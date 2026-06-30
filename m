@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7522AC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:13:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 289A4C43327
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:14:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3823A6B00FB; Tue, 30 Jun 2026 05:13:55 -0400 (EDT)
+	id 15F636B00FC; Tue, 30 Jun 2026 05:14:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35A266B00FC; Tue, 30 Jun 2026 05:13:55 -0400 (EDT)
+	id 1372B6B00FE; Tue, 30 Jun 2026 05:14:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 270616B00FD; Tue, 30 Jun 2026 05:13:55 -0400 (EDT)
+	id 0751B6B0100; Tue, 30 Jun 2026 05:14:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F12616B00FB
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:13:54 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 725121C6E09
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:13:54 +0000 (UTC)
-X-FDA: 84936016788.15.6D44D7C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D84E16B00FC
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:14:27 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 76A711C3305
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:14:27 +0000 (UTC)
+X-FDA: 84936018174.12.612EBC1
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 892A380002
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:13:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=W+spzFSP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	by imf20.hostedemail.com (Postfix) with ESMTP id A04D31C000B
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:14:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=XjRXYR50;
+	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782810832;
-	b=dLgDcBtO/2RlxMG7/O7mHnLs+YWRhbEF3Xm/cS1IQNf9V39WD1G9X67kXKnJxP4prQuKxM
-	LaEnkH8nKV5FHXa5V1bB/OyibeKSqVsa25xFu+ORgdacdQ+KfVU9iBIic86Z4FX//7HDP0
-	4Ldx1nHaha6H0f6xb7D7tGDSb23UqC8=
+	t=1782810865;
+	b=kykxK7o9wq2/H3EUVemowPTA53P6AhKonrlNJwIvjYFHBfJIBPXs1dM/CXI/4bCQ6cy8E0
+	WEMVswLfPt3ml4IuYro0J9Dnlvz1dfCT9Rt4/NajDl61heVAvCNFCtvHsWsyokE8zKPDlN
+	Ce9EESp57qLPMoqF/AFqQXs6Gvb0lvM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782810832;
+	s=arc-20220608; t=1782810865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XawQTOQeMrC2goaYpbqyNPdZ1yS9UOUVP9VgBUrnkUk=;
-	b=ph1xh1Exe5NVcIJsOFzL8qX9zlnPaLaVoh7WTscAImGXcVz+IIfaGy8bYxmVi3H8gh3/0x
-	xVIjnFVO3rlp4SYBKROOqeON2KvHzj+vxKmUvd05MYT1Vd7Hs60NE3WhxrhS1z/Xj/3TcD
-	WMoSOpheXBsW/vQTyVztjRrB+kp39ic=
+	bh=HfjTiG0jHFf9ywEZeS6UslnAQPABLC5dbG0q1WV0izI=;
+	b=UU6LDSuVD92DrVChfuxp3DAO+yrTI62eOX64/co/0HzzD9NlXAlwBEtT2griBeBAMSr52u
+	KVzIQTpyP3XSE0pb8sNRlpbd3aljgDvA0FSQUJwjaAHsp5aY/gAVU2Lvgx7r6uxwdgP7Qj
+	yoD2crg3kh7Vkm/RXTACZ0EWn1suFJ4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=W+spzFSP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf02.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=XjRXYR50;
+	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1060E2C1C;
-	Tue, 30 Jun 2026 02:13:47 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4B1DF2C1C;
+	Tue, 30 Jun 2026 02:14:20 -0700 (PDT)
 Received: from [10.57.81.132] (unknown [10.57.81.132])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5203D3FAFB;
-	Tue, 30 Jun 2026 02:13:42 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 16E913FAFB;
+	Tue, 30 Jun 2026 02:14:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782810831; bh=xfhzNa7i/skfAP7X8l/W5lXDtIlKtNWwDUgCZO/Necw=;
+	t=1782810864; bh=gWU2+q57VLQEQbWXLkaWbWHCxJakIwq33zdaa5p1Eu8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=W+spzFSPXCTHtXozMKrEXROXtZhxJU1ZPPwnZbwUuHnyjZLPYrxvGDhFIL3bT4ggq
-	 MIMuLnGKJR2VyWXW20lFvLPHd4hXWwG0VjLZkDBmx8IkF/PxK+cQ9Gg40yaSIymMfM
-	 rwPOWCXB4qduy/a+rMan2D1x3U+Zv8qM31+xwRAc=
-Message-ID: <cc586a87-871e-4b13-a4fd-f7c0757dc602@arm.com>
-Date: Tue, 30 Jun 2026 11:13:38 +0200
+	b=XjRXYR504D+Vxscp6Uvahb1H/yAoW0+cH56gS/Gc1aRNw2VZXb9jFW5zgD3p2d2gO
+	 3E/MVCbHlFCImB7zkUo3wn4AUZVbYzG1ySzXEwb8GqLYQwL+DiAWM4MRJgJUnn/nTl
+	 k7YNttTCKDuukMPf3Ch7PvgZk+8uZgczy5xupOUA=
+Message-ID: <0ac4e410-c73a-4fe7-a248-4c0ff735e73f@arm.com>
+Date: Tue, 30 Jun 2026 11:14:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v8 01/24] mm: Introduce kpkeys
+Subject: Re: [PATCH RFC v8 02/24] set_memory: Introduce set_memory_pkey() stub
 To: "David Hildenbrand (Arm)" <david@kernel.org>,
  linux-hardening@vger.kernel.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -87,21 +87,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-mm@kvack.org, x86@kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
  Thomas Gleixner <tglx@kernel.org>
 References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
- <20260526-kpkeys-v8-1-eaaacdacc67c@arm.com>
- <70f4dcdf-c45f-47d3-91df-a7897bd86ff4@kernel.org>
+ <20260526-kpkeys-v8-2-eaaacdacc67c@arm.com>
+ <e026ab6b-aee2-48e7-9bb5-1735d7a23859@kernel.org>
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 Content-Language: en-GB
-In-Reply-To: <70f4dcdf-c45f-47d3-91df-a7897bd86ff4@kernel.org>
+In-Reply-To: <e026ab6b-aee2-48e7-9bb5-1735d7a23859@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 892A380002
+X-Stat-Signature: u7sizqy8uhmb4raa8gc1qabnbroujg9t
+X-Rspamd-Queue-Id: A04D31C000B
 X-Rspam-User: 
-X-Stat-Signature: qd1dztooo3epyqwfo1ysaqororghe31q
-X-HE-Tag: 1782810832-371586
-X-HE-Meta: U2FsdGVkX18wnEdXbdyJw0JwF2zr1cpTST2YXr9A+mXaZNZ40/T6AMq0I9W9PxlqdifsNXxoEEiIb7h2qPumUqqLkQ3petn79I9aeL3NnL+zy82cglGfZRx+GO0NoMHhZR5BQE4QKrSep4YqcDpG5rkxfOoc+/PUPa6NEFKicd6Icas+TW5NrJqMSp3++lWljt1oL6SjnPka/rft9x5trnSxuToaWeYAWH7c3dF0QJpmPm+gEflvCTlUfMK4HnzhWSRuJcrkM/GbbdGM9SJF2yjXzrD7MlwC1fhoWQxzaSrgz4LK/5ivqsFcbT3XGVFqRn3PUUvcRmoJPEt9CnSeLH6D3IVl8tDkV7XhWvd8USN/ObP+OLLPpWYUplp8HHe3B8FfAvlsa0gMzwS+UeWoW5XcQhkBYkn829EYOwlHEFNB328yLiF+cpR70Q1/I7DuUA2t0YrnnCgzMLSC7sTCSGYQUCaAtWmr1ZxBED2goit+jW70I5d8bmvbjLiWkGv/VJGGTODAv5LJNRwPbuoSzDxPaAQrqUR8moCuBTfrTqiosKiH6vVlteOj83kukYQTV4lEPTA46KQAB6zOIa8JPaX5k4rM5vpSwjj35A7611GIWr8lfDRw3g+vvMqnsUMsM8qKvRh366gxo1wivwMTbny6ay1N3A0jmfibMqVEO20MfEO13+W3gWHs2uL1soQO7avqmVvTP+ZTLjZq0jaySCgC8A+zpTkOj+8Bmgt4BCnB3IpxtTjtx5P/X8hQuEhbwMVgxhUCIVCaB9zPZJCjhCx4v1Rw4kxN5ps0dnKGau761K/pKgYMUri2iiWxHdUas/JR4yZt95wb7a/bs1XrRKXx8hsvwWHUI7IL5fmZAw/LUXsu9+27r46rKJfd7GyloUgBBd6lwWlhOHOzVpMY8JnAq5uGk4w9O31BnlcJozRwO1JPwxSMZn1Qi6SQXODdhFlGpls/N6aQW3wzttY
- YuHYIXgE
- qzgjVWJ/UQg4OG4jgUNrOGyXCpcBPcFH9Lrtuf7lLg+JDYr3B8BnJNnE+MJWSCDo0uaA15QHWHARCy5Qid9Ifp6gu+eRXUc0SJhwb0nGvy1XB5kB37/wrShyxJQp07TKQSetQBrbnW5ry0rdSPHW+v6q0lev2Jrz2QQ9HwVHYo8BDW/0IRr2xqfHlocc4BUAffxpfm3YDaMVQzhmE705fANmdQWfUdmyMfsuEZ+xo4C3lsVqcGEI9ewwmfJU3SDajO5WUoWF3k+6ZXgRh+zsZylzgQhCc42ZDx8ILT8ln43RqsDpohBxjFLRA+oG5DC05Ae3B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782810865-918578
+X-HE-Meta: U2FsdGVkX1/T7kkjCnyfn9b0gZ50+I6FCzOfBuOgLu9FBvfkB6nRQ35jmcusGujUoykfMcYTvFMP/RF9I1UG/YCzhSh9BprA1R1ejUZypCHAhAiBnsLJLKOLRil88DiH4B2bnB4LwBgbGtbXUPJQQJZSirOR98ZZPLnITZeNykDnKf4pSCVUDif6Uf/Rq2rWVEY+GFMnbfdQahsWFogz/hvVOActLoqpPShN0G2BK5/TWGJDVgD2Ls1/EvI9QrOrM/C8IioYN90l17cpOmGGhMhzQR9vVdNS2W8MA/ghJZQvLZnE+8PXO84WRIQRS/lRDdtMHiqC999nfdg5teMmcIXmF3a0+S0JTRbU0RtC4UD1Cn7LWAh+qh0EXa6Zo9MkjslcT/8w/17y4ntFvvC3np/eL5wkJe/VLyC7AByCNyoIzals500ONo+TOxPPtw+CVnCaWjYgi6upLYBltBKElV6YvNzVgp022FFIQC5CVEXV2k2SV/0xmOOSYWPpFKJ/jl6+FGcMbSGRVHel0a3ve/HXwQP8WKaO7FPZPmk/HKdbtW78fUQPhhe4hw4qmVeSSswsb3BcyMfY3kH6OtObRz7smD6iqrDfMfHTzzsTIfXziMQyQqCb4JvIfJkxzRnoVIuZmBO9pEynHcuLy8adSOIArG04iQtfUZ2a47EOgjK+W+3u1BuBcHFgqB6sqZNhVLD+yDMJPs+mpm5fbmCqoOAXut8XQ93Y9WanwqUTDzEaATmEQEvAhd35JhpbFhfB52wrQlBnpK2aFb24Z9aV2UMhRjZGHvTjO83jayz0k+XIVZNrCcMn39aZ0IW8WnMv/w+urUBYDefhIWI4wgnmMndbOTsMiZDcJ+6ggtxv7iQhdbG8U0Ru2LZxQ5eo/QpquFtQ5mcUBguxb/Mop/DB0bzI2K757P8ZrOlRCwPoAG2FkNjwQpcUw3EHa92YAv5oHjny1lV0KGLJ+uMHR9H
+ FeR2T3Ub
+ TTRFYqc0qTJaBl3NSoYR9ZP8Zilu5f/5c6kvIG2P8wCabf29mtE8tUgIT16nkeKUKeF36X9bNAv2fcFYAwg35adqdN2iixv2allqnaip5dVhLHaf5bF4Skc3iN1b+4Qz5UQZrWwEVWw+bQE2LD8J95V6nUQFUlZFLs/7SqRc3RlMuzmIRX3KKq97nGzeB00pBA3grNoHh/WdA8zYGuK6DIXirekaTYd+Ydv1/UHwBywXij77SksmlzQebR/q4kL4eFYs5IV45y7bPVpWwVMGgEbzy15ypWmIp8CkE9vednGOSJrW/mOkKtlv/lXBSRoehe6IJPZVXKO8MCzN+mccOEGzC8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,171 +109,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 16/06/2026 17:19, David Hildenbrand (Arm) wrote:
+On 16/06/2026 17:41, David Hildenbrand (Arm) wrote:
 > On 5/26/26 13:15, Kevin Brodsky wrote:
->> kpkeys is a simple framework to enable the use of protection keys
->> (pkeys) to harden the kernel itself. This patch introduces the basic
->> API in <linux/kpkeys.h>: a couple of functions to set and restore
->> the pkey register and macros to define guard objects.
+>> Introduce a new function, set_memory_pkey(), which sets the
+>> protection key (pkey) of pages in the specified linear mapping
+>> range. Architectures implementing kernel pkeys (kpkeys) must
+>> provide a suitable implementation; an empty stub is added as
+>> fallback.
 >>
->> kpkeys introduces a new concept on top of pkeys: the kpkeys context.
->> Each context is associated to a set of permissions for the pkeys
->> managed by the kpkeys framework. kpkeys_set_context(ctx) sets those
->> permissions according to ctx, and returns the original pkey
->> register, to be later restored by kpkeys_restore_pkey_reg(). To
->> start with, only KPKEYS_CTX_DEFAULT is available, which is meant to
->> grant RW access to KPKEYS_PKEY_DEFAULT (i.e. all memory since this
->> is the only available pkey for now).
->>
->> Because each architecture implementing pkeys uses a different
->> representation for the pkey register, and may reserve certain pkeys
->> for specific uses, support for kpkeys must be explicitly indicated
->> by selecting ARCH_HAS_KPKEYS and defining the following functions in
->> <asm/kpkeys.h>, in addition to the macros provided in
->> <asm-generic/kpkeys.h>:
->>
->> - arch_kpkeys_set_context()
->> - arch_kpkeys_restore_pkey_reg()
-> Looking at this, and wondering about "why do we get registers involved in this
-> API" I would probably have an interface like:
->
-> 	arch_kpkeys_enter_context()
-> 	arch_kpkeys_leave_context()
->
-> Whereby you return a "struct kpkeys_state" or sth like that.
->
-> You could either let the architecture define what's in the state, or
-> alternatively store some generic data in there as well.
->
-> struct kpkeys_state {
-> 	bool entered_context;
-> 	struct arch_pkey_state arch;
-> };
->
-> Maybe the "entered_context" or however you would want to call it could avoid the
-> KPKEYS_PKEY_REG_INVAL (which confuses me ;) )?
-
-Yep that would do the trick. And would make Sashiko happier too, using a
-magic register value isn't great ;)
-
-> But the KPKEYS_PKEY_REG_INVAL usage confuses me. I understand the
-> KPKEYS_GUARD_COND + kpkeys_restore_pkey_reg() one, but not the one where
-> arch_kpkeys_set_context() would return that value.
-
-Right, that's used in a follow-up series to protect struct cred, so that
-unnecessary switches are avoided in case of nesting [1]. I wonder if I
-shouldn't fold that patch into this one. I don't think nesting is likely
-to occur in this series, but the extra branch probably doesn't add much
-cost either (it's easily predicted).
-
-[1]
-https://lore.kernel.org/linux-mm/20250815090000.2182450-2-kevin.brodsky@arm.com/
-
 >> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 >> ---
->>  include/asm-generic/kpkeys.h |  17 ++++++
->>  include/linux/kpkeys.h       | 122 +++++++++++++++++++++++++++++++++++++++++++
->>  mm/Kconfig                   |   2 +
->>  3 files changed, 141 insertions(+)
+>>  include/linux/set_memory.h | 7 +++++++
+>>  1 file changed, 7 insertions(+)
 >>
->> diff --git a/include/asm-generic/kpkeys.h b/include/asm-generic/kpkeys.h
->> new file mode 100644
->> index 000000000000..ab819f157d6a
->> --- /dev/null
->> +++ b/include/asm-generic/kpkeys.h
->> @@ -0,0 +1,17 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +#ifndef __ASM_GENERIC_KPKEYS_H
->> +#define __ASM_GENERIC_KPKEYS_H
->> +
->> +#ifndef KPKEYS_PKEY_DEFAULT
->> +#define KPKEYS_PKEY_DEFAULT	0
+>> diff --git a/include/linux/set_memory.h b/include/linux/set_memory.h
+>> index 3030d9245f5a..7b3a8bfde3c6 100644
+>> --- a/include/linux/set_memory.h
+>> +++ b/include/linux/set_memory.h
+>> @@ -84,4 +84,11 @@ static inline int set_memory_decrypted(unsigned long addr, int numpages)
+>>  }
+>>  #endif /* CONFIG_ARCH_HAS_MEM_ENCRYPT */
+>>  
+>> +#ifndef CONFIG_ARCH_HAS_KPKEYS
+>> +static inline int set_memory_pkey(unsigned long addr, int numpages, int pkey)
+>> +{
+>> +	return 0;
+>> +}
 >> +#endif
-> Do we currently expect an architecture to overwrite this? How does this interact
-> with KPKEYS_CTX_DEFAULT?
-
-That's a fair point, pkey 0 being the default is pretty much hardcoded
-and I don't see that ever changing.
-
-The value isn't coupled to that of KPKEYS_CTX_DEFAULT, which is purely
-symbolic.
-
-> Nobody in this patch uses it, so maybe it should be added where actually needed.
-
-Agreed, the ifdefery can be removed.
-
->> [...]
+>> +
+>>  #endif /* _LINUX_SET_MEMORY_H_ */
 >>
->> +/**
->> + * kpkeys_set_context() - switch kpkeys context
->> + * @ctx: the context to switch to
->> + *
->> + * Switches to specified kpkeys context. @ctx must be a compile-time
->> + * constant. The arch-specific pkey register will be updated accordingly, and
->> + * the original value returned.
-> Are these arch details and registers relevant? Ideally, we'd keep it very simple
-> here ...
+> This patch looks rather odd, given that this is just a stub that won't be used
+> before patch #20.
 >
->> + *
->> + * Return: the original pkey register value if the register was written to, or
->> + *         KPKEYS_PKEY_REG_INVAL otherwise (no write to the register was
->> + *         required).
-> ... and here. Not sure if any caller cares about these details. Again, with some
-> abstract state we could maybe handle that internally.
->
-> "Return: the pkey state to pass to kpkeys_restore_pkey_reg" (or however that
-> function will be called)
+> And there, it's only used from arm64 code? So why do we need the common-code stub?
 
-Yep agreed.
+It is primarily used in patch 12, the generic kpkeys page table
+allocator, so we do need a stub.
 
->> + */
->> +static __always_inline u64 kpkeys_set_context(int ctx)
->> +{
->> +	BUILD_BUG_ON_MSG(!__builtin_constant_p(ctx),
->> +			 "kpkeys_set_context() only takes constant values");
->> +	BUILD_BUG_ON_MSG(ctx < KPKEYS_CTX_MIN || ctx > KPKEYS_CTX_MAX,
->> +			 "Invalid value passed to kpkeys_set_context()");
->> +
->> +	return arch_kpkeys_set_context(ctx);
->> +}
->> +
->> +/**
->> + * kpkeys_restore_pkey_reg() - restores a pkey register value
->> + * @pkey_reg: the pkey register value to restore
->> + *
->> + * This function is meant to be passed the value returned by
->> + * kpkeys_set_context(), in order to restore the pkey register to its original
->> + * value (thus restoring the original kpkeys context).
->> + */
->> +static __always_inline void kpkeys_restore_pkey_reg(u64 pkey_reg)
->> +{
->> +	if (pkey_reg != KPKEYS_PKEY_REG_INVAL)
->> +		arch_kpkeys_restore_pkey_reg(pkey_reg);
->> +}
->> +
->> +static inline bool kpkeys_enabled(void)
-> Is the enabled vs. supported intentional?
-
-That's a fair point. It is intentional for
-kpkeys_hardened_pgtables*_enabled() in patch 11: on arm64,
-arch_supports_kpkeys*() always return true if POE is detected, while
-kpkeys_hardened_pgtables*_enabled() also require
-CONFIG_KPKEYS_HARDENED_PGTABLES=y.
-
-For kpkeys_enabled() the condition is CONFIG_ARCH_HAS_KPKEYS=y, which is
-always true if we support POE. So it would be reasonable to rename it to
-kpkeys_supported() (and maybe more intuitive, since it doesn't imply any
-functional change).
-
-
-Thanks for the very useful suggestions and sorry for the late replies!
+The ordering might be a little confusing indeed, but I tried to follow
+the following order: 1. kpkeys/generic, 2. kpkeys/arm64, 3.
+kpkeys_hardened_pgtables/generic, 4. kpkeys_hardened_pgtables/arm64.
+Happy to reorder if you have other preferences.
 
 - Kevin
-
->> +{
->> +	return arch_supports_kpkeys();
->> +}
->> +
->
->
 
