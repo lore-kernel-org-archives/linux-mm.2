@@ -4,114 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BF22C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:02:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CD08C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:04:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7879C6B00F4; Tue, 30 Jun 2026 08:02:31 -0400 (EDT)
+	id 1BEC76B00AE; Tue, 30 Jun 2026 08:04:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7384C6B00F7; Tue, 30 Jun 2026 08:02:31 -0400 (EDT)
+	id 16FA26B00B2; Tue, 30 Jun 2026 08:04:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64ECF6B00F8; Tue, 30 Jun 2026 08:02:31 -0400 (EDT)
+	id 05F386B00B5; Tue, 30 Jun 2026 08:04:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 318806B00F4
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:02:31 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A83FE140212
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:02:30 +0000 (UTC)
-X-FDA: 84936441660.27.9506420
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BE75DA000E
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:02:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SjJnG9eM;
-	spf=pass (imf25.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CF4036B00AE
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:04:04 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52402C21CC
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:04:04 +0000 (UTC)
+X-FDA: 84936445608.07.9C8C4E8
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EE50E160014
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:04:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=afnIokYB;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782820948;
-	b=w7Zt6d6E7xPQYdl/zwUc0WuzInbgfoWGSmAzfImLxSSMIInCqZQtPocbnVjWAbZLRKZjIK
-	ObtqKemkMnwKAfdRy6it3lSR6IKP3JXhk0tp+RVWMATuwQGRjx0QjXUAz1DYr1/83YeFOY
-	R0ioGv51iYcf+80vuqRp81+VoophMEk=
+	t=1782821041;
+	b=UjbkD+h9hphM6GKEOqAGW3X5EyRajMgK8eUYcKX5ks1byGXTxxtDA44Xl5p5YBUWZvOMQI
+	2qfXdpTq78c7fo+9UfTPrOeNmDSEJa6y27nuhZm43ZkPq0DneCEenDcV4tEtKW1rijw1QH
+	fp50C5aHapDwnP1udOLy21AjVlO4rkE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782820948;
+	s=arc-20220608; t=1782821041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jtOT+ofm/KMHAXBQoy8Xf77zwNZ6tmjUK28sksK7y38=;
-	b=RcGLsBAlGRX9Gfp1lMvn/5IO5rvlYRFfi6eXKj16KKsHmLe2lh9VXw5dSe9X+0LqVxJdCK
-	vFwP1cQTbHIiLdqCr23KBahG34+cPbkfXEjmlcGbDuEQ0/4wR+0KTsl3Sp3uhcHoexOhZm
-	Tf8T3twGvxxg6UD6M/jn2D+OgbZrK1o=
+	bh=V/DMUiQ1VPaw+ocwoQ3oyh/3Cnm4EySYJMIokcHus7g=;
+	b=XmuvzI0i0joNohgvVwGQRJ2Zlw+nCn3E+sCOAQ3sa1hXSgnWbuKbQKactjh2wwHhQ1tY59
+	NJc8u+gE0n+G8jkn9YFixAksA0sE+PZHesfZnbI3AWN9PRbHntRRC+9sKqKfqn8RNuu1RX
+	Dy2sRBDhPJHEhBb2Jcd9Ww3KTKXwqH0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SjJnG9eM;
-	spf=pass (imf25.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493ba729dbdso3209185e9.3
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:02:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782820947; x=1783425747; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jtOT+ofm/KMHAXBQoy8Xf77zwNZ6tmjUK28sksK7y38=;
-        b=SjJnG9eMQtoPINcaUXZTjnywWCa33zZYJUCMkWk4DzMxPB4AWj1Ectu5/R50pfyFyP
-         jmQlxrkQdWqOWIXTwcvN++9RhwEbu7uEtqvLuVVAn84u0fi3XyNEtzD1vfb55lhji/ke
-         y+Vj+st/LlnDehEHq1Y0cwR2CPLARKQOFpsJO7jz3gXpbOwefDWAT+wm4+MYStnlAl6Q
-         I7NRG5caqWGVXCX3SubtdlPDV+grzMuX2aVv2NhVLTRxIAGxHtQlvX7vxV/Tad6hVi0u
-         8IldVQ8pwajm1Yy/7pKyV9WdQCejBHE/9T6GPEJJqWCTgD5ue+Bxh09BTJX5ysZhYKdw
-         +7HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782820947; x=1783425747;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jtOT+ofm/KMHAXBQoy8Xf77zwNZ6tmjUK28sksK7y38=;
-        b=XkamCpzGrQjwVqDfIEUMyfLy0JiZw7Xmu2WDdna+FsAjL/nIWxJNG+GdWX2QkOqR3V
-         u7BUXz5QksUI2GGwGFNpKzCQ7KVE0oMKq2Zd0UhkevWieEOxOrmBBqCETpYG3SfwitXG
-         7lEmb2MloWha0jeIo4pPX7n5Hu6+YFF4CuVLgxZR7fknXFOATgqHUoDNnR+AaDRP2Tnr
-         fQ8FIBy5liEz8fSGgP40T2Lm2b3pHmJz6fcUaPoFjnjFu3IGjjWuqG7J8vE7a6rlGzmu
-         ZfRUULCreowpvQI14Lz8TtTz2PKyzR14qdcMeASL/NkodIwuoP7e7/v7r7g4BJtFYsIK
-         zhjQ==
-X-Gm-Message-State: AOJu0YwHlC8Gjy8fyCbd1bF55yZP45gpupPtpPh4MIYwrIJKZXUrOpfX
-	f5mMhormqcMIAoJOCc+lzAz9PvS0i/zSw47nX3ykMshLOjknc2GQ64OhI48FcSAZXW0=
-X-Gm-Gg: AfdE7cm1Ewku+RHqgZwidxk+OUDCjnEObjgBwpL3WD7I7WU+tqv991KQYAUhiWXDyeK
-	6bzb5ZaFtEdDf3hW0SugDqaxJY94Dnv9lrbfMQeSV0E009/2+TlMC+C+VV+PEAjL+TbxPKpfs3r
-	YtxWbAZ+IAkJZrqkVK1PEtG+lhGNaLRgxEyvqeDrb3mYjDoNyboKOGf/FhNRP9FjknVmdq1a3fE
-	PIQaimmlq7dPQcYBfD2jAm6yKJBwLW4zC9IT/TCpr2Z2WUSUY5eRAA9OSiSjYr0P6zVwcNyr8St
-	g0+4JBHosLP+SHrubscMsp8bUTPQBFqCWPpL/DjjgMUIEBPZRBeQS1OuclrvHXJuBBvLccFpb/T
-	bdcO4zOxkD4m4V2qiLBcqYTcH0LzBEgu9auAWimjKMuX+D8akDsu89PTjOL4wwxVvxe4/LYx2zo
-	PZRccLqsfX1+U=
-X-Received: by 2002:a05:600c:1c17:b0:493:bba7:e9f4 with SMTP id 5b1f17b1804b1-493bba7eacamr28333925e9.18.1782820946110;
-        Tue, 30 Jun 2026 05:02:26 -0700 (PDT)
-Received: from user ([104.28.155.142])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493b8cb62f1sm112720015e9.15.2026.06.30.05.02.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 05:02:25 -0700 (PDT)
-From: yahia <yahia.a.abdrabou@gmail.com>
-To: hughd@google.com,
-	baolin.wang@linux.alibaba.com
-Cc: linux-mm@kvack.org,
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=afnIokYB;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782821039;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=V/DMUiQ1VPaw+ocwoQ3oyh/3Cnm4EySYJMIokcHus7g=;
+	b=afnIokYBOW1Nsyw5v2FMpAPhzWDSn8Xmhm8lmi4QXXJYhfCyHTu/UVshzew1eNimj7yZJl
+	5tPyYbPjrpHXa0TJ2MYRl71Qf/B0aW970KDwwl91kx9ODE/LlDdCTkLiwA5pgrxNr3s57T
+	Dh0Z1m+HITnk4VjZz8g8g/Gx9nDfeSE=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: davem@davemloft.net,
+	andreas@gaisler.com,
 	akpm@linux-foundation.org,
-	yahia <yahia.a.abdrabou@gmail.com>,
-	syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
-Subject: [PATCH v4] mm/shmem: Fix data-race in shmem_fault
-Date: Tue, 30 Jun 2026 15:02:22 +0300
-Message-ID: <20260630120222.11562-1-yahia.a.abdrabou@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <1d27c781-0adc-474d-9c75-899e63bf7490@linux.alibaba.com>
-References: <1d27c781-0adc-474d-9c75-899e63bf7490@linux.alibaba.com>
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jannh@google.com,
+	peterz@infradead.org,
+	osalvador@kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v2 1/3] sparc/mm: drop custom pte_clear_not_present_full()
+Date: Tue, 30 Jun 2026 20:03:44 +0800
+Message-Id: <20260630120344.81142-1-lance.yang@linux.dev>
+In-Reply-To: <20260629-clear_not_present_full_ptes-v2-1-96089871a1e7@kernel.org>
+References: <20260629-clear_not_present_full_ptes-v2-1-96089871a1e7@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: zwzz6pqx9h6eboogoy9kt3znpikud9er
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BE75DA000E
-X-HE-Tag: 1782820948-975257
-X-HE-Meta: U2FsdGVkX1/4dbk36uoch0PWGYYRU03ilpOkTUodW8eXTGH2lxm6uFD74/zCHhaIwyG+KWzJ0DolPkGmQFhzJUYdIx3IxaRxJvFEmjgvM1NhFUZHV2VWKLuaGhTZfuP50CAgdSL2hFWU8Kssa0Oof0CW4sYWqY7COJlRNN1kZQ6v638iDIZDqBK4jWW+DLBpH/kTZrSbO5x0Vh4ZUuzJwTtnsnbblb23ShmiS/mXYQ85q1vWHPlbBaSoV70K/D0nSp43wS0cDewLyeFkmm74BJqq0PKeBkqw8RFQ4hd5kAoMjkiWbBNCV83ZKyZtx5G6i9FEOAFb46FYya5/BDPF18f7cUP3nA9TAgn/hbGLPSa9Lk/7RUgraB6atSxYYlw/E2UMtdfY4FNHw5fO7avctQSYHTYF1MEjfJDiYEcw8ZUuRju9H28SJdw2XWrvyZw2PMyf2n9u0RsxDVmygPWIRnoX3ojR/Jv9ej/Of3CDmE/Yv/FqSpbJ9j6t+v9TAd6USdq4ZlBF5+CULj+Hogk3Q6vmbIvYXfYzxr2Ub0hP/uG9G+wqALLok/ZZFGpLA6Rqgem/2FYttbeu9Okpq41+JNWh/sk+f6fOlC2TgiWLUKlEuJMCt7ivWiGE5s3055e/1mlcdSM1efwyMCD/vBC/XPRzywuLU8jk3RqmIMAZjorijWPUKltwc3a6Izg1AS8fTCniGD6VOxTg/dTXw1XC+W9P92+MLcFJ/GpUSWUjj2G4z7cTWusFadYhfteBZmLgOcVwFNZDhp+ieV3wLKSrI1rr5Nz/8CjHcUI+2Vq75EOS02tCwiSQ0GcTCo0BSrVZ4dtXg7EmKaEdNPe1DJHuvcmcJUXSH9o2tudpxkiFUmzgaOwSbpeONdipDjLdpE+8F91vP0qkKBM7mUrScwduAlFWznJEfOABGlI5EzObrL2lqkSyueV5nxY1gRJ9qxbEVfCOC3MkbbtAEciZ++S
- oqlSRWg7
- btDhiBUJ/05WCBUyOgCy8lYoTyeJU1bthclgl4QNCSewcg0K8d+RLTHOuS1q+YM82038ju/TJE2vIXQEQqLnugXXAIErWc9HEAoGZE8fEMXKM+1lephpbDN2+afhQ+tmVr8+WV0fpCWFIMVRFpsSVkOmkO0ZRtwwz8ZfLehJ7jHSVOQuFyWZYzM9WcgLSIQ8gaBPYYqd0sSb25/LvFPHh/3ye/kkG23QnSBpsXQQ+aKtoxhjTU4WErlBryEb9JFtVWYydfkTuXe3kigViDsy/mk/PhZPSwMak3bwoDFrT7kg9Wy8Y1j6Xqt0rkVQB8xGvVxUbqa3n9AxRLzSHkTUyMnAe2P+p4wqi/ITWPvUNjsOgRKh0D5zFeySkXqZSikTuFCE27nhQ1vxItkUb2hUjWN/uyA0lkyaHjvD47Ju8XV6rHBEnFjV68mBGYgOFgZTNAiqr0yUhlhPiIIkAV4wK4aaAL9NI5XTsTtQ2FCrLJNRzP5zUhuGBmsgu8OEzYiHJaUAle5LpIA8Q0O95aVKe225kDuHN4u0ogtxj2IkAra0kE/fXcNr7CtaG1UxFczdIypLBSlA8nqgpV5YTOgqcEgludNuCRNbSLvSA4/F2sAlQ5AfEfpp5iav2Zn/B9DNMEk1eTM5Ma18XYZc643H7vcZC6i2KsOGU7EtOkNiia36v0umetDUxR+1yBXLOudjkDLoUK7RRT/GMp68JdY25HX+M0ErH0UjdKrBmdKedH8Pyml+DmKpFKnN2tg==
+X-Stat-Signature: u948qa88getd5iqxrsu79yhpdz65ra3k
+X-Rspamd-Queue-Id: EE50E160014
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782821040-404472
+X-HE-Meta: U2FsdGVkX1838WgLH9nGx+DT6cFiLNJiBMq7XRgruBeI52J/AP5S6MbiH0m2wm7GyGYyOdcS6sAyMHJbB69D9d2uamqP2RXeXUWmpwj2AUzsFzYvxiWXSbs/CusHXxEpd1pJmHyrYFdgsVsmfAbtnDR1LxVsh5HqjdQefrfxqw3Cf8tkVhIDjPJ43fOpihRXpnrLOA46kHeMhnEmGy7iAZFXCmO6jvOh7tbk1aH7HMdIVkXajm5szQWdDTw6VQU9s+E1rVCc97ZjLPC7GtwzkiquBxuzU1YykxZRcXOqpPS4+VsX2KHe+fVFngFXno1Fez4VKvS0Vf/5RZ8Q0phZYuJsjTB41t34DgCWtAw2Qs9Sq0a1iU38DL2uiaM6VnvJFMMBl1s5E02C/IX/EhATB3cCF7Y2gvN14UTQ8duufPaS1C4p9jVohDz+0pd4jW/VronwBfLDiFRAry3qY5UB4FHXiXblmAwdHby0/AFmT+PswaXlfvToNIndywPuRNHaLTkVu6CVxvoCOl5oo+NbTkH9AIBcmN/xmWiuM4/792ZPtnJi9FQMU6Ftc3+jPcHjafR/BNBxCCPBud7MR+mcg0cm3FAy0OkGtx83qwMlfrbfm+1k3kT1KucIjYIKrDhmNgarHpDXuy/JMp5QcTh/DcRHurhJYXWUXwiOshFq3gRmzv8F7wiJPTPI1ULdSc6Vtf9BSmCdIHbaLNvNAyPc1Bj+1VVPegzhZD0c00b3/CsFt/z7svV1jf2k34OEPI79Wfq2Rh8l5rbCg1YX4YcS3l/9CR9yE7mBoo1Tr/+ghwv4YEnYksaAgd24EHd1VyZDdXAT6VKKyRhD1ywev4sRPUZoEUr74yWFcZPWPA/jKfFpG0b4YRLCL90rUe9yiSmyLvR13t2GBXjG7abmY2P3RlGRgvGob0uz8VzlZarMj2+zq8nnzhfJk3QD+UNGYfcDFCUeYB/zadCEQe/MfNF
+ SgkN8Kab
+ +5NkVp/laOhr6Jz9ix7i3FwuGqDv0+Gln8jjCpE3c0VDY2WSMbSnvKp4fybOATfQIrDACJdv2QyN1YRe+zVPJ7br/gFs9+ZQuSXZw8bHidcE7/UrE3lGEDzJmaigvsLAWF+HQ+JY1dXDn62lX5me6KJrzRrtIJcIqbniKc1nlJ4J676BYOPaqkVkIinrtA4OyYLgBTPrC6dLXWQ1reKnmhhDA9Ihr73pgINNmSW/AGh6hxSmSFujGUGALlb7r5S331eMirvg9oinznrAe6bydPhZy+lzOXrJO7F+/VOh/G88V4BUc2EnK+Ltu2Kwc/SdRfQM0phe8n1SQoFIUZ7aieyGAqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,91 +102,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-shmem_fault and shmem_writeout access inode->i_private
-without holding a lock, while shmem_fallocate is modifying
-it while holding a lock, thus a data-race is created.
 
-Fix this by using READ_ONCE and WRITE_ONCE, which provides
-an atomic, lockless read and write of inode->i_private which
-prevents compiler optimizations such as caching in registers
-and add writing to inode->i_private with WRITE_ONCE to prevent
-the compiler from writing in registers.
+On Mon, Jun 29, 2026 at 03:49:47PM +0200, David Hildenbrand (Arm) wrote:
+>On sparc64, pte_clear_not_present_full() nowadays does a simple
+>__set_pte_at(). In __set_pte_at() -> maybe_tlb_batch_add(), we check
+>pte_accessible() to see whether to call tlb_batch_add().
+>
+>However, non-present PTEs are surely not accessible, so tlb_batch_add()
+>is never called and the "full" parameter is irrelevant.
+>
+>Let's drop the helper and just let common code do a pte_clear().
+>
+>pte_clear() on sparc64 maps to set_pte_at()->set_ptes()->__set_pte_at()
+>... so it ends up calling the same function, just with "full=0".
+>
+>Given that "full" is irrelevant, there is no change.
+>
+>We added pte_clear_not_present_full() for sparc64 in commit 90f08e399d05
+>("sparc: mmu_gather rework"), and I suspect that it was already not
+>required back then.
+>
+>Cc: Peter Zijlstra <peterz@infradead.org>
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
 
-Reported-by: syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=76cc716982cf0254f302
-Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
----
-v4:
-- Remove redundant READ_ONCE
-v3:
-- Fix lockless read in shmem_writeout
-- Apply WRITE_ONCE and READ_ONCE across all
-  locked instances of inode->i_private
-v2:
-- Add WRITE_ONCE to shmem_fallocate()
----
- mm/shmem.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+fullmm only matters if an old non-present PTE can pass pte_accessible().
+IIUC, that doesn't happen on sparc64 :)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b51f83c970bb..adb8431743e6 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1657,7 +1657,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
- 	 * reactivate the folio, and let shmem_fallocate() quit when too many.
- 	 */
- 	if (!folio_test_uptodate(folio)) {
--		if (inode->i_private) {
-+		if (READ_ONCE(inode->i_private)) {
- 			struct shmem_falloc *shmem_falloc;
- 			spin_lock(&inode->i_lock);
- 			shmem_falloc = inode->i_private;
-@@ -2693,7 +2693,7 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
- 	 * Trinity finds that probing a hole which tmpfs is punching can
- 	 * prevent the hole-punch from ever completing: noted in i_private.
- 	 */
--	if (unlikely(inode->i_private)) {
-+	if (unlikely(READ_ONCE(inode->i_private))) {
- 		ret = shmem_falloc_wait(vmf, inode);
- 		if (ret)
- 			return ret;
-@@ -3630,7 +3630,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
- 		shmem_falloc.start = (u64)unmap_start >> PAGE_SHIFT;
- 		shmem_falloc.next = (unmap_end + 1) >> PAGE_SHIFT;
- 		spin_lock(&inode->i_lock);
--		inode->i_private = &shmem_falloc;
-+		WRITE_ONCE(inode->i_private, &shmem_falloc);
- 		spin_unlock(&inode->i_lock);
- 
- 		if ((u64)unmap_end > (u64)unmap_start)
-@@ -3640,7 +3640,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
- 		/* No need to unmap again: hole-punching leaves COWed pages */
- 
- 		spin_lock(&inode->i_lock);
--		inode->i_private = NULL;
-+		WRITE_ONCE(inode->i_private, NULL);
- 		wake_up_all(&shmem_falloc_waitq);
- 		WARN_ON_ONCE(!list_empty(&shmem_falloc_waitq.head));
- 		spin_unlock(&inode->i_lock);
-@@ -3672,7 +3672,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
- 	shmem_falloc.nr_falloced = 0;
- 	shmem_falloc.nr_unswapped = 0;
- 	spin_lock(&inode->i_lock);
--	inode->i_private = &shmem_falloc;
-+	WRITE_ONCE(inode->i_private, &shmem_falloc);
- 	spin_unlock(&inode->i_lock);
- 
- 	/*
-@@ -3747,7 +3747,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
- 		i_size_write(inode, offset + len);
- undone:
- 	spin_lock(&inode->i_lock);
--	inode->i_private = NULL;
-+	WRITE_ONCE(inode->i_private, NULL);
- 	spin_unlock(&inode->i_lock);
- out:
- 	if (!error)
--- 
-2.54.0
+LGTM. Feel free to add:
 
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
