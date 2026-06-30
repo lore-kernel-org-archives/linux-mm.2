@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE33AC43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:03:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16C94C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:17:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D04826B00D0; Tue, 30 Jun 2026 10:03:54 -0400 (EDT)
+	id DBE126B00D2; Tue, 30 Jun 2026 10:17:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB4F86B00D1; Tue, 30 Jun 2026 10:03:54 -0400 (EDT)
+	id D48CA6B00D3; Tue, 30 Jun 2026 10:17:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCC956B00D2; Tue, 30 Jun 2026 10:03:54 -0400 (EDT)
+	id C10816B00D4; Tue, 30 Jun 2026 10:17:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9495C6B00D0
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:03:54 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1715214049C
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:03:54 +0000 (UTC)
-X-FDA: 84936747588.07.04A4C5F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 94B0B6B00D2
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:17:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1215BC282E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:39 +0000 (UTC)
+X-FDA: 84936782238.09.836E7BB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 78BAD18000F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:03:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UXXpJ6Sc;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 73EAF140007
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:37 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MpvryAXc;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782828232;
-	b=5h3KzPEr3+w70qjgtwXrfUararLVJDhZbuSqRqbyJH3TYZI1jnlvWqhMz/3cqA6GIybtSl
-	MHD4LtVvrVruZjKGbzUbBeTKrfd+PVAggxQePOLQVuapyUYv8CoD19jd3m6RivO0M6ctbE
-	eKjzW4TvRtSxZqd86iS0GYrzpcC2k9k=
+	t=1782829057;
+	b=igg0B/CIk9ffqiEJyXVfW3XVWA8CD1Nmb7XT2THF/gLoP7scG3zdCOJnYDMJTgf27DzJT9
+	e8aHJQ2P3Gt+syM+7duZe41UcZY+NYB3PnOqrADD35rm6NWcme7vRnBKnbLqwUhr7K0ENi
+	xgKvTvlD9fiayNbA5fK/YkJmDcqrFhQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782828232;
+	s=arc-20220608; t=1782829057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ClHDIHe24wi5Yo5FWGkzU3UQ8Z+yVvMWp5sTcgmzYDE=;
-	b=2XYyey42jH4t1KHP1OPIs9qg2iuJfumIb2wD64ZHlE6RQd3rmQxf4SDPOC53+5R/m/ffjF
-	TAWa8Q+SOYq9YVAeh3UHaOWDfDA2WbYmmn9ut8I5hJjIKhTVtK2ERwdLaDQZKJWUE8jIW8
-	FJThj90twv06JSRXhVcnsNaUiQfTrtk=
+	 in-reply-to:references:dkim-signature;
+	bh=8vfRiINSDbirl30Dmm17gH3r0ZINd4Brr0niqjDS/TE=;
+	b=ZEdC+WnmpiZTT1b20H7LT4+Up/mu57ksw2dqPWjwiENPGgvwc1oz6NDH9NsOU4M4nLFQtQ
+	ScnOAn8PKAKWVKv/OnKhhgBn2z20A4r06T3x0Dyl6JeyoqZtfjfYSQjLevu0L+eqax6J6N
+	+0p9dcIzHGCe2t6HYcYW1QZuw9YOdT8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UXXpJ6Sc;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MpvryAXc;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8AB5C40B7C;
-	Tue, 30 Jun 2026 14:03:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3781F000E9;
-	Tue, 30 Jun 2026 14:03:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4EFF0434CE;
+	Tue, 30 Jun 2026 14:17:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A4E1F000E9;
+	Tue, 30 Jun 2026 14:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782828231;
-	bh=ClHDIHe24wi5Yo5FWGkzU3UQ8Z+yVvMWp5sTcgmzYDE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UXXpJ6ScDKGWLDx/HgUzJ5sqtbpEXFA2Ctwbjq6K2MtMcDWYaEX94Gk0asH/tH/kA
-	 iQfsHpW/G5+QPyWYgHQZ+raxxja9UDbc5KaMY8qqcx5ypmJbgKxucYJQz7ACutyeC+
-	 hXENuFNiGhVTw4JzOBuubKINL8mI5jUDxDXctc9B3c0YOhH8OCYi8NOK8bcZ0amjtQ
-	 FoVq4/zPENKLAwqqXzyjFl4Xzc3DMIw7QoLRGt+hPIfl7nLtbnkvvzEeUYznXte1W1
-	 /NuGYU8As7v2GwZj24s0uelAhG9/j9W/z3vQuKMfFMgElgdclAyuQMjdkU0Ftp8dFa
-	 WfGIV4wkZQ10A==
+	s=k20260515; t=1782829056;
+	bh=8vfRiINSDbirl30Dmm17gH3r0ZINd4Brr0niqjDS/TE=;
+	h=From:To:Cc:Subject:Date;
+	b=MpvryAXchpyZO7mGub1FHBvvvj9h2FyGUTCQqdpcpHzs6b4BwS62GwPEfLkxV9+Ic
+	 xznRbtcnDWntPb8Y0MzcvWGbukxiERNdlZi10+dJLsJGpW36Y2V/TIOO85+M7hDA4z
+	 6OUbwEta+oYPz9ehSP+A66TAbJJ+ftvyuYIgpMkcTbn1z6q+qHMuUwUL0Gg/+2fn7R
+	 5Fm0gaZ4xlsVjXBHsWgU7WIco4Qn2nhDOaWy7B/Ch7lJKXSewS2mz7umL2CjkHzns2
+	 sNSSc3AJUmpXpyijIKBL7OOaUyjKE49ZLQiZbrkPLPScBzT+SjxHYa0lSCjVz9mWIX
+	 O2sh0WBEvnsHw==
 From: SJ Park <sj@kernel.org>
-To: Igor Putko <igorpetindev@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/damon/vaddr: remove redundant RCU lock
-Date: Tue, 30 Jun 2026 07:03:36 -0700
-Message-ID: <20260630140337.91100-1-sj@kernel.org>
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 00/11] mm/damon: update, optimize, and clean up doc, tests, and code
+Date: Tue, 30 Jun 2026 07:17:14 -0700
+Message-ID: <20260630141726.92246-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260630130253.3843-1-igorpetindev@gmail.com>
-References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zeg9fqchwy3xy3jzi13waueianzcr6gh
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 73EAF140007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 78BAD18000F
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782828232-40944
-X-HE-Meta: U2FsdGVkX18L4Z5tPgX+Ay8lWZnd+xc2DfxUl9hcYtQ2XlibWVUJQU1qGsqj8kWD3PAolv0rnE6zNUniznrWytLE5QzhzBhKti18SGd+zzsDl7E4VngbhHVegfVmAw4PJcLFZJCAxJ+BPu7NZlz4ZrBZa7BgUkLaASScozcmxj9MPTKXkVPM6Rs8le7Ry2qyo+rgz9J0rdA2kzO7AmaTQgXN+PMphTf34bYOR4LgYbISJ8fseOMLyGg3Mtp5ojYdQDENpvOok+3xLiisO+tHWKrqGQ57nTBRRCYpkJWaWOE6EMlc0GXiz+dbANsrgQ1taJPeXYObw/9EsBX+xYSHTnvHsj+jL16JsZDs4UZpZ01IKm+cVZUlLfykNhRlnqXCtKfXngWCfzyYqIvf41upSw35drrPDMZhLhR5ycf9WQwuA7bytKRMM5uIqcUX7ksk7QoD7rY2o4ikspDOGFxnYG78WKtT92SXPHHnTFtO9JaW+5UO0Ba3m9EhwNnhCQ2GrBbqPo8j6qvdYzzM62B6yr2+/nPg0ywlciRgKxDhPQ6ezuHgcnIki7lf00u8dw7tyRdu8dvrcnwsKqt3tYqlXZ/BcgTXuiyuc3r3RAtDZJ1gaG8L1Q0B4tG2kICO6ok/RM3m4EaKi8irQnrloRLMZb9MKeiMOdU9xBP3u3ZjBAJJh7nAEFD6iM1nNbE4SUK6iVEijp2bsMLjkVd/kRJzFxLdW0I1tIpckcxwTMmVpCkdhfqe/DPeT1AGiCewBrjnjMhOfyycA8j+Rmwy97u6sk2NGc6B2vlF1hS+36rLW/g4pppTylbnaz3DXltAZITuzzSf5v6m2y7jY0r34R2fef/SzGqmgGUNWV2ZVQGj/m838J7rl/Vkt6c4KJsEbYLYdwPOc+pLOgdOwBFKaPHaaAbrsrFINDHRsyFr1xy6omfAVTKeAyRCtFEGS+V2YlRJGWZHj6TXckYLWH55uUN
- iffoRl+P
- U8vLZ1T63V8UwZzUctmbjRn5/kwcGTYewRGQye52+L20KWS/YVaNFKZc6k8AOAYu/LiYxZk50NwCVHNdk6g8Pomz4Yq3kHD+ejyxG6HkAungrWge3qhBCRRXmqkZJwcvFIs4zz2pggkNaZpveOwCqVWGrAtx2wGfgkM9IJfmYv2DW2rHIoyenDqRUgVLFw/hxum0cNbahMiPGfRABhb1FcJdCRdvY6t8uI6SMVSUa5M3hXJOUwRUzDhemwqakxGSY0DY46PO0sgl75+xPqLd3TtD8oncXIQUH/ndFVPaYwmL8wUxw954+aPPuNcLu3zaAjBAWii2xUcediYpyVQ7dbn7Sig==
+X-Stat-Signature: wr3hg3dtr1iyxmc35t5pwtmhn6dfn1qr
+X-HE-Tag: 1782829057-409486
+X-HE-Meta: U2FsdGVkX18pDG5vNsLtzkx5h9x/LnzsrP3GEyF+90MzpHoHLO9C8SaVkfaoE/bTTyyB8AHLvMvwHY/C+B0XpYrRFiywDnKMJ2kvlh8TfSaaTmqtriUAPlQvY+DeHJyHtMeur9Fy6XmYA6WwBpozbLUQzd/iLhJo1A07CqfCyAdDHqTwwQ3HeNHRfqKarAofmk0kockmK/B108iy6t8Aq8g22g6GALAow1JM3l/KlAa+SyBvvfiPXxHAaOCX8KiZCbKLATLOnTp5FqGDmsffcDYZvKMSLuO6yHoxT/QD1NalLLo31PeKZq63xsYfrx4aEsIAMTOqLfdgQDehDkn6fqeqMygQAc0f+GdnYV67eSsS6DMMHuZOTLqsStdEO2GEIFAWrYRPia2uxXL0CX7jb2EFl0Mc4o11k77AZaro//EvWkhoqEyVXC4eiYB+U5sgTHdY29/S8mbnJtmdT+d3OMOp13eXbAOYnrb2T/7pYDO5CXGjRoSKBksLy5z0PhsCHU4u4aZqWHv5LkUZAP//5EVBbvchPSaRXIswY4er4CXUGYZv3BNMLBKcym7n0KKjyTQj0kxqwmMJvkdCCGRRFjeMvkSUzO+ToCrtiGDiiUjm+i1tIdfUzqvAJt/Un0V9EemA+tHQc/eiRvLIQicfKDY5/obf5EwSAEydUvSZY45nN5hkblFNm36Vtp/7ZgWwjoJWKYZ1MWZZFjHcXYgSJYshtkyqUyuDiEvnJ3ch9aYiX9mO6Iz6dBe7aoNxG+5qY19vChFXPEcO/2F+JtSbsgilJ+YsSOJ8gW81iGso+sFNXp9gpGeKLfTINFiCxBmDEgWCSaoAElulbNdFTwpWHBqGuqKODzhmkfJdEWirnEA8oH7SByt8lU9oN6UwOYy/2kiTg22jitbmFW2a9O+qIMeFPKfRBf+2cbW7TUoRh4n95gSXNQqfI82+qjyWTkLVPfzM/YmYF5EDYM4Of8X
+ 7ydFfceJ
+ 6YjD+NxahrpcjIk/khLZ7Gr0OgjyKOtLla/Y3vWSQmkgcF6AfcmMcixOc93EIDwzgKWDtTkDB/bdaJjSA19aduXZDRFvy95LZXLV+pT/rcK3ML4xrVn98DgGNq/9BILv5EQ1tX7yqQdQNGP3P9LmzL+nHW9L3/BxQf9Dfz8CNcQxtSCk5t9FKy4fOlqlUc7F6tHBAaTuq8bO/J7ZzrqqOnJ33Vx+XTM32tD/MesgCxvx24Wk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,37 +105,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Igor,
+Patches 1 and 2 update the design and ABI documents for recently added
+DAMON features.  Patches 3-7 add or update more unit and self tests for
+DAMON to cover recently changed or added functions and sysfs files.
+Patch 8 optimizes damon_commit_target_regions() to skip unnecessary
+adjacent ranges setup.  Patches 9-11 clean and fix up recently added
+DAMON sysfs interface code for readability.
+
+Changes from RFC v1.3
+- RFC v1.3: https://lore.kernel.org/20260626001644.85825-1-sj@kernel.org
+- Drop RFC tag.
+- Rebase to latest mm-new.
+Changes from RFC v1.2
+- RFC v1.2: https://lore.kernel.org/20260625142357.103500-1-sj@kernel.org
+- Fix broken sphinx syntax in patch 1.
+- Drop unused counts[] for damon_rand() test in patch 3.
+Changes from RFC v1.1
+- RFC v1.1: https://lore.kernel.org/20260625050756.91115-1-sj@kernel.org
+- Document nid requirement for node_eligible_mem_bp.
+- Fix typos: s/memmcg/memcg/, s/geets/gets/.
+- Drop damon_rnd() randomness test case; test boundness only.
+- Fixup dests dir selftest to do real test with correct file permission
+  checks.
+Changes from RFC
+- RFC: https://lore.kernel.org/20260624142008.87180-1-sj@kernel.org
+- Rebase directly to latest mm-new.
+
+SJ Park (11):
+  Docs/mm/damon/design: update for DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP
+  Docs/ABI/damon: document probe files
+  mm/damon/tests/core-kunit: test damon_rand()
+  selftests/damon/sysfs.sh: test multiple probe dirs creation
+  selftests/damon/sysfs.sh: test {core,ops}_filters/ directories
+  selftests/damon/sysfs.sh: test dests dir
+  selftests/damon/sysfs.sh: test all files in quota goal dir
+  mm/damon/core: reduce range setup in damon_commit_target_regions()
+  mm/damon/sysfs: split probe setup function out
+  mm/damon/sysfs: split out filters setup function
+  mm/damon/sysfs: fix typos in probe_{add,rm}_dirs: s/attr/probe/
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  40 +++++++
+ Documentation/mm/damon/design.rst             |   6 +-
+ mm/damon/core.c                               |  22 +++-
+ mm/damon/sysfs.c                              | 102 ++++++++++--------
+ mm/damon/tests/core-kunit.h                   |  15 +++
+ tools/testing/selftests/damon/sysfs.sh        |  71 +++++++++++-
+ 6 files changed, 203 insertions(+), 53 deletions(-)
 
 
-Thank you for this patch.
-
-From next time, please give enough time for others to comment before posting a
-new revision of the patch.
-
-Also, please post a new revision as a new thread with a changelog [1] including
-links to previous revisions, rather than a reply to the previous revision.
-
-On Tue, 30 Jun 2026 16:02:53 +0300 Igor Putko <igorpetindev@gmail.com> wrote:
-
-> __damon_va_three_regions() is called only by damon_va_three_regions(),
-> which already holds mmap_read_lock(). Since mmap_read_lock() is held,
-> the maple tree and VMA list are protected from concurrent changes.
-> Remove the unnecessary rcu_read_lock() and rcu_read_unlock() calls.
-
-This is not explaining the test part change.  Could you please update for that?
-
-Also, have you had a chance to theoretically or experiemently confirm the
-problem [2] that motivated to add the rcu_read_lock() at that place is not
-reintroduced by this change?  If so, could you please add that to the commit
-log, too?
-
-
-Thanks,
-SJ
-
-[1] https://docs.kernel.org/process/submitting-patches.html#commentary
-[2] https://lore.kernel.org/b83651a0-5b24-4206-b860-cb54ffdf209b@roeck-us.net
-
-[...]
+base-commit: bb5dde77be397d614ef968578e3bf6cf9674df3c
+-- 
+2.47.3
 
