@@ -4,76 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBAD4C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73956C43602
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:27:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9758C6B00AB; Tue, 30 Jun 2026 06:27:20 -0400 (EDT)
+	id 72A8C6B00C4; Tue, 30 Jun 2026 06:27:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 926C16B00C4; Tue, 30 Jun 2026 06:27:20 -0400 (EDT)
+	id 6D9406B00C5; Tue, 30 Jun 2026 06:27:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83D816B00C5; Tue, 30 Jun 2026 06:27:20 -0400 (EDT)
+	id 5F1616B00C6; Tue, 30 Jun 2026 06:27:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B55A6B00AB
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:27:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D7C8C1A03D0
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:27:19 +0000 (UTC)
-X-FDA: 84936201798.23.357BD4C
+	by kanga.kvack.org (Postfix) with ESMTP id 3A6B26B00C4
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:27:22 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE60D1A0427
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:27:21 +0000 (UTC)
+X-FDA: 84936201882.06.9A163D2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 26DB78000C
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:27:18 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ij0/X3OB";
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 215DF40004
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:27:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GFDNMXG6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782815238;
-	b=zHHxZyh0J/VHYz9RFePKzihwwV2ehIgN0GbYEtCVtQF15f6jpNUZsGEpR1FYyLIjk5EDKS
-	qJD/b5R6Ha90YgSis8/BNK+0/TAyHfWeZtLSeYG3/x0LDcoNPaRZQD4E+WijsFkLFm7/S1
-	cxegvjEDG9X0O04lqE6hm12NFJtZeqU=
+	t=1782815240;
+	b=hZHbj4IBbF34+PLw0z0XVDEQ9a2y3mxbd++wF8TyMQPa3vi0XN31kbbbvaRtDslE5pVkPI
+	0uk3099Ha9eG8OwQkBGl1WaBo7pdBvPd46KdRablJo9cWDiL4HDch2oX8HQe8X/WjePAuc
+	b73cG+TnEpWCv8QrwtR7wtuQm0arwIU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782815238;
+	s=arc-20220608; t=1782815240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=+nYWrX07JlaFQzXJIQgj7pMrZxgun/XWbsUf+czLcVM=;
-	b=HlcCvf6wJWnugb8kirhYD9p8+7WVHlSBPN0ELjlBvQFVFgyEogXuYOJXA+lGbrQ+9lW11h
-	BP4o2kdn8O4Wm5lXHdXHmXL02TSj3+NezKj6Sr+Z4lKV6d9IavHl3/PLkhGGZCCKcZNHC3
-	9WaBkh24yUL+LVadtwySlR00g0vsXWY=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=patmpnVmYGTOpRCqMyGDpkqFj5MsIg2HEN2E1VwU2Hc=;
+	b=Q0tC5lWaSKIFFCErkhNCAuwe4ALEqEaBZPCFQTlWHuo7/1RGluC6zFoxeMQI4Wx93hEvAG
+	j1nssw41kb+Q069JNMydfVTdBFnvQx4pfk0KA6VzCuW2XVnIqfu85869eAh0G8mXdQOrox
+	O9f98L0ZW3kd6CXK2UdJOK3c6lf/3S0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ij0/X3OB";
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GFDNMXG6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4CC6A4164E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6EBC243EC0;
+	Tue, 30 Jun 2026 10:27:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3F41F00A3A;
 	Tue, 30 Jun 2026 10:27:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8490A1F000E9;
-	Tue, 30 Jun 2026 10:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782815237;
-	bh=+nYWrX07JlaFQzXJIQgj7pMrZxgun/XWbsUf+czLcVM=;
-	h=From:Subject:Date:To:Cc;
-	b=Ij0/X3OBsv649sZ8kUBK6iRv04bfxCQxZGiGivCgRzUNKGeChGY+I0CCIa9sghyEc
-	 jMrnPZauWJQqdYAqzmbKDLhMyM5mbK6fpZ4X6y/y2GfnT3G10Oxd20S9b9SR3iyQzL
-	 ll9EepMUa5oiFSwf2gryT8CzTFwIRnhbsCg7oMx7oagY3kgPlXp/cEYKGURy+Sdgdk
-	 wEjsO4KcsAMqCY9XTmrHwRKA5n/2jq1vT7paXv5V+pZK8rY999MXTwj1vFeiZCi5nK
-	 kgdApegIUZh7szoho2xgHudVWOR7H6HvaWCOEP/soHPG5jGWEviVA1xqpZoyzR+d2N
-	 Rz3nEbH++LePQ==
+	s=k20260515; t=1782815239;
+	bh=patmpnVmYGTOpRCqMyGDpkqFj5MsIg2HEN2E1VwU2Hc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=GFDNMXG66ssR/fsB+/hwGXiru/uXpVJ/rPeKW4ReYyUg10ebLRY7d9OSbJRyrQe7J
+	 S7nbUbcEnMR97DSNKEvsUtDyAtrrOlbGOpBgM+e68dI5RJlnejphJYnLrrh6LuJNU3
+	 ToDrJkLWv1dRjVcprSL5eA/T7AeJDJFi8XadYWmlKwbokMjNRHc7LCYLhi6h5MTy/0
+	 gIzAuNER+omqaAXhMtCI1L5J3VYZLzT4RyYexWRfeIuvhseeJRjZkeUOzwaUdMwAdj
+	 B11/JvUl/hkXISvm/v+cJwAXbCm2/hesVJwTvDbxF37Khkaye09acR41UpZipCSiN9
+	 K9yw9kw7/N6vg==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH 0/2] USB: replace __get_free_pages() with kmalloc()
-Date: Tue, 30 Jun 2026 13:27:07 +0300
-Message-Id: <20260630-b4-usb-v1-0-8d547235c374@kernel.org>
+Date: Tue, 30 Jun 2026 13:27:08 +0300
+Subject: [PATCH 1/2] usb: host: ohci-dbg: use kmalloc() for print buffer
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPuZQ2oC/yXMsQ6DMAwE0F9BnmvJpFEGfqViiIMp7hCqGKpKi
- H9vUsZ3ursDTIqKwdAdUOSjpmuu6G8dpCXmp6BO1eDIBQp9QPa4GyPfyaUonshPUMvvIrN+/0e
- P8bLt/JK0tXVrcDRBLjGnpUWNcJ4/kEcGLYEAAAA=
-X-Change-ID: 20260616-b4-usb-b302cae4004d
+Message-Id: <20260630-b4-usb-v1-1-8d547235c374@kernel.org>
+References: <20260630-b4-usb-v1-0-8d547235c374@kernel.org>
+In-Reply-To: <20260630-b4-usb-v1-0-8d547235c374@kernel.org>
 To: Alan Stern <stern@rowland.harvard.edu>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Mike Rapoport <rpppt@kernel.org>, linux-kernel@vger.kernel.org, 
@@ -81,13 +80,13 @@ Cc: Mike Rapoport <rpppt@kernel.org>, linux-kernel@vger.kernel.org,
  "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Stat-Signature: rxfa5wyi8wuy6ygiu8nhy1e95yoew8fn
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 26DB78000C
-X-HE-Tag: 1782815238-837180
-X-HE-Meta: U2FsdGVkX19nDqd6r9VlZOvKBlvQOv285L3hG90oqTVLU/URNDKySWdw++LypkfBMz1tBr118p4h67IdmUhDHZaFFppwGXy+NWlDcqhTw6EgpEiA3PdLg3zJlOa0ZmNNhgq2VMW9TImC4bgMaFOsCbJSmUH38lX+7uxrsFkxAA7cPsjeq79cwPBqbe8JeFVhLGZHjpFYpt5djNymeW6u1f9tQdGa+RoGHw350upAhtdxl49T0eMlV7d36KTdk9WgNd5cwF2qcgaEQ+n9TPvvOZsM2gobnQqqmV8RfuvEEhyXIQQC+rT6GmD37+rtrplG5KlH7RtCGtv13G/ua88HA/yWulyrmUMc9mpQpCVkw7Em1fO0cjMrPd8X6+Vus5phE3/4XSOEbEfKp9ScIorbj0BC04B3tHGJ9GfVjd/t2Ma2/1D/x+u4RDauF/O1btwDQLqV/gEdnB36Pvaghwd7TL6W/BjfV0rQhbFVGtzUGjCIPVhs26cuog5ROoKgMUmH12pcG/Szx+wPN3s9D+ozV9NNnejj1WGc4k2r++C08gicgxMxzbCUZG/EFBYXLlTIPvGprPi368hqMCKw3bTmV0nJQFfoLHgBLN/3F0xe3mT5AZnGtz86TQqn798laVjpA1uDVva1FPqElQMLCi7zYDoFSEU1J+zlxqgdTrrxVz++4xm3brFu5q0dLMNScMqsEeFyYr2BZdNrS1/p/9KCOUnhlpe096qKUUEKV/aAEznBK6k8rTQrMjRWpvHQItKnLxyPIm4v9BH7tsFo1UfsrKxuhbkqvuqmmKmmAYO3bq/6Z9FRcnpfxIDNN/t4w3/PDDRlF97X3x6bbNEeUsIgJ3GlBQdCp1FRAzF/YQ21zpfrtxxBBw8Z9BDELqr2ubE4YOLnA29nvVriHOl50M4gUgQKPTYdFuoRYyFNJAQxDpqH3ySWPlEInPbXSrF/gctTv6PN1wztXOf3ymbIE/p
- jYKRYoFf
- k/QftfJXvHCVa2ZtpxrEEoWvSCTUnV/soaEcyPNr2hbaaNBN7G+TumDSKP9in9dXZWfKYyPuEg4iMWETZ3JDYikgO/4H9aZowI7eDefHUBDBnSoei/fejroK1jtpV/a52mPbqEIxKH6pOteuTGVj9fDNsrwvgrEV+T+3WFLJx60SrML2abVdjqlHGLOmZaIMf2X30gGnMIHEcwDU6ZlVxsBRnipQdp+8AdG8FiiJpkCt1Vx+tswoxMIUbCPl3XcecYvRqBYvXTb1z5XxDlO/Z7wk3NQMBTZhNvu6OymDfyxwzzLjeo1yrjY3ZQg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 215DF40004
+X-Stat-Signature: h9oe55spr41rs3b3aawggo3as7pbsosc
+X-HE-Tag: 1782815239-934048
+X-HE-Meta: U2FsdGVkX1+tcGPMBBVDgSTEeQSLvDtweuv7W3sOyG/fqYUwf2NVxVvk9PTFvds6LnvEeNdw3oeL//HAZJGbcV/hLdibToeJRV6j6b8LiOaNd491YRaG/lPe3ezyeesyWcSKL8FEfZyKAaui1uOwxm0VRCD6eUXeKoiCcflxUlGANMHH4eZVLNbt3rNoh7huQ2fP0laQsEE7lMClnoRK93+szgyVIIUdbwH5WdDvLu6rHdjgxIHKLmxDsLm85KFRwNL2pRpWnrqJ2TxAM9uNCTGUvQ6q3HSMZ+9hBg9Mt3T+w1WA8wlcJfV7qyqB6HBllgG1zZmKNGppRUb6cslDC68eIkLUidpgdbEzCtH3SFCgUJKXWnt4BMKn6v+htWEApWM6MNsPoEgX/rYS7YX/IseJ5DIDC+o2MaifpiuLfQfBz6J1KpTNFOJo+mrIafj1ztrn/INhtjTTEj5rthuN3bV8HGlyZj4bcPOJjS7lRK8VI3fa52gORZZ29qElx5oWHFWaTqYQWJ/C+Vnnk0PGXhvXkLaAe5RJz0Tp4c+IsU4YR4ICdvhgwfm8vI+XAbKkaFHE4Gp7KOMqow8sGTG95oSUKIFYWRlTMyIYr3zrRiJ9XZQWL8m+kfzgJg4PIsvs1jYCuBMohqpv7+twD3oWTE0Grb7iVPhCs1pTYUZNsVO7/XXCb/KwmlyMIdmm+2wCF5WfI62AQSD5Q8jmRf2nB71Ywixi4S6W+hGODWqzZ3ufR6Lxm4OWcq1TFZ+IUZRP+tLX4Rr/cVAi+JdR1WabSBrrogub4deWW9/TsfHI8V+ZV06elMPSFoSEn0hmFO+OUvkCBwvB1oRQus8p9HCWnU3sFDZ0vv/d70mkCiDtyLuG06P85igDxtuYe7+J7O6CWTLP4/O87RIC3/H70iNaom/gaeK/KOD6jMfUF/BX+KIYvB4zPtXLRFOBuMs4DAa7BUkiXo6Nyj9RZmxkpju
+ E0H5M0xr
+ /KVEdLK3mg/J8CB/fSZ+mIq2q3EIUV628UD0joA5iTGp+267gFPXVX5ciT+wOL/obOV/J1hh7xW/ETQmoh58eIGu7yazYPLfIgVM2jmvl2xPvin2U5EY8EB1X+WJ4yPaeiMMbo7QU8pe/bCLg31jmBJaKSRSFN+pvLCulA6tFjmwsne0HWXmb+Eu/iXjAr30+samEfzdFuUIRnTyr0g5W+k/RwzRWOf+tS9UrOdSD8UTSHWQ77dnDpeOhxczaDqiLh3ktgObsdCI1Li4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,54 +94,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a (small) part of larger work of replacing page allocator calls
-with kmalloc.
+ochi-dbg allocates buffers for formatting of various dump outputs.
 
-My initial intention a few month ago was to remove ugly casts [1], but then
-willy pointed out that Linus objected to something like this [2] and it
-looks like more than a decade old technical debt.
+These buffers can be allocated with kmalloc() as there's nothing special
+about them to go directly to the page allocator.
 
-Largely, anything that doesn't need struct page (or a memdesc in the
-future) should just use kmalloc() or kvmalloc() to allocate memory.
-kmalloc() guarantees alignment, physical contiguity and working
-virt_to_phys() and beside nicer API that returns void * on alloc and
-doesn't require to know the allocation size on free, kmalloc() provides
-better debugging capabilities than page allocator.
+kmalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object.
 
-Another thing is that touching these allocation sites gives the reviewers
-opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-another size is appropriate.
+Performance difference between kmalloc() and __get_free_pages() is not
+measurable as both allocators take an object/page from a per-CPU list for
+fast path allocations.
 
-For larger allocations that don't need physically contiguous memory
-kvmalloc() can be a better option that __get_free_pages() because under
-memory pressure it's is easier to allocate several order-0 pages than a
-physically contiguous chunk with the same number of pages.
+For the slow path the performance is anyway determined by the amount of
+reclaim involved rather than by what allocator is used.
 
-And last, but not least, removing needless calls to page allocator should
-help with memdesc (aka project folio) conversion. There will be way less
-places to audit to see if the user was actually using struct page.
+Replace use of get_zeroed_page() with kzalloc() and free_page() with
+kfree().
 
-Also in git:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/usb
+While on it, make kfree() calls unconditional since kfree() can be passed a
+NULL pointer.
 
-[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-Mike Rapoport (Microsoft) (2):
-      usb: host: ohci-dbg: use kmalloc() for print buffer
-      usb: core: devices: use kmalloc() to allocate dump buffer
-
- drivers/usb/core/devices.c  |  7 ++++---
  drivers/usb/host/ohci-dbg.c | 11 ++++-------
- 2 files changed, 8 insertions(+), 10 deletions(-)
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260616-b4-usb-b302cae4004d
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-Best regards,
---  
-Sincerely yours,
-Mike.
+diff --git a/drivers/usb/host/ohci-dbg.c b/drivers/usb/host/ohci-dbg.c
+index 9e0e06bbc570..0a648a7d9136 100644
+--- a/drivers/usb/host/ohci-dbg.c
++++ b/drivers/usb/host/ohci-dbg.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-1.0+
++#include <linux/slab.h>
+ /*
+  * OHCI HCD (Host Controller Driver) for USB.
+  *
+@@ -683,7 +684,7 @@ static int fill_buffer(struct debug_buffer *buf)
+ 	int ret;
+ 
+ 	if (!buf->page)
+-		buf->page = (char *)get_zeroed_page(GFP_KERNEL);
++		buf->page = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 
+ 	if (!buf->page) {
+ 		ret = -ENOMEM;
+@@ -729,11 +730,8 @@ static int debug_close(struct inode *inode, struct file *file)
+ {
+ 	struct debug_buffer *buf = file->private_data;
+ 
+-	if (buf) {
+-		if (buf->page)
+-			free_page((unsigned long)buf->page);
+-		kfree(buf);
+-	}
++	kfree(buf->page);
++	kfree(buf);
+ 
+ 	return 0;
+ }
+@@ -782,4 +780,3 @@ static inline void remove_debug_files (struct ohci_hcd *ohci)
+ }
+ 
+ /*-------------------------------------------------------------------------*/
+-
+
+-- 
+2.53.0
 
 
