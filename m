@@ -4,89 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 124CFC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 19:36:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94815C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 19:42:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3D036B00A6; Tue, 30 Jun 2026 15:36:18 -0400 (EDT)
+	id 597716B00A8; Tue, 30 Jun 2026 15:42:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DED1F6B00A8; Tue, 30 Jun 2026 15:36:18 -0400 (EDT)
+	id 547C16B00AB; Tue, 30 Jun 2026 15:42:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D04786B00AB; Tue, 30 Jun 2026 15:36:18 -0400 (EDT)
+	id 439346B00AF; Tue, 30 Jun 2026 15:42:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A2FC26B00A6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:36:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2C07912061F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:36:18 +0000 (UTC)
-X-FDA: 84937585236.05.457EA4A
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7DDAFA0002
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:36:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=cDIB8Hdr;
-	spf=pass (imf25.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D3F16B00A8
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:42:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5A831683A7
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:42:01 +0000 (UTC)
+X-FDA: 84937599642.24.F7476EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9AB5E180004
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:41:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ONzg81oF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782848176;
-	b=TP8hnat47nOJuzB8vMyG0GwaGIEkeK89+c2YmJSS3MP0tAFlxTp3KSrgFl69FfgpJ4G4TO
-	03FqbEW1gTKrFZDjsuiNtFW9yWvEhXxC6mtZ+K28hx4NuDFLd3v4eYLgGKSsjoaG+kdGrA
-	Qc5v9pE1Cdr84uk//JWl/lJCeedT3iA=
+	t=1782848519;
+	b=eYcgH4AhpKAAjqYDppB++LehvGeGkkxq4+I6nlm9bvhh9Nfk2w6hrTLmvK/h+bY954OZVc
+	BCo2XtpyW9AQdbprDech2nSMYoA4XLmPjt43L1vC+2OqhGuMLopc1hztkajQvcYUl+IB9b
+	4w19uyYRa4pVMDDcfSSZUKIFJ7RzXEs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782848176;
+	s=arc-20220608; t=1782848519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yPCrY1FcI3FpRnGc5ZKuI5vFumDsIEQAM9UCUyL0JHM=;
-	b=Z4JBbWlg9sOsrZyRi9RPPWxTrUlpllf4OcYCM1jcYfeD8uX6yi52EW4W08JswxceRr1EPw
-	NvXTTQe86hHPXjqrc47lCRqlPzZvUHOaYrM4Bn3L6OKFDoT/JY+lUMWXgUGsnd4CcmJ7eS
-	8kaAfcBjoJ9OIByqIS2FbXXFN6k0PWs=
+	bh=m1Hu7A4UhmYRhe1m1e8rBZ7Nl7tQc2Vk+DTc471ehKc=;
+	b=fMAhpAGc3B3ssx8WOuazMCwp/DKRcbSaJ46MpT5paCAyW/sk1uVNzgKnnqF/hvZWcWWCe0
+	65iHccGgVYctaaJW9V5cOu6ABlJZu6P4r123V5V+x2q58lWjnuZjV5vguHlFprPPUCY9Gm
+	mosm+H7Pr0ROnqxaKSYCinYhxbk+/wQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=lwn.net header.s=20201203 header.b=cDIB8Hdr;
-	spf=pass (imf25.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
-	dmarc=pass (policy=none) header.from=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net ED75041596
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1782848175; bh=yPCrY1FcI3FpRnGc5ZKuI5vFumDsIEQAM9UCUyL0JHM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cDIB8HdrQQO0PnAQrr/CcS5aY1q1hcRwSwGYArUPiB8hYF71oZUORebnSB8sa49hW
-	 u2ePanYOpizDPfSjM0ogctLfxGGRJKlqGrrCosXoq4T4k/dA9BAfwZZFEYYY8LGjmQ
-	 n84eVkBksILKrf2NAwrB3adKDEXXI1KsI1BWCs/fcxBe7nJZExha/ZPMmrHee2knwP
-	 EqRq+U/5l+s764TFix2MY88hcoMXFx+pGYEzr6eptSn9fIVjziNReylaS33tGkIy3R
-	 RIK4EcEIeRNmI80bjL58BsMHZAdLCUml3gWIbJfV88Trh2GFt0DPhpaOcanlpnuUJ7
-	 ebG660lInR1SQ==
-Received: from localhost (unknown [IPv6:2601:280:4600:27b::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id ED75041596;
-	Tue, 30 Jun 2026 19:36:14 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, skhan@linuxfoundation.org, sj@kernel.org, Zenghui Yu
- <zenghui.yu@linux.dev>
-Subject: Re: [PATCH v2] docs: pagemap: fix flags location, member name and
- sample code
-In-Reply-To: <20260626162710.25844-1-zenghui.yu@linux.dev>
-References: <20260626162710.25844-1-zenghui.yu@linux.dev>
-Date: Tue, 30 Jun 2026 13:36:14 -0600
-Message-ID: <871pdnstw1.fsf@trenco.lwn.net>
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ONzg81oF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F23B7600DA;
+	Tue, 30 Jun 2026 19:41:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584301F000E9;
+	Tue, 30 Jun 2026 19:41:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782848518;
+	bh=m1Hu7A4UhmYRhe1m1e8rBZ7Nl7tQc2Vk+DTc471ehKc=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=ONzg81oFk/PDWeX6IROp4+f0i7JoVDhUBuurseMfTapXHzDzE4scvfjRmBR1Mh/bc
+	 JPRHWvBjPQLNz2zyKN2zBhSO7L+ofXep5snit5Ar5o2i9tzWGyyReUHPZ8Ab3SUTy5
+	 kEc+FnQK46TIjTJOFW+lpGFVyH0UXfF6txN9b9KZP77d671ndnh1Nlrsy9NbGhcM3K
+	 Ac108C2qM56ZZ0EAAxNQm/YCH1JTgX46p87ZaXmG7IjOA3QFct9v8Fl3OQxvtLSUYN
+	 03YoYhar2ZLdz4v0dQQTz4e6gwuy0ws8PavxEteU9ssdm9Oj3TdF2qj5AsLtGqa5OB
+	 oXGb0PC+wyEyw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6609AF40068;
+	Tue, 30 Jun 2026 15:41:57 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Tue, 30 Jun 2026 15:41:57 -0400
+X-ME-Sender: <xms:BRxEahnk9vAGQsgIN0gDfzCM97VSaT9mhUyb6U-9dW0FIR3kdsVOBw>
+    <xme:BRxEanpoqDpP1mOnnLuauLX03594Zsk0oNWAmvfBvkMM-AbdqzvSWxXzE-kgXFfvU
+    S24raSm0Zg4Ufpk__-yNvzJBYmYlDCAPOPPpx5qL6w1odn1OPfHZZU>
+X-ME-Proxy-Cause: dmFkZTFAPBwvbmhzGjVyCOgmT565eqnNKdGTHLZLtgQb+uinOgWLIybyc7yG3a/6L7j8v4
+    GFcIM16Ly/rGLMH5WPvNN9UKC9df2+sY3hLbgqnac1dARd6Sc/VyiD2xvBDcJqw916u70o
+    HGfaclnUk5OTTXYTAyRmx9XHI/tgsTHQwBzU5XZQrus2ULNbpSCd450sGKeI9ZHQrLMLEv
+    x1SjodKGAGhTIiWLLi8PBMDI3d8e+kjbYMsYr8X2J8BXF1Ti2LMX70Cztn6MvMOUMYOgLA
+    DmbQt5fS4p+YHTZoKlGDQwrKsYZTN8jSXgbL3eW2Gyi7GISmx70rtLem2O5s7BXYTYlOU7
+    IPpIWfD978FhT7x73O15cs2u/X1u7UKiW65oJIM8HP8Ot/i3SRGJmTbZOoXaUpDbdktwFw
+    apwjx2WOYYOBFKI10a+s4OHFqbFNWMQ+UZFHt+LrmlHnusJOpVZLzqwrXOP++Gx6x5WVg9
+    8SY6p1s3rzWgVLkBZy3bvSK6Az5fuhyqMupL3r3teU3woKULQWedunCkcBC5h4o/OdL5Jc
+    y2G4TIfEoRZRjgIjJzFJZo2aDsp2Yv0hSTIoXi2DAPFeNJwWmqh3DYzlDqbBXOl1R5vGXa
+    Yvx4iLz2sThtMsoZAb0ajHcJSxew7+AeH285WR9ExaD0DS3gA6WX+SaxMeiQ
+X-ME-Proxy: <xmx:BRxEakFDL5TGk6MfQRMEWcAKCP47ahS2OOaufklRbrkKhj2LS_jEvQ>
+    <xmx:BRxEaoQnqHuyUuHfAuM0YwFIV3Gj8JN-DYlOdzIGK3DRfmhX7_cZCw>
+    <xmx:BRxEatLh0a1lU2Jb20W6lBHPBiwnLvW3TojXYmRIlxWjWMqh4CugXQ>
+    <xmx:BRxEarbWpdvfZgG-OO_bPxsB1lsp7AI7F5ip2G0ixC0WDqD8axR57Q>
+    <xmx:BRxEan_LjzMStriHNNNZcN8u1KmPoCbD6ABudxejmBSXa8823mXxdCMW>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 42B24780AB5; Tue, 30 Jun 2026 15:41:57 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
+X-ThreadId: A9AULPwk-68B
+Date: Tue, 30 Jun 2026 15:41:37 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Liam R. Howlett (Oracle)" <liam@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ maple-tree@lists.infradead.org, "Chris Mason" <clm@meta.com>
+Message-Id: <a1500111-40fa-4845-8d79-0473e19bbf45@app.fastmail.com>
+In-Reply-To: <20260630190843.3563858-13-liam@infradead.org>
+References: <20260630190843.3563858-1-liam@infradead.org>
+ <20260630190843.3563858-13-liam@infradead.org>
+Subject: Re: [PATCH v2 12/19] maple_tree: Catch race in mas_alloc_cyclic()
 Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7DDAFA0002
-X-Stat-Signature: 5wfk657qnw4mokg95mpj7sp3i4uk9rhq
-X-HE-Tag: 1782848176-983518
-X-HE-Meta: U2FsdGVkX18ZVCgfwHEXvFG39tL4SzOdwNPYJHjKI0q7Vc8W4/jb2mJCHnPDRGOI31aqVEJiy8S66TtwLU7hH+xlJe2nh4tePlnMQYXzxO1PgGmiPSMRTohqJvRHoj31jot+FoVCU/Bq+MAX7dYFW0+V5NlDv8wkg+Yl1ySLKspmTCGgSZhtglCxt8P9mqzLgcdEbJP7JIryeDX8v8IWebHRBwMfeKTKT3DvM8E+vB7GhACAy2uv26sXis3XBrb0tcFmBHLoY81IadGcb8OVhmpcooSs0KEjApAHZJfh3kFkDInktNYoQAN094njMNjXpWr11ElDfOMqhVxNvcxQ5DPJXXhvaAQ7Q03Lvaqu7/bsxeTKS47ZlWfbeI9Jz4M3iH9E7U/F8BTUXAHkbWg1Ts1ASr75911C0nB2CHSckragH7cAj0ghFZ0L3maVh+56U15VuNRrYpOOeShon9KXfSCx6fqtX41DLUORqyFntS3PYmzQhfapEjDeTg5/5OVjcfeIyAGtPymsUWBnsNDA/VPZ7DPW/UXh1bGhyAwJgBcqE78Q3qcsNI7WwQm68cn6pZGwZlfU+EkB30KGUJluEp2sHHw8IRv/vDMtNxb4E0AP7zDl6lmbOupAnHD1uIpofO18NXiOTeGHgKbDFzkrEuhh3VquJvIjYxwloumrhtmmzfHH5eitSvRloTDwz9QBDphnP2Tg2QMBLChtQE4iS8mFGacf1/t3cpStDkBKMqphaWcf7fq+wy1+Wghmw/UTYKuPYszT7BipXgbjM4o4ltO0Bab1MKp/YtjzibPyUsjYpiH2O5DOxsRKgaxf8jVoPqzsb29zy3sqcvMF04vijh2O+6ERq0FmTpQ2M1Sfx8kthNmHg36UYl2LE1GYK+Xi9HOqulgO3EZSF9KJpCIJXnbORctzh/4FtPsHadN+vaIYTUJsTm3egd5iuqM1CLNjJJmMP+msIONYZY/uBgW
- M4jZSCoT
- vgBWYtXnsQ7+il5gKmQ8+55Szr+FeXebg45J/0vEMknPNu2XdO4KwnK7d7lpgoGhGqxesaL+sVOLjOrm0ML7wVHwsqMzdhQ7sSabmMx7hrfx5B9STTiqKRPLfmTxbp6rh90Ng2siayBkuX986X10NHvUkadBpGfhZZoL0CMRhvnoYIVyUokWmNuOQwduzOXi8g+6RZjXyf87c46qiItjGm2PnhuvtYWrFoi7p42DEeSla/eW0KvahnygzFEfBrU/pasvNj4Ji6BlJMF9m7Df8ip/5kRf3oicAU/Ld6NfzSxn16DzbpUWse2dOwm8kUDDrzKGnn1i/6Qc8qOtJ549s+pUPCLdBVOX2UE0/
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9AB5E180004
+X-Stat-Signature: dcfssjg9ha86tdt1gan5tk4mnbq71jm5
+X-HE-Tag: 1782848519-269752
+X-HE-Meta: U2FsdGVkX1/d+6hPab0ePnNBI43CuKuLxMs9ObR4jJHIdx7F8+QepQ5OLsobzkZxn5tO/rDBqyXE01a7ZWocAcGs7gzXqlfJHB/wb4dyMTzAC3YM6jeOqRfYe67g89RtNLLdcgrhg1BrDbfQlVQ6q2whG75E7xsFGc8cJiAXtAv32eteJV/MNKKMSTpC9U580072gHgA9Pi6o7+cakjUmmfN7sCok5AMGU/DwN7saVfQDLSPMpWsgkVbWMKAQM9QaFJYNQeIaYHvoM3y1rTMM+t1Cwmc5++diOw1nYqtjWmGLs2JjDR2MMPezLq8lt+4CHpwUHjYwy3kuM+bZE/rAvhzZnr77fUSFDoTmlR+u6w1BzwCqclfinLUXat0UGgZ328fXDkGcS+ITVCyzZolA9cf7uR3Vp5vKSKg1ASV6WMhnKe81Zo9rN9xRTqNYJUzAPWSBhJl6zUnrdLjtXdrpvvvgzGE76iUs/j11SP7WVGJqsej4Pdw3Qu2a8PG8K4IbaKJiEVZ0g7HwT983NuenDpT7BeMnOOgpe4jHQSFzCQLatwaJSG1x7CVye+7vjDYjpbe0uYlWi0DAKs1SySYZ5CALTVcV1j+BwfCk+COv+TehNJtGCoYr+zInaZctRMI/AloC+oDEVju1TXo3JYKXEc6Ky0juOcIxSCyAnamR/nAq0DRJW1e1YpPK4tv+a2Sznffzu98soXIMyfgHzKr1LL/mk6UnsFwSVIjL366f98wZBVsbbU5b9Tjh/36O4oeNJGXm7rcCBWu18HOxICOvM7mdrYromwiY7uyfAC0HXgSIGjyEkdZIKsgR/+Ux4vsyrzGCf1GqzPiRaFWT5CPiTeHTqwtlQG5aa+a8lmwgDm1b+pT4Y5KSgwB3c/Mtjnr6MqY/IohjlaNtOz4dN1lfV70eQx1vD26CjIM+4bmXQMReMS0hg8Tsh4Cz4ZGQrpVjfjdeoopEc/k3AEDwZb
+ 30c/Euq9
+ hzOZiEebC8etKDwGDzIFJak4Z2n3bH5SoV0mOK+U643lGIb7il8mtEoA870RFqzE4vnNI6oqXh4H3u11kWVqM6QFavz8ekEwYno5+7HoJNT/zk1gWQj7HWKJx5QGc9WSCbkOL+dRz18fSBYEItqhGuYd/aD5YnpGxAOn8dQzWO76qvU3XaKBgUviatZuP/vTOjurhsRzDipyENVnDOsuGOHES0Tv+gk9K0IpAfgBMOaTgQWA7LH8nZyQ9knymOPHJk7X8JpvK6Hr1t8psoeeM9LnvxqXZesq3kcMWZwjSP+5Gcyx9XUDZi2BJy+y2bFQmYV0lbdfX5bjNmMG55hVlLTXZileOfVz/sIupnPvOlggSB+AFlT+x1t32siao4MmmQ6QC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,41 +121,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Zenghui Yu <zenghui.yu@linux.dev> writes:
 
-> The userland visible page flags (KPF_*) were initially moved to
-> include/linux/kernel-page-flags.h in commit 1a9b5b7fe0c5 ("mm: export
-> stable page flags"), and later moved to
-> include/uapi/linux/kernel-page-flags.h in commit 607ca46e97a1 ("UAPI:
-> (Scripted) Disintegrate include/linux").  Update the doc to reflect the
-> current location of these flags.
+On Tue, Jun 30, 2026, at 3:08 PM, Liam R. Howlett (Oracle) wrote:
+> If mas_alloc_cyclic() is called during a low memory situation, it is
+> possible the lock may be dropped so reclaim can occur.  There is a
+> window where some other task may allocate the same id and cause the
+> mas_insert() to fail with -EEXIST.  In this scenario the function will
+> return -EEXIST, which is not expected.
 >
-> The member @walk_end of struct pm_scan_arg {} was wrongly written as
-> "end_walk".
+> Modifying the retry on mas_nomem() to re-search for a slot means that
+> any race with other writes will not matter as the lock will be held
+> between finding the index and writing the index.
 >
-> The first sample code of the PAGEMAP_SCAN ioctl wrongly used the
-> PM_SCAN_CHECK_WPASYNC flag twice, instead of the PM_SCAN_WP_MATCHING flag.
-> The second one included the wrong category in the required mask -
-> PAGE_IS_FILE should be used instead of PAGE_IS_SWAPPED as per the
-> intention.
+> Moving the flag logic avoids cases where the flag is modified on drop
+> lock/reacquire or when the write fails after clearing the flag.
 >
-> Fix them all together.
+> No existing users are exposed to this issue.
 >
-> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-> ---
->
-> * From v1 [1]:
->   - drop PAGE_IS_SWAPPED in .category_mask (David)
->   - fix typo in commit message (David)
->   - didn't collect SeongJae's R-b (as the content has changed anyway) but
->     thank you for that!
->
-> [1] https://lore.kernel.org/20260625174447.24292-1-zenghui.yu@linux.dev
->
->  Documentation/admin-guide/mm/pagemap.rst | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> Fixes: 9b6713cc75229 ("maple_tree: Add mtree_alloc_cyclic()")
+> Reported-by: Chris Mason <clm@meta.com>
+> Cc: Chuck Lever <cel@kernel.org>
+> Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 
-Applied, thanks.
+Reviewed-by: Chuck Lever <cel@kernel.org>
 
-jon
+-- 
+Chuck Lever
 
