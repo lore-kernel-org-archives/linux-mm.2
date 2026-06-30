@@ -4,156 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEC3BC43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:15:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27EB1C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:21:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9635B6B00BB; Tue, 30 Jun 2026 11:15:26 -0400 (EDT)
+	id D42606B00E5; Tue, 30 Jun 2026 11:21:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 914716B00C0; Tue, 30 Jun 2026 11:15:26 -0400 (EDT)
+	id D1A0F6B00E7; Tue, 30 Jun 2026 11:21:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 802FC6B00C1; Tue, 30 Jun 2026 11:15:26 -0400 (EDT)
+	id C33DB6B00E8; Tue, 30 Jun 2026 11:21:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 56EE76B00BB
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:15:26 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDA80140500
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:15:25 +0000 (UTC)
-X-FDA: 84936927810.18.FBADFF3
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 64FC14000F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:15:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DbCvN2a+;
-	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 893B76B00E5
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:21:27 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 01557A054B
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:21:26 +0000 (UTC)
+X-FDA: 84936943014.28.82754BF
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3CFD14000A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:21:25 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lDVNWsPH;
+	spf=pass (imf12.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782832523;
-	b=zUDYXyTmX7a+0v9AlU1MoQOrL/sUCsSS6KagSKojZ0P9A6H5XLZIB+aPXhfBP5XakUQQDb
-	KtY+z7gFEN2JNY8D4xNJAP7thd8HiQI2OkrpdGyiniarRuuQhlF39YAcgnvGeNUr6NqmDt
-	CnbwtMUR6Ovr4JP0J146jvj0uaDxWB4=
+	t=1782832885;
+	b=u/5GkVuihQz6Sr6rieMF/5SPpf6NXEg6VvfSVVxWIF1NPte0u7NUifD2WHJDMPB3gn/dfS
+	Kt1pN5v+omWyGuQDlyDFV7w+A5On03SzFzD/KiBN7RT0hrJ3WghdxW5n+6Rn8fQZNjRxer
+	PCE1vXEg4+oOaxhBJ2GUB8GUwqTURak=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782832523;
+	s=arc-20220608; t=1782832885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NJtdwo7CYpqk5QMqp6wZod8zu4LWb5ufSk76ZdNMOmw=;
-	b=wxpOImwqw+W7ooILEXlMmvWMHuCwfio7R9wcT1LiPh/zvvBAZPzNKGmlAWuDBzYm8gk6DO
-	y2wIrUD7f+wQxVu5O3O81eihMzZrHuyXS4XwvyszGdawAv5vM/2KYhFI6OVNrQDh5Lbvzw
-	uBycA+ryL1bHXW6vcozqx3LV57uXLg4=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=XL7r3nX+4tuUw824gjUa7PzQu/yc0CIJbCIJiAlasd4=;
+	b=Y9fELjoEqJkyCfTnm40Dw1A/RpSUln+qtkND0RIYmZ29AZTD4hbbC7K8iHTLbaSZs5+tNv
+	bTHNIKRfGrE/Q9IU9UoYSg3u0Brb+j8BEFxcgPB0auxORVx+lnw3GqeGGs+s/aETQ+x934
+	OyfqcmSMRUZ9p/MXSwI+XP0Gad216dU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DbCvN2a+;
-	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782832522; x=1814368522;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=f1c4FlMC3olZxC3giH+6deLBbehRifubsyfC7HTpIQs=;
-  b=DbCvN2a+J8mGCDLk4N6ONy9URA/seKhBvnAZGuMnX5AtxXzpdbeTbBIm
-   yBKEBCW1Ll85lvjwdMsGYkZj0ikBOb8A/qRiv/+53vV1Tr/UAyvsEuHwi
-   iFgA/uPTFloCwDlQpuQ5b/lLCiSHlW3dF+EBn7Ew4ymPZz0bcuounr2lj
-   JrbXA0agnSmAbd/ctHyt3bmMlzmPSoh4syiFUOApd8EbiSg/ICbIY4QEv
-   Zh3SefjnVmp8iRT3P2AkXp6HNzmH4kec0CGOQ7NEmY4c/TuucsIv7RfwO
-   OhSrfC/GdVglSgHmcGSMdUlqjVDPu3B8zV0cAz953H2joZC3gC7OhmVsd
-   w==;
-X-CSE-ConnectionGUID: cIowe3LwR4eaPIHTn3kZAQ==
-X-CSE-MsgGUID: lAxjjsMyQlWUvQNh3YhUmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="87386285"
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="87386285"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 08:15:20 -0700
-X-CSE-ConnectionGUID: lstz0gkFSimhaXBdx8wchQ==
-X-CSE-MsgGUID: NMO51T81Tk+iW/xUz5199g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="247820700"
-Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.109.240]) ([10.125.109.240])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 08:15:18 -0700
-Message-ID: <bddb2695-1b64-469d-be6d-e668fae18d84@intel.com>
-Date: Tue, 30 Jun 2026 08:15:18 -0700
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lDVNWsPH;
+	spf=pass (imf12.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2c9dbd00f1dso16998005ad.3
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782832884; x=1783437684; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:user-agent:message-id:date
+         :cc:to:from:subject:from:to:cc:subject:date:message-id:reply-to;
+        bh=XL7r3nX+4tuUw824gjUa7PzQu/yc0CIJbCIJiAlasd4=;
+        b=lDVNWsPHu8e6D6zN1rIrkCwp+zf2+5b+wqdzXBTPMy3WwauIzf7TU3b0Zb8eWYSIX+
+         HIJxG0/lp1kNM8Wo8smcl/1+dMSb2KlGHa83XiG1TxgIy7lO4kjD7DQAhJcYj+vUdN2t
+         wpoZ/A4x7dNgmuGOt9+2sja1KAOi23DEisOgFx7TYwyuWq7D3EtBvCOPPjAGluN7ZVic
+         zQK9HIooCCoyfUPsCE1ShGonBgheDw2gAU62ehsI/5v4IOCiK8dKY5M7FPrymTdpXrWz
+         U6b8SskxtrUk2rpy4t1T7sTTuf47BNqDt0umTd54TJ7CNZEbnLtkLjPd6+89DKDgk+xW
+         OKFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782832884; x=1783437684;
+        h=content-transfer-encoding:mime-version:user-agent:message-id:date
+         :cc:to:from:subject:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XL7r3nX+4tuUw824gjUa7PzQu/yc0CIJbCIJiAlasd4=;
+        b=LhYCe+GDKXoZ32kDA1h7viM4peG0BuUwUZSXKQRGayHakNZO38cjo6bjqvJ5aX1zDj
+         jAmLSwC/qmHOyeOZQarWXKP5YtKig4nYr8SZh9nXtOuvLSUhzz6fJ02vPkIRzMXXfepp
+         WTGwZ+ml13YeBObgUvqoGO/HcASOgELLcTC5RQP8z3pAfZo3Q5thmCT37dQIdfnCByHH
+         pwiX4gFKmKhCrJoolTcXVm5jUYMOwY0emknUwYklCZkGe0vic51YB4qDH7CuZu8wBEgm
+         kWjzCZov3fFEylHsRYBLl2RCn0TUyGSaiDD6gcrpSIhSK3iRb0YnM3MkMG8YAlky3Q0/
+         ISow==
+X-Forwarded-Encrypted: i=1; AHgh+RoDHeUWfMCXgte5Yvj02RAJqwBTrrJ8MSgFmvZgDmg5ZP1h+Gv5elIXgjUY5ngJ/1VvOLd+vwBm+A==@kvack.org
+X-Gm-Message-State: AOJu0YwBxMifEnKHL1PMLWZjMGx0R71zniu57yrF+XrGN6IlhkH6mxg8
+	vo5Rx6zR+kLIWeXd/K7W6ekBR2erz+u+8DF5jTJaINLVD6PD0v2sTP2HjQoZvw==
+X-Gm-Gg: AfdE7cnAfKen8LfSe05T/xESy+fEL72wQIHsN0hK5pu5nq1rebaDwWz5o1sXHkbmKYu
+	CuaHCH0MrWTqL9MuTX6Ms1FXMB3T03P2LgBTkWEstbRI+7bm28zRG7GwLt7zWZTsHjea8EmXYle
+	GvuB1Edp1Un01TIJFXmjT+dEzhjhGARFiPM6mtVrK11T97a8BR6ByVlCY2042wnXcZrMTh2A91a
+	oFTYk+aq7cP5d5oxIdJXFCuBbAvg8J8j4XennL6GdGutHtfNSi4N0Zbb6bCCe7R7sb623zQ8X9o
+	RXo+osggODdiJHut2wmYZ024mEOGbjbioELPKhbhZkH1Y4eSpi/S+RxMRk3cJXRsqlE4autT2W+
+	9s98PuI7x6f0Bc2+/vZ5wGkkOt2nRzeC6CgpGSChkWoBN3oVVuAInKgPwqXoU+5K0BrBZOrmREd
+	EgXP3A9My+x9WpTfXbLyzIPiKI2HRDwqsVl9kkjqYu5Lb+NvfQr+qtAFPVlpE=
+X-Received: by 2002:a17:903:9cc:b0:2c9:c083:cd49 with SMTP id d9443c01a7336-2ca5a581aaamr8392545ad.14.1782832884074;
+        Tue, 30 Jun 2026 08:21:24 -0700 (PDT)
+Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37c930e8sm16720955ad.37.2026.06.30.08.21.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 08:21:23 -0700 (PDT)
+Subject: [PATCH v4 0/3] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ akpm@linux-foundation.org, david@kernel.org, jgg@ziepe.ca, corbet@lwn.net,
+ leon@kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
+ shuah@kernel.org, skhan@linuxfoundation.org, surenb@google.com,
+ vbabka@kernel.org, skinsburskii@gmail.com
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org
+Date: Tue, 30 Jun 2026 08:21:21 -0700
+Message-ID: <178283277041.183052.6873574850714079228.stgit@skinsburskii>
+User-Agent: StGit/0.19
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/vmalloc: widen guard region to defeat ENTER-based
- stack pivot
-To: Pedro Falcato <pfalcato@suse.de>, Xiang Mei <xmei5@asu.edu>
-Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, linux-hardening@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>,
- "Gustavo A . R . Silva" <gustavoars@kernel.org>,
- "H . Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jennifer Miller <jmill@asu.edu>,
- Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>,
- Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>,
- Yan Shoshitaishvili <yans@asu.edu>
-References: <20260629214712.1198680-1-xmei5@asu.edu>
- <d9775951-fe04-4d1f-b205-bd4626590f5e@intel.com>
- <CAPpSM+QTiwgPk3KNmWbjSk_SS8LLL5XDfikWC1A98vetom3yeg@mail.gmail.com>
- <akPT82jDvPwlaNuo@pedro-suse.lan>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <akPT82jDvPwlaNuo@pedro-suse.lan>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 64FC14000F
+X-Rspamd-Queue-Id: 3CFD14000A
 X-Rspam-User: 
-X-Stat-Signature: c84ttxrureuqwjw1eades4751w7yc5d8
-X-HE-Tag: 1782832522-909903
-X-HE-Meta: U2FsdGVkX1/0OMsBreWM9qDdXKmFUiiRKb4vnx6f4+sO6GYilk3qADAsDmyXNv8V9pmqiVsmjP3YyCS84+enrtzUQCJtPnfJoWbPSkRM8G7Dd8Ar7JrJ/bPm/LaxAEablJzrIS1PC2pj/S46b3c+FWIrqaIAaXS88zCI80OIfXlHTg9WTx1JTc3YRc/C4cZXOZlZ/6wJ7NqUqCKPBkCjGVqjvZpa5kLWAzjmxxSyAmEzAfv1CDxJHyHPcyiC08P8BvGQn3F4UhrxzzAB0FSedjghA6kD72QlSN/6NVTCKCIf3Du78Mi84xRqOylK5NnFTjpng/ZjYczZ27eo+sAInTC52I3hU2rF7COl2sh2sz4NlCEWkv+GlqIf5TWzphYXxOMyBmFU7gZ9u9UXDg1HtFjoFlf/SEsqhnslcTAp+2mvLcRyhOoAqcZR/OISo4dNfmoWsHUWiBFY44nHbyXI4Zjinbu/V9CDdVPYlOsYfu0rr8kL3rbf6e3umZ0IMGEX5DgpXFdBno1jcmMuCuFXdyv7TtqIZjqIt6N781iWre1OZKJwVPVLtpPvZwEMfH4lIQ4TBuM3Elo1A3YatSAqbkZ9NVejjCmrq8WBtHyS5H4vPlA4rzS3oBMw3eETYqrjzAAAppe6mmjKN3a8Eu/1DhqKkcJbA9G9uSObu0Yp2CU3YJ6x95XrILOYWerrzUPvAqZcx3QRc8trVdJEUB3W4MNKJ+vrRL3N57814h0LS5cCT9rt9YJSYQJNYiEpwHUaj0Y2YInpuEopNJa+vb9/SNGK9gJF2eVygaifGdRNbNFgaCcjzc+GLufFGynQVeKnYDchl8IYUF4hM5/SRO0ABQngn7HPIrAnMMmHAeRDJCLA1/10YhPLiOh4ExjXuMgGN/ncO+F8Es885xDtyirBqJ19KM3QkeWCoIEDiiSnHKUm65vgyB13WCCJeTCe1aORVDfffj0umbWpxYXkhY0
- izZ27/hb
- kJflJPmnPWcV+dMyKjKXC5W6C72lTysOVVPhnsGRXeyK+tGzjiHGgfqumw2Q2KEkZejgJEqcH/XN2P+5SomJ26h4s370Bts93DCDEa2SCjuEpVrpRTN6h/G5TwUdnaAA/E5qdo2R+hhpQbq7af4E+WEP/t/nzOnl9nzIKx1rEzWGR4DiWVrcdaYgXAVsE1D+uZa+f4hyo/ToHCts=
+X-Stat-Signature: tm4gn3bbb4znzx8aeysz6673uae3qpud
+X-HE-Tag: 1782832885-576965
+X-HE-Meta: U2FsdGVkX19V0zYhHSiuRW5UUWz+gla9cGa3pjo/KEUI2y09AM2hbw1IL8iXPg6em7sORWjzr+QjST/aqZY+9lYfAuuQyyA2yXIlyasbj9o7dx2o7v8xQ2vrq8S51ZuoZ+SgTFy1DYK9iPypCEYcQWve1X6JnoZKEZa/gUWLBq/5UHrSJ3m6bn0EQcMjMS7WBvbMS8MQQaxK2ddC8EQEHnHMF/VVhP4z36s5fR5uTIShFsCK8qiSLmUa+GRdWu3O7RaEhHWgezLmj0TVPJA/L9mWDl0NEPCAvlheg5evL5wSy8w0k53AmhWzq7bcFAaC7XKi44PNm4G4LdnMPCPVe0pZ3SuR1t3it4xWp/jM8j+Rrl+QgWxmZAERG0nQAMLJWU5VWa3qPojXY9rlBbqj9BdKG39LsEW8CRKetKViZjWk47zFHhqRev+mP6VkbnLDjxk7HmfOKb93iDRXBpVpSRCnQhDUevE10qpYgZKMNDPWd7QhO80LC7AkSvqhLyh/i5eKUqNrnLppINTSbeLxW/XXlHWgDDCPyeS1HdHeEB8+0b4fCrG9d2nn/1FdNw2IxyvepL9di68IYhDZY38aU/8sZrvLre48GSEqQshh4a0SdphKLhbICYyfJ1/CBHTPvRFgokSlCTt3qGjowE08e3WL7Gzx9WxmbM6EDWoOUkDZpr/PxLQfog8LoOX/0J8uZtnAYhawYg4H3i+xNQGprX6HbjDoZV0MeRvkLpUHFmQb1FJLZF5g5LgBH7yFgLW5CG1AJFu/1UNy5XAnkAFmrp8OcUA17urBje35LmaHu00EXL0edq+w9VwbmhdRpG54pf/LysHbWrI22uVmydDonzxQ6zYr1MQju7NtakvWmD7h53sZfHhLvg4PatDpqxcRSIJjczIQkli53FwPGFgLX3chlrnwBWYm6zlMAda63ychxGPAU4Fd8ar0x7plcwYGjWUPt5lVkgmxTkxuteD
+ pNFLm3km
+ i0AUtmaD9VFw5pJ5/EcnkkjIUZQm8CTcrThwW0h8KkUCV7F7moJGeLwaf8pdDGuLJy1rF31WVTxYyVAvVvrbjuC22g3lCzHbysfyXtMn07L+ve74M+FDhFmu2UOdnZpivzMWHGljo18yF1HsPOpN6ml4tBzz0veFYMASWcZ7UyyYg7t4MsseolU26F0i6LlZMdJoajbbI6Nh3gO4695l0lcDNhAJRzJBdanTByq6bPtGNjHu1uGDlF4++EybVeL97cv9jBiTMjyCvRmLYS9qUrd1Q9htJmgvaFYq6TTge8QwslG1UxyVOst74mJt02RCGRIolQr3vH/iEAYp56CzHEXOBGHL3VxxvqDv00N+ThYUA7Y4dP3dg5bcOQ1tq1PzqMnSe68g0qvivvERwe0wY4pWhPVui+CuRF5+HftbM7qX5HqER5KB+R3pCdBVDiM5STezkxq9p6ALmQa/VavlQj62NREBCVFB4Tyz9IMiiFZPIl3OFJ3t1KlFsO6Sk1vPwuJ+c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,53 +121,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/30/26 07:40, Pedro Falcato wrote:
->>> To even be considered, this series needs to be refactored properly.
->>> Making this VMAP_GUARD_PAGES a separate patch is the bare minimum.
->>>
->> Good suggestion, I will do it in v3:
->>
->>     1/3 - introduce VMAP_GUARD_PAGES
->>     2/3 - mark percpu vmap areas VM_NO_GUARD
-> I would suggest you create a VMAP_STACK flag and condition these guard regions
-> bsaed on that. Otherwise it's a bit arbitrary as to what callers get 0x11 guard
-> pages, and which don't.
-> 
-> (you can find the concrete stack allocation functions in kernel/fork.c)
+This series extends the HMM framework to support userfaultfd-backed memory
+by allowing the mmap read lock to be dropped during hmm_range_fault().
 
-The real question here is whether VMAP_STACK is a good idea or whether
-__get_vm_area_node() should grow functionality to manipulate guard gaps
-and then just have the stack allocation code use it directly.
+Some page fault handlers — most notably userfaultfd — require the mmap lock
+to be released so that userspace can resolve the fault. The current HMM
+interface never sets FAULT_FLAG_ALLOW_RETRY, making it impossible to fault
+in pages from userfaultfd-registered regions.
 
-I, personally, despise code like this:
+This series follows the established int *locked pattern from
+get_user_pages_remote() in mm/gup.c. A new entry point,
+hmm_range_fault_unlockable(), accepts an int *locked parameter. When the
+mmap lock is dropped during fault resolution (VM_FAULT_RETRY or
+VM_FAULT_COMPLETED), the function returns 0 with *locked = 0, signalling
+the caller to restart its walk. The existing hmm_range_fault() is
+refactored into a thin wrapper that passes NULL, preserving current
+behavior for all existing callers.
 
-static inline size_t get_vm_area_size(const struct vm_struct *area)
-{
-        if (!(area->flags & VM_NO_GUARD))
-                /* return actual size without guard page */
-                return area->size - PAGE_SIZE;
-        else
-                return area->size;
+Faulting hugetlb pages on the unlockable path is not supported because
+walk_hugetlb_range() unconditionally holds and releases
+hugetlb_vma_lock_read across the callback; if the mmap lock is dropped
+inside the callback, the VMA may be freed before the walk framework's
+unlock. Hugetlb pages already present in page tables are handled normally.
+Possible approaches to lift this limitation are documented in
+Documentation/mm/hmm.rst.
 
-}
+Changes in v4:
+ - Rebased on 7.2-rc1
 
-I'd *much* rather it be something more like:
+Changes in v3:
+ - Return -EFAULT from dmirror_fault_unlockable() when the mirrored mm can
+   no longer be pinned.
+ - Add an eventfd stop signal for the userfaultfd handler thread to avoid
+   waiting for the poll timeout on successful test completion.
 
-static inline size_t get_vm_area_size(const struct vm_struct *area)
-{
-	return area->size - area->gap;
-}
 
-for example.
+Changes in v2:
 
-Looking at every use of VM_NO_GUARD, I think the kernel just gets
-simpler if it goes away. It's only referenced in 6 sites:
+ - Split into a preparatory refactor (new patch 1) that moves
+   handle_mm_fault() out of the walk callbacks, plus a smaller feature
+   patch on top.  Suggested by David Hildenbrand.
+ - Hugetlb regions are now supported on the unlockable path; the v1
+   -EFAULT short-circuit and the hugetlb_vma_lock_read drop/retake
+   dance are gone.
+ - Distinct internal sentinels for "needs fault" (HMM_FAULT_PENDING)
+   and "lock dropped" (HMM_FAULT_UNLOCKED).
+ - Outer loop now re-walks after a successful internal fault so the
+   faulted pfns end up in range->hmm_pfns.
+ - Kernel-doc on hmm_range_fault_unlockable() and the
+   Documentation/mm/hmm.rst example match the implementation.
+ - Dropped the mshv driver conversion (v1 patch 2); will post
+   separately.
+ - Selftest converted to drive the path through test_hmm with a
+   userfaultfd handler (new HMM_DMIRROR_READ_UNLOCKABLE ioctl).
 
- 1. __get_vm_area_node() - Munge gap argument into 'area'
- 2. get_vm_area_size() can be replaced as I showed above
- 3. kasan_mem_notifier() - just pass a gap=0 to __get_vm_area_node()
- 4. kasan_alloc_module_shadow() - just pass a gap=0
- 5. check_sparse_vm_area() - check area->gap instead
- 6. Just remove VM_NO_GUARD checks. No flag means no munging the flag.
+
+---
+
+Stanislav Kinsburskii (3):
+      mm/hmm: move page fault handling out of walk callbacks
+      mm/hmm: add hmm_range_fault_unlockable() for mmap lock-drop support
+      selftests/mm: add userfaultfd test for HMM unlockable path
+
+
+ Documentation/mm/hmm.rst               |   62 +++++++++++
+ include/linux/hmm.h                    |    1 
+ lib/test_hmm.c                         |  122 +++++++++++++++++++++
+ lib/test_hmm_uapi.h                    |    1 
+ mm/hmm.c                               |  187 ++++++++++++++++++++++++--------
+ tools/testing/selftests/mm/hmm-tests.c |  149 +++++++++++++++++++++++++
+ 6 files changed, 478 insertions(+), 44 deletions(-)
 
 
