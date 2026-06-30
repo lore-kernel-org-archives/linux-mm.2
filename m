@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D58C8C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:10:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E98FC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:15:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 866816B00A4; Tue, 30 Jun 2026 06:10:52 -0400 (EDT)
+	id 6004D6B00A7; Tue, 30 Jun 2026 06:15:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8177B6B00A5; Tue, 30 Jun 2026 06:10:52 -0400 (EDT)
+	id 5B0CB6B00A8; Tue, 30 Jun 2026 06:15:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72D506B00A7; Tue, 30 Jun 2026 06:10:52 -0400 (EDT)
+	id 49F5A6B00A9; Tue, 30 Jun 2026 06:15:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 381C96B00A4
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:10:52 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9CEF7C2190
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:10:51 +0000 (UTC)
-X-FDA: 84936160302.18.C29FF03
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C94EE160003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:10:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MjDEQzuL;
-	spf=pass (imf08.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2579F6B00A7
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:15:33 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E77D120440
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:15:32 +0000 (UTC)
+X-FDA: 84936172104.05.B3CBAC4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EFF9440002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:15:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l/XVErlH";
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782814250;
-	b=vOGEZhEhH78gtIOyr+3WS7aYZkWXzescniKB3CXypMJ6h3ct7TnSpiBBzjGzw4nS5UNy6S
-	X+ObyXQOCcuwxtmjoVfMXsrZSM0jz/ItOExE+OFXnJk7l0ScUdBNh8mGDR8LhYWdpV0wmg
-	Qza+i33SvLUjI3fmB9exOr+0914iEpE=
+	t=1782814531;
+	b=6tID+9IFRBWJGmNy269j+L4BboIlyqpRQAwsWTOyzF0yACtENlWMZEGR4wCbyk9q+Ei8lQ
+	adETb0AW6PQLHElTV6hpr8LdAHoO+zSET5jSM0heBMXFVkNUJ1R6X1sH5eCVdfVOTto7rB
+	9KtZ5gY4ny2IKdDcqVLdbJOgsQcmCsg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782814250;
+	s=arc-20220608; t=1782814531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZgOE6uzkRAVSlpL16TwrAGSWNxNVNTEQIKNuqqsnJEs=;
-	b=D51y/vGmOTVungzCSiPiNYwrVHS2uc4PwNBVUyGOiKj+zq0eiV7QG3hDrquPgTqnqFmlrn
-	EKeSeubOIeg7s7iKco8Px/UTrUihBEg+TxJz7e+C0uJoBQg9kewYa24VLDXNxbWTfF9dx8
-	Ungx5Dpj+W3odKL8POg3Nqm//SY8orY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lI3NPkDDbaOtWN0AagWeM0hopceUDy8AbC/aW08cank=;
+	b=6tiN34k+VF0ewDnWOWby4DwAoSBOhlMu/g5JldMmaMQWdG8+9pE0iTs314dXUDls5u2WGb
+	/NNPBJ7nYWxS9jwu/YnXzmKT6EXeEOJulRwu6gGx1V0AnudARX/zmZURdYrSzAy/XrTesX
+	GvQcVbnwiCPJbpGILNbbnhK+rr/edFI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MjDEQzuL;
-	spf=pass (imf08.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782814247;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZgOE6uzkRAVSlpL16TwrAGSWNxNVNTEQIKNuqqsnJEs=;
-	b=MjDEQzuL2489TFE5xc5P5zV6a/EV8ApFdZSn+MaU6Z2jH2X0wsdPvHf74ejlqCqSBgjO+4
-	30jITnG50mALgqkptEjvwgg+eK92R4gNXiiQd7ek8P6VAYy2Y9UWq1+AMZPPcrDal3vMyt
-	WcMnpGdKtuz1+Sw42Rrwy4MYhc1sCLg=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 30 Jun 2026 10:10:38 +0000
-Message-Id: <DJMAWIOIOII3.24TMC6HTPXA7C@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Hao Ge" <hao.ge@linux.dev>, "Brendan Jackman" <jackmanb@google.com>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
- <gourry@gourry.net>, "Alexei Starovoitov" <ast@kernel.org>, "Matthew
- Wilcox" <willy@infradead.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <linux-rt-devel@lists.linux.dev>,
- "Vlastimil Babka" <vbabka@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner" <hannes@cmpxchg.org>,
- "Zi Yan" <ziy@nvidia.com>, "Muchun Song" <muchun.song@linux.dev>, "David
- Hildenbrand" <david@kernel.org>, "Oscar Salvador" <osalvador@suse.de>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Matthew Brost"
- <matthew.brost@intel.com>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie
- Kim" <rakie.kim@sk.com>, "Byungchul Park" <byungchul@sk.com>, "Ying Huang"
- <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, "Roman Gushchin"
- <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>
-Subject: Re: [PATCH v3 15/16] mm: replace __GFP_NO_CODETAG with
- ALLOC_NO_CODETAG
-References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
- <20260629-alloc-trylock-v3-15-57bef0eadbc2@google.com>
- <b4916118-3537-4e19-8bc8-1d103dd0d225@linux.dev>
-In-Reply-To: <b4916118-3537-4e19-8bc8-1d103dd0d225@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: sronhiar9ixyw34my8xdq4w9iarj6h8j
-X-Rspamd-Queue-Id: C94EE160003
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l/XVErlH";
+	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4F04560008;
+	Tue, 30 Jun 2026 10:15:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3631F000E9;
+	Tue, 30 Jun 2026 10:15:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782814530;
+	bh=lI3NPkDDbaOtWN0AagWeM0hopceUDy8AbC/aW08cank=;
+	h=From:Date:Subject:To:Cc;
+	b=l/XVErlH88YHdtfHcc78riCZQuDZj2CApRlflyee2XodqHkXoiIDMdoQUkS1S5eGl
+	 uyj36gRnqTtrjcrTP4N8lCyFa85YB8QuzW8p5/Rj4CK9W0huMjYOUm9Gri25tzTGh1
+	 dZjTDb3Ou/C0xjPDleCfCOu1p2H/0qkUhfA1xrf2ywR1qYHlpo2U24iH3FhfpOOTlF
+	 HNxjgrrrJYiiJE/+TfPzUwrmP3FEEnsb9SHe+0oaeHcXN93RxE5TAJh6i87/LT4LuO
+	 6sTmXS3Tk9pLS0q8oCzxkUZDSzJRHkPD9ppMUds33nUS27ofwQauVj9d1kNZ3eZbnD
+	 JkpwyjiADTnLg==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Tue, 30 Jun 2026 13:15:24 +0300
+Subject: [PATCH v2] selinux: hooks: use kmalloc() to allocate path buffer
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260630-security-v2-1-560d33c13ee6@kernel.org>
+X-B4-Tracking: v=1; b=H4sIADuXQ2oC/22OTQ6CMBCFr0JmbU1bI6Ir72FYtJ0RqqaYGSASw
+ t2luHX5vby/GYQ4ksClmIFpjBK7tILdFRBalxpSEVcGq22pj1YroTBw7CdVBsRSozsZe4bV/ma
+ 6x89Wdat/LIN/UOhzPju8E1KeXQptljJmuY3SdzxtF0aT43/WRqO0qg7GY0XWIOrrkzjRa99xA
+ /WyLF/3zrrWygAAAA==
+X-Change-ID: 20260520-security-6cdd60da7129
+To: Paul Moore <paul@paul-moore.com>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc: David Laight <david.laight.linux@gmail.com>, 
+ Mike Rapoport <rppt@kernel.org>, Ondrej Mosnacek <omosnace@redhat.com>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, selinux@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Stat-Signature: 7h4n643wu6podh1kg9zoum19gs1z4mi6
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782814249-786686
-X-HE-Meta: U2FsdGVkX1/W+jR0pm4ea34jV+HsiIs09G5FU36KisqKkhz4hAc8fYYyXTW3CCtDkR+RVha8/M3ioCRHG1NxeYMqYSQZwJ56ZhDzKzsDfTq1KKll/q1NxPHkD4HfQZyQerCNvCJg+is2leqHGiXDp2ZT86HuyD5uszwFD6w4fqY+hS+C+nVm0ZyXjbt/5IiWG3JRmY0UbO/LSuNi5MNV42gcq4Lc0sMCAO9FMHGd3i3XCw+ToodmfBwE5iBfIksH7JjWQFA0i3OgfqKjCBVnicA14iJWWdICI///T6i/3FvGGdg4UbwXjgLN6zoNHeroamQ4w/Ynl5kT+P7TObxSWDPZPeGCvixyqtQ7DoNVztr4AYLiVET01VQgjgEOWGlnAyMTuv5zM/UXQHlRGBk1Gi5QmBD4ZAeLi/tGbHu0Ys5hT54DBy94Sc/dTqlt/3sAcyVS4jUJr3daOH3HwOyGmKjG1YGE8PxQBi3BQrIEYDx3XAFhOppsaLcCX0Ef3jimqaHVqz38HW8yOIXvmQHI3CP8X5olECGMA2+gpv7JgL/lHyVQWokjazupfeSAEkZT/zddb1xGNpDNFY473zAeKDZvDRrEPyY3gxGZruJvBaNeYhuYj1ACK0+9X+/d57dHeAWjPeLlMNPCBys114VXM8BVnJkFyafBLOC2koqxOT+BxJlSqgohw+pH3eu0l963YJRmERR93HapgrYpVjXYyop4OA92oxblXMw+KAE9gopJxJxVByNecknIC/GtjpwCkkc+ruf6YSsZtdgZPO0BwWh56hQhKIHBJhpx3+xY1X0FAm7cNlHmoMNqJwGP9BCzEwVd+GNbGnzzuNb7QpieQ3Q5YGvqBI8+uoFAck2whjWWzwwnHxq7Exq2rSs3V0ogh2r0dFMW3biDBGPRv9bMTUoPTbkytA8D0mFcreEz5f+Pl36TAn4Rs0n8yg8g17zlT2V3Uk8UGh+OucZg1S+
- UuHsDwmz
- iV+t2Q7BWEqa2KVhoPEw3iml+NuKy4FMOupKYCkgT1AQTmLS8pYUC6sP6pZQ0W0z3af1vABDShpODup4u9ehhXvWPCeYb21h3jBMvcp+SDMunX9xhaE/3e2kWIO6tDRoGdDy70pUYwgUo96Pw6xf+rILdyIR7fehToq7n+7dvA2YdYK6FIPrbfQXsyU6GztEPDNAYo0NmRldj8Y8p53LJbLWMyVblZqlzqfC/N5oiwqDo/xXEIPH14n6YgCj6NQYFtLck0LkjBDpKw+Aor/fxWA6WXHudX7DXaaUBFmu6zRzt+uKLVhG4QYkZJc/65gcjY6FM3HUUFwxRyqFnofsff9/8XsKWlCUj98fwL+8fn6b0x3qY0/c1i6FPZkhtGkI4zhji
+X-Rspamd-Queue-Id: EFF9440002
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782814530-981011
+X-HE-Meta: U2FsdGVkX1+0oxOJf5MIkmzuZv+RyiVsbTItHfFoWiCkDQSE5ZKyjs2TeKUbTRztUXNZ2MJ6kVudu+3M5oM1AQ1l8+A5H8XhvM2eAcO8o3p3+Cv9NZ4B/S3XJWesFrFQ95/MnCLgDm06IAch2wWSskHAcYEps5zgHdMwY2Wwg4zcUraiFYin+NDcIAXRIJHiJIgDbjhBy8RbJ0DFPyHtYSua/WyxqAA/A1gGm/iu0YR1Q9ECRmKzmhFq9GXTh26cBh02W2IT11yBLz6z3xJLdRTku6zR4ivTQEHTqKbYXCMZaa0DbuYy+yJonI7pgv3jnMmLXQ/k4NtLmrryYNSm5bzVuWqz9zOl02/HJhJxGJiFoyxErBlFA/F61Fc0oQyeq2cF2jnj2wGXjaPbHAuVJwrhaQx1Rpg3vUhKHD3RZIGgKk+QQvv0EyO4JlHTnSBr/9w+fhZBRUevDseQw4/vNNAnsaDXsJpZmbmUVLNNtOT8Ogq08LVfSZCaTUQckRTKpkSjl/FXPdBhfOEcmEh3T0S8r4i9aex5miPFPsJffzhzj9EaIDz89wQuYfMt9ASiYlvrXpqaM5C1EXyGMp8fWmQiztAQSyS4X/hD7uRm/FPQnk0YLUebcNE1WEyhbWhYFe7UzfIIMvAoS6jNWfA9Vou0qGfuW8ufCwCHIA4VcZtXX+gfUKUoHxCsJf2I/q3BUkKxQEIZ9dqxe7/sQllWsYzXzLaoAVz/BSloPGPk/tMWEqe6iVCFvNs0uLpXb99Vitnz+UE4acwR9H7jOo5l4xa6rbwIDgBY52J4WtP7z26Wqcp3CSIUBwq7NQOnn5i6izmXbeLn/JWcI/NRh/lF6bMLbZ7pslx4QqUl2i/J/x9TZEMpVDotzYQMEiGkhKzwgHiORWG3L+zqA3NV6KW2aKRjuewaFV+ZzIjldWQWTR+i3QR4Abka6zjmXLkOGCLq937WzYtaW0g4YrXWjPk
+ +UTwTSwc
+ RvGWXCYno786sPI8pNNpT+fSflil5xW1fc/9/cURogFU0L26arKV1HGyt0C9QEjB45EN3gMHoFgiu01W+1t5SZp/O2+BqKIm/i7veMNsQ6ac8reqFEhErbSv7W6SlsbGCRfCN1N1vuNZ4Rzt283Fyb/NK2Ryo7SG6suGTmHeaJTChePz7BafUed/mQj8+YtybqNEXC9Sw5wTrcC0UYGAT3dLqz0888SpfbG7d3n/YecLfPJfGmOrzCMU3Y3jk/Au2ubFdhNMs6sL2Jf3s6sVeuCGetTsSPl8qchpB1iRHAqECZ1Xcw+D6wUeC8VRV2lwH3a5DNKx2WoZpgwqwnMfqXLMbAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,126 +96,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Jun 30, 2026 at 1:55 AM UTC, Hao Ge wrote:
-> Hi Brendan
->
->
-> On 2026/6/29 21:12, Brendan Jackman wrote:
->> Now that alloc_pages has an entrypoint that allows passing alloc_flags,
->> we can take advantage of this to start removing GFP flags that are only
->> used for mm-internal stuff.
->>
->> This requires also plumbing the alloc_flags into some more of the
->> allocator code, in particular __alloc_pages[_noprof]() gets an
->> alloc_flags arg to go along with its callees, and we now need to pass
->> those flags deeper into the allocator so they can reach the alloc_tag
->> code.
->>
->> No functional change intended.
->>
->> Signed-off-by: Brendan Jackman <jackmanb@google.com>
->> ---
->>   mm/alloc_tag.c       | 22 ++++++----------------
->>   mm/compaction.c      |  4 ++--
->>   mm/internal.h        |  1 -
->>   mm/page_alloc.c      | 42 ++++++++++++++++++++++++------------------
->>   mm/page_alloc.h      | 17 +++++++++++++++--
->>   mm/page_frag_cache.c |  4 ++--
->>   6 files changed, 49 insertions(+), 41 deletions(-)
->>
->> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
->> index d9be1cf5187d9..a32a94e759b94 100644
->> --- a/mm/alloc_tag.c
->> +++ b/mm/alloc_tag.c
->> @@ -15,6 +15,8 @@
->>   #include <linux/vmalloc.h>
->>   #include <linux/kmemleak.h>
->>  =20
->> +#include "internal.h"
->
->
-> Should we include page_alloc.h here, as we call __alloc_pages later in=20
-> this file?
+selinux_genfs_get_sid() allocates memory for a path with __get_free_page().
 
-Yeah, there are a few build failures due to me not doing a broad enough
-build. From now on I will just wait for allmodconfig instead of trying
-to be clever with my build tests, sorry about this.
+Such usage does not require a "page" and the size of the buffer should
+actually be PATH_MAX which may be less than PAGE_SIZE on some
+architectures.
 
-Also, this suggests that I have not actually re-tested the alloc_tag
-code since v3 so I must repeat the test described in my cover letter (I
-just manually enable the feature and check the kernel boots) for v4.
+Replace __get_free_page() for allocation of a path buffer with kmalloc()
+and make it explicit that the buffer size is PATH_MAX.
 
->> +
->>   #define ALLOCINFO_FILE_NAME		"allocinfo"
->>   #define MODULE_ALLOC_TAG_VMAP_SIZE	(100000UL * sizeof(struct alloc_tag=
-))
->>   #define SECTION_START(NAME)		(CODETAG_SECTION_START_PREFIX NAME)
->> @@ -783,19 +785,6 @@ struct pfn_pool {
->>  =20
->>   #define PFN_POOL_SIZE			((PAGE_SIZE - offsetof(struct pfn_pool, pfns))=
- / \
->>   					 sizeof(unsigned long))
->> -
->> -/*
->> - * Skip early PFN recording for a page allocation.  Reuses the
->> - * %__GFP_NO_OBJ_EXT bit.  Used by __alloc_tag_add_early_pfn() to avoid
->> - * recursion when allocating pages for the early PFN tracking list
->> - * itself.
->> - *
->> - * Codetags of the pages allocated with __GFP_NO_CODETAG should be
->> - * cleared (via clear_page_tag_ref()) before freeing the pages to preve=
-nt
->> - * alloc_tag_sub_check() from triggering a warning.
->> - */
->> -#define __GFP_NO_CODETAG		__GFP_NO_OBJ_EXT
->> -
->>   static struct pfn_pool *current_pfn_pool __initdata;
->>  =20
->>   static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
->> @@ -806,7 +795,8 @@ static void __init __alloc_tag_add_early_pfn(unsigne=
-d long pfn)
->>   	do {
->>   		pool =3D READ_ONCE(current_pfn_pool);
->>   		if (!pool || atomic_read(&pool->count) >=3D PFN_POOL_SIZE) {
->> -			struct page *new_page =3D alloc_page(__GFP_HIGH | __GFP_NO_CODETAG);
->> +			struct page *new_page =3D __alloc_pages(__GFP_HIGH, 0, numa_mem_id()=
-,
->> +							      NULL, ALLOC_NO_CODETAG);
->>   			struct pfn_pool *new;
->>  =20
->>   			if (!new_page) {
->> @@ -837,7 +827,7 @@ typedef void alloc_tag_add_func(unsigned long pfn);
->>   static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata=
- =3D
->>   	RCU_INITIALIZER(__alloc_tag_add_early_pfn);
->>  =20
->> -void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
->> +void alloc_tag_add_early_pfn(unsigned long pfn, unsigned int alloc_flag=
-s)
->
->
-> alloc_tag_add_early_pfn() has three occurrences across the codebase:
->
-> 1. Definition in mm/alloc_tag.c:830:
->
-> void alloc_tag_add_early_pfn(unsigned long pfn, unsigned int alloc_flags)
->
-> 2. Declaration in include/linux/alloc_tag.h:166:
->
-> void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
->
-> 3. Static inline stub in include/linux/alloc_tag.h:170:
->
-> static inline void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t=20
-> gfp_flags) {}
->
-> This patch updates the definition in alloc_tag.c to take unsigned int=20
-> alloc_flags,
->
-> but the two declarations in alloc_tag.h are left with the old gfp_t=20
-> gfp_flags signature
->
-> These should be updated to match.
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+This is a (tiny) part of larger work of replacing page allocator calls
+with kmalloc:
 
-Yeah ditto, sorry about this and thanks for the review.
+Also in git:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/security
+---
+v4 changes:
+* rebase on v7.2-rc1
+
+v3: https://lore.kernel.org/all/20260531165852.1478916-1-rppt@kernel.org
+* get the args in the right order
+
+v2: https://lore.kernel.org/all/20260531151502.1467515-1-rppt@kernel.org
+* explicitly use kmalloc() with PATH_MAX
+---
+ security/selinux/hooks.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 1a713d96206f..d1f089917a82 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -1336,11 +1336,11 @@ static int selinux_genfs_get_sid(struct dentry *dentry,
+ 	struct super_block *sb = dentry->d_sb;
+ 	char *buffer, *path;
+ 
+-	buffer = (char *)__get_free_page(GFP_KERNEL);
++	buffer = kmalloc(PATH_MAX, GFP_KERNEL);
+ 	if (!buffer)
+ 		return -ENOMEM;
+ 
+-	path = dentry_path_raw(dentry, buffer, PAGE_SIZE);
++	path = dentry_path_raw(dentry, buffer, PATH_MAX);
+ 	if (IS_ERR(path))
+ 		rc = PTR_ERR(path);
+ 	else {
+@@ -1361,7 +1361,7 @@ static int selinux_genfs_get_sid(struct dentry *dentry,
+ 			rc = 0;
+ 		}
+ 	}
+-	free_page((unsigned long)buffer);
++	kfree(buffer);
+ 	return rc;
+ }
+ 
+
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260520-security-6cdd60da7129
+
+Best regards,
+--  
+Sincerely yours,
+Mike.
+
 
