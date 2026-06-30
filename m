@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D615C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:00:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D77DC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:01:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 659E76B00B1; Tue, 30 Jun 2026 11:00:27 -0400 (EDT)
+	id D39CE6B00E2; Tue, 30 Jun 2026 11:01:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6325C6B00B2; Tue, 30 Jun 2026 11:00:27 -0400 (EDT)
+	id D118C6B0110; Tue, 30 Jun 2026 11:01:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 548D46B00B4; Tue, 30 Jun 2026 11:00:27 -0400 (EDT)
+	id C4E2C6B0111; Tue, 30 Jun 2026 11:01:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 318C56B00B1
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:00:27 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A7B948EF60
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:00:26 +0000 (UTC)
-X-FDA: 84936890052.28.1AA55F1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D760EA000E
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:00:24 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5QS6KFh;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A49A96B00E2
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:01:26 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B6D3C2444
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:01:26 +0000 (UTC)
+X-FDA: 84936892572.21.6994CE1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 70E8C1C000D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:01:24 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I6lqx7xe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782831624;
-	b=vnhn1F13i9jvVAIAvBiNpGpGiYeLQgMvgzWZnas24h996iHF/nl78VgV879XTAVd2S1USg
-	DdmrfN9CDlfLAAhCymtauuqhHX9BgoiHoaFES3Ye4gVKFNQ+mmTGoVo3jqccyJQO/lC/Pt
-	0UvM0Fwgdu4zGO15DpOWt3zIAnrP+Dw=
+	t=1782831684;
+	b=LjsQgM2t1EHGTC/uSsT0wnIku1Pri9MXzb4vY0NCbjE10QAnH8a6MvT94oJNEln+KdC+bM
+	Nf4UXOyjMiPq1dnv0mtwl1N8G7+f8TlwaWlVe9zDDJuvpZUgVrg6EY6t6iJssHMpsVhL+S
+	0iQJOhFkPZN9IGpZiDRQhqlK5vbhnyM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782831624;
+	s=arc-20220608; t=1782831684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lEjljAT8oCBe6H0+DZxoSp7D0aXaqVksk3/Y1JCjZd0=;
-	b=cqQ+X3W8j91I7de1SWNjDf+aAeZ1KWyUgOgW4fElvCvJClCdrJTXrDj1VibLyar6oVZRTN
-	ePzCIGnAb1Bc3npB/WzVE8FHZEFzsGvEWqPS5z5lj8S2A35ryCdK6RlOmtLkxMxcBobQs0
-	W1WpjwPgf1+/ngKYs75Hr9629LSgBEE=
+	bh=v22ZwceD+Hle0zDa72UrwGJHemOkLfc0UBG3SW36enI=;
+	b=twmvK2uaXlI+X/kQmtkuq8R4fYr1NEhM22eq0iHYTi83IKaO3qheANpbewAr8CEyNPpsgG
+	9EHHtvWGFbHj3lTpJzbCmNtzNgi1yzrxp/Pldxn3WAL2I3c+q9x2diPrzHeQgf1GwG0HMr
+	xhp8ZJ5ZknOKqDx+fcxI588xkvSf1ZI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5QS6KFh;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I6lqx7xe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4A59760018;
-	Tue, 30 Jun 2026 15:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB01F1F000E9;
-	Tue, 30 Jun 2026 15:00:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 80563416C8;
+	Tue, 30 Jun 2026 15:01:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE4CD1F000E9;
+	Tue, 30 Jun 2026 15:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782831624;
-	bh=lEjljAT8oCBe6H0+DZxoSp7D0aXaqVksk3/Y1JCjZd0=;
+	s=k20260515; t=1782831683;
+	bh=v22ZwceD+Hle0zDa72UrwGJHemOkLfc0UBG3SW36enI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D5QS6KFhU/5DOxHs4TOWy0bffEu1vpyOjarro1YAFzBSMYJ0jmUqd8LXAXR5OSaYX
-	 lT+ZeDgjVMLyeTBPni32H7bS6yD3N1YatU8vQZ3m4XXPIvFBZ3bClUETpdYbq6NLN0
-	 D525b55NxYXe3NhT9lr1DvZDoZmx3XKZXU9PtqtAN+uGBEEWkUx4jDIMjFq5ywIOYB
-	 0k2hic87Cigrr0lRB35EPiUya7c9cB7pohffQfgPmFBS9sx4Q0i+DDDGdU7K9/pwAh
-	 gSQmlmDsiNreWpKLyF9SfSGdt/GUWU4i07X6MW5tXoGFu0D9jvOBINDUNGr6sQp+rf
-	 9Ql8aWYKvA5/g==
-Date: Tue, 30 Jun 2026 18:00:18 +0300
+	b=I6lqx7xe7ArEoBeN2UysBFuosgjtJd5J+5+JeOIu7nS7HkHEgOhZKD+NYpCgObeHQ
+	 yx2gWe6NnthkQSUTweAI36dYEHA14aVvXYEOst62rLvNCjMo1jTB8pbeCqQzyQJzGh
+	 dEuhY/mgrlzj09HUZxkcxAwvKcS/G95M7h8YF6EN5a3vmMQWrodWMlnCJnCcW+OlGf
+	 ehGlUmxiDsExBPFzuMKvrjJdu1MxfULg8BOK1azZFEExpSBfKc+/rNWw7bQQAuNtXG
+	 DrymVoUdkO1du/sPhAAjdKEL71Rpaih6H9vUFDqbg/ndhd54OWQjJCJJYfXrmFzny/
+	 hmv0rm2Hnf/kw==
+Date: Tue, 30 Jun 2026 18:01:17 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
 Cc: Leon Romanovsky <leon@kernel.org>,
 	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linux-rdma@vger.kernel.org
 Subject: Re: [PATCH 1/5] RDMA/umem: ib_umem_get(): use kmalloc() to allocate
  page array
-Message-ID: <akPaAp-0Zul8uVga@kernel.org>
+Message-ID: <akPaPaCJdYINBEEV@kernel.org>
 References: <20260630-b4-rdma-v1-0-ab42bcf0de92@kernel.org>
  <20260630-b4-rdma-v1-1-ab42bcf0de92@kernel.org>
  <20260630123150.GB7525@ziepe.ca>
+ <akPaAp-0Zul8uVga@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260630123150.GB7525@ziepe.ca>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D760EA000E
+In-Reply-To: <akPaAp-0Zul8uVga@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 70E8C1C000D
 X-Rspam-User: 
-X-Stat-Signature: p31qcjre3i1ze3rjiijiii8mex81mw15
-X-HE-Tag: 1782831624-322395
-X-HE-Meta: U2FsdGVkX1/Qao58vKOfV/53zzLKH6kPr5OC8/dV/6TPZryudd4YgDdsUNaLV+FXON/7dCiXmF6A+AI1Jd/Q41eFvtvQGIfddZFwunkeKG6MRVFwrXwhnCdKY7oC6bKtAG/TB7wrZ/0KeOw7ttEcSgi7iLgHf+C5iSISnGsQ11+qYUx65cUAnD0YMWt6DKtoziRICdBK9c4qMS3lei4cCVI5xvlsd6peuMG58DzENXMrCcvURjdbH4IHNHj5BRXnNDpzFk+XEJmqgDKasiXz6ZOH7j0ZbaQnDGE/L220kqhDakVQwWvbU/GPBBdExWTykDit6zeldA/apuwA25et3YKI66GBIKaobvpK9osj/31yCeU6v+frXwUyl2P9fSu2W6/zxYAms4zDJST9gNTr8cIFhZnFKAIjw/UgQSBmautWWS/M+myLDbkFjbfSgNmrfVMvwHxj0gG2YSPBA4oFQ6T3fbm//W9M/9sknjelx5wq30DUQTSB41SDorYVZ17pE1D126wa71Dw3QENF5ln9bWvxNhwZJpiv8TwmPxRE0CsJtS7mKO4S1D9QhOXtEKT3+mgWxSNoWzM65JfY0SSRdfT2LnBwke6bcaotSapU9lXF9oXXU1xZwq+LR6sXS/GPGMz6HeYxgYJbukE+4C4PUbelGVmLg4AT2zPVioW0GR8fbnFqk3TZiPYANM3onJgkfc+aCdnglSZhsPNBGgflNwkjGFe4VR0upF2/9qkG98cW0Azvk2Qnbw8qRhN7XQsC1vb5niwlItDsJaWmhRYGzZ3nFl1xJafqYkCK1PWCSQ8OvIMuvcS+XEYmvb2bLcuV3e6hzj1fX4Q95ZsyCjGSZ6b+WLmB9OXNPo8fmhLFcoc08fJNwInG1QFK5+G4GY691h7h9FsE3qzpNPthvjGoKMK7APCzZCj+tkNuTSD2pZ9FcCQSKwOHomfYruaLZwSfKKKxxzCIU++7xy26uq
- oJIskc0T
- BDputxHHJFYPYZzPRWgLPDAAthd3lyK40YXp7J9z4RKU5rVX/PDCuAsdfXK1ENcHHZnBuCrrmeTZF/hKAcb5FUC/ds/1bEt2orngsNuMi5nCpBoIec+6LPXLmrd3r79ZHx6JGlyymUxtcMKYq1rUAJLWJgSdWahf2ofNYFKHgzVkO1TojCo5LW+IruryCH9pfjMIebHomYxseKTf8YEf6vEGdm4arVY6rzrwhUHMBVaycQh5TafQhVOAY4SaR03rcOhyPCPa9Dv7bNsVRH9FrME+A7ybUX3j683wpPJyDC2BVj5E=
+X-Stat-Signature: 3d66cs8yasu8bsw4g9cqujaktdinndo5
+X-HE-Tag: 1782831684-637859
+X-HE-Meta: U2FsdGVkX1+xF0dh0DYK8QeVziKzNFVS2QaAnnYGZZNK35eQbC6d6vY/LFWX8kkcYc27UL31PAIdq7eZovEUCAb2ZojIg3q8QlUon7e5cx6j5LzwguJi3sLjYTGPADh2XPxmmXNJyK0gdjyxnvhFnK6zSd/M6uBdR5UDE/dAJlvLgGyrBQmqGXWJohIuDLbeRNu9tGejqEg1NFQr8x+4NT8S3DOIkSGfGDHnAUSRoEtW4Sw6zZuZK/q5Fy1cq9sz69CLYboEhUTleSMN6vuDjGClJFftx0u1wmdRAwo6SQ6OqIZkcn1hHbdhYqeeIDs2YhxPnx1KUyBfp1JhFKicfQqytjhr0H+5WgGm/xnkLrmiisqXarjkusvopLeQ+V7xAIUhklBoxzrxKp9nIARrEP9w+MHEWFi5wMsMcdWSrvw7ZtYNYrjhWSorSjpMr35AVMNBYhSvuqo29CvwbMKgxBdLU9e1aYTV9lyyQbCT+EIEqXhSvPRVHtkyGNxvgo1u7TZKLrbL3DM0FICmyli5QWF1HJpKhvXEeq4A/BVAASdJzx7bIr7g98imwAkesSs7ZvbL3YrCu2eaDDcmRVDHXZH7jNrQKQxV090cIBzwlmrPAfZgnDFecJ2nyqfGX8VJ0ZaTG2LbgQVepdresCHbpmgJLwP0am/cVqhHl1wDsqrwl7eUVEicR5cHfm1mFlNoLrrv1llgfMlptAzrID4OOuVHMesVNZKkhZc/gojFj1wbOtyDba3iIi5V90y5cU4kWy12r6Obg5ZMRgnV4hNS+RbjAubKZBv+nAaPcPEJMc9dCsg2ZCBM0sU2yS4056JXuZG31uL2dP4evH8ZNmmEBYdOL5TOeL2TiCmd/+yOjPEj6Vl6qE6zbFO5VcizbnuE4SlNUGL+UnoyLy8kPv3uVsCOars9DARQSY5OecYzR1UQxFVCM2UKpSJLYJoqKRW3my/RWxCpR8AO3FTt0Vf
+ pL96SBqN
+ qX7UpfjagnecWFypDjrO4WwWs9N+0qCaYGExtNx6v46kjiW6Mde73vBNLcigm2gzuxvPm9fSAUJobWKi17R67vYhlZaLDzC6yRCMo/mX32h7vXfPXbSfXcsKbNQIpb9EdEy6G6nDNiJZKBYjTsaQTDDiMwTZteQtODEDidnFYhWaIhxAswLJCynWtX6U0Ebj+I+B8gpYMYIymvnOquwABeHkJbXsiwQ/jICCqHOGopFrVVGlwJMbD4nnxQr19DVaDK5A3JdnwVXm7w6Xja7mn/SoDh0vLaGPAmqKHUlFiBfZKQQk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,37 +96,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(adding Vlastimil)
+(actually adding Vlastimil :) )
 
-On Tue, Jun 30, 2026 at 09:31:50AM -0300, Jason Gunthorpe wrote:
-> On Tue, Jun 30, 2026 at 01:52:29PM +0300, Mike Rapoport (Microsoft) wrote:
-> > ib_umem_get() allocates an array of pointers to struct page for
-> > pin_user_pages_fast() calls during memory registration.
+On Tue, Jun 30, 2026 at 06:00:24PM +0300, Mike Rapoport wrote:
+> (adding Vlastimil)
 > 
-> A whole bunch of these use cases in rdma are really "give me some
-> temporary memory, I want it fast and as large as possible. In a
-> syscall context I will free it before returning back to userspace"
-
-Not sure I follow where "as large as possible" comes from. Here it's
-explicitly a page.
-
-And does "fast" mean that vmalloc() is not an option?
- 
-> eg we'd be really happy to get any kind of high order page here.
+> On Tue, Jun 30, 2026 at 09:31:50AM -0300, Jason Gunthorpe wrote:
+> > On Tue, Jun 30, 2026 at 01:52:29PM +0300, Mike Rapoport (Microsoft) wrote:
+> > > ib_umem_get() allocates an array of pointers to struct page for
+> > > pin_user_pages_fast() calls during memory registration.
+> > 
+> > A whole bunch of these use cases in rdma are really "give me some
+> > temporary memory, I want it fast and as large as possible. In a
+> > syscall context I will free it before returning back to userspace"
 > 
-> So, how would you feel about a new API?
+> Not sure I follow where "as large as possible" comes from. Here it's
+> explicitly a page.
 > 
->  void *kmalloc_temporary(size_t min_size, size_t max_size, size_t *actual_size, gfp);
+> And does "fast" mean that vmalloc() is not an option?
+>  
+> > eg we'd be really happy to get any kind of high order page here.
+> > 
+> > So, how would you feel about a new API?
+> > 
+> >  void *kmalloc_temporary(size_t min_size, size_t max_size, size_t *actual_size, gfp);
+> > 
+> > I know of a few other cases like this in the kernel at least.
+> > 
+> > The implementation could try to find an available high order page and
+> > immediately return it, otherwise do a small reclaim allocation?
 > 
-> I know of a few other cases like this in the kernel at least.
+> How do you suggest to decide how much of reclaim should happen? With the
+> usual semantics of gfp?
 > 
-> The implementation could try to find an available high order page and
-> immediately return it, otherwise do a small reclaim allocation?
-
-How do you suggest to decide how much of reclaim should happen? With the
-usual semantics of gfp?
-
-> Jason
+> > Jason
+> 
+> -- 
+> Sincerely yours,
+> Mike.
 
 -- 
 Sincerely yours,
