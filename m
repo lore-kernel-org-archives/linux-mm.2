@@ -4,116 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1E0C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7626C43602
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:40:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DDEF6B00D9; Tue, 30 Jun 2026 12:37:56 -0400 (EDT)
+	id D0F696B00DB; Tue, 30 Jun 2026 12:40:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B5476B00DB; Tue, 30 Jun 2026 12:37:56 -0400 (EDT)
+	id CC04C6B00DE; Tue, 30 Jun 2026 12:40:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47FD86B00DD; Tue, 30 Jun 2026 12:37:56 -0400 (EDT)
+	id BB1A06B00DF; Tue, 30 Jun 2026 12:40:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A6F56B00D9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:37:56 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67F9614055B
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:37:55 +0000 (UTC)
-X-FDA: 84937135710.12.B19DC11
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 43DE718000A
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:37:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=IGK2WudX;
-	spf=pass (imf24.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D5226B00DB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:40:24 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8BEF2A0556
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:40:23 +0000 (UTC)
+X-FDA: 84937141926.26.F007AD5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id CB5631C0006
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:40:21 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/MQZoQA";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782837473;
-	b=GOwjmfzGagqdEu4tvRv/O1JAkJpesiyvF7zLXcKNDw2X4draEwuSKQS7eolpf3uorzeSeD
-	Y4vYiOHcTnrNPYW+fI28vRw57l5d3z25XcuXfcr7D1Y7ZkK7suUiAuaXHaqasCGG+eX+vF
-	7ORCuziZFzdyLCpwkXqptaFatxTJ7Nw=
+	t=1782837621;
+	b=XrmqqsjgbvjAu6XBYZQ3lKqRqPE1lp4unNT3C8mVI1xQHIKyROeIUmIlzSvPhRjUQHMsty
+	8NuTDnxT4lpy9ie4uWNPXHcazgca2R+3Ib4n+gb0BQ0dZQRmrY3FBmlkyjvFICcM7KUO9u
+	c5ErcymX1MMTdPGfi7tR/XOHRFeJRUQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782837473;
+	s=arc-20220608; t=1782837621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kz+SuXE9j9za15YLoAB+zy98OKmA/lb7I/FlxnUtLag=;
-	b=Qudi0JIc8xHnp7k9FuKXHbWSFw57zWRblm834YtlnJwVpYtJxNfeD8otDSAGZAl5sY9CuG
-	IbB4LiaaqC83934exY9SaATttkxfbYUIZmqv9VhfhXfOIIUZsdEtNBo3Qu8/6+RftypdfO
-	EBiXdre6boOWKTeI8hYTeBcu0grbZUM=
+	bh=m6W4hQ7qcRzIKpayH7mjY67i8WEXiWhsXyDo1waGDtY=;
+	b=l+YKysH+cRNbnQ8UNBd8rt3WEY1sljMNQ00oQFkYRK/k4olUQcg3eLxk+RdZndqkcK5quA
+	7UkKUHTuCvs8RLmUy120mK7ap3sGBJqu4u7qk8vgCJe82Ew6Txu3xWdQmyo7V63HBDOlzS
+	wif2mxqT6RLpzX//3PL0UOgn6ZkeZX8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=IGK2WudX;
-	spf=pass (imf24.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C287302A;
-	Tue, 30 Jun 2026 09:37:47 -0700 (PDT)
-Received: from [10.2.213.21] (e137867.arm.com [10.2.213.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B88B3F85F;
-	Tue, 30 Jun 2026 09:37:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782837471; bh=g58E1RgBOT17YggIpVtjm4i/yrYpROSWqIGglQToKUc=;
-	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
-	b=IGK2WudX+PJaEpGGXXw64zx0sjng8/eaN/Rh3Y+MvJrSMyCQKQtzGmNp6HkLRKA59
-	 UH+tXBYKY5mFl0tT6enV58lfXSTXvmDvSwWLrhGO+5GYcT+gQbhYP07y57q7fZhefg
-	 NWM6IkC2lsMLKtWLWUb174guV8D8FtaPJLeizbpQ=
-Message-ID: <b8f3b5cd-8d8a-4396-ba0c-011a83234dd9@arm.com>
-Date: Tue, 30 Jun 2026 17:37:39 +0100
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O/MQZoQA";
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 376A6600C3;
+	Tue, 30 Jun 2026 16:40:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D65E1F000E9;
+	Tue, 30 Jun 2026 16:40:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782837620;
+	bh=m6W4hQ7qcRzIKpayH7mjY67i8WEXiWhsXyDo1waGDtY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=O/MQZoQAhSDAeea/WrJrhWbWYjo7anJ2AhCWj4gc1I0rPjLLNvRmJIaSFOBWYt1eh
+	 lEd65lEf/ailCv6wQTmbDJEt5KzD04eaKUK7pUjwbLRJhki7DVyISI7oC7G5Wh/aOn
+	 mBNMwJPfHp+SdVoLHc2cK0btbRkg0M+uEMNOXAL887VCADoyI/9ex3uuzQ7nLAuByo
+	 rjsWx6WrXhIX/QagpHNq+WFx/TuRn9nASJFyFx1H+4nfA5pI714NMPfdDMdSLep4X4
+	 1KUNju8RXzVIITSPkweti6Isd7NLOnvrUb574OqOJLKT3MsYXk7iDiaiKfkD7V4MKg
+	 imJp15HmJXiRw==
+Message-ID: <357c74a7-88a4-486d-875d-cb45d6470fc8@kernel.org>
+Date: Tue, 30 Jun 2026 18:40:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 01/18] seccomp: Convert __secure_computing() to return
- boolean
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-References: <20260629130616.642022-1-ruanjinjie@huawei.com>
- <20260629130616.642022-2-ruanjinjie@huawei.com>
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>, oleg@redhat.com,
- richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com,
- linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
- kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org,
- kernel@xen0n.name, geert@linux-m68k.org, tsbogend@alpha.franken.de,
- James.Bottomley@HansenPartnership.com, deller@gmx.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
- glaubitz@physik.fu-berlin.de, richard@nod.at,
- anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, luto@kernel.org,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net,
- jcmvbkbc@gmail.com, peterz@infradead.org, wad@chromium.org,
- thuth@redhat.com, mark.rutland@arm.com, kevin.brodsky@arm.com,
- linusw@kernel.org, yeoreum.yun@arm.com, song@kernel.org,
- james.morse@arm.com, anshuman.khandual@arm.com, broonie@kernel.org,
- liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com,
- yangtiezhu@loongson.cn, sshegde@linux.ibm.com, mchauras@linux.ibm.com,
- austin.kim@lge.com, jchrist@linux.ibm.com, arnd@arndb.de,
- thomas.weissschuh@linutronix.de, sohil.mehta@intel.com,
- andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org, x86@kernel.org,
- linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-um@lists.infradead.org
-Content-Language: en-US, en-GB, fr
-Organization: Arm Ltd.
-In-Reply-To: <20260629130616.642022-2-ruanjinjie@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+To: Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>
+Cc: linmiaohe@huawei.com, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rcampbell@nvidia.com, apopple@nvidia.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ mel@csn.ul.ie, nao.horiguchi@gmail.com, ak@linux.intel.com,
+ j-nomura@ce.jp.nec.com, pfalcato@suse.de, dave.hansen@intel.com,
+ tglx@kernel.org, jpoimboe@kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
+ <20260629074802.42727-1-lance.yang@linux.dev>
+ <a1c6c3dd-8db1-4db6-b032-e350bacc4577@kernel.org>
+ <6fdc0cbd-0880-4594-bf33-a2993ac2fe60@arm.com>
+ <1fb04774-1ac6-472a-bbc8-52fceb69b018@kernel.org>
+ <cf369aa5-e540-4c3b-85d6-0e9e159496ed@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <cf369aa5-e540-4c3b-85d6-0e9e159496ed@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 43DE718000A
+X-Rspamd-Queue-Id: CB5631C0006
 X-Rspam-User: 
-X-Stat-Signature: qazebbxrjjyytboqpy6k7sdps6zikdca
-X-HE-Tag: 1782837473-693673
-X-HE-Meta: U2FsdGVkX1/VnKw2Fuws+BGUBN/ZwIa2V9jvIiDWLVlW+jC7w8diY+zVlhCGQUq3tG2wlM6FIJ9G6AaTBSYeT/ewDYh0envFeJ/M5BUm76yuB7ayY5DxmZ17RcTh7EP4U0KuwBlulHni7UJZzPgd4ACIBUyXOLXr5FPUpPZqLWMzx/Mrd3PiRtUGariEDn86vxq+VK/0/uGFlfGf6ZzwlVPGLr58Thf70+Cdte+IeFG/2uMD2R6ipKs2h/nef5rgsxL4Y1BoRHdb3bU0aDRUf94715SweY3iWz1bBmGe1QPDxd3709bYx1PTyWWyhasfIEQK5bzq32wuyrbyjN4kL1RgCaxIWgRv7qQRy+XFFzkDY6RQhxcQAI3LJ+hF1RFKWbU/3w/qcYq/UC/4I80HXiOp450tPQrBx6ZcDLX+YFVcuBOkz42j1QVV3hj/BOY8duBCEeYv+u9Wm4KEZI6drK6HijTxgnQ3wT1Y1CmS/Q166OXtUAuyPU8x6y1NXbKefOXk7pOflhwmjg9AydJMFkWR1o9pdDV/lnGiSrU/01uPCkeLRTsGjHiUPhFClRDVMrfTjRm/Bbyn24Bpo+dnr+kr/mcB3iOtAMAoskyJzntLnT+oHSnG2tUZgKnjH4DiugYB0a4tWKQF/IvTM3vCoz2EIDTuJfWZNhntFniLG/Eodr0vg/FA9qhpr2j/LhUI0AqOygPS450a/WYMkxmi/ngHjaLTC+2QzfLLWoltM9QrQfgZFarxhMs+zQPwPBQ1a7tTil/wBYODWsRLT12M9dydCB4bnvJxr2eZdUy3Oo066XHYObPu8Wt5uFMD3Du/BzJejCXWu42ip6CbRF6rjDGBS3gSUHOMofap98/IQhpjJ8NdbdcPxi8nwHzFpEfnKdRheZvp07zk7/JW7XJBKtMh9FDhRUrk6batKRBIFcPZzeeiN39EnJzSSlL3frAxZmYTF+YhkmVjDF80vCd
- gWSw3GKI
- MZMtyS/eeM4L4sH0sp2W57c8iWWuOtFvns09+008r+sJ59TR/UVCFtP0fUS27seInfWcDuQ0WCxvKorAh/28Ga1y2UF/qsZfuWyTaVtv0n5rOTHXg5Gb9VKhBxloUQYAskPEOTSjynzH4MirLruHaz20NCuGUS5Y5Bo4s6hJWilD0VQM55dmmI0doqam67PPSS6jAYRPMpw57JgVs6npClAfc5LyyTRQ7uq380TjHLCC5oaE1POqnlDFIRXxnlZgmaMMpTUm2nN0v5uz1yrr5zIPGZvjjbj4w5egDOWtj9CzWx4J4WuU+7auP6BCjgWUUS6GQBDPvxOE62Hg4tYCUd3QjK3sHhuNEkKGpD0NP1R4L5lBWXg8EMa3oSpqSCcrbMNEPxH2IGWgUn7puNJOkJZZn8Jf02KbW/edxNIJ2fyW9/88=
+X-Stat-Signature: a8gu5x8afudo1qew4i9z5365xphpmyte
+X-HE-Tag: 1782837621-921715
+X-HE-Meta: U2FsdGVkX1+JhXEyKNOfwuZVycggVNJX4zRZJTpQqZm8fM+93OgkIeggiFUgMrvAXzWKSS4wxNx/e3ADylGIljzIa160G885g+CWnfpoZqkQ78ZirLxMS72njstGnFFJ8ayJ9ImsheN412CuLIp0CUxrkUfbuhk+PTYIwd2e3BoXf0q4/v0bkv9NU7RUi5MXKXX6mfaCKUiDQZJom52PrProMbALeI7L5ZzNWJHzeymGsaxfBjEaub+Ku+CEgetzLBuKiVyrNzzQVy4zFlGmFkBeYdkTDMKRZYGAYyqGluY/XivteOwGj+sH+0xLJAHDbjGJ8rNKMRcSMk28dsxzuHen216hOjUpxcZCPDohf0i4vGy6AApHtNhE2UvBMmKFrMyPPqTBO9suGOXTrlPnkVs9EOf2EcggI5agdSSd2Y1dzJ9YmKxmRt4o62XKfBzlW1eAU5oy0k8LiCntlrHf4BmFJ9F6kMJD7Gh0rtivojGi19WQa/JfViOih6x6Nihtkb8erQdrq1kOwWmQnORhRlAGo6xCM4CyfWvxZ8aYP+T9t3udsgsL7MZpRnAErMVs6Wjl860i7D2UaqhRXIj7Bxkp/rDoYoCvEsPqVGB2/DdVyZYx8ISpmmy+NRK6UMno3R6R9CIyKlqdYHuz5nX7DbliojQNpg4aMJgAjpU7WmGYQvuJwuwJJGspVhCmAvhqOCbh7E8g2HYcpz5SOJoH7e76hu8I+NZTQqo6bDDayLQ3PR1oFLO5cKJQEy6PsGurmomUnuJUfrt2j9LDjYvPPzMNwsKJjdzWjJuQSzWdSBxf7n3ge7vpz76p0oO2bYA3yx1hhkgJXrx23lYwOml6VL99JaibvGX6l6o4RHSosKwSapryDxbdOVUtqOTy+rQ0zHtAZMie62q8piYPxFwDRviRIjXm4qCfJUd/EFNh3/wk0nXUF1/t8cwIdz/TDs+g3l9vYBfy3I/DOv7NCra
+ ngcrym1F
+ 1sKLNvMgWaZsY/Q9JF7ee7yoxYTbblXWe+0a1eO08+QFrYuVbrNT0Kzqyb468/5ZuK4iqRnKAykt6Z1jmsCnhpHML5PP2hwixYB04VH3CaZ/jqRCKKxAmH+ZkVQcWFj9zcJ4CXWAmdDBXlw30AhARgj+OiYWSxxn5CSf0oaQ4Vd+vRCl/0U448E9wdArzkF5bqVmi4cVd5agSsOel1bGvID+Yyf/kDHFXYbBKsJ8nC3jIuxvqVB/qmDoOxDyWoSlvLN165BgIZDqqgpGhOgWN6fmuykQPQkwBRQPx+w+RO3CbYGpRabwfcjvJbX1a3w1ktxGcbTO74WvpyJXObHvwZfbo7+bAyy7nOHMxj9vw3i9fUp5EAbDa6qnzt5G6tfY9KqVO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,101 +151,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jinjie,
+> 
+> We can simply do this right:
+> 
+> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> index b8432886085af..a35fa373263dc 100644
+> --- a/arch/arm64/mm/hugetlbpage.c
+> +++ b/arch/arm64/mm/hugetlbpage.c
+> @@ -87,7 +87,7 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+>  	p4dp = p4d_offset(pgdp, addr);
+>  	pudp = pud_offset(p4dp, addr);
+>  	pmdp = pmd_offset(pudp, addr);
+> -	if ((pte_t *)pmdp == ptep) {
+> +	if ((pte_t *)PTR_ALIGN_DOWN(pmdp, sizeof(*pmdp) * CONT_PMDS) == ptep) {
+>  		*pgsize = PMD_SIZE;
+>  		return CONT_PMDS;
 
-On 29/06/2026 14:05, Jinjie Ruan wrote:
-> The return value of __secure_computing() currently uses 0 to indicate
-> that a system call should be allowed, and -1 to indicate that it should
-> be blocked/killed. This 0/-1 pattern is non-intuitive for a security
-> check function and makes the control flow at the call sites less readable.
->
-> Furthermore, any potential future changes to these return values would
-> require a high-risk, error-prone audit of all its users across different
-> architectures.
->
-> Sanitize this logic by converting the return type of __secure_computing()
-> to a proper boolean, where 'true' explicitly means 'allow' and 'false'
-> means 'fail/deny'.
->
-> Update all the two dozen or so call sites across the tree to align with
-> this new boolean semantic. No functional changes are intended, as the
-> callers still return -1 to the lower-level assembly entry code upon
-> seccomp denial.
-Would it be relevant to mention that this fixes the unsound return value of
-`syscall_trace_enter()` in generic entry, which motivated the patch 
-initially[0] ?
-> Suggested-by: Thomas Gleixner <tglx@kernel.org>
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> ---
->   arch/alpha/kernel/ptrace.c            |  2 +-
->   arch/arm/kernel/ptrace.c              |  2 +-
->   arch/arm64/kernel/ptrace.c            |  2 +-
->   arch/csky/kernel/ptrace.c             |  2 +-
->   arch/m68k/kernel/ptrace.c             |  2 +-
->   arch/mips/kernel/ptrace.c             |  2 +-
->   arch/parisc/kernel/ptrace.c           |  2 +-
->   arch/sh/kernel/ptrace_32.c            |  2 +-
->   arch/um/kernel/skas/syscall.c         |  2 +-
->   arch/x86/entry/vsyscall/vsyscall_64.c |  2 +-
->   arch/xtensa/kernel/ptrace.c           |  3 +--
->   include/linux/entry-common.h          |  7 +++---
->   include/linux/seccomp.h               | 10 ++++----
->   kernel/seccomp.c                      | 34 +++++++++++++--------------
->   14 files changed, 36 insertions(+), 38 deletions(-)
+That should also work I think.
 
-This is missing an update to the Kconfig documentation, a possible
-suggestion :
+-- 
+Cheers,
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index fa7507ac8e13..9e3d40088afb 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -637,7 +637,7 @@ config HAVE_ARCH_SECCOMP_FILTER
-           - syscall_set_return_value()
-           - SIGSYS siginfo_t support
-           - secure_computing is called from a ptrace_event()-safe context
--         - secure_computing return value is checked and a return value of -1
-+         - secure_computing return value is checked and if false
-             results in the system call being skipped immediately.
-           - seccomp syscall wired up
-           - if !HAVE_SPARSE_SYSCALL_NR, have SECCOMP_ARCH_NATIVE,
-
-> [...]
-> diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
-> index 416a3352261f..3f66320e46d3 100644
-> --- a/include/linux/entry-common.h
-> +++ b/include/linux/entry-common.h
-> @@ -100,9 +100,8 @@ static __always_inline long syscall_trace_enter(struct pt_regs *regs, unsigned l
->   
->   	/* Do seccomp after ptrace, to catch any tracer changes. */
->   	if (work & SYSCALL_WORK_SECCOMP) {
-> -		ret = __secure_computing();
-> -		if (ret == -1L)
-> -			return ret;
-> +		if (!__secure_computing())
-> +			return -1L;
->   	}
->   
->   	/* Either of the above might have changed the syscall number */
-> @@ -113,7 +112,7 @@ static __always_inline long syscall_trace_enter(struct pt_regs *regs, unsigned l
->   
->   	syscall_enter_audit(regs, syscall);
->   
-> -	return ret ? : syscall;
-> +	return syscall;
->   }
-> [...]
-
-Otherwise this feels like a more appropriate change with regards to
-"safeguarding against new `secure_computing()` return value" !
-
-With the updated Kconfig :
-Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-
-Thanks,
-Ada
-
-[0]: 
-https://lore.kernel.org/r/20260511092103.1974980-2-ruanjinjie@huawei.com
-
+David
 
