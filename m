@@ -4,171 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF06AC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:07:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4A3C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:08:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFDD56B0129; Tue, 30 Jun 2026 11:07:13 -0400 (EDT)
+	id 709DA6B012A; Tue, 30 Jun 2026 11:08:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAE726B012A; Tue, 30 Jun 2026 11:07:13 -0400 (EDT)
+	id 6BA116B012C; Tue, 30 Jun 2026 11:08:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C3DB6B012B; Tue, 30 Jun 2026 11:07:13 -0400 (EDT)
+	id 582D36B012E; Tue, 30 Jun 2026 11:08:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 74AF36B0129
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:07:13 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 18921A053F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:07:13 +0000 (UTC)
-X-FDA: 84936907146.06.F259DA3
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011051.outbound.protection.outlook.com [52.101.57.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 47E5D100004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:07:08 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HKBE0lCL;
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 52.101.57.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782832030;
-	b=Ql6JhBsS3xHqxbOc98jrVYYFeTeqXRPMOYSnHwkYPlLi1nU0+pYWMRsWw9kOOjbemqZM5J
-	n5B/7N1zIYbjM3IOdB23/RYC1cD/ZxFDr/bemmBPg6U9i37IxvYABDSXHEUmyHSXwX3WjK
-	eLZubsXu8Ze7dbZSN8vzLwU+lnK9Rjo=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782832030;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 321B06B012A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:08:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B630A8C956
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:08:09 +0000 (UTC)
+X-FDA: 84936909498.24.0F841C7
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2C39D140007
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:08:06 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DdA85Oso;
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782832088;
+	b=hzodlGnl34ZW19hJ36j6TLD9rf54UfEFZm9FQ6a2bBfhd67OZCyXXg9XSI/ucKWP8jCxLt
+	CVom1HXepz2UthwYyDlRIro1IscW2E9Sq+TdYC50PnXoNHNOPK8LM8ikgwkkkEOfpcKK7Y
+	drMbrx4pdLUzXugXWB0QWZSnbjfLmpY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782832088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lLU8CqZnoAqMbfwvvS9pPYji7oGHjBeni2LaY9TVYbk=;
-	b=1FnGtMryMvPtiYepW7m9uE9y4nu72kzYKwUi3OvndZTQy13jxcJqZLg8wsXTVSSf/mh/uQ
-	S4OIRSgPNm3tyL8Svx4i4psGBkjinux3FuH3NsD5Fm/Wb44VDN9hIn/7lBNupa/SbyTuLp
-	8oiXINLQ3F0wMvoukD9z8MC99kRZdRE=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=HKBE0lCL;
-	spf=pass (imf05.hostedemail.com: domain of ziy@nvidia.com designates 52.101.57.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HMWQaJW91amOPk5ZRdWoUKADaNT5t7x4Mki2dI7UX5zCE2KDK49QGiLrLxt2Zo7JHYRPzqlv/PhpI5UzuZ2ARd67k72nxxFwl9JzMPCxVe1Cd42IxTlkL/cYMcFRzT+CA1k+fwlHx8yzacKa9OZpRd/9J+YeabDkbD91rz64mVCm/eJkWl3qKv4KTJnreYYXakFwX66n1qCp2iEX4ENQsNAeZ6dOCZiGixA2y9eLWUK7Z12FZBHtXIX0ts+dvkZzAdTkHRvLOqUscKX2ERVeAopWIJQU0/sQy1q4wHyMjocS0OoJ4WwdGVy9Gaj0IMQwrYScZjxHYhIsJGJ4xCvQ0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lLU8CqZnoAqMbfwvvS9pPYji7oGHjBeni2LaY9TVYbk=;
- b=RoCNHZjfmP2VscnRiFdyKysZYGfyCI+Fw5NY2LLKu3B5fjGqVvOpQesbiNlL4WEFBVn+YRXXz/zjDT5JxDblN2GEFazM3eK7sEXGPtdWu0NONmsO4a/jM60cixtQucO7qVw5PvzminpxE/n6KJ687ssCsZP4h0UGnNBvcwLKtfVJ6scJw8GU49bAPBlFDjSZb7UsfmT9wTVGnEaarbndEwgNE98J6QPnpsP6BTPelrTsb49tkgmWnJiP4ljAFvwXzatAiJiSZwwoaA7qzkSpDp4DvYXfc2u0cnCwaxIZxgfcNZt3TrxKPisORNPwpAsLQpwmTrSBn1iCINAtIcHt+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lLU8CqZnoAqMbfwvvS9pPYji7oGHjBeni2LaY9TVYbk=;
- b=HKBE0lCLJcOa3xlNhtehSnfK6l24U7EA3rbs/vwdPnVvfhzpCBAObWufu160IL+9VFZYDyz26FJgDJ3/aU4Gk7+wd6LE6QG5u4v/pNmk1bBHvFLRswgp/aEOnbztOdTupv2dGweBP07xV7X5+07vS67oAlppGE0lSlnacQ9rS7uBor9dbTNuYedzqYAhX6zg4IAUpH80F1LCKm9CQA2gekJsUdZ7t5o4DFlGxHe0phs7Yx7vDtU6/6v7pOe+gFYu2vzdeKytFlSYDzSweeNkd89yUUnZkPDtVJLn09vQFZA6JnXPsqZp850Vmp71mxwbp1NSo7V7OMbgbEjydxCLYg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by PH7PR12MB7258.namprd12.prod.outlook.com (2603:10b6:510:206::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
- 2026 15:07:02 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.008; Tue, 30 Jun 2026
- 15:07:01 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 30 Jun 2026 11:06:58 -0400
-Message-Id: <DJMH7EKQ3SBB.2REYPX4LVFFTF@nvidia.com>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH] mm/page_alloc: free allocated PFNs if the range does
- not match
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, "Vlastimil Babka (SUSE)"
- <vbabka@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
- "Brendan Jackman" <jackmanb@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>, "Yu Zhao"
- <yuzhao@google.com>
-X-Mailer: aerc 0.21.0
-References: <20260629-free-pfn-on-alloc-contig-range-error-path-v1-1-496ff9ca22db@nvidia.com> <4549ad0e-abb1-4156-95c6-5e3c1319dffe@kernel.org> <d44ae8a5-ec70-456b-92a0-ce7ccabf6917@kernel.org>
-In-Reply-To: <d44ae8a5-ec70-456b-92a0-ce7ccabf6917@kernel.org>
-X-ClientProxiedBy: DS1PR04CA0001.namprd04.prod.outlook.com
- (2603:10b6:8:44f::8) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=gHtO69diIM0k7S0Wj5v0VMDMfaI21iwZjDPJcsxigLA=;
+	b=wY6queWD5yICbiFroJR1JWEwUfOvFe/YjB8gfAsJO/5D6CNhJkLfNsfNv964pVMeKHXXhn
+	swA7lQ7VCmHZAMX9hZYmEX0pD6nGRNySI5p7af42Bm1pnsOzus3nX7bp7AhcSN0COgB9HR
+	DwutUeg2ybTiHZZfEAXNZf2I9+W2GOk=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DdA85Oso;
+	spf=pass (imf09.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Tue, 30 Jun 2026 08:07:47 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782832082;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gHtO69diIM0k7S0Wj5v0VMDMfaI21iwZjDPJcsxigLA=;
+	b=DdA85OsoBrLMdEteQcGdKeX0AzDe/7nYRg6vYyk+ql7QNoPRZhPyh6W4lrwEt3aIUsY85A
+	JE813+iwrtqbl676jixEw8tFQvESMIQJk7/QjLpMcGpXjiQKc/SGLfsaN5zJ4egZANbrfF
+	VdBlPwM6d0VpkL2r/zLQAQQmH4qak78=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [RESEND PATCH v2] mm/memcontrol: Avoid stuck
+ FLUSHING_CACHED_CHARGE on isolated CPU
+Message-ID: <akPbL3HZrvWy8O3Q@linux.dev>
+References: <20260630070004.470181-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH7PR12MB7258:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87e3b50a-2fb2-481b-0603-08ded6b93ca2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|56012099006|22082099003|4143699003|11063799006|18002099003|6133799003|921020;
-X-Microsoft-Antispam-Message-Info:
-	BXSM9yY3C2lIjKCD7/msN8JT2iwfx/8eTcZ+Lbd/i/K/USCWlgKtD7Af5ny+8VHcUX7Psv6IF8oJFBHu14IjW83GdB6kMv33QyFDPUK/tCc6lIRTON8UjduSp7cKcBt5RCUZ6mUHTBM0B3cjlyIBiajUhEPk/Z9NeJOs+GvCx60HW9f0BFLSvS0Q3OiYLEu8PegNBWX8gY+RjFbC5HimtPwDHm5ZRXnh5ND0tACuZU0bw/nn+oUvvG3OXdC+s/HfLMF8p5TFOIFuUhvfoTiRhTyFYUkOfKo7pezOMo/puji3Civ6so/stRSv5pFsvOFBpGXZtksFJA9TA+QdFD8MeUPrGJJ2/zf0d1EKGX2H85tUHUFYWzMUvUJJtRXnZov6IykPmYxQ4x4iLIImTsOvJLHAlLym7ClLTrSXCP5wJwwUChnLGBlw4DUIk3p6v2yMwNUrhVoOG34HSeYTI8Fkk0jyVuCjOiMafAX0k5U2dMPpQ75rEvbLKmHCQHMGaVLmSV+aUL0a0r3LolHNR1ez9IwA820+kR72ExDus2EribCEYmJxt/MAsuRwrVADy14Sz5roqKBv5eI5aID+4CYvMQUSJRJRMfalBABxsglAeapzb19k/v65q1QjP6MdzWAOo7o09dAPcwv645zphLhKP3LXqOpVWwN7D5gut4n8DVu+uYfPhM4FCbcGMQkZaRR/ZIYF+lvod78x0sLnHdPpOg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(56012099006)(22082099003)(4143699003)(11063799006)(18002099003)(6133799003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b1RWeGU1ekVncUVoampTWlJqc2k0VDM5ZlVZNE9UQ0JVTHNVN2NvRWFQYzNS?=
- =?utf-8?B?cmQ2MkNKVldJZ2ZDdFdQQWFzamMrdEFzRFVnSjQ4TGlKWTFPSyt1aHZvc2ps?=
- =?utf-8?B?dnRUWW5LTjVSUlpsUWlxRVhVNFNNRUlNOXc5K0tTWFcySWVzMGZ3aU1lTDhy?=
- =?utf-8?B?SU95dTN4UktpODVpSkw4S21KVlhUSzlpeEpYRmhjN1JxTzE3dDNQdmtMNDNu?=
- =?utf-8?B?WG1KMzVzQ3g1dXAwSlBNR284Rjh1dzlQQ3pTTVNhWmdwa3JiVzY1M1FBYVFw?=
- =?utf-8?B?NXFQK25yV0J3M0ZpWTBFMzJFVHdXUTRCNld1dVJLMzFvUjArR1pwS3ZsOG02?=
- =?utf-8?B?QVZVN1RDTTBCcS94VTh6SVdGemRWVTh4Vm5jSnR6NStUaGRocXV5aTJ3RlJG?=
- =?utf-8?B?V25XbkJrY2VzT0pVSTlXTENXcmZqckZsRlJaeG9KMm1RdTZ2eUtQKy9VT0FB?=
- =?utf-8?B?SFExb3lXV1ZKK3Zva2JQSjAzazc2Vm9WM1BTN2tuUmxPQlgybjExU0cvSXoy?=
- =?utf-8?B?dU82UlZqZzVHMndzL1MvRHJoWGtPZnFrZU11WERPV3ppRUh6d1NTNUpLVGU4?=
- =?utf-8?B?bzhKS1FzY1NDVk5jeUQ0b2xoWmFuT1pOZmVoQ292ZG9lVEtyN3FUc0oySjht?=
- =?utf-8?B?QW4vQlpIbmhZU292SE1OaWdqT2xXeHIwa1h2bUF6Mmo0ZXUxUlRFbm0vY05I?=
- =?utf-8?B?ZmpTbnZmS2tucmhBUUtUUXJGQVRzS3FXaXVZcjRxdUFEUGlJRVFkejRuajdH?=
- =?utf-8?B?Q1YyelN0NXlVOGhId2JObkYweXJyREJGYUwvWDZuNCtLRFpHOGYyZkVXQlNV?=
- =?utf-8?B?eERYRE9YSUYzcFNyeU1xRU9SUzREdHdKT0dDaVIyZlRWaWFwaytIUktsS2tP?=
- =?utf-8?B?NzZKdVRBbkJRY3l1MkFDWDMyRTdSUW9QL2lycUZvWm1GQ1JpeTRHYkY3dnFn?=
- =?utf-8?B?MWtvS0h5SjRCc2QxVXZVNWpaaDhNUkFuYzNsc3k1UzR3ek5TZHRYSGkvSVkr?=
- =?utf-8?B?c2EyZXlOeWQ0ek9HMGt1QzUxTlBQNUtMbno4am9lVCs3a1dmeW1HVnBHNW00?=
- =?utf-8?B?QjhzM3FocW9jSXdpMmtLaUFiWC9WTDlUb3dMQnM4MVUxZTNLSGxvM3FrcE5B?=
- =?utf-8?B?RUN1dVY1dHBheXltTTdWTWk1bUJ4VUFtZnl0NkpZbWFIb1R4U2R3NFhTWU44?=
- =?utf-8?B?NVh2czcvRmdZa2NxamZWWUVSRFMwdjBreG95RnREemNaOXZ4L3pjSlpua3RC?=
- =?utf-8?B?YjlRemxxNGZiaENZa1g0OFFPRVBoNk5vMGFHZzk0MHRJV1F5T1RKMERrR0V1?=
- =?utf-8?B?dGY3a2F3M2syNktEeUFNSDUxZ2czNERrQ2ZsUklQR2VqTDNrSmVlaWdSalph?=
- =?utf-8?B?bnBrWVlkQjZkN3NjeUFSRDUrVHZPNFZRd1dZKzNmcDJTMmVBTUZhV1ZYN0tv?=
- =?utf-8?B?Y1loSGlUV2tVcE1XS3NrTnRiSXpTdUxpUCs4U1QwSTQ1ZDdvd1d6U3A0SHNX?=
- =?utf-8?B?Z2hkcWt4aE0vRk0vZlhERlV5SzJ1MkNHTVRZTDdQd0V0aHVFeGFkVVhGeitz?=
- =?utf-8?B?WElTSElwRkplNWppR2c5Si9YeUEzdGVkYUlDdDA1eVZZc2lkK2tGbkZNVXB6?=
- =?utf-8?B?dExyR0dtdmVXTTZJOWljR0ZKN2J3ZitjaUxtaDRSNzhqZk9idnppWXpPOTEy?=
- =?utf-8?B?aG1YdWRoaTNiQmJuRFA3NnJBYlZJTnJKZ3ZJQ1ZKQVlrQnRaRVBRbmJ6OVpO?=
- =?utf-8?B?NTJkTjMwT3I1aXRwc3FwcU5uZ3lyUzVQSmJaV1pQamY4dUQ2aVZlc05wODZq?=
- =?utf-8?B?aVdFQW15M056a0ZrbXhLbW53Ulh1aE15S09PTUg2U1p1NVM5d0ZlYlpIcm9L?=
- =?utf-8?B?eDZhS1FFZjc0c2NnVXBXYjE0SUZ3L1lxdTQxeFVpdGJ3ZTFRMldTa1FBUlZv?=
- =?utf-8?B?VmZnRzNKTzVzY0x1OXFlOTd1SFJSb0ZINWQ5YjlRVlVTRWZwbWhOVW5sb2tr?=
- =?utf-8?B?RmJOVjB6T20vTlRydTNDVWh6czE0aHBNdW4yalIwc2xEa1JBMHVtcFNkVHYy?=
- =?utf-8?B?ajZUUzRuWWRnZGF5U0xFem0zTmxwVnJXT3FDQ08yc0l1K2FZZlo2MzFDTENj?=
- =?utf-8?B?cjBYUksrUlc3RklPY2pJczI5K0V0VWlMcUY5ck04b2xrZkcycW0vcUd0T0E1?=
- =?utf-8?B?bi9QUWlqOVJ2R1pOMm9Ed2NlODJqekFrQWhnTUFMZWI5Z0c5N3pia3B1eVpT?=
- =?utf-8?B?SW5Xdmtnc0t3UjRZZ1NoYW9sWEJvejdxN2piRnV3bWQ3TGU0aDJVdGdscno4?=
- =?utf-8?Q?N9Q5umO/bfHnivaImc?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87e3b50a-2fb2-481b-0603-08ded6b93ca2
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 15:07:00.9581
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TehMUaloaw814Tdz2H2rbSi8gwpbV8vGT5abEPaH5GLGItFUGh/0Lm63AWo3Dzh6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7258
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260630070004.470181-1-hui.zhu@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 879keeo5exa1o4uwatgkhf6wmnf39d3s
+X-Rspamd-Queue-Id: 2C39D140007
 X-Rspam-User: 
-X-Stat-Signature: 971dkbo7c931zho5hmc6cyp7urcrr7bk
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 47E5D100004
-X-HE-Tag: 1782832028-790087
-X-HE-Meta: U2FsdGVkX1+7cpImr92VqnlenrD6LJqgymyUNjT8bPctM+iY6HAJFtDdo1ZWqlrtbsYezEMLQwAGr9zNaPtZAVwJIIq9u90g/vUY3ao3oV9JOlNK639tRmBgTpZd/VHmbtxeAmXTKZEYioIalyfpz2fEvNNdGAyVV1MiMAKuXfLuabIwobt36CQnsBsCzuu3Is+OLoGzBlGK4zVJoi/LwNPeMSTfNkY914K5hZTEHA+JQAktAoYtAr3I+TmEyGRaRqIXG9E96yIQEPQt8ZKtOvgZ+We6QDR3iKNS2+atFdpHTFEMTvGuUmwcAe3YtFfBgs2Qv0HVvcYVAO9OCNRwHqtgV7M40fA7UZfdtF+TKtoCCdV9A7uExCNOJOdwVGUqnhqXGhVFrTsdtSuhJ6kARMAfK8i5fW2aqVt/Cp1wmKI+jIHak/uk8lMvr5TYxR3QipWuz/LA72nAKDMvGVACtYcuNfYltYRcB0mNrwgznNOeQpZRZoluoL6qX/T2+H4KG6kDD0xPisDqyGFZTzgjZc+V2VR2vKKKxEgTwo1PC8sit0vJ0N0D5buiD9srI6yB0PrFTbJn1xBEiLLcyTYWCHvZwHPXuew8bXJHDkmNgNEgg41+w7A/UN4K6+jwrRJ1+9ulxkO/3my/Z3p8yY0PvACEIwiIdB0DmxZDQwQfW4/rxnS1rMm1lNu/DryP/0Ay4pnM+5xStDfc/TO82c1cw1bg+q/NnFw+MJUezAnhg+qWgopPybGa1SMakqz9J7+Vnwzq1pxDNacbBbdz9GObWlu9s9D2iAahhWlRRhmSyIBytUJ7DXxyoxFsPBN0urrZ0YGXfbGQpbFwA2K4Cky90rKGZXq5vbjYPzlVdO7RTpPvc81EhmK2mnUy0fped7OyFLfTthzSrwNFaanO0c/bX78WrF39hA2aMszRjddbKZSKnJjWGpoOTLvaeKiq5MRuTDaaW/vYnXg+80zsBZC
- iIVKiaSi
- jwGkeXx5kt+5wSne7G9qL2mLildcElp3hfEeCfnkyWTVFZxpVTP5sXscHpckwg8VmSswU2UI2vzxbmJlgMzsngNCij/JOscrFJC1rYhWgpERMBINOdJJ+IlYmyRsXqwN9wJWTIMFDPqhAUZU1Nu4Y48Gv3CyHgd3toFFQI/LfEl3gs+EBCh+I8nRXheAeQg54Xd9Zg2w363oPKpvm9/wyh4J0H9GXan+zFLMDLQlmwqCH+Vp0quscGtB18Vt6FXel7CXnITXPWktbXbCW8+42iuuRsvanMQ0FOaXJtnAsE/vQAsbAptRgAMC1FuasE954Ftnk8mbwdXdQSf67hRFgavLQJad6MHEQs1qgEaWGKG1iaOc8W6D69NHiQrr01xy55IH6xSNtaoBYns9ukKG/uvVtPPltX0cfnRyKMJf74Q3ldiw7QOuQFq7PhM1/jenI6FzuZwurdh84dsMu7DcbEXC7wVqDhKJPi/vdtm1LEHfSd9DUUYwpm/66yEnX2uMVuTu9gc/2Wi3w0j2eVwbgTcUWaA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782832086-601398
+X-HE-Meta: U2FsdGVkX19pXN+ADSaT4B7Ln4a84/kRVXoswDMlgk7goTZZNqqx+eHZitr22jSsodtQTZkuMAa6xQ5W4Q8+t4Y5hEqPKEZpgW2pstbYQoBPfcZCzaKxY+RuUXpDVDtpntuIlYqDWUwNQO30STcn97GFxcGes0rSe4d8sOUPzIx/hBIcQXBOAE55IodyyUJNkj5zIyGtcttIg5ZSGcDuq/dBHtjvLZulATvpkmjN9+z8jfDCcWM3/TIrRQ+tM75/tnqtJ8GXywW0e2DwvmsxGnpTJxin8a8kuCgVeFcXUeVvwVsrhXRlXGE939938WU/13B5ZVcTH/+TxgCsQwwlt6RKmmVxw19WQ0/9KhM21qKcsVLdMWVcr/zCqJpLLjDnOIk97bwB36mG3kbe92ug7xSneXagZBw/EXAVdh7WiUiUgrxBMZ2zYyLlQF/DCjHkqepiYWDVKxYrvdQeNwy5OhcqOzpeP06zVJRzxENV9o1P4PZ8TzxgcW2sI1S16PXFwd2o42fQMQWaEVJ8LERcz4G6f1PBeFoqtQ7wWABqVf1Wsg9m6NCM5bfrn/F/ZusuFCtblPUTzyH6YNf81sZOUNEuQFD5SanM5BsA8oAZhv43I0be/xGb8OKFVWYTJShmSLLNk5FEqGq+xfQENnrdUUm0493dT5+Aq/fjpZQo1kx4ciJi2TVyMJKR3TRADmbT2/hg3v9rjTH6d/fQq8NCgDoNozsnc+k8TcXmzaXvBZSp9JOY2PJWsS9+Wt6H0Y3YtdLJQrL2jwvmCT/NsDeg9TbsgFFKlSMgdLxe+zlByCRxC4yzaagpuw8qIah4HXUjF0b8RardGjSWkOcpXt5vThHXleRLDEQYUUcgiDjyGR869dKjILAIDZnftTngXwsXx9ufopfTUMVp1qG5rCbyq+/6WQxc8RWj4rSRLBtFBryaSr92/WrTTE6saOdf3qKC86YbpJItYEBIY5cPVC+
+ 6fsYAa62
+ Rxmf7b7ushXzHzPAvgNyqC3tD8pZNr3p0remBzSLbuBRXqhwOl1Vc3i6l24CzeybCIvB8+3pP5A/l7LFCCTHhuKCL4gsh7pvjerHfUEL62uHw5Z4qgziUndH850GR4QYrn2uOkD2h5dCLvSVtNl3oD9TbnZLkEgIHrhY7bbNiIQvnpp80zTTvcQUIVmXQ9SDKfHsoRiTPXAz7ZS6Phy3/qnqW/qYH28eL2ovO7kuDnUjYatbnsKvLUF762tUmV9P5eU7P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,91 +91,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Jun 30, 2026 at 9:39 AM EDT, David Hildenbrand (Arm) wrote:
-> On 6/30/26 09:44, Vlastimil Babka (SUSE) wrote:
->> On 6/30/26 03:35, Zi Yan wrote:
->>> When using __GFP_COMP in alloc_contig_frozen_range(), if the allocated
->>> range does not match the requested one, the code errors out with EINVAL
->>> without freeing the allocated PFNs and causes free page leaks. Fix it b=
-y
->>> calling release_free_list() in the error path.
->>>
->>> The issue is reported by Sashiko[1].
->>=20
->> So this?
->> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>=20
->>> Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
->>> Link: https://sashiko.dev/#/patchset/20260628-keep-subpage-private-zero=
--at-free-v1-0-f4ce3930d10f@nvidia.com [1]
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> Cc: stable@vger.kernel.org
->>=20
->> Hm well, it's a path that warns, can only happen due to a development er=
-ror?
->> Not sure we care about stable then. Anyway.
->>=20
->
-> If someone would run into the WARN we would already be in Fixes: territor=
-y.
->
-> it's a path that should never be executed. If it does, the real issue mus=
-t be fixed.
->
-> So (a) I don't think this is stable material (b) I am skeptical that this=
- is
-> even a Fixes and (c) I am wondering whether we should touch this *at all*=
-.
->
-> :)
+On Tue, Jun 30, 2026 at 03:00:04PM +0800, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> drain_all_stock() sets FLUSHING_CACHED_CHARGE before calling
+> schedule_drain_work() to queue per-CPU drain work.  When the target
+> CPU is isolated (cpu_is_isolated() == true), the work is silently
+> not queued, but FLUSHING_CACHED_CHARGE stays set.  Every subsequent
+> drain_all_stock() then sees the bit and skips this stock entirely,
+> so the entry is effectively pinned until something else on that CPU
+> runs drain_local_*_stock() and clears the bit -- which on a long-
+> isolated CPU may never happen.
+> 
+> The original idea was to actually perform the drain from the calling
+> CPU on behalf of the isolated one, by adding a lock around the
+> per-CPU stock so that a remote drainer could safely touch it.  In
+> practice this turned out to be intrusive: the stock data structures
+> and their fast paths (consume_stock(), refill_stock(), the obj_stock
+> helpers) are deliberately designed around current-CPU-only access,
+> and retrofitting cross-CPU serialisation onto them adds non-trivial
+> locking and PREEMPT_RT concerns for very little gain.
+> 
+> Looking at the actual amount of charge that can accumulate in a
+> single per-CPU stock, it is bounded and small, so leaving an
+> isolated CPU's stock undrained for a while is not a real problem.
+> The only real bug is that the stuck FLUSHING_CACHED_CHARGE bit
+> prevents future drain_all_stock() callers from re-attempting once
+> the CPU is no longer isolated.
+> 
+> Fix this minimally by clearing FLUSHING_CACHED_CHARGE when the work
+> could not be queued because the target CPU is isolated.  The cached
+> charge itself is left in place; it will be released the next time
+> the CPU runs drain_local_*_stock() (e.g. after leaving isolation,
+> or if the isolated CPU itself calls drain_all_stock() -- in that
+> case cpu == curcpu causes drain_local_memcg_stock() to be invoked
+> directly), and the next drain_all_stock() call is free to retry
+> instead of skipping the stock forever.
+> 
+> Fixes: 6a792697a53a ("memcg: do not drain charge pcp caches on remote isolated cpus")
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+> Changelog:
+> v2:
+> According to the comments of Waiman Long, updated fixes.
+> 
+>  mm/memcontrol.c | 28 ++++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 6dc4888a90f3..2e66b4a2c25d 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2256,7 +2256,8 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
+>  	return flush;
+>  }
+>  
+> -static void schedule_drain_work(int cpu, struct work_struct *work)
+> +static void
+> +schedule_drain_work(int cpu, struct work_struct *work, unsigned long *flags)
+>  {
+>  	/*
+>  	 * Protect housekeeping cpumask read and work enqueue together
+> @@ -2264,9 +2265,22 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
+>  	 * partition update only need to wait for an RCU GP and flush the
+>  	 * pending work on newly isolated CPUs.
+>  	 */
+> -	guard(rcu)();
+> -	if (!cpu_is_isolated(cpu))
+> -		queue_work_on(cpu, memcg_wq, work);
+> +	scoped_guard(rcu) {
+> +		if (!cpu_is_isolated(cpu)) {
+> +			queue_work_on(cpu, memcg_wq, work);
+> +			return;
+> +		}
+> +	}
+> +
+> +	/*
+> +	 * The target CPU is isolated: the drain work was not queued.
+> +	 * Clear FLUSHING_CACHED_CHARGE so that future drain_all_stock()
+> +	 * callers can re-attempt instead of skipping this stock forever.
+> +	 * The cached charge is left in place; it will be released the
+> +	 * next time the CPU itself runs drain_local_*_stock() (e.g.
+> +	 * after leaving isolation), or by a follow-up mechanism.
+> +	 */
+> +	clear_bit(FLUSHING_CACHED_CHARGE, flags);
 
-I looked at the code again and agree with you that the code is not
-reachable and the fix should not be in the WARN path. Theoretically, if
-order =3D ilog2(end - start) is smaller than MAX_PAGE_ORDER,
-find_large_buddy() can return an outer_start smaller than start, leading
-to this WARN path. But currently alloc_contig_frozen_range() with
-__GFP_COMP is used by gigantic hugetlb, thus that is not possible.
+Let's do something like the following.
 
-How about
-1. making sure order is bigger or equal to MAX_PAGE_ORDER,
-2. adding a comment in the WARN path to prevent someone else trying to
-fix WARN path if Sashiko reports this again
+	guard(rcu)();
+	if (cpu_is_isolated(cpu)) {
+		clear_bit(FLUSHING_CACHED_CHARGE, flags);
+		return;
+	}
+	queue_work_on(cpu, memcg_wq, work);
 
-like the patch below?
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ee902a468c2f..e87d3fced9d4 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7130,8 +7130,13 @@ int alloc_contig_frozen_range_noprof(unsigned long s=
-tart, unsigned long end,
- 	 * In contrast to the buddy, we allow for orders here that exceed
- 	 * MAX_PAGE_ORDER, so we must manually make sure that we are not
- 	 * exceeding the maximum folio order.
-+	 *
-+	 * The order cannot be smaller than MAX_PAGE_ORDER either to prevent a
-+	 * potential mismatch between the requested range and the allocated
-+	 * range that leads to an allocation failure.
- 	 */
--	if (WARN_ON_ONCE((gfp_mask & __GFP_COMP) && order > MAX_FOLIO_ORDER))
-+	if (WARN_ON_ONCE((gfp_mask & __GFP_COMP) &&
-+			 (order > MAX_FOLIO_ORDER || order < MAX_PAGE_ORDER))
- 		return -EINVAL;
-=20
- 	gfp_mask =3D current_gfp_context(gfp_mask);
-@@ -7235,6 +7240,7 @@ int alloc_contig_frozen_range_noprof(unsigned long st=
-art, unsigned long end,
- 		check_new_pages(head, order);
- 		prep_new_page(head, order, gfp_mask, 0);
- 	} else {
-+		/* Fix the caller if this is reachable */
- 		ret =3D -EINVAL;
- 		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
- 		     start, end, outer_start, outer_end);
-
-
---=20
-Best Regards,
-Yan, Zi
-
+>  }
+>  
+>  /*
+> @@ -2299,7 +2313,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+>  			if (cpu == curcpu)
+>  				drain_local_memcg_stock(&memcg_st->work);
+>  			else
+> -				schedule_drain_work(cpu, &memcg_st->work);
+> +				schedule_drain_work(cpu, &memcg_st->work,
+> +						    &memcg_st->flags);
+>  		}
+>  
+>  		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
+> @@ -2309,7 +2324,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+>  			if (cpu == curcpu)
+>  				drain_local_obj_stock(&obj_st->work);
+>  			else
+> -				schedule_drain_work(cpu, &obj_st->work);
+> +				schedule_drain_work(cpu, &obj_st->work,
+> +						    &obj_st->flags);
+>  		}
+>  	}
+>  	migrate_enable();
+> -- 
+> 2.43.0
+> 
 
