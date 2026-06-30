@@ -4,108 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42202C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:56:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88106C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:57:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35A0A6B00E0; Tue, 30 Jun 2026 03:56:00 -0400 (EDT)
+	id 706B06B00A2; Tue, 30 Jun 2026 03:57:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3315C6B00E1; Tue, 30 Jun 2026 03:56:00 -0400 (EDT)
+	id 6DE546B00AA; Tue, 30 Jun 2026 03:57:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26FA96B00E2; Tue, 30 Jun 2026 03:56:00 -0400 (EDT)
+	id 5F54E6B00AC; Tue, 30 Jun 2026 03:57:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D676B00E0
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:55:59 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CC4040402
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:55:59 +0000 (UTC)
-X-FDA: 84935820438.18.5ED4CD8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 96344C0002
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:55:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V4CwXk6Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 342A86B00A2
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:57:31 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BEF2A8DB2E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:57:30 +0000 (UTC)
+X-FDA: 84935824260.10.8B4CB60
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 380BE120005
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:57:27 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=eIEFlTFu;
+	spf=pass (imf29.hostedemail.com: domain of jackzxcui1989@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782806157;
-	b=uLkOkrNtlvOd9sJdPMX7n12kvF2ad3NzsWMuMksrRQqIfvxtBMToeVMoNibwz6I5afG2vq
-	xJ2wV9qIe6EwTg3fqk3ci78zYdU75TUlag9KnmicxIYSsqhuMt9NZOAozpOmtkLBxnxwkU
-	UH/EH+sPiPc8KUCjCYHu1IWvZ+cGa88=
+	t=1782806249;
+	b=6l+LwTeDNF+UbDeFbFEUOD1Kca4ok1lyxGb5g6ykCC9FRJRV7fqPQQ0rRzQOPJHCE+BrAA
+	j+/LwQCcXOl6Er+EJlNaBHnVvAjsduCYebDGWGMa/FZTSwH80IgOPeHGtofhBkRP4owgra
+	IRU4MLi3NGrqDlYREHc34izTR9dgW5Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782806157;
+	s=arc-20220608; t=1782806249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w2dS4VqRw/Em0OvDV2StfeJ9DlNgRzJR6JUzBHHof/0=;
-	b=FFnYxyxmPYJytl8tdjPL1aWm6stlDHSSI400nDtnVNJKCDgHfF6ork0XVKUeWPnQGfuwP8
-	1hDqYK+ab6WuT35y+v75ST/mJBiv8uE+TWVmC/3paLODWrM+DVYSwhKqpJhBZEhbpylP1W
-	gVE2vptCqb4XdSvEK+LiA69Sc+Mhd3Y=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BNfFV4XdnfcPNnXm+sJNTcmizJskETSgNCohDoXgSug=;
+	b=PxxDf573nQGkmT6WDyuq+P6dy2RPzt+R4OLI6SYSifjqlct8+aLRAraQ8qutC6LrwG13Tf
+	XqblemUuBThX9PT13uuiE3RNoMHTiQgi8HcQkPwst6driHoBXjvzfdcOX8D1C3aZcndzP6
+	69ayJG3WU7n5etR7Csw2FTpE4ERvkaM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V4CwXk6Y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C0A4F41E68;
-	Tue, 30 Jun 2026 07:55:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52031F000E9;
-	Tue, 30 Jun 2026 07:55:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782806156;
-	bh=w2dS4VqRw/Em0OvDV2StfeJ9DlNgRzJR6JUzBHHof/0=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=V4CwXk6YKnkYyH5J826DwWWvxDBFMYJsBkeZ0jSkUuMCi7MRUOwPXrQIs0ZHNDKTe
-	 2ephx8Dr1Na5hqDsI++k6XEZ7iCni7ECvJYyTPYqj3g2lXsipul+IGD/QTusb1vOTm
-	 OAqqQxxkgt0xfx9VoWOeskdhoVrsyyJ450FyZnKwxmnnIWvfbkDizSNP3kFvy9Ob+W
-	 sLw0QaG9BhNasKCuFOOhQclfgqewrbO1QbkwMCqFsPukzl/hosk5V6ICSYZFcwKbFH
-	 5z5sjJV2t/O1coQ0RxG+9M7fpfWNHyh8S9q8n8Sv8Yc5JFX2ToBAYBkY3yLAQsYxUr
-	 kntxXfArnl0VA==
+	imf29.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=eIEFlTFu;
+	spf=pass (imf29.hostedemail.com: domain of jackzxcui1989@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=BN
+	fFV4XdnfcPNnXm+sJNTcmizJskETSgNCohDoXgSug=; b=eIEFlTFuwyyRFJASAi
+	1BOk+H27YrXjaN129H4WWsfLZuk9Fm8DQIBbaCH/ZIu41if88qKHuT88ZF/iFOGL
+	oOA20VfK3g5/ozt9HA4FoqjvHQ/CqZCE1oAIasIoD9cr22EBO6Ehs8fnivsHZIkh
+	7p+Lycbiq0feaTwRmBPspjnws=
+Received: from zhaoxin-MS-7E12.. (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wC3016WdkNqrv3WGg--.10119S2;
+	Tue, 30 Jun 2026 15:56:08 +0800 (CST)
+From: Xin Zhao <jackzxcui1989@163.com>
+To: brauner@kernel.org,
+	ljs@kernel.org,
+	rppt@kernel.org,
+	pfalcato@suse.de,
+	viro@zeniv.linux.org.uk,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	akpm@linux-foundation.org,
+	liam@infradead.org,
+	david@kernel.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	mjguzik@gmail.com,
+	ebiederm@xmission.com,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	chuck.lever@oracle.com,
+	alex.aring@gmail.com,
+	arnd@arndb.de,
+	keescook@chromium.org,
+	mcgrof@kernel.org,
+	j.granados@samsung.com,
+	allen.lkml@gmail.com
+Cc: kuba@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	Xin Zhao <jackzxcui1989@163.com>
+Subject: [PATCH v5] coredump: Add bit 9 of coredump_filter for pre-exit files before dumping
+Date: Tue, 30 Jun 2026 15:56:04 +0800
+Message-Id: <20260630075604.52533-1-jackzxcui1989@163.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/3] fs, mm: add ->cachestat() file operation
-From: Christian Brauner <brauner@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>, 
- Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Miklos Szeredi <miklos@szeredi.hu>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
- Shuah Khan <shuah@kernel.org>, linux-unionfs@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-In-Reply-To: <CAOQ4uxiNrEZ8rsRc11mdjkMWe3dfThE0DJ2vXuO0yiNemnpR6A@mail.gmail.com>
-References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
- <20260623111533.2285005-2-ptikhomirov@virtuozzo.com>
- <ajqOyIA8tPQsxfz6@cmpxchg.org>
- <3f6392aa-c1f6-4263-8892-978dacbbd8ca@virtuozzo.com>
- <CAOQ4uxhras5YAr8_HBpuHSDwvfiEF8vAr0NDB0R_PXtGDhnqjQ@mail.gmail.com>
- <20260625-lehrbuch-gehalt-wichen-1b2f3533efbe@brauner>
- <CAOQ4uxiNrEZ8rsRc11mdjkMWe3dfThE0DJ2vXuO0yiNemnpR6A@mail.gmail.com>
-Date: Tue, 30 Jun 2026 09:55:50 +0200
-Message-Id: <20260630-tierisch-ehrbaren-errichten-bed402a0a26c@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3948; i=brauner@kernel.org;
- h=from:subject:message-id; bh=akQT6JRfJ1Zkbm0d13uEQPaH8NlEtNJnfMROgJGxvXM=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5l3WEHDrovNv1wMy7DPHbGI4bei2/3jc3L9d3/brdP
- qJvp1nYd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwk34GR4Ybbp8jPbOuYjn14
- 0nyR4VK4ZUDq6amfGTtvldl4p3+yKWH4763BU/ipx7TfP8TdQ8Wx8fuNS5bxvaenzZovVnl2+oo
- gFgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 96344C0002
+X-CM-TRANSID:_____wC3016WdkNqrv3WGg--.10119S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3JF4fKw18Xw1UZrWDGr4Uurg_yoWfAF4rpF
+	WrKayfKF18KF4xtFZ7GF47Xa4rAwsYgrWagry2gw43Aa15A34xur4ft3W3XwnrAr93Ka1U
+	XF4jqr9ruryqqFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_FApUUUUUU=
+X-Originating-IP: [124.77.128.91]
+X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/xtbC6BkvOWpDdpnEkwAA32
+X-Stat-Signature: idp9pnpes6hmd7ouyt7fqj3ed5ctjgca
+X-Rspamd-Queue-Id: 380BE120005
 X-Rspam-User: 
-X-Stat-Signature: 8xbz4ice1kswwcmk34ucd8z3j6eg9gs9
-X-HE-Tag: 1782806157-207500
-X-HE-Meta: U2FsdGVkX19PFk9KVVfsOOk5AWxviGIgUNVTINH6ZbVjM4JDrFofb0RmaKz8c5/rJ/S2gzKSWRVYnLqIEgXN2MSke5FCbtzaUvmJyC2MGw+FsXdkI4MbK+R9usIOkpSMHmqsuEP8hAuU9b1wDPC7hDqqMiNLjvV2Av4CypYdmPXZskXfmBxYCirBpJVtVZBzghbrVqKlvG78rqm6zyxnQbyRPPmzkA4ofWEuY1FWDEU+/BKfpjkV9bPxVv/2ktJqUYCTWEfqsgdef8DXlFm/rLJM+Tm9/ACbSJFI+jSjBh9Opq7AOsmG5S9mWiCK8HbRAXidc4MG0BMD0WXuX05tFYh0/tCipA2DKbgDgge7IvxiiN84O1bSNDzJNdF+b1uA67tTZc/dNtK5g28MfDsKpbj5IMTarOYwNk8q41FDRxmRbN/ysdVVn4C102+vjDPmximagONrkME9pS9bVaVlc1CSwyoSOCdq2YsfpyVomlGOjzbGwbnsnfiXoqmvkXLrHLSxvhys9osnXcRjZb3IYOYe4vR+8obtOHd/4ICgrV62ihD4AgLunLvj7lA69+1posq5GfZqtanvi//y09DeIw1EijkMd9k/SIxUl994XXZSbOWSp5Ou4Cs6+nqZL2Gt+Sq+LQ/mOOiGSNN+4zHozBsmKan+QmdUP+qZSfGWmAYpKATUMd5kecaHdIf1+jZCoT6+9Np2YVZCAsMqqg9ynMDjPNMUm8zW8jamr6ldXzhT9l/BlpVmnDx4dsTKsO9boBA+qePh4FrJPjL3NMcnZjjyQ8kNWLzYWl8CN/VFVoGrI2GsfGQMlUn4dFVYuR7HZ1C2A48If9Ulhz1DoHkc5mkfy8Yp/Oa3Do8vXIPHCO0UTkVdCdz33ecx0R7zZsX6fE7WC/L/oPRcnzc0itG099QHykS30xE2r373wbqx58wHdBcN3A0bu3oiye6eMvspsT0vZDgG5ASiFmouQC4
- jH+3BBMy
- GrqcEsnhPAmD4na6eZiSvWkeZXQ54uVypKcgxqnH/HmJuk1vnJrpcNMHbGb17WVo6tLV6SaWka7x9BHeOU5+TVP8VfaEd68eDJ2SfkEd8ezLc075+Dk/YsC9WZwLrechttK0SdAV1Ym+pDBfikcRqZgnqYnZHF24lpiBELB7sPu9Al+Ai4U2UEXntbaellI0sWA31AsNItAktioQqn05F3xmQhJIl2dXMSGhn34OArmJX3b8AP7+75bxkrVJLKlpvag4uIBl6oJMzgT5Cl4nHcg3eFO0IuSaZwEs+dW+pZITzaoPGs97s2/8Z32SEkHhek3I4E02+PDTtJjQU2r7FaYOwHIn0XRdTOQlJxE5bue9U/pgFThc1aTXNJawFIljhJoP1
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782806247-499883
+X-HE-Meta: U2FsdGVkX18o3p/7rk+oAH2Qunwwf86/B7NDpyfXufHOFwKlzDWxisW0lcKA3o+z1NMnVewKFJyYJ3ZEC1CqpjoDV0MQlZZAcQ8LVVUx2lcbiigZ2tBhhV2j9Z/lUi/SJC9ms8K33z64pI13oV8NXJRshEsVGV60R2p5v9Mfe//iqhfbcGwc+wZqtFWt/KlW7V11AHyyGmWvD8DvryDBuZHzi1GghRl9dhemVmB5mLqJN2NyeWOKy/6S/wYXgtDqwflHrBrSkIxkSNwfQ/wAVfLCPuxHJaDWmHEqsshQPv8cc7fsjCyT0bYzHNfQV/DacwTFB6qWb23q/EkDimcCBeCUL3ccLPKK3zRgRjX6spFtQwvQQyIgmkBN09NoIFstrJvc13PHAsymNTaZqcDzExvwCjw72OgR6O1ArTNuwta6qlwyP8hs5v0qXvvSEOEOHhOaKw8CA/WVSN49rqgJm6fXLW6Y0Ol/S7CN8X9ppZjWr3OozpKqcjY3MGrg3RcLogRfjBoj1SMPNGyEYKGdG71rTJZjLDDr5CPvbVBDxCNYj1Kju3kbZChkjQG9ks/Idj5S4CbO6DKAnOrs3Eab8C4PBWNZpHnUCYkIabVk+zOXD60IgoCLpNz+xcMksgBrgG30/b+nmsPApMVapNVCo1r3PMnrjWhUxfrnyc8S5uFTJ1m0D2fwJJpbX2DMgiXmy7OOm7/f8u1+7BZ3ymG8LEFy75ddPgKq2IOQo4JOQNTtM/rpRPHHWERpQB2r3hGRLxuubIm2x/cg9KWKv33ar//4I3P5m0hvBYTf3aRBghxeZiu5l8U/f82w6MSlM35eBi+d2Qz51b8XcnyIG3CPv6UqTrhsvlLgY/znGt6ZQwcdVyZueWpIv7PdPR6iP6So+g6b8/WGbSh1TZ28yKpJpHEsEI0D+I3dXcMgI6BAhOQaUOhK5iBmTEBR0HcHvFC0I+7XVqcvI3ijnJGr8cL
+ bcuBxJh2
+ UZTw8fwBpcsgZHnWXCjlDLu/vzxeD6L4tUnTlhr7CZ+pw5hSktk/rfmm+9XwIXbu3weBWFm3+onWEmAqPP3zLmsgogAlu4ElR1ZoffMqOv9YXYR+g+MwYSWmF9YWUhHDzE99s3yDomzIXAqISo86KTAzqwcXtPsTdDiCD9zn19mAs4C/V9wP2irPGv5/BHZ05VbchE/CeUm6BSKKi6qqTSBSE48DgrpYWQKQrDRmErkiXHoygQeEgzgg6mF2pG6wZY89FpCucLkwWO+Q15KWBob8QFtsWaHw1bRszY0/gkCBLre6qRPvEiLX3Tj823TVjkOOlZBEopK0SPHrQSPJbKsuPVJxtywEc9Q9boE5pk/kveRYFyAPekkym/or0uO2DJIcJJyRzB9rXoLlB1MUytwcYSCU7M+ZidrEYWhxYguDG9sUhdxWHYnlZ6sCqnSS252CNApcK/Oi2Pwpvs0Ks/HsHWZSPiRC+QHtHxNG4vc+YDzvMuuTc2mPtUgNfah5w/+r6KxWplgq90RFQOFGdWkfGAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,98 +121,214 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-26 17:18 +0200, Amir Goldstein wrote:
-> On Thu, Jun 25, 2026 at 12:36 PM Christian Brauner <brauner@kernel.org> wrote:
-> >
-> > On 2026-06-23 17:34:47+02:00, Amir Goldstein wrote:
-> > > On Tue, Jun 23, 2026 at 4:55 PM Pavel Tikhomirov
-> > > <ptikhomirov@virtuozzo.com> wrote:
-> > >
-> > > > On 6/23/26 15:48, Johannes Weiner wrote:
-> > > >
-> > > > Yes, AFAIU in overlay when we use realfile we should always use it
-> > > > with_ovl_creds(), even though I don't think there is anything cred related
-> > > > in filemap_cachestat(), I still think we should follow the common pattern
-> > > > other overlay helpers use (similar to ovl_fadvise() and ovl_flush()).
-> > > >
-> > > > note: Actually some places get ovl_real_file() and use it without
-> > > > with_ovl_creds(), e.g.: ovl_read_iter, ovl_write_iter, ovl_splice_read,
-> > > > ovl_splice_write. But those look more of an exception than the general
-> > > > rule. All other instances use with_ovl_creds().
-> > >
-> > > Use with_ovl_creds() is a good practice to keep the mental security model,
-> > > but it is useless if the security check (can_do_cachestat) is not in the
-> > > vfs helper (vfs_cachestat), so please move it there.
-> > >
-> > > Also it kind of makes more sense to check (flags != 0) in sys_cachestats
-> > > before checking permissions.
-> > >
-> > > > Also there are simingly no other file_operations which return "realfile"
-> > > > for further processing, mostly the operation from fsops simply replaces
-> > > > general operation with its own logic completely.
-> > > >
-> > > > Thanks for your review!
-> > > >
-> > > > ps: Hope overlay maintainers will correctly if I'm getting this wrong.
-> > >
-> > > I don't think this is wrong per-se, except for can_do_cachestat().
-> > >
-> > > Just be aware that the real file could change from one cachestat
-> > > call to the next (i.e. due to copy up).
-> >
-> > I'm really grump about adding a new file operation just for a
-> > special-sauce system call which is under a CONFIG_* option even. We're
-> > not going to set the precedent of piling on custom file operations for a
-> > single filesystem everytime someone adds a new system call unless
-> > absolutely necessary.
-> 
-> I had a similar reaction.
-> 
-> > This looks like it could just use a new helper in
-> > fs/backing_file.c that the cachestat thing can call to use the correct
-> > file.
-> >
-> 
-> I was considering suggesting this as well.
-> Having f_real_file() complement
-> 
-> but technically, can_do_cachestat() should be checked against
-> the overlayfs file/inode AND also against the real file/inode with
-> ovl_creds.
-> 
-> I'd love to be able to provide a backing_file "template" for
-> operations, but I don't have a good idea how to do that.
-> Do you?
+A coredump typically takes seconds or even longer to complete. If we
+happen to hold a write lock with flock just before triggering the
+coredump, that write lock will not be released during the entire coredump
+process. As a result, other processes attempting to acquire the same write
+lock may experience significant delays. Another typical scenario is that
+some custom management modules for shared memory also need to release the
+reference counts of the related buffers as soon as possible, rather than
+waiting until the coredump is complete.
 
+Add a new bit(9) of coredump_filter to tag whether need to dump fd list.
+We set it by default because tools like systemd-coredump go through the
+fds. Some other coredump pipe programs like minicoredump do not use fds by
+default. If you are sure that your coredump backend does not use the fds,
+you can clear bit 9, which will allow some file resources without VMA
+references to be released earlier.
+
+In fput(), check FP_DUMPCORE task flags to NOT release file by task work,
+otherwise file put operation will NOT execute util coredump finish.
+
+Test Case One - flock
+Test program send signal SIGABRT to the program which owns the flock,
+output the wait time(unit ms) to successfully attach the flock.
+Test program malloc 500MB heap and memset it.
+If NOT set bit9 of coredump_filter, waitms is 11280.
+If set bit9 of coredump_filter, waitms is 0.
+
+Test Case Two - ion buffer
+Test programs include ion buffer publisher and ion buffer subscriber.
+Ion buffer publisher output the ion buffer hold_time if the subscriber
+NOT send ack to publisher and NOT release it. The subscriber will trig
+coredump by itself in some time.
+If NOT set bit9 of subscriber coredump_filter, max hold_time is 19591ms.
+If set bit9 of subscriber coredump_filter, max hold_time is 320ms.
+
+Signed-off-by: Xin Zhao <jackzxcui1989@163.com>
+---
+
+Change in v5:
+- Not add another bootargs for the feature,
+  as suggested by Christian Brauner and Lorenzo Stoakes.
+  Add bit9 of coredump_filter to tag whether need to dump fd list.
+  Set bit9 to 1 as default.
+- Al Viro, Christian Brauner and Lorenzo Stoakes point out so many
+  problems of the code related to umap that was added in v4, delete all of
+  it which is unnecessary. The management of reference counting for shared
+  memory generally does not need to be released through the release
+  operation of files that have VMA references. Traversing all the threads
+  within the process and executing exit_files() is sufficient.
+- Fulfill comments and commit log,
+  as suggested by Pedro Falcato and Lorenzo Stoakes.
+
+Change in v4:
+- Christian pointed out that the coredump process will traverse file
+  descriptors (fd), so certain fds should not be closed by default.
+  Rework the whole feature, add /proc/<pid>/coredump_pre_exit for user
+  pre-exit resources selection, default is NOT pre-exit anything.
+- Mateusz suggested that walking the fd table and release the file-lock is
+  reasonable. No longer release all the fd(s). Based on user config, only
+  the flock fd(s) and the fd(s) correspondent to file-backed shared memory
+  will be released at most.
+- Link to v4: https://lore.kernel.org/all/20260624145552.70143-1-jackzxcui1989@163.com/
+
+Change in v3:
+- Add comment and commit-log to explain why do the MMF_DUMP_MAPPED_SHARED
+  mm_flags_test() check, note that memory mapped files keep their own
+  separate references to the files. The case to work around is that early
+  unlocking a flock on a file allows other processes to lock and modify
+  the mapped data protected by the flock,
+  as suggested by Pedro Falcato.
+- Link to v3: https://lore.kernel.org/all/20260619122419.3954581-1-jackzxcui1989@163.com/
+
+Change in v2:
+- Get rid of the implement of adding new fcntl API, the issue does not
+  worth inflicting the cost on everyone,
+  as suggested by Al Viro.
+- Call exit_files() in coredump_wait(),
+  as suggested by Eric W. Biederman.
+  Add MMF_DUMP_MAPPED_SHARED mm_flags_test() check to filter cases that
+  need to dump file-backed shared memory.
+- Link to v2: https://lore.kernel.org/lkml/20260618150301.3226517-1-jackzxcui1989@163.com/
+
+v1:
+- Link to v1: https://lore.kernel.org/all/20260618030700.2511668-1-jackzxcui1989@163.com/
+---
+ Documentation/filesystems/proc.rst | 14 ++++++++++++--
+ fs/coredump.c                      | 21 +++++++++++++++++++++
+ fs/file_table.c                    |  7 ++++++-
+ include/linux/mm_types.h           |  6 ++++--
+ 4 files changed, 43 insertions(+), 5 deletions(-)
+
+diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+index db6167bef..d590a1dda 100644
+--- a/Documentation/filesystems/proc.rst
++++ b/Documentation/filesystems/proc.rst
+@@ -1939,6 +1939,7 @@ The following 9 memory types are supported:
+   - (bit 6) hugetlb shared memory
+   - (bit 7) DAX private memory
+   - (bit 8) DAX shared memory
++  - (bit 9) fd list
+ 
+   Note that MMIO pages such as frame buffer are never dumped and vDSO pages
+   are always dumped regardless of the bitmask status.
+@@ -1946,13 +1947,22 @@ The following 9 memory types are supported:
+   Note that bits 0-4 don't affect hugetlb or DAX memory. hugetlb memory is
+   only affected by bit 5-6, and DAX is only affected by bits 7-8.
+ 
++  Note that bit 9 is set by default because tools like systemd-coredump go
++  through the fds. If you do not set bit 9, files that are not referenced by
++  any VMA are released before dumping core. Some file release logic, such as
++  exiting flock or releasing references to shared buffers is executed much
++  earlier.
++
++The default value of coredump_filter is 0x233; this means all anonymous memory
++segments, ELF header pages, hugetlb private memory and fd list are dumped.
++
+ The default value of coredump_filter is 0x33; this means all anonymous memory
+ segments, ELF header pages and hugetlb private memory are dumped.
+ 
+ If you don't want to dump all shared memory segments attached to pid 1234,
+-write 0x31 to the process's proc file::
++write 0x231 to the process's proc file::
+ 
+-  $ echo 0x31 > /proc/1234/coredump_filter
++  $ echo 0x231 > /proc/1234/coredump_filter
+ 
+ When a new process is created, the process inherits the bitmask status from its
+ parent. It is useful to set up coredump_filter before the program runs.
+diff --git a/fs/coredump.c b/fs/coredump.c
+index bb6fdb1f4..ed4d30916 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -521,6 +521,25 @@ static int zap_threads(struct task_struct *tsk,
+ 	return nr;
+ }
+ 
++/*
++ * If do not dump fd list, files that are not referenced by any VMA
++ * can be released before dumping core. Therefore, some file release
++ * logic, such as exiting flock or releasing references to shared
++ * buffers is executed much earlier. Note that do_coredump() often
++ * takes several seconds or even longer to execute.
++ */
++static void coredump_pre_exit(void)
++{
++	struct task_struct *tsk = current, *t;
++
++	if (mm_flags_test(MMF_DUMP_FD_LIST, tsk->mm))
++		return;
++
++	for_each_thread(tsk, t) {
++		exit_files(t);
++	}
++}
++
+ static int coredump_wait(int exit_code, struct core_state *core_state)
+ {
+ 	struct task_struct *tsk = current;
+@@ -1124,6 +1143,8 @@ static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
+ 	if (cn->mask & COREDUMP_REJECT)
+ 		return;
+ 
++	coredump_pre_exit();
++
+ 	/* get us an unshared descriptor table; almost always a no-op */
+ 	/* The cell spufs coredump code reads the file descriptor tables */
+ 	if (unshare_files())
 diff --git a/fs/file_table.c b/fs/file_table.c
-index c68b8c0a4097..d93059d53e88 100644
+index 16e52e7fc..399db62f6 100644
 --- a/fs/file_table.c
 +++ b/fs/file_table.c
-@@ -57,6 +57,8 @@ struct backing_file {
- #ifdef CONFIG_SECURITY
-        void *security;
- #endif
-+       unsigned int flags;
-+       struct cred *backing_cred;
- };
-
- diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-index 27cc07738f33..64e07ebc43b0 100644
---- a/fs/overlayfs/file.c
-+++ b/fs/overlayfs/file.c
-@@ -50,6 +50,12 @@ static struct file *ovl_open_realfile(const struct file *file,
-
-                        realfile = backing_file_open(file,
-                                                     flags, realpath, current_cred());
-+
-+                       // Raises ->flags |= BACKING_FILE_CREDS and sets ->creds to ->backing_cred.
-+                       backing_file_set_creds(file, ovl_creds(file_inode(file)->i_sb));
-+                       // Now add a helper that performs permission checks on
-+                       // both creds for that cachestat() thing and returns
-+                       // the actual file to operate on.
-                }
-        }
-
-something like that?
+@@ -566,7 +566,12 @@ static void __fput_deferred(struct file *file)
+ 		return;
+ 	}
+ 
+-	if (likely(!in_interrupt() && !(task->flags & PF_KTHREAD))) {
++	/*
++	 * coredump_pre_exit() may release files before dumping core.
++	 * Cannot use task_work in the case, needs to release files
++	 * earlier."
++	 */
++	if (likely(!in_interrupt() && !(task->flags & PF_KTHREAD | PF_DUMPCORE))) {
+ 		init_task_work(&file->f_task_work, ____fput);
+ 		if (!task_work_add(task, &file->f_task_work, TWA_RESUME))
+ 			return;
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index c7db35be6..e865edb04 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1954,14 +1954,16 @@ enum {
+ #define MMF_DUMP_HUGETLB_SHARED  8
+ #define MMF_DUMP_DAX_PRIVATE	9
+ #define MMF_DUMP_DAX_SHARED	10
++#define MMF_DUMP_FD_LIST	11
+ 
+ #define MMF_DUMP_FILTER_SHIFT	MMF_DUMPABLE_BITS
+-#define MMF_DUMP_FILTER_BITS	9
++#define MMF_DUMP_FILTER_BITS	10
+ #define MMF_DUMP_FILTER_MASK \
+ 	((BIT(MMF_DUMP_FILTER_BITS) - 1) << MMF_DUMP_FILTER_SHIFT)
+ #define MMF_DUMP_FILTER_DEFAULT \
+ 	(BIT(MMF_DUMP_ANON_PRIVATE) | BIT(MMF_DUMP_ANON_SHARED) | \
+-	 BIT(MMF_DUMP_HUGETLB_PRIVATE) | MMF_DUMP_MASK_DEFAULT_ELF)
++	 (1 << MMF_DUMP_HUGETLB_PRIVATE) | MMF_DUMP_MASK_DEFAULT_ELF |\
++	 (1 << MMF_DUMP_FD_LIST))
+ 
+ #ifdef CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS
+ # define MMF_DUMP_MASK_DEFAULT_ELF	BIT(MMF_DUMP_ELF_HEADERS)
+-- 
+2.34.1
 
 
