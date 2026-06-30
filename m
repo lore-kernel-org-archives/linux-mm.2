@@ -4,141 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7764EC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 08:09:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52A14C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 08:10:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CFD06B00B3; Tue, 30 Jun 2026 04:09:19 -0400 (EDT)
+	id 3C5296B00EC; Tue, 30 Jun 2026 04:10:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 680696B00B4; Tue, 30 Jun 2026 04:09:19 -0400 (EDT)
+	id 375966B00ED; Tue, 30 Jun 2026 04:10:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 595D86B00B5; Tue, 30 Jun 2026 04:09:19 -0400 (EDT)
+	id 265816B00EE; Tue, 30 Jun 2026 04:10:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 167F06B00B3
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:09:19 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8F6E58D595
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:09:18 +0000 (UTC)
-X-FDA: 84935853996.24.300D8F8
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9402120009
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:09:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=asu.edu header.s=google header.b=e9Nwa2Gy;
-	spf=pass (imf03.hostedemail.com: domain of xmei5@asu.edu designates 209.85.210.171 as permitted sender) smtp.mailfrom=xmei5@asu.edu;
-	dmarc=pass (policy=none) header.from=asu.edu;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782806956;
-	b=oBC8r9YfY76sdVj9l6pjCcPD3LIcrzLIcA8kuo81KxGnmUOQWlkFl3sZjAXdQPHT96705V
-	UFvZZa0TmuJZ1tCFwZLr1QjXQP8nI0sl7SJtMC79H++GmBV3j1nkfaZHXn/BMQ1v7DPiVv
-	6jNNTy2QFTbkHYLEOZuvT/0AxH1aMXY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782806956;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EBF8B6B00EC
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:10:12 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 720C9A0413
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:10:12 +0000 (UTC)
+X-FDA: 84935856264.22.4D9CBE9
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf07.hostedemail.com (Postfix) with ESMTP id AE77A40002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:10:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="M3UVh/O0";
+	spf=pass (imf07.hostedemail.com: domain of jackzxcui1989@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782807010;
+	b=XRPClAkIjvssIBEZPdWMbWP2ZNhmjN0+9zyrSlJEMSe7HvaczXuSAbYiI7ifNWPTyCS6j2
+	eEXtssO5xsLTU+xkz40p11O3toXGodigkpL6vBEwPP87J8tURxhLx1WqKYVFPddc7t1PPv
+	EM3m1pWGT09JFBbWrjkIZglKr8pWQEs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782807010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QMfxs/lV3gs7hZOuAvr99QHZT5L0EyUo7IHm9UkfFF4=;
-	b=oKJGPV7WlSmzSve4JXdFmuD+OZzyQn8DYtQe8kvBpdkITxnYPFBH2697IyxoZT2GEtTTvp
-	CvZnGyBUwXf2y/N6qa2uT7dREZbKXZGWZ+eyywA5csHDQiI0nal36Ri0pI4IHspXQAyPeN
-	p7B0AYedCbzWULH/zbCRjHNbNp5/kUw=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=asu.edu header.s=google header.b=e9Nwa2Gy;
-	spf=pass (imf03.hostedemail.com: domain of xmei5@asu.edu designates 209.85.210.171 as permitted sender) smtp.mailfrom=xmei5@asu.edu;
-	dmarc=pass (policy=none) header.from=asu.edu;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8478a25f268so1100228b3a.2
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:09:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782806955; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Zyt+hMV31mtBFJgtSRYj+ucZcryExncXX8sb1RzwOxqhqKJhwar3d+LkRjFKPFDjA0
-         cmR3QwdFlfxTmu3u1J4/nCRBXiZYG2diyJ/gs96EBm1pYRDxEhdkm97REGRidOiIFJ2d
-         fPkjJ4b79IByVDiTL2e9jKeZA9/dfnhIkHhy/DdiNYmKpmofKXy5a104DKL4uLjdE2nK
-         1SgYjRLmfOjS8b/lv3uDICckFGNg8r2woSq3queaukoREY9X06TRqWVaDzbSKxgg+Y9W
-         WjmYlBGmKA+NKqwrxj+1cpBFyydTJ7qdDfPBL1pHLQDp+FV7e/BF76fzi3BXMyNKs07e
-         sn7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QMfxs/lV3gs7hZOuAvr99QHZT5L0EyUo7IHm9UkfFF4=;
-        fh=qW2nQPNc78710P+q9kXB85pcl7QbgvvTKba6D/BXFnI=;
-        b=IJg40A2PNFoawNCJzHsxzfMnOawb7qohCoBzVU4zhzDJXBxQr4+U9V+lNnYZiseNaV
-         /5d+RWxuazoKSi2SeDvEAOmtPxDd5U+SUSsHzAD2NFrsH928dF5P3XkGGCcxJREHMdpi
-         1rN7e2OSWwYqmlNOCzvtDYyKXOocDBWlg9mqTsfNFRs4C4CrheVLwAUhPBkOCCvW5L7e
-         bBXJJ11ocw1ZSfjm17CA0azA6XxGYTpXGbHUv5AuUf3UA3qoTNKS4OBel21se0VWpRS8
-         1/YxkYTB3B3qWtOMOnexUyHoX14qv5ueuOhK+qhfZmou6WJmxyxBU+pKqxRwtNWVQOyD
-         DTjA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1782806955; x=1783411755; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QMfxs/lV3gs7hZOuAvr99QHZT5L0EyUo7IHm9UkfFF4=;
-        b=e9Nwa2GyZf3GEGH8BFEcmS7OLwZkul5HAjIcgajz/ZhCyAxh/WnxjangRjHnPn3biG
-         cCnmMlgOOunAEl+ItOJusgsWyvSrqZVDMMAFsFfrHdPZk+1w3j4VaXM9Z8u2pitwxJ7M
-         s/2ceq+AWltUVWlvy2x9QSRpJqicTim++Xipbahpst0qSarWmT4uN4Yg5hOh9OjM42zB
-         ajoAql9WcwemEvUzWluovwurCCoHdhrPvvk0Lp4gupLS0K1Na9AO7hzNUIfasbaP7M9t
-         YNzxCQ2Nz+UKLLCAJVKabCYQMMFMkOfsjdi2PgSORV0SpszDgrVwL69+tysW6wqiBw4P
-         tnIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782806955; x=1783411755;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QMfxs/lV3gs7hZOuAvr99QHZT5L0EyUo7IHm9UkfFF4=;
-        b=aAdPYYZzEfTOa60gJw7ZgVWQDy60ic9zd4h5XnhmshThetwViZhv0RRfmhZlCgrn+M
-         JqLq1cTt9m9cfNLhGbRiYXx/QKiK3u+kNI0UBF7p7sAjZ+vPH/A1Xsci/U4F9YxN0oKu
-         I++v55LxP7pr3LO5XKm7i6kmx5c0ar0c3sJ23DUp5DhdOhkx4ni7yHV6FiVXvIXKdaK+
-         RwMzZrwoO7OkgxQjXGCEvSlGdTSW0aT9uBoCEJdVJNGWff2GtXWSATII23Q75qfEDJk1
-         plt780B6fNpH2UwF+r4TzgQfHS6wu94scHs/1jKxE7QhaPE4KDoG9eJ7rkPVM+upr3fj
-         cIug==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2rIzb8DL0BS9KJhAFMnz4VlJsvdS8qGYX0qCL1g49Yyj0cipHUywfP49w8TQ7IqYXeT1V7aGkFA==@kvack.org
-X-Gm-Message-State: AOJu0YwlEL3q556i3yy0pyWK57ombbi1wDeFPgNKRHKkqRqDJEYkR5nQ
-	waCKFjxd2nuDC/My9e3AuUjavdnFCN1XHAXIkPaBM3la9zx21iMrOkbuB60/gjXYCqJ/5OrOsy6
-	Nt+p5CTao7KXRUaeXljd391a+hLDJvVLNpCQjuxRv
-X-Gm-Gg: AfdE7cl4+/qt+PJOlZTNi4Vn9WIkdFFbs8Qe9iYznHeG+MozNGRxQ6QkQ+zVBaI2iY4
-	ORVxl37TZSYgmWMnudGOt6uLIoKI3w9EXlIQXWH5TbzeReAntCRc5fZ7Zim4IrrmIlWfCF9TXvK
-	J07xQ9qlgJp1xD2a4R2gdU+RVZzdMF0nCsUFWjo6vyFpg3LgbCAMANGaGdgEoWxG7brtr/4fdh/
-	a4IZYKFowIiz/sfNQVcHk8f4A0BQlkKfh/hViN8/23BrXA6xLpq78FxOByFKYLcAu6ttuXfRpcY
-	Ts1Pr/P0RYt5ruCE0FBonDiYvLPdSQ==
-X-Received: by 2002:a05:6a00:bd0b:b0:845:e8b5:8c49 with SMTP id
- d2e1a72fcca58-8479ee9a9a9mr2040137b3a.10.1782806955524; Tue, 30 Jun 2026
- 01:09:15 -0700 (PDT)
+	bh=yMFvOab7JfjhFzPXVN7GoFjgSZR2kyk1cDhk7lmS3lE=;
+	b=L1tA7+rzb/UlpTYmsz/IHKsLA77OJC1g46pvxRgdPPi1Bt2UE6aVW2snS/aPARwzO6bURK
+	R9ftze/1kLbVKz3pVxAknT/YtutfTeoXSWUtZ+IT2oMWgOp/6K3QyBvjygK31mwZ2p4GyV
+	+f7GDPGEK+DJFZSWL42AO9zLoiIpXBU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="M3UVh/O0";
+	spf=pass (imf07.hostedemail.com: domain of jackzxcui1989@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=yM
+	FvOab7JfjhFzPXVN7GoFjgSZR2kyk1cDhk7lmS3lE=; b=M3UVh/O0Jvp01mB0fW
+	/lfDkszRjzteGlggE8Qi2E0kvUA1xbwb6dQaxNRDuykytA+uI37uu+wjD6maB1dB
+	CVkY+mE/6fA0vJ1svCH7D2bcdKOziVea3Aa6eNm3gTk6T0OWGMpo9xAEWoCHluhk
+	8ohzJ9Jl3kwWqWXb7caUIGZqY=
+Received: from zhaoxin-MS-7E12.. (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDX3su8eUNqwWWIGg--.46550S2;
+	Tue, 30 Jun 2026 16:09:33 +0800 (CST)
+From: Xin Zhao <jackzxcui1989@163.com>
+To: brauner@kernel.org
+Cc: alex.aring@gmail.com,
+	allen.lkml@gmail.com,
+	arnd@arndb.de,
+	chuck.lever@oracle.com,
+	david@kernel.org,
+	ebiederm@xmission.com,
+	j.granados@samsung.com,
+	jack@suse.cz,
+	jackzxcui1989@163.com,
+	jlayton@kernel.org,
+	keescook@chromium.org,
+	linux-arch@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mcgrof@kernel.org,
+	mjguzik@gmail.com,
+	pfalcato@suse.de,
+	rppt@kernel.org,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH v4] coredump: Add /proc/<pid>/coredump_pre_exit for pre-exit before dumping
+Date: Tue, 30 Jun 2026 16:09:32 +0800
+Message-Id: <20260630080932.60881-1-jackzxcui1989@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
+References: <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
 MIME-Version: 1.0
-References: <20260626173444.2252041-1-xmei5@asu.edu> <yu6l7zo4dmqcnho7thkf7sk42lt6xkz6uxxwxmg73x23vihlnp@pe7vdut4o2jc>
- <CAPpSM+Qwmv_wsNFnEjtk3GbLdZB_JtH5vW0v-Cj-CyiE8M_UEw@mail.gmail.com> <20260630071257.GQ1181229@noisy.programming.kicks-ass.net>
-In-Reply-To: <20260630071257.GQ1181229@noisy.programming.kicks-ass.net>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Tue, 30 Jun 2026 01:09:04 -0700
-X-Gm-Features: AVVi8CdBvYa65GaG_aiHMGG_wGQ7SXzFa_rmBeFZe4-w9ahKm8Oy_NU9CMHCKu0
-Message-ID: <CAPpSM+Q3nZTULXxRM8_6QzfF0BBDLEWOcLF16cciuFzS1aodCQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/vmalloc: widen guard region to defeat ENTER-based
- stack pivot
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	linux-hardening@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Jennifer Miller <jmill@asu.edu>, Tiffany Bao <tbao@asu.edu>, 
-	Ruoyu Wang <fishw@asu.edu>, Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>, 
-	Yan Shoshitaishvili <yans@asu.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDX3su8eUNqwWWIGg--.46550S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tF4DWF4DKF1xAry7uw4rZrb_yoW8XFyfpF
+	W5Ka93Ar4kGr17J3Z2ya1rXF1Fk3y5JF47XrW5W3y7u3Wkur1Svr48Kryag3ykCr1Ig3Wj
+	qrnFv34Uu3sIqFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pR489tUUUUU=
+X-Originating-IP: [124.77.128.91]
+X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/xtbCvx34A2pDeb2JZQAA3Y
 X-Rspam-User: 
-X-Stat-Signature: mok5cok7ukhb5xaj994qabqgywzhq8qr
-X-Rspamd-Queue-Id: 9402120009
+X-Stat-Signature: 8wyfx1uke1y3cn5xdn8biezzjuunmfhj
+X-Rspamd-Queue-Id: AE77A40002
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782806956-521148
-X-HE-Meta: U2FsdGVkX1/F7wTVGtBUJbmisagTmZUvveMqzIjwlH2ZcmNCHO/4Dnf/vAdylvhA0As9TVnWcFKUo3bjYCdpSTH4dBvr+jizcV/3mWLOMOJOL36/bQr++RPATxBHSxE4f3zLWmk1QRoJYx+ulN3CI9rJXD5Y7ebAeOHEobm8u3nZa8HQvQhb8Ebo3dDFy14XYKcX/iWvUKi9iSmh72JWY0E1dsV/iUGwur1ObOq8vQ66wovyYkc8UEZXyZi8lHXbO7wtKvcAcFwBmTjjTCSLASv6SLS2YsCq6d4tFZFW8euEmG3OnYhKu+hxLPsYRdcAb/kwZyHFDJntLKFvWpILI+Xb50IZUxBVm008dENUoNl8KdJVUw5d1tK5qHOa3vopykZcwkL9mX7ZF3t/jWhw2bArGJB64g43QgKCyupSKxteXdu2BfmKJW1U75mbpS1/XSga2YKaJI785604pBuERKS4EiVH4pqqyD/H/dRtPcuA/zMyIWcqC1S1WuHrRWz6vCWazwasz1tmSJFRUp/YnVjeMjsckS36oWW25If8beWGIG+DGI9rZPNA/elKfuqsCIbz+kaStHtKNDPTWklV9sMNrak9susQs+r4mqj+f0z1m+QgxpHrDeNiDfBH96P++gLNzvM15iM7il2twMsEIpNY73CqojK9rdDO4NPzJya8ZOhFpe2McC4tNX/IqXMEVKddJugo9R/tulwfZ4qK9Mh7WTtIqPzYXziOZE8ELU6J63OcRCN0X4eT0DyhjtYdNrAAd5adBvXKraRWRHpsizpJ8WifMF81hNkJ5NfHcMLnKh/7HiOzvDNdYBvpBdWHoaMvc+fvyeOU9oVKQ2cIw5ruzKCziP5VlGogbZOG82GuUQ6/G3N6sMPKqgJl9ac4/KlVwLfW6pM7t8oQKX80EEtoq/CKuRjebv0IPdQxgEUTitDdJPzoFH52U4jDTEsV3FNVz4+4hNY5uPKpGPS
- jHsgIb2q
- TrDXZ+rFJvSWVfr0KXNWX5SUHGLKRlafGa2Oxj9oPqWUBHhuKr46MrYaeKujZEn/99nE7xBbJ+NWIG3u951Vm8llBh1YgyCtKBtCjQUJxvdCE4MFMy++JnPJYzoNRSFpDdVuy160HmBgn+JP+skT1FZ0Ia4yWpXEgPuLR8KyPBewNesEmy5heXKF3UXV+Fz7H16wDz3ryefzyLTfGVG1zdR8llrdYPLp/EHfoAF9f2jiAfKHATDGlsUmrMd9KTvMybbKn7YKkB/1J62GgBRs5azra2eMIf10MKyUIj6rAfNqzSYBjoYtMkOxjiA==
+X-HE-Tag: 1782807008-55713
+X-HE-Meta: U2FsdGVkX1+zb8xf/bSGKM7WrMgXaum+RnyjXHC52tdPDdUQStx1K5pzamv1e/GrBDtyO1wmKfYPSy5Zegau43S8mDmyZKeCuqX76eIJQtw72VUQAD3WUDGMR0q4YBvELp8v9r/gymfF55DeXfKV0q4RDpXis3QYRnI0YPna36xYEuTa62J9FcbTUXtZnYerq8aFyWiZAsfYBaW+W7HSCJoagi4Np9KXh6qGAkNODv4maRo/OgQf640+gRnxSzbie3+LOgjSWbZu3nWBLo3t8ah87VsOaCHjxJxdhj7TeEJ+wOjd0jvpzyUg4Sekek5HMA40kVUgv4ywi7Uu1nWZKGg4LQ6SQG/mdhoiWq/qEP9m5en1N98scRK9xrKne3faWKyI/efVnRQPNdGEd2ESNaXUKKYuQznhD5XGK9AD+l00lfIcLjYK22SmpG4AXlhed48ecRQVQuZV4cmD+wTTGPGgnWqwdNN9beP8oqtP6D8Ilf77qmTKpMRERqoi2PAzdvNUMafjFSADCD67f+SaichTzBj7UYEy5F8fWIZp7GPya8DYjS9YBZxqbzo0ecQ874ef94IWFICsi8OFe0nao3tltrDHjoctSMPSv6/5nydGehZTC6bZnrWiPXNOaAkV7F5aS1IZggrNxl2N5/zK4oqe+xZ4m5kfpDLeugnTgwcVBgEibuMd8wHABNMGDWWC3sIxZQ1ExF63CPNFMvDWTcAdKD7zl9+/Edz+O8uXHP5WBggLrXrCcAS9pO9TBukvgg1grguob2k9U9sws4NyR7hAnTXdZF9LvfdTTIM0Qw9WUXoyoNS8UpPnA7g0AzdPgCO8ZeX8FYvkc1U4UlbhWjAdLY9coRqKe26Diig7BDB7OmFcu4cGZ/Ci7mi2EOPEca2R+TWZQp99R1BN0SJGZWQQTfqGlrNmlZnqyBYrdeQCUP71Y1t434EWOG0KByU2KEt26D3t1DIjlCZ6zLN
+ uTZyAQqP
+ drXu9vlEm48IG23Vt2kbfL9KuiobWb5W8iDdY2SwEFTgvmptPKiNZ7/tO9MCa9MmEwyQvmb0zR0Aj6UfG5tOvFOIkBnASPjGU9l4SkXfFATmzLORIQJdGyfDoF/iYq4YLJStBIic8lpu9xSQCY23uTVxR3UTDl3zh5Q/S6whPHtNy8y8VwGpIld4MmPGwRHTgpFT1VAZDIvOxLaaQUQLPwdyXVXznP9nuPt3QVQsNE6Fq+vTE57t0GOWXM0cetdGI8c6Z0GV6y58PsF56wce7lKOOOcpCq1IxKXVPEr7gb8wRCks6f0URbhTr0y9YACf9a6m6nEwIeFiLnjMdoUzqeO5RifbJjvis8e+cQ8vUVZbASrj1cKALB0+5Ci/kzYIoQYPpCjAJmguzV94iTuE7NR8izew3wCpGsooz0gWfa2jceasmtP7QFeLL1gDtFnL3odzjtFCE+zxqTHu/iJ/HwxTQ7DQKWzl53enXKgE+mGEh5j4Xo4Xbse59mVFJgnYdMvQP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,46 +110,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 12:13=E2=80=AFAM Peter Zijlstra <peterz@infradead.o=
-rg> wrote:
->
-> On Fri, Jun 26, 2026 at 10:48:46AM -0700, Xiang Mei wrote:
->
-> > >   - The displacement is attacker-chosen (via the immediates) up to 0x=
-100ff,
-> > >     so the pivot can clear any guard narrower than that in one step.
-> > >   - ENTER is reachable as a gadget, so a pivot of this size is availa=
-ble
-> > >     without depending on register state at the hijack site.
-> > >   - The pivot happens after the control transfer, so it is not constr=
-ained
-> > >     by forward-edge CFI (kCFI / FineIBT).
->
-> > Please ignore this line; it is not related since we assume we already
-> > have a CFH primitive. Sorry for the confusion.
->
-> So I am still confused by all this. CFI does remove a ton of CFH
-> primitives. Until we have Shadow Stacks sorted, ROP will obviously be
-> the main alternative, but I'm really struggling to justify adding 16
-> guard pages rather than going after any actual control flow hijacking
-> primitives.
+Dear Christian,
 
-Sorry for my wrong information. This is not related to CFI. I'll remove it.
+On Thu, 25 Jun 2026 09:28:08 +0200 Christian Brauner <brauner@kernel.org> wrote:
 
-We assume we have a CFHP (control flow hijacking primitive), and ENTER
-gadgets escalate the CFHP to ROP execution.
+> Nah, we're not doing a separate file for this. That makes no sense
+> whatsoever. I've already explained this in the first mail. There are
+> effectively three modes:
+> 
+> (1) dump to a file
+> (2) spawn super-privileged usermode helper process connect coredumping
+>     process and said helper via pipe
+> (3) coredumping process connects to AF_UNIX socket
+> 
+> Parameterize (1) and (2) via a command line arguments. I strongly
+> suspect you're using some AI tooling so it should be able to figure out
+> how this was done in the past.
+> 
+> (3) can be extended by just introducing a new flag value for struct
+>     coredump_req. That is also illustrated by previous work.
+> 
+> We're not spreading procfs files. It's terrible api design especially
+> for security sensitive changes.
 
->
-> I mean, if you have a reliable CFH, we should be fixing that. But
-> somehow I'm thinking that if you do have one, ENTER isn't going to be
-> the worst of it.
->
-> Or am I missing something here?
 
-You are totally correct. ENTER only works when we have CFH. It works
-as a stable one-gadget primitive escalation (from CFH to Arbitrary
-Code Execution), and we propose this patch as a hardening feature.
-Sorry for the misunderstanding because of my mistake.
+I am unsure whether the addition of a bit 9 for coredump_filter in version
+v5 will be acceptable to everyone, as there are still many projects using
+the coredump file and coredump pipe mechanisms. I found that coredump
+files are used in elf_coredump_extra_notes_write, which makes it difficult
+to distinguish between these two types and determine whether early release
+of the files is possible without setting parameters. I am reluctant to add
+another bit for this purpose, but it seems necessary. I am not sure if my
+understanding is correct or if you have better suggestions, as I really do
+not want to address only the coredump socket situation.
 
-Xiang
+Thanks
+Xin Zhao
+
 
