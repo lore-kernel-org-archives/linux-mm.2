@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89273C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 00:16:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30EBAC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 00:19:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34DEE6B00B8; Mon, 29 Jun 2026 20:16:02 -0400 (EDT)
+	id 26B556B00B3; Mon, 29 Jun 2026 20:19:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FF996B00B9; Mon, 29 Jun 2026 20:16:02 -0400 (EDT)
+	id 242DF6B00B6; Mon, 29 Jun 2026 20:19:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EE5B6B00BA; Mon, 29 Jun 2026 20:16:02 -0400 (EDT)
+	id 1838D6B00B7; Mon, 29 Jun 2026 20:19:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D0E6B6B00B8
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 20:16:01 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D51E71402E9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 00:15:59 +0000 (UTC)
-X-FDA: 84934661238.11.3D7D4F1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 53E511C0003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 00:15:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ym0n7Pya;
-	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id E887E6B00B3
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 20:19:13 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7DBD61C67F4
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 00:19:13 +0000 (UTC)
+X-FDA: 84934669386.19.F8727E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 39450100006
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 00:19:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nv9rkHwL;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782778558;
-	b=s4SnwhoNXHGvZyKVoIczIfXChmyQdysUZCGl3Gk3kYavQpgdbzy4nPsi8sko2WYQ25xzhs
-	k2Qtum/pEdGJbO38cVSvZ/GpmdSxfLn0nda5pOo8/BcWDXEsoYxx3jDAuxelL5JBE7FcS+
-	WM1KOfVf+21OBLRFvmFGzow2zeAt+wM=
+	t=1782778751;
+	b=FSCDZKeLH2DMUAqz0BL0cO94lkkLZcaZKRAsy0kLOm00Xuriflv7ASY5Tou6Pxc9S9QWtA
+	L4BtGYiIiSg5KHEjmsL73/6Mj8dbE4FFGo5c6PXTrDnjgMI3ts58kaYa7qpLD9yQug4NML
+	fTQ+CEArm0Us7Bs2Zkw6dpScnFnH1iU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782778558;
+	s=arc-20220608; t=1782778751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nit+uzLYWcVxRwAjtLptONbY2sqNp7YD9OQCLbyeu3I=;
-	b=7jcjtVT9zsT2oqRJ6XQQYSYAyHjwXMRsnuNgDkJ6N2uyhrZxk5NmHI5GCcxQ1XjioTxpN8
-	pz9Pmy5GF/7/HDloPnyJdTJR9M18VRPYAQ9lZ6wGIbXP0zeRa6gDe2rZrtjDyZa2CfcDqC
-	046Y/k40gzQASmDhvI0qne6RT2UN7lg=
+	bh=D8J7zyOljJxIqZB5f7uwdIkFI5+z/zXnpkVRuCp1TkU=;
+	b=q8mEIV5ljMme/s4hQ/lYQuNKX5v7MzqBifeM0dLX+fkPrivN+te2zMFslYtNOiLsP9QMBv
+	aciVJeM64LTFH2bJVrgfjvD+gjX5b9GKndHOXZNxI+VVL2wQfsTfWNkTLhXciBBOH5XDNJ
+	G2IL1Gagqmji0jT1Mu9NDrqTLnTyc+I=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ym0n7Pya;
-	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=nv9rkHwL;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DBF96600C3;
-	Tue, 30 Jun 2026 00:15:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120C21F000E9;
-	Tue, 30 Jun 2026 00:15:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782778557;
-	bh=Nit+uzLYWcVxRwAjtLptONbY2sqNp7YD9OQCLbyeu3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ym0n7Pya/hmGoFn+s2yhXdiWd+CDg0SoF3vlWaxBZSZskDXBd4h90B+/e5hUuAhpA
-	 4qBMRuFEC507FHg+64KRw5Sgar6T0BdO0SkQCFC0bm7k4V8y76jVdReXYRNLCiXG75
-	 qk/i3I1rIgiyM+GvBfBp0ZyJ8MuN/iJ0hiuIbsAm3z4mApNY8byS7HfTbGYcd8nA2L
-	 MzV0m8rl0Zq/R2JIZbPIkqYFjWk8gvBne/uPcrN31dJ7SZ1WxND0Ypc39YoG+lyRRx
-	 2CWjSXP/XE3MhuPi8x5eCPU13OnYNxAszYPztscIDNYPK3i2zHGFlMOWTs+Ir81CeQ
-	 0jAzW1Ae4rUpA==
-Date: Tue, 30 Jun 2026 00:15:55 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Hao Jia <jiahao1@lixiang.com>
-Subject: Re: [PATCH v5 4/6] mm/zswap: Implement proactive writeback
-Message-ID: <akMJ8UfeZXrVe5LN@google.com>
-References: <20260629112032.20423-1-jiahao.kernel@gmail.com>
- <20260629112032.20423-5-jiahao.kernel@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629112032.20423-5-jiahao.kernel@gmail.com>
+	by sea.source.kernel.org (Postfix) with ESMTP id 1926B40967;
+	Tue, 30 Jun 2026 00:19:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A15A1F000E9;
+	Tue, 30 Jun 2026 00:19:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1782778750;
+	bh=D8J7zyOljJxIqZB5f7uwdIkFI5+z/zXnpkVRuCp1TkU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=nv9rkHwLKumPriu4HCUOBpBwWTkj8j7Oi0Qpx09LjAX42ImcenX3nSswjKvLS9ewS
+	 Rr48m2UzsJKtSW0rKOoiW5ZPJFNxG+cUZgxFtrpIpG6tve4XaoJXIEmck9twg191WB
+	 z7b68thqB94mCvK4qCcrTf33doOMfHBBD42c7rCI=
+Date: Mon, 29 Jun 2026 17:19:09 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>,
+ oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>, Linux
+ Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org,
+ Dev Jain <dev.jain@arm.com>, Wen Jiang <jiangwen6@xiaomi.com>, Guo Ren
+ <guoren@kernel.org>, linux-csky@vger.kernel.org
+Subject: Re: [akpm-mm:mm-new 59/142] mm/vmalloc.c:3590:23: warning: unused
+ variable 'start'
+Message-Id: <20260629171909.1d6e96dd15a80b8f463bb68a@linux-foundation.org>
+In-Reply-To: <202606291606.9h8aGniQ-lkp@intel.com>
+References: <202606291606.9h8aGniQ-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5kersdf7mp3boqsof4znq16du19wtguu
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 53E511C0003
-X-Stat-Signature: onnoheg6rqfnr44d43s6h8113ghdt7zr
-X-HE-Tag: 1782778558-942772
-X-HE-Meta: U2FsdGVkX1/Q6HAd75TrT7v2M3QCCxXAVPYIWq00QqeFq2PlSa575M86Plj6APRtw3qtBHC+pmxm2svrrdCOLXdnJWZbSTGeaADTSDAmSCluURvXSIQMc5WN350p98WOtDoFghJDw+INX04HeEIhJNGS2hVGl6Ed4CqFce3M7/23bcROsofGCXIdsJbFJesaKyVYMDW+X4ObY5GixGbhQDVF/GTz3/8uElMsSOSnrgP5OrZA59j5s66YE7cnHaCgCzpHCLL95oPZ5EVP8d6YTE/AMe7pR5dOoIbLs6jL3vgQmh3mWJWyhB5sQLQjMPUdOPXxhP6BxFkj9jHv9OzEeKgycFUhETnQpxAEDFrC9rUK1+6WzrN4+r2791YxqwTs/weEXC6OuhxfW6b5Y664sOy8fwBjujX5SNfVZEtwSizuMslvY9aJv+R/6q47hSlnGruTEkrCRaps7WQ6B0kdTZVD+a6G7ddmIkIEoMw494nYkJFMalfOZpbOiggKHyIH2RmdDm3aUjOHB28i+LjI55Mw2GBebmawJYniIE6f2HbxdodpyR2MPr3ykZ6pqTSwWNmOexJGmngPOoTIZwf5WuBsdoTzk//T8LjtaT1Bwgt1K8GnY545Ve1l0n6FRIQxxhA+M7qVSHjYnMXM/7Ih3FgfB90hfCOb54RRdu9eWNq77XD+efXvhUw1efZSNkmMbjA1Dz5mbaB4ZHJ+LiJir9Ev3JhP93eVD7IuMEMzEIij6nF0Vd9TFdWUu4cUwFyHexfr/kCCLJQb5hpUwLGzf3kF8qhkfWWeM6AxNgX/B590XBnx5lfp0rXEnw2pwMIAp1+kDwNSIL0i7rZL/6kMwXOg/h0YZU+K0hEe9wTfSu9mQLbwizG3wuBLlinl+3Cd62VgLjBbsyi+p7ELrc+CJt16Dscqx1v2w+kn3lqgypK0Y1CJk3c2tg/M3SvrmYbg/sdii9DZeRQlrgobZ5E
- KeEsDYif
- 4k2xlFYHY7EqKqE5DyE+Nsz0RK0EqU05BSztufCX97q2rknt6Ns1fCxpyu5vzlA00eLV79Go5DZ9fK4+ByrN0/pSIkmy45Va1byh+WbYZ2TSuCMU3QZlaWvxMkXbpRFkihFfOBXoL7bv85QQ/U7VImS0KzPZdavUmuYGX5YS97I4ZnzOb+Qspt9KE8/1ZwbPnPbRbtD93TcreG/IK/JYVhOZuD67XNrQtOYK0vsGy8udY17OogOv/+J6t25U9jIOl6YFAx66nDE9g59SGf1HOjzwHSnGg/KhdbfQtP5GvksQK2fSQmgzFJiG0vMx3821bQ76A3NogWYrvw1BdNvtnehAOFInR2h7NxrtiB+EbSMrFpeTZx8aaIgyvYk2fV8c5CIKNiipthidjB2iljri19Qz1ZJW80MiV6Fq00RCRsrtdp7koafIS9DcgbQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 39450100006
+X-HE-Tag: 1782778751-531698
+X-HE-Meta: U2FsdGVkX18EqGmKLlpO2SD1E4aaqbu5Lac+CiOIdPdNAqOH8d8f4KNyTXDjPJhDK5U4LseibLE3ddYLGMi9BZCabQGmcNczhnDXYK889B/lbPKdfuPX/JNilkXjr6fhPJPE5O/x3dZ1OBiQ2B7zwXZFZn89TMcs71USqG4sgFpXHLUNbTCXrBvh0VjD07Jkz3fls2vo8Ak4DqeYI8UjWIxzz1yoP+l4It926I+6k37BFf5zHmW0EQa5Hmsc41sEcFSP7BWgrbQZWq4wJPc2bH850JsDadsi0Eal1FY51feKav8AWjZp9qOqCeDZvlEQ3rFw6QKGX4aaOKg1W0dPxxDknismAYrlB6fPU3t0Vm0Ezpu1bt96qAsfUHMvDClVmJOiQk15HQ/1apb0KR36pV3XvH84cbr8FiYd2BRP5PMlawHECtvLzaF2YZZjUAKlRwdMH9hHO6f+u0S4ib4eFRzkVgr0WBFgD+CA4WSCm6ooGDJ7hSiDR/I7wma/exsNdNmiP8+SEY7mmSSx8XnmPBTzJZcG2AynaKpyGWlRAKHp8p8jaAbUUa2ArryWpSjQMowLctcFLr/+86wF9mk3gglN8y4jc82XFWLfHFjakOImGmzoQLjIafJWLumIdVObiVX8AdttkCOBwkGseaFejNuKyHrjEVH9UVscK14rWFgN2DLkifJouvRK9nYJUTOCBK2f0P5PkmdtFTvBcX6lo5QdJXxMaab9ss62UA6ljJYknHzwo2cCN07GPXO95fXaYcAcPQD04LEqzOf7ehTwDEaQZdOTTR3NLXLAEmUeQDSAe0KHpLQ27jhc/uQy7ywvYq8FY4umGhvQRtQPS8Dn9srYvU3Isoy6EaBuAs/lwfsp3QYdoyLtIhrrNFrFa8XitNIVhOv5Ro80CGEnWxjy+zsolJapy6MUVW34iqqfJLtLfpwG+hzh51L9UKDzrf6/1VimcA5nLBmxickeAyL
+ njllTfAu
+ LasbAvF/TpAChH/841nB26yc2nTFGe17bkDUqbR/4GDLY0DOF3K9ZY4evWabDar3TMYCa0CdnLE4gOXoW0xisBLN9uqEPtMoAVArqdwVWt8WzzgP/3uK04xss+TQbg1pNBjvhYSubhbojv2GR1rKkCFQv/4xSMzV6N4m3CFdtxBBs6py1UAL8wKH9WH6bLrFKLl7DH4Oh6Ut4SyHVUZkeW6w+j+HgsimD6id4RYMu0XYkugMxr0kwAlm9EeKwPfVH4onOr5uMznA0y1bDxYvaNFAQZ8pQx+4SHXqGhkTXCeGT/eRsnCq7ithEansWa1xDOg1GARuRzjDukJs0OtxjVTVUIV1iBbg9PHDpmKuCaslA2c58wmsf1OHEbAiMLL4dC/F+kosXbHErULHlJDt/8WAi4KFRqZap9sI4pGsBrCDJK1znbu6Fr0xfxppragFRnLXo3cr9viy+vz/b7Q5ShV0HCy6OE9yxDU30KUYbe7du1fwf2TD7Cu/nz4T1P6dKyTj7yihcVUAS2h7Fnxe/wKOOxND1vfZpasNonjC5+JLp1QM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,175 +93,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 07:20:30PM +0800, Hao Jia wrote:
-> From: Hao Jia <jiahao1@lixiang.com>
+On Mon, 29 Jun 2026 16:58:34 +0800 kernel test robot <lkp@intel.com> wrote:
+
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+> head:   88cefc306c43b58d9bb65c9e96e284306710d961
+> commit: 80c453511b6ee1af0e4db83c3db0020215c4eaf0 [59/142] mm/vmalloc: map contiguous pages in batches for vmap() if possible
+> config: csky-allnoconfig (https://download.01.org/0day-ci/archive/20260629/202606291606.9h8aGniQ-lkp@intel.com/config)
+> compiler: csky-linux-gcc (GCC) 16.1.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260629/202606291606.9h8aGniQ-lkp@intel.com/reproduce)
 > 
-> Zswap currently writes back pages to backing swap reactively, triggered
-> either by the shrinker or when the pool reaches its size limit. There is
-> no mechanism to control the amount of writeback for a specific memory
-> cgroup. However, users may want to proactively write back zswap pages,
-> e.g., to free up memory for other applications or to prepare for
-> memory-intensive workloads.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202606291606.9h8aGniQ-lkp@intel.com/
 > 
-> Introduce a "source=" key to the memory.reclaim cgroup interface,
-> currently accepting the single value "zswap". When set to "zswap", it
-> bypasses standard memory reclaim and exclusively performs proactive
-> zswap writeback up to the requested budget. If omitted, the default
-> reclaim behavior remains unchanged.
+> All warnings (new ones prefixed by >>):
 > 
-> Example usage:
->   # Write back 10MB of compressed data from zswap to the backing swap
->   echo "10M source=zswap" > memory.reclaim
-> 
-> Note that the actual amount of compressed data written back may be less
-> than requested due to the zswap second-chance algorithm: referenced
-> entries are rotated on the LRU on the first encounter and only written
-> back on a second pass. If fewer bytes are written back than requested,
-> -EAGAIN is returned, matching the existing memory.reclaim semantics.
-> 
-> Internally, extend user_proactive_reclaim() to parse the new "source="
-> key and invoke the dedicated handler zswap_proactive_writeback() when it
-> is set to "zswap". This handler walks the target memcg subtree in a
-> round-robin fashion and drains each memcg's per-node zswap LRUs through
-> shrink_memcg(), accumulating the compressed bytes written back until the
-> requested budget is met.
-> 
-> Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
-> ---
+>    mm/vmalloc.c: In function 'vmap_batched':
+> >> mm/vmalloc.c:3590:23: warning: unused variable 'start' [-Wunused-variable]
+>     3590 |         unsigned long start = addr, map_addr = addr;
+>          |                       ^~~~~
 
-Before going through more versions we need to figure out if this will
-pivot to be a proactive demotion interfcae for swap tiering.
+Sigh.
 
-> @@ -7869,9 +7872,12 @@ int user_proactive_reclaim(char *buf,
->  	unsigned int nr_retries = MAX_RECLAIM_RETRIES;
->  	unsigned long nr_to_reclaim, nr_reclaimed = 0;
->  	int swappiness = -1;
-> +	bool zswap_writeback_only = false;
->  	char *old_buf, *start;
-> +	char source[16];
->  	substring_t args[MAX_OPT_ARGS];
->  	gfp_t gfp_mask = GFP_KERNEL;
-> +	u64 nr_bytes;
->  
->  	if (!buf || (!memcg && !pgdat) || (memcg && pgdat))
->  		return -EINVAL;
-> @@ -7879,7 +7885,8 @@ int user_proactive_reclaim(char *buf,
->  	buf = strstrip(buf);
->  
->  	old_buf = buf;
-> -	nr_to_reclaim = memparse(buf, &buf) / PAGE_SIZE;
-> +	nr_bytes = memparse(buf, &buf);
-> +	nr_to_reclaim = nr_bytes / PAGE_SIZE;
+	unsigned long start = addr, map_addr = addr;
+	...
+	flush_cache_vmap(start, end);
 
-Nit: if we keep this as part of memory.reclaim, we probably want to
-choose clearer names (e.g. pages_to_reclaim and bytes_to_reclaim).
+See, this is our punishment for writing kernel code in CPP rather than
+in C.
 
->  	if (buf == old_buf)
->  		return -EINVAL;
->  
-> @@ -7899,11 +7906,26 @@ int user_proactive_reclaim(char *buf,
->  		case MEMORY_RECLAIM_SWAPPINESS_MAX:
->  			swappiness = SWAPPINESS_ANON_ONLY;
->  			break;
-> +		case MEMORY_RECLAIM_SOURCE:
-> +			if (match_strlcpy(source, &args[0], sizeof(source)) >= sizeof(source))
-> +				return -EINVAL;
-> +			/* Only zswap is supported as a reclaim source for now. */
-> +			if (strcmp(source, "zswap"))
-> +				return -EINVAL;
-> +			zswap_writeback_only = true;
-> +			break;
->  		default:
->  			return -EINVAL;
->  		}
->  	}
->  
-> +	if (zswap_writeback_only) {
-> +		/* source=zswap and swappiness are mutually exclusive. */
-> +		if (swappiness != -1)
-> +			return -EINVAL;
-> +		return zswap_proactive_writeback(memcg, nr_bytes);
-> +	}
-> +
->  	while (nr_reclaimed < nr_to_reclaim) {
->  		/* Will converge on zero, but reclaim enforces a minimum */
->  		unsigned long batch_size = (nr_to_reclaim - nr_reclaimed) / 4;
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index ba01bf0e44e9..9cda96f05508 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1713,6 +1713,56 @@ int zswap_load(struct folio *folio)
->  	return 0;
->  }
->  
-> +int zswap_proactive_writeback(struct mem_cgroup *memcg, u64 bytes_to_writeback)
-> +{
-> +	struct zswap_shrink_state s = {};
-> +	struct mem_cgroup *iter = NULL;
-> +	u64 bytes_written = 0;
-> +	int ret = 0;
-> +
-> +	if (!memcg)
-> +		return -EINVAL;
-
-Can this ever happen? It would be a bug in the caller.
-
-> +	if (!mem_cgroup_zswap_writeback_enabled(memcg))
-> +		return -EINVAL;
-> +	if (!bytes_to_writeback)
-> +		return 0;
-
-Do we need this? I think the loop will just never enter and
-mem_cgroup_iter_break() will do nothing.
-
-> +
-> +	while (bytes_written < bytes_to_writeback) {
-> +		long shrunk;
-> +
-> +		cond_resched();
-> +
-> +		if (signal_pending(current)) {
-> +			ret = -EINTR;
-> +			break;
-> +		}
-> +
-> +		/*
-> +		 * Use a local iterator to walk the memcg and its online descendants
-> +		 * in a round-robin manner. Upon exiting the loop, mem_cgroup_iter_break()
-> +		 * must be called to drop the iterator reference.
-> +		 */
-> +		do {
-> +			iter = mem_cgroup_iter(memcg, iter, NULL);
-> +		} while (iter && !mem_cgroup_tryget_online(iter));
-> +
-> +		shrunk = zswap_shrink_one_memcg(iter, &s);
-> +		if (shrunk > 0)
-> +			bytes_written += shrunk;
-> +
-> +		/* drop the extra reference taken by mem_cgroup_tryget_online() */
-> +		mem_cgroup_put(iter);
+I'll queue (and test) the below.  It should be OK -
+arch/csky/abiv1/inc/abi/cacheflush.h directly includes asm/cache.h
+which declares cache_wbinv_all().
 
 
-Can we just use mem_cgroup_online() instead since mem_cgroup_iter()
-already graps a ref?
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: csky: implement flush_cache_vmap() in C
+Date: Mon Jun 29 05:07:51 PM PDT 2026
 
-> +
-> +		if (shrunk == -EBUSY) {
-> +			ret = -EAGAIN;
-> +			break;
-> +		}
-> +	}
-> +
-> +	mem_cgroup_iter_break(memcg, iter);
-> +	return ret;
-> +}
-> +
->  void zswap_invalidate(swp_entry_t swp)
->  {
->  	pgoff_t offset = swp_offset(swp);
-> -- 
-> 2.34.1
-> 
+To avoid getting an unused-var warning from
+
+	unsigned long start = something;
+	...
+	flush_cache_vmap(start, ...);
+
+Cc: Guo Ren <guoren@kernel.org>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Leo Yan <leo.yan@arm.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>
+Cc: Wen Jiang <jiangwen6@xiaomi.com>
+Cc: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/csky/abiv1/inc/abi/cacheflush.h |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+--- a/arch/csky/abiv1/inc/abi/cacheflush.h~csky-implement-flush_cache_vmap-in-c
++++ a/arch/csky/abiv1/inc/abi/cacheflush.h
+@@ -42,7 +42,12 @@ static inline void flush_anon_page(struc
+  * Use cache_wbinv_all() here and need to be improved in future.
+  */
+ extern void flush_cache_range(struct vm_area_struct *vma, unsigned long start, unsigned long end);
+-#define flush_cache_vmap(start, end)		cache_wbinv_all()
++
++static inline void flush_cache_vmap(unsigned long start, unsigned long end)
++{
++	cache_wbinv_all();
++}
++
+ #define flush_cache_vmap_early(start, end)	do { } while (0)
+ #define flush_cache_vunmap(start, end)		cache_wbinv_all()
+ 
+_
+
 
