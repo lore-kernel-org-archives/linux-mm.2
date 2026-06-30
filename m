@@ -4,89 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C39B8C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 04:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7823EC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 04:38:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CC5E6B00D8; Tue, 30 Jun 2026 00:26:26 -0400 (EDT)
+	id 241AE6B00DA; Tue, 30 Jun 2026 00:38:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77F7A6B00D9; Tue, 30 Jun 2026 00:26:26 -0400 (EDT)
+	id 218D96B00DB; Tue, 30 Jun 2026 00:38:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 692796B00DA; Tue, 30 Jun 2026 00:26:26 -0400 (EDT)
+	id 0BAC96B00DC; Tue, 30 Jun 2026 00:38:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 460356B00D8
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 00:26:26 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BAF23A038F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:26:25 +0000 (UTC)
-X-FDA: 84935292330.04.8A90ADA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2C97D100002
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:26:24 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1Seo8Ff;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782793584;
-	b=s9/1+M3O3r1v/asa67V6NiAmaNYncocgLByy0MheDfWK3Aow+JNo48id5dD1ZqOPGx/ezH
-	1kwjHeKhNb40yJusB1gODgLA7STTsHk0GA5+yI/K+gWlNmbisVuCvRqfBGX470yxgDmIcE
-	BqWadnRvIbtRsRVZcP5Xk+PmSR5A3+M=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782793584;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C822E6B00DA
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 00:38:49 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5A26C167BE0
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:38:49 +0000 (UTC)
+X-FDA: 84935323578.20.31DC103
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6390E180006
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:38:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Yj1lUWVk;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782794327;
+	b=n5wmIGbX4QMrfqdYzXocu6YnYtYkjw0uGVL75t+L6OS2Mb/xphqjf3l3XtLGVZ5EgFCRBr
+	1JdB/doe7AE2hQFnLd/TAJwUfY0Ol7R7pf29ys8Bt3LNgjv4Ck76su3dNmTXjiNuXnOp9r
+	RE8mdRLP4ZE1hL7/gYuMTRe+Zijpn0o=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782794327;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ae8t/Ilc5afoONBuaiJzpXJpdh+evRAuQt8lBfqqfFc=;
-	b=zhMOpqS+ChZHuNbmA7jQm6fhVOPaMhwTi7UxkTlbwWjc0PDlF8980UTajTav0dU0WSxgYr
-	8nrbpFwd/GSbbCzQQZD38qCcRTYmqrVOWHz3gyFwhnKhZJaFaNW9SVSka4f7fWMGv9zZBi
-	vWuKedPbwlcrlEPNtbwuA7UDp3k1vh4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1Seo8Ff;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5649F419C5;
-	Tue, 30 Jun 2026 04:26:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E081F000E9;
-	Tue, 30 Jun 2026 04:26:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782793583;
-	bh=Ae8t/Ilc5afoONBuaiJzpXJpdh+evRAuQt8lBfqqfFc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q1Seo8Ffs3lw+ArmCzrhd6+ZuK+vKuYMzCkkcKrKjxwuJT0X3+DzQ2Awmfl08SI72
-	 pIaCRoLbGkSpScHQFf3cHZXrZE7SX8T6cbsPSJsSdCA7QOZOubFE3WbK9N5Xuflktj
-	 AUJUIUfPmRsOkDNkIW5rAeKIPjhWe6T3AqAhXhyUDW3MKKKBHcUL5Zn9r+nkRAKn8a
-	 cz2W203yWDri1oey6bDLcrkSeF3Qd4TFZcPAaHcbpp/K617KHHh/uLB6HIqMIxCDeR
-	 aePKtHaldDnUpqJJIdXc+G7FPb6/UPvk5ym6qX9YRCVuERqhXrbxn4qBoJd4AWPoOe
-	 owd+xm28QDkmA==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/core: validate ranges in damon_set_regions()
-Date: Mon, 29 Jun 2026 21:26:12 -0700
-Message-ID: <20260630042612.151351-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260630035221.146458-1-sj@kernel.org>
-References: 
+	bh=hf8fcysN6jlhj3x22vZZGKCuBikMYUf3CE6Z9jnUVq4=;
+	b=j4akjMxD10R4tuL9LKwC58lgDfuD/pmgrqymlogZRk8Q7hsUGg3A8QigNCF4agPeyZ3E2u
+	Q2ww+v6lPU79L1RwCMiwpyb20DlBLxxj0mXNm2eF//2SeHwTACX5UbLomqom9DkYFgjqJB
+	DnUnnbHmx6iRaSUucIQBtiH+/Ybp4hA=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Yj1lUWVk;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c10ed63c0so91501cf.1
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 21:38:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782794326; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BA4ru9xWiwR8jyymPCDcPy1oQ6vwzf1IVqeSdoDimnDGU2gfUsXUYO9vv5pdF3X7LL
+         GN82i/XCU6nUFpEFCYrkz/h4ZuIq8HysKpBQx526uXWVpcMgkw/7TgdlX1DMYGnRaGVv
+         5olGjRC6FsfrFeIi4mNBJuBi1lsIJOoPCC3EDU8v6z1nzoX5IIDATAN3jEgwcCvzXtGs
+         laJ4vVPZr/YHxe/jPnc6TY6zyS5aX3tFq2M5BwJW94Ab0zSCjs6PP4RiyckQ1+scNwwH
+         HYPTKGXo11QTLQfleyvS+MiJ1Cy+yjC+wOSdsolnIj/YXrAKV2MDM2kI94Mg1kBMkhis
+         zz5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hf8fcysN6jlhj3x22vZZGKCuBikMYUf3CE6Z9jnUVq4=;
+        fh=Hwjum2I50deMgRotApjkDfb9RnzlD3gxKKLde55bnMU=;
+        b=FegU1r8UO/12Nsp06iAXxzBACFaQsEPAQKGoD320m7CAG204FGGCzaM2edYclJYbl9
+         4ZGMvaj3o/fI3yWEl983cEBrin/tE079r09ZgFEndy/1Uf2BnvaCRqHAo7z4/uLjM19B
+         HKV246C7+KCnQFIEB6uA1twBCtFSuKHj5Hi0miSLNfetBCYGOQIMuaTnqvmJc4m66NX8
+         NbWvvokgMzgbBPRo64JZxhro/Rbcxd98g56apYwGx6rEVw0P4W/VQ6eRLTqzBfRU1rbC
+         LzdJ4IBs2bIPiC9Hl7z068ck2QFKcpA4vRJlABnMwWZ3xmwnpMPPM9zl+5/4ITknoETd
+         HXaQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782794326; x=1783399126; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hf8fcysN6jlhj3x22vZZGKCuBikMYUf3CE6Z9jnUVq4=;
+        b=Yj1lUWVkXJQ0KKb+AAXQBFUiLzkRGJbAO/h8Y3wWtzFjBscUQOzDERgMiBa4yVyvcy
+         iM3JwN77TRWoPvEpHrS0NN8dIc+mp6FpyH0+hrqOZiuoICZPdwbsWk6g6AftPgopf0cJ
+         RJyT8eUF5Ul1hUkWGaWUW45G0LU0eTEllDFZaDaCtSoFAWo+2alzmBb7/1EWOKAXx0Rv
+         nM6zK0qpvU11AByArzXePm23eCvRkkrrebtsILhY50nrkiu9AIteigfTtQWNWuTcbrgm
+         5fbnp5E064V/EbM2U4ZQc/2wNN9tRHC45zr8mjEBDiS6l/YnDwoB6nLWQZRcxeWTHw0u
+         ASPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782794326; x=1783399126;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hf8fcysN6jlhj3x22vZZGKCuBikMYUf3CE6Z9jnUVq4=;
+        b=iPHQy0AqJibkjids3RRycIXRoiUHp9EekTG0DpiTDMy2Wijvzpd6/UKq9WeeTRHmMi
+         bBl6hx6EalPM+mEKQ5EZhQpBppSCBlVyGSKSr+qqiqW5DEuYZ9p5g5bCLmylzL3sRr1H
+         uDojg7V8GNx9zUCsODEgErp0j5+0Vs5EWD+oE1+uUx3tIXa3b0BLej5fYR1eRi/j/nk5
+         W4oorXS/SCoaq8tE8Oo4dOWS1SI6euco5xltP81fNkbEhxZ92tthqOTZNO7brVYNELji
+         7KxXT4IFswFWI8R/6nll0Uusssk/+VArgG6GhRHCQUqdKvqeCg9rx67CoCQ7tbFDGvyC
+         3j3w==
+X-Forwarded-Encrypted: i=1; AFNElJ9cHg8wpGMiH8kIRmKeVnxruL7W4xg9KSSWh27PgR+dcFWKzllzda77+V67YI1u0V+wZ7veoaLz7g==@kvack.org
+X-Gm-Message-State: AOJu0YzrZe6g8JDOxFac+b+sqD6oEQVqF/Sb6JudQLBLDx3E5t9uhFuT
+	rulR/Dfqr1P7QFt0uGuk2Whs1e4FL4KECDdCPwfPxKNPytRMitA6I5EYtUPgFWXhxIwb09nYdJz
+	wCM/wirxmoRIYiXwwI78OtsIlF4gRttiZVK5R5FZy
+X-Gm-Gg: AfdE7ckrIJr4ORDWHAkA+zuTkkV6cNcpfAEXxIP5cbjZeLLAYY7w0hjuBiN6RmGzwcI
+	ebSvhO3pgeSlvaNB1eDQJBFB2gyh2fFbLRkmkcdlt4VoMosCk7N6WX8Lsq2FOR6zP5RorTZSSDs
+	ysjwjSK2m55mZdx6tJerK76De1AR7CXDt2Nar/VrUOiKolTbQClCNPc98Ujxce+3jlveBDJj+Sf
+	FXoM7RQpRVP2aJTbOk4MbckZe8ft2LQJP/O4OutPc2RHDBE1yq9RUauov4fTm75Cpg4PuY=
+X-Received: by 2002:a05:622a:30a:b0:51c:523:9540 with SMTP id
+ d75a77b69052e-51c13d3e9dcmr3772971cf.18.1782794325690; Mon, 29 Jun 2026
+ 21:38:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260625230029.703750-1-shakeel.butt@linux.dev>
+ <62453403-954c-4cf1-8924-6d38184b0810@kernel.org> <aj6re83IC84lkFL0@linux.dev>
+ <09267187-6c85-438f-8791-4cce8d07892a@kernel.org> <akCJRTnmA2um3CIy@linux.dev>
+ <akCSftF6mrsKsz1V@linux.dev> <e6ca6ac6-92c8-4db6-a82b-cbb92ceaa4ea@kernel.org>
+ <68122038-e8e0-47ed-82f8-cb6a23e4658e@kernel.org> <CAJuCfpFanDcpqq5B7eNZbw2HnWOXD-xzcnrdbz-e2gnSM2EYHA@mail.gmail.com>
+ <eac2ed38-432a-4d95-8968-2663540d73d7@kernel.org> <CAJuCfpF78_5CjLsbJLte+B4MzfaSiAmyeH57VLhgLtj8AXD2NA@mail.gmail.com>
+ <62969830-4b1f-483d-8fa9-9ce487568570@kernel.org>
+In-Reply-To: <62969830-4b1f-483d-8fa9-9ce487568570@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 29 Jun 2026 21:38:33 -0700
+X-Gm-Features: AVVi8Ce0cM4WdLexTNLWBMwH_6OvAm3pJMsszBi1qMMJztja4oIjh081ZfsM25c
+Message-ID: <CAJuCfpH8ZjBMaOmso=9gZNz=DK2ja5yMS+04OjTGHh5Uc7r0GQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
+ kmalloc cache
+To: Harry Yoo <harry@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Usama Arif <usama.arif@linux.dev>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Danielle Costantino <dcostantino@meta.com>, 
+	Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6390E180006
 X-Rspam-User: 
-X-Stat-Signature: uhg9ay6p8jndz48ezuf46rk84hgzby9n
-X-Rspamd-Queue-Id: 2C97D100002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782793584-976106
-X-HE-Meta: U2FsdGVkX1+MGoL22WXk9carQkL4gFOFZ8lh20/i01K3NesjHbaY7z7jkMk5BHJWMSRaIqwRdrg9KVmUq72/6TtRIXKwjbWdd+em+2xM0jIqPozV6oWQcD+JMBBMq5mcQTh9HAMUF6LSWYmsXGEqa6qdtUXwfy9305Opha8GZdWzK1hgsKpXFRpeizmEdUp7Agc/qrFBT1SFk2q3G17kOyCAWoH1UxTZkjDU34wMXPdA+hfQn1KqeAXq7YCnC3VaaJdRscEAWdV/4NDwaMpeElIaB7giQi6fcqmxPvdLSG0C07f+9LlAJ8JSGtW0j974IO+Ze7qAFHeMGOPFPt/rwogu22vqLAyeKeT3ZdKA93La28xqsFMrqTQ68HWecuvWHCjySFIHwgv7/5tu0Fg3cWuqdSb+aN5/9+emONT2/jzxwoNqsdDwYj9YD3BT+iAPSxOmc0t0lKj+9quPQceTwS41khX6hs0YZn1mT6j08+FyXvc0l2UFuU5u4T7HkP9o5Mc0fDtd3ZsZvLaSQwCtbPd8oiAFfiVk30gRUIbb7Sa9t3Gnrc6sWO9pvNi+gD15f3MywcXTdMoNqxZdbQ9xqjjKgiMLCZU+9gAN6F0E145YXgO6JYq8r9OzCrKQndyWwXhywgCAHe+6bhP2xT5b2ZZNeZw/LkgsgRXJrRxslMCrzufm2+BVJrxzo1zrDe3UUjPOQLbFdvzmSJbcfUytMVXy5hcFU8v2LdUWhST+egJZmwDgudIhU8xYbAPcvtmJnAlhpxDHb15BecNjyQENBqa/3BjqvtfsQ02+ZJ4kdMHsAldhP5yZLwM99mldH+A3aQEiHq9P2PmeBfHQ/Ns6icXXiFn9eWEqqaOsiiNSou4Zd5QWfMu2eoqxm5eKRv/Vxh18avK220r4WveIDkOWEBikmlCsCRUmToJ6/sNUZp+7PunlVhFa6fSoXo6dKSB/ozDXmBB/YnKdWJVCs1P
- Fs8jUzzm
- 501Fk8RQB8l4/VE6zcoCMuPBCx9YeelbXVWNLLQTy1D1cO5Z8CngX3rlmPwjBAE7zDc/y5wcxuNw+7fHZzhqGMcGKpQO7L8v8eDOCU72kub6izRfgTNmbwWYHePIL6itXj9SwMxpmF+zdh5vbEg872nr/a5V1dFNW6naCh/ZbNZNh/4jzW3+cvgIReGmUxBAx9W1P6e4wLs68p8bGsORlra32m9SkuZrbdMPKlk5LUMBWzWV2OtmKID9GV3yFbLEBN+/MySZkHfyhX4VWrVkFKjQvvw==
+X-Stat-Signature: id3s44nhn8g4mp4e5gtwuhos1k9pu4aq
+X-HE-Tag: 1782794327-157971
+X-HE-Meta: U2FsdGVkX188f4Xw7RKDs5k31t8tbO6+UOOscX8N3swPCgELFVh4s8xi1zja04z1alVUi8usUXyGVqbDARvD6kzAuPrcbf2ZZPSTUmwfunwQWRp5lqybUCEms1SOW1JrZJAQ2Q6iOIKxGd2Wl3PePxah/YPv9nJNgI6C4AoNwJDg61oPy89lwpDVK1+pSxHHYrVK7DjEuGYVWQKHWLsa4+s+ofruIub/EQprddFxCQ3hAIYvjbKMTBpr3E5v9s5plF2Xe2b9kln1QNjsA1VnDCLvkUQSI4PZ+9tygq8DUJyBllc/rvRsV5K8i5FIY7/BdNO5SiYETLJhwGasFkstAurcMT0dX+2Dm7cvYKHqOAcqZ0QW16Z363e/oZJlcQPl+OSJdEYIpJVKLqhnYedN/RIdn9CUyY8AEdc6TpuL3ycpJCbAkiszP4p+Od+s8AlE2UDzk2ANfOjGk0eOeHXG3NlrwMmNOt+4CUy2AhFyHUB+EPsQZM/Acijld9v0vIYmWifH9Hqsdkbu0Hv1YWIBwXAOXFI/HVbgGw6JBVz+WE9G6XT3xoD4KUBErIUPDx5ZZ9dTdUkPe8RlDLS+E2dOeL+udGjdarfSXvbvK6mP8AK6aGG83CzRQKBiAd4ofO1zAjh3qTaqYBoiK5KzCQP90kqN70q//qNl4EEqwGmVZn9TKjP4R6GHLyhkzEf7Z6AGrsedYXLZ46NXdfet82OSwVMkyVjCpv5jk6hzJaRTnNGM9ZJJHl5/JVCTNc2y5uQL5Oh5C5HukVULXWQO2h5hFdCB18ghaFePea6vLicyM6xDO4V9o6U9c1l51BGW9bIGagGmzejamoS3BM759rsPBt6GZYmP60bi/LLIwPMlCE6s5ldZjrLeLahCAxHVYwufJNuew1fro9MYHNSNlFyXBwtwfyzsa1MuOctYMhvzUhKRi1U8BN0a/j71tNQcY0OkLD4TTrfTfnjke3lwUxL
+ yuco6TBS
+ n1C79nGRI99py+up64DKlMSDyWMasxLFZqCUBZ93u3+3XEAFoYXDre3+okm4BgbOWUDPAM1YKPorVKZfysp795XbDZMLWMPBLe2Sp1QVAKRxQKw/fxf5OCa1/58BqYZilpRpnC874qL1R2mIKBil84IupIl8IwCyPQ+IOZnyC9tboMhz5xC0wylQF53+x1wMOhxALJgEMK3/D49ElumR/ZkLlP1MBW3nLGoeGAzODTJVZDZTflRIs55Ew4ZZ/J41BEOxTT9FHf/8cc1Fwz++yZoGQGKk2ua1YFE8KWzKEQVRHh4YPGhy+ZkSwag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,42 +149,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Jun 2026 20:52:19 -0700 SJ Park <sj@kernel.org> wrote:
+On Mon, Jun 29, 2026 at 7:31=E2=80=AFPM Harry Yoo <harry@kernel.org> wrote:
+>
+>
+>
+> On 6/29/26 1:28 PM, Suren Baghdasaryan wrote:
+> > On Sun, Jun 28, 2026 at 8:57=E2=80=AFPM Harry Yoo <harry@kernel.org> wr=
+ote:
+> >>> I think adding a new KMALLOC_TYPE would be the cleanest way to fix
+> >>> this recursion problem once and for all. This size bumping and the
+> >>> special case of SLUB_TINY are quite confusing.
+> >>
+> >> As mentioned by Vlsatimil, in the long term, using SLAB_BUCKETS
+> >> infrastructure would be more straightforward than new KMALLOC_TYPE
+> >> because (I think) the kmalloc type is decided purely based on GFP
+> >> flags and we need to somehow work around that. SLAB_BUCKETS provides
+> >> a nice abstraction to do this.
+> >>
+> >> Luckily, SLAB_BUCKETS is introduced in v6.11.
+> >> Unfortunately, SLAB_BUCKETS is optional.
+> >>
+> >>> We could define that> new KMALLOC_TYPE only if memory allocation prof=
+iling or SLUB_TINY are
+> >>> enabled to avoid new caches when not needed. Does not seem too comple=
+x
+> >>> but maybe I'm missing something? WDYT?
+> >>
+> >> I think we need some enhancements to achieve that with SLAB_BUCKETS
+> >>
+> >> 1. Rename SLAB_BUCKETS to SLAB_BUCKETS_HARDENING
+> >>     (w/ SLAB_BUCKETS being a transitional config for _HARDENING)
+> >>
+> >> 2. Make the SLAB_BUCKETS infrastructure unconditional,
+> >>     but the decision is made at runtime:
+> >>
+> >>     1) actually creating a kmem_buckets vs.
+> >>     2) falling back to kmalloc.
+> >>
+> >> 3. kmem_buckets_create() creates kmem_buckets only when
+> >>     SLAB_BUCKETS_HARDENING is enabled.
+> >>
+> >> 4. SLUB decides (not) to create kmem_buckets for internal use
+> >>     during the boot process. Use the kmem_buckets for obj_exts
+> >>     array allocation.
+> >>
+> >> Side note: this would unconditionally add the kmem_buckets parameter t=
+o
+> >> the kmalloc slowpath. Probably it'd be worth introducing a dedicated
+> >> entrypoint for kmem_buckets instead.
+> >
+> > Yeah, this sounds quite complex.
+>
+> I think it's not that complex, but quite some churn, yeah :)
+>
+> > Maybe we could use the new> kmalloc_flags() introduced by Vlastimil
+>  > in [1] to avoid using GFP
+> > flags to indicate that we want to use this new KMALLOC_TYPE? That
+> > seems simpler,
+>
+> That indeed would be smaller changes.
+>
+> > though it's not backportable because kmalloc_flags() is> brand new.
+>
+> Right, I didn't seriously consider that option as I was (mistakenly)
+> assuming you or Shakeel would want to backport it.
+>
+> > [1] https://lore.kernel.org/all/20260615-slab_alloc_flags-v3-0-ce1146d1=
+40fb@kernel.org/
+> >
+> >>
+> >>> If it is more complex than I imaging then I'm fine with Shakeel's
+> >>> approach as a temporary fix.
+> >>
+> >> Since above requires quite some changes, I'd say let's proeed with
+> >> the fix (since it's one line of code change that fixes a bug),
+> >> and then see how we can make SLAB_BUCKETS changes as minimal
+> >> as possible for backporting?
+> >
+> > I was thinking Shakeel's approach for backports and
+> > kmalloc_flags()+KMALLOC_TYPE going forward.
+>
+> Oh, I misread it then.
+> I was assuming it's critical enough to bother backporting.
 
-> DAMON core logic assumes zero length regions don't exist.  However, a
-> few DAMON API callers including DAMON_SYSFS, DAMON_RECLAIM and
-> DAMON_LRU_SORT allow users to set empty monitoring target regions.  This
-> could result in WARN_ONCE() on CONFIG_DAMON_DEBUG_SANITY enabled kernel,
-> and divide-by-zero from damon_merge_two_regions().
-> 
-> For example, the WANR_ONCE() can be triggered like below.
-> 
->     # grep DAMON_DEBUG_SANITY /boot/config-$(uname -r)
->     # CONFIG_DAMON_DEBUG_SANITY=y
->     # damo start
->     # cd /sys/kernel/mm/damon/admin/kdamonds/0
->     # echo 0 > contexts/0/targets/0/regions/0/start
->     # echo 0 > contexts/0/targets/0/regions/0/end
->     # echo commit > state
->     # dmesg
->     [....]
->     [   73.705780] ------------[ cut here ]------------
->     [   73.707552] start 0 >= end 0
->     [   73.708452] WARNING: mm/damon/core.c:359 at damon_new_region+0x6e/0x80, CPU#1: kdamond.0/758
->     [...]
-> 
-> All DAMON API callers eventually use damon_set_regions() to setup the
-> regions.  Add the validation logic in the function.
+Yes, it's worth backporting, so we can merge Shakeel's change as is
+and then once Vlastimil's patch is merged we can implement the new
+KMALLOC_TYPE as a replacement.
 
-Sashiko found a pre-existing issue, and it is not a blocker of this patch in my
-opinion.  Read my reply [1] to Sashiko review for more details.  So this patch
-is good to go.
-
-[1] https://lore.kernel.org/20260630041806.151124-1-sj@kernel.org
-
-
-Thanks,
-SJ
-
-[...]
+>
+> > Just throwing this as an> option. I haven't looked closely into
+>  > SLAB_BUCKETS yet, so that might
+> > be indeed a better direction.
+> --
+> Cheers,
+> Harry / Hyeonggon
+>
 
