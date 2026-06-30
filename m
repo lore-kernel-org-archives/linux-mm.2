@@ -4,88 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEC0EC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:23:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB628C43327
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:30:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E43296B00F8; Tue, 30 Jun 2026 05:23:32 -0400 (EDT)
+	id 74CFB6B010A; Tue, 30 Jun 2026 05:30:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1EA46B0107; Tue, 30 Jun 2026 05:23:32 -0400 (EDT)
+	id 6FDFD6B010B; Tue, 30 Jun 2026 05:30:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D58D56B0108; Tue, 30 Jun 2026 05:23:32 -0400 (EDT)
+	id 615E96B010C; Tue, 30 Jun 2026 05:30:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B440B6B00F8
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:23:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41638403A8
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:23:32 +0000 (UTC)
-X-FDA: 84936041064.13.50C0475
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 958A5A0003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:23:30 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XwaG8N67;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3850C6B010A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:30:36 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C4200167B6B
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:30:35 +0000 (UTC)
+X-FDA: 84936058830.17.0742048
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C0E3E8000D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:30:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KHnKuuA2;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782811410;
-	b=tggQ88Yw/WxffkELsaD7P5AtPMIZ4BIbME06Kn6x1kvb+7dXPj+X6eqh9rn7gcyLYGrZcC
-	WhAcveYi2xJDe5hLq3OpdOE8f2SruehymzhZLaBssnbI+2KbC0tqRMImc6p3Uw43J+GK3o
-	JlBQZsL7JXtBES2+DJ7hPNfhLhRI5Z8=
+	t=1782811833;
+	b=nszPR0LMRTc69ivJKRQPOkWkTybUUZg+tdxSt8K7L+DWG5C2msd0a4DeKPLSOcMnkNt+HF
+	hK/DHdwYWQ8j4xGzKvEkHmDEON5F3JuN0KqPlBZOG5jzy6fsa3qDIi2lzRsQRkWvFCE4HN
+	Kh1LMEzMKGDC0Z0b9tn3/IrAQ+cmycQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782811410;
+	s=arc-20220608; t=1782811833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MkkU4CemahsX2lCu5FnMMTHdANSRG2dmn9y8txXDAU8=;
-	b=win7ioniO+l7JxzlRST9itCtwXgjNLLLVUO69UkR+uUQCO14uGT44DZa3crO4UE8bA2uCD
-	FQIrXD6gB7BgHATtCUh6CGWh7rfXx+fb1qBhWcv80E2tS0lVXn4JjjfGVPeYr7kO/BKytF
-	qDHNNB6wrC7z/29dkMVmVnMKNkcp8YM=
+	bh=8nbrEw8HxPIVYOk3lCiNdzXrvv3ZUctNh/Crii5aUdc=;
+	b=WtfFLhaYW27ZLY1qcL2ygxOPdozZ72yTVTwebHTVVTa85PcNSroV+bJYL1h9ZQg0j5naNC
+	a9q7ru7N1RYXYAGwj9uQf0WfheMAG2OD4b/esfNAkG3fymWsEoaufPJuWqacL+Os/Aju08
+	wB5413nYVpBuywylrbXWimBQCyuVlZY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XwaG8N67;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E451341AA4;
-	Tue, 30 Jun 2026 09:23:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39C11F000E9;
-	Tue, 30 Jun 2026 09:23:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782811409;
-	bh=MkkU4CemahsX2lCu5FnMMTHdANSRG2dmn9y8txXDAU8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=XwaG8N67GSOGZMPrLMrdz+gdj+cqIp4BvOJ5rjk7sPlWs+NI4nojTxxCTuWCG0iud
-	 JZj8uIEqbbuSKgk6N47fpod/TyFdT8EvOuADsyO2vR9R6zxbgBbPjSDOp1KOVvu/RQ
-	 DJkPX+4Jok8amI/VKGPJWwnjdzhzTbUp/2ZVX1QYqMy6BeiYmOh7l91RzhoK1YflGt
-	 HTnW3dGjKh7ZMFvpXiVid5jaiqbYFaw20kWV8x+d005+95+Dl2oGCrzYLBQvchEnua
-	 +jONQJtXy/2BYnipwm0ZaXvfsfBcioEpMYQkwlztbUydBgzOeB+kJrhC7uiCmKFE/y
-	 B9q7Mvmi71c4Q==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Zhen Ni <zhen.ni@easystack.cn>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260612031105.3350181-1-zhen.ni@easystack.cn>
-References: <20260612031105.3350181-1-zhen.ni@easystack.cn>
-Subject: Re: [PATCH] mm/memblock: Remove redundant pageblock_align() in
- free_unused_memmap()
-Message-Id: <178281138932.625070.4768611038394499878.b4-ty@b4>
-Date: Tue, 30 Jun 2026 12:23:09 +0300
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KHnKuuA2;
+	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1782811828; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=8nbrEw8HxPIVYOk3lCiNdzXrvv3ZUctNh/Crii5aUdc=;
+	b=KHnKuuA2xz1wd3FwzcThUBUkZfzuKXYK8M0dVp3IhEbpfuotZdJapv1BAFGnGF9s5GszmO4YDiab0Oo0wDlwRa5ni8U+RLXU6w7BQ4bcNEVPPju7VK7cpBz9e44XZS3H+Sy66uxSZSZTziGWz6r9Agjxbg0QMpeZsKWGvyXYDJY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R331e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X6-zr.q_1782811825;
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6-zr.q_1782811825 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 30 Jun 2026 17:30:26 +0800
+Message-ID: <1d27c781-0adc-474d-9c75-899e63bf7490@linux.alibaba.com>
+Date: Tue, 30 Jun 2026 17:30:25 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/shmem: Fix data-race in shmem_fault
+To: yahia <yahia.a.abdrabou@gmail.com>, hughd@google.com
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
+ syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
+References: <8b6aecca-c4fe-441b-b0f9-fff10f7b43af@linux.alibaba.com>
+ <20260629040345.13138-1-yahia.a.abdrabou@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260629040345.13138-1-yahia.a.abdrabou@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15.2
-X-Rspamd-Queue-Id: 958A5A0003
-X-Stat-Signature: e1unnfg1d5kqs6746bx6qnbwn3esutr4
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782811410-433726
-X-HE-Meta: U2FsdGVkX18Zpj2QiZfp0zhX2YHveEHkln2v6bUjMpawjbKUC/ef2rlpZ+dfGiVfHni1Phj4qmMpE2n/nxc0QEXmpaSriHKoxxFWE9O13SvRiBZIpLXnvqO9MuRN9IpRxo9WZSRn8sshRdH44HT8igJJW2zHm0HSMtWP8yHq8YLiC2pjHNXpIYLpmJyfwIatyi3FUupLhx7DnPWoc1ZvHY66hZjzwuhV+DcPpQrUBVqIUvQ1l+FqJnWmlEJgRk8Z4FQeYdxE7ZeiOGgujXkMJO2Y77CDJe+vo64AvqYvuxsIGkUm+6hbyfI9axPzpy+lWVWVOefAEH6cdunvZq59oJirirDObkLqcV+QBxxdyqpB2kQGD+4eMSvJZLdlURwU9xDI/gg6YZOeUyUbfhUzm9bvkyO5zvk4rkuK3ZFO9Cd8mahEvquvRMkWkbKoxKt9Z4oeGZ67PSk9onfNMqj3sEvoB6wR6YuMiFu+ko0cMkSfm8Ap+H7/YpCrQsnqQORt5a7IQNGb4IymgkbCG9uhGKwnQzQTOxBUiFt3QkiJfhGV4KFRwlDEKhIkwet/UIx4Qb+KCD2uY73UkRF0j6lhdmGmYZXzoqdrgrdgPIT9W6uy9zfvUZ0axVM2lekj+vzZOsESDXcEt5RWcKQYnjvsI4nrB0kAQc/+X/5F6anAgTE/jajnh3BV17Fbrzfp9I+yeAvSoMJhJ0Coiy+qHtM32hw89IK/DndD+joAilKm23jSDHzAwF9HlvzUaPcFluRjDvkxC/i8hBVo3eCyhNNaJXfc4tBa/uNmldzlM4FK59jBS9DxZ6c/NMjnrcu6obM7ZygMt3H4JFddyBAOARMfaXLMrZxojNj+R5MN80j5jTIxFY2k25c7pgMsGV+YL9QoQGcmcAghPAk1oQRi2wGptSzivcKFXT3tiy5WA4V1/X1mS2f8ePIvaKAlXDRdcCAvCNZUNhVEN5yF7C698wA
- 65RRu8O9
- Saur1qSx5XSXU3FI6ltSmgxa2ZrU/cUulthUIEaRKuJTZcovZeDqxVGtZS3r9GUElGxNZsabh4t9/4dCYSTjeDQU9VXPWi0uNa6dZXDeRa4ViEHEjvE5F6acx6OE17h3PKX0FrSv+P9N30QFoJqztb/pFL7fDurvQFqUPk3mxo5cyyFrWQ4VdJ7MlfQbKy4fGcaVdH4MrWAFc6LkAvkCN/O+HMymw8nCds2sD2bSIa8fvYpBuVjzMpXI6ywtfOUWUo6BQXmy2LcfzXFTqVtrLIVsMzhf4zucjwR/W
+X-Stat-Signature: dbp33hiegdw9u1jo3nw7m9nen7frxpxi
+X-Rspamd-Queue-Id: C0E3E8000D
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782811831-164616
+X-HE-Meta: U2FsdGVkX18wrN4E5ug9BsEijnt0bwb6KL43YZouLP0fZaCoMuPVfeIomOCAd9eACsCNHuLAiDgxKCfeCH1SKFaiSK2TMOv23gNfw4i4Yi1z6IM680pSrYldjEVMyfCZjKOgNFKcu+3JWot0qInT3rjRnbJ9To29S3wJ00ewT4qPXV02H6YBVJqWpcdRG/4b67WDk13DcVU5ysC8jQFJRleSOfH3AA4XdvTjXZT7oEhS6Ef5mCfXp2HhNp9e29h3/0d9Vdm9TcpzLdlIOsUlfkn/LXCgFPs+M0GjhVziEViSvUoWnlv82eV5+HD7eFkeeWkp/JQV5HLdPqBPWIP96tTpwRm2eeuQD2onBo18cdyq9+AkK0AQvCG1p7wWfYpmj6OEEMq1piX2O+pgLE+cP0okMF2soRHnRTK7GeijSjkS9T6lct21WaXcvyDuGNFJoJ/pDmBfFvGAlpwEm462BgBYFB+gQ2A05gBSgptUlqKG+TMYoH91wis+OadwfYZXSbfc6RtIoklq/yURss3PKnCp1W/VffVlQS84UlNQ+s9ShSPXB92mdWzKLGEkXujrNgpgjJi0oKdphl3Mhio7+aMF7Mf20iK1QJygejyvYt7C4vke0Ua/fLDHOHEP32DwsB+595mLqiau5nOi9nkNaH7hxFA7Lzyh/zo0yN5/IcRSEbyndtkk4GtfVa9n5PJoFUEEB93gRLBHM8NMIQsfZf4AImN3+OWhcNqEEIeI7rgrd5U9C6NV9JHqAX2OPAoHgxf+dAsI1VGyFbRWOdCton/BATsAicmMadlG6MoZwItsp1dmG53ATW/9ZIF6oNmQl+M6MS74pt+ofdYTEmKcIg6YlADloOd9TWMDxq0r8LdwjonCM5EfCZoll5ktuxkR8V/WFkRMqV9rGL+l+2jQxlUwxgealf0pQNqsamLlNFRg91K1wsdGAJYabFh1uypLEFluq6Dl2YOpltHZQ8v
+ rCynDM1x
+ QftfLCbAs+t2HzlnhbZaqyjfvXmcRCBQv/2hxaxQzf2pcqK/w8diEjFQxpPX+yB3ooZq+R14it6SAx7FUmHSnL6PG5lFj20GSPbQaTQ2k+oraVBltfVvOe/JDAc1AnyI3tiC6KlVYQiGXxBY374ne9Mn/9+KzLuUSXj0F3XSc96zXd3CPvF5RsAq9b4wjzKNvnme7Oh5RnNK6Mz7zrFieuX4sHRJ6jzILHPEfXNm0c4f8LJAnVRcnAYjfE9jPuZLE4tPIc763vuOpdZtHzXa81da0dA8y0OV7S2/Ocs9pArInXhqb7bQQXHf09IGe6mr+7JuNCmeLnGms/v+W09ft+WTDMdv/HHLeQcqKS7GcVYSen8PImvdsWa79/CyzOHeQZeS4gy7yKoFIicPuTJk5sxwn7cl/ueDh798r3aJ1Bkz94s5t1foPgsU21W71cr8uYvXMq76yRPuFfB1JgVgyB1tH3zGMTg/a8Z3iSxUXlcxVv/ssP2U4DBF8M7VZ43n0pkZBt9ZroHKwC+XftByBtDNEwQbW6MusDnjDkYY1mtldFFOl7bHcgRCsQyXZbQ94GxE+A4L0/fd1BWJnHX5kjgo56xDZMlggTQ4K7H2d2nj7uP9kB2RraB5jzg9h177UXxAl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,20 +87,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Jun 2026 11:11:05 +0800, Zhen Ni wrote:
-> mm/memblock: Remove redundant pageblock_align() in free_unused_memmap()
-
-Applied to misc branch of memblock.git tree, thanks!
-
-[1/1] mm/memblock: Remove redundant pageblock_align() in free_unused_memmap()
-      commit: a5d67c54d414ee707333ce179d4492e99122e5b6
-
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
-branch: misc
-
---
-Sincerely yours,
-Mike.
 
 
+On 6/29/26 12:03 PM, yahia wrote:
+> From: yahia ahmed <yahia.a.abdrabou@gmail.com>
+> 
+> shmem_fault and shmem_writeout access inode->i_private
+> without holding a lock, while shmem_fallocate is modifying
+> it while holding a lock, thus a data-race is created.
+> 
+> Fix this by using READ_ONCE and WRITE_ONCE, which provides
+> an atomic, lockless read of inode->i_private which prevents
+> compiler optimizations such as caching in registers and add
+> writing to inode->i_private with WRITE_ONCE to prevent the
+> compiler from writing in registers.
+> 
+> Reported-by: syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=76cc716982cf0254f302
+> Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
+> ---
+> v3:
+> - Fix lockless read in shmem_writeout
+> - Apply WRITE_ONCE and READ_ONCE across all
+>    locked instances of inode->i_private
+> v2:
+> - Add WRITE_ONCE to shmem_fallocate()
+> ---
+>   mm/shmem.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index b51f83c970bb..1c39e9dfc524 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1657,10 +1657,10 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+>   	 * reactivate the folio, and let shmem_fallocate() quit when too many.
+>   	 */
+>   	if (!folio_test_uptodate(folio)) {
+> -		if (inode->i_private) {
+> +		if (READ_ONCE(inode->i_private)) {
+>   			struct shmem_falloc *shmem_falloc;
+>   			spin_lock(&inode->i_lock);
+> -			shmem_falloc = inode->i_private;
+> +			shmem_falloc = READ_ONCE(inode->i_private);
+
+The locked read cannot race with the write side, so READ_ONCE() is 
+unnecessary here.
+
+>   			if (shmem_falloc &&
+>   			    !shmem_falloc->waitq &&
+>   			    index >= shmem_falloc->start &&
+> @@ -2647,7 +2647,7 @@ static vm_fault_t shmem_falloc_wait(struct vm_fault *vmf, struct inode *inode)
+>   	vm_fault_t ret = 0;
+>   
+>   	spin_lock(&inode->i_lock);
+> -	shmem_falloc = inode->i_private;
+> +	shmem_falloc = READ_ONCE(inode->i_private);
+
+Ditto.
 
