@@ -4,116 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94815C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 19:42:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3A45C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 19:50:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 597716B00A8; Tue, 30 Jun 2026 15:42:02 -0400 (EDT)
+	id 66E676B00BF; Tue, 30 Jun 2026 15:50:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 547C16B00AB; Tue, 30 Jun 2026 15:42:02 -0400 (EDT)
+	id 6469C6B00C0; Tue, 30 Jun 2026 15:50:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 439346B00AF; Tue, 30 Jun 2026 15:42:02 -0400 (EDT)
+	id 537576B00C1; Tue, 30 Jun 2026 15:50:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D3F16B00A8
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:42:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A5A831683A7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:42:01 +0000 (UTC)
-X-FDA: 84937599642.24.F7476EB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A52C6B00BF
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:50:29 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7ED7E9019F
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:50:28 +0000 (UTC)
+X-FDA: 84937620936.11.50329B9
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9AB5E180004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:41:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ONzg81oF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id C5EA51C0005
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:50:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=le072lq0;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782848519;
-	b=eYcgH4AhpKAAjqYDppB++LehvGeGkkxq4+I6nlm9bvhh9Nfk2w6hrTLmvK/h+bY954OZVc
-	BCo2XtpyW9AQdbprDech2nSMYoA4XLmPjt43L1vC+2OqhGuMLopc1hztkajQvcYUl+IB9b
-	4w19uyYRa4pVMDDcfSSZUKIFJ7RzXEs=
+	t=1782849026;
+	b=YADwiLqhGGiTRQ52zX4HpTdGD0D21inthXYVGIIiAvLDDXYjNyL3iXi0kazTQuhZGTyNWy
+	TK2GpQwRxfrLqkhasI/zPFCNLm6/V3qG7bwZZ7hU7XFWK6hgT4mGL9y653MTNPVoyyUqfs
+	MqxGUbzrOPEHktJvOjr7eLcw33rs4F4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782848519;
+	s=arc-20220608; t=1782849026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m1Hu7A4UhmYRhe1m1e8rBZ7Nl7tQc2Vk+DTc471ehKc=;
-	b=fMAhpAGc3B3ssx8WOuazMCwp/DKRcbSaJ46MpT5paCAyW/sk1uVNzgKnnqF/hvZWcWWCe0
-	65iHccGgVYctaaJW9V5cOu6ABlJZu6P4r123V5V+x2q58lWjnuZjV5vguHlFprPPUCY9Gm
-	mosm+H7Pr0ROnqxaKSYCinYhxbk+/wQ=
+	bh=FMxmVQrFcbWBi9W6ES9lijana0prsiuY8ycjOWzjCwY=;
+	b=tMQ/25RVnVnQGHNhMCKJVviehsnGqRPjmumphpg6AzUa/B/On8fyUGuzesNt9tICtnuzc1
+	2tzHwXh7VUEKpW37jxrGWAyaAqLwnpa9HtdNHUYQ7dNn4tP50GWmcqmZzaDboxJ+BU21QI
+	GqA7fKXQ+V4TpNYVN/CIXoQQnPk2vvw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ONzg81oF;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=le072lq0;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F23B7600DA;
-	Tue, 30 Jun 2026 19:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584301F000E9;
-	Tue, 30 Jun 2026 19:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782848518;
-	bh=m1Hu7A4UhmYRhe1m1e8rBZ7Nl7tQc2Vk+DTc471ehKc=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=ONzg81oFk/PDWeX6IROp4+f0i7JoVDhUBuurseMfTapXHzDzE4scvfjRmBR1Mh/bc
-	 JPRHWvBjPQLNz2zyKN2zBhSO7L+ofXep5snit5Ar5o2i9tzWGyyReUHPZ8Ab3SUTy5
-	 kEc+FnQK46TIjTJOFW+lpGFVyH0UXfF6txN9b9KZP77d671ndnh1Nlrsy9NbGhcM3K
-	 Ac108C2qM56ZZ0EAAxNQm/YCH1JTgX46p87ZaXmG7IjOA3QFct9v8Fl3OQxvtLSUYN
-	 03YoYhar2ZLdz4v0dQQTz4e6gwuy0ws8PavxEteU9ssdm9Oj3TdF2qj5AsLtGqa5OB
-	 oXGb0PC+wyEyw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6609AF40068;
-	Tue, 30 Jun 2026 15:41:57 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Tue, 30 Jun 2026 15:41:57 -0400
-X-ME-Sender: <xms:BRxEahnk9vAGQsgIN0gDfzCM97VSaT9mhUyb6U-9dW0FIR3kdsVOBw>
-    <xme:BRxEanpoqDpP1mOnnLuauLX03594Zsk0oNWAmvfBvkMM-AbdqzvSWxXzE-kgXFfvU
-    S24raSm0Zg4Ufpk__-yNvzJBYmYlDCAPOPPpx5qL6w1odn1OPfHZZU>
-X-ME-Proxy-Cause: dmFkZTFAPBwvbmhzGjVyCOgmT565eqnNKdGTHLZLtgQb+uinOgWLIybyc7yG3a/6L7j8v4
-    GFcIM16Ly/rGLMH5WPvNN9UKC9df2+sY3hLbgqnac1dARd6Sc/VyiD2xvBDcJqw916u70o
-    HGfaclnUk5OTTXYTAyRmx9XHI/tgsTHQwBzU5XZQrus2ULNbpSCd450sGKeI9ZHQrLMLEv
-    x1SjodKGAGhTIiWLLi8PBMDI3d8e+kjbYMsYr8X2J8BXF1Ti2LMX70Cztn6MvMOUMYOgLA
-    DmbQt5fS4p+YHTZoKlGDQwrKsYZTN8jSXgbL3eW2Gyi7GISmx70rtLem2O5s7BXYTYlOU7
-    IPpIWfD978FhT7x73O15cs2u/X1u7UKiW65oJIM8HP8Ot/i3SRGJmTbZOoXaUpDbdktwFw
-    apwjx2WOYYOBFKI10a+s4OHFqbFNWMQ+UZFHt+LrmlHnusJOpVZLzqwrXOP++Gx6x5WVg9
-    8SY6p1s3rzWgVLkBZy3bvSK6Az5fuhyqMupL3r3teU3woKULQWedunCkcBC5h4o/OdL5Jc
-    y2G4TIfEoRZRjgIjJzFJZo2aDsp2Yv0hSTIoXi2DAPFeNJwWmqh3DYzlDqbBXOl1R5vGXa
-    Yvx4iLz2sThtMsoZAb0ajHcJSxew7+AeH285WR9ExaD0DS3gA6WX+SaxMeiQ
-X-ME-Proxy: <xmx:BRxEakFDL5TGk6MfQRMEWcAKCP47ahS2OOaufklRbrkKhj2LS_jEvQ>
-    <xmx:BRxEaoQnqHuyUuHfAuM0YwFIV3Gj8JN-DYlOdzIGK3DRfmhX7_cZCw>
-    <xmx:BRxEatLh0a1lU2Jb20W6lBHPBiwnLvW3TojXYmRIlxWjWMqh4CugXQ>
-    <xmx:BRxEarbWpdvfZgG-OO_bPxsB1lsp7AI7F5ip2G0ixC0WDqD8axR57Q>
-    <xmx:BRxEan_LjzMStriHNNNZcN8u1KmPoCbD6ABudxejmBSXa8823mXxdCMW>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 42B24780AB5; Tue, 30 Jun 2026 15:41:57 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-MIME-Version: 1.0
-X-ThreadId: A9AULPwk-68B
-Date: Tue, 30 Jun 2026 15:41:37 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Liam R. Howlett (Oracle)" <liam@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- maple-tree@lists.infradead.org, "Chris Mason" <clm@meta.com>
-Message-Id: <a1500111-40fa-4845-8d79-0473e19bbf45@app.fastmail.com>
-In-Reply-To: <20260630190843.3563858-13-liam@infradead.org>
-References: <20260630190843.3563858-1-liam@infradead.org>
- <20260630190843.3563858-13-liam@infradead.org>
-Subject: Re: [PATCH v2 12/19] maple_tree: Catch race in mas_alloc_cyclic()
-Content-Type: text/plain
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D194600FC;
+	Tue, 30 Jun 2026 19:50:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3F31F000E9;
+	Tue, 30 Jun 2026 19:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1782849025;
+	bh=FMxmVQrFcbWBi9W6ES9lijana0prsiuY8ycjOWzjCwY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=le072lq05S11cthELKbk6B5NinT918q60jWaE/wqstt7IXJGysONgpodmnxn+0d/U
+	 zy82u86XKgQsazaCVeE6QmjyZQC9dUSLOHggftvCtSAadZXZVq+8/SdoBWzmAvqvGl
+	 e1nUYigYVV6gYyqi0snij/xCYsi75KhgqV9+EE6k=
+Date: Tue, 30 Jun 2026 12:50:24 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
+ ziy@nvidia.com, linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan
+ He <baoquan.he@linux.dev>, willy@infradead.org, youngjun.park@lge.com,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, Liam R. Howlett
+ <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka
+ <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org,
+ nphamcs@gmail.com, shikemeng@huaweicloud.com, kernel-team@meta.com
+Subject: Re: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
+Message-Id: <20260630125024.6c079ea708630d99708e26f6@linux-foundation.org>
+In-Reply-To: <20260630164143.1595669-1-usama.arif@linux.dev>
+References: <20260630164143.1595669-1-usama.arif@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9AB5E180004
-X-Stat-Signature: dcfssjg9ha86tdt1gan5tk4mnbq71jm5
-X-HE-Tag: 1782848519-269752
-X-HE-Meta: U2FsdGVkX1/d+6hPab0ePnNBI43CuKuLxMs9ObR4jJHIdx7F8+QepQ5OLsobzkZxn5tO/rDBqyXE01a7ZWocAcGs7gzXqlfJHB/wb4dyMTzAC3YM6jeOqRfYe67g89RtNLLdcgrhg1BrDbfQlVQ6q2whG75E7xsFGc8cJiAXtAv32eteJV/MNKKMSTpC9U580072gHgA9Pi6o7+cakjUmmfN7sCok5AMGU/DwN7saVfQDLSPMpWsgkVbWMKAQM9QaFJYNQeIaYHvoM3y1rTMM+t1Cwmc5++diOw1nYqtjWmGLs2JjDR2MMPezLq8lt+4CHpwUHjYwy3kuM+bZE/rAvhzZnr77fUSFDoTmlR+u6w1BzwCqclfinLUXat0UGgZ328fXDkGcS+ITVCyzZolA9cf7uR3Vp5vKSKg1ASV6WMhnKe81Zo9rN9xRTqNYJUzAPWSBhJl6zUnrdLjtXdrpvvvgzGE76iUs/j11SP7WVGJqsej4Pdw3Qu2a8PG8K4IbaKJiEVZ0g7HwT983NuenDpT7BeMnOOgpe4jHQSFzCQLatwaJSG1x7CVye+7vjDYjpbe0uYlWi0DAKs1SySYZ5CALTVcV1j+BwfCk+COv+TehNJtGCoYr+zInaZctRMI/AloC+oDEVju1TXo3JYKXEc6Ky0juOcIxSCyAnamR/nAq0DRJW1e1YpPK4tv+a2Sznffzu98soXIMyfgHzKr1LL/mk6UnsFwSVIjL366f98wZBVsbbU5b9Tjh/36O4oeNJGXm7rcCBWu18HOxICOvM7mdrYromwiY7uyfAC0HXgSIGjyEkdZIKsgR/+Ux4vsyrzGCf1GqzPiRaFWT5CPiTeHTqwtlQG5aa+a8lmwgDm1b+pT4Y5KSgwB3c/Mtjnr6MqY/IohjlaNtOz4dN1lfV70eQx1vD26CjIM+4bmXQMReMS0hg8Tsh4Cz4ZGQrpVjfjdeoopEc/k3AEDwZb
- 30c/Euq9
- hzOZiEebC8etKDwGDzIFJak4Z2n3bH5SoV0mOK+U643lGIb7il8mtEoA870RFqzE4vnNI6oqXh4H3u11kWVqM6QFavz8ekEwYno5+7HoJNT/zk1gWQj7HWKJx5QGc9WSCbkOL+dRz18fSBYEItqhGuYd/aD5YnpGxAOn8dQzWO76qvU3XaKBgUviatZuP/vTOjurhsRzDipyENVnDOsuGOHES0Tv+gk9K0IpAfgBMOaTgQWA7LH8nZyQ9knymOPHJk7X8JpvK6Hr1t8psoeeM9LnvxqXZesq3kcMWZwjSP+5Gcyx9XUDZi2BJy+y2bFQmYV0lbdfX5bjNmMG55hVlLTXZileOfVz/sIupnPvOlggSB+AFlT+x1t32siao4MmmQ6QC
+X-Stat-Signature: p9pb819s33coasoe11uddthx6z6ru8by
+X-Rspamd-Queue-Id: C5EA51C0005
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782849026-195990
+X-HE-Meta: U2FsdGVkX1//iN3B2J2OflPCLz7Ia7JIsgZieuH5DTVweNTj4Q+o43BUooQyKvoJuvdsjBZTe6IZN4ZA9qwl5BKbO4ZGX27lVskJgNKEZhA1Z/0kaiIRc+UhGdAZH8XM1KhuiBYPatI2IH3sOCeW6yNMM7h2Zae7r0k1F3JR0EnTxQfU622O4d3Z+jyutDEe/uU4W3H1EknLwe9lCgWZiycWImyGbASsyvZft+PVybE/ZIAHBBdevxffLBo+X9ocBq4EWk2Ne+iS4p3a0WVqT3b8g2/9cpDoJfVI9ZeRYxkOnirvtUokvk9X5OQkriA31BUzxuEZCfIXoq/zCC9uDX4WUnSJ61i+xNkHkJFdLI+VHJdQTo7hWRgF4ZVtVfJrKkh7ngnB6ek8a/70wJCZVvt5kdzYpAJ1nwb3Qn4QdDiFpXecRhILd0YuNK9bMrhCV19aYi/7hLPLdaXU2d+7msQtqLX9wyl1spBCevA9eaRZKk+MQzKc4ovM4aMJp6tExVSlYqxgjaAXdW1rcm9+4WSi0vvEUa2A4EYRl+IjibbBBpU78FoSZgdtK5U/AA657TCCa2r6Kn72am20jbKG5r9LWgkzB6h06BFtwxt3mMRHUdWLv2ArpIHYtpNXqpKsA1NTlQa8wekTFEZk93GsYow8Bncc2Yvm/G3B94lIf0TqRBwqrx72UGfxJ5xm3ryDfc2W2qsQYxVpN8lVBzzaw/W1DvOmRVqaB7Rs5notq2uHNoZB4hH7BunRspP1Bm+VX+sZwx9TtL/++uDO4o2oAQ3EPF9vKmHpZHd4ogItE3ASj3d8OxGB9WGxMxFG/FePm85J0s9lkmMMQxvaC4Ejs/Eyt8R0GziFFR44Gwf5+8vMtoq+hSZYnYG3KcA/UK6UMmGcF+qSzV16ydboKpChVHLU2W8FOOaNGIGNMH8jZB8v+ect4SA6Ekh4U1Fb7wsPOJ+gX+aIUgnSWVjWpJS
+ 3epsJ/H5
+ D2pIAL6n/KAVDYwWPw8O3hfbJ2xsS43DB3he2RlPbsT2lR30TNfOF+oM0SiYoutGPDhgGI7j6tHiQsIew2JvmRl8vMBOSGN62pSsoyNh5DsOXKDIIDWM3lBd4kp3acBF/Cw3uoKmNKBQUejf2DFaxsSFPHUsdJtqv5R1qbFfaJd1iF8aC1v5O2f3dJx4ZgYGi/Z0dR5fwbKXC4p7nN0ePdOaAxf32MslD9eq7RNidh/SGI/61KfTF8qTenG8MJQuZoKkBr//ljn7YUt9pjLSOqZ7+e4tim8Hg1wIvbj5ulLp4ONOjZ9zNIaHAUQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,30 +96,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 30 Jun 2026 09:34:37 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 
-On Tue, Jun 30, 2026, at 3:08 PM, Liam R. Howlett (Oracle) wrote:
-> If mas_alloc_cyclic() is called during a low memory situation, it is
-> possible the lock may be dropped so reclaim can occur.  There is a
-> window where some other task may allocate the same id and cause the
-> mas_insert() to fail with -EEXIST.  In this scenario the function will
-> return -EEXIST, which is not expected.
->
-> Modifying the retry on mas_nomem() to re-search for a slot means that
-> any race with other writes will not matter as the lock will be held
-> between finding the index and writing the index.
->
-> Moving the flag logic avoids cases where the flag is modified on drop
-> lock/reacquire or when the write fails after clearing the flag.
->
-> No existing users are exposed to this issue.
->
-> Fixes: 9b6713cc75229 ("maple_tree: Add mtree_alloc_cyclic()")
-> Reported-by: Chris Mason <clm@meta.com>
-> Cc: Chuck Lever <cel@kernel.org>
-> Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+> This is the preparatory part of the PMD page table swapin work. 
 
-Reviewed-by: Chuck Lever <cel@kernel.org>
+Thanks.
 
--- 
-Chuck Lever
+This comes reasonably reviewed, so I'll queue it in mm-new.
+
+Why?
+
+- Human review coverage and AI review make me believe this isn't the
+  final version at all, but I do believe this is something we want in
+  7.2, and getting it under test early will help to push it along.
+
+- Getting it in there early means that others will base their work on
+  material which will probably be upstreamed this cycle, so this gives
+  them a more accurate base against which to work.
+
+Sashiko did find a lot to talk about, some of it pre-existing so can
+people who work on this code please take a look at
+
+	https://sashiko.dev/#/patchset/20260630164143.1595669-1-usama.arif@linux.dev
+
+
 
