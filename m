@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15DD8C43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 11:00:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67BA2C43327
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 11:00:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F39F16B00D7; Tue, 30 Jun 2026 07:00:00 -0400 (EDT)
+	id 59D9D6B00D9; Tue, 30 Jun 2026 07:00:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEACD6B00D9; Tue, 30 Jun 2026 07:00:00 -0400 (EDT)
+	id 574E36B00DB; Tue, 30 Jun 2026 07:00:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E27C26B00DA; Tue, 30 Jun 2026 07:00:00 -0400 (EDT)
+	id 4B3226B00DC; Tue, 30 Jun 2026 07:00:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B46196B00D7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:00:00 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2F8334045E
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:00:00 +0000 (UTC)
-X-FDA: 84936284160.02.774119B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 936AF160006
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:59:58 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z+l60L7w;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D2456B00D9
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:00:06 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8372616806A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:00:05 +0000 (UTC)
+X-FDA: 84936284370.15.5E75111
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C0B9140004
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:00:03 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMVGaWI9;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782817198;
-	b=imSOChhc0n3bjkVCdWqMURslpl3/LwEBMSd9rB3pSPAPD4os8C4gmEsj7hU/RcQkQ86F4L
-	xistIumXcIRgfOkUoM3Iqa9AsqfLpHdS6cvEQx6zcrrZni4UjzhEgQewObuxYRew8CSnhb
-	vIcHAVz13t6qRjvijFQMnhA8nZRgOP8=
+	t=1782817203;
+	b=5gKRISWZGqU8UIgCH0QGfzmU1W+OulU42qDYS8GrMXF89rA1Y02Jjuker0a0vCWczBg7ej
+	TaRMuj2d45kUkHhUNWKWVWI7cxNTJT39cReGgobYK5+98RKFWQpNOd0SJgl3n8Ey+crNh1
+	LZhcRBrdzOjkn+c10fM4X59VLzavSrI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782817198;
+	s=arc-20220608; t=1782817203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uoX4qX+FZWfnshgsq0X7cWNdSoKNRRVi845f4JIWs1M=;
-	b=FLvC/Xe2EAb5Ptu773YaUlaxw9ETHZTZvC9e/iCNSWNOSyFM0R6uUyarphyKru3ZriH74d
-	2henNo+lXAaJO6y0kbKVDKpEM9Iebd5kkmLeDziWphui1L0jJt/e/lkMSKoS2KE66Kna9E
-	UOV2xYn5/oPBIeRTCzlI40M84++DnrE=
+	bh=qVNG6A0QrvVc3Q5VGETu2ZNN6OFwwV/HGShrasBWJk4=;
+	b=jAk5K5wS2Yoqk7jpUb0gcq/6EatBzzqjB40Ac+0hvWjI0GVYD+n/79S7Up8tUStbYQW7NR
+	++csL6ac4J5p7NfdcgNZg93eQwHP5nCRF5KSUzrMMy/0/8GofMOFoma1vb0LhH69Xxf8mv
+	Yx4GILsspKilPSOFONlxyxYZNcKebrM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z+l60L7w;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMVGaWI9;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 371AA600FC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1412840E06;
+	Tue, 30 Jun 2026 11:00:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1A51F000E9;
 	Tue, 30 Jun 2026 10:59:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617C81F00A3F;
-	Tue, 30 Jun 2026 10:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782817197;
-	bh=uoX4qX+FZWfnshgsq0X7cWNdSoKNRRVi845f4JIWs1M=;
+	s=k20260515; t=1782817203;
+	bh=qVNG6A0QrvVc3Q5VGETu2ZNN6OFwwV/HGShrasBWJk4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Z+l60L7wn/PShGQKOVf1uhUaR8+VJHm56bmboZldAjfa5+rWFzL+mzZyxkjjooadV
-	 wsf1HlrnDhCLt1VCQhMO057gNkL4/ki0eS/5OYX9/9ZwvhGEhpKb29+Gm8Remz6d1B
-	 Rmw9MS+PDoCRERuT8V6DQMMADlSyqJGDnomFNnSdgDlNF3cRw5cFcdPMrzAFDKnEAH
-	 0XRtlJyBXyq0BuiKqcIxChmIVmPvNkYVA6aM/GsMSFtH6N7RDP/AuEG4GPSkJoO8uY
-	 mpbzYCwoD5Pw010DnINlP+QgJtqiDzrYGbzBGVg3vPImYTt0vDejn1AmTXPB2q2pgb
-	 nqljjBe2Hkszg==
+	b=ZMVGaWI9VL4Ex4gSsvHRdpL8r28sBJeHwMEuL7+lauPlew2FTdOEsgs2ATl1+atca
+	 5LYGcr4dixAyl65dQrx1zaB/Glfflj9NCXAqVLtCfj8sE2er5nqspknawJYfva0Chv
+	 vKRhkeVapVUnpfeuyh4J75IHXPeUUpy5UPveQh5Llp1phBnJX8oYOScCnmkcIBSI6q
+	 EkJvpcSINDcZQKSJ/otkSjIulmeOQfuTzYU9nqou8/TxgPQebt/GjHstOjzw9cPTO7
+	 WUMbUxdHMl15cDSi+gs3tI/IEI0Ne+cwtcQB5Ilb6oLY2SCNlfdksJjYyFL7tCxlDT
+	 rQgDawk1deirQ==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 30 Jun 2026 13:59:25 +0300
-Subject: [PATCH net-next 6/8] sfc/siena: use kmalloc() to allocate logging
- buffer
+Date: Tue, 30 Jun 2026 13:59:26 +0300
+Subject: [PATCH net-next 7/8] sfc: use kmalloc() to allocate logging buffer
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-b4-drivers-net-v1-6-672162a91f37@kernel.org>
+Message-Id: <20260630-b4-drivers-net-v1-7-672162a91f37@kernel.org>
 References: <20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org>
 In-Reply-To: <20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -89,13 +88,13 @@ Cc: Brian Norris <briannorris@chromium.org>,
  linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 936AF160006
-X-Stat-Signature: dxcq1o8676x1nom8oktykhwsrc1j5qp8
-X-HE-Tag: 1782817198-877650
-X-HE-Meta: U2FsdGVkX1+rLz7fxVeB/OKXjJoz0incWgHshQYAkrWwjDhEeFAhseZO932DdEF0lK6PM95DaVTaUpGo+ZAjBtCmitV+SOr2qfwsK7mauJlFSO2HqeB6iRt2HpefOCNbb8FylEMyFtDe4Kq6Pei4i7aDmnBe394VT8XnJKsAKnjZv4+qlXfplXi4amNlAzF/wMHUmYR9L22jcgnZ2r8NJB1jPLlfqXtkwnrfgp+rvMqhP58GQyF0hATvpeuzWHaBzybgS+nUqWUUboCHYaORXs2bKSpw2JBEky6gUms7Le8c/pt66CuhtHCzYd0qVmSz+Agf7fANCgWHBQinfZp1Zlkwf/lNpI2YcBVarTz5j+9hWL3+1MupnxBO9jzAZWl5am33sFMj8ipZEKyVu2Ouy2n8V0T7Oxs+V06KdVn5k3E3TSDdSX2C8miB/VzGyI7uHYGp79yx8R4a7n7/SBajY6gg06gcFxCb+Gu9RamEiXDENO4Hk4sQ1xPo2Q3KjzPzz6eyKe2r36cBpk4CDfizVauPTN9A3Mz1EoTlbmXYHPgWX68ndakr78C6Bd4DQc0DPzIvVkJAhONFZUrOqRO51Y+Q7kDN/VoEv2KqMJXc8ILgF9unlScsI+IX/osKRFH2Ih9MFG6gz2GJv1KeYlwr47nzODtlXcMeWaA5lK7t7P01VUa8AhR4JxMFHBijAmyZlA6zN/HBYdWdo9q1/MB1B46FUXHS3wj79hZsEI6kVAEE7p9ctscFGmBEsWHHqsUWu7eT7gTWDLomGp4Rrnb/esN0ZNiuSAWLW3cboBL32f9iNF1Uz20uVIZQMQ+5HjfLkhdHIDPyoW1q3fgEsyRIuEyJ6VoPwzVWdPIIy4CHNmmZ5LT1s+kcDTnEKv87N3eS5xZ1YLSecoSvi4bV2S+aRwAwwwM+vf+idYRmhKHtiH60uVU5HJS7jBOZHzl5sPkC1uFjf5spSb+3Fd+UHpm
- JVH29yHO
- snTwjOsmNVIqzucWq1PwSkTZE95D8W2M6VfFQdqOc8SHN6FkA7JNtfSYoBl5ldbpmUWlCfIfTKrJwkbBD0X8gQsi3OJp/uHZFp15jlOKuj6oRACuNBOKAqD7kKsO0LvlS0cjx6XNViAgJp0X7SKMRAdfNP2PLFv1FZBZ4bf+M4mQnlrYyddyUPqXt1D5Dx+lxvyEqzdOjACo9BKvL2vsMMU/llPT8MrQb5P8SQrLgHKTCaVaoD6u31HsrKGiE5Y2ff+YtM+2aKXavj+5W6H9dLw7lspoh2MFBE6cHAg3F0l6Bfjrfmwx/wYzOQiLdRaDqoff8fj2dYlNpjyly8PYR3KvmB8+QnenXri0I16lLwHJf5e4gkYvDjpENi52wgASNnD3p
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C0B9140004
+X-Stat-Signature: 8p4ksw715sjm7ma89ceggx71s6gky4pd
+X-HE-Tag: 1782817203-680140
+X-HE-Meta: U2FsdGVkX1/wP0mgfZGBprRROdpTOuQWUfql1CkJDxX20Sz1wq8oar8qpMcN2pocrOnPfMvjC9hlk4ixPtMC4RkK78lXVkUkKb8nI8Cijngtgh05fIw68x6fUqdb/KuS3lXEtG3nVWE+OgXgyLuFPBMyzltkec6OZLvJA6oNgXrDi1ydFiUEQg02euSOeD1asBz1XpKYqqQdOnqdAPpEnPlaM67GqjWZikxwk1Oy9eYBET2tk71b0dZjuxOLr+znINheXvOiG8qdJ7ay1W7wMtEdNlr+hwb1MJj1jXG6SmtdtKaWi6Ttv4ewdRwhoIaEPAE8FPpkJfU1UTqpp8KOaBHyjFbU5ePJtLV7UQ19g3zVKnEmVyl2gYws2/VBM72bL9h62iv7JsiY1MWGksWeDcer54hz8V7rY9ViAC8molLelT/JsxnWkgBIY59Hrs9EEkw2IKUfRVrs8IrLyU5uyJ0D5zPzff3NyHSAHA57TspSifJ/d7ZXMa+E4rr48ZsAsMeXV0nLmSz8qXveMUx1fkGeeBRViAbDEeu2fkom1MP4kbauHLadGoclCD97YXJdcTLen6Vdpy3ZV9Eg4bqsNeFmiWdp63daodgx01MSMxrP8f7jmuntFXAr2dcbycpgHQph63nAwMG6Pb86O6ysGDE9qP5Vp+9bxoygyblWBt5O4G7OYy3fN1gH5RUeOn2gMxDj9YIgWEoC7H0bvHf9Ta+iKzU2e2DWBhecJLAXzrCYIjKQghfHVBBNLU4TCSgStm8DX8U5+zKvdJ+wXljr2VanST1+vDsu5PnEiMacbt/Cv5LGcYQmVIZLT5cKEiD85x81f64hv4JuThdKxsZVv3RrFipmMrJ3dOLEdhCQRWtGaVdYYKXRTSEAgfOPqcCOmB0Es0+5B/+eDuurURjsUygnECdfEfzyAJP/NS0oGH3YAnq8OrZY2BkyGLJwIAZ5wIQcDSJwh6CmerR/9mr
+ dXIGRVeP
+ MGxTeHfYS7hNuUBe4OFakUy522JJVZxVflxHPuq+ErqMXt6HmkCMnCmMWpyzbCc47Uq07lBOYaALagu8LW5oF9l9ncDBG8VPWR5XVuUvoTDf+rFNqv0KsdExKyF7oZpAYjNxjSa2rGja9sYhiSXOt694cUZW7Y/Vq0ui9uqCMrmyskRL95VWl3M0M28P2WSonOY/zAWrHBtf7y8cx8r988tO49rPeQRfjPkxMnAqEfxhssJAQJVyMRVX/j1vwrlsTWYEUtUm36gG5hEQGMIKJzXjSy+M8F26Bir852xQu0mk6l48iK4bf1urcDfXPnJBebe+IG54Djj3TzAJgG+EOf/1efEmHHhiDPpfzsxNz5M31a+uHkkG529Hf63Oiwf52eT32
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,7 +102,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-efx_siena_mcdi_init() allocates a logging buffer for MCDI firmware
+efx_mcdi_init() allocates a logging buffer for MCDI firmware
 communication diagnostics.
 
 This buffer can be allocated with kmalloc() as there's nothing special
@@ -125,13 +124,13 @@ kfree().
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/net/ethernet/sfc/siena/mcdi.c | 7 ++++---
+ drivers/net/ethernet/sfc/mcdi.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/siena/mcdi.c b/drivers/net/ethernet/sfc/siena/mcdi.c
-index 4d0d6bd5d3d1..048c1e6017c0 100644
---- a/drivers/net/ethernet/sfc/siena/mcdi.c
-+++ b/drivers/net/ethernet/sfc/siena/mcdi.c
+diff --git a/drivers/net/ethernet/sfc/mcdi.c b/drivers/net/ethernet/sfc/mcdi.c
+index e65db9b70724..b806d3d90c42 100644
+--- a/drivers/net/ethernet/sfc/mcdi.c
++++ b/drivers/net/ethernet/sfc/mcdi.c
 @@ -7,6 +7,7 @@
  #include <linux/delay.h>
  #include <linux/moduleparam.h>
@@ -140,28 +139,28 @@ index 4d0d6bd5d3d1..048c1e6017c0 100644
  #include "net_driver.h"
  #include "nic.h"
  #include "io.h"
-@@ -73,7 +74,7 @@ int efx_siena_mcdi_init(struct efx_nic *efx)
+@@ -71,7 +72,7 @@ int efx_mcdi_init(struct efx_nic *efx)
  	mcdi->efx = efx;
- #ifdef CONFIG_SFC_SIENA_MCDI_LOGGING
+ #ifdef CONFIG_SFC_MCDI_LOGGING
  	/* consuming code assumes buffer is page-sized */
 -	mcdi->logging_buffer = (char *)__get_free_page(GFP_KERNEL);
 +	mcdi->logging_buffer = kmalloc(PAGE_SIZE, GFP_KERNEL);
  	if (!mcdi->logging_buffer)
  		goto fail1;
- 	mcdi->logging_enabled = efx_siena_mcdi_logging_default;
-@@ -116,7 +117,7 @@ int efx_siena_mcdi_init(struct efx_nic *efx)
+ 	mcdi->logging_enabled = mcdi_logging_default;
+@@ -112,7 +113,7 @@ int efx_mcdi_init(struct efx_nic *efx)
  	return 0;
  fail2:
- #ifdef CONFIG_SFC_SIENA_MCDI_LOGGING
+ #ifdef CONFIG_SFC_MCDI_LOGGING
 -	free_page((unsigned long)mcdi->logging_buffer);
 +	kfree(mcdi->logging_buffer);
  fail1:
  #endif
  	kfree(efx->mcdi);
-@@ -142,7 +143,7 @@ void efx_siena_mcdi_fini(struct efx_nic *efx)
+@@ -138,7 +139,7 @@ void efx_mcdi_fini(struct efx_nic *efx)
  		return;
  
- #ifdef CONFIG_SFC_SIENA_MCDI_LOGGING
+ #ifdef CONFIG_SFC_MCDI_LOGGING
 -	free_page((unsigned long)efx->mcdi->iface.logging_buffer);
 +	kfree(efx->mcdi->iface.logging_buffer);
  #endif
