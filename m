@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F203C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 19:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C35FC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 19:09:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 859B26B00B9; Tue, 30 Jun 2026 15:09:19 -0400 (EDT)
+	id 2DAB96B00BA; Tue, 30 Jun 2026 15:09:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80A4F6B00BA; Tue, 30 Jun 2026 15:09:19 -0400 (EDT)
+	id 28AFB6B00BB; Tue, 30 Jun 2026 15:09:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F8086B00BB; Tue, 30 Jun 2026 15:09:19 -0400 (EDT)
+	id 0B7006B00BC; Tue, 30 Jun 2026 15:09:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F44E6B00B9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:09:19 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2BBEA0508
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:09:18 +0000 (UTC)
-X-FDA: 84937517196.28.5715608
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D6BE46B00BA
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:09:20 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 60DCE1C3761
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:09:20 +0000 (UTC)
+X-FDA: 84937517280.29.D9FE5AF
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1FF25C0007
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:09:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hv3BCoM8;
-	spf=pass (imf28.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id D69A316000A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:09:18 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=TDnbvz3l;
+	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782846557;
-	b=Hsd2c9l/vCTZfJCk5zIJlNDpjL5dNHWb8Ex1gwRhFEgLrBwDiWcmirWKyd3HmDpUTj/RS6
-	uqzTXI5lUDh7npEZrCLvALHhEums0F2BHlMf2/8HaxqIVt+SfXqHgIVmVc6dPJhgEvWqRr
-	l1/vEUOrOxpb95bgxAzJd/4qpvUfDIE=
+	t=1782846558;
+	b=fk9Bofm54te/nMycRYNTxPV/p8DGI0c8Lhj7tna1OGEp5yOMKuOXlDoiCSvX71lnfUcW4U
+	9WSIS7DuwiUlyuqjMvvrhJzwLFKJmjsBJh1l3JK1Rn4M+Ako9hjSbt4ueIQwzlQx9M/hZH
+	TySCR2LKYojJQOkmPHbH/R6AWnCAncI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782846557;
+	s=arc-20220608; t=1782846558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ySvyaqBnJby490O44Q0qs0efkhX6UCzOyNrGR/pLA+A=;
-	b=VZJToQo7DyaUH7ti9+OkpcOZGjoyMTngNC53lfW7idlambYWVjpvt5iybRBYdBOorAeW0d
-	b6jpd1ManbfHQJ5JQnmCcbwqTDTjAbCMn8/qKs92LHq97SUSbiRXooxCXd4nqnQfFRpjpG
-	cw5jyvhq0sV0HXiKF//luY8amFxbDeE=
+	bh=d19P2mU7bCvxpx2bi3qQUglg6+PsjCRE3aXSYueMTuY=;
+	b=0Eia0Dai+MjzEY1ZmoUaKXUFgP1vG+PyWxqQgg+KTbct7YekZy1tx3sk3LqgeXIXh8yTNr
+	u0XtWdu3fVRpmCQEN6WFWq1pPlBOPx6ZHJ7l0EZQo/4cSaEwf3+oZTkGao8lDRdQkPu8dy
+	wGpKPVOSOZrC9tXdwwyeQRK88FW5cg0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hv3BCoM8;
-	spf=pass (imf28.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=TDnbvz3l;
+	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=ySvyaqBnJby490O44Q0qs0efkhX6UCzOyNrGR/pLA+A=; b=hv3BCoM8vhD3ocMbMRW9R3ul2v
-	7QY9ljFg2gkawpcfFGmEiMDJssl22em6nqlJdxIU80C3bD0G1tRyE/u515jayxUybath4UMOTvXNL
-	zZjCBCmV3zGfSP6ChxqqGlCDlRmEbQN/eXHyYPTlAzgJjjvoE5p9o1r1xkX5lyohj8pbgiOxOQFYk
-	PDvy8+UmQp76EYOi+zPmXxK4h2qj1JVQbAn6MiP9OP3uYTl+vm0U2ZEWu69riigKcObOBnp8YzCpX
-	dLaHHXUtUTv3gvcE+gIGfyRdzXr1H3+UpP6/mNbYRx9NpRpVtGn4a5As//A6HDCe6lZi/TTcZ4LBs
-	jaZbkLOw==;
+	bh=d19P2mU7bCvxpx2bi3qQUglg6+PsjCRE3aXSYueMTuY=; b=TDnbvz3lB9rgMKLOweJ4/5AWrN
+	ZQ3ySzjIr86ANtcbD8o/A+//JOAfJSLJePZ2DTDtH3dCOq8KltSnH3QxSYdFuUgpa+5l9rUBvgXLW
+	nNCIp0JlVJXozib/JLi6vXzoMHX3Oe3luwWv+Ivr7i/JmNPMZJKwXE0i03f37GO5lB1hAqM59ib43
+	v235GPOlwRSoRErFNkOJXOVFbgKwjsTM4gV/+O/gX/OO7E6pmolXG4vWV4z9Lw7heMMHf3r9CKWQc
+	LDGpqdIWf3cC9dzh8mT6pTEsmn5fesbikNIOtQHyigYEs978VdD/ImE8QjFB2E6uTKmdGx7NBd4Em
+	JJk74/Kg==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wedpb-0000000061T-3cX9;
-	Tue, 30 Jun 2026 19:09:16 +0000
+	id 1wedpd-00000000620-1k5d;
+	Tue, 30 Jun 2026 19:09:17 +0000
 From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	maple-tree@lists.infradead.org,
-	"Liam R. Howlett (Oracle)" <liam@infradead.org>,
-	Joe Perches <joe@perches.com>
-Subject: [PATCH v2 16/19] maple_tree: Change two GFP flags in tests
-Date: Tue, 30 Jun 2026 15:08:40 -0400
-Message-ID: <20260630190843.3563858-17-liam@infradead.org>
+	"Liam R. Howlett (Oracle)" <liam@infradead.org>
+Subject: [PATCH v2 17/19] maple_tree: Fix argument name in header
+Date: Tue, 30 Jun 2026 15:08:41 -0400
+Message-ID: <20260630190843.3563858-18-liam@infradead.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260630190843.3563858-1-liam@infradead.org>
 References: <20260630190843.3563858-1-liam@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k67q5sti15nw8x17uxixztcpp4cd47hg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1FF25C0007
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782846556-699831
-X-HE-Meta: U2FsdGVkX1+v3PhMdSek3L9i6XaNeWyx3uAv6FdgVQVnY64ZXWr4QNxSDLauUsbmW9oegP07yik5ybfge/3B1vYwT5wBBiJkGadWIEsSsxxDhZ2Wbp0ctkdFHMxRjmtzS15QjjmEctkZjj3fNRtr3+C0Y93B+etRNlYP45lzOLbMrp6hyYC24UQh7VI+rTW/n688FbReA1Vd4ap/XGDq6ZALTPZeCREpaC7uXPbFBmIhmEQdJ0xe5XhI2emgSEavLCMA5jJ4qCW/79GMIgRs7XkRAj5+cwDFRSGv4o2jdtqrueRpYH0lr4wdRMgIPTmCUsi4B01gRBGBRR1MeOBeaBd6obzSM3uk86OpSMeKoBEzjQRXoxpUm8mk9eZDcoQzOhjXV8RhrlSUSAz4pR2c1q9mZrP44D8U8ytYp1RNwQo+UmjTg6PSnNA+oPP/nEvy6L5SnEQXnuyB7kq2fAVIAyIee5TtdCaL3svz6bvOs4Xl5niSctPgcsqC1oV0RWWDaD/z0mPMS14vGztGuSAyxMSBeOd9jh/sHAbTOXrG1+eOx+03MtPIfvNL82ERzetl1bw2HNSvlr5TV5vhjVedm3OydxxVmGszN6P4SDsnPK2BrVMbxVPUxXpOLbQf8LiKpHTJqFSXGm1sg9QHklUfPCMK2gZ+y6JE0sbPo59nqPWS+hs/d6vARfTVb9OsrhMapmHeCOJ9VWESMBnb+iuQHKZvkQk9F2sK1Mk4RODL0gAhWdHBvqbAVCdAeGnP6MEUXlZrXp1Jlilx8d5kJCutIAg0K3wUv17JWprkcb2MbBn+yvOSnDM58PdOQ66xcQg2/pOlBWpPv6XlXpYjWLEdKA7HdsED9bM8ZjCKavHjh0BZegT2Foj/T1Ia50f95MoeTs4GrsJUyWlH/8Oq9paAxfwTShYQ+QpwIQzXxQ3gKFuujMJ73uk/QbI4ZRh096AKYGdbtQhQJKq7/TPQEBq
- g4jgYDg/
- BzWAKCZQPiSb4G4DoXd/wIBt7koEtG929Opg71c7FTDCB0PzvorszVQlmlCnFReR8Si9IT50QletxzZT+1O5hGseVzjPfwUvRmJ0mMdvaPzhvhVwpaGNdS2basl5QxEY/pxQooshSebpomCUf/BYBN5xzkyO6FUuFt/oA2ehP/8dNZ4NwXvRtrmnLyk5Sh8YAYZzqdJ45KhTJyTcfeI43dB1TE2DrLlPzdjs82gqpFbvDjEj9IKv/RUx6rEfzukNf3Pd3tMb/ZCSRLwm9LdyT+jdt9JLHYpqvKrmcLcjXFKRjZM2sIeh0VL5I3tOpRboCQFSCJbX2KEfMiJ3L+dlPUo4hvIrEnLW99TIPfVUb1yEr24Y9XPbg7xnac0jqOBMciOfd9Nu5VdHYfhcj73TQlvFPwds2KtDpskH7fUFVZTSVftc=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D69A316000A
+X-Stat-Signature: dmc7h83zt6fxfje1utxmhbw5nwx8ehdq
+X-HE-Tag: 1782846558-809903
+X-HE-Meta: U2FsdGVkX19pbmE4zz2qkK5QpdBvpESAlgXlXyXDMuJEuh9PG7gB/orTJ7o8nfZxDM/EMCYhmDz8gRbRNFO1DWfKF8YvUy71FQhGOBlvIgc4Wt7jrl5+DL1pgvsq65yKSUhQr7cSe7flRmCQqGqmjPaeCYgs5+Hzo0giTHrSoDdVlsacJ68RgSBo/bsCQjIVl7Hyib2iu/IUWDJHvXsN92yoWraeLiYMu4m3XlPjmcCi7qRefMcZGYS+A8ZT24AxPorrvhpHFADSYgnVgkeowlSfmAXxy2hjMmWN+Y+y6R3gKeVVaW3k7Gs7clui6Up8BrgA1MQKlPiSMT7We62keTk0fro881ObHsA3khuB57suSThi6rWOwGnzJFat/H0iIEBzW9bIdJWVwhRNWwlToVzUrd8pB8P9eqCvWtghxC1dSchGEUcVAlKeUcpifRzWKfwXIRnl+LTMsE4lHjpsM+UUHjSKz0fiO/k6PAcS/TYKTDhYqUjuw+xsVk+FnSLVfmX9CC9VgPLccnCX21yrwLU7RuPCQzRwuRbQ/30Pt2L96L15kPWflrd+QXmIGB8+TIsPMXUeMf4y1LyRl7hD6Cc+3wWKxATixXlx6lNqn+aBxTGLlQ+HdMiynroE5+ZPW1+X08cM+DqDQhYqqnQpyICdzVActdHQJSG8tr1UiWDVgKfNR7qyB7i+nuKXUa25kr2wsXALF+57+/UVHSrpSuRo0HM+KLPslcp+tUq6ei6x+USQkEbzGlq91WHnbKFpPJYavQz4IQreD2s4uOsxXOGhgAT3KSgXBvD0U+Ruz0POdvv1ROVD/ly2jFTWXmZzNNVWcOh0wiEU0AbVRjWy5MD/QObAdJVtxq7AYALR1KeMpzUw55X/MT0oqfz0GXn6eHt/7Toezif4Vn9clr9CP3G1ejMXByQZZZTD0E7jwvuQnPA0N3Neph7BTLH8Dosk/jVIzdgUETPX4XEdlJ6
+ b1MojblT
+ NoLJzOGL6HD6hN+KgN9CcWC3BNaiyRHcQSzE2l1YGSUo4M2LuBRvc0y1IVxZwrNVxxeR+xPpyU+QjFoP11JQ9lFMHG8cDm6rpWoLbDBQr4xN7xWP/PefhvjcBt7mFBTJP6TSrohZRJQQIQKPyervC1s50N/G8xigsu46eOWGFY6f3xU7KkbQ+GYEsl9povA6S2h0GpdbOnBIWEke1GHljmjC/4zJ+KEqiVLWI4kciOPQWCPWrA32pPR5ul06bk+8gf5oklwEwA8wdaU9cZSa7wvmLejlcCTLzvpFCqMYd3VCTpHX4ft549EbvoNwgi8O9psHh8l7uheqhAEgAkb5X5cxTZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,38 +91,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The GFP flags in two tests are obviously incorrect.  Make the tests
-correctly run by updating the GFP flags.
+The mas_prev_range() function takes a min and not a max.
 
-Link: https://lore.kernel.org/all/d9cbb89faa5bdb71d451781d214a51ce8923a83e.camel@perches.com/
-Reported-by: Joe Perches <joe@perches.com>
+Fixes: 6b9e93e010204 ("maple_tree: add mas_prev_range() and mas_find_range_rev interface")
 Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 ---
- tools/testing/radix-tree/maple.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/maple_tree.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/radix-tree/maple.c b/tools/testing/radix-tree/maple.c
-index 0607913a3022d..d967e76a3c065 100644
---- a/tools/testing/radix-tree/maple.c
-+++ b/tools/testing/radix-tree/maple.c
-@@ -35234,7 +35234,7 @@ static noinline void __init check_prealloc(struct maple_tree *mt)
- 	mt_set_non_kernel(1);
- 	/* Spanning store */
- 	mas_set_range(&mas, 1, 100);
--	MT_BUG_ON(mt, mas_preallocate(&mas, ptr, GFP_KERNEL & GFP_NOWAIT) == 0);
-+	MT_BUG_ON(mt, mas_preallocate(&mas, ptr, GFP_NOWAIT) == 0);
- 	allocated = mas_allocated(&mas);
- 	height = mas_mt_height(&mas);
- 	MT_BUG_ON(mt, allocated != 0);
-@@ -35257,7 +35257,7 @@ static noinline void __init check_prealloc(struct maple_tree *mt)
- 	MT_BUG_ON(mt, mas_allocated(&mas) != 0);
- 	mas_set_range(&mas, 0, 200);
- 	mt_set_non_kernel(1);
--	MT_BUG_ON(mt, mas_preallocate(&mas, ptr, GFP_KERNEL & GFP_NOWAIT) == 0);
-+	MT_BUG_ON(mt, mas_preallocate(&mas, ptr, GFP_NOWAIT) == 0);
- 	allocated = mas_allocated(&mas);
- 	height = mas_mt_height(&mas);
- 	MT_BUG_ON(mt, allocated != 0);
+diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
+index 346eae48cf15e..5e0bd2857d941 100644
+--- a/include/linux/maple_tree.h
++++ b/include/linux/maple_tree.h
+@@ -576,7 +576,7 @@ void maple_tree_init(void);
+ void mas_destroy(struct ma_state *mas);
+ 
+ void *mas_prev(struct ma_state *mas, unsigned long min);
+-void *mas_prev_range(struct ma_state *mas, unsigned long max);
++void *mas_prev_range(struct ma_state *mas, unsigned long min);
+ void *mas_next(struct ma_state *mas, unsigned long max);
+ void *mas_next_range(struct ma_state *mas, unsigned long max);
+ 
 -- 
 2.47.3
 
