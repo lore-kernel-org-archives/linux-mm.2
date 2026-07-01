@@ -4,97 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D2D8C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 01:37:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CC93C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 01:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 526AB6B00A6; Tue, 30 Jun 2026 21:37:17 -0400 (EDT)
+	id BF5496B00A6; Tue, 30 Jun 2026 21:47:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FE7D6B00A8; Tue, 30 Jun 2026 21:37:17 -0400 (EDT)
+	id BA6236B00A8; Tue, 30 Jun 2026 21:47:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43CB16B00A9; Tue, 30 Jun 2026 21:37:17 -0400 (EDT)
+	id A6F046B00A9; Tue, 30 Jun 2026 21:47:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A71C6B00A6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 21:37:17 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D4691C5776
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:37:16 +0000 (UTC)
-X-FDA: 84938494872.20.3AA840C
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5E1E920009
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:37:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jMlqi+H6;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6272F6B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 21:47:59 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B85B7401AE
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:47:58 +0000 (UTC)
+X-FDA: 84938521836.15.AD7A65F
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8065740004
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:47:56 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ACb/zxQc";
+	spf=pass (imf04.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782869834;
-	b=WIJTEwbFpbYWQrXaPVccmBqvfZIrv3az9EvqlBtlE2WBEG1rqY3YMY+23UgvnfMrcU3qYa
-	+2rkHnI4BASsg5Hx8TDCS6QITpRIcWC4sN+akuApSDV0Yk6mr0tKkBCfQ2GtYa1wKJ3jML
-	naK+GAEHlMDtrs9GYj4DrGa6XdAPf/4=
+	t=1782870476;
+	b=1fuH2pfznwsFRjUlG4Lh8kE3r7u2WfGrCplJYOw0HVonZQJuaKNzGnHnJbSzxlIC/A+7bC
+	uHt/GMj5P+8TuF08r2wh4QVhQC2i1pHSZJGMm7V6XFcYHqfj3vpNTDX/nlUU23lspXnJT6
+	TxU0oRrNmo5cOupGumWPycJro1EDfeo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782869834;
+	s=arc-20220608; t=1782870476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=Das6bGb+MW83RXxVEqhElDByrLHsF2Du+SHh7TI6M5c=;
-	b=72TB4PBBc+WmMJXNyB0w0YPv9Jwcwox4b3slQG0gRKS3rCiBHg0m+b4QbLmNxbd9EuAUsN
-	9sm8PTljaBePHpe+H0z5rxKD775EEPOIij1VRBGfmr5fhUJx7BCsHELuAOO6cfydmzwvCZ
-	gao5FZp+kAU+0MQzq435znKzum/wHUI=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ysLxtr1n2K4bo9wRx4/EdIOpK0zk8mIVVHbKxk1Ez/4=;
+	b=Aqs2w9LRKA5+1L5TwVtrwRwLIfQ8MLRshcdcWtHbAyafeesFQK5wcsO473QjqKZlv8XL86
+	w63A7dUP5Eia+VQT3PG0979smP+mkKisWzYhAh707vRNZHnvBfwY4582Ep8+X7uM/xEnJr
+	Vj3yf9gGgHPSw1l9SuJW7XB3QjrK9xM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jMlqi+H6;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782869833; x=1814405833;
-  h=date:from:to:cc:subject:message-id;
-  bh=PFxWOFsTYrEDx75BwfRH5hpO6+k30LXq3G+vNZaMPPU=;
-  b=jMlqi+H6kC3nHo5bgKgDAXsr+HvKjDNZEoK+2q7Fug1twBceI0QM9VWe
-   2ZA0pR59pbP2kowtS2+QPrl4RaKAZq1IWG+ikWcTgTna6LWDHc+Gm6jIz
-   CXkk4xVNc0EYQzLm0gr67wbPA4zlrYZ35ebnAa36hFnpKmhFSkKPSdoAh
-   1hcaWHb6pnO8ZokeEn4QTeGNqqXFD6l2JbYYmWZTc6UMPvmmz9oldqNRj
-   hoAj1e6TabUktNz13UppAl5LFQ4J5PZA5FkMVLIGb1osgfeh8sJH0nMz/
-   UzL+mrZWMzAppDXplSdkVCQ9LrseFgBl8BUwezKQ/APuAXiR3GgKTikH4
-   w==;
-X-CSE-ConnectionGUID: Diy+Yw6XT2mYjhabyRD9nQ==
-X-CSE-MsgGUID: NXBi7vozRYqSREmh7OOgHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="87427274"
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="87427274"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 18:37:12 -0700
-X-CSE-ConnectionGUID: Q2TRE87+Qa6oRVXvaxMNLQ==
-X-CSE-MsgGUID: BxGRJdSASDerHOYa/gzemg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="256338041"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 30 Jun 2026 18:37:11 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wejsv-000000008pv-1d8Z;
-	Wed, 01 Jul 2026 01:37:06 +0000
-Date: Wed, 01 Jul 2026 09:36:44 +0800
-From: kernel test robot <lkp@intel.com>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: oe-kbuild-all@lists.linux.dev,
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="ACb/zxQc";
+	spf=pass (imf04.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <97e35cad-20f8-46cf-ae37-18fecb978e2f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782870474;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ysLxtr1n2K4bo9wRx4/EdIOpK0zk8mIVVHbKxk1Ez/4=;
+	b=ACb/zxQcg/Qyy9PQAB+n+SdUBjP5gkfNkc0qneHUbVvZLKbT35HJ0QyVpHyP3DOEy0Oljn
+	J/BViD0FXAgiAlMq0EVr4v3VL9sVJgd77k+tAXQ6CRTziWSFwtvK4y3zo0c7UPKcL4xfvk
+	GUIyk034z++L4bDAPTBIjp3p5uFQdFA=
+Date: Wed, 1 Jul 2026 09:47:06 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH v3 15/16] mm: replace __GFP_NO_CODETAG with
+ ALLOC_NO_CODETAG
+To: Brendan Jackman <brendan.jackman@linux.dev>,
+ Brendan Jackman <jackmanb@google.com>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
+ <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ Vlastimil Babka <vbabka@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 1977/2307] mm/hugetlb.c:3095:4: warning:
- array subscript -1 is below array bounds of 'struct list_head[1]'
-Message-ID: <202607010945.6lDjBFTU-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5E1E920009
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
+ <20260629-alloc-trylock-v3-15-57bef0eadbc2@google.com>
+ <b4916118-3537-4e19-8bc8-1d103dd0d225@linux.dev>
+ <DJMAWIOIOII3.24TMC6HTPXA7C@linux.dev>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <DJMAWIOIOII3.24TMC6HTPXA7C@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: zpa6edz7rz66hscxix5b3d3qattyzeay
-X-HE-Tag: 1782869833-927294
-X-HE-Meta: U2FsdGVkX185fCJKgBlvfnkXQBVgL9J6WjNNGjdLz6iUi+33M1Fzox+ITqeCFx/OTE+dPOomZ+qIVXJ0Ri0WfHoavsxYxTnapm/vkN5lXqKsiHdumE/V9tFPwkkYFxZWJz3A9ePR9lEQRJsvnyf/ejWvMnTAgvgvvyuIPhIskwRPLj98sktgf3s3VlaGnjVM96mqO8agQYFDt5Cx8k45VC0XZuvR92s4zWu32qk8VBDsEFRRxs7+DQSCS3IWYYeCyEyho8NkDswO0O8o7XJfp6YCIPboqVasvJwCs8NyL1RA6frblPHEXmxSflWDUPhVH7N+LSuV/DbEdqMy6VYOb9sm6r6EtAkHfUjHJ1BMxTq3B2srn+wwei6cWNra1QZ7q2CKjwpF/6tT7tJJ0Sd0ausLS6IGMlJ+IgACJRog468LjUFvjWnVftcDHLQPzT286vLd0bvXYjmN58DbOyUK1GLEQ/XIbYmDlRqTBgxccMNBW9hEw0PEZDJBimDhda7xHhRb6zoJ0fE0GwLUzb/mEBdpfUj3AxZUHCv/bDu+6Ej07BWE88fFUAxKoWrLir+dDWopVEq+XfFbhe/78NLwoBKZmyQTjGI/H48OcqeHA//S82Z5u/l8DPTUf0SvjRtQmHMb+mreQuOiUsJ6P2B1b6hH7E7JXnBtQwwFYmVE2DwtOJPNAosESBh9cpr6ui6d+l8vTV2fHsbrZG3p936RhmOlDx5J/c+YfHDc07NcCo4NxONokdsLwVzcCHTiJcKhWXdjEy6akBfdSDVV6JHo73C09/bkIiJ9Po9A+NJcFBc2PcRufsZrLW9YPM6PCR4UDYk3gpZ1alGdRccbyUipuCw3k77hEAtWRBt2sUY53VwyCIBS+MMQ36DHbIG0YVCKxILUg3wJKEQR8DzgAV6WTLNTpJ1l1k3IaPmosyGkajKgMphk3oMMoCZ+9OaOVb0w0lofhBo8afi6k8LP7PH
- Eie7etaK
- C9+v8Vahqd/0c/6QNIrE6J2PaQq1lcjC3GXuZIeenIy8qoU6TabkPRkH3Tb7Qgu6h+aL+8oSncLb08eHwMhuYBEhu8a7ljDkUIU33dPYOIXy/2vsYs8ylQVF9iCt4Jgxd7ZCWXH1OUJJcoKVDiuRVdan2RAadB5TnQe8KLszIZYzmEPeYTYOnxpohQyuarfXlHX0vOH1YmBzNXnJBfvk7QGsjMT08R0n5RMy8iX+a3a30gf+N0jC/IMCzOVLdC0nUJcCWs1zf+YcyfGnlhNX6aYmT5MkC7sx/zvZl5PJ3cBg0E83TkD0XTUqWcSCvWLDEA02I4yFz9UFfKxE=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8065740004
+X-Stat-Signature: ty1gwef5k4yom9g7s3ohzgz37b373jnd
+X-HE-Tag: 1782870476-862837
+X-HE-Meta: U2FsdGVkX1+aB5iRH40/bUHOnw4o49QBuZWtJBxMksP3mt9kh+lF29/qj2288D9OnleM9DHztC5JyZpzShOvBn6FjQnMLXXc2Ik19mP0CpdhatncBn7qtSNcKvB9U2o5l7InuU9SlUDD9ZZECg+7dthJ6pY3A6gyTk9R6Y4pENY052osINPRqeysAYjmEkFxQ1FMu7NpgFbyOLmcBfnEVFcKZ0AC87Ly6CAYJ+PoARUx/TFxqS7+YzXUNzXug0v9JM2YH8Rc1tReSdhaJYawvY0udlebHuxwju3IX43uhPjOfZKy2Xy8UOwmdd66lSJT+GFRyM5tPHnTQ5ZphNk7peAb6dfmUbDATyZIhDwc7YRNBOmD+aosIsGUfspwY/kJOzqgNizZMw6cilvpwQQYuMfvWzktV8ELHnTQT4PYCgPZ2FsQXRSFVStgycfwLF8VXl7etlpxYHA1NdKil++4r3BefghPzYde2+257Zd2BAQvg2tCLWT6vU4lAvI4OH7hDUDADqBcErJW1YzeADM388z3WVBWTa8KMYDq53i2UBMSuyqqhpbRFsgzksX0khRpz0YummUM+JvlmQ/vRvxk5NtKtkZQklb/Dr8afJrfjmqAYBX6/IJe+86E601oM2R/nW544QincH9ti//C99pdVHsiofqiDWyGN2r1aMW3+2X734keI8exbdYmGR7fm8ryUZNb3vH7l1Kxdhcv+f0/DH6U3Ux5CE1pISKS0mlEaf4ywJ8reGrwqnIZ8DkyOX/4zrP7CLwPd87xAGe1Yej0JkqJ7+am8t3yK1hCZnzuK2LRFrQjuBsg0e+XluPs7xKwgAMluF+rB6mpzRl7XSq5VSXeNrb061boZHgryvzTsxudPtwzVBinv6YEWNPicfKv4Pis+1uwRcyX3jt8lUx5dPt5wOk3Ft2ZrU0mKQcr3m4hvQWJ6a3W/WGKBABedNGFtegfUMz+Ed1GO+FmFOw
+ 5CMxsB/j
+ h1bPBq+ohlxL8Emi1MF41uovC2WHKayFgLaswF7uTAyoFrBQfIZgJspHfqnKi0OQBojTV267x4fhQXWCgph6K3iI85WJZ3b58JEIb3+/Eb6WVG3ZpEP6COJ1Sq50KUxB6xL2viKNdeKWbT3HWUxyZ7z2hOHL6FVGWTgNLle9ZDzcXQtqVyP/t7zJdgbbLPPON4btx+9kKNrlx0S3RSNYMnXAB6hzpvTwxImLeL0y/biuHU2dPHBM+GFKBbtyavSmOU+fcYlZ92rBsg8KeR5Oz5TFtbunafiYzDTcqYPuYBWz75VQw7WI1rEcatZpKNb9lqoiEQC0vak8PzwsUdfxfdFRulaW94mkzw2A+CeCSzCla57GqPHru79W2X5Eo7TsaTCtLP5g4/9oFfPGxYGbkW0KReQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,86 +112,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   be5c93fa674f0fc3c8f359c2143abce6bbb422e6
-commit: f48ee682d55e3602fcc194cb93b8398f2546e53f [1977/2307] mm/hugetlb: free cross-zone bootmem gigantic pages after allocation
-config: sparc-randconfig-r131-20260701 (https://download.01.org/0day-ci/archive/20260701/202607010945.6lDjBFTU-lkp@intel.com/config)
-compiler: sparc64-linux-gcc (GCC) 8.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260701/202607010945.6lDjBFTU-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202607010945.6lDjBFTU-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   mm/hugetlb.c: In function 'alloc_bootmem_huge_page':
->> mm/hugetlb.c:3095:4: warning: array subscript -1 is below array bounds of 'struct list_head[1]' [-Warray-bounds]
-       list_add(&m->list, &huge_boot_pages[nid_request]);
-       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Hi Brendan
 
 
-vim +3095 mm/hugetlb.c
+On 2026/6/30 18:10, Brendan Jackman wrote:
+> On Tue Jun 30, 2026 at 1:55 AM UTC, Hao Ge wrote:
+>> Hi Brendan
+>>
+>>
+>> On 2026/6/29 21:12, Brendan Jackman wrote:
+>>> Now that alloc_pages has an entrypoint that allows passing alloc_flags,
+>>> we can take advantage of this to start removing GFP flags that are only
+>>> used for mm-internal stuff.
+>>>
+>>> This requires also plumbing the alloc_flags into some more of the
+>>> allocator code, in particular __alloc_pages[_noprof]() gets an
+>>> alloc_flags arg to go along with its callees, and we now need to pass
+>>> those flags deeper into the allocator so they can reach the alloc_tag
+>>> code.
+>>>
+>>> No functional change intended.
+>>>
+>>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+>>> ---
+>>>    mm/alloc_tag.c       | 22 ++++++----------------
+>>>    mm/compaction.c      |  4 ++--
+>>>    mm/internal.h        |  1 -
+>>>    mm/page_alloc.c      | 42 ++++++++++++++++++++++++------------------
+>>>    mm/page_alloc.h      | 17 +++++++++++++++--
+>>>    mm/page_frag_cache.c |  4 ++--
+>>>    6 files changed, 49 insertions(+), 41 deletions(-)
+>>>
+>>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+>>> index d9be1cf5187d9..a32a94e759b94 100644
+>>> --- a/mm/alloc_tag.c
+>>> +++ b/mm/alloc_tag.c
+>>> @@ -15,6 +15,8 @@
+>>>    #include <linux/vmalloc.h>
+>>>    #include <linux/kmemleak.h>
+>>>    
+>>> +#include "internal.h"
+>>
+>> Should we include page_alloc.h here, as we call __alloc_pages later in
+>> this file?
+> Yeah, there are a few build failures due to me not doing a broad enough
+> build. From now on I will just wait for allmodconfig instead of trying
+> to be clever with my build tests, sorry about this.
 
-  3060	
-  3061	static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
-  3062	{
-  3063		unsigned long pfn;
-  3064		unsigned int nid_request = nid;
-  3065		struct huge_bootmem_page *m = arch_alloc_bootmem_huge_page(h, nid);
-  3066	
-  3067		if (!m)
-  3068			return false;
-  3069	
-  3070		pfn = PHYS_PFN(__pa(m));
-  3071		nid = early_pfn_to_nid(pfn);
-  3072		/*
-  3073		 * Use the beginning of the huge page to store the huge_bootmem_page
-  3074		 * struct (until gather_bootmem puts them into the mem_map).
-  3075		 *
-  3076		 * Put them into a private list first because mem_map is not up yet.
-  3077		 */
-  3078		INIT_LIST_HEAD(&m->list);
-  3079		m->hstate = h;
-  3080		if (!hugetlb_early_cma(h)) {
-  3081			m->cma = NULL;
-  3082			m->flags = 0;
-  3083		}
-  3084	
-  3085		/* CMA pages: zone-crossing is validated in hugetlb_cma_reserve(). */
-  3086		if (!hugetlb_early_cma(h) &&
-  3087		    pfn_range_intersects_zones(nid, pfn, pages_per_huge_page(h))) {
-  3088			/*
-  3089			 * If the allocated page is on a different node than requested
-  3090			 * (e.g., on PowerPC LPARs), put it on the requested node's list,
-  3091			 * because hugetlb_free_cross_zone_pages() only frees cross-zone
-  3092			 * pages belonging to the requested node.
-  3093			 */
-  3094			if (WARN_ON_ONCE(nid_request != NUMA_NO_NODE && nid != nid_request))
-> 3095				list_add(&m->list, &huge_boot_pages[nid_request]);
-  3096			else
-  3097				list_add(&m->list, &huge_boot_pages[nid]);
-  3098		} else {
-  3099			list_add_tail(&m->list, &huge_boot_pages[nid]);
-  3100			m->flags |= HUGE_BOOTMEM_ZONES_VALID;
-  3101			/*
-  3102			 * Only initialize the head struct page in memmap_init_reserved_pages,
-  3103			 * rest of the struct pages will be initialized by the HugeTLB
-  3104			 * subsystem itself.
-  3105			 * The head struct page is used to get folio information by the HugeTLB
-  3106			 * subsystem like zone id and node id.
-  3107			 */
-  3108			memblock_reserved_mark_noinit(__pa((void *)m + PAGE_SIZE),
-  3109					huge_page_size(h) - PAGE_SIZE);
-  3110		}
-  3111	
-  3112		return true;
-  3113	}
-  3114	
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+No worries at all. For the alloc_tag build error, it depends on whether
+
+CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled.
+
+
+> Also, this suggests that I have not actually re-tested the alloc_tag
+> code since v3 so I must repeat the test described in my cover letter (I
+> just manually enable the feature and check the kernel boots) for v4.
+>
+
+Thanks a lot for your work. I merged your patch locally via my 
+automation bot,
+
+and verified the basic functionality of alloc_tag.
+
+The alloc_tag feature works well so far.
+
+
+By the way, you may need to rebase your patchset on top of mm-new.
+
+This patch has been merged into mm-new and will cause a minor conflict,
+
+assuming the mm-new tree has not made further modifications to this patch:
+
+https://lore.kernel.org/all/20260629-free-pfn-on-alloc-contig-range-error-path-v1-1-496ff9ca22db@nvidia.com/
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+
+>>> +
+>>>    #define ALLOCINFO_FILE_NAME		"allocinfo"
+>>>    #define MODULE_ALLOC_TAG_VMAP_SIZE	(100000UL * sizeof(struct alloc_tag))
+>>>    #define SECTION_START(NAME)		(CODETAG_SECTION_START_PREFIX NAME)
+>>> @@ -783,19 +785,6 @@ struct pfn_pool {
+>>>    
+>>>    #define PFN_POOL_SIZE			((PAGE_SIZE - offsetof(struct pfn_pool, pfns)) / \
+>>>    					 sizeof(unsigned long))
+>>> -
+>>> -/*
+>>> - * Skip early PFN recording for a page allocation.  Reuses the
+>>> - * %__GFP_NO_OBJ_EXT bit.  Used by __alloc_tag_add_early_pfn() to avoid
+>>> - * recursion when allocating pages for the early PFN tracking list
+>>> - * itself.
+>>> - *
+>>> - * Codetags of the pages allocated with __GFP_NO_CODETAG should be
+>>> - * cleared (via clear_page_tag_ref()) before freeing the pages to prevent
+>>> - * alloc_tag_sub_check() from triggering a warning.
+>>> - */
+>>> -#define __GFP_NO_CODETAG		__GFP_NO_OBJ_EXT
+>>> -
+>>>    static struct pfn_pool *current_pfn_pool __initdata;
+>>>    
+>>>    static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
+>>> @@ -806,7 +795,8 @@ static void __init __alloc_tag_add_early_pfn(unsigned long pfn)
+>>>    	do {
+>>>    		pool = READ_ONCE(current_pfn_pool);
+>>>    		if (!pool || atomic_read(&pool->count) >= PFN_POOL_SIZE) {
+>>> -			struct page *new_page = alloc_page(__GFP_HIGH | __GFP_NO_CODETAG);
+>>> +			struct page *new_page = __alloc_pages(__GFP_HIGH, 0, numa_mem_id(),
+>>> +							      NULL, ALLOC_NO_CODETAG);
+>>>    			struct pfn_pool *new;
+>>>    
+>>>    			if (!new_page) {
+>>> @@ -837,7 +827,7 @@ typedef void alloc_tag_add_func(unsigned long pfn);
+>>>    static alloc_tag_add_func __rcu *alloc_tag_add_early_pfn_ptr __refdata =
+>>>    	RCU_INITIALIZER(__alloc_tag_add_early_pfn);
+>>>    
+>>> -void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
+>>> +void alloc_tag_add_early_pfn(unsigned long pfn, unsigned int alloc_flags)
+>>
+>> alloc_tag_add_early_pfn() has three occurrences across the codebase:
+>>
+>> 1. Definition in mm/alloc_tag.c:830:
+>>
+>> void alloc_tag_add_early_pfn(unsigned long pfn, unsigned int alloc_flags)
+>>
+>> 2. Declaration in include/linux/alloc_tag.h:166:
+>>
+>> void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t gfp_flags)
+>>
+>> 3. Static inline stub in include/linux/alloc_tag.h:170:
+>>
+>> static inline void alloc_tag_add_early_pfn(unsigned long pfn, gfp_t
+>> gfp_flags) {}
+>>
+>> This patch updates the definition in alloc_tag.c to take unsigned int
+>> alloc_flags,
+>>
+>> but the two declarations in alloc_tag.h are left with the old gfp_t
+>> gfp_flags signature
+>>
+>> These should be updated to match.
+> Yeah ditto, sorry about this and thanks for the review.
 
