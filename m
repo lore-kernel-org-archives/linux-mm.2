@@ -4,90 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65A7EC43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:42:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB2F5C43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B9396B00AC; Wed,  1 Jul 2026 05:42:07 -0400 (EDT)
+	id AF89E6B00AF; Wed,  1 Jul 2026 05:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 242386B00AD; Wed,  1 Jul 2026 05:42:07 -0400 (EDT)
+	id AA8806B00B0; Wed,  1 Jul 2026 05:43:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E32E6B00AE; Wed,  1 Jul 2026 05:42:07 -0400 (EDT)
+	id 973706B00B1; Wed,  1 Jul 2026 05:43:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFE526B00AC
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:42:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 650851C1F49
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:42:06 +0000 (UTC)
-X-FDA: 84939716652.03.719E9DA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 689F26B00AF
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:43:07 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA5C34023B
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:43:06 +0000 (UTC)
+X-FDA: 84939719172.05.355DB7F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BFE9018000A
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:42:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OIHblCl3;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 39A60140003
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:43:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NMvirreP;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782898924;
-	b=KDs3cP8sYHU3FDo2DqZxzdVFfnXpGGN4Zj3cQVyBCb8vyD13ctQFcZmyd7btnQULtWvveR
-	5llZAs8QJEhc13w/NCNvhDSoX4JfWDsM2Ekqpyvri5PgjIY09sxL+cLosNu6ZzBjlQ75kr
-	h/n4/KpZgAUH/1isIFjJ4u1epevf+AQ=
+	t=1782898985;
+	b=FsqdGqgfCcshUKjAkNZOGIDWYZkxTLzh1fm5+WeQ3Psd1p9gWYmt9wiHqNYFWOeNp9HLmO
+	TDAzuXlhEkqNq6nLPOTDbcdDobsN6baEQaB/KlwaDdOX3fnBubivDJSzvqmqVYCAQ8DKOR
+	FLITWnPrDmJI3d+QSJbmLKRyYzZ5W0g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782898924;
+	s=arc-20220608; t=1782898985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oofkD0xPKEf9vCnFp/Y6xC9zUcU++9G9r0ci+L1ELF4=;
-	b=N/bmw4teVQ+GijehoSGeKI3/KBB15m/HSeQhwnEypasgFJmntWZLB2Lu1CNkXBhD6z0hqu
-	dCMu8B6uMCvYlLdLf/r846sux12iiqbRKYPf2xtVRe101ANhN/OHqTUPGTZSw8CyFz5JVH
-	NhPh32ceCqrfPi7DANZvtzHgGZN1LcM=
+	bh=yD2RrJDZdDL6RXjT+lWLw24YuDCa/4sSWtW/fyWFcdQ=;
+	b=OwzgxGu7kRyGKE5RXH0ZYGgqas19FT8/YCFBWwfjLNmUPqW5gYAMDSin4yTKy0Dh6zdd7S
+	bxMbuH51/VdgSjTaGCK7pUnCYv0QZCQi/ojV6OrHnhl3ziRhPY89Wy2o5vAMFtlfC6QD0e
+	axFM3FsAzk4lqIN7sb6wjPLgw0Mw4P4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OIHblCl3;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NMvirreP;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B57643DE6;
-	Wed,  1 Jul 2026 09:42:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E68A1F00A3F;
-	Wed,  1 Jul 2026 09:42:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 889EE418C7;
+	Wed,  1 Jul 2026 09:43:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C261F000E9;
+	Wed,  1 Jul 2026 09:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782898923;
-	bh=oofkD0xPKEf9vCnFp/Y6xC9zUcU++9G9r0ci+L1ELF4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=OIHblCl3HCNczmG+b75ItOq2+mwAyrrJ/gm+hyonolZEUllMNHcUWun1Fn9vBt1Oa
-	 bvuhMy8BdS1+TAayGPVntvd8agcnyqcL5HehCJporv52MjaB0B/Bj80+Cx6JMzFy4N
-	 d+3YuFXiLEcKsZiJaq2OtbwdGF58sgXZaz1jr1Kmdg8Ez+hrAmtiSvYs1oGadrYmcE
-	 PbjHkp3H+F/NKzRhMVMVudHJFu0bxrwsi9kviFxNJbo5J9vFbOTXV4amxQE7+xzjEi
-	 st+I3icZd8s+DnofgG136KZ07LueNOA9GLc46GsUtWmaSZHqUGFejrn1aOjzFXuOem
-	 we3wjumT1HMfA==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Wed, 01 Jul 2026 12:41:51 +0300
-Subject: [PATCH v2 2/2] usb: core: devices: use kmalloc() to allocate dump
- buffer
+	s=k20260515; t=1782898984;
+	bh=yD2RrJDZdDL6RXjT+lWLw24YuDCa/4sSWtW/fyWFcdQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NMvirreP+CX8s1HLyn6zgBtUDz2oDbR9gIrXRS6YaNTcLZcnF2rsBWbQVm+Jl25Sr
+	 A8lJ4z61L/giXcR/ptNpe3o3puYpqxx0hsQHO+85EjYqDjCEIO/1lP13eBb0n33jbM
+	 UqdM041iHE/nTaNAA42LQ7VXM81xgA3Bi0FchvCuGazRU+YOdfKqe2mJyLfx4J0AJ1
+	 B3RyYF4D778BuLdBJm0jXf0mSpjvs1QuEQapPlpQ8TZMICq6soqt5v87zbEEbs2TAJ
+	 FdEluByUsfWooss92oIM/tmJ0RAV1NPZbvuLQEU3DJQZvF/ZXYqF3+AFDc5BkN379N
+	 fKMeFEDS7Kh+w==
+Date: Wed, 1 Jul 2026 10:42:43 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 01/30] mm: move vma_start_pgoff() into mm.h and clean up
+Message-ID: <akTfDTjDnnZ-8zwE@lucifer>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <b28b698df4c009e85c4728446ca5863d8e633164.1782735110.git.ljs@kernel.org>
+ <akPqIfmQLOs4gI7h@pedro-suse.lan>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260701-b4-usb-v2-2-272807df4b64@kernel.org>
-References: <20260701-b4-usb-v2-0-272807df4b64@kernel.org>
-In-Reply-To: <20260701-b4-usb-v2-0-272807df4b64@kernel.org>
-To: Alan Stern <stern@rowland.harvard.edu>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mike Rapoport <rpppt@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-usb@vger.kernel.org, 
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-X-Mailer: b4 0.16-dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akPqIfmQLOs4gI7h@pedro-suse.lan>
 X-Rspam-User: 
-X-Stat-Signature: 7ubri6bcyrdwokxq45fxo4jrgg37srga
+X-Stat-Signature: 97d3orrbqz51zj3nur7hrggfy7997tk6
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BFE9018000A
-X-HE-Tag: 1782898924-339661
-X-HE-Meta: U2FsdGVkX1/635AbSNWeMQQc/gjEiMPuFYVrqu190yMB5AC//98XdLMOoh1sT/pnzK6wL2oon2YSerKSzLw9N9RmFaqtx9ISZ0ebSLX21FMXW0iWn7O3geNiRRWuCe388yBDKXhtBfX1i/GoTzsnlxtLNVXkR+LnEyy3i0uasJpcRHYLhxm9IuUIEAebalffrY8Sd/eOov0pyc1y/uk4LNCGjprd30B0rBijCmMrQoGF68sKJck4XD4I6NMrhuITesgg6Jy6mOTmBXsSJzkEA5wSDMStyD/7srnQFRs7v4lU3PU7tBS0Qm4y3PawsRnnejs+jyw2CZZrc48684PiFk9PwyrRxKTkxd2K3X/17WUjvGt/Lv+tzcTXbn8tkHJyATR4TqTUmRUyFtefUsAv4JwriRUHeI4rX7lO6E9qW6DeBSwIQ92yGMMyHlglkrur/kBdv4k/TbafMYFkxuDD1rTt8W15htAm/4ALyP+tOOSGXuW9dF+Ccs5VM3XvqrE4+hYFbSBTVxNtHvY0Q1vWprzMahLjVRzoz0x+tyUgKE/GmbRZM1HlwmhEL8+WqMkPG217GzkvAobPnti4cjF1f4M+xAFxq2imjCo6ZiWkgvszm/VnxIijHLZovIwKhnMDMxUBNt/VN/cBhdwIuL+O+UMjctFnmxJtkoy+guYAvk7lZwxjpSp5yewxOrVAOsuKfoFv2oYSpmFlflnVaZ58mw5P78k3af5EyNWT1GpVxZwnFoo5FmDf+MDIfHdEQ26t5AFpMGE5G/vA2HeWW7/qrkvwLcF3JZt0HaoKjIuUaEAbf9xFVeaWP8/DPU91NqRGJuUrkLmpkQQKnKA3KH5K9hYOakAHXj6hrf6sY6a1ZkukWaaitBwORm9X7GsuMVxsBL876NAcZZRTe0/2QNMPerpX36XnhUmXq64c4qulDNxkhMpSF2l06VQ688GhQ53mUiSgrKg8KyLC5NjIxXn
- X8/kKyAu
- vog+ZqDKEI5qYLXrHDFO3ivBftXiKq9wfxYwNCkjmaLcS/AdsPdhxsGLlJ1myJA6lfs0GjkBbyt9Gy9dQfDrDsB6JjWq8IFHFI850Dn+qS5PJ8bAGdbQhbJaeRBGEchKwykzbRfw3x7Xm2Lkw35qR52XXC24miaFWJ60xHJzUfrQSRrJCK7fJqucViRcU8yXzStZ6AO1TFXBLpvDmbl2jNgILgwPMhUdJSUWXH4/4JosqM0W09w5n0kWDM7NJd3hRPXOdFrFxwo4O+bdLVqb4dSyjjNTr9ujVImFes882OdaroSv7Mw/Hf8WFb6KrI8q01D2HL4yEWb/4JBJSVfAb8uIYSZbtSbUcJezYPjrTcnLl7+gzkVRoKBm8x9kjYZHH7x6q
+X-Rspamd-Queue-Id: 39A60140003
+X-HE-Tag: 1782898985-591674
+X-HE-Meta: U2FsdGVkX1/ZsrYGSE0mITfZmjbacxZveUdMSjjyhvvdmdu1LI2ejEa/pbqqJE2S5B3LFIYG7aJevq9EfZzip7E0d3XdFmXUexpZewkGSmfmellpNZJJsZ/hWAd+bj+h1bDB3ATAWxftzVHvTX2qDtBwVSreans3WfkzUEz/uDHEszanYUpV4V4tc3YkB8L4c0+SfjPCYEAkYBFfk9kSOtjZsafsT61t3TRTuVTXcUhZZW68hqrfRMRkg+cC9tCq5htehNa/E6RHhCvdTlPyF6NbS1gUaFLn3aVbA6cpyCHehxGRA2uWcdLnNcE7jbe80WEHp9AzM+/4iCyjgeo9LuCgcjkfeRY/NEFO6pXcKHfVzavWrhhWXCZtMgE5hB2INxn4+0KjitTUk7rNFVpsFMAW5aw/6uvFOyciYhymO7PQZsY1db2DguTdIW3rt9nuf+Q2j92A+lpgsZr+8x7lOtW0Q39ltYPd/8Vmgfibpby3dt4IqHDRzJfpkgCFTeEzjcAT0L9dHY+qz9k5bu7rBk2wJsIf4ogPRLtLOyhyZqyDzA1OwdnrdR/QTGRtxJeAO/Cyb7iRfugW3dFGKdGS5hfADvHsnCUBe4rHaNgw3NK7ycnEm/UhvpeAMKLcuuu9Nkai8zCF76oXzg/zEc6rVDHDTEjWTJIl8/Mg/pyiCobJmGy9VaPqKXLxtIwzmNcuHeP8JUtrThO/7Hk3Q5WphipsygI1bvdCM0Jkcnoz1KBMnHNBiN8UMO0gBzFln1Z3HCArRF7nvOIiVTiaN4OgPE3CNiSFAhehhnVpZskJrdn/K8qtuI69Y0qT6ye510/X2g7gqabugGfWNp2pSw6r0m3YEuhTzk6JQdmEPUnomv2WSz11GWscXhmEXMfPTiBbLX2LsX7WvksVwogXRcCdDECbrzSfeSoOQql766jxTf+gUUkU1SxibNlr0kf9O8CIXji8ShdMx7dhrL6Prxr
+ KWhbHBE9
+ 1F4k1PZBh9pi/5nF8571//j6IoMA6OT+4WdRWEihcYqKedCNLSBmDqbRFMNBvLn8Xgyz/CAy320PzgEdMXoVIwOv1JNRouJiZYswXh1SZhLk6xhwwshOYQETbFVoJKouEk36M4HOIXlt9gEdmtKPMeDlivrako2OnalO98pMEDfOPYlVtd++wQyULEEVpjzi4jg1AFlIi7I78KBs5JLPKyfkqA1jhiqi3siJhjiQdTsaMCd/X1F9b4L97M1cDRSTJqcD+u1s7TJ3MOV9YAFVRyX71KQvhZ6nOBIwn/kgrg22HMoFdPNAxPsSDyKjIbpLV352sxfplqDrYgW/16lvdFeHVHXwFM4tZ1biToa4LByhoS36SIYth9DObMEWeYi/0+KMCPtaGBs8B6qjrxH6+en5+Uw+t+jz2bAZOexEv8uTWepEiudVhdqdpVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,73 +123,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-usb_device_dump() allocates a buffer for formatting
-/sys/kernel/debug/usb/devices output text.
+On Tue, Jun 30, 2026 at 05:10:55PM +0100, Pedro Falcato wrote:
+> On Mon, Jun 29, 2026 at 01:23:12PM +0100, Lorenzo Stoakes wrote:
+> > vma_last_pgoff() already lives there, so it's a bit odd to keep
+> > vma_start_pgoff() in mm/interval_tree.c. Move them together.
+>
+> Hmm, a part of me wonders if this is the part where we should start cleaning
+> up mm.h into vma.h or something. Probably not, it would be extra churn right
+> now.
 
-This buffer can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+Yeah the issue is there's some confusion about vma.h - mm.h should be for
+stuff that is used outside of mm, and these helpers are definitely like
+that.
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
+vma.h is purely for internal mm vma stuff, and most people should be accessing
+that via internal.h (I address that in patch 27).
 
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
+I do wonder if that could be done more nicely but punt that to another time.
 
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
+But also probably worth doing a pass over some of the defines, I have a
+bunch of series chur^W changing stuff lately so can do a follow up on that
+maybe.
 
-Replace use of __get_free_pages() with kmalloc() and free_pages() with
-kfree().
+>
+> >
+> > These each return unsigned long, which pgoff_t is typedef'd to. Make this
+> > consistent and have these functions return pgoff_t instead.
+> >
+> > Additionally, express vma_last_pgoff() in terms of vma_start_pgoff(), since
+> > we wrap the vma->vm_pgoff access, we may as well use it here.
+> >
+> > Also while we're here, const-ify the VMA and cleanup a bit.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
----
- drivers/usb/core/devices.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Thanks!
 
-diff --git a/drivers/usb/core/devices.c b/drivers/usb/core/devices.c
-index a247da73f34d..6f0354aba38b 100644
---- a/drivers/usb/core/devices.c
-+++ b/drivers/usb/core/devices.c
-@@ -37,6 +37,7 @@
-  */
- 
- #include <linux/fs.h>
-+#include <linux/slab.h>
- #include <linux/mm.h>
- #include <linux/gfp.h>
- #include <linux/usb.h>
-@@ -408,7 +409,7 @@ static ssize_t usb_device_dump(char __user **buffer, size_t *nbytes,
- 		return 0;
- 	/* allocate 2^1 pages = 8K (on i386);
- 	 * should be more than enough for one device */
--	pages_start = (char *)__get_free_pages(GFP_NOIO, 1);
-+	pages_start = kmalloc(PAGE_SIZE << 1, GFP_NOIO);
- 	if (!pages_start)
- 		return -ENOMEM;
- 
-@@ -479,7 +480,7 @@ static ssize_t usb_device_dump(char __user **buffer, size_t *nbytes,
- 		if (length > *nbytes)
- 			length = *nbytes;
- 		if (copy_to_user(*buffer, pages_start + *skip_bytes, length)) {
--			free_pages((unsigned long)pages_start, 1);
-+			kfree(pages_start);
- 			return -EFAULT;
- 		}
- 		*nbytes -= length;
-@@ -490,7 +491,7 @@ static ssize_t usb_device_dump(char __user **buffer, size_t *nbytes,
- 	} else
- 		*skip_bytes -= length;
- 
--	free_pages((unsigned long)pages_start, 1);
-+	kfree(pages_start);
- 
- 	/* Now look at all of this device's children. */
- 	usb_hub_for_each_child(usbdev, chix, childdev) {
+>
+> > ---
+> >  include/linux/mm.h | 9 +++++++--
+> >  mm/interval_tree.c | 5 -----
+> >  2 files changed, 7 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 485df9c2dbdd..059144435729 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -4278,9 +4278,14 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
+> >  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+> >  }
+> >
+> > -static inline unsigned long vma_last_pgoff(struct vm_area_struct *vma)
+> > +static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
+> >  {
+> > -	return vma->vm_pgoff + vma_pages(vma) - 1;
+> > +	return vma->vm_pgoff;
+> > +}
+> > +
+> > +static inline pgoff_t vma_last_pgoff(const struct vm_area_struct *vma)
+> > +{
+> > +	return vma_start_pgoff(vma) + vma_pages(vma) - 1;
+> >  }
+> >
+> >  static inline unsigned long vma_desc_size(const struct vm_area_desc *desc)
+> > diff --git a/mm/interval_tree.c b/mm/interval_tree.c
+> > index 32bcfbfcf15f..344d1f5946c7 100644
+> > --- a/mm/interval_tree.c
+> > +++ b/mm/interval_tree.c
+> > @@ -10,11 +10,6 @@
+> >  #include <linux/rmap.h>
+> >  #include <linux/interval_tree_generic.h>
+> >
+> > -static inline unsigned long vma_start_pgoff(struct vm_area_struct *v)
+> > -{
+> > -	return v->vm_pgoff;
+> > -}
+> > -
+> >  INTERVAL_TREE_DEFINE(struct vm_area_struct, shared.rb,
+> >  		     unsigned long, shared.rb_subtree_last,
+> >  		     vma_start_pgoff, vma_last_pgoff, /* empty */, vma_interval_tree)
+> > --
+> > 2.54.0
+> >
+>
+> --
+> Pedro
 
--- 
-2.53.0
-
+Cheers, Lorenzo
 
