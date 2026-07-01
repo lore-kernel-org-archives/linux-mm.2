@@ -4,114 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B687C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:05:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E16C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:07:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADD0C6B00AE; Wed,  1 Jul 2026 11:05:57 -0400 (EDT)
+	id 254E76B00A6; Wed,  1 Jul 2026 11:07:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB51A6B00AF; Wed,  1 Jul 2026 11:05:57 -0400 (EDT)
+	id 22C726B00AF; Wed,  1 Jul 2026 11:07:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CCF16B00B0; Wed,  1 Jul 2026 11:05:57 -0400 (EDT)
+	id 1449C6B00B1; Wed,  1 Jul 2026 11:07:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6255A6B00AE
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:05:57 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BEE8DA03B3
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:05:56 +0000 (UTC)
-X-FDA: 84940532712.15.4ED2C19
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E2A8AA000E
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:05:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=hLzr7ges;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id DF0996B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:07:16 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 86822A03D8
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:07:16 +0000 (UTC)
+X-FDA: 84940536072.05.A2D04C4
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CB3BA4000D
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:07:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Q7veYNnl;
+	spf=pass (imf07.hostedemail.com: domain of 3IS1FagYKCOgcOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3IS1FagYKCOgcOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782918355;
-	b=RhFiITehQSpUNE9AVNRG8nvi5SmlgjJmuvrFdFnWhV5Wko7ZYdf+ZLfcqVOe2jTNIWGt9t
-	Hy9IdV3R0Iu1eDUjntHZ5qXfatTS2SJvoPahc53OxksVQI5e7T6qY05o4EcM1BjT0xyq3z
-	b0CXFv/LILsWrtnCT00ilPk9DFpkJgw=
+	t=1782918434;
+	b=hCOSOhIxSgBhrf4Ysom/jDJXAqpasgrrz5XWFheccm1YjRlNYBZ1nzP9iTnTOmvkzSZopb
+	ENqHwSwwYkcG83K+02gLPiEh/TiZ7BNJcCvnRYxsc6s2ejQrm7acdn7xicL/qUbmGm2mfA
+	+cAKsD6DnrlaoI42mEYTl0hdzemqBvs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782918355;
+	s=arc-20220608; t=1782918434;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wpcsb0+VdxshQ15XkMHrH6lVO/I8qddArljRZWvFEt8=;
-	b=2YWnklRCz98BDcId16w+j+3bPCb9egVq08lhSY/pQtADFGA1swnoH5daM0V5BrKkPgvEqF
-	2++7HHfg/gYhPoV0Stm4QGef5c9qN52h11xbLyyTCKf3m979Y63CX5n/5GVvyB6YXYMtbT
-	Z3wZSG9nqLsgXEzYozyGfCImCVqx/W4=
+	bh=35ip1FXhxTsr49Tf+Elt4WaaVNO58PfZuNT2YrZrg5w=;
+	b=xj5GtMMaOa8uoPGyvVwlQvKLqjdpd0J3BgaT0LIeJgsu91vg6hnqMyomWs2iMqV0e+C3Eb
+	7WHuoTu6D8XnJ0aR9vbk07uumFUxpM97Ho2LxQ4SoJ1gKrOkKZEfWiQnDcIZHdSuZTMDRH
+	hpl01APWb9m/PhirOxFH7/DcqiuNyRE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=hLzr7ges;
-	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7fe36f1be74so11199257b3.2
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 08:05:54 -0700 (PDT)
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Q7veYNnl;
+	spf=pass (imf07.hostedemail.com: domain of 3IS1FagYKCOgcOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3IS1FagYKCOgcOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c825562f8bso8485295ad.2
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 08:07:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782918354; x=1783523154; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wpcsb0+VdxshQ15XkMHrH6lVO/I8qddArljRZWvFEt8=;
-        b=hLzr7geslxQuLEnOfk72DmSjuQiH6FiStrkWgW7WKUGuZaKUZ+QqrzUvvmA41F50gE
-         DbhMfVAS7eWzSdIMWsLVGWOOce529NCUi+lT22eEVsx5hTtq6PFjAQJ4QrhG7HJvccde
-         QP522+OS5C4Xd9Ycg5PP69Xxd98BibbJ7KWeQa7vn2mxVse4ZR3JntK6e5+xvy67NORR
-         MPfyCyNuZdW3dor0Vig+yqoxHO+FED4bk2cynyXK1z9tGLKCD4IiVq3+7Dm07bDF95jj
-         GKmSuXZD/L4N6H9pzU2ROGVmMQZL47+TCj/kE3Pj9dMkh3y34KcfsAnCOMBrpgBzbQ/S
-         0Axg==
+        d=google.com; s=20251104; t=1782918434; x=1783523234; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=35ip1FXhxTsr49Tf+Elt4WaaVNO58PfZuNT2YrZrg5w=;
+        b=Q7veYNnlgynlKIH40BUT4vCGDV1jTVn7YITYwQBt3XG8NfLO+jFSEW8/+VzlUirUcK
+         Q0fPb8JmyTwcweZdbJlXsckpS+oNw19vxUXG5R8OCrGhgtFBLYgCXwV6jpK6mNu9jhpS
+         /QuW3/aS+UV07WlqoGysWw6UrqqppRLPoNRwB8pNxJvvwotGM1yDCkBr1xmhr43sOwU+
+         JIE6U61W+JVyjy2hYZUITuYhN8HJ9rpAjP5fGUKpVMwqZle/ZsBlungGj3lkReelHaqK
+         arMHck26QJQFr6ZolY/ojl4Ej3TKThLfKZBp0QuuwzS4/T6bUYGgNa5F3thVC+dKu52V
+         X0+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782918354; x=1783523154;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Wpcsb0+VdxshQ15XkMHrH6lVO/I8qddArljRZWvFEt8=;
-        b=flxqIhZKIigkeJjEGUUixAOaePOWmRVR/fDmJEEjjr3FtAJPQH/xnufuQUep3R3+H3
-         Nh3ZL9WAJzONPu1LYYR9IgUkH9P135wxDdl0vKRbjgD0pi3JDNCgLI3iWqbvxYN7qpeX
-         6vCusID/ozMt0VcDszbmLcETvH3AbBWie4LU8f9qbOEzqOo7ijlM3Ya5NwzrnangXoYM
-         FmOMW9Qphw6ixos/zI8X90a2dDl8ux2v70T3SwECvGLYwp4lTHeUbQuGWaiR5mYhYnwj
-         pKBa6a5eMlplh36fa2AF7JyYfsPcgXjErviT9zzhQMbG1HejuPgGOT1yct6zgexVboMT
-         xJJg==
-X-Gm-Message-State: AOJu0YycuVArUt9Mhq4ZWM5IBCZF8DpSt3LG7ACw45HK9wYmybV0OMTf
-	iXadqEjLaHQ8YAXgMDuhWEzMv0MijgtjCZOCzayf9h4SV44Pe05c2LkLV04hvjzipHQ=
-X-Gm-Gg: AfdE7cn79vHrRkAGr+tnjTRMaOPu+4mjPUa6xUEB8k4ksam0SG+wluognISC+uz8uyA
-	QgG1xNOH/yGu5LwFFXE0PbniFaERwU1clR9qaxbyQUP8nQcRRGQgMYcmlhpNS0ofE4Tpcp2ECAB
-	uqGpEf4pUatUiOM8qIZH+dgowcV6ARzqxZtJq9SYnxI8r5PA+Z5KaEZq0b2zFn6TczV/B+QiX37
-	Ie9kYDddUWYcs9u3Tq6zhDN9fYFhgOyjx9ovD0f5hnC93tQhWJvVWK+6HsOoJnaTNE966hCYHqd
-	P2m/EPcOrCa8Se6GCDeMjzsT80VNpBNfG+RwS1HZz6SvSkBItzdSQweRoT5KrG9Jw06QcJXKXWd
-	1DZsx/IOZttRxTAH9t9unHXBohGvpQCt0xL1pP5FwQtaW80e1kjYcCgYbdNbEg20xX6wW4fqVb/
-	F53piuGek9BzXR0y8YsIDBMx3ZXLomiCVGUueOcw4k5wQk6QKib7iAL9/wFJysxFuDW6x+
-X-Received: by 2002:a05:690c:6906:b0:80b:968:29ff with SMTP id 00721157ae682-812eb86e8ecmr20804517b3.53.1782918353875;
-        Wed, 01 Jul 2026 08:05:53 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f3611d783bsm23143586d6.28.2026.07.01.08.05.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 08:05:53 -0700 (PDT)
-Date: Wed, 1 Jul 2026 11:05:48 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, kernel-team@meta.com, osalvador@suse.de,
-	akpm@linux-foundation.org, rppt@kernel.org,
-	mgorman@techsingularity.net, hannes@cmpxchg.org, vbabka@kernel.org
-Subject: Re: [PATCH] mm/mm_init: handle alloc_percpu failure in
- free_area_init_core_hotplug
-Message-ID: <akUszCySPFA7IRlb@gourry-fedora-PF4VCD3F>
-References: <20260630214039.2263562-1-gourry@gourry.net>
- <b8baae33-d551-40fe-abb5-287f3711dd80@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b8baae33-d551-40fe-abb5-287f3711dd80@kernel.org>
+        d=1e100.net; s=20251104; t=1782918434; x=1783523234;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=35ip1FXhxTsr49Tf+Elt4WaaVNO58PfZuNT2YrZrg5w=;
+        b=HEdym+6DZPB86UIQSDK6vRuKBq0e6o3OR4rQDKrHZWE9rrjCmjPuToeJsfVQ12TZoB
+         TPzGDdQwGCvA5GSFb1iJFOkvTq2SS8uyfGFcv/T1i481jEbl+kOeGyfXV7hg6kJvm3hw
+         bZS1w7nm0+J61T487amLCdXjZ0j+eJ+KFagEvzszvFBBeJyUtDhJwh/tk4Q+Xv8p/puy
+         oW1+Evf7d1d/6m5n1JlHSz12WHUxYgcROsx7fM+FtQoUUXji0o3nLnYHhyKLnI8mdpdC
+         4l9BfUycv+CHkHG+qnd2xeiC8O5mpwLqHWq8o+tVVUi9/z/Hd28D2xs/H+3IXf/yIEdb
+         hBHg==
+X-Forwarded-Encrypted: i=1; AHgh+RrHMolIb76S+60s6cncqbGSPYR2ElhOqPO+iyTkskpSVP2oO68x7PRGr2TePpMkRzvcXRGyU7yZ1Q==@kvack.org
+X-Gm-Message-State: AOJu0YxGo0lobcSh2U0ClEvfu7BHCjzaBKX7vIw1vyUhXZm7zGb1ZkWp
+	me5Q2xV6cAxe85sp6WK4BEx51+BRmj3pu3zwlaolOzTs1B3OkWSvJl3Lzg1ddf2r/RWdXzMklc9
+	HInVexw==
+X-Received: from plbl14.prod.google.com ([2002:a17:902:eb0e:b0:2b0:aef9:a5a2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c50:b0:2ca:e5c:7fcf
+ with SMTP id d9443c01a7336-2ca7e654686mr23268045ad.3.1782918433131; Wed, 01
+ Jul 2026 08:07:13 -0700 (PDT)
+Date: Wed, 1 Jul 2026 08:07:12 -0700
+In-Reply-To: <e5876e41-a11a-4d5e-958f-9e247c19d387@intel.com>
+Mime-Version: 1.0
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-7-9d2959357853@google.com>
+ <a1b06afb-af6e-4666-8c7d-990e7fa150fa@intel.com> <akP9Qv_IPVEh7GAB@google.com>
+ <e5876e41-a11a-4d5e-958f-9e247c19d387@intel.com>
+Message-ID: <akUtIDdRiU9YOr8-@google.com>
+Subject: Re: [PATCH v8 07/46] KVM: Rename memory attribute APIs to prepare for
+ in-place gmem conversion
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E2A8AA000E
-X-Stat-Signature: ccqenkh9nj1h9bstmmanw7gz5xp5m7sw
-X-HE-Tag: 1782918354-636544
-X-HE-Meta: U2FsdGVkX1/S8W0glgaiAd2EZ9UDT2cku2kQGZn47HZwqfw3ZghnUF7QpE3Vtcl7auaLMOsdVqhaFIbt0ElaB8zPalJvbPURaI5snqxDUy1iomeZsD/WsQ9uw/31V2InsVZ1YcH+Q7zsvsDZSybkvC/zMWXWl0Qn8qRtO3xdpIzuguVvKZ3TYoGN58wme8FaRLXBPiLnfH6wbdM4n24MPvdlyv1++wqsC8yRswM18MUHmLzeA0qu9Sw+Hdv0F7u/T9J9S8/2+lJKK/5VZVwnxiGujTAG/yNVK3xKKQ2DSJbB8ei4QsIgSGUAiUzxiXw7s7OEq/nOcfCUTu5EY0eFb2HGHL6xWa4Rahd4lGmR4v4AFcWNCNzfCMIB6k7oT+X0KsT1CZJ5b9YT4nzXkmLHVMvXHVfx1gE+Zb3p7+0Ksw9kpAwxFOxQBL94qeQRz5TEGaBdlZVVrSw4lcR2eeHTHkhRYlHlYl9wUopzSI31bbtdo0ReNUhUYBsQm4mP1oU7NwlPNlLv4+ugXM5FFNP3E93apBrX2S3kf4vVx6GmTnv/VQ4FFB6A8TU5zmoPk2yFU8fyLZ31TDvx7CB/qv/oN8E8aS96yJoXKNeDg4XEYGkNPT9I2WQB7pzwJnjHe8GHb+H8K5648fp8XdjC3AX8anes9mPhVF1fHVfqYH+JL6hFqXx2xwSwk7wrm3ZtjVpZE7zk0msBa+rsw4LT5UZMbapQP9qp9mmpQo3ffGUOGfXqKVh4oXXHb+vEJIyFevyVH4IJ/HJyjjz0ZzpgujfpIMFUSKm+0pQxzafsG5vm14u9KyK7nqBmpHmi5FrNEGkbYP8hCJw+UpEHXEg5xAS9L/1ZM7ifkuUrwU9IiHJK2lwNI+bkSnAy07pD5qIRCwZsn+hehNCxiVhr4eVHKUGMN/FTZM4hFZNE+YkjE3cXJUXk9ShXpEpl7gmom0ij47uqVDBUqWVBekcHTO8zA6+
- v7aUMr8X
- squRT5rPM38BqDo5IvRUjaQe7vKL+ycFxo/o/KpEm0TW61zQ5uaq7hUBF1qZt8Xa9WhVTRVc2TTjVJ2eYdP3F8IxL5EX7twOgMZbukfNhDKD3UEeRJdnJbIwKrtBUCM27BoKePPCNC4oNFoE4U/t+dvpCFAxeR2gN6669vrmxRmlsLthVwamfommlM5ldnK/xSlNNKSQ/vLNC1Kyy/w9dCssWzxyg0MJNOWqG6In80bGxDslvR/+Jv9kXTZEZlp9BnRCd80p5DFrjASUyzEMMUHOykqid+qPfWD+5/2H0XDIDX5/iMs99EtTiOg6EozLU4NgTY5U8vCAalkSvnbqIze2Cj/PeI740msQ4RXWVL54yNRFFrL6a45jqwBDs+8vJSHXo
+X-Stat-Signature: wjhun7kb1afaidnnqse6irgphbuu5q5w
+X-Rspamd-Queue-Id: CB3BA4000D
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782918434-767535
+X-HE-Meta: U2FsdGVkX1+CbRtK2Rv8Z67/LCfAkRg4eFIADvpvV2FMDW/uo+RebWmSsm2RzgQL36cVB6BcpNWgTTGj+NoYpQeetQ80lPuWq5nXtb844t50pI9i6tb0jQApy6byPWzGNbkR3xIU1eWjr/ff2q/v3Cqwk6+rLatBVXJXacDWxEEpmM4lWjIx6W8elrluqHXjtA3mnPkPex3vPvjlCPgz+NkElDr6xWNiHgJi8a0vHZKXeTO1g2DZq6ZNF1Cc+htZI5TLDjUQLbqSa/sJGtvzB3P4qSU1BPJLkHmZC2cQAWv+LQoPUauEOJEquQnya6iQw7WyJVB2CXBMrLJj1G2us2C5g/JclJ3yWSvN/5TTB97ftws9eu7afT9/5/U9Zn66HTcEmRGABD3qwUwIG6Cvhw7LY66hfiXqz27bmq1uTIy/cMZIhNQD2apbZ7eC98D2Lc84D9wq7/0HokOALY5tmekHlgJXsNMwb+OI+qlDUp+/DFHgXRaFpzTrnx6WcnvVpcMbzly4jWyhziENBS31dJcgQEQY3mHeAkbdTaBwXP/GiUguthFifobPhASdLpN0X2QYvzRnTsC8uxFNFDR1OfeQFzJeaIiVTLMB5CsgUQPFN4Cv42LsG6/Vrjl7mF9C3uIbXjI/p0zVe3clsuGDvYEgWBRyxKf+j41srHATMn8ZPYskBjS8vvQx7fW7ZjiU44cE/nfhkbY4hOTz+7PLZdiG4uOvrGBbAqkkksNAAxnr4w7UjE8aKXWQijYruiX+WDdWQRpo++KLO2Fg75JKiRfeiE2Lg223TViHdkxWjLDyJ3x2eC8L3l5Vod3+zQYRUUwEkQ6D7OZreoVYQ8061taqjH9Qjp3ncBH3Ml+U9V4jiYYy3kOj1p2uPhpt1LHZihQbPA58Oj+J4HMTGJSaUo+wcomm3ndRBlp94SVooPdrZhJj3cZNU2YkxH9PLJJg+yRnR7UpTNljgCk3znl
+ VodOcwuX
+ cDSEZ+mA7Yz0/b+EqfzltdDZjSlqIGJT50Qdx/S1gQPDup8o220jYwzwMJwovz/0KkkgxRl9Xb2IOI9TYOlojsUdxL6N4fp4SvKSsm8z4zp6nYC1Pzygt3JJ1uXqdthlhgG7wpQEkRYJXQ6+ks5/wg6Bp1Cpf2O8O3RWtjM5+bC01L8W/ksoqAJ//ENalSyt0ZoiimO53o1FeWQ8xvcwb3FEzRlS2H4QMVN7JiksogTyek3SDOAU5Lnj96Qv9MJImC2oWSyepoIF48dnHfVwWrelCHTJNWBvtWDFF5heZd2fvhMwKwUrX92bprN7dcd11rcfYZOzkhTXlv3Au6vnowxMBS6jpxvBZ2fNZ+grbF9436ZlzlXtU4t/pnI/bEa0e0ViEI3mf7t0XSNz7BrqBqcrTtezIRNVIX6q0VNO9Moh45ydZggnsnqkHDTZd7oaoeudysqvC41iIgK9l4JCpFzs+WGHG17WWmkcV1rJsZXFY9uPMKoMCWRUoQw/2KUPmP8EAX4k2i06pNJN0/W7mu18Y2PQp8IgOhLEEy7LrWE9SkpG9hzec9rffYty8Lhwu+WSebkmyMbeTKhKQ01SrhsS7LA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,62 +134,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026 at 10:35:41AM +0200, David Hildenbrand (Arm) wrote:
+On Wed, Jul 01, 2026, Xiaoyao Li wrote:
+> On 7/1/2026 1:30 AM, Sean Christopherson wrote:
+> > On Tue, Jun 30, 2026, Xiaoyao Li wrote:
+> > > On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> > > > -bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> > > > -				     unsigned long mask, unsigned long attrs);
+> > > > +bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
+> > > > +					unsigned long mask, unsigned long attrs);
+> > > >    bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
+> > > >    					struct kvm_gfn_range *range);
+> > > >    bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
+> > > 
+> > > We have
+> > > 
+> > >   - kvm_pre_set_memory_attributes()
+> > >   - kvm_arch_pre_set_memory_attributes()
+> > >   - kvm_arch_post_set_memory_attributes()
+> > 
+> > Yeah, that's probably for the best.
+> > 
+> > > left, do they need to be renamed as well?
+> > > 
+> > > then the interesting one is kvm_vm_set_mem_attributes(), which contains "vm"
+> > > already while it means "vm ioctl". Do we need to rename it to
+> > > kvm_vm_set_vm_mem_attributes()?
+> > 
+> > I say "no" on this last one, the fact that the function is scoped to a VM ioctl
+> > is enough to communicate that it applies to per-VM attributes.
+> > 
+> > Actually, since it's a local helper, we could go with kvm_set_vm_mem_attributes()
+> > to be consistent with the other functions.  That just leaves
+> > kvm_vm_ioctl_set_mem_attributes(), which I think it appropriately scoped.
 > 
-> >  	 * The node we allocated has no zone fallback lists. For avoiding
-> > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> > index 306ea5c13f54..37fd64ce144d 100644
-> > --- a/mm/mm_init.c
-> > +++ b/mm/mm_init.c
-> > @@ -1536,7 +1536,7 @@ void __init set_pageblock_order(void)
-> >   * NOTE: this function is only called during memory hotplug
-> >   */
-> >  #ifdef CONFIG_MEMORY_HOTPLUG
-> > -void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
-> > +int __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
-> >  {
-> >  	int nid = pgdat->node_id;
-> >  	enum zone_type z;
-> > @@ -1544,8 +1544,14 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
-> >  
-> >  	pgdat_init_internals(pgdat);
-> >  
-> > -	if (pgdat->per_cpu_nodestats == &boot_nodestats)
-> > -		pgdat->per_cpu_nodestats = alloc_percpu(struct per_cpu_nodestat);
-> > +	if (pgdat->per_cpu_nodestats == &boot_nodestats) {
-> > +		struct per_cpu_nodestat __percpu *p;
-> > +
-> > +		p = alloc_percpu(struct per_cpu_nodestat);
-> > +		if (!p)
-> > +			return -ENOMEM;
-> > +		pgdat->per_cpu_nodestats = p;
-> 
-> Is there a need for the temporary variable?
-> 
+> If we finally choose to rename kvm_vm_set_mem_attributes() to
+> kvm_set_vm_mem_attributes(), I think the trace
+> trace_kvm_vm_set_mem_attributes() needs to be renamed to keep it consistent?
 
-at start:
-    pgdat->per_cpu_nodestats = &boot_nodestats 
-
-So need a tmp to do the swap/revert/etc
-
-> Also how to handle cleanup on error? Or why can we skip cleanup? (what happens
-> if we get another call to __try_online_node()  later?)
-> 
-
--ENOMEM ->
-    hotadd_init_pgdat -> NULL
-        __try_online_node -> -ENOMEM
-	    pr_err("Cannot online node %d due to NULL pgdat\n", nid);
-	    try_online_node -> -ENOMEM
-	        __add_memory_resource  ->  error_memblock_remove:
-
-Basically we're left exactly where we were before we made the attempt.
-
-Another call should work just fine after a bunch of dmesg spew.
-
-If this happens during boot via add_memory then something else is
-horribly horribly wrong and we'll at least get some debug info instead
-of null deref.
-
-~Gregory
+Ya, good catch!
 
