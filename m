@@ -4,99 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56396C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 11:02:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E70CC43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 11:03:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3A6C6B00A9; Wed,  1 Jul 2026 07:02:20 -0400 (EDT)
+	id 468EB6B00A6; Wed,  1 Jul 2026 07:03:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEB076B00AB; Wed,  1 Jul 2026 07:02:20 -0400 (EDT)
+	id 440D96B00A8; Wed,  1 Jul 2026 07:03:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB4336B00AC; Wed,  1 Jul 2026 07:02:20 -0400 (EDT)
+	id 331E06B00A9; Wed,  1 Jul 2026 07:03:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F6E26B00A9
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:02:20 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 110868D16B
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:02:20 +0000 (UTC)
-X-FDA: 84939918840.22.2CA0054
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CF33F40018
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:02:17 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DnLpWiCR;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B3BC6B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:03:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7DC48A0315
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:03:47 +0000 (UTC)
+X-FDA: 84939922494.28.8852F9A
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 77B92A0012
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:03:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yFxKMR0d;
+	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782903738;
-	b=BY/GooM2WjhkRvNECiFaFrUwW/uQ40wWd7R2xoyBCIB/k8KbPXUK4ooyZKDRJQ3X+EnZU7
-	XDiW5nSrThmhiypjuUKttSObt8iMS6VMru/bW7MJpRRsVAhQzNKqYl4uXy9mzZOzyXpBC1
-	6XQOujiJexLe4L/jK0IiUWf/Z7Dc5Ls=
+	t=1782903825;
+	b=4f7MjJUHck4wK+Wy2eJOyRHhR8/ZoBxeipGYfD7V4lsMGnVQzN9XR6In9VXExlq51Q3iaf
+	bLuoawVXOTQrywrlRTrAAumEjoSyJy7UuSZnoZRoFkmt4/OTouPLl3QIzUx3tf5pnylYnz
+	5yzKe4CYAAvrTRQmhbESL8AYLI6gTfI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782903738;
+	s=arc-20220608; t=1782903825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zPH4Wbb7vWkYcWnzq9COp5K4O/xDtmN6JFyEAuy/kZk=;
-	b=tkRAvCVF10HQNfyNmm2uDnSQSj3AdvxXEwedYzhDIK/aDswMfA001pG7fh269FDQT53zb/
-	QMCjWE/YP+ATvgYGjgkKZXcWV0xfk0HG8n/nsiwvQlPp3on+hiu9FQVqx9j3PRlav24pmS
-	+zwkXu25AdRgqGkbhWdtH5Mybpnvl10=
+	bh=BiAQQLl8vVs83xuAeiGeNLD4wLKcdjLHTtoBRrCpg8E=;
+	b=0VDLuF2mGMbaKyywpkQg97YWQN1qHwxvM8XdIAfpG363MNzyahmZ0ZdoZS+TKpiVpRijus
+	67SbJPcking3oZAg3Q/ZFssaO+fkgTOZVmrlffMvw0SUrFb3cfAyFZ82iCrwoiADcE8/00
+	QfgdJIkIKMrmjHQnQq4VJmhH5uQV9LI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DnLpWiCR;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782903735;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zPH4Wbb7vWkYcWnzq9COp5K4O/xDtmN6JFyEAuy/kZk=;
-	b=DnLpWiCRptxj5i70Y8eh9ciGLCcAqKuUl5ayokBW5ylbwAM2KSyWzZScryyL45l7BA5tSw
-	94sJfycwMoc7XqkRtLVkKbOBa1wGFdpG8aXwKjLK27d/L3R6kEh3n6ffroucsddg8LZBS5
-	sWcw7oK9C+o0o6RtwPG9wcu06pucbgM=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org,
-	ziy@nvidia.com
-Cc: vbabka@kernel.org,
-	akpm@linux-foundation.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ljs@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	rppt@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] mm/huge_memory: add page->private check back in __split_folio_to_order()
-Date: Wed,  1 Jul 2026 19:01:51 +0800
-Message-Id: <20260701110151.77453-1-lance.yang@linux.dev>
-In-Reply-To: <98cf3340-1a2f-4d50-8410-6e9d6d3a5308@kernel.org>
-References: <98cf3340-1a2f-4d50-8410-6e9d6d3a5308@kernel.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yFxKMR0d;
+	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1782903817; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=BiAQQLl8vVs83xuAeiGeNLD4wLKcdjLHTtoBRrCpg8E=;
+	b=yFxKMR0dYhvSC23dj6Enjel0Qdkv9wO4qVgyU33An9NDYrHBfSBF2BgrlU6klTJdXXYRa8tQiaIjWNdbvlvsGL5n3uw3mYJ/jOF9cDTDisyTDszR7Tc+Pvix947f6kfpYv16IlhBpHQ6Y3guPPicGLxIsmWfno/WsDuMfJSadxw=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X67dyRL_1782903814;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X67dyRL_1782903814 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 01 Jul 2026 19:03:35 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  David Hildenbrand <david@kernel.org>,  Zi
+ Yan <ziy@nvidia.com>,  Matthew Brost <matthew.brost@intel.com>,  Joshua
+ Hahn <joshua.hahnjy@gmail.com>,  Rakie Kim <rakie.kim@sk.com>,  Byungchul
+ Park <byungchul@sk.com>,  Alistair Popple <apopple@nvidia.com>,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Neha Gholkar
+ <nehagholkar@gmail.com>
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+In-Reply-To: <akPg4ANRetbjSP_b@gourry-fedora-PF4VCD3F> (Gregory Price's
+	message of "Tue, 30 Jun 2026 11:29:36 -0400")
+References: <20260629163337.1264881-1-hannes@cmpxchg.org>
+	<akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
+	<87h5mkz33h.fsf@DESKTOP-5N7EMDA>
+	<akPg4ANRetbjSP_b@gourry-fedora-PF4VCD3F>
+Date: Wed, 01 Jul 2026 19:03:32 +0800
+Message-ID: <877bnfynsr.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: qy8jpgpothrqeqzyaomjpodn7hnmiwzg
+Content-Type: text/plain; charset=ascii
+X-Stat-Signature: 9annur6k6hsn9wdo814jezqb7aajee8d
+X-Rspamd-Queue-Id: 77B92A0012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CF33F40018
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782903737-148118
-X-HE-Meta: U2FsdGVkX18UOhXJWHYODqH5hgAKrK8LRlrEiixr4OcIDIoKLr9gea/uBloHs018OPtyVcycu6/EpuzzgslpolZCU4cITPwhxlpGmGDKgs92PD3u1qjrNzrIzrw0HaInEnl/uJo4eUosdJG8+xS/5pwdx4NdEExHho4ih5pgh3mxGw5feGEdxyDIayO7RYVI+esAMZOHNyudJCY0HVuq5bhnx+qwt/Dk2CcIxcrVGJfVUwjOVYLAwaW3ZJVnGhIh+Z87Rjdf5rQUUBq93qeLP22esGfiCpqPLeGpn+qbxHTcJd7Gzsr47lCPZKnC3q8bXnEpGk+Ywajgv5/UHuaXiBFPb6ldS2iiWHWmpx/UFWSDXw6+/b2XKGmoT+gs/6zl1cSeVaEfQfoBmS+Ff92nHLfgZrC0ROm6NMihQawAj3DG1AxDJHut7q5Xt7zKnXgd4BdIXIM94p3ricmiTCBThKxbfRXgc7nxydzCkaZYSAM9d1jVTaKQPQLOgCcX/B6T11Rfk8LNNkadK96S6Y25ZvzEgoKdcUpb3i/8vXauY35SrlI3iMKBK1t859um2j4IFXEnS7YNtWimeTOupu4Uy+khkoQryVYr6JgCHgf2pZGfP+zQxQty/WoPpt/I+zsM2g3UmuAg/5JtM6l1cm4dTZbUWYj7sJWHbG2nSjakDpwC9dXVmCZ/Omx32MT+RpzsY/XpeyRSH8m/B615AzntNwg0XpOw63viJ6xxy2UY/6u9/66S8ZgsCGBw2z+Mb4LHDI2WDqvGkbh2wq7jvABUPhATgT5uxImHe5PKXOmTG8WyCGdKAcInaw81syGvoHiRVMOZZ5D9VqMkdltVQFp1ZrMg6fLj6V6HWFS53B5ITAn+sMEwTAYb9aOHBIGTzLEKeqxwoyxVpmGuF7OiNP4UMc94fta7VLt0VTNtp9sd22M3RwGQ5T42yV77cEUYElE+4ZZea5V5qYpL9Qa065G
- NavuPuSy
- qlxL7XSfilBXKcq+g7AacerYl9IRykX0j/nE6npaWqYKmN3F0N0u6YBBsn3QcUNQJ3OGX9izG1Blm0/9vSl0WYg+iygE/aJU4rIgcblMlQJYuMPFDm9SMZxLwxIlWw4h8Oc5RAiwVEIX4BJcINmeuniQtXua8Hi3TaimTHX1ZLxA0N8d8v+ianbrAmspxu+dDRjOOCe7kZSQxV9kCw0y60KUxXdazB+eNffzZR+Z5HNWrxvhl8lgDImtx7+5o1SPgX8uFcOE1uY0Vw6IBRICPzoDBjS7N5CbaeHQ+5Vyzm5dkIaM=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782903820-816204
+X-HE-Meta: U2FsdGVkX19walupu3fcVj3YgsZQ+5AE1wY/oizoMkqBthBuVja3kpIQOANxJfCwN3UzTV5LZauSYC8uRmHC4TsHtR18axJopoWN6PYnH3zOKPM7O/H07Rm6vhzz8x3MN/Xbn4H1LHf+JkQN7yIJzfDBWMOvaUyyqDDsp1REIOjmOPnTHCuzmUuq/NUnMGpMzo5VKpvixzvy01nX2yyT7XdtG9c8z8fb5A0T5BPPYHGA0gy2g3dmr9+2Ptksrf5c01MJUbOf1Y0UttoxBWDfNRayGh4YvYEPjYPUchi3sEGSY7RJikeJANfzT6hxIKlWndO2QpiL07YAgthtPnzgCwlVrjLd8Dvzj1nPzwTZJ8oJ7V3yEKOSy8rr85vDsoAl+OFqV2jG5O2+t+O9FMndl7GSjzRnWaXxFckgYV6QQ7Y8HCRHqWomfIV6Z2+UqmGgY1RpRkkt4h9HagBj33ZLPxVqIoAjgxJSVpIW8XkJhzKiS9HjY6MmEIZXz1UNOWLHcaCQ/zmNCzT171bfokWCUFPkKYHWf/VAAZH/UD7ICzEYJuqk8s07yEXtAG8naMYnh45V4fLnVLoKx+hODgwVW1SN2TcRn9gjG921e30U70RYO+DjrMKHuAQrclnYB85DPXT+++cdqekTPs9yXTglQKAcP4fydSS8Qcbc6EU+BoyX1zrIJ9rJ1+mJK8r2tK12IsqOcm4w/YTwdCrTW8qvH1KVt/oRXezy3ZCQFPTjWCgaXAS+kR0uvFM6AJJNRxFyySqidX7GIjsAFZq4HQ+x3+nBdcD1YXseUCVmgg9cCC3I4A0AqEPtHb9injxw6VWzjbA5BTYO4S8w4dq0MbBxYdQ8Y5pHI40ebwwMRkDiSaFDVQgjcx+roHphSBzL69ZjCk8pFc7/TDwCtpUuvH771YJANLw/WCKjkDCeqowMRnlDhBz6kjVVFiZ4Bzwvfi+3XnT6rXD3WgaX5vS9Feg
+ XVnVqnQ7
+ cuEwPyPkRdpv9ZU1ZKxVilsZoB2rKWUMOIKr+cd3tVKUX90LUKqnNG7+vSWaIY2IF+VtRqvocR+LW733elO4wXrHRVFmsoKdIEBUJT8Bx7vGgr6zTm9OrBFbcPfFRwo4R/iJsdtMBZuSeO5h2g7G9yBI3pZXXQGtJMDKjJfl0NVeNof3vTsh6G8UkKVYL0V/ZtKmUHIR+ZK063eFpLCy82cO+hUfoYPWKq7F+8GRdx3Htw8yvTXfcmXJPVJ7+krwst2iN22iMgr5myveQph0+DiOB8UZBoMhsTjQLExAkiV4r1i7T9YhpDDe+fVoTO3Z2rmN0ZHf3CUhiMEQo/shkFO/YirtEzXDTQkZXxMfkc+Va9gwkUo40YMwCywMsqoe0PcvzHnTYkvBBpWo9u7JF9HastA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,179 +93,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Gregory Price <gourry@gourry.net> writes:
 
-On Wed, Jul 01, 2026 at 10:56:47AM +0200, David Hildenbrand (Arm) wrote:
->On 6/29/26 16:39, Vlastimil Babka (SUSE) wrote:
->> On 6/29/26 04:56, Zi Yan wrote:
->
->s/add/readd/
->
->>> page->private should not be set in tail pages. Commit 4265d67e405a
->>> ("mm/migrate_device: add THP splitting during migration") removed it
->>> without a proper reason. Add it back.
->
->You can link to the discussion where we clarified that this was not intentional.
-
-Probably this one?
-
-https://lore.kernel.org/all/13f3fcda-7328-4aa5-afc6-75a294a82b2a@nvidia.com/
-
->>>
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> ---
->>>  mm/huge_memory.c | 10 ++++++++++
->>>  1 file changed, 10 insertions(+)
->>>
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index 2bccb0a53a0a..037d67fbec6e 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -3594,6 +3594,16 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
->>>  		new_folio->mapping = folio->mapping;
->>>  		new_folio->index = folio->index + i;
->>>  
->>> +		/*
->>> +		 * page->private should not be set in tail pages. Fix up and warn once
->>> +		 * if private is unexpectedly set. Do it before swap.val assignment
->>> +		 * since private overlaps with swap.val.
->>> +		 */
->>> +		if (unlikely(new_folio->private)) {
->>> +			VM_WARN_ON_ONCE_PAGE(true, new_head);
->>> +			new_folio->private = NULL;
->>> +		}
+> On Tue, Jun 30, 2026 at 07:20:50PM +0800, Huang, Ying wrote:
+>> Gregory Price <gourry@gourry.net> writes:
 >> 
->> The unconditional warning means this is not expected to happen. In that case
->> it's odd to check and fixup always, but only warn with CONFIG_DEBUG_VM.
+>> [snip]
 >> 
->> If we are reasonably sure the current code is OK, and only want to catch new
->> mistakes in development, we could just VM_WARN_ON_ONCE_PAGE() without fixup.
+>> > Demotions don't care about mempolicy, so opting shmem out of NUMA
+>> > balancing and mbind'ing on a tiered system is just full sadness.
+>> >
+>> > This is all just more evidence that demotion needs to be completely
+>> > redone, it's creating a mess of undefined behavior for memory placement.
 >> 
->> If we are paranoid, leave it as it is, but drop the "VM_" ?
+>> It's hard to respect mempolicy during demotion in the current
+>> implementation.  Do you have any ideas on how to improve this?
+>> 
 >
->Agreed, either "if (WARN_ON_ONCE(new_folio->private))" + fixup, or no fixup.
->
->I'd prefer VM_WARN_ON_ONCE_PAGE().
->
->(I was only able to trigger this once while testing my own patches)
+> I think it's feasible we could respect per-vma mempolicies, but not
+> per-task.  That would at least make this particular interaction less
+> painful and mbind() would do what you'd expect.  It is a bit racy,
+> but with MPOL_MF_MOVE_ALL the user can get what they actually want.
 
-Looking at the history a bit, that check has been around for a while :)
+Yes.  Per-vma mempolicy support is possible.
 
-b653db77350c ("mm: Clear page->private when splitting or migrating a
-page") first started clearing tail page->private during THP split:
+> I think task-wide mempolicy is problematic and generally a bad idea
+> on tiered systems, maybe it's ok if we simply document task policies
+> are not respected on tiered systems?
 
-static void __split_huge_page_tail(struct page *head, int tail,
-		struct lruvec *lruvec, struct list_head *list)
-{
-	struct page *page_tail = head + tail;
+Anyway, it's convenient to use numactl to manage mempolicy.
 
-	...
-	page_tail->private = 0;
-	...
-}
+Is it possible to enable NUMA_BALANCING_MEMORY_TIERING for non-default
+VMAs?  If we don't enable NUMA_BALANCING_NORMAL, the overhead should be
+OK because the page table entries are changed to PROTN_ONE only for
+pages on the slow tier.
 
-That was too broad for THP swapcache, tail page->private still carried
-swap_entry_t there ...
+Additionally, we may need to consider cpusets.
 
-71e2d666ef85 ("mm/huge_memory: do not clobber swp_entry_t during THP
-split") kept that swapcache exception, and made that tail page check
-explict:
-
-static void __split_huge_page_tail(struct page *head, int tail,
-		struct lruvec *lruvec, struct list_head *list)
-{
-	struct page *page_tail = head + tail;
-
-	...
-
-	/*
-	 * page->private should not be set in tail pages with the exception
-	 * of swap cache pages that store the swp_entry_t in tail pages.
-	 * Fix up and warn once if private is unexpectedly set.
-	 */
-	if (!folio_test_swapcache(page_folio(head))) {
-		VM_WARN_ON_ONCE_PAGE(page_tail->private != 0, head);
-		page_tail->private = 0;
-	}
-	...
-}
-
-
-5aae9265ee1a ("mm: prep_compound_tail() clear page->private") followd
-the same rule. Changelog says the warning had already caught real
-non-zero tail page-private values:
-
-"
-    Change that warning to dump page_tail (which also dumps head), instead of
-    just the head: so far we have seen dead000000000122, dead000000000003,
-    dead000000000001 or 0000000000000002 in the raw output for tail private.
-"
-
-So prep_compound_tail() clears tail page->private for tail pages:
-
-static void prep_compound_tail(struct page *head, int tail_idx)
-{
-	struct page *p = head + tail_idx;
-
-	...
-	set_page_private(p, 0);
-}
-
-cfeed8ffe55b ("mm/swap: stop using page->private on tail pages for
-THP_SWAP") stopped keeping THP swap entries in tail page->privata.
-
-So split code started warning and clearing old tail page->private before
-setting the swap entry:
-
-static void __split_huge_page_tail(struct page *head, int tail,
-		struct lruvec *lruvec, struct list_head *list)
-{
-	struct page *page_tail = head + tail;
-
-	...
-
-	/*
-	 * page->private should not be set in tail pages. Fix up and warn once
-	 * if private is unexpectedly set.
-	 */
-	if (unlikely(page_tail->private)) {
-		VM_WARN_ON_ONCE_PAGE(true, page_tail);
-		page_tail->private = 0;
-	}
-	if (PageSwapCache(head))
-		set_page_private(page_tail, (unsigned long)head->private + tail);
-	...
-}
-
-00527733d0dc ("mm/huge_memory: add two new (not yet used) functions for
-folio_split()") added the same check to __split_folio_to_order():
-
-static void __split_folio_to_order(struct folio *folio, int old_order,
-		int new_order)
-{
-		...
-
-		/*
-		 * page->private should not be set in tail pages. Fix up and warn once
-		 * if private is unexpectedly set.
-		 */
-		if (unlikely(new_folio->private)) {
-			VM_WARN_ON_ONCE_PAGE(true, new_head);
-			new_folio->private = NULL;
-		}
-
-		if (folio_test_swapcache(folio))
-			new_folio->swap.val = folio->swap.val + i;
-		...
-}
-
-4265d67e405a ("mm/migrate_device: add THP splitting during migration")
-removed that check ... Worth noting, David pointed out in the thread that
-the check had caught bugs before. Guess nobody really noticed at the time.
-
-https://lore.kernel.org/all/76750d20-cdfe-41bb-a228-9b3f171675ec@kernel.org/
-
-So adding it back makes sense to me. Just in case it's useful later, feel
-free to add:
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+---
+Best Regards,
+Huang, Ying
 
