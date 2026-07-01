@@ -4,92 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FB7C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:52:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B438CC43602
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:56:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 408EF6B00A6; Wed,  1 Jul 2026 05:52:11 -0400 (EDT)
+	id 6D1A06B00A9; Wed,  1 Jul 2026 05:56:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E05B6B00A8; Wed,  1 Jul 2026 05:52:11 -0400 (EDT)
+	id 6A8D66B00AB; Wed,  1 Jul 2026 05:56:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D1466B00AE; Wed,  1 Jul 2026 05:52:11 -0400 (EDT)
+	id 5BF316B00AC; Wed,  1 Jul 2026 05:56:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0633F6B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:52:10 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 721311402CC
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:52:10 +0000 (UTC)
-X-FDA: 84939742020.25.AC679AC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 396706B00A9
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:56:11 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 950D0A02A2
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:56:10 +0000 (UTC)
+X-FDA: 84939752100.19.C3FEEB8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D898E12000C
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:52:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hUmFUbpx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id F1062C0009
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:56:08 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hn05lo+y;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782899528;
-	b=uyoVQehJR0I+qlwL2wrW1jI6aueuyODehx2vFmPRu0nEkbNhuqCT1D6+0UIitza/3xtY0i
-	TAnylYMTT3LuJnBK225+BjXK5cCDlR5vWesk3L5it3UTTmOBO5s5XqqnwJ9lC9Its5L2vj
-	vtKIwbemdlN9N34hOkN2fgKvB61slZU=
+	t=1782899769;
+	b=k0hqg7YGhZzAdu76kb58tAA+eOVZXiFWHLvangK+/HnuvsOW/BGA4gt8gdukwASMvOQRDb
+	U2zfTQMD5o0kFfAOZ6efKo5jh4+1RMNIzi1YmCXznRHbc3nJzhXmDdOWyS+ayqQm3Jfbm6
+	gQpK6Mc+v0aPBpkf8LXbTiHlZZA/aJY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782899528;
+	s=arc-20220608; t=1782899769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6AeWjVLYlFF7ljuv59DbbHj2vnwHWY4jNzYXr4Sv7xs=;
-	b=nNHhLswXA2uSxcL8a30+/JW9lyB/F0y5jgpZuu93zPkcZhywAkcQVa8+JfEaxvWmSg2UZI
-	mLqMThJP14i1HDFQUQdY3H5Pp/ChQD/+EEDMXiZpUnkWyCaMdUT56uR1zj2HAq3xXPpBdW
-	1TFgix8owUEIwWXi8I1zDfb77bjdv6I=
+	bh=uFnqjfO2nGnpQRfkiFUM7kAq9hpq2gQ/a+iAbNQdyDY=;
+	b=8RJ2HDtY3Ln+7IGRFgQoQsjuZvN5BUXIa73711f7oLEK0PgVcIg+fVdgfrqTmWSSEZWpmM
+	qY0boZdrDpaz9mtmdjqYCPilMJqjVHz5usY9MQDhAp2498i+/HEhjNKaFbb6rSfJF1fpju
+	tILk2nXl0T681ABUCtki9/bAV+k7OZk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hUmFUbpx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hn05lo+y;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 21C74417C7;
-	Wed,  1 Jul 2026 09:52:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DE91F00A3A;
-	Wed,  1 Jul 2026 09:52:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 253FB411B6;
+	Wed,  1 Jul 2026 09:56:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEB71F000E9;
+	Wed,  1 Jul 2026 09:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782899528;
-	bh=6AeWjVLYlFF7ljuv59DbbHj2vnwHWY4jNzYXr4Sv7xs=;
+	s=k20260515; t=1782899768;
+	bh=uFnqjfO2nGnpQRfkiFUM7kAq9hpq2gQ/a+iAbNQdyDY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hUmFUbpx1y5tJpPtnUlhcT3j1560TB5Z7WidudXQhnXQ3iBlDbOGKHdvOXxORwcrE
-	 tjmyXJMPH48NxKfebsrBvhUG7gACJwmZBgrQpAIcWhb5oG4zMfdDkGNOqXzmcJIxMZ
-	 oFwE09qRkgyihGrox9lPD0M8pJPvZztnF7f92f8U84bzcQesV6RBPrds9JSGEOpWhf
-	 qER8uTWo8wRBJgWEBBXX4UndrcxMWK4GJPF99H/7QvmN4QI4razDO5GnzxBRwUy9tZ
-	 AH6UDHXZu9FYrBnZ8aE8ywkTbnCASgfyFqy+cxTE0e0MnA26p6ifh1mSGu+DbB+2e8
-	 Okad/FnnS81yw==
-Date: Wed, 1 Jul 2026 12:52:01 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Hannes Reinecke <hare@suse.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
-	Brian King <brking@us.ibm.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org
-Subject: Re: [PATCH 3/4] scsi: ipr: use kmalloc() to allocate IPR dump buffer
- memory
-Message-ID: <akTjQVQQNdeO9M28@kernel.org>
-References: <20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org>
- <20260630-b4-scsi-v1-3-494fb37ebe7b@kernel.org>
- <7c8f0e70-f49c-4614-af95-002fb2be11ba@suse.com>
+	b=hn05lo+yqTo162vzSSvmLgoHkc8sZFXTO73a3zpugE032j41FtZRAcgR5cC/mIsWC
+	 oqb+WxZyigte/GQZKBkZXaiYmAep0fVWbliyTXXxFOHdLIA7ZB+tMSio0XPY3sBbJD
+	 xp1cndGs6No9+YfwSniB6tXQcpWnVEn7s0jLOOyrTHsS3hH1QGk++EdC7x7glsCzx2
+	 ooQPJops5d+rLUK2ebXz4gbnEltEwqB5O9z9G9A+zLJBaWmKUz/FSVMRs5+u0CJBcF
+	 9YJUExToRs6x/TXjrPjHcKoRJgS2PsOr32tKYv6tYSwkl+1flbn88u/WCVI5PjKVif
+	 CCXDS3L8jpcpw==
+Date: Wed, 1 Jul 2026 10:55:46 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 05/30] mm/rmap: update mm/interval_tree.c comments
+Message-ID: <akThthi2yrXY1meF@lucifer>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
+ <akPrTU96BwQJoygw@pedro-suse.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7c8f0e70-f49c-4614-af95-002fb2be11ba@suse.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D898E12000C
+In-Reply-To: <akPrTU96BwQJoygw@pedro-suse.lan>
+X-Rspamd-Queue-Id: F1062C0009
+X-Stat-Signature: qx3kfb3b5qqdreh3inybmg3wdnan6ycy
 X-Rspam-User: 
-X-Stat-Signature: jry34g8wuzjfmgytsy3ieobwsyzrmx19
-X-HE-Tag: 1782899528-39004
-X-HE-Meta: U2FsdGVkX199KZ0BD14kamasRmIoPVjMBXA20ueFFJViy/GVo1U5bd90cBZHy0EfiZHQB0/opR5wFviLiU+Bnp3qS+tDIcfeekfU8Hns1bW2Kk/1RQsXyyX+UNMy7PAE2QQXjX6jqRqCHeAKKKuHlAAA52sU99bcOH+xbYwXiivWdZ+946tKvLb7LTBCW6r4gjQlw7vHNRNj8eg+uMgsnHpO67a12OmBw/ip1NA3JPFym8FG5gMNVRDbmDwYnE4a0bb8Cg5JfD6yNTc8D6a2PFfXjIgThPqgrJaF9goOiAvUh+1RTvx32DcaRG78MQFzc43ja/cGlwd63fWVrE1j0L9jVuYZeROLblSh7EXPhk8ceiRGsHnjW/BvenooMSAzjKyJu1OmN5lGb/cJZBjksIH+yitSYAbbZs0B7Qimtwx+oSap7HuM9C0jjfp1WZP+iyDp/8AMI66iiH4/gME3SQUxyniwsLEyUHp13qJJdK751pM9t1yUHjQQUBsr+L6jnXJX83LAjlglRxhow3sDLkjUVVwecVWlXJpawtonBo3w9EBzr6nmerndi6dJ7hnKZszUhle/YwSsp+f6BgSW6VYzSqXWbapB9bKegk23NztibMDc+54Hs3niAsabmqVAfGSpAOg7PCjo8kiPWk7+oj26vV4VIqJ3sWDJwZC3CgUHrtOuya3EQhJJx6bv7sP6FscwdeJOIDR1T+9nInJOvTajZT8mBe4cX69o2VKnblVZqQUbTGUfh3xRsWfNtzxDgE9pfHMDSwP+73Wl6OgdrgtJWbBrB087KbyIGxs0bjdd8DnDNsnCbW/BymOcPL3B8uTv7e2mSdPWyn6rXMt+e+IYCqCFtebkMeZwe0W9+8fw8OVGqPn2ixndN9X3usXGZlOTOrKgXnQuJnak46IZ+gEvJ4laVqWLM2XJ5Ljr268KlmWNLabG53UQP0NCXXdzJk0hGwVd5hh0+ujmCp5
- mO64OjRg
- xn3sP8yCLjw2DZfkivi89oSPwWAjjJibw7J4I5fnksn3SCr8oZ4dfXYr/ixMnIi9n+J+IK32qqOcRUn8416pQPJbfFRQ8ORmxyMCx1PgBcrPuEi5xD87hD959xNFIvQG95oa2h6RqC1WNHRicR843Nk4jQ+KXtyumozszhRsk7V0BltEeLNgOiaHnn6KhCtf7xRvQuvlLK1xjB6vTvdpc89hKRNmYX8fXd+pcwSv10PGGR9mfCKuTZDBv1qKHzMoEsCFwaNi3Zqw6X0nQUl1RujeiFoonJ6seVADYAEpeyEJsSIY=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782899768-289674
+X-HE-Meta: U2FsdGVkX18vkmcP/L/aeO0mtYy04JCeYG6SVXxbLtWgrMEHbW2SpAmXEngXVwCOI8PDyjo65+JumUru2DfKL4WDjYycJquFurnfmtmkQMUwSB6Qs5EjDsd/dmHIsXLFPzhSqP3RhMTDF9c48FB8tXkk5xRzB/NjpMA2rEI/8Bs2GBv1ZouMZvau+9wW85v29jvzEFoK3dbQX0rXLSDTlp8kW46tBe8fReQ4sMeR5TAAQeQ4A9eJPTMyb8cYMH7CgjVv7HUWFXmpxEVp+SPrMEVuEttdrUgThHpAWKe6xoLP3wGyweFYLouuP+HAP7sGb+5EJ1vj0nPkjokPHIbPR3heAw/vClPkTQEZfVizjpDD8MGIP5t3RZhHeM7HSl0FoFs6aDaa179NwxQj+XBD5skGY9KCtw7bfUT/C+wlrSxIwxLiCZIQPXu5YZ5uXNEsutRgSyzhTToUbu1kp2EuRNwnK7U9eDg86Lu3faKhJm56OQFfcMiwk/UXgaA/7HIeSCQ2NeIQqqClxmdZxVHsjBBLLutnmr3pEAkJD3RloVF56V6KP+ZIdtfk3cfw1b+ijbc7XB+eWl71Z7adc+rPLsEmEzWL3gcb41XZTdDS9v8qj4P3WX5urYagIPMQ/mqRiedBRilqXViia/C9f3r4ibnUvfZDzDW/iXrOU+LEbR1r/hffk4cXj4wEUY2r1sYr67UM/kaKwIyvLBe7lOzKzltkA6OPEx0cs2JLRLorM0cp1/imBEzc5RSIh7TLeqQFmCRd5OpD2mA3cjp4ELSe3iksT/+0OHkwKjRL4YqtUIiGzqXMw7POJljPLONzcmg/fWVZhahlID7q65HchjSBVjebBMyAlfDCAynKKubTNeYL4j2rj3Okqcs1FtFwvIYff1Tszd6WlSnBeHrTH+pjh41IZWbGBd47PxGFHNifIM203XmhGAfw+9nXNpMFHaqVhTpqQHaVqudBTnbf3OC
+ gIbCMjjS
+ I67iMcg6n+z/0QZ76wZIPNTxdovXtv5FpcYiissvlieRUuT3RSN2kBZayrbXHCCJAvKWiqS9oq1u1FtjTC7WDNkRJBGeCTMGQuXE+G394xfymIoJKOWRz02qpq4W7PUq3BlY0Z1oOixZkpIB+ba19KRqXCP9edWazAB4ht5KTIutq88AkPGJVqU9kV6YpiIQLF5KOQQMMbpJfHwSm08yEtl8JaQ+uZ56gQCC0i351ctzClxo9nW85JC+w4YdTPfsAFvkJC/Y0sYFxK+exxoM4olV7znZUcRKLIZnPuTBp//kc9tRpTiujrkQZS8HeSVYnNDKp5tSb6ciGmDJtOYD/tr5Fm5Qj6E+W16Pp2UBe8eBLNzgfvjcGIQpIjn1DlCkE3h9BrswB6jul4XgRXLR8drp/zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,59 +123,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026 at 09:03:06AM +0200, Hannes Reinecke wrote:
-> On 6/30/26 12:54 PM, Mike Rapoport (Microsoft) wrote:
-> > IPR dump machinery allocates memory to save adapter's crash dump using
-> > __get_free_page().
-> > 
-> > This memory can be allocated with kmalloc() as there's nothing special
-> > about it to go directly to the page allocator.
-> > 
-> > kmalloc() provides a better API that does not require ugly casts and
-> > kfree() does not need to know the size of the freed object.
-> > 
-> > Replace use of __get_free_page() with kmalloc().
-> > 
-> > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >   drivers/scsi/ipr.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
-> > index d207e5e81afe..5a212bfdeec2 100644
-> > --- a/drivers/scsi/ipr.c
-> > +++ b/drivers/scsi/ipr.c
-> > @@ -2893,7 +2893,7 @@ static int ipr_sdt_copy(struct ipr_ioa_cfg *ioa_cfg,
-> >   	       (ioa_dump->hdr.len + bytes_copied) < max_dump_size) {
-> >   		if (ioa_dump->page_offset >= PAGE_SIZE ||
-> >   		    ioa_dump->page_offset == 0) {
-> > -			page = (__be32 *)__get_free_page(GFP_ATOMIC);
-> > +			page = kmalloc(PAGE_SIZE, GFP_ATOMIC);
-> >   			if (!page) {
-> >   				ipr_trace;
-> > @@ -3226,7 +3226,7 @@ static void ipr_release_dump(struct kref *kref)
-> >   	spin_unlock_irqrestore(ioa_cfg->host->host_lock, lock_flags);
-> >   	for (i = 0; i < dump->ioa_dump.next_page_index; i++)
-> > -		free_page((unsigned long) dump->ioa_dump.ioa_data[i]);
-> > +		kfree(dump->ioa_dump.ioa_data[i]);
-> >   	vfree(dump->ioa_dump.ioa_data);
-> >   	kfree(dump);
-> > 
+On Tue, Jun 30, 2026 at 05:16:51PM +0100, Pedro Falcato wrote:
+> On Mon, Jun 29, 2026 at 01:23:16PM +0100, Lorenzo Stoakes wrote:
+> > Update the file comment to clarify that both file-backed and anonymous
+> > interval trees are provided, referencing the relevant data types for
+> > clarity.
+> >
+> > Also add comments to indicate which parts of the file apply to each.
+> >
+> > While we're here, convert the VM_BUG_ON_VMA() to VM_WARN_ON_ONCE_VMA().
+> >
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 >
-> I _think_ we can replace this with kvmalloc, and allocate the entire
-> dump buffer in one go. Once switched to kmalloc() it's kinda pointless
-> to allocate separate page-sized buffers here.
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+>
+> This is fine for now, but I'm wondering if it doesn't make sense to, in the
+> long term, have:
+>
+> mm/rmap.c - common rmap mechanisms
+> mm/anon_rmap.c - anon rmap gunk
+> mm/file_rmap.c - file rmap gunk
+>
+> or even something like mm/rmap/{core,anon,file,ksm??}.c
+>
+> While working on my file rmap patches I noticed there's so much stuff just
+> splurged all over rmap.c - interval_tree.c - fs.h - fs/inode.c.
+> It's a little silly.
 
-kmalloc() performance is on par with __get_free_page(), but kvmalloc()
-would be slower if it falls back to vmalloc(). 
+Well, Wei had something like this idea a way back, but I'd rather avoid it.
 
-I'm not familiar with the driver to say if this could be an issue here.
- 
-> Cheers,
-> Hannes
+Firstly, with scalable cow coming, I'd rather us not make anon_vma a special
+citizen in any way, and I'm going to be heavily modifying all this anyway.
 
--- 
-Sincerely yours,
-Mike.
+On the interval tree side, I'm simply going to get rid of the anon side of it
+altogether with scalable CoW also so that can live as it is now for the time
+being.
+
+In general we try to have generalised rmap walk logic for file vs. anon with
+rmap_walk -> rmap_walk_[anon, file]() for one obviously.
+
+But obviously there's separate rmap walker logic for file vs. anon.
+
+I used to harbour a belief that we could make anon like file-backed but now I'm
+kind of thinking that's not possible :)
+
+So I guess the real answer is - yeah, but let's revisit it after scalable CoW
+(and anyway I'm likely to do sensible architectural breakouts as part of that
+work anyway).
+
+>
+> --
+> Pedro
+
+Cheers, Lorenzo
 
