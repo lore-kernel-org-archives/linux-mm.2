@@ -4,89 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C91C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 02:40:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56BB0C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 03:11:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F36376B00A6; Tue, 30 Jun 2026 22:40:31 -0400 (EDT)
+	id C491F6B00A6; Tue, 30 Jun 2026 23:11:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0DC96B00A8; Tue, 30 Jun 2026 22:40:31 -0400 (EDT)
+	id BFA0F6B00A8; Tue, 30 Jun 2026 23:11:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E22EC6B00A9; Tue, 30 Jun 2026 22:40:31 -0400 (EDT)
+	id AC45F6B00A9; Tue, 30 Jun 2026 23:11:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B98E96B00A6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 22:40:31 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE5C61C0E4C
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 02:40:30 +0000 (UTC)
-X-FDA: 84938654220.25.99D3A34
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A82B31C0005
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 02:40:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jU53toVP;
-	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782873629;
-	b=At+Z+WTTwNar6R1F+nWQIJjOH4yxM/cOW/fw+o+nlPNKgO2kVQD5DedX/0IZaqXHuaQ8S1
-	wTTQQK3lyaaZBXRVEI4AVUO8vsQwygHNbXQAXgpBNO/OD5Yjk0+sim++32BiHhqKhmPxGm
-	q/Lar/NoJ0/TsYQUkgaqYltqZyMh9cU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782873629;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CBD86B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 23:11:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE2688C398
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 03:11:17 +0000 (UTC)
+X-FDA: 84938731794.19.C920173
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C94CDA0008
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 03:11:14 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Nx4nvyyC;
+	spf=pass (imf15.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782875475;
+	b=J1XHFH1UQD6YbYKzhD2sHrH0z89HnL65mKOCB+jtk0fY5p6RX81BdylY4xZSTQosKFivy5
+	3xgVbivSn90WX0fJ6FOoAMfHopLcR1vDyqKTyAfKmIZtw+RC7T8Yf5AKfy8iK6nA20xiLW
+	nudCW7PEf1BFXXFiYM/IFZezep171cE=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782875475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=zOd8DSH7cMYtJD/+/URsy/IxwgqSz9ZSG2fyMnhSXak=;
-	b=cPN3B8+T4cx6penDPZpIAWpsthSPy++SwuqoqaOmjgZrlCRprbgk/JKZgbkRP9DH5FJUrS
-	wRcxe069B1OsuoC/TZCPyDzKcqtfKVWmCWNxx9+re/labv8jzNucTTTdiNyHTb1Jn8PIrX
-	AfATPyDVbGRBheJY7mGLN6TwMvJP004=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jU53toVP;
-	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782873624;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zOd8DSH7cMYtJD/+/URsy/IxwgqSz9ZSG2fyMnhSXak=;
-	b=jU53toVPumrS9P5nkr8lgqCFP3On/pZhU6agZrcXkfqKCJkvxOKtlYu/72jObB/OC9jhqZ
-	BjXP02wTgs93xHsY/ptW+JuOjrGzS92mQSLkYBuLjiSIiHoqCZZ4dDkxjAAWaKx2pd52T/
-	3ULYc9iXvhPdt7Auvx4hQY9Ul009zSM=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH v3] mm/memcontrol: Avoid stuck FLUSHING_CACHED_CHARGE on isolated CPU
-Date: Wed,  1 Jul 2026 10:40:10 +0800
-Message-ID: <20260701024010.564830-1-hui.zhu@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=AW+XVWe2JL0df9uuAdxaZgi837urm1REze6zO62j7wg=;
+	b=A6puQ0NuOG0x54O5q3GAFiPxmmlcPTzZJqU6AjQlkqjWiEBDwJqYIq57Tw941dF/lfDoIs
+	ZljNGPasVVswngUgIEQDLDYv25I/VNP88tRSCgfQgD1mSSLYidbCTdsZVjPZn4g53+YuyB
+	c+iQZezyOIRrAzTbNxci01vlCZTTYXI=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Nx4nvyyC;
+	spf=pass (imf15.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7eb29ed2bbdso28429a34.2
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 20:11:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782875473; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FKDans2nj0SP+eV25fLD8NJoIwh9j9pXQ1FPPGsr57+vMPq4cZjNXqkkDx2To+nGeE
+         o85dE0B37BvOxvAbKabxDuMWbf+wL6O2Ylv45bB4WNEABoqT/TSV2hnZh/qo+Qbf0U7r
+         Zyk0eC9tMTAU121rvKVS6BXONf2nFx7Zsr055LeFWjGqi2pm/75zTTfPAw7wxzkvb2Yr
+         4dv9mJQ0/m2SeVVc1Y0u+v6VHzdmYHSZe2z7P1dQyjQKT/wCmcPnC0UTQeCC2sg2NiSn
+         llIIrTiKYvWtTrG25Vw7iy5ON5EReIYyM0l4fhWwM5kWbM+W2TMzCdllJrvtftzMmR+A
+         iOBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AW+XVWe2JL0df9uuAdxaZgi837urm1REze6zO62j7wg=;
+        fh=gFHE4S10I/QRJ0BUvPtN+9xkrMcdOhjPhw9KZu7fZ4w=;
+        b=TMFdORXWo4NsVdT5lLJ5+wPTB7iro10rLdZONfdsEkSCT8V/rfBJ4p/TBjye73EuBX
+         ivS+/wkFZJ8+ZD7CMIikIDHk9FQ1s0q6/Xn0YoVry5YEXJVZ0jmyjaEFEWha2H/xJMrf
+         vwZJ4RtF5/XBEEFa8SaB0/GateVLxA4nu8FQLBYJUJgdcLY0etPCJ1BTLKoH/mGyZhFn
+         BPd2zshD5pnrszj6Tgt19VoN2hw2ZvEta07+W8ryVRV71uYwelN1Ina6CWJtv1NwMyzr
+         z1oxJIsgrgptvyqlxOlFE/i7BvWiA5YZLJUvnZ8IQPlxmp2aAgTuOcLrTuYDzGqk6LVN
+         j0gQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1782875473; x=1783480273; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AW+XVWe2JL0df9uuAdxaZgi837urm1REze6zO62j7wg=;
+        b=Nx4nvyyCOT9cfGDhbJfsBsoRJPu7Gvns3Az1hWuCekqgFiCPr+JKOlrlyg3U0ksymK
+         E8PfDh6nwKCaJK2bSu8f3UaIByG1aYSO7VqvUUY/GNL6BUxjjcRkxRDWyV0u1qlCGA+F
+         ZJuET6iw1o7m6ZoCjsVpjCC5+3cl/oBCoP2N9XrdSnB4DGOJw9LF9cwm5gpxBXxm8cQQ
+         ZhMcDtFRrImeP1D4bVjtO6+VWZLuD/v+4AU+cdASNi338ZbiGUmpPbDvU5zucJBLsaZq
+         dEUqL7tV1Hv3DgW+7dPlhbws1JEskDKpqrkrmpifaqo+VQvp+Wah2zEhJG1K+4j6+CsT
+         NtmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782875473; x=1783480273;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AW+XVWe2JL0df9uuAdxaZgi837urm1REze6zO62j7wg=;
+        b=lxGbpih5N1C9vhZiWwcLoTR5eSTXqkW0pNuLrKBVkfS+Ub1dOrEBlp9XtRt1xwa2+R
+         aSV/R81A9Ac8NMGF4mVDAtdHknNtJXxsAZyTzdNd1iSlqoJjfDwkU7cks1bVW657cO8k
+         EeEdf47IINlk2ycE7CxqKdswE+T8ry5fDA8TTuCYb3YldjMrcR8pvD89MXc3bvrQsPY/
+         i8MZFOUEw5s3U4qI0TDtYwMe52qO8BsaZ4y5s6p8PmLBRYo0LQBy08OtFUrlJouu7t0R
+         71gDfSGcJEnyuXmRpsMX5AXy5mPepGNZgrU+sx1xINIZjzaW5ka6YMbVtsgEGVQ+fPxJ
+         iPWA==
+X-Forwarded-Encrypted: i=1; AFNElJ/9+FDkdYfI0ATgU6ZwVP80V4yc92VIWWHEPrdt2PbLaVTQwyseymWM2al6C4ftosr3c7KYf+2lCg==@kvack.org
+X-Gm-Message-State: AOJu0Yy/k1QVqEcMhsd6cSUBNLwF5QnWeHS+GROCcouFxnmUPLFPlrFD
+	HgUUZhJz53iBU14O32cR/+WjeRBV/WCoE4x9UYb8rlhBAZd8lfe0Oj+LnVFIr0uMej7edqjr/4P
+	J5k3FwMONNlGLQOxgVp2WDs/yhHAgG0Fze4ZTFkx0Jw==
+X-Gm-Gg: AfdE7ckhopXUF0HIA8F5y3qEyvFx2i9am40DvVe81l0w6nCqah+UBa0aJqpzLwdJ8Gk
+	XOvyFQhPdbKqRGCrI+MFnQFTvpwht3Om+koH28dZZn//dHLQ/A/v/hohlPrNqUTZUKTK2gupqUb
+	Oxf4naDdRzyKSfIlov5scF/NpdB7TdB28Dstm0mB03J8HVIdnELVP7zkoC6Co4NolSGkNiTgl2p
+	Cm5LsmjM2JwpRIwewmuB1Uj0Ec0wHLuO5HNJNoNFdMLE/VfytUwP0igbjCHvFCYHWVlkR1WW7o=
+X-Received: by 2002:a05:6830:4901:b0:7dc:c4ae:a689 with SMTP id
+ 46e09a7af769-7e9ec586d01mr4829708a34.2.1782875473497; Tue, 30 Jun 2026
+ 20:11:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A82B31C0005
+References: <20260505062026.91724-1-cuiyunhui@bytedance.com>
+ <20260505062026.91724-2-cuiyunhui@bytedance.com> <3720c3a4-cc0d-4ba8-97ae-35def0189e2e@app.fastmail.com>
+In-Reply-To: <3720c3a4-cc0d-4ba8-97ae-35def0189e2e@app.fastmail.com>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Wed, 1 Jul 2026 11:11:02 +0800
+X-Gm-Features: AVVi8CfCZ39PlUVHuhvVesQ30Ayu5byi3NLY-dGR5ZLniizemgTSehNq4vDg6QE
+Message-ID: <CAEEQ3wn8AFVqWZAiXfQd4a1ZzH=2L8qRX4W3S=KcmQ5FORjn+Q@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v4 1/3] riscv: io: avoid null-pointer
+ arithmetic in PIO helpers
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Dennis Zhou <dennis@kernel.org>, 
+	Tejun Heo <tj@kernel.org>, "Christoph Lameter (Ampere)" <cl@gentwo.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, pulehui@huawei.com, 
+	puranjay@kernel.org, Thomas Huth <thuth@redhat.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Ben Dooks <ben.dooks@codethink.co.uk>, 
+	=?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@ventanamicro.com>, 
+	Samuel Holland <samuel.holland@sifive.com>, Zong Li <zong.li@sifive.com>, 
+	"Conor.Dooley" <conor.dooley@microchip.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Deepak Gupta <debug@rivosinc.com>, seanwascoding@gmail.com, 
+	Andy Chiu <andybnac@gmail.com>, menglong8.dong@gmail.com, cyrilbur@tenstorrent.com, 
+	wangruikang@iscas.ac.cn, Atish Patra <atishp@rivosinc.com>, 
+	Anup Patel <apatel@ventanamicro.com>, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, qingfang.deng@siflower.com.cn, 
+	Linux-Arch <linux-arch@vger.kernel.org>, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 8h5deuky8rj5t5e9n5qs1s5omskodpjj
 X-Rspam-User: 
-X-Stat-Signature: zcgb5398nuittyjgpm4xue3uifz9gxpg
-X-HE-Tag: 1782873626-883741
-X-HE-Meta: U2FsdGVkX1/H4OjuvdjSWnZhvWbbWlNneNxwFHGaaXmvVCepiHrjc1rGp4FZgLJkmIaPvVkefTivBMLTsGbkfcZQMA7kaQn//GQ04SMc210wnUn4QZ22tqutLMAp+rb6JHF5dyxu0H/cqczPlI2gra44ceu8TBYJin28x7uQHQZpku2q9sX/FEgMoLCRNHnp1AT2LfO878+kkLB2JB5iu6ukixEIfoNVozTdhRG8bmPLoiAGD3io1vTzVG3hIDmt8ljNEaqaJecsKs8dmFzIVBwhKc2Xyh5xcACGeoWzllzFgSt+fFW1od5+18dxWDpuS0gmlQNUBZCQyjnwj5jbB7F6c9VSgLoWAMO14iBTKmWEtYjzJKolFFe1+3uU71I06/1ldDbM4dk+4VjMSqQRtX3Kuk/lr+rAe8G0IqzFEOi1brsjSWp0040BFN8bvfOwAEOX/YZi58FiQwUbfC+yyl35jOOZmhsmVPQE/lwwTSQDfAkYG2zVM9PEAfczrEiCJtvhIUV2prIC/tMllRxxQdNjaEtmkTVnnXxnfont/QywD+KCVdxS/zuwhwwf76vfk2q0DaZj1uXQZPI9jjuBfCoLJwHYb6AHWz4fD5Uhx7EyjgicIfuzQf6JBtFXvo5AvBFiOA2/Aj9gNvUdCuSjnrFaNuDrzZJO6qz1yx9oX6rmkF54CpRUUL8RAVw7+fBXi/SYxGDZMhTPrIWyBIKhqfF/axpg14yprRbqfUEfA8ibZCVlGWNsqSzGY1Dq0gIc/egCLaHSGpYn/mL/34Lj0yKKcsCsl5A83EysXrEviAvNqXUBu33iyE95hfW13qAv6BHFqqWMvOWF40CgEUbNH0HeluRyP2CtpQWkIIiDcy8X/8uiBEbWhEahUCoKKG7zpHI6DYLN6D9ndvRYyJswrzBmFjfhF6dH1PZuff/GqWr9YBn88Kr+Fka91z1f6Y+yy0qb5a15q0qGwKtp4tz
- C7+shWL0
- KJZVpvzwDKZqwZUkv8cC8CgLoncQLWwrb3E/1oYyM4opwad7cAtjUw/8p/hPAw05ybT9R+gQpPF2rSWSCRwq0WPsYtc69Eo1ove0z1w7MyR2UL8l+RTyyplfx6kJcZJnP06jtS9B50/ux9w7PXmpnaKad1NlbQyh7m/8hQ+oEtIieaprsWFj22ocsETHtm9zhauRbHx3toNMgE0vsu60VqKjSBJyfmKktjIAkGw42P+jxRdvarJFqfZ8tpA==
+X-Rspamd-Queue-Id: C94CDA0008
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782875474-652819
+X-HE-Meta: U2FsdGVkX1846x7SZWbMEcXuSpPUCi4bZfM7dDyD8S6eANQytWd+yqxTZ3meYlfngV5tRc0qG9GKLyhDo4EfFCuhFLttff+EQNYLSdu5LSTplkLVZltqPljaqb5k/SfIv/vC8ZS8DQSl7iCnt/ENuM3CQXtAlzVCyH6rH9CyC+5th+N2NqkI6rbpPNErBLgnA4Sik/VPZWPaJRXWLxpKkamu735b6a2JEdMl4QVZVbtezxsPaJe4fuNOyUEvz5tqs/sFOzEjA426Sr6TzOq4QSBqoVCzxOktuuYr43h9Jg7fHkb/n4xquNzHVY4frrO7uWEvaFDLFF8Y0NTrw5CmHvBXQ4Vy4bSmuApLgUEo6wobCfFKOfv6A+9deV3D0fE3TDWzvud4/00tBXQcNse5OzidOHKD4+AURAHT3pAknOV5G6j6rxSJW6L8j1aUw1nK0S4SKDDcL36/6TnJ+UEzG3ZUK1UDGSsiJJ+1F7EUMPRcsCKeGq3nLYkVAbMzgGySat6P+Q3NqgpbfLKdS9gBPPiI/zvqgl4JO/yFnvO2lNqVwK8SOC8Ii/kZU89NzIa+sjvwmWsYiIZUbWjj2nsVTgl4MDQmWrWLTGS0Exu3xalXYQOqY5cCoyR2yUdHGxuBf++wBVcOcU/JgNOEaubG4Hp1cxggkaEr5uiDELjol3R4MkuAL1nxHafeuy/WSy84RA+gY71LVcMEeZUCe+qQKECfobe7nKvbrTriqmKWG3NtsQ8H3Mte5nGy4isEFyaHytDL5ikib802MrRZqYMwC5i+ygCf9LnXmDNJkr7BkOO9OAj/lYEATNaOyY7M8Fy9CBtMJMVI738tyy1CFQZM0id2IhfasDWHHuBiMlXgGoOU97YM9WxeGXYSg696AJ4HnmEwAc9Hf0jmhreFnqGczTZGrQqXymV3Gqwl3/7pdz4ZDZz7ePtWkdl1rhL6fMKHj6SX+YujrDoY4nzoSm7
+ nassPSby
+ hbPeGogZ/uhn8Z9YfT39fYDnWVDQNmWAxJ25WK5lozyEh+66eKMim//P6FvLkCQTqy4yHyKWh6N5qTt6vH4TTzmpSSHU4tHJh7hiEYcgQKzOrTdCtrT5GwUI8rUmOskq9z7klcMdmYKhKs9Qnaz1nCWvIxNYXxjAnVMPXv/oGCRNRJ4bqpgS7YrTqClc6aoH/Cx25Tc8ra6o0KnEty6Kzs/yCRuSEigX/oC5WZFqfZalbdAwHzsornY1jc7JbpsNpV46xtiozc3JpbXV0gzNDVsDHcc8B17KEd6OfH9U5yHYqqeUGNkDwMZpuU3p8yUEWKhd8g7L3cQvW7eLdeG6Bv98nZfmEE3pp4L9zLbZgxkVBxF4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,115 +158,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+Hi Arnd,
 
-drain_all_stock() sets FLUSHING_CACHED_CHARGE before calling
-schedule_drain_work() to queue per-CPU drain work.  When the target
-CPU is isolated (cpu_is_isolated() == true), the work is silently
-not queued, but FLUSHING_CACHED_CHARGE stays set.  Every subsequent
-drain_all_stock() then sees the bit and skips this stock entirely,
-so the entry is effectively pinned until something else on that CPU
-runs drain_local_*_stock() and clears the bit -- which on a long-
-isolated CPU may never happen.
+On Tue, May 5, 2026 at 2:34=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote:
+>
+> On Tue, May 5, 2026, at 08:20, Yunhui Cui wrote:
+> > The RISC-V PIO helpers derive I/O addresses from PCI_IOBASE in ins*(),
+> > outs*(), and ioport_map().
+> >
+> > Under configurations where I/O port support is not available, these
+> > expressions can still be formed during compilation and trigger
+> > -Wnull-pointer-arithmetic warnings from clang.
+>
+> If a driver attempts to use ISA port operations in a configuration
+> without CONFIG_HAS_IOPORT, there is a NULL pointer warning because
+> this is actually a NULL pointer access that will crash the
+> kernel if the driver is ever loaded. You should not attempt
+> to shut up the useful warning here but instead make sure every
+> such code has a proper 'depends on HAS_IOPORT' dependency.
 
-The original idea was to actually perform the drain from the calling
-CPU on behalf of the isolated one, by adding a lock around the
-per-CPU stock so that a remote drainer could safely touch it.  In
-practice this turned out to be intrusive: the stock data structures
-and their fast paths (consume_stock(), refill_stock(), the obj_stock
-helpers) are deliberately designed around current-CPU-only access,
-and retrofitting cross-CPU serialisation onto them adds non-trivial
-locking and PREEMPT_RT concerns for very little gain.
+Thanks for the review.
 
-Looking at the actual amount of charge that can accumulate in a
-single per-CPU stock, it is bounded and small, so leaving an
-isolated CPU's stock undrained for a while is not a real problem.
-The only real bug is that the stuck FLUSHING_CACHED_CHARGE bit
-prevents future drain_all_stock() callers from re-attempting once
-the CPU is no longer isolated.
+I agree that NULL-pointer arithmetic warnings can point to real missing
+HAS_IOPORT dependencies in drivers, and we should not hide those globally.
 
-Fix this minimally by clearing FLUSHING_CACHED_CHARGE when the work
-could not be queued because the target CPU is isolated.  The cached
-charge itself is left in place; it will be released the next time
-the CPU runs drain_local_*_stock() (e.g. after leaving isolation,
-or if the isolated CPU itself calls drain_all_stock() -- in that
-case cpu == curcpu causes drain_local_memcg_stock() to be invoked
-directly), and the next drain_all_stock() call is free to retry
-instead of skipping the stock forever.
+You are right about the generic ioport_map() change: the helper is already
+guarded by CONFIG_HAS_IOPORT_MAP, so the extra CONFIG_HAS_IOPORT check is
+redundant. I will drop that change.
 
-Fixes: 6a792697a53a ("memcg: do not drain charge pcp caches on remote isolated cpus")
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
-Changelog:
-v3:
-According to the comments of Shakeel Butt, keep the whole
-schedule_drain_work() body under a single guard(rcu)() instead of
-splitting it with scoped_guard(rcu){}.
-v2:
-According to the comments of Waiman Long, updated fixes.
+For the RISC-V ins*/outs* helpers, they use PIO-specific fences
+(__io_pbr()/__io_par() and __io_pbw()/__io_paw()), while the asm-generic
+helpers would go through readsb()/writesb() and use normal MMIO string
+ordering. So removing them would change ordering semantics.
 
- mm/memcontrol.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+I will keep the RISC-V helpers for now and only guard the port-I/O
+variants with CONFIG_HAS_IOPORT.
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 6dc4888a90f3..42a0d0d6284a 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2256,7 +2256,8 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
- 	return flush;
- }
- 
--static void schedule_drain_work(int cpu, struct work_struct *work)
-+static void
-+schedule_drain_work(int cpu, struct work_struct *work, unsigned long *flags)
- {
- 	/*
- 	 * Protect housekeeping cpumask read and work enqueue together
-@@ -2265,8 +2266,21 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
- 	 * pending work on newly isolated CPUs.
- 	 */
- 	guard(rcu)();
--	if (!cpu_is_isolated(cpu))
--		queue_work_on(cpu, memcg_wq, work);
-+	if (cpu_is_isolated(cpu)) {
-+		/*
-+		 * The target CPU is isolated: the drain work was not
-+		 * queued. Clear FLUSHING_CACHED_CHARGE so a future
-+		 * drain_all_stock() call can retry instead of skipping
-+		 * this stock forever.
-+		 *
-+		 * The cached charge itself is left untouched here; it
-+		 * will be drained the next time drain_local_stock() runs
-+		 * on this CPU (e.g. after it leaves isolation).
-+		 */
-+		clear_bit(FLUSHING_CACHED_CHARGE, flags);
-+		return;
-+	}
-+	queue_work_on(cpu, memcg_wq, work);
- }
- 
- /*
-@@ -2299,7 +2313,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
- 			if (cpu == curcpu)
- 				drain_local_memcg_stock(&memcg_st->work);
- 			else
--				schedule_drain_work(cpu, &memcg_st->work);
-+				schedule_drain_work(cpu, &memcg_st->work,
-+						    &memcg_st->flags);
- 		}
- 
- 		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
-@@ -2309,7 +2324,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
- 			if (cpu == curcpu)
- 				drain_local_obj_stock(&obj_st->work);
- 			else
--				schedule_drain_work(cpu, &obj_st->work);
-+				schedule_drain_work(cpu, &obj_st->work,
-+						    &obj_st->flags);
- 		}
- 	}
- 	migrate_enable();
--- 
-2.43.0
+>
+> >
+> > +#ifdef CONFIG_HAS_IOPORT
+> >  __io_reads_ins(ins,  u8, b, __io_pbr(), __io_par(addr))
+> >  __io_reads_ins(ins, u16, w, __io_pbr(), __io_par(addr))
+> >  __io_reads_ins(ins, u32, l, __io_pbr(), __io_par(addr))
+> > -#define insb(addr, buffer, count) __insb(PCI_IOBASE + (addr), buffer, =
+count)
+> > -#define insw(addr, buffer, count) __insw(PCI_IOBASE + (addr), buffer, =
+count)
+> > -#define insl(addr, buffer, count) __insl(PCI_IOBASE + (addr), buffer, =
+count)
+> > +#define insb(addr, buffer, count) __insb(PCI_IO_ADDR(addr), buffer, co=
+unt)
+> > +#define insw(addr, buffer, count) __insw(PCI_IO_ADDR(addr), buffer, co=
+unt)
+> > +#define insl(addr, buffer, count) __insl(PCI_IO_ADDR(addr), buffer, co=
+unt)
+> > +#endif
+>
+> Can you try to remove the custom accessors altogether and
+> use the ones from asm-generic instead? These should already
+> have the correct behavior all the time, in particular they
+> already come with the correct #ifdef check that is apparently
+> missing in the riscv version.
+>
+> > diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> > index ca5a1ce6f0f89..d799e5ccc9437 100644
+> > --- a/include/asm-generic/io.h
+> > +++ b/include/asm-generic/io.h
+> > @@ -1205,8 +1205,12 @@ static inline void __iomem
+> > *ioremap_np(phys_addr_t offset, size_t size)
+> >  #define ioport_map ioport_map
+> >  static inline void __iomem *ioport_map(unsigned long port, unsigned
+> > int nr)
+> >  {
+> > +#ifdef CONFIG_HAS_IOPORT
+> >       port &=3D IO_SPACE_LIMIT;
+> >       return (port > MMIO_UPPER_LIMIT) ? NULL : PCI_IOBASE + port;
+> > +#else
+> > +     return NULL;
+> > +#endif
+> >  }
+>
+> The function definition here is guarded by the #ifdef CONFIG_HAS_IOPORT_M=
+AP
+> check, which should already prevent it from being visible when
+> CONFIG_HAS_IOPORT is disabled.
+>
+>      Arnd
 
+Thanks,
+Yunhui
 
