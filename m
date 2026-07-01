@@ -4,134 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D30DC43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 11:07:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C0D6C43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 11:08:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D2E36B00A8; Wed,  1 Jul 2026 07:07:53 -0400 (EDT)
+	id 0F4776B00AC; Wed,  1 Jul 2026 07:08:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AA7C6B00AB; Wed,  1 Jul 2026 07:07:53 -0400 (EDT)
+	id 0CC486B00AD; Wed,  1 Jul 2026 07:08:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49B1E6B00AC; Wed,  1 Jul 2026 07:07:53 -0400 (EDT)
+	id F23DE6B00AE; Wed,  1 Jul 2026 07:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A68F6B00A8
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:07:53 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 898981C6EF5
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:07:52 +0000 (UTC)
-X-FDA: 84939932784.24.2D868F8
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 788AD1A0002
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:07:49 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UhBEjII3;
-	spf=pass (imf19.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CD39E6B00AC
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:08:26 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38B17C1922
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:08:26 +0000 (UTC)
+X-FDA: 84939934212.16.3A7A9DA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5C35E1C0002
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:08:24 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UmV2H54Z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782904070;
-	b=U9U/xbfUVUEdl1c0aPvFdQIhnxastOpNm4uWz1z/pcd36l90kE95aZHjbA2xHSXbWj30hJ
-	eu0rwYZLBVNVCRaje32QG/isixeqJmwih+SvkleCzT2JwmtV751fPUzeJASFrSm3X3XSaB
-	z3XEg9dfnVckCQ/X1lyYTNodY52KyB4=
+	t=1782904104;
+	b=ta3T1IDH6r1nssGR7S3p3zZcOVTn/vDXAKt+g7mc+7CXcrm12nCWkvgNR15baD+1UCRbyV
+	/o3VCmgBDEuqo6tOBDl0DnshJjDOfLOXS5lCHK3EPNIe3hZ/VwEXBBSxFj85EsPqCH3g2j
+	f+gDfa65CcFHeWgVRjiUv0GyD+0iPhU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782904070;
+	s=arc-20220608; t=1782904104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eIuavgt6WfS4XzKwlIQ7LHYyqYr0ijg3W3SaEaqQyDQ=;
-	b=zfDDptlom+TLJLB0tz+pVKG6KD/5PbVZ8g1YpqJOgNesVK7c9zNiQXNh+lyqelzua0l801
-	Jh2xYAFbkUP69Nj2kM/h+YVq7nRPAxkPGMxdHqEl/x5LKcD8ljNq2SlFgMfd82NacS6oTC
-	08P9Lk/GzcLaLAsRVYaV/rD3iDZxsJ4=
+	bh=25hllQ81FJ8oyoNh16ieVwck6f+ese8UGksMu6pmaKY=;
+	b=flg3N8EulZHBXB7PNSmfUe5Ay6koqmmurO3PXTJVIfP8qN3AUJZFP/2e4uPfe6pXxLw2HU
+	ZD1fG9C0oDoOYjg4kAJJbOvnpi56V1wNFBmLJM9I+ccJKoL56uxZurxggStBI0+mE1MJpk
+	pnfUFwU4RMNSQpxz+89mDTxFbvlRF10=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=UhBEjII3;
-	spf=pass (imf19.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782904070; x=1814440070;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=hCvnNk/pEx9Q3BuA3GT3urPlvNsb9ZGbJEO+TxrHDhk=;
-  b=UhBEjII3MOGjkqeInxy+u+oKXfcOis9wYd6qt6wXBipNegHtx8SCJ1ul
-   q7iiaXF+EK6p2FxuezElSHnjS1oCHawiBxBLvp42HhMIhEYe0GFT8Lbu1
-   6Pm4QQ3rbbDTCbv4g1R+EhG5sP+iCjFOKmXZ5xBdJjmPK7Jpgq5846tzK
-   NmHcXAXvh/py0n4sWv8oAcfFhTMVR0Jqzpr9XGI7REtnNMmjCwAbBz9CL
-   XmjU594/EdeW2o5mkxf1A1Lqm9EEyvB8+7jkkduVQ/NrcwmrqPzvgBewD
-   CoMk+nBrjfFWdK/9II+5D6DG7EdeeXJPzl71xiyYddsmAj2pF0PLvUCgu
-   w==;
-X-CSE-ConnectionGUID: mynS1WgUSwyLmX1Lh6rPNw==
-X-CSE-MsgGUID: T8gCzhwATraS2mm/g5c2vg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="87546070"
-X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; 
-   d="scan'208";a="87546070"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 04:07:48 -0700
-X-CSE-ConnectionGUID: qj8BVJ/XRI6zgtwRVeHuag==
-X-CSE-MsgGUID: hj6+vDsNStmOM/iX4E14dg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,141,1779174000"; 
-   d="scan'208";a="248074941"
-Received: from unknown (HELO [10.239.158.49]) ([10.239.158.49])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 04:07:34 -0700
-Message-ID: <25fdb77d-20f6-4b3a-8b3a-dbba0dc47046@intel.com>
-Date: Wed, 1 Jul 2026 19:07:31 +0800
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UmV2H54Z;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B585417D3;
+	Wed,  1 Jul 2026 11:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F3A1F00A3A;
+	Wed,  1 Jul 2026 11:08:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782904103;
+	bh=25hllQ81FJ8oyoNh16ieVwck6f+ese8UGksMu6pmaKY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=UmV2H54Z56ebtF4+V+F6t1iMxLQGSEOGPxOrV68q4Yjla9IsHu3zTo913JCwmx4U/
+	 F0kHCIIHRlB2p5gR9hJ5Pn6DnC+ii6GdFxjW5T7dWOcCqS8/osiyd/cSgVj/EreCwN
+	 A/Ev6MNZhGkgArrBTn5hdYFUISsBGa1RDDB0HvmN7xnoJ6tnZT+XS/eSbhwoqBP6tS
+	 Z5/qyTUr1+DRX4UT/UN7lMyY8hB43UFRzNzCBzxijCSg4CtOHwXwaborFGr0KVBKrB
+	 IIxEf86C2VSpxlRWyJzis7vlyIOGlxSffWnncODDyFCJY8j+vG52M9ScucDZQn7JUU
+	 +l36cBhQL7xXg==
+Message-ID: <f7ae2a47-730e-4665-85d9-07a7a40e1b39@kernel.org>
+Date: Wed, 1 Jul 2026 13:08:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the
- default\
-To: Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
- andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
- <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com>
- <CAEvNRgHYTFnHbsLLgMTCSitmnp1_j9Pomikm9qmpGTh1w8YE5Q@mail.gmail.com>
- <ajx5Vrz9ma--hrGH@google.com> <ajyJhZcgfYFtGfS2@yzhao56-desk.sh.intel.com>
- <aj0Jf30PS2f7x1nt@yzhao56-desk.sh.intel.com> <aj087H1UWSFxbShR@google.com>
- <aj3H2sxymOYTWTnE@yzhao56-desk.sh.intel.com> <aj7NwCRwWEfLK-gQ@google.com>
+Subject: Re: [PATCH 2/4] mm/huge_memory: add page->private check back in
+ __split_folio_to_order()
+To: Lance Yang <lance.yang@linux.dev>, ziy@nvidia.com
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ljs@kernel.org,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, rppt@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <98cf3340-1a2f-4d50-8410-6e9d6d3a5308@kernel.org>
+ <20260701110151.77453-1-lance.yang@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <aj7NwCRwWEfLK-gQ@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260701110151.77453-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 788AD1A0002
 X-Rspam-User: 
-X-Stat-Signature: pw4pbh7cohfr9h9a658xf6u9egfbb6wf
-X-HE-Tag: 1782904069-166158
-X-HE-Meta: U2FsdGVkX18HmUu83HF6XDws3E3E4p0dZWL6uKOGcgjyVDVBA4ehMs9dY8xuvGSP/FayztgXEH7uGTDBVXzWhlAEOGAiv1dHQCIpSHg8qz7AM6w+TmhTRU9wPnMRyIU+SP9ZvZiJ4eOmbG8WGAc4lXx4nVy9vSPoITJNF8okBIm2+smFTrPmnnWg7jBS/2xoyIOXs0yGrlZsWqRiVQRaxcgN+CMZnq59i5wfPup4KH0oZ6tB/ZGFfC6f5eZunHzGNB3c5PO+9lYMl/NqCu4mqnW9hlqiKJ6UeeCzM2i79vHl0iKui3w+nu+OxOb65XYG8j2DXHo6KCQH7WSOvvcaVm3DuV5tclSDlq2aKnuZLTrUPsz1MOuq5TXgljjNhfHh80YDLlryQEHkaJYlN8gG0gFI/It9aH9HOzPFVozgvj76NAQ1c9pCFiWubzsOAYQzZW1TZ0UUVb8kMVkjbDRN/wwftvAfKvd4ZqMlnjwd3SjN/74fudzGLwapq8CtfmkCIqMZxYawo8OrPWlw7odVrI222muE1Ixjx/Z3W5246v2A+CURvW/kF3ANYv/WrPLsA+BA+zpTg1p+gEiHFftXhPdXivZrhb0+XuWZNlqyyaCawesUdAFl9ASCpRcL8WouJTshwR01m80OPgOulViFWcoTv5BCS1YcleIWaabDwwp9K0MOEg6DGArhxwQhTTyBM29AAz/JKihXmPk6PXIWZPJ+gIHPheVbWJYXpT9EY6BMBMKj12szMuMpwma2bQRtr1Ht81URxVIZRpYw9vURoeQU6y10drDprJoKZjZ0vG5TiwF3zRc3R6SUs8h++PeKDMEw4rKHO+8it7TwAZLGVC6KNT0/LpClXgIp/YQwpOa3nBayIbhUHkF03gbFm3a5qvJZtjpNj2gdj2NEONFftIUfY5fufxnmwlb8TlghHtB5FseDxJoTp5oPaG2NNCvPQvQCJ+3groZm1SN0xg3
- a4EKQ/1h
- Rdzp7ZBoSzQnwJVT3K7D27PnznN/P2kVDahue+jwpM9h6rGf7Gm0YHDSnJdG4fJVw+q52Vi7Rf8GUuSDnQe2cdlXx7gX1lVuRhsoMEI7uh6Ayp0sFLwn8n+gVXFZ8L8LPNqL8lAnf5zsoUkVfvGtJU7GDx+mU6ponLv70T/ac7m9r9WNQTDO1senQHPOlNC1IgARWE9B+wXXlE5VA4mDppeCBi9J2ZTtAJiYtKtgzvpBlrsdYMPul+WIQJKGtCj4LQg/ZxYGqGwGhCnYwb1jYNeRVvTH4NC07D+0Vezk5jcDR2Iw=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5C35E1C0002
+X-Stat-Signature: k346xk69rftnti5a7fgwd4x45r4ehisx
+X-HE-Tag: 1782904104-163648
+X-HE-Meta: U2FsdGVkX1+o8qk9jGHHIAyPcWXwOov1dXXXZohFypKRbMUVVw7JWpGZnjs/PVcaWKpkvEDZa34wRoJTa13GuBfXs4JrHIiaTWycuubGNuvM7kINLHx41QhO9dtsDOqe/ja3bIFRg/FyfLXb4QsD3LE2CsuipLSwEJ55L7Jf9FXzFdHa76NFsXw1cKrNcVONUBPsWMHXWk7Vszq38f7mOGgD3qHw3mgPrSqI08ONgmlF/5b5Z10jYqVsWsO3gnIwJKq+7+kfJ7A+M0PjwqIm1Pc51T3WYJCWBbo3d46oc4dfwGsfJg1VwM9oJD51xounnkFVupv6BxXZ8iYG96FVqSZVufXTUt9U//HpoNO6u7TrF1S/lCev3qzpVcf2JMfXWNJs3p1LtDRM8hdPhU3jmuVTbNh1qZppXZhE/uFnDnsPQ0prpq2f3sqA0di4iJYz7m03EThiQ1c1FYTlL3I0y/mfGxF+U4PxPEGY5JHM2PveeUieAYCZg17YcXDbNJJh7gMDMCP2+v+R/rJFy3rd/0W6+RkB+j+lSsDfBHVnG76gU9zSHEcR9FB2B36fO7R5dhYhDQrEeEkQwJKcGPeA8keCNIV21KlvwkIvTT2JkFDPXbo7pP31XpQ8S692Ch/bJV16LE5enllZTHaDrl9aOarhm94pteKUA9o5ggsuFfrgWaqiE2SN19oBw3Z6IYV6ADuhJBm5lnLtVv7xflolOZZ4iANg3CxsKK1WctgGnbhdg4X9gB/wdrXCqFuwZTgAUrSHxLSaHQM48VXFa5YI3C8JbwGR0lemO0V9KEqMunXF/71uC1yTA3zdM4dAXToJEKJMoXORFGVLVe9AqbS2j+mCtpAU8t8bLtlTAaMk74IaVjsVgwiQ67Zp/6udpxzc4AG1qoLmOrmu22ywYK3zQ+53CD0/ECfeel1Mx0R6JU9zR2BD6ozpqNRTZEwxQYVCDJKoP9VErFRvPe6zzn1
+ kUU6rueA
+ 2fYUwPVsXo3zM46CfeUNwJ1cAJBGjmI7emmeui9KBg/9KVQyqKlWquGWrbS7XDuqXSccVqg5XpUyNf+tNtGaqYGV8AktIUjCnMAWn+82y9Ak5WGdwc8WCm80R6motKXULQdwe6suqLnXdBREKMbDWkgUtawJelLDwD0EPB+jnP2CjUUZ7LAKX9hndppCgDEujMHj92NxUdbjN6AiuVS8HUSnzhZUEbMTVQYth6JekIEACRYRUEqjqr5sVQkFLgNimnflgAluRNGR04LxsVDghsLwW998CgfSzCeOrskl+a0YSO1Jx9EOed8NzQjlFQiAHbgOJ5DKf/qxNA6+fMbiOTaPYMOJEHlvb7tXD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,34 +142,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/27/2026 3:06 AM, Sean Christopherson wrote:
-> On Fri, Jun 26, 2026, Yan Zhao wrote:
->> My first impression of gmem_in_place_conversion=true was that it enforces gmem
->> in-place conversion. However, it actually only enforces per-gmem private/shared
->> attribute.
->> My worry was that people might think it's a kernel bug if userspace can still
->> have shared memory from other sources after they configured
->> gmem_in_place_conversion=true.
-> Ah, I see where you're coming from.  FWIW, truly enforcing in-place conversion
-> is flat out impossible.  E.g. userspace can simply replace the memslot, at which
-> point the memory effectively reverts to shared.
+On 7/1/26 13:01, Lance Yang wrote:
+> 
+> On Wed, Jul 01, 2026 at 10:56:47AM +0200, David Hildenbrand (Arm) wrote:
+>> On 6/29/26 16:39, Vlastimil Babka (SUSE) wrote:
+>>
+>> s/add/readd/
+>>
+>>
+>> You can link to the discussion where we clarified that this was not intentional.
+> 
+> Probably this one?
+> 
+> https://lore.kernel.org/all/13f3fcda-7328-4aa5-afc6-75a294a82b2a@nvidia.com/
 
-would something like below enforce the in-place conversion?
+Indeed, thanks for digging it out.
 
-Userspace can create a memslot without gmem fd, but that memslot can 
-only serve as shared memory and cannot be converted. So it doesn't 
-violate the in-place conversion.
+-- 
+Cheers,
 
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2122,6 +2122,8 @@ static int kvm_set_memory_region(struct kvm *kvm,
-         new->flags = mem->flags;
-         new->userspace_addr = mem->userspace_addr;
-         if (mem->flags & KVM_MEM_GUEST_MEMFD) {
-+               if (gmem_in_place_conversion)
-+                       new->flags |= KVM_MEMSLOT_GMEM_ONLY;
-                 r = kvm_gmem_bind(kvm, new, mem->guest_memfd, 
-mem->guest_memfd_offset);
-                 if (r)
-                         goto out;
+David
 
