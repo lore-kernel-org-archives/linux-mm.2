@@ -4,121 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E153C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 07:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D83AEC43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 07:19:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 363D86B00AC; Wed,  1 Jul 2026 03:04:56 -0400 (EDT)
+	id 7F20B6B00A6; Wed,  1 Jul 2026 03:19:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EF056B00AD; Wed,  1 Jul 2026 03:04:56 -0400 (EDT)
+	id 7A3AC6B00A8; Wed,  1 Jul 2026 03:19:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B5A06B00AE; Wed,  1 Jul 2026 03:04:56 -0400 (EDT)
+	id 691BF6B00A9; Wed,  1 Jul 2026 03:19:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E38BE6B00AC
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 03:04:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5B98B1C6A61
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:04:55 +0000 (UTC)
-X-FDA: 84939320550.11.5AA8C2C
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 68C531A0008
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:04:53 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=hHLiNgPR;
-	spf=pass (imf19.hostedemail.com: domain of hare@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=hare@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FF406B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 03:19:53 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BF75D1C1D3C
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:19:52 +0000 (UTC)
+X-FDA: 84939358224.22.E850548
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 70CA340007
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:19:50 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uler7TU1;
+	spf=pass (imf07.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782889493;
-	b=SngQYI5xWkgsZZO+Z2SgWGWnJp+AJ13cDGC/NqsVe1evD/wHR384IX9H3D/SsDonWU660a
-	J/qLuQzSU/iQUafaQRaEEcsHKvtnk1zkEZQ0VQti+YoLYDb3PXgoAagASpXhOezt+5vxKX
-	g3rUili05p3ShQDnd/ctfG2jiqHFRCs=
+	t=1782890391;
+	b=fOruVVhzGEIUw/Uz4RBdGEwUqPQsuNCPNJRNhPUg7XlqIxB/RvEjmhdYcPWHACelVjt2P8
+	SXnENzize/dXlC5cjSR6OjhN4Tho4+MYLNmUYGnrHMPuXwoKP3x1MZ2t0Mr0KNzAzQeWRa
+	EMu0OqCk5UJRtkUZ2Zto4r+/NidxU2g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782889493;
+	s=arc-20220608; t=1782890391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Frs6Emcy9pNNZIaepK2NrL0xBcYA3u3r9RRnho4i+Lk=;
-	b=BQxmzUUuv+Fw74aGABVONb/GJsPbJyvE71sqJXkWEAUlKFJ3cfoCb0tmI4zV9UoFToe7Fz
-	gSNHLwlYtI2CIkl/9YG+IQ79sFvDJyWhfrJw7mPH+Bku2Fkugz85FJeNEveVIsNYAWnm1e
-	vjPZ+wxTKP/Zp12A0rQAJh1tpafVGUs=
+	bh=oU4WzgOEp9MzpTOCoPD9OUsBrXWafEC3mjtn0apNXKM=;
+	b=CtiVZ9ygZ1+lwvX+nVZeiLB6X1j+m3Zd17VCfLfwWnsq9RoWNIhI+qTI1dmywQBWchSnIJ
+	0y0tBITK7jOS42Hw4C09E7Z5/Nbym6dUN0OIFlqBxxFqT5BHGIQ2mDPuYappIphSEOt4EH
+	9A40wCXKgXwrHQeuTc/H1/2gsVqWun0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=hHLiNgPR;
-	spf=pass (imf19.hostedemail.com: domain of hare@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=hare@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4926bd21aa1so1673765e9.3
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 00:04:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1782889492; x=1783494292; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Frs6Emcy9pNNZIaepK2NrL0xBcYA3u3r9RRnho4i+Lk=;
-        b=hHLiNgPRds3RzFOFoCiCr4XIEo65Avyt+Vz9WtFREXcrXEYdXW/CgYnBTKj6cc/VlG
-         GZRz63eIXPsROd6ahqyObsrcsc9JjgsRbzXUbF9PlLOLp5+mBOYtyrp079nC+mFBQPEm
-         e8ncHGWOBhKawhL4g80bTS7buXA6MCLDgwGMSFh4bT2tfd/9sSDjJYWJb+77f00evams
-         shAmUnNA6w3CzkFLmoP1cAQCJnqVc10auXUT6pMpDMHk6lgcQ8+vuQr2Op4Zn7H+SArF
-         /rdtxye7PpPV1FflhjLfcRvHQk8KtDCpAfRGfWeBhgMzl0GGWAg/OEMSnWWPteB3HUq/
-         ik4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782889492; x=1783494292;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Frs6Emcy9pNNZIaepK2NrL0xBcYA3u3r9RRnho4i+Lk=;
-        b=Ekrq/0cwdensbgaBTTobaK9GJvPmyIF82VPG44sXkgPR/S6kNN38R+vuSpfE5hb465
-         xVdvrlOT+I+Tk1UaXABsGyqnfq2qjxlWou+bjqI0qiIkerzF63+rP9Kp6rJAhhOXe7SG
-         hC9ZS2iUEH7dzOlv99g7HsaSVt8HRB5A/Q2kPsSeO0Yc6Pby4LOC2EKDeaOpb7hsQh3F
-         8cDxOyeJvs3Vomb9i8L7GdCIkEv+eE/5HuzzblHfaGCgupmmsJFL/s3HkGeJK/cFz8Pt
-         5pZIOxx/Giqmx/Siy5p8ZOacDyctyGcgQGeyyNS6AHdT0ImSMrXQEaAsLH1kfZHhOm6b
-         IsbA==
-X-Forwarded-Encrypted: i=1; AFNElJ9ciJiJ4xAbbxonlhCLuZ3W4Ik5xLGjkkdyJiHTFwBLRz+RYSMVxu07qnDuSVTmYCTVioPmJq3H2Q==@kvack.org
-X-Gm-Message-State: AOJu0YzBhOvnbxdbA+5vUft1Xof043I8ibYwOIQ4SjHe1vRgxSCNLts0
-	zORd5O+O+96sJVugcXroSjBLLX9eWsSrt/ujy9hq4QGBh4amucCKEsgh3LgwQLomzCw=
-X-Gm-Gg: AfdE7cmojTFNXfqSSlUkcbC2CUrlU12x3Hyj0eADtN7wkixt2pG/+JXH4WBzAblKpQQ
-	11hOLAWb190L+xyAZPbHx9la4KcTKWq4lbk2jPecODN0la9p7PnVQWlqVf8pD+LCyF/NOAIjbBW
-	qPy5b0OSz5XcFeTYx1Sw+lGgP5N8IJnPcuhTUWLcF3iLYVGb5epk67BYz988qdsjFfLdYCMoBcY
-	bGbWWP4xDtDUSAjBFKnJjqo0dtR0QSNE3Dv6wCw7AqNN3g7QFgABZgiD8x1H26UyO3dQehszXe7
-	HALSoYsaMEaA/GhlioKEpzeC3h3g//zmXJKB+TWE5D5tEyj1C6tE5VX/5VPvT2SDCXYMAor6Iur
-	LxNgkdnU5oHyxuMTj1Yrz9lr4YHgKjN7JXDD9dmvlxgMxk6ngNXu09jPBJbnTumGq5WKIs/Tq6B
-	nPC412kB4+g8AAfoO4LrBinvMT30A59jPnZS+z+5Mo7SPCpls=
-X-Received: by 2002:a05:600c:3e14:b0:492:437a:a653 with SMTP id 5b1f17b1804b1-493c2b9022dmr4676775e9.26.1782889445790;
-        Wed, 01 Jul 2026 00:04:05 -0700 (PDT)
-Received: from ?IPV6:2001:a62:1403:d01:fcc2:cfc6:9af3:a0c1? ([2001:a62:1403:d01:fcc2:cfc6:9af3:a0c1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493be81df2asm94738895e9.12.2026.07.01.00.04.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Jul 2026 00:04:05 -0700 (PDT)
-Message-ID: <9bc4021f-0648-4cea-9f27-8ee2bd9e7088@suse.com>
-Date: Wed, 1 Jul 2026 09:04:04 +0200
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=uler7TU1;
+	spf=pass (imf07.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oU4WzgOEp9MzpTOCoPD9OUsBrXWafEC3mjtn0apNXKM=; b=uler7TU1Gk9SDIwdFJcsM8Dq2t
+	QtyDMju9rs26AfVwFAI5kufCwCm8B03v4tb0uaRemIIHO1lIFqbDZFZJmHMy6YbGu4hOiZK9WVzTf
+	kCxAYt/FVHbq3V1GiJR5VW3Ey8/WgrYRzGpZuBA6nWteQ/bswc/y6bm1bol5NIp8iIpMjI26XfAVY
+	pz4pDIl7QNZvkwM2sMRBXJoXq55CmzsefUa08ShHXmbMwzKoItZ57WcrZWrqYWRT+lFHMXy3mplrE
+	lQwGt1A1X8Oamv6jQhpA4vy86N/0P9HjTteDYVS387w9jV3A0CaqgBqnOv+98KPp+eyjiAoyXESmx
+	6ZPcZ64g==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wepEX-00000006DAR-3izs;
+	Wed, 01 Jul 2026 07:19:46 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 5555430035C; Wed, 01 Jul 2026 09:19:45 +0200 (CEST)
+Date: Wed, 1 Jul 2026 09:19:45 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Xiang Mei <xmei5@asu.edu>, Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	linux-hardening@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	"H . Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Jennifer Miller <jmill@asu.edu>,
+	Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>,
+	Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>,
+	Yan Shoshitaishvili <yans@asu.edu>
+Subject: Re: [PATCH v2] mm/vmalloc: widen guard region to defeat ENTER-based
+ stack pivot
+Message-ID: <20260701071945.GL48970@noisy.programming.kicks-ass.net>
+References: <20260629214712.1198680-1-xmei5@asu.edu>
+ <d9775951-fe04-4d1f-b205-bd4626590f5e@intel.com>
+ <CAPpSM+QTiwgPk3KNmWbjSk_SS8LLL5XDfikWC1A98vetom3yeg@mail.gmail.com>
+ <4e96acf4-25e7-4f30-8455-f9b3f49062be@intel.com>
+ <CAPpSM+RhcW=xciX50W3G+2mUVNkmLfL1-BScPN_2TekMbzYVcg@mail.gmail.com>
+ <c7c5d2c7-db83-404f-b40f-ee01ae8b9299@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] scsi: sym53c8xx_2: replace __get_free_pages() with
- kmalloc()
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Brian King <brking@us.ibm.com>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
-References: <20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org>
- <20260630-b4-scsi-v1-4-494fb37ebe7b@kernel.org>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.com>
-In-Reply-To: <20260630-b4-scsi-v1-4-494fb37ebe7b@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: sc9bmy4hyn7h7gho6esmfgkkhswjoqyr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c7c5d2c7-db83-404f-b40f-ee01ae8b9299@intel.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 68C531A0008
-X-HE-Tag: 1782889493-877884
-X-HE-Meta: U2FsdGVkX1/mlRkyCn9io56NdR0OkXlVgIwzmDsf0vG4gYEt0Iv6AYQCCZGQVL9I4OQ8bufe0zsrATcKPWKdnPs/nddIBDJg2lKmE9DlMEObrgd0J1r8RwiW+ipjvHgViws7e9wCwiRd5a4hEnKY20NjTvLws3AKrAJPyn0rjVxkqKwGBs/7B9hMZgmoBAmk3EAJkrcFs0rgEkiEURrXP2uotJPTjsa/dkQss6jCWe3gbFmILeUBTGpqo0XTvXSkcPd42EqBq57e2mqge1tRE9X1GaAkTz9ExyLvBT0BXs4NLxxcl8ATX7uCl84B2ky7zHkF3BZJg8NaqdeDzN58alVMCh6ZSWhx5qTAuiMMMKaFMGTv/8r2Xc932tMms7NF24t5L+n1lgMus/s/72sfOVYW99JIfPE2WrXLDEcoPRKN2YCnHnoPn6PYHcPnHe0Vf61Di3jOH3vCEBu3FrlL3dAvU/GoUOSDO3D2Fmka+5anpjmDO+IjDoAldQ24DJ0WFS4so/usyc40kpCSRt3etWFbZiBHARLyR/j/HzVBaDbAo9k+wVH2F1uav/TAVoDM2gg0e1S1Mkmk3PV2LmNXiy1Mf3yUq+hr5Io1IFzPiiKzffSeHxFQBa74D6ej66HBYg739Tm73HgnuzjS2EgJQOzcFY1atU7aTlxVJXgP8sEjqdOI1d9ylwW0W4k81EfCIKVQBtTUJ76SPjvWXXp8BaTr6KrmvD5kd2XTH4EAOqeGoJXZ2rc8tnE5ADii2DSaHvB3JbQVE8PfQXoyYFySq3wKp+gI/KpcTbd/qIT2xUQLH9dh0JqY/ueGZfBtxtagvxjJWuT5Bg9vkz1mi6u19smaNMF5QpiU7LuppQXAt91u+Xj7ebksj2dleSmF3L5k2O/D9UZ06T1Gj/kKLO+6wcuxkxvnVqpR+Y57gnN+8tEjgjEO9pF2o0KqL8aNbbiempLIQ0HGbj9zZ/y7KGJ
- k8wY3nd7
- drCN1sPRWbI3wYpY6YnIeBZkNtp+DtVdoZscrxZK/Dv6waW+RUYr5zKxZ72ShRfWqxmXZQQZJBboLxN+Tj1OjM4Sf/PmrqXprrlHC354SyrVRzrdKvwrxIAm+3t9nIYRqDHFzxSRTTv1ApIbkVMNm2jC6BnSvxb/2QBiY3xZANtoY8I0UxzReNoiMs4MOG/dE1Y/TQjpVDa2Bsws0BUWPTThH8bcC0tzYWZVIoceNtRJsPgQ11RVosRamXhMTJXDyJWSk+Cdubyi9rmkCNHD/OKUnHJrzZnanZ2JIlidhAJ11jl1U/0grhT061N9nV3UbQzgVCLXzw3HLsnsd0wk3w7b4vYqT9TZOW/Cfr0YM0ThQezy1sUaIspLWPdmRxpu6qR6ZMosG+bTFFMdu4VEYsuoIPbzoPwqAh27eHVHNcEfZxyJFaWfgOvfz4lu9AsHFY1UR+9Sz3pzUrRy7A0sz12d2anJL9lCxJ8o/Pq0mTE8rc2EoA30xRwlm3w==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 70CA340007
+X-Stat-Signature: 6gqtgkweoks79cmae533wiq3i66cpken
+X-HE-Tag: 1782890390-58412
+X-HE-Meta: U2FsdGVkX19iMp+uVYEEWUdtaBw4UWLH0llLftzY2/eoMJ9hrCxMDCpUjgtqm1uxTyhHhkYfoXORSrbM2pxK0S90YwqQN+thFYmOqWYwIR+p6niJxKu1Ki5N+GSinP46Qdy+e8yrzQ9jVWaeUtaMjWF3gJfCqIFYUIFXsXt5Nxy1qroPiCMGTjoZ4mDg45d8hpDTJa9CxIBlDURhDMl6aVGx4IHoTCtWGsy7XL68ks3ppVuzBdoA4I/ivyUIpEGeNTytycONNtlVMm3DL/J44193B1QW8SWygutYWQL/LTZzH9WXgVKM0PplhUMLt1QenuY7MIbzkFi1w8Xbydzbfz95KiCmBxCELHRT8ctul1Ia88BuF23aGWAj+qCNwCTpexu7IBKD8gRvuuD9lbir9JTlgmIKzOgIbBIxyPbiBckM5GbwKihV2fHqeC5JrpqnrFhiHeNapI+JJiOW57Gjx46NLo2TD5am5Ypam+v/yswLRy+lLIZ5DWaRUI8o8udWMy1u4vSHKCm2TaDvolPW07H/bQSUN6Hy+A48KcjMMKm3hpIOYyPHPooCRk7uKQIh2/wFMFC+dbSugIsUmXhRHHg7ieZghyvxj310LcoWr44z9Bu7t5V5rxbwWjf55o16LOZhUW9J95Ui5NvaLy1tgO3qE2MnOuIB1Y4x4T1JFWUQD1i5tJPSpll7LlCSfIGZkpOutxgYgGXWzJEVMJR1df+fHSIlHA0pnjB4SrafpG9H6cfPUEx+tl2gcGqXeD78YLWTmIpw/7DX1JOV+0tDtwSXuytVKf23x7J9AOa7JXTnBBenKdbUaKZnDFyWIpfHlQyt0Gwkb4kzL4I4BOGVbJrFFaf2/7p/VBvYnatXpxZUWAcKO4zHhHjryT6WjyqIlFf3tOW8XEhvJR1m/xxdfQhhYTkoT3uK61dqlemlzsgeK1wuG8NboLCvq0D9kYUS18DLph4k5BlwdgMi4Fk
+ KFTZ1Mbc
+ VeDVNxcX9o0GEzRqbLi0KfgUNBhclmy9ajo8WkVxTFv+QSMCLsBrxyECniCxG2PvWk8PITXfKOaJ6gpDenzjLf7aNQrav+qdWkTDBx98ua9Tyeky/sMqVOPgo08CE6CldUSoH6lCm4TEtWhAkKn3vB+v52UUeAkijrL6E6vPrvpuoqDQ/06iBuczhAtXQpF52j9SwSWsU0ttAVI5KVk/1Sy0XXbB9lPh8gRlV+hw65R1tTPkHmq60pJQ32MbbapLVuFFlQdMqj88HYJzHmDEkptRCVl8B/GvS5eksGMBiQcUzgVaOb3pxBFde8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,58 +108,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/30/26 12:54 PM, Mike Rapoport (Microsoft) wrote:
-> sym53c8xx_2 driver has an internal memory allocator for small
-> allocations of the driver structures. The backing memory for that
-> allocator is allocated with __get_free_pages().
+On Tue, Jun 30, 2026 at 07:01:48AM -0700, Dave Hansen wrote:
+> On 6/29/26 18:22, Xiang Mei wrote:
+> >> Please don't even try to send a v3 without addressing this.
+> > This is a demo exploiting CVE-2026-31419 with this technique:
+> > https://github.com/google/security-research/pull/397
 > 
-> This memory can be allocated with kmalloc() as there's nothing special
-> about it to go directly to the page allocator.
+> Thanks for sharing that. That's really good info.
 > 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
+> But what I want to hear a bit more about is why this new guard region is
+> a good, generic mitigation. Does it help mitigate a whole class of
+> vulnerabilities?
 > 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
-> 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> Replace use of __get_free_pages() with kmalloc() and free_pages() with
-> kfree().
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   drivers/scsi/sym53c8xx_2/sym_hipd.h | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/scsi/sym53c8xx_2/sym_hipd.h b/drivers/scsi/sym53c8xx_2/sym_hipd.h
-> index 9231a2899064..aa365e8ba66f 100644
-> --- a/drivers/scsi/sym53c8xx_2/sym_hipd.h
-> +++ b/drivers/scsi/sym53c8xx_2/sym_hipd.h
-> @@ -1110,9 +1110,9 @@ sym_build_sge(struct sym_hcb *np, struct sym_tblmove *data, u64 badd, int len)
->    */
->   
->   #define sym_get_mem_cluster()	\
-> -	(void *) __get_free_pages(GFP_ATOMIC, SYM_MEM_PAGE_ORDER)
-> +	kmalloc(PAGE_SIZE << SYM_MEM_PAGE_ORDER, GFP_ATOMIC)
->   #define sym_free_mem_cluster(p)	\
-> -	free_pages((unsigned long)p, SYM_MEM_PAGE_ORDER)
-> +	kfree(p)
->   
->   /*
->    *  Link between free memory chunks of a given size.
-> 
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
+> I think you're making the claim that this ENTER technique takes what
+> would normally just be a DoS and makes it fully exploitable. Does this
+> happen for a lot of DoS bugs? Or is CVE-2026-31419 very unusual and this
+> stack guard gunk won't ever be useful again?
 
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.com                               +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+AFAICT all it really does it make it easier to set up a ROP chain. I
+don't think ROP is unfeasible without it.
 
