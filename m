@@ -4,100 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D5CFC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 17:43:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DDC5C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 18:03:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 952036B00AB; Wed,  1 Jul 2026 13:43:00 -0400 (EDT)
+	id 5B2FB6B00A8; Wed,  1 Jul 2026 14:03:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 902AC6B00AC; Wed,  1 Jul 2026 13:43:00 -0400 (EDT)
+	id 562A66B00A9; Wed,  1 Jul 2026 14:03:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F3126B00AD; Wed,  1 Jul 2026 13:43:00 -0400 (EDT)
+	id 42A746B00AB; Wed,  1 Jul 2026 14:03:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 589B06B00AB
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:43:00 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CAE45A0452
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:42:59 +0000 (UTC)
-X-FDA: 84940928478.12.83789DA
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5AC7240008
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:42:58 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=SSXpINOv;
-	spf=pass (imf01.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 131066B00A8
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:03:03 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 937D4A048F
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 18:03:02 +0000 (UTC)
+X-FDA: 84940979004.06.5AFF3E7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A7537A0013
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 18:03:00 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LqVbdaSM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782927778;
-	b=rj7JQkfp3TcVPqRQACKKAXpGaCQCU6x+ar+/k1LVD4b6/cGrzv5rFRi0uJ0lbIWPsFxLyo
-	QAUF78Efil2oG0ISTDCr5151Kpodl7gpWEqoPtWYbx4qfDcnQBKgl+wA4QMBNktkcxPL9C
-	Y89Sw4j5Bto7PArPspiJEEznASuYLbs=
+	t=1782928980;
+	b=7ef7a/wzbeAJ5CakmUzQXYxLeBOQ3S9klLUXcWgO+iX5xj1vBMfoiqxHUl+GJ51xzFrkpg
+	p8zE5KOlISU42KfRdN+ouRPwD/kHn+eocUKvzQSLem0hw5bRBuUviWu4EwhRFQWP4gblqv
+	bw6r8KAufpysyx3Ebth58KACgW2PinY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782927778;
+	s=arc-20220608; t=1782928980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Hp/MTWF1U4k7tJMPR2GAr/ulpfpcYIO72EJRz51U5t8=;
-	b=OF1H4FFTRol391aRhPrMJ5v+bKB2FtI0J7g24wLFRVzFXr1oT0jf7qR/cb7bI4HbYQVSUe
-	CbpdZgxScR1JMLrIoT2EKGsC1G2jgXTQEZW4gkzLGSQ+Ut4/cLQudjcZuXLi23+XKNr00M
-	s8Sc1jMZTD1ftw2yKLD3Nwcw0rMjoBE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eREqeUP0xgJeEasKEkO8ipVJNCzjqtzLfhGVHKMiv0A=;
+	b=WqXUhBxl0VLGs8CKpQXF8KYrVqTuqOehzhjnrpEJbWRoip3BuDvZRawsxfXRBq8OrmkYGZ
+	YcMi8XLJxpzZ+22rJoTmqOf4BzyS18DgBtk07YXplNutvEg3odvmVw94D/n0spHXJfpIQr
+	l6YyASL9qM+7ClzV7ia3d9jxFt3sJDA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=SSXpINOv;
-	spf=pass (imf01.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc
-	:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Hp/MTWF1U4k7tJMPR2GAr/ulpfpcYIO72EJRz51U5t8=; b=SSXpINOveD8VhloC7JTauZovRR
-	fOUQ5g2Tvtw7dPtYWx05YTxhikBrKzdOzVzx38IdQlHwJKzLqNLjcMd6OekNDacYUNolYyoP1CEAc
-	i0VMk9qVe1FU6Mmc2cvxjLNsDgTgZyx6UvBw68jhSV7bQD/Yma5nnsOhKpwZ6jaYmFAzwNGT8w2CI
-	fWbFSkGLe/v9FhqoTfQJ146y5fbQOcKRYaN+738hq2KVdQCc9VrinNW/3JLXSn0ryieUnEOuMxSYE
-	2f8bhuLEm0eADjplGvR5EdSNoXrr3toaMQU+bLrzVKxxaWt1ZXWXejaOLzYSgJRJysPdLXXh5RleL
-	pCPnyTWA==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1weyxN-000000001Vx-0nsW;
-	Wed, 01 Jul 2026 13:42:41 -0400
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	yang@os.amperecomputing.com,
-	Rik van Riel <riel@surriel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/huge_memory: set PG_has_hwpoisoned only after new folio head is established
-Date: Wed,  1 Jul 2026 13:42:34 -0400
-Message-ID: <20260701174235.3173401-1-riel@surriel.com>
-X-Mailer: git-send-email 2.54.0
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LqVbdaSM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AD06D41402;
+	Wed,  1 Jul 2026 18:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B491F000E9;
+	Wed,  1 Jul 2026 18:02:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782928979;
+	bh=eREqeUP0xgJeEasKEkO8ipVJNCzjqtzLfhGVHKMiv0A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LqVbdaSMfsPoOBAFGgM5H2zcw4clr0Fj+YEHYz5Nl73DELl7oZoEW5VDvQbCG0oFT
+	 JjKG6ZX6W8mfJYUBrO0IQS2/vc3SJ0eP7BS0UnrbI5JtqKRMIAR0VKUsD2HhUCipya
+	 vFFau4JZ7jmY7cNgMVgsFRcqzOSbRkivPSs4EmQg15+L7ABj3dC5HS3/WWSyjo659Z
+	 X8igFve7aJHpWO2btgZUfmLqVtm3LEqB1HCMakrfgvFTBBs56gQceCWMPaVOyKE/M3
+	 soD15VbmR6sqDQu1v/NzkOtAMQR6joGuTuWmvtNBUfZZny07iLTL7vC2WuLHKzBwqZ
+	 vU2Xz6JP1l0GA==
+Message-ID: <c11c73ba-4422-4ef1-834d-6cc230146dea@kernel.org>
+Date: Wed, 1 Jul 2026 20:02:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] mm: page_alloc: move capture_control to the page
+ allocator
+Content-Language: en-US
+To: Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260626182215.1107966-1-hannes@cmpxchg.org>
+ <20260626182215.1107966-4-hannes@cmpxchg.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260626182215.1107966-4-hannes@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A7537A0013
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5AC7240008
-X-Stat-Signature: gdbzrme9kiy8jmismshz5undzi6t8ie9
-X-HE-Tag: 1782927778-633048
-X-HE-Meta: U2FsdGVkX1/LK59RbVAU/Mm6XKjPV4G71jmNHda+WrQoqXDxModrV5GKWakfz/R0OhWKSfjlpgIWryepXRAOZ1zoLCDTz5irRH35vqo8msFLCmJWfrNUO+ZlNnA96JhFuiu+7x2I38xRVHvdyI/R9NLO8Nc4zbCXUjjcMKapqGwO3b5ELMK0JpO5X7usNXlypTgm+C/+7lyHAqNVJ+H+hiXOegtRcGrUitbWb8+Z3SKt/DpXGe6+MGlH01WcFg+OOgxmEnLjSUWk1FzmzVaE00+TeU/Rcyz6YY/S4Ya9xx2mgpzqqnyaJWXDLRvo3eaC6FIJFsIb04RGqZNiJ6xDLw+22AKgoH9YxTn+FIuq4vg1cX3TRftyhEjIU227OiYSqExsA0a3kf4ESdvVDuV6zKl+9uNuln5sUQg5a4fZFteCrOjzSrwYE3Rxnano3Z+47Q2rW6zkxN2ajrkOBYf0F9MmVKY2fZ0TfSQzkM7mZUtc5EFtoSWvOUrQeFVSP0AHaqTktkN1lE3FyFr+qOT1r+FEVqKvaU8uch6ySCKHohsyRxYEDr5Uv8RoGGmK0TxObwqPsXBzNPjncUd5VXguiGaQj8O8ov00IVQlFwTZsHVAOo6xsBZ4+lpRRkJrKD+pE217xeHnKtaxn2yWpLegJqxatoXLyDXYBnRqKIdEVzF69w/Od00mdxbK6uLgC7mF4OxkUCJKmzkjdrX41h7Uv+m6Mb2/r5x6wU/BLNh4QzVx2T65rNvZFhpp2YvH9zXaBDP17psff0Jt3wFLHAXGAefIcKHQ+C4n9ZTPG8mCk97A+gun6hbwXXBvfOEm/vwW2U29qvVa3D72ZirRRUQdq2/hEOXfeBveYaxnnDrLQsTpdVJp+E3m330WmSmhCJqa6V/+9HaeEFzFnfGlIwIeaK5dHTiT+1H+J3Cpj55xYY919lVRXCO+EIFFDHsd6ufXD7C/JvwLsQTub4X3VWZ
- VUeodUy+
- kpdFLS3wnyyGN++bvRC2TDrw3+JUixFMTpKAINAaE18K5GEQwG/XY8PEyAHPD3PzL+I/ITPwjfOkS1MJyl4kQ8DVP7STPWSENxKYlJcVuPvCGAGeDkIQh8FHXYQT8qy1JvP2v4I9GeRbgcvLCj2gdl17CECgx02WMrcmRZxEu1YJVzOiHl+/fXWt16aYuSPxrqdNwpiyfMzx5IqweQ3JD7ccUCW17+twkz/tYv/Lo2id5bt6GnElSVxil0+/z+oJm/KdVel/C8GfSa/1LDBu6vM/scGXVvX4Ri/9IPvpPcbGnoBxUs2n8Cin3fnvklWvJwxDsNorMGagDk7X0szsxaeXe5MweHPJEkNBWgHjb5VKLZHY=
+X-Stat-Signature: s95fouoaq1j8rqppcsua9z19p5phtf74
+X-HE-Tag: 1782928980-950201
+X-HE-Meta: U2FsdGVkX19P+N4iReGndT3I8i0zau24DKbHQAX3H67n6h+ums0lMXjDmBt60rI6yUQBlI+VHLe+4wMhlfZr2ruy6gtUX4OKf/TSIOipneaDiHw1nS2q9rlIfi3wWoZtOOU6lYaVAfielSy0Gay5S9ePmUnNp6pvdanQ2SnrZ6AI97ZF5tsMTX/5MABsFXmeFpyjtNFk4J4EEfsRO2mXJoq+ogm0ZKs9/Ph7J9eJ88Dvbk1fhmUEJheffhPCD3H41OxflcH4WYrwFaL36pz4ksWJWpw9sVazSrffOP9bYsax28+Z5zCIs+JxCoIma7cwF3x4If0Ky7B8Ete6q+S0Sh6DqTwhERX/D0cas0N+ZylL77RYRIl/LjuneYCKQwS1DQ8uE3jLUz9bTFNWYz6q320dskrpZtOy9h3VVaDFUzEQOq3kHKglyFVSyMemgsaf44n8+GFJieZxK4CBlxixRxepuHZqG+844YvXeLLGreQMthUVYxuez5LgAOdwWxsq1PUYeFQAQhYOSQ4S+fcZBZqRWuuRrIa5YCNBPI/YrJ3thL48ENA8YTN7Gdktzzl45ApNorlVhanGNs8eNf4O8ho2WhXQvrq1QkPo6c2esgziclpgYlzrWAjFPGWTqmo9wsEz7yk1VnxUniyUSnzxJro6oAQ/vWwU/8Ojw8ftsbsuh1cMTa6SMT4stQNZ2262EXnhXbwPvtUvQYTj30p2DeZlQWHlXNCSy9Xg2I2WCPqx4/b8TGDv7+4gPbsjhdv6ddJSUvibvgtGJ5gLNcKG3H7KhXB40K889VcxrgmT3C6V3rJPVW7lXGklgv0pjphUzWAcsLEdZlVsodAS65mXFl+0EcTi5rE7gpjTkKoqFPqS15PKm3Uz5LlrKL8VBDgKibi6bqZgtfIt48rvYy7tOlA+3wiPDaeApRYpPLTheIzim+XZQS+yt2PfwbxDavG0uIx0poFw0sGHiKlWGCF
+ HfgOYg5T
+ rM7Ikv53owzxyuj1WNeapIok+cwHeKQ6hur6/Wx7RtYIggN7ZTngbbt1fvn58v4WjHmFmSSUMvKkOsBZOSlcAA9a5vDFACQ9Jpx4O3+81fBF45RkObOGQyhQkw03Qyz20G7yJQrCfYz22V4HSsKArb5wyF3LEAOkpk0+yarKTFKWN9oN1qDfZRW61wHXU/KS4Ibs7Bl3jZ00ShqN95sbTIk1gmUWRhZwYAFbepwnRBXUwBc/iFdVqOQGj4D5iWVWD60NmXIndcybG7goEGRNfxXVvOPx3z7YEnhYSy8CSejzmbMZWkSWWu3DTkcCKfz0EUSaRnDM+xMlCajCBLEQ/IZ8xZXemN6ycdSM9K9D7FkPfJ/E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,97 +138,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__split_folio_to_order() copies the hwpoison state onto each new
-sub-folio while splitting a folio to a non-zero order.  It does so via
+On 6/26/26 20:21, Johannes Weiner wrote:
+> The compaction capturing code assumes the allocation request order
+> and compaction target order are the same. That won't be true once
+> defrag_mode promotes sub-block allocations to pageblock-order
+> compaction: compaction targets the larger order, capture should
+> remain at the original allocation order.
 
-	if (handle_hwpoison && page_range_has_hwpoisoned(new_head, new_nr_pages))
-		folio_set_has_hwpoisoned(new_folio);
+Well I guess you could also try to capture the whole-pageblock page and then
+deal with it as with whole pageblock stealing? But this works too and
+perhaps it's simpler.
 
-*before* clear_compound_head(new_head)/prep_compound_page(new_head, ...)
-turns @new_head from a tail page into a proper folio head.
+> Move the per-task capture_control to the page allocator, so its
+> fields can carry alloc-side information that compaction's
+> compact_control does not. Pass the capture_control through
+> try_to_compact_pages() / compact_zone_order() instead of a bare
+> struct page **; compact_zone_order() sets capc->cc while running.
+> 
+> task_capc() now also checks capc->cc to handle the new
+> not-yet-running state.
+> 
+> No functional change.
+> 
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
+>  include/linux/compaction.h |  3 ++-
+>  mm/compaction.c            | 33 ++++++++++-----------------------
+>  mm/page_alloc.c            | 23 +++++++++++++++++++++--
+>  3 files changed, 33 insertions(+), 26 deletions(-)
+> 
+> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+> index f29ef0653546..66a2f70e9e01 100644
+> --- a/include/linux/compaction.h
+> +++ b/include/linux/compaction.h
+> @@ -58,6 +58,7 @@ enum compact_result {
+>  };
+>  
+>  struct alloc_context; /* in mm/internal.h */
+> +struct capture_control; /* in mm/internal.h */
+>  
+>  /*
+>   * Number of free order-0 pages that should be available above given watermark
+> @@ -92,7 +93,7 @@ extern int fragmentation_index(struct zone *zone, unsigned int order);
+>  extern enum compact_result try_to_compact_pages(gfp_t gfp_mask,
+>  		unsigned int order, unsigned int alloc_flags,
+>  		const struct alloc_context *ac, enum compact_priority prio,
+> -		struct page **page);
+> +		struct capture_control *capc);
+>  extern void reset_isolation_suitable(pg_data_t *pgdat);
+>  extern bool compaction_suitable(struct zone *zone, int order,
+>  				unsigned long watermark, int highest_zoneidx);
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index 7df3a85d43af..c2701bf1d04e 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -2791,7 +2791,7 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
+>  static enum compact_result compact_zone_order(struct zone *zone, int order,
+>  		gfp_t gfp_mask, enum compact_priority prio,
+>  		unsigned int alloc_flags, int highest_zoneidx,
+> -		struct page **capture)
+> +		struct capture_control *capc)
+>  {
+>  	enum compact_result ret;
+>  	struct compact_control cc = {
+> @@ -2808,35 +2808,22 @@ static enum compact_result compact_zone_order(struct zone *zone, int order,
+>  		.ignore_skip_hint = (prio == MIN_COMPACT_PRIORITY),
+>  		.ignore_block_suitable = (prio == MIN_COMPACT_PRIORITY)
+>  	};
+> -	struct capture_control capc = {
+> -		.cc = &cc,
+> -		.page = NULL,
+> -	};
+>  
+> -	/*
+> -	 * Make sure the structs are really initialized before we expose the
+> -	 * capture control, in case we are interrupted and the interrupt handler
+> -	 * frees a page.
+> -	 */
+> +	/* See the comment in __alloc_pages_direct_compact() */
+>  	barrier();
+> -	WRITE_ONCE(current->capture_control, &capc);
+> +	WRITE_ONCE(capc->cc, &cc);
+>  
+> -	ret = compact_zone(&cc, &capc);
+> +	ret = compact_zone(&cc, capc);
+> +
+> +	WRITE_ONCE(capc->cc, NULL);
 
-PG_has_hwpoisoned is a FOLIO_SECOND_PAGE flag, so folio_set_has_hwpoisoned()
-resolves to folio_flags(folio, 1).  With the new compound_info-based
-page-flags layout, folio_flags() asserts the page is not a tail:
+I wonder if it makes sense to continue having capc->cc and this whole dance
+in two functions. AFAICS (after patch 4/4) we access only capc->cc->zone and
+capc->cc->migratetype. migratetype is stable in the whole
+try_to_compact_pages(), could be part of capc. Order can be added by this
+patch (with no semantic change to it) and not the next one. Zone varies, but
+could be also in capc and set by try_to_compact_pages() before every call to
+compact_zone_order(). Then compact_zone_order() doesn't have to set up any
+capc fields anymore?
 
-	VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
-	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
+>  
+> -	/*
+> -	 * Make sure we hide capture control first before we read the captured
+> -	 * page pointer, otherwise an interrupt could free and capture a page
+> -	 * and we would leak it.
+> -	 */
+> -	WRITE_ONCE(current->capture_control, NULL);
+> -	*capture = READ_ONCE(capc.page);
+>  	/*
+>  	 * Technically, it is also possible that compaction is skipped but
+>  	 * the page is still captured out of luck(IRQ came and freed the page).
+>  	 * Returning COMPACT_SUCCESS in such cases helps in properly accounting
+>  	 * the COMPACT[STALL|FAIL] when compaction is skipped.
+>  	 */
+> -	if (*capture)
+> +	if (capc->page)
+>  		ret = COMPACT_SUCCESS;
+>  
+>  	return ret;
+> @@ -2849,13 +2836,13 @@ static enum compact_result compact_zone_order(struct zone *zone, int order,
+>   * @alloc_flags: The allocation flags of the current allocation
+>   * @ac: The context of current allocation
+>   * @prio: Determines how hard direct compaction should try to succeed
+> - * @capture: Pointer to free page created by compaction will be stored here
+> + * @capc: The context for capturing pages during freeing
+>   *
+>   * This is the main entry point for direct page compaction.
+>   */
+>  enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
+>  		unsigned int alloc_flags, const struct alloc_context *ac,
+> -		enum compact_priority prio, struct page **capture)
+> +		enum compact_priority prio, struct capture_control *capc)
+>  {
+>  	struct zoneref *z;
+>  	struct zone *zone;
+> @@ -2883,7 +2870,7 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
+>  		}
+>  
+>  		status = compact_zone_order(zone, order, gfp_mask, prio,
+> -				alloc_flags, ac->highest_zoneidx, capture);
+> +				alloc_flags, ac->highest_zoneidx, capc);
+>  		rc = max(status, rc);
+>  
+>  		/* The allocation should succeed, stop compacting */
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index cb422505c6ef..9dee1c47e795 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -718,7 +718,7 @@ static inline struct capture_control *task_capc(struct zone *zone)
+>  {
+>  	struct capture_control *capc = current->capture_control;
+>  
+> -	return unlikely(capc) &&
+> +	return unlikely(capc && capc->cc) &&
+>  		!(current->flags & PF_KTHREAD) &&
+>  		!capc->page &&
+>  		capc->cc->zone == zone ? capc : NULL;
+> @@ -4146,23 +4146,42 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+>  	struct page *page = NULL;
+>  	unsigned long pflags;
+>  	unsigned int noreclaim_flag;
+> +	struct capture_control capc = {
+> +		.page = NULL,
 
-At the current call site @new_head still has the tail marker
-(compound_info bit 0 set, PG_head clear), so on CONFIG_DEBUG_VM kernels
-this hits:
+You didn't set .cc to NULL explicitly...
 
-  kernel BUG at include/linux/page-flags.h:354
-  folio_flags+0x82
-  folio_set_has_hwpoisoned
-  __split_folio_to_order
-  __split_unmapped_folio
-  __folio_split
-  truncate_inode_partial_folio  (shmem hole-punch / MADV_REMOVE)
+> +	};
+>  
+>  	if (!order)
+>  		return NULL;
+>  
+> +	/*
+> +	 * Make sure the structs are really initialized before we expose the
+> +	 * capture control, in case we are interrupted and the interrupt handler
+> +	 * frees a page.
+> +	 */
+> +	barrier();
 
-Reproduced by syzkaller: hwpoison-inject a few subpages of a large shmem
-folio, then MADV_REMOVE (fallocate punch hole) on the same range, which
-splits the partial folio to a non-zero order.
+So either an implicit { } NULL / zero initialization + barrier() is enough
+(I hope so) and we don't need to set NULL / zero in every field explicitly.
+Or not and then we should set every field and not just page.
 
-memory_failure() tries to split the poisoned folio to order 0 first, but
-that split is best-effort; when it fails the folio is left large with
-PG_has_hwpoisoned set, the case fa5a06170036 added this hwpoison copying
-for.
-
-Move the folio_set_has_hwpoisoned() call to after
-clear_compound_head()/prep_compound_page(), where @new_folio is a real
-order-new_order head folio (handle_hwpoison implies new_order != 0, so a
-second page always exists).  The flag still lands on the same struct page
-(page[1] of the new folio); only the ordering relative to compound-head
-setup changes, satisfying the FOLIO_SECOND_PAGE precondition.
-
-Fixes: fa5a06170036 ("mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0 order")
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Assisted-by: Claude:claude-opus-4-8
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Cc: stable@vger.kernel.org
----
-v2:
- - cleaned up comment (Lorenzo)
- - consistent changelog grammar, plus rationale on why this path exists (David)
- - Cc: stable (Zi)
-
- mm/huge_memory.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2bccb0a53a0a..b5d1e9d4463d 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3587,10 +3587,6 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 				 (1L << PG_dropbehind) |
- 				 LRU_GEN_MASK | LRU_REFS_MASK));
- 
--		if (handle_hwpoison &&
--		    page_range_has_hwpoisoned(new_head, new_nr_pages))
--			folio_set_has_hwpoisoned(new_folio);
--
- 		new_folio->mapping = folio->mapping;
- 		new_folio->index = folio->index + i;
- 
-@@ -3612,6 +3608,14 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 			folio_set_large_rmappable(new_folio);
- 		}
- 
-+		/*
-+		 * PG_has_hwpoisoned is on the 2nd page, so set it after
-+		 * the compound head is prepped.
-+		 */
-+		if (handle_hwpoison &&
-+		    page_range_has_hwpoisoned(new_head, new_nr_pages))
-+			folio_set_has_hwpoisoned(new_folio);
-+
- 		if (folio_test_young(folio))
- 			folio_set_young(new_folio);
- 		if (folio_test_idle(folio))
--- 
-2.53.0-Meta
+> +	WRITE_ONCE(current->capture_control, &capc);
+> +
+>  	psi_memstall_enter(&pflags);
+>  	delayacct_compact_start();
+>  	fs_reclaim_acquire(gfp_mask);
+>  	noreclaim_flag = memalloc_noreclaim_save();
+>  
+>  	*compact_result = try_to_compact_pages(gfp_mask, order, alloc_flags, ac,
+> -								prio, &page);
+> +					       prio, &capc);
+>  
+>  	memalloc_noreclaim_restore(noreclaim_flag);
+>  	fs_reclaim_release(gfp_mask);
+>  	psi_memstall_leave(&pflags);
+>  	delayacct_compact_end();
+>  
+> +	/*
+> +	 * Make sure we hide capture control first before we read the captured
+> +	 * page pointer, otherwise an interrupt could free and capture a page
+> +	 * and we would leak it.
+> +	 */
+> +	WRITE_ONCE(current->capture_control, NULL);
+> +	page = READ_ONCE(capc.page);
+> +
+>  	if (*compact_result == COMPACT_SKIPPED ||
+>  	    *compact_result == COMPACT_DEFERRED)
+>  		return NULL;
 
 
