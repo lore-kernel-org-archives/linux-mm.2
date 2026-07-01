@@ -4,156 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A489C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:08:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3EF5C43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:12:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E493A6B00A6; Wed,  1 Jul 2026 09:08:26 -0400 (EDT)
+	id 860F36B00A8; Wed,  1 Jul 2026 09:12:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF9B96B00A8; Wed,  1 Jul 2026 09:08:26 -0400 (EDT)
+	id 7EBDB6B00A9; Wed,  1 Jul 2026 09:12:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC3EE6B00A9; Wed,  1 Jul 2026 09:08:26 -0400 (EDT)
+	id 6B40F6B00AB; Wed,  1 Jul 2026 09:12:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A24656B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:08:26 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E6A12140332
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:08:25 +0000 (UTC)
-X-FDA: 84940236570.13.2B31CAB
-Received: from mxout5.mail.janestreet.com (mxout5.mail.janestreet.com [64.215.233.18])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B8089100006
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:08:23 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=janestreet.com header.s=google header.b=OxpHxQn+;
-	dkim=pass header.d=janestreet.com header.s=waixah header.b=W5zubF5K;
-	spf=pass (imf05.hostedemail.com: domain of gleventhal@janestreet.com designates 64.215.233.18 as permitted sender) smtp.mailfrom=gleventhal@janestreet.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	dmarc=pass (policy=quarantine) header.from=janestreet.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1782911303;
-	b=hNuSaJPHKykMnRoZ/RUSjZVOKWV5sQptG9ijh1GUwSzjFDJHyzsH+ZoVmbJ3/xbu8Ctrlb
-	yszZbzeBjPXH3YQuqDPNxjbjMphUIyRMgYmsXzNwKfFDGQkG+6JG8XWuCMuZBgI2hFok6b
-	7dbtwDMeZG4nVRd6c01eUc8Z/3NH6mo=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782911303;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BEE86B00A8
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:12:50 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4048F167D30
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:12:49 +0000 (UTC)
+X-FDA: 84940247658.09.6BB1867
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8C4B51C0002
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:12:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=O6B704Mg;
+	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782911567;
+	b=SJhMR+Ego8WtZgNw4ysPzQ4S0GHyzGOukFnc1Emocf5x9KGkcr+4YYtxmLoEYZtXQeBTkI
+	yj6G+Om5TOv4gzgZMJn/alQqbKjhgysFnXHxvRbpcxsRWzY2pgQ8mOFo1LYTot07PPePsW
+	qqqKob5Qu5TrgDHgKWAETvFw+M9HYMg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782911567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X7e/LeiaosEk7gbcvbS8Q8cNOEviS4SeVXYWmv3QOzI=;
-	b=k5OnyjG0M+OYG+Q/ZNdZXU4DuNMPtW0Zpvz5lHVkDiVxeuCidnzkqfIhJZJ3OxCMasBsMt
-	Z5vnGR9eT76+Cuqlx9STdT6jB4rZpZjKeBfoiJJ86kTC3x04C/D6AaYAfdIaBwaH/jAKz7
-	gtooKvX0GXR/QtegMmRN9i36J8cNO3E=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=janestreet.com header.s=google header.b=OxpHxQn+;
-	dkim=pass header.d=janestreet.com header.s=waixah header.b=W5zubF5K;
-	spf=pass (imf05.hostedemail.com: domain of gleventhal@janestreet.com designates 64.215.233.18 as permitted sender) smtp.mailfrom=gleventhal@janestreet.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}");
-	dmarc=pass (policy=quarantine) header.from=janestreet.com
-Received: from mail-ed1-f72.google.com ([209.85.208.72])
- 	by mxgoog2.mail.janestreet.com with esmtps (TLS1.3:TLS_AES_128_GCM_SHA256:128)
- 	(Exim 4.99.4)
- 	id 1weufv-00000009vuF-0KCK
- 	for linux-mm@kvack.org;
- 	Wed, 01 Jul 2026 09:08:22 -0400
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-69848bef5c7so661344a12.2
-         for <linux-mm@kvack.org>; Wed, 01 Jul 2026 06:08:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782911302; cv=none;
-         d=google.com; s=arc-20260327;
-         b=pgkLGioz7oHQQy+oqS/pEEwI8RYGyU46Z3NIGKfEw0OrDVMTzH1bWV6e6ToY6jUOBn
-          nCFWOkQPoKWWhUzFNDyc/S2iQKWzgZGY4w2AxDh0asrAun+e/XRtvp3jcZ6O81aoQek8
-          ey6b89Iv7AoDpb20y0vUBL7XTjwGcgwfIRUoV44UgqBcDqUe4a4kGKD3pVqYoms5YQT5
-          99004oCJoX/DrVYlXgt2QuEpzO2Z88AWEGbxHYYQXpiQaGsvDgmRzv4B48tXpmB+I/bE
-          psSJSV/SVopeZJC/xJgv+sW08DBzc6Av1Cv67Ik2Ft+M9k7zGB77Bwf884GCyT6V20WA
-          dgrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-         h=content-transfer-encoding:cc:to:subject:message-id:date:from
-          :in-reply-to:references:mime-version:dkim-signature;
-         bh=X7e/LeiaosEk7gbcvbS8Q8cNOEviS4SeVXYWmv3QOzI=;
-         fh=7Jyt+pvkj6PP8YyUE8cTppp215LQADFBIKYrQlsplaQ=;
-         b=SuVdtRqhUiCEx8KV4fGp1kA321bqYX6K6WnLOoNf7297pa/Hj2X5HLtRTxh06t3Ulw
-          ILxRAx7FwiYIzbQWLzRsRv2/FCIcT03Fpg7ycGKdFKg7wpHm31BGe4MmlcmwVub7vUHG
-          qIeMOOMHQNvZK71ptNfHuW73T6EdqEWa2BAPah+7LvG7/e3xrRD3Og8rGBv09e0BIXbs
-          nc+ywngL47Ll5RGEFWg6X5EMCtFzKGeh847wM50tDtKTz7adB/rrOPe2eVO+L4uftV6a
-          hKlCDmQad8ZTmMSzMHQTfko7d9QD/lxTOq7zXXmELX+MqyewqSwcwFrLAVw3X4Z5GOqO
-          FgJg==;
-         darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-         d=janestreet.com; s=google; t=1782911302; x=1783516102; darn=kvack.org;
-         h=content-transfer-encoding:cc:to:subject:message-id:date:from
-          :in-reply-to:references:mime-version:from:to:cc:subject:date
-          :message-id:reply-to;
-         bh=X7e/LeiaosEk7gbcvbS8Q8cNOEviS4SeVXYWmv3QOzI=;
-         b=OxpHxQn+hdVNcnnhO+0mqXEGvVsrIWnjfKZeoKRaUoJqrFd45vLJUoOEU0o2a01rLc
-          OPKEYG3kxvYYzTaZwl4SZKdtqqomJFljnhhPGKdDvyUoj4IJRxm4TU7ZBce5ZR0rnDyT
-          OsJVfyjnmTZINy9q1Vfcjwl4oTP90MKV6wf8U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=janestreet.com;
-  s=waixah; t=1782911302;
-  bh=X7e/LeiaosEk7gbcvbS8Q8cNOEviS4SeVXYWmv3QOzI=;
-  h=References:In-Reply-To:From:Date:Subject:To:Cc;
-  b=W5zubF5K5t2VcP6Z5302fsEYdDRnkNqiy5o8YialEgWobGXeN4VD6w2Ae1xHpuHlf
-  B2PbPjpE6vDTVU3xSGqpaBa0mYo+SZCiDrcElYpwqLHzwXHMQ26R8VuKuy2HIqlZhx
-  sqMvaAIcawdYhAKQh0gmYGlkOPlcCZNdKgWYEex41Vq8mWAApZYibliUfBNXSSYy6h
-  Fjg/akLIX3yPxY5vSvlCqj6BxB4Ah9O8FIZZvtwOo+qZ8Iw6QN0AKIQePa9MlqYk35
-  DZspSLeMeW3VxBHMfVH7OOY3E5q6Wx7YasN4YVTW1XbFYm8SPlqJR5hdp72ymVW6W1
-  SqLHix+cCJCTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-         d=1e100.net; s=20251104; t=1782911302; x=1783516102;
-         h=content-transfer-encoding:cc:to:subject:message-id:date:from
-          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-          :to:cc:subject:date:message-id:reply-to;
-         bh=X7e/LeiaosEk7gbcvbS8Q8cNOEviS4SeVXYWmv3QOzI=;
-         b=TP65wdPLeGSNm2Z/uAF0VmqElCokP5AG2IsrqZ/efWqTqkKHIebRDaR784/b6Lj6Sc
-          nPJjrGmjz1lCxZYC+VfvgU77TLOX/TgMquR2o2uiKXmCkTv1IpGF0fKuRedHYO9b56Jw
-          c5CEJIZlUEsnW7xDYWwhKqbIiAPHdnEqwn7fc4Zm9GTr6ZXIMRNQgx0KP66SNCClaBYY
-          OVD/9SfmNtc8er8WeUshlIca2x3fAg1pkymKWRo89FpD7PtLHcSXOJHJWaj9D0aNjssZ
-          i4h8IUJ+SIv5CKa5OPDj7IR13lvMGHGLU1hxqOOzHfMcJCWugOXbwu/A/x4CSby1u0nX
-          3cuQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrC6FDkzw6S/XUlLuU58zrVSZu6vGhh7hcYM2TtzYx+/rBl2nSm1GMAuw3G8W8vfKoMzuzzTqJwqw==@kvack.org
-X-Gm-Message-State: AOJu0Yzo4wYV+N9L4ge0ZULos0A53TTZYINY2FDm20Ok+AksOod9ZKw3
- 	+ya0nHbUXUN2Ee2QztD0jZQYfsyMaOUJA6G3rwNzbGlK/iS0fBVroLeYQ30HbmekrRHaz7HCozt
- 	R3/fbgoaFRh7kVS9Hu6DxWU4/gpbrPEcNCS6xqSDNvVwKy+4fZAgrUzFzfLoSNw91s+SEvAHuPy
- 	HFDBs1UblWAaQi3xMDFnk1mLkL8w==
-X-Gm-Gg: AfdE7ckd5bc1RlEsOev6jAqbghu9+7DUEHiG3Rnv4l5UcghYDgbQCFbhFkYbVJCxMG/
- 	/jwi/uaEI7F0WOgisyF66ZYbU/K31hxvdX0piHJ2cUrsNfo2CxNWD8AWMm73Qqd4pTYgWy0JRIS
- 	3xJL5hd21/HklYjK2K2OGgDOSV1/ag15nG2deWgtGjhhqbIRV6kTXy8JCet3UUAeust7E=
-X-Received: by 2002:a05:6402:430d:b0:698:3b7c:7e2c with SMTP id 4fb4d7f45d1cf-6989f38f47bmr824656a12.36.1782911302040;
-         Wed, 01 Jul 2026 06:08:22 -0700 (PDT)
-X-Received: by 2002:a05:6402:430d:b0:698:3b7c:7e2c with SMTP id
-  4fb4d7f45d1cf-6989f38f47bmr824637a12.36.1782911301695; Wed, 01 Jul 2026
-  06:08:21 -0700 (PDT)
+	bh=91uk3L99OWz781fU570Nvcxs1RgxF76hCIkEAl460QA=;
+	b=7B7lMn/tdRQb1XGc2xjR4U2Q8eYEMbbiiQngqb8+rREsr9meQTrwaEqV8dx7rPzicWxLkJ
+	gae2u5/qbUa3RrzXPkA/8tPx1Dwd9PNCpxDHg4cJTiwuaTCkvwd4T7/+gHjmVxAgCTgJKK
+	djo8Rr+mlgXKMDEWr7zz3snqrVR7fMM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=O6B704Mg;
+	spf=pass (imf21.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EA5E46001D;
+	Wed,  1 Jul 2026 13:12:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D301F000E9;
+	Wed,  1 Jul 2026 13:12:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782911566;
+	bh=91uk3L99OWz781fU570Nvcxs1RgxF76hCIkEAl460QA=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=O6B704Mgvju/Ngdd1VbVKl0dbadn+4zuNw4UCqU9OwhtQxYQ1fO1eeNawxcTx7Nbw
+	 aXfOMPV5NhTp9JgBqcn7SsZlimNjZ31SGM/Hd0Dh2tV8YTyKpycqS2V7v1vILKeoRW
+	 5XJgR5/Bozvjndkz/hfuiOlHcALUeKsilMlgMk7pMHjKaUzvK3E4EytUGgeub5f51F
+	 QRwY5RumucwkLPyq60/BGF4+6Q4mlvKfzGVAK4pcJYe+Qe3pMsiWAQY3nya5ud6NQK
+	 cVyqKkfazNv1oPEvdn4YyoKLii7qUC+Lg7jlaYiI9qA//lBx6Vql9SdH0Ef5ft1I5G
+	 70jCf5SchPRdA==
+Content-Type: multipart/mixed; boundary="===============4080985512832073215=="
 MIME-Version: 1.0
-References: <CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com>
-  <akQIIav_zaK6RmIC@pedro-suse.lan> <akQO8JtTxmp89GS8@pedro-suse.lan>
-  <akQekZUyoKadiGCH@pedro-suse.lan> <akUADHLWEetveHLp@casper.infradead.org> <akUKty7jsWJrdyho@pedro-suse>
-In-Reply-To: <akUKty7jsWJrdyho@pedro-suse>
-From: Gregg Leventhal <gleventhal@janestreet.com>
-Date: Wed, 1 Jul 2026 09:07:44 -0400
-X-Gm-Features: AVVi8CfbAVtUJ3lTyb378QyJPKoGbZ_N6e1vZmdlCalj-0NGI2vym8M_lSCjDHg
-Message-ID: <CAFN_u7EE0ooQsH2JAnYn6EFrxnRToXAqvW_uUE0aqPDEPEmSAw@mail.gmail.com>
-Subject: Re: Subject: [BUG/RFC] write-open file THP cache purge can discard
-  dirty page cache
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Matthew Wilcox <willy@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
- 	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- 	Andrew Morton <akpm@linux-foundation.org>, Song Liu <song@kernel.org>, 
- 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
- 	linux-kernel@vger.kernel.org, Eric Hagberg <ehagberg@janestreet.com>, 
- 	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 5resrk9dcier9dyxp6hm661mjoyc8nk1
+Message-Id: <fcc8e7d5146cf4c85f081ad21175c0da4b359b8c68c8305b2671c49de1a19807@mail.kernel.org>
+In-Reply-To: <20260701122948.57584-3-cuiyunhui@bytedance.com>
+References: <20260701122948.57584-3-cuiyunhui@bytedance.com>
+Subject: Re: [PATCH v6 2/3] riscv: introduce percpu.h into include/asm
+From: bot+bpf-ci@kernel.org
+To: cuiyunhui@bytedance.com, pjw@kernel.org, palmer@dabbelt.com,
+	aou@eecs.berkeley.edu, alex@ghiti.fr, dennis@kernel.org,
+	tj@kernel.org, cl@gentwo.org, ast@kernel.org, daniel@iogearbox.net,
+	andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
+	memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev,
+	jolsa@kernel.org, bjorn@kernel.org, pulehui@huawei.com,
+	puranjay@kernel.org, thuth@redhat.com, ajones@ventanamicro.com,
+	ben.dooks@codethink.co.uk, rkrcmar@ventanamicro.com,
+	cuiyunhui@bytedance.com, samuel.holland@sifive.com,
+	zong.li@sifive.com, conor.dooley@microchip.com, tglx@kernel.org,
+	debug@rivosinc.com, seanwascoding@gmail.com, andybnac@gmail.com,
+	menglong8.dong@gmail.com, cyrilbur@tenstorrent.com,
+	wangruikang@iscas.ac.cn, atishp@rivosinc.com,
+	apatel@ventanamicro.com, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	bpf@vger.kernel.org, arnd@arndb.de, nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com, morbo@google.com,
+	justinstitt@google.com, qingfang.deng@siflower.com.cn,
+	linux-arch@vg.kvack.org, er.kernel.org@kvack.org,
+	llvm@lists.linux.dev
+Cc: ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Wed,  1 Jul 2026 13:12:45 +0000 (UTC)
+X-Stat-Signature: synzbjtroj6xqxde4ugdrykyjae8zjei
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B8089100006
-X-HE-Tag: 1782911303-916614
-X-HE-Meta: U2FsdGVkX1+sYidm79F32cbpR4/GDaKwdmR5edmEg9SgoqZb7EoQBFICGdm5w/pXGcXMw4YWflizn4oL9Jl2vI80M2Oa4v+T5jAk8HPxyh4WWqRJPx/ZqDey3NiqkcGaJn7/KbzoKdaOMrerekPZyi0IAJJQdrnHmjFPDC5tn0sf708pRxIBmB4J+qhl2SJ29HldcfJ+EoxtlgbOY9XuM64HwVNaQ6R7i1ORpm/c57A92DMKXtP8RsUbvY/MeEo7zsSrBe6ZKKcs4UNaUncq3dPViPVkv/AW1x6VL7CUrnUXnfKi0nKYkhFtgmEIh2hI1n3ZiKc6rbjacPck07TlIX5cXuKrK1Idls52z/GB9tceR4ZMTgS3zycqah7nLAVIFZGe7rsCQiHuoQuYzHClQpDnwMy900D93RaYUDwsbyqhdt7RFGtu5mW1YxTlqXZsHzrvhCoiKRz7Vnx6HK5qvqPGI6j+vO6tVipEc4DRMq7IzvPmcTt9WpJdPB+Tfu4/1PaX/HpKU1/YEByAh6pIcZBBVdlK5n8telM3mDj4KQ2zmyL7OolCeweap2eR62M2jqxL/A/5L8eW7C6u72Kem8UFL4caLN6NEL+TpvK25bDpnyBdymAAKe8jG/a7DY/XQnuPhz2u6gEwxZvf1PPcdh8/tTsI2aCRBJIqFPQqM4etA3f0EBO9VzTibQZ7p3JRvDHsX7Z182v+rmDlscnQW6UAzBp1DYfkyoQ52zBMVam5uhgellGFJAbeU6yrnegd6OfxVLWRnEzA5cDczrJ/Hgpkf8A72ETRP6DX8T0dnPxaqLXCCXUWJqwufkNFIV68+e1kwRURC+S2cxgjKdlE5BCzjHw8n6511b5Nk5R6WCHbbomKBIiAkR86D9oTmpfhSKR4rFSC8N0WJY3q8e0d3dkBMtVDMqCM9GWy2sXXHLBmJ/udUav2FWc8Nr1E1LSHAPaXMRAbt/pOwGvWGa/
- st2pPIXc
- hVGHsKcRKc3srspcfGpafudIvRrq+A++XlXiZ5tyzPnfy7g59aLSXCUE0k7HPYK/McaekT2cc2YPS4CD1ml/h319NjWgDKKybmQOGt4CLja2LIU5b97u4NoOa0M5aXOqu4vmLFJY7p8aLZ/u1LmxEgDnJA8MM/KG1u7hECQ9GHDTbB31tNT21Ypj+wJ+zmFj25w5ZpOsrqB9sELwy3rNmosfDbpAeyF2SiDBNVsGXiNBOuZ3u7Bb5O9l7Nxi7wsxOGMGfoKZWcYUjFyQ2+4WWyVLDaNsXxwGsn360lpBWujpNEnsAbygr6cQn3uhVG9JnyeXJ9/VF7p50rSq5HgKS8rS2piSn7YEqivQ5dkw2pf5dLO7lnt3kcuL3oQ==
+X-Rspamd-Queue-Id: 8C4B51C0002
+X-HE-Tag: 1782911567-714763
+X-HE-Meta: U2FsdGVkX1/Xt8vOQtTMskw+VnkWViy3znuSPp/rPxlw14s5qA0kfwNDcS9usqz//lFUH2MkXJucLHu18NJVjfiwOrzmT8wBfAZtN3/s60s2tx0xi+ZSbasmR49GUmqOkJ99dRWhAfIRtPZ5LjJ5/rb97E2a7z+QljoSG9NovExYVWUlJjV+Fa7GVW3SB/48+92/I7XUAwOe5iXnz1ishCNRpZQ6nlkuxGhFzjbnNm9gFpjGi+D6ARBSxZNi7R/v9Gr50yh5QurmAYUyKPdIO+HduxrbB4zMuujsYf6lJ3qAWaOP/X4iIF4gpywzx+gpsBlQOlHepI0g6/Sa0W86Kfdlfuz6gqVdfRyv+S6eRt7vLs+DPRsqE2G4yRjR208tf3ClnJbBUnlHgmSSRkmNJm3TyLy+d0PWfzWohzljfFu7ZPbNCo9SIqFqS9kEigLVNfbJVWnzyZ7pEHx+2E9cahj35hGjsoJOWjUNn6rhavT1Hu4bjXPKWF5XpibiXGAttwYNwflcKX7bh91y/VKZJ2k602wCZsZZcOyqzpdqPJDWWMe7snsDhqiiZXnXZmfCwQJQQKCAeOERlqrgyCEZmGuR8qdZP1R4skfD13kz1P7mSOg9BsdB0W2cU/4n3w2GLFKeWsDqc2qLypDPfEZboCpKw8LTnrMLjBk0XRj17LWmSz3nY9ZzXj1EoGnjEq/BsfNJZ/aV6tgsNQN27PfZrewEL7s3Q1zXCZxeXsH0S0/wkJJ/m6mzix3NB2kSrpSdNtTcLuY46MRcKjl8yYkWlhfN5PWFX3f4z9NOzO7XU11D4SdAUocKAUEZUliXluk3CI2u/HdRenXct/Jy5/cwnew2P37zNYD9v0ubtVQYX+6qcHfQI02/ZFivh/73u64JDskyReaYGei7qR4V0+wpPS4a0pN+9KAF39C270F24pbRyAlbIE7eETI3mQPykW0iim1nUN047ZtuEdo5uzn
+ GnUZjD9z
+ Ev6AsHGsWPjui+FW1vCj1CthbzBu1RJcsk0aCAuM4ulsVplWfWUl0w1mPVG13KLJcli9F8Cnl16Cc/4d77tDQb3g6cdY/mF0ot2F/gQD2BP0nyYAq/3LNTZqNxphBR+nOoPpyIr3czpk5deVnadIRbH7qhHKW/hayiYfdoaWFBttH5qaWG0otl8CQ9D3CvfUN7+dQmNts/mIAVXJwh9fO0PWrETMFHPLzBJBsBNvdHTbsyHzjHbEDk3j/MjX39+JfVieFL+m3vi3zTNfrGQDsHBesHOh/xfEFAyN66QsCYuTPVK4YtFulEiZisZ7/m4JqxmZZie49rwlMjiaCDkp9vFU0jMZOFcH2hcodeFUbtFPDzmPVUGe1SRLvXtmY/Obg5EzKNFHdBzf+LJIxbfR1/f0WED8BxOh8mBGu+saObzO5WhK2BPiEEry0lVCliyeGB8c5xZgxvxIi9rTiEZip2+mZYjcYN89oEfDMB1YrEX318+EfwguFKj7HJ6bbEqIpUvIQ4tyZLnOuESN416co1PVJggwXejfqhFv7bqr/FK1O+aKYN3eAYsuiWQcgKkAvKCsmTGHgZAAvPeTBxxgPt9cosb7PX5AN4MwBneOGQkfY//ZR/YOxX1d9eQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,51 +107,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks all, it sounds like there is nothing for me to do quite yet, correct=
-?
-Also Zi Yan is correct, I meant order-0 folios.
+--===============4080985512832073215==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please let me know if there is anything I can do.
-FWIW: The patch I suggested did seem to resolve the issue (based on my
-testing) and did prevent my reproducer from reproducing (whereas it
-repros ~instantly for me on a not patched kernel), but I (obviously)
-defer to you all here.
+> diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/percpu.h
+> new file mode 100644
+> index 000000000000..34483253e946
+> --- /dev/null
+> +++ b/arch/riscv/include/asm/percpu.h
+> @@ -0,0 +1,284 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +
+> +#ifndef __ASM_PERCPU_H
+> +#define __ASM_PERCPU_H
+> +
+> +#include <linux/bits.h>
+> +#include <linux/preempt.h>
+> +
+> +#include <asm/alternative-macros.h>
+> +#include <asm/cmpxchg.h>
+> +#include <asm/cpufeature-macros.h>
+> +#include <asm/hwcap.h>
+> +
+> +#define PERCPU_RW_OPS(sz)						\
 
-Thanks!
+[ ... ]
 
-On Wed, Jul 1, 2026 at 8:48=E2=80=AFAM Pedro Falcato <pfalcato@suse.de> wro=
-te:
->
-> On Wed, Jul 01, 2026 at 12:54:52PM +0100, Matthew Wilcox wrote:
-> > On Tue, Jun 30, 2026 at 08:55:12PM +0100, Pedro Falcato wrote:
-> > > @@ -2043,6 +2044,17 @@ static int collapse_file(struct mm_struct *mm,=
- unsigned long addr,
-> > >      */
-> > >     try_to_unmap_flush();
-> > >
-> > > +   /*
-> > > +    * If collapse looks to be successful, flush any dirty pages
-> > > +    * out the page cache. With the nr_thps incremented, there won't =
-be
-> > > +    * any new writers (nor new dirties).
-> > > +    */
-> > > +   if (result =3D=3D SCAN_SUCCEED && !is_shmem) {
-> > > +           err =3D filemap_write_and_wait(mapping);
-> > > +           if (err)
-> > > +                   result =3D SCAN_WRITEBACK_FAIL;
-> > > +   }
-> >
-> > Oh, the other thing is that this should be conditioned on
-> > !mapping_large_folio_support().
->
-> Thinking more about this, I don't think it works. On the file open side, =
-we
-> always truncate the full page cache, even if large folios are supported (=
-due
-> to possibly max folio < PMD_ORDER). So if we skip write-and-wait on such =
-cases,
-> it will be possible to fully reproduce this issue.
->
-> --
-> Pedro
+> +#define __PERCPU_AMO_OP_CASE(sfx, name, sz, amo_insn)			\
+
+[ ... ]
+
+> +#define PERCPU_OP(name, amo_insn)					\
+
+[ ... ]
+
+> +#define __PERCPU_AMO_RET_OP_CASE(sfx, name, sz, amo_insn)		\
+
+[ ... ]
+
+> +#define PERCPU_RET_OP(name, amo_insn)					\
+
+[ ... ]
+
+> +#define PERCPU_8_16_GET_SHIFT(ptr)	(((unsigned long)(ptr) & 0x3) * BITS_PER_BYTE)
+> +#define PERCPU_8_16_GET_MASK(sz)	GENMASK((sz) - 1, 0)
+> +#define PERCPU_8_16_GET_PTR32(ptr)	((u32 *)((unsigned long)(ptr) & ~0x3))
+> +
+> +#define PERCPU_8_16_OP(name, amo_insn, sz, sfx, val_type, new_val_expr, asm_op)			\
+
+[ ... ]
+
+> +#define PERCPU_OP_8_16(op_name, op, expr, final_op)			\
+
+[ ... ]
+
+> +#define PERCPU_8_16_RET_OP(name, amo_insn, sz, sfx, val_type, new_val_expr)			\
+
+[ ... ]
+
+> +#define _pcp_protect(op, pcp, ...)					\
+
+[ ... ]
+
+> +#include <asm-generic/percpu.h>
+> +
+> +#endif /* __ASM_PERCPU_H */
+
+This isn't a bug, but the header defines a fairly large set of broadly named
+helper macros (PERCPU_RW_OPS, PERCPU_OP, PERCPU_RET_OP, PERCPU_8_16_OP,
+PERCPU_OP_8_16, PERCPU_8_16_RET_OP, the PERCPU_8_16_GET_* helpers, and the
+__PERCPU_AMO_*_OP_CASE helpers) and never #undefs any of them before pulling
+in <asm-generic/percpu.h>.
+
+arch/arm64/include/asm/percpu.h #undefs its PERCPU_RW_OPS, PERCPU_OP,
+PERCPU_RET_OP and __PERCPU_OP_CASE helpers once they have been expanded.
+
+Would matching that here be worthwhile, so these generically named helpers
+(for example PERCPU_8_16_GET_MASK) do not stay in the global macro namespace
+for every translation unit that includes this header?
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/28518481105
+--===============4080985512832073215==--
 
