@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFC56C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 16:49:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F7E0C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 16:55:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A0A66B00AF; Wed,  1 Jul 2026 12:49:48 -0400 (EDT)
+	id 03A536B00B0; Wed,  1 Jul 2026 12:55:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 978AF6B00B0; Wed,  1 Jul 2026 12:49:48 -0400 (EDT)
+	id F2C696B00B1; Wed,  1 Jul 2026 12:55:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88F976B00B2; Wed,  1 Jul 2026 12:49:48 -0400 (EDT)
+	id E44A86B00B2; Wed,  1 Jul 2026 12:55:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F45C6B00AF
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 12:49:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CED131C7374
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:49:47 +0000 (UTC)
-X-FDA: 84940794414.01.8603B13
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 12821180006
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:49:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UZkTNtmp;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id ABF536B00B0
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 12:55:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 213B48DCA1
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:55:00 +0000 (UTC)
+X-FDA: 84940807560.03.6648D99
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 57022C000F
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:54:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIi48hmX;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782924586;
-	b=hM1uGoSpC6bZlcV9U0RIOmg6AtimACcbVdhYmrhUBn8q/2vLRp6uCWItgclxj0T6v2UJN+
-	uOwEyEnXzgQgOduSgE+m0f7b3qVHckUUIKF7shTaLINT5M6geYuKT7Qxa0PQT05KyfvRry
-	mUgFiJAFu43kqnZzuOHP4+QMrhrePFQ=
+	t=1782924898;
+	b=SkuCueCqAoLUt2OMtDJx0LSTmrM11EIxfBtTWc8qPAtqAsVxytEUZpx8kE3PGsoKKMoLwF
+	YJka7amO6jwaJIQztR7562il6SIUYeQPIpJ6KWHFAtEJtaGRGZ0hjvP0KH/j9tJx25Zd+W
+	HUjaceyZ7k/E/dHR/luDUweI776CCFk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782924586;
+	s=arc-20220608; t=1782924898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ewTcjC2YNzXZmdVVFzcmi3ViWYP+V41foEbY5CbQbA4=;
-	b=BiKLgV/mhz+DkL/Q7GIT/WaeLDuCnawAYL38lSAyCQ1Z0fJJ2o2IB0Tk0rHuLlM5mysKrI
-	rNIxKMMp4nSrrjhy7xa8iJF2WMP5rAdh2j8MIjuKks8FAYrINPEWibG96ntE07n8VvyR0n
-	VaclX7fFIVhOgOiB6Tn3OlUW50SeOds=
+	bh=87Wni51q7tV3DEcX7N0ywWkBdDM6S1XyRH7FSeJhsxg=;
+	b=w3+tX8viCMk0eLLy45ghQjbGMPcJdsaPwCfxXhwmuiajIfDUbQteAZaO3cHZDXlfR6Q8MI
+	fInCE1qqttcB9NgYf6keXfwVrhhe7LzakS9dWQVYEkyf8M757qKH+APwclhJJjviViUsgR
+	aocIFeruTjoVxkBAt8ZgxJ76knKOuNU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UZkTNtmp;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIi48hmX;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 894EA60138;
-	Wed,  1 Jul 2026 16:49:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2F81F00A3A;
-	Wed,  1 Jul 2026 16:49:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2A075416B7;
+	Wed,  1 Jul 2026 16:54:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E881F000E9;
+	Wed,  1 Jul 2026 16:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782924585;
-	bh=ewTcjC2YNzXZmdVVFzcmi3ViWYP+V41foEbY5CbQbA4=;
+	s=k20260515; t=1782924897;
+	bh=87Wni51q7tV3DEcX7N0ywWkBdDM6S1XyRH7FSeJhsxg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UZkTNtmpKRaME4zjJl/r6A13mMXd1FfSdDxLmZ1795hN67MKNO4BVBvojv24PZjzM
-	 1P6qSXhQZh3H/kawABE1PLrZDTKIO7roA/+MS9ddZz0k/DRiI+DWtjXk2dlvetM2Im
-	 hgV24I3m34Wg9VDKK65SlSJyXN9tM31ZRQf6mSjd8i0cZ85ihdamfUBW3ozh6mfBNY
-	 cy3nU46+8JQ/NWZCaSFohbKXtR4DEtlGxgH2NrctfLiWyK/kgAot0nwJEuUYlnQGVK
-	 eKIYogZ4WXRmBTvGZQ+4EZf9WJF8EsGX6/BCvMW+AqWPZyCCInwQ1H9ePeAzHdojKi
-	 5riMsS/WKqOzw==
-Message-ID: <65671a65-a2de-4f12-994a-a96d2acbc92e@kernel.org>
-Date: Wed, 1 Jul 2026 18:49:38 +0200
+	b=MIi48hmXsvy9gv6zAWRL5MXmswZhWZ0M1QqKS9FFSgETxRmTX2oSFqeGqE2qU5kxG
+	 k9280jpyr+SZh9okxydz/S4PDEhFalWWrTJP/ntLSe8r0V21zOn2UlDwojqVFcdpaD
+	 yyWSQDMkpPtx5d/6NZvWAggJEGl5tipOWNlOHf3Pta2mG9GhmIt4Diw/gQg+R+gOfk
+	 /QYH5/pPDy2FBtljlx1gcdfhfp5Ty2fRnXNHbwg6rVzYbrXUFjn8qPij2nGrnfbgE4
+	 MywQ1ESFcJnXMuWQ0En144bm6nFQOV27fZo894EdmNDXtLGS3mWP40g2X5YldmHHDh
+	 WB3BMJhUXFyQA==
+Message-ID: <43b4c503-14ba-4e88-b56c-caf5ef0597de@kernel.org>
+Date: Wed, 1 Jul 2026 18:54:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate_device: pin large folios before splitting
-To: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com,
- byungchul@sk.com, gourry@gourry.net, joshua.hahnjy@gmail.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com,
- rakie.kim@sk.com, ying.huang@linux.alibaba.com, ziy@nvidia.com
-Cc: shakeel.butt@linux.dev, hannes@cmpxchg.org, kernel-team@meta.com,
- sashiko-bot <sashiko-bot@kernel.org>
-References: <20260701140638.840773-1-usama.arif@linux.dev>
+Subject: Re: [PATCH] mm/mm_init: handle alloc_percpu failure in
+ free_area_init_core_hotplug
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org, kernel-team@meta.com, osalvador@suse.de,
+ akpm@linux-foundation.org, rppt@kernel.org, mgorman@techsingularity.net,
+ hannes@cmpxchg.org, vbabka@kernel.org
+References: <20260630214039.2263562-1-gourry@gourry.net>
+ <b8baae33-d551-40fe-abb5-287f3711dd80@kernel.org>
+ <akUszCySPFA7IRlb@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260701140638.840773-1-usama.arif@linux.dev>
+In-Reply-To: <akUszCySPFA7IRlb@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ykrkfaiqjpbjoehj6isit1g7xb6xpt5p
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 12821180006
-X-HE-Tag: 1782924585-475420
-X-HE-Meta: U2FsdGVkX1+bz4RWBKlMs16UmUfnhh+GejrlOzQ599XrB2sqxCQV4wlvQgX6AH/eOTX9fllpKVPiBlyXZzapMV2we67lxrJ5GLYwrE3yNHE0pd5iCoXJ+TVTsd79AnFPhoPDRYvB0oREOYXVBAc7+HjpqHSVAlvhkp+JjX99C88oUIIA1G+ne8kk7vVDpWClR7isjG9bys5DGxqNEMB0ZGwKBZL/IKTmshMxx05OHwVxXkT40yZwv437yM5d5AjSURy53Cw48VuIRL0Xv0t/5qaeAsbHa2mX799ZypJtldwKqAahYxMcUI96zskmYvg5/al235do62F98GZd7HJS+v9D13VWJEm14Um0bMXbLHcZewWSDoJfOjjyfnJkYn7f0+IkR9LdLSbHCHbWV+Wy8V6lt3zKMeEbY8mbRtG7xJG4dXX/cfFevM/mcXKCALDQMfS8kEuqua6YBK8wSgG+PMCISlzDXSc3Dzk6wsv1YimpCtBLW4GGUE/WBriG3VGF5Rif9CrITly62MM0nAtQmJc9MM2mXXQVehRNPpJNd3SEp7dScNkxeDcWDxH3obXNdWXwwn/la/N5bZuMjINOTJXSsVChpgyvLY9YKLxr99UCVN3G8wx74XIQaDy2k4AaZueSqxslZq8R+4Jjmlw2tUvWw3CoOw7QfVQ+AFz/VlXKR4KPKN5Eie1kV8ExLwYk4+VJXPGCpmQhhiOLAH2HAz9f4YXcmUk922pzsa5JAoM/pL1krP4YkJKXRKD0ehoXrkEJGaAAk5hGE3KlGJtklyc5EByLiF/SebJxL60SQ7pIgeGOlwik6Qw+d1isHP3GjiU/5z+k5YU02awuS38nC5tO01cKYvvjsP6cT9ntqByG1ULe3pU8oZ3jxqHWJIX5uW6ykmaapPgU6HQjmerWgnl9+jGdJx+QM/J4BSewciKKjY6h9AFnKtkWxksIZcyQultyuIa8bvjbYjz80r/
- T7eaHA2a
- vgxCYDuBPrJSZVQ1j/VUBKDW37aq62GQMO77D23lv6hdvAUxMcXOO+ojxqu+Nib6T9jl0YUrhMPPegClrRO7BbLb3UWhQEkYJcPJ5WQ+hFcps+znWfsrEF31rY6zd7eQOJP6Y8xSSgerRSVBj+tPPbESIIhUHAokyE60H40mtz2d1WOtN9WxdLzlKR6NPcmyzihBIAEcwhRJCEXb703XcfdGDjYKrdlHJXrTCsJp5GcVzdWh1GQkZ6e0tIKK8pmScVtunrq1dIvBSW9Asl4IxYR1rp0ZEm0bdFzywoKWJuQ5ytv8RTYm6/N33w5QhDsEtXdrryCH2HQhlqJXJhqLh0QAZLjM1m9hXQttqw5xfgS/RY/1gPjDtEo23QyzFi1Jl7TP6FSI5fW5Ef38rR5UmjaCYsdvsAzkwEtgIi/Sibqxl2YZOtMZb2EHNMPDGtAkhrOLhzgY+S5K62N/JaR+bDi/W5w==
+X-Stat-Signature: wfan5odztua9m4ab3iujys9hkhmea6iz
+X-Rspamd-Queue-Id: 57022C000F
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782924898-504176
+X-HE-Meta: U2FsdGVkX1+Xm3YCxslok7WkX6qKK7arxrFO+ptJlbs4Kue8CMyh8GMiE+9gEXVggrGa5GkPwQevaSz6Dr2O0E36m29cC6nmalQEmoALco7qfdkMdhDilLLQfphxWg3NdHPBnO38FF+tt4W+u+YE4DAQzkb2zLGbxQvkINiQU4e3mwyWPemRcPNtlWXaPjztn5LCnZlvGqJPbSeUxoZMCOOOaq3kHNE3CrXaByj1Yh/E0M7uooMHqnd8muFZClCUYJ7Bets6qMb38KK67+ymFCiJB+zHh9J9ALWgCgJaecxzJUWqE3NRL/JX5X37PK7ZBmUjp9dow4Al3/zI/xSUYcZCaWjMhATzzBqM7w4YNrWJS1HtS44lvuPjVYaQAv41W2aZ7QZkfOORIuo1dR5jhSWkpCDnNiREHQOf2Zj+86y0gXKePJJ0snw1WPoOVvzK/753Pck7G9Qt8pMsDOtGBKgz9LrNmEU1r2Ft+Fp4Ky9oQaqah/UyictcEXb54T6xDpRIfi+Jp1FWtfNZqmgV942Yza0ignb3LLUtsLUhaf/VGSklmNao60V7ogzDdbPNrII2r6qEyFB4j4cDf4VajD+uxgNdH3oUTNYtjBKjEBzj4caLPDVIAtaNte3wH7SW5nxuR4VoLzkNbBwurMa5sOIyVXkHOzkSKiXhy49D0AuSz8u9fT2+bGUVVZtHUOFSWtorhPpEqrtTjDozCj0wYvDvuzBP/adohymtTUb0AUKYw7rlIag/ZSG2sxa1h+D9iGCMDpuuDMeLXb2NP83UoFJA0uuYOREMvJ1QbEo1v+TjWoBz6c6rx80f6ufNGlJsIYcFoRSheX0oFbvBADK0YfM1GmLXFO8MwzJxMKnSrPD8aulLWR7qOF0oEXJQdhEFQXhtHLG3MkA+4LTxDom+TIrVXoRQCuDGb9ztCnIV2bsAvOB/V+/2LtOIjiRljFO1hd5eirHfPFk1yoAP+3l
+ mUbvyroh
+ PupiWQYyq5f/VDmF6wcnbD6mQV5H8EodX5C5bfgJIP/CSo09KvhqQH2bfpPVnKChOJM7UGTqKrDgsfRz+d8naf2fld2jTCkmD+C6l+EvrxHO9ytfoeRL6yuCGTN4c/7P7GbpVpcgDp0g94Tgp2DCaGxRzBwYr/2uCiikTA4R2C93w7MAM1UX0I7gLgN0F31inI4/HD4DQeLP/ZjCMazdITbFjEyVtk32zoRUzqTbShBB/lViCZH7V1+s6VbR0I0c0TX8PujF4rwgeLf0b5e2GOzRdXfj5wvpl6pEsJM66IaYMzaLymwN16Wtwfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,96 +142,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/1/26 16:06, Usama Arif wrote:
-> migrate_vma_collect_pmd() can detect a large folio while holding the PTE
-> lock, then drop the PTE lock before calling migrate_vma_split_folio(). The
-> split helper took its own reference, but only after the lock had already
-> been dropped.
+On 7/1/26 17:05, Gregory Price wrote:
+> On Wed, Jul 01, 2026 at 10:35:41AM +0200, David Hildenbrand (Arm) wrote:
+>>
+>>>  	 * The node we allocated has no zone fallback lists. For avoiding
+>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>>> index 306ea5c13f54..37fd64ce144d 100644
+>>> --- a/mm/mm_init.c
+>>> +++ b/mm/mm_init.c
+>>> @@ -1536,7 +1536,7 @@ void __init set_pageblock_order(void)
+>>>   * NOTE: this function is only called during memory hotplug
+>>>   */
+>>>  #ifdef CONFIG_MEMORY_HOTPLUG
+>>> -void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+>>> +int __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+>>>  {
+>>>  	int nid = pgdat->node_id;
+>>>  	enum zone_type z;
+>>> @@ -1544,8 +1544,14 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+>>>  
+>>>  	pgdat_init_internals(pgdat);
+>>>  
+>>> -	if (pgdat->per_cpu_nodestats == &boot_nodestats)
+>>> -		pgdat->per_cpu_nodestats = alloc_percpu(struct per_cpu_nodestat);
+>>> +	if (pgdat->per_cpu_nodestats == &boot_nodestats) {
+>>> +		struct per_cpu_nodestat __percpu *p;
+>>> +
+>>> +		p = alloc_percpu(struct per_cpu_nodestat);
+>>> +		if (!p)
+>>> +			return -ENOMEM;
+>>> +		pgdat->per_cpu_nodestats = p;
+>>
+>> Is there a need for the temporary variable?
+>>
 > 
-> One way to hit this is device migration over a range that contains a large
-> folio. The walker reads the PTE while holding the PTE lock and derives the
-> folio either from a present PTE via vm_normal_page(), or from a non-present
-> PTE that encodes a device-private softleaf entry. It then has to drop the
-> PTE lock because split_folio() can block. Before migrate_vma_split_folio()
-> gets a folio reference, concurrent reclaim, migration, or truncation can
-> replace or clear the entry and drop the last reference to the folio. The
-> split helper would then take a reference and lock on a stale folio pointer.
+> at start:
+>     pgdat->per_cpu_nodestats = &boot_nodestats 
 > 
-> Take a temporary reference before dropping the PTE lock and pass that
-> reference into migrate_vma_split_folio(). The helper consumes the
-> reference, so split_folio() still sees only the expected caller pin instead
-> of an extra pin that could make the split fail.
+> So need a tmp to do the swap/revert/etc
+
+Reviewing too many patches today ...  makes sense.
+
 > 
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Link: https://sashiko.dev/#/patchset/20260630164143.1595669-1-usama.arif%40linux.dev
-> Fixes: 022a12deda53 ("mm/migrate_device: handle partially mapped folios during collection")
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->  mm/migrate_device.c | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
+>> Also how to handle cleanup on error? Or why can we skip cleanup? (what happens
+>> if we get another call to __try_online_node()  later?)
+>>
 > 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 2f8b646302c2..f5a5f699e98e 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -77,6 +77,9 @@ static int migrate_vma_collect_hole(unsigned long start,
->   * @folio: the folio to split
->   * @fault_page: struct page associated with the fault if any
->   *
-> + * If @folio is not the folio containing @fault_page, the caller must hold a
-> + * reference on @folio. The helper consumes that reference.
-> + *
->   * Returns 0 on success
->   */
->  static int migrate_vma_split_folio(struct folio *folio,
-> @@ -86,10 +89,8 @@ static int migrate_vma_split_folio(struct folio *folio,
->  	struct folio *fault_folio = fault_page ? page_folio(fault_page) : NULL;
->  	struct folio *new_fault_folio = NULL;
->  
-> -	if (folio != fault_folio) {
-> -		folio_get(folio);
-> +	if (folio != fault_folio)
->  		folio_lock(folio);
-> -	}
->  
->  	ret = split_folio(folio);
->  	if (ret) {
-> @@ -310,6 +311,13 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  			if (folio_test_large(folio)) {
->  				int ret;
->  
-> +				/*
-> +				 * Keep the folio stable after dropping the PTE
-> +				 * lock. migrate_vma_split_folio() consumes this
-> +				 * reference.
-> +				 */
+> -ENOMEM ->
+>     hotadd_init_pgdat -> NULL
+>         __try_online_node -> -ENOMEM
+> 	    pr_err("Cannot online node %d due to NULL pgdat\n", nid);
+> 	    try_online_node -> -ENOMEM
+> 	        __add_memory_resource  ->  error_memblock_remove:
+> 
+> Basically we're left exactly where we were before we made the attempt.
+> 
+> Another call should work just fine after a bunch of dmesg spew.
 
-Do we really need that comment (same below?). It's a common mechanism when
-keeping to refer to folios after dropping the PTL.
+Okay, so the additional pgdat_init_internals) should be ok.
 
-> +				if (folio != fault_folio)
-> +					folio_get(folio);
->  				lazy_mmu_mode_disable();
->  				pte_unmap_unlock(ptep, ptl);
->  				ret = migrate_vma_split_folio(folio,
-> @@ -353,6 +361,13 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  			if (folio && folio_test_large(folio)) {
->  				int ret;
->  
-> +				/*
-> +				 * Keep the folio stable after dropping the
-> +				 * PTE lock. migrate_vma_split_folio() consumes
-> +				 * this reference.
-> +				 */
-> +				if (folio != fault_folio)
-> +					folio_get(folio);
->  				lazy_mmu_mode_disable();
->  				pte_unmap_unlock(ptep, ptl);
->  				ret = migrate_vma_split_folio(folio,
-
-LGTM. The code duplication in this function is concerning.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Makes sense to me, thanks.
 
 -- 
 Cheers,
