@@ -4,127 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EFB9C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 16:09:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A76D4C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 16:09:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53E616B00C1; Wed,  1 Jul 2026 12:09:33 -0400 (EDT)
+	id 89AEC6B00C2; Wed,  1 Jul 2026 12:09:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 516A76B00C2; Wed,  1 Jul 2026 12:09:33 -0400 (EDT)
+	id 872236B00C4; Wed,  1 Jul 2026 12:09:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4062F6B00C3; Wed,  1 Jul 2026 12:09:33 -0400 (EDT)
+	id 7630C6B00C5; Wed,  1 Jul 2026 12:09:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A4C96B00C1
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 12:09:33 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A737D140406
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:09:32 +0000 (UTC)
-X-FDA: 84940692984.29.EA09707
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DDA38140010
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:09:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vKVgzqDC;
-	spf=pass (imf23.hostedemail.com: domain of 3uTtFagYKCJ4QC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3uTtFagYKCJ4QC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EFDB6B00C2
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 12:09:55 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9B811A0436
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:09:54 +0000 (UTC)
+X-FDA: 84940693908.04.551AFC5
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1264C10000D
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:09:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GKsigi9j;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782922170;
-	b=McCJYHBlb4GNSNMrbIihtcuaAOrwf5OnZAx+vCsyp6/FQVTZfFslTXNUChyOnbOTEEUUPD
-	MeZxX5ssQJLulAXAhD/MqTMrJ/R0saBx5vSP4fFfWJhH0Ftm1b8/5K5JuTq01bpiCtUBEt
-	q2qPDftfMKGo6/Z71WPCh9FK5Jkbam8=
+	t=1782922193;
+	b=uakYtz1An1UMVDp2jJtDytXmJ0FXV+aAHp8dqU8bJLRQK9lIt9/B7nhflLx1/FcdVTOHyb
+	O1VL06vopqKohgv9Y8FxBKwQjpvOv2Buw/OmyGxBrMx4qN27OHiPE3o2LHo/tnV/6A4cnR
+	MxCFubeVqJ6d07FhOG2DL4WffS7xnPg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782922170;
+	s=arc-20220608; t=1782922193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fb46jkRTl6zwGFz7DUfAUgbXgotI+sXKJjyrZvcz3JQ=;
-	b=koJNrx9t4pEc8HAWEDe90F/xTTSqarY1Hk/0KPONWQvTZI3Tzi1vfTeWBR5g82avk/3AyH
-	F6nFBcRy31jyEKoZwKqa5r3ZdzIM42JXmqH844DdhqRDnNGnaRwWSZekYh/NVQFt145Tge
-	t3uubFnDwi5D4RokYubsSMhN/VqWeX0=
+	bh=32k3xy2qoDs5v558QiIXDOBJrw4XcLaI228zHYcvJQI=;
+	b=L3tEb7fJBHelweU9XxiFQN0DJ1K7/CHhRLIJT5XxxkdPmdlR9Stps573r8NVLZlCapRpPx
+	xyWJ1rqcJMOPi021y2Q6qO/J19tiUikQZGVft3KmdAnlN6sAOp1b+bTTNniYXBG5Jt+LbN
+	UrIXMkq7gD37l6J69nBbJwV+IOmNMy0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vKVgzqDC;
-	spf=pass (imf23.hostedemail.com: domain of 3uTtFagYKCJ4QC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3uTtFagYKCJ4QC8LHAEMMEJC.AMKJGLSV-KKIT8AI.MPE@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37d125687b6so898510a91.1
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 09:09:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782922170; x=1783526970; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fb46jkRTl6zwGFz7DUfAUgbXgotI+sXKJjyrZvcz3JQ=;
-        b=vKVgzqDCoSuPavku12oJ72bsFDlfD2k9KgD6lGYS1gtrUcAYs6xdEtj+gm5ZvZxCL5
-         P0Ojej3ZOemxtV0yxDZzHbGdL4Vxvfih4j6DtOthE8UC03J7qm/eLjxJe2l3kfQvjhUe
-         BaXyvBwFQI74JerHRQ6EV9t1VKEVCRrUbdTXZ0WAd2l9ydOhZNQkwvJhVlqa/9ZVNypm
-         FGPDMKCHj08JhXPzkeA4ZdbpN+QGJ+FQHe4f+g3HASEcaR997LUq3zwnfnP7V83qdIo3
-         EGitqRFnUx1Wo/J5evL/RORyAFQNmbO4g5mmbaGov6flauZrd+BUnvky6qdNY2DNfeJC
-         EAIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782922170; x=1783526970;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fb46jkRTl6zwGFz7DUfAUgbXgotI+sXKJjyrZvcz3JQ=;
-        b=cbB1Sk3yC9Nd/tE9aGgfkTfnXSoU2gh/TOIhuVLvEugMsJsRWlWw7M84wJ4IuCYOHm
-         8xBSu5Vl5XD4NcRNaHd7kNTeDB0h7B3xOiRIv43jugbs6mE8OVeYbDYi3NYKsGBSa5CB
-         NxEJaimVZA59p+pJm+DhL0TdZlGHu4/WkeuvOIxB6ZLqFG93pCJx9a+NfDSu4i9eYIkR
-         HVlrn7gZd173pVo0EyWkPaqeK0NmpicQzPU1UtQNAm35BnALkopLqdRqjFJJpyEFM+/o
-         UpUem62dI88ytyXGm+PCyZbMRqDSmgGCVLgautHoDnYepxLS5ScXa6kyggzuwMeYHJXL
-         vzqQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpPAfetV2k91puJGT+RX+RV2Rlt4eJK7HoaxwhAGZ1gXhah1hUNW9GRKpbHLZrw2NrBJ0j9dBFLuQ==@kvack.org
-X-Gm-Message-State: AOJu0YzX+s4KuZaS9wR6Qf5lpeN6hZ0vpd/JkRN2x6Z7HLOK9/IIpq0n
-	GRPZC17lGnRVMZCdbHUXLuvMxookXxWHbOeIByCokk/toSR1eyMtfL4JToszG0bvPh1alpBj25f
-	rryPXIA==
-X-Received: from pjbnl12.prod.google.com ([2002:a17:90b:384c:b0:380:8669:e33b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c03:b0:37f:9ce3:ca96
- with SMTP id 98e67ed59e1d1-380aa20dab8mr1881109a91.31.1782922169200; Wed, 01
- Jul 2026 09:09:29 -0700 (PDT)
-Date: Wed, 1 Jul 2026 09:09:28 -0700
-In-Reply-To: <584a8f9a-1538-4f8b-b576-75ef0fa961c7@intel.com>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-17-9d2959357853@google.com> <584a8f9a-1538-4f8b-b576-75ef0fa961c7@intel.com>
-Message-ID: <akU7uAKb5E_Tklx-@google.com>
-Subject: Re: [PATCH v8 17/46] KVM: guest_memfd: Advertise KVM_SET_MEMORY_ATTRIBUTES2
- ioctl
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Rspamd-Queue-Id: DDA38140010
-X-Stat-Signature: ngi55iaud1ohp3ewe1czmn5k7rdhyhbp
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GKsigi9j;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782922180;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=32k3xy2qoDs5v558QiIXDOBJrw4XcLaI228zHYcvJQI=;
+	b=GKsigi9jw5iEZkRAOu0U35OCwwNX+WFYQBJnw1VnjqCFwAV1xkeG5HVPPXjVerUIFCpvkl
+	1sYFG/+4cZNO5RnH+3ZGNEajZyzEn2vDXqeNcTTch6ZM0ZT3P4Eo/8D1DaouN8eSB+B2FA
+	bvbtO9Gx6J4K8rZ0y4m06I1Z9Hu4ibM=
+From: Lance Yang <lance.yang@linux.dev>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	tsbogend@alpha.franken.de,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	l.stach@pengutronix.de,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	peter.griffin@linaro.org,
+	jani.nikula@linux.intel.com,
+	joonas.lahtinen@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	tursulin@ursulin.net,
+	robin.clark@oss.qualcomm.com,
+	lumag@kernel.org,
+	lyude@redhat.com,
+	dakr@kernel.org,
+	tomi.valkeinen@ideasonboard.com,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com,
+	thierry.reding@kernel.org,
+	mperttunen@nvidia.com,
+	jonathanh@nvidia.com,
+	kraxel@redhat.com,
+	dmitry.osipenko@collabora.com,
+	zack.rusin@broadcom.com,
+	matthew.brost@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	oleksandr_andrushchenko@epam.com,
+	deller@gmx.de,
+	bcrl@kvack.org,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	hughd@google.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jannh@google.com,
+	pfalcato@suse.de,
+	kees@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org,
+	etnaviv@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	intel-gfx@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-rockchip@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	intel-xe@lists.freedesktop.org,
+	xen-devel@lists.xenproject.org,
+	linux-fbdev@vger.kernel.org,
+	linux-aio@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 12/13] mm/mprotect: convert mprotect code to use vma_flags_t
+Date: Thu,  2 Jul 2026 00:09:17 +0800
+Message-Id: <20260701160917.91435-1-lance.yang@linux.dev>
+In-Reply-To: <7ef626d8a12dc742cfc09d080be5dc09850e873a.1782760670.git.ljs@kernel.org>
+References: <7ef626d8a12dc742cfc09d080be5dc09850e873a.1782760670.git.ljs@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782922170-170777
-X-HE-Meta: U2FsdGVkX18Kg8gNKkKM+izYuOUHho1M8BBE+OYc8GOXURuXhgl33WFbmV6uuMhSzW7jVAvWq04X2oNpejAxz2gpBqJW3FhyXBnSRlpWmenNn8S28jomweDgsEXWCaXJUZJkHv2Li4LOmtueOnoWfo7PAnNAGbxqlVfsrkyIe7Fhb6IOF9xB3XoNis9p4MrzHAh7BvIvozciSkb/Ne1Saq59szwgDmONDLfR66OzfU0Un2YX7dqSTpU5QYyhqbE+/ktWFguqXOzceasQXG1ISiA/nKuSTT01j3a/xZImQWY8UKSNP+iL031gG2irZ0YbXquTwU1+5PLB7YhSxdfiI+cYrNI4d00fS/JzVU+y2jU5M5G94cwDjWHf8hLFwQ22vsn2bRg0OLz4MesXeKyH158WbeHbtjTAkXXs7g+yfJBUQCWdilLuaz07Zg6Rprs3fOyg4QVkp2UYkn3hulS75/iN8on5FeOjwOPwtDunMJ1ZK7BKZuIje0p4IYOHtiTz4YkelgwZKgBFJCno+6MXg8pbPsMsI61s8TUJRC/5cezqGmcj8tQiSNNx0GXPC6PE0oATq5DZk/+zcY4rm+M7z27BvbBrC1UjfLEQ1QFTkaDpXFhXy0l0+aJPvM900jWk/07G/xxwysS90k7ZHfG/s4OuK+HqHLVHN6/Gyxhef9UbiI/uEQBIzeaz9ivD2S6wjdTTevaPbkgaqIa6fAU6NltNuOJegqFc3zZApgQxdzbf3zes1lzwYK5yOqdNMHhWRAv99mHxsmyWrRWlnsJqdNfaY1zAc9IG10EUnIAZJpJq6bc3zSkrA4nKV40fnp32oaYidrYmyzOgcr0fkItbey6In6QGzOzLTHeM+olXikNbwJonNQya67iR9BbS/3HC1pN8TSwMDPc+z+Jeswr9mVwMESH7MclVL6bLmWkle9QwTEYkjZT/CAp9ppPU0r5qr7qEl/kbj8G2bvGJ1Vg
- yz5qtROr
- X3jyilaXE4Fxk3NaRhGvJuV26l+tGlkNxgGZGqDTbV8uvW//vBzevP5pJQm89M812Zek9xzoCW/CHMVm8Iq2E7/2f8810eaN+KbpIMcpWZ0rEkN4mETjDlw++Is33Z600Nl7/Zad4tgUfDAGLbo9aR+4CqzQxUZtu0Ko+7ReRg+81PYjaFEwkP5K5dVTiDb/d3x7YvxG2i2a65i3O45vgP4UdI8TFgScASwSnMdlHG6H7GVq2M2Dq9e6e/HpGzNRIMFoNCPMpBrxNN4DS4FvcqPTfu6CnAzMeARxPAOe7oA0Zsjk30n5zmu+BrNTaiymA0v3CSxeT+22WJBHbgd2HNGaew4Gue1uJbGReSMNWZUdV/uaYK21dDIIbTl1ZEXYLMTWcQ6kcKLAtQzIpMhBzshW9xWWgelPAQRiBPdsuiHBtIVa2CTaB6AEG3md1Zg6kimB417U6/xncR8K+JtWm2YJyfHeKhgTuctYt2J3hrjCOLslcjAySy+5KEURpShQ9e90K1MNMl2pvK8TX1QcEMLBZD8EzAvFCoUsrnNUiD4TCIgYriqvDug8U4zyipvmF+c2fdc5ckdi83/cbdr482B5wSqoD2hL4WAD/u2o/g6w2MaTiMyy/pBMWNPWmM7gbHtJtQ1T9oSg8VAA=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1264C10000D
+X-Stat-Signature: kcykqn15sjtn73sanxrr3pmrq6aj41aj
+X-HE-Tag: 1782922192-876365
+X-HE-Meta: U2FsdGVkX18iujqS3EqhuTdP/lfr+A8eXTrHxlLgZGfM5lHZ2dOOY/p25ZHmOVNdtDS31TfKYG/YaZjppnObk7H2QrJG+67VTg3QFZF2Al0iNbXMeo4Oc1knwSrY2fvxG7o7pSvvLjGUcyJ//A8fleDnY4JsvOVF6yqENJkoREt2UpW1t4rXF390IFijXs7DQnBU3vdzJiarZ7uymvfOwapCjI8Iip/eGzyL67CjA5z2XvhevmFJn2QkQEc4u5psG+BHaTIyhtD1wuZpWi+GBjcHloTJSV7ihoO7alrIKxt7QMf5mS8FdAQd0reyxpEM6m8SmClIHlE5fDJI9JVwQdUEBFozr82o9sG8nHLGQHZBVs+/DWFQIKJJtQCF79ZQUU7PISrMeMuXdVX+sa2K9BPrmHbaG+5S5vd8LbhhOQ1iWLzzhHQoeSkiLifPdf5zabXc5TfTUSJGaaD9E3OCAZIytnlCSGZ9W3l8EApqjiHZFdyeeu/W3xH0+tVeQyDooH5G1fReDw9J2sSNwMObHzXBoXkkgmsQVUd+NI1fuv8vdp3TK5l+2F4hwRRznNBmc1+NxY50PPWQ4rIfXSoq1kRhxa6P/QiJcGyM4RRnJ6o69NLZMrR6O4cuOUplNbPABe92ddwJGS+6yOMUAYyq6LH9d/g22UaDRbjLp8kAhfjR0NhMR11rkH2HVYT0mdJrEy37W/yqmitFEX4JWBjn5RQ2KTzKWzUVF5XBjUxRL+UFHKZUuJGf1/0kFtU6Gp33HT0jaqAcrBjth6NVHtCcrn70nDTUF5WXzhFX8hXZoCtk0OcYh2OUVT9CzLc3ZO9iBstwcZNndgwPGWgjv4f358Q0TwqA/rymPYsJF928BeruSpbn6+0snIuE2aH6wXXzjEIc535WzRHJjVTV2ZwkpobySjKh/vKjA6DE3cxOsYItlmJr+G21oUCoti11cZ9EtZkv8P6kTazObyNdo+D
+ v4V+gbh+
+ 7kCTmyoH8M0h5gkXnoPlUKqjbWHF9Mz0gzvhNOZxBw8jbSahdi4RU70URUndYqX3h7NyJz5En6Xtexxz02vQWxP9b298wYMs37vToUEVQZ6lDaP+8eGJI+X1ncysRi+BbTulHgZo5KMLiaqusfBEeu5M5yYRTneMOCxfpaBFwr1KZJiHK0Cz+zDHZeoGCSc0uhpq35VNssy2P30xGSh39d+Kg9EY33jMQUXbNMGnL9FY1NslgtZGPbX/Lq8eE2WPZFohKHwrxy8Oo3B0A33huehMx0Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,55 +168,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026, Xiaoyao Li wrote:
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> > @@ -4969,6 +4973,11 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
-> >   		return 1;
-> >   	case KVM_CAP_GUEST_MEMFD_FLAGS:
-> >   		return kvm_gmem_get_supported_flags(kvm);
-> > +	case KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES:
-> > +		if (!gmem_in_place_conversion || !kvm_supports_private_mem(kvm))
-> > +			return 0;
-> > +
-> > +		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> >   #endif
-> >   	default:
-> >   		break;
-> 
-> this looks inconsistent with the
-> 
-> 	case KVM_SET_MEMORY_ATTRIBUTES2:
-> 		if (!gmem_in_place_conversion)
-> 			return -ENOTTY;
-> 
-> Well, the check of
-> 
-> 	if (!kvm_arch_has_private_mem(f->kvm))
-> 		return -EINVAL;
-> 
-> is buried in the following kvm_gmem_set_attributes(). How about moving of
-> kvm_arch_has_private_mem() check to put it along with
-> gmem_in_place_conversion check in kvm_gmem_ioctl() in Patch 13?
 
-Me confused, patch 13 already adds the kvm_arch_has_private_mem() in
-kvm_gmem_set_attributes().
+On Mon, Jun 29, 2026 at 08:25:35PM +0100, Lorenzo Stoakes wrote:
+>Replace use of the legacy vm_flags_t flags with vma_flags_t values
+>throughout the mprotect logic.
+>
+>Note that we retain the legacy vm_flags_t bit shifting code in
+>do_mprotect_key(), deferring a vma_flags_t approach to this for the time
+>being.
+>
+>Additionally update comments to reflect the changes to be consistent.
+>
+>No functional change intended.
+>
+>Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>---
+> mm/mprotect.c | 16 ++++++++--------
+> 1 file changed, 8 insertions(+), 8 deletions(-)
+>
+>diff --git a/mm/mprotect.c b/mm/mprotect.c
+>index 9cbf932b028c..c9504b2a2525 100644
+>--- a/mm/mprotect.c
+>+++ b/mm/mprotect.c
+>@@ -40,7 +40,7 @@
+> 
+> static bool maybe_change_pte_writable(struct vm_area_struct *vma, pte_t pte)
+> {
+>-	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
+>+	if (WARN_ON_ONCE(!vma_test(vma, VMA_WRITE_BIT)))
+> 		return false;
+> 
+> 	/* Don't touch entries that are not even readable. */
+>@@ -97,7 +97,7 @@ static bool can_change_shared_pte_writable(struct vm_area_struct *vma,
+> bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+> 			     pte_t pte)
+> {
+>-	if (!(vma->vm_flags & VM_SHARED))
+>+	if (!vma_test(vma, VMA_SHARED_BIT))
+> 		return can_change_private_pte_writable(vma, addr, pte);
+> 
+> 	return can_change_shared_pte_writable(vma, pte);
+>@@ -194,7 +194,7 @@ static __always_inline void set_write_prot_commit_flush_ptes(struct vm_area_stru
+> {
+> 	bool set_write;
+> 
+>-	if (vma->vm_flags & VM_SHARED) {
+>+	if (vma_test(vma, VMA_SHARED_BIT)) {
+> 		set_write = can_change_shared_pte_writable(vma, ptent);
+> 		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, nr_ptes,
+> 				       /* idx = */ 0, set_write, tlb);
+>@@ -811,8 +811,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+> 		vm_unacct_memory(nrpages);
+> 
+> 	/*
+>-	 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
+>-	 * fault on access.
+>+	 * Private VMA_LOCKED_BIT VMA becoming writable: trigger COW to avoid
+>+	 * major fault on access.
+> 	 */
+> 	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT) &&
+> 	    vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT) &&
+>@@ -886,7 +886,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+> 			goto out;
+> 		start = vma->vm_start;
+> 		error = -EINVAL;
+>-		if (!(vma->vm_flags & VM_GROWSDOWN))
+>+		if (!vma_test(vma, VMA_GROWSDOWN_BIT))
+> 			goto out;
+> 	} else {
+> 		if (vma->vm_start > start)
+>@@ -894,7 +894,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+> 		if (unlikely(grows & PROT_GROWSUP)) {
+> 			end = vma->vm_end;
+> 			error = -EINVAL;
+>-			if (!(vma->vm_flags & VM_GROWSUP))
+>+			if (!vma_test(vma, VMA_GROWSUP_BIT))
 
-That said, the ordering here is wonky and misleading.  A cursory read of the series
-would make one think that waiting to advertise KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES
-makes it safe/ok for KVM to plumb in support for KVM_SET_MEMORY_ATTRIBUTES2 over
-multiple patches.  But that's not actually true, because the ioctl becomes live
-the instant the code exists, userspace doesn't need to wait for KVM to formally
-advertise support.
+IIUC, should this be
 
-To further confuse matters, it is actually safe/ok to iteratively add support,
-because it's all effectively dead code until "Let userspace disable per-VM mem
-attributes, enable per-gmem attributes".
+if (!vma_test_single_mask(vma, VMA_GROWSUP))
 
-So, I think we should go a step further than what I think Xiaoyao is suggesting,
-and fully squash patch 17 into patch 13.  That way the reader doesn't have to jump
-through as many mental hoops to piece together what is happening.  It'll obviously
-be a bigger patch, but should be easier to review/understand overall.
+instead?
 
-Oh, and that combined patch should carve out error_offset straightaway, so that
-the full uAPI can be reviewed in a single patch.
+#elif defined(CONFIG_PARISC)
+#define VM_GROWSUP	INIT_VM_FLAG(GROWSUP)
+...
+#ifndef VM_GROWSUP
+#define VM_GROWSUP	VM_NONE
+...
+
+VM_GROWSUP is only defined as GROWSUP on parisc and becomes VM_NONE
+elsewhere. But VMA_GROWSUP_BIT is the raw ARCH_1 bit, which is also used
+for other arch-specific VMA flags:
+
+	DECLARE_VMA_BIT_ALIAS(SAO, ARCH_1),		/* Strong Access Ordering (powerpc) */
+	DECLARE_VMA_BIT_ALIAS(GROWSUP, ARCH_1),		/* parisc */
+	DECLARE_VMA_BIT_ALIAS(SPARC_ADI, ARCH_1),	/* sparc64 */
+	DECLARE_VMA_BIT_ALIAS(ARM64_BTI, ARCH_1),	/* arm64 */
+	DECLARE_VMA_BIT_ALIAS(ARCH_CLEAR, ARCH_1),	/* sparc64, arm64 */
+	DECLARE_VMA_BIT_ALIAS(MAPPED_COPY, ARCH_1),	/* !CONFIG_MMU */
+
+Other vma_test() changes look fine to me: just fixed INIT_VM_FLAG()
+masks matching their VMA_*_BIT :)
+
+Cheers, Lance
+
+> 				goto out;
+> 		}
+> 	}
+>@@ -918,7 +918,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+> 		}
+> 
+> 		/* Does the application expect PROT_READ to imply PROT_EXEC */
+>-		if (rier && (vma->vm_flags & VM_MAYEXEC))
+>+		if (rier && vma_test(vma, VMA_MAYEXEC_BIT))
+> 			prot |= PROT_EXEC;
+> 
+> 		/*
+>-- 
+>2.54.0
+>
+>
 
