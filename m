@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B438CC43602
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:56:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66344C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:57:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D1A06B00A9; Wed,  1 Jul 2026 05:56:11 -0400 (EDT)
+	id 462186B00A9; Wed,  1 Jul 2026 05:56:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A8D66B00AB; Wed,  1 Jul 2026 05:56:11 -0400 (EDT)
+	id 43ACF6B00AB; Wed,  1 Jul 2026 05:56:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BF316B00AC; Wed,  1 Jul 2026 05:56:11 -0400 (EDT)
+	id 351AA6B00AC; Wed,  1 Jul 2026 05:56:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 396706B00A9
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:56:11 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 950D0A02A2
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:56:10 +0000 (UTC)
-X-FDA: 84939752100.19.C3FEEB8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F1062C0009
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:56:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hn05lo+y;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 1394E6B00A9
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:56:59 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9A1F0A02D6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:56:58 +0000 (UTC)
+X-FDA: 84939754116.17.ACB250C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 154FE100005
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:56:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DZVMXwNQ;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782899769;
-	b=k0hqg7YGhZzAdu76kb58tAA+eOVZXiFWHLvangK+/HnuvsOW/BGA4gt8gdukwASMvOQRDb
-	U2zfTQMD5o0kFfAOZ6efKo5jh4+1RMNIzi1YmCXznRHbc3nJzhXmDdOWyS+ayqQm3Jfbm6
-	gQpK6Mc+v0aPBpkf8LXbTiHlZZA/aJY=
+	t=1782899817;
+	b=4w7H9d9uxjcFL5pA7KOaE2AyyIC86z87sC6dzFfpTqQS9aGR0MRCWh6fCnPexVfiv68UTP
+	csYExVB2rd6ErJqPRiCjoyQUIgrzoqkJYiiLxKZNZ5JecSDQGuWd8xdJRP9T0Iv8pWNK1t
+	Rrpr/P73Md0r55jKdWUqLHs46qZMSQg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782899769;
+	s=arc-20220608; t=1782899817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uFnqjfO2nGnpQRfkiFUM7kAq9hpq2gQ/a+iAbNQdyDY=;
-	b=8RJ2HDtY3Ln+7IGRFgQoQsjuZvN5BUXIa73711f7oLEK0PgVcIg+fVdgfrqTmWSSEZWpmM
-	qY0boZdrDpaz9mtmdjqYCPilMJqjVHz5usY9MQDhAp2498i+/HEhjNKaFbb6rSfJF1fpju
-	tILk2nXl0T681ABUCtki9/bAV+k7OZk=
+	bh=ce5x8VsOSihGimDX+E2xZ9QKUoBE10Bad77hJiyAQ1E=;
+	b=dlSOOcth82mbaXbwdvVmDthna2/ey9QuXqn2cD07+87vnBYYkbza3l/CTFtNCLTzFpE95q
+	H4cmvK92+WIIyxENC4JKJjFVhhahyQYcrrKXduAaukksqIG/3IxqEXA8jfjs7s0HXsW/Io
+	BLolswvUdIYAu/41w/uvbUx8ebNChaM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hn05lo+y;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DZVMXwNQ;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 253FB411B6;
-	Wed,  1 Jul 2026 09:56:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EEB71F000E9;
-	Wed,  1 Jul 2026 09:55:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 475BE60138;
+	Wed,  1 Jul 2026 09:56:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3460C1F000E9;
+	Wed,  1 Jul 2026 09:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782899768;
-	bh=uFnqjfO2nGnpQRfkiFUM7kAq9hpq2gQ/a+iAbNQdyDY=;
+	s=k20260515; t=1782899816;
+	bh=ce5x8VsOSihGimDX+E2xZ9QKUoBE10Bad77hJiyAQ1E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hn05lo+yqTo162vzSSvmLgoHkc8sZFXTO73a3zpugE032j41FtZRAcgR5cC/mIsWC
-	 oqb+WxZyigte/GQZKBkZXaiYmAep0fVWbliyTXXxFOHdLIA7ZB+tMSio0XPY3sBbJD
-	 xp1cndGs6No9+YfwSniB6tXQcpWnVEn7s0jLOOyrTHsS3hH1QGk++EdC7x7glsCzx2
-	 ooQPJops5d+rLUK2ebXz4gbnEltEwqB5O9z9G9A+zLJBaWmKUz/FSVMRs5+u0CJBcF
-	 9YJUExToRs6x/TXjrPjHcKoRJgS2PsOr32tKYv6tYSwkl+1flbn88u/WCVI5PjKVif
-	 CCXDS3L8jpcpw==
-Date: Wed, 1 Jul 2026 10:55:46 +0100
+	b=DZVMXwNQ7Qas5su8LVUpZ9nJZzyP2uBxeA7y69zzPN45RtVQlQlUbn6BqoVClF8OQ
+	 cdNO1iGygY8gO12qIOso81h2/ovQrZtecs/m5aFsflX56hjaVdJn1UW1oDVl1Yio6K
+	 KRPnQX2cEF4iykCZPLFviJvZsj0dccJ/OtNrkWrmrDfd+Zc2DCw82CITQK1lp0tyWe
+	 FVO7hLYRhosCJheK7GEd0ZzB4RBxZA6em2G+SdpL6ItiqRo5WAo8LiBboh0bVEWu86
+	 sAwvz0MgMFy71FvJ0/B44EaogV7h2VMnc/A+pYGBJOKud9YpmG/8lNeNdIQphF8zxv
+	 fOupSSuKidQxA==
+Date: Wed, 1 Jul 2026 10:56:34 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -99,23 +99,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 05/30] mm/rmap: update mm/interval_tree.c comments
-Message-ID: <akThthi2yrXY1meF@lucifer>
+Subject: Re: [PATCH 06/30] mm/rmap: parameterise vma_interval_tree_*() by
+ address_space
+Message-ID: <akTkRC7gPzdibXhU@lucifer>
 References: <cover.1782735110.git.ljs@kernel.org>
- <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
- <akPrTU96BwQJoygw@pedro-suse.lan>
+ <43050b10b53cdfc3627440e6b14ae2a9730b2a5c.1782735110.git.ljs@kernel.org>
+ <akPsGrmaOd3JMlC2@pedro-suse.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akPrTU96BwQJoygw@pedro-suse.lan>
-X-Rspamd-Queue-Id: F1062C0009
-X-Stat-Signature: qx3kfb3b5qqdreh3inybmg3wdnan6ycy
+In-Reply-To: <akPsGrmaOd3JMlC2@pedro-suse.lan>
+X-Stat-Signature: r6dn5z4tmh9345zb6mgn9d35bqw6oysp
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782899768-289674
-X-HE-Meta: U2FsdGVkX18vkmcP/L/aeO0mtYy04JCeYG6SVXxbLtWgrMEHbW2SpAmXEngXVwCOI8PDyjo65+JumUru2DfKL4WDjYycJquFurnfmtmkQMUwSB6Qs5EjDsd/dmHIsXLFPzhSqP3RhMTDF9c48FB8tXkk5xRzB/NjpMA2rEI/8Bs2GBv1ZouMZvau+9wW85v29jvzEFoK3dbQX0rXLSDTlp8kW46tBe8fReQ4sMeR5TAAQeQ4A9eJPTMyb8cYMH7CgjVv7HUWFXmpxEVp+SPrMEVuEttdrUgThHpAWKe6xoLP3wGyweFYLouuP+HAP7sGb+5EJ1vj0nPkjokPHIbPR3heAw/vClPkTQEZfVizjpDD8MGIP5t3RZhHeM7HSl0FoFs6aDaa179NwxQj+XBD5skGY9KCtw7bfUT/C+wlrSxIwxLiCZIQPXu5YZ5uXNEsutRgSyzhTToUbu1kp2EuRNwnK7U9eDg86Lu3faKhJm56OQFfcMiwk/UXgaA/7HIeSCQ2NeIQqqClxmdZxVHsjBBLLutnmr3pEAkJD3RloVF56V6KP+ZIdtfk3cfw1b+ijbc7XB+eWl71Z7adc+rPLsEmEzWL3gcb41XZTdDS9v8qj4P3WX5urYagIPMQ/mqRiedBRilqXViia/C9f3r4ibnUvfZDzDW/iXrOU+LEbR1r/hffk4cXj4wEUY2r1sYr67UM/kaKwIyvLBe7lOzKzltkA6OPEx0cs2JLRLorM0cp1/imBEzc5RSIh7TLeqQFmCRd5OpD2mA3cjp4ELSe3iksT/+0OHkwKjRL4YqtUIiGzqXMw7POJljPLONzcmg/fWVZhahlID7q65HchjSBVjebBMyAlfDCAynKKubTNeYL4j2rj3Okqcs1FtFwvIYff1Tszd6WlSnBeHrTH+pjh41IZWbGBd47PxGFHNifIM203XmhGAfw+9nXNpMFHaqVhTpqQHaVqudBTnbf3OC
- gIbCMjjS
- I67iMcg6n+z/0QZ76wZIPNTxdovXtv5FpcYiissvlieRUuT3RSN2kBZayrbXHCCJAvKWiqS9oq1u1FtjTC7WDNkRJBGeCTMGQuXE+G394xfymIoJKOWRz02qpq4W7PUq3BlY0Z1oOixZkpIB+ba19KRqXCP9edWazAB4ht5KTIutq88AkPGJVqU9kV6YpiIQLF5KOQQMMbpJfHwSm08yEtl8JaQ+uZ56gQCC0i351ctzClxo9nW85JC+w4YdTPfsAFvkJC/Y0sYFxK+exxoM4olV7znZUcRKLIZnPuTBp//kc9tRpTiujrkQZS8HeSVYnNDKp5tSb6ciGmDJtOYD/tr5Fm5Qj6E+W16Pp2UBe8eBLNzgfvjcGIQpIjn1DlCkE3h9BrswB6jul4XgRXLR8drp/zw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 154FE100005
+X-HE-Tag: 1782899816-311589
+X-HE-Meta: U2FsdGVkX18CqcnaeGrRjsOisFPXQBLx1Aqy/CLP2q5IJ5vWU9VC6COEyCzsD4AjoK0YaO9mwWwG0YtUQ9mYoAsFporflwGLfMi2zX+VNk/DrMiGg0JySzcXMfls5ArUziFb6Dcy9kI8LxqlZqREOVHZCuM/DW6vGrvOkDFDhQZXMJ1InnWulFbJhItgsaA16vUV43zWq0duv3u33GImU4oxNSZVIxcu6nFQ8O5KFTnsyTzpqMNrzIK8rr9NqM7FSGAE9Qha5rgoLPsFIDGfLMITBLlk7hD9++8vCgCNcBT463MSQ96lYyn9LIYWNcybC/eRCz6jtlcOlXJL/0KESLGIDcBCbhshQNxZWZtRtJxE+JhOB6m4R8OcqlnyLJHRJjRvclPrEyWSCFWHYG4U49SilOuYt5+hn1isQzmKXRh11nE55xk0X5cd1aVxNfFoWs93bXyQ3hUPbPjBwWlwyQB8IfX1lRhoj1vP6S+IcbQWPJTcqo4SZtClwIUFD56QeR8h8dNJIcpmyl+aNaYPsIRcrEHDw1qBsO5+KhT5tnHaWOrITJs+zTgBMAMR8tHzxDImobak49nGXi1eFv8asySIpASqJJ7/fD/xkqDCmJ1GN/v5qkewv9Bl4gkmWwZ4YWO3M+j3qFRnfzgxXYrQVSkmc8AZ5zoJrSG6VDlpOFmVh5n8nM8pBVSh6aT4y1o81si8Jewa5webylQwUhENlj3U9YsBNk8UQ0+gThZIhxuNPeqtspX3nH4fCJzo4esziuXai/CJqA3NZriILh/Za/qWhP0HGnYJqkAyAB5ZszBGAoDx7D2V79e9JW7I7i6MMtLGCWjKxkf3gKB7u0rXViWmt8uLZm+BM4NjDfcM6v/RPKAuvPxiEK30K2zMJ/469Reiif91JulQRC5peSIZU623+8cpKbi6KBX6L4fMPnWjxW288T/Kv3GIhgFRL/fZR1GkbTiPJEfZjUxs6UF
+ bKof1cV1
+ 3Xc+UkD151FmVl2DbsP6xoX1ffibmw6g07Wm26SxadV7oInr0tao904GmxkWqWRWpIWq2m9eHzV+eEjdbG6AmqAhvxzITWiJc22ehgImKivMEH4OdZQ8IwcJNAmPuzJtB+9dMp0kDqKbY8wdtWU/rZ9+G0xHCtatX8EfDclD6fFyK625Z16/qH3E7n1TlEYETr2ObmrvOgs4Slp6yD7sjaAF5OcSgt2QoOzpyYGIOVY5V2eB0G2CZjIkYrNKOX0XapoW7pqZsAOTqT9sfliVWQ4IUH4EKj+/8wqO68ST2rhUmn3JxknAWlL6zUnQtGgpGnU+8Ria/tLQPF8+VcbCTG+x5IiJmr4w+3IYPAgsZ5hav09UrVXanFgfOcLVHacPyz9UbLjZP0ghkju8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,57 +124,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 05:16:51PM +0100, Pedro Falcato wrote:
-> On Mon, Jun 29, 2026 at 01:23:16PM +0100, Lorenzo Stoakes wrote:
-> > Update the file comment to clarify that both file-backed and anonymous
-> > interval trees are provided, referencing the relevant data types for
-> > clarity.
+On Tue, Jun 30, 2026 at 05:19:16PM +0100, Pedro Falcato wrote:
+> On Mon, Jun 29, 2026 at 01:23:17PM +0100, Lorenzo Stoakes wrote:
+> > The file-backed mapping interval tree functions vma_interval_tree_*()
+> > accept a raw rb_root_cached pointer to determine the tree in which they are
+> > operating.
 > >
-> > Also add comments to indicate which parts of the file apply to each.
+> > However, in each case, this is always associated with an address_space data
+> > type.
 > >
-> > While we're here, convert the VM_BUG_ON_VMA() to VM_WARN_ON_ONCE_VMA().
+> > So simply pass a pointer to that instead to simplify the code, and more
+> > clearly differentiate between these operations and those concerning
+> > anonymous mappings.
+> >
+> > While we're here, make the generated interval tree functions static as they
+> > do not need to be used externally (any previously existing external users
+> > have now been removed).
+> >
+> > We also rename VMA parameters from 'node' to 'vma' as calling this a node
+> > is simply confusing, update the input index types to pgoff_t since they
+> > reference page offsets and rename the parameters to pgoff_start and
+> > pgoff_last.
+> >
+> > No functional change intended.
 > >
 > > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 >
+> 1) This is fantastic
+> 2) I need to rebase my local work :)
+>
 > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
->
-> This is fine for now, but I'm wondering if it doesn't make sense to, in the
-> long term, have:
->
-> mm/rmap.c - common rmap mechanisms
-> mm/anon_rmap.c - anon rmap gunk
-> mm/file_rmap.c - file rmap gunk
->
-> or even something like mm/rmap/{core,anon,file,ksm??}.c
->
-> While working on my file rmap patches I noticed there's so much stuff just
-> splurged all over rmap.c - interval_tree.c - fs.h - fs/inode.c.
-> It's a little silly.
-
-Well, Wei had something like this idea a way back, but I'd rather avoid it.
-
-Firstly, with scalable cow coming, I'd rather us not make anon_vma a special
-citizen in any way, and I'm going to be heavily modifying all this anyway.
-
-On the interval tree side, I'm simply going to get rid of the anon side of it
-altogether with scalable CoW also so that can live as it is now for the time
-being.
-
-In general we try to have generalised rmap walk logic for file vs. anon with
-rmap_walk -> rmap_walk_[anon, file]() for one obviously.
-
-But obviously there's separate rmap walker logic for file vs. anon.
-
-I used to harbour a belief that we could make anon like file-backed but now I'm
-kind of thinking that's not possible :)
-
-So I guess the real answer is - yeah, but let's revisit it after scalable CoW
-(and anyway I'm likely to do sensible architectural breakouts as part of that
-work anyway).
-
 >
 > --
 > Pedro
+
+1) thanks :)
+2) sorry :P
 
 Cheers, Lorenzo
 
