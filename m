@@ -4,113 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D08BAC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:00:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57CC3C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:04:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1B686B00AB; Wed,  1 Jul 2026 05:00:11 -0400 (EDT)
+	id 4F4876B00A6; Wed,  1 Jul 2026 05:04:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F4056B00AD; Wed,  1 Jul 2026 05:00:11 -0400 (EDT)
+	id 4A5456B00A8; Wed,  1 Jul 2026 05:04:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E2A66B00AF; Wed,  1 Jul 2026 05:00:11 -0400 (EDT)
+	id 3BCDE6B00AD; Wed,  1 Jul 2026 05:04:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B2136B00AB
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:00:11 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DAFAD1A0246
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:00:10 +0000 (UTC)
-X-FDA: 84939610980.18.FC45F0A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E0DFD20017
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:00:07 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QEekwifj;
-	spf=pass (imf03.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1217D6B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:04:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9B6371A02B8
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:04:02 +0000 (UTC)
+X-FDA: 84939620724.08.4393D76
+Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 434744000E
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:04:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa1 header.b=M8LfqDYd;
+	dkim=pass header.d=konsulko.se header.s=ed1 header.b=aAtI26ZD
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782896408;
-	b=4KkNKNNLoFnNoxSSzLJQ5D9tTIU9JPmhozXfn3MxUFbXuMLPtAPSl8bVj/x42ai8qagVXv
-	NY8UnCP0EijnRLZriMC5zRbAlKSAQhzVld7APKtWW0mefkGgiz4+H/3TuvDT3IuCFKyt4H
-	6EgXfUgO32pEsCth+WiWotWyNKus4Lg=
+	t=1782896641;
+	b=Lt4Ao7D29bQeX2RnlISRNihBTDCCe7tG/MasmbJ38iPCmv6NVP6UmRfEdnHhIq4+LDDqXs
+	66oDAx4MMHFja39pdzF6enp/ibnxtoHBALC2Y2qQx31ARWN7ynxNxTu79GUPczRxdGVro4
+	VAsofdH1vwAwqaw9HrbtwJPwU7ReKNs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782896408;
+	s=arc-20220608; t=1782896641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DXSX3FRG31xY5lf5eahGGSJyLhKORhOOgjVTyvQoAZA=;
-	b=vg31QQ17Th8cmHGlA00iRwk98Kp3SzH+lsVOFUQAoowdjClJSoSdOfPni/paF1H375aE3i
-	Bo4I161DxQGL0rxq4VjFfHrvUQ7+6eJDMiJHGwX8aODEaSqCMyLVliEYe9Ssm/a6D+4Gt7
-	QO1oyMl+DQ1+LboTVzJ0/b9UxXZu+P8=
+	bh=2I4SEOxas6X0x5H7zz6wH0Lfb6ZZgh0f8mcYajOzvc4=;
+	b=yg33KPz5yRN4vAnH2mphYe9VDLtuPbGqOcImDdQoJg4ec331VbnAe1WcMoNWA536DtQ0S0
+	2MyfJEOAI8MU5EcH7xthqnM2EUnuVseRNpnEfwnwQ2eUPN/e4MvFwSEl0aYd7hzkx7HB8+
+	G3BMlHuHC31B8Fc9OTh7tOeebAEBk2Q=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QEekwifj;
-	spf=pass (imf03.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782896408; x=1814432408;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nHgJI21HPY161RCXXPvHhSW5/EGkSu5uqE1nrC9+G4U=;
-  b=QEekwifjyBRwlIwHaoDL0ce5vbavgDyydb+005QCxEH5p2ycJPJPjoRk
-   4bhBUtUFZB4pE77Zv4Hxprzq0Kjem9ynkK20lIsUzzM/fdWO+C3gdbBgC
-   K6bvyAbIx5hhfdLn4gJanslyWultl/d3DzbEhicnIuYPACeXmcIpDAOck
-   Jg8znzIGkEyub9Z9qGFCIE0uHrL5n7ypfnZfyXZL82mJHqN55wyrwhu0o
-   qNQfmfpBm0x5NGx1psPUbKvCcgP8yBVsaQrxqMxZK/54c5y9lOaWEYu9K
-   jH0BcUW3tVycuSKbO9edjjxyX5I8jAukaJ6qY3cRr5rQg8OFgMHt4jCu/
-   w==;
-X-CSE-ConnectionGUID: gh/c760wR2KYrFKeOQ2Isw==
-X-CSE-MsgGUID: 5DplrNhTT6qsao7M7NWoKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="109170689"
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="109170689"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 02:00:06 -0700
-X-CSE-ConnectionGUID: qmADDl3uRZuJqwO2sQFarg==
-X-CSE-MsgGUID: ULkSYhUmQ0SqQeGXnXEstQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,235,1774335600"; 
-   d="scan'208";a="254425816"
-Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.65])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2026 02:00:02 -0700
-Date: Wed, 1 Jul 2026 12:00:00 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	Lorenzo Stoakes <ljs@kernel.org>
-Subject: Re: [RFC V2 3/3] mm: Replace pgtable entry prints with new format
-Message-ID: <akTXEOowxiEc0XKy@ashevche-desk.local>
-References: <20260610043545.3725735-1-anshuman.khandual@arm.com>
- <20260610043545.3725735-4-anshuman.khandual@arm.com>
- <fc57bb9a-4564-489e-8da4-65068b5283ae@kernel.org>
- <4a416383-62f5-1716-8e04-a2ee1f89a864@google.com>
- <dabfd73b-d872-4267-9a40-45463fe146ac@kernel.org>
- <3afa822d-3cc9-1068-9a10-94a5f2e4d29a@google.com>
- <90b5cd31-87ed-4ef7-86cc-458b9e06b02d@kernel.org>
+	imf17.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa1 header.b=M8LfqDYd;
+	dkim=pass header.d=konsulko.se header.s=ed1 header.b=aAtI26ZD;
+	spf=none (imf17.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.211.244) smtp.mailfrom=vitaly.wool@konsulko.se;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1782896637; x=1783501437;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=2I4SEOxas6X0x5H7zz6wH0Lfb6ZZgh0f8mcYajOzvc4=;
+	b=M8LfqDYdrxNmY6wM9ssCGtFKfo1sypg4ZbtkSenfafxQDvH9IMfhD44UynTuwLB9Hw0Qwgfo2ICZu
+	 eWUKJC1nUMJOxNA0nFml8AZRouIEJmvI3l3V4ihlgsIuwchepcql0xdoV3ElGLLF/xQzEO1SFlJCkc
+	 cYYOyzbyOM4KsieeNmZf3FtPPrqRuwjCOU0Q8+8Gtxjn6klEuht74qQhWj6hwx+BrRM/NXfwDM6qNe
+	 eTcuo2bRWcx5vg7tGRgEQyxANAeyjs62txgoWVpDfbmAQGKbwA5VK+KzR3YkAkywY4i6kZZkZ5T9z0
+	 G1zVpQgRIMP84CiwE6HCAw3ZZY1XARg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1782896637; x=1783501437;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=2I4SEOxas6X0x5H7zz6wH0Lfb6ZZgh0f8mcYajOzvc4=;
+	b=aAtI26ZDbZmqTZCwHgKvV78ZV6Jz/T53rPuFdKmoYl8nQ3SZmDExBtXiXcfeM5nDrzylNZWcSD9kT
+	 rKHZcHHAg==
+X-HalOne-ID: ca031a73-752b-11f1-9565-314137fccf3e
+Received: from localhost.localdomain (c213-102-77-204.bredband.tele2.se [213.102.77.204])
+	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id ca031a73-752b-11f1-9565-314137fccf3e;
+	Wed, 01 Jul 2026 09:03:57 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Cc: Sagi Grimberg <sagi@grimberg.me>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-block@vger.kernel.org,
+	linux-nvme@lists.infradead.org,
+	linux-mm@kvack.org,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: Re: Re: [PATCH] mempool: optimize mempool resizing
+Date: Wed,  1 Jul 2026 11:03:51 +0200
+Message-Id: <20260701090351.869635-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20260625131738.b7c10540e5c598cc9b60e19d@linux-foundation.org>
+References: <20260625131738.b7c10540e5c598cc9b60e19d@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <90b5cd31-87ed-4ef7-86cc-458b9e06b02d@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Queue-Id: E0DFD20017
-X-Stat-Signature: kpqcrntaecous1hz9qc7tnmoj8oauuoq
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782896407-237965
-X-HE-Meta: U2FsdGVkX18pUafzMlDLOqi/k0Omqm030RBhv+0NdcvEYnn/LYUdCoHC+lIeJdR8UsV+qmPu4TSGqrm3LKYIFTzl8NJhvfPqJipwnjanURNfKlagAqz1MXEUi1sVFY7+K3P0o8HUHwvE2L+cdMRw/NamIHHvN/rV5/rL5p0+uZUAzrQomeVLLsL4Z44BNhKiBw2IrgRm+7ZxZ1KURBlm+85d8hwa4HIn8nHJxMsBkBnt3xC4mgEoe7CqFuiTgnmRJwGUf1rmfU2wINun/U2ncgCrLKGQJcHyQ0rDyz9CeH22F5rB8vzkQwsOCNxnQz4MbGizujacgSUyVm6RUNeezjkhw5cO8g8hknUYDSHgnSpKYwLZdgJi+6uo4UUn6f9pI+ivhRXwvDKgQj75WTA/Zd8hTdZT8VNA8QdptsL3nn9TDnW51ZHAxAO/d88L0qCpDd3aQJZ8bVZG9aUBqaWk0kuxPKAYZyP3EnBgQx4h+Yk+LIGes6DuTB+cUH/FpLZTtlOPY70dISf6milIBsCUUiTU3x1iY7sloA3c14MSMhmjeR7oZiO/hZ2YvOG5WgouVK0wVt/r0VKgtH1voa5FmuM8EWHtadNl6XpyYho8BjF6mA5A3BQFpOHHU5SGQn4w60zopaVEP1cv6PthOVGt7nZVYzBwULBwhXDsdeKT1Zk+yvdZCzzHK1+MuJGyV7L7Bcxvcd0D9YgoiqQq6wbQUsaB2YKClY8ldQdztc5i4gfVI+ymUovyb5q9OqNIGOBLBz6xtXMM8ptv6f6OH+wfDYOqX/kLBvHVW/R/aWiUzJrObFMnaFMoQMFnopRMt07VSr0vJU+mKjM5COenIJQvb9rMKBCQSbohDv+H5tu+6BcjX1Bh3guoRMn+7QDjseXhmEzX36KHuD/6W+2KW3l9sdBpLi7CM+BpjrsWcdLRshBMSJunBopnYYrUwQsN4IGr92Y8Lq00AzdS3cUZyV4
- EhWow58d
- c0bWH95x/EwfVECrl+4IL7F2z4baP/J/bCawPSdP3zIfvJKgs2DgIe4iwh8by28sIW5LCed7WT9HxASvERic47NfVcydlgfPEBINDYUQtusXlNgV6tAdHDg0cZn9IcpI75xNEECK4fNoGAltxhvpLqWaolPBvteE0fMT4H5YwqkxeQnsdrkwjN0ZbNzuq7zuRlkrh
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 434744000E
+X-Stat-Signature: cnt48bsgzfhrnwdz7j9zkd4j5ieqy91d
+X-HE-Tag: 1782896640-266009
+X-HE-Meta: U2FsdGVkX1+fDEduCwFtBfhbFfx27nc9x0ZkfT36eYFEwv+X4/B0ovw3AdkUxuTvdrwmoKSTfr7YFnbJr1EPxn/KL8BC6nkB/HgqRK2yjcap8qCWjfigQsgb/97F6VvayKWCvW4y5PY8yDLzPOvogZtU3WI7zU5agupcGgqn7wWUVDFIoNT1VG6d2xpdioy083hWH/pQWnRrAUJjSjFB07MAx+mftLwwcQ2Oxw6ZuWhKUQnKNlxJH6yKmIzyQyA1VDUIVK+gJsRoRDl1Ipt5QkxPrLW7ugJK7szt/fBDDk04Q6cF1MF9AgflWdq/R/w7+6VH4vSr0nd7Qe9a3Vi4sdW+KRO8djx+7BZ+bvdVPv55ZfnXMFcKlTIJl+DjLdUxRtBNj2SY8hpZfjsvf1kHris4kinIES3epIF5Ln9YEAm0tCLF7sY9noh7l/oWm8OMLeDRQ16KLNGrezI5z7qoY/W4G3GmOqyIhn9f6EO/TA1G5g+/kG1ofkRWjxblwfopZXPz0jL03oiM/FaxSaucKW3gCSJ25QVxmLfR51FPaqQBuEuGtWmf60u4i+4ryC4gERXurIbXyKtwcJUc2TXVpW7sWi6fHL+JyX9iQ1GA/vohsBGSrcXyejLpI1UCwIsS57xkzZ7mpFrlNx0mmk/fVlZdxewYx7TGRQ/7iXjwJakHGMDiGb9WeIxitx9adZzRYTn1OBA2Cjpw7aKAh7qbQSdKIRruzjI2DY8dbjQOYTvxwyrSuJOxF7oVzQKvYuZahCLcFRdyz9UdvAp3DYWzGa11CtE5RdmiJauV5M4O7ceXArwi0lb7qlKC+B9TEffXTI7gUKSo9GIL4XhMxkD6CjcSb/sWkN7gR8Lu7Q/YfDC1T7Iyi7r1zEYklEjRgb30Y6IVhV1PqyEvQK2DYfhedEFQI8GMAUwf5CRlcaVBEF9FKv5djUSfgbf2Ts0N8G+rUaln3bMy5C9DXrd55s2
+ +lKzma0T
+ Od1xC0TEPG0Y5qXOl8+Hx1qcW/ZwSWIiTF9O49mL5HQ4WpM/FQ3MefX2JbdCM3hFnOZuQP7NxcnblXxo50aOCofCdGhK8Ia8cBC9KV6pc95XkRs47DULvTlhInenummN6lwVSPMG/COnR8pHF/3DJdkUrC2UlQm3rpjJrP0Dgxx5+ao/8UXQstOmXYR5s8B2v6ziku9clxxwWkenotbrkmcgIgnLNRfB+mFSHZJ6OUslO9lC2J7q2H6oih0zdNh/+vZOuel+XyVP3dN/oABKxtZ/thQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,61 +110,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 03:36:58PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/16/26 08:19, Hugh Dickins wrote:
-> > On Mon, 15 Jun 2026, David Hildenbrand (Arm) wrote:
-> >> On 6/12/26 23:26, Hugh Dickins wrote:
-
-...
-
-> +#define PTVAL_STR_MAX	(sizeof(u64) * 4 + 1)
-> +
-> +static void ptval_bytes_to_str(char *buf, size_t buf_size,
-> +		const void *entry, size_t entry_size)
-> +{
-
-> +	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
-> +		snprintf(buf, buf_size, "overflow");
-> +		return;
-> +	}
-
-If you want to make this available for dynamically allocated buffers of
-the exact size, this function should return the result of snprintf()
-as int along with accepting NULL, 0 case.
-
-> +	switch (entry_size) {
-> +	case sizeof(u32):
-> +		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
-> +		break;
-> +	case sizeof(u64):
-> +		snprintf(buf, buf_size, "%016llx",
-> +			 (unsigned long long)*(const u64 *)entry);
-
-Not sure why castings are needed here and below.
-
-> +		break;
-> +	case sizeof(u64) * 2: {
-> +		const u64 *val = entry;
-> +
-> +		if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
-> +			snprintf(buf, buf_size, "%016llx%016llx",
-> +				 (unsigned long long)val[0],
-> +				 (unsigned long long)val[1]);
-> +		else
-> +			snprintf(buf, buf_size, "%016llx%016llx",
-> +				 (unsigned long long)val[1],
-> +				 (unsigned long long)val[0]);
-> +		break;
-> +	}
-> +	default:
-> +		snprintf(buf, buf_size, "unsupported");
-> +		break;
-> +	}
-> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
+Hello Andrew,
 
 
+On Thursday, June 25, 2026 at 10:17:38 pm +02:00, Andrew Morton <akpm@linux-foundation.org> wrote:
+> > On Thu, 25 Jun 2026 21:49:15 +0200 Vitaly Wool <vitaly.wool@konsulko.se> wrote:
+> > 
+> > From: Vitaly Vul <vitaly.vul@partner.samsung.com>
+> > 
+> > Resizing mempool to a bigger size currently requires a new allocation and a
+> > data copy to a new larger elements array which doesn't go well with the
+> > idea of having a fast and deadlock free memory allocations during exreme VM
+> > load.
+> >
+> > This patch introduces a new parameter max_nr for a part of the mempool API,
+> > which denotes the maximum size of the pool. With it in place we can avoid
+> > any allocations in mempool_resize() since we can either grant the resizing
+> > request or reject it basing on thr maximum allowed size of the elements
+> > array. For those few users of the mempool API that actually use
+> > mempool_resize() it is a clear upgrade because the maximum number of
+> > elements is known upfront.
+> >
+> > Derivative APIs (like mempool_init_kmalloc_pool()) are mostly left intact,
+> > substituted by the new mempool_init_kmalloc_resizable_pool() API where the
+> > pool is actually meant to be resizable.
+> 
+> Thanks.
+> 
+> It would be helpful to have a description of what inspired this work.
+> Presumably there is some observed problem in nvme or in zone-blockdev
+> use? Can you please describe the problems and also describe what
+> effect the patch had upon them?
+
+We are using mempool for a variable number of large buffers, the maximal size of the pool is always known. However, as these buffers are large, we don't want to waste too much memory on a saturated full sized pool.
+
+Besides, it takes a lot of time (seconds!) to saturate such a pool and we would absolutely love to avoid that.
+
+Basing on the above, one can conclude that we're using mempool_resize() quite often. And for that to be efficient, we need to know if we can grow the pool  without having to re-allocate the elements array and copy the data. 
+
+Since all the existing users of mempool_resize() actually know the maximum pool size for their respective cases, the easiest way to implement this is to introduce the hard maximum, and that is what this patch is doing.
+
+<snip>
+> Seems strange to return -EINVAL if new_min_nr is too low, but -ENOSPC
+> if it is too large.
+> 
+> Also, (pet peeve), ENOSPC means "No space left on device". If this
+> errno ever makes it back to userspace, the operator will be running
+> `df' and wondering what the heck happened.
+
+Hmm, I see your point. Let's go with -EiNVAL in both cases.
+
+> Also, AI review had things to say:
+> https://sashiko.dev/#/patchset/20260625194915.387663-1-vitaly.wool@konsulko.se
+
+Sashiko is doing a great job indeed. My 2c on that:
+
+1. mempool_create() should create pools with max_nr = max(min_nr*2, 1); and this will be fixed in the next version of the patch.
+2. There were no forward-progress guarantees during pool growth in mempool_resize(), this patch just makes things simpler and more obvious.
+3. pool->min_nr update will be fixed in the next version of the patch.
+
+Thanks,
+Vitaly
 
