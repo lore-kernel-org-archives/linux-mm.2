@@ -4,127 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CB69C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 17:19:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 359EDC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 17:24:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67A9E6B00AF; Wed,  1 Jul 2026 13:19:26 -0400 (EDT)
+	id 10A9D6B00AF; Wed,  1 Jul 2026 13:24:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 651E56B00B0; Wed,  1 Jul 2026 13:19:26 -0400 (EDT)
+	id 0BAF76B00B0; Wed,  1 Jul 2026 13:24:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 567A86B00B1; Wed,  1 Jul 2026 13:19:26 -0400 (EDT)
+	id EEE346B00B1; Wed,  1 Jul 2026 13:24:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C26C6B00AF
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:19:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 680021C041F
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:25 +0000 (UTC)
-X-FDA: 84940869090.08.0834175
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 972171C000C
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=As0ffcbF;
-	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C84046B00AF
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:24:29 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4DDCD1A0489
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:24:29 +0000 (UTC)
+X-FDA: 84940881858.24.0A33C27
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf23.hostedemail.com (Postfix) with ESMTP id AAE3F140002
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:24:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Mf04VCvT;
+	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782926363;
-	b=sIT+K73MFmpDouwrAJKngs/KGBmFwd4ad95iH3oRslew2EdGNkqvuWlduTi0xuXJjc53Qc
-	reVu2lN6RwiN/8EgFykKs81SksVu75DBMc6TUx3WWCGFI3EgJQn/mpGEkAv2/51huC86Sz
-	rBoSQJJ2q4MHtGUMPj9bK6EiXc7ZO8w=
+	t=1782926667;
+	b=HPiQgIlE3OMeJmZbStvikj9rGdodhml9J4ODvGW+czWzN3tuL4Jx6W9fmujjXTYUQUnp9Y
+	BofQe0CyeRTOf2BGCELtzhoESRacV8Ju62tBW45P+DO3anML1FU0qH2N0rbCuE81Ewkd8z
+	EvaEzsUxrNVAU/xLEXZie7xBsBHL9+8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782926363;
+	s=arc-20220608; t=1782926667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a/4dtvv/aIQO81upj+w4QSeM/a48j6z5FlMxCli/iT4=;
-	b=iwjiTox3oFpCxVhnWE9510Cs7wOuYhjxHcIIhSVrhJIxA2uVpG5zpbkbBapkosP5gubaoy
-	x+8OU9jyimE0WNLdulAdWe1pSswZZacQLTO9E9Rl68EbjX7MrGQN+Ud6/ni6Df/8Mpiq0f
-	x8kSlgtgDfnN9fdQ7F9NHnLC+xfEUSw=
+	bh=HbvWGJKElR/rTbCtbGCSktloNZd5j7nEevslzR82294=;
+	b=iETkLOPIu8pHD/WFWo2WsEdXrV2xNruFdJBz3oDhAyxHTGXED4QXK8ZKzhHfl5MMqDZj0E
+	3Sze9avgGKmilY6uzz51MIP426SchM8JORYVhJBZ+M5o535OTfO9NC5gg4zBOpZeTga5OJ
+	QwAqYRKmy2eMWcNIu3w5qhzISpXALxc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=As0ffcbF;
-	spf=pass (imf20.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-842358aaf36so373424b3a.2
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 10:19:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782926362; x=1783531162; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a/4dtvv/aIQO81upj+w4QSeM/a48j6z5FlMxCli/iT4=;
-        b=As0ffcbFu0MK/xLmPOJhRKsIjS93QrN3bQGLPyPVJ7xTUrNqJKVyGB43l/YaX6LphJ
-         cx8ZxzcY7rgbq2GcsK/q883MNYgF4/48ynUgvYvb0tyF6kxIdUjsW5UbGrf6gMs4s0qS
-         IN75P3xv6ewIFMibr0QMX3a7YLxmTcxN3AyfYlSGqppfvHtb9KX5H81lLmBiWaorDU3Z
-         E7AyE0BLjs+oFNsVeSqOzxT/8GusJE3zXApowbnH2pE3WpNPEtP7eLiExhWgW12Gd5/E
-         PoUBw3NkLCxeM98Tt/6E3pIHYzh5iXatI0s+TOpiiRX5C0K+NRTKVCgBwj/gPAtqy7Df
-         4BiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782926362; x=1783531162;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=a/4dtvv/aIQO81upj+w4QSeM/a48j6z5FlMxCli/iT4=;
-        b=jXPUZlW8oM+ek8ePYU/ecQpU1FGH55glSrfxzMuy4KymcSDJDRXT4mtGR7TiirUANr
-         lFmcCUFP3KA/TiLTypqO+MrK6y+DZQqJLIHXy0UWmj8TRFca9GrBBiJM7bq0n2SnaaEb
-         9ffUHsz2m8UzFRVEnAhRml+6cGs2hBFsnOcnejgfh+mBfwGicpqb/h/TFZThtVJpmDFz
-         dzy2ZFvasdnfb7k4WicDrEsckbpZSht08JYCgx4+T4zrV7BuS9LK5ABmgdPc2JHNaprX
-         DWgzGOc7/7wGJrhC+vTdWlF6gFxLKsdEwFlFWelfarJJHNDDx415FpoqjdiSOtl9Z5wg
-         uiKw==
-X-Gm-Message-State: AOJu0YyEmHFviHIRxkEitRlxoLnOjQH3WDxgt5BjVk5T9QgUWZbrv7eO
-	M/L5zEytilb9mcUTT6Kx/mLX95wt+OW5qGyeO8of9vZSnb+eIGSFSbCi
-X-Gm-Gg: AfdE7cnFtmGE7sEy5baPOUkZEUU6vIeXZyjWN6BvWYslPD/jCz3d0Lu4JTpz58/0DxC
-	CSd7N5fFhaFIqJiZShPi0EHemejRaFnT5qUFF0+HngNM3tNe359O/ZOQWlbdeCDZXSs1P6WwX3J
-	txzsSPIVw9BGZmrosX12SMbYTGyvMDnPnYF+qUw/yTDPuCLXv4SLbveTw+1XfiLErrJy6eGa1Ie
-	31huMFp1j3Wrk5LaRMQyNa/R6iWYEh0GbkhzqxyBgEFdGCdfH0FRSch388Jpl9n7nWwaT5qwHOb
-	GSSS/xkpYn3DHhObcPHnHxdJvMTif5vI1Dx765QvGdixH2j7PiCaevTcKycK0wBMpiuqyt3OmcA
-	rOC9ThwhtvLTJ9HoShhtsDnL1l8+tvMrxdZaj5DGlPVjnUFyWJNnN2BzpmYUMgh6Qr/GJd58XQ6
-	EGcTebkpQ=
-X-Received: by 2002:a05:6a00:2da2:b0:845:e146:e840 with SMTP id d2e1a72fcca58-847c077432cmr2338544b3a.24.1782926362374;
-        Wed, 01 Jul 2026 10:19:22 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb94ab79sm105719b3a.31.2026.07.01.10.19.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 10:19:21 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: akpm@linux-foundation.org,
-	Yury Norov <yury.norov@gmail.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: linux-mm@kvack.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Michal Hocko <mhocko@suse.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Rich Felker <dalias@libc.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH 4/4] mm/page_alloc: initialize node_possible_map like the other node maps
-Date: Thu,  2 Jul 2026 02:18:51 +0900
-Message-ID: <20260701171851.2447626-5-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260701171851.2447626-1-ekffu200098@gmail.com>
-References: <20260701171851.2447626-1-ekffu200098@gmail.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Mf04VCvT;
+	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=HbvWGJKElR/rTbCtbGCSktloNZd5j7nEevslzR82294=; b=Mf04VCvT26F5DejxVyk2Ofq/TW
+	C03tHntseOXOSqM2Ux7b9JWhWUVLn8Xa1XV1qdKvJdZnWvKgO99yqO9aCD8KS8h0+n45kuntk9cnf
+	25G+3xuhr5/EU6ohEwubdBQBano/2MFMhIQ+XljgOkR0AdsE8kbUmImL+mTk8ojbkzdzi1bDtA8OU
+	JZ7GSOjAILAmkvRPK+nxoqoKJaFiJM3eVM9RngEoBNZLSqKXSLV1vpA5h60hdfDEQ7P8zzfp+hFyL
+	2N5vPlt7jcv+Nm5EOsm0DJw5IjOvX24V3tT0NsSdj1Ef9MXpt8fSnsAUD5CH+GH14xvMJGc4ow/wg
+	dnmIbZxg==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1weyfY-000000001HY-1Meb;
+	Wed, 01 Jul 2026 13:24:16 -0400
+Message-ID: <9df36c6f5819f7decb188f0fcf1b199b68e238e0.camel@surriel.com>
+Subject: Re: [PATCH] mm/huge_memory: set PG_has_hwpoisoned only after new
+ folio head is established
+From: Rik van Riel <riel@surriel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	linux-kernel@vger.kernel.org
+Cc: kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, 	npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, 	lance.yang@linux.dev,
+ yang@os.amperecomputing.com
+Date: Wed, 01 Jul 2026 13:24:16 -0400
+In-Reply-To: <d267004c-a09e-4f04-9635-d1acc579d89f@kernel.org>
+References: <20260701134622.3152896-1-riel@surriel.com>
+	 <d267004c-a09e-4f04-9635-d1acc579d89f@kernel.org>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: shmxmt86hfe3s753zakcsmx55yqg5a6a
-X-Rspamd-Queue-Id: 972171C000C
+X-Stat-Signature: 78chnyiwu5uhqb4aixcxg3nbpuzjxmkn
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782926363-306965
-X-HE-Meta: U2FsdGVkX1/OQJ3Xs3FnXiBeQY26Ub1WTCQhRuTOVbiyhf/lT7RSvvGCCnRz78b+L/CtQamiFsnD5lZNQiQEDvNVTdMtkTSPC0MeQeNy8qLo5OCo72iOSEzYtJpTQJLWdvaX2W4mjwLolok4SrdWkILHFYuBI4p2BiW2mNqUlnnVLbIoPS0N9++rvUTXOXe3W8t77/H2iIhsD4Vd3qDjl+kM5SNqUwGswPrw+C+4+8DFpO30MkpLVAkw5Vuli6+oTB9316ZH9Tq8JnMn7G/OFYkws1ioF+lSeomlB8PUAk+mxr6KTqBHbacth3/nCIFzQ7vUu0OgBRQEYoVSr9vKLjHBdZoKhB+2AhQuVzLLMc10KIPTQYYuQszjZHLay+xljL3jTLx0ux6ormxIZ1Fouril4o0vTCE53EuU6oJ/zp7vjJ8JbqX8kOQRBzSaSx+snT+GxWi/tMAPa9oTK0hWA/50RKRRa6i/kIG7OyZ3tZ39BZIiypHQ8MvPLf/8Y5mBl0Ch4Cz6FlE8BSRwN60ezz6VSXnRYaBXjQinii9Z3+kduMt6x4YswLZTtfyCvdgaer7kXZp+jiaDx5XSCfAqXF1G8oD+0KWBa0SmcUw+vQsR9e5ougy+0UpGb2ZfC69+i0t7hp1kkB87B1GK573GPot3h75uv9HVg8i+27M6BCwlcqwXqC5jx9XCs5w80EhkLUIP9VhcUX2cnk7TMFmUGoCpjaJGlpgwwWoonD1OxF8yDLWBF9pAXEYi9/5V1wh7anu+cjbjmHEmN46ao6g1rbbpz+GeblXkPE0lUjJrcuESyDi1DQZOrt1l9qe8D3IxZUBBH0SdHUPCBgHnpDxd+UZQ3t4CO1FcrJLRoNSTKOarYIQtKOse6ztT7rWS1NiqWuDw7nH/ZBSgSVaXX0FB7x+XLIqXxRuDMp/YKcR7YSEtsyZVcOI6lQjxqYbobJaSYHelSBG049aXR49vkaq
- YOeg+VIQ
- WH3G0tD0fyUAHbCXic/5jzwrDWQz9pSys7WiWFq7oQ+uebmhkHqFQBpCAmsaULbElqrAzOeu4AImt4yKzF4RJ/Dh1v8otv7GrAjBy+w/hXOG8rgZdH6cKPilICcpGNaSVS4dqLULJPZfgF1NpGSuaAHBpSZIBAWyypT1X6PUFsVHfK8BuNTWY8XSC+G1yg7q5JQ7BpM2CSuNOlppXALsoTIblDh42y23EBVZ+qRuC5lJpLEw84ejtqwxoXFdMbvrmSXpp5xF+RNyT3hfWRoKuNf0CreoGcPuyFURO+vxcFaSfaajZ6vshO7sa+OJDn4NrlIkNWG/NLDkg0HTh56+/s3I8ywtJ9xC/kQQck8oS0Ok9Y3A5JBKMgu5cTsUo2UanriI1HfM+1uVycDfJCwyDTX8mcxWcPTtCHIU9iH/LDmUBj9ybPCxszSy2EUJaxw9dGS74BuHG39V5KYMZjNQ6Gj/UBNZLOm+i1irmPMQis0q4oggr/mJzkUzvSNN/wEMh+T0w67Zd23FaqoO4nCVvWuER5X8B6mEOmRPV
+X-Rspamd-Queue-Id: AAE3F140002
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782926667-894167
+X-HE-Meta: U2FsdGVkX19WPQWF/ZVA59V3ouN2vsAcI2fhSFpYc2UO3NfCc9LP8vrzY3EKBS6UcfmKqx4TKCoDJdl5iXKDf+SdVYdg5RYnDn6+toTwPdqjYldjxoeXpNyuyvp77ZaWfwAV8E8jWg11agLJVH9vTi6fWvY2cH8yxVw+BHGKEKlLh3wQ/FipCuOEDNFCecgtpdkucz3x++TtAPZu2CHdpCmSZRUAOYlcZATMDUEyN4Zf3JiZqtLjp67utuDo1Qd4e6luhhNaDjNl5fqmiaa4DjdEaUeUYJVHiuk0okepVZXbMA6cOTA5Ns2QQvYpKaD3pZwKbzAlxnvXuf6uJAU6nNg9WFI+s1BhLcGe9JQrI+H3WWLIbAJIJry5UXXhKlPf1f7ypghaUnNKUFQiLDZ2RSQWoq2kSNHbIKKI6DNJ3cjsEQU9Uz+vE01+ixZT9ogmdDkc1AHilUUcLgRvt2w6E2QJrHiyvQ7BXLQRTlNCdZZcHaWw4YJBkiqhJCg3bIBY42aNvAvGbuW5F7OUrOjDtKDDifDlJipbfti+teEYaJfTHJa05qziRZtQtCrx/CPyV0ovHyWrYhsI+eNk8xKZyf7DyN32tb07wd/Sf2gr9jp4HNQgxTRTD9vB1onDQJwrWPD17mUGW0Ygzdma5PKEGU7cJ0Ot6d06K/lr9DraGyYGed5ovctT1aXVo6cWK0Ll9Z2dFD8764K76qZgZoCNPHLMNgHWjzyhmVoq+Sz4VwPXpABLfkh2KqS/Nb9vL9EEfUS0v95KfhN/u1cc7iYb1q/esV+IkcUiDL4J/6m97cruVpXY2/zOpDHZPl39IUe6RGSVOVar6WXaGDwE7nJfw4AWz1QnnX2/idko62FqQbC9yST7HHO7sIB0Rt/1Jy3zkipkDo2hW2poBInOKdCB/9jfjovop9AlfhbEtnF9fJLVQHOneZFO8eeNHd2WD7Tzyvf09TEUnDPWIfCAa3y
+ CuunwNaD
+ PTBF4ysnxk96rhnquVJNIaDYHWV9GJeDBszeeQR5cyjumiMZ1BUABbmapvMGp9OXjmkO17SQPQETdEgW8XlnGn3RotbotolAz2aKyBJVtyuhShuHQzJ95Xm1HXN+7U8TF3kFsBIv93E28Jo0OZ+CGEkpIsYaUHf7bzPcW3tar9XWxj1h2QYOUPxrcHuIPooJ5qOWM0ZLhyCqOU4n2R6lweLjQ1IKVpWTixXEeFUwqEdKwqeNa8u0ifnAf+YF6FB8FMyl9fXu4okdX9IMkApMfNhWgng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,80 +125,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-node_states[N_POSSIBLE], aliased by node_possible_map, is initialized to
-NODE_MASK_ALL, unlike the other entries, which are initialized with only
-node 0 set.
+On Wed, 2026-07-01 at 18:33 +0200, David Hildenbrand (Arm) wrote:
+>=20
+> There is some grammatical issue that makes me wonder whether you are
+> talking
+> about the present or the past.
+> >=20
 
-On !NUMA, MAX_NUMNODES == 1, so initializing node_possible_map to
-NODE_MASK_ALL is equivalent to initializing it with only node 0 set.
+Changelog issues fixed for v2. Thank you.
 
-On NUMA, every architecture now sets node_possible_map after parsing its
-NUMA topology, so nothing relies on the initial value.
+> > Reproduced by syzkaller: hwpoison-inject a few subpages of a large
+> > shmem
+> > folio, then MADV_REMOVE (fallocate punch hole) on the same range,
+> > which
+> > splits the partial folio to a non-zero order.
+>=20
+> As Lance says, after we do the TestSetPageHWPoison() in
+> memory_failure(), we
+> call try_to_split_thp_page(). Does that already suffice, even without
+> the
+> MADV_REMOCE.
 
-So, instead of initializing node_possible_map to NODE_MASK_ALL, set only
-node 0, like the other entries. Then NODE_MASK_ALL is no longer used, so
-remove it and its only helper NODE_MASK_LAST_WORD.
+While fa5a06170036 was created to deal with having
+the folio split to >0 order, in this case it looks
+like the try_to_split_thp_page() call from memory_failure()
+failed, presumably because folio_ref_freeze() could not=C2=A0
+freeze the order 7 folio, because the reproducer had=C2=A0
+multiple threads poking at that folio simultaneously.
 
-No functional change.
+This test case is rather contrived, like most syzkaller
+tests, but given that the try_to_split_thp_page() call
+could fail for various reasons, we do need this fallback
+path.
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
- include/linux/nodemask.h | 20 --------------------
- mm/page_alloc.c          |  2 +-
- 2 files changed, 1 insertion(+), 21 deletions(-)
 
-diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
-index b842aa525546..484fe366a94c 100644
---- a/include/linux/nodemask.h
-+++ b/include/linux/nodemask.h
-@@ -47,7 +47,6 @@
-  *					MAX_NUMNODES
-  *
-  * nodemask_t nodemask_of_node(node)	Return nodemask with bit 'node' set
-- * NODE_MASK_ALL			Initializer - all bits set
-  * NODE_MASK_NONE			Initializer - no bits set
-  * unsigned long *nodes_addr(mask)	Array of unsigned long's in mask
-  *
-@@ -296,25 +295,6 @@ static __always_inline unsigned int __first_unset_node(const nodemask_t *maskp)
- 	return min(MAX_NUMNODES, find_first_zero_bit(maskp->bits, MAX_NUMNODES));
- }
- 
--#define NODE_MASK_LAST_WORD BITMAP_LAST_WORD_MASK(MAX_NUMNODES)
--
--#if MAX_NUMNODES <= BITS_PER_LONG
--
--#define NODE_MASK_ALL							\
--((nodemask_t) { {							\
--	[BITS_TO_LONGS(MAX_NUMNODES)-1] = NODE_MASK_LAST_WORD		\
--} })
--
--#else
--
--#define NODE_MASK_ALL							\
--((nodemask_t) { {							\
--	[0 ... BITS_TO_LONGS(MAX_NUMNODES)-2] = ~0UL,			\
--	[BITS_TO_LONGS(MAX_NUMNODES)-1] = NODE_MASK_LAST_WORD		\
--} })
--
--#endif
--
- #define NODE_MASK_NONE							\
- ((nodemask_t) { {							\
- 	[0 ... BITS_TO_LONGS(MAX_NUMNODES)-1] =  0UL			\
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 784a6e2f8ba0..c0f17dede824 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -191,7 +191,7 @@ EXPORT_SYMBOL(latent_entropy);
-  * Array of node states.
-  */
- nodemask_t node_states[NR_NODE_STATES] __read_mostly = {
--	[N_POSSIBLE] = NODE_MASK_ALL,
-+	[N_POSSIBLE] = { { [0] = 1UL } },
- 	[N_ONLINE] = { { [0] = 1UL } },
- #ifndef CONFIG_NUMA
- 	[N_NORMAL_MEMORY] = { { [0] = 1UL } },
--- 
-2.43.0
 
+--=20
+All Rights Reversed.
 
