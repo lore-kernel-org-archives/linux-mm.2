@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6785C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 14:48:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EEC6C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 14:52:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 977F96B00BF; Wed,  1 Jul 2026 10:48:31 -0400 (EDT)
+	id 601816B00AB; Wed,  1 Jul 2026 10:52:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9506B6B00C0; Wed,  1 Jul 2026 10:48:31 -0400 (EDT)
+	id 5D8CF6B00B2; Wed,  1 Jul 2026 10:52:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 865D96B00C1; Wed,  1 Jul 2026 10:48:31 -0400 (EDT)
+	id 516F76B00B4; Wed,  1 Jul 2026 10:52:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F3096B00BF
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:48:31 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DE9B1403BF
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:48:30 +0000 (UTC)
-X-FDA: 84940488780.29.6C49727
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 42B614000B
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:48:29 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CfHMA57v;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 29D246B00AB
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:52:52 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 906A0403D0
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:52:51 +0000 (UTC)
+X-FDA: 84940499742.20.4CEC364
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F1269160012
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:52:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I+voNpCR;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782917309;
-	b=bwFduu8BV2tx6+6hTSpkHq8RMT4LO1xcwmxyi5/aynnAaXJOu8rQmlgplpe68fsjAtSxDA
-	LkemCrSpvxw0cq/pChCpYm4zS1MNf475nt8HKf4vMKGHLQUikch6uXpz3xasktKURkFE05
-	PM54IMwov4AnhGEb3+LrkrOjM0R3YD0=
+	t=1782917570;
+	b=mtG2xt2n9ZxtFpw1ZGcHCxxPHO2jWw76ZrTfbFl6rKe4etM+IHkxBFqbqHwYa7tXxoLv4U
+	005poE8zKwxKVsWPgQq9lP5kKFHYwIeZvB7pWuog/gxI7WIEMUw0wvLZ6RZFBZGArvPZUN
+	F1+niTCsVVFrXU/EtP0wbNjbfdoXKp0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782917309;
+	s=arc-20220608; t=1782917570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4VafhRbm8rnHMCZpEIBC3NAXIVyFpdQKn/cpt2JTi7U=;
-	b=TdVm1br2CWCLDXo79lBOlmVfrZG+T/Ts6hP3E77Q99ZfrNI7UPxRbUywHiT1/wM0p0n2WR
-	5TywZNnIfT8Xgug8mEcSx8hPpYV0LvrJYVunu2OrZHbJGpES3XrZeNfreQEUnQlLizcN3Y
-	XQqEtWJSDTnmjsxrE6D96Fet2E9d4Kc=
+	bh=3PMuOMB8oQMmED+VTExnHBYgDYKgq3h680UUULi7v7E=;
+	b=64HvvI9l+LU4jMnDJ1u8a0XdgYkXxU7Kh1ZBEer/cPOzwbXJEUhEYzWIcDMw5YhDWgkJjN
+	wrFBnWCTPC4V9u/hKp4nRYIM0z9mAQ/U7WwZup5dVRK4VKc3O0RLyZKP/pEJiM2G+aMdOo
+	iHJSS3ebl3MYr9bu+dlx532I6a2LDDQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CfHMA57v;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I+voNpCR;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8F23043FB0;
-	Wed,  1 Jul 2026 14:48:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAB61F00A3E;
-	Wed,  1 Jul 2026 14:48:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 901C66001D;
+	Wed,  1 Jul 2026 14:52:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59BF1F000E9;
+	Wed,  1 Jul 2026 14:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782917308;
-	bh=4VafhRbm8rnHMCZpEIBC3NAXIVyFpdQKn/cpt2JTi7U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CfHMA57v/es7Bf6Eh48NbQYpsR1IkkJ+j14HygB2KVFBx6o7mM+KtPXG1lZWxmN/U
-	 Pf9ZN9c7Q+WV7pcelUlpmQi/cTf/Ywfou7qiOMVwvTkubK3loe8DSiSbxUkhK1X2/S
-	 ZAekMOpzQbN3Zs8yVaYlXa2rRmDhcDGtm6h3Jdr4o28FjuaM4hui82zuh4/Ku+mNxB
-	 nKiGXJCmjDdIqlxQwQW07DDL/JMlXQqhZRhgvnvxVHMABM6X4yUYUcew8/IbX8DnNn
-	 +v0pze6gHtm+vn6PgwLlhAaAs8IyeftrqVHqkg2g2ekt3IcLXmMidl2J3PMf3RO6IW
-	 D3e3G/1JnLSRQ==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 8/8] mm/damon/sysfs: remove region size validation
-Date: Wed,  1 Jul 2026 07:48:10 -0700
-Message-ID: <20260701144815.113325-9-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260701144815.113325-1-sj@kernel.org>
-References: <20260701144815.113325-1-sj@kernel.org>
+	s=k20260515; t=1782917569;
+	bh=3PMuOMB8oQMmED+VTExnHBYgDYKgq3h680UUULi7v7E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=I+voNpCR/OqqBEbboBbDgUgzg6w4E8OX8t8BJTRz5LxscDmx14gIg/I+GTT6Go5En
+	 xx2WzMwLjKG3JNp6q4LBxu6tdzFx4KlJ5XBdV2I0QIu25zFI6yIT+YDI6V9HvJvH54
+	 rrwWWOxGiT/mXdpoXHWZLZDHD+ifZBOtNQ9HJ7ijbKe/IWJNoxK39ao5l58GHwg4m1
+	 4V0HEmZzX67RlkSyc1YSIOZdh4HRKHfcnA7+Mx6rIpbMVU5ekq3jcHW9KzQ9OI8ugN
+	 /ezRHMhgA/qgykeOF39lwG0X/4hBHUi/p5RB7YXXmWvKpQxTfFmWNGvaeXuC5EasgC
+	 7RMG5tbjD6v2A==
+Date: Wed, 1 Jul 2026 15:52:39 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, yang@os.amperecomputing.com
+Subject: Re: [PATCH] mm/huge_memory: set PG_has_hwpoisoned only after new
+ folio head is established
+Message-ID: <akUoqvmGtSMgD0QT@lucifer>
+References: <20260701134622.3152896-1-riel@surriel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 42B614000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701134622.3152896-1-riel@surriel.com>
+X-Stat-Signature: zoixmknubmtat8mwq9mkyda9uisjwzxj
+X-Rspamd-Queue-Id: F1269160012
 X-Rspam-User: 
-X-Stat-Signature: b8dutd57ha3zmbi8kne68jo96g1fn6yo
-X-HE-Tag: 1782917309-872530
-X-HE-Meta: U2FsdGVkX18qHkvBamBhVJpNwEOkPsQFt9Vfy3ccZPOVT1xH1Ch4H/U+tG/alXsOX5sAMkRfsjNFJo4q8Kuy+ouZBaP7hx6C7v8t3qmMgkR660ehIQUigDTjRISns0/a6r5xGoOFz1d8r8STLBOWAzoCban0j/Sz7ukX1+qGv7k2VqAJ58e70Gn30ol4yG3PctXFROEUK2cZmSbH6G8oAMVHE4iIVEkd110Ed+fkQ7eKMQbnZUTwLUP8GV9ZmIzPqZDi/Js3Q6M6PkzdGAL2qm48Yt9Ta0AM5qktWnceUC4SgYiLFE6D0LKZh5pQP9P2tM9KzHARA0+hx3fRX+BfmS+XcBKQQf4H5zw6bTAvaokAAzZwt1fOBMK67pw7nNP6xM5LQnQx3YhKy4rTwseGzRosAgS2Le3Xwvg7vnCV2lj0FJORdnGVUbZXXvvSufSbJA01M5woRrEruzGflgm4fOYWLJHii7JOZ/0QgyFWnkkh/x9Unce93fHDXpUTJCI3bxynRjXvqaxohkeioCJW6BAJvUc8ltv3/p7NaRiboz2sX6ZX1kZ9XH7LpQkjYy7MRqNHB8tNFnknvWLVkl/EoHP2yF7stIkl1/vXBYx5dJk+PVcYfE+dsKjB0SciPq6bHHts9O9b7x7LEFIUXeZq1dLhfqYXLTYYymCOsL8O+luHPvjfg8QpTeOHAkpaZnzc/LND2OncJzjQALXJsBatv7UVzmXtUI1SURTCRodNRr3Q0HWU6JpIQSx3vyGYAgn6BYDpi2FZa1ax4tN3HbI2P45tI7Fr33NZK1nkfs9i+QGPrKtxLNKD/8/JyxXJStMMuCY2DxxfIZjoBn8b7+kiFbcix0hvVkrw2ed4ft4kyOFTPbMTstp9CnDGDlHCZyHUwm55g06TCilVy8i46H1JFdVgm7/eBTct1Y3R28zRosip8rFonUhDrBRQsHXcEJktlZdY5PRRqGn49kXLvZk
- P72dlvn/
- /PRQLhmWbfMv1YUr2WJaQLZo+YKSuTVE8PeDhrj4HyaT2z8T/cgoKWBswI33NF+jnlbPoKe8eEpBeOyFrLpzZskyOs0UD1UlGd8aHoZOSRvMWfUjY6h+Bg2w8bYR245TkCtNpitnRoal7P6wihjTSGOFTNHl1QbKV4kdRpjR0OsT3xkzcpSem1Vc68lX4B83refRpTG6pBhEdPcNJwOyqbVhZC+tVETnRkinHpzWv/UV2/9o=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782917569-540904
+X-HE-Meta: U2FsdGVkX1/cSaOM7hCXZqvuQ1wnQXJYP91C15bUXASEX3EnBVpk+aQYnQku4yOnDShTiPA/pnK7SlL7fWq1cZUrwl3uYUzeuwnqQtvrFcSqVHedmUSRS5UWjLivzD8O22A49bennNTogRD6vxFEbQlj2Og5mi7vIWy2DD8PLqOt/kTzpxHoQyY3ELYMokRAd9LaH3d7wsjS9yzt+A9E/B41SJmtybpZ74pHziwj9rQl5NUfNIkthkELMWOEA3mEiuB1Hyn8gHFlUkRBiBgMe6uAc7ISrP5v2UUHXX7G9zE3NtTjed1rxg5tinl3pcOYHAg/3sD4gS1/o2Ms96ZJtIR2k5fmDjrsEfi8RPgFS6UdoBZlvBA2Hh/YeRgz01p8HAaj5Co5xklxZVW++0O+st2gOqBzB/KT/XBHee3Juq216jW7L59yrGuM2Ymgn0WkCvauEHYFuPERyL4cyLERlzThiMi1gbdDHpwKR2B9wozGBiMsiKAMsHz+njjFWbG0Q600GYpXN2DTBXfTVsYJVJUcra7KkAfbWKtU/4jE8SBVxCMNMEWAGbQFvUHJlfZ9SqJgVjepoMHyQSIo5u8WNlKocPKMCpeH5svVcQRlJYMZS+cmzZwv5ZZl1dqEqcPK3aq4Xxs+DC//A+NBRiMmrkz7VzhgafrqwGhSNeGNlojp8bzKnncIuQ1q5FxIj/OGyWTcpEYwAi4y2MvFnm9Fi5Sudi5ELQ/ADf6sCamQRM9u5hroThD3ij6Tt6RKAzQB9Cir0TKcNo4A8n/LoFP3Lr6MfC8uplY95+LqxO/UadbhnwXQ9DbmmD2qVwtg3IJNuGmcqn1iP3bevyQRCEuCcNjRR04AYP58wzZVu0w7vMR3BnazmZ04wuONcSzam95TQQXDrJQgpZ4RxRYBOYYlFSVmOfxUzOBSij/whOQW32XDdjUPhhrNaIvg7fxndyP3UjF7qFvXagHO4vJfTeP
+ m4ZSDmsz
+ VSKHHKzBxpQcz4zse63GbLd1LvIBlHQGablRJSPFTQYVz5P3MXyEDK8PGjDCkhYn2fSZN3zmiZkMCBWGjVRENtt+GcbK6QA9DNnhgv+sDjkyfEu3pNYrKgEVjvdEaHQCCxB7j5+AE++Z6bQ79Atx2VsZVyiHLWplh1SOs0eX9LeAzQ5xkfzZMZ/fGOTW7SsICHoO0CNtVo16lXfmbsy89Hpdc1dfsQVbKmDX2pedSyjMHZh8/kGIOdE0UCwXw5cESekBmVyEWZtzc/6oQyCx+UQLB8Eo+EpBF07SMj8fQafvztzclOli40dk9ujPQy2ARTAUr+1TvzxeZ0jxA60qI2AABTfnJwcqzTDi2WGqj6/bpEwo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,31 +93,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_SYSFS validates user inputs for monitoring target regions to
-disallow negative size regions.  DAMON core assumes only positive size
-regions, though.  The validation is incomplete.  Fortunately
-damon_set_regions(), which is eventually used by DAMON_SYSFS, does the
-complete validation.  Remove the incomplete and unnecessary validation.
+On Wed, Jul 01, 2026 at 09:46:22AM -0400, Rik van Riel wrote:
+> __split_folio_to_order() copies the hwpoison state onto each new
+> sub-folio while splitting a folio to a non-zero order.  It did so via
+>
+> 	if (handle_hwpoison && page_range_has_hwpoisoned(new_head, new_nr_pages))
+> 		folio_set_has_hwpoisoned(new_folio);
+>
+> *before* clear_compound_head(new_head)/prep_compound_page(new_head, ...)
+> turn @new_head from a tail page into a proper folio head.
+>
+> PG_has_hwpoisoned is a FOLIO_SECOND_PAGE flag, so folio_set_has_hwpoisoned()
+> resolves to folio_flags(folio, 1).  With the new compound_info-based
+> page-flags layout, folio_flags() asserts the page is not a tail:
+>
+> 	VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
+> 	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
+>
+> At the original call site @new_head still has the tail marker
+> (compound_info bit 0 set, PG_head clear), so on CONFIG_DEBUG_VM kernels
+> this hits:
+>
+>   kernel BUG at include/linux/page-flags.h:354
+>   folio_flags+0x82
+>   folio_set_has_hwpoisoned
+>   __split_folio_to_order
+>   __split_unmapped_folio
+>   __folio_split
+>   truncate_inode_partial_folio  (shmem hole-punch / MADV_REMOVE)
+>
+> Reproduced by syzkaller: hwpoison-inject a few subpages of a large shmem
+> folio, then MADV_REMOVE (fallocate punch hole) on the same range, which
+> splits the partial folio to a non-zero order.
+>
+> Move the folio_set_has_hwpoisoned() call to after
+> clear_compound_head()/prep_compound_page(), where @new_folio is a real
+> order-new_order head folio (handle_hwpoison implies new_order != 0, so a
+> second page always exists).  The flag still lands on the same struct page
+> (page[1] of the new folio); only the ordering relative to compound-head
+> setup changes, satisfying the FOLIO_SECOND_PAGE precondition.
+>
+> Signed-off-by: Rik van Riel <riel@surriel.com>
+> Assisted-by: Claude:claude-opus-4-8
+> Fixes: fa5a06170036 ("mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0 order")
+> ---
+>  mm/huge_memory.c | 16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 2bccb0a53a0a..ee7ecb3b45c6 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3587,10 +3587,6 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  				 (1L << PG_dropbehind) |
+>  				 LRU_GEN_MASK | LRU_REFS_MASK));
+>
+> -		if (handle_hwpoison &&
+> -		    page_range_has_hwpoisoned(new_head, new_nr_pages))
+> -			folio_set_has_hwpoisoned(new_folio);
+> -
+>  		new_folio->mapping = folio->mapping;
+>  		new_folio->index = folio->index + i;
+>
+> @@ -3612,6 +3608,18 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  			folio_set_large_rmappable(new_folio);
+>  		}
+>
+> +		/*
+> +		 * PG_has_hwpoisoned is a FOLIO_SECOND_PAGE flag, so it can only
+> +		 * be set once @new_folio is a real (head) folio.  Defer setting
+> +		 * it until after clear_compound_head()/prep_compound_page() have
+> +		 * turned @new_head from a tail page into a proper folio head;
+> +		 * otherwise folio_flags() trips on (page->compound_info & 1).
+> +		 * handle_hwpoison implies new_order != 0.
+> +		 */
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 3 ---
- 1 file changed, 3 deletions(-)
+This reads like an LLM comment...! A ton of noise and unnecessary detail.
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index e666dddf1feba..b65651498e0d1 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1987,9 +1987,6 @@ static int damon_sysfs_set_regions(struct damon_target *t,
- 		struct damon_sysfs_region *sys_region =
- 			sysfs_regions->regions_arr[i];
- 
--		if (sys_region->ar.start > sys_region->ar.end)
--			goto out;
--
- 		ranges[i].start = sys_region->ar.start;
- 		ranges[i].end = sys_region->ar.end;
- 		if (i == 0)
--- 
-2.47.3
+How about:
+
+		/*
+		 * PG_has_hwpoisoned is on the 2nd page, so set it after
+		 * compound head prepped.
+		 */
+
+?
+
+> +		if (handle_hwpoison &&
+> +		    page_range_has_hwpoisoned(new_head, new_nr_pages))
+> +			folio_set_has_hwpoisoned(new_folio);
+> +
+>  		if (folio_test_young(folio))
+>  			folio_set_young(new_folio);
+>  		if (folio_test_idle(folio))
+> --
+> 2.53.0-Meta
+>
+
+Thanks, Lorenzo
 
