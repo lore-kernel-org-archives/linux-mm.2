@@ -4,123 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49722C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:49:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83D73C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:54:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 337C86B00A8; Wed,  1 Jul 2026 11:49:25 -0400 (EDT)
+	id 714DB6B00A9; Wed,  1 Jul 2026 11:54:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E8986B00A9; Wed,  1 Jul 2026 11:49:25 -0400 (EDT)
+	id 69E9B6B00AB; Wed,  1 Jul 2026 11:54:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D7936B00AB; Wed,  1 Jul 2026 11:49:25 -0400 (EDT)
+	id 547646B00AC; Wed,  1 Jul 2026 11:54:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA9756B00A8
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:49:24 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6930C8DC53
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:49:24 +0000 (UTC)
-X-FDA: 84940642248.28.1C34EDD
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 43EDD140003
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:49:22 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OiPM7TYS;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1666F6B00A9
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:54:27 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 702FD1203FC
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:54:26 +0000 (UTC)
+X-FDA: 84940654932.23.3556E1E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1AB7410000B
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:54:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A7iWcg2s;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782920962;
-	b=qrN5XDRnJ7u88mBupmgDqoaHs3d+PxNyEIzh4COYYV78hQm+aUW3WtDuot84yrN/xt7kBs
-	mKuzKWCSY37gTFBUv9cXPcCdoT3gi4uoMsGbiyxzGOYQG2NUwnFpoOkfgk8csZd//bheW/
-	FbJNj3dgZwmSmooZCJAjnWeUrEWIK2c=
+	t=1782921264;
+	b=lcKKne+sITLeH53YltOCgjilc6B2om8+5G74oqnk0de/SIeAgoGMEWf9FLl86GKLq61q+K
+	wNHuO3pUwV1FVocKJF7gKuEGqaBy+NmJraqzCTnNNxdGzyYcc9RDLXasKxh+w60nIc9Ehg
+	bZzzEyjAPqxUvVYVwdRxC13U+7zuV2w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782920962;
+	s=arc-20220608; t=1782921264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i0eLlm391NF2bUHGbij/mFfmXYZrka70d1KGczHgghA=;
-	b=sZRBy/DyWrkhrGgXGDckUtsu599Oo13rBPXGtF8XL7P0FLrwuSA/86LgkhHmMueuFSiiRs
-	h+4+sdfzslWzQbxwKQ7B+BJv6V38sfJ6V9lwAYPQRJ5X0IZu3D/KymHs7VNBZCgxJX5u3i
-	NdIEyZI9ENxIRDb4fHokpcIYawkn+IM=
+	bh=ZQqt/bByGpZMVaTV47GrHV/MzFjAQYvcctbsvrjGHwc=;
+	b=bVKwhbRigqfxtdq2Yf75AnPcdEylB4ECOACE3vg5FgswI4whHU1gOkQh8+dgimtRd1825Z
+	c8gKmr8si1mLmBXU5C5SLboSpTBqd/0I7uCua0x4ZCBd5AAEiYVaPf3WrE7W83s95IxDyd
+	TawnPDBdMSbkYTdg34YHrovwLwtrX/c=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OiPM7TYS;
-	spf=pass (imf23.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-51c29b46382so2637291cf.3
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 08:49:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782920961; x=1783525761; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=i0eLlm391NF2bUHGbij/mFfmXYZrka70d1KGczHgghA=;
-        b=OiPM7TYSwkU2n0Y6gqkOq35GVeWibJNAXYaAIN4W6XOqPfMPHm5vbJDNT2UiKJ4O5q
-         /xEIwgLag1aGQ8fe344pso3JWYO6WnVgTFyNdQ74XG3RB/OGALn6rGQ+9Y0myf/tXNOf
-         lQWHWmio/QrqZVEYSge4rvJBjRc0bb65onexhF4hJoFOdAs5uSzcOqr2iBdwtOR1nnpd
-         H+7vbD0m9zg7kk42mOmBcQsDexZZfyZfVXW61ip71QSzYUinywEv9Q26BhUzvNyaU/M5
-         7oMZnksBGRgnwSKnAyFc3O83O0mkbYMM6ze7N+PacPbtw9/tZx8gGt5bB084YPCagj1G
-         Vdpw==
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A7iWcg2s;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782921263;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZQqt/bByGpZMVaTV47GrHV/MzFjAQYvcctbsvrjGHwc=;
+	b=A7iWcg2s15SWrCLcvcL5iL1gvKcnPUTcPu81VdD+E641LEKd059mPI9Sd3CKaEN/VOI1Md
+	Bq1/22pBQMlFb+LjwWshCSa6zvs6osx2wvl+a8KfS1/fkjdRbbF4BFIsIo18L56PB0/TMT
+	1XWyau9FvnN2vOPeYXGebjiEtcdfMvs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-7xEIaMrzPwaVMVX3KZmTow-1; Wed, 01 Jul 2026 11:54:22 -0400
+X-MC-Unique: 7xEIaMrzPwaVMVX3KZmTow-1
+X-Mimecast-MFC-AGG-ID: 7xEIaMrzPwaVMVX3KZmTow_1782921261
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493b786d550so9386265e9.0
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 08:54:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782920961; x=1783525761;
+        d=1e100.net; s=20251104; t=1782921261; x=1783526061;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=i0eLlm391NF2bUHGbij/mFfmXYZrka70d1KGczHgghA=;
-        b=RyDrZJRJfpsVheo40AcF7zeqfl0qbWMpftiuxKZjA3HBLFRJPI6bUYIkPgpNmrCgaU
-         OHYJQxRkPSq7pQhIidKURoRmhPX9tNpPo3oPFkfs/jH7/JdlXLNxzA9GZAJWeq6gGuuy
-         dSNs/hohemuoUx65/TwljDlD2WNorD2XOyjMR4XRaiXKbJ/e0wd5Iw361gqWiVv/fqaq
-         BJxCuuwwb6FKDkfE9OdJ/oe/WK2HMxdZo2AglKjRqz+LZKGLn4ZsfUEi3i4W5grk8kW/
-         ciRnJEpei4xDpEYbKMfJOjMbPRhd6wqMKusOMed0CerCRsOUW7wn/4o5d0/obsw/P5JP
-         JuPA==
-X-Forwarded-Encrypted: i=1; AFNElJ//e54wlRkjHk00j518I2TZQ+SM35vTyI6M9ph/ftVlBWP4mpi39uqGTqATVh+lt76D2RlEOwInEQ==@kvack.org
-X-Gm-Message-State: AOJu0YzrrOfWmqcoAvIGY9hALEvMaj/AfFBOuZt0UDmy5vH2nvb5QafT
-	C4VVEUQ6ZuyN2l6WJygrexalX7hqGGH/z0U2NS6MHBEWlGUOlP7sdEtoeihVupoBaVY7zROYtLe
-	pOt9/vpU=
-X-Gm-Gg: AfdE7cmLvyOmfCAXPnrIiSRPs+rxMA/3SWaZ/SbkWQflv5kDcaAvdctxP6hhuXqlC06
-	JULOAwLNW29sOYBAo3zBUtYlhxgt7IzHTmg7bLisuOYuqRz0pPYOa9bujSVBkVaX9s1IjXGpqjB
-	c7KLXuL6F3c4g+6pbcKzD1dh1W4HmiYHBFU6exmAp9AsOf8+h/KopcIyGPboohk9J4G6lE4oSwO
-	DMD6Dsxhb7CpUSnhdtC8wDaoKZrk/pbLv3VaIXki+OZQgQ5rdWH5gzEsoblfQCHDnuik0CgEjr0
-	ifxgWI5I2yrylY9N0/5VR64lqD5W2+jY9RSzHQAtpWB/pFgGziiShRJ3W/OFSxleiPRo/hGr3r1
-	ZGBZXn5HY1aK404UAE/gGlebnaPvMLvgTLVqIXhcFX31uMxszPFsecH24/AAeYFzvvfIGXu9Shq
-	JJmT1ViFPqcEw=
-X-Received: by 2002:a05:622a:4d:b0:51c:7f8:2a9e with SMTP id d75a77b69052e-51c26b3d86dmr27574701cf.61.1782920960665;
-        Wed, 01 Jul 2026 08:49:20 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f4718141e6sm179246d6.24.2026.07.01.08.49.19
+        bh=ZQqt/bByGpZMVaTV47GrHV/MzFjAQYvcctbsvrjGHwc=;
+        b=YsZuxgGKKA2O/PJS7bE+hwPSNzJAuIRrsbE13VEgz4HAOdgysgWNeReMGcWs6UAQ8n
+         KgDkNkc8SGAXRrjIj5j9PrmZ4lHRPeUB61LHQWuinuzh9Fnz7eNo8E8cvxomAE47JEm/
+         ZjXWZJdlkTO0Gxwa7Im/gfb4B2djmXZJuCCbpLE2YQJ0DaGKFwCnF7VqP/woxhTIY0d/
+         BEdLyFRdxFIfkpM645uKjccDrKzwWEwOtmyeJ0m+EKsIr/TRz+SIIzADbgpiB1OQwKZC
+         ZeM23XmOEOpS1Jm1Pc/20EjL54KrJGialngoFSW5L+6ZvTVBcG9+sx5qdMrhdkRSVLuv
+         Q/ig==
+X-Forwarded-Encrypted: i=1; AFNElJ/WI5x3E1p0BOeLQcnjf7W1u1Y/iFiLA17iQRtQIAZzbRnICR7w/KlOTxi7oIHrTZ3mJA2BXTxSvg==@kvack.org
+X-Gm-Message-State: AOJu0YyrgB83mwmK2FcCboSK0MzMfklSFfeDEOQMyG9xqOq03ieIODQa
+	qh1RQ7mTXvYF1ewp75oLzICj9cOEaFTRiJwXZfrpX9BNCAK04W58qbJUS64rRynDA0OljSqVh0I
+	kze4kFIy0RiwXlb164h0YlaaLjrg88UfA8tFaGoAkNRnciYUgtlQw
+X-Gm-Gg: AfdE7cloG9279SQ2cmPA/ZdhuEHP/n5FYZzOGMnM5t4aVWu8WisPuP2qRnuq+YaE7sp
+	U6d5y9xjRTB4HsXgWSufwT7POFyPQsLL4I5KsxsdLc4I0bhJjOcE6a9VbNKPY186sS/5e6AHllR
+	DtQP83rcVP1dnfYK34+W63SbcMTDsiq71dvq7XwupABcVchmdfoQx3EbVfmxipQw8FfinZZ6ckc
+	oXzv+A8AsQjhOEfJ9Tm61hqDuodHJg/PpnGwUDixSLHIP5sqhvR59V03lSvoYGAXzOb28M8UFKM
+	eJlpwgYZZJyLDgPAgihIo14PJbgT96G+mL/tn9FyQNlI3RDHpo/tcfaAM1v4wYYK9PDUNC9Yl7q
+	yNrvlm10IVkfwW4zIHHE02yV25RJCzd5C
+X-Received: by 2002:a05:600c:3588:b0:492:59fe:4a15 with SMTP id 5b1f17b1804b1-493c2b84695mr28232005e9.24.1782921260994;
+        Wed, 01 Jul 2026 08:54:20 -0700 (PDT)
+X-Received: by 2002:a05:600c:3588:b0:492:59fe:4a15 with SMTP id 5b1f17b1804b1-493c2b84695mr28231295e9.24.1782921260379;
+        Wed, 01 Jul 2026 08:54:20 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493be4c89ccsm95218855e9.4.2026.07.01.08.54.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 08:49:19 -0700 (PDT)
-Date: Wed, 1 Jul 2026 11:49:16 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>,
+        Wed, 01 Jul 2026 08:54:19 -0700 (PDT)
+Date: Wed, 1 Jul 2026 11:54:15 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-Message-ID: <akU2_Mt_JDCxmnc7@cmpxchg.org>
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
- <akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
- <87h5mkz33h.fsf@DESKTOP-5N7EMDA>
- <akPg4ANRetbjSP_b@gourry-fedora-PF4VCD3F>
- <877bnfynsr.fsf@DESKTOP-5N7EMDA>
- <akUzUqQG185XHqgL@gourry-fedora-PF4VCD3F>
+	Oscar Salvador <osalvador@suse.de>,
+	Andi Kleen <andi@firstfloor.org>,
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+	Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>, Byungchul Park <byungchul@sk.com>,
+	linux-mm@kvack.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
+ non-atomic page flag ops
+Message-ID: <20260701112946-mutt-send-email-mst@kernel.org>
+References: <54c8cbee-9b26-458c-93ba-5aa594f5d1e8@kernel.org>
+ <20260629174225-mutt-send-email-mst@kernel.org>
+ <cbab829a-3e65-4b4f-a2e2-704e88a611a0@kernel.org>
+ <f6d8354c-2f79-4a48-934c-cbeb335765e2@kernel.org>
+ <20260630174852-mutt-send-email-mst@kernel.org>
+ <2f884bfa-3cd5-4fba-8aa4-c2e68890ab64@kernel.org>
+ <20260701041112-mutt-send-email-mst@kernel.org>
+ <d2ce93d9-c3d8-4915-a511-d08eb2c1b374@kernel.org>
+ <20260701043024-mutt-send-email-mst@kernel.org>
+ <c03ec696-d635-4c7f-8c77-89a439d9135b@kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <c03ec696-d635-4c7f-8c77-89a439d9135b@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Vbr9xoeNokM87iMilBfziAL7BR7u_HMcB0-N1ijdwxs_1782921261
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akUzUqQG185XHqgL@gourry-fedora-PF4VCD3F>
-X-Rspamd-Queue-Id: 43EDD140003
-X-Stat-Signature: 3y1ydrnziyay1m13yfxshuj8ortc6q8i
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1AB7410000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782920962-820429
-X-HE-Meta: U2FsdGVkX19YFkdBkSv0bUrA4FnCXT8JL0+6yNLTgblWuyRs/aizY2/F9d2A44kl+VfvKp27MkkX5gUrTWBH+r6iKb/lDTrJ7zjV1r4cy3iOXTgXll8y7r7qTGBznxjZjWlnNBECrD8ekKCW+qhaYh1cZCEm8HxljL6pvQ/pTurKGO2YTg7/oFbBH17FmDkcgqIzPCpSjvYwivxwCp7vkNbAbnVonvqzCWSpdFpngEP8HBL3IQldYMNwmB1edtAVK8IucRZakEDNRVCtbMGd6OmzODHrzo06iM60RDRIEDgLjqDRnAXtljOYHr9YAOuS6GHc5SveVMTso38aAIxcCH//0L5MzVYVch4uOf1Ufk8LxgxA74UCi8ZmB83+8uscYnQiMRxb2wsLWzEalYTEMfYSO8tNswUoaLJvupitFKU+JJp2IUctZ+5GUekaz7yFT3iEVfy9XiKwzWzg0ow8lRMFtINHvGSIOkHLAYk+DAFxU9jjvR5J2y/A0Hgk3y0PxzSDYGfYlp8Ypy8x/rOeo5iz1OrD5TnW5O6vHqGb9KHbvmbUdzCklMHvxcCJsJURDWMMOYz/IE5Wg7GpF9VTPQqdFJgO7lawyaQn3LiqNIfAemnu2QNvV2Pyu951r9yX7b/aTL+FcX1t/nhIyO9PHFZPQu9y/1QkvHGSGQbdU6TBPPwxwz49tEV5sLSFc4bbGKYMwo1HpAWsyz1i+uhWR5QjPEKYQT5hUfj7Q/K4mvlfhyYsH8M4N18ieT2P2PB6QOF19Ra/2rR54v/I9pi8EfVI9pOSq2tQBpbWzU8s8TANFvR4/blr8BR8OBfEWSxfcM3gqB8SBHMK+Iw+Y4AP5okmvqxG1fzbxyCfZO8ZW/r+LXrwSv7zdTn93pY2KNMYVh6KW5PWLs6EGVZql9Ff65lR9bN7B3/eqqCKr3qL2sqxixJcVaoZ/2mh5mXlQDNzrJFFoLQI0y1gtRW/ZfZ
- XvQNoEQc
- WUjO0R0OOmUu9sn1yWF1DZhbP/B75ZV6fecoT242whTBWwfKrLAvGM+QYjz6qXuRXG0jl6khSpdc0W7Y69whP8PgGbXPqOZTO+RW+mkcWY6lP2DuOjU+xuBtR1RE7fAElcqUcKmc55uJJOvZDNwDTsDkSlSRQkCq+A80bkfuFmBjsObuDgJ+PmMdR09Uce6YiPpBd6u/55cqJqGgghVKWsR+Ov+Ze9bxD7WOqjkEnOGw4m8P8UPWacKp/BltXbO+DCW8BIr7lbN6rbTHAq5DXWODVJ42x5Qpg7oGiwbm0eInM1HJTNKYqfpaThZpGXRGd6xUQxbbdfCrzYW1WPy7Ye9l/LAGGlYbzNnBif5w1wIYYk8w3g2onD5tx0m/ga1ZjgLUBBwBtQTmWwRGLZt4Weuw7HTXnGsy3EfXhYyYSFhxtld4GderiwCw2y/L/xmaMc6ZHzxiqcS8UNg33Pui3jSyszO/LDDWSvIgcga415ZrXy/M=
+X-Stat-Signature: redtihiniayphjzontkfxpdow9k3kreb
+X-HE-Tag: 1782921263-354752
+X-HE-Meta: U2FsdGVkX18mJNMF4TXmnU4MxXsf5UfO2ckElFICVzjv6zdo+/GP6xuaWfuL6/NKVOYQgtBiXaqbKgYVVpCuCNWf8XErGlwtZq00VLMCFhwJ1tJkJzZvLPvUNls+j/6Lf1lKgAVJi9YpDwpiy1T255W1ea3AQ2yegirZvO/WAxe6APhERQ1I9o+HoDPzbs0FdltnXYNnuPlX1o52alXh6dDYhoxVA2AbkhlkcWOroFJiZqdzISXgMzftSp7lp1Wf/8KhbNsIOwjOhsI8wa1l2X4bJ/f3dHYI2B5mrLF+bpMhsZ3pPcJh6gIzu3Zhlf37prqbCcuLnizqIvOYW09rG8KFyDBQo9saTc71eXsY8qsTE1dgdCZovDe9BVH/rDvrIS9DD5A336T6gkYdnJE5WYrSMI66rOqE9BwVWWWsj6CvaFFFNcat5qfwwxIO5Jr2O9xe9ziJY5KogaUAeExDH0S89bdq6WVLPsJ8iHwik7fZOdmlhKsUeQL7H7UmFNWVgNNctc0o93TMMt8N+Jr5Ea3B8VIRgn+zT9wD8LpDwgGsIAe3o1MEN2sfma9oia48fO0FP+v2wMXT2JT6NwhBtDBsdjQkDE2lZJ8dp/8d0YIKQQDerI34IZ+MJbvjAjFcMeLhAqaiWw1/+Xcky/hgIu6bd8R++OY4B2aM/P4X0eUEnp/gAR7OfFf1rqYjub45lo3/GVTv4KbD6cnoU0Cb35XSTYe1amYvzKNblY0u43nwT9sEUjTaCv49W1wNPbeivnWZiP5F3y4ezF6y2MJRWR6J00d4wK9ALbwi7PKnMTkaXyQNm9PhVJrCS0r6duEhxivPSUb41sLCDUgyGuAbPIRE6PnlSJPUw12puNefQwEUOXTB67F9GKGkkVx8KI4hXKTMziEDb9U7d1LBWxRmGhFrmNfwnQlj37zOpeGMr8IkHX5BFqo3m9Poin5eCuYigyqKDrPolYYZErcl35I
+ yDbgdqmg
+ zdWwSn8YOOYlJwbIuf5YLyL7+qVlJuwQ/IR9QCLwXQ7G6UvTaLB9f32uGSYK8cc+rNvZg7xwASXuFycBCygKwoqba4sgIwJ5A0punGLfhMUaRMmw5qwkfW985m7zCSO7Hwtp/AZNXSKTRpXaDS8zpk4OBUmjvgvPyQ/B4mqEoy8OccbhTwNeWwMYGS2lR3k2hFzHutWgFeGRsD/gZ7kQF/oZ1BX6uyDcySjCEuCY0UflzBQapClWxsFIQODvInJ3BPhF+NXL5vsT0nXlUHllX7e0Nkr3svNvXWBYBoPzVAimtP7RKotZNkAPOI8LMl6REkKcCzuO7wTFjGCiXBuyXOzuPlEXvHXz5tcouRuKtqJQ9oKi2g6r/IyNX2an6k714AWYOOTQTY5drPVfJ453zoxJu7j0m78EtJ3nt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,67 +157,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026 at 11:33:38AM -0400, Gregory Price wrote:
-> Something i found while seeing if i could make ZONE_NORMAL nodes more
-> reliably hotpluggable:
+On Wed, Jul 01, 2026 at 10:36:31AM +0200, David Hildenbrand (Arm) wrote:
+> On 7/1/26 10:33, Michael S. Tsirkin wrote:
+> > On Wed, Jul 01, 2026 at 10:26:26AM +0200, David Hildenbrand (Arm) wrote:
+> >> On 7/1/26 10:18, Michael S. Tsirkin wrote:
+> >>>
+> >>> So on this idea. It might not matter. What I had in mind is:
+> >>> 1. run the current logic
+> >>> 2. add page to a list of pages to check, then invoke e.g. call_rcu_tasks
+> >>>    (or call_rcu_tasks_rude) maybe
+> >>> 3. in the callback, recheck and if poison cleared, go back to 1
+> >>> 4. otherwise everyone will see the bit set, remove from list we are done
+> >>>
+> >>> it seems to not regress anything, and for the rare race, we set
+> >>> the bit eventually.
+> >>>
+> >>
+> >> So test-and-set (and friends) would also have to check the data structure that
+> >> remembers bit to set/clear (and possibly update the data structure).
+> >>
+> >> That does seem doable. Do you have a prototype?
+> > 
+> > what do you think ;) post it?
 > 
-> diff --git a/lib/stackdepot.c b/lib/stackdepot.c
-> index dd2717ff94bf..9ceeb56574ef 100644
-> --- a/lib/stackdepot.c
-> +++ b/lib/stackdepot.c
-> @@ -682,7 +682,15 @@ depot_stack_handle_t stack_depot_save_flags(unsigned long *entries,
->  	 * we won't be able to do that under the lock.
->  	 */
->  	if (unlikely(can_alloc && !READ_ONCE(new_pool))) {
-> -		page = alloc_pages(gfp_nested_mask(alloc_flags),
-> +		/*
-> +		 * The stack depot pool is a global, never-freed allocation.
-> +		 * Use alloc_pages_node() on the CPU-local node instead of
-> +		 * alloc_pages() so the pool does not inherit a transient task's
-> +		 * NUMA mempolicy (e.g. MPOL_BIND to a CPU-less/bound node), which
-> +		 * would strand this long-lived page on that node forever.
-> +		 */
-> +		page = alloc_pages_node(numa_node_id(),
-> +				   gfp_nested_mask(alloc_flags),
->  				   DEPOT_POOL_ORDER);
->  		if (page)
->  			prealloc = page_address(page);
+> As RFC please :) [and if it's AI generated, obviously properly reviewed and
+> reworked by you]
+> -- 
+> Cheers,
 > 
-> This is a global, permanently allocated, resource that inherits a task
-> mempolicy's placement because that task *happened* to be the first one
-> to touch it.
-> 
-> There are many alloc_pages() calls (155 instances kernel-wide) that
-> inherit a task mempolicy when that's probably not what we want.
-> 
-> alloc_pages() is called in: net/, lib/, kexec_core/, drivers/, arch/
-> 
-> you can imagine a task setting `set_mempolicy(INTERLEAVE, ALL)` and the
-> result is a bunch of random driver memory gets spread all over the place
-> along with the task's heap.  Is that really what the caller wanted, or
-> did they just want userland data spread about?
-> 
-> But at this point it's a 20 year old interface, not much we can do about
-> it without making *someone* sad :[
-> 
-> I considered proposing MPOL_F_MOVABLE_ONLY to mean (roughly) "userland
-> memory only" - and then slowly trying to migrate numactl to make this
-> the default.
+> David
 
-Hm. Kernel allocations that are totally incidental like the stackdepot
-example above should not follow task policy. But there are kernel
-allocations (kernel stack, inodes, pipes) that are directly allocated
-on behalf of a process, and so probably SHOULD follow task policy.
+Not "generated" surely. But assisted, yes. Still hacking on it, but the difficulty
+with memory-failure is that fundamentally, it's not 100% robust.
 
-That's an annotation problem that I think we have solved already,
-because cgroups need the same distinction for what allocations to
-charge to the current task's cgroup context.
+For example, we have a fifo fed by hardware and consumed by a workqueue:
 
-We could rename __GFP_ACCOUNT / SLAB_ACCOUNT to __GFP_TASKPOLICY /
-SLAB_TASKPOLICY or something, and have mempolicy follow it too.
+        struct memory_failure_cpu *mf_cpu;
+        unsigned long proc_flags;
+        bool buffer_overflow;
+        struct memory_failure_entry entry = {
+                .pfn =          pfn,
+                .flags =        flags,
+        };
 
-There is still the whole "changing 20 year old behavior" aspect, but I
-think the polarity works in our favor: big important allocations have
-already been following the policy correctly. The behavior changes
-primarily for smaller, random allocations.
+        mf_cpu = &get_cpu_var(memory_failure_cpu);
+        raw_spin_lock_irqsave(&mf_cpu->lock, proc_flags);
+        buffer_overflow = !kfifo_put(&mf_cpu->fifo, entry);
+        if (!buffer_overflow)
+                schedule_work_on(smp_processor_id(), &mf_cpu->work);
+        raw_spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
+        put_cpu_var(memory_failure_cpu);
+        if (buffer_overflow)
+                pr_err("buffer overflow when queuing memory failure at %#lx\n",
+                       pfn);
+
+
+if there are lots of these and the scheduler is slow and it overflows,
+it's sayonara you have lost the flag, right?
+
+
+Oh and by the way, I just noticed that when buddy merges pages it does
+not check the poison bit. So it looks like there's a simple way to lose
+the poison bit - have it merge with a non poisoned page.
+
+I guess maybe we should fix this last one.
+
+-- 
+MST
+
 
