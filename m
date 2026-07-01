@@ -4,129 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D6D4C43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 17:19:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E11C43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 17:19:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B81A36B00A8; Wed,  1 Jul 2026 13:19:08 -0400 (EDT)
+	id 5B5CE6B00A9; Wed,  1 Jul 2026 13:19:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B34546B00A9; Wed,  1 Jul 2026 13:19:08 -0400 (EDT)
+	id 58D8E6B00AB; Wed,  1 Jul 2026 13:19:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A22CB6B00AB; Wed,  1 Jul 2026 13:19:08 -0400 (EDT)
+	id 4A3236B00AC; Wed,  1 Jul 2026 13:19:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F9F86B00A8
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:19:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CFCC91C73D6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:07 +0000 (UTC)
-X-FDA: 84940868334.21.2BDA384
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 30707140003
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YiXy0G1o;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 15B8E6B00A9
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:19:13 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 701351C358A
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:12 +0000 (UTC)
+X-FDA: 84940868544.13.7AD25DF
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id AFF2A20005
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:10 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BSf8gzFz;
+	spf=pass (imf13.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782926346;
-	b=MdrwkIWTvWtzWUBxeqmOxLi6SeTR5WTQnz16iJhCiyF4VqSJ7orQzn06k4eeolOrAV984m
-	AoS1Dt7IpvSYh9VCAp5rxWiJ4njK7AShLyiqDeYDb9ZRnGLFG691xqcaerT3ZeASwaw3M/
-	+xHgC0J9RBSy5LCNPQdH06qhYotq+80=
+	t=1782926350;
+	b=ZmfgPKYOIYCujG/ehFsEy7fXC8pOr+XuiWQp15fmc9eqKqHzJ3ICEI7xchbcrNv1lW9jhJ
+	0w/KLvOgXl+j4C6OvdC+r9H6R3SXlOO5vv/8vJjfWvHo/Q7EwM1Z3gd8yUgxZp4ZbDoUZL
+	FBEcTGT23BoAFjdnh7hVvaNYosddevE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782926346;
+	s=arc-20220608; t=1782926350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=OVZjtpTrxXxAVguXYAz4E7mi5sWPqKxrHjlHEoMDU8Q=;
-	b=IDBOXaDNSgikUcCR28YTWR2LPtuvYGzC7BSGuEsjVonj1iW8/scG3KvCwpe1inCFcmhxHw
-	F/DLwsSLK5u2SKYBSdS9nxkCqa6HqGmgosr4JQA+4qwycdECq4dNRGM0NmmLiCnTj5Ag+G
-	+fFeND+Jgo/rGNcFumvVz+DPdRuHW7E=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MDuqDP6jfkHa+poyWLUCQVCh41lLbreNnwDZhuoCFhY=;
+	b=kmemfS6oXa74fphfYRaRDHufcyLUnm9xV4sCkyDu7qsyu6k1JxtM/OzAZDKCvH9wy2ejHu
+	BM/cu/PHkUgshnnkIx3pxoZojROIA/VZyAoO9eXtT+65U6/7ytk1GFKF/XsB8DVjLXZ+7Y
+	2CMIa6pYEgsV81V2Va2kzeN0fpynhl8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YiXy0G1o;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-847917c3678so829699b3a.1
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 10:19:05 -0700 (PDT)
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BSf8gzFz;
+	spf=pass (imf13.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-845ea8924a2so473739b3a.1
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 10:19:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782926345; x=1783531145; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OVZjtpTrxXxAVguXYAz4E7mi5sWPqKxrHjlHEoMDU8Q=;
-        b=YiXy0G1oC1vhWcZq/Zz7FWboIHzOYhTXpdwm8ikwtnqXmJsQLlycp6fqwe734G5GL+
-         CzZ/ZbNgfs6HlyXMtXyXp4fBdvgs6ZTvwDgWmFmkTDbTns9Tun2YC5pmdIQxv97xvGoS
-         7paFuK52YLXDjsWrTJsmqJtRF6toHsVxWJBG/oibsNBN59PAAVKKyi1GxNH5rcXUKkuI
-         kufAZHvlh7mpSuuGlhb2mQxg8LZ5FxC2+l9BLtkBLAvfCvcZ+nLv5RXY5x4nhKNEmFyy
-         fjnCF9D0ZmTZWf1ST5D2RgLBn9G3OcfGyP0yKVgDEeu9C6OQjjCHrjIM3A0aVeMUZCGP
-         HHwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782926345; x=1783531145;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1782926350; x=1783531150; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OVZjtpTrxXxAVguXYAz4E7mi5sWPqKxrHjlHEoMDU8Q=;
-        b=X8PW6ntHomQ/sFn1wslCHWz1jjmRCtU38bAGoIzWcPsQPES6mPOmA2Xff7JsDvL3of
-         J3NPWi+H2MdLHkG4Po0TkJbL1pZjbOXzTu2CHsb1qI8fFmDjw4GlWxo5L4AGN6Ck5JAG
-         Z2AMD0sHus1UfEwKOylDbFXhYZM4vebWrIeiyzy0OBw44dudwtvhVzJ1QJUMVgzh+KUM
-         4H8NEX1L2hCIAPcyDir3Dygl+JIQHZ3F+K+s4xlofKc5nqIZ8n5qJjmg1eq1B7vdUmmI
-         PxDpMcuSEWK/cmhCUPL0f0QxvX+h6RhRhlLDLw2xAdCgF0rK7sgU3PqhWhVhZYjocWwj
-         k26Q==
-X-Gm-Message-State: AOJu0Yx5H5eTRCq5ZFA4Eom/4amaFPysnUfOjFFSCv75jqbFii+LJ3pv
-	T5hrIQmxqhlSMm/uYsoGRcELeqLuDzF8qFKrLO2v4ZnDfO/l/qwh9bQm
-X-Gm-Gg: AfdE7cmXgAd7fv3al8hFgfo3IVSvF6DxV9OBrnuwCJvYKCzLy5Z0hI14Ctoiw12smaE
-	5nYKeXLkcK0X0MGVQKPT7iGxPK0RllKe+MTHUtpbYmMKIbyqI+D6B3GmHWaJICHj2AboV9M/Y/t
-	XVI8iSqNbL5ny3CUCFzMj9I3EU0CUeDGHv1s63T5suleQbzLL9nGy8Xd6qQkvj6ta6WOVTkHokS
-	1i+4RDy4G804L8EV2jNRU6IjyVqGf2MHw2L2uwPQ5I7U390wnXn77SzjLerHdyIqPglraZ6pSRd
-	OG+4wHJOhLhyB3+EKscLyS0PIpNdP1pd/rKetn77pSHAasm6e2wuiPTcl948xC11ymjMOdaOdur
-	QVOKILzuvaXlgzFwMn/jAiroldfjZKnnTz+y4akdmpX3auCdwbKike0mr9oKyeFdZh5BDHqvMDi
-	I8z0pXz3A=
-X-Received: by 2002:a05:6a00:948e:b0:846:a04:acdc with SMTP id d2e1a72fcca58-847a831fb33mr4758788b3a.26.1782926345049;
-        Wed, 01 Jul 2026 10:19:05 -0700 (PDT)
+        bh=MDuqDP6jfkHa+poyWLUCQVCh41lLbreNnwDZhuoCFhY=;
+        b=BSf8gzFzCzdQ2RzBzNPVB63V4yjLyNPOLUnNCp5BGE0xr8kZoCSzpifNCsIpgnXYsE
+         qOd/C6dyJ8UwBRa1rMISem/K3yDJH1kMloRufASu5zGVjniIrmCoMu8z2TddML0gXUU+
+         xrvL8ilc4Vo+MGnob5ukXtvFY4T3MxgcIkf8wNrFYrbDCPUp059jWzr6u3R+wA6wiomt
+         QY9kAbKDNrAWju1rom4i+H6xwnuV6s0bCvdn/b3p9UOhkZXtuTPjqiG4YXljEzXbkK7H
+         /d+9xnmDndK16H3GfwATOTndJT8bmfaRSLTy6NfOzABII+ZUWKz165G3ZCzRj6V9gIbm
+         FSaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782926350; x=1783531150;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MDuqDP6jfkHa+poyWLUCQVCh41lLbreNnwDZhuoCFhY=;
+        b=dwBmacgqJMv8MF+gEEz1on/kq6qTWVJsrTG7ZNzj9O74RniNJK4vPokghEv6IdHzBj
+         onkeaHSZlr7ryPZs8M/pkw19tE28ClwVbpaee/XZ0dnSW5EtUPgvk+xLPEVIOOKhMKO7
+         /YKmup7xHMmUmkaE6HLriaIOd0n9tPNYU0il2ZCCRHuF0jOydMNYufVFOJYIhQ4KKTTe
+         mlYiMqHXqSGKO5dI/ZHeBYi1fqAYvoT0wcsPmJguB6Wu4zhs3CX4msxPKnj38wrVFvgm
+         h0mNCRDX7oqGAOrLIxFqgUZxbRRjLhsE/3tck0x8GmLeFcYvLWREqPRVWlxGipTPwj3C
+         tAYQ==
+X-Gm-Message-State: AOJu0Yxc5MgfUHXVkfnVaC0FB5dW3HUJcW4QwgiyxwsMYfh5a7RSoDJf
+	Skq/t4h1FQm2oGotFb3IHbv+9m3xcffVhRS9+8jKEje7iwjiY5QwnPkg
+X-Gm-Gg: AfdE7cm/Klr+3N8TKycdGdb84gT3SoHUcEPaDtGx0Z8nXESyV1ebHvtN3LCJi4gKkWg
+	GLv1tNWQD5KKp2ebYvBdItXQyxqKM82HiTREN+l0qk4FCiykoPaHv+6JTR5V7XMz7lhNyiyVk8Q
+	Kdo+hTWgiaJne+hQrEMrCfAgsCzSeIj4UWZFtx6uJ8cGy81yTuSK0vNAJUw4H/WxKsILwstUdCH
+	Dg3MI/giD0lCKyzTAFVDRBh87yFX5ZM6Bxn12fqB63TMAKwCoEX/Pv1aec/t6Ji+qzLdDjX3RAE
+	4HDtiiQHs07wowmVHQhMFUVA9TzSIu1v47mv1ELqnKIS/yrnrAqssgSCZfLYTGmT5GCwqLDWGgv
+	yEgVJ4FaPuM57R6CfN0zWlUf9FExNQ0K2ob/vR2espS9qc0Kl6Ccydg5ELjpEo1GBprmyt9dr/J
+	oaYzZ/2fQ=
+X-Received: by 2002:a05:6a00:4b04:b0:845:e97d:447e with SMTP id d2e1a72fcca58-847c07449a7mr2509329b3a.26.1782926349508;
+        Wed, 01 Jul 2026 10:19:09 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb94ab79sm105719b3a.31.2026.07.01.10.19.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb94ab79sm105719b3a.31.2026.07.01.10.19.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 10:19:04 -0700 (PDT)
+        Wed, 01 Jul 2026 10:19:09 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: akpm@linux-foundation.org,
-	Andreas Larsson <andreas@gaisler.com>,
 	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>
+Cc: linux-mm@kvack.org,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	linux-kernel@vger.kernel.org,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Rich Felker <dalias@libc.org>,
+	sparclinux@vger.kernel.org,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Yury Norov <yury.norov@gmail.com>
-Cc: linux-mm@kvack.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org,
-	Michal Hocko <mhocko@suse.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	sparclinux@vger.kernel.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>
-Subject: [PATCH 0/4] treewide, mm: initialize node_possible_map like the other node maps
-Date: Thu,  2 Jul 2026 02:18:47 +0900
-Message-ID: <20260701171851.2447626-1-ekffu200098@gmail.com>
+Subject: [PATCH 1/4] sparc64: set node_possible_map in bootmem_init_numa()
+Date: Thu,  2 Jul 2026 02:18:48 +0900
+Message-ID: <20260701171851.2447626-2-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260701171851.2447626-1-ekffu200098@gmail.com>
+References: <20260701171851.2447626-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 30707140003
 X-Rspam-User: 
-X-Stat-Signature: 6thhh4iq5wsu3p58q11yhtri6qtb1gnt
-X-HE-Tag: 1782926346-121330
-X-HE-Meta: U2FsdGVkX1+z11lvXibLzrpizSSDEDsM6ahd31YhdMqpbH4XSkiyPSil1zvd76qfiL+nMm2X9fhpD5r6J4ex+0tdXC/CLXezdYEiXj9MQJNs71Fc7ScFKEk/1Yn6A7cKlcK/1Y+yqkMf8pIWXD6bgSKlkXmmeXxFF2IfJn41SN9GzyY9ipBs7myV6havvmCCV0rQp+OYi30AULuMYMFjckGCuTTQK0Z8jCzIUu34iSqSPl+NZYzW+F7miMaPmMfedSqFxxwc7cwsqovibC1+po4GcCj081bA87kXr6II88V6R5LbkDry0bpcGaQCw7oZLeMHxCXG6L8vYFDfvM8xXKtwO42eU6nfX5Hdwku9wYI7FJNbfs83gBTcU/eXUHQEcbXo+EqT8HiucXlOG08Sl73oSrtQeoLaFsZ7XFE08KX8D1U6MOHeXxNg5BkWhbCfzUf0kaSjKIRCYwRKt9Ak+M7pa0k1uh/bYdZyjiDnVrNw8cskdSMbJRDybBcP/894ZFB3Dn81WvW5FGMM5hZsHBIUDBhJmREmaHhper2KC8goz1w14MvOzxNRMtvaoKOzstWjuEmHWKG7y7n8uVJy/LlxBuGOysYCX7MbQ3nbDGbW1N/FyLLHsmcOGar7nPw0xQ8+A9+C2+/Q4LMYMbetKEh/Uz6qwg1/Quifv0/xeWiHdIUJ41n/DbsJbnsV+w9C0qyPQ7piWJCk5+36QBE3jV0+y27isSGq9k1hkNIdrRYp1cR//ycrm6T5x+weV1lD242bP34dxrOKc+T+jBMm81Q3RnXV3fchjsZrZUIb4fMH5TC8xa6IxFJ4zk/tuuulhwTy6PsdXgHfRAgU7JNXWFZLNEjz9QwBAZF1+kLIP8M2ed+ypxykZqxXU8twvoP/tQWFSeIBr52dBOPk1vo5vVQSAMVtdRm2nkHi8A6LMSIDPv6DFumL5ep3keyLupSBmBrTNb0DVqL8d0kky3Y
- nvoTwPfV
- s14Sa9zbRJ5VVrKLNkM3MMvmo/+VlD/R27emRCA6YNRkOSkHPaV52G9s2yEJEBbt9198zfUlZC3EXcuo6a2vKNqjIQNxCrsXYLH5fyU6ncBInwAP5X97o7FIxqqbKlNf+7TP6tKKwYVr6QFhDxFIfyHb1v4lGoVzl3hMIbUPC1lb7EVjVMrkuo7pqi3PINYFxagjdOxvsrSl5aBVZFCToPKvj1WwPdaFwOQPMJO/of0TuCIm1vbAG8rCusZLorETzCauvbqunYi5VebRnf+TgtKB9FYThmE5847SvCOVqIaZSPlY7EfXKzQTpxL1TdJ82QSRv+uO9J2P/zcJNR1vkjyDCRWuqMyeHcmjq8IZLbh0gqKoSIzMpp/yMNp43o9bT8oRzFBom4N0wEYT+KV3wMWb62bST/ESNXZFSL3kTB5s5XuKrtqqmXbTwqnYdY1+7ivc0Jg6Jgkmm48Wv5GNdjlE4UJm95o3ATAUQ+pud1G/xCFOVrVQVvv5x5R/kPLclhnceqyEUZe7hTP9IMLLaWe90YA5odXkGvfimM/FRI6dDV5BCNaAya16c7sCl+6Vc60VWvYToB9+nFazGAbnvjkeAVA==
+X-Stat-Signature: stoyde8zgsbiqay5j34p5qi9h5nmogp3
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AFF2A20005
+X-HE-Tag: 1782926350-83944
+X-HE-Meta: U2FsdGVkX18399oB691x3fEU9aWReB93Vg6AJ9Fv7p7ORfXJ996Ara1IcCAzHNEbT1hl4u2apqezl5ZdNK/HTSsB1JtRifBtLGrMIA07cb7AQ3+m3MPRpoOJsIlvC/9Xi9YPUZujZxbkiY4Ydts7nGs98fg2PIUfqgL2zPRxnUmoVP5Qj5lthOUQNmaxuxdOzqJAlK5DYJI74XuZzn9lWSBvMBRzjOnyW3zYOiu79LEyO4hZntpTwIt57+kPHspdeKhsiGvl4N+N0A/7asJWF+wHlcd4qGi/V5NQ5bFjvP4soQuvJLfXWvtfJ1nYIKaJvIA/mTzD8rXMYf6Fk4sKfFvEREO4OXKjLzdUIkFUjA3iX+5Nhu8s6DEWubO1sj2S5ASIjFx8ZQRVb1N5HYYEoYr9Z7NRuOOXs2WDXGQ4lpN+z9FmWQOWT3oKM7zlHWHNb1l7joXUob46XXrWhdiuNaPHygHnXv3roglpIKJrWcdttnVu0Vj+BzD1W8YAUat/HnCWjS+Ah9CqwohqbFOMEXvUlXfX6acWRakqo4wEuExN5Z0PZ1QdFZKq2PEa0JjzbcJjtHmgvMNT+MHxBjiLfixORSSXaJzH+1WccByrKPUK2NI3oTD9lMmxiW0vMglShgJEuPVJ3kDcIt3YrNe7CEbgfnoRzGiAqvkJrYUNICLj2c10my/o8dlaq4N1kTv6/Wg+QTjpbzsWmqLPCam+xPlp+7gQPv1qBt4BffoxvSThKMFyj9Hmu8W3vgCH3b3MDJA8Rus7iPg4kH6x2bH+BxPHvGyhZvb7IO9R/xT738vytLPZAJ6RapH0THr7rGZtItGBGCa7qTagM6AJFSwnqwQc6krgqaWvZd+tGs7G5QIh2iY2/dOd7L5przlzRUbizggVzVNU0hBPO3bqVQPlx1v7Wdq6BjbiYujFSIzuaBE2R+9nq24UxpY3kpZ28wKYsiF/c1fxSslKUmPSF4j
+ FSYcUWRp
+ LhbIlmemioE9x7aPCKv0ZC+RdflXg7Xju56r22pAT6Z0Gcs0RiSjVmlRT4sKEUfWDHVDMqEH3CSMPeA/LwL1q+0Epvxd62/DgQmnsdxlXbSE9Uus1XdOnVYUTS0z8qWgWiTRa0SCj0XWOqSFPDi4l4bdj4kLi/jn45FyX2CaNBK7FNlNPteO2PmDp/BocF0TwM4cRxl0daKVYTB6hALJwvp6Czb2T52HFGvWv9RTRF2ffb5ZB32aHfivKuDVO20s0Hm52T6lS3ym/vufLpo2izLIA4QNox6VqBXb8B71C2CLWKKT0N3mMBvk+xdzbbrj3WF77q6/N/4V56ZIGKFbyZ+pkRCYBlaK4KLvcf/Kc3tT8EqMzzyc2uUatnyIZa8pzCJQiN0zmHB33z9UdZWMexm4VfVD/bvLf+zOtziVYiVG8KiMHXapgB6SU76OE2c07Rx3dzRay6MeRcxIXeuwLH/H+3owP06DLf20hbhV2w1TA2/P8c5C1nmCRTs2EoKN/8D9ZfxZEmAoQbp//GOUrPeN/GQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,51 +127,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While reviewing an earlier series [1], Andrew asked why we carefully
-initialize node_possible_map at compile time, then zero it within __init
-code anyway.
+Unlike other NUMA architectures, sparc64 never sets node_possible_map.
+bootmem_init_numa() marks all nodes online and node_online_map does not
+change afterwards, so set node_possible_map from node_online_map.
 
-node_possible_map, aliased by node_states[N_POSSIBLE], is initialized to
-NODE_MASK_ALL at compile time, unlike the other entries, which are
-initialized with only node 0 set.
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+ arch/sparc/mm/init_64.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Architectures that use numa_memblks set node_possible_map from
-numa_nodes_parsed, so the compile-time value is meaningless for them.
-
-However, a few architectures that do not use numa_memblks do not set
-node_possible_map on their own. Once these architectures set
-node_possible_map to match their own topology, the NODE_MASK_ALL
-initialization can be removed.
-
-Patches 1-2 handle sparc64 and sh, which do not set node_possible_map
-themselves. Both set node_online_map from their topology, so set
-node_possible_map from node_online_map.
-
-Patch 3 handles powerpc, which sets node_possible_map by intersecting it
-with node_online_map. Nothing sets node_possible_map before this, so it is
-still NODE_MASK_ALL and the intersection is just node_online_map. Once
-patch 4 changes that initial value, the intersection would no longer be
-node_online_map, so assign node_online_map directly.
-
-Patch 4 initializes node_possible_map with only node 0 set, like the other
-node_states[] entries. NODE_MASK_ALL is then no longer used, so remove it
-and its only helper NODE_MASK_LAST_WORD.
-
-[1] https://lore.kernel.org/all/20260624204030.3c8baa67713b6ca1d537baba@linux-foundation.org/
-
-Sang-Heon Jeon (4):
-  sparc64: set node_possible_map in bootmem_init_numa()
-  sh: set node_possible_map in do_init_bootmem()
-  powerpc/numa: set node_possible_map from node_online_map
-  mm/page_alloc: initialize node_possible_map like the other node maps
-
- arch/powerpc/mm/numa.c   |  2 +-
- arch/sh/mm/init.c        |  2 ++
- arch/sparc/mm/init_64.c  |  2 ++
- include/linux/nodemask.h | 20 --------------------
- mm/page_alloc.c          |  2 +-
- 5 files changed, 6 insertions(+), 22 deletions(-)
-
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index 103db4683b16..a749f63568b7 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -1559,6 +1559,8 @@ static int __init bootmem_init_numa(void)
+ 		else
+ 			err = numa_parse_sun4u();
+ 	}
++	if (!err)
++		node_possible_map = node_online_map;
+ 	return err;
+ }
+ 
 -- 
 2.43.0
 
