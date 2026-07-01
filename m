@@ -4,119 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66344C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:57:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19F64C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 10:03:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 462186B00A9; Wed,  1 Jul 2026 05:56:59 -0400 (EDT)
+	id 0533F6B00A6; Wed,  1 Jul 2026 06:03:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43ACF6B00AB; Wed,  1 Jul 2026 05:56:59 -0400 (EDT)
+	id 02AE96B00A8; Wed,  1 Jul 2026 06:03:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 351AA6B00AC; Wed,  1 Jul 2026 05:56:59 -0400 (EDT)
+	id EAA176B00AC; Wed,  1 Jul 2026 06:03:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1394E6B00A9
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:56:59 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9A1F0A02D6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:56:58 +0000 (UTC)
-X-FDA: 84939754116.17.ACB250C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 154FE100005
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:56:56 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DZVMXwNQ;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C404B6B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:03:43 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 444411A02F7
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:03:43 +0000 (UTC)
+X-FDA: 84939771126.22.D3C3188
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 00793C0004
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:03:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=neHSFNYg;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782899817;
-	b=4w7H9d9uxjcFL5pA7KOaE2AyyIC86z87sC6dzFfpTqQS9aGR0MRCWh6fCnPexVfiv68UTP
-	csYExVB2rd6ErJqPRiCjoyQUIgrzoqkJYiiLxKZNZ5JecSDQGuWd8xdJRP9T0Iv8pWNK1t
-	Rrpr/P73Md0r55jKdWUqLHs46qZMSQg=
+	t=1782900221;
+	b=CZe3Y1BTvCvuCAZEfwlOEJYI0AOHEeE+sep9JqZWP7XGr6pLfuGPa0ox695cS1k58MGlOW
+	0HzIYhylbQa7pU7LJf/YAgzaGtFWTcGBgXh+BFA0/jLbvshn1hfQvmtcDFDd8llI2TWIiZ
+	hDMk3iqAbqQZv6/+2TTtfr2qGD4NTlw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782899817;
+	s=arc-20220608; t=1782900221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ce5x8VsOSihGimDX+E2xZ9QKUoBE10Bad77hJiyAQ1E=;
-	b=dlSOOcth82mbaXbwdvVmDthna2/ey9QuXqn2cD07+87vnBYYkbza3l/CTFtNCLTzFpE95q
-	H4cmvK92+WIIyxENC4JKJjFVhhahyQYcrrKXduAaukksqIG/3IxqEXA8jfjs7s0HXsW/Io
-	BLolswvUdIYAu/41w/uvbUx8ebNChaM=
+	bh=mNFFO4VPeScOrYJf3hXGt7ANdsY5Px/4ndX+cXNT6ZM=;
+	b=aVvbbyiHolIFdnAa1Y5YA75OX76YpmEE6N2Vs7DwTh6F95nTXB+p0yIwkQOantU9vQURbi
+	4erZ2ULmLGOA9V2n/WJ/9iHQNkF0XLB2alEIXqWcsKqBU/E2CEhKp23gpmZZq8Qy9msNEU
+	zfMp3PQqzVBIPgMV+978c+rVUUMiPVk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DZVMXwNQ;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 475BE60138;
-	Wed,  1 Jul 2026 09:56:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3460C1F000E9;
-	Wed,  1 Jul 2026 09:56:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782899816;
-	bh=ce5x8VsOSihGimDX+E2xZ9QKUoBE10Bad77hJiyAQ1E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DZVMXwNQ7Qas5su8LVUpZ9nJZzyP2uBxeA7y69zzPN45RtVQlQlUbn6BqoVClF8OQ
-	 cdNO1iGygY8gO12qIOso81h2/ovQrZtecs/m5aFsflX56hjaVdJn1UW1oDVl1Yio6K
-	 KRPnQX2cEF4iykCZPLFviJvZsj0dccJ/OtNrkWrmrDfd+Zc2DCw82CITQK1lp0tyWe
-	 FVO7hLYRhosCJheK7GEd0ZzB4RBxZA6em2G+SdpL6ItiqRo5WAo8LiBboh0bVEWu86
-	 sAwvz0MgMFy71FvJ0/B44EaogV7h2VMnc/A+pYGBJOKud9YpmG/8lNeNdIQphF8zxv
-	 fOupSSuKidQxA==
-Date: Wed, 1 Jul 2026 10:56:34 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 06/30] mm/rmap: parameterise vma_interval_tree_*() by
- address_space
-Message-ID: <akTkRC7gPzdibXhU@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <43050b10b53cdfc3627440e6b14ae2a9730b2a5c.1782735110.git.ljs@kernel.org>
- <akPsGrmaOd3JMlC2@pedro-suse.lan>
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=neHSFNYg;
+	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1782900215; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=mNFFO4VPeScOrYJf3hXGt7ANdsY5Px/4ndX+cXNT6ZM=;
+	b=neHSFNYgW0Uiomg231jvPGdTO4DbZVxM4G/+XXG5ELDThtQcum5KP7zCq/1YROoZxK89Sbl4OrMfM0sMZpkkJcWdq7g9ImMsqro3d6BLuSpmI0Iyp6F81qJHk2ASR7cP3iU8bNukdGuPjgFujp88SWkHK1+69Nr4w+EmW0pi0b4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R671e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X66r03a_1782900213;
+Received: from 30.74.144.109(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X66r03a_1782900213 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 01 Jul 2026 18:03:34 +0800
+Message-ID: <623db71c-daab-451c-909f-a8efa56b998b@linux.alibaba.com>
+Date: Wed, 1 Jul 2026 18:03:33 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akPsGrmaOd3JMlC2@pedro-suse.lan>
-X-Stat-Signature: r6dn5z4tmh9345zb6mgn9d35bqw6oysp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] shmem: shmem_get_folio_gfp livelock
+To: =?UTF-8?B?6ams6LaF?= <machao26@xiaomi.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ =?UTF-8?B?55Sw5a2d5paM?= <tianxiaobin@xiaomi.com>, =?UTF-8?B?5L+e5Lic5paM?=
+ <yudongbin@xiaomi.com>, =?UTF-8?B?5p2O6bmP56iL?= <xiaoyaoli@xiaomi.com>,
+ "hughd@google.com" <hughd@google.com>, Kairui Song <kasong@tencent.com>
+References: <e1c290782eeb419e8c3e18ac6b1f49eb@xiaomi.com>
+ <126cb4ced14f4a3fa40c3189bf8a5920@xiaomi.com>
+ <49858bc642844e3bbf6449c0f241af04@xiaomi.com>
+ <700a2cbf90a2484f979aac858f08f5d4@xiaomi.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <700a2cbf90a2484f979aac858f08f5d4@xiaomi.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 154FE100005
-X-HE-Tag: 1782899816-311589
-X-HE-Meta: U2FsdGVkX18CqcnaeGrRjsOisFPXQBLx1Aqy/CLP2q5IJ5vWU9VC6COEyCzsD4AjoK0YaO9mwWwG0YtUQ9mYoAsFporflwGLfMi2zX+VNk/DrMiGg0JySzcXMfls5ArUziFb6Dcy9kI8LxqlZqREOVHZCuM/DW6vGrvOkDFDhQZXMJ1InnWulFbJhItgsaA16vUV43zWq0duv3u33GImU4oxNSZVIxcu6nFQ8O5KFTnsyTzpqMNrzIK8rr9NqM7FSGAE9Qha5rgoLPsFIDGfLMITBLlk7hD9++8vCgCNcBT463MSQ96lYyn9LIYWNcybC/eRCz6jtlcOlXJL/0KESLGIDcBCbhshQNxZWZtRtJxE+JhOB6m4R8OcqlnyLJHRJjRvclPrEyWSCFWHYG4U49SilOuYt5+hn1isQzmKXRh11nE55xk0X5cd1aVxNfFoWs93bXyQ3hUPbPjBwWlwyQB8IfX1lRhoj1vP6S+IcbQWPJTcqo4SZtClwIUFD56QeR8h8dNJIcpmyl+aNaYPsIRcrEHDw1qBsO5+KhT5tnHaWOrITJs+zTgBMAMR8tHzxDImobak49nGXi1eFv8asySIpASqJJ7/fD/xkqDCmJ1GN/v5qkewv9Bl4gkmWwZ4YWO3M+j3qFRnfzgxXYrQVSkmc8AZ5zoJrSG6VDlpOFmVh5n8nM8pBVSh6aT4y1o81si8Jewa5webylQwUhENlj3U9YsBNk8UQ0+gThZIhxuNPeqtspX3nH4fCJzo4esziuXai/CJqA3NZriILh/Za/qWhP0HGnYJqkAyAB5ZszBGAoDx7D2V79e9JW7I7i6MMtLGCWjKxkf3gKB7u0rXViWmt8uLZm+BM4NjDfcM6v/RPKAuvPxiEK30K2zMJ/469Reiif91JulQRC5peSIZU623+8cpKbi6KBX6L4fMPnWjxW288T/Kv3GIhgFRL/fZR1GkbTiPJEfZjUxs6UF
- bKof1cV1
- 3Xc+UkD151FmVl2DbsP6xoX1ffibmw6g07Wm26SxadV7oInr0tao904GmxkWqWRWpIWq2m9eHzV+eEjdbG6AmqAhvxzITWiJc22ehgImKivMEH4OdZQ8IwcJNAmPuzJtB+9dMp0kDqKbY8wdtWU/rZ9+G0xHCtatX8EfDclD6fFyK625Z16/qH3E7n1TlEYETr2ObmrvOgs4Slp6yD7sjaAF5OcSgt2QoOzpyYGIOVY5V2eB0G2CZjIkYrNKOX0XapoW7pqZsAOTqT9sfliVWQ4IUH4EKj+/8wqO68ST2rhUmn3JxknAWlL6zUnQtGgpGnU+8Ria/tLQPF8+VcbCTG+x5IiJmr4w+3IYPAgsZ5hav09UrVXanFgfOcLVHacPyz9UbLjZP0ghkju8=
+X-Stat-Signature: 1bwkwaymar556caz7pj7mgbx87ufmg5q
+X-Rspamd-Queue-Id: 00793C0004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782900219-495274
+X-HE-Meta: U2FsdGVkX1+uKAOIEaU1977LLGgdeiLWlV7W/TFGgQcLOqJAM6+3KjdfvEcaauoR4EZGAaQmYkx5W7DLq/pYJqSRkRvxwQLOOxGno6IqKeCG9UKVv4+5cypzBJ7vb1ujMGoYUw12PxtCw4eyH7G6i8h2fUP38OT6Ke1aGunMQip+LLomP9t7vt1ZimX4OkGqHyr6EfdDJ8CO15D18zfSPEsLXcsGPu1SkFP3hVMlFTiGSW+OEWi3N+6X+vOsEZOlKI40jugKk+v8tikuk0C/Oa/tWeX2RM+OZrkll0tz2ZysFgIGQJWNpHHleBjUmN0SJfMnEHzkgiuGItjEYD1GVaYedGIPmZl0kkktfQNNdQzXTcgbKqRKfD50BYaOd85q/fwXtVVYf0ZK68aqrYRGfyMB1seLj+7fBkSoP6l4+4Ct68EW0aENatkEK/FAQhNkGkE0wVo6Tf2NHfsGy7WOiO1yKqts3hIEC3vyxpVnfF/3KKK9ZP8GDnuwW+WXT9RDt41RFl33tJKKTgls7MwkPJ4mZPD+l3NTVQ677Zjcf3n3zlPd1Kplkz2f4AkEURAIxMG3+bhmoQXpVh7nzY8+ui6UvcdXngliH7gmVdD83m0giJUWyDESrmlxMrbiDnS/2PzCqAfoFJuUQj/mz7dS332U/BOLWRiUdcRzi174F0vpKT7sA+4dr9uiN2jD9cjYbQ1kzskH/H4Cv+ez6CkSmCIjOe+LIf+ipNoDiHgvMl9/UfZQT9KPx92oBf0OdFTA2uQVMIqh5kYgsNPiVQsyIgG3VJh4IkwYEAFZOO3mZ7jWAueSDQoVoV/jiNzs6oLvp0KnddekI/5lqbQbIpCOdPAXpTPkuJLnQybloaj9OF9leW/ToGZeZn5XEGyZmqel9Dv1EDqc7njLul2YQgnC6hX5tgOvFJTbUZSWVw6Kxp0/MoxEeps919QpL4FA2dOXgWNpCWAfa+jyOx/D43/
+ z/QYVCZf
+ jZVkzGQWyDL6JYV9fdih0EuW/0kfWPXvKygmOXUWAox8CxXTGLmJVlMmkf4HF85NpUK7eTzJjOeuPHIHY1n7BzhfPx/A6zjHZgeLxdtxk2xjBfL2p7x/Oy6Dpu5jrWbOUX/DmVezADpGfFPV0Fr+WMOMgDcouQgZL06e+eLrSZN9YDC39rq1cbve2kt3wmdPUfs9rXxqQCESiMsEuz+P3CXiL24l7jmckgQk5KmKScglEjcG97W/6AT2mhlBLtcSnZBN7FSEoAgooGXkebk+N4peoKlLSiXfM1So1B5YNwlMwD1ULN05zKCI1QCO80kacleJBKaBjQWTSDmkkzlh0JqNu4KX0b8cl/IRyq/bS0jJ/XZ4ffvG65gqU0LvKS9KwzNMqI+nECNisVq7zX8o04Es/sZFKpVrkypY7k+fVnOJd8bRHnQnduzEGxnkpwrkxLTkJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,42 +93,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 05:19:16PM +0100, Pedro Falcato wrote:
-> On Mon, Jun 29, 2026 at 01:23:17PM +0100, Lorenzo Stoakes wrote:
-> > The file-backed mapping interval tree functions vma_interval_tree_*()
-> > accept a raw rb_root_cached pointer to determine the tree in which they are
-> > operating.
-> >
-> > However, in each case, this is always associated with an address_space data
-> > type.
-> >
-> > So simply pass a pointer to that instead to simplify the code, and more
-> > clearly differentiate between these operations and those concerning
-> > anonymous mappings.
-> >
-> > While we're here, make the generated interval tree functions static as they
-> > do not need to be used externally (any previously existing external users
-> > have now been removed).
-> >
-> > We also rename VMA parameters from 'node' to 'vma' as calling this a node
-> > is simply confusing, update the input index types to pgoff_t since they
-> > reference page offsets and rename the parameters to pgoff_start and
-> > pgoff_last.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
->
-> 1) This is fantastic
-> 2) I need to rebase my local work :)
->
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
->
-> --
-> Pedro
+CC Hugh and Kairui.
 
-1) thanks :)
-2) sorry :P
+On 6/30/26 9:15 PM, 马超 wrote:
+> Hello,
+> I encountered a bug in the shmem subsystem. Details below.
+> 
+> [Summary]
+> shmem_get_folio_gfp() can livelock when multiple threads fault on the
+> same shmem page concurrently. The -EEXIST retry loop (goto repeat) has
+> no cond_resched(), causing busy-looping threads to starve the thread
+> that holds the swapcache slot, resulting in an indefinite RCU stall and
+> system hang.
+> [Environment]
+> 1.Kernel: 6.18.21 (ARM64, PREEMPT, CONFIG_LRU_GEN=y)
+> 2.Triggered by: multi-threaded app with threads constrained to 2 CPUs
+> via cpuset
+> [Root Cause]
+> When multiple threads in the same process fault on the same shmem
+> swap entry:
+> 1.Thread A enters shmem_swap_alloc_folio(), succeeds at
+> swapcache_prepare() (sets SWAP_HAS_CACHE), then enters
+> workingset_refault() → lru_gen_refault() → rcu_read_lock().
+> While inside the RCU read-side critical section, it is
+> preempted via preempt_schedule_irq (IRQ exit path detects
+> TIF_NEED_RESCHED).
+> 2.Threads B & C enter shmem_swap_alloc_folio(), fail at
+> swapcache_prepare() (slot already taken by A), return -EEXIST.
+> 3.In shmem_get_folio_gfp():
+>      error = shmem_swapin_folio(...);
+>      if (error == -EEXIST)
+>          goto repeat;// no cond_resched(), tight loop
+> 4.Threads B & C spin at 100% CPU on the retry loop. All three
+> threads share the same cpuset (CPU0-1,cpus_allowed=0x3).Thread A
+> is perpetually preempted and starved — it cannot complete the
+> few instructions needed to call rcu_read_unlock().
+> 5.The held RCU read lock blocks the grace period indefinitely,
+> causing all synchronize_rcu() callers (cgroup operations,
+> fd allocation, etc.) to hang, eventually blocking init.
+> [Scheduling Details]
+> Key observations:
+> 1.Thread A was RCU-boosted to prio 98 but accumulated only
+> 99ms of execution over the entire stall period (~1200s).
+> It was effectively starved despite the priority boost.
+> 2.Threads B & C have vruntime=0 and prio 91, indicating
+> they run in an RT-equivalent scheduling class (SCHED_FIFO/RT
+> policy). Each accumulated ~1134 seconds of execution with
+> only ~1600 context switches, meaning they ran uninterrupted
+> for ~700ms per scheduling quantum on average.
+> 3.Thread A cannot preempt Threads B & C: Although RCU boost
+> raised Thread A to prio 98, Threads B & C at prio 91 (lower
+> numeric value = higher priority in RT class) have equal or
+> higher effective priority. The busy-looping threads never
+> voluntarily yield (no cond_resched(), no blocking calls in
+> the loop), so Thread A never gets scheduled.
+> 4.CPU contention: CPU0 had nr_running=28 and CPU1 had
+> nr_running=24, with 3-4 RT tasks per CPU. Thread A competed
+> with Thread B on CPU0 but could not win scheduling.
+> [Observed Impact]
+> 1.RCU stall lasting 910+ seconds (19 consecutive stall
+> warnings, grace period g=4398761 never advanced)
+> 2.synchronize_rcu_expedited() callers blocked 742+ seconds
+> 3.init process hung > 720 seconds → system unresponsive
+> [Call Traces]
+> Thread A (RCU stall source, sampled 19 times identically):
+> __switch_to+0x1a4/0x360 (T)
+> __schedule+0x96c/0xf3c
+> preempt_schedule_irq+0xec/0x198
+> raw_irqentry_exit_cond_resched+0x2c/0x44
+> irqentry_exit+0x38/0x64
+> exit_to_kernel_mode+0x28/0x38
+> el1_interrupt+0x5c/0xa8
+> el1h_64_irq_handler+0x18/0x24
+> el1h_64_irq+0x84/0x88
+> workingset_refault+0x16c/0x79c (P)
+>    shmem_swapin_folio+0x8e4/0xd44
+>      shmem_get_folio_gfp+0xb8/0x710
+>        shmem_fault+0xa0/0x174
+>          __do_fault
+> do_pte_missing
+> handle_mm_fault
+> do_page_fault
+> el0_ia
+> 
+> Thread B (busy-loop on CPU0, sum_exec_runtime=1134s):
+> xas_load+0x78/0xe4 (P)
+>    shmem_swapin_folio+0x950/0xd44
+>      shmem_get_folio_gfp+0xb8/0x710
+>        shmem_fault → ... → el0_ia
+> 
+> Thread C (busy-loop on CPU1, sum_exec_runtime=1134s):
+> xas_load+0x50/0xe4 (P)
+>    shmem_swapin_folio+0xd8/0xd44
+>      shmem_get_folio_gfp+0xb8/0x710
+>        shmem_fault → ... → el0_ia
+> [Question]
+> What is the recommended approach to fix this livelock?
+> We are considering adding a cond_resched() before the
+> goto repeat in shmem_get_folio_gfp() to break the tight
+> loop and allow the swapcache-holding thread to make
+> progress. Would this be an acceptable fix, or is there
+> a better strategy (e.g., bounded retry with fallback,
+> or yielding to the specific waiter)?
 
-Cheers, Lorenzo
+IIRC, the scheduler maintainers are not a fan of continuing to sprinkle 
+random cond_resched() calls throughout the kernel. The scheduling 
+decisions should be left to the scheduler itself.
+
+Regarding your issue, could you try the latest kernel? IIUC, this 
+problem has already been fixed there (likely from Kairui's swap 
+refactoring work [1]).
+
+Now the shmem swapin call trace should be:
+
+shmem_swapin_folio()
+   -> shmem_swap_alloc_folio() (I think you use the SYNC swap device)
+     -> swapin_sync()
+
+In swapin_sync(), it first checks whether a folio is already present in 
+the swapcache. If so, it returns immediately. In your case, threads B/C 
+would get the folio that has already been added to the swapcache and 
+continue onward, instead of retrying in a loop.
+
+struct folio *swapin_sync(swp_entry_t entry, gfp_t gfp, unsigned long 
+orders,
+                            struct vm_fault *vmf, struct mempolicy 
+*mpol, pgoff_t ilx)
+{
+         struct folio *folio;
+
+         do {
+                 folio = swap_cache_get_folio(entry);
+                 if (folio)
+                         return folio;
+                 folio = swap_cache_alloc_folio(entry, gfp, orders, vmf, 
+mpol, ilx);
+         } while (PTR_ERR(folio) == -EEXIST);
+
+         if (IS_ERR(folio))
+                 return folio;
+
+         swap_read_folio(folio, NULL);
+         return folio;
+}
+
+
+[1] 
+https://lore.kernel.org/all/20260517-swap-table-p4-v5-0-88ae43e064c7@tencent.c
 
