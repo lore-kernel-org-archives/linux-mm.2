@@ -4,94 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EBFEC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 07:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1B1EC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 07:54:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92F496B00AE; Wed,  1 Jul 2026 03:54:07 -0400 (EDT)
+	id B79646B00AF; Wed,  1 Jul 2026 03:54:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E0556B00AF; Wed,  1 Jul 2026 03:54:07 -0400 (EDT)
+	id B04056B00B0; Wed,  1 Jul 2026 03:54:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D1576B00B0; Wed,  1 Jul 2026 03:54:07 -0400 (EDT)
+	id 9F27E6B00B1; Wed,  1 Jul 2026 03:54:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 501F96B00AE
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 03:54:07 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA39C1A0295
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:54:06 +0000 (UTC)
-X-FDA: 84939444492.20.13000D6
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 801B38000A
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:54:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gtC108Cj;
-	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B8EB6B00AF
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 03:54:23 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E1B8E140288
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:54:22 +0000 (UTC)
+X-FDA: 84939445164.30.6B5ED2D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 285E82000A
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:54:21 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FPMJNrxy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782892445;
-	b=hlTzD2Rtwn41+9gBziYykHUrEU1HjAB3UeCqU1SDfreqXh+MHripzOtb60yyZkfUGGWluk
-	RTPfNHR9tIJV+7xiq3EPraiHUQv1lzXY9HU5dZvaM+Xmz7AqQ1wrrwc6G07HYGbSqoUdYn
-	p7IK6/8l3TadmpWYeJ09Nh7Ww8EGx3o=
+	t=1782892461;
+	b=hrhYJBsaFoSttLA8gmRG7N64x0YmAv+h3lrZk9Sz2sdJtHv+nY6ydBL6JmrRrvAV7A9wFX
+	+rs5oU0RY3fkE7Adj/XQs1bmpMHLcejM4gbguwfhg5km1hpyd+2eFrYsZJh5pvkODpTb8W
+	g3iupb47E79gxGJt4GPm1cLCFNPKiwg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782892445;
+	s=arc-20220608; t=1782892461;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3h7CGvVoalB/WWwlHPJ/8L12bWTkcsodPzdppqEOSlE=;
-	b=iToHM+h1FwOSH9GzkKGI5aVuau2vUhTZixqPBTuQA3agCnULnyadS18UADUJVC7b1bymBj
-	wTqq7MVRAWMw6kUdm3krEWJ4ZNDO0uUQpQZMvxvPcjK/lvBGp8KpFOuVzKvcgt70NTPaNr
-	ONMhuhXQVGUO47gFxMkvTd6wloztHe0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OoGwCpoz9l+DaS9yK/T7aMyhiRavJfkssRFkVojsyeU=;
+	b=UeuuFtu+TtR+JAw5mKl0QPFnWmWJcvGGhxk8pNtaJ9vzY8ROlPLoNh0jgoiVmI0Qx1ypjW
+	DRQVk2pWGjTdrtU/ot8//1ByeyjBDxGd2vRDmv7XSQcUKfMBIwewFOeDBNaJ2feKWd7rr0
+	MrEqL6JrGYbhGpFpDjCDwyK4ptCFBpI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gtC108Cj;
-	spf=pass (imf30.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782892442;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3h7CGvVoalB/WWwlHPJ/8L12bWTkcsodPzdppqEOSlE=;
-	b=gtC108CjJNVRGfhHG3RKkQAts4kg9aEW1C4fta5PvdlcJFWdsxKhyc5MDoAVC+TJsvhYq9
-	el42sk6fHOI4mNYDlHkVyL1NPiZXzMgltpKb+XA0Fnr/UfLwbQebwz4eHsSXR9JBV1fNf1
-	kBHcR2u4vhCRr6IG8Tqm59CGsZDDkQA=
-From: Qi Zheng <qi.zheng@linux.dev>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	kasong@tencent.com,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	harry@kernel.org,
-	muchun.song@linux.dev,
-	peiyang_he@smail.nju.edu.cn,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	ljs@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] mm: mglru: fix stale batch updates after memcg reparenting
-Date: Wed,  1 Jul 2026 15:52:51 +0800
-Message-ID: <20260701075251.56413-1-qi.zheng@linux.dev>
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FPMJNrxy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A10B9601D7;
+	Wed,  1 Jul 2026 07:54:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529261F00A3A;
+	Wed,  1 Jul 2026 07:54:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782892460;
+	bh=OoGwCpoz9l+DaS9yK/T7aMyhiRavJfkssRFkVojsyeU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FPMJNrxyKsiNwu1e5dvMIa8aiWktThZ4oTvZuWEl/UwLIdXaJMCXh6FKTK4L0516+
+	 sbZagLjisYsO7E5gKG00+R/P5l7U1dAeqLHGieYJo6h0ygrlxD43xFZo3OU3naopx9
+	 Pa61i0hCt1hTvGYqaKVTClH3x9JwNkdC8DWLcNkgjl5V8QU9Dq2gqYPB0pIJhivGWi
+	 aqYyw7u1bLhXIbuehVx3el4lmfgeKc7QpxyvtVK2PCBE7YCwomLsKsxcpJMAmhWCLT
+	 2/FGiWnuHPfGyCgHSAh+xg1cAB6d01llOP8lcrDlLKvR73Us9Oo8mEWjIsTbyLi3SF
+	 Uul1PhhqAWz5A==
+Message-ID: <f291fabb-2f08-416b-a3b7-407eb6d872ae@kernel.org>
+Date: Wed, 1 Jul 2026 09:54:13 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ytzwr4kmk5n7x4pwyrme1zw1iku78ezk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 13/16] mm: Remove __alloc_pages_node()
+Content-Language: en-US
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
+ <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
+ <20260629-alloc-trylock-v3-13-57bef0eadbc2@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260629-alloc-trylock-v3-13-57bef0eadbc2@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 285E82000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 801B38000A
-X-HE-Tag: 1782892444-357803
-X-HE-Meta: U2FsdGVkX1/sOck6by0w3Yc/4I9Rd5yKk4s/Fax/dt5qG0jGWR8bRAauwSGTLjBezP/3lD95dqVDog7pXoQve8BDru4sIPLBsoeqOB1xOwRrWRcLuiik9HRS0zWPPVASYlNyqyWMN+d+Cqigj15NP9e2FqcZ6veKN1Rqr+lC51tAaW2A6j95t7T8ZAU0KxTRiXdAU9Zu0ezrULtX+S25kkPZr6Vy5etmSgqbAldfxuI/ctj8CuIS1xaF3TJpoqcG49yIxdWna07pJQorPAGR+1z96Tugx69Ap25j0uaNvc/KGacxC/mSbde90t9pdWlmVTkIhCpra64RzcJbbNIfdXO5I2ruVG2RqSaV3JdcZ52LZwusO1qrBYRmgAHchsW+T/hu4P9OWc5fjEe/bs/Lub33MNwZp3u24jAQqSN/k/pFLKRFDWid4mnRSFZRhZiIgdALA7cWRx9y+Gacey+Tcud4D11q073lX92qzEmVlUhHd5juFnbKRDz5Z3Gjc7Ak4Xozrvlb224dT1tFw+IwCNMMJm6+JqklDbmlZWy9pvA+vcdFM9TohZBe1dVa06VSsW2fguUcoN/5BUC1h6MWVeriFYLCyueirC21HhcjTawrHPGIpGSbBbzhrTZKLsNRyzrGntdO7sJ8TmgDURUWd2KzO9/jxQQYKQs4bxxQzUNBe0I3xezp6q38qqz4lmWwRM3aocTYLe3R81pm6Sr337YfvBoL9YqdYv2UxDTJ5FIcwzXld7xIn5bDAUNFRVU7J5xB20sdnrfjZDrzyoPf5nR1krypr/lp0yU2FI2BPsDTuqdSVZ/mht3xdxCpjTkvusnzdeWb2GxLYVz9ltcsV+CKjHrY99TOb7A1JB8uPvmqzq7Oppg35f5crzBjOEdgZWTSpn7MpMhhqvEK17SsgX4l1STS8N1RfifDw65XMGULpN/TWCyFUNyzgWqEuZ3LZh5NS2U3nkluoVmLsgS
- H3/vr9oI
- sjGWhbIplCvFEIN1fPwNXlmEHlhQpkGX+0tcyDh/dN6gelsku4mlWKzQPLXR/J1YqJYIZ5AqHAyIqta0EphjCbDdZb+wqxreaXLZEWaY+PFcJlFNLNNS06T3ureUGHD3VJnL9w7Wn7TcWmr0QJqPRvTPfA2aS/V4FcTsquSuiyajsbBonDvNqy8kqXYKWZHwN++E8JEIMXVckT/h6aNTP7mqJ2JVwKj983jtbZ/6aG8Vbhy626SSDt2mXbw==
+X-Stat-Signature: o9er1kfbkjyjnjpo3rdiztn1rppma1pw
+X-HE-Tag: 1782892461-136807
+X-HE-Meta: U2FsdGVkX18wlUjiXwZNFBMziEVyD1BqGiyQAGQ6vnkgA7cxXLwXx+PISXMt1ISyj8RsO2fNc4gVYKQ1p34zqicBOHNserJ+/X4ts5+4TlzI/7gCqU1iWzeCNm+H3a7dyVtJahk+Rd25Su8y/i/Nx8oBl5sxktbi1PcqI7QtmjQLNuaaC1zV7VCrt4pVRQzy3fgsLQK4xtxEdTrmcJadeMR6a8cXlX4FBHHyAnuZj+T3n/aBegwK2hn5L8F/FfJFztpdcPvTkf15g/oON0snL/xCSZf58drPqn6eA75EI/qRbMno7JvYvhDXtpVfw169BG8i9oXFvM+1b0T6aQ5z8aVmOEigPFxB5TvG+7yjbwCEtXrAAdywM0STSpfIzQ5RrwEDGISjCvbSQxUsYmrrsUI4TuA4ndu9+RQ21f5k8BniYFjWX5McX/LrBvq+77b44RU0glCFNJeLOJ8TP9qMN06lINZ41dD7xjscLHypYYDVF16+QOC6YxHn9oMA/kp7B77fKPzYJQkYDzDB0AzsWkhEZANPhATELmObMJszZAxnT0i65zctZhkMiX8dTKecSCIEDONxC0rubzZAXS32WhUBYzVigxYrb7oSCXOSszPMh6SCeAZ4Zw5D15hnWlpLgLvU6f0edtF8tgEJvO0DXxzMl4d6ag0cDQoSpwtOCJLGJ+Er1VDKYbx5iccZ4Brco8/Vttt054zI32ld9XPsUPziWdKmaWyjHn9oeyrQh4awoHpEGPeu+grtMYRBHLQ+j7N/+VmDBQwd+xlFeO+3nalJBFmDWmVYDCY4kEAh6ltIrumXwgUkssDVcNyGLx3r6Q6SNg5LLv7WbyXeDcGFrK3F0TS668bIUDkOnXSJmdTNZn4P+HvMvCtFDCBAnEEX9kundekI+S2NWrlYEfUtOG5yUgLQlPwfwWpg/1eCfCsKe/enoFY9SU1GrCkLsiz9YzGmekiybRm9yaMmPss
+ e3TboVuj
+ WAAUVyocfZ+aIBdw3EwNVKYP6FpaUqftKyB9Ftb2pS9YkkYD3e0DyuLOkAQeXvT1iV5e6YCDRiyTGDagqpAUVH6eIrD5vIrHumVaxr+G5O/b2DCqTMQoYP8FnVy5b/Y2XgLruW0t5axP3xi+ZdsLnesj6ch2p7Vste8VPOX4g2dDVZe4TZGyx9AI2JtbgQDSkDCF22HxK7uqkoufusB3aRyoJRhdMY5K8ifSw+zSmwp7vkkapz9XICvelOa+6n6OeVu3hHjgdXQwsrpg0dsqKm+pDgsLui2hziTCwF//yx7RPhZB+NGEl5VgRsWadvYeN16+fI85HeXBqp4JDt0MaRuK3HV0KwojRfdZ07FhLPfC30WfBiUpg+D0EoA4BbG9bxaghcUaf8EpCZas5tAXDI4prgQFCNO3aR0aF7clhj7djFmc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,156 +151,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+On 6/29/26 15:12, Brendan Jackman wrote:
+> There were only a few users, which have been removed. The only advantage
+> of this API over alloc_pages_node() is avoiding a single conditional
+> branch. The disadvantages are:
+> 
+> 1. More API surface, more sources of confusion, more maintenance.
+> 
+> 2. Worse impact of CPU hotplug bugs: most users of __alloc_pages_node()
+>    were using the result of cpu_to_node(); if the CPU gets hotplugged
+>    out this will return NUMA_NO_NODE. If one of these paths fails to
+>    protect against a concurrent hotplug then page_alloc.c will use
+>    NUMA_NO_NODE as an index into NODE_DATA() and cause some horrible
+>    memory corruption or other. With alloc_pages_node(), the code might
+>    just work fine.
+> 
+> Ulterior motive: this frees up the __* variants of the allocator APIs to
+> serve specifically for use as mm-internal API.
+> 
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-The mglru page table walker batches per-generation size deltas in
-walk->nr_pages while walking page tables without holding the lruvec lock.
-The reset_batch_size() later folds those deltas into walk->lruvec under
-the lruvec lock.
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-The page table walker can run concurrently with the memcg reparenting path
-as follows:
-
-CPU0                           CPU1
-====                           ====
-
-walk_mm
---> walk_page_range
-    --> update_batch_size
-        --> walk->nr_pages += delta
-
-                              mem_cgroup_css_offline
-                              --> memcg_reparent_objcgs
-                                  --> lock lruvec
-                                      lru_gen_reparent_memcg
-                                      --> reparent child folios to parent
-                                      unlock lruvec
-
-    lock lruvec
-    reset_batch_size
-    --> child lrugen->nr_pages += delta
-
-This will trigger the following warning in lru_gen_exit_memcg():
-
-	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-				   sizeof(lruvec->lrugen.nr_pages)));
-
-And the user-visible impact of underestimated nr_pages in MGLRU was
-premature OOMs because MGLRU does not try to reclaim memory when nr_pages
-reaches zero, but there are still more pages.
-
-To fix it, make reset_batch_size() check CSS_DYING under RCU before
-flushing the pending batch. A non-dying memcg keeps the original lruvec
-stable against RCU-delayed offlining; a dying memcg redirects the deltas
-to the first non-dying ancestor.
-
-Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
-Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
----
-Changes in v4:
- - re-implement lock_batch_lruvec() in a simpler way
-   (suggested by Johannes and Harry)
- - collect Reviewed-by
- - rebase onto the next-20260630
-
-Changes in v3:
- - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
-   (suggested by Harry)
- - update the commit message (suggested by Harry)
- - temporarily drop the previous Reviewed-by tags
-   (since the sync method has changed)
- - rebase onto the next-20260624
-
-Changes in v2:
- - update the commit message (pointed by Barry)
- - collect Reviewed-by
-
- mm/vmscan.c | 41 ++++++++++++++++++++++++++++++++++-------
- 1 file changed, 34 insertions(+), 7 deletions(-)
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 35c3bb15ae96..ca1e2a870d51 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3262,10 +3262,40 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
- 	walk->nr_pages[new_gen][type][zone] += delta;
- }
- 
-+#ifdef CONFIG_MEMCG
-+static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
-+{
-+	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-+
-+	rcu_read_lock();
-+
-+	/*
-+	 * The memcg can be NULL when the memory controller is disabled.
-+	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
-+	 */
-+	while (unlikely(memcg && css_is_dying(&memcg->css))) {
-+		memcg = parent_mem_cgroup(memcg);
-+		lruvec = mem_cgroup_lruvec(memcg, pgdat);
-+	}
-+
-+	spin_lock_irq(&lruvec->lru_lock);
-+
-+	return lruvec;
-+}
-+#else
-+static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
-+{
-+	lruvec_lock_irq(lruvec);
-+
-+	return lruvec;
-+}
-+#endif
-+
- static void reset_batch_size(struct lru_gen_mm_walk *walk)
- {
- 	int gen, type, zone;
--	struct lruvec *lruvec = walk->lruvec;
-+	struct lruvec *lruvec = lock_batch_lruvec(walk->lruvec);
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 
- 	walk->batched = 0;
-@@ -3285,6 +3315,8 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
- 			lru += LRU_ACTIVE;
- 		__update_lru_size(lruvec, lru, zone, delta);
- 	}
-+
-+	lruvec_unlock_irq(lruvec);
- }
- 
- static int should_skip_vma(unsigned long start, unsigned long end, struct mm_walk *args)
-@@ -3779,11 +3811,8 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
- 			mmap_read_unlock(mm);
- 		}
- 
--		if (walk->batched) {
--			lruvec_lock_irq(lruvec);
-+		if (walk->batched)
- 			reset_batch_size(walk);
--			lruvec_unlock_irq(lruvec);
--		}
- 
- 		cond_resched();
- 	} while (err == -EAGAIN);
-@@ -4867,9 +4896,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	walk = current->reclaim_state->mm_walk;
- 	if (walk && walk->batched) {
- 		walk->lruvec = lruvec;
--		lruvec_lock_irq(lruvec);
- 		reset_batch_size(walk);
--		lruvec_unlock_irq(lruvec);
- 	}
- 
- 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
--- 
-2.54.0
+> ---
+>  include/linux/gfp.h | 20 ++++----------------
+>  1 file changed, 4 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+> index 01d6d2591f49e..3bf55a5f9143e 100644
+> --- a/include/linux/gfp.h
+> +++ b/include/linux/gfp.h
+> @@ -256,21 +256,6 @@ static inline void warn_if_node_offline(int this_node, gfp_t gfp_mask)
+>  	dump_stack();
+>  }
+>  
+> -/*
+> - * Allocate pages, preferring the node given as nid. The node must be valid and
+> - * online. For more general interface, see alloc_pages_node().
+> - */
+> -static inline struct page *
+> -__alloc_pages_node_noprof(int nid, gfp_t gfp_mask, unsigned int order)
+> -{
+> -	VM_BUG_ON(nid < 0 || nid >= MAX_NUMNODES);
+> -	warn_if_node_offline(nid, gfp_mask);
+> -
+> -	return __alloc_pages_noprof(gfp_mask, order, nid, NULL);
+> -}
+> -
+> -#define  __alloc_pages_node(...)		alloc_hooks(__alloc_pages_node_noprof(__VA_ARGS__))
+> -
+>  static inline
+>  struct folio *__folio_alloc_node_noprof(gfp_t gfp, unsigned int order, int nid)
+>  {
+> @@ -293,7 +278,10 @@ static inline struct page *alloc_pages_node_noprof(int nid, gfp_t gfp_mask,
+>  	if (nid == NUMA_NO_NODE)
+>  		nid = numa_mem_id();
+>  
+> -	return __alloc_pages_node_noprof(nid, gfp_mask, order);
+> +	VM_BUG_ON(nid < 0 || nid >= MAX_NUMNODES);
+> +	warn_if_node_offline(nid, gfp_mask);
+> +
+> +	return __alloc_pages_noprof(gfp_mask, order, nid, NULL);
+>  }
+>  
+>  #define  alloc_pages_node(...)			alloc_hooks(alloc_pages_node_noprof(__VA_ARGS__))
+> 
 
 
