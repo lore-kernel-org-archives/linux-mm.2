@@ -4,107 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E4BEC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 00:24:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48142C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 01:01:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 361166B00A6; Tue, 30 Jun 2026 20:24:50 -0400 (EDT)
+	id D80B06B00A6; Tue, 30 Jun 2026 21:01:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EA826B00A8; Tue, 30 Jun 2026 20:24:50 -0400 (EDT)
+	id D5E696B00A8; Tue, 30 Jun 2026 21:01:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B45D6B00A9; Tue, 30 Jun 2026 20:24:50 -0400 (EDT)
+	id C474C6B00A9; Tue, 30 Jun 2026 21:01:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DEECA6B00A6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 20:24:49 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 644C6140193
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 00:24:49 +0000 (UTC)
-X-FDA: 84938312298.03.931394C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 58105A0009
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 00:24:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AjLSjqyf;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782865487;
-	b=pFgdvXNbf5TBjUvqQxOkJDmizH2DZNEIWNIoxbfXGPUAPIzFzwlbsbXrv+EAdm1E3BYAqK
-	8xDA/d+irfS2dEaZeL/MsmdsGN2B38Ygtddof0AtMvyoVP0sFfpYYIi4HS3MxVmEk1G2Xi
-	0o3MTt1J5sMI6RMrZvxY83ja83zZ8rw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782865487;
+	by kanga.kvack.org (Postfix) with ESMTP id 9ADC56B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 21:01:23 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 27A808B991
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:01:23 +0000 (UTC)
+X-FDA: 84938404446.01.532C1B5
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 2F890180018
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:01:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=ebuH0fTS;
+	spf=pass (imf24.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782867681;
+	b=LuWU+A4bMgqZEehOuwQ0x+n1baHq9SmBQkkXMLPvzxfavzAThzhRCu852vXUHrQR65LEHV
+	tnMFf3QPAgNpK5RFxqDZYPLm1IraKMIVK46ue8jWPGTwmT0KnQUkXfs3994PLMYYgUet8i
+	gpFAWkHLvBAKPQ81FOaRuaJ6Y8I59xo=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782867681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xTs20CSuM/vUDmQtfbId0rl6VyghXk5EqBxIDAfWQSY=;
-	b=6zumvblOZIuOoqEqiryroPA9FOGsCs6LJ91q4jUfSqFX6Mut+1JaQ7BWOFDRRONDUMAy0X
-	1UGo8aRciM6e4zfjESYWj7nE4L5mVqAu/Rh5w9Utb0C65/e1R+yDsgW1rf/dRm7WDSGB24
-	/+KTi8NJ/be9FYIjx9fUM5IqqAIVoew=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AjLSjqyf;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5065B4404E
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 00:24:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0016E1F0155A
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 00:24:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782865486;
-	bh=xTs20CSuM/vUDmQtfbId0rl6VyghXk5EqBxIDAfWQSY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=AjLSjqyfopAP4F3P6MxA0n61MZIsCi2dgOhDqP9s10/x0vSgtA3nd+udZr8SFIaom
-	 r244g2MCdIJZRY5Dx9HPDmz9aAsJ1rum/uyvox7y2kpnG8xveDGgr0mvxHHs7Ops2R
-	 cWlI5YosovpQKOSnB3MY+EQUYTTuCmVnMyAIMFNqwVYs0FcffkXCOH6Iis2xTgofZF
-	 PZErwryqzxdjnIDIV7x9zKiVDRiKqeBxdHeCwjHI8g2h3WotpjQPvPW8x2DplZ2hCw
-	 5jN35/vlX1FX7VocSPEVx1YuiGljMnV0ymEPqDuMudhODogdNC1nB4xnv0PW3F+s96
-	 M/EFFmiDQiv/w==
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-9204711e831so5736985a.2
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 17:24:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+qhShuDPTZP7PJMRii3hjypsUZy0vtlZHzvp7ZADRxCwWxG4QQzkTVC7JtHcIt+ULh71sFVnJaBw==@kvack.org
-X-Gm-Message-State: AOJu0YzFoWmiM+COX58ytDbciuTEAPdGmcuFGPN0PHkh89JEcdIp1CcS
-	KA1M7ttskotdWRrz5qIvrorPcd4NhCoxD5IUmdK/piSz4COybCwYo1MQDh9tAo1uFh8dYTaqHNX
-	W7JSy5wnuZ4tsyT0KT26dRO6POQGBl9s=
-X-Received: by 2002:a05:620a:6193:b0:92e:6cd4:5892 with SMTP id
- af79cd13be357-92e6d859ad7mr510785985a.40.1782865485255; Tue, 30 Jun 2026
- 17:24:45 -0700 (PDT)
+	bh=Ci7gWP2h/xtf3jvVwNd+rFboszO2fpzultsBVkBU2u8=;
+	b=ukLPaW45Dc+63DldMafwVIvITBQPbviAa8SEOX7h7yDGD4BmQCQ9gmHEyvXbIQUCuP4TTM
+	X9yFYKayjQVqO24Bd4/qIqfvudIgsN8TvELb+GnTi9fhxH6kk4x29MFzprRjMpKmVYUOYt
+	MBb/5L/Y50ofTcLhHeMbHJ7Zj6KMwq4=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=ebuH0fTS;
+	spf=pass (imf24.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-37df416c44bso56409a91.2
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 18:01:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782867680; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lXdaDXVAh+NDuR34mHGvuzvUIlOpf3MmQ0jX3tthGLIHv9yGX/kfeh3HxQxjIDobSn
+         xZZ8wX73S8oegUqtQd9pExEHDnC0ThFh8hQIYoYAdCjWedGaB/wwZCsaqygUSoKn0n9v
+         +op5/7/BexD10Od7RO3IAtlTQ6G5WRkMlPfQczuDPbNl/G/H6csq5C2IlS0PqW8obP68
+         mg9aw0tnfLL2rAtEEXY8wlHBwjN0L0wVeK4FyZwqPQGslUjRvEWBkPi2/I60Dkq08+gr
+         eBcT/+RyTNXWLMGccGrdSMXW/c/SoTcF6IZr9ya68JtpfnPdNByiLs2ZCpJpHnB7XGBY
+         mPkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Ci7gWP2h/xtf3jvVwNd+rFboszO2fpzultsBVkBU2u8=;
+        fh=Y2lP0ZwpDGBZ+ht3lO+L6wb5yQl6uknjndaCZz5uqZ4=;
+        b=qPL8+NYbOkmFQzQtnkla/wJgEOmgENxRYlObuhetFB1gcnMRZdUJoV8Og+7kpuc+Rl
+         p4GMFdIaB+Nb7XVLCzbCrMbXm9IjSZ00Z7EQnpdxsyq4LPPgH6rdVSk32WGDLRfs4UbC
+         H3CBK90UohcliUljcMSkkhO2xMleYnk3gZvM7ZQd2DBwlB78wg0GLCBR0W774zwDI7oU
+         Us8bKQBW5cS3PHGw/zdyD8xfg7P6ujKY0s6jyEeBNj1tPFxzMuLeTG+BI1VlsXKmkpoa
+         HuszjUOPljyPFQaNIy8UpNyKp0HNrleT1bjjKRwDlAVDWKozogZ9PKef7O0GrJmS40yN
+         oE6g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1782867680; x=1783472480; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ci7gWP2h/xtf3jvVwNd+rFboszO2fpzultsBVkBU2u8=;
+        b=ebuH0fTSEkmZAQ2SRBnKtLZBHsEQh6SNbvJ62gfUBLXXcdgMZvdIELiPfmkkHp16jM
+         up2i0VhS0u9V3Jy/lTduzAoKL7Ly9amh0U+3oTVLlPJJP9k7FDz8GLjpveFSF2hEg8NQ
+         bHBthsjnL8HHQTK62cSiTkel+MK4v8/W1tTU8v+WHMqMVNx1Jr34EQ94yej18xYVqfuK
+         dmavn2KV6e6kEdxc5HTTsQINY4LwSbD134la10Wc5IwyuEezgJQI+lFgUGrcBPc+SXFl
+         jGIjlPW2CYAfSkKISLUtFazEsXzsuliPE9avJq31GKNEjxWeDt3/nBExre6g6tOgVHku
+         cbEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782867680; x=1783472480;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Ci7gWP2h/xtf3jvVwNd+rFboszO2fpzultsBVkBU2u8=;
+        b=Ny2asN3HLQ11FDwkPXtcrfVllb3lqoqo9h4hUtD4Ne34QDe3vVRnc08aFihti745Bl
+         c5YZkkPYLz14Qw3LkBSqsGUnoc+gTUMKwwgFtOyb6fXWC2elqRjM1lTNyRcUSarGSq9b
+         GeDyvXcgoDLM5Pdp6Is2AZjA/Wmb4Mmj+9UqbjqM2rKzBWTlwwg9tIzQWemMCGTuISHD
+         VJYyHBPyczLXfyp19AYTACXVlQHPz8rduR6KPI8c2kySyANpDSYjzXOgwnitzvn4U+Zt
+         vdny5FyZrhW8vQfmEzipYM1nGAC2b+I9auuIgBgSAiWlzcZbBel0qd2FZ4t45I+rBSBM
+         AHWw==
+X-Forwarded-Encrypted: i=1; AHgh+RoQtb97VzXp9s5aodTaQkLKasyhomQWsBNltKiOrUqKHh+UrsAyIAYSApaQK7NSamabGg1zGSp2LA==@kvack.org
+X-Gm-Message-State: AOJu0YxiVnHj3L69yV4XYKg1siz7gY2Cvuz+zmhyrydbn+FiB/E/A3bT
+	wrGvy8suqy919087fAOsTR0/1oT2vSU7Toll92c+KdeXteu8qdNw1eDxt/0W86ape2RxkdiWR64
+	yWoH34MI6nMKJLYNPZqMl8y5A6BSXPsl8iSrjE6gH
+X-Gm-Gg: AfdE7ckXTh1q3tDHOXW4GaCWgXL8GLlRcUgwYyzWmUpaVf2wXRCc46mMu9E94w6kDSl
+	qXEaNWmxySoQCLqWY/cQZHuY82J/F2b3HcNo3AABCzyIBclakYyaTAZ+leksc3CtTlTMqgyJgDM
+	e9t5gIEGQCcHjCyuhNZLNwMguhumIbeIA5gkjQFs5NeC15zLJedsOXNj6jxKK7nPzqKhYwzSio3
+	JbHG161Vvr9fcaPnyYONvT0+xLIgy0QIiT3fwl1SBGOWuQK3OWaR4TQTXvi3d5BSPL+WLa/5H2h
+	ZNbWr/U=
+X-Received: by 2002:a17:90b:4f4d:b0:37f:caf3:171a with SMTP id
+ 98e67ed59e1d1-38052559d5emr5595765a91.4.1782867679957; Tue, 30 Jun 2026
+ 18:01:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1782538002.git.zhengqi.arch@bytedance.com>
- <e2bd33d5-4de5-49cd-970f-9e80eec91a3b@kernel.org> <CAGsJ_4zuxaqXQgrg_SiGY4gV4t3FQHdeM91dH4Y3-RknE7mg-g@mail.gmail.com>
- <DJMRZRG70UYR.MOB3ASPBCBAB@nvidia.com>
-In-Reply-To: <DJMRZRG70UYR.MOB3ASPBCBAB@nvidia.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 1 Jul 2026 08:24:33 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4x0D6oX54_BD2jcN5_v8o-TcgMTKbC6dv4QOxCtB_ShNQ@mail.gmail.com>
-X-Gm-Features: AVVi8CeBGpmk77eMqTttSo_KxW3HiZzQmkhgUsiW6XCXi8DjH7cK85TxKK_kaqY
-Message-ID: <CAGsJ_4x0D6oX54_BD2jcN5_v8o-TcgMTKbC6dv4QOxCtB_ShNQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/8] Introducte Reserved THP
-To: Zi Yan <ziy@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org, 
-	ljs@kernel.org, baolin.wang@linux.alibaba.com, liam@infradead.org, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	lance.yang@linux.dev, muchun.song@linux.dev, osalvador@suse.de, 
-	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
-	peterx@redhat.com, usama.arif@linux.dev, willy@infradead.org, 
-	vbabka@kernel.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
-	hannes@cmpxchg.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Qi Zheng <zhengqi.arch@bytedance.com>
+References: <20260630-security-v2-1-560d33c13ee6@kernel.org> <akOZERjhp302jhut@kernel.org>
+In-Reply-To: <akOZERjhp302jhut@kernel.org>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 30 Jun 2026 21:01:08 -0400
+X-Gm-Features: AVVi8CdzHGjJVtgP64OlHgyKiOBBF-BFKpTaq8pGUJg-AodsMxNfqrpADS4MUHo
+Message-ID: <CAHC9VhSekkkDajeFxpjAvaRyUnrfThX9hB1MD3aYBhYMCoRcTQ@mail.gmail.com>
+Subject: Re: [PATCH v2] selinux: hooks: use kmalloc() to allocate path buffer
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	David Laight <david.laight.linux@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 58105A0009
-X-Stat-Signature: q84r1eir4ytbo19knzhixa3ginacurnc
+X-Stat-Signature: 4yzoznmhqdzajg9yzttt1nr1arnxegy8
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782865487-998269
-X-HE-Meta: U2FsdGVkX1/PXYazB3PhejbxpmFFLf8Xe1Zvr+LksFsdZxrde2c0CuEcAm/xmJFmoCa0DjZtdQ76hMTZz3oLBIqkxEqSOD8IEEHQv0stD311H90PtMurEM5VQu5aCA/Rdba4Ag5MPLkFWy8eWKmL4mqW+k9FhSXRMp8ZmPnKqKqcZMHAKhv8QCG/+LYreuy9a1H3G0qKYF9J6QgH4dnKlxfFal1bS9p32GT+WzAMRtSYavF3eYySuk7Tpk728+XrH4Dx6qs2M8cPDTqLQwYS0tXuIPzEGqd47xKKZjtyUVBxbUqdWCUvXnkMgVTolzo8jJl1EAV+UUovPZTVchmlsN1KSudMA40C3rrt9yJbv7jSj0sLlsrWHt2564191z9Wvu8NikNtdqWBGjYCw9yEF8pZnI3hS5qSB6iaJ2nzxEr5V82k3L/Dz8XO/pXRVyy8VL9rEfu0VWjyVTAj4aFg3BjC6ojtfoRJIpjokqLDKHjhkoe5tkiixA1e/nTTPCpqwKkqGaRRYLyaWwzsBLZen35g6X1H44Q9Ht3SmKvda+GqEufOuyu1k7RpetumqvMhLUio60p2gGL59s43JHcdCUdembkf8mmxdrbFRTe5nl1TiSrWhEOAdHd8JtoF20BRNPvi6NoygWidvXNA/MLINb0itw+/Ng2t4LevWhRE1RDI7j3G952/9ztxd93O6Dqm0gC6vDp6KVxFhrHHsNY/oJcLTz3AfTHpAPoohmTmOYuLIThcfm2Jeh/PYYoc4Vacs63czZw9HDwzf9gFXZpSX8RcokfMvJCIOBLOfjSKsOxDLDipERKUnyF+Qrhkya0H4Plp7P72xj5z+2i43DKFBcV98VDp3wumXs/tTVwXSaTy61IP8zp5cl3bNUhPJl8VEDyML+Z/p7v9o0PRtVXGrEE/18eOCGOX8rMcYYHLDgkXUJkE6Bj00efQARDN5CjseKkhGC0CQ/tOzs7offb
- pb+YaUMd
- nGwtZNPqXQyB0Rpujp2Fw+xc5j78Msx2aPFw/XJVwA/W9eW9XpCoOEZzC4rHh8Q1N2JCyFtRZMZM/qpxXLxwyvHm58//DLllPhJ37OXwxRvVBT3zsXfmlUAu+LbhputHMOnr55iJI8Cmq7yzdkmt5CGmT2w+WO7wrVP/wlO0KyG3T+RzwJq5NdG6QtkPwGQnrG38rQBlPMGMPgtSbbgW3FzmuZSMUPI1Zkz7WfR25tdAUXdndgGcXY77LDypuBB+YpPed5qZQcRq45CFaAgheoKubs+UBq3Lrp5UAIy2IcHgEUUU9X94U87MUkI7lUX0s5OccopQCfRWZe0CU4ErCb4Q4UJPPzf2EBpVdiaYDyvm2Syg=
+X-Rspamd-Queue-Id: 2F890180018
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782867681-743996
+X-HE-Meta: U2FsdGVkX1/T23+OmhmFxeJIdeKB4m+bysZdxfiZcjQ+V8QBTwek5YMCFSGrcYPqDP+HqoXvG+lByuvWcXRybzcmc65Pibr1aj/rtYU4MRS8wbYLEoNvHmBhF89E1xKYzhdYKuALVnhhag5Hj8dYQext43keSTY4sdLRFtqCtg4Bs8iUK9St2dqiIQw8GIU4NlF+P3pH/IrzSvlL5lDvXrT+RRRRUn3xKdibI89amttiV3s5+B8sxWT4rnBdCj2wO5cBN8WDDWoWlYYOeq2dlJErNBftPfBBHjvzOeLcvuTlGGIm0i63l4vEOAz1JVitAtieSkDXlyfxmX2fA274akFY/3xPwMw07QEaeJksShby8FebIBsJrsz6f6tJfbXAuEaobwX2EjdEM1x4Lxni8cNMASuBFFDx4jYMgokPgGfUi6TOlsN5K8adggAfa55tioDY8t9QizYaF1ZhZIq7hZCv94v7EuE6IDkeBLGml1NJmdrmA5F5t3Ej8L8L+PZkZBKMW90jyi+TSY9oqzph+lR/I9fTqKVlyfaMM5KesgqdmV3rGTpMuGEw2iW0h4gc3srJHgwtTsDDWxLTc2U49fruw1sLR7a67ZaJjs6kDxzNyubeaGXOGoWHncVDRr0JghKIxOESnLZJrh5vQmr072Fpz7H6LEMO6ICXX/cnW1bDh2Bg8x8ylqcClbwLXis8BxBhJKXqULglNy0hdRoIzbchBO/aHf7Vn0XtG2oeKz+cbFJtVoDb9IFVD/kkn2LaqLxxS2mlic1jGMwScBRasFEuIktFr2CwFc9gVnpo0tCY1UWhiqZlnUgEvXtr/4k5Xv2erEJcMcV/Ti9M+nmhNtmk2VbL2EdaI63wB8hVVkECiSAgvukJ/8frZ+3jwKPuKnP9tNVWDJQDm5/sw5ggmRDsvJup0Zx+9fxsORpf4yAJd9VytfuSDPdz6gHy05/nJNk+jfv4pyjM82h4Yc/
+ pljxa58t
+ nc0H/nl3DkeqvvZbrCRJO4uIdMNzjethNQKVi7vaUVq4R0t7B46Jt54GMRIVeQQWJMDmD7bjPUyM8TWnmIYIb6aHr084tbJvfjXKoJcO+umjUieSX9CfVeoy67rbr+vl4wBUFDfUMKvPYzH3ZoevVhRd2ICTr0qyk7V27LN0dhMNpt0ZmmSgDxOWTN4+rEAVys8tHGy2l/MUpqUptSbTY5SK+qjv4073XRVuYgXeL/WkGuYuycQavMXo8AyNpns+6jGbGl24js4D7cdNRXJDeo3/cmGqbDOYNxX+sZv07jEkz7pOtfAD5PoDdqmJDS2Mr9DW0Fjj+RWxLBzCzZ7xb30nwNmoXisYcIAviVs8NhsNa5XWq+F03zrrgXSgR/+/WpGGoev4VxzLedaBerTmuKRAUlUQ8w5mk7K+qW9sWDQPFLps=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,140 +139,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 1, 2026 at 7:34=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
+On Tue, Jun 30, 2026 at 6:23=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
 >
-> On Tue Jun 30, 2026 at 6:59 PM EDT, Barry Song wrote:
-> > On Mon, Jun 29, 2026 at 8:20=E2=80=AFPM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> > [...]
-> >> >
-> >> > 2. Implementation
-> >> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >> >
-> >> > In 2024, Yu Zhao proposed a similar idea:
-> >> >
-> >> > Link: https://lore.kernel.org/all/20240229183436.4110845-2-yuzhao@go=
-ogle.com/
-> >> >
-> >> > The idea was to introduce two virt zones: ZONE_NOSPLIT and ZONE_NOME=
-RGE to
-> >> > guarantee the allocation success rate of THP, achieving an effect si=
-milar to
-> >> > reservation. However, it seems there was no further progress, perhap=
-s because of
-> >> > reluctance to introduce more virt zones like ZONE_MOVABLE.
-> >> >
-> >> > This RFC wants to discuss another implementation:
-> >> >
-> >> > 1. Introduce a new migratetype: MIGRATE_RESERVED_THP.
-> >> > 2. Introduce two new hugetlb-like kernel boot parameters: `thp_reser=
-ved_size`
-> >> >    and `thp_reserved_nr`. When set, the required memory is marked as
-> >> >    MIGRATE_RESERVED_THP and put back into the buddy allocator.
-> >>
-> >> I'm all for some mechanism to make runtime allocation of large chunks =
-of memory
-> >> easier, by adding a pool from where multiple consumers (THP, guest_mem=
-fd,
-> >> hugetlb, whatever) can allocate memory.
-> >>
-> >> Call me very skeptical of getting the page allocator involved like thi=
-s. (I hate it)
-> >
-> > One thing we've been thinking about for a while is whether we can
-> > introduce something at the pageblock level to let memory "remember"
-> > which allocation order is preferred within that pageblock.
-> >
-> > For example, if we ever allocate an order-0 page from pageblock 100,
-> > that pageblock would later prefer order-0 allocations. Similarly, if
-> > we allocate a large folio from pageblock 200, we would avoid using
-> > pageblock 200 for order-0 allocations as long as there is still
-> > memory available in pageblock 100 for order-0.
-> >
-> > Since order-0 allocations are often the main source of fragmentation,
-> > if we already have both pagecache and anonymous large folios, we may
-> > care more about containing or quarantining order-0 allocations in
-> > certain areas, rather than trying to maintain a large-folio pool or
-> > similar strategy.
+> Should have been:
 >
-> Aren't unmovable pages causing fragmentation? For movable pages,
-> regardless of their orders, they can always be migrated if no additional
-> pin is present.
+> Subject: [PATCH v4] selinux: hooks: use kmalloc() to allocate path buffer
 
-Right, unmovable pages cause fragmentation, but movable pages can
-also contribute to it. In terms of fragmentation itself, there is no
-real difference between them=E2=80=94the only distinction is that movable
-pages can be migrated or compacted.
+No worries, I just merged the v3 patchset, it applied cleanly.
 
-My point is that compaction or direct reclaim may lead to both
-allocation latency and increased power consumption, which may
-defeat the purpose of using large folios to speed up Android phones.
-
-Right now, order-0 allocations are spread everywhere, so compaction
-and fragmentation may be playing a ping-pong game and remain
-ineffective overall.
-Ideally, we should try to reduce or avoid triggering this kind of migration=
-,
-compaction, and reclaim.
-
-Our recent experiments using 16KB for both file and anon
-show that we still frequently enter direct reclaim due to memory
-fragmentation when allocating order-2 pages. In about 89% of
-order-2 allocation cases, direct reclaim is triggered even though
-there is sufficient free memory above the watermark, but no
-contiguous order-2 pages are available.
-
-These movable order-0 allocations, which are spread across every
-pageblock, are contributing to the fragmentation.
-
->
-> If we use per-order pageblocks, how to use pageblocks with rarely used
-> orders? Allowing lower order to fallback to higher order pageblocks?
-
-Yes. If order-0 finds that all pageblocks associated with order-0
-have been exhausted, it can allocate a new pageblock for this purpose,
-or in the worst case, fall back to a pageblock associated with a
-higher order.
-
->
+> On Tue, Jun 30, 2026 at 01:15:24PM +0300, Mike Rapoport (Microsoft) wrote=
+:
+> > selinux_genfs_get_sid() allocates memory for a path with __get_free_pag=
+e().
 > >
-> > Chris=E2=80=99s de-fragmentation of swap slots[1] seems to be a big suc=
-cess
-> > based on my observations, where he provides a similar memory-order
-> > preference for swap clusters. There is no reservation mechanism, no
-> > sysfs knob, and no need to split swap into two areas=E2=80=94everything
-> > just works automatically.
+> > Such usage does not require a "page" and the size of the buffer should
+> > actually be PATH_MAX which may be less than PAGE_SIZE on some
+> > architectures.
 > >
-> > I wonder if you would be interested in something similar at the
-> > pageblock level. If so, I=E2=80=99d be happy to work on a prototype in
-> > August. I=E2=80=99m completely booked in July.
+> > Replace __get_free_page() for allocation of a path buffer with kmalloc(=
+)
+> > and make it explicit that the buffer size is PATH_MAX.
 > >
-> > [1] https://lore.kernel.org/all/20240730-swap-allocator-v5-0-cb9c148b92=
-97@kernel.org/
+> > Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> > This is a (tiny) part of larger work of replacing page allocator calls
+> > with kmalloc:
+> >
+> > Also in git:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-k=
+malloc/security
+> > ---
+> > v4 changes:
+> > * rebase on v7.2-rc1
+> >
+> > v3: https://lore.kernel.org/all/20260531165852.1478916-1-rppt@kernel.or=
+g
+> > * get the args in the right order
+> >
+> > v2: https://lore.kernel.org/all/20260531151502.1467515-1-rppt@kernel.or=
+g
+> > * explicitly use kmalloc() with PATH_MAX
+> > ---
+> >  security/selinux/hooks.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> > index 1a713d96206f..d1f089917a82 100644
+> > --- a/security/selinux/hooks.c
+> > +++ b/security/selinux/hooks.c
+> > @@ -1336,11 +1336,11 @@ static int selinux_genfs_get_sid(struct dentry =
+*dentry,
+> >       struct super_block *sb =3D dentry->d_sb;
+> >       char *buffer, *path;
+> >
+> > -     buffer =3D (char *)__get_free_page(GFP_KERNEL);
+> > +     buffer =3D kmalloc(PATH_MAX, GFP_KERNEL);
+> >       if (!buffer)
+> >               return -ENOMEM;
+> >
+> > -     path =3D dentry_path_raw(dentry, buffer, PAGE_SIZE);
+> > +     path =3D dentry_path_raw(dentry, buffer, PATH_MAX);
+> >       if (IS_ERR(path))
+> >               rc =3D PTR_ERR(path);
+> >       else {
+> > @@ -1361,7 +1361,7 @@ static int selinux_genfs_get_sid(struct dentry *d=
+entry,
+> >                       rc =3D 0;
+> >               }
+> >       }
+> > -     free_page((unsigned long)buffer);
+> > +     kfree(buffer);
+> >       return rc;
+> >  }
+> >
+> >
+> > ---
+> > base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+> > change-id: 20260520-security-6cdd60da7129
+> >
+> > Best regards,
+> > --
+> > Sincerely yours,
+> > Mike.
 > >
 >
-> I feel that swap and page allocation have a fundamental distintion,
-> where swap slots are not movable, but pages can. Memory compaction can
-> move pages around to make space for high order allocations, but does
-> swap support something similar? How will page mobility work in this swap
-> slot defragmentation world?
->
-> In addition, when swap space is full, or only order-0 swap slots are
-> available but higher order folios want to be swapped out, folio swap
-> might simply stop (except splitting folios to fill the order-0 slots).
-> But for page allocation, some pages can be reclaimed/swapped to make
-> space and this adds complexity.
+> --
+> Sincerely yours,
+> Mike.
 
-Yes, I agree it adds complexity, but it might significantly help
-address the fragmentation issue from a different angle. We used to
-focus on migratetypes, but now we could shift perspective and try to
-contain order-0 allocations, which are the real source of
-fragmentation.
 
-BTW, I haven=E2=80=99t started anything on this yet, because I=E2=80=99m no=
-t sure
-there is any positive feedback for it :-)
 
-Best Regards
-Barry
+--=20
+paul-moore.com
 
