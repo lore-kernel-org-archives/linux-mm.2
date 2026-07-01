@@ -4,120 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 359EDC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 17:24:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA5A6C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 17:26:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10A9D6B00AF; Wed,  1 Jul 2026 13:24:30 -0400 (EDT)
+	id AAC5A6B00AF; Wed,  1 Jul 2026 13:26:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BAF76B00B0; Wed,  1 Jul 2026 13:24:30 -0400 (EDT)
+	id A5CD76B00B0; Wed,  1 Jul 2026 13:26:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEE346B00B1; Wed,  1 Jul 2026 13:24:29 -0400 (EDT)
+	id 924366B00B1; Wed,  1 Jul 2026 13:26:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C84046B00AF
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:24:29 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4DDCD1A0489
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:24:29 +0000 (UTC)
-X-FDA: 84940881858.24.0A33C27
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AAE3F140002
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:24:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Mf04VCvT;
-	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782926667;
-	b=HPiQgIlE3OMeJmZbStvikj9rGdodhml9J4ODvGW+czWzN3tuL4Jx6W9fmujjXTYUQUnp9Y
-	BofQe0CyeRTOf2BGCELtzhoESRacV8Ju62tBW45P+DO3anML1FU0qH2N0rbCuE81Ewkd8z
-	EvaEzsUxrNVAU/xLEXZie7xBsBHL9+8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782926667;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6965B6B00AF
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:26:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C08D7120457
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:26:12 +0000 (UTC)
+X-FDA: 84940886184.14.3D60BD1
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BFE0F100002
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:26:10 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bPRjtl3p;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782926770;
+	b=EZM1NuVWoM8gRU8xElQOMwXApD7Q6dAYBCKdeRGlXTlmsF8Ae7y6d92p9NxBdy2mcsH8xe
+	HPcT8CNO8ORCBHF9ZvJnstUiV/wpVd/w0gJ1Q7RKX3IUZztSxtaZS0bwu3JJ2/PlLVlImy
+	XJ0ci/vLMge2wxsQ0C9UyOBu7jW09Zo=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782926770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HbvWGJKElR/rTbCtbGCSktloNZd5j7nEevslzR82294=;
-	b=iETkLOPIu8pHD/WFWo2WsEdXrV2xNruFdJBz3oDhAyxHTGXED4QXK8ZKzhHfl5MMqDZj0E
-	3Sze9avgGKmilY6uzz51MIP426SchM8JORYVhJBZ+M5o535OTfO9NC5gg4zBOpZeTga5OJ
-	QwAqYRKmy2eMWcNIu3w5qhzISpXALxc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=Mf04VCvT;
-	spf=pass (imf23.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=HbvWGJKElR/rTbCtbGCSktloNZd5j7nEevslzR82294=; b=Mf04VCvT26F5DejxVyk2Ofq/TW
-	C03tHntseOXOSqM2Ux7b9JWhWUVLn8Xa1XV1qdKvJdZnWvKgO99yqO9aCD8KS8h0+n45kuntk9cnf
-	25G+3xuhr5/EU6ohEwubdBQBano/2MFMhIQ+XljgOkR0AdsE8kbUmImL+mTk8ojbkzdzi1bDtA8OU
-	JZ7GSOjAILAmkvRPK+nxoqoKJaFiJM3eVM9RngEoBNZLSqKXSLV1vpA5h60hdfDEQ7P8zzfp+hFyL
-	2N5vPlt7jcv+Nm5EOsm0DJw5IjOvX24V3tT0NsSdj1Ef9MXpt8fSnsAUD5CH+GH14xvMJGc4ow/wg
-	dnmIbZxg==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1weyfY-000000001HY-1Meb;
-	Wed, 01 Jul 2026 13:24:16 -0400
-Message-ID: <9df36c6f5819f7decb188f0fcf1b199b68e238e0.camel@surriel.com>
-Subject: Re: [PATCH] mm/huge_memory: set PG_has_hwpoisoned only after new
- folio head is established
-From: Rik van Riel <riel@surriel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	ljs@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, 	npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, 	lance.yang@linux.dev,
- yang@os.amperecomputing.com
-Date: Wed, 01 Jul 2026 13:24:16 -0400
-In-Reply-To: <d267004c-a09e-4f04-9635-d1acc579d89f@kernel.org>
-References: <20260701134622.3152896-1-riel@surriel.com>
-	 <d267004c-a09e-4f04-9635-d1acc579d89f@kernel.org>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+	bh=GBB5HZ6zDCVz0SCESSEY3U9B2MI62tJWE3p2W/LN8NQ=;
+	b=JF1MOAFeMgIr6C71rtFwcOUPxPXYPY0olNIbMCng46tANpgFRFMRXuQX/slne3vFGbjbyR
+	SDHJHbnHw3WKteMRH6ebr/50lwFTnPBiN7Y6qVeUzept7xobcskcw9/j59cPh+hU33bV1h
+	Ea7CvXIO8JJbaqufYydrM9l/WZqMEqg=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bPRjtl3p;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c12788a75abso187176266b.2
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 10:26:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782926769; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PPSyY188/s9LvmZqV1zbpL6VKbDHpGTp1fSMQnvP0FTmA0wrxasglLrDY7s5F5rUA2
+         hkw13+V54pyf4qYLayDw5LzFyN9VFjmceBRH07roUCFPk5g2DYcPmIJmwfkTf3Nt5LzX
+         fFRJ2C5ZtS1dIieowGC1HfKSKaG7zTpd4BaQakob2/CsrLox8+yrqQj8peTTsPKdKczE
+         ZvXGcdRGhKLLnK1FcK0gXqZvWdlUw1nMF2O45R8iIyYE1ZILdYncptMqgjxqwkQehMe8
+         Ca/KUkKrHdbpjwyY1bAcTz+gjNiTnjsE1EbKEAztPCj+lJEtHlBy2jpuZLAoL1yLQSJF
+         UoQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GBB5HZ6zDCVz0SCESSEY3U9B2MI62tJWE3p2W/LN8NQ=;
+        fh=+fVSvtS7obMfEoEGsavUXPg28Wocs4ZWSUiuubH4IPQ=;
+        b=YS6x+pwvA0LuUENVQ2+HnJ074AJBxv4THDHkv+0Q2Xsys1kT+RDZnHwU5/f+GAfU/n
+         unJjan0kC1r8tXP2xo5jvUCn19gzW5ktFu/Aslsqmt5pu2dSVCqsv93pix0SIhaNFQpi
+         vQeBPIlaHqghMTf1lczeUfF0hC7LxsixoKME2aO9dkyAk9DR3kNwqMH5LRoL1/0QWl92
+         LjUW9GE/7ei3VIkUcr3LoGxGldsiW5co8+JJgV7KhLS57TI9clxfasm5jKCvh/mJxn+d
+         T4pRsFuWPHKM7TFxnhScyXsd8+71ZuSkl4OE5wfPcdcCqQgnAudYzORivxQD2pQwZriV
+         0ubw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782926769; x=1783531569; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GBB5HZ6zDCVz0SCESSEY3U9B2MI62tJWE3p2W/LN8NQ=;
+        b=bPRjtl3pNJ7VTpYxLeiRxrYOu2DxcFFGorhAzV1S9MWJrI7RCtLMVY03vxdian+HIb
+         6EeB2nb5R/1stj4izXVlWCJMS+fVBfhcsxXCCmkgf39SIRnsHcRR/i022kEWaVpt+3ff
+         t8TkV62AZTGkiI2J0jKCpKD3+G21P1p9BbUFAUtgWdxf6UWpeV4CRJ/uPzr2o80WbOJR
+         6GgxOL5NcOR4pOXYxEkP/mlvgLQWwswP4RAkN4HvO8b0KDS+WQhGOYmldB5a/ZTBLOGr
+         j037B0vOMjwAUvQcjtmGruIZzmvjqlQ+AFzU/f+KTbBGl9AcqR2pxWP14lFYEJRVVGOS
+         5KSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782926769; x=1783531569;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GBB5HZ6zDCVz0SCESSEY3U9B2MI62tJWE3p2W/LN8NQ=;
+        b=NXce5zG4Hz++KAM76Di1etR3hbFNhVsIt2FIEh2dBMQ5j97OUPEsX7mjIs5MPlMI6H
+         Alz/si+tLDwpKhZLr37pouasaLN8LIX4NvZSI7JvUV6J5ViR7LpmCdyHpkmyAGeT+641
+         MvyqVWp5rl2GCVfY67uvgnQYQ3wnC7EnLrdOZ+YaYRa8pUf4LOEzdSAwgFoJP5ncNn9r
+         rKzSvFu8WcphTn/hy7ZL3u7zHgCTPYu/sLOvCQiAsHWvyWRqDTwob7m2PEUsyJjPmiPe
+         XLut12dNe4HjiBeJJpbZqsSDMm8NBB64xmbcR3j2h/cDAHnCW2d2kKUuB0cfuatKwju4
+         IVtg==
+X-Forwarded-Encrypted: i=1; AHgh+RolrtDAPz5Bgave1IJJ7V7NCGc+bjcKX2o/CAbbex5ru1M1nbTK8eJ0ZkZ0Q23Hbt0mrsmOBoJIwg==@kvack.org
+X-Gm-Message-State: AOJu0YxD0F+ZZdjNiFdy+wOJ0VJ+12rdQuL/Z9e8dXCyOVXZRdaB+x+G
+	RbRox+TsAgnLAR9Hs9V0K4VuAoBUu9vNuz9LvtsiOCJ1B7BP3ERsjpXWBlljttXoFkjTyi7uzfx
+	V0EHMmU6fmNNqIsf7kD33+yNVOnaPGGg=
+X-Gm-Gg: AfdE7cmwbnkNr3Lk9Qd7J2cAzFayjq+6mnFOAZEEI4Tv8jh/7Hvutc+8rb+XdTY3cR1
+	gPAhIGD82HLT/lou7TXnoEMe3PlhHlhCUpJC6VsVwQbvSdFzATy9ZSMWAEp5wQvo3P5zqDdCbRw
+	vePLgnN6DF5+PqTzEWsD7HZ0d7kyaziNYGXYyjEL9lavRz2bJdj9c11UA5Db3iVkNhHMFFN5zpe
+	QUufF+u5bldWpyKTtwHSqjTidC0CXvBflNwqHJXy7pRMFJHSbIDTtX/sFwPtw3ELG6YLCcN2NJp
+	s07MxjFjnJCZHnw5KNqGANfKdlKvpw==
+X-Received: by 2002:a17:907:e102:b0:bee:ac9b:9abc with SMTP id
+ a640c23a62f3a-c12ae4095f7mr66116266b.22.1782926768722; Wed, 01 Jul 2026
+ 10:26:08 -0700 (PDT)
+MIME-Version: 1.0
+References: <e1c290782eeb419e8c3e18ac6b1f49eb@xiaomi.com> <126cb4ced14f4a3fa40c3189bf8a5920@xiaomi.com>
+ <49858bc642844e3bbf6449c0f241af04@xiaomi.com> <700a2cbf90a2484f979aac858f08f5d4@xiaomi.com>
+ <623db71c-daab-451c-909f-a8efa56b998b@linux.alibaba.com>
+In-Reply-To: <623db71c-daab-451c-909f-a8efa56b998b@linux.alibaba.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Thu, 2 Jul 2026 01:25:31 +0800
+X-Gm-Features: AVVi8CctcQDElI9zL7pd34LeyQdKnKpM1fDGsN08-NT-WlwHLsQHKfiPOh_GADc
+Message-ID: <CAMgjq7AcD4Mg5byJr-niZVp_Y=_ZVeCp42xakGCa=mw4zXkJhg@mail.gmail.com>
+Subject: Re: [BUG] shmem: shmem_get_folio_gfp livelock
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: =?UTF-8?B?6ams6LaF?= <machao26@xiaomi.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, =?UTF-8?B?55Sw5a2d5paM?= <tianxiaobin@xiaomi.com>, 
+	=?UTF-8?B?5L+e5Lic5paM?= <yudongbin@xiaomi.com>, 
+	=?UTF-8?B?5p2O6bmP56iL?= <xiaoyaoli@xiaomi.com>, 
+	"hughd@google.com" <hughd@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-MIME-Version: 1.0
-X-Stat-Signature: 78chnyiwu5uhqb4aixcxg3nbpuzjxmkn
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BFE0F100002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AAE3F140002
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782926667-894167
-X-HE-Meta: U2FsdGVkX19WPQWF/ZVA59V3ouN2vsAcI2fhSFpYc2UO3NfCc9LP8vrzY3EKBS6UcfmKqx4TKCoDJdl5iXKDf+SdVYdg5RYnDn6+toTwPdqjYldjxoeXpNyuyvp77ZaWfwAV8E8jWg11agLJVH9vTi6fWvY2cH8yxVw+BHGKEKlLh3wQ/FipCuOEDNFCecgtpdkucz3x++TtAPZu2CHdpCmSZRUAOYlcZATMDUEyN4Zf3JiZqtLjp67utuDo1Qd4e6luhhNaDjNl5fqmiaa4DjdEaUeUYJVHiuk0okepVZXbMA6cOTA5Ns2QQvYpKaD3pZwKbzAlxnvXuf6uJAU6nNg9WFI+s1BhLcGe9JQrI+H3WWLIbAJIJry5UXXhKlPf1f7ypghaUnNKUFQiLDZ2RSQWoq2kSNHbIKKI6DNJ3cjsEQU9Uz+vE01+ixZT9ogmdDkc1AHilUUcLgRvt2w6E2QJrHiyvQ7BXLQRTlNCdZZcHaWw4YJBkiqhJCg3bIBY42aNvAvGbuW5F7OUrOjDtKDDifDlJipbfti+teEYaJfTHJa05qziRZtQtCrx/CPyV0ovHyWrYhsI+eNk8xKZyf7DyN32tb07wd/Sf2gr9jp4HNQgxTRTD9vB1onDQJwrWPD17mUGW0Ygzdma5PKEGU7cJ0Ot6d06K/lr9DraGyYGed5ovctT1aXVo6cWK0Ll9Z2dFD8764K76qZgZoCNPHLMNgHWjzyhmVoq+Sz4VwPXpABLfkh2KqS/Nb9vL9EEfUS0v95KfhN/u1cc7iYb1q/esV+IkcUiDL4J/6m97cruVpXY2/zOpDHZPl39IUe6RGSVOVar6WXaGDwE7nJfw4AWz1QnnX2/idko62FqQbC9yST7HHO7sIB0Rt/1Jy3zkipkDo2hW2poBInOKdCB/9jfjovop9AlfhbEtnF9fJLVQHOneZFO8eeNHd2WD7Tzyvf09TEUnDPWIfCAa3y
- CuunwNaD
- PTBF4ysnxk96rhnquVJNIaDYHWV9GJeDBszeeQR5cyjumiMZ1BUABbmapvMGp9OXjmkO17SQPQETdEgW8XlnGn3RotbotolAz2aKyBJVtyuhShuHQzJ95Xm1HXN+7U8TF3kFsBIv93E28Jo0OZ+CGEkpIsYaUHf7bzPcW3tar9XWxj1h2QYOUPxrcHuIPooJ5qOWM0ZLhyCqOU4n2R6lweLjQ1IKVpWTixXEeFUwqEdKwqeNa8u0ifnAf+YF6FB8FMyl9fXu4okdX9IMkApMfNhWgng==
+X-Stat-Signature: 5jmdkr9r7fo3m6c8jiqibi7esznygrhm
+X-HE-Tag: 1782926770-81226
+X-HE-Meta: U2FsdGVkX18YBJGEnRSSR/3AomdDltYsVn/q3tVbs/yLYqXEHhWLZFb+qtYIHpo5gLG+wktspI29/yCO5o2hty149ss1cKuMiay8DPbIHIu1vj80cTvRGrE4pLUJ0FBGI+4vJvg4ocI/EoAOrH/5/3z15gBno6dge6Z1NUP9ovK1NZazrcOwPORJ/06PV85ux4xHIWFnIS4ltqWuVyk3to1Le+jNScyzalv3pto0XkbNxSMBwSgAOrhj4n/yxcxQ0ES2VD1WdLkWT/L4y3RSxWo4C0k1jKEK/9ekpdhvMjAyM8VhoR5ZTN54INh6PQVhCqnPgRRmeahHgDOtyrFy3lBAAh81JRQzbes40snIybN784PqkxNUo9F5v9159kmSd0uslCLW2CAprP4WCz/SM/aZqKgZ8nB+I65IN5+zOrERrcAFFwfKIvdBkDy3C4IBzsXWO56r4S67AeKDzPOzywQPLUeILtakIkditxl/BNKNI9CCJCXW2X8iYAXTkd0EbtbTaFdNLVMjAFNwOROd/6MbcaJmrvZeeWY8hGdQI2nLbnqBEkg74k5YWqc/bP3WH5KdAQYAs1cOFHIpgCr/GkIaXn3SXuQOdda+fnKXhEOChOn2cj6Z6CNXn23GvKHLTIITL2atuPY6MUKk2UhdEkLXRFWixiCPIaL9NpYxlTrFLzGxqPweQUW1U7pWGCQriiDVGG3noGslFI8wG5g+KExh4n80yy2vgeWPhrxjuxjpFcPGjPlcN9XjK1MZjQqs3XvaYU0oouKjWwKuP4jzE4xFFzGjhBokm7lDNq/Vu+rom1iArBd/bBgI5nXtkpopQzMuReH1AXmiRduBhpJfmJ+JEcxGmyceX80qSkrvKeQUFm9RjMWbj0oo4B6nuUJAe5Kv1sEx0WqY0AsEHSvHI9ZMQXbKC6etRw6guKZXAJ6zqSEEZAoYPUbW1qC8oS9tTWSljltX49HWbSmSXW0
+ ay5xX2g4
+ Nr2fpqkTYsyv/hnqaPfc010OMzYA5dETf0zCYGnC5jbOCkrwl+oRUPZ+ag1YRxiGeDbmvEymm3HHndRDZw2DTH3fsqlPSnEtH4SYnWXffn+2H7Stlgi5hkvwo6MB0rgqFTVRig51WkdvqhSN3n8coUYO5AD106NRaNHs6BfacIIYGoS1JT5/onG0GJseNaDBqS/czn2Xdh8dt/1fbAP3wcf6wRsomxm6Zs1OWWh1lztgfd2N+YtJC5oEnY5lwL3w9hWmwWPBGLyG2fNKjTinfRNeIblv0BmmAeENon7lcgnhPSllc1aCeMIYsC+Aca/yfr2sKf0u52tYsPngX6Zyf9kZADymKMzbtkc3hjWamwgONO6gN4+dqJ9j5uZS5409mqxvgMRTY2uN4iQKb2rUYXdJp0DaFY58qHo5WKHGRQBIq6Y2b9/pmbpBEgiMJKiVJEqx5P7I2A6b30HhSrZtKj2RH0gTrM8Bcw3tBx+5hhxn4uwjFRm1XN//lI9M7f+eib2HT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,41 +145,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2026-07-01 at 18:33 +0200, David Hildenbrand (Arm) wrote:
->=20
-> There is some grammatical issue that makes me wonder whether you are
-> talking
-> about the present or the past.
-> >=20
+On Wed, Jul 1, 2026 at 6:09=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+>
+> CC Hugh and Kairui.
 
-Changelog issues fixed for v2. Thank you.
+Hello!
 
-> > Reproduced by syzkaller: hwpoison-inject a few subpages of a large
-> > shmem
-> > folio, then MADV_REMOVE (fallocate punch hole) on the same range,
-> > which
-> > splits the partial folio to a non-zero order.
->=20
-> As Lance says, after we do the TestSetPageHWPoison() in
-> memory_failure(), we
-> call try_to_split_thp_page(). Does that already suffice, even without
-> the
-> MADV_REMOCE.
+>
+> On 6/30/26 9:15 PM, =E9=A9=AC=E8=B6=85 wrote:
+> > Hello,
+> > I encountered a bug in the shmem subsystem. Details below.
+> >
+> > [Summary]
+> > shmem_get_folio_gfp() can livelock when multiple threads fault on the
+> > same shmem page concurrently. The -EEXIST retry loop (goto repeat) has
+> > no cond_resched(), causing busy-looping threads to starve the thread
+> > that holds the swapcache slot, resulting in an indefinite RCU stall and
+> > system hang.
+> > [Environment]
+> > 1.Kernel: 6.18.21 (ARM64, PREEMPT, CONFIG_LRU_GEN=3Dy)
+> > 2.Triggered by: multi-threaded app with threads constrained to 2 CPUs
+> > via cpuset
+> > [Root Cause]
+> > When multiple threads in the same process fault on the same shmem
+> > swap entry:
+> > 1.Thread A enters shmem_swap_alloc_folio(), succeeds at
+> > swapcache_prepare() (sets SWAP_HAS_CACHE), then enters
+> > workingset_refault() =E2=86=92 lru_gen_refault() =E2=86=92 rcu_read_loc=
+k().
+> > While inside the RCU read-side critical section, it is
+> > preempted via preempt_schedule_irq (IRQ exit path detects
+> > TIF_NEED_RESCHED).
+> > 2.Threads B & C enter shmem_swap_alloc_folio(), fail at
+> > swapcache_prepare() (slot already taken by A), return -EEXIST.
+> > 3.In shmem_get_folio_gfp():
+> >      error =3D shmem_swapin_folio(...);
+> >      if (error =3D=3D -EEXIST)
+> >          goto repeat;// no cond_resched(), tight loop
+> > 4.Threads B & C spin at 100% CPU on the retry loop. All three
+> > threads share the same cpuset (CPU0-1,cpus_allowed=3D0x3).Thread A
+> > is perpetually preempted and starved =E2=80=94 it cannot complete the
+> > few instructions needed to call rcu_read_unlock().
+> > 5.The held RCU read lock blocks the grace period indefinitely,
+> > causing all synchronize_rcu() callers (cgroup operations,
+> > fd allocation, etc.) to hang, eventually blocking init.
+> > [Scheduling Details]
+> > Key observations:
+> > 1.Thread A was RCU-boosted to prio 98 but accumulated only
+> > 99ms of execution over the entire stall period (~1200s).
+> > It was effectively starved despite the priority boost.
+> > 2.Threads B & C have vruntime=3D0 and prio 91, indicating
+> > they run in an RT-equivalent scheduling class (SCHED_FIFO/RT
+> > policy). Each accumulated ~1134 seconds of execution with
+> > only ~1600 context switches, meaning they ran uninterrupted
+> > for ~700ms per scheduling quantum on average.
+> > 3.Thread A cannot preempt Threads B & C: Although RCU boost
+> > raised Thread A to prio 98, Threads B & C at prio 91 (lower
+> > numeric value =3D higher priority in RT class) have equal or
+> > higher effective priority. The busy-looping threads never
+> > voluntarily yield (no cond_resched(), no blocking calls in
+> > the loop), so Thread A never gets scheduled.
+> > 4.CPU contention: CPU0 had nr_running=3D28 and CPU1 had
+> > nr_running=3D24, with 3-4 RT tasks per CPU. Thread A competed
+> > with Thread B on CPU0 but could not win scheduling.
+> > [Observed Impact]
+> > 1.RCU stall lasting 910+ seconds (19 consecutive stall
+> > warnings, grace period g=3D4398761 never advanced)
+> > 2.synchronize_rcu_expedited() callers blocked 742+ seconds
+> > 3.init process hung > 720 seconds =E2=86=92 system unresponsive
+> > [Call Traces]
+> > Thread A (RCU stall source, sampled 19 times identically):
+> > __switch_to+0x1a4/0x360 (T)
+> > __schedule+0x96c/0xf3c
+> > preempt_schedule_irq+0xec/0x198
+> > raw_irqentry_exit_cond_resched+0x2c/0x44
+> > irqentry_exit+0x38/0x64
+> > exit_to_kernel_mode+0x28/0x38
+> > el1_interrupt+0x5c/0xa8
+> > el1h_64_irq_handler+0x18/0x24
+> > el1h_64_irq+0x84/0x88
+> > workingset_refault+0x16c/0x79c (P)
+> >    shmem_swapin_folio+0x8e4/0xd44
+> >      shmem_get_folio_gfp+0xb8/0x710
+> >        shmem_fault+0xa0/0x174
+> >          __do_fault
+> > do_pte_missing
+> > handle_mm_fault
+> > do_page_fault
+> > el0_ia
+> >
+> > Thread B (busy-loop on CPU0, sum_exec_runtime=3D1134s):
+> > xas_load+0x78/0xe4 (P)
+> >    shmem_swapin_folio+0x950/0xd44
+> >      shmem_get_folio_gfp+0xb8/0x710
+> >        shmem_fault =E2=86=92 ... =E2=86=92 el0_ia
+> >
+> > Thread C (busy-loop on CPU1, sum_exec_runtime=3D1134s):
+> > xas_load+0x50/0xe4 (P)
+> >    shmem_swapin_folio+0xd8/0xd44
+> >      shmem_get_folio_gfp+0xb8/0x710
+> >        shmem_fault =E2=86=92 ... =E2=86=92 el0_ia
+> > [Question]
+> > What is the recommended approach to fix this livelock?
+> > We are considering adding a cond_resched() before the
+> > goto repeat in shmem_get_folio_gfp() to break the tight
+> > loop and allow the swapcache-holding thread to make
+> > progress. Would this be an acceptable fix, or is there
+> > a better strategy (e.g., bounded retry with fallback,
+> > or yielding to the specific waiter)?
 
-While fa5a06170036 was created to deal with having
-the folio split to >0 order, in this case it looks
-like the try_to_split_thp_page() call from memory_failure()
-failed, presumably because folio_ref_freeze() could not=C2=A0
-freeze the order 7 folio, because the reproducer had=C2=A0
-multiple threads poking at that folio simultaneously.
+So this is a 6.18 issue, the SWAP_HAS_CACHE design was a long time
+issue and we had a workaround for anon in commit 13ddaf26be32, the
+`schedule_timeout_uninterruptible(1)`. That's fine as a workaroud and
+we remove the workaround with proper redesign later in commit
+f1879e8a0c60. Shmem never used a workaround like
+schedule_timeout_uninterruptible and we jump to the right design
+directly.
 
-This test case is rather contrived, like most syzkaller
-tests, but given that the try_to_split_thp_page() call
-could fail for various reasons, we do need this fallback
-path.
+For 6.18 LTS, do we need a fix though? I think we can have a similar
+timeout for shmem as well, just do a
+schedule_timeout_uninterruptible(1), yes it's really ugly, and we have
+another long time workaround like that in mm/swap_state.c as well in
+6.18. Without the later proper redesign there seems no better way.
+Barry provided an extra improvement on top of that workaround in
+commit 01626a182302, maybe can also be carried into shmem. So maybe
+having both for shmem is a good choice for a 6.18 fix.
 
+>
+> IIRC, the scheduler maintainers are not a fan of continuing to sprinkle
+> random cond_resched() calls throughout the kernel. The scheduling
+> decisions should be left to the scheduler itself.
+>
+> Regarding your issue, could you try the latest kernel? IIUC, this
+> problem has already been fixed there (likely from Kairui's swap
+> refactoring work [1]).
 
-
---=20
-All Rights Reversed.
+Yes, exactly, the recent swap rework removed the root SWAP_HAS_CACHE
+problem, so we should no longer see any similiar problems like this in
+mainline.
 
