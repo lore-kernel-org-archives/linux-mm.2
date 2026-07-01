@@ -4,119 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E20A3C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 10:34:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F06C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 10:44:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DBCD66B00A6; Wed,  1 Jul 2026 06:34:02 -0400 (EDT)
+	id 8F49D6B00A6; Wed,  1 Jul 2026 06:44:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D46AE6B00A8; Wed,  1 Jul 2026 06:34:02 -0400 (EDT)
+	id 8CCCE6B00A8; Wed,  1 Jul 2026 06:44:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0FC36B00A9; Wed,  1 Jul 2026 06:34:02 -0400 (EDT)
+	id 7E4446B00A9; Wed,  1 Jul 2026 06:44:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 992036B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:34:02 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1BD7C8D008
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:34:02 +0000 (UTC)
-X-FDA: 84939847524.07.D652DE0
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6E98080003
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:33:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	spf=pass (imf02.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 577D76B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:44:43 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C8091C6D9D
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:44:42 +0000 (UTC)
+X-FDA: 84939874404.20.065AD09
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6F360180003
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:44:40 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AMWpoDHi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782902040;
-	b=SUMLnCvjLWt5L4MZq87SR5O3OIWC+b561+wnvUgOiOAdgz37bmGRDZwrVSM2MLClXpfPXY
-	ZRGLH55jeEnYrlNkG+0orTg+z1U7OCPuxYpslHmAvLIE39d9FIrUWH9kqb9m6q8FaPxn3G
-	9Z8Rsng/3V5aZD/H1MiSwCBJ05WsfgY=
+	t=1782902680;
+	b=PfoAU/8ZtDirsUAfTFyRj/gSX3cl6SSFkYQu7xHlHf5rhIyRe4ZamITgUbXhPHQU6X7AZq
+	mJS/McdC5CrpHTB/NPXgpxs2Lhm4NCp9vGHNNnE5FNNqls0jawkz+iBiy9Sah0p7W0K4Us
+	8yObDf6l5NSasvaamTU80iiqDoOp6v8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782902040;
+	s=arc-20220608; t=1782902680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=adXmeum5XrmeKtBdOzYscwR8LvdD3SxppDxpdDIYcW8=;
-	b=hfUYXHck0nt0ScKsJvktOWazAe/fkBt9qQhxutVXYUBVcShQ7yjmz602y1LyufZr49uMN9
-	D3dkzK3dCTjZbXAWD28SzRFG7/ZmezvFxCm0u2xHVt247NtHph2T54VaaCmhe+TojlAyP7
-	LTPP8CmzBaz0h3OaXwSZMoLfoQexipE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9Atn4BT6IY+UyTIxFw+Mt5/4qpOrMMRCDyJSqbz7S8o=;
+	b=ginX1pBl6+c+EQ0bWwcD4Q3TZnYgJOBmuC5xHsV2J8UvnfPYXsi1olV99eRaxZz7OWuXIi
+	5ANbX1yKBoC1flKiwSwiZTqn8oCbcRVwnmcQRD/oi5oFRFcmv2GcIpp3WLmrkSlXE/tX/9
+	79kLec3BVPR8joiuVYvbel2S/IQkAgs=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
-X-UUID: 59c765ec753811f1aa26b74ffac11d73-20260701
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
-	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:fec1accb-4499-4070-bc03-1739f843941f,IP:20,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:20
-X-CID-INFO: VERSION:1.3.12,REQID:fec1accb-4499-4070-bc03-1739f843941f,IP:20,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:20
-X-CID-META: VersionHash:e7bac3a,CLOUDID:c2b7554a1cb8331f306b33837f8e295f,BulkI
-	D:260701164826BQSDSSH8,BulkQuantity:3,Recheck:0,SF:10|64|66|78|80|81|82|83
-	|102|127|841|850|865|898,TC:nil,Content:-10|0|15|50,EDM:-3,IP:-2,URL:0,Fil
-	e:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DK
-	R:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 59c765ec753811f1aa26b74ffac11d73-20260701
-X-User: lihongfu@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 900317000; Wed, 01 Jul 2026 18:33:51 +0800
-From: Hongfu Li <lihongfu@kylinos.cn>
-To: kevin.brodsky@arm.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	hongfu.li@linux.dev,
-	jhubbard@nvidia.com,
-	joey.gouly@arm.com,
-	keith.lucas@oracle.com,
-	liam@infradead.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	maddy@linux.ibm.com,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	shuah@kernel.org,
-	surenb@google.com,
-	usama.anjum@collabora.com,
-	vbabka@kernel.org,
-	yury.khrustalev@arm.com,
-	zwisler@google.com
-Subject: Re: [PATCH v8 2/5] selftests/mm: unify pkey sighandler selftest assertions and tracing
-Date: Wed,  1 Jul 2026 18:33:32 +0800
-Message-Id: <20260701103332.352021-1-lihongfu@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <d8a1c72d-831e-4880-ac00-5aeac41ceeaa@arm.com>
-References: <d8a1c72d-831e-4880-ac00-5aeac41ceeaa@arm.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AMWpoDHi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Message-ID: <8cb5ead5-bc70-4ee3-8c5a-0cf31fd9ff76@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782902677;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9Atn4BT6IY+UyTIxFw+Mt5/4qpOrMMRCDyJSqbz7S8o=;
+	b=AMWpoDHiLIp13PkuTCiEbsqv5MWUbfc1Nct3Na3mpjq1aX86XO7zUQY14PGstixuTkYC4Z
+	bPg38oIDGTcmhjNF7T3QHFyANQfOCMH7n1jDRF7pw/pNN+Ainbsx1/KeAm89DigdQTHVHx
+	mJj+sb/Qc4YJsT18pDh6kXlm14F9UDM=
+Date: Wed, 1 Jul 2026 11:44:33 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
+ ziy@nvidia.com, linux-mm@kvack.org, ying.huang@linux.alibaba.com,
+ Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
+ Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ kernel-team@meta.com
+References: <20260630164143.1595669-1-usama.arif@linux.dev>
+ <20260630125024.6c079ea708630d99708e26f6@linux-foundation.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260630125024.6c079ea708630d99708e26f6@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6E98080003
-X-Stat-Signature: 3nhsg13itrygobzb7zjukprb8kbrog8s
-X-HE-Tag: 1782902038-460093
-X-HE-Meta: U2FsdGVkX19bFPerqOFhtFezUoFDGdNMSeQAUlG0ArlIjNiiSb7nM3Td6sxTi2O89sRrODWeP0K2pDX5eTtWMeL/nr8OmPgkz31DSFVgLaYmfDIhrQ5GV0rzvegLSQNmajy/uBbJTBdmuGDgykHlUcpgFl5qGtKalE9Qyr5Cn8ZpOnXc5exd8Lz0EDKihFcdV8RLJCeCd09nEVPkUcT0Ug9LVu8YlEw5m51IfAdh7KRPpRAE5oHQUlS9mKbQ13K4qWlDLcw5McY3ir1/1BSIADC30IMj8JAp8pckpcMtrP0CKbnOAE4wACMVAaw/MYchT+fA3emnaxpI/I6FFvWpYmdrtFyL/peZYmXviatG9DMlUj8NO5U9dvBvhGAbDu38xHRPI6rmlAfxQ0882qLc4HHfRnXJe7qGRnOc5Jsg8puSneM513Y/O5vW43D5/6w5VWsWt+rNUVTu9/dc1sYeMRxz1DZNZYJEQ/HhwfmhV0zP1jY7TFk4u6jqRbQKhQC8p6smqdDymojp9SVKWq7tKPV4nJdCf6VY/zcm17d0ABXUAaTOAbH1f6/50WoxnAZIlxsPB6GT+4ONYru6wEkYjcKKrKbiOXH8BWzRR5rffGISi+2/t5p3L7LsT0MgJbjJU4hU06PH6Fe19feoMkpswOHJiNVEuM8jSr3qC15olqV4BOWtjfXpXxWA9X5ImMGkxtpHBciGzryMK3z/CsNq8JuzOzS5o/NW4a1YRzIsPW/7nl5OFs1XLFwL+yvMBJlNxcioxOtH37j+f9f7BoCVikLxpVGiz7PrlRvE2aAirugm8Y8S3nGnKy8D8jBnnWC3z36yha+elQqxNAHnxmBrc9cUbMtkMLPhr6ZIj2o1s9HZFo4Aaa3HXTmxa6VCSfWeGlCW4NoQLL0yEzprEqxlokDFDV4sn6EtmeAM7wOHOEx/vd9S60xggdXxWxHamMNlFcaL4qFDpfGfnYN/dfJ
- jqcG2FnC
- VFF9a
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6F360180003
+X-Stat-Signature: ydgip9pkoy7oxpd7nyozw8kqqwrtc47p
+X-HE-Tag: 1782902680-957967
+X-HE-Meta: U2FsdGVkX1+vyZvjdEPvZxzgGmus1xdTtNiK6AK+Vm0nVkmcmZJJ1H1Sxf9lP5v9BJq3mYqGCTbTsjCwWouRV5xIm2vZjZe151Jf9Cytizlo9SWS099DRPiHLJT7pXTkccgSmJS66IDAfMmptfS397SjNO7xtdRc7xBvxlaMiHxxNYkrcA0fJlBuY1d9wGANpXsgV/09wBHY9l20PNGkRMYsdH+RQoIGbwGuH9h6XvK+pNPFEycG2QwGI0l/TRZxYfpHLed03i1sY47wrXY4S4wGhDXLLBr12TjP4m+KDDYEuqc2aAg8CJ/Sayd9pbObwUdldSqM7M83Ziofna/jX4BiwCqgBeQTNUqbae0rc8VO2gUO4fL9hI8DTN4rzaynL/+XY7B9VB88OnfZRHEDM6tUJHnJW/XSL7G6NY9J9qrYbnjb8Gb+PZlzX35QMlAdb5aCRm+BX4y3vgaFG32g1GYaxbDb1MEDbACs0s3Y42xjzJsV34psJMpktx0oYOgSSARn3hOGvfVorBdgu16Yb03r6XBp/1gGz3FL4JfAUP40YPQvl429MJf47QrTbD8NVim+9WImefuMqfmndmiVjmPPomle08byToxN92GETKAeQGrIEQXKV8nBc518pWnJgEaE+is6lq1SwgEozf4PXdCEaEU4O/VwgSKq4/w2PUQhucPqunWvoip6ehcRXMKSqjOHfSTs6sjA9wQpRXf3OmZXy9SiEDsc/1hBrtz+pUvOkr0+e6QsgYVP41S0kfUh8+WRSnM6ujHEdz9WSi4WN3NzsC3c0c/rsm3s/TEwQCZWUOe+zzHioeQZIt9MO6aooCPMdTW6aQdPsuoEsc9ilnsmsxqcz3AltIQ/7VV8DQZauqnApXu/f4ZaHu8WELc3aBIb0t9kxfKQFYYB0NucOLp20hLM3GRJ214134zjS1+QEUC7ZChkeqT+27tKfeeoRTvjrw8QsLgGVSoQk8l
+ CI4hwsQ3
+ vjhJkqNl3nbMIGz4kVHGKSNMmTF0A2LQFb1+5Z/PaJmcLvoEEvTHntbgmDDquFSND/6Abm/qEdAgRbGs2AJHtqRvRy8SnOITkHrROAUVHFDUETBe7zavOKXrPVmbfjuJN3ML1QHoHIF1d+JSYZFH1w+oRRSW0C8oFWNAX6NqvGqqi1mbW/LBjMozFTmF1RIW/AiR6cujlum9PI26knEIKpRbIHrJV1dDAeIpzdNVITcIwA6nGWpB/gNnwCUwQTyFlua7A6y/W3I01s0JowGCEvCE1Zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,38 +98,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
 
-> >  #include <sys/types.h>
-> > @@ -36,6 +35,10 @@ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-> >  static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
-> >  static siginfo_t siginfo = {0};
-> >  
-> > +int iteration_nr = 1;
-> > +int test_nr;
-> > +int dprint_in_signal;
+
+On 30/06/2026 20:50, Andrew Morton wrote:
+> On Tue, 30 Jun 2026 09:34:37 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 > 
-> Might as well define those in pkey_util.c as well (move them in patch 1
-> too).
-
-Thanks for the suggestion. I'll move test_nr, iteration_nr and
-dprint_in_signal into pkey_util.c in patch 1/5 and drop the duplicate
-definitions from protection_keys.c and pkey_sighandler_tests.c.
-
-> > [...]
-> >  
-> >  	/* Use clone to avoid newer glibcs using rseq on new threads */
-> > -	long ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
-> > +	ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
-> >  			     CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
-> >  			     CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
-> >  			     CLONE_DETACHED,
+>> This is the preparatory part of the PMD page table swapin work. 
 > 
-> Align these lines to the opening (.
+> Thanks.
+> 
+> This comes reasonably reviewed, so I'll queue it in mm-new.
+> 
+> Why?
+> 
+> - Human review coverage and AI review make me believe this isn't the
+>   final version at all, but I do believe this is something we want in
+>   7.2, and getting it under test early will help to push it along.
+> 
+> - Getting it in there early means that others will base their work on
+>   material which will probably be upstreamed this cycle, so this gives
+>   them a more accurate base against which to work.
+> 
+> Sashiko did find a lot to talk about, some of it pre-existing so can
+> people who work on this code please take a look at
+> 
+> 	https://sashiko.dev/#/patchset/20260630164143.1595669-1-usama.arif@linux.dev
+> 
+> 
 
-Thanks for catching that. I'll align the clone_raw() argument lines to
-the opening '(' in the next version.
+Thanks Andrew! I think most of the stuff sashiko pointed to is not
+introduced by this series or can be ignored.
 
-Best regards,
-Hongfu
+I will wait a few days and then send the PMD core series on latest
+mm-new.
 
