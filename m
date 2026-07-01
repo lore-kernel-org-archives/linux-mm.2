@@ -4,114 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74475C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C366AC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:25:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13EF66B00A9; Wed,  1 Jul 2026 11:20:59 -0400 (EDT)
+	id 51BD86B00AB; Wed,  1 Jul 2026 11:25:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1164D6B00AB; Wed,  1 Jul 2026 11:20:59 -0400 (EDT)
+	id 47E8F6B00AD; Wed,  1 Jul 2026 11:25:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 054216B00AC; Wed,  1 Jul 2026 11:20:59 -0400 (EDT)
+	id 36FB36B00AE; Wed,  1 Jul 2026 11:25:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD24B6B00A9
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:20:58 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 316B08DB89
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:20:58 +0000 (UTC)
-X-FDA: 84940570596.06.D0AEDD6
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5F766100004
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:20:56 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cSVyF7Xw;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F1BE96B00AB
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:25:35 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 59CF6403D3
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:25:35 +0000 (UTC)
+X-FDA: 84940582230.26.13E245A
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DBB0B1C0008
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:25:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sjCG3GIb;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782919256;
-	b=Sw/3iVsP4F68DhAwcTzGmjXaU+J1Mn9P2j8FE8Sm8jYYzyWnmkDfRmfsMNrl5SIWRAXhB5
-	1M9uqr5FEPG4a5A5XbYXJLKGsSPi4GSOUh1+R0d9zKaq86GUpZeoQwwVc1RT9men3O3nUj
-	BYneEUcsAvkJtG2dRj86QG3TUb/Odck=
+	t=1782919533;
+	b=KFxYKFeulvq6OCJGUafsIrumi7NYCAj0NKVqYDryG/ZUBJL6zDlISanuDZmONbCMw7tcrd
+	IB9yL2x8c2O+6itfsTFoUSPvD/GSXs8NvxMg+vlTdYkj7jstpvg2HjGY/6E5cB87Z+44ox
+	RDUc6E7OhAHypsWuFUaRwwRtEuOs4DQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782919256;
+	s=arc-20220608; t=1782919533;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zSMdskJ/XVsebZBQ8sHZxAPdt7ILVugrW/olreDrl4I=;
-	b=nRXV7n7b2wneEBIvbOJjwn3JVXA5lzDkLIYbn660s7+p5AU2AFGzc9NcUigrT9ETEOxYlh
-	7j2cbAM4kGk10zVUU1cYd1Y7WM6jEixk7i0sj7OSzoYOHcAmRihoTqyY5aWUeyUcDKNibe
-	BHN/aPn31+8IAQI9rp3XAOZ3yDbjUWA=
+	bh=H7i2gxVfdyLMw0EmDv5vkqlxZHu7upnqw28TbwSHmLg=;
+	b=WgCIBsESOWHI6uGoCS8o4XRuWZ5r+jEMDzFit8XY/+IG8WW+AlyXm49kT8lmVo8WVLj07g
+	D4xW2wvn8MVpLGc5dH0e675hk4CEZ9sTCEi5Z7zJja0in2dfOz8BSCOLdcgUtFsb1Twf4K
+	K8yXuAIOFsTZSHG0bVEFYi0p8CnfJE0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cSVyF7Xw;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92e65e18969so57889185a.1
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 08:20:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782919255; x=1783524055; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zSMdskJ/XVsebZBQ8sHZxAPdt7ILVugrW/olreDrl4I=;
-        b=cSVyF7Xw3Y/pRfLlDlX0sXWlX77cihQ0cm10k6TZ5sbXDJdyVqs9jhwo+stqguXLu6
-         2ecb2shTRum7mGWdrITqc6soR0BfIbRafU9cI/s83m+COOtYHAN57wucaQpDGM6ytYe3
-         2HnelxUdlTBEqpAnqoWL19hmKWHHgdmDfuko7gQTzEUe6q/GY1JjUWK2gADvU/O7sCv1
-         b+UFeNKpZMjN5hGR7lcTF7lMjgr9T2/GkQ8hU8noLhNpvXI0oz+Jg8h2cEEt3gP5Msnm
-         ynRHhhHdszfDJPVqljZ0nqoMq7QlE3TRsDqXajkDhftiy/k0dz0wxwz9jalsRmSJrCnE
-         2Uqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782919255; x=1783524055;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zSMdskJ/XVsebZBQ8sHZxAPdt7ILVugrW/olreDrl4I=;
-        b=XkOGJilFl1QlCEN0LoUO+By7wq3wyiKDNr0p2KE78RIYrvmRrUBY53y3bYyXw0ojvs
-         SDp/7WTEflY7bo40Q17Ktu8U5rN7J2siq7HfU6MVNzndJXpR6pP0U7UIZBSx0Ig0iY6d
-         J690fGdRl6swz3Cgy5Euori3vZEQWcEJeX+FFK+8/apJ4h4ebJF6mDxASbfTDqeJuhT6
-         OyBYARmhBEU46jvoW8hgyUTEIM5OULnnjVKYjS2HYV/Uyc+QBI+XRL04gMI3Hmy7Re40
-         SetEmRkI+o0kY8ZO7i2d0GOAZA9qvsDFKwv62wdv8U7/48cNsLByslvQrkzpSxgFoJ6w
-         VUww==
-X-Gm-Message-State: AOJu0YxjUwhQioyPt+JX/3brzYjaZKNFZs3x9NJHCiWHJSlDd6VQb4oI
-	1US52hY7MsnEnropyFGpyJ6AQsFZELhoESxphPnNKEG3KE/fYfbw/vO1KeELuftT0Ck=
-X-Gm-Gg: AfdE7ckD2BqeTxLm5IXLT1vU1H/c336ilgoIX0Mr+N1lHx3R0kqy4ad3LEIfFN2nU1f
-	mt4Uu5ksLQ1MXJgWrTyi0la7Jp0ULV4APNhPQPOOguh00YxQl8kca+rpfO21O6XpXdw2LGgnQxf
-	6hY6w7Ied1Ai8DCUF4aJNK7YjdlWCjt/y2JQMntG5WGYx0udifcNzvSZW3dgf8b/bwboeXsafjT
-	LVnBmnXFrCIHYvQNsveQ0zCGYjNp9v9gSmVxzCg7py8vA/gH1TCU0FleWVPEWXXVG9de0bXz+c9
-	iSojg4DL5/2YK4tHT9ksr7pGwMnYGvVBV8yNDJMESZcod/IKAqt3EfAqkcF8VGPMhSJDv8Aljlv
-	u45bMNk0xP1Cg77H2nv62de8KEKVMg9JGVcoMPA3nru/oNvvKJ5utZXbMvKXtjDn6sRABkLpU9F
-	3Uriv5wh992pnOvK31y4kX7a/3F8Cd+34MJ8iVYCvA+4eWiBpU/ZUWO4KkrrHGYvat7Hvh
-X-Received: by 2002:a05:620a:178e:b0:92b:f1ba:5fad with SMTP id af79cd13be357-92e69821ad8mr849855185a.37.1782919255344;
-        Wed, 01 Jul 2026 08:20:55 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e623379easm595581185a.32.2026.07.01.08.20.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 08:20:54 -0700 (PDT)
-Date: Wed, 1 Jul 2026 11:20:50 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-cxl@vger.kernel.org, kernel-team@meta.com, david@kernel.org,
-	osalvador@suse.de, akpm@linux-foundation.org,
-	mgorman@techsingularity.net, hannes@cmpxchg.org, vbabka@kernel.org
-Subject: Re: [PATCH] mm/mm_init: handle alloc_percpu failure in
- free_area_init_core_hotplug
-Message-ID: <akUwUv_rrgmRP4bK@gourry-fedora-PF4VCD3F>
-References: <20260630214039.2263562-1-gourry@gourry.net>
- <akS2AYLzOzlJ8tIO@kernel.org>
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sjCG3GIb;
+	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782919530;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H7i2gxVfdyLMw0EmDv5vkqlxZHu7upnqw28TbwSHmLg=;
+	b=sjCG3GIbFnGZzS/i7r3lSRl+vIlTgGaZZaQyALM04jublH7FiI6uvxqzlgaoCSbxGTug8Q
+	A6MH6TB6uDQgqhlaLT+z+xdj5MLy0+FyZQohT/e6aaw6ezoAuMrLA9vFENdJ7el94AplnS
+	b4Q19qp1+xp63ebDSC0U5B2Wc3Ymjm0=
+From: Lance Yang <lance.yang@linux.dev>
+To: riel@surriel.com
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	yang@os.amperecomputing.com
+Subject: Re: [PATCH] mm/huge_memory: set PG_has_hwpoisoned only after new folio head is established
+Date: Wed,  1 Jul 2026 23:24:57 +0800
+Message-Id: <20260701152457.29836-1-lance.yang@linux.dev>
+In-Reply-To: <20260701134622.3152896-1-riel@surriel.com>
+References: <20260701134622.3152896-1-riel@surriel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akS2AYLzOzlJ8tIO@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5F766100004
-X-Stat-Signature: rijszytj8pi1sc9eugfnocuqkzzsgobn
-X-HE-Tag: 1782919256-342397
-X-HE-Meta: U2FsdGVkX1/2sK4syYPhGLhVWwi92SLql86NPoDCaJJ8JGNioSeL3uVVjDvEds2h7UIw1ZFuiw4Z0iBz8FlxHF253g+dtAlizp3xEovIAJHhR/CgCEDQu4VDvQhiq0UaGa+ZMQ0uJHYqJHxUjhIXsUFVXjtZcplkU5VfXc+uV7h/+DUu7oRxAF3PN0QBKKbPLGN5wpocr3BOT20XyWyId6kKqpTgEB3kEwg7Bakqg+67cMX2gMXQj73eA3PkrB717L18n2VptiDfh+vonCubCcSHCuXn63nFJp/obWSRko15NzRaPHbuXqrQ30ENKLY8ANQz9P7AWvx4rrv6DY9cQuBk7O/CnGSu9dngC6dGd82quQkTmErOUIA/9Qq9Id2fUX07BMPokDyXRgwuCtlrHD86mU5//M7MfTn4iEnYt7Aul6w0ZkCYXoz1klAUa7fB9hhx7Rtq/sdbBKAObMGa2boqZ/bPyvhYke5K48Sm7FT9kK0b+wqktzgKS2iuoycCTmvnGL/6fq4DJuLJth5oRCJHue44kpjY5gCp268Zz/RPmY/sZH6M8ExdJ0phljQ4oFexCehzejnSf8ZmFJ9aO/W2u9lF2L6JdP4bZpEo817bFryVJBmWuLvx6iYm5dXxjKulUfXLxHslTs51eBLBjQYoWphv2BhY/B5AOc9I+aN0kuW6n0MiwWvJZjzV8xlyPbaMMmCQf1e23UKKaJe49VdGy81bnYI2AVcllydwxn9jJahwJuf7L/7DgqwOE/+/yr35kl6xQ4BLaXgASvLwRtwOZNtIH8LC10ls2AA7wKg2g7rQhVIHgSJlSYEtjY+0KghodDF6imtAzTtzxfiEuu6VJeiNUVI94HHsN08cBCoHxfRKjmpx3BZ0DqyEOX3u6ZKQ3H+yOtfW1qKLKgncmmT6hwd0Lom02c1ZWd8itWEXMzs6XF8ObqNB/89k4H+ljtO2yzrM17PFdCDw7rQ
- UzppYi38
- DFr9o2sQ5bM9OIGA0PPFwnUDoQ1y7xIbzYSRgZHPZI5HHqI44REf8fFXTeZjkjQldF6TBiskSZPShM4ZF1UfqEcqmzMA8/PASMVMmrWoDJuBooFfNepwRUopmnx4XPkFae5dfNBZ5QMVYJmTdiLHfLibGRQwVfll0bzmgSAMIJEPdDGUYhc0VZDa7VM86iqh9T+3DLvYobXDLfsgGXNVrnXIoRrYuc42KSiXnfwEcScojJW7lWYJ2p/sIUE2jaRMwdd+iYmEnwxp7npCVrQTf7xU2y4Aeh/L4iiGLOu3KlFo+hB2+76p9TaXWJHd4PcGsoUCicZO4qAHJn7JVphE/bYin4ZHPgEw7aPx/c6hYVMDFf656a+pFqy/EkwFbjvHJX9/xslr9NsGfp+Jul33n0m5Zcj6TagvWilQFXxiSqFNA0XsufCJ9hPmpbKYFK0u0aYYxLZgGBsPCay4=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DBB0B1C0008
+X-Stat-Signature: hgkiy14c5u7mrgoame7b3ffxdf58yxxd
+X-HE-Tag: 1782919532-964101
+X-HE-Meta: U2FsdGVkX19nj1V+ftdToH7qbsYLISY7+h76hOFpTa2tqJFSAVPcPwzGXybGAj4fbS9PEGf+93RInTGB/j90ThBEHBShGPnL+TIn1RnPAUuUJA4u70KiDdAaA6PDJBXZqBiMtMXKUQOcnLhq5ivTDMGQHD+AqOz6bXbeh+CFqxkzwXhBrFIGuzNRnVbH90SCSI20WLhaRyH74qsrMlHx8rAmAeRGs9dzuf+4ZBuFktaO+7woMQNniapSefuzFj2dr49w90eVuGJpwTbbftq9+aLzmGwVYw/FQ9mwNkizJDok+/rAwPoWPaGVDt/LsLcVQGpEkh7f9ChLMQUNZ2MDfgOJ7NEtayoX6KqGVJ307c8MsIFaY8ex+tkya7Ym3l5P2VlhApeVkglo/hNV6e/AqXINSafuOslaE9C815OypfPkf0Khjcg6ClDqsdW97w/akdtNcXl63Wls+jEGzKproYpJWRoIwVNVug26s69R/h1fUepEizvxwpARtFRSv+itbWrqEXP8ZWaqCFxDhoY3bqVUMeQksIyqNlEVGLoSe9eYghVFVOX8VhRwgNIMSkVm5+0/NFb/R06e4W0Ay2W143Q4erazZeHxnX+cO1wRbeuu7gjYXJ037D1z5thRmtYrPwaXfN+KehobYJA6UvwEvhe/fhxwn2/MjRcbUKeWEQbW+pwpEbuF9lhs3xxbBXxh5u0mTPBMfCPbqo7/aXWXmIT0HRL3gHBBU96/LT7/uYOtAYQnS72aypiaz/dtd0Jcn3Kdl3+q3m95zmON3azedtgmHvRSlwV12vGrfb7h0l8QYRYsmW6NuMX+JL/dPJkRb1Xe7YCSJj5XnBA0Iej+W9XnwU+g3WKTLV6lbh625RUheVewD9eC4ax+6XXdts+W9WspMtZAx64We6UQrno7tTN4hSOIyANapbj89CuYxVe+KAvLOQbTYHGPClV5edkH+FamW1dRb4fi4Y+K0u0
+ CWP76pwz
+ SU9OuDAz3SaO/gq4i9JVuwg+wl0rt26Yb2QLvmdenRMfNsjSNa6RSlLKs5ux8/0m4HipfEalEnN8s3nv+5wDEPXgEry/xV3XU+D/5UWMA6B+61JfPi47mAHK3XPv1I0WK1J9x+9HNO1wsUeL57ZYd6dov1rjZkVPF/DGaBXpwBdZJhz0GBn9byTsYURvY0az0zC3DUHjrx1i6P2uvwdZu+VlryW4EOBMIVwPsfFhKjz9ngEndWqPzJHuhqQvatO9LdYEJYyGLKaz0Bd4aqXhTvf95TwnyTYKA1nLr3UF8tOnZG/mHIgvxM23iEsWQEz10VOBq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,50 +101,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026 at 09:38:57AM +0300, Mike Rapoport wrote:
-> On Tue, Jun 30, 2026 at 05:40:39PM -0400, Gregory Price wrote:
-> > We miss a failed allocation check for pgdat->per_cpu_nodestats, which
-> > results in a NULL deref when we offset into the per-cpu area.
-> > 
-> > Propagate -ENOMEM up the stack and leave per_cpu_nodestats pointing
-> > at boot_nodestats so a later online can retry the allocation.
-> > 
-> > hotadd_init_pgdat() returns NULL on failure, which __try_online_node()
-> > already maps to -ENOMEM.
-> > 
-> > Assisted-by: Sashiko:unknown-model
-> 
-> I suppose it's rather 
-> 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
 
-I honestly wasn't sure here, Assisted-by is the tag for LLMs lol
-i can change it
+On Wed, Jul 01, 2026 at 09:46:22AM -0400, Rik van Riel wrote:
+>__split_folio_to_order() copies the hwpoison state onto each new
+>sub-folio while splitting a folio to a non-zero order.  It did so via
+>
+>	if (handle_hwpoison && page_range_has_hwpoisoned(new_head, new_nr_pages))
+>		folio_set_has_hwpoisoned(new_folio);
+>
+>*before* clear_compound_head(new_head)/prep_compound_page(new_head, ...)
+>turn @new_head from a tail page into a proper folio head.
+>
+>PG_has_hwpoisoned is a FOLIO_SECOND_PAGE flag, so folio_set_has_hwpoisoned()
+>resolves to folio_flags(folio, 1).  With the new compound_info-based
+>page-flags layout, folio_flags() asserts the page is not a tail:
+>
+>	VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
+>	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
+>
+>At the original call site @new_head still has the tail marker
+>(compound_info bit 0 set, PG_head clear), so on CONFIG_DEBUG_VM kernels
+>this hits:
+>
+>  kernel BUG at include/linux/page-flags.h:354
+>  folio_flags+0x82
+>  folio_set_has_hwpoisoned
+>  __split_folio_to_order
+>  __split_unmapped_folio
+>  __folio_split
+>  truncate_inode_partial_folio  (shmem hole-punch / MADV_REMOVE)
+>
+>Reproduced by syzkaller: hwpoison-inject a few subpages of a large shmem
+>folio, then MADV_REMOVE (fallocate punch hole) on the same range, which
+>splits the partial folio to a non-zero order.
 
-> 
-> > Fixes: 75ef71840539 ("mm, vmstat: add infrastructure for per-node vmstats")
-> > Signed-off-by: Gregory Price <gourry@gourry.net>
-> > ---
-> >  include/linux/memory_hotplug.h |  2 +-
-> >  mm/memory_hotplug.c            |  3 ++-
-> >  mm/mm_init.c                   | 14 +++++++++++---
-> >  3 files changed, 14 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> > index 7c9d66729c60..f04b915678db 100644
-> > --- a/include/linux/memory_hotplug.h
-> > +++ b/include/linux/memory_hotplug.h
-> > @@ -289,7 +289,7 @@ static inline void __remove_memory(u64 start, u64 size) {}
-> >  /* Default online_type (MMOP_*) when new memory blocks are added. */
-> >  extern enum mmop mhp_get_default_online_type(void);
-> >  extern void mhp_set_default_online_type(enum mmop online_type);
-> > -extern void __ref free_area_init_core_hotplug(struct pglist_data *pgdat);
-> > +extern int __ref free_area_init_core_hotplug(struct pglist_data *pgdat);
-> 
-> Nit: we are trying to get rid of 'extern's in the headers, even though it
-> makes the declarations inconsistent.
-> Can you please drop the extern since you anyway changing this?
+Hmm, a bit weird ... for shmem, hwpoison-inject should call
+try_to_split_thp_page(..., 0), i.e. a uniform split to order-0, no?
 
-yup no problem
+So MADV_REMOVE should no longer see a large poisoned folio. Am I missing
+something, or is there a syzkaller link? 
 
+>Move the folio_set_has_hwpoisoned() call to after
+>clear_compound_head()/prep_compound_page(), where @new_folio is a real
+>order-new_order head folio (handle_hwpoison implies new_order != 0, so a
+>second page always exists).  The flag still lands on the same struct page
+>(page[1] of the new folio); only the ordering relative to compound-head
+>setup changes, satisfying the FOLIO_SECOND_PAGE precondition.
+>
+>Signed-off-by: Rik van Riel <riel@surriel.com>
+>Assisted-by: Claude:claude-opus-4-8
+>Fixes: fa5a06170036 ("mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0 order")
+>---
+
+Anyway, I used a local split_huge_pages_pid() hack to create this exact
+situation: a large shmem folio with PG_has_hwpoisoned set and a poisoned
+subpage before the non-uniform split. The BUG is gone with this patch :)
+
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
