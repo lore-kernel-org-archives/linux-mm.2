@@ -4,113 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4BBFC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 14:07:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27731C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 14:09:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABCD56B00B7; Wed,  1 Jul 2026 10:07:33 -0400 (EDT)
+	id 088E16B00BC; Wed,  1 Jul 2026 10:09:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6D2C6B00BA; Wed,  1 Jul 2026 10:07:33 -0400 (EDT)
+	id 0399C6B00BD; Wed,  1 Jul 2026 10:09:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 936566B00BB; Wed,  1 Jul 2026 10:07:33 -0400 (EDT)
+	id E6A186B00BE; Wed,  1 Jul 2026 10:09:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 661E06B00B7
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:07:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E087F1A03D3
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:07:32 +0000 (UTC)
-X-FDA: 84940385544.03.AA47F65
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B8A9520010
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:07:29 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=snu.ac.kr header.s=google header.b=xqg9FDvO;
-	dmarc=pass (policy=none) header.from=snu.ac.kr;
-	spf=pass (imf13.hostedemail.com: domain of hsj0512@snu.ac.kr designates 209.85.214.174 as permitted sender) smtp.mailfrom=hsj0512@snu.ac.kr
+	by kanga.kvack.org (Postfix) with ESMTP id B9FAE6B00BC
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:09:13 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1ADD1403BF
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:09:13 +0000 (UTC)
+X-FDA: 84940389786.07.FBB0337
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2C282C0002
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:09:11 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ytyg1HxO;
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782914851;
-	b=pLEkGm3WU6KIEAIymO21bXsAyBun7lbFVL1fUUnCX0WeVX2UxM/ufvRIexk1HMoYvVk5X2
-	PeVLMlitf7Da3aSkcnsQadR5wQ3ga6lNtdp4fjlYAEJw9xENT7ur9OFy1o/4PWMSiVeYGA
-	wjI9aiy4ydQvNzRfq508KXHE7oO0x1Y=
+	t=1782914951;
+	b=1RF0mDTi3qbqODMOf0yHztn8i3DC3JYlDBfRo/bjXr0iXE7QONuLz8+1ijA2Kl5gYaeBuv
+	2C0lV7mm7ARbLAtJesNk6p1Usqe9sNYvYLOKOOcN8l8cn/qKM79FcWsBBXq91HXJ9pxuLJ
+	rgouBy07Qdvn7TAqJJrYarcIHqNTTDg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782914851;
+	s=arc-20220608; t=1782914951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ZxgN1oUx6Pz7v7TGz+X3A2giflOx86wktdE36WmTNHU=;
-	b=IVLx497TrH3UKoeqREkHw7934QFwXdM339X8LtlUe4qBbGipSF2IsFXoDIsPZ8yJP186OG
-	us451z8ldXv7QUiDOHmZaAAkAe8LdMzYNecg1SBPu6DOOrcVF20yG8WA3MU/EqbfwLSLV3
-	nGvUUHz+y+B/NpR9Vkq0Y8FlgT5HTV8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=46MFV16NDHBS0YYz/g1khsqLQgu2b556MgiPh6BwUuk=;
+	b=ti2BwImfzWbcSCQwzaYZLDhKFlBDK5t6bQKyprUsVr1tfJ7DiIMqEKsFOv5JazFP3lcPpR
+	SVNG2phY1XwqZxVbEf6k2HdbQvxXu7aDHW67CIqU3Ds98z8/BrwShIhhIfLf1HQZ0C0HQu
+	PEngmCt/Bd50rBVa4gZicNAChc+td2g=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=snu.ac.kr header.s=google header.b=xqg9FDvO;
-	dmarc=pass (policy=none) header.from=snu.ac.kr;
-	spf=pass (imf13.hostedemail.com: domain of hsj0512@snu.ac.kr designates 209.85.214.174 as permitted sender) smtp.mailfrom=hsj0512@snu.ac.kr
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2c9f44ddf26so3132505ad.3
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 07:07:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1782914848; x=1783519648; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZxgN1oUx6Pz7v7TGz+X3A2giflOx86wktdE36WmTNHU=;
-        b=xqg9FDvOW56D2hsWu2YURxEfPL/YkyX/F5wpnrygjRsqjqM3eV6It1yYKkp+LtC4QL
-         65qPn18+cPNJBFY9BdFWAu5+Vy3awohFnRvbBrtm5HtLsNGTuQmHZNN/r9AXARImltb2
-         12n+SSn58G+E9loAoMPC+psWBdd2B05EDNsmQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782914848; x=1783519648;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZxgN1oUx6Pz7v7TGz+X3A2giflOx86wktdE36WmTNHU=;
-        b=SuWeYvy/5uGgptrfs7HE8TLamIyKvH4K6agdl4AOhcPam+RyPU0TMkUodoji7U+4bG
-         4YVe/RmpvTPmqhHsnpVH6u7zS/l7szaJI/DxJ5N+6ikl+jrn4iuBi3VUA5BEGYujaueS
-         H+RA1c5Ugpn/bNPf8MerZoZafpAAzaq7krDH5Y3kkTqh3UJVX0gXAt4jAeBWxXq2kIRt
-         Q/cmUVZUE3hrrkH5yH0cfOT3EbQG2txXH1OfP/GGc1nnaOvljCJ8y/I8AtLb+LX40RHH
-         W3lDLlAH7UczbYNtakEA6CeCma+nd+cx8P9jds+A2r05ktodqhnsoovMVs6einyoxHUQ
-         b/tg==
-X-Forwarded-Encrypted: i=1; AHgh+Rrepr+Ntohnu4/h4hzU7yTmw763yKvxOFvVjNTEnJQhSNgmCn7Us4TqMAOY0OYwKrV7BQ9N9++blw==@kvack.org
-X-Gm-Message-State: AOJu0YxwQKRBORPRkQ1tzAyi0rCrnR7BEmRcs8mpotomboesgU0CAqAQ
-	bpDgD8IQNg2zWe1nRZerg/I/ri85Yg0g0BxqkX5Lxo8IC2hKfXP63oioDwY/J1BOVCc=
-X-Gm-Gg: AfdE7cn0M27/V6m+42mEpI1F+K76vaDgbHfW8G+KjL9/3DAtfk3tHB+jEk/r97kn0q2
-	+wVA9CP6G5sBuzPvhI3lL9Zdd33nPm+ZwqQ54ufaaJF+Oaf9P4dX8EFZO6X9VUDy404fsnx1DRZ
-	5RAoRUi6qVgGos8FacvGwstG5Ma55/YUGsBVLDWwJZg+7KgDP3Ty9nGEUkvXMb7/MkQLyKs6cZ9
-	tjMlA56kNBewumm3+xdgZdr063BXBX3bnUseIJ5pgJNgeSlgoFS5iVUldV1KEk8w+xL800CkH2U
-	M23N7YG7V4nCYD9BFGj5/FC7dKFyRQmi9CBjIb+7h58tLRPIELhxvNw/xLKdhTZ4nOKqCbqHfUz
-	zIbiYZywW8D/T51h98eRYmUubpeXfDJp2HR9JvVYJAd4pX4NtltGoXIgJ5OHdYc/MnjT2I9Wb4A
-	V2Id3S55IEoz4QSAHGsYm7a6zVwuShcRYJsUE=
-X-Received: by 2002:a17:903:286:b0:2c9:97a7:b1ea with SMTP id d9443c01a7336-2ca7e924ae6mr19926615ad.41.1782914847937;
-        Wed, 01 Jul 2026 07:07:27 -0700 (PDT)
-Received: from localhost.localdomain ([59.29.41.108])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca382a3863sm32525705ad.57.2026.07.01.07.07.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 07:07:27 -0700 (PDT)
-From: Seongjun Hong <hsj0512@snu.ac.kr>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Seongjun Hong <hsj0512@snu.ac.kr>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] slab: remove unused SL_CPU slab_stat_type
-Date: Wed,  1 Jul 2026 14:06:33 +0000
-Message-ID: <20260701140634.71608-1-hsj0512@snu.ac.kr>
-X-Mailer: git-send-email 2.43.0
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ytyg1HxO;
+	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <00056bd9-265e-4e34-b11d-c63307b8857e@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782914948;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=46MFV16NDHBS0YYz/g1khsqLQgu2b556MgiPh6BwUuk=;
+	b=Ytyg1HxO0itBzI7rC9Gtmx+Hlg6ch1f0sI90RD2I04Afvb0gn8YCXIOwhr43ANQdABmoiD
+	l8sNjjNAW3C32tuu3ZKXXPdEFkD0QjIZyXhDNy4poT4gL3pRV+++Fal7P2LP78mEFd5BxW
+	itvBjXS5TkbL70UnplFsFv8EydPaPns=
+Date: Wed, 1 Jul 2026 15:09:02 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B8A9520010
+Subject: Re: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
+ ziy@nvidia.com, linux-mm@kvack.org, ying.huang@linux.alibaba.com,
+ Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
+ Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ kernel-team@meta.com
+References: <20260630164143.1595669-1-usama.arif@linux.dev>
+ <20260630125024.6c079ea708630d99708e26f6@linux-foundation.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260630125024.6c079ea708630d99708e26f6@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 3wmpz7ihgmgk1e8yrzz6t7p6sbu5hgqp
-X-HE-Tag: 1782914849-911927
-X-HE-Meta: U2FsdGVkX1/hiCRdlTsln5N/cMjRf3sydfe1HI3O46DsXqLFKRIclJw/FAlkQhYuWbzd0x68WO8y4uNwyyk9cZatnjRijVN0sBLKNyqBBN0dYjHNpdtc1aRaY0h2xDChmwlbgMkZt/RrXDhAuTnWV+xhanSdD7Xd8zqZq6t5T68smUQJWwOuwPofppb2j5S2UChULby+vPh6uhiGBj5KD1R8wUgaw+BloOgGpjje4q3VsMWwEqAyaNzo14BMxZGbb9h87X8vxmLMjmJNoVzP6YO2LmowIBwEUqFSvmS8R6vcLq0un9b1QcTvKUS6JrOGNCs0FE0SJgu/w4mThEG8mAZdxQxIpwXgbUf278dUHaufVFulCLCsqsuf9Pa3xDrEBdgxp8XxQZ7AIcWFQOADqmkheBgdLH4CqTICphBKyNVgRGZf1baqWCcYYvkzfu9BXy/UX/VwLtRfZUc9spVvUhzdlpHCLr8ooctPCiuC8mLI4XG9FtJSbGa/QNleDg7tGptFSb30vkER3X76WJGQoTPVvYVgAhfuogy54Ur7ZXyi8Re7yz9LXoj5zBDvY66GD1lm69IPyGofE81EbE1CXFL61kc+j7BM87AaWdCdER5lrQD50ec4goI/bE9nmQlx3huLqc3K1KEIVtRKFUFHqurkoYjL+1KRVshPHMy0iVX20sEyKF/VfQ80ccW/xQ+7FT860bGB+NAe/QcKWHbflVEFyJsvoitNVdw1t05AH1g6/SkQXk6hLJI7Wc1jQhLv+ISqTwFtzF9+PcTANoen/ITA2MODfY1jKSW4itfFgfoim8lb2LiZE7+rwfrPw0FNb0H7Nyz2yXakeVhRHYetU4TOj2o4FNAQey5NIfWzxYW1JC1Cjyq3pZowslxgRBnz7n5+EyAYAyWqw9kqs3UTSxAxeAwsyQFHpRajqDRLmFNlUsi+1uayQ6dP0PvfclkGhUwUo+LMIrRVSPdOCDM
- gopS18se
- GhkQZ/aPStY1rTuccwROTMANO/tA05aW+NljEkkPQKqcG5inrfyY1DTcSzPBNuUviVlQOdIzgRLAcdqioobLrCQ0okWCPhQs9yd6BqDdnTRewCWgPnu9CkFE+mvgdRvblV1jrsatvrEB0s+oUJq+O4NcqSGlzFwim4XnMsiGVNXDqFzs0zNFk1/5WWgEXu7YyW8q1iTeOaK7OscEwjnTVHrjOZt4EmtMHhh3YgVEF91zKrTc1LdfPtxw135j77SfuuBe50AVTIYCF61q3g+F/d9jhkMGJIibQpfDiwFM8l7sRN0BjlPRrwJU8sqWa2r68vzHFhxofPvBPkIoU5WAoNtX/0g==
+X-Stat-Signature: 5to1n1gikmish6ab17kef9oipfa8ae14
+X-Rspamd-Queue-Id: 2C282C0002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782914951-718684
+X-HE-Meta: U2FsdGVkX1/+6a0sjGq1HCcNnlHhhUe/Ul6vzY3HawAdN8EnP3dmHLpl0k494BVMPzHP3zBRrmTyBbw4hCoWQEHMEVTA4LAiQ/afq+2yIwiC4eXPjzvXqY9BCR7XpT7oTiTygvxlJb7CodKQgZ+cbITxTynZQDyldxm2d+xZj+wZiogLoOehpnxz5QdprJ178zgaDdgrsfZRj6o5Xk7RkhdG1E7sLIp+kPuNiMZD7f4HPy7NK5b4hxUsx/EuYxhxKOg40RYoxFUF1hlmAIq/68oB7CvEk6jbnQzpX1Fy7X+x3ryLWl+wOyUY+zS4xwYXZOUO5y3PI99vRlxjCAksciAOCozyiTR3Kua7f8vp8RvnEfXcTmfpFUTXUWs0y862XDwLRsS1EqjGWtonYENpNXMuJxpPRAsEL9c5AHuXnXJkwepJeiyOhwiQf5jSJXlqxXB7hF2oO+p44XAicLRZZ6SVDgOk3UN8Cl12+duQXlQJ/I0LxRGQpqQvimQbaOOtQWu7kU9hastN1+tOAVAZxNXRBVXHGrsOLWVsiuY1TOYBIqLZ0ol8c/G8n1NgUQPZTvkUsi+RsRkI7wBH6gGQk2p9KE7iF5wWwiFTB7yTG6zWZ9sAUeyxWcacXUrUvUcspFUlE6KlTnpAc+aOzcHpAV45TvXNHyr+uamDwuMFGYhp9rmo5bbqCLOCBVbAUb8YvYglBRzxiYQ4gzJAX2XVnHjudjItgGhITnEGSK/7jGqAS2dXqqQw6DQTN7cmlFeaSuh0krBIIHPgUTPmQwrYj9dqmo6bvmk/GH19ccsIJy/zGnjlTo4l2SwxAGsFWYbLzWFICmXc7jB/RbOEQurX0Z+KY8rgsVrrVS7yrH6103NaRwyBrBqGOvOfQwZWgO3j7O2co7AUG0ZYZymu4+bRp2VhLRYoQZ2MMo+CRYLCMrnV5ylJaNkaBEZOhjo1cEtZs07RbkcxThOlw4C+SN5
+ CF1yRe14
+ +4BAFJpEh3TXvUVVgR5qy5v2270AvbDFBmhcJ7Zf26kttlSFAfn9GinzdZG0wN/kUs75Fwtkuuh9mvi4WqOTgUYvORe9JGTbI0XQg3lwc+QAdOSgVc1uqSPUTMk8DjvmFsSWMkDCAkYHsnZzq2BE6ytV/N1dPOPgTZqdk9C/PbBjw/lrOcZ6oMlfRMyRne7TEiA+x2BSVkDYM/6qk0ygoOcXIDXFAZYAxrmuCJpuB0Cspvbcrfu+lJQbzMwnbPmdYW8W4Q0ZnPju7UYO6KfFuI/V1QNnGzqNJw37gdbJgvM8WdfU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,51 +98,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since the removal of the per-cpu slab in commit 32c894c7274b ("slab:
-remove struct kmem_cache_cpu"), show_slab_objects() no longer has a
-branch handling SO_CPU, so cpu_slabs_show() always produces "0".
 
-Emit "0\n" directly instead, matching the sibling cpu_partial and
-slabs_cpu_partial stubs, and remove the now-unused SO_CPU macro and
-SL_CPU enum value.
 
-No functional change intended; the cpu_slabs sysfs attribute continues
-to read 0.
+On 30/06/2026 20:50, Andrew Morton wrote:
+> On Tue, 30 Jun 2026 09:34:37 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+> 
+>> This is the preparatory part of the PMD page table swapin work. 
+> 
+> Thanks.
+> 
+> This comes reasonably reviewed, so I'll queue it in mm-new.
+> 
+> Why?
+> 
+> - Human review coverage and AI review make me believe this isn't the
+>   final version at all, but I do believe this is something we want in
+>   7.2, and getting it under test early will help to push it along.
+> 
+> - Getting it in there early means that others will base their work on
+>   material which will probably be upstreamed this cycle, so this gives
+>   them a more accurate base against which to work.
+> 
+> Sashiko did find a lot to talk about, some of it pre-existing so can
+> people who work on this code please take a look at
+> 
+> 	https://sashiko.dev/#/patchset/20260630164143.1595669-1-usama.arif@linux.dev
+> 
+> 
 
-Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
----
- mm/slub.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 9ec774dc7009..f2eb60ce0d23 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -8992,14 +8992,12 @@ static void process_slab(struct loc_track *t, struct kmem_cache *s,
- enum slab_stat_type {
- 	SL_ALL,			/* All slabs */
- 	SL_PARTIAL,		/* Only partially allocated slabs */
--	SL_CPU,			/* Only slabs used for cpu caches */
- 	SL_OBJECTS,		/* Determine allocated objects not slabs */
- 	SL_TOTAL		/* Determine object capacity not slabs */
- };
- 
- #define SO_ALL		(1 << SL_ALL)
- #define SO_PARTIAL	(1 << SL_PARTIAL)
--#define SO_CPU		(1 << SL_CPU)
- #define SO_OBJECTS	(1 << SL_OBJECTS)
- #define SO_TOTAL	(1 << SL_TOTAL)
- 
-@@ -9188,7 +9186,7 @@ SLAB_ATTR_RO(partial);
- 
- static ssize_t cpu_slabs_show(struct kmem_cache *s, char *buf)
- {
--	return show_slab_objects(s, buf, SO_CPU);
-+	return sysfs_emit(buf, "0\n");
- }
- SLAB_ATTR_RO(cpu_slabs);
- 
--- 
-2.43.0
+There is one pre-existing bug pointed by sashiko that is not related to my series
+that I think needs to be fixed. I have sent it in
+https://lore.kernel.org/all/20260701140638.840773-1-usama.arif@linux.dev/
 
 
