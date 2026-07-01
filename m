@@ -4,83 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D33AC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 20:04:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DDC1C43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 20:07:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF6CC6B00AB; Wed,  1 Jul 2026 16:04:56 -0400 (EDT)
+	id E95F86B00AD; Wed,  1 Jul 2026 16:07:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCE126B00AC; Wed,  1 Jul 2026 16:04:56 -0400 (EDT)
+	id E6CEB6B00AE; Wed,  1 Jul 2026 16:07:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABFCE6B00AD; Wed,  1 Jul 2026 16:04:56 -0400 (EDT)
+	id D84346B00AF; Wed,  1 Jul 2026 16:07:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 87BF36B00AB
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:04:56 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1EB73404D7
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:04:56 +0000 (UTC)
-X-FDA: 84941286192.27.8F39223
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 63A4C140016
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:04:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ja9vf6Dc;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782936294;
-	b=eW63FlVJ9qMgPgAhaCsnASWH8dHaKwYMy1Bw+T66yiAZjvdhyCjTHxeqdXrH/Qu2bTj0et
-	CgZDtI8L4D7uSLBfy+W/iQPTWiWeOIR47GLJkm05I0VHFtq+qTpFbXrBIL06V7qQPQMw/7
-	gIvxX7sTfI76Sh2Z8VP+BvpzYxo4k9w=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782936294;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AF1FA6B00AD
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:07:08 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D8D41C3330
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:07:08 +0000 (UTC)
+X-FDA: 84941291736.07.12EECB5
+Received: from relay.hostedemail.com (unirelay06 [10.200.18.69])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0FB9040003
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:07:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782936426;
+	b=DYYPzx/1OFsZ1dCSUmfFzmwX3ClkkglMfISvaUaRlyMTU0+YNoZO+y91rKUos1IycSwgsK
+	gfQ8gSeOwEYheTdEBaeoGQEJ5X4El69p3pfqe/RWl88apPKv3XAP1GJ18Wcv4yAPrekvRI
+	bxn6mQJppW17YBabbiqdM6jjL5Zxdzc=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782936426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h8XewL7dOdgjgBlExG7c82KjdEETSt64MZQ6t5MNVB0=;
-	b=Wu/l6GG3P/dD0AHezPxc9oNjr2+oFjm+H83SR+U2SuDW6R8XJeuJEeELf03a9dYnsTFl+1
-	q0C5Q+ie0VInl3qBE3dofKA+ndN7oLwplw0l41QNGMpTYBrMjVrpU97Uu6C+fBsnD4as3N
-	oT9MG3PIsJ7yGpOFV5IeOu5bIh+CIbo=
+	bh=JlvkbBWp+nCtDdzWKMgtdcXUqu08ewyXUHePXK7va7c=;
+	b=cobKiTsm195qtirMTBgWj1TK8PWhJkUdG+cY60km3qVMRZjRYggTIdYqHaWeluQkvLGUZk
+	gLdBEFaawO+rwdrihXRMGu3NILaMJw6IP4ggIsaQqX5SfZiRpwJEegMmGeWc6FYXdXb3su
+	Fyzomhy+mY/fuASN5hBen6WlCRczADc=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AC3931C7491
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:07:05 +0000 (UTC)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 81579C26B3
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:07:05 +0000 (UTC)
+X-FDA: 84941291610.14.C6EB057
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BEB5C20006
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:07:03 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782936423;
+	b=waYGeUklPrf1SdjWOtfPoubXkYZt2MzP0ef7XXUfFmOaAmqAJbwTXbm0OOyEeiHvAAgyqK
+	XB8pPzxwZBKU3gmhDv8pf4rmrw4M10kLKgWbFNtsxCqyRFwFVPljBYlYCzKrTK+x1vSJMd
+	VVYjXngGGmJ9sxVExTQMOq28gnFSo0I=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782936423;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JlvkbBWp+nCtDdzWKMgtdcXUqu08ewyXUHePXK7va7c=;
+	b=3yHrbNL1O88Zexzvt79trJXumUB/JGAJgH8Ua2Cmsf1jySgu+QzVmWQJLAzldyFK/h9tG8
+	P4A/cZcGCAetQyu8shTFEE40C0Gh2X+lVar8ELiwis/4vovV9vVSdr4Mn22I+sfjO9ZaBr
+	1DDXKaU1Kg7KJIL88zU5zoxgIHwPSrE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ja9vf6Dc;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Claj4dMc;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D525B60138;
-	Wed,  1 Jul 2026 20:04:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77BD1F000E9;
-	Wed,  1 Jul 2026 20:04:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FD4B6001D;
+	Wed,  1 Jul 2026 20:07:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEC01F000E9;
+	Wed,  1 Jul 2026 20:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782936293;
-	bh=h8XewL7dOdgjgBlExG7c82KjdEETSt64MZQ6t5MNVB0=;
+	s=k20260515; t=1782936422;
+	bh=JlvkbBWp+nCtDdzWKMgtdcXUqu08ewyXUHePXK7va7c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ja9vf6DcKb/bQGd8Q/6iQioxRJ4eHqsokqNUjcwZvoqiQJ4xlXVIG5w6SsTyTCa0x
-	 AIKElSpeOeS5ztXPEA85mfpfq9h2psbrIoGnDn4v6qIxUtL6Nwr+roAIz323yRHoGt
-	 IMw+wru4cB84D+3LpYLMT+xyHleK9GowCVFeVg4viNgJc23H6UTUYK5TkGrIY5XDlP
-	 7oA2IQs9w1B3gegU34I/B0sxiPtGcYKzk5TzKEiFwR5oC5OZSSam2PTUozLOm7RHGH
-	 9Kv6IErdBuQ8xnYwZW7UPw38ju1mMtzWcj54ErwyjMSPao217hU0ZHC6NiuiwIyQtY
-	 gFZa+wpSeWp2Q==
-Message-ID: <b0b66905-c619-463a-8114-73848bc913ca@kernel.org>
-Date: Wed, 1 Jul 2026 22:04:43 +0200
+	b=Claj4dMcTgt01vsBm9pIoz3ZxkgeC/HuvGWH8eDcEAu8t5aWHSbTv5N1vZqpPXUpE
+	 +OsxvcENS2GHHiA3KNoQT55kEzk8C9B5oyPPmiYpmsWwVJD+5AACL9RJ9PTfGTxcBn
+	 9uzK8+S6uzC6CkmNmqOykqeZCTk4rjcrDfCnz7uSpwfxjkdDCr12R/1UQNoxj7q7up
+	 jBH7OIOA9PkY2P9lU5aSkyGRlcu88eRBPvumPHKLnmR3KmomqF/dS1O9RtFsCu8gZ4
+	 lGmomMJA44wv1Pyqse5gqMrIYnvBQZUx1xzuqRngnqBStmcO4vfSMwyaAERoqbny3B
+	 68UO/kwgYXaow==
+Message-ID: <c4faa211-22ff-4fab-a95f-1c2cff35f684@kernel.org>
+Date: Wed, 1 Jul 2026 22:06:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
-To: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, kernel-team@meta.com
-References: <20260630164143.1595669-1-usama.arif@linux.dev>
+Subject: Re: [PATCH] mm/migrate_device: pin large folios before splitting
+To: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>
+Cc: Usama Arif <usama.arif@linux.dev>, apopple@nvidia.com, byungchul@sk.com,
+ gourry@gourry.net, joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, matthew.brost@intel.com, rakie.kim@sk.com,
+ ying.huang@linux.alibaba.com, shakeel.butt@linux.dev, hannes@cmpxchg.org,
+ kernel-team@meta.com, sashiko-bot <sashiko-bot@kernel.org>
+References: <20260701140638.840773-1-usama.arif@linux.dev>
+ <78C557ED-3CF3-4558-9BA4-C43B30E63F67@nvidia.com>
+ <20260701122745.2bfab3347691b658fb93f601@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +151,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260630164143.1595669-1-usama.arif@linux.dev>
+In-Reply-To: <20260701122745.2bfab3347691b658fb93f601@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ttpnfrad4exmmq874dsx69zfy3qcoen5
+X-HE-Meta: U2FsdGVkX186YkdkZ3Ph9s4MDL400Uabu4MmqvSw+8Pye9NHy5ulqUN1wQj4f8EjE8De4e33idMF9oZDmw+6sxu3PHQ/REjAP5oQQH+6pZbGTJ6qITmfVCFnq3Iyw83oQrj3kUziHxQyzpl7FR4fidvCMbkOCKkXska6sYHZO4DMUodqPt/sms+b+Drkc2EV7ISNoTZ13Rse43Yr4G5MjHOJOlXDFqDExljgX+H99xCAtzxfnYUPvEkYAHQ9rnMkdvvXVQN15JNL7zehfKPCFksWujkmwO2pYdeLojl5A2kfzdVMBIH3S+xbI7APjVcIBhoJOkbOgx9q2oHXeEmACErm5eT5NBCxvqp/Vfv/Rs8TiK7InCDQpAQzKtbtDcYZZrMTIZlcjJ/0lPhUoOrrLEaceG8JIh7jvkv6Lwppk0ReTOqq84idkhSBdlbCOutSnPJTGljA3fE+f84Ik7eI1tqTrJnMKXWvbd0PYfWKnPF2I0/u+afMLToH5d0pJfK6Dx7WBCbIhKrfDCjqlHbSFNZQVNV21Zz+1NX68hcxrWVEE4rr/lyS3vAZNzK2RUHzX9b7EFwo/uiyyaGAHequperiut+IHkXkOjM+Rsd+M7lqK1VQ6fUCKkPHluuGHnely6EhrXLEsZsJBX0eYIIslYqcWdMLw/aO7ziUuqWK1nxbbMUbBnWGYINvtHyTU59uyV5qqORMEdA5G8sNfCEmSl/MkBcgHOSlw6aoeXnOoMICaCnkUPil06k/tZhDSzNRucvY5bAx99Hdicxfr/SIFDJFkfP7gbf+/0yThY32vSoR+1Y1bEN1oYoZuvuurDRaAyO6dWkLoKwlFsyye2fFKy3LuayZIJ+5g2gPucuURE2sLi5iBh9uFYX765UhlQKauaSUaZ8dv+GTHF+peBuFbIINsxNizfGqGWgwIVdLVD5IMe+O2gb3QWkV0ZzLyFYo1LGttI5o7H7wUKrE4LM
+ ydjPCfgl
+ lKzNpamUx1zDl5jIpMRuXPvEioAV3YxSJueMso+NC46llUR09u98yyNYCrEUWrCC/IbXPRSP/aOvaKxOMCxT+jHONK9Gg1nenGAyo6tB4fShWa6+VTe+yKXaHqS7ZjEf4uqycrA6/IQAR0/5ePeREMfhoFx9XIexbXWoK9nc8TumSXAr/CCsiLpKk4ScV9IWWPohWrplF0saE+Yhvs+cht0RwJAST7K02oYMIwsyeVpzcoE+4VzA0UkaDb1tHFZ2oqipT9WK+4mWv0lpWiC17RnbMFqZTEXWWVkP97YVnUll2WcsmL5ZCFaMEU8tEcebMDgSowd6HUKPg0lSMLg+3PYxTXQ0JYhaSQ8KNlYKrvykzaGIpGkT55iK8+zjuWi7tsPV5RdGswvjLMN94B4+vLFfZww==
+X-Stat-Signature: 4fpbbe7f9rfcm3tm6gcwwge79am77fap
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 63A4C140016
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782936294-63405
-X-HE-Meta: U2FsdGVkX18W+y/g5btPicTnT9cX15esvL56CH+uHFQBjOuVopsveDk1bq//lFFRUqZCXHcQxnOgASZYQGK4GeEPEz5orXXjgfTc7QEjEj7vwho+hoZ/s/UX+eVkww1aGS53rmy6/epsxbUkEs1kZPZDT5Tdn1Z8XY0Fs9jSuFfFej7llGAoDmjrIRgF2B5ibJeKTp6maRNYd3q136tR6CILT6gaIo7QSRGtBu/4aJIanxUbHpLXeX99uf6rnGzXtgq6vKspusgEvtARiRno42TVkwuTEGa5ADa7y5YkI6n75HnbfepAFkBS/c2s9X8pw8BFACcJZ2xYUe3CWnBWXldjZFYTjpAtAK9qjAj/MAwDb8uBZ1c/e3HcOL22G2mjXRPYu0uhFaxuR/ONrEhaoeF+A3TxtUwphD9Y35Trq9Vb2F7F/SgIGYVCSV8N2JVO6bsZaBdB6BEgeHenCWh0HD9APtfURnYg2BBtXo9gG/VOCONIcggUC1xDpN0EKvL3SLY3iho1jrzIBsy402y1WtzSPx1LbMfnW1j/Q3OVfS11R5LCE3TnUtlymrHpwFlxx/065G3XucVwdNA5VRN/Iut0cn5jUwwrKG5n/hiTnrQNAbEe9bBZ4ngn7XGtq84YUjk7CMxddF/6j0MNLD42k9OnSEsHNUenFSzVnNO6zxD7yFxb9rr8OZn30+WE8irWVsBk2XmA9wt8w7aOYvqxQ/2d1UG6WseJUKZN70zFgid4v3XiXR8Nbhk4h7g6a9EIHBzuk7FRQMv495PXR5uXT4Uy7g6D4me6aUXWUYVrDX3uK6FBVRG3ykEPodF8D8dhURod8WARPkaj6RoBwOfacXtVpmc1z+Uj/mVUChwViH1z5ywSVVXuay3kjmrsBb/Gt43LCjkhU4x3xQFoiMllnGyn+FBlKef6/kceDZgc0uCD8anRuxahRqLzb3OPW1+Sh7xszb1k1lSmswYY1MI
- XnRyJO/I
- QED2CCVmhr9TU8PDsnxXbDJ1OhgrxFIs+WiyPUuMnPpQiwkdMSuqL5ZVqHrs4GBQR8qlQ4Uu45LnAviPGS2FIYcWzGORNkfkIP/AsSvagXH2jbUkrLw+n9UMrx4iF4dt9o0892rApHXFyebzrPtUo5+RcISyBl4LPvJG778NIwxnzXFldcZOrWQo3RyjMIHWLggDCwSXPVG5gxJO4Mp6uoSbS7uxGxrQ2HyOVpb2u748vN7vVIMVQ+MAG63RrO8tP+yS1
+X-Rspamd-Queue-Id: 0FB9040003
+X-HE-Tag-Orig: 1782936423-987987
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1782936425-614828
+X-HE-Meta: U2FsdGVkX19FEfatBbsUen3ZwhAhXCaqFilRNStPdannvCbakl0TS5rT0dXWc4VOp2HxMDlPz645ad+RQfnUeU6nmIlfGSzyxKkey+aCzoCcCqeR5LNxyG1a90eBUW0egdfdIt2JE6BOkGR1c7StzKWpgllZrWTQNqL+LbBtGH+d44HQtlvJn1xx2xfBAwKOie6GNOt/umB7cA1ptYoK1V3kOb8pFQ9u7Z5rSCGRSmWAOk3VrwyPvLv4DZ6+0/oO6j1TUL/qNpSoEnvSaKL142uSGi0i9vpMl0i3vuv0Fbc+YB3r+tAx1lrHA9ReMipyxCKNV24BVQOkt7GR3atKQiamfwS/btQlnHFcEBwtJfgNp+0pg1F3hySbYZOwkapeGVtdTGcSstDs5LcX1HHlRk2BZjp9crM0AZV2dXqc1uxltnRfV8qgsH8XtUCo7P+yDjwMqHcpiz5EKSK4M4rB9Wt46GLG1JYPEomV8NMXsya/76lqyA9/gQqn7Ejj6UQcj2KD9a3ueMf6bS518GGokmsdQ3EaNWuanx1LKC2k9UOMUkj7jdU2F+fG66nA2jQh4JFxtfb6PG5ywpltJoMU+iCsdnO7FyQ0lMnOtaOlDR3lKj/G2ZwCEQGqILwbO+5ssLmPT9NDG+aHt/WOAyUS4rPM0E/V0GBkIaOBF6QTRsaUHzAsmcpx1X14y4lBprIcmsgOXLhjDCj8ZdwK0d/YftMheIFT74DD73N5U488/cXk59i1mTtvoq6g5ObR92XqfgwQw0E1ZvUdns4q4tWYFWSrZLbZPE+P3sPf5hZyaZUzJJgYp1oEM58CUjb5yVEFJCcLU2yubircVCmvlvlFeTc5KSCWapcQILg5bOMpUih+bnfz5mz2Gp0iCBC0+B/M3HzpfWU4L1fWjb8GZcyOkB6dBVxCuWjV8Rf3iOrNkK3MGmtq/KX3vpAjM9436PKw8Xz72dOVOfSXOkuQAM1
+ wEz6MlAB
+ w92T42cb5te8mim63JH7pJuN9WrlRTUtAJ2dvVG1IED0DDGxsRTdImBR9POxtdTkGy65tGctAc8zJaAyWa2yz8uF9BqqZp57k8eTeHr4eH2tWHFFlghPs0pTauSSJVyho3SLasf8J4HTPt/zFTdUUMykXQMiOVk16ti+9v5/a8atxDrtSZB/MAft46ps0caFNbzLDV7ljqdNIMJjlRz7n6l8vL0VDUevCagxbOqNRywglMGg38eQ5aT7H4qKYl2raNAawgCb3uIYtJIvq+gtS9C/xPmdhkI4fr05WnvbHUwQVHOaOFhHThC2fLnqH5B+k/SZ649L+CAFLcA76xNcxRURTleKz454NFOYmkJuYZTZBhlCvlOTXY0AF6a1xrOPxpBbw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,29 +173,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/30/26 18:34, Usama Arif wrote:
-> This is the preparatory part of the PMD page table swapin work.  The
-> full PMD swap entry series has been split into two parts:
+On 7/1/26 21:27, Andrew Morton wrote:
+> On Wed, 01 Jul 2026 13:02:10 -0400 Zi Yan <ziy@nvidia.com> wrote:
 > 
->   1. this preparatory series, which contains the first 6 patches. Zi [1]
->      and Lance [2] suggested to separate this out from the core series.
->   2. the PMD swap entry core series, which depends on this one. I will
->      send this once the preparatory series is merged in mm-new as v3
->      as the combined is currently at v2 [1].
->      I have not marked this prep series as v3, as its not really adding
->      support for PMD swap entries.
+>> LGTM. Like David said, the comments might not be needed. Thanks.
 > 
-> This series does not introduce PMD swap entries and does not install any
-> new page-table entry type.  It only cleans up existing PMD softleaf
-> helpers and call sites so the follow-up PMD swap entry series can be
-> smaller and easier to review.
+> I like the comments!  They may be uninteresting to those who are
+> already familiar with these things, but they aren't the target audience.
 > 
-> It should be safe to merge independently.  
+> How are others to become familiar, if not by this?
 
-Agreed, thanks for working on this and splitting this part out!
+I mean, it's one of the basic rules: if you lookup a page in the page table, the
+moment you drop the lock that might be invalid.
+
+If we were to document that everywhere... this is not really the secret sauce we
+want to document everywhere.
 
 -- 
 Cheers,
 
 David
+
 
