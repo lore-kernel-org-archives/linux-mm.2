@@ -4,141 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63F75C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:16:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74475C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B5696B00A3; Wed,  1 Jul 2026 11:16:21 -0400 (EDT)
+	id 13EF66B00A9; Wed,  1 Jul 2026 11:20:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48C9C6B00A5; Wed,  1 Jul 2026 11:16:21 -0400 (EDT)
+	id 1164D6B00AB; Wed,  1 Jul 2026 11:20:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37C596B00A6; Wed,  1 Jul 2026 11:16:21 -0400 (EDT)
+	id 054216B00AC; Wed,  1 Jul 2026 11:20:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CBFD6B00A3
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:16:21 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95DC01683AA
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:16:20 +0000 (UTC)
-X-FDA: 84940558920.18.5F2E2DD
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A8B5540014
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:16:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Odau8ccw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf07.hostedemail.com: domain of glider@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=glider@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782918978;
-	b=vBG49Wg3dCwe5O7lWQo+PFhPjLsUx63Wne8y2NvFU0XVwOVCsfcpcp0N5gQilNDs70qMuY
-	ohsPMgFB6wqVbB7dV7hMxW6avbWPJj46v7GkPHamb6T8kc70Rq8QpgPjyvqG2IEhkFEQwz
-	1a/8EmI3brUFqVdeyKm3HJu41a3MMqE=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782918978;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CD24B6B00A9
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:20:58 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 316B08DB89
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:20:58 +0000 (UTC)
+X-FDA: 84940570596.06.D0AEDD6
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5F766100004
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:20:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cSVyF7Xw;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782919256;
+	b=Sw/3iVsP4F68DhAwcTzGmjXaU+J1Mn9P2j8FE8Sm8jYYzyWnmkDfRmfsMNrl5SIWRAXhB5
+	1M9uqr5FEPG4a5A5XbYXJLKGsSPi4GSOUh1+R0d9zKaq86GUpZeoQwwVc1RT9men3O3nUj
+	BYneEUcsAvkJtG2dRj86QG3TUb/Odck=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782919256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g9Ct1t4oI3eGFO4X7XoqoWi2Q8Pv35qR9dPP8CVLRfQ=;
-	b=w1+cBGxbh4k+FdOu8WtcXkEiZ82CyX02hsAUcH66cOG+Jrg+3JvkzRO8unNiF1jKNQBDd1
-	t8EuO+3cbVs+3T/EKiC3rUPv5rQpzQuuAsy9ms/9crnRIcw9k9vLc2rKft4vooUq2UeHfS
-	3MHlOFO7qDrDMe8w42EvWn8nTAlJI4k=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Odau8ccw;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf07.hostedemail.com: domain of glider@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=glider@google.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-68bd9fce347so1577624a12.2
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 08:16:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782918977; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bvSQGvDeSSWMSEEAXyMvGQlNbhXlY1E3NuvfWdxzdctIDZzpmjBKdXdoEgKyWhWxqa
-         bzjdHCer5TKjjjGszhYGqI9Xqz9PRphJnC+PStOWKguHPyi9rEHiVsdGzy4qYaJJlAEj
-         cQ9JlhEBZX3TAq/s4n3JDw1lC81p/hT20zgqV+m4B/K34XSCkTQNHdcGNeRd0OZu11uc
-         62Oo/emg29Nw51vfnU5sSC4tLnl998RGCA8V2lCH0GB6gTiE/USaPHZ22P+GeUyUQ9Dw
-         9UOcpbaXZKynL9zXxHOjxLoQMhRX9cWwgoywJNKyqnRz58wrwTN2HEkW0hdMr9LqL6yy
-         BcqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g9Ct1t4oI3eGFO4X7XoqoWi2Q8Pv35qR9dPP8CVLRfQ=;
-        fh=e223hhFe+a2UWcAaJ7VmoYOT63J9ZcVfdRNeYU1SyTE=;
-        b=DNYACU8WtOtooDI0CgzenT1pNz/VirweVQXsAe39ZQafd81W2ZuKvY7UvYEriu9IiJ
-         roirJnYC+dG6PdPF5a2S2kWmRUg2GK56C1fsHbZka2RO2bYIVjhTa1ScEjilFp+1TPIp
-         GJNQ1mU7E8vT7bMbvrxaejM/InqD0OoAowLTR5HZfU0mGyMtMVi8XY8B55bqFzVqW4yT
-         MtRV9M+6+IFh47dYfpBav45bpBg8iKLDPbatrAVWxSAGAnBTN20XQiLKptQ3ZKcC8dXy
-         4RNeN0AAvMYQedxYVnTjf6Cxf8BpV8wq0W/R73W66wwBrz+RLAkXQ4BNdxqNEq5Z2nvx
-         qKqA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=zSMdskJ/XVsebZBQ8sHZxAPdt7ILVugrW/olreDrl4I=;
+	b=nRXV7n7b2wneEBIvbOJjwn3JVXA5lzDkLIYbn660s7+p5AU2AFGzc9NcUigrT9ETEOxYlh
+	7j2cbAM4kGk10zVUU1cYd1Y7WM6jEixk7i0sj7OSzoYOHcAmRihoTqyY5aWUeyUcDKNibe
+	BHN/aPn31+8IAQI9rp3XAOZ3yDbjUWA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cSVyF7Xw;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-92e65e18969so57889185a.1
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 08:20:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782918977; x=1783523777; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g9Ct1t4oI3eGFO4X7XoqoWi2Q8Pv35qR9dPP8CVLRfQ=;
-        b=Odau8ccwOa6dJdLC2x6GCI57aG4NDMV9wsLqj+S9c4KVCsv5373FPklWggN9x3dq2v
-         qLXvTcQw/z8m+chItxj/GJDwe0eMXe+qyfOI27vhNDvcDHcmp5uvt8C5wVpsfms6qV3d
-         Cv2ZGex4WOjU3BeRDdtkv9W+XF8dH0++t2srjZNWLQvauHCDluuvZOY78bLA9Zd4hRYF
-         9LwfI7O/NMizB4L+ysTHBy3LVa/M0s32q2mKU8uF/PiIZ1h/g5G0MSS+8+4HO0ndYalT
-         F5glAJPZ+Mqq9WAJN/hSsIbQUbu8u3CGj0fcnoV5WoUmlRhDQXJU8xvm0gmCeKcepFC2
-         EvcQ==
+        d=gourry.net; s=google; t=1782919255; x=1783524055; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zSMdskJ/XVsebZBQ8sHZxAPdt7ILVugrW/olreDrl4I=;
+        b=cSVyF7Xw3Y/pRfLlDlX0sXWlX77cihQ0cm10k6TZ5sbXDJdyVqs9jhwo+stqguXLu6
+         2ecb2shTRum7mGWdrITqc6soR0BfIbRafU9cI/s83m+COOtYHAN57wucaQpDGM6ytYe3
+         2HnelxUdlTBEqpAnqoWL19hmKWHHgdmDfuko7gQTzEUe6q/GY1JjUWK2gADvU/O7sCv1
+         b+UFeNKpZMjN5hGR7lcTF7lMjgr9T2/GkQ8hU8noLhNpvXI0oz+Jg8h2cEEt3gP5Msnm
+         ynRHhhHdszfDJPVqljZ0nqoMq7QlE3TRsDqXajkDhftiy/k0dz0wxwz9jalsRmSJrCnE
+         2Uqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782918977; x=1783523777;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=g9Ct1t4oI3eGFO4X7XoqoWi2Q8Pv35qR9dPP8CVLRfQ=;
-        b=sreNYBi3bdvNyT/hwb82FF3oEKI4rfBTGF0vh5gvISnvmS6iaoiW23VEZzAP0a7igV
-         ml4aiIZoUveuoQG3R9jlcvdXOdJTrZPwMYu7HiXbw9/AKdyW92W94GdRK77wrwFNxSc8
-         7eKUxUbvNsjXDEY7LvnFh6hxRYsk/tQdny+U7dVMgqS/kzir4s29aPQA49ZvnggWs+Vz
-         BIBhdM7yZQeJttsjXRvucQp8oSsamOhURY1gyZuutoF8r9DsXMk67/kArf87SMbAhHNF
-         7VlPcRLNJE6CPwMxaUC/uyHcirZPRRVYy11SpKByyOjKzRpg2ZGpGqhbF1uUoTctCc78
-         KzBw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp3Onqe+8XDqHqFNeKV/IqYpI/50aqARs9k/DZrb3z1ft7o8lvhmoECHozvpZ5vpE8SLcX3ctghyA==@kvack.org
-X-Gm-Message-State: AOJu0YzGK066iwW1yq5V6KOuZF0AvTFlRZJGxBtHy+HSfwF3ODFwrSlR
-	AAqydm3SXRHcFs4ycRgqU475S/Vr8PQAU8t3gTO2oiq9NCQDIBSZOET+6S1YF8DGK8obuuRV5J1
-	9uB1xod0lrZR+jke6UxDJeEaO76a59anSt+Ym9wbG
-X-Gm-Gg: AfdE7clVXtMjFMUkEKNRAR1+Z4YGJVqOma07qsKGRbQOoaiMqRUc+0LjT9Cfr1Wz0AH
-	qlYJynkOiMeJsLp505X9tVMpot/I3Y5LThfbh/VkPhYjIKeSdAdcSC7Ttjkfb4bGQWqYa0H+9yx
-	f8dvTuK8kczvD/1kJhFoV3LR1rSNR6eAEOokc2p0HJxfk0U0JHIxCtpQMYN3gKZVntjC0NpLyD4
-	40wynA33rQRs84nl0ZJxNxUDAfdf1dM8tEdb8ARk2DG1temOPP4mtnvv2JoDhu5sc8EvqAZg48v
-	wEiYWw/XpNgMaPXqljDPZ8vqjemxJ0OmPmsC
-X-Received: by 2002:a05:6402:34d2:b0:698:4699:59d with SMTP id
- 4fb4d7f45d1cf-6989f33c106mr1053721a12.17.1782918976573; Wed, 01 Jul 2026
- 08:16:16 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782919255; x=1783524055;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zSMdskJ/XVsebZBQ8sHZxAPdt7ILVugrW/olreDrl4I=;
+        b=XkOGJilFl1QlCEN0LoUO+By7wq3wyiKDNr0p2KE78RIYrvmRrUBY53y3bYyXw0ojvs
+         SDp/7WTEflY7bo40Q17Ktu8U5rN7J2siq7HfU6MVNzndJXpR6pP0U7UIZBSx0Ig0iY6d
+         J690fGdRl6swz3Cgy5Euori3vZEQWcEJeX+FFK+8/apJ4h4ebJF6mDxASbfTDqeJuhT6
+         OyBYARmhBEU46jvoW8hgyUTEIM5OULnnjVKYjS2HYV/Uyc+QBI+XRL04gMI3Hmy7Re40
+         SetEmRkI+o0kY8ZO7i2d0GOAZA9qvsDFKwv62wdv8U7/48cNsLByslvQrkzpSxgFoJ6w
+         VUww==
+X-Gm-Message-State: AOJu0YxjUwhQioyPt+JX/3brzYjaZKNFZs3x9NJHCiWHJSlDd6VQb4oI
+	1US52hY7MsnEnropyFGpyJ6AQsFZELhoESxphPnNKEG3KE/fYfbw/vO1KeELuftT0Ck=
+X-Gm-Gg: AfdE7ckD2BqeTxLm5IXLT1vU1H/c336ilgoIX0Mr+N1lHx3R0kqy4ad3LEIfFN2nU1f
+	mt4Uu5ksLQ1MXJgWrTyi0la7Jp0ULV4APNhPQPOOguh00YxQl8kca+rpfO21O6XpXdw2LGgnQxf
+	6hY6w7Ied1Ai8DCUF4aJNK7YjdlWCjt/y2JQMntG5WGYx0udifcNzvSZW3dgf8b/bwboeXsafjT
+	LVnBmnXFrCIHYvQNsveQ0zCGYjNp9v9gSmVxzCg7py8vA/gH1TCU0FleWVPEWXXVG9de0bXz+c9
+	iSojg4DL5/2YK4tHT9ksr7pGwMnYGvVBV8yNDJMESZcod/IKAqt3EfAqkcF8VGPMhSJDv8Aljlv
+	u45bMNk0xP1Cg77H2nv62de8KEKVMg9JGVcoMPA3nru/oNvvKJ5utZXbMvKXtjDn6sRABkLpU9F
+	3Uriv5wh992pnOvK31y4kX7a/3F8Cd+34MJ8iVYCvA+4eWiBpU/ZUWO4KkrrHGYvat7Hvh
+X-Received: by 2002:a05:620a:178e:b0:92b:f1ba:5fad with SMTP id af79cd13be357-92e69821ad8mr849855185a.37.1782919255344;
+        Wed, 01 Jul 2026 08:20:55 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e623379easm595581185a.32.2026.07.01.08.20.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 08:20:54 -0700 (PDT)
+Date: Wed, 1 Jul 2026 11:20:50 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, kernel-team@meta.com, david@kernel.org,
+	osalvador@suse.de, akpm@linux-foundation.org,
+	mgorman@techsingularity.net, hannes@cmpxchg.org, vbabka@kernel.org
+Subject: Re: [PATCH] mm/mm_init: handle alloc_percpu failure in
+ free_area_init_core_hotplug
+Message-ID: <akUwUv_rrgmRP4bK@gourry-fedora-PF4VCD3F>
+References: <20260630214039.2263562-1-gourry@gourry.net>
+ <akS2AYLzOzlJ8tIO@kernel.org>
 MIME-Version: 1.0
-References: <20260701125151.352632-1-voytikd@gmail.com> <CAG_fn=Wor0586c077D+0D+NYh+bkhqPhVVzoAANsaLGxbjLpTQ@mail.gmail.com>
- <CAAX90H31D3y-q1RJ=ah+hhPj2_apUh-rGtmwwp8vBzDNZcLH5A@mail.gmail.com>
-In-Reply-To: <CAAX90H31D3y-q1RJ=ah+hhPj2_apUh-rGtmwwp8vBzDNZcLH5A@mail.gmail.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Wed, 1 Jul 2026 17:15:36 +0200
-X-Gm-Features: AVVi8CcT-ikLzaLh0i71cpWmg-Xsyf2H8TgZcmrLinyuDA6tKonIkBw_YC0GzxI
-Message-ID: <CAG_fn=VA4P2YVNHSHxzeChFg45LhoYLnj4jrLMq+jVGnt__wPQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/mm: fix objtool failure with KMSAN enabled
-To: Dmitry Voytik <voytikd@gmail.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Dmitry Vyukov <dvyukov@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankur Arora <ankur.a.arora@oracle.com>, 
-	"H . Peter Anvin" <hpa@zytor.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Marco Elver <elver@google.com>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A8B5540014
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akS2AYLzOzlJ8tIO@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: mkijmngqfc7k5okdxbx59n8apxhtj75m
-X-HE-Tag: 1782918978-281817
-X-HE-Meta: U2FsdGVkX1+cI6Ld3HshI8Qm84/UyutVqZ48fJWtW5i44U4vdy0PTY+8zvGPSZEFkM4tV7upQmeB40nkdMlt7LmiumopqAz8EI2xQHlLZt6iZlE+HOkbht1siu7ceEMNSZis6irIZxC6HF+M7tPMFzVQoEJ2qfvna4qhqb3jTpJsiF4mKJYVTogC9z1N2qLWhkVmLeGfxmt4Ts8Kg/y2vuCzao8354uD7sif7glL/4lUuwrM8I/f9ODol2EVOayiSIZy8nHMp243/IwfAtv5RvzRRJjKlGJJL9zHH0ahIuI3tKO3I71ilyNZPD/S9fyiMjCgHqbKKj1ty+xFnlutpXabb8vYbBaZImXJZXYjW1UdsrrEWon+CkSYQUk3eXp41aZdoijS08gea1Dk8J/czybHsAwwV8T0ucNqkyqHTT2hCpReKlqIh2TS4C+bfsz8TAZ1e53hihbK9jolEoDhgFx5KKXX08xgZmiOwT95zAA9b4RiualDS7SU1Jp3O8E8hmAdyL4NfIiUOQDBA6GO598sMMsTC9lZM1Qshrue8q+xLEUEZ63bG0GCFkTgriatPXtHFSNP0hT4reqczGOJBUH4Xl/eElzhwW9SIByS9QX9+SakTXs2tJlucyUjQnAWZberqjnzwYlIAlgoiwXIM6THCt5PW9dJ6G5B8KH0Ps5UECd6syw7QKCaQ6KrwkNq59tRjZBYCX8erkBLv6uomXKTK7GpDrLjqar16Wxs5UX9/jLTnLEC3qr5xH9wCn9CjJTMQ3P8eQFDG0krHB6Z1+y0XqsVhPmTVbLZxNF1woKLSr1KB8upYLSMcHNQorsUbyQbM+CYN9PfHYagijjCNPdi6dB7ZZAIb9AiFNzWD8ciijk7rdxB4AlwPEV8IrDfuogzOICsZApxYMg9RURGcJRdhgwjuqqZYG35Olwusa1STkPtNeZMxZU7kcrsWub+i8JK+o+55bvk4GrP1DT
- koKNAX3v
- 8G3X1XBSwfmQnM087/pnK9WmH7YMKoKKOIXGbzlxY7jh+BrA8DiExNmSzQaZhPxDRM4b8TH3x0Jn4q9COmHqq5BznQLdxjy/9/kGoL4oaGkYIpDwhGb8WIy/J7ThtWyiJMIIJvsx+Sv9tCp8XOPgvWuGEfXnQ012zy4F3skBNEIHLZbwpSIBS26pfCdzVfSAKI7KRTXmbdGUS3o9Cu2eVMWBExoqWyNqIQDrqqi7oTiFbPFcPxFpaqw+BDjRebxPEjmQbCkYI1Mb0aA0owrJhZ6No1F6s1ugNvX/iUFsa0Dw389oPh6NlHkDOTxOzea0FoWIkchZURJihwUmhS6G6oJgG3QqxjfFncKgjba8A+old5WlGpb9uZsiK+Wj21T0ubvkNe+VUZ95otsiBMg1npEPcvnu7F7JYh0SifTHVClm6EDBK0fOyrsrPmcYu7qLzV6EutDA09aWJHkpmgD3R1i8CcDtrPy0m/3X4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5F766100004
+X-Stat-Signature: rijszytj8pi1sc9eugfnocuqkzzsgobn
+X-HE-Tag: 1782919256-342397
+X-HE-Meta: U2FsdGVkX1/2sK4syYPhGLhVWwi92SLql86NPoDCaJJ8JGNioSeL3uVVjDvEds2h7UIw1ZFuiw4Z0iBz8FlxHF253g+dtAlizp3xEovIAJHhR/CgCEDQu4VDvQhiq0UaGa+ZMQ0uJHYqJHxUjhIXsUFVXjtZcplkU5VfXc+uV7h/+DUu7oRxAF3PN0QBKKbPLGN5wpocr3BOT20XyWyId6kKqpTgEB3kEwg7Bakqg+67cMX2gMXQj73eA3PkrB717L18n2VptiDfh+vonCubCcSHCuXn63nFJp/obWSRko15NzRaPHbuXqrQ30ENKLY8ANQz9P7AWvx4rrv6DY9cQuBk7O/CnGSu9dngC6dGd82quQkTmErOUIA/9Qq9Id2fUX07BMPokDyXRgwuCtlrHD86mU5//M7MfTn4iEnYt7Aul6w0ZkCYXoz1klAUa7fB9hhx7Rtq/sdbBKAObMGa2boqZ/bPyvhYke5K48Sm7FT9kK0b+wqktzgKS2iuoycCTmvnGL/6fq4DJuLJth5oRCJHue44kpjY5gCp268Zz/RPmY/sZH6M8ExdJ0phljQ4oFexCehzejnSf8ZmFJ9aO/W2u9lF2L6JdP4bZpEo817bFryVJBmWuLvx6iYm5dXxjKulUfXLxHslTs51eBLBjQYoWphv2BhY/B5AOc9I+aN0kuW6n0MiwWvJZjzV8xlyPbaMMmCQf1e23UKKaJe49VdGy81bnYI2AVcllydwxn9jJahwJuf7L/7DgqwOE/+/yr35kl6xQ4BLaXgASvLwRtwOZNtIH8LC10ls2AA7wKg2g7rQhVIHgSJlSYEtjY+0KghodDF6imtAzTtzxfiEuu6VJeiNUVI94HHsN08cBCoHxfRKjmpx3BZ0DqyEOX3u6ZKQ3H+yOtfW1qKLKgncmmT6hwd0Lom02c1ZWd8itWEXMzs6XF8ObqNB/89k4H+ljtO2yzrM17PFdCDw7rQ
+ UzppYi38
+ DFr9o2sQ5bM9OIGA0PPFwnUDoQ1y7xIbzYSRgZHPZI5HHqI44REf8fFXTeZjkjQldF6TBiskSZPShM4ZF1UfqEcqmzMA8/PASMVMmrWoDJuBooFfNepwRUopmnx4XPkFae5dfNBZ5QMVYJmTdiLHfLibGRQwVfll0bzmgSAMIJEPdDGUYhc0VZDa7VM86iqh9T+3DLvYobXDLfsgGXNVrnXIoRrYuc42KSiXnfwEcScojJW7lWYJ2p/sIUE2jaRMwdd+iYmEnwxp7npCVrQTf7xU2y4Aeh/L4iiGLOu3KlFo+hB2+76p9TaXWJHd4PcGsoUCicZO4qAHJn7JVphE/bYin4ZHPgEw7aPx/c6hYVMDFf656a+pFqy/EkwFbjvHJX9/xslr9NsGfp+Jul33n0m5Zcj6TagvWilQFXxiSqFNA0XsufCJ9hPmpbKYFK0u0aYYxLZgGBsPCay4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,86 +119,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 1, 2026 at 4:45=E2=80=AFPM Dmitry Voytik <voytikd@gmail.com> wr=
-ote:
->
-> Hi Alexander,
->
-> On Wed, Jul 1, 2026 at 3:18=E2=80=AFPM Alexander Potapenko <glider@google=
-.com> wrote:
-> >
-> > On Wed, Jul 1, 2026 at 2:51=E2=80=AFPM Dmitry Voytik <voytikd@gmail.com=
-> wrote:
-> > >
-> > > This patch fixes broken builds with defconfig + CONFIG_KMSAN +
-> > > CONFIG_DEBUG_INFO_*.
-> > >
-> > > To reproduce the issue before the fix:
-> > >   make mrproper
-> > >   make LLVM=3D1 defconfig
-> > >   ./scripts/config -e CONFIG_KMSAN \
-> > >     -e CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT
-> > >   make LLVM=3D1 olddefconfig
-> > >   make LLVM=3D1 -j(nproc) vmlinux
-> > >   ...
-> > >     LD      vmlinux.o
-> > >   vmlinux.o: warning: objtool: folio_zero_user+0x801: undefined stack=
- state
-> > >   vmlinux.o: error: objtool: folio_zero_user+0x801: unknown CFA base =
-reg -1
-> > >   make[2]: *** [scripts/Makefile.vmlinux_o:76: vmlinux.o] Error 255
-> > >
-> > > objtool in verbose mode shows how the frame pointer is omitted:
-> > >   make LLVM=3D1 OBJTOOL_VERBOSE=3D1 -j(nproc) vmlinux
-> > >   ...
-> > >   b15a2c:  folio_zero_user+0x7fc      xor    %eax,%eax
-> > >   b15a2e:  folio_zero_user+0x7fe      mov    %rcx,%rsp
-> > >   b15a31:  folio_zero_user+0x801      mov    %r14,%rdi
-> > >   b15a34:  folio_zero_user+0x804      mov    %rbx,%rcx
-> > >   b15a37:  folio_zero_user+0x807      call   0xb15a3c <__clear_pages_=
-unrol
-> > >
-> > > After the fix, the frame pointer is back:
-> > >   b15a37: 31 c0                       xor    %eax,%eax
-> > >   b15a39: 48 89 ec                    mov    %rbp,%rsp
-> > >   b15a3c: 4c 89 f7                    mov    %r14,%rdi
-> > >   b15a3f: 48 89 d9                    mov    %rbx,%rcx
-> > >   b15a42: e8 00 00 00 00              call   b15a47 <folio_zero_user+=
-0x817>
-> > >
-> > > It seems the issue was introduced by
-> > > commit 54a6b89a3db2 ("x86/mm: simplify clear_page_*")
-> > >
-> > > The actual fix is to revert the change how ASM_CALL_CONSTRAINT is
-> > > positioned.
-> > > Additionally, reintroduce asm_inline to prevent potential compiler
-> > > rejection of inlining.
-> > >
-> > > Link: https://lore.kernel.org/CAAX90H2_RPnZL_dFYN7cQF6yt-wAweKKSx2=3D=
-6e2aZ0kv+Pm+NQ@mail.gmail.com
-> > > Signed-off-by: Dmitry Voytik <voytikd@gmail.com>
-> > Have you tried running KMSAN with this fix?
-> >
-> > I tried running with the config that Thomas posted at
-> > https://lore.kernel.org/all/87tsqjq3i3.ffs@fw13/
-> > (https://tglx.de/~tglx/config.fail), and it still hangs for me.
->
-> I only tested the fix with defconfig + CONFIG_KMSAN +
-> CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT + olddefconfig.
->
-> qemu-system-x86_64 \
->     -kernel arch/x86/boot/bzImage \
->     -append "console=3DttyS0" \
->     -nographic \
->     -m 8G -smp 4 \
->     -serial file:serial_output.log
->
-> Booting from ROM..
-> [    0.000000] Linux version 7.1.0-14280-g3dd2bc904bda
-> (voyt@voyt-laptop-dell) (clang version 22.1.6, LLD 22.1.6) #2 SMP
-> PREEMPT_DYNAMIC Wed Jul  1 16:25:28 CEST 2026
-> ...
+On Wed, Jul 01, 2026 at 09:38:57AM +0300, Mike Rapoport wrote:
+> On Tue, Jun 30, 2026 at 05:40:39PM -0400, Gregory Price wrote:
+> > We miss a failed allocation check for pgdat->per_cpu_nodestats, which
+> > results in a NULL deref when we offset into the per-cpu area.
+> > 
+> > Propagate -ENOMEM up the stack and leave per_cpu_nodestats pointing
+> > at boot_nodestats so a later online can retry the allocation.
+> > 
+> > hotadd_init_pgdat() returns NULL on failure, which __try_online_node()
+> > already maps to -ENOMEM.
+> > 
+> > Assisted-by: Sashiko:unknown-model
+> 
+> I suppose it's rather 
+> 
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
 
-In fact I think the hangs are being caused by CONFIG_UNWINDER_ORC=3Dy,
-sorry for the noise.
+I honestly wasn't sure here, Assisted-by is the tag for LLMs lol
+i can change it
+
+> 
+> > Fixes: 75ef71840539 ("mm, vmstat: add infrastructure for per-node vmstats")
+> > Signed-off-by: Gregory Price <gourry@gourry.net>
+> > ---
+> >  include/linux/memory_hotplug.h |  2 +-
+> >  mm/memory_hotplug.c            |  3 ++-
+> >  mm/mm_init.c                   | 14 +++++++++++---
+> >  3 files changed, 14 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> > index 7c9d66729c60..f04b915678db 100644
+> > --- a/include/linux/memory_hotplug.h
+> > +++ b/include/linux/memory_hotplug.h
+> > @@ -289,7 +289,7 @@ static inline void __remove_memory(u64 start, u64 size) {}
+> >  /* Default online_type (MMOP_*) when new memory blocks are added. */
+> >  extern enum mmop mhp_get_default_online_type(void);
+> >  extern void mhp_set_default_online_type(enum mmop online_type);
+> > -extern void __ref free_area_init_core_hotplug(struct pglist_data *pgdat);
+> > +extern int __ref free_area_init_core_hotplug(struct pglist_data *pgdat);
+> 
+> Nit: we are trying to get rid of 'extern's in the headers, even though it
+> makes the declarations inconsistent.
+> Can you please drop the extern since you anyway changing this?
+
+yup no problem
+
 
