@@ -4,163 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A76D4C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 16:09:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1DFFC43602
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 16:17:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89AEC6B00C2; Wed,  1 Jul 2026 12:09:55 -0400 (EDT)
+	id A82876B00AD; Wed,  1 Jul 2026 12:17:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 872236B00C4; Wed,  1 Jul 2026 12:09:55 -0400 (EDT)
+	id A0C0F6B00B1; Wed,  1 Jul 2026 12:17:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7630C6B00C5; Wed,  1 Jul 2026 12:09:55 -0400 (EDT)
+	id 8AEE16B00B2; Wed,  1 Jul 2026 12:17:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EFDB6B00C2
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 12:09:55 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9B811A0436
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:09:54 +0000 (UTC)
-X-FDA: 84940693908.04.551AFC5
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1264C10000D
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:09:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GKsigi9j;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 5B39E6B00AD
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 12:17:36 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9D731A0402
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:17:35 +0000 (UTC)
+X-FDA: 84940713270.01.1366132
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2102E40006
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:17:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EzJnptID;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782922193;
-	b=uakYtz1An1UMVDp2jJtDytXmJ0FXV+aAHp8dqU8bJLRQK9lIt9/B7nhflLx1/FcdVTOHyb
-	O1VL06vopqKohgv9Y8FxBKwQjpvOv2Buw/OmyGxBrMx4qN27OHiPE3o2LHo/tnV/6A4cnR
-	MxCFubeVqJ6d07FhOG2DL4WffS7xnPg=
+	t=1782922654;
+	b=xt/LqfSzB5ncs+ovgiYc5Jgh/epMbKimbObbwLlYtqFirjj7j0Y470M2Q6+4RlG4Wg+yg6
+	kYvS8PoMpRdfYmbXpvdhV1aI/aI0kJSOenFX4A8onIo0/XUfFicEA7ANHDYm/yeibrELQj
+	+n+xdgf+VW0YF2MlS4XuEh/wfU8oj7Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782922193;
+	s=arc-20220608; t=1782922654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=32k3xy2qoDs5v558QiIXDOBJrw4XcLaI228zHYcvJQI=;
-	b=L3tEb7fJBHelweU9XxiFQN0DJ1K7/CHhRLIJT5XxxkdPmdlR9Stps573r8NVLZlCapRpPx
-	xyWJ1rqcJMOPi021y2Q6qO/J19tiUikQZGVft3KmdAnlN6sAOp1b+bTTNniYXBG5Jt+LbN
-	UrIXMkq7gD37l6J69nBbJwV+IOmNMy0=
+	bh=uFcBNd60OaYA5Y+rtfkHScnnu+1+htBpNsra9XAmyzU=;
+	b=Hx5XhbXoNYLQvxgbk6aFWQ/GJLVbTqnbgAO7dtIpMzWONAMNpCunxZJq9IbIDAzu8AlPl1
+	74BUEvFzpocOfa96B0qFJminQj5HRaoP5ihhn6laulwbu2I6+uIoSPt3BWk9u+OJbTVpPe
+	cB7ciIdoElRVz6mnDJHnp1EPNEwmDPw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GKsigi9j;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782922180;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=32k3xy2qoDs5v558QiIXDOBJrw4XcLaI228zHYcvJQI=;
-	b=GKsigi9jw5iEZkRAOu0U35OCwwNX+WFYQBJnw1VnjqCFwAV1xkeG5HVPPXjVerUIFCpvkl
-	1sYFG/+4cZNO5RnH+3ZGNEajZyzEn2vDXqeNcTTch6ZM0ZT3P4Eo/8D1DaouN8eSB+B2FA
-	bvbtO9Gx6J4K8rZ0y4m06I1Z9Hu4ibM=
-From: Lance Yang <lance.yang@linux.dev>
-To: ljs@kernel.org
-Cc: akpm@linux-foundation.org,
-	tsbogend@alpha.franken.de,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	l.stach@pengutronix.de,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	peter.griffin@linaro.org,
-	jani.nikula@linux.intel.com,
-	joonas.lahtinen@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	tursulin@ursulin.net,
-	robin.clark@oss.qualcomm.com,
-	lumag@kernel.org,
-	lyude@redhat.com,
-	dakr@kernel.org,
-	tomi.valkeinen@ideasonboard.com,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com,
-	thierry.reding@kernel.org,
-	mperttunen@nvidia.com,
-	jonathanh@nvidia.com,
-	kraxel@redhat.com,
-	dmitry.osipenko@collabora.com,
-	zack.rusin@broadcom.com,
-	matthew.brost@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	oleksandr_andrushchenko@epam.com,
-	deller@gmx.de,
-	bcrl@kvack.org,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	hughd@google.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jannh@google.com,
-	pfalcato@suse.de,
-	kees@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-mips@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	dri-devel@lists.freedesktop.org,
-	etnaviv@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	linux-rockchip@lists.infradead.org,
-	linux-tegra@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	intel-xe@lists.freedesktop.org,
-	xen-devel@lists.xenproject.org,
-	linux-fbdev@vger.kernel.org,
-	linux-aio@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 12/13] mm/mprotect: convert mprotect code to use vma_flags_t
-Date: Thu,  2 Jul 2026 00:09:17 +0800
-Message-Id: <20260701160917.91435-1-lance.yang@linux.dev>
-In-Reply-To: <7ef626d8a12dc742cfc09d080be5dc09850e873a.1782760670.git.ljs@kernel.org>
-References: <7ef626d8a12dc742cfc09d080be5dc09850e873a.1782760670.git.ljs@kernel.org>
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EzJnptID;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6CC5E601DE;
+	Wed,  1 Jul 2026 16:17:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A6A1F000E9;
+	Wed,  1 Jul 2026 16:17:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782922653;
+	bh=uFcBNd60OaYA5Y+rtfkHScnnu+1+htBpNsra9XAmyzU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=EzJnptIDY29oYgbo6yB/i2dyz4L1vuF8JsElH3OX1hkNA2c4PF17z0+BlHpyQKiGh
+	 ae7zj5X/y9D4nGkzH5Ij4a7fHqonKNCax+j0zthiVJOQPXfYO12p4gvKJ9xg/5wDzq
+	 qbvlUmMyUgmJN5tPHZBhaPv7GkDppPJJeby1UlHFf5xs1C/6wbKwvx8FYN5Bi5Pujt
+	 bvyWOwEHEvTukWm2O2KQMsXycfN7T4T3Muhvb3wz5pLRs8Smsa07Srmjs/fbrwRYPR
+	 kw41ba9ko+kHFD44hAdTNIDxW8UNr57/GaVaGEWIC20B/A58RtTttqiHeRPKjMqTaw
+	 tLNdjf9+q5Hpg==
+Message-ID: <a353c28c-a864-456d-9b00-7f6a932cda73@kernel.org>
+Date: Wed, 1 Jul 2026 18:17:23 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
+ non-atomic page flag ops
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, Andi Kleen <andi@firstfloor.org>,
+ Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+ Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry@kernel.org>,
+ Hao Li <hao.li@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org
+References: <54c8cbee-9b26-458c-93ba-5aa594f5d1e8@kernel.org>
+ <20260629174225-mutt-send-email-mst@kernel.org>
+ <cbab829a-3e65-4b4f-a2e2-704e88a611a0@kernel.org>
+ <f6d8354c-2f79-4a48-934c-cbeb335765e2@kernel.org>
+ <20260630174852-mutt-send-email-mst@kernel.org>
+ <2f884bfa-3cd5-4fba-8aa4-c2e68890ab64@kernel.org>
+ <20260701041112-mutt-send-email-mst@kernel.org>
+ <d2ce93d9-c3d8-4915-a511-d08eb2c1b374@kernel.org>
+ <20260701043024-mutt-send-email-mst@kernel.org>
+ <c03ec696-d635-4c7f-8c77-89a439d9135b@kernel.org>
+ <20260701112946-mutt-send-email-mst@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260701112946-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1264C10000D
-X-Stat-Signature: kcykqn15sjtn73sanxrr3pmrq6aj41aj
-X-HE-Tag: 1782922192-876365
-X-HE-Meta: U2FsdGVkX18iujqS3EqhuTdP/lfr+A8eXTrHxlLgZGfM5lHZ2dOOY/p25ZHmOVNdtDS31TfKYG/YaZjppnObk7H2QrJG+67VTg3QFZF2Al0iNbXMeo4Oc1knwSrY2fvxG7o7pSvvLjGUcyJ//A8fleDnY4JsvOVF6yqENJkoREt2UpW1t4rXF390IFijXs7DQnBU3vdzJiarZ7uymvfOwapCjI8Iip/eGzyL67CjA5z2XvhevmFJn2QkQEc4u5psG+BHaTIyhtD1wuZpWi+GBjcHloTJSV7ihoO7alrIKxt7QMf5mS8FdAQd0reyxpEM6m8SmClIHlE5fDJI9JVwQdUEBFozr82o9sG8nHLGQHZBVs+/DWFQIKJJtQCF79ZQUU7PISrMeMuXdVX+sa2K9BPrmHbaG+5S5vd8LbhhOQ1iWLzzhHQoeSkiLifPdf5zabXc5TfTUSJGaaD9E3OCAZIytnlCSGZ9W3l8EApqjiHZFdyeeu/W3xH0+tVeQyDooH5G1fReDw9J2sSNwMObHzXBoXkkgmsQVUd+NI1fuv8vdp3TK5l+2F4hwRRznNBmc1+NxY50PPWQ4rIfXSoq1kRhxa6P/QiJcGyM4RRnJ6o69NLZMrR6O4cuOUplNbPABe92ddwJGS+6yOMUAYyq6LH9d/g22UaDRbjLp8kAhfjR0NhMR11rkH2HVYT0mdJrEy37W/yqmitFEX4JWBjn5RQ2KTzKWzUVF5XBjUxRL+UFHKZUuJGf1/0kFtU6Gp33HT0jaqAcrBjth6NVHtCcrn70nDTUF5WXzhFX8hXZoCtk0OcYh2OUVT9CzLc3ZO9iBstwcZNndgwPGWgjv4f358Q0TwqA/rymPYsJF928BeruSpbn6+0snIuE2aH6wXXzjEIc535WzRHJjVTV2ZwkpobySjKh/vKjA6DE3cxOsYItlmJr+G21oUCoti11cZ9EtZkv8P6kTazObyNdo+D
- v4V+gbh+
- 7kCTmyoH8M0h5gkXnoPlUKqjbWHF9Mz0gzvhNOZxBw8jbSahdi4RU70URUndYqX3h7NyJz5En6Xtexxz02vQWxP9b298wYMs37vToUEVQZ6lDaP+8eGJI+X1ncysRi+BbTulHgZo5KMLiaqusfBEeu5M5yYRTneMOCxfpaBFwr1KZJiHK0Cz+zDHZeoGCSc0uhpq35VNssy2P30xGSh39d+Kg9EY33jMQUXbNMGnL9FY1NslgtZGPbX/Lq8eE2WPZFohKHwrxy8Oo3B0A33huehMx0Q==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2102E40006
+X-Stat-Signature: i4nahdreffpps4iunefeftmce631m1gh
+X-HE-Tag: 1782922653-163680
+X-HE-Meta: U2FsdGVkX1+waKU26Ne7ndImLH/yhet2Ahjo7vI39mA2AbtpBZ5Pyf2eAYadurY5RKkS/9j+bgu2ZUKgKiHOZKbRazKhTv2N0+ze571SMiaHTIqqoqXSPEcYHCaaadW9tBVujB4hn721vvI564bFindW2GlA06qcuevuePVR7hf0f2xTwlFGBwwkJm/i/a1bbYshChmQ04jJZs55C8oosc6PUDoT2vAPT29ibtAhX+Q/7L7IOojQpHuKGqAFs+raTy6qWxF+i7iBTkiHFxlIrpcQmwDEMQcwlqTVfjlID0LWRGvi5q+EHV6Okxsn9OrzsmG7wj9MPgoDmRN0/Xv2sKuS4NNwudI6eNuwrFV7xJ6H/Zj/bR74L0c+QJWJX5XkKp3Jomwskrc7Xf+AcP0L3r8hse5P470OARyly7/EG79eMnzPeRW0WDB/gFhEuhWRj1fYoO6SDsPERLKo6vDmuxsrdKab9ZQ0EBhde+J2Z1Fl60VsC5K3uzEDl32KyqPwQjyhwKv3x2uGaNhD5HxfBgLsgpzrmu0HmxC5RCNubA1q7gKfydD8rJzqLJDaO6BXpIvbqyu9rjwfr9nqLAt4MwCVhjpRo5vVP4ydcG92vZ+E9Az8uZAVc2FTNqEj+0T/HCQj5qx+61LOD+CSdAELgbNJH/wcgCRw11Rmv8ixMsTK8ROiVfa/8fPqYvWhv0VfGfzrE0ejW3ym4HubGpuRZ6kyDhsUP+t1O6+Uc15n2I/b2Xc8W6UPu4Jxdmzk84WUH2fHVarH98+YSmHRwmz5II82k/k7RCpyBrNLacDas9JVo+kzoJQRDopRjvSMQAA8PloFEhuS9Qed2cBdhRGzGlYKAFYqVCbvE8fAbSFC6t0Z5pZHU0RA0jEipT8gyI7nqdHu8+axvqTcp+6iFIPlJg/8qiUnMRCUjUI0eYRTCi+D+6IZvTnvIQnPD2lMotiCoZSoaOowmaEhO1w57yQ
+ +0kP4va1
+ 4tRZHzChLJwrii5i0d4llxTZv4hGe8gWtF7FHLXk1myw/Pn8S87X3fPk6GB5JsQyiVivQqJz6YEhLAc11QBrNpa/rT1kaACgphOVQUgA0nDuKT4ou8HvqnpKc1sl/e88nlmWuPD/3ZEyUbMoiBlNNkN4hhY8V0+5+DuDs25WxUdLpxLHUGyv7kwKG30Ehhfmd+B4kglXY+5qlrnDIA8mikb+X+Cx+CaN8NsEY07hdeLYaPLUAQ0owq7hkAjRDdTEs83uMz76VFT4ADuVICzSH+PJFo1IDCWDy7yHIT/OjyLfxSkYyFijNLt4q6G7eRK2GJ5inMEWgV0H1tPXwQqE4uFOxRA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,125 +164,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Mon, Jun 29, 2026 at 08:25:35PM +0100, Lorenzo Stoakes wrote:
->Replace use of the legacy vm_flags_t flags with vma_flags_t values
->throughout the mprotect logic.
->
->Note that we retain the legacy vm_flags_t bit shifting code in
->do_mprotect_key(), deferring a vma_flags_t approach to this for the time
->being.
->
->Additionally update comments to reflect the changes to be consistent.
->
->No functional change intended.
->
->Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
->---
-> mm/mprotect.c | 16 ++++++++--------
-> 1 file changed, 8 insertions(+), 8 deletions(-)
->
->diff --git a/mm/mprotect.c b/mm/mprotect.c
->index 9cbf932b028c..c9504b2a2525 100644
->--- a/mm/mprotect.c
->+++ b/mm/mprotect.c
->@@ -40,7 +40,7 @@
+On 7/1/26 17:54, Michael S. Tsirkin wrote:
+> On Wed, Jul 01, 2026 at 10:36:31AM +0200, David Hildenbrand (Arm) wrote:
+>> On 7/1/26 10:33, Michael S. Tsirkin wrote:
+>>>
+>>> what do you think ;) post it?
+>>
+>> As RFC please :) [and if it's AI generated, obviously properly reviewed and
+>> reworked by you]
+>> -- 
+>> Cheers,
+>>
+>> David
 > 
-> static bool maybe_change_pte_writable(struct vm_area_struct *vma, pte_t pte)
-> {
->-	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
->+	if (WARN_ON_ONCE(!vma_test(vma, VMA_WRITE_BIT)))
-> 		return false;
+> Not "generated" surely. But assisted, yes.
+
+What I thought.
+
+> Still hacking on it, but the difficulty
+> with memory-failure is that fundamentally, it's not 100% robust.
+
+It's all a bit slapped on top of everything, yes.
+
+What I was wondering is, assuming the call_task_rcu() and it takes forever,
+there might be quite a while where a hwpoisoned page that lost its bit is not
+marked as hwpoisoned.
+
+So you'd actually want the one doing the test_and_set_bit() caller to wait until
+the bit is stable.
+
+But that should be rather hairy as well. :(
+
 > 
-> 	/* Don't touch entries that are not even readable. */
->@@ -97,7 +97,7 @@ static bool can_change_shared_pte_writable(struct vm_area_struct *vma,
-> bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
-> 			     pte_t pte)
-> {
->-	if (!(vma->vm_flags & VM_SHARED))
->+	if (!vma_test(vma, VMA_SHARED_BIT))
-> 		return can_change_private_pte_writable(vma, addr, pte);
+> For example, we have a fifo fed by hardware and consumed by a workqueue:
 > 
-> 	return can_change_shared_pte_writable(vma, pte);
->@@ -194,7 +194,7 @@ static __always_inline void set_write_prot_commit_flush_ptes(struct vm_area_stru
-> {
-> 	bool set_write;
+>         struct memory_failure_cpu *mf_cpu;
+>         unsigned long proc_flags;
+>         bool buffer_overflow;
+>         struct memory_failure_entry entry = {
+>                 .pfn =          pfn,
+>                 .flags =        flags,
+>         };
 > 
->-	if (vma->vm_flags & VM_SHARED) {
->+	if (vma_test(vma, VMA_SHARED_BIT)) {
-> 		set_write = can_change_shared_pte_writable(vma, ptent);
-> 		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, nr_ptes,
-> 				       /* idx = */ 0, set_write, tlb);
->@@ -811,8 +811,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
-> 		vm_unacct_memory(nrpages);
+>         mf_cpu = &get_cpu_var(memory_failure_cpu);
+>         raw_spin_lock_irqsave(&mf_cpu->lock, proc_flags);
+>         buffer_overflow = !kfifo_put(&mf_cpu->fifo, entry);
+>         if (!buffer_overflow)
+>                 schedule_work_on(smp_processor_id(), &mf_cpu->work);
+>         raw_spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
+>         put_cpu_var(memory_failure_cpu);
+>         if (buffer_overflow)
+>                 pr_err("buffer overflow when queuing memory failure at %#lx\n",
+>                        pfn);
 > 
-> 	/*
->-	 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
->-	 * fault on access.
->+	 * Private VMA_LOCKED_BIT VMA becoming writable: trigger COW to avoid
->+	 * major fault on access.
-> 	 */
-> 	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT) &&
-> 	    vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT) &&
->@@ -886,7 +886,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
-> 			goto out;
-> 		start = vma->vm_start;
-> 		error = -EINVAL;
->-		if (!(vma->vm_flags & VM_GROWSDOWN))
->+		if (!vma_test(vma, VMA_GROWSDOWN_BIT))
-> 			goto out;
-> 	} else {
-> 		if (vma->vm_start > start)
->@@ -894,7 +894,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
-> 		if (unlikely(grows & PROT_GROWSUP)) {
-> 			end = vma->vm_end;
-> 			error = -EINVAL;
->-			if (!(vma->vm_flags & VM_GROWSUP))
->+			if (!vma_test(vma, VMA_GROWSUP_BIT))
-
-IIUC, should this be
-
-if (!vma_test_single_mask(vma, VMA_GROWSUP))
-
-instead?
-
-#elif defined(CONFIG_PARISC)
-#define VM_GROWSUP	INIT_VM_FLAG(GROWSUP)
-...
-#ifndef VM_GROWSUP
-#define VM_GROWSUP	VM_NONE
-...
-
-VM_GROWSUP is only defined as GROWSUP on parisc and becomes VM_NONE
-elsewhere. But VMA_GROWSUP_BIT is the raw ARCH_1 bit, which is also used
-for other arch-specific VMA flags:
-
-	DECLARE_VMA_BIT_ALIAS(SAO, ARCH_1),		/* Strong Access Ordering (powerpc) */
-	DECLARE_VMA_BIT_ALIAS(GROWSUP, ARCH_1),		/* parisc */
-	DECLARE_VMA_BIT_ALIAS(SPARC_ADI, ARCH_1),	/* sparc64 */
-	DECLARE_VMA_BIT_ALIAS(ARM64_BTI, ARCH_1),	/* arm64 */
-	DECLARE_VMA_BIT_ALIAS(ARCH_CLEAR, ARCH_1),	/* sparc64, arm64 */
-	DECLARE_VMA_BIT_ALIAS(MAPPED_COPY, ARCH_1),	/* !CONFIG_MMU */
-
-Other vma_test() changes look fine to me: just fixed INIT_VM_FLAG()
-masks matching their VMA_*_BIT :)
-
-Cheers, Lance
-
-> 				goto out;
-> 		}
-> 	}
->@@ -918,7 +918,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
-> 		}
 > 
-> 		/* Does the application expect PROT_READ to imply PROT_EXEC */
->-		if (rier && (vma->vm_flags & VM_MAYEXEC))
->+		if (rier && vma_test(vma, VMA_MAYEXEC_BIT))
-> 			prot |= PROT_EXEC;
+> if there are lots of these and the scheduler is slow and it overflows,
+> it's sayonara you have lost the flag, right?
+
+I guess so. I assume on relevant hw you wouldn't expect a storm. But who knows :)
+
 > 
-> 		/*
->-- 
->2.54.0
->
->
+> 
+> Oh and by the way, I just noticed that when buddy merges pages it does
+> not check the poison bit. So it looks like there's a simple way to lose
+> the poison bit - have it merge with a non poisoned page.
+
+When we poison, we try to take the free page off the buddy. At least that's what
+I remember.
+
+So I think we would just then go ahead and split the free higher-order buddy
+page to remove the single page.
+
+-- 
+Cheers,
+
+David
 
