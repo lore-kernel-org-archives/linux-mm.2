@@ -4,122 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E11C43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 17:19:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15B07C43602
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 17:19:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B5CE6B00A9; Wed,  1 Jul 2026 13:19:13 -0400 (EDT)
+	id 9FC796B00AD; Wed,  1 Jul 2026 13:19:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58D8E6B00AB; Wed,  1 Jul 2026 13:19:13 -0400 (EDT)
+	id 9D4036B00AE; Wed,  1 Jul 2026 13:19:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A3236B00AC; Wed,  1 Jul 2026 13:19:13 -0400 (EDT)
+	id 8C50B6B00AF; Wed,  1 Jul 2026 13:19:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 15B8E6B00A9
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:19:13 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 701351C358A
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:12 +0000 (UTC)
-X-FDA: 84940868544.13.7AD25DF
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AFF2A20005
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:10 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BSf8gzFz;
-	spf=pass (imf13.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 598076B00AD
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:19:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C92E214044D
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:20 +0000 (UTC)
+X-FDA: 84940868880.17.6B331F8
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0313920002
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 17:19:18 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZzwHSzAj;
+	spf=pass (imf31.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782926350;
-	b=ZmfgPKYOIYCujG/ehFsEy7fXC8pOr+XuiWQp15fmc9eqKqHzJ3ICEI7xchbcrNv1lW9jhJ
-	0w/KLvOgXl+j4C6OvdC+r9H6R3SXlOO5vv/8vJjfWvHo/Q7EwM1Z3gd8yUgxZp4ZbDoUZL
-	FBEcTGT23BoAFjdnh7hVvaNYosddevE=
+	t=1782926359;
+	b=TEzZ1ePys9ujWC/pZLcnr9DFEk9SmouCyz0OM6+i/bKbiUAVTzREkbjf97dAUWqcNlExq9
+	vWnHxtDkZTMLns4PEwVi2sjbSHaHSiZCn5dupSp+CmHjSwvKGmFSQIZtcqdQRpBlkep0fK
+	ViOjuV4B93ocrfI2kFRxWhgmyajCpvI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782926350;
+	s=arc-20220608; t=1782926359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MDuqDP6jfkHa+poyWLUCQVCh41lLbreNnwDZhuoCFhY=;
-	b=kmemfS6oXa74fphfYRaRDHufcyLUnm9xV4sCkyDu7qsyu6k1JxtM/OzAZDKCvH9wy2ejHu
-	BM/cu/PHkUgshnnkIx3pxoZojROIA/VZyAoO9eXtT+65U6/7ytk1GFKF/XsB8DVjLXZ+7Y
-	2CMIa6pYEgsV81V2Va2kzeN0fpynhl8=
+	bh=obKytdSgK8DmwXqyL+Uzle0RrtZhdlqOEa7faS72rK8=;
+	b=M/AiusT83J+wjwTwP7gHitqkf85ly4mb/aCLBAFW4oxP6JKJZij7pbPVLzoXWNpHvxQ+/1
+	3ap+ObFOAVVTi+lsjU8UZ7mlyhtYi72/NIy5Jp5t0bfP1Iz7YsHBWNxShZF3DmOsgksU37
+	atw9+s14HiG9Cr0ajvQxvVpWA1ocyWg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BSf8gzFz;
-	spf=pass (imf13.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZzwHSzAj;
+	spf=pass (imf31.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-845ea8924a2so473739b3a.1
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 10:19:10 -0700 (PDT)
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84780c95e2eso540754b3a.3
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 10:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782926350; x=1783531150; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1782926358; x=1783531158; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MDuqDP6jfkHa+poyWLUCQVCh41lLbreNnwDZhuoCFhY=;
-        b=BSf8gzFzCzdQ2RzBzNPVB63V4yjLyNPOLUnNCp5BGE0xr8kZoCSzpifNCsIpgnXYsE
-         qOd/C6dyJ8UwBRa1rMISem/K3yDJH1kMloRufASu5zGVjniIrmCoMu8z2TddML0gXUU+
-         xrvL8ilc4Vo+MGnob5ukXtvFY4T3MxgcIkf8wNrFYrbDCPUp059jWzr6u3R+wA6wiomt
-         QY9kAbKDNrAWju1rom4i+H6xwnuV6s0bCvdn/b3p9UOhkZXtuTPjqiG4YXljEzXbkK7H
-         /d+9xnmDndK16H3GfwATOTndJT8bmfaRSLTy6NfOzABII+ZUWKz165G3ZCzRj6V9gIbm
-         FSaA==
+        bh=obKytdSgK8DmwXqyL+Uzle0RrtZhdlqOEa7faS72rK8=;
+        b=ZzwHSzAjeg2FNS4RtT3zOd4mq3Ts7Zo1k4ReiLqNBnDbYQpKOJ7ix+R/WH0qVjtXcC
+         91Iv0cMEfYGTQKAz9MOzbcByloMtx64mVz5IgZE9O1qWDn/hpbLE2DQzuK9kBFnq7Qdz
+         dlLUpYfHp3W/0n6bQ1kiDAE72fMnpl1wPrsZ5GPte843wYpi2e8WYuJdSv+H32dOqgBc
+         URTCRwCOzJRjztgULl3+xBtA8aiGZ/+a+sEW6gsZwu8EGSEn44i/dxsig5gAtm+e+zV0
+         oCW28Vnl/FD1miPHThHQ/Re9sJ/5Tp23yyoG+26PdjvqysexK50fBW2HOYk9fyhJknFI
+         /Xtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782926350; x=1783531150;
+        d=1e100.net; s=20251104; t=1782926358; x=1783531158;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=MDuqDP6jfkHa+poyWLUCQVCh41lLbreNnwDZhuoCFhY=;
-        b=dwBmacgqJMv8MF+gEEz1on/kq6qTWVJsrTG7ZNzj9O74RniNJK4vPokghEv6IdHzBj
-         onkeaHSZlr7ryPZs8M/pkw19tE28ClwVbpaee/XZ0dnSW5EtUPgvk+xLPEVIOOKhMKO7
-         /YKmup7xHMmUmkaE6HLriaIOd0n9tPNYU0il2ZCCRHuF0jOydMNYufVFOJYIhQ4KKTTe
-         mlYiMqHXqSGKO5dI/ZHeBYi1fqAYvoT0wcsPmJguB6Wu4zhs3CX4msxPKnj38wrVFvgm
-         h0mNCRDX7oqGAOrLIxFqgUZxbRRjLhsE/3tck0x8GmLeFcYvLWREqPRVWlxGipTPwj3C
-         tAYQ==
-X-Gm-Message-State: AOJu0Yxc5MgfUHXVkfnVaC0FB5dW3HUJcW4QwgiyxwsMYfh5a7RSoDJf
-	Skq/t4h1FQm2oGotFb3IHbv+9m3xcffVhRS9+8jKEje7iwjiY5QwnPkg
-X-Gm-Gg: AfdE7cm/Klr+3N8TKycdGdb84gT3SoHUcEPaDtGx0Z8nXESyV1ebHvtN3LCJi4gKkWg
-	GLv1tNWQD5KKp2ebYvBdItXQyxqKM82HiTREN+l0qk4FCiykoPaHv+6JTR5V7XMz7lhNyiyVk8Q
-	Kdo+hTWgiaJne+hQrEMrCfAgsCzSeIj4UWZFtx6uJ8cGy81yTuSK0vNAJUw4H/WxKsILwstUdCH
-	Dg3MI/giD0lCKyzTAFVDRBh87yFX5ZM6Bxn12fqB63TMAKwCoEX/Pv1aec/t6Ji+qzLdDjX3RAE
-	4HDtiiQHs07wowmVHQhMFUVA9TzSIu1v47mv1ELqnKIS/yrnrAqssgSCZfLYTGmT5GCwqLDWGgv
-	yEgVJ4FaPuM57R6CfN0zWlUf9FExNQ0K2ob/vR2espS9qc0Kl6Ccydg5ELjpEo1GBprmyt9dr/J
-	oaYzZ/2fQ=
-X-Received: by 2002:a05:6a00:4b04:b0:845:e97d:447e with SMTP id d2e1a72fcca58-847c07449a7mr2509329b3a.26.1782926349508;
-        Wed, 01 Jul 2026 10:19:09 -0700 (PDT)
+        bh=obKytdSgK8DmwXqyL+Uzle0RrtZhdlqOEa7faS72rK8=;
+        b=JGsMG/C97sE+/gC14odPPW2DlLa6QM63MusKms3oEzwkG+CnbxrKWFkMYAvSPhJA7k
+         ecqKuRCybPOp5m0Sqp9E0ZnyBcgAtq2IHqovxSlhibEqcZomoKgtp62Do6ydKpwwJLGa
+         US8MP1eW6/mIDKDDJ7C0c3M2qmRcUPxlukdjXTZDbKwV09E7C69uCi4jAJ0SCdHL0h+y
+         pWynudfRZJj93C2d6Sd2rarNKhMw9Ef8V+wh3hmVW+xCwxPze75kOTgwumIqdbrt5WIq
+         NLc0yABBQFI3l/QFgRap6IrQKqCCKJwB1Pr8iluucc4sS+wclHi4C6CHCJ41Bqszx3Xo
+         XIUA==
+X-Gm-Message-State: AOJu0Yx36VTyH4y9R+mFM3Cd/M8v1GOENjWt/ZJ+iwN4Gtaa7uMcQ/Xe
+	jbRBNhvtEoYFCuKqLfnHP3wMKjvfiMhYhpnmUizwdSEMlOQXr8V6bSEM
+X-Gm-Gg: AfdE7ck1lG4kt1duuxawy7ztaXvj+X9BBbWUBE2vEkO4N3mFn1actzt+FObH9x4GiPH
+	IPeipcAnxGEEfEDoITEGHgVpoozBvZGojeYX/gOwbH16wxadh9bVGm6VSt9OBIFwbn8y+vmo/kg
+	41bc1hNRUTHlEDOoxpqt3MdmwYDtEOubjYBrHRBF+JZlNvsbzKvOEGA0ZO65/AccunW2MLZD03J
+	6FuCGm5hAF+ogrYwNMiWpEMtqvPL2/P3wYRizzdUV/JLT20QDfGiKZlq70xFC+j/ziPbJfS80Ph
+	iRub4nRm7hjbjhD+TfVTWfGCkCcqgQZufwB33miRBEg0tLmrwElmYnlEl34akpvhXhtSS41OQ8n
+	9Ocrl3YH+XifWMpMN/49BFk/4PKq7cNDjX3un6eGFnhh2j2jLFLxWfYEMKomFJYQ75JG27xoNSp
+	K4tmYl+zQ=
+X-Received: by 2002:a05:6a00:b4e:b0:847:7f0e:1ac6 with SMTP id d2e1a72fcca58-847c5070041mr1582243b3a.19.1782926357933;
+        Wed, 01 Jul 2026 10:19:17 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb94ab79sm105719b3a.31.2026.07.01.10.19.06
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb94ab79sm105719b3a.31.2026.07.01.10.19.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 10:19:09 -0700 (PDT)
+        Wed, 01 Jul 2026 10:19:17 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: akpm@linux-foundation.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
 Cc: linux-mm@kvack.org,
 	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org,
+	Nicholas Piggin <npiggin@gmail.com>,
 	Rich Felker <dalias@libc.org>,
-	sparclinux@vger.kernel.org,
 	Vlastimil Babka <vbabka@kernel.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Yury Norov <yury.norov@gmail.com>
-Subject: [PATCH 1/4] sparc64: set node_possible_map in bootmem_init_numa()
-Date: Thu,  2 Jul 2026 02:18:48 +0900
-Message-ID: <20260701171851.2447626-2-ekffu200098@gmail.com>
+Subject: [PATCH 3/4] powerpc/numa: set node_possible_map from node_online_map
+Date: Thu,  2 Jul 2026 02:18:50 +0900
+Message-ID: <20260701171851.2447626-4-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260701171851.2447626-1-ekffu200098@gmail.com>
 References: <20260701171851.2447626-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: stoyde8zgsbiqay5j34p5qi9h5nmogp3
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AFF2A20005
-X-HE-Tag: 1782926350-83944
-X-HE-Meta: U2FsdGVkX18399oB691x3fEU9aWReB93Vg6AJ9Fv7p7ORfXJ996Ara1IcCAzHNEbT1hl4u2apqezl5ZdNK/HTSsB1JtRifBtLGrMIA07cb7AQ3+m3MPRpoOJsIlvC/9Xi9YPUZujZxbkiY4Ydts7nGs98fg2PIUfqgL2zPRxnUmoVP5Qj5lthOUQNmaxuxdOzqJAlK5DYJI74XuZzn9lWSBvMBRzjOnyW3zYOiu79LEyO4hZntpTwIt57+kPHspdeKhsiGvl4N+N0A/7asJWF+wHlcd4qGi/V5NQ5bFjvP4soQuvJLfXWvtfJ1nYIKaJvIA/mTzD8rXMYf6Fk4sKfFvEREO4OXKjLzdUIkFUjA3iX+5Nhu8s6DEWubO1sj2S5ASIjFx8ZQRVb1N5HYYEoYr9Z7NRuOOXs2WDXGQ4lpN+z9FmWQOWT3oKM7zlHWHNb1l7joXUob46XXrWhdiuNaPHygHnXv3roglpIKJrWcdttnVu0Vj+BzD1W8YAUat/HnCWjS+Ah9CqwohqbFOMEXvUlXfX6acWRakqo4wEuExN5Z0PZ1QdFZKq2PEa0JjzbcJjtHmgvMNT+MHxBjiLfixORSSXaJzH+1WccByrKPUK2NI3oTD9lMmxiW0vMglShgJEuPVJ3kDcIt3YrNe7CEbgfnoRzGiAqvkJrYUNICLj2c10my/o8dlaq4N1kTv6/Wg+QTjpbzsWmqLPCam+xPlp+7gQPv1qBt4BffoxvSThKMFyj9Hmu8W3vgCH3b3MDJA8Rus7iPg4kH6x2bH+BxPHvGyhZvb7IO9R/xT738vytLPZAJ6RapH0THr7rGZtItGBGCa7qTagM6AJFSwnqwQc6krgqaWvZd+tGs7G5QIh2iY2/dOd7L5przlzRUbizggVzVNU0hBPO3bqVQPlx1v7Wdq6BjbiYujFSIzuaBE2R+9nq24UxpY3kpZ28wKYsiF/c1fxSslKUmPSF4j
- FSYcUWRp
- LhbIlmemioE9x7aPCKv0ZC+RdflXg7Xju56r22pAT6Z0Gcs0RiSjVmlRT4sKEUfWDHVDMqEH3CSMPeA/LwL1q+0Epvxd62/DgQmnsdxlXbSE9Uus1XdOnVYUTS0z8qWgWiTRa0SCj0XWOqSFPDi4l4bdj4kLi/jn45FyX2CaNBK7FNlNPteO2PmDp/BocF0TwM4cRxl0daKVYTB6hALJwvp6Czb2T52HFGvWv9RTRF2ffb5ZB32aHfivKuDVO20s0Hm52T6lS3ym/vufLpo2izLIA4QNox6VqBXb8B71C2CLWKKT0N3mMBvk+xdzbbrj3WF77q6/N/4V56ZIGKFbyZ+pkRCYBlaK4KLvcf/Kc3tT8EqMzzyc2uUatnyIZa8pzCJQiN0zmHB33z9UdZWMexm4VfVD/bvLf+zOtziVYiVG8KiMHXapgB6SU76OE2c07Rx3dzRay6MeRcxIXeuwLH/H+3owP06DLf20hbhV2w1TA2/P8c5C1nmCRTs2EoKN/8D9ZfxZEmAoQbp//GOUrPeN/GQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0313920002
+X-Stat-Signature: u6fah7371yg6drat9m8kny31xroy46wr
+X-HE-Tag: 1782926358-799545
+X-HE-Meta: U2FsdGVkX196v6Ba7/YoP0UqDymrtjPuV+Zjwq2SqeqcDt4446+N0qXgDVqtXHoPTGZwSe0pQvLnpT+O/P9beBpCEKc/a7jiuTQqzMf/QHorkJFIgK1b32OAE6bUyL5pNjrZq6vjiDxhKMHxiYKfUBN1UcpqluzKzroOUde6L5H0N/3Wa1DUfGWaMENnnb0LXJw7G0tt69wOgoiVazq87U+Tf4PkcH6qkC/zs9O1a2Tg0rSye3qdUyeuCP3PSTQeHolpbn2AiSURB3BgUQfHOU17VwQ21LrhdkPKzG7/beC4DOOGkxMB2Kp9W+mFWlk1QIBU6JHl87wV1y8PZ4YxZ+XHdf3TbqPjOpN2rviSlK0ObxZImMBFA8MJnut/seMD8RRbQt+N5W7qLGZC4LE4Jm5G4fySP+IjvUBBSQ1TmNvlOrkEZjU2OuKeEKSuScbtGYxcdNiBQ5LZNLXPoyF7abKHcDwg34NQXL1RDDj4tHyV1vnYb2m95oeHSM+lOiTJE4Kwr+RvVjE83/UVsjHuEwS7u5NoJC7Bsl7IMhw9uyQH/dtHcekGzVIUALhNcZa+lPCcY0wG3CuIxN2az5dYym/yQPFR7eNPMH3x3qbTVEuW8+E/XPy8kR6lw+su1EUImQna97o6h2kolRyLuCqLMakafsvZUg0M9sECNMZV0Iefk+I7UeGyAtndO1iLlnWqTW8BN5xRpxlAmjMIrQELJSVKgBiAcvDMkKEo014SF28j1NQVo4FbepyW5Clh9CLz0MBIVzAc6PbP4V55FMsAVBSwPKAJCkbCXH2crJYp014MdViMcgGqlOR2uqxe1InoeQMz/YbH6N5YX8uiOx9JEQwIS0sAtKLXRf8vNFaHeA2LNKAbZX/9yhBn8oU7jAE5X+7a2X2/BZePMWFOVrybx+I86p1pnZQzvlleelgiongSmYjG5rzOIqO4h6YTLChI/UjS+G83GgO4OsrB9V/
+ TBRxlj1s
+ FHclQex9fQ9sKKCz9anheikm7eSjZG3Plt5WB9n1Ucg6BIWG5B3Rr606Kl+9OL2QFNGvYrCFAvvmIZ2NwZrZNVpm+L9EZKDTTeDxWpDzKx0IWNU6Ez/BWITEDudjTPR8upHk24ROmfHfV0Sx3qbR+23loY1WyerR5DU6wmEhOY6K9iZy9pwyuKsY0wogldaMdR0m+qnbP8CyPN9Q+7epyrfREO/ue1Kp6KQJ3Re9ZgPWAQS2UBSc/q6V0FS2ndXoK0xskdvq44D96+um4aS+5CWToOLmdcnIhWv/TjYS49Q5JMdvKmcjh1VgibLm3bk0oKHnIqcSQw+oU4Uyu4yyOqmSPzIhJ5NDq1opDwYZdazZaM/if8lSSqbaYcEnOemY0CwLMXmgpq41PHmU6pmn2xhByYgxZXXArF0EpgybTYdrwaTwqYUwS2HDjK9Kkh3OrZpH7dveOFdjCMmZdE4YAGCFb4vSYf4L74pxLB6qgZnuXNL/SI3I2V7gbcpg648dYltylksHg1Gl9eB3/G0UEffGQLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,27 +129,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Unlike other NUMA architectures, sparc64 never sets node_possible_map.
-bootmem_init_numa() marks all nodes online and node_online_map does not
-change afterwards, so set node_possible_map from node_online_map.
+mem_topology_setup() intersects node_possible_map with node_online_map.
+Nothing sets node_possible_map before this, so it is NODE_MASK_ALL and
+the result is just node_online_map.
+
+In preparation for changing node_possible_map's initial value,
+mem_topology_setup() no longer depends on it.
+
+No functional change.
 
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
- arch/sparc/mm/init_64.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/mm/numa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 103db4683b16..a749f63568b7 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -1559,6 +1559,8 @@ static int __init bootmem_init_numa(void)
- 		else
- 			err = numa_parse_sun4u();
- 	}
-+	if (!err)
-+		node_possible_map = node_online_map;
- 	return err;
- }
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index f4cf3ae036de..2fdecae90a01 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -1179,7 +1179,7 @@ void __init mem_topology_setup(void)
+ 	 * that we expect to make use of for this platform's affinity
+ 	 * calculations.
+ 	 */
+-	nodes_and(node_possible_map, node_possible_map, node_online_map);
++	node_possible_map = node_online_map;
+ 
+ 	find_possible_nodes();
  
 -- 
 2.43.0
