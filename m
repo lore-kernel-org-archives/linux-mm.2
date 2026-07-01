@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B99A5C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 01:23:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 896F2C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 01:23:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 811D66B00AD; Tue, 30 Jun 2026 21:23:26 -0400 (EDT)
+	id 727A26B00A6; Tue, 30 Jun 2026 21:23:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E94E6B00AE; Tue, 30 Jun 2026 21:23:26 -0400 (EDT)
+	id 6899A6B00AE; Tue, 30 Jun 2026 21:23:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7274A6B00AF; Tue, 30 Jun 2026 21:23:26 -0400 (EDT)
+	id 5767D6B00AF; Tue, 30 Jun 2026 21:23:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 417486B00AD
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 21:23:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A8E4A8BF00
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:23:24 +0000 (UTC)
-X-FDA: 84938459928.21.36046A9
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BD72F180009
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:23:22 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pA6m5Vb8;
-	spf=pass (imf24.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E8A56B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 21:23:30 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D74E120197
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:23:29 +0000 (UTC)
+X-FDA: 84938460138.22.76CAD45
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 318B040007
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 01:23:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Om7cdqVR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782869002;
-	b=r/1ZDdmZvrVqI2K6VDjHdOHEtMEM0TdxQGOiR/frp15oxJHaNsfRLeJiQXgN1s2NDHrF9S
-	wXzyoSxTUsTJKQuD1YHaJINubsKK50+uqr/q7/5LWStAV80BGelphxx0pSHQ7ihyy4sPR9
-	HwmXGcutI7upQ3oX/hi6ETGW0/otl9A=
+	t=1782869007;
+	b=7kKpDRKYvHS06VrEiPaFF59mBEJF1xBlxutFSJkxh3wCw/1kgVK7e9saerKutBndmyukwU
+	BkSguTd8jtGLqwIkosUteGzf3Xsiv2HBn+YVQ15YiYnvT2Ys7SwCOhSXINp4U3xLB54rug
+	wmh3+eoJ/ouZnM5BQe5XeapFGa/erEw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782869002;
+	s=arc-20220608; t=1782869007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x7l7Cu37ztLHTqXl9+24GTeEvM65Yy8Y6kuKnfhmUgo=;
-	b=aWQ4LteqPr7JQjR/G9xeUQ/1anDc/cFqBX3sl5e8mS/+mEom2FZbJItzWQSMQZ35GOFYJj
-	yu1FlUxV2Dhjk6dxK/2yzaSWVBd8lRk+RKMHF+gY22iQIk5KE2RMNsRCXQ+TxjcYu4oSYe
-	WKgPHafk3LFS5nEvNKxkQudUSqQsqMw=
+	bh=hMPk4xo0goYwl32b+O7Fi24CGRO5SYSFgHPQLi10p/I=;
+	b=E5oNlcZIKGTY+9kLxZekz3Y5dWvEBJvFC4GSoz9BYR0mFy96D/K5Cft1DAZcfE/2fNzre8
+	YKxZaa2DOFh3bP4araqtwpiqGTKTqnvzRwRakJ8PqrxSpf/qSeJFuhlLVkYH8/ISl3zaMS
+	lKFqx/xmNXjbOARnjzZ5+LuTCtrzbj0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pA6m5Vb8;
-	spf=pass (imf24.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Om7cdqVR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782869001;
+	t=1782869005;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x7l7Cu37ztLHTqXl9+24GTeEvM65Yy8Y6kuKnfhmUgo=;
-	b=pA6m5Vb8KmRiyGsfhZrTgKQYfEpC++IIFH5Ly2vt2JZ6mpCZrbVvVGCO/Nlw14adeoXSc3
-	tFWLbSEPGGDTRuQ8ctN3wHUfRJevqO/EWiOcW0+rUBajSkN7jsxxx21iPHjjTVGmvi6syg
-	v39BgAuIcEaWMGMCl1oslYt2oU05+GY=
+	bh=hMPk4xo0goYwl32b+O7Fi24CGRO5SYSFgHPQLi10p/I=;
+	b=Om7cdqVR2SQfzLtC/CUOMJu+oOYjf4Nyu27g3QsInJgvk7g2PvJA6l1ACJLmEtRw6F9wO3
+	33K8l0IQAXfbzRsVjizow4th4jumCuDkN6jBb/fKK8cjObrukLPcQpcGq4ng4TaVI4G8EO
+	SlYAhsWLv5RFgwm5a86p7Uxg0rf1rj0=
 From: Ye Liu <ye.liu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>
@@ -70,22 +70,22 @@ Cc: Ye Liu <ye.liu@linux.dev>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 4/7] mm/page_owner: hoist CONFIG_MEMCG to function level for print_page_owner_memcg()
-Date: Wed,  1 Jul 2026 09:22:30 +0800
-Message-ID: <20260701012239.315262-5-ye.liu@linux.dev>
+Subject: [PATCH v4 5/7] mm/page_owner: add missing newline to count_threshold format string
+Date: Wed,  1 Jul 2026 09:22:31 +0800
+Message-ID: <20260701012239.315262-6-ye.liu@linux.dev>
 In-Reply-To: <20260701012239.315262-1-ye.liu@linux.dev>
 References: <20260701012239.315262-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 318B040007
 X-Rspam-User: 
-X-Stat-Signature: 6f4prrcz3qxfzjtfd3pm9x5t6fgrintq
-X-Rspamd-Queue-Id: BD72F180009
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782869002-987508
-X-HE-Meta: U2FsdGVkX1+JycbRzzu7Oaq9cQ9Yu5WspV4rAFELnLInDSr7c6buXdWTbCIw6u12fcE+IV1XnAiDn3j4xdnN3tGQL+awHo7PCbLNHRw2/OQdi2SunWxvbdLMwDBlOIqjrw/LvRErTTGnfleotJM5QjmqhTyoXPcGeKDj8ozM7R20dTUWdVcyFUnsB8ggCRDoJ/xDaCaF7Orz5/KjPCtjTsSCYUi8wzRn9ZZf8kEcWgUMiGFxCfzy4TeiV7eIWl699IEd3slb4JfzaH27yth2FUgc0TsY24sxoScuaodNFG9hOpGjYE7yDYj2b4VX/7COVp+4iyAjIfSxxFS25ggZdrDoP5PRsJyYoWtMBelQtaVKHeS48dOAIaHmyIpvVMkC+DMKePkcbz0phQA2MG9JJySE0I+gfYpdZ1xPnfeKAjaeLsgJRadnLHsvX85HF+Am3EOhwtLx0SW1SfmbN+KsfIosq7nSx/W8sYJ1B4kj/OVbV+qIC5WHvpyS4YFahYCOeeDu9IGjNoPiO2T6hekxf5dutInc7cTxzhQ0gQ78xJzYWZUcx/KMTuChtiChrEDNkd62A8r5o55mc2hNspM4o6oIi/ebBOlL4+a8v2RRh28ms4pOf3K503mDWGgt9YrYudgB6b40ISQVy0vrXNjgLz9F9yl0TqwWfNpcDrabHwBRff2ZJI2/9STOcGeGVJ3eOzCLMVNNSUC6EmxQMILuO/4Cu8SIny3HyEUx/mRtewJK2X5UPBgtBZIJzESaBNEq6mq3HgehsbNVryziC/zeY6W1l/4kSsDldy7bpiYtGiIHvDGpweZqf+Kfb2thTR5MsCV2M7IrsUkEBVNBX83w7KbPY/ir2zTH7mZ5Qr741g8B9hLNVAtVPhxc3wdPl2VlFUKFXosy6a2P4HAn7VcnIXOfqiEQU1HR2+fl8hdQkn3Zkpf5wBN5xGvpzMabjmcoezV5oFyZsfxj5zJQCtt
- e1astsAy
- W5K5zsQyB+MFXEryUaNu0QznChD9ZRbLLukf6l5PJj4E17IvqhjpB1Bqw8/yiwWT3tPACGDLF3vf4d4W6FuPdd7kWZplqTGrrOppshzYLLDEOA7djEHNrmnyZUwQzyNKXj/6jCQj51Dbw9LwaT+WSXfazSiqOUf0NkjjopdqddyUF9fadJjcMxssyjta2lXtGxdD3bg08vB9Adj9RLqpb5s3A71V2Wz0+mz2ksSNgvqwthqyZ9cWhFjuoa4pFB5aNZX3bd1V2xg2Qk9o+2cK6dUumhDSR+QKOUp9ZbyA4rudcRdE=
+X-Stat-Signature: ak4qcqg3ygphs5fhmirzraomehgrugqj
+X-HE-Tag: 1782869007-643344
+X-HE-Meta: U2FsdGVkX1+5xixvlwz/WJtsQlclIBu8pm7zALPYWY3QmgqI8w/F6NjBWmCxE0aTuM6r3AWQcEd7J4QxPXsP3ypfkLnOs85UWpt32dnIzUq30jhElVfBmFDQgYc/vm1jp57cKNIymFYMX55FKT+OXkSD+bxtp2loeoF4nUMUp+phRX2+w7GEcFlTF3tbChXUvwhd4XGuQfur02neQgjg6a62S5+a+Nel4wmKHCjlV6M9LF/NlHupiFqA0Vc0LWmj1YrpOl0CaGJVLawUzwS8PMbbQeLvY/JDkSUA/I0klIPO76nIh/NXa+wgaCnbLEjSY+Bl/dpypsmfyD9htTsGuZ6N/Od8AQQ3tj66wcBkIcCKisRX31Fiy2W4062bfb5eCIBO6HwdsJsXADqEqUJQdKE4iWIkbuM3F2wYaTB58UcZzP/nm5YZADkqmud2HbDxOVhElagGg5d5dPtXGsUhIFg4oSJfBk93nOfUdfi/sPAGqBfaAx6i8Hh/ZaeFj8NQ2ddxiyfj/Qbyf/bCMYB3OYGUUY9aDg1E96KgLBYaIq2MSOabmQjP2TI0URpeTrWN0tFTBW2aLlW7BQHs1edW/OoheJvRGX9MCr+S2o0sO+Ket+ZwsKNMRDB1edm+hmtfWEgavj7RVz7BNUIYbzMWVZ+QJJMEpqlzhl6Yernxj8mvP/62kzSu2/bR0Pfo/KOYmk3pDiuECKi3NcvO9lAwStMc5oZwcJGfFyI94+mgF3963iv2vVOyl9tq05czxYq8aTtEEkxs1/VGtptLra7NJloxeT6PF9HDZZu3XrzeP8GBokDdVWFQSo3+0gpOUC+kaNw413H6c98WJe+8puF1PkN+zyTcuBdiXZX68NyH6z6uOIpUhjBr38ZADDH8pZsQf+01pCkNHJQhhXoYJcUNyBLbpA5r6Oj7CRIpvx7uNSsMQ6mIl6H6L3+nxvqAXku1GLH1QGUgzciDLE4GmMZ
+ TBTcdEyO
+ ohiw/kKOlOx+A2U7l2RdXRhiWtEiztyglaGu+Ty5+r5m2kMFNqVayPvA8HZQ7smqHUltVIes7AEZlo1UCKvX2Sa7PgjlPyM3MWoFdreAXNlsdHOTcATr29JIhRE5X7pX57yuwB6ls9NFfmDgJ3tuxvi6pqFKSOKE4t2B3RfCZ6bIJw1NZduXsfRicpjikQvVWrhAjkOWo+wf4cx8d+QDOTZ4ayrgA9RqSH1VRl13MvXItM4z+3c2JA0g84tI1GBFAz/OyFIkHfubYR6Tb6jqDdWYlvFD9jUt1CPTcVBdK7rewFt0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +93,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The print_page_owner_memcg() function has CONFIG_MEMCG guarding its
-entire body via #ifdef inside the function, which leaves a no-op
-{ return ret; } when the config is disabled.  Hoist the #ifdef to the
-top level so the real implementation and the empty stub are two clearly
-separated definitions.
-
-No functional change.
+The DEFINE_SIMPLE_ATTRIBUTE format string for page_owner_threshold_fops
+is missing a trailing \n.  simple_attr_read() uses scnprintf() with the
+format string, which does not append a newline, so reading
+/sys/kernel/debug/page_owner_stacks/count_threshold produces output
+without a terminating newline.  Add the missing \n to match the
+standard debugfs attribute convention.
 
 Signed-off-by: Ye Liu <ye.liu@linux.dev>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- mm/page_owner.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ mm/page_owner.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mm/page_owner.c b/mm/page_owner.c
-index 4e352941a6e2..fe2bf2274d8a 100644
+index fe2bf2274d8a..7520718f63f1 100644
 --- a/mm/page_owner.c
 +++ b/mm/page_owner.c
-@@ -522,13 +522,13 @@ void pagetypeinfo_showmixedcount_print(struct seq_file *m,
- 	seq_putc(m, '\n');
+@@ -974,7 +974,7 @@ static int page_owner_threshold_set(void *data, u64 val)
  }
  
-+#ifdef CONFIG_MEMCG
- /*
-  * Looking for memcg information and print it out
-  */
- static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
- 					 struct page *page)
- {
--#ifdef CONFIG_MEMCG
- 	unsigned long memcg_data;
- 	struct mem_cgroup *memcg;
- 	bool online;
-@@ -556,10 +556,16 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
- 			name);
- out_unlock:
- 	rcu_read_unlock();
--#endif /* CONFIG_MEMCG */
+ DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
+-			&page_owner_threshold_set, "%llu");
++			&page_owner_threshold_set, "%llu\n");
  
- 	return ret;
- }
-+#else
-+static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
-+					 struct page *page)
-+{
-+	return ret;
-+}
-+#endif
  
- static ssize_t
- print_page_owner(char __user *buf, size_t count, unsigned long pfn,
+ static int __init pageowner_init(void)
 -- 
 2.43.0
 
