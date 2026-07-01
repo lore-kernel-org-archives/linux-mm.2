@@ -4,114 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40C58C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:52:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6149C43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:53:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D5976B00AC; Wed,  1 Jul 2026 09:52:56 -0400 (EDT)
+	id 850936B00AE; Wed,  1 Jul 2026 09:53:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0AE0B6B00AD; Wed,  1 Jul 2026 09:52:56 -0400 (EDT)
+	id 827706B00AF; Wed,  1 Jul 2026 09:53:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F04F46B00AE; Wed,  1 Jul 2026 09:52:55 -0400 (EDT)
+	id 73ED96B00B0; Wed,  1 Jul 2026 09:53:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C72CD6B00AC
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:52:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 459F41C720C
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:52:55 +0000 (UTC)
-X-FDA: 84940348710.14.CE41CC0
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6078B14000F
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:52:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=aq6qsf9M;
-	spf=pass (imf23.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.219.48 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu
+	by kanga.kvack.org (Postfix) with ESMTP id 31A146B00AE
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:53:24 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B125B14038C
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:53:23 +0000 (UTC)
+X-FDA: 84940349886.03.1D2D92E
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf16.hostedemail.com (Postfix) with ESMTP id F2487180006
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:53:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CeinzSqW;
+	spf=pass (imf16.hostedemail.com: domain of 30BtFagYKCHUlXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=30BtFagYKCHUlXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782913973;
-	b=HfEfScXRU5M0EvgA84hZXjn3/ErBk9Sa/JYYCVobgs3tybzzwdVTU8+RR34JmwN17Zd7pI
-	v7AkHHVzHUtL16FlxtvXrtupb9W5g3Ft2NHf4Z7Gb372llVQ5+eJgVkflvZatVpCHakO1v
-	gafinBEhCMypJKvf5w74KE1hoV8mOiI=
+	t=1782914002;
+	b=Llfn98tdBAcFxocpFOtD+Q12jyJm13w6pKqDkskBy3qGSayWTAgArusRZAWwxB8PxxgC5W
+	rdcjA+T5U1fQVCogkSjDoz6pKNZ1s65Gmb8FwJy7Kc4Vu+ZzjP1v/Cl8biVB7zDsn2YUkI
+	tbuPOHLz901dfdbbQsdHg2Y1qUa9LNg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782913973;
+	s=arc-20220608; t=1782914002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b9jTQNUhONnvzwaACiiAR+1wKZIRO/byslWAp9/FPB8=;
-	b=u0Mo8HWvR7PmSJqLbHMtt7CllwPeExDTwRxlEpa0SnmvpKrXEWhTjYJ2AXXvchBVjOFTs1
-	uOUpi+pKgP/8JtWTbvVcPZzBaS5SdotZnlW5rTg8oy/6p52ccxQ1IN3F23u/LgEt8EGrbG
-	fcXIn/favXylSWKydThPBB7lgptnfLc=
+	bh=2dlvRC/ivhzraYV58bWG4aEWroXr163d0LU1VPS4Meg=;
+	b=5pBg+i36oHUN6uWtKWtVXIaLOHUuuZkSYc7aVnpuocWmG8LvwMwJDcHdNIXWCypf4sfPZi
+	cR32Z85T02Sj1W2XrLb7KCzPMLphxTNbKua9BtJig80ytLz3V3mIatuDRtNyGrrx+o73NO
+	PesNq6TGxPG19luu29HMUHbK/rVLt2Q=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=aq6qsf9M;
-	spf=pass (imf23.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.219.48 as permitted sender) smtp.mailfrom=stern@g.harvard.edu;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8f3cbaef818so3665106d6.3
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 06:52:53 -0700 (PDT)
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CeinzSqW;
+	spf=pass (imf16.hostedemail.com: domain of 30BtFagYKCHUlXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=30BtFagYKCHUlXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c894391f000so982011a12.1
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 06:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1782913972; x=1783518772; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b9jTQNUhONnvzwaACiiAR+1wKZIRO/byslWAp9/FPB8=;
-        b=aq6qsf9ML26KKR0UEUBiaqjFAPDUh/ZFX39+aFryUllixJqJIqdo7yzq5Sf2+7hX0C
-         jZRLTtfqyKbaXJa916y2J0IpOZzBfdh8XsK9DIchSJoCGu7Kufw3WgZP5nXYYnfO/s3R
-         GoGIHIug6C9bYWkocXxh0JoqskODeQ1BlSb8u2RC1WCl4tgdjKvLKDPgPvGJaRFzDf/e
-         pebZVY/P/TZmM/9RWoRZ79J1qdh1WM8QnBROMaWgvv4uO7gr126hwNmedfcj0iK0Om1A
-         gngXbzSERiJg3MTR9WtqdIlfz6pjlMGktK8i6cQT1fYxNxVme5RXI5AzRmVtMw2IQe4l
-         TmEw==
+        d=google.com; s=20251104; t=1782914001; x=1783518801; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2dlvRC/ivhzraYV58bWG4aEWroXr163d0LU1VPS4Meg=;
+        b=CeinzSqWDcUJrdnTIwsUXNF9NgUxKcE+WEUpCtHC4zzofX9O5a6C53xhgba1I9ceZe
+         zpyd9ZNe+pV8wQ9J3nIysoTWEHH5gwE6IlaD8Vod18+Kta2DnGe0+TasJarGb/Hw49jh
+         AcRqM67EJhjL6sLD1CRTWuKJTxEs7ubHVScBV4fs6RWL92UfM8DZHcwCZZ8H60I/vWe5
+         CWyJ+/FWY1ZQLKTcr31gYytnI3sE9r8LWZID+d3kSwf1DZjv1mhQewAzrDqAIN1Ya+gc
+         xh6PHTzj8LJKusEeEOAdETU4fAe4H2PzrylpoiXXyOcG/cjF7SJQMOafZ6DD5RDS8ZNx
+         SObA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782913972; x=1783518772;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b9jTQNUhONnvzwaACiiAR+1wKZIRO/byslWAp9/FPB8=;
-        b=Cqh2RTTm5sjrerMN0aFxCVDYrvM5sJrfyocmxJX8zKFoQ/k78TVEEoe2g89RJzVYCX
-         8qnBzap+2dqQ1GEvWKgyOcFSr/T/r0VtLK1DaAwVYhKrgCyEQLxzvJvD6DBnl5ZFSJ8T
-         jYtHWNhAfjU4FraDY2xz6l8UHG3k8ieZwfbZcbhUlf61dM4Ie6UBbemGmhrOFBV9+j60
-         YgMCmUXVXuRXZV+wG2pDnKe6mn6YfQ5rcDyHklR+KhJp0Q6pHOL3rtfIMvHPVxGSVlm1
-         iW3k50vjp4+0G59H18WwiGB0g3M0cBntBuaZrrMW4c7FQ4aYcQoKMcwlo8TXjfb9uX97
-         oFFQ==
-X-Forwarded-Encrypted: i=1; AHgh+RprAX6NANQRl5SM2Tj/vXayqE/mZorcT3vr0EOKgsHcKl0/wCb4uWNLfyHPrqNd09MgI1pBZMWmTg==@kvack.org
-X-Gm-Message-State: AOJu0YwwxkoeAoPpOvNMlc2ThHvfO5v8JptzS9MFScU2tHhiP8Epfwse
-	Z5S61Eo/Os6tC2OM4hkAgF7uR+WeHeRRXz3wkGD/AkxLKDg+E67uDcjwAIqCwhiI1w==
-X-Gm-Gg: AfdE7cn2sZ4iVR2RCABJolLy1O65wpiRBY2gzY4v1CNsTxQ1kswzhzCOhFjXFo9jLfg
-	uJnKV7DwVo9tB+ssYeQFbRICwJxLu/W1QSXlGp+1djm3LD37wKafcVokfqOeNauTNMxGw6yEGub
-	IB77BqkT3PG3yTFtow9EUqlibBOUp7Iw7BFQ8YXkZ9REbZf80sZi9DjNYYK/CeCQrI1tPbMw9h8
-	cJMLBrBmxdrQ1egfkqQjA1HmGI100u6qe7JqWD7iyOfTbywWJZw2aJTx2wz+gHUxqiBhhK99CRc
-	dP+VjDbUzvy8J4IXWh7+yodDEu0wm0qKxER+ZpmRAnFl87Xxfkm1a0iKoIrgbqzxD07p9NQ6rRv
-	7Tt5293Zw52kyRwPg8nCakSOncBkVvtOJKFsqIXQ/ESWjAz8ij6SIMA4fvrlfZF5+R400Pq92AY
-	2Fqfqxg8p1Lj3+/zzlgcfGRVMSEkYHirQ=
-X-Received: by 2002:a05:6214:18f:b0:8f1:8737:d794 with SMTP id 6a1803df08f44-8f3c6dc8a06mr15433756d6.16.1782913965137;
-        Wed, 01 Jul 2026 06:52:45 -0700 (PDT)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f35e88a4bfsm22400436d6.8.2026.07.01.06.52.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jul 2026 06:52:44 -0700 (PDT)
-Date: Wed, 1 Jul 2026 09:52:42 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] usb: host: ohci-dbg: use kmalloc() for print
- buffer
-Message-ID: <4aa114fd-ec0e-4e7c-ab9c-6e9a327b3cfa@rowland.harvard.edu>
-References: <20260701-b4-usb-v2-0-272807df4b64@kernel.org>
- <20260701-b4-usb-v2-1-272807df4b64@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260701-b4-usb-v2-1-272807df4b64@kernel.org>
+        d=1e100.net; s=20251104; t=1782914001; x=1783518801;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2dlvRC/ivhzraYV58bWG4aEWroXr163d0LU1VPS4Meg=;
+        b=UVhB2oAgN/zLyWLsU/WC7/L53TteOzw0v+KbKfSY/bL7fVRQ5UaNbzeXIND06/kJ3h
+         mlsIisraqmve44qIwp+StEv17M1sl021u2Ss9D3gI+ZctAgPbJvPuaCI5HOB8pAH6WRi
+         AV5t/DO6onrHf5tebBgkZcdVIbmPD3R8D3+EGBGbYgEQmcp8qKRiRdqeu3Ma3NTbx0fh
+         sN923PwJUvlJYv6Pe7CEreg0hW1SKLKXPsgu/lDcopoSe0v4sZ14TNlVPuxQ9AZwtzkp
+         T9zXSJEInO4GBS1t/i7fmaNzoeHDb2QHIJneNntqfs4eqZ7YT55LgSM9/AGFKpWJNtZs
+         IZAg==
+X-Forwarded-Encrypted: i=1; AFNElJ+8RmVwNKCaTC21GGs4n9rFAf9LCCL9M8ffcBniqgyJYX0s/EfFoSB1LaWOWTUDCHbDBJgFdpvNtA==@kvack.org
+X-Gm-Message-State: AOJu0Yysw2yzaE11uB2i9nH7H6R3vkSFpAB3pIx5ky4eAvwgeDf1tAkl
+	rO5RLTQvVY8e0JhMMUyYv/QKhJuv1pcEcn1cPI+wse3RVw6K1mkij5P2Vy0+DhMwJJe3HFDufdJ
+	Mu+EUuA==
+X-Received: from pgam26.prod.google.com ([2002:a05:6a02:2b5a:b0:c99:aff5:707d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a11:b0:3bf:acb2:5d48
+ with SMTP id adf61e73a8af0-3bff4227b8fmr926021637.38.1782914000204; Wed, 01
+ Jul 2026 06:53:20 -0700 (PDT)
+Date: Wed, 1 Jul 2026 06:53:19 -0700
+In-Reply-To: <25fdb77d-20f6-4b3a-8b3a-dbba0dc47046@intel.com>
+Mime-Version: 1.0
+References: <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
+ <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com> <CAEvNRgHYTFnHbsLLgMTCSitmnp1_j9Pomikm9qmpGTh1w8YE5Q@mail.gmail.com>
+ <ajx5Vrz9ma--hrGH@google.com> <ajyJhZcgfYFtGfS2@yzhao56-desk.sh.intel.com>
+ <aj0Jf30PS2f7x1nt@yzhao56-desk.sh.intel.com> <aj087H1UWSFxbShR@google.com>
+ <aj3H2sxymOYTWTnE@yzhao56-desk.sh.intel.com> <aj7NwCRwWEfLK-gQ@google.com> <25fdb77d-20f6-4b3a-8b3a-dbba0dc47046@intel.com>
+Message-ID: <akUbz_kJvYulaboo@google.com>
+Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the default\
+From: Sean Christopherson <seanjc@google.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Yan Zhao <yan.y.zhao@intel.com>, Ackerley Tng <ackerleytng@google.com>, aik@amd.com, 
+	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
+	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
+	willy@infradead.org, wyihan@google.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Stat-Signature: x7jezj17af3srrgrygeg5pbjcjwdryjy
-X-Rspamd-Queue-Id: 6078B14000F
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782913973-94954
-X-HE-Meta: U2FsdGVkX1+DOUl5YWVoPnJAyOAh/kcr8cRLGK+v5gH4bDEIU8qULtMgQM/PLY5ia8yCH9VPr4x4SVvffuDMzLXqTme+QDoo8dcZ7KVZAH/RihXGnP/LrWKZ6z8ePQXPqHDqLt8kcDY36e3qL7U+4faKrMfbwgyS4XKwzxteJAI9uDQ16jJgtq3wj8fiFGWq6Vm779sKjatG2JqfGwnl1SvhQjGkSOQr8/7Z6/sGKz+OTgr3LSLzGXQae3tzy1xxWk/jF8S9wqGWhUikgMO57jt8HXS5X2/yiRP3lXQXPfL7+QIR+6B1j8lIomKQs4j3uQj7LsBUZ4TNEDKELO0Bwcj1CpuzLeY7JWjjCzl0rn5Nv3FkB7kJjOfVHRN7IAPbu3yW9+HIo9orLDP9UBhLAYoHwhdFRbgou5d4vGLoqbqpBiQaLZFmfraLSq/iVaSJoTbsMvQhcBJy9sd2QqMLbL+k48Z0KFH7cMHxYnuWSmMZdbey9qB7T0m39X/GRpkh2n2AQbcTZmMBQ+WpbTG7ypif9tpZE2mPKevh5mvnBJH+zZH+wTjMyEuUk5XHsyj3hVm82gzk6By//oj3RTuPckC65K2dtAxyvNtW3hJ79WxkQSF+zYt5KhPZb2c6wTOUXjQhtd6ieldzZR3gwkdbNihyWL3Nax4iFK4Fdsn6375PPtjvF6c7D2aEqh+P1qQ3xWPPDmkPPJsQkr4yiGmNQITvdOcToXTzCCjDp8v84o3vPZeb89FwNtP9U4J/6+INvmzNlNoGmyD+DDdb1vymJ9y8TvfP0jvCYNIjAvXkTQh3QDPMzeZGjvKuh8x9ymKF6MpiiwPfZsiFI6GFSc1v093zsvJAvswTKP03gCdpxJmbp3J1Te/JfID7ch6i3bw2tJgwwYmpyz9rnh4pLh9QHHoxqnDD+EyOHhvzcyaciqFH2RMYlm8pEAhfSkgwI0MPzVf1ueKYkHff4HS5bYq
- U8enKUTx
- UiwWkwZjsflk+FSJjji+z4MWhxTn2pM2YTmHGvdv/yy7b0O41HFw/pYvrv5Amp/E76k4sHjLvJmjj63ioZqwfERb+zW1FZo/HMdcPcuMLX46XHjluXu4GoziexGsDKmIQZ9ligiNwgrU8XIJIefOHCzn8o9xSfQsaR/Gl7VYXp1ICUT7qOKKzdjoykxXlDI9Rz2LhR2/3LGdxJTWJur0TECpB8D/WJv0XftXQy2Ud6sMVlT/sZInFbaQ1e+bG0d33ao1RUBQP5GcUqRBfYmYNIT7lGJuz61E4A8Gih9la27qxwNDbqTtbEzItVjJvcaNLISxFXLiYfNTygn9teVJv4SBZmi1g+Xd1pR+ISnLoz0CfZOaXQMmX+qKL/5oFuu7lPHEADIaBewLeYTTxcAGv5Pp2oDQkVn2L5YUSslTSe+4IjtnXA09h3ph07Z/ZKxl1w8dAfEQariqbw4UcvJ1ft8yjngVD1U5IxVQteDaShe8K9Sk1t1xq5ctg+XZ4TU49JRHZ0UWnRkpG+qm2wWulktygUKGm18KpISMC
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: F2487180006
+X-Stat-Signature: y67xa31oe418ue4mn8dicjqtxypuwkz4
+X-HE-Tag: 1782914001-779830
+X-HE-Meta: U2FsdGVkX18TmLB3PY4BGqFBb4kfT/Tc0EnwPC1d0qb0SYrzuBoCE0O3hi6TlCx6Wdqq7W+j337Qv2Isne9u3eky7kxFr1rWHUoUxf+Zip4kRzIOswyGaS2oJc7TuzG5QnepugVWHKMvKDYzfmwHEevS8vbzFA9hVI4ypcUYrNsrQimY2iIHwIqBAyZd/jLo2VbRdgBKFR3XUr7bZ+fSITD0QwmlkeS25btKap/YOOiuV5WUYIQ6xjmWpu/vW9/mrCbNTserupKbbsEDz1m4l8X1fGC/9TVL4YhGav9j7vZnoq78KXrTEPwlY7zfAOg/l8qk97OB7+B7bAS1woawXxXN+dKr2JYxA7y69BXkd9fUbx4ZkXmek75bXLGP946QJGc6gGSxkw02/IZdKsISkvqYzz4dQACTTIoHnJX9U/ic+2R+3cgpRvLXnzc4lz4bL/CjlAOtvOeTc9MDhSrjqP0ZT86uroNKOJeATH41H8Pd6aTPXdoSkzZN8ejcdmdhaSzQCVEBLC0iZx8VP9AsKJUQ2rDWv/AsOB7Msxv7eXsyuGXhp3wqI+CBZ69yMujWZOfUTIalPLA9HBVuF8+XTXG6O4h3IAxvk54FC3rJpOvWhdPEhZfkSmAmR+uJgOODZZgdQ3QlhiG08hhYCJ6qT06LpBuZZZPTC9mAYQxj0ZSDfe3FkR8Xm9N1/aXoFp+f0IFOPLeKTJJ/yxSL0UY9+fKzalX+Do0PHEfj9vgeUt1NNX3nLAedOxHZewZpAxMbMkVfjqA6UngjwB1n3eoLQQkkR6y9ICve08PWgi7NS4ZrOBbIVRyiRIvk6jvi9W6FKsLys2rBJm4CmKUnCt3esDV8DNO3wIswF+szg1URqAB5dL5bH/Hw3IUfzqsyI2e4dCfm6xmpE/bvYR2FIGMDn8Jt0OdMTa0yu256FrsZLW/dRGr4gOBppEz4u2SeJsxynPnbVoiuEeoMrm0IAmo
+ NrBSZlRL
+ lUoob3D98nCWUzPyP2rsoocdUBInTtZ5PnTkQ2M1U6WhzqLMn4/ZPrmRf4Oc4804Zx9NBSTwTF/ZDWQ+QSHDljJkRdcS9dq11ROe02ggmPN32cALhfk5mYWUvq0m0cf5P2PVVE2GmJRHdwxauJknuEODYFKuKMWYUwlJv5T2Xm9b+etK16uZwhtwOJ//KYe+NqxHgSHgSAXmEhXTnELn6mE4CtV+cUr2Pwnkjkqpb0lJo5pcFy2EZhFfQpEu4OdwwrPr7RhjBh516wCSP36lqmwtkQkzBdiOegxXBLGsSdCPJq1ESh2LFU2CtVkp6kVWFtWmKwtAGGkmyTQ3MLZmcwOTU/OgG2qsBTvr2u6XwjWJVWlthYe51b/xqcvAxhGUyJAbJjPyhc0/W9pMiJQmQItZb4oTyk0J0wV3Jf79gVI3bntfnqXwcCA4cghupKJNSSBPr467P6YsDY4/cxc9JHOBUc+JImTDVRrgK4OngzE1ss4E2tyjzcAivwH1KXb7Pb8pjgsQzBzprlWr88WGSORxHtOwch+cdm/q64vi6ubJy3kZhRl7n3z0lIFhq6o8/44vU19KSjiGSB9+cn7ZNZOHhlGp1wI3EQsXhKYDrbnEiVcR/mX9JMZnJHrKmYyz3wD9TkULI05j5OOk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,76 +134,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026 at 12:41:50PM +0300, Mike Rapoport (Microsoft) wrote:
-> ochi-dbg allocates buffers for formatting of various dump outputs.
+On Wed, Jul 01, 2026, Xiaoyao Li wrote:
+> On 6/27/2026 3:06 AM, Sean Christopherson wrote:
+> > On Fri, Jun 26, 2026, Yan Zhao wrote:
+> > > My first impression of gmem_in_place_conversion=true was that it enforces gmem
+> > > in-place conversion. However, it actually only enforces per-gmem private/shared
+> > > attribute.
+> > > My worry was that people might think it's a kernel bug if userspace can still
+> > > have shared memory from other sources after they configured
+> > > gmem_in_place_conversion=true.
+> > Ah, I see where you're coming from.  FWIW, truly enforcing in-place conversion
+> > is flat out impossible.  E.g. userspace can simply replace the memslot, at which
+> > point the memory effectively reverts to shared.
 > 
-> These buffers can be allocated with kmalloc() as there's nothing special
-> about them to go directly to the page allocator.
-> 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
-> 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
-> 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> Replace use of get_zeroed_page() with kzalloc() and free_page() with
-> kfree().
-> 
-> While on it, drop the NULL checks in debug_close(). buf is never NULL
-> here because all the open handlers return -ENOMEM when alloc_buffer()
-> fails, and kfree() can handle a NULL buf->page.
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
+> would something like below enforce the in-place conversion?
 
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+No.
 
-Incidentally, I filtered it out of my reply this time, but on this and 
-previous submissions you have a CC: entry that says <rpppt@kernel.org>, 
-which is an invalid address (three 'p's instead of two).  Is there a 
-typo in one of your scripts or settings?  It's a little surprising that 
-you aren't constantly getting email error messages every time you send 
-something out.
+> Userspace can create a memslot without gmem fd, but that memslot can only
+> serve as shared memory and cannot be converted. So it doesn't violate the
+> in-place conversion.
 
-Alan Stern
-
->  drivers/usb/host/ohci-dbg.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/usb/host/ohci-dbg.c b/drivers/usb/host/ohci-dbg.c
-> index 9e0e06bbc570..23dc9eddc06c 100644
-> --- a/drivers/usb/host/ohci-dbg.c
-> +++ b/drivers/usb/host/ohci-dbg.c
-> @@ -683,7 +683,7 @@ static int fill_buffer(struct debug_buffer *buf)
->  	int ret;
->  
->  	if (!buf->page)
-> -		buf->page = (char *)get_zeroed_page(GFP_KERNEL);
-> +		buf->page = kzalloc(PAGE_SIZE, GFP_KERNEL);
->  
->  	if (!buf->page) {
->  		ret = -ENOMEM;
-> @@ -729,11 +729,8 @@ static int debug_close(struct inode *inode, struct file *file)
->  {
->  	struct debug_buffer *buf = file->private_data;
->  
-> -	if (buf) {
-> -		if (buf->page)
-> -			free_page((unsigned long)buf->page);
-> -		kfree(buf);
-> -	}
-> +	kfree(buf->page);
-> +	kfree(buf);
->  
->  	return 0;
->  }
-> 
-> -- 
-> 2.53.0
-> 
+But userspace can delete said memslot and replace it with a memslot pointing at
+a guest_memfd instance that was created without INIT_SHARED, at which point
+userspace has effected a shared=>private conversion.
 
