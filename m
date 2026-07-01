@@ -4,106 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E588C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 08:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 326B0C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 08:43:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FE8B6B00A6; Wed,  1 Jul 2026 04:41:19 -0400 (EDT)
+	id 202ED6B00A6; Wed,  1 Jul 2026 04:43:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D5156B00A8; Wed,  1 Jul 2026 04:41:19 -0400 (EDT)
+	id 1DA846B00A9; Wed,  1 Jul 2026 04:43:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0ECFA6B00AC; Wed,  1 Jul 2026 04:41:19 -0400 (EDT)
+	id 117D46B00AB; Wed,  1 Jul 2026 04:43:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DA85A6B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 04:41:18 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66FDE1A0278
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:41:18 +0000 (UTC)
-X-FDA: 84939563436.03.AC3F241
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 72A5016000C
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:41:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DmU9SIka;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DCA276B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 04:43:31 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3EB2F16557C
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:43:31 +0000 (UTC)
+X-FDA: 84939569022.18.F12B1D2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8FDBB1C0003
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:43:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hcFkC3n8;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782895276;
-	b=Ca82c9KVc5p8HXjSfNcjj/DzG+YurmJH/+HZ7HEhbJgjseqZ71PygkIiwIruEzD+mfOhOq
-	V+H6tuZopMCXupVKXyiPkBhjJxxlNV5eaZQuAcDA17C4cT8nU2w9WOJWiOMSZwJplHbw1k
-	C6jck/B9Mhck7XDNfu2kMG+3v2YoV48=
+	t=1782895409;
+	b=GX4GAzMIenYavRkzM3APDxsC3pwXauU60i4iC2yPJ53PkUy/sWxl8Prm6i76zOE22szGxu
+	MoXfYafE37xIPyuqa1hmjQKrf4zRrvb7sAGo17iZ0ya4x+Ko7PNbEyESgSp7waL8C+ClE2
+	/Zb7uGyTWb8ZJWeMtIYiZyG/FKF2i+I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782895276;
+	s=arc-20220608; t=1782895409;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pGrFD8S8lQ+BASYixy8RN9uVW/2UQNoP/HAty0kmd4I=;
-	b=birgLkKeY+sj4HGHHYJ2/jttQSKiiY4TSmPaM1opyPrgu12/QwL5aN4+B7UlSX8OcY+J23
-	lfI93hSTcJ2V9N/IN6xq+3+yR9rUeROrqZ8egIwJ2Fpje5OfIyl+t5GfwqEaNeSw8nuVDW
-	+ygrKevAiLt4eb9So+Is7wdRi9YEE4g=
+	bh=wg0g0njCZHL6Zz09qa62R7YUBIiwi7uccWEENqLTF4c=;
+	b=Fr2piCNhFb54YUqQPfFHFR2p/buDyhTNKFlhZj4e9q9aaEw5uMAMSSDQmDKnj56f6oYhlP
+	8mu5DSguVELw9etmy83pN5qvZQh9XlVk14Dhe51Eyh6S5ws9Lv3q+XGjONKHDgEMb+atEq
+	DGC9ih62wnRogO/40nYiycj9sSnpJDE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DmU9SIka;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782895273;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pGrFD8S8lQ+BASYixy8RN9uVW/2UQNoP/HAty0kmd4I=;
-	b=DmU9SIkabHFsQPD8XxzUshbsAT7wCxhtvnPHcgxRiNYlAjgVDK+AILgqoS4CwAOOWXLgCu
-	ZU2oOAPTr0qa96GDozfDP/t3fIQDl79mExZWgZWMEoz6iwZCBQ1UeHdevZl7fb5RVIN14N
-	Xool8UPLEtm+blogWqnWnSN/fnm/dYU=
-Content-Transfer-Encoding: quoted-printable
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hcFkC3n8;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B226B40A7F;
+	Wed,  1 Jul 2026 08:43:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5C41F000E9;
+	Wed,  1 Jul 2026 08:43:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782895408;
+	bh=wg0g0njCZHL6Zz09qa62R7YUBIiwi7uccWEENqLTF4c=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=hcFkC3n8AHC2UQ/5CKvA8Ur1qGVOq+ZJoimSPsg/lymsNXEw6hDCkD+1aAaKZUzbF
+	 EboLoiFXWX6RCKMMS95x5EetuT50ZUevkKpHh1q2EwciC75UP0Bv3S9UG3Zuv2aS7h
+	 AomCbO1VGjRn073SkoxHWyKd4LdBvRNa2Qt5PIUKn/UHIGlVUOVWfiR4uVnR5lRkzG
+	 07Jc5gEi5ftmPZVEIS15RXvKVPNoT6My4N+4hJMdEF1crY5YsXQEoIbbIeBODtoOLR
+	 tjcrd/wz2PAqaQ3OAmwjn3896pSO2n8c0+gOwHz/G9kN2Ff7rQ0wARl9f9ai/IRfO6
+	 clsd80r3SIm8g==
+Message-ID: <143ed5f0-67be-451d-a592-e184dd51763a@kernel.org>
+Date: Wed, 1 Jul 2026 17:43:23 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
+ kmalloc cache
+From: Harry Yoo <harry@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Usama Arif <usama.arif@linux.dev>, Meta kernel team <kernel-team@meta.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Danielle Costantino <dcostantino@meta.com>, Kees Cook <kees@kernel.org>
+References: <CAJuCfpFanDcpqq5B7eNZbw2HnWOXD-xzcnrdbz-e2gnSM2EYHA@mail.gmail.com>
+ <eac2ed38-432a-4d95-8968-2663540d73d7@kernel.org>
+ <CAJuCfpF78_5CjLsbJLte+B4MzfaSiAmyeH57VLhgLtj8AXD2NA@mail.gmail.com>
+ <62969830-4b1f-483d-8fa9-9ce487568570@kernel.org>
+ <CAJuCfpH8ZjBMaOmso=9gZNz=DK2ja5yMS+04OjTGHh5Uc7r0GQ@mail.gmail.com>
+ <CAJuCfpFX_sMrcTad-QGJsCV=fNyMWF=Bi6XmoHRqEAzMbWNfdg@mail.gmail.com>
+ <39a79576-dcae-4b66-9478-c81dfe676699@kernel.org>
+ <CAJuCfpGRC7NPxcODUsb3YS5nV=qG+-SbSYj1Fwm-QPqgKSVWAA@mail.gmail.com>
+ <c5c4208d-a6f0-413e-bad9-49be12f12d55@kernel.org>
+ <5ebd3c4a-5c06-43b4-ab0a-7a8f0396c84c@kernel.org>
+ <akPSjsbjl-UAcdI8@linux.dev>
+ <CAJuCfpE4BwDpt08iXtdh_nqRR5TGzGTdHzGZWYayC7t6V1O49w@mail.gmail.com>
+ <c4eab53b-c54d-4f1e-a4ff-8d86b8d32503@kernel.org>
+ <CAJuCfpE6WSWPyZMheF4b=2mrwx7bPP3JUe9Pwp6QAswSMF4GyQ@mail.gmail.com>
+ <9a139365-28e6-4f1e-b35b-7f6091e9aa14@kernel.org>
+ <92bf5e21-690e-4a77-929e-5217e0d7cb0c@kernel.org>
+ <68e7f6cd-cf11-46b2-84a2-d512bb22dae4@kernel.org>
+Content-Language: en-US
+In-Reply-To: <68e7f6cd-cf11-46b2-84a2-d512bb22dae4@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 01 Jul 2026 08:40:50 +0000
-Message-Id: <DJN3MAVWO7YV.2FIHJGQO8I6US@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Harry Yoo" <harry@kernel.org>, "Brendan Jackman"
- <brendan.jackman@linux.dev>, "Brendan Jackman" <jackmanb@google.com>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil Babka"
- <vbabka@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan"
- <ziy@nvidia.com>, "Muchun Song" <muchun.song@linux.dev>, "Oscar Salvador"
- <osalvador@suse.de>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Matthew Brost" <matthew.brost@intel.com>,
- "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>,
- "Byungchul Park" <byungchul@sk.com>, "Ying Huang"
- <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, "Roman Gushchin"
- <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>
-Cc: "Gregory Price" <gourry@gourry.net>, "Alexei Starovoitov"
- <ast@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, "Hao Ge"
- <hao.ge@linux.dev>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-rt-devel@lists.linux.dev>
-Subject: Re: [PATCH v3 05/16] mm/page_alloc: unify
- __alloc_frozen_pages[_nolock]_noprof()
-References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
- <20260629-alloc-trylock-v3-5-57bef0eadbc2@google.com>
- <397859cb-b127-4cc6-9c71-044afc99bf0c@kernel.org>
- <DJMJPA37E3V0.39XKKI63O2ETU@linux.dev>
- <791b1aee-8667-4721-ad93-2a1b8fd2aef1@kernel.org>
-In-Reply-To: <791b1aee-8667-4721-ad93-2a1b8fd2aef1@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 8FDBB1C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 72A5016000C
-X-Stat-Signature: p9d91cfhoxa7ek34ghbibuhhkqf1opzy
-X-HE-Tag: 1782895276-699536
-X-HE-Meta: U2FsdGVkX19RKXPOtDk4g/PHg2dLD23iqwzwLdrGkrJ381tx6DDCZikkAPGPWT42znSs8yVzPrRiH3dN3zDMR9/U07NEbR57gRsds3OMj++bnVcx11AY15iS4epQH/oiYes+m6CO5M4icbVKE0foLHGiCb4EIXBfrNLfjzT740Oz/ibr+pJtf+WL3UgE7C1Oz3kuYqV+U4vj0x9INiLGM94FHEO2B0uGFdxBeyfNTQHiuxiXSLB+6d0XgCa3HT1oRDd1BVDG3SPjYSFb59DmvoZ5mN5w9mNITD7tj+caNfeZEYluxUA9VXI64vx1tSmOQqJufo/RQ/CPNRnZKt75iYrV8TaoWxYBmfKvcVwVfiWLxp0muA4NWSX9k/8Lyvs5OoFCtdNtebsllmTk1hyd7HWK5xvdSeChR63ojdIUzrsCazjFwiNn3LuzBQBM0v4lswzt1qZDU9om49IEzERp6XTrSnp2xV6tbfvqrXF037pZPH+l7eoem+wZZUkzvbC0h7hc2NE5lVq0KkuGGm8yFCTAjcv73X24S3p9ZcCJJ/wmxFZgs6GUoKqI3gX4qXCOQ72O1vZWAJopoPk4/jF8NFU7Xoe+NVOIXdk7xFdpoclEvoBIau+echFlxwnAWf0Vs6a3hugZFV5Qm8KlPx2InR4DxzcInyeerzIAb8fP8TqYFL9muC6spO00yZ2kU/jjFK8PGWjUI9f1rRJlbGC+xQdbZmCR3Wv5flNwzR5oEkXooYWWYjabmd1goKauAb8YH/GJzdGb5602gT2efr1haCKicPtEuAZU6wTCgD1GNmXbn7bk/aPvTq6b9RgVxliyndsQGt5ggAC9sK6n/RyS0DyM5KMk91JKhXSYa4tl8xd7JiN2MH2NdjPTy9QoCyzRdty4hSluWbbU2aPeHqDAWYGRMlQQOWnUg0oPnHLJg3OB5k77AZ2vdY5yhXIqszYuGBM7kfN47hqC3/8XjVc
- vNmlZHXf
- eGGjADEpZj/PA8Dj2OC9G7PdaNMlGGJ6WsWCLQBitAVtACqn7/3xBdBe+RhX1wI17Nek+vCojQkCKETg5SLFr4Ybq230Ea+oHcbEXEpxOwt9UcMSg4F0YB4k8hWIrkjT49+OLh7lCDxXoAURcx9N3aKrx0HXLfm7dAp/6K+v0z2JQ1hTcpfVpdvCsO0Wfez9uP26Jg5TwEpwARPMUA4+cbDbxteEuwwvSFMWWxmuSWjaF6ofHiRi/nTZ4rXluiwLN6aM5rr0BbQDDo1+v8TuI27jEl/wGbzVgF2jS8XOdupU12+xhJUyBNoL04k8e2GhwoweoRWKzySMkOBHuBPl7hyX0BIqVDQdx8rK04g2AktmVla0=
+X-Stat-Signature: u7xgjjgceenktt4om8fmn987mq3db31j
+X-HE-Tag: 1782895409-119548
+X-HE-Meta: U2FsdGVkX18sJ0ZKvdE7Dw1qPmhM+pIF6MKGZicjdAJvOerM/nuGg1DKsv3C8UzRCWAGjtjFTXezkdEse5ZgLJNPS1hzhWOd7YfXc9al+b0ha3EPcc3tYzim5SQA3Z1YuILh/hDxxnqY1WPZJXCM4JwCFw9bEP4Cy3Imx91u//tY3h4yPr95Pc/DFf5mypyGQ5U+1q9aLqrahBmmhy/C9GWQVdG/4oRdxKJrzqeCKGIw3Ruzg/2UJxqgrOxswY2BuGmQhRGBEJMjdvGeAnZhXh88J9wz58dTS7KxX0hLedfgSa7a0wfd9Ku2dZUICjEMmVotZxI+uJltcZ47S/dPhWpX105UNs9EZMTKWXPsHZWCm30F/c7ufd7Qb7buiguRnRXw4Tzk+73GByOx1Vvwl41cbMGbuhB/7Wv0z+IDFyM5I3QubZhsg3KjvwB26hx5f/DAJS9RgKNfbmp4JusSFy32UOw/3z5VH8nhOzSKt5+beXpApN6tSLb4imKaWK68/dlrfD1TlmtnZ2fKfWoAORJ28I5lPMos6dAmZ6MFujjtPjGFBcKpAr5BTCciIV9xJkqk2MtJ4/NXM9AUbvaDXBETU6jzqOyCisKxai7EkSuQ0JgmE+2WidJSVwaYEgrtWXRySfao6ZuTgD0qYbiaLNmTph5pcRgBLj0xfJNubDAktIouCl8zO0wnzoi8H3tujE/uxGL9Y3UhoRDUsxlfvEtcqWqlYaNmcH1PLxfMceYU6VGjbB/dYkOR5NzTUUsGovqziiGUtn5INcrnVTRVClfg/y7oIB5zOq8U/S4yQS915w4ERJ81eAaVKBgO7hzg3ZkZzrRv/7t0Bz0IC/niWv71T7+/UCq3EqizN2AIzmsYmk9YknLJ98/qXNc9iOmXvLsfqZKJz5PwfCC1flG6V1YmiRtpL6QIiwL6ELMlyxvhn9qlfHIv0X8dSHVzADUc8npppyPND3j1YHbh84m
+ oUOIxYeO
+ kaIuOGIkUESb+h/MRnplMxfvUHLB5Ud5IJlAT+Jtd6PBgVjjU2Xu+rwC4Pl8S1PPqIp+ZjsLaTRvtfLCnjd4MCbV0cgGJbgrkaslzKbJpq7rkSXOXRZpYeDW/AWVQDqoI175+XfgAeddzfvkVJYFF5eDrFVyNyh/vCh1ZHbn68UiclPDk+dLyF+YWxTemmo3CcvCNaCzkaljTGgZwZTIBQg4+0N7+gef7lXkXeyUeig/pyMyVn9L8gKj3/3w0fmK7Th+2OTFMwd2yWy6QqOL2vZGa2XcuW80+xgPA6UDc5GIryMtbNP1M2PewXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,87 +116,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Jul 1, 2026 at 2:21 AM UTC, Harry Yoo wrote:
->
->
-> On 7/1/26 2:04 AM, Brendan Jackman wrote:
->>>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->>>> index a3ba63c7f9199..8d409d075e3e9 100644
->>>> --- a/mm/page_alloc.c
->>>> +++ b/mm/page_alloc.c
->>>> @@ -5271,24 +5271,98 @@ void free_pages_bulk(struct page **page_array,=
- unsigned long nr_pages)
->>>>  	}
->>>>  }
->>>> =20
->>>> +static inline bool alloc_trylock_allowed(void)
->>>> +{
->>>> +	/*
->>>> +	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
->>>> +	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the curr=
-ent
->>>> +	 * task may be waiting for one rt_spin_lock, but rt_spin_trylock() w=
-ill
->>>> +	 * mark the task as the owner of another rt_spin_lock which will
->>>> +	 * confuse PI logic, so return immediately if called from hard IRQ o=
-r
->>>> +	 * NMI.
->>>> +	 *
->>>> +	 * Note, irqs_disabled() case is ok. This function can be called
->>>> +	 * from raw_spin_lock_irqsave region.
->>>> +	 */
->>>> +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
->>>> +		return false;
->>>> +
->>>> +	/* On UP, spin_trylock() always succeeds even when it is locked */
->>>> +	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
->>>> +		return false;
->>>
->>> Except for deferred_pages_enabled(), it's not specific to the page
->>> allocator. SLUB has
->>>
->>> 	/*
->>> 	 * See the comment for the same check in
->>> 	 * alloc_frozen_pages_nolock_noprof()
->>> 	 */
->>>
->>> ... and repeats the same thing as above.
->>>
->>> Perhaps let's factor it out into a helper
->>> rather than trying not to forget to update the other place?
->>=20
->> Hm, not sure about this. I think I would say it's a "coincidence" that
->> these two bits of code look the same? Like, page_alloc.c uses
->> spin_trylock() so you can't do alloc_pages_nolock() from IRQ on
->> PREEMPT_RT. slub.c ALSO uses spin_trylock(), so you ALSO can't use
->> kmalloc_nolock() in those scenarios. But those are two different facts
->> that just happen to be isomorphic? Putting them into a shared helper
->> would kinda imply that these are part of a single system with inherently
->> coupled constraints.
->
-> But as long as they use spinlocks and can be called in unknown contexts,
-> they are supposed to have the same constraint?
->
-> And actually, the only reason free_pages_nolock() or kfree_nolock()
-> don't have these checks is just because we don't allow kmalloc() ->
-> kfree_nolock() or alloc_pages() -> free_pages_nolock(). Once we allow
-> them, we'll need to repeat this again.
->
-> I think it doesn't even belong page/slab allocators,
-> probably should be spin_trylock_allowed()?
 
-You are right. I was imagining a function called alloc_nolock_allowed()
-but actually now I see the name spin_trylock_allowed() I realise it's
-not about the allocators (which both just happen to use spin_trylock())
-at all, it makes perfect sense.
 
->> But I'd lean towards leaving this out of> the patchset since the
-> potential deduplication isn't really related to
->> the other cleanups anyway.
->
-> Ack.
+On 7/1/26 4:42 PM, Harry Yoo wrote:
+>=20
+>=20
+> On 7/1/26 1:53 PM, Harry Yoo wrote:
+>>
+>>
+>> On 7/1/26 1:30 PM, Harry Yoo wrote:
+>>> We can do that in pre-7.2 kernels, by teaching kmalloc_type() and
+>>> kmalloc_slab() select the new KMALLOC_TYPE based on __GFP_NO_OBJ_EXT?=
 
-Patchset is getting pretty big already but most stuff is already acked
-and also most of the patches are trivial so maybe I'll tack it on after
-all...
+>>>
+>>> e.g.) Select the new KMALLOC_TYPE when KMALLOC_NOT_NORMAL_BITS is not=
+
+>>> set AND __GFP_NO_OBJ_EXT is set.
+>>
+>> Uh, this is bit subtle though.
+>>
+>> In some cases  KMALLOC_DMA =3D=3D KMALLOC_NORMAL,
+>> KMALLOC_CGROUP =3D=3D KMALLOC_NORMAL,
+>> or KMALLOC_RECLAIM =3D=3D KMALLOC_NORMAL.
+>>
+>> Just checking KMALLOC_NOT_NORMAL_BITS is misleading.
+>=20
+> Here's a prototype for slab/for-next. Backporting it requires handling
+> __GFP_NO_OBJ_EXT instead of SLAB_ALLOC_NO_RECURSE, but shouldn't be
+> too difficult. Now writing changelog and going through testing...
+
+Now thinking about the performance implication of sheaf allocations
+for kmalloc caches being served from KMALLOC_NO_RECURSE caches won't
+have sheaves at all
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
 
