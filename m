@@ -4,146 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10908C43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 08:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34451C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 08:32:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 089D66B00AC; Wed,  1 Jul 2026 04:32:53 -0400 (EDT)
+	id 0D7646B00AD; Wed,  1 Jul 2026 04:32:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 061DC6B00AD; Wed,  1 Jul 2026 04:32:53 -0400 (EDT)
+	id 061606B00AE; Wed,  1 Jul 2026 04:32:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E92F46B00AE; Wed,  1 Jul 2026 04:32:52 -0400 (EDT)
+	id E921E6B00AF; Wed,  1 Jul 2026 04:32:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C369C6B00AC
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 04:32:52 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5D8E71A0278
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B0D986B00AD
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 04:32:54 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3290A1C1F0C
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:32:54 +0000 (UTC)
+X-FDA: 84939542268.18.764E1F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 851CA40006
 	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:32:52 +0000 (UTC)
-X-FDA: 84939542184.20.9F48EA2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8328A1C000A
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:32:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=POofgpPt;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ej/bhLV2";
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782894770;
-	b=wj1BE3lvd3FuPgmKW24wlnvLINj5n9ToAi+rNXQI9NqeTpuk0OyHcEKFunqNmnjnlgBUa5
-	FDk4caCMaK6LVAfp78hm5EB7Bt9KCU1/bhg0KOvXlohbW6Z6uYv0M/pW7cQ+no7IPfkvkC
-	PJAIRsia9HcidjAuBInu0oIKp7u66+I=
+	t=1782894772;
+	b=Cac+Kr/Mb//BO4BMJDl5wvHMBdLVfm+NCBpdJvB2ui2JsEN6zj/EczGmQ1eyi5eZQrhwMh
+	nQz70kVQGSvIn8lmxUVyr+NDHd6TOP9k576OFa5i58kbdyIgV3hK75OEuj3Ae31OjZ4ld+
+	rsypgpG1U0G7PRAa3wqkiEuXNh2635M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782894770;
+	s=arc-20220608; t=1782894772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qnNgn00HPtxGEmPVZmC3ERUTFf2RhZT1SafyHKh1YXY=;
-	b=Txox2mVcsne5CHtBcJfpzfJ9qxSMHKAn3yGykvQribSLTXJi1C4Wqa8Mw0wgz18gvz/FXl
-	ISalkeX19J2ZGPUSxZjePdi6WhC7fRGWwbngNEJe2SPlzJVi56u4Y7mXLcDgsyXv/y72FO
-	ALqzHe28pRwUYYAHfvCcd9cTKu7Qhzc=
+	bh=BSy3cfzVUqyR4pBWzhZ0/b5cdJEuto21KG+Sw+YT5bM=;
+	b=zHkJdXveGc/RAfBzrfGYZARXmMsDnUhWg7iv8tCxG2TdFgagtjbYEcorxY2zlv75C/S/es
+	dMtbCFMdIEOtS2aNbVPRpt1g/ri6HA8DH49POv2mDSUCiQJRh+sHK77NZ+H5RQ4Q/NvV2+
+	tN2Vf1GigYelKwgriSK5/vGxrRGI0os=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=POofgpPt;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ej/bhLV2";
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE15C43D15;
-	Wed,  1 Jul 2026 08:32:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9831F000E9;
-	Wed,  1 Jul 2026 08:32:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BF3A601D7;
+	Wed,  1 Jul 2026 08:32:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0531F00A3A;
+	Wed,  1 Jul 2026 08:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782894769;
-	bh=qnNgn00HPtxGEmPVZmC3ERUTFf2RhZT1SafyHKh1YXY=;
+	s=k20260515; t=1782894771;
+	bh=BSy3cfzVUqyR4pBWzhZ0/b5cdJEuto21KG+Sw+YT5bM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=POofgpPt2nwgcX5HuD4IxNyW9cOA3TuB2pq2AICIA3gIKE/TRguRBoSlwo69Wi2VK
-	 DkFCow35wbmk1trpPJyJJ777stS8E+BCkDI089kcftpnHCtD0/SPGFj6I7+ME8JZSW
-	 A7Yd5uCa5icpRjBVOUlUBKKRu80RLgewO8fxLDtRixro6vUqkk+sySkyBnppi8e05X
-	 91e5sM8lla7yifNTAPqyi6/k+EY4jEQmsrYyYPvAYSzmpXYT2NmD9zQFnBfDXyZVC7
-	 /G78J1U9+6KkDkiV9r6F/0eN3yOOVnZY4OK20rmeZ02pS/+ZNUbGY8grzY2lFLJtaJ
-	 cFycaW0GmqZog==
-Message-ID: <e0ae6be7-4e45-4c4a-9663-a87fb260564a@kernel.org>
-Date: Wed, 1 Jul 2026 10:32:42 +0200
+	b=ej/bhLV2lC+xeGIQFxa6NbBX1bHdqFNVtfWMnPmcd3tYv3DiL3LK7f2SwmyHZrZem
+	 l1q8F5oRB3cekt4CRrVDQIfP7q7Iov3PkmuyUSHpSKlltbx8Da2dndhdKb1ngitM4Q
+	 C329B8cViplBVPzYmkkhMZEYcXhFm7rhGjuTImwRJ3abixHDXV0TaEoBkUeESuu702
+	 NVFshKGSoc5Ux1bfta221QCZaPqbE8ZUibY6RO+yOcflQe8JjVfD3bo+rL1WnPF1XA
+	 J2Zvrr90sP9a9KZvZPY3HHIj9zx0gEHnw4wenBVPv7HeFeQUZjPbHC4von+mCgp4au
+	 3UZEX/6wxZPFw==
+Message-ID: <d5d9c27d-6a7c-40c1-9273-09c9d5bd2a7e@kernel.org>
+Date: Wed, 1 Jul 2026 10:32:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 16/16] mm: remove the __GFP_NO_OBJ_EXT flag
+Subject: Re: [PATCH v6 06/10] mm/memory_hotplug: add
+ offline_and_remove_memory_ranges()
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, kernel-team@meta.com, osalvador@suse.de,
+ gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+ djbw@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
+ alison.schofield@intel.com, akpm@linux-foundation.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org, iweiny@kernel.org,
+ Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com
+References: <20260630211842.2252800-1-gourry@gourry.net>
+ <20260630211842.2252800-7-gourry@gourry.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
- <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
- <20260629-alloc-trylock-v3-16-57bef0eadbc2@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260629-alloc-trylock-v3-16-57bef0eadbc2@google.com>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260630211842.2252800-7-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 17h6pprdnstm3gj1466eq9tmis9p34sg
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8328A1C000A
-X-HE-Tag: 1782894770-546979
-X-HE-Meta: U2FsdGVkX1+B7iA91fcBCEpRgupq95gL1kQXqmmpwzrcEzS9e3bDF2PjjNhedtFcPLf7zdt+m71HdIbg+DBudW0aRQw8jo9Z3hHsrzOOO5LcaVGwPcwIcNGxoqC8lYK41PjL8UK3la9LIyFhrdcKZHhx4EZeijZFn/8CGP1mzscj/XUeCr+LRKCXkL7Q+T+l+6KN/jpNaeTU3DVChiNg/aeUIpdD/SOpHxeE1DYWkwfLKIYJGMCDxHEcQTynZa0e59ZPD1/IjNaOfID1rhVxSyXxB866fNSnMiDbMhLFIYqj1aOCNsFSBuyYBsBkVAuMrDYHu0cmfh+3RJDHDg414tL684mrGU5OXrXYWnWGwiWuon4HOwNeJ2SIDCsks0qthPfpqjKN6cAaWrDQPIbfyD36f+obwodKXXC/V/NUXydja7zbpRzAoH0XANfUF7sqNONDUezad79pkH9pJl8EXbrRaLElISrpZz22HKc67PDcnT5S49zfdJBATccie8RE74yHI/mKZ9auTOpzM0OjhF3wYHBVLNarnhJz+iqEnikc1ILIgMjOSgSwnCqyZ331ONKMrvjlYwORj9Wdq1sQJoVYv9JR1hYM7MiAD5L47QjoItzLq7PYvvVnVl6KH+ZPdRKVWzVLvPHwR0cgN4bSu88VwRR0D5X1fGqhPEso9OMU73H8CxmBcl5FMkd/Ar8eUOyyiRuzOOWt8RlXPyV3JyNTnUuahWSUAyDohsTDfbTPV6tNe/o7XCek2Zubx0y9+oADmga0LBZAznxo+0TpFC2JcOEgs4fWScANMui5hh415kYNM2XpqQjIiSzi3CKZXgw/y3OP/86vwtYsEzmarJ2oDEuxpSkep/khuT3Igo/LOhtydpp1SMe1B6Zvc3pstQh7fZVmAqpQnqjwbNk7OLUKE94OWprLoJyYRhgg8maEZ7eHRfmwFezomMbTKpj9VskemOiyL4DQgUqYvND
- V92ZE/kf
- xD8ZrFYuFlc1fC6Dss60vBDFIQmHU8PF6LeQZcvPbV9FojHcgM8vKG8MFR74beClDkoF/tfncALTTl7O2+KrvdssGc4T8vMj05/lkX2EOzWeiqxV9lWThviqRFd4CEpRb2rNP2PR0uLZyA0x0YUxaM6kej0eCaXUvI72nih5ixHbYZAAhXmWOLwW06AcVoKzuyRh71soE+u0AvQvd69N79/WAurOTYaLFYSxAlY2hj5yQj9O9K3RnOlA4ZsM+O2pcCctfpzZtWFRbcgg8Lc6X4WYgeUl2NMNygbEoYDc0GJB4nVA1NwYcpEUcE1ylsolh6r6h/8y6LU2nf4ajmLbzy9yxXgl8rGdvt5Ts6t5gM3gbuHL2BUHKbye0wIU7PEDs8VfCwz+kpU+CAEPrG0kOnVXAc/Os5tZT7VYhhYnLZI1a1/s=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 851CA40006
+X-Stat-Signature: oec545y11awdyy9y36rffkknp1emqbbo
+X-HE-Tag: 1782894772-737791
+X-HE-Meta: U2FsdGVkX1+VQVsKBXJfJ4niNLlJ/L8UZ8oyluR3x959kEqKB+/n8W02MjFv48PrcPnuMfGK+0tqudoehedOu/F1NCNzlaGDs0V+lLZsLLuPlGneiBMySxGn/4zX5BX+83QmA9y1TZX/mb17AUfQM0E3bzt4Ogy04fxb5g1xDpfcVnYLIo6RBYfk7Qn/SPa/q6zeBdJ81HNCiNee9xgRhd8INvfGvDrIDD1MoXd/nA/Uth+WSao4IWgmTnd/vF1zkKoGe7Vql7xE+z+y0F5QRUtpZ8sNmEkeHsgX0zNTuo+9hOaWClKWPdmbGKj+zIz+lTb2y44x2MpKfm4e4A3v7AffWRQsomlVPoRhUKfnvzw5kVDcQaB/WZW1vNHwP5YhcaNIX6bEDNVaDwHqYFZplJ/MMaafrETzlfrl356eAajqRb1h4Gitf3s1jQpjUQG02MMDrDShct0X8MVXI1rFCXfW6OtJs8KIuj+J7vHIX50bqkX2yukdzx/vItpMRk74RGUQ34flCgTRHR+EhOE0RbocW4eP/xcYu035Fm+Xq1qW5cDDr3vRjnqYHbawHJ2BABFBtlSt9FFasXKMoZRb2Aw3pkJQbL3joujtwYnKYSmsN7YE41aKMyjZ0hy9vSTNhRf0TKDxPae1Wr6wxy0/yE/SlheYPbmfEfeF9SU96jarVG187oJtY5g4p84rVbqvYoJW3L+sA7uNw2pnQt+hO3ZacbfPxBP/sSfUlsL/UHFBeVAsFv86EVpyiS8iJbo3mT5q75PpuDJbXjJimu3SvhsVKQQgDI12QWeqFwut3LoE2/MxKQP6RLXzpb+15Nxo+Aecc5DzPpd4Z9RTKQqDzlizTYmLV6fQLp0jhhWn+K4HlsNJx8LIjtqwV12cP9Fs8zZEjuz/Nlk7XcajeEIa/NOO5GrStR6tTL/EH5HAHiKaribTpFa/389uM62GV+7BLMpK+nC2V/SiWtvGTaU
+ 4ZCAJF5W
+ 3xerRhrqfh7mJPKux2JkzOiSoVnsBvTDcC5NfaxwcGGBbCplVqiDPtlAtq7TbmC11+G4eW8nXMiTC67B1JWfz6aCchTIFDPBEMmrmRV8EPq1v5EkDUsgVIFkeYpg2ipBWaGLR3/YV8SDUte218dPiok4Mda6L2fXTPXVd+MQ2kEP96ghDlrgopr2DLXuQ2y5zUGeeGCVRFoMtM+XHUFKJ0QhI9Q1qBZihqeIBl3UFzwHfB19V/qpAeb8bcL8zaeo3vMJzrK4XWY9PAJiuZ3KHoTotGCmv8dMsm4blc41V7OpU9ot2evvHVKI9n/LyNmUKdPXnMopd2Lxs8OjIE7UUUbS+EUZPm8+nVPJb/3B9S/ciGD+IqyN0Tt3fUFdmM0tedZxvSMizFa8CxNU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,62 +146,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 15:12, Brendan Jackman wrote:
-> All users of the flag are converted to SLAB_ALLOC_NO_RECURSE or
-> ALLOC_NO_CODETAG (from __GFP_NO_CODETAG which reused the NO_OBJ_EXT bit).
-> Free up the flag bit.
+On 6/30/26 23:18, Gregory Price wrote:
+> offline_and_remove_memory() handles a single contiguous range.
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-For a correct process, there should be also a matching From:
-
-Thanks!
-Vlastimil
-
-> [Rebased onto __GFP_NO_CODETAG removal]
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> Callers that manage a device composed of several ranges (dax/kmem)
+> currently have to call it in a loop, which gives up atomicity.
+> 
+> In addition to pushing rollback logic into the driver, the lack
+> of atomicity creates a race condition between system daemons trying
+> to manage the same resource:
+> 
+>    - Manager 1:  Offlines memory blocks.    Removes device.
+>                                         ^^^^
+>    - Manager 2:  Detects offline memory blocks, re-onlines them.
+> 
+> Add offline_and_remove_memory_ranges(), which takes an array of ranges
+> and processes them as one operation under a single lock_device_hotplug():
+> 
+>   - Phase 1 offlines every block of every range.
+>   - Phase 2 removes the ranges only if all ranges are offline.
+>   - If any offline fails, the whole operation is reverted.
+> 
+> This gives callers all-or-nothing semantics for the offline step, so a
+> failed or interrupted unplug leaves the device in a consistent state.
+> 
+> This also resolves the battling managers race - the second manager's
+> operation simply fails when the block is destroyed / cannot be onlined.
+> 
+> offline_and_remove_memory() becomes a thin wrapper that passes its single
+> range to the new helper, so the offline/rollback logic lives in one place.
+> 
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 > ---
->  tools/include/linux/gfp_types.h | 7 -------
->  1 file changed, 7 deletions(-)
-> 
-> diff --git a/tools/include/linux/gfp_types.h b/tools/include/linux/gfp_types.h
-> index 6c75df30a281d..a93b8bd200b76 100644
-> --- a/tools/include/linux/gfp_types.h
-> +++ b/tools/include/linux/gfp_types.h
-> @@ -55,7 +55,6 @@ enum {
->  #ifdef CONFIG_LOCKDEP
->  	___GFP_NOLOCKDEP_BIT,
->  #endif
-> -	___GFP_NO_OBJ_EXT_BIT,
->  	___GFP_LAST_BIT
->  };
->  
-> @@ -96,7 +95,6 @@ enum {
->  #else
->  #define ___GFP_NOLOCKDEP	0
->  #endif
-> -#define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
->  
->  /*
->   * Physical address zone modifiers (see linux/mmzone.h - low four bits)
-> @@ -137,17 +135,12 @@ enum {
->   * node with no fallbacks or placement policy enforcements.
->   *
->   * %__GFP_ACCOUNT causes the allocation to be accounted to kmemcg.
-> - *
-> - * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
-> - * mark_obj_codetag_empty() should be called upon freeing for objects allocated
-> - * with this flag to indicate that their NULL tags are expected and normal.
->   */
->  #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
->  #define __GFP_WRITE	((__force gfp_t)___GFP_WRITE)
->  #define __GFP_HARDWALL   ((__force gfp_t)___GFP_HARDWALL)
->  #define __GFP_THISNODE	((__force gfp_t)___GFP_THISNODE)
->  #define __GFP_ACCOUNT	((__force gfp_t)___GFP_ACCOUNT)
-> -#define __GFP_NO_OBJ_EXT   ((__force gfp_t)___GFP_NO_OBJ_EXT)
->  
->  /**
->   * DOC: Watermark modifiers
-> 
 
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
