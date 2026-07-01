@@ -4,78 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFC76C43602
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 08:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1D5DC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 08:36:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 944176B00A6; Wed,  1 Jul 2026 04:35:49 -0400 (EDT)
+	id E00476B00AF; Wed,  1 Jul 2026 04:36:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91B596B00A8; Wed,  1 Jul 2026 04:35:49 -0400 (EDT)
+	id DD8B16B00B0; Wed,  1 Jul 2026 04:36:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 832316B00AF; Wed,  1 Jul 2026 04:35:49 -0400 (EDT)
+	id CC6E66B00B1; Wed,  1 Jul 2026 04:36:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 59FFF6B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 04:35:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8BEFA029B
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:35:48 +0000 (UTC)
-X-FDA: 84939549576.30.662F7A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 1F4B020006
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:35:47 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CUbiQPlR;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A99F36B00AF
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 04:36:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31625C15E6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:36:43 +0000 (UTC)
+X-FDA: 84939551886.29.80A5CB4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6C6F1A0005
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 08:36:41 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jzW/rrzw";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782894947;
-	b=DYU63tLb9y6r1u/EAkr56QAJhRhW8OxF9xnrSX4YxorRo4ziZrpScMnfE1rr5f/bZBnPdM
-	wGLYyuozclo+97UZH5qtvmu9yOFhbbX62IUjWXMuXF1K3+EwuTlG4TmTnky4goVN8f7AwM
-	c3BmpXIdGRrbg5DeN+/JBA2euRFfwJc=
+	t=1782895001;
+	b=v/D2q8LSkfXlFrKlslel32zSmZdZk9U6ORmagV1vPld867KhHtx+iP240yY6kOfAm3Pssw
+	cV5ZmQyhm+mYHqSyxnowIxkzVUsGhE7GIoa8ZNbA74o5VE0fEWN9SXZ9wxyuzoHhb3gsDr
+	8kP9+hodnPhspa2gbPMt66u0tvR4guk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782894947;
+	s=arc-20220608; t=1782895001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JrfIlvjinRp/Isc/2aqvA7fk3pmFV0oszkJp6lh7LfY=;
-	b=WpTc4ej9kDDF1IOXgKUViExt3w3U7f6w23UPnZMcqL3BQC7/OoRdG+Jcq3meCpG2MkYvFv
-	hf66pU3kXAN6/EkHMVFw78+x7lgqLtOEUdy3oeq9c2tn81+XhfS4IKa9/sYN+eL9kltiJV
-	jQugx9IPJe3ZmouHwENcFkvi7q7BtIs=
+	bh=xPEJAHy4hb00HRqDPAQWbFJl4HuP8MOTJH/+eoezJ7I=;
+	b=g8FsCmcZaTSrd+QAAU94jqKALLbzxEI7McFY/QpWNZlXMHnVN4dPopyzb4Ap7b0eq1QoDa
+	3O8Me8wiacW+Q9m7HmIkb+GaWrfRJM3tKvXd7LraCfREs9CCiC3d9vN0Yao1lzn/AiAquE
+	N8bnSmDWvRXZ6KPG8dRT1/GBenM14+g=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CUbiQPlR;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="jzW/rrzw";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 50EDC41FE3;
-	Wed,  1 Jul 2026 08:35:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6C21F00A3A;
-	Wed,  1 Jul 2026 08:35:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F1A8C6001D;
+	Wed,  1 Jul 2026 08:36:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371091F000E9;
+	Wed,  1 Jul 2026 08:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782894946;
-	bh=JrfIlvjinRp/Isc/2aqvA7fk3pmFV0oszkJp6lh7LfY=;
+	s=k20260515; t=1782895000;
+	bh=xPEJAHy4hb00HRqDPAQWbFJl4HuP8MOTJH/+eoezJ7I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CUbiQPlRNLrGAaISfsMY2lKId+9XnZt02rpJWrZt0iiXTBPY5ps7EvIeCm49fjIVC
-	 QTGVocVVcGV1jQbSkMvGtW692LfGFij4mHu5VN1jur1x+xpTGe4z7ZNYrUsR49ViUR
-	 oTJfADXQm1srqI0ZrACTDBgaizDXw2H4x68GvqMOPa7GpXhf6dBxFUQVHYbSbS0Ocg
-	 Kr2xS3Er8g52fpOCoxyesm6VGfy3j+i4inOa8JNrwyIvK8Yn6oBXcWw853SY+z+Q88
-	 7eKpSTwmSHMy0+w/aTGBKIPE4lo+L2QC9aiKrHpMkBGPfccrQQP7niAIhFOWDwoztW
-	 a7g0HvZ7xRLdQ==
-Message-ID: <b8baae33-d551-40fe-abb5-287f3711dd80@kernel.org>
-Date: Wed, 1 Jul 2026 10:35:41 +0200
+	b=jzW/rrzwTr0czj4QnvDVZj4wh8o8DkAXTIMba4+v3umaXcz2XyBShEeJaunOpw7oJ
+	 c62tiaBrta2dD+rFE1Mvn0I/QqPtJn6btwSICosFH2epy6HfAUHFIEoygUUEi5lV3a
+	 48/5zbISrWpdxErC1ygFmRBoOzmbkNwEo/2si6aJLrHouWoG0Ay6dp0M+l4IKonbwK
+	 Vly83+W/tyxp2abFNlcl2m9+TZKljikrsMtK3DpXQfbe0s52A/SXRBDT/EytnagoVN
+	 0e9ewkvbyVLx3gJDBL/JaZhpzx8irrSv3t7msktUZXNAi5N03ReL0AoULRrW+PcywP
+	 1ZLEdArRC3XUA==
+Message-ID: <c03ec696-d635-4c7f-8c77-89a439d9135b@kernel.org>
+Date: Wed, 1 Jul 2026 10:36:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mm_init: handle alloc_percpu failure in
- free_area_init_core_hotplug
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- kernel-team@meta.com, osalvador@suse.de, akpm@linux-foundation.org,
- rppt@kernel.org, mgorman@techsingularity.net, hannes@cmpxchg.org,
- vbabka@kernel.org
-References: <20260630214039.2263562-1-gourry@gourry.net>
+Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
+ non-atomic page flag ops
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, Andi Kleen <andi@firstfloor.org>,
+ Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+ Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry@kernel.org>,
+ Hao Li <hao.li@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org
+References: <4f5ba5d6-246c-4430-9737-e8dd8e4c5142@kernel.org>
+ <20260629092856-mutt-send-email-mst@kernel.org>
+ <54c8cbee-9b26-458c-93ba-5aa594f5d1e8@kernel.org>
+ <20260629174225-mutt-send-email-mst@kernel.org>
+ <cbab829a-3e65-4b4f-a2e2-704e88a611a0@kernel.org>
+ <f6d8354c-2f79-4a48-934c-cbeb335765e2@kernel.org>
+ <20260630174852-mutt-send-email-mst@kernel.org>
+ <2f884bfa-3cd5-4fba-8aa4-c2e68890ab64@kernel.org>
+ <20260701041112-mutt-send-email-mst@kernel.org>
+ <d2ce93d9-c3d8-4915-a511-d08eb2c1b374@kernel.org>
+ <20260701043024-mutt-send-email-mst@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +146,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260630214039.2263562-1-gourry@gourry.net>
+In-Reply-To: <20260701043024-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1F4B020006
 X-Rspam-User: 
-X-Stat-Signature: hgp7ya6amuene9kpykskap8zasqqinab
-X-HE-Tag: 1782894946-331028
-X-HE-Meta: U2FsdGVkX19/OebwK7vqQ4w0/S/A+ekAY38fS9pcKb0zw8WBCVVEJL37WbSnlFkqhh36epY157qwUrmaL4rTj8XWmL9Dp+8cmMpaxYgelwFIpJjPw/uPZZyNOGqri++O+UMAWOc2OrQUJW0LzCPxGzVoSRYNtAsTizOAlWHEVuodFCneiMP7Yb/dbCcCfaXhUrfEaVIlCh3LJ0RWYzPOsMB3+4QGGxq62B45/rgympj3vJcamGroCPnxERy2e25bFleNSy/MrzePuRVBpnBYs5cA9L03ZazOWnVHS++3fTA5/T/p37OmIcvKJDnZdX2epil32JR1HS9zo4GusNPwrMC3Zzr3P4Z9P7jz2zThFb16ydWdRawZTjdFCVFy/3tMz2jir0uPHItUEKOLd7eoKqlOgip7MeUbUKcLGsyQ+Vbu9A3Y7KLRkTCp1DbsQ3YIWyIRHL5iXZhHuQYN0U4LjS91AJC3hyAxC3XwyzjUQcTSYxKYHgAAx4r8tb7uan33ROjWitQjNId+hUo7h27InKAhwwLHt81LsxcDZ64+g+BsG8Q5ZgtGlTuGF2T8LqKTe4vow5MdXPqppuUipOvQP4DJyO258gSedqU6QQap+SX5mWey9iIvJXCqZ9EsZ4P+MXKiQDkHrf5SCDaFZ6sJyzWiOoyAqtoKmJur83zpV4TVHwNGqEpGH797Ufn+ZPw3q+i25iuk47ZVVmUKGxPMNRS9xTVdsPTrCsyTt45aBRS1S0IqvU4weYZYY3NfpWdZV0klXjvEG47APTfYgH/9V8TAxFuzCq6rrZP572GitdkrPMhCQ10EWDJM82Up3/clwwRHalVVbuwr0DNffKg4/wszRlPYc/jtNG9+i3NEN0q8Hgfd52ZjVqxLW7fHR08i7HXYv7Vbk/G/1V5o468EfCtnHXrESDUEQpgr7Tq58kE1Cj725WkXdgomLS7ttJWvi57L/S2hdIKVy57vUd8
- I4R4LDMx
- 865AMX3uKKzg1NPF6QFNCrR1JVw5hwg1gRzvSda+T+WDGTG+n6YZQv/NbmhQSk3Hr2ibn8aTNDxAG/ehRXRc7huRS9ZAVHFbAHCSZR7vDnIg0iNSJyqKGFnnTA2F4CFktpZW9WtoKcrnElG/3YWvEWYvXhkhMrsLmVgiNTv+DaqPVqXDRJclQHrUHvLWM3lvNtdRi5IFP7D7yXzamiB3RUlGGqcbS17wY8wTD8zi7CUmih+tNN3jFKbXogNZtCiTC2BcQVeNQyY7mGmNRaA8zLUP3iHJafM2unVPnioRnBQTPrzY4eln0l4V5Yw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6C6F1A0005
+X-Stat-Signature: awbubgctkb8a1dfu34sh4piqxpkpqm5x
+X-HE-Tag: 1782895001-452024
+X-HE-Meta: U2FsdGVkX18tM9aQsDmXoHCNf+R7rZBzB/R63+yvv/oxYfxgNreVfqjuINZwLY58rwhpeVzlF2Lpsjl9wi9lQ1oDgaQNkT3kph7558OnttoHUY9nH+Mm96WvRTys+jKSC7C8WA+G9h34qeNgMAql8eVtvSg36eWPtcWjDpVHQLMswaRSsn0ja8u+8yjIBQQz49yUcDVq61qbRm2/ryquFpngCILij+ZWiPB9/+A/7imoifyJbOjbvCcUJ+3Grh8kFrzeWUXIBLeBKSaVAe8bnR2k3KZWRMeHNWHlVgNztJ0nvtI73X//C7HAzP/6FsJ24unTdODVkhU7N0Cf0CzgQkwS1+YLyOGdmui1kuPB1dqrJjPwYXAuRYi66kEPAcFcBzBoiPAWe0p3U7xfQIDRffETj9sA4wjfi79eNPupauOIWxY3ebuQu1dlxcIXz4rqM8J/R/rrvbgPyP9/Imom5i3RkNY19VHev2EFkm4ElgQlwf/4qPKqPnJw4pKQ/8U9tAJHjjiJiHwD5m3KK8ssIHl/LJFnJddNXhPY/ik59OsN0uIBaT/Dkrn5XSHEkd/KoFdaNgqsy496p52Hp/t8lCCkSUxXwjFWo0ttT4DUsJWnaWnqjnQkxYhc0oXPoV6844FJKUks0wml/yHXwn8e0+8BRjDXUxIEQaJFN0WkAZHIxYXQgNy2hWT9fn6CibT9hnZF+ODefDuBKMmB+3H9nkktK9bVHzEWaPnz9Bx5mq62f7OaeIilJ4xlgUaWNY4UdRRPMazaAdX0c/ei+MkN3g/ZwWvn1pEkfOEXPWFx1PhzQ1mJ1stXF6KCogHdvJDzeHVjdXj5DxSvgc44BqWuLUxuPdBaRpxjGiHn1iHNkfRxNJxrOZuca2PqguouPse8X4UrDCkfzpMKw3/VpFLu2eieH8DGgZEgRqBMx5TBcneaXk3p5TMyqKT6mRTYRjbPkzhs+sABHgSS3jT7PYz
+ gbn1fh7u
+ l4lTlRAzRezac9LGxfVzXkRD0GVpd1V7B5dTXdMk1m4T5Ei0npVnD6A6cFmiKaKqre4PZlPOZwNoJl1yXNZ7dmVbPnRfIFXVB8JxXKSIW8nWBwmZS40Hn0W7Lj/K7KerNq+zHHgM/7xdYJiF7WurzIKYGINYSTr0bkZyfl966BGIwgOoqYWVR4jtbG8yN4hBZea+XYUOdU8aGJIqe5aXyBp6P8MTSx+mNWzbW6wqz1gDnLCddbPZjGt4JjKZIiXrptilVFAS57TiS0hes75MBAlS2riMf31gX6RLe5CsEkDmOwS1NHkZm0kNGuOkWHfVR9KMYqmSa9dyyE8lOLuz5+59/3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,40 +164,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 7/1/26 10:33, Michael S. Tsirkin wrote:
+> On Wed, Jul 01, 2026 at 10:26:26AM +0200, David Hildenbrand (Arm) wrote:
+>> On 7/1/26 10:18, Michael S. Tsirkin wrote:
+>>>
+>>> So on this idea. It might not matter. What I had in mind is:
+>>> 1. run the current logic
+>>> 2. add page to a list of pages to check, then invoke e.g. call_rcu_tasks
+>>>    (or call_rcu_tasks_rude) maybe
+>>> 3. in the callback, recheck and if poison cleared, go back to 1
+>>> 4. otherwise everyone will see the bit set, remove from list we are done
+>>>
+>>> it seems to not regress anything, and for the rare race, we set
+>>> the bit eventually.
+>>>
+>>
+>> So test-and-set (and friends) would also have to check the data structure that
+>> remembers bit to set/clear (and possibly update the data structure).
+>>
+>> That does seem doable. Do you have a prototype?
+> 
+> what do you think ;) post it?
 
->  	 * The node we allocated has no zone fallback lists. For avoiding
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 306ea5c13f54..37fd64ce144d 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -1536,7 +1536,7 @@ void __init set_pageblock_order(void)
->   * NOTE: this function is only called during memory hotplug
->   */
->  #ifdef CONFIG_MEMORY_HOTPLUG
-> -void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
-> +int __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
->  {
->  	int nid = pgdat->node_id;
->  	enum zone_type z;
-> @@ -1544,8 +1544,14 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
->  
->  	pgdat_init_internals(pgdat);
->  
-> -	if (pgdat->per_cpu_nodestats == &boot_nodestats)
-> -		pgdat->per_cpu_nodestats = alloc_percpu(struct per_cpu_nodestat);
-> +	if (pgdat->per_cpu_nodestats == &boot_nodestats) {
-> +		struct per_cpu_nodestat __percpu *p;
-> +
-> +		p = alloc_percpu(struct per_cpu_nodestat);
-> +		if (!p)
-> +			return -ENOMEM;
-> +		pgdat->per_cpu_nodestats = p;
-
-Is there a need for the temporary variable?
-
-Also how to handle cleanup on error? Or why can we skip cleanup? (what happens
-if we get another call to __try_online_node()  later?)
-
+As RFC please :) [and if it's AI generated, obviously properly reviewed and
+reworked by you]
 -- 
 Cheers,
 
