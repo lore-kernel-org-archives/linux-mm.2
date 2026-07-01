@@ -4,135 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B81E9C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 18:14:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2063CC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 18:21:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A164A6B00A9; Wed,  1 Jul 2026 14:14:12 -0400 (EDT)
+	id 08BB06B00A8; Wed,  1 Jul 2026 14:21:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EDEB6B00AB; Wed,  1 Jul 2026 14:14:12 -0400 (EDT)
+	id 03D336B00A9; Wed,  1 Jul 2026 14:21:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DE776B00AC; Wed,  1 Jul 2026 14:14:12 -0400 (EDT)
+	id E6EE16B00AB; Wed,  1 Jul 2026 14:21:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B9266B00A9
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:14:12 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B2A431C7401
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 18:14:11 +0000 (UTC)
-X-FDA: 84941007102.28.BFD23D7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E34E240007
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 18:14:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o0A4txTL;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C3DA36B00A8
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:21:13 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 55553168497
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 18:21:13 +0000 (UTC)
+X-FDA: 84941024826.05.30E68F9
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 60191100003
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 18:21:11 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=BTr7BAo+;
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782929650;
-	b=szPfMaQZJ0qz5MPyqQGxecj6mv1dWs8U/WxJeNZlQ2acE5Cy+wNPWY06R9MaoXRBy6PXDw
-	urqSSQz/S2e5Lf0JU1fDdAtRZ8LG3EQpVWKaGCc2w3jHYRV06iY+ggw3sqO3TuFUYZvaBa
-	4NSDiAJczGXMLqX1SdJIp01jzJL0XbU=
+	t=1782930071;
+	b=naV2S0BxALzhpbG4PXeME97Lf51KkV5QJcEdnqCCXy8MCWqO/LQbSOfjvQ0N2GjoedWX5y
+	TaCQH3TbIpFILCFvtDkNcjZ7TZCXDgz8bg2L1ni+Bda5hUHkhFs54kziuRQIuQXRIIAnxk
+	YNJ16Jhq/p8PuTapYYOL8LRWc92/IZg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782929650;
+	s=arc-20220608; t=1782930071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PD5z0B3KLuf6QAzSmxugLBPawi7CkWU61EppSSVzf20=;
-	b=k52qh4DJBVQWTMl6AaMLccQI7JUtzpFwWxlJe1SIAD/uMACqFiemIGszrUve7hoWKj1YE6
-	eMJ+Ua161A3DniNZP3Q0sT7ar0uwXuHulhBvJo1vHVpLQA0GytI/J4o06QHLa0keB3qgIl
-	b7U+isrCd0uxm8peNPs91bRA5KTKB3U=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=QBjYQGhoBP1Rzw+O9Mu9B3KRHSZGqqE2WAhtEsoN9xY=;
+	b=ZrXGHGucqnJt3vOOpy+rnz0ImX6TyBAsJA7/7HNZanne6bIgYpADcQakMjoRbq0//fNGYA
+	hMJ0n6vRALsQaW2gB2mS0DAtdq2ZhxsR1udutjumfXBGCSwk4SQuIRUc1F6XGbmZEBr3EQ
+	+U+BEm29IMHM/X7Wq8Ru9BFrCQsC5PQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=o0A4txTL;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D736D432AF;
-	Wed,  1 Jul 2026 18:14:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747CD1F000E9;
-	Wed,  1 Jul 2026 18:14:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782929648;
-	bh=PD5z0B3KLuf6QAzSmxugLBPawi7CkWU61EppSSVzf20=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=o0A4txTLWUptFpeU/Mi/BSpuDwvTNfldwpIE0TgrDcVds8g2WEZSvOpqN79Bj6sM7
-	 MiLa10CAFyo5XQs5YFP7qj3yEr993E93vOH5j9XG1oDhdpvtskD3+WpW4PdOthV405
-	 c6Nh+LhhVwMCiX2nr6J9mSNQapr+We1913hqbqEzLJyEFJ+PO42yv62MPP4gXIqAkI
-	 kRugLLa+JS8uo00oe6fQ2C44xoUkkaczdGmkM44VrdfqpNK9KpG1Ukue27iFZvRNIp
-	 SjuqYpm3ozd+EpwkuPwC1wG9/tlGQAHHszpp7PSJhafVckY+ppJdfafOnESkohjRpQ
-	 09eQC530kPvpw==
-Message-ID: <c00f2d42-83f7-4417-aaf8-aed0bf1e28db@kernel.org>
-Date: Wed, 1 Jul 2026 20:14:05 +0200
+	imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=BTr7BAo+;
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.174 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e7c6ec9dbso24234985a.0
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 11:21:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1782930070; x=1783534870; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QBjYQGhoBP1Rzw+O9Mu9B3KRHSZGqqE2WAhtEsoN9xY=;
+        b=BTr7BAo+Pl0M+LdRusm7E2Gi2YNjNXQcKwPlTAq3t8KRJ9zt64y8hEVnc35fmAnaHs
+         1GB0ClX2PNTvdUD9IFK+v/ZlNK+w7w/MeMMnbz45oDQYF7asZqC1VqwyplJ9M14zMjiD
+         tb5Q7DU/TiiZ8lBNAFd35T5yvwDzplhcof59LTkR21uogAWzXVuRQCHxSdeADXin22VB
+         Cz6p/KRSTNK8Fk/89Kq9m4lv60P/h1EhvGioo+nsu5kMH74R9Pj5Vrgd9PdnOUT0BzDS
+         VRJ22/aVTxgnLhaT6UUYdGpVhrPUJFJWA7V0yO97ao3rWlrCPLGbdKWaQ5Ow/IvPl1eR
+         6DQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782930070; x=1783534870;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QBjYQGhoBP1Rzw+O9Mu9B3KRHSZGqqE2WAhtEsoN9xY=;
+        b=DilWLTqWby2wDVdpj2b7W1kVzZhijFKtiRIJoBelw2WTycmjpEMiW0jmWy6N70PZlj
+         CtkZL+zn4DkF2uGDEJP82qVbB0dLZJT/QkHgjQn9zcUbgkCHeP7PYV6Xxs9/Qf7YtbkM
+         8zM3jHEYRUX+KMW09sIwEm4Sa+L4u+OfC9bEd7+lPBL5oWQ/PJDwYKlQZyVXLZYG4wNC
+         haRftZ385chjYIYc8hb97cDscztVGKog4zGVyZ9kZOlT9E1LV/fincQv919QW1iVRKWZ
+         JU6GMFcpg3cqYTNPrKONkOa7UN6PsctX/mgAd80+z1SOu9WT1Qjs+Jo5eNR7mXW6VVH4
+         1XBg==
+X-Forwarded-Encrypted: i=1; AFNElJ/U1N+160JdXe8H5BJbIBiDlsJsYZ6zFqSpS5xnBakcJjvGnaMcAakE20j/C0/w2aEIJO0dfoRx+A==@kvack.org
+X-Gm-Message-State: AOJu0YzebWVRahd4vw7WpnJOAgtBdTt4+MMpdRPx7jFcGB4BK41OX1m2
+	xSI9UPqbs1SAQ/D5DkjpcVqupRU9e8R1wxe/qxPQiTGJ9MLaioMIDEkQfwOrHR019B8=
+X-Gm-Gg: AfdE7cnCxJ+AUAy8zoyXBmZmRh5h5Whycx4WpYroxa6gQdOPQQAoMna1hRIg+BhEg+r
+	qmPSUMZNdRdxXaryw4F5BiTTMHI3Xp5dNX96UttACAdipgfE0WpckfF1RnAf9+wXXtah/TPfZHD
+	c99P8hnq8uWY/sLs6kVfc9KBpT5sALfW0/0TP8HeDZRFalum6xjGUkdO8pUprUhlN5s/XZ9rI3U
+	SRoTvfXSQWWcyYJcSOt3v5DeLIWSlR2to8PF24I/fb9bBEHDi/t2KRgb9C8ZN8aoLrEQSGdr1Hp
+	549Y88KBCsNLPOQ6eUhZ75U5F/pS7XK6f+t1x1NFmsDKDpn84B2xi74Vw/Zg8YFdYrNO0m5Ps2q
+	+uMN6d+yXqUYphMupLTofVqzpnSN6uA7KHA4V1wR5Uz9nP10HXIYjrR+LRw4SzIr2ejx8GGbGgl
+	ZA9G8ql/roHfdJtADPbtyvcQ==
+X-Received: by 2002:a05:620a:2851:b0:92e:52df:3523 with SMTP id af79cd13be357-92e781dc83emr395697685a.8.1782930070154;
+        Wed, 01 Jul 2026 11:21:10 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e80009552sm9286785a.11.2026.07.01.11.21.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 11:21:06 -0700 (PDT)
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Gregory Price <gourry@gourry.net>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: gfp_types: fix __GFP_ACCOUNT, GFP_KERNEL_ACCOUNT documentation
+Date: Wed,  1 Jul 2026 14:21:02 -0400
+Message-ID: <20260701182102.1586784-1-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm: compaction: support non-movable compaction for
- pageblock requests
-Content-Language: en-US
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260626182215.1107966-1-hannes@cmpxchg.org>
- <20260626182215.1107966-3-hannes@cmpxchg.org>
- <e36dad58-d259-4533-be08-50d667d5144e@kernel.org>
- <akUyEgKMryy6TntY@cmpxchg.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <akUyEgKMryy6TntY@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ziy4mg7kxnwq733fwqhnzs7a3asnn1xn
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E34E240007
-X-Stat-Signature: qem37osc11odcrh6peuk73hd99wazcyu
-X-HE-Tag: 1782929649-967533
-X-HE-Meta: U2FsdGVkX1+CAfGX4Ddo7XDtgl9wrbxosHK08hm8ULpMttvZ1drc6aYRDW1FneczoZtrNxdkfTS4vsi9ODaPBsLdAVdLvbSo/jdSIk88cu4afWTrfeADH9MBVHNtwmbN1vdEldV6pyAiuWRYp3Sax4A6HaBb03GKAoqFzIAKS0QrQXOiGFapVilqNqc3Lt6Wgjo7dI/IHAPjtksuFZZM46K+QqjGXGZ4dqL7cG/iPTHpnx0upujE5yY8n+z9x4PS5jC9nrs+qGbxqENb5CuSP5FL5bmQMeaOVe2aNWyZOLcMb+me4e+svpZNr03vgIf0+0WKcZjvw9OYBqeGUprHuyld1m0/YRp/J5CntTPQWOyUHwiWCdfI/suOa5+j2LNLxxEdwKvMtV3Y0veZuQDrXP0R25/3uG05Ty2EqxOztpN2fL+4/qmGr6SPp9OPVBWk9ErMhb7mdwQzrCtnps2kkmng8dd1iKs32eg5vHxOYTJy6yC1DIbjGD124wGGLuzJKNjmLa6n0iQRaFvXajAeXDdeXIpYTld2ib9e18d1RMPQxW45ZqG592bwuWMM3UWxP7jeSgWzKMISQ9lkItj5ibcJ+H+VNJzzylbfYvc8zjhu8u8AZ8C1UQyYU6z/N8CKDtahwkxpWIpS3kNKpXGh8tzwUqLf/RjCSFcajuO0Mzrrm9OXf6YCMvafTcGn2b8Kt0+WD1ijXjbN04VZ9dXIl6XId+uDimj1OLgR4MfwCIFZv+OF5YvqaE4TTxCUvwZ09pU4TZnoVaM8gBhVm17zS5ies7+VBmLGpEjBLfvx3bYXBPpP+L5t6HFZnaK9nZps0l2ckgSriHvPJVqTDvEjrtJxt9WfYubB4ll/TwdjawHEF93NxC0wSsabe/KTM6KkYSsgX/LC9LB9lP8roN40ZDxLFONdsocySe8mdkS2n/rhI1HmMPdsom8NmhHcNjOl1E2y6N41dKuIVGLgQ/C
- ut2X0d8z
- Z56UH/yiNougy7R+e1TqKuG+zAwLxHUE9QjeiHZwU3aCh51R+6moAoWgJQ3q9SXPl+PzEuzAEXXPYIZQ7e5wZIJ4Ub/4JiMad3JNbdAbELRAwZ9xoxbdWgfvW0y10fZxUzI+2whVdP0opkbn+eXBbXGsjev/mSq+MQXm/m4Si2soTHP+xJS/s/e186Ex3XuxxAf/RI/iikfEC+kFf4mGbzDjduT1NnL7I8by1+oNKHz3tp3GjvjPomcnnWmM1OAXbhbh0xqJoNGq3gkgwgYIYjrcNt/A3SPT1rUAtg5wZA3+J3j8DiFaK/lwAHhiZduFtIjEtDJfK+LdKYlAeHADRgpxvNg==
+X-Rspamd-Queue-Id: 60191100003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782930071-805006
+X-HE-Meta: U2FsdGVkX1/lj1RrU3B+f0Y+bNU8hf/loRITySJETF0A1U/3pmUPddZy/GehbSNB+RDbdrhzWNBgqvP2NSaQESGND9R3oaeg+OPz94y4gZ8TNTty7yvKLwkArYQvBdDi1GabDchOCF6rtU/aB/0IPqpElFvEHejG42X6P77FTLUKwcPZ6qKgUnjeM+Ylblt+SKQEoxaQfE+sd8asywRLfmy/T4gILPOZSOLtjfQ/F1p8Ofe+BFBzk7n8Iavdoxun+7ExugqP4CP0/jerJZEG43XDklLUlD4jL9698fXqt1DCZGZe5KLUnaueg7aR6EeFKPpBAnalx4Sb8X44mhqLj/2KgIX+V8FyMbjkqsivKIO2o+SsOyC638WYSbt0VBhR7p1dlbUgK4a2aSGEGt+TpmE1gUtItsojCLOoqeEHMmvf+aO0OF8k7JMGvq0VpvwlvldPlhMZxoevB/gvfht1SnKtEm7q4FUfL8hWiOTMTHaTvOfUAlC8/fLmAUl5zGLzgK0+REiaEsu+SaPZPRgL253gdir9D9+otWSs3nqzvIAE1uIcpODppP+gIFvahmLIlNo7G6IqB+KXgUdAEDmWjwXW/XGl6HYOwmDOBlSE9Z+EXVSJ+U1XzUnU8HPK431n6FFJZ08bV2EMOVtT6+v9sgzocZYqKgn2zJL15E0On5xU6RAUD0/2noDG1JVbHVvjnjmzqkB7bzI5IbXUz79wqn0dpJ+dhb2YP466BhV3NwQPH0Cj+ulqAzNhaza7MV6wXCWqULInjYpSkzx5eKVzdt23zxJ3DJFw0rE59hFFAHdJlnetg4tcHrnc+N3M2fYsGzfY1ZtwjXjsLQkUIx5m40kjTozM5rnl2n0tHdpxKPjasY29yqejmoEzleOYEV9zvSfLuVFGR/d2tRkcMvSNGbi1PXapcNjmrHYb7qg3jqRpeSVLL5liE3zwKQ4npN7qvov++R4iqfLfiv1Vb9x
+ 7JvdAOiv
+ sM49P1zkwZR5Bmwe+WO6NgbJOZS+N2zwXvS9GgQ4c9nxrktZAQq/s0rzpYAV6xuIiJEj5lbOom2CeP7DICAzasoOLIqe+V0EcrtkbLsP5lzS2YC9qQndM0QjrCwD+rv5v4DkXRvuKOi7OcC18hFZ3915vHeVND3tBI3R12LGZ6M9skHQdo75KrT4l1QgrF6hAwiU14EP9JFvcLUohRbstSIljTe/jjj1ZyXDmobxIHx2K0pgFzuA7KUo6RB3B/VhXm5nakPAoNbm0JoQNOnkDC3CQYqUoebKCPoyBFjVEz+YAdlvaEZgX9wo0wlFxCRv+fxEFsfQzP+O25+SYOS7sIMs1MY762+889lrxiBSzvwTTgDHUtHkBKH6tEOl9F9MBr2+cXUm1VTW+xRqxbCCZOPz6Ur0pJsrWvZlMxMiJaxP4Q0u+U+BRUFUvlBCfNWELGEhMO4vulws6c2qjuQoMsgO7ud9iTHIHjpya15RlxSNt2Nz1Ud6pFpkERQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,114 +126,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/1/26 17:28, Johannes Weiner wrote:
-> On Wed, Jul 01, 2026 at 04:19:29PM +0200, Vlastimil Babka (SUSE) wrote:
->> On 6/26/26 20:21, Johannes Weiner wrote:
->> > While trying to fix a reclaim storm in defrag_mode, I noticed that
->> > non-movable direct compaction is extremely inefficient.
->> > 
->> > When searching for space to evacuate, compaction only allows blocks of
->> > the same type as the incoming request. This is to prevent migratetype
->> > pollution, where a small non-movable request frees space in a movable
->> > block and provokes the allocator to fall back and pollute it.
->> > 
->> > This protection is reasonable on one hand, but the downside is that it
->> > makes non-movable direct compaction nearly useless: if we get the type
->> > annotations right, by definition there aren't any movable pages inside
->> > the non-movable blocks it is allowed to scan.
->> > 
->> > With defrag_mode, the goal is the production of whole blocks, which
->> > are essentially type neutral: __rmqueue_claim() will convert them
->> > wholesale on alloc. This makes type mixing and pollution a non-issue.
->> > 
->> > Fix the pollution gates to take the requested order into account, and
->> > allow whole-block requests to scan blocks of other types.
->> > 
->> > The only exception is CMA blocks. That type is sticky and these blocks
->> > cannot be claimed to other types. Continue to be strict with them, and
->> > allow only explicit ALLOC_CMA requests and kcompactd to evacuate them.
->> > 
->> > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
->> 
->> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> 
-> Thanks!
-> 
->> > diff --git a/mm/compaction.c b/mm/compaction.c
->> > index f08765ade014..7df3a85d43af 100644
->> > --- a/mm/compaction.c
->> > +++ b/mm/compaction.c
->> > @@ -1381,12 +1381,33 @@ static bool suitable_migration_source(struct compact_control *cc,
->> >  	if (pageblock_skip_persistent(page))
->> >  		return false;
->> >  
->> > -	if ((cc->mode != MIGRATE_ASYNC) || !cc->direct_compaction)
->> > +	/*
->> > +	 * Background compaction produces blocks for the zone at
->> > +	 * large, with no particular allocation context. Allow all
->> > +	 * block types, including CMA.
->> > +	 */
->> > +	if (!cc->direct_compaction)
->> >  		return true;
->> >  
->> >  	block_mt = get_pageblock_migratetype(page);
->> >  
->> > -	if (cc->migratetype == MIGRATE_MOVABLE)
->> > +	/*
->> > +	 * CMA pages can only be taken by ALLOC_CMA requests. For anybody
->> > +	 * else, vacating a CMA block consumes free pages the caller
->> > +	 * could have used, and produces free pages it cannot.
->> > +	 */
->> > +	if (is_migrate_cma(block_mt) && !(cc->alloc_flags & ALLOC_CMA))
->> > +		return false;
->> > +
->> > +	if (cc->mode != MIGRATE_ASYNC)
->> > +		return true;
->> 
->> This now stands out as uncommented. Can we come up with a rationale? :)
-> 
-> Let's see. Originally it came from here:
-> 
-> commit 9927af740b1b9b1e769310bd0b91425e8047b803
-> Author: Mel Gorman <mel@csn.ul.ie>
-> Date:   Thu Jan 13 15:45:59 2011 -0800
-> 
->     mm: compaction: perform a faster migration scan when migrating asynchronously
-> 
-> This limited async scanners to movable blocks. By keeping them to the
-> most productive space, it keeps their latencies down.
-> 
-> But then there was a follow up here:
-> 
-> commit 282722b0d258ec23fc79d80165418fee83f01736
-> Author: Vlastimil Babka <vbabka@kernel.org>
-> Date:   Mon May 8 15:54:49 2017 -0700
-> 
->     mm, compaction: restrict async compaction to pageblocks of same migratetype
+Gregory points out that these descriptions are cursed and confusing,
+considering what these flags actually do. This is mostly due to
+historic implementation choices and cgroup1 baggage. Improve the
+description of their actual effects.
 
-Aha :)
+Reported-by: Gregory Price <gourry@gourry.net>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ include/linux/gfp_types.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-> This made the migratetype filtering about preventing block
-> pollution. The patch quotes reduced extfrag numbers.
-> 
-> So now we have a block pollution guard that we apply only if... the
-> scanner is latency sensitive? :) Is this actually desired behavior?
-
-Yeah indeed I was wondering in this direction.
-
-> Another way of looking at it would be this:
-> 
-> 	/*
-> 	 * Allocation fallbacks can spread migratable pages
-> 	 * into non-movable blocks.
-
-But also vice versa, non-movable pages into movable blocks? (without
-defrag_mode?).
-
->  This is high-effort,
-> 	 * low-result work. Restrict it to sync scans.
-> 	 */
-
-Works for me.
+diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
+index 54ca0c88bab6..463b551d12d9 100644
+--- a/include/linux/gfp_types.h
++++ b/include/linux/gfp_types.h
+@@ -136,7 +136,8 @@ enum {
+  * %__GFP_THISNODE forces the allocation to be satisfied from the requested
+  * node with no fallbacks or placement policy enforcements.
+  *
+- * %__GFP_ACCOUNT causes the allocation to be accounted to kmemcg.
++ * %__GFP_ACCOUNT causes the allocation to be accounted to the active
++ * cgroup context.
+  *
+  * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
+  * mark_obj_codetag_empty() should be called upon freeing for objects allocated
+@@ -320,7 +321,7 @@ enum {
+  * %ZONE_NORMAL or a lower zone for direct access but can direct reclaim.
+  *
+  * %GFP_KERNEL_ACCOUNT is the same as GFP_KERNEL, except the allocation is
+- * accounted to kmemcg.
++ * accounted to the active cgroup context.
+  *
+  * %GFP_NOWAIT is for kernel allocations that should not stall for direct
+  * reclaim, start physical IO or use any filesystem callback.  It is very
+-- 
+2.55.0
 
 
