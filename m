@@ -4,90 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE39EC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 06:12:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FAD6C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 06:13:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6D4E6B00B9; Wed,  1 Jul 2026 02:12:12 -0400 (EDT)
+	id F41616B00BB; Wed,  1 Jul 2026 02:13:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B44906B00BB; Wed,  1 Jul 2026 02:12:12 -0400 (EDT)
+	id EF1906B00BD; Wed,  1 Jul 2026 02:13:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A811E6B00BC; Wed,  1 Jul 2026 02:12:12 -0400 (EDT)
+	id DBB816B00BE; Wed,  1 Jul 2026 02:13:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C08A6B00B9
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 02:12:12 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0397C140235
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:12:11 +0000 (UTC)
-X-FDA: 84939187704.05.E8FFEBB
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5A0C0140005
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:12:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hQYvkOCq;
-	spf=pass (imf09.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B38436B00BB
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 02:13:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 28B741A0199
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:13:33 +0000 (UTC)
+X-FDA: 84939191106.23.B35490F
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id F3ECD80007
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:13:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nVkPquKq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IgLbW7hT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nVkPquKq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IgLbW7hT;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782886330;
-	b=5Jqr7XalQupjxlwHMeIqKGSe+Ru5dcwrltQMgmcTdXivBSRemHTk8oNiuPjVcQQyJVaT5f
-	aKzC8NPiVmhkr+UfUGenBRcaKrZSbnBiqwi8Gvs50fh0jnoFXLA+oxAA0nfuqAthDrmPcj
-	CiZHHe5TaqDQqGJRTpUcppEHM5CK8AQ=
+	t=1782886411;
+	b=0kNBGZqrM/MIvEq2jKLRyZLBN7E3g+yn5LyAK+Eh2Wzk4oqA4/FOfH3GD0r7RK/zVF0a4n
+	cWB0q1BXVHdddgmdccI6j4u/fVEvLkmDiu43T8jBfazKbh0q6bfl9phY+39HQdLeA1A0QQ
+	vhva+tmZMy12erseEBQE87CIk6nsezk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782886330;
+	s=arc-20220608; t=1782886411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kPdMSwpWK7V6fRo0p2kvQ6pvML08ypL3K7qCcleN4AQ=;
-	b=buxUX9d8caqQ5mxoJBnfAYhHrRXgt13LCOCldKX0wCfcDrMt5lZ7GoxCABTt+q/cZ3qvQx
-	MXfEWKi93Ttn+hmhJekIzH4k8r84Ko7zmdJG1Y50+QbsN3ntB9oJ8oafg08cFPQynBWhRp
-	9LBgKhrwJqFRyKvoe+hI6l1IuPxa7iU=
+	bh=KYQUm/ch17JGjQTwSu+BBLhvek6prevgXa6ce8KlIcw=;
+	b=5E6H3E9bjwbC8FKjfHVzOWKTVp0lVCeb9QO+dKGgCfxzC7rlSj4f6w1/eUHybexUX3Q8mj
+	vgc4ssbB/xNDB3mfO90e/H/FxRSvJ5xKXJk0jYYhyw95jMU3LGoFOpW8Yqa9SlMA9WpwRV
+	2qo/FM9vS2N+de4Nw0D4RffwMApqC8k=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hQYvkOCq;
-	spf=pass (imf09.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782886329;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nVkPquKq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IgLbW7hT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nVkPquKq;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IgLbW7hT;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf02.hostedemail.com: domain of hare@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=hare@suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 386CC75FA2;
+	Wed,  1 Jul 2026 06:13:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782886409; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kPdMSwpWK7V6fRo0p2kvQ6pvML08ypL3K7qCcleN4AQ=;
-	b=hQYvkOCqxZ+sYtTLVbwOEVJuJpQU3RHpvBv4p6VLBMnIHVSMNL6RVPfY/BeVdawllR+9RK
-	K5Ew8NxOJgKbzvlpMixaeBVFvCf5isTx6YQt254dlm7YUh+5qcy88DQrPdHEPltAw5EMbt
-	+W82bi1y1qwhxS/SnC/hzNuPoSuQomU=
-From: Ye Liu <ye.liu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: Ye Liu <ye.liu@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 9/9] mm/page_owner: use memcg_data snapshot instead of PageMemcgKmem() to avoid TOCTOU VM_BUG_ON
-Date: Wed,  1 Jul 2026 14:10:52 +0800
-Message-ID: <20260701061101.344679-10-ye.liu@linux.dev>
-In-Reply-To: <20260701061101.344679-1-ye.liu@linux.dev>
-References: <20260701061101.344679-1-ye.liu@linux.dev>
+	bh=KYQUm/ch17JGjQTwSu+BBLhvek6prevgXa6ce8KlIcw=;
+	b=nVkPquKqfnuglwRA64kO/65FlsWtnZVcUr3tQjW84mZEt5kIK1Id+IAvCnd8COFWAMIdCN
+	A+LLI/gXRqAumQ6m6nZvELRBDLiulChfZexd6Z8RaTTDRKPx8SMbetsUAzw04D6Lu6YrUo
+	3Tt20D3L669qjQts1PWJhNHngCyL2zI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782886409;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KYQUm/ch17JGjQTwSu+BBLhvek6prevgXa6ce8KlIcw=;
+	b=IgLbW7hT3Aoo3CqPjJU1FBDZYQCfBqX2sBw4KqeELLYrzoJwo6zrbQBzA6udP+eNK09Hw4
+	2Irk1zJbX7sxlFAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782886409; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KYQUm/ch17JGjQTwSu+BBLhvek6prevgXa6ce8KlIcw=;
+	b=nVkPquKqfnuglwRA64kO/65FlsWtnZVcUr3tQjW84mZEt5kIK1Id+IAvCnd8COFWAMIdCN
+	A+LLI/gXRqAumQ6m6nZvELRBDLiulChfZexd6Z8RaTTDRKPx8SMbetsUAzw04D6Lu6YrUo
+	3Tt20D3L669qjQts1PWJhNHngCyL2zI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782886409;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KYQUm/ch17JGjQTwSu+BBLhvek6prevgXa6ce8KlIcw=;
+	b=IgLbW7hT3Aoo3CqPjJU1FBDZYQCfBqX2sBw4KqeELLYrzoJwo6zrbQBzA6udP+eNK09Hw4
+	2Irk1zJbX7sxlFAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 88874779AA;
+	Wed,  1 Jul 2026 06:13:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 9virHwiwRGoNTQAAD6G6ig
+	(envelope-from <hare@suse.de>); Wed, 01 Jul 2026 06:13:28 +0000
+Message-ID: <abde41f0-7d40-42ba-a232-cc0538cd0e4b@suse.de>
+Date: Wed, 1 Jul 2026 08:13:28 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 09/10] dax/kmem: add sysfs interface for atomic
+ whole-device hotplug
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, kernel-team@meta.com, david@kernel.org,
+ osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
+ dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, alison.schofield@intel.com, akpm@linux-foundation.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, shuah@kernel.org, iweiny@kernel.org,
+ Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com
+References: <20260630211842.2252800-1-gourry@gourry.net>
+ <20260630211842.2252800-10-gourry@gourry.net>
+ <akQ_xlJtXNgnGUdf@gourry-fedora-PF4VCD3F>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <akQ_xlJtXNgnGUdf@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F3ECD80007
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5A0C0140005
-X-Stat-Signature: ijrxujsymu96xdcnzbcnuxej1i56whxa
-X-HE-Tag: 1782886330-82546
-X-HE-Meta: U2FsdGVkX1+iAdgVf8TbLrQTLck3u7N2tFt6WZO1Cy8vdiifNwO8wgeeG8xE8xsHLSzR3IPnofVYsXv2yxxCy/MXUm3mhLoOyTGyoly7gO2IjTfxs7x0EPRqu6bvoTLZsDw8rI8DIngYseJBN2pBRK3h9MwsqZmvw9ULVhLWbp1+SmNML0NxTNl7D+jnh6098WMw8yonRUiH6sWpMci08jz+pvrw7khhgLDsZWdFb8+EOFhfu8gpgGFb05kv7MfylpSQ18SCRsOsWScsYQhaix3iYfUa3xPWLqWdtqyDHXfdYcIaf37rDFyKuY6MrJ3zrX++tJGBBtuyslsn8LL8POlWd5omcE3HAaEJyqha3pnTB4I5W+5fxPe/mh3gcV8KyFQTwrIuHxHpbakFl+ZGS+Yt0GseiGCkvQs8AGctx1BQBM712r0KXJO4NwVPeMdPWt4l9DIkKLgCHDNd+jycsUPzQbEq1Ovv1oxVco0Q6mqZdp3NIGx7Ijjha/Itx/NkxLapwAQsW7XHnEjsb15kwuAz9wnPLY6OEdM/onol/CY+95B05inZEivQevieFa9GGvDsDec1wbodhiqhdKdbXfAk3UfHeAsuyHGaEWCGESNDUV2bu9DLyHrNikQGiza0oDHSn0jD+A0Jsz1we0K69MiE30KP4pk5LJQcNF/AyCHhA4L75MMqTWTS9zO0NS8aQf/pndY7ED8M5Z42eUt9CXUyu7iwwstfKw46V8ZErBebbSKCXpHOCgejGxW87hOoepBN0s03is4/wfnSxtRksCGPRHPE49y9Hul80Iv1ct+SjTmY0qdMmerxu7WPfj+tza8wU9gp3kKCddVShoje1bvLg+9Ya3s8mopMgcW4KMReNZBvqYCjET4ney3rdSX4o43XkpFzq6hFejyiRaHJqgTey+aYf1NoZIeoVZgsPh8wgA+Sp+SEtf86cMY8/GP1Vz0nOLA2pnp2wjUWS8b
- C2a0wWoZ
- QX8jEqGiW2hf6uXGshazUgYi7oMP89TkNy8JPBgM92qn6LYIGSRaNcg+TWA9dpsm0+znMoaQYBLHDeqCOvZlx/QHSIYBCZEl5LD+sB+PezF2r9bxQ80Rv4ga3QsIjYtVGUBzPeUs6AUSK3pSUQLBR5eoO9F0w50V4qNBXHZd69Yyk1R/KB9eZ1rpTUH1RGddbAk14Jvxynr4JKCf5/YWW2gGzLNPRKLVOStzKIw+vK3A+80LbFDfvC9KYUsnQhlDPgQmEIZnwUE1w1KrYtc2suTvQ0Q==
+X-Stat-Signature: 6ryqqw71enuiuk76aup7ctstc9s1mmxo
+X-HE-Tag: 1782886410-394222
+X-HE-Meta: U2FsdGVkX19c8E3gNMB39XWBGcpNIj36n64oDWjftSZE3Booc3zwk1Z7HkHvGRMLPskzr538kzE579stroUJ7Ya3hysA+OaESUNg0JhBeVVAFFPppJQjgqhZR6mwyVgRuz4lprk8X+94AKa5sLXxPTuDCHVYsIbczDGRv//feGf2DuW5KCX0RDla/ZCf18NzXFmI78UEomMNWn4m05SCu2QVIm2PH4CrYPRmSV1nd9Mejioccz6b52NdJMWUShwIVWaZfokzLRIAOJLkBushEgs3hGPMp0xXcA/D5Y5UecuIXdjyq7aTP84Znz4o8o0tdpfBpDbgvPNL33TFqLoyn9HmOlqLjW4NWaLmdW0eBAciJXQym3pGf2gPL9/UryZQc64Rj5YLia7vqGN7ZLxOcu+X+GbRubxG0r+2Jt3Ub+pR8XqisZW3q+uTC3G2GfKShX/UrcWqvOPT3wLapUcHciTYKfIAMCSW9UYfbzyfxDgJLkXlOQr86UlLUMOhfAvag/8XJRSDumeQeJ+pRW1qjSWuWHEo2tYjNxShvLXjnslI8aR9YzY/VHm17woOs3Aj02R4MKmSWx0ah+tnMnhgfY0LFnte7YIDhQd8XyVlC3VuxqVmIKr3T2dbybAxKjtNUIfAXKMBzepJAtj0IulzFtNNoqxA8lIqRHGWAHmpVlU0Z840rPcqow9SZUMcPWWZDvAKS+NYQgmlnYtAlHZn6r2Nc9vRQk0M3XV8v0vdNGhWQHH+Zb8nwFG6xC5tD1RWgG1+1HAqf1ddagoSn19j542knxFWCkU0yGVa6QRj2TsSFcyQox3LroSa4BuknBUzca03wGo1dImB2D1/7T5/XSyrCaWu1Ts8GtyDrNe2QXH6xQn9+APOjCSdzSjpVR0Vg3502r3H9+MDaZmFuKLY3qMtcFkDQ4MjSjNbjoZkqYWYv/raInV9fnu5WrVyqOroyrOrH+k2Ch6ZqAKi+o5
+ 7vP9t40i
+ wS+jhbYcUE0xcUMgb0L7UjRfBTxLIeKA1LliriXH6JN7o+IVVsp21//ikXZcC8Y3Y82MbfPo4HogW/GlzSgLPGJ6Xo/G+JEId7/aiWVx5ATUmIIlFYsBkm5kXQmYwXA+WlLg7ulqB1JSkrU5qdvvYOlD8b9WHlQ6zGREyJPRZ1pO5nhOyoRe2uJAcQrES4+LvIr1pJEQ/gWM5oP2u/Q4vLDMaH/E37DafqEbAMK0c/I8fFbEIuj2HIzVS5ebuwyAduMJh6CrHVVzQmxH96n/PG3aCtihUMc8cmzKjbBcIOIU57+7eXlLHB95rfvJA9kL4JStUgIVm+a77fZU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,45 +146,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-print_page_owner_memcg() takes a snapshot of page->memcg_data via
-READ_ONCE at the top of the function and guards against tail pages
-and NULL memcg_data.  However, at the end it calls PageMemcgKmem(page)
-which internally calls folio_memcg_kmem() — and that function re-reads
-folio->memcg_data and page->compound_head locklessly, wrapping both
-in VM_BUG_ON assertions:
+On 7/1/26 12:14 AM, Gregory Price wrote:
+> On Tue, Jun 30, 2026 at 05:18:41PM -0400, Gregory Price wrote:
+>> There is no atomic mechanism to offline and remove an entire
+>> multi-block DAX kmem device.  This is presently done in two steps:
+> 
+> ... snip snip snip ...
+> 
+> Sashiko pointed out a false-positive, but adding a fixup patch
+> here that adds additional consistency.
+> 
+> On total failure - release all resources.  This makes the sysfs
+> interface consistent with the probe failure path.
+> 
 
-    VM_BUG_ON_PGFLAGS(PageTail(&folio->page), &folio->page);
-    VM_BUG_ON_FOLIO(folio->memcg_data & MEMCG_DATA_OBJEXTS, folio);
+Speaking of which ...
+With this patch we now have _two_ interfaces to do the same thing.
+And both will be generating uevents.
+Which is far from ideal (one could easily envision _conflicting_
+udev rules, one set doing an 'online' on the old interface,
+and another set doing an 'offline' on the new interface...)
+Is there a way to not sending uevents for the old interface
+or to make it configurable?
+The old interface had the nasty side effect of generating
+_tons_ of uevents during booting, and on larger machines we
+even had seen udev acting as a fork-bomb during booting,
+taking down the entire machine (we had to restrict udev
+to 512 threads max to avoid that from happening).
+So if we could disable uevents for the old interface
+things would be _so_ much easier ...
 
-If the page is concurrently freed and reallocated as a THP tail page
-or a slab page between the initial guards and this final call, the
-VM_BUG_ON assertions can fire on debug builds (CONFIG_DEBUG_VM=y),
-causing a kernel panic.
+Cheers,
 
-Fix by reusing the memcg_data snapshot already taken at function entry
-instead of calling PageMemcgKmem(), which is semantically equivalent:
-PageMemcgKmem()->folio_memcg_kmem()->folio->memcg_data & MEMCG_DATA_KMEM.
-This avoids both the TOCTOU window and the assertions entirely.
-
-Signed-off-by: Ye Liu <ye.liu@linux.dev>
----
- mm/page_owner.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index 2e3880053a34..efbf67d54ee2 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -561,7 +561,7 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
- 	cgroup_name(memcg->css.cgroup, name, sizeof(name));
- 	ret += scnprintf(kbuf + ret, count - ret,
- 			"Charged %sto %smemcg %s\n",
--			PageMemcgKmem(page) ? "(via objcg) " : "",
-+			(memcg_data & MEMCG_DATA_KMEM) ? "(via objcg) " : "",
- 			online ? "" : "offline ",
- 			name);
- out_unlock:
+Hannes
 -- 
-2.43.0
-
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
