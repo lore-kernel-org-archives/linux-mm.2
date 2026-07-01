@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA55BC43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 10:18:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71CB6C43602
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 10:20:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 978636B00A6; Wed,  1 Jul 2026 06:18:49 -0400 (EDT)
+	id 474726B00A6; Wed,  1 Jul 2026 06:20:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 928926B00A8; Wed,  1 Jul 2026 06:18:49 -0400 (EDT)
+	id 44B2B6B00A8; Wed,  1 Jul 2026 06:20:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 818B26B00A9; Wed,  1 Jul 2026 06:18:49 -0400 (EDT)
+	id 3632E6B00A9; Wed,  1 Jul 2026 06:20:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 556916B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:18:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C70F7167D17
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:18:48 +0000 (UTC)
-X-FDA: 84939809136.09.8AD1585
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1B71740010
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:18:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AXQrg9P0;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 10F766B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:20:26 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97040A02DF
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:20:25 +0000 (UTC)
+X-FDA: 84939813210.13.5A67C57
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0CC3F160012
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:20:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cuGMmNGU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782901127;
-	b=kI3x5qjK9l6Le5pSiI4/1ZZ/FfQRV8kzl1n6LW+yVFD96C1DddWYeXK1pdMEgWhyRR2pnv
-	Y/7tva9anyf2vUluzpGunc4/kG4Da64aqMhy9XLi3MdFpmBRcUjvn9AV4PxW4cVDru7m7s
-	UXbVk5A8infq99iMrTosVBRVzahwrb8=
+	t=1782901224;
+	b=QrR0SgVGEUZmCL3n/lQOXScRJJ7T3gK5cJhgqp5dCilnxy3EvDkXSOHUBb0VWacdEBryn5
+	83wgZ6XS+0b5pTtxxjd91cEEtz+wMK+4hxE1AVuM7Zt3x2SfbxlqCPI0BIbgvahmEx+QIP
+	UdjLokXXtfIujUysYTjrRNXb2q3WF8U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782901127;
+	s=arc-20220608; t=1782901224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JM9/CaIlMkjQdFefjm0dVPPjkG/0+O7+5RX4p75h0x0=;
-	b=TyOJa5LMS8FJsoe3+VRfxf8r2NBIEwmJucrVlneBnobrdUfU34f0VQlG+QvmQZiB3J+ys3
-	nNV2CKb8p9sthj78z95yoIcBiLeWnejYE1W2joJi/qUF/OqZU1Gg9k2WwUQK8aXJhZnk4W
-	i6VFwpkcekyxX6XbVH0SjhGFf6O5j5M=
+	bh=D5+bWR29OngXVj5rwG1+zYSN1WwMk4/7ECM6WfNh2uI=;
+	b=e+J2ev5gqfHOM+GAi6Z/SLF85iIYQI1DlSw+9LIMw548T0c4NCurACAlKcATdj19gnW8MT
+	/YuwuOWGHnbZA3z7DRhAK8F3csc1ecwXWUX0nt1zAzS72t0J5xtTPMzyrs8a/jMRu1R2t6
+	iFOHUEjeDRvhKqdCmsekGV1Co2d+YIc=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AXQrg9P0;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cuGMmNGU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ED32C44063;
-	Wed,  1 Jul 2026 10:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783341F000E9;
-	Wed,  1 Jul 2026 10:18:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 69CE6601DE;
+	Wed,  1 Jul 2026 10:20:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7771F000E9;
+	Wed,  1 Jul 2026 10:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782901125;
-	bh=JM9/CaIlMkjQdFefjm0dVPPjkG/0+O7+5RX4p75h0x0=;
+	s=k20260515; t=1782901223;
+	bh=D5+bWR29OngXVj5rwG1+zYSN1WwMk4/7ECM6WfNh2uI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AXQrg9P0AZleFkeFS51+PjUo+B8xcdDVE6tYWDlNGuGdgBpLyKHJD6elc2v/kcqUE
-	 8Pcm+GcqRx1k66nL9Uz+zEQ1FGgN7fgq6+QHDdXkD+Pdz0aJff6p2k0V+rzm+2Z3nu
-	 iSsIViklzABlCCMKzkBXtJrZyVFo2V4IsTINTz9RKasIkvyuDEwuSlPRQaN1JPh1Ph
-	 4s6fRT7pOmRvUznm5PfN3Qg8RbN5uvU10x5Z/rpOw3czvOGlanwtN8QcTVROHG707e
-	 UmVvX7bqHJU1MBVNsmN1D97wgCCjA1bFiUR7kEt/Ogvvig/eVyWKvzrNW1JuZ23oNU
-	 HGzRMycOX4fdw==
-Date: Wed, 1 Jul 2026 11:18:24 +0100
+	b=cuGMmNGU7E65Dg68eYFJaoaIWAAXeqkJUg8FZQJgjFh+i1j9q01MpEqRw5mq7z2rO
+	 rkXRZR9NGSQ9sII7fZOwfSIwzleA8JRMW111/zeCE0qmHsxiY/HLQ0Dm8xGge55Nbo
+	 /rPxBfTmGORtHvvZPyK97uPKTZnGWvFXgU7p2RkSdlG4PEyzwi19N3lXnrYxEkZX5b
+	 zl9UvB9/CJ8gR1giihtd/aBTGzdpN/Ulj4oApN/i9Aqbvc2Mp6sFjuGNqa0yzOHDgG
+	 nR1WDpWllVqYqSGN3pkdhjkgYYrs6JaUJqiQNQpkXzrrwNWf/Am7VMbc8hwnba0Luf
+	 /Q1TqhzeWdoGA==
+Date: Wed, 1 Jul 2026 11:20:01 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -99,24 +99,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 09/30] mm/rmap: parameterise anon_vma_interval_tree_*()
- by anon_vma
-Message-ID: <akTpXVhj3unHRH8o@lucifer>
+Subject: Re: [PATCH 12/30] mm/vma: clean up anon_vma_compatible()
+Message-ID: <akTpyNqkh6W1SmhI@lucifer>
 References: <cover.1782735110.git.ljs@kernel.org>
- <1c1df7b905ef340cbf2effef769a4e770a8e0eb1.1782735110.git.ljs@kernel.org>
- <akPvI4r1rnxxSbzW@pedro-suse.lan>
+ <5a7a07bd2a774989849b0fea84f758059ed914df.1782735110.git.ljs@kernel.org>
+ <akPwbHbGiF1FxL6m@pedro-suse.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akPvI4r1rnxxSbzW@pedro-suse.lan>
-X-Stat-Signature: qwhcts7dmbsk5xybtdf945wus9wzsp7u
+In-Reply-To: <akPwbHbGiF1FxL6m@pedro-suse.lan>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0CC3F160012
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1B71740010
-X-HE-Tag: 1782901126-730670
-X-HE-Meta: U2FsdGVkX1+2VxZRdIzszUf+efOkAQ70K9LU6xeH+lEaMdBsTDETSXZY7tcHZXanf53UNbO2k102Zq2TGVa2cjPJX8tzVO8sRXJ3QtCtnHVlzSp+9h92cPdAC7L+HR1PscV+WwGMqIfYDDNPM9nfN/tCuHDTyLkWAPGl+R/2+5T4GMZgi4Fwn73dlMSG6zTzEXR+jkbIwnKKYNuCAW6G2zzuskhyD0EfSKJzLxvL7Rp79CM7kXkP3qI6G4DLZo/tAMYreiNDDZD1PB3iPbPJYI3ztY/knbck6IfedWk5Y1Z2ssacdDWp8sIW7cyFRc6J5iI2WhlHrNgfbgOcDb+YvCewDsIa6eg8jrvPBD4WEsSDIajyxGQBnnpMf+YDgZ8rlzSSp/+dpPf5cGcOrMJvLfEJNEA+erLA3Lv/SRz7dSRaibhbxSZcVHfDvad37GccgFv2/+AnkuMhhhjlfHhgFWVBTfJerOiZ130a41Kno6I9JSnWL7LmrR0K7/LcjpFJORtsY8C+o5NStBFQtoi3lHZegGHcHcvB+ZAY565bUfkd/nKl7j3/ffrSSGqf9vl2cHSDm4sR1jo8GsaaGNIZUHQW5mI7/SzxAhP/OJY8mI3IBRacOvzp7eBTfEXiFYRPoDqsRrxO7DJ9CGmsdbYo55KmR3NCNBEwAEU3N3i+CAdTP1rHFMKD3Fyl5IOJwjJEr34g+/nXM1h46ct6RoPsezLVBurpuPkax+yL2T6TCI3n34QunGyoBsbTZCcpg0UawZdwH+fqzDSHjy5Icq7NEBXLFIf2tQiFuc/EBWEUvTlS0uEC+9DEsUrQvB+HUhrovLRVz6olTheO0nqFa79BqtcCcKv/BSRp7+GLskKcVWzT8qjCJyTUW9BdLJYKZwWYG6z2fOg0gC5bQq4lsJ7zPg9OAjfyJC5qmlT99QYhd3rHrFOo7T+I7EaCF6Wf341M/D1c+WmfrWvbZKgF7pD
- W22WmSdU
- umKMm2d9V/NUJKDHH3adMxpwKezBuHCgB4D54+vWB4B01q+oeW8o9XNSEDHCNgDqei6y9O7pMTlEj+agtSimSswxtwsPq9XsyrEVq0LOw1rMlIsv+jFd3r5WmWpFzJDyQ68R0OPdp+WIonlVIvXXk5LZ8g1bfsEIaysJZwmg2fYL9AldkBXLmmAid6VG3pQ0MqyUFja1a/RccSTjkho0/s6cQKGyMlFYZaDIDzHra+0noRaQyw5OFU4a+Bmsux/cOwizhcn5TBEAlizLYB0VyQLuVwRwIp6mo1uzia0fRLDc+eQwvfIf6WIsOr3GlJnYuZZ7jlK8z/MTt9bjomPGn/dVpgA+rRQMCsOaXLVimHKoG8M0/2Y3/tDrzizrte586tiW5tGk19djd1ZJwZIckaRrXBg==
+X-Stat-Signature: w8qcyetmc5uu8wwij3wbtykch46gis9y
+X-HE-Tag: 1782901223-208657
+X-HE-Meta: U2FsdGVkX19BzARGp3gL0rO08M9ZSnTEJiF2z/SppIxm/DEODUD/Nd0KrCHIjn527lY5Aa7SkPClhnu2Vuc1aLVbTvq+Yk9yW18UASJeEetL2wCGPEXbUw0Sx+2ZBnXMr17Vq7ZFgAQ5kDjwDfBQWuWphEPXVYYZ5ibTaqdxr6B3knAXFh+qtBhsE3kz32BZ5Hq5QTfsB89r9TEVaAbsmztGxNUIJCxf37XwFD5xQK0MsMNs8uldADzRrdRlECjjzSfYshVOsTxWJjpe1CO71d5Iaip/InfiAFMg7PodSW1ny9fZ+1anb6CmLNZlegZYmjMCVk/racCDAkzlk/lpV84HFu7mTVHcrHWxgslbLssJPQxPTgEuoIHI/G2JwCU84lW8S16VaozRDf3YbDIxClVP/yQ9dqQnMLLEff8J/eNCKXHNcnpkKSQ0YdhvmvPM/5+bO8FL/sc6e/6/yQ7nwRM+HbkJ40MZPR3aP4oxiwyj2qo6ZT4vHZMs1hBz1sCfwcOneIBU76aSKvMRz9eBlyXzFaoGv1XUYw1mbuwx0VeqiR/iUnVT1OOu/HBQs3H2o65qQqsUDtmbUKeWFYszP3+Fre0djRw+bvoNe/TERjh1BWbXIkgp+REoj/PgZHpqejX8DEL98UXhsAcVcMHZVY2BlpFbbrOrFlgPos2kOK3FQe/RjNLn7M23lrjfR6Oi2WIbQx8cuAzTPHh+B1Mu8gcSrEylIzXR1n578jSq/xNlyeXjxxsvuzvuzQvwsU9vr8VKh8LXbFkLT1Q7ej8RffkW3r+/CPKL5y3sIsgJ1YgiiyTAZG44kMc3aAFGiICNLx2+QdR5z6vEcjGRv2RtrkfsafFhwDr/dYIWJuQzmhTPBwZ7TrNjKbWovM2ZNohxHpvY0zzKXSHDpIlb8trXMGDWqiVdyq0DNVZPiwmemuByfY+lBxCI0W69UpzlMD7Kko2u4Skx+hjCaUt8LTz
+ 9kFzVm9Q
+ uq20D+ujRh4APXnwJGFgxPrLU9xc8ANZG/30ZE5x3aDf6MxPXknKJEDbmWA7KZUseauc+0Y5HK1zdM9acxNSg6JRssLqiypqlhlVQIfkciyWyWb//oEegwKBfOuhIVZnxkxOe0QkiD2YSJwtt1eRObgfpDOHZXqnS+U+/z1qV+k38hBPENhBOzgN245ssrjIVexBvo7wQ93oNbY87ZuEh5CnKG4gMk8bryyma3gYMKFxg4gYAIuXfPAZDkGI385/TPoshmsdMOHdBf5hywVfYfJkjxH5skA41xIhBVD6ghZ79wJgWQtm6Lx3Q2pEm5xCDBo7MqgwGArZARm4Z/fQTa1DPGZv7Csq0jB2GkIhxogvRKGqGRBCGp8qQsrn33QXL2BtKGaLXByn25wg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,35 +123,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 05:32:03PM +0100, Pedro Falcato wrote:
-> On Mon, Jun 29, 2026 at 01:23:20PM +0100, Lorenzo Stoakes wrote:
-> > Similar to what we did with mapping_interval_tree*(), let's declare
-> > anon_vma_interval_tree*() in terms of anon_vma rather than rb_root_cached.
-> >
-> > In each case the rb tree referenced is &anon_vma->rb_root, so just pass
-> > anon_vma and the functions can figure this out themselves.
-> >
-> > Additionally, rename 'node' to 'avc', 'index' to 'pgoff_start', and 'last'
-> > to 'pgoff_last' to make clear what is being passed.
-> >
-> > Finally express page offsets in terms of pgoff_t to be consistent.
+On Tue, Jun 30, 2026 at 05:36:18PM +0100, Pedro Falcato wrote:
+> On Mon, Jun 29, 2026 at 01:23:23PM +0100, Lorenzo Stoakes wrote:
+> > Break up the existing very large conditional, add comments and use
+> > vma_[start/end]_pgoff() to make clearer what we're doing here.
 > >
 > > No functional change intended.
 > >
 > > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > ---
+> >  mm/vma.c | 21 ++++++++++++++++-----
+> >  1 file changed, 16 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index b60375c6c5c3..6296acecf3b7 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -1967,14 +1967,25 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
+> >  {
+> >  	vma_flags_t diff = vma_flags_diff_pair(&a->flags, &b->flags);
+> >
+> > +	/* Ignore flags that mprotect() can change. */
+> >  	vma_flags_clear_mask(&diff, VMA_ACCESS_FLAGS);
+> > +	/* Ignore flags that do not impact merging. */
+> >  	vma_flags_clear_mask(&diff, VMA_IGNORE_MERGE_FLAGS);
+> >
+> > -	return a->vm_end == b->vm_start &&
+> > -		mpol_equal(vma_policy(a), vma_policy(b)) &&
+> > -		a->vm_file == b->vm_file &&
+> > -		vma_flags_empty(&diff) &&
+> > -		b->vm_pgoff == a->vm_pgoff + ((b->vm_start - a->vm_start) >> PAGE_SHIFT);
+> > +	/* Must be adjacent. */
+> > +	if (a->vm_end != b->vm_start)
+> > +		return false;
+> > +	/* Must have matching policy. */
+> > +	if (!mpol_equal(vma_policy(a), vma_policy(b)))
+> > +		return false;
+> > +	/* Must both be anon or map the same file (MAP_PRIVATE case). */
+> > +	if (a->vm_file != b->vm_file)
+> > +		return false;
+> > +	/* Flags must be equivalent modulo mprotect(). */
+> > +	if (!vma_flags_empty(&diff))
+> > +		return false;
+> > +	/* Page offset must align. */
+> > +	return vma_end_pgoff(a) == vma_start_pgoff(b);
 >
-> Yay!
+> Very nice.
 >
 > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
 Thanks :)
-
->
-> I have a vaguely similar comment as for the file part (names could be
-> simpler, doesn't really matter whether it's an interval tree or possibly
-> even a tree), but I care less strongly about anon rmap :)
-
-And yeah ack, let me agonise over that a bit :P
 
 >
 > --
