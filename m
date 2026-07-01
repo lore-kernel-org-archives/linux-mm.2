@@ -4,99 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB697C43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 14:57:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B687C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:05:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A52CF6B00B1; Wed,  1 Jul 2026 10:57:46 -0400 (EDT)
+	id ADD0C6B00AE; Wed,  1 Jul 2026 11:05:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A030B6B00B4; Wed,  1 Jul 2026 10:57:46 -0400 (EDT)
+	id AB51A6B00AF; Wed,  1 Jul 2026 11:05:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F2D86B00B5; Wed,  1 Jul 2026 10:57:46 -0400 (EDT)
+	id 9CCF16B00B0; Wed,  1 Jul 2026 11:05:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 64A296B00B1
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:57:46 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02FBCA03D2
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:57:45 +0000 (UTC)
-X-FDA: 84940512132.11.CECEA77
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2B786C0010
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:57:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="u/xNL6ff";
-	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 6255A6B00AE
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:05:57 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BEE8DA03B3
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:05:56 +0000 (UTC)
+X-FDA: 84940532712.15.4ED2C19
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E2A8AA000E
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:05:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hLzr7ges;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782917864;
-	b=bgRowgB1EWM5c1FnYV9DKzvxMK6fz7z5r1PgMSuMRRZd6V245Lsd4COKnmqd5Ehj1i+hi/
-	uv00Hji+Mk75V5JXn74opg1jkqa2UOhyETDNJQHSeOCA9KVLxU+sHpajFTRiVipPkk9IIL
-	0NYjWYAcNj5sU/ucNw5SbJWtAvHqclU=
+	t=1782918355;
+	b=RhFiITehQSpUNE9AVNRG8nvi5SmlgjJmuvrFdFnWhV5Wko7ZYdf+ZLfcqVOe2jTNIWGt9t
+	Hy9IdV3R0Iu1eDUjntHZ5qXfatTS2SJvoPahc53OxksVQI5e7T6qY05o4EcM1BjT0xyq3z
+	b0CXFv/LILsWrtnCT00ilPk9DFpkJgw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782917864;
+	s=arc-20220608; t=1782918355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IZxZYzr7s/jUyGjUJHT8GX3O2MqALroysxUHX5OVR6I=;
-	b=X6U/LKR2XMn7iBQv/RNUhtkSxIJiLQVjIQ2XYdx6/sEK2573sZThfoifh44X5j7aRP4is/
-	bP53EXc5ywdpmTK05MKqtf2R9KgKfZQsQxjUN/Lg336Suq+uMG5AueBeUjgHZij1l5XRBJ
-	zd0E+fFwq1afn/GU+kdrRJSKah9xFYc=
+	bh=Wpcsb0+VdxshQ15XkMHrH6lVO/I8qddArljRZWvFEt8=;
+	b=2YWnklRCz98BDcId16w+j+3bPCb9egVq08lhSY/pQtADFGA1swnoH5daM0V5BrKkPgvEqF
+	2++7HHfg/gYhPoV0Stm4QGef5c9qN52h11xbLyyTCKf3m979Y63CX5n/5GVvyB6YXYMtbT
+	Z3wZSG9nqLsgXEzYozyGfCImCVqx/W4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="u/xNL6ff";
-	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782917861;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IZxZYzr7s/jUyGjUJHT8GX3O2MqALroysxUHX5OVR6I=;
-	b=u/xNL6ffTYYFG6/pQpvgb7+IDpimCtA2nrVpoyuJXSR+7kaiiIrfULdup+UpIRI/qtrg7V
-	GgzR0/hCpJhwoWWcGngrI4zLqG283UAA2LBp8soStkA1DrGZXKPunOUidLsR+PQee3cP6B
-	RhE8vD7Y1go18ShEHgOu6+YT2Wtt24c=
-From: Usama Arif <usama.arif@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	kasong@tencent.com,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	harry@kernel.org,
-	muchun.song@linux.dev,
-	peiyang_he@smail.nju.edu.cn,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	ljs@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] mm: mglru: fix stale batch updates after memcg reparenting
-Date: Wed,  1 Jul 2026 07:57:35 -0700
-Message-ID: <20260701145736.3785016-1-usama.arif@linux.dev>
-In-Reply-To: <20260701075251.56413-1-qi.zheng@linux.dev>
-References: 
+	imf15.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=hLzr7ges;
+	spf=pass (imf15.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7fe36f1be74so11199257b3.2
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 08:05:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1782918354; x=1783523154; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wpcsb0+VdxshQ15XkMHrH6lVO/I8qddArljRZWvFEt8=;
+        b=hLzr7geslxQuLEnOfk72DmSjuQiH6FiStrkWgW7WKUGuZaKUZ+QqrzUvvmA41F50gE
+         DbhMfVAS7eWzSdIMWsLVGWOOce529NCUi+lT22eEVsx5hTtq6PFjAQJ4QrhG7HJvccde
+         QP522+OS5C4Xd9Ycg5PP69Xxd98BibbJ7KWeQa7vn2mxVse4ZR3JntK6e5+xvy67NORR
+         MPfyCyNuZdW3dor0Vig+yqoxHO+FED4bk2cynyXK1z9tGLKCD4IiVq3+7Dm07bDF95jj
+         GKmSuXZD/L4N6H9pzU2ROGVmMQZL47+TCj/kE3Pj9dMkh3y34KcfsAnCOMBrpgBzbQ/S
+         0Axg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782918354; x=1783523154;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wpcsb0+VdxshQ15XkMHrH6lVO/I8qddArljRZWvFEt8=;
+        b=flxqIhZKIigkeJjEGUUixAOaePOWmRVR/fDmJEEjjr3FtAJPQH/xnufuQUep3R3+H3
+         Nh3ZL9WAJzONPu1LYYR9IgUkH9P135wxDdl0vKRbjgD0pi3JDNCgLI3iWqbvxYN7qpeX
+         6vCusID/ozMt0VcDszbmLcETvH3AbBWie4LU8f9qbOEzqOo7ijlM3Ya5NwzrnangXoYM
+         FmOMW9Qphw6ixos/zI8X90a2dDl8ux2v70T3SwECvGLYwp4lTHeUbQuGWaiR5mYhYnwj
+         pKBa6a5eMlplh36fa2AF7JyYfsPcgXjErviT9zzhQMbG1HejuPgGOT1yct6zgexVboMT
+         xJJg==
+X-Gm-Message-State: AOJu0YycuVArUt9Mhq4ZWM5IBCZF8DpSt3LG7ACw45HK9wYmybV0OMTf
+	iXadqEjLaHQ8YAXgMDuhWEzMv0MijgtjCZOCzayf9h4SV44Pe05c2LkLV04hvjzipHQ=
+X-Gm-Gg: AfdE7cn79vHrRkAGr+tnjTRMaOPu+4mjPUa6xUEB8k4ksam0SG+wluognISC+uz8uyA
+	QgG1xNOH/yGu5LwFFXE0PbniFaERwU1clR9qaxbyQUP8nQcRRGQgMYcmlhpNS0ofE4Tpcp2ECAB
+	uqGpEf4pUatUiOM8qIZH+dgowcV6ARzqxZtJq9SYnxI8r5PA+Z5KaEZq0b2zFn6TczV/B+QiX37
+	Ie9kYDddUWYcs9u3Tq6zhDN9fYFhgOyjx9ovD0f5hnC93tQhWJvVWK+6HsOoJnaTNE966hCYHqd
+	P2m/EPcOrCa8Se6GCDeMjzsT80VNpBNfG+RwS1HZz6SvSkBItzdSQweRoT5KrG9Jw06QcJXKXWd
+	1DZsx/IOZttRxTAH9t9unHXBohGvpQCt0xL1pP5FwQtaW80e1kjYcCgYbdNbEg20xX6wW4fqVb/
+	F53piuGek9BzXR0y8YsIDBMx3ZXLomiCVGUueOcw4k5wQk6QKib7iAL9/wFJysxFuDW6x+
+X-Received: by 2002:a05:690c:6906:b0:80b:968:29ff with SMTP id 00721157ae682-812eb86e8ecmr20804517b3.53.1782918353875;
+        Wed, 01 Jul 2026 08:05:53 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f3611d783bsm23143586d6.28.2026.07.01.08.05.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jul 2026 08:05:53 -0700 (PDT)
+Date: Wed, 1 Jul 2026 11:05:48 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-cxl@vger.kernel.org, kernel-team@meta.com, osalvador@suse.de,
+	akpm@linux-foundation.org, rppt@kernel.org,
+	mgorman@techsingularity.net, hannes@cmpxchg.org, vbabka@kernel.org
+Subject: Re: [PATCH] mm/mm_init: handle alloc_percpu failure in
+ free_area_init_core_hotplug
+Message-ID: <akUszCySPFA7IRlb@gourry-fedora-PF4VCD3F>
+References: <20260630214039.2263562-1-gourry@gourry.net>
+ <b8baae33-d551-40fe-abb5-287f3711dd80@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2B786C0010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b8baae33-d551-40fe-abb5-287f3711dd80@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: zmrrg3gdqdfa44z3yogwma91edpgcz9z
-X-HE-Tag: 1782917863-60655
-X-HE-Meta: U2FsdGVkX1+qISBixi0HL1sqEsffs17/7xpmcwzVvx0zsAgOzI7V9OLGpdmlHiu/Ez404bOS/ThchnUounFKOCwk5ZkU/XajEU5UJgUphqCtvMi4sZX3tjeJ9EhHujnNOlbajujIt7IqPWlIgR8nxdghTlzw55v2SweNeF/b8bTfMvnrtKcqDZh2YQmt0X80JfxjkUuowkaAEkAc/fnOhdeUMAz3sYFuZq5cEbMqLYQLhsg/0+ERySRTTzq1R0viLvPSyCm37qrwkKS5ypSU625oEl+BP/FLXk2n4f32YmB8PnEV7BR/vB/LkTmWzdb8XcollLRlT6DeOcbdX8ueDRpmjK4eMq/pKKosNAUlngs9um896v/gQa8s0pOAPMAa1clR2f1LLkrGpbTDBQJMM1a5eCF73Mg07p3dsh9iRztiapJ7oZlQ7tH6OlpYD+L6Jd7gQP3ZlOaweVVl6GvbfmWgUbFE/q/mHwOBnAm/YvN2JI5sYeTEPEqQ323S1ApKN/qK2LhQpi5pIUh99HLUbFneq2aGYLHE40eEhNhjeWQoOdwN8YPhadSEgk/8jVC/msxue4Jjt11UPyvfZoNPK/0az2g9cqLGJKdUVTdRvp9Wlq88K9znO378TNH4R8xlmTFW7/6tZBpR0GiJ6FtBmzloSTIbuKPtCv0KofUj2NkeH2VNhGlhsGqUWhjrjLRpGK8sqafNHD+ndWgV4/T7/gtq3aD6FCMS+ORdDxFFvU70PKH4Y3zxQRPVH2fC2s1jhRNwfwoOUKP50eGpqObGMkW99yQ3E13XuVNfT2bBgtZuFe9dADRkAdiGQs5hAdnY8XRGUoOmfRcUuN5Z3YnPrvI5FuWPWw3B/YlcBp7TnLYoO0WNybcBhOS5P+vea6lFYFP1Zu4XIjgvaEWp04h9aKF4s2V5g9v64dz4p4Q3osm+BJ/xh+JFqzbJbVGknby5m9korhBoxMIbv5m1Dhv
- NRplXp9w
- LWFMm5h/fkQdlZ0cmr+MfwoROUjYt87l3wFhtEh1xZZCERmlG8snWSekSFtosALezI83vth9JkuW1WAe5yPfgoqOdCiRVLVOEXX3IRlMKVoiykDFBaXK6CLytYtJ8k6Du6X16Q3jSSyE2GJLWnnULfbdra7Te8mNZqUW+K+EU5CRvdgY5aqcXQeIGCQ6m5FV+EQdII0oXcYqnNfEMcJiKyhfZg96UUvAurlUWyRwzgjHc37P728uvUwMfDw==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E2A8AA000E
+X-Stat-Signature: ccqenkh9nj1h9bstmmanw7gz5xp5m7sw
+X-HE-Tag: 1782918354-636544
+X-HE-Meta: U2FsdGVkX1/S8W0glgaiAd2EZ9UDT2cku2kQGZn47HZwqfw3ZghnUF7QpE3Vtcl7auaLMOsdVqhaFIbt0ElaB8zPalJvbPURaI5snqxDUy1iomeZsD/WsQ9uw/31V2InsVZ1YcH+Q7zsvsDZSybkvC/zMWXWl0Qn8qRtO3xdpIzuguVvKZ3TYoGN58wme8FaRLXBPiLnfH6wbdM4n24MPvdlyv1++wqsC8yRswM18MUHmLzeA0qu9Sw+Hdv0F7u/T9J9S8/2+lJKK/5VZVwnxiGujTAG/yNVK3xKKQ2DSJbB8ei4QsIgSGUAiUzxiXw7s7OEq/nOcfCUTu5EY0eFb2HGHL6xWa4Rahd4lGmR4v4AFcWNCNzfCMIB6k7oT+X0KsT1CZJ5b9YT4nzXkmLHVMvXHVfx1gE+Zb3p7+0Ksw9kpAwxFOxQBL94qeQRz5TEGaBdlZVVrSw4lcR2eeHTHkhRYlHlYl9wUopzSI31bbtdo0ReNUhUYBsQm4mP1oU7NwlPNlLv4+ugXM5FFNP3E93apBrX2S3kf4vVx6GmTnv/VQ4FFB6A8TU5zmoPk2yFU8fyLZ31TDvx7CB/qv/oN8E8aS96yJoXKNeDg4XEYGkNPT9I2WQB7pzwJnjHe8GHb+H8K5648fp8XdjC3AX8anes9mPhVF1fHVfqYH+JL6hFqXx2xwSwk7wrm3ZtjVpZE7zk0msBa+rsw4LT5UZMbapQP9qp9mmpQo3ffGUOGfXqKVh4oXXHb+vEJIyFevyVH4IJ/HJyjjz0ZzpgujfpIMFUSKm+0pQxzafsG5vm14u9KyK7nqBmpHmi5FrNEGkbYP8hCJw+UpEHXEg5xAS9L/1ZM7ifkuUrwU9IiHJK2lwNI+bkSnAy07pD5qIRCwZsn+hehNCxiVhr4eVHKUGMN/FTZM4hFZNE+YkjE3cXJUXk9ShXpEpl7gmom0ij47uqVDBUqWVBekcHTO8zA6+
+ v7aUMr8X
+ squRT5rPM38BqDo5IvRUjaQe7vKL+ycFxo/o/KpEm0TW61zQ5uaq7hUBF1qZt8Xa9WhVTRVc2TTjVJ2eYdP3F8IxL5EX7twOgMZbukfNhDKD3UEeRJdnJbIwKrtBUCM27BoKePPCNC4oNFoE4U/t+dvpCFAxeR2gN6669vrmxRmlsLthVwamfommlM5ldnK/xSlNNKSQ/vLNC1Kyy/w9dCssWzxyg0MJNOWqG6In80bGxDslvR/+Jv9kXTZEZlp9BnRCd80p5DFrjASUyzEMMUHOykqid+qPfWD+5/2H0XDIDX5/iMs99EtTiOg6EozLU4NgTY5U8vCAalkSvnbqIze2Cj/PeI740msQ4RXWVL54yNRFFrL6a45jqwBDs+8vJSHXo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,162 +119,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  1 Jul 2026 15:52:51 +0800 Qi Zheng <qi.zheng@linux.dev> wrote:
+On Wed, Jul 01, 2026 at 10:35:41AM +0200, David Hildenbrand (Arm) wrote:
+> 
+> >  	 * The node we allocated has no zone fallback lists. For avoiding
+> > diff --git a/mm/mm_init.c b/mm/mm_init.c
+> > index 306ea5c13f54..37fd64ce144d 100644
+> > --- a/mm/mm_init.c
+> > +++ b/mm/mm_init.c
+> > @@ -1536,7 +1536,7 @@ void __init set_pageblock_order(void)
+> >   * NOTE: this function is only called during memory hotplug
+> >   */
+> >  #ifdef CONFIG_MEMORY_HOTPLUG
+> > -void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+> > +int __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+> >  {
+> >  	int nid = pgdat->node_id;
+> >  	enum zone_type z;
+> > @@ -1544,8 +1544,14 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+> >  
+> >  	pgdat_init_internals(pgdat);
+> >  
+> > -	if (pgdat->per_cpu_nodestats == &boot_nodestats)
+> > -		pgdat->per_cpu_nodestats = alloc_percpu(struct per_cpu_nodestat);
+> > +	if (pgdat->per_cpu_nodestats == &boot_nodestats) {
+> > +		struct per_cpu_nodestat __percpu *p;
+> > +
+> > +		p = alloc_percpu(struct per_cpu_nodestat);
+> > +		if (!p)
+> > +			return -ENOMEM;
+> > +		pgdat->per_cpu_nodestats = p;
+> 
+> Is there a need for the temporary variable?
+> 
 
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> The mglru page table walker batches per-generation size deltas in
-> walk->nr_pages while walking page tables without holding the lruvec lock.
-> The reset_batch_size() later folds those deltas into walk->lruvec under
-> the lruvec lock.
-> 
-> The page table walker can run concurrently with the memcg reparenting path
-> as follows:
-> 
-> CPU0                           CPU1
-> ====                           ====
-> 
-> walk_mm
-> --> walk_page_range
->     --> update_batch_size
->         --> walk->nr_pages += delta
-> 
->                               mem_cgroup_css_offline
->                               --> memcg_reparent_objcgs
->                                   --> lock lruvec
->                                       lru_gen_reparent_memcg
->                                       --> reparent child folios to parent
->                                       unlock lruvec
-> 
->     lock lruvec
->     reset_batch_size
->     --> child lrugen->nr_pages += delta
-> 
-> This will trigger the following warning in lru_gen_exit_memcg():
-> 
-> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-> 				   sizeof(lruvec->lrugen.nr_pages)));
-> 
-> And the user-visible impact of underestimated nr_pages in MGLRU was
-> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
-> reaches zero, but there are still more pages.
-> 
-> To fix it, make reset_batch_size() check CSS_DYING under RCU before
-> flushing the pending batch. A non-dying memcg keeps the original lruvec
-> stable against RCU-delayed offlining; a dying memcg redirects the deltas
-> to the first non-dying ancestor.
-> 
-> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
-> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-> ---
-> Changes in v4:
->  - re-implement lock_batch_lruvec() in a simpler way
->    (suggested by Johannes and Harry)
->  - collect Reviewed-by
->  - rebase onto the next-20260630
-> 
-> Changes in v3:
->  - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
->    (suggested by Harry)
->  - update the commit message (suggested by Harry)
->  - temporarily drop the previous Reviewed-by tags
->    (since the sync method has changed)
->  - rebase onto the next-20260624
-> 
-> Changes in v2:
->  - update the commit message (pointed by Barry)
->  - collect Reviewed-by
-> 
->  mm/vmscan.c | 41 ++++++++++++++++++++++++++++++++++-------
->  1 file changed, 34 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..ca1e2a870d51 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3262,10 +3262,40 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
->  	walk->nr_pages[new_gen][type][zone] += delta;
->  }
->  
-> +#ifdef CONFIG_MEMCG
-> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
-> +{
-> +	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-> +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-> +
-> +	rcu_read_lock();
-> +
-> +	/*
-> +	 * The memcg can be NULL when the memory controller is disabled.
-> +	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
-> +	 */
-> +	while (unlikely(memcg && css_is_dying(&memcg->css))) {
-> +		memcg = parent_mem_cgroup(memcg);
-> +		lruvec = mem_cgroup_lruvec(memcg, pgdat);
-> +	}
-> +
-> +	spin_lock_irq(&lruvec->lru_lock);
+at start:
+    pgdat->per_cpu_nodestats = &boot_nodestats 
 
-Do we need an rcu_read_unlock() here?
+So need a tmp to do the swap/revert/etc
 
-> +
-> +	return lruvec;
-> +}
-> +#else
-> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
-> +{
-> +	lruvec_lock_irq(lruvec);
-> +
-> +	return lruvec;
-> +}
-> +#endif
-> +
->  static void reset_batch_size(struct lru_gen_mm_walk *walk)
->  {
->  	int gen, type, zone;
-> -	struct lruvec *lruvec = walk->lruvec;
-> +	struct lruvec *lruvec = lock_batch_lruvec(walk->lruvec);
->  	struct lru_gen_folio *lrugen = &lruvec->lrugen;
->  
->  	walk->batched = 0;
-> @@ -3285,6 +3315,8 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
->  			lru += LRU_ACTIVE;
->  		__update_lru_size(lruvec, lru, zone, delta);
->  	}
-> +
-> +	lruvec_unlock_irq(lruvec);
->  }
->  
->  static int should_skip_vma(unsigned long start, unsigned long end, struct mm_walk *args)
-> @@ -3779,11 +3811,8 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
->  			mmap_read_unlock(mm);
->  		}
->  
-> -		if (walk->batched) {
-> -			lruvec_lock_irq(lruvec);
-> +		if (walk->batched)
->  			reset_batch_size(walk);
-> -			lruvec_unlock_irq(lruvec);
-> -		}
->  
->  		cond_resched();
->  	} while (err == -EAGAIN);
-> @@ -4867,9 +4896,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
->  	walk = current->reclaim_state->mm_walk;
->  	if (walk && walk->batched) {
->  		walk->lruvec = lruvec;
-> -		lruvec_lock_irq(lruvec);
->  		reset_batch_size(walk);
-> -		lruvec_unlock_irq(lruvec);
->  	}
->  
->  	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
-> -- 
-> 2.54.0
+> Also how to handle cleanup on error? Or why can we skip cleanup? (what happens
+> if we get another call to __try_online_node()  later?)
 > 
-> 
+
+-ENOMEM ->
+    hotadd_init_pgdat -> NULL
+        __try_online_node -> -ENOMEM
+	    pr_err("Cannot online node %d due to NULL pgdat\n", nid);
+	    try_online_node -> -ENOMEM
+	        __add_memory_resource  ->  error_memblock_remove:
+
+Basically we're left exactly where we were before we made the attempt.
+
+Another call should work just fine after a bunch of dmesg spew.
+
+If this happens during boot via add_memory then something else is
+horribly horribly wrong and we'll at least get some debug info instead
+of null deref.
+
+~Gregory
 
