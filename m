@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 066BCC43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 16:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E23EC44500
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 16:08:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2BAA6B00A8; Wed,  1 Jul 2026 12:08:47 -0400 (EDT)
+	id 451D66B00AB; Wed,  1 Jul 2026 12:08:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDC5E6B00A9; Wed,  1 Jul 2026 12:08:47 -0400 (EDT)
+	id 405A16B00AC; Wed,  1 Jul 2026 12:08:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCB9A6B00AB; Wed,  1 Jul 2026 12:08:47 -0400 (EDT)
+	id 319C36B00AD; Wed,  1 Jul 2026 12:08:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 90EE26B00A8
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 12:08:47 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1623240411
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:08:47 +0000 (UTC)
-X-FDA: 84940691094.26.7732835
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E3F696B00AB
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 12:08:49 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 73FDA1683F7
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:08:49 +0000 (UTC)
+X-FDA: 84940691178.01.C98263C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 41F8E14000F
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:08:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DnlPXo6K;
-	spf=pass (imf23.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id B1057140009
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:08:47 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HqY9lwvP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782922125;
-	b=FCuog3wSxk5SK69U1TFcvqBp9g0ol+n46w/dXTOGKyYopAYX1wE1+fIChds7DNw7vB0w2o
-	smLbNTwNTH97ye9o0NYDY8lAg34/5WbsWdAq+5qGP1JEFoloylx7zlbcmSeIGoo2YoWhrl
-	I0mZiXur8CcfqdoW5n/hWudM300Q9k0=
+	t=1782922127;
+	b=aL0Tez8tvlfZVtpOgPxAJjrCSPdrYXQYZR6NkvGe3ppYXxsKgyyX9STk09nnjnxdt9JpOO
+	qbHzRAm905aCtYreXHBFom6ZAQTnein/FwqH0CS2OUntSh44gOVXU0rIv4X3h7+1SLnu0P
+	O4K+v81m3siURdJDxL9fT+2NVeiq5PQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782922125;
+	s=arc-20220608; t=1782922127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nMG99KrASAgPXd7BmpIGuOHPcTsSyUSkLuJtJkK3AE0=;
-	b=ox+lKWgQQbvDO1OL3INS5pu+KcaWAhp04SlEsi7AZmI8R4dPFYPfiSGAAceOclqC34k8jS
-	jhMJlhF9RjZEjuRYJSAHspjpoLKmN+28Zvz1PuZd0zP9aCtJvY/Kgvs+0Zj3bFs3RALmIE
-	XHh6Aeri2k50OQ+RQwVIKm7WrsoyG+c=
+	bh=ilf76DE9BP6bAlpJ5TSsK+VG1K4+DBYU3ah/k09fSb0=;
+	b=JNxPz5WeATXfIIOwco363Y2bDGIcH99Lj1c9taZqoZzNOolRupb3fM4Q0FwdLpj30t+gQd
+	Mco3r61Tvx4AIxCnoDMBplmR66ia3CL/MkwiPrgEPC14oHqRd8KRz/gRN/pK2Va2TJ/MbP
+	nu31ssPKY96ggqB3iAvoD3nkGQ/88gw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DnlPXo6K;
-	spf=pass (imf23.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HqY9lwvP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7A05B60138;
-	Wed,  1 Jul 2026 16:08:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C911F000E9;
-	Wed,  1 Jul 2026 16:08:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C8266001D;
+	Wed,  1 Jul 2026 16:08:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4B91F00A3D;
+	Wed,  1 Jul 2026 16:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782922124;
-	bh=nMG99KrASAgPXd7BmpIGuOHPcTsSyUSkLuJtJkK3AE0=;
+	s=k20260515; t=1782922127;
+	bh=ilf76DE9BP6bAlpJ5TSsK+VG1K4+DBYU3ah/k09fSb0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=DnlPXo6Ku9YJptA/pggWMvD5eX/ACYGiV21WcxQyB3m2e5Auu38mbBzZym7IH8B/A
-	 G1MUaejXd15Dt1XkJ/Jx1JAYpMFVA/xGd0jSaRdg/qJEk6XocnfcUBqOO8ZSjNbKs2
-	 YFyECU9egBeZcHK8H5BNwFmXoJvQZqVi+eVGoEdDTOuWO/n63YRYG6qOtBsQCx+1JX
-	 kwYxxAt1MkjDcBrIcGNt5xNCIp3b6+AgdZKf9h1JHsmmG9MoxwjNZFnwvnupqgjt4T
-	 6js+9fPkQ01TueCeOF9UHamaqhusMu4eCXCr23h8rf3Zm2jPKxto1VD3OYcFIXHlGV
-	 veZlGGZ8FyWwQ==
+	b=HqY9lwvPhjcZO2a+SqiUelb3CqZVUPmbrWLT4/cTDap+EVImbQAvCUP0R2SM/WZQO
+	 Scd4yskDCD+2YKNAvZbcZ7K44rCMHwXW4lN3g4AXY4Hse6YFG7YRYASCFhanzLUnI1
+	 LzDKQ3jMd9G21k+LviG+9DwalATXAuXQ7AZwv8uOHJ1IDwuQqK0oUEPvbG2Opyv7GP
+	 rI8fxYeaQYOFBJBkbdlJ8LjAaujlFThtFwwZCo9sG5WuQEfqyMTTnhaXfq+Ii6DKTA
+	 qhu1SsTq3uuz2N+ZB3Tt5wDAP3gd411xwPtTX2p5Q7SOmKfVMAruhokttbNwUAnmNJ
+	 eL1tBI1vme29g==
 From: Thierry Reding <thierry.reding@kernel.org>
-Date: Wed, 01 Jul 2026 18:08:12 +0200
-Subject: [PATCH v3 01/11] dt-bindings: reserved-memory: Document Tegra VPR
+Date: Wed, 01 Jul 2026 18:08:13 +0200
+Subject: [PATCH v3 02/11] dt-bindings: display: tegra: Document memory
+ regions
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260701-tegra-vpr-v3-1-d80f7b871bb4@nvidia.com>
+Message-Id: <20260701-tegra-vpr-v3-2-d80f7b871bb4@nvidia.com>
 References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
 In-Reply-To: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -111,30 +112,30 @@ Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org,
  linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
  linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3519; i=treding@nvidia.com;
- h=from:subject:message-id; bh=DfAPq+WrFjXuxENDtD3cOfZznmCd6BODekDyNN2sHyM=;
- b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqRTuF+wqCHtBjl7P+pNku92FShBXmKUOKJc/BE
- Rq91UpauHyJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCakU7hQAKCRDdI6zXfz6z
- oVsRD/9Lu0d/mH9amkHL1bT4wtGLxaWbO0BXEuEJlCKoQj6WgB53dHFEmpkZnFGdAFGWalJcHAl
- lDGfP7r3CexIdmXNF33PjJCYZxsNw2mWMX5KwZWGfRSw/fxUQ2mQqo9sxkwvI7/f7GuCQa3yE4E
- lUJgDfRJeqXLCPKHjD05sc2lvcx3P10FKeQoRUZCHwODIA2FVjwiGSdObMQ09OkKMPAFY+wGtrN
- WpH4UWUdwUM3ppw89khez3D9sdmQT7cptx+6D70C42Okc3XMhY42eNHkhfMjJ1ppjag9sWuQ/k1
- ZiQBIsrL6rYJ7oobxibfPNWfhDqFUc0gg+ljdFkL8vY/ktkkXRddpHPTIR+fKfGDaZH5PTF5FtS
- VXeQYa0Gdb3EBNpC9jQrnaE8vFSb3o7Emh2VxQgvIHDtxnsOp2Rz41kAd32/nwwU6msVOJcMxZb
- Abs5M2i0Ucs993gi8+Q6f0XLRgrzgDkVafgKOpt+oEG0vqApZn9lJ+GRLMcS83xtW4C3Hekwndq
- ceQi9dUsW+79FdTdKnoJ+8dlAv2JiHPc9CKABXKvN7stLbJXWZ865CPMkJlURRaRvzCN0HSiUAY
- 4sZSHfnY5XjOq/f9OohstHiENl1z0Z/7xIvq3bObJWGdKJquNyyEoMsLSgdlsd+Kji8+fERs9c/
- BJ1kujm/cPoxkbA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3570; i=treding@nvidia.com;
+ h=from:subject:message-id; bh=GRoiIFMQfM7gzDRzAuvdY2P5ccmj+ETXrFNLv78LxOI=;
+ b=owEBbQKS/ZANAwAKAd0jrNd/PrOhAcsmYgBqRTuFSGQ9dGDN3kzOm9qzarxw9OZw0cL6HePrk
+ 0Jmuoyl0AuJAjMEAAEKAB0WIQSI6sMIAUnM98CNyJ/dI6zXfz6zoQUCakU7hQAKCRDdI6zXfz6z
+ oS/+EAC0wB3gChuITlH2sXNXS95V4q3MybbSfE5oD4mkn+StZvm3vAI3H6Wdr6rx8fe60LuedY1
+ ghz5YAwiKSOdYiM6OfwagrwPDHgHQVSk3E4CPqiABKXW4cWQrj45IrvuYUv74j4XLe4d86wLPEc
+ XRhz4WxuobfKAmeCp+vP/1AGwYm31jnYqxiEGYGwGax8B/QNjsTHDmN/l8yN0gSCAan2Ebbl6Db
+ B8Y0tocMlvJfkN9Vpy+I8CLl1NVGl8fFDR4rjlxNPMqrXh35zmG9tFZoUZKrXh3gkSueSWXm3Ic
+ dc2rrIVfCdZWUyVVQP3HYvlG3o7ZYoBFQkR9Dgb5utSERxWZywX9+WhXOsfwMTecDydnHHLp9QX
+ 90ACCc5x14rRGWrNQIlX+ybDXW8xM5UH9lHkjZh+d0I2aRyPG+qVnPAuVTSf0X+oVb0gOk853fu
+ g7nObP5ggkU3TL1+l0JvQElWXT27M27tvn33q83T6T1naf8aBXCVi4yvgiz/XxsDYtVZGzCE4c2
+ 8oAnmE+ODLePWMnjAD4liqDajcrofCGaaFuwfGSS30RLIFzaTXxEV5cO2Im7VmVd5cB5Z0riYPB
+ dC4NBuEohrV4cIXBZF9s7vfDIUwZIrcmM41FJPTZ2/Xztxqx9yXCYp3SPR5pN1JqKkpvf+/TC/S
+ 34uWCUo4nfgROIg==
 X-Developer-Key: i=treding@nvidia.com; a=openpgp;
  fpr=88EAC3080149CCF7C08DC89FDD23ACD77F3EB3A1
 X-Rspam-User: 
-X-Stat-Signature: ymp8c57m8ns9npqpdsbba3c9aeac38s6
-X-Rspamd-Queue-Id: 41F8E14000F
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782922125-622125
-X-HE-Meta: U2FsdGVkX1/U5sFjE/a2WzE804cBgsRANciN5zBgjjV2fh7JB+N4QIroQCf33KebP1VVzT9ho3xds8ZidlWjNxN172b09ydwbxQy3g6aBZKbg/xyA6MnTxabaDofNTbKwk2Sxko+dRmxub3Ma4Pgb1h5WuwS/WrkuCLnUj6swvkoSK+0+i35Rsyv1fXX2aX0IBKP6I5bXFkZ92aapaFR2SsJGG3P5V+G5LSpDo2S2UBkkkUM+OMmoZFr3LmpfM6RzWDHqqpbsWV2OLmzDO+/2vul3NFI0rroEdp3Cmf6ZLB9gsTc391yGvV4vWxw4Uh3m8uuWsRAvvsk1lrABGNtl9p5na14yDqRqd3zFHJ7AEszi2OXJIQGJ+aeCuyDE1a3Wjtu1Ri6qT3FE9c0a2qpLggsKV45l4FeJ1JiV/Jxp02GxydKDbR4fP8t7P6WWMJv9DI7JvNVq5e3bYY9GMpL/2g9H17UYNi8Hkddv7kPq2GRkZ0ZERKh2tf5LL1DuQI127auuhCNqX3fVB1zSp56fyz5h4PuDo/2hFd4QHoPAsibIwMCrchRg6k+T3mRBvW3/1I3KcZIok3W5iC4MmCNFDxlobr4saPGVYxuZUa++DMVJsCg2WKLgWNBD3/6mjU01Ss3JYW1r2M6UETshkFpDWZEBvTDwVcKpdJAT9m8cDOEUJpd1bmPvBHlmGBKR9VIRrFmakVA/3hyNCgiJych2NP1MK/y4ZR4nRiN/S511AiVv+tznarVWQoFNQf5gn7QLtgP7Ue2usPnm7tXaRap+ps6Hwv/bo+iB6dlRohpgQm95kR2Hh18xRYOhg+Um8R5YrCCc2ZP4HjbKmBTUifwVVv8OEe8D861qbXSYFTu7Nh2912DZUoHibhUZ15WyqSPEk5w0rc46dxlnol3Nn/U97Pd1Bry+pqPo8n006QH4EIrawtkea3mBUlPrjom/udsbDqDSn3oSqHr9AT4wNl
- m9wYeECK
- CzfDbjWSV/3B1pNgwTTtGaciXAb9flK1QDgCOCygocZdYxZhaRzj3hB2C5UHHEYNtNw+P1G1eYWPGRz5DashyAtx/H9Wn4Qexcz/t6k6fMC3RngK9pVywSPI7ZrWVG+rRHht4L2U4HF+JsGwL8gJaMsEEvaFgUneuaaYX2X9HY+72pXez8Ckv2VLGnozJ6fLD7SE/K2pqLufxW6rZ5rxK6V+N1lCxH25iAmNPotLPH+zL7An6M5y4FKUvUQ1mM/XAY1wUn8693sufNEtnMMBDf++CzxPRuuctqIdn5zC0y7+Wp9QiHHH2Cz7uKOh02iJWObBc5TICKSfJhM2W6mi1Q/q62LoxWtgvH2P3to0Q+1+wcXaH5NpdgIbeMXbgyZQnURZizsGXhyMujuHJSZi/CDnmLoHVM1yPrjKD
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B1057140009
+X-Stat-Signature: t7wsc7sdwofqdnohxbf8sgrphzeu4frt
+X-HE-Tag: 1782922127-622983
+X-HE-Meta: U2FsdGVkX19iCZJH2ahUDbQOqQX6Mk5pxvlUoX2em2+4E7AooLYDMJgbFmNNnMuQQj2FT4D1lnhHCSlwyrgBIVMp+UQ0ukS2jSMZNIBWasWm1sNfKM3ZV4448BO3Cc6QnSvb22cr4r4PdLoRjyk93S9qIn7Ak2kESXcXv7uae3jtlsO9WCx/YbI5IGbDiVMblFggOYEXPr4T0eKsZiGOyVGOmqyvA812kmH6vGR6zsze/Fz1ksG80HbR9fd2CpVRV56Bm/HIWODLJIViDW+9EHqrOtDVYM7tb767Ek8PaJlZm3tJPLdHxwfpof5SrbfHTmAmnXhR9jFP/NwpoFO08B3X9dssImL5Ub3Z2Rp/ZeBikZqGWZBZ1IovJ77fKuEqhHOYRf/2JaNHhkZuAWuCj/NJVLuC4JZSTlTBbxtyAMFbIM14Cpr2biGjnAq2eiSf3FAHm17CjtcNIbcE0OrC6CPkEjRjiCOHIpi/6IHMV8iu4IqHKj6kGY7O2pjhVfCHpW+nHSEZVuCAK1AUdB6pXsCl1ZGDnYMQAWVj+Pll/Cj/4zWRmw4hJza6KvACSnkil8OCm4DJPkUAsvuVnC8HAx6oHhjih43C2Iv+Vr1peuZUOnykzkWacbbCJXCxUbJ8k8XtRI46DfB3aQ6eXIsy3onJYO6L7343FlG+VxcNZL4obHdUh2TIdhhB836wPG0MOGftu5KsoPZK6RDX+yz4xajhAzyX0yqrvgYEZ4GAKujEOu9/j2QbvAJEMvYX76ijMz35DsExXLkXvZc17u3me5n3b2wroaQtF+OTEs6duEJbT/Z3VcYNbnsY6hHvR2vGFS0pKro5UMVB8SSpROU7/TovNl64L1Ji083kj1pVDbh5iCGO29a6bZIED4z5TKuDXUHCsXd2K9mODnBX1GRFe3yGV58jCRnBBNcB4se5/Nq8QUzwYjiHKTAudbE5URV8IB6Ac8gsHotFzP/8ckN
+ oC/+6gUj
+ BeKmyhbI7Rr1A8WzC2aP6MoCSt8WFCx0emw2O+DQNjlNkl1QzYVn72schoaRJD3WsKgHyYOjgMp7lZkDxBofkJjNvS0VvKUZd2WBQqh75LtB40oGqplUHtDqIxXQLXGX8/ZmoP47ZkBE++5jRu6qoQUl2DGTBFwwzJagsgiVFcre5xP7N4eoTVnTUqKKjP49XdUwf4gamxxuVB1KO4H/AQsb3xxp+hdEwZpW1LwSNYE1t5wrEwgvTWdoz7kpBiO/W/Z6/SLwzsfqGfWZdYQwf8IadDvd/JEVpp9d5KWk85vg8Q+RS9fHoXJCCLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,107 +145,101 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Thierry Reding <treding@nvidia.com>
 
-The Video Protection Region (VPR) found on NVIDIA Tegra chips is a
-region of memory that is protected from CPU accesses. It is used to
-decode and play back DRM protected content.
+Add the memory-region and memory-region-names properties to the bindings
+for the display controllers and the host1x engine found on various Tegra
+generations. These memory regions are used to access firmware-provided
+framebuffer memory as well as the video protection region.
 
-It is a standard reserved memory region that can exist in two forms:
-static VPR where the base address and size are fixed (uses the "reg"
-property to describe the memory) and a resizable VPR where only the
-size is known upfront and the OS can allocate it wherever it can be
-accomodated.
-
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
-Changes in v2:
-- add examples for fixed and resizable VPR
+Changes in v3:
+- document properties for VIC
 ---
- .../nvidia,tegra-video-protection-region.yaml      | 76 ++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
+ .../devicetree/bindings/display/tegra/nvidia,tegra124-vic.yaml |  8 ++++++++
+ .../devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml  | 10 ++++++++++
+ .../devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml   | 10 +++++++++-
+ .../bindings/display/tegra/nvidia,tegra20-host1x.yaml          |  7 +++++++
+ 4 files changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml b/Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml
-new file mode 100644
-index 000000000000..1c524bae9ce3
---- /dev/null
-+++ b/Documentation/devicetree/bindings/reserved-memory/nvidia,tegra-video-protection-region.yaml
-@@ -0,0 +1,76 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/reserved-memory/nvidia,tegra-video-protection-region.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra124-vic.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra124-vic.yaml
+index 7200095ef19e..1e27a731ad9a 100644
+--- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra124-vic.yaml
++++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra124-vic.yaml
+@@ -67,6 +67,14 @@ properties:
+       - const: dma-mem # read
+       - const: write
+ 
++  memory-region:
++    items:
++      - description: reference to the video protection memory region
 +
-+title: NVIDIA Tegra Video Protection Region (VPR)
++  memory-region-names:
++    items:
++      - const: protected
 +
-+maintainers:
-+  - Thierry Reding <thierry.reding@gmail.com>
-+  - Jon Hunter <jonathanh@nvidia.com>
+   dma-coherent: true
+ 
+ additionalProperties: false
+diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml
+index ce4589466a18..881bfbf4764d 100644
+--- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml
++++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra186-dc.yaml
+@@ -57,6 +57,16 @@ properties:
+       - const: dma-mem # read-0
+       - const: read-1
+ 
++  memory-region:
++    minItems: 1
++    maxItems: 2
 +
-+description: |
-+  NVIDIA Tegra chips have long supported a mechanism to protect a single,
-+  contiguous memory region from non-secure memory accesses. Typically this
-+  region is used for decoding and playback of DRM protected content. Various
-+  devices, such as the display controller and multimedia engines (video
-+  decoder) can access this region in a secure way. Access from the CPU is
-+  generally forbidden.
++  memory-region-names:
++    items:
++      enum: [ framebuffer, protected ]
++    minItems: 1
++    maxItems: 2
 +
-+  Two variants exist for VPR: one is fixed in both the base address and size,
-+  while the other is resizable. Fixed VPR can be described by just a "reg"
-+  property specifying the base address and size, whereas the resizable VPR
-+  is defined by a size/alignment pair of properties. For resizable VPR the
-+  memory is reusable by the rest of the system when it's unused for VPR and
-+  therefore the "reusable" property must be specified along with it. For a
-+  fixed VPR, the memory is permanently protected, and therefore it's not
-+  reusable and must also be marked as "no-map" to prevent any (including
-+  speculative) accesses to it.
+   nvidia,outputs:
+     description: A list of phandles of outputs that this display
+       controller can drive.
+diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml
+index 69be95afd562..a012644eeb7d 100644
+--- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml
++++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-dc.yaml
+@@ -65,7 +65,15 @@ properties:
+     items:
+       - description: phandle to the core power domain
+ 
+-  memory-region: true
++  memory-region:
++    minItems: 1
++    maxItems: 2
 +
-+allOf:
-+  - $ref: reserved-memory.yaml
++  memory-region-names:
++    items:
++      enum: [ framebuffer, protected ]
++    minItems: 1
++    maxitems: 2
+ 
+   nvidia,head:
+     $ref: /schemas/types.yaml#/definitions/uint32
+diff --git a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml
+index 3563378a01af..f45be30835a8 100644
+--- a/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml
++++ b/Documentation/devicetree/bindings/display/tegra/nvidia,tegra20-host1x.yaml
+@@ -96,6 +96,13 @@ properties:
+     items:
+       - description: phandle to the HEG or core power domain
+ 
++  memory-region:
++    maxItems: 1
 +
-+properties:
-+  compatible:
-+    const: nvidia,tegra-video-protection-region
++  memory-region-names:
++    items:
++      - const: protected
 +
-+dependencies:
-+  size: [alignment, reusable]
-+  alignment: [size, reusable]
-+  reusable: [alignment, size]
-+
-+  reg: [no-map]
-+  no-map: [reg]
-+
-+unevaluatedProperties: false
-+
-+oneOf:
-+  - required:
-+      - compatible
-+      - reg
-+
-+  - required:
-+      - compatible
-+      - size
-+
-+examples:
-+  - |
-+    /* resizable VPR */
-+    protected {
-+      compatible = "nvidia,tegra-video-protection-region";
-+
-+      size = <0x0 0x70000000>;
-+      alignment = <0x0 0x100000>;
-+      reusable;
-+    };
-+
-+  - |
-+    /* fixed VPR */
-+    protected@2a8000000 {
-+      compatible = "nvidia,tegra-video-protection-region";
-+
-+      /* fixed VPR */
-+      reg = <0x2 0xa8000000 0x0 0x70000000>;
-+      no-map;
-+    };
+ required:
+   - compatible
+   - interrupts
 
 -- 
 2.54.0
