@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21186C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 20:03:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D33AC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 20:04:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A93B96B00A8; Wed,  1 Jul 2026 16:03:34 -0400 (EDT)
+	id BF6CC6B00AB; Wed,  1 Jul 2026 16:04:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6B2F6B00A9; Wed,  1 Jul 2026 16:03:34 -0400 (EDT)
+	id BCE126B00AC; Wed,  1 Jul 2026 16:04:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95CD86B00AB; Wed,  1 Jul 2026 16:03:34 -0400 (EDT)
+	id ABFCE6B00AD; Wed,  1 Jul 2026 16:04:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DF9E06B00A8
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:03:33 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4F6B3C257F
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:03:33 +0000 (UTC)
-X-FDA: 84941282706.07.5E9974F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 87BF36B00AB
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 16:04:56 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1EB73404D7
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:04:56 +0000 (UTC)
+X-FDA: 84941286192.27.8F39223
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8B06912000E
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:03:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=imHR64ns;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 63A4C140016
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 20:04:54 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ja9vf6Dc;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782936211;
-	b=VUs+8A5VpeObYNmsNj95X6aD/8jl7aSQae/DWmq/mApQzMpuKt8dyYV1W/ceBhsGEv7WVx
-	CTfVYTQZo9yPgVwBn0zgWk8CqPCY3n1VkmpKUtC/ww0QNHJQi+BdLJ5Z+N+HKew8Cw8Zez
-	4wtdnWOf4EX+Y2frLVBqFJtom9SjJ2s=
+	t=1782936294;
+	b=eW63FlVJ9qMgPgAhaCsnASWH8dHaKwYMy1Bw+T66yiAZjvdhyCjTHxeqdXrH/Qu2bTj0et
+	CgZDtI8L4D7uSLBfy+W/iQPTWiWeOIR47GLJkm05I0VHFtq+qTpFbXrBIL06V7qQPQMw/7
+	gIvxX7sTfI76Sh2Z8VP+BvpzYxo4k9w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782936211;
+	s=arc-20220608; t=1782936294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6zp09cAbru0LBE7s3fcZYa3/iefpTqvsPd295TfbYY4=;
-	b=A4eFuOjChWyLeZsOpB3mFzzxZ9DrVHW8LRXVULubAJOvhr2K+HHY6Bbb6yyFK4nNB+km4o
-	/1Swx56rJAb2m5xvd/GvkJcMsiaSvkuvyj1tLGNmvXCw1Kk/WK4+LOI2h1r3jJMy4262f9
-	2GoUBGq/FYrRu1xnNaMtdkTNcBMPIpU=
+	bh=h8XewL7dOdgjgBlExG7c82KjdEETSt64MZQ6t5MNVB0=;
+	b=Wu/l6GG3P/dD0AHezPxc9oNjr2+oFjm+H83SR+U2SuDW6R8XJeuJEeELf03a9dYnsTFl+1
+	q0C5Q+ie0VInl3qBE3dofKA+ndN7oLwplw0l41QNGMpTYBrMjVrpU97Uu6C+fBsnD4as3N
+	oT9MG3PIsJ7yGpOFV5IeOu5bIh+CIbo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=imHR64ns;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ja9vf6Dc;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E6F786001D;
-	Wed,  1 Jul 2026 20:03:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317411F000E9;
-	Wed,  1 Jul 2026 20:03:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D525B60138;
+	Wed,  1 Jul 2026 20:04:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77BD1F000E9;
+	Wed,  1 Jul 2026 20:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782936210;
-	bh=6zp09cAbru0LBE7s3fcZYa3/iefpTqvsPd295TfbYY4=;
+	s=k20260515; t=1782936293;
+	bh=h8XewL7dOdgjgBlExG7c82KjdEETSt64MZQ6t5MNVB0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=imHR64nsQ4Ic2E8LNQelQ0fnWppOOkbDz2FDT1MGXSEFI62xLOIFofiq4Zi+6t3Jh
-	 Ak7f2+aOZEavQ9BGLAlkbg4L+LEdVbi44UvEN2sgsxd7UvgzYdUvGQTFPFLOnGfG9n
-	 SPgazdzQLgJjqgk0ZOcZMuYKKCGBQNw6mcTehwnxQfHT/1ZTdeMZEbx49JvAWtSMab
-	 EW/IO5o6eEWhy7yfbhQui8vBWpKCe4Ed19q1QFWEOZxG25daIQDbTQEQCJXsbEUSdo
-	 GaxQ9aJnijUNz0PHGIqqb6CP6+jomvwsj91xIJoGWt1WyvN2V9stEJqKra2S13zEon
-	 +h2ZeGZ3DGxWQ==
-Message-ID: <e37df165-8de0-4924-ba19-0d43a6b7d36e@kernel.org>
-Date: Wed, 1 Jul 2026 22:03:21 +0200
+	b=Ja9vf6DcKb/bQGd8Q/6iQioxRJ4eHqsokqNUjcwZvoqiQJ4xlXVIG5w6SsTyTCa0x
+	 AIKElSpeOeS5ztXPEA85mfpfq9h2psbrIoGnDn4v6qIxUtL6Nwr+roAIz323yRHoGt
+	 IMw+wru4cB84D+3LpYLMT+xyHleK9GowCVFeVg4viNgJc23H6UTUYK5TkGrIY5XDlP
+	 7oA2IQs9w1B3gegU34I/B0sxiPtGcYKzk5TzKEiFwR5oC5OZSSam2PTUozLOm7RHGH
+	 9Kv6IErdBuQ8xnYwZW7UPw38ju1mMtzWcj54ErwyjMSPao217hU0ZHC6NiuiwIyQtY
+	 gFZa+wpSeWp2Q==
+Message-ID: <b0b66905-c619-463a-8114-73848bc913ca@kernel.org>
+Date: Wed, 1 Jul 2026 22:04:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] mm: rename ARCH_ENABLE_THP_MIGRATION to
- ARCH_SUPPORTS_PMD_SOFTLEAF
+Subject: Re: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
 To: Usama Arif <usama.arif@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
  kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
@@ -82,7 +81,6 @@ Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
  lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
  shikemeng@huaweicloud.com, kernel-team@meta.com
 References: <20260630164143.1595669-1-usama.arif@linux.dev>
- <20260630164143.1595669-7-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260630164143.1595669-7-usama.arif@linux.dev>
+In-Reply-To: <20260630164143.1595669-1-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zo7risz6byqrrny13ntuy96njacp1nq5
+X-Stat-Signature: ttpnfrad4exmmq874dsx69zfy3qcoen5
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8B06912000E
-X-HE-Tag: 1782936211-827852
-X-HE-Meta: U2FsdGVkX1/atOUIeIPwCqfwyE8JEWbUDjIWspjScvFJaknzwPdCpPwm3Ygx0H7c6BfcOwFquKhGlqnA4COSZSOCayQw6aM7EhGPV/+nQKiWafU87yf4WMd4+DYyf+tCO69z2tW+VAI6crvICmzsNYIQsFxidvHl5YDeoVmKazE+NJncq/oSnGjfyb6ZyQXLIHNtW5zy+foAe/fcWn3/cfpMQeuT/+t9QruXBVfaA7rTYSrWQpqSDMipjwFwhLXmLj+JWVG3eEmU+SwxSeqt3skl3Q4XtdolauaWTHjHpjRavohgapEV+S/Bu60sAXGpSbzJ6AiD9C+/f6vc4HloGmlFtuVNQWUrGelH3X82dtbZ8Xu6efKMepnXxPw2kOPGWe0qqCJCio/RJZxBKScCSmszfRFV2hVIJxByPhEIyo4EEgNQKGZ8X1wxN7CgzLuquWFaztpZRWqGznlpAZ1mz10jRH3QKBHWpaih7txL7C//jIbOJ4yyjCjDcwez+VB3pR2QRyOmwK2/ccssVEY6+4FZ6d+Hq2TBHpYPCaGMsA4ldt0IVMtY3nDRRzBEf7zHyKfkWIuziFA2t0276M0gED4GW4MbQjfcSfk9px0yjGeQTSCMK2Tq3fgMAzm2CtfpL5ckrgWYZkBNv13EnRwlCHCe2TFba91fxtc+kwy0Dt8KETuzG3tJp5ngiuKmVgD2w1K5iTBLBdlpFEFUNuOF0xNgzO6dlGu+ycAYhCHdmYVc8dBWQhHBFrbMs11hR3kEsnJg031euYiFqIb9S7/Ku7wMo2JdM3859QooiU3/HKv+TCcOd9c8gxSUFmNxGt5mCefaQ0YnCSiQ3UCsLXR8Pr1zfEUyCHwrNH7RbSvVaXgB2iusuPF6p3HgKdwq13JpXISHRbqZH3QoJwluMnCOL6CgsvDQu77sex9HqE9wLEBywdUmhrLnJKjByS/BawnPz6FOI0j3N6j4CY91weG
- wd3gDIUU
- rQXm3AJhKqSoWBFi/62knwXwAjrVlMhKjeYSyZWgF9bwbS5FYtXLO4VH70DHYzzErOIMvPKFi08pYR6Rrg43usWGPcvloDwIGrQ4XavKI+8BUtmSNwO/IEDVlXEXvYp1twapNyDAn1PjGeKvA3ncNDc7o1EF8Z9qCK9NH8MdkzJVmHg3mFXrilqqYT04jfukidRA+R7j7Je3g9naCglLo6jnp+h1L/sVjTkqej/rpLiMfnIhgozkbB9t3PfbGknfwDQqoUIyIpumxUP7arURZcyGXG3sYr5UaedkKExkSuF9GeLbWnyGs2ipY/w==
+X-Rspamd-Queue-Id: 63A4C140016
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782936294-63405
+X-HE-Meta: U2FsdGVkX18W+y/g5btPicTnT9cX15esvL56CH+uHFQBjOuVopsveDk1bq//lFFRUqZCXHcQxnOgASZYQGK4GeEPEz5orXXjgfTc7QEjEj7vwho+hoZ/s/UX+eVkww1aGS53rmy6/epsxbUkEs1kZPZDT5Tdn1Z8XY0Fs9jSuFfFej7llGAoDmjrIRgF2B5ibJeKTp6maRNYd3q136tR6CILT6gaIo7QSRGtBu/4aJIanxUbHpLXeX99uf6rnGzXtgq6vKspusgEvtARiRno42TVkwuTEGa5ADa7y5YkI6n75HnbfepAFkBS/c2s9X8pw8BFACcJZ2xYUe3CWnBWXldjZFYTjpAtAK9qjAj/MAwDb8uBZ1c/e3HcOL22G2mjXRPYu0uhFaxuR/ONrEhaoeF+A3TxtUwphD9Y35Trq9Vb2F7F/SgIGYVCSV8N2JVO6bsZaBdB6BEgeHenCWh0HD9APtfURnYg2BBtXo9gG/VOCONIcggUC1xDpN0EKvL3SLY3iho1jrzIBsy402y1WtzSPx1LbMfnW1j/Q3OVfS11R5LCE3TnUtlymrHpwFlxx/065G3XucVwdNA5VRN/Iut0cn5jUwwrKG5n/hiTnrQNAbEe9bBZ4ngn7XGtq84YUjk7CMxddF/6j0MNLD42k9OnSEsHNUenFSzVnNO6zxD7yFxb9rr8OZn30+WE8irWVsBk2XmA9wt8w7aOYvqxQ/2d1UG6WseJUKZN70zFgid4v3XiXR8Nbhk4h7g6a9EIHBzuk7FRQMv495PXR5uXT4Uy7g6D4me6aUXWUYVrDX3uK6FBVRG3ykEPodF8D8dhURod8WARPkaj6RoBwOfacXtVpmc1z+Uj/mVUChwViH1z5ywSVVXuay3kjmrsBb/Gt43LCjkhU4x3xQFoiMllnGyn+FBlKef6/kceDZgc0uCD8anRuxahRqLzb3OPW1+Sh7xszb1k1lSmswYY1MI
+ XnRyJO/I
+ QED2CCVmhr9TU8PDsnxXbDJ1OhgrxFIs+WiyPUuMnPpQiwkdMSuqL5ZVqHrs4GBQR8qlQ4Uu45LnAviPGS2FIYcWzGORNkfkIP/AsSvagXH2jbUkrLw+n9UMrx4iF4dt9o0892rApHXFyebzrPtUo5+RcISyBl4LPvJG778NIwxnzXFldcZOrWQo3RyjMIHWLggDCwSXPVG5gxJO4Mp6uoSbS7uxGxrQ2HyOVpb2u748vN7vVIMVQ+MAG63RrO8tP+yS1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,57 +146,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/30/26 18:34, Usama Arif wrote:
-> CONFIG_ARCH_ENABLE_THP_MIGRATION started life gating just PMD-level
-> migration entries, but has grown to gate the entire PMD-level softleaf
-> machinery: migration entries, device-private entries, and soon swap
-> entries.
+> This is the preparatory part of the PMD page table swapin work.  The
+> full PMD swap entry series has been split into two parts:
+> 
+>   1. this preparatory series, which contains the first 6 patches. Zi [1]
+>      and Lance [2] suggested to separate this out from the core series.
+>   2. the PMD swap entry core series, which depends on this one. I will
+>      send this once the preparatory series is merged in mm-new as v3
+>      as the combined is currently at v2 [1].
+>      I have not marked this prep series as v3, as its not really adding
+>      support for PMD swap entries.
+> 
+> This series does not introduce PMD swap entries and does not install any
+> new page-table entry type.  It only cleans up existing PMD softleaf
+> helpers and call sites so the follow-up PMD swap entry series can be
+> smaller and easier to review.
+> 
+> It should be safe to merge independently.  
 
-device-private really relies on migration support.
-
-See do_huge_pmd_device_private() where we migrate back to CPU memory.
-
-The whole concept is pased on migration. So that's why it currently makes sense.
-
-So "has grown to" is not quite accurate. It's a different story with swap
-entries (that can exist even without migration support).
-
-
-> Rename CONFIG_ARCH_ENABLE_THP_MIGRATION to CONFIG_ARCH_SUPPORTS_PMD
-> _SOFTLEAF to make this clear.  This is a pure rename: the set of
-> selecting architectures (x86, arm64, s390, riscv, loongarch, and
-> powerpc on PPC_BOOK3S_64) and the gating semantics are unchanged.
-
-Hm, that makes me wonder what it would take to make this all just be implicitly
-supported by CONFIG_TRANSPARENT_HUGEPAGE.
-
-Looks like someone would have the courage to touch stuff like arc, mips and
-sparc64 (+arm and x86, but that's less of a concern :) ).
-
-So yeah, renaming the config option makes sense. The config space is the wild west.
-
-We have
-
-	PGTABLE_HAS_HUGE_LEAVES
-
-and stuff like
-
-	HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-	HAVE_ARCH_SOFT_DIRTY
-	ARCH_HAS_GIGANTIC_PAGE
-	ARCH_HAS_PTE_SPECIAL
-
-We do have a limited number of "SUPPORTS" (which is longer than HAS), but I
-would either use
-
-
-	ARCH_HAS_PMD_SOFTLEAVES
-
-or
-
-	HAVE_ARCH_PMD_SOFTLEAVES
-
-
-Apart from that LGTM.
+Agreed, thanks for working on this and splitting this part out!
 
 -- 
 Cheers,
