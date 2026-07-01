@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F570C43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 14:48:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 778E2C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 14:48:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83F4B6B00B7; Wed,  1 Jul 2026 10:48:27 -0400 (EDT)
+	id E33856B00B8; Wed,  1 Jul 2026 10:48:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F13B6B00B8; Wed,  1 Jul 2026 10:48:27 -0400 (EDT)
+	id DE3226B00B9; Wed,  1 Jul 2026 10:48:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7067F6B00B9; Wed,  1 Jul 2026 10:48:27 -0400 (EDT)
+	id CF91C6B00BA; Wed,  1 Jul 2026 10:48:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 51EAA6B00B7
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ABA036B00B8
 	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:48:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CCE274027E
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:48:26 +0000 (UTC)
-X-FDA: 84940488612.01.7F222CF
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50EF61C723A
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:48:27 +0000 (UTC)
+X-FDA: 84940488654.09.2A75DD4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 58765C000E
+	by imf02.hostedemail.com (Postfix) with ESMTP id AD54B80016
 	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:48:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLSV1hrS;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lTrbqQ0j;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782917305;
-	b=v0tmT4+QeO/MNApnQyrNcj7ThuAWyIWTgXrZ+T1y1UDz4NdY4sI+SUFSnD/0ibmrLqUKKR
-	9JfBwmFoOzL6lKKl2BrymG+sU4kTUVCwABndnF9olHsrS0Jc8aeg1uIRPmvDtdnjYO1AuP
-	Ee3KcLU/+ljEk51fzoxFesG4Tu4UY00=
+	b=Tm/ShXnm9/jY+9Kp/IJ1C7KdBQZqekchKLQ3TjzMFtmKr/jSQ5Oxa2kFb57GxDidMfu3Ay
+	TIFBDTWtc8SMqnJW25PylFiWEo/lMhhvMt7NLIXLuPvx97icSMkANvhTyYXvocm56p14OF
+	N5TfQlq9WloRYGppb3PuVRGRMNN4/Bg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782917305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=u9li3f2mdhI97UWZZHyi3UM2e3i9g+HccBwSNR9mxb0=;
-	b=OxsZPXHtdoBiRHcuID9I/HO5tNI3rgFuHi2hBR7OnktxHqH/w1TyqorTxkJpmSqnkvCZjV
-	31T0ZGkvg7J0JIwlWNTxeKdJ2VgjMhHtbyl7niN40fCH5IK9y2Mc0LzMViTG6h38Y1qPWr
-	bZPDfowjyYcatd13mhkzjaJjtt09cc0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QkKbN8JT013PFC22cFEAzBpDHHTSG1t3VeAW4U+gBVo=;
+	b=iuWEeZWJ81WYqVlavrZQ2JZKpLSQ7IKZOM5lGuT6/3RL8g73lJHVuXBIVZAeHa3dGgoZA0
+	S3hnzf6yLM6P8pNNtusUkQJNuArUfhaZmkzyga8FFajLoQeuo6IALa8wbPW3feXkjEf1jY
+	keIqTX4Oq29UVPuSAWMIwfHrI8f+XlQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLSV1hrS;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lTrbqQ0j;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C3F7B601DD;
-	Wed,  1 Jul 2026 14:48:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401101F000E9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 41863601DE;
+	Wed,  1 Jul 2026 14:48:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D0A1F00A3A;
 	Wed,  1 Jul 2026 14:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782917304;
-	bh=u9li3f2mdhI97UWZZHyi3UM2e3i9g+HccBwSNR9mxb0=;
-	h=From:To:Cc:Subject:Date;
-	b=SLSV1hrSc0rRE1UYdFWJa1n9HxXt/0lHObGgfp8wE/j77sJfNfZnD6aU9QKm9Qvtj
-	 aYXSLwJw/Dn+9iIhC1o5yabwZHDKdkJEPog4CGsFLfeKsXAdEM82AzYuFQFNTNITEf
-	 eVlrKpCpYgPa1Tffz0V6fi58PYgz6xUYyUW/3HeqoLpuKwWsXBm2oQ7oFQ9Btpv1AZ
-	 Pfri6KvTRRxm1DVyUrFYXKkPkc8LYZuD4Dn2H9435TSdZzEiPW/x0QtYV7lC6nuiZ/
-	 hdb80YrZQRMNhljoS5hLSaz5a6OcnVckIpa+Z6v515VV0WKI3bTa7zURhYv4qRliZ+
-	 5IyBLuan/4/AQ==
+	s=k20260515; t=1782917305;
+	bh=QkKbN8JT013PFC22cFEAzBpDHHTSG1t3VeAW4U+gBVo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=lTrbqQ0jrniuvVaZzyOK3vdvPOT3SRcyfKFnltmDJns3tib9ZjPxDn37q76QCETH/
+	 jAaO3CcN/ZtyhOlO/WoN9lC7yI2whBEGhXWMqLNQLi5GrmsKU5FYLZ8fsi0IgBhlMg
+	 oGDUesv4iD0ixBlDnHqil4ba7XN7MWeRhR85NellhG6BqDfRgYFtoVJyJMwpB7hZ52
+	 JmWZfG1IxUqx3wpHo0EZszqiYvPdLlTwk1f5USSNshL3LmVNOisGyr2dbT8ol92UYA
+	 grgIrquocVLpzvfSbtTLEOAtkRi+gi9qrnOe1w0GeWB7BSW8fSyj8dQ+piwcfIxqyl
+	 nK8JAr2jjhKCg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,20 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 0/8] mm/damon: validate all parameters in the core
-Date: Wed,  1 Jul 2026 07:48:02 -0700
-Message-ID: <20260701144815.113325-1-sj@kernel.org>
+Subject: [RFC PATCH 1/8] mm/damon/core: safely validate src on damon_commit_ctx()
+Date: Wed,  1 Jul 2026 07:48:03 -0700
+Message-ID: <20260701144815.113325-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260701144815.113325-1-sj@kernel.org>
+References: <20260701144815.113325-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AD54B80016
+X-Stat-Signature: mjwa93fn7jwsccrtbgi1s5oxi9fkdu8m
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 58765C000E
-X-Stat-Signature: nhrch3bpsunu1udhmdenjxr3ehs3fhz9
-X-HE-Tag: 1782917305-787043
-X-HE-Meta: U2FsdGVkX18jf8G8lR1s4MDJ7X4S51oGxQCL+QiSbImwEnTKmuD9LiXblUhHSAGkJG0c05abQ2STWAgwL6iFGq3Q+3Ifpss/Rjp1SXSRLq/bv6e1hBJbDtcsEkYNYHvi6GQtyVz8I2wVsuGrm2XY9VWMnQRdWK8heSaG5hPfomvs65w1nbjGLVnTSxaN3orXieoCsc7Un6eef+/fj9lc1tKeH4QCpXrzjion8YK7naprZP08/caFm4fizI9j+a+hMG4ZtjWb+gu9lAZrZc7y8oXBsF8OsuzAuQsqKshHsR6UANoFg5Ex5tYodWy5gXW7zmo4Fdsq0D1OGZ9juZDh8PKJjiL3B/xCobqpaE7hdnZBfHUUS/zbs13qRFOH8Et9bNJw4pRVviD4DVbbYO1CpNDEwOEI0DrEaT9K63iILKNq+Ynvd5tCPAmlfblvcPBs/RVY43QhcB3Rx2r62WztjS4U3pQzVBvDO+ng7kS9QPMMIaDtyGyejNGo3f5UNoI67qMvFtavrY0iRboIY5cN8jAEb+CWRHoe3D8QbgAKQ05pHpbxntcn/9D0rUhGUsAsXllJapJXQc6mPrda07QzH3sgj11Dkgt0qLQdCE2epE28JHbrRt6x0OTmfVXsKrBAddZxZJTK7QLW26+MPzkduTYiXNHQhGvQ6hS/+ubFN833fueIlhV/ZP6/Iz3BNOyT7eZEMlr/N4bcH1eoT2kIjMPrd6K33dqBjwUsPjo/DCGbiD71x5khSXDz7twmgiABC2z96H8XuGnZWlQK7/hg7C3QeUhsPEB4NRcPpSFaliwJrYvI/OfZoinC/4p45OY8t7I/6DyU2nob9AnWoGQFSXqP7tI6PJsAaMAZkePfiaBohhmdixJHkWN7oVAm2gg8OTQUhdjAPdqQlmTKnSREABwIA+H73Gc/19hn6iosqoN4pD7dM3WNUzjoP3Hegu6A40K2CwFlbm57snwrqAQ
- RZahlf2C
- +5srICRCwOEWTfLdOT2cbY6YISJKAgwHxQxR2bdl05LULEfMRIues8PW8beVCnn137SImEVvrAp5q9TIn04UquI2k5IfoJ5MpXDb/yRSgzs+Up384yMhaL3PrsgmBlLn1L8+JJSyBc6p5TGvUnO24BVLXCcHYgI74n0V6bGeTIPp6rbIj9SWSdROU1qlkJaEyGP7xxj2WYxXAMv9ddMDzbhri5UEmvUX1KEhl8PRo+vpaogk=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782917305-446338
+X-HE-Meta: U2FsdGVkX19hEl+peHoTK6oeVBSTHbSmTwXHp45QEGCEKoyeiaFvwBF7zpAPfjQx9HDRd+VvUKGxSDHjdqdGwKqvZL3RoMSUcKXtJniltjimCUHatW8Te7FEI5dDRd5Exb6FQyVHB54TEisk7ZuWc8yK/hqES0mqoD+OHxp+PpfycS7neIyxgszRlqrXNjXx0rbNJ+d6AmWQhvr1SthfkfR8L+ASMsXABhTKgX06K8YYP2KvKgQXgvXtC9qmaJUjDs/hfHqaFKV3XDZHGf979U4YhsHpSOn8Kbko+WsBXDU2m4lkSc23wxDI9AgwHgGY4rmdFKOwmkdIygt7WFl8cZmdukrxgtgeuixumJ2/WL8hENNxkaKjcisINpLOqk4bCvh8OBejVwFkPCO6+QPDTbpCvcp0AWzeSkTwkEngdcScL/TJMCamQvuU6F+HATzzLwGfLxBc8IFtIKGLEOqlmctFxZpynN0SqrGMH05XJWoX0BfLGTsYB5n4n6+IbbbhjghrI8NnwoAPc2wAiK03DnpSmvJ4VFhsPtQu1kbWH/6R3Hp0IKkBzElc3V31ij7L0BWDXzU1fRu/V2dizT/+eSjiL/1V0nVXhNNOgTLsaiy03RAqThGYapEQmcAIHtWPelQovdn0X5b7s4CMP15NGAA7bYqt+1WeAoOkRZNpNMADWqBezUir87yF0hXHU4vcIy1eRCiLZ4Fac0WYdX9lv4dAK6x0bswHh5E00Q7qag6HF5Lfn8/e6g55rApZX8PQC1Hxq/CxwL6hihIFjMI1/2m3aaMCQgpM2S0QLSX6+jB51TlA8VK3dpstwuo7GIzBUlIgxUCtKVedqUcaa2HOCJ/hrTYwCgLXpUcg0ZhgeoPMpn+08zpT8aTSER/XNuR1074447EJWLlfCzzp6y7XaoVtSKRUz61zJ1sErYwDSQ9tZdJw55hoHCwuca0oK33wPofGnQfOdVMdaSNCey9
+ 5Knvxcwx
+ 4Ao+CoWPm1BII9gY0M4nIlEj2nJQmmx2AfkUE/2bs3Ic9qTl20qtWActGOcg//QgyRuxFJNPXaTBezuNGZxRfat5xhaUQsRZ/qVCU7a8QxaSQMr73qkH0rCJkjyldMY5CrfRE9B5c5scEOu9AErc0DRV3ioAWKAAICaC38D7/CjRYS2qJnUl96pLbUThjfYeMWJ/1R+oHXWTj/rP6PYrn3o+jFZw2hMZEdmfC7PTukvBMa4ap+VZtU2D8fYGTexu3r1EoXljtMseagM+4jj8ZePlEMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,69 +93,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON has a number of parameters.  Some of the parameters are validated
-by DAMON, while some are validated by DAMON API callers.  Each caller
-has their own set of parameters that are exposed to users.  Hence each
-caller has their own ways to do the validation.  There is no clear lines
-for the responsibilities.  It is confusing and easy to make mistakes at
-validations.  Actually we found a few bugs in the class.
+damon_commit_ctx() does its holistic parameter set validation while
+applying the new parameter in the set one by one.  If it finds a
+parameter is invalid, because some invalid parameters may already be
+committed (it is called "commit" but not atomic and irreversable), it
+stops the running DAMON context.
 
-Define DAMON core as the place to do all the validations and implement
-those.  damon_set_regions(), damon_start() and damon_commit_ctx() are
-the three main DAMON core API functions for setup of DAMON parameters.
-Make the three functions to do safe and holistic parameter checks.  The
-first one is already providing the validation, so changes are only for
-the last two functions.
+The callers of the function therefore have to validate the parameters
+before calling it.  Because the function already embeds holistic
+validation, DAMON_SYSFS reuses it in a safe way.  It creates a
+test-purpose context that is not running but mimics the running one, and
+calls damon_commit_ctx() against the test purpose context.  If it
+succeeds, the parameters are considered valid, and a real
+damon_commit_ctx() call against the running context is made with those.
 
-This might add unnecessary validations for some use cases.  The overhead
-should be negligible as parameters update is expected to only rarely
-happen.  It reduces the number of places to check and fix for bugs of
-the class from all callers to the single component.  The maintenance
-efficiency gain is obvious.
+Other callers such as DAMON_RECLAIM and DAMON_LRU_SORT do not expose
+full parameters to users.  For efficiency, they validate only the known
+set of parameters.  The efficiency gain is arguably small and doubtful,
+though.  Meanwhile the maintenance overhead of the multiple different
+validations is clearly high.  We actually found and fixed a few bugs in
+the class.
 
-Further cleanup documents and caller code.  Make the lines of validation
-duties clearer.  Remove validations that are no more needed owing to the
-core validations.
+Update damon_commit_ctx() to embed DAMON_SYSFS' safe and holistic
+validation approach.  Callers can simply call damon_commit_ctx() without
+worrying if their parameters are invalid.
 
-Patches Sequence
-================
+Note that damon_commit_ctx() can still cause an unexpected stop of the
+running context, if internal memory allocation fails.  It is arguably
+unlikely since those internal allocations are too small to fail, but
+theoretically possible.  It should also be better addressed, but not
+necessarily a blocker of this small and incremental improvement effort.
 
-Patch 1 implements the core holistic parameters validation for
-damon_commit_ctx().  Patch 2 extends the validation to damon_start().
-Patch 3 removes the duplicated holistic parameters validation in DAMON
-sysfs interface, which is now embedded into the core layer.  Patches 4
-and 5 remove duplicated min_region_sz validation in DAMON modules.
-Patches 6 updates kernel doc to clarify damon_set_regions() is doing the
-range validation.  Patches 7 and 8 remove monitoring target range
-validations that doesn't necessary thanks to the validation in
-damon_set_regions().
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 61 +++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 47 insertions(+), 14 deletions(-)
 
-Note that the patch for providing the validation from
-damon_set_regions() is separately posted as a hotfix [1] but not yet
-picked into mm.git as of this writing.
-
-[1] https://lore.kernel.org/20260630035221.146458-1-sj@kernel.org
-
-SJ Park (8):
-  mm/damon/core: safely validate src on damon_commit_ctx()
-  mm/damon/core: do parameter testing commit on damon_start()
-  mm/damon/sysfs: remove duplicated commit input validity check
-  mm/damon/reclaim: remove duplicated min_region_sz power of 2 check
-  mm/damon/lru_sort: remove duplicated min_region_sz power_of_2() check
-  mm/damon: document region size validation in damon_set_regions()
-  mm/damon/core: remove start, end check in
-    damon_set_region_system_rams()
-  mm/damon/sysfs: remove region size validation
-
- include/linux/damon.h |  3 +-
- mm/damon/core.c       | 79 ++++++++++++++++++++++++++++++++-----------
- mm/damon/lru_sort.c   |  5 ---
- mm/damon/reclaim.c    |  5 ---
- mm/damon/sysfs.c      | 35 +------------------
- 5 files changed, 63 insertions(+), 64 deletions(-)
-
-
-base-commit: fe39036ef6a25f1ce6674c04188fd67fc53402e7
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 871c6f5257c9e..62c27002219cd 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1664,20 +1664,7 @@ static int damon_commit_probes(struct damon_ctx *dst, struct damon_ctx *src)
+ 	return 0;
+ }
+ 
+-/**
+- * damon_commit_ctx() - Commit parameters of a DAMON context to another.
+- * @dst:	The commit destination DAMON context.
+- * @src:	The commit source DAMON context.
+- *
+- * This function copies user-specified parameters from @src to @dst and update
+- * the internal status and results accordingly.  Users should use this function
+- * for context-level parameters update of running context, instead of manual
+- * in-place updates.
+- *
+- * This function should be called from parameters-update safe context, like
+- * damon_call().
+- */
+-int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
++static int __damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ {
+ 	int err;
+ 	struct damos *scheme;
+@@ -1732,6 +1719,52 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ 	return 0;
+ }
+ 
++static struct damon_ctx *damon_new_test_ctx(struct damon_ctx *dst)
++{
++	struct damon_ctx *test_ctx;
++	int err;
++
++	test_ctx = damon_new_ctx();
++	if (!test_ctx)
++		return NULL;
++	err = __damon_commit_ctx(test_ctx, dst);
++	if (err) {
++		damon_destroy_ctx(test_ctx);
++		return NULL;
++	}
++	return test_ctx;
++}
++
++/**
++ * damon_commit_ctx() - Commit parameters of a DAMON context to another.
++ * @dst:	The commit destination DAMON context.
++ * @src:	The commit source DAMON context.
++ *
++ * This function copies user-specified parameters from @src to @dst and update
++ * the internal status and results accordingly.  Users should use this function
++ * for context-level parameters update of running context, instead of manual
++ * in-place updates.
++ *
++ * This function should be called from parameters-update safe context, like
++ * damon_call().
++ */
++int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
++{
++	struct damon_ctx *test_ctx;
++	int err;
++
++	test_ctx = damon_new_test_ctx(dst);
++	if (!test_ctx)
++		return -ENOMEM;
++	err = __damon_commit_ctx(test_ctx, dst);
++	if (err)
++		goto out;
++	err = __damon_commit_ctx(dst, src);
++out:
++	damon_destroy_ctx(test_ctx);
++	return err;
++}
++
+ /**
+  * damon_nr_running_ctxs() - Return number of currently running contexts.
+  */
 -- 
 2.47.3
 
