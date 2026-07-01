@@ -4,77 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45299C43602
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:57:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5A55C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:57:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC2826B00A8; Wed,  1 Jul 2026 09:57:27 -0400 (EDT)
+	id 9E0F86B00A9; Wed,  1 Jul 2026 09:57:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E737A6B00A9; Wed,  1 Jul 2026 09:57:27 -0400 (EDT)
+	id 991706B00AC; Wed,  1 Jul 2026 09:57:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB1906B00AB; Wed,  1 Jul 2026 09:57:27 -0400 (EDT)
+	id 880A76B00AD; Wed,  1 Jul 2026 09:57:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B82036B00A8
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:57:27 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 36AE3C1D76
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:57:27 +0000 (UTC)
-X-FDA: 84940360134.06.E7940BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 72A5740002
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:57:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TlVDab3t;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 55D2F6B00A9
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:57:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C3BBA12039A
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:57:30 +0000 (UTC)
+X-FDA: 84940360260.14.935E138
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 201C840012
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:57:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KlniPm7g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782914245;
-	b=jOzyfgQAeBt45+MCXf33rcYMhwawGNZxdxDmJLgY/AOqCkxDX6212n9vTJGi8K1vraWQQd
-	8ODATKYfzbEshUftTwNRYbfp5lngshRcDnDaXzCGbaSxPTXXVcxv6MvW4a52kIDUHY+nvf
-	djJ9dAG95971oQ49V/Ys8HtxMRkzUXo=
+	t=1782914249;
+	b=TibU8Fg9Jcu5vDFj54EC2tc5kL7CKsNnkjlAl2gBNecZDQAyh03xmrpchr8nxZ3wNz0zSS
+	BIDqZsodPsbbXnDb4NrnZgoPbnpp9E+u00xdtc2jZ74D0fyG4gxlLs7DCn7Gz10Y/8ZMz8
+	p05yM1qAPk7RfVesXry1QQA8V9DPpUM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782914245;
+	s=arc-20220608; t=1782914249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zag35WAocY+5o+OvST/25DSXMEyjKxN2j2GDhfTpF5s=;
-	b=FNtBp3BW5yxr2mVjmIDM7+BixWgVN2N8FD9Jmash7NQx71wNlvIlj2ka2xWimXXYjKHfpM
-	rcZPcvmf2baEWniTuwL8SRWUIANMyhT6OwFvWx0Dt/ShR8Er9ua3q52Ois46QzYf9lPHTd
-	Eqaqb7XgqeJHKT/bN82LaN9i9mq85Lo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KN3v4O8jkhd6Mt2HpgZaziumJD8qk36FkI+IylasYd4=;
+	b=nD+9ItMZ5ljXosU/jtWoqmiQv9h7k5Vdf3aiCdaBrWC+JLKmeA/AvPh7tG1gmATpysOzGk
+	OJE16lgOj/QqOBCeORHs1D18cB4BKfOwBV2z+VNG7eOsHCT5aESo4fHj/14vTMxnmEG/X2
+	8GaHQNobzLjqhsfpSwABOyMa8jFxQxA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TlVDab3t;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KlniPm7g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7182941252;
+	by tor.source.kernel.org (Postfix) with ESMTP id 91EBC60122;
+	Wed,  1 Jul 2026 13:57:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9FC1F000E9;
 	Wed,  1 Jul 2026 13:57:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF371F00A3D;
-	Wed,  1 Jul 2026 13:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782914244;
-	bh=zag35WAocY+5o+OvST/25DSXMEyjKxN2j2GDhfTpF5s=;
-	h=From:Subject:Date:To:Cc;
-	b=TlVDab3taKef0cAHAYzvZWbe8q1YtiZZL2iPNyoLbK/g1DgwhDk/Gg9XGmwG9yKBF
-	 PnWzy//tKPnrrbIuL4frm/k3LfXeFGF2iCiZ2yEZWg2OFMYpIXXwpiqEGDdeYqHh12
-	 FxuPhn3YvDMqXdAYksh7EzEe29c/SLkcjH6s6U2CkKGL02I4pNZDh36BF+vzSNse+L
-	 4L4BLyrOyvTeZB/fzHFqta9oFP7ZoXHXgsn7JsvszUlmHn9T2thGwzYpuKnFPY6iZ4
-	 /hQnQLexd22jTT31Sc43CUIAg/Usjb6WzwhcixRdNrLp6OWItHPtroKWH161IHgwTI
-	 elkTYlpzGTUfw==
+	s=k20260515; t=1782914248;
+	bh=KN3v4O8jkhd6Mt2HpgZaziumJD8qk36FkI+IylasYd4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=KlniPm7g68QtWZ0ZI9P+lp3JUjV32CfOcL+P0rwGBBPnR7YemV6QARFIlMBom7Ft2
+	 hg+UXCYHwEMJfnINZ+cvQYZ2+Tx2E1sF9CLPJSZbS9/iJa9EAD3VFKNZHhuUfFv4h/
+	 bjenyY6mkL36a02MkyvLbUf8OWfNk5KqEgFxqkJpda74bg7w3btOfpXfB9Xrbv3Chq
+	 PE5b8Dsablj2qQqu/5Z0viSA4rkhgtGLq3C1kqL33o3SsCQ0rOotmd+azQFlkyCnqP
+	 wMq3kV+j7NIZUxi0pBzmzk/HNlVf2GeUrUj4tyvCR23R70TuTnD/ouuREl2EBNGope
+	 cPqa7hslPkgiQ==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH 0/4] drivers/net/ethernet: replace __get_free_pages() with
- kmalloc()
-Date: Wed, 01 Jul 2026 16:57:17 +0300
-Message-Id: <20260701-b4-drivers-ethernet-v1-0-58776615db6e@kernel.org>
+Date: Wed, 01 Jul 2026 16:57:18 +0300
+Subject: [PATCH 1/4] bnx2x: use kzalloc() to allocate mac filtering list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAL0cRWoC/yXMwQ6CMBAE0F8he3aTgkLQXzEeumW09VDNLhATw
- r/b6vFNZmYjgyYYXZqNFGuy9MoF7aGhEH1+gNNUTJ3rBjccHcuJJ00r1BhzhGbMLD3c2Mt59NJ
- SWb4V9/T5vV5vf9siT4S5XtWGeAOL+hxijSpp37/MWFb8jgAAAA==
-X-Change-ID: 20260630-b4-drivers-ethernet-b5e085b98ab1
+Message-Id: <20260701-b4-drivers-ethernet-v1-1-58776615db6e@kernel.org>
+References: <20260701-b4-drivers-ethernet-v1-0-58776615db6e@kernel.org>
+In-Reply-To: <20260701-b4-drivers-ethernet-v1-0-58776615db6e@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Manish Chopra <manishc@marvell.com>, 
@@ -86,14 +84,14 @@ Cc: Edward Cree <ecree.xilinx@gmail.com>,
  intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, linux-net-drivers@amd.com, netdev@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Stat-Signature: cgeqwghki39mybftybaeeoffe65ud7u4
-X-Rspamd-Queue-Id: 72A5740002
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 201C840012
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782914245-274973
-X-HE-Meta: U2FsdGVkX1/4OrK8/OidWm+WWfEyBpRFjn8qbX4yQzbZ98QChjawfLFXKM5Hrng2zkmlM/x+djr4/65m1BWmbyRn/J+tx1qidJhrnlkoRiFii+pfP0sQnPk9vkLMfACGQ6FhzL7v7DMiabXPlXDiz1e7MHv/xKh0tsSY7b3mJE/mNiOYCRejple3cGjtUNAu7lb8AfeptC5uCgsQWUKFS6JxTfJGnbVHAXfAgQaAzDuC0r+BI4kfNTr6JfMB2RJDvNq8VWP6aiPqNj5+Wr17AusgyNhA/GWms6abHTB//8oHNqPrxMagqtAlu+NmERLyyr2LSRhYJXjWcwNzknKsg/XXVF0fIbBCoy8k+jgGcAu8U1hD7CmnrFn7vFIT7s7ICgR3iPlmZnlsc9f+0FFtJIC9Oazd4ry3CRhK+3skVHYyD9BrnxsQ5nHrWcy6BXRMyspC6UDi1oi4+3wXLr7bU1t6WCcx1oVbvNbLAPFtv03S8BdxtFb3vi/fbYa0P00hUjjCzPOqwYcPbKCHruOBETkuVCRTkvQdfc0EpiFaILnHpAXOXFN/mC1LC/eYIGTRTNFS8Ys/43ERlF3UDxFFrNedkDnpinnbKKO0kZqh41T2o7h3QmJNEvQe0wpFn36gSF0vtPjk+QTdx+x8ff1C4Whhoh55UnJ1Hg13ugV+Dnqewqd5QjZIcEvyg49C9E70YQztnCmlCrEoL3+TvZTRMhsnJgISGNz5RZdeANER2EM/KMTGtHkD1uxjQg/6QcwKyFFx14Rn3VgFuOqr8QIU4g5ddDoaveEvhQEnzvCVCGLFvKBlya6FHiIOhVkcrq7jIIIUvxJjbsggR4FL1x8Jkrcwjlg4SLkz/aJTymK8tUCt5VluM8gcikSLAA2bJ00aHiOBulO3qGbF7yTdiXStvnM1VwUjvpR4u0TcPDf0q2Uo9QVYclvv7Nm106l55s5fjbe/dO/Ph54C8YpJuVZ
- oicddrOh
- OKfwPu0sCbkEBOfC6KQ3kgvHjFUAIBaPgToDONcMCaKOQk7yHk3hN6mTc9IvVP+osl1kf2oD6SBETzhKavpxP8ELuu25K7Vq30m2y7Serv+xikaF2UDDo/NIJoO8BGxxgA0M47IHqOpMJs34qp2dQWnnOryE/G8Ejs0lPg6wHPTMltCiucaTw/zxGsamd3Kni74w34ZSBGPUv30IXOF5CHNVYzsN76Fjvr9cmcIRSJpnKZuVfBDDQU42HBz6uPH97BKQQ9YcfcBVEtkcgggPLvUHJac6u41McKZXndUxSTFPNOpSC3o/roTlZaGiEKk5x6Zl96uM/nvlALcRhPsFBBvZ040RZ63jbbQ8YDRlaLK3j0itd83K0t0y9WKjYuU1Em5EoQPE3MOlRjZ5uXMspbvvUG0TMoY3yrXfyzAXxVSLEvA1Xkw7/8k6OEcUj8Jk3twPT5rChU/LKMUo1hHDeytZc15vK3Rqf2NPNnyHY/fHc3RMDML1xJMm9lfU/SU9ZgZ765ScagxCXVe0=
+X-Stat-Signature: mmwp8d7z1e3upkrjs1nt7c73mtsoqjkn
+X-HE-Tag: 1782914248-251706
+X-HE-Meta: U2FsdGVkX18t4yPlmf0BIvLFPbDw7z10UbQp44tmVjujWpNTaz6uyYXj4boR9LqWg+kQDNf2ADeWmyh4iFoLvUWzQYWn/fgBmJJeSkb0I00m7zkWtQtvdqBltzArzvt56ytROEyvr8jtpUqRfpaQVcwIFSIj25QSyPSQoKaFuwPiFw8CO/MaVVw42cHRviGDBV21VSC1PqlLRpXU8SwL8tVtbSXHcc6ouTWcdW/8+inJUqf+/2jx00uv3LindYneV6izTdIsa4d13Eu5P/4p6RQklrw5YDUyey6eLhi/fZfyKRIm6tQ2pRZWuK0Y3Joz/HaBdCqTOtW17MtQHGnz4FcGkYpN2IMD8FaJvPtxqeFAvh77pBQPRMR0D2ehR6XdEE3GMt1sB9mSQVsleBjl1UeYIiplF56TZxRawCkMCM9ojYckP2Nzo4Chasc4aVJQHcUMQBHoR8snBrIwyR3EDDwYZkbHj6cpIDfI1x/4xSelGWkmKtLEaj6DsZu6D5ud4g3Pe9Sa80dxmylRzip4bqwpazq+K/LyXdjQpAvGHGvPl/NPZzK4pQvMwkemcb64KuCnchIaEjLQtQ+36TC6lL+VnQgVyu6KoDyUA11vgyEr4kV0Xzu7PQ51k8wXUYu9IM2sezEhCAfWPxw9ojDL9OVr4l9oxuNbcPHn6N3fWGjkEquGxlqQPEVXww83DSh8uAGl1p48jUGyQsvAULyhx063z6C/kSX1hmaL0hQQNI4v71yHGTwoIHBg6KI2A1Dpp85ExVjy5tZNUlnwINFlxxnhXl3a/jOS7+QoDmMv2sTU1RmbTBVap8Jr3CwcJQe7pvKduT0yR8NQd2MFEritKrYKJ95egpgnsWqwLFy9ihQntig7MI7esum8JdZhNW/nKF8Aaoo6jqZHJe07Xz+0ySaoCstwRUU0DqF68T8Hf1kyBq8eSKNYeIXmd9CxQY0Jds6a2JKHQx0aYtF9Tdo
+ WhQ2PK7b
+ RTNkQvNj6W4gLDrcIrSXeB6oYy99nLFajJ0amoc04HgR4Et8K51gNn0NI+CeoS35065ZjL8uUluXMykAUaw37z5VmIEnN39vPnvLUv2lFUcEqf6ZMDT2Izl98JJvgoTBwMTV9xCFdF610rTZaUFaOEBXytSSyRsl5kJcpM02xgYOR8UV6hAQmoOyIezpapy0nlYjbpFDkHyU3ocOJWfXNNAtNHt4pxVuhdn3ShtM9/IANgPnbDOD80b79ZMhon0ezR6e7P8Sxen1AytIeGV8KxD9Axk7dzxlO+wsT29XhAVYZ2kU4KI34+kjDAOOWZX/P+9om4S/NM1pAPALbUUR0THCjLrlTtxuMtmu3QHoKQAgngoa1akN2lGbJu/m+vwxn+/10
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,64 +99,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a (small) part of larger work of replacing page allocator calls
-with kmalloc.
+bnx2x_mcast_enqueue_cmd() allocates memory for mac filtering list using
+__get_free_pages().
 
-My initial intention a few month ago was to remove ugly casts [1], but then
-willy pointed out that Linus objected to something like this [2] and it
-looks like more than a decade old technical debt.
+This memory can be allocated with kzalloc() as there's nothing special
+about it to go directly to the page allocator.
 
-Largely, anything that doesn't need struct page (or a memdesc in the
-future) should just use kmalloc() or kvmalloc() to allocate memory.
-kmalloc() guarantees alignment, physical contiguity and working
-virt_to_phys() and beside nicer API that returns void * on alloc and
-doesn't require to know the allocation size on free, kmalloc() provides
-better debugging capabilities than page allocator.
+kmalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object.
 
-Another thing is that touching these allocation sites gives the reviewers
-opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-another size is appropriate.
+Performance difference between kmalloc() and __get_free_pages() is not
+measurable as both allocators take an object/page from a per-CPU list for
+fast path allocations.
 
-For larger allocations that don't need physically contiguous memory
-kvmalloc() can be a better option that __get_free_pages() because under
-memory pressure it's is easier to allocate several order-0 pages than a
-physically contiguous chunk with the same number of pages.
+For the slow path the performance is anyway determined by the amount of
+reclaim involved rather than by what allocator is used.
 
-And last, but not least, removing needless calls to page allocator should
-help with memdesc (aka project folio) conversion. There will be way less
-places to audit to see if the user was actually using struct page.
+Replace use of __get_free_page() with kzalloc() and free_page() with
+kfree().
 
-Also in git:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/drivers-net-ethernet
-
-[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-v2 changes:
-- split out ethernet drivers from a larger set 
-
-v1: https://patch.msgid.link/20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org
-
----
-Mike Rapoport (Microsoft) (4):
-      bnx2x: use kzalloc() to allocate mac filtering list
-      ice: use kzalloc() to allocate staging buffer for reading from GNSS
-      sfc/siena: use kmalloc() to allocate logging buffer
-      sfc: use kmalloc() to allocate logging buffer
-
  drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c | 6 +++---
- drivers/net/ethernet/intel/ice/ice_gnss.c      | 5 +++--
- drivers/net/ethernet/sfc/mcdi.c                | 7 ++++---
- drivers/net/ethernet/sfc/siena/mcdi.c          | 7 ++++---
- 4 files changed, 14 insertions(+), 11 deletions(-)
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260630-b4-drivers-ethernet-b5e085b98ab1
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Best regards,
---  
-Sincerely yours,
-Mike.
+diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c
+index 07a908a2c72f..d560524d317d 100644
+--- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c
++++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c
+@@ -26,6 +26,7 @@
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+ #include <linux/crc32c.h>
++#include <linux/slab.h>
+ #include "bnx2x.h"
+ #include "bnx2x_cmn.h"
+ #include "bnx2x_sp.h"
+@@ -2664,7 +2665,7 @@ static void bnx2x_free_groups(struct list_head *mcast_group_list)
+ 				      struct bnx2x_mcast_elem_group,
+ 				      mcast_group_link);
+ 		list_del(&current_mcast_group->mcast_group_link);
+-		free_page((unsigned long)current_mcast_group);
++		kfree(current_mcast_group);
+ 	}
+ }
+ 
+@@ -2713,8 +2714,7 @@ static int bnx2x_mcast_enqueue_cmd(struct bnx2x *bp,
+ 				total_elems = BNX2X_MCAST_BINS_NUM;
+ 		}
+ 		while (total_elems > 0) {
+-			elem_group = (struct bnx2x_mcast_elem_group *)
+-				     __get_free_page(GFP_ATOMIC | __GFP_ZERO);
++			elem_group = kzalloc(PAGE_SIZE, GFP_ATOMIC);
+ 			if (!elem_group) {
+ 				bnx2x_free_groups(&new_cmd->group_head);
+ 				kfree(new_cmd);
+
+-- 
+2.53.0
 
 
