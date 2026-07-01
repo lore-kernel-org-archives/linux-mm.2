@@ -4,129 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E16C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:07:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81900C43602
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 15:12:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 254E76B00A6; Wed,  1 Jul 2026 11:07:17 -0400 (EDT)
+	id 0DCBF6B00A3; Wed,  1 Jul 2026 11:12:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22C726B00AF; Wed,  1 Jul 2026 11:07:17 -0400 (EDT)
+	id 0B4606B00A4; Wed,  1 Jul 2026 11:12:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1449C6B00B1; Wed,  1 Jul 2026 11:07:17 -0400 (EDT)
+	id F34F16B00A5; Wed,  1 Jul 2026 11:12:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DF0996B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:07:16 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 86822A03D8
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:07:16 +0000 (UTC)
-X-FDA: 84940536072.05.A2D04C4
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CB3BA4000D
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:07:14 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q7veYNnl;
-	spf=pass (imf07.hostedemail.com: domain of 3IS1FagYKCOgcOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3IS1FagYKCOgcOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 804F06B00A3
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:12:55 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E4469C1F4C
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:12:53 +0000 (UTC)
+X-FDA: 84940550226.02.F8FF4A0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B9C38120002
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 15:12:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=s81qyGVj;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782918434;
-	b=hCOSOhIxSgBhrf4Ysom/jDJXAqpasgrrz5XWFheccm1YjRlNYBZ1nzP9iTnTOmvkzSZopb
-	ENqHwSwwYkcG83K+02gLPiEh/TiZ7BNJcCvnRYxsc6s2ejQrm7acdn7xicL/qUbmGm2mfA
-	+cAKsD6DnrlaoI42mEYTl0hdzemqBvs=
+	t=1782918772;
+	b=KnDv2GHIZAMFSjcd8PJdk2f3tVzp4l6Eh5z6i0h+gd/5Q3l/yzbkrGh0H2FIDV26W75G2M
+	gOvqGJ7W1mwK9HzT6SWd0pez4nvwSR0RFVvUQGI7CTYPSFWIZesvdTi3JCNW3GXYRfVd6u
+	4srSIkp5UKCMvsSbbVYR98D0jp3Usoc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782918434;
+	s=arc-20220608; t=1782918772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=35ip1FXhxTsr49Tf+Elt4WaaVNO58PfZuNT2YrZrg5w=;
-	b=xj5GtMMaOa8uoPGyvVwlQvKLqjdpd0J3BgaT0LIeJgsu91vg6hnqMyomWs2iMqV0e+C3Eb
-	7WHuoTu6D8XnJ0aR9vbk07uumFUxpM97Ho2LxQ4SoJ1gKrOkKZEfWiQnDcIZHdSuZTMDRH
-	hpl01APWb9m/PhirOxFH7/DcqiuNyRE=
+	bh=UJSjfkB8u87VnE4SEpbldG79jYcWKV5CqJWF93HUm6Y=;
+	b=6fQUhdroZINE6xmYivuM+pk70gn3s60uWG12tn4Vq0Ww1djqngHC67UEQ9jYs0fvFol+su
+	gOrYbi2q9NKWfsIr7hCt5xw9cPAgZ21atSeMkg2mPpF44HYLX1+v4JsSb4nESrAaxwNTJm
+	QvKnjVmdYQ8NBNhjquIjjNRurvYkHqg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Q7veYNnl;
-	spf=pass (imf07.hostedemail.com: domain of 3IS1FagYKCOgcOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3IS1FagYKCOgcOKXTMQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c825562f8bso8485295ad.2
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 08:07:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782918434; x=1783523234; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=35ip1FXhxTsr49Tf+Elt4WaaVNO58PfZuNT2YrZrg5w=;
-        b=Q7veYNnlgynlKIH40BUT4vCGDV1jTVn7YITYwQBt3XG8NfLO+jFSEW8/+VzlUirUcK
-         Q0fPb8JmyTwcweZdbJlXsckpS+oNw19vxUXG5R8OCrGhgtFBLYgCXwV6jpK6mNu9jhpS
-         /QuW3/aS+UV07WlqoGysWw6UrqqppRLPoNRwB8pNxJvvwotGM1yDCkBr1xmhr43sOwU+
-         JIE6U61W+JVyjy2hYZUITuYhN8HJ9rpAjP5fGUKpVMwqZle/ZsBlungGj3lkReelHaqK
-         arMHck26QJQFr6ZolY/ojl4Ej3TKThLfKZBp0QuuwzS4/T6bUYGgNa5F3thVC+dKu52V
-         X0+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782918434; x=1783523234;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=35ip1FXhxTsr49Tf+Elt4WaaVNO58PfZuNT2YrZrg5w=;
-        b=HEdym+6DZPB86UIQSDK6vRuKBq0e6o3OR4rQDKrHZWE9rrjCmjPuToeJsfVQ12TZoB
-         TPzGDdQwGCvA5GSFb1iJFOkvTq2SS8uyfGFcv/T1i481jEbl+kOeGyfXV7hg6kJvm3hw
-         bZS1w7nm0+J61T487amLCdXjZ0j+eJ+KFagEvzszvFBBeJyUtDhJwh/tk4Q+Xv8p/puy
-         oW1+Evf7d1d/6m5n1JlHSz12WHUxYgcROsx7fM+FtQoUUXji0o3nLnYHhyKLnI8mdpdC
-         4l9BfUycv+CHkHG+qnd2xeiC8O5mpwLqHWq8o+tVVUi9/z/Hd28D2xs/H+3IXf/yIEdb
-         hBHg==
-X-Forwarded-Encrypted: i=1; AHgh+RrHMolIb76S+60s6cncqbGSPYR2ElhOqPO+iyTkskpSVP2oO68x7PRGr2TePpMkRzvcXRGyU7yZ1Q==@kvack.org
-X-Gm-Message-State: AOJu0YxGo0lobcSh2U0ClEvfu7BHCjzaBKX7vIw1vyUhXZm7zGb1ZkWp
-	me5Q2xV6cAxe85sp6WK4BEx51+BRmj3pu3zwlaolOzTs1B3OkWSvJl3Lzg1ddf2r/RWdXzMklc9
-	HInVexw==
-X-Received: from plbl14.prod.google.com ([2002:a17:902:eb0e:b0:2b0:aef9:a5a2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c50:b0:2ca:e5c:7fcf
- with SMTP id d9443c01a7336-2ca7e654686mr23268045ad.3.1782918433131; Wed, 01
- Jul 2026 08:07:13 -0700 (PDT)
-Date: Wed, 1 Jul 2026 08:07:12 -0700
-In-Reply-To: <e5876e41-a11a-4d5e-958f-9e247c19d387@intel.com>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-7-9d2959357853@google.com>
- <a1b06afb-af6e-4666-8c7d-990e7fa150fa@intel.com> <akP9Qv_IPVEh7GAB@google.com>
- <e5876e41-a11a-4d5e-958f-9e247c19d387@intel.com>
-Message-ID: <akUtIDdRiU9YOr8-@google.com>
-Subject: Re: [PATCH v8 07/46] KVM: Rename memory attribute APIs to prepare for
- in-place gmem conversion
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=s81qyGVj;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F7082309;
+	Wed,  1 Jul 2026 08:12:46 -0700 (PDT)
+Received: from [10.57.81.2] (unknown [10.57.81.2])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 08EDF3F85F;
+	Wed,  1 Jul 2026 08:12:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782918770; bh=w1BNEJPXIDy9algqgCKAxD3B5zfQNFh2VUrM/S84y8g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=s81qyGVjJ0IVzVYP6kgfRrvQWpL9l+uqqZm7X+9jKd1w+D7OUr1SGKAKVhYBxXyYZ
+	 ABq8+8QLSHBgSAHpKgBQPiyFEnYv7x0xspwb9aG9eXz7fswyMYB/DrWoyWqEOXw7Z6
+	 gw1tLyTU4RaNk2fMGekvwKRKsUuFaykZSz/rRAGY=
+Message-ID: <fd31a9bc-f2be-4be7-ac4d-c79f2a117683@arm.com>
+Date: Wed, 1 Jul 2026 17:12:44 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/5] selftests/mm: refactor pkey helpers and fix mmap
+ error handling
+To: Hongfu Li <lihongfu@kylinos.cn>, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, keith.lucas@oracle.com, maddy@linux.ibm.com,
+ usama.anjum@collabora.com, yury.khrustalev@arm.com, jhubbard@nvidia.com,
+ joey.gouly@arm.com, zwisler@google.com, hongfu.li@linux.dev
+References: <20260630073235.3802271-1-lihongfu@kylinos.cn>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260630073235.3802271-1-lihongfu@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: wjhun7kb1afaidnnqse6irgphbuu5q5w
-X-Rspamd-Queue-Id: CB3BA4000D
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782918434-767535
-X-HE-Meta: U2FsdGVkX1+CbRtK2Rv8Z67/LCfAkRg4eFIADvpvV2FMDW/uo+RebWmSsm2RzgQL36cVB6BcpNWgTTGj+NoYpQeetQ80lPuWq5nXtb844t50pI9i6tb0jQApy6byPWzGNbkR3xIU1eWjr/ff2q/v3Cqwk6+rLatBVXJXacDWxEEpmM4lWjIx6W8elrluqHXjtA3mnPkPex3vPvjlCPgz+NkElDr6xWNiHgJi8a0vHZKXeTO1g2DZq6ZNF1Cc+htZI5TLDjUQLbqSa/sJGtvzB3P4qSU1BPJLkHmZC2cQAWv+LQoPUauEOJEquQnya6iQw7WyJVB2CXBMrLJj1G2us2C5g/JclJ3yWSvN/5TTB97ftws9eu7afT9/5/U9Zn66HTcEmRGABD3qwUwIG6Cvhw7LY66hfiXqz27bmq1uTIy/cMZIhNQD2apbZ7eC98D2Lc84D9wq7/0HokOALY5tmekHlgJXsNMwb+OI+qlDUp+/DFHgXRaFpzTrnx6WcnvVpcMbzly4jWyhziENBS31dJcgQEQY3mHeAkbdTaBwXP/GiUguthFifobPhASdLpN0X2QYvzRnTsC8uxFNFDR1OfeQFzJeaIiVTLMB5CsgUQPFN4Cv42LsG6/Vrjl7mF9C3uIbXjI/p0zVe3clsuGDvYEgWBRyxKf+j41srHATMn8ZPYskBjS8vvQx7fW7ZjiU44cE/nfhkbY4hOTz+7PLZdiG4uOvrGBbAqkkksNAAxnr4w7UjE8aKXWQijYruiX+WDdWQRpo++KLO2Fg75JKiRfeiE2Lg223TViHdkxWjLDyJ3x2eC8L3l5Vod3+zQYRUUwEkQ6D7OZreoVYQ8061taqjH9Qjp3ncBH3Ml+U9V4jiYYy3kOj1p2uPhpt1LHZihQbPA58Oj+J4HMTGJSaUo+wcomm3ndRBlp94SVooPdrZhJj3cZNU2YkxH9PLJJg+yRnR7UpTNljgCk3znl
- VodOcwuX
- cDSEZ+mA7Yz0/b+EqfzltdDZjSlqIGJT50Qdx/S1gQPDup8o220jYwzwMJwovz/0KkkgxRl9Xb2IOI9TYOlojsUdxL6N4fp4SvKSsm8z4zp6nYC1Pzygt3JJ1uXqdthlhgG7wpQEkRYJXQ6+ks5/wg6Bp1Cpf2O8O3RWtjM5+bC01L8W/ksoqAJ//ENalSyt0ZoiimO53o1FeWQ8xvcwb3FEzRlS2H4QMVN7JiksogTyek3SDOAU5Lnj96Qv9MJImC2oWSyepoIF48dnHfVwWrelCHTJNWBvtWDFF5heZd2fvhMwKwUrX92bprN7dcd11rcfYZOzkhTXlv3Au6vnowxMBS6jpxvBZ2fNZ+grbF9436ZlzlXtU4t/pnI/bEa0e0ViEI3mf7t0XSNz7BrqBqcrTtezIRNVIX6q0VNO9Moh45ydZggnsnqkHDTZd7oaoeudysqvC41iIgK9l4JCpFzs+WGHG17WWmkcV1rJsZXFY9uPMKoMCWRUoQw/2KUPmP8EAX4k2i06pNJN0/W7mu18Y2PQp8IgOhLEEy7LrWE9SkpG9hzec9rffYty8Lhwu+WSebkmyMbeTKhKQ01SrhsS7LA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B9C38120002
+X-Stat-Signature: ugmuhsmyzerz4uiieh57dkrcuxa53ngp
+X-HE-Tag: 1782918771-579454
+X-HE-Meta: U2FsdGVkX1+qQQ5pPbyeX3RmdT1gSp8R3PtKuu6GUwgCfNdFHtH4T1Z4egwSCVP+7wGje1368yuHR45K6ctysLBel3+I5sjkeD0WN8OJkhHqYlyThEekgnSaYlJDfwIWBSDNDkMpozzdAqUZuAz+tYFnvYASithchCKMrU1L5bG6Q+oAAJBd5jc3R9/Dg9SGh+5U8PaScPOlwxnmZqKAt0uteclOHn64TzBwfySAI8Q/jC9YKlDoihBspLx6jW+zsTan5fxiCEL82+KsGnY6hXTURakw2Xa9+tt5jb+hwWNG/eW95oXRszESeMnuGKPiybEw1gRLXJguhK4GU0aFLPvhi5H9X8DbNkNBAZqeXB9SHdiR68CbyNFkZhO4TT5tDE6Cu3xT2bcdVIUFlQI4krlFRyi/B9sHUDQBMW2YrvCUao9RDyp7LVELK1hNanRL3zdD2PkgAz65iEtdrmKykZY+PRKYqpOZNypgpXa8eXSJdIkPDmxkFZKD/k5pslmSNrWWwrecjR5/RfoxiZBwmnZPYfAmB2/t8Sw5WeOd2Z09jtoRYaSPFAcSXuUzeUS0ZdxcXa89YjJGKakmamxqvoYld2yhB6IWRgD/sypL83nH2nKPczJeWgQCQ6hAQ1z3K29cVVnkNjiWmeOwsr5SW2pXYgx/d0Z/wxlX5GOdnA8hLSnNXRU89+k9mb/ycN//UahS8Zi3mHp7VHPGMkLlq886KNYVyqDniVMbUeRvGYulyjBUYZN8Q1tOArRhe1OLKWYpagB+AOvG7rAePaSFRYjuoHISWVIL2mStshXL7+VR2jnT/vTfI/u8iwT8ZrOp+scCqKZhlVUHwWcnSxJSMwFwlhTGwGBAUzeIliGo/V4EZ/T+WtH8np+hCKGkNvWtHLrWRIKkZ6q/sdsnVEPqC4oZeIL2H8pT72mEDTsNrhjsahdqKHTJC++URKL4JMObjvh9AXB2XIkFKoF83w7
+ y1alP1Pe
+ LGzyJxSUKuXyXgNENB9gReUx1fSZLWWGARXzYhyCCv3XJy7/H1ojDlVDKfQLhmYopmjopCH7He5sx422ewhWrsple6CukoLbmP2eJr04hd1I8k0ewKLsJuEAt6gof1EpP8dfsRoB3nQ347BOLGxvUf3TyRXUVrPa4X06fFuRAB0tLAUjro5JPxgj3qbD5nH7mlGziZ36Mx1YHklBZ77B8ySas2kxNMmDAKzGxoxPWJiJDive1/ByCzEWyFe7wawAy5kiebyF7rdAbtIHjoQz0ge8YIBcjA4KRkI528OdHAtCTqYUqM6aqt2fVxxgPyyhblHBD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,42 +95,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026, Xiaoyao Li wrote:
-> On 7/1/2026 1:30 AM, Sean Christopherson wrote:
-> > On Tue, Jun 30, 2026, Xiaoyao Li wrote:
-> > > On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> > > > -bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
-> > > > -				     unsigned long mask, unsigned long attrs);
-> > > > +bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
-> > > > +					unsigned long mask, unsigned long attrs);
-> > > >    bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
-> > > >    					struct kvm_gfn_range *range);
-> > > >    bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
-> > > 
-> > > We have
-> > > 
-> > >   - kvm_pre_set_memory_attributes()
-> > >   - kvm_arch_pre_set_memory_attributes()
-> > >   - kvm_arch_post_set_memory_attributes()
-> > 
-> > Yeah, that's probably for the best.
-> > 
-> > > left, do they need to be renamed as well?
-> > > 
-> > > then the interesting one is kvm_vm_set_mem_attributes(), which contains "vm"
-> > > already while it means "vm ioctl". Do we need to rename it to
-> > > kvm_vm_set_vm_mem_attributes()?
-> > 
-> > I say "no" on this last one, the fact that the function is scoped to a VM ioctl
-> > is enough to communicate that it applies to per-VM attributes.
-> > 
-> > Actually, since it's a local helper, we could go with kvm_set_vm_mem_attributes()
-> > to be consistent with the other functions.  That just leaves
-> > kvm_vm_ioctl_set_mem_attributes(), which I think it appropriately scoped.
-> 
-> If we finally choose to rename kvm_vm_set_mem_attributes() to
-> kvm_set_vm_mem_attributes(), I think the trace
-> trace_kvm_vm_set_mem_attributes() needs to be renamed to keep it consistent?
+On 30/06/2026 09:32, Hongfu Li wrote:
+> The main changes in this series are to refactor shared tracing and assertion
+> helpers into a common file, unify both pkey selftests on pkey_assert() and 
+> per-test tracing for consistent diagnostics, and add missing mmap() return 
+> checks with MAP_FAILED used throughout for readability and consistency.
+>
+> Hongfu Li (5):
+>   selftests/mm: move pkey selftest helpers to pkey_util.c
+>   selftests/mm: unify pkey sighandler selftest assertions and tracing
+>   selftests/mm: use pkey_assert on clone_raw failure in pkey test
+>   selftests/mm: add missing mmap() return checks in pkey tests
+>   selftests/mm: add missing pthread_create() return checks in pkey tests
 
-Ya, good catch!
+Ran the tests on both arm64/POE and x86/PKU without issue, so FWIW:
+
+Tested-by: Kevin Brodsky <kevin.brodsky@arm.com>
+
+>  tools/testing/selftests/mm/pkey-helpers.h     |  4 +-
+>  tools/testing/selftests/mm/pkey-powerpc.h     |  2 +-
+>  .../selftests/mm/pkey_sighandler_tests.c      | 81 ++++++++--------
+>  tools/testing/selftests/mm/pkey_util.c        | 86 +++++++++++++++++
+>  tools/testing/selftests/mm/protection_keys.c  | 95 ++-----------------
+>  5 files changed, 141 insertions(+), 127 deletions(-)
+>
+> ---
+> v8:
+> - No code changes (relative to v7).
+> - Updated Cc list: added developers identified via `git blame` and
+>   `git log` on tools/testing/selftests/mm/pkey*
+> v7:
+> - As previously suggested, wait for v7.2-rc1 and rebased the whole series
+>   on top of it. No functional code changes.
+> v6:
+> - Add missing pthread_create() return checks (new patch 5/5).
+> - In patch 2/5, call tracing_off() at the start of test_pkru_sigreturn
+>   before the SIGSEGV handler is reset to SIG_DFL, to avoid leaving ftrace
+>   enabled on crash.
+> v5:
+> - Use ret instead of child_pid to hold the return value of clone_raw().
+> - Make tracing_on(), tracing_off() non-static.
+>   Remove cat_into_file() declaration from pkey-helpers.h.
+> v4:
+> - Base changes on top of the latest mm-unstable branch.
+> - Split the first patch into three:
+>   patch 1: move pkey selftest helpers to shared code;
+>   patch 2: unify sighandler selftest assertions and per-test tracing;
+>   patch 3: use pkey_assert() on clone_raw() failure.
+> - Use ksft_exit_fail_perror() in main() for mmap() failure.
+> v3:
+> - Use pkey_assert() for remaining sigaction() and clone_raw() error
+>   checks for consistency.
+> v2:
+> - Update commit message
+> - Move shared tracing and assertion helpers to a common file,
+>   replace assert() with pkey_assert() in sighandler tests
+> - Drop assert() from main() in protection_keys.c and add a proper error
+>   message instead.
+> - Link to v1: https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
 
