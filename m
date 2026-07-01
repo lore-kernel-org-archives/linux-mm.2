@@ -4,99 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 289DFC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:47:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3D97C43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:50:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA93C6B00A6; Wed,  1 Jul 2026 09:47:06 -0400 (EDT)
+	id 934CB6B00A8; Wed,  1 Jul 2026 09:50:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5B316B00A8; Wed,  1 Jul 2026 09:47:06 -0400 (EDT)
+	id 8E5536B00AB; Wed,  1 Jul 2026 09:50:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4ACC6B00AB; Wed,  1 Jul 2026 09:47:06 -0400 (EDT)
+	id 7D4146B00AC; Wed,  1 Jul 2026 09:50:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA1636B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:47:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1AACF140399
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:47:06 +0000 (UTC)
-X-FDA: 84940334052.12.4E5F590
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C6F8E18000B
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:47:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=AswG+Zxp;
-	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 536C96B00A8
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:50:49 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B1D914028F
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:50:48 +0000 (UTC)
+X-FDA: 84940343376.24.14AFB46
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DE2DFC000E
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:50:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nWWc9DcK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782913624;
-	b=0UD8M3wrKh1ybhLUNYxwJYILkqIRK7kbvCwIPKSfTJvqFnLXu037aFM7Be+A95Qbvlc0Eb
-	Ezb79D1gCeosE9xKyeX8Hu0dJyZFnIeljdJpyxbXK7ZFJxgy9Gn4ErtVoj+JSaXF5D6kE5
-	o1mb0kI5k5v/eMpvkF4qiesYmwEjxp0=
+	t=1782913846;
+	b=CqWshDe3N+AIoWM2s2XtI4fGKGabMva3R5QEQB1Eo7NKOUpiMULAfVsCgtasaegxHAk1Vc
+	sqXAJJYhgjbB1n6oQgTjRclryVwnxyStUJ71obk97msaYH9v8TaAvaNerPxZgpdetJhVPS
+	/sqLixeJiRtutU1GUZ/D4p74Z4yiiJk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782913624;
+	s=arc-20220608; t=1782913846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=wO7ZZiQGguH2N/obhhx4w2CpdeZ8/YXIgBvKpNRdF9w=;
-	b=nXJL3m66lI0nTwa2DseRmbZnUOSHeYmw5XM2xgBb/kPf8UU6gxyUsx40YgivA9jIQruB1F
-	/0FC7viwaDP08KoUUvRnBCLFU677zIXRU+P45qsGb6U8tTRmL8c21xqGtkUXWI2cdwcbEZ
-	SH/js9jRAo4cqntzIdW6oZbGh6U78GY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ie8R7oVh0jgJpbjerp22bW6nCIKQRE3693vV7WPgBXA=;
+	b=t7+wteD65HC1KbypuoeNuBdaa3/TfVV486c00UkGq/2mPdNQKLchmQdfje072mGvPaMSeg
+	/GpVXTLIIdRL+Edh7OdDd3xGXViVMY8GLEZpgCU8YSKxp5k1NSiCc9GJ9EbWepyxvZmJwt
+	ugnCP12Z563mBjlGSFCWOEVHZBEUmXE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=AswG+Zxp;
-	spf=pass (imf16.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc
-	:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=wO7ZZiQGguH2N/obhhx4w2CpdeZ8/YXIgBvKpNRdF9w=; b=AswG+ZxpLGFSU/NE8doEBQNmU+
-	nt5f4hvHcVNd/0mrbWIx/i/OuSQqdxeROdlx7Zj9hdLlZuTVnHHd23uuAzr5nsSGcCSTeTnQb5fuO
-	bRGj0evMTg/WpRAEcVLc8gz8Z7qlTYC4S65bz3K1zXl4f2PtK4Ty3gZFV6ngMUtgtD1QHOC35L33/
-	0ZYF//REQgP9/P3njvGHnqPE/NI+8W4tsZrzozJgIv9aE/v/40VKFntkdChKXoE/Yv0ZMkxQHfWX9
-	ZC3mqGuyxhvj9XgqDuDHG4VhwM03xqf7qDNeKemsusP7CueD4CiYFabOWDnBvlgii9t3fgIkZO/tt
-	0Eyi0hFg==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wevH7-000000006qJ-03pK;
-	Wed, 01 Jul 2026 09:46:49 -0400
-From: Rik van Riel <riel@surriel.com>
-To: linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	yang@os.amperecomputing.com,
-	Rik van Riel <riel@surriel.com>
-Subject: [PATCH] mm/huge_memory: set PG_has_hwpoisoned only after new folio head is established
-Date: Wed,  1 Jul 2026 09:46:22 -0400
-Message-ID: <20260701134622.3152896-1-riel@surriel.com>
-X-Mailer: git-send-email 2.54.0
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nWWc9DcK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D8D5F43F1C;
+	Wed,  1 Jul 2026 13:50:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E291F000E9;
+	Wed,  1 Jul 2026 13:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782913845;
+	bh=ie8R7oVh0jgJpbjerp22bW6nCIKQRE3693vV7WPgBXA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nWWc9DcKOfk9brqgIj8O56He2iH5VsBU3XE+1yCaLLVN+LUcuTKToV/2wwChCwT6S
+	 NlxpFP7sq9JeVsc51fuD5bejBNcUsvdPbU481DWQZtb46PqEVF9yAeRTsLBp8rpBHQ
+	 yaWaqdLYGOQ0JAh+5D9PFOvpuNFEPwDMelKnt00yu61YbFuhKyazGbcPsPrFwiPp2x
+	 2HyADEiPSDGo4fppXAQRFo8JA/ZI7p/0NFBNIJwFTk21S0USj2Dx3X06T6eEvvmY4e
+	 TucbpRuXzf2K/OSioOp/8nmSPxsojrfbx900L1GLuBEcMfNLwIdlXV3HG+f5RpWJjg
+	 Mxl+PGg+RUZHw==
+Date: Wed, 1 Jul 2026 16:50:40 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: John Garry <john.g.garry@oracle.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
+	Brian King <brking@us.ibm.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org
+Subject: Re: [PATCH 2/4] scsi: proc: use kmalloc() in proc writers
+Message-ID: <akUbMCOyt2NHNWCM@kernel.org>
+References: <20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org>
+ <20260630-b4-scsi-v1-2-494fb37ebe7b@kernel.org>
+ <9d23ada8-8b43-4ab8-beeb-b51c99ea0eba@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9d23ada8-8b43-4ab8-beeb-b51c99ea0eba@oracle.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DE2DFC000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C6F8E18000B
-X-Stat-Signature: wtybn8ox34ionha1qgy9hyhs9r6dnm15
-X-HE-Tag: 1782913622-187902
-X-HE-Meta: U2FsdGVkX1+7Z+e/GG5cwWrN7/MEFrh9kiXM5KA+SMea8JFd322sH9HE+u0qYFOeasaar+6m34m/lP0Q8r5xuWMG81E6dPvQKtvc8mZej8tHqAI6k7EU1eflAP/GSHgyAkIMQExTjHbGAMlFlCEnKe7+f+3QTwuLJ0XhtZSxf/zmvd0rhtNixxq/wyJAlG+z9voa31KLXfXapv5cdPfdCJpNLRkWUP3vBYJtNnWesqJqM7ZpuY1uy2Z99sjPYThtSgIO7TZMHRu9m3C+K7KlW9IyHWSbFi4vZPoE68gaeSsyqHE8B+6w4f7KO65h8EqlJxkPAAh8rRAPqdz7u2lWNcn2mFWdMkIFjI377d2oJ5Nub+SMUgf20gFf/thHMoznv7CclLIQW/3usL6BlvH+Ea0KYxi3cPL3IxzDxQSAnZNY1TqIsO4/Icuf+py79WfYxijX9mcy6TUOPe1QFHx6n7oc9qVglwgkkH6HlJU5MdS+wQ8k+27/3WYPoRxtClb/aVbprTBjIE5dhArBB/dBS898FmH7QAQyqmA8PV8D/BtxWfVCkS7SSgrhaV5X+vChejRTn3+3/a0enY/mDMBm+dEv+RSlH8SR5VKxdT4aSZ3fg3YP9LtWzSTpYu+rtBWsomIRoqG1rrz9kW153qmwC+QweZL3AuO7q7NgZC7M3ISxJg2LBEtslp1AZs1QMqJoFWZi4o5GjFDn97Qjxcr9EfaPN+NyIGpfKfz7g4xEcninfQk0UyQVgKKRzYNgbPXe+KAA0/cEC0n6jf8KiLAL9Fy4MYgiODgJ5qva/5O5FMvGjL/gXFuaOdIAv3sqOyjwYYACjXu/3tvpz+7ELYDkhXOzcp0sRljuiw16+aZPQgykshllYEEvQdAMrvw9OnIvxy1HUqiAsK5vhU1x6f+eBqHxrtldkDtO3hBxwhKUo7jAjxYRgyKmSWTl92CU86eekwsIt9dBtPkwJdvfMiy
- maBhitfB
- RrdHAUKMBSs1wv6UgNUbsI0bBzfj3DtvICksoH/cn5+PEoxRv07EFtiAEYSeF9TOz+Mj2WT0jNzJ6Ie5QvKpmZAC590Wc+aDOAdYNfi4iemfayN5FGJ4XQ+AHigWU0GC0xgd29SC2pIIJUCdydWpB7+stsXg88GWYqFwYl6B9JU8C4LyFFusTGsiwfFJZNHC0JBLJKHvqjCYWoeZidyDol3+JUhB1KFXLbMrDAl3soMUeD1ycFDkKDikDI506sHWaUe7BXQsD9xAerKHtRDmR/ryjqjpIozFXWkAmNsJj4zHwC5s6IdKSbRPaX+iwov6Am9fN
+X-Stat-Signature: oxj8b3gbuic7h43kcnkihfc1xcopkz98
+X-HE-Tag: 1782913846-468607
+X-HE-Meta: U2FsdGVkX18usWAK9qYLakkzPFUDlFdXhtxII56HXpCW1Ds5IonWUxg8q1eubpiT3QRSDTgcZChlJK1E4zqLR6qsSbZLEuDOPcgb8vrjzpDEkeQnKn3mXwRF/fk0NJVALGHB9IRuZ+oOCQGU6zcWqq98OlgGqPkAMgegr4bgB8qDc/iDHxt2rVLJQKg/bXkcJBhXpNlr6XzUCT0XYmru7j6rP76/w4xMSdvdv6CrhP4ULbLoi+VKFQ61VxOITcZtZmwFtKLlvHMwwF+8HHa2W3q5OsCdYth3PiaUBvaJATx8F2bgwzKbaqvIvjgj3MnsU40WSL5nwXTSBnHLlO8GWjqME8ssJi4m7PKsjGJxmO0XwNgGjvUZF4MBHgi46rc5QLB2b7kswWkHAQ5hSfsMfyW57Z4ZOnYVoO09BP1BStmwQFnqs/31VL4Fd9lvqGNIVuEfztG7WRlcjF8aBpMpxodNv0BAsUhOkPaplv9WSOD4Cto9qIcUGV1ugJyGVxwJqK3t7sg7Sw184tIiMh90DEqXuCCwTbtP1iRJXaijsEPNbKDVOPyrVhDD9xASOKlXYNOZ7frEAP9vuyxeyRuMGpjHg7uFyDPi4HpVj6gCaNyG0baj1MCb/3yNox48RfZJXBhTVQHmZbDboH2TIoMCQYvlVz/WD3ZXt8MFlTKmjyS+1+69Hh1mrtdi5J5QGbUjDvXaWAl9KopMY3rabzzo9Ep7tXR9Fr2dLC1uPdRzQ9PQfXhR5Kn35zU1J536wWRGBfQ8EaOqmbMq8DsGoSUw/CXUdTSmnnRX5DoEYFo1rGJHwiv/aszTHhb9VB3kJcVdHO9vWO04WE3a9BSz6M2xd1DG5DRv+ISsOHLn5voGeXjo5IhY4cr7A15e5t8pH2PuoYVrOJWLEXO9I/VaK4l5EpqIlAQgXrZq2nMZamTOESLEWMvga2r8M8aJs1Nrh6UzstUekkJOenX++k7KMzo
+ fEKFa1cP
+ B8rcrhtDw4lpY1L/3lMAXWIaveMCmcz+0oSiU4H8wqXb8bvJ6/8+wEj6OUbTX2JaIrdfF3WSwJqNGIE5+9f9gDAhZQlX33iuJ+zDdT3D8/NYT4xrpyBjE7y7yh5lWo6avVO/oLEhb9DKTY0h+kVwHnddja9ZrwzXPJ4z3jd5gx4m4OiKa20UoJyk6ylAas+jTgZs7oMATUxnoBBuKkouwlTeM1T6XmEbakSr9+RLRaXU8B8oMqkZkv7HR0WMSFwtdDmHKI4Fbv34fHUgUaeTqe4c7Zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,87 +96,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__split_folio_to_order() copies the hwpoison state onto each new
-sub-folio while splitting a folio to a non-zero order.  It did so via
+On Wed, Jul 01, 2026 at 11:52:21AM +0100, John Garry wrote:
+> On 30/06/2026 11:54, Mike Rapoport (Microsoft) wrote:
+> >   	if (!buf || length>PAGE_SIZE)
+> >   		return -EINVAL;
+> > -	if (!(buffer = (char *) __get_free_page(GFP_KERNEL)))
+> > +	if (!(buffer = kmalloc(PAGE_SIZE, GFP_KERNEL)))
+> >   		return -ENOMEM;
+> 
+> It would have been nice to use standard coding style checks for allocation
+> failures, i.e.
+> 
+> 	buffer = kmalloc(PAGE_SIZE, GFP_KERNEL);
+> 	if (!buffer)
+> 		return -ENOMEM;
 
-	if (handle_hwpoison && page_range_has_hwpoisoned(new_head, new_nr_pages))
-		folio_set_has_hwpoisoned(new_folio);
-
-*before* clear_compound_head(new_head)/prep_compound_page(new_head, ...)
-turn @new_head from a tail page into a proper folio head.
-
-PG_has_hwpoisoned is a FOLIO_SECOND_PAGE flag, so folio_set_has_hwpoisoned()
-resolves to folio_flags(folio, 1).  With the new compound_info-based
-page-flags layout, folio_flags() asserts the page is not a tail:
-
-	VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
-	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
-
-At the original call site @new_head still has the tail marker
-(compound_info bit 0 set, PG_head clear), so on CONFIG_DEBUG_VM kernels
-this hits:
-
-  kernel BUG at include/linux/page-flags.h:354
-  folio_flags+0x82
-  folio_set_has_hwpoisoned
-  __split_folio_to_order
-  __split_unmapped_folio
-  __folio_split
-  truncate_inode_partial_folio  (shmem hole-punch / MADV_REMOVE)
-
-Reproduced by syzkaller: hwpoison-inject a few subpages of a large shmem
-folio, then MADV_REMOVE (fallocate punch hole) on the same range, which
-splits the partial folio to a non-zero order.
-
-Move the folio_set_has_hwpoisoned() call to after
-clear_compound_head()/prep_compound_page(), where @new_folio is a real
-order-new_order head folio (handle_hwpoison implies new_order != 0, so a
-second page always exists).  The flag still lands on the same struct page
-(page[1] of the new folio); only the ordering relative to compound-head
-setup changes, satisfying the FOLIO_SECOND_PAGE precondition.
-
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Assisted-by: Claude:claude-opus-4-8
-Fixes: fa5a06170036 ("mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0 order")
----
- mm/huge_memory.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2bccb0a53a0a..ee7ecb3b45c6 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3587,10 +3587,6 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 				 (1L << PG_dropbehind) |
- 				 LRU_GEN_MASK | LRU_REFS_MASK));
+Sure.
  
--		if (handle_hwpoison &&
--		    page_range_has_hwpoisoned(new_head, new_nr_pages))
--			folio_set_has_hwpoisoned(new_folio);
--
- 		new_folio->mapping = folio->mapping;
- 		new_folio->index = folio->index + i;
- 
-@@ -3612,6 +3608,18 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 			folio_set_large_rmappable(new_folio);
- 		}
- 
-+		/*
-+		 * PG_has_hwpoisoned is a FOLIO_SECOND_PAGE flag, so it can only
-+		 * be set once @new_folio is a real (head) folio.  Defer setting
-+		 * it until after clear_compound_head()/prep_compound_page() have
-+		 * turned @new_head from a tail page into a proper folio head;
-+		 * otherwise folio_flags() trips on (page->compound_info & 1).
-+		 * handle_hwpoison implies new_order != 0.
-+		 */
-+		if (handle_hwpoison &&
-+		    page_range_has_hwpoisoned(new_head, new_nr_pages))
-+			folio_set_has_hwpoisoned(new_folio);
-+
- 		if (folio_test_young(folio))
- 			folio_set_young(new_folio);
- 		if (folio_test_idle(folio))
+> >   	if (copy_from_user(buffer, buf
+> 
+> 
+> Regardless of that:
+> 
+> Reviewed-by: John Garry <john.g.garry@oracle.com>
+
+Thanks!
+
 -- 
-2.53.0-Meta
-
+Sincerely yours,
+Mike.
 
