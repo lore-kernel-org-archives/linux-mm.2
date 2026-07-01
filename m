@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 065BEC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 07:52:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A64AC43327
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 07:53:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAA926B00A3; Wed,  1 Jul 2026 03:52:49 -0400 (EDT)
+	id 647866B00AC; Wed,  1 Jul 2026 03:53:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E81B96B00AB; Wed,  1 Jul 2026 03:52:49 -0400 (EDT)
+	id 5F8556B00AD; Wed,  1 Jul 2026 03:53:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D98AD6B00A5; Wed,  1 Jul 2026 03:52:49 -0400 (EDT)
+	id 4E8A46B00AE; Wed,  1 Jul 2026 03:53:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B41FA6B00AB
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 03:52:49 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B6831202A3
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:52:49 +0000 (UTC)
-X-FDA: 84939441258.06.45F3265
+	by kanga.kvack.org (Postfix) with ESMTP id 1466B6B00AC
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 03:53:16 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BDD812027C
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:53:15 +0000 (UTC)
+X-FDA: 84939442350.22.C9F8DBF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6B96020005
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:52:47 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BfkccUaU;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id BF453C0003
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:53:13 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZKWT4qxI;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782892367;
-	b=8abTbvaG84c1JgsA7Pfkjn3CyGoWtfSjNFB8f0gFrrRL+ero82STE5DXu6MZSwzlm18E6T
-	WvVf3n1GsjSylVB4H16CjkgjEpbjj52AccaxHaa4QIBo76lsAnVNrtjYsqlRqxZnETC7GG
-	Wq+tdoWD9I/xHyMFpjkyfz4qIwmNo+0=
+	t=1782892393;
+	b=Z1w620cspfcZGky77O5fcCOpn0rWGyMs+RZ+kDs/dt0d7PvzTCF+/1bovnwVa50+/kcDJl
+	dxVDL7U4K9Sx4U373bURFa5+Ebx6Srr2JioAw8aZK6o0mZtNr6FdPIZDw6R1w1THmPMI5e
+	T9dtcKBzjXwddJanfXIDSqbQTtH+uEM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782892367;
+	s=arc-20220608; t=1782892393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dKbP//8QY/1Wg8mxCuHp5FUFFSyQtjbWDh9zGpFf3So=;
-	b=fw9cxfFriMJh8wpqzoUTwmGNYqd0DK3FMqve4e2JwEVQcprsJ86smcu5EwyUA51uiIBdtb
-	fPvMhXwvm5GGMmQW8c8r5MKTMIxG+JZNQzzfr9Ettl2TwzgeSnO7iMgtBNYlkNHjugTx+U
-	NZfW7dkWBGV0vbHn+5NwycY0D6TbMQ4=
+	bh=6ZqOs+Ac3N8fel244wP+HYtt2C1Z8hNbICjemOVEohw=;
+	b=0CpNy8dcFxiP/I7s0FJ/JV1TEhPazCpZfzWXU+DJlvnj/SBf/5TNVVj7x1XTila36SyIxW
+	wO7cmneLKelodKX7Co1FyuOLqLI7OzMLPfC3UVQo503W9DJq3OHWF4ogSHNIPGpkYwbZOZ
+	8to62idt09yYQpNwksJi02LB756AVas=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BfkccUaU;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZKWT4qxI;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 85095401A1;
-	Wed,  1 Jul 2026 07:52:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BC11F000E9;
-	Wed,  1 Jul 2026 07:52:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1177841ADF;
+	Wed,  1 Jul 2026 07:53:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A041D1F000E9;
+	Wed,  1 Jul 2026 07:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782892366;
-	bh=dKbP//8QY/1Wg8mxCuHp5FUFFSyQtjbWDh9zGpFf3So=;
+	s=k20260515; t=1782892392;
+	bh=6ZqOs+Ac3N8fel244wP+HYtt2C1Z8hNbICjemOVEohw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BfkccUaUHNEF3dFaQxfhFNmbE1hneuuMzRIfimnOcg2P32HwBacsPUbASExpHlJdK
-	 Y2vhbA8503NFx5NS+gVisL60jOQEnvfnx1A1ZCgCwFAx+h08h9bsS/asVNTEp+gF9V
-	 TGqLsLO3z1DBRzKYa5VSGlvDFQFCw1Uhbury5toMFY082g6+ddPHXeG4OKCjrj0ni+
-	 n50ynsuZNmW9BZIoMt6QKVzLKSFq+2YugAGjJtKA1C1a4B6eTQnZwUNOMVQRnAhySO
-	 ydNB2WgIzAdA8AyrpNeMXgCFBgvP4H7Y/P+KURSkGz7Pfl/ZVzcyn5eeSGq8eBHu7w
-	 W4fe81xA5hxWw==
-Message-ID: <d7bee578-7f0d-48c3-9eb3-65999476b7f8@kernel.org>
-Date: Wed, 1 Jul 2026 09:52:37 +0200
+	b=ZKWT4qxIbsgyec0zKfgP/6WMd6o+EtZ0asgxpWuiN5zNmmxMmhP9yyJzwLHZNbPN7
+	 aEdftbdQMtuSsvql1aux4zSdV10z5yPewaWYqKevJd0tJCC9xKoB6HUVz+nDKHfbXo
+	 LbtwljbAzOvQaSpSMwoOlnnASzp12brTDj7/0eUeny6kNX6vmAFfvHtSKPLezCSa9s
+	 U+dPJGW5vksj1TTLQqX4j8QnrZ5YKCoVfQK9766ndg0i4hp7gARNYSFBeNgqvQqu7L
+	 8uOe/+3ypdS1y5gTQpZ7P4qM1AJSWbNXueY2cDSf3Zpm7Vt9xiAWXypsqVxS8dy6uO
+	 wnEomIB1bemrg==
+Message-ID: <9ceabeb2-fb48-4ad9-8463-6c7ba16a8644@kernel.org>
+Date: Wed, 1 Jul 2026 09:53:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/16] sgi-xp: Use higher-level allocator API
+Subject: Re: [PATCH v3 12/16] net/funeth: Switch to higher-level allocator API
 Content-Language: en-US
 To: Brendan Jackman <jackmanb@google.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -90,11 +90,12 @@ Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
  <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
  Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, Robin Holt <robinmholt@gmail.com>,
- Steve Wahl <steve.wahl@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ linux-rt-devel@lists.linux.dev, Dimitris Michailidis
+ <dmichail@fungible.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
- <20260629-alloc-trylock-v3-11-57bef0eadbc2@google.com>
+ <20260629-alloc-trylock-v3-12-57bef0eadbc2@google.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -135,17 +136,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260629-alloc-trylock-v3-11-57bef0eadbc2@google.com>
+In-Reply-To: <20260629-alloc-trylock-v3-12-57bef0eadbc2@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mspdrgcezmmuo1wgbagt8jdnutujkc17
+X-Rspamd-Queue-Id: BF453C0003
 X-Rspam-User: 
-X-Stat-Signature: rw9f8oxakzby9bwdtgoru3prip3oh7br
-X-Rspamd-Queue-Id: 6B96020005
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782892367-567174
-X-HE-Meta: U2FsdGVkX1+QmLk7rOK2eZBVHCyo/UDCQdWUWeR8G1KKIKntCQABK4vCtEsf1eVzIHj7ik8Bw3Ror+nDbEkNdMA3V7rYudhl6svZnWJLESUZTiLzz9+z+lvMdPRS/Zxf4J+PiSWRUV1/NrEJ95b0p8bNSHvSa+Wb/D1b0SIxYDfbNHZqMOWUomd//Q2uFXdkxxTvqOReYXjFCB+Z+lPHognssBsz+dvlV4c2uIM2cNPahfEZqN+GJrCLj0GufXr31ut/aUlbHOOTz3Gms6oTcXIcymD4qpCHC6TxS8gAA9pf4KknZJXjK+sd8AQBy5MPp4wp+fELRTna++2QEXA9UDn/TXCicxZvHTAPzlosZFczUcOnwrnCN3eMmHEwgKfZBahID3LZuhnd9jFV+uXhjGy+fxDhZYmkWR7t3XQmIK8XKt2tH/BXsMdXb4yjo0uPyWEIeMuurWvPVZRX06nk4ZthFIly+D3FYEqm+6dQzNEBKXdcqwTMw1lWlmpKM2yZXYBvWNhZM3GDWN+GdqD1Uon2h2GG7zhYTmlmgdQPPdxMddm5KOX74I7RjhZPrMhnwY5F9u8CNr+qPqrpCWyGHYtccMGXrVgGyYB4zlSY0ufh80W8Zq8Me5ZxthWG2y39PCMByuOFRR2eNCvZ4i+34CFybVXElZqEWB02fenXVtFez7eOkGmZootpqKmHIoiRjk1Hqc+yMJwUyNw6lXOUmBsBFNr4DgYKZk2A2ZRxbhr6QTV8YnY+kbwy+Hky6fe6R8szhZtdwx7Etdf5p3p8whKRglLYcerXEWQEMIQcZ3W2JDNu6QmynG1ahSCjzZ2YbgVIjsPrUJhDKD+4bEAn4JJG0EE+a9h1XH4N0kheMTQBbwxpcDVK4LikiYkt/jR0T9QRfXdE8NAGmhbi7Ic5hqY+5twSlGlEe1FsqX1hyiRDlHX5nS7bcbADKOcuU1A1dtebOc7SEWK1540Zuu9
- wNasuN6W
- H5JwheBzSOsQuH4Mp35tMFGI3+DnhM+OcOb2Sd8OoACO31MP+ihiW3/xvN1ljVemKBFtegWJEtdgVk+9GVJCbk5D+2u9ksn7BuYvc/SehNMrJPv7hsTaxHT5GRU83X3F/R1u31zWa7DySu/VotzFEXhhH2hBe+SN3RiHWITsRgZ3t8f6O7tkye8aYzdL5SqR1YMN2xm7/A1jhSDkUTkmZZ/mQuqn0gzIURP+5rC/jCc3SAdgVj5nw+heHRMg62Py7Gz5DdVkd5hzArpLgeWMA/qehfU8tmMF/Bp62n3ki6RTFiJXPjVsZcRdhkYrA/wejfDa//Cd9HTdWYnrI0lscENQK8hljhyJPFPrVTVAYBJr9uvcMvZLfbvXvWlPHM2yWzDoYBeLrJM4ueOn7X45PSfGNyHpmHtvXjUsCgbjX8c0rXRhfXjIifcUWNQCHMSWBjnPOF9tfiuX5e5tJ+0u3VqfNFpjN1KnG7TeUd6pUX6Dwvag=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782892393-642596
+X-HE-Meta: U2FsdGVkX18m95tjTwDx50j01e+OA8GdpugES9oeBqWMeVKsyjOWXRaK2aFvuRuoQ6CEZaSQPkbEqeyZEjHmCO+0QRUQxV4NcmbzJXTYnm2Uxhf7CXq/pkgxDDgg4pM8/mfCpPp1kHSVqeIi+zxajuPZN/X1mEMQfswpWnGR7NRxztpdgfEq+VhB7KoBdlaCCTd150vlnrM/peMdU+yGHC5h1pPbSswdUq/0KRWKyOy0QSe2zrkggrf+p7AjXlnyklhgNw+b5KJz07dqBowq4yjCPoErYb4KifRNTryLV9O4nMVx2QD0ZcURtvT+QCDEucJCeLwmoSUAnw+UBqOVQcTK/tNQnEZiO/Dj8ie4n0exRSQF1fUtMCdeQ0cg6QvAQ250jl7Zxoi1JsMu9AcW6kkpWFluPTZGIrpQZBQkvg9w3FBmLkBsKpKXZHs/G2rTNdStQQWukJ7oOb63EkjhcJ67o/d+yO2FAn+jPgxBrI9cs9QGj/VgfSlyPAHENpxN7Dm4Usjow5F33VcYlDUKwgYMjaeeJAOhetPECPdAZwcj3ha1KTUZE4IKo7kebnxHl8Zh9pnRtua1zhexPsBbH0fse/8YYlgenvJZItSVdfHJtyCmFMIoi3quPct0eNr4c1uCeyctAvpy7AUUcvr1HuVVoEpfobhkstWTPQpP5glRQip8lf9/HQJXFDAAiucGvfh8J+g4AOfWk15zJxEINtYZhcDWU63ZTZ3vNSxAgG6EHk+uyTDMefL/LODuY8G/jsR3fl2gC1zMl7I3g19hlQAb5uEW+KpGHT71fpc7KdHH/RsZHK2onU3CeY9zvjOSW031NfBYuG0VJdB/8N2JyNDMJIRyIhix/e5OvU23Vf14w4nqgGJeHjNz0gapzHEvSR/ukeGEDs+jj9tNVNgWiFReI0+lzJJYBKhN7y7rqvT6HcId24IvpoY0ZLdEP4zl3qBYc819vVbBZg/i9Y+
+ 6Tohlkjv
+ 2Mo9g8uPTaLi5j46GrNla5aU/LFZO6egycCz+ntjvZuBd7EF2XUzNS+hyZe41Tpu2+DuMW1QgjHuVOzLmblh7KR9V6e6iThWWpXrvGsiDKl7kS+j1B1/ankh2faXQSoq1D2PpQYVQCaf4bXEW6MD5tKVeTVd55VeRrasF9f/BPTWRXMIUEEnuffs4IjbRMhEokvjk1d3CZ2YvRtmvv3cKpGpuphpLt1VDS06JfSxG1binXcRnExgl2RiAiObGhu67SaKPwCHCvrxbgEcc2alBhZiRgPWvVDeCIaV/20UqJ0pguVPZva3ZhUC96/kRFTFJNls9Va3jw/+TMW6Aa2x99yFK0Hp2sdcnfEqBTRJWCyYSPgwqcdvuo02tK2v1j0+LufBoakXFbQP6Tk6jmizxacYedfBOOKQTsuAuPSl29tqaReTfOV5Q/L3vUoHNmrwn/DuqyErxd4Pd51iI7yXZDAoG2q1ZVjFajv3SLJcYgyx1oE8o9tvVad/9zHrO8sOHRjQ/6pfPHW61Kb9m8kPsxhVBct71nsVWae1V0Okp7nBjkiTOPIw7xYad6w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,39 +162,35 @@ On 6/29/26 15:12, Brendan Jackman wrote:
 > 
 > No functional change intended.
 > 
-> Cc: Robin Holt <robinmholt@gmail.com>
-> Cc: Steve Wahl <steve.wahl@hpe.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Assisted-by: Gemini:unknown-model
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Dimitris Michailidis <dmichail@fungible.com>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Assisted-by: Gemini:unknown-version
 > Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 > Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Nit:
-
 > ---
->  drivers/misc/sgi-xp/xpc_uv.c | 2 +-
+>  drivers/net/ethernet/fungible/funeth/funeth_rx.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/misc/sgi-xp/xpc_uv.c b/drivers/misc/sgi-xp/xpc_uv.c
-> index 772c787268932..aacff70204241 100644
-> --- a/drivers/misc/sgi-xp/xpc_uv.c
-> +++ b/drivers/misc/sgi-xp/xpc_uv.c
-> @@ -170,7 +170,7 @@ xpc_create_gru_mq_uv(unsigned int mq_size, int cpu, char *irq_name,
->  	mq->mmr_blade = uv_cpu_to_blade_id(cpu);
+> diff --git a/drivers/net/ethernet/fungible/funeth/funeth_rx.c b/drivers/net/ethernet/fungible/funeth/funeth_rx.c
+> index 7e2584895de39..d7000017ac2bd 100644
+> --- a/drivers/net/ethernet/fungible/funeth/funeth_rx.c
+> +++ b/drivers/net/ethernet/fungible/funeth/funeth_rx.c
+> @@ -103,7 +103,7 @@ static int funeth_alloc_page(struct funeth_rxq *q, struct funeth_rxbuf *rb,
+>  	if (cache_get(q, rb))
+>  		return 0;
 >  
->  	nid = cpu_to_node(cpu);
-> -	page = __alloc_pages_node(nid,
-> +	page = alloc_pages_node(nid,
->  				      GFP_KERNEL | __GFP_ZERO | __GFP_THISNODE,
->  				      pg_order);
-
-gfp flags can now fit on the line above?
-
->  	if (page == NULL) {
+> -	p = __alloc_pages_node(node, gfp | __GFP_NOWARN, 0);
+> +	p = alloc_pages_node(node, gfp | __GFP_NOWARN, 0);
+>  	if (unlikely(!p))
+>  		return -ENOMEM;
+>  
 > 
 
 
