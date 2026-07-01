@@ -4,106 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59159C43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:51:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FB7C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 09:52:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31C226B00AB; Wed,  1 Jul 2026 05:51:06 -0400 (EDT)
+	id 408EF6B00A6; Wed,  1 Jul 2026 05:52:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F4166B00AD; Wed,  1 Jul 2026 05:51:06 -0400 (EDT)
+	id 3E05B6B00A8; Wed,  1 Jul 2026 05:52:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BDCD6B00AE; Wed,  1 Jul 2026 05:51:06 -0400 (EDT)
+	id 2D1466B00AE; Wed,  1 Jul 2026 05:52:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E8E5B6B00AB
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:51:05 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6315EC1928
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:51:05 +0000 (UTC)
-X-FDA: 84939739290.05.9ED7128
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9041E2000D
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:51:03 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hLnWdoy8;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0633F6B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 05:52:10 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 721311402CC
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:52:10 +0000 (UTC)
+X-FDA: 84939742020.25.AC679AC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D898E12000C
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:52:08 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hUmFUbpx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782899463;
-	b=1TG8yJRAYxTB0lo+IUVK92vgH4BSPTkiV1NeW2llWCWa49GuN5xudVMYk2oHJ7VSuEaONx
-	Phi7MJKsarZbTj227IsWmyy2gJ/cHT3kEL3PkmmLRHGH5VGtvi/XBmg/gK3nKmyCq7y1qX
-	k/SXtiPvqGm+3bt2s+rwb84ifcjPt0w=
+	t=1782899528;
+	b=uyoVQehJR0I+qlwL2wrW1jI6aueuyODehx2vFmPRu0nEkbNhuqCT1D6+0UIitza/3xtY0i
+	TAnylYMTT3LuJnBK225+BjXK5cCDlR5vWesk3L5it3UTTmOBO5s5XqqnwJ9lC9Its5L2vj
+	vtKIwbemdlN9N34hOkN2fgKvB61slZU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782899463;
+	s=arc-20220608; t=1782899528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z2iTkH44zrjde5YjDVOVEaWsS9SPfrTjlzsfaFMLyYE=;
-	b=J9kGHiU4WXI8BxX6dLEr2tKOkV6+wAW48pbb6lfkx/nyYLtax11HBfQbURLsawsqEUCaUr
-	fKUzTlgkSdw6HuT/uAW2xM9dFqsx8/YdsFsN+SmyjtUdOBjFobMo8no3AFugLdlgx3pKcl
-	pqkwn5q+tXpE3uy96P7cJf/3Ljw/Ec4=
+	bh=6AeWjVLYlFF7ljuv59DbbHj2vnwHWY4jNzYXr4Sv7xs=;
+	b=nNHhLswXA2uSxcL8a30+/JW9lyB/F0y5jgpZuu93zPkcZhywAkcQVa8+JfEaxvWmSg2UZI
+	mLqMThJP14i1HDFQUQdY3H5Pp/ChQD/+EEDMXiZpUnkWyCaMdUT56uR1zj2HAq3xXPpBdW
+	1TFgix8owUEIwWXi8I1zDfb77bjdv6I=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hLnWdoy8;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hUmFUbpx;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F6A8601EA
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:51:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA70F1F01558
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:51:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 21C74417C7;
+	Wed,  1 Jul 2026 09:52:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18DE91F00A3A;
+	Wed,  1 Jul 2026 09:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782899462;
-	bh=Z2iTkH44zrjde5YjDVOVEaWsS9SPfrTjlzsfaFMLyYE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hLnWdoy8c+T7td6KZ16EjiqEhhyYhjiA0hSqKxco5xCbdMUNn4OXUBj6VCmiZJQmX
-	 DkR3ywdWq6gxwYKTKPRcbmNxd7xMVMbMWObmX8Dn7efWj2ryt9B5VfTlVTXGtdx7iT
-	 rJE2SHC7S84E44g4AOI2plbZGv2fMX2USo3YvRQgiUQofvOQAJ4OBcwDRavLoN5lCu
-	 IkpapKTJfWWl8dyOE20lQlV8fR9QznAZ/khrOYh++qjQ/lMK7V93NfD9YbKAjf36vy
-	 4/XDpACHAkU1mz6jPGBN1I5dVZhLrjj0PXDhMtLMuWIuXZcWXKF7My3yYI1kO6rYG5
-	 DUyZnQGTxPfeg==
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-92e65e18969so32086985a.1
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 02:51:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+PO2qfTwXS+IPpwxbAtF1O4wnOq/y12mb1hm6qquspJ6bgBJBiwrTLSCnuBVJBg6wqnENdf63fJA==@kvack.org
-X-Gm-Message-State: AOJu0YzsB3BTIlq42JoljWHavPNFTRIHBsdCGgvnEvy8ePt74mcD2hOs
-	+QkBGijr8Bna5MFVPQSj3LvfgghNJi7wiWFUbX8l8Dvy1kEz2pxCh9+sNHftLTjZVAFpss445Pj
-	YwKTg/ZFln6F9IGk+Vv+nz++JZW0DLX0=
-X-Received: by 2002:a05:620a:8002:b0:92e:5949:3567 with SMTP id
- af79cd13be357-92e696e87f8mr698511785a.14.1782899462144; Wed, 01 Jul 2026
- 02:51:02 -0700 (PDT)
+	s=k20260515; t=1782899528;
+	bh=6AeWjVLYlFF7ljuv59DbbHj2vnwHWY4jNzYXr4Sv7xs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hUmFUbpx1y5tJpPtnUlhcT3j1560TB5Z7WidudXQhnXQ3iBlDbOGKHdvOXxORwcrE
+	 tjmyXJMPH48NxKfebsrBvhUG7gACJwmZBgrQpAIcWhb5oG4zMfdDkGNOqXzmcJIxMZ
+	 oFwE09qRkgyihGrox9lPD0M8pJPvZztnF7f92f8U84bzcQesV6RBPrds9JSGEOpWhf
+	 qER8uTWo8wRBJgWEBBXX4UndrcxMWK4GJPF99H/7QvmN4QI4razDO5GnzxBRwUy9tZ
+	 AH6UDHXZu9FYrBnZ8aE8ywkTbnCASgfyFqy+cxTE0e0MnA26p6ifh1mSGu+DbB+2e8
+	 Okad/FnnS81yw==
+Date: Wed, 1 Jul 2026 12:52:01 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Hannes Reinecke <hare@suse.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
+	Brian King <brking@us.ibm.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org
+Subject: Re: [PATCH 3/4] scsi: ipr: use kmalloc() to allocate IPR dump buffer
+ memory
+Message-ID: <akTjQVQQNdeO9M28@kernel.org>
+References: <20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org>
+ <20260630-b4-scsi-v1-3-494fb37ebe7b@kernel.org>
+ <7c8f0e70-f49c-4614-af95-002fb2be11ba@suse.com>
 MIME-Version: 1.0
-References: <20260623231635.43086-1-baohua@kernel.org> <20260623231635.43086-5-baohua@kernel.org>
- <e56c4d73-ed4a-48bb-8d0a-97b1200d4a35@kernel.org> <CAGsJ_4y3yC1DCsHfCn5FP6vK3jqNRbqU5pbBqHnb5LB7GgtWOA@mail.gmail.com>
- <ajzm3pHq-wQlLNmm@KASONG-MC4> <c16bd777-6dfa-48f9-8dc5-2b56bebe67ad@kernel.org>
- <CAGsJ_4xh1P1yw3JogQxTS=Vu8kLEiMMh8si2YnCc9qnoKWLwjA@mail.gmail.com>
- <1e7a712b-33f4-44c2-85ed-6333ddca421c@kernel.org> <CAGsJ_4w8zK=xvWhRpyPiPS6JskmVnEH8E9fdQOYmk_PHb1bZtw@mail.gmail.com>
- <430e75bc-3993-40da-9996-71583e44c2d5@kernel.org>
-In-Reply-To: <430e75bc-3993-40da-9996-71583e44c2d5@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 1 Jul 2026 17:50:51 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yE-U5ox5y+brDBxEoc2uympQ7JBRqgD5OsqqX-u_6t=w@mail.gmail.com>
-X-Gm-Features: AVVi8CfiVBuGxL7Vf8ra-H8elzsaPTNXC_3eQPhC59d80Jbf0OIbfH_V74Ph9c8
-Message-ID: <CAGsJ_4yE-U5ox5y+brDBxEoc2uympQ7JBRqgD5OsqqX-u_6t=w@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] mm: try to free swapcache for non-LRU folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kairui Song <ryncsn@gmail.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	baoquan.he@linux.dev, chrisl@kernel.org, jp.kobryn@linux.dev, 
-	kasong@tencent.com, liam@infradead.org, linux-kernel@vger.kernel.org, 
-	ljs@kernel.org, mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, 
-	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com, 
-	usama.arif@linux.dev, vbabka@kernel.org, youngjun.park@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7c8f0e70-f49c-4614-af95-002fb2be11ba@suse.com>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9041E2000D
+X-Rspamd-Queue-Id: D898E12000C
 X-Rspam-User: 
-X-Stat-Signature: qisswjy1567d1qqjoak4wenr8rqp4bdo
-X-HE-Tag: 1782899463-120542
-X-HE-Meta: U2FsdGVkX18vyGwMxPtxP2ht/KqJl+hReqnuW23hhUnPO7XmV56IvsyZXwUvh7yQxejSqA75uCk1grE4EMLXqhsL15VXUNvqlDeJpzFGXNH+eubq9skygeAOghDr+D1Dq8e+osVsjNbzvwTONemU4v6t4ggxcDGcTXneCuBkLvUQctYoaMNBnHadBhqSlO6ADbZQLqIrI4sR1NhN0m0mS29XitFqr88A+2OyexJnBfaakM25c5B5RojlKpsNS5+38tlPxOY26G+kYU6XuItdJt+GDlADM5IjJktFJ3iFNfMMWfhhGO2INAHnPPg8s9zm6ssnZoNG2qJbljp6B4BVcBo+Chx+bhZtY+tMgB1WMBFbikahWbdOK6E508HYVm8mO0FzRlpU95k8oFvEBuvri9bQVLl0fpfFaXBQgjrU3Ilvg3UxOdZDh2YSU7NU9Sp5yPeJKL5L5CL5kKg2Uj5sQSDOzuqmn3vtdg5A0j5VUUHuj9PdbOIABLa4RifF7+vlbWZ8JalN97uo+iKoOOrSeQAuQD+6aueQnNQfDfYL3Jkl4FSACBB0i4hNb3crE+Wrf/gs0+bOM96KaY2Fa4WHPeIbcIiKAzTH4c28nb5v393qXPKxEKAKugGoxbwX7kvfRPQIBIME8DhszjHVofwlY64xjqnswFqpVRFUzwqJth/WkOK7nTqPYdRnOUTza90W9Fb5pwWHCoAdcGwOfAkcCABl+sJ0tOwuQQmWjDHBzDAgiIeoVOXAxubPqis7z15+13nPVWvFW1dBgVDQEdEMf34kZgetUuP1Z/i22N1J/LRZgks/gx9/zlIgw2HJSfMlTyo2MO/Fa49AnW926snLakYh6flLz0ts7Q1SceRqoUwKenk55jLC518s7nPvk10aC9Bo0NW24iNEoIvu6VAA8ZRyiuUWdGyyKmxxaVyKhPVTNfCpRjmOc60sZAf3X+m5NO1fXPeO5DNKyiTmewp
- 6rFpCxnE
- IPTAzpmZ7HHMqa3ytJS2Q5Ib//9NWmCWP/14cBw5EkEvamKFgQi+KIGOrMZyukI9yTPSqD50EuSVuibuOnXpixkQxTSYrXsWTidm6c4M1S2qvFFC2pzC7DGZryD06dvU2r/VyBCqfgn0CV1vfLb7VI1WtT+3z7VqHLNR8ttxr4n4F4/fzlewAE6YcgEpNN7rDXz8cId2bix/lUUEgqfL7RdiFtYW8USTRITuY+sHEFO0R55RQ4WuWo+wjhUOeNqNs2ZOi3AONRUb3okBrWga+o1MiEGlQSe2IkfE4ps0dWwW42pESjsv3g84dRA==
+X-Stat-Signature: jry34g8wuzjfmgytsy3ieobwsyzrmx19
+X-HE-Tag: 1782899528-39004
+X-HE-Meta: U2FsdGVkX199KZ0BD14kamasRmIoPVjMBXA20ueFFJViy/GVo1U5bd90cBZHy0EfiZHQB0/opR5wFviLiU+Bnp3qS+tDIcfeekfU8Hns1bW2Kk/1RQsXyyX+UNMy7PAE2QQXjX6jqRqCHeAKKKuHlAAA52sU99bcOH+xbYwXiivWdZ+946tKvLb7LTBCW6r4gjQlw7vHNRNj8eg+uMgsnHpO67a12OmBw/ip1NA3JPFym8FG5gMNVRDbmDwYnE4a0bb8Cg5JfD6yNTc8D6a2PFfXjIgThPqgrJaF9goOiAvUh+1RTvx32DcaRG78MQFzc43ja/cGlwd63fWVrE1j0L9jVuYZeROLblSh7EXPhk8ceiRGsHnjW/BvenooMSAzjKyJu1OmN5lGb/cJZBjksIH+yitSYAbbZs0B7Qimtwx+oSap7HuM9C0jjfp1WZP+iyDp/8AMI66iiH4/gME3SQUxyniwsLEyUHp13qJJdK751pM9t1yUHjQQUBsr+L6jnXJX83LAjlglRxhow3sDLkjUVVwecVWlXJpawtonBo3w9EBzr6nmerndi6dJ7hnKZszUhle/YwSsp+f6BgSW6VYzSqXWbapB9bKegk23NztibMDc+54Hs3niAsabmqVAfGSpAOg7PCjo8kiPWk7+oj26vV4VIqJ3sWDJwZC3CgUHrtOuya3EQhJJx6bv7sP6FscwdeJOIDR1T+9nInJOvTajZT8mBe4cX69o2VKnblVZqQUbTGUfh3xRsWfNtzxDgE9pfHMDSwP+73Wl6OgdrgtJWbBrB087KbyIGxs0bjdd8DnDNsnCbW/BymOcPL3B8uTv7e2mSdPWyn6rXMt+e+IYCqCFtebkMeZwe0W9+8fw8OVGqPn2ixndN9X3usXGZlOTOrKgXnQuJnak46IZ+gEvJ4laVqWLM2XJ5Ljr268KlmWNLabG53UQP0NCXXdzJk0hGwVd5hh0+ujmCp5
+ mO64OjRg
+ xn3sP8yCLjw2DZfkivi89oSPwWAjjJibw7J4I5fnksn3SCr8oZ4dfXYr/ixMnIi9n+J+IK32qqOcRUn8416pQPJbfFRQ8ORmxyMCx1PgBcrPuEi5xD87hD959xNFIvQG95oa2h6RqC1WNHRicR843Nk4jQ+KXtyumozszhRsk7V0BltEeLNgOiaHnn6KhCtf7xRvQuvlLK1xjB6vTvdpc89hKRNmYX8fXd+pcwSv10PGGR9mfCKuTZDBv1qKHzMoEsCFwaNi3Zqw6X0nQUl1RujeiFoonJ6seVADYAEpeyEJsSIY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,65 +97,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 1, 2026 at 4:18=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
-[...]
-> >
-> > The newly allocated folio will likely still be sitting in this
-> > CPU's local LRU cache. If we drop the drain in patch 1, it seems
-> > there is little point in calling do_wp_page() from
-> > do_swap_page(), since we won't be able to reuse the folio while
-> > it remains in the local LRU cache.
+On Wed, Jul 01, 2026 at 09:03:06AM +0200, Hannes Reinecke wrote:
+> On 6/30/26 12:54 PM, Mike Rapoport (Microsoft) wrote:
+> > IPR dump machinery allocates memory to save adapter's crash dump using
+> > __get_free_page().
+> > 
+> > This memory can be allocated with kmalloc() as there's nothing special
+> > about it to go directly to the page allocator.
+> > 
+> > kmalloc() provides a better API that does not require ugly casts and
+> > kfree() does not need to know the size of the freed object.
+> > 
+> > Replace use of __get_free_page() with kmalloc().
+> > 
+> > Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >   drivers/scsi/ipr.c | 4 ++--
+> >   1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
+> > index d207e5e81afe..5a212bfdeec2 100644
+> > --- a/drivers/scsi/ipr.c
+> > +++ b/drivers/scsi/ipr.c
+> > @@ -2893,7 +2893,7 @@ static int ipr_sdt_copy(struct ipr_ioa_cfg *ioa_cfg,
+> >   	       (ioa_dump->hdr.len + bytes_copied) < max_dump_size) {
+> >   		if (ioa_dump->page_offset >= PAGE_SIZE ||
+> >   		    ioa_dump->page_offset == 0) {
+> > -			page = (__be32 *)__get_free_page(GFP_ATOMIC);
+> > +			page = kmalloc(PAGE_SIZE, GFP_ATOMIC);
+> >   			if (!page) {
+> >   				ipr_trace;
+> > @@ -3226,7 +3226,7 @@ static void ipr_release_dump(struct kref *kref)
+> >   	spin_unlock_irqrestore(ioa_cfg->host->host_lock, lock_flags);
+> >   	for (i = 0; i < dump->ioa_dump.next_page_index; i++)
+> > -		free_page((unsigned long) dump->ioa_dump.ioa_data[i]);
+> > +		kfree(dump->ioa_dump.ioa_data[i]);
+> >   	vfree(dump->ioa_dump.ioa_data);
+> >   	kfree(dump);
+> > 
 >
-> Well, we call do_wp_page() here to avoid another page fault where we woul=
-d end
-> up in do_wp_page() and actually break COW.
+> I _think_ we can replace this with kvmalloc, and allocate the entire
+> dump buffer in one go. Once switched to kmalloc() it's kinda pointless
+> to allocate separate page-sized buffers here.
 
-Yep. We still need do_wp_page() to handle CoW, but we could
-actually reuse the folio if we don't drop the LRU drain.
+kmalloc() performance is on par with __get_free_page(), but kvmalloc()
+would be slower if it falls back to vmalloc(). 
 
->
-> >
-> > So I'm wondering whether we should keep the drain in
-> > patch 1 by checking for a refcount of 3, or instead do
-> > something like the following in patch 4:
-> >
-> >
-> >         if ((vmf->flags & FAULT_FLAG_WRITE) && !pte_write(pte)) {
-> >                  lru_add_drain();
-> >                  ret |=3D do_wp_page(vmf);
-> >                  if (ret & VM_FAULT_ERROR)
-> >                          ret &=3D VM_FAULT_ERROR;
-> >        }
-> >
-> > Otherwise, the combination of patches 1 and 4 seems somewhat
-> > inconsistent. It feels like a strange mix of sweet, spicy,
-> > hot, and cold=E2=80=94kind of contradictory :-)
->
-> Yes, this needs a proper thought.
->
-> What you describe is relevant for
->
-> e.g.,
->
-> swapout
-> fork -> exclusive bit cleared
-> child exit -> parent is single user
-> swapin -> added to swapcache and LRU cache
->
->
-> This is not very odd, so we should keep that working (I think I have
-> micro-benchmarks for that).
+I'm not familiar with the driver to say if this could be an issue here.
+ 
+> Cheers,
+> Hannes
 
-Maybe the simplest approach is to keep the drain in patch 1 and
-just make the code improvements you suggested in [1]?
-
-That way, we won't regress the potential reuse in
-do_swap_page().
-
-[1] https://lore.kernel.org/all/c4718e32-2baa-4dee-873c-7ab99f21ca4e@kernel=
-.org/
-
-Thanks
-Barry
+-- 
+Sincerely yours,
+Mike.
 
