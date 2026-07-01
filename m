@@ -4,88 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E70CC43327
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 11:03:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD3C8C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 11:05:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 468EB6B00A6; Wed,  1 Jul 2026 07:03:48 -0400 (EDT)
+	id A88026B00A0; Wed,  1 Jul 2026 07:05:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 440D96B00A8; Wed,  1 Jul 2026 07:03:48 -0400 (EDT)
+	id A38D36B00AB; Wed,  1 Jul 2026 07:05:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 331E06B00A9; Wed,  1 Jul 2026 07:03:48 -0400 (EDT)
+	id 900316B00AC; Wed,  1 Jul 2026 07:05:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B3BC6B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:03:48 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7DC48A0315
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:03:47 +0000 (UTC)
-X-FDA: 84939922494.28.8852F9A
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 77B92A0012
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:03:40 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yFxKMR0d;
-	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 639416B00A0
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:05:35 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D5DF340326
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:05:34 +0000 (UTC)
+X-FDA: 84939926988.30.144D49D
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B55C614000A
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:05:32 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=none (imf23.hostedemail.com: domain of schwab@linux-m68k.org has no SPF policy when checking 212.18.0.9) smtp.mailfrom=schwab@linux-m68k.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782903825;
-	b=4f7MjJUHck4wK+Wy2eJOyRHhR8/ZoBxeipGYfD7V4lsMGnVQzN9XR6In9VXExlq51Q3iaf
-	bLuoawVXOTQrywrlRTrAAumEjoSyJy7UuSZnoZRoFkmt4/OTouPLl3QIzUx3tf5pnylYnz
-	5yzKe4CYAAvrTRQmhbESL8AYLI6gTfI=
+	t=1782903933;
+	b=TmKXO1FPUlWpABWuN7lwrMPrQmdqiQjVW1ss/wwT1xH4VyDEFvqZBkl4bJpdkvQXr1H4xX
+	lfG8+PAe/sM1Foh6jEpCWHI7uoveQ8wVHLtB0k9n54gJ8lzvBEW/iZCUi6Tp5qvXYd4GAF
+	axDTa5fN51Jk+opJ7f0J1Gz6e2q9xPs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782903825;
+	s=arc-20220608; t=1782903933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BiAQQLl8vVs83xuAeiGeNLD4wLKcdjLHTtoBRrCpg8E=;
-	b=0VDLuF2mGMbaKyywpkQg97YWQN1qHwxvM8XdIAfpG363MNzyahmZ0ZdoZS+TKpiVpRijus
-	67SbJPcking3oZAg3Q/ZFssaO+fkgTOZVmrlffMvw0SUrFb3cfAyFZ82iCrwoiADcE8/00
-	QfgdJIkIKMrmjHQnQq4VJmhH5uQV9LI=
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ie0Xb+kW7hcy+X6ih+rt32aJMFM8pnIHwdmk0D3/mnA=;
+	b=ueY6S7JtTDJGz8hZ4dPcFFfp7ojj4dskP602JgdGpGDm3LYLh+hZlzClQLtCQ0Bzx/QbZV
+	KMAudtuDOB653Ufn2+S4Ry5qS9H9ImSJaorIUTQeg73DIeaoyKI4kD8eHNwJNgqMqaC1fA
+	wBDY1ySANapErm3um4EOcFdVeziM+Nk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yFxKMR0d;
-	spf=pass (imf15.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1782903817; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=BiAQQLl8vVs83xuAeiGeNLD4wLKcdjLHTtoBRrCpg8E=;
-	b=yFxKMR0dYhvSC23dj6Enjel0Qdkv9wO4qVgyU33An9NDYrHBfSBF2BgrlU6klTJdXXYRa8tQiaIjWNdbvlvsGL5n3uw3mYJ/jOF9cDTDisyTDszR7Tc+Pvix947f6kfpYv16IlhBpHQ6Y3guPPicGLxIsmWfno/WsDuMfJSadxw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X67dyRL_1782903814;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X67dyRL_1782903814 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 01 Jul 2026 19:03:35 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  David Hildenbrand <david@kernel.org>,  Zi
- Yan <ziy@nvidia.com>,  Matthew Brost <matthew.brost@intel.com>,  Joshua
- Hahn <joshua.hahnjy@gmail.com>,  Rakie Kim <rakie.kim@sk.com>,  Byungchul
- Park <byungchul@sk.com>,  Alistair Popple <apopple@nvidia.com>,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Neha Gholkar
- <nehagholkar@gmail.com>
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-In-Reply-To: <akPg4ANRetbjSP_b@gourry-fedora-PF4VCD3F> (Gregory Price's
-	message of "Tue, 30 Jun 2026 11:29:36 -0400")
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
-	<akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
-	<87h5mkz33h.fsf@DESKTOP-5N7EMDA>
-	<akPg4ANRetbjSP_b@gourry-fedora-PF4VCD3F>
-Date: Wed, 01 Jul 2026 19:03:32 +0800
-Message-ID: <877bnfynsr.fsf@DESKTOP-5N7EMDA>
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=none (imf23.hostedemail.com: domain of schwab@linux-m68k.org has no SPF policy when checking 212.18.0.9) smtp.mailfrom=schwab@linux-m68k.org
+Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4gqxy30lzFz1r5hd;
+	Wed,  1 Jul 2026 13:05:31 +0200 (CEST)
+Received: from frontend03.mail.m-online.net (unknown [192.168.6.182])
+	by mail-out.m-online.net (Postfix) with ESMTP id 4gqxxq4bkDz1r5hL;
+	Wed,  1 Jul 2026 13:05:19 +0200 (CEST)
+Received: from localhost (dynscan3.mnet-online.de [192.168.6.87])
+	by mail.m-online.net (Postfix) with ESMTP id 4gqxxp59v1z1qqlT;
+	Wed,  1 Jul 2026 13:05:18 +0200 (CEST)
+X-Virus-Scanned: amavis at mnet-online.de
+Received: from mail.mnet-online.de ([192.168.6.182])
+ by localhost (dynscan3.mail.m-online.net [192.168.6.87]) (amavis, port 10024)
+ with ESMTP id tQZ9_tKXpaIT; Wed,  1 Jul 2026 13:05:09 +0200 (CEST)
+X-Auth-Info: Pt4uSQGEyIjPFT3BPFolkb81GA8tMoI4Th+4yeNg3MiwksamljRMriYVf7/YBrTR
+Received: from hawking (unknown [80.255.5.134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mnet-online.de (Postfix) with ESMTPSA;
+	Wed,  1 Jul 2026 13:05:09 +0200 (CEST)
+From: Andreas Schwab <schwab@linux-m68k.org>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>,  Deepak Gupta via B4 Relay
+ <devnull+debug.rivosinc.com@kernel.org>,  Thomas Gleixner
+ <tglx@linutronix.de>,  Ingo Molnar <mingo@redhat.com>,  Borislav Petkov
+ <bp@alien8.de>,  Dave Hansen <dave.hansen@linux.intel.com>,
+  x86@kernel.org,  "H. Peter Anvin" <hpa@zytor.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+  Vlastimil Babka <vbabka@suse.cz>,  Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>,  Paul Walmsley <paul.walmsley@sifive.com>,
+  Palmer Dabbelt <palmer@dabbelt.com>,  Albert Ou <aou@eecs.berkeley.edu>,
+  Conor Dooley <conor@kernel.org>,  Rob Herring <robh@kernel.org>,
+  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,
+  Christian Brauner <brauner@kernel.org>,  Peter Zijlstra
+ <peterz@infradead.org>,  Oleg Nesterov <oleg@redhat.com>,  Kees Cook
+ <kees@kernel.org>,  Jonathan Corbet <corbet@lwn.net>,  Shuah Khan
+ <shuah@kernel.org>,  Jann Horn <jannh@google.com>,  Conor Dooley
+ <conor+dt@kernel.org>,  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
+ <alex.gaynor@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Andreas
+ Hindborg <a.hindborg@kernel.org>,  Alice Ryhl <aliceryhl@google.com>,
+  Trevor Gross <tmgross@umich.edu>,  Benno Lossin <lossin@kernel.org>,
+  linux-kernel@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  linux-mm@kvack.org,  linux-riscv@lists.infradead.org,
+  devicetree@vger.kernel.org,  linux-arch@vger.kernel.org,
+  linux-doc@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  alistair.francis@wdc.com,  richard.henderson@linaro.org,
+  jim.shu@sifive.com,  andybnac@gmail.com,  kito.cheng@sifive.com,
+  charlie@rivosinc.com,  atishp@rivosinc.com,  evan@rivosinc.com,
+  cleger@rivosinc.com,  alexghiti@rivosinc.com,  samitolvanen@google.com,
+  broonie@kernel.org,  rick.p.edgecombe@intel.com,
+  rust-for-linux@vger.kernel.org,  Zong Li <zong.li@sifive.com>
+Subject: Re: [PATCH v23 06/28] riscv/mm : ensure PROT_WRITE leads to VM_READ
+ | VM_WRITE
+In-Reply-To: <CAKC1njRapOxS6ibQdCuES1E3aAjsA+yGz4yZ1xJAZHU2vkAm_A@mail.gmail.com>
+	(Deepak Gupta's message of "Tue, 2 Jun 2026 09:19:50 -0700")
+References: <20251112-v5_user_cfi_series-v23-0-b55691eacf4f@rivosinc.com>
+	<20251112-v5_user_cfi_series-v23-6-b55691eacf4f@rivosinc.com>
+	<87jyslndo4.fsf@igel.home>
+	<CAKC1njS=AHu6uHrH4ae8VxcdEbhgiPXYCAoN3F_mnppBd3SwOA@mail.gmail.com>
+	<875x44o9hj.fsf@igel.home>
+	<CAKC1njSn_rtCj8ii876PNQTk0nsCTfWsb4DzdymufHVthh1Rkg@mail.gmail.com>
+	<871peqgp9v.fsf@igel.home>
+	<CAKC1njR+dTdvp+BmLGPtgd8dufiUwBtkQ9a-qinELT_Fmi13sQ@mail.gmail.com>
+	<87wlwif04z.fsf@igel.home>
+	<87tsrli6lt.fsf@email.froward.int.ebiederm.org>
+	<CAKC1njRapOxS6ibQdCuES1E3aAjsA+yGz4yZ1xJAZHU2vkAm_A@mail.gmail.com>
+Date: Wed, 01 Jul 2026 13:05:09 +0200
+Message-ID: <mvm8q7vt1ga.fsf@suse.de>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: 9annur6k6hsn9wdo814jezqb7aajee8d
-X-Rspamd-Queue-Id: 77B92A0012
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782903820-816204
-X-HE-Meta: U2FsdGVkX19walupu3fcVj3YgsZQ+5AE1wY/oizoMkqBthBuVja3kpIQOANxJfCwN3UzTV5LZauSYC8uRmHC4TsHtR18axJopoWN6PYnH3zOKPM7O/H07Rm6vhzz8x3MN/Xbn4H1LHf+JkQN7yIJzfDBWMOvaUyyqDDsp1REIOjmOPnTHCuzmUuq/NUnMGpMzo5VKpvixzvy01nX2yyT7XdtG9c8z8fb5A0T5BPPYHGA0gy2g3dmr9+2Ptksrf5c01MJUbOf1Y0UttoxBWDfNRayGh4YvYEPjYPUchi3sEGSY7RJikeJANfzT6hxIKlWndO2QpiL07YAgthtPnzgCwlVrjLd8Dvzj1nPzwTZJ8oJ7V3yEKOSy8rr85vDsoAl+OFqV2jG5O2+t+O9FMndl7GSjzRnWaXxFckgYV6QQ7Y8HCRHqWomfIV6Z2+UqmGgY1RpRkkt4h9HagBj33ZLPxVqIoAjgxJSVpIW8XkJhzKiS9HjY6MmEIZXz1UNOWLHcaCQ/zmNCzT171bfokWCUFPkKYHWf/VAAZH/UD7ICzEYJuqk8s07yEXtAG8naMYnh45V4fLnVLoKx+hODgwVW1SN2TcRn9gjG921e30U70RYO+DjrMKHuAQrclnYB85DPXT+++cdqekTPs9yXTglQKAcP4fydSS8Qcbc6EU+BoyX1zrIJ9rJ1+mJK8r2tK12IsqOcm4w/YTwdCrTW8qvH1KVt/oRXezy3ZCQFPTjWCgaXAS+kR0uvFM6AJJNRxFyySqidX7GIjsAFZq4HQ+x3+nBdcD1YXseUCVmgg9cCC3I4A0AqEPtHb9injxw6VWzjbA5BTYO4S8w4dq0MbBxYdQ8Y5pHI40ebwwMRkDiSaFDVQgjcx+roHphSBzL69ZjCk8pFc7/TDwCtpUuvH771YJANLw/WCKjkDCeqowMRnlDhBz6kjVVFiZ4Bzwvfi+3XnT6rXD3WgaX5vS9Feg
- XVnVqnQ7
- cuEwPyPkRdpv9ZU1ZKxVilsZoB2rKWUMOIKr+cd3tVKUX90LUKqnNG7+vSWaIY2IF+VtRqvocR+LW733elO4wXrHRVFmsoKdIEBUJT8Bx7vGgr6zTm9OrBFbcPfFRwo4R/iJsdtMBZuSeO5h2g7G9yBI3pZXXQGtJMDKjJfl0NVeNof3vTsh6G8UkKVYL0V/ZtKmUHIR+ZK063eFpLCy82cO+hUfoYPWKq7F+8GRdx3Htw8yvTXfcmXJPVJ7+krwst2iN22iMgr5myveQph0+DiOB8UZBoMhsTjQLExAkiV4r1i7T9YhpDDe+fVoTO3Z2rmN0ZHf3CUhiMEQo/shkFO/YirtEzXDTQkZXxMfkc+Va9gwkUo40YMwCywMsqoe0PcvzHnTYkvBBpWo9u7JF9HastA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B55C614000A
+X-Stat-Signature: mksmo19ay667umee6weq4aqnfwdqecm5
+X-HE-Tag: 1782903932-442914
+X-HE-Meta: U2FsdGVkX19lwvm+29g3+mh7zWU4Yno9+81GbH/Gaevyn33HvJhTHjCU3x6GFELkfEvQQQqJXlh2VOcfXdWJ50mYmIdpzoEBZFt7XpgRXd3Pwe62zXetalXhPbkvLtIU20g71POBEODk4iXY/LRW2I+CIQKZSdYeoa0+XrNlAIQeZpwpN357H5dy25X9WugGmpEZj/EtVygAMNSqqs0Hd7rwHNii75/fo/EogOw2AtNlEcU6vkUGedNvu5O7duPkPYJZAi6vvQPSvE1vIaWex34A9nhzZF19W67hTmSihxzkGoCSHJaYjw+xa/vRGTvl8yXSJg3vxbt1xzTZ/At6Z5N0+73Zo8SVxnxio1/8eWYNOk+s2hAXq/gtdfwxZ9d8YW7LP0+ZhRIAZ9uqfJanq5Ulh31fyb4vWokODhhZetiEbsdb4XRiF0s0BxOZwCgGsLCfSyxtZoNv1Lo153psatcMHmOZxgnJaLBbbgSDqSGO3yr59GFLAIhh4JiP4VkGOvinhpmaPBxAz4kimQ78LQdS1pMhTMKIcmfioAqfPFs0dGLLz+lbuapw+bCDYArMlNXMux9UH5/pm3JqigrsNI7pw/SkBz1iySlOOcaNezTROjU8fSanFCtUaRsCqHwknjgyN5D8zK3NN+pSu4GbKQenRwDah6rwvSMhYT9yF4Sldk96XZGGpmgFQyW+BUKlNFHvByJPpGL+8r1WgExqU2nGas1qnCk+xG2RF8/RwNfmG6BPqT+u4uaraqsMTEWyeT+rLt4jMam0kBJumboOSaXhuRmvh8Y64RoHpXSXUXk6LS6bBZUncivLX7kbu7ylnL88m1PAfdEag4PAoAk7eAdb0kKZ0Ui65wrpkV5KBonm/6V0gKYpNn7wrT9wdrdjxaWj566yE1fcXtzHXyAFobVCEI0cucu68Na0Xl2QMAGiXyUEx1624HQ5sCruruSdv/LX8/B7B9OEkqDkKn0
+ n/ytQRwk
+ dAFMdfeqhHxobhA8Jit79g714nw+5DvLVJ/qHpF4r9Y9OQmUyBuEFY8/Z2sEt0UiyJHF7Chhx8W7D5Z1u+sUniMk7W5XmUYccd66fYFKtDLtwV1qL19S47B6LiE/UcCt8QdgfRL/bKlY1MDOi+0okMjIXwoD7Qxe21Za7mXLQzNdJbQG094OAY6J5pR0H4HUjFLYTuZ/rIe+IAQUpkwUCuRW+0WQd4mVbWrcThyx8pf4cqFyhio9/R6XfXNPnMh0VjQFCDrma6pK0yMEc3nVxAYMQlXRkStoT47N+udy6qRHnyEhgiVivg2nwR0RHAUNt4BYl6jnj5ituPNaO750bN4unU35qBgTf0uQvCNbdgfII/qdv6hsp5TbKTTmtLnVmWy2kO8Yc88JeJx4MMmPN+IeEfr82wIlwMbis
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,44 +136,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gregory Price <gourry@gourry.net> writes:
+Any news? This is still broken in 7.2-rc1.
 
-> On Tue, Jun 30, 2026 at 07:20:50PM +0800, Huang, Ying wrote:
->> Gregory Price <gourry@gourry.net> writes:
->> 
->> [snip]
->> 
->> > Demotions don't care about mempolicy, so opting shmem out of NUMA
->> > balancing and mbind'ing on a tiered system is just full sadness.
->> >
->> > This is all just more evidence that demotion needs to be completely
->> > redone, it's creating a mess of undefined behavior for memory placement.
->> 
->> It's hard to respect mempolicy during demotion in the current
->> implementation.  Do you have any ideas on how to improve this?
->> 
->
-> I think it's feasible we could respect per-vma mempolicies, but not
-> per-task.  That would at least make this particular interaction less
-> painful and mbind() would do what you'd expect.  It is a bit racy,
-> but with MPOL_MF_MOVE_ALL the user can get what they actually want.
-
-Yes.  Per-vma mempolicy support is possible.
-
-> I think task-wide mempolicy is problematic and generally a bad idea
-> on tiered systems, maybe it's ok if we simply document task policies
-> are not respected on tiered systems?
-
-Anyway, it's convenient to use numactl to manage mempolicy.
-
-Is it possible to enable NUMA_BALANCING_MEMORY_TIERING for non-default
-VMAs?  If we don't enable NUMA_BALANCING_NORMAL, the overhead should be
-OK because the page table entries are changed to PROTN_ONE only for
-pages on the slow tier.
-
-Additionally, we may need to consider cpusets.
-
----
-Best Regards,
-Huang, Ying
+-- 
+Andreas Schwab, schwab@linux-m68k.org
+GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
+"And now for something completely different."
 
