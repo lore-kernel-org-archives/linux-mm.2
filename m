@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B83BC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 14:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 088AAC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 14:48:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFE6B6B00BA; Wed,  1 Jul 2026 10:48:28 -0400 (EDT)
+	id 310006B00BB; Wed,  1 Jul 2026 10:48:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD7116B00BB; Wed,  1 Jul 2026 10:48:28 -0400 (EDT)
+	id 2C02A6B00BD; Wed,  1 Jul 2026 10:48:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12B16B00BC; Wed,  1 Jul 2026 10:48:28 -0400 (EDT)
+	id 1FA786B00BB; Wed,  1 Jul 2026 10:48:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 83B246B00BA
+	by kanga.kvack.org (Postfix) with ESMTP id E62F36B00BB
 	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:48:28 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0ECF01C5F4E
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6C7AB1C723A
 	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:48:28 +0000 (UTC)
-X-FDA: 84940488696.09.86E22E0
+X-FDA: 84940488696.27.43EE91B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7E3AC20009
+	by imf16.hostedemail.com (Postfix) with ESMTP id D48D918000F
 	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 14:48:26 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CeHg43Rn;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GEFCPSeL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782917306;
-	b=AZ+UrEumfVRFRrw/MHl+1BsTKFcB8Hm+rWIo6jXwhjkurVYLbTw/lsXUh0QIJwg780cVWH
-	r1M+DcDTVpwvJaFfqgUAa5PI6u4YRrlYwqgBD4UTxEUNGj2t9KmmmpNCFDh+BkuYS7oYsJ
-	49k+b8mZ+sQMwH2iRCYHIMB3R98S9ZM=
+	b=ahMLQGAMu9YJH/ZD/iWJ7AvjfuHfA+dTSSUE+5rOgd9OXAafed5w2GukcIDOqdQGdESUxy
+	5oXQgbyVUFKbca1JreKWvWFjLqfRITM23Y0eBZD1IM1Ay6iYFN7IKtRZfAG17rzcuPENzj
+	fZ6fgN61trFP3xg10mCSuX42mjaRt2E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782917306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BLtPouv7eTzT2uQvAh/J7SZwGEEh8mUIs2EK62lyYMI=;
-	b=S7BeF/7Be0/XlQScXUCktCRG7dotUGD8Ul8wgm7RQ6kYkb4sbqSKx4tekzHvu1h7KPnIds
-	tWbDmlNl8w+iddLFZ2w76HOUaSlElUNQe65HRokhssYKi4drXeFOzx2GQNbKk6thSAzPJ1
-	ud2X2rVL1pWcKc5wFbqERVFxGS7UWH8=
+	bh=z4feI/qU1SbwMydOJY76MHjKjfYHnoO820guZYu+4uI=;
+	b=nPqxA/MTLlaCaXEfUfDNFT2uISauhl99UQgFIsHVJzCt5kR8XpqHTH4vhZ2ikh5ADksAEB
+	9L6cwlFm08tIM5MKeClqfL3j8GrElyUNKozx504ytnnDZBYmLcQ9KHJ5HhxhvUnC8OARix
+	+kMC/Fz4wUHhTw892LzVmOQj48Mnh7c=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CeHg43Rn;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GEFCPSeL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 18FB260138;
+	by tor.source.kernel.org (Postfix) with ESMTP id 780BA601EA;
 	Wed,  1 Jul 2026 14:48:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9013B1F00A3E;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF03B1F00A3F;
 	Wed,  1 Jul 2026 14:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782917305;
-	bh=BLtPouv7eTzT2uQvAh/J7SZwGEEh8mUIs2EK62lyYMI=;
+	s=k20260515; t=1782917306;
+	bh=z4feI/qU1SbwMydOJY76MHjKjfYHnoO820guZYu+4uI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CeHg43RnI1LV8nyCsPHx9+XpeFcYyUIYoxkNve9MFbcxVkX79J0BOYHlUetIvE3Um
-	 pSpNLNsRGtbarEsEhGHOBni6Ww9G+FLrAfpilTglDfCMjwS6LD7HkpwRrU+PyRo1/l
-	 eCAlC0o9hsJxoHZPdUssVCF0p5rw1Bxn0YcqxdlMX3X8c/2DsRxNiqB/xGAskvadvh
-	 zdNZYnRSwIrT4eNH5j/ZeAQzW167uLQgxmVu5VtwLN8Vh0EA2bIygyNdKbFmkDVjyP
-	 roHdiliLKe5psBkOP42Hj0vlgzQTeQi4tcGrJMIuIyzw1Br3Cx/m51wISaJgvxkppo
-	 fx2YzBbVZOqvQ==
+	b=GEFCPSeLYMw1PQCmlpe9SPIj0AO5UrrMtNr1mhwwq+tIRgEPxBIfwU5aNCkorbFeA
+	 JuLDYfKDA4DL0OdXoj4pcwl/hBnMZM0B/dOplIrc9Ei7t7g2CL2uUpx7brhIVijwk+
+	 4szMC2LEcrKAjixcKHiIvFwF5ncWDeWcwE50sxE5774S+Xu8BlNq+XbPa5x8N35a4L
+	 LQ6NOUWX6nqdYsaZgpvrEmKtk/kw5DD03rdS/ba67Ng6Wgtdpx4bbU8mN0KNxNWhBm
+	 I6CA1Eh1MGdoZ0tJNJBQzDac97oQHWruQvEUcOsqSI3z/BA2sM9S57zCwewS9bogbc
+	 Ug/Eb/2Yje0Dw==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 3/8] mm/damon/sysfs: remove duplicated commit input validity check
-Date: Wed,  1 Jul 2026 07:48:05 -0700
-Message-ID: <20260701144815.113325-4-sj@kernel.org>
+Subject: [RFC PATCH 4/8] mm/damon/reclaim: remove duplicated min_region_sz power of 2 check
+Date: Wed,  1 Jul 2026 07:48:06 -0700
+Message-ID: <20260701144815.113325-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260701144815.113325-1-sj@kernel.org>
 References: <20260701144815.113325-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D48D918000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7E3AC20009
-X-Stat-Signature: 39ecw3oy9j4ytxh5xqfqzpnu4q8kd637
-X-HE-Tag: 1782917306-818757
-X-HE-Meta: U2FsdGVkX1/q3R62HtbWZCYES/pcneTL59R5Nh14Ne0BKrT0bDO4h0aVIoHYjMpy5dKKNImQN7NI1aNmPLu/+rRANigkjKf49cdAwvEJq7dRmIIhwIFTpKFemmH6PnEJawRnTDOnd8DLPwt/UnbRyjxYbxuegslhXPnALRTmpG2m1limDaJA24k6NNcMJJwHEwc2FFktDLQFZh2SiUmj5gsBFgRO6mdlkt/kUTanMO4qeXsvZNgHKifFFTo7KcyxYaIvxprHIdeqnQyfAHhDETSxH8zZdcklOBkDbkftjydCJukqzxmFJ7JszoqXiZ4Hgh5Kx0WE+U91IgqJ5rXIppiUSO+Q/wTT7LNy3EtvcLVUuvIX1h1qDkxLwFtjD3s7iIIzF1DaQO83Xu73R8AlQDR6BmvGht2TeEnVIj0DpaV4w3YWV0u71I5ltOXXYlts+mnHvB5xNYQGMVzXxQcYXBGc/NkJS1EA9XnFwgo/eskO0OLGocrjO4LY8F3hk5iGwws3mdPanBs9G/jQ1jQwhfU8v7r5Vx0x/oza07TP1hcULB+FSNLG0MRbkN4LiiskSk1cOHmxpFC6FyE+3RjjztrUfVXvgEp9Lr1XIC4OKs05GzAw2qCvJeOQHu2KeHHmz1/fBWLlcyaXhZuLCi8O8dNJRVcnAQc44lH+UrWAzeHSDCj5+OIHiO1GP2VX75PPFxi4VKHbc6/lOY4qtNsZP5zCTI8AxGG1Fd0m26XWo7AzMu33nmsMToHeQQGOuisjz9f5Ah7cua1nJBdOpbELmMcEQCUf/O2Oi71BsID1CnLOw489IpGq4FEHMCXkgnLBKuRyhKh5AV+ptEnrxmI19RORn/1MjsNWaFB28pDJdXdspHgITmqqUrjDunnodAUVkhZnbDSS8jD8zq+VBbzdk1xe//o47WVNAktGzhIIfV9TYLxvnb2KdEQEzdZdWaUauY9sfw604WTl2BD/LFC
- QGiFUJiP
- zQQduAAkZTtwNxl+kghifqqrFJlmEZ7U7/inSvIAHX1NxLs99W8+2pniu3oYe1vIsKSWddQg8Cg5T1na5AibGWFCgrfIyVcn3a7ijKOrZQv6HiHK46FeyARMza2qXOHdK+pLp+nJ6/3mlUFIGeCMzlUl0yq1vsCbmmC83RTubXZ+lFuI3YtBpEud3b7loNWHiWVf7cAB9+HYoG72Dyf0schDhEd82sXzkDKGgLhpTRcqXiBc=
+X-Stat-Signature: fgaa9qnn9fu6d8dc91zr4otcknyzswmk
+X-HE-Tag: 1782917306-846834
+X-HE-Meta: U2FsdGVkX1+HBoI7kDbo7ov++DIlE498yJO8ewma7K+cyVuS+xCgZzT+8PqvrZbw67QKwN8+D7BAfuADmjjxH1Kt2qo3J3h9or4teuBsdyiM2enKJUSJQozxcTy+Ju77ZV/6F6+BIB7zIQyphg1q3Pxp8JliRm/eOA5HbvoCeVbpUvKCTSEh87dBOw+phYezgAoNrRcpXQy934NlzJbQwKQqQOpDQT2g4zcs0zCOBS5hErcds7DaZ4PbdZaFV6VnG0OYadZeR+xJGUxrPouKJ28w1NOw21W7107m+EDEuu03kq/A1giqEW7sSg0ley91DWQo9jYKrIF0uHteAB5SZYUUsN1dqQcosRAqeRsI+h4L6xFKsBfwLXFJt+NNmrML3pUPmSM6ZSM3jt0x8/Kf+eBa5SvN0UD8XEWIP1xDh9UncA/baKL8K9B4MAkC2y20PrwoH5NJ2NXab+BSrqgmR+ca44mTy/o/K2hjqdcdcN0eW8pF0PPLYEs3HxR3gy3rqoGkoITu7Moe/aLl/xvjKBKf4xG7IY0yZ4nccT7GazCR97Hn9JZRAXbZ3BJp7nUgR8q4WbBuEdiephrQABf3oT194KpKzQ/2JTYrL+Od+YAcYcyKgskVUEM2qwsUE+VJWCfW7O54Lsq4xUvfLNBO/DLsBrc8i5soSlh8yDhf0SbNuwgcKVaRk4A6PCttYiFKzmChe4fWSltsmjG2blcLDLTu202k93t806GkSLP6+t+BmCXisrn7ycxTY3GRyB1qYJSaNrKBIgHEBujoeB+nDzn8VzgmmRJovMoGPYbjbKbHfy96izMynTWY5uJCONhgI63a3LHHJdGurQ/fnu+2OH0LG/pH7GVKJ0BfCX58TKMsEoTjd0bSfjNz6Mz57cxr0J5WifSFDTAS6ypwemFSqfJmFAYQN96nb+TOVrqy3uw2x1JjQ08EmLEp3bO+bRVD0AAU0Og9E/FKSKtR2bH
+ oqHcACWu
+ veFJ44NP9OeTxKlYWRVmb/LMN3UyPjMT1GZsWx7KuHUmkKEn4VNP6novxQVvCSURGaeWc/4Nxb4GjIBeSNGrjhAEV7qpL0f2AoKsqt0I3Fn4OhoVy9KUG2AnJaVIVZF/2Gc4bwEinAASQFJP0aB/cLjhuSOFXvoV9LMatqYHUojXxZQDL7YITigRFk13Li/1kRJD4/C2N6TFiIWAI5KxI2nHHn9nepd1RUNzRKAsDmknWtKn8HmytBbfg+9svyUsraPF7ZThzdWv3mpYTTHqP3YBozA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,74 +93,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON sysfs interface does parameters validation-purpose
-damon_commit_ctx() calls for parameters update.  Now the same logic is
-embedded inside damon_commit_ctx() itself.  Hence, the validation in
-DAMON sysfs interface is just an unnecessary duplicate.  Remove it.
+DAMON_RECLAIM validates the user input for min_region_sz.  The same
+validation is done inside damon_start() and damon_commit_ctx().  Remove
+the duplicate.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 32 +-------------------------------
- 1 file changed, 1 insertion(+), 31 deletions(-)
+ mm/damon/reclaim.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 6710b6d019bf5..e666dddf1feba 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2098,26 +2098,6 @@ static int damon_sysfs_apply_inputs(struct damon_ctx *ctx,
- static struct damon_ctx *damon_sysfs_build_ctx(
- 		struct damon_sysfs_context *sys_ctx);
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 11b70d0a9a6f0..6469b25cc34f9 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -208,11 +208,6 @@ static int damon_reclaim_apply_parameters(void)
+ 	param_ctx->addr_unit = addr_unit;
+ 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
  
--/*
-- * Return a new damon_ctx for testing new parameters to commit.
-- */
--static struct damon_ctx *damon_sysfs_new_test_ctx(
--		struct damon_ctx *running_ctx)
--{
--	struct damon_ctx *test_ctx;
--	int err;
--
--	test_ctx = damon_new_ctx();
--	if (!test_ctx)
--		return NULL;
--	err = damon_commit_ctx(test_ctx, running_ctx);
--	if (err) {
--		damon_destroy_ctx(test_ctx);
--		return NULL;
--	}
--	return test_ctx;
--}
--
- /*
-  * damon_sysfs_commit_input() - Commit user inputs to a running kdamond.
-  * @kdamond:	The kobject wrapper for the associated kdamond.
-@@ -2127,7 +2107,7 @@ static struct damon_ctx *damon_sysfs_new_test_ctx(
- static int damon_sysfs_commit_input(void *data)
- {
- 	struct damon_sysfs_kdamond *kdamond = data;
--	struct damon_ctx *param_ctx, *test_ctx;
-+	struct damon_ctx *param_ctx;
- 	int err;
- 
- 	if (!damon_sysfs_kdamond_running(kdamond))
-@@ -2139,17 +2119,7 @@ static int damon_sysfs_commit_input(void *data)
- 	param_ctx = damon_sysfs_build_ctx(kdamond->contexts->contexts_arr[0]);
- 	if (IS_ERR(param_ctx))
- 		return PTR_ERR(param_ctx);
--	test_ctx = damon_sysfs_new_test_ctx(kdamond->damon_ctx);
--	if (!test_ctx) {
--		damon_destroy_ctx(param_ctx);
--		return -ENOMEM;
--	}
--	err = damon_commit_ctx(test_ctx, param_ctx);
--	if (err)
+-	if (!is_power_of_2(param_ctx->min_region_sz)) {
+-		err = -EINVAL;
 -		goto out;
- 	err = damon_commit_ctx(kdamond->damon_ctx, param_ctx);
--out:
--	damon_destroy_ctx(test_ctx);
- 	damon_destroy_ctx(param_ctx);
- 	return err;
- }
+-	}
+-
+ 	if (!damon_reclaim_mon_attrs.aggr_interval) {
+ 		err = -EINVAL;
+ 		goto out;
 -- 
 2.47.3
 
