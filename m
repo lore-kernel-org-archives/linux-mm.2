@@ -4,97 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29048C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 10:23:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D10A3C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 10:30:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1473F6B00A8; Wed,  1 Jul 2026 06:23:58 -0400 (EDT)
+	id A7EA46B00A6; Wed,  1 Jul 2026 06:30:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F7D66B00A9; Wed,  1 Jul 2026 06:23:58 -0400 (EDT)
+	id A2FAD6B00A9; Wed,  1 Jul 2026 06:30:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0101F6B00AB; Wed,  1 Jul 2026 06:23:57 -0400 (EDT)
+	id 8F8EC6B00AB; Wed,  1 Jul 2026 06:30:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CC89F6B00A8
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:23:57 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 56E4C4028E
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:23:57 +0000 (UTC)
-X-FDA: 84939822114.01.2411845
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AE48AC0003
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:23:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0gX0K89;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782901435;
-	b=YF3ziUOxStGz9/3AZShlHVc+kRQ1PWNSO/mMxI3RQp/AqVjzw1rotReYM3iHJf7CWMoI6j
-	NRlpOYz6GujRiQSXxQ++Q3liUmDUiwYPPhEHwk8eUGytRDGp/+0kKHQ52ShrQ8NCFCVRm/
-	Urb+GKksClf5r68hmwqlZeGflBPF3/E=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782901435;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B0496B00A6
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 06:30:35 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0266167FC5
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:30:34 +0000 (UTC)
+X-FDA: 84939838788.18.97FD5CF
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 1116C180014
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 10:30:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qdDWMyRJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782901833;
+	b=6YYHNDtb3swXsdfNFM8w67TD++lMN8iWU4Yux0akVeZvhmjvCoY8hbNhCII6reDjU9YJRf
+	bnF+OS6C8JlEHhcw3wEwsr7VfdYmV4czHv0WpCzlxH/za2PYGxenxBtIReAnLWejoTjiXZ
+	QfcJvcKVtirZ802DpWeDsrIP5ZWJkhs=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782901833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wQ8qOYDe5kXztHH+xJLUrlU+iOY7jfOVJOn8zyUOgpA=;
-	b=5jF3a5NhLpY1Ev5YF8Ii2/OqPaN8ykOndlosWhniDP20RP26+/ONPMFolfJYZ8vDObbEyv
-	j/1bLdG5ywmeYBl5v1tQml1N9E7+I5k9JVF5vGP4JsylzJfdqScR2zDREhyXGbUdfn3Xu7
-	anpVIjng5uQ1P9MfJQreV16LwVy09sg=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0gX0K89;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DDF7541A77;
-	Wed,  1 Jul 2026 10:23:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0407C1F000E9;
-	Wed,  1 Jul 2026 10:23:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782901434;
-	bh=wQ8qOYDe5kXztHH+xJLUrlU+iOY7jfOVJOn8zyUOgpA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X0gX0K89AEhl6+DSq4hnkO/hI4W5rOjmCIJb0AR9m+PwyStRVf0lIsm/lmnjt2vr3
-	 QxxOaKesl67hWCdXgvKo+yOXn58N6erfdHWm5E5l6GC7BwwLVwkXmXRyxW5k3Sdh8a
-	 pFg3Ga20/wO8l/9OrwmZWpU6QT16+77MTPfQtnqjmXLhA97yuKPAMSI8Ce8HQUgOiD
-	 Z9Z+zl5gR/d5+5LKPvAE1TbLsnsdcls0ABM3ZpwFrdUIwSmvHq1LahwFbuwY2jpleM
-	 q24N7RvO92QuU/OrfqEfDeB3FWoTeokeWPDzPMfSDJ/vOpgSizL3Y7rBN2vzef42g/
-	 o6Wu3FpN1225A==
-Date: Wed, 1 Jul 2026 11:23:42 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/9] mm: use enum migrate_reason instead of int for
- migration reason parameters
-Message-ID: <akTqXYFncsSLniIn@lucifer>
-References: <20260701061101.344679-1-ye.liu@linux.dev>
- <20260701061101.344679-4-ye.liu@linux.dev>
+	bh=xA5qwJQ5ZOB9PrEYWpKUaKUpyF3b4ancjvRigQCLEfE=;
+	b=eI0xRx3sRiiHiZgLtlWsC19VG38RRsMMGDxksZvxCnFQujQZSxBa6UOgyZbOl/KLtpomrc
+	5GW3y9aMp2IyF0jccGaQj5Ds+NN6rsvN/GOQKctuO66YJZFMSDLmcc8x1prHrpbNe60SQS
+	OIGxz+JUpImvRqsIdHfdiRMQXsh88vs=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qdDWMyRJ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.50 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5aeb8c19017so594668e87.0
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 03:30:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782901831; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BJv4trkKFNR1lodKN4U0TuUEsRulCmSdXPn1Q0U13KZVlxbiKa9jtVy0yodTIM56o6
+         a9UVRAGIcLfTKh5WLlR1uLREudPWSAR28w7dVglOsfm1ceuGo+vM5AmvFmoLweGnpcP9
+         rz+mb4LRwgpptEko5dxUSo/IoN60On3uUFWXTMDUWmTIBZOIgeiO3cQ5LSIG20xCujE+
+         vvG77qEn33Op2kJlh9CVtInZJ+0XurCh0G1A4TD0G25uNnZJrIEvCRE06oOJbapjAQrk
+         D6g4QOf/MZnTJ0z23OrpflBKcbtONpJZ4sfXmVrFTORS9j7I5SUZwIKWgEZq423szoJq
+         JWYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xA5qwJQ5ZOB9PrEYWpKUaKUpyF3b4ancjvRigQCLEfE=;
+        fh=hWvtUWx9Yn62o2GpGjLMweFI2JRRJlp72un7AlZPdU8=;
+        b=DV6p05gn884IkhGrTMSxBszPcIklWByuR5tfe95jzDj2K1cp+kyA9BeBy7t8jsX+Mp
+         W2eOf4ZAvSUr5LRi+cnNDNI4axGr91SZjQzYNjvCIgFAU/o5pBSjwamFe7+sSPYWi0f2
+         knWX748VPRHjiMSm/p50L33W+RuUUGeNwlDePX+rYLLFjqlPVAbI2LCslQVEUJs5zTSP
+         KZqsVn/807A6XzBI8wzzMyWnkfUWp/QmU3G8uYCtQ7DvuKLVPdipVDMRbNpymzL7Ff4z
+         U10IeLwVtX0RDAFPDAhxiI3TjcGl5SHKCm8oVhidfvXrsbnFbUBhaIBpV3BgypNIQf0u
+         X/tg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782901831; x=1783506631; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xA5qwJQ5ZOB9PrEYWpKUaKUpyF3b4ancjvRigQCLEfE=;
+        b=qdDWMyRJsJIDE+cbjaeXvqPvobNY6q6oRxwx78f9XQ1Y+f6VXEH+op3TrCG4+9ts8m
+         QCG/w5kz89pHBWQqgNTtXPfH5Aiiu4w3drYnfZHElQ/9rPgt+eogN9WiPwF5IsxM2hkO
+         bXwuZkGZ954OHPI4nkRwTCp/i1scGvsx2dU+Z77rVONWL19kPcdNGyaiOvqrfHTTgljh
+         +9hIW9hH+IAxcKzItDLDtYrF3oSSndkk+g7H1jBHjzf/BEYyNv6eMbYs7wI3VoT7ippH
+         5jri4KYa+qIQtjrzdqhLgEXz9cwDVGvqg+3BtiQg50ixkI0xtVmdKqL10fD2O8juUNPe
+         qHyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782901831; x=1783506631;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xA5qwJQ5ZOB9PrEYWpKUaKUpyF3b4ancjvRigQCLEfE=;
+        b=dINlvaKN3HYKwskqIOup+F/i6fVV2PyhnfjIN1beo4vtmIftmA0iKNywKvYnGl9Qb3
+         WhSmLjAR+3noa8zAs2tKynSdK96/0IDR7oqNfIWlNvjF+jpPvq88Gaz/eEjT+7FLpToY
+         RHkyHgeGDiVK0oXe1zfEWWZl+lQS4mazXoQvr1himx71caeCiX1jk2D20cvxM5DW5i6I
+         e72R/aktFkRdXxqZjQQS13WtR8CnldRzUXr9/NI3S/i1iRsFGIfBqXDzGPlyk3OgKdLu
+         CA3ckL1LOZrmcIHTEPjmqHy0vdlvxZMZhSvOSubismc46rb/5OWD3rdihz+gjHx5cFUQ
+         6XqA==
+X-Forwarded-Encrypted: i=1; AHgh+Rq7BhBVWMkimSH/XhMcipc7qOpWTfm4hOFrNWXlrPAReBvsIu2alspTzgF3IxImKdbCfvN8sBGzrQ==@kvack.org
+X-Gm-Message-State: AOJu0YycmmhnYsUBKpVMpW4meCE29ULOmFSBbdp+3XhUIBV9p2MIWwyL
+	mhtxM1eCT4R8VynLgusenWS/L7OsvqdWj7lf6YC/madjLkkFgyIcKpPFzIsJebSzEeRTej2Co0E
+	nMHSdJRPrPgIHcLnceD7PXfs81JRc+Xg=
+X-Gm-Gg: AfdE7cnR6iRErdJRl++9DqwCCX9EsFpf+eLWBVtXfFf4qLjl88XaXArBVElS5YBb+p9
+	+df69zKgKQ4ZHglSIIIT4udwpt+wR7cRf9wL2iWK1tDWbosOEVekncwm46eBgFMQdww+yzSqZYW
+	x/iVk5jZG3KWzPCgJOB46JZk7RZyPi3P0+NVj83cLVJXkQ8CpyQYS03xXj52XbE+VQK/UTLI2WJ
+	MlgsxD5ZcxEL9ubJY7kncKmeKlRZTeLrZoORTM0VJECU/DjBJ2T/slz/i+hhLT7ZPM9J6ISsAJY
+	g7r8aSfRkDg3C7EWHJyASA4r4Q==
+X-Received: by 2002:a05:6512:630f:b0:5ae:b270:505e with SMTP id
+ 2adb3069b0e04-5aec67973e3mr225140e87.1.1782901830996; Wed, 01 Jul 2026
+ 03:30:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260701061101.344679-4-ye.liu@linux.dev>
+References: <20260701-ch-swap-series-plus-folio-lru-cleanup-v6-0-d4f648963382@gmail.com>
+ <20260701-ch-swap-series-plus-folio-lru-cleanup-v6-2-d4f648963382@gmail.com> <akQOmJOy1TYrhlq5@casper.infradead.org>
+In-Reply-To: <akQOmJOy1TYrhlq5@casper.infradead.org>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Wed, 1 Jul 2026 18:30:18 +0800
+X-Gm-Features: AVVi8CdEKckBCl7bwZrAts0Mp322Jz5dOoJByytnqbXcKin9G8KQmplLTfNe_BE
+Message-ID: <CAJxJ_jhaxah3WzjO6+hF9XFY_ffPjHRw_RjoOQFTY+3ZAs7qcA@mail.gmail.com>
+Subject: Re: [PATCH v6 2/3] mm: rename swap.c to folio.c
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1116C180014
 X-Rspam-User: 
-X-Stat-Signature: 5fyta5yoas1qk1buhconuppa6hubqe1a
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AE48AC0003
-X-HE-Tag: 1782901435-705658
-X-HE-Meta: U2FsdGVkX1+LfRwHBFY27eEHZeZgXz66JHqbR25yM94Nz17sW1nblxb/v2R2u9AJn9PbIsKXhisSdQL+RD4S9qKoCKakh4b6j1xveLAhXnAJEXOnRhin3AOlH1vhbI/pihJ61oOF+AqtMprGspuON53fDHUEcqGboHQRoNcDZomTbS/VmpxckAznXaLn4vc1CI3WjxIKzncoC2KNxyjCPnTGv8+JzW451OWnedm3R9wBGtZbL5vAdpOeLp/gxsytH4g2s4oxwSpf2IWtbPYVzcjP7OdAd2N70DjdRqSproEoUN4KoyePnBvdn+fLo4awa0dBYVXm8x7UZYXkbTwTywyN6N7LE8zeXfygBCN6I5NP9A2NP9h65yH+MvuUDvIRhkmUNL9DEqW998VGnIT5wBdIgJ7oKrwe2pJheTVjL/OJCxXEoJyssu+0kFpQkpDwU1tYiFzG5ltVa9K+AztljQ0CPxCd+PDhL1X0mxecOUbv2SueJmr5WBl9DnM3yxcdhiZ6t70E94ufLWHKtJpjcUuhPQVI8RQqOBGEBThXibsG+v5oYvkibjLXQM7CiZmrFgAZ3LZWECnGn2k7FPss3tMvfX77zINzYgr7Ag6NTb0M7Bima4Rmx6oLOWUrycc7k1UXbk0kxNGtSXj0gJ+kNGfrZ47+hu6soGka30xVuoIkovpGxSfbV47S9HsUCkjYtrQrQP8OFPRAjfKc9cXyoYPLaj2y9m62UwmW848KgDzjLMqO+hWtQZwJCTbx1WWFj/TPpbLD74YHt92P4GUuD80KPxMj4IqR0h6SxkzHopt+8Gf203BiCS6Z2IPYWBeqe6eZSHn+kVqjnu58mbxDpGTlVsMBnzDOrSOdlzx4CddUN/vYLnnzjN6w7qMUny27IbkRmzpC0z625SnwBm5SJ4/LGSDhyqgFhMiuztfVx7foUl4SYyFEjQ1RYZ96gGVM6BcO1scP+bk/t5GQHqT
- mkkLZcuN
- B4ZiHX9EataR50PytnZNEeK354HexoOy8VVKdvM6c+qjHPWmwijIiSxlqMkGedphKy+MIOdYAamFVd69BNUMFnte2blBjn53z52PHiPx414amzrsQjwldQeF7iB80huaVyf6fO6rqI5B8k2odn6lEBcw45F08wthwplbph5jtThP2OX0bkavowZPzZ3x77NmWt54pBIRMrSdbIRHDmKi2IPDaTn+r/eHt4jd02K7M/gA6mhEjY46EX6qtR8s9uCxItOEL0BXs5m4Uu7Rv1kpmGlnJ1YIAE+i51D9ZmkKdb+S7pyI2JRTm0iWRuUVI+7p1ABosfk80mUEDP6fcO2CGPZlExgRxTGzZ/DNg/akfUs0q/6LtG7p4kx1tJFTqoNy7QhlCFmMFG76sAhIebuH5QP/vnGVaklIEhuhAlcgRPNVeZMw=
+X-Stat-Signature: 18wxwtodezikod3cme4961cmdxhr17t9
+X-HE-Tag: 1782901832-859517
+X-HE-Meta: U2FsdGVkX18WCfCEQjswUGCxBSmnhuy6fYn1vuvmeTQ78vofGtJopuk9CWpOgfff7H0kS8AOEj46ZWDo5jovHZbBPJHBXsZ3Ft1QY6RXXdUQe/mT4yzoGUWXDLyIQbhjUn1LAQdI+zduXxuYAdHB2r+drqCO8vrJ5f+WYqHSTcP+TKa/pWdIcYp1RH8XH/tCEVAn/lJFk9FLTXHXVWwSSlmOdYLxNKYtWx1nBgy0qZ4BCSTQWYv5kogK0da6lXVoddUFWmWoboH+nOcKb86w9hhYcF23keGBvHT0cBpDuko6EotkWLiAcldKIgLavY7Yj+/LUvqwnNuTqFkdSKmjN01HTNuJXwMtB9kiodT2vLSL/MWBe+iib6oi02TjU2qHuu0st11WmHY3q/vVwd8NrI1JjZaz+Wlim+OK3AWDK17gi9qBMMVEPfzfBT+8PTM7QtVR1BlGCmb5GN391JX4Q0n9qwha3LODtc6sycvItIJ4ChS/J4CgJKEC2PjpZtdXd2n0/8cWeSHMEOhO0FC/htHn4BftxyEf0VdvHT3MtplV0xWfgj8fvZvKUhH1FODXSlAOVw/esNTQt/gbb4I2d0Xm4OHTevd5+FSRhpI6dLSzO/lsVHrto+USs6mZ825mCbh3FPPzN2i80DEDa//mEqCzt2X+uuNdN06MGKechgi2ZvSO15RTNCqOJDX/u0FP/pROgPJ5pJ/ODiAFjgScnHjFyuo2agyVSaBRXF/WXeMOR3PSjYCOxEIJeNYra1n/Cc/xNHkiG2rYpNM3bZKG7mdd7ec1XYX+3bQ5wijsOr8cD6Q/olQvoiWikP0YChNAQoKQZoguzqSTEYetx2uJSJNgivdF5733zvpoDqBxDcfQQYJIQ7T2lcVd8ggiOSEdpiE8nLxpHAJ6OnhRhdT0mq9REDWeKwB9XzGsJMmU5zGfydsLW3G7OVV8pb4ZiyMhWB+BlHz2JAoyItgBRPg
+ J54ZXZD+
+ PMFYfbB1EuzDbfyW8/WAgIUCuuZ/nTQeOda6IG5fqxVpWMJV+nsPfDsaWrN4AjVNeB8W8mu3JkacvnMCEjqnP/LBnxfhUhYi0+5FY81dJPWcL97EZ6lOMLt8t3hsoeP/VLn4DqbVDqTBhPQ/KR1ncbQ19VYTBAxzR03Mq1cwD2Cd7q856yW68EiDz6/tNXFSrjqF3mvaDDrITjAIxBLykJYGJFdg6JPnqzG22w1Y5A/mSfPUYMN+iKTYaB2DWQxquHV/zIWHiz3pMp+MERYtLu9vOimKRqXVLCUvmOThLMFFxuEgdTtNLWcHr1aPtS3ivyCtbjS5tqr0vA6vGZ2FE2FDVV0gNu0yGPztKiLfsCAuC00P2RwJub2Ev7vozjlETMVW5LjwyGOpIevTcNNRRbTjQcDf18fLpPs1cMsccxI+mog4OSYqKBPDs2no+JWDDRcU3C4/DSKifN5otQLIUVazOf9rLcMH4D2N8HI3Gff0n2xo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,280 +150,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026 at 02:10:46PM +0800, Ye Liu wrote:
-> Replace all 'int reason' function parameters that carry migrate_reason
-> values with the proper 'enum migrate_reason' type.  This makes the
-> intent explicit and leverages compiler type checking.  The affected
-> subsystems are:
+On Wed, Jul 1, 2026 at 2:44=E2=80=AFAM Matthew Wilcox <willy@infradead.org>=
+ wrote:
 >
->   - page_owner: __folio_set_owner_migrate_reason(),
->                 folio_set_owner_migrate_reason()
->   - migrate: migrate_pages(), migrate_pages_sync(),
->              migrate_pages_batch(), migrate_folios_move(),
->              migrate_hugetlbs(), unmap_and_move_huge_page()
->   - hugetlb: move_hugetlb_state(), htlb_allow_alloc_fallback()
->   - trace: mm_migrate_pages and mm_migrate_pages_start events
+> On Wed, Jul 01, 2026 at 12:27:33AM +0800, Jianyue Wu wrote:
+> > @@ -17057,7 +17057,6 @@ F:    include/linux/swap.h
+> >  F:   include/linux/swapfile.h
+> >  F:   include/linux/swapops.h
+> >  F:   mm/page_io.c
+> > -F:   mm/swap.c
+> >  F:   mm/swap.h
+> >  F:   mm/swap_table.h
+> >  F:   mm/swap_state.c
 >
-> The 'short last_migrate_reason' struct field and internal helper
-> parameter in page_owner are intentionally left as 'short' since they
-> store per-page metadata where size matters.
-
-Based on my own personal experience, it's ok to be short ;)
-
->
-> No functional change.
->
-> Signed-off-by: Ye Liu <ye.liu@linux.dev>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-1 nit below but otherwise LGTM so:
-
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-
-> ---
->  include/linux/hugetlb.h        |  9 +++++----
->  include/linux/migrate.h        |  6 ++++--
->  include/linux/page_owner.h     |  7 ++++---
->  include/trace/events/migrate.h |  8 ++++----
->  mm/hugetlb.c                   |  3 ++-
->  mm/migrate.c                   | 12 ++++++------
->  mm/page_owner.c                |  2 +-
->  7 files changed, 26 insertions(+), 21 deletions(-)
->
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 2abaf99321e9..fa828232dfcc 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -154,7 +154,8 @@ long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
->  bool folio_isolate_hugetlb(struct folio *folio, struct list_head *list);
->  int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison);
->  void folio_putback_hugetlb(struct folio *folio);
-> -void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason);
-> +void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio,
-> +			enum migrate_reason reason);
->  void hugetlb_fix_reserve_counts(struct inode *inode);
->  extern struct mutex *hugetlb_fault_mutex_table;
->  u32 hugetlb_fault_mutex_hash(struct address_space *mapping, pgoff_t idx);
-> @@ -424,7 +425,7 @@ static inline void folio_putback_hugetlb(struct folio *folio)
->  }
->
->  static inline void move_hugetlb_state(struct folio *old_folio,
-> -					struct folio *new_folio, int reason)
-> +					struct folio *new_folio, enum migrate_reason reason)
->  {
->  }
->
-> @@ -956,7 +957,7 @@ static inline gfp_t htlb_modify_alloc_mask(struct hstate *h, gfp_t gfp_mask)
->  	return modified_mask;
->  }
->
-> -static inline bool htlb_allow_alloc_fallback(int reason)
-> +static inline bool htlb_allow_alloc_fallback(enum migrate_reason reason)
->  {
->  	bool allowed_fallback = false;
->
-> @@ -1238,7 +1239,7 @@ static inline gfp_t htlb_modify_alloc_mask(struct hstate *h, gfp_t gfp_mask)
->  	return 0;
->  }
->
-> -static inline bool htlb_allow_alloc_fallback(int reason)
-> +static inline bool htlb_allow_alloc_fallback(enum migrate_reason reason)
->  {
->  	return false;
->  }
-> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-> index d5af2b7f577b..1f83924615d6 100644
-> --- a/include/linux/migrate.h
-> +++ b/include/linux/migrate.h
-> @@ -57,7 +57,8 @@ void putback_movable_pages(struct list_head *l);
->  int migrate_folio(struct address_space *mapping, struct folio *dst,
->  		struct folio *src, enum migrate_mode mode);
->  int migrate_pages(struct list_head *l, new_folio_t new, free_folio_t free,
-> -		  unsigned long private, enum migrate_mode mode, int reason,
-> +		  unsigned long private, enum migrate_mode mode,
-> +		  enum migrate_reason reason,
->  		  unsigned int *ret_succeeded);
->  struct folio *alloc_migration_target(struct folio *src, unsigned long private);
->  bool isolate_movable_ops_page(struct page *page, isolate_mode_t mode);
-> @@ -77,7 +78,8 @@ int set_movable_ops(const struct movable_operations *ops, enum pagetype type);
->  static inline void putback_movable_pages(struct list_head *l) {}
->  static inline int migrate_pages(struct list_head *l, new_folio_t new,
->  		free_folio_t free, unsigned long private,
-> -		enum migrate_mode mode, int reason, unsigned int *ret_succeeded)
-> +		enum migrate_mode mode, enum migrate_reason reason,
-> +		unsigned int *ret_succeeded)
->  	{ return -ENOSYS; }
->  static inline struct folio *alloc_migration_target(struct folio *src,
->  		unsigned long private)
-> diff --git a/include/linux/page_owner.h b/include/linux/page_owner.h
-> index 3328357f6dba..9fe51dfccf26 100644
-> --- a/include/linux/page_owner.h
-> +++ b/include/linux/page_owner.h
-> @@ -3,6 +3,7 @@
->  #define __LINUX_PAGE_OWNER_H
->
->  #include <linux/jump_label.h>
-> +#include <linux/migrate_mode.h>
->
->  #ifdef CONFIG_PAGE_OWNER
->  extern struct static_key_false page_owner_inited;
-> @@ -14,7 +15,7 @@ extern void __set_page_owner(struct page *page,
->  extern void __split_page_owner(struct page *page, int old_order,
->  			int new_order);
->  extern void __folio_copy_owner(struct folio *newfolio, struct folio *old);
-> -extern void __folio_set_owner_migrate_reason(struct folio *folio, int reason);
-> +extern void __folio_set_owner_migrate_reason(struct folio *folio, enum migrate_reason reason);
-
-NIT: We drop externs when we change them as a rule, the extern is unnecessary.
-
->  extern void __dump_page_owner(const struct page *page);
->  extern void pagetypeinfo_showmixedcount_print(struct seq_file *m,
->  					pg_data_t *pgdat, struct zone *zone);
-> @@ -43,7 +44,7 @@ static inline void folio_copy_owner(struct folio *newfolio, struct folio *old)
->  	if (static_branch_unlikely(&page_owner_inited))
->  		__folio_copy_owner(newfolio, old);
->  }
-> -static inline void folio_set_owner_migrate_reason(struct folio *folio, int reason)
-> +static inline void folio_set_owner_migrate_reason(struct folio *folio, enum migrate_reason reason)
->  {
->  	if (static_branch_unlikely(&page_owner_inited))
->  		__folio_set_owner_migrate_reason(folio, reason);
-> @@ -68,7 +69,7 @@ static inline void split_page_owner(struct page *page, int old_order,
->  static inline void folio_copy_owner(struct folio *newfolio, struct folio *folio)
->  {
->  }
-> -static inline void folio_set_owner_migrate_reason(struct folio *folio, int reason)
-> +static inline void folio_set_owner_migrate_reason(struct folio *folio, enum migrate_reason reason)
->  {
->  }
->  static inline void dump_page_owner(const struct page *page)
-> diff --git a/include/trace/events/migrate.h b/include/trace/events/migrate.h
-> index 11bc0aa14c7e..15ee2ef201b5 100644
-> --- a/include/trace/events/migrate.h
-> +++ b/include/trace/events/migrate.h
-> @@ -52,7 +52,7 @@ TRACE_EVENT(mm_migrate_pages,
->  	TP_PROTO(unsigned long succeeded, unsigned long failed,
->  		 unsigned long thp_succeeded, unsigned long thp_failed,
->  		 unsigned long thp_split, unsigned long large_folio_split,
-> -		 enum migrate_mode mode, int reason),
-> +		 enum migrate_mode mode, enum migrate_reason reason),
->
->  	TP_ARGS(succeeded, failed, thp_succeeded, thp_failed,
->  		thp_split, large_folio_split, mode, reason),
-> @@ -65,7 +65,7 @@ TRACE_EVENT(mm_migrate_pages,
->  		__field(	unsigned long,		thp_split)
->  		__field(	unsigned long,		large_folio_split)
->  		__field(	enum migrate_mode,	mode)
-> -		__field(	int,			reason)
-> +		__field(	enum migrate_reason,	reason)
->  	),
->
->  	TP_fast_assign(
-> @@ -92,13 +92,13 @@ TRACE_EVENT(mm_migrate_pages,
->
->  TRACE_EVENT(mm_migrate_pages_start,
->
-> -	TP_PROTO(enum migrate_mode mode, int reason),
-> +	TP_PROTO(enum migrate_mode mode, enum migrate_reason reason),
->
->  	TP_ARGS(mode, reason),
->
->  	TP_STRUCT__entry(
->  		__field(enum migrate_mode, mode)
-> -		__field(int, reason)
-> +		__field(enum migrate_reason, reason)
->  	),
->
->  	TP_fast_assign(
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 571212b80835..17732d1fdc5e 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -7182,7 +7182,8 @@ void folio_putback_hugetlb(struct folio *folio)
->  	folio_put(folio);
->  }
->
-> -void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason)
-> +void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio,
-> +			enum migrate_reason reason)
->  {
->  	struct hstate *h = folio_hstate(old_folio);
->
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index d9b23909d716..49e10feeb094 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1469,7 +1469,7 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
->  static int unmap_and_move_huge_page(new_folio_t get_new_folio,
->  		free_folio_t put_new_folio, unsigned long private,
->  		struct folio *src, int force, enum migrate_mode mode,
-> -		int reason, struct list_head *ret)
-> +		enum migrate_reason reason, struct list_head *ret)
->  {
->  	struct folio *dst;
->  	int rc = -EAGAIN;
-> @@ -1626,7 +1626,7 @@ struct migrate_pages_stats {
->   */
->  static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
->  			    free_folio_t put_new_folio, unsigned long private,
-> -			    enum migrate_mode mode, int reason,
-> +			    enum migrate_mode mode, enum migrate_reason reason,
->  			    struct migrate_pages_stats *stats,
->  			    struct list_head *ret_folios)
->  {
-> @@ -1716,7 +1716,7 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
->  static void migrate_folios_move(struct list_head *src_folios,
->  		struct list_head *dst_folios,
->  		free_folio_t put_new_folio, unsigned long private,
-> -		enum migrate_mode mode, int reason,
-> +		enum migrate_mode mode, enum migrate_reason reason,
->  		struct list_head *ret_folios,
->  		struct migrate_pages_stats *stats,
->  		int *retry, int *thp_retry, int *nr_failed,
-> @@ -1799,7 +1799,7 @@ static void migrate_folios_undo(struct list_head *src_folios,
->   */
->  static int migrate_pages_batch(struct list_head *from,
->  		new_folio_t get_new_folio, free_folio_t put_new_folio,
-> -		unsigned long private, enum migrate_mode mode, int reason,
-> +		unsigned long private, enum migrate_mode mode, enum migrate_reason reason,
->  		struct list_head *ret_folios, struct list_head *split_folios,
->  		struct migrate_pages_stats *stats, int nr_pass)
->  {
-> @@ -2011,7 +2011,7 @@ static int migrate_pages_batch(struct list_head *from,
->
->  static int migrate_pages_sync(struct list_head *from, new_folio_t get_new_folio,
->  		free_folio_t put_new_folio, unsigned long private,
-> -		enum migrate_mode mode, int reason,
-> +		enum migrate_mode mode, enum migrate_reason reason,
->  		struct list_head *ret_folios, struct list_head *split_folios,
->  		struct migrate_pages_stats *stats)
->  {
-> @@ -2088,7 +2088,7 @@ static int migrate_pages_sync(struct list_head *from, new_folio_t get_new_folio,
->   */
->  int migrate_pages(struct list_head *from, new_folio_t get_new_folio,
->  		free_folio_t put_new_folio, unsigned long private,
-> -		enum migrate_mode mode, int reason, unsigned int *ret_succeeded)
-> +		enum migrate_mode mode, enum migrate_reason reason, unsigned int *ret_succeeded)
->  {
->  	int rc, rc_gather;
->  	int nr_pages;
-> diff --git a/mm/page_owner.c b/mm/page_owner.c
-> index c2f43ab860eb..4e352941a6e2 100644
-> --- a/mm/page_owner.c
-> +++ b/mm/page_owner.c
-> @@ -345,7 +345,7 @@ noinline void __set_page_owner(struct page *page, unsigned short order,
->  	inc_stack_record_count(handle, gfp_mask, 1 << order);
->  }
->
-> -void __folio_set_owner_migrate_reason(struct folio *folio, int reason)
-> +void __folio_set_owner_migrate_reason(struct folio *folio, enum migrate_reason reason)
->  {
->  	struct page_ext *page_ext = page_ext_get(&folio->page);
->  	struct page_owner *page_owner;
-> --
-> 2.43.0
+> I would argue that folio.c is now not part of the "MEMORY MANAGEMENT -
+> SWAP" responsibility.  Agree that it's part of the LRU maintainership
+> still.
 >
 
-Cheers, Lorenzo
+Hello Matthew,
+
+Thanks. Agreed. mm/folio.c is LRU-only now, so it stays under MGLRU and
+not under SWAP.
 
