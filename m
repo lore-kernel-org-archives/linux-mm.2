@@ -4,147 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8077DC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 11:34:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F83C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 11:37:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48D6E6B00A6; Wed,  1 Jul 2026 07:34:29 -0400 (EDT)
+	id 94F836B00A9; Wed,  1 Jul 2026 07:37:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43EC26B00A8; Wed,  1 Jul 2026 07:34:29 -0400 (EDT)
+	id 9004A6B00AB; Wed,  1 Jul 2026 07:37:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E10F6B00A9; Wed,  1 Jul 2026 07:34:29 -0400 (EDT)
+	id 7C9CA6B00AC; Wed,  1 Jul 2026 07:37:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E9B786B00A6
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:34:28 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A6CB1C6F93
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:34:28 +0000 (UTC)
-X-FDA: 84939999816.06.E14DEBC
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 83DF0A0004
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:34:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=kbaiPlpU;
-	spf=pass (imf25.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 492D66B00A9
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 07:37:46 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AF374A032B
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:37:45 +0000 (UTC)
+X-FDA: 84940008090.23.F19534F
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C3AFE20007
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 11:37:43 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dRhe4kJ2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782905666;
-	b=LQffNyjEiQHALbTbV8CJW6omOdfaKc+GrEKBLZeRq7wpk2CXYlCCT7ZK6ZEUF9jsM8GV/k
-	QFoxBKs0HrPeQGwgAiftmKR/27L2soy5iy3qJt1DptvJ8+sBF2mVmxqYsg3tijUQiwRfbq
-	7z6W+HT2E1zfTDYXkBzcAh7ULveH7fQ=
+	t=1782905863;
+	b=nQDWxA0eQ+E/Us8pXeIqdX9jIGOqdSA/DwiQ9IPKBO6pQTBiptaSr85L+z4wgmjVzkZNrD
+	z2rSGY+Cj7nq97YEyjkkWNUirD8e/ZDF8PvbOGCro+TIoUuaL76wLCYeW9uedRibDkk1K+
+	Zp55zgmVGPh9O9byptYscKfqBxcZ2v4=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782905666;
+	s=arc-20220608; t=1782905863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4faTMgKNiTFwecAROGzTjTqdDKLQ5/Ado1VdunwSeFg=;
-	b=c9BLjzsJXCUe4dl4dChzIKA0179SEvvu/7e1xDmWUfIZ9rtV/wZ01gznMYtufTGdVZj4rs
-	hnKAan3uyoLBmVGvAHxNtzWX4QcGE4uBGeZOO3Qpty5eb4CgbV5mrIGGYERDWr+ggfIm+t
-	InG7usJMiiIRWe32+xadi2faZ+m7UvY=
+	bh=xyNXo7H8eX4YkkvGbSznBTYxJI+0zg6IyIYoofrzRLo=;
+	b=0NUndwz3Pe/ZGshn+SJ2bP2InRxD1K1r/pj4KIYLuVD8nxgbYVlDARZKwvPJnW4A5E3dJ8
+	WVUsECXIMRIw8fXfIs0i5wqqpi3R+ycCboJUA/G6DfzmIMa0h2J33Ni4QdDcVgz3pOimdC
+	5V0dKFXxHqX9/4BV1mOpjKPg0+P2u38=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=kbaiPlpU;
-	spf=pass (imf25.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.41 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7e9ecb1e13bso220782a34.2
-        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 04:34:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782905664; cv=none;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dRhe4kJ2;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf13.hostedemail.com: domain of surenb@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c15a5b265so222801cf.0
+        for <linux-mm@kvack.org>; Wed, 01 Jul 2026 04:37:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782905863; cv=none;
         d=google.com; s=arc-20260327;
-        b=ZMBOOOhwpQro6ZuSnkkTUJACnpstYZs3iFRnCvhQj8pWM+Pti+eZjlb9p0tmYDup1X
-         JptTlPW+6aN0ZNwXYPhEAXBwH6oYS0szIFJoZhoVMEgsBCj9Q5i2/8wdsCPI+w+yYnRd
-         WDcH/XZngnmVMvMczX2n/ySOneIX6WFaX6VUFz4Y/Gd1DmYNYU3m1sLFlMP7O5FWmPqF
-         ucV6FaFWPsiNKUFqgioAIC4jPTltvoKp8FA5VuK36I1648Rb/S7u7yGlA3NHROVctg2i
-         fXTKORBnAIESHrWajYScscdyIkJ+pIwHqotAyy2sY7EgOs7t2eV7ufgi/5chPYSMk2l2
-         NkgQ==
+        b=f/KwXzbDQ+5yzLnOEcXGOWf0FmlZtRya4Gbz1VfF+TdyQiLKUuDyY2RExMa4ny0j3n
+         iNDLBmhQdR744pfTurEz3fm8Be7n3+hJEdplwkyBxzyIadCkxu+vJGR+CT907ydOZlI/
+         6fN3m7TexebzqiRRUfR2oyyV+Na35goZzufOjT50J/w7okraL+HttV+ROK8pff+UF+YG
+         7G/IX66DuGKPKqq/JcuDut8QU07hVfBpPnd8IlEgZg1ogtbkJkBi85KmMd7vr6/k0CrJ
+         jAteNm/0NoN9Emp2rJNNm7YSnOL1havfyS/y3OLxhj/YEGvG3HdyUMhDXI7ViLpyPxyf
+         DtQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=4faTMgKNiTFwecAROGzTjTqdDKLQ5/Ado1VdunwSeFg=;
-        fh=0KJ2s2A6CMLjBZCoHIdso1A0J17PD/rC6YRxMmAJ5JA=;
-        b=BAIOVpZ15ErhCLvdoPq9OaKQyttvlUbOhI8Uu34iGnLBnW8EX6wcKN4n/NyIZ8xpVJ
-         sEaccEVGrBjLO5wqYZXRTidPU4tuTL2b9LtrChZLx9/QyOHrKhd7/M2sBxhDiWVl2+zO
-         n3iJxkvBmV1ktVIJEhOTQr2MUxxdKII5OR98VuGmtXMFlaMvco5BsVSPEDy2BCYCeqjw
-         78HKTZnTTJWevJcuZtYone8GXtPEvLt3S1E185nG2bqwm/RXZvDc0CuJFvxvXUy6zMoK
-         AArI0/G1wg8kZozoTuBCekxBpYeiZXEv7tfkuDaw5LKQ+9xDAsznMP08SG2JNtLXulbK
-         oRiQ==;
+        bh=xyNXo7H8eX4YkkvGbSznBTYxJI+0zg6IyIYoofrzRLo=;
+        fh=FnIsVthMZ+2zJl0vqKePvOcXuOet2ZMSD8AsJPamInI=;
+        b=BKFDnetXqHbtkbOlLZFY7nNp/dQdHox6S1Wr+P9GIx1FdIkcgHHfanFCSoLS2E9Yl+
+         77mhTXzga1iXrjZifkHer+E0eNcjpU2MmEDcdLvFAL3ftjDQ4SIoDbwVDAAHF3ud7kYw
+         JCRFHXMzU6ZrJN0M8H+2cL1GGwJhUIiLUhh40b4BZHb8HjOYy+PFXAr+b9NXEelPmodK
+         yrhpEhMgnwdwOAnSNvuWkq85L2fVsXDo87oAHaNtHDMzDct7ovNZnw88Vl1qnvI+h+V/
+         oGl0s3D6c1RgmHqjeRn1vw1dG8w/A2BtQTlaCgknCRs55050FX0wpV8aMHcjVOrIgXRE
+         jUNQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1782905664; x=1783510464; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4faTMgKNiTFwecAROGzTjTqdDKLQ5/Ado1VdunwSeFg=;
-        b=kbaiPlpUhmDxqyr9LYKjiP9YWzSDypeKYeYt/6tZE+0r7BNyw0neMOd7uXQQFTtJgW
-         UQ6UPil0pPe6lyw4keB9HBU+S+9pSb3b7U5XQWGYis+XkMbGHQCx0QNqsH5f1iO7gI8c
-         1fMUkbwa3vGrOn/RP6/380q5h2xu/tm8cOY5A/KbrrFXUHt17WNNPNtefCOq5Y2bwBv8
-         3HboLhcaRL1/KXk3k7kkvUFlqfTDuAMA7wpz/BulSyRkUPE4CachtgYlGCRzsVLmEnAM
-         fzxtQ/OoXwn6TPiVr2ixYTS4bAOhRJA2KkzhIybca7JZz7I3aZHh32KrXJRu3zMJ0dK1
-         V3mQ==
+        d=google.com; s=20251104; t=1782905863; x=1783510663; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xyNXo7H8eX4YkkvGbSznBTYxJI+0zg6IyIYoofrzRLo=;
+        b=dRhe4kJ2Wsi7ZnIMFwUvPXmmoDG16vklrFtsqC7kQtty7AjhDggquv56fkllpIimDw
+         0aUSOjmjpJ9iCwUr4VE6/pG4TkP6B3YfMVIZXJbIovo0+TTsRXfzUQPcFFe/jjqcbKsM
+         a+HJ4OCsa6EeG55dq30STVQ1fr1EMkQ0+BjvObeP6FvIYw5L1Nk8/WUE70AdrMvMIpJT
+         gTdDw8v/BCS8SIwd/0z2Oh5HnjvVHLYfmic6zjykkyDxTH4N+vcPps6CJ8JEKyKwN3SV
+         HqtxaIz0ukPLu7dBEMbbIdgi+qP2B8kbPN5cViZMhMx3Kp5Af33+faVKdqfvUdifM3SK
+         Zjug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782905664; x=1783510464;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4faTMgKNiTFwecAROGzTjTqdDKLQ5/Ado1VdunwSeFg=;
-        b=g4qhdvc2G85Ub3CI9Nr7GOhh47iSB3CMd1FaTs3MJGJr40FOFtuOJ1fIsRZO+tE6xy
-         Y0mT2Wv3KDZ1ZtWcvC45A3IG5lYwSXLKVdHlH5p4njeZdyhdFgkTqA+dkaItX7xP7ArJ
-         0xPO4LEXrXGEvGYgkNhcLkz1P5bTor2WB7ZXK4kb87Pwub0EUFZHLq/MiNNSZ0pLT7BT
-         iONvtOdOz/dSJmsQnQ2beaaQ0jm/+dOWwUQOx0vXIokOqXSGuXMH2CkVpjRSr5z/PIuF
-         7IFB9G4UwXgDY2h9LPtypG2PusGreeEM3E3FSpm1GiQvv8enMqRWoW60HLyE92gcqtSE
-         AHcA==
-X-Forwarded-Encrypted: i=1; AFNElJ8g+OrhPxKq6hwhMxrnbPeUy4nXdPkUhMpTbXRxwqm/4OlqyS50rNtwghSoUR/GKcImzWmrnImAGw==@kvack.org
-X-Gm-Message-State: AOJu0Yz5uQFn/dxuF6RRKUMiRdk/LgjIYCH3EeehUj5FgeznFujLXb4P
-	bFRC/V3ONbMFhV6yAN0TPbJIYihG/6UL9iHM3aquf8hBofXnGX63m1d2G5l64XQonPpjIIMBB1h
-	PyH7ACOzLAcZSqhPlI2EudLSflotKD1AUPCAioKXqfg==
-X-Gm-Gg: AfdE7cm/kSakGDZbLAAoVsNeQWAdjVOAk5DM/oroaebOku0COcAUU5X02/lkD+1tgEG
-	1E2ZToMnMZfwmbwAxhcfhC4KPOdAMNTZxhAUIcvHVwGBJEoyE+ZLGSzE6Va/iRSIsvr9Dzj3lc+
-	jbvIVMcSbZbPdhFPh0slgxwpZNf+P8gheXov0OddIL/Rk4AdDvDo22m5qJi8exr2a8Op2LCwsCR
-	9v5grMudxgr2oERb5BF9wZoiOxzZT0mv24w3sG6r+GKwhxYJu6JYqSZPCR+9mwRnalZEjIAFC4=
-X-Received: by 2002:a05:6830:268c:b0:7e9:eaf2:ee22 with SMTP id
- 46e09a7af769-7eb4cc4c951mr544254a34.22.1782905664119; Wed, 01 Jul 2026
- 04:34:24 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782905863; x=1783510663;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xyNXo7H8eX4YkkvGbSznBTYxJI+0zg6IyIYoofrzRLo=;
+        b=ZmMvbF5YEn1GgTf9Sf+93Gqoo14Rwg9MDL0qMJGQe6QQGEkBHjFnYwkPZDUw3rNco0
+         1+ZDDCMN+sGKg9QNPtzGJkB3IrrNC0JMdGjyWOQm5zmtoTNNjdf/sQK8USIXpGhkOjjY
+         8rwnHSE8l8PuExNvHnGO9mqsfyB+WGx6ksW9HZAovFUsGdkanyENU/ju581LojGSMYA4
+         eMdoJv0TM5lYuu74LO+LfBqDMfwxA9gb1m87lR6bAOPHm5HH+aJ3q3ktuA4EFM6hluVy
+         4uMnYgSLiG9IuKnn+L9ChP/CY4ngDtVlucWak7aFSYPr57vGetlAUeL6X8S1l62wcCrZ
+         FyCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/qL/sH4nj2iD1fnH0fOvqhBTC/xppg8Ox0uVEbcbBv/Uog7Lq9GaVH6McwOF1cDq/7gnB2R4VzbQ==@kvack.org
+X-Gm-Message-State: AOJu0YxBfjDJ4zl1dZ++Lj7ExcGF5XXC7L5r6ZVAhFRPd/lX/q7HDHOi
+	4F3CdaTtfaV2aFDkGM+YYEbPP0yGwB3sBU8Xaj6NYMiUYy4kYEk27HH3VB0pfWVUfjhZ3Lnhsmd
+	Vxl9r89yrpPIuFInpn6UeffUaPrJegFLt+YyFea5p
+X-Gm-Gg: AfdE7cmiD/WSsalufPZOGRAwmsUwiVLqhKMzWoWDkOIxknx2pdkHs2mu+55KaV8YLvp
+	zL4TEBevP7A4AasFmfCITo08zdTHVpUKLUauMpmvJSeRygLnH80E1y99tNKXA6p+tIBfi1FrzXD
+	zhbT/COqTT9pGN8qzwAljI/SMKPXw2pEnGgToI9JdnlO6G7Qbbqwz+lCaslMgkwJJsguRbMMEnx
+	0FLndemKXYe+Tr+C438sn0Lxc13yGe+0aJJEtD+Qry0H9icTNeuIa+BY4cZo7drV9EXRtg=
+X-Received: by 2002:ac8:5850:0:b0:51b:fe30:b8c5 with SMTP id
+ d75a77b69052e-51c204fb36fmr10762871cf.6.1782905862160; Wed, 01 Jul 2026
+ 04:37:42 -0700 (PDT)
 MIME-Version: 1.0
-References: <d6afed2c271de42efe2a3580ea30c7601cae9c0c.1782877663.git.cuiyunhui@bytedance.com>
- <bf03528b891e5f09ec46d075649474ce5f2228e80afe1d6fe5481789e9dca9d3@mail.kernel.org>
-In-Reply-To: <bf03528b891e5f09ec46d075649474ce5f2228e80afe1d6fe5481789e9dca9d3@mail.kernel.org>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Wed, 1 Jul 2026 19:34:12 +0800
-X-Gm-Features: AVVi8CdSDzogNfvB7WcojkNKIVGKoMGTBqHUYhLn3ECuyFSx3CWlfNAiYqksifk
-Message-ID: <CAEEQ3w=d_t2WDAa7Zmemm9fk-guMmwdX11wUFG2odFaCwz6y8w@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v5 2/3] riscv: introduce percpu.h into include/asm
-To: bot+bpf-ci@kernel.org
-Cc: pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
-	dennis@kernel.org, tj@kernel.org, cl@gentwo.org, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
-	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, bjorn@kernel.org, pulehui@huawei.com, puranjay@kernel.org, 
-	thuth@redhat.com, ajones@ventanamicro.com, ben.dooks@codethink.co.uk, 
-	rkrcmar@ventanamicro.com, samuel.holland@sifive.com, zong.li@sifive.com, 
-	conor.dooley@microchip.com, tglx@kernel.org, debug@rivosinc.com, 
-	seanwascoding@gmail.com, andybnac@gmail.com, menglong8.dong@gmail.com, 
-	cyrilbur@tenstorrent.com, wangruikang@iscas.ac.cn, atishp@rivosinc.com, 
-	apatel@ventanamicro.com, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	arnd@arndb.de, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
-	morbo@google.com, justinstitt@google.com, qingfang.deng@siflower.com.cn, 
-	llvm@lists.linux.dev, martin.lau@kernel.org, clm@meta.com, 
-	ihor.solodrai@linux.dev
+References: <CAJuCfpFanDcpqq5B7eNZbw2HnWOXD-xzcnrdbz-e2gnSM2EYHA@mail.gmail.com>
+ <eac2ed38-432a-4d95-8968-2663540d73d7@kernel.org> <CAJuCfpF78_5CjLsbJLte+B4MzfaSiAmyeH57VLhgLtj8AXD2NA@mail.gmail.com>
+ <62969830-4b1f-483d-8fa9-9ce487568570@kernel.org> <CAJuCfpH8ZjBMaOmso=9gZNz=DK2ja5yMS+04OjTGHh5Uc7r0GQ@mail.gmail.com>
+ <CAJuCfpFX_sMrcTad-QGJsCV=fNyMWF=Bi6XmoHRqEAzMbWNfdg@mail.gmail.com>
+ <39a79576-dcae-4b66-9478-c81dfe676699@kernel.org> <CAJuCfpGRC7NPxcODUsb3YS5nV=qG+-SbSYj1Fwm-QPqgKSVWAA@mail.gmail.com>
+ <c5c4208d-a6f0-413e-bad9-49be12f12d55@kernel.org> <5ebd3c4a-5c06-43b4-ab0a-7a8f0396c84c@kernel.org>
+ <akPSjsbjl-UAcdI8@linux.dev> <CAJuCfpE4BwDpt08iXtdh_nqRR5TGzGTdHzGZWYayC7t6V1O49w@mail.gmail.com>
+ <c4eab53b-c54d-4f1e-a4ff-8d86b8d32503@kernel.org> <CAJuCfpE6WSWPyZMheF4b=2mrwx7bPP3JUe9Pwp6QAswSMF4GyQ@mail.gmail.com>
+ <9a139365-28e6-4f1e-b35b-7f6091e9aa14@kernel.org> <92bf5e21-690e-4a77-929e-5217e0d7cb0c@kernel.org>
+ <68e7f6cd-cf11-46b2-84a2-d512bb22dae4@kernel.org>
+In-Reply-To: <68e7f6cd-cf11-46b2-84a2-d512bb22dae4@kernel.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 1 Jul 2026 04:37:30 -0700
+X-Gm-Features: AVVi8Cf5UDtkoAqOcj2xTsaoTi_1LNUJTo4KVIzlyqHVW__EJJwtisRC8ShRSwQ
+Message-ID: <CAJuCfpEBd_V_U0GQiqWtYXmZxxQ1M48b_LhVn6W+EU5862HD5Q@mail.gmail.com>
+Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
+ kmalloc cache
+To: Harry Yoo <harry@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Usama Arif <usama.arif@linux.dev>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Danielle Costantino <dcostantino@meta.com>, 
+	Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 83DF0A0004
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C3AFE20007
 X-Rspam-User: 
-X-Stat-Signature: r9qwot4b8966rz6ebmmd1praby6fj9j7
-X-HE-Tag: 1782905665-214211
-X-HE-Meta: U2FsdGVkX1/fakk63n2PYbiOhP1z5z4CKV1VbxQnPekG+eOOkk+ETyYTK5e2zu+YNo1sxhDv57iNUC0yQNVoCgUVPXp2vRF8NpywZHUv26hNFgVDeOKGHcnRlKx3YiuOBrlYJF5fQJIdtjRbHVfyK+UxMEfQhSq6bjy+YF8dOgHdA1O2m4a7Vfi5fc9wjzpawMBthLmKbbuutZDONxOEqySi5dBB3Jx8mj+NdTAsqpYLPTB6ma6P748v619cTPnE39JzdigETcF8dSB9/JR/90fPmNrZ+toFU8Hmap6yriWwYyY/GgWuy1RhW327LLkHI/QXDXpayx6SkjZWEcampPTSa7KJp3CbBzWb433QJDG0svES8s29kwmmWSEPEr3SNqhMrLc5kZVluKtl6c3LK61jeAhHHeDWK4xB07hWUyX3KYzLrXh7SwFkZoxepDby7jF7aitKNcgGadcOZ/I4v3DItM1SanNNKKztzGB3NQcdnW2oAUG1UHyOAt4w6oj2OHpaqkke5tGUBXkNcDQE8nBGKYUQ+xYZKvmrAkx3XI6xYioM2sc/0r3fVHYdmNUBFd/k8yo/Pysk9GmVextnDaXTutoVLZeV1LmEFxsfvqmDxwc28MTgv91LzLtfLXDuz6VieoS1Z8GSGkVZnLEotQX8qB6xCIGg22hdPjUKvwZ0lfT27QXYLS/82ReFbWCXRSssVlHogAn3vRHlwOgd5UeHJknuN5wBFwiP6LyiuOpN7LzOA3f/kuiXbNA485AH7bzK5zbePWtOogP1Loy+8BW+qf8+0josriXRZHFQr55K6fRsAbHMvO/wzzsf1nuYqedZOmcLoUHg0qmb6AnvRPdBvXtz5lMU8fz1HN3PcX4l6VY0K8/hzV2W58lXuX2gFiEqHCm46n5zysPTdWVO2v5fxr391iTUMDAT2mJjyWQl1qYi5XFJmKYh3qJaXFJMmk5aLuFljmslBbOVAuQ
- z6S2D/fg
- DiZ8m/jwWoYJKdggk3S17UcvTSMt0ZltBLN8M5XPiZkDSyNz4aYaQFliH4BE1CAx02paXaLrO869mQ5Czdbfsw+4l4/cyyJE4Eas1oICIKmizubNMjYVpyh2Q8NzkNipKoFtEdkdrjQqXM1/OCHyxKDuoqFKoWM/kjwvDspjeWFJ2WUCtKcFWjyKEwGEzl+tqalLFOjrkGgjr0AE1gp1rfu1rp6wuiS6j11U3naZnK6okmbdjGZqbbHUMaKDZHeJl6Oq83GSuT9ONnc7w3zgreCHQTF4fibY++QZ9UkKi7PFwYWJonWQwZwqZxWMg2lO3Es/N5Gj5E6ox0gx3m2I4eQncvqWxgFsG9FPdWCxjb2SQL/IJk/Fxktkgfm2BRyzEDsXjkqAmdqt8gtqdRWnrRQa87fyZF9M3ig/k5EWPhell8wpcCe5C38uV6e24jni9hbkWZybfQ0bkxMs+9zQD2G75zwuF0qQCfDH5
+X-Stat-Signature: wqhz4fspn111zwwdkk3o79w8ef8h6phd
+X-HE-Tag: 1782905863-46492
+X-HE-Meta: U2FsdGVkX1/9tmMKZFO6X5scroOArex+NKcsCGVU/tUFXtKvf4QxbrtpfGZnAnFdil4tOQdhQvzSGly7+gFYtmTs4oS3Vq5HG7N6QXlSyq4HUjoCUsShZxiaU9kGR7u0AOPELTaFWZ7Blea2yrJ7kc1tQ87dpQt07s1STLOqBZ1MB30Bequ2Ufmb3GaTYNzFmYWSWyDtgiKNPLQdlX8UyjXrYutez5LcJVv1XLpx7WStnS6lDmAadjsSGaNtNyIgE/FRdC1BQ8pUASYGThB3oLTxfuJvMVpygOZ0QeFs2RnGXmHZ7+rRhS26neIlKe6Pa0TgUSb/KLSTOkefPqbzSZeqaTsVlY7tZyJdzGhmkrgnwdmUw4rzjYoa5UdJGYrky0ZsWsZ+ixk6ad9jJZA6NxnwyUmNJRlzZwICxpauNV81MajocrzELo27Jh9yPxym8nAZGCoSX1UOP/i2xlV6nA+Y7tYyUcTc3XDB2at00j6y449+lO0d8edLA6g1qmT27iiUsemaQjaCehHAEltrMvRDW+Pw5GjXewxA4QHi5GQD7ijAlRc1Dr33n4PdO/zQGHcUwPVb2tBWfd9GGJd1DrXkUexmFKR/jbStu3Sqaxfr6gRFoxTvGKnOpRZQx/mKamToNQqWnWehEFm6a/PFN0tgfHmzrosj+m7oPeKGWfHPkk4E76pZTxH7LziIXhPDg1b7qhAr/GbXJYIOr/AVbw+sRq+AZ7bHCjMzOoBBtH+cWQtmWIJkiv5iXRo8BHg4W2+yZFnbiaAWFaZQSy5xh5yGcLGqDfg4/sy7vz4nop8No1xd3EVFAkmj7eZjWUC9QTkICWvQllT4HQxo6fDN3Jj/wJ26vdOUfven3d3eDjBuhbc0nyWZ6UaInwx7dbbsxpLqWgorkMv3AKLgX76HlnI3txvOARc+xBBX1g0KUa1lrFY0NaCQ3jATrY3z64wLrr5KWxI2dqn5pfl/OLy
+ dLf2dOnW
+ 4eS2AnN0gEHr5ptgt9gEr+3tVhNPbIXpNrcIIvZBTxob84ZH0cApcFsBuFjaDTSTr5yF9BeMJHEguJJ5KNMlgodz1ljStshSPs0nraUTgoS8P7O6oe40qU3Tgtpro26vV4B6S+/vgmlT3CNqmtNzIAB6WR8rNETFYoRgf4WNYiA8486xQTNhN95B73I8e3Cl6UiKXgkvnxXuPL7oT0mjY8gImRKliAuHiep1FZcgFdItEdyJKR4IQfHLtKQSos/dkFwMJx2CPVYvwJBpv6JmmnAPv36YwelOV8SI2nMJMFfj2rJBbviTspBdugw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,220 +152,299 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi bot+bpf-ci,
+On Wed, Jul 1, 2026 at 12:42=E2=80=AFAM Harry Yoo <harry@kernel.org> wrote:
+>
+>
+>
+> On 7/1/26 1:53 PM, Harry Yoo wrote:
+> >
+> >
+> > On 7/1/26 1:30 PM, Harry Yoo wrote:
+> >> We can do that in pre-7.2 kernels, by teaching kmalloc_type() and
+> >> kmalloc_slab() select the new KMALLOC_TYPE based on __GFP_NO_OBJ_EXT?
+> >>
+> >> e.g.) Select the new KMALLOC_TYPE when KMALLOC_NOT_NORMAL_BITS is not
+> >> set AND __GFP_NO_OBJ_EXT is set.
+> >
+> > Uh, this is bit subtle though.
+> >
+> > In some cases  KMALLOC_DMA =3D=3D KMALLOC_NORMAL,
+> > KMALLOC_CGROUP =3D=3D KMALLOC_NORMAL,
+> > or KMALLOC_RECLAIM =3D=3D KMALLOC_NORMAL.
+> >
+> > Just checking KMALLOC_NOT_NORMAL_BITS is misleading.
+>
+> Here's a prototype for slab/for-next. Backporting it requires handling
+> __GFP_NO_OBJ_EXT instead of SLAB_ALLOC_NO_RECURSE, but shouldn't be
+> too difficult. Now writing changelog and going through testing...
+>
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index 51f03f18c9a7..91a71537a2fe 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -684,6 +684,26 @@ static inline unsigned int arch_slab_minalign(void)
+>  #define KMALLOC_PARTITION_CACHES_NR    0
+>  #endif
+>
+> +/*
+> + * SLUB needs a separate kmalloc type, KMALLOC_NO_RECURSE, when
+> internal slab
+> + * metadata of kmalloc objects can be allocated from the same kmalloc ty=
+pe.
+> + */
+> +#if defined(CONFIG_MEM_ALLOC_PROFILING)
+> +/*
+> + * Memory allocation profiling can allocate internal slab metadata
+> + * for any slab cache.
+> + */
+> +#define HAS_KMALLOC_NO_RECURSE
+> +#elif defined(CONFIG_SLUB_TINY) && defined(CONFIG_MEMCG)
+> +/*
+> + * Accounted slab objects are usually allocated from KMALLOC_CGROUP.
+> + * On SLUB_TINY, those can be allocated from KMALLOC_NORMAL because
+> + * KMALLOC_RECLAIM aliases with KMALLOC_CGROUP and has higher priority t=
+han
+> + * KMALLOC_CGROUP.
+> + */
+> +#define HAS_KMALLOC_NO_RECURSE
+> +#endif
+> +
+>  /*
+>   * Whenever changing this, take care of that kmalloc_type() and
+>   * create_kmalloc_caches() still work as intended.
+> @@ -702,6 +722,9 @@ enum kmalloc_cache_type {
+>  #endif
+>         KMALLOC_PARTITION_START =3D KMALLOC_NORMAL,
+>         KMALLOC_PARTITION_END =3D KMALLOC_PARTITION_START +
+> KMALLOC_PARTITION_CACHES_NR,
+> +#ifdef HAS_KMALLOC_NO_RECURSE
+> +       KMALLOC_NO_RECURSE,
+> +#endif
+>  #ifdef CONFIG_SLUB_TINY
+>         KMALLOC_RECLAIM =3D KMALLOC_NORMAL,
+>  #else
+> @@ -716,6 +739,16 @@ enum kmalloc_cache_type {
+>         NR_KMALLOC_TYPES
+>  };
+>
+> +#if !defined(HAS_KMALLOC_NO_RECURSE) && defined(CONFIG_SLAB_OBJ_EXT)
+> +/*
+> + * kmalloc_flags() with SLAB_ALLOC_NO_RECURSE should not use KMALLOC_NOR=
+MAL
+> + * if any of these alias with KMALLOC_NORMAL.
+> + */
+> +static_assert(KMALLOC_DMA !=3D KMALLOC_NORMAL);
+> +static_assert(KMALLOC_CGROUP !=3D KMALLOC_NORMAL);
+> +static_assert(KMALLOC_RECLAIM !=3D KMALLOC_NORMAL);
+> +#endif
+> +
+>  typedef struct kmem_cache * kmem_buckets[KMALLOC_SHIFT_HIGH + 1];
+>
+>  extern kmem_buckets kmalloc_caches[NR_KMALLOC_TYPES];
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 281a65233795..ba0560111488 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -386,12 +386,21 @@ static inline unsigned int
+> size_index_elem(unsigned int bytes)
+>   * KMALLOC_MAX_CACHE_SIZE and the caller must check that.
+>   */
+>  static inline struct kmem_cache *
+> -kmalloc_slab(size_t size, kmem_buckets *b, gfp_t flags, kmalloc_token_t
+> token)
+> +kmalloc_slab(size_t size, kmem_buckets *b, gfp_t flags, kmalloc_token_t
+> token,
+> +            unsigned int alloc_flags)
+>  {
+>         unsigned int index;
+> +       enum kmalloc_cache_type type =3D kmalloc_type(flags, token);
+> +
+> +#ifdef HAS_KMALLOC_NO_RECURSE
+> +       if (type >=3D KMALLOC_PARTITION_START &&
+> +                       type <=3D KMALLOC_PARTITION_END &&
+> +                       (alloc_flags & SLAB_ALLOC_NO_RECURSE))
+> +               type =3D KMALLOC_NO_RECURSE;
+> +#endif
 
-On Wed, Jul 1, 2026 at 1:06=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
->
-> > diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/p=
-ercpu.h
-> > new file mode 100644
-> > index 000000000000..46f1901d3bb8
-> > --- /dev/null
-> > +++ b/arch/riscv/include/asm/percpu.h
-> > @@ -0,0 +1,283 @@
->
-> [ ... ]
->
-> > +#define PERCPU_8_16_OP(name, amo_insn, sz, sfx, val_type, new_val_expr=
-, asm_op)                      \
-> > +static inline void __percpu_##name##_amo_case_##sz(void *ptr, unsigned=
- long val)             \
-> > +{                                                                     =
-                       \
-> > +     if (IS_ENABLED(CONFIG_RISCV_ISA_ZABHA) &&                        =
-                       \
-> > +             riscv_has_extension_unlikely(RISCV_ISA_EXT_ZABHA)) {     =
-                       \
-> > +             asm volatile ("amo" #amo_insn #sfx " zero, %[val], %[ptr]=
-"                      \
-> > +                     : [ptr] "+A"(*(val_type *)ptr)                   =
-                       \
-> > +                     : [val] "r"((val_type)((new_val_expr) & PERCPU_8_=
-16_GET_MASK(sz)))      \
-> > +                     : "memory");                                     =
-                       \
-> > +     } else {                                                         =
-                       \
-> > +             u32 *ptr32 =3D PERCPU_8_16_GET_PTR32(ptr);               =
-                         \
-> > +             const unsigned long shift =3D PERCPU_8_16_GET_SHIFT(ptr);=
-                         \
-> > +             const u32 mask =3D PERCPU_8_16_GET_MASK(sz) << shift;    =
-                         \
-> > +             const val_type val_trunc =3D (val_type)((new_val_expr)   =
-                         \
-> > +                                        & PERCPU_8_16_GET_MASK(sz));  =
-                       \
-> > +             u32 retx, rc;                                            =
-                       \
-> > +             val_type new_val_type;                                   =
-                       \
-> > +                                                                      =
-                       \
+Overall your approach LGTM, just here why not simply:
 
-This does not impact functional correctness. I will rename LR/SC
-fallback local variables to use consistent naming, and keep the return
-helper separate since it only handles add operations for now.
++#ifdef HAS_KMALLOC_NO_RECURSE
++       if (alloc_flags & SLAB_ALLOC_NO_RECURSE)
++               type =3D KMALLOC_NO_RECURSE;
++#endif
 
-> > +             asm volatile (                                           =
-                       \
-> > +                     "0: lr.w %0, %2\n"                               =
-                       \
-> > +                     "and %3, %0, %4\n"                               =
-                       \
-> > +                     "srl %3, %3, %5\n"                               =
-                       \
-> > +                     #asm_op " %3, %3, %6\n"                          =
-                       \
-> > +                     "and %3, %3, %8\n"                               =
-               \
-> > +                     "sll %3, %3, %5\n"                               =
-                       \
-> > +                     "and %1, %0, %7\n"                               =
-                       \
-> > +                     "or %1, %1, %3\n"                                =
-                       \
-> > +                     "sc.w %1, %1, %2\n"                              =
-                       \
-> > +                     "bnez %1, 0b\n"                                  =
-                       \
-> > +                     : "=3D&r"(retx), "=3D&r"(rc), "+A"(*ptr32), "=3D&=
-r"(new_val_type)             \
-> > +                     : "r"(mask), "r"(shift), "r"(val_trunc), "r"(~mas=
-k),                    \
-> > +                       "r"(PERCPU_8_16_GET_MASK(sz))                  =
-                       \
-> > +                     : "memory");                                     =
-                       \
-> > +             }                                                        =
-                       \
-> > +}
+?
+
 >
-> [ ... ]
->
-> > +#define PERCPU_8_16_RET_OP(name, amo_insn, sz, sfx, val_type, new_val_=
-expr)                  \
-> > +static inline val_type __percpu_##name##_return_amo_case_##sz(void *pt=
-r, unsigned long val)  \
-> > +{                                                                     =
-                       \
-> > +     if (IS_ENABLED(CONFIG_RISCV_ISA_ZABHA) &&                        =
-                       \
-> > +             riscv_has_extension_unlikely(RISCV_ISA_EXT_ZABHA)) {     =
-                       \
-> > +             register val_type ret;                                   =
-                       \
-> > +             asm volatile ("amo" #amo_insn #sfx " %[ret], %[val], %[pt=
-r]"                    \
-> > +                     : [ptr] "+A"(*(val_type *)ptr), [ret] "=3Dr"(ret)=
-                         \
-> > +                     : [val] "r"((val_type)((new_val_expr) & PERCPU_8_=
-16_GET_MASK(sz)))      \
-> > +                     : "memory");                                     =
-                       \
-> > +             return ret + (val_type)((new_val_expr) & PERCPU_8_16_GET_=
-MASK(sz));             \
-> > +     } else {                                                         =
-                       \
-> > +             u32 *ptr32 =3D PERCPU_8_16_GET_PTR32(ptr);               =
-                         \
-> > +             const unsigned long shift =3D PERCPU_8_16_GET_SHIFT(ptr);=
-                         \
-> > +             const u32 mask =3D (PERCPU_8_16_GET_MASK(sz) << shift);  =
-                         \
-> > +             const u32 inv_mask =3D ~mask;                            =
-                         \
-> > +             const val_type val_trunc =3D (val_type)((new_val_expr)   =
-                         \
-> > +                                        & PERCPU_8_16_GET_MASK(sz));  =
-                       \
-> > +             u32 old, new, tmp;                                       =
-                       \
->
-> This isn't a bug, but the two LR/SC fallback loops name the same roles
-> differently.  The non-return loop uses:
->
->         u32 retx, rc;
->         val_type new_val_type;
->
-> while the return loop above uses:
->
->         u32 old, new, tmp;
->
-> The loaded word, the scratch/merge register and the computed field play t=
-he
-> same role in both loops.  Could they use one consistent set of names (e.g=
+>         if (!b)
+> -               b =3D &kmalloc_caches[kmalloc_type(flags, token)];
+> +               b =3D &kmalloc_caches[type];
+>         if (size <=3D 192)
+>                 index =3D kmalloc_size_index[size_index_elem(size)];
+>         else
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index b6426d7ceec9..8541f4a9cfda 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -783,11 +783,15 @@ u8 kmalloc_size_index[24] __ro_after_init =3D {
+>  size_t kmalloc_size_roundup(size_t size)
+>  {
+>         if (size && size <=3D KMALLOC_MAX_CACHE_SIZE) {
+> +               struct kmem_cache *s;
+> +
+>                 /*
+>                  * The flags don't matter since size_index is common to a=
+ll.
+>                  * Neither does the caller for just getting ->object_size=
 .
-> old/new/tmp) so the two loops read as clearly parallel?  As a smaller poi=
-nt,
-> new_val_type reads like a type name rather than a value, and new shadows =
-a
-> common keyword.
+>                  */
+> -               return kmalloc_slab(size, NULL, GFP_KERNEL,
+> __kmalloc_token(0))->object_size;
+> +               s =3D kmalloc_slab(size, NULL, GFP_KERNEL, __kmalloc_toke=
+n(0),
+> +                                SLAB_ALLOC_DEFAULT);
+> +               return s->object_size;
+>         }
 >
-> > +                                                                      =
-                       \
-> > +             asm volatile (                                           =
-                       \
-> > +                     "0: lr.w %0, %3\n"                               =
-                       \
-> > +                     "and %1, %0, %4\n"                               =
-                       \
-> > +                     "srl %1, %1, %5\n"                               =
-                       \
-> > +                     "add %1, %1, %6\n"                               =
-                       \
-> > +                     "and %1, %1, %7\n"                               =
-                       \
-> > +                     "sll %1, %1, %5\n"                               =
-                       \
-> > +                     "and %2, %0, %8\n"                               =
-                       \
-> > +                     "or %2, %2, %1\n"                                =
-                       \
-> > +                     "sc.w %2, %2, %3\n"                              =
-                       \
-> > +                     "bnez %2, 0b\n"                                  =
-                       \
+>         /* Above the smaller buckets, size is a multiple of page size. */
+> @@ -843,6 +847,12 @@ EXPORT_SYMBOL(kmalloc_size_roundup);
+>  #define KMALLOC_PARTITION_NAME(N, sz)
+>  #endif
 >
-> This isn't a bug, but the read-modify-write LR/SC sequence here is nearly
-> identical to the one in PERCPU_8_16_OP, differing only in operand numberi=
-ng.
-> The non-return loop parameterises the operation via #asm_op, but this loo=
-p
-> hardcodes add:
+> +#ifdef HAS_KMALLOC_NO_RECURSE
+> +#define KMALLOC_NO_RECURSE_NAME(sz) .name[KMALLOC_NO_RECURSE] =3D
+> "kmalloc-no-recurse-" #sz,
+> +#else
+> +#define KMALLOC_NO_RECURSE_NAME(sz)
+> +#endif
+> +
+>  #define INIT_KMALLOC_INFO(__size, __short_size)                        \
+>  {                                                              \
+>         .name[KMALLOC_NORMAL]  =3D "kmalloc-" #__short_size,      \
+> @@ -850,6 +860,7 @@ EXPORT_SYMBOL(kmalloc_size_roundup);
+>         KMALLOC_CGROUP_NAME(__short_size)                       \
+>         KMALLOC_DMA_NAME(__short_size)                          \
+>         KMALLOC_PARTITION_NAME(KMALLOC_PARTITION_CACHES_NR, __short_size)=
+       \
+> +       KMALLOC_NO_RECURSE_NAME(__short_size)                   \
+>         .size =3D __size,                                         \
+>  }
 >
->         "add %1, %1, %6\n"
+> @@ -966,6 +977,11 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type
+> type)
+>                 flags |=3D SLAB_NO_MERGE;
+>  #endif
 >
-> Was the intent to keep the return path add-only, or could the two loops s=
-hare
-> one templated sequence?
+> +#ifdef HAS_KMALLOC_NO_RECURSE
+> +       if (type =3D=3D KMALLOC_NO_RECURSE)
+> +               flags |=3D SLAB_NO_OBJ_EXT;
+> +#endif
+> +
+>         /*
+>          * If CONFIG_MEMCG is enabled, disable cache merging for
+>          * KMALLOC_NORMAL caches.
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 9f754cf1c187..a5745759f0af 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2123,42 +2123,6 @@ static inline void init_slab_obj_exts(struct slab
+> *slab)
+>         slab->obj_exts =3D 0;
+>  }
 >
-> > +                     : "=3D&r"(old), "=3D&r"(tmp), "=3D&r"(new), "+A"(=
-*ptr32)                      \
-> > +                     : "r"(mask), "r"(shift), "r"(val_trunc), "r"(PERC=
-PU_8_16_GET_MASK(sz)), \
-> > +                     "r"(inv_mask)                                    =
-                       \
-> > +                     : "memory");                                     =
-                       \
-> > +             return (val_type)(tmp >> shift);                         =
-                       \
-> > +     }                                                                =
-                       \
-> > +}
+> -/*
+> - * Calculate the allocation size for slabobj_ext array.
+> - *
+> - * When memory allocation profiling is enabled, the obj_exts array
+> - * could be allocated from the same slab cache it's being allocated for.
+> - * This would prevent the slab from ever being freed because it would
+> - * always contain at least one allocated object (its own obj_exts array)=
+.
+> - *
+> - * To avoid this, increase the allocation size when we detect the array
+> - * may come from the same cache, forcing it to use a different cache.
+> - */
+> -static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+> -                                        struct slab *slab, gfp_t gfp)
+> -{
+> -       size_t sz =3D sizeof(struct slabobj_ext) * slab->objects;
+> -       struct kmem_cache *obj_exts_cache;
+> -
+> -       if (sz > KMALLOC_MAX_CACHE_SIZE)
+> -               return sz;
+> -
+> -       if (!is_kmalloc_normal(s))
+> -               return sz;
+> -
+> -       obj_exts_cache =3D kmalloc_slab(sz, NULL, gfp, __kmalloc_token(0)=
+);
+> -       /*
+> -        * We can't simply compare s with obj_exts_cache, because partiti=
+oned
+> kmalloc
+> -        * caches have multiple caches per size, selected by caller addre=
+ss or
+> type.
+> -        * Since caller address or type may differ between kmalloc_slab()=
+ and
+> actual
+> -        * allocation, bump size when sizes are equal.
+> -        */
+> -       if (s->object_size =3D=3D obj_exts_cache->object_size)
+> -               return obj_exts_cache->object_size + 1;
+> -
+> -       return sz;
+> -}
+> -
+>  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>                         gfp_t gfp, unsigned int alloc_flags)
+>  {
+> @@ -2168,15 +2132,13 @@ int alloc_slab_obj_exts(struct slab *slab,
+> struct kmem_cache *s,
+>         unsigned long new_exts;
+>         unsigned long old_exts;
+>         struct slabobj_ext *vec;
+> -       size_t sz;
+> +       size_t sz =3D sizeof(struct slabobj_ext) * slab->objects;
 >
-> [ ... ]
+>         gfp &=3D ~OBJCGS_CLEAR_MASK;
+>         /* Prevent recursive extension vector allocation */
+>         alloc_flags |=3D SLAB_ALLOC_NO_RECURSE;
+>         alloc_flags &=3D ~SLAB_ALLOC_NEW_SLAB;
+>
+> -       sz =3D obj_exts_alloc_size(s, slab, gfp);
+> -
+>         /* This will use kmalloc_nolock() if alloc_flags say so */
+>         vec =3D kmalloc_flags(sz, gfp | __GFP_ZERO, alloc_flags, slab_nid=
+(slab));
+>
+> @@ -5330,7 +5292,7 @@ void *__do_kmalloc_node(kmem_buckets *b, gfp_t
+> flags, int node,
+>         if (unlikely(!size))
+>                 return ZERO_SIZE_PTR;
+>
+> -       s =3D kmalloc_slab(size, b, flags, token);
+> +       s =3D kmalloc_slab(size, b, flags, token, ac->alloc_flags);
+>
+>         ret =3D slab_alloc_node(s, flags, node, ac);
+>         ret =3D kasan_kmalloc(s, ret, size, flags);
+> @@ -5395,7 +5357,9 @@ static void
+> *__kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_f
+>  retry:
+>         if (unlikely(size > KMALLOC_MAX_CACHE_SIZE))
+>                 return NULL;
+> -       s =3D kmalloc_slab(size, NULL, gfp_flags, PASS_TOKEN_PARAM(token)=
+);
+> +
+> +       s =3D kmalloc_slab(size, NULL, gfp_flags, PASS_TOKEN_PARAM(token)=
+,
+> +                        ac->alloc_flags);
+>
+>         if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
+>                 /*
 >
 >
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a =
-bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
-E.md
->
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/284940=
-34360
-
-Thanks,
-Yunhui
+> --
+> Cheers,
+> Harry / Hyeonggon
 
