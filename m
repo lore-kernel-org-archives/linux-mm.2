@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D61BCC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:59:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A7B8C44500
+	for <linux-mm@archiver.kernel.org>; Wed,  1 Jul 2026 13:59:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF3C06B00B2; Wed,  1 Jul 2026 09:59:18 -0400 (EDT)
+	id AA9826B00B4; Wed,  1 Jul 2026 09:59:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA3BC6B00B4; Wed,  1 Jul 2026 09:59:18 -0400 (EDT)
+	id A80A76B00B6; Wed,  1 Jul 2026 09:59:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B94936B00B5; Wed,  1 Jul 2026 09:59:18 -0400 (EDT)
+	id 9BD676B00B7; Wed,  1 Jul 2026 09:59:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 97D496B00B2
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:59:18 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2C9C51C2D27
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:59:18 +0000 (UTC)
-X-FDA: 84940364796.01.D773DE9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 751E24000C
-	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:59:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vlm+1lqn;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 768F76B00B4
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 09:59:21 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E3ED1140370
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:59:20 +0000 (UTC)
+X-FDA: 84940364880.21.EA58A2D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3D40E1C0009
+	for <linux-mm@kvack.org>; Wed,  1 Jul 2026 13:59:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cu3l05zC;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782914356;
-	b=nxFZ0s6uU2s1zQkish4eVG0UYEEeYS69BniCopBkJeG2wSD8+0arsRGk0vlB1zAG1479an
-	NII3hjmQ0njUxfkv6X1FYL3vhLVqD2e+zCXsGv60F4oQigEahMEaN3wMreHIsvz1XuzqYz
-	waupf05NeFNHWRV5ciYo9D5NNXRhqyk=
+	t=1782914359;
+	b=4O34C9fCBL87FdQJ0oywUM3SuYR62TIQ4WqENtL4cLPD4HxsEEfLuZoz/pCR0wOblQVjmC
+	jB6qY5EfwTVKshOzjJ/6/dDe7aN6K/AzcCawBgowVfLUchnvAOlDNJ1o3TTQZMc1BK1AmF
+	4ciBdWohf0guv26Ww6X7w/a8svirPg8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782914356;
+	s=arc-20220608; t=1782914359;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=LpfnkoRQ/FIEnyqT9WtrevlR/4ONd3yok9y5wj54j9M=;
-	b=r35hJvlQ/z+r3VNIHRWG5SOSGrwU5DawBGpN48UK/RlTjIUBk09najxMTIxPXt3n8G+UQq
-	xDVL3QHHBQbc7b5yVE24t+jZYiad5uP5Go3QjxSkdAQRmVQ0oVJj6aUw1QklPWph5mQBKq
-	1gJwUkiIbD9lfsHweUoXK10CCecN3mE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xHs6OlXAq+nMv2o/knd4pQu7oA8n+V4gayHSkVMilCw=;
+	b=mURhdY3erVW4bx8RreR9dLVaDPgoH6vOCEOtkza6JRreTdg7EuIvmvEXsbUoaN9vT7GwYX
+	WOrqNs9pVxWKX5IlYvtPzGCnBD+POwGx5ftA3fP7gESD7V+m5NovM0xUtDiR/l1kqVZvIr
+	umdxhk1oK/iArIx8UjHGox7SHzdlwuQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vlm+1lqn;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cu3l05zC;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9FD0140212;
+	by tor.source.kernel.org (Postfix) with ESMTP id C247560122;
+	Wed,  1 Jul 2026 13:59:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA281F00A3A;
 	Wed,  1 Jul 2026 13:59:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DD11F000E9;
-	Wed,  1 Jul 2026 13:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782914355;
-	bh=LpfnkoRQ/FIEnyqT9WtrevlR/4ONd3yok9y5wj54j9M=;
-	h=From:Subject:Date:To:Cc;
-	b=Vlm+1lqnw0+3/DGTRCUIaNB1c1zYGlJAGjdv2/E5QfdeDDPjsHdM1kPXDdHsF5YGN
-	 3x+fE/ceoDxA2tEV8/6vz4ccOiZvAE/g9lTu2ggMVY1LIdW3rhPgzy/P4cP/22X4BB
-	 e933TZn2T+RhdEai0fwPXAXP4mxuvEnuJzpZf1423uKckJhVeWxNLhNyPKFFLugtpO
-	 ibOOET9A4lUzyeY0V052OdR+CYiehh/YbhQXoMUgjvT6n8e6TkvedxIdZ2xmNyoGyM
-	 6CYy+C1j1qyNX5QZjxiIaInB2gjnLS2PpWBJqFvMmZS3sqI03ko3i7uEC6tFbztQqh
-	 BEVYL8FVMTU4w==
+	s=k20260515; t=1782914358;
+	bh=xHs6OlXAq+nMv2o/knd4pQu7oA8n+V4gayHSkVMilCw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=cu3l05zCJydWaCb6XZleI8j4SchsHom65b6soJbENEKe9cMFPDoR05KBkYA6O0BqV
+	 U/ym3E0Sw51sEY+n/5JJId5v4wFHFCXPa+hJS2OKnLkTMZ4jfnCLdHXRG4fMmMUkNb
+	 374SuCaAnYJfVw+DfMSj6j6S5QtH2Dmp+M0MjO+hMgdHDY5iHQXdy7MImJ7i4sQA2E
+	 STsMPyxBDpSX7NtcYjSV2Gi4BYa084wrEHJsD0AwRYS6rD6at3YLyEOfIdoJkcls49
+	 Beb/26klLPEQ10mPDSUY4SukxC17acg3+oE8gSfBuh7c5ZhKWnGTskGeNSpzm+J/gI
+	 3f/Pf6DR4MmUQ==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH 0/4] drivers/net: replace __get_free_pages() with kmalloc()
-Date: Wed, 01 Jul 2026 16:59:09 +0300
-Message-Id: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
+Date: Wed, 01 Jul 2026 16:59:10 +0300
+Subject: [PATCH 1/4] b43, b43legacy: debugfs: use kzalloc() to allocate
+ formatting buffers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAC0dRWoC/yXMwQrCMBAE0F8pe3YhxjSgvyIesunWrkiU3VqF0
- n830eMbZmYFYxU2OHUrKC9i8igV+10HeUrlyihDNXjno4sHhxRwUFlYDd+ifGcz7P0x9D6MiUK
- Eunwqj/L5vZ4vf9uLbpzndtUalIyRNJU8tagRtu0LbS7gOI4AAAA=
-X-Change-ID: 20260630-b4-drivers-wireless-5294524fab46
+Message-Id: <20260701-b4-drivers-wireless-v1-1-60264cdf2efe@kernel.org>
+References: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
+In-Reply-To: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
 To: Johannes Berg <johannes.berg@intel.com>
 Cc: Brian Norris <briannorris@chromium.org>, 
  Francesco Dolcini <francesco@dolcini.it>, Jakub Kicinski <kuba@kernel.org>, 
@@ -81,14 +81,14 @@ Cc: Brian Norris <briannorris@chromium.org>,
  libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 X-Mailer: b4 0.16-dev
-X-Stat-Signature: npeabbfd8oop6ego953uskmju8ep3ghg
+X-Stat-Signature: h5cjutnkbycbn3f1hg79xht841duxemh
+X-Rspamd-Queue-Id: 3D40E1C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 751E24000C
-X-HE-Tag: 1782914356-376504
-X-HE-Meta: U2FsdGVkX1/aPZugrWMN6FDvV4ZuC4RamODvdpBjKkM7XDyX4y/ysI9DuKTKNKIwcybcrGOu112r9l8Sdjou11TZ4/1gdUJx8UByuN4lBWnvnpOvZ0R94fEEUXILuo6gMlJCQHTbXwSiVQXpi+UW7FNKy0/m+KhYiku/M45zgbGGNXwi4WdVwpp1eQDl01gAORghX1ifUlDOCAzPkhuRoda1pvlYuol7mJ+NK6yok8tlVa38nnwoGqpJGdxYEloWp6d3ywqBuPDbmM/Nt0I+RGfPQb46f8TMl7AXWOhu6h/PetPKOyBeBJBELnZImRIBzukhgKBi/7fr9NqninEZPz1gMzvL3MzRd3zD9+DOv/NdWShegvf1Ge2ABcRV9wtxgtpLC0x0l7KyQVzc8kPTv8sxgJV31O+gy+tBj6pqzjpQKtATsh3R+V5lQb3nOSduNIAnHUpkuHpfdvYx1Zg5l/OiyGd5mexF6sgWWz8RA+ZMDH8VbDOqXwxSzkO+ZTzKcePOn/3X1FLpFGMtpygF6POuJNc2N1yXdyXRc7PCmBLzvU7CZZ/BXdNPdvGRAX3TqEPRvoHIkzXlF+YoeVJXq/Q6dlV0suPUzEbazVR/WZQv8ogMqDwQYpg5PtrIZiWus7vKSRFkpU6WpdED2jf/xIAhktsnqGKti0olr7ZCeBlDVbCjozHDNXMovsn7XsV/ZSQsTXzZRRQHAxkWFI4b4Bwf1LXhquclnkTRdafvB+SLDqlNjG6fBlCjEzqLqFvRhcUeQGXCU6qLS28EC4wK/iWYlaAEi5Z2javAU3ftC6RdarN4eosvNJ2S1jFCErKukWwJTOMMgZO3Ht7azIefjx4CpJVKog8VBuLj/aBPDXKUMcaPRb1ogS+NUvO4WOkipaPTjxw5rTLdmBQ8OZVqXIVAPVxoJMes6lDzHX75WupHTcsc7VbdEr1L9wWBFVxO2vClLEwoJnY6SWgjOxM
- JkyBecDu
- MAzLXuiO+you69nSzX+GM5A97QYTbDPVbj3sIPHevyF2ryOUOKauwmQ8lO0gHfbheMTRsl9YVFe8Ef/ambrD4u/ag138XhBoAr85VvRKEvLSywkjkqB9ayAIyC1noEt1+bsxKOUZ6IpdBBHdjEPXiP0miCg7aOkgsUe7EAE011j7lZpT3WJ4ppzBctPsl/WywU02zbZuX07h4DCZ/A+juL0+OdzR/fhG0OGqyyAVydjkaBZ3Gmrch4NyjbPTi/yUZMcP2rGDNBhlI5wfR5Aryu7jM6Xo8eiqk6G2F4rsKYUo4C6NNeDWsWf92LmRZJGwURxrpeRVLMIfm5RwP4Go25u7k8MBoyTgmSk5ATgykVJi1mesl5e2cKkXQhPtYrHP/H5S/w8htE+uGDHaqXo2tVxGT+Q==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782914359-830822
+X-HE-Meta: U2FsdGVkX1++9jYqqxqA9O6AppEi1/4HiyTuD2sKu1GCluczBEsxk55uydVLvdkCYu+5Wu5sJcn2QObwqo37x1frXS+xxUKkVEOySHRukiHts+AhZyYEgNLDVm6tinltzzzjRtm+6wwt906RXHT4HGBsddAJXM2vCp8f4D4SBL7l7+dMdq8BxPDLbGb+H7+HZ/hDzShPU+biXeFDcc5EyDtr/RcI4ZIjeWTWNk0pMBkNXRLVCaSBAV554mSaf6xkt0+Etc0wzTolLpAvueHxT9tro7XIoxKRbNIbcIq3cy5Nk5WYMuY+ql8QyBG6HgwUh/lqQjh1pp40I9Ia3qPHL3V3GK2GUWzFP7SOoiJSI7wppFHLSBEPMO3M5b/zu9CxTWnZrWAs6FyeAkiCfR8R44Zg+iawVe10LaNNuTmRQ3Qz5dtVgX98oMqzn37ktg3qWam567HBU1CuiJx0cLgdvpo4VZVUPy+wheqUzSUuaiuUL/s3GVThpaQcKymG/Vab/l6B8HIMimtcQM+U6HSmSdhol6DGbZ8tJGGxB1NF02UuTbwbQ9I5M1w2WGTObqDeGiMS60dxitntAEYzfpIiNgW/EzISrPrudi9bPB/YupfIelkDkOPwsm0Bp3HtMjzId5Oh9LpKxZeVEMDHAvjkEKL6eL6MW7e+aH5c5yKKBNt5JFA0ZIg5xmKaF0dZEXCLQRzZZ6cb1kv+V13AVNsx4FJo7r/w4j4Pa3NpXeYg/XgPa3Th4uf2RlzUT15zw6FlgV9xCCL4wCO3v+nVsB4R4fr2fz+GDkE3oMlIekEvLhr4Fjso2t/PLg45viQXC+zMfMXZH9TwvCcUN9ZO2O+M6fWkky+e6R8upct/g9Rzaazb8Id9QxU9LuE1MEIsO0RC9Pnmt3NfjgTXiLiRjS9T4H+eSzfm7gDTWV8MrFzEaF9EopwkRsAO8wP1CC88gS3wUsRU1uCvroDIiT1BqFo
+ LvMN8+tQ
+ 439saZPxNIpxHRe7CeD29VHhaIv7kvcMy1mqZ4246a9PW70NzJkqpWpvakPrdSwRnSj2WFtYStQNT3oHJmgKBg2K+zU9cGHMNzdmCT1k+dvSjx63G66X0F64/zdycSs3wUcDsnryiydLSe547Te8/7fY9MfSS6bwlHAN96SH9k+PPQ4PW2+VpUBjQey0LG/sL7gkoBbyBguAfZd7WPTGCkt2KgmditlNr4OKlbZddy1FZjyQhrfV+5OEsh+J7rrR7jQq2wXxgG2HmkVE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,66 +96,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a (small) part of larger work of replacing page allocator calls
-with kmalloc.
+b43* debugfs functions allocate 16 KiB buffers for formatting debug output
+text using __get_free_pages().
 
-My initial intention a few month ago was to remove ugly casts [1], but then
-willy pointed out that Linus objected to something like this [2] and it
-looks like more than a decade old technical debt.
+kzalloc() provides a better API that does not require ugly casts and
+kfree() does not need to know the size of the freed object and for 16 Kib
+allocation kzalloc() will anyway delegate it to buddy.
 
-Largely, anything that doesn't need struct page (or a memdesc in the
-future) should just use kmalloc() or kvmalloc() to allocate memory.
-kmalloc() guarantees alignment, physical contiguity and working
-virt_to_phys() and beside nicer API that returns void * on alloc and
-doesn't require to know the allocation size on free, kmalloc() provides
-better debugging capabilities than page allocator.
+Replace use of __get_free_pages() with kzalloc().
 
-Another thing is that touching these allocation sites gives the reviewers
-opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
-another size is appropriate.
-
-For larger allocations that don't need physically contiguous memory
-kvmalloc() can be a better option that __get_free_pages() because under
-memory pressure it's is easier to allocate several order-0 pages than a
-physically contiguous chunk with the same number of pages.
-
-And last, but not least, removing needless calls to page allocator should
-help with memdesc (aka project folio) conversion. There will be way less
-places to audit to see if the user was actually using struct page.
-
-Also in git:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/drivers-net-wireless
-
-[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
-[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
-
+Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-Changes in v2:
-- split out wireless drivers from a larger set 
-- use kzalloc() instead of kmalloc() + memset in b43legacy
+ drivers/net/wireless/broadcom/b43/debugfs.c       | 12 +++++-------
+ drivers/net/wireless/broadcom/b43legacy/debugfs.c | 12 +++++-------
+ 2 files changed, 10 insertions(+), 14 deletions(-)
 
-v1: https://patch.msgid.link/20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org
+diff --git a/drivers/net/wireless/broadcom/b43/debugfs.c b/drivers/net/wireless/broadcom/b43/debugfs.c
+index acddae68947a..31a1ff00c1a4 100644
+--- a/drivers/net/wireless/broadcom/b43/debugfs.c
++++ b/drivers/net/wireless/broadcom/b43/debugfs.c
+@@ -495,7 +495,6 @@ static ssize_t b43_debugfs_read(struct file *file, char __user *userbuf,
+ 	ssize_t ret;
+ 	char *buf;
+ 	const size_t bufsize = 1024 * 16; /* 16 kiB buffer */
+-	const size_t buforder = get_order(bufsize);
+ 	int err = 0;
+ 
+ 	if (!count)
+@@ -518,15 +517,14 @@ static ssize_t b43_debugfs_read(struct file *file, char __user *userbuf,
+ 	dfile = fops_to_dfs_file(dev, dfops);
+ 
+ 	if (!dfile->buffer) {
+-		buf = (char *)__get_free_pages(GFP_KERNEL, buforder);
++		buf = kzalloc(bufsize, GFP_KERNEL);
+ 		if (!buf) {
+ 			err = -ENOMEM;
+ 			goto out_unlock;
+ 		}
+-		memset(buf, 0, bufsize);
+ 		ret = dfops->read(dev, buf, bufsize);
+ 		if (ret <= 0) {
+-			free_pages((unsigned long)buf, buforder);
++			kfree(buf);
+ 			err = ret;
+ 			goto out_unlock;
+ 		}
+@@ -538,7 +536,7 @@ static ssize_t b43_debugfs_read(struct file *file, char __user *userbuf,
+ 				      dfile->buffer,
+ 				      dfile->data_len);
+ 	if (*ppos >= dfile->data_len) {
+-		free_pages((unsigned long)dfile->buffer, buforder);
++		kfree(dfile->buffer);
+ 		dfile->buffer = NULL;
+ 		dfile->data_len = 0;
+ 	}
+@@ -577,7 +575,7 @@ static ssize_t b43_debugfs_write(struct file *file,
+ 		goto out_unlock;
+ 	}
+ 
+-	buf = (char *)get_zeroed_page(GFP_KERNEL);
++	buf = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!buf) {
+ 		err = -ENOMEM;
+ 		goto out_unlock;
+@@ -591,7 +589,7 @@ static ssize_t b43_debugfs_write(struct file *file,
+ 		goto out_freepage;
+ 
+ out_freepage:
+-	free_page((unsigned long)buf);
++	kfree(buf);
+ out_unlock:
+ 	mutex_unlock(&dev->wl->mutex);
+ 
+diff --git a/drivers/net/wireless/broadcom/b43legacy/debugfs.c b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
+index 3ad99124d522..a04d90d7307c 100644
+--- a/drivers/net/wireless/broadcom/b43legacy/debugfs.c
++++ b/drivers/net/wireless/broadcom/b43legacy/debugfs.c
+@@ -192,7 +192,6 @@ static ssize_t b43legacy_debugfs_read(struct file *file, char __user *userbuf,
+ 	ssize_t ret;
+ 	char *buf;
+ 	const size_t bufsize = 1024 * 16; /* 16 KiB buffer */
+-	const size_t buforder = get_order(bufsize);
+ 	int err = 0;
+ 
+ 	if (!count)
+@@ -215,12 +214,11 @@ static ssize_t b43legacy_debugfs_read(struct file *file, char __user *userbuf,
+ 	dfile = fops_to_dfs_file(dev, dfops);
+ 
+ 	if (!dfile->buffer) {
+-		buf = (char *)__get_free_pages(GFP_KERNEL, buforder);
++		buf = kzalloc(bufsize, GFP_KERNEL);
+ 		if (!buf) {
+ 			err = -ENOMEM;
+ 			goto out_unlock;
+ 		}
+-		memset(buf, 0, bufsize);
+ 		if (dfops->take_irqlock) {
+ 			spin_lock_irq(&dev->wl->irq_lock);
+ 			ret = dfops->read(dev, buf, bufsize);
+@@ -228,7 +226,7 @@ static ssize_t b43legacy_debugfs_read(struct file *file, char __user *userbuf,
+ 		} else
+ 			ret = dfops->read(dev, buf, bufsize);
+ 		if (ret <= 0) {
+-			free_pages((unsigned long)buf, buforder);
++			kfree(buf);
+ 			err = ret;
+ 			goto out_unlock;
+ 		}
+@@ -240,7 +238,7 @@ static ssize_t b43legacy_debugfs_read(struct file *file, char __user *userbuf,
+ 				      dfile->buffer,
+ 				      dfile->data_len);
+ 	if (*ppos >= dfile->data_len) {
+-		free_pages((unsigned long)dfile->buffer, buforder);
++		kfree(dfile->buffer);
+ 		dfile->buffer = NULL;
+ 		dfile->data_len = 0;
+ 	}
+@@ -279,7 +277,7 @@ static ssize_t b43legacy_debugfs_write(struct file *file,
+ 		goto out_unlock;
+ 	}
+ 
+-	buf = (char *)get_zeroed_page(GFP_KERNEL);
++	buf = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!buf) {
+ 		err = -ENOMEM;
+ 		goto out_unlock;
+@@ -298,7 +296,7 @@ static ssize_t b43legacy_debugfs_write(struct file *file,
+ 		goto out_freepage;
+ 
+ out_freepage:
+-	free_page((unsigned long)buf);
++	kfree(buf);
+ out_unlock:
+ 	mutex_unlock(&dev->wl->mutex);
+ 
 
----
-Mike Rapoport (Microsoft) (4):
-      b43, b43legacy: debugfs: use kzalloc() to allocate formatting buffers
-      libertas: debugfs: use kzalloc() to allocate formatting buffers
-      mwifiex: debugfs: use kzalloc() to allocate formatting buffers
-      wlcore: allocate aggregation and firmware log buffers with kzalloc()
-
- drivers/net/wireless/broadcom/b43/debugfs.c       | 12 ++---
- drivers/net/wireless/broadcom/b43legacy/debugfs.c | 12 ++---
- drivers/net/wireless/marvell/libertas/debugfs.c   | 39 ++++++--------
- drivers/net/wireless/marvell/mwifiex/debugfs.c    | 62 ++++++++++-------------
- drivers/net/wireless/ti/wlcore/main.c             | 14 +++--
- 5 files changed, 59 insertions(+), 80 deletions(-)
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260630-b4-drivers-wireless-5294524fab46
-
-Best regards,
---  
-Sincerely yours,
-Mike.
+-- 
+2.53.0
 
 
