@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6904EC43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:43:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01D78C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:43:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 270726B0100; Thu,  2 Jul 2026 20:43:01 -0400 (EDT)
+	id 557786B0102; Thu,  2 Jul 2026 20:43:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 249786B0115; Thu,  2 Jul 2026 20:43:01 -0400 (EDT)
+	id 4E1DD6B0115; Thu,  2 Jul 2026 20:43:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 134276B0116; Thu,  2 Jul 2026 20:43:01 -0400 (EDT)
+	id 3D1076B0116; Thu,  2 Jul 2026 20:43:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA6796B0100
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:43:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE21040149
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:17:33 +0000 (UTC)
-X-FDA: 84944190786.25.FEE281B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B0DB6B0102
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:43:03 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC58FC1827
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:06:16 +0000 (UTC)
+X-FDA: 84945069552.18.EE7D2EE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 28503A0009
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:17:32 +0000 (UTC)
+	by imf15.hostedemail.com (Postfix) with ESMTP id 522F2A0007
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:06:15 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PrlL1zVt;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XjJmr1gQ;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783005452;
-	b=EJgIdLaO1uIoz5s51IfTvtIx9GyNxgByAKNWmiFeXdi0CEJzzMLP65TrBTxo9rpdz3mtVw
-	LqFlRa+ugFXehIurmZbVaOPRVoOQFiJ2ifQP0LCcnQZkiIiki6+cvEsKscTdXXzgucsVIu
-	fPeqisxVMBsQHI6wD3um7fREOWNr9ec=
+	t=1783026375;
+	b=soLWt7Mb1t5Gaej9HtZw1sZqW/ugRlYYfa8LGy1sUkG1LsUC41eHJuhs0RzUiy4u9/E5MY
+	dTxjvR0571/daJb/GdHkL7I51mAw/E3tpisGiFF7mY0t2k9CGeFAJw8Cpnmbte8JJ0vexQ
+	ldO3SgO1OANoLdgYm+yeHcg1N+aaspU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783005452;
+	s=arc-20220608; t=1783026375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y7IE1cTP8gYIjzStVQMnbcLaVaQwalgnaExPeatrYk4=;
-	b=T36mvfyAZ32srm/svHbKG3qsOW70xF+OoyR5zra9wVCDMsWk/k9qVmdfOuaaLrdh1cwpXM
-	VWiXBEeyGAz2mGtixrVMFgFUIISlYeSR3CC6va1JkomiA+V4xhB1IOsDI0L+/awo4uGE8k
-	xkZiecDQYm9jxzeZhieeF+7xmCsXnXs=
+	bh=3BUtL0wdhRHBCOaPZNQsX8fjUI9m5nC+jbrg8ueFSt4=;
+	b=P0sT32bfwVHIsGXtQ2FFsLmm8x9eBg+7BetwgqYZtJi/zB4Y2BALCmmULkBisIMsXY6Nzu
+	Id/tbwnaI2LbHtJNV92kaLbJGSz6Stohps5FdpFJs5jUOj2M6amn7puhvIxa5jIdQaZL6b
+	oBLSSI9E6SMeNKMcvnn2jn9QmQNhHdg=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PrlL1zVt;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XjJmr1gQ;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6FAB440DCD;
-	Thu,  2 Jul 2026 15:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734E61F00A3A;
-	Thu,  2 Jul 2026 15:17:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9F0CE42D61;
+	Thu,  2 Jul 2026 21:06:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F951F00A3E;
+	Thu,  2 Jul 2026 21:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783005451;
-	bh=Y7IE1cTP8gYIjzStVQMnbcLaVaQwalgnaExPeatrYk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PrlL1zVtDvQS+Yqw7s4ZMpuYEnktktCRL9+9F0oyngH7XoCU9pBAqSsazkA15Muj5
-	 3WuYYhl6+KwOle8yrBMwAWVl2HJ3IHAWJdYgBtwRoAnoKHikOpWLn2C8y2DWmEq/sk
-	 KmM0io/yeqDKjcOtg590ivRWr+q8BD7FWMZsS6jeznS4jSWw16nrRPLthbc9NfKD31
-	 wDOltWqFRelFDZRCy7eCed17nDdzQJXu3HmEQL0U+rECZZvuE43MGOf/o4VcN9iKjO
-	 g0EcqrYF2ne/n3aasmeJ+RgRysjdpJJF1iZ5gbW1NLJabN/U3JcAXyTz68mJG+9L1y
-	 08O/KzH7Hf2og==
-Date: Thu, 2 Jul 2026 16:17:21 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] MAINTAINERS: add Usama as a THP reviewer
-Message-ID: <akaA349aX5oCVcyg@lucifer>
-References: <20260702140257.44780-1-lance.yang@linux.dev>
+	s=k20260515; t=1783026374;
+	bh=3BUtL0wdhRHBCOaPZNQsX8fjUI9m5nC+jbrg8ueFSt4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=XjJmr1gQ51HXvJVpcXxk/bKSPfbeoxDgQExOGa2UWh8rMvyKzhr1k4+rn794A4jD1
+	 Uncize0oEBLHFHMtajttgUcGKDfZPq128HITOPFHWlO2nezZAyDKmIc5NZgF1QVIJ/
+	 +g1Ixii4KVAr1aCJhWnW1P1tQbB0WJJc+6yYap7s9rWM1FyXTSt9K1lNDPXbC+OaeM
+	 IABNn7MGGQVgVm1hJbOwakWUajkzQS3e4YECRdaeh+4izzNvjFT8sDJ/QwayXDNe7Y
+	 d6aMfWSqftpt+BRoHY+bHJZ4Ic1PXEo8mYk7aBYTCK/5lQdp8dRiEaiGc+kj3OPcwE
+	 +WYi6Ms0NAj0g==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1 7/8] mm/damon/core: remove start, end check in damon_set_region_system_rams()
+Date: Thu,  2 Jul 2026 14:05:49 -0700
+Message-ID: <20260702210551.95167-8-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260702210551.95167-1-sj@kernel.org>
+References: <20260702210551.95167-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702140257.44780-1-lance.yang@linux.dev>
-X-Rspamd-Queue-Id: 28503A0009
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 522F2A0007
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Stat-Signature: m7ytna9zmou3sbhdkwmybhx81h7gcm5y
-X-HE-Tag: 1783005452-613089
-X-HE-Meta: U2FsdGVkX1+JVv/fAHXjM61G3LR3sliN3laS4UOH/7enXtEPeIzkui+A/VxfYOqfIE6OK4N/mXvWVs2tF8EzOTLivILjd7YhnxMJunm25X4e+QBad8PVQOlvzsgCf0Gyn41bxLM07ERHXPIqyQGT/T64CP9qyLFugRMXMyetvXQ3kgjFJhX1QSx8G8KjILb7AotGGNCLYucm95CZs8kaDQLSYqldVQTz5jUvuQtkGH2GuV5Ja/9zROxTGKv99zxX6mTsMf+Wfm9DJWmCQXXmaLY54+uoSaR+9xPrfKDDCm3HRW/eNFhhDkI5JaAA6FCftkG0iIigkGwEsQbTVL1Tt0o7XJQ5jcj4VtjyPIOC/j5uNSuQG7rQKkIwSfIG62KlEzU2jY6LxnRPGWLcw6Egd6Vtl8xfqcANC32NDMn/1HjmCWdmOTGTCknM6G7uS1gTjxb2dI9cS3AVKHP4ZYaJyqflg5q0EE4oecTFVK2Cr5EQfX8qsIjXux5YiWVF7cPdqsmbXpf2De5I2lw7EnL/FhKyvMAGPFaMV7XNldX51gC1cZqscN8qZkp42ihPWSeUFDt7MyiBXi6MRfcKbt7P5nvn1FFpha6qUD6Fe6APQ3QRi8LcCKkxRtHuLvdDY0abMZ0FQK8Rfdfk2BI/BupT/8wE1gcZ7JIsOlfrDXtEm8tW8aSfeN2uhWh+GrpjGIkFbuMM6Kvdtx2X0hyQxHGSM69voRGZjU11pLHknWhZQq6LlE70GhaB8oechB9ulOW7M16+jC9Otx/JfmtRbYZ2fzjSCONRRO9EWARcDL+G8g2lHWgf/xjQzj0t371qyC+WCB97FeFqNLfeRo3Uig3gr4ykkcqDhQmuFqRw0UzAGi2VobQbTbKVGhhVxHAslExLP9ALMy6qfq2V+/e5t5PiouaKxxrvLULKOUMuKNC5SJuHHRfPaUiIsfPkKjWX6bne6oWNr3WmHJaXlSqTXay
- 1w9H9Bzn
- nqyDK0KN0Zg+Fga/mYFB4+Sekt/06VrnY+UkwuX68lWJahI6/Ybgzz+/PAvzNdB+JSDaBw3BUC6iExVhMJRgBr8lxsahGEDfSIV67lM67vmJhAeph5ZXALnKMDazpHetfmoUe6XLmBJBztQlAvl+T7VSsZK0epwe1eHVx3YJ06ThJlopku+Utmk4RfRpHYN6qHDJEk5P8OuiPXjvEHZlCp6iACzxoJ4JkU2DIGdk9+Cu4J/sJITlTEl1WMEA/qiHmKOMJeXdPj4aOG3oUa9jB7ZuTdACUSaYqyeMHMUqr6TPjiQOXEyzfW0Dqkz39PBj62Q7LkW6ZYkJB75jxQWKK+8xaXXmYzXg8k9jw1M0WzXl/8KY/+WYfST3jLZqihKRgSzakNrA6aTjvYUTnFInjyhpdFI6obn4taN+G+tRiJGkWJ4I41dlllXhzZOv7YxJiYKwdK8YK/yZChZA=
+X-Stat-Signature: hsb1g5pa9tazzaf1ufk9t6r83d1ttrdk
+X-HE-Tag: 1783026375-467534
+X-HE-Meta: U2FsdGVkX1/BWQdtoRLUXk3DXsC/jeMUoBZ97ASi7Py3IXcchkxdA0e/+2g4fzYTGwt2DJ2yc3SK2GzH6/PenCV1JVH9w+DMfZkbgtg+GatjIdo/WAe3pG5D58e59U0p7IiaiDaPGqs35AvQBvWDkmc6Y956IKL8JFTmOZnMQ1rmpWYqdTBYvxuw+6r2YN2cJnuGZlikpdHC0Zjp7pp/M+v/t4jo7cmGuS5a5r98CgRCl9kaeqJl6V2xmuquF01B4FELVGiHRR4bUGwhHPxEH9TqrV1AZHB0Tsb/wkEl3NDtc/pCEWWgHOwgz8LhaNsXt/MN60kF8CAtwsayMl7ZagWTWv1srjN3qNWHNa/czIApHJPh2V5sK/wEqR/G3O2t9bCQEskw2mrf6LTPZ8t1hgSSt8/HVS/dLbWZA9+V69g/LghFkDT1JwxGP/o+N6vjy/gSgdLo+I4qUDhQkoIWSh8MB54HgsEQ887+SNckm/DbI17vQj3D13f53+4zs0f0ru93IswgHwqxwFd8uyOlpSYV3/y4s5AHlA82MQdm+xdCyyEcb8nIpDHF17LI7TArkrT0T0RmSCeJtTjz5uyKYfXYcK7K9frS0h6h5U61opVaNHbuRh8zsgNpKu5fxiOQt1HLdMJFb8f1UloM+Bbw0aHf6yTTM9iG5fOj8GFF/o4oZwUoAR1ho6LVMhhrVj2v/pWjC4aZCmSpXP8CgtbVJ0Cu9Yi6gbWodZopnmNaO1CaW8XHXd/H5LunFYmLFWojOmRBXCpvzZvM+pkWMpwRIe06UY+ItHlu/p2u5R46OM7ULqUDkNlPX5W1zWk5JycYMpQgpXrjpntFyBFwKIZjzVofyjI255hoYQW9u8I4+KuVZ6JMsoGh/ST8NJ9B2chJfzdOF48XIAPAffvdeYZKbsycFXIl79TNaeZXcrggFNqB8X1cGXb5jS1e0npZ3sKHWwoLmtY21h8kjfbqWs3
+ EYr/lEOz
+ zDlV3wKmmutquDSRjwef4JbhqRD0yjHMj4dcEZ4aXy7a6TcCXQUjPeds+cQPgfh8pfMKnWS5TULVHSR7iNpa0eoNaDIXijqyso7Gt+q9dWiXgoIXM4G1XiamZCSwj95GwZUacy8Kxd9KbCxi3IyMJEPf8jBvW2j0xlrIsbyfMb4jZKFqmtpVKu/bSb+IRis874lPhI1CXHUYlfU0BqRCdRQkSMXY9wbBhnP8J4qVBqvvQqW7RKJIF5+QdxI3Y/lVc7C2Penkclt38SkScHMwV4ABcMuaWlsk4sw23Bp87PlvuZfkt3Lkk4Vk5ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,43 +93,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 10:02:57PM +0800, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
->
-> Usama has been active around THP, really enjoys working on THPs, and tries
-> to review all the patches that come in.
->
-> Let's invite him to the THP party as a reviewer to help with the ongoing
-> THP review load.
->
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+damon_set_region_system_rams() validates user inputs to avoid creating a
+negative size region.  But DAMON core avoids zero size, too.  The check
+is incomplete.  The complete check is done inside damon_set_regions(),
+which is eventually called from damon_set_region_system_rams_default().
+Drop the incomplete and unnecessary check.
 
-Sounds good to me, thanks for your contributions Usama, this is very much
-earned :)
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-So:
-
-Acked-by: Lorenzo Stoakes <ljs@kernel.org>
-
-> ---
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2acb019516eb..29c302e9c17b 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17255,6 +17255,7 @@ R:	Ryan Roberts <ryan.roberts@arm.com>
->  R:	Dev Jain <dev.jain@arm.com>
->  R:	Barry Song <baohua@kernel.org>
->  R:	Lance Yang <lance.yang@linux.dev>
-> +R:	Usama Arif <usama.arif@linux.dev>
->  L:	linux-mm@kvack.org
->  S:	Maintained
->  W:	http://www.linux-mm.org
-> --
-> 2.49.0
->
-
-Cheers, Lorenzo
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index ca301abcb9ec5..3c5a46e1c079a 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3846,9 +3846,6 @@ int damon_set_region_system_rams_default(struct damon_target *t,
+ {
+ 	struct damon_addr_range addr_range;
+ 
+-	if (*start > *end)
+-		return -EINVAL;
+-
+ 	if (!*start && !*end &&
+ 		!damon_find_system_rams_range(start, end, addr_unit))
+ 		return -EINVAL;
+-- 
+2.47.3
 
