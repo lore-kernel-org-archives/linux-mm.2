@@ -4,169 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFA48C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:11:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0DD9C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:13:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10D326B00EE; Thu,  2 Jul 2026 21:11:24 -0400 (EDT)
+	id E0A3B6B0192; Thu,  2 Jul 2026 21:13:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C5DF6B010B; Thu,  2 Jul 2026 21:11:24 -0400 (EDT)
+	id DE1F36B0193; Thu,  2 Jul 2026 21:13:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA6AE6B018C; Thu,  2 Jul 2026 21:11:23 -0400 (EDT)
+	id D1F116B0194; Thu,  2 Jul 2026 21:13:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA4316B018C
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:11:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EAD668C124
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:51:31 +0000 (UTC)
-X-FDA: 84944427582.19.02643DA
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013045.outbound.protection.outlook.com [40.93.196.45])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 08DAB14000E
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:51:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XZuYts5V;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783011089;
-	b=cGOQMORBrDEpGM9SfJKPcFgbWK1dnD17X1ntOcat+KqDBvYFaC/YOi2U0P0zEkYi2eZJWa
-	vxEkiNVH7WQz/xjvMZjSsOBgoieXSJwql+6FYWCLSICo0tu0MMyDELpwwjDCTlTgxHAkDB
-	eq6kQGgKrKzHz4iw4dcEg3rcLKNsx+E=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783011089;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A905E6B0192
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:13:09 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0DD391201E7
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:53:08 +0000 (UTC)
+X-FDA: 84944431656.28.36589B0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6FB0310000D
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:53:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Big/Uh5x";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783011186;
+	b=ZuNqpGkxtArI79VQEPcLNKaSulweGkBlN+ponwwFuqCmzTssMVVkSuc6jI1Lew5PGcTOr0
+	QWSMkBWk+lFnHyP6yu8WlgQzF+p9cu3q8sCQWgep0OuRuoHZUtO74XBXj7Re9BDYq5QAqV
+	+Q3B+exdAZKO0oV0tKdzRx/DdSvKG1o=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783011186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eAAkFNP+ANgCEvdeWwteFwMammq8vR/aDjEtStbQetg=;
-	b=TieaT6Rqrw2K7TxGMW/mJmZK467m8J5tHQkMB6rX7YkkxhY8NCcrhLOYrgVMaenNPgMRd6
-	Q+u6NjGAftpSKljQtniyk0lL54+Bg/7eAiUSgB3Ouozy5wsjmd7miqZL3mMZTRtfD/oymK
-	iwB9NIhJTUCht7GSNvLd2skuqHrVc1g=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=XZuYts5V;
-	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.45 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DcxaStf169z9dOLA+XgsDwNAKE15bGRroWd8VtEad4UycaRoRLyd3NT6Y2dRN1bvKanV4LPTNKjtK7dlYpaagx1hGn76l14/C1WAl7VLQ5gbQtakec4zmNC8Npe6jXvXPPc+tjTUfIjeM2NbqHI1qDJUjHzeVVyLa82Hw1pGfSd0Uk4ZwdPN1kUPMif1IKW+1Hymn2jaIXCxuhGLiXkrCInlAbeWH3OGihuJH4DLxbHrJ4m3qfkXsazW9KtVoI9CmqNgYqF2VaUve4yREjVbdPF7iodz/fD6aXHOBnjdwnkdPTTCpkMg93CqNW1FU5p+zaz4FrimUf7GpQZsWEErNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eAAkFNP+ANgCEvdeWwteFwMammq8vR/aDjEtStbQetg=;
- b=n+EgRGSd5svdiWd7W4QoaSREP1HN64CWqqBT0/f5kHRT6qESvLV5GiQ6L+8fh9RtXEfv6mSLKsMtGlI2tbfTthDAsGbAXWsTG7nHk7vVjeExJV0VEwzDSv3KHWuvWWHRRZwBxWC9HhoKKZFB+y13z4q22UUXHZ59lkPegmMHndxuEUb/6MKdwvpXFB1MRsFc2i5JvcLqy/R2+VOQDrPimnFeAzEvukz5VQp/b5Vq9kimTFFbX95/lZNpQOz1CXIHnEcXhVjbYNkz864M+87fxam8Qfi9dTszmw/sMe+qlkUdeps4pXP5kH93y4dGfTc5omtj/bDrPY4ccX2kh3z5sQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eAAkFNP+ANgCEvdeWwteFwMammq8vR/aDjEtStbQetg=;
- b=XZuYts5V3ezNbBJHpm9nNyHtFBCNS7L5AwA7afTQ0rJTEYtxe7oKmZcJuf7uRGsnzthUmIyvokOo8w4jxtD0SUBfms8qC9ZEwNpRWbCzdz9UjO25FaaCB0m7+7Xy/TBblXiUp78QhIOoC9jLniLre2UEoRmc94opXzBIGuv2YVPvnfVVb/y2tJaGD9wb7TU4YLcveg2O61+cD/bemPDiOaGZGL00IQs7u5oU6FjBYnG3OHO7jU2g6OH5pO7CkXgJfgqD9rgEDOC8uoUz4EcH7o+Hcc2N/Et5ZDRKucurSlFUuPEglZw/11GCWZ+al9H3UeNfBRciCg6DgyeoRINUPA==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SA0PR12MB4384.namprd12.prod.outlook.com (2603:10b6:806:9f::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Thu, 2 Jul
- 2026 16:51:22 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.009; Thu, 2 Jul 2026
- 16:51:22 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Ackerley Tng <ackerleytng@google.com>, Qi Zheng <qi.zheng@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, fvdl@google.com,
- jiaqiyan@google.com, joshua.hahnjy@gmail.com, jthoughton@google.com,
- mhocko@kernel.org, michael.roth@amd.com, pasha.tatashin@soleen.com,
- pbonzini@redhat.com, peterx@redhat.com, pratyush@kernel.org,
- rick.p.edgecombe@intel.com, rientjes@google.com, roman.gushchin@linux.dev,
- seanjc@google.com, shakeel.butt@linux.dev, shivankg@amd.com,
- vannapurve@google.com, yan.y.zhao@intel.com,
- Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Dan Williams <djbw@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/6] Open HugeTLB allocation routine for more generic
- use
-Date: Thu, 02 Jul 2026 12:51:20 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <5BCC635A-9CB2-42AF-B7CA-43886CF2BEC7@nvidia.com>
-In-Reply-To: <20260702-hugetlb-open-up-v4-0-d53cefcccf34@google.com>
-References: <20260702-hugetlb-open-up-v4-0-d53cefcccf34@google.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL1PR13CA0027.namprd13.prod.outlook.com
- (2603:10b6:208:256::32) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=AdFubk+JD40bWGnDszpUR8QtopM4gDG6s4W5ZjSbVSM=;
+	b=XtVP8C1MCmV52MLnbojC5D5UQchiqfl9sSW8qnn78aBqnXiTs5MwrIiHKjK9rM+hLStao9
+	Pv+zBuL2QK8x0Os7vozaC2kH9mNZ/bReqqs96vHDOmH7S8foaO7XcRcv4XiV7T9GZapWbk
+	vWDFjvRzeD6ydoL/rkBj4tDiDoty0iA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Big/Uh5x";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8D66A601E3;
+	Thu,  2 Jul 2026 16:53:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FC41F000E9;
+	Thu,  2 Jul 2026 16:52:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783011184;
+	bh=AdFubk+JD40bWGnDszpUR8QtopM4gDG6s4W5ZjSbVSM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Big/Uh5x+p9UFUyrs0H+TX8SkxXowLs9309ENEt2bZHNEFPVeSIvL00bHj+6bpm/y
+	 s8udHbi4jszqqgXKeOlXpUA7KzmEVpFSNVFpyyDq6Q2tuQAlNTHZgadeL2wS+BpmDr
+	 6duTpmSGL4zT1r1ioPN028UWP/YtE5PatvwARH4Ev47D7gXUxGX5zO/VlTN87FBAj4
+	 1G3pLC0fuQw3cvxZISOhdXlr6cOuusPnuh2jpCqFPzERMGSM8ehDyvqT4qLyVPPXYT
+	 mvmg6zxqVvnS0/yc+YD9yAa6o+SLV0TJiBWDgaGH2m4YDAPlF5N6U0oQT202lLwHRc
+	 amVrZi3QepJIw==
+From: SJ Park <sj@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: SJ Park <sj@kernel.org>,
+	Lian Wang <lianux.mm@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	daichaobing@sangfor.com.cn,
+	kunwu.chan@gmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RESEND RFC PATCH v2 0/5] mm/damon: add mTHP collapse and split actions
+Date: Thu,  2 Jul 2026 09:52:34 -0700
+Message-ID: <20260702165235.86684-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <akY6ZzPnwk-CToMp@lucifer>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SA0PR12MB4384:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d137283-51a0-4acd-f131-08ded85a258f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|3023799007|11063799006|6133799003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	G1akPo1/nHQsQVQOe4uOKF7Fftl/MNc39je7jBsVNAqwRRsu8ifNg+hOFBBOXR2AhEyqSWdQzKsKANgAI9cAmGgLJue6YytIDPQ3+uoBcCKLTCs0/b50gx8A+0UQIbEXk/S3QgltGeYfgzlReM1WUfvaKYLZw6WQ1bP6Pu+fDEbXLKQZkn31RAKoi5ONoE5mndgOiRpXJt+dhIvXNv7n58Ig+JssgV0eRHaXmVBcqYQ/rzdWccilCaxYscNCU8RppaxyQcuEdRkk01nz6n0C0j+CH/pHH5Nm7VGd71IdaCCh++02//LmJSjAd2cHQays7iccfoGwZb9Gsnc1J2Vin5LgjY9ToqGg7b7FrrtztnLwCX4w56NYVOGkM3dMxvafRlD9RPmc15Bf/vkyO/+ZMQQgp8EjaUjU6oatrpst3RfLS9xrAC+k9TT/Lt87+nWOaR2D1+TpGi16vmy4NrrovZoe2ZJ5FVcSotf072Eh6C4P2HJWGL9sveAx7+2fNnhkDWbolovzG8LRk4G3oTXRXieVzApWpq0PjZOlPjFzFwVMMSDNJw+5/FKFY0WQB3Y9sY7RqppdMS02GUO4D5MPmxGoGOdSZUeBRhq0pHSo0dpBSyihxPl88P0Eb7gIS2mld7VJEr9c8Rg1/JOiHzQffB0omI1CnnUROsHqbmTV18g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(3023799007)(11063799006)(6133799003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?As7OlaKpwp/9SbD5k+J1+L/1EC5UL0eF8VKlIYbVoKiDJ0u/jKJHhSbbli1F?=
- =?us-ascii?Q?YGqHzufXPZZqdylne6RtGsb12Ecss9UsQ4yEa1R1BqgHRaToegUOuizHjz9s?=
- =?us-ascii?Q?0h2UNuTUPv/Jy9DsXldlZO1pwBz1yyXrgkv1XUJgFt+0psH0nAmSkTULClbc?=
- =?us-ascii?Q?5yQWdMwKcDtYIMeI+EIxDpJ3Tz38DoPFnXupc7yAnt5dugZZQ8vclleLmlyl?=
- =?us-ascii?Q?ZFJq7/pCEQ/H+Zsk2pF1ini43X03ydBSorD5bhimPCPJhy97gp/pLWNujUmA?=
- =?us-ascii?Q?/CcAXDI6GfqrL1rOoMMLdF6rBkWSLh07M6Y7n1jK1iW403tY0ThON6+1e76R?=
- =?us-ascii?Q?dzd1kSx+gJw5c8c5GB6ewc6QC5Li/3RHTsWoEKBFieiTS7b/l1ldNGmmt2Df?=
- =?us-ascii?Q?Ovebfi1DA2H7KaliOef76/fCLgPCGu4B8peSLj004UdzInLoYmYbWAy+tw1u?=
- =?us-ascii?Q?QQV2ZPmAAXEMiJZ4Oseh736/4/RptrI8sl1kzC4quw0de0CuA0DvD+wnvCxR?=
- =?us-ascii?Q?w+UcmIKeI1NOHCYg/L7/Er4+Wne0F437JjqVaOAN7kukbvME/y/PjC8jEeEL?=
- =?us-ascii?Q?IQVvzyt5M0wQWtih7u2egxbgZp9liqD2uGNA9aq9ips+uJVed0IZ6wwevbAs?=
- =?us-ascii?Q?Zcj2/5aUtopKj4vjtmhrVIGqcUcNRU40bW/KE0BSPSQ/wus1BfbfT90DVl1D?=
- =?us-ascii?Q?vc8Gh+lOF3yI3t+fniMrcSiCWbGW09EGsGCacIP7LoLHwge1UqXl2W6goiPI?=
- =?us-ascii?Q?SDHxDbVoyyZHEkEW45tgW7OJlhUkIEhliifwwnnQDfDEwSzKHk9ckt+iMT//?=
- =?us-ascii?Q?CQUNwOZMHOLt4sfbwvhknouEx3/jpRia50DFYSBrYPWFR0SwRI2xXN0fEVD7?=
- =?us-ascii?Q?ssJvXE6ptZlwHV72RdLF+HUtWKUJH+b8yc0Tewak1+xlOYxW4cxVZqVgCRfY?=
- =?us-ascii?Q?82GQ1ZrP+Stl8hQF5CWu4oHV6/YMZW4qnTSs0LZJsE6dFlAR6TUno8QKUNba?=
- =?us-ascii?Q?uxgXQF7O3LHFpomlHl4eVfm0AnH8ckvEWI0pNWC3K6N1bNsgWraY0KQLYHx2?=
- =?us-ascii?Q?hoMuIemsSrOfJQr2BhdkibkSwYTKloeKvSmhIIHgUp+1CQMDww9o/QgGRNW7?=
- =?us-ascii?Q?cAdFzPxYJMtAiRssSBZ3vLP88MwDYpIGREvgDmPPYTPbyA6jYgOzjoo8V/UE?=
- =?us-ascii?Q?GaaUA57GjBbDSnuZ4DnlD+rVaC++FJHD+gVc2qQAuz+1mA0K/lRGcV1/Tdas?=
- =?us-ascii?Q?DMDV4nyo/DKqT51Nvm5tqLiRGLnMJaMrHyFEJEFn7cj/GKT1QzcBy+IkaQw7?=
- =?us-ascii?Q?cFXaagFkHcBiu92jx3Wd3z38sWW5SpL4tgXYC58q2iqR/B8dmiI0WX4mUDtv?=
- =?us-ascii?Q?nPKOkCQBt3MMycJbzwRgVPb9Q2EWqZfDtVAF/7gSDeJqdbuC3Yqq1uGQl4c1?=
- =?us-ascii?Q?udECl+IYHoVv9ADuDZI82hoiyy5YiDYQBBOcp2WVo1422cRM6bf+J0wD1yiu?=
- =?us-ascii?Q?nt+X8W53I6wMbWX2vRUn42NAr8OYJ/YkkHfbX9lMhmI7yr36/JdY44YZAP+i?=
- =?us-ascii?Q?NJMd1EXxwi0/vQaBbFTe6J01jSOYeeGxN31b5FcwmcKN2i7cK0MfMyuTE9Es?=
- =?us-ascii?Q?7YY/+hT5YoximIHrA51nk8ykvenHwwHxoZYl84SHuV7W17eVIKgdFgDS6DW5?=
- =?us-ascii?Q?cvD+oPAIMwN+m0zZa2K05jqxR2wI9EGULDUJ8LNoi9vPBBkztrYHmEY9Iltp?=
- =?us-ascii?Q?Xfs0HaLj4Q=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d137283-51a0-4acd-f131-08ded85a258f
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 16:51:22.4028
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7cmfLNM/eMUFiqMhbe7FVeDEgekvoyZ0ThTbKXDMw5tqsxk8SC6py8wQh7X01aAt
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4384
-X-Rspamd-Queue-Id: 08DAB14000E
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: bb3tojshuk5imcugurmg4ep14n74t4kp
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: h75hfw11tx4e3kfxur58uz3borpnubxd
-X-HE-Tag: 1783011088-942530
-X-HE-Meta: U2FsdGVkX18GkvBK0xPxEqRGtt6z12Z1+aUX/chmfAoxVm9dXO2cTsKFqkjeEfWgyvxBG1AuVTCKPdghvFoigetBXCpBzh1B9rEzWjrw5kuig7RpxGTmi3z1ESUpAw0Le6LcQ576sA+EVUMfIMtq/R6X185GDY8X1E4OZK66q7bIpnh3+a3rWv3rdYLxo6TNWywobGwWR35L7GEkmVlgKuBxQm4+cgrbZbE7DgaJiqeZS5aNoTysu5eXe96udoEnEz+vFaeldc54c6dR7lK1XbMRLRg9eBtMuwzqsuztg0nLPdsJf3TdJEbqK3krzIP1WqCZjcdM3d55gl+7S4ktGnpBgQmJ8+4D6rdA0u0ppqqysWCTe3a6KXTvb3VS61RRadQYBQHTRNZWY0FmK51xe+9+aQuG7/+PJ9fnP0hGD2XjU3o8F2rmQ04FlVmB/wVB6autLYz4FA/WmmxbLnlsvtGaBj1dSA+kZCPyyyDZjobMyF6wDZIZ7MpxCKUTFjzTPdAZmefK+lcfZ7hY/X5cncCEtGx9T4RuVVHsaJHkibdQFWKTjmoSTvj50VePIzSkXpCMfZPAUWoWUi5NvkGbpMMhDHyyYQ0QI8NtX+G6Ix4mVq4eflSsNdV4YLAxZeI9JNsnuyXX95dLQNptSqrb2LDdTL0L07sUE0K87o2rEQtjVE1fnjnIlkjVnoBG0jAMPlUCGBG8R8DFmAJrUCMCIzpgpeuVxJes14N6TXt43eMYT0gTllyoqRlzV3Ig7gpRRiOMv4IFQ/vo3AEXdP2Mdx/YLHMZlfANZdf4/6Ye0GXLLJbVxw/d3ChbJ4qy0Gwm3hZOBIgXTIEmjtVPeouTEiymIFPOyTGztiyGWl1w+3whcr4s1WuVVQfqDnzQv9Ccr1AKWcyP8JJQ55xytIf4+KC0wNu45DJ5ADPCsUjE8eioQ6DeeLDcpHEhskQ4WDtk3tmfOd6lKgKuUcAue93
- eKbIwMgK
- RfZX+DcF54my37pRtV4QnvXWM3CdNw9GjQXmDqsnwsrlxHoILZNN108zOcMedkWq4qQLDsu/6UQQMtzGyuj7vdIrm2TWr2yjIXjrzBs45chWTG3YPsykORWLClmVHwUTmTXlg9tJoJDkYPcsjnwURa2ICOd1Ukq8c8UUUsd6B+P+4XmZ8gxGUMtl+J6TELsEXG0HqG8ko1B9A1UdeIcus2jAjY7dm55V2H8IhGL+5dJkmuBe4/Daz+TInq0jfdJwBdT4NULp3zXqVhC0+00YFkRVe5RVQTfQ1giBKe75o7WO25hsls9mLedSNLJIiHHOI1HWzbnKzr24KThwJhgOWtAHp5MF42bxZVkwk9kYfRfr3ABD3W/Jl8XRFmfQK8dqskz5ft3IaRrDG1tJAhuOavygiNLZTwYR6tkcBm2PVYLY+adl1rEkzLNPJ3Yy7KSdThiPVEE5CNqUr6qKZF1L1Q1ohlt2TSZgQ9m4myEMXdLL07VzwrvbMuC68pl12+WHAXUXAXZ3wiKGx+eLZ/+hXvNyYu+yncYYZPhenHM1/XbudhTkODupBcqai59SRLBL4FzBTtsfl3RewqKmU8YuBquuu1Q==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6FB0310000D
+X-HE-Tag: 1783011186-308150
+X-HE-Meta: U2FsdGVkX1/1cWVkalgSjuHVVQD/QDk/2RLI+wVy5YOnCO1psIhL91aNTmFy1vaUWtPT3xP7W5RxTw0A1Za7nPRot+U9c+xsRdJIdoPtAsbW2XdN/k0cuF5hFiFyfBK0ow3xDeuaeVg/v8CVSXH6YY6UT/suUKZcW6X0o69CHYB3hBtx5ebRVIMZhBhz69SFNkoEpZSqWpadYoK8hpaPfHvfrhu2h8G0zEduHp2S38sgtC9Y4l8Xy6FJkuXg5CIOOC9F8T5Ds+HifMRsrnknqvXctBarVQ3G0Br9rDfc+WV+gDNJkBDjWdQh1lBtNYXrZ0GV6+Nk48mu3QFD+lGwln8MngOWn3idRVgH3L2g0Qhqty/vqJS6JIvYA/K4I5ZHEdhtwFSlgqVydWkCjQB6IBaxARH9j3/PBuLuoagNA4WmcEDkkpBVHnO0UssWqaGrlilI+XrXB23lHyVKuTrqVt6Hlvlz7TIHCKbhp4uRI05OVwt2V8tUtio+sbjOu4EyNRLFmCBufKq9LwRmQ5Z0/rUsgRd4EkubwTplEDbg7bzCI/cHKEDXuXm5w2JHTKfZKPQuVjkTBvKpFS5+txCAHqoPTNohoJfhaF4LlmDSlWMZ2r9azznPpNuEYohVeufx6dQaRRpJ/XuB26XctK6mzejMYKNagWzFOCTUPwKya3SGMgbdkvhy56kDzRKT5O+RTc5sR7i9QvtqdMHk42hrIszT43R+ZHS2kFQOHstL5iUKNxAu94K+tw3K2OCXhygY2TDIx/fQHb3gKe2+/gMPCLTzLD2jG6AMee2IaEz7C5aq3qpj39nYuZD6/yLG+GgKDN3Io4A4Ufl04xuOT/kOg+KkZjowlKV3QSukZpHRZYpmiXGFQcjCE39aVGvVd7MBWWH2wEKmonYbbhWGkpAG+kamXBoWLSlJCNV1y+vW4LCdezrg2eXZPD2YyOtut+5YpCjQWmBmRNeJEe02AuR
+ M7+tt/a1
+ dQTSFG2ilj+i4UWAbv21Ci7UkIUC7bcs+UcFuPkfMyb1yrQ/qy7hnivszd40oa3ZAj61f9q0fx5+JdTBdsEmgzRJvm4GG+cTF95/DOkNUfsCmckZVLJrtR60wbCRicQlT3l8TzORLl7j22CzB3tJFBq93NWAUTs9UgWa+IZPpMUlCuO7eAtgWwbVz4H/EZFokIGYtaXRgDe7v6vOpc+H2m82dnHFWav863gQZql0jMmaXZviykJ5sXVPvG4iCHcNFTmixv+p/Nm/lrhORdMzxHJxnFRVCp24bgM+NzSwM0u2/B7X2wLTSV2xwOFPZeQvbW6kjYDn1lh0qDjMF1J9tQuKXV8i/TMe9Rfxo//3q7JtnGUSeX7gyqc52NxdfZAsNo84Gkq3bfdT3TXI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,120 +105,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Qi
+On Thu, 2 Jul 2026 11:23:55 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
 
-Since he is looking into adding memory reservation functionality to THP[1=
-]
-and this looks related.
+> +cc all those you missed.
 
-[1] https://lore.kernel.org/all/cover.1782538002.git.zhengqi.arch@bytedan=
-ce.com/
+Thank you for doing this, Lorenzo.
 
-On 2 Jul 2026, at 12:21, Ackerley Tng via B4 Relay wrote:
+> 
+> I really need to write a bot to do this, because I'm getting a little tired of
+> pointing this out :))
 
-> Hi,
->
-> The motivation for this patch series is guest_memfd, which would like
-> to use HugeTLB as a generic source of huge pages but not adopt
-> HugeTLB's reservation at mmap() time.
->
-> By refactoring alloc_hugetlb_folio() and some dependent functions,
-> there is now an option to allocate HugeTLB folios without providing a
-> VMA. Specifically, HugeTLB allocation used to be dependent on the VMA
-> to
->
-> 1. Look up reservations in the resv_map
-> 2. Get mpol, stored at vma->vm_policy
->
-> This refactoring provides hugetlb_alloc_folio(), which focuses on just
-> the allocation itself, and associated memory and HugeTLB charging
-> (cgroups). alloc_hugetlb_folio() still handles reservations in the
-> resv_map and subpools.
->
-> Regarding naming, I'm definitely open to alternative names :) I chose
-> hugetlb_alloc_folio() because I'm seeing this function as a general
-> allocation function that is provided by the HugeTLB subsystem (hence
-> the hugetlb_ prefix). I'm intending for alloc_hugetlb_folio() to be
-> later refactored as a static function for use just by HugeTLB, and
-> HugeTLBfs should probably use hugetlb_alloc_folio() directly.
->
-> To see how hugetlb_alloc_folio() is used by guest_memfd, the most
-> recent patch series that uses this more generic HugeTLB allocation
-> routine is at [1], and a newer revision of that patch series is at
-> [2].
->
-> Independently of guest_memfd, I believe this change is useful in
-> simplifying alloc_hugetlb_folio(). alloc_hugetlb_folio() was so
-> coupled to a VMA that even HugeTLBfs allocates HugeTLB folios using a
-> pseudo-VMA.
->
-> Testing:
->
-> + libhugetlbfs tests pass
-> + ./tools/testing/selftests/mm/ksft_hugetlb.sh passes
->
-> Andrew, thanks for nudging me to send a v4!
->
-> Oscar, you mentioned that you wanted to do a closer review on v3, hope =
-you
-> find time to review v4 soon!
->
-> Changes in this revision:
->
-> + Define gfp within hugetlb_alloc_folio() instead of having it as a
->   parameter so users aren't able to override gfp arbitrarily as Oscar
->   requested.
-> + Addressed some of Sashiko's comments [4]. Some of the issues I didn't=
- address
->   were pre-existing issues. Since v3 of this series Sashiko was updated=
- to
->   actually send mails. I'd let Sashiko point them out again and then we=
- should
->   discuss those!
->
-> [1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google=
-=2Ecom/T/
-> [2] https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversi=
-ons-hugetlb-restructuring-12-08-25
-> [3] https://lore.kernel.org/all/agqaUcVp_hwH-VXr@localhost.localdomain/=
+Good idea.  I will also consider implementing this kind of checks to to my lzy
+tool box [1] or hkml [2].
 
-> [4] https://sashiko.dev/#/patchset/20260518-hugetlb-open-up-v3-0-e14b30=
-2477f8@google.com
->
-> RFC v1: https://lore.kernel.org/all/bb35a69a-5be9-45f5-a557-1902487a1bc=
-2@linux.dev/
-> v2: https://lore.kernel.org/r/20260506-hugetlb-open-up-v2-0-826a0c5f28f=
-c@google.com
-> v3: https://lore.kernel.org/r/20260518-hugetlb-open-up-v3-0-e14b302477f=
-8@google.com
->
-> ---
-> Ackerley Tng (6):
->       mm: hugetlb: Consolidate interpretation of gbl_chg within alloc_h=
-ugetlb_folio()
->       mm: hugetlb: Move mpol interpretation out of alloc_buddy_hugetlb_=
-folio_with_mpol()
->       mm: hugetlb: Move mpol interpretation out of dequeue_hugetlb_foli=
-o_vma()
->       mm: hugetlb: Use error variable in alloc_hugetlb_folio
->       mm: hugetlb: Move mem_cgroup_charge_hugetlb() earlier in allocati=
-on
->       mm: hugetlb: Refactor out hugetlb_alloc_folio()
->
->  include/linux/hugetlb.h        |  18 +++
->  include/uapi/linux/mempolicy.h |   2 +-
->  mm/hugetlb.c                   | 269 ++++++++++++++++++++++++---------=
---------
->  3 files changed, 175 insertions(+), 114 deletions(-)
-> ---
-> base-commit: 4a50a141f05a8d1737661b19ee22ff8455b94409
-> change-id: 20260504-hugetlb-open-up-eaba80571b09
->
-> Best regards,
-> --
-> Ackerley Tng <ackerleytng@google.com>
+> 
+> On Thu, Jul 02, 2026 at 05:46:28PM +0800, Lian Wang wrote:
+> >  include/linux/damon.h      |  10 +++
+> >  include/linux/khugepaged.h |   9 +++
+> >  mm/damon/core.c            |   2 +
+> >  mm/damon/sysfs-schemes.c   |  77 ++++++++++++++++++++++
+> >  mm/damon/vaddr.c           | 128 +++++++++++++++++++++++++++++++++++++
+> >  mm/khugepaged.c            |  46 +++++++++++++
+> >  6 files changed, 272 insertions(+)
+> 
+> You are doing damon changes, and that belongs to SJ, sure.
+> 
+> But you're also changing core THP code? Please ensure you cc- THP people because
+> without our approval this cannot be merged:
+
+Thank you for calling out this, Lorenzo.
+
+Lian, please do as Lorenzo kindly asked, from the next revision.  You don't
+need to add those recipients to all the patches if you worry their inbox
+volumes.  But do ensure adding them to at least patches that modifies
+khugepaged.h and khugepaged.c, and the cover letter.
+
+If it is cumbersome, consider using 'hkml patch format' [3].  It does that (run
+get_maintainer.pl and add recipients to each patch and the coverletter) for its
+users.
+
+[1] https://github.com/sjp38/lazybox
+[2] https://github.com/sjp38/hackermail
+[3] https://github.com/sjp38/hackermail/blob/master/USAGE.md#formatting-patches
 
 
-Best Regards,
-Yan, Zi
+Thanks,
+SJ
+
+[...]
 
