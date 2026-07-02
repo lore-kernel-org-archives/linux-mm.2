@@ -4,88 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E94BBC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:49:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 602DAC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:50:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1C546B013A; Thu,  2 Jul 2026 20:49:41 -0400 (EDT)
+	id 4CAB36B013C; Thu,  2 Jul 2026 20:50:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCC7F6B013C; Thu,  2 Jul 2026 20:49:41 -0400 (EDT)
+	id 47C136B013E; Thu,  2 Jul 2026 20:50:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0A2C6B013D; Thu,  2 Jul 2026 20:49:41 -0400 (EDT)
+	id 3B93A6B013F; Thu,  2 Jul 2026 20:50:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 866AC6B013A
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:49:41 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 80102140294
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:01:03 +0000 (UTC)
-X-FDA: 84944905206.21.9AD951E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E98C080009
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:01:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SyAFRhvl;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 10D736B013C
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:50:44 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DAA8C1C6E3A
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:43:40 +0000 (UTC)
+X-FDA: 84944559000.16.AB51341
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 6A67120002
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:43:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PxMvIRBf;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783022462;
-	b=zd2whGcfXcWCrCww/mItaBX9y+XscmFMmdNdPQKA3N9ksIq08v9Q2ZmHNLRQ/7fhre7oMQ
-	wA1dr2EfCFooerCUJPqqsE5Zae7nYdpj5w9mf2lj4tDfCpjKGbHy0U0cQfAdQ3TWFbcFXj
-	leBcDEbf6uPByRnb9y/8z7fcxQFLLyw=
+	t=1783014219;
+	b=CageVnSUP0oZH0ouby/b+HNUvgFS52o48Tu+q0/b3gCS+IcFS9U6dU33bhlcgWvjwCTuD0
+	DH/3qarrYCmz8Lnx233oYq/W4L8AMcp+Sa3NwcqzC4waLGfjSzPLDyWXMvET47Tmkf2Axm
+	132lDtUguQ/ckP6UD3+PASNjwO2Busg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783022461;
+	s=arc-20220608; t=1783014219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s1O7yxhZA4uvwDJ7tfSidpqHooCz3PzvrPr8bHBzeY4=;
-	b=Onc3PuVhqmikHDurgk2IWVCzIjmOpB44FqT7S0QxJ6G+ZlLQuw8w5ukxLFNrOcAYNkHGi/
-	C50r0IrG/jfas3KV98FDRBbZiWPj9bJNaPscfzqSksj+BI5irmYst50Rb8buToH3huvlOd
-	6OZYsWN9qVpFIqHsnrj7lBmXFaiNPrQ=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=fmVHkjv2MM9+6eB8Ztw4ftwrH2iuE6q373EWQ4BEoEM=;
+	b=s6iiQ5lSo2Oc47YDh+iPWC2CBgoYkAcvkdIgvkvg96O7uNN26oCqKO4yenKSwkp/qO1IPN
+	Sga7vHEl5jRLKuCimskRylo+l2iGByH3HoLSOvQEKOl+JXTfDnrEYB1nLyGzl11pT+Mvp1
+	w/i5Ay/04lNdF0peUn4PP0U2HNF2e48=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SyAFRhvl;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 316DD601CC;
-	Thu,  2 Jul 2026 20:01:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483FE1F000E9;
-	Thu,  2 Jul 2026 20:01:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783022460;
-	bh=s1O7yxhZA4uvwDJ7tfSidpqHooCz3PzvrPr8bHBzeY4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SyAFRhvlIwWuXxtyW+DsYxsCGfICLywCNwisc9/R05DvJtWpdXfO+V6YaT9UJRYS5
-	 7yqczLFVhUoBa3jiKUac4MKkaeZf2UzyH8UGuiY6lH4K7GojUiUjy52dxu2T58nvUv
-	 F29DoDuvn9S0r+/qz6nm46ufYGH4dVO2Rh1Bgnb/wOCU8US+ZbyyaEYxUl3KSW3UmI
-	 pw1ldkWPvsljqcBZZC0J3dnyowVHxs9de1m61hnMxMTbcuV/P8WLw8TjWCl/3c/Nu3
-	 LOJSd/23nPnoB6lKTFsxrkKyWp/djcFqpEZmQ2cg3+4P3FYEd/kGlCqYkP3hnrkX/t
-	 lCsfBmpVPRnuw==
-From: SJ Park <sj@kernel.org>
-To: Lian Wang <lianux.mm@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	daichaobing@sangfor.com.cn,
-	kunwu.chan@gmail.com
-Subject: Re: [RESEND RFC PATCH v2 4/5] mm/damon: introduce DAMOS_SPLIT action
-Date: Thu,  2 Jul 2026 13:00:44 -0700
-Message-ID: <20260702200045.92126-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260702094633.75658-5-lianux.mm@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PxMvIRBf;
+	spf=pass (imf31.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783014219; x=1814550219;
+  h=date:from:to:cc:subject:message-id;
+  bh=QEGMOc3SpuqbmNd6M2wJK5ocPmc94n1B/IOdlFDjgHY=;
+  b=PxMvIRBfabhdpoXYPLrWntrXrcNbWkqcSphV783gDxH6Mrc7Nx1VzjdO
+   e0E8m3LM6GHxJJwcO4b5zb4ChQo+aLxRylxKXp5flv1qMdAjoB7WSKLyw
+   9UtBhTNNhYiEFnRw3ODyXVfp4MoNjiTEdJZkDSeBtmkLAnzEyqu4O8gOG
+   dckT9kLlrCVm8R715SYzhab1s8PhLjLQzeqnvLFqGDM10pvCDRIrpOvQF
+   NhXxli9sFyswbfnhfPa6Dl/HQEgU4Xc/L/96PMIULamGxdV6TceRpYUH2
+   1ZCNfH3XJPn8BjerN62ndev2PIXF6sT1QKuLkRo4Q37utvjh79bHeVtpN
+   A==;
+X-CSE-ConnectionGUID: ZoW4cdQyRxqZr56ipGAK3w==
+X-CSE-MsgGUID: 0uVinNUgQd+wBJzMQ/lMoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="87688604"
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
+   d="scan'208";a="87688604"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 10:43:37 -0700
+X-CSE-ConnectionGUID: 7BhZeXN6RvKxoVjeSEDdLA==
+X-CSE-MsgGUID: 7JE9EWfPRHKgCLJ+37a3Qg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
+   d="scan'208";a="257263034"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by orviesa005.jf.intel.com with ESMTP; 02 Jul 2026 10:43:35 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wfLRj-00000000B2x-1n7W;
+	Thu, 02 Jul 2026 17:43:31 +0000
+Date: Fri, 03 Jul 2026 01:43:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kir Chou <note351@hotmail.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org, David Gow <davidgow@google.com>
+Subject: [akpm-mm:mm-nonmm-unstable 59/59] WARNING: modpost: module
+ random32_kunit uses symbol prandom_warmup from namespace
+ EXPORTED_FOR_KUNIT_TESTING, but does not import it.
+Message-ID: <202607030125.ziX4WI61-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6A67120002
+X-Stat-Signature: 9jb7ospycr8am6jipfgdeuhmnto3aiga
 X-Rspam-User: 
-X-Stat-Signature: u65urn7dc7zoi6u6aqaopzdrji1cszsm
-X-Rspamd-Queue-Id: E98C080009
-X-HE-Tag: 1783022461-198135
-X-HE-Meta: U2FsdGVkX19v/WjLjLBWhjHz3iDspZY15QDxiy3PB5Qzn0fIRpWyj64wKJHdnBula7GRn4dNF4VgD7QNjOAy0WYLJHutR/zE73mbe0JtRMLFul0IkyBjvDkBI+tPxCfpLSbjPz5t27GPSXS9JbSrDF86fmimc/NTclWYoEPLa9pIqkAzMKoym+EGP/1hHypR4pguE9RivI3jlldUioLi/ULAvZc9CxrJVWP3SVNbvO8FEkYnl+bkHoAzvyRp3saZmpAtoJQ9MYJ2H3eJg5D/TrZ/seaUFh5v4IAItOhTkpTuynuMXAicMQveB4kAzws4ry+XlxKZG5GlNM5pfrsabaweX++hft0KBgeziNpwPtTNmFP1TTdqJ3pFvLhuWv3M836ir6y0GuLNDbhr2NkikrVg49ZiA0OOyQrADufHp1V8wWoC1PEFvbFe1ufN48UJRru7Xet4alvw45zQc2RWagd13sL3+XaeOtM1VjObATV2REBfn28nu0jxYuhJm90JiDGNVPtlk7tpypK4flbd4lYpyuAqZ97Hmw2UH0bHL+ale6mpQXaMpQrlqzHNoAxcRqWv19FgTvg8e+s6Wvg5fFtMa3w44UbntOJ8SplZ9Bf/GSTDq0whvrEgUjBXyvlM8jk3k6XYJ8hSQCNo97xINwPCqhHqps+1b+lVoNk0J16q0hZ95nDwLEWPfjJltRZBFMw+rUklnvUSNalKyzjrUUxI2qUnzErAaO1g6kGVMboagHILqCIeNMR2pWdLfnlXzIrlxMrDEwlrQIQVA+mJWVKBvWoNf5R4CAFUKbT7jR7ls+OPuJz6aLUl43ahJL/5imVWvY/nd5B2Isl2XK3kGtqiym1Tmzb3NrJ3jHD0CgPpoOYFvi6hHaXey5bJJY6Ouwh0nvQnCarBALy6b6W8qZvCNwb8pnTX2jhe7reIgXdkOb7hM/NRf7Co3X++9P2fy6D2hNyPMAiYvrEUyg+
- zB2S15eA
- T4Pw0nl4CcAmmmP9d9bPkPAnH9bO0J8V2+F+Z1aSOxxTFamQynH1/AePocSttfN/0L0Kw9Ic+RVVCD7nNIIpwYqDpHF6lcEZOXyYfnaEtlyY6vEnAhgkRwpxIAbnCmLA70gwfHJL3Y2hGvGOqfWNN3RnBNjQo/8Mf69c8fEk9ilbc+w9QnHIsRZH4U0RAH2quz291nQNYBs+FMYM6Vma2beaiot0vW0JvCVi/eO7jMecLb7pg7WiL1E9fijNF9AT9Zvj7Pr6/4a9XHaA20xIqLkrLWsjpbEM2x18ESi3IAE07n4Pw1wLHkToY12vzCwGCCIYSQYxUHrpWDt7pjg/Z0Hd/D5fYnYJx3GFngwX7N93wv6XP1frQiPN2tFu3dfjX5eO3ZcgAST3geL/gWwCe+vHDU4R2nkt9v8HyiT4LS8uEiDxU+YCznBW1qa2NOk3XrRzjRFJ46/dX3og=
+X-HE-Tag: 1783014218-450029
+X-HE-Meta: U2FsdGVkX19m5qUZ5YzaUBw05wW54sgN/890WoU7XTYfOVLEXPquF+a6ORyOg83KTLTOA/yJSGfA5j1EBdais1b3VKYpB3NDBLyw7U+jWLMv2qU5SkGfUCvCEzAgAdwhUepcTH7jyGuDWPRQIuB4vRn7smYovt/zYGEBeAxPnSuJqos9nuUJBYm2Nr8ImdUCZuxR0uOkHgyJJ2Ca6WoQpHhu4Q/QFaofIyPOqr1kNtWfyBjybMcRFhMIbUVk22FPf28dAgvxk623WVP7LMeF1FrL2HBgGdssDgJWIRyjVtVEJ+QHWlyoux8igyc/60W9VORhLUJF6+m5hvLdUa95NpOT9oPj/CNkNZ8rNTQvQTpyLNAIZdlB3BlDM6Sjxc9Oja/y3iWaCkzhPhSzOVmjzdL8+3aC1cLUnsI14QxfnLMos+DYayJNWh5rQ5PBM/mAqThyAuKuR4uJL1pwEIxCP7UYjR2ZpaYizTVr1mVy10NScOSvFRgR6cyptXizHHtWoQPA9QaS8N0f/5gvHwlWTqKC8DknEnEolVoj+fsHV6gN2iepON0Wphu6uXBL0XVnIr5Ihirmks2xJPUZQWLCu4KM2D3EKPH5+5COsW5A/tiK4miBDrlAwa4GA0XAdYnLxXqu+TJjlrvYHWVTooaYUw8acO4EEM7zqGos8YAanGRmbV8slma34x+AnEsl4bv8IpvXW2N/09aDfO12Yw7GqlNL01MJqDw+/VXwsj93849dhSqi0Iy0rSxSH4I0Xwr4EY1S8Tm2iKXfjMRvwlMMHPob7KvqODHaEQl60JwzTgh2FJJDnQyg3W3VAxAk4VjjBLAEYq6n+e+CHRRl1duCBNrDkaoGJr9N80APHc+8gBxt16dl7N2hBFFU5Lp0JDynmw/AOVQbAIju85NZ1UisTHgTAGJjJncc7KD1pkegJZOm2hZ4rn12PM5hHUXTccDMHvo0SWksq0bWHoWDhnX
+ 4F1G/Xdo
+ U+4c4vmtGBT47AFwTsu3PO807LbyOVmPvrHNBnWDWd3bJwz1eHSpUdHAIhGi4lamHpKiFrAh7/4jDDJJRIP8zz4Jc1yCbO6Yd1NrlLyTuOGKY/op8Cyu0ozs45j1skB2fDoTsGJQPNYZbKlGIyq9cqZeVBRoj9n7B4ZODATIWldr40mJFaOZLe+MYU4t92uQ4vSNssGtjiwKsg7Oh96hRNkWuZ0VbYDvby2eQ5xt1wg0lDUxo7W3xvIbggXzxFBWfuTrHyVK9FazgbJ5BkGc0d2ydtsHZAIIiyMUwso3SQGz/72KNPYh+s7i4GXKgtPk6YI/MOqly7GIlE6w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,112 +105,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  2 Jul 2026 17:46:32 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+head:   2ee1282ed36ff65ff425a4c6d3121bd701dcd547
+commit: 1f9afe351aeb325ebb94489d40d8ab65f30f8d2a [59/59] lib/random32: convert selftest to KUnit
+config: arm-randconfig-001-20260702 (https://download.01.org/0day-ci/archive/20260703/202607030125.ziX4WI61-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260703/202607030125.ziX4WI61-lkp@intel.com/reproduce)
 
-> Add DAMOS_SPLIT to the damos_action enum for splitting large folios
-> into smaller mTHP-order folios.  Add a target_order field to struct
-> damos to specify the desired split order.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607030125.ziX4WI61-lkp@intel.com/
 
-This commit is not adding but reusing the field.
+All warnings (new ones prefixed by >>, old ones prefixed by <<):
 
-> 
-> Expose the action as "split" through the DAMON sysfs interface with
-> target_order validation (must be 2..HPAGE_PMD_ORDER-1).
-> 
-> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
-> Signed-off-by: Lian Wang <lianux.wang@processmission.com>
+>> WARNING: modpost: module random32_kunit uses symbol prandom_warmup from namespace EXPORTED_FOR_KUNIT_TESTING, but does not import it.
 
-Let's have only one S-o-b: line if there is no reason to have two.
-
-> ---
->  include/linux/damon.h    |  9 +++++++--
->  mm/damon/sysfs-schemes.c | 16 ++++++++++++++++
->  2 files changed, 23 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index 5a0587556573..30cf4afb212c 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -121,6 +121,7 @@ struct damon_target {
->   * @DAMOS_HUGEPAGE:	Call ``madvise()`` for the region with MADV_HUGEPAGE.
->   * @DAMOS_NOHUGEPAGE:	Call ``madvise()`` for the region with MADV_NOHUGEPAGE.
->   * @DAMOS_COLLAPSE:	Call ``madvise()`` for the region with MADV_COLLAPSE.
-> + * @DAMOS_SPLIT:	Split large folios to the target mTHP order.
->   * @DAMOS_LRU_PRIO:	Prioritize the region on its LRU lists.
->   * @DAMOS_LRU_DEPRIO:	Deprioritize the region on its LRU lists.
->   * @DAMOS_MIGRATE_HOT:  Migrate the regions prioritizing warmer regions.
-> @@ -141,6 +142,7 @@ enum damos_action {
->  	DAMOS_HUGEPAGE,
->  	DAMOS_NOHUGEPAGE,
->  	DAMOS_COLLAPSE,
-> +	DAMOS_SPLIT,
->  	DAMOS_LRU_PRIO,
->  	DAMOS_LRU_DEPRIO,
->  	DAMOS_MIGRATE_HOT,
-> @@ -573,8 +575,11 @@ struct damos {
->  	struct damos_access_pattern pattern;
->  	enum damos_action action;
->  	/*
-> -	 * @target_order: target order for mTHP actions (DAMOS_COLLAPSE).
-> -	 * 0 means system default (PMD order).  Valid: 0, 2..HPAGE_PMD_ORDER.
-> +	 * @target_order: target mTHP order for DAMOS_COLLAPSE and
-> +	 * DAMOS_SPLIT.  For COLLAPSE, 0 means PMD order default,
-> +	 * valid values: 0, 2..HPAGE_PMD_ORDER.  For SPLIT,
-> +	 * valid values: 2..HPAGE_PMD_ORDER-1; 0 and HPAGE_PMD_ORDER
-> +	 * are rejected at scheme creation time (defaulting to 2).
->  	 */
->  	unsigned int target_order;
-
-As I commented to an earlier patch, let's use the union.
-
->  	unsigned long apply_interval_us;
-> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-> index 7dcd582ded86..84a4617ca3d3 100644
-> --- a/mm/damon/sysfs-schemes.c
-> +++ b/mm/damon/sysfs-schemes.c
-> @@ -2293,6 +2293,10 @@ static struct damos_sysfs_action_name damos_sysfs_action_names[] = {
->  		.action = DAMOS_COLLAPSE,
->  		.name = "collapse",
->  	},
-> +	{
-> +		.action = DAMOS_SPLIT,
-> +		.name = "split",
-> +	},
->  	{
->  		.action = DAMOS_LRU_PRIO,
->  		.name = "lru_prio",
-> @@ -3058,11 +3062,23 @@ static struct damos *damon_sysfs_mk_scheme(
->  			HPAGE_PMD_ORDER, HPAGE_PMD_ORDER);
->  		target_order = 0;
->  	}
-> +	if (sysfs_scheme->action == DAMOS_SPLIT &&
-> +	    (target_order == 0 ||
-> +	     target_order >= HPAGE_PMD_ORDER)) {
-> +		pr_warn("DAMON split: target_order %u invalid, need 2..%u. Defaulting to 2.\n",
-> +			target_order,
-> +			HPAGE_PMD_ORDER - 1);
-> +		target_order = 2;
-> +	}
-
-As I also commented to an earlier patch, this validation will eventually
-dropped.
-
->  #else
->  	if (sysfs_scheme->action == DAMOS_COLLAPSE && target_order != 0) {
->  		pr_warn("DAMON collapse: target_order not supported without THP. Use 0.\n");
->  		target_order = 0;
->  	}
-> +	if (sysfs_scheme->action == DAMOS_SPLIT) {
-> +		pr_warn("DAMON split: not supported without THP.\n");
-> +		target_order = 2;
-
-Why set target_order here?
-
-> +	}
->  #endif
->  	scheme->target_order = target_order;
-
-
-Thanks,
-SJ
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
