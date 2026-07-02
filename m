@@ -4,113 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B35C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:35:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2580C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:37:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A49CA6B00E4; Thu,  2 Jul 2026 20:35:44 -0400 (EDT)
+	id B13456B00E5; Thu,  2 Jul 2026 20:37:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FAF66B00E5; Thu,  2 Jul 2026 20:35:44 -0400 (EDT)
+	id AA2F76B00EA; Thu,  2 Jul 2026 20:37:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 910A36B00E7; Thu,  2 Jul 2026 20:35:44 -0400 (EDT)
+	id 96A786B00E5; Thu,  2 Jul 2026 20:37:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 626FA6B00E4
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:35:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D80A11C56CA
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:09:15 +0000 (UTC)
-X-FDA: 84944169870.12.2A3E361
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0BCC21C0005
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:09:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dkh9RWL9;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 53E5A6B00E5
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:37:36 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1643E1672AD
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:21:55 +0000 (UTC)
+X-FDA: 84944352990.07.29F2173
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 269ED100003
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:21:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lhbPbyxQ;
+	spf=pass (imf14.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783004954;
-	b=hreo/oveWmiLtv7g90RLTseFLa1APD2CHBwArRPHP2GB//T7ppzaOU4IT515wm2o94/xrS
-	tkP6fFHlnbay1hlsQmvKEjWjY6fos0nGVCDfNnuJmE1PvboSTYodztc9Fm/MZmtLtXyTP7
-	d4ExWHhDL1vYlTryLTG+j+78mXPI6uI=
+	t=1783009313;
+	b=0anTHfdmZufRJfOsjaBnbundiwL4g3slMlOPxonEwgfRqP3qu0Zo13vTbkrKqiUT5xoGwm
+	pawxNDKXylSCs+6KsDt+52eWf91nFjxEjpHv23pH0RIapjB3nG6JZtBsch9RUJXlMSWXaU
+	JAX1E9TGj9UC+UpOwnyvYDmnNySEn+A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783004954;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1783009313;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GVgi/IDW6MB0ICHH5yTujujreeH5t5fHN661xjkq/74=;
-	b=Q8A4MKmnCRWknh2f5imSPJwSp/CElwub2cE2h+igdtc4iLDtNz2rIfUgyjRK9Qt5HsDw/v
-	+CRj1ITaFWn3E4dqPWhgwAkswRIvdZ6qzimm1B2kEtqIW5bPCGhkNw5rHJlKrQGvBhzkf7
-	oo1tgpC0u/O1DALVtBsk+2XEQS/05pw=
+	bh=N8zXsOHj+8QLMuq41NuHYRZCy8C/8orxXBapqwy6Gos=;
+	b=vEfY8e036HTZzjtjN5Cb30JD8haPwPYp4wZCc58WtsNJxulWCY8k8nStuGGkddqNnLFbRH
+	pnUlcWNSMh8k0dNV5FjsAA9K4so+DtWaWMJ7osow/AUcQtd0gBomOUL/7mOjtsxO9QfxSb
+	+hS9Ne2yUeClaEEwZ2axA5QeJYnLit4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dkh9RWL9;
-	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <cf5a92d3-2c7e-41e6-afed-f2a4c9d1a774@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783004941;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GVgi/IDW6MB0ICHH5yTujujreeH5t5fHN661xjkq/74=;
-	b=Dkh9RWL9rMIQE6Ur1L+lFP9fWBIPUF1EBlETBXiV1FwoU/+0F4n7u3+DtwQotZKTkFazHu
-	oHVZr/Vs+FAfYKVbUxY57cWOfPctKhbPm5r74IEfkBs57Xoqgu/OIspBSvCnXq9uEYouaN
-	h+ygMrTbcJpYGV90L9aTDp+5SWenOgM=
-Date: Thu, 2 Jul 2026 23:08:32 +0800
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lhbPbyxQ;
+	spf=pass (imf14.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CFA6601FA;
+	Thu,  2 Jul 2026 16:21:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C97D2C2BCF6;
+	Thu,  2 Jul 2026 16:21:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1783009311;
+	bh=L6CajZVBgzjS8wjxh2LVoHr1hPxj1p1z49lWx+D36K0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=lhbPbyxQZuZOi+E3tUzhLLAeuv0kphRtAD10nQMcRn7WozfCu3plR+p/ZWsSc15O8
+	 Rgkf3uH/WA33XCbWDDzzSSrS49LwAeeXQzOVnrcie1hopfj6TvBCRtvI24NtcYm5lE
+	 b5JhyESEcwX4MHSkicUzQQsUAOB8tBRDRO8MHZM/eU4Vxz4jhhhsiQkfatpfk1qQ9G
+	 zJ5EHSl048Dc/HdKvdrzYvBEapiRHmIGwcVj5bxP7Eh3qyUZpHhDOnVyvUln7u+TYv
+	 bPEMvhsgguU8N1WNGtXjhoxB6+pIeltUTyK/I49/fQTetjKtRuXfGlkx6u7Ar1RxfS
+	 9CWW24rjI0kWw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD8ADC43602;
+	Thu,  2 Jul 2026 16:21:51 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Thu, 02 Jul 2026 09:21:47 -0700
+Subject: [PATCH v4 3/6] mm: hugetlb: Move mpol interpretation out of
+ dequeue_hugetlb_folio_vma()
 MIME-Version: 1.0
-Subject: Re: [PATCH 02/13] mm/vma: update do_mmap() to use vma_flags_t
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, tsbogend@alpha.franken.de,
- maddy@linux.ibm.com, mpe@ellerman.id.au, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- l.stach@pengutronix.de, inki.dae@samsung.com, sw0312.kim@samsung.com,
- kyungmin.park@samsung.com, krzk@kernel.org, peter.griffin@linaro.org,
- jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com,
- rodrigo.vivi@intel.com, tursulin@ursulin.net, robin.clark@oss.qualcomm.com,
- lumag@kernel.org, lyude@redhat.com, dakr@kernel.org,
- tomi.valkeinen@ideasonboard.com, hjc@rock-chips.com, heiko@sntech.de,
- andy.yan@rock-chips.com, thierry.reding@kernel.org, mperttunen@nvidia.com,
- jonathanh@nvidia.com, kraxel@redhat.com, dmitry.osipenko@collabora.com,
- zack.rusin@broadcom.com, matthew.brost@intel.com,
- thomas.hellstrom@linux.intel.com, oleksandr_andrushchenko@epam.com,
- deller@gmx.de, bcrl@kvack.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
- muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, hughd@google.com,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- jannh@google.com, pfalcato@suse.de, kees@kernel.org, perex@perex.cz,
- tiwai@suse.com, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
- etnaviv@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- nouveau@lists.freedesktop.org, linux-rockchip@lists.infradead.org,
- linux-tegra@vger.kernel.org, virtualization@lists.linux.dev,
- intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org,
- linux-fbdev@vger.kernel.org, linux-aio@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-sound@vger.kernel.org
-References: <e0ac58ad2b88ff7e2f0024e3286b2e786f79ca32.1782760670.git.ljs@kernel.org>
- <20260702111531.64883-1-lance.yang@linux.dev> <akZwsS-_cywsXSjL@lucifer>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <akZwsS-_cywsXSjL@lucifer>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 0BCC21C0005
+Message-Id: <20260702-hugetlb-open-up-v4-3-d53cefcccf34@google.com>
+References: <20260702-hugetlb-open-up-v4-0-d53cefcccf34@google.com>
+In-Reply-To: <20260702-hugetlb-open-up-v4-0-d53cefcccf34@google.com>
+To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ David Hildenbrand <david@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, fvdl@google.com, 
+ jiaqiyan@google.com, joshua.hahnjy@gmail.com, jthoughton@google.com, 
+ mhocko@kernel.org, michael.roth@amd.com, pasha.tatashin@soleen.com, 
+ pbonzini@redhat.com, peterx@redhat.com, pratyush@kernel.org, 
+ rick.p.edgecombe@intel.com, rientjes@google.com, roman.gushchin@linux.dev, 
+ seanjc@google.com, shakeel.butt@linux.dev, shivankg@amd.com, 
+ vannapurve@google.com, yan.y.zhao@intel.com, Zi Yan <ziy@nvidia.com>, 
+ Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>, 
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, Dan Williams <djbw@kernel.org>, 
+ Jason Gunthorpe <jgg@ziepe.ca>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783009310; l=4245;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=RYxWDoursNMXPBaEsqbHPgjLpUH2ys8iFhzueYn0G14=;
+ b=rYD2Hbywotp4zMbjXDA/oclXMUW71K3rQjI4+GOqZkRuLl0QU8QJ+9LUumuTUgfjVVeTPpfMz
+ QDR8Wh2SZl1Dfkr6NQKDJ3aytxkM4tOU29DQW5mwsJ9mfqa7X6mAJIr
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 6jfnmojdwt48o87yxeithyxmmok3u7yh
-X-HE-Tag: 1783004953-166670
-X-HE-Meta: U2FsdGVkX1/UMmjPXG2bkiSljrIclrNLyajETI3Z+aa6UD6ySaceF+VYau0jKyqPMKEtGhoN/D+PDI9+eG1GYiqFAR/CtaVz96v3nfkJ3hKh0e1lpqNHf0fOK6r53y8HgA7NqUFfaXRaKvRf+2xibdmiqC3pUNVAcO6aUCC8ad/6TqtdbF27P9OPUzmXUS1tBpY8i8cJ29+Ym3Vta4aQ8nSj19zfhb/g3uBfUSDakYx/4HN+8zS1jh7EwN9e3yMV7L8DwF7+woixCwhLdNEVQ2S6RjGCkyxYmrwsOe3Pa3L6YsnocMwI3Xr38FGBKnLA9bZKgK1+To5frrqG+QdnqCSQt35pS09oQj3hIdbNkzd2d0k+H03zjdB1Gh9orBVL5ldk7GrYejSSpBEMz1M1RECf4tmrI4dDHjRUkM9YwA6KYj537KT8LvVWeJAeCwfkwajrKm/agJDdEB/Kviq+eUAc+0ApGLYhCG59/inBlDI1tbz0g0Sw5aSPpuQpEmsllO+MbcT5neEYdb/p+3jsLC3m94ItNzWGNqe01NMluo4KpmJngVl1DV+1XF6iu1EoqU31QNg3u1t6YbxLEhmo2ZSwo6eBY/z3zsRAhxOiNHSvqTHaKMv1lCPnKpDR4VZhXFd55T187KRuBojT7xK8MaE6iIekIia5AMSOJHXSRvQXdJxipUdBCEsub3hrgQwSPYxTCXnAwQq5HqjLk9hBq6gVCdn7qEKs9c0R0MUEGqi7fy1zjvVGOzbfnfYnAke/oLdx6L5ayLyKjTVuQG1keE7GBRNRrvdD/dEaI2lyL6w60gKOOCMSx8mWazDzxhjNEbcAJrld7qPkP4TW7aD6oDht6UoxfA830F9i8AXKfoq0TJASgQW13CXcrvQjOGZBoe72RpEqElBtTRUL6cJH5X7wLDlN2OoTPxjzO1CtxChISKwxU6k6ENUalX5JfPplwDaj3GjVoyxPgtg8s+4
- qas4xQRP
- WRWckpOap8YJG6LpZVOsfAvqF2QhdWcuotmhodnRxHdpH9a0UCXHBIoIcKYXtIbAVT+zLtYiPEqFadvE6tH/UmYwbnRs2f+MS4/kKWQ2FzGWCxFpZ9jttoSmbeybkCnZnfS4pNWDDQBEbLSJyCwCt13B6EW57+0naYzC0a2Q/GDsBrswMjFi/DUZ/D+mzpgneejDdwzt3Augmx/OWUIz+QOT2kyuXankBZJzaICukxAYlUQf1ef0jLWM7BMuPgLIj57Xv
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 269ED100003
+X-Stat-Signature: shgd5rk4fbjixog3o734r4e4iwxizzy4
+X-HE-Tag: 1783009312-905023
+X-HE-Meta: U2FsdGVkX18c04zirF24wktQCEHb92w7/YFrljFUtINoPHy+DEESEfQMLzIyewgb2lllPzCoPzz2R+f2q9lYSO2K+LHSqrjamC5YrX0zONYYMjKmUChyXWVwmfpJhDKCEhnXDn2KEQGMDuPy4nkTK7kU/GsOyK/fZrlp5k01psDtdl4w1Lfo5cBZcDHqPUMmhlQL+NiUmY4JQvGU2/4DQynnOuihi5PEaXM43gxpUU0TWVkIQrKWn10/gPlkRskdkYoS3HEOq5B5dWqw997PUlD2Wh3iyxcjF9nUS1LdWE1C2CT1Jn3pJpxJcK2cRif366u+dbDOGBCutsn2S0Ql6by32PV4BNgHsU+pK8Q0WavdBcUY2H0unR92JLGP1DEUhO+lT/i46HJUtI6BkTClc+gHzHGt+zHSZs2jFxnEy2nGSRB0ogPBjbFz1zAGlX5Y593GmneUIh9C2chd4oDMxeXuT7aRCE6z2kkv1z6oYghwIgx6AWVTBj/J8rel6xTqrcxuR69ABV0hmttgIPNNkNuVkL+cdPUaFcD5mUIvF5dAHPouTKpApEZFmes5InqdlFpMdt+fDDFBUEhtsgKNPbdqc7KMTEzdmX3HOLH+Ew0otU91fWlqF7OTntkioirgIqVTtNyccBsBfOCrmLBIooGhVKLuc5ZOviMfaZMF9phDRCVe6QPnx+zUJ/IU8ZoZecTN/AB/c5FoGzr5FbdtlgkrvCM9yA5q105cNIYDewnQhlocygfOoxcH4/aH8fbvK4kYYjD15x6gAFbW8lUU8G+LzUZwLAhvM4lTVePHyyX044nIW+0m9iW+xoecu6SEmK44AKTVXN3qdsbwhmSTIBI/MtegY8nnLNul7T6IQRHCNvmmj6BlSHJs0QmcuEmpSsqXtQ+ditIYN8Tm/Dawg7ooaDCFzGqIBeIuGE+t6bkdFkFRSM3KO2uQBpnEx4nszC/hdVrxRg1hIfxojCc
+ o9TTV7el
+ MlaQm/ae8wFTy5SdvxN8zgCqhIS2p3zI9HgUXVw8GgtpdQdtEf/xixoGbY7I+xQUZUzOF1Sch7MNi4k9rOI0vhX532PougtqjVMwHb+zTzPjNCTaiLrV3r+3AvSur0w708xEEqbGZK4zGVJw+MkCM/aA5NU8c+k0edpKQ+QLXPKj8y7iCfkR6fowV3yKCNq0+uivNUFcbaRGTUz8K1U/asbWReUeqGaxSgznqRGm/uURWPyDPtu1FG8pr10jBoLVov5oHP9hxZsoUGIj7BoBJJGhiUrQJyKGH8f/4NLsGA0hwcLMry8mohmXIZLCeOKHf0dT09PBhkRJSj+6p8Ve53Nk9ZfJzDCFJ4tRIWTyur7Tt1vkUWzNCt2pFconbC//sTKdPR0ZGOW/kCvdVwspsLfpgwmGnUO45t3fhlL7CUFfrOVKUTNCjJlo68Eeh4H+dBaSaMzYf9nhg30bM9EqTpeiJkwuvcUXeJmPw4Tb61cU9rHPbYjnTsPowgwyy4asVG4mAU4q4vUqiF4tp0S050zKHKhFAc1Wc5prE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,72 +120,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Ackerley Tng <ackerleytng@google.com>
+
+Move memory policy interpretation out of dequeue_hugetlb_folio_vma() and
+into alloc_hugetlb_folio() to separate reading and interpretation of memory
+policy from actual allocation.
+
+Also rename dequeue_hugetlb_folio_vma() to
+dequeue_hugetlb_folio_with_mpol() to remove association with vma and to
+align with alloc_buddy_hugetlb_folio_with_mpol().
+
+This will later allow memory policy to be interpreted outside of the
+process of allocating a hugetlb folio entirely. This opens doors for other
+callers of the HugeTLB folio allocation function, such as guest_memfd,
+where memory may not always be mapped and hence may not have an associated
+vma.
+
+No functional change intended.
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Reviewed-by: James Houghton <jthoughton@google.com>
+---
+ mm/hugetlb.c | 66 +++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 32 insertions(+), 34 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index cdcfff521b6db..f595ab15f9fcb 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1323,32 +1323,26 @@ struct mempolicy_interpreted {
+ 	enum mempolicy_mode mode;
+ };
+ 
+-static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
+-				struct vm_area_struct *vma,
+-				unsigned long address)
++static struct folio *dequeue_hugetlb_folio(struct hstate *h, gfp_t gfp_mask,
++					   struct mempolicy_interpreted *mpoli)
+ {
++	nodemask_t *nodemask = mpoli->nodemask;
+ 	struct folio *folio = NULL;
+-	struct mempolicy *mpol;
+-	gfp_t gfp_mask;
+-	nodemask_t *nodemask;
+-	int nid;
+-
+-	gfp_mask = htlb_alloc_mask(h);
+-	nid = huge_node(vma, address, gfp_mask, &mpol, &nodemask);
+ 
+-	if (mpol_is_preferred_many(mpol)) {
++	if (mpoli->mode == MPOL_PREFERRED_MANY) {
+ 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
+-							nid, nodemask);
++						       mpoli->nid,
++						       nodemask);
+ 
+ 		/* Fallback to all nodes if page==NULL */
+ 		nodemask = NULL;
+ 	}
+ 
+-	if (!folio)
++	if (!folio) {
+ 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
+-							nid, nodemask);
+-
+-	mpol_cond_put(mpol);
++						       mpoli->nid,
++						       nodemask);
++	}
+ 	return folio;
+ }
+ 
+@@ -2855,7 +2849,11 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	int ret, idx;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+ 	struct hugetlb_cgroup *h_cg_rsvd = NULL;
++	struct mempolicy_interpreted mpoli;
+ 	gfp_t gfp = htlb_alloc_mask(h);
++	struct mempolicy *mpol;
++	nodemask_t *nodemask;
++	int nid;
+ 
+ 	idx = hstate_index(h);
+ 
+@@ -2914,6 +2912,18 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	if (ret)
+ 		goto out_uncharge_cgroup_reservation;
+ 
++	/* Takes reference on mpol. */
++	nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
++	mpoli = (struct mempolicy_interpreted){
++		.nid = nid,
++#ifdef CONFIG_NUMA
++		.mode = mpol ? mpol->mode : MPOL_DEFAULT,
++#else
++		.mode = MPOL_DEFAULT,
++#endif
++		.nodemask = nodemask,
++	};
++
+ 	spin_lock_irq(&hugetlb_lock);
+ 
+ 	/*
+@@ -2924,35 +2934,23 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	 */
+ 	folio = NULL;
+ 	if (!gbl_chg || available_huge_pages(h))
+-		folio = dequeue_hugetlb_folio_vma(h, vma, addr);
++		folio = dequeue_hugetlb_folio(h, gfp, &mpoli);
+ 
+ 	if (!folio) {
+-		struct mempolicy_interpreted mpoli;
+-		struct mempolicy *mpol;
+-		nodemask_t *nodemask;
+-		int nid;
+-
+ 		spin_unlock_irq(&hugetlb_lock);
+-		nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
+-		mpoli = (struct mempolicy_interpreted){
+-			.nid = nid,
+-#ifdef CONFIG_NUMA
+-			.mode = mpol ? mpol->mode : MPOL_DEFAULT,
+-#else
+-			.mode = MPOL_DEFAULT,
+-#endif
+-			.nodemask = nodemask,
+-		};
+ 		folio = alloc_buddy_hugetlb_folio(h, gfp, &mpoli);
+-		mpol_cond_put(mpol);
+-		if (!folio)
++		if (!folio) {
++			mpol_cond_put(mpol);
+ 			goto out_uncharge_cgroup;
++		}
+ 		spin_lock_irq(&hugetlb_lock);
+ 		list_add(&folio->lru, &h->hugepage_activelist);
+ 		folio_ref_unfreeze(folio, 1);
+ 		/* Fall through */
+ 	}
+ 
++	mpol_cond_put(mpol);
++
+ 	/*
+ 	 * Either dequeued or buddy-allocated folio needs to add special
+ 	 * mark to the folio when it consumes a global reservation.
+
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
 
 
-On 2026/7/2 22:16, Lorenzo Stoakes wrote:
-> On Thu, Jul 02, 2026 at 07:15:31PM +0800, Lance Yang wrote:
-[...]
->>
->> [...]
->>> diff --git a/mm/mmap.c b/mm/mmap.c
->>> index 46174e706bbe..547352183214 100644
->>> --- a/mm/mmap.c
->>> +++ b/mm/mmap.c
->> [...]
->>> @@ -488,23 +496,27 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
->>> 		 * Check to see if we are violating any seals and update VMA
->>> 		 * flags if necessary to avoid future seal violations.
->>> 		 */
->>> -		err = memfd_check_seals_mmap(file, &vm_flags);
->>> +		err = memfd_check_seals_mmap(file, &vma_flags);
->>> 		if (err)
->>> 			return (unsigned long)err;
->>> 	} else {
->>> 		switch (flags & MAP_TYPE) {
->>> 		case MAP_SHARED:
->>> -			if (vm_flags & (VM_GROWSDOWN|VM_GROWSUP))
->>> +			if (vma_flags_can_grow(&vma_flags))
->>> 				return -EINVAL;
->>> 			/*
->>> 			 * Ignore pgoff.
->>> 			 */
->>> 			pgoff = 0;
->>> -			vm_flags |= VM_SHARED | VM_MAYSHARE;
->>> +			vma_flags_set(&vma_flags, VMA_SHARED_BIT, VMA_MAYSHARE_BIT);
->>> 			break;
->>> -		case MAP_DROPPABLE:
->>> -			if (VM_DROPPABLE == VM_NONE)
->>> +		case MAP_DROPPABLE: {
->>> +			vma_flags_t droppable = VMA_DROPPABLE;
->>> +
->>> +			if (vma_flags_empty(&droppable))
->>> 				return -EOPNOTSUPP;
->>> +			vma_flags_set_mask(&vma_flags, droppable);
->>> +
->>> 			/*
->>> 			 * A locked or stack area makes no sense to be droppable.
->>> 			 *
->>> @@ -515,23 +527,24 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
->>> 			 */
->>> 			if (flags & (MAP_LOCKED | MAP_HUGETLB))
->>> 			        return -EINVAL;
->>> -			if (vm_flags & (VM_GROWSDOWN | VM_GROWSUP))
->>> +			if (vma_flags_can_grow(&vma_flags))
->>> 			        return -EINVAL;
->>>
->>> -			vm_flags |= VM_DROPPABLE;
->>
->> Old code checked VM_GROWSDOWN|VM_GROWSUP before seting VM_DROPPABLE. New
->> code flips that around. Hmm, shouldn't master, just made me look twice ;)
->>
->> Maybe keep old order?
-> 
-> I guess I feared that defining droppable above then referencing it below would
-> be less clear?
-> 
-> Can move if you feel strongly about it, and sorry for making the move at the
-> same time as the general vm_flags_t -> vma_flags_t refactor as it does make that
-> less clear...
-
-No need to churn just for me. Thanks :)
 
