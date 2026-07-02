@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44C36C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:24:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103B6C43602
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:24:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D17576B00BD; Thu,  2 Jul 2026 20:24:42 -0400 (EDT)
+	id 290486B00B9; Thu,  2 Jul 2026 20:24:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CECE96B00BE; Thu,  2 Jul 2026 20:24:42 -0400 (EDT)
+	id 268666B00BE; Thu,  2 Jul 2026 20:24:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9945C6B00B9; Thu,  2 Jul 2026 20:24:42 -0400 (EDT)
+	id 130B86B00C0; Thu,  2 Jul 2026 20:24:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 582B46B00BB
+	by kanga.kvack.org (Postfix) with ESMTP id CED6C6B00B9
 	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:24:42 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2DDD31401E1
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:17:30 +0000 (UTC)
-X-FDA: 84944493060.26.AB77135
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1FDAA140185
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:36:39 +0000 (UTC)
+X-FDA: 84944843718.28.E06A872
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 96AC7C0016
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:17:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OV0GRM8X;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 846A3C0002
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:36:37 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAFXpiM5;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783012648;
-	b=Fs70r61uRgCRzTtNqEv4inT4FRbyKbpshKLcTG0vnNCgmMuQjIc68VKOQXKBBqI1WrqEvO
-	+N5Dx5QOlhNbFv9nEA8UcM/Sqvan5R7X92/Wq1GzZssDIwym2QvIJh35h48MoKKFDc3YHr
-	JjJpKnVgWEVHvBRMRArlt6OuQ9pHhbM=
+	t=1783020997;
+	b=WOKOApwqnsXAa1cVBdPu26Wzet1tQspgO9VTGDzWM92uKyAKoeTihPZXc43KK0oPXPmtuh
+	JcpF5BeMqwRp2fwJ8lh9WycVxQR+YjO2X5JcwdgTISI+k1BcMKe8sbLOkyei86uiSIiV1V
+	L2tqMMTVn3mo80bBnfeqeYU6C4mVUrw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783012648;
+	s=arc-20220608; t=1783020997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r7SpLxZbspL6XS8P9x+tydUy80YkcthGS0kwmq/oA40=;
-	b=B/spUdQhVxC9SoIFa3JfymjySBIOI8ZMepuynuFlApt35J5TzMIcq73ttMJCUPpvROrSIQ
-	O83WzTOiKTji0DmLQWrMzjT0viO27bYONsfCOzoj/ShC+018XeY8LtbFhavtBKV35p2cBS
-	1X3zN+r366zziOpH4aKlsdQjmB6HJac=
+	bh=MY2PvaibwGLXUsakAE8KZoj1YpuVr+KpHhe3HAZG2cY=;
+	b=GDKEuS0h1Tp7H+gMZct/NwIV84PM9kGujwBwcN8hdSR5NDCheXi/QRBNYDy2bmT72WAMr2
+	05aSGSWAgw9Dgj2Sc8mPlVt7koubZJe+GAP+ICQ2EpP38cuq8wxhPH29nvZybMNnwUKHTB
+	MzO4f2sRJl0IVqQAAIiAY3nHd8W7jJc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OV0GRM8X;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LAFXpiM5;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 18CEF601D5;
-	Thu,  2 Jul 2026 17:17:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292B41F00A3A;
-	Thu,  2 Jul 2026 17:17:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E026B601CB;
+	Thu,  2 Jul 2026 19:36:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1472B1F000E9;
+	Thu,  2 Jul 2026 19:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783012647;
-	bh=r7SpLxZbspL6XS8P9x+tydUy80YkcthGS0kwmq/oA40=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OV0GRM8Xw14V/XJHNFLeOXS6ZRg96+zCIwS8jw1vF/leCd+5ijvesos21lWjHFLZk
-	 Yo14tOzcMD5W+ODOYUVYUR23gopp7e+w1uHnJNWq5qWfu3lUhImTvZc5Mj5ORQA23z
-	 mQo9dHsu6YHd1wn5xWK5j5FVjjAIJWwwyuaQZaJ7whcdAvvruae7/5uNXEEmxyF9UI
-	 or9m0787yhtBQO5QHScsJqoM2EL29hCO4eWfrrxAsj6UIjbBW+rpRLu7EtQIBBnKcJ
-	 6Io8LbgYFYSIL0OSEA/qnD3/zLDAkWc9V00Iz5tIk/4Pk18y0eKMNLW1x7NBfri+AR
-	 cuRqo1C/WJQSA==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 1/3] mm/damon: add damon_region->last_probe_hits
-Date: Thu,  2 Jul 2026 10:17:09 -0700
-Message-ID: <20260702171714.88278-2-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260702171714.88278-1-sj@kernel.org>
-References: <20260702171714.88278-1-sj@kernel.org>
+	s=k20260515; t=1783020996;
+	bh=MY2PvaibwGLXUsakAE8KZoj1YpuVr+KpHhe3HAZG2cY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LAFXpiM5yXxtgfZHPm0Wh6d4EBqzikJlBc9DZIxvBW///LR3ZlYwKS8VEPhSwMLni
+	 5Ff1rr215W1jtQ9H2DzGiUboxwvpI5gOpyVzV3hYRsJZFbmnsbDraXswJRf4pSPpLh
+	 AXpX69ssAn2+z4jkrwG0EjeH/PNCQbHCcU5pREN4CTil3KOkOfPs6UlTytKpfCdd8E
+	 ZU81jx3RMsZqYWVMkj0rldjftacBQw2G39vyw/9rZNMDDec1AJu1aUJuaGgTZNLRTV
+	 DXTsecJkTevpSvOEketwG0h8D74tZ79onp22LrWroYO0H2YtdHcq08iR2P6uMWX6Lg
+	 dC21cEPa1sOaQ==
+Date: Thu, 2 Jul 2026 22:36:29 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-rdma@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Dave Chinner <dgc@kernel.org>
+Subject: Re: [PATCH 1/5] RDMA/umem: ib_umem_get(): use kmalloc() to allocate
+ page array
+Message-ID: <aka9vZSViFlzBrwW@kernel.org>
+References: <20260630-b4-rdma-v1-0-ab42bcf0de92@kernel.org>
+ <20260630-b4-rdma-v1-1-ab42bcf0de92@kernel.org>
+ <20260630123150.GB7525@ziepe.ca>
+ <akPaAp-0Zul8uVga@kernel.org>
+ <akPaPaCJdYINBEEV@kernel.org>
+ <20260630153638.GG7525@ziepe.ca>
+ <9cc11eeb-372a-49fb-ba89-486333ac71c4@kernel.org>
+ <20260702125516.GO7525@ziepe.ca>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702125516.GO7525@ziepe.ca>
+X-Stat-Signature: sxxs4t3yb4n3xehqru8fx9maewgtxuka
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 96AC7C0016
-X-Stat-Signature: yyre8hu9pu3qjwbhtqmhipya4pn3i9xp
-X-HE-Tag: 1783012648-618672
-X-HE-Meta: U2FsdGVkX18Teg//tgI+/rSBAbX4y28/hz/3sRRRudyVYXnBI7uAfEtoNsWva9DckXyDwvBhJDvRMihAYETUuRlG42odXIBHmhlohme/n7XeubSmlGcbkdZSrqkqH4lU7DmbWNX7dYrEHmNq3JznX4SlLHx8ypkMoztHtpEC2mB5RW+MYBYaZ7vo4/EYsuNJmULfN6QAqAjJFBLwvibb0yc/gQstft69P4p0hb+wkc3R2bUIR0V2k2jTfTIiyLSb8hVieb3sTx+hhdsEHNJxo6MJ4jgSrXDzyMelATwlyrPwbNujM0Dj7fvLEVFUgYP1XRFp+kf3l9NfYdVhT5BuYwxn8xSGiDJUnQQ/MIn4IpcUUv+YTdlrl1LYep6uWwDhiX5QWAeNmxqMKWo45a82nu9M5p6rij+HJUTFWRvPz4pOlXBz2r781Z1/j7AY+f1hZmqbcLut0bWrum974tRiG/2EABgdANqFF2X3wxtkzQwmEk9DIFVOIfq4KQc11993VzlimPv2R8vkkCGxIE1ker37K/81NVSqstmcusjodo2bBsh+mDQ7OSOuxM07YIuRjaXp836EdA7+QKRnqYOIElpS3J0dvaVs0XjvXQS836at0WViF6aO3Mvhy7JY5DuMx4Vg90102hLUmcRyY+HRj/rv3lNswcwx+SBtBwlMXX41wzV66kT74gct9T57dX1QxhQMH/6ygJAi9+dH5K4Uw7x50ayzMrqK1JqGejXK4N5xHztvnorfstgq4WC5ksOFqmbgiQftRC5ROvtKasZMk/79N/A0nWoN46u7vKNYtbjHYAhvp5TmS61f96JtvRnXmwiMTYNaM0Ym+Jx/XPd/b563apRRXRyCBNH7AKGeZBM2T18whKxfyonj7NzFzIDNP5q4etusD0wdQZI/rXP1ieq6bpK5NwOqytwlvjcDlbQ4U4p7eQ5hhRybl7DCLJ+it0tOfr4vSzOKNzbr3vQ
- 4blVTvM3
- ChrKinQ2YATD3DREVk7EvdQA6vmi2+7hRilsIFduKM1EKEHa55nuYstYr7zNNj7gSur93d1mj/CNhlLQmUmemzsi9JeNvlcAG8u3mqpxvvSi1uN/PGBpF7Q8u0KPbRo9oWKGyzIcfsG3uFk3c1AgdPnvtpLuoeKHpUiMdscubJHabTNCxifVDMmpNg0wpynMgpBrwcxtL55fLgLHvGegH7bVWUaHBbEil85Zf0i9L+Ho7LtJdown1ybUF2k0dkea/bdwaHyYb8dG/bVtXA+8oUuyrUw==
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 846A3C0002
+X-HE-Tag: 1783020997-898795
+X-HE-Meta: U2FsdGVkX18KA3IdkKMzOQozz5ohngauMzeX5h1WVTCULcf7u4OeyzSnIW7DJi+znHqG6SYGGwmJKMjUxRa9i88A/MqX/hDi8yTlOu7jYGFQnkeH11Cdwi5kfEtKwFXysp5HgGTXiIKQiJtbWJHK5pIJxNC60UnmBtJfocE86caCkZPAHUvEcIiHlCBlkyRridKwDXfJ6BxMv9Je3nRB5pD0riJsPyg6u2EUcOXYqfbApeA166qolb76roQbadsFVhmz+ih87W2yv5J0WgfXvtZ676pcBdSHkgPeT0ShxrSgJFTrATCAAQjQLZwAOO6JyrKLkEEHgIYGnJvfifF9j3QEy/Qf2m3akFBKuKzF2iLp7SBHAdQLmzstDBUSsBty/y3CqCaosYFcazh8a03J0PyZ+3XgPuWzLIRg7C8Zlw+GZOuk2kOl74IOkcWvczGAsk06m4vio6QCjaqsvucaF/fBGKc5Ld4xgLkr31oTtHIboEgtcigtsTNvqRkWBiXAFlWQVfReC1C9NAZk423z+CviUEhkGuwv7VimsdHLZaD+mQiRh5C1O6xF9qXZC155dzXIWnDkbY5mdVKsFx0BSpkR6YlsyX8OjCWSe4cTEKX9vCyu3ItNAz+W9/wLjqiTHHA/RLEM6ij0FmhAKR8b8N6aIJW4PcLi3NZIYsHAQ5KtD8TijwG59xwvdsLIkOqp+9v0Ypke1tNcIjuA/pDFvymCTawQZuBw5GyBG/e4gIZus5isInzLpUPAUmsHkjvo2KC2rCXCaMSBwLGZHMOh4asshudravS2Qr7DgD6Dp6WGZhgZVMsU8JV33SzEZInp9i9Eqp6y20pP7oe05ocyBWaUbEz6ktZbgfBRMFU5l49sy38SfViPhoTQc7uemL+psdCkeVVWnqknitX1/rUqBg10e+NeUuEgTHb8kam+6pyQCkHyw4pp6Gr8u+2M0Zaa9tagowszz4pD88qzGbx
+ kAcA5cPy
+ SRBfkl03BK33+QMw0RZE4lz+fZhBpkibo3pKbFZgFOkXYblZyFXamcnaRnyi+hxeDwBlCteQDQaSdtwXIxvAFiRo6DOGQQSuFMZqFEtO9o/yYjK8mn32IwuwgEd/SIq+7OLsbJiEZ1mPhjCwph2caJTJX9zgp+j/kklvjg42ifVW/XUB7/HwnotMvaLySns7UFSQyvkNnqChlEAS63HoyTvIXJpa9H+2jHkVLJXPRuge3aef/fEqLdmm/E/vKTLa55oI4fabpfJ9Vz4pIsTtHJY2GgpUfLX+tHA/32aiuFx68T7c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,68 +104,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add new damon_region filed, last_probe_hits.  Maintain fully accumulated
-probe_hits values from the last aggregation interval in the field.
+On Thu, Jul 02, 2026 at 09:55:16AM -0300, Jason Gunthorpe wrote:
+> On Thu, Jul 02, 2026 at 02:46:46PM +0200, Vlastimil Babka (SUSE) wrote:
+> > I think this should be discussed more broadly and not block this
+> > change.
+> 
+> Currently all of these get_free_pages ones in this series are this
+> special need, so I'd like to not loose that marking somehow. Maybe a
+> comment or maybe a inline wrapper function.
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- include/linux/damon.h |  2 +-
- mm/damon/core.c       | 10 ++++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+Comment is easy :)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 805e089ff4f2f..4f7e305b261c3 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -68,10 +68,10 @@ struct damon_region {
- 	unsigned int nr_accesses;
- 	unsigned char probe_hits[DAMON_MAX_PROBES];
- 	struct list_head list;
--
- 	unsigned int age;
- /* private: Internal value for age calculation. */
- 	unsigned int last_nr_accesses;
-+	unsigned char last_probe_hits[DAMON_MAX_PROBES];
- };
- 
- /**
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index b2fc15a3804ff..d45dc87fbbd9c 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -302,8 +302,10 @@ struct damon_region *damon_new_region(unsigned long start, unsigned long end)
- 	region->ar.start = start;
- 	region->ar.end = end;
- 	region->nr_accesses = 0;
--	for (i = 0; i < DAMON_MAX_PROBES; i++)
-+	for (i = 0; i < DAMON_MAX_PROBES; i++) {
- 		region->probe_hits[i] = 0;
-+		region->last_probe_hits[i] = 0;
-+	}
- 	INIT_LIST_HEAD(&region->list);
- 
- 	region->age = 0;
-@@ -2047,8 +2049,10 @@ static void kdamond_reset_aggregated(struct damon_ctx *c)
- 					damon_nr_regions(t), nr_probes);
- 			r->last_nr_accesses = r->nr_accesses;
- 			r->nr_accesses = 0;
--			for (i = 0; i < DAMON_MAX_PROBES; i++)
-+			for (i = 0; i < DAMON_MAX_PROBES; i++) {
-+				r->last_probe_hits[i] = r->probe_hits[i];
- 				r->probe_hits[i] = 0;
-+			}
- 		}
- 		ti++;
- 	}
-@@ -3239,6 +3243,8 @@ static void damon_split_region_at(struct damon_target *t,
- 	new->nr_accesses = r->nr_accesses;
- 	/* todo: do this for only installed probes */
- 	memcpy(new->probe_hits, r->probe_hits, sizeof(r->probe_hits));
-+	memcpy(new->last_probe_hits, r->last_probe_hits,
-+			sizeof(r->last_probe_hits));
- 
- 	damon_insert_region(new, r, damon_next_region(r), t);
- }
+As for an inline wrapper, is there an appropriate rdma header to put it?
+I don't think it belongs to slab.h.
+
+> Jason
+
 -- 
-2.47.3
+Sincerely yours,
+Mike.
 
