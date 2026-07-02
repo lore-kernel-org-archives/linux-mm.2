@@ -4,152 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A5ADC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:25:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96402C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:25:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59EA06B00BE; Thu,  2 Jul 2026 20:25:25 -0400 (EDT)
+	id 0BDBE6B00C1; Thu,  2 Jul 2026 20:25:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 550226B00C1; Thu,  2 Jul 2026 20:25:25 -0400 (EDT)
+	id 0706E6B00C3; Thu,  2 Jul 2026 20:25:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 465C86B00C2; Thu,  2 Jul 2026 20:25:25 -0400 (EDT)
+	id EEE9F6B00C5; Thu,  2 Jul 2026 20:25:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 00D9B6B00BE
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:25:24 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D5DA1C32B4
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:25:24 +0000 (UTC)
-X-FDA: 84945571368.08.50CD129
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0B49C180006
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:25:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=oiopEJ92;
-	spf=pass (imf16.hostedemail.com: domain of wenxiong@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=wenxiong@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A68C96B00C1
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:25:43 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 726A11C6AC3
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:17:27 +0000 (UTC)
+X-FDA: 84944492934.05.10D6BD7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D1630A000C
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:17:25 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWdy97mB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783038322;
-	b=ReTx0ykLh07oj5X6v6nRQyJ/sMdjQBYyk/AmMtqvrefWlSPrtPZvFT4TaArBre+/i8xtHJ
-	4xWengJ0j1XuBpZumo07MRO4xyGk5C6h7QtfGGj7b1+1AErM52S0ablMPNZVGvPad+EN8Z
-	fgwv63qzQfZETOmaPYXp91qJPsWT+XI=
+	t=1783012646;
+	b=KPhW5L7AFWS5RwIyhsauzRC+vf2YH5R4lAC2JkfXHkG0gAi0UBJfAdew4rJj2S4HswG4xj
+	PJY62qj9Q6pFooggEeJQQGR5h9gUb23+Zq3OY7q9HOL+3e73xLNalcNXgbGUiN6YevVjk/
+	LjNyGVLkbAyroGBclDlqolwknMZi1gU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783038322;
+	s=arc-20220608; t=1783012646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tWbKecO/Sdy/sI7WeY/MoFz9BeLH+k1o19XP5U9Ao1E=;
-	b=4Oi3PB/QjJgfF9Qblwd91hL6zYIe13mYp7B8bAlxsSEsk/gfpv8Ru4fvqut2nH9OyT6oDQ
-	fe92qWXgZW/alSMTgYZsb4/RBxVk0uLq/UNockHzrmjjk2rdt6o3yP+2satX+aV+A1tABG
-	/pSk669Cjg1NfwKbQpMiJbHSEL5C+hQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=19kUkWTcX1TUOLrO+G+Zk6bSs1QBfCPLoMUXYasiczU=;
+	b=b0+NwHKYH8uIvN/TX0McKy0tiiGD3S7lcl/4n3D3WYWW908VGVDVvUmIPuheQu7TyYZ6YI
+	6VKJjNct2a0FUbqNKgJxws4cSpP2ScOYOxVE5WhpCoBO6KzfH/fsorQQKrnjarOv74DFWd
+	bqJErmP7zxgsLcGp+/pi6Pxiyv8ZXU0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=oiopEJ92;
-	spf=pass (imf16.hostedemail.com: domain of wenxiong@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=wenxiong@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 662JICsb589782;
-	Thu, 2 Jul 2026 22:05:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=tWbKec
-	O/Sdy/sI7WeY/MoFz9BeLH+k1o19XP5U9Ao1E=; b=oiopEJ9261dd6ezDz1rQ7K
-	Ni+OzhalrQU0pVw9BXzEzLwn4vfJxN+h/NgOaVzXmdjgc8sqpOZn3uxiaLmEtrV6
-	6AtYKO18yYHOHPOOwumNQaGMt9X6D8opXhsWXAAynRy9r69Rf0LrFDDqXDUZKUIu
-	vS/1D7xsq+n7bDT37xMV4LY9k3eR7mZhrON4J5BW+Kw4f8766oz0Bqs1tGLE81SB
-	xV4gmVVvvpjpLE5b3T2bS2MUj9NzGZE4zMKZmErKsTX3ZYlgv7HzoUv4lbhdIBN+
-	kQMWd47+TfGjqvmoT6nTv4KUi8gqaYfpjekL6hEheO72U6yHo8649LUA8Pz4LIHg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26pec9ry-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jul 2026 22:05:01 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 662M10Hw011388;
-	Thu, 2 Jul 2026 22:05:00 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2u2gnuby-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 Jul 2026 22:05:00 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 662M506E18285150
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 Jul 2026 22:05:00 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EE6F358059;
-	Thu,  2 Jul 2026 22:04:59 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A7FF35804B;
-	Thu,  2 Jul 2026 22:04:58 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  2 Jul 2026 22:04:58 +0000 (GMT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWdy97mB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0026C43C97;
+	Thu,  2 Jul 2026 17:17:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC75F1F000E9;
+	Thu,  2 Jul 2026 17:17:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783012644;
+	bh=19kUkWTcX1TUOLrO+G+Zk6bSs1QBfCPLoMUXYasiczU=;
+	h=From:To:Cc:Subject:Date;
+	b=gWdy97mBnapbModTmVjqlPO2xt+mxap5ShIXKTGqM4KjkEm11gUCeuqTHaAqgidme
+	 H9IaYugh0I8aPYlweHq5f1bwRNWryKyl6l2stGIBsQR2E8utDGCDtW1e4yDLPafnTn
+	 YEfSNpYU5ydDNeBAFWAhWeCg0a6BoEFbGwhj3RTkG23jDJQCFR7aDBRt1VI1fa03ed
+	 ELsM/si1GqL/Fwq/xvnV+CvW+qNRi7K6W5C+sybbBlqDG7rrMxl0xKvKfZ7Ohcrwcn
+	 QvUERYD46o0K2YcZeiOiUni4d7Ikh+/JfgXoMx26Qv9uSyeDoG9f1xWr2RXCtvvEi4
+	 8HsSM8uBAUSNg==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1 0/3] mm/damon: provide pseudo moving sum probe_hits
+Date: Thu,  2 Jul 2026 10:17:08 -0700
+Message-ID: <20260702171714.88278-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Date: Thu, 02 Jul 2026 17:04:58 -0500
-From: Wen Xiong <wenxiong@linux.ibm.com>
-To: Brian King <brking@linux.vnet.ibm.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Hannes Reinecke <hare@suse.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Brian King
- <brking@us.ibm.com>,
-        "James E.J. Bottomley"
- <James.Bottomley@hansenpartnership.com>,
-        Matthew Wilcox
- <willy@infradead.org>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org
-Subject: Re: [PATCH 3/4] scsi: ipr: use kmalloc() to allocate IPR dump buffer
- memory
-In-Reply-To: <05bd4fe1-fbf3-4849-96ca-930d04710903@linux.vnet.ibm.com>
-References: <20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org>
- <20260630-b4-scsi-v1-3-494fb37ebe7b@kernel.org>
- <7c8f0e70-f49c-4614-af95-002fb2be11ba@suse.com>
- <akTjQVQQNdeO9M28@kernel.org>
- <d92f22b9-9a4d-42f2-ba67-0371f85fedd3@linux.vnet.ibm.com>
- <akYLdBME5kgyi8Rw@kernel.org>
- <05bd4fe1-fbf3-4849-96ca-930d04710903@linux.vnet.ibm.com>
-Message-ID: <9eb64399ea51461aef8188ad5cffa9f9@linux.ibm.com>
-X-Sender: wenxiong@linux.ibm.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: WNdsdVtpHIQyUudr2beV1suYvfyVA3dG
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzAyMDIyOCBTYWx0ZWRfX+RpcbRKJNNKt
- gKCxLu/0D7fhBYJMfq+k83fcYk+RQ3QYSCYNPlPZ+IrAp5hRlxpF0lMThe3Y78J64erNp/LJ//4
- Dfv8564Ny7Mw7Bl3kIOWXZTBEq3DT/4=
-X-Authority-Analysis: v=2.4 cv=edsNubEH c=1 sm=1 tr=0 ts=6a46e08d cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8
- a=20KFwNOVAAAA:8 a=VnNF1IyMAAAA:8 a=0BNHoLoJkjV9DPgUaycA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzAyMDIyOCBTYWx0ZWRfX6h63RbjHUs3+
- MMUd05bqiMu+CN476WSuC/OLph4RaPyVeCdvvN4srqQlRD1hphwJX3x+ZoXVfcapV2Tzfd/EQVW
- 4C7WinzeaKNLAawkl4juNjFqfIxLwsZQxynt1WyPiQDvgJmpV4D97+3Ug4UxZmRj18xTQFqQim4
- qt37nGpoyeogka72yyjg/ed/r4W0+QJSTglMBQFctSrYZtPB7AAi1ZUgwn6yILW+pbI1n673RGO
- u+LsCf8JEiOhenAcXw0dlabGcQi0ce1jdHOSW7jOciHNSJkiisHv1xvrHy2f74DxXFlrMRFPtpf
- ZBzJuSE7X2aOqjKFInpARPpzZbo3n4EE57OUsQl6f1qMYMq7rOqAeBO+JzRdRJaxdHWfP77e5ea
- JU+vjqJ1MW9jAXvlpi1UPnK8uf9E+QL/hIRByW36d8FsGMDeuWMVSIVSnrzxrblf90X7UqrczR2
- Lc/+riA3tTf82F4xf3A==
-X-Proofpoint-ORIG-GUID: WNdsdVtpHIQyUudr2beV1suYvfyVA3dG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-07-02_03,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 adultscore=0 impostorscore=0 bulkscore=0
- spamscore=0 suspectscore=0 clxscore=1011 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607020228
-X-Rspamd-Queue-Id: 0B49C180006
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: usygy3t4hccdt7uyhdfgu9ggnpouu16y
-X-HE-Tag: 1783038321-877696
-X-HE-Meta: U2FsdGVkX19PVyxgPqIv3/PpYOJHts3lgKsa3AZCJoPm5azvMeC69J02+AV+o0bvJkidQOM8yYGFse36yeCqdvJddutg0afmszM4aC7ZP+ZPMhhtGjtt95GdXKEISwD0YrrfWmKn115YoJzR5kd+RhOJ602Dwu2HDzHQywxQDQ/QYDHQCv+n+ENPdMrh5i1Lxb46R/dzU3ccvyarNzoPBP1o+VSi1o8dlRwtyVIQ/Hblqddh73ppkJW2X/+8WjzzSxJqaWm5vLOSxBngZxT44OJX82rzzeuyvzqjFArb3/jht/QPkgM/tQzi95Qb+QFsq3xWnZS0yVQlSR4jlxPAPwyLMDtX68Qq8z42kW3HFvs25wSVeifa0RhMtl6zZaxT6VV/ZN08R7jH3ZUEjrblTq1lb2c9Z/7IWFLu5kSigsJgrXSSnmMVoZXPJ1WVd/f40Z9Qq10WByOEeutfGXuedriu1/zknJLtjESOYH1VlXNBenfjAC7LJfhsLxZxWiUrS3tCmwvN/QX+gaobJiTCsTZecH/tiSNtV7xzNkSVo7Dyqp9z+IirhbkU2lXpIQqz78/IXdw/G7baDo0EDOQetueBguojcnUEiskSTbV3fvhr/XBsiB+xJ+h+aGx6igQECB3lHLNq2FA6QtEBQhbZq1Z2ie6O+PB6C7F1y+36qxiu0msUBCDxHA58hbLHusbDe8Te2VKqz/SKB3Aaa7fz+VhWTAF3vZyp9k+iWE7uQwhVbFYVXpDIreXixs4fU3cG9E1CifDiRbIDFvCnKzzByKiqTJPxxfyMqw/qKFdd3xdlD2unQJ1ZMw9ufcGs7yvjtgQMnu/J41if/HGyMhpxawRzg0uLiJiji2l3QXKqzqmHWXyYRtE3bYYZUG9z+tjA8UvS9svW0KCrb2Fa2vW6OF4O74p8rW9S2NwHfS94/TTw5LFO5WlafcHh3E1LqQ/J72W5eksCAOkz6jAyFVd
- 6iWDHPnX
- hfULOzJGkULQeKvvsIhxOsoPH1HRdmYiHcXxi87HM+Ba+DXuETkIyzeY4/iCkWbmfVn3wZemcq6PD85dLxOBeGzj3/U9rGvy2NK9QSRalHplGrLKQpVgts97RAG5FOTpiKtWLyu5XVCD9kOeMdfU+ZKxXN65DQOQYpYOQaE7f56C7i49HXOEnb/vHBPuqJPjjceRwYGw8U1E9xJ6KopReMyEGbrPNsTH6dFcCq4v6KEe+yxyluMdkISzqEuzBm10Ia4l9gpzdmxO2MZv7anTZaeE2x4L5kpmwUfqXUshfPmwOpVELmkPauog3/s7Au4BrMFgZEndZqskMR2rB0rWNGkJdpstzwWus7ZRqObGWv1DJMEECkj4kbHw2BZm0Lj+A/fvs
+X-Stat-Signature: 7mt1schis9h19gtzgg6m8q5jons7m4sc
+X-Rspamd-Queue-Id: D1630A000C
+X-HE-Tag: 1783012645-690072
+X-HE-Meta: U2FsdGVkX18yTmfZhYyoS2rcrmi73I5VnJAb40mDINP5V345UedWNu/gdS37LJeIjG7ggfFuhIxGPcSI61wBHxJHEIHLggn3JjYYT9HQqTSnhfv+pny+zKP34ZBGHY9glXlKE67pR5yk4AZ7/hRl8Q0iyvJ2a1/+JCUP0sIqyXIr8YuepuMAOJDSdvEnbAuQzEwHRVF7ZTBJK4Wjucv7nIWiA9PPQ5FS/3TSarDi2L0AjJE+od/oJZyzJeZl0oLtOxaAk5LzF4NkC32C7pGQnkOUGUDe+65ppElVAwYw0ee+QprLMFhnTw3jtLSGgWiTKwUhpOIbQZQKWGqWE3rWVEihtG3ivdwS/dYLEk4yjCKfzkWCep3F2GuPgHvslaV0T2MUQgMp8VwKZQ2PUVSj2/p+xBl0VJa7phVzh9ur6CG/MYz8VB0HHlYEMMnlCHnV6AsqEhZLRGvcgKTi5+aSqX7287bkfAiMHBuUsvA5iPWxxh7gl3hGV83q27sDq+j41MHF1fV7qZUwY5Wbvseuvdky/glU/eP/oeXFHF5pNDR7nS6bw/20RC8giLqgsvLX4qvUHNripGqN1wr3h5/BKEIXVYSNG4VHgQKLMCze0UyK7hdCqLJY52nzZKQdlMDy43WqdPjjRMDvd5XU7aU2ERQfQY/Lxrs+9vduoZVD/MnCLet0vKZTv4qROeSG86Rzhv0gMDqndIaXjmpoFH5LNuFrqjjqK25Mv/wpoC9eAm++TJ3+HXfKEj3fOJ4B/W47tY+DlGQOG1cEb0IOgaFBqy5T5eIPb8581teQ/ctZoU4pVPzzcWv4NdqR/toAmnHJk6uRAMSWE+X9NvEZVHnKj9zOj/JMdXinvFyPYhpUvj00ndq8ymys5gDL/89yKGDz095dZ7VBx6BsUSdOiAZ8Ymb9OyXk9SHhXENlE6528igaonBYzU1Q5CvQXG4Q2ymqDa2UYDScCJOvYMQLfba
+ RcUJLvlI
+ aVQjFgzdnHr9UTrgU4BkkENxIzJ6EWWiP9ELO0yD51eh0tgvoV6pR1cb0YE+4NnNNKOHjv/FNQWm2W4r9oO1WOpoktblv/uWvbrdDWbV/tqR/OUxin/v8O6va6QEcqXhEU5f7DOraXSI0rYBAcA1jBtEjDKoLXkGUSvKNLd6HNSl6X2mALZRm3oxQoO7/3c69QZ/ELzSYC8iQRrwVRL26wEPsGl9X4CmWHbZMHm27f1MXjbejTTVP03ru8SvuBQOcsKJS6F4CdWhETDdV0/ThySmGtrXotdCmiBl7dm2IF3QYtPM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,106 +91,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-02 14:56, Brian King wrote:
-> On 7/2/26 1:55 AM, Mike Rapoport wrote:
->> On Wed, Jul 01, 2026 at 04:03:48PM -0500, Brian King wrote:
->>> On 7/1/26 4:52 AM, Mike Rapoport wrote:
->>>> On Wed, Jul 01, 2026 at 09:03:06AM +0200, Hannes Reinecke wrote:
->>>>> On 6/30/26 12:54 PM, Mike Rapoport (Microsoft) wrote:
->>>>>> IPR dump machinery allocates memory to save adapter's crash dump 
->>>>>> using
->>>>>> __get_free_page().
->>>>>> 
->>>>>> This memory can be allocated with kmalloc() as there's nothing 
->>>>>> special
->>>>>> about it to go directly to the page allocator.
->>>>>> 
->>>>>> kmalloc() provides a better API that does not require ugly casts 
->>>>>> and
->>>>>> kfree() does not need to know the size of the freed object.
->>>>>> 
->>>>>> Replace use of __get_free_page() with kmalloc().
->>>>>> 
->>>>>> Link: 
->>>>>> https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
->>>>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>>>>> ---
->>>>>>   drivers/scsi/ipr.c | 4 ++--
->>>>>>   1 file changed, 2 insertions(+), 2 deletions(-)
->>>>>> 
->>>>>> diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
->>>>>> index d207e5e81afe..5a212bfdeec2 100644
->>>>>> --- a/drivers/scsi/ipr.c
->>>>>> +++ b/drivers/scsi/ipr.c
->>>>>> @@ -2893,7 +2893,7 @@ static int ipr_sdt_copy(struct ipr_ioa_cfg 
->>>>>> *ioa_cfg,
->>>>>>   	       (ioa_dump->hdr.len + bytes_copied) < max_dump_size) {
->>>>>>   		if (ioa_dump->page_offset >= PAGE_SIZE ||
->>>>>>   		    ioa_dump->page_offset == 0) {
->>>>>> -			page = (__be32 *)__get_free_page(GFP_ATOMIC);
->>>>>> +			page = kmalloc(PAGE_SIZE, GFP_ATOMIC);
->>>>>>   			if (!page) {
->>>>>>   				ipr_trace;
->>>>>> @@ -3226,7 +3226,7 @@ static void ipr_release_dump(struct kref 
->>>>>> *kref)
->>>>>>   	spin_unlock_irqrestore(ioa_cfg->host->host_lock, lock_flags);
->>>>>>   	for (i = 0; i < dump->ioa_dump.next_page_index; i++)
->>>>>> -		free_page((unsigned long) dump->ioa_dump.ioa_data[i]);
->>>>>> +		kfree(dump->ioa_dump.ioa_data[i]);
->>>>>>   	vfree(dump->ioa_dump.ioa_data);
->>>>>>   	kfree(dump);
->>>>>> 
->>>>> 
->>>>> I _think_ we can replace this with kvmalloc, and allocate the 
->>>>> entire
->>>>> dump buffer in one go. Once switched to kmalloc() it's kinda 
->>>>> pointless
->>>>> to allocate separate page-sized buffers here.
->>>> 
->>>> kmalloc() performance is on par with __get_free_page(), but 
->>>> kvmalloc()
->>>> would be slower if it falls back to vmalloc().
->>>> 
->>>> I'm not familiar with the driver to say if this could be an issue 
->>>> here.
->>> 
->>> This code only runs when the adapter has hit a fatal error, so should 
->>> be
->>> extremely rare. The memory is getting allocated while the storage 
->>> adapter
->>> is in a failed state, so anything running on the system at the time 
->>> could
->>> be stalled until recovery is completed. This memory is allocated and 
->>> should
->>> be freed soon after the adapter recovers. In order for this code to
->>> run, the iprdump daemon must be running, which will then read out the 
->>> dump
->>> after the adapter is recovered, and write it to disk, after which 
->>> time, the
->>> ipr driver will free the kernel memory.
->> 
->> Thanks for the explanation!
->> 
->> So the allocation is not on the hot path and it seems to me that
->> performance differences between kmalloc() and slower vmalloc() won't 
->> move a
->> needle relatively to the entire dump procedure.
->> 
->> And it seems that GFP_ATOMIC here is a historical artifact rather than
->> actual necessity. ipr_get_ioa_dump() runs in a workqueue context 
->> without
->> locks held so nothing warrants GFP_ATOMIC.
-> 
-> Agree that GFP_ATOMIC is not needed here, but we probably do need
-> GFP_NOIO since we don't want these allocations starting I/O as the
-> storage adapter is not in a state where it can handle I/O until
-> the card is reset.
-> 
-> Thanks,
-> 
-> Brian
+Data attribute counters (probe_hits) of DAMON are managed in the
+classical way.  The counter value is accumulated every sampling
+interval, gets the complete view at the end of the aggregation interval,
+and is reset when the next aggregation interval starts.  Hence, the
+complete view can be retrieved only once per aggregation interval, which
+can be quite long.  With the suggested intervals autotuning setup, it
+becomes 2-4 seconds in common real production systems.  It can span up
+to 200 seconds in theory.  This will restrict online monitoring use case
+of DAMON.
 
-iprdump works with both of GFP_ATOMIC and GFP_NOIO.
+Actually DAMON is already providing online monitoring of probe_hits.
+DAMON sysfs interface exposes the values via schemes tried regions
+directory files.  However, due to the above mentioned limitation, it
+usually shows only partially accumulated hit counters and therefore not
+useful.
 
-Tested-by: Wen Xiong <wenxiong@linux.ibm.com>
+DAMOS is not using probe_hits at the moment.  In the future, using it
+can further strengthen DAMOS.  However, a recommended setup of DAMOS is
+utilizing sampling/aggregation intervals auto-tuning, and having its own
+DAMOS apply_interval (1 second is mostly recommended).  In the setup,
+DAMOS will nearly always show incompletely accumulated probe_hits, which
+will not really be useful.
+
+Data frequency counter (nr_accesses) of DAMON solves this problem using
+the pseudo moving sum value.  The infrastructure is not limited to
+nr_accesses but general sampling based counters.  Maintain and provide
+the pseudo moving sum of probe_hits similar to nr_accesses, using the
+infrastructure.
+
+Tests
+=====
+
+On an idle system, I ran DAMON with an attribute probe filter for
+non-anonymous page, using DAMON user-space tool, damo [1], like below.
+
+    $ sudo ./damo start --probe_filter allow non anon
+
+Because the system is idle, nearly all memory is not an anonymous page
+but a free page, so the probe_hits are expected to be nearly always
+full.  In this setup, since the sampling interval is 5ms and the
+aggregation interval is 100ms, the counter value is expected to always
+be near 20.
+
+On kernels not having this series, if we retrieve the probe hits in an
+arbitrary time that is likely not aligned to the aggregation interval,
+the values are usually much lower than the expectation like below.  This
+is because the tool is showing the incompletely aggregated values.
+
+    $ sudo ./damo report access --format append region "probe_hits: <probe hits>"
+    heatmap: 00000000000000000000000000000000000000008999999711111111000000000000000000000000
+    # min/max temperatures: -1,630,000,000, 0, column size: 99.800 MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 3.898 GiB   access 0 hz   age 16.300 s     probe_hits: 11
+    1   addr 3.898 GiB    size 77.859 MiB  access 0 hz   age 1.500 s      probe_hits: 11
+    2   addr 3.974 GiB    size 700.770 MiB access 0 hz   age 0 ns         probe_hits: 11
+    3   addr 4.659 GiB    size 791.078 MiB access 0 hz   age 13.700 s     probe_hits: 11
+    4   addr 5.431 GiB    size 1.472 GiB   access 0 hz   age 15.800 s     probe_hits: 11
+    5   addr 6.903 GiB    size 915.059 MiB access 0 hz   age 15.300 s     probe_hits: 11
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+After applying this series, I was able to reliably show the expected
+results like below.
+
+    $ sudo ./damo report access --format append region "probe_hits: <probe hits>"
+    heatmap: 00000000333333330000000166666665111111139999999855555555333333333333333444444444
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 790.496 MiB access 0 hz   age 1 m 33.300 s probe_hits: 20
+    1   addr 790.500 MiB  size 791.160 MiB access 0 hz   age 1 m 15.400 s probe_hits: 19
+    2   addr 1.545 GiB    size 792.316 MiB access 0 hz   age 1 m 32.400 s probe_hits: 19
+    3   addr 2.318 GiB    size 795.465 MiB access 0 hz   age 1 m 2.600 s  probe_hits: 19
+    4   addr 3.095 GiB    size 797.102 MiB access 0 hz   age 1 m 23.500 s probe_hits: 20
+    5   addr 3.874 GiB    size 797.293 MiB access 0 hz   age 47.900 s     probe_hits: 20
+    6   addr 4.652 GiB    size 787.516 MiB access 0 hz   age 1 m 3.800 s  probe_hits: 20
+    7   addr 5.421 GiB    size 784.461 MiB access 0 hz   age 1 m 14.400 s probe_hits: 19
+    8   addr 6.187 GiB    size 795.621 MiB access 0 hz   age 1 m 15.700 s probe_hits: 20
+    9   addr 6.964 GiB    size 798.000 MiB access 0 hz   age 1 m 10.200 s probe_hits: 20
+    10  addr 7.744 GiB    size 54.566 MiB  access 0 hz   age 1 m 9.300 s  probe_hits: 20
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+FYI, 'damo report access' output format has changed on v3.3.0.  Above
+outputs can be reproduced on <3.3.0 versions of damo.
+
+Patches Sequence
+================
+
+Patch 1 adds probe_hits counters for values that fully accumulated in
+the last aggregation interval.  This is required for using the moving
+sum infrastructure.  Patch 2 introduces a function for getting the
+moving sum values on demand, using the infrastructure.   Finally, patch
+3 updates the DAMON sysfs interface to expose the moving sum values to
+the schemes tried regions directory.
+
+Changelog
+=========
+
+Chnges from RFC v1
+- RFC v1: https://lore.kernel.org/20260621214231.13449-1-sj@kernel.org
+- Rebase to the latest mm-new.
+
+[1] https://github.com/damonitor/damo
+
+SJ Park (3):
+  mm/damon: add damon_region->last_probe_hits
+  mm/damon/core: introduce damon_probe_hits_mvsum()
+  mm/damon/sysfs-schemes: set probe hits as pseudo moving sums
+
+ include/linux/damon.h    |  4 +++-
+ mm/damon/core.c          | 31 +++++++++++++++++++++++++++++--
+ mm/damon/sysfs-schemes.c |  3 ++-
+ 3 files changed, 34 insertions(+), 4 deletions(-)
+
+
+base-commit: 863594ffd4066f35cc62893902c843b0c2a87c65
+-- 
+2.47.3
 
