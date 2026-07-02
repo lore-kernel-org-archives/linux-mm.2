@@ -4,100 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0DD9C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0142C43602
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0A3B6B0192; Thu,  2 Jul 2026 21:13:09 -0400 (EDT)
+	id 2986C6B0193; Thu,  2 Jul 2026 21:13:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE1F36B0193; Thu,  2 Jul 2026 21:13:09 -0400 (EDT)
+	id 271166B0194; Thu,  2 Jul 2026 21:13:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1F116B0194; Thu,  2 Jul 2026 21:13:09 -0400 (EDT)
+	id 1868D6B0196; Thu,  2 Jul 2026 21:13:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A905E6B0192
+	by kanga.kvack.org (Postfix) with ESMTP id E94CA6B0194
 	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:13:09 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0DD391201E7
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:53:08 +0000 (UTC)
-X-FDA: 84944431656.28.36589B0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 6FB0310000D
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:53:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Big/Uh5x";
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C9C0912015E
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:44:32 +0000 (UTC)
+X-FDA: 84944258784.23.C436982
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C82734000A
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:44:30 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksutEY6W;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783011186;
-	b=ZuNqpGkxtArI79VQEPcLNKaSulweGkBlN+ponwwFuqCmzTssMVVkSuc6jI1Lew5PGcTOr0
-	QWSMkBWk+lFnHyP6yu8WlgQzF+p9cu3q8sCQWgep0OuRuoHZUtO74XBXj7Re9BDYq5QAqV
-	+Q3B+exdAZKO0oV0tKdzRx/DdSvKG1o=
+	t=1783007071;
+	b=oLx8bpqcF2ay0s2Xv5XUNjbhi2yFU1jed/E1Gi6ZYUNloCNILx41qoY+dF9AwdG1ZSi1NB
+	bL9pzj2KzkUxvBeUJcTOgzlI0pIu1anaegTd0vQTrvjMJYdKM3j3zlgSYx8t0HSLiFObZf
+	2e/aAgF+8JP+lXNVrEiG0lCCMgRBpfo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783011186;
+	s=arc-20220608; t=1783007071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AdFubk+JD40bWGnDszpUR8QtopM4gDG6s4W5ZjSbVSM=;
-	b=XtVP8C1MCmV52MLnbojC5D5UQchiqfl9sSW8qnn78aBqnXiTs5MwrIiHKjK9rM+hLStao9
-	Pv+zBuL2QK8x0Os7vozaC2kH9mNZ/bReqqs96vHDOmH7S8foaO7XcRcv4XiV7T9GZapWbk
-	vWDFjvRzeD6ydoL/rkBj4tDiDoty0iA=
+	bh=+NLPZaAxLlfVoo9TQds5zdC84AWDauDAYil69mJ6gMU=;
+	b=Rvuj6L2cTyuNSVXJHQ9xP38gD3fqxhXl7cShPsyCutGROx29V0UvdmFJM597wKF+E9EzUZ
+	gF24Kk1k9hYekaaD6bBO/vPfDWX0nf28yrIWaWgOOgTXMR04murZN7pwThsS1Rin7g9Y9L
+	p8a0aMDlZsgjgqplvLq8bF0Xd6Z7FQw=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Big/Uh5x";
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksutEY6W;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8D66A601E3;
-	Thu,  2 Jul 2026 16:53:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FC41F000E9;
-	Thu,  2 Jul 2026 16:52:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E47CA43BA5;
+	Thu,  2 Jul 2026 15:44:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58EA1F000E9;
+	Thu,  2 Jul 2026 15:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783011184;
-	bh=AdFubk+JD40bWGnDszpUR8QtopM4gDG6s4W5ZjSbVSM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Big/Uh5x+p9UFUyrs0H+TX8SkxXowLs9309ENEt2bZHNEFPVeSIvL00bHj+6bpm/y
-	 s8udHbi4jszqqgXKeOlXpUA7KzmEVpFSNVFpyyDq6Q2tuQAlNTHZgadeL2wS+BpmDr
-	 6duTpmSGL4zT1r1ioPN028UWP/YtE5PatvwARH4Ev47D7gXUxGX5zO/VlTN87FBAj4
-	 1G3pLC0fuQw3cvxZISOhdXlr6cOuusPnuh2jpCqFPzERMGSM8ehDyvqT4qLyVPPXYT
-	 mvmg6zxqVvnS0/yc+YD9yAa6o+SLV0TJiBWDgaGH2m4YDAPlF5N6U0oQT202lLwHRc
-	 amVrZi3QepJIw==
-From: SJ Park <sj@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: SJ Park <sj@kernel.org>,
-	Lian Wang <lianux.mm@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	daichaobing@sangfor.com.cn,
-	kunwu.chan@gmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RESEND RFC PATCH v2 0/5] mm/damon: add mTHP collapse and split actions
-Date: Thu,  2 Jul 2026 09:52:34 -0700
-Message-ID: <20260702165235.86684-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <akY6ZzPnwk-CToMp@lucifer>
-References: 
+	s=k20260515; t=1783007069;
+	bh=+NLPZaAxLlfVoo9TQds5zdC84AWDauDAYil69mJ6gMU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ksutEY6Wh40A6FNGBunfbtg1fjIF0LNXDbJ3mO8CXEDU9pmcOBdL1e/5v05soePHr
+	 fj7g57nyLn/6TbxNbZCc7sDoxqwpTg/n39fFiWAzCxJ38dr3zBxoHH2U0/RHHT1+wo
+	 VDVnIr90DU16mwTfqURsSknrMnLfVhKw4Qlpegd1Qm8BOb+YGybrKatKQ5QUk8ynMB
+	 opam7cm2C4mTc1EGvul7UFk5PgcjCCMbscuOBRN9dp4VYGpYjM1HpEciKR+vYdhCOe
+	 X1tnccg9j6y+B8TiwvHOyngDBNQjFo03tK5XPFDCOdzCwRDo5hW6hdXBiQsZm6OYk7
+	 HOCsesTwJTz/A==
+Message-ID: <e552da60-3d44-4812-9522-19df8470c495@kernel.org>
+Date: Thu, 2 Jul 2026 17:44:20 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bb3tojshuk5imcugurmg4ep14n74t4kp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/6] mm/migrate: use huge_ptep_get() in
+ remove_migration_pte()
+To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, j-nomura@ce.jp.nec.com,
+ nao.horiguchi@gmail.com, ak@linux.intel.com, mel@csn.ul.ie,
+ pfalcato@suse.de, jpoimboe@kernel.org, dave.hansen@intel.com,
+ tglx@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20260702051341.126509-1-dev.jain@arm.com>
+ <20260702051341.126509-5-dev.jain@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260702051341.126509-5-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C82734000A
+X-Stat-Signature: qe65rfg4wq636fztwaqbpxekn3cqh49k
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6FB0310000D
-X-HE-Tag: 1783011186-308150
-X-HE-Meta: U2FsdGVkX1/1cWVkalgSjuHVVQD/QDk/2RLI+wVy5YOnCO1psIhL91aNTmFy1vaUWtPT3xP7W5RxTw0A1Za7nPRot+U9c+xsRdJIdoPtAsbW2XdN/k0cuF5hFiFyfBK0ow3xDeuaeVg/v8CVSXH6YY6UT/suUKZcW6X0o69CHYB3hBtx5ebRVIMZhBhz69SFNkoEpZSqWpadYoK8hpaPfHvfrhu2h8G0zEduHp2S38sgtC9Y4l8Xy6FJkuXg5CIOOC9F8T5Ds+HifMRsrnknqvXctBarVQ3G0Br9rDfc+WV+gDNJkBDjWdQh1lBtNYXrZ0GV6+Nk48mu3QFD+lGwln8MngOWn3idRVgH3L2g0Qhqty/vqJS6JIvYA/K4I5ZHEdhtwFSlgqVydWkCjQB6IBaxARH9j3/PBuLuoagNA4WmcEDkkpBVHnO0UssWqaGrlilI+XrXB23lHyVKuTrqVt6Hlvlz7TIHCKbhp4uRI05OVwt2V8tUtio+sbjOu4EyNRLFmCBufKq9LwRmQ5Z0/rUsgRd4EkubwTplEDbg7bzCI/cHKEDXuXm5w2JHTKfZKPQuVjkTBvKpFS5+txCAHqoPTNohoJfhaF4LlmDSlWMZ2r9azznPpNuEYohVeufx6dQaRRpJ/XuB26XctK6mzejMYKNagWzFOCTUPwKya3SGMgbdkvhy56kDzRKT5O+RTc5sR7i9QvtqdMHk42hrIszT43R+ZHS2kFQOHstL5iUKNxAu94K+tw3K2OCXhygY2TDIx/fQHb3gKe2+/gMPCLTzLD2jG6AMee2IaEz7C5aq3qpj39nYuZD6/yLG+GgKDN3Io4A4Ufl04xuOT/kOg+KkZjowlKV3QSukZpHRZYpmiXGFQcjCE39aVGvVd7MBWWH2wEKmonYbbhWGkpAG+kamXBoWLSlJCNV1y+vW4LCdezrg2eXZPD2YyOtut+5YpCjQWmBmRNeJEe02AuR
- M7+tt/a1
- dQTSFG2ilj+i4UWAbv21Ci7UkIUC7bcs+UcFuPkfMyb1yrQ/qy7hnivszd40oa3ZAj61f9q0fx5+JdTBdsEmgzRJvm4GG+cTF95/DOkNUfsCmckZVLJrtR60wbCRicQlT3l8TzORLl7j22CzB3tJFBq93NWAUTs9UgWa+IZPpMUlCuO7eAtgWwbVz4H/EZFokIGYtaXRgDe7v6vOpc+H2m82dnHFWav863gQZql0jMmaXZviykJ5sXVPvG4iCHcNFTmixv+p/Nm/lrhORdMzxHJxnFRVCp24bgM+NzSwM0u2/B7X2wLTSV2xwOFPZeQvbW6kjYDn1lh0qDjMF1J9tQuKXV8i/TMe9Rfxo//3q7JtnGUSeX7gyqc52NxdfZAsNo84Gkq3bfdT3TXI=
+X-HE-Tag: 1783007070-809049
+X-HE-Meta: U2FsdGVkX1+E+qxcpNuXXWUuSp2Bg/ZvecSPeM7Ovfa/WQ2U+DNWouGzDpcB6EJunFz9UjbWbZgD/87ctaq6UjRmlSmX/9uQyh3FfHy+djbGA7vkTvGBb0X02VZwDHf3O8s3Qsrt9L7S/apPoc0ezkD8qKr7cYeT6vnE6j+Ev8QSkXqnh6eQlQtsKVqdvPgvP6/Zz6dIdPNsYj5FUtwJ/0VjZNUBQOHB+TnI4N90sm5qF6ptG2Uer8FsURyLDoHF/sk2oL/gVb92+UAPigki2xx81fZoRLqHrTD7LOogIUB+B5DR0qT3xKC15MbvHVgPhTBq/PycDehEYgAi2biEIuxsGA5uBXPUABBKOup735hYYgPw5esnvnvL/csGGAMVQIF9OEI6agsOXsOhWYlZoyhkauLXYbcWqwtWaVGi9ozyK9Ke6G3pkhTpKo7F96p+Pr04H7MR6RO6oCjmA7o4pBy9VX3oVUzvlvw+CL9Z7Y+NY5dSELTIbgraFFzPrt7C6tDHz9crQWOdztY7uXuHnnHdH0YiiQ6cSOO8v1GqOtGwjtWE73jgNs2aortLXyubYD/g9ariuvUtqy5iwUjhwVtqSK3w4RRxixQ/DKtwu+tV3FMZ55ZweWFm/Xoue35G1rTJSVkW0KynXjdvelt7//3bclXXfoFbfs/Zk1PHyL4cpp0s+gygj9K2Ta3HucZfG/ipbuFGcqYr707/XaCY3sa3k8Y3cAHHPaaJUpayOk0rO3FDoycqtZz42qh/RKBP/ZcdxTPmSNGW/vZM1znOY8MLofeI90WFXGwIjbkdpQbNkoSPQ2DDN7BxqNyaxkb2HZSnXeFWWOZSv39MLD6KSnpdWSGBtizdaVsNpQF2skvmMwdA/rp7wrmbY0ZObePSG9I95tZAGKCGSKpHrvSU34u44EJXq672On8BDLic8yF96jjkB4HDuetPVVRnT4C8GZ29uB1RIl4aanceXVL
+ x/g5WTyr
+ Le5sU3+a1IPHH7W+lLLnMs9e5SxJ/j4STh3Sf+JPRAQ86qZQXfMGA3NtKwcRRkP7qeJKOmdTLEQmQo7REqI8RctL9r31eixzkKTUA70zY/olqO5GJ+W+E/oNPxTu6vbYsJg45SZ/+LYHS9of7OYoD5ksmbgCzsdfYAqYMVA0Y8j/qUl95Dm2E3jVA38hK55B9CyRrAyQCXa5DbL+1awD+z7yxun41Fyr19uyjbZLdpIaVo0GRLa11Ld1gdlmB2R0eSS5BOutxMZNt2r7I3wIiJrYN7JAeKJXlF9ThZIAFb4fKa7R7Dk54Gm1v/6nnPdwZkvlW7Mr6274Bavu9r6MI+F3BNu7AZN7evY510iZX9SYYcaKFKMqa+Ab411oYtsGdqk+J5VMuGrwhL7CNh6ALaJARng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,52 +149,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2 Jul 2026 11:23:55 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
-
-> +cc all those you missed.
-
-Thank you for doing this, Lorenzo.
-
+On 7/2/26 07:13, Dev Jain wrote:
+> remove_migration_pte() converts migration entries back to present PTEs
+> after folio migration completes. For hugetlb folios,
+> page_vma_mapped_walk() returns the pte pointer to the hugetlb folio in
+> pvmw.pte, but the code reads it with ptep_get().
 > 
-> I really need to write a bot to do this, because I'm getting a little tired of
-> pointing this out :))
-
-Good idea.  I will also consider implementing this kind of checks to to my lzy
-tool box [1] or hkml [2].
-
+> On arches which provide their own huge_ptep_get() to dereference a huge
+> pte pointer, accessing via ptep_get() would cause pte_pfn(),
+> pte_present() etc to misbehave.
 > 
-> On Thu, Jul 02, 2026 at 05:46:28PM +0800, Lian Wang wrote:
-> >  include/linux/damon.h      |  10 +++
-> >  include/linux/khugepaged.h |   9 +++
-> >  mm/damon/core.c            |   2 +
-> >  mm/damon/sysfs-schemes.c   |  77 ++++++++++++++++++++++
-> >  mm/damon/vaddr.c           | 128 +++++++++++++++++++++++++++++++++++++
-> >  mm/khugepaged.c            |  46 +++++++++++++
-> >  6 files changed, 272 insertions(+)
-> 
-> You are doing damon changes, and that belongs to SJ, sure.
-> 
-> But you're also changing core THP code? Please ensure you cc- THP people because
-> without our approval this cannot be merged:
+> It is not clear whether this has a trivially visible effect to userspace.
 
-Thank you for calling out this, Lorenzo.
+Right, for non-present entries it's even weirder. Fortunately your patch #1 also
+handles that.
 
-Lian, please do as Lorenzo kindly asked, from the next revision.  You don't
-need to add those recipients to all the patches if you worry their inbox
-volumes.  But do ensure adding them to at least patches that modifies
-khugepaged.h and khugepaged.c, and the cover letter.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-If it is cumbersome, consider using 'hkml patch format' [3].  It does that (run
-get_maintainer.pl and add recipients to each patch and the coverletter) for its
-users.
+-- 
+Cheers,
 
-[1] https://github.com/sjp38/lazybox
-[2] https://github.com/sjp38/hackermail
-[3] https://github.com/sjp38/hackermail/blob/master/USAGE.md#formatting-patches
-
-
-Thanks,
-SJ
-
-[...]
+David
 
