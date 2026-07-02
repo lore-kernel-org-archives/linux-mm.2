@@ -4,143 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF6F1C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:01:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D3B6C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:01:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 587F06B0172; Thu,  2 Jul 2026 21:01:19 -0400 (EDT)
+	id 699BB6B0173; Thu,  2 Jul 2026 21:01:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C5CF6B0173; Thu,  2 Jul 2026 21:01:19 -0400 (EDT)
+	id 6723B6B0176; Thu,  2 Jul 2026 21:01:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A1106B0176; Thu,  2 Jul 2026 21:01:19 -0400 (EDT)
+	id 4EC056B0178; Thu,  2 Jul 2026 21:01:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E50226B0172
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:01:18 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C6961C0768
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:32:39 +0000 (UTC)
-X-FDA: 84944228838.18.AC2D2BC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 96FBB120007
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:32:37 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrfHMTc6;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 07BB36B0173
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:01:22 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD2798CEEF
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:16:14 +0000 (UTC)
+X-FDA: 84944943468.23.0BC9FE4
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3E8211C000C
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:16:12 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=rNgU7ybt;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783006357;
-	b=ixZtdDAAC3XKsGyyy48NJq16TLpnmIHjC+hiERX+V8eUhzAqrMBT1UqW1Ix91YEl5+Rlkr
-	JYEcT2ZZ+Cvsp2U3pgMW5Js04hUhFHd3WvxPS1n/axPe126kwmxagu+UeibNAyDxGLJeUA
-	Ytuclv2wYbOJ4TA36yUurzMSDI1YwbY=
+	t=1783023372;
+	b=IFybOeChg8V74skBVBGAM6PoBnasl2kO8b7P2Xonbuud7s+90Elf71moe+r5XVZVlTt3xC
+	WLNDAXuqIPrh0M87bv/cYbRbsf0GblZMCdmgX8efIo3navAvVib9RY0/JgMfRRy9wnpYzz
+	gxK5TaFAKi+br7PuKky+Pdsg7/fo3TE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783006357;
+	s=arc-20220608; t=1783023372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K6BXeY1SuXwf6XNLIwmaGIUYMIBQYDCncKaEEO6QK5o=;
-	b=dSvsgB2Wi/adMLlitByWLpBBQNBbucnPnP7u4b3yOGJpv9QcjZfDIV2isO7KpG8QH/rm57
-	KSDaqN0jtVlNfOsymFg4ibZZMaJtzjMj4uBq9AVVfLfqvR5LK8Lo5yGv+6fVLAnW8rI+hB
-	TAFZH9ze0KaDEz2KyZmk73nGTFdxUPA=
+	bh=tmYpiJGo1yl3FmbXB66UdXuPm3pvTnT7eXs8/XbJup0=;
+	b=1Nmri1To0/lw8SK5+6NjYx2KGTI5OJNTqF8XIU3mXg2UwulG9ukrBsAP61OOTaYFBDKm6a
+	/3ejDv/AXCbkdIjIxqMBLGaTA5hbkKOnop3MFJie46tOELef3unseWEIRfx1LAVcwMmedO
+	A8H3q72dCZzOLVV1YeeRG9AoM04IjSw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RrfHMTc6;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CD853601EC;
-	Thu,  2 Jul 2026 15:32:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9271B1F000E9;
-	Thu,  2 Jul 2026 15:32:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783006355;
-	bh=K6BXeY1SuXwf6XNLIwmaGIUYMIBQYDCncKaEEO6QK5o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RrfHMTc6WpFqBIjgT3gKXJn9UOPoDGOmQjbssocbfy19iPWhzvzZOmDc2uft1nTM/
-	 G4mcZQYbMHXOrHseVJCkoj98KH/X/o931BKZVuGiz0o8Sx08jvdPQC00UZ01xGkDe0
-	 ANjXIGZ1epVEZa/j/Wi5/7tIdg3oTErIEWdOWc+QRX0pwGPIq40tRn1qFM7FYFQXAY
-	 zHmSlxTopOz0AVxljNc3xjqdmrClnJqiS3j5wBtfJ8Wu0IrfTdc0iUeT+sEnWbwR2S
-	 iMJSwCbMr6porAjAWR31wA7EQRiBrXaHFYTaVgyinEnl24OpPzs/7aTh/Q2g3PTBmX
-	 HzG8A1gFURwlg==
-Message-ID: <00d6e0fb-dcba-45d5-98c0-f5ed81604ca0@kernel.org>
-Date: Thu, 2 Jul 2026 17:32:26 +0200
+	imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=rNgU7ybt;
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c2a76536bso16410051cf.1
+        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 13:16:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1783023371; x=1783628171; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tmYpiJGo1yl3FmbXB66UdXuPm3pvTnT7eXs8/XbJup0=;
+        b=rNgU7ybtCh0Nz2at2jaRpOMldtiHGAH3lJveGsSjIOTsCN0R1ZZeIwwcitBamstj2B
+         Su18C/ksPjYYW9ieDhVDeOt3yjB/x5Q3UD1VCF8eU0TtPdJ2+O+u1oOBVdSp7EPBwqL0
+         VazyKhqLwI45MV5ugLZ8GY2B5WNQSpqrxm97J0oKBL5HGLVCAJMJwdpj1vMjBV3oyjiI
+         BzLcyndwzrgXYsHfBtDgheJAKXGwTpl+8HEocxAMx0rIfzAMEDml8qDy2PRHKkEvL+TN
+         HOe4Shi6KhNFgJC2r0k9ZCL3hOQXrqOAT9rWIcejEqxWr7ZowMrwzltArzkPh2f2aHo+
+         n2tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783023371; x=1783628171;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tmYpiJGo1yl3FmbXB66UdXuPm3pvTnT7eXs8/XbJup0=;
+        b=tAS3PUQLtU3dbs8E4pHSnc2aRt2svUuIfqSGF8ofaPs/+ZLGvjZxG48YdqOx2nssG3
+         WOxLxnoE+yL3P7OW9QEWUDTWiRka/qZar0dX5jaAuGOE+jkrz4MiwD+7RqEa9KRS62KP
+         JVFT7YHFHt9eQ9bBQdGoPh8DztM6lA9Y2qoqcn8MccCifkJImXJadWAodoWOMzI832vk
+         c7RflczppMR8whg+/9j/F8RxvtgVvn0IWP+9bZCowdP1Im2lc8zjAV6kM2RFIDHMikIr
+         lh6coA2uY4cUHrXSUkhLE5g69q9lPkgSXKN+QNsy0HL1Ztq+GSfePzaLF2b9Sm/HNHAu
+         U4ow==
+X-Gm-Message-State: AOJu0Ywk+PeLWAW//grjIgfJovvv1meKfpoIz4Or962An1nsQ1iwMMW8
+	zaRr8lgF2Ukb/kPsQEbXPBgdVRAIg1wSdS9xXRtgO38Puuv9w1ehkVerL2c70QPSIC6vCs++mm/
+	Z/IGMSEQ=
+X-Gm-Gg: AfdE7ckpDF/sHW3DxpXTPWBK4yFDTGhbyOzmBO/go+LMUxx0KIkIhs1HqhXmfhfvJSP
+	JvL7KUnMmHIKfiQeoFo9VM9MK00QheWLDqjdqKKVCiBBwGWmJE48Q7bDwGctQlP53/jhm3NIsOB
+	hAxVwk6QR6y0wk9crV7j9vixPb7qDjhglj0UAusGarkWFrf7G6HABLe6XbQ493Ai2nkiV3hqKVS
+	fysr95ml6jJbSs1fg1IC/p7of6AQFv88a0qm8jG2nuNEMtM1fbNbdOBOgc24M1w3MYb/fj+Nx8E
+	Vu/AELCcLxziepiVY7LA8U0ZxMkyLxBsiQKhrdjlWzU8uQd4CXA2dq8vpZzvpS8XzLrIcHxVIlN
+	CfEfDs1f5KBdDs6pkki/XCbXgrwwUoBLfcbd+zz1MhF0NvwytecLvb+6X0VVqLpXiD/FHyaQZb/
+	+5Yu1MKPPjfyGFrurK5seT8A==
+X-Received: by 2002:a05:622a:1812:b0:517:7e6e:708f with SMTP id d75a77b69052e-51c26b0f4bamr108570591cf.52.1783023370904;
+        Thu, 02 Jul 2026 13:16:10 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c30c15822sm22003851cf.15.2026.07.02.13.16.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 13:16:09 -0700 (PDT)
+Date: Thu, 2 Jul 2026 16:16:05 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Yunzhao Li <yunzhao@cloudflare.com>
+Cc: linux-mm@kvack.org, nphamcs@gmail.com, yosryahmed@google.com,
+	shakeel.butt@linux.dev, hawk@kernel.org, akpm@linux-foundation.org,
+	zhouchengming@bytedance.com
+Subject: Re: [PATCH] mm/zswap: use ratelimited stats flush in
+ zswap_shrinker_count()
+Message-ID: <akbHBZP9HxOJMtQB@cmpxchg.org>
+References: <20260702180908.150136-1-yunzhao@cloudflare.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/6] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, j-nomura@ce.jp.nec.com,
- nao.horiguchi@gmail.com, ak@linux.intel.com, mel@csn.ul.ie,
- pfalcato@suse.de, jpoimboe@kernel.org, dave.hansen@intel.com,
- tglx@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260702051341.126509-1-dev.jain@arm.com>
- <20260702051341.126509-3-dev.jain@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260702051341.126509-3-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ga7rgc3au8mbq6uoojgr4if133cb9zze
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702180908.150136-1-yunzhao@cloudflare.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3E8211C000C
+X-Stat-Signature: d9iwixd4dyh1hwe63rnbjd7iaicib9m9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96FBB120007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1783006357-574786
-X-HE-Meta: U2FsdGVkX1/Y1kEwQG1/YNfVNWS5tH1ULB6q3hTk2X+Kb1vcWP2sZBs3dwE9HFA5hsNsU4iRYwV/R2efqA6fKiVFTjEI5O2F4N4LdFwKyACBcODk7BOZGAzNlwqNVFonxsMxuHUUYTwTDmI1yt2lsfRkLqYk+UHzhyQhYXLKGSl9xlmcbreGNP/P2eNuHCx5cD8uab827H3RO/5IkyKNCJ6FexnkWr9sFUr2voo37z9ChA9JY1lIUSzlVhKzCEEraYGYzHEdlmGG0A8XqAc9RMzwxbR4kT/RqrraFpe1WXA2FED5h8PIt2vvanDIJK3S19nwvGUe0JoALCHWX7xqgrqSfAxNe+TlDtAUihaoH/s31Kp1q/DRUmlCsXwH2jnAsJAvhelaY1ne82UuqmF1dxR9wXONs99ROIeCCYoTRzhgW4Y/inPSGM7gYI9zdJ1d0Y/1711uBtZZ+Zzc7Sgb5acnCpIjiUZEDkEZEP4YmdScMnGv4TE1EPMbqklsAwzOUXIKWh1GfSxSyqIMR9dhTaZhU7r2kkp5J0oLe+WZIPI5umYF9Ehs7RZS7ccgjmYAvRIA0g7oBrFtArCsrAgBFMtXOL9f+ArHyIn1kvgmDDkiX+FU/EaVCfn4ly4mcotnFmPp80TAaiHl73V2ciPBMwAGS8n3JgJEctihVwsTCfjAEUW5lfNpMy8YyWsQcO0HfZnkYThFAWvINGkHo0umQ4DHFa8zidu+sNwb6ORub2RlhAqwt7r0LvMoXmHUI8pia3EXUiF0w1K7KaLMmSO4OsDyxl3jgaouzk7kjB/sT31jPJ5pqfFUejZeNVUei58q5f6ieQ76/rYhYRNBCZ8ZzgpjYwfYo3gjmx+io3sk0ukFoBFWirQvUIF0TuAwo6zBAGwsSkeoY3jRadGRmti/yetoht76QzL41beokJePcXpBNK9zNsUeZ6l69AUbAEI09FrMIGz7yzlBJBAK/vj
- DVIV4q5x
- dEf036gMurbz+OIUO04GRbUZFLGxxUVS+Humk3L1ZLBdoaE93CmLqzuVc/UMemHW12VcbPfuM8Jpwga2FRdFfmfuTpsbyvuGDg8k+Bxd9VHD0UUN/G2lXv9TxCz/fQfKonzQIstoBgGF5zbWVk9qbmsl/fNflqeARXup9oSMZZqr0vRahdCSy3CDnWuwctDfZhgZy74y4qyQxlSg2bGvjIbeDHJ7epZ2MXxGry82L1+WextqJsqjKC8go5FEQO54j34iL1H/0SX0556Wz4dLYeTtNH29uYqbqd2q8paUoi5surqhVSWssZidNlIL4qn7l/nWoVb0P/tUWMhWsczzEa+NKZpw/VbCliPXmPKRq5cKxBAvrAYK6E4+r2dvFtnU2pFvZUTfXOvmWuXtVbsFtBtKhyRBPvUmqcbPkG/juUZRicOq5rxITdFa7zyFqQidXm6HMDlnot4ZGjp3Mvfn/NxjFMQ==
+X-HE-Tag: 1783023372-693507
+X-HE-Meta: U2FsdGVkX19DaDP4ZyzeNEofcLJa20/fWRS3Hxmq5ybRrEpHzIlMCeYrdjGt3a5IT8YjBOqjAGqGtzmLR3kgyjsZV6qyvzfoViH9h8QW7RIDv5umao2L5TRESeYavVJb3epSknRWXLhmvV0xOKhY0VpklegHR70LLVcBPqRtY4jk/T7xSLYigqDoURCww/UHNGgEiVOej9MWeJXV1g5s2FqEORgL4lX4RACrsDcfJdsK35LKcUXmbVgToa0SHmiMTU5RKCWfyQ1AqG7PWYtgPYXALo3Xn4DlO1zrFWOpY0WkdlPRsmxidjoRz5bxJ8qMOi+KiVDPVZIahVz7ICKqk860X/6L8uFh+Qm9MTHez2ZPULbOh56PsnMOmsARLOA5xdbtG1MvsgkYHLzTWrs8AgxFsA+EyRTsN/nueWqZuBOAEZrdjlXtDmewTWRXyR381KgUYx1nXM/swup890X3z5NgIeqst2QNkEdDiMeKHtcC972pA28mEHwA16yi1R6o8gTk6DPuF97+StxBBOM0pfCCnpQAdF5p8SuYOx6V3zNiVpdwRBODlkScFoDe9tvbnWodO8A/vCEjvWdE3kzEmBZRJFN+g15ILihPmA8P3FVO09KejN0uR7KfLs3Jwp1xjGmmlXohbRvutZixAETQzEPNCBhOLq1QLZ+4bM/9AoWqlXbgt/J0a5pUnxd1L5tx9L1LqrsSIsCa7X3mLmi+6O4nW8E4NCXJna5g7kwA1690rVtjNvaX/dPkl0aC076FixvAan8SmhjDRPZnb+YVcRtqw/wqIRIjVVnORpB6t6OdWEg7K5gPpVnsthn66JOlRTTPbaPFfdSyv0zxKKEpUi0NZD/aK3/YQq/ITrGyIC3LLB6u0trn2IGy32/T5URINVrpkFR0aAWZmb0i0sqlfiJ0GJxSIMRjqkT7ExpSUb+ZbUoRPjCbm3RW+9Mh1sTJNqL8OENRXdHGmtu9tis
+ VRb7Z7un
+ ghpp7zEaomh7Vk6TNt9XwEyGuxOt6//KiOYrlYZYukjlHAnlAp00a43oCSOJxLbybeVyODZt+90bsz8+84/4mIWvZDoT7CRB8JVkcbHg3XfArpYuX3mOSDK6ZU2v1Vj3XOxeDxTU+mKJvn1KrLt88o0x3wZt1ohUCLZZV+KiidLkAgFUZ1K/eSkTXfBKT0M2+WOPkTfpa9CKZ1BXcJJv9K4LFNGp100ALoKeK58MUTSk6jgsPHvUa/8mJfY29z+4hQCeJTfu0LBwJR6lG0u5wkEki1qo3u8FLaqjZI1lKSNEWM/5iXlG6rLEiYe2UKdRLdY7+Olf/c5eFqjr251UIYub0y2DJmTS972aiQHD0FKQFG2ughZn2H+6K8YfgP9ZNcX84DeYjZo/7flt+8OA+hyHvVn5Qz06Iddu8aXhYXW2eKJzAawNNiqZ5god8yQAALL1K2xx4NId0m3WZ6bRlV5aBKAaO1Xkfxt/PFJ7VzqESojrJ7LZ5Q2qZ9PM4/NIWMogCYi8f3j06ztOGn+a8aRXA2b0LwkiCvyZhpwnZcU2bhzbmZtmcl3jA1CQqFJ66kO2ZYIm6eTRchOtrWD4tWHgzhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,67 +120,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/2/26 07:13, Dev Jain wrote:
-> try_to_unmap_one() handles hugetlb folios when memory failure needs
-> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
-> case page_vma_mapped_walk() returns the pte pointer to the hugetlb folio
-> in pvmw.pte, but the code reads it with ptep_get().
+On Thu, Jul 02, 2026 at 11:07:35AM -0700, Yunzhao Li wrote:
+> zswap_shrinker_count() calls mem_cgroup_flush_stats(), which takes the
+> global cgroup rstat lock synchronously. On machines with many CPUs and
+> NUMA nodes, this creates severe lock contention in the kswapd reclaim
+> path:
 > 
-> On arches which provide their own huge_ptep_get() to dereference a huge
-> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
-> etc to misbehave.
+>   - Multiple kswapd threads (one per NUMA node) run concurrently.
+>   - do_shrink_slab() invokes zswap_shrinker_count() for each
+>     memcg-aware shrinker pass.
+>   - Each call flushes the full cgroup rstat hierarchy under the global
+>     lock.
 > 
-> It is not clear whether this has a trivially visible effect to userspace.
+> On AMD EPYC 9684X machines (96 cores, 192 threads, 12 NUMA nodes)
+> running production workloads with zswap enabled, perf shows 2.88% of
+> kernel cycles in osq_lock contention from this path:
 > 
-> Just use huge_ptep_get() for dereferencing a huge pte pointer.
+>      2.88%  [k] osq_lock
+>               --__mutex_lock.constprop.0
+>                   --__cgroup_rstat_lock
+>                       --cgroup_rstat_flush_locked
+>                           --cgroup_rstat_flush
+>                               --zswap_shrinker_count
+>                                   do_shrink_slab
+>                                   shrink_slab
+>                                   shrink_node
+>                                   balance_pgdat
+>                                   kswapd
 > 
-> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use page_vma_mapped_walk()")
-> Cc: stable@vger.kernel.org
-> Reported-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->  include/linux/hugetlb.h |  3 +++
->  mm/rmap.c               | 16 ++++++++++------
->  2 files changed, 13 insertions(+), 6 deletions(-)
+> 84% of kswapd kernel cycles are spent in
+> shrink_slab -> zswap_shrinker_count -> cgroup_rstat_flush, not in actual
+> page reclaim (shrink_lruvec).
 > 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 2abaf99321e90..fdb7bdf7645c5 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -1261,6 +1261,9 @@ static inline void hugetlb_count_sub(long l, struct mm_struct *mm)
->  {
->  }
->  
-> +pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
-> +		    pte_t *ptep);
+> Controlled A/B on identical hardware and workload:
+> 
+>   shrinker=Y: 2.88% osq_lock, memory PSI 1.58%
+>   shrinker=N: 0.00% osq_lock, memory PSI 0.57%
+> 
+> eBPF-based rstat lock wait measurement across 8 production metals
+> confirms the contention splits cleanly along shrinker enablement:
+> 
+>   shrinker=Y: 50-250x more contended lock acquisitions (248/s vs 1.1/s)
+>   shrinker=N: baseline lock wait (0.0017 s/s vs 1.04 s/s)
+> 
+> zswap_shrinker_count() only produces a heuristic estimate, scaled by
+> compression ratio via mult_frac(). The actual writeback happens in
+> zswap_shrinker_scan(). Slightly stale stats are acceptable here.
+> 
+> Switch to mem_cgroup_flush_stats_ratelimited(), which only flushes if
+> the periodic 2-second flusher is one full cycle late. This matches the
+> approach already used in prepare_scan_control() (mm/vmscan.c) for the
+> same reclaim path.
+> 
+> After applying this patch, rstat flush latency and lock wait time on
+> shrinker=Y machines dropped to the same level as shrinker=N controls,
+> while the zswap shrinker continues to function (pool size remains
+> bounded under the max_pool_percent cap).
+> 
+> Previously discussed:
+>   - Chengming Zhou (Dec 2023): rstat contention from
+>     zswap_shrinker_count [1]
+>   - Shakeel Butt (Aug 2024): zswap_shrinker_count still uses sync
+>     flush [2]
+>   - Yosry Ahmed (Aug 2024): suggested eliminating in-kernel
+>     flushers [3]
+>   - Jesper Dangaard Brouer (Sep 2024): cgroup/rstat V11 patch [4]
+> 
+> [1] https://lore.kernel.org/linux-mm/20231206103935.3440502-1-zhouchengming@bytedance.com/
+> [2] https://lore.kernel.org/linux-mm/CALvZod7LFxLCxVpOFH8b2Ppm8T40HPGMKQwX_=NPCWB_mFW+oQ@mail.gmail.com/
+> [3] https://lore.kernel.org/linux-mm/CAJD7tkYvFyOSX+rP_FKGBhxvZiCDxtpsNp-c5CGOA-4Bq9oXSg@mail.gmail.com/
+> [4] https://lore.kernel.org/linux-mm/172616070094.2055617.17676042522679701515.stgit@firesoul/
+> 
+> Suggested-by: Jesper Dangaard Brouer <hawk@kernel.org>
+> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
+> Signed-off-by: Yunzhao Li <yunzhao@cloudflare.com>
+> Tested-by: Yunzhao Li <yunzhao@cloudflare.com>
 
-Two tabs, or just in a single line.
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
-If others prefer a stub, I don't care. This here is shortest to let the linker
-bail out.
-
-> +
->  static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
->  					  unsigned long addr, pte_t *ptep)
->  {
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 1c77d5dc06e9f..aa8a254efaecc 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2095,11 +2095,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  		/* Unexpected PMD-mapped THP? */
->  		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
->  
-> -		/*
-> -		 * Handle PFN swap PTEs, such as device-exclusive ones, that
-> -		 * actually map pages.
-> -		 */
-
-That comment now actually belongs above the pte_present() check below.
-
-
--- 
-Cheers,
-
-David
+A lot can happen in 2s, but I agree doing this every time is
+silly. vmscan has been good with 2s for a while, so this should be
+fine as well. We can re-evaluate if we run into weird behavior.
 
