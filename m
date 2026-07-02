@@ -4,111 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AB4DC43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:31:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBCF7C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:32:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AE7A6B00D0; Thu,  2 Jul 2026 20:31:25 -0400 (EDT)
+	id D02606B00D2; Thu,  2 Jul 2026 20:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 758C06B00D2; Thu,  2 Jul 2026 20:31:25 -0400 (EDT)
+	id CDA196B00D4; Thu,  2 Jul 2026 20:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5852A6B00D3; Thu,  2 Jul 2026 20:31:25 -0400 (EDT)
+	id BEFC56B00D6; Thu,  2 Jul 2026 20:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BF0B6B00D0
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:31:25 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3D5128C52B
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:25:10 +0000 (UTC)
-X-FDA: 84944512380.30.0446574
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2693F40011
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:25:07 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ULyK4XOG;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9296C6B00D2
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:32:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7EE6F168016
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:46:39 +0000 (UTC)
+X-FDA: 84944868918.08.6FF37AA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 00EAA40011
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:46:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fvZmcYdh;
+	spf=pass (imf07.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783013108;
-	b=p0PjNHDacNezv5YT4elOySlEvBEEKjXXsZK7JKuYo5hrT5ykUfInYNanHi17EJGRKSWtRY
-	HCE1EdT1aDr3NTnORKLSGfUoVRF0m2z8hsX4JyAwIt/XC3Vcg7hEjcq5q+hF6njY3SxsHF
-	He41yb+auLvT2WlpYLS/0LsapuIKdBg=
+	t=1783021598;
+	b=rIGt2dSfPjVD6FoBPoeG6PtpW6W1Dl3OePDry7kw8wgFvCtgJnf54RqGcvShbco30k6qZp
+	lARB7zROFjL/IwE4YgNA4m8/t15/2EBCszKHCdubqhnqpuB0R9DJ+8eyGK10GUfznwU+Js
+	V7352UA2mzxRJRvLYt2o+Qtgm9outXA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783013108;
+	s=arc-20220608; t=1783021598;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=h2Ms0gDqn541Zm3m4bDAe3INBlyb1cMJpyBl6JN9E+g=;
-	b=yLNzf6FKDZ3NWQvpyP+X0LdHIct56SQMw1aXoOGUDZ6kpcHiK/b09I08qF/IaGrXMi8E3v
-	/BmyjnVmoAEQ7VUP5HJjU1vnVz9V9AoZO3ku85elKDwQYgx+wasmU7/yFZQLIuRZUZSIuq
-	eECQ/6uQsIJNxXPOs3lguWGP5QlC3CQ=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eyHDCPYYCnCqlMDzLTfPdm2rWb8d16r0Pbrr92/ckAM=;
+	b=FJw3RgunhH2XOzYYqa9NgNEzGJyRuwrM2+78k+yMrcGgoLJgBt57PFwZNcBHWcnlmll97h
+	59bb4qwshAR4IZhU8uXkWT9D562acVcCXSLs+6m61zMzVxerrktHYscqMPU4iDTDNlJmqk
+	ZUhgW3Cnsc3Ge+sbmBgJEoc4Igf6R2c=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ULyK4XOG;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783013107;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=h2Ms0gDqn541Zm3m4bDAe3INBlyb1cMJpyBl6JN9E+g=;
-	b=ULyK4XOGrqjVGvqTQx+oZbkAPT1p5LRj3+i2pYlTBbwUeU3p9GRkpDS1a6XtTlgtugVUgh
-	973PNMbe8zeKlGVHv9eEvyX+fp+ghNHMWpj0S1PHxhehdQae1j/nYl7xINO/lJYpRBkU2c
-	Y3gI5OfGSS9pu9ZmK/EoDYS8goj6POo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-197-_Mnzm0EiNzKnCBN8KhOh8Q-1; Thu,
- 02 Jul 2026 13:25:03 -0400
-X-MC-Unique: _Mnzm0EiNzKnCBN8KhOh8Q-1
-X-Mimecast-MFC-AGG-ID: _Mnzm0EiNzKnCBN8KhOh8Q_1783013100
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 995D71944B24;
-	Thu,  2 Jul 2026 17:24:59 +0000 (UTC)
-Received: from p1.redhat.com (unknown [10.22.76.7])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0874E3002D2F;
-	Thu,  2 Jul 2026 17:24:50 +0000 (UTC)
-From: Nico Pache <npache@redhat.com>
-To: Barry Song <baohua@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Cc: ljs@kernel.org,
-	willy@infradead.org,
-	Nico Pache <npache@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>
-Subject: [PATCH 0/2] mm: fix PMD level mTHP accounting bugs
-Date: Thu,  2 Jul 2026 11:25:45 -0600
-Message-ID: <20260702172548.37075-1-npache@redhat.com>
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fvZmcYdh;
+	spf=pass (imf07.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 85ABB601CC;
+	Thu,  2 Jul 2026 19:46:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A391F00A3A;
+	Thu,  2 Jul 2026 19:46:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783021597;
+	bh=eyHDCPYYCnCqlMDzLTfPdm2rWb8d16r0Pbrr92/ckAM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=fvZmcYdhCSUgxGkmW212EmxrZkq8oiLsj08VEMml8LnUCeVmay3/VcXrLihutPk27
+	 v5fcM+pm9FFE6PI7i6YNPUu7yvwylH1P1PCBykFqQwX2Wr27XknhLV5s+ojEkqHeDi
+	 ybpgMTv7D3GiZgJ8aliQVd8yh0h2EIsoiJWzYqIBVGCH9QGxMDXT3LLwWRJHUHsEPE
+	 lJ5yUDrsuyxK+t3S+6a36XFBKDDSJPOo+69ULqmDBge83Uzk2DLYSur7EVuvXiRQiS
+	 7FNBmzOIXBi+EHRJU+QYGo4HULKM/uQI/xDmetMBKrzzdZlHvR9QCdVvj0k+n8CES7
+	 LMgDNjtPzxinA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>, Dmitry Voytik <voytikd@gmail.com>
+Cc: Borislav Petkov <bp@alien8.de>, linux-toolchains@vger.kernel.org,
+ Alexander Potapenko <glider@google.com>, Ingo Molnar <mingo@redhat.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Ankur Arora <ankur.a.arora@oracle.com>, "H .
+ Peter Anvin" <hpa@zytor.com>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling
+ <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Marco Elver
+ <elver@google.com>, x86@kernel.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org, llvm@lists.linux.dev
+Subject: Re: [PATCH] x86/mm: fix objtool failure with KMSAN enabled
+In-Reply-To: <20260702111550.GH751831@noisy.programming.kicks-ass.net>
+References: <20260701125151.352632-1-voytikd@gmail.com>
+ <20260702025342.GJakXStrsCmIRnEwFD@fat_crate.local>
+ <CAAX90H0V-=Gy1FyBT9qop2=RvhBxbOPLu6+DYpPH2pTehT=nRw@mail.gmail.com>
+ <20260702111550.GH751831@noisy.programming.kicks-ass.net>
+Date: Thu, 02 Jul 2026 21:46:33 +0200
+Message-ID: <87se61npie.ffs@fw13>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: S1xyTUKAWUzNnJcRen3is2nXWQ5SP7n6ksjIEeDOOz0_1783013100
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
+Content-Type: text/plain
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 00EAA40011
+X-Stat-Signature: 7m46hhq1tye1hhetn3qx6sab3tubtwtq
 X-Rspam-User: 
-X-Stat-Signature: ghfi5s74ozb6rhohabdxq3sikrydyqi4
-X-Rspamd-Queue-Id: 2693F40011
-X-HE-Tag: 1783013107-557934
-X-HE-Meta: U2FsdGVkX18AzofbJH/MhEWZ1kg20uU5uvsFQkzytnXCHNTrbb7itAZNpqo2qHZww6/TFPSlFvkifvPGtv4vkjuLwfkncKpibEpVjooMYsV7tttt6GCMAB4LUa2TMjeHRiZV25hQLhcQZDTh4rPoG/cQ+DGUS8YDKu7nWl5OpCujciKR2ygCnUpwdrPB/idEnI85IYSdw7RHgHzl3q9Xq/EM7zuu0rFT8RW0jQkuwbV7xURvXZMxxLTFrCQhrkxstLjvki+x0GxXy03iMeWLApGOTIyhFUMRRV5IdSIBVo/43W34x7pukjLb76zXTVG7OuUoKyEp2sGxTOFoWOv67FGeCBNKAh/XpG44xmFCjmA0qAudYrRiA3xk1ndp7qoST6hdVWa/j9pik6sobUXK+D0InwrWJiB3vRfP90uCeb80cIEMwuS99ZaYkeDAsctcEkYB9ryTutfOdQS4I+9nIn8LG644VmBdvSRvRBzZwze/rYbRwZoz6m79YljxvR9U+JWfJOlowb6Ruy1tvOwyClQrZzDpxNnuyx7eIj7xmUuyReC1m4nnomGPBhJtvKR99S3OXYwJW8xwf+akMW3Fv8dKFV/MAEN1HTfKNowHpc1szS+znw9eec3WrbA/gPqIPW8SQef0na212zRMcJjNEBA3zu7wxmQeMArh+2CueEjm57VQClPkjn5C47U/VUteZvM6Sd3i5uo/Tkv7ybvdFTydzeNPgObDg8o+6OZcn96Hvhyr7iZHYSEil7nGOkJ3Yh4KyECcJJYZPAHb7mZZoRqCc1lAYnGReoxYR4ZQ6+0o8gXvq6lXKBcm4O//7hUpL0E8vZZ4qJBKQT5nk8znwzv4tYWSyzqjM8iCjgkhIEPtf6DOm8dxFyPe9vil6hXVdKEui4o3T2jI+IBaOOmY92ViyZntVgpIUb/EHL2OxsRx3a6F8ZZnhgoCHgmg4lVa8L3ZWSBUccuImbyteaq
- 9dxVgoab
- 04EucdSvIPax4kLw/Cc3ZCB9uIym4qymtJNCSaTtTTxlCcsAESWoNFdkcmSbfAfEfN5u4aaS8keIQTfuSUDhyJi/k/gvr+BxFXuFqFl8s2uErQad50jgqRomD7C7TaW40OBQ864bAw/bdNHtdjG5vck9IQR3rFUFb79mndKTkhPhhXuiBwzCTuPD3uTO7c4DSvhwi39XQAz562zzVpzWdcJKp27PShvzIsC//ce/mo3LzgYUkDl4cmRir81Zo1tvFqZizra6+0xSj8I13WGO1eJfDEmfVepwJ2HTuWRVkh8LvTxG9xmZahhgI8BjLaTD1A++Xp2dYNTruGJ/rX0UQlok48BMvf2vuUlnkgCPRL2o3PEwrbOiOp6PaCopKHwoDvUru9bplGfoT2rEuWH1GoXfr9bWzXZJQI4HvE1//DyL56AYQTeM2WMZc+3E5zdhisyxy
+X-HE-Tag: 1783021597-558452
+X-HE-Meta: U2FsdGVkX1+rBpWBEpG/+Wtw0vELp4HLQ6d92Oc7FMxSA/Zarzy2ZmyMtQr2gVD9BMJNWvuFT3REwc4E/b2YGVdjIPz7zJ4fxz3twTEED0K2AE/ec+1GZ1PTeCiJi2PoDQFd1rQrcNYRVkYE2Lihdsh500XFWBqJmYgaYBLCcaV+f41cMk5ibFNH1LwE33OvIAUL5Udx0zZo3PyKWzekgcbg1gvsMusAmiK9awuLNgY0P+nVCbF7afuMbGzlAgWl0rIqGLkA2fvFIk3pwJ4DajsK4W2YwS9lQO8hlpsxXjTiSFhIfJF5MdpmMCsccuneOnuREUFysZqiySFNT3ulI+OdMGKKWBrBjfOmwLhbZF9eHfRvyPbha0vP/m18cvT9c2ntSINmG8FbJC5lGl7zHft4E/fIPVbUSrCSGYSV8qsSpTSiToLmlHfMAU55mz7Sh/6ynXmsoWldFj1kscK0xFXAm03AMmKtyIFCxsUjkXwHBTs0wGzKwuo1iuOmt/ca3rodzu9fQI4r4VsOhhdd3AJFxgPZFdYnxsqher1TpxmgNuRFbhryPg1nB9ulemD9/kRB/nlcwwXDBSJseRFds9iqwqYVL8s9IsNeK4wWAa5hg0OtCg9nJ6eNRzxj7Weh6AzOEuCKDQrGW/7V+j3faJXjz/rZ6VIloue+Z7K9fCrnxIJ6EOJKmjFEIelWhYAmiHOWZ7WvPxQ1a4fHjhH7+eH/qKZVE7Vo23F6lMQyG3nkWT/eunYz7pt8YRkxv+H6OVNh0cVO3/Jtkl5TvH6wCuEhblAxGoLXhUPoWCdnA6pBmyS68wvRKroeq7UB5YFN7mwc4JbHjWbCX/Oo2dmwTrkatna0BToF0sksu7ZxQ5XA3T+tGIr0sAPlrVtIlFrgJCRuZvjmg3Fk5hUBNYQs6d0QnJZzDsTLjFi7RWHl724+RW8MF49VNa19Ob+pls15eEAnlh57hd3peNT7Ecu
+ IS+F+DHU
+ iHVifS99dhJhs2HGDwaCH2QdmMmXgULRIWdgm4Fk1Nk7YItXwVOlg2tiGPan9ZzBqLGQSUNyLm+11D8ktmFzxnpNECuYW3f/gYv5BPk1xSjBFQdHfomMvqqaIm604yxI83U+/hsLtxuJ7KEr9F95YPT+ZNvfGH/FFxImu2Z5vRiIkCFql3XVWh9tNA5K3n/PT8sjxDlodvDOifg+A02T+1/7NgVr5gy3nEz2v2m7OeANClP+zWAmU6Ez4GlSTj7eKzAFgAEo1/lGhd02tn8HqthXPsL4pERidIFp35yBcJ+XkW245D6sV48+WojNRhb/8hYoM7kVKHwryIU0ToahnQafoYZhcoq7rxMcl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,37 +100,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While running selftests I noticed the PMD level per-mTHP stats (nr_anon)
-remained elevated after each run. After further investigation I noticed
-this accounting error occurs for both the migration.private_anon_htlb_test
-and the HMM tests.
+On Thu, Jul 02 2026 at 13:15, Peter Zijlstra wrote:
+> A quick test with folio_zero_user() seems to suggest the
+> ASM_CALL_CONSTRAINT movement (your patch) generates the same code for
+> defconfg as does the unmodified code. The change from the thread linked
+> above (input constraint on __builtin_frame_address(0)) generates
+> different code.
+>
+> A third option is to force FRAME_POINTER=y for KMSAN builds -- for now,
+> until clang is taught to be less insane.
 
-In the HMM case this is due to folio_add_new_anon_rmap() incrementing the
-mTHP stats, but never containing a corresponding decrement in
-free_zone_device_folio(). We solve this by making sure to decrement the
-counter when freeing device memory.
+With FRAME_POINTER=y I get now with clang-22
 
-In the migration case, we are incrementing this counter without first
-checking whether this folio is a hugetlb folio, which relies on a separate
-accounting system. We solve this by adding the proper hugetlb check before
-incrementing this counter.
+vmlinux.o: warning: objtool: folio_zero_user+0xa7b: stack state mismatch: reg1[4]=-1+0 reg2[4]=-2-336
+vmlinux.o: warning: objtool: set_ftrace_ops_ro+0x64: relocation to !ENDBR: machine_kexec_prepare+0x8f0
 
-With these changes in place, the two tests no longer cause elevated PMD
-level accounting issues.
+That's with your objtool patch applied. When I remove that then the
+folio_zero_user one goes away. The relocation to !ENDBR stays.
 
-Co-developed-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Nico Pache <npache@redhat.com>
+Oh well...
 
-Nico Pache (2):
-  mm: decrement MTHP_STAT_NR_ANON in free_zone_device_folio()
-  mm/migrate: exclude hugetlb folios from MTHP_STAT_NR_ANON accounting
-
- mm/memremap.c | 1 +
- mm/migrate.c  | 6 ++++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
-
--- 
-2.54.0
 
 
