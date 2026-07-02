@@ -4,114 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 488B2C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:01:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B2C6C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:01:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A4886B0141; Thu,  2 Jul 2026 21:01:09 -0400 (EDT)
+	id BCF6D6B016D; Thu,  2 Jul 2026 21:01:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44D796B016E; Thu,  2 Jul 2026 21:01:09 -0400 (EDT)
+	id B52AB6B016E; Thu,  2 Jul 2026 21:01:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33BE96B016F; Thu,  2 Jul 2026 21:01:09 -0400 (EDT)
+	id A1B1C6B0170; Thu,  2 Jul 2026 21:01:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C1CC16B0141
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:01:07 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 37F521A01D3
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:41:28 +0000 (UTC)
-X-FDA: 84944402256.09.712949D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 95111C0009
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:41:26 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 651A46B016D
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:01:12 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7A01A1A017A
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:35:09 +0000 (UTC)
+X-FDA: 84944235138.11.9D0C496
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id ADF7BC0009
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:35:07 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UbIxVhIT;
-	spf=pass (imf10.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=claYiCGD;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783010486;
-	b=kIoO9LzyO9mmqwKo3BaWQn6zx1cdKuvIFGTm3+Siiwhd/7yNw4cvFE0emBv0q6GfR8FOPp
-	ZAJt113CMHm9M6GYtmeVp9X1ykliroDCKuKLJDo/YgELEdenK9X0oa2JeXHIuUH1RFUMaV
-	bbu9mcXvKMBQw/VW9QhSiG5G6I4P5Gw=
+	t=1783006507;
+	b=K/eDLqpMg7L3iA3Yf7mG9phRcJpT6lsreNX+5EXZpZDP1iGBWHGkSrQoMAhceq+Qa+k+kz
+	M3n7RGsVhn0317X8/GvXnIHU8AjmKO+SOqtB5v7JGkwsVjd+ZFX/pqnQD5sm3kwM16yzQf
+	LvsO3MUB7rFtuZmN2khrxpR+0afNjOs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783010486;
+	s=arc-20220608; t=1783006507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4TcPpM0BZaoJj/LKE0Ry2kWPQZbK+NaW1FTfGXp6Qn4=;
-	b=7f/6mHTc/gd123D6bC5QqaOA04P92Ow2X17LwnzZMFwvZ0bWqfKhF509+BgJhfyrwPNgeM
-	fS5ymUUHSSeV7i1rOHnFTpYkjy4doF7c4USaT4iUvRai3ZEecu/Gm/+HZbm64YFhut7jKN
-	EnI5NHAanT52PgVZaP3RFl7gibX2ELc=
+	bh=jWa1mD+awYvcVqO7NB5NDH/ijt/TFGs11SlmfzyMrnY=;
+	b=NVPufLm1kC7NV3VBTKUdsk8uZDSL6rWVlRYFl5nODI7xP5H+ml6rCHRNuuDmBZEHCb49NF
+	E0a4JltSEoJo7A6ML46NIL5QCrS4umEF2rO6j62A7OXi0k6DdPv7gBSAlBmgyxqdrNy/Ch
+	MmRcSqcguuN9e3vr6S3Lw+K3v0PS0O4=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UbIxVhIT;
-	spf=pass (imf10.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=claYiCGD;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2583060204;
-	Thu,  2 Jul 2026 16:41:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3321D1F00ACF;
-	Thu,  2 Jul 2026 16:41:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C600F4356A;
+	Thu,  2 Jul 2026 15:35:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABFF1F000E9;
+	Thu,  2 Jul 2026 15:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783010485;
-	bh=4TcPpM0BZaoJj/LKE0Ry2kWPQZbK+NaW1FTfGXp6Qn4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UbIxVhIT3k+L2Rvex870aYp4emZYvycrMzgT/l80VxrbTxWvxI9JRKpnaUNMEjG3G
-	 ZoVLWczTG/g9HyZAgZ70twW/ylV0EE7XLdG/sgXmKLnHisy8AsEYlfbd5niKzqz1lY
-	 ws98cZTWJqeFnp3vSJLG17/qF3Ge/moCJxFQuACsKCwbcRvPFAWF7LSujuvl0ZguAd
-	 0Ey5CbVzfmKHTGGtoQsv7zUESob5GM+jQi/nn4i0YwCIBp/b1yxTiqFNMy4jhvtD5D
-	 q7w26HLWMKTd+xN5EbSr27iexWuWelP+dlG+S+pGinCthmp6iUYPrtV/RBEn+6x6na
-	 +pBQI4mIXDTaw==
-Date: Thu, 2 Jul 2026 18:41:23 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
-	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, Chun Ng <chunn@nvidia.com>
-Subject: Re: [PATCH v3 04/11] arm64/mm: Add set_memory_device() and
- set_memory_normal()
-Message-ID: <akaSJ5D98w2cHqb6@orome>
-References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
- <20260701-tegra-vpr-v3-4-d80f7b871bb4@nvidia.com>
- <akYs91INHMXMTI-t@willie-the-truck>
- <akZkuwktaXFTrASP@orome>
+	s=k20260515; t=1783006506;
+	bh=jWa1mD+awYvcVqO7NB5NDH/ijt/TFGs11SlmfzyMrnY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=claYiCGD9+iGsb3rEHrI1s5HJg2hkS7W6gL8omu35jx7x6oqejSN3G4l7/5wm7Oj8
+	 +qeUOcSoyvFJPDTJquyp36FHneu5xD9PqAyLHKJcQ+P3eTzJg10elubGWbYbJr+tvk
+	 gEE7trLBICmQyG4GF4bSPPqOoz8r1KexO9NQFWpt3u0Qf8T4/i/JJfkd3SpHnFKz99
+	 RX6qVFtcgpOs+c+omD5H0aJsah5hYR2/8Ml0K83F+CITI6tNy81EbWhYtG4d4EAkVL
+	 yNTim2+Lm0L3zEKKV5p6v+OojCOKZ+TZsWnkiFcAAN0kVhGppFbuEVQCf5lkvEZkm2
+	 Ixf8nfTRbGYxw==
+Message-ID: <38a23f8c-56c4-43a2-a3ed-bf7d4f784cda@kernel.org>
+Date: Thu, 2 Jul 2026 17:34:56 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="a4brqgkdrivfh2ns"
-Content-Disposition: inline
-In-Reply-To: <akZkuwktaXFTrASP@orome>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 95111C0009
-X-Stat-Signature: dg5cxin4cxas17w69mae5aphmeuagmzk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/6] mm/rmap: use huge_ptep_get() in
+ try_to_migrate_one()
+To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, j-nomura@ce.jp.nec.com,
+ nao.horiguchi@gmail.com, ak@linux.intel.com, mel@csn.ul.ie,
+ pfalcato@suse.de, jpoimboe@kernel.org, dave.hansen@intel.com,
+ tglx@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20260702051341.126509-1-dev.jain@arm.com>
+ <20260702051341.126509-4-dev.jain@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260702051341.126509-4-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1783010486-625866
-X-HE-Meta: U2FsdGVkX1+0hb/BrbZnTZq1eFBNHJmgH87KWBYuDJQau4Lj4d5C0LqCidOcBZbJNyJenTZTOfGWnl3GzMiL2cMjFjf+XRAj7g6/8di/FAbgv1ibd7RA3vaQDY2VKzR4PTqyEjTD0sF9aKOGFJIqTbp90XmDS5TuFT6/eIXw8ZISOseyPKEG0Vn/yuxgCKKOGCGcs5BO1tBlj56DYgJgRH4Oj6gyyyvnVBAVHtp09Trv86NCGAEzeUuCBtHl6E5WBVBGtAqYSnwyIxVBQLD1nYScCWUyL6YIiuEUpLUo3QMpmvK8ouVRn87Dhg50ygEoTMbF0kAqfvjecZfgHiLMUkwcIjGKKkh1ARyVh4C8TZoBVgfgJvg50zmTy+O1Mu1yxC3zHBqa9RgVERYjDuMhqnFsLHjT2fN7VuuTYT0IJyaD8Y0nCBQFSgUA2M1S/EvsdoyGHcoXOYPaxAR7/HtyHpsWlNSief36ilxWUZ6cnrG7f1oghyBUh0pqe72WBRZiOdMP2MXnR0Hduy/SZm/wZYaT2LrmkNq/VVygyKyycfjCm1bez0eb365UZ0mf4lBWbKaNu7j+OfaYfja0Z5NkKqTCglvyFsb47ZaBRGocAsqrQa1tmX68XpgoroSHxtcNGus2/BhuRqbJ36kF9tzwx0hbgZWOCVLEjNuxnc3cjJHroVixcyyxahnUDSk0HEjuiZk3xsLNYJt4bYY/Ufvijl/hmQ3NlRtE8POY+AlvPxv8NALoniP3xdJ17j7BQd/6WBMO73HerAbBSqycJnJamMFPw/OmD2JfbejJFQPzP/XnTMbuEr4Z9mo1SWls9YZv4rASgv/n19AmW5e2OMBDhhxCSaE1nt6xUK/F+6TfLeqfEKHDlgUCulscN9OI37aXwfJIhKbrw6pJz5os4bVQTO/kFTy2vkeA4XeqlbCgnqasjpzrigHJBiPxCbJ+3EQYyIA4NHM/NZYdOaI8kT2
- NDYpr65y
- S6siMCqbz+R10xjnAL7b/AdW1sSZyKjfEiUV4Vk0kqwD6qi+roELIYcUon52iED8cDpbqzZBWaakv22jTu97IP/kAL1S3j3mazDXRhe4GJ4AQwx6218dxYy3lbB9DkcCy5zQ/NDDBR9GYB+SYMMMrZyxpWFBw6NmLNAb1M2sUtp7bJ/JGGhJVgZviF6pW/CWICktuw+5ba6pan+4PFYe/BTAKP+Bom7CMXkU8/OqMplrHTuOBGGYz8aFLNBaN98gBvSRsPKWsfQRwhDRAw6a+jvijg2w1HovwWuxrX7o5tWz7gulLgkV2Se0vNGK9AN8uGnuRl+yKkDFDZoPPosmz3NwAD95eP/e455b2F3+pgNd3q2Uu0wH5hyPCGuzCZ82Yuv4GpETS/82+hIf9yoRnZtbW9x56kB60+HtJuC4B5OXOjerFnr/yiY05rR/6+UKPQ5RvA5A5g+6s5HLK2B/9auxZDm8CM/z16MVlUcS9Lx1JeLubK+wIKCnRllUP+WgnpADmAIL8UpWzyF560U6Qjz7MSw==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: ADF7BC0009
+X-Stat-Signature: q8ofcuyc8oh5bcapn1g7kkh8kg6pfzw5
+X-HE-Tag: 1783006507-247984
+X-HE-Meta: U2FsdGVkX19F6BXMUAhYNrI+qrFPEV0o7MMmv25tzVJbiU2oIpIwRPe//zGor57BR2o53DBdu42hYOsI5lN/LeU9TwocOatIcaATZ8PH520EAErL/ED2hpECb6LzVQy7ddSPZjEZ/1PisplExHeRpXwOQvm6wKtwhxx1SoWWUk5M6rOE8osH6qLDA/MAejx9xL/eCDSaEj6SIx3HNwKdTHITHhMpJd6mtGY9fz5dI2IBMB2orKYLa76q9Q8OZkkfOxqJ4sv4KbCdb8rqvxvUlGmICaSxphIbybRyHqVAsB3oSkD4xAeZyN5+DwD2W8UPtjn9Jyr3wQ6OIR+rLU18gbqQyX4KnyuqN0AZjwxwbvz/+tYxwsjwVoVg+6wU6g4pOze/l6d+HxTPpZyiR2GdgM0pZQetcuv5iSi3QZFY7LgXD48B5GBWn1AR7ony/h5vaTLFxEuRdatPrSLyLXup6SQ5TnPiPdrMCadA4rcTOKwsJ9M281bUnMZ8YAVuI/Lsy0jAXeRoU2oyKsbCS260PY1Jj/BnuZf3sumbJfa0vvbd8OxCv4AgOozve8jNRRaJxNe72oix/yDq4005yrcdWUJ/ztUZG9oPulkrtZGf5XmDvMqUlJvhXsqmR/MIA20TcNja9UxrIQqhWUAzmHnlkd5jLSpdPhdTysDCJTogsZDYnLz/NDOX4kBCqo/QJxU/G5X46PFmazvuAPPBusqXeMERdZCnCZu2iqfUYEtoAyxhzcDWs+JMgHUe3SWCx8PeEEgSWsbhOY6+ZuF/i8J6skjthQP5Mct0FA5r9jWbwURS2gOZKRUlolF13Q2yJ48W+so8Z5E48xzB7hoKBKu7aSH3cONn+tfyZbk0EavoBZ053JBDV34X+oPX+JN19zDm85RmcU0h+NgC6jmX3ptiOvxKihvv30gGwI1vBqy8nDcxhRfx1RgxyMdH6IZOPVJ7owIG/n908OsyuHYQll/
+ N/8Chm6D
+ AD7LlEK1gC0GDMVzoXfGNyJTzeVTOI30hHxxnvmefJsBdSTIlXtyvFM4uc4q9TAWRnI0Ut9BgWRTGZzCMHsj/AB4nyC0trHMWQk1nQ8NdoIyepRd89X3WRYOtqKNnPy9+Un899sF3iEvL05jYdWryf6dgpqnXiotSw6nFxn/tbn9Ra3tACVviJjA87Beg7YCqtaPUBJFDHihtWMOfqIAuakyV52tBuhZbIcRrcDFM7N6Htb6WUr7GWCpNljV+GxV+cwG0dGBB3SSUmBCFJXViaqzVaL/VgA9YzXxOvFrr+sCStm+EUMVL3zbCxaEbvj3GcENfqnWbeSCUMOTsPJBSCQ6JIetKB2xbFU2C7rAzxIyez6AiBKUS/um6UXlNfWS7Glcq33jD7SDBxBjLeByLD6ruN9dvtXeOPP7ebJOhPU1qISTWNQtbiccT7RhX1YTMTMH4ylDqVqTezZ/VrEunczq0fw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,79 +149,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 7/2/26 07:13, Dev Jain wrote:
+> try_to_migrate_one() is used by folio migration to replace a present
+> mapping with a migration entry. For hugetlb folios, page_vma_mapped_walk()
+> returns the pte pointer to the hugetlb folio in pvmw.pte, but the code
+> reads the huge pte entry with ptep_get().
+> 
+> On arches which provide their own huge_ptep_get() to dereference a huge
+> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
+> etc to misbehave.
+> 
+> It is not clear whether this has a trivially visible effect to userspace.
+> 
+> Use huge_ptep_get() to dereference a huge pte pointer.
+> 
+> Commit a98a2f0c8ce1 copied the bug from try_to_unmap_one into
+> try_to_migrate_one.
+> 
+> Fixes: a98a2f0c8ce1 ("mm/rmap: split migration into its own function")
+> Cc: stable@vger.kernel.org
+> Acked-by: Muchun Song <muchun.song@linux.dev>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/rmap.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index aa8a254efaecc..abc3a44baaa3d 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2505,11 +2505,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>  		/* Unexpected PMD-mapped THP? */
+>  		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
+>  
+> -		/*
+> -		 * Handle PFN swap PTEs, such as device-exclusive ones, that
+> -		 * actually map pages.
+> -		 */
+> -		pteval = ptep_get(pvmw.pte);
+> +		address = pvmw.address;
+> +		if (folio_test_hugetlb(folio)) {
+> +			pteval = huge_ptep_get(mm, address, pvmw.pte);
+> +		} else {
+> +			/*
+> +			 * Handle PFN swap PTEs, such as device-exclusive ones,
+> +			 * that actually map pages.
+> +			 */
 
---a4brqgkdrivfh2ns
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 04/11] arm64/mm: Add set_memory_device() and
- set_memory_normal()
-MIME-Version: 1.0
+Again, the comment is related to the pte_present() handling, so best to move it
+down there.
 
-On Thu, Jul 02, 2026 at 03:46:44PM +0200, Thierry Reding wrote:
-> On Thu, Jul 02, 2026 at 10:18:47AM +0100, Will Deacon wrote:
-> > On Wed, Jul 01, 2026 at 06:08:15PM +0200, Thierry Reding wrote:
-> > > From: Chun Ng <chunn@nvidia.com>
-> > >=20
-> > > Add helpers to swap PROT_NORMAL and PROT_DEVICE_nGnRnE protection bits
-> > > on a kernel-linear-map range.
-> >=20
-> > That sounds like a really terrible idea. Why is this necessary and how
-> > does it interact with things like load_unaligned_zeropad()?
->=20
-> This is necessary because once the memory controller has walled off the
-> new memory region the CPU must not access it under any circumstances or
-> it'll cause the CPU to lock up (I think technically it'll hit an SError
-> but in practice that just means it'll freeze, as far as I can tell).
->=20
-> Probably doesn't interact well at all with load_unaligned_zeropad().
->=20
-> > I think you should unmap the memory from the linear map and memremap()
-> > it instead.
->=20
-> Given that the memory can never be accessed by the CPU after the memory
-> controller locks it down, I don't think we'll even need memremap(). The
-> only thing we really need is the sg_table we hand out via the DMA BUFs
-> so that they can be used by device drivers to program their DMA engines
-> internally.
->=20
-> Looking through some of the architecture code around this, shouldn't we
-> simply be using set_memory_encrypted() and set_memory_decrypted() for
-> this? While they might've been created for slightly other use-cases,
-> they seem to be doing exactly what we want (i.e. remove the page range
-> from the linear mapping and flushing it, or restoring the valid bit and
-> standard permissions, respectively).
+Apart from that LGTM.
 
-Ah... I guess we can't do it because we're not in a realm world and so
-the early checks in __set_memory_enc_dec() would return early and turn
-it into a no-op.
+-- 
+Cheers,
 
-How about if I extract a common helper and provide set_memory_p() and
-set_memory_np() in terms of those. Those are available on x86 and
-PowerPC as well, so fairly standard. I suppose at that point we're
-closer to set_memory_valid().
-
-Thierry
-
---a4brqgkdrivfh2ns
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmpGlK8ACgkQ3SOs138+
-s6HETA//VE10mlKmDkMPw7oOS2GPLTn9mVHksFDOn28PMBlC2qgyv4CyznGj3Rfw
-WHIYoNb0rxntAbxQkh6SV5FCCi76fm/uTR3z2an8FI8W7KwiVfDiaIv3cmlG6TVd
-XcCj42QUsUHU7iFHzfSVkW33626MSfyeD+w00yxmT14U2Utl4X/+V+EQF6tRStJZ
-eLJUAyxrArCx98MI79QW13QB5MilfaFjtY6IxwXr+0hW2qnXGbNWJ5x1Z5kbC6wD
-6yOAfi8QY0nqau5GKgo/+dkYUq1zAc65a7QdRu5KW383NDcLhRbtrwBoA6TYFriL
-c2GJiV1ch4N8Dsr694Lmn4jNHUUqPLcPY8it6qMkUNVrc5XjK24C0intns2AFR4i
-7ca82YvaTCuql87GjgBkz9NptVtmqVdZxnrtVYAH9mbvfczVpAEEsacYrMwtqBPM
-crTqcMLjkLxVZdnsvwT3Je73FolwTnxNsBlTaA24I64kQCW9QUIRy6WltcFdimPM
-2K40ULhVg3dNDSaGsQaIvDv8kpgBJiX4sf3kIjK71Dgo9/HKS4IBZx3kfKUxxURj
-RD51dxPOiDXPwIzDZxbERJ2rZx4NxSTj2FjLET7Vs6nbKwvC+K/XiLOtEIXbfwdD
-w9Hih0fRPiPrhG+uab8J6u+Jsaj9KI/DnuqDrIZL+ciFm4MVaNc=
-=9S6h
------END PGP SIGNATURE-----
-
---a4brqgkdrivfh2ns--
+David
 
