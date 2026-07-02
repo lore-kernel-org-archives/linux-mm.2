@@ -4,99 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E970C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:21:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C261C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:24:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6817B6B00AD; Thu,  2 Jul 2026 20:21:25 -0400 (EDT)
+	id 269AC6B00B5; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6592E6B00B5; Thu,  2 Jul 2026 20:21:25 -0400 (EDT)
+	id 21AA66B00B8; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 595E86B00B6; Thu,  2 Jul 2026 20:21:25 -0400 (EDT)
+	id 15BE66B00B5; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C6A26B00AD
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:21:25 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01F688D58D
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:12:39 +0000 (UTC)
-X-FDA: 84945539280.20.1A86DC6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 14544C0004
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:12:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Tb50A/dS";
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DD79B6B00B5
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:24:40 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 90177140121
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 14:56:07 +0000 (UTC)
+X-FDA: 84944136774.07.135E3E3
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E7A99160015
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 14:56:05 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FhWJEmba;
+	spf=pass (imf08.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783037558;
-	b=NU9QXTP/mE0Mz/wRYDGVI4JMufV3IVITBeaqguitr9y+ZuRjDR8iiuTAmIxjFTvFSIsQnA
-	t+CAnd4tgKGmW4LTG5F5zSqUOv7tKZQQHMnWsiwqfBVtzpK4UVpdDSmOnP+l9xkZhI7kZK
-	ONSfBX4jRKnTKfij/DYiTM30cwx12cs=
+	t=1783004166;
+	b=6XFN20B59GZXc+vjZEMHYDojRgeL8qJlCTVgVQ1tmQLzz0CSeKiewAYYHBAd6spTDpwiuA
+	adNJkRUzFsnzdoF680UE886+Lb4fGcNSxOGtI0pl+vnL+T9CS/3OeXPa/TuWs3ahOrb6vm
+	AZc46Kr5LZ7gzAt4wQlsNA2Y4nRbgRY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783037558;
+	s=arc-20220608; t=1783004166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LN+VlUU64xomiYlQ6F7UHxeiqMWSdTj4VlmHCeuMCOU=;
-	b=Itx6dQTur8+FlgfzqqeeTlDkGOtnNvUpddbhxUaxqoLCh5ev1ap2A+c80I/dX3dOg1yMHG
-	3uEiOAsgL2fX9kuRgY/3zV1CFy6W7UTzIU/YzqVcvgU5vaHqGEtfH9ky7fpp7+Cl83CmlX
-	86hsgZQKlOOQNxD39x3JiXIgGTykKdk=
+	bh=T5zfo7gwxlXsH8BZgYvGWYJB1jbxdG1g9whcrQZbPWA=;
+	b=j/P5Oo9oYsE90kZQbzWIt1AhZUel27kn6Q4kJc7pdlN1p1H6fSVTAR/06fpUmM9Cjv0zdm
+	jWXNeU0aK+UhuDoZpGUUYwDkzFTgvhtMWZUIqsaUvxdKCAeKTfvfD3w2BjdAyWn6hrFT8D
+	YWsSXxwVK2fTatXMCevGfNuHk32a9XY=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Tb50A/dS";
-	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2D24F439D6
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:12:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111A31F00A3A
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:12:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783037555;
-	bh=LN+VlUU64xomiYlQ6F7UHxeiqMWSdTj4VlmHCeuMCOU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Tb50A/dSC/k2pIa1weRNyRhz4UqXgCqbnRAJFYl6rFeM03LYZLcfVJ7qoJ4A/2MG2
-	 Rr1en5rhFj93/iqH731LtZb5Vj6kSfVMxfW73fECjIpKwhICPfuHfGgTEu8iQUg9yE
-	 H+ZkjumjdIc+bHeTQRwHD9hYLlNwUlKmCGD/vRRYz1GxjeaW15UJkIElIghCAJ2jXt
-	 plptmVfxs569/tWn/9gQBGO9p81YKLpTDRNPI3bJRGd37DfWBg1BsK8/CpxOn8Hthc
-	 pCmjIAWE+YSYpxquS7SQ1e9xK1YZjqnHBlSBenMY7MHbbxp/eSWft6MI0mw6l2pXQk
-	 d456cNpjaCVGA==
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8ee88fce572so25194866d6.1
-        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 17:12:35 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrkAFbnLWYhhwzJMipB9nIyr73ar3mi7WxHVSvaiSSp5EKEJwo635pB+EZo/7NYLQC0N994vgW30A==@kvack.org
-X-Gm-Message-State: AOJu0Yyz0tqfJO0t5/MIQBC5+Tj4OCm8HslIX1IQ+A06xQPGdDTr7oiS
-	+N8DUN73mJYPnS6jlR3NhLZVCMAn5GgnpqpiI6CXDgr6POR/xxqIuzyd2wOpdb4Kmo0L8m8ibQD
-	iRQCARceKDwlhOCj0+MsKGCmAt77OI+k=
-X-Received: by 2002:a05:6214:43c3:b0:8ee:ab07:c79a with SMTP id
- 6a1803df08f44-8f4236257abmr99737436d6.33.1783037554547; Thu, 02 Jul 2026
- 17:12:34 -0700 (PDT)
+	imf08.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FhWJEmba;
+	spf=pass (imf08.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=T5zfo7gwxlXsH8BZgYvGWYJB1jbxdG1g9whcrQZbPWA=; b=FhWJEmbaGn6UtsXhnqmiUSuk42
+	oACCjFIyGz/kt/5rJT4X3y6beox60aT2V75XC1G+ptDHmqjKnSAmjOx2x1h6TagiUA5nKXTRYTbTS
+	imggaPZaZHVbnLkjVW+RW6xdGKAP34AdwblxmWNJ1gFZvOfOZbtM7aDTqztig/cb/Htcdd90dVBHC
+	hSrfA3aVx1FdAl8cYGJkP2igPo1dG67yeNpwKdc4qe7Ajk0A8yC+XZeskDbjuXgh8fVMLgyXaxHyI
+	gAPqHLvOCIIEaH3cB4/QD88kOkCcovhVZvjgYFO/S6JpaGDHYSVi9juyoSJbNjtNXrPSXCeY7cGm8
+	eRB4QPPQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wfIpQ-008heR-1v;
+	Thu, 02 Jul 2026 14:55:48 +0000
+Date: Thu, 2 Jul 2026 07:55:42 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, workflows@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 2/2] selftests/mm: test kmemleak's N-consecutive-scan
+ leak confirmation
+Message-ID: <akZ4tzQw70x3RR2D@gmail.com>
+References: <20260626-kmemleak_twice-v1-0-ab28f7cc0971@debian.org>
+ <20260626-kmemleak_twice-v1-2-ab28f7cc0971@debian.org>
+ <akYkKgWOsYnw6ETE@arm.com>
 MIME-Version: 1.0
-References: <20260702140257.44780-1-lance.yang@linux.dev>
-In-Reply-To: <20260702140257.44780-1-lance.yang@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 3 Jul 2026 08:12:23 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wkSrA9oRPFkWkZbym-6wK5Z-eRZWRLNrKgmO0adpWudA@mail.gmail.com>
-X-Gm-Features: AVVi8CeWx1IRN45D52TTDictU96YFaU3t5miuYraMM_UyrWA1zuxQ9nndFocYdE
-Message-ID: <CAGsJ_4wkSrA9oRPFkWkZbym-6wK5Z-eRZWRLNrKgmO0adpWudA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] MAINTAINERS: add Usama as a THP reviewer
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: pm4yn8cordqbmgypgxobg3jntsaiery9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akYkKgWOsYnw6ETE@arm.com>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 14544C0004
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1783037557-830917
-X-HE-Meta: U2FsdGVkX19MXx9eN/VqakTTLGwK5FWuVU9QJxoSNnceesejSAQ9pqCV1S4dWJqqJb6Z5Ulx1K2BWzjRXJKBVMr9XdV84GgshWQncB2XqXMTSW8gM9x6N0RZ6YXBgsH3qqt23cZm6EvIpRS/0CKhqIgnZrHDONwQhzOu6pZjLPhQj80hQiuHj8gazTHfsrOYJJvpCeoEcymN0+E7sTCBQKJDHpdyUDJkDYgfjpoSH9xUKHkPHcCG47MLn9eHYmSMuQmvEswr9JGofIUzT+iw3eeNHdF5HVop69bIR8T9q5ufj6vCtHYAmiTKdiWCvNL/fJxEqsIRJ1znsROY+pbFqozPOb5kUYkKDAG/v2DFGQhRh/6E1M7Oa2Kn+xn7+x1cj9LyaW8PoAaZ2gYoNYu8rG+uqoLcX0vGET3G5flHh9cB9MHiPlyoc9Pl9EPmMjlSktxqleRjG+NSKWohrFDQr15sdQXNvIlEPf2vmEIJuVRtZA2TR7XLABDc9f3J6jh+/kt7FvS2Qu6BK/F5PuiakEPi9wlyul1XVCbjkXJCHACPMPkqkOhFk4dGbSur/pjMddjT+YOPbm472eDEBS2jpq/PMCEtyFPJ3Pz8JC/mrHo2FwGaBsG14J41mFzu8wd0w6q0J9IjKbFGi3eL1i+4/meKNKhATPGQrdqX2iaW6GFXf13703bZSEMMaAmeB6+qQFtWQ/oxG+YlC9xCFyQzF9NWILZFvGu1kU1qtrWfPFNYIj13hqM91LeeW7JvlXmvjzeJ0vgaPnIjlOouOzcFIXG91G8Dy5FfQjTmrgsKqhtMsZ3z/YdJ8XbChJW3DIsX1xm1+uPubb9kS5CLWBeE6D/Hc2nXwMiLm7IAY2fksKnWLvhtbj8IOWIIGQbGhcKeTEOZeIyzW5SeihGIQyA3c4OjjHEq3uXGOPnHJ1ed8rLM7v4At/swSpTxAnQbefkHJN2w36pzPvk5uaP8Jpu
- NZpkbrSg
- kdvrZfdOTIeolGP1rs63OFFUkGFApQunSRZnIU12+g9Hg33DBLU7Nixq8tIvsrfEMactyl/wTrFrmMsjFu819Wow4gkb/57MLbomOKLlKJRMyOZ9kDwEUqsZ1QMsarpYQ6s996or0or1GkAK6/fT5vahXSV3zfDjN2MJuc+yKYgjVP8tIAdsCuUJXsVXM25M9BHiqqKbojYiPNtDtkhZYyGTGahFS3P/h3lPRYPFC4ejdvLUGqJoME6LuPwt2RW+e/yhM2SbeWZSijTs2dvg+gHobhW3ff11haQLT/7VZ25+xHJVynDidYhc9+pjxiyglmYTePM+i8o9+nal+ejpd73tncg==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E7A99160015
+X-Stat-Signature: acopf8pxo5r5kw54b5n9k1c93nb6u8i1
+X-HE-Tag: 1783004165-224270
+X-HE-Meta: U2FsdGVkX1/mT3oyDyiJqivT8xIct70MWvuOt4s7vF2WhbMrh89aPMCf1ztGb2tU9M/ADnVbqDmUndQ9RrLOfSFHTQqljiGLhHS9lX9f0Qs/8RcPDOxDPUuB0pTS0vEKkEfX3W4kFcWtiT5mMicsGEN6BO4m3/w5YN8UUcAyMiCF0tk0/GN4L5SMV8k41KFI4YW5apnJovtqqVJ9fV7IC/dafq2NC2mgXgOqlBgjj3qFTp1OkzT2SS8qKie0WBwc5nFfRNXa99odQkbT6iHNrbJc2M5CXbxuZCuM3K9nUcPU2k4gP6jmRgEvUQ7bQAF2S5/v1BUTgiByGuKjIy9IkaoiD0OVeNHG0biDjvo9nOVp6LAs86ZWRoR58w1GCH4ccRFQg1qrPUqPzWAXJ8i4NYfIKOjOZHDBvvJgPU6zVUVFphuWLff5vyqVpk2iJRAjDmqZKt4+sEv8EodlJPh34lQL9zhKixtYe84uN2ztWQWkIygBbghY4KfOQu8RFO+TpwZLheVWVeGQjfP69TLkOQWm5xTmenslPcaATf8MvqpM3WmikgGC93B9idaEBsXVLBtdPoEOTae1GqA+J8Dj8MK095E4SHWLqadv3twQgcvf8WW1k8mps3xOn5XFV0Q3kA1FiLDI+RulAh8iTTVtcdFbF+E+WjzTvvdGET1UBkBM7Zl+5LlRUqxXTfvr3xYy2fWP9VQ2U+vLiuPk7eBE02fSKVObJY7Ba1Yl7uBKA+XQijFdiQTHIQH5qqQDNXnVS1hr6l7qYViYw++SDdxKV6oQNRJb4K3bhkZlFsxTa1MNQIMEvrPmRk+gzuGtOVJS6m3tIq3i0QPx0+nv8plXjlfYiRz9no0RPz3gWghBK4wLP5Eov8v8rmZq94SqPA7MgBUVNaJkbImq3SQvUqCmeJsBiZuKtx9/NE1RxloQSAgZWVygqmZniiUnTervh7eCWN6SELrfS2mbOZuOd30
+ f16yl4Xx
+ 5h4CSfgdRtwk6az8aTqUKKRBAXq0u+f9F+oB3HgeGqbCaBVoDJhB2+Wze3knb2p0Xv5JSE7Aja5LOul3p7JvnU/o0Vp7QcsewWsIjnePfbU+waBH1dVkFAeBV+wh6X6N9ZJx8/jwXRLvu5Bn9HJGZ+RBd4/OXiUdO/8xkNrYGmel33Tj58tetodx0aWekJXBJXqwZ/0kMkmbSj5eudyRxjcgPwvrvbq2YSjf2ttjcYu8EAD1EAZZ17oRby2WOpCg1n3tq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,20 +101,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 2, 2026 at 10:03=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
-rote:
->
-> From: Lance Yang <lance.yang@linux.dev>
->
-> Usama has been active around THP, really enjoys working on THPs, and trie=
-s
-> to review all the patches that come in.
->
-> Let's invite him to the THP party as a reviewer to help with the ongoing
-> THP review load.
->
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
+On Thu, Jul 02, 2026 at 09:41:14AM +0100, Catalin Marinas wrote:
+> On Fri, Jun 26, 2026 at 08:52:03AM -0700, Breno Leitao wrote:
+> > +pass "min_unref_scans=1 immediate; =2 gated to 2nd scan (counts $first/$s1/$s2); param read-back ok"
+> 
+> Are these off by one?
 
-Acked-by: Barry Song <baohua@kernel.org>
+They seem to be OK, and I've tested it multiple times.
+
+> Kmemleak has a mechanism to detect live objects
+> via the checksum. A side effect is that on allocation, the checksum is 0
+> and only after the first scan the checksum is changed.
+
+I got the impression that checksum continues to be zero for these
+objects during the whole life time? (weird). 
+
+If you think this selftest brings value, let me investigate what the
+heck is happening here.
+
+> On checksum mismatch (i.e. the first scan), we mark the object gray
+> temporarily and won't increment unref_scans. So we already have an
+> implicit two scans required to report an object as unreferenced during
+> its early life.
+> 
+> I think this test needs a priming scan to update the checksums
+> followed by the actual check for min_unref_scans (with scan=off,
+> otherwise random scanning will skew the results).
+
+I tried a priming scan and it actually breaks the min_unref_scans=2 case
 
