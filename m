@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E943C43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:21:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E16AC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:23:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07FDC6B01A9; Thu,  2 Jul 2026 21:21:21 -0400 (EDT)
+	id 520C66B019B; Thu,  2 Jul 2026 21:23:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2C476B01AE; Thu,  2 Jul 2026 21:21:20 -0400 (EDT)
+	id 4D0E66B019E; Thu,  2 Jul 2026 21:23:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D57D66B01AA; Thu,  2 Jul 2026 21:21:20 -0400 (EDT)
+	id 40DBF6B01AB; Thu,  2 Jul 2026 21:23:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 40B646B01A7
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:21:20 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4EEDD1C0EAF
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:54:12 +0000 (UTC)
-X-FDA: 84944283144.16.C114980
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F8E36B019B
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:23:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE76940196
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:04:06 +0000 (UTC)
+X-FDA: 84944459292.05.D96178D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9CFE8A000E
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:54:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eoAO/iRv";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 19EC71C0002
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:04:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HKOYsxPg;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783007650;
-	b=fNfU11TNxyMmeZIJKl0mXwVZoF9c5Cfh7K7YyLLbr4UY1Mm3KHevOGgZc+i1ncBC47kvC3
-	KYwInFC1l3wEw5jEnzh6uxrWKxYXNRf3yKHNhy5tIwDFPvrxpYYuQew1fVHkNQe574Pf/M
-	8WhkdI8vp5h1CTwb0bu9Hpnw6LRvFBc=
+	t=1783011845;
+	b=SGLxUAR0cdLrvmVuhxW3RUN7Bf6hUoU4ZglkZXFRUW0urmUTk3lZ1yX02WuNmpH49TuwPD
+	7c+fw5A35+UQq/hlh9oGLD8Ihwo8NrG5rifkyTAsWNPgwEevNDFseS+v6CV1eZn0xwpf+V
+	IbK3H8MNfh96o9Ifm2cfQd6Z3Vojs+A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783007650;
+	s=arc-20220608; t=1783011845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RPtnA5Otm5AEo45RKl1pTz5DNKyMcRXjK9BGaXAsRaM=;
-	b=iC7erNpXG64xe6W6GUmCYLRD7DVl/mzlJzIaV2LxEIVXyxodkGkCGE1V5DP+cvAw6AIIP3
-	F+mgMjCEko20pN/GmoOjv7fje1jS4kxrjsPLNqKB8rXXysKJxUZamCwxMo+oZNFKZGRfXM
-	PRpX5291xXd2vwLmUfDNnopw2ggcOIQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YmemtDDe1o1PgFyP6WGOt3q7FxPO3fkO/4XZQ1A7KyE=;
+	b=KErcE3Sd+hrAXfYAusDOMOV5pMg507UQ6zE6I2QlJjscWi9pjz20U97a3Amf76Hks2+ePe
+	4C9cnC0oJxCs+m1x7JLWZKMp5qaxNYxgMmRVYpalfZPGMhyv1wmU5jC9NrL6FuMc3Jxdb3
+	RtTLtilthjHqXXzuJnDo4qhaBbWEWNc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eoAO/iRv";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HKOYsxPg;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 310D5601E3;
-	Thu,  2 Jul 2026 15:54:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9F31F000E9;
-	Thu,  2 Jul 2026 15:54:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 87FE3601CA;
+	Thu,  2 Jul 2026 17:04:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8261C1F000E9;
+	Thu,  2 Jul 2026 17:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783007649;
-	bh=RPtnA5Otm5AEo45RKl1pTz5DNKyMcRXjK9BGaXAsRaM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eoAO/iRv4NCJmrbvnkUOji7Q9mno40CpmCEx/xHNPIKlF0pSlsgn/0dhJmrhCIqbx
-	 +GNiVM9aP/G36x9UjeZZm2heNXer8jFULVW8lAmYAaqHz+KlUSfxRJqCIhGUOQ2i2g
-	 saUMCn1ba8Vz5IJZVJkhfsLt2EzZYpJxMLG7moRbOje8b1ydhS0jJgjiZK4jRZPCWw
-	 CtGp2ynJoUX359oHbDa4ynJqyt9G3rQH+xntmnbxug2X+sdWGCahVuVkqy7CUM15s7
-	 6nDD3348eRhT+1fPtXRUQiCpbJmV+Sjh1mqVDdhU4cJslL4SNZ8GiZCk66KIEooXNH
-	 un8bsV222WgAg==
-Date: Thu, 2 Jul 2026 18:54:04 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Subject: Re: [PATCH 1/9] mm: numa_memblks: set numa_nodes_parsed in
- numa_add_memblk()
-Message-ID: <akaJnPmqCvNQS8fY@kernel.org>
-References: <20260628135828.1393120-1-ekffu200098@gmail.com>
- <20260628135828.1393120-2-ekffu200098@gmail.com>
- <178298867638.1436291.11279946475033863942.b4-review@b4>
- <CABFDxMF4B5cYYw5h+JWwBMFfz9XMVZMJdEwwy3ksRysYBTAZGw@mail.gmail.com>
+	s=k20260515; t=1783011844;
+	bh=YmemtDDe1o1PgFyP6WGOt3q7FxPO3fkO/4XZQ1A7KyE=;
+	h=From:To:Cc:Subject:Date;
+	b=HKOYsxPgiBSzSeDjVvQJzVpD1yrzVzFbOIX9SSHhfjxd8kVvbUuq9rxsO51jCZmiQ
+	 1mi8eESw9sa0ASlgWaPTQPsGSoYsdsx5vnsciqTN6kCeh0ZOp1IkjJa+HyLJnuPS5z
+	 obbFbJwJ/+l1ujMa2zEAUjbEwIoqmdFbrjaqHKWLrdb1xewKnqLXhr3zEYQYGclbL9
+	 eIy4gvLHg5airwn+eIrh4rel9plg4b6zEZ+GMrkp1EcIJBmDoJz4gyhaWDWY5oVwtw
+	 WfxZOYCYq0+HduasUolc8Dxbj+E3J6/teuBycot1XLo7k9yIWW8WwEhkHfpq8UJaeq
+	 ggrVvicOaXk5w==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1] mm/damon/core: disallow overlapping input ranges for damon_set_regions()
+Date: Thu,  2 Jul 2026 10:03:23 -0700
+Message-ID: <20260702170326.87255-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABFDxMF4B5cYYw5h+JWwBMFfz9XMVZMJdEwwy3ksRysYBTAZGw@mail.gmail.com>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9CFE8A000E
-X-Stat-Signature: mm34oujstqi5wpzkbgrwmuuxzqy3gjix
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 19EC71C0002
+X-Stat-Signature: tegsce14capduabf7twap9wmnyue61dw
 X-Rspam-User: 
-X-HE-Tag: 1783007650-777151
-X-HE-Meta: U2FsdGVkX18PRcl2+PENZ8Z13TOqW8JbJnqdiOu28KtJVuqaYM1cf+CgLaw3ye/5dkeF5MzJPTPWf+8dbaf9DXszd78koN1Q/APWKPtPQkwzlDbnu2yXFGtWIr3blqO1ZtwyV8PST8sS7VZfBVWxRy7q+ryYLsurKJV5iEvX/aLvk97q2NcKLxZ4NBN6nlLFgqYGyin8dm9vYSQPiI3pHjj3YfX7i+/nefMtHvC6pp9P2LEZDGVM3BeGnxyKV0Fs/Qq5t4sLNzCxHuovh9aRkrMmTfLT8wGOjDTIYIkP67LoBZYEfsD5mG4CQA3gEIGaa5FcN3Yxjn+toIkU76mKv5kjx54YaI23ujj0afjOM9G3VM4S7QQ1ktYJb3np/MkZaT5yCt/JsFWLhGhQBdgzfWsk9cUWp1QHlhKQSLix0pYvTqjronLTa/o2h2fNC9fv69SxeUdpdfbBr8TYCNyqyPDt+qXsLwF7rfMvN5jNDX8lszjYX7x3/ZBpxqIgIL51r4PaortrtBvr2nzj+lBddCMopItnyqv1YLsSErM5fszVCEcw4Hr+K4NGcoPouX9qBmc59bHFaOpbPi03wbTLR4X1AE8t570HYeD0jks8TPMHHsuSLF8GYOj0AGgY7Hs6oiHkbEY/swY66e1rHINtNIvNN5T5appry34OIbWxxVSJau2a3bq/L2O4YYB6JfywzefWi57JODreMxlIUYn9XDdQe/QYLgaP65//6mxDqtoAv+sCEcbPL1pZ6oaQbNV5Um/7xyPx7R3kBvW7rRImXC3WiQhLD/+uiKDch7wK7vq6mHFkthJgWm3tBqTGni6elhzKQccjXV1mu472P0PFEoUTa2srMogYKJC8L0Vubm/Qm13kSuq0OojOgbe3DF1b3MQ1Bjj57N1iMqFEaYCCF/OHKnZdXGKT1DuGn34FGN06Ra2YcFdMYA2ymg2p/RCSltZaZ2U9eIuO0kcu9z2
- WRZXYZFN
- Md+z+Ni2GslBKt7HcAB994Ep1UXXq/lMs0kkTrber27t5NEtZiFYt73inhmSrQEgiuXwx8DPPaJF2Brp2xhktdctwk+aV7E5a021C16vrgaZR9511CX66ejT+BiNwpsRqTQ4+1rf32m8fQZMegJp5RbmakP6mWxdyM1Z7kw9uxzmR6XUU24RfwkSrWOnhCAyjUlPTmFA0rmb/1N0cv8x9xHej8QJQJsvftt/MzaK5ScdEnF9Fph8CpegdfQkA6DyTiA0V7PkfLX5h9dmTszGMB9BzjSAnnqV5EJ5oO2OaYq1yylTPbmQnj8ZOD2FT8Ony8GJTadlwmW3pCPo96lixPh/m3esXk7ikNIr6wmTUp8dsL2ADUS2zy8lx3A==
+X-HE-Tag: 1783011844-843654
+X-HE-Meta: U2FsdGVkX1/BmDs4cWa5oAvmIljZvDOICXh2SxLf2dZNJsFc6tmpw4VsOse4dlS70GKNS9aVU8SH9MjXWyoqLXkkviugAFjFKfA44ZoU4RnINAw9f+wVtz65n7mzorzCBDmHC3YKmrbqzKM53jFVaplbLLPhTfkmniDEEIHClZtpsKjINlurSLYlsiwcE4gd+8PpvH6/HUupt+AnwzGitPGFntW4ylx0NyAghdWORmQKCqHxNdSrJ58UIspNxWSICgP3wOuozJ8nMtBNYrDwVdFWRtB46SppHBU5cy57hSrDxTWR6OS7zBeB/xrShg8D6C6HxAS1Vi/M0Ys/S39sy5EU5CN0cj/7Qx123zp9DQSvzJ52idN1wjfbAkOS7WUZruu6mZNDIAtvAKiDxo+Ks8D2TqkvPAnVe+lff+adUi4x0shN3k9wo/8TYaFcZjd8xYvrpS8n2ckSMyTDUYEwAF/s9wWaMzdmovwXBPy7FNNo4tQxOyQ7gBFk/r42QxzipT42sRJMb6CbfQFXCVdNzL68Sl6ESvWq+EBaB4XrMGvIIyYkgMslQBwOs9uqOTtyU62ROUcdtinTHQv5dL+5JcAvER/YiUmZKwUaN8mGCj1hEbuaQm4knqCVCinNjjhYhFxCsjOe/ddPw6HBIjlwWo5lD8JI6Y3/leDJftc4x+ryRi0PAZySAyJzJQe0/qgy0p37Qks26v8ppudqKP5xkuN6gQG5IHUE+K+j1y5QL6eNULHabmHeSA3DE+YbCXapPJ5we/liQHai0ryKw6s09WgkCI/QWPlLtP00z35TgRnm9wgulD5vg59KKYHjsx0dHLaUM1fZl6lw8QwpOJqwVxrdHc1/bXEcXgTEKEp6YMIMyhZNpwJ8WdX8pIkad8Zl2O0ydX9S+JWORUbDeoKH2y3/sG4EPK86z1h2U61or3g9CaU7znUzP1SKhQYdmgYM09bItHFAosKj2HnRXY1
+ uhTnFD/c
+ xJFmhqU/z2M9BwacJ4I7yjw9rxE7dw6UK6wEN4i38V2CNPeX/b2tzKl5seYmO4ubXxGTXNsMOHoFASfmzR1IDiY7dUpMTeAKsYtUtkpX2bQRzi2SaFKck0FKZ219xH79sKGCDcu1iNLRhSIuDRlhWGWvR9IdgzPYEc5RnWDxtZcVZrjxEfN7iWv6V+mawgXBNYXBxUMUA/JiCkwPeaCwf7HLjTBmKYpP6IZJiyrInagC6b3oRsYxyHkvy7wlM455uwdRvpGInGIAutyfQBybyGGj0X5KbIuEHa217f/o13wyEdfwjSvBD157qmQXYk/tPAZArtu98+sCACJUlT1pO3Oce4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,72 +92,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 10:43:40PM +0900, Sang-Heon Jeon wrote:
-> Hi, Mike
-> 
-> On Thu, Jul 2, 2026 at 7:38 PM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > > Every existing numa_add_memblk() caller separately marks the new node in
-> > > numa_nodes_parsed with node_set(). Set the node in numa_add_memblk() itself
-> > > on a successful add, so this no longer depends on each caller.
-> > >
-> > > numa_add_memblk_to() now returns -EINVAL for an out-of-range node id, so a
-> > > zero return implies @nid was valid. No existing caller passes an
-> > > invalid one, so existing callers are unaffected.
-> > >
-> > > The per-caller node_set() calls are removed in later patches.
-> > >
-> > > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> > >
-> > > diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-> > > index 3c3c4eac3514..2d92ca38c02a 100644
-> > > --- a/mm/numa_memblks.c
-> > > +++ b/mm/numa_memblks.c
-> > > @@ -135,14 +135,17 @@ EXPORT_SYMBOL(__node_distance);
-> > >  static int __init numa_add_memblk_to(int nid, u64 start, u64 end,
-> > >                                    struct numa_meminfo *mi)
-> > >  {
-> > > -     /* ignore zero length blks */
-> > > -     if (start == end)
-> > > -             return 0;
-> > > -
-> > >       /* whine about and ignore invalid blks */
-> > > -     if (start > end || nid < 0 || nid >= MAX_NUMNODES) {
-> > > +     if (nid < 0 || nid >= MAX_NUMNODES) {
-> > >               pr_warn("Warning: invalid memblk node %d [mem %#010Lx-%#010Lx]\n",
-> > >                       nid, start, end - 1);
-> > > +             return -EINVAL;
-> > > +     }
-> > > +
-> > > +     /* ignore zero length or invalid blks */
-> > > +     if (start >= end) {
-> > > +             pr_warn("Warning: invalid memblk node size %d [mem %#010Lx-%#010Lx]\n",
-> > > +                     nid, start, end - 1);
-> >
-> > Nit: any reason to put this check here instead of replacing
-> >
-> >         if (start == end)
-> >
-> > ?
-> 
-> Reordering is needed to ensure the following node_set() is not called
-> with an invalid nid.
-> While doing that, I thought the start == end condition is the same
-> kind of invalid blk, so I moved it into the warning block.
-> But no strong opinion here though. Should I go back to not printing
-> the warning for start == end in v2?
+damon_set_regions() assumes the input ranges are sorted by the address
+and don't overlap each other.  Hence the assumption was initially to be
+explicitly validated.  But commit 97d482f4592f ("mm/damon/sysfs: reuse
+damon_set_regions() for regions setting") has mistakenly removed the
+validation.
 
-Yeah, please skip the warning in v2.
+This can make DAMON behave in unexpected ways.  At the best, the
+monitoring results snapshot will just look weird since there will be
+overlapping regions.  DAMOS will also work weirdly, applying the same
+action multiple times for overlapping regions, and make DAMOS quota
+weird. More seriously, depending on the setup and regions updates
+sequence, negative size regions can be made.  It will trigger
+WARN_ONCE() if the kernel is built with CONFIG_DAMON_DEBUG_SANITY=y.
+Depending on the monitoring results, the negative size region can
+further trigger division by zero in damon_merge_two_regions().
+
+Note that some of the consequences including the WARN_ONCE() and the
+divide by zero depend on commits that were introduced after the root
+cause commit 97d482f4592f ("mm/damon/sysfs: reuse damon_set_regions()
+for regions setting").
+
+Fix the problems by checking the assumption and returning an error if
+the input ranges don't meet the assumption.
+
+The issue was discovered [1] by Sashiko.
+
+[1] https://lore.kernel.org/20260630041806.151124-1-sj@kernel.org
+
+Fixes: 97d482f4592f ("mm/damon/sysfs: reuse damon_set_regions() for regions setting")
+Cc: <stable@vger.kernel.org> # 5.19.x
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from RFC v1
+- RFC v1: https://lore.keernel.org/20260701034921.99179-1-sj@kernel.org
+- Move consequences divergence note to body of the commit message.
+- Rebase to the latest mm-new.
+
+ mm/damon/core.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index c6fc35be633b3..b2fc15a3804ff 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -418,12 +418,19 @@ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
+ {
+ 	struct damon_region *r, *next;
+ 	unsigned int i;
++	unsigned long last_end;
+ 	int err;
  
-> > --
-> > Sincerely yours,
-> > Mike.
-> >
-> 
-> Best Regards,
-> Sang-Heon Jeon
+ 	for (i = 0; i < nr_ranges; i++) {
+-		if (ALIGN_DOWN(ranges[i].start, min_region_sz) >=
+-				ALIGN(ranges[i].end, min_region_sz))
++		unsigned long start, end;
++
++		start = ALIGN_DOWN(ranges[i].start, min_region_sz);
++		end = ALIGN(ranges[i].end, min_region_sz);
++		if (start >= end)
++			return -EINVAL;
++		if (i > 0 && last_end > start)
+ 			return -EINVAL;
++		last_end = end;
+ 	}
+ 
+ 	/* Remove regions which are not in the new ranges */
 
+base-commit: b62b6588a32f9aacd58e415ae883bdeb67594f5e
 -- 
-Sincerely yours,
-Mike.
+2.47.3
 
