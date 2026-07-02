@@ -4,88 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FCE0C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB7D4C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 154466B00E8; Thu,  2 Jul 2026 21:08:05 -0400 (EDT)
+	id 4B63E6B0183; Thu,  2 Jul 2026 21:10:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 105A26B00EE; Thu,  2 Jul 2026 21:08:05 -0400 (EDT)
+	id 48E0A6B0185; Thu,  2 Jul 2026 21:10:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0439D6B010B; Thu,  2 Jul 2026 21:08:05 -0400 (EDT)
+	id 3A3996B0186; Thu,  2 Jul 2026 21:10:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D0BFE6B00E8
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:08:04 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6006DC174B
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:18:41 +0000 (UTC)
-X-FDA: 84944949642.21.213933E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B05EA20004
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:18:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZF2hnxBY;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E69706B0183
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:10:43 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2F7A11C69F3
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:54:18 +0000 (UTC)
+X-FDA: 84944434596.16.A0EC357
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2AA56160005
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:54:16 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1izVBK4n;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6uTqBlzX;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=i80g1EaL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=O61y2J9V;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783023519;
-	b=ffd18Xfr/buzIXSc2HI/Nylnw86UhmtAAllsRhnETvt1CXCdnwPcVoCx0Hr9jg8XgtnOgN
-	mRx7ENaw4B0m+mV9/pQ0bH1cHTW7LUp9xc2kHi32igc5+uTkM0L4pA0XaTs9HfEcQQTom9
-	3ZZMNI6qgHDCDChwW2U0+ks9J1TaR70=
+	t=1783011256;
+	b=1e8VhVDwVDkLXZJc5bRvmFXu9P/u/L13baPU+BZksaTUyzJO5is9S5nc1wF7PTfGi/htL2
+	XVuimYSqELHAW/VhATkfayhCs+9lFVr0OsKR+8R8vhAmhtD0sa7T7IaczHFUtwOIColA/E
+	bBKPZAm/4yRNy5SiTF82QeO/V4oOi5s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783023519;
+	s=arc-20220608; t=1783011256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aJVj3aZrzou3ulR6wLajsObd6FMKWMyiLZL8yCyBvek=;
-	b=Y+deedioX27Bp1ahP1PxUYP6b9YLLyjoFRyk1hNmOedVddP1qO03jRlVnLMMGVi+YGQK7R
-	XPJ+j+aWhZi4CuI/1lRvGB3SPPlEFCPlPg61F4x7IxGcaUSV9Yd6zwE4Q4tOGvzJoFmMif
-	643dBaM9i4dL2d6c96MgLlEFV1pt1Gk=
+	 in-reply-to:references:dkim-signature;
+	bh=heA6NlsuWwAqm6a7CgrmaEXikzhssH3mg744Z6Vx3HM=;
+	b=WkNz3b4UG2ie8bkLPQ6Wcp28YXLTE1+vlfWl//Sa4Fy7GA/BcHxbVXoBCsXSCUs28msZ4X
+	WkuXOaHa8On+L06dbGoKqIp3WVFEefPkLrMmsgg3GMprSaKNK7Jonl8wr3RtQjXWq7VSWq
+	qF9Du54BWRUcjE1afwGGZ8jB5hjiWGk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZF2hnxBY;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB9B4433F1;
-	Thu,  2 Jul 2026 20:18:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170131F000E9;
-	Thu,  2 Jul 2026 20:18:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783023516;
-	bh=aJVj3aZrzou3ulR6wLajsObd6FMKWMyiLZL8yCyBvek=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ZF2hnxBYbHqnz/AtyCwcoywaVufriI/VFNc7GpUjb8cSGNRr+7TnrNNgOmfv+0MSr
-	 WlkHLEAoHeBDF6pZniDqHPaYeXvJo+pKK5qshRdzuZl/bGGy/KhchjnGNThO7nQJJt
-	 SuD5x+8HWNBm+te2Fj5zU+tQLfDITVCERgQn6ETA6WlyocN56nqcCMSBaOs4/nXICW
-	 f3PKTSh2Nf/phfbvX9+VvpNciEBssNY3Tjaz0WBSUY9lludhJuA3TXKiUbhYqImvHx
-	 ejahQFP0C/aGtXT+X7HHix1r9+Zj/62x4jxllEjRwW98krgE5Ijz1MWWTT9CGfQJZR
-	 qrDgQNghczm8A==
-From: SJ Park <sj@kernel.org>
-To: Lian Wang <lianux.mm@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1izVBK4n;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6uTqBlzX;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=i80g1EaL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=O61y2J9V;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7658C75FB5;
+	Thu,  2 Jul 2026 16:54:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783011254; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=heA6NlsuWwAqm6a7CgrmaEXikzhssH3mg744Z6Vx3HM=;
+	b=1izVBK4nVCJ74vk0GUwiMAv0GlH+Ps2ASXq6SqAYaeWjK8PW5ZlWd6OSAcLlqMtiVIBUEa
+	cSd5oQV9mUQl3GWMrCCyaTZEx4FPCpXWM4uBLp7hZkonWn/RY/aHQdxawvRDSs2mPlViDV
+	SrKqtCd+GWMLNwmY1EcWQSfqqOJgTUo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783011254;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=heA6NlsuWwAqm6a7CgrmaEXikzhssH3mg744Z6Vx3HM=;
+	b=6uTqBlzXnUFP3mTmChLkBqe9bSn2aV9bO5GZPaSJwxMPe2hHKRPdjxwC+vZWd4zUAyunz+
+	VMNDWuCVoSd9ROBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783011253; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=heA6NlsuWwAqm6a7CgrmaEXikzhssH3mg744Z6Vx3HM=;
+	b=i80g1EaLCR84t4GJZWPKL6QND00ecxXrtiK9z4q8TQS+NWQohgoAxa1kY0V3lE8MaUmP8v
+	W+i9mEj6mJepcuqBJ6gIqD3NXTlMfhAnx1iU+B5UithgtQwzoP6850iPelgEugyd/gM4ZW
+	xkQ+27Ttbg/+EogYLdaQToHHKmrNSDc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783011253;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=heA6NlsuWwAqm6a7CgrmaEXikzhssH3mg744Z6Vx3HM=;
+	b=O61y2J9VlyCj+9OmiKJmZFL1QCLCphSXO1xaHSug75JaSqB+QWHtxr4oIESNxRBIWlEZoA
+	4DbvtMoAIhZYetDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F384C779AA;
+	Thu,  2 Jul 2026 16:54:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HYAEOLOXRmrqQQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 02 Jul 2026 16:54:11 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
 	linux-mm@kvack.org,
-	daichaobing@sangfor.com.cn,
-	kunwu.chan@gmail.com
-Subject: Re: [RESEND RFC PATCH v2 5/5] mm/damon/vaddr: implement DAMOS_SPLIT handler
-Date: Thu,  2 Jul 2026 13:18:14 -0700
-Message-ID: <20260702201814.92375-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260702094633.75658-6-lianux.mm@gmail.com>
-References: 
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Pedro Falcato <pfalcato@suse.de>,
+	stable@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Matthew Wilcox <willy@infradead.org>,
+	Song Liu <song@kernel.org>,
+	Eric Hagberg <ehagberg@janestreet.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Gregg Leventhal <gleventhal@janestreet.com>
+Subject: [PATCH stable] mm/khugepaged: write all dirty file folios when collapsing
+Date: Thu,  2 Jul 2026 17:54:09 +0100
+Message-ID: <20260702165409.164568-1-pfalcato@suse.de>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: isqjjs8fcmatwcnf645zmzkwejxzy4tt
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2AA56160005
+X-Stat-Signature: ux75c5j3w33ggp861cmpn5g534f4gzzy
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B05EA20004
-X-HE-Tag: 1783023519-235559
-X-HE-Meta: U2FsdGVkX1/IGycqKpcAttW9vls11r2NNAGSl3JEHOoNjrkzuQmr5pqcpHtZULwmSj0Aqio6poQIYH+kRCpaIxR61eW3TzU3nNoViSapCCBEeDE4xZaAhLhZ305se7gQxRwbUMHumyqEvcV4b7Z0m0WEsR2mMAO3/w0FLhu2iiLBJLGNCegRmNSlDB1+R5EBYZdKCO9o/yXCAA4DDYIezk1Rxw3kjjMk7YNoxyjDh6E2pOg+NQgfPBOtqMjKEXT825yhKyR9vZYZuLMBfekgtQLJOAA6R876Ts7Hs5WYC9Dm4PLqftlYiXUP0t+IWTIwZvV5FC4nZpYZ5yfwlBuHvTVecbcnOKqL72qTHvhPEpjgwdw7RR8NSeElObN7t86HvjFpClfLtytVNZRjXZCFBPOEQ4IdXxF1USv80EAGJu2F3bdbuNt+Xzn4Dx8nuBY78V+OsyRrZMDF3arA7tUwXTTwmQF9d1A0cR+lDDOa0Fcu9sUs1Js7Z6lOgUCv7rvlYiVMYEcwsH5qTx0Fbl8rrcozkj9Pt7pq3gmWGkxRBIWSHL5Y2jhFWmQAy9YiynbKou3rDO4XJX9DsFHcYMSTPyl94WiPmbAKTjloSRTMOkhyABoB/MtBxqp7XglVLR2uIHYbeXulJLVUX3HH6Zj5nbor20caRUbeHKUaQ8d+JHsLCoyDH4Pm81DYMkGZWGcwJvH33tNjEDxFRSVVNqGJCw473usgBGqchxxkN20Ptqw8RTM9WJ1Ha8WAcH+NY/oOY7gS8oH3InLuFvOJf3x/Kt6VGyFLjVR5kdCtKIlVzCjsGEmrT2OKucKeOBVK/k5s6+n2/bs1Wj7aPKFd5oBfVh3v8RGRBG+vyPHP6wt60MkFKXLiovzYlRGxq2XrzioJmUVp7kaSRgLv+NVgRYIHfSqXXsYeeSp6HsdNNUdy8U1QcZP0gOpAeQWFmqCXs9j5vlNqcUu4nb4qFhg0JSy
- 0l06GRsu
- AfQckCbFprg4sRWVTciL5ksFcVJa0M3YxoPYYW9VvQygmNOGsiXs9m9DXp2RvNNwcLA7Ssb5fM2XHnAC0J7RSwLyCt7lPQoWIOVevB1EAuJtZV94Vq7N8261hPIVE8bHyKl/2MaCNqUS4xHQkkuwsRzW83TGvapsjoqg54znxfO/PYHc4HL+SvTAJYu6YZnHOaIuPjUedsvPNqoNn+0QwND+D9r4WiMLabKTZUVd+hEvt3vjevpURgtDqXBS83zDtQ4k9AaGZ+0YYDNq1hzM7JswCZVE2MHYBmCqVYIMzz6tiXKj/8aWhCcbrtXkrSK2kykU+CBVMM1h3G9SJgOhISCEWYXbA5YgCFj//Dxc76YnCOPBTH+URXsNWJtltFQWPS9lF3CDk+LZcNgn5uSMYnBJokPMW/9m0qYZZ
+X-HE-Tag: 1783011256-713488
+X-HE-Meta: U2FsdGVkX1+mEiKLYV/mPmUUJlu/qgHVbk5zQmr/i9DJw5wEWOiXGKTWpKVRluC3rPFCBC16Ol4L3RF+GraUI1UCG6iQLqfP0UnyaNH8KUdDY3xnYMLDgM7Zm2Y03P+0qyo5MGDpWYUU1CHd7eLjKaPRmw1aRr3EmdVKjDZZt9C1OGb2aFmWmeesMskZeHAt3zhxREZdM8xw0DxanE74gcbWP8czVg6B27OJgJaJsP7VJKj+3sGFLf2IVVDDzxF2S2NlfBlHHx7tsfP6+dM6PnqYusX9LO/8Z5csX8nb12Qpn49D0LesA/jAuH7pzPq5MdBoCkXQ4HyFSIYkjl5B33EPOX80UN2HRYQLTeJBfFXSSX7sl7zHh2CfBeGTiYLaw0kH8j2vtp0bC+xWxDg+GGOHKQXs7uM551sBvBC259ASbvwFljXEXn9RJWaLPyr0Qjh3oM7SSU6el4QkCvzmX8t80PlrFWe14f6sVasW+6z9nyt1bjhsyRd6Ph9pSpnKrqb9UCuaz1o09P1Uj0mU0wEMCPViMZjaJ+ImMkG4yZQszwVzcX+fqL9QitMebh5cJWSFIAdXLJs1vm6VRsfWPN04xRpTPVKqOW2hAtLc30a59UkgsOzv8AR5SAFCcKCiX3CGVM5Q7EpbUVicyv/QCYmQcxb27C8t0V59kP1mh+TrvkaSeWXF6fIppd6igyh0dtiUY9XmL2ngJg1gPRKifRQCPy5M+wWmIrjPdolbJKeRmPCfT91+MnwoT9W2rEJ10DPbAIijbM84Cfqc2Tjix4LkK47DZgURLnUkBfMYuJBYKg45SY5jT68TdX4n2QqQvlV6T1RCwY8uy/36wYI9dq4ppwSqAmMZwfW7yBks9PvmJSHDl+S/naPuaqqW2mJYUbzrpYleNL2mmV9QaFbEY3tnghBxCI3Cdxa6g1+KF4dxxTOjUPGBHVFRwsoD0L2R4Xz0otmgy7u5Y88wQRc
+ UGgfAcmB
+ Ep46jyTtArmODWaG3E2+ulgiILB0H+MBQzCYvqlZY4RqDQ8NWdZLL8TQZegCsZDuEtMVtyPc2iAVbSY8O+ek8qOYrm7drxkLhtbF0eLfHsC+LMDmZ4ov1Spv+ARQBMY6r0Q1/WdXOM1EiszG9evdFEvcMBbJlLXMIvn0QzOS81QfhtLW+j1yaaF0hUR915g6YrckFYFMePhSXkcI79wGNINn8x8xSIe8LC3tUNSemju2zfa7GVBoguj4mRcGsDRGuISak4/Yas+7V27inVp86igYoRP7MYEJUZhg5wH+VEZZ/ik4n1jdPTvNEr3lcN27jW25VZaxVASPceheOPOjZRsowYsk1oOJJjFic0Err9Nw31VzcBFhHeXYN5TzlDlpXoSL3uIqEWc4msTzRXDcOs6ygLyjkjq9W/bQ3t1z1/FT1Qboqcb7peHJJehesRzyEe2IOHbuuvl9x4bbE7ahp3MAS5SDedoUWofY7mM+sPeVqX3eG0M2y+QQhNPJ2ICbOZiUv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,148 +144,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  2 Jul 2026 17:46:33 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
+As-is, khugepaged and writable-file opening exclude each other. A file
+cannot be open writeable and have THPs (because the filesystem is not aware
+of them). khugepaged will never collapse file pages for files that are
+opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
+particular file is dropped. This is fine because nothing could've been
+dirtied.
 
-> Implement the vaddr operations layer handler for DAMOS_SPLIT.
-> For each folio in the target region that is larger than the
-> scheme's target_order, split it via split_folio_to_order().
-> 
-> This supports both anonymous and file-backed (e.g. tmpfs/shmem)
-> folios, covering KVM guest memory backed by THP tmpfs.
-> 
-> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
-> Signed-off-by: Lian Wang <lianux.wang@processmission.com>
+However, there is an edge-case: collapse_file() might not be able to
+coexist with concurrent writers, but it can coexist with dirty folios
+(from previous writers). Therefore, the following can happen:
 
-Let's use single S-o-b: if it works.
+open(file, O_RDWR)
+write(file)
+close(file)
+madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
+open(file, O_RDWR)
+ nr_thps > 0
+  truncate_inode_pages()
+    /* THPs are cleared out, but so are the dirty folios */
 
-> ---
->  mm/damon/vaddr.c | 80 ++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 80 insertions(+)
-> 
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index 98a87609376b..a177703f7e0a 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -944,6 +944,83 @@ static unsigned long damos_va_collapse(struct damon_target *target,
->  	return applied;
->  }
->  
-> +static unsigned long damos_va_split(struct damon_target *target,
-> +		struct damon_region *r, struct damos *s,
-> +		unsigned long *sz_filter_passed)
-> +{
-> +	unsigned long addr, end, chunk_sz;
-> +	unsigned int target_order = s->target_order;
-> +	unsigned long applied = 0;
-> +	struct mm_struct *mm;
-> +	struct vm_area_struct *vma;
-> +	struct folio *folio;
-> +	struct folio_walk fw;
-> +
-> +	mm = damon_get_mm(target);
-> +	if (!mm)
-> +		return 0;
-> +
-> +	chunk_sz = PAGE_SIZE << HPAGE_PMD_ORDER;
-> +	addr = ALIGN_DOWN(r->ar.start, chunk_sz);
-> +	end = ALIGN(r->ar.end, chunk_sz);
+When this edge-case happens, there is data loss, as the dirty folios are
+fully discarded.
 
-Like I commented to collapse part, would it make more sense to ALIGN() addr and
-ALIGN_DOWN() end?
+Fix it by fully writing back the page cache (and waiting) when collapsing
+file THPs. Doing so provides the guarantee that no dirty folio will be
+observed while there are active THPs. To fully ensure this is safe, the
+invalidate_lock needs to be held while doing the writeout, so that
+do_dentry_open()'s page cache truncation excludes this write-and-wait.
 
-> +	if (end < addr)
-> +		goto out_mmput;
-> +
-> +	while (addr < end) {
+Cc: stable@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Eric Hagberg <ehagberg@janestreet.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
+Closes: https://lore.kernel.org/linux-mm/CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
+Tested-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+---
+This patch is written against 7.1.0 (because the code no longer exists in mainline).
 
-Above 'if (end < addr)' seems unnecessary, as while() here is covering it?
+Zi, I kept your Tested-by, but I had to move some things around and
+use the invalidate lock. Please re-test if you can.
 
-> +		unsigned long folio_sz;
-> +
-> +		if (addr + chunk_sz < addr)
-> +			break;
+ mm/khugepaged.c | 39 +++++++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-What's the purpose here?  Preventing overflow?  How the overflow can happen,
-and what is the consequence?
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index b8452dbdb043..0707d719a270 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2094,32 +2094,43 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 		goto xa_unlocked;
+ 	}
+ 
+-	if (!is_shmem) {
++xa_locked:
++	xas_unlock_irq(&xas);
++xa_unlocked:
++
++	/*
++	 * If collapse is successful, flush must be done now before copying.
++	 * If collapse is unsuccessful, does flush actually need to be done?
++	 * Do it anyway, to clear the state.
++	 */
++	try_to_unmap_flush();
++
++	if (result == SCAN_SUCCEED && !is_shmem) {
++		/*
++		 * invalidate_lock as shared excludes against concurrent opens
++		 * in do_dentry_open() truncating the page cache. This is
++		 * particularly important if there are dirty folios in transit.
++		 */
++		filemap_invalidate_lock_shared(mapping);
+ 		filemap_nr_thps_inc(mapping);
+ 		/*
+ 		 * Paired with the fence in do_dentry_open() -> get_write_access()
+ 		 * to ensure i_writecount is up to date and the update to nr_thps
+ 		 * is visible. Ensures the page cache will be truncated if the
+-		 * file is opened writable.
++		 * file is opened writable. If collapse looks to be successful,
++		 * flush any dirty pages out the page cache. With the nr_thps
++		 * incremented, there won't be any new writers (nor new dirties).
+ 		 */
+ 		smp_mb();
+-		if (inode_is_open_for_write(mapping->host)) {
++		if (inode_is_open_for_write(mapping->host) || filemap_write_and_wait(mapping)) {
+ 			result = SCAN_FAIL;
+ 			filemap_nr_thps_dec(mapping);
++			filemap_invalidate_unlock_shared(mapping);
++			goto rollback;
+ 		}
++		filemap_invalidate_unlock_shared(mapping);
+ 	}
+ 
+-xa_locked:
+-	xas_unlock_irq(&xas);
+-xa_unlocked:
+-
+-	/*
+-	 * If collapse is successful, flush must be done now before copying.
+-	 * If collapse is unsuccessful, does flush actually need to be done?
+-	 * Do it anyway, to clear the state.
+-	 */
+-	try_to_unmap_flush();
+-
+ 	if (result == SCAN_SUCCEED && nr_none &&
+ 	    !shmem_charge(mapping->host, nr_none))
+ 		result = SCAN_FAIL;
+-- 
+2.54.0
 
-> +
-> +		mmap_read_lock(mm);
-> +		vma = find_vma(mm, addr);
-> +
-> +		if (!vma || addr < vma->vm_start ||
-> +		    vma->vm_flags & (VM_HUGETLB | VM_MIXEDMAP))
-> +			goto unlock;
-> +
-> +		folio = folio_walk_start(&fw, vma, addr, 0);
-
-Why we need this?  Can't we use the simpler pattern like that on
-damos_va_stat_pmd_entry()?
-
-> +		if (!folio)
-> +			goto unlock;
-> +
-> +		folio_sz = PAGE_SIZE << folio_order(folio);
-
-You can use folio_size().
-
-> +
-> +		if (folio_order(folio) > target_order) {
-> +			if (!folio_trylock(folio)) {
-> +				folio_walk_end(&fw, vma);
-> +				goto unlock;
-> +			}
-> +			folio_get(folio);
-> +			folio_walk_end(&fw, vma);
-> +
-> +			if (!split_folio_to_order(folio, target_order))
-> +				applied += folio_sz;
-> +
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-> +			*sz_filter_passed += folio_sz;
-
-Shoudn't this code calls damos_va_filter_out() before split_folio_to_order()?
-
-> +			addr += folio_sz;
-> +		} else {
-> +			folio_walk_end(&fw, vma);
-> +			*sz_filter_passed += chunk_sz;
-> +			addr += chunk_sz;
-> +		}
-> +		mmap_read_unlock(mm);
-> +		cond_resched();
-> +		continue;
-> +
-> +unlock:
-> +		*sz_filter_passed += chunk_sz;
-> +		addr += chunk_sz;
-> +		mmap_read_unlock(mm);
-> +		cond_resched();
-> +	}
-> +
-> +out_mmput:
-> +	mmput(mm);
-> +	return applied;
-> +}
-> +
->  static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
->  		struct damon_target *t, struct damon_region *r,
->  		struct damos *scheme, unsigned long *sz_filter_passed)
-> @@ -977,6 +1054,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
->  		return damos_va_migrate(t, r, scheme, sz_filter_passed);
->  	case DAMOS_STAT:
->  		return damos_va_stat(t, r, scheme, sz_filter_passed);
-> +	case DAMOS_SPLIT:
-> +		return damos_va_split(t, r, scheme,
-> +					  sz_filter_passed);
-
-Let's keep the order same to that of damos_action.
-
->  	default:
->  		/*
->  		 * DAMOS actions that are not yet supported by 'vaddr'.
-
-
-Thanks,
-SJ
 
