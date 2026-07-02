@@ -4,110 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D334C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FCE0C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:08:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 373336B017F; Thu,  2 Jul 2026 21:06:07 -0400 (EDT)
+	id 154466B00E8; Thu,  2 Jul 2026 21:08:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34B4C6B0181; Thu,  2 Jul 2026 21:06:07 -0400 (EDT)
+	id 105A26B00EE; Thu,  2 Jul 2026 21:08:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23A6E6B0182; Thu,  2 Jul 2026 21:06:07 -0400 (EDT)
+	id 0439D6B010B; Thu,  2 Jul 2026 21:08:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E903B6B017F
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:06:06 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A39571A017F
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:40:41 +0000 (UTC)
-X-FDA: 84944249082.16.95ABFED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7FC3618000A;
-	Thu,  2 Jul 2026 15:40:39 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z8vOAtQO;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D0BFE6B00E8
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:08:04 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6006DC174B
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:18:41 +0000 (UTC)
+X-FDA: 84944949642.21.213933E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B05EA20004
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:18:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZF2hnxBY;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783006839;
-	b=wX7B0sljttxEQRAaPZTY7Zx3T7CckeSvF4ms8yba2bbmS1pums04vu1+cI4DLH22rOhS+W
-	yOmcjYZiviqnog96uf9Z1/olDNkOTAKYvk1+dqlxVuYDLclunVA0jkSk6cyCnHhU8c3L4T
-	hXtNi2jxOpQLE1wuqnuibSZ7D7SSa2A=
+	t=1783023519;
+	b=ffd18Xfr/buzIXSc2HI/Nylnw86UhmtAAllsRhnETvt1CXCdnwPcVoCx0Hr9jg8XgtnOgN
+	mRx7ENaw4B0m+mV9/pQ0bH1cHTW7LUp9xc2kHi32igc5+uTkM0L4pA0XaTs9HfEcQQTom9
+	3ZZMNI6qgHDCDChwW2U0+ks9J1TaR70=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783006839;
+	s=arc-20220608; t=1783023519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gNLYS8EYE6bJ5KaXF7DR9fRu4urDF+a7laqqF8q0hcA=;
-	b=k6S/h/NLVnHDJIWcuzrcJ2AtKhX4XG8sbfuv2a1fbgqrm383h2fATqaNEf1Mak/zvxCg1r
-	pJTERNOtMLA0S8TEQ+TrZP6I4lHl+zkH4Wbl0L/4mp9rhlsXmiY62tqfZCp5j9MCfhDHXq
-	lV+Bo6HRmDa7+5ED75EuV7pMRA4ZZwg=
+	bh=aJVj3aZrzou3ulR6wLajsObd6FMKWMyiLZL8yCyBvek=;
+	b=Y+deedioX27Bp1ahP1PxUYP6b9YLLyjoFRyk1hNmOedVddP1qO03jRlVnLMMGVi+YGQK7R
+	XPJ+j+aWhZi4CuI/1lRvGB3SPPlEFCPlPg61F4x7IxGcaUSV9Yd6zwE4Q4tOGvzJoFmMif
+	643dBaM9i4dL2d6c96MgLlEFV1pt1Gk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z8vOAtQO;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZF2hnxBY;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7EA7601CA;
-	Thu,  2 Jul 2026 15:40:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8E41F00A3E;
-	Thu,  2 Jul 2026 15:40:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CB9B4433F1;
+	Thu,  2 Jul 2026 20:18:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170131F000E9;
+	Thu,  2 Jul 2026 20:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783006838;
-	bh=gNLYS8EYE6bJ5KaXF7DR9fRu4urDF+a7laqqF8q0hcA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Z8vOAtQOT+iGTiy4xQ3GfxWy9CpR6iieY1qxm1fyBJSvxEFV2aEwGeTLwIZE4UbYF
-	 sH6QvDHKQJHBXcc/JYlecYNDNZBJEw63vn2taYjOLxg3iNlePJRLcm76SDX3qcqqpf
-	 OAzUHT+NRGQHyZOOfos5EJuVfaKEWfkdr4crDOBp2KFX/hKeIetGWLc1I64/oz6RHQ
-	 NC8RA6ivq/IEW4DV1d+3Z0k229cWnviqo6Svky+UHUgnyeaFy3m0xyIovRQ1UfVX8n
-	 wqqP9ts5FpBy46j7HS+G+te0/D/3BLeS388iQo+wLiLJCSDRdl7jDwGFy3vdpkllGJ
-	 NUUDfmqseIbQg==
-Date: Thu, 2 Jul 2026 16:40:15 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, tsbogend@alpha.franken.de, 
-	maddy@linux.ibm.com, mpe@ellerman.id.au, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
-	l.stach@pengutronix.de, inki.dae@samsung.com, sw0312.kim@samsung.com, 
-	kyungmin.park@samsung.com, krzk@kernel.org, peter.griffin@linaro.org, 
-	jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com, 
-	tursulin@ursulin.net, robin.clark@oss.qualcomm.com, lumag@kernel.org, lyude@redhat.com, 
-	dakr@kernel.org, tomi.valkeinen@ideasonboard.com, hjc@rock-chips.com, 
-	heiko@sntech.de, andy.yan@rock-chips.com, thierry.reding@kernel.org, 
-	mperttunen@nvidia.com, jonathanh@nvidia.com, kraxel@redhat.com, 
-	dmitry.osipenko@collabora.com, zack.rusin@broadcom.com, matthew.brost@intel.com, 
-	thomas.hellstrom@linux.intel.com, oleksandr_andrushchenko@epam.com, deller@gmx.de, bcrl@kvack.org, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de, 
-	david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, hughd@google.com, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de, 
-	kees@kernel.org, perex@perex.cz, tiwai@suse.com, linux-mips@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
-	etnaviv@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
-	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org, 
-	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 08/13] mm: introduce vma_get_page_prot() and use it
-Message-ID: <akaGOiLz-3Zx6kDs@lucifer>
-References: <3bb8bdc4788230c33102166d56cbc5abfad9d4cb.1782760670.git.ljs@kernel.org>
- <20260702123845.95316-1-lance.yang@linux.dev>
+	s=k20260515; t=1783023516;
+	bh=aJVj3aZrzou3ulR6wLajsObd6FMKWMyiLZL8yCyBvek=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZF2hnxBYbHqnz/AtyCwcoywaVufriI/VFNc7GpUjb8cSGNRr+7TnrNNgOmfv+0MSr
+	 WlkHLEAoHeBDF6pZniDqHPaYeXvJo+pKK5qshRdzuZl/bGGy/KhchjnGNThO7nQJJt
+	 SuD5x+8HWNBm+te2Fj5zU+tQLfDITVCERgQn6ETA6WlyocN56nqcCMSBaOs4/nXICW
+	 f3PKTSh2Nf/phfbvX9+VvpNciEBssNY3Tjaz0WBSUY9lludhJuA3TXKiUbhYqImvHx
+	 ejahQFP0C/aGtXT+X7HHix1r9+Zj/62x4jxllEjRwW98krgE5Ijz1MWWTT9CGfQJZR
+	 qrDgQNghczm8A==
+From: SJ Park <sj@kernel.org>
+To: Lian Wang <lianux.mm@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	daichaobing@sangfor.com.cn,
+	kunwu.chan@gmail.com
+Subject: Re: [RESEND RFC PATCH v2 5/5] mm/damon/vaddr: implement DAMOS_SPLIT handler
+Date: Thu,  2 Jul 2026 13:18:14 -0700
+Message-ID: <20260702201814.92375-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260702094633.75658-6-lianux.mm@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702123845.95316-1-lance.yang@linux.dev>
-X-Rspamd-Queue-Id: 7FC3618000A
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: isqjjs8fcmatwcnf645zmzkwejxzy4tt
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: guxnm11cfizp33bdqozw9y35qkkq78ad
-X-HE-Tag: 1783006839-990519
-X-HE-Meta: U2FsdGVkX1/eRAhMEvLTSPR3vMnkBrbZqudvKnqE6wdQw5WRoBZh1QwEWbKpl1xcFJJZCcrUnwyNoGZ+dAIfYtzBotQTWo4vpDJg8kOHERj52y0/TT+c5N4j9+cHBHztGUP7pQSoC6E4GJ9i+Ph249jjtCi0yPC+1QJwMAhRfjyxuKITYyXxEvRHwLDp6dY2M4Fhgpl6IDPUZYI8+6NSANkhzaxXUmImGj/1p42gqDBDO4NQAQJM5gk7EnOk3m27VVO923J0icDnt+rR6lj3Go7s065RhTUSIq5+4M6AE7DgZVoOOmQ/w5z2OwL11wzOsGpFkzp7nBMUoua9LB8SPl68aWnynmRkwJtgQ3Hrap/DtgSEhmramEHhm+4uuERReYRn4g+zfLWZJWLJCab2cWkvYkWyAiHM10tgBAyA0ve9dAZnxoHrJVWSsql2Cjb8+NAyV7+5HV+LZpEn82QylF4tfI/zJBh+XBRtf2zhItc28ELsI8U5kj9uaRR0ekJ3tpWPR7ZMFDt4XknDFlUugjhyAsxRTRlR5/lShC7OZN8aYJGkR5epltyG5N/CCUPYQV1gONhwp1kHdMu0gRFXq5qbp2M+YcZ8myGBhnfbeEqCDlrbcFzAKDTN0yk5VNNnq488cRnm8P5sWVxKZloddeifKx4B4cJD4AeQDAkPUXydkTe19hfrfviQcHoaaZZqVwPR6vlRfQj0CNU6V+OUbd7kBxqQYBrI4RtkPnj6mciLQv77Zutx7yeczJjENMuG9EuleShurny8VNDrGxajgBC7dycYIplHT43F1oeBqp7HG5++JX4oge9Ea4WdQXEZyxe9jLfPt/v/FbXs4d+dOFJMH2rHwj5jSdq0Z6cmVxt6Y3OzCu0Vjm7fpiMNUb03H+irZbmsHLvIF1fCGwwVAkAdbU2u4k2BPlK3C2QZwPWq5O8e19pc6xHvAth/5fpSWXDf0gMV+M0jyKmX+uS
- +snbHbm8
- /l4+F2jnDoW9LAER/t4VKEpqbip+z/jtVMsHeUIWKWGdX516oBw5YPZ+NUUSvtDlVuzF/5FuXoM0K27e11DOs/8ZZnQ9MWSFe3w+W+TZMeyOH8kia6FQKWBxPfBdRTUlk5k4ofrhEGUPpNi+dCfUsEv/5rzK290qdzElGtq1T0CGGaPdHX/uzmn/t7U/VJ1ZqvSPNALzYTA8aZLdWqrGR+If8bgN02sH0S0Npf71YEJJGyiTqdOdhOGoAtkPqb9sIesRA6OWuaJeyrg4MySj4b6YYD8bOK6ys6pGuyZvSjSDrzt4bl6R3l37uhleDQL97SEYY
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B05EA20004
+X-HE-Tag: 1783023519-235559
+X-HE-Meta: U2FsdGVkX1/IGycqKpcAttW9vls11r2NNAGSl3JEHOoNjrkzuQmr5pqcpHtZULwmSj0Aqio6poQIYH+kRCpaIxR61eW3TzU3nNoViSapCCBEeDE4xZaAhLhZ305se7gQxRwbUMHumyqEvcV4b7Z0m0WEsR2mMAO3/w0FLhu2iiLBJLGNCegRmNSlDB1+R5EBYZdKCO9o/yXCAA4DDYIezk1Rxw3kjjMk7YNoxyjDh6E2pOg+NQgfPBOtqMjKEXT825yhKyR9vZYZuLMBfekgtQLJOAA6R876Ts7Hs5WYC9Dm4PLqftlYiXUP0t+IWTIwZvV5FC4nZpYZ5yfwlBuHvTVecbcnOKqL72qTHvhPEpjgwdw7RR8NSeElObN7t86HvjFpClfLtytVNZRjXZCFBPOEQ4IdXxF1USv80EAGJu2F3bdbuNt+Xzn4Dx8nuBY78V+OsyRrZMDF3arA7tUwXTTwmQF9d1A0cR+lDDOa0Fcu9sUs1Js7Z6lOgUCv7rvlYiVMYEcwsH5qTx0Fbl8rrcozkj9Pt7pq3gmWGkxRBIWSHL5Y2jhFWmQAy9YiynbKou3rDO4XJX9DsFHcYMSTPyl94WiPmbAKTjloSRTMOkhyABoB/MtBxqp7XglVLR2uIHYbeXulJLVUX3HH6Zj5nbor20caRUbeHKUaQ8d+JHsLCoyDH4Pm81DYMkGZWGcwJvH33tNjEDxFRSVVNqGJCw473usgBGqchxxkN20Ptqw8RTM9WJ1Ha8WAcH+NY/oOY7gS8oH3InLuFvOJf3x/Kt6VGyFLjVR5kdCtKIlVzCjsGEmrT2OKucKeOBVK/k5s6+n2/bs1Wj7aPKFd5oBfVh3v8RGRBG+vyPHP6wt60MkFKXLiovzYlRGxq2XrzioJmUVp7kaSRgLv+NVgRYIHfSqXXsYeeSp6HsdNNUdy8U1QcZP0gOpAeQWFmqCXs9j5vlNqcUu4nb4qFhg0JSy
+ 0l06GRsu
+ AfQckCbFprg4sRWVTciL5ksFcVJa0M3YxoPYYW9VvQygmNOGsiXs9m9DXp2RvNNwcLA7Ssb5fM2XHnAC0J7RSwLyCt7lPQoWIOVevB1EAuJtZV94Vq7N8261hPIVE8bHyKl/2MaCNqUS4xHQkkuwsRzW83TGvapsjoqg54znxfO/PYHc4HL+SvTAJYu6YZnHOaIuPjUedsvPNqoNn+0QwND+D9r4WiMLabKTZUVd+hEvt3vjevpURgtDqXBS83zDtQ4k9AaGZ+0YYDNq1hzM7JswCZVE2MHYBmCqVYIMzz6tiXKj/8aWhCcbrtXkrSK2kykU+CBVMM1h3G9SJgOhISCEWYXbA5YgCFj//Dxc76YnCOPBTH+URXsNWJtltFQWPS9lF3CDk+LZcNgn5uSMYnBJokPMW/9m0qYZZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,51 +93,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 08:38:45PM +0800, Lance Yang wrote:
->
-> On Mon, Jun 29, 2026 at 08:25:31PM +0100, Lorenzo Stoakes wrote:
-> >There's a large number of vm_get_page_prot(vma->vm_flags) invocations. Make
-> >life easier by introducing vma_get_page_prot() parameterised by the VMA.
-> >
-> >This also makes converting vm_get_page_prot() to vma_flags_t easier.
-> >
-> >Also update the userland VMA tests to reflect the change.
-> >
-> >No functional change intended.
-> >
-> >Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> >---
-> > drivers/gpu/drm/drm_gem.c                   |  2 +-
-> > drivers/gpu/drm/drm_gem_dma_helper.c        |  2 +-
-> > drivers/gpu/drm/drm_gem_shmem_helper.c      |  2 +-
-> > drivers/gpu/drm/etnaviv/etnaviv_gem.c       |  2 +-
-> > drivers/gpu/drm/exynos/exynos_drm_gem.c     |  6 +++---
-> > drivers/gpu/drm/i915/gem/i915_gem_mman.c    | 12 ++++++------
-> > drivers/gpu/drm/msm/msm_gem.c               |  2 +-
-> > drivers/gpu/drm/nouveau/nouveau_gem.c       |  2 +-
-> > drivers/gpu/drm/omapdrm/omap_fbdev.c        |  2 +-
-> > drivers/gpu/drm/omapdrm/omap_gem.c          |  6 +++---
-> > drivers/gpu/drm/rockchip/rockchip_drm_gem.c |  2 +-
-> > drivers/gpu/drm/tegra/gem.c                 |  2 +-
-> > drivers/gpu/drm/virtio/virtgpu_vram.c       |  2 +-
-> > drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c  |  2 +-
-> > drivers/gpu/drm/xe/xe_device.c              |  2 +-
-> > drivers/gpu/drm/xe/xe_mmio_gem.c            |  2 +-
-> > drivers/gpu/drm/xen/xen_drm_front_gem.c     |  2 +-
-> > drivers/video/fbdev/core/fb_io_fops.c       |  2 +-
->
-> One missed?
->
-> drivers/gpu/drm/panthor/panthor_gem.c still has:
->
-> 	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
->
-> Can use vma_get_page_prot(vma) too.
+On Thu,  2 Jul 2026 17:46:33 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
 
-Oops! Will respin and update. Good spot!
+> Implement the vaddr operations layer handler for DAMOS_SPLIT.
+> For each folio in the target region that is larger than the
+> scheme's target_order, split it via split_folio_to_order().
+> 
+> This supports both anonymous and file-backed (e.g. tmpfs/shmem)
+> folios, covering KVM guest memory backed by THP tmpfs.
+> 
+> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
+> Signed-off-by: Lian Wang <lianux.wang@processmission.com>
 
->
-> [...]
+Let's use single S-o-b: if it works.
 
-Thanks, Lorenzo
+> ---
+>  mm/damon/vaddr.c | 80 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 80 insertions(+)
+> 
+> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+> index 98a87609376b..a177703f7e0a 100644
+> --- a/mm/damon/vaddr.c
+> +++ b/mm/damon/vaddr.c
+> @@ -944,6 +944,83 @@ static unsigned long damos_va_collapse(struct damon_target *target,
+>  	return applied;
+>  }
+>  
+> +static unsigned long damos_va_split(struct damon_target *target,
+> +		struct damon_region *r, struct damos *s,
+> +		unsigned long *sz_filter_passed)
+> +{
+> +	unsigned long addr, end, chunk_sz;
+> +	unsigned int target_order = s->target_order;
+> +	unsigned long applied = 0;
+> +	struct mm_struct *mm;
+> +	struct vm_area_struct *vma;
+> +	struct folio *folio;
+> +	struct folio_walk fw;
+> +
+> +	mm = damon_get_mm(target);
+> +	if (!mm)
+> +		return 0;
+> +
+> +	chunk_sz = PAGE_SIZE << HPAGE_PMD_ORDER;
+> +	addr = ALIGN_DOWN(r->ar.start, chunk_sz);
+> +	end = ALIGN(r->ar.end, chunk_sz);
+
+Like I commented to collapse part, would it make more sense to ALIGN() addr and
+ALIGN_DOWN() end?
+
+> +	if (end < addr)
+> +		goto out_mmput;
+> +
+> +	while (addr < end) {
+
+Above 'if (end < addr)' seems unnecessary, as while() here is covering it?
+
+> +		unsigned long folio_sz;
+> +
+> +		if (addr + chunk_sz < addr)
+> +			break;
+
+What's the purpose here?  Preventing overflow?  How the overflow can happen,
+and what is the consequence?
+
+> +
+> +		mmap_read_lock(mm);
+> +		vma = find_vma(mm, addr);
+> +
+> +		if (!vma || addr < vma->vm_start ||
+> +		    vma->vm_flags & (VM_HUGETLB | VM_MIXEDMAP))
+> +			goto unlock;
+> +
+> +		folio = folio_walk_start(&fw, vma, addr, 0);
+
+Why we need this?  Can't we use the simpler pattern like that on
+damos_va_stat_pmd_entry()?
+
+> +		if (!folio)
+> +			goto unlock;
+> +
+> +		folio_sz = PAGE_SIZE << folio_order(folio);
+
+You can use folio_size().
+
+> +
+> +		if (folio_order(folio) > target_order) {
+> +			if (!folio_trylock(folio)) {
+> +				folio_walk_end(&fw, vma);
+> +				goto unlock;
+> +			}
+> +			folio_get(folio);
+> +			folio_walk_end(&fw, vma);
+> +
+> +			if (!split_folio_to_order(folio, target_order))
+> +				applied += folio_sz;
+> +
+> +			folio_unlock(folio);
+> +			folio_put(folio);
+> +			*sz_filter_passed += folio_sz;
+
+Shoudn't this code calls damos_va_filter_out() before split_folio_to_order()?
+
+> +			addr += folio_sz;
+> +		} else {
+> +			folio_walk_end(&fw, vma);
+> +			*sz_filter_passed += chunk_sz;
+> +			addr += chunk_sz;
+> +		}
+> +		mmap_read_unlock(mm);
+> +		cond_resched();
+> +		continue;
+> +
+> +unlock:
+> +		*sz_filter_passed += chunk_sz;
+> +		addr += chunk_sz;
+> +		mmap_read_unlock(mm);
+> +		cond_resched();
+> +	}
+> +
+> +out_mmput:
+> +	mmput(mm);
+> +	return applied;
+> +}
+> +
+>  static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+>  		struct damon_target *t, struct damon_region *r,
+>  		struct damos *scheme, unsigned long *sz_filter_passed)
+> @@ -977,6 +1054,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+>  		return damos_va_migrate(t, r, scheme, sz_filter_passed);
+>  	case DAMOS_STAT:
+>  		return damos_va_stat(t, r, scheme, sz_filter_passed);
+> +	case DAMOS_SPLIT:
+> +		return damos_va_split(t, r, scheme,
+> +					  sz_filter_passed);
+
+Let's keep the order same to that of damos_action.
+
+>  	default:
+>  		/*
+>  		 * DAMOS actions that are not yet supported by 'vaddr'.
+
+
+Thanks,
+SJ
 
