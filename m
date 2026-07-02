@@ -4,96 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C261C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:24:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37DE9C43602
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:24:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 269AC6B00B5; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
+	id BDECD6B00B8; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21AA66B00B8; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
+	id BB7906B00B9; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15BE66B00B5; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
+	id AF34C6B00BA; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD79B6B00B5
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:24:40 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 90177140121
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 14:56:07 +0000 (UTC)
-X-FDA: 84944136774.07.135E3E3
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E7A99160015
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 14:56:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FhWJEmba;
-	spf=pass (imf08.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id 851C96B00B8
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:24:41 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC5A71401EF
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:17:31 +0000 (UTC)
+X-FDA: 84944493102.06.28CF527
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 183FD1A0006
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:17:29 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPEK96h9;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783004166;
-	b=6XFN20B59GZXc+vjZEMHYDojRgeL8qJlCTVgVQ1tmQLzz0CSeKiewAYYHBAd6spTDpwiuA
-	adNJkRUzFsnzdoF680UE886+Lb4fGcNSxOGtI0pl+vnL+T9CS/3OeXPa/TuWs3ahOrb6vm
-	AZc46Kr5LZ7gzAt4wQlsNA2Y4nRbgRY=
+	t=1783012650;
+	b=CPt9sBZFpgelHr8QD1Et45dI4fsVNlGV2kcR+UeMfELld02TCnRX8D/SjlQi+Axwtmqe2k
+	LThbj9okvQvrxO5CvRnpV3uzHCAao5Oh5ul69gRyBfW20Er3BZXLLu4FYxN/WEXCUgXVEL
+	jBvqhJaAE3NYPUbsaTLYRcHijdd2iD0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783004166;
+	s=arc-20220608; t=1783012650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T5zfo7gwxlXsH8BZgYvGWYJB1jbxdG1g9whcrQZbPWA=;
-	b=j/P5Oo9oYsE90kZQbzWIt1AhZUel27kn6Q4kJc7pdlN1p1H6fSVTAR/06fpUmM9Cjv0zdm
-	jWXNeU0aK+UhuDoZpGUUYwDkzFTgvhtMWZUIqsaUvxdKCAeKTfvfD3w2BjdAyWn6hrFT8D
-	YWsSXxwVK2fTatXMCevGfNuHk32a9XY=
+	bh=Gcy9SSkJ7cJu/6jz9kUdhF88DVRVIoJailmK3qTsD+c=;
+	b=78fbxadM/gqfPaoT/yh3XvQ2HvniZ3eqMhMDSXB2IjpSZ3s5o5ofiYYWI95CV+xJDjfmh6
+	yWtydtPcAbUr64L007N9pk09kHHqKsyMB2qQUqAyiaG5i9Ss3tDyihtQ5F3WO6W5uqCIrB
+	tlS1qNP9yw4qQ3VxNdG2jnKgdrrlwyI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=FhWJEmba;
-	spf=pass (imf08.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=T5zfo7gwxlXsH8BZgYvGWYJB1jbxdG1g9whcrQZbPWA=; b=FhWJEmbaGn6UtsXhnqmiUSuk42
-	oACCjFIyGz/kt/5rJT4X3y6beox60aT2V75XC1G+ptDHmqjKnSAmjOx2x1h6TagiUA5nKXTRYTbTS
-	imggaPZaZHVbnLkjVW+RW6xdGKAP34AdwblxmWNJ1gFZvOfOZbtM7aDTqztig/cb/Htcdd90dVBHC
-	hSrfA3aVx1FdAl8cYGJkP2igPo1dG67yeNpwKdc4qe7Ajk0A8yC+XZeskDbjuXgh8fVMLgyXaxHyI
-	gAPqHLvOCIIEaH3cB4/QD88kOkCcovhVZvjgYFO/S6JpaGDHYSVi9juyoSJbNjtNXrPSXCeY7cGm8
-	eRB4QPPQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wfIpQ-008heR-1v;
-	Thu, 02 Jul 2026 14:55:48 +0000
-Date: Thu, 2 Jul 2026 07:55:42 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 2/2] selftests/mm: test kmemleak's N-consecutive-scan
- leak confirmation
-Message-ID: <akZ4tzQw70x3RR2D@gmail.com>
-References: <20260626-kmemleak_twice-v1-0-ab28f7cc0971@debian.org>
- <20260626-kmemleak_twice-v1-2-ab28f7cc0971@debian.org>
- <akYkKgWOsYnw6ETE@arm.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPEK96h9;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A9E07601CA;
+	Thu,  2 Jul 2026 17:17:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7831F000E9;
+	Thu,  2 Jul 2026 17:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783012649;
+	bh=Gcy9SSkJ7cJu/6jz9kUdhF88DVRVIoJailmK3qTsD+c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OPEK96h95RYUYAI9vrFwZVqQZnsmZiyedlttZzRkAI5rwigEJlcgFd2sT0uYShw3Z
+	 3lKk7eSoSK6iQ3a4rGfhLz35SMAv2rUf2V3bhgNo+Bmagdb8PBK/4GRfdTkqyn0C6F
+	 2CP2JPeEbUxOuBvGhneAVRcsC7NJUvHu/IhBJZrcHLcJ29r5VJeUGRKELORRXPOYlg
+	 2ck8M1kXf8iWjvhRHT3/YzEOhWiu8Qr+xCQhmfER8/y55hLXgS4Lzyo6mOUfNKBpLc
+	 AJZ6QcN8RfbvYT3G+ukKaC3P6XuVlrezx6yRWXDjyf0yQUeaUkwfXdOXdjwATcivcz
+	 35gqKsVn0Osow==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1 2/3] mm/damon/core: introduce damon_probe_hits_mvsum()
+Date: Thu,  2 Jul 2026 10:17:10 -0700
+Message-ID: <20260702171714.88278-3-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260702171714.88278-1-sj@kernel.org>
+References: <20260702171714.88278-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akYkKgWOsYnw6ETE@arm.com>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: itam35q5zxpzszemw7cxmsuixbwt189w
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E7A99160015
-X-Stat-Signature: acopf8pxo5r5kw54b5n9k1c93nb6u8i1
-X-HE-Tag: 1783004165-224270
-X-HE-Meta: U2FsdGVkX1/mT3oyDyiJqivT8xIct70MWvuOt4s7vF2WhbMrh89aPMCf1ztGb2tU9M/ADnVbqDmUndQ9RrLOfSFHTQqljiGLhHS9lX9f0Qs/8RcPDOxDPUuB0pTS0vEKkEfX3W4kFcWtiT5mMicsGEN6BO4m3/w5YN8UUcAyMiCF0tk0/GN4L5SMV8k41KFI4YW5apnJovtqqVJ9fV7IC/dafq2NC2mgXgOqlBgjj3qFTp1OkzT2SS8qKie0WBwc5nFfRNXa99odQkbT6iHNrbJc2M5CXbxuZCuM3K9nUcPU2k4gP6jmRgEvUQ7bQAF2S5/v1BUTgiByGuKjIy9IkaoiD0OVeNHG0biDjvo9nOVp6LAs86ZWRoR58w1GCH4ccRFQg1qrPUqPzWAXJ8i4NYfIKOjOZHDBvvJgPU6zVUVFphuWLff5vyqVpk2iJRAjDmqZKt4+sEv8EodlJPh34lQL9zhKixtYe84uN2ztWQWkIygBbghY4KfOQu8RFO+TpwZLheVWVeGQjfP69TLkOQWm5xTmenslPcaATf8MvqpM3WmikgGC93B9idaEBsXVLBtdPoEOTae1GqA+J8Dj8MK095E4SHWLqadv3twQgcvf8WW1k8mps3xOn5XFV0Q3kA1FiLDI+RulAh8iTTVtcdFbF+E+WjzTvvdGET1UBkBM7Zl+5LlRUqxXTfvr3xYy2fWP9VQ2U+vLiuPk7eBE02fSKVObJY7Ba1Yl7uBKA+XQijFdiQTHIQH5qqQDNXnVS1hr6l7qYViYw++SDdxKV6oQNRJb4K3bhkZlFsxTa1MNQIMEvrPmRk+gzuGtOVJS6m3tIq3i0QPx0+nv8plXjlfYiRz9no0RPz3gWghBK4wLP5Eov8v8rmZq94SqPA7MgBUVNaJkbImq3SQvUqCmeJsBiZuKtx9/NE1RxloQSAgZWVygqmZniiUnTervh7eCWN6SELrfS2mbOZuOd30
- f16yl4Xx
- 5h4CSfgdRtwk6az8aTqUKKRBAXq0u+f9F+oB3HgeGqbCaBVoDJhB2+Wze3knb2p0Xv5JSE7Aja5LOul3p7JvnU/o0Vp7QcsewWsIjnePfbU+waBH1dVkFAeBV+wh6X6N9ZJx8/jwXRLvu5Bn9HJGZ+RBd4/OXiUdO/8xkNrYGmel33Tj58tetodx0aWekJXBJXqwZ/0kMkmbSj5eudyRxjcgPwvrvbq2YSjf2ttjcYu8EAD1EAZZ17oRby2WOpCg1n3tq
+X-Rspamd-Queue-Id: 183FD1A0006
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1783012649-608943
+X-HE-Meta: U2FsdGVkX18f0ND/P3ZIj7J+HCBOdYluVUKl+jvhIuZSlUzcEW6XepdoasGLgZUEDbnZmNiu3yCDuZGmUGoYZJMnlOw4tiQrnKe2vaWe7n5oESI1Jbk3ziH1UvHEz8x6U2vx7nPlsHI7beDxfEbN5nKg78H5IN7H1NUANGcS6RPqefEG864dDv8U7B2Djz++nGinTxCu3DJ1ab6VB7dmzmNcmVSjQ79PbKoLe9SNAcu5UBJym5PgGmdbGRULQeceVaIP32GOiNvE+FoIJdxWewmu3F9Brbks+UfGboJ4DD4WqdEiTSDjFXMSZluJXqI/Dlp818xwp6lwEp96NGriQqXR5HJvJR1WThht+EoHNaVUTjS9D3PJt8ra85XFLlJfMKZIGXeo+LdbsCRB2EoZ3tKvpxKxlrS+tIjelG4liTcBD5RoyLXppMGkoBdI1jax+6BNGp+unGurVvXfPuvxGSuYs1kE+hvQlWhbeUgRxOMtr2f26LpyS8ysOmcSOFuAaBnSRzarZVjrfGN9dNAp96fF2FzUnNwYiQLJyt7cbop6CZ0af8x4gi2J4bXtEtbGqCwrfVD3oJWiPgl1k/BB1Bqp94lKQQA4LR36k8/N8VCnm8x9E5ExM6aVUi5tWfp6d5pRKfYSeB8bPpa0Hws6vNMMETx6VRRCHlH2OP9wmVHUr0wfVXedbQzBCFNJBmyvGeIXfDxSswJeAd9dFbRSLLQFDQDbcb9dp1iQSct8AxAfLjGKQcvaH3xsKMKuwSTAJchZvMrVcRIXm0aWbm8LThxQfhT+Qx36FlnUIgjsgIH5eTucSrQJDD+J9SIaaXaS5bTqSzKVUuB5LmRRfUehUENAjF/Wo88ChTCtyRsttFlmz5fU+dhBPSm59LSFIKvurZCaEl8hUUITPUYs+A8a7HUXztrzG+c3kxIeAEKn68fvcySMuRGSPDyOxVbt+DGX54k/VDhM4IXcKUatIRG
+ NSgNXE1T
+ tnUAyzdHW+uiURbfaJHr4tiBpjfThIfATpZa13go31aYAPAFtNUTEX1i2S07hKNuTvigWOptD7Ub6pIB/x8swUobYMNuF9B5i8N+rakJD2deNN3vFtGFDgfAf027PFJk+Mzb9hgHZyI0SRKqB3sE06aMjW8U0vYWod2ky3kHvi/JL7XbAR7Nz/nGPM5bdVFI20Nv8aHYInWZHJ6Rq35Tg8FAJ2N+0PaWWUUStF1k+3ox9YLyvOs0ekl2i7s+w1uoNWr5/HdsUXyu6PtbCo6KgJMbhRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,32 +93,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 09:41:14AM +0100, Catalin Marinas wrote:
-> On Fri, Jun 26, 2026 at 08:52:03AM -0700, Breno Leitao wrote:
-> > +pass "min_unref_scans=1 immediate; =2 gated to 2nd scan (counts $first/$s1/$s2); param read-back ok"
-> 
-> Are these off by one?
+Implement a function for getting a reasonable best effort quality pseudo
+moving sums of probe_hits on demands.  It reuses the internal function
+for the pseudo moving sum for data access frequency (nr_accesses).
 
-They seem to be OK, and I've tested it multiple times.
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ include/linux/damon.h |  2 ++
+ mm/damon/core.c       | 21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-> Kmemleak has a mechanism to detect live objects
-> via the checksum. A side effect is that on allocation, the checksum is 0
-> and only after the first scan the checksum is changed.
-
-I got the impression that checksum continues to be zero for these
-objects during the whole life time? (weird). 
-
-If you think this selftest brings value, let me investigate what the
-heck is happening here.
-
-> On checksum mismatch (i.e. the first scan), we mark the object gray
-> temporarily and won't increment unref_scans. So we already have an
-> implicit two scans required to report an object as unreferenced during
-> its early life.
-> 
-> I think this test needs a priming scan to update the checksums
-> followed by the actual check for min_unref_scans (with scan=off,
-> otherwise random scanning will skew the results).
-
-I tried a priming scan and it actually breaks the min_unref_scans=2 case
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 4f7e305b261c3..616bdf0954b52 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -1003,6 +1003,8 @@ void damon_add_probe(struct damon_ctx *ctx, struct damon_probe *probe);
+ struct damon_region *damon_new_region(unsigned long start, unsigned long end);
+ unsigned int damon_nr_accesses_mvsum(struct damon_region *r,
+ 		struct damon_ctx *ctx);
++unsigned char damon_probe_hits_mvsum(int probe_idx, struct damon_region *r,
++		struct damon_ctx *ctx);
+ 
+ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
+ 		unsigned int nr_ranges, unsigned long min_region_sz);
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index d45dc87fbbd9c..871c6f5257c9e 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -273,6 +273,27 @@ unsigned int damon_nr_accesses_mvsum(struct damon_region *r,
+ 			left_window_bp);
+ }
+ 
++unsigned char damon_probe_hits_mvsum(int probe_idx, struct damon_region *r,
++		struct damon_ctx *ctx)
++{
++	unsigned long sample_interval, aggr_interval;
++	unsigned long window_len, left_window, left_window_bp;
++
++	sample_interval = ctx->attrs.sample_interval ? : 1;
++	aggr_interval =  ctx->attrs.aggr_interval ? : 1;
++	window_len = aggr_interval / sample_interval;
++	if (time_after_eq(ctx->passed_sample_intervals,
++				ctx->next_aggregation_sis))
++		left_window = 0;
++	else
++		left_window = ctx->next_aggregation_sis -
++			ctx->passed_sample_intervals;
++	left_window_bp = mult_frac(left_window, 10000, window_len);
++
++	return damon_mvsum(r->probe_hits[probe_idx],
++			r->last_probe_hits[probe_idx], left_window_bp);
++}
++
+ #ifdef CONFIG_DAMON_DEBUG_SANITY
+ static void damon_verify_new_region(unsigned long start, unsigned long end)
+ {
+-- 
+2.47.3
 
