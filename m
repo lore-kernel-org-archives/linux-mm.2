@@ -4,172 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57EEEC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:39:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE695C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:39:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEB176B00F7; Thu,  2 Jul 2026 20:39:41 -0400 (EDT)
+	id 2DCF66B00FB; Thu,  2 Jul 2026 20:39:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA28C6B00FC; Thu,  2 Jul 2026 20:39:41 -0400 (EDT)
+	id 268366B00FD; Thu,  2 Jul 2026 20:39:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC8266B00FD; Thu,  2 Jul 2026 20:39:41 -0400 (EDT)
+	id 091446B00FE; Thu,  2 Jul 2026 20:39:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 831056B00F7
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EFFE6B00F9
 	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:39:41 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 750C5140210
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:34:07 +0000 (UTC)
-X-FDA: 84944534934.15.A2ECA52
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011025.outbound.protection.outlook.com [52.101.62.25])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9D9538000E
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:34:04 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="jJRNH/55";
-	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.25 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783013644;
-	b=xXiP8/LP50Lxjp64v92IAfoiLn5cIiK8Fd4oZcCteWKOF59NXCIQTTxpBLI6UtGu+6cOLv
-	6BjnfX0uBbF78ULUOOOHQyN6jZPJyqJOps2CAk6zKTuyd2DYBTHBHfybFjAT2ywuCLEsEZ
-	BBfQiRZr4zpgU1JQrb06nmskPjRpV4Q=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783013644;
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F0951C1928
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:39:35 +0000 (UTC)
+X-FDA: 84945607110.24.EACDD1F
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2A48F160011
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:39:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a6erBmpD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783039174;
+	b=phf479+g6PnqF1Q0Ns/cRpZaOg+rXeprbN6UsLnj0q9ZPMmIZBOtxjxNAIUxD4XF2323zZ
+	eTLf1/lCyezxsLpUpjZCMrA2O/LK+HRondGgwGIFGmcGmvCQpUZFQm1sOoKT1JdQzG6G3K
+	CisN0t+0OfsxzJ9TDzDGMPajZCgVfjk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783039174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AyU8jgp8DFO+4/4o5t0h2KqM9k83CiQMli6/a7lZNzQ=;
-	b=IIq0iPPgeKXrIe5rmgvgJ4mhIT4fS4Cgv/0MqQHPPZ8YlqPxTY4NY9MmFa+xSOOxVVFCXP
-	qGnk0agOK+lx0kIFc4ecoAX6dee54JVN5d7jhRFyv770qPERlyf5rDhPooX5aFeYTA3E+A
-	a8A6wjnmrN9QW+0c8OZgaBg0Hzpct2k=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="jJRNH/55";
-	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.25 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b4UOC1+nAQ2tDST6ohAm/8DDs7mWrrRaAHT6uqI5xoxytjeyPL7TXB828AwMQd2NuCqty6eOUNrIYEAw9tvZbxouqnJOdnytUNgRrGvN3qonWC+gZutUU3VgPUeh4knkUELcM5DFx0sgDpxDKyneaOpcnTfj7GL8k3/dn4l3E5Zvk3g7V3AO+6jieacD1g6kx9Fsdvp/K5KI/WVH9ZWvVf6PaB/TeuQO20L3Lx98ywIgIiNs6KfIM9w2ZK3u3D957ObPTaKxZHKnvPSVW4paBa3tvB21RKp8MuaUu513mO2jbUGPqA0B1MyAcugEsamUE2v0m0bMrAw7yYZPNt2aKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AyU8jgp8DFO+4/4o5t0h2KqM9k83CiQMli6/a7lZNzQ=;
- b=cnDeJZT1amSqZN7JO6XewzhxjwXNpczKlJ9gMCoPsgyhXLG+tEh16hFHeR3eRupOg5jIKXismNFBNa6y/FkQLspaNvcrexDrgUgXJZsW9xajGnKjmxgB6llu02GT9IvAl5Ct4D/nM40HTy7rA24vEo9qQE8kq0vY0pj3vyImnVQw/k2HsB99nrQjML6jrlpaPmRBev8ju/fPEBPNVJrtMsd4vOdOkwOvUMk4R9XJANikZZuRReEHU800W65SDMeCRW4iVQgQQDqupaieSEOr9NeRMREHvTkitVrWEOBq/EzRunA5f1hP/a36O6pYKD3QqNAkhA/55xAb7RgenBoGJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AyU8jgp8DFO+4/4o5t0h2KqM9k83CiQMli6/a7lZNzQ=;
- b=jJRNH/55LDBgsayi3lwwO09PSdNw5t0K+44PXnHL+tmeDMCGEe2UstObTB86SZUjQUA4GozG/vegp8VUQgxevMPiUOPBBlp/OeBT5h71+v8G7koRBPhETWD8j0+RJNqP6v5DWBvnWWHOJKZHikK0fOZSaH2Wvv6E3aOJC3lUhFrA/1RZMG5uMvM+w9n5EAFQHSPycbTKjkoC9b9B+qC43mmX73cNuV3U6IyFdtfq2Bn1iD0EE8P50IHayhkrGjOcFDZAUqGycH2WcxJN4yjj0XPn8NXUnoiQv+QmLgAKh+N1y04HfznJlPfxfLSe+cLU1ntdFRPaLmZWvJjNvk451g==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CH3PR12MB9395.namprd12.prod.outlook.com (2603:10b6:610:1ce::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Thu, 2 Jul
- 2026 17:33:46 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.009; Thu, 2 Jul 2026
- 17:33:46 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 02 Jul 2026 13:33:44 -0400
-Message-Id: <DJO9KV3KOPWY.3ESKX5RFMW2M0@nvidia.com>
-Subject: Re: [PATCH 2/2] mm/migrate: exclude hugetlb folios from
- MTHP_STAT_NR_ANON accounting
-Cc: <ljs@kernel.org>, <willy@infradead.org>, "Oscar Salvador"
- <osalvador@suse.de>, "Andrew Morton" <akpm@linux-foundation.org>, "Matthew
- Brost" <matthew.brost@intel.com>, "Joshua Hahn" <joshua.hahnjy@gmail.com>,
- "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park" <byungchul@sk.com>,
- "Gregory Price" <gourry@gourry.net>, "Ying Huang"
- <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>
-To: "Nico Pache" <npache@redhat.com>, "Barry Song" <baohua@kernel.org>,
- "David Hildenbrand" <david@kernel.org>, <linux-cxl@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260702172548.37075-1-npache@redhat.com>
- <20260702172548.37075-3-npache@redhat.com>
-In-Reply-To: <20260702172548.37075-3-npache@redhat.com>
-X-ClientProxiedBy: DS1PR06CA0015.namprd06.prod.outlook.com
- (2603:10b6:8:23e::14) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=FQmnbToj2uNt+38fsrDHgZM8w5YoOu6ycBL01BwfMxY=;
+	b=Nd2OzDUPFecWWKfMvHQ3KUlK0H2m7cGjiDUIDEwfrNNAKRNk1uuYzY2FLMURR057uvWdUe
+	AUWUsSvcIAdDqSxZsUIXnxv+gOciMHXbx58+UCW/GAYVkdK8oUCv2ckaqb239Cko0soYFo
+	tGQFxtIzDUw0LEhkHH1ZCDqyl1OVuqU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a6erBmpD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-664d910cc75so26650d50.1
+        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 17:39:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783039173; x=1783643973; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FQmnbToj2uNt+38fsrDHgZM8w5YoOu6ycBL01BwfMxY=;
+        b=a6erBmpD1ey+vX4odGUfCHG7wLIilEnRUgDRaquRztC2QORfsnR6FCiibZ9gF+OH1v
+         VeS+0P9YJCwi2BTQBveRXqTUwK6on6rSHmDQdMYAyjsVZ5ucwG7CbVTs5CUTKG848ly0
+         pPD/X/da0sICavbT1tdxyEQ1X9/bh3TzcTnY+Z94Ee3YJIADZAKSny9jWzylkX1ZEoXS
+         iXdpKraCo28d2jYNBwFsj+aQldc74rFsAvtHkuKUvjUCWqIB92b15CxBvKyOIyfgXdIO
+         0o07vmmsQPKYm/tA36pqUzBMjVopY8g1dfcPoO0VvQ+4fhNlQaP02bGs22GkT8GhfceR
+         U3Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783039173; x=1783643973;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FQmnbToj2uNt+38fsrDHgZM8w5YoOu6ycBL01BwfMxY=;
+        b=Qcl5ow50l1E41dYmVbdg/VULgHolDKarGoOp+JDi0oZqLl0RrQ/X6Qrt5bHB2t23Rb
+         Es7G8uhOBjghylvbNttEYzjWXx7R/Ti8G23YCbiqNzcoNtGGxmrXh6zjFnuKXizNtKJO
+         CXDEVptIo4Miw2Ejh7RQsqj/6kN56JiG4bi+WirLiQmPg++TJcymVJemrSUbKrRrKwA8
+         ytktX+YvEmZ80wzeJue1084hXWThQ4QOwuG8oVfl+WzYpejgWht8NrAJNcykbb96L0oK
+         fWtsgrT2pylVhdak+BJzygv4yQ7cW3AxjgAEFQ99kdQugCE57jvs7U3z/F9Zkn2/M/2J
+         YVvg==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7avKjOhOk3Xzcb7/c3n+H7tQ+jCXWVmGFXTD2Q+n3KSOvS4TaphVW+uNHI2I3MMA+e0s5N4hTgA==@kvack.org
+X-Gm-Message-State: AOJu0YxcP7Bu0xNcbeEt46zORzNOMikfB0aOxA7sc8ycbOclwae+uaW1
+	5pSfKmbcP+Bf/AWnfd3exJXZRbUd5xIvP+HRSckfajDNXmgTgXS7+sYMk6/O/RJ8
+X-Gm-Gg: AfdE7cl0jDgnAyc3gcIwdpmIQs2TjQrb3KuxrVvm375+VL6gMGpvYbX8K2l6eg0tU3J
+	MaDc4qlRQnRjv7KOANkaD4VntQbYP+v50f3F4QzreCOu+o0mU9C8TBBWf/UlDoeq+tGkz10BIAX
+	v30ko+RST28wC1JEYnUXxno9xQIj/o/qLedQxXoeUT2wwOxJD5MSmreFqCBkRPmAJaOHnp43/PJ
+	jor9fG86viHJUGDipfbTCLAk4mtUGOweuCOqQ9t3OaPXGMJ5pJyUKu+5h2Y/2x3U/bAQh1NP1NV
+	XE/1DNEkGBAD8m34NKyQ0ymkqK7lF7s2koyps+sCV0/X+M5kKpapHy6cjzHlfm94Eh/Qj+y+KIy
+	SEAc9u8hxFH8mt/vicbur1iyd30pNtaw2NqCfPLkwDrVTi20vpjhEKWGNXagXA0GTwo7ZQRBssD
+	Mww2cIa8CPM1+VHzenwDrVhFyC9ug=
+X-Received: by 2002:a05:6a20:2d23:b0:3b3:1b38:d9d6 with SMTP id adf61e73a8af0-3bff4255e0emr7781388637.39.1783028589316;
+        Thu, 02 Jul 2026 14:43:09 -0700 (PDT)
+Received: from nyx.tail25a6.ts.net ([98.35.8.117])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f0bb84405sm18270279eec.17.2026.07.02.14.43.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 14:43:08 -0700 (PDT)
+From: Farid Zakaria <farid.m.zakaria@gmail.com>
+To: david.laight.linux@gmail.com
+Cc: brauner@kernel.org,
+	farid.m.zakaria@gmail.com,
+	jack@suse.cz,
+	jannh@google.com,
+	kees@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	mail@johnericson.me,
+	shuah@kernel.org,
+	viro@zeniv.linux.org.uk
+Subject: [RFC PATCH] fs: introduce pluggable ELF interpreter loader registry
+Date: Thu,  2 Jul 2026 14:42:47 -0700
+Message-ID: <20260702214247.1253741-1-farid.m.zakaria@gmail.com>
+X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260630185916.5a694895@pumpkin>
+References: <20260630185916.5a694895@pumpkin>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CH3PR12MB9395:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2ccbd98-b559-49d8-7071-08ded86011e4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|7416014|11063799006|4143699003|22082099003|56012099006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	DiLI6HT6T6ih440n4QIWA+CpbUyyeht5utNTackNKjoT/MNZaL3I9Z+MObwo6RW7GiKJaqb1ly2i7E/kPmrRV/Y3uBA+69IgbCRpQyCmc3Jo545aoPYShaLTm7x3cfJRqmHOvQqIvReSAuRomr6i1jskhxak8Q93IDgFNnkPU12I4qtxXwYyU17BxSeILZFrcwRwbrK6Rl+9vBntAcDjx9pBdrwLZqu0g6DMXIjnF/n1bADvZar96v33NtQ5kaj1M4JaMR9bd8vSt56SuobVY+jIRm/0XO5S7ePpRdLCtySJLyunJgIXmAbcF0qb2RdFN8FczkSyGglqUiqIPJj5/alTAA84UGONBkMai8vetsLRf4mOR0B/NAfZ7r9f4Vo2+mPqqpxqmJZOUFXIXhLeJqkRr+U5YY6AYXmCLemA40Mdi0fC0cQVhJTg/qbcmD/Wxy/zOZn2u5TLIClf08K4DyNXh0DlTxPJm5bsc1FFhN9yRKt+l7ReRur0f0kkUdO6LDyH2pOhw3yES4RQir70RVCs8Il9HBGMHYd2yPOiB/bIPXGOl+gMlEZ9r2q7jB+CKf71XZ5+Z9TKOyDJkOSTW/w/c32SglWKfemfTFePYhDztIju9DU3lA1dll/M+I5DCjRqDdQ1CAAxFKT9li6lgDwJtuvh8MgDLip/oD5Y3gw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(7416014)(11063799006)(4143699003)(22082099003)(56012099006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?R0d3MThORXI1aTROcm5BZko1Z25GM25rRmdsS2RyYVQzbWN5YzFlek10aHBz?=
- =?utf-8?B?UXdxbXR6emlaUFRNTm1LWVEyYUVVZGtpcWJIb1JVK2IrdWovNzBLdTdpRjRH?=
- =?utf-8?B?dEpEbUtqdkx3KzkxbU1ySkZtazgzUnRLaE5RUWxMVlkva0hvWVhOcjdPamdH?=
- =?utf-8?B?R2ZZMXhLYzJHTmZFRkJ0V0w1Uk4zL1lySnVxOXQyZmRYR0Z3TXRySHUrcXE1?=
- =?utf-8?B?UzUvUGlQUnZIMFEwdDFzWEhBUEpHaktYMU54czg4cUZ1TGVRZFYzU25xV3Ji?=
- =?utf-8?B?bUgvQlpyNTBlZ3hsa1Z6VkNla3ZoM2t5SlhwUEdRNEhJeHpIcUdreXBqWGdr?=
- =?utf-8?B?RnJkRlRHeUtWd05ucVhOM2txZjBuWTRDbmdkWEhoRWh2NFoxV1BkaFpRZ1RP?=
- =?utf-8?B?VWpQU1BTUU41M1JXNThlb3B6ZkxsUHVocURKMllxbEk4Q1JIbWJjU0dQTGVO?=
- =?utf-8?B?K2RjRVk2enlqdzJadUhHT2RyTWQ4SHNibDRBVGgxMXZmekpybERxZWFvaDBl?=
- =?utf-8?B?ZjBjSjI3Uzh0ZXE4QUtISUNUS1Nva2pUQTRuYlBITmZUY2JGVzlab0ZteG9B?=
- =?utf-8?B?WWl3aHBjeWZSemNpMkVEYXRPN0RiM2dOUThDTVVML1pNQmdxNkQzNGRCbzdF?=
- =?utf-8?B?WVNKVzZma0lpNHJ5bCtrS1FBdHBqQVovcmZ1Ym9wUHliWk03N1JDc21tMERE?=
- =?utf-8?B?c0E0eXdhcDRoWWlOQ2IwUzR5UkZINDlYcmFOTnJESHlEeFhNTXQ3dlNmNkIy?=
- =?utf-8?B?NWdRV3BxTlJvTnRSMGswdk10ZWYxTmZnMWduVWFDWVdSRFpmZTlTOUx3SDAy?=
- =?utf-8?B?bjExejRPT3Q4aVd1ZlhMd2tTUW9DOGlKeDNGcWVJUVZsMm5oeXdaOWVaTXhk?=
- =?utf-8?B?QjNkOE5Eek9LWUYzTjdBVXJxN2tQd2dBc1YwcGx5YjdzNytxYUJXZEt4a0ZG?=
- =?utf-8?B?MWMrRDhKZjNvTjZoaDFHaUxVY05INnZMYlRKZW5RMWlmenNDSFl2TExzZ04r?=
- =?utf-8?B?NlgvUmgrUkhPUy90anBpb1d0VVB0aDJoQzFYdDN2QTUvajlKRFBHQmtoMGNN?=
- =?utf-8?B?Q1JuNENvcXpJcWRjS2ROUWxlQjFEV0ZCVVhZT3dpMkJoZnRYVERYbkFOZFZO?=
- =?utf-8?B?Tm9zdWhTcUJOY0RKSVlkU0ljbVB4bTNVTHREcmcvMFZyK0hHQjRVSHV5NHEy?=
- =?utf-8?B?a0pzQU9kc2o3WnNONUo1WHJBZlF6aXZhTStqZGFBMVdUREFEd1owcTNEaDhh?=
- =?utf-8?B?VGRETjZ6Uyt6dVBCc0U1Ti9lWllVNkpqQU5ZdGxXZXVURVpVdjk5RGNOb2RS?=
- =?utf-8?B?WGt6azF5eFlJTFFGVlRUV3JmNDRLSndCSUxnVlhwbU1YM3BOcXJXS2dTRWxj?=
- =?utf-8?B?b3duMy9SWE5KamFxeDBNMDFMOUxzMDg1RFR0Ym96S3VoVm12VzdhUElBb0tG?=
- =?utf-8?B?MkNtN0Z1UHQ1MHNtSDQzb0t4SWdtZVZDRlQ4UTVrU0x2TkgxM0ExU2pXc2gy?=
- =?utf-8?B?ZDR5QUo1QWxPUTNqdnpoY3BsczYwejY1Y3lCRDlWRkQzMG5MdjNSQS8vZklB?=
- =?utf-8?B?TXpocmQ1NTk0NGpZcHJVaG5hRldtY0lsUzl0Yk10cjVWeUZ5MUJqU3htNEp1?=
- =?utf-8?B?N25IbEwwSGgxZmdPMVEwVFpEaGhIT2ZwczVKVlgrMUE3MGZvemZMWm9LeGtZ?=
- =?utf-8?B?blk4dllDMUEzTGJiNUliSkxqQjFqbkZJeS9CU21KWVFYdlRZSW83SEJyTHcr?=
- =?utf-8?B?OGx4RHRuU1JYdS9jMEtZa3JvazJBMnZnWUg5a0I5SCtpc2NyR20zRVRZL0dD?=
- =?utf-8?B?U3NZQ3dZYlpUSmhaMWM0Njh4MW9XekVNRjJGQ1pBRXE1VlYreklYdU00Mk4z?=
- =?utf-8?B?NFZXK0l1TFNNdmFlOTQ2WERlM3Y3VEtZejRmbEdWNnZVaHo1SE9zOGhuV200?=
- =?utf-8?B?NVBWVXlSbkJFbjFsbmhaV2lWSWo0L2VNRlNVN1VPRitFaFFNVFhwRm9HMUVz?=
- =?utf-8?B?SnUvdlZtbitBZlNjSjB5R3hPcmZmc2VhbCtNQXZwbER4Y1NvRVNOd3pWZGFT?=
- =?utf-8?B?TlV6TGxyNEFiWHU0enRrRktyQlhEYllLN0plNFFndzYydlBBRHc5WW1PdkF0?=
- =?utf-8?B?NnlaQmt2ajR0dUdtd0s3UWFYejMxZEFqMUlic3ZpRkJqZkVIam1XZkIvRW5m?=
- =?utf-8?B?RmNDZ3RYekRRNHRkMjdsT29pOVdUSXB6YkFmcWZBWFlsQSs1OUk1T2lKN1lL?=
- =?utf-8?B?OWJQUUxLS1pqK2hoY2t2UjdKUUc2WmRua3RKaWVPM0ZYK2RBQWEwZW9Na3c4?=
- =?utf-8?Q?FdXj/duPskIz9YI4LP?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2ccbd98-b559-49d8-7071-08ded86011e4
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2026 17:33:46.3158
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MknQ9mebtchH99RsfSvdgppzTFSK8Ar9JZG9jbJNOV87DqpZtbrDmuS/899nuf87
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9395
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9D9538000E
-X-Stat-Signature: myyqgymo74131qtjiryjec9jayu7kt37
-X-HE-Tag: 1783013644-299788
-X-HE-Meta: U2FsdGVkX1/cXlVauP1E1ajnC4zppC5LSCmeStCvBC24y1bKfK+bqP51YjNUfc78Fdg9VVqhY6+nXLCl4l5pbP53q8/QjsNZbfNMUWNHBNitgqh+3rvW+QBL+QAGOHbbkIS768LjuQYu5q3OPbtT1oHHvVe2/3rvBMlXYOXWyIVG9HGFNDFBsOsSSgRPYJ81G9jkjKnUgSLBG9SNxu3HkNEnTep+C99QvYkTnp+KDkAw49kC5Y+bvSKCR9EAStDyzSwoSyJ565HC6sB1W/K0PHsO7W1WYq0eYXjxLWEyCj+tSAt5a3CoxiJn6EJzD1li1BzhBN7p4lRrWDEo6XgVvdb3ToAKs9yW2SMGbo72nfNMRFii4nWYdacVRSbsIlkwa8Di5WiXuB6AS0jvNNGDOBozi1iic16p1OAIUkWCnFYlnoLRMc0uggInCWqeiS9+oH+FDdFNuRaHojcSfQG6n7bZIgx3Am5AIxfjQdl7g2/+IJIAX9ewk+xvTHFSul1qgA3DSXTKtBLClXgzDWVCeRo7T8KEXg//NnXg9ozL2BSS7HPU4aKXRSnrqHFlPeBqM4UmFF5Jpz31jVuLjGPU0izyGyrtjuQGPhVMgeIdQypeQsU5xuABOvv7KUj3Aap9uf8LL/I9n+mkB4VydpECuSdqwduv2G2A78I6380iOv7vOnCrTa2E7jaR7OpvJ3K00V4dEtlyIsGadNXC/4ppYLubwt547hlm8DPxsMDNPUcser7EX0p9ugrIu58cU83PjpGK8LhJlrZSUAMncJXiLEfL8u4uBUU5+mP4IO76CyKkig4mEO3Cosr3d+pmJM4YpZrmg/Zk09v6S4/3Coc4maATT3V80LMvlNGRPuvVj0vKKxAElGcC3eHaDYpVbV5Jw8ZYIHRNDkqbKN14LtMeAbJLmU8AapJ+CDXxgScyh0RsiQILlgknRVAUfIW6RWFe6RLeDOpZibLoD0KgTk3
- y1QkpKLY
- dlNqxY3hEKAxSag8Y5PvEkI3kS1mKcbT1KDTyTD16itn0QUzAPPchtWn/eSOyYw75BtgLdPBj+phQesPg9k+yhgfgLSYz/t12GdbzOXvzlJgd9P4YtCIhx+JxF+Ko+lLS8tnpZvltAxmCThgtnnjGucwfDiQAylfGjKaTEz7sHxxJQQQ6kpsauynuY2ZNX3P2/fxcKRNwOpR+pdTJW0B2XZckYqanEsPtw6tl6VXvkgPo1FBWYLDxagXIn788ek31TtNTj3pMUSL972xCammF3PSLFd4oysExYAxLUbIwwbhfCA8uktU3j3b9c9KmppjSUHx8ZuKrR7AbU+WAcESz1p/Q8q4JFc7wItFm1tsc21tgDVaZyErz99LtDquMS6DBF/M7Ru7/RN4noaXeEAMkq1rUg0+rNgkoZIc0/YJ+CZgEbxPkmbC2FnjGgY1guCobV4u6THkT6a3YabW5ciTOIhBjrU40f/rrFDG6YrZgym6MlpQ3OzweA05SRxMEaF7mo1WzW4XjJtRv7snGvkTY/7UcZuHuB3dFh7o3NVrylJW4udrTewA/kzaKT2chhjzKJjBc
+X-Stat-Signature: zp94n4jbc8k73ubpjjjsc3qtaead1rex
+X-Rspamd-Queue-Id: 2A48F160011
+X-HE-Tag: 1783039174-49575
+X-HE-Meta: U2FsdGVkX1/MKPFyGG9ZY2M5iQyFTM4BADhkcz6VeFvXzcgt5c+OjPQJMpkeN+BwFQCMImSbjku+GPssnqch9bBWBUwM0DbFTyO5TjEb52P3CoPpr/CLNLhU1QJzDQVjHpbkHlioEioPq0G6fLsFVbl7oqJaXdLXEzRuJt+Sgx0E693lHlVsrtVxUHTgsQD75KBSdbNJKwY5JashtmDkU8LKIik25XSW1iSnPlwPJOqCNsTQ2ujQ6UWqn+P6s5E8XWuHBL1S9ZVng2Pqy6AQwZruhZEa0zkDVVN/lHAKLJG9rvKqJO+JwNn/EBgNQCr8QZmFTkkC0S/+q4D34dgBaHPBEq4kS6jsI5T20SgJ+BDO5Kcxzuz+bLTSaYxFcqPmXNEwzxqLOHE37ZtNGjt+cPwl/xpv65CoSyw4Sv3lHPBMQn4YSFgas29s/vs/uIXNpkJhjhvwSjc/F8BLGOSTs99ByN7uOKyYUZlmi8t2OUHLCEZ6Qa+q3gj6uAZOla870mzRZXfLSa/9L5JVkEcAuBPRfLyVm6Tq0SXqT5U2wq79hJh/jeLFFDIlDXBcbhtamUAhvT21P+BdLLOnprxeHfyEYDsNWP2uaCC0vqjY5V34LsReOkzQxe19ZkNX//zNz0k7neC6mRcM8YgK2VHsVEhLsEz4MXRf8rrqbCyyjT0UQA/Ze7Qd2De8T+swJatOiRi9LQpWn1L+pm8wWJ470frNSzaNfiXU383z4nF6wA2dygBxYGPqTF/UKJN9RIFXBQ/OXqhKAO9FMWrsyz5eUt1yP3yHm9x3FmkOqqlpmfNcSINAeyHzajMIyKY5EcUQAVL4c+RphAYyEPRENZNEAl+TFEcGidCTu1/p7n0cgQCh8E2S+X3/BTnbwo7rxD9O1DczowhaVYXPIuqDscqwc8p/4iZpWeZ5JWWtKiZEZS57s7R8ROLBdgWq8e+YApHHx/aI2eew442ED7agBf2
+ eewntKWX
+ KH1txW+omV7J9xO1MqWUdBnzUyKa/TAdHycRH1j/xvR6ac8bs7HAh4Q7nFdAWIAAHPYJ9zQPEpPyHIOSIT70MdpufnqfvfGpgEicnf6c8HLoeZ9cuC/cLt1OE8fWY+xEJt4rfL5sjDJjY6t2wBaGTg/U3d05Xva/YOnhvTBtT+mmKo00dNKRUAK629WLyDgRilNT/Yy3ZjOdk5FcKQW1miDSr6xb9fsv7R+hXrHtCNj7Vh2r44l607Bbszjs2GMTuyD9rcNJOpVxKiwLs8bxCBK31IoEOgbVoqbpWcctgx8siNOdpp9CZVTdZME65nB00QC+IR3DIIGgdFIWNKA/HHW67PTQlb9oxGx6IQETfmlkfjHwYvLA5s+J8LvYR3uOFHDrNAbQj6dD24egcfYcc+9lm2LlA/oHcflT2mrbneO/jnDv9mcTjiYYJDCGCY6eMjWF11L8HsoY5IohsiulZAMTiShlAppFET6F9RHSTl7RKmhvy+jOdZB77s8b7uf709opR90ufviO+sRM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,36 +127,362 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Jul 2, 2026 at 1:25 PM EDT, Nico Pache wrote:
-> __folio_migrate_mapping() increments MTHP_STAT_NR_ANON for the
-> destination folio when `folio_test_anon(folio) && folio_test_large(folio)=
-`
-> is true. However, hugetlb folios satisfy both conditions despite having a
-> completely separate accounting system; they use hugetlb_add_anon_rmap()
-> which does not touch mTHP stats, and their free path also bypasses the
-> mTHP decrement in __free_pages_prepare().
->
-> This causes MTHP_STAT_NR_ANON to be incremented on each hugetlb
-> migration without a corresponding decrement, permanently inflating the
-> nr_anon counter.
->
-> Add a !folio_test_hugetlb() check to both places in
-> __folio_migrate_mapping() so that only actual mTHP folios are counted.
->
-> Fixes: 5d65c8d758f2 ("mm: count the number of anonymous THPs per size")
-> Co-developed-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Nico Pache <npache@redhat.com>
-> ---
->  mm/migrate.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-LGTM. Thanks.
+Introduce a pluggable framework for ELF binary loading to allow dynamic
+resolution and redirection of program interpreters (PT_INTERP). This is
+primarily designed to support hermetic path resolution like NixOS $ORIGIN
+relative dynamic linkers without bloating the core ELF loader or compromising
+system execution security.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Introduce a new registration interface for kernel modules to register
+open_interpreter callbacks. Standard ELF loading queries this registry; if a
+plugin resolves a custom segment type (like PT_INTERP_NIX), it returns a file
+descriptor for the resolved interpreter. Secure execution environments
+(bprm->secureexec) bypass relative resolution for safety.
 
---=20
-Best Regards,
-Yan, Zi
+Assisted-by: Gemini
+Signed-off-by: Farid Zakaria <farid.m.zakaria@gmail.com>
+---
+
+Hey Christian,
+
+Here is a rough draft of what I thought something could look like for a pluggable ELF interpreter loader.
+I've included the relocatable loader in the patch but this can be out-of-tree if needed; it's also named
+"Nix" to distinguish the need for it. 
+
+I chose to read from a distinct segment type (PT_INTERP_NIX) to avoid backwards incompatibility.
+
+The default loader itself could be a plugin similar to binfmt_elf, but for now I wanted the patch
+to be small to demonstrate the concept.
+
+ fs/Kconfig.binfmt           |  15 +++++
+ fs/Makefile                 |   1 +
+ fs/binfmt_elf.c             |  24 ++++++++
+ fs/binfmt_elf_nix.c         | 108 ++++++++++++++++++++++++++++++++++++
+ fs/exec.c                   |  47 ++++++++++++++++
+ include/linux/elf_plugins.h |  39 +++++++++++++
+ 6 files changed, 234 insertions(+)
+ create mode 100644 fs/binfmt_elf_nix.c
+ create mode 100644 include/linux/elf_plugins.h
+
+diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
+index 1949e25c7..ef4277fd8 100644
+--- a/fs/Kconfig.binfmt
++++ b/fs/Kconfig.binfmt
+@@ -38,6 +38,21 @@ config BINFMT_ELF_KUNIT_TEST
+ 	  only needed for debugging. Note that with CONFIG_COMPAT=y, the
+ 	  compat_binfmt_elf KUnit test is also created.
+ 
++config BINFMT_ELF_PLUGINS
++	bool "Enable plugin support for ELF interpreter loading"
++	depends on BINFMT_ELF
++	help
++	  This option allows kernel modules to register handlers to dynamically
++	  resolve and override the ELF program interpreter (e.g. supporting relative
++	  interpreter paths with $ORIGIN).
++
++config BINFMT_ELF_NIX
++	tristate "ELF interpreter plugin for NixOS ($ORIGIN support)"
++	depends on BINFMT_ELF_PLUGINS
++	help
++	  This builds the NixOS ELF interpreter plugin. It intercepts PT_INTERP_NIX
++	  headers to resolve relative and $ORIGIN interpreter paths.
++
+ config COMPAT_BINFMT_ELF
+ 	def_bool y
+ 	depends on COMPAT && BINFMT_ELF
+diff --git a/fs/Makefile b/fs/Makefile
+index 89a8a9d20..bd81e7ff6 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -35,6 +35,7 @@ obj-$(CONFIG_FILE_LOCKING)      += locks.o
+ obj-$(CONFIG_BINFMT_MISC)	+= binfmt_misc.o
+ obj-$(CONFIG_BINFMT_SCRIPT)	+= binfmt_script.o
+ obj-$(CONFIG_BINFMT_ELF)	+= binfmt_elf.o
++obj-$(CONFIG_BINFMT_ELF_NIX)	+= binfmt_elf_nix.o
+ obj-$(CONFIG_COMPAT_BINFMT_ELF)	+= compat_binfmt_elf.o
+ obj-$(CONFIG_BINFMT_ELF_FDPIC)	+= binfmt_elf_fdpic.o
+ obj-$(CONFIG_BINFMT_FLAT)	+= binfmt_flat.o
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 16a56b6b3..53fa26815 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -35,6 +35,7 @@
+ #include <linux/random.h>
+ #include <linux/elf.h>
+ #include <linux/elf-randomize.h>
++#include <linux/elf_plugins.h>
+ #include <linux/utsname.h>
+ #include <linux/coredump.h>
+ #include <linux/sched.h>
+@@ -870,6 +871,12 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	if (!elf_phdata)
+ 		goto out;
+ 
++	interpreter = elf_plugin_open_interpreter(bprm, elf_ex, elf_phdata);
++	if (IS_ERR(interpreter)) {
++		retval = PTR_ERR(interpreter);
++		goto out_free_ph;
++	}
++
+ 	elf_ppnt = elf_phdata;
+ 	for (i = 0; i < elf_ex->e_phnum; i++, elf_ppnt++) {
+ 		char *elf_interpreter;
+@@ -882,6 +889,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 		if (elf_ppnt->p_type != PT_INTERP)
+ 			continue;
+ 
++		if (interpreter)
++			continue;
++
+ 		/*
+ 		 * This is the program interpreter used for shared libraries -
+ 		 * for now assume that this is an a.out format binary.
+@@ -935,6 +945,20 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 		goto out_free_ph;
+ 	}
+ 
++	if (interpreter && !interp_elf_ex) {
++		interp_elf_ex = kmalloc_obj(*interp_elf_ex);
++		if (!interp_elf_ex) {
++			retval = -ENOMEM;
++			goto out_free_file;
++		}
++
++		/* Get the exec headers */
++		retval = elf_read(interpreter, interp_elf_ex,
++				  sizeof(*interp_elf_ex), 0);
++		if (retval < 0)
++			goto out_free_dentry;
++	}
++
+ 	elf_ppnt = elf_phdata;
+ 	for (i = 0; i < elf_ex->e_phnum; i++, elf_ppnt++)
+ 		switch (elf_ppnt->p_type) {
+diff --git a/fs/binfmt_elf_nix.c b/fs/binfmt_elf_nix.c
+new file mode 100644
+index 000000000..d28b92c30
+--- /dev/null
++++ b/fs/binfmt_elf_nix.c
+@@ -0,0 +1,108 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/fs.h>
++#include <linux/path.h>
++#include <linux/namei.h>
++#include <linux/elf.h>
++#include <linux/elf_plugins.h>
++#include <linux/slab.h>
++
++MODULE_DESCRIPTION("ELF Interpreter plugin for NixOS / $ORIGIN");
++MODULE_AUTHOR("Farid Zakaria");
++MODULE_LICENSE("GPL");
++
++/* Mnemonic value for NixOS-specific program interpreter: 'N', 'I', 'X', 3 */
++#define PT_INTERP_NIX  (PT_LOOS + 0x4e49583)
++
++static struct file *nix_open_interpreter(struct linux_binprm *bprm,
++					 struct elfhdr *elf_ex,
++					 struct elf_phdr *elf_phdata)
++{
++	struct elf_phdr *elf_ppnt;
++	struct file *interpreter = NULL;
++	char *elf_interpreter = NULL;
++	int i, retval;
++
++	/* Find the custom Nix interpreter header */
++	elf_ppnt = elf_phdata;
++	for (i = 0; i < elf_ex->e_phnum; i++, elf_ppnt++) {
++		if (elf_ppnt->p_type == PT_INTERP_NIX)
++			break;
++	}
++
++	if (i == elf_ex->e_phnum)
++		return NULL; /* Segment not present; fall back to others */
++
++	/* Security check: refuse relative interp resolution on secure execution */
++	if (bprm->secureexec) {
++		pr_warn_once("binfmt_elf_nix: secureexec active, refusing custom interpreter lookup\n");
++		return NULL; /* Fallback to standard PT_INTERP */
++	}
++
++	if (elf_ppnt->p_filesz > PATH_MAX || elf_ppnt->p_filesz < 2)
++		return ERR_PTR(-ENOEXEC);
++
++	elf_interpreter = kmalloc(elf_ppnt->p_filesz, GFP_KERNEL);
++	if (!elf_interpreter)
++		return ERR_PTR(-ENOMEM);
++
++	/* Read the interpreter path from the executable file */
++	retval = kernel_read(bprm->file, elf_interpreter, elf_ppnt->p_filesz, &elf_ppnt->p_offset);
++	if (retval != elf_ppnt->p_filesz) {
++		retval = (retval < 0) ? retval : -EIO;
++		goto out_free;
++	}
++
++	if (elf_interpreter[elf_ppnt->p_filesz - 1] != '\0') {
++		retval = -ENOEXEC;
++		goto out_free;
++	}
++
++	/* Path Resolution: Absolute vs. $ORIGIN */
++	if (elf_interpreter[0] == '/') {
++		interpreter = open_exec(elf_interpreter);
++	} else if (strncmp(elf_interpreter, "$ORIGIN/", 8) == 0 || strncmp(elf_interpreter, "${ORIGIN}/", 10) == 0) {
++		const char *rel_path = (elf_interpreter[0] == '$') ? (elf_interpreter + 8) : (elf_interpreter + 10);
++		struct path parent_path;
++
++		/* Reference parent directory of the executed file safely */
++		parent_path.mnt = mntget(bprm->file->f_path.mnt);
++		parent_path.dentry = dget_parent(bprm->file->f_path.dentry);
++
++		/* Open relative to parent directory */
++		interpreter = file_open_root(&parent_path, rel_path, O_RDONLY, 0);
++
++		path_put(&parent_path);
++	} else {
++		/* Naked relative paths are rejected for safety */
++		retval = -ENOEXEC;
++		goto out_free;
++	}
++
++	kfree(elf_interpreter);
++	return interpreter;
++
++out_free:
++	kfree(elf_interpreter);
++	return ERR_PTR(retval);
++}
++
++static struct elf_plugin nix_elf_plugin = {
++	.owner = THIS_MODULE,
++	.open_interpreter = nix_open_interpreter,
++};
++
++static int __init binfmt_elf_nix_init(void)
++{
++	return register_elf_plugin(&nix_elf_plugin);
++}
++
++static void __exit binfmt_elf_nix_exit(void)
++{
++	unregister_elf_plugin(&nix_elf_plugin);
++}
++
++module_init(binfmt_elf_nix_init);
++module_exit(binfmt_elf_nix_exit);
+diff --git a/fs/exec.c b/fs/exec.c
+index b92fe7db1..45813bbce 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -46,6 +46,7 @@
+ #include <linux/key.h>
+ #include <linux/personality.h>
+ #include <linux/binfmts.h>
++#include <linux/elf_plugins.h>
+ #include <linux/utsname.h>
+ #include <linux/pid_namespace.h>
+ #include <linux/module.h>
+@@ -108,6 +109,52 @@ void unregister_binfmt(struct linux_binfmt * fmt)
+ 
+ EXPORT_SYMBOL(unregister_binfmt);
+ 
++#if IS_ENABLED(CONFIG_BINFMT_ELF_PLUGINS)
++static DEFINE_MUTEX(elf_plugins_lock);
++static LIST_HEAD(elf_plugins);
++
++int register_elf_plugin(struct elf_plugin *plugin)
++{
++	mutex_lock(&elf_plugins_lock);
++	list_add_tail(&plugin->list, &elf_plugins);
++	mutex_unlock(&elf_plugins_lock);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(register_elf_plugin);
++
++void unregister_elf_plugin(struct elf_plugin *plugin)
++{
++	mutex_lock(&elf_plugins_lock);
++	list_del(&plugin->list);
++	mutex_unlock(&elf_plugins_lock);
++}
++EXPORT_SYMBOL_GPL(unregister_elf_plugin);
++
++struct file *elf_plugin_open_interpreter(struct linux_binprm *bprm,
++					 struct elfhdr *elf_ex,
++					 struct elf_phdr *elf_phdata)
++{
++	struct elf_plugin *plugin;
++	struct file *file = NULL;
++
++	mutex_lock(&elf_plugins_lock);
++	list_for_each_entry(plugin, &elf_plugins, list) {
++		if (!try_module_get(plugin->owner))
++			continue;
++		mutex_unlock(&elf_plugins_lock);
++
++		file = plugin->open_interpreter(bprm, elf_ex, elf_phdata);
++
++		mutex_lock(&elf_plugins_lock);
++		module_put(plugin->owner);
++		if (file)
++			break;
++	}
++	mutex_unlock(&elf_plugins_lock);
++	return file;
++}
++#endif
++
+ static inline void put_binfmt(struct linux_binfmt * fmt)
+ {
+ 	module_put(fmt->module);
+diff --git a/include/linux/elf_plugins.h b/include/linux/elf_plugins.h
+new file mode 100644
+index 000000000..826a32854
+--- /dev/null
++++ b/include/linux/elf_plugins.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_ELF_PLUGINS_H
++#define _LINUX_ELF_PLUGINS_H
++
++#include <linux/binfmts.h>
++#include <linux/elf.h>
++#include <linux/list.h>
++
++struct elf_plugin {
++	struct list_head list;
++	struct module *owner;
++	struct file *(*open_interpreter)(struct linux_binprm *bprm,
++					 struct elfhdr *elf_ex,
++					 struct elf_phdr *elf_phdata);
++};
++
++#if IS_ENABLED(CONFIG_BINFMT_ELF_PLUGINS)
++int register_elf_plugin(struct elf_plugin *plugin);
++void unregister_elf_plugin(struct elf_plugin *plugin);
++struct file *elf_plugin_open_interpreter(struct linux_binprm *bprm,
++					 struct elfhdr *elf_ex,
++					 struct elf_phdr *elf_phdata);
++#else
++static inline int register_elf_plugin(struct elf_plugin *plugin)
++{
++	return 0;
++}
++static inline void unregister_elf_plugin(struct elf_plugin *plugin)
++{
++}
++static inline struct file *elf_plugin_open_interpreter(struct linux_binprm *bprm,
++						       struct elfhdr *elf_ex,
++						       struct elf_phdr *elf_phdata)
++{
++	return NULL;
++}
++#endif
++
++#endif /* _LINUX_ELF_PLUGINS_H */
+-- 
+2.51.2
 
 
