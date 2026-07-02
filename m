@@ -4,115 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47E7EC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34506C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:16:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 140FD6B019D; Thu,  2 Jul 2026 21:16:20 -0400 (EDT)
+	id 0F20B6B019F; Thu,  2 Jul 2026 21:16:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 118326B019F; Thu,  2 Jul 2026 21:16:20 -0400 (EDT)
+	id 0A3F16B01A1; Thu,  2 Jul 2026 21:16:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02EB06B01A0; Thu,  2 Jul 2026 21:16:19 -0400 (EDT)
+	id ED3296B01A2; Thu,  2 Jul 2026 21:16:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB8B66B019D
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:16:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AF6731C1BAC
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 18:11:01 +0000 (UTC)
-X-FDA: 84944627922.05.52D4190
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EF59B20007
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 18:10:59 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=YB5X2Vqj;
-	spf=pass (imf31.hostedemail.com: domain of yunzhao@cloudflare.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=yunzhao@cloudflare.com;
-	dmarc=pass (policy=reject) header.from=cloudflare.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B98F66B019F
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:16:22 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E7AB98B436
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:46:30 +0000 (UTC)
+X-FDA: 84944263740.12.B80E91C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C73581C0007;
+	Thu,  2 Jul 2026 15:46:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mynx6GD6;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783015860;
-	b=uoBuPjGHWw2MwZ3gtu9pGGvfDGVKM2lgWKxIst7CDqd+d6/7F9eS/gP5KFEXzMGLkrYTmZ
-	4FY9Cnfx2IobPPk6j20L/wERIh+VTqcYH+rVZbehQCqynsgQaQGWCY1NLB850Gv/I8NsUg
-	Va4XbyyESQV/HAusKYLPoZev6BCrUwQ=
+	t=1783007189;
+	b=JSO22uiw0mgxwwQSRrb6uKfYPHVJBUsvUarPiG0wOJMq1R88t68w5H6MALQOLedVK144+g
+	KCqYv3ZOlJhsqkebf2cPIBR2trVFYNluYV8IV/CE/A5HIf4IlywIP5OL1I/QK4CNgxGNB2
+	uzKMmonqvYwkwDj6gOM3hOjrnORsC3M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783015860;
+	s=arc-20220608; t=1783007189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pPFAHPxSzUNPu9IZC6QtURWk5+bIEf2CeYJZBVADvKs=;
-	b=CVRz/nBcldiNEuHbOPJCLw555MotzRPBRpQrhF26gJxSXO9GYi7I877dbdZvvct4sjlQqX
-	7m+eMiXDUWsLrTxQwae6KEc/tylowyebzqkTnT97EAODlWlubIlzW/oAdaiRYAViTJm69Z
-	KWTMiK3Y0Zu7OmMrRXG+cXzXLIHAHA8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jvE9wSqWBUCbGMsJG9svgBUezevNvrm1MrcHHSCChso=;
+	b=Qdf/YFrqQomK8hMNk6mos1UhizBcRIlFDZHZkyLEt49qaM2blkru5ivxusiyoMC6WsxWrm
+	a+CrozxBJ+TYCZwOT0OTOiBDZMJt9p1qFZv6FfZVanmIsCKhJqPhVpc9yu4omMX1P4jGCU
+	nUE19+I6KroT75iYJbLv/AcCAEw5ktA=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=cloudflare.com header.s=google09082023 header.b=YB5X2Vqj;
-	spf=pass (imf31.hostedemail.com: domain of yunzhao@cloudflare.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=yunzhao@cloudflare.com;
-	dmarc=pass (policy=reject) header.from=cloudflare.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c7c61b5292so25228335ad.0
-        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 11:10:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1783015859; x=1783620659; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pPFAHPxSzUNPu9IZC6QtURWk5+bIEf2CeYJZBVADvKs=;
-        b=YB5X2VqjuNpIOVDuPqIrclKoai3R87RI7fxV0BYfRIxXPSG8ykIWnKMjA9B/HIw2Ap
-         Bg345GusqbbgOaHL6ozdQm430JgTJU1ibnquqnlqf0/9tW7ze0erqCqcjFjnYqxusqkj
-         3uMu1VEtG6MWOQgw1630s7tNlXbrqvnMXYUre3qFTZhiJnBRBw9hWfazUYvTvNLpoHxg
-         fy4X92Gs/dzv023tM3nu68CGlOYMzeY8S0/kQyzc43zIvI+jx/UxE6+Y+wZKuBFx8goQ
-         Oxk1UREfOazbFiIR+LlBcFVdyKSLzAwRXPmVXrtTg8dUWQ7SzRmmDWeJta2KvMbna5lO
-         rjBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783015859; x=1783620659;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pPFAHPxSzUNPu9IZC6QtURWk5+bIEf2CeYJZBVADvKs=;
-        b=YoRiN6I0reZFLRKPy4nCWwd0Tmdvy4Mp1i3I3ogPxgR6kp8ZuN13hJWzwLrie5buaq
-         R8VeLUdGuDisTC/KdXT05mVVzfNfsuVve23KlT8cRaY+f6FzDm8HCrPmMKX4TcO9/Xcd
-         hojTSdbxCiv4pQrS+R8fypppJ/YHVFOz5cwIQcSvEGEw9W8ohq4Q7GOGM70e3QayycAn
-         bZ2hOknsuzCDpe04MoZqow54P6lrECpm5CuAMwaHRWjPWOrlvFbAcCdPBA0XBxe8cwsM
-         M9TDJPQEB08F0SWMHocJX5Id2RGfcTOO/zy/03czMTByufS/3/1cBtMibE6ffj2G90Oo
-         IOyw==
-X-Gm-Message-State: AOJu0Yy9BIcsrv2VdPVw7VF1By81uLfDfGKl2HPhbHhKLyNEi06xPFyh
-	7vPTLoh4nOqrAW4VXaDvWtIGX1iA2/1w+70A9QVzKfGWwPvlIB0heT+8oPQpvnsP/DW0V9BJm+m
-	RFrWRnpo=
-X-Gm-Gg: AfdE7cleORAqFAqWJfY6BIqUaI/bqpBoYNdTNawr1y0xPVlJsKb0LzycTxHC55Pa7nz
-	pYJLi2jhZJ9Q4zTDlchBgghbvjYuNaNvUpr/rgq2ZeIR5X3YFOJwvxelednl4HKIsQJdg/gIpsa
-	dfuuNG15sOSqWTBma/PpsQ52g0BGzsd/raMjwpGkngGp2ecmt65lWOhNBGR2G4Jo67gLDu3wk2W
-	z9v4UC+9CaQVrFeXqpg2j4pqelPtG/MCTYz4VkiwF/66P4Q4ry7vjCH+98/sbVf5y91ygVbvpCR
-	NqKTYtvSS9UWFgACrdWr4WO5G6MIeI1pfCo/fKdlJ7PtjzW7hoMJD46BIDvirdcmES2PNqN5hSZ
-	IGtFx8RwgqnpceDPyQOYFaKPZLC8OfJD3dqDONX8PN3wl9p62CDzEYmjQJUedyl6McqFb5Mb3xQ
-	6IYB2k
-X-Received: by 2002:a17:903:24d:b0:2ca:4cfd:a6ea with SMTP id d9443c01a7336-2ca91140f99mr60889225ad.16.1783015858755;
-        Thu, 02 Jul 2026 11:10:58 -0700 (PDT)
-Received: from 9YNJRV3.lan ([2a09:bac6:cad7:154b::21f:104])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca9a9f6abesm17168605ad.65.2026.07.02.11.10.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 11:10:58 -0700 (PDT)
-From: Yunzhao Li <yunzhao@cloudflare.com>
-To: linux-mm@kvack.org
-Cc: nphamcs@gmail.com,
-	yosryahmed@google.com,
-	shakeel.butt@linux.dev,
-	hannes@cmpxchg.org,
-	hawk@kernel.org,
-	akpm@linux-foundation.org,
-	zhouchengming@bytedance.com,
-	Yunzhao Li <yunzhao@cloudflare.com>
-Subject: [PATCH] mm/zswap: use ratelimited stats flush in zswap_shrinker_count()
-Date: Thu,  2 Jul 2026 11:07:35 -0700
-Message-ID: <20260702180908.150136-1-yunzhao@cloudflare.com>
-X-Mailer: git-send-email 2.43.0
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mynx6GD6;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2EBA4601EE;
+	Thu,  2 Jul 2026 15:46:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90EC61F000E9;
+	Thu,  2 Jul 2026 15:46:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783007187;
+	bh=jvE9wSqWBUCbGMsJG9svgBUezevNvrm1MrcHHSCChso=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Mynx6GD6LkebsGmUnF9MjOYGoc5t/kjVRBAa3y4hDMiI7/vl1tQdkpNYaMYBglDKt
+	 PpjOhV7WkyGWbA6148JfY40EHSUewPFem4EcHLSNtrDL52P+m6uRZFhhXV+p8drDP5
+	 krlXhtnXXcRAzWJ2KFYq3Hh8rhTgMNWOvfDO5ubcScHxjko5fhA5/oYXfBSBTm3FYZ
+	 q91+d//PbttUXOxvDyYYUNz2FFsT7LJ6pIAF99pcS/rpWlpmF6qsZCGqK6q0R7Cu6u
+	 A7jMMvK5AtByO3p0pYtd9gulxJxBI42o3AQ7j7VXEvArqPbpGQYUH4EuymRAwVZamK
+	 6IrFtw9w61Ysg==
+Date: Thu, 2 Jul 2026 16:46:04 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, tsbogend@alpha.franken.de, 
+	maddy@linux.ibm.com, mpe@ellerman.id.au, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
+	l.stach@pengutronix.de, inki.dae@samsung.com, sw0312.kim@samsung.com, 
+	kyungmin.park@samsung.com, krzk@kernel.org, peter.griffin@linaro.org, 
+	jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com, 
+	tursulin@ursulin.net, robin.clark@oss.qualcomm.com, lumag@kernel.org, lyude@redhat.com, 
+	dakr@kernel.org, tomi.valkeinen@ideasonboard.com, hjc@rock-chips.com, 
+	heiko@sntech.de, andy.yan@rock-chips.com, thierry.reding@kernel.org, 
+	mperttunen@nvidia.com, jonathanh@nvidia.com, kraxel@redhat.com, 
+	dmitry.osipenko@collabora.com, zack.rusin@broadcom.com, matthew.brost@intel.com, 
+	thomas.hellstrom@linux.intel.com, oleksandr_andrushchenko@epam.com, deller@gmx.de, bcrl@kvack.org, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de, 
+	david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, hughd@google.com, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de, 
+	kees@kernel.org, perex@perex.cz, tiwai@suse.com, linux-mips@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
+	etnaviv@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
+	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org, 
+	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 10/13] mm/vma: convert miscellaneous uses of VMA flags in
+ core mm
+Message-ID: <akaGxiTaJreEQn8T@lucifer>
+References: <1e7d834c887b6a65627d730addcff13d458c6268.1782760670.git.ljs@kernel.org>
+ <20260702131233.59026-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: payw4d7tc9t99imfhi6zc3okueijgukr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260702131233.59026-1-lance.yang@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EF59B20007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1783015859-245619
-X-HE-Meta: U2FsdGVkX18ey7+IBLls1PSMtD/IKQ8E19yPw0u/k/1GZ+elrUL4SVEdo1ZN9Xij5Q3Pz8svbEBO+OTygqr1n4isByP7pnuyLJYxDmsi5nIR8oqcFawoVXWKVrnFgxosNTSN7OMAmDbo/qV/K+NZdRSlCkjrTdYhEEnQhqb8pjwLwFLToVlOBOk3BH/lAL4rj9ydl9wzd6MSaA+ci7tSFc0HS+JP3w+zm2p688TwIWuwrKoLu/8dHuAhskMkBf1A9ICmeNb/O9Aih009N19tJpZoOHh25WSxkT0JgbKCmZ2onsLHEGs/JmBTfa+CWZyR8BWMQboZUk1GwqX5RZ5fh7iii10W+7A+jZd7mKCc5dRKfutKRVe6QUt2nJ9qS0xOCUzPW6+2OWY68FqF8x1f7VZGgn5cmhNAqIfb8ZgdEgpdUdgD2oARDoqtj4EwQy9rIK63EsxtrkyEJTsQdhxgpmuQcEGXb04tLrD4ZFiGVF08ZiqSX5ZNYa2K9MGulbkvBZmAd/g3WMWPUSK/mt6Krg1K/vituLNgisKFB1m/brzGCbugpMNIlboxVbzESxIG/kyAiSdl+tMaskaw++CxoKTYHI1ZIh6nFFwszYTpotWRkVPxOXvYcWGuATUkeVSj67YpOO0L8dta650DoG8z0DH8DQEiJbDduvurOuK5szdxLYasJavwNkMG6D5w1T1e9VlHwPBgFPORlFkZj3oRETk40pJsMM158709yOd5mIBYDr+MWtxw2nAFuTZ8VUJbpIrrmpURXo/PLQewzqoQMHsTnkRxhSOyMupCsbPouo/JeE6MLA9vRTak5xt7z9eHdVnNAxUJMSpiKjemVuKTHnlfDpzWywRGEpQ/8t99mL8ZRvT4Hv93B1jfSx/r+3jvYoBku2D5dFkKcV7rHuwdF1XbEDT0iQS3bKnOG8IipfuJtUo2bjMOOiEwPsMWs3DkTYyNCEjPLlyQ9I/8rQy
- +4Bb9Zcp
- FEikeUPNP3J7DLeBjOKflUCm8Dtak0H1hOXVGJ3A9tkmlHUHCGTgDou5B68mWvHky3erRS01TjJeYo9iGujrFOXZiMRcF9kBkge4UM56VzoRm5YI/w9q/Hs/vvTAzv7oLI5aLeFN1hYfP+09qtngcvsL/u/HBkRBfyceestSqONUlN2sDyoFn56GtaCOdWf2PHf1LRsGZ9iirFN9pYCnJKLDMinypPWS1XzrdjAXcc+nBMP+fL6jthy9gWPVfHE3VrzIJWtBF/NM/lmdrN9+VB8ln1oXpcIisxBV5ceDISlo+78bsPi8FZ8f6ZhDDu+4oDjKXZ3/W5Sa4kMN85t6mBb26lNZRCuvSSJ4I6Qqhr1VtGWnJvU0wGoyvxySY0YwMwIzvlZTojhZnUCuBypmtR1sQoqw0flwwBtHjIOK0Isd8L4DdP3SMgAqwsabGBcqEGm7vDEKuDnYRw+XUUmfzbyHR0g==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C73581C0007
+X-Stat-Signature: 7zs8oqyjyxb9m6bbnoawymu89ks3gdgy
+X-HE-Tag: 1783007188-156681
+X-HE-Meta: U2FsdGVkX18yXngQauTTwneNP9zt7mk26pAgEVMSNYOpiUl5Kdmqsxc1q/TfojT+GG0E09CPxUz1UkVjzBAeaJZaCBPUzJUhcXI4hTKbx2w9nodC6dMoX0FLWfYZT0TuRi7h/QWuV5aEkDuV5MmMYk26JYutnjqYHYt7xFvABupDHQzA43Pouh5mPm3Onkr8PBNp9nXupwljP4+3hMidWshLV5ySQb0WPp2HdBEyWhCKcf89DOXiX5eckuPMvXSt+5BqyrIBsVfj3KHUsza7W8DLIYx1pEJ4Kij765PDn4ixsu92Psa9rKFDmdIHa+QI9E2ZkLmWuCaN7VPTCFSDB4YaGQe9W5jFy3T10dTTALD5Hc8DPePxqzOCcp/CrB9ogx/vJL39oPYJCeZp3E9Ag1WVaX/lhmFA8YZ99PyzlViG9t9tBrD9XxIvyzJezrp2rbRvnwuRhZ2iaVzdbbBQO4o0X5aMjX74P0BLTPebrjwhaNb51MJjTXoKiwHZzC+bU9AQH14yggaaeVRjdrM/IHGVOQ11443qd2aKeL/+7z2P1TfpyzQ45RIg4RYrO2L+CA2hf2qwc59wXtWSz6CUthjFDI7+UMJvtniFLTP//evDRbkFYGFvP1iUuN2UVZyoE3oV7Iw7U13gIecxb8+lAD1kblNx8nVexLJWgpPvHyxEYB2umEnhQDEqhv5ED7RyQFY6hq4DjHvRP/YRbdl2Woi5mUxiE9JV3MX/wC7o9pSf5ySmKwfaBG3B0iqiYQda+K+8rCuu0HEQVwyuzSzjIVvv65Nd2LJ5fUU1i+wdUJ6XyikWMHgoeR9fXrSxU/s3X2ijBWxfKL3820uwuHh3HkqB/xSBN14HIizQ40O8GYF2iGITXaFE+EgPer8IfJx9sQ5RSO9qGt9Y7VqIrHkCt60kC7TmQ3dJj3/28J4IqNzBuCrpyNog7RfvfZyEAgsaF1n0OLa6gIZbUsV+g+I
+ 5vWvpMOg
+ DcnW4hTZHNftc1nxdvjBmlPlNTmTwtxLHhVC9kWPs+Wm/qmtNdwJ6NrL6LQiYR2To9Nwd9caeAXR2WjJJT6MYh4cjPZsL5z31oISdVkkXH6TXNITHlI2d+mMXSQEacHoEIAC/CcqAt20p/99Ml9jHWaVo3sSHDxop0Rza0TQpyFU7fLjdEsOMvu4iKpjp49Mf7ETkFOKYIU/l4elgGLO8+9ZI/jWEcqYMVbSeHXTVb15D/F4U/oWSv1djGir7MZTu2PoWu7xvUftA3gehLYLb1ecZig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,98 +116,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap_shrinker_count() calls mem_cgroup_flush_stats(), which takes the
-global cgroup rstat lock synchronously. On machines with many CPUs and
-NUMA nodes, this creates severe lock contention in the kswapd reclaim
-path:
+On Thu, Jul 02, 2026 at 09:12:33PM +0800, Lance Yang wrote:
+>
+> On Mon, Jun 29, 2026 at 08:25:33PM +0100, Lorenzo Stoakes wrote:
+> >Update various uses of legacy flags in vma.c and mmap.c to the new
+> >vma_flags_t type, updating comments alongside them to be consistent.
+> >
+> >Also update __install_special_mapping() to rearrange things slightly to
+> >accommodate the changes.
+> >
+> >Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> >---
+> [...]
+> >diff --git a/mm/vma.c b/mm/vma.c
+> >index b81c05e67a61..ab2ef0f04420 100644
+> >--- a/mm/vma.c
+> >+++ b/mm/vma.c
+> >@@ -3417,23 +3417,27 @@ struct vm_area_struct *__install_special_mapping(
+> > 	vm_flags_t vm_flags, void *priv,
+> > 	const struct vm_operations_struct *ops)
+> > {
+> >-	int ret;
+> >+	vma_flags_t vma_flags = legacy_to_vma_flags(vm_flags);
+> > 	struct vm_area_struct *vma;
+> >+	int ret;
+> >
+> > 	vma = vm_area_alloc(mm);
+> >-	if (unlikely(vma == NULL))
+> >+	if (unlikely(!vma))
+> > 		return ERR_PTR(-ENOMEM);
+> >
+> >-	vma_set_range(vma, addr, addr + len, 0);
+> >-	vm_flags |= vma_flags_to_legacy(mm->def_vma_flags) | VM_DONTEXPAND;
+> >+	vma_flags_set_mask(&vma_flags, mm->def_vma_flags);
+> >+	vma_flags_set(&vma_flags, VMA_DONTEXPAND_BIT);
+> > 	if (pgtable_supports_soft_dirty())
+> >-		vm_flags |= VM_SOFTDIRTY;
+> >-	vm_flags_init(vma, vm_flags & ~VM_LOCKED_MASK);
+> >+		vma_flags_set(&vma_flags, VMA_SOFTDIRTY_BIT);
+> >+	vma_flags_clear_mask(&vma_flags, VMA_LOCKED_MASK);
+> >+	vma->flags = vma_flags;
+>
+> Maybe worth a vma_flags_init() helper here to mirror vm_flags_init()?
+> With this open-coded, we lose the soft-dirty WARN_ON_ONCE sanity check.
+>
+> Might be nicer to keep that check in one place ;)
 
-  - Multiple kswapd threads (one per NUMA node) run concurrently.
-  - do_shrink_slab() invokes zswap_shrinker_count() for each
-    memcg-aware shrinker pass.
-  - Each call flushes the full cgroup rstat hierarchy under the global
-    lock.
+I really hate all the VMA flag accessors, they conflate things horribly - we
+should be explicitly taking VMA write locks when we need to (and often killable
+ones actually) not assuming that a VMA flags accessor does (they should at most
+assert).
 
-On AMD EPYC 9684X machines (96 cores, 192 threads, 12 NUMA nodes)
-running production workloads with zswap enabled, perf shows 2.88% of
-kernel cycles in osq_lock contention from this path:
+This case is even more terribly egregious - you are setting flags at an
+arbitrary time, why are we asserting something about softdirty?
 
-     2.88%  [k] osq_lock
-              --__mutex_lock.constprop.0
-                  --__cgroup_rstat_lock
-                      --cgroup_rstat_flush_locked
-                          --cgroup_rstat_flush
-                              --zswap_shrinker_count
-                                  do_shrink_slab
-                                  shrink_slab
-                                  shrink_node
-                                  balance_pgdat
-                                  kswapd
+You may update them as part of initialisation, maybe not. It's far from a
+guarantee and feels like a lazy place to put it.
 
-84% of kswapd kernel cycles are spent in
-shrink_slab -> zswap_shrinker_count -> cgroup_rstat_flush, not in actual
-page reclaim (shrink_lruvec).
+BUT obviously it's an oversight not to open code that here, so I'll update the
+patch to do that!
 
-Controlled A/B on identical hardware and workload:
+I want VMA flags to be a clean stateless thing, other than the flags
+themselves. Implicit, unrelated, asserts or lock acquisitions in general should
+be done separately IMO.
 
-  shrinker=Y: 2.88% osq_lock, memory PSI 1.58%
-  shrinker=N: 0.00% osq_lock, memory PSI 0.57%
+>
+> [...]
 
-eBPF-based rstat lock wait measurement across 8 production metals
-confirms the contention splits cleanly along shrinker enablement:
-
-  shrinker=Y: 50-250x more contended lock acquisitions (248/s vs 1.1/s)
-  shrinker=N: baseline lock wait (0.0017 s/s vs 1.04 s/s)
-
-zswap_shrinker_count() only produces a heuristic estimate, scaled by
-compression ratio via mult_frac(). The actual writeback happens in
-zswap_shrinker_scan(). Slightly stale stats are acceptable here.
-
-Switch to mem_cgroup_flush_stats_ratelimited(), which only flushes if
-the periodic 2-second flusher is one full cycle late. This matches the
-approach already used in prepare_scan_control() (mm/vmscan.c) for the
-same reclaim path.
-
-After applying this patch, rstat flush latency and lock wait time on
-shrinker=Y machines dropped to the same level as shrinker=N controls,
-while the zswap shrinker continues to function (pool size remains
-bounded under the max_pool_percent cap).
-
-Previously discussed:
-  - Chengming Zhou (Dec 2023): rstat contention from
-    zswap_shrinker_count [1]
-  - Shakeel Butt (Aug 2024): zswap_shrinker_count still uses sync
-    flush [2]
-  - Yosry Ahmed (Aug 2024): suggested eliminating in-kernel
-    flushers [3]
-  - Jesper Dangaard Brouer (Sep 2024): cgroup/rstat V11 patch [4]
-
-[1] https://lore.kernel.org/linux-mm/20231206103935.3440502-1-zhouchengming@bytedance.com/
-[2] https://lore.kernel.org/linux-mm/CALvZod7LFxLCxVpOFH8b2Ppm8T40HPGMKQwX_=NPCWB_mFW+oQ@mail.gmail.com/
-[3] https://lore.kernel.org/linux-mm/CAJD7tkYvFyOSX+rP_FKGBhxvZiCDxtpsNp-c5CGOA-4Bq9oXSg@mail.gmail.com/
-[4] https://lore.kernel.org/linux-mm/172616070094.2055617.17676042522679701515.stgit@firesoul/
-
-Suggested-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Signed-off-by: Yunzhao Li <yunzhao@cloudflare.com>
-Tested-by: Yunzhao Li <yunzhao@cloudflare.com>
----
- mm/zswap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 761cd699e..b5a17ea20 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1217,7 +1217,7 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
- 	 * Without memcg, use the zswap pool-wide metrics.
- 	 */
- 	if (!mem_cgroup_disabled()) {
--		mem_cgroup_flush_stats(memcg);
-+		mem_cgroup_flush_stats_ratelimited(memcg);
- 		nr_backing = memcg_page_state(memcg, MEMCG_ZSWAP_B) >> PAGE_SHIFT;
- 		nr_stored = memcg_page_state(memcg, MEMCG_ZSWAPPED);
- 	} else {
--- 
-2.43.0
-
+Thanks, Lorenzo
 
