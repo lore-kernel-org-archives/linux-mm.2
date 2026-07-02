@@ -4,95 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBCF7C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:32:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A74AC43602
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:32:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D02606B00D2; Thu,  2 Jul 2026 20:32:36 -0400 (EDT)
+	id E140B6B00D4; Thu,  2 Jul 2026 20:32:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDA196B00D4; Thu,  2 Jul 2026 20:32:36 -0400 (EDT)
+	id DEC096B00D7; Thu,  2 Jul 2026 20:32:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEFC56B00D6; Thu,  2 Jul 2026 20:32:36 -0400 (EDT)
+	id CDAA96B00D8; Thu,  2 Jul 2026 20:32:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9296C6B00D2
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:32:36 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7EE6F168016
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:46:39 +0000 (UTC)
-X-FDA: 84944868918.08.6FF37AA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 00EAA40011
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:46:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fvZmcYdh;
-	spf=pass (imf07.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 92ED36B00D4
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:32:37 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C97DA16789A
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:25:30 +0000 (UTC)
+X-FDA: 84944513220.09.B2FB562
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D9EC980009
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:25:28 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JT/KkjPI";
+	spf=pass (imf30.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783021598;
-	b=rIGt2dSfPjVD6FoBPoeG6PtpW6W1Dl3OePDry7kw8wgFvCtgJnf54RqGcvShbco30k6qZp
-	lARB7zROFjL/IwE4YgNA4m8/t15/2EBCszKHCdubqhnqpuB0R9DJ+8eyGK10GUfznwU+Js
-	V7352UA2mzxRJRvLYt2o+Qtgm9outXA=
+	t=1783013129;
+	b=8UqPn3Uo7M+i0MKa3sEPSTUuzjonNFDSA7db84OjrC3AfSXxXcN78H9bQtkA61sJnp+NoG
+	QJO2hdXXTs+UojWE046dXxMdWbf5k8cW5+aI2uSuEbQI99j9Qvwa2F3c2+NDJHStHM+zo4
+	qRX9EWhpnhp4B7C5ojarXLl/lhBxCuA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783021598;
+	s=arc-20220608; t=1783013129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eyHDCPYYCnCqlMDzLTfPdm2rWb8d16r0Pbrr92/ckAM=;
-	b=FJw3RgunhH2XOzYYqa9NgNEzGJyRuwrM2+78k+yMrcGgoLJgBt57PFwZNcBHWcnlmll97h
-	59bb4qwshAR4IZhU8uXkWT9D562acVcCXSLs+6m61zMzVxerrktHYscqMPU4iDTDNlJmqk
-	ZUhgW3Cnsc3Ge+sbmBgJEoc4Igf6R2c=
+	bh=cBefviiafkFbe/nsc/cyLo5CV934Kk6BkNirD8bq4mc=;
+	b=QlDYawJkf4h5z8eq3ApPYIf1KIqR5rryjxQiOl27zs2vnPC3C8uNHlg7LPR8wyGuEGYdMS
+	p+SexKHqVm12rctlPodaYeqTxB7GyHH7YlWFOg5GbOTdxfYZopov9id+j3j1E/ZtH/Ufly
+	hRLGcRKBTzfplBWLfJKRkWreuQ+9sS4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fvZmcYdh;
-	spf=pass (imf07.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 85ABB601CC;
-	Thu,  2 Jul 2026 19:46:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A391F00A3A;
-	Thu,  2 Jul 2026 19:46:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783021597;
-	bh=eyHDCPYYCnCqlMDzLTfPdm2rWb8d16r0Pbrr92/ckAM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=fvZmcYdhCSUgxGkmW212EmxrZkq8oiLsj08VEMml8LnUCeVmay3/VcXrLihutPk27
-	 v5fcM+pm9FFE6PI7i6YNPUu7yvwylH1P1PCBykFqQwX2Wr27XknhLV5s+ojEkqHeDi
-	 ybpgMTv7D3GiZgJ8aliQVd8yh0h2EIsoiJWzYqIBVGCH9QGxMDXT3LLwWRJHUHsEPE
-	 lJ5yUDrsuyxK+t3S+6a36XFBKDDSJPOo+69ULqmDBge83Uzk2DLYSur7EVuvXiRQiS
-	 7FNBmzOIXBi+EHRJU+QYGo4HULKM/uQI/xDmetMBKrzzdZlHvR9QCdVvj0k+n8CES7
-	 LMgDNjtPzxinA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>, Dmitry Voytik <voytikd@gmail.com>
-Cc: Borislav Petkov <bp@alien8.de>, linux-toolchains@vger.kernel.org,
- Alexander Potapenko <glider@google.com>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Josh Poimboeuf
- <jpoimboe@kernel.org>, Dmitry Vyukov <dvyukov@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, Ankur Arora <ankur.a.arora@oracle.com>, "H .
- Peter Anvin" <hpa@zytor.com>, Nathan Chancellor <nathan@kernel.org>, Nick
- Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Marco Elver
- <elver@google.com>, x86@kernel.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] x86/mm: fix objtool failure with KMSAN enabled
-In-Reply-To: <20260702111550.GH751831@noisy.programming.kicks-ass.net>
-References: <20260701125151.352632-1-voytikd@gmail.com>
- <20260702025342.GJakXStrsCmIRnEwFD@fat_crate.local>
- <CAAX90H0V-=Gy1FyBT9qop2=RvhBxbOPLu6+DYpPH2pTehT=nRw@mail.gmail.com>
- <20260702111550.GH751831@noisy.programming.kicks-ass.net>
-Date: Thu, 02 Jul 2026 21:46:33 +0200
-Message-ID: <87se61npie.ffs@fw13>
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JT/KkjPI";
+	spf=pass (imf30.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783013128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cBefviiafkFbe/nsc/cyLo5CV934Kk6BkNirD8bq4mc=;
+	b=JT/KkjPIlbroq5pf5LRyfYXwKp1BWiW2eVA6PY4uphi5DTMKe2Vz0V1F5Pxt2RvVk9N+hT
+	l3BdP2LYy68XPOC36lEXpITDhcbgGAMSSwSCi0wa/EC9us6dV+NDJttEnkJOrfXYUHvYRn
+	04AUNKXPXNvaME2P4KfTnCvV3KZ3/dA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-8-YlzfNNoRPHuWMl6LqaNVfA-1; Thu,
+ 02 Jul 2026 13:25:22 -0400
+X-MC-Unique: YlzfNNoRPHuWMl6LqaNVfA-1
+X-Mimecast-MFC-AGG-ID: YlzfNNoRPHuWMl6LqaNVfA_1783013120
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 950071944CF2;
+	Thu,  2 Jul 2026 17:25:19 +0000 (UTC)
+Received: from p1.redhat.com (unknown [10.22.76.7])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4486E30030D0;
+	Thu,  2 Jul 2026 17:25:10 +0000 (UTC)
+From: Nico Pache <npache@redhat.com>
+To: Barry Song <baohua@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: ljs@kernel.org,
+	willy@infradead.org,
+	Nico Pache <npache@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>
+Subject: [PATCH 2/2] mm/migrate: exclude hugetlb folios from MTHP_STAT_NR_ANON accounting
+Date: Thu,  2 Jul 2026 11:25:47 -0600
+Message-ID: <20260702172548.37075-3-npache@redhat.com>
+In-Reply-To: <20260702172548.37075-1-npache@redhat.com>
+References: <20260702172548.37075-1-npache@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 00EAA40011
-X-Stat-Signature: 7m46hhq1tye1hhetn3qx6sab3tubtwtq
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: tyBEfGF2aRTUIU3lYGCSJz5HvXLEDneWgHM0oKiaoP0_1783013120
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: enrxntdp6ksofpc3qozc8meegqw85dbh
 X-Rspam-User: 
-X-HE-Tag: 1783021597-558452
-X-HE-Meta: U2FsdGVkX1+rBpWBEpG/+Wtw0vELp4HLQ6d92Oc7FMxSA/Zarzy2ZmyMtQr2gVD9BMJNWvuFT3REwc4E/b2YGVdjIPz7zJ4fxz3twTEED0K2AE/ec+1GZ1PTeCiJi2PoDQFd1rQrcNYRVkYE2Lihdsh500XFWBqJmYgaYBLCcaV+f41cMk5ibFNH1LwE33OvIAUL5Udx0zZo3PyKWzekgcbg1gvsMusAmiK9awuLNgY0P+nVCbF7afuMbGzlAgWl0rIqGLkA2fvFIk3pwJ4DajsK4W2YwS9lQO8hlpsxXjTiSFhIfJF5MdpmMCsccuneOnuREUFysZqiySFNT3ulI+OdMGKKWBrBjfOmwLhbZF9eHfRvyPbha0vP/m18cvT9c2ntSINmG8FbJC5lGl7zHft4E/fIPVbUSrCSGYSV8qsSpTSiToLmlHfMAU55mz7Sh/6ynXmsoWldFj1kscK0xFXAm03AMmKtyIFCxsUjkXwHBTs0wGzKwuo1iuOmt/ca3rodzu9fQI4r4VsOhhdd3AJFxgPZFdYnxsqher1TpxmgNuRFbhryPg1nB9ulemD9/kRB/nlcwwXDBSJseRFds9iqwqYVL8s9IsNeK4wWAa5hg0OtCg9nJ6eNRzxj7Weh6AzOEuCKDQrGW/7V+j3faJXjz/rZ6VIloue+Z7K9fCrnxIJ6EOJKmjFEIelWhYAmiHOWZ7WvPxQ1a4fHjhH7+eH/qKZVE7Vo23F6lMQyG3nkWT/eunYz7pt8YRkxv+H6OVNh0cVO3/Jtkl5TvH6wCuEhblAxGoLXhUPoWCdnA6pBmyS68wvRKroeq7UB5YFN7mwc4JbHjWbCX/Oo2dmwTrkatna0BToF0sksu7ZxQ5XA3T+tGIr0sAPlrVtIlFrgJCRuZvjmg3Fk5hUBNYQs6d0QnJZzDsTLjFi7RWHl724+RW8MF49VNa19Ob+pls15eEAnlh57hd3peNT7Ecu
- IS+F+DHU
- iHVifS99dhJhs2HGDwaCH2QdmMmXgULRIWdgm4Fk1Nk7YItXwVOlg2tiGPan9ZzBqLGQSUNyLm+11D8ktmFzxnpNECuYW3f/gYv5BPk1xSjBFQdHfomMvqqaIm604yxI83U+/hsLtxuJ7KEr9F95YPT+ZNvfGH/FFxImu2Z5vRiIkCFql3XVWh9tNA5K3n/PT8sjxDlodvDOifg+A02T+1/7NgVr5gy3nEz2v2m7OeANClP+zWAmU6Ez4GlSTj7eKzAFgAEo1/lGhd02tn8HqthXPsL4pERidIFp35yBcJ+XkW245D6sV48+WojNRhb/8hYoM7kVKHwryIU0ToahnQafoYZhcoq7rxMcl
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: D9EC980009
+X-HE-Tag: 1783013128-557617
+X-HE-Meta: U2FsdGVkX1+vlX+Aj3803YmY0VZdbD2uJbfnPaqMdJ1/xnLwe0Ca1sHvUZwzfgsFQgj80Xzhb6AToPiuQ7E+gO1XqAzAbwi5IxnGC/Hoq4gj8AQoJSPtWhQyJS84Hl0AkdJ53YPMfMaLgui+9U6pWJNEG/WjdmXT56DRugr/XwBXh9AmCaiRBvESvhnsjwW8okMopGb5axwR6F1VBvUHRYKYHr+48dOafMCXs4IlvdijJ+/3Xkg+1wzsg0Lw6yySPUJYi28AmylsxFFKFOtYmc3s1U+OlW9panvxOXoMBNbJL/+86tncDHioDdDzkL1+eUgt0qae7a2nzdeAeDmw9+aPTGFGuC8vT8vsIdZv1g/QViGgFH8XLIHo881wKyZ4ysCotHSGzsFCyNKQbJn66ZBb5KYlV+S64Z4C5cZHlX+mzphoCj1XfwbZvpKEUGXlAXiiw85hyTGDBOh1m9C7juvXoCsJ0VrkREz74ibZxCTtbFXRXA1FhCtY3lbSwQPbVYclRmvEMSjmivhrKDgdZTGC/bbOLpdmoyvVrWl4H2pvqnPDKRFqMeiHLgcIVn/cUY4FcQbGN4hPwzjvSUpH3X7B7ofRb2jqrQLcRUkGYIWjOIChb+BS5wGQzsZnzQzKbmPfE6v11s0YdmbPdOpGHrU2goA+Zifl3/yUd5SjxbdBre6pl9DkscXZ8nH5TNjB66RtH0chHHUDFrd/0DOcGh+uf0yGI9WyCD03zUQRPxfw0xAoqPTfv57GEFdpAN/+newW/gIhtUcY0lM1yZmpDS03pCTlfLJOZ07X1vRQwp3OttzeVu/tMegSTIXxrl8DJI/wEh1rwm0Ze+raD8CM99ldQRAH6gQm0bgyXcFtIpWYCncj7N67cPnzEupu4SUKrUP9HDeuyMAIVYWDgdIOBrOlo5JWGQ6JtDzrsnEksuUIbFb9tX83wt81HNf+SVkZcp/E12isNU2WwO04MCh
+ NPcbRWSx
+ E0yqEyyTr53Fq3iX1yXKNSm5gyOd2zkmtXIQACmedpmu93CENRnGxk4JPeU3sPR5xRNxMeCVa35eqeYVA5P3/10TwQspnWH3dDM+lJ74PxKSDkAYLbbAylALaOrS0Hv6PQWdNyqiz94yY5Tdzwbe9s5hr4uazpAJ5rhQW96GrrkR+kcz47SOzuHmddE+MwzOA+lf63csA265mhvmed45/9wtrQVE79VRaoVK7hgl7MLg44o4f4+oyaVlb/MZSdBbH6Txl60h/3ohQ4Ex3uGDWpkDaXTnY0K6LVWzOVh5S4nYzZmbhEF7xiU6BbHgEuuhxOal2vR22Jr49ieKZjkY2c9o36j+wdZn776FE86hP8pB/2CPB4k7NOYmA2IyvD8bC/KJ+T4KjtrjQQw7tvtDnB3I0fROIfhk9wCKPI01RdR7zYU3mM2lLz0Uez6gDZAqUaDJH7k6CmutXFuRIHvEnsTQICnE00QNBOl0w+yx9R6k2GZ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,25 +120,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02 2026 at 13:15, Peter Zijlstra wrote:
-> A quick test with folio_zero_user() seems to suggest the
-> ASM_CALL_CONSTRAINT movement (your patch) generates the same code for
-> defconfg as does the unmodified code. The change from the thread linked
-> above (input constraint on __builtin_frame_address(0)) generates
-> different code.
->
-> A third option is to force FRAME_POINTER=y for KMSAN builds -- for now,
-> until clang is taught to be less insane.
+__folio_migrate_mapping() increments MTHP_STAT_NR_ANON for the
+destination folio when `folio_test_anon(folio) && folio_test_large(folio)`
+is true. However, hugetlb folios satisfy both conditions despite having a
+completely separate accounting system; they use hugetlb_add_anon_rmap()
+which does not touch mTHP stats, and their free path also bypasses the
+mTHP decrement in __free_pages_prepare().
 
-With FRAME_POINTER=y I get now with clang-22
+This causes MTHP_STAT_NR_ANON to be incremented on each hugetlb
+migration without a corresponding decrement, permanently inflating the
+nr_anon counter.
 
-vmlinux.o: warning: objtool: folio_zero_user+0xa7b: stack state mismatch: reg1[4]=-1+0 reg2[4]=-2-336
-vmlinux.o: warning: objtool: set_ftrace_ops_ro+0x64: relocation to !ENDBR: machine_kexec_prepare+0x8f0
+Add a !folio_test_hugetlb() check to both places in
+__folio_migrate_mapping() so that only actual mTHP folios are counted.
 
-That's with your objtool patch applied. When I remove that then the
-folio_zero_user one goes away. The relocation to !ENDBR stays.
+Fixes: 5d65c8d758f2 ("mm: count the number of anonymous THPs per size")
+Co-developed-by: David Hildenbrand <david@kernel.org>
+Signed-off-by: David Hildenbrand <david@kernel.org>
+Signed-off-by: Nico Pache <npache@redhat.com>
+---
+ mm/migrate.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Oh well...
-
+diff --git a/mm/migrate.c b/mm/migrate.c
+index d9b23909d716..9fd50ea25d2d 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -590,7 +590,8 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 		/* No turning back from here */
+ 		newfolio->index = folio->index;
+ 		newfolio->mapping = folio->mapping;
+-		if (folio_test_anon(folio) && folio_test_large(folio))
++		if (folio_test_anon(folio) && folio_test_large(folio) &&
++		    !folio_test_hugetlb(folio))
+ 			mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
+ 		if (folio_test_swapbacked(folio))
+ 			__folio_set_swapbacked(newfolio);
+@@ -623,7 +624,8 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+ 	 */
+ 	newfolio->index = folio->index;
+ 	newfolio->mapping = folio->mapping;
+-	if (folio_test_anon(folio) && folio_test_large(folio))
++	if (folio_test_anon(folio) && folio_test_large(folio) &&
++	    !folio_test_hugetlb(folio))
+ 		mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
+ 	folio_ref_add(newfolio, nr); /* add cache reference */
+ 	if (folio_test_swapbacked(folio))
+-- 
+2.54.0
 
 
