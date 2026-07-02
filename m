@@ -4,88 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 098FEC43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7432FC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:52:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D0426B0148; Thu,  2 Jul 2026 20:51:24 -0400 (EDT)
+	id 654CA6B0149; Thu,  2 Jul 2026 20:52:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A8436B0149; Thu,  2 Jul 2026 20:51:24 -0400 (EDT)
+	id 605126B014B; Thu,  2 Jul 2026 20:52:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EB0B6B014C; Thu,  2 Jul 2026 20:51:24 -0400 (EDT)
+	id 542496B014D; Thu,  2 Jul 2026 20:52:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD2436B0149
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:51:23 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 858C78CAE4
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 18:51:53 +0000 (UTC)
-X-FDA: 84944730906.25.75DF64F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F1D811C0007
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 18:51:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iQozmxJd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1680F6B0149
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:52:36 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96B581681AE
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 22:27:03 +0000 (UTC)
+X-FDA: 84945273126.11.F085F0F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf02.hostedemail.com (Postfix) with ESMTP id CF1AE80004
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 22:27:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MlLfc3vG;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783018312;
-	b=RMIcwxd/yqf3jKu+Zfkksnx7jlpncoCvWLUJv7aO9RGADz8kyz024W7LOCtiR6OwKmM1oN
-	u7hOjxyEfWx2XzWlC8RvdpzQYHdLX/r6kG0VrSpW0KiLMv3lTyJPFZAF6FcCWLon8sP4VM
-	KylkUrUu/glgdFRUNDfvaq3zhE4ag00=
+	t=1783031221;
+	b=zClEWBkfpfJMahJzl8d3Oj3c7iGifo2ybqB6KDCrNbAseWwPwSdoN/JGEC32N2qwejWQM3
+	oP/o7tSNdVOXOnP5JWcj9JQEUvimdd/WH1Epn/kJwfAecapYcuHl8SHJtTQrZZn8TiTcRK
+	b1dBq5rji66RIPB/KF3HcjFN1D3n/Aw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783018312;
+	s=arc-20220608; t=1783031221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GRvPQ6/Z0g76HRnzKKDLecrWTfumsay2ZV4G7sApkk8=;
-	b=JY4iu++h7s5p6/Fn7tcQBVDH1pP94HOgd1qAh+AXBrah4SL2SsfWGmSNuNHo76ONBL5Oin
-	yhaAwaa5Z5cyNQXVZpMtdZY5gw67n3a8RFa0H0uRBLbq1jpj+ItBlfj76GU53FrPHVWvGM
-	t0u0myBHd7d9FueQY6hdnFxLat+syH8=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=rlwwiHqlqS+qCsedpdNeZv/PYYM+pLwd1QkiKL+Zdls=;
+	b=QObuHvdS8Gi3kUFlFo2BWrXngkiocMgqXoSRt/9K1Ir8whxvzyork1OS0fWK5LI9GCpAXO
+	t89PEkB6DY+fAuqeT8b7dyfYbC/wu6F2wzIDVdUiL+kb8Y8+Kw5thZShW80+WrzuzCEVKq
+	PqnyV0R9W5gu0CY0f8J0on1iTEx1uPw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iQozmxJd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 506A3601CB;
-	Thu,  2 Jul 2026 18:51:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA611F000E9;
-	Thu,  2 Jul 2026 18:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783018310;
-	bh=GRvPQ6/Z0g76HRnzKKDLecrWTfumsay2ZV4G7sApkk8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iQozmxJdkoRbRH5oLgqkPWRBXd+Qnd82D6mUzoSS5n4Q6rQTo02sW3z9jkxnXDNtF
-	 776BYNsJFUH2Gm6HxCjpw3Xqf5qdYWHJssvWv+lKw+CZxzNkj+VAjXjHqCZ7YzyTfx
-	 ZF8bQlg18Pt/G9dwGXoeLoYSE9yR9alB8rt7l5XpXGXh3iBBsu7RjZ8BJ34KI5+K0U
-	 LlhTdioZY7ZLfHuXzHBceHgdWcbzQSEAocedZqJVsl/3UhnqFr3VsTYC0kHuBY7cEl
-	 fTnCTkoIoTeULVqalWWKq8qvkkdqo08zG6EwZBrAkP6MLJ28dhWHWLuiN1gmutMWJP
-	 uDp/y5CCWdbGA==
-From: SJ Park <sj@kernel.org>
-To: Lian Wang <lianux.mm@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	daichaobing@sangfor.com.cn,
-	kunwu.chan@gmail.com
-Subject: Re: [RESEND RFC PATCH v2 1/5] mm/damon: add target_order field for DAMOS_COLLAPSE
-Date: Thu,  2 Jul 2026 11:51:37 -0700
-Message-ID: <20260702185137.91227-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260702094633.75658-2-lianux.mm@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F1D811C0007
-X-Stat-Signature: dtrxshntco5hrutpntkhg3wjsqtdqf3z
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MlLfc3vG;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783031221; x=1814567221;
+  h=date:from:to:cc:subject:message-id;
+  bh=ldokdXKOX1+t80VvmQZx//kZUf44w/Cteyv5DGsVT50=;
+  b=MlLfc3vGNgh7kHy8WlQQUVzj6RGPpf53HBegq4mgJ5jlymWO753Ahvxf
+   zKW0RNC2RIRfvG0RiYUkaducTn3cqXYDdy2PoMBuSrcttJcGgpl/4ehjy
+   pItj4eNA7Ic1ZIhKz8gfmagcT22zSlbtSLVEacTxI6Ag8gQLGJhC1pWOZ
+   kP+zwfOHRCaJeR54p6psDTsAivTe8aAaEl/2evLN/4Apgc5PiK7iu3TXf
+   +kKdpblNs4gpL0BNaMLqTi8a7APl3TT7YD2vuZODxUFLi1GFtQY230ffd
+   bI/eygZJH9K190y11HqW9OR8RvYgB31FjMbeMKJ2COZxJywOFRTDQnsmR
+   w==;
+X-CSE-ConnectionGUID: binrLdXgT6GIrwgj/943iQ==
+X-CSE-MsgGUID: Exicor/gSg2vsto3dGGe3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="83656426"
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
+   d="scan'208";a="83656426"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 15:26:53 -0700
+X-CSE-ConnectionGUID: 7tt9Cc8ISgGJary0x1uarA==
+X-CSE-MsgGUID: YXIBcuKsRtCyyZP103nhqg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,144,1779174000"; 
+   d="scan'208";a="246592721"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 02 Jul 2026 15:26:52 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wfPrX-00000000BKU-2fE0;
+	Thu, 02 Jul 2026 22:26:34 +0000
+Date: Fri, 03 Jul 2026 06:25:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: linux-mm@kvack.org
+Subject: [rppt-memblock:fixes] BUILD SUCCESS
+ 2ebce860bdd7ae5e13002811bc9bbbf33fcfc221
+Message-ID: <202607030633.Y250Ba7b-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CF1AE80004
+X-Stat-Signature: e4xn37w6qukwqmfcexsbtu9566tz81or
 X-Rspam-User: 
-X-HE-Tag: 1783018311-136391
-X-HE-Meta: U2FsdGVkX1/BC1efhxCo3kG/bRerWSqkFyZql7BXbTf0iPHMYtoDpNnnc9sfvyO5n6rxgcRDGymfEUdZNysHHRH93oxB31m/gB8xbt4/rPD3Ci3rmhOy2kozhgHEmReNnTP3Yb5x8zX3ktfKgCZ5cV6MjXp5ExZkJCRzA2SM5BE2/g3ljjuiAPBQGfNs/CTCseCG82LRAWSzLdofzdfLXJMzOY2sG9zzJCZ8nEQG3GZYU/OPtqCVlF9mNlA0TsqRMuecngaQwBES1AwTOs8OCkW3zwZgN0l3J/K/cwgq1EVBGQv5NC2hA6S0v95vrgMFNo1Qf5j/r93xEpjPSC2tDE3A+pyZAe3Fy81WnbDSMr/59ate8xs5mlMpw5FsF8gh9pT1sZxX0PAWohv2TZONBVu3aSl+MPAULCh52mC0eq9cwkiun0Vse+jAfT3SvtF8/2/jzyyNVc0x8bmjMBXaC+CZ+J2jDPwKYsprodmc3OJ5L61xXmvwLOcCu0YaxWcWMMzf4N8TVr51bVVfzq+VKnMU0QilKBfs+pV5C8WBPntAPxVpMRkevG3bNlDWuEOMXke10EoDWipzSd9ukFoHgGIPmw8OiiAgkzkAvfI4Fjb9JqtcE6wsBi+Q0ZhF371HKR7yrbsX6z3K6qTR0b0a27KFe2G8A1PZjlkjJyd0PS6o1FNrEOrQqeoyYSUFelupoRQ1hIqHLTq/znzxSUhj6cPX5JxCQxg9Z9GS/APHY/YwPGAVrJltFhLOp6fEvteIgAJRJD1LPEShLcltrb+7ia2Rm7GLS7BVyRzliXifkXy2nNlW3mWR5YQ/3rizFoIOHwl8zyGHH4/aAcEirqUwJfXV2xk1HjmTj1ji7kouyJpXXQ0WdSW0kcFitUX8ltHlFoX3m325JYT7Jbg+RON6DNnBThklCHlbYAPV6BujIOrLExAzFhiKaPH3kJJVAkVh/ZFNlG+m9zamjJtHw+x
- 1YHMmqs1
- nFOWHF0mvcjFtHwD1cJ098vQ4g4iBlkTUn5SWdXeX+UPz/dmcT/cU80xoxIO+Cl9U9DIp5OaUDDpsNh8WSZNEgvG4Q2ccziivA2nI2pjUyOoqCch8b9cVN1hNmL33ae1RzFoKTwWrwY6n5HESnTjiWZFxQNi7BubBcWYKJZKtmtzZ86vaZjz/xpgJ9VAK8zaARwe4XmgAHj3gM2JrmlD9lx41plmWMNAX9nAKQXNw6g1Up4O1Po5Hs1LR+PTwsm0H1fSPFCxQQbYsJaZ7bQ0U92+x4ksiU/f0MVH8KMz+2a/NXm4AjG4pbm1R/NtCYekhGyOgAc8tuDnz7bYagPBpbb9i/EUXxTLFtcgQMz4Jx+ifA9HfMhoi4xMKFyNTfyhOlHDWRbAt730gbtIhOmVDQCofyNqgFEizVIBF0ssKrs0zIhKJUt+zrvGn3BPcoJB7lvnQ3kF2gZ/CguG6ZOnoW1bfb/Z5W0vIoa6QyO12gUTxzOc=
+X-HE-Tag: 1783031220-256974
+X-HE-Meta: U2FsdGVkX1/qQYKEOcuSV/a2hlLmXOonZjUJxWmM6USSNdgFzTpBoDTDDGpUBikzna1eBnQs+Q6khTBj9PyO79ks8tMhbooM+OZxdEha5vkSQxb6FyshE5h6hqJWxOGmPxMwDr8HUkx2yNapXmYL0N/xjZgxs31KlwC9lnf8mIt6gIsq0KD3gqaBmaUnjHDF9HgrtgtaCJ07Ms1Hf2M0Ygv7ekJbN3jDz6FpuGsbgkLa+MQx+R7T17EM8P4if4bNW4GxIXIUmP8vcE9F4bTS1Q2wsrjLj5oZi3CxXvUyI+2wipaE7yY3rkz8lcChDSdojCQqbktZ4ooERD0L1TH5zXFOScyoqUE9PrIGiIRSvOz37eI5OAp+kO/ge482YmK91TUMBVzmHg+RGXIRpCE5YOGSHkMzy0O1OGjFlzmARS17JgJe9+DWLznsloK6q30wXUQoQyYVqNkGeF4CWs7rko9b7yj4oNV+9WQ+uqhh2Ihd8dqcwDNsVZ/tJdno3Rt0DTvtN1FsNCV3c423Z8vS1pOv7flDDoYlqMPLfRbqC8ugzWX3WJGVgSR7l0oQEnin8WgWfa9rASZJtGdGKoCCIcDrn36C78zicEyYuCtOmsLzc8TVdNFqCAutuBfiYwtiRR1xhFABV1SlZdwwEDDUWI4eQauQ1s1718OdfzvUCZebKXZx2l39gK9umcuBbLv0mqKN0gdk5brenE86UTka00Y1Cjfdla/LPU2SHq2qKoIZGDc64lTuSLNEeXduR0TBgNodlC0F614hwLKtqrQs0HJUq63QYZEiZH+db7OawAlEmFomuCkD88tg2yeiEHa7HgzCQqERW4niKZ7mhExKZJi4gyP4Um0/9ScbhuhS5mVonNI5d8pViFTShfs3yTjmSbBcSfccplWvZ3Fq/4GwPp59jxBQgZXJPl/sEjDhTEOVTcV/gWK/IfZ1+jMeBUzRrUYnU9wuIm6iILViKzd
+ f7ke6FFs
+ xnvR/W/aW/UXk+bKktXmTGaGckyAZm1d2uWBDJW78KGLpHzipJ8+kIq8l9dWxdMX9xGkNC/5mltSCv9VDxTrxLx1gsExY3jnKEE5hEFG4SiqtThj7NkIf530EnGtGgD7LT+WTIQ/o8XzJ7TIuquGj5SGGpxeQ16CIav24MNvXS5CmbJ+ZYBAo/eu3/pIf9SN2mBVd5gvucRfHkNk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,226 +100,341 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  2 Jul 2026 17:46:29 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
+branch HEAD: 2ebce860bdd7ae5e13002811bc9bbbf33fcfc221  mm/mm_init: handle alloc_percpu failure in free_area_init_core_hotplug
 
-> DAMOS_COLLAPSE currently collapses into PMD-size THP only.  Add a
-> target_order field to express per-order mTHP collapse intent.  Zero
-> means system default (PMD order, same as current behavior).  Valid
-> values are 0 and 2..HPAGE_PMD_ORDER.
-> 
-> Wire up the sysfs interface: a per-scheme rw file "target_order".
+elapsed time: 799m
 
-Unless there is a name conflict, let's just call it "order".
+configs tested: 321
+configs skipped: 3
 
-> Validate at store time that the value is in range, and warn at scheme
-> creation time if DAMOS_COLLAPSE is used with an unsupported non-PMD
-> order, resetting to 0.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I'm working [1] on centralize the user parameter validations into core layer.
-It is fine to have this for now.  But once the core layer validation is merged
-into mm-new, let's use it for the validation.  That is, just let the user
-writes invalidate target order.  But eventual attempt to use that via
-damon_start() or damon_commit() will fail.
+tested configs:
+alpha                             allnoconfig    gcc-16.1.0
+alpha                            allyesconfig    gcc-16.1.0
+alpha                               defconfig    gcc-16.1.0
+arc                              allmodconfig    clang-23
+arc                              allmodconfig    gcc-16.1.0
+arc                               allnoconfig    gcc-16.1.0
+arc                              allyesconfig    clang-23
+arc                                 defconfig    gcc-16.1.0
+arc                            randconfig-001    gcc-16.1.0
+arc                   randconfig-001-20260702    gcc-16.1.0
+arc                   randconfig-001-20260702    gcc-8.5.0
+arc                   randconfig-001-20260703    gcc-8.5.0
+arc                            randconfig-002    gcc-16.1.0
+arc                   randconfig-002-20260702    gcc-16.1.0
+arc                   randconfig-002-20260702    gcc-8.5.0
+arc                   randconfig-002-20260703    gcc-8.5.0
+arm                               allnoconfig    clang-17
+arm                               allnoconfig    gcc-16.1.0
+arm                              allyesconfig    clang-23
+arm                              allyesconfig    gcc-16.1.0
+arm                                 defconfig    gcc-16.1.0
+arm                         mv78xx0_defconfig    clang-23
+arm                            randconfig-001    gcc-16.1.0
+arm                   randconfig-001-20260702    gcc-16.1.0
+arm                   randconfig-001-20260702    gcc-8.5.0
+arm                   randconfig-001-20260703    gcc-8.5.0
+arm                            randconfig-002    gcc-16.1.0
+arm                   randconfig-002-20260702    gcc-16.1.0
+arm                   randconfig-002-20260702    gcc-8.5.0
+arm                   randconfig-002-20260703    gcc-8.5.0
+arm                            randconfig-003    gcc-16.1.0
+arm                   randconfig-003-20260702    gcc-16.1.0
+arm                   randconfig-003-20260702    gcc-8.5.0
+arm                   randconfig-003-20260703    gcc-8.5.0
+arm                            randconfig-004    gcc-16.1.0
+arm                   randconfig-004-20260702    gcc-16.1.0
+arm                   randconfig-004-20260702    gcc-8.5.0
+arm                   randconfig-004-20260703    gcc-8.5.0
+arm64                            allmodconfig    clang-23
+arm64                             allnoconfig    gcc-16.1.0
+arm64                               defconfig    gcc-16.1.0
+arm64                          randconfig-001    gcc-15.2.0
+arm64                 randconfig-001-20260702    gcc-15.2.0
+arm64                          randconfig-002    gcc-15.2.0
+arm64                 randconfig-002-20260702    gcc-15.2.0
+arm64                          randconfig-003    gcc-15.2.0
+arm64                 randconfig-003-20260702    gcc-15.2.0
+arm64                          randconfig-004    gcc-15.2.0
+arm64                 randconfig-004-20260702    gcc-15.2.0
+csky                             allmodconfig    gcc-16.1.0
+csky                              allnoconfig    gcc-16.1.0
+csky                                defconfig    gcc-16.1.0
+csky                           randconfig-001    gcc-15.2.0
+csky                  randconfig-001-20260702    gcc-15.2.0
+csky                           randconfig-002    gcc-15.2.0
+csky                  randconfig-002-20260702    gcc-15.2.0
+hexagon                          allmodconfig    clang-23
+hexagon                          allmodconfig    gcc-16.1.0
+hexagon                           allnoconfig    clang-23
+hexagon                           allnoconfig    gcc-16.1.0
+hexagon                             defconfig    gcc-16.1.0
+hexagon                        randconfig-001    gcc-11.5.0
+hexagon               randconfig-001-20260702    clang-23
+hexagon               randconfig-001-20260702    gcc-11.5.0
+hexagon               randconfig-001-20260703    gcc-16.1.0
+hexagon                        randconfig-002    gcc-11.5.0
+hexagon               randconfig-002-20260702    clang-23
+hexagon               randconfig-002-20260702    gcc-11.5.0
+hexagon               randconfig-002-20260703    gcc-16.1.0
+i386                             allmodconfig    clang-22
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-16.1.0
+i386                             allyesconfig    clang-22
+i386                             allyesconfig    gcc-14
+i386                 buildonly-randconfig-001    clang-22
+i386        buildonly-randconfig-001-20260702    clang-22
+i386        buildonly-randconfig-001-20260703    clang-22
+i386                 buildonly-randconfig-002    clang-22
+i386        buildonly-randconfig-002-20260702    clang-22
+i386        buildonly-randconfig-002-20260703    clang-22
+i386                 buildonly-randconfig-003    clang-22
+i386        buildonly-randconfig-003-20260702    clang-22
+i386        buildonly-randconfig-003-20260703    clang-22
+i386                 buildonly-randconfig-004    clang-22
+i386        buildonly-randconfig-004-20260702    clang-22
+i386        buildonly-randconfig-004-20260703    clang-22
+i386                 buildonly-randconfig-005    clang-22
+i386        buildonly-randconfig-005-20260702    clang-22
+i386        buildonly-randconfig-005-20260703    clang-22
+i386                 buildonly-randconfig-006    clang-22
+i386        buildonly-randconfig-006-20260702    clang-22
+i386        buildonly-randconfig-006-20260703    clang-22
+i386                                defconfig    gcc-16.1.0
+i386                           randconfig-001    gcc-14
+i386                  randconfig-001-20260702    gcc-14
+i386                           randconfig-002    gcc-14
+i386                  randconfig-002-20260702    gcc-14
+i386                           randconfig-003    gcc-14
+i386                  randconfig-003-20260702    gcc-14
+i386                           randconfig-004    gcc-14
+i386                  randconfig-004-20260702    gcc-14
+i386                           randconfig-005    gcc-14
+i386                  randconfig-005-20260702    gcc-14
+i386                           randconfig-006    gcc-14
+i386                  randconfig-006-20260702    gcc-14
+i386                           randconfig-007    gcc-14
+i386                  randconfig-007-20260702    gcc-14
+i386                           randconfig-011    clang-22
+i386                  randconfig-011-20260702    clang-22
+i386                           randconfig-012    clang-22
+i386                  randconfig-012-20260702    clang-22
+i386                           randconfig-013    clang-22
+i386                  randconfig-013-20260702    clang-22
+i386                           randconfig-014    clang-22
+i386                  randconfig-014-20260702    clang-22
+i386                           randconfig-015    clang-22
+i386                  randconfig-015-20260702    clang-22
+i386                           randconfig-016    clang-22
+i386                  randconfig-016-20260702    clang-22
+i386                           randconfig-017    clang-22
+i386                  randconfig-017-20260702    clang-22
+loongarch                        allmodconfig    clang-23
+loongarch                         allnoconfig    clang-20
+loongarch                         allnoconfig    gcc-16.1.0
+loongarch                           defconfig    clang-23
+loongarch                      randconfig-001    gcc-11.5.0
+loongarch             randconfig-001-20260702    clang-23
+loongarch             randconfig-001-20260702    gcc-11.5.0
+loongarch             randconfig-001-20260703    gcc-16.1.0
+loongarch                      randconfig-002    gcc-11.5.0
+loongarch             randconfig-002-20260702    clang-23
+loongarch             randconfig-002-20260702    gcc-11.5.0
+loongarch             randconfig-002-20260703    gcc-16.1.0
+m68k                             allmodconfig    gcc-16.1.0
+m68k                              allnoconfig    gcc-16.1.0
+m68k                             allyesconfig    clang-23
+m68k                             allyesconfig    gcc-16.1.0
+m68k                                defconfig    clang-23
+microblaze                        allnoconfig    gcc-16.1.0
+microblaze                       allyesconfig    gcc-16.1.0
+microblaze                          defconfig    clang-23
+mips                             allmodconfig    gcc-16.1.0
+mips                              allnoconfig    gcc-16.1.0
+mips                             allyesconfig    gcc-16.1.0
+mips                        omega2p_defconfig    clang-17
+nios2                            allmodconfig    clang-20
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-23
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-23
+nios2                          randconfig-001    gcc-11.5.0
+nios2                 randconfig-001-20260702    clang-23
+nios2                 randconfig-001-20260702    gcc-11.5.0
+nios2                 randconfig-001-20260703    gcc-16.1.0
+nios2                          randconfig-002    gcc-11.5.0
+nios2                 randconfig-002-20260702    clang-23
+nios2                 randconfig-002-20260702    gcc-11.5.0
+nios2                 randconfig-002-20260703    gcc-16.1.0
+openrisc                         allmodconfig    clang-20
+openrisc                         allmodconfig    gcc-16.1.0
+openrisc                          allnoconfig    clang-23
+openrisc                          allnoconfig    gcc-16.1.0
+openrisc                            defconfig    gcc-16.1.0
+parisc                           allmodconfig    gcc-16.1.0
+parisc                            allnoconfig    clang-23
+parisc                            allnoconfig    gcc-16.1.0
+parisc                           allyesconfig    clang-17
+parisc                           allyesconfig    gcc-16.1.0
+parisc                              defconfig    gcc-16.1.0
+parisc                         randconfig-001    clang-17
+parisc                randconfig-001-20260702    clang-17
+parisc                randconfig-001-20260703    clang-23
+parisc                         randconfig-002    clang-17
+parisc                randconfig-002-20260702    clang-17
+parisc                randconfig-002-20260703    clang-23
+parisc64                            defconfig    clang-23
+powerpc                          allmodconfig    gcc-16.1.0
+powerpc                           allnoconfig    clang-23
+powerpc                           allnoconfig    gcc-16.1.0
+powerpc                        randconfig-001    clang-17
+powerpc               randconfig-001-20260702    clang-17
+powerpc               randconfig-001-20260703    clang-23
+powerpc                        randconfig-002    clang-17
+powerpc               randconfig-002-20260702    clang-17
+powerpc               randconfig-002-20260703    clang-23
+powerpc                         wii_defconfig    gcc-16.1.0
+powerpc64                      randconfig-001    clang-17
+powerpc64             randconfig-001-20260702    clang-17
+powerpc64             randconfig-001-20260703    clang-23
+powerpc64                      randconfig-002    clang-17
+powerpc64             randconfig-002-20260702    clang-17
+powerpc64             randconfig-002-20260703    clang-23
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    clang-23
+riscv                             allnoconfig    gcc-16.1.0
+riscv                            allyesconfig    clang-23
+riscv                               defconfig    gcc-16.1.0
+riscv                          randconfig-001    gcc-12.5.0
+riscv                 randconfig-001-20260702    gcc-12.5.0
+riscv                 randconfig-001-20260703    gcc-9.5.0
+riscv                          randconfig-002    gcc-12.5.0
+riscv                 randconfig-002-20260702    gcc-12.5.0
+riscv                 randconfig-002-20260703    gcc-9.5.0
+s390                             allmodconfig    clang-17
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-16.1.0
+s390                                defconfig    gcc-16.1.0
+s390                           randconfig-001    gcc-12.5.0
+s390                  randconfig-001-20260702    gcc-12.5.0
+s390                  randconfig-001-20260703    gcc-9.5.0
+s390                           randconfig-002    gcc-12.5.0
+s390                  randconfig-002-20260702    gcc-12.5.0
+s390                  randconfig-002-20260703    gcc-9.5.0
+sh                               allmodconfig    gcc-16.1.0
+sh                                allnoconfig    clang-23
+sh                                allnoconfig    gcc-16.1.0
+sh                               allyesconfig    clang-17
+sh                               allyesconfig    gcc-16.1.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-16.1.0
+sh                 kfr2r09-romimage_defconfig    gcc-16.1.0
+sh                             randconfig-001    gcc-12.5.0
+sh                    randconfig-001-20260702    gcc-12.5.0
+sh                    randconfig-001-20260703    gcc-9.5.0
+sh                             randconfig-002    gcc-12.5.0
+sh                    randconfig-002-20260702    gcc-12.5.0
+sh                    randconfig-002-20260703    gcc-9.5.0
+sh                           se7343_defconfig    gcc-16.1.0
+sh                           se7619_defconfig    gcc-16.1.0
+sparc                             allnoconfig    clang-23
+sparc                             allnoconfig    gcc-16.1.0
+sparc                               defconfig    gcc-16.1.0
+sparc                 randconfig-001-20260702    gcc-16.1.0
+sparc                 randconfig-001-20260703    gcc-11.5.0
+sparc                 randconfig-002-20260702    gcc-16.1.0
+sparc                 randconfig-002-20260703    gcc-11.5.0
+sparc64                          allmodconfig    clang-20
+sparc64                             defconfig    clang-23
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260702    gcc-16.1.0
+sparc64               randconfig-001-20260703    gcc-11.5.0
+sparc64               randconfig-002-20260702    gcc-16.1.0
+sparc64               randconfig-002-20260703    gcc-11.5.0
+um                               allmodconfig    clang-17
+um                                allnoconfig    clang-17
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-16.1.0
+um                                  defconfig    clang-23
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260702    gcc-16.1.0
+um                    randconfig-001-20260703    gcc-11.5.0
+um                    randconfig-002-20260702    gcc-16.1.0
+um                    randconfig-002-20260703    gcc-11.5.0
+um                           x86_64_defconfig    clang-23
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-22
+x86_64                            allnoconfig    clang-22
+x86_64                            allnoconfig    clang-23
+x86_64                           allyesconfig    clang-22
+x86_64      buildonly-randconfig-001-20260702    clang-22
+x86_64      buildonly-randconfig-002-20260702    clang-22
+x86_64      buildonly-randconfig-003-20260702    clang-22
+x86_64      buildonly-randconfig-004-20260702    clang-22
+x86_64      buildonly-randconfig-005-20260702    clang-22
+x86_64      buildonly-randconfig-006-20260702    clang-22
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-22
+x86_64                         randconfig-001    clang-22
+x86_64                randconfig-001-20260702    clang-22
+x86_64                         randconfig-002    clang-22
+x86_64                randconfig-002-20260702    clang-22
+x86_64                         randconfig-003    clang-22
+x86_64                randconfig-003-20260702    clang-22
+x86_64                         randconfig-004    clang-22
+x86_64                randconfig-004-20260702    clang-22
+x86_64                         randconfig-005    clang-22
+x86_64                randconfig-005-20260702    clang-22
+x86_64                         randconfig-006    clang-22
+x86_64                randconfig-006-20260702    clang-22
+x86_64                         randconfig-011    clang-22
+x86_64                randconfig-011-20260702    clang-22
+x86_64                         randconfig-012    clang-22
+x86_64                randconfig-012-20260702    clang-22
+x86_64                         randconfig-013    clang-22
+x86_64                randconfig-013-20260702    clang-22
+x86_64                         randconfig-014    clang-22
+x86_64                randconfig-014-20260702    clang-22
+x86_64                         randconfig-015    clang-22
+x86_64                randconfig-015-20260702    clang-22
+x86_64                         randconfig-016    clang-22
+x86_64                randconfig-016-20260702    clang-22
+x86_64                randconfig-071-20260702    clang-22
+x86_64                randconfig-071-20260703    clang-22
+x86_64                randconfig-072-20260702    clang-22
+x86_64                randconfig-072-20260703    clang-22
+x86_64                randconfig-073-20260702    clang-22
+x86_64                randconfig-073-20260703    clang-22
+x86_64                randconfig-074-20260702    clang-22
+x86_64                randconfig-074-20260703    clang-22
+x86_64                randconfig-075-20260702    clang-22
+x86_64                randconfig-075-20260703    clang-22
+x86_64                randconfig-076-20260702    clang-22
+x86_64                randconfig-076-20260703    clang-22
+x86_64                               rhel-9.4    clang-22
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-22
+x86_64                    rhel-9.4-kselftests    clang-22
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-22
+xtensa                            allnoconfig    clang-23
+xtensa                            allnoconfig    gcc-16.1.0
+xtensa                           allyesconfig    clang-20
+xtensa                           allyesconfig    gcc-16.1.0
+xtensa                randconfig-001-20260702    gcc-16.1.0
+xtensa                randconfig-001-20260703    gcc-11.5.0
+xtensa                randconfig-002-20260702    gcc-16.1.0
+xtensa                randconfig-002-20260703    gcc-11.5.0
 
-> 
-> The actual mTHP application via the khugepaged wrapper will be added
-> in subsequent patches.
-> 
-> Co-developed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
-> Signed-off-by: Lian Wang <lianux.wang@processmission.com>
-
-Having two Signed-off-by: looks odd.  If you want to give a credit to your
-employer, you can add that to your signature, like:
-
-Signed-off-by: Lian Wang (Your employer name) <lianux.mm@gmail.com>
-
-That's a de-facto standard in mm community.
-
-> ---
->  include/linux/damon.h    |  5 ++++
->  mm/damon/core.c          |  2 ++
->  mm/damon/sysfs-schemes.c | 61 ++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 68 insertions(+)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index 6f7edb3590ef..5a0587556573 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -572,6 +572,11 @@ struct damos_migrate_dests {
->  struct damos {
->  	struct damos_access_pattern pattern;
->  	enum damos_action action;
-> +	/*
-> +	 * @target_order: target order for mTHP actions (DAMOS_COLLAPSE).
-> +	 * 0 means system default (PMD order).  Valid: 0, 2..HPAGE_PMD_ORDER.
-> +	 */
-> +	unsigned int target_order;
->  	unsigned long apply_interval_us;
-
-Let's rename to 'order'.  And put it in the union having 'target_nid' and
-'migrate_dests'.
-
->  /* private: internal use only */
->  	/*
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 265d51ade25b..be54defd4646 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -579,6 +579,7 @@ struct damos *damon_new_scheme(struct damos_access_pattern *pattern,
->  
->  	scheme->migrate_dests = (struct damos_migrate_dests){};
->  	scheme->target_nid = target_nid;
-> +	scheme->target_order = 0;
->  
->  	return scheme;
->  }
-> @@ -1278,6 +1279,7 @@ static int damos_commit(struct damos *dst, struct damos *src)
->  
->  	dst->wmarks = src->wmarks;
->  	dst->target_nid = src->target_nid;
-> +	dst->target_order = src->target_order;
->  
->  	err = damos_commit_dests(&dst->migrate_dests, &src->migrate_dests);
->  	if (err)
-> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-> index 329cfd0bbe9f..7dcd582ded86 100644
-> --- a/mm/damon/sysfs-schemes.c
-> +++ b/mm/damon/sysfs-schemes.c
-> @@ -6,7 +6,9 @@
->   */
->  
->  #include <linux/slab.h>
-> +#include <linux/mm.h>
->  #include <linux/numa.h>
-> +#include <linux/huge_mm.h>
->  
->  #include "sysfs-common.h"
->  
-> @@ -2257,6 +2259,7 @@ struct damon_sysfs_scheme {
->  	struct damon_sysfs_stats *stats;
->  	struct damon_sysfs_scheme_regions *tried_regions;
->  	int target_nid;
-> +	unsigned int target_order;
-
-Let's rename to 'order' if there is no problem.  Same for below.
-
->  	struct damos_sysfs_dests *dests;
->  };
->  
-> @@ -2323,6 +2326,7 @@ static struct damon_sysfs_scheme *damon_sysfs_scheme_alloc(
->  	scheme->action = action;
->  	scheme->apply_interval_us = apply_interval_us;
->  	scheme->target_nid = NUMA_NO_NODE;
-> +	scheme->target_order = 0;
->  	return scheme;
->  }
->  
-> @@ -2642,6 +2646,39 @@ static ssize_t target_nid_store(struct kobject *kobj,
->  	return err ? err : count;
->  }
->  
-> +static ssize_t target_order_show(struct kobject *kobj,
-> +		struct kobj_attribute *attr, char *buf)
-> +{
-> +	struct damon_sysfs_scheme *scheme = container_of(kobj,
-> +			struct damon_sysfs_scheme, kobj);
-> +
-> +	return sysfs_emit(buf, "%u\n", scheme->target_order);
-> +}
-> +
-> +static ssize_t target_order_store(struct kobject *kobj,
-> +		struct kobj_attribute *attr, const char *buf, size_t count)
-> +{
-> +	struct damon_sysfs_scheme *scheme = container_of(kobj,
-> +			struct damon_sysfs_scheme, kobj);
-> +	unsigned int val;
-> +	int err;
-> +
-> +	err = kstrtouint(buf, 0, &val);
-> +	if (err)
-> +		return err;
-> +
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +	if (val != 0 && (val < 2 || val > HPAGE_PMD_ORDER))
-> +		return -EINVAL;
-> +#else
-> +	if (val != 0)
-> +		return -EINVAL;
-> +#endif
-
-As I mentioned above, this should eventually removed in lieu of core layer
-parameters validation.
-
-> +
-> +	scheme->target_order = val;
-> +	return count;
-> +}
-> +
->  static void damon_sysfs_scheme_release(struct kobject *kobj)
->  {
->  	kfree(container_of(kobj, struct damon_sysfs_scheme, kobj));
-> @@ -2656,10 +2693,14 @@ static struct kobj_attribute damon_sysfs_scheme_apply_interval_us_attr =
->  static struct kobj_attribute damon_sysfs_scheme_target_nid_attr =
->  		__ATTR_RW_MODE(target_nid, 0600);
->  
-> +static struct kobj_attribute damon_sysfs_scheme_target_order_attr =
-> +		__ATTR_RW_MODE(target_order, 0600);
-> +
->  static struct attribute *damon_sysfs_scheme_attrs[] = {
->  	&damon_sysfs_scheme_action_attr.attr,
->  	&damon_sysfs_scheme_apply_interval_us_attr.attr,
->  	&damon_sysfs_scheme_target_nid_attr.attr,
-> +	&damon_sysfs_scheme_target_order_attr.attr,
->  	NULL,
->  };
->  ATTRIBUTE_GROUPS(damon_sysfs_scheme);
-> @@ -2970,6 +3011,7 @@ static struct damos *damon_sysfs_mk_scheme(
->  	struct damon_sysfs_weights *sysfs_weights = sysfs_quotas->weights;
->  	struct damon_sysfs_watermarks *sysfs_wmarks = sysfs_scheme->watermarks;
->  	struct damos *scheme;
-> +	unsigned int target_order;
->  	int err;
->  
->  	struct damos_access_pattern pattern = {
-> @@ -3005,6 +3047,25 @@ static struct damos *damon_sysfs_mk_scheme(
->  	if (!scheme)
->  		return NULL;
->  
-> +	target_order = sysfs_scheme->target_order;
-> +
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +	if (sysfs_scheme->action == DAMOS_COLLAPSE &&
-> +	    target_order != 0 &&
-> +	    target_order != HPAGE_PMD_ORDER) {
-> +		pr_warn("DAMON collapse: target_order %u not supported, only PMD order (%u) is available. Use 0 or %u.\n",
-> +			target_order,
-> +			HPAGE_PMD_ORDER, HPAGE_PMD_ORDER);
-> +		target_order = 0;
-> +	}
-
-Ditto.  This validation should eventually be removed.
-
-> +#else
-> +	if (sysfs_scheme->action == DAMOS_COLLAPSE && target_order != 0) {
-> +		pr_warn("DAMON collapse: target_order not supported without THP. Use 0.\n");
-> +		target_order = 0;
-> +	}
-> +#endif
-> +	scheme->target_order = target_order;
-> +
->  	err = damos_sysfs_add_quota_score(sysfs_quotas->goals, &scheme->quota);
->  	if (err) {
->  		damon_destroy_scheme(scheme);
-
-Overall, looks good.
-
-[1] https://lore.kerneel.org/20260701144815.113325-1-sj@kernel.org
-
-
-Thanks,
-SJ
-
-[...]
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
