@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4398C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B35C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:35:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D2286B00DF; Thu,  2 Jul 2026 20:34:36 -0400 (EDT)
+	id A49CA6B00E4; Thu,  2 Jul 2026 20:35:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A9626B00E2; Thu,  2 Jul 2026 20:34:36 -0400 (EDT)
+	id 9FAF66B00E5; Thu,  2 Jul 2026 20:35:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8991D6B00E3; Thu,  2 Jul 2026 20:34:36 -0400 (EDT)
+	id 910A36B00E7; Thu,  2 Jul 2026 20:35:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 63E166B00DF
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:34:36 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A8B0A01AA
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:18:17 +0000 (UTC)
-X-FDA: 84944343834.26.81922D9
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 748D3C0007
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:18:15 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZvFsPkNB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 626FA6B00E4
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:35:44 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D80A11C56CA
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:09:15 +0000 (UTC)
+X-FDA: 84944169870.12.2A3E361
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0BCC21C0005
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:09:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Dkh9RWL9;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783009095;
-	b=76E5JeDcISVQ+J9QaibqmSkr4MFXfnTY/UU/a87YphHj3DJ8FBpDafmAHg/TUkcLnUXCbd
-	p6vEiD1UpTjPR5c6ZiehT1Sgk4KAbjEPpsl00USDhfJ7ON48kUgcZXRMRHxO1L5ED1tIui
-	hjhf0mTcu0B61Tt6CCGZv1brrzzHUv0=
+	t=1783004954;
+	b=hreo/oveWmiLtv7g90RLTseFLa1APD2CHBwArRPHP2GB//T7ppzaOU4IT515wm2o94/xrS
+	tkP6fFHlnbay1hlsQmvKEjWjY6fos0nGVCDfNnuJmE1PvboSTYodztc9Fm/MZmtLtXyTP7
+	d4ExWHhDL1vYlTryLTG+j+78mXPI6uI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783009095;
+	s=arc-20220608; t=1783004954;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nLm6wd6MZy34PotO0lu+sqiieTpRzFwK6t+5eDAyG2s=;
-	b=nuO6HdlBFXPkwGN1I3jImWpRZSktsHtMOVY6PAx0/qvo/SSQ1MtALlh2E/pzmPH5q9Tetv
-	6v3EtcyAooXHCPBS2pohwuf3t3sdEmf09xBg9clCJtVRUgXnl9LeK4gXrkkA/+y5DbEErL
-	DXXAoexmzKKm+PBRV3KOB6T4CdPqu+g=
+	bh=GVgi/IDW6MB0ICHH5yTujujreeH5t5fHN661xjkq/74=;
+	b=Q8A4MKmnCRWknh2f5imSPJwSp/CElwub2cE2h+igdtc4iLDtNz2rIfUgyjRK9Qt5HsDw/v
+	+CRj1ITaFWn3E4dqPWhgwAkswRIvdZ6qzimm1B2kEtqIW5bPCGhkNw5rHJlKrQGvBhzkf7
+	oo1tgpC0u/O1DALVtBsk+2XEQS/05pw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZvFsPkNB;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <2f36a2da-0686-485f-b4b9-ae699bef4fd4@linux.dev>
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Dkh9RWL9;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <cf5a92d3-2c7e-41e6-afed-f2a4c9d1a774@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783009091;
+	t=1783004941;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nLm6wd6MZy34PotO0lu+sqiieTpRzFwK6t+5eDAyG2s=;
-	b=ZvFsPkNBnPpT/fXlkSqC4NvmGcAElqV1ItfaWxOxanuNMADXNea0vysO/aaC9fK20Fa/Nl
-	/h+xkuVNERTD1ctetn6nlGPrMQ61CJ3XCqhhkVF860M2M509mqat5nuz+pZfFLHprM1shj
-	DZ6Bs3Xsc4eQrpsCTRy6e4DCc3heh0Y=
-Date: Fri, 3 Jul 2026 00:17:29 +0800
+	bh=GVgi/IDW6MB0ICHH5yTujujreeH5t5fHN661xjkq/74=;
+	b=Dkh9RWL9rMIQE6Ur1L+lFP9fWBIPUF1EBlETBXiV1FwoU/+0F4n7u3+DtwQotZKTkFazHu
+	oHVZr/Vs+FAfYKVbUxY57cWOfPctKhbPm5r74IEfkBs57Xoqgu/OIspBSvCnXq9uEYouaN
+	h+ygMrTbcJpYGV90L9aTDp+5SWenOgM=
+Date: Thu, 2 Jul 2026 23:08:32 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH 13/13] mm/mremap: convert mremap code to use vma_flags_t
-Content-Language: en-US
+Subject: Re: [PATCH 02/13] mm/vma: update do_mmap() to use vma_flags_t
 To: Lorenzo Stoakes <ljs@kernel.org>
 Cc: akpm@linux-foundation.org, tsbogend@alpha.franken.de,
  maddy@linux.ibm.com, mpe@ellerman.id.au, maarten.lankhorst@linux.intel.com,
@@ -95,22 +94,23 @@ Cc: akpm@linux-foundation.org, tsbogend@alpha.franken.de,
  linux-fbdev@vger.kernel.org, linux-aio@kvack.org,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  linux-sound@vger.kernel.org
-References: <380f761d35a3faa4370f8b3f92e3d4af3d4c7110.1782760670.git.ljs@kernel.org>
- <20260702134947.25189-1-lance.yang@linux.dev> <akaJx8Zt8kazlrjq@lucifer>
+References: <e0ac58ad2b88ff7e2f0024e3286b2e786f79ca32.1782760670.git.ljs@kernel.org>
+ <20260702111531.64883-1-lance.yang@linux.dev> <akZwsS-_cywsXSjL@lucifer>
+Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <akaJx8Zt8kazlrjq@lucifer>
+In-Reply-To: <akZwsS-_cywsXSjL@lucifer>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 748D3C0007
-X-Stat-Signature: nz5k9113qkhp45yfysmsuty67hic5cwk
+X-Rspamd-Queue-Id: 0BCC21C0005
 X-Rspam-User: 
-X-HE-Tag: 1783009095-507028
-X-HE-Meta: U2FsdGVkX18CqcMgPxBizBVFdCdk8e3VxkvNxhCdiKypTx8WVQFID7Wc12DmS5pbu/Jz32SuXkRG+HT5t0ejA5kTcNqs0OzL4MTV6bVFg9/EcyIuca4Yd4+ZO0hZf3MkoEMed3rtLiwYE4xVq+qYJdTRrS14xGVZKw0WGBf6g3r3vjITyt8U7FdPkivADHE4gl4TAt6BYfO8yVz3TCoiWCdjyvUwLBX49LscsSIhmTHZhgJtHuP8qdpgrfijrYF/XZe0mkMM0iiJCEr4R6zKCDhDYDRLoYeYCuawIyIGT0rhrPOEjskpAJOnHqmtoeM6d4iGXXIM8QYGI/lpb+J5YMErdG9+z3u2n7g1+imBLDxzUq3Y3TvXLtsyb23UnjDvdz/Ij48lX1DF2Xm6IltcdUZn1hIjAdKmI293v97fxC9htsibbJ6JtQgToT8Jzc4MJXpGHAr1pB8r7sfojeGB86YPqP8aZJSllrJ09zwZnQKxqYTOMm0UHFfIvBGX+H2ruuqehC/MoL4s6AIXrvNtzwuayjgCqkxzn+1Olpg85vaSc2GMk+utc63BTs/2M0v5fXs56eVCWHp12aBkFmXylObh/UlwWS25zvVmzyqNplM77aVUQWAzI34+9tTH+Ck/x+0KociifYXsZYXrFv01UNWJbUx3ErZgcp/fprxvEl+oBLdrlJCeStKxrCuZK4nNZ7fe8t71m/A+J9PEezLXZbeZ0ZQATCzD+CWX+AtHERCDcCx6Jxt2+5GQ/edqGCR2wqdZbibkoDOhYdp6uYwf3w0eb8xfLSXZJdhS3FNOrGmInDP4tx7MnJWd6lvoY00Btjf+Oi9pyUtwz9iIHsa6LFc5Crt9b/SwPBwqPmKdUPGjFbVZtL81CJ3UCQW8nOPIrUt5t/ipJaJjoWNmaRq9lrNpxWM0WewO7KI05YgbQCWO+vWMFTwHbhyvmtzIaopKjHVYtzRaTHl12Q1Rm33
- Z7u/u5J3
- BrNyodzZJGrTlN9VD5J/B1cDgcrEVHZg/86KiShxhBjG6OPQqOj0Zrf/5Hl/toOfVIqQug9N4cX9oMc9+vbb+OejzRpcD2aE52OcnC8DPsLAsDpKBABy2mIaEIszE/5GdvbCcPZDtXWCoj/G/pwqmelKnDlSHO5TrNTFVWrQTHk/A2ra3yf8c4858CkywHDVgqZstVO0uJzdymu1hA89Vevu9yuMUyaDaCkqIDgPwSr8B6a0FHscXHPXbHI58PkkPfsmEI0g1EbgJIH1yJLHI1UaAsg==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 6jfnmojdwt48o87yxeithyxmmok3u7yh
+X-HE-Tag: 1783004953-166670
+X-HE-Meta: U2FsdGVkX1/UMmjPXG2bkiSljrIclrNLyajETI3Z+aa6UD6ySaceF+VYau0jKyqPMKEtGhoN/D+PDI9+eG1GYiqFAR/CtaVz96v3nfkJ3hKh0e1lpqNHf0fOK6r53y8HgA7NqUFfaXRaKvRf+2xibdmiqC3pUNVAcO6aUCC8ad/6TqtdbF27P9OPUzmXUS1tBpY8i8cJ29+Ym3Vta4aQ8nSj19zfhb/g3uBfUSDakYx/4HN+8zS1jh7EwN9e3yMV7L8DwF7+woixCwhLdNEVQ2S6RjGCkyxYmrwsOe3Pa3L6YsnocMwI3Xr38FGBKnLA9bZKgK1+To5frrqG+QdnqCSQt35pS09oQj3hIdbNkzd2d0k+H03zjdB1Gh9orBVL5ldk7GrYejSSpBEMz1M1RECf4tmrI4dDHjRUkM9YwA6KYj537KT8LvVWeJAeCwfkwajrKm/agJDdEB/Kviq+eUAc+0ApGLYhCG59/inBlDI1tbz0g0Sw5aSPpuQpEmsllO+MbcT5neEYdb/p+3jsLC3m94ItNzWGNqe01NMluo4KpmJngVl1DV+1XF6iu1EoqU31QNg3u1t6YbxLEhmo2ZSwo6eBY/z3zsRAhxOiNHSvqTHaKMv1lCPnKpDR4VZhXFd55T187KRuBojT7xK8MaE6iIekIia5AMSOJHXSRvQXdJxipUdBCEsub3hrgQwSPYxTCXnAwQq5HqjLk9hBq6gVCdn7qEKs9c0R0MUEGqi7fy1zjvVGOzbfnfYnAke/oLdx6L5ayLyKjTVuQG1keE7GBRNRrvdD/dEaI2lyL6w60gKOOCMSx8mWazDzxhjNEbcAJrld7qPkP4TW7aD6oDht6UoxfA830F9i8AXKfoq0TJASgQW13CXcrvQjOGZBoe72RpEqElBtTRUL6cJH5X7wLDlN2OoTPxjzO1CtxChISKwxU6k6ENUalX5JfPplwDaj3GjVoyxPgtg8s+4
+ qas4xQRP
+ WRWckpOap8YJG6LpZVOsfAvqF2QhdWcuotmhodnRxHdpH9a0UCXHBIoIcKYXtIbAVT+zLtYiPEqFadvE6tH/UmYwbnRs2f+MS4/kKWQ2FzGWCxFpZ9jttoSmbeybkCnZnfS4pNWDDQBEbLSJyCwCt13B6EW57+0naYzC0a2Q/GDsBrswMjFi/DUZ/D+mzpgneejDdwzt3Augmx/OWUIz+QOT2kyuXankBZJzaICukxAYlUQf1ef0jLWM7BMuPgLIj57Xv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,33 +120,70 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/7/3 00:07, Lorenzo Stoakes wrote:
-> On Thu, Jul 02, 2026 at 09:49:47PM +0800, Lance Yang wrote:
->>
->> On Mon, Jun 29, 2026 at 08:25:36PM +0100, Lorenzo Stoakes wrote:
->>> Replace use of the legacy vm_flags_t flags with vma_flags_t values
->>> throughout the mremap logic.
->>>
->>> Additionally update comments to reflect the changes to be consistent.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
->>> ---
->>
->> The vm_flags_set() cases below spell out vma_start_write(), but the
->> vm_flags_clear() cases don't?
-> 
-> Yep as I said elsewhere, implicitly taking the lock is terrible and me doing
-> this is completely on purpose to get rid of that :)
-> 
-> But I haven't been clear enough clearly, so I should put the argument as to why
-> that's ok in the commit message.
-> 
-> Will do so on respin.
-
-Makes sense, thanks for spelling it out! A short changelog note
-should clear it up for me :D
-
+On 2026/7/2 22:16, Lorenzo Stoakes wrote:
+> On Thu, Jul 02, 2026 at 07:15:31PM +0800, Lance Yang wrote:
 [...]
+>>
+>> [...]
+>>> diff --git a/mm/mmap.c b/mm/mmap.c
+>>> index 46174e706bbe..547352183214 100644
+>>> --- a/mm/mmap.c
+>>> +++ b/mm/mmap.c
+>> [...]
+>>> @@ -488,23 +496,27 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+>>> 		 * Check to see if we are violating any seals and update VMA
+>>> 		 * flags if necessary to avoid future seal violations.
+>>> 		 */
+>>> -		err = memfd_check_seals_mmap(file, &vm_flags);
+>>> +		err = memfd_check_seals_mmap(file, &vma_flags);
+>>> 		if (err)
+>>> 			return (unsigned long)err;
+>>> 	} else {
+>>> 		switch (flags & MAP_TYPE) {
+>>> 		case MAP_SHARED:
+>>> -			if (vm_flags & (VM_GROWSDOWN|VM_GROWSUP))
+>>> +			if (vma_flags_can_grow(&vma_flags))
+>>> 				return -EINVAL;
+>>> 			/*
+>>> 			 * Ignore pgoff.
+>>> 			 */
+>>> 			pgoff = 0;
+>>> -			vm_flags |= VM_SHARED | VM_MAYSHARE;
+>>> +			vma_flags_set(&vma_flags, VMA_SHARED_BIT, VMA_MAYSHARE_BIT);
+>>> 			break;
+>>> -		case MAP_DROPPABLE:
+>>> -			if (VM_DROPPABLE == VM_NONE)
+>>> +		case MAP_DROPPABLE: {
+>>> +			vma_flags_t droppable = VMA_DROPPABLE;
+>>> +
+>>> +			if (vma_flags_empty(&droppable))
+>>> 				return -EOPNOTSUPP;
+>>> +			vma_flags_set_mask(&vma_flags, droppable);
+>>> +
+>>> 			/*
+>>> 			 * A locked or stack area makes no sense to be droppable.
+>>> 			 *
+>>> @@ -515,23 +527,24 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+>>> 			 */
+>>> 			if (flags & (MAP_LOCKED | MAP_HUGETLB))
+>>> 			        return -EINVAL;
+>>> -			if (vm_flags & (VM_GROWSDOWN | VM_GROWSUP))
+>>> +			if (vma_flags_can_grow(&vma_flags))
+>>> 			        return -EINVAL;
+>>>
+>>> -			vm_flags |= VM_DROPPABLE;
+>>
+>> Old code checked VM_GROWSDOWN|VM_GROWSUP before seting VM_DROPPABLE. New
+>> code flips that around. Hmm, shouldn't master, just made me look twice ;)
+>>
+>> Maybe keep old order?
+> 
+> I guess I feared that defining droppable above then referencing it below would
+> be less clear?
+> 
+> Can move if you feel strongly about it, and sorry for making the move at the
+> same time as the general vm_flags_t -> vma_flags_t refactor as it does make that
+> less clear...
+
+No need to churn just for me. Thanks :)
 
