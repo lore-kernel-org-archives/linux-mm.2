@@ -4,88 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6CBDC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:46:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E51F7C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 696C66B00D1; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
+	id 90ADD6B0133; Thu,  2 Jul 2026 20:48:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64B356B00D3; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
+	id 8E3646B0134; Thu,  2 Jul 2026 20:48:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 538C76B00D9; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
+	id 7D2B06B0135; Thu,  2 Jul 2026 20:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 276EC6B00D1
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6B5568CD18
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:56:26 +0000 (UTC)
-X-FDA: 84944893572.13.9134031
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BB825180004
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:56:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/FWB6jt";
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DEC66B0133
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:48:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E9A154018C
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:40:51 +0000 (UTC)
+X-FDA: 84944551902.24.FE7E37F
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BE32E180003
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:40:49 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=rJ6HYeFA;
+	spf=pass (imf06.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783022184;
-	b=aFgLMmmjYDTwHJmhWO1fw4b8h7fwMfNf/VhiaysPSMmohCoQEwsgXz4QfZF7+uO+Ykyqmn
-	7D1CxhIEYahJKPFFOk/VMG0M7Fceqx1vMK8JsGD11U0J+js1QqLrMkGajGLcrbGb/KM0JT
-	woJwaTLw/TMhWzWxuya9s5P2lMhw/rM=
+	t=1783014049;
+	b=qc9VIcdZfCCza65ozm1+63KGjyKwyInKjwXdbmJEgdCikVpj8qhG6Ljz39l9J3wvk9FBOW
+	I/J5zv3/UAu0lIr2joc77NkW6WdX5FJXPCNypUsoh8WoU7c3gC0YGiUeKR3NId3bEsIX0M
+	kVEwxHHWkY+kLvAj6r4jQ/VK5mcDs70=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783022184;
+	s=arc-20220608; t=1783014049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8pPyJqfnMYXXqo+RHQk7hHYPHe8mO9fxIeSu/W46PMI=;
-	b=0tugRrQOQHMonrnqj+4872OiuwmeWnP7tVVz1qRehfmvG4C1VGlk+1ItXVUDlwkOXMFgep
-	GDqUIqIeQIE8rGQsMvuksoXB4zx69D518GeQ3AoFKAK/dbP+SNaw5TmQkW8blyLL1MvorX
-	iY2cbFX3KjNrhRnDlyUs21ajtJF5SoE=
+	bh=wjDO069O5wPccgEOGkGQ3cuNvHu36V72pupN1KvsqHs=;
+	b=3KxG8V7YGYOI8cGGUCKsRZmLXZlLCx3PGMhrkRczP5ts27TNJo0RGgjEPAfgSmLqnVBaKa
+	QIMSA4U5i4EBJPUp/Onlxsu54trGFWnM+xzj+Ku5GGrbTN71n+VJvE0n7sRL2wFkPoYvMl
+	9SLwr+ZVdjSOfhwaE74Ze3AK0XCeGcU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/FWB6jt";
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB8CD40B45;
-	Thu,  2 Jul 2026 19:56:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A4F1F000E9;
-	Thu,  2 Jul 2026 19:56:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783022183;
-	bh=8pPyJqfnMYXXqo+RHQk7hHYPHe8mO9fxIeSu/W46PMI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N/FWB6jt/dWaj9Km4IL7UnuVEtMf+BFcFz2ur9eOgAlxhIq72KfufKL9vRuwm+hWc
-	 ccEGRd6j6VI9qoSwL7i/dNhwpp+UdizZdh9oWDjT71rAYGFqkdwHW0EON7p+vwnS+8
-	 cOwvxG17Z2cJktUpux8Dl5E/YNbfwxPFOaC34VqPeioGIGoVauLzv9KWQxHfj79FLC
-	 aJSJqIgTeo9RF98anzhicX/8I8Y9XHTpXGWN9nrdDBZ3hkeDnOpBc4QoqSxHNZ6DTK
-	 MZuKmdpziG2uSJ7lieXuXiwb0ayj+uhZZPfn+NbJ9vIli6yP5sSDuNzYnwwn52xPFE
-	 esJuiGkOUKfPA==
-From: SJ Park <sj@kernel.org>
-To: Lian Wang <lianux.mm@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	daichaobing@sangfor.com.cn,
-	kunwu.chan@gmail.com
-Subject: Re: [RESEND RFC PATCH v2 3/5] mm/damon/vaddr: implement mTHP-aware DAMOS_COLLAPSE handler
-Date: Thu,  2 Jul 2026 12:56:17 -0700
-Message-ID: <20260702195617.91982-1-sj@kernel.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=rJ6HYeFA;
+	spf=pass (imf06.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1783014049; x=1814550049;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=wjDO069O5wPccgEOGkGQ3cuNvHu36V72pupN1KvsqHs=;
+  b=rJ6HYeFAQxPAxKfLjMAyaPeIMXrouBc6H65O5s+ukqBqUlFazBDHvPZD
+   VdoCthhOF2buiu837nkXyF3YdHmsLNbX2QPwRQ/q5qh2X52HNy0KEXWdi
+   t2sc24uXHW4ccCDxgQVbsC/UTSlcZ707YwoSLPfjMHJgmPhS0FIShGWsP
+   45zV8hU64DdF0tOMghCaK2ftnBhk3QyZtN/nHAY/HXb0180eUw6R3Mo7v
+   oKShKLLBMBiA4pwJb/LDllz83H2gr/abFbOvgaATPl1VItEHk7+H5YCyo
+   dCaxd0+uy97TfiQjkgooznInhGTzZ6cgr7znkhv4Hh5xqRrpxDQAepdiW
+   Q==;
+X-CSE-ConnectionGUID: d8W885b8TJ649lrO3hVDrA==
+X-CSE-MsgGUID: EDaTCzZzRXKJzEObOGELrw==
+X-IronPort-AV: E=Sophos;i="6.25,144,1779148800"; 
+   d="scan'208";a="22966156"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 17:40:48 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:31911]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.17.129:2525] with esmtp (Farcaster)
+ id d2830d2f-e214-4b0f-b893-92eb1aebbcd0; Thu, 2 Jul 2026 17:40:48 +0000 (UTC)
+X-Farcaster-Flow-ID: d2830d2f-e214-4b0f-b893-92eb1aebbcd0
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Thu, 2 Jul 2026 17:40:48 +0000
+Received: from dev-dsk-sakacpav-1a-480d1124.eu-west-1.amazon.com
+ (172.19.96.155) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 2 Jul 2026
+ 17:40:45 +0000
+From: Pavol Sakac <sakacpav@amazon.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Tejun Heo
+	<tj@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>, "David
+ Woodhouse" <dwmw@amazon.co.uk>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, "David
+ Matlack" <dmatlack@google.com>, Samiullah Khawaja <skhawaja@google.com>,
+	Alexander Graf <graf@amazon.com>, <linux-mm@kvack.org>,
+	<kexec@lists.infradead.org>, <nh-open-source@amazon.com>
+Subject: [RFC PATCH 04/14] driver core: add struct sysfs_lazy_state and device_set_sysfs_lazy()
+Date: Thu, 2 Jul 2026 19:40:23 +0200
+Message-ID: <20260702174033.32116-5-sakacpav@amazon.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260702094633.75658-4-lianux.mm@gmail.com>
-References: 
+In-Reply-To: <20260702174033.32116-1-sakacpav@amazon.de>
+References: <20260702174033.32116-1-sakacpav@amazon.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BB825180004
+X-Originating-IP: [172.19.96.155]
+X-ClientProxiedBy: EX19D035UWB002.ant.amazon.com (10.13.138.97) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1sr597p9iu4rkkurup787pp47cekd9mp
 X-Rspam-User: 
-X-Stat-Signature: po5rercj1p3hoodonsh6k94a77eoj8by
-X-HE-Tag: 1783022184-42108
-X-HE-Meta: U2FsdGVkX19v/PPBGoHulJ5fgtq8ZFbzi1uiWkphYxphbP4/IJA3huV+kHfCkBNgWuyPkeoKAKRkkgZCW2hclL7M7KtFkIBLzLUO9Wlz6/tUQ0GQuETwedDRJ0Tt3AM2bUow/cLdGoipUdAzcQsslrIVDKp3WSmT7jl1ay4HdJtUYU9h0xbqugSoloUHV5aRrnojJgQt3WNAi+5z1FMomAe+3eKbeYDYOrrweSgdc3QqcLoeyZWbfivnGJ5Np+C4/QLyK+NUVWjDmCxaEQOr2bswt9PXCBN8h2JtGnNxX7bvnGIQVW+AkVU3X6rnzNZdGagqb1c/IxH7cYwJWDoPjeVfWKUen0b1gCa7i1K3t39kjiIi80kQ511JUiLGanQpF2Ru5p74UJ9GXDG8EGsDyGUOSZPpAzsMINTE23jXu5dMdSaknxCjcsCRXx+BBIgSwLUhvgEHK3hE8E9Hb4Gp/XE7ii7TFys5P7xFOk7VCEKpqrNn5wWxOsbFgTcWdWvplV0q6vF71YgHwStAMRAu9ABNKKjumi6692WUnL6mxfpg5du++y8u64ma+WonuPABHVGV8oTw/ODuISrBdVxC+umQW85F3Bof9PvZVK8C6eVXDFIa/mxN/n0Gnlw/TfxKIei3BJHx3RW1F2VwAsjFp67dqZmXUMUjCS6mdmXp9gTaak/9b71w64B0WWyAxsv9GtPYyWucKBjlwzje5IVFuqGB2EGXxMrB1/+jbvSNXNSVucguyUl0L1Mpd+cWW+ekbq4EZyCknSF6Ijyjr5v0nahu+L23xbyo6qVkmh4gHD/Q/U52BmrBXlSd99cBJlrFZC3GF2/CXElG3VAFU6zfiIEOZa/BbGHCnX2M6Z01gFXwQ5AS/idoGcNrdqOFlVjRbRCFLd9VVql7wGeGDb5oojTH1lkpkjhmjDK5if/WcqB+ex9eTuMX2J41ruSDy8pX2+/jUofK/abj4bKgrTu
- ZHiA2PaO
- XsA4OC8bvGKG0SqpjXJbnx7u9Rshi9h2yJ57o+ZNW92gkCqtNEOI4va+jqldkUA/Syu0eSOXKs0ROMEA0ZIuHcMaffdy+CT2Slrlhjn/DEwMe/jiaQezL8/uGF3dFAfGjSzECjdDYhV9z7yvaTxA65I8kt5XncN2fHGC04cZ9cqt3L94Iz4B/3Goigu1E8o3y6suKVHVFmxSqwGLgkzN2B4I+kgfM+57iOkpbRWNVFYg3obsUpMouq/G5/VWHk1Yc4iI94CdLEAIc0YCnuBCqLhQP4nZB8nw+qNqTFBzdKva8mV7m6eiXSUUKzE/AtT4miEKNHjdQuJi2R0lnGvzy2UEH75XQL3iG7ujlMbwVhCGbmsWWq6Lbt5g43ofyi+WXx2BU6pJkI1yLaOSEsegWnpaLLwjUA9OMW+h4
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: BE32E180003
+X-HE-Tag: 1783014049-393269
+X-HE-Meta: U2FsdGVkX1972xayErQDNqgtXfcIrfSXShy/6xiBEKWA1BXUeG5HXDBbDPTXLSbPYXfeJIM4Hj64Yq4gWFYqPEKTfYRyOtDWwKHgfjq8P+0bpnANkBVKgS15XPLW9+I/zQebyr0LzEtPpEDXJCRUYX1BGC0svTCC+/6H5TM/QMBAcBlHN2uvTRhWYNMUUmVH1jL2xaitgpy6FIv7LlSbwHNq5KgI6CvkRN/zOkUuQkoG940YXUzGBQZsETGJmTpmpSGKYXJgaBxxPWYZb/Q309u4RGZfWkT5TQq93//o/CFWbJSQJd4JCrSqumwZ08A0tt8bRMfObwQzJiQD6vr9FfygmtXPop77yQ+DaTzUNxilNNsPygA4Buas6N8wUZgqTMO0e/YWWj5YsTUP9RdlztcPGmB3oP3ajcikGnDW9ANDU3/qvz5JPThkXYhIhU6JIoDLz/CsBs6jKrsDpvFaoeM3QE9EPiNtTmnEatGFjd0kvt6RGL0pcp/IZjYLcmpcE8+4mrnx6RTsfsGuG8xRfhLK0FS1JvTVDCr39cxXz3QdbEqhK2LfVIfZXtdslA/mJBlAhiDbh7hLpwjtxIY2d+bBsH0SYyX0RsR7RpOCHUkxF4zmEdt+E/jP4FS3VMgQeN4trKhAIFpxcgeCVZ0krYP3DP72cva6ZQuRXpSBbKbslMHiK/W5Kpyl4hNsMSKxsRyIRZ9E5tS92AKH5zBiVSsmjdh3VOA/HEJ9ZUFaF6fjS54o2lPzv+rYosbnd0UEeKlMFP+OVfL5uTKDVe0vQIRJIVEh6waJqe7BHIDcYXAEUiSCQecHt/K6aW24ZGOAIU3mNcetv1KgG45Z5ImiMtb4pcepWNCB8jz8hCB1btEuIs0FMNi02Rx2XCe1PN6l98Oj2m6ZrlI/s4wa1LjgQa5DYMMdRvnhNQShb6tIPrYf+HLfeldNEJtadKME9+SMVuyyQuKF8bazyVZAOpW
+ xlBsALgM
+ 5+W49LYOyTRVU6FNZVONDZ2FcSvaHmXAD3WZ74zDtjTH8eZmwCdIekZ/0Pz16T81UqgVVgyy3ZXWKLcobG3tzD6UGRBI49RshpduzLGpWCto2YnXeI8PfNVxioOwxs3c7NTCS8L6+jSV3Y38fX9n5ez09g5c8BPHyE6qrm23OVbzJyR3xfLj4tXGD8L6dND4lHFdmrzuIe2RaVzoECFJT4/aXdlyv+ddJG09F2R5zLm0vAojxZrZPq+znVt0P7YR2UY/4s5cCkJpnLc9ceS0/2mQ45ezvyPgWju2RTCOwY/M2+SiwfVZ0/USYet9h/WHHDaHdu27O8dJwValkQugDlVF+f1fc6s0kixkq7+Z9eTMtJQWFK0sSh6J+O8gPmcm7OzYoa4xGoFSYBlyVEDpnrf42wg8+ovq1hfRuHS6QiXVaZ0Ug5MWK9Wd++Y+EcidqaVK9/KCUvBTvxkpqOhZxKyfkDw+rWQJ1n/PpnTcxkFDQlXFzaw5LYNwDyu+tQxbMXz8Q2pe/c6CaohEg8HNHQTTcu2xRXgyKcrJvTcXOw58w7sV65F5dg7oollxYJ12i9iVYuE9ETa0qdBD8xWDZTb+o9uWFVqJL9l6BtnaDu5WB8NmmVKeHKx023uSJWjfBLhdlHokHxh23KHNIZ1JoyMYIxJiT3sZWysg4ppOCWlgZu4A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,128 +118,209 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  2 Jul 2026 17:46:31 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
+Add the per-device lazy-sysfs bookkeeping struct and accessors that
+subsystems use to opt their devices into lazy population:
 
-> When target_order is set (non-zero), the DAMOS_COLLAPSE handler now calls
-> damon_collapse_folio_range() to collapse pages into the requested mTHP
-> size, iterating over the target region in order-aligned chunks.  When
-> target_order is 0 (default), the existing madvise(MADV_COLLAPSE) path is
-> used, preserving backwards compatibility.
-> 
-> Region boundaries are expanded outward to the covering aligned range
-> (ALIGN_DOWN start, ALIGN end) so that collapse works even after
-> kdamond_split_regions reduces region sizes below the chunk size.
-> collapse_huge_page() internally validates VMA bounds, so expanding
-> beyond the original region is safe.
-> 
-> No external mmap lock is held: collapse_huge_page() acquires
-> mmap_read_lock internally for validation, releases it, then acquires
-> mmap_write_lock for the actual collapse.  Holding an outer
-> mmap_read_lock would cause a self-deadlock when the same thread
-> attempts the inner mmap_write_lock.
-> 
-> Co-developed-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
-> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
-> Signed-off-by: Lian Wang <lianux.wang@processmission.com>
-> ---
->  mm/damon/vaddr.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 48 insertions(+)
-> 
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index d27147603564..98a87609376b 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -14,6 +14,7 @@
->  #include <linux/page_idle.h>
->  #include <linux/pagewalk.h>
->  #include <linux/sched/mm.h>
-> +#include <linux/khugepaged.h>
->  
->  #include "../internal.h"
->  #include "ops-common.h"
-> @@ -899,6 +900,50 @@ static unsigned long damos_va_stat(struct damon_target *target,
->  	return 0;
->  }
->  
-> +static unsigned long damos_va_collapse(struct damon_target *target,
-> +		struct damon_region *r, struct damos *s,
-> +		unsigned long *sz_filter_passed)
-> +{
-> +	unsigned long addr, end, chunk_sz;
-> +	unsigned long last_chunk = ULONG_MAX;
-> +	unsigned int target_order = s->target_order;
-> +	unsigned long applied = 0;
-> +	struct mm_struct *mm;
-> +	int ret;
-> +
-> +	if (target_order < 2 || target_order > HPAGE_PMD_ORDER)
-> +		return 0;
+  - struct sysfs_lazy_state { mutex lock; bool populated;
+    bool power_added; } in include/linux/device.h.
+  - dev->sysfs_lazy pointer field on struct device. Non-NULL is the
+    opt-in signal device_add() consults to mark the kobj's kernfs
+    directory KERNFS_LAZY.
+  - Public accessors device_is_sysfs_lazy(), device_sysfs_populated(),
+    device_sysfs_set_populated().
+    device_sysfs_populated() uses smp_load_acquire() to pair with
+    device_sysfs_set_populated()'s smp_store_release(); this lets
+    the lockless fast-path in device_ktype_populate_all() (added in
+    the next commit) skip the mutex while still observing all
+    kernfs_create_*() side-effects performed by populate_all under
+    @lock. The canonical write is under @lock.
+  - device_set_sysfs_lazy() allocates the bookkeeping; idempotent and
+    must be called BEFORE device_add(). Freed by device_release().
 
-I think this validation should be done by the caller, or whoever before this
-function is called.  Let's remove this.
+device_add() consults dev->sysfs_lazy after kobject_add(); if set,
+kernfs_set_lazy(dev->kobj.sd) gates kernfs lookups and readdirs to
+device_ktype.populate / populate_all.  No driver-core attribute
+content is yet routed through the walker - that lands in the next
+commit.  No existing caller opts in here; the plumbing is in place
+for subsystems that follow in this series.
 
-> +
-> +	chunk_sz = PAGE_SIZE << target_order;
-> +	addr = ALIGN_DOWN(r->ar.start, chunk_sz);
-> +	end = ALIGN(r->ar.end, chunk_sz);
+The "blob whose pointer doubles as the opt-in signal" pattern
+mirrors dev_iommu_get() in drivers/iommu/iommu.c.
 
-How about ALIGN() for addr and ALIGN_DOWN() for end?  I show madvise_collapse()
-is doing so and being consistent to that is maybe a good idea to less confusing
-users.
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: driver-core@lists.linux.dev
+Cc: linux-api@vger.kernel.org
+Assisted-by: Claude:claude-opus-4.7
+Signed-off-by: Pavol Sakac <sakacpav@amazon.de>
+---
+ drivers/base/core.c    | 74 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/device.h | 28 ++++++++++++++++
+ 2 files changed, 102 insertions(+)
 
-> +	if (end < addr)
-> +		return 0;
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index bd2ddf2aab505..6d0d917d4b1ff 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2555,6 +2555,10 @@ static void device_release(struct kobject *kobj)
+ 	 */
+ 	devres_release_all(dev);
+ 
++	if (dev->sysfs_lazy)
++		mutex_destroy(&dev->sysfs_lazy->lock);
++	kfree(dev->sysfs_lazy);
++
+ 	kfree(dev->dma_range_map);
+ 	kfree(dev->driver_override.name);
+ 
+@@ -2588,6 +2592,67 @@ static void device_get_ownership(const struct kobject *kobj, kuid_t *uid, kgid_t
+ 		dev->class->get_ownership(dev, uid, gid);
+ }
+ 
++/*
++ * True once populate_all has completed; lockless.  False for non-lazy.
++ *
++ * Memory-ordering: pairs with device_sysfs_set_populated()'s
++ * smp_store_release().  smp_load_acquire ensures any kernfs_create_*()
++ * side-effects performed by populate_all under sysfs_lazy.lock become
++ * visible to readers that observe @populated == true.  The kernfs
++ * lookup path also takes kernfs_rwsem(read) which provides an
++ * independent memory-barrier; the explicit acquire here is belt-and-
++ * braces for callers that may bypass kernfs (e.g. internal sysfs_*
++ * helpers and the KUnit suite).
++ */
++bool device_sysfs_populated(const struct device *dev)
++{
++	return dev->sysfs_lazy &&
++	       smp_load_acquire(&dev->sysfs_lazy->populated);
++}
++
++/*
++ * Latch @dev as fully populated. Caller holds @dev->sysfs_lazy->lock.
++ *
++ * Memory-ordering: smp_store_release() publishes all kernfs_create_*()
++ * side-effects performed under sysfs_lazy.lock to lockless readers
++ * via device_sysfs_populated()'s smp_load_acquire().
++ */
++void device_sysfs_set_populated(struct device *dev)
++{
++	smp_store_release(&dev->sysfs_lazy->populated, true);
++}
++
++/**
++ * device_set_sysfs_lazy - opt @dev into lazy sysfs (call before device_add())
++ * @dev: device to opt in
++ *
++ * Allocates @dev->sysfs_lazy.  Idempotent: a second call on a
++ * device that already opted in is a no-op.  Must be called before
++ * device_add().  After device_add() returns, eager attribute creation
++ * is skipped and walker dispatch lazily materializes attributes on
++ * first sysfs lookup or readdir.
++ *
++ * Return:
++ * * %0       - on success (or if already opted in).
++ * * %-ENOMEM - allocation failure.
++ */
++int device_set_sysfs_lazy(struct device *dev)
++{
++	struct sysfs_lazy_state *lazy;
++
++	if (dev->sysfs_lazy)
++		return 0;
++
++	lazy = kzalloc_obj(*lazy);
++	if (!lazy)
++		return -ENOMEM;
++
++	mutex_init(&lazy->lock);
++	dev->sysfs_lazy = lazy;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(device_set_sysfs_lazy);
++
+ static const struct kobj_type device_ktype = {
+ 	.release	= device_release,
+ 	.sysfs_ops	= &dev_sysfs_ops,
+@@ -3642,6 +3707,15 @@ int device_add(struct device *dev)
+ 	error = device_add_class_symlinks(dev);
+ 	if (error)
+ 		goto SymlinkError;
++	/*
++	 * device_set_sysfs_lazy() only allocates ->sysfs_lazy_state for
++	 * non-namespaced devices, and device_is_sysfs_lazy() guards opt-in
++	 * here, so kernfs_set_lazy() should always succeed.  WARN_ON catches
++	 * a regression in those preconditions.
++	 */
++	if (device_is_sysfs_lazy(dev))
++		WARN_ON(kernfs_set_lazy(dev->kobj.sd));
++
+ 	error = device_add_attrs(dev);
+ 	if (error)
+ 		goto AttrsError;
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 9c8fde6a3d866..39e08e8c950c6 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -45,6 +45,18 @@ struct fwnode_handle;
+ struct iommu_group;
+ struct dev_pin_info;
+ struct dev_iommu;
++/**
++ * struct sysfs_lazy_state - per-device lazy sysfs population state
++ * @lock: serialises populate callbacks (held across device_sysfs_apply())
++ * @populated: full-populate latch
++ * @power_added: dpm_sysfs_add() latch
++ */
++struct sysfs_lazy_state {
++	struct mutex	lock;
++	bool		populated;
++	bool		power_added;
++};
++
+ struct msi_device_data;
+ 
+ /**
+@@ -739,9 +751,25 @@ struct device {
+ 	bool			dma_iommu:1;
+ #endif
+ 
++	/* Lazy-sysfs opt-in (NULL = eager). Set via device_set_sysfs_lazy(). */
++	struct sysfs_lazy_state	*sysfs_lazy;
++
+ 	DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
+ };
+ 
++/**
++ * device_is_sysfs_lazy - true if @dev opted into lazy sysfs
++ * @dev: device to query
++ */
++static inline bool device_is_sysfs_lazy(const struct device *dev)
++{
++	return !!dev->sysfs_lazy;
++}
++
++bool device_sysfs_populated(const struct device *dev);
++void device_sysfs_set_populated(struct device *dev);
++int device_set_sysfs_lazy(struct device *dev);
++
+ #define __create_dev_flag_accessors(accessor_name, flag_name) \
+ static inline bool dev_##accessor_name(const struct device *dev) \
+ { \
+-- 
+2.47.3
 
-Let's early-return for end == addr case, too.
-
-> +
-> +	mm = damon_get_mm(target);
-> +	if (!mm)
-> +		return 0;
-> +
-> +	while (addr < end) {
-> +		if (addr + chunk_sz < addr)
-> +			break;
-> +		if (addr == last_chunk)
-> +			goto next;
-> +		last_chunk = addr;
-> +
-> +		ret = damon_collapse_folio_range(mm, addr, target_order);
-> +		if (!ret)
-> +			applied += chunk_sz;
-> +		*sz_filter_passed += chunk_sz;
-
-Shouldn't this call damos_va_filter_out() before damos_collapse_folio_range()?
-
-> +next:
-> +		addr += chunk_sz;
-> +		cond_resched();
-> +	}
-> +
-> +	mmput(mm);
-> +	return applied;
-> +}
-> +
->  static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
->  		struct damon_target *t, struct damon_region *r,
->  		struct damos *scheme, unsigned long *sz_filter_passed)
-> @@ -922,6 +967,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
->  		madv_action = MADV_NOHUGEPAGE;
->  		break;
->  	case DAMOS_COLLAPSE:
-> +		if (scheme->target_order)
-> +			return damos_va_collapse(t, r, scheme,
-> +						 sz_filter_passed);
-
-Let's use two tabs indentation on the second line of parameters, instead of
-aligning things with the mix of tabs and spaces.
-
->  		madv_action = MADV_COLLAPSE;
->  		break;
->  	case DAMOS_MIGRATE_HOT:
 
 
-Thanks,
-SJ
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
