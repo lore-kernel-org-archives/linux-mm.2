@@ -4,35 +4,35 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C396C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:01:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8B5AC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:03:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 932836B0176; Thu,  2 Jul 2026 21:01:25 -0400 (EDT)
+	id AE40D6B0179; Thu,  2 Jul 2026 21:03:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 908D06B0179; Thu,  2 Jul 2026 21:01:25 -0400 (EDT)
+	id ABC9E6B017B; Thu,  2 Jul 2026 21:03:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75C0A6B017A; Thu,  2 Jul 2026 21:01:25 -0400 (EDT)
+	id 9D2226B017C; Thu,  2 Jul 2026 21:03:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DD746B0176
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:01:25 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 008F98C36D
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:53:38 +0000 (UTC)
-X-FDA: 84944584116.07.DA96984
-Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CF7BF4000B
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:53:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=EYAVZfQJ;
-	spf=pass (imf04.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B6146B0179
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:03:04 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9B740C0856
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:53:39 +0000 (UTC)
+X-FDA: 84944584158.15.AC96267
+Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6A7FD16001B
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:53:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=BUBa7NTm;
+	spf=pass (imf08.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.35.192.45 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
 	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783014817;
-	b=rHNsixSzmIcaYEMi1P3iXFb+tbvjae180a8Gx70/BS6MWug/xN0sj5hYyZlt/qwkkL8AgH
-	p/5y7IxkOTz8TGtbPkUXAQ2md9FZEMLn+FPj4UhWVCbk2fsyddmGrBFLth1n6HeMNu1I5G
-	6UdNNGQqWAo2vZv3TBA0ZnbEUg7hy+0=
+	b=pWsNHcvj4zxu+VRc4Q5CHF5KJX1n8G4JkfzxhF6Np69+23LRyeFymPTZZNyTlc56eu349P
+	8DR4zF7npDXz7b349EGiyOI2R62aAWznR21ppFSWfrOU5oJ2dwM4rEAgOADbs+vpA1Mjw3
+	cBIPLBLtGgGP2DrsXkZZoQh2GFuFcDA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783014817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -40,47 +40,47 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YRpX/gFLnZEEqF0UusNAsTB0VI4hO2m7E7PNpCTesP4=;
-	b=KHr/r4GEaAGFdb189XGFkYhddCAx3JaeZG1/iFXZw5mKbGhw68oxZUDbxnOG79AY27NhsG
-	YaYE1l+PcPkEIoLSi6vGf15Dhsxc1N5ETReyoDyuR5ReNf+oZYw19bVeO30VZ9ySeDXED8
-	R+9gDnw2A6/ucIeu1AMGEgTlxREztG4=
+	bh=sSlTPPRGfH8uX0Q/+Vq9kwU7nczCfGQ8R9eS8+/KnEA=;
+	b=uMy1CNxs5q20ZsVp8fADEbHM49/foBd101zPtKx5ia26IGQIFijRsu0tY1FliTuLsmjPvu
+	q1h3aqLvl+kOPZsLPgg+zKxWjoGKH4C1Ot4VbpdFA0Lqz5vSlyCt7kzdAh6JV3tRldKkW7
+	Wed6XiPCFl/Ag0M6/M6e1HCjsjvHjC8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=EYAVZfQJ;
-	spf=pass (imf04.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+	imf08.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=BUBa7NTm;
+	spf=pass (imf08.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.35.192.45 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
 	dmarc=pass (policy=quarantine) header.from=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1783014816; x=1814550816;
+  t=1783014817; x=1814550817;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=YRpX/gFLnZEEqF0UusNAsTB0VI4hO2m7E7PNpCTesP4=;
-  b=EYAVZfQJqkofcKZrsydxFQRmMWW1v46dDrmuNNp0BlRyo42JhD75tPz6
-   HRcN88tXuMBXDmUBPKv1HxitFFJ4R4Mpv/7oEX5HpQF5PWtWArP7ZPIZo
-   q4bwXmOYXXVlfl0N1/CCKYz+U8sTRkt1zc9n2k/+d9gxapR+GAuLbLXZ1
-   wxPEEo+JajDI0ZORH+STwDGZWDxUOUafMkU5b+5NOoh3/DdOtwrxmcYph
-   A7DWy46hmrBQlZn0zySswsOLnJQbD+J0ox/X0RLoH3DYw2QHeTv6RkD6e
-   O8IZafCYryZuEDBYYw3GZcl/41IgPKAq0aiCUJN8dzB94zc10VBcoJ59R
+  bh=sSlTPPRGfH8uX0Q/+Vq9kwU7nczCfGQ8R9eS8+/KnEA=;
+  b=BUBa7NTmvGA1AqLDMH+dRd6miA2a6Fq9GkWwuvedELgepB9OnuNVOBBt
+   RIA7j27hTzP8eTb5U4w9bCQxqZ+mhHxeh79QTnJJR7Z7Ibru7kwGzR8jd
+   ErzxdHDcvy6xV0pR1GaMDXzVDKWTgMkiNqrNQeQu++FLO7V4W/9ZfHD2/
+   1lcp5vUUm24RC5cMC0lkQeQZYutIYrAUlD/1HGOHAC2ainJbIDxWDVQ6U
+   vz2649LWfPbEuZwGVWQtcxWuWIVekEykbkRLrEvbMhDg4l8A205dEvn1t
+   CdJRycG7xFX9WAoT2qmEAdJb7kCFvyAuC4V/rPFECPiweiepEUeH/tr4H
    g==;
-X-CSE-ConnectionGUID: j4bOgIWfRyi74UZM0kS6RQ==
-X-CSE-MsgGUID: 2vZoHb/STCSR9QGYYJjDAw==
+X-CSE-ConnectionGUID: pOZNzN7bQxC5C5HyldoDbQ==
+X-CSE-MsgGUID: gb9pcWjVSPGNDOJgrRcVHw==
 X-IronPort-AV: E=Sophos;i="6.25,144,1779148800"; 
-   d="scan'208";a="22965770"
+   d="scan'208";a="22717676"
 Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 17:53:36 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:5839]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.13.18:2525] with esmtp (Farcaster)
- id f5b15eb2-309e-43c4-88e7-579e7a4f8061; Thu, 2 Jul 2026 17:53:35 +0000 (UTC)
-X-Farcaster-Flow-ID: f5b15eb2-309e-43c4-88e7-579e7a4f8061
+  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 17:53:33 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:13460]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.112:2525] with esmtp (Farcaster)
+ id fd164244-2329-49ff-88a8-fff81b2dba1f; Thu, 2 Jul 2026 17:53:33 +0000 (UTC)
+X-Farcaster-Flow-ID: fd164244-2329-49ff-88a8-fff81b2dba1f
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Thu, 2 Jul 2026 17:53:35 +0000
+ Thu, 2 Jul 2026 17:53:32 +0000
 Received: from dev-dsk-sakacpav-1a-480d1124.eu-west-1.amazon.com
  (172.19.96.155) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 2 Jul 2026
- 17:53:32 +0000
+ 17:53:30 +0000
 From: Pavol Sakac <sakacpav@amazon.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
 	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Tejun Heo
@@ -91,9 +91,9 @@ CC: <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>, "David
  Matlack" <dmatlack@google.com>, Samiullah Khawaja <skhawaja@google.com>,
 	Alexander Graf <graf@amazon.com>, <linux-mm@kvack.org>,
 	<kexec@lists.infradead.org>, <nh-open-source@amazon.com>
-Subject: [RFC PATCH 10/14] PCI/IOV: opt SR-IOV VFs into sysfs_lazy
-Date: Thu, 2 Jul 2026 19:51:10 +0200
-Message-ID: <20260702175114.24659-6-sakacpav@amazon.de>
+Subject: [RFC PATCH 09/14] iommu: lazy-populate iommu_group reserved_regions/type attrs
+Date: Thu, 2 Jul 2026 19:51:09 +0200
+Message-ID: <20260702175114.24659-5-sakacpav@amazon.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260702175114.24659-1-sakacpav@amazon.de>
 References: <20260702174033.32116-1-sakacpav@amazon.de>
@@ -104,14 +104,14 @@ X-ClientProxiedBy: EX19D036UWC002.ant.amazon.com (10.13.139.242) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: s7yonytd1rw1za6az4oy9113pj13skf6
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CF7BF4000B
-X-Stat-Signature: qyoxiftj7cxedige9i9fxp69b8khye69
-X-HE-Tag: 1783014816-590120
-X-HE-Meta: U2FsdGVkX19Tou6lakMLT/kzkEQqyArIDf3/CIwah7zUsNeWXMCw3XEqxnySvRmp3ZdqrA6KF4ICr8KirSCkztUkw4H8He7Ot6I91voHJxqTdUhiFSuwN5BhJmz/5nfH/4m3AE+hJN+lF8emWvphfqR50gYLS1X2YKFpP6dy/9T1Lp/z3BXKDUc5l1cscnHPx5kxp90L5rDu0u94SFkzGjYMT4GraPnQqccqVcdxdMcKtmKU9EC3q1PtjMoCF0E+dOxdtmcmzeqeEcjDG50ljAgzk//KQ1p9SXio4CwCTz+IWpdSpfOBF/Do7/iCEmI4m/OG8s7pOXJAtBKtV+hLyyNRdl+0gR7TRe3dXinG3g36VQhDfsPPtICe1ipahIDU2datYMfbICmvk/+hEqxSg39lQwWXx4AhQhL6wMEBsGKt1IOjxcBOuT9BBlCPmDyLntbaiurhPu1lmwqYyjHs8/U8ECHH+jclwBM8kYvz0O+qu48OZnUeZLuJmz6tKEkXx40CbgC0azaxCWHdMUfe2Lbk+PoW6wsZLHIyZsgwly2c3d6rkaAPHcpoPA1bsNQlljtsC38JFBimMHztUNsEg3Qrz+Xh3dGMDkNlKhUjVXgqTsIt8bhjcOheFZQwN8Lm50ZpHciwHGKdIYdcODfqCWSqYrSlh58wvWznB8wRC3OaAGvicttx2y2YNOx+84efd4S5AGD8i9VjoX3/btrfStBED8lw7pbh6kbzJKanvVgFeJWHM35f28gr4imsFS+4w6VvguX2T0bKovpM6FCxkZMUlm8cCQMhj8aVF2jJZjBNlYIEVkmk7YRf1pQz5DKIifQCVIuJcN1+qul3mOH6cG9ERdVS0FQiReaP0+9wE8eCTaczeZ+NUZgovGr1YIjYVWHrMoDRc/xxLnqDIitfrZSlYLTeVWEACxZ57jIWZtkQUwpu4MnSVJAtmkxRduhJgNy9Uh7Cpf3JGsx3IQU
- 8y4su8EZ
- YKVVjDbVAZCAvPc0FqaBDXZr5aO9N1NtX3atkI5TdupHG97Jl9pzmLUobQC5S5bjsRRJ08/30QPEQdrV7myMA3VK7fIPMrhy/wh+DLXdmmKTPFQ/BVldfxOHruYa6gmbptu53oaTI5XQSfExD1JNR7Aanf39XxL5luTfJOnGiFuoA3fo+WlofPYcYtryhV6doGYBEj9mM16M2+stXLKh7hVTXX857+C1anOmPuj3V+rqJeN2IwYzgFDYQDvNfYGQ1vVIB2fn6nxA9ktL51twE4swVEHY1FowNdbGU7nfkv2ntE/6vhoKqNuKek1PvQ/AmY5bc1rmAPI+DjvT/vjFOJQ44mABw//orFIN9Zc+rtpWe1nlXpm4F98lr4EmTqm0Urwi/ev0a9+cslKpNogSdo//RgkX3Cj9P2maND1pOUe1Y185GNBzSFFEtOsudWQNLwFPeRWzUzIWd8SOdghRlFa3QyqZGfXzYpHwY4OEUgqRN4I/vNT7CtRcOo6DI3zREqm+ldqIMD+T9ANIe+lHz5a42Mn4OwXa+Q2o2/jIUgWXjaxZE4r9mr4UD1Kg3+rgHYvH8/TiTVDewB66iC18ZGlxFPBuZgCJFv94RZWg7ksLVhDZBwSY+2QalRSZ8B7WRfxVWf4t9E8o1mRj0YY2PNmf63zrHm+oS27vnq+yJZT7CYW7SHfl66rltNFvvyiRD+QjstqCqH2M+Frs=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6A7FD16001B
+X-HE-Tag: 1783014817-191040
+X-HE-Meta: U2FsdGVkX1+5YBr2mkb805c/0FJziGaD8rZwhE5/fRC9au7PiWq6JvGXuZM6Rw31A5jmD1+qbH4ew018RSqOJ5T0gcucgydobEUAjes8+aA8GQcSBm6mipeEswSwsVlzTvypo2b71PExZrdQcMo3wLtO344Gb1E1BI5lqjIwsGJCxAq/0uSKX9kBEzAmQ5c66qQrpHm7sO96nnlEHaqM1XikwVoXlSI0ODzQP0zat8gwwX20Elvdr9PY2XYuU+gDklUgwJK0Lzh3C2KZOH8hoBkEWkvKJ8aDO3SE+BMvn/EE2Qvkj+MxQlIko8hDVMKVf/NaBEsTu4Uz6nCXb9ilM0E/conAFADAMblAv8jZ53KCfRuzQ+9TH2XgsXAq2Nkk+COPHsJb0tyYnaYdXUx/lb8g8/oKOWzF/TeRxwud7vNTL1D2keQ9N0ZCY3lDcNzGM7hiirZp7fz039LMqH3ueQhQIJSpN9ZwE58zGo1nXYS62zUbGkJNqqVmMzMIxPuXbpYCDnepi9XW3nlPktLCVxaofXp/TDntDJhltZKaxtkveoaNMClZOBIWHOt50gzMrveOy9EEeP4hewmWxQW62USRMIyAqndGBQrF4+O0YAQf48+fKNLaEMrPXzwHXhbLZv8va3ajebYp+CETuFqSAFrD6BJcOGzZqX/PyEBGmhuUqmD/rtdNRxtvmdJFH+w9k3JqQGNZScC3r8/iTGlhWmUtwstWdAnsY/Pd904tm70kFHQvoCKHLVi0qtC71oY6gtSskfDE4KwaDqcL7aqXoeFO1CNB0goiKywa+PwGE4BYBPshFHa6UBkc1paJRyC83pSWL/vKMBcDA+Hsc8TkX1dKkwjZpJovAcIu07UZprtvcOGcS6Eb+lIVVmUzMVDlyVcMzCNQOBNh0qfPfYsz5qqpKtwMhiZgoCZWM9q4edQIi854Z3tdRmbzjYIfDqrAmQxLqTxNQhXAx66SgJn
+ LTIchBjJ
+ UhQhdW7prF0/vi866Kx3jt0FgzGtNcthDhcL2aEehM2PGQpZcYk2uSy/A96GXAsRqw/9CpzGkecs7K1LpMCcWxd9B0ajcCadiib68xNoimHfCWziY3kn1mtKR0qb/wPmLxZM+yogdOXU6yL4j/bUMZFLYUqcYbQ/7CT2GW81GqzPAiKYlVrQWXKrtj6NCJc54MtQt9Z9I/X0gzQkto4IUzi5w2PL1o0QljyikkHg1kFv4LIL8O2QptIdccWCAF+1Z0ReHrzjuq9PyaSdkX14qEEQyfOTkXv5k4Ev0A1ROaN/e69Ok3ZvN98i62c9CEFbhwG7KKFMRP+FCHtV/w3gsMdSdFE7AWNuVAxqSY/5CwItWGTMDvQLnzzMDxkyhYG2+3qEd1shlfBkP9xnD77GEiLIs8hjbtwnpKKKuYfQQVWnA/aJkZsjSRwuDu4ZPLUTZjnLjcXd9zYMHE1WFKHY3M22IhKD3ibXA1OpPLU9gETnn37evxDdY+mUT0MwLm3hBrQG4wuW7B12bULZiKalJkgfc+EIYVAIleOBCBsAw8boD9BClJQvcBcFIYJhWLAc1IIqAIZe0/D9BDAlfAji/kRN7RAre4uB3pt+r7fJpLn41wjXZ672Tqzja53hsf2nlX5FDLRC7kfYwyGGwoMFXBlv7k0U9/6XZ+b043jyo7Ze9lZu5d+/NMh9o04AY2JmzuwoQ77Q/PPLZWHPRpch4kM4Mwhl0kSJTE09CYk4X/G8iBPh/Jj6rD7FMVDV43HAtlSBvbKH66qcpg3s81+ZADWdMEr943fAfkMdzyYYDiV1AGQVt2XrgZtI8w56Mi1eou49/nnAp4chFjz32tTnkt2nYPnEH1VPeq4h2oGAQwREoqoDgwygdysi8SYjObuyz3+SL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,107 +119,234 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-First behaviour change in the lazy-sysfs series. Call
-device_set_sysfs_lazy() on every SR-IOV Virtual Function before
-pci_device_add() so the VF kobj directory is marked KERNFS_LAZY and
-attribute files materialise on first userspace access.
+iommu_group_alloc() eagerly creates two attribute files -
+reserved_regions and type - that are read only on the VFIO /
+iommufd ioctl path (VFIO_IOMMU_GET_INFO, iommufd type query).
+On systems with thousands of SR-IOV VFs each VF typically gets
+its own iommu_group, so deferring these two attrs eliminates two
+kernfs nodes per group at boot.
 
-Place the opt-in in pci_iov_scan_device() (immediately after
-pci_setup_device()), which is the single allocation/cleanup site
-for a VF struct (Shay Drory, commit 04d50d953ab4 ("PCI: Fix NULL
-dereference in SR-IOV VF creation error path")). Any -ENOMEM from
-device_set_sysfs_lazy() rolls back through that one site rather
-than leaking the VF struct, the physfn ref, and the bus ref.
+iommu_group_ktype is the first non-device_ktype consumer of the
+populate mechanism: wire iommu_group_populate_one /
+iommu_group_populate_all and call kernfs_set_lazy() on the
+group's kernfs node immediately after kobject_init_and_add().
+See the in-diff comment at the kernfs_set_lazy() site for the
+ordering rationale (must precede kobject_create_and_add("devices")
+to interact correctly with kernfs_inc_rev()).
 
-Add an early-return guard at the top of pci_create_sysfs_dev_files()
-so lazy VFs skip eager resource-file creation; the guard covers
-both pci_bus_add and the late pci_sysfs_init iterator.
-pci_remove_sysfs_dev_files() stays unguarded - its per-entry remove
-callbacks are idempotent.
+Both callbacks fast-path on iommu_group_sysfs_populated() so
+re-entry after the directory is fully populated is cheap and
+cannot fire sysfs_warn_dup().
 
-Marking VFs lazy defers the bulk of each VF's sysfs population to
-first access.  The cost avoided is per VF and scales with the number
-of VFs, so on hosts that create a large number of VFs it removes a
-correspondingly large amount of up-front kernfs node allocation at
-probe.  The nodes are deferred, not dropped: reading a VF's
-attributes materialises the same tree as before.  Quantified results
-are deferred to the cover letter.
+The name attribute is created on demand by iommu_group_set_name()
+on a separate API path and is not handled by these callbacks;
+groups without a set name return -ENOENT on lookup of name.
 
-No userspace ABI change: all files eventually materialize.
+No userspace ABI change.  A selftest for this deferral is added
+later in the series under tools/testing/selftests/sysfs-lazy/.
 
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-pci@vger.kernel.org
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Kevin Tian <kevin.tian@intel.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: iommu@lists.linux.dev
+Cc: linux-kselftest@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
+Cc: linux-api@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Danilo Krummrich <dakr@kernel.org>
 Cc: driver-core@lists.linux.dev
-Cc: linux-api@vger.kernel.org
 Assisted-by: Claude:claude-opus-4.7
 Signed-off-by: Pavol Sakac <sakacpav@amazon.de>
 ---
- drivers/pci/iov.c       | 19 +++++++++++++------
- drivers/pci/pci-sysfs.c |  9 +++++++++
- 2 files changed, 22 insertions(+), 6 deletions(-)
+ drivers/iommu/iommu.c | 132 +++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 119 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/pci/iov.c b/drivers/pci/iov.c
-index ec2fca8209593..5537c3df6f45b 100644
---- a/drivers/pci/iov.c
-+++ b/drivers/pci/iov.c
-@@ -328,14 +328,21 @@ static struct pci_dev *pci_iov_scan_device(struct pci_dev *dev, int id,
- 		pci_read_vf_config_common(virtfn);
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 61c12ba782066..7a8dd43f0a09a 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -21,6 +21,7 @@
+ #include <linux/iommufd.h>
+ #include <linux/idr.h>
+ #include <linux/err.h>
++#include <linux/kernfs.h>
+ #include <linux/pci.h>
+ #include <linux/pci-ats.h>
+ #include <linux/bitops.h>
+@@ -71,8 +72,22 @@ struct iommu_group {
+ 	struct list_head entry;
+ 	unsigned int owner_cnt;
+ 	void *owner;
++	/* Embedded lazy-sysfs state (every iommu_group is lazy). */
++	struct sysfs_lazy_state sysfs_lazy;
+ };
  
- 	rc = pci_setup_device(virtfn);
--	if (rc) {
--		pci_dev_put(dev);
--		pci_bus_put(virtfn->bus);
--		kfree(virtfn);
--		return ERR_PTR(rc);
--	}
-+	if (rc)
-+		goto err_free;
++static inline bool iommu_group_sysfs_populated(const struct iommu_group *group)
++{
++	return READ_ONCE(group->sysfs_lazy.populated);
++}
 +
-+	/* Single-site -ENOMEM rollback (kfree + pci_dev_put/pci_bus_put). */
-+	rc = device_set_sysfs_lazy(&virtfn->dev);
-+	if (rc)
-+		goto err_free;
- 
- 	return virtfn;
++static inline void
++iommu_group_sysfs_set_populated(struct iommu_group *group)
++{
++	lockdep_assert_held(&group->sysfs_lazy.lock);
++	WRITE_ONCE(group->sysfs_lazy.populated, true);
++}
 +
-+err_free:
-+	pci_dev_put(dev);
-+	pci_bus_put(virtfn->bus);
-+	kfree(virtfn);
-+	return ERR_PTR(rc);
+ struct group_device {
+ 	struct list_head list;
+ 	struct device *dev;
+@@ -1033,9 +1048,99 @@ static void iommu_group_release(struct kobject *kobj)
+ 	kfree(group);
  }
  
- int pci_iov_add_virtfn(struct pci_dev *dev, int id)
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index 5a779ebaee326..8bf3837204693 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -1777,6 +1777,9 @@ int __must_check pci_create_sysfs_dev_files(struct pci_dev *pdev)
- 	if (!sysfs_initialized)
- 		return -EACCES;
- 
-+	if (device_is_sysfs_lazy(&pdev->dev))
-+		return 0;	/* lazy: entries materialize on first access */
++/* Lazy iommu_group attrs (excludes "name", managed separately). */
++static const struct {
++	const char			*name;
++	struct iommu_group_attribute	*attr;
++} iommu_group_lazy_attrs[] = {
++	{ "reserved_regions", &iommu_group_attr_reserved_regions },
++	{ "type",             &iommu_group_attr_type },
++};
 +
- 	return device_sysfs_apply(&pdev->dev, pci_sysfs_entries,
- 				 DEV_SYSFS_ADD_ALL, NULL);
- }
-@@ -1790,6 +1793,12 @@ void pci_remove_sysfs_dev_files(struct pci_dev *pdev)
- 	if (!sysfs_initialized)
- 		return;
++static int iommu_group_populate_one(struct kobject *kobj, const char *name)
++{
++	struct iommu_group *group = to_iommu_group(kobj);
++	size_t i;
++	int ret = -ENOENT;
++	bool name_present = false;
++
++	/* Fast path: directory fully populated; kernfs has authoritative state. */
++	if (iommu_group_sysfs_populated(group))
++		return -ENOENT;
++
++	mutex_lock(&group->sysfs_lazy.lock);
++	/* Re-check under the lock against a concurrent populate_all. */
++	if (iommu_group_sysfs_populated(group)) {
++		ret = -ENOENT;
++		goto out;
++	}
++
++	/* Materialise the whole table (2 entries); cheaper than per-name dispatch. */
++	for (i = 0; i < ARRAY_SIZE(iommu_group_lazy_attrs); i++) {
++		struct iommu_group_attribute *attr =
++			iommu_group_lazy_attrs[i].attr;
++		int rc;
++
++		if (sysfs_kn_exists(&group->kobj, attr->attr.name))
++			rc = 0;
++		else
++			rc = iommu_group_create_file(group, attr);
++
++		if (!strcmp(name, iommu_group_lazy_attrs[i].name)) {
++			name_present = true;
++			ret = rc;
++		} else if (rc) {
++			pr_warn("group %d: lazy-create %s failed: %d\n",
++				group->id,
++				iommu_group_lazy_attrs[i].name, rc);
++		}
++	}
++	iommu_group_sysfs_set_populated(group);
++
++out:
++	mutex_unlock(&group->sysfs_lazy.lock);
++	return name_present ? ret : -ENOENT;
++}
++
++static void iommu_group_populate_all(struct kobject *kobj)
++{
++	struct iommu_group *group = to_iommu_group(kobj);
++	size_t i;
++	int ret;
++
++	/* Fast path: directory already fully populated. */
++	if (iommu_group_sysfs_populated(group))
++		return;
++
++	mutex_lock(&group->sysfs_lazy.lock);
++	if (iommu_group_sysfs_populated(group))
++		goto out;
++
++	for (i = 0; i < ARRAY_SIZE(iommu_group_lazy_attrs); i++) {
++		struct iommu_group_attribute *attr =
++			iommu_group_lazy_attrs[i].attr;
++
++		/* Existence check absorbs the populate_one race. */
++		if (sysfs_kn_exists(&group->kobj, attr->attr.name))
++			continue;
++
++		ret = iommu_group_create_file(group, attr);
++		if (ret)
++			pr_warn("group %d: lazy-create %s failed: %d\n",
++				group->id,
++				iommu_group_lazy_attrs[i].name, ret);
++	}
++
++	iommu_group_sysfs_set_populated(group);
++out:
++	mutex_unlock(&group->sysfs_lazy.lock);
++}
++
+ static const struct kobj_type iommu_group_ktype = {
+ 	.sysfs_ops = &iommu_group_sysfs_ops,
+ 	.release = iommu_group_release,
++	.populate     = iommu_group_populate_one,
++	.populate_all = iommu_group_populate_all,
+ };
+ 
+ /**
+@@ -1060,6 +1165,7 @@ struct iommu_group *iommu_group_alloc(void)
+ 
+ 	group->kobj.kset = iommu_group_kset;
+ 	mutex_init(&group->mutex);
++	mutex_init(&group->sysfs_lazy.lock);
+ 	INIT_LIST_HEAD(&group->devices);
+ 	INIT_LIST_HEAD(&group->entry);
+ 	xa_init(&group->pasid_array);
+@@ -1078,6 +1184,19 @@ struct iommu_group *iommu_group_alloc(void)
+ 		return ERR_PTR(ret);
+ 	}
  
 +	/*
-+	 * No sysfs_lazy early-return here: populate_one/populate_all may
-+	 * have materialized resource files on first access, so the
-+	 * per-entry remove() callbacks must run unconditionally.  They
-+	 * are idempotent either way.
++	 * Defer reserved_regions and type - both are read only on
++	 * VFIO/iommufd ioctl paths, so let the populate callbacks
++	 * materialise them on demand.
++	 *
++	 * KERNFS_LAZY MUST be set before kobject_create_and_add("devices"),
++	 * which calls kernfs_inc_rev() on this kobject's directory and
++	 * would otherwise leave a stale negative dentry cached for a
++	 * missing reserved_regions/type child.  WARN_ON because
++	 * iommu_group_alloc() controls all group kobjects directly.
 +	 */
- 	device_sysfs_apply(&pdev->dev, pci_sysfs_entries,
- 			  DEV_SYSFS_REMOVE_ALL, NULL);
- }
++	WARN_ON(kernfs_set_lazy(group->kobj.sd));
++
+ 	group->devices_kobj = kobject_create_and_add("devices", &group->kobj);
+ 	if (!group->devices_kobj) {
+ 		kobject_put(&group->kobj); /* triggers .release & free */
+@@ -1091,19 +1210,6 @@ struct iommu_group *iommu_group_alloc(void)
+ 	 */
+ 	kobject_put(&group->kobj);
+ 
+-	ret = iommu_group_create_file(group,
+-				      &iommu_group_attr_reserved_regions);
+-	if (ret) {
+-		kobject_put(group->devices_kobj);
+-		return ERR_PTR(ret);
+-	}
+-
+-	ret = iommu_group_create_file(group, &iommu_group_attr_type);
+-	if (ret) {
+-		kobject_put(group->devices_kobj);
+-		return ERR_PTR(ret);
+-	}
+-
+ 	pr_debug("Allocated group %d\n", group->id);
+ 
+ 	return group;
 -- 
 2.47.3
 
