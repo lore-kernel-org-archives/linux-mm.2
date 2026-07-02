@@ -4,85 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE590C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:19:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EDE4C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:21:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8736D6B0190; Thu,  2 Jul 2026 21:18:59 -0400 (EDT)
+	id E438E6B01A7; Thu,  2 Jul 2026 21:21:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FB456B0191; Thu,  2 Jul 2026 21:18:59 -0400 (EDT)
+	id DCE326B01A9; Thu,  2 Jul 2026 21:21:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7114A6B0198; Thu,  2 Jul 2026 21:18:59 -0400 (EDT)
+	id C94576B01AB; Thu,  2 Jul 2026 21:21:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 412056B0190
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:18:59 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BF41A8CEEF
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 01:18:58 +0000 (UTC)
-X-FDA: 84945706356.07.E7C6A32
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BB3B1C0004
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 01:18:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ud5qXez2;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 813F86B01A9
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:21:20 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 352281C0E75
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:53:28 +0000 (UTC)
+X-FDA: 84944281296.30.89DAD6F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 22C1A4000B;
+	Thu,  2 Jul 2026 15:53:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQbSkv+E;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783041536;
-	b=nKHRFKZ82s4wxCwhJFTuYvp45HZkyq7G9yUMm3ZVTnkCNiBZ+PQmbZEsI/lqY9F25F7nht
-	l7K3Ts4quiv9gorNWPLUQZn7sWKhhgEDzHOopxyjVIZkimb9EHZLH+KNJqDOGa/2F5Jvib
-	Kv5Uo2xHiltJoZArdb6PdFcbCWNXEXQ=
+	t=1783007606;
+	b=rnAz7Fcf2oSgFyHnJioaR1KNzu5R5p1bPdczDpuly2gJx601pFBQ+XhjLpoDbdhZs59uxN
+	yjiBIUqQZO+/keCKk6xbUnKgaQFbhKa6kczT/xoMda0th/5Xe3zkLh/dk+Ha06F8hZutdJ
+	rZFw69Hel7XHHcQ/mBw6TXGapLU+tTw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783041536;
+	s=arc-20220608; t=1783007606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vlaYEmM5yHWyRftqrh5OqWf6FKrbWtq0+ONz8K/Op2E=;
-	b=ZhOKpeGhf0nWhZdAr7x28VTdMu4SEp4XYTQ/2E86jSmCr7U/wAvEX7uDXojfcZeNRSw6w8
-	27B31PoohNu+4j3HLtoDdfOk5DurePw2uO/Dnk2DOycYNQxGvMvOXnCnweYCovFMzAEPT3
-	RA1K2lUbybSOHR2W6n7d9sxr95zoqQY=
+	bh=rQoQgNL4RLwOJnesXJ906iiowNQYEhnsDiycftRDMfA=;
+	b=tYqoFUMgA5r8nBnWan+gXmoFVwhtsNlvFIeaTSKhecTEOwZW2ZTKVpg7Sdn6mmc1Ir6Cyd
+	78DNs/QLCMSroTwsYEqLw7v1nQGZqdm1ZsTOHmHkvHnN7uLj8frTqJQvzAhJsO6mHVj8wV
+	lm/Lr5Sduycj+Ja6WoP/+pDkhmQsfYs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ud5qXez2;
-	spf=pass (imf28.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783041532; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=vlaYEmM5yHWyRftqrh5OqWf6FKrbWtq0+ONz8K/Op2E=;
-	b=ud5qXez2mSTZPv6BZHW5vKeX9VZW2UXE+TW38m08kXt7ATiUaFsO2LSMx3cvXYg9cR8IcM4xl0NUoagIflJAbuZGCGv3vzDWuhPgf7AXd7dzLG3IXtRDIdGcFC9i54eG6Ue3p0q7aDEsC/YtguUN8W3Gh8QrEx/xWFvl6oRHjSs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X6GuTEm_1783041530;
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6GuTEm_1783041530 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 03 Jul 2026 09:18:50 +0800
-Message-ID: <918c72ae-dd3a-41e9-84ca-164f2e0e6d01@linux.alibaba.com>
-Date: Fri, 3 Jul 2026 09:18:49 +0800
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQbSkv+E;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8A81B601CA;
+	Thu,  2 Jul 2026 15:53:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BC51F000E9;
+	Thu,  2 Jul 2026 15:53:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783007605;
+	bh=rQoQgNL4RLwOJnesXJ906iiowNQYEhnsDiycftRDMfA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RQbSkv+EjZljB5g46djvoiDLFxojsXRU7Kht7L4jS+hQfEbvLoddE5ik5cDm8RdCY
+	 BqtXzK5uRv9pKYN6O4Tsu8EtqfPc36l/PyBm4MnF4L/Lj7XhDm03p3BdIE6c5nK+EW
+	 WgpMr9xlTDqRIB0VqPTmKhcFe7wtPBcgkLNUiWKV6EXjD7eDfr1juT0c0xwZM3oIhX
+	 yoTEQ0aDxj88mE4YuknOHetVU7Tkkxdet4F5l/46xPMCuTjg7uKR5BnT4gNu2YfNUW
+	 X6p/cRUZ6h1qZ1EK6Q4sO2TBLVEUPUv3Po11nDMVUJoDiNp2oyKVRliXzikuEZxJQO
+	 doneV51wWqdgg==
+Date: Thu, 2 Jul 2026 16:53:01 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, tsbogend@alpha.franken.de, 
+	maddy@linux.ibm.com, mpe@ellerman.id.au, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
+	l.stach@pengutronix.de, inki.dae@samsung.com, sw0312.kim@samsung.com, 
+	kyungmin.park@samsung.com, krzk@kernel.org, peter.griffin@linaro.org, 
+	jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com, 
+	tursulin@ursulin.net, robin.clark@oss.qualcomm.com, lumag@kernel.org, lyude@redhat.com, 
+	dakr@kernel.org, tomi.valkeinen@ideasonboard.com, hjc@rock-chips.com, 
+	heiko@sntech.de, andy.yan@rock-chips.com, thierry.reding@kernel.org, 
+	mperttunen@nvidia.com, jonathanh@nvidia.com, kraxel@redhat.com, 
+	dmitry.osipenko@collabora.com, zack.rusin@broadcom.com, matthew.brost@intel.com, 
+	thomas.hellstrom@linux.intel.com, oleksandr_andrushchenko@epam.com, deller@gmx.de, bcrl@kvack.org, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de, 
+	david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, hughd@google.com, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de, 
+	kees@kernel.org, perex@perex.cz, tiwai@suse.com, linux-mips@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
+	etnaviv@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
+	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
+	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org, 
+	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 12/13] mm/mprotect: convert mprotect code to use
+ vma_flags_t
+Message-ID: <akaIfhfbTCAdJm3H@lucifer>
+References: <7ef626d8a12dc742cfc09d080be5dc09850e873a.1782760670.git.ljs@kernel.org>
+ <20260701160917.91435-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/huge_memory: set PG_has_hwpoisoned only after new
- folio head is established
-To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org
-Cc: kernel-team@meta.com, linux-mm@kvack.org, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, ziy@nvidia.com, liam@infradead.org,
- npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, yang@os.amperecomputing.com,
- stable@vger.kernel.org
-References: <20260701174235.3173401-1-riel@surriel.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260701174235.3173401-1-riel@surriel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: oddaffthkcy57xraiscnuubnt1q4w9kw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701160917.91435-1-lance.yang@linux.dev>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 22C1A4000B
+X-Stat-Signature: csa97imtmxywwses3ebhhdpehz1u3moc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BB3B1C0004
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1783041535-773157
-X-HE-Meta: U2FsdGVkX19fEhLImDItgAdifHKWG05gAIVFkUM+ixO6U9tjjzOfcgYWhx4IsnLKqv7Dn4gJ65D4gn/7MprXvg7urwdoQehhQvc2i3GDrIE81BItzNKLjQ+77cZQpkkqEA6fvqZEaw/kyUPHHqm7wbkQe7YJ7YpX1ZuLCYvdVGB6Mo5ObjB8J6YwBkfYXW3M2pNtuIXQgRsXR7Tdfg5sxHMwLgKis5AVurC41EstVXBuk3iQk3cl5yuQAcwzrzHa23+mU0JmC6kF9DXM5fTb2BXAxPN7v5Ue9FPJI+baN3CZ6TxRbfYj23GCwdgiQNV9OEjke/cuVoKPmdvgTkSIVtulCeO9t2Cr2eqSqZzQ0YNdKlg89+jp6C4Uui+9jo0398Bs3phrp74KWeh+xYm0guS324wxN4aO1lbPD31BKVadS4eEID8QwKPVUcifIFR2bwBf2L+0lavB3qUMl5/w1Thvbn6xZmLgZ+io4OdIppZukB+fhMvKaXVIgU94zhPg4qBjjwiYUgC58A0VvfPV837PiPGWYchvD0RB0AmJtgN5jacJgcm5j+CNdpnKI4Km0dqbwlyb43H0QKQmPqtKDdPfzyki2IRJW30XzyLHaaZLo/vL0+JskNDwaMsesv8LtDwaUhTrwJbqUfH8jTJeeqtWhdCpA0WrJCe+EyBg+ILYIj8LQAsobdMvpM845RD2kGcxxnbjhlA5LtGDRGh7MVJDBAq9/gCVHptQ2qASNlQUOXMcKw8jnCRy5I1TnUuBX2VbgTGhpMcEBdAXQQytqM6JeVj4ZV9zr24GPv9FWLq+V0U3c1ZD/mDykhqqObOErPtxHzN8QbGsHTCnRjVSVq2fKGfNI3g/4ZTq6kiwyHEK24fR2jigCGutTk7IMRsroGdiF7bgoc7+hw1lk8etOtspQ/MQpbtbRqlXeV7sv+/i33ZQjhKLc2yl+VeU9G51o9LQgCU6nT1lXgJdcu7
- v7TCYYTd
- w5ptygnImlhMYHs1+FIg6qx79bXFwGyIIqr/EKneEg79/tgDCSQMiFbi2zHJYdRch2Y9PrJTIlB2V7FzZpm/aoTbNbXxsimXNJA5K5o+fqhh71aemUATMAx9iYVnPx/c6aLRnNCRlaxSA5CEL3MaPjIue4zkpZplL3NitNCQrqqh5BPWg+bXU+ds/iXqT2AUvKrV0g0ZSF/yBXYjxduYZN/bb68HgerGDe2rNZ8CcUcg/4jf3nt/HQYqZF13ZOi2CWE0LOIy2Xc9oAeQjC1UWZMn039NOlTds4EQD1PyH1T6jrMlnCJSdlmn44AvOw263WIxoGgbzuvJFur6naDTZv2QZD0KH30SQy6rzlcSM832PnLmOBLVLwp5CLGIaXp27RzhDr9k5XJPV0kxoutWcwezANdmXl18dBEwABjRm56SZkxL5GRLzKXdYX9OmQPXWpTW4mRPu/Xh6rsc=
+X-HE-Tag: 1783007605-184361
+X-HE-Meta: U2FsdGVkX19Au4td9+fV/Y7cWfJGyzE1YfDGRcJAfxEtmz0xNTFq930KZtUdtiHZWywj+tJLkTvgzypeS3cRbd1Z3MW7OOpzyj7yaK0J8Gxyg6cqMStdx8udBTtoMgbyldDDChvzzo2+Pl9yb6AL6yZ1iPGv2WduXZvv1hDF+U5v5/C/zYPWEDuU1bTrELKEeXYBrSs2baS7HD4d0rNgncZBKUwoOzEnn7UvWMhu3zI/m9QKzLGRlwRSZ9wl2b/9EKCDyALblTTXHsf8HzVO3GNeqN+ma3GkWV8lTt+aDF04/YVsgIWWm6qrROXUvRgjFHeasG5bCey4iO1Rrysi++0oLZiP44Iaa43a0e5m8o5p9kMASRsGnHldij9wuAjaLg/yYxNSGIpJJUbRgRTCeGWNE2Og/W2EWfHK+VAa+Pg3V8IjCOGSkF0zXRAAmqKH1Elf/GS5mkgPgD+qFP3cgZVQVWkDaykjJo55WqCmy5SLdQSEHC10EED86f/0FqZzPHqc9VyiipNZCkBg0zWIn7emkf2MT+zNNB1sH3hzUdt5y/cy2wDCmGCeDBhbaaTbl93GC6NEBSf+pTgy1R0fbllAIWDTiYN8PBIQtjhXKvaIP0ow8sI5rFCqvAHRhdehl2zUr51ruL3WHBM253nw+RIahGTidd6fEkpZW4S3R9a49tDTrVlm8L7OLyDwuR09TlpXsbk9fFYLMeH1ZUh0h1AvWSBsAn8OEGAkn1OmmWTmhKxPmHNQHgDBUxm+HXtGS+avGbffuhjAEkYg7APvndiZJrEiPkoQNuyPRzDXlVs20xqAISwt7pYNF7bSQKYdumQIXfg8xor7MaZXG+8NwpPYi6K9XOd2AilGhRmxFpElho9VriuDserXBC1GJ7ifGjRE96oWM3hHo2nzg5pwXC0E14u2HwtkixkQhqxzK3V1Kpp8sNZZ4oE9Vg1o5+ykw976EXZolNYmySS7VgI
+ R/Tr6K2r
+ XGBen6LXgtKrn2gTMunyxGJa9e8wNhcXcTokLYdWK9Ek3caWOcoriahOgftlJG5NXOsuoONPfzBqjLa1ii4j610w7RHuA5N4oiLC/uUjqSS8XDpWqXb+fyd+FeMtycrDBrfrVtymMtjMwnywLA/NSOvN3g3KKnBDP11I07Y+0lw2QR5mzBadCMjNJJFeqq1DvF8sYsX2tHt+/8+OkDIWp9okW6Lo8EkzOs3MT/EdVI3bpXm55uJVMholJX01IUMugtIq7tsgzFm3ER84Fy8b34b6NsFv7VD4JgtxGrD7X3osW7B88c9xocfk7Np2poxLqxmk7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,62 +116,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jul 02, 2026 at 12:09:17AM +0800, Lance Yang wrote:
+>
+> On Mon, Jun 29, 2026 at 08:25:35PM +0100, Lorenzo Stoakes wrote:
+> >Replace use of the legacy vm_flags_t flags with vma_flags_t values
+> >throughout the mprotect logic.
+> >
+> >Note that we retain the legacy vm_flags_t bit shifting code in
+> >do_mprotect_key(), deferring a vma_flags_t approach to this for the time
+> >being.
+> >
+> >Additionally update comments to reflect the changes to be consistent.
+> >
+> >No functional change intended.
+> >
+> >Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> >---
+> > mm/mprotect.c | 16 ++++++++--------
+> > 1 file changed, 8 insertions(+), 8 deletions(-)
+> >
+> >diff --git a/mm/mprotect.c b/mm/mprotect.c
+> >index 9cbf932b028c..c9504b2a2525 100644
+> >--- a/mm/mprotect.c
+> >+++ b/mm/mprotect.c
+> >@@ -40,7 +40,7 @@
+> >
+> > static bool maybe_change_pte_writable(struct vm_area_struct *vma, pte_t pte)
+> > {
+> >-	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
+> >+	if (WARN_ON_ONCE(!vma_test(vma, VMA_WRITE_BIT)))
+> > 		return false;
+> >
+> > 	/* Don't touch entries that are not even readable. */
+> >@@ -97,7 +97,7 @@ static bool can_change_shared_pte_writable(struct vm_area_struct *vma,
+> > bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+> > 			     pte_t pte)
+> > {
+> >-	if (!(vma->vm_flags & VM_SHARED))
+> >+	if (!vma_test(vma, VMA_SHARED_BIT))
+> > 		return can_change_private_pte_writable(vma, addr, pte);
+> >
+> > 	return can_change_shared_pte_writable(vma, pte);
+> >@@ -194,7 +194,7 @@ static __always_inline void set_write_prot_commit_flush_ptes(struct vm_area_stru
+> > {
+> > 	bool set_write;
+> >
+> >-	if (vma->vm_flags & VM_SHARED) {
+> >+	if (vma_test(vma, VMA_SHARED_BIT)) {
+> > 		set_write = can_change_shared_pte_writable(vma, ptent);
+> > 		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, nr_ptes,
+> > 				       /* idx = */ 0, set_write, tlb);
+> >@@ -811,8 +811,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+> > 		vm_unacct_memory(nrpages);
+> >
+> > 	/*
+> >-	 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
+> >-	 * fault on access.
+> >+	 * Private VMA_LOCKED_BIT VMA becoming writable: trigger COW to avoid
+> >+	 * major fault on access.
+> > 	 */
+> > 	if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT) &&
+> > 	    vma_flags_test(&old_vma_flags, VMA_LOCKED_BIT) &&
+> >@@ -886,7 +886,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+> > 			goto out;
+> > 		start = vma->vm_start;
+> > 		error = -EINVAL;
+> >-		if (!(vma->vm_flags & VM_GROWSDOWN))
+> >+		if (!vma_test(vma, VMA_GROWSDOWN_BIT))
+> > 			goto out;
+> > 	} else {
+> > 		if (vma->vm_start > start)
+> >@@ -894,7 +894,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+> > 		if (unlikely(grows & PROT_GROWSUP)) {
+> > 			end = vma->vm_end;
+> > 			error = -EINVAL;
+> >-			if (!(vma->vm_flags & VM_GROWSUP))
+> >+			if (!vma_test(vma, VMA_GROWSUP_BIT))
+>
+> IIUC, should this be
+>
+> if (!vma_test_single_mask(vma, VMA_GROWSUP))
+>
+> instead?
+>
+> #elif defined(CONFIG_PARISC)
+> #define VM_GROWSUP	INIT_VM_FLAG(GROWSUP)
+> ...
+> #ifndef VM_GROWSUP
+> #define VM_GROWSUP	VM_NONE
+> ...
+>
+> VM_GROWSUP is only defined as GROWSUP on parisc and becomes VM_NONE
+> elsewhere. But VMA_GROWSUP_BIT is the raw ARCH_1 bit, which is also used
+> for other arch-specific VMA flags:
+>
+> 	DECLARE_VMA_BIT_ALIAS(SAO, ARCH_1),		/* Strong Access Ordering (powerpc) */
+> 	DECLARE_VMA_BIT_ALIAS(GROWSUP, ARCH_1),		/* parisc */
+> 	DECLARE_VMA_BIT_ALIAS(SPARC_ADI, ARCH_1),	/* sparc64 */
+> 	DECLARE_VMA_BIT_ALIAS(ARM64_BTI, ARCH_1),	/* arm64 */
+> 	DECLARE_VMA_BIT_ALIAS(ARCH_CLEAR, ARCH_1),	/* sparc64, arm64 */
+> 	DECLARE_VMA_BIT_ALIAS(MAPPED_COPY, ARCH_1),	/* !CONFIG_MMU */
+>
+> Other vma_test() changes look fine to me: just fixed INIT_VM_FLAG()
+> masks matching their VMA_*_BIT :)
 
+Thanks you're right, will fix!
 
-On 7/2/26 1:42 AM, Rik van Riel wrote:
-> __split_folio_to_order() copies the hwpoison state onto each new
-> sub-folio while splitting a folio to a non-zero order.  It does so via
-> 
-> 	if (handle_hwpoison && page_range_has_hwpoisoned(new_head, new_nr_pages))
-> 		folio_set_has_hwpoisoned(new_folio);
-> 
-> *before* clear_compound_head(new_head)/prep_compound_page(new_head, ...)
-> turns @new_head from a tail page into a proper folio head.
-> 
-> PG_has_hwpoisoned is a FOLIO_SECOND_PAGE flag, so folio_set_has_hwpoisoned()
-> resolves to folio_flags(folio, 1).  With the new compound_info-based
-> page-flags layout, folio_flags() asserts the page is not a tail:
-> 
-> 	VM_BUG_ON_PGFLAGS(page->compound_info & 1, page);
-> 	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags.f), page);
-> 
-> At the current call site @new_head still has the tail marker
-> (compound_info bit 0 set, PG_head clear), so on CONFIG_DEBUG_VM kernels
-> this hits:
-> 
->    kernel BUG at include/linux/page-flags.h:354
->    folio_flags+0x82
->    folio_set_has_hwpoisoned
->    __split_folio_to_order
->    __split_unmapped_folio
->    __folio_split
->    truncate_inode_partial_folio  (shmem hole-punch / MADV_REMOVE)
-> 
-> Reproduced by syzkaller: hwpoison-inject a few subpages of a large shmem
-> folio, then MADV_REMOVE (fallocate punch hole) on the same range, which
-> splits the partial folio to a non-zero order.
-> 
-> memory_failure() tries to split the poisoned folio to order 0 first, but
-> that split is best-effort; when it fails the folio is left large with
-> PG_has_hwpoisoned set, the case fa5a06170036 added this hwpoison copying
-> for.
-> 
-> Move the folio_set_has_hwpoisoned() call to after
-> clear_compound_head()/prep_compound_page(), where @new_folio is a real
-> order-new_order head folio (handle_hwpoison implies new_order != 0, so a
-> second page always exists).  The flag still lands on the same struct page
-> (page[1] of the new folio); only the ordering relative to compound-head
-> setup changes, satisfying the FOLIO_SECOND_PAGE precondition.
-> 
-> Fixes: fa5a06170036 ("mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split to >0 order")
-> Signed-off-by: Rik van Riel <riel@surriel.com>
-> Assisted-by: Claude:claude-opus-4-8
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> Cc: stable@vger.kernel.org
-> ---
+Again I swear I ran claude on all of this so it's failing me here :)
 
-Good catch. LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>
+> Cheers, Lance
+>
+> > 				goto out;
+> > 		}
+> > 	}
+> >@@ -918,7 +918,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+> > 		}
+> >
+> > 		/* Does the application expect PROT_READ to imply PROT_EXEC */
+> >-		if (rier && (vma->vm_flags & VM_MAYEXEC))
+> >+		if (rier && vma_test(vma, VMA_MAYEXEC_BIT))
+> > 			prot |= PROT_EXEC;
+> >
+> > 		/*
+> >--
+> >2.54.0
+> >
+> >
 
