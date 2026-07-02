@@ -4,144 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B2C6C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:01:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B446C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 01:01:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCF6D6B016D; Thu,  2 Jul 2026 21:01:12 -0400 (EDT)
+	id 1982A6B0171; Thu,  2 Jul 2026 21:01:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B52AB6B016E; Thu,  2 Jul 2026 21:01:12 -0400 (EDT)
+	id 140E46B016E; Thu,  2 Jul 2026 21:01:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1B1C6B0170; Thu,  2 Jul 2026 21:01:12 -0400 (EDT)
+	id F24906B0174; Thu,  2 Jul 2026 21:01:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 651A46B016D
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:01:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7A01A1A017A
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:35:09 +0000 (UTC)
-X-FDA: 84944235138.11.9D0C496
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id ADF7BC0009
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:35:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=claYiCGD;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A29D06B016E
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:01:18 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7FAB81C19FE
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:55:50 +0000 (UTC)
+X-FDA: 84944589660.15.9BD03E1
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4B21740007
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:55:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b="dQHDVf3/";
+	spf=pass (imf04.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783006507;
-	b=K/eDLqpMg7L3iA3Yf7mG9phRcJpT6lsreNX+5EXZpZDP1iGBWHGkSrQoMAhceq+Qa+k+kz
-	M3n7RGsVhn0317X8/GvXnIHU8AjmKO+SOqtB5v7JGkwsVjd+ZFX/pqnQD5sm3kwM16yzQf
-	LvsO3MUB7rFtuZmN2khrxpR+0afNjOs=
+	t=1783014948;
+	b=Tfr2se82W4UitQw33Pxgk/v/h7A8IElkl8g4v8+3KSIL2deIqfgqQapxQJkQOTF553QJe/
+	3QfVZCPPhRTZedat0gZlrCvxAPN2IPMPmTNpEo++zRgZlAdDCL/ehQ7jObmAY7a5SKWxMa
+	hzBik/IGTfNPaT/8hrtp8iRYqiUmS4g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783006507;
+	s=arc-20220608; t=1783014948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jWa1mD+awYvcVqO7NB5NDH/ijt/TFGs11SlmfzyMrnY=;
-	b=NVPufLm1kC7NV3VBTKUdsk8uZDSL6rWVlRYFl5nODI7xP5H+ml6rCHRNuuDmBZEHCb49NF
-	E0a4JltSEoJo7A6ML46NIL5QCrS4umEF2rO6j62A7OXi0k6DdPv7gBSAlBmgyxqdrNy/Ch
-	MmRcSqcguuN9e3vr6S3Lw+K3v0PS0O4=
+	bh=cFmIg3hL0q3j/Hsjk04HwbZaeoVYUJNjVvmJepwmBGc=;
+	b=Gu22uhC7smxWz5A+0C20rGwgla6zGdWsFgQJZC9NY2cr4elZe5pJPUGd3BMQG6r77LWCvs
+	8j+QJjzP5npL7FJEXpkPEYRnagxhuWB1wCmH1Edu5nAm18jahL9/hqufO3dEDe9Cp01a3D
+	bZdPdRIwxw+VTc/drO1Ys/cHmS12Ojc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=claYiCGD;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C600F4356A;
-	Thu,  2 Jul 2026 15:35:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABFF1F000E9;
-	Thu,  2 Jul 2026 15:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783006506;
-	bh=jWa1mD+awYvcVqO7NB5NDH/ijt/TFGs11SlmfzyMrnY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=claYiCGD9+iGsb3rEHrI1s5HJg2hkS7W6gL8omu35jx7x6oqejSN3G4l7/5wm7Oj8
-	 +qeUOcSoyvFJPDTJquyp36FHneu5xD9PqAyLHKJcQ+P3eTzJg10elubGWbYbJr+tvk
-	 gEE7trLBICmQyG4GF4bSPPqOoz8r1KexO9NQFWpt3u0Qf8T4/i/JJfkd3SpHnFKz99
-	 RX6qVFtcgpOs+c+omD5H0aJsah5hYR2/8Ml0K83F+CITI6tNy81EbWhYtG4d4EAkVL
-	 yNTim2+Lm0L3zEKKV5p6v+OojCOKZ+TZsWnkiFcAAN0kVhGppFbuEVQCf5lkvEZkm2
-	 Ixf8nfTRbGYxw==
-Message-ID: <38a23f8c-56c4-43a2-a3ed-bf7d4f784cda@kernel.org>
-Date: Thu, 2 Jul 2026 17:34:56 +0200
+	imf04.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b="dQHDVf3/";
+	spf=pass (imf04.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.42.203.116 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1783014948; x=1814550948;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=cFmIg3hL0q3j/Hsjk04HwbZaeoVYUJNjVvmJepwmBGc=;
+  b=dQHDVf3/rDTtR4pYMTrbUaBM2lBAa1VVlWkAi5GmnE1z2r5fhT7cChg9
+   AWPHiR49qNxrVqWrskz2ESmBTO9OeHseycs8qA/P035kNzC6LX0qX/RRy
+   6+RD/X9VDJCP3ANYBVFCTsLTQKn9qU7w8zNuZedeSD/5ALjyfiRqHRVV2
+   rvn4aBT5l5C14zuHxkL25W+IfyaGsSyz1mKhSIUFFN9c31NpFplQhxrtb
+   f/2thr4sw8fWpmWYQc3lPhx/xZkxry/GvMwU9fV+3jT4tgIJXKkjyHNlx
+   zwZAHr2WMkSiif4wJB+SszGI73SkCOQmmsY+OaGyETUcXvnvQDlsw0Qhc
+   w==;
+X-CSE-ConnectionGUID: x2XGedNhRU+MjL1IjezJNg==
+X-CSE-MsgGUID: 6OL4jp4yTPCWXa1bmw4Crw==
+X-IronPort-AV: E=Sophos;i="6.25,144,1779148800"; 
+   d="scan'208";a="22965889"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 17:55:47 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:18776]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.46.225:2525] with esmtp (Farcaster)
+ id 809b607f-dbc9-423e-b071-6f20917d738b; Thu, 2 Jul 2026 17:55:47 +0000 (UTC)
+X-Farcaster-Flow-ID: 809b607f-dbc9-423e-b071-6f20917d738b
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Thu, 2 Jul 2026 17:55:46 +0000
+Received: from dev-dsk-sakacpav-1a-480d1124.eu-west-1.amazon.com
+ (172.19.96.155) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 2 Jul 2026
+ 17:55:43 +0000
+From: Pavol Sakac <sakacpav@amazon.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Tejun Heo
+	<tj@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>, "David
+ Woodhouse" <dwmw@amazon.co.uk>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, "David
+ Matlack" <dmatlack@google.com>, Samiullah Khawaja <skhawaja@google.com>,
+	Alexander Graf <graf@amazon.com>, <linux-mm@kvack.org>,
+	<kexec@lists.infradead.org>, <nh-open-source@amazon.com>
+Subject: [RFC PATCH 13/14] Documentation: add lazy sysfs initialisation and device_sysfs_entry docs
+Date: Thu, 2 Jul 2026 19:51:13 +0200
+Message-ID: <20260702175114.24659-9-sakacpav@amazon.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260702175114.24659-1-sakacpav@amazon.de>
+References: <20260702174033.32116-1-sakacpav@amazon.de>
+ <20260702175114.24659-1-sakacpav@amazon.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] mm/rmap: use huge_ptep_get() in
- try_to_migrate_one()
-To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, j-nomura@ce.jp.nec.com,
- nao.horiguchi@gmail.com, ak@linux.intel.com, mel@csn.ul.ie,
- pfalcato@suse.de, jpoimboe@kernel.org, dave.hansen@intel.com,
- tglx@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260702051341.126509-1-dev.jain@arm.com>
- <20260702051341.126509-4-dev.jain@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260702051341.126509-4-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
+X-Originating-IP: [172.19.96.155]
+X-ClientProxiedBy: EX19D035UWA002.ant.amazon.com (10.13.139.60) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4B21740007
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: ADF7BC0009
-X-Stat-Signature: q8ofcuyc8oh5bcapn1g7kkh8kg6pfzw5
-X-HE-Tag: 1783006507-247984
-X-HE-Meta: U2FsdGVkX19F6BXMUAhYNrI+qrFPEV0o7MMmv25tzVJbiU2oIpIwRPe//zGor57BR2o53DBdu42hYOsI5lN/LeU9TwocOatIcaATZ8PH520EAErL/ED2hpECb6LzVQy7ddSPZjEZ/1PisplExHeRpXwOQvm6wKtwhxx1SoWWUk5M6rOE8osH6qLDA/MAejx9xL/eCDSaEj6SIx3HNwKdTHITHhMpJd6mtGY9fz5dI2IBMB2orKYLa76q9Q8OZkkfOxqJ4sv4KbCdb8rqvxvUlGmICaSxphIbybRyHqVAsB3oSkD4xAeZyN5+DwD2W8UPtjn9Jyr3wQ6OIR+rLU18gbqQyX4KnyuqN0AZjwxwbvz/+tYxwsjwVoVg+6wU6g4pOze/l6d+HxTPpZyiR2GdgM0pZQetcuv5iSi3QZFY7LgXD48B5GBWn1AR7ony/h5vaTLFxEuRdatPrSLyLXup6SQ5TnPiPdrMCadA4rcTOKwsJ9M281bUnMZ8YAVuI/Lsy0jAXeRoU2oyKsbCS260PY1Jj/BnuZf3sumbJfa0vvbd8OxCv4AgOozve8jNRRaJxNe72oix/yDq4005yrcdWUJ/ztUZG9oPulkrtZGf5XmDvMqUlJvhXsqmR/MIA20TcNja9UxrIQqhWUAzmHnlkd5jLSpdPhdTysDCJTogsZDYnLz/NDOX4kBCqo/QJxU/G5X46PFmazvuAPPBusqXeMERdZCnCZu2iqfUYEtoAyxhzcDWs+JMgHUe3SWCx8PeEEgSWsbhOY6+ZuF/i8J6skjthQP5Mct0FA5r9jWbwURS2gOZKRUlolF13Q2yJ48W+so8Z5E48xzB7hoKBKu7aSH3cONn+tfyZbk0EavoBZ053JBDV34X+oPX+JN19zDm85RmcU0h+NgC6jmX3ptiOvxKihvv30gGwI1vBqy8nDcxhRfx1RgxyMdH6IZOPVJ7owIG/n908OsyuHYQll/
- N/8Chm6D
- AD7LlEK1gC0GDMVzoXfGNyJTzeVTOI30hHxxnvmefJsBdSTIlXtyvFM4uc4q9TAWRnI0Ut9BgWRTGZzCMHsj/AB4nyC0trHMWQk1nQ8NdoIyepRd89X3WRYOtqKNnPy9+Un899sF3iEvL05jYdWryf6dgpqnXiotSw6nFxn/tbn9Ra3tACVviJjA87Beg7YCqtaPUBJFDHihtWMOfqIAuakyV52tBuhZbIcRrcDFM7N6Htb6WUr7GWCpNljV+GxV+cwG0dGBB3SSUmBCFJXViaqzVaL/VgA9YzXxOvFrr+sCStm+EUMVL3zbCxaEbvj3GcENfqnWbeSCUMOTsPJBSCQ6JIetKB2xbFU2C7rAzxIyez6AiBKUS/um6UXlNfWS7Glcq33jD7SDBxBjLeByLD6ruN9dvtXeOPP7ebJOhPU1qISTWNQtbiccT7RhX1YTMTMH4ylDqVqTezZ/VrEunczq0fw==
+X-Stat-Signature: 5zysuy9z7gs9fdazcpfap5zmf5ymtw53
+X-HE-Tag: 1783014948-471797
+X-HE-Meta: U2FsdGVkX1/8dv1lNg5RxjrAflOUu2tAleKjnt6n1++2442iDghMNCEO8bN+enrJhPe4eHYM2d/dIvlDRO3Sd8cRQXYqqjVXRRKNtLoYUUuw7lUNg3M9lwNGt0KxVW2Ov3vFhLEiasgGXCH1aupoj5nIEhI6eqOPaos3vNAnlc/w4BUYytzMU6yt+KLFGLAufFka6DuB5aY6xugDrBFZwLi24/swWvbj77uHWFsP46MuFzNqyJzf0Pim5w9jSLKhFm2B2rrBliIaEIz1A06I9tWUfosVRaWE4RQKI8h30vEpG3Si0X4mhFGmZkeJtakhg31g0HjjRBp9Z4wXfXcPUy3C4WEl+/LX1LKJOFzuVolg+82OY/4QQ0EqRGu71XjwOyHFfHt8cy2A2fcIIWBIy45pyBlcaxFvsEqzWUdpGdtRLG1ll+GbJmdBPTny9m5NyvUjAWUDapIM/m4sWKm34GA/fomWUlRGFfQFm11glBbMrsG6/FCkmB+XkGeKF8DWYRqX4YmjToQlb/FaHGIG5JW9iVbHYEgsqBrl7VuLWjK1nyPcsIb/pmEtkmxWTKnsNkOu6sOeP8v12hLPh4X60FXLU6FIuob8zpwEsuGVZyE0UF6xCPq9UGO5PkZ95kaq8act5F9WFBxGmNsZeJJp/58eH+OzH7Im2IwoJb1JX8mr5tokjqEm8esBLIYmLj143+KUgLu24K1otD9MM0I94d8ILt3d5p9TzVVr+80l3sJP7t+pSZ4KLqkRt8T5NyWVihBa4S3pfDFTRgQAwFFLB3Sf5t28ggTgPpliVi5KthNPtpURHEVdj2NeVFBi6GO0vC/temrOXUMQ/xvip38BBpdt7HF+StUV8wN9ajEzuT4ZtwRaAccY3I9uenXvrlsoD7mnyw6mpsBHGmRekE4ru+41BmmaeCLDG5ZmQ3uLnFxaFsz3q+aqktgEg/g0dRZkJEx/J7PE1Sfvrbkm0cX
+ iKdWT+Br
+ P5SJBmpkPqrV4Rge5FFSrWVnYGfNcIWGCmmWk/nmN1hgBo3HkV7th1xyLl8Wj9Np5b328aeqv5fy++axTqXsLmuAsRA2/2DQtrLkS9DOjQvDsMIVl+vbkqiMol0GamAGUO2euMSz4LvIcYdYjv9pPk929luD06IM6zu9LzwhamIVSOhNt78/D6wKQBDYH4pcQcAFqAoElFtJ0s3LI7WD6Y4EtFgtbnTV2ejMqoGOuicd5viwsfgQ/fsFCYk6GBa0LCZArYT2KAof93DM42V7sGGUzBHEGeGOSf3CfF9o87QIOM11O0Swpog8FRIVx7ZeYGogqGFRfzwyBNK8EnEM8AdUOiGcQ/xfBjcxkusdjmxGXtxdGuO6k1jN6r+DdxPIj3qVwmscW5hFQFIbzdxtW6kLmN8BX3Qlbt8c1tqZJm6NqNeD5rCRKzuEhOj+Ltyikuivm7hdmyuajMEJvHw3T0QQHTg+sdkH0vsXC8JdaD6YV4WvFU7ZpSKT1dgXH9tj9kdi0ik+3VzKiR8vCZxj+Ptvd8HV15yoUHfibFi+0VTYcjOKVzvZ2WPeD8uUuYWRCT1WiY7tcbIlp8PAt1ql6H22xd8Uzmxc/HePjYfZI/U5gYO4PPxoZ13MyzsZPKiN0lCSxuV2Hqd3rRYV6EGweFtmHkYkgzlq+PNS6BREjB4lMuLCtglI1rFikE3Ybf41hm2JAOipDR6CTvp0wsw+mKgZ5ZnY0qz7KyCF8KaLax9wtWDcTci5/HHfJGWqsSNh3ZOJp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,60 +119,333 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/2/26 07:13, Dev Jain wrote:
-> try_to_migrate_one() is used by folio migration to replace a present
-> mapping with a migration entry. For hugetlb folios, page_vma_mapped_walk()
-> returns the pte pointer to the hugetlb folio in pvmw.pte, but the code
-> reads the huge pte entry with ptep_get().
-> 
-> On arches which provide their own huge_ptep_get() to dereference a huge
-> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
-> etc to misbehave.
-> 
-> It is not clear whether this has a trivially visible effect to userspace.
-> 
-> Use huge_ptep_get() to dereference a huge pte pointer.
-> 
-> Commit a98a2f0c8ce1 copied the bug from try_to_unmap_one into
-> try_to_migrate_one.
-> 
-> Fixes: a98a2f0c8ce1 ("mm/rmap: split migration into its own function")
-> Cc: stable@vger.kernel.org
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->  mm/rmap.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index aa8a254efaecc..abc3a44baaa3d 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2505,11 +2505,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->  		/* Unexpected PMD-mapped THP? */
->  		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
->  
-> -		/*
-> -		 * Handle PFN swap PTEs, such as device-exclusive ones, that
-> -		 * actually map pages.
-> -		 */
-> -		pteval = ptep_get(pvmw.pte);
-> +		address = pvmw.address;
-> +		if (folio_test_hugetlb(folio)) {
-> +			pteval = huge_ptep_get(mm, address, pvmw.pte);
-> +		} else {
-> +			/*
-> +			 * Handle PFN swap PTEs, such as device-exclusive ones,
-> +			 * that actually map pages.
-> +			 */
+Document the lazy sysfs mechanism and its declarative walker:
 
-Again, the comment is related to the pte_present() handling, so best to move it
-down there.
+  - Documentation/driver-api/sysfs-lazy.rst: developer guide
+    covering overview, opting-in, populate callbacks (per-device
+    walker and the iommu_group small-table pattern), locking,
+    teardown, known limitations, and a "See also" section
+    pointing to the KUnit tests and the kselftest.
 
-Apart from that LGTM.
+  - Documentation/ABI/testing/sysfs-lazy: userspace-visible
+    semantics - lookup vs readdir trigger points, stat() behaviour
+    on known and unknown names, inotify / fanotify interaction,
+    udev cold-plug compatibility, and the list of currently
+    opted-in device classes (SR-IOV VFs, VFIO, iommu_groups).
 
+  - Documentation/driver-api/index.rst: add sysfs-lazy to the
+    toctree.
+
+  - MAINTAINERS: add F: entries for the new docs, the KUnit test
+    drivers/base/test/device_sysfs_apply_test.c, and the
+    tools/testing/selftests/sysfs-lazy/ directory (added in the
+    next commit) under DRIVER CORE, KOBJECTS, DEBUGFS AND SYSFS.
+
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-api@vger.kernel.org
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: driver-core@lists.linux.dev
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: linux-kselftest@vger.kernel.org
+Assisted-by: Claude:claude-opus-4.7
+Signed-off-by: Pavol Sakac <sakacpav@amazon.de>
+---
+ Documentation/ABI/testing/sysfs-lazy    |  77 +++++++++++++
+ Documentation/driver-api/index.rst      |   1 +
+ Documentation/driver-api/sysfs-lazy.rst | 146 ++++++++++++++++++++++++
+ MAINTAINERS                             |   4 +
+ 4 files changed, 228 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-lazy
+ create mode 100644 Documentation/driver-api/sysfs-lazy.rst
+
+diff --git a/Documentation/ABI/testing/sysfs-lazy b/Documentation/ABI/testing/sysfs-lazy
+new file mode 100644
+index 0000000000000..3a1b2a0e97e1c
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-lazy
+@@ -0,0 +1,77 @@
++What:		/sys/devices/.../
++		/sys/kernel/iommu_groups/<N>/
++Date:		May 2026
++KernelVersion:	7.1
++Contact:	Pavol Sakac <sakacpav@amazon.de>
++Description:
++		This entry documents the *realisation timing* contract
++		for sysfs entries under devices that have opted into
++		lazy population.  All attribute names, contents, modes,
++		and ownership are identical to the eager-device tree;
++		only the moment of creation differs.  The opt-in set is
++		enumerated in "Currently opted-in device classes" below.
++
++		When a device driver sets the sysfs_lazy flag on a struct
++		device before calling device_add(), the kernel defers
++		creation of attribute files, attribute groups, and
++		class/bus/driver symlinks under that device's sysfs
++		directory.
++
++		These entries are materialised on demand:
++
++		- A lookup (open, stat, readlink) of a specific filename
++		  triggers creation of that single file or symlink via
++		  the ktype->populate callback, which drives
++		  device_sysfs_apply() with DEV_SYSFS_ADD_ONE.
++		- A directory listing (readdir / getdents) triggers
++		  creation of all deferred entries at once via the
++		  ktype->populate_all callback, which drives
++		  device_sysfs_apply() with DEV_SYSFS_ADD_ALL.
++
++		A stat() call on a not-yet-realised filename:
++
++		- If the name corresponds to a known row (including one
++		  owned by dev->type->entries), the attribute or
++		  symlink is created and stat() succeeds with the same
++		  metadata an eager device would show.
++		- If the name is unknown, stat() returns -ENOENT and
++		  kernfs caches a negative dentry.  Transient errors
++		  (-ENOMEM, -EBUSY) propagate unchanged and are NOT
++		  negative-cached; the next lookup retries.
++		  access(F_OK) behaves identically to stat().
++
++		readdir() returns the full set of names the device
++		would expose if eager - applies_to gating is evaluated
++		during populate_all(), so the visible set exactly
++		matches the eager-device tree.
++
++		Once a row's entry is realised, it persists for the
++		lifetime of the device.  A second open()/stat() is a
++		plain kernfs lookup and involves no walker invocation.
++
++		What does NOT change relative to an eager device:
++
++		- The set of files and their names (applies_to is the
++		  single gate, identical between eager and lazy paths).
++		- File contents, permissions, ownership, and SELinux
++		  labels.
++		- The device directory itself (always eager) and its
++		  parent chain.
++
++		Interaction with inotify / fanotify:
++		  Watchers see IN_CREATE events at first-access time,
++		  not at device_add() time.
++
++		Interaction with udev / systemd-udevd:
++		  udev cold-plug works without modification.  udev
++		  reads the device directory on KOBJ_ADD, which
++		  triggers readdir -> full realisation.
++
++		Currently opted-in device classes:
++
++		- PCI SR-IOV Virtual Functions (drivers/pci/iov.c)
++		- VFIO group and vfio-dev children (drivers/vfio/)
++		- IOMMU groups (/sys/kernel/iommu_groups/<N>/,
++		  drivers/iommu/iommu.c)
++
++Users:		udev, systemd-udevd, libvirt, DPDK, SPDK
+diff --git a/Documentation/driver-api/index.rst b/Documentation/driver-api/index.rst
+index eaf7161ff9578..b1807ca6cd1ce 100644
+--- a/Documentation/driver-api/index.rst
++++ b/Documentation/driver-api/index.rst
+@@ -23,6 +23,7 @@ of interest to most developers working on device drivers.
+    driver-model/index
+    device_link
+    infrastructure
++   sysfs-lazy
+    ioctl
+    pm/index
+ 
+diff --git a/Documentation/driver-api/sysfs-lazy.rst b/Documentation/driver-api/sysfs-lazy.rst
+new file mode 100644
+index 0000000000000..5fbd7732afe0d
+--- /dev/null
++++ b/Documentation/driver-api/sysfs-lazy.rst
+@@ -0,0 +1,146 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++=========================
++Lazy sysfs initialisation
++=========================
++
++Overview
++========
++
++``device_add()`` normally creates every sysfs attribute, attribute
++group, and class/bus/driver symlink under a new device's directory
++synchronously.  For populations created in bulk - hundreds of PCI
++SR-IOV VFs, fleets of vfio-dev children - that work dominates
++``device_add()`` latency yet the resulting sysfs nodes are rarely
++read.
++
++Lazy sysfs defers attribute creation until the directory is first
++opened by userspace.  The device directory itself, its parent chain,
++and uevent broadcast remain eager; only the *content* of the
++directory is deferred.
++
++Opting in
++=========
++
++A subsystem opts a device in by:
++
++1. Calling ``device_set_sysfs_lazy(dev)`` before ``device_add()``.
++2. Making the kernfs directory created by ``device_add()`` a lazy
++   directory via ``kernfs_set_lazy()``.
++
++``kernfs_set_lazy()`` flips ``KERNFS_LAZY`` on a directory under
++``kernfs_rwsem`` and returns ``-EINVAL`` for namespaced nodes (a
++non-NULL namespace tag or the ``KERNFS_NS`` flag) and non-directory
++nodes: lazy dispatch does not carry an active namespace tag into the
++populate callback.
++
++The flag is set once and never cleared.
++
++Populate callbacks
++==================
++
++A lazy directory's first ``readdir(3)`` or ``open(2)`` of a
++not-yet-created child invokes one of two callbacks defined on
++``struct kobj_type``::
++
++    int (*populate)(struct kobject *kobj, const char *name);
++    void (*populate_all)(struct kobject *kobj);
++
++``populate(name)`` runs on a named lookup miss and creates the single
++matching attribute.  ``populate_all()`` runs on the first
++``readdir(3)`` and creates every attribute the device exposes.
++
++For a ``struct device``, the driver core wires both callbacks to
++``device_sysfs_apply()``, which walks an immutable
++``device_sysfs_entry`` table.  Each row declares an
++``applies_to(dev)`` predicate, a ``create(dev, name)`` action, and a
++``remove(dev)`` action.  The walker dispatches the rows whose
++predicate passes for ``@dev``; the rows themselves call
++``sysfs_create_file()``, ``sysfs_create_link()``, or
++``sysfs_create_group()`` directly.
++
++The same pattern is used by ``iommu_group``: a lazy ``iommu_group``
++kobject's ``populate``/``populate_all`` walks a small fixed table of
++group attributes (``reserved_regions``, ``type``).
++
++Locking
++=======
++
++Each lazy device holds ``dev->sysfs_lazy->lock`` (a mutex).  All
++three populate paths take it::
++
++    populate(name)      -> mutex_lock(lock)
++                          walk(ADD_ONE, name)
++                          mutex_unlock
++    populate_all()      -> if (test_bit(POPULATED)) return;
++                          mutex_lock(lock)
++                          if (test_bit(POPULATED)) goto out;
++                          if (dev->p->dead)        goto out;
++                          walk(ADD_ALL, NULL)
++                          set_bit(POPULATED)
++                          mutex_unlock
++    REMOVE_ALL teardown -> mutex_lock(lock)
++                          walk(REMOVE_ALL, NULL)
++                          mutex_unlock
++
++The ``dev->sysfs_lazy->populated`` bool is the
++``populate_all()`` once-latch.  The unlocked read fast path is a
++performance optimisation; the field is only authoritative under
++``lock``.  A stale false on the fast path harmlessly retakes
++the mutex and re-checks.
++
++Lock ordering: ``lock`` nests inside any caller-held VFS or
++kernfs lock that brought us into ``populate``/``populate_all``.  No
++sysfs / kernfs operation that requires ``kernfs_rwsem`` write may be
++issued while holding ``lock``.
++
++The ``iommu_group`` path uses the same pattern:
++``group->sysfs_lazy.lock`` and
++``group->sysfs_lazy.populated``.
++
++Teardown
++========
++
++``device_del()`` sets ``dev->p->dead`` *before* the
++``REMOVE_ALL`` walker call and takes ``lock`` around it.
++Any populate callback racing with ``device_del()``:
++
++1. Either takes the lock first and runs against a not-yet-dead
++   device (its created files are torn down a moment later by
++   ``REMOVE_ALL``, which is idempotent against the row's
++   ``remove()``); or
++2. Sees ``dev->p->dead == true`` after acquiring the lock and bails
++   without creating anything.
++
++Either way, the device exits with a quiesced sysfs subtree and no
++populate callback sees a half-deleted device.
++
++``iommu_group_release()`` follows the same dead-flag + lock-then-walk
++contract.
++
++Known limitations
++=================
++
++* Lazy sysfs is only available for devices whose populate path is
++  driven through ``device_sysfs_entry`` rows.  Subsystems with bespoke
++  ``device_add()``-time sysfs creation must migrate before opting in.
++* Namespaced kobjects cannot be marked lazy: ``kernfs_set_lazy()``
++  rejects them because the populate callback does not carry the
++  active namespace tag.
++* The directory's eager skeleton (the directory inode itself and the
++  ``uevent`` file emitted by ``device_add()``) is not deferred.
++* Per-attribute creation cost is unchanged.  Lazy sysfs amortises
++  the cost across first-access events instead of paying it during
++  ``device_add()``.
++
++See also
++========
++
++* ``include/linux/kernfs.h`` - ``kernfs_set_lazy()``, ``KERNFS_LAZY``.
++* ``drivers/base/core.c`` - ``device_sysfs_apply()``,
++  ``driver_core_sysfs_entries[]``.
++* ``drivers/iommu/iommu.c`` - ``iommu_group_lazy_attrs[]``.
++* ``drivers/base/test/device_sysfs_apply_test.c`` - KUnit walker
++  contract tests.
++* ``tools/testing/selftests/sysfs-lazy/`` - userspace VFS-level
++  parity tests.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5d8a887c868ed..1424e641d535f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7800,9 +7800,12 @@ M:	Danilo Krummrich <dakr@kernel.org>
+ L:	driver-core@lists.linux.dev
+ S:	Supported
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/driver-core/driver-core.git
++F:	Documentation/ABI/testing/sysfs-lazy
+ F:	Documentation/core-api/kobject.rst
+ F:	Documentation/driver-api/driver-model/
++F:	Documentation/driver-api/sysfs-lazy.rst
+ F:	drivers/base/
++F:	drivers/base/test/device_sysfs_apply_test.c
+ F:	fs/debugfs/
+ F:	fs/sysfs/
+ F:	include/linux/device/
+@@ -7830,6 +7833,7 @@ F:	samples/rust/rust_debugfs_scoped.rs
+ F:	samples/rust/rust_driver_platform.rs
+ F:	samples/rust/rust_driver_faux.rs
+ F:	samples/rust/rust_soc.rs
++F:	tools/testing/selftests/sysfs-lazy/
+ 
+ DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
+ M:	Nishanth Menon <nm@ti.com>
 -- 
-Cheers,
+2.47.3
 
-David
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
