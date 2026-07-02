@@ -4,118 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6144CC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:41:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70536C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:41:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E539F6B010D; Thu,  2 Jul 2026 20:41:22 -0400 (EDT)
+	id E7ACC6B010F; Thu,  2 Jul 2026 20:41:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE1D36B010F; Thu,  2 Jul 2026 20:41:22 -0400 (EDT)
+	id E2C2F6B0111; Thu,  2 Jul 2026 20:41:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7E956B0110; Thu,  2 Jul 2026 20:41:22 -0400 (EDT)
+	id D1B356B0114; Thu,  2 Jul 2026 20:41:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 869146B010D
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:41:22 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EDE3F8B68E
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:21:54 +0000 (UTC)
-X-FDA: 84944352948.14.FE227A1
+	by kanga.kvack.org (Postfix) with ESMTP id A4A616B010F
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:41:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 301408CD7E
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:06:15 +0000 (UTC)
+X-FDA: 84945069510.06.BEE3B6C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8A7F2180003
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 16:21:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDPDV4FK;
-	spf=pass (imf06.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 91519C0002
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 21:06:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ljGPoVaR;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783009312;
-	b=YH0DoMIExaU03ZbUuX9LXyol0gSb+U5QsrTirnCMqZj+2wGvHiSOAGQiEUdP2Goaip3/r8
-	jki1NYP1FkLhmw9HAzWMCNT2p4y53QVP4nLk3BN5WKoK8PfttdBuV6mp990vzX4MuigfQB
-	iM+XpyYplnUDOXvPjf8wJyCPEV2FsxM=
+	t=1783026373;
+	b=e1Ac0rUWGynGIWHriGQUt/YHrbxgV8/ehDpsxz84tcgakX+UsXeuOnUvOOcWq3/qpgSzXI
+	4AsCQPKTly47VoEcPwVt66zjAZHCB92vvAXAL9tQbX1gljOlUND8TzaxxkYADRUMw3PjS+
+	NnSivvK/Z8Ke2y9GXfXbnW5caiSa4f4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783009312;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1783026373;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=WZDLBXjRg8Oe1jRy0IEV8CeZjx72SBKOhHr0UsKZtFk=;
-	b=zRmRgjqGMk+LzF3RumzvL7ye5TKCjkayZKpL1djms/Si82Bpq26k1HtssB6CRgz7InMrWs
-	DVwzWNjIP0BKDOKLimXAdjZ44j+vlHR8uy67Uo/TG14p9hMwSjvmFGeeqC+kQcnvDVB3J/
-	RBpBmCreI9lb3I3yaZnfnPg7A8Cgk1U=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=z4feI/qU1SbwMydOJY76MHjKjfYHnoO820guZYu+4uI=;
+	b=YI6DjqxUrnn0UHIqMGCSK0BblIvhYm4ohxtbvEVBbBVImy4HuFxzLkB86uiU1xULoPVy18
+	+H7QQc7fYtZCjIJcWwG3OL8a20Euzec4ZL84yocFH0ovNFIgcACW1ewQrkdDImQc3nwSSX
+	lg+FACt4MfNMqjc/mfHUpI+Dc36JDhw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HDPDV4FK;
-	spf=pass (imf06.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ljGPoVaR;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06CD1601EE;
-	Thu,  2 Jul 2026 16:21:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A01BEC2BCC7;
-	Thu,  2 Jul 2026 16:21:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1783009311;
-	bh=hiTTHL9a0qLiWbd6zy0olFhlRuJG9+JDT8dd4m9jteg=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=HDPDV4FKttd6/K+xMS2wdT7l4NCRYKilHQGA+MuCqJ9a/U8fqoNMxahw7jogE/GHk
-	 3ChtnAgOvDyxUZt+A80GP2QnIBI6lG2pHWLqNlscb5InkeZevh2s+v1AYq44Ws9V5c
-	 LKgZ9XN3cNBlS78j7E9pXMdvuQcpnslEM85+9rcOnKa0QbISVYIvh2vhqxf8MZxJz1
-	 tF9jo/3qazVduV2zfnQEsOmhlsS6nOIvbVtN5az2L9Or5dCWX3DZZaD9/SqohwlbGL
-	 wiU8c+Zgz6CjYWSg2o0Ko7xJ2ZEnMvueckSdDN/zJVTgMYm24/6ydw5b9TXui35+W8
-	 8GGnBj3NtF38Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79E85C43458;
-	Thu,  2 Jul 2026 16:21:51 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Subject: [PATCH v4 0/6] Open HugeTLB allocation routine for more generic
- use
-Date: Thu, 02 Jul 2026 09:21:44 -0700
-Message-Id: <20260702-hugetlb-open-up-v4-0-d53cefcccf34@google.com>
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AB22B601F8;
+	Thu,  2 Jul 2026 21:06:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD1F1F00A3D;
+	Thu,  2 Jul 2026 21:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783026371;
+	bh=z4feI/qU1SbwMydOJY76MHjKjfYHnoO820guZYu+4uI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ljGPoVaRPSsYpd8xs8EBy2MLqzQCKbktUtw89flLSbk4nzvtlLCe/43mE10Bq9u+4
+	 akxWatJ3/XfFjzRYBuiPRshbxUd5pDyWnZ1AvBxB0+79mzcKtLtsEoBUQzkJl7bVc6
+	 oZLkTrQcoVHvCMcYhMQhAySQOVd9S2PunLvrPf2ebBHGXNvT9w0IU42vESskpQwZxT
+	 O+zmtBjwLSBc3qqg/a3LBrDWFCA11CFy9kVsJHxei4AMYtopl39KS3WXXYgGFUYypE
+	 H/e2AkkcfzlNXxhvnCBYJmzGa3MBij+3UPIDawYwwMRUyFnmltMK/yJUBlvQCDrpI0
+	 +wC1CUFbLRFmA==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1 4/8] mm/damon/reclaim: remove duplicated min_region_sz power of 2 check
+Date: Thu,  2 Jul 2026 14:05:46 -0700
+Message-ID: <20260702210551.95167-5-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260702210551.95167-1-sj@kernel.org>
+References: <20260702210551.95167-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABiQRmoC/2XOwY6DIBSF4VdpWA/mighMV32PySyQuSAZKwaR1
- BjfvWgySSddnsX58m9kxuhxJtfLRiJmP/swlsE/LsT0enRI/U/ZhAET0AKn/eIwDR0NE450mSj
- qTitoZd3BJymvKaL1j1P8+i7bxnCnqY+oT8eEjLGqpQTVciFY5XyqtPnFOOCaRndzIbgBKxPuh
- 9b7OYW4nnmZHeZfiXgryYwCVUxoMK1lyppX60jJzQtQq3egKQDWvGuAcSmt+gfs+/4Ef5oKAy4
- BAAA=
-X-Change-ID: 20260504-hugetlb-open-up-eaba80571b09
-To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
- David Hildenbrand <david@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, fvdl@google.com, 
- jiaqiyan@google.com, joshua.hahnjy@gmail.com, jthoughton@google.com, 
- mhocko@kernel.org, michael.roth@amd.com, pasha.tatashin@soleen.com, 
- pbonzini@redhat.com, peterx@redhat.com, pratyush@kernel.org, 
- rick.p.edgecombe@intel.com, rientjes@google.com, roman.gushchin@linux.dev, 
- seanjc@google.com, shakeel.butt@linux.dev, shivankg@amd.com, 
- vannapurve@google.com, yan.y.zhao@intel.com, Zi Yan <ziy@nvidia.com>, 
- Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>, 
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Dan Williams <djbw@kernel.org>, 
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783009310; l=3720;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=hiTTHL9a0qLiWbd6zy0olFhlRuJG9+JDT8dd4m9jteg=;
- b=ERg9hmAD6VrUmgCkE7oQ5DfH9+yxr8RuhcVr2UAd2eaQ+8HZRPQw0bazPfS2q/LlF2fW2V599
- hzJIL49uXUdDJq94xDBCFKDgEq44hMo8g4reAYSPfrNULI/FotDk+5c
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 91519C0002
+X-Stat-Signature: 5xd1g6m8fr75sker3gtjm5ubycpyjj8g
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8A7F2180003
-X-Stat-Signature: 1t7j5e64zydc4buqu3bmsuxkair5sqoe
-X-HE-Tag: 1783009312-539065
-X-HE-Meta: U2FsdGVkX1856R3WGdEHqqD48YgCcdWL7x/07otDtrLIuLdJrDt4xyT1j3HbvVawLv9HOG2nuNDkwCWty27TR4Hprga+PYHOhHXpyL4R2PTxuPBpEJ6dXhskUhBRfyHbr8A2RfHeHbDrYheNy8L8c7huGT651kYwsNe6oCcb9RbCJ2IUsGRHRWsAolWUon4y2+1bIYLU9TYliWpPnz0zHegyBqCiCezBQZ4M4Kfc93XTzmfi65+wKwoh8u5FrbFKz38kF4xEVDU7DothqWgzbCfS0aBYDpVrPo7BTgnne6QP2gh6tJAEnZlpxew53P9X6JOiTvogwZJHxLxCUxOvnJbPM8ZxH8549AXZ3qi9BWQjzVC9dQbG7SmxR97gBkN8b4JUa/G1h3y/d+25SWx+zfxG3ktsx7Blod1l8yK5sEsd9alKWHXvGxA1JfIODXnsVgcnAJj9FpyXqDdlcne1Yhm5PUTjzXzyB50Me9sitvHUj0SOq688y69HPrPuqy+OBhozJxZNUsWzGryS7LYZjB+WD+jlokeCFKJeUyNqvJuFFw1gM0Ygv23+gfniFkt69rbuUtMSLrdUTfTmIY4yRJVBE5ispkymKjgpW4HLgrkTS2dDJ8KeBQ6XQRUAvuaoPFuGmcbq1Xc3jIgtCjn7J7AIyyeST82BX3JCUzIjo7Fn8LdSeiIS8hubI7sANKNFNo4LmDHUi8hn9k/cc1YOnAs5TvOobuj2l+eLwMx3YFc13Qwc2SU0ksCzQ+7/9uDdk5NWuCSfjrrZDg0LzkLJgw+5tyBI0PuVLIsj0k2+OtM7ltXj3CEe+vwC1PBBD2wruxhn3zmIutDbeJ8kgUnW4hJVCTVkTZjfusuTI4PfHLfYoIdNue18WLInUUivXyKnA84Rnb7FYxDZSx8ockbpezGNAih+NnH/iblqrxHM8JTkE2MqlAn/F4c8cR56MgMi1WEi7YjC1RNq+d5oTtE
- cBxTmmIU
- 1TNbemf9/g/yj0Uo07nRu0hhKbk+gX9NCV4D7Hk9WzbpHiDYIGYWRKEX2vpcZOroIKEFyw1swa0PCPQM7wSx0sm3GwJH6ueXnZcET0C/LfmN6gW9NQ50aEGzRW0X+Lagu93TwppJGvD0Y9/9nUd8+0W0SAYOuyesXE8tf4wZ4hHQB4m3d9HFHuvJyU7f08tHCg7JzHRJHZR8xCxut0UfQWUXNxEZHY94gJDcN8z0sv4d23YDcL+cXwH9asS0KKHGTEE98nVvurfRGVuq/zJzaqhI86sfseRenUviR0bODoGR3ZebR4nAD4xUljLctrppzzinK7ZcfjfILa6GtsfYYuUZCS/ylCxOy/SR5uYsgDNwWBlh6woQQplA7KuwcaWsF0wIyQTJ246SigZ/NmSQnhVdhZwHtRZvlgZGCTPD5C5ZMsqAuiJHjPDJ3tTlddQK5N4igIQyO8zZ3UWcFsUdE+smrVD0Anx380ENC3s7DV0rLO012qNVs9zeFSjY5pPakualHoQUS2sFsfTQGm8unlxDfnFmE4uH/OkDDWp3uCbVoQJZ6e9DH4x3JzQ==
+X-HE-Tag: 1783026373-93529
+X-HE-Meta: U2FsdGVkX18menFSyqDTLr2ftPRk+CX47MhDoOw95mDXRD/tMxRlRL7RP1XIXkdESFWnFBj/hPqxWVUg5dV92an+nsWE9Ln58C4qrrzler9UIWux5jxuay/rOV6QQ1qgLivp7533dVQYiuOIcJGtOdbgtNpEipVWsg8iH07gn13PyjBeZz9TLiN32M+QhaTB0hmmU5GA2eYb6wU8Y4rVou3blUsdzAMxCRqpIjnzrJYcO/9psyUqY1DulwD6pZvT/YHm2YN1XFvJ/0JdZu8dWEh3I4XQf6qUYnIqs+HRFXzzSwih0FjuM5Aj69fWdSYRBrfRzy1OPnjRLpsC5nPz0+UBUDObOsUC/ZUsSK9POPvHHAM10G2p4+nBcF/tyDyFXQsoBec53c2n31App4qzq8MyWjZE3ucKXYrU1sYtIIugLeNokieN2hywmbxOMu62lTMhJArQ0muHEVKOAn1TqqbSQ/vVTT4qJxLHR/qn/IUtqw0Tkpu+DANOjmADzprwSeSvsK6oDIR2FCd5HyRtDsJBpTJijXaOaCrCRaeU0xSkOebnUm0/opqit1HuuWA5JwAwcG8l+0DikDFprR+k056JTJ6Fb+9df9OzDQ1iBHkglt/8XNNLed91svdg1WXgozJguSbJuvPB3ywK+LGqqjCC3DEJyL+EO76sXKGTqJFaiJifPNx6sDESrHMT4BJanb0t/Wp6p/k4Npsu315fmU/Uqtsqp/+Kd4Eh9tp8xiiHgzz82dtqI6enmi18BbTh2QZ2cXQ52fcdHJyTouDFx5AF0fX266WyCgtMouy75D0tjNDcXE4t9iGNwmMVA8LSwltxFQjqP9surPVfDeL53JQeOwLuue36mdrn5ixdOrb1+GOjLcGP8xy+pjoJbQQt6ymmQG5nbVONKVeQPhbmhOHysajMzffdLlLr7BCPogJokwa14FCVHIfTBNSO5XEubKixl7VUHahn1TRUsgV
+ sKBEAbHV
+ oIiv+XDxHJD3rhbpCVToiH7q1zAy54ObXORARI+dpg8YBACy+X+VWRIDFBdErbQZAYP5jgk6lyX4VaZ3Ix3MloOL0DHbnCuytmnK7PxSKFOwzVd+2cuq6RziGX1coAEeI8R1UZdBG8zipYCxD3lW7RhPMGVWw+lGc9o6l3UtTIisrKUAK3m8eXJdt8nU/DjeJlfIl6J+BtbbiXxPE4BGeiVo80Mb8T9z2PS3EmK5hnhMzfYvS9Fc56JqrHmOCIOiOU7QuvqkSP8Ev1tlnW5hGnVpAbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,91 +93,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+DAMON_RECLAIM validates the user input for min_region_sz.  The same
+validation is done inside damon_start() and damon_commit_ctx().  Remove
+the duplicate.
 
-The motivation for this patch series is guest_memfd, which would like
-to use HugeTLB as a generic source of huge pages but not adopt
-HugeTLB's reservation at mmap() time.
-
-By refactoring alloc_hugetlb_folio() and some dependent functions,
-there is now an option to allocate HugeTLB folios without providing a
-VMA. Specifically, HugeTLB allocation used to be dependent on the VMA
-to
-
-1. Look up reservations in the resv_map
-2. Get mpol, stored at vma->vm_policy
-
-This refactoring provides hugetlb_alloc_folio(), which focuses on just
-the allocation itself, and associated memory and HugeTLB charging
-(cgroups). alloc_hugetlb_folio() still handles reservations in the
-resv_map and subpools.
-
-Regarding naming, I'm definitely open to alternative names :) I chose
-hugetlb_alloc_folio() because I'm seeing this function as a general
-allocation function that is provided by the HugeTLB subsystem (hence
-the hugetlb_ prefix). I'm intending for alloc_hugetlb_folio() to be
-later refactored as a static function for use just by HugeTLB, and
-HugeTLBfs should probably use hugetlb_alloc_folio() directly.
-
-To see how hugetlb_alloc_folio() is used by guest_memfd, the most
-recent patch series that uses this more generic HugeTLB allocation
-routine is at [1], and a newer revision of that patch series is at
-[2].
-
-Independently of guest_memfd, I believe this change is useful in
-simplifying alloc_hugetlb_folio(). alloc_hugetlb_folio() was so
-coupled to a VMA that even HugeTLBfs allocates HugeTLB folios using a
-pseudo-VMA.
-
-Testing:
-
-+ libhugetlbfs tests pass
-+ ./tools/testing/selftests/mm/ksft_hugetlb.sh passes
-
-Andrew, thanks for nudging me to send a v4!
-
-Oscar, you mentioned that you wanted to do a closer review on v3, hope you
-find time to review v4 soon!
-
-Changes in this revision:
-
-+ Define gfp within hugetlb_alloc_folio() instead of having it as a
-  parameter so users aren't able to override gfp arbitrarily as Oscar
-  requested.
-+ Addressed some of Sashiko's comments [4]. Some of the issues I didn't address
-  were pre-existing issues. Since v3 of this series Sashiko was updated to
-  actually send mails. I'd let Sashiko point them out again and then we should
-  discuss those!
-
-[1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/
-[2] https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversions-hugetlb-restructuring-12-08-25
-[3] https://lore.kernel.org/all/agqaUcVp_hwH-VXr@localhost.localdomain/
-[4] https://sashiko.dev/#/patchset/20260518-hugetlb-open-up-v3-0-e14b302477f8@google.com
-
-RFC v1: https://lore.kernel.org/all/bb35a69a-5be9-45f5-a557-1902487a1bc2@linux.dev/
-v2: https://lore.kernel.org/r/20260506-hugetlb-open-up-v2-0-826a0c5f28fc@google.com
-v3: https://lore.kernel.org/r/20260518-hugetlb-open-up-v3-0-e14b302477f8@google.com
-
+Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Ackerley Tng (6):
-      mm: hugetlb: Consolidate interpretation of gbl_chg within alloc_hugetlb_folio()
-      mm: hugetlb: Move mpol interpretation out of alloc_buddy_hugetlb_folio_with_mpol()
-      mm: hugetlb: Move mpol interpretation out of dequeue_hugetlb_folio_vma()
-      mm: hugetlb: Use error variable in alloc_hugetlb_folio
-      mm: hugetlb: Move mem_cgroup_charge_hugetlb() earlier in allocation
-      mm: hugetlb: Refactor out hugetlb_alloc_folio()
+ mm/damon/reclaim.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
- include/linux/hugetlb.h        |  18 +++
- include/uapi/linux/mempolicy.h |   2 +-
- mm/hugetlb.c                   | 269 ++++++++++++++++++++++++-----------------
- 3 files changed, 175 insertions(+), 114 deletions(-)
----
-base-commit: 4a50a141f05a8d1737661b19ee22ff8455b94409
-change-id: 20260504-hugetlb-open-up-eaba80571b09
-
-Best regards,
---
-Ackerley Tng <ackerleytng@google.com>
-
-
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 11b70d0a9a6f0..6469b25cc34f9 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -208,11 +208,6 @@ static int damon_reclaim_apply_parameters(void)
+ 	param_ctx->addr_unit = addr_unit;
+ 	param_ctx->min_region_sz = max(DAMON_MIN_REGION_SZ / addr_unit, 1);
+ 
+-	if (!is_power_of_2(param_ctx->min_region_sz)) {
+-		err = -EINVAL;
+-		goto out;
+-	}
+-
+ 	if (!damon_reclaim_mon_attrs.aggr_interval) {
+ 		err = -EINVAL;
+ 		goto out;
+-- 
+2.47.3
 
