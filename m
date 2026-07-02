@@ -4,111 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19606C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:55:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3553CC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:56:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E0886B0150; Thu,  2 Jul 2026 20:55:45 -0400 (EDT)
+	id 1A5916B0152; Thu,  2 Jul 2026 20:56:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B8036B0152; Thu,  2 Jul 2026 20:55:45 -0400 (EDT)
+	id 17CD06B0154; Thu,  2 Jul 2026 20:56:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE78A6B0153; Thu,  2 Jul 2026 20:55:44 -0400 (EDT)
+	id 096126B0155; Thu,  2 Jul 2026 20:56:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C7BEB6B0150
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:55:44 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3EB0D1C5CC5
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:29:47 +0000 (UTC)
-X-FDA: 84944221614.18.3CB913E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0EA6720008;
-	Thu,  2 Jul 2026 15:29:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZDY+QGc;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8544C6B0152
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:56:18 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 035CF1C18CB
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:48:34 +0000 (UTC)
+X-FDA: 84944571390.20.E78437D
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2394B18000E
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:48:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LiqVBGSp;
+	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783006185;
-	b=tXi3MP1q2MYGJZ0g8I5TiQL6D7RmHy+kn8YMDpup3dThiY9lb9v+bk/w3pcmTNhGvkcFwA
-	D7sdyr7fc4Pn6fMsgU8vOrEKCm4Ks3tQwRSwQRZEI+bTNpc1KDTSMBGAv3M8PY4SW+3Iy4
-	3W9jueOmHxhkHEK0YYI+KDnM+PyLHoA=
+	t=1783014513;
+	b=2/Fwk6SckT4d7vx4vlSBzMvt6w2miI/Jteb5WL01oAJ8MlcKMZ9jdNTs1fmsOVQrfFfQfr
+	b84XjvO8CXH83eJhnxz58K1KQHAfFckdz2ZS8COLdrz8XCTDSAE0LhzackZotoT8r1wgCk
+	gS+iOKVbCrLxWlAwffdUwyQkCeIVFzE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783006185;
+	s=arc-20220608; t=1783014513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AmvNH9wwHqyoIMesePnV6/zMDBtlSz51dFh4yHJ1BTo=;
-	b=CHJqm17aCd0GCnW709ApQm/DkKZOrdmslMQR5mbbOqCkoirzmMCyif2/aJvte8MHOjues9
-	1TRazdTNh8AE26yM2rH+NiF7Jc9SldIN5k19PUJgDr/2OUuq/7rD1rR2cfHQJjQSIjswjd
-	/1FhBt11IT2wpiXLhbI9d7W3mM0vUdw=
+	bh=r1iw1Kf11G8Y2iJEwm3GfbWSG8bTonFB3NcyHNMfkRY=;
+	b=C74zmvBkoJSNbSKodVdHUeIL+p+m2DDOkUYxgZlRq9QZ0fAv4i2TMdC2q3zJSAv5w4VrkK
+	7+A8sa0iCJ1/2pS7R3NPX/oDZlAlRW7+FcuM+Z4cGl/0c6NJY8/TTrK23cKyBDFO0UXo/P
+	VZatZDIFc+lM7sr5I5uCSQVO6Kyzsk8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EZDY+QGc;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 25A4F418F4;
-	Thu,  2 Jul 2026 15:29:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7DF1F000E9;
-	Thu,  2 Jul 2026 15:29:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783006184;
-	bh=AmvNH9wwHqyoIMesePnV6/zMDBtlSz51dFh4yHJ1BTo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EZDY+QGcsghhDIw9rxbIhnPAJRijthrModhJ3dAoSN5cVM+YkTpcpEvD+KPlh/M/u
-	 Qwt3kZkRl2OzXpZ8lNBF20cEMvcQmjr2C3N0OBOmi3krbMnyRHMJTEBJXrtiCGLkys
-	 hVceGk9nKeLivyWhhq1nb1heVf5ntbaXnUG4S4OpDlt89/1RU+lLBy/OziQBm1WY0f
-	 mLETtt6Kv1hVTKJQz++mgHlN+PUF+ac9yH5QtMrmNRfTW7GoeSyD7Rts3hi3Don33s
-	 UtJfTmtwGOSlfBDJEzVdm8IjgP96nHmx5GxFIPDKfkfCebxxa9UBrNHRuHW+T6BGzw
-	 FkrA9PbgKP9aQ==
-Date: Thu, 2 Jul 2026 16:29:20 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, tsbogend@alpha.franken.de, 
-	maddy@linux.ibm.com, mpe@ellerman.id.au, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
-	l.stach@pengutronix.de, inki.dae@samsung.com, sw0312.kim@samsung.com, 
-	kyungmin.park@samsung.com, krzk@kernel.org, peter.griffin@linaro.org, 
-	jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com, 
-	tursulin@ursulin.net, robin.clark@oss.qualcomm.com, lumag@kernel.org, lyude@redhat.com, 
-	dakr@kernel.org, tomi.valkeinen@ideasonboard.com, hjc@rock-chips.com, 
-	heiko@sntech.de, andy.yan@rock-chips.com, thierry.reding@kernel.org, 
-	mperttunen@nvidia.com, jonathanh@nvidia.com, kraxel@redhat.com, 
-	dmitry.osipenko@collabora.com, zack.rusin@broadcom.com, matthew.brost@intel.com, 
-	thomas.hellstrom@linux.intel.com, oleksandr_andrushchenko@epam.com, deller@gmx.de, bcrl@kvack.org, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de, 
-	david@kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
-	liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, hughd@google.com, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, jannh@google.com, pfalcato@suse.de, 
-	kees@kernel.org, perex@perex.cz, tiwai@suse.com, linux-mips@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, 
-	etnaviv@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
-	intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org, 
-	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 06/13] mm/vma: convert vm_pgprot_modify() to use
- vma_flags_t and rename
-Message-ID: <akaC-xxNr8ZyN4aH@lucifer>
-References: <548ba81b2971734d4d2143237ad1465bd1b2f525.1782760670.git.ljs@kernel.org>
- <20260702122116.65642-1-lance.yang@linux.dev>
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LiqVBGSp;
+	spf=pass (imf06.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.47 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5aeb2b17167so859990e87.0
+        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 10:48:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783014511; x=1783619311; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=r1iw1Kf11G8Y2iJEwm3GfbWSG8bTonFB3NcyHNMfkRY=;
+        b=LiqVBGSpYT5tGYSQPxtsMsNP7YRysiPwdL4/5Lso9HcvPGZcSvhVg18tbFewz8PZtb
+         +p28bDXE4ZaCYnewbmVJjV9AoZ6cuVAw3nTd43tIXvKd5UbDwOlmTzlbTWrEVhDysaUa
+         zXhS4bh7wW4l2lwRDHTkDBmbvPpkBfpfRHLA4zsSlwA63fp+ifiKe4fgRYpVYLATTb1N
+         Br91MR8sY/tRWvSE8zpVLubwbJjUw0UyBbMxPWJl6GrruDhOhTtZcJ37Su1CjPBPu5pe
+         QDwkTXy5FyMyP9BC/UcxNjnYRYYFIEFdZKhsq9XImGwzMkRjJQqFDpsKA4L/XAdjlFf5
+         1LUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783014511; x=1783619311;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r1iw1Kf11G8Y2iJEwm3GfbWSG8bTonFB3NcyHNMfkRY=;
+        b=qPnWAT8voMhRWmpN7glb/yWPwGSH7tWhtOcIYeaooIOeGblDg52Fgu5J+4p7vTed5B
+         SWIZbpWLRrtwOBM7OXpiND/2zVz0xJHvQTXaSjhskyJ94dHm9/pSt0HRQlCXs1RMWrGd
+         TdWJZhRZ43U5lOSe8ixpnexQwSuB9WnFA2kFgf9dfA63e/eJq8UIkh2L1ep3xsplIzcE
+         WU1yPkPUggVVBn9QL1wTJ1hLpSq0hWKTP1SOyjt5D6p48R43M2IJOVsIg68YvKXfGVsS
+         HpTF8TT4WruJfvvi6pVLbmGSWSlgjesdX42/1nlBZpjaIhlxAfILXJjAQ/wxDNRRalNu
+         pRUw==
+X-Forwarded-Encrypted: i=1; AHgh+RqoQM4bOMmhByX/sFKde90vKVTJVR2/DPRYUmV87N9L0ePWKbl0K2EoI5XjJV267h1hsn8BgALhuw==@kvack.org
+X-Gm-Message-State: AOJu0YyCbLT1xpJ3B9vSfSgToPO1TZYHdO+vpp/vQ4aiCyOGdWnnlFRj
+	Dtp+Nlyqo+g8HrXW+yxUxgx3D1vejmcYqriUGVAH15jTgAjInl7KqWuB
+X-Gm-Gg: AfdE7ck06fp3Wcw4yth2TwvP7PpiadA795JC8K4UdkG0wcZ1lPrvYBAuvrL47tgrunL
+	O2IIJgV7oCj+OeyzhbBV77s3q0NO405py673WGBVWCwfuVnKqcGysjjRR4knsWaJ69MldWdqNRn
+	NiuigBYZszPGVTfuK/v2fOYB5vinYXERF/a49kvRg3veCYD5wiGZbCRx8BetIZU1bsYIuMUSfxI
+	R28H94dDMu5nsVbAtEuuXqOMqHQreiAw8y4om0vXm6M3105d9yh2/FLZAGa/QQEEb45vfWhmUHb
+	2h96hNDVI4DdsXNpw1fqMb+/fI5NYyQPobgCyNItxyZe6JGFzIvNxqV+ZTsAAMAlwujynXLKLYz
+	2aeF4sDIMcahSkShbzlytvsj0vaQIIynCeIkp8PQMd0AcXRE5S03q8LJF+VZrgfG85DWi1ptcL3
+	YB4vEOKHGIwV865OkbVoHBEA2/JCoNSY2f4PotCF0CBaPlupW6+MnFHw==
+X-Received: by 2002:a05:6512:648d:b0:5ae:b6cf:c745 with SMTP id 2adb3069b0e04-5aecf4dcd9cmr163318e87.17.1783014510420;
+        Thu, 02 Jul 2026 10:48:30 -0700 (PDT)
+Received: from pc636 (host-90-233-199-119.mobileonline.telia.com. [90.233.199.119])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5aec89a16a8sm823845e87.34.2026.07.02.10.48.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jul 2026 10:48:30 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Thu, 2 Jul 2026 19:48:27 +0200
+To: Feng Tang <feng.tang@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmalloc: add alignment info in warning print as
+ possible failure reason
+Message-ID: <akaka3D3IC883O5t@pc636>
+References: <20260702112610.21589-1-feng.tang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260702122116.65642-1-lance.yang@linux.dev>
+In-Reply-To: <20260702112610.21589-1-feng.tang@linux.alibaba.com>
+X-Rspamd-Queue-Id: 2394B18000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0EA6720008
-X-Stat-Signature: b6fzn9ezn3ijpxdoajthpqrmscyntwam
-X-HE-Tag: 1783006184-396953
-X-HE-Meta: U2FsdGVkX182Tif/orRrqW2OMSgDliNZeO20cNIIDrhzystpbrCkvGhmIHiRLDkq8ZGxfB4I4Y8ZQOnvEzhVZ/U1L2yDqyT/TNcBQYyIenCHeouWIOkxb9JGRWNTAO7o4JcMw4h2C25c/9/xtz4U0YRyGRkXwFHoch2XD1cUDX2J+aKqRCsX+nqdrkAJRsxnODBrrsxkKjDDkxqVlCRgaXwVRYV2Xdg5dJh3wN/CrtCl9xlrbpxl2F5g0Cr4vSyilMBkqy9qNhsE0XYCMW929DzMwXtK8unG+op9jYLSaKK9yXzs3pL8enRa/m756S/pqUvY6qU7OAH7unQQfqg2EILmjSmqiagmdQXPgyniBCQSZQP7L4ZsZeW1H8j+vVIfswY/un04AMY97VAtaYTJ6BUtPGcu1TCKrvy1uPtwMI2t+1zUoiZAAWoOWJ3JJei6vxY1sT1XoEIKR8zqYOdZLgGq8pU7dqq2BHOU+a59fThbuBsAY0lgt1RUYrBEHicVsn6ngm8gikheXbnIhDYMhzZ+oU8iVtmIYMeq1xTs4EXQ4jUWMLGb2Da4HjwOveUI141DEdzJ/ltjTz6+8PdRCLmMvJnwzeq3Wj1IHuj/RFukt1EZKXRdiodpBYF2WTg5F1cP418douNC5U0LPqP6MzuEkZIiru1iPuxXSo7vnuojJkD3K/9SA9bvu/Fbq4/dNms33Za4crJA3Uh9fnHsbm1pmmdhH/IASNP559GVgMSlGCas2+EhkEE7H2RT3ybBsBO6wGvyg1RTUGU8rndDkqiEOmNrlV5IrIIfBL8bmuBLGEdr/GEYWiz1cQRb4tKAx8ep3fvmZvz2C+aFwFd52NDn6SD+8q3WTO8NJpa3pYBIfgJxi7VdBtiw39fZbOW/c93/wSlMakAE5KemXth/BJkSKFKmz3fyba9nDQtGP3l5OJKNKvFWcfCKLXh+BfhEsOKIl/RsKoYk3c1Fr3q
- kbi6xC0Q
- LNg/YW+dBjz0MQm811PlZWuWMVnYo1oKwGW4Qy9HI5vPOznEPpLHddlCQluBVa0QP3WZk7Lctr5R32Jlezba0qNj6o2t/0fgDV1boHzJe5fYLClurzEIasEPs0Go0X0idPcfihbVSTq17hqEjW5W0zxnXitkvZ1bFYln57d+wDj6IBkxQjZV6Edet110kNQEFzO6lJD59Rx3vd2NsIhNz/oD7Q5a9FtA8QCKvqT1qsnm/ArcMrzTJsw8PcUsG1RF/GzYZVbswr39Xeuq5ursG+lOKri0JIIBd7nYuqUl4boYvDZTFQWS4t9GGjUFgDFVO/TJs
+X-Rspamd-Server: rspam09
+X-Stat-Signature: mz8qfh7sowtfbncw96zuqz7sbbw6ubkc
+X-HE-Tag: 1783014512-238291
+X-HE-Meta: U2FsdGVkX19jvDKCRR8xZiTOxqYiQdVSsZLcYC7RoQ8iba0Wt9lnTTVsgqb6kX/ti0BUv9vxb6cXTiIiKXakL9dahgzzrLkw9pkapGZmIMA/UpCjPBPbgdHgHjxIQIqPZWJMpNWap1K594X4DnjNorwNCAGjkB5lBbBIvHxIsE5ZscT6wwnKSUm2AkQw4Lb/P4nHjuwVq5T7oZD1Xng10VDF4VB7gaZ8etTR028YyOh4eD3g5LY6mDJFauDCcTPzkvwmpq64E0cXARz2qETW0A1ji3LTaPsZSYjgZYzrZotEmGYnT2nOJQG6z49fKspa+8oNBdo0Gw+heN4boNO8aCotqWjFxRCdypciV7yu7xIqRijYhuagmtgG4ocBxzGRYSkELZUoiAbBWiE/speaYu4aH1Ki+ctLOezPt4fEMf9PKUnTFdlFDq2i/VrcFs2yPZm8zIVuKJwZIebzyNYLwRF44j5gZbKN4n4EevQs9LaNfgfy4wZP6JA2/fqzL1rJp7W+kqN/+WuTO9ziwp2xjGHv8HEIDaBvWLRKAHsQr+H+ITp0v91UYYVG0s+tK3yRqEiKffmOwo8PEPNMWwQHboVmBS+7w+8U89jJKHndbimvQ9XowdDfGOue/xE7eB1nCnEN1lAofkVV+noXrybwqxoCyqjXQvBbTqdjzvjGl0qJ2IO0zHYXaED7tn8y4CUuHwFNtAsogSasXMNykKDpNmPYbTwIp3oS6qSPFnXzu/zRQNbpc7VR09qY3nUnj2lTLuAYd380mofF0KeaYppuYE1oLhxdjafI9awhfuGAGDNsxH3RLy49P9bQbqy/jBXFmpPFY2rR1qydYJoSrvVNJmuxSECGDZ8ffe6RGLUHF5/JPm0/YHyKzgTsIHFH0WNEclX7MWwmIK/2RSqCoBrSxyWpZ7VOnHwbk/jpZ0a4XUpj3EvGV3EAdEKLZpicxJYBJq6owHv88FeAcH/DHs/
+ hYxJH5zq
+ NHbshkgVBulzUAnoEVdAzKYoFFO+wgIKFwKQTAiWaZztgZ+lHXQfbzMPh013vZQdMtPSjJRwFRX5O1y8MhwlTBq+jdmoL8VB0zlhtdXyD1W9MAU6+OnPGVG7OhLKo+ZfjsaZKf0RHfUF3gItXaw1vtZwWVXRaCOtc0cm63TaQXxq+uJ5qxta278riKnw4IP1yCRVkHIUKIAMNkhOMynSaTKidYsf+fxAeRn0eFVT8k4BL2j8c2BQPPcEJJYXBsTXDUtVWTICEnEdk32E1OaL5KcEw7N4aWHCwLYazbCTX09nrben7QmtKrpNHpcvUVNTFZzkWrG417S8qXg87O2QDY4NLExyviRSbWY4UC5jbW6s2xhNWLyViwd/OLs4gl0p0nZoX/N/NhsKhSymI/6uzO4xlEBfwsKBlmaG1bbvvHWJYbu80H8xvKjXn8LlbWHoi6JLftp3LlAxeRawRNqG7DQ7666HmNoo5WEdB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,58 +119,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 08:21:16PM +0800, Lance Yang wrote:
->
-> On Mon, Jun 29, 2026 at 08:25:29PM +0100, Lorenzo Stoakes wrote:
-> >Update vm_pgprot_modify() to use the new VMA flags type vma_flags_t, and
-> >rename to vma_pgprot_modify() accordingly.
-> >
-> >This is part of the ongoing work to convert vm_flags_t to vma_flags_t, in
-> >order to eliminate the arbitrary limit of the number of bits in a system
-> >word on available VMA flags.
-> >
-> >Update VMA userland tests accordingly, updating vma_set_page_prot() to no
-> >longer inline vma_pgprot_modify(), rather we can simply define
-> >vma_pgprot_modify() as a static inline function and the tests will pick it
-> >up from vma.h.
-> >
-> >No functional change intended.
-> >
-> >Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> >---
-> [...]
-> >diff --git a/mm/vma.h b/mm/vma.h
-> >index bcf0c2773449..6a8abb8ae937 100644
-> >--- a/mm/vma.h
-> >+++ b/mm/vma.h
-> >@@ -522,9 +522,11 @@ static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma
-> > }
-> >
-> > #ifdef CONFIG_MMU
-> >-static inline pgprot_t vm_pgprot_modify(pgprot_t oldprot, vm_flags_t vm_flags)
-> >+static inline pgprot_t vma_pgprot_modify(pgprot_t oldprot, vma_flags_t vma_flags)
-> > {
-> >-	return pgprot_modify(oldprot, vm_get_page_prot(vm_flags));
-> >+	const pgprot_t prot = vma_get_page_prot(vma_flags);
-> >+
-> >+	return pgprot_modify(oldprot, prot);
->
-> Nit: could this just stay as a single return? something like:
->
-> return pgprot_modify(oldprot, vma_get_page_prot(vma_flags));
+On Thu, Jul 02, 2026 at 07:26:10PM +0800, Feng Tang wrote:
+> When running 'fix_align_alloc_test' case of test_vmalloc module with
+> command:
+>     insmod ./test_vmalloc.ko run_test_mask=64
+> 
+> It will fail, which is the expected result, as the case increment
+> the alignment parameter gradually to 64bit limit. And the dmesg has
+> warning msg:
+>     "vmalloc_test/0: vmalloc error: size 4096, vm_struct allocation failed, mode:0xdc0(GFP_KERNEL|__GFP_ZERO), nodemask=(null),cpuset=/,mems_allowed=0"
+> 
+> It doesn't give the alignment info, which is the real reason for the
+> failure (not the 'size').
+> 
+> Add alignment info to the warning print to give the necessary hint
+> for possible failure reason, and the message will be:
+>     "vmalloc_test/0: vmalloc error: size 4096, align 0x800000000000, vm_struct allocation failed, mode:0xdc0(GFP_KERNEL|__GFP_ZERO), nodemask=(null),cpuset=/,mems_allowed=0"
+> 
+> Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+> ---
+>  mm/vmalloc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 1afca3568b9b..e066324dcc76 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4045,8 +4045,8 @@ void *__vmalloc_node_range_noprof(unsigned long size, unsigned long align,
+>  	if (!area) {
+>  		bool nofail = gfp_mask & __GFP_NOFAIL;
+>  		warn_alloc(gfp_mask, NULL,
+> -			"vmalloc error: size %lu, vm_struct allocation failed%s",
+> -			size, (nofail) ? ". Retrying." : "");
+> +			"vmalloc error: size %lu, align 0x%lx, vm_struct allocation failed%s",
+> +			size, align, (nofail) ? ". Retrying." : "");
+>  		if (nofail) {
+>  			schedule_timeout_uninterruptible(1);
+>  			goto again;
+> -- 
+> 2.43.5
+> 
+Do not see any issues with adding extra information on failure.
 
-I feel it's a bit clearer this way, separating out the two, I know it's a super
-tiny difference but anyway :P
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
->
-> Otherwise, LGTM, feel free to add:
->
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-
-Thanks!
-
->
-> [...]
-
-Cheers, Lorenzo
+--
+Uladzislau Rezki
 
