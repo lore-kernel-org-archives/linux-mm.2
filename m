@@ -4,113 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70C1DC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:46:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6CBDC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:46:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 475D06B00CD; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
+	id 696C66B00D1; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FF716B00D3; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
+	id 64B356B00D3; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 315B26B00D6; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
+	id 538C76B00D9; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E7DD36B00CD
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:46:22 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 110BE8C57B
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:40:52 +0000 (UTC)
-X-FDA: 84944551944.05.8D81645
-Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D21971C000A
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:40:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b="qrdK/fl0";
-	dmarc=pass (policy=quarantine) header.from=amazon.de;
-	spf=pass (imf18.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de"
+	by kanga.kvack.org (Postfix) with ESMTP id 276EC6B00D1
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:46:23 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6B5568CD18
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:56:26 +0000 (UTC)
+X-FDA: 84944893572.13.9134031
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id BB825180004
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 19:56:24 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/FWB6jt";
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783014050;
-	b=vry4gSw5Vk4prn2MbihnFecF/BHZ0SK1oaDcAY9rWJzJz2DDBOGekfyG/8yAhL3p8PESqB
-	B4UY4EoUFz/ZJtII4EfpBep8cabaije9QVtWq6f1E2ArHpfi1GDnz+tp5X6QJgOK9Whxz5
-	gUdfgHty/jJdEQgzklQHnNrTmudpXMU=
+	t=1783022184;
+	b=aFgLMmmjYDTwHJmhWO1fw4b8h7fwMfNf/VhiaysPSMmohCoQEwsgXz4QfZF7+uO+Ykyqmn
+	7D1CxhIEYahJKPFFOk/VMG0M7Fceqx1vMK8JsGD11U0J+js1QqLrMkGajGLcrbGb/KM0JT
+	woJwaTLw/TMhWzWxuya9s5P2lMhw/rM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783014050;
+	s=arc-20220608; t=1783022184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5y+H67ThXEbUdB02JQVhsVtUDnX/kL/u90pAnPi/57A=;
-	b=CoCZt09snke4SWieKw17Hao1vVCT0SMr2H2Flyj6ndatVgevh/TFjd2itsq7bLCH5omT4x
-	Qi0rlNqIZeRwr5Fb1upJFcolFkvgRi5L/xDPRSycyQQ5u5OyuMzqXHePVU+7/dCK05+/RG
-	lAJ4k2PCqqTt9QoLPG+KAWtq+6X6BAU=
+	bh=8pPyJqfnMYXXqo+RHQk7hHYPHe8mO9fxIeSu/W46PMI=;
+	b=0tugRrQOQHMonrnqj+4872OiuwmeWnP7tVVz1qRehfmvG4C1VGlk+1ItXVUDlwkOXMFgep
+	GDqUIqIeQIE8rGQsMvuksoXB4zx69D518GeQ3AoFKAK/dbP+SNaw5TmQkW8blyLL1MvorX
+	iY2cbFX3KjNrhRnDlyUs21ajtJF5SoE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b="qrdK/fl0";
-	dmarc=pass (policy=quarantine) header.from=amazon.de;
-	spf=pass (imf18.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 35.162.73.231 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1783014049; x=1814550049;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5y+H67ThXEbUdB02JQVhsVtUDnX/kL/u90pAnPi/57A=;
-  b=qrdK/fl0ArqbXZ52WjUwEqHQwRz0zAbanaoYD2PMgDBGgaYLnQE8zsk/
-   74Ym++3jqLJJysmZL4jV91oKU+ZObrDbwJgZjSeqmBo1KgZf77pujJmNV
-   wEVb6BbvayruQ6g5EA3cNv1HyUuFETysa15aCljbkKT9VeBkVUKmaTiPv
-   scRCIcdQNaIrZje3pCUCk4kquPzsRtmlrjONyN03Loh7rbALPudNoQSKM
-   CxD17LQAyEIjvfEDf5fvu8RaSoYA/T7xKbxeAtxcAOBaTuJkZV/aeCkOa
-   cXHb+o9A88U8cqaJP8NTpt4XdIny6GSLR9q+rQq8z7/Ci3EMEE15yyjr2
-   Q==;
-X-CSE-ConnectionGUID: Z3ST562ISvGKPYlXp7BD5Q==
-X-CSE-MsgGUID: i8mNv5wBRKGRhF0eq3+5hA==
-X-IronPort-AV: E=Sophos;i="6.25,144,1779148800"; 
-   d="scan'208";a="22738367"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 17:40:46 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.105:21839]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.17.129:2525] with esmtp (Farcaster)
- id af6c0e5f-4b77-4570-942d-449df8c7a53e; Thu, 2 Jul 2026 17:40:45 +0000 (UTC)
-X-Farcaster-Flow-ID: af6c0e5f-4b77-4570-942d-449df8c7a53e
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Thu, 2 Jul 2026 17:40:45 +0000
-Received: from dev-dsk-sakacpav-1a-480d1124.eu-west-1.amazon.com
- (172.19.96.155) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 2 Jul 2026
- 17:40:43 +0000
-From: Pavol Sakac <sakacpav@amazon.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
-	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Tejun Heo
-	<tj@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>, "David
- Woodhouse" <dwmw@amazon.co.uk>, Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, "David
- Matlack" <dmatlack@google.com>, Samiullah Khawaja <skhawaja@google.com>,
-	Alexander Graf <graf@amazon.com>, <linux-mm@kvack.org>,
-	<kexec@lists.infradead.org>, <nh-open-source@amazon.com>
-Subject: [RFC PATCH 03/14] sysfs: introduce sysfs_kf_syscall_ops dispatching to kobj_type
-Date: Thu, 2 Jul 2026 19:40:22 +0200
-Message-ID: <20260702174033.32116-4-sakacpav@amazon.de>
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N/FWB6jt";
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AB8CD40B45;
+	Thu,  2 Jul 2026 19:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A4F1F000E9;
+	Thu,  2 Jul 2026 19:56:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783022183;
+	bh=8pPyJqfnMYXXqo+RHQk7hHYPHe8mO9fxIeSu/W46PMI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=N/FWB6jt/dWaj9Km4IL7UnuVEtMf+BFcFz2ur9eOgAlxhIq72KfufKL9vRuwm+hWc
+	 ccEGRd6j6VI9qoSwL7i/dNhwpp+UdizZdh9oWDjT71rAYGFqkdwHW0EON7p+vwnS+8
+	 cOwvxG17Z2cJktUpux8Dl5E/YNbfwxPFOaC34VqPeioGIGoVauLzv9KWQxHfj79FLC
+	 aJSJqIgTeo9RF98anzhicX/8I8Y9XHTpXGWN9nrdDBZ3hkeDnOpBc4QoqSxHNZ6DTK
+	 MZuKmdpziG2uSJ7lieXuXiwb0ayj+uhZZPfn+NbJ9vIli6yP5sSDuNzYnwwn52xPFE
+	 esJuiGkOUKfPA==
+From: SJ Park <sj@kernel.org>
+To: Lian Wang <lianux.mm@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	daichaobing@sangfor.com.cn,
+	kunwu.chan@gmail.com
+Subject: Re: [RESEND RFC PATCH v2 3/5] mm/damon/vaddr: implement mTHP-aware DAMOS_COLLAPSE handler
+Date: Thu,  2 Jul 2026 12:56:17 -0700
+Message-ID: <20260702195617.91982-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260702174033.32116-1-sakacpav@amazon.de>
-References: <20260702174033.32116-1-sakacpav@amazon.de>
+In-Reply-To: <20260702094633.75658-4-lianux.mm@gmail.com>
+References: 
 MIME-Version: 1.0
-X-Originating-IP: [172.19.96.155]
-X-ClientProxiedBy: EX19D035UWB002.ant.amazon.com (10.13.138.97) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D21971C000A
-X-Stat-Signature: sdngz8poneaorhk7o461y17gqgo6ffo4
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BB825180004
 X-Rspam-User: 
-X-HE-Tag: 1783014049-563442
-X-HE-Meta: U2FsdGVkX1/RN9SGCfImUr6eKJnTo+x9XFy686vtDpoQtldLmDyFj/hMt1PZo8IrBAins4vKnk7JNQNwLJpQrOJo42cvsOEd8tnC/NkWhgbMcUjTmtH8wPrUpALCF4hWSWR2uhhM9Ylu7M3FSty1X62QCvB8ZQC667Nh+dBBYMBcZWDVnLuhXA4TKWC0HLOFzyTKCB1J4WSJvQDchYMVi6Ry5/9KiH1NChCluKJIjQ3dpP0tYjj982WERNZbd7gP2XN5jFK4bFVltB793bqAf2sttSxny9wNbyEGn22nOBDfUc8skIa9obgllEgXRcA6G1nvX+867waXozVNwH6fB4eUTpkXP8CoGTwkF1ZOjRVtjJIkk1vGzLwjZ+hfeC+n/3bANpF/B18tJ9dByPDHNhcCWztQbYkmq/pMPNWeC5tR0rQ/J/zOcJH+MCY62wxM708H+L+3el1GDlXZtjB1SFdtWB5haTmVWlgMDamDBDFNX5+UwPE8ywPnKyb1Kc1AQd336Vvz0IWQz6CeFShosxLiazUnYknrC75+PJGu2XuKlY7bHtL/0L0m/EQr/7+Iltp5OvTAO/gsgapZp0HaOeHkBnKhRBXNV8P2/xjOo3Jg1yme/8I/nimRlY1tz6BuYzfOVrqm7bXdVms/6xfgIf8SwHr1X3K2ks1MVzMOBwpq6A1CvOswOmrTMNBBuaXMdTEaLyxsCvowy7u3XlvNSyP7vqfpjrXYLwG5Ln249YszdQdMsjkesjOT47OGQ3aHQBfGyx85/wxWjHZLjVCOOuHpFPvL/DjLm2NqLLnL5pQsjEy+qBeApNtRd5aSYEbgpVh0uarS3v4+RGBgjiS9BxsDWdWSgSfOK2t3O5u2buLWkl6Kv4nhkBshjc5dnIeq4yFsPrW+gXZ5crz/y0V3Ognu9+PDypyf2zKTrj2xmzJkeKyGZAdQ3cBEOEyOF1pTjwYJyvaYpBS7ucud29H
- 7TQt9iUF
- lqHmLtBt2HVxNXFQDPPg2NRAtWwXPFMykIZRMZAWpjOXdlJHKSz3mXo5j+/Q/WnlpYC2L84p6fhoKPOU7dGcJRQ8k4KrIpZJ8OKLpgLbPYSaM8jA/i4rLfjxL8DdnH9Re1/9s0ZRAJIuAOonjVEcJMNXNby8dFtwmuBOqaKthYZ8rrlP0qNE1xxy+Z0svOlZfkR4CJdA+Eh5wGGvFJtxIT5U2g8r3Q9o2oUPFf2JBD3aNSmyOtXCbK62547hJjMMQ/+Tnmf+HkXeWHWNOURnZkbwS3+L9IAyLQeBoD9YdQM51zPefYHyBfQRVtAuk3DM4OzAjssE/9citgbg+oh16jskUXEISkWXrsemJH2Kz0QS5HyeXxDBU/K7c5t3mlOUXHHFzW2SjrjX/H7LWF6qB2BjhEYi3Dvt5lJVdP+Oek7Hm+yd6wKY+Q31h2SqHoRktuN129+mcLnw86WyeHRxRBou2D9WKsRPItWH1e4jOa+VE1j0apTrUtg8lR+bU+EnvmW3zURiGVxxuZzvyYUtZBpJ85VtHkwXJV4zLgAEf6FThainu9uOhawxfKaSSGHkcFLTt6dWv59Hb8he9tPYd80OKKBQOVYtuoTLXpPkBCwwXRdOyD6cjF0oHlraH7ZiUyj7DE0965ltFG9wPTFXvqMX4hA0z3h80RLxWsHgLwquOc9+RnxNZMjtA5Q==
+X-Stat-Signature: po5rercj1p3hoodonsh6k94a77eoj8by
+X-HE-Tag: 1783022184-42108
+X-HE-Meta: U2FsdGVkX19v/PPBGoHulJ5fgtq8ZFbzi1uiWkphYxphbP4/IJA3huV+kHfCkBNgWuyPkeoKAKRkkgZCW2hclL7M7KtFkIBLzLUO9Wlz6/tUQ0GQuETwedDRJ0Tt3AM2bUow/cLdGoipUdAzcQsslrIVDKp3WSmT7jl1ay4HdJtUYU9h0xbqugSoloUHV5aRrnojJgQt3WNAi+5z1FMomAe+3eKbeYDYOrrweSgdc3QqcLoeyZWbfivnGJ5Np+C4/QLyK+NUVWjDmCxaEQOr2bswt9PXCBN8h2JtGnNxX7bvnGIQVW+AkVU3X6rnzNZdGagqb1c/IxH7cYwJWDoPjeVfWKUen0b1gCa7i1K3t39kjiIi80kQ511JUiLGanQpF2Ru5p74UJ9GXDG8EGsDyGUOSZPpAzsMINTE23jXu5dMdSaknxCjcsCRXx+BBIgSwLUhvgEHK3hE8E9Hb4Gp/XE7ii7TFys5P7xFOk7VCEKpqrNn5wWxOsbFgTcWdWvplV0q6vF71YgHwStAMRAu9ABNKKjumi6692WUnL6mxfpg5du++y8u64ma+WonuPABHVGV8oTw/ODuISrBdVxC+umQW85F3Bof9PvZVK8C6eVXDFIa/mxN/n0Gnlw/TfxKIei3BJHx3RW1F2VwAsjFp67dqZmXUMUjCS6mdmXp9gTaak/9b71w64B0WWyAxsv9GtPYyWucKBjlwzje5IVFuqGB2EGXxMrB1/+jbvSNXNSVucguyUl0L1Mpd+cWW+ekbq4EZyCknSF6Ijyjr5v0nahu+L23xbyo6qVkmh4gHD/Q/U52BmrBXlSd99cBJlrFZC3GF2/CXElG3VAFU6zfiIEOZa/BbGHCnX2M6Z01gFXwQ5AS/idoGcNrdqOFlVjRbRCFLd9VVql7wGeGDb5oojTH1lkpkjhmjDK5if/WcqB+ex9eTuMX2J41ruSDy8pX2+/jUofK/abj4bKgrTu
+ ZHiA2PaO
+ XsA4OC8bvGKG0SqpjXJbnx7u9Rshi9h2yJ57o+ZNW92gkCqtNEOI4va+jqldkUA/Syu0eSOXKs0ROMEA0ZIuHcMaffdy+CT2Slrlhjn/DEwMe/jiaQezL8/uGF3dFAfGjSzECjdDYhV9z7yvaTxA65I8kt5XncN2fHGC04cZ9cqt3L94Iz4B/3Goigu1E8o3y6suKVHVFmxSqwGLgkzN2B4I+kgfM+57iOkpbRWNVFYg3obsUpMouq/G5/VWHk1Yc4iI94CdLEAIc0YCnuBCqLhQP4nZB8nw+qNqTFBzdKva8mV7m6eiXSUUKzE/AtT4miEKNHjdQuJi2R0lnGvzy2UEH75XQL3iG7ujlMbwVhCGbmsWWq6Lbt5g43ofyi+WXx2BU6pJkI1yLaOSEsegWnpaLLwjUA9OMW+h4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,131 +93,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Wire the sysfs side of the lazy populate chain.  sysfs_init()
-previously passed NULL as syscall_ops to kernfs_create_root();
-install sysfs_kf_syscall_ops with populate and populate_all
-that dispatch to the owning kobject's kobj_type.
+On Thu,  2 Jul 2026 17:46:31 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
 
-The kernfs lookup path pins the parent's active reference, so
-parent->priv is safe to read; sysfs_populate() additionally
-pins the dereferenced kobject with kobject_get_unless_zero()
-across the sleeping ktype->populate call.  sysfs_populate_all()
-does the same for ktype->populate_all on readdir.
+> When target_order is set (non-zero), the DAMOS_COLLAPSE handler now calls
+> damon_collapse_folio_range() to collapse pages into the requested mTHP
+> size, iterating over the target region in order-aligned chunks.  When
+> target_order is 0 (default), the existing madvise(MADV_COLLAPSE) path is
+> used, preserving backwards compatibility.
+> 
+> Region boundaries are expanded outward to the covering aligned range
+> (ALIGN_DOWN start, ALIGN end) so that collapse works even after
+> kdamond_split_regions reduces region sizes below the chunk size.
+> collapse_huge_page() internally validates VMA bounds, so expanding
+> beyond the original region is safe.
+> 
+> No external mmap lock is held: collapse_huge_page() acquires
+> mmap_read_lock internally for validation, releases it, then acquires
+> mmap_write_lock for the actual collapse.  Holding an outer
+> mmap_read_lock would cause a self-deadlock when the same thread
+> attempts the inner mmap_write_lock.
+> 
+> Co-developed-by: Kunwu Chan <kunwu.chan@gmail.com>
+> Signed-off-by: Kunwu Chan <kunwu.chan@gmail.com>
+> Signed-off-by: Lian Wang <lianux.mm@gmail.com>
+> Signed-off-by: Lian Wang <lianux.wang@processmission.com>
+> ---
+>  mm/damon/vaddr.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 48 insertions(+)
+> 
+> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+> index d27147603564..98a87609376b 100644
+> --- a/mm/damon/vaddr.c
+> +++ b/mm/damon/vaddr.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/page_idle.h>
+>  #include <linux/pagewalk.h>
+>  #include <linux/sched/mm.h>
+> +#include <linux/khugepaged.h>
+>  
+>  #include "../internal.h"
+>  #include "ops-common.h"
+> @@ -899,6 +900,50 @@ static unsigned long damos_va_stat(struct damon_target *target,
+>  	return 0;
+>  }
+>  
+> +static unsigned long damos_va_collapse(struct damon_target *target,
+> +		struct damon_region *r, struct damos *s,
+> +		unsigned long *sz_filter_passed)
+> +{
+> +	unsigned long addr, end, chunk_sz;
+> +	unsigned long last_chunk = ULONG_MAX;
+> +	unsigned int target_order = s->target_order;
+> +	unsigned long applied = 0;
+> +	struct mm_struct *mm;
+> +	int ret;
+> +
+> +	if (target_order < 2 || target_order > HPAGE_PMD_ORDER)
+> +		return 0;
 
-Both callbacks refuse dispatch in namespaced directories: the
-initial consumers (PCI, VFIO) are namespace-agnostic, and tag
-propagation is out of scope.  Transient errors propagate without
-negative-dentry caching so the next lookup retries populate.
+I think this validation should be done by the caller, or whoever before this
+function is called.  Let's remove this.
 
-No behavior change: no kobj_type sets populate/populate_all yet.
+> +
+> +	chunk_sz = PAGE_SIZE << target_order;
+> +	addr = ALIGN_DOWN(r->ar.start, chunk_sz);
+> +	end = ALIGN(r->ar.end, chunk_sz);
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-api@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: driver-core@lists.linux.dev
-Cc: Tejun Heo <tj@kernel.org>
-Assisted-by: Claude:claude-opus-4.7
-Signed-off-by: Pavol Sakac <sakacpav@amazon.de>
----
- fs/sysfs/mount.c | 60 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 59 insertions(+), 1 deletion(-)
+How about ALIGN() for addr and ALIGN_DOWN() for end?  I show madvise_collapse()
+is doing so and being consistent to that is maybe a good idea to less confusing
+users.
 
-diff --git a/fs/sysfs/mount.c b/fs/sysfs/mount.c
-index b199e8ff79b1f..9e0a37b60d6e7 100644
---- a/fs/sysfs/mount.c
-+++ b/fs/sysfs/mount.c
-@@ -10,6 +10,7 @@
-  */
- 
- #include <linux/fs.h>
-+#include <linux/kobject.h>
- #include <linux/magic.h>
- #include <linux/mount.h>
- #include <linux/init.h>
-@@ -96,11 +97,68 @@ static struct file_system_type sysfs_fs_type = {
- 	.fs_flags		= FS_USERNS_MOUNT,
- };
- 
-+/*
-+ * sysfs_populate - dispatch a lookup miss to the owning kobj_type.
-+ *
-+ * kernfs pins @parent across the call; we pin @kobj while the
-+ * (sleepable) ktype->populate callback runs.
-+ */
-+static int sysfs_populate(struct kernfs_node *parent, const char *name)
-+{
-+	struct kobject *kobj;
-+	const struct kobj_type *ktype;
-+	int ret;
-+
-+	if (kernfs_ns_enabled(parent))
-+		return -ENOENT;
-+
-+	kobj = parent->priv;
-+	ktype = kobj ? kobj->ktype : NULL;
-+	if (!ktype || !ktype->populate)
-+		return -ENOENT;
-+
-+	if (!kobject_get_unless_zero(kobj))
-+		return -ENOENT;
-+
-+	ret = ktype->populate(kobj, name);
-+
-+	kobject_put(kobj);
-+	return ret;
-+}
-+
-+/* sysfs_populate_all - readdir-time variant; best-effort, retry-safe. */
-+static void sysfs_populate_all(struct kernfs_node *parent)
-+{
-+	struct kobject *kobj;
-+	const struct kobj_type *ktype;
-+
-+	if (kernfs_ns_enabled(parent))
-+		return;
-+
-+	kobj = parent->priv;
-+	ktype = kobj ? kobj->ktype : NULL;
-+	if (!ktype || !ktype->populate_all)
-+		return;
-+
-+	if (!kobject_get_unless_zero(kobj))
-+		return;
-+
-+	ktype->populate_all(kobj);
-+
-+	kobject_put(kobj);
-+}
-+
-+static struct kernfs_syscall_ops sysfs_kf_syscall_ops = {
-+	.populate	= sysfs_populate,
-+	.populate_all	= sysfs_populate_all,
-+};
-+
- int __init sysfs_init(void)
- {
- 	int err;
- 
--	sysfs_root = kernfs_create_root(NULL, KERNFS_ROOT_EXTRA_OPEN_PERM_CHECK,
-+	sysfs_root = kernfs_create_root(&sysfs_kf_syscall_ops,
-+					KERNFS_ROOT_EXTRA_OPEN_PERM_CHECK,
- 					NULL);
- 	if (IS_ERR(sysfs_root))
- 		return PTR_ERR(sysfs_root);
--- 
-2.47.3
+> +	if (end < addr)
+> +		return 0;
+
+Let's early-return for end == addr case, too.
+
+> +
+> +	mm = damon_get_mm(target);
+> +	if (!mm)
+> +		return 0;
+> +
+> +	while (addr < end) {
+> +		if (addr + chunk_sz < addr)
+> +			break;
+> +		if (addr == last_chunk)
+> +			goto next;
+> +		last_chunk = addr;
+> +
+> +		ret = damon_collapse_folio_range(mm, addr, target_order);
+> +		if (!ret)
+> +			applied += chunk_sz;
+> +		*sz_filter_passed += chunk_sz;
+
+Shouldn't this call damos_va_filter_out() before damos_collapse_folio_range()?
+
+> +next:
+> +		addr += chunk_sz;
+> +		cond_resched();
+> +	}
+> +
+> +	mmput(mm);
+> +	return applied;
+> +}
+> +
+>  static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+>  		struct damon_target *t, struct damon_region *r,
+>  		struct damos *scheme, unsigned long *sz_filter_passed)
+> @@ -922,6 +967,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+>  		madv_action = MADV_NOHUGEPAGE;
+>  		break;
+>  	case DAMOS_COLLAPSE:
+> +		if (scheme->target_order)
+> +			return damos_va_collapse(t, r, scheme,
+> +						 sz_filter_passed);
+
+Let's use two tabs indentation on the second line of parameters, instead of
+aligning things with the mix of tabs and spaces.
+
+>  		madv_action = MADV_COLLAPSE;
+>  		break;
+>  	case DAMOS_MIGRATE_HOT:
 
 
-
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
-
+Thanks,
+SJ
 
