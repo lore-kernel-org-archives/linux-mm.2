@@ -4,144 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CC63C43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21D8CC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:57:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D5296B0154; Thu,  2 Jul 2026 20:56:20 -0400 (EDT)
+	id D6A1C6B00E7; Thu,  2 Jul 2026 20:57:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 268B96B0156; Thu,  2 Jul 2026 20:56:20 -0400 (EDT)
+	id D1ABF6B00E8; Thu,  2 Jul 2026 20:57:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1560A6B0158; Thu,  2 Jul 2026 20:56:20 -0400 (EDT)
+	id BE2CE6B00EA; Thu,  2 Jul 2026 20:57:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B9C8D6B0154
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:56:19 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3849E1C0C4D
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:28:39 +0000 (UTC)
-X-FDA: 84944218758.06.1BD0640
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 69AAF1C000D
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 15:28:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b2UNbaF3;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6C91C6B00E7
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:57:36 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5B1D8167A86
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:51:25 +0000 (UTC)
+X-FDA: 84944578530.22.9B557E4
+Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 25879140006
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:51:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=PhCUyCv2;
+	spf=pass (imf26.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783006117;
-	b=nTKG6NtOP8gNAqJKeH3g2mHm9Nm2/GPxKTFiPS83Yv2AhZKZjUo0YUdyRgniECGIcIG1j4
-	4F6h/gp5rKFcFCOFwMFCat55e1snPJYiVqToZ33Y1atFwoApiYXsnx+TFlulFT3E8Tivn3
-	Y00VWmtjb6fAo59n8dQbQBQUg43WVsk=
+	t=1783014683;
+	b=AJ9x05bdhOJTNNBUFoJOmevGoX/pKho1WrUjVnShnwZ6Q8P1COK62+u1FORHWH4isiWUkr
+	n5fandVtFq6uaA1AqAFkxCGsRm3R9yhX9KgbHwaxBt2LAjCnsNFSzPvX+OHxXw0zewVp+I
+	tHQORDZEWRJDiCu3Bs7aaW1QmJ3nne0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783006117;
+	s=arc-20220608; t=1783014683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1fxXhck2nCzeMzLvm9K6L7ngfJTEEd79JFyjVImCQDM=;
-	b=mRpwURV6j2Cpy2JCAy3DUUY26lMc07q9KNjtb4X66hKQ93lts/T096SDTtqr8CwsrrqAMu
-	c5OALnux5RMRnKZ1iqjBHWErCUNlA2MYu1kubAXHTQcxJeI7Gj+MjZG3qQgGMGX4N/JqU8
-	aLkus5IlX9NsY5VyjffoNxmlEw1VhKU=
+	bh=mmK2zooHqLvAHzbEI5SDeIhxEVgl5YiYD7Pep1MMb4k=;
+	b=jBiUo5DoXcu18wL4UN5ux4VEUJY5VOsJ4HuYGVpCucuUy6WoreByUVKSgx9kcxO41Whxcm
+	l9x1f/fj6syH41IZTsA8g72PDCB8/jE9l+IvKDR3Ay8f1EGoIL2IWPe8DJVXhLJqhgH17q
+	6SulhkOCA46O+TDddknzBc+KKoT0JZk=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b2UNbaF3;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A18EF40B69;
-	Thu,  2 Jul 2026 15:28:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909DE1F000E9;
-	Thu,  2 Jul 2026 15:28:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783006116;
-	bh=1fxXhck2nCzeMzLvm9K6L7ngfJTEEd79JFyjVImCQDM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=b2UNbaF3r1hljIWsq+U3j/11VVe9K2mDfW8ITR+HjohsDjn4ssvCJs9AFVheLFUgy
-	 YutZV+6PpHeF6xFcTE3aP1wgob9+1JJiCuA/RUVFz2dvVYiCt029oTNRLVLNIirVwd
-	 ZJRN/llZI+zewvXG8n2DgpVZTw4maIPQ94/3bo8QOtoi+JTqEKFtFV6CASOrxfXduo
-	 qTdXAdcCH6byaDW+HoajP2kUzTHaMjHIVEEpuN8pRkkUTl53dMnB2eSPLJRIlyVlw7
-	 fxKtmvq5cuKuBvDlq8x+OvxC7zoRN102vKdIlK8yykc6GDFwRBmyrZt2fzUDpQl6OJ
-	 HSXqnKeJZSz7Q==
-Message-ID: <d6544525-5dfd-40c0-9c9a-2423f21d8034@kernel.org>
-Date: Thu, 2 Jul 2026 17:28:25 +0200
+	imf26.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=PhCUyCv2;
+	spf=pass (imf26.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+	dmarc=pass (policy=quarantine) header.from=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1783014683; x=1814550683;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=mmK2zooHqLvAHzbEI5SDeIhxEVgl5YiYD7Pep1MMb4k=;
+  b=PhCUyCv2nC+Q4/rdBp1CrLZRfMGFJs/cgPFZgOk7LXC2pjGkRrpGBL2h
+   CVpbVz8j3Q1WsMl19rTgUJMOZstZSiSgYPnvBKcbhNt/M/FYZ6awOo8Rc
+   KyfhOtlYa/Zig7PfgQXeJ7mqsdQ2VWE/uSA65eH68Gk0cXNHSBNTKe3x5
+   ic1A5nhdJNbdZs/JRlhviMfz6M1N2q1+DVKEu00inpFUWtNUCrocb41AX
+   0tmIk2zi5Oic0YBQDH5JfDF8EmDjAm+z7UJaS/UXvHimAJQ21H6rdvo3Y
+   KO40bk+kOyc1HfaE+VMiwK7lQzUvwrV1VRmVdX/XOYc88YX0hFeDusiZz
+   Q==;
+X-CSE-ConnectionGUID: HKUz4EBzTdic+O93pqepGA==
+X-CSE-MsgGUID: DNQoA3ZdT9yO4I8VAgOujg==
+X-IronPort-AV: E=Sophos;i="6.25,144,1779148800"; 
+   d="scan'208";a="22963757"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 17:51:22 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:4473]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.43.112:2525] with esmtp (Farcaster)
+ id cd19b220-fdcd-4ca3-8e48-99625866b657; Thu, 2 Jul 2026 17:51:22 +0000 (UTC)
+X-Farcaster-Flow-ID: cd19b220-fdcd-4ca3-8e48-99625866b657
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
+ Thu, 2 Jul 2026 17:51:21 +0000
+Received: from dev-dsk-sakacpav-1a-480d1124.eu-west-1.amazon.com
+ (172.19.96.155) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 2 Jul 2026
+ 17:51:19 +0000
+From: Pavol Sakac <sakacpav@amazon.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
+	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Tejun Heo
+	<tj@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>, "David
+ Woodhouse" <dwmw@amazon.co.uk>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, "David
+ Matlack" <dmatlack@google.com>, Samiullah Khawaja <skhawaja@google.com>,
+	Alexander Graf <graf@amazon.com>, <linux-mm@kvack.org>,
+	<kexec@lists.infradead.org>, <nh-open-source@amazon.com>
+Subject: [RFC PATCH 06/14] driver core: wire device_ktype populate to walker
+Date: Thu, 2 Jul 2026 19:51:06 +0200
+Message-ID: <20260702175114.24659-2-sakacpav@amazon.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260702175114.24659-1-sakacpav@amazon.de>
+References: <20260702174033.32116-1-sakacpav@amazon.de>
+ <20260702175114.24659-1-sakacpav@amazon.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/6] arm64: make huge_ptep_get handled unaligned
- addresses
-To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, j-nomura@ce.jp.nec.com,
- nao.horiguchi@gmail.com, ak@linux.intel.com, mel@csn.ul.ie,
- pfalcato@suse.de, jpoimboe@kernel.org, dave.hansen@intel.com,
- tglx@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260702051341.126509-1-dev.jain@arm.com>
- <20260702051341.126509-2-dev.jain@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260702051341.126509-2-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8
+X-Originating-IP: [172.19.96.155]
+X-ClientProxiedBy: EX19D033UWC004.ant.amazon.com (10.13.139.225) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 69AAF1C000D
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 25879140006
+X-Stat-Signature: dyhwofhkh4yh8qdbs5npupra98w53b55
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: fphbjktuyk6snty3foaq5usmdhkmumyh
-X-HE-Tag: 1783006117-797315
-X-HE-Meta: U2FsdGVkX1801dEp+TjsnxaUreDnwG164WGGYJb5BeOpTzEZaSC8Q9GPTAn8VDSTxnqa25tChWIxQLZh3fK9OhWH3M476TKxvmB6TzVJ4AZhXhu3qXpNjRmh3U1MWpSyb34+h+4WhYqbRv6Q2mVl3TtKtEZ2J4+sFNZS5IcRm4/jIBWimoNikB3UQgwOgZ/lUesyw3yAQgM3Hso+EPd19d3WTa2Fq6NaFsKvAaGtaWztzfo3LRo3D2luX1fd5Pkdx+mKIapDGBRx/gYuEPIPKR3Wta+eeOIVDSzZBeR5jGvc9eqt8fDWYVCVsfHutUlJ9mBuhcMR4VvRvQtm8SrNGUmVT8tbfpj3OP7f86EFhXcGKlbx6ifD9A8k24W+wb1vN/DRaDSGGk7ZC4B1YLNBTSxrah0mw/VElpyg+Tuj1iq910+be6N/2+6AsHwM1Fa3ONhXq9awmBvHfSqowlqBnsMSrhco54CvU/loXJ6OOW4aIVDM/L9y6nNxqWcqMHUsDO7BMxv1142nVqF3wAbfcOtsptL3WUC1Y+TuJHQ5Rn6AmzfCN/AwnsaVNbp+3IQjCBnbniXf4vjnVpOyeG5NydFeL5zItcyo6hcE6xBo7h9LbLaBKk3vkDqtsSHDD/3/qoDNwJr5fu4omHMvbDvTyGl+zl4rlYUhZvl/mDn9HfbjAfXTOLzck1EhQDVYrB59auvHIgwYlBeP+eNXDPHYbhISXvXq6FaJSRNGeC67boBSMlj285dkQHn0939AwfIN4GfOYLmtkjThHg8w3eLn8DT5JU7dvIPW7Dv5ZCs3uF2gY/UgbJDS8JGUDYb/QqIMCweqBEEOUMP2MAiGwkOJKyEuwlDBfhcdBgGnbM7TvaB1F583nAwEXS5eHH+LFSWRxGASApEu0h6lIy/NAexl0b6eV+bjRPC470fzubTQlGPL7jguCfMPANkpYzmKfwioLLEvqkcEko/ln0xEBQY
- HrKwe0XI
- JjBIqmxQTOeq2TM+mz+8+qz9nRMNBX1beOQPLhWwOf4rJYlxziVGoert+8XckRYzXHIgaYc3C1HrKHX9vpuzR1jjquRQXlmFlsp1qz9li/j+ecBOjjToiXO8Itb8vnZsm8KIfT3KzWcz33PxhKT9JVLNErpReL3lKDDHeyhp3ZyW8k+YMcGgpxd5GnA8NiX1STSt7zSis57cp3XhdRzNaAVdV7tXATXqTJKes8vyChwZ63sEcEgKh47z6QNM0irxp5JMHObpdjfCHQeeuNwVs1pAZh1V7uOUlgyAqeQ5Ld0mYXj68RdlUFIz5gn4F6qVA381CGPa1829WQvXxvcF62O6z+dYOnNwhNKZxFW6/V08iLxWKozTbklE1HNQzj5KtQNsJhRlcM/n/Qu3kNPHtQd1dGZjJg6yMTNTUkV60j0+gtPC8Q/Cij0dG+DiY7z1h7TkJfSHF4oN2FxBcuxvu1cVdNg==
+X-HE-Tag: 1783014682-829952
+X-HE-Meta: U2FsdGVkX1+0GIinzkeH3UZmOTy7alUtSNutru1JEcgYZRKy/LOtGA87soIOIw0hGGzcYrFlJ862W0ReokMtdECR0BZEbhNt8lVoLn5EIiNUVq8R58yzuBBYqjMiqccNBR/Acik3rMAvr2+NcokKTNkTqPAJZP2Ca5Nu30tfTscnaYwxawXWOOHmRIf9a96uZ+ZqT9yXH4YMn6DQIY377bcCusYl9tE2JYnTXtUZNyFRx9JmNErc24lOYMdidzfLvx6wxtpqLASAUQ1Cj8MFmdWCCsk2rM8jUOwycBqUvcxPJQt5oGft/fsp0FtibpuNciihgq93LccnqLMBnnPhDKAZ7+ACoRms+OruzXZj0A0dFoHFE6FDxZz/Pi0MN2b+G0pNR8RzJkhQ8uGygvksDcUj1IGfi00S7zSwcGuFIiBEfP4bBha4NUL0VWLvSnwnlMJ73AxB1G2Hc9W+WEqoR19R8XIky4uuqLK8AgqFVhvsHGKSzH1JtjVQNodaWjFs3S4G8OVndP8c8GzMzlTxdx2ck62gtTylCgodno2DfD7AIgAen0PuCyBWzVWNAkVfMiqDf+e35L+52LzWVRoVvH7dDgvOTDug/hKmQTote70p5uyPL7i3IJx6ESa7CGK2wsZsLj+AJANM3wGYpCMO8v7mJOvZe0rLoC2o4EP/zlIHgUgdzOiCjLwdfYhhIWqmIneMZYfjFqR7fSPt2VVQQaU0Ex9poIF+L5EKdgLT0v8daSOLa1XoJ9cjxk5xIJwdiuaRR67HAH/RCcWKaXNbAkaCRQ9BJ8IfJqvJSm1Ytwc+VaXOQrFy/oAmI8yVM9hS1qNLR5GCUFyB7P67NrXWibaAqY6lZaW0BcHHKeQasMClvGFrEc4leWlGkcsnigyZ/ULPQgvbUqzXOc5jcwMQGjVJ5glfbTkc3x+u+JQXc3aeZJO7KExe984sCyKb+UPc0VKFJwD5mFoIRaUwUu2
+ eiN1qJ32
+ 2STVGHfplzYIE83o511O5PLsRwWeqIBPhH3CT6ml/R6ouJXGnbHB0naVe2g0J2Z2/ccfCxlcquDMcN+HQKcjYYycHyYtjVgYuTZfyUmXap6fD6rpyT7uP10nxNi2PqG2jFe2mNxL654O8mRcFDGtEPsCxYZLKmL9k/QSQUSU7zpoaUATs+3Lx6U7ywduov309/HM5lBCvSe2E6qYiXM8VQW0gMIjIDMjINXY3/p1SiS6VeGck/q1GoYOBEiUb25ZtC8206UQZr8fVGvmk05aYsp2HzbQ3gfdeNxzfee00XLpENVQ6grlqXJacsBLKWjkVKHCQLQK9p01pbxFQkDcnOTnTTYLkKOC2q7+AtO19H0om6uf4NuxVE5bRm4ioLahjkOsCcGcEYRxmnS35/fQwZYnZ1zPUNbEAysPPhxu0g780ipAaDY3pq4fI6AoZswpXvtXHizpgbXedcOgMfHcv+SR8QUiHQh1FmTSSq8IpNvflfKZC26C0yQADAO6CLUzKn8D05ngwP//3au+95ugt9/bMbP+I8woBjZ0x6Ii8nhsuqt772brl0rC68BDxEzQPD2vYPn1l64g3vpIA6ydf0pOXUYC7Krdf31YSynctcEEJpAM6zix7EjEBAaJkr9QSRAeotPmFIHffGXd6tMyFI1Ql2HW4Y30QgpKbtM6ccF1oPUygpZRIp9nvZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,47 +119,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/2/26 07:13, Dev Jain wrote:
-> huge_ptep_get() can be handed a virtual address pointing to the middle of
-> a contpmd/contpte mapped hugetlb folio (examples of callers are
-> pagemap_hugetlb_range, page_mapped_in_vma).
-> 
-> The arm64 helper rewalks the pgtables in find_num_contig to answer whether
-> the huge pte we have maps a contpmd or a contpte hugetlb folio, and
-> returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over the
-> contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
-> if the addr is not aligned.
-> 
-> Fix this by aligning the pmdp pointer down to a contpmd base before
-> checking equality with the passed huge pte pointer, to correctly answer
-> whether the huge pte is the base of a contpmd block.
-> 
-> Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery mechanisms")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->  arch/arm64/mm/hugetlbpage.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> index 30772a909aea3..8e799c1fe0aa6 100644
-> --- a/arch/arm64/mm/hugetlbpage.c
-> +++ b/arch/arm64/mm/hugetlbpage.c
-> @@ -87,7 +87,7 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
->  	p4dp = p4d_offset(pgdp, addr);
->  	pudp = pud_offset(p4dp, addr);
->  	pmdp = pmd_offset(pudp, addr);
-> -	if ((pte_t *)pmdp == ptep) {
-> +	if ((pte_t *)PTR_ALIGN_DOWN(pmdp, sizeof(*pmdp) * CONT_PMDS) == ptep) {
->  		*pgsize = PMD_SIZE;
->  		return CONT_PMDS;
->  	}
+Wire the kernfs syscall callback shape (kobject *, const char *)
+to the device-level walker. Add device_ktype_populate_one() and
+device_ktype_populate_all() adapters that dispatch through
+device_sysfs_apply() over dev->kobj.ktype->entries (currently
+NULL; the migration commit installs driver_core_sysfs_entries[]).
 
+The adapters early-return when dev->p->dead is set so a populate
+racing with device_del() is a no-op.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+No behaviour change: the table is empty until the migration commit.
 
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: driver-core@lists.linux.dev
+Cc: linux-api@vger.kernel.org
+Assisted-by: Claude:claude-opus-4.7
+Signed-off-by: Pavol Sakac <sakacpav@amazon.de>
+---
+ drivers/base/core.c | 50 +++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 46 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index aeb4985eb8838..975b6e0c4dabd 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -33,6 +33,7 @@
+ #include <linux/swiotlb.h>
+ #include <linux/sysfs.h>
+ 
++
+ #include "base.h"
+ #include "physical_location.h"
+ #include "power/power.h"
+@@ -2841,10 +2842,9 @@ device_sysfs_entries_end(const struct device_sysfs_entry *entries)
+ 	return e;
+ }
+ 
+-static __maybe_unused int
+-device_sysfs_apply(struct device *dev,
+-		  const struct device_sysfs_entry *entries,
+-		  enum dev_sysfs_action action, const char *name)
++static int device_sysfs_apply(struct device *dev,
++			     const struct device_sysfs_entry *entries,
++			     enum dev_sysfs_action action, const char *name)
+ {
+ 	const struct device_sysfs_entry *e;
+ 
+@@ -2972,11 +2972,53 @@ int device_set_sysfs_lazy(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(device_set_sysfs_lazy);
+ 
++/*
++ * kobj_type populate adapters - thin wrappers from the kobject
++ * callback shape (kobject *, const char *) to the device-level
++ * walker. Both read dev->kobj.ktype->entries (which is currently
++ * NULL until driver_core_sysfs_entries[] is populated below) and
++ * call device_sysfs_apply() with the matching action.
++ *
++ * The walker traverses an empty table today, so these adapters are
++ * no-ops in behavioural terms. They are wired now so that the
++ * ktype plumbing lands as one reviewable unit; subsequent commits
++ * flip rows on without touching dispatch wiring.
++ */
++static int device_ktype_populate_one(struct kobject *kobj, const char *name)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	const struct kobj_type *ktype = dev->kobj.ktype;
++	int ret;
++
++	/* Device is being torn down; do not populate. */
++	if (dev->p->dead)
++		return -ENOENT;
++
++	ret = device_sysfs_apply(dev, ktype ? ktype->entries : NULL,
++				DEV_SYSFS_ADD_ONE, name);
++	return ret;
++}
++
++static void device_ktype_populate_all(struct kobject *kobj)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	const struct kobj_type *ktype = dev->kobj.ktype;
++
++	/* Device is being torn down; do not populate. */
++	if (dev->p->dead)
++		return;
++
++	device_sysfs_apply(dev, ktype ? ktype->entries : NULL,
++			  DEV_SYSFS_ADD_ALL, NULL);
++}
++
+ static const struct kobj_type device_ktype = {
+ 	.release	= device_release,
+ 	.sysfs_ops	= &dev_sysfs_ops,
+ 	.namespace	= device_namespace,
+ 	.get_ownership	= device_get_ownership,
++	.populate	= device_ktype_populate_one,
++	.populate_all	= device_ktype_populate_all,
+ };
+ 
+ 
 -- 
-Cheers,
+2.47.3
 
-David
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
