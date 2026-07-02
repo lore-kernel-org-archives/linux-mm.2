@@ -4,83 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C189FC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8A41C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:48:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 931F56B0136; Thu,  2 Jul 2026 20:48:04 -0400 (EDT)
+	id 7ABFE6B0137; Thu,  2 Jul 2026 20:48:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E3506B0137; Thu,  2 Jul 2026 20:48:04 -0400 (EDT)
+	id 784186B013A; Thu,  2 Jul 2026 20:48:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D2036B0139; Thu,  2 Jul 2026 20:48:04 -0400 (EDT)
+	id 624A66B013B; Thu,  2 Jul 2026 20:48:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F4D26B0136
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:48:04 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98F7FC0665
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:40:49 +0000 (UTC)
-X-FDA: 84944551818.27.181DF19
-Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6F909180003
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:40:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=oKls6MaG;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 21DD96B0137
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:48:05 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C26DA401DC
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:40:44 +0000 (UTC)
+X-FDA: 84944551608.26.A6F5407
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 83057100005
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:40:42 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=n2P5mEHB;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
 	dmarc=pass (policy=quarantine) header.from=amazon.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783014047;
-	b=NGY+pUNzOw/wVakconYu4XPUL+gG2mWjaXpX5Tm7cVJXraSYlCZ5oMwo0x6MZQd72vcNcL
-	ha9+Oud/Sg1vu2RYPazJ15MJ1Hd3Z39BSUk3BDsZsSn+yMoQ5eMJDXJ8UKGrf5CIowaJmK
-	HDBXcADD6wAJPRxYQ2LG9cFt8KYPnQM=
+	t=1783014042;
+	b=NXr7WFimcNQiGqPi6u88FFxX4xj5lsJTys797BNmYnzOUx81Z+qmQpT3/rE6dzhjKVFD8U
+	QwxahOiUY7Ma/4H8oHHaDzHrI0V7XoUMT3RhP5Phdl4ipxQd41NWUKsE41EDgSsAU8dNLc
+	GQK+KMXWLyDrNAA8CZpiXLWK2wcx+t0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783014047;
+	s=arc-20220608; t=1783014042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RalHkUMqjXODGCA3necl3G/M5e2tE63FCMjS/RA66vc=;
-	b=I7AwmrbwzdKl1PDvL/aKWQ78aSGHkaE3+IE+ay7jWEkXpkJe8KmTGv1OlTt/ZQU1maPhyF
-	OspHKEBjBjkt1mv02DCo31DJ3AT+1Gzd030ZnS31sBL57wLOlNpD5NvfwACJGY03cS1dj0
-	m+gjsjmkrrBOe5LlvgcgdiQg8669JQw=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yNPCtJS7zBtCAE2YXriwx7XKMhltueALVW8fi9ZgLvM=;
+	b=MEEKQU8pTIfH4eWO982bBofb2OFVQ7mYfhTjMT5OHdasPLRHpRFMM7gebNdrLHfRfy9C17
+	Bb1z5R05R6jZdbwRrkFgWimC6qF+6rtEjO9uDpCCkrTllr5U8Ilp7oN+1wMMZ3Q7fCSjg0
+	7ZuHjFDNXrxeCTkXmk65j7OnAgOgshY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=oKls6MaG;
-	spf=pass (imf06.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
+	imf05.hostedemail.com;
+	dkim=pass header.d=amazon.de header.s=amazoncorp2 header.b=n2P5mEHB;
+	spf=pass (imf05.hostedemail.com: domain of "prvs=6363c8db2=sakacpav@amazon.de" designates 44.246.77.92 as permitted sender) smtp.mailfrom="prvs=6363c8db2=sakacpav@amazon.de";
 	dmarc=pass (policy=quarantine) header.from=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1783014047; x=1814550047;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=RalHkUMqjXODGCA3necl3G/M5e2tE63FCMjS/RA66vc=;
-  b=oKls6MaGESx22lfmEnZeaBNeFc2ky08scIr9iQMlp5k2I5echa9qHTW8
-   Qu7u5KtRfBKenCqSiJ0tkKVQRvxijgt4YuoWJCaIKCD8VP8ne6DcIjcY8
-   8PrH/h2JpyFDUmxF5IcIMq9XUclWK2bGPzko9Wjc+Em2reLWqXbkdiXsR
-   gDK9oQaiRYu4zdhAYjgZH4S1DK2wNlJavF5doMb7VMyaoe2UEOZMo7+Oi
-   +ShwEfE4QvzAc+tnlNSk7e5mrgLeXMygC3dWeWb+4H0l7xl/RQLRuyIWE
-   mfD4rhAWos5ggplsU/tsBN4X0yXh0/OLiTcsB2cNGsg2zK1a0SQRK/nWM
+  t=1783014042; x=1814550042;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=yNPCtJS7zBtCAE2YXriwx7XKMhltueALVW8fi9ZgLvM=;
+  b=n2P5mEHBfqK+oyc4BBzPtqVS4lZO812/TU6SP1mbLIYNQP93DIhWolL8
+   EWuoOxyf29yL1T/hU/7eCa3fI0w1pjTLoFkZc//z1mviLLtYJEQYAfrkW
+   4M0r5GrDprUzElml38gwIsdbyCD/wqIDUDx66OdjAB7g2JUffVQ34efyL
+   6OPZlmkBMX2rJHDXPppAQ5Di1fiAXStpyJwX0DZceoCq5JLwhCYxKlL/E
+   RasieXwmP5zcKo005Ft11Ihc0byDATkyjJ7gHoqJgLQImAVhwzxLRGnBd
+   9uYz+Q9OPOWqXNWUFFO9RpIrk4/mFtMPO2KF3Lca4qkYOFAhy8ABtBY+f
    A==;
-X-CSE-ConnectionGUID: HOUxIlnyT4ypCgsL3Xtcaw==
-X-CSE-MsgGUID: A/9DmCBWShOikppfD3tbJw==
+X-CSE-ConnectionGUID: 5xN7P1ipT8CvnCH2x09Y/g==
+X-CSE-MsgGUID: 8SypBo+mSRWloV+lLv0m5w==
 X-IronPort-AV: E=Sophos;i="6.25,144,1779148800"; 
-   d="scan'208";a="22966139"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 17:40:43 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:7621]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.49.151:2525] with esmtp (Farcaster)
- id 421bfa08-e878-4364-b145-fd3d813c5a4d; Thu, 2 Jul 2026 17:40:43 +0000 (UTC)
-X-Farcaster-Flow-ID: 421bfa08-e878-4364-b145-fd3d813c5a4d
+   d="scan'208";a="22939040"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2026 17:40:38 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:31268]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.46.225:2525] with esmtp (Farcaster)
+ id 85f956fc-c1bb-4e7b-b2de-53fd06591ab4; Thu, 2 Jul 2026 17:40:38 +0000 (UTC)
+X-Farcaster-Flow-ID: 85f956fc-c1bb-4e7b-b2de-53fd06591ab4
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Thu, 2 Jul 2026 17:40:43 +0000
+ Thu, 2 Jul 2026 17:40:38 +0000
 Received: from dev-dsk-sakacpav-1a-480d1124.eu-west-1.amazon.com
  (172.19.96.155) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43; Thu, 2 Jul 2026
- 17:40:40 +0000
+ 17:40:35 +0000
 From: Pavol Sakac <sakacpav@amazon.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
 	<rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Tejun Heo
@@ -91,26 +90,24 @@ CC: <linux-kernel@vger.kernel.org>, <driver-core@lists.linux.dev>, "David
  Matlack" <dmatlack@google.com>, Samiullah Khawaja <skhawaja@google.com>,
 	Alexander Graf <graf@amazon.com>, <linux-mm@kvack.org>,
 	<kexec@lists.infradead.org>, <nh-open-source@amazon.com>
-Subject: [RFC PATCH 02/14] sysfs: add existence-check helpers for lazy populate races
-Date: Thu, 2 Jul 2026 19:40:21 +0200
-Message-ID: <20260702174033.32116-3-sakacpav@amazon.de>
+Subject: [RFC PATCH 00/14] driver core: defer per-VF sysfs creation for fast SR-IOV bring-up
+Date: Thu, 2 Jul 2026 19:40:19 +0200
+Message-ID: <20260702174033.32116-1-sakacpav@amazon.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260702174033.32116-1-sakacpav@amazon.de>
-References: <20260702174033.32116-1-sakacpav@amazon.de>
 MIME-Version: 1.0
 X-Originating-IP: [172.19.96.155]
 X-ClientProxiedBy: EX19D035UWB002.ant.amazon.com (10.13.138.97) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 65a6umz6gzsgf57njf8m94eqps5e3qyy
+X-Rspamd-Queue-Id: 83057100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 6F909180003
-X-HE-Tag: 1783014047-818822
-X-HE-Meta: U2FsdGVkX18HSzndqUsAB+Sa33rvBdoo3sFdtTb1z+7R9PHN3gTeAjbjBoGoylAxtauX/cgLh2MMLNtvcacPmxQvpMVB8TPcGueBKQ5g4SqeISFU60lK+XImwG35a5xjZdUzUssPWcOYOl6G9nVzuQjZ2t0XxAgkwCBicOAB0jBM1enjA8ddtgStFv8cMnYBqaGGSf0cVSW4hGMO/AXZRyMY4oTy9c/yA2vFHXFfy/m4pw2EzFzJS8ffuhjeWvdHiw6rGxlf1OV0NAbL18Nf6A41JH13OhjQE8brFOgdtMPb+l0x3otiu49kRf3FD8z4sgQkDUWux8WsnPE4DIuzEaPTAdrMJ8XJRh93N/fgKj9pap/ZU1pcnIJAmQWDH2bozSMftq7c3G6EzYOpmbMyA8nCQceAHhJE6ajK8S5OsZcw89rSqSUrVFqKYJ/7j4dR0BgL8yydTpIO7nipmtgf7MkbHFlFuOdxfu1MfzmxRTrVaBhn2khdOSYtOzNjzfK6l41P5lsm//Dv7FlIFr91G1uvn+bDWOQri9Tv3R81qkmn1QE44VIUw6HI5wNc0gsGLytBLgWGraLI32UVhRKCqqpZm7MjQQw9CHTePNGnhhtUc5BMYl4FPGC90ym7W9a74+dc6f7PlWt56PqaBO2Ee3I64Q4E8KuLGM5oAexRp1ZZVz7A2uWcdr88VC/XbLs9rPza3xkiOkGy1SewRcUhZzSAgT/1biW6qSNwPj4cGUUhrw78PAYspr2vSaxxGebeCjroG91ST43v64Bxvp5DdBn/LcGCtgu1Rpo7ts0/T1Ay56PNLJb4Q5CoAYDPZ0uXpgq5IOE0JpqHBbU52QiDI4CFFENfGwsI4k8v/tNwnDPak3Ji39clio8gWtiYBjCJzSl7t98N1AX+cDXrTUFx9lKunlAeC71RWO7zqMOfFa50/HEtbv5VUwLb4NcSA6uAtbS4GtWFdespidRJioZ
- WrhtrPrD
- wmNkTh/lYdmFBnRS4m3Tzouihi8ZTtA42USxVRlPD3+1OUL/kD1If7oek4ZWKYvQvY8sk94fcjLPZYl+porIM40UHdu7SorENE6Es4vRjzw7fAIhTnv7LwUOrQV/eiDkEHQT24fG84tYTZoSLqye1vL9K86y3ekjrqDxxiu49iNhi90KUY8bzo5FEwVwShM8Lg5hWk4CYSpne3KGFCONToxIob276TiARKJJjYAury1/ETMp+nwEmgBBs1EEkU8MfG0cidx3g2wwynyTjq9mbd+PY8hwr7TGM2MYMPU9GvgrOZYqh8pmkZTC5xEvh4ikDu+FmgXtJ/LhkL+gKz6oKi33akjKZVjXHTAnzx7tYSP1GQgkIyKxlN2ycbPN8xBxa2tGS6pNN4jTctIAJVAT1OekbkDI8jfWxNMQRCmG+gU/EEAHFXqpJnbRWw9jC/XMD4AzOZ3HHdeVCdrv9L5Z6Jj7CXitv3ooXtwsgQYxZGza98k1PEMj43ekgx8h9p5U2kuOJ1dsGTCUbEIGHJ+DIJyIj9MRTErJnEO6k5/3GTckh/EJq+kqnc3uqx8TJks0ED4DBgSixzhn/7xU/wiU2uT6DxvtP/ZOl6mgP4Aiym2+sZZSFOZK6Pgl1bw==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 66no89iuu3gti4xoke6s55prfnjoe8cf
+X-HE-Tag: 1783014042-46973
+X-HE-Meta: U2FsdGVkX1/xIjIeznh088yDLbxpEGmpYrJHponrRqYJA4ImNJiTDQKWF3/O25WYw6jHlMj3V8bLKyf8PvXWnkKNuvuFHO2mdnMchphKNbNFQiq+dNN78Q8bouzd8DWwf0lnvag0jLwTWSEPFnrUtUx+NPNpAgOqaRr3HIEpl1YnAhetOheGmYdzU6igTAaQnnFbBFv47oFhoKpEOZHw+YjjlWXu+nXck5ZsBmZVQpmnXAogHDL82BEdWMNJ9kL9aKPOxxNtt9gEmdgn6BwUgK64eWBmIj2Rs2W2WTbWGcbhm5Qxm4eRM93f6FWTVLnh/TVLkE4R7ul2c4vfkmIoOjiSzUrKbQokMvmoPwij/N6Vw4UMtQtCK/bjfG4LaavGey+xJMeCaWj6b8LRLWcS5HGveCi0AatsgnH8JixzkfqvJM7KqVxZKomvA7yUxn22zpWx9ySuWxqR/DtnoAvuhfE++xynuvoHr68C8RQkPf5CWcbCGL+tW4L8c3rpCwgFkLiglKSmhhASMWZiMOpXIAyYP8J347qeiMqf4apk4V7K5888e5tsIwMJT1IWbLYUA/1k4uAYOI1x+97+zT226zk0mu7BX6VPk+mcEQJ7LEp5xbkERMLzBfGAc/aq5liFWghyjONxYD+wWpxRtgax5lHyFRvnf7bd5stV3SmNiSLuKDVQhGwm/e5ITft7vvSFog21UgXXhHSLWHy6IvPX4EKv/eFD35K8dMCyVS55FchWy9evx6VOq9hi3RIE1q0Lg0N4vxAuyqzWvCdQKa5AOJoh++yTLqweQwTkPTkrfdNdUd3I44KMunF7ULzb4CsV1qrUgHbOe4aHNEHUrkFG7hjSps8/9mKHOXJ0fz8exlV9gfo3P2Yd+khGKWy3JR9+LBJPtIiZQcgQlQy4qlAcCIKV6knUPkbZucFmyjpE4KIww8ElGCOV+oBl6PUoKkSz4orpJfvYgDDS9QYlh2f
+ 88pE0KkO
+ aTOJr3MpH3T4nsa72t+B/VPOsqER0T6RBJRjMzHOcih6i6AOMMFPtMRVZhT5Deh0aVU50q5PfBJn8YpF5L+2vV/57WwxzenhJsbDG1O5RArpe+JrxiJqarBG+9sWUta+Vwu8R9fkF3jcsKD0Z/3DvmY8B2HNEphTTyy/Y/+bybV2+yaDFj/e5b7L0SM8lUzaVFnmAWdQ3KMUoqmHW7yi3ORM+mD4RlofBCQ6771FobHesKhUaRuKhj77S6047dVmOZozYN9lVgB5j8Kow5bbeV3xhcGT6VMpSNOqDMr2cC01MB7Bcq3cGDUcr6fzz1KRc9XLug5jfH8EwyQpv2Qep7rMEvxgx0/5DBYZojlhPiTvfvULSaSqubFjba9/aU9EaZEbU8spUYCGWvafIz3HXdK3FjdUSaC7hqA/6emS+x3N6q14iQnkfKabPR3ego3j9JnMMdkoeqBcIrmU71P9VhdsZyXFcjwKJgFZ8jbH9aOZMzak1JC3vYFoEJtgzMVUaFoB3A6v7oYV+znlZnNQfn2kVCaOB+A0Tx2cET/3UdNvcwVc4rjSAIAF5SbytvyetIzZoygp+WO3ADnmqxUPHOyfDfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,226 +115,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Lazy populate paths (introduced in subsequent commits) acquire a
-per-device lock and may walk a table of create callbacks.
-A populate_one("X") and populate_all() racing on the same device
-serialize through that lock, but each create callback must verify
-the entry doesn't already exist before calling sysfs_create_*().
-Otherwise the second caller hits __kernfs_create_* which fires
-sysfs_warn_dup() before the create callback can absorb -EEXIST.
+Virtualization hardware keeps increasing in CPU-core and VF density.
+Kernel is trending towards preserving VFs using LUO across a kexec
+which will put SR-IOV in live-update hotpath. VFs must be re-added to
+the sysfs tree, along with its supporting devices (e.g. vfio,
+iommu_groups). On production hardware a single VF can consume ~80 kernfs
+nodes. With thousands of VFs on modern hardware, hundreds of thousands
+of kernfs nodes need to be created, which can add 100ms+ to the boot
+time and to guest downtime.
 
-Add two read-only helpers that wrap kernfs_find_and_get() so
-create callbacks can perform the existence check under the same
-lock that excludes other lazy create paths. Pairing exists() with
-create() under lock makes the check-and-act atomic with respect
-to all lazy populate paths on the device, and eager paths are
-temporally separated (eager creates run during device_add, before
-lazy is enabled).
+Proposed here is a PoC of deferred materialization of sysfs files until
+first access to avoid cost of kernfs node creation in hot path. In the
+reproducer below using a synthetic VF to isolate the sysfs overhead,
+the per-device sysfs-creation time is reduced by ~74%. It exploits the
+expected access pattern of hypervisors, where only a subset of device
+files need to be accessed to attach a VF to a VM on the hot path.
 
-  - sysfs_kn_exists(kobj, name): true iff @kobj has a child kernfs
-    node named @name (any type).
+To allow lazy init scheme, a minimal set of files and directories is
+built per device: a device directory resolves directly to the device's
+kobject and is used to materialize attributes at access time. The
+access is trapped in kernfs at the dir-read or path-walk stage and
+depending on the trigger, either the full directory or a single file is
+materialized.
 
-  - sysfs_group_exists(kobj, grp):
-    * grp->name != NULL: true iff a KERNFS_DIR child named
-      grp->name exists under @kobj->sd (per-attribute presence is
-      not inspected; mirrors how internal_create_group()
-      short-circuits on -EEXIST).
-    * grp->name == NULL: true iff every visible attribute in
-      grp->attrs and grp->bin_attrs is present; a partially
-      populated unnamed group returns false so a follow-up create
-      pass can fill the missing entries.
+The changes are two logically distinct parts:
 
-Both take kernfs_rwsem(read) briefly via kernfs_find_and_get and
-return false on bad input or non-existent name; sysfs_group_exists
-additionally returns false on a node-type mismatch.
+  1. Refactor of hardcoded device_add / iommu_group sysfs attribute
+     creation to a table-driven form to allow walkability of all
+     attributes and single point of definition for attributes
+     regardless of lazy opt-in to avoid duplicate definitions and
+     associated maintainability issues with it.
+  2. Lazy-init infra to front-run access to device files at lookup/
+     readdir time to trigger materialization. Opt-in per device: PCI VFs
+     and VFIO devices opt in via device_set_sysfs_lazy(); iommu_group
+     opts in at the kobject level.
 
-This commit only adds the helpers; subsequent commits convert
-create callbacks to use them.
+As a PoC, the code does not yet follow this logical structure in the
+commit sequence and likely does not yet cover all corner cases.
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Rafael J. Wysocki <rafael@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-api@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: driver-core@lists.linux.dev
-Assisted-by: Claude:claude-opus-4.7
-Signed-off-by: Pavol Sakac <sakacpav@amazon.de>
----
- fs/sysfs/dir.c        | 25 ++++++++++++++++
- fs/sysfs/file.c       |  2 ++
- fs/sysfs/group.c      | 70 +++++++++++++++++++++++++++++++++++++++++++
- include/linux/sysfs.h | 15 ++++++++++
- 4 files changed, 112 insertions(+)
+Synthetic reproducer measurements
+---------------------------------
+  devices   per-dev time   total time       kernfs nodes (base -> lazy)
+  -------   ------------   --------------   ----------------------------
+     500    31.8->8.3 us    15.9-> 4.1 ms     36,417 ->  3,922  (72.8->7.8/dev)
+    1000    33.2->8.7 us    33.2-> 8.7 ms     73,427 ->  8,432  (73.4->8.4/dev)
+    2500    32.8->9.1 us    82.0->22.7 ms    184,421 -> 21,925  (73.8->8.8/dev)
+    5000    33.0->8.7 us   165.1->43.5 ms    369,401 -> 44,406  (73.9->8.9/dev)
 
-diff --git a/fs/sysfs/dir.c b/fs/sysfs/dir.c
-index ffdcd4153c584..ae97ab7e41939 100644
---- a/fs/sysfs/dir.c
-+++ b/fs/sysfs/dir.c
-@@ -159,3 +159,28 @@ void sysfs_remove_mount_point(struct kobject *parent_kobj, const char *name)
- 	kernfs_remove_by_name_ns(parent, name, NULL);
- }
- EXPORT_SYMBOL_GPL(sysfs_remove_mount_point);
-+
-+
-+/**
-+ * sysfs_kn_exists - check whether any sysfs entry with @name exists
-+ * @kobj: kobject under which to look
-+ * @name: name to look up
-+ *
-+ * Existence probe under per-device sysfs_lazy_state.lock; lets a
-+ * caller skip a redundant sysfs_create_*() and the resulting
-+ * sysfs_warn_dup() WARN.
-+ *
-+ * Return: true if a kernfs node of any type with @name exists.
-+ */
-+bool sysfs_kn_exists(struct kobject *kobj, const char *name)
-+{
-+	struct kernfs_node *kn;
-+
-+	if (!kobj || !kobj->sd || !name)
-+		return false;
-+	kn = kernfs_find_and_get(kobj->sd, name);
-+	if (!kn)
-+		return false;
-+	kernfs_put(kn);
-+	return true;
-+}
-diff --git a/fs/sysfs/file.c b/fs/sysfs/file.c
-index 5709cede1d756..5f3144e52ab72 100644
---- a/fs/sysfs/file.c
-+++ b/fs/sysfs/file.c
-@@ -816,3 +816,5 @@ ssize_t sysfs_bin_attr_simple_read(struct file *file, struct kobject *kobj,
- 	return count;
- }
- EXPORT_SYMBOL_GPL(sysfs_bin_attr_simple_read);
-+
-+
-diff --git a/fs/sysfs/group.c b/fs/sysfs/group.c
-index 182e54e575ee9..d6b2034cc22c9 100644
---- a/fs/sysfs/group.c
-+++ b/fs/sysfs/group.c
-@@ -636,3 +636,73 @@ int sysfs_groups_change_owner(struct kobject *kobj,
- 	return error;
- }
- EXPORT_SYMBOL_GPL(sysfs_groups_change_owner);
-+
-+
-+/**
-+ * sysfs_group_exists - check whether an attribute_group is materialised
-+ * @kobj: kobject under which to look
-+ * @grp: attribute_group descriptor (may NOT be NULL)
-+ *
-+ * Read-only existence probe used by lazy populate paths.
-+ *
-+ * Two shapes:
-+ *  - @grp->name != NULL: the group owns its own subdirectory.
-+ *    Returns true iff a child kernfs_node of type KERNFS_DIR named
-+ *    @grp->name exists under @kobj->sd. Per-attribute presence inside
-+ *    the subdirectory is NOT inspected - once the subdir exists the
-+ *    create path treats the named group as already materialised
-+ *    (consistent with how internal_create_group() short-circuits its
-+ *    create on -EEXIST).
-+ *  - @grp->name == NULL: the group's attributes live directly under
-+ *    @kobj->sd. Returns true iff every visible attribute in
-+ *    @grp->attrs and @grp->bin_attrs is already present. A partially-
-+ *    populated unnamed group returns false so a follow-up create
-+ *    pass can fill the missing entries.
-+ *
-+ * Locking expectations: see sysfs_kn_exists().
-+ *
-+ * Return: true if the group is fully present per the rules above,
-+ * false otherwise (including @grp == NULL).
-+ */
-+bool sysfs_group_exists(struct kobject *kobj, const struct attribute_group *grp)
-+{
-+	struct attribute *const *a;
-+	const struct bin_attribute *const *ba;
-+	struct kernfs_node *kn;
-+	bool exists;
-+	int i;
-+
-+	if (!kobj || !kobj->sd || !grp)
-+		return false;
-+
-+	if (grp->name) {
-+		kn = kernfs_find_and_get(kobj->sd, grp->name);
-+		if (!kn)
-+			return false;
-+		exists = kernfs_type(kn) == KERNFS_DIR;
-+		kernfs_put(kn);
-+		return exists;
-+	}
-+
-+	if (grp->attrs) {
-+		for (i = 0, a = grp->attrs; *a; i++, a++) {
-+			if (grp->is_visible && !grp->is_visible(kobj, *a, i))
-+				continue;
-+			kn = kernfs_find_and_get(kobj->sd, (*a)->name);
-+			if (!kn)
-+				return false;
-+			kernfs_put(kn);
-+		}
-+	}
-+	if (grp->bin_attrs) {
-+		for (i = 0, ba = grp->bin_attrs; *ba; i++, ba++) {
-+			if (grp->is_bin_visible && !grp->is_bin_visible(kobj, *ba, i))
-+				continue;
-+			kn = kernfs_find_and_get(kobj->sd, (*ba)->attr.name);
-+			if (!kn)
-+				return false;
-+			kernfs_put(kn);
-+		}
-+	}
-+	return true;
-+}
-diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
-index b1a3a1e6ad09c..de211563f3dec 100644
---- a/include/linux/sysfs.h
-+++ b/include/linux/sysfs.h
-@@ -428,6 +428,8 @@ int __must_check sysfs_create_bin_file(struct kobject *kobj,
- void sysfs_remove_bin_file(struct kobject *kobj,
- 			   const struct bin_attribute *attr);
- 
-+bool sysfs_kn_exists(struct kobject *kobj, const char *name);
-+
- int __must_check sysfs_create_link(struct kobject *kobj, struct kobject *target,
- 				   const char *name);
- int __must_check sysfs_create_link_nowarn(struct kobject *kobj,
-@@ -454,6 +456,8 @@ void sysfs_remove_group(struct kobject *kobj,
- 			const struct attribute_group *grp);
- void sysfs_remove_groups(struct kobject *kobj,
- 			 const struct attribute_group *const *groups);
-+bool sysfs_group_exists(struct kobject *kobj,
-+			const struct attribute_group *grp);
- int sysfs_add_file_to_group(struct kobject *kobj,
- 			const struct attribute *attr, const char *group);
- void sysfs_remove_file_from_group(struct kobject *kobj,
-@@ -593,6 +597,11 @@ static inline void sysfs_remove_bin_file(struct kobject *kobj,
- {
- }
- 
-+static inline bool sysfs_kn_exists(struct kobject *kobj, const char *name)
-+{
-+	return false;
-+}
-+
- static inline int sysfs_create_link(struct kobject *kobj,
- 				    struct kobject *target, const char *name)
- {
-@@ -656,6 +665,12 @@ static inline void sysfs_remove_groups(struct kobject *kobj,
- {
- }
- 
-+static inline bool sysfs_group_exists(struct kobject *kobj,
-+				      const struct attribute_group *grp)
-+{
-+	return false;
-+}
-+
- static inline int sysfs_add_file_to_group(struct kobject *kobj,
- 		const struct attribute *attr, const char *group)
- {
+The reproducer is synthetic: an in-kernel module registers N unbound
+platform devices (60 attributes / 4 groups, ~74 kernfs nodes each; no
+config space, BARs, or probe) in one timed burst that models SR-IOV
+enablement. It runs as a two-kernel A/B from one vanilla 7.1-rc2 tree
+(eager baseline vs patched, plus a patched/opt-in-OFF arm), 20 runs per
+point. Measures only sysfs-creation slice.
+
+Deferral removes ~74% of the sysfs-creation time and ~88% of the kernfs
+nodes. At 5000 devices that is 121.6 ms removed (165.1 -> 43.5 ms) and
+~325,000 fewer kernfs nodes (369,401 -> 44,406). The table-driven rework
+adds a +7..+11% eager-path time overhead to non-opted devices.
+
+Available as a docker image that orchestrates builds in qemu guest and
+prints results as a table (x86_64 Linux host with /dev/kvm assumed):
+
+   docker run --device /dev/kvm ghcr.io/pavsa/linux-lazy-sysfs-vf-bench:7.1-rc2
+
+Assumptions / Trade-offs
+------------------------
+The saving depends on the access pattern of hypervisors, and on no
+component walking the whole device tree on the hot path to avoid full
+materialization. Both are expected to hold on optimized hypervisors.
+
+An actual production hypervisor was observed in local testing to
+materialize an additional 5-10% of total nodes on average on the hot
+path.
+
+Overhead: +7..+11% eager-path time overhead applies to every non-opted
+device going through device_add() as all struct devices traverse the
+walker and can't be gated under a config option.
+The lazy opt-in infra can be gated under config option to have zero
+impact if disabled.
+
+Final words
+-----------
+This is an RFC to first get feedback on the decisions taken at driver
+core + kernfs level before engaging maintainers of other subsystems
+if we want to pursue this further or pivot to something else.
+
+The code is at a proof-of-concept quality written with AI assistance
+with some known limitations with main target to gather potential
+savings and initiate conversation.
+
+Feedback appreciated for:
+- table-driven attribute refactor targeting common device add path /
+  suggestions for more efficient/less invasive approach
+- mechanism of interception in kernfs, materialization, locking scheme
+- fit into context of LUO - complementary or is there some other
+  mechanism already considered to mitigate the sysfs impact
+
+Pavol Sakac (14):
+  kernfs: add populate callbacks and KERNFS_LAZY flag for lazy dir
+    population
+  sysfs: add existence-check helpers for lazy populate races
+  sysfs: introduce sysfs_kf_syscall_ops dispatching to kobj_type
+  driver core: add struct sysfs_lazy_state and device_set_sysfs_lazy()
+  driver core: add struct device_sysfs_entry and walker
+  driver core: wire device_ktype populate to walker
+  driver core: migrate device sysfs to device_sysfs_entry table
+  PCI/sysfs: migrate to device_sysfs_entry, defer physfn symlink
+  iommu: lazy-populate iommu_group reserved_regions/type attrs
+  PCI/IOV: opt SR-IOV VFs into sysfs_lazy
+  vfio: opt vfio-dev and VFIO group devices into sysfs_lazy
+  driver core: test: add KUnit tests for device_sysfs_apply
+  Documentation: add lazy sysfs initialisation and device_sysfs_entry
+    docs
+  selftests: sysfs-lazy: add tests for lazy sysfs initialization
+
+ Documentation/ABI/testing/sysfs-lazy          |   77 +
+ Documentation/driver-api/index.rst            |    1 +
+ Documentation/driver-api/sysfs-lazy.rst       |  146 ++
+ MAINTAINERS                                   |    4 +
+ drivers/base/bus.c                            |   41 +-
+ drivers/base/core.c                           | 1047 +++++++++--
+ drivers/base/test/.kunitconfig                |    7 +
+ drivers/base/test/Kconfig                     |   13 +
+ drivers/base/test/Makefile                    |    2 +
+ drivers/base/test/device_sysfs_apply_test.c   | 1601 +++++++++++++++++
+ drivers/iommu/iommu.c                         |  132 +-
+ drivers/pci/iov.c                             |   24 +-
+ drivers/pci/pci-sysfs.c                       |  158 +-
+ drivers/pci/pci.h                             |    5 +
+ drivers/pci/probe.c                           |    4 +-
+ drivers/vfio/group.c                          |    5 +
+ drivers/vfio/vfio_main.c                      |    5 +
+ fs/kernfs/dir.c                               |   43 +-
+ fs/sysfs/dir.c                                |   43 +
+ fs/sysfs/file.c                               |   39 +
+ fs/sysfs/group.c                              |   70 +
+ fs/sysfs/mount.c                              |   60 +-
+ fs/sysfs/sysfs.h                              |    7 +-
+ include/linux/device.h                        |   90 +-
+ include/linux/kernfs.h                        |   28 +
+ include/linux/kobject.h                       |   15 +
+ include/linux/sysfs.h                         |   39 +
+ tools/testing/selftests/Makefile              |    1 +
+ tools/testing/selftests/sysfs-lazy/.gitignore |    3 +
+ tools/testing/selftests/sysfs-lazy/Makefile   |   24 +
+ tools/testing/selftests/sysfs-lazy/README.rst |   52 +
+ tools/testing/selftests/sysfs-lazy/config     |    6 +
+ .../selftests/sysfs-lazy/iommu_groups.c       |  162 ++
+ .../selftests/sysfs-lazy/kmsg_cursor.h        |  167 ++
+ .../selftests/sysfs-lazy/pci_resource.c       |  284 +++
+ tools/testing/selftests/sysfs-lazy/settings   |    1 +
+ .../testing/selftests/sysfs-lazy/sysfs-lazy.c |  777 ++++++++
+ .../selftests/sysfs-lazy/test_mod/Makefile    |   28 +
+ .../sysfs-lazy/test_mod/sysfs_lazy_test_mod.c |  319 ++++
+ 39 files changed, 5341 insertions(+), 189 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-lazy
+ create mode 100644 Documentation/driver-api/sysfs-lazy.rst
+ create mode 100644 drivers/base/test/device_sysfs_apply_test.c
+ create mode 100644 tools/testing/selftests/sysfs-lazy/.gitignore
+ create mode 100644 tools/testing/selftests/sysfs-lazy/Makefile
+ create mode 100644 tools/testing/selftests/sysfs-lazy/README.rst
+ create mode 100644 tools/testing/selftests/sysfs-lazy/config
+ create mode 100644 tools/testing/selftests/sysfs-lazy/iommu_groups.c
+ create mode 100644 tools/testing/selftests/sysfs-lazy/kmsg_cursor.h
+ create mode 100644 tools/testing/selftests/sysfs-lazy/pci_resource.c
+ create mode 100644 tools/testing/selftests/sysfs-lazy/settings
+ create mode 100644 tools/testing/selftests/sysfs-lazy/sysfs-lazy.c
+ create mode 100644 tools/testing/selftests/sysfs-lazy/test_mod/Makefile
+ create mode 100644 tools/testing/selftests/sysfs-lazy/test_mod/sysfs_lazy_test_mod.c
+
+
+base-commit: ec89572766744e844df24c27d31c97b4c00f4e07
 -- 
 2.47.3
 
