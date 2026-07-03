@@ -4,100 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC83CC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 17:12:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1EA0C44500
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 17:13:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D22E06B00B5; Fri,  3 Jul 2026 13:11:59 -0400 (EDT)
+	id B04706B00B7; Fri,  3 Jul 2026 13:13:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD3A36B00B7; Fri,  3 Jul 2026 13:11:59 -0400 (EDT)
+	id AB3D06B00BA; Fri,  3 Jul 2026 13:13:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC3A66B00BB; Fri,  3 Jul 2026 13:11:59 -0400 (EDT)
+	id 9A36D6B00BB; Fri,  3 Jul 2026 13:13:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ED366B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 13:11:59 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 125BE40230
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:11:59 +0000 (UTC)
-X-FDA: 84948107958.21.DB6A666
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6F9F240007
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:11:57 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=KYlDRCMj;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf11.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	by kanga.kvack.org (Postfix) with ESMTP id 59EF16B00B7
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 13:13:47 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D3B7B401C0
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:13:46 +0000 (UTC)
+X-FDA: 84948112452.19.A1DEB91
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1D63212000F
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:13:44 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g4enwm4s;
+	spf=pass (imf29.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783098717;
-	b=kAtIshiDYGFpVXgOowb1dcYYf0xg54TTSHV6ay9qxZAAEhtq2bL0o4iws5Zuo3V/1hElsL
-	y8NZKx4Cym+0Xi1snrvSRg/MxWeYChUvBSHRA73frXf91RXZdyBhMVO+FfRDAcpl09rDvk
-	3TW1PsJKWkMQgwqmLDZld3xdqgxigCY=
+	t=1783098825;
+	b=ilMXYV2F9uxRlbsiCt7PZAYvsN2x3J8cjgOCFMkzPfKxbeuu9jsObagSw0V2+FBSI0oH7n
+	hFK29/RHF1bt5X1oYn4rqo5EIwERWs6c5DSvnG7a97BeU9i9rqPuSUsC5jPMyn4eUBIkb5
+	OGTntqrZhC/ViVMuHg6c8R4uUsx4Vio=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783098717;
+	s=arc-20220608; t=1783098825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pb7TrLeGqe0b/bNAlrMgjLIiLoh7aG16nEZVkpvvbWA=;
-	b=f1nlxe4BAm/KdAHHcTeaN7MwhlNPlbTcbQjOtTuD9OHYGYUnkTi69+Gsz25+OXw8fqZpcO
-	pgzEjthHgeyjzTTtOHiLqFwT52v7e+Mtj5f9XVmG7vwxZ/Xvt8dqeNJZwwRvODwJ/PBsqE
-	LOltT1lBEtlBatRn4y3p+hwFYK63T8M=
+	bh=q23BIidiZ017iKhXJsbogBQ9PJP1zUIVfxmZpJ2jL8Y=;
+	b=2OhFZcTql/vYmVo+WgTD9aiePlKg1E4jIIdAPwC0DIkB6384M2PAGpxWYetpxpGRl479DI
+	B4UpmHLt3eSBkIJZAqgjP//JS5Vq0uUNjsLk7jgJ6QD5SRgUaaREFnorFZ+QIet7WA2duy
+	y/WJ27TGQcdMbwNb3a3+CVQ0tkjLims=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=KYlDRCMj;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf11.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pb7TrLeGqe0b/bNAlrMgjLIiLoh7aG16nEZVkpvvbWA=; b=KYlDRCMj9Z9aprfDoC0OuuVSUt
-	aAt90CVAPXFkHFoG5hzBMuAaOMFhnK4O6WYD4bQ5KjvqtsctuFQren0WOJHa8Z3MKEOwD8xSNWxbD
-	l+Zy2RkUqkCwYo9oltROgpA4pkfi0CkGZ5KT513lP/g2lv+35+LQGW3hNsANPA0ToQeNN0sEgZpGN
-	xZpH2+pbgnWw473psp1hwBauahFCEmIYkhPDLNZdOHAM/sXqFheIjqSNkEtLrGEiM0QvX2sFxdPqy
-	aqL2jhscx5y4MjD7KZd2TFmkTyPqZdp2oMrHXb2ZPjnSKYUzBirMeSDCid2bzcKtpaRyd4nnkqFiW
-	/F4hDR/w==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wfhQZ-009YIE-2C;
-	Fri, 03 Jul 2026 17:11:48 +0000
-Date: Fri, 3 Jul 2026 10:11:42 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 2/2] selftests/mm: test kmemleak's N-consecutive-scan
- leak confirmation
-Message-ID: <akfsldIW1US1d69C@gmail.com>
-References: <20260626-kmemleak_twice-v1-0-ab28f7cc0971@debian.org>
- <20260626-kmemleak_twice-v1-2-ab28f7cc0971@debian.org>
- <akYkKgWOsYnw6ETE@arm.com>
- <akZ4tzQw70x3RR2D@gmail.com>
- <akeX8mFiizd65pDw@gmail.com>
- <akfNeK7OOpvoZE9z@arm.com>
- <akfYImSNDh3OjIfR@gmail.com>
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g4enwm4s;
+	spf=pass (imf29.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D0D3600AF;
+	Fri,  3 Jul 2026 17:13:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB2F1F000E9;
+	Fri,  3 Jul 2026 17:13:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783098824;
+	bh=q23BIidiZ017iKhXJsbogBQ9PJP1zUIVfxmZpJ2jL8Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=g4enwm4svtwtT15ZA13jyA9qwc9lTppZoLAqvOXFJBuu8Kf5+n3us4YU1h9YquIQ5
+	 ZJzaMwvXvLV4y1YTzZTccXJTXIqFY7kVs1R7t1Xlwnq201NEMIOKid+EEmnkxiSMSi
+	 GNi/uX7pe9g5oOTx6OwStKk2v/qCkvdBHEwH1xGl+ZPu9h6p/ywnZRCLOOmca4YyDa
+	 svZYQ2arPoNcRi94A2S6PIqz9+mr1jy1vobmXh+nOQmN5VkPCJckI573GfqHv+OilP
+	 Bm5MnNHsTToXJBO1LQvI4FYubASQDDOLIaRxh4CJS3U0VT2ZmBr02kU8SnnEr3qzmp
+	 fkqPwnkZrA6Ww==
+Date: Fri, 3 Jul 2026 18:13:31 +0100
+From: Will Deacon <will@kernel.org>
+To: Thierry Reding <thierry.reding@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sowjanya Komatineni <skomatineni@nvidia.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Russell King <linux@armlinux.org.uk>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	devicetree@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-mm@kvack.org,
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org,
+	linux-trace-kernel@vger.kernel.org,
+	Thierry Reding <treding@nvidia.com>, Chun Ng <chunn@nvidia.com>
+Subject: Re: [PATCH v3 04/11] arm64/mm: Add set_memory_device() and
+ set_memory_normal()
+Message-ID: <akftuw9NyRy36fXA@willie-the-truck>
+References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
+ <20260701-tegra-vpr-v3-4-d80f7b871bb4@nvidia.com>
+ <akYs91INHMXMTI-t@willie-the-truck>
+ <akZkuwktaXFTrASP@orome>
+ <akaSJ5D98w2cHqb6@orome>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akfYImSNDh3OjIfR@gmail.com>
-X-Debian-User: leitao
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6F9F240007
-X-Stat-Signature: qy1i9qh9xk44ycfr4kqbp4ocq45gbwn9
+In-Reply-To: <akaSJ5D98w2cHqb6@orome>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1D63212000F
+X-Stat-Signature: 37fgmywk7yy6q7s4r3axttxgyeznica4
 X-Rspam-User: 
-X-HE-Tag: 1783098717-842233
-X-HE-Meta: U2FsdGVkX1/xeZM/JTt4Hyr6MfbOCLKpBAKV+QbcULaR+kpGJHxkVfGnOrTapqzoOY+9rpXcfsXYVx77tAcUKlnVisBYK1bSgxSJqoSEWBbOtftSNknUrTymeWwf/6tpy0cQs/3otZIJAvmBmiJU4oLlAYVUdqSUlvskRBt6cimMDMncc4w3+8KspCKTYTA2psuL2XLAkThT5lG24+rGEaouPASyyXKYQJOqllB0gHu4XeRGdBZmSTTRLAbaB/VqgIBUlsJL8J7vsBUOATKyKV4StCVjVWQBxoLXZFSGoERueRwON7GgkPAQ6ermjp9Aa+FSb00RJDdF+LVaFX7XKZLNX3WzWQrN/wor1ON1/qGJvpo3IgPfX0dA5WXUNCxUytbOYK0HM8cjQTlPRqAoLpzY4dLgJXCc/R+VMrjdEguvoBvOkczP2qZNCozqgtEIRFFKuJ+ppTvkSfx5nCMNTGN/TfyKdLa1qs4lvab2G4wmYDkzKe52lQj+VLNlxKrhaYqt7I3MtzL0+emnAEPJ8DGAJ4+DgcKamTmkI3mIvCdRnyclmqFQl6j2Za2bAOyOGGqJLwGFnPqzjH8/x4miOiIdOd32JDAwblbg3b1xXlCmzLe35SpFnti3qo+E6Xd5r0Dxw4X2a+n0j7Mvviwutl/IFPrSUbIknrWtGsi1RROhHoBS1Yo5MxqEmwiwgNTtvsVTCxrk98CU3QzhKUPo2f9/mKCEtu9a0tD+E+osA9QhPgwvEsJFE2mQObcfxUPWIXY9dZ27Mfmw1hxEl5T8lvW/DgN/eKIsGLRq+m6BRuude5O5MoqlxVICjjHJT++ZOm4LL+pYM/saYumKFAj71001QUZoYedXPvPfQM07apzia2CJdqXC17G+kH7800jy3jD2Qx/BFGYvTzsTtYW+bYiYfi/y3091WNtqY3pptXm4MszZ3d/E75X2UNNU9Nz84IxV5B61ZfmjMvraQFU
- vDFrvOpf
- 8BA7TuSOC+7s+22Qr800ez/NunVNIiQugm3A52m/NtMVmNhVzIA56XdGZ5y1cKVBbsM863R2EgAVquHkCRvFSxZMD+zSuGXZ1JgQLk7qpyFxz0GiXb2xfqwHzX+vKzM9RzGkySCwv2Mfp7wXmFd+UzVqARQJh3IwjcrOIKw5vFs/eG0mFREaFQrOmTaSxVvGerAxRKRrV8Ss/kZSi4ptD8Q6UKLXAgs9FYOkAuW1Br22oCnNjBLOHCZjiv5r6/CRoTfrt+3Ft3aVSQzii+EAT4X0rbcegTg+UhS1m3HbMU8f8J3M=
+X-HE-Tag: 1783098824-492386
+X-HE-Meta: U2FsdGVkX18x6GE5pZ2EQRXlMPsNoCla2QUT6bd0FGzuAf9HGZkHyn/JSOLTFwNGO7TwAFyNhAacpDtYIsnU+YAcgwjfHIx9BWmyfneqil5WojjCTt4IF4508x3kfaRhSRgyKGZRHViD/BGmdoc/qgB9v65k7x+KaCFRcalXwr6PpDIzoWVMmeKMq2V4IjbTCMRU83jtJaG4NcWQYDTiMbRmz3I3aJL3r/RWDC6ME7uovd2mKNZyiRqhGv101MEXTdDeU9a8OVqwHQgkFz2ChGmoyesO9+ChRlkqR5FTavyt/6gf6RGVseEQLD5pILaepsn+MnYjBdfoot+qaAtURi6fWXP1mzTDxHGKjTy/uJQXqv+AuEGZOa/g2Zob6t/jj+gvlQfR0+7lQhHlum30rE/+jD2Ec5reuq4vsBvw+jkeFbdufbPVtYytsmc5uvf+mTwM5f3aIbAFf6X7ScgzgQ4uEsHIB8+Wiixu2PTicT5Y1rB02CwX0X0nAJiwQMFg9gfqmx4jVpcD/G/xsFyYfGbJ+NcdRQltIatVMaSZW0R2EeoDH3k9V+Mxrm5E3w0pkWdIaZBbX+lGVU1srt3i+4E7UQUkz+aukKSAbmSqPUlJq74IXgueVeaStZLDy0JDsTxJlPiqjleM2v9Hb4tYCl8DL6jIimiXN3L0M+ktFbUS6Ieoz8PUzP5l6VMq8jEUcbs+eg8b/0dzL41pOwmU9OEkMF4YfTq2OeVMzx4MUazEeoC1kXftpc/QDALAdn6B5yyipYR/BwtISrFF4Hsq2vonTXwqZ+O4nnzoCr4qC6Nj2vn6PgpZkQ/QZEWN2GnzYd2Yw35fOOGqg9G6kROyTtvW8vvnfoq8JxE1ycOkI6BzLpqszwekNu2TELn1z2npUf9XvWGUbogwqQm1hrOCqbLsF31gIzG8sO7Fr/MOo/+j/YZoEkMzBvdJrnAAmj+Rkjbzll6F5vF2nzqxJHU
+ m35hXSEs
+ udlC6T5xiihmRYhggYFJgG00e+3HUkvudXJ3NGrGzbt+yUdrATegs9NsCOt9fx4x6V1H+E4otCpnFUMK1L8HUc6YwGRZvr9heDxEOYhHupcv3FvUJ2KrHQ7ZgFGo26hLnxtxdiCUFJ4xBX4r4TQE0orMmZfNuc1pAOSRuriRQfMZo76WSE38YDeVuGredrEy6o+CrplhT+X/k3ocH4T8Fsznexp3S71NlDtGfAm3MDz5uvhHsHI0T9uAC7jFww0ujmYt4e7Drksn7GS3ygHBUOrXP9hc+6c2/6qS3Bd0BEUHt0j5jvhR8rGA8YSQ+X3KiKh4MeyovlrJm4wVYmJZg5GUfv3L0rE2BHMGzbqxaJrXprV4Vod5334KyJ6tHX3/U0mPUcNwrF1cQVXIv+gduMvTG5c7rvunwRBJVC3dSeXR8mkDIJuPh3kgBYQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,25 +140,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 03, 2026 at 08:43:27AM -0700, Breno Leitao wrote:
-> On Fri, Jul 03, 2026 at 03:55:52PM +0100, Catalin Marinas wrote:
->
-> I will spin this "fix" separated (CCing stable), and send a v2 for this
-> selftest with priming enabled.
+On Thu, Jul 02, 2026 at 06:41:23PM +0200, Thierry Reding wrote:
+> On Thu, Jul 02, 2026 at 03:46:44PM +0200, Thierry Reding wrote:
+> > On Thu, Jul 02, 2026 at 10:18:47AM +0100, Will Deacon wrote:
+> > > On Wed, Jul 01, 2026 at 06:08:15PM +0200, Thierry Reding wrote:
+> > > > From: Chun Ng <chunn@nvidia.com>
+> > > > 
+> > > > Add helpers to swap PROT_NORMAL and PROT_DEVICE_nGnRnE protection bits
+> > > > on a kernel-linear-map range.
+> > > 
+> > > That sounds like a really terrible idea. Why is this necessary and how
+> > > does it interact with things like load_unaligned_zeropad()?
+> > 
+> > This is necessary because once the memory controller has walled off the
+> > new memory region the CPU must not access it under any circumstances or
+> > it'll cause the CPU to lock up (I think technically it'll hit an SError
+> > but in practice that just means it'll freeze, as far as I can tell).
+> > 
+> > Probably doesn't interact well at all with load_unaligned_zeropad().
+> > 
+> > > I think you should unmap the memory from the linear map and memremap()
+> > > it instead.
+> > 
+> > Given that the memory can never be accessed by the CPU after the memory
+> > controller locks it down, I don't think we'll even need memremap(). The
+> > only thing we really need is the sg_table we hand out via the DMA BUFs
+> > so that they can be used by device drivers to program their DMA engines
+> > internally.
+> > 
+> > Looking through some of the architecture code around this, shouldn't we
+> > simply be using set_memory_encrypted() and set_memory_decrypted() for
+> > this? While they might've been created for slightly other use-cases,
+> > they seem to be doing exactly what we want (i.e. remove the page range
+> > from the linear mapping and flushing it, or restoring the valid bit and
+> > standard permissions, respectively).
+> 
+> Ah... I guess we can't do it because we're not in a realm world and so
+> the early checks in __set_memory_enc_dec() would return early and turn
+> it into a no-op.
+> 
+> How about if I extract a common helper and provide set_memory_p() and
+> set_memory_np() in terms of those. Those are available on x86 and
+> PowerPC as well, so fairly standard. I suppose at that point we're
+> closer to set_memory_valid().
 
-Quick update on this plan. The v2 for this patch depends on checksum fix[0],
-given it touches a similar code:
+Why not just call set_direct_map_invalid_noflush() +
+flush_tlb_kernel_range() for each page? We already have APIs for this.
 
-	@@ -687,6 +692,7 @@ static struct kmemleak_object *__alloc_object(gfp_t gfp)
-		atomic_set(&object->use_count, 1);
-		object->excess_ref = 0;
-		object->count = 0; 
-	+       object->unref_scans = 0;
-		object->checksum = ~0;   <-- Adde by the fix [0]
+The big challenge I see with any linear map manipulation, however, is
+that it will rely on can_set_direct_map() which likely means you need to
+give up some performance and/or security to make this work. Does memory
+become inaccesible dynamically at runtime? If not, the best bet would
+be to describe it as a carveout in the DT and mark it as "no-map" so
+we avoid mapping it in the first place.
 
-I will wait the "Fix" to land first, before sending v2, avoiding merge
-conflicts and being able to rely on sashiko to review it (instead of having merging
-issues)
-
-Link: https://lore.kernel.org/all/20260703-kmemleak_checksum-v1-1-5e0ab7d6966f@debian.org/ [0]
+Will
 
