@@ -4,147 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 183A7C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:27:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D367AC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:29:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 039636B00B4; Fri,  3 Jul 2026 08:27:01 -0400 (EDT)
+	id 6589A6B00B4; Fri,  3 Jul 2026 08:29:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F32C86B00B5; Fri,  3 Jul 2026 08:27:00 -0400 (EDT)
+	id 609096B00B5; Fri,  3 Jul 2026 08:29:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF3A06B00B6; Fri,  3 Jul 2026 08:27:00 -0400 (EDT)
+	id 4F7A86B00B6; Fri,  3 Jul 2026 08:29:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB9886B00B4
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:27:00 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F8114051F
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:27:00 +0000 (UTC)
-X-FDA: 84947389800.30.AA8A580
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 60B45A0004
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:26:57 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=g5b80To4;
-	spf=pass (imf25.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783081618;
-	b=Ixj0caZG4RD89F30hemIfntTHgFwLRESbbFKlAYy13BelC/jtawakPkeD6ErtrmtJtWtKO
-	jWzPARmqoJO+Y0u/mOsq2cZas75RdmYBTxEofhFiddncSRnOjqf10vvRcENma2gI0Q0Y3s
-	mZaZWxNL19C9nwrjJCrdp5VfptVtaVI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783081618;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 25D536B00B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:29:02 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A518EA052B
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:29:01 +0000 (UTC)
+X-FDA: 84947394882.16.C249952
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C4F50C000A
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:28:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=HL8h+CtS;
+	spf=pass (imf22.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783081740;
+	b=tPw+1FXvuIvPQbCb+7z8SfnuNBsP91YOjN8x4X7hyAr7bIXkI6DeI6436zXG+99/RuO4cA
+	Yxy2qRz8hSvu53GJ5TluCPeJqNHRser9WibCsRFX5S6fj9Ry3gP/jHujE4+tmGvkXMKvjd
+	uMck84KSMZvFEc5sdiYYPCkQtcP82NQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783081740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mkcwegeSHRA8Rtq4C78mf0gL9tHt8vO0ljYRm2yfd08=;
-	b=vocwa0qTPYyOltqypdNWJxoa7oJnV2zo9lUquCAhX0PCQlWngDceMAMevSKsiwYcmRvgNz
-	z3XHeaejpw3+6AWNLNiM6Eo2FkOKfGXoyQKsQkHcHr4odh6Nrxr5HT0rv8fFU87TdkTNsC
-	BUME377YqjYWKoPLiX+PctlZk3Fh04A=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=g5b80To4;
-	spf=pass (imf25.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-448cf99c133so1226504fac.1
-        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 05:26:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783081616; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iSWyQqbmRknSTLj8jI8liq3Wm1qrYr/rglbxjunbQylkk0B/p2iGAbPd5QdXhcvn/U
-         EggPUxx4fHQblfBYnHpbbmhoJoqH0rQMvBnDkfnGEpybbOxOHpOUyFipf6Mx1/i3fGg7
-         J0i/WqqWsX3TPQKF8j//zyvWwdpgmfjWq4wzkBn4fPLd2EhYYzJiUzxgn7kO3IRq4ZXf
-         6Wnk4H4E7S0LtoMUEH4/zUvuFSLYDSV6uSjkSotZqMkJDHcbUGRl6qPLpEL1ZrCpnvS1
-         niobZmF7Gab2YRIUKh8Yvk7UkFUPhfOpcCSdQteyrN4+3vgo2+rOS0I9Gi8Q36LJo2Fo
-         ucTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mkcwegeSHRA8Rtq4C78mf0gL9tHt8vO0ljYRm2yfd08=;
-        fh=dR7npzASdHEBc+w/pHnfUfa/dFi/RR9LLWnLXm2XaFQ=;
-        b=pDmIqFW34c73aHtpMmTKoWGa+jnb8xFXNpgHgr8+PXVzG90aQj1e6UnAvSj4aucrxg
-         SiXihLxjRL44EZEhzbnOqCdPfVQbSjLRqKRO3AnEBgRFaCbmrAIS2+lnYH+XJG7Ks3e0
-         0Nu6wixNMmfSSC7Q/+YLkWQg3hjG1b4sC3LTEAhWJGxp+/zRayzZWqfV6LdblIrvJpvq
-         7+dx40cWXDHqGIHQv9at8hJHwjarE5EXer/nKTi32WMnvJ+glnJm0yn+picIvvl8PSEP
-         IM4VQDNuRQa8KB4nff4zYwH9fuBALkJoSmP2G8i/77zzc7XeGvxyHLxuCEU59ez7eUbA
-         5qzA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3xWVG/3qQZSSCl9XZAnFe0CG/d9wAGXcusZYIWuv8No=;
+	b=hro/DqL1H8Hf/nr3Ee0v8NAFYD+MI4Ow4htmwRSK7vb8Ud6etxndgpBX5+DGa4ImdYk3jY
+	sXRO9nJTV9BiZ5Um8gi9vULqCKFfFfr1FLM/YFWdy3UnFIS2GfZEZBUD6fa0/ZzrNDeljQ
+	kE0wXOM2a+s5+mCck7x3lyf6BtHNjfI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=HL8h+CtS;
+	spf=pass (imf22.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84592b55832so329499b3a.3
+        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 05:28:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1783081616; x=1783686416; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mkcwegeSHRA8Rtq4C78mf0gL9tHt8vO0ljYRm2yfd08=;
-        b=g5b80To4ZBarPNTxRX3y6tIasS3n1wdmMWEjS0lArTgnGx59+nwikh06qzARscKhPU
-         GrDoqLaaMjNmz+HdnYPdmjWq4gAtmbCsWa0UU5M/cwo07cgpWPTQ6brBmBjYp7IeT4f7
-         HTPIRavtgyjokIo5DBYmFZzD+rvSD4BriAEruOJtXeFFZKf6l9IsAOX2ZcmSVnkNpdx9
-         lo/G1PPfAI7+ROikFI0f6AuzK4w5hNjNIvuEOqA+cYpVMx3nouf753q8yNAngDOm1ii2
-         a7JDwv8vZ3NMwLyGfK23dRYhgHPVp8QEpprKfN45R5g8k7zC/D8kXWIiFPcNO51XBKW9
-         mqvA==
+        d=bytedance.com; s=google; t=1783081738; x=1783686538; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3xWVG/3qQZSSCl9XZAnFe0CG/d9wAGXcusZYIWuv8No=;
+        b=HL8h+CtSFlCDxUMs5i4F0CQSMVjpuFCSFoK8xK5dVDR4k7VrV62u0ADt+1dCwdwtug
+         ugQmAGms3E/g4MbwAFPm2oKhovUhv0PdChZsDME8cNcV6Q+bPyqFU4zr0bP+e02swQZr
+         UNq6Z3MJRCL6LluubCDOt7x/Cjp/CXPTB/Z8nc4N5qQn3Ra/nG9p63EkxZe3FZce2IrZ
+         0cCVvTuJLk4LwnGDSEC+xkCtRdz2CeXnOd43OIg7Wvkxy4AqG+hL+Uxf0PimEDL+t7J1
+         ydz9ed/6t8qYYUEGoJZQKxjXvkyxfWwkvk6UNs7McwYANA9HX7sJNkLKL1rkghIq2/W/
+         6n7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783081616; x=1783686416;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mkcwegeSHRA8Rtq4C78mf0gL9tHt8vO0ljYRm2yfd08=;
-        b=hK5ks09xZr8/2gQH2dC0YEl3R9ISvPQes0ilJJ1AFxCv2245Fa/XRmWK2Rolh61t74
-         PTSLhrRPYVxlHGbzlRsY45M2QUZAw/v+eCUHPis2Tszye/bIgblNCmadgDyl+ZFhmEtI
-         8QXIR58SmkXstbfbBtcJiJmqB/fX8U15UUVRJd2m0COn77MC6+SR4fJ81MjiUHJTVfhC
-         RZXJ/oXFx348L+ZgI9RAGe1vAa4qgMYsAgwob+apGPLu5Tub3RAPqkjiInWjfvL737vf
-         PFV1EBKoEM5JDYmzdxYqrHs5+tl2XliMrQ3wCcLBeTAnFjFyJzBzTmjYfnuMRI2YXKS1
-         Nxrw==
-X-Forwarded-Encrypted: i=1; AFNElJ+5+kGe7chy69e+D+Y2W+f+OyZUNcNXyWw8Kbg4vyQl8eycdVkSjwjyQ4MB3SfYs2AvYf4Q1jspFQ==@kvack.org
-X-Gm-Message-State: AOJu0YyDQ8SYjZ5BQDMi7lWvJ1RnL/bZoOuydwxPvmFDRj4qdLfEc90E
-	Q+mbqnUAbwm79wBoM8YWKef2HNOlgHEXuHGJoL+9ABla/nS9Bqr2LOYAyPDd9+a7RSdXFV/DJMF
-	V+q8w8fzxQVHGKx7TP0va4O4x8wkYCQ5aDTYCm6/Fcg==
-X-Gm-Gg: AfdE7cmo8JiSX+vtTAZQqaWNNwQl3plDkvFPRM6W7dmgDGMuQpNc26Eqi6dBYKx8IC0
-	kH0ThYxvzManR9Ha7Kvm0JTDombc3khYAn5yaLd7sBVtmhLqVVE0uabiNyIfMP+TMNgL/YMXzyk
-	Vs+vf8eKYemW5nZq/aMbVCedJJ//LU9pf+J93r/0VRMbEtBKaROJz4XH+P6imgi8uQJGWD36n16
-	trIcT4RLjsFpVh82vCZSZ6lt47SyT0Wt6XwLV06hZRnJHEpXCgXkMfjvXDHTNCntVvOkfjBGFc4
-	dLS8BEXisxqADg==
-X-Received: by 2002:a05:6809:6:20b0:496:100e:35f8 with SMTP id
- 5614622812f47-497e1e43cedmr1478072b6e.21.1783081615982; Fri, 03 Jul 2026
- 05:26:55 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783081738; x=1783686538;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3xWVG/3qQZSSCl9XZAnFe0CG/d9wAGXcusZYIWuv8No=;
+        b=hXG3fTF22alNx8OZ7CfxaAXTiWVWvLu6vwIovNlJUfs8HEWKLy/4Sr3GsiOP4hc2S6
+         3a5P/u+GZhE6vSy0TNs4iEM7sX2X11PAuUSMIWMB5M3PU/fKRDv5ksMR6CF072YvLzHe
+         jpCzirCyyJGw7JZAV6Tnpd6fmIRS3faolecF7/DstkO4LJA0SeOQSayluzL2KTtRCfOj
+         3vn7g/DzJq2DKncfcWANmHMY8h8XcKcR6a5P8Xsg2E42zgZkOli4Kizsif5F3PurgFwQ
+         me3GYkG471/N4ZmJQ8Q5Npdo0aWWTTGxzqjzF2Yp5t8EeQ+f1y1Pi7uf5kVAYJko1UDX
+         l7Jw==
+X-Forwarded-Encrypted: i=1; AHgh+Rps/GR+QuX3AxdihP6YT+cNDG4ILuNg7fMIhIKr4Hd0QZmIvukeIdn89v0U5FrYE0s1xyD71Q7Www==@kvack.org
+X-Gm-Message-State: AOJu0Ywo7A1KNuZaXf/HaOPtyFz5gWo/wTRTzzJog2enkuR4bbjObAmz
+	MrA9xqk3NPcgZ1/aUyonfPaBMMnijVrEDNLuOYZL1hQAUTFXkFEPjhvqgJWk1WbN0l0=
+X-Gm-Gg: AfdE7clIcIibbRwyGsS7epFukcJNG3SWMjh7o3h8CibPmwIoGTBrhYeisnqQktizFK5
+	p1KvO2IPYUncYqW7IargWTBDLklmdE9m0sV1VJcz1qXm0SV6tCbqUpSYyK8UAYLW2GvrKYNS2Pb
+	Q+IU8S++FiICJ3DdvaXG+0G8IPGwWWh/viMTHUsWI4BHmGyh/QILTfPcrhtefV5UX7F80T/IPpB
+	qV0X6Ifkmn2ZPeah7TQVLpGVs9ePdUOQ83kZ3o+RlOLt1yrK+vCRyzlVKwzl3VVMzwyfsV/WAf8
+	BGMLpdr9a39WVz6J8zn1dIi0PEMI4knD6blsWgXh9h0VH/ei8NcHUSettxoH5gAqvbG2i1DgFCy
+	VWNrhwjn5lEkyOocswaY2SeYLro+E4BA2LMrbc4RkbFHHULyuWsoobfz7utToXdRire4fF49HCy
+	tgvoonBt8hL382nWcjFWZbhxpbcrLIUpoTlJo4j/s9288E5ByIKlfB64tcDN0+tA==
+X-Received: by 2002:a05:6a00:18a7:b0:847:8b0f:2508 with SMTP id d2e1a72fcca58-847c0686cc3mr10380342b3a.13.1783081738170;
+        Fri, 03 Jul 2026 05:28:58 -0700 (PDT)
+Received: from L6YN4KR4K9.bytedance.net ([139.177.225.224])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e8f3d74ccsm2705551a12.9.2026.07.03.05.28.43
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 03 Jul 2026 05:28:56 -0700 (PDT)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	dennis@kernel.org,
+	tj@kernel.org,
+	cl@gentwo.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	bjorn@kernel.org,
+	pulehui@huawei.com,
+	puranjay@kernel.org,
+	thuth@redhat.com,
+	ajones@ventanamicro.com,
+	ben.dooks@codethink.co.uk,
+	rkrcmar@ventanamicro.com,
+	cuiyunhui@bytedance.com,
+	samuel.holland@sifive.com,
+	zong.li@sifive.com,
+	conor.dooley@microchip.com,
+	tglx@kernel.org,
+	debug@rivosinc.com,
+	seanwascoding@gmail.com,
+	andybnac@gmail.com,
+	menglong8.dong@gmail.com,
+	cyrilbur@tenstorrent.com,
+	wangruikang@iscas.ac.cn,
+	atishp@rivosinc.com,
+	apatel@ventanamicro.com,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	arnd@arndb.de,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com,
+	qingfang.deng@siflower.com.cn,
+	linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v8 0/3] riscv: fix PIO helpers and add optimized percpu ops
+Date: Fri,  3 Jul 2026 20:28:29 +0800
+Message-Id: <20260703122832.15984-1-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-References: <20260702025443.83389-4-cuiyunhui@bytedance.com> <cee66b78b5bad62e6107ce7579d7e613ad05a258aef8d0ab279b706543651a13@mail.kernel.org>
-In-Reply-To: <cee66b78b5bad62e6107ce7579d7e613ad05a258aef8d0ab279b706543651a13@mail.kernel.org>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Fri, 3 Jul 2026 20:26:44 +0800
-X-Gm-Features: AVVi8CcDmMKspGUBCgXqug4CkmXz20IK78kFtcg22LCfN8fJHodpSJeX2_dNFaw
-Message-ID: <CAEEQ3wmTJU1-5e81fy0wnv6gCP4n0cdydOW-Hj7pFJxhFj+6MA@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v7 3/3] riscv: store percpu offset into thread_info
-To: bot+bpf-ci@kernel.org
-Cc: pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
-	dennis@kernel.org, tj@kernel.org, cl@gentwo.org, ast@kernel.org, 
-	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
-	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, bjorn@kernel.org, pulehui@huawei.com, puranjay@kernel.org, 
-	thuth@redhat.com, ajones@ventanamicro.com, ben.dooks@codethink.co.uk, 
-	rkrcmar@ventanamicro.com, samuel.holland@sifive.com, zong.li@sifive.com, 
-	conor.dooley@microchip.com, tglx@kernel.org, debug@rivosinc.com, 
-	seanwascoding@gmail.com, andybnac@gmail.com, menglong8.dong@gmail.com, 
-	cyrilbur@tenstorrent.com, wangruikang@iscas.ac.cn, atishp@rivosinc.com, 
-	apatel@ventanamicro.com, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	arnd@arndb.de, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
-	morbo@google.com, justinstitt@google.com, qingfang.deng@siflower.com.cn, 
-	llvm@lists.linux.dev, martin.lau@kernel.org, clm@meta.com, 
-	ihor.solodrai@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: qfoxb98a85mu4kn9719umd5rk3ty8jmr
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 60B45A0004
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1783081617-385002
-X-HE-Meta: U2FsdGVkX1+ukoKUwDHpJ36mZN5OY1lQ+Af3dHZqmAn4wXcxReXkIigfXCaDgci1MKrkAD0lfIfXUuSgnroLBVI6IEuzoYPCBDfgkToNK9C6IIi5yTd+QUNXiWDdh4o8GnoC0+YdcJhOy3+edB+hpehjpOdKvloS/NG7SFWmlHKOx6K/F0xJnNJW9JsE3DZFZpOQFb4poYwKKqsiZ9YSgZKdj8b0IV0FkSjj36O2iGQAw24pv3IliqHx5NjQdWijezx8TvI/6Os3z+829Y+A3Jo/4H56bdvOkbGCWgU1wk0mwitIFoECziOz/FX18JTTzesVI8La0RktDZJat73WGoYB2EJnWn4x3ZIt+sJqumZjJftDVlWqJSFoQtCnCIsHYsHJahq4yVbSPs/ZZl8FZ/GUHWOg1Hc7yV4QC/04F2gKh25hpLp98q9icdHztYmHLhDjVyDb1fwuJxuiTQ/EruKArZ/VPlQ2Two1437slcFPI8+n2l6nZR2BBCqFt04aen5Kdyd+ZbCttMQzTgfva4k1hMWe/rZTSwX0PZ4vbgNTD4d9nEMAlGbYBndRehHWIwYd/H8+eE3BSZZgUp3ycdH5LaQlSmNEalY0AA9hoWMj0ske7+pCb3QqSO3Ck4bMFYstwVKLOv4sM35eeaTZOdpf7CrxQRlZCUSIhNIT5I3YtmhfCnRO5En7s3BZfanK6+NTCjiC6AwIXtEPcNqD8ej+wgbkiiPoAm6jYOjB8Jxu2IrO56/5OQDJsHimishCjdJYSFmuJm8oUwoOsF0BJsSC7j4ILSpcLUmV0z4X5OCr3mbAIUN+WIjzxGON1p1V1R50DeTcqrN1OaZaba6IpEOL6a+REOEZi4y9r9AuORMgFnvPcbRoi4ROOwMduAdb0e8i9bZJKUxVNeipSvQ7rBpd+TqDpyzSWkskK/z6uQZ9235Ru7zmfOEj1+04/ALy5Trq4vjuNPkQQ2VFr3w
- KI5x+yM+
- C6pX9OABwNipESPiZMLa1EawFzyBWG3oaPoRxAOmlpQ7+78wHkV0EqL+yrugnKcAAJBjw8xsGMSwmU/i5nbNZ/wdffdo+DvUPgqEmRlDpNJoecTyeIxHE7gj5FuXkxG+ovW2wDJMtid3QZo7BsWna+WvyTaDGskWW8XEkp31HyZv+8Jxj7041KfhewhhqjbBt5S/YGjKPrim+OzZ3hoEEW6ZC+oXF1mvK41SxCOhr+MbtQH0RhmkmWw/zur2IKOIMe58lzFr5R0zPvNJ1O0RgWaAh/YB/lGm0sCzAv9l7+vcqWP3nA+a8yESRcNk4l/Iu9jnUtY1aKFyuGNhEw+DPhwYXKktg+arVqv3aT9zNEFA3s9qy9MxcbHTCL1+ep1zBtBwcfCgcQ8VUVJx7o8Q02xeqP7NEaOlBnJiSzq+QHSu+SgV3f6V9fx2rNjNhjq86WrzZLBDg+VqGV+brBXMp/fK0pjSBM+mDm2SbSe78lLb5e6wSILxYnN80ruyUiN9V9+D3kY6iMuAzcVDdaxYm7wLv9A==
+X-Stat-Signature: 8nokxcaqpeubzb665rriq95i35sokxr6
+X-Rspamd-Queue-Id: C4F50C000A
+X-HE-Tag: 1783081739-179163
+X-HE-Meta: U2FsdGVkX19mCd4TxyUfInfS3g+Nnxgk7+ww/Va/tBe1GYkaH7JgyifprzWWNuuNf2hwQfkMjPBbvPL2EYBFmXMHmhctE1o10KWYIXxjsbFiPF9jG+tNTy49xKQhtr1Dlb2tmh8BRqsK70LlPmgOpTx5U2E74g3sd1rJKiOizQ6VmDG3J+M2Orysb2Pc2h1Ja1TDyplAB3O6xUHqthbRnmcisuIEQZVknZaJCnJxjn3xEauzjf0GNFbsfodMQQgEo3aqGuxe47r0cnV3GQDD5lh6ddd3/mRxHXXb8951Shh2qCFKpLKqRdZkPc68accVour15bUi7NJ6fl2wIG+Vp60uXGrpn+02QsJDNBeOs7WunaVVos6Ads4WorFjKOInTcl6TqOmJKu36MiJNPkAaks1mveeo6SzNDkxvXJbj/onhvdVekNeW0+epBjw5bY6n2gZP2+TO7M8wD2L8JaJOHJnBEVrjt5FSrzou+epZMhvX1P5B9PYepKmvcJ9fYG8LfSOwyGfapAorYieSFfRF5ZfEpVvL3OISCugsQ0GzqMyBVcnCFpz+8cEVQex41B6PnriZDyOmAw+5LmkenNQVVAIeUR9ctc/euHwT4NeHgcJ7FR8NILo8v2WL5CDOhBYnH47TNejCJT761YjzLG+F1qPek3YUpUPlWREZKBdcc+ZhrVt1tKSTVpjJWNfOhN3dhhMTZ/XbsxSp5ish1U5tP5gChDaO6Vsh1mS0Ttk8smbVk20p6+U3fIh0tip2l06YUUWuXi5nauFgl1wYnObEIqLgPBMqwgwFUROxXbSnYZz10RD4rcA5esDGNvGRQrZk2gCgNwYZ8r7yqTO1Z4e7cdVdN4QqIorqTRCoBntQ2OBb2DHXIepM+kqis4FHF84qngZazcEYfdfhfPoD6v/7smFrTcZO7+W4IwVaSI2k25ZpZMpr6hGBmFogeHBquuAq0NyvnIb7LTk8hyINHN
+ 3eu4vlNi
+ eTuFcIpGFO70Te1E7d5R0h/fsfk7zrq3+uaouT4xGBl6w0+TtXX8JEWOAoN7Q9NOCSgEwEoJmP9q5lt3a3xJmIUVgGRfN/l0oFj39d0Tg3Dkr6Hc4muIy3jSgv1k3c6T3xENfKvs6/+K/sQAMvOvLssZoLU6qfTSTf9kwspx3fumbzk7KlIl4XMCytShIW8mbzi1SN8E/de5HH7TwGRXAjuftOwVm8nL0BRZN5TPaFWja3qNRl+1t73F58Q0KKGb1LdZ3PasxyyQ1XS9z+briQj3UqMZQdeQrds0nTDQW4ToaxvPoa45e/TcbOdD036kKF2pD39qKPBPRWGQBjG3U6r5TR9a/1IwoYOEwpJONz6sT6eLnHIwW2GzoFxlgsZZUAcEeORNIA7x0uEbpiX7nmQDnkQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,70 +158,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi bot+bpf-ci,
+Changes in v8:
+- Fold the TASK_TI_CPU_NUM cleanup into patch 3.
+- Pick up Arnd's Reviewed-by tag for patch 1.
 
-On Thu, Jul 2, 2026 at 12:08=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
->
-> > diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.=
-h
-> > index e9e8ba83e632..137a49488325 100644
-> > --- a/arch/riscv/include/asm/asm.h
-> > +++ b/arch/riscv/include/asm/asm.h
-> > @@ -91,11 +91,7 @@
-> >
-> >  #ifdef CONFIG_SMP
-> >  .macro asm_per_cpu dst sym tmp
-> > -     lw    \tmp, TASK_TI_CPU_NUM(tp)
-> > -     slli  \tmp, \tmp, RISCV_LGPTR
-> > -     la    \dst, __per_cpu_offset
-> > -     add   \dst, \dst, \tmp
-> > -     REG_L \tmp, 0(\dst)
-> > +     REG_L \tmp, TASK_TI_PCPU_OFFSET(tp)
-> >       la    \dst, \sym
-> >       add   \dst, \dst, \tmp
-> >  .endm
->
-> This isn't a bug, but asm_per_cpu was the only reader of TASK_TI_CPU_NUM,
-> and it now loads TASK_TI_PCPU_OFFSET(tp) instead.
->
-> > diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-of=
-fsets.c
-> > index af827448a609..fbf53b66b0e0 100644
-> > --- a/arch/riscv/kernel/asm-offsets.c
-> > +++ b/arch/riscv/kernel/asm-offsets.c
-> > @@ -38,6 +38,7 @@ void asm_offsets(void)
-> >       OFFSET(TASK_THREAD_SUM, task_struct, thread.sum);
-> >
-> >       OFFSET(TASK_TI_CPU, task_struct, thread_info.cpu);
-> > +     OFFSET(TASK_TI_PCPU_OFFSET, task_struct, thread_info.pcpu_offset)=
-;
-> >       OFFSET(TASK_TI_PREEMPT_COUNT, task_struct, thread_info.preempt_co=
-unt);
-> >       OFFSET(TASK_TI_KERNEL_SP, task_struct, thread_info.kernel_sp);
-> >       OFFSET(TASK_TI_USER_SP, task_struct, thread_info.user_sp);
->
-> A tree-wide search now finds TASK_TI_CPU_NUM only at its definition in
-> asm_offsets():
->
->         OFFSET(TASK_TI_CPU_NUM, task_struct, thread_info.cpu);
->
-> with no remaining users (TASK_TI_CPU is a separate symbol still reference=
-d
-> by entry.S).  Could this OFFSET() line be dropped as well?
+Changes in v7:
+- Rename the internal AND helpers for consistency.
+- Undefine internal percpu helper macros before including asm-generic/percpu.h.
 
- Thanks, will fix in v8.
+Changes in v6:
+- Keep the RISC-V PIO fix local by directly guarding ins*/outs* helpers.
+- Add the missing asm/cmpxchg.h include and clean up LR/SC fallback naming.
 
->
->
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a =
-bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
-E.md
->
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/285624=
-50933
+Changes in v5:
+- Drop the generic HAS_IOPORT_MAP/ioport_map changes.
+- Fix 8/16-bit LR/SC fallback masking and constraints.
+- Initialize secondary idle task pcpu_offset before CPU bringup.
 
-Thanks,
-Yunhui
+Changes in v4:
+- Rework the series into the current PIO helper fix, percpu.h, and
+  thread_info pcpu_offset layout.
+- Keep the generic pci_iounmap() behavior intact.
+
+Changes in v3:
+- Fix this_cpu_cmpxchg128() build issues when cmpxchg128 is unavailable.
+- Fix sparse warnings.
+
+Changes in v2:
+- Add non-Zabha percpu add/and/or support.
+- Add the thread_info pcpu_offset optimization.
+
+Changes in v1:
+- Initial RISC-V percpu.h series using optimized native-width percpu ops.
+
+Yunhui Cui (3):
+  riscv: io: avoid null-pointer arithmetic in PIO helpers
+  riscv: introduce percpu.h into include/asm
+  riscv: store percpu offset into thread_info
+
+ arch/riscv/include/asm/asm.h         |   6 +-
+ arch/riscv/include/asm/io.h          |   8 +
+ arch/riscv/include/asm/percpu.h      | 300 +++++++++++++++++++++++++++
+ arch/riscv/include/asm/switch_to.h   |   8 +
+ arch/riscv/include/asm/thread_info.h |   3 +-
+ arch/riscv/kernel/asm-offsets.c      |   2 +-
+ arch/riscv/kernel/smpboot.c          |   8 +
+ arch/riscv/net/bpf_jit_comp64.c      |   9 +-
+ 8 files changed, 329 insertions(+), 15 deletions(-)
+ create mode 100644 arch/riscv/include/asm/percpu.h
+
+
+base-commit: 7de6ae9e12207ec146f2f3f1e58d1a99317e88bc
+-- 
+2.39.5
+
 
