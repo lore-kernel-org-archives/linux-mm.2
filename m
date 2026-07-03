@@ -4,103 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E049EC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 11:43:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8FF3C44500
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 11:44:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D9ABE6B00C0; Fri,  3 Jul 2026 07:43:52 -0400 (EDT)
+	id A8EDA6B00C1; Fri,  3 Jul 2026 07:44:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4BE26B00C1; Fri,  3 Jul 2026 07:43:52 -0400 (EDT)
+	id A660D6B00C5; Fri,  3 Jul 2026 07:44:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C62436B00C2; Fri,  3 Jul 2026 07:43:52 -0400 (EDT)
+	id 9A4636B00C6; Fri,  3 Jul 2026 07:44:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A0E8F6B00C0
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 07:43:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33F868E7A5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:43:52 +0000 (UTC)
-X-FDA: 84947281104.17.BCE21F5
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C04BA1A0005
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:43:48 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=axBe2JTE;
-	spf=pass (imf19.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 7310D6B00C1
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 07:44:08 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 056561404D1
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:44:08 +0000 (UTC)
+X-FDA: 84947281776.11.0412A66
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 57423C0009
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:44:06 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tKakZnJ3;
+	spf=pass (imf22.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783079030;
-	b=AHiwIC6teTpxFKfhAd8myOxcMwg5RJ3oG2UtnBuIKYd/P4SZCjnAR0tsVM2M3EnS3FdsAC
-	yV6s+0EVaL8nhKRBo7j+tGl+GqLmAtbaeULPDN3n3hNCwdBVt2MsfArk9P/S7Qq9krUhzC
-	sy6zfeh3l5hQIoVx34Q0HzMI0c59tao=
+	t=1783079046;
+	b=7zw2sLP97InAWHnQTu1v3KKqAvJ0De0Attce5EpYx5LQGipqdp2ZLUyWB5AtRw5CYrLfNz
+	3cJjdD8qSVNhMSWjYNJejSekfBwe36Y6mHPYmTdIKm1weMPPEjuPjTDobnaMx04HsX67hi
+	O/bWt87ri1lg3a470EX3fhcDY7mtlFU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783079030;
+	s=arc-20220608; t=1783079046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VSetS396SrH76litqhz6V0tLsyOUbEp17iVMUlqbZ0A=;
-	b=ND1x1nWY4WvdjUwfvBPAiZdmd87xJEoOVynu9qqKE9Lasf45QHbMF6c7mIDIKRzYZAG7R/
-	oz9FYNcd2MVX4rzZVdIT3z8FOzd7YuK1xFJXCkqOVVcphX+RLzfo6hpnNcbgCGDWgQXCrJ
-	mMS1tgJP9HvVoBPyk78VLTPqEigR6v8=
+	bh=JLEv5rnGz+dH05b46BfT9OvCq8I6vCtHuaFvN5MWQs8=;
+	b=vVuP7xG0uXINSMKE8uY4eB8cx+Hf8hBgKL8iIJPS+eAUbgSPVJsST3VLGr/wzNNcCZMkPA
+	lR5nZvrRPG0O5Sop0F/UR7JOBRqfRmLMDm7p0vhJ3gm0COkLPujveq19mSORmpYF7ZojG+
+	i+jZwF3dI40RTzbezNMIdPdGIDR7L5A=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=axBe2JTE;
-	spf=pass (imf19.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Mime-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783079024;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VSetS396SrH76litqhz6V0tLsyOUbEp17iVMUlqbZ0A=;
-	b=axBe2JTE4wy9jYDVh/aDcxlWFqplgDs/zl2EfbLtmG9mqQTYZV5rPg/mysAbrTIYroHQun
-	imD73iN1OFVJuv2JTbrfrEOVOfWxT3+/GG9kaJQRW5kMdQ8aqP0fGcDHhwBu9Ypv9V+6iW
-	7YqnlKUsRosMN4yi746SiqKn2nh99fI=
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Jul 2026 11:43:39 +0000
-Message-Id: <DJOWRDASVUUV.376L8DP13F1XQ@linux.dev>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
- <gourry@gourry.net>, "Alexei Starovoitov" <ast@kernel.org>, "Matthew
- Wilcox" <willy@infradead.org>, "Hao Ge" <hao.ge@linux.dev>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-rt-devel@lists.linux.dev>, <derkling@google.com>,
- <reijiw@google.com>, "Yosry Ahmed" <yosry@kernel.org>
-Subject: Re: [PATCH v4 18/18] mm: factor out can_spin_trylock()
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Brendan Jackman"
- <jackmanb@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
- "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Muchun
- Song" <muchun.song@linux.dev>, "Oscar Salvador" <osalvador@suse.de>, "David
- Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
- R. Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>,
- "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
- <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
- <byungchul@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Hao Li" <hao.li@linux.dev>, "Christoph
- Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
- Gushchin" <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>
-References: <20260702-alloc-trylock-v4-0-0af8ff387e80@google.com>
- <20260702-alloc-trylock-v4-18-0af8ff387e80@google.com>
- <1e162a97-1594-495d-b48e-7dafaa0a6d82@kernel.org>
-In-Reply-To: <1e162a97-1594-495d-b48e-7dafaa0a6d82@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C04BA1A0005
-X-Stat-Signature: c6xq9amt3cyyfbhcrt1pzmw876a95d9h
+	imf22.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=tKakZnJ3;
+	spf=pass (imf22.hostedemail.com: domain of mark.rutland@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=mark.rutland@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2AE10462B;
+	Fri,  3 Jul 2026 04:44:01 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 65D7D3F673;
+	Fri,  3 Jul 2026 04:43:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783079045; bh=GrslDCw/jAcNOwlB5p8nyDTpYshtAqIWlzis+qMG09I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tKakZnJ38IyGMrpp+FvNGCM4vGiYTEfyBni8Tcaswrg4QrDdEbNpUaICG78eSHmGQ
+	 OGQV+KmXsh59rXzLS/pX0QGbIzhBmg5wD2mrtFlZMHliVzpGArzzl6pwF6bB5ekiJB
+	 DUxWC4xjecD3+Ioa17sixIZ2uo+RdtMykGKWIz5Q=
+Date: Fri, 3 Jul 2026 12:43:53 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: oleg@redhat.com, richard.henderson@linaro.org, mattst88@gmail.com,
+	linmag7@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com,
+	will@kernel.org, kees@kernel.org, guoren@kernel.org,
+	chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
+	deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au,
+	npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com, svens@linux.ibm.com,
+	ysato@users.sourceforge.jp, dalias@libc.org,
+	glaubitz@physik.fu-berlin.de, richard@nod.at,
+	anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+	luto@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net,
+	jcmvbkbc@gmail.com, peterz@infradead.org, wad@chromium.org,
+	thuth@redhat.com, ada.coupriediaz@arm.com, kevin.brodsky@arm.com,
+	linusw@kernel.org, yeoreum.yun@arm.com, song@kernel.org,
+	james.morse@arm.com, anshuman.khandual@arm.com, broonie@kernel.org,
+	liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com,
+	yangtiezhu@loongson.cn, sshegde@linux.ibm.com,
+	mchauras@linux.ibm.com, austin.kim@lge.com, jchrist@linux.ibm.com,
+	arnd@arndb.de, thomas.weissschuh@linutronix.de,
+	sohil.mehta@intel.com, andrew.cooper3@citrix.com, jgross@suse.com,
+	kas@kernel.org, x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, linux-csky@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-um@lists.infradead.org
+Subject: Re: [PATCH v16 02/18] syscall_user_dispatch: Introduce a weak
+ fallback for arch_syscall_is_vdso_sigreturn()
+Message-ID: <akegeU59jSK9t7FX@J2N7QTR9R3>
+References: <20260629130616.642022-1-ruanjinjie@huawei.com>
+ <20260629130616.642022-3-ruanjinjie@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260629130616.642022-3-ruanjinjie@huawei.com>
+X-Stat-Signature: 5iocjg1kt9wwp3uifiu3ajx7ctur34co
 X-Rspam-User: 
-X-HE-Tag: 1783079028-343645
-X-HE-Meta: U2FsdGVkX195rtcpClgek1elPRjjhW1uKjcHOcnx8dlGGFtItCqrdkE50viByoH0uwUNxFvF3/D/RpjA9y6H5k/ywtefte6/1dsVRO01k/w/7DLp4l9GlgsM4qBYQVG9fCgtJFr2+YfddJtFQdvzCMkRWX3asvuSEoIjdmHguTi0au8AO1IjHh+Z9PqDv3ln5mQdfol7XrXNHTV6mfICEaGvCACbRIE5o2X8j9AdmX/oDmG/JpDHv8/Xh3uRUYOUrvu1IkX2Xzvfij+GupifD0kGROfa5ErWnzLom08uxruob/8e1bdUt9zbz5aJixidItladijuNA9PlcsTOllFKyXG33rPprEBCkFZfSPlkQG0tYMz61s/NwkBySSJ351GCwE1PCpvqnTWBu8tI+GAmCoLKxHXZhxnstVlEcUKsn4TQvrGxCHXNmImuUnJ1HGu8/4oNN5Ys5gUyRKV77af7oxNulsl3jaJ1GCLlVDwJV2ZMsMtlDfMQHcx+o0mY5RJZMcFUZZHDvaGZD3OsX+8q8ZJRc4C4VRmDSw6kB//wYGFfRiydOzBhBnjmYhIH/ylio7G0cYk/qXss5jS87t0+mec/pUmjo9xFu0EkLoRtgCfud2UFrcEN0hC+5Tki2izwTPgjm5tG1UreaqVRjoJ7pb16uYvzF/OOT80yY4qsAqfm6DHSq0V94ipIvnl/LcF1aHRz7eUH3Wubv+6tT0DGjk4NAfFuKiV1ugijA+C0ttiP4UAWij83h8WJrSfQbeTZhjeP39pI2rTOuv+L44gMAJXTicTbOWmSM57PJKAf4zM6JvlqSqt3rJJyT5dWb2qjV4PpTw4m9BY/IsqFyn0fpvF6DciS9OnItyvlKiG1q6Xg7k1XeJ5ZbeqtaYuwAULVxCeE4Q8DTmJF6B6AOJWmU65a6Kyd4uxc1HW+rHIJU7N6c/r6Zvs4XWF0L2wAplu/0R8Dtj94aSnZa5t0P9
- wQlZsrup
- Y6WvbJrpX/hbyOvmrueE1zJot9H/y07dc++sLK6gTNTD33VSpRW/9IDkw8nq7s3HlzQh5M+zUexSGijz0t8NT90+U9t3WyyK+ady0kwCXL+OkeRUpUnrWsyuec0r/05NnYXyUsWqAr0e+ErDvKmIa1dOLkdSjIlqGyiAMgee2rLFUTEurDpIy43WFJLse0wlklBP6PzVP1AVJbSKSZgstowzzwBm59eN5fVujn7aQmKMuEAbsrEJy2OWCsD76jrJbjxR/uTEJ0ZYz3n2EYi/MuyU9M11fpNZoQUlL31YH7ahZMsxkuMO77uhJ8FUX04tdBMlp8C6JDMcYaWAn8Ln7v5R7UFSapURM9jNMH61+3x6g9v0=
+X-Rspamd-Queue-Id: 57423C0009
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1783079046-965368
+X-HE-Meta: U2FsdGVkX1+PqkzJeUo/29jksyIcqA13FMp0MXXHM9AAhXFZ4d6Y/1fuLUB7I0eMYGt+Xkx9inPicUa0tKxKMitj3AtlETub+yPenB5ORyxxr9LH8MVKlTF2O3vdumC4+3n3JlDxzW2bp+VGtcR719SdFqDdtoTCqf8t3NKjWowbSrtKAN7uvNcrfi41JlpG+b4psrK7G2bQ2MGLt+YIS5A38JQ6trMWr/Ft0BorMdcq8xn452wEGw+ef9W8pq44HFp2IMbLj6kDGjYNYIok7QolxtUGQK3HA+T1oL02PHR/HJnOtBupV3q6xeoq/2+ibHyNYDu7ybOpsI13p2wVcE40au98O86fga3UM0YxTpVQK7KS2xmb//Ginq7YbS9NrAvkIhaBzqjRxRmedrzWwAzvHup80sfWZGYCQQxLXcMYMideD5lXWRpeU0zmgLKZtaAZa0IelEh3qlXLukDio0HPwhQyFAu1cJkdNns1aPnfdvoAbLnJWb2FSeWuPA1kzC7KOdFPZ3I/iOUvDQ/RGihJfXNgxQa371OJnSIm2UZSL1hjapBIzk8OSXZU7oSFspLoglmrFuTD8paWytH8GLncRJYjJFZUnMmJk0h9em2qZclsJNIpqlnPB2aglkkpv06FuPgA/nSBCsfuA1eCR6aU5sCj9Km/mTQU4PwJcVWLaWNc5JyUrYGT4xtanQynKINgaxfZiM9+7KlK+UzaCKAXA53QaTpbJKovINvP2syWkTx8D/2q/Y65/WFpZrjNcTNjK4Vo+SxOCe4FhnDKSmIo57LqHXrTqKlKYf6gM+bXGk9ukXNHx1Gd76JTVtQ88Vkp1ULbbood4DFzMLjpmveoeNZcH8LKjboUCpRvvD54xg8sHK/K+nJbN9wMPrp6XYkdWKNOxjD+5W8bEONieQXJ9+gQhn5Gtz440rJWy71iVHOdBKmoxBuQuVzW2kH8F78kh/WMLgNHiUMYDFh
+ Elybjm4I
+ nzkBvXuBLewKlgMki15oMTBkHYoqXlf3Gjma3mMI817enkgW2i0Ki9FWUJW/vz/UeSs0/h8TK7TInyN0HmQug2pcddavm5PKGo5C56n+XU4IeiLCIoJ3nm0fGv4pmvyzRVXpgCiKJOACPNrf7HiVvokvP06OzPt1OKvp3Fvm4Obn4v3Y74NyMrSTg3h1EXQhQTzAyJda58QFctd1pFCVO5gGyM19kPgdRTw9EtiqiaKzgGQLcDYCmpTn4YMDF1jWvwDGhz5ooWBJ+IoiNz1YiitSacs2V7xGkyJCfbg8V23Pz6IREU/19i+Y/KYOHXF2XbqwGCcodpCXiUOv+yGUwvv6SJwyDFYE1ys6N6Nz6TDDQot8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,21 +119,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Jul 3, 2026 at 9:32 AM UTC, Vlastimil Babka (SUSE) wrote:
-> On 7/2/26 11:49, Brendan Jackman wrote:
->> Deduplicate checks for whether the current context is safe for
->> spin_trylock().
->>=20
->> Does this function really belong in mm/internal.h or is it generic? Not
->> sure. If someone ends up duplicating this logic elsewhere in the kernel,
->> that would be a shame. But goes in some generic header, someone treats
->> it as documentation about where it's guaranteed safe to spin_trylock(),
->> and then it emerges that there are other subtle preconditions that
->> didn't affect the mm usecase, that would be worse. So, just be
->> conservative and keep it local.
->
-> Agreed. We could even use page_alloc.h ?
+On Mon, Jun 29, 2026 at 09:06:00PM +0800, Jinjie Ruan wrote:
+> Currently, multiple architectures (LoongArch, RISC-V, S390, Powerpc)
+> provide identical stubs for arch_syscall_is_vdso_sigreturn() that simply
+> return false. This results in redundant boilerplate code across the tree.
+> 
+> Introduce a default __weak implementation of
+> arch_syscall_is_vdso_sigreturn() directly in syscall_user_dispatch.c that
+> returns false. This allows architectures that do not utilize a vDSO
+> sigreturn to entirely drop their redundant inline definitions.
+> 
+> Architectures requiring a specialized check (such as x86) will continue to
+> override this fallback with their strong symbol definitions.
+> 
+> Clean up the redundant implementations in loongarch, riscv, s390
+> and powerpc.
 
-Would be nice to shrink the scope but I think it would be "wrong" for
-slub.c to get it from there. It's not to do with the page allocator.
+> +bool __weak arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
+> +{
+> +	return false;
+> +}
+
+If we need this, please make it:
+
+#ifndef arch_syscall_is_vdso_sigreturn
+static inline bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
+{
+	return false;
+}
+#endif
+
+... and require that architectures which need this provide a CPP
+definition.
+
+The use of __weak is generally problematic, as it prevents the compiler
+form being able to elide code, and gets in the way of symbol resolution.
+It's perfectly fine to require that architectures need to provide a CPP
+definition alongside their own implementation of this function.
+
+That said, as per my comment on v15, I'd prefer that for now we DO NOT
+enable syscall user dispatch on arm64, and we first make it possible for
+architecture to express whether or not they support that, even if they
+use GENERIC_ENTRY. That might mean this patch isn't necessary right now.
+
+[1] https://lore.kernel.org/linux-arm-kernel/akZgV0Y4YAmB43_g@J2N7QTR9R3.cambridge.arm.com/
+
+Mark.
 
