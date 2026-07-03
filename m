@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A53A1C44500
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 11:42:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4648C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 11:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 758BA6B00B8; Fri,  3 Jul 2026 07:42:57 -0400 (EDT)
+	id 7F4E96B00B9; Fri,  3 Jul 2026 07:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 732546B00B9; Fri,  3 Jul 2026 07:42:57 -0400 (EDT)
+	id 7A4FF6B00BA; Fri,  3 Jul 2026 07:43:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F9D66B00BA; Fri,  3 Jul 2026 07:42:57 -0400 (EDT)
+	id 6BC5A6B00BB; Fri,  3 Jul 2026 07:43:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3791E6B00B8
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 07:42:57 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B82901A0501
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:42:56 +0000 (UTC)
-X-FDA: 84947278752.17.96A4C53
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EC036B00B9
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 07:43:07 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB7691204F4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:43:06 +0000 (UTC)
+X-FDA: 84947279172.29.FC827C8
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0291740006
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:42:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=k2n+xkzc;
+	by imf27.hostedemail.com (Postfix) with ESMTP id E6ABB4000B
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:43:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uKpG9QTS;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783078975;
-	b=EOlRrSWZGLA+vfwpnPmQZaL2JT6DjbLaoaCBn2JPKdLTi9tS3OsF8oeb7NqZKBQlgvtQgP
-	Xu3tzGLBfg9tTZBxHp+WPo9eD9A7yX+WQ7Elke9xDZ4ogGmsBlj2lJE7GEzdcOG9Fm+jb7
-	aD5M092WkUMfIu1V8VZkvWZMXfW94l4=
+	t=1783078985;
+	b=Rexy0nkNmPub3NuY/xYWy1/rMq2SsQRw3lCzQZt1JKlVE76EiguWvKOMrOBjKzqma7rjgo
+	Qr+weXKIVPzLf7fuqJWRc2MvijOvwfBZwsAeT4LO9Rm1xCvWu6xkxlCeTbv5WgOmSFEnBU
+	Qabikln3ZavvyIWkMANRvdcmMjamnwg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783078975;
+	s=arc-20220608; t=1783078985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SWBD+9qQtzjkzS2vxK4tZ/6Te1U+xHeFS85kjLJ6Phk=;
-	b=OHxUO1B+TCCJeSvsqQI48xnJai8g99OLKeeVlwOtVVpqVXzl740I2uyanUqjQWWyghKzYV
-	UahL+ldG5hb7jQ5mMJRsv/yE0BehYmKeuQ/75CEcoxZTv1jXP8wL8U0WDwY+jCn4JHOgKp
-	rek+q18bNperwTnJCUU+sfZf5E4Ttl4=
+	bh=rhmPAyPji4IiYnAgpKt2XVKFZNBHGXgCXYcf2whmneI=;
+	b=Su7liswqew7K247ocWjEZhfSdy+eKeFXiZ2l/DmGn9kHr5xKt6xbpNZbQNAm5nD81KTl7R
+	jxDj0zNreMudpHOH3ejSTUVWVG8AS+R8wzSFLhzEftDbUj9Hz2HTRKiwFNQPVzK4FUkQIJ
+	Jhi6kfQ/KEf+u2z8jOqq12H+n2LdbEM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=k2n+xkzc;
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=uKpG9QTS;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B647C361C;
-	Fri,  3 Jul 2026 04:42:49 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C3E4535C8;
+	Fri,  3 Jul 2026 04:42:59 -0700 (PDT)
 Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 934E83FAA1;
-	Fri,  3 Jul 2026 04:42:44 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A11603F673;
+	Fri,  3 Jul 2026 04:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783078974; bh=h1IY5vXGtS5qm0GLFc9NhQBQjfsdy191rN1Uth+Oiss=;
+	t=1783078984; bh=QibAWbZw4adH0rQMvhQv9lcIr1WFPi662truFhm4Ubw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2n+xkzcwCyd3J/xSa4zKVaUpOHOy35BxeWEYAFbGOCKUM0tXaNOstPt5Q76BSk3n
-	 yjtzVV2etNN40/5idIaXRjsy/phcdoOXCHriXGcjm3ZFmeV1EARux/ZHb42t7GgVAC
-	 OzlyxC0kw2XvxGBk6gm4fmcJpkt6Hip6x3aoeeAQ=
+	b=uKpG9QTSOi87p1LOsj3dnWli+GqrppjCjNWMmEgZLXCJtd57TsRx7GWJ98w1ZVOAZ
+	 20yIQYe4WsOHi148Hhyqepvl/DlVJN4MyKKvI5WdispsFnQlQaD+7fhvc0UOsbtErU
+	 ReX/Pnc7lJHNnbHM3HH3YQyfDO/tChOi9OHrBpu4=
 From: Dev Jain <dev.jain@arm.com>
 To: muchun.song@linux.dev,
 	osalvador@suse.de,
@@ -99,22 +99,22 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com,
 	stable@vger.kernel.org
-Subject: [PATCH v3 3/6] mm/rmap: use huge_ptep_get() in try_to_migrate_one()
-Date: Fri,  3 Jul 2026 11:41:56 +0000
-Message-ID: <20260703114202.365553-4-dev.jain@arm.com>
+Subject: [PATCH v3 4/6] mm/migrate: use huge_ptep_get() in remove_migration_pte()
+Date: Fri,  3 Jul 2026 11:41:57 +0000
+Message-ID: <20260703114202.365553-5-dev.jain@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260703114202.365553-1-dev.jain@arm.com>
 References: <20260703114202.365553-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0291740006
-X-Stat-Signature: uppahmkkkxsm3ai8sd3y9erhcj67emuk
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1783078974-860880
-X-HE-Meta: U2FsdGVkX1/EhnpUOBN2//oxlRTiysfiVRpGMKYRu+P5qy6Vm9sRdTdu5DasXARwvxlbTSqEHeevC6CitnWkAH/TBeov1gG9itjuvBURZ3OqEjjBeqHjvHbJj2C2PVI3R8IFC1iKdBR9aFZEsp2zG4uR13Xmg94+ljZ/B6T5dzGk+M4p2p5pyB84jVcSt55un3J49X4g3Z/c4vRBq/+UoYymMJ7WvFl0NtEArnLk+OuubCdoENjeq8ahvCm6XyxK2Fjy4j1SJ1ZZFvDGXNnqWZ4qPI7xeKqVPxhqEgO6aQ0JoYjt5H77hfmg1bCmCtbbD0Wvf4pS5nkjiJNnymT6ijFSUf1pxslXGCQsvvU5mkR0gfFXOAXzRtpjB68VyBRGTAXSdkh7kN69GvA5HdDBhbzpgUyo/ITHLUxL0QfV2DzhXHWlll2TwxXKr/ax/DtHy4xmhE4BjWuJqMd7Goz3HzWUqmZj+xv0FZYButOQ5Rif2EGxhTdTxVzD0T6yB1a3aMnWoQhazzN7GxpMCnTTwR2ySYd5lgkMugmXoae+NJToZteYQzNPLRoGvp78ULsYouliAjaln87/hrKXzOqhrmj2Y7Zv9pMwvVPsW8hkcUkc5uYnDM03lxp/lComTQbnsIPRLAumMk2lkG7ARMMwzd5H2DHD3a9aVC8khbL8bKaUMH92DiW2Q4TwFwphgDH4YzBWpXXlM4XTmhYcnwbtyOSwt/at9TGW6sp8KuiISPS34AC+arDVpYSZyXibiC9VlNen3S8qlfvgfyvVCfqO7EUhbJ8qRQ7iKTxsc0lCV7PelvnezCMqoRNPn6r0SFqOwiwu5a1njhjiRU6yR/k3h9SejiV3Ik3HYMW/cKjx7Uf0FaoO1jSjg5G/l9hF6RQDe/sQBn/T1MihvQ+xmlhzDBlOtl495vB+WVBwSyJy5TB9mfj2kQNjJKQfYplKbd/wXOk7RX6Mzg2bq0GYXIE
- hnUxFHnJ
- FieljATGEHfrcNWA8pL0ft5JRcuVF1AnbejOZrGDRg45wTpVyjCt00OzxdLVzJNi8MHRII+R0VastF89hOvOEP2X2PjInY5xST0En1i1RrqnO7k2msNT968+mB2n0Xp/mUfL/xp9J+hB1dOFTLvpuB9n1wNvTxNFXgmFtBT4ByDA2iITdoKSdSy23E8BojaR61ycmEOkdkM7g+s/9qhdVF89gemrFi3qDs4oLkCC0lSxBl54c4tf0+D7GdeQ5VFw9NplpAYl1TCqi2xDUsONUOBV7+4nn61aljsovGiau7F1TXvJ3arwOSs4huOLJ68D0r1ELIojzKes94W2CoRviynBtjC5DGXaHTXkUwoj+aUvDmd6y3Wpbh9zZyb4l4L7jwwpz8eg0xiSvSLI=
+X-Stat-Signature: 1h9xwx8t4ftywxj5zbdxiwp8nqpusxpo
+X-Rspamd-Queue-Id: E6ABB4000B
+X-HE-Tag: 1783078984-681740
+X-HE-Meta: U2FsdGVkX18rg79vKMC+Bn336FLASwlBSdPiOeqXPPCkSsRNGEtD+Av2BarZb5CUrWtmtrI+I8pJ+OSwsWzcz1M1waygEQWV1rShQkjBOM3JXTOshJlsltk4qsD8x3O3ueTT9JndNvH8j+r5zTSSUvCoIIcVQ2XmUn+a12VJ3uKMzYb3LPFFoeWkNpQpxp5OOY7MgpKgOgxE4vZVBOYjt4zyexZr+GSPS4G+A/8xFXuv4oaPWw8yoaw0U00RcGqK3035ujHteH5xZzSC7zzragqq+EbMVkHafzohLpT+rUwUrBOrTZ09lSoxfiYvMRd8rg1pjaY2j1fbFghwSm9u+mPoRCG44QnW/2ALOh/ZaRPyAstbCU2EaCdN4gaVCI+Z31tbTUWVA8j1l17TUHevz/N/e3/YWkxMEX/iKgzjuAhFYnxiXBmX0osdu9e0929t4nPE2zuT+o0KX7lVOD5/DpnChDyDQfqk0n+vwKycr1gPPJFep+hiic5GqLVD6Oy7FGq0NWm54T6kG20Gc6mOsafqLlI0xrd4faQnPYJmSMXUC6qDnhXrO1HuuuIuUrUBuCRScMb6tkJFpqNOvoG+UG0Fnfm5AW64vJnFCpW209eBYbzucFsrDN/Yi+un1VaqbzX4A4MnDAZOowlQLmbI2IY7PLk6igg8Ia44eCuFtcRNySceSwpcHyQu6hvnF72pM9XzvIQ5s58kb7cXlbhNiZD6yWiQD3vgBj4zxKYEVQXPK8T+GB7eY1l3EFp/X9rC/xq4cor1+1yHzdMM5gyth+L0MhmY77iaG54/D/v4ULDRF28VN+bK2tB2731eNe9SLxKaL4Je+Ho824mhvQ/hi3ep7To5u3RVs9PuWfpdXr7/1dIaOILcLYq7G3emfXt+3/9TAu2zNnpkZF00kEscwIJcTMVuTeiXkZy510OavhSGq9zzO7QVjrFwqz0rlSYOZG9UmpnO3EZAIpuQz7X
+ kaD4qI+n
+ OUGLB4WPh/AcDLIGldFCOUE7N+ErWN7jThwaCxGMsAs3Ann8aEIpW0COY1hUUCXY7eHeA+sn9erqm+CjXmioOGaJ2QjcAZGUHNMGJ0ixyJzQk55vyQVecU3No2nknAZ9RmOKSzEBwUPlYrX7GoP3mL/DSfj52fS43094cUVHERpqJHk0VtGEmKpfBriFwCdEzVhwGYxDs7Wsnuq80A16DlxisxDG+RSEI7tDtRMTEuKS41C3ySA5a+9l39IpA7DvkkRhH5CE3alphbTDWtzM48JRAWl1eU7CpsGIPp0Rz9kWB7wgV9z11C4bt015MhJC6VwOjuJsNBN7FusYuKcY6HFQAuD0+jZBY0fc77iApB+3qIQEWJwckZwbAJvQT6MYeA2F5nAEEMe5JVeY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,67 +122,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-try_to_migrate_one() is used by folio migration to replace a present
-mapping with a migration entry. For hugetlb folios, page_vma_mapped_walk()
-returns the pte pointer to the hugetlb folio in pvmw.pte, but the code
-reads the huge pte entry with ptep_get().
+remove_migration_pte() converts migration entries back to present PTEs
+after folio migration completes. For hugetlb folios,
+page_vma_mapped_walk() returns the pte pointer to the hugetlb folio in
+pvmw.pte, but the code reads it with ptep_get().
 
 On arches which provide their own huge_ptep_get() to dereference a huge
-pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
-etc to misbehave.
+pte pointer, accessing via ptep_get() would cause pte_pfn(),
+pte_present() etc to misbehave.
 
 It is not clear whether this has a trivially visible effect to userspace.
 
 Use huge_ptep_get() to dereference a huge pte pointer.
 
-Commit a98a2f0c8ce1 copied the bug from try_to_unmap_one into
-try_to_migrate_one.
-
-Fixes: a98a2f0c8ce1 ("mm/rmap: split migration into its own function")
+Fixes: 290408d4a250 ("hugetlb: hugepage migration core")
 Cc: stable@vger.kernel.org
 Acked-by: Muchun Song <muchun.song@linux.dev>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/rmap.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ mm/migrate.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 03737daa348c0..ea4ad5e662f7d 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2505,14 +2505,19 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 		/* Unexpected PMD-mapped THP? */
- 		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
- 
--		/*
--		 * Handle PFN swap PTEs, such as device-exclusive ones, that
--		 * actually map pages.
--		 */
--		pteval = ptep_get(pvmw.pte);
-+		address = pvmw.address;
-+		if (folio_test_hugetlb(folio)) {
-+			pteval = huge_ptep_get(mm, address, pvmw.pte);
-+		} else {
-+			pteval = ptep_get(pvmw.pte);
-+		}
- 		if (likely(pte_present(pteval))) {
- 			pfn = pte_pfn(pteval);
- 		} else {
-+			/*
-+			 * Handle PFN swap PTEs, such as device-exclusive ones,
-+			 * that actually map pages.
-+			 */
- 			const softleaf_t entry = softleaf_from_pte(pteval);
- 
- 			pfn = softleaf_to_pfn(entry);
-@@ -2520,7 +2525,6 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+diff --git a/mm/migrate.c b/mm/migrate.c
+index d9b23909d716c..c65f0f43df7eb 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -371,7 +371,11 @@ static bool remove_migration_pte(struct folio *folio,
+ 			continue;
  		}
- 
- 		subpage = folio_page(folio, pfn - folio_pfn(folio));
--		address = pvmw.address;
- 		anon_exclusive = folio_test_anon(folio) &&
- 				 PageAnonExclusive(subpage);
- 
+ #endif
+-		old_pte = ptep_get(pvmw.pte);
++		if (folio_test_hugetlb(folio))
++			old_pte = huge_ptep_get(vma->vm_mm, pvmw.address,
++						pvmw.pte);
++		else
++			old_pte = ptep_get(pvmw.pte);
+ 		if (rmap_walk_arg->map_unused_to_zeropage &&
+ 		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+ 			continue;
 -- 
 2.43.0
 
