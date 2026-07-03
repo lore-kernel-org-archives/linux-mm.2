@@ -4,86 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA06C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 16:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B34A3C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 17:06:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B34FE6B00B5; Fri,  3 Jul 2026 12:56:22 -0400 (EDT)
+	id 91EF16B00B5; Fri,  3 Jul 2026 13:06:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADDF36B00B6; Fri,  3 Jul 2026 12:56:22 -0400 (EDT)
+	id 8CFD86B00B6; Fri,  3 Jul 2026 13:06:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F64D6B00B7; Fri,  3 Jul 2026 12:56:22 -0400 (EDT)
+	id 7E5FD6B00B7; Fri,  3 Jul 2026 13:06:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E4BC6B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:56:22 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ED6061C7230
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:56:21 +0000 (UTC)
-X-FDA: 84948068562.27.0CB275C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 65B8580005
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:56:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvhY5qHn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 447CE6B00B5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 13:06:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C8F3C1A021F
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:06:12 +0000 (UTC)
+X-FDA: 84948093384.22.D1B0854
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 48BD640010
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:06:11 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ve2ee7u6;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783097780;
-	b=JWrorELvRaGiFL/2YB/gvvTYI1lqb03zjn7cgC6lo0KXVchH422FKKv29/WDLFSPJpWGoQ
-	3xJdd5rLau532RrgtB2QruH9eTghmUwCR2KwT8HF7+fKoHIHhJg2E27bQBBzqtzGdzo6WO
-	hVkzSWJm0PjZbRT/GN+RfGjd4KzsjS4=
+	t=1783098371;
+	b=Gve8gJjV9GYRJQnXoUgxKdoSS+sKeGEy0EM4BYKBOJjhV6Cxe/RrFoUohiU1cp9PaGxkFw
+	/1pikDpiP/iQFVuYanHHJI1Bt5f30F/u9PBVklals4SoeydpAOcIoexJKFRblMkaVjifRZ
+	Mi8QgiHbAT/DCaJ1yXLluJgUnoUHRSA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783097780;
+	s=arc-20220608; t=1783098371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=d8Fu0LoPjMdgfenH4nsnTkiBTDtpH+E6tfmdEIE/iDI=;
-	b=SD5AAuv96+kH9KD1Jujp248fhGja92YhCpQMDuXT4xeUatLaJ89JqGrzXUMj5sYnu9Q/o7
-	4EPvm+4fhLlTIAyCcKpp72JIhcr8iJ2P2sMGZs2UUgX/3Zm39bcYuKALXInzSc+Ig8INVg
-	Bk+Ni7hhophYvYYM6Pbk85zcqWwBzdA=
+	bh=KJy5PCwtKFgXV0xEcKKTT8ihzzqX9E1/Kam4u8NnZNc=;
+	b=5bGwGNiNLzy385OOwdzyj3YQAWauXVrA2lABy4lamVVl9DHHMJnoRQBhhzhlvpONYDAMry
+	P52i2hn/eRWPS+L/FgXteA0u7LQeqw3XKxBpXAqi1DXxuLtu6KUjOWrC3OkPgLZiFqDcWY
+	SHS8FMONw38b6nx4oBXqcTWb9GRE9zc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DvhY5qHn;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ve2ee7u6;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6E5F641AB7;
-	Fri,  3 Jul 2026 16:56:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1131F000E9;
-	Fri,  3 Jul 2026 16:56:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9497360051;
+	Fri,  3 Jul 2026 17:06:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40B91F000E9;
+	Fri,  3 Jul 2026 17:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783097779;
-	bh=d8Fu0LoPjMdgfenH4nsnTkiBTDtpH+E6tfmdEIE/iDI=;
+	s=k20260515; t=1783098370;
+	bh=KJy5PCwtKFgXV0xEcKKTT8ihzzqX9E1/Kam4u8NnZNc=;
 	h=From:To:Cc:Subject:Date;
-	b=DvhY5qHnFGn2Dni7hV6Z6DToBHEQ4RtbpWP13BQ1U+IJOykwuBw7AdajTzI0l+UUb
-	 oVykTxPjHdTjMwgax1sNUoGgNU47w4Id/dTWMFaQLl40+naxIuBxrsvvREKiUPBJY+
-	 y9UX3d4y7WM7QYahilmTc/nLZAau3lOqEyTzVmhP+sWwREnY9ad5rTyshJT3rPhWOx
-	 w9SnrBeq+mYy0TOYv34Jmz44cKLP3FAf/xwZMO4enfLgnKZ4zHRwr52FHse2tBZ1K+
-	 SxakAADI6IWOAmRD6SSNXdUIHsmXLJe3Ax0VW5OKmibwPmZQ9m3R3zeNP+/pZpI9Ip
-	 3U7kn2biOOcqg==
+	b=Ve2ee7u65r8ZUPjBrSRGXBU/LnJFcwLhVngkHB4zjJ5/XOn4fNmEXp4e8KCK0Vhob
+	 pbMbXkvDAqFEAyDsF8qsQEI1NACRu9UFFjPRPUuDiVg2KtbqowSbrdqzhR9TyGhDnY
+	 KAfulYSFNAuH742OSkovW1nIVBUtcOmcsOyKm1xMRMZituOZIS8gB+PlJFZC+x3Q7v
+	 fGyJuhyePTmeqthKlXfVR7mATXc8OCK1PtClZZknwKCu1RWhkyvGFmFTHczDJ1j3jd
+	 ldmi9SgRIX6Zi+G/GVpop5nDjVjwKLYbk+bBRTs9kPn7g3p4n2pBodQsxzj8z7Tx5j
+	 RM1mrHXLv9ueA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	"# 5 . 19 . x" <stable@vger.kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH] mm/damon/core: disallow overlapping input ranges for damon_set_regions()
-Date: Fri,  3 Jul 2026 09:56:08 -0700
-Message-ID: <20260703165610.92894-1-sj@kernel.org>
+Subject: [PATCH 0/3] mm/damon: provide pseudo moving sum probe_hits
+Date: Fri,  3 Jul 2026 10:06:00 -0700
+Message-ID: <20260703170605.94472-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 65B8580005
-X-Stat-Signature: dfkae4u5z59jyst5q4yxocfwpeo8m8jz
 X-Rspam-User: 
-X-HE-Tag: 1783097780-993377
-X-HE-Meta: U2FsdGVkX1+bs+65pb8NxzTxqTI+HgqFeduP1/ilprWveI5q6Mt3WyqrvqMn+so9F8AKPw0AtK5UGOEzwPk/xEmG/EOy0Gz2lrhzUC4SX9t70ZtxX5C9cy9DG+R8Q+1XYZ6olZ1phuoRgqJCoahFoyDZIG6Hl0EAcWinkW+JNC+fINxH/xLsN3xM3Zv1PY6HpjVNjuF3utYcbuY3+lr0glRUUokSNiA7JcnPL+SknGrzYOm8yEIMWV0L7NNiYYO+wT/QBFguV3yyqHZsfO91EICrf/O3GBN3hmESKVwG4uJHfZESVdpHgfZVj4r07Sb10yEly3P98D/PukiyYVNzBcolZQ5WM2P/ViMCJd06zxkA1VlBWVCUFcBDyMdF+C6BevcAoQG9/z8moeFCHRU45q+EHgQ7fjC6D+nej0ZcUW9LjyVLZ1OL0o4usCitc+0+3YXa80lyvx/fD5VQmPoMGJ+e2zw4lpfUgapwqd/UithC3PRyNJxAywgjkbFRxI05IIhlUaLZerPIb3NMVdwmKHSQ6uOl+EXlGwR1AelTr4nQ2r+ME92Iq/qp41pQWqeTsEw4zSLZ18M1HHu9RXdVGN1ej8nZZQoOYH4ODlcwlr0g1AMenou8C1KZtJGU96ths0p2EfxIEQq8BFdxQMD8Qw/oEya/82gB8mMFlALtVdcVkgvO7sW8njMFnkxsw2F41hUHuGyGCeHY37NxwaLNhVkNCo2uengYPo4kHaG1D4EK7b1IFXzJWpJcqqFFakp1e/jMK/F1C1sQHvnY04gGOWFI2pK8J/lEDbrV/qQVY2TyHSD0M30ly17+7S2cWa1IMTYlstiGG6Hf/pv4MIlBA5IsY08ZR1ltPpOslWPqtcNJx6eURBbF9VFm3i7aQwUgLPV7AxkwCKrr66h/T1Y1X7WmLRahMBIbq2jyoyTxa/EEVptUFQkp/vW0yo86nrqiTv1NckZNR3MfrAvdjuA
- 1JtVHCgl
- j+XA0/RHsmy5O8CqUThRbFrSW3a/8O8g5IU60f+4h6sNnUi2AK4BqsmGRydGNrJFvvzXQFO/Vauq6WZSYCKYMkCgsSmA43HLVFhG7BQJlVicGR2uB1UnGi0MjeQTtO1WjfpAPFaQlI/UX8ums/zGSB9e4pNt2sXM968ibh32OLhxu8XHaPpfxhClzo+R749rkeq4mATCKqI4ggQCDONe2OnpDsRGcnoi6aAXQ824rio8v7OSjoZ6qITqRXxNJmPDdgRALtFwoRX8WsNwEMDM81ZeBfYrWO43KGDTuVadChdtxwRLlvOfuCDIbE25vvtD2S3w0QnAnkj/JBoty5sHr2kV+6g==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 48BD640010
+X-Stat-Signature: oro1ybqx9ubo95e85xrr9ke9z56bjdc3
+X-HE-Tag: 1783098371-872200
+X-HE-Meta: U2FsdGVkX18JiOkZF0Zpnu+swIum2AcYZEttp2VCzedF/07mMmPjiqXio/eLzid0/YmfjDaXE21rcXzY9G18mZxpTfY81QmezxjScmu/gZex/rsWO5gB/HI8UmG+TXsYtwxkBNwzZ/gSOCcJvZIa9pnxYq3UYM0aZ+V0xGXUDpTGOB+x4E4qulmM6W2otTH3CwmiGiGIB8cG0Z3PwbBsM8jvEmNdzZRtQwPxRyYK0JKPUZDcrSBVKOLvGP7XMNlFca67/VoQpquCC1+P0McxK1Bf2v+o3lkdMx0WlA2V1sjgvYeOVBix5h16q+gy2R1pYSFenBf30KRd5Rf2/In5n6Zk/yLW16DdtTbCc1u93taXVYBELJLdkFE1ctNGtpx87A2FdT5emHiOFTtn9KSgeVIs0uZrkLNV56gYYXfGIUAEqffAzX3UJjIQrUon8Nz0vJF6cCh3/imN5OY7lph7BNNYlQXw14LDNwWhy7yMitV2N9yRF6kMSEpp37lEMB+vlv3QGUu3twcunKuE2J424HeYaFJE9J5SXMRI9Kj0BZyYNbnm8R7l/63mfC8Zp6f9XkKmMNhzQ/NV/DcLgSbpUTZsNKSJd6cVcQdeDpNBN2Lhhkp3kdoNGmGezPHP7dcloZMx2JL5PankbDgekRRz0zhdPaTUndf8J8d0lCiTjgoAYOqxSADy3MI4MzikEjIW76HOPWzux1xiD3deOUyVb+TiebP/ImdjDyfnpb/uqEeBLwdhzbcSCwrBnLNO9cLsqURj6b8KVTogmkvzERM1zSsPv5xi4vtnaTr4XSVnwSbNXF8OdGeXzWKhiGQTvn7SJerQwq4uRgZ6Mm70MPUwHk1KRy1NfRBbpEQInzqbFhDSZjpXoTr/3MCrQtBm/V5+me42AxKDUy4DwoS/94pRQAAZLh1zLoNVRNJgHWYZHe0bkjhlFU465XWxTpDxg5rA+/Djqb/srej6ixTCSIR
+ xQq32yLg
+ cTff202KjVX2aGyTlPzzx/gRJYxEF49j1bRxpRGhLlJvfA6SWU4o27zQ5G+Mkg6kprMwDfg5nbaBAeDkvQJkwsbBF84zzGg4uqv4vkR9dicaWPuG7FrgRe25LW4IXxOLykj5Lx5O61g2Ax8KA1G8U6MKFZtc4aHqC+QiPfyPQd7TgVUQfEFIZ4VnMoIm6Mx9juMPnQ5vYyY7tAN2uoWUCayHeBP7XdduLLQKEOjVo6CZHoTPntfyuoFUY4SXCVhkHfkQfQPt0OK4G9NmCYyvlcUr5ZfIrw+V2SOeG1cZ/eyvoZBs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,78 +90,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_set_regions() assumes the input ranges are sorted by the address
-and don't overlap each other.  Hence the assumption was initially to be
-explicitly validated.  But commit 97d482f4592f ("mm/damon/sysfs: reuse
-damon_set_regions() for regions setting") has mistakenly removed the
-validation.
+Data attribute counters (probe_hits) of DAMON are managed in the
+classical way.  The counter value is accumulated every sampling
+interval, gets the complete view at the end of the aggregation interval,
+and is reset when the next aggregation interval starts.  Hence, the
+complete view can be retrieved only once per aggregation interval, which
+can be quite long.  With the suggested intervals autotuning setup, it
+becomes 2-4 seconds in common real production systems.  It can span up
+to 200 seconds in theory.  This will restrict online monitoring use case
+of DAMON.
 
-This can make DAMON behave in unexpected ways.  At the best, the
-monitoring results snapshot will just look weird since there will be
-overlapping regions.  DAMOS will also work weirdly, applying the same
-action multiple times for overlapping regions, and make DAMOS quota
-weird. More seriously, depending on the setup and regions updates
-sequence, negative size regions can be made.  It will trigger
-WARN_ONCE() if the kernel is built with CONFIG_DAMON_DEBUG_SANITY=y.
-Depending on the monitoring results, the negative size region can
-further trigger division by zero in damon_merge_two_regions().
+Actually DAMON is already providing online monitoring of probe_hits.
+DAMON sysfs interface exposes the values via schemes tried regions
+directory files.  However, due to the above mentioned limitation, it
+usually shows only partially accumulated hit counters and therefore not
+useful.
 
-Note that some of the consequences including the WARN_ONCE() and the
-divide by zero depend on commits that were introduced after the root
-cause commit 97d482f4592f ("mm/damon/sysfs: reuse damon_set_regions()
-for regions setting").
+DAMOS is not using probe_hits at the moment.  In the future, using it
+can further strengthen DAMOS.  However, a recommended setup of DAMOS is
+utilizing sampling/aggregation intervals auto-tuning, and having its own
+DAMOS apply_interval (1 second is mostly recommended).  In the setup,
+DAMOS will nearly always show incompletely accumulated probe_hits, which
+will not really be useful.
 
-Fix the problems by checking the assumption and returning an error if
-the input ranges don't meet the assumption.
+Data frequency counter (nr_accesses) of DAMON solves this problem using
+the pseudo moving sum value.  The infrastructure is not limited to
+nr_accesses but general sampling based counters.  Maintain and provide
+the pseudo moving sum of probe_hits similar to nr_accesses, using the
+infrastructure.
 
-The issue was discovered [1] by Sashiko.
+Tests
+=====
 
-[1] https://lore.kernel.org/20260630041806.151124-1-sj@kernel.org
+On an idle system, I ran DAMON with an attribute probe filter for
+non-anonymous page, using DAMON user-space tool, damo [1], like below.
 
-Fixes: 97d482f4592f ("mm/damon/sysfs: reuse damon_set_regions() for regions setting")
-Cc: <stable@vger.kernel.org> # 5.19.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
+    $ sudo ./damo start --probe_filter allow non anon
+
+Because the system is idle, nearly all memory is not an anonymous page
+but a free page, so the probe_hits are expected to be nearly always
+full.  In this setup, since the sampling interval is 5ms and the
+aggregation interval is 100ms, the counter value is expected to always
+be near 20.
+
+On kernels not having this series, if we retrieve the probe hits in an
+arbitrary time that is likely not aligned to the aggregation interval,
+the values are usually much lower than the expectation like below.  This
+is because the tool is showing the incompletely aggregated values.
+
+    $ sudo ./damo report access --format append region "probe_hits: <probe hits>"
+    heatmap: 00000000000000000000000000000000000000008999999711111111000000000000000000000000
+    # min/max temperatures: -1,630,000,000, 0, column size: 99.800 MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 3.898 GiB   access 0 hz   age 16.300 s     probe_hits: 11
+    1   addr 3.898 GiB    size 77.859 MiB  access 0 hz   age 1.500 s      probe_hits: 11
+    2   addr 3.974 GiB    size 700.770 MiB access 0 hz   age 0 ns         probe_hits: 11
+    3   addr 4.659 GiB    size 791.078 MiB access 0 hz   age 13.700 s     probe_hits: 11
+    4   addr 5.431 GiB    size 1.472 GiB   access 0 hz   age 15.800 s     probe_hits: 11
+    5   addr 6.903 GiB    size 915.059 MiB access 0 hz   age 15.300 s     probe_hits: 11
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+After applying this series, I was able to reliably show the expected
+results like below.
+
+    $ sudo ./damo report access --format append region "probe_hits: <probe hits>"
+    heatmap: 00000000333333330000000166666665111111139999999855555555333333333333333444444444
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 790.496 MiB access 0 hz   age 1 m 33.300 s probe_hits: 20
+    1   addr 790.500 MiB  size 791.160 MiB access 0 hz   age 1 m 15.400 s probe_hits: 19
+    2   addr 1.545 GiB    size 792.316 MiB access 0 hz   age 1 m 32.400 s probe_hits: 19
+    3   addr 2.318 GiB    size 795.465 MiB access 0 hz   age 1 m 2.600 s  probe_hits: 19
+    4   addr 3.095 GiB    size 797.102 MiB access 0 hz   age 1 m 23.500 s probe_hits: 20
+    5   addr 3.874 GiB    size 797.293 MiB access 0 hz   age 47.900 s     probe_hits: 20
+    6   addr 4.652 GiB    size 787.516 MiB access 0 hz   age 1 m 3.800 s  probe_hits: 20
+    7   addr 5.421 GiB    size 784.461 MiB access 0 hz   age 1 m 14.400 s probe_hits: 19
+    8   addr 6.187 GiB    size 795.621 MiB access 0 hz   age 1 m 15.700 s probe_hits: 20
+    9   addr 6.964 GiB    size 798.000 MiB access 0 hz   age 1 m 10.200 s probe_hits: 20
+    10  addr 7.744 GiB    size 54.566 MiB  access 0 hz   age 1 m 9.300 s  probe_hits: 20
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+FYI, 'damo report access' output format has changed on v3.3.0.  Above
+outputs can be reproduced on <3.3.0 versions of damo.
+
+Patches Sequence
+================
+
+Patch 1 adds probe_hits counters for values that fully accumulated in
+the last aggregation interval.  This is required for using the moving
+sum infrastructure.  Patch 2 introduces a function for getting the
+moving sum values on demand, using the infrastructure.   Finally, patch
+3 updates the DAMON sysfs interface to expose the moving sum values to
+the schemes tried regions directory.
+
+Changelog
+=========
+
 Changes from RFC v1.1
-- RFC v1.1: https://lore.kernel.org/20260702170326.87255-1-sj@kernel.org
+- RFC v1.1: https://lore.kernel.org/20260702171714.88278-1-sj@kernel.org
 - Drop RFC tag.
-- rebase to latest mm-new.
+- Rebase to latest mm-new.
 Changes from RFC v1
-- RFC v1: https://lore.keernel.org/20260701034921.99179-1-sj@kernel.org
-- Move consequences divergence note to body of the commit message.
+- RFC v1: https://lore.kernel.org/20260621214231.13449-1-sj@kernel.org
+- Wordsmith cover letterr, specify damo version of the test.
 - Rebase to the latest mm-new.
 
- mm/damon/core.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+[1] https://github.com/damonitor/damo
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index c6fc35be633b3..b2fc15a3804ff 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -418,12 +418,19 @@ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
- {
- 	struct damon_region *r, *next;
- 	unsigned int i;
-+	unsigned long last_end;
- 	int err;
- 
- 	for (i = 0; i < nr_ranges; i++) {
--		if (ALIGN_DOWN(ranges[i].start, min_region_sz) >=
--				ALIGN(ranges[i].end, min_region_sz))
-+		unsigned long start, end;
-+
-+		start = ALIGN_DOWN(ranges[i].start, min_region_sz);
-+		end = ALIGN(ranges[i].end, min_region_sz);
-+		if (start >= end)
-+			return -EINVAL;
-+		if (i > 0 && last_end > start)
- 			return -EINVAL;
-+		last_end = end;
- 	}
- 
- 	/* Remove regions which are not in the new ranges */
+SJ Park (3):
+  mm/damon: add damon_region->last_probe_hits
+  mm/damon/core: introduce damon_probe_hits_mvsum()
+  mm/damon/sysfs-schemes: set probe hits as pseudo moving sums
 
-base-commit: af0487ccfb044dd7d9418c06c6718af630e16311
+ include/linux/damon.h    |  4 +++-
+ mm/damon/core.c          | 31 +++++++++++++++++++++++++++++--
+ mm/damon/sysfs-schemes.c |  3 ++-
+ 3 files changed, 34 insertions(+), 4 deletions(-)
+
+
+base-commit: f0eadb83262e3eac82b67cb7fb5456c2e9db75f7
 -- 
 2.47.3
 
