@@ -4,157 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A40C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CDBFC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 066236B00B7; Fri,  3 Jul 2026 08:29:46 -0400 (EDT)
+	id EC2546B00B9; Fri,  3 Jul 2026 08:32:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03D886B00B8; Fri,  3 Jul 2026 08:29:45 -0400 (EDT)
+	id E72EE6B00BA; Fri,  3 Jul 2026 08:32:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E95756B00B9; Fri,  3 Jul 2026 08:29:45 -0400 (EDT)
+	id D62066B00BB; Fri,  3 Jul 2026 08:32:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C4A3E6B00B7
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:29:45 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4BF7F120524
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:29:45 +0000 (UTC)
-X-FDA: 84947396730.27.0D58214
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5068820002
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:29:43 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Km3TTjQN;
-	spf=pass (imf31.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A40666B00B9
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:32:20 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 23B8040526
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:32:20 +0000 (UTC)
+X-FDA: 84947403240.11.DDCF3B3
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4B991C0003
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:32:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ofzMecE7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 30KtHaggKCJ8I9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=30KtHaggKCJ8I9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783081783;
-	b=gmcBv2DAg1E+TtmWdRBj3TWUql9DZffiW9zNLRfLAPUcJ0vxKqnffkVOQTRmAT34Go+FnC
-	W6aSJMk0lcEvTrHm3iL+3FZVVaz4YlY3j/W+Z1xa/fD0On4uPQUf/WgfW454nIMW9sfgk2
-	Ob9URV1M+IF+m5QgQ+zq2x+xwl+gmKk=
+	t=1783081938;
+	b=OXnLb1009B21SjMDfJkjpRiXJ1ehLIDEtNzb8sAUABxVXrShLyhZH1ce6ijCLoigSsYMD/
+	YdXfyOZGdDlfvpO7lgBH0I9tWpOmWQoEloeHeyR1wIvHmZ5JoSQpUNBWwkiTnBlax5kSm+
+	XphdFQuzaRAtedj3IoLfRZworUKHwlA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783081783;
+	s=arc-20220608; t=1783081938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xWymMkKQ8Nzs1dbNd9FV2sO0HsdChXyI0jaB18RfcJ8=;
-	b=b3a0bwMT2VBhBSyat96S3fBSMPnw6FeXbVj84dJISulUjGuoMgY7BTbHJ1oBZnoZth5Clb
-	a+BbcHwMNYLMVgve9E//+GveAAm4ZpkKddJmIck7q6lHOuh3+fx1cQVDoAoBb1hNo4VcuY
-	8Qe6Q1tOKDl4ml1LkdN5PL9rNEexRHc=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tnDWaO67kOtoHBKr0HS5m4PtTKwANjm9WdLJsztRd4w=;
+	b=5B56B6II+Kn9Mr1PLFn07XrX5sh78Luunn2Hdrr1quYNa4nluPJQeJ9pO9RvYcx+JAvWPw
+	fyiMXN5jZS5U6whQIrDBUBoRSs2d3PhPhKXK9U6On1jLhXCoC6X4Og5eLV+hXY/CwWXcaF
+	M2DhwmulDs5eqd9YhhS5RNz/I4deiFM=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Km3TTjQN;
-	spf=pass (imf31.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8475eca3a66so620491b3a.2
-        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 05:29:42 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ofzMecE7;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf28.hostedemail.com: domain of 30KtHaggKCJ8I9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=30KtHaggKCJ8I9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-493bf840a69so4383875e9.3
+        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 05:32:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1783081782; x=1783686582; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=xWymMkKQ8Nzs1dbNd9FV2sO0HsdChXyI0jaB18RfcJ8=;
-        b=Km3TTjQNp9xYEfbf6zj7ZR8Qwej80dLoK1S/c8q0aaQq//SUfiPNF4jzm/MHyoe9Ud
-         KAXuy9pecDUWxgE9qjmkJMHmmsRW4IuMMjs8VHG4VShiFgM0b4XuR4E12JS0JXrN1Fis
-         jnpCaC5BDRuCh7c1MZruL3Xf/ellwJa/UKxpoj9JLAW56lk8o3Q+zXYb6MO+K1QYBbp8
-         7vC9U+DrQsYoD1ehnppHYl4VCbPV71KF2Pmck0NVvwHX1Tdsz0djYCJkEKVdNvFcNNQi
-         pEah/mBMqW/P6YVfG+hnf+RRCwLmJIsbf+9MMYoI53H+2RFrvlkTnYwxSJTnvU++tR6w
-         7/0w==
+        d=google.com; s=20251104; t=1783081937; x=1783686737; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tnDWaO67kOtoHBKr0HS5m4PtTKwANjm9WdLJsztRd4w=;
+        b=ofzMecE79n/F+jbZWW3qg5L9bGH3nfWkMi6mzkyquvND7UrHyHVeG6Do1HnLeo+s3N
+         XFq2HArwFiWz/9/IjgiFDv3Jyc1VxsXk1N8o8obvC3a7m8eIoTOmsQroA9nPXQm4EBri
+         IoGhWfFqISREFQwzu0FEizeuzgFm+jyI3gqPfswwMWT503bppMJOnAL9gVpNVQZMSNM5
+         JaaqKzdXBWaKgL3m+Lkw2vs9E1wANmV/PiZ6CUqa9guDEaB8Ag26orJNJVchPsn8frW6
+         pg8ZnhuNHGYd7vCbv/yDfQTW+Xw2oE8lKmdbuyAJDFsQ4ZtriEbLtYHcrKol5uxB18d8
+         iyQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783081782; x=1783686582;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=xWymMkKQ8Nzs1dbNd9FV2sO0HsdChXyI0jaB18RfcJ8=;
-        b=EWw3pHE7i9p7JFbZtQwEarm0k3fQQtPp08idiPxPH7Ke0JlRNWGRpMJGlN6VeZf/tn
-         RHIvw329N2wqYr7xKaseZFUkZ+KTk+50JgRsRIn2ULBwfJIzhweoHhN9Oajy3bf4fbuj
-         NH1ov3BLTmHL5XC5CXweISrRpMZnL50A2FaxOBXInl/0THrYSvGWNZNXpqYPSgzyeQc1
-         YFmAfJjuK3UD0PKOkRFlIRT62b9xLuOUHMxXvlPjnUlwmnrVMkDUpZtOxmnZUbkVaAhj
-         Pw4u6+6kRmLCI4eEnrsHTYDad/14nCYt+9z1FAgtkHYq3V0CATuTuMaWKEgxt3+37w/h
-         4Z7Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9LpsNBlZ1TC3sCq3WqjjyJY0/Z34kSvDKdviO/9yWez8LrTYjatyPgk6A6pLN9vv1DENG/leME+w==@kvack.org
-X-Gm-Message-State: AOJu0YzEfJwshSSuQ7mMAPVsKL7guChD836zCzR9ai/viGKuBADqIBg2
-	/2yyPVzqQvbvccRofbb0KAVFUldkxywtA0/XSGMOeb8pb2svUN/awIUVK9mZkcofRLU=
-X-Gm-Gg: AfdE7clwcNXYp2U+QqnquwOXFEgmHXUZSDN+qcjFP5rNXLh3RNAEKbFSGdIWW4u36ns
-	hWZUvVUaiM7UZtCs5QmGefNBcRyfto97VfDgQqtchnrAWj7K39xTjWm92R+52WSN0pG6hOnRDvA
-	1HyMeOhhnbdwhU2wsyQ6IQKnu8Nx5h2GBkrHjpUS1qWpek5i7dqVwfJDec/3GvnoCuU9Zzf448G
-	5jW5hQ80vJEDhg8KDFhE7hKmBDhg6S5lmRoo3PLGK8g1vxRUEOpH61XBmHUR8hKYsepWCktUg79
-	/TIGgd9E6Waj33puOG9UEfTA8ejUQb+gNwbzzB+Md1PcK9Nd1cnPvriMNYl0x91MyKLR5DnBgjQ
-	m1BPkTXTBcXx0wAbwvEUiMbwSfSwlwLZAPsej2znFI+mdHPUZ04RDkteMLbj9SaD2eX9SLxzlco
-	+PZk3SrGdQ5eBt1jQX78R6NkjVZ1Cl1+PdWKUcaVMUz4z7YMU0r4o=
-X-Received: by 2002:a05:6a20:3d8b:b0:3b4:7758:e397 with SMTP id adf61e73a8af0-3bff407cf53mr12548308637.16.1783081781880;
-        Fri, 03 Jul 2026 05:29:41 -0700 (PDT)
-Received: from L6YN4KR4K9.bytedance.net ([139.177.225.224])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e8f3d74ccsm2705551a12.9.2026.07.03.05.29.27
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 03 Jul 2026 05:29:40 -0700 (PDT)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	dennis@kernel.org,
-	tj@kernel.org,
-	cl@gentwo.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	bjorn@kernel.org,
-	pulehui@huawei.com,
-	puranjay@kernel.org,
-	thuth@redhat.com,
-	ajones@ventanamicro.com,
-	ben.dooks@codethink.co.uk,
-	rkrcmar@ventanamicro.com,
-	cuiyunhui@bytedance.com,
-	samuel.holland@sifive.com,
-	zong.li@sifive.com,
-	conor.dooley@microchip.com,
-	tglx@kernel.org,
-	debug@rivosinc.com,
-	seanwascoding@gmail.com,
-	andybnac@gmail.com,
-	menglong8.dong@gmail.com,
-	cyrilbur@tenstorrent.com,
-	wangruikang@iscas.ac.cn,
-	atishp@rivosinc.com,
-	apatel@ventanamicro.com,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org,
-	arnd@arndb.de,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com,
-	qingfang.deng@siflower.com.cn,
-	linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH v8 3/3] riscv: store percpu offset into thread_info
-Date: Fri,  3 Jul 2026 20:28:32 +0800
-Message-Id: <20260703122832.15984-4-cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20260703122832.15984-1-cuiyunhui@bytedance.com>
-References: <20260703122832.15984-1-cuiyunhui@bytedance.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5068820002
+        d=1e100.net; s=20251104; t=1783081937; x=1783686737;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tnDWaO67kOtoHBKr0HS5m4PtTKwANjm9WdLJsztRd4w=;
+        b=Vg6mkJQMRY9fAxh5SQGxvlDZNDUaYZ1PzG91FmROnhMh9e5D3vAEnzmSGtGZRy03Q9
+         7yntDymW8EucsuE29ntif054Iqb5U/xTb2EuA4D7CNIi+7P2gQ+V2qmCw5mqd4bqlPbl
+         stOE9/5xhkxgAwVb6Dfkt/tjPzCckctV0lRq7xF0/pkXldwguR/UVmYqUkcjQmAoS/E1
+         mQM9GZ3bLdDW1E7JdefamjPrJwMsTaPkNageR1Y2hnfsWDPnrFmgJDRiv18ad2dsZcKa
+         8gXaxS/eKAW5XGYtKpG7TNTBZRBe0x14z3H83ACQqO3Wq2mpCXhvsCOQM8hjoBDfFsCx
+         jcXA==
+X-Forwarded-Encrypted: i=1; AFNElJ+qIxbx3+Pwv/q7ndEQggyDr/JvY3T+oe23f/39DDoUDX4J2CY9A5hbdM+/bhqlHsb30L7qDlm6NA==@kvack.org
+X-Gm-Message-State: AOJu0YxF7QuCOuq33pF51X8M6xOG047559WWCx3f2k9Pql8axqNfdu90
+	j3t6H9EWuOXHlgWGMcRTrZKafW2hLLhBVcyE+DO6RBjN4lI7/9TrRW85yCBvCFkPZfMktWwR95n
+	7j/61ULS3hyugtA==
+X-Received: from wmer11.prod.google.com ([2002:a05:600c:434b:b0:493:aecc:774a])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:6692:b0:493:bb6b:5bda with SMTP id 5b1f17b1804b1-493c2b983b8mr139426775e9.29.1783081936166;
+ Fri, 03 Jul 2026 05:32:16 -0700 (PDT)
+Date: Fri, 03 Jul 2026 12:31:40 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAKyrR2oC/3XNTW7CMBAF4Ksgr2tkzySx2xX3QF049ji4TTGyQ
+ 1SEcnccWPATsRo9ab73zixTCpTZ1+rMEo0hh7gvof5YMbsz+454cCUzENCIRipu+j5aPqRTOb9
+ cVsahcqZFVKyYQyIf/q992+9bzsf2h+wwl8wfu5CHmE7XwVHOf++6R8kl1+id0rXWCLTpYux6W
+ tv4x+byER44wCsHLjhKjxIb5SoQC46P/POVY+G1askLMq61sODVnSuxWK8KF8Zr71Er0s/r0zR dAFKCqT56AQAA
+X-Change-Id: 20260617-alloc-trylock-14ad37dab337
+X-Mailer: b4 0.15.2
+Message-ID: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
+Subject: [PATCH v5 00/18] mm: Some cleanups for page allocator APIs
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	derkling@google.com, reijiw@google.com, Brendan Jackman <jackmanb@google.com>, 
+	Yosry Ahmed <yosry@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Robin Holt <robinmholt@gmail.com>, Steve Wahl <steve.wahl@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dimitris Michailidis <dmichail@fungible.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: 3grsbd7tmi5sp9rkfhsskmypxfhy8ugz
-X-HE-Tag: 1783081783-336408
-X-HE-Meta: U2FsdGVkX1/po6H93vpWeGzkx+jtT3Ovyax3/53bw78T4vhI8NfPeE/N5FGrzsrnTK4S9b3JWzeJ7qhQGjU4hJQresCT2RxYGVt6KSkRfe7O7sdgM3RkHOPssYdsscthJIyGfzVK8SpRYI8u9wN34extHLqDziEd0tI2+2JfQihxx5kB8OkLfy9mizsOXpJyY5SiNs0ooRVxnqCTZwkR65BjsEi7ZlFdAvw09cRqLBjg5GF4iUMdiEYko87MCqCT0WTk1TvaRbGT0vLZAxcKR26vOPxOT4bcecXXwgi+8rW4d7reyx3oSgL0QSBmA6NtDuoCCyUjct6nTeSPJyGOuSvMbwrRDzQ1RBHlzQaKqkZvDKN/u2qSX/mngRe2+YkEOT7RbkiaYpz9j6JFcZkkAMrVSBq2zv0ZY+i2C6wxhSTk/h6nV4NOs2DYjtprRUalUaL+eEXIIDOQ6bItFkVoHcGJ6jIPEll4KSKvcBRuDrze91yUpWqx9IVkQPqe9kumGwF2UkGhmlbnMoMDOZ7kpZpY5j7ic12Hfnvf07CgODOhD0+lBDGYAW4tCviYsC4eYjtmtO5GFFcb0wpaqm8aJeNw7/h9NC2f1qQJ92ZUvJqtEeWwxQ+ckwLZWm1avJJ1IR9Oq3vZKzX1CEc+B6A+ei+aoXnjTDrHoYKTYWsDvGQk+PaaEyntD1U5xjsVDoc8m1q7zpXa3iow1KwN9SlxS1gGtwoT+edkmqDVLvhQp/qQXMIoASZNIPvQkSsmIh/nxrQ3wRL4V2W9QZ/fSRWjqGKxPkDpGYrQBsvNyJF6KefUFxCy3snqI6l0ewE4qEfkGxh3lGFXFz4Kt5YfR809d6ivneUf04hQad3a1/NKZDY6J2uplF4G7wzucB1tBnZH+l+3Rq+nz1RKFnsl1SyRKY+ZHVx0E/axtuxaZNlvwTbx/n0bvT7m9fzd/wekdBcfKWg1WW8EG9snBhB2OJk
- yROnt6uc
- 6nqiqgO2n5Ep6GR8Rp4ABywm9bGBxC5gaqEKjaHJxAhf7qNKYvyuDgsBIXnR4RUcJE+V/H4F7xdnk/BHTf6SoS6bhcY+ekQTuyGs6UM2TE/8yTn8yiowq4mQ+uDJKQRwzCRfJqDi02T2sTz5DUpTBo5SkT1XINewFFP0ce5Dbh4e791shyTUw3wb/kZI5ZNVZbU++2YADKsSJ4rOkyprj1Alc2DKgvRDmApUwPh+pVVDWBTHuCi/NCvS0o1lizSgFjNpbyhl8poKM19cZfQaF2ZqEbNYLl0MtEl1UaXoDLtZJkX324DMOmwzInrxEZWuWmiF5/7OjsfXxa6fCZMFkIIVbWHTnorgfYQrL6H67sSsdcIS3AZQPrDvBrh7bhXE9KDdzH3/3K/bubs5S1ZGTqLSwxUcV5DYSvcXFQjdROtvIVWRqPjwNp2OkzDba83xK4HbrButnmnx8Cj0H0xP2uBEUCA160plrMdJ2rH2JzxFjVyuJ4BqwyQ5KGkWqnAdbwMsDXGkT8YCrL8t+ldrEtXAblw==
+X-Stat-Signature: j4bd4qmtzmeu49n5b4yud8quurts9kdw
+X-Rspamd-Queue-Id: 4B991C0003
+X-HE-Tag: 1783081938-967275
+X-HE-Meta: U2FsdGVkX1+5WPkFtdl+x0PcDIbCxNaNtFU/OPQTw0rWxfdvNXIqQdpZ7EkPDerr9JdYBvpuYUC7X3LuIGfGGXKuMTkRraM7ldcX1O+FGTZbAq2FGXFHBnu/iWvOTC8+ZvcPnjkjHVaosIM6Nqwf2fqT+jBioO56LYffPulsT3YBKchIUvaqfefmT13V6sLxLhWxcJkhkKMCUg3vAJK6a+aM201e4z4qnyoO/kvyGi6NpgPp+Tm9URlUrNxQxXbDlH0Mna6UnVGwSzfU3N5HP7lio7z7NXd0xax+/NrXLGQSqtkuSK6g7+E8VMqoOZ4OyKUgQxcPs+ypKrJBCChFuxGuc7antH4k4ViVOWIviuxhwnSDLJtPMwGO4RZ044W5O/NyNP99OR3uygVaqaxZ+ptHoen9GZB3TU3j2hv/jlIHIutygCgm01zdpf5217VSnjEu22bfKT3W+VTlrRdz4XLfYmoMqxE47v/D83LwWF5RtTkS9gLT2/PCYWJQbWcFue66byJdfD1WjXm5H4ijVayVryHSRKFWY/f17Yz2P6YFfBH7IK37iwWbIWJdJvGNJ7k5CrS8Z6uzySMQGibJKrqDB6tkKn+XlWEadnBgppI5U2HITPulJkrgkUhcCWIHCckHzzoODp/wvhOvRV7IRoITLh51FBZHBcEETjLGW3F9oV0CmXE2bj0eaOmPPtRFJIztwAIpPK8/LrMidfC/Jof27kxyKHNBUo4s1WoBkSlqZPNN5dEhZHHjrG/cHmNP5QIY4Bf8NzAK8XNGD6RB+Z8vpab9TbrioGfP6vCJB0tz0mkTqKQ2GLk9JDJChng0XE9uY6OVZIT2Wb4EBgXMOQ7TSnYFe0O9Nh2PIabCutHLQmj3MOzEv0ta98uzQ+OsB4NAs0XFJIdawPAvFahOxEZaa/dZrnbh82U5qw0w5bx35ivtvpOTBKleZQcxmf86Q1CY8OAamR/Bf+3XI00
+ WbmBK8ni
+ GCZ0LZwI7MNp05QrEaN/JCZIkJlZqaUk5QzYfq5NpEt3A1I/lFb5EW5aUWqNqJC2TdYwaOATeTil7NZ0tFrAs9s7XOdeS+3+O5+HFnnxjpytJNtUg3pA6OGZduGWE3Dl7RC7I6NO7FMZjmzWzBMUv4vuK/ZvQoD1x/StZnMRCc+k/Uq3TYBDECOv23xNT/aztAvvIdCM26DFa8nBApXDrGmRrZfy9l5j4ZYrE5esXBH4CpFYIQrhLqUPTYy1vgmdeoKmg02OFZRkCLRrL4i8ozwYBwjJHmDetlMyOPkzCAxupHdQY0frlKjON2BLmycn+qTERB0T6pD2ocvAHxq4j+AoEb9+Z5BgkdKaMdXVu45iKyLHkFCNwoSKQD0dcXUdu59f9PiACzNPkVPdf7kL3kib9Uk4/RJRCqoTxHbDkIdIasdIC4L1Md6IE1ZZjdbZGoulwLKAXvwU+X3WsuMt9M9nToKiGCk4gHe6w+n+If03LGFaAHBYzgabz4SjRub1pdoEIGcObvOC3YoJ6jZl2VMA8woIjLbOVf2kvwqK55e4JKcFknpLBQRX9rYuiQc6jnaaQ1VvpyyrrdPiV+aS5LXQ+o177+FBm7Oei/6zWOyNnrMV5rpQ8k9L+NLgazGQFp6utabODFr131z5b4c3aczhS3MEinDpXn0lMPxMibyLyQ9uEumAJ7Mvu4wqRZrEkwggEOwJPvw3vwOi9G8OJIZ+q4iLhoxx5oa4039kY4AyO5whMiw1HtuKD6/0fKYyM2rjmLcP2831SR9E/NH0qjzQ0JhDOcsRrvJT+RWaS9zt9YHeUNZsWF1sIvXDzoe0cw3n2gNYCNYXYkUuXEobh8DXDDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,193 +138,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-RISC-V percpu addressing currently derives the base offset from the CPU
-number and __per_cpu_offset[]. Cache the current CPU percpu offset in
-thread_info so percpu accesses can load it directly.
+Based on mm-new.
 
-Keep the cached value up to date for the boot CPU, context switches and
-secondary CPU bringup. Initialize secondary idle tasks before they start
-running so early percpu accesses use the secondary CPU offset rather than
-inheriting the boot CPU value.
+This depends on moving alloc_tag to mm/:
+https://lore.kernel.org/all/aj5QBtJcphPElczI@lucifer/
 
-With asm_per_cpu no longer deriving the offset from the CPU number, drop
-the stale TASK_TI_CPU_NUM asm offset as well.
+Some tweaks and cleanups for page allocator entrypoint and flags. This
+is motivated by preparation for __GFP_UNMAPPED [1] (which will probably
+become ALLOC_UNMAPPED in its next iteration), but all this is supposed
+to be an improvement to the codebase in its own right: unifying code
+paths, reducing API surface, and removing GFP flags.
 
-Link: https://lists.riscv.org/g/tech-privileged/topic/risc_v_tech_arch_review/113437553?page=2
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+[1] https://lore.kernel.org/all/20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com/
+
+This started with unifying  __alloc_frozen_pages[_nolock]_noprof() and
+expanded from there.
+
+Unifying the nolock allocator entrypoint with the normal allocator
+entrypoint means adding an alloc_flags argument to the later (only
+exposed within mm/). This presents an opportunity to take advantage of
+that arg to remove some GFP flags, if we add that alloc_flags arg a bit
+more broadly to allocator entrypoints.
+
+To distinguish between mm-internal and "public" allocator entrypoints,
+it makes sense to use the __ prefix. There are already some public APIs
+with that prefix. For *alloc_pages*, just removing those variants seems
+like a nice cleanup anyway, so do that. For get_free_pages, the "__"
+variant is the _only_ variant and it's very widely used, so it doesn't
+seem worthwhile to modify that. Therefore, scope this "__" change
+specifically to the *alloc_pages* API, which means we leave the
+*folio_alloc* API untouched too, even though that could probably be
+cleaned up if so desired.
+
+Tested:
+
+- KVM, mm, and BPF selftests in a QEMU VM
+
+- kunit.py on x86_64
+
+- For the ALLOC_NO_CODETAG bits I just booted a VM and read
+  /proc/allocinfo. I confirmed that if I remove ALLOC_NO_CODETAG, the
+  kernel crashes in early boot, so I was at least booting code that
+  depends on this logic.
+
+I used Google's internal version of Antigravity (AI coding harness) to
+do the repetitive bits, those commits are marked with Assisted-by, the
+rest is manual.
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/riscv/include/asm/asm.h         | 6 +-----
- arch/riscv/include/asm/percpu.h      | 4 ++++
- arch/riscv/include/asm/switch_to.h   | 8 ++++++++
- arch/riscv/include/asm/thread_info.h | 3 ++-
- arch/riscv/kernel/asm-offsets.c      | 2 +-
- arch/riscv/kernel/smpboot.c          | 8 ++++++++
- arch/riscv/net/bpf_jit_comp64.c      | 9 +--------
- 7 files changed, 25 insertions(+), 15 deletions(-)
+Changes in v5:
+- Just trivial non-functional fixes.
+- Link to v4: https://patch.msgid.link/20260702-alloc-trylock-v4-0-0af8ff387e80@google.com
 
-diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.h
-index e9e8ba83e632f..137a49488325e 100644
---- a/arch/riscv/include/asm/asm.h
-+++ b/arch/riscv/include/asm/asm.h
-@@ -91,11 +91,7 @@
- 
- #ifdef CONFIG_SMP
- .macro asm_per_cpu dst sym tmp
--	lw    \tmp, TASK_TI_CPU_NUM(tp)
--	slli  \tmp, \tmp, RISCV_LGPTR
--	la    \dst, __per_cpu_offset
--	add   \dst, \dst, \tmp
--	REG_L \tmp, 0(\dst)
-+	REG_L \tmp, TASK_TI_PCPU_OFFSET(tp)
- 	la    \dst, \sym
- 	add   \dst, \dst, \tmp
- .endm
-diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/percpu.h
-index 76b1b8c1fb953..9bf9f4cf4ca5a 100644
---- a/arch/riscv/include/asm/percpu.h
-+++ b/arch/riscv/include/asm/percpu.h
-@@ -9,7 +9,9 @@
- #include <asm/alternative-macros.h>
- #include <asm/cmpxchg.h>
- #include <asm/cpufeature-macros.h>
-+#include <asm/current.h>
- #include <asm/hwcap.h>
-+#include <asm/thread_info.h>
- 
- #define PERCPU_RW_OPS(sz)						\
- static inline unsigned long __percpu_read_##sz(void *ptr)		\
-@@ -279,6 +281,8 @@ _pcp_protect_return(__percpu_add_return_amo_case_64, pcp, val)
- })
- #endif
- 
-+#define __my_cpu_offset (((struct thread_info *)current)->pcpu_offset)
-+
- #undef PERCPU_RW_OPS
- #undef __PERCPU_AMO_OP_CASE
- #undef PERCPU_OP
-diff --git a/arch/riscv/include/asm/switch_to.h b/arch/riscv/include/asm/switch_to.h
-index 0e71eb82f920c..733b6cd306e40 100644
---- a/arch/riscv/include/asm/switch_to.h
-+++ b/arch/riscv/include/asm/switch_to.h
-@@ -88,6 +88,13 @@ static inline void __switch_to_envcfg(struct task_struct *next)
- 			:: "r" (next->thread.envcfg) : "memory");
- }
- 
-+static inline void __switch_to_pcpu_offset(struct task_struct *next)
-+{
-+#ifdef CONFIG_SMP
-+	next->thread_info.pcpu_offset = __my_cpu_offset;
-+#endif
-+}
-+
- extern struct task_struct *__switch_to(struct task_struct *,
- 				       struct task_struct *);
- 
-@@ -122,6 +129,7 @@ do {							\
- 	if (switch_to_should_flush_icache(__next))	\
- 		local_flush_icache_all();		\
- 	__switch_to_envcfg(__next);			\
-+	__switch_to_pcpu_offset(__next);		\
- 	((last) = __switch_to(__prev, __next));		\
- } while (0)
- 
-diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/asm/thread_info.h
-index 55019fdfa9eca..f10ba62b61016 100644
---- a/arch/riscv/include/asm/thread_info.h
-+++ b/arch/riscv/include/asm/thread_info.h
-@@ -53,6 +53,7 @@
- struct thread_info {
- 	unsigned long		flags;		/* low level flags */
- 	int                     preempt_count;  /* 0=>preemptible, <0=>BUG */
-+	int			cpu;
- 	/*
- 	 * These stack pointers are overwritten on every system call or
- 	 * exception.  SP is also saved to the stack it can be recovered when
-@@ -60,8 +61,8 @@ struct thread_info {
- 	 */
- 	long			kernel_sp;	/* Kernel stack pointer */
- 	long			user_sp;	/* User stack pointer */
--	int			cpu;
- 	unsigned long		syscall_work;	/* SYSCALL_WORK_ flags */
-+	unsigned long		pcpu_offset;
- #ifdef CONFIG_SHADOW_CALL_STACK
- 	void			*scs_base;
- 	void			*scs_sp;
-diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
-index a75f0cfea1e9f..f4f7ee976cd94 100644
---- a/arch/riscv/kernel/asm-offsets.c
-+++ b/arch/riscv/kernel/asm-offsets.c
-@@ -38,6 +38,7 @@ void asm_offsets(void)
- 	OFFSET(TASK_THREAD_SUM, task_struct, thread.sum);
- 
- 	OFFSET(TASK_TI_CPU, task_struct, thread_info.cpu);
-+	OFFSET(TASK_TI_PCPU_OFFSET, task_struct, thread_info.pcpu_offset);
- 	OFFSET(TASK_TI_PREEMPT_COUNT, task_struct, thread_info.preempt_count);
- 	OFFSET(TASK_TI_KERNEL_SP, task_struct, thread_info.kernel_sp);
- 	OFFSET(TASK_TI_USER_SP, task_struct, thread_info.user_sp);
-@@ -50,7 +51,6 @@ void asm_offsets(void)
- 	OFFSET(TASK_TI_A2, task_struct, thread_info.a2);
- #endif
- 
--	OFFSET(TASK_TI_CPU_NUM, task_struct, thread_info.cpu);
- #ifdef CONFIG_RISCV_USER_CFI
- 	OFFSET(TASK_TI_CFI_STATE, task_struct, thread_info.user_cfi_state);
- 	OFFSET(TASK_TI_USER_SSP, task_struct, thread_info.user_cfi_state.user_shdw_stk);
-diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
-index f6ef57930b50a..7876854d16279 100644
---- a/arch/riscv/kernel/smpboot.c
-+++ b/arch/riscv/kernel/smpboot.c
-@@ -191,6 +191,7 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
- {
- 	int ret;
- 	tidle->thread_info.cpu = cpu;
-+	tidle->thread_info.pcpu_offset = per_cpu_offset(cpu);
- 
- 	ret = start_secondary_cpu(cpu, tidle);
- 	if (!ret) {
-@@ -208,6 +209,11 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
- }
- #endif
- 
-+void __init smp_prepare_boot_cpu(void)
-+{
-+	__my_cpu_offset = per_cpu_offset(smp_processor_id());
-+}
-+
- void __init smp_cpus_done(unsigned int max_cpus)
- {
- }
-@@ -233,6 +239,8 @@ asmlinkage __visible void smp_callin(void)
- 	mmgrab(mm);
- 	current->active_mm = mm;
- 
-+	__my_cpu_offset = per_cpu_offset(smp_processor_id());
-+
- #ifdef CONFIG_HOTPLUG_PARALLEL
- 	cpuhp_ap_sync_alive();
- #endif
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index c03c1de16b79a..eab93d5258e9e 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -1395,15 +1395,8 @@ int bpf_jit_emit_insn(const struct bpf_insn *insn, struct rv_jit_context *ctx,
- 			if (rd != rs)
- 				emit_mv(rd, rs, ctx);
- #ifdef CONFIG_SMP
--			/* Load current CPU number in T1 */
--			emit_lw(RV_REG_T1, offsetof(struct thread_info, cpu),
-+			emit_ld(RV_REG_T1, offsetof(struct thread_info, pcpu_offset),
- 				RV_REG_TP, ctx);
--			/* Load address of __per_cpu_offset array in T2 */
--			emit_addr(RV_REG_T2, (u64)&__per_cpu_offset, extra_pass, ctx);
--			/* Get address of __per_cpu_offset[cpu] in T1 */
--			emit_sh3add(RV_REG_T1, RV_REG_T1, RV_REG_T2, ctx);
--			/* Load __per_cpu_offset[cpu] in T1 */
--			emit_ld(RV_REG_T1, 0, RV_REG_T1, ctx);
- 			/* Add the offset to Rd */
- 			emit_add(rd, rd, RV_REG_T1, ctx);
- #endif
--- 
-2.39.5
+Changes in v4:
+- Fixed some (harmless) missing applications of ac->alloc_flags (local
+  Sashiko)
+- Fixed various build issues.
+   - Note that Sashiko pointed out a KMSAN build issue [0], I have
+     fixed it but KMSAN builds are currently broken by objtool [1]. At least
+     mm/kmsan/init.c compiles.
+     [2] https://lore.kernel.org/all/20260629141642.628271F00A3D@smtp.kernel.org/
+     [3] https://lore.kernel.org/all/20260630104434.GC751831@noisy.programming.kicks-ass.net/t/#u
+- Avoided setting ALLOC_NOFRAGMENT under ALLOC_NOLOCK (Sashiko, Harry)
+- Added patch to tweak alloc_flags_cma() interface (Vlastimil)
+- More commit messages fixups (various)
+- Added patch to create can_spin_trylock() (Harry)
+- Link to v3: https://patch.msgid.link/20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com
+
+Changes in v3:
+- Created mm/page_alloc.h
+- Fixed EXPORT_SYMBOL() issues
+- Reworded commit messages per Sashiko's pointers
+- Dropped rename of alloc_flags arg in prepare_alloc_pages() (Suren)
+- Renamed gfp_to_alloc_flags_nonblocking() too after rebasing onto:
+  https://lore.kernel.org/all/20260623004600.113347-1-jp.kobryn@linux.dev/
+- Link to v2: https://patch.msgid.link/20260622-alloc-trylock-v2-0-31f31367d420@google.com
+
+Changes in v2:
+- Fixed up whitespace in nolock unification patch
+- Introduced ALLOC_DEFAULT to replace literal 0 for alloc_flags
+- All other patches are new
+- Link to v1: https://patch.msgid.link/20260617-alloc-trylock-v1-1-83fd7858832e@google.com
+
+---
+Brendan Jackman (17):
+      mm/page_alloc: rename ALLOC_TRYLOCK -> ALLOC_NOLOCK
+      mm/page_alloc: some renames to clarify alloc_flags scopes
+      mm: name some args in a function declaration
+      mm: Split out internal page_alloc.h
+      mm/page_alloc: unify __alloc_frozen_pages[_nolock]_noprof()
+      mm/page_alloc: relax GFP WARN in nolock allocs
+      mm: move some stuff to mm/page_alloc.h
+      perf/x86/intel: Use higher-level allocator API
+      KVM: VMX: Use higher-level allocator API
+      x86/virt: Use higher-level allocator API
+      sgi-xp: Use higher-level allocator API
+      net/funeth: Switch to higher-level allocator API
+      mm: Remove __alloc_pages_node()
+      mm: Move __alloc_pages() to mm/page_alloc.h
+      mm: replace __GFP_NO_CODETAG with ALLOC_NO_CODETAG
+      mm/page_alloc: drop alloc_flags arg from alloc_flags_cma()
+      mm: factor out can_spin_trylock()
+
+Vlastimil Babka (SUSE) (1):
+      mm: remove the __GFP_NO_OBJ_EXT flag
+
+ Documentation/admin-guide/cgroup-v1/cpusets.rst  |   2 +-
+ Documentation/admin-guide/mm/transhuge.rst       |   2 +-
+ MAINTAINERS                                      |   1 +
+ arch/x86/events/intel/ds.c                       |   6 +-
+ arch/x86/kvm/vmx/vmx.c                           |   2 +-
+ arch/x86/virt/hw.c                               |   2 +-
+ drivers/misc/sgi-xp/xpc_uv.c                     |   5 +-
+ drivers/net/ethernet/fungible/funeth/funeth_rx.c |   2 +-
+ include/linux/alloc_tag.h                        |   4 +-
+ include/linux/gfp.h                              |  54 +---
+ include/linux/gfp_types.h                        |   7 -
+ include/linux/skbuff.h                           |   2 +-
+ include/trace/events/mmflags.h                   |  10 +-
+ mm/alloc_tag.c                                   |  23 +-
+ mm/compaction.c                                  |   5 +-
+ mm/hugetlb.c                                     |   4 +-
+ mm/internal.h                                    | 275 ++------------------
+ mm/khugepaged.c                                  |   1 +
+ mm/kmsan/init.c                                  |   2 +-
+ mm/memory-failure.c                              |   1 +
+ mm/memory_hotplug.c                              |   1 +
+ mm/mempolicy.c                                   |  11 +-
+ mm/migrate.c                                     |   1 +
+ mm/mm_init.c                                     |   1 +
+ mm/page_alloc.c                                  | 269 ++++++++++---------
+ mm/page_alloc.h                                  | 312 +++++++++++++++++++++++
+ mm/page_frag_cache.c                             |   6 +-
+ mm/page_isolation.c                              |   1 +
+ mm/page_owner.c                                  |   2 +-
+ mm/page_reporting.c                              |   1 +
+ mm/show_mem.c                                    |   1 +
+ mm/shuffle.c                                     |   1 +
+ mm/slub.c                                        |  17 +-
+ mm/swap.c                                        |   1 +
+ mm/vmscan.c                                      |   1 +
+ mm/vmstat.c                                      |   1 +
+ tools/include/linux/gfp_types.h                  |   7 -
+ 37 files changed, 536 insertions(+), 508 deletions(-)
+---
+base-commit: 32af3ff0925368eff29b2fed62f154150eb5dc10
+change-id: 20260617-alloc-trylock-14ad37dab337
+
+Best regards,
+--  
+Brendan Jackman <jackmanb@google.com>
 
 
