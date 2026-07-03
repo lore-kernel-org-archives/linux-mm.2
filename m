@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEBE0C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:33:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63D71C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:33:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9937C6B00CD; Fri,  3 Jul 2026 08:32:43 -0400 (EDT)
+	id 1F1F36B00CE; Fri,  3 Jul 2026 08:32:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96AA26B00CE; Fri,  3 Jul 2026 08:32:43 -0400 (EDT)
+	id 1CA566B00CF; Fri,  3 Jul 2026 08:32:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A7D96B00CF; Fri,  3 Jul 2026 08:32:43 -0400 (EDT)
+	id 06AB86B00D0; Fri,  3 Jul 2026 08:32:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 634DE6B00CD
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:32:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E8193C2885
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D6E096B00CE
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:32:44 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 684E91404CB
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:32:44 +0000 (UTC)
+X-FDA: 84947404248.23.E627896
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	by imf04.hostedemail.com (Postfix) with ESMTP id AC12840006
 	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:32:42 +0000 (UTC)
-X-FDA: 84947404164.03.802DB46
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 339C840007
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:32:41 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="kuJpEVi/";
-	spf=pass (imf11.hostedemail.com: domain of 356tHaggKCLYfWYgiWjXckkcha.Ykihejqt-iigrWYg.knc@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=356tHaggKCLYfWYgiWjXckkcha.Ykihejqt-iigrWYg.knc@flex--jackmanb.bounces.google.com;
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nnUZmPDl;
+	spf=pass (imf04.hostedemail.com: domain of 36atHaggKCLghYaikYlZemmejc.amkjglsv-kkitYai.mpe@flex--jackmanb.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=36atHaggKCLghYaikYlZemmejc.amkjglsv-kkitYai.mpe@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783081961;
-	b=SYW8RmCsXhnXdMkjjUAsQpKhatc8xTU6BU2Kr5x66eNVSzBM4CeYGXPIJlNvCC3zGU9T4e
-	eytdkjyVf5BuoPDnBLOoSYaIFCOCXuxDskkIVGId//1p2PtS5gR+yIE/HSBTfLLPEOdCDC
-	CJn0bswh+rkuJcnEYR/DZLLP7Y93Cpg=
+	t=1783081962;
+	b=3BC1qD0FvXNd/LxWVIL9aQVR8Imh+e26mDba757woIcbJvJh+UyNTIgsrjdN9fdMCYo+eV
+	ysBpg/xMN6CG+ovvygkjHH308Mbz7VWX6liDSbp2pzwsblbyUEbxh2SwDFYDq9o4iHf7Rg
+	H7/rjPVHaPppx4yVAti6e5JZWmhnJeE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783081961;
+	s=arc-20220608; t=1783081962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6S3JNEhTHh8S5PWRfrbe8AKMasrMsda1UyR5Zu08tMA=;
-	b=eP56vbYg6N8mAJfRJTggbR1tKO568oJnGvx84uzcrzQmpDgk5Eor/Wq8LYPHtuvinnHkLu
-	hDcDV2iuSGWYI53q7RSmDXNEyTg1MkXn7RVkA5kk1ZvRaIIDahpIv3nd94M9akN5hrfWqK
-	gS/5tjoZM4xgvdxsB6w2KITMOptpfOA=
+	bh=bD9d5R/Qa5BcsyyPmIa4YCQAd3/CPOGQg2JVFAI3c00=;
+	b=PEbO0agRrvIqHxUclkjyZNd7LdsD1HO4RPKnQaJ4bnKALkxJMKZgLvc9QQt+x8o6cK/Fe0
+	IKX8pO5dQuU39Iwi70XgpspAVZPVcVtGdh11WuLi3VYQwoyGF06MsicOiI9Q7sUGAUCTxV
+	Tv4YIksDs24TG3+liannpNYRAHSG4RY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="kuJpEVi/";
-	spf=pass (imf11.hostedemail.com: domain of 356tHaggKCLYfWYgiWjXckkcha.Ykihejqt-iigrWYg.knc@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=356tHaggKCLYfWYgiWjXckkcha.Ykihejqt-iigrWYg.knc@flex--jackmanb.bounces.google.com;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=nnUZmPDl;
+	spf=pass (imf04.hostedemail.com: domain of 36atHaggKCLghYaikYlZemmejc.amkjglsv-kkitYai.mpe@flex--jackmanb.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=36atHaggKCLghYaikYlZemmejc.amkjglsv-kkitYai.mpe@flex--jackmanb.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-493caa3c54eso5191995e9.2
-        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 05:32:40 -0700 (PDT)
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-c092c622e15so44887466b.0
+        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 05:32:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783081960; x=1783686760; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6S3JNEhTHh8S5PWRfrbe8AKMasrMsda1UyR5Zu08tMA=;
-        b=kuJpEVi/FRf+N7dVr7Tova04SLDjP3bKJhkrlcowZVKEwFJKSXchY8S28fdsc01bU5
-         n+nVKGU4AUTcTpcJBtO0bZ/OmNnYTXL65VSmFqFvPan+s96LCuIJ4Nh+HXnBMDZNURAl
-         3w+wrvCkhAKFkz1stx5fhVJUVta99qq/4MVKHGxBg0ekOZ8WW6Y/qO+336iitBFMxIuy
-         CyFGYX6E1CxLK3RqqMKeZoCYXYdk2WqsDlwueoGFcp3+4Z1q4UjmiBN4yybxjVRkfSrv
-         KN/N6eO25FartKuRHNnv1faZc+3ZxTHQGJp2k1uPUv3fcHApKyLVrgUuC6CkVBAkdXTr
-         uxsg==
+        d=google.com; s=20251104; t=1783081961; x=1783686761; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bD9d5R/Qa5BcsyyPmIa4YCQAd3/CPOGQg2JVFAI3c00=;
+        b=nnUZmPDlfU8sFePhQjQmAwcewkqsfr7hyZsSCwhCqfVbmv0hsloTsYUX6thHGoEjyP
+         wOtbt8CdSjujMgMJYfY6xCgEC1vY/FV3MtIyasGqavxmnR1DX9Kn/J8IhB6HtT5EOjjJ
+         0BE10gCx2CplaDfNoeX+EEKuSOfpgQqW8omDb3iueM/HFiaMIRM54KXfKgbnyvupjya/
+         49mvNZq9ij0Xf0wD5IUaWu8Kfr10eXH7UHGoLomDFrAHi+0WfFLrb2AYM9OyY2zWqP5D
+         YYkUGThF8x2Z97YMIYAM0hL7+cqFfm0XPPGJamFT4vxn2UWvjl6dS7XUJnExPf0vq8Tk
+         WfZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783081960; x=1783686760;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6S3JNEhTHh8S5PWRfrbe8AKMasrMsda1UyR5Zu08tMA=;
-        b=OS/8ofbEHJHlKKd4BS3Qh1IsvCibSg/rRWEOpL8yXuhp4WpuwCYwFrkP82DtbYYNJ8
-         vv+y1I8jIQx/RYuYJfOwbEumr5FZXzKUHwdaxZQ/xwXyo/BPVESl5ZaVgCHpWWbgN+WV
-         PFP4QRa1obO8oRomqkyDwlXCxubSY+Qx1/BqQiW2rec0anqESlbmGuOu99CAfkH4cMNp
-         Adb0xC5GcvBy1sGl5elIhFt3kKFibOqmB0ryKja1qyV/SbbDtH4WfFAErBU/ndv5ekzy
-         oeM2ZuvpU1C0Ur0zkpXIBAyzXXicIudQxD13DnANb9Bq3R45ZT0uRVk58QGYu+dOs5ch
-         IGVA==
-X-Forwarded-Encrypted: i=1; AFNElJ+CIyi3tK4S3vQRRlA38FCojSdNO6KbksQpvAQX2QN7WBJNXpVqoiy9GbuDMVSGOZYGwerxpD8bFQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzrgo5vfDRzMckpjsF3mlLEh6h7kQJmFfq3UFaRGns3UPYRHRXf
-	/aRUYZ3kUonvBQGNM0hVVQuCPm36SH6MEc0dKbsu5lSyz/5euxXR6mT9FmLSpcI67Lx2jqdNKr5
-	Qp2KmQO6f9jy9yQ==
-X-Received: from wmg3.prod.google.com ([2002:a05:600c:22c3:b0:492:4659:9cd8])
+        d=1e100.net; s=20251104; t=1783081961; x=1783686761;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bD9d5R/Qa5BcsyyPmIa4YCQAd3/CPOGQg2JVFAI3c00=;
+        b=b+RDw1gNWqHCZcSJn/0ar9qYnpZBj4/Dj7o8lnXzkkfmxQQtsO+IeCQ8eWeOqaTr1m
+         oRYp3U2AshMCWUMVuyoF0Tgk+KaeK82wqprMwpV0qATsSleL+tRQn788ryBhZxFWWFHU
+         3uawXhRGIMHkkpjpoPIGww2NpF/c3/UaNFJLpaTS5U0zXFM6i8HCfQW6IHEiRY91ebGa
+         BZ9eqXio/SAW02cv07GdyyDqyV7WnfRJeqqJyXP/URq7Hb/k99j7dPp/QnveBMD8+t2q
+         W5Eo4BVl0FDte3zrDLCqqdKtwFOuGX+R8N9nZmKXm+1084KD7yxxG1VMthI4BLhGQbZ/
+         YIYw==
+X-Forwarded-Encrypted: i=1; AHgh+RrCul5PfwtFO1EWEHArVFSDvY+pgaPMu0q8QTsXXdptvDiJTjkQ/bvynwUOy40JsCTTCODIuCYVdQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw2eN6Mx5vGd+rILZ7KVzp09vlg2hkg7XZD6JSiuFnUYvh856i8
+	bc2r5RWXv/tcPta1cd4JUMPhcm01mWx7BVGpqIA6MV1+UTb7DdaU1PCD2ui4sST0jr4YKdBT6I5
+	fy/wqCIYI3VtAVQ==
+X-Received: from ejblz6.prod.google.com ([2002:a17:906:fb06:b0:c12:58f8:f86])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:34d4:b0:493:b8cf:cc8a with SMTP id 5b1f17b1804b1-493c2b3ccd2mr128779195e9.4.1783081959528;
- Fri, 03 Jul 2026 05:32:39 -0700 (PDT)
-Date: Fri, 03 Jul 2026 12:31:56 +0000
+ 2002:a17:907:fd0b:b0:c12:9692:791b with SMTP id a640c23a62f3a-c12ae79a0eemr441027266b.37.1783081961027;
+ Fri, 03 Jul 2026 05:32:41 -0700 (PDT)
+Date: Fri, 03 Jul 2026 12:31:57 +0000
 In-Reply-To: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
 Mime-Version: 1.0
 References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
 X-Mailer: b4 0.15.2
-Message-ID: <20260703-alloc-trylock-v5-16-c87b714e19d3@google.com>
-Subject: [PATCH v5 16/18] mm: remove the __GFP_NO_OBJ_EXT flag
+Message-ID: <20260703-alloc-trylock-v5-17-c87b714e19d3@google.com>
+Subject: [PATCH v5 17/18] mm/page_alloc: drop alloc_flags arg from alloc_flags_cma()
 From: Brendan Jackman <jackmanb@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
@@ -107,14 +109,14 @@ Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>,
 	derkling@google.com, reijiw@google.com, Brendan Jackman <jackmanb@google.com>, 
 	Yosry Ahmed <yosry@kernel.org>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 339C840007
+X-Rspamd-Server: rspam08
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 8qdxiqxafri6xu8x4p5onq5o4sgmzmfc
-X-HE-Tag: 1783081961-503261
-X-HE-Meta: U2FsdGVkX1+YZO9QbMH142purpAqVmQ7xR+PQ/mnQ60qL0ZQ3ABi8tDjr5j9rovigHX7g5N/fTy3kGy/2VuyL3x7ZtvTbzF0gJMXQrws5yuv1aSIKJI7iMUQR5QAwH7zFbod8j5C0TDqouYs5RY/NF4iVG4ev6tYr66q56c8Ica28gxsg23tBZqHdRzRgLa0Fg8/KYQyMzvk0rw1mbgAKGodHSScPzoW5QcrSre1HISHjeRALGFKPkivDyK27Wu5qnyLY6GiItgesWVSapmee1H9C9ow+pfidHkt8H+PT4iJ88+2whv02okZSx8hqMM2GNco3DnzVLeOWlU8/JfI4n8HIr7K+ni09m5kNzXvg+jMhEiC/UScHwy8raRNYLjyzw0sMfNRoojMdVmIO7jalsF1RdBl6HVZK5uDcSlgpQEIbE8uYN4yEPieCf3il2bCeQ4CXLVda6Ga1+LFwT/tQ4qJKsGRbLw04CmpwfGiB2V1yzJtZNAkHqMj+7bTr381bKDYOZIY6I36AlBe4erkmzuuDUvJv1j8qEwJhQt9H2HbNaA05EzqK2oGvxFVRZ1MvFcHsV5uMabYyxV5ceFo50ANjouORrJ2AflEWGEFn6kPPpDHA+lu82492JxblLvesPcAb4axxfEXdQA1411VSwn/I3R5QKYBSzFN6WjT1bK90sKzrX9f2HRjqAYdyHudFFzoU85GpYZ2csAz+Dh2N1in/WAiRlkNh5zAzdQX9N2ht0njT2DFdsM2ik3TAlsBGY67uMDB9NuDji+HZLJpgu3xD+RN/O1QV/X4Ouw7uO6s5u5VcJrY+IHAHZwfNVx3IjcpIfDMxa1py1S7EmSOA673AxwDerT52vzxfevlabEcwZXFg26vLZ7Keveyzwo/zl7NgGF1CyRbV1dbMlVh3mjzo1H8zqLUwl7QPKKLv8MJ2Qt1ah8y36QFaRX9F6IrtePpKs+sUyAkirYuQpj
- 7fTX53yv
- 7yIEBwjZzI1SAIyfJqrVrPnEwqaDu8+elpFgDLWi45isL4zM8OIsUMLsXAkslbVoXGwafFoAfuEsM0W4858H0Bfp0ibYnOl4zfV3mlnLJw1pMuo04EdsmQHBF7z1DDku7LLISBg2eOri6Z9Ifp6yg1qjDi8Cl0n8+pglezTQpQwoSwVJEUdJFC15BlsfRusoXjU36ML589x1ws8+jG8s4UfLZ9BeaWzvWwTJS4DwMd0ctkNLX9jIWHZkuabbUYPBIcmeiBIhVh0mTZOFArv1peMOAz98Fkfr2xx0jwWRKat/WK1hE1R6uzyeVUHeAfpk7EWgv6nJfQsHoommjdWEBE+QBblVRZVOQitCwY6LkePl805SJmVmiTxZF0i9B8ryQy4KIX9UmMCTY72tJQDTweeYS8x5yBh1FVI4HOxqkW+S79c489tdMacyJKRD/MyCxr7XtLMoT4joySb7im1CcOwLevuIIsS416iK1YI/yXf+/s8mrws7PNKVoI16R/YftpITk6sHzQ53RLaYumWg6q/cmoNGgEhpgP0ZqgUCdJVi40N0CuoXeTlKqrLO1EDkyqeWxzMwSaKsszvasVXJKPRBaYdtlBCf+oPhsGv93jTnHW5MWeOC2lZXpD8C4RdAVk2+lcQbsXfWp+Fth1bdhlKF3XQ/e1PO0DpHgwXB+fMsVxVSjTALeiwskYSWLz0vpXXO+HaKk8uDLvYo=
+X-Stat-Signature: 8kwxnsomi3q8qo5mofs9jhoefy4rykqj
+X-Rspamd-Queue-Id: AC12840006
+X-HE-Tag: 1783081962-585355
+X-HE-Meta: U2FsdGVkX1+ISEcP1BfFLT5KsgFsoLRGfh03iO7M6wV8C2rhX+Vqhh879xKdNHpPFBRRICHIHPckQyOnEMyCOABz8hbBsBsf7OZahUIoMcwnUM0biVb4cKvkbmpQhMs7cd7fRIMjEe5+qbhJjcdRYpXDeTX6sYGYZGH6Uc197fQLceUUS6e2YUlHM4Zkh5b2hvGHYNPDnIY9v6wcnyLnUejWDdfyvbvqiH905EgKUmHYNMVxA0YqUOXacXKKFcyzSRXG6IDqwQWjyOgMq9Ncocl9cw6qZ+7FBTlscMVkvLNeTH8B5GkgLRZg4aonhxJUavCySd0J2lXy4Ku8timEXiRXAgvAnkLEz+7Z4fQgw/xTuGUF40rrTTptJ0R/c+Dermm9esWEFb7q3Y9+sWyA3AMY359z9uzxOSE0lD0V3B7Bw6mmmqEq1pXxkht0qeQvgbXKEnEmlgjCoKAQGakS0n8iEj3KztAsRh2hRHATg+3DyrSq83j2hlFRuIQPeC9sBHcmp8sotrwf/b+vVoyJ924Z9DhD+JVI/z+SZXXv/iLsYb79pcJ0OWMBMJESJqiV8MBdQ42EuvYh7hUEQSGUtSiWIpqfwTSGiehx0DDwN3OjEP0bVlBLPEFGU0+V5vG6YaVMG654R1jXsQlgu1v621zebApbsNBoOIBry9G57O07jsFtbnKOkrudK/mOgcsK7DgRjW0MPWjiovphJLHrsSKPD8fLWuGmQxJHEzwRr7seenPu5qPPaIohumHtEg8oi1tY4YosDVNSr9QRjVCK6rfL5rptzsqU0PDUv7kxC1bAqo8Mv9sILW3dbWeUzUb5xlSZVgDSF/Xp3/9QOwbjOeN2/eizpNEwIroVcMh1e+qni09ZuJ0wOdc+Exol1dSVeI2wzDRaiClKRhLDnRCdHv/xAba2RVKhiXnL51fDO8nJp6sPp2avdd0bnLt9i0ZKbjbuhqXHBwUnWrdrmz8
+ uV01rpWF
+ MtNWGWlUrLC/K4QKWoKcvy1lIvIoWYU78rJ0iDyoUi/s/KhCwJNluBoBW155kwhdE65zh24hTwb5BXBKvy8NeI7oHKervzv+3oBG+f3aXWzKEgWqlvO+47KVMGqVrqEnmmMr3f7shmCeBHdFzniFL4w9tJSTsL1YwveLsPy5Bb9gTM5ceL59ENWGYxvqGA641HProjwMeXP2y1FO7pzQ8zfnn6f6Mea1BSMfxpVKFXQvrR+gLDe1urqRnb+qpuxXgMJqjfH0HnZPabgqVcsoYB6zxH/VOwcBRUIx6OAK1FCKYG3zXOZfEDtulrDQHG10lFHacWfpFgV7zjkpVn85c+ko6uLR+pWA5ddCL7D92j3rqv1WA/JGfJtphK5PotRgodwx3FpbIArNadXrHvNtKSgfPwRqTdnUlZrndsdRewRlzgdES5Hm1YTUOLhvk/X26jnhIGExIt2Rnk9NvegqPbZ8G1+hXfR0CE67JK9HftGBIad5maTJ4BFVivm0tpQ0ZLhfV1H2riWfdXjueZ33QdxbCUxMlVu5to50JcNhtEpOnuXi1jY7KPDeOZOi7m99wAwr1W1Mt5pTWUyFwibC8uJ6Xiz/X/KjXNl/vTXenlxg9dB/IwKKka2cAXpyWy7FobEZq/fCpQ2t4IE+9AhxnuFxE+EzDwp75rFU30NBJ+3xPtSbm3MiMAh4XQqQSEi8kYwjnMiHlW3sF5TQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,121 +124,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+To align the style with other alloc_flags_*() functions, drop this
+additive argument and just have the callers do that themselves.
 
-All users of the flag are converted to SLAB_ALLOC_NO_RECURSE or
-ALLOC_NO_CODETAG (from __GFP_NO_CODETAG which reused the NO_OBJ_EXT bit).
-Free up the flag bit.
+Note you can't always freely or alloc_flags like these callers do
+(because of the WMARK bits that encode an enum) but this is fine for
+ALLOC_CMA, just like it's fine for e.g. ALLOC_NON_BLOCK returned by
+alloc_flags_nonblocking() and or'd by its caller.
 
-Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-[Rebased onto __GFP_NO_CODETAG removal]
+Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Link: https://lore.kernel.org/all/5dcdd1ef-21ad-4ed0-9e8a-0e5cf96b4392@kernel.org/
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- include/linux/gfp_types.h       |  7 -------
- include/trace/events/mmflags.h  | 10 +---------
- tools/include/linux/gfp_types.h |  7 -------
- 3 files changed, 1 insertion(+), 23 deletions(-)
+ mm/page_alloc.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 463b551d12d99..190191411009f 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -55,7 +55,6 @@ enum {
- #ifdef CONFIG_LOCKDEP
- 	___GFP_NOLOCKDEP_BIT,
- #endif
--	___GFP_NO_OBJ_EXT_BIT,
- 	___GFP_LAST_BIT
- };
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index cfaf16244f56d..c3b246e67ed14 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3775,14 +3775,13 @@ alloc_flags_nofragment(struct zone *zone, gfp_t gfp_mask)
+ }
  
-@@ -96,7 +95,6 @@ enum {
- #else
- #define ___GFP_NOLOCKDEP	0
+ /* Must be called after current_gfp_context() which can change gfp_mask */
+-static inline unsigned int alloc_flags_cma(gfp_t gfp_mask,
+-					   unsigned int alloc_flags)
++static inline unsigned int alloc_flags_cma(gfp_t gfp_mask)
+ {
+ #ifdef CONFIG_CMA
+ 	if (gfp_migratetype(gfp_mask) == MIGRATE_MOVABLE)
+-		alloc_flags |= ALLOC_CMA;
++		return ALLOC_CMA;
  #endif
--#define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
+-	return alloc_flags;
++	return ALLOC_DEFAULT;
+ }
  
  /*
-  * Physical address zone modifiers (see linux/mmzone.h - low four bits)
-@@ -138,17 +136,12 @@ enum {
-  *
-  * %__GFP_ACCOUNT causes the allocation to be accounted to the active
-  * cgroup context.
-- *
-- * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
-- * mark_obj_codetag_empty() should be called upon freeing for objects allocated
-- * with this flag to indicate that their NULL tags are expected and normal.
-  */
- #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
- #define __GFP_WRITE	((__force gfp_t)___GFP_WRITE)
- #define __GFP_HARDWALL   ((__force gfp_t)___GFP_HARDWALL)
- #define __GFP_THISNODE	((__force gfp_t)___GFP_THISNODE)
- #define __GFP_ACCOUNT	((__force gfp_t)___GFP_ACCOUNT)
--#define __GFP_NO_OBJ_EXT   ((__force gfp_t)___GFP_NO_OBJ_EXT)
+@@ -4526,7 +4525,7 @@ alloc_flags_slowpath(gfp_t gfp_mask, unsigned int order)
+ 	} else if (unlikely(rt_or_dl_task(current)) && in_task())
+ 		alloc_flags |= ALLOC_MIN_RESERVE;
  
- /**
-  * DOC: Watermark modifiers
-diff --git a/include/trace/events/mmflags.h b/include/trace/events/mmflags.h
-index a6e5a44c9b429..c1a05ff0feab0 100644
---- a/include/trace/events/mmflags.h
-+++ b/include/trace/events/mmflags.h
-@@ -54,18 +54,10 @@
- # define TRACE_GFP_FLAGS_LOCKDEP
- #endif
+-	alloc_flags = alloc_flags_cma(gfp_mask, alloc_flags);
++	alloc_flags |= alloc_flags_cma(gfp_mask);
  
--#ifdef CONFIG_SLAB_OBJ_EXT
--# define TRACE_GFP_FLAGS_SLAB			\
--	TRACE_GFP_EM(NO_OBJ_EXT)
--#else
--# define TRACE_GFP_FLAGS_SLAB
--#endif
--
- #define TRACE_GFP_FLAGS				\
- 	TRACE_GFP_FLAGS_GENERAL			\
- 	TRACE_GFP_FLAGS_KASAN			\
--	TRACE_GFP_FLAGS_LOCKDEP			\
--	TRACE_GFP_FLAGS_SLAB
-+	TRACE_GFP_FLAGS_LOCKDEP
+ 	if (defrag_mode)
+ 		alloc_flags |= ALLOC_NOFRAGMENT;
+@@ -4837,7 +4836,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
  
- #undef TRACE_GFP_EM
- #define TRACE_GFP_EM(a) TRACE_DEFINE_ENUM(___GFP_##a##_BIT);
-diff --git a/tools/include/linux/gfp_types.h b/tools/include/linux/gfp_types.h
-index 6c75df30a281d..a93b8bd200b76 100644
---- a/tools/include/linux/gfp_types.h
-+++ b/tools/include/linux/gfp_types.h
-@@ -55,7 +55,6 @@ enum {
- #ifdef CONFIG_LOCKDEP
- 	___GFP_NOLOCKDEP_BIT,
- #endif
--	___GFP_NO_OBJ_EXT_BIT,
- 	___GFP_LAST_BIT
- };
+ 	reserve_flags = __gfp_pfmemalloc_flags(gfp_mask);
+ 	if (reserve_flags)
+-		alloc_flags = alloc_flags_cma(gfp_mask, reserve_flags) |
++		alloc_flags = alloc_flags_cma(gfp_mask) | reserve_flags |
+ 				ac->alloc_flags | (alloc_flags & ALLOC_KSWAPD);
  
-@@ -96,7 +95,6 @@ enum {
- #else
- #define ___GFP_NOLOCKDEP	0
- #endif
--#define ___GFP_NO_OBJ_EXT       BIT(___GFP_NO_OBJ_EXT_BIT)
+ 	/*
+@@ -5070,7 +5069,7 @@ static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
+ 	    should_fail_alloc_page(gfp_mask, order))
+ 		return false;
  
- /*
-  * Physical address zone modifiers (see linux/mmzone.h - low four bits)
-@@ -137,17 +135,12 @@ enum {
-  * node with no fallbacks or placement policy enforcements.
-  *
-  * %__GFP_ACCOUNT causes the allocation to be accounted to kmemcg.
-- *
-- * %__GFP_NO_OBJ_EXT causes slab allocation to have no object extension.
-- * mark_obj_codetag_empty() should be called upon freeing for objects allocated
-- * with this flag to indicate that their NULL tags are expected and normal.
-  */
- #define __GFP_RECLAIMABLE ((__force gfp_t)___GFP_RECLAIMABLE)
- #define __GFP_WRITE	((__force gfp_t)___GFP_WRITE)
- #define __GFP_HARDWALL   ((__force gfp_t)___GFP_HARDWALL)
- #define __GFP_THISNODE	((__force gfp_t)___GFP_THISNODE)
- #define __GFP_ACCOUNT	((__force gfp_t)___GFP_ACCOUNT)
--#define __GFP_NO_OBJ_EXT   ((__force gfp_t)___GFP_NO_OBJ_EXT)
+-	*alloc_flags = alloc_flags_cma(gfp_mask, *alloc_flags);
++	*alloc_flags |= alloc_flags_cma(gfp_mask);
  
- /**
-  * DOC: Watermark modifiers
+ 	/* Dirty zone balancing only done in the fast path */
+ 	ac->spread_dirty_pages = (gfp_mask & __GFP_WRITE);
 
 -- 
 2.54.0
