@@ -4,135 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85D84C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 09:44:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF899C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 09:48:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89C556B00B5; Fri,  3 Jul 2026 05:44:27 -0400 (EDT)
+	id E72316B00B4; Fri,  3 Jul 2026 05:48:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 873B86B00B6; Fri,  3 Jul 2026 05:44:27 -0400 (EDT)
+	id E011F6B00B7; Fri,  3 Jul 2026 05:48:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7632F6B00B7; Fri,  3 Jul 2026 05:44:27 -0400 (EDT)
+	id CC6846B00B8; Fri,  3 Jul 2026 05:48:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 49F8D6B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:44:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9F10FA04C9
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:44:26 +0000 (UTC)
-X-FDA: 84946980132.01.FF6F153
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8437340006
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:44:24 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DPLiZHb9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RFHq4t2n;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DPLiZHb9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RFHq4t2n;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A2AC96B00B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:48:55 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 24E40404B1
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:48:55 +0000 (UTC)
+X-FDA: 84946991430.03.AB12AF1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8B4DA40002
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:48:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kTHi5+aa;
+	spf=pass (imf11.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783071864;
-	b=t81j4z3OlNjnbhNOQ0HtTBTzRU3qQaQw2KfzrlHTUXK5tXWXKv7U6Ax2lt6uW7g7sh9Kr1
-	lwZJfsgAXMaM7eibQNeQmUSam0FNwCk3bKwY1bpyovj4h6VubOEJCpYpWC7vGqqZK9tCp8
-	OXbFpRhICXHSJbxeEXRBFETSKGHumBg=
+	t=1783072133;
+	b=3EWvJjVsGmCSGf8BFBQqy9eeuYNikmOwmBQgxKiUrodiJtwAABjy6/+2k17916WpHrdOxJ
+	MLoeYt9OtKl7thQ1VKqB1xpnZP379yMJ9dQ568aVkRec9eDeQmP13peI0bxIiVQ12dzl5A
+	V8HmZkTSq5JXnsNqo4B2+95QWLoZQ00=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783071864;
+	s=arc-20220608; t=1783072133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZvVdFC/w93Kd0pOreOXa++4p9nmwSNNQYlxhQaYUCks=;
-	b=O3iZb5im42e+Ci1w0o/sIQEPKpjeZhrewesIgTl8jrJE/bqb97tUz2UDsk/mplhkDM/NCy
-	9Ss2GIqNG3A1R4LzUCOYMzf22ZPwgHOcps0yaPTZE0GJnprTJhBwn2diYseaJUdqnIsxvj
-	cbRwO2bW9gdOgONMY8PS3iUIgOuZ6Qk=
+	bh=GU2sQW+BHbRyl8stT+ES8Av3G6KBfsKpnc1VSiXAaH8=;
+	b=Uo+I/VdLgGv6iUMNOUg0N5NlcfOcVNwgpp768yLjf7E+PQ3QLbj2M/B3kX6HcFqLFPq5C9
+	1W2IBkxn/5sTeRY/wWt5pkoeWXqjxdMDR+saMswB0kxGl98VjaoWusmRWCDvQs1UauSHet
+	otBop0ub/eh7w4GYFW2pR1GUB/3AR7k=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DPLiZHb9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RFHq4t2n;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DPLiZHb9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RFHq4t2n;
-	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 217FA747FE;
-	Fri,  3 Jul 2026 09:44:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783071863; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZvVdFC/w93Kd0pOreOXa++4p9nmwSNNQYlxhQaYUCks=;
-	b=DPLiZHb9AFizwgdPdY9ZWzKFAG1DhD3/oTe4wGbn51M13DPaair6AlbEX3LaV9XuUdBz81
-	+giYBjxqeGo7J+lkc6Zx6O4HJE20nW4si+aVXHAEQ8WA+GGwEiJ96rkhulSg7xMgYxd5pN
-	IRMjRKWfHWOwKHx6xE3I/LqStYDci2Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783071863;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZvVdFC/w93Kd0pOreOXa++4p9nmwSNNQYlxhQaYUCks=;
-	b=RFHq4t2n78OVH5E64KJJlOEOwn4PMj+Vd75rr7m6vznsLIX71F+uh+aM1TQTPREfoDwij2
-	U8TSotwPfJf9l0AA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783071863; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZvVdFC/w93Kd0pOreOXa++4p9nmwSNNQYlxhQaYUCks=;
-	b=DPLiZHb9AFizwgdPdY9ZWzKFAG1DhD3/oTe4wGbn51M13DPaair6AlbEX3LaV9XuUdBz81
-	+giYBjxqeGo7J+lkc6Zx6O4HJE20nW4si+aVXHAEQ8WA+GGwEiJ96rkhulSg7xMgYxd5pN
-	IRMjRKWfHWOwKHx6xE3I/LqStYDci2Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783071863;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZvVdFC/w93Kd0pOreOXa++4p9nmwSNNQYlxhQaYUCks=;
-	b=RFHq4t2n78OVH5E64KJJlOEOwn4PMj+Vd75rr7m6vznsLIX71F+uh+aM1TQTPREfoDwij2
-	U8TSotwPfJf9l0AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6DD99779AA;
-	Fri,  3 Jul 2026 09:44:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vJYxF3WER2oBAgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 03 Jul 2026 09:44:21 +0000
-Date: Fri, 3 Jul 2026 10:44:19 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, 
-	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, 
-	Douglas Anderson <dianders@chromium.org>, Gary Guo <gary@garyguo.net>, Anand Moon <linux.amoon@gmail.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH] mm/mseal: fix mseal documentation for 32-bit kernels
-Message-ID: <akeDk49-pPgUDek1@pedro-suse>
-References: <20260703022507.187457-1-leon.hwang@linux.dev>
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kTHi5+aa;
+	spf=pass (imf11.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CB5A46001A;
+	Fri,  3 Jul 2026 09:48:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F641F000E9;
+	Fri,  3 Jul 2026 09:48:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783072132;
+	bh=GU2sQW+BHbRyl8stT+ES8Av3G6KBfsKpnc1VSiXAaH8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=kTHi5+aaAp/rX4HTakkhjR3bFvlbbboB2hx19Nen/OQCynsTw3x/WIdUXu+frxwFV
+	 89SbG0+Shaxd2FOCH4dmgKGnOQNd95ufhEkEGXGpT/32v4K6RPBMgJaLR03++i0XQv
+	 HLnWwMqbhfMA9VGMcYWioEN6EpIjQeekAAIeSA8n3p4PU3sGcDhY+SXTEkDi6qWsvN
+	 N6ri66YT0BOjRUFOiXivtMgrlnMXxRLN30aljrlnw5thKW/fQEv2TszzuBrW0Uq2oE
+	 Hw8BoXQe/baC4Oi3LETFSwEwu7qrQBQfRHShyZgwSnxBg2nijHTJWdtguxJWbMqGZ5
+	 OSuwx+53eId9w==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>, Jinjie Ruan
+ <ruanjinjie@huawei.com>
+Cc: oleg@redhat.com, richard.henderson@linaro.org, mattst88@gmail.com,
+ linmag7@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com,
+ will@kernel.org, kees@kernel.org, guoren@kernel.org,
+ chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+ tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
+ deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+ svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+ glaubitz@physik.fu-berlin.de, richard@nod.at,
+ anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+ luto@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net,
+ jcmvbkbc@gmail.com, peterz@infradead.org, wad@chromium.org,
+ thuth@redhat.com, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+ kevin.brodsky@arm.com, linusw@kernel.org, yeoreum.yun@arm.com,
+ song@kernel.org, james.morse@arm.com, anshuman.khandual@arm.com,
+ broonie@kernel.org, liqiang01@kylinos.cn, pengcan@kylinos.cn,
+ ryan.roberts@arm.com, yangtiezhu@loongson.cn, sshegde@linux.ibm.com,
+ mchauras@linux.ibm.com, austin.kim@lge.com, jchrist@linux.ibm.com,
+ arnd@arndb.de, thomas.weissschuh@linutronix.de, sohil.mehta@intel.com,
+ andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org,
+ x86@kernel.org, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-um@lists.infradead.org
+Subject: Re: [PATCH v16 01/18] seccomp: Convert __secure_computing() to
+ return boolean
+In-Reply-To: <akdp6GAu77-ipsXA@kunlun.suse.cz>
+References: <20260629130616.642022-1-ruanjinjie@huawei.com>
+ <20260629130616.642022-2-ruanjinjie@huawei.com>
+ <akdp6GAu77-ipsXA@kunlun.suse.cz>
+Date: Fri, 03 Jul 2026 11:48:49 +0200
+Message-ID: <87cxx4mmim.ffs@fw13>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260703022507.187457-1-leon.hwang@linux.dev>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 8437340006
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: zbjirpwxaxny8y8g9y4of51e5babszqx
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 1duugodu3xa1twpime8oe4931ktqpmdr
-X-HE-Tag: 1783071864-920707
-X-HE-Meta: U2FsdGVkX1/xU3t1O36pxwL8yJ3v7xrZP19B2oJ6SrWwryCnWVyTc9dYDpnjihCv7w9o+iFpqGpvAtm/QMPqsmZ2tvlzrSrmIEqak8/xG4Ve7QKRLxmPqw8yhMe085Ct/Ea4alvh1nP3Tmk3DnI02E4X0NOIZjl4Sh8ZGsWf1YAfHrXIfKGA74zFy6IgKM35G2xe5hECyvbhh4sHt+/asu/i8IgoQCauua/6Jsh78kyNPbQv9ZPSY/uzKkT73z4DJDsUPNOTs2sQ5JctangzPWpu8p9+0hRd4+oq+VmTXazUQzHKZkGScln/6iR6CCTkm5OizrkVwqlKjT7GEPJPk/r+GDax3bbcH/xrqbUfaRr63d2GxmynnQZDKd6NK5jY7cgFotA/wFIMGgVFs0nz/BL90L81K7GhlB0h3U0kwEalbZnNp8yAI7xzQrREUif0m4+/bKHJkxBYcFKXE8c8Y3QJozngXHtQanrDTupTcChE0t9R3HsK/eVhgHz+vW/2YRwskqrCfYFcd5spB/X2RuqEZPEWDunuc2eBrAGz2XSQHEOx4jxNyle2DG9bMlsKpeojujNGLAmnhyHdYOqgpU2rhlbw6iJEMLkw0W8PmZR9SDEO6Q+hPGtBDdUSgXGruE/YCZHOr4dB1vm69kJ+5TeXNosZmla+Fj9hjBD66/IYqHAT7tQU8BCMLpFffCteW14FThFFBuJAlTTn07zLaV6rmJA3SbqD22Yz3xw5ulTYQMr3/qFd49lqZz2llNBSp9066IpYfd0jsXTSE0mQjIDrTYb54oYFgv0+KJqMRFRbupefvhzoKzM/30uIfAGnkQEqc0IyHq3AZw4fECmEgL2rQJOBNuNbjFeXDsfrYh80o+QzIY/PTQVXuJUzvU912/LQX/rVeFGyr8hVsv1b6AifIADAHgZbewQzJOwDnZBHOs/ogNsE3lAf0UBwHbrixwjV9wDwrmyAHld/ky1
- 93ZU8qe1
- ckZ6u2lzv9JZcFchJyrBIsl2vam4Ebfncn+M66itnEaOHRck/EvrpeWOgprCRZi9uiMqJf/m9QfLrpod34cNO/jE+Y43hN7E4LUSdBKPc6kry2GNsPrPAwzDst74XwFm8GyCo74iB1Ph0yHGfB57WmVUlDcmOnTJDWLvBSWIkpqJ0mU0PpuN+BrkkZ5W6N3lg/QJvTz/FdrBESGabXqakjtogeJFACZZhwWyD6pPfRdvrbaemGqfKLItwxQR3xuG3PbKTKkrTJXzrJ3+uRxmWzmbUx2skmOgfb/mZ0ZH1zyLOqJlXmOPtgqzowZjoNArLgxbLOPu8qXvBYKPnGjhlgv+FURpMWq1H+cGehsHi7+9SbJXwF1UBqlNcMyEX+f/kqqKf
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8B4DA40002
+X-HE-Tag: 1783072133-677854
+X-HE-Meta: U2FsdGVkX19ldhu+g/hGAYe2l+OqjgT+63ZJfAxvQs/9xQDHTd9ZacW4L1t9hd9UVH+gm8qpBns/nVCpVCeaRPIBRPg+Dnpc9K1FC29T96RoOkPyvETQZhS9eTctBBA46KsL7h6Mraz/v1CHlFWG/7dHDGItlrTa3lZFIT1s5RuupFfksomgReJm5ELDccZjfmSlvi9LaonJFuuIOGkHLyXNxpITga6J0Wehz/Oe7l7bYVT9brwMzAy1FiKuayknCpc6wJLYtN9jfT+mbDpFLJ09lJ8Aovy+8L7GutTOWQb7lQLx6xXJOkYu77QV0WBcNSnrg1xP4KlLf9t4cOrajgn40kESlXjnaJMIzlxk/kZ7P52hyjbGmgb5zj7bcrMlMZHifOjhwmx1xcrAR9TnIQaXpKv8/RyBXkA8XeKAplOKnuYGZFyGoG8C4pJP0o6WAR4Io9UBT6L3CpOPSbqvUpa5jWNrL0tAIJ29reSjo7BTfpynDlJeWkmk2mV41SPhhUWi1Ydj2TS4HwfXD6aNxyr5Vq3CfGEMoa6jhlvDyGJfDHcTToisDxweP1iUPWteTOvx7tJllqt0MlyiDVFjx+98WWKB5PhOGC2MDvuGIW/Ui7rNuv7VO06zKTw/t31arNqJnAODEa+KlkDVI73s38vZW9ODj0KvvWI4NjB/mJDCw732I4fWbaMqn/hKginj16DDKktTc91pmy1+LPuwxjwqyV/Coi+YT2sIchrNlSaJ5gvadUPpDtZMIRPHLk8JRWLEycjXUiwDdY8Q+cDK1OjwFrQgSFFGtwrUyEZ414P1n9LsGsYZDEZTPZHOVz1kFjcgg66bTKQv+hfv92IVrRAHFuCciUfsLiSHwqyXr2wnKeaIHL6zJah5tnTmja9ba91Ah/tx/XHxfUtO5YrKkSQBkbJSL0D1crxNteZkBfE/NIng8mo9DHu3eIGPl/Az/0SXzk9s+K7FBV5aPxs
+ DmlFWBpp
+ iwdk8nZguIdRHb4LMElJ/sPtLKp4UNn7v0GLv70vjzA0PLTQMtPWo/GIyZkk1z444P4/nrql/KFlxxQCwoiE+a0CtLNL8UPOlUfDKk11a86oCXY6xw/1RdEHcQBczst18sVGkkW61dQqVRWCOmU/ebQqZdOqrlognxrQRhr9RAQLjJevcVs76MSMvH93VGKlLgK864biSBS7AjYw96h2mXHh1s0Rh8ZmXf7nqSfORjHZBvDvm/44yvOmBk37nHerR9ItwtTHPA7SyZfwIzM7CjOKx6kSvaMGm3l6081eEAMJuLU0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,121 +123,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 03, 2026 at 10:25:07AM +0800, Leon Hwang wrote:
-> mseal.o is built only for 64-bit kernels, so 32-bit kernels fall back
-> to sys_ni_syscall() and return -ENOSYS rather than -EPERM.
-> 
-> Document the -EINTR return from mmap_write_lock_killable(), fix the
-> CONFIG_MSEAL_SYSTEM_MAPPINGS typo, and describe system mappings in
-> terms of VM_SEALED_SYSMAP.
-> 
-> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-> ---
->  Documentation/userspace-api/mseal.rst | 18 ++++++++++--------
->  init/Kconfig                          |  2 +-
->  mm/mseal.c                            |  4 ++--
->  3 files changed, 13 insertions(+), 11 deletions(-)
-> 
-> diff --git a/Documentation/userspace-api/mseal.rst b/Documentation/userspace-api/mseal.rst
-> index ea9b11a0bd89..1f1cf206670c 100644
-> --- a/Documentation/userspace-api/mseal.rst
-> +++ b/Documentation/userspace-api/mseal.rst
-> @@ -50,8 +50,10 @@ mseal syscall signature
->           * The start address (``addr``) is not allocated.
->           * The end address (``addr`` + ``len``) is not allocated.
->           * A gap (unallocated memory) between start and end address.
-> -      - **-EPERM**:
-> -         * sealing is supported only on 64-bit CPUs, 32-bit is not supported.
-> +      - **-EINTR**:
-> +         * Interrupted while waiting for the mmap write lock.
-> +      - **-ENOSYS**:
-> +         * The kernel does not implement ``mseal()``.
->  
->     **Note about error return**:
->        - For above error cases, users can expect the given memory range is
+On Fri, Jul 03 2026 at 09:51, Michal Such=C3=A1nek wrote:
+> On Mon, Jun 29, 2026 at 09:05:59PM +0800, Jinjie Ruan wrote:
+>> -	if (secure_computing())
+>> +	if (!secure_computing())
+>>  		return -1;
+>
+> Hello,
+>
+> I am not fond of this logic inversion. The boolean is meaningless in
+> itself.
+>
+> Previously -1 was used to indicate that the syscall was filtered but you
+> chose to invert the logic choosing true to mean syscall was not filtered.
+>
+> You could choose true to mean that syscall was fitered avoiding this
+> inversion.
 
-Honestly, this whole thing needs to be deleted. We need a proper manpage.
+That's just wrong. Boolean logic makes more sense with having
+(!condition()). Just because the old 0/-1 nonsense had it the other way
+round does not mean it has to stay that way.
 
-> @@ -62,7 +64,8 @@ mseal syscall signature
->          memory range could happen. However, those cases should be rare.
->  
->     **Architecture support**:
-> -      mseal only works on 64-bit CPUs, not 32-bit CPUs.
-> +      mseal is built only for 64-bit kernels. 32-bit kernels return
-> +      ``-ENOSYS``.
+> Sashiko points out some places in existing code where it supposedly
+> explodes which might or might not be true
 
-This LGTM.
+The vsyscall one is correct, but that's a bug like any other one and should
+be caught in review.
 
->  
->     **Idempotent**:
->        users can call mseal multiple times. mseal on an already sealed memory
-> @@ -131,20 +134,19 @@ Use cases
->  - Chrome browser: protect some security sensitive data structures.
->  
->  - System mappings:
-> -  The system mappings are created by the kernel and includes vdso, vvar,
-> +  The system mappings are created by the kernel and include vdso, vvar,
->    vvar_vclock, vectors (arm compat-mode), sigpage (arm compat-mode), uprobes.
->  
->    Those system mappings are readonly only or execute only, memory sealing can
-> -  protect them from ever changing to writable or unmmap/remapped as different
-> +  protect them from ever changing to writable or unmapped/remapped as different
->    attributes. This is useful to mitigate memory corruption issues where a
->    corrupted pointer is passed to a memory management system.
+The blurb about bypass is AI halluzination nonsense.
 
-Also LGTM.
+> but any in-flight patches that use secure_computing would also be
+> affected.
 
->  
->    If supported by an architecture (CONFIG_ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS),
-> -  the CONFIG_MSEAL_SYSTEM_MAPPINGS seals all system mappings of this
-> -  architecture.
-> +  CONFIG_MSEAL_SYSTEM_MAPPINGS seals mappings marked with VM_SEALED_SYSMAP.
+Maintainers know how to deal with collisions of that kind. Stop making
+problems up.
 
-VM_SEALED_SYSMAP isn't meaningful to userspace.
-
->  
->    The following architectures currently support this feature: x86-64, arm64,
-> -  loongarch and s390.
-> +  loongarch, riscv, and s390.
-
-This is also useless, every 64-bit architecture will support this.
-
->  
->    WARNING: This feature breaks programs which rely on relocating
->    or unmapping system mappings. Known broken software at the time
-> diff --git a/init/Kconfig b/init/Kconfig
-> index 5230d4879b1c..12bb39f637b1 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -2112,7 +2112,7 @@ config ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
->  	  from a kernel perspective.
->  
->  	  After the architecture enables this, a distribution can set
-> -	  CONFIG_MSEAL_SYSTEM_MAPPING to manage access to the feature.
-> +	  CONFIG_MSEAL_SYSTEM_MAPPINGS to manage access to the feature.
->  
->  	  For complete descriptions of memory sealing, please see
->  	  Documentation/userspace-api/mseal.rst
-> diff --git a/mm/mseal.c b/mm/mseal.c
-> index 9781647483d1..0464c7b94ab9 100644
-> --- a/mm/mseal.c
-> +++ b/mm/mseal.c
-> @@ -132,8 +132,8 @@ static int mseal_apply(struct mm_struct *mm,
->   *   addr is not a valid address (not allocated).
->   *   end (start + len) is not a valid address.
->   *   a gap (unallocated memory) between start and end.
-> - *  -EPERM:
-> - *  - In 32 bit architecture, sealing is not supported.
-> + *  -EINTR:
-> + *   interrupted while waiting for the mmap write lock.
->   * Note:
->   *  user can call mseal(2) multiple times, adding a seal on an
->   *  already sealed memory is a no-action (no error).
-
-And this whole header needs to be deleted as well. No one's looking at
-kernel code for documentation (and if they are, we did a horrendous job
-at actually documenting the thing).
-
--- 
-Pedro
 
