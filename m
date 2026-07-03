@@ -4,127 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD31FC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 04:14:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 608E5C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 04:14:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D0FC6B00C0; Fri,  3 Jul 2026 00:14:19 -0400 (EDT)
+	id 2A4D56B00C5; Fri,  3 Jul 2026 00:14:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A7816B00C1; Fri,  3 Jul 2026 00:14:19 -0400 (EDT)
+	id 27B546B00C6; Fri,  3 Jul 2026 00:14:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 896666B00C2; Fri,  3 Jul 2026 00:14:19 -0400 (EDT)
+	id 192A46B00C9; Fri,  3 Jul 2026 00:14:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 571C16B00C0
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:14:19 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B22F9A041E
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:14:18 +0000 (UTC)
-X-FDA: 84946148196.12.FC81DD4
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F3B7A120003
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:14:16 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oTxA3Dsa;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D0FD46B00C5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:14:24 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2A3828DC46
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:14:24 +0000 (UTC)
+X-FDA: 84946148448.28.9BDD67E
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 735BC40002
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:14:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vb+j3Rlv;
+	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783052057;
-	b=Ti72Ho7XqBe3qtpdXu1jVoPCLfps63TE9Z17T1sc8T1gMhyT2Mknne7VoETNBO/keKS5Cl
-	RD8eun1Y4VDqpMKJc6BfkIwoQRqXcbHOZ39pqWNCzJuUuhW++p91+ia4bRpLGSOOttcKqv
-	l8E/+SecbkuiNuRZ1ReLahLp8KGf4yE=
+	t=1783052062;
+	b=O7OfAQVbAr0Um/W0UcqBiNLY6eie9hGnMAsRwpoGsHdhF9UVrqUS+b//Crcz7/hLkvK4nE
+	K/tMzv+grvBCUEuUAjhUeqk9sE2FBJ0P2jisMk/+4GqNu5FAA4EN2PQZNBwtb0sxzyEGp8
+	9NwuH4i2WQ3ktNjBWmwrZ6bZM6EaTsg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783052057;
+	s=arc-20220608; t=1783052062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x+iysOyNbRm03PhdFjVxkBmiS8J9Op+shCzVJjlLBpQ=;
-	b=rFgGgc2qDyOms6WMTPNZZkL85MR1K/CtxZmbTZKiPV3Vrf9Mno7WFXoL1MsLcH+oQIEbsz
-	8wZ4+XmlpzB2u6kIKNq06pJD+FoTP6m9bH4kXSfPjVDBodA+kSLxom0qHTIkwq2T+MB03b
-	P0uTNG0J8JSeVFpgsCgCyvrcCPiXk/c=
+	bh=6EZL1NKnTgoPS6ISbktoUEUb6WMEmWM4FtznnYOJW0U=;
+	b=1I9dIV/PmTecB6Z7iX5upu7vWb3rYOHjxEb4Z6B5SkihEOHakganUoCcjE5rncx1olnLub
+	1a6mhic7mgT8PMnewRlMmmVhKm4+2XlCpb1n0pjMvj/ElRTwPyeJqfa54L14BdoR2pDPRM
+	W1dCoSQFdoBlOYHMuMuOf/E6fDT9xqc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=oTxA3Dsa;
-	spf=pass (imf29.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vb+j3Rlv;
+	spf=pass (imf07.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-846970f0acaso104947b3a.3
-        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 21:14:16 -0700 (PDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-84592b55832so92439b3a.3
+        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 21:14:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783052056; x=1783656856; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1783052061; x=1783656861; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=x+iysOyNbRm03PhdFjVxkBmiS8J9Op+shCzVJjlLBpQ=;
-        b=oTxA3DsaRAU42pG/9zwwXETr2xNz/gRx7GR6+VyjzeoKk9yLHqtYLVDb9ooqLrhS0V
-         YgYBao5MxGLtHS0YMMtr4HHDxpFoC72VSoKZbQSxql10lI9gyA+4MG2GGVsoX3k3qTYu
-         RhM4njANsH6V/10eWCD6cqr+DuPxrh2+oq502tbcWMM8goTEOBu2LxPvYhoop9bBGU1t
-         Yg3M1cIej49GjeBAWWe177FG+iOkBt/lFWPWiMDRn+8OeVad5NNWVlpKFvihD5DwNAQW
-         MsmxaUvfjW0+Cfs1oEi5Sxda0xyAXFEw6tzQkjcEHnJGL4VRRUVADuwEPlGZX1Ac5QyB
-         j2Eg==
+        bh=6EZL1NKnTgoPS6ISbktoUEUb6WMEmWM4FtznnYOJW0U=;
+        b=Vb+j3RlvXHkPuDubIS7opi4t4NgzOX9aV880bIAbRypY/fhMtZ58c5NUcxxwo+Qh/f
+         E82s37wB+BdxqWrixadAc2BXCG1NW50iNHwJwZCUeKYxNBfIBZYxCEvCu6YXkNZxXr1Y
+         L64rVihcz51UMZ1jnsJ+unbnpaxswrUEdzP+TcA7y2AodsyCt5Qw5AnplAmlwQF4HKNy
+         bO3yNug+wc+rGIHHLDTyf7ODEvF5FR7YgEcxiHT1x6BNXoDVyCEAWZANciBzG/OE0KZB
+         bwA++SvBYWWZUsgc/glvbQxLQQLD4FolFbYypL0e+6wAhI97166J9gg9eWumJEEJ0Hyz
+         wbzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783052056; x=1783656856;
+        d=1e100.net; s=20251104; t=1783052061; x=1783656861;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=x+iysOyNbRm03PhdFjVxkBmiS8J9Op+shCzVJjlLBpQ=;
-        b=KJzTU3azsNvXZ921IFn7ciRm/i2yFMXBHNBtgH/D4F7kuX12JycHMiRcEf+ItyVU+Q
-         mDhyeVqJhIDOJecckKlaY1b6MU3p9RijmJwHIh7ntIb0Tw0IjK67rjH3Ih2L3Hd93AZO
-         wiOcEDD3UcdCr3uS7wB0mmrsA3FRE81dZWb/IIqR6HAmZ6jaSw0klwxL5ApDVg+mh+g4
-         2fxaMrYdYlpXCXsh5+O5y79Cbur4lJEavKb8DSmqSO52mQs+mSWMVYwlJnZ/OZ495/yq
-         EdjcL7W2yLPlSDRcJ6EBHkxc30b7/opQswlmV8Iixbot+BKlgle0wiEJc5UMcHMkfnYX
-         75ug==
-X-Gm-Message-State: AOJu0YxhA8p0UMreaaysOiZhbiCP4RPBtCkwZE/Bsn4WwChnIdvbWYHg
-	HlmEpwNdzioIaJDJmel6OLups8hfw/nNU/m/KG9tapaRz6iZ/2O4X3fz
-X-Gm-Gg: AfdE7clbsvnVlZIwOsEdR/I8rQKGB1norIW/qRKsh+BQervJozNraGjHSYDXZNB2tfV
-	g2AAHXDUZKH2ksXcn/+VWoaYnVYzpMhmalPCHJy3i2sr1qc/Cm65M+lS7yBiBvU/rEgwEvzLzNB
-	oK+qKOLA6MHjMOYrBWIbK9IB4tfn8mNQJS/ryzntmwoAYntHEyt3BMzTWvhkVH5gyvW0O0BSZoa
-	0rHuSJGebbZBLByxBIew5H9oh22ZIEY7brCslkLUEKG+xc2j5s7gFyCcO+JHlWpjj+pvOSmYPT4
-	YsCTX4hqA333b9NF7s7dwWewoOSbDAvZ7d7p4nfE6336FVUx+85WeYZOxcOVfwmUUsUaRumJ6Xd
-	sFM8/vrZalG7tomYFj2ll/peUwH9V7Fqb2H38f5GbfS+jhZivb+Uw+ZbKEHEg56P5xHnsHWFC2B
-	o3R3KRqNE=
-X-Received: by 2002:a05:6a00:e8a:b0:837:e9cc:d474 with SMTP id d2e1a72fcca58-847c06739c9mr8648805b3a.2.1783052055912;
-        Thu, 02 Jul 2026 21:14:15 -0700 (PDT)
+        bh=6EZL1NKnTgoPS6ISbktoUEUb6WMEmWM4FtznnYOJW0U=;
+        b=OxEPEP6Lq/wBUYGsP6VS6mGmfq7/PPmhwKFredlEKGkEN9yfHOXXViRiyPEUk6MQOD
+         Enc5XVpdCwlgtjhMCqZn619zvA/xZveuzq4ivHFhCBrVPCZPWOOfula6hEPeR3cuZpw4
+         zvhi3B+ZL7d5M+DH+Z6LKDMK77Bw6gxgOxJBZarfHBPSh5UZfMZDtWaQLDveS98UDZmj
+         1vNPdz33pu3Iayz/PjvBl6vybBwHJvsEbdoELQll3Da53i0rt6r3syQp2QFjeZ++k5zi
+         Eb55y6mGjwN2PuF943qCsNJbVmyeFdz3yo4VEOutChu9wZNwvo5u2guLwNKe3uM1SDIT
+         18aQ==
+X-Gm-Message-State: AOJu0YzV8kVfWUnwat8inoQe+DeWROmrN5hGGnYT6JJWHkYTPZ2afJ8x
+	XrUfmZqOlTYSgEhLUfCOXKwnc1ttDTvVk7Dk1NT9upQHB60hW9SyQtNx
+X-Gm-Gg: AfdE7cm9B8M0CrcjAJcH7ggQ73Q8FO9LTyQ6G9OS29n/RlrSPx9M+t4RTXjjyw9BODS
+	Y4DoMQlnWsxpGb5xB69zl4BnXIWfC5MX7/IPIbsmAhE9C40JvV7WRr/JXplBnIxV63AKNjBfM4A
+	yOnjn8fBUew97DY1FlwPLcIBnRSyz/uP9ETkivMDRsEh3DwZ/f//uaWweWTQhk460wqCjInQgQp
+	KRP7p3mKf/s/9r9Bpe+J98bp7gjzOXd044997AbqUTIAZcMZFTy54DsA/SlfBVUvRVHPuka5+Mv
+	odpoyJGYNuFv3vD9x72h9ZNa0wnYlA9rFpXAQzmAuQZ4zSz3T0ksohfVJjK0SZOdhkAZ2x0kzm6
+	ZIAs6VxSIF7pBm4ENmVkgU5YWCfSC2QCMF9CCFFELsgVXMV+8aoEvKCwtN7gvp6dFSr6XP5922N
+	HbcxjS9T0=
+X-Received: by 2002:a05:6a00:1302:b0:847:8ccc:d7cd with SMTP id d2e1a72fcca58-847c085b20emr8662798b3a.37.1783052061259;
+        Thu, 02 Jul 2026 21:14:21 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb94bd7esm2207768b3a.38.2026.07.02.21.14.11
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847cb94bd7esm2207768b3a.38.2026.07.02.21.14.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jul 2026 21:14:15 -0700 (PDT)
+        Thu, 02 Jul 2026 21:14:20 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: rppt@kernel.org,
 	akpm@linux-foundation.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
 Cc: linux-mm@kvack.org,
 	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	driver-core@lists.linux.dev,
 	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
 	linux-kernel@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Rob Herring <robh@kernel.org>,
 	Saravana Kannan <saravanak@kernel.org>,
-	x86@kernel.org
-Subject: [PATCH v2 4/9] x86/numa: remove redundant numa_nodes_parsed node_set()
-Date: Fri,  3 Jul 2026 13:13:24 +0900
-Message-ID: <20260703041329.2797584-5-ekffu200098@gmail.com>
+	Thomas Gleixner <tglx@kernel.org>
+Subject: [PATCH v2 5/9] arch_numa: remove redundant numa_nodes_parsed node_set()
+Date: Fri,  3 Jul 2026 13:13:25 +0900
+Message-ID: <20260703041329.2797584-6-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260703041329.2797584-1-ekffu200098@gmail.com>
 References: <20260703041329.2797584-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F3B7A120003
-X-Stat-Signature: daagpxeqwkb1i61pdr1m46ekmmdja8ma
+X-Rspamd-Queue-Id: 735BC40002
 X-Rspam-User: 
-X-HE-Tag: 1783052056-362014
-X-HE-Meta: U2FsdGVkX1/jtr5TIdEpzEKnELym9xmKonVpiPSMNbJ3EsUcM3T4YwUNwsBJzbpbvOTRudtlnPlk7RfXXWy/ghyPpOvJT0dh20GC2G336SOa2t9K9Y38pUH4Wfq9G/5DDm8RpAWo70mjEzSHUWj1+68UV+6+yEnucLqZMBcLe3MEiddoaI/4cf0QhabjZbiDJI06OhhhMtEwzmSANmEusEPzlqLmrHvhlTbES3+AtC5iLjxyYrsQe628vqB4PFzTdP159BRKwIQlMFTbs3lRI98gNfHNdBSsHNrGiKzf4CckX99PCZVyTiF6pbE9e6XUUXiK1XuicBF0aB1tYJ0nyf3q7n/ht7Ubb5Vw644hoOn9WM5lc9/a6ky1JDH6LFQVgtFvCNILZHQTqtkH0tlfJHXpTtP2V06/NCxjsKW+WmAbCjT0JgYwyz7jjFfo1BhFggRUYdUt+O6fsRSuHqluOWapjHi68gDaW7hn5Gw4EuvsJ/3pk5E56z/mmZtSmFjA6Ttpm8B2eNcep2hBbpYECiVdjFvQ1vrLZaGQ3OhAFrzwYQQnvzRUPCqb1YAE2OhUIyGG6SncAfce7jbvxOBK4UM3S6TK0AC5x25qEwvUwOOfBVh3/P2lFLgf23tsU2vTMzbDPg7A4QW3mPfq9XswTWmcquS8ILDjinjzhioCAdAJbAdCwvSwlqNsRR1QJoVA/tf2UcJmXVfDZkLKtlxzK6Chi+gDznyH4jZKmg9Dhxj92OORPMLy5HG4Cw3ZKO4xZWr7gi4y1JCfMTbl1lLZBOuF5xnAESiP1PoiOlvq1eJYo1l1gveai9el+I6MtMAJSzUQ2pKmKYAAl3Eyna8LKfl+lqPtMf2k+xP62hNhBZ5zdwEKnIYUN5UuFHpkUFyZ1cv3/z8i+sp+DP7/i1IyA77OGR0+fli4Grz5HnYlTd3sUE1HJ3j8ovNTpIRZ1C1F2Z5Rl8Cz5cWcmnFi2HY
- bOQ2yZW6
- uwvWCM1Uaqitx/ufqQIJmNcdic2zHvMyVxLsohit6/77/HyKkRaLkcJAhCORGrZynykvmD9oQtnCBmxYAqT+xXth1niMeiQUcCZYiBqKnIBSzQPa/drND7xV6AVokOAMiuwaBr/v26SoPEi9wzTL602SRo0j7atw0GcNVpmNZ+64MzGpAHzeXHBvHpKNigXkfiIflYeAPvQ6RFhY5v4NMD6iy64mQ5FdyCl1WKx9Ci68CECt7DIVV0LSZA2j/3TROy1yP8kBNaHlbC+mkqnJDf1Uee5Q8j0m/qRC7MNjWcVPCnnFhkcnUctyprv26pYxSSKjRKcwNfJdPWFkyz3AMNyjWlaepP+TtgPo7d1FL3LkhmmumILHmrIJ0LeDfxcW5MEofK76+sxuUIyvgPXnFjPOkxyi1b/tsjiqMI2RJCnGmJJxMul77lSIMp1y+s3IAlZ/6g9e9pt4FVxk=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: jk4o98nwpm1fiuyzuytb5utkbbo8mgtf
+X-HE-Tag: 1783052062-97573
+X-HE-Meta: U2FsdGVkX18eju2L9UpPe7HNCzGcUbarbLK4RojlJ67qGieMQgy4/VPZ1TK1VJCCKZHdUJO8rz0LkQhUjALFlNXR56PiZuIEwdEJjmEGRCXWD9/d6CG9tSQt18vECdeOOkk62o7DLn1jTLrNSKjUxv8H/Mdkkrka+/uSnSFaS86DmudSgk3gX9LJ15oMT6aoH/64ZbsW0yUXQAbwPjytUD8okzstXgTksEr59PbW5SXpskj0fhyBJBUflEt1rzn4lc9JXNb7aQ/gEa4uVwHnLrodOpEVd2JIsr5aSFk2NczZGRfCZdmGxAHaL005vUNRubqTwXK9F3H4yDvyO46n9Yaf+Rfoz9r8eygW09uPyY2e/eeyoRzjqUmazKrabehNrx45ipCIAvKe3Pz2waruS1NG/009Xpg06ESny9ehGieTBMB5Q+ZTlGURImV2DRhT1+K4McSiloKH2JMEsnc/EFBR79UmVBXluZ+mxLtSUZCgKx2o6UX+WFKtnS6nxoedOTfexBVpdBT6XTFFf1TMDCU8thc4X06nDRLlOeHxarbGs9QWMRtOC98Zy4yfRBGW0IoizgemHCQ+9NCQ0Rrl4IKPGxVc3kPNa6TM0lmekZiy3ZCYP2YyPghaCjfkil1uvZJEeHii8xH6o1BmvM9qN9tLkY9GGzbw/iA01KnWtiwuSO6PkHnKMkuFiErPcoslmKWUdo6kHYdWorAalAaz6CYL27vcDY0HXje1z/aAvtEe+JMJ3Oh+N9+FUJy+nTlgOlXLjPI0XfYlzUWm0V33SfiRjIR4tpX+ZyhxT9MzaQRbZm/N03TX3BRCnRnjEmorxVVSaTnvmDVOF7BcyrMg1JyEnbcY+Nape+wc9lm/mZAtUNFu6xpwUtK8Gmg/JoJF5R4/84ihxYXBUt3irWY6I9pjRSYDrzoWnulsP4/SHEhSAfHRKLEYVEBrY57nyqQXlwArpGwCMpZ+JI5gYVf
+ b6DYRdVF
+ qSTg1lm84SZXS3BGzOhSGEbJFoLYEuzehxU57k/7wwyUkjkSEbBXq6goQSiBNpq+1IrNQiBsc/9Ylki0VMgnqp08IP6vUBQtEBMwsLzXPizyz7YTo/UOLidUHjDRlAYUsXtrqSlNC8SY0V1dWQi7OQgWNj6rtzNr9lZEPzdr8lZI0ov4vFr1mcA8to/8Jf93TIlRKf6kCWAwhSX0UT/L/StacjYoIb6xrPKq5jX8Hv7AJVt+MtMCIObfr6mqzJjjImVcbnylg/Bnew92yaLrzZ7+BBd2XH8cuNPVPbiYBSXhLxn5n4wKdVsQHgkCMjAahUs2RjqTZTL4yHokoPZ/UDbHryo1VE4C0GG07eLzGVPbzC32XWeqFNPowCmweQmbx6Ysv2YFvo0EoxwC5yUwzOk+hOQsQj6wgrPDkGIlcg3cPE0uZIKoi+SHsEPwCYVkLLmFTYtGnt3Glwwc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,34 +138,21 @@ No functional change.
 
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
- arch/x86/mm/amdtopology.c | 1 -
- arch/x86/mm/numa.c        | 1 -
- 2 files changed, 2 deletions(-)
+ drivers/base/arch_numa.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/mm/amdtopology.c b/arch/x86/mm/amdtopology.c
-index f980b0eb0105..1cb581bbf2b6 100644
---- a/arch/x86/mm/amdtopology.c
-+++ b/arch/x86/mm/amdtopology.c
-@@ -150,7 +150,6 @@ int __init amd_numa_init(void)
- 
- 		prevbase = base;
- 		numa_add_memblk(nodeid, base, limit);
--		node_set(nodeid, numa_nodes_parsed);
+diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
+index 442ea239bba7..c7f63c4cf367 100644
+--- a/drivers/base/arch_numa.c
++++ b/drivers/base/arch_numa.c
+@@ -279,7 +279,6 @@ static int __init dummy_numa_init(void)
+ 		pr_err("NUMA init failed\n");
+ 		return ret;
  	}
- 
- 	if (nodes_empty(numa_nodes_parsed))
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 99d0a9332c14..ced66e68a68e 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -216,7 +216,6 @@ static int __init dummy_numa_init(void)
- 	printk(KERN_INFO "Faking a node at [mem %#018Lx-%#018Lx]\n",
- 	       0LLU, PFN_PHYS(max_pfn) - 1);
- 
 -	node_set(0, numa_nodes_parsed);
- 	node_set(0, numa_phys_nodes_parsed);
- 	numa_add_memblk(0, 0, PFN_PHYS(max_pfn));
  
+ 	numa_off = true;
+ 	return 0;
 -- 
 2.43.0
 
