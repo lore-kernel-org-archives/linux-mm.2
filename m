@@ -4,117 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD93CC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 11:59:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FCD2C44500
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B24406B00B4; Fri,  3 Jul 2026 07:59:51 -0400 (EDT)
+	id 43E146B00B4; Fri,  3 Jul 2026 08:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFCB06B00B5; Fri,  3 Jul 2026 07:59:51 -0400 (EDT)
+	id 3C8786B00B5; Fri,  3 Jul 2026 08:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C75F6B00B6; Fri,  3 Jul 2026 07:59:51 -0400 (EDT)
+	id 290E86B00B6; Fri,  3 Jul 2026 08:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 731926B00B4
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 07:59:51 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 043048EB7C
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:59:50 +0000 (UTC)
-X-FDA: 84947321382.01.DCB0800
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 42AE310000F
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:59:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=BzvOXcJ3;
-	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EF2656B00B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:14:44 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5914AC25E1
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:14:44 +0000 (UTC)
+X-FDA: 84947358888.24.87F5008
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CC6D84000B
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:14:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d6VbRKa+;
+	spf=pass (imf01.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783079989;
-	b=qZ8GU5KQeby9TV99L9Uqf/bjzTnL2QfR0FksShwZJjcf5jjOKgdczkcxE8J36OVer/rvE4
-	c8x+vUrgyIeZQdAM/lxA5pHsQ0Nd/rOuPbH3Atqxlyg0y0Bg3lAzJimP28aMUn4V0YLak2
-	bW4vU/vOib04/9lTg/cFzaDYpuD8PsQ=
+	t=1783080882;
+	b=TOE7HcaBXizp6a+VY5FSe6tkWJV7pumJ1WXClhvbxKWuB68a72gStvcXVPLCaSCp3kOWj5
+	YN+atCdbphitynhEv7pnnZm6BPqV+gMTTmeJQNkwhS14xHsLmtVQRapu8OLxImGOujg+Ci
+	X2gjK1NyLqTYIa5GT7oUeEk50d/FBEU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783079989;
+	s=arc-20220608; t=1783080882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nIRicYWAN7eALFj2WeVf3MGLGNgyyZRX21hN1DuKhnI=;
-	b=c4DYBT7X+hW+johB0v3s+z0ci/HUPxAWTRR1pehEHHbRlCT1pH/y9vTGjQ7Sfs1mX3IWQL
-	ISct+c0G9jrD/d/O1Qp+kSsWykT8INXa4Ifez/finHUvBv76dvt6Vlc+z6rn4/O4LpOlEA
-	AMijHP6PBMPCAMXOpWlbngYAYDqznrM=
+	bh=wCSekJzceclmv2Xdvl4vn/0F9vF6oLcNXpc7pUyDj0k=;
+	b=XZs2ln0uNb2j+o9wWOes3QKt7VNoHPxh2t7xJivtByDLLSfJjAxA7JGk1SikNAlMe+MkSM
+	YGgyLk5QiQelsGODJlgyT5jxwnJLmTlEIDfWNcwJ2An0HGklNURjxwzgZWLfxs4VhwttZO
+	kot4L95DBDQlX33XMH0J98VkBMftwWg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=BzvOXcJ3;
-	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A44F463D;
-	Fri,  3 Jul 2026 04:59:43 -0700 (PDT)
-Received: from [10.57.81.24] (unknown [10.57.81.24])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 990933F673;
-	Fri,  3 Jul 2026 04:59:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783079987; bh=CtML3PEXn1LHht7AQdQyqLzB0Qb9Ae10yAgK67397Zw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BzvOXcJ33pukFW1hsXEQNbx9QPLsxIFvrmHevHBsOp8nnm06vLzF5mha44X2sHHDU
-	 SHr/Zn3XgMMxalHNhRBDOI53sw4fZs97H12agiXgP0ix1sp+Z6e44T3eAOSbucjLm7
-	 PcWgBN9O+acHfIv6mNNUdNha0fe7PMafRvzBoqR4=
-Message-ID: <fa1f5b39-2703-40a1-81d6-3feba87e19b0@arm.com>
-Date: Fri, 3 Jul 2026 13:59:21 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 01/18] seccomp: Convert __secure_computing() to return
- boolean
-To: =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
- Mark Rutland <mark.rutland@arm.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Jinjie Ruan <ruanjinjie@huawei.com>,
- oleg@redhat.com, richard.henderson@linaro.org, mattst88@gmail.com,
- linmag7@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com,
- will@kernel.org, kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org,
- kernel@xen0n.name, geert@linux-m68k.org, tsbogend@alpha.franken.de,
- James.Bottomley@hansenpartnership.com, deller@gmx.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
- glaubitz@physik.fu-berlin.de, richard@nod.at,
- anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, luto@kernel.org,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com,
- chris@zankel.net, jcmvbkbc@gmail.com, peterz@infradead.org,
- wad@chromium.org, thuth@redhat.com, ada.coupriediaz@arm.com,
- linusw@kernel.org, yeoreum.yun@arm.com, song@kernel.org,
- james.morse@arm.com, anshuman.khandual@arm.com, broonie@kernel.org,
- liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com,
- yangtiezhu@loongson.cn, sshegde@linux.ibm.com, mchauras@linux.ibm.com,
- austin.kim@lge.com, jchrist@linux.ibm.com, arnd@arndb.de,
- thomas.weissschuh@linutronix.de, sohil.mehta@intel.com,
- andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org, x86@kernel.org,
- linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
- linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-um@lists.infradead.org
-References: <20260629130616.642022-1-ruanjinjie@huawei.com>
- <20260629130616.642022-2-ruanjinjie@huawei.com>
- <akdp6GAu77-ipsXA@kunlun.suse.cz> <87cxx4mmim.ffs@fw13>
- <akeIK5TRCjlKbzbp@J2N7QTR9R3> <akeOjqMy7HVgRRCr@kunlun.suse.cz>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <akeOjqMy7HVgRRCr@kunlun.suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 42AE310000F
-X-Stat-Signature: 65a9kuam3k8y1df7ya1wu3kueddesb6t
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d6VbRKa+;
+	spf=pass (imf01.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EFD26600E1;
+	Fri,  3 Jul 2026 12:14:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126D41F000E9;
+	Fri,  3 Jul 2026 12:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783080881;
+	bh=wCSekJzceclmv2Xdvl4vn/0F9vF6oLcNXpc7pUyDj0k=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc;
+	b=d6VbRKa+He2/cAFmwYnkVZjxIlsRAYd3koyUzl174SlRWigVinPrxLNyW1D1D0xO6
+	 vkKKNIjrywD5F/UoMCDkjtUhMxTDLSU421VLUP3NnsA6Yq0l9c8CZZMUbV11zQMLVm
+	 xMzeOzkKcw/86tXQdDzbYMe4rYh4Pzb86R5wZxWB+2w+rY6vfS4Tp4BiDgmMxVtryf
+	 iBGvffCRTHwx+6nF4Codf8+X4UD6mDt+kizURmVt9H/JKijTnykALPxPBgCZUpmupk
+	 VMwlDGrjS5G8BUxlsvjQZ0J03g4d96qrPiIHOY/A1nSnH6jTvs4ieLW2YML2tmOltj
+	 ytQtBS/G8QFIA==
+Message-ID: <e6cccc28049a6231d50842254447c909@kernel.org>
+Date: Fri, 03 Jul 2026 12:14:39 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Thierry Reding" <thierry.reding@kernel.org>
+Subject: Re: [PATCH v3 07/11] dma-buf: heaps: Add debugfs support
+In-Reply-To: <20260701-tegra-vpr-v3-7-d80f7b871bb4@nvidia.com>
+References: <20260701-tegra-vpr-v3-7-d80f7b871bb4@nvidia.com>
+Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, linux-mm@kvack.org, linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org, linux-trace-kernel@vger.kernel.org, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Benjamin
+ Gaignard" <benjamin.gaignard@collabora.com>, "Brian Starkey" <Brian.Starkey@arm.com>, "Catalin
+ Marinas" <catalin.marinas@arm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Conor
+ Dooley" <conor+dt@kernel.org>, "David Airlie" <airlied@gmail.com>, "David
+ Hildenbrand" <david@kernel.org>, "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "John Stultz" <jstultz@google.com>, "Jonathan
+ Hunter" <jonathanh@nvidia.com>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Luca
+ Ceresoli" <luca.ceresoli@bootlin.com>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, "Masami Hiramatsu" <mhiramat@kernel.org>, "Mathieu
+ Desnoyers" <mathieu.desnoyers@efficios.com>, "Maxime Ripard" <mripard@kernel.org>, "Michal
+ Hocko" <mhocko@suse.com>, "Mike Rapoport" <rppt@kernel.org>, "Mikko
+ Perttunen" <mperttunen@nvidia.com>, "Rasmus Villemoes" <linux@rasmusvillemoes.dk>, "Rob
+ Herring" <robh@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Russell
+ King" <linux@armlinux.org.uk>, "Simona Vetter" <simona@ffwll.ch>, "Sowjanya
+ Komatineni" <skomatineni@nvidia.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Sumit
+ Semwal" <sumit.semwal@linaro.org>, "Suren Baghdasaryan" <surenb@google.com>, "Sven
+ Schnelle" <svens@linux.ibm.com>, "T.J. Mercier" <tjmercier@google.com>, "Thierry
+ Reding" <thierry.reding@gmail.com>, "Thierry Reding" <treding@nvidia.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "Vasily Gorbik" <gor@linux.ibm.com>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Yury Norov" <yury.norov@gmail.com>
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CC6D84000B
 X-Rspam-User: 
-X-HE-Tag: 1783079989-521682
-X-HE-Meta: U2FsdGVkX19mTJn4qKfVf9sfKd52TxC+XPl8zb+JyWw8hhD6LuU6bGVyYiKEf1tuo4ipIqnZjo57Sgx4LJZZZh7RirTxCPYQYiBrKEH9pDjh3q47iyzzOcMTGeXNbphQa7mavZcDTWNZy3mpjUzHSA9YA/n1KMB/LY92orIVTnq4VWTJLzi2tAjQrut8XcEHsbEZIM8Odetr588pAVxm+gwAR6lNmOU2REHsjot0jA7v8y0OkemfSaXiO+6fOggXnlXLCc7eywhbT93ianucoVI91i2ke2voe3othxI2ji2ZAqS3YSAfXGXLjniKMpDZUgvWZEWUvAQkiOvQmWZXK1rUNTPWIjpAVcbLJJhFHjfJb2933OY/Se2z1avfIDbMYtqRe0JOwlJlLTkVINtFgC9eDkeYfb2gXcKMAcwF88fboJOjWteKFRTPpckqM/PV1XC19UE36UBMuk8k/ReX2g1WC2mnlvLJLKkcnXgzr37MnxDoqKGJOAcMr9DHuD5M7aVPp8VmEYZcClxUnVxjoQiwI2LMPkqK5ro+5QHRRPNCi3c+SSY8dSyd0dANZpTkbCAgJ12zqB2PMLrxS5QhdMw1uPumlMfTfGaYATyntDhEG3ALx9xnuAGORMgygwwjY4KucIxoDSgU/DAZkHhplbwnkaDiG3Ar+Jehg20+pfCPlsD1zTeDIjWhc+gFUdziECyjZ439D1scfb4cIA3SBQf0iIMS3Ws4AM38vC+n6rhJ4JhKw7jWtap2l5JEvefJ3chJqepGqkcBwab2Di1WcLrz9vWLrWBnJeNkhNE94lKn2GdwiF4ZWwVvGDVxRIha2FHHIOdabGU5V2Wp36keqnXdgnJzoWSZ26CyGDlJHII9RJRCNYNKFQopB45jyG+T4gOZyoB+TNGb52ncHmFGlb8VSgPQRSdEr7r+Oe62Pe6VyxqVKMo6GECzaMrlY7RRvyvEVRq3AZAyszXg/Wq
- PnakVBJs
- Bo28lj3PnYbwXtDI/0pRWoGvXEOmjx78XSZETltAOgk3fEo1+bXUyZamPzo6lmzsczalZg1ErpxfQd4V9wGwnRSbclAuxESC6upreFhTX623VY6xKSQv/Z4aFDeK1ouzuFhzGSibHeWRpTGc0R9YJeselmET/C5oHVicWGHzC9rBGfz4tMBOU0G/dWd9ccFL6KEHmXDPgw1bO+ggJ3JSdf4vx3TjAfP7lF/9rdVeNhSoH2lak2oy5F4KRah/iHZx6uXQ/kYQEqcWbeX26eaNNXmCMvsr+bNG0Y6FrpSBIynG/MZBb6DD8AJnjqQ==
+X-Stat-Signature: da9euoheoqiukbn7gwsdze3ybf34a4mt
+X-HE-Tag: 1783080882-495693
+X-HE-Meta: U2FsdGVkX19KL+9Xw45kp43uEZ9cK3F+efSXcA2OwO6ftmdmmdLeAEXiFHC68M74fj1RJHLfV6xt448xsmk75EJfABNeLpzHEm1UWqaVORpE6NgkSF0zGtmOozBYeNgwfzm9TyrnpAJ6tXqwj1ViwXtyQWhpZTLkEIhwRxkNeINsG5uWEzbpmNKhN7VGhiRdTueZ/+F38tThRGePHPdUKa9lvPBQbYD3bsI2w2M3Gk4MGhVi8b6ZarFxr+8iHwgsDsdJBctow31luVisHEzy2JMMLBnbAf8xxFWrjeu2m81IzujDPqBu5Cb95i42PoMi4LjJrS4xaDg7gQ7BbGXZzGMP+0h1UvkeWl4qWfuWIvjhwEq9ClnaK7rdds9rRDMG+EnfjouZi0RT/AAi9S4G9qMQwwtjTigDwpIDWPt+D51WoChf0ytCKHh99VihBC2FoYDTxjjNARyEqJh/QpBOBTdhSDy50cK96ohtYpYWaiDpyY6D7ya90kH48PRWW9Q8zREvGJIhUxTmT9OhKRF5h2Fog/X+juQCPxnypHn5PKK8HvPqE3jn9fdsE7zCSaTRbEO+D7VXAxZqz5hy3Nmhl9ryM0uYhOYwOUHRMEUKrR7IghDmWa/Ksx9Z9dUnwi9TCmxdydlpJVBUnELjkct0ZLyFgDcXfvBGaOf5aGh6mPIyZYIQwkNjGhSAet14xPTVU9h1fFmW2Zhtj5RBez00ANlAXJ0OkMkQuQJXkbSB7lCo/awTeSPrIVbei8NE57DrMAL6ZkeyeKclpX+Qx0LzLCloNddBUDBHhGQ6yfSGvOj+SMDbZTWZZXVH4hyFO234EtsnUvpbDv6v5v4aRsQsGrKplaDGprgOSN65I+RLxu0VpmPo4aBkL+NhjUXeJOHJZeVpTgIHnpoY3xBEZwTsa0vdN5OkIODGN5wlTM19kCoN2A6a53GNN5cm/q1YGxV7lA2cBCUlWHQPPUt6+kk
+ qWEk7Yr7
+ /SzfqVi4buF61AMmEVNehh++GP8qintIZ6yI7Bu1xHm1PV8aGmdFUWH24XEgQWcakz4O/Rj5VVUdLQQv6OdQQfgcgmUymee5u9B5x74mRhXEcpwDvPfTmjoNy7swb7t8N+rxCfPc+w0s1VqBX1Ass57aeqpejndNAIMz6vK55jLmfH0PkH7LX1X6O4pPLKsKb33jfdEy07S043Hpp8pHXRYe3KheRRwFHaAHXTHIydKVVxgmp1SWqQa22a/jLtgepBK1zsjPvwii5ZUPXdWpqEkocUeAeRd7g6vtCtDv8Iok0SHlub2t32m4/iv8VtIhF0lNU7+V44j5rF6L+6LPbq74/obIVUOmUtxTAjXjxiPmdkjqKW3TFPli5L4sokmFvwd+v8H6zX8rQwqo8cND5IufJfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,47 +109,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/07/2026 12:27, Michal Suchánek wrote:
-> On Fri, Jul 03, 2026 at 11:00:11AM +0100, Mark Rutland wrote:
->> On Fri, Jul 03, 2026 at 11:48:49AM +0200, Thomas Gleixner wrote:
->>> On Fri, Jul 03 2026 at 09:51, Michal Suchánek wrote:
->>>> On Mon, Jun 29, 2026 at 09:05:59PM +0800, Jinjie Ruan wrote:
->>>>> -	if (secure_computing())
->>>>> +	if (!secure_computing())
->>>>>  		return -1;
->>>> Hello,
->>>>
->>>> I am not fond of this logic inversion. The boolean is meaningless in
->>>> itself.
->>>>
->>>> Previously -1 was used to indicate that the syscall was filtered but you
->>>> chose to invert the logic choosing true to mean syscall was not filtered.
->>>>
->>>> You could choose true to mean that syscall was fitered avoiding this
->>>> inversion.
->>> That's just wrong. Boolean logic makes more sense with having
->>> (!condition()). Just because the old 0/-1 nonsense had it the other way
->>> round does not mean it has to stay that way.
->> 100% agreed!
->>
->> Bikeshedding below; sorry.
->>
->> I think the bigger problem is just that secure_computing() is a terrible
->> name that does not express the intended semantic -- it's not clear
->> whether "secure computing" means "seccomp permit the syscall" or
->> "seccomp is enabled and some special rules now apply" or something else
->> entirely.
->>
->> If we're changing the return type, it might be worth renaming the
->> function something like:
->>
->> 	seccomp_permits_syscall()
-> Then not only it is clear which way the boolean value should be
-> interpreted, it also pervents the accidental inversion of existing
-> calls. Overall great.
+On Wed, 1 Jul 2026 18:08:18 +0200, Thierry Reding wrote:
+> From: Thierry Reding <treding@nvidia.com>
+> 
+> Add a callback to struct dma_heap_ops that heap providers can implement
+> to show information about the state of the heap in debugfs. A top-level
+> directory named "dma_heap" is created in debugfs and individual files
+> 
+> [ ... ]
 
-Totally agreed, if we have the opportunity to rename a completely
-undescriptive function name like "secure_computing" we should take it.
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
 
-- Kevin
+Thanks!
+Maxime
 
