@@ -4,94 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B36DC43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 08:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3862FC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 08:32:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B3526B00B6; Fri,  3 Jul 2026 04:26:52 -0400 (EDT)
+	id 043596B00B4; Fri,  3 Jul 2026 04:32:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98AC46B00BA; Fri,  3 Jul 2026 04:26:52 -0400 (EDT)
+	id F37866B00B5; Fri,  3 Jul 2026 04:32:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A10C6B00BB; Fri,  3 Jul 2026 04:26:52 -0400 (EDT)
+	id E25856B00B7; Fri,  3 Jul 2026 04:32:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 636C76B00B6
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:26:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3BAB8E14A
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:26:51 +0000 (UTC)
-X-FDA: 84946784622.17.FEEE504
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 87738A000D
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:26:49 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AFC186B00B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:32:08 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F2288120495
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:32:07 +0000 (UTC)
+X-FDA: 84946797894.06.2566331
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6997A4000C
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:32:05 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BDRZOSFN;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783067210;
-	b=HSjVlN1T+1fIWz8QulckuNyCxHPsRRRbcmpzll8FMeXXYAht5LXLpl+iU9xC2HZDvaMuI0
-	OFW8g+gotTLCXmDN4KuZgBRUxmO09i1Id/A2IZyG5eupSwFKz2HF6SGKReaMi1VyVRHEqx
-	wAnyo4/zjUOFtW+woKNiHJBhk6yQaDk=
+	t=1783067526;
+	b=vf+7ni8TkVTlvyEYp10pJurL6wRXG2rTvhC7xEfFEiVwSkGuIlUhvAozt9uiOrXNFM/bj9
+	AaNuTx6WT5Eifm7b+9ZIdryusj67OSRhXv/SuLdmEnn1umocRfelCBTG+m0VIvwHh1yHyt
+	HHREw7Yox6QZsc1wJtGtwFTWYhzq2bo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783067210;
+	s=arc-20220608; t=1783067526;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EBB4wecgkxqTMhzqlEtVZRPk5suuyk6Bf1KDV9tHxXo=;
-	b=7Wq/euoDdnw3HytmgSIslrkCQdG7wMqUGQZGEPX3iau82bkZ2KOawaU9NU0DUZuvf7Cl8k
-	QSgc+C5DCK/8lOM3Ta+gtAQrKj40y9Gx+PH5EXaXgBAuHSSqa/gNU7ASxB0jbLXnvQRnsv
-	hiUOOg49M32xaDcYGonbUEj6de9AsZI=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=pBKtvWEvDurD2pDDuKX3P4Fwi/GOkJOnCPOpHPUzSmI=;
+	b=ymi5Uz34PRGMfryyvil63dVd5wnEGMAScgHIfpV1DMS5hZ9+sZjU3kEtkFYa/QIBRTeiHI
+	3thN9lpF4gSxyxF6lT3ZvU6SWLYvCxJzFyf/YCmX8oRseXFX4WjQxROJEkwlRnLALXpHge
+	L61p4RD6Zx0wT4vi7bymrlhAk7zOY8A=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=none;
-	spf=pass (imf25.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gs6Kz1RJPz4yjjH;
-	Fri, 03 Jul 2026 16:26:47 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl1.zte.com.cn with SMTP id 6638QYiB046414;
-	Fri, 3 Jul 2026 16:26:34 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp05[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Fri, 3 Jul 2026 16:26:37 +0800 (CST)
-X-Zmail-TransId: 2afc6a47723dd8b-98915
-X-Mailer: Zmail v1.0
-Message-ID: <20260703162637070FU4ekl58Hw_Z7OSuJryZB@zte.com.cn>
-In-Reply-To: <20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn>
-References: 20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn
-Date: Fri, 3 Jul 2026 16:26:37 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <akpm@linux-foundation.org>
-Cc: <david@kernel.org>, <chengming.zhou@linux.dev>, <hughd@google.com>,
-        <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <ljs@kernel.org>,
-        <xu.xin16@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIHYxMSAzLzNdIGtzbTogYWRkIG1yZW1hcCBzZWxmdGVzdHMgZm9yIGtzbV9ybWFwX3dhbGs=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 6638QYiB046414
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Fri, 03 Jul 2026 16:26:47 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A477247.000/4gs6Kz1RJPz4yjjH
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=BDRZOSFN;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783067525; x=1814603525;
+  h=date:from:to:cc:subject:message-id;
+  bh=tmEvE928znH8qNFZmFA9+hqKVw8A78urxl5SprV9/2A=;
+  b=BDRZOSFN3nqir+lYQ/kqcN7luBb9UmYHQ6ie3y/Hf2QO9n5dELWrynMV
+   jfMUrEf5vud+wf8lXUclfHbywdfPTslKZvhZAAVTVb9ZIsqlXNQLFEiCX
+   fqd+TAy4m5vaX8ZBOrnfHiQi1ZZqGhrEAAePaG7f+bgxZckQJt67QGpZa
+   zNkvwBJaaJwfvVtbPmSIkGV3ujbhzZgF3ZFak0rftUIOlKh2GzpPTij7n
+   IJqVvTBSc2w6lHSXTa5QAd5oEAfpwTDShBgDHLFb0OQcHBP7GntZ+SmJK
+   VjvIoeu1j/LtzSvBHvuUz8BcKpRaH1W5dohNBo3YYCI7xG3UAmhA550pT
+   g==;
+X-CSE-ConnectionGUID: tzb5SFSDSYy+WsT77RZCyw==
+X-CSE-MsgGUID: H3TZXzOGQRSQaayQq2C9sQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="83852773"
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="83852773"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 01:32:04 -0700
+X-CSE-ConnectionGUID: 03LZJP41SLaCC+oO1VZ0zw==
+X-CSE-MsgGUID: 9cNI3tVrTpa7JRE8fDZIvw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="249090055"
+Received: from igk-lkp-server01.igk.intel.com (HELO e5a8ed462067) ([10.211.93.152])
+  by fmviesa010.fm.intel.com with ESMTP; 03 Jul 2026 01:32:01 -0700
+Received: from kbuild by e5a8ed462067 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wfZJW-000000001SH-1ObJ;
+	Fri, 03 Jul 2026 08:31:58 +0000
+Date: Fri, 03 Jul 2026 10:30:59 +0200
+From: kernel test robot <lkp@intel.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org
+Subject: [akpm-mm:mm-new 242/252] radix-tree.c:459:17: error:
+ implicit declaration of function 'kmemleak_transient_leak'
+Message-ID: <202607031019.AffpLUyg-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6997A4000C
+X-Stat-Signature: ftg1joxqr3u846nonaagoks8fa19sdzp
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 87738A000D
-X-Stat-Signature: rtzq6k4o6gmdt3sdm6xy8j8xjsyzqfne
-X-HE-Tag: 1783067209-929075
-X-HE-Meta: U2FsdGVkX1/WFiNbF2ffBG7IlxuEuuvgLpgpHh3+j110ooK8UV2jeDRD6OnQZjSG6A2N/mep/Zz8r1JkjP+OUqba1o70CsfKKIN8rDnbqadbDl7vq9dxm1wT3djlNxnJjs80yOo0KpcA3r+TfA2IzQFYe39zgjqMWs7zcYCeqRa9eY0AEhZcNObRt4SpoMSz45BsgrlTw9wgteGGVNLqKZuICdIK8BfrVNNPRNb/4PKdJ1jh2Jd2LXspG55F+gPqlgD+YrnWTsBE64Www6b2p9mI4av5k10uDmnwiuslVWLBFlzoTv0e7lw77WnG/38GYWhKyd0LjjgLCkftSQJZ2trYsK2ynPbjNXlumFuzLddABLeqzkiIPyLvEYtqAtKkGhSQeCIJE1n5oFT5m4C4Yyqkuc3ylb5SWwuR0xB15859dYtenoEmmbbz8SRm/Jy748DvLsSn/gECPeca6V0rwEpTre3wRf8NbTIKcXUGPxJAzNX17xwIC7FlVDmdMJYYhysIINk+pzYEZBLSCbxY/GqH4b4hc78y11TEptnMKxVfcWGekhAtfpWfi+tO4pEn5PnDSMHKIse8aIK7mVPGqdzOdvbTuVnuGipUBscN2SWKbe0diuXW2BHV68/25C9zzBHFYlxcDF7vTa1S2gsd52mj5pNjR/oguCO46X3qnQrzqQ5juEyTK78h8diHHkgDqE6teX2EdMrMH1EK5K9ajGjSk0+w6LHd3UC/L1AJN7cRMDd9gmchH71R0IIR9bf9g7efZI5pGDfBWw/6KbsFjX018Gw/2ZMAO8kcfTKECkLgrm5SbsWUWNmenM8nuESAA80gtBYRh9jbI+hDXdlK/EpbbsIQ/W9p/1ctRjjIoHZWcOXs4y9XiB3HQqcNQTxReT9nz5grMqG03jqaW2k/+OSObgrZdEDu2NzKVbh49lvxGTC8b4+l6o/pvZrD6Ys2P1g+VM0UC2FMTcvoB69
- 2MiRfY+S
- CUVbCzP+YycbqihijWyQpumpt4TvjUNmLAbYZ5OBpLMaKrkMxLNsSGLXUeacWjh44ao0EZcSfU+vQovoNmitmXA5KvBG5wkTujNYS5BpfjCn1FX5JH4o/6Dsv40xjG2orGrRgaC7tfy4/lYsg+pyrJvaGApGoYR4wCRYNreGEjbTDvEE9VeDFJZMM46DOpoSxst2sF2W/h0IySytE9bLjBLHZcMyNrXaej3yIwMJjmx8hs70kwSWVnS7fOy8RxENu2NiYifewwQGYf5nhA41UQeL4FPtLeGJTwn5JpI3ZakpOv3gku/HQP4f0lQ==
+X-HE-Tag: 1783067525-606909
+X-HE-Meta: U2FsdGVkX1/xKrzLkaVfFDTjRrD9v5hzuKr2swj+QyQmu5xBdD12hux5mmYfSEMcbQ3ZQ+oKKjKR3KNUGYUTV/Vp0/UZM+ep/qsDP4Efsrv4RzWYVlsodmyIQJVEpSZhvpKTOvZsS+tKnFO3MMaqUUiI3AYOhqec0vpbG5VJz9okq8K0lTUspLsAokqme6V3jMinpc8VMLSukYA68GcTYY2AarwPoK/lYzvMS7FwtD4GjjMdds+vs8B89xLZ4mUK8qVV6vcdfA330G85lDj9M6mp2xeQS8mThxe01CQv+tjXnWAQEEVFrHJSIfUCwEtE/jXHPoiC871Sex40EuPhN61jz+ijT1iYERER9pEv4k23DkKaMG50/xOYs3W2zleF7OtSajFlCEUX/AwWfqIlZgMhkGG71pqBHVhoKPBGGJAvGFGlz783lpNqushirwIOwn7DhMS5NEn0tGh1PnEKUfUkN/waC4lF5279m6bwMGewAR2+Gm8iThLdNSmpBnFlDjQaaF+Rr96eFfv/GmNNPPR9tZ413moQ3idQRNmlR3EZU7K77bBqBLp9HllcA5/InwW0GypWFcx4z9EyRtcSc7PFdjtiswoPCAy07Apqunn5A7JzXrDSnME9GesKFASxs09GwwMpWABn7dfiovzoiYNaui4dA/iEOOmdgGOcTTVdg7pGOJamAVXWr0TtDYywq2if8fZq1ljCUqQNCJVZoxVogOZbj/N0y+6S5l7xZj0yhRqD9CCfDbqHEvut/53VDr0vcdEbeQGEP+PQoKqnPoYsBPKdij/RTCn9T1CGJhOzNbAwMd9I80T0+IQYHIPgIs7DRYRDV1qfedr3MSNdTWNBTbZtTCfmDC9XNLUjcppgrwTL5NRwWkRUYmDWa20dL2r/MnKmB7wdX7oTspe2uINMygTbTlAa27dDY5SH2ILvPga1kKnut/95YM77XaguS723hG+LmiTupVW3ZXi
+ 5L8UCxyM
+ mWtUVxRM4Zb5h9yz+K2YFEbb6jgiTKY27tf9iw3MIBqye5j36rJmJqCC/INtjnN7JhEubfS6KHaskuXtOaGX6UfgnwNgpqlKkf0SfOxz0JESFt5KaxeY5q+OXrteFDQA0TuZIHqKA27Ns5PpmSgCeXmsosmN4yjUEV2xdy/uImtOTcf+9wYGEgXK/JUz49iCsXLikjndDNSoD/FmWmOsxUsgzfqAVdLKubqa9p33BOTCoZxdRLR+X/OofYe5UcY+E5Gz5j4niwhWT0bPe06VuXh3Zyz+sNA2Age9x90P65AIHrItOF/eTEPnnyAMhuZ7SQcdNiExcTL8SX00=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,116 +103,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   e031e55776cf9193b4720a253e92539ca536d224
+commit: 58b5601b28c144be1905eef7964bfa8457f58292 [242/252] radix-tree: fix kmemleak false positives on tree head reassignment
+config: powerpc64-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260703/202607031019.AffpLUyg-lkp@intel.com/config)
+compiler: powerpc64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260703/202607031019.AffpLUyg-lkp@intel.com/reproduce)
 
-The existing tools/testing/selftests/mm/rmap.c has already one testcase
-for ksm_rmap_walk in TEST_F(migrate, ksm), which takes use of migration
-of page from one NUMA node to another NUMA node. However, it just lacks
-the scenario of mremapped VMAs.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607031019.AffpLUyg-lkp@intel.com/
 
-We add the calling of mremap() and then trigger KSM to merge pages before
-migrating, which is specifically to test an optimization which is
-introduced by this patch ("ksm: Optimize rmap_walk_ksm by passing a
-suitable address pgoff").
+All errors (new ones prefixed by >>):
 
-This test can reproduce the issue that Hugh points out at
-https://lore.kernel.org/all/02e1b8df-d568-8cbb-b8f6-46d5476d9d75@google.com/
+   radix-tree.c: In function 'radix_tree_extend':
+>> radix-tree.c:459:17: error: implicit declaration of function 'kmemleak_transient_leak' [-Wimplicit-function-declaration]
+     459 |                 kmemleak_transient_leak(node);
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
----
- tools/testing/selftests/mm/rmap.c | 81 +++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
-
-diff --git a/tools/testing/selftests/mm/rmap.c b/tools/testing/selftests/mm/rmap.c
-index 53f2058b0ef2..1c293ad3f8b8 100644
---- a/tools/testing/selftests/mm/rmap.c
-+++ b/tools/testing/selftests/mm/rmap.c
-@@ -430,4 +430,85 @@ TEST_F(migrate, ksm)
- 	propagate_children(_metadata, data);
- }
-
-+static bool range_maps_the_same_pfn(int pagemap_fd, void *region, int nr_pages)
-+{
-+	int i;
-+	int retries = 0;
-+	unsigned long first_pfn;
-+
-+retry:
-+	if (retries > 10)
-+		return false;
-+
-+	first_pfn = pagemap_get_pfn(pagemap_fd, region);
-+	for (i = 0; i < nr_pages; i++) {
-+		if (pagemap_get_pfn(pagemap_fd, region + i * getpagesize()) != first_pfn) {
-+			/*
-+			 * Retry up to 10 times at most in case of the low chance of page
-+			 * compaction migrating the page while we check for pfn.
-+			 */
-+			retries++;
-+			goto retry;
-+		}
-+	}
-+
-+	return true;
-+}
-+
-+TEST_F(migrate, ksm_and_mremap)
-+{
-+	unsigned long old_pfn, new_pfn;
-+	void *region, *mremap_region;
-+	const int nr_pages = 16;
-+	size_t mmap_size;
-+	int pagemap_fd;
-+
-+	/* Skip if KSM is not available */
-+	if (ksm_stop() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/run\" failed");
-+	if (ksm_get_full_scans() < 0)
-+		SKIP(return, "accessing \"/sys/kernel/mm/ksm/full_scan\" failed");
-+
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd < 0)
-+		SKIP(return, "opening pagemap failed");
-+
-+	/* Allocate and populate twice the anon pages initially. */
-+	mmap_size = 2 * nr_pages * getpagesize();
-+	region = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
-+		      MAP_PRIVATE | MAP_ANON, -1, 0);
-+	ASSERT_NE(region, MAP_FAILED);
-+	memset(region, 0x77, mmap_size);
-+
-+	/* mremap the second half over the first half, to stress rmap handling */
-+	mmap_size /= 2;
-+	mremap_region = mremap(region + mmap_size, mmap_size, mmap_size,
-+			       MREMAP_MAYMOVE | MREMAP_FIXED, region);
-+	ASSERT_EQ(mremap_region, region);
-+
-+	/* Merge all pages into a single KSM page. */
-+	madvise(region, mmap_size, MADV_MERGEABLE);
-+	ASSERT_EQ(ksm_start(), 0);
-+
-+	/* The whole range should map the same KSM page. */
-+	old_pfn = pagemap_get_pfn(pagemap_fd, region);
-+	if (old_pfn == -1ul)
-+		SKIP(return, "Obtaining PFN failed");
-+	ksm_start();
-+	ASSERT_TRUE(range_maps_the_same_pfn(pagemap_fd, region, nr_pages));
-+
-+	/*
-+	 * Migrate the KSM page; the whole range should map the new (migrated)
-+	 * KSM page.
-+	 */
-+	ASSERT_EQ(try_to_move_page(region), 0);
-+
-+	new_pfn = pagemap_get_pfn(pagemap_fd, region);
-+	if (new_pfn == -1ul)
-+		SKIP(return, "Obtaining PFN failed");
-+	ASSERT_NE(new_pfn, old_pfn);
-+	ASSERT_TRUE(range_maps_the_same_pfn(pagemap_fd, region, nr_pages));
-+}
-+
-+
- TEST_HARNESS_MAIN
--- 
-2.25.1
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
