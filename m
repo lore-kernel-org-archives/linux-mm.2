@@ -4,92 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C75C9C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 05:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 043D0C43602
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 05:30:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 716096B00C9; Fri,  3 Jul 2026 01:13:08 -0400 (EDT)
+	id 95A396B00FE; Fri,  3 Jul 2026 01:30:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69E186B00CB; Fri,  3 Jul 2026 01:13:08 -0400 (EDT)
+	id 90BF86B0100; Fri,  3 Jul 2026 01:30:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58CEE6B00CF; Fri,  3 Jul 2026 01:13:08 -0400 (EDT)
+	id 7F9EC6B0101; Fri,  3 Jul 2026 01:30:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 262EE6B00C9
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 01:13:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F6FFC1FFA
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:13:07 +0000 (UTC)
-X-FDA: 84946296414.17.978A446
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 095F94000C
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:13:05 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 56E956B00FE
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 01:30:24 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0B9EC1FE5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:30:23 +0000 (UTC)
+X-FDA: 84946339926.30.86B3D7B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 06A014000A
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:30:19 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HqCnGi2z;
-	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=arm.com header.s=foss header.b=YtDDG9+n;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783055586;
-	b=I6hjM7fGZipDf47m4dNARxjN2r7215dpQ4kk5jHOV8BspmmPkgxyEhASlU5p48yybK9dqA
-	+K6MH/mf5zkONwrFRxlLHA9UegRcYhIrmLpxD3g6TQ6ewk9ww1wFjAPFyisnyO4UbSfP5b
-	u48altKaXHgWl1oG3rxnouenAdVL0HA=
+	t=1783056620;
+	b=00AJxxXDBPo/lKB2n7ePoOUaUozqrmVFWwj7b8spTQzGZ3pKwTCbRg2+kvOUtmkPaMUZg3
+	jCmHN78rrxOH5R7YUuhiLELoQYMRQuCkpdSmBwGH6o9E6V4e0806/ykCxtZWRO8TeFJTgI
+	iq4RYJwNkhsFsFsbmFLJWocZMX/q8Ao=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783055586;
+	s=arc-20220608; t=1783056620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d2jmDN8EDDEi8qou1T3zevjnsQGMZ5IhSTwrPgKzFh4=;
-	b=y2RgwjRbbZec5m69KIGFqnYLcOo6WCH+OhiHyL9RTAdpr8FGk0iBZrkjrXGqed5SQPXG9N
-	oJlLMkHwyTA4mynBI5wCDOcM8fYVZo/HCf61xDuU7ChCFZ3Y9ad6VF6pjDz5sYFEFmFtJG
-	MJe/gLBkW4ZM1tFpXk8fR9Zy85RVvZI=
+	bh=V4iIBY89FDo1UzdzB/uBcAQK/RPNiJ0sNDuJsScMG6k=;
+	b=vjQ72cMEYyjYBpz8BlT7KXika1UzMwwEO50fbXtffzwu4cXAsQ/p75xJTjOw7qJH4ekwZg
+	9WmoVD+QsSlREmz84f7+QEMntYEB67r4WQcp+l1JLp+Qgw6m52uJCKkomLEDOoB4+nG1IG
+	e+blbaA66OFd7WKlZ4xL7ogAz8W9bHI=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HqCnGi2z;
-	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5AA3F600B0;
-	Fri,  3 Jul 2026 05:13:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30D91F000E9;
-	Fri,  3 Jul 2026 05:13:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783055585;
-	bh=d2jmDN8EDDEi8qou1T3zevjnsQGMZ5IhSTwrPgKzFh4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HqCnGi2zDjWTXnC3MspWlCf9hO0/ZN6ukeuSVhsLMfxoXT1NAObsxCFxHqAbwxAhq
-	 GkXe2fpz7+2ch+jjP9jzz/+n1jNKaYIpPTm6uMzqZjLl4XTTcLbA88btfrcAGC64Xk
-	 dgjq4bw8U/PPZV/f4PobkEObr81d8waV6vVQOo+o1Odp1XPKZWyM8XDEjD3TN5B5w0
-	 hdEFS2+ICzF2WtkZHqm0ISVHal0f+AJpG/kf8goAtMPdHBmG03KOsdT5bzD1s/nd8u
-	 MD6x+Z5V57PalXJOwjjAoXjdscFDQ625LKHgM2NrKMYqQDzdZ0pYKtHjY6nJ1g8fzz
-	 4/VMxpFvVFrdw==
-Message-ID: <77a03a9a-8461-40c3-a383-d9dc62efb801@kernel.org>
-Date: Fri, 3 Jul 2026 14:12:59 +0900
+	dkim=pass header.d=arm.com header.s=foss header.b=YtDDG9+n;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22BD51D14;
+	Thu,  2 Jul 2026 22:30:09 -0700 (PDT)
+Received: from [10.164.19.15] (unknown [10.164.19.15])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C07E3F673;
+	Thu,  2 Jul 2026 22:30:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783056613; bh=UFr9Wdq1njDGvt6poz4+T8rHJby7UnZmUIqtj/UdkVQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=YtDDG9+n6E2IK/NpzkunB8X0k+Xu7zlG2Mf5SenOvVidxgMMYHZg26V+CGrvrecH6
+	 Phd+lP85qg5BeenR7AD3hjvJsYiHZNu7FLsqlY3Hi9oaCyU7BotAHiGSuPCbr1ubOC
+	 BlLtVt9t0QMmj5jX0Bv5+rJ7pk5lVZwwL53kf6vU=
+Message-ID: <1b1f6281-2a46-4811-bbea-24a666c0a772@arm.com>
+Date: Fri, 3 Jul 2026 11:00:01 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: ABI: sysfs-kernel-slab: mark cpu_partial attributes
- deprecated
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Seongjun Hong <hsj0512@snu.ac.kr>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>
-References: <20260701141755.85119-1-hsj0512@snu.ac.kr>
- <54e75619-3dbc-448c-81fa-122edcdad1f0@kernel.org>
- <f047ceae-4836-40c9-bb7c-a6074bbf1a1f@kernel.org>
+Subject: Re: [PATCH v2 2/6] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
+To: "David Hildenbrand (Arm)" <david@kernel.org>, muchun.song@linux.dev,
+ osalvador@suse.de, akpm@linux-foundation.org, ljs@kernel.org,
+ liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, j-nomura@ce.jp.nec.com,
+ nao.horiguchi@gmail.com, ak@linux.intel.com, mel@csn.ul.ie,
+ pfalcato@suse.de, jpoimboe@kernel.org, dave.hansen@intel.com,
+ tglx@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20260702051341.126509-1-dev.jain@arm.com>
+ <20260702051341.126509-3-dev.jain@arm.com>
+ <00d6e0fb-dcba-45d5-98c0-f5ed81604ca0@kernel.org>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <f047ceae-4836-40c9-bb7c-a6074bbf1a1f@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------NOh23wvTE30Hws23l0EoVgJZ"
-X-Stat-Signature: uwboyo3tqx7h3dzs3ntwdrapa3186s74
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <00d6e0fb-dcba-45d5-98c0-f5ed81604ca0@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 095F94000C
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1783055585-499661
-X-HE-Meta: U2FsdGVkX1+Zv67wY1F7Dgti2S4Xyi0iPbvHt51ioLfDeAGlUCmA/+D4cW8w/RC/HX8FyVOj9w7dtTuPiUv8ksV2bmI9QC23/hXoap8mXBrWBds+5SAXMCU4wAWTKCYx0qAPX2dYEmaDhtwEAn4zA6+2lQqe8odztt1pxnOU4S5AhDGZLewD73EqbpakbBnTzU35/SwwcWyMfI62e+zbGLFamVwLEfd7Rqrvkck/3iPw1gHHSjKK22Cf4NYF9YRCTGmOB557GbshpPLFSwHvJIKW7oxEhvP4/FKtH7t5Fh4CXDiHHXrhy5gdZ4WAQ/NHzimnbgFJylujVGryqlw3k5YmjuZ7S22QNly9N8GMnwteeip4H2wiy+9s8g4gUIPJP+A6lOY7zPhvPSrOZowznhQkG6k47Y7m8iGs/w2lSeoXYUFThDo2sfwXR56golqeeGlg6JrgUYfI/X5c3RlnHfnYJjf3ugI6EppMje/rYV9P9ctjL33qiEFfjsTdhnSAwQPdBsco7RFNEsg+OKubCfDIFs1iIbzHtNHTWCtfo8E6mZhBG6BvwaIUSDmFltp+lKmqqb3ZOJa9qeTstiUssmm+XV1KtzU6o9iyIQytifmRI5wmXmUmPexU4piJsKdM2Va464ArqhDfAJxXdSfMbe5WBaOydZ+hP275Os+EoQxzz7selLhhgycv9wGCLd5ceTwfrLhcd5ParDUc4ZUCzvDSHgq/rcCXaMuPvaFfo6ecI+E9MW+U2gY5dQDabNNCfBwMiHbrz1Tfh6Fz7P+KtPATJIgVDCvcW8Al8lerRWVZKAmeomlFGvXODAeFZeOgsDViuLYIbvbf+/Gun6cBzO9Ko0YNuwIL/uLbMYx5Cdp/xP25M58TGAnDaX29yOTXL4f5ZgWfGWUAvlFJFFIgdKEzrbkcg/JjSSDzBo3qHPY1esbbrJDW+bBGUF+bF8uMyE3h0RpthSnF65UjjR+
- iNuAfVWh
- LIJVAH+vhivRmIVp78fiLOSlx2q6dTnf95itxM8r4FOfcmMOsbcybc0lls1SkRG+182W4PkEHQPnSUcM60nhaIqZxKDxEBXSjn1f5JZtm7IYBXHhqypCDDaLxLEJ6W121BtvbiekD/HF3znjQxEIYcd7FYx72WLtJCQox0qDNs/78O/7sLAVHSeTddjNvDyBbhlnVYytWDcA1xaoOe+GZ8+NfoGK05iEAT85sE5mx7hxLVacDal0DArUJrJviGKjqvnA8vCi/gE+VVkE+IIP2bihRFN8XBQhgtoEVJ6EwnlUhgn43KCGnTowpq0zitd5QPjn9tNC2qaH/TjDKZWxovcz0tpR+jmO7prddhuv6/XyR7ALZnPY2T8XJVF8N6annTeWFZHdhav9+2jHtkb6CCCx7/MA33yqdHSf6WTiUByHB6eCif6i8c483CzqlClSShA/7mVoIhvLBluPHV/2CxtdoW1CKi14r+WogbWfReZ2mrs+U8QnJ+xaGlGLg5m6I3RZuNggHzCtvvRNgTwr/bMC0Y8TFD7cawHJdnLSWoonGuSBwjkaiWXeSSH1A3FiQr5X3ktCzPNv6WKs=
+X-Stat-Signature: j6tfpdkoqwc8usiikoxf7u3w8kk44pox
+X-Rspamd-Queue-Id: 06A014000A
+X-HE-Tag: 1783056619-550146
+X-HE-Meta: U2FsdGVkX195e3lWSDxKiHsqMJgK6gnOxXnsD4VZNDQKcL5Dm3AHoFjIEyUdGXTB/tdQI/dmSEVYM60v/gbpJSHGKQ8uYuDQijQQSKf5m3uEc2AsU4prtu5L2yXcol69aYGvN8RJSDoHpja7X+i81fSQOzyvc/3dlNaCTzv9i94D3NePrz+Otlxb60bY97Y6qFgjNmhdyVy+3ivGMVqgs8YOQ90jRoI57G255RU5o5Oia/Lxan0AZH7KT8Fr0Xc3mHlu9JfPN3QVduz98mMOKnhHSQZRdzSMiEHSz0XpxREhBe3yGRoVIbIDYvRAWh1YPOHG90HxqWKCXXh1Go4UpYampmSkoz/wMmuCM2rk3o7dusGnv2xMfsxOq95nq/BK/1yBafIETT4I+NLyiQrJbweEg7jAWX0li/CrOSuxgBvCy/BHv7uwHzF/yspwdRja9XP+rC6vBaFr4fz/WokxiE8Kuw3jW8ypvz0vZm4RmnEbKs1tTJM/lbK3WU3GnCVDC/Kg2ImrBVDS7IziiFLsWeHTBKWe44GpKWFaDWWMDpbhqpNXmUXn2qBJ2q8W80Ps/Un0wbuUtRex5O5zeaJhgwcM/VfnhFA4QzVhY6VGNdEtDqHU9oWDLlv+ocNGe6ubKnVvt5MkUX2tlEJvueUYu1KsXYCi9tqyAVwrV908pQKBQdSWNWnEgDb8B/4jPY3qaX08YdUq4th5+mnKywL5Gz+FnwnQ2lmaP4yFGyOZCb/2nEAwHwmQl0HrzfgvkRloeAdOKRMa+KBA8hZdvwYRYg8PwlPFx7BYFFzl7jsvsTlwYDjrdamzAAdXMdXRxAionKeWHzGeyJjdAsBAOfxoW7sxBFoJ/183XlyqUwpJgZrhvY24NZdYbTMZrz1IKiktaIhm262BJwA6xwWS6b4KdKU3yRs8w88ZbvjnDBYAzqUrfHkzI2UrwDzUVsIPpHiiEkhz5ibIQC8lQf9GVYv
+ ttup16r6
+ j+9SrRPMhZ6bly5Z4OOZ4RNmDTkt5yAwdaX1YX+z2MUOpKDs39WYAvrBtbE/ZOPEqoN53tQ7z6om3vaUysn7xjVmD93+QCNLGWs/uaLyXMXKb/GiLi0js5uiSwY9GMXhKG9u3icqZARYB36K3cOtcsAUj9dyfhW2Qulk+Uw85oubFVivGZJYht6twKosw2PhOGeS9kAY50nVUR81EvOhYJsoYo9HIqEfoIcvWk5Sw5HWjHRZl9QF+HgQIb4bEoE70P3XvS7dPmTVHcNHoz/0ZX7YrniXMaUXKMFJe4XEu+DNy3EzUiAenp4DK02zq1KF6lndqIOSCVAcmr9su9fripTiZT6ABhAfIl6NqJKFiBVy2dtcwaSzcjdVqxhM1C3pUNJ5HCKVGo9r69C2haoUBC4HLZNCOmc7y1QoMeon1/J430OyvbdR1hmbWyoLdEwMtqrvG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,121 +103,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------NOh23wvTE30Hws23l0EoVgJZ
-Content-Type: multipart/mixed; boundary="------------YgT6oA9Qcxr9YGnpqYJ0rzq5";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Seongjun Hong <hsj0512@snu.ac.kr>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>
-Message-ID: <77a03a9a-8461-40c3-a383-d9dc62efb801@kernel.org>
-Subject: Re: [PATCH] docs: ABI: sysfs-kernel-slab: mark cpu_partial attributes
- deprecated
-References: <20260701141755.85119-1-hsj0512@snu.ac.kr>
- <54e75619-3dbc-448c-81fa-122edcdad1f0@kernel.org>
- <f047ceae-4836-40c9-bb7c-a6074bbf1a1f@kernel.org>
-In-Reply-To: <f047ceae-4836-40c9-bb7c-a6074bbf1a1f@kernel.org>
-
---------------YgT6oA9Qcxr9YGnpqYJ0rzq5
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
 
-
-On 7/2/26 5:28 PM, Vlastimil Babka (SUSE) wrote:
-> On 7/2/26 07:18, Harry Yoo wrote:
+On 02/07/26 9:02 pm, David Hildenbrand (Arm) wrote:
+> On 7/2/26 07:13, Dev Jain wrote:
+>> try_to_unmap_one() handles hugetlb folios when memory failure needs
+>> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
+>> case page_vma_mapped_walk() returns the pte pointer to the hugetlb folio
+>> in pvmw.pte, but the code reads it with ptep_get().
 >>
+>> On arches which provide their own huge_ptep_get() to dereference a huge
+>> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
+>> etc to misbehave.
 >>
->> On 7/1/26 11:17 PM, Seongjun Hong wrote:
->>> The per-cpu slab and per-cpu partial slab mechanisms were removed whe=
-n
->>> SLUB was converted to per-cpu sheaves in Linux 7.0. The cpu_slabs,
+>> It is not clear whether this has a trivially visible effect to userspace.
 >>
->> small nit: sheaves were introduced in v6.18,
->> but the cpu (partial) slabs layer were removed later in v7.0.
->=20
-> Fixed up when applying by saying "fully converted" :)
-
-Looks good, thanks!
-
->>> slabs_cpu_partial and cpu_partial sysfs attributes were kept as stubs=
-
->>> that always return 0 for backwards compatibility, but their
->>> documentation still described them as if they were functional.
+>> Just use huge_ptep_get() for dereferencing a huge pte pointer.
 >>
->> Right, for backward compatibility, because, unlike files that
->> might not exist w/o SLUB_STATS, userspace tools might assume that
->> they always exist.
+>> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use page_vma_mapped_walk()")
+>> Cc: stable@vger.kernel.org
+>> Reported-by: David Hildenbrand <david@kernel.org>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>>  include/linux/hugetlb.h |  3 +++
+>>  mm/rmap.c               | 16 ++++++++++------
+>>  2 files changed, 13 insertions(+), 6 deletions(-)
 >>
->>> Update the three descriptions to state that the attributes are
->>> deprecated and always read 0, and note that they are retained only fo=
-r
->>> compatibility. While here, fix a "partialli" typo in the
->>> slabs_cpu_partial description.
->>>
->>> Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
->>> ---
->>
->> Overall looks good to me, so:
->> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
->=20
-> Added to slab/for-next, thanks!
+>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>> index 2abaf99321e90..fdb7bdf7645c5 100644
+>> --- a/include/linux/hugetlb.h
+>> +++ b/include/linux/hugetlb.h
+>> @@ -1261,6 +1261,9 @@ static inline void hugetlb_count_sub(long l, struct mm_struct *mm)
+>>  {
+>>  }
+>>  
+>> +pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
+>> +		    pte_t *ptep);
+> 
+> Two tabs, or just in a single line.
+> 
+> If others prefer a stub, I don't care. This here is shortest to let the linker
+> bail out.
+> 
+>> +
+>>  static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+>>  					  unsigned long addr, pte_t *ptep)
+>>  {
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index 1c77d5dc06e9f..aa8a254efaecc 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2095,11 +2095,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>  		/* Unexpected PMD-mapped THP? */
+>>  		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
+>>  
+>> -		/*
+>> -		 * Handle PFN swap PTEs, such as device-exclusive ones, that
+>> -		 * actually map pages.
+>> -		 */
+> 
+> That comment now actually belongs above the pte_present() check below.
 
-Thanks!
+Oops I mindlessly just copied the comment.
 
->> By the way.
->>
->> There's still some gap between the documentation
->> and the implementation :)
->>
->> We've dropped a bunch of files that exist only on
->> SLUB_STATS and new files introduced with by
->> sheaves were not documented.
->=20
-> While we are touching these files, the question is what contact to use
-> there. Some have Christoph, some Pekka, some both.
-> Seems inflexible to me and should ideally point to the slab MAINTAINERS=
+I will then rather put it in the else block which gets the pfn from the softleaf,
+that is the most appropriate.
 
-> entry.
+> 
+> 
 
-Agreed.
-
-> But not sure if it's possible. Documentation/ABI/README says:
->=20
-> Contact:        Primary contact for this interface (may be a mailing li=
-st)
-
-Looking at other mm-related sysfs files:
-
-Contact:	Linux memory management mailing list <linux-mm@kvack.org>
-
-> Maybe we can propose that it can also say
->=20
-> See the SLAB ALLOCATOR subsystem in MAINTAINERS.
-
-Replacing the contact with linux-mm mailing list and mentioning
-SLAB ALLOCATOR subsystem in MAINTAINERS sounds good to me.
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------YgT6oA9Qcxr9YGnpqYJ0rzq5--
-
---------------NOh23wvTE30Hws23l0EoVgJZ
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCakdE2wAKCRCGXBN6rc5S
-1vfxAP9SCpQIkFDU/oly+VDOPNVw6h+A8ebDHoXAfgGj8xhZlAD/Y8bvDkASXQW4
-1jTb04fo5dlGTxe9a/HeHtm79YGbKgU=
-=pxDA
------END PGP SIGNATURE-----
-
---------------NOh23wvTE30Hws23l0EoVgJZ--
 
