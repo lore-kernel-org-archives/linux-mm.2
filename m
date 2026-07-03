@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D367AC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:29:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13341C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:29:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6589A6B00B4; Fri,  3 Jul 2026 08:29:02 -0400 (EDT)
+	id 08B2F6B008A; Fri,  3 Jul 2026 08:29:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 609096B00B5; Fri,  3 Jul 2026 08:29:02 -0400 (EDT)
+	id 03C446B00B7; Fri,  3 Jul 2026 08:29:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F7A86B00B6; Fri,  3 Jul 2026 08:29:02 -0400 (EDT)
+	id E46FF6B008A; Fri,  3 Jul 2026 08:29:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 25D536B00B4
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:29:02 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A518EA052B
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:29:01 +0000 (UTC)
-X-FDA: 84947394882.16.C249952
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C4F50C000A
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:28:59 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=HL8h+CtS;
-	spf=pass (imf22.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AD5716B0005
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:29:17 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17AD31A0526
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:29:17 +0000 (UTC)
+X-FDA: 84947395554.12.6110B89
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D391980009
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:29:13 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=giAOS5Vr;
+	spf=pass (imf02.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783081740;
-	b=tPw+1FXvuIvPQbCb+7z8SfnuNBsP91YOjN8x4X7hyAr7bIXkI6DeI6436zXG+99/RuO4cA
-	Yxy2qRz8hSvu53GJ5TluCPeJqNHRser9WibCsRFX5S6fj9Ry3gP/jHujE4+tmGvkXMKvjd
-	uMck84KSMZvFEc5sdiYYPCkQtcP82NQ=
+	t=1783081755;
+	b=bWGxoW1SaJg9QASK+PKVs8ouQhBTFrEcANgS2rL0rzCV64t7tPMM7X8bJg1xgWdO8vXgFL
+	6ehSdKSoO12p/q4lun+4kNS+UDH9/CCRr5+eSTlgQrWEVMAxfMApxROeenD+Ve8iNGqUhX
+	blI89XEfihmPn7pNxBJV6+yGBugoJFE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783081740;
+	s=arc-20220608; t=1783081755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=3xWVG/3qQZSSCl9XZAnFe0CG/d9wAGXcusZYIWuv8No=;
-	b=hro/DqL1H8Hf/nr3Ee0v8NAFYD+MI4Ow4htmwRSK7vb8Ud6etxndgpBX5+DGa4ImdYk3jY
-	sXRO9nJTV9BiZ5Um8gi9vULqCKFfFfr1FLM/YFWdy3UnFIS2GfZEZBUD6fa0/ZzrNDeljQ
-	kE0wXOM2a+s5+mCck7x3lyf6BtHNjfI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=v+VxPGsXEB5teg9HEsa3LZ3vy1Qgi8wQBPtiYzVf6Qc=;
+	b=FJTbhERVzd0A2jsjH+yIO+EE/4xaXTQu9VlFza1mZb802Csp/R8eWoQHHqK8szkSdSn2p6
+	SpU+drrx4rfioqNKr4XCuPWmJdcv3iGaChNr9ROZfyYABK2tfhno3VqrwN4M3hNq0EJoYa
+	OstsimNms4+j/SqyBWaztnGQz+i6zMc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=HL8h+CtS;
-	spf=pass (imf22.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=giAOS5Vr;
+	spf=pass (imf02.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-84592b55832so329499b3a.3
-        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 05:28:59 -0700 (PDT)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-846970f0acaso422080b3a.3
+        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 05:29:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1783081738; x=1783686538; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3xWVG/3qQZSSCl9XZAnFe0CG/d9wAGXcusZYIWuv8No=;
-        b=HL8h+CtSFlCDxUMs5i4F0CQSMVjpuFCSFoK8xK5dVDR4k7VrV62u0ADt+1dCwdwtug
-         ugQmAGms3E/g4MbwAFPm2oKhovUhv0PdChZsDME8cNcV6Q+bPyqFU4zr0bP+e02swQZr
-         UNq6Z3MJRCL6LluubCDOt7x/Cjp/CXPTB/Z8nc4N5qQn3Ra/nG9p63EkxZe3FZce2IrZ
-         0cCVvTuJLk4LwnGDSEC+xkCtRdz2CeXnOd43OIg7Wvkxy4AqG+hL+Uxf0PimEDL+t7J1
-         ydz9ed/6t8qYYUEGoJZQKxjXvkyxfWwkvk6UNs7McwYANA9HX7sJNkLKL1rkghIq2/W/
-         6n7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783081738; x=1783686538;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=bytedance.com; s=google; t=1783081753; x=1783686553; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3xWVG/3qQZSSCl9XZAnFe0CG/d9wAGXcusZYIWuv8No=;
-        b=hXG3fTF22alNx8OZ7CfxaAXTiWVWvLu6vwIovNlJUfs8HEWKLy/4Sr3GsiOP4hc2S6
-         3a5P/u+GZhE6vSy0TNs4iEM7sX2X11PAuUSMIWMB5M3PU/fKRDv5ksMR6CF072YvLzHe
-         jpCzirCyyJGw7JZAV6Tnpd6fmIRS3faolecF7/DstkO4LJA0SeOQSayluzL2KTtRCfOj
-         3vn7g/DzJq2DKncfcWANmHMY8h8XcKcR6a5P8Xsg2E42zgZkOli4Kizsif5F3PurgFwQ
-         me3GYkG471/N4ZmJQ8Q5Npdo0aWWTTGxzqjzF2Yp5t8EeQ+f1y1Pi7uf5kVAYJko1UDX
-         l7Jw==
-X-Forwarded-Encrypted: i=1; AHgh+Rps/GR+QuX3AxdihP6YT+cNDG4ILuNg7fMIhIKr4Hd0QZmIvukeIdn89v0U5FrYE0s1xyD71Q7Www==@kvack.org
-X-Gm-Message-State: AOJu0Ywo7A1KNuZaXf/HaOPtyFz5gWo/wTRTzzJog2enkuR4bbjObAmz
-	MrA9xqk3NPcgZ1/aUyonfPaBMMnijVrEDNLuOYZL1hQAUTFXkFEPjhvqgJWk1WbN0l0=
-X-Gm-Gg: AfdE7clIcIibbRwyGsS7epFukcJNG3SWMjh7o3h8CibPmwIoGTBrhYeisnqQktizFK5
-	p1KvO2IPYUncYqW7IargWTBDLklmdE9m0sV1VJcz1qXm0SV6tCbqUpSYyK8UAYLW2GvrKYNS2Pb
-	Q+IU8S++FiICJ3DdvaXG+0G8IPGwWWh/viMTHUsWI4BHmGyh/QILTfPcrhtefV5UX7F80T/IPpB
-	qV0X6Ifkmn2ZPeah7TQVLpGVs9ePdUOQ83kZ3o+RlOLt1yrK+vCRyzlVKwzl3VVMzwyfsV/WAf8
-	BGMLpdr9a39WVz6J8zn1dIi0PEMI4knD6blsWgXh9h0VH/ei8NcHUSettxoH5gAqvbG2i1DgFCy
-	VWNrhwjn5lEkyOocswaY2SeYLro+E4BA2LMrbc4RkbFHHULyuWsoobfz7utToXdRire4fF49HCy
-	tgvoonBt8hL382nWcjFWZbhxpbcrLIUpoTlJo4j/s9288E5ByIKlfB64tcDN0+tA==
-X-Received: by 2002:a05:6a00:18a7:b0:847:8b0f:2508 with SMTP id d2e1a72fcca58-847c0686cc3mr10380342b3a.13.1783081738170;
-        Fri, 03 Jul 2026 05:28:58 -0700 (PDT)
+        bh=v+VxPGsXEB5teg9HEsa3LZ3vy1Qgi8wQBPtiYzVf6Qc=;
+        b=giAOS5VrO+BCTJcKwW5KgHb0IxbBS+YYxBreJCGsF3mviOXkJq/Ey0ZCrdxCPakl1R
+         bcSPvB2oNkwzqEcS9JspNiQ3yUS3QPnBRG1niL1tVjByDvqssbwGufVgtiWhMhW3PRII
+         7uQavbDLIFamRU1H28KICi7g9iGWHcw2LvTVo8f7jBbkeTWhbE8NNil1eNXMi0R5LD7E
+         NeAu9RJ2gTvESUMTb+JNphIOWZ7GaqkhllLvnHFzyYCUKhhI42BIPR3nlIFLbXJdKAwT
+         kkK+xPO1C0ZzlZiu0fP5HirmtnQu/sH7necRL9WB81I3RmvaLyVv5AQs1Q+kdgq35ER7
+         Q4yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783081753; x=1783686553;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=v+VxPGsXEB5teg9HEsa3LZ3vy1Qgi8wQBPtiYzVf6Qc=;
+        b=GkDgqaRXeKNJAbezVNUxc4w3K5OEhbG5K/BaSxBDwNG6ucKO+JqONZ5bqEec0Db4MG
+         ZXn4PchW9WhDOu5XMjyMaykMSxlz6Cfv0b5G9HWyDZvmWtLP72OpDThkHo+b1jYZUyKo
+         nbQA8Drh06fIrQFTY2lVo+yktFsyCYLLiuR3tDRwt1Q3h48GPYWTNU/0ojZTR8d3PMm1
+         F0Fze5ms3zuxd3qQenhRKKl0XWaqdap9DjK6giJQCDHgQ0r2XlrcKcR/1/kAjznn1LJA
+         X/yjn6LYgtB+Z5oCRvQ2wE8TQ3AfxYsD17+sbB7sUuOlvt4ecOsnTMFdAwPuULTtMdc/
+         JRsQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/lHjHD8KT1PjShA/iSFX4fDemD/zRmQ5764uld3UtvyJsx2Qah1/rBeq5LHgQ4c/6IvtCg4w+vJg==@kvack.org
+X-Gm-Message-State: AOJu0YzlVD4r07lMkpbJeV/sAWJac8UKh2LfdAZlMN41hIEZrQGX6hOs
+	Ko/mnHK2sNWu7A1FoCY8/02f0m8ddxGSJnMTWP5QR3aP/Na1cJgRqFd/e/X6ZkxsJQY=
+X-Gm-Gg: AfdE7cn8E3lxe+mOU+EJsVpjsnEsE0toB2wOBfchBLnPD5BAuC+GN2djRW4tXPXcQD6
+	C1nu+jgY1nuA3ReEVjcifCKOpjaHBZngT8+5w9zPW2EwyxteDzHsbeWtl0TQD85lAVzXobyMalM
+	IlLNkaoOOX5/0Pvx7mA2s52pK/2jmQ4DBB8bLVAy58nRKzFdLcemfIy7P1g6/VR4V7IxVtbU7tr
+	zTPmWg4FgRbE8gtd6Bjdl9i4+KXaC+hRQXCpY3DMXxpMmPL+qDaC/zVvAbb/I1l3DTVimOepygb
+	ApUh4Abk7xAJXtwn+jm0U0a8PPeY+GNuEZtjVLPcqgtkiSJ6hNK4tLxwSI3S9p1jKnE9wXWA78C
+	OsEyc/UCpCx3P+aLEsKIT9g9p0Xm7ZB97JwZIUjA5PU3mWNMzgGdQHt2kEA41rwd+mEPPh9My9Y
+	VhRj3LYwgaROoSH4AawcFOaTzOIkizt7uUwdhvlmTK6daBAoPe0Ig=
+X-Received: by 2002:a05:6a21:514:b0:3bf:b960:6fc4 with SMTP id adf61e73a8af0-3bfed4701b4mr11795889637.30.1783081752569;
+        Fri, 03 Jul 2026 05:29:12 -0700 (PDT)
 Received: from L6YN4KR4K9.bytedance.net ([139.177.225.224])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e8f3d74ccsm2705551a12.9.2026.07.03.05.28.43
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e8f3d74ccsm2705551a12.9.2026.07.03.05.28.58
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 03 Jul 2026 05:28:56 -0700 (PDT)
+        Fri, 03 Jul 2026 05:29:11 -0700 (PDT)
 From: Yunhui Cui <cuiyunhui@bytedance.com>
 To: pjw@kernel.org,
 	palmer@dabbelt.com,
@@ -137,20 +139,22 @@ To: pjw@kernel.org,
 	qingfang.deng@siflower.com.cn,
 	linux-arch@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH v8 0/3] riscv: fix PIO helpers and add optimized percpu ops
-Date: Fri,  3 Jul 2026 20:28:29 +0800
-Message-Id: <20260703122832.15984-1-cuiyunhui@bytedance.com>
+Subject: [PATCH v8 1/3] riscv: io: avoid null-pointer arithmetic in PIO helpers
+Date: Fri,  3 Jul 2026 20:28:30 +0800
+Message-Id: <20260703122832.15984-2-cuiyunhui@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <20260703122832.15984-1-cuiyunhui@bytedance.com>
+References: <20260703122832.15984-1-cuiyunhui@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D391980009
 X-Rspam-User: 
-X-Stat-Signature: 8nokxcaqpeubzb665rriq95i35sokxr6
-X-Rspamd-Queue-Id: C4F50C000A
-X-HE-Tag: 1783081739-179163
-X-HE-Meta: U2FsdGVkX19mCd4TxyUfInfS3g+Nnxgk7+ww/Va/tBe1GYkaH7JgyifprzWWNuuNf2hwQfkMjPBbvPL2EYBFmXMHmhctE1o10KWYIXxjsbFiPF9jG+tNTy49xKQhtr1Dlb2tmh8BRqsK70LlPmgOpTx5U2E74g3sd1rJKiOizQ6VmDG3J+M2Orysb2Pc2h1Ja1TDyplAB3O6xUHqthbRnmcisuIEQZVknZaJCnJxjn3xEauzjf0GNFbsfodMQQgEo3aqGuxe47r0cnV3GQDD5lh6ddd3/mRxHXXb8951Shh2qCFKpLKqRdZkPc68accVour15bUi7NJ6fl2wIG+Vp60uXGrpn+02QsJDNBeOs7WunaVVos6Ads4WorFjKOInTcl6TqOmJKu36MiJNPkAaks1mveeo6SzNDkxvXJbj/onhvdVekNeW0+epBjw5bY6n2gZP2+TO7M8wD2L8JaJOHJnBEVrjt5FSrzou+epZMhvX1P5B9PYepKmvcJ9fYG8LfSOwyGfapAorYieSFfRF5ZfEpVvL3OISCugsQ0GzqMyBVcnCFpz+8cEVQex41B6PnriZDyOmAw+5LmkenNQVVAIeUR9ctc/euHwT4NeHgcJ7FR8NILo8v2WL5CDOhBYnH47TNejCJT761YjzLG+F1qPek3YUpUPlWREZKBdcc+ZhrVt1tKSTVpjJWNfOhN3dhhMTZ/XbsxSp5ish1U5tP5gChDaO6Vsh1mS0Ttk8smbVk20p6+U3fIh0tip2l06YUUWuXi5nauFgl1wYnObEIqLgPBMqwgwFUROxXbSnYZz10RD4rcA5esDGNvGRQrZk2gCgNwYZ8r7yqTO1Z4e7cdVdN4QqIorqTRCoBntQ2OBb2DHXIepM+kqis4FHF84qngZazcEYfdfhfPoD6v/7smFrTcZO7+W4IwVaSI2k25ZpZMpr6hGBmFogeHBquuAq0NyvnIb7LTk8hyINHN
- 3eu4vlNi
- eTuFcIpGFO70Te1E7d5R0h/fsfk7zrq3+uaouT4xGBl6w0+TtXX8JEWOAoN7Q9NOCSgEwEoJmP9q5lt3a3xJmIUVgGRfN/l0oFj39d0Tg3Dkr6Hc4muIy3jSgv1k3c6T3xENfKvs6/+K/sQAMvOvLssZoLU6qfTSTf9kwspx3fumbzk7KlIl4XMCytShIW8mbzi1SN8E/de5HH7TwGRXAjuftOwVm8nL0BRZN5TPaFWja3qNRl+1t73F58Q0KKGb1LdZ3PasxyyQ1XS9z+briQj3UqMZQdeQrds0nTDQW4ToaxvPoa45e/TcbOdD036kKF2pD39qKPBPRWGQBjG3U6r5TR9a/1IwoYOEwpJONz6sT6eLnHIwW2GzoFxlgsZZUAcEeORNIA7x0uEbpiX7nmQDnkQ==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: sdukm8dx6uej7gpe5kox68xnwdt699of
+X-HE-Tag: 1783081753-772228
+X-HE-Meta: U2FsdGVkX198xS7O64b/u8pm3K31PRkJLJYKXGpuT13G1GVh4hpMwX/hhIUC3M9Ds4VssGTJUr08o7Q+HuWvXEiv9/SbCy1A+kDPJFQTEcYriJV7gmbBRNzLMXdzPirWfNTeVpAWVet2KdhXkHqVYkdObpVkDzUKF1tVsvKFMFrScqwFu77WIFwk7wCHZSP3XCZs34qIIKlzPtjbhFCQOON5H04WzZhMYoonSw+2HGaa9bTlK4izP5V52lEgZPFmAkywPeKz3EF5VR6mRAO8JEl3B9ukHqaWiimX/xlieboPHCF/6w0Sc9r58cg2vM6NkFGksFv68PPWbcZvry4B73hFWP0jxqTC+RFl+U1bhtHuNRjHONSfv3MQ9becqgYjnaI/n4agBPp8KQsrEZaKcfdbc/pFvcIte2BOCUekLgOUe0Vr+aE9qrDbDSDMN9em/9c3wsOHyzVRM1RQR5cgzaOhz0D4lE9Y65liSRmDxfTN00M6o5j2cQsFN/f8IqbECM+noPJEERw5YNPQ+02n8WQtdCdjysPKVUVBjCFXEP3kh9MQCPX4th9EE56J2Oc6r4zemGNk+iGFn6KlFbD1jkE1UnAngP2QXcRks2DnAVv+W7W0b/ovD141SAEpC5l7LH/qz08d58ApRDWqx4B8ly810qwq/YnjCYJPc7tupfFwM3oBah45zJY8IzYj6YQHFAh+FJxtQwkAUvFf69wxzgcGKo0kn9B6xpfxK1cYO3q6ZFg9hawdnhOzmy40s658sJYtL6xXEGhr/J1PpK4If/yDG8BtsF/I7kEqBwNk0r94x9DxVYxY98JBJ1lnNxmui2CVmLBdp2/bE/k6404qIAVnJd+qy7FSxcamnrHkvxVzEGTUKZa1rTc2v2sGqvWXc8cbAskC9qANFddVUxKc9av6nvYKTYi2vs/rWu9IQsLxgAomm6NML2+LO/i5ep8DvVs+6ZkrJO08JSpKEuo
+ maX6d8M/
+ QumnBpXBCuqNgyH/nNMkPoC31LRNlhLRfl8jdq4L9nS1SmWZzWAeeR2O70HyP5n1uhn00E/m9F2DBuuw1QHDZps8CGhTSEV9AYgI3jC+JgzjooHt7//Ps1EUdAKiBfYOnfRv4jJeHda/6PGJ15gUIJMP0D+dsy4QXu1btbe2uJIUyfpkJPCfFFh4NxWvbAz/elm2Jf75vS9t2gL2VOU52aMl+mCOEdIqsDygdebx7FeF388eLkXwbe40X5ykF4iLP6oMs9gUSLcbLcQi9hd0TNTQwVr26MV5CidknlaPBNMMvPqGtu0tLJyMC9jeqmTj7bC92n56SlHgfaQuLQi2Gyyi86UOSsgTo7/kyomYNpp2ps7449hPBkeDzeGGKFf0Er1OOvt2wb4MiYaTbrZWgySpvnDl6GusLg2VmojPiFstNP3E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,57 +162,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Changes in v8:
-- Fold the TASK_TI_CPU_NUM cleanup into patch 3.
-- Pick up Arnd's Reviewed-by tag for patch 1.
+When port I/O is not supported, exposing the port-string helpers is both
+unnecessary and can make clang diagnose null-pointer arithmetic from the
+PCI_IOBASE based address expression.  Keep the MMIO string helpers
+available as before, but only provide the port I/O variants when
+CONFIG_HAS_IOPORT is enabled.
 
-Changes in v7:
-- Rename the internal AND helpers for consistency.
-- Undefine internal percpu helper macros before including asm-generic/percpu.h.
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/riscv/include/asm/io.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Changes in v6:
-- Keep the RISC-V PIO fix local by directly guarding ins*/outs* helpers.
-- Add the missing asm/cmpxchg.h include and clean up LR/SC fallback naming.
-
-Changes in v5:
-- Drop the generic HAS_IOPORT_MAP/ioport_map changes.
-- Fix 8/16-bit LR/SC fallback masking and constraints.
-- Initialize secondary idle task pcpu_offset before CPU bringup.
-
-Changes in v4:
-- Rework the series into the current PIO helper fix, percpu.h, and
-  thread_info pcpu_offset layout.
-- Keep the generic pci_iounmap() behavior intact.
-
-Changes in v3:
-- Fix this_cpu_cmpxchg128() build issues when cmpxchg128 is unavailable.
-- Fix sparse warnings.
-
-Changes in v2:
-- Add non-Zabha percpu add/and/or support.
-- Add the thread_info pcpu_offset optimization.
-
-Changes in v1:
-- Initial RISC-V percpu.h series using optimized native-width percpu ops.
-
-Yunhui Cui (3):
-  riscv: io: avoid null-pointer arithmetic in PIO helpers
-  riscv: introduce percpu.h into include/asm
-  riscv: store percpu offset into thread_info
-
- arch/riscv/include/asm/asm.h         |   6 +-
- arch/riscv/include/asm/io.h          |   8 +
- arch/riscv/include/asm/percpu.h      | 300 +++++++++++++++++++++++++++
- arch/riscv/include/asm/switch_to.h   |   8 +
- arch/riscv/include/asm/thread_info.h |   3 +-
- arch/riscv/kernel/asm-offsets.c      |   2 +-
- arch/riscv/kernel/smpboot.c          |   8 +
- arch/riscv/net/bpf_jit_comp64.c      |   9 +-
- 8 files changed, 329 insertions(+), 15 deletions(-)
- create mode 100644 arch/riscv/include/asm/percpu.h
-
-
-base-commit: 7de6ae9e12207ec146f2f3f1e58d1a99317e88bc
+diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
+index 09bb5f57a9d34..92d5f831f3495 100644
+--- a/arch/riscv/include/asm/io.h
++++ b/arch/riscv/include/asm/io.h
+@@ -102,12 +102,14 @@ __io_reads_ins(reads, u32, l, __io_br(), __io_ar(addr))
+ #define readsw(addr, buffer, count) __readsw(addr, buffer, count)
+ #define readsl(addr, buffer, count) __readsl(addr, buffer, count)
+ 
++#ifdef CONFIG_HAS_IOPORT
+ __io_reads_ins(ins,  u8, b, __io_pbr(), __io_par(addr))
+ __io_reads_ins(ins, u16, w, __io_pbr(), __io_par(addr))
+ __io_reads_ins(ins, u32, l, __io_pbr(), __io_par(addr))
+ #define insb(addr, buffer, count) __insb(PCI_IOBASE + (addr), buffer, count)
+ #define insw(addr, buffer, count) __insw(PCI_IOBASE + (addr), buffer, count)
+ #define insl(addr, buffer, count) __insl(PCI_IOBASE + (addr), buffer, count)
++#endif
+ 
+ __io_writes_outs(writes,  u8, b, __io_bw(), __io_aw())
+ __io_writes_outs(writes, u16, w, __io_bw(), __io_aw())
+@@ -116,26 +118,32 @@ __io_writes_outs(writes, u32, l, __io_bw(), __io_aw())
+ #define writesw(addr, buffer, count) __writesw(addr, buffer, count)
+ #define writesl(addr, buffer, count) __writesl(addr, buffer, count)
+ 
++#ifdef CONFIG_HAS_IOPORT
+ __io_writes_outs(outs,  u8, b, __io_pbw(), __io_paw())
+ __io_writes_outs(outs, u16, w, __io_pbw(), __io_paw())
+ __io_writes_outs(outs, u32, l, __io_pbw(), __io_paw())
+ #define outsb(addr, buffer, count) __outsb(PCI_IOBASE + (addr), buffer, count)
+ #define outsw(addr, buffer, count) __outsw(PCI_IOBASE + (addr), buffer, count)
+ #define outsl(addr, buffer, count) __outsl(PCI_IOBASE + (addr), buffer, count)
++#endif
+ 
+ #ifdef CONFIG_64BIT
+ __io_reads_ins(reads, u64, q, __io_br(), __io_ar(addr))
+ #define readsq(addr, buffer, count) __readsq(addr, buffer, count)
+ 
++#ifdef CONFIG_HAS_IOPORT
+ __io_reads_ins(ins, u64, q, __io_pbr(), __io_par(addr))
+ #define insq(addr, buffer, count) __insq(PCI_IOBASE + (addr), buffer, count)
++#endif
+ 
+ __io_writes_outs(writes, u64, q, __io_bw(), __io_aw())
+ #define writesq(addr, buffer, count) __writesq(addr, buffer, count)
+ 
++#ifdef CONFIG_HAS_IOPORT
+ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
+ #define outsq(addr, buffer, count) __outsq(PCI_IOBASE + (addr), buffer, count)
+ #endif
++#endif
+ 
+ #include <asm-generic/io.h>
+ 
 -- 
 2.39.5
 
