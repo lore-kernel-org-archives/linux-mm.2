@@ -4,113 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E158C43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 19:45:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D1C7C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 19:56:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A66266B00B5; Fri,  3 Jul 2026 15:45:15 -0400 (EDT)
+	id 130F76B00B5; Fri,  3 Jul 2026 15:56:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A17776B00B6; Fri,  3 Jul 2026 15:45:15 -0400 (EDT)
+	id 0BA176B00B6; Fri,  3 Jul 2026 15:56:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 905246B00B7; Fri,  3 Jul 2026 15:45:15 -0400 (EDT)
+	id EC6376B00B7; Fri,  3 Jul 2026 15:56:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 68E476B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 15:45:15 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C9981C159B
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 19:45:14 +0000 (UTC)
-X-FDA: 84948494148.02.6416C2E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1537AA0003
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 19:45:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HfipuKoq;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BFC576B00B5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 15:56:53 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48D87A0291
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 19:56:53 +0000 (UTC)
+X-FDA: 84948523506.04.49310FE
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E3A3818000D
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 19:56:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="fbhDnA/g";
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783107913;
-	b=b1gQXNUgNJZ3S8NHpoX1KD05Az7IOnq8flyrtMO1JNvqTD1xzj/kkyFdGb25wUDFhvZAjk
-	bsLyPAnTd7DSIH2o8wYbezxD0/nji4aJa9udBGjskdcUFF6EPa1KlDG9Nki2Uq0ERhtZ17
-	H0i+/WnB30ODcjgA5vhJIGg6VK0ErZo=
+	t=1783108611;
+	b=SzRt4FXQRcen2StAPTTPQ+ZCiOJ7ymhmoMUrLGNF9ozA3MMaCxAPnD/CP0Ij0KywK3sRFm
+	qYultmsTXrC6YT15Hvxxpz0890J5aScETnb1kzw5B2AFX0Wvw6e3KkwTjniLXjROr9uwe+
+	c2b+8vy3Kgq/S+ZDDlN3OUUx1GXQtps=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783107913;
+	s=arc-20220608; t=1783108611;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xKTF6vDNUBQAI9jFuD7VQkJvNOUNn1t8G/tpgnpCDhQ=;
-	b=pPcyMuCHal7RJ8rGHK9BFD3LkvM1Z+0EC6/QCVafaNN2Jd8C9CFL+ZOOth64kSonxHsMTF
-	p3F7c2No5a0Ke1i1BAtD0zW0H5oNm3ebPkNqU6BbbcaEPyppdR3FbVTqdHvaX9rtiwU92u
-	2G1AQhnXLomwqOlfAjsl9qgiEw2oilo=
+	bh=Ec4ooeB81VdLBBWoolmCjIrqAa/mMFqe7GUMG3eUFx0=;
+	b=UQTL4CwWkYi/PrjZHcJNCSf4uuqS3nez/fzUWcHqafCLg1Ue2qg2zS+xuGpXbVl6fS4pSJ
+	2ObfZHmNhNEgb4vrhTGp9SzNhYjmkFio687AQyfFVKgFT0ehytj/03WfRsaRhcaP+fW8n8
+	q76hSU+iU2YJjJoxthQjPHJI9aGrsQ8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HfipuKoq;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4281A415B7;
-	Fri,  3 Jul 2026 19:45:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EA61F000E9;
-	Fri,  3 Jul 2026 19:45:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783107912;
-	bh=xKTF6vDNUBQAI9jFuD7VQkJvNOUNn1t8G/tpgnpCDhQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=HfipuKoqA9YbTNTFO5CPy2Y4hov7rjwC1UoEu3ip3PLY4OVaz8/MocBxkxf6Ex5MB
-	 ulQf0ZXbHchbTPLaLuhb4kc0W4BsTDHWs5DJ2r27N3saK0sQemoeoHJ1fsdhCSs30L
-	 sfEFUWvv6QDLnh9AOnVTlmVTVxiFda76c8Fss4vPfaRrV68xiAWAJ6dL5i/czdkdoZ
-	 jKQ0CFVp0O6cl9KRIMYv6WDxVwMI7z1qRzkQ9hv3XzrJ7YC86C+sTMCRPIJi/1yU4v
-	 cnecisgkzaIt1MPB8p3PbvrVbsylFXGhjeZKAgPq+eBxpEP21RjPdrIjUabD6tucx/
-	 A703xqyo6MPeA==
-From: SJ Park <sj@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: SJ Park <sj@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Usama Arif <usama.arif@linux.dev>,
-	david@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	ying.huang@linux.alibaba.com,
-	Baoquan He <baoquan.he@linux.dev>,
-	willy@infradead.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	kas@kernel.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	"Liam R. Howlett" <liam@infradead.org>,
-	ryan.roberts@arm.com,
-	Vlastimil Babka <vbabka@kernel.org>,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
-Date: Fri,  3 Jul 2026 12:45:01 -0700
-Message-ID: <20260703194502.102044-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <akZis7j6xSjl8K_D@kernel.org>
-References: 
+	imf06.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="fbhDnA/g";
+	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E8A7640E01DB;
+	Fri,  3 Jul 2026 19:56:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 591k-6jQHESx; Fri,  3 Jul 2026 19:56:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1783108598; bh=Ec4ooeB81VdLBBWoolmCjIrqAa/mMFqe7GUMG3eUFx0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fbhDnA/gtOESnV9bPd2jExK58X/KJ+kXFtj7TALiu2D/pTjDmFF+sq2Q5S4GTDoZs
+	 Rfn5fhAbaqjrt66z5m65Gp/yldPN4Ssmi5cPYyGdlTe7ZNjpcZ3Dqz/kW7Nv8iqp3b
+	 QkedMrE1/YPFjPknxed4vUpV0fnVmvTJzrJP4xMkdqJ6SJh4znVRjFxk5eg7GcQxJi
+	 cVXNsLkRf/3Z7BxcWNoQzn6i9aR8qN/ZGM7COx03LYky89jAHnso74jYMsfasa5dxU
+	 ykabhvjrBh3QhJuoQb+/YvMbUeieDfz142B32N5wS7fFKGWBbYMj0D9HCGeoDCqUox
+	 f4GDW8ngLep9gNMJO4JlDs7OfiBRnPIzjAScLuSOwZzLBwtwddJv9MRPUreHp6/aeA
+	 kCGiRqVO7WuBnhYBqfdL4Wjxwp2m9JnFoqK+Ido2qLgLsQAzOwd3tyXTWCusWmy2RC
+	 2Ks7tRaZj99L2v+VbpEXaKCbyZQMflIkx+YZ8cB1mJ2mXZ6HnKGSvAE56tLI6yRZi8
+	 jLl9CP+mLFDS4mTQyW//oyD1Q9w4HDNZXnRCA6FNS1XukmTlJufSbpNlAL2KemskFr
+	 OITG3TLxt6kcMu9wf16o/ao7qLJAcQ37ePi9aOi+X7Y4bVRkuGoYdm1DN4hN/VGOtk
+	 tCVkVB1slPHiLCfzotXwxa1k=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5108940E01CE;
+	Fri,  3 Jul 2026 19:56:22 +0000 (UTC)
+Date: Fri, 3 Jul 2026 12:56:19 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
+	dave.hansen@linux.intel.com, david@kernel.org, kees@kernel.org,
+	linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mingo@redhat.com,
+	rppt@kernel.org, tglx@kernel.org, x86@kernel.org
+Subject: Re: [PATCH v5 7/8] x86/string: extend memcpy_flushcache() fixed-size
+ fastpaths
+Message-ID: <20260703195619.GGakgT44P7lpcoMVlY@fat_crate.local>
+References: <20260702022342.GFakXLrl7ryd-g7gTu@fat_crate.local>
+ <20260702073750.73840-1-lizhe.67@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260702073750.73840-1-lizhe.67@bytedance.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1537AA0003
-X-Stat-Signature: by3gdzihoji6ah63ryosfqj31ducpt7n
-X-HE-Tag: 1783107912-671831
-X-HE-Meta: U2FsdGVkX18qsLoNPlzFgjOljUKCyHGH7q0xrp7VqoXsmlBb01J9YKpB1qiBJEL8kUWxmWg+WpkzedOR0XAgnT6hmgDtlJpUCnSUNzH4PctmCUSpN6RqHE5v+kKhDwEX46wGpwPqSDfD5Btu6574GglamfYh8Jw8zqWtiNrdse/CxTZsNQ94Yr4/bVcehC0VbJ38v/vnIxyHhKQ85YVz8ROdCxPqZPem8Q7iKhbvfNwVMNuFzV+9Q1hy5jNXPRxRoIH0jMTrOzp1o4r92oFb6CCIUt++9u+hdAeyiNpcKSr5nfQTD+yXpFH066+jtUxjKQJCQ3rNMng9mosFZJm9i4NeOjyoCy41FVu7DxvbXmq3+H8rwGV5rRZhBBv4IrA6W/SiHGqLw9tmGjs3La+Gq3ox1It6AvOeOF2fxKePtpKua51N2asP4medj484cYRllc5C0J2f4Gndeub02nDGHgoqyVMV3Kyb6GYM87t7QtR5CJJ0G9X1OwQZuQdvO1pn4WBvAw3neuh5ATRH/VqkLb+XnZxF1ghMM85mKUWuxGLnFg2xX/GT/0IjZMuvbpHdJZqSDZ39M9AExBEUnkgxkdAvxGi9BLAsWNWaVauMtgVAMHF4JWc6ppCIPhc916l5pjhO3B7jgVC7lN187SsjKFmMuKkUb9wLvG46mwwdDCC9GVjgF+bDvr6tY+NqsM4BJyBl0bRts9/JY0ET7506mjY8kJL14kVAd5Sf9TgaPIB/Rmn72U7zUmtw8+9vXAbV5vtclVGLoGh+RYTpKQjsH5HO/6AzecQzcj7P2USz1h6Z717bibF590LcgY3y/EIwkZqoT1AXPPmZ97KXZqW1FWBSiXnTzys0RwkEvTiYwOoJK2i/DXmZrjX25hXyrs+BD7NOGkaUysevqX2avm5XrNT/RY2kUm5CLnCBfPej+3ErxRoQssRoXQNknS70IWcBYhGdaJX3/RP+HHTf20X
- 0C9TKwYb
- sMR+s7ZJo+2ZZAOIkAdEMTllCPBIxqhO1zkRcNJ5Y9eUUedAeImW5ioiqMeon6srR3P2lXI5NEU+B57fMvy7UvBK7JL/HCO1JlxrkUKFUdu0gDzt8kGsgbQyEmLIJXXXjJ+cW+qARSwx9YEihUpU+d0P5yyAz5ntVMMZs+NEyO9QhMc9TE1X0wws1dx4Ct7rrYCIgpegBrd4HwLNcpEzTHgLajj3gVEc3oyZKnzwlKCrN3YFlDco4TQa6fTdIngdfIPZFJcLDlNhsg8IsH3z8bxGv9MJn5nBpEbrRGGp0gg2AbMMGcfayR/ZN6feyaDY3/GK6
+X-Rspamd-Queue-Id: E3A3818000D
+X-Stat-Signature: bmb3hxrwwtdb8bhyg4ehofqt8kwtx177
+X-HE-Tag: 1783108610-220373
+X-HE-Meta: U2FsdGVkX1+CflDlUfIfhRICvt8BZQyUnqQ7q1Y0o0yXgdQ1XLvifMNnYDIK0ye2zd0J+uPqpHckinHSVh3hgNlCCNTVACmuoocCpE1cYSdxTkSBfsCYBpurmGAmT8NAmSbmrFbP9LhpzuabH7eIPKkm0ykp3xNsB4rEtXI5rgKCjnvo9LWz8ddxBIwQx6Kmlj9/puH18WswmaBBTIxB0LF0820XqOVGIU5cmR4LF2vGAzyfSFvQ/wQZTr1UmaNMBRhv9dK3emV63x3AsG81IE8vl/ULiBZPdhqSWI6v+63ZR652vqWc1PJgrWLC1vQBOpKariIj9HszQFqNSWkVA+sD1fhtXS+PHiOXC89ahfNvYKPerTlg/LVPuikwaBj4GDLdnOx5KzxlEZa42A5S8R7wg3I3H+KI62a/0gd8wAgmOLHhFKrwYyfzOl26wftbiS+dehTy7qyhQ5XZUpLEHU4eO0U5iG6KJCRtLHySEQdaYe+GVp81UsEsMpo0UGVi+iUeUiY9RWbKEy3kAmaZHuvoe0SruuDdrqThXmF3EqBee156OiTeD4EMVYlYzg5b9mH+JtLSfG6l3va+XT22iLDQDaGda/0Le+HUZ1c7iT63VjhAgd/3pLHVmYH+Z44rFrn01hS80vIVAxr1NNra5Mk+I9DZ/9qtTjdbWtFfdl/e0XXK3dF4yjMdeBCU7lyVsBDXI+mUS+0pC09V5sGbTA/6yMaO/53jfXBJIEgNrmD47OGwZqKh+5/mHRQrfxtVnVOn7AEL+ssyC3xoLsA/KuaRI/YHDWoE0NQZ27WwhEhQxObmbfRrV51mAW2c7ljRkgdUUTOEfN7zSbJoG+1bJGX43zTPEzU95YP2/iNn0yEOd4TB5T62oMHDuqN+qTdD4ANGHduVjMtM5uWCO/P2Y4S3G5fQdENp0x10fwSwwTUKPDUmz9m5+eqQ3iKA8ezb1ZpjsAd0S3kumZaGVTA
+ Wl+W8cxK
+ iubecd93s8W9B6pRx7PSY5UFm2pji6egbUSXsIm/lTeVsSYArGZhFDfFZHQJFBBg2d6NcFgGVYjsj5fF60dYB03g3xFN7tDNdFeDp148bxFeVImhN0NRkYr1rI7/7nAOSf2IetGomFYqLdHeBcqsgF1YCpu6LTcJSuc6uV224LDt97krb0fAeEm3ZicI1mz4TZEv8JEVyrm9GmvPVonEGEvCT+0F8L28uVv53juJsVZjs1bAROsoOIySfVJF9WKJunWAs/GUscvDnJoOpQJBuGW0gLaX7Fy1Wc82RtCZLXLZZKVTshCaKHV7VgjxH+DH/R33pmic5vNQXLcgpJEkg+QVhPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,78 +107,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2 Jul 2026 16:08:03 +0300 Mike Rapoport <rppt@kernel.org> wrote:
-
-> On Thu, Jul 02, 2026 at 11:48:24AM +0100, Lorenzo Stoakes wrote:
-> > +cc Mike re: CI.
-> > 
-> > On Wed, Jul 01, 2026 at 04:46:13PM -0700, Andrew Morton wrote:
-> > > On Wed, 1 Jul 2026 09:04:33 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
-> > >
-> > > > On Tue, Jun 30, 2026 at 12:50:24PM -0700, Andrew Morton wrote:
-> > > > > On Tue, 30 Jun 2026 09:34:37 -0700 Usama Arif <usama.arif@linux.dev> wrote:
-> > > > >
-> > > > > > This is the preparatory part of the PMD page table swapin work.
-> > > > >
-> > > > > Thanks.
-> > > > >
-> > > > > This comes reasonably reviewed, so I'll queue it in mm-new.
-> > > > >
-> > > > > Why?
-> > > > >
-> > > > > - Human review coverage and AI review make me believe this isn't the
-> > > > >   final version at all, but I do believe this is something we want in
-> > > > >   7.2, and getting it under test early will help to push it along.
-> > > > >
-> > > > > - Getting it in there early means that others will base their work on
-> > > > >   material which will probably be upstreamed this cycle, so this gives
-> > > > >   them a more accurate base against which to work.
-> > > > >
-> > > > > Sashiko did find a lot to talk about, some of it pre-existing so can
-> > > > > people who work on this code please take a look at
-> > > > >
-> > > > > 	https://sashiko.dev/#/patchset/20260630164143.1595669-1-usama.arif@linux.dev
-> > > > >
-> > > > >
-> > > >
-> > > > Hm, my understanding was that mm-new is where we take everything submitted for
-> > > > early testing?
-> > > >
-> > > > Did something change?
-> > >
-> > > mm-new has always been a few day front-end to mm-unstable.  To protect
-> > > linux-next from brand new material.  It serves no other purpose.
-> > 
-> > Well it only serves a purpose if it gives us better testing.
-> > 
-> > We have a CI running tests now though, Mike - is that predicated on material
-> > being in mm-new or does it just grab the email?
+On Thu, Jul 02, 2026 at 03:37:50PM +0800, Li Zhe wrote:
+> The relevant target sizes here are the x86_64 sizeof(struct page)
+> values which patch 8 can hit: 64, 80, and 96 bytes.
 > 
-> CI grabs patches from patchwork and tries to apply them to one of the three
-> bases: mm-unstable, mm-new or the latest Linus' commit merged into mm.git.
+> On x86_64, CONFIG_HAVE_ALIGNED_STRUCT_PAGE keeps struct page 16-byte
+> aligned. That gives 64 bytes in the common case, 80 bytes when
+> WANT_PAGE_VIRTUAL or CONFIG_KMSAN adds extra fields, and 96 bytes when
+> both are present. I stopped there deliberately because this series does
+> not have a current caller which needs larger constant sizes.
 > 
-> If patches apply, the other bases are not checked. 
+> The 32-byte and 48-byte cases were added only as intermediate fixed-size
+> combinations used to build those larger struct page-sized copies while
+> keeping them on the inline movnti path.
+
+This needs to be in a comment over that code so that it is clear why that
+distinction has been made.
+
+> Yes. The separate helper is there exactly because the added
+> 32/48/64/80/96-byte cases carry an extra 8-byte destination-alignment
+> check, while I left the existing 4/8/16-byte inline cases unchanged.
 > 
-> This patches applied cleanly to mm-unstable and successfully passed (at
-> least once :) )
-> https://github.com/linux-mm/linux-mm/actions/runs/28544575927/
+> The intent was to keep the larger fixed-size cases on the inline
+> movnti path only when they already match the alignment assumptions
+> used by __memcpy_flushcache(); otherwise they fall back to that
+> out-of-line helper, which already handles the misaligned head/tail
+> fragments before entering its movnti loops.
 
-Awesome!
+Why can't the larger MOVNTI sizes deal with misaligned cases too and thus make
+the code even simpler and more straight-forward this way?
 
-I found the CI script (mm-ci) on the GitHub organization.  Is the repo open to
-contributions?  If so, between GitHub PR and patches to linux-mm@ what is more
-preferred?  Seems it is not running DAMON specific tests, and I want to add
-DAMON kunit test to the test set as a first step (DAMO selftest is bit flaky on
-some systems), if people don't mind.
+Thx.
 
-I or someone else may also want to add more tests like Cc list checking [1] in
-future.
+-- 
+Regards/Gruss,
+    Boris.
 
-[1] https://lore.kernel.org/20260703190421.100480-1-sj@kernel.org
-
-
-Thanks,
-SJ
-
-[...]
+https://people.kernel.org/tglx/notes-about-netiquette
 
