@@ -4,102 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60122C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 16:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3A3DC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 16:43:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F24AE6B00B5; Fri,  3 Jul 2026 12:37:55 -0400 (EDT)
+	id 45B606B00B7; Fri,  3 Jul 2026 12:43:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFD926B00B6; Fri,  3 Jul 2026 12:37:55 -0400 (EDT)
+	id 40CAA6B00B8; Fri,  3 Jul 2026 12:43:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E13076B00B7; Fri,  3 Jul 2026 12:37:55 -0400 (EDT)
+	id 323036B00B9; Fri,  3 Jul 2026 12:43:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FF7E6B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:37:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A3041201FD
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:37:55 +0000 (UTC)
-X-FDA: 84948022110.14.CFD1AFB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E82876B00B7
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:43:22 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5615E140209
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:43:22 +0000 (UTC)
+X-FDA: 84948035844.09.4F37477
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 40AB7C0007
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:37:53 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FALyA88g;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 41EE41C0002
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:43:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oQgODdQc;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783096673;
-	b=5jkIh0nAVBjrU/zUEQVHN2vkHeZw6TPEa3sgJZU7Yy2N4Oahj9hdIcp03M8XxeLXZ73euf
-	dC2qdDrAw0gxA+4AKf9BEyI5oF9Ri1U8kWJfFlPMzX+coGNK47dqAnjH+Ul1fi4yxdawYp
-	Ow7CjrBu37u07yUM5WVJ1s6Lhc86HtE=
+	t=1783097000;
+	b=uOF68nEe+U+PVusfN1dkwW/YElwlECPm4VDI+v9/dfLBJuJZwaVwdRhxdZlwWP1sxTx5lA
+	ArWMgJOQgvOTd09FNSo8P+pAPoFXdeVQ8t906wBMk72jnmw3Z58Mz8dX7FS5rnB+Mj2rww
+	aQ239x5UVx57KKD8yABQqPiFh9ISet4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783096673;
+	s=arc-20220608; t=1783097000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sfgOhtUqXakhO/LJCSQi+Xtir7lK29w0aDyR77catJ8=;
-	b=7CnklHJoCHLkNiBWw8rfOypQOyWUMmutaFNN7c2LRv6ECXrBDVw69F2ScU2niNHuhn1pSX
-	rwPz3XX07ZKblQQ2ezreTjUrFqKt6dlfwzFHAMkXphR/dDteRzfc2zwdCbX2PZSmXFUo4j
-	/iQ90kH4JN6geCOC2JQdcadOKntdIqE=
+	bh=wmiike0RMf4GUZzG60cV6tKCpPnHn3sgz+92qG8ZSFo=;
+	b=z0tgRfqLscePWjpj7qNHmBsqMR8v8rW+bjbM6laJdtqrAbgt54m9J2u/x+LFn5ZdZZFeIH
+	UjuZNUEHMXacUUHfsFRh/aA4wNvGsEpU/TBjHq66ajJ74IcuNqqCVQ3iTfRORrusRpEN6Y
+	cY7EVo+zqh4OXHdmWnZu1rnGZF9Bzgc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FALyA88g;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oQgODdQc;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6A254064C;
-	Fri,  3 Jul 2026 16:37:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8721F000E9;
-	Fri,  3 Jul 2026 16:37:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 68F4C43E4E;
+	Fri,  3 Jul 2026 16:43:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4E11F00A3F;
+	Fri,  3 Jul 2026 16:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783096671;
-	bh=sfgOhtUqXakhO/LJCSQi+Xtir7lK29w0aDyR77catJ8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FALyA88glPg893RXkoN9RTJO/MOwhlJg9JAvwHpslsw8oc/saSVG40yzlCTjD4DYW
-	 pt2IRfk2i6zJBeIR0AOCP+1jWUbxQBrkTCz05/JpyoMmFMv6wjaD5nYDf6KPOBtSgm
-	 nWs/kLSZwQ10zcUApI0QmTcyMVwg0KkwN/pga2/AvWdb+udqLdoYSPp7bHsBLnFTzI
-	 +97XvOfKuIwa9aFsrLmJ5Sk9vJ0i8LKy0YU8jF08PMgvLXmsHxf7mYXVoDbSiWnaDJ
-	 4NPQseUUiIW89u9P5QrZHDh85nHAlBZiao71tU+rK/Z1fiB2hxsBC9pFhkjUtniCWq
-	 lmozENbGnPi4g==
-From: SJ Park <sj@kernel.org>
-To: wang lian <lianux.mm@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	daichaobing@sangfor.com.cn,
-	kunwu.chan@gmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RESEND RFC PATCH v2 0/5] mm/damon: add mTHP collapse and split actions
-Date: Fri,  3 Jul 2026 09:37:35 -0700
-Message-ID: <20260703163737.84760-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <F1C05416-5D04-4568-B8CD-D4376B0F3848@gmail.com>
-References: 
+	s=k20260515; t=1783096999;
+	bh=wmiike0RMf4GUZzG60cV6tKCpPnHn3sgz+92qG8ZSFo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oQgODdQcQOZJ6UkIoTHpSPAR+xm0LbTzqhxtul4thXzJ1L4k1xRCB5Jfy9i79GdKy
+	 AqZzrmO9bPCWxh1+UKQeckEA8xfE1ALRrFgdtPWO8vjwNCunLuPHT3DQY412txfRXM
+	 IcPirEckZNvCksYf7oe2J9e7Gb5Koo01YZfFnIEDWVb2ZH6ACzGBQOnmSqTdpxJG/p
+	 jE9g1J1K8wCvGiZ6t6teTZjFTfq4KjVtxn3YEXBVakSfpQy5fogPPdyjHcKdGbkX9Y
+	 rkoOLSm0x9pfqRwQbmndrfkrHk4CW6WfefyPzMPDnrR/5D2l0WpKn8AHdQbcbcwD0f
+	 t+0ZKGm4Ihgmw==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A9FACF4006C;
+	Fri,  3 Jul 2026 12:43:17 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Fri, 03 Jul 2026 12:43:17 -0400
+X-ME-Sender: <xms:peZHagMAZzcYl7CmGJIRQXcADJfppBSUDgNGnKdXW7-27IhwjKYNSA>
+    <xme:peZHav94GBW2fS7CSPjP7dXckGLtKDruvWFJgoRhS21FxCl5eSniepVxlnmADCm2k
+    ot3CcE2nTZxy-aoG3P9nlnbLnnddED08kNQfUr4Ghc-QSpAM3BUGVc>
+X-ME-Received: <xmr:peZHag-yEVwy1cFKNkUnw1mA7mzH_ik4hwH_tdr4YTNR-JuUxfNtBQ6LD3-XvA>
+X-ME-Proxy-Cause: dmFkZTEhXLrG7RRgWewl6PxPi2xh+8RsvhIU1msTLaJArxEAHB6uY996MYxuxeHg0YK91y
+    R0wyJcP7nTPMFDWO2Q8TpgpNyNZ42owgYwLWubaXjtExEZhofOlvlDvWLcia4Prx0zY45R
+    Fw38UnVt/frpIxZIsiAA6MUvzEARpnKuokCRNpn3gJzH0DP6jNc6FvmZdyr5G4Z2yyeA3e
+    A0pTNJ/xcW6DuOeNSIJ8JAKYtZNQGLKSOSu8G1RdEMTK0KDrunlklY8omtJiDqkZaS+9Im
+    xxzBCx16mviGsn1Gf931m+HMap5B6fYLxqAeP9gaObnEeRSCHAQmpkENZV8SepZp8HRAVS
+    D0mw8Lk+gVKD1CORE7bPyI2GJGmG4myt9165rJWgPoq8dT6ush6hA9t45mkxQ+OTjL+AIS
+    p+s9Ya+POW2qVpOGRTM3mU/duDR8ZK8HmdXoz87Dnj93jS1kPgVfUmo+5sGgF1rAvYNw17
+    jjw7+Tv7Y9MATgSPzv+Oq5FeWwGbeqjXX/0q+uGinBX/WSOsXB0IeMiSnOhwNfCGQJLE0k
+    Bld2Zc9VVIRr9ZuB3HegwP27DOKH9IzcWyGPzpgQVWOiR308qAcGNSuLpMCF4ffgkhfCf7
+    XsttxQzyy66CukTnb565g5n2L6u6r1LVYxt905mN7so2p6LQ4vyLwep8Ryiw
+X-ME-Proxy: <xmx:peZHavqZomUiomjVpT4A2daHUPpDZbqZLOGRjBjZpiGyVhDSfJNukg>
+    <xmx:peZHarJH0dyQxR4lrQGZ9IqAUJctIzzPAFEoPd5G-ISbH1gMNpzZSA>
+    <xmx:peZHak0BtjTmrFjtRwV9bkHngywyLii-Ma5udRkPh5Dbtkh4e9qQ0g>
+    <xmx:peZHak7O_jSu-q03beVgwlBiHYK8VGPqx_4AvW4Ujhd0wQ8X3DYjUw>
+    <xmx:peZHaiMlQJmsOlLT50fzJ4z4SqiiflrE1QXy9udNZWRfsTPEdZJWvGeB>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 3 Jul 2026 12:43:17 -0400 (EDT)
+Date: Fri, 3 Jul 2026 17:43:15 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org
+Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com
+Subject: Addressing Sashiko AI review
+Message-ID: <akfmUXjqaBQnxqYX@thinkstation>
+References: <20260703133615.1039465-1-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260703133615.1039465-1-kirill@shutemov.name>
+X-Stat-Signature: mmi75z8q76y6ubjn9ro54ea71rahxc9c
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 40AB7C0007
-X-Stat-Signature: 5cjtbkw75ymq8orcu49sicqhf9tw9yri
-X-HE-Tag: 1783096673-800385
-X-HE-Meta: U2FsdGVkX1/Re1A0MgTyQgLEj9UG7+alT0XoSxLppvBLPH0rb8zMz64xIl9oXu95IiZWa0IJoV2P3Pc4rLcPx4fc0fvHfsgXj3IcGE9oZ8UgPK2af8d2uGoMyHNXZ1QNOz4zQrhqoBIZz3UhWLnaUHHa63lFy8ArP13I69ERgX3+USFdAEPt0IiI65qyEPxSwK1rNyEnyT8U2GLHOsETdV2Hx6OP3kxMyUeu/5HC+heHj8sXv2CQX5H5sgpFRtnVtVkj6JtNXcyqDvcu3qBu00kP98AJ6ZKxNYJqvPPhHFjVFNTwCFNp5tBc8exHbsntTYO+DByLiAhVtEevJzgq7GOejdUz3LsFeNbhbf5QGlCiDqqpMP5HANV+2CajSeT9E9dKVyiXk+yDaJN/D0hcNXxqxcmNQOFdQoADq/UEcB8kla2bV+JDHTpSy7zckf8sdS2EFyfCvQ7+kt978pofjusSxKBsEvsJLvg/HJwwjAQkQXAVk7bYzEAjWwtMbdE8vTRiA8AXMULK+ccjrrHqGx6LwIUNSLOTnYxJmEJY1owxkKEw0Ejt3Ac9vqmXd/x8Ot/frzb2D9T9U2R1lfaCewIAlhI9MRZiYeSCtgfT289+4V28NFjdB3+aJO5Fj/wBFX1P5GI7UjMMdkXebDMI9YuoPRin9kRZLDurRGsX3Lo608Hui8o5AZDh/YmHa64+fhs+hwet1lTa9+ZuoxsAOo5jeNpoVbpGqy4Pv8r9P6nAjYT84hUgaPTh5wr9ZNYk16CfVGGP5cL/oJRlAWtDPH/qdZwl0vJJ4+PZeG0fU2tuH25VMgN2mF94vShwOTHEpAt94K2vHo4TTWc3riykJnl6bqNEfgqHFcROVRbEBun8m/M05+d8XtNzQAXJ/cGK2EqIiPS++1WXJZ10AoUQ/kMai8h8xgvXUbnQk+dQICDJrUlTmNAMl6If4L+pw6OVznnYlOcVCbDLzG8BWtx
- brJmDIXm
- djPuHm76ieyNvC17crtQIfDg09wXt/l+2oT/4Cc1VJ2vOm+7a959KDqBvnAsyzmws63P6Hr78LbZtdchPVm10hV6yO/zfMyBn+1uZ9tRMH5hrSjZybXx5I3gf+jnxd7fX2SfssjEAKVPe7yW7HIvpByk72TMYyzmAoyKHb7EsTmLna8j5R8J+ko2M75AyZ2EFxMZ3hQVKJ7o3j2hVPo2rQpdeUPP7W1TWWxwQzbBveyRDypruaxG4gF7tt2OKDNA53XIK9GS4uGEyCruRQ31YySvd7qXOfmSWsdYx3ivej9wX2nlJCYnuCWOLK2qG/tpSnUYQVUiWY/x/eWNNwX+DPGtzejFEQVBD11nFpC5tLzCzkN6exff5s6sekXzYibQ93X0diqqK4/uZ0CYdBXaQlvR8LI+sH5GGSBuEludiQrPt1z+I9AQJ7hOQ7sFPlLB6zIDk2fWPm18qjVfHvGR53BztwSvyGrl/TpV8j1NI8wbG8Q5IfsEa5G2IxHK6zRAybAMVEWahQeK+CoaWkvzjDPmT95YH5+eZzlf+RszIkyHTgQf2iib8l4lDjMAL2jwGovgwDQcxgxbXF5nYexUn5eogNH9DLsXq1aXDFpowCyqizss49pXZuQbBCL2G/C1brqNOVcsbaER6suzkTmnwyWCAWlf/ZFodpDGhIuip3kvAsUs=
+X-Rspamd-Queue-Id: 41EE41C0002
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1783097000-434961
+X-HE-Meta: U2FsdGVkX181c/+3TZRt4q/H3s+URf64PI8mxIRgQeIdhvc/SS84HBMy5z1KACuJpaE2by7PCjst2rm9PhQlrPuihqoL6aam5eyFdqLPx6SGhS1GHgkIRB6kofNoFWEGRg6OpfNeCMhVRx91+YkY5RbS/zP7lK+jEtP/rGNSMEQ3DszN41DwLw7dvcQTXq+Xusejbm48IA00I+vCRVKIgze8vlTLQ6WOEnz75tAOZeAfM9zOvoG5wula9rjWtHCltUM2kPOUteq1saGIRhErctgHDNIZOMxFDv9jSSakoLcUTAUjUBCkGRJ3kMQvl9771eUeJdxpUSsFNogbtKLHx++8rE9x8Naj4zY3xQAbT98yIf546YQPVsXQ5o5eoj5fBhNgkD8LiK66rLn6l+8QBpKvEiHGGEUvgge+tIyfulAIeerx3Xd/uRAEuZ4/6Q7XMUvFzsaxFDFAfMGfcDZUQN4Tm6/tHGLlsEbjvbUWth/8Fn+TdmdP9mIHGh6gVnNXjp9wXml/UPRk/H56LRI5PiVTkXEcpEo3s4Z+iei/+7qPuVkXqAnjKKYnENwyqtrYekinRjwG9sGM9Ty3r9E6O8bx/q1bGbmby1frmZP3PgzdaX+JuPY/nhSI7p5ZPHReee+JSSmjwmQDQi46C0keH+IG1QdCaCdKe8s7jTmHjZSFbXUHAtzXXJ6K27qY0i3T8h9yMmMTXAggMeZ88B8N789pfdp2TvwWhcyKYaY8ECNleiBrnzwjDERBWx7X8Xx6VMco379lrVZXvF+gx5j8Zu1KqaHXWXjoY92Za36gOzFOCXdvodR0fDy4M/0emQfRTmQAcnk57Cz55bVLfvLDuR0fF9FTW+lvF91DlCtzhBG3VcsJj9ENT22npSfaXI0dYBkB2x7GpVTLR2AOOyQZ4I8i8I3Lk8+30w2D4DfIgxCyamBkS9qZJaCWXEb8M8JEDYoIJ48i+LbQsoJoIOp
+ Vwlfrvam
+ lhnYvz1UgbPNdIjOeNdVV9b22NYH7lWHEYYEHcT/LQbmora3+spygjJtEbmpMGkkG5sRw1c+SUudVX1t/TLRLfRk74olu6pGuG4Num6vC9xmSQOrOiHym1J7QNvOkGKTRF/tJwXS96OoR9/8hXyJ1/Rl/HJRyQI+2jixxX9QLIj8Jfp5IGkndw0csobVY0DzipLw9fWpzwYBTTcZYxqAiKFzwhmNVk5y/Icu8L2iHCH16tgYLapW178NjvJgfmWiL6pH8mj8XNGLQofSG197z6eGMMETU+9pPrSm9cYncLcaHQRo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,90 +122,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 3 Jul 2026 09:10:51 +0800 wang lian <lianux.mm@gmail.com> wrote:
+I looked through Sashiko review and queued changes for v9 (see incremental
+diff below). The v9 branch is available at:
 
-> Hi,Lorenzo
-> 
-> > On Jul 2, 2026, at 18:23, Lorenzo Stoakes <ljs@kernel.org> wrote:
-> > 
-> > +cc all those you missed.
-> > 
-> > I really need to write a bot to do this, because I'm getting a little tired of
-> > pointing this out :))
-> > 
-> > On Thu, Jul 02, 2026 at 05:46:28PM +0800, Lian Wang wrote:
-> >> include/linux/damon.h      |  10 +++
-> >> include/linux/khugepaged.h |   9 +++
-> >> mm/damon/core.c            |   2 +
-> >> mm/damon/sysfs-schemes.c   |  77 ++++++++++++++++++++++
-> >> mm/damon/vaddr.c           | 128 +++++++++++++++++++++++++++++++++++++
-> >> mm/khugepaged.c            |  46 +++++++++++++
-> >> 6 files changed, 272 insertions(+)
-> > 
-> > You are doing damon changes, and that belongs to SJ, sure.
-> > 
-> > But you're also changing core THP code? Please ensure you cc- THP people because
-> > without our approval this cannot be merged:
-> > 
-> > $ scripts/get_maintainer.pl 20260702094633.75658-1-lianux.mm@gmail.com.mbx <mailto:20260702094633.75658-1-lianux.mm@gmail.com.mbx>
-> > SJ Park <sj@kernel.org <mailto:sj@kernel.org>> (maintainer:DAMON)
-> > Andrew Morton <akpm@linux-foundation.org <mailto:akpm@linux-foundation.org>> (maintainer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > David Hildenbrand <david@kernel.org <mailto:david@kernel.org>> (maintainer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > Lorenzo Stoakes <ljs@kernel.org <mailto:ljs@kernel.org>> (maintainer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > Zi Yan <ziy@nvidia.com <mailto:ziy@nvidia.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > Baolin Wang <baolin.wang@linux.alibaba.com <mailto:baolin.wang@linux.alibaba.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > "Liam R. Howlett" <liam@infradead.org <mailto:liam@infradead.org>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > Nico Pache <npache@redhat.com <mailto:npache@redhat.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > Ryan Roberts <ryan.roberts@arm.com <mailto:ryan.roberts@arm.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > Dev Jain <dev.jain@arm.com <mailto:dev.jain@arm.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > Barry Song <baohua@kernel.org <mailto:baohua@kernel.org>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > Lance Yang <lance.yang@linux.dev <mailto:lance.yang@linux.dev>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
-> > damon@lists.linux.dev <mailto:damon@lists.linux.dev> (open list:DAMON)
-> > linux-mm@kvack.org <mailto:linux-mm@kvack.org> (open list:DAMON)
-> > linux-kernel@vger.kernel.org <mailto:linux-kernel@vger.kernel.org> (open list)
-> > 
-> >> 
-> >> --
-> >> 2.50.1 (Apple Git-155)
-> >> 
-> > 
-> 
-> Thank you for pointing this out again, and I deeply appreciate all the tedious 
-> work you do as a maintainer to keep the mailing lists aligned. 
-> 
-> As a newcomer trying to transition into complex feature development, I must 
-> admit my initial design is far from perfect. I leveraged AI tools to assist 
-> with certain implementation paths, and although I extensively self-reviewed, 
-> tested, and reasoned through every single line of code, your and SJ's 
-> feedback clearly shows there are still major architectural flaws. Just like my 
-> very first kernel patch—which was strictly reviewed and guided by you and David H. 
-> —I know that your sharp feedback is exactly what will help me grow as a kernel engineer.
-> 
-> I will completely step back and radically rethink the design of this series, 
-> especially regarding the cross-subsystem encapsulation and locking hazards. 
+https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git uffd/v9
 
-No worries, take your time :)
+- 05/15: uffd_disable_fault_around() did not cover RWP, so one
+  missing-page fault on shmem pre-installed up to 15 cached neighbours
+  as accessible ptes and PAGEMAP_SCAN reported them as
+  PAGE_IS_ACCESSED. Fault-around is now disabled for RWP.
 
-> 
-> As for that bot you mentioned getting tired of running manually—let me write 
-> it for you. An imperfect newcomer who just made these exact mistakes knows 
-> precisely where the traps are. I can craft a pre-flight patch check script or 
-> a CI bot that automatically validates the `get_maintainer.pl` output against 
-> the patch file diffstat before any email is dispatched, throwing a loud warning 
-> if core MM files are touched but their respective maintainers are missing from 
-> the CC line. 
-> 
-> What do you think? I would love to build this tool to save your and other 
-> maintainers' valuable time in the future.
+- 06/15: change_huge_pud() rejects MM_CP_UFFD_RWP_ALL next to the
+  existing MM_CP_UFFD_WP_ALL check. Defensive only.
 
-Sounds great!  hkml already has all building blocks for doing the check, so I'm
-planning to develop such checks in hkml, but only for manual runs.  I ain't
-develop and run a bot, since I don't have that much compute resource.  Maybe
-you could save your time by reusing the hkml feature on your bot.
+- 09/15: the PROT_NONE accessibility check lived in
+  vma_can_userfault(), which unregister also calls, so RWP register ->
+  mprotect(PROT_NONE) -> UFFDIO_UNREGISTER failed with EINVAL. The
+  check is now register-time only.
 
+- 13/15: userfaultfd_register() read ctx->features with a plain load,
+  racing the WRITE_ONCE() in userfaultfd_set_mode(). Benign (the
+  tested bit is not toggleable), now uses userfaultfd_features().
 
-Thanks,
-SJ
+- 15/15: the documentation wrongly claimed UFFDIO_API returns the
+  supported feature bitmask on EINVAL; the kernel returns the
+  structure zeroed. Corrected.
 
-[...]
+The finding against 03/15 is a pre-existing bug that the rename only
+made visible: copy_hugetlb_page_range() clears the uffd-wp bit of
+hwpoison/migration entries with the present-pte accessor, corrupting
+the swap offset. Fix posted separately:
+
+  https://lore.kernel.org/all/20260703161833.57416-1-kirill@shutemov.name/
+
+I believe the remaining findings are either pre-existing or false
+positives. Ping me if you think something is worth discussing.
+
+diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation/admin-guide/mm/userfaultfd.rst
+index 69836e39aa0b..783d969f0e28 100644
+--- a/Documentation/admin-guide/mm/userfaultfd.rst
++++ b/Documentation/admin-guide/mm/userfaultfd.rst
+@@ -348,9 +348,9 @@ without ``CONFIG_USERFAULTFD_RWP``, and architectures whose ptes cannot
+ carry the uffd bit at runtime (e.g. riscv without the ``SVRSW60T59B``
+ extension). Requesting an unsupported feature in
+ ``uffdio_api.features`` makes ``UFFDIO_API`` fail with ``EINVAL`` and
+-leaves the userfaultfd context uninitialized; the bitmask returned in
+-``uffdio_api.features`` then advertises the features the kernel does
+-support. The recommended probe sequence is therefore to open a
++leaves the userfaultfd context uninitialized; the structure is returned
++zeroed, so the error path cannot be used to discover what the kernel
++supports. The recommended probe sequence is therefore to open a
+ throwaway userfaultfd, call ``UFFDIO_API`` once with ``features = 0``,
+ inspect the returned bitmask, close that fd, then open the real one
+ and call ``UFFDIO_API`` again with only the supported features set.
+diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+index ca718e8590c5..bfbd6a59909f 100644
+--- a/include/linux/userfaultfd_k.h
++++ b/include/linux/userfaultfd_k.h
+@@ -171,7 +171,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+ /*
+  * Never enable huge pmd sharing on some uffd registered vmas:
+  *
+- * - VM_UFFD_WP VMAs, because write protect information is per pgtable entry.
++ * - VM_UFFD_WP and VM_UFFD_RWP VMAs, because the write protect / access
++ *   tracking information is per pgtable entry.
+  *
+  * - VM_UFFD_MINOR VMAs, because otherwise we would never get minor faults for
+  *   VMAs which share huge pmds. (If you have two mappings to the same
+@@ -182,21 +183,25 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
+ {
+ 	return vma_test_any_mask(vma,
+-		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR,
+-					VMA_UFFD_RWP));
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
++					VMA_UFFD_MINOR));
+ }
+ 
+ /*
+- * Don't do fault around for either WP or MINOR registered uffd range.  For
++ * Don't do fault around for WP, RWP or MINOR registered uffd range.  For
+  * MINOR registered range, fault around will be a total disaster and ptes can
+  * be installed without notifications; for WP it should mostly be fine as long
+  * as the fault around checks for pte_none() before the installation, however
+- * to be super safe we just forbid it.
++ * to be super safe we just forbid it; for RWP, pre-faulted neighbours would
++ * be indistinguishable from accessed pages in PAGEMAP_SCAN (PAGE_IS_ACCESSED)
++ * and pollute the tracked working set, so each page must be populated by its
++ * own fault.
+  */
+ static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
+ {
+ 	return vma_test_any_mask(vma,
+-		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_RWP,
++					VMA_UFFD_MINOR));
+ }
+ 
+ static inline bool userfaultfd_missing(struct vm_area_struct *vma)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index c67261f04731..4150f1bdea0c 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2766,10 +2766,10 @@ int change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 		return 1;
+ 
+ 	/*
+-	 * Huge entries on userfault-wp only works with anonymous, while we
+-	 * don't have anonymous PUDs yet.
++	 * Huge entries on userfault-wp or userfault-rwp only work with
++	 * anonymous, while we don't have anonymous PUDs yet.
+ 	 */
+-	if (WARN_ON_ONCE(cp_flags & MM_CP_UFFD_WP_ALL))
++	if (WARN_ON_ONCE(cp_flags & (MM_CP_UFFD_WP_ALL | MM_CP_UFFD_RWP_ALL)))
+ 		return 1;
+ 
+ 	ptl = __pud_trans_huge_lock(pudp, vma);
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index a7659b0a1147..c96cfe0871dd 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2221,15 +2221,6 @@ static bool vma_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags,
+ 	    !vma_is_anonymous(vma))
+ 		return false;
+ 
+-	/*
+-	 * RWP uses protnone as an access-tracking marker. PROT_NONE VMAs
+-	 * have vm_page_prot == PAGE_NONE, so RWP resolution can't make a
+-	 * page accessible -- the next access would fault again. Reject up
+-	 * front instead of letting FOLL_FORCE loop on protnone+uffd PTEs.
+-	 */
+-	if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(vma))
+-		return false;
+-
+ 	return ops->can_userfault(vma, vm_flags);
+ }
+ 
+@@ -3758,7 +3749,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_RWP) {
+ 		if (!pgtable_supports_uffd() || VM_UFFD_RWP == VM_NONE)
+ 			goto out;
+-		if (!(ctx->features & UFFD_FEATURE_RWP))
++		if (!(userfaultfd_features(ctx) & UFFD_FEATURE_RWP))
+ 			goto out;
+ 		vm_flags |= VM_UFFD_RWP;
+ 	}
+@@ -3825,6 +3816,17 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
+ 		if (!vma_can_userfault(cur, vm_flags, wp_async))
+ 			goto out_unlock;
+ 
++		/*
++		 * RWP uses protnone as an access-tracking marker. PROT_NONE
++		 * VMAs have vm_page_prot == PAGE_NONE, so RWP resolution
++		 * cannot make a page accessible again. Reject at register
++		 * time only: a VMA that later becomes inaccessible via
++		 * mprotect() must still be unregisterable, so this is not
++		 * part of vma_can_userfault().
++		 */
++		if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(cur))
++			goto out_unlock;
++
+ 		/*
+ 		 * UFFDIO_COPY will fill file holes even without
+ 		 * PROT_WRITE. This check enforces that if this is a
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
