@@ -4,183 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2727C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 14:07:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67E4DC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 14:15:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7DC6B00B6; Fri,  3 Jul 2026 10:07:18 -0400 (EDT)
+	id 4EB1B6B00D4; Fri,  3 Jul 2026 10:15:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CF716B00DA; Fri,  3 Jul 2026 10:07:18 -0400 (EDT)
+	id 49B976B00D7; Fri,  3 Jul 2026 10:15:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BDB16B00E0; Fri,  3 Jul 2026 10:07:18 -0400 (EDT)
+	id 3B0666B00D9; Fri,  3 Jul 2026 10:15:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 519896B00B6
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:07:18 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C91AEA0153
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:07:17 +0000 (UTC)
-X-FDA: 84947642514.26.3B42B1F
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010027.outbound.protection.outlook.com [52.101.85.27])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 005E8C0009
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:07:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FmJFlUM0;
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783087635;
-	b=coVUFWTHI2gN0nELPOZe7BSUU20JZfzwfz4HYYdEd955pnqU3w1wfKX14JJmzO1x+TAZi7
-	nVbg++2G+yt3aWyAOvpVMG0vX8g2JcmUDY7TsU214YfcITqDrJkjGOLeD6TDH20oYQidkB
-	DZqmUUODYft9heW7c+lb2aK1+2Ml2Tw=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783087635;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 08E8B6B00D4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:15:19 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F7BC8B5E5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:15:19 +0000 (UTC)
+X-FDA: 84947662758.25.A970A64
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9DFD78000F
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:15:16 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EiOFvREO;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783088117;
+	b=EMTeR6dGudDqhTsNrmxQ05SV/z3nLAdJfu7I3EbhY/0tAYVLAHF0D60vAiq9xMSM3cdyE3
+	kRHD2PRaSWKKFV16OH6EfTzWZtrVdhLJCjP3s+mOt+35325KKLgTzXhMwxcqg6mHGld9Xa
+	98JamZZZs3HlIBWtAW5DsSLcf4WwdC0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783088117;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J5SsvOiulisatS9mB/z4aC3rLtARcX2CCixaRThcDWQ=;
-	b=LMIwtAUXLIPIS/5PfpQClyDY4UTD1WeGslJ6D2lqphh66H/0lOgNNZO09/rhHv8vVOGOBD
-	I2dzBvPpmpdA7jx7a8VuI5F67EtJkoD8YyncICMxXBn5juRAtZEiaC7GK6LUZUuAnm58xs
-	ylIp79YQ68Maom9jLFPTREXCtyeZcu0=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=FmJFlUM0;
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kSL+ueDbw1PJkWCzegcxFdkLjd+HwZH7YL6Icjep1jQ7A/3BMEuEB+zYOFDLE8jCsm8Hoy4720aaXA4k0gwqRRtNt7W7QyGijnhRWhbt44hwLAqNLgvLmr18lk9Q8SZ+YyO0vRMNsPGxjg73Btr8so9i6m/bY6EwbRn1gzgkcOVi+/jgOWCgfLZOmaGNcWSfsDuKUsS/hkXwq6kI1Ap7ttxf3SUlYur9E2t8xYdExzduXNWtR1xDfIcALqI/HFLvQoh5+oQpv8KLzAI8Vp7SlGgRpEMv6UY6BaFXKAo+QhM8CDLfVHzZ/kLIliMly6aQ6uY4ZZay/N+uBgsx+hJgcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J5SsvOiulisatS9mB/z4aC3rLtARcX2CCixaRThcDWQ=;
- b=tMNKx5tD1sQ62sIzNOfDWo3FWBjJ1lTn5dXsg32QnFMZQRimLtLF4Ck5uEc8bQoIxuzWJJ8p2O6uUyqIZCoUOA7Sa3UwxVIpjAGX1gz3YBjYwTImj4q6b7fHzX7tcsOLrL4KntJocHS2YrBNebWQC/LS3uMMEjI88Lq9CU7JuaBqrPAY1oHXXRkBaTVoUIB0bLQ/kCmoESLo6TZtAUzImpoheVK6SKjGGG6kuTS4paSJFHe2GrleAIlRKeK+8d8pB35HJ3WkjCjgjKfih2mYAzADAqz7QdebqA9dXKbaqLn4uwp5zxK5SRV8RJyW/8jRUzl19bvo944HmhQouveVIQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J5SsvOiulisatS9mB/z4aC3rLtARcX2CCixaRThcDWQ=;
- b=FmJFlUM0SdTkpTNq2jWNyJn/QUxaq4UUie/hGuOMmTRs7BW/9/0aI7AjI8vipKOzHyLV/+9h56791TQwArrwvzHw/0bD6Ra0Xm4y0BILcPrL0piEjq4rgkKSJ/iw6dtcVaMRXhF/x/qpQh7qP8BeYhjkoKgkjzYV62N6ySpHQfQYN0s+IOKbO8O9xnCIo99uOTPHNmVM7cSCvX3QAn8nTrOLvgBxp2RMHueaADrRt/hoeWp5fBbdx2FHrZsoF/AbfHB6c2sFqdgl0ozIDNqIZL67ZmPKpvrfGaDOSOcsEJ4W6PPeKDcfE0slAwV1H4kKWtUYbsgg87GkmlBB6kVDUw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CH3PR12MB8308.namprd12.prod.outlook.com (2603:10b6:610:131::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Fri, 3 Jul
- 2026 14:07:06 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.009; Fri, 3 Jul 2026
- 14:07:06 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 03 Jul 2026 10:07:04 -0400
-Message-Id: <DJOZT6IW4YGT.1U1IO3ERN9NMN@nvidia.com>
-Subject: Re: [PATCH v5 04/18] mm: Split out internal page_alloc.h
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
- <gourry@gourry.net>, "Alexei Starovoitov" <ast@kernel.org>, "Matthew
- Wilcox" <willy@infradead.org>, "Hao Ge" <hao.ge@linux.dev>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-rt-devel@lists.linux.dev>, <derkling@google.com>,
- <reijiw@google.com>, "Yosry Ahmed" <yosry@kernel.org>
-To: "Brendan Jackman" <jackmanb@google.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
- "Johannes Weiner" <hannes@cmpxchg.org>, "Muchun Song"
- <muchun.song@linux.dev>, "Oscar Salvador" <osalvador@suse.de>, "David
- Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
- R. Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>,
- "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
- <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
- <byungchul@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Hao Li" <hao.li@linux.dev>, "Christoph
- Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
- Gushchin" <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
- <20260703-alloc-trylock-v5-4-c87b714e19d3@google.com>
-In-Reply-To: <20260703-alloc-trylock-v5-4-c87b714e19d3@google.com>
-X-ClientProxiedBy: BL1P221CA0040.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:5b5::15) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CH3PR12MB8308:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a4294d2-cee6-4ee0-3610-08ded90c5d4c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|23010399003|366016|4143699003|11063799006|56012099006|22082099003|18002099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	hw0R/6jp8qKkSodU/ltQoeNxKmw97YI9YBHdvsxJx45unYEoQoG9CK6YsPu6lTGRO6Esq6U92Yu7DTc/j3WuOhu+KhMccCwlDWnkv7GSMV3HZyGx3UaSBxh1AXtPvUYuLI2wq33eACKuR+cZhiQLloxOWXQWdC+wr4qb2ojSitXE478nmQKX4U3Bw25kuvnalpRoo+QV/Y1sDPepW9IqiJjzhzWgUxO+F7T2kxKwLx3boGpERchbawAR48QcUyNRgU7EoiP4XdCr2vB58bjUDxKzoWl2xvq/3lmvdA3rKIm72QjIcUEQ99+QLQNFBD2CjFoq5qfz/T7eK6vVtpx2/PrAwJHrxRPIWxtFxZ3bGO1nMO7jn3hn9GirOZCWZ/EkAKw6fJy0jkl0ssygiy2ir4n8k1AGi1mwlFT/h8Osme7OgUG7L0jtqWoUIPXA/Ngj9u95enZyTpd0AMUceSGwTPzV2DnGLjj4vxSGoAX1cvPGrk8mNWybciNPM5gBVXyOdSC00RYJfV/gSHlo95FgvZT+6lgTcfP6g/NThaC8KXJM5FqPqbYD03DVChaKd8SsUbzpZpnIwSnwsFbP+UUdsHEmQKz+nRrFzLz/Dph7pIiIDF0FAt+9uijFEGTn+waAilsLf2zb7mJLNazVVP8SDd6lRVfp0qJLQyIuHFU5yDI8sffT4DqelF2sAZt9Er3BGazMhIQWxM80ASdobHcF0w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(23010399003)(366016)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TThOcVFmVzRDaUk4bUFTQnBVNWJVOW1jMElpM3NDWmJJSnVOUWNQSEhEbHly?=
- =?utf-8?B?NkJFRmNzWE92NTFJYmx3YVRxMlgwVXFVRkVFM09LaU0xc3ltNVQrc2J1Q25B?=
- =?utf-8?B?MW5RNTFmWDhnNWRhSmcyaGU1QTV1QkhIWkRRS01CSTlPYXZSemoyRGZBUUE2?=
- =?utf-8?B?Ky94VkRQWjh6UmlyK01jM3cyYmE3RTZ6elBuQm1Lc3ROSHJlMElLK1dlV0Ja?=
- =?utf-8?B?S0JRaU1yRG1COVVjdGM1UmQyMzBKc2lqWmYyTFVhOXpxak1LVnBtclFMS3hM?=
- =?utf-8?B?b1p0TW9sK1Nqb2pob3JRR3BMNHZjSzZQNEpvQjhzcGNoVXFuNHZpVDRocVhs?=
- =?utf-8?B?R2M5U0RwQVhuUi9GSURwVFkyT1hpVFMvTmZ4MFNIV3BUTnRleGlqY2R4Qkpp?=
- =?utf-8?B?aUFBaE04TmhEQlFFUVFCOFBMM0Z1dVQvbE5tMU1vUUZvUmJSNUVDSjRWc0ZR?=
- =?utf-8?B?Q21CUEg0aVdoTjNvV1ZGb0poZVFic2hIdWtyNmdCdVNiR3UvZWR1WFM4aTA0?=
- =?utf-8?B?Zm1yOFRLNjVTWE1VWTA3b2dYRXhTMitIcDdaRTI3WE1jeThpYTZSRmR2RDkz?=
- =?utf-8?B?V1U0Q2tTQ3JRczd3ejZNaDAyTnlzODd5SHNIK1NLS0MvOUh3RDBXWkF3dzJ4?=
- =?utf-8?B?b3F6Q0VOc3dQcnZaYTRQME1nNWxsVnBNYnlFbk9WeklHZ2pqUkZqUytlbU5R?=
- =?utf-8?B?eUQxYndaSXU2eWJUZVBlYlQxcmVneEdtWXcwdWtXU1FaUEdYQU91TDZ6b0lt?=
- =?utf-8?B?TC9OQ2dLbkp6WTBMYmlCenBtT0NtbWxuL3JjYkV0OURkR24ycE9RYzZKT3hv?=
- =?utf-8?B?S3o4aWNwT0VDOFNnMFJncklHeDE4R3pGOHRzdFlSNCtiaFFYVGJGRmdoNHUw?=
- =?utf-8?B?dW5tRERPR3VOQnZJWGd3UWFHbDVpdlpHV3kxbm55czFQTVBSNFh5OWZWMnZH?=
- =?utf-8?B?cGNPa3VsRXRHeU5PbmxwNnpMaUJET2dlYTdVemlHVGkzSW9YZWhDWVNqZThY?=
- =?utf-8?B?VjVBYXBUQ0s4RnNaRHBpTGpJOWx6ZGRxSG8xZU4rWnFVUjVGTWwxRXcwZU11?=
- =?utf-8?B?TkQ2SHFuZWswRmhIR0FwWU16OTdMUWI5Vzl3MGJrZkROQjF0QThock0yU0RK?=
- =?utf-8?B?V1ZVek1LNWtER0VMc1BXMnBJU3FSTnpOZFM4eXNUaUtsVGt6ZS8rVFhuVTNG?=
- =?utf-8?B?Z3U0OTZUdXlxcm9WT1p5M3R3SFRMbURFL2F6R0hIWjBGNlJxR21MV1FDZUo3?=
- =?utf-8?B?ZHplYllnN21DSTVlbWNUR0xyMy9FSnRLbm83MzdiS2YxKytUNThKSHdOMXU3?=
- =?utf-8?B?MEJCek9nR3VnSERjRmM2dDA3VVdHcmZyeGE1OEFWOS9NRWZEM2hJSnk3eGh0?=
- =?utf-8?B?Y1ByMXJEZ0JEa2c1Lzd2dklRMmluQjd6M1VJMGxwa3Uwb25zRWwxRVVLb1Y1?=
- =?utf-8?B?UmN5elNQemRZMlVTbmhLeEIwQXMzOGt2TlBkSlhzazNtK2kxTmhLcmpnbkQy?=
- =?utf-8?B?eEFHU0VIc3czbXBoNytxMFJ2MW51ZXRaWTBJb05Xa1V0ZmNSZ2h4Y2RLS2ZZ?=
- =?utf-8?B?d1pPRHVkMVdjV21KTVpKZ3MwTkJmeHY3enRHdmdZSDQzMjJOWkdyT0k4Y1Z6?=
- =?utf-8?B?eDFOTm9lNlBnenlrUEw4R1Q4ZW53MWw4UDVTelBxbTdqdDdwLzBVdkNoK1li?=
- =?utf-8?B?cm91L0dtYkJlWVJBNUZSa2VSYzJ5OW9Ocm9lL0tqRVczSDk3emNJU2ZtWWhU?=
- =?utf-8?B?WmYwYnBrQWE1Q1Nuc3lmMHk2dVJBK0h5RmFPdUtZeEZZUUpQWTJkcmcwVkpR?=
- =?utf-8?B?QTRTMjhNb01hUU83ai9WcXlWdHlBanFsYmU2U3Jwd1VXQnNaZkU3SkdJY3pJ?=
- =?utf-8?B?VW5venJoMFYxeGcyc21kK0NlTE5rVWxwMndVVENlNk95V2tVa0lnSi85MGVJ?=
- =?utf-8?B?eS9kb2NUakNNWEhiN0ZrejczcjUrV29ZMXYvNWpkbGlybWhEck1VZExOY3o0?=
- =?utf-8?B?VVRBbGlyZUp0UTRTTWR4NVFvZWQyRVg2NjRJTmQ1NnBCaDlCWXRsNWJhajNK?=
- =?utf-8?B?aysyT0d5VUdZdGJ0YitFRVdmOG1ENDhoY0QvQnZNdUY5TDJibkdnTmZQNWlY?=
- =?utf-8?B?cWEwa3BJZmUwUUV4QmxReXVaT1RQUktRejQrdDhMQU5FYkgxVHhMRXYwTnM0?=
- =?utf-8?B?b2VmQUFSM2tHOTdSVlVnS3RWSE5WbzJmaGM4YisvMnh4ckp5VzBRTFpGSFFo?=
- =?utf-8?B?SHBwZHJaNTNPYkRZYXJjd2xvUDJLb1JPR214QkQvTzkrR3FXK3BKWFhwY0Vy?=
- =?utf-8?Q?Ssu2rRcuHunOD/RVp1?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a4294d2-cee6-4ee0-3610-08ded90c5d4c
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 14:07:06.2663
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5p5KO8PwWyAxsIBqu/yhjjGDyjUWr+ynhsqRo3f0GnuqZF25peofDJIMN4gm4vwi
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8308
-X-Stat-Signature: hxdewft13dajwunogqojfarkntyowb14
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=VVlWcHvzBGVvtRU0HZNkUmHXt1mZuFkEhcfNnKYjfKA=;
+	b=EEYUyy1MG3Ll99rusUsKTchmdJXM0mdce47+nZNyjNVjMhbd54W9MNLnD1u8uBdJZx4jK4
+	NnOznciojFSi7tkWr/SCgcrNhfJBb+wiUjOZcgY+pHbdsG/rEHpFmcmj1A1SHtBZyRL8IQ
+	BygEAkp88zg9dgCjyfg7CQ5Nn9TKdz0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EiOFvREO;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783088116; x=1814624116;
+  h=date:from:to:cc:subject:message-id;
+  bh=mssUN9MRux+VdHWpXmTi+DJe1noOKFImv4q9eLM5sbQ=;
+  b=EiOFvREO8FZSuQOmyUcK5eBnq02kcJYD4T0rMtPWwl6/WCMdLU1ESvg6
+   ZlU25v0Yc5ZiSC2suSzowuLRogLzatbO17SczA6veUZ/s3dH+zq7pKWm1
+   QRLzVkv7SFIpkqb7vwQDGvEvlYeVmnRK3XEwF/13KGHhqbLtUFrGObLFy
+   P98IILODpabsu3GcoTwriCzo6EHVVZc9vY0MTDq+c7FbyYBR4CRLES+Qk
+   XTMTp4lHqlTzjpTlOXEJLcKzADe2+W+ZKST3TNlLCzKOdesRxv1mDgx5R
+   ov3iQ+gR0KoTd0DRV79vCif+Rndw3YYM4l4r0MqSK5WRkHlXvQVeQ0F75
+   Q==;
+X-CSE-ConnectionGUID: tEvMrzHzTg+3voIBa4nXXw==
+X-CSE-MsgGUID: ws8cwH+fTUWbamP9QjVBKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="101263250"
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="101263250"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 07:15:15 -0700
+X-CSE-ConnectionGUID: NvVg7GuqQrquyAbvLICZGw==
+X-CSE-MsgGUID: H10oQFSMQL2oRE56n2HspA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="248675895"
+Received: from igk-lkp-server01.igk.intel.com (HELO e5a8ed462067) ([10.211.93.152])
+  by fmviesa006.fm.intel.com with ESMTP; 03 Jul 2026 07:15:12 -0700
+Received: from kbuild by e5a8ed462067 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wfefe-000000001Wz-3EcE;
+	Fri, 03 Jul 2026 14:15:10 +0000
+Date: Fri, 03 Jul 2026 16:14:58 +0200
+From: kernel test robot <lkp@intel.com>
+To: Wang Yaxin <wang.yaxin@zte.com.cn>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [akpm-mm:mm-nonmm-unstable 43/44] htmldocs:
+ Documentation/accounting/delay-accounting.rst:237: WARNING: Block quote ends
+ without a blank line; unexpected unindent. [docutils]
+Message-ID: <202607031654.P4fsMqo4-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 005E8C0009
-X-HE-Tag: 1783087634-49855
-X-HE-Meta: U2FsdGVkX19TzOBZYvXTfmUcCvvuFGJaL3iA9Vw1NayMWH9u95K5blSMtlIlFIaGvXuIqjjFFrKFOLQidziC3eRDVCmmTOiu88Qh1zzu5mIT2jTl08RsjkRZUfP8UImtSWwUAdkyYTIsCw5S0hFrmaT6Y6x1gI5aOSz9c4EMi7SVe0MwMhVPfWWLgcBvOhq75hU3QUaMAyOdi9Yw0kugHpMnMY5KL3me6BMaWoA/KFS0eMtu6IaDxztIB/ALX8y5QJfkthJ/2+fSfqdL3L1GFw7lZ2FYscEuA1G3Xrf7BfmlfdrIGOl/frZpJl+b3kTxzoeHEPkBbykZu3YANZZseS7XOL/mekPU01ES0NKVI1QK+3v4sDZCcXX1/5rr3fXImRYdP495ROKNq1jbwKHt//AyseUp8zFZX/rZ2cmHt7SoJSWvzfWuNbJywzvY16wwlG7+u71kfEFM6QnZn9cdlg8Te5HaSZ+ql712J4Kynmc8AZ+D1o22BoZPWEo/CXi7dAzMS8LO3R4Lzwj+iyUhrSuuY0sAGFWStC5vRnlp8gwhY3q0+xznf4/1yT1E0k/FUgEPWVDlXBRjd7U8neNj791gjJbRoNTHrp/8rZbKZgZGMLwT+jGo0ox6uh6+wEhWDsOfiW3p1xsRKkexfhZyz6Flcb3Td4jR2z6oL3apb17DnQG9PyZAGeWsZOcFyPKfoqGwH7Xp2pd4u/Q8tewZE+7SZ9dMZEvjmBRmZ+l3oramX9mvOHEFUJxG8LNM/FvWBmwkHDwxci8zXc3GbSvOb6JKPUP+bnrWSwTCzxw40GR2AKOl60X5vx9tMSd7L2AAHrMnOhMY5lJHrXCIQcAuH6QTw3X8wdci+P4zL/rG8Yi0N82+RvPPiZUUKSYzO6jm0soEXwok8hacZWiL5YubUpTe6hnNSZbKtakV4sJV2m/DQz7h76meRmXwva/GG+GSkf96QwMpjD70xzADQrH
- lJiFOHOd
- XAdZN1pKi2lT78awuDi1jp13nC+lMtXWMEq/0msEOmPNCjxKugJLYHVcgiofqr0YueZkQ4KAYC6ydM+50fB6420XdOPAkoMFNIdE0qCIa7M1ZwnyblUrrvUrjQ7JTWR7R+X/iwAs7hm3fEg2pwD/2F14Ebu4zOhHRXKzPAyrKWZMM4F37fZAjIgfG8KbaeKNJmzZMsL+G+gIRsXg6IL2CqApvK70e9dkYRM2KXVV3XHDQ2+jXvYJbQN3YS7WFbUcBMmKNwsaymO9qmop+bAIQ99Jw/w8AQ1am6V54qJqOTom2OVo7LWi/nOPb7XMmJrbZrkSwqr6TSl/O+3DO7/+KqfborYXy5RTkowaPw8wWrzTdjV8D5Ld0FiRhLDV0Ev/Q2zGxMNXu6AOORONoVnvLWjsq9ef9qw0TYPOVUvOBk0F0V514J8Glrg/ujEEQzufjvfYz7AsJwk7AWlAPj9whi4zJdC3kz+Zl76avLgCM57K3NMipHxFNWC0Na8MUp9C1eYi2hsk0N8lZL3MuqdtbHEEDSuT0357+zXRA6jm4WjA7HLth5Wf5o5EzzElrTB51C1Fb
+X-Stat-Signature: i7tjzzaqe8xbn1z7urk931mnr9rxwab5
+X-Rspamd-Queue-Id: 9DFD78000F
+X-HE-Tag: 1783088116-540498
+X-HE-Meta: U2FsdGVkX1+O62GDaB1fTv+SdLKGUT+UiHfB0keTBqfp8LxN7rVN0asr5Uiw5P5T/Vkpt6zYPHO/hNe4zBXhFoC/2VIgms9R//yz/nutw7BscFodMG4qG5/HhFBgYq/yyMrY0XwpQZtjz25WQTcK2glqamEJA1dlve/pU+jATRd+OoxftHh36laVkbVA2oYtTbK36npawTQ6wE17QTjr/dv/gLr8+HOYx3XpPcLwx14RLVNd/rJu4nxmBne8rwkQ288N3RUO93IGYc+ZJ5qSySMT0Ndg4Icxyn2dz4vAiPb3bprfFOHsGvs/4TXMisvxOv0pAnb2hkwH8F+W2a0+lcjnuBNKYUFMMQATuoo9VjmT1Z7tcV+q36aGRJBc3+qmIWVooK2iGh1hpwnxB40ETc29rMB5V9EaoDeDv/sBTQt97eMySW0UDeH4RhnCO/Vt9iNbZk5TehpOVJN6+ptH88cai+RfLby3xMrMwWPgwEICV58DqHaI1mQP2OXknTRwnx7bGlqcCDcGh2bcWcgQb3gTltpcPI3QfNDjaHgxNLvDHyBzHRckVc3AvefV/o0UEVSTSShlF19Ngsol/IZL3SszgvSr1iFvQR4XVKed53GlUz2+Ranic1GtlXEV5m+Ci9dTgYA/53mq/gCPvqPVl1uc2m6dbsCKDXdsNzA160IfhCHRF6EPS3Arb0go0enIubrqtlsO8Kvx5KyzvZTtheTYuHk9OdvE1efvjUDDFnUQFME9q1HvAHzI7mkiB+kMOu4vkMBywPCV7Bz6ADwOyN/m9pILavmZGEdUtzD0+/h9wfEMM+An3Sfia+vvQd5fPRll8mWNAxCMp+zvRz22vwXFZxhSOyK7qjWgHTia+7H/w+Vj+Oa/1CnJgEdZc11YKXsE7eP4AXGhAF7SAN5VHeifF3INKtEmkt/rzZkHQVduN1jdeycfrIvmhD3eaya7kPkO7MtRusXyTjDLWSL
+ yp+2EGOk
+ j3gsLGrRftV6FfszypVqTBLH9emuIugnkKxML7s+Qt/I/nRTXuR67XpQnTLX+NO+twh20RbjAt4WMk/TBV730QatET8w/62+EHkHqqqbd8tGjxsg1v0PeaU2JKSYcGkpGzeZkbZgqw9PguZ7VP6mCH2XWioMx+rmy8JCVXZUgB655V+aHgbOZtyY4qtwnHAmuqBHjXKqh/G+JrAzZK7hyuoYlCRdTbCmHML5AY7imDKNAJ7gFBGVClub6JstJAFaIyVoY2b2vugmJpQWtU7tEqgCYx4ygJzWOzPdS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,56 +104,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Jul 3, 2026 at 8:31 AM EDT, Brendan Jackman wrote:
-> internal.h is a bit bloated, seems like time for a page_alloc.h.
->
-> Where it wasn't obvious, the heuristic for deciding what goes into this
-> new header was "does it support/correspond to a definition in
-> mm/page_alloc.c?"
->
-> Only need to include it from ~20 .c files out of ~150 so this does seem
-> like a genuine reduction in scopes, which is nice. And there's no
-> circular internal.h<->page_alloc.h dependency, so it seems worthwhile to
-> split this up before that inevitably emerges!
->
-> Suggested-by: "David Hildenbrand (Arm)" <david@kernel.org>
-> Link: https://lore.kernel.org/all/41e92bab-6882-401a-8de9-154adbdcfb36@ke=
-rnel.org/
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
->  MAINTAINERS          |   1 +
->  mm/compaction.c      |   1 +
->  mm/hugetlb.c         |   1 +
->  mm/internal.h        | 252 ---------------------------------------------=
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+head:   604ad02caddab12905643d5191b4a301d87033ef
+commit: 7f18b4ec38272a00b16cb2995ebb06281e0f26d0 [43/44] delaytop: sort by max delay to highlight top latency processes
+compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
+docutils: docutils (Docutils 0.21.2, Python 3.13.5, on linux)
+reproduce: (https://download.01.org/0day-ci/archive/20260703/202607031654.P4fsMqo4-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607031654.P4fsMqo4-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   [WARNING] /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/os_mode_index is defined 2 times: ./Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:373; ./Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:243
+   [WARNING] /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/touchpad/enabled is defined 2 times: ./Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:636; ./Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:252
+   [WARNING] /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/touchpad/enabled_index is defined 2 times: ./Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:645; ./Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:261
+   Using alabaster theme
+   Documentation/accounting/delay-accounting.rst:236: ERROR: Unexpected indentation. [docutils]
+>> Documentation/accounting/delay-accounting.rst:237: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
+   Documentation/accounting/delay-accounting.rst:237: ERROR: Unexpected section title or transition.
 --
->  mm/khugepaged.c      |   1 +
->  mm/kmsan/init.c      |   2 +-
->  mm/memory-failure.c  |   1 +
->  mm/memory_hotplug.c  |   1 +
->  mm/mempolicy.c       |   1 +
->  mm/migrate.c         |   1 +
->  mm/mm_init.c         |   1 +
->  mm/page_alloc.c      |   1 +
->  mm/page_alloc.h      | 269 +++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  mm/page_frag_cache.c |   2 +-
->  mm/page_isolation.c  |   1 +
->  mm/page_owner.c      |   2 +-
->  mm/page_reporting.c  |   1 +
->  mm/show_mem.c        |   1 +
->  mm/shuffle.c         |   1 +
->  mm/slub.c            |   1 +
->  mm/swap.c            |   1 +
->  mm/vmscan.c          |   1 +
->  22 files changed, 289 insertions(+), 255 deletions(-)
->
-Thank you for the cleanup.
+   Documentation/accounting/delay-accounting.rst:239: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
+   Documentation/accounting/delay-accounting.rst:243: ERROR: Unexpected indentation. [docutils]
+   Documentation/accounting/delay-accounting.rst:244: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
+   Documentation/accounting/delay-accounting.rst:246: ERROR: Unexpected indentation. [docutils]
+   Documentation/accounting/delay-accounting.rst:247: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
+>> Documentation/accounting/delay-accounting.rst:249: WARNING: Definition list ends without a blank line; unexpected unindent. [docutils]
+   Documentation/accounting/delay-accounting.rst:246: ERROR: Unknown target name: "pool_workqueue". [docutils]
+   WARNING: /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/os_mode is defined 2 times: Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:364; Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:234
+   WARNING: /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/os_mode_index is defined 2 times: Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:373; Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:243
+   WARNING: /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/touchpad/enabled is defined 2 times: Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:636; Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:252
+   WARNING: /sys/bus/usb/devices/<busnum>-<devnum>:<config num>.<interface num>/<hid-bus>:<vendor-id>:<product-id>.<num>/touchpad/enabled_index is defined 2 times: Documentation/ABI/testing/sysfs-driver-hid-lenovo-go:645; Documentation/ABI/testing/sysfs-driver-hid-lenovo-go-s:261
 
-Acked-by: Zi Yan <ziy@nvidia.com>
 
---=20
-Best Regards,
-Yan, Zi
+vim +237 Documentation/accounting/delay-accounting.rst
 
+   224	
+   225		bash# ./delaytop -t cpu
+   226		System Pressure Information: (avg10/avg60/avg300/total)
+   227		CPU some:       0.4%/   0.2%/   0.1%/     220(ms)
+   228		CPU full:       0.0%/   0.0%/   0.0%/       0(ms)
+   229		Memory full:    0.0%/   0.0%/   0.0%/       0(ms)
+   230		Memory some:    0.0%/   0.0%/   0.0%/       0(ms)
+   231		IO full:        0.0%/   0.0%/   0.0%/      12(ms)
+   232		IO some:        0.0%/   0.0%/   0.0%/      13(ms)
+   233		IRQ full:       0.0%/   0.0%/   0.0%/       0(ms)
+   234		[q]quit
+   235		Top 20 processes (sorted by cpu MAX delay, largest first):
+   236		     PID      TGID  COMMAND          AVG(ms)  MAX(ms)   MAX_TIMESTAMP
+ > 237		------------------------------------------------------------------------
+   238		       9         9  kworker/0:0-eve   0.59   16.87  2026-05-27T13:32:39
+ > 239		      30        30  kworker/2:0H-kb   2.87   11.36  2026-05-27T13:32:36
+   240		      27        27  migration/2       1.05    9.51  2026-05-27T13:32:37
+   241		      50        50  kworker/2:1-eve   0.50    9.13  2026-05-27T13:32:37
+   242		      15        15  rcu_preempt       0.11    8.98  2026-05-27T13:32:37
+   243		       1         1  init              0.17    7.12  2026-05-27T13:32:38
+   244		      67        67  scsi_eh_0         1.20    4.23  2026-05-27T13:32:37
+   245		      23        23  ksoftirqd/1       1.12    3.77  2026-05-27T13:32:36
+   246		       3         3  pool_workqueue_   0.72    3.55  2026-05-27T13:32:38
+   247		      62        62  kworker/u20:2-a   0.49    3.03  2026-05-27T13:32:37
+   248		       2         2  kthreadd          0.18    2.82  2026-05-27T13:32:37
+ > 249		      11        11  kworker/0:1       1.42    2.76  2026-05-27T13:32:36
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
