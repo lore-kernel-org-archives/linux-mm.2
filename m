@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BB40C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:17:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E970C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 00:21:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66A4D6B00A8; Thu,  2 Jul 2026 20:40:26 -0400 (EDT)
+	id 6817B6B00AD; Thu,  2 Jul 2026 20:21:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61A9B6B00AD; Thu,  2 Jul 2026 20:40:26 -0400 (EDT)
+	id 6592E6B00B5; Thu,  2 Jul 2026 20:21:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 531126B00B4; Thu,  2 Jul 2026 20:40:26 -0400 (EDT)
+	id 595E86B00B6; Thu,  2 Jul 2026 20:21:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EA3A6B00A8
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:40:26 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EA1031678C9
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:17:33 +0000 (UTC)
-X-FDA: 84944493186.04.3AA86E5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C6A26B00AD
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 20:21:25 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01F688D58D
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:12:39 +0000 (UTC)
+X-FDA: 84945539280.20.1A86DC6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 501FD40005
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 17:17:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LvsKJecz;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 14544C0004
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:12:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Tb50A/dS";
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783012652;
-	b=YaEKDx9CF8DMPxiRfMv/tWTD6X+HuSpqcoWZ2eYtZby6JS8ffe0BV8S/MTW/NcydSqXT9F
-	RDTUIeNiRaFUyYFq9GzJ2rbQ9ywk9LrqfIO0wVZeD3GKfu5KhZDHl6K7FdacZ7mXBrE6GZ
-	wCe7aerXcLYsZIOL8rf1M43euEuJoBE=
+	t=1783037558;
+	b=NU9QXTP/mE0Mz/wRYDGVI4JMufV3IVITBeaqguitr9y+ZuRjDR8iiuTAmIxjFTvFSIsQnA
+	t+CAnd4tgKGmW4LTG5F5zSqUOv7tKZQQHMnWsiwqfBVtzpK4UVpdDSmOnP+l9xkZhI7kZK
+	ONSfBX4jRKnTKfij/DYiTM30cwx12cs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783012652;
+	s=arc-20220608; t=1783037558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PtgVIn45F2jyWQFHDav9RTyiur9MFQyJ2Q0LK1nrhNk=;
-	b=rlrA8gxi7ey1w/wgISanIvyqxSr7TowDxk5xdOe8LflXLtJgGqIbcm+8tHmz7COh4p3cow
-	/IDWzJYk+S1peHP1D3/FjSutqgvoUZSZki/X3ndOfQllwOU089faqblGbf1ZhK0PIaY+MN
-	M4ixVySGPcqSRPfezGJzPGW27iwjBoE=
+	bh=LN+VlUU64xomiYlQ6F7UHxeiqMWSdTj4VlmHCeuMCOU=;
+	b=Itx6dQTur8+FlgfzqqeeTlDkGOtnNvUpddbhxUaxqoLCh5ev1ap2A+c80I/dX3dOg1yMHG
+	3uEiOAsgL2fX9kuRgY/3zV1CFy6W7UTzIU/YzqVcvgU5vaHqGEtfH9ky7fpp7+Cl83CmlX
+	86hsgZQKlOOQNxD39x3JiXIgGTykKdk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LvsKJecz;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Tb50A/dS";
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7746C43CF3;
-	Thu,  2 Jul 2026 17:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6D81F00A3A;
-	Thu,  2 Jul 2026 17:17:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2D24F439D6
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:12:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 111A31F00A3A
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 00:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783012651;
-	bh=PtgVIn45F2jyWQFHDav9RTyiur9MFQyJ2Q0LK1nrhNk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LvsKJeczZhsyMy2+rheXejzfiSf/2HuZf6rkTeBbhXrQ7c7hwRZlTqdkXq7JF3m0g
-	 tGCHD58OqvlC5nvpswa/fEJjcQx+ngi+RaBqPzMbPeE7z0vL0YFQ9D5vKJwWHql1VS
-	 HIZ3QGTnryNhYGcAVGuJiUeZXgOn7dqydv6nBbEBQUUaszEayYxPO6cijTtzeb/Cp1
-	 jzKTi9INBZXSnFNseeOLDbtMWD6RHnoWMIavBtmOzKELxCRuHynvzz63E3PJH1W/Al
-	 mD2TfDvHmBrrhUnFloVE13qEFhDwjStsA9rcYnVc+HBHyxmMGpVyv6tDoT7WGTHMI0
-	 lV2sXmu61o2Yg==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 3/3] mm/damon/sysfs-schemes: set probe hits as pseudo moving sums
-Date: Thu,  2 Jul 2026 10:17:11 -0700
-Message-ID: <20260702171714.88278-4-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260702171714.88278-1-sj@kernel.org>
-References: <20260702171714.88278-1-sj@kernel.org>
+	s=k20260515; t=1783037555;
+	bh=LN+VlUU64xomiYlQ6F7UHxeiqMWSdTj4VlmHCeuMCOU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Tb50A/dSC/k2pIa1weRNyRhz4UqXgCqbnRAJFYl6rFeM03LYZLcfVJ7qoJ4A/2MG2
+	 Rr1en5rhFj93/iqH731LtZb5Vj6kSfVMxfW73fECjIpKwhICPfuHfGgTEu8iQUg9yE
+	 H+ZkjumjdIc+bHeTQRwHD9hYLlNwUlKmCGD/vRRYz1GxjeaW15UJkIElIghCAJ2jXt
+	 plptmVfxs569/tWn/9gQBGO9p81YKLpTDRNPI3bJRGd37DfWBg1BsK8/CpxOn8Hthc
+	 pCmjIAWE+YSYpxquS7SQ1e9xK1YZjqnHBlSBenMY7MHbbxp/eSWft6MI0mw6l2pXQk
+	 d456cNpjaCVGA==
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8ee88fce572so25194866d6.1
+        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 17:12:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrkAFbnLWYhhwzJMipB9nIyr73ar3mi7WxHVSvaiSSp5EKEJwo635pB+EZo/7NYLQC0N994vgW30A==@kvack.org
+X-Gm-Message-State: AOJu0Yyz0tqfJO0t5/MIQBC5+Tj4OCm8HslIX1IQ+A06xQPGdDTr7oiS
+	+N8DUN73mJYPnS6jlR3NhLZVCMAn5GgnpqpiI6CXDgr6POR/xxqIuzyd2wOpdb4Kmo0L8m8ibQD
+	iRQCARceKDwlhOCj0+MsKGCmAt77OI+k=
+X-Received: by 2002:a05:6214:43c3:b0:8ee:ab07:c79a with SMTP id
+ 6a1803df08f44-8f4236257abmr99737436d6.33.1783037554547; Thu, 02 Jul 2026
+ 17:12:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260702140257.44780-1-lance.yang@linux.dev>
+In-Reply-To: <20260702140257.44780-1-lance.yang@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 3 Jul 2026 08:12:23 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wkSrA9oRPFkWkZbym-6wK5Z-eRZWRLNrKgmO0adpWudA@mail.gmail.com>
+X-Gm-Features: AVVi8CeWx1IRN45D52TTDictU96YFaU3t5miuYraMM_UyrWA1zuxQ9nndFocYdE
+Message-ID: <CAGsJ_4wkSrA9oRPFkWkZbym-6wK5Z-eRZWRLNrKgmO0adpWudA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] MAINTAINERS: add Usama as a THP reviewer
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: pm4yn8cordqbmgypgxobg3jntsaiery9
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 501FD40005
-X-Stat-Signature: b179kxo898citgy63riqeppkea4epwyy
-X-HE-Tag: 1783012652-153049
-X-HE-Meta: U2FsdGVkX18DRJkdoTPI8XUKhSP/eQSkEHYd0bWDwEtJzJ9nJg0yxWj9RidxT4vHdlrdohzcpKLXEV9qUqJVZGRYwi6AkD8l91VgdRyZZQiAcFuEVQLXuE/nMDNsFfWQtMIkNLfD6ETmtkyZDUV9rS+u8I/WFiv79wtQtg2zN0TqlJ3C/PuESzxMTPl1UFiFt65Z9UMmKz8rLglCGgEGH8xF/7Z0ymL7SY+Y1am+RZfmykqs2pxTCQ3ek2n5Jm0oEVzLjK/QcXb56+CUwActIEv63SmgCjupV/mhkwBoJV5RJaahm/hIHiTXg9kmp2CZEYKQxBMQZ9vYuc5lAI35rANhQkg0MGZXGsehzjw+1DZRCOBK3qC8e6asJnmdsMs+3YII8rC36dHPwHczeUTq5iZ9iCiTgjicl5QaZIiIvsgKifV20v9/2E0sF/c0Ssri1alDum2MRT4GXCG2Xu9KKE1+pwF0jGBtwyhagzCbrAuYzT9Q+4ZTTZg1EXc1qIuZdXNde/JPnmGubY7+nkgd5bjwufxcrVlIRhqBhFz6SkYwLVIRvTpy6U8Omvgg96MRfjz4/hCD71gJLQtKTR44pi5G7jXaT/Kqwc8xcK24kAeKpRxViyuSscnvYLBvNr7AnAw/X6lmmKCnimMQwll/9gjfIkGLd6zYUZJwBpS9tXYdHbAgj0NwBxHEKPv0hwPF43ZZC0GkGaAermYl0dEdOaT6YfBo62cFMOooI/3y7OT4OiKSyLbFK54vNmLgm9ZAODVcuD+Kf1u1UaLYnlWgzq+RfQ1uTwmlJ2GHqZOpaJOE392gCPOt5pk+vWRFAqbg9IDDaOXUuhEr7wCRFb8II6LtFRVVcyox59Wb47Cn6cJ4XMyvUwkLRF0Mi6IlD16wmwruFTE2RdrLCgfGuj87x20QKJyngDs/FtLFJsnSfB45SzrJ2av8ZpIFT3BbjOmQYAaxusBHXNnCDi7daeX
- 16rg4A9R
- +p8gK9kqXZTOY40D/3ezymwbmGYOHJxc1NDfL/RGD72SEGnTbfbTVffqdXp8GaMhZzgmULNcw0qUH7N9u/b3pofDnlfAqBRC1ELLmFnpRM+aORpS1OJx+Gqbh8r6aVR0PEr/LVgZfwpT+ZNhXt50FZhLYsj11kiBC2LwttmEfDf3/Kg564Kneox/0cEbtHq9GS1u17QBmmULrjhw+81Qxroxwpvi9gmwp0aJz9EyUL28ErPw=
+X-Rspamd-Queue-Id: 14544C0004
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1783037557-830917
+X-HE-Meta: U2FsdGVkX19MXx9eN/VqakTTLGwK5FWuVU9QJxoSNnceesejSAQ9pqCV1S4dWJqqJb6Z5Ulx1K2BWzjRXJKBVMr9XdV84GgshWQncB2XqXMTSW8gM9x6N0RZ6YXBgsH3qqt23cZm6EvIpRS/0CKhqIgnZrHDONwQhzOu6pZjLPhQj80hQiuHj8gazTHfsrOYJJvpCeoEcymN0+E7sTCBQKJDHpdyUDJkDYgfjpoSH9xUKHkPHcCG47MLn9eHYmSMuQmvEswr9JGofIUzT+iw3eeNHdF5HVop69bIR8T9q5ufj6vCtHYAmiTKdiWCvNL/fJxEqsIRJ1znsROY+pbFqozPOb5kUYkKDAG/v2DFGQhRh/6E1M7Oa2Kn+xn7+x1cj9LyaW8PoAaZ2gYoNYu8rG+uqoLcX0vGET3G5flHh9cB9MHiPlyoc9Pl9EPmMjlSktxqleRjG+NSKWohrFDQr15sdQXNvIlEPf2vmEIJuVRtZA2TR7XLABDc9f3J6jh+/kt7FvS2Qu6BK/F5PuiakEPi9wlyul1XVCbjkXJCHACPMPkqkOhFk4dGbSur/pjMddjT+YOPbm472eDEBS2jpq/PMCEtyFPJ3Pz8JC/mrHo2FwGaBsG14J41mFzu8wd0w6q0J9IjKbFGi3eL1i+4/meKNKhATPGQrdqX2iaW6GFXf13703bZSEMMaAmeB6+qQFtWQ/oxG+YlC9xCFyQzF9NWILZFvGu1kU1qtrWfPFNYIj13hqM91LeeW7JvlXmvjzeJ0vgaPnIjlOouOzcFIXG91G8Dy5FfQjTmrgsKqhtMsZ3z/YdJ8XbChJW3DIsX1xm1+uPubb9kS5CLWBeE6D/Hc2nXwMiLm7IAY2fksKnWLvhtbj8IOWIIGQbGhcKeTEOZeIyzW5SeihGIQyA3c4OjjHEq3uXGOPnHJ1ed8rLM7v4At/swSpTxAnQbefkHJN2w36pzPvk5uaP8Jpu
+ NZpkbrSg
+ kdvrZfdOTIeolGP1rs63OFFUkGFApQunSRZnIU12+g9Hg33DBLU7Nixq8tIvsrfEMactyl/wTrFrmMsjFu819Wow4gkb/57MLbomOKLlKJRMyOZ9kDwEUqsZ1QMsarpYQ6s996or0or1GkAK6/fT5vahXSV3zfDjN2MJuc+yKYgjVP8tIAdsCuUJXsVXM25M9BHiqqKbojYiPNtDtkhZYyGTGahFS3P/h3lPRYPFC4ejdvLUGqJoME6LuPwt2RW+e/yhM2SbeWZSijTs2dvg+gHobhW3ff11haQLT/7VZ25+xHJVynDidYhc9+pjxiyglmYTePM+i8o9+nal+ejpd73tncg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,32 +104,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON sysfs interface exposes damon_region->probe_hits via probe hit
-files.  Because the counters are completed only at the end of the
-aggregation interval, users can show incomplete values if they requested
-the file content update (update_schemes_tried_regions command) in the
-middle of an aggregation interval.  Set the value as the pseudo moving
-sum value of the counter, similar to that for nr_accesses.
+On Thu, Jul 2, 2026 at 10:03=E2=80=AFPM Lance Yang <lance.yang@linux.dev> w=
+rote:
+>
+> From: Lance Yang <lance.yang@linux.dev>
+>
+> Usama has been active around THP, really enjoys working on THPs, and trie=
+s
+> to review all the patches that come in.
+>
+> Let's invite him to the THP party as a reviewer to help with the ongoing
+> THP review load.
+>
+> Signed-off-by: Lance Yang <lance.yang@linux.dev>
+> ---
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs-schemes.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index dbf2b0515d582..32f495a96b17a 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -110,7 +110,8 @@ static int damos_sysfs_probes_add_dirs(struct damos_sysfs_probes *probes,
- 		struct damos_sysfs_probe *sys_probe;
- 		int err;
- 
--		sys_probe = damos_sysfs_probe_alloc(region->probe_hits[i]);
-+		sys_probe = damos_sysfs_probe_alloc(
-+				damon_probe_hits_mvsum(i, region, ctx));
- 		if (!sys_probe) {
- 			damos_sysfs_probes_rm_dirs(probes);
- 			return -ENOMEM;
--- 
-2.47.3
+Acked-by: Barry Song <baohua@kernel.org>
 
