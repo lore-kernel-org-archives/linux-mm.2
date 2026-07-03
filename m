@@ -4,100 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 127E2C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 21:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE647C43602
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 21:04:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 015A76B00B7; Fri,  3 Jul 2026 17:02:35 -0400 (EDT)
+	id 632BC6B00B9; Fri,  3 Jul 2026 17:03:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F08E36B00B8; Fri,  3 Jul 2026 17:02:34 -0400 (EDT)
+	id 5E3A16B00BA; Fri,  3 Jul 2026 17:03:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF71D6B00B9; Fri,  3 Jul 2026 17:02:34 -0400 (EDT)
+	id 4AE986B00BB; Fri,  3 Jul 2026 17:03:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B45CB6B00B7
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:02:34 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 43E1D1C1CB8
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 21:02:34 +0000 (UTC)
-X-FDA: 84948689028.20.2C0E6B3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BE8C04000B
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 21:02:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QxG157Of;
-	spf=pass (imf01.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 178916B00B9
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:03:59 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7C4A8402BD
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 21:03:58 +0000 (UTC)
+X-FDA: 84948692556.23.EA3CFDA
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 53B2620005
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 21:03:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2026062701 header.b=XsI115ZB;
+	spf=pass (imf13.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783112552;
-	b=36KaYcoWNOX1qLjgpA85sOflI1kGiU916k2RWkGUfG/hMK3faW5njN67FbYiVVc39JLJus
-	ywWZu/NMPCHphxLQH8eYmLASdn1iP2Nm7LMDGfx1rwDuN7p55hKolRIyqKd65ZoeIxfMFu
-	xjUWTY0PiwbcSOyJKFzT3WzTx5qsmk0=
+	t=1783112636;
+	b=D/s9LtAVz/og9XezXTKp41ucFmIJY5v3QH6oLcLtpOdt4CxKVjwd3H0FGr44vte+p9UV5J
+	ykVjQ7dGCKgkrE8RgByDzMY4fQRqCOlDykOo2e0gUVdbj3GkmPb4rzF5ynndR5pucwl/dF
+	9ADkidCqFauxKlAhd/THciMaceEUSPs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783112552;
+	s=arc-20220608; t=1783112636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kxy/nHrA/YPl3oQA1s1YUJFp/UiroxEca2CIOkGyN+4=;
-	b=1DBGJ67Oe7p69xCH/5WTDuQv5LePX26KhEfa5PoAZLXiSTRbgQwk87iJ3l2hZY0DAUA6o6
-	UlC58sB6sc/gCRHww+aHNdknVmRHSmwOtN2L38jpTdH8DeKYgIOPa0GKiEcuVEMR/JmmPJ
-	S3C0J3xDxR5AvWxKLynL48hklQ8lKGI=
+	bh=GmRpAk0oLfd0gWfVh+rqnEOK9BfphxBIPqfUy4WToJg=;
+	b=UHgXz8cMk4hKPkRwk7268mwNCNVPOa0h9HrLgTGUI4J+Sj29TX8T4sO26RzbLF9PedBkE1
+	ZUyGJn2JFJkc0EA8h1AenaY4hOmk71RtTOcm3sTHV0zZEnogmhkGQalt5XV5njIlkA4XBm
+	WDp6tqyHOVxB3wt62P1VRKQBjDWQQxE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QxG157Of;
-	spf=pass (imf01.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7FED1418BC;
-	Fri,  3 Jul 2026 21:02:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E9A1F000E9;
-	Fri,  3 Jul 2026 21:02:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783112551;
-	bh=Kxy/nHrA/YPl3oQA1s1YUJFp/UiroxEca2CIOkGyN+4=;
-	h=From:To:Subject:In-Reply-To:References:Date;
-	b=QxG157Of+hFM+LFQ7BvmTo4/2xtWWbjNv088utFW0+XMcajzFhzht7bVw+dS/5+ve
-	 z13t+B9J2d3OEuDdefTJaMFUi/E8wR9R4/Gm8FumDxvtidM05Sl+GmAf2UF3yFReVv
-	 mqr0Uto/z7L5q4vJJuYvvkeRGjFR+vVDM1RsyJd1bHmq1AjopoNWuiUQKDN+DOiMd5
-	 UKtcLljh6CArSl8nMs/YrmJNWbVz3y0ScJwJjIVzXckAgbDblGcbOkJB3HG6JTvDY7
-	 ze5vM6LRITBpSbB+6er3+uBCHXU5LgTycppqNNQ6CQSegRpkLv+Lmifi7rpWsij9EC
-	 tLM3kGlume1GQ==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Yunhui Cui <cuiyunhui@bytedance.com>, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
- dennis@kernel.org, tj@kernel.org, cl@gentwo.org, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
- eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, bjorn@kernel.org,
- pulehui@huawei.com, puranjay@kernel.org, thuth@redhat.com,
- ajones@ventanamicro.com, ben.dooks@codethink.co.uk,
- rkrcmar@ventanamicro.com, cuiyunhui@bytedance.com,
- samuel.holland@sifive.com, zong.li@sifive.com, conor.dooley@microchip.com,
- debug@rivosinc.com, seanwascoding@gmail.com, andybnac@gmail.com,
- menglong8.dong@gmail.com, cyrilbur@tenstorrent.com,
- wangruikang@iscas.ac.cn, atishp@rivosinc.com, apatel@ventanamicro.com,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, bpf@vger.kernel.org, arnd@arndb.de, nathan@kernel.org,
- nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com,
- qingfang.deng@siflower.com.cn, linux-arch@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH v8 3/3] riscv: store percpu offset into thread_info
-In-Reply-To: <20260703122832.15984-4-cuiyunhui@bytedance.com>
-References: <20260703122832.15984-1-cuiyunhui@bytedance.com>
- <20260703122832.15984-4-cuiyunhui@bytedance.com>
-Date: Fri, 03 Jul 2026 23:02:28 +0200
-Message-ID: <87bjcnlrbv.ffs@fw13>
+	imf13.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2026062701 header.b=XsI115ZB;
+	spf=pass (imf13.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 663L1ZSA3634717
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Fri, 3 Jul 2026 14:01:35 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 663L1ZSA3634717
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026062701; t=1783112500;
+	bh=GmRpAk0oLfd0gWfVh+rqnEOK9BfphxBIPqfUy4WToJg=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=XsI115ZBOQE6RF8kLr3qg2nWr/ZTSr4Cc85qgkCOplrXGEthFkxyO4lr4Oxope3Ei
+	 uXNwCi3aZ7FCtu+IMJnAqz2+ucRqWMj1Z7USJtc8sJ3JeZ97gpLik9L3v7EKJiITZs
+	 v3dorB7yOn0T5r2CkG54hpyoXlryh4wtyjAKA2DelYGyZEF7zAgS971DjfDngm3ESi
+	 xNG5a833nv7cyD8PK/+FW1vBKez1uSFK+Mw4JZVnFQTsSNU/45Xgc7/odbqex1xmxx
+	 hXA4rZMcbl0HR+NkDB+kp5lErI+aTQzy/C6IBW2f20LsUByG25W5uHpF7doGhQ6iHG
+	 wsGBsVIphvsfg==
+Date: Fri, 03 Jul 2026 14:01:29 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Thomas Gleixner <tglx@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>,
+        =?ISO-8859-1?Q?Michal_Such=E1nek?= <msuchanek@suse.de>,
+        Mark Rutland <mark.rutland@arm.com>
+CC: Jinjie Ruan <ruanjinjie@huawei.com>, oleg@redhat.com,
+        richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com,
+        linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+        kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org,
+        kernel@xen0n.name, geert@linux-m68k.org, tsbogend@alpha.franken.de,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        glaubitz@physik.fu-berlin.de, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        luto@kernel.org, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        peterz@infradead.org, wad@chromium.org, thuth@redhat.com,
+        ada.coupriediaz@arm.com, linusw@kernel.org, yeoreum.yun@arm.com,
+        song@kernel.org, james.morse@arm.com, anshuman.khandual@arm.com,
+        broonie@kernel.org, liqiang01@kylinos.cn, pengcan@kylinos.cn,
+        ryan.roberts@arm.com, yangtiezhu@loongson.cn, sshegde@linux.ibm.com,
+        mchauras@linux.ibm.com, austin.kim@lge.com, jchrist@linux.ibm.com,
+        arnd@arndb.de, thomas.weissschuh@linutronix.de, sohil.mehta@intel.com,
+        andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mm@kvack.org, linux-csky@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-um@lists.infradead.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v16_01/18=5D_seccomp=3A_Convert?=
+ =?US-ASCII?Q?_=5F=5Fsecure=5Fcomputing=28=29_to_return_boolean?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <87echjlrs4.ffs@fw13>
+References: <20260629130616.642022-1-ruanjinjie@huawei.com> <20260629130616.642022-2-ruanjinjie@huawei.com> <akdp6GAu77-ipsXA@kunlun.suse.cz> <87cxx4mmim.ffs@fw13> <akeIK5TRCjlKbzbp@J2N7QTR9R3> <akeOjqMy7HVgRRCr@kunlun.suse.cz> <fa1f5b39-2703-40a1-81d6-3feba87e19b0@arm.com> <87echjlrs4.ffs@fw13>
+Message-ID: <F0993CE8-27EB-42D9-80F7-04A7A73C2395@zytor.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BE8C04000B
-X-Stat-Signature: jbd7zmtbyush194yuqb87cyq448mtrfy
+X-Rspamd-Queue-Id: 53B2620005
+X-Stat-Signature: e3tgbipsamg647ajukxy8fxj1uzaurtx
 X-Rspam-User: 
-X-HE-Tag: 1783112552-625903
-X-HE-Meta: U2FsdGVkX18WCpDEqwUSsEQDA+NzF2gx2wj73BR0MWOkIQi+yrsUG9wVTrT53DNc5urCa5ZRku2cCrLiCVxuS2D6x2BrXw3tyKU1B0Qb7bx/JCJWqXxF+jEP0ncldhFsGTE+ffN6myipx00X5n3LA+sHdRW70bmnChxSyZIFsGxQFy+4KthMDKQutOQGbCPFl6UZMLYXyXHxww90oUspnYLg/WcTpNxmmx76hXaRpVQDXVyyEeWOuD/8ue91ZvRm4xh0qYegug3sHPymY8ht2fJIadQtgKK7zknETnyKTH7lIGu1uPkRVsvTfzcHM+4Q35/dIrGcU5V3nhRPrRMsKJZTN084Xto0mBt7LHQT4spJXqiF7BPZujnDz8j6y6Z7pHKIl/8D8yODw+Jw3L/Zo+MnUPhIoWSbOQRrvtRF/SOIoE8IgoRL7HdOMkVKo107Qhw8IsdDNyMmJcxGjUrQ5u/A+cw5KLEja38YG3s721nCnSYqvryewVIGcXD2fw+ofxSHmZYXMcZSPZ9YWbxypLlsqbQdRF1YIuHHk97YVC7fx9YhnP7x7lq+1j7b8DErNDCHK6e1IRFI9M58S4BAtcd+wIAoPA0q/jSCY9m8HhcLw4UhScEA1A8xVmh1X4QBF+0Ogz0BeRuAuo2URSrDNRNR4sxg2D2KrUVaYDBGbwjlyHdrL/+B+H5YXUhmDCLThgX1Ys7tXET686npad9zxzxGfjuj0CpshNgIHfPKkAkgFvv1HCgURuJlmWXTynBK9bPmuAXFzAgVUPer6sceL+2/+StSFk4dDzwbwRVFPKESRCXG96ZJy9TeOYl02K0qlotSoLpY0AO5zo2l2+J2iGBqncDZAzJA4oJw04ghoGuFF45iWxgsS05EHFnMim+B+XYonGzTU7/VMeQ8bZs7CybYjVJUMR72C8SCw4XtNMmJuc3eUWJxJUNlJlcvN6WUcTKGYAqEob+gWOS9RxO
- MOYV4QpB
- h4/HGKprsg0XYu1uQhuQYq/ZBouklhCs+J1ls494Hfac3gFBczitTNhAMepRbUopPVE9jKNr0fIP3KfC0DIec7WCCt7Dgsc74J/+o22UWWMFOOPzrcHz1StgiwjZPC/PZU20DhW0t3u5UIHglX+12GkJKCPXaEJl5ouwoXqrv4tSL4p9dB6VbVbEY3f6eob8xMWfwTZpOB6ljJ8RSxhLrBmpQ0tMMYNmV20z7unFqGmIRiPBDE2oiBj6PMVRM2yWgWrsFEV51x9Wf5jQMCYmQ+GhyGC0yYue8J3RmZT4p56v/sVkpLhulq70gYWXNEA4Ne3CMbRtEzQ+ETBOWWwMG+td5f/zEK2FyQAOHFeyfm3LmXvLIhfm8Bnpd564SOgiyOFbD/22KLXbiNmvtL7Hj5R2Wsg==
+X-HE-Tag: 1783112636-984547
+X-HE-Meta: U2FsdGVkX199B8d/E6/RpoAb6iX351cotW/XU7SNnOBriUZ+OYapAJCScj/MJqem8OO+lzJ/GXwO+/mUIGvnUQTlF5taRbQt870RlGfYlwtVabovNW0W/FyxfKkoRwPc8RwQ24RcQDPcF1hmKdo7IQbed/Tz9wWyIzTmh2vJz04jNDi5ycjd7i/Cbo8ZtzOsv4NcCj50t4RUScxIv/0EVgbMsVVcXnyZPBkDu/pV+mjV5Z+nxOMsgxvxR622f4AOLiqTKMahhkBMYR0AOwuMJ+bVV4eCv3Go7cDqBEZgCeAOh2zo8VXNEvoLM4Uw6o0QtG0TqNFzld+Gea6ZgTvFXLsKMRtzmb6RH8dbaHb3oIDyiFX29hMQFhS1+YNxS8NfFEpPFzEIDzo4ScAjg5T5U1C9FCemz2fOC00k0Cjf2+XVj0uUP0DrdamEtFmst4xCiHd/4I+RsMXl5YMYJ0sNitW/TxpnDl94DWQ/bs7Kfi9ctaRHbib9YBJy6pWaGIDt6C+Hn2TyOiCj1To7iKducRupJfxEqtn6CPmNPCefMIeM1gs8uHpGOjswK739OzIeCYKlnQfFqnZIA/ghj7qJeh1gMUPSCPeQe1Y5391Sa+wy6X8AbRbB3FXR5Sqbj+i6Km9SlRrTRPnPDrHUEZWK6XGNkT+d7k41E7hZHOo7Ri2hJIBR1AtEwITCxQ/h5pabAKiwFBaRxbdShbrZ5H1PSc77YsdO7j8GlrD1Oy/LcqJQJdlyzmHl9klS82KcOiQTznz2+BMrXoVxcN2Wp6TX2tmIM4x7kreCfJUGRQxDtjps9Hu3WLef4rv33XOXmyWnM5rR29ND4yH8xk1y1L3orbvspoV/5qBmjaS5AfyausU8uKUyud4oIUaoytk5sNo2jZOkR7+20FHN6WPDBjJdNM6e8Cv9SS+aVupi/5/xFNfHM48EKobUyBnfaOpv4kexDCkwJPn/Q5a0eXJ+uw8
+ DDtxbpbt
+ o1IxGaS17xbPJT+HKZN+um5KzJITOrI0j8AwzSrdAM32I0tpBoF7Bom8p2rdbXAKN9PhS9ShM8j3PFtWZTdh13UXJ86S9tk334JpRecL+6spm13qXFeqO5YivcAs0PTCdgTE0wMn9hRRYt4mqDJw+avqC8v6Ge+gQMeQcqcjx6dmt64QBYGWZ8Mfm8G5OVJ4RB0YOb2QTvKOFVlNg9zXRxxyAksJGYNXzExwU9VTHZQz+J7J8Dv2WX+7J9hPE350TXMxmEKPxhq9gSRyvBzICVXpKx3AVCuTmUrx9/kljpDqK+TSiyKgklluRlMxuBQB2idvBeTES8JkTMjMZC/ouEp++b4glTCNMNPldSAE/kInb8DndaaYA/rPP6EQ3C2GUDhXLI/5bmJiEBwPWKSfW8Y0+8BT1vCPKU09g1NwxdW7kHGI9xlblBAjZfQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,26 +126,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 03 2026 at 20:28, Yunhui Cui wrote:
-> +
->  extern struct task_struct *__switch_to(struct task_struct *,
->  				       struct task_struct *);
->  
-> @@ -122,6 +129,7 @@ do {							\
->  	if (switch_to_should_flush_icache(__next))	\
->  		local_flush_icache_all();		\
->  	__switch_to_envcfg(__next);			\
-> +	__switch_to_pcpu_offset(__next);		\
+On July 3, 2026 1:52:43 PM PDT, Thomas Gleixner <tglx@kernel=2Eorg> wrote:
+>On Fri, Jul 03 2026 at 13:59, Kevin Brodsky wrote:
+>> On 03/07/2026 12:27, Michal Such=C3=A1nek wrote:
+>>>> If we're changing the return type, it might be worth renaming the
+>>>> function something like:
+>>>>
+>>>> 	seccomp_permits_syscall()
+>>> Then not only it is clear which way the boolean value should be
+>>> interpreted, it also pervents the accidental inversion of existing
+>>> calls=2E Overall great=2E
+>>
+>> Totally agreed, if we have the opportunity to rename a completely
+>> undescriptive function name like "secure_computing" we should take it=
+=2E
+>
+>Absolutely no objections from my side on that=2E
+>
 
-Why do you want to go through the indirection of current:
-
-> +static inline void __switch_to_pcpu_offset(struct task_struct *next)
-> +{
-> +#ifdef CONFIG_SMP
-> +	next->thread_info.pcpu_offset = __my_cpu_offset;
-> +#endif
-> +}
-
-instead of using __prev->.....offset, which is right there available?
-
+Hell yes=2E=20
 
