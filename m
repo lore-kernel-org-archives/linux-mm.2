@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F208FC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 06:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E702C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 06:38:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C5F86B00B5; Fri,  3 Jul 2026 02:24:26 -0400 (EDT)
+	id F372F6B0109; Fri,  3 Jul 2026 02:38:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9758C6B00B6; Fri,  3 Jul 2026 02:24:26 -0400 (EDT)
+	id EE7256B010A; Fri,  3 Jul 2026 02:38:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88B6B6B00B7; Fri,  3 Jul 2026 02:24:26 -0400 (EDT)
+	id DFD3B6B010B; Fri,  3 Jul 2026 02:38:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 568F86B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 02:24:26 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE1E51682E8
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 06:24:25 +0000 (UTC)
-X-FDA: 84946476090.21.8E6DC89
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0EA2180003
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 06:24:23 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SJGw1s2I;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B24526B0109
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 02:38:47 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 144EF40448
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 06:38:47 +0000 (UTC)
+X-FDA: 84946512294.28.6568FC2
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D23F0A0009
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 06:38:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IlPBo5Ep;
+	spf=pass (imf15.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783059864;
-	b=ivnP7VV8FKOm+5e0JFmRGBp9ZhI/8bpfbviwQFZJAnm+LWo0hMXB2dbExWrEzPKFh01Er8
-	0wLNly+g6mllM2rvYUTcz0urK5Vnfw+mVGKfkpySYtAsYaZjgQcDf4jl9xdscQlz2dA58s
-	o3Evmgy7BjLCsbsyKIKObwPREGEkALc=
+	t=1783060725;
+	b=igSI8BxKQkJ+o+aWWN2l6Cld82pRie3iIO5/D062JuhXdRDGnNaJE+rUqJFT/8W1zBRRSs
+	I/UH1Kx/rqoW9xc9dFA4q82aXTPTUvny8kWlFForJkzWOqi/udn0P7fvyfNBzjr5kJ8GPB
+	exXR9vDQhqpmpevkqGY9j1izoZAeuC0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783059864;
+	s=arc-20220608; t=1783060725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VSCI+9VMFGhzZ4DHrpiIFSYVmzhFlldpQab5ARttNrE=;
-	b=JruMT74GesTBeFqgaFRhkNyatnpzF1yr4ar+Wfo8Zb1SAbryK2nvXwpenv8d27gW2RgbKC
-	JYRGDwTY9IOoimOYIETxp/IbN5sNJdF5B95Z0UwvL56EuufZ00EWh/iyGO7MHXxDHxredO
-	lkIn9DUdMkwIN05OtaQ0bpVUj8MxMVA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=z0NILGVMEqCxDUwwsKsa9n9qfS5/GPIbQstMynaSZY0=;
+	b=mFiO21c/W5zduhCm4UnTC/CHkX2Zk4KYXgD2/Ojdz8FGCRfVzp8uoKwrN/dDnqOR0BBvNf
+	3V9ZbQwKjC98a0HMMb7+ZlTTa6BbVyoPzwwagQL83T/AzDupuAxD519R61fwZPkab83b8E
+	bupfdZXnt/VMTGg+ZspVqeOZv+XLroc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SJGw1s2I;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4A7A94349D;
-	Fri,  3 Jul 2026 06:24:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0031F000E9;
-	Fri,  3 Jul 2026 06:24:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783059863;
-	bh=VSCI+9VMFGhzZ4DHrpiIFSYVmzhFlldpQab5ARttNrE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SJGw1s2I3fN0rhA453Szz+Q90oqWuePSgwQLW0OiR0tHPsGk2ShFtqQLeGlQe0ylE
-	 UEmr+1XISkkD2hI+MuqB/fvupdy+jzj4H/Usx18ttHKGI6nwBUbijJ/gL8ocLk34ni
-	 W48nEvXVVv6YEYS+y10oe2abN6tD3ze2D0Stu4mWrsboocGIr9kAo8WuTurJ9YVh+h
-	 rdSczdSkFnFEXqT7ukJn4YrSUsd4QNRxMzPrYY8i2wQ6o4QrW98Z2SOI/n4nFd7w/A
-	 PXFWSqOmZ8Vrz81/Pz96SeDwZ99lqvbXWOZICtd88TvEWHEhbb7c2TKfWt8eF5CQiW
-	 e4S3CSmPvRuCA==
-Date: Fri, 3 Jul 2026 09:24:17 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, peterx@redhat.com,
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
-	syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com
-Subject: Re: [PATCH] mm/userfaultfd: clear uffd-wp PTE state when
- re-registering without WP
-Message-ID: <akdVkekOyiE2rtnl@kernel.org>
-References: <20260601082609.170076-1-jianhuizzzzz@gmail.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IlPBo5Ep;
+	spf=pass (imf15.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783060719;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=z0NILGVMEqCxDUwwsKsa9n9qfS5/GPIbQstMynaSZY0=;
+	b=IlPBo5EpD5UJdecwEsnJy88CIxXeca2so8Drk7Be2zX9Vee+P4m1ajEMdFd+al5Qn6usSi
+	xddm56PP7uTa2i04ZG1qXVQ3aLiylCYlRONRgTOd99jR27EvTy/w2nxXSnhJMP3MI7YsDK
+	Xb+35SN9RVjLvVR81vgrQ7IfLw4pe+s=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: linux-mm@kvack.org
+Cc: jiayuan.chen@shopee.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Tao Cui <cuitao@kylinos.cn>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] mm: memcg: reset zswap settings in css_reset
+Date: Fri,  3 Jul 2026 14:38:23 +0800
+Message-ID: <20260703063826.306878-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260601082609.170076-1-jianhuizzzzz@gmail.com>
-X-Rspamd-Queue-Id: 0EA2180003
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: kqhfsseawnhrc5sprnycsaq8aft9fpsh
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ocg16q9o5rfp74bt5dj91qtfkdf6kx98
-X-HE-Tag: 1783059863-400317
-X-HE-Meta: U2FsdGVkX1/PphuLaYpExr6QKFCiPY47VZLGQJR5w7iXWBJ/UC0rjuGWtaLbtQI+0reUYXCVmCqhUmQJlJcINUXR6XjRKjYBzaBjx6hWyxD7RSLrLr5Ut63L2EOPd6BQYf06ieFR6B15PiK3kCCxhUGuFtkEFE16YJFdjakGKg5IK2qcjfMhcJL2+BbOa4vtb5VWaRe5ETBv0pwWwaLdwal1nUReMiTAFZCVjeah6Im+mzQsiPG9MdovP5e5/Q2vmV1FC46+vkLLSaIRCKAK6u4FZ7zx1BJBIY/RY0zCdthnbvNTUaCxbC+pe9kex6LD4+PpnDaSzieBzHbBBi0uJkb92xxDIOWlBhqdoyaMX0dJTFc7zpMjAEQMvkkE4BDBHXrb8ed66gQFJNSlLJea1BN6lKvkQfZoVbQVZ6zDwESDAuTq9ur3C0mMH+0DBxdIABb/uIfbG0txQDaFHY367TJ+dg7eKRolvhvD6gDWpo0um5DA3f/gosltjbdqeKYZC+ZsomL/SqJpXbGWeWu3ubFiBNTERRFUmM9c4Y1UBmwAftTT+/2Lm8/MxmVXFvC1btiTvv7Yf7zBE0DER2LrGNkfGXsSGdF1SZKgoggdLi0FioGCuPXZH9EZH6O8L+vOA25TS+gpl0W7VY/wcVDM0zTvaOf3u77YOoyh0PY4x4AXhHDhzqcIKhIJ81TlJdiWsHWo+d+Ci3mPh+saKh3fKtIItLmvglR/JPeYpgZDyTawB3zzr6Y0E6NhRbmD4e5RmXftwS0r9mMf5JXqKRNRWWaTgqjnQJmkI3nWQ/Y7aZ9USPtymKM5tLTvsqWDJ6UZEmP14biWFCQUdxiBi9U7Eu2wV6fGw8wikH/PppvSeqyG91/kcO/q+aFuCimbiioO/Ai4mHnaAyDK8iAuuPs8bCFnkB4lVyjKEFljJlsUGObyKWGhWSKcT02pbW5qpagv1GHvxoJUBof0o6GCQpL
- IDem+xq4
- XEIBWPn4axkl5+1Ve1NgR5s+6yB8UcGw7iCt1h0FhpdVoVQgntxNv1E77XhJgJiCJoUO3syOQ/RFVxB6aMV0NavV7pQ3cJpqpOp/ZLqG6CDyLZPmDw/cWwJ9bxbZE5SwSLf7T3QSTO9CXFWEFOS8mbuDwgxA14Faz2wdV10uEQcnSU5/qi3Ji+XC0SEj7Ue5OnW65gSiGJUes5gq2E7pZwIiFbpqZVin1PxSKRGBMSXf1IzYovotgcGLgKyIBmE/B5/eqQ5Cm0OPQU0hRhN3dRO/qb+0nZaEMkTdHUW5xFgdzcttaE5+l6QjE/N7OLPt3BpXxJQgFGp8jYIMlazHg1QBDfWM3ZPg9zov2SPrEM6QtJnYvjLx8sw0RWGc9pMRtiMb59cPgjtSV8/BQrDo3p6sRpHWmGJJJqbEqchg2d7ukHpff05idJAdG7FQIoDc+QwRcAhfu9XyLtamjKdB2bAwCFNdHZCEJ9bi3x2ZvX+QDc/U71BguQD5ZTMmACY6Cxmeri7+3M+VS2adAQL715SSw4g==
+X-Rspamd-Queue-Id: D23F0A0009
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1783060724-321015
+X-HE-Meta: U2FsdGVkX1+/px+zra+1NMvX2ftety4Kk5K6Q2nOSosex6F9HdQELU6jZGXMNWGnSPgcGpOHc0H+Yw/SvUa3+GARjE50RPe8LmSfVnImCd03/e5nY+Aq4Fz10yBp7mXlEQfteWb9UdyoJBmg1xvEk/34zllrBye6ER7/PYosn/X80Hdlhmq6GyOrpwD/9xTXETOpP8H04sPW2T5+HJ6chjg65qMplc+ZeJ79abbZaxwy5t6pzLI4j/j3MxeRpY6muUqPtmte+zO973tJ+6gv6TfX8SNBm68JowP3Ga1Sy+237T4VClj/hff9LZFjCxm0eCltQgHBfUHltcDOOrXYQkGFS9eKIwNOzdQ57/q/UR85ecGxD2pMNYKZ1nhtpcG47szBUZaLHZY50DwbEaymZ0vYjIniA8t2MaCmrly7BrLmsFz/5eqbc4ObuY98S0PAufiE+NHcXY1OZJ8TWrWpZbuAURF81TJ2gj/wyLDuA4xxd9gxypzAkWxx8Pl5IUijO3KNnwkaNCRiV8/4LM9Q49uBON/ZGo8nKjqTCtxUugV5/62wTdaNRz47FJ+8gHAReSQd1upkXvd0+Lhph9sC8FMoj/Fz9VXYmLv7RFTzL9jAItSAdSat4Zn1ZnXh5G5aNZzlTcypgk5hf5kbr7VZGlJC7MGe/Ol95V+JMSZM429yw1VFumKiICF29646yxyXLy1H4TKVYi366q2FLAJctpReUlQcPVLaTFMms9mQQ2MDaIt9IaPaWGFjwvCDbEQPCEJCoDK3LEWvgXt4SL7hPmBmbMuvnY4LhgcONcISLbgVQRULFPIQBdom0L2wq2anG4tuOzogPIAunQ7lvmT8QDIvTUsUR+QrZlBhBVw6owTXEtH13sdi1FoWeiUT5K3sGX5adlfZfapCpNXKOMFYmC0xtpWMspwt+24Wl4e/mH5WIpiArwOjq4vrKgwMrpIYOhn2KwTwhzzQ6G7L9Zm
+ Zby0QDkB
+ w1TE2QPzExA6XFbFkWcsLxgIxDHXoB/tcyKPc+Wrb6TFfxVnXD2Kiu3z3BZixZtEsJEBGxC8NsJn0zzIwgJC50JX7bWXseB/d+Fq0EA4rgi10chKO7dE37dvYfNwIJzYKKfeDQEKFSYLCYUxkr7omxsAsVKJz2zzd//CMKpBsjl2885njwioEreL+QHGoQrcdMfHJBFQDjy0AlvJBCIK2+xmH5yGUhQZKEaQ5eRXYEBejbsCLn3QPeKwOIWJMsgnR5CDOUsd/c9x3WW+VitB/sdnfyUGF2zW6porNdEZdm/zFlzHFlpOfd+jnB2E340I032B1K7hfx/EzRTM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,76 +92,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 01, 2026 at 04:26:09PM +0800, Jianhui Zhou wrote:
-> UFFDIO_REGISTER can be issued on a range that is already registered in
-> the same userfaultfd context, replacing the VMA's userfaultfd tracking
-> mode.  For example, a range can be registered with
-> UFFDIO_REGISTER_MODE_WP and later re-registered with
-> UFFDIO_REGISTER_MODE_MISSING.
-> 
-> When the second registration removes VM_UFFD_WP, the VMA flags are
-> updated but existing uffd-wp state in page-table entries is left behind.
-> That stale state can survive in swap PTEs.  On swapin, do_swap_page()
-> restores _PAGE_UFFD_WP from the swap PTE and can then install a writable
-> PTE, triggering page_table_check:
-> 
->   pte_uffd_wp(pte) && pte_write(pte)
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-Please explain where the check is triggered and what are the effects.
+mem_cgroup_css_reset() is called when the memory controller is disabled
+on a cgroup but the memcg cannot be destroyed because it is pinned by a
+subsystem dependency -- for example, the io controller declares
+.depends_on = 1 << memory_cgrp_id, so memory remains in the cgroup_ss_mask
+and the css is hidden rather than killed.
+
+The purpose of css_reset is to revert the memcg to its vanilla state so
+that no policies are applied and the css can be safely made visible again
+later.  Currently, all page counters (memory.max, swap.max, kmem.max,
+tcpmem.max) and other limits (soft_limit, memory.high, swap.high) are
+reset to their defaults, but zswap_max and zswap_writeback are not.
+
+These fields are initialized in css_alloc (zswap_max = PAGE_COUNTER_MAX,
+zswap_writeback inherited from parent) but were missing from css_reset.
+As a result, stale zswap policies remain in effect after css_reset: the
+zswap charge path (obj_cgroup_may_zswap) continues to enforce the old
+zswap_max limit, and the writeback path continues to honor the old
+zswap_writeback setting, even though the memory controller has been
+"disabled" on this cgroup.
+
+Reset zswap_max to PAGE_COUNTER_MAX and zswap_writeback to true, matching
+their defaults in css_alloc.
+
+Test:
+	echo "+memory +io" > /sys/fs/cgroup/cgroup.subtree_control
+
+	mkdir /sys/fs/cgroup/test
+	mkdir /sys/fs/cgroup/test/child
+
+	echo "+memory +io" > /sys/fs/cgroup/test/cgroup.subtree_control
+	echo 10000 > /sys/fs/cgroup/test/child/memory.zswap.max
+
+	# child/memory.swap.max and child/memory.zswap.max disappear
+	echo "-memory" > /sys/fs/cgroup/test/cgroup.subtree_control
+
+	# re-enable memory control
+	echo "+memory" > /sys/fs/cgroup/test/cgroup.subtree_control
+
+	# before this patch
+	cat /sys/fs/cgroup/test/child/memory.zswap.max
+	    8192
+
+	# after this patch, same as memory.swap.max
+	cat /sys/fs/cgroup/test/child/memory.zswap.max
+	    max
+
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Tao Cui <cuitao@kylinos.cn>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+---
+
+v2 -> v3 : typo in commit message and add Reviewed-by tag.
+v1 -> v2 : add WRITE_ONCE.
+https://lore.kernel.org/linux-mm/20260630100832.107062-1-jiayuan.chen@linux.dev/
+---
+ mm/memcontrol.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index d20ffc827306..c20ef3c1d6fe 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4362,6 +4362,10 @@ static void mem_cgroup_css_reset(struct cgroup_subsys_state *css)
  
-> Handle removal of WP mode through UFFDIO_REGISTER the same way as
-> UFFDIO_UNREGISTER: resolve the per-PTE uffd-wp state before dropping
-> VM_UFFD_WP from the VMA.
-> 
-> Also make the same-context fast path require an exact UFFD mode match.
-> The old subset check treats MISSING|WP -> MISSING as a no-op, even though
-> WP mode is being removed.
-> 
-> Fixes: f45ec5ff16a7 ("userfaultfd: wp: support swap and page migration")
-> Reported-by: syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=18d274a59b87cf80e86d
-> Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
-> ---
->  mm/userfaultfd.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 180bad42fc79..dc0b3eba768b 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -2153,13 +2153,21 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
->  		 * userfaultfd and with the right tracking mode too.
->  		 */
->  		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
-> -		    vma_test_all_mask(vma, vma_flags))
-> +		    (vma->vm_flags & __VM_UFFD_FLAGS) == vm_flags)
-
-Please use new VMA flag APIs.
-
->  			goto skip;
->  
->  		if (vma->vm_start > start)
->  			start = vma->vm_start;
->  		vma_end = min(end, vma->vm_end);
->  
-> +		/*
-> +		 * Re-registering into the same userfaultfd can remove WP mode.
-> +		 * Clear any per-PTE uffd-wp state before dropping VM_UFFD_WP,
-> +		 * matching the UFFDIO_UNREGISTER cleanup semantics.
-> +		 */
-> +		if (userfaultfd_wp(vma) && !(vm_flags & VM_UFFD_WP))
-> +			uffd_wp_range(vma, start, vma_end - start, false);
-> +
->  		new_vma_flags = vma->flags;
->  		vma_flags_clear_mask(&new_vma_flags, __VMA_UFFD_FLAGS);
->  		vma_flags_set_mask(&new_vma_flags, vma_flags);
-> 
-> base-commit: e43ffb69e0438cddd72aaa30898b4dc446f664f8
-> -- 
-> 2.43.0
-> 
-
+ 	page_counter_set_max(&memcg->memory, PAGE_COUNTER_MAX);
+ 	page_counter_set_max(&memcg->swap, PAGE_COUNTER_MAX);
++#ifdef CONFIG_ZSWAP
++	WRITE_ONCE(memcg->zswap_max, PAGE_COUNTER_MAX);
++	WRITE_ONCE(memcg->zswap_writeback, true);
++#endif
+ #ifdef CONFIG_MEMCG_V1
+ 	page_counter_set_max(&memcg->kmem, PAGE_COUNTER_MAX);
+ 	page_counter_set_max(&memcg->tcpmem, PAGE_COUNTER_MAX);
 -- 
-Sincerely yours,
-Mike.
+2.43.0
+
 
