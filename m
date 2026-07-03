@@ -4,104 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FCD2C44500
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:14:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 183A7C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43E146B00B4; Fri,  3 Jul 2026 08:14:45 -0400 (EDT)
+	id 039636B00B4; Fri,  3 Jul 2026 08:27:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C8786B00B5; Fri,  3 Jul 2026 08:14:45 -0400 (EDT)
+	id F32C86B00B5; Fri,  3 Jul 2026 08:27:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 290E86B00B6; Fri,  3 Jul 2026 08:14:45 -0400 (EDT)
+	id DF3A06B00B6; Fri,  3 Jul 2026 08:27:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EF2656B00B4
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:14:44 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5914AC25E1
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:14:44 +0000 (UTC)
-X-FDA: 84947358888.24.87F5008
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CC6D84000B
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:14:42 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d6VbRKa+;
-	spf=pass (imf01.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783080882;
-	b=TOE7HcaBXizp6a+VY5FSe6tkWJV7pumJ1WXClhvbxKWuB68a72gStvcXVPLCaSCp3kOWj5
-	YN+atCdbphitynhEv7pnnZm6BPqV+gMTTmeJQNkwhS14xHsLmtVQRapu8OLxImGOujg+Ci
-	X2gjK1NyLqTYIa5GT7oUeEk50d/FBEU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783080882;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AB9886B00B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:27:00 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F8114051F
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:27:00 +0000 (UTC)
+X-FDA: 84947389800.30.AA8A580
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 60B45A0004
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:26:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=g5b80To4;
+	spf=pass (imf25.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783081618;
+	b=Ixj0caZG4RD89F30hemIfntTHgFwLRESbbFKlAYy13BelC/jtawakPkeD6ErtrmtJtWtKO
+	jWzPARmqoJO+Y0u/mOsq2cZas75RdmYBTxEofhFiddncSRnOjqf10vvRcENma2gI0Q0Y3s
+	mZaZWxNL19C9nwrjJCrdp5VfptVtaVI=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783081618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wCSekJzceclmv2Xdvl4vn/0F9vF6oLcNXpc7pUyDj0k=;
-	b=XZs2ln0uNb2j+o9wWOes3QKt7VNoHPxh2t7xJivtByDLLSfJjAxA7JGk1SikNAlMe+MkSM
-	YGgyLk5QiQelsGODJlgyT5jxwnJLmTlEIDfWNcwJ2An0HGklNURjxwzgZWLfxs4VhwttZO
-	kot4L95DBDQlX33XMH0J98VkBMftwWg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d6VbRKa+;
-	spf=pass (imf01.hostedemail.com: domain of mripard@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=mripard@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EFD26600E1;
-	Fri,  3 Jul 2026 12:14:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126D41F000E9;
-	Fri,  3 Jul 2026 12:14:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783080881;
-	bh=wCSekJzceclmv2Xdvl4vn/0F9vF6oLcNXpc7pUyDj0k=;
-	h=Date:From:To:Subject:In-Reply-To:References:Cc;
-	b=d6VbRKa+He2/cAFmwYnkVZjxIlsRAYd3koyUzl174SlRWigVinPrxLNyW1D1D0xO6
-	 vkKKNIjrywD5F/UoMCDkjtUhMxTDLSU421VLUP3NnsA6Yq0l9c8CZZMUbV11zQMLVm
-	 xMzeOzkKcw/86tXQdDzbYMe4rYh4Pzb86R5wZxWB+2w+rY6vfS4Tp4BiDgmMxVtryf
-	 iBGvffCRTHwx+6nF4Codf8+X4UD6mDt+kizURmVt9H/JKijTnykALPxPBgCZUpmupk
-	 VMwlDGrjS5G8BUxlsvjQZ0J03g4d96qrPiIHOY/A1nSnH6jTvs4ieLW2YML2tmOltj
-	 ytQtBS/G8QFIA==
-Message-ID: <e6cccc28049a6231d50842254447c909@kernel.org>
-Date: Fri, 03 Jul 2026 12:14:39 +0000
-From: "Maxime Ripard" <mripard@kernel.org>
-To: "Thierry Reding" <thierry.reding@kernel.org>
-Subject: Re: [PATCH v3 07/11] dma-buf: heaps: Add debugfs support
-In-Reply-To: <20260701-tegra-vpr-v3-7-d80f7b871bb4@nvidia.com>
-References: <20260701-tegra-vpr-v3-7-d80f7b871bb4@nvidia.com>
-Cc: devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, linux-mm@kvack.org, linux-s390@vger.kernel.org, linux-tegra@vger.kernel.org, linux-trace-kernel@vger.kernel.org, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Benjamin
- Gaignard" <benjamin.gaignard@collabora.com>, "Brian Starkey" <Brian.Starkey@arm.com>, "Catalin
- Marinas" <catalin.marinas@arm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>,
- =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Conor
- Dooley" <conor+dt@kernel.org>, "David Airlie" <airlied@gmail.com>, "David
- Hildenbrand" <david@kernel.org>, "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>, "Heiko
- Carstens" <hca@linux.ibm.com>, "John Stultz" <jstultz@google.com>, "Jonathan
- Hunter" <jonathanh@nvidia.com>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Liam
- R. Howlett" <liam@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Luca
- Ceresoli" <luca.ceresoli@bootlin.com>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek
- Szyprowski" <m.szyprowski@samsung.com>, "Masami Hiramatsu" <mhiramat@kernel.org>, "Mathieu
- Desnoyers" <mathieu.desnoyers@efficios.com>, "Maxime Ripard" <mripard@kernel.org>, "Michal
- Hocko" <mhocko@suse.com>, "Mike Rapoport" <rppt@kernel.org>, "Mikko
- Perttunen" <mperttunen@nvidia.com>, "Rasmus Villemoes" <linux@rasmusvillemoes.dk>, "Rob
- Herring" <robh@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Russell
- King" <linux@armlinux.org.uk>, "Simona Vetter" <simona@ffwll.ch>, "Sowjanya
- Komatineni" <skomatineni@nvidia.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Sumit
- Semwal" <sumit.semwal@linaro.org>, "Suren Baghdasaryan" <surenb@google.com>, "Sven
- Schnelle" <svens@linux.ibm.com>, "T.J. Mercier" <tjmercier@google.com>, "Thierry
- Reding" <thierry.reding@gmail.com>, "Thierry Reding" <treding@nvidia.com>, "Thomas
- Zimmermann" <tzimmermann@suse.de>, "Vasily Gorbik" <gor@linux.ibm.com>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Yury Norov" <yury.norov@gmail.com>
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CC6D84000B
+	bh=mkcwegeSHRA8Rtq4C78mf0gL9tHt8vO0ljYRm2yfd08=;
+	b=vocwa0qTPYyOltqypdNWJxoa7oJnV2zo9lUquCAhX0PCQlWngDceMAMevSKsiwYcmRvgNz
+	z3XHeaejpw3+6AWNLNiM6Eo2FkOKfGXoyQKsQkHcHr4odh6Nrxr5HT0rv8fFU87TdkTNsC
+	BUME377YqjYWKoPLiX+PctlZk3Fh04A=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=g5b80To4;
+	spf=pass (imf25.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.160.53 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-448cf99c133so1226504fac.1
+        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 05:26:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783081616; cv=none;
+        d=google.com; s=arc-20260327;
+        b=iSWyQqbmRknSTLj8jI8liq3Wm1qrYr/rglbxjunbQylkk0B/p2iGAbPd5QdXhcvn/U
+         EggPUxx4fHQblfBYnHpbbmhoJoqH0rQMvBnDkfnGEpybbOxOHpOUyFipf6Mx1/i3fGg7
+         J0i/WqqWsX3TPQKF8j//zyvWwdpgmfjWq4wzkBn4fPLd2EhYYzJiUzxgn7kO3IRq4ZXf
+         6Wnk4H4E7S0LtoMUEH4/zUvuFSLYDSV6uSjkSotZqMkJDHcbUGRl6qPLpEL1ZrCpnvS1
+         niobZmF7Gab2YRIUKh8Yvk7UkFUPhfOpcCSdQteyrN4+3vgo2+rOS0I9Gi8Q36LJo2Fo
+         ucTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mkcwegeSHRA8Rtq4C78mf0gL9tHt8vO0ljYRm2yfd08=;
+        fh=dR7npzASdHEBc+w/pHnfUfa/dFi/RR9LLWnLXm2XaFQ=;
+        b=pDmIqFW34c73aHtpMmTKoWGa+jnb8xFXNpgHgr8+PXVzG90aQj1e6UnAvSj4aucrxg
+         SiXihLxjRL44EZEhzbnOqCdPfVQbSjLRqKRO3AnEBgRFaCbmrAIS2+lnYH+XJG7Ks3e0
+         0Nu6wixNMmfSSC7Q/+YLkWQg3hjG1b4sC3LTEAhWJGxp+/zRayzZWqfV6LdblIrvJpvq
+         7+dx40cWXDHqGIHQv9at8hJHwjarE5EXer/nKTi32WMnvJ+glnJm0yn+picIvvl8PSEP
+         IM4VQDNuRQa8KB4nff4zYwH9fuBALkJoSmP2G8i/77zzc7XeGvxyHLxuCEU59ez7eUbA
+         5qzA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1783081616; x=1783686416; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mkcwegeSHRA8Rtq4C78mf0gL9tHt8vO0ljYRm2yfd08=;
+        b=g5b80To4ZBarPNTxRX3y6tIasS3n1wdmMWEjS0lArTgnGx59+nwikh06qzARscKhPU
+         GrDoqLaaMjNmz+HdnYPdmjWq4gAtmbCsWa0UU5M/cwo07cgpWPTQ6brBmBjYp7IeT4f7
+         HTPIRavtgyjokIo5DBYmFZzD+rvSD4BriAEruOJtXeFFZKf6l9IsAOX2ZcmSVnkNpdx9
+         lo/G1PPfAI7+ROikFI0f6AuzK4w5hNjNIvuEOqA+cYpVMx3nouf753q8yNAngDOm1ii2
+         a7JDwv8vZ3NMwLyGfK23dRYhgHPVp8QEpprKfN45R5g8k7zC/D8kXWIiFPcNO51XBKW9
+         mqvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783081616; x=1783686416;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mkcwegeSHRA8Rtq4C78mf0gL9tHt8vO0ljYRm2yfd08=;
+        b=hK5ks09xZr8/2gQH2dC0YEl3R9ISvPQes0ilJJ1AFxCv2245Fa/XRmWK2Rolh61t74
+         PTSLhrRPYVxlHGbzlRsY45M2QUZAw/v+eCUHPis2Tszye/bIgblNCmadgDyl+ZFhmEtI
+         8QXIR58SmkXstbfbBtcJiJmqB/fX8U15UUVRJd2m0COn77MC6+SR4fJ81MjiUHJTVfhC
+         RZXJ/oXFx348L+ZgI9RAGe1vAa4qgMYsAgwob+apGPLu5Tub3RAPqkjiInWjfvL737vf
+         PFV1EBKoEM5JDYmzdxYqrHs5+tl2XliMrQ3wCcLBeTAnFjFyJzBzTmjYfnuMRI2YXKS1
+         Nxrw==
+X-Forwarded-Encrypted: i=1; AFNElJ+5+kGe7chy69e+D+Y2W+f+OyZUNcNXyWw8Kbg4vyQl8eycdVkSjwjyQ4MB3SfYs2AvYf4Q1jspFQ==@kvack.org
+X-Gm-Message-State: AOJu0YyDQ8SYjZ5BQDMi7lWvJ1RnL/bZoOuydwxPvmFDRj4qdLfEc90E
+	Q+mbqnUAbwm79wBoM8YWKef2HNOlgHEXuHGJoL+9ABla/nS9Bqr2LOYAyPDd9+a7RSdXFV/DJMF
+	V+q8w8fzxQVHGKx7TP0va4O4x8wkYCQ5aDTYCm6/Fcg==
+X-Gm-Gg: AfdE7cmo8JiSX+vtTAZQqaWNNwQl3plDkvFPRM6W7dmgDGMuQpNc26Eqi6dBYKx8IC0
+	kH0ThYxvzManR9Ha7Kvm0JTDombc3khYAn5yaLd7sBVtmhLqVVE0uabiNyIfMP+TMNgL/YMXzyk
+	Vs+vf8eKYemW5nZq/aMbVCedJJ//LU9pf+J93r/0VRMbEtBKaROJz4XH+P6imgi8uQJGWD36n16
+	trIcT4RLjsFpVh82vCZSZ6lt47SyT0Wt6XwLV06hZRnJHEpXCgXkMfjvXDHTNCntVvOkfjBGFc4
+	dLS8BEXisxqADg==
+X-Received: by 2002:a05:6809:6:20b0:496:100e:35f8 with SMTP id
+ 5614622812f47-497e1e43cedmr1478072b6e.21.1783081615982; Fri, 03 Jul 2026
+ 05:26:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260702025443.83389-4-cuiyunhui@bytedance.com> <cee66b78b5bad62e6107ce7579d7e613ad05a258aef8d0ab279b706543651a13@mail.kernel.org>
+In-Reply-To: <cee66b78b5bad62e6107ce7579d7e613ad05a258aef8d0ab279b706543651a13@mail.kernel.org>
+From: yunhui cui <cuiyunhui@bytedance.com>
+Date: Fri, 3 Jul 2026 20:26:44 +0800
+X-Gm-Features: AVVi8CcDmMKspGUBCgXqug4CkmXz20IK78kFtcg22LCfN8fJHodpSJeX2_dNFaw
+Message-ID: <CAEEQ3wmTJU1-5e81fy0wnv6gCP4n0cdydOW-Hj7pFJxhFj+6MA@mail.gmail.com>
+Subject: Re: [External] Re: [PATCH v7 3/3] riscv: store percpu offset into thread_info
+To: bot+bpf-ci@kernel.org
+Cc: pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	dennis@kernel.org, tj@kernel.org, cl@gentwo.org, ast@kernel.org, 
+	daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, 
+	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
+	jolsa@kernel.org, bjorn@kernel.org, pulehui@huawei.com, puranjay@kernel.org, 
+	thuth@redhat.com, ajones@ventanamicro.com, ben.dooks@codethink.co.uk, 
+	rkrcmar@ventanamicro.com, samuel.holland@sifive.com, zong.li@sifive.com, 
+	conor.dooley@microchip.com, tglx@kernel.org, debug@rivosinc.com, 
+	seanwascoding@gmail.com, andybnac@gmail.com, menglong8.dong@gmail.com, 
+	cyrilbur@tenstorrent.com, wangruikang@iscas.ac.cn, atishp@rivosinc.com, 
+	apatel@ventanamicro.com, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	arnd@arndb.de, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
+	morbo@google.com, justinstitt@google.com, qingfang.deng@siflower.com.cn, 
+	llvm@lists.linux.dev, martin.lau@kernel.org, clm@meta.com, 
+	ihor.solodrai@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: qfoxb98a85mu4kn9719umd5rk3ty8jmr
 X-Rspam-User: 
-X-Stat-Signature: da9euoheoqiukbn7gwsdze3ybf34a4mt
-X-HE-Tag: 1783080882-495693
-X-HE-Meta: U2FsdGVkX19KL+9Xw45kp43uEZ9cK3F+efSXcA2OwO6ftmdmmdLeAEXiFHC68M74fj1RJHLfV6xt448xsmk75EJfABNeLpzHEm1UWqaVORpE6NgkSF0zGtmOozBYeNgwfzm9TyrnpAJ6tXqwj1ViwXtyQWhpZTLkEIhwRxkNeINsG5uWEzbpmNKhN7VGhiRdTueZ/+F38tThRGePHPdUKa9lvPBQbYD3bsI2w2M3Gk4MGhVi8b6ZarFxr+8iHwgsDsdJBctow31luVisHEzy2JMMLBnbAf8xxFWrjeu2m81IzujDPqBu5Cb95i42PoMi4LjJrS4xaDg7gQ7BbGXZzGMP+0h1UvkeWl4qWfuWIvjhwEq9ClnaK7rdds9rRDMG+EnfjouZi0RT/AAi9S4G9qMQwwtjTigDwpIDWPt+D51WoChf0ytCKHh99VihBC2FoYDTxjjNARyEqJh/QpBOBTdhSDy50cK96ohtYpYWaiDpyY6D7ya90kH48PRWW9Q8zREvGJIhUxTmT9OhKRF5h2Fog/X+juQCPxnypHn5PKK8HvPqE3jn9fdsE7zCSaTRbEO+D7VXAxZqz5hy3Nmhl9ryM0uYhOYwOUHRMEUKrR7IghDmWa/Ksx9Z9dUnwi9TCmxdydlpJVBUnELjkct0ZLyFgDcXfvBGaOf5aGh6mPIyZYIQwkNjGhSAet14xPTVU9h1fFmW2Zhtj5RBez00ANlAXJ0OkMkQuQJXkbSB7lCo/awTeSPrIVbei8NE57DrMAL6ZkeyeKclpX+Qx0LzLCloNddBUDBHhGQ6yfSGvOj+SMDbZTWZZXVH4hyFO234EtsnUvpbDv6v5v4aRsQsGrKplaDGprgOSN65I+RLxu0VpmPo4aBkL+NhjUXeJOHJZeVpTgIHnpoY3xBEZwTsa0vdN5OkIODGN5wlTM19kCoN2A6a53GNN5cm/q1YGxV7lA2cBCUlWHQPPUt6+kk
- qWEk7Yr7
- /SzfqVi4buF61AMmEVNehh++GP8qintIZ6yI7Bu1xHm1PV8aGmdFUWH24XEgQWcakz4O/Rj5VVUdLQQv6OdQQfgcgmUymee5u9B5x74mRhXEcpwDvPfTmjoNy7swb7t8N+rxCfPc+w0s1VqBX1Ass57aeqpejndNAIMz6vK55jLmfH0PkH7LX1X6O4pPLKsKb33jfdEy07S043Hpp8pHXRYe3KheRRwFHaAHXTHIydKVVxgmp1SWqQa22a/jLtgepBK1zsjPvwii5ZUPXdWpqEkocUeAeRd7g6vtCtDv8Iok0SHlub2t32m4/iv8VtIhF0lNU7+V44j5rF6L+6LPbq74/obIVUOmUtxTAjXjxiPmdkjqKW3TFPli5L4sokmFvwd+v8H6zX8rQwqo8cND5IufJfA==
+X-Rspamd-Queue-Id: 60B45A0004
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1783081617-385002
+X-HE-Meta: U2FsdGVkX1+ukoKUwDHpJ36mZN5OY1lQ+Af3dHZqmAn4wXcxReXkIigfXCaDgci1MKrkAD0lfIfXUuSgnroLBVI6IEuzoYPCBDfgkToNK9C6IIi5yTd+QUNXiWDdh4o8GnoC0+YdcJhOy3+edB+hpehjpOdKvloS/NG7SFWmlHKOx6K/F0xJnNJW9JsE3DZFZpOQFb4poYwKKqsiZ9YSgZKdj8b0IV0FkSjj36O2iGQAw24pv3IliqHx5NjQdWijezx8TvI/6Os3z+829Y+A3Jo/4H56bdvOkbGCWgU1wk0mwitIFoECziOz/FX18JTTzesVI8La0RktDZJat73WGoYB2EJnWn4x3ZIt+sJqumZjJftDVlWqJSFoQtCnCIsHYsHJahq4yVbSPs/ZZl8FZ/GUHWOg1Hc7yV4QC/04F2gKh25hpLp98q9icdHztYmHLhDjVyDb1fwuJxuiTQ/EruKArZ/VPlQ2Two1437slcFPI8+n2l6nZR2BBCqFt04aen5Kdyd+ZbCttMQzTgfva4k1hMWe/rZTSwX0PZ4vbgNTD4d9nEMAlGbYBndRehHWIwYd/H8+eE3BSZZgUp3ycdH5LaQlSmNEalY0AA9hoWMj0ske7+pCb3QqSO3Ck4bMFYstwVKLOv4sM35eeaTZOdpf7CrxQRlZCUSIhNIT5I3YtmhfCnRO5En7s3BZfanK6+NTCjiC6AwIXtEPcNqD8ej+wgbkiiPoAm6jYOjB8Jxu2IrO56/5OQDJsHimishCjdJYSFmuJm8oUwoOsF0BJsSC7j4ILSpcLUmV0z4X5OCr3mbAIUN+WIjzxGON1p1V1R50DeTcqrN1OaZaba6IpEOL6a+REOEZi4y9r9AuORMgFnvPcbRoi4ROOwMduAdb0e8i9bZJKUxVNeipSvQ7rBpd+TqDpyzSWkskK/z6uQZ9235Ru7zmfOEj1+04/ALy5Trq4vjuNPkQQ2VFr3w
+ KI5x+yM+
+ C6pX9OABwNipESPiZMLa1EawFzyBWG3oaPoRxAOmlpQ7+78wHkV0EqL+yrugnKcAAJBjw8xsGMSwmU/i5nbNZ/wdffdo+DvUPgqEmRlDpNJoecTyeIxHE7gj5FuXkxG+ovW2wDJMtid3QZo7BsWna+WvyTaDGskWW8XEkp31HyZv+8Jxj7041KfhewhhqjbBt5S/YGjKPrim+OzZ3hoEEW6ZC+oXF1mvK41SxCOhr+MbtQH0RhmkmWw/zur2IKOIMe58lzFr5R0zPvNJ1O0RgWaAh/YB/lGm0sCzAv9l7+vcqWP3nA+a8yESRcNk4l/Iu9jnUtY1aKFyuGNhEw+DPhwYXKktg+arVqv3aT9zNEFA3s9qy9MxcbHTCL1+ep1zBtBwcfCgcQ8VUVJx7o8Q02xeqP7NEaOlBnJiSzq+QHSu+SgV3f6V9fx2rNjNhjq86WrzZLBDg+VqGV+brBXMp/fK0pjSBM+mDm2SbSe78lLb5e6wSILxYnN80ruyUiN9V9+D3kY6iMuAzcVDdaxYm7wLv9A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,17 +152,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 1 Jul 2026 18:08:18 +0200, Thierry Reding wrote:
-> From: Thierry Reding <treding@nvidia.com>
-> 
-> Add a callback to struct dma_heap_ops that heap providers can implement
-> to show information about the state of the heap in debugfs. A top-level
-> directory named "dma_heap" is created in debugfs and individual files
-> 
-> [ ... ]
+Hi bot+bpf-ci,
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
+On Thu, Jul 2, 2026 at 12:08=E2=80=AFPM <bot+bpf-ci@kernel.org> wrote:
+>
+> > diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.=
+h
+> > index e9e8ba83e632..137a49488325 100644
+> > --- a/arch/riscv/include/asm/asm.h
+> > +++ b/arch/riscv/include/asm/asm.h
+> > @@ -91,11 +91,7 @@
+> >
+> >  #ifdef CONFIG_SMP
+> >  .macro asm_per_cpu dst sym tmp
+> > -     lw    \tmp, TASK_TI_CPU_NUM(tp)
+> > -     slli  \tmp, \tmp, RISCV_LGPTR
+> > -     la    \dst, __per_cpu_offset
+> > -     add   \dst, \dst, \tmp
+> > -     REG_L \tmp, 0(\dst)
+> > +     REG_L \tmp, TASK_TI_PCPU_OFFSET(tp)
+> >       la    \dst, \sym
+> >       add   \dst, \dst, \tmp
+> >  .endm
+>
+> This isn't a bug, but asm_per_cpu was the only reader of TASK_TI_CPU_NUM,
+> and it now loads TASK_TI_PCPU_OFFSET(tp) instead.
+>
+> > diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-of=
+fsets.c
+> > index af827448a609..fbf53b66b0e0 100644
+> > --- a/arch/riscv/kernel/asm-offsets.c
+> > +++ b/arch/riscv/kernel/asm-offsets.c
+> > @@ -38,6 +38,7 @@ void asm_offsets(void)
+> >       OFFSET(TASK_THREAD_SUM, task_struct, thread.sum);
+> >
+> >       OFFSET(TASK_TI_CPU, task_struct, thread_info.cpu);
+> > +     OFFSET(TASK_TI_PCPU_OFFSET, task_struct, thread_info.pcpu_offset)=
+;
+> >       OFFSET(TASK_TI_PREEMPT_COUNT, task_struct, thread_info.preempt_co=
+unt);
+> >       OFFSET(TASK_TI_KERNEL_SP, task_struct, thread_info.kernel_sp);
+> >       OFFSET(TASK_TI_USER_SP, task_struct, thread_info.user_sp);
+>
+> A tree-wide search now finds TASK_TI_CPU_NUM only at its definition in
+> asm_offsets():
+>
+>         OFFSET(TASK_TI_CPU_NUM, task_struct, thread_info.cpu);
+>
+> with no remaining users (TASK_TI_CPU is a separate symbol still reference=
+d
+> by entry.S).  Could this OFFSET() line be dropped as well?
 
-Thanks!
-Maxime
+ Thanks, will fix in v8.
+
+>
+>
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a =
+bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
+E.md
+>
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/285624=
+50933
+
+Thanks,
+Yunhui
 
