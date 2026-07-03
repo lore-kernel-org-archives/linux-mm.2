@@ -4,98 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C0A6C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 14:50:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84498C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 14:51:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70C596B00B8; Fri,  3 Jul 2026 10:50:52 -0400 (EDT)
+	id 784256B00DD; Fri,  3 Jul 2026 10:51:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E3E86B00BA; Fri,  3 Jul 2026 10:50:52 -0400 (EDT)
+	id 75A656B00DE; Fri,  3 Jul 2026 10:51:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F9B26B00BB; Fri,  3 Jul 2026 10:50:52 -0400 (EDT)
+	id 6490A6B00DF; Fri,  3 Jul 2026 10:51:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 18F776B00B8
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:50:52 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9AA7EC0841
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:50:51 +0000 (UTC)
-X-FDA: 84947752302.05.7B84A91
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A672A180007
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:50:49 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="UDBNB8/0";
-	spf=pass (imf16.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783090250;
-	b=FfJOeIMb3K/i5N5acbc8MPscOGmmKUeeVtltdmEGH4/y712tkgW2DnoVAreXh251NC1Uua
-	7bR4V3MuM7gP6q8jaM54qaj4V6sN8JZyNT3DQZ/nIG2tzmPYlhQIu6lszw2pVBRja2Czjh
-	emsJSeeA2STuiXvBr+n4gWofEUHJYz8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783090250;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 384856B00DD
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:51:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C21AC167375
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:51:18 +0000 (UTC)
+X-FDA: 84947753436.07.FF9D37C
+Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013017.outbound.protection.outlook.com [40.93.201.17])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E2225180004
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:51:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=mwrdYg0n;
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783090276;
+	b=2f+rxqV0yhK4gzWMSckghAoP6AwhcTI/Fh5ViowtztHaZdp0WBmkEEroZDrcB+W0vFa/Xg
+	uwwJESAc7YU+0Y9Hdu4G1x/FZGUPJR2yVwavHDIyCYm883AjJWzf736b7qllPJJhsuPleT
+	6mLdHanEDwl2N7HQzeUT0oY9dGYXTwA=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783090276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CXlZY4gPG+zU33k3H0xm4g/0VaNA0tr7HNt5303WUBg=;
-	b=NiCBbyEkHNoPENPqkTvADi8s1+8LJRoQbQNK3FYN383hcyZOkxK81zgwbi7hVs7CWit05v
-	5uJ0iG58bF/045qh2YER+e9Tpgfjbqnn8YCXz5XnQtXbBhW7Bcnx5TxjXloYttB0ZrA4Ro
-	7fA8MxaWobMBoPb9sX9/wZXC2cKxPwE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="UDBNB8/0";
-	spf=pass (imf16.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <8f75dc18-dd4c-4989-a76c-eec6cc513ccf@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783090246;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CXlZY4gPG+zU33k3H0xm4g/0VaNA0tr7HNt5303WUBg=;
-	b=UDBNB8/0B1x3/BrOa/t8tH6XYsteLhqIKb6sFPxo+8voiJoXwSGbGVTm7m2V2fKjxbZfG5
-	wYXqGIpNv/UsD7//6L9xKs/IvOligQC3lhghGNicG75MZUNKdc91kSBysgQAuIKoLqiQ3k
-	zeQenTliY3QJ+tbtFUjK7MHFfZ7WXFo=
-Date: Fri, 3 Jul 2026 22:50:29 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH] mm/mseal: fix mseal documentation for 32-bit kernels
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Nathan Chancellor <nathan@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Nicolas Schier <nsc@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Alice Ryhl <aliceryhl@google.com>, Douglas Anderson <dianders@chromium.org>,
- Gary Guo <gary@garyguo.net>, Anand Moon <linux.amoon@gmail.com>,
- Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20260703022507.187457-1-leon.hwang@linux.dev>
- <akeDk49-pPgUDek1@pedro-suse>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <akeDk49-pPgUDek1@pedro-suse>
+	bh=536uoPkVfSNVMXY+Zcfqr/ev0JHCMwC07/KjanhsN3k=;
+	b=p/jFHLi2V2GVx5efxk9iD+7+CBCw30prWqYP8YgkrNcBbECUGNY8sADMwNfKssx9YdITLO
+	wRft8Q5IRutM3Q8+Jw1XmFHhiaGTH2XhRM3P1H7gM3Cz/ddSyFVxAS+6/GpLD5Ff/MDoRl
+	smWoOnQhM1b6D5WYnNl70iKAGe6hV2E=
+ARC-Authentication-Results: i=2;
+	imf24.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=mwrdYg0n;
+	spf=pass (imf24.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vEGZkLvtrHLqIzcLeGs1Csq08Yu0ujJUvXKZ3qI8jnkF///pjKrNJpb/S4eJZhugCR2umA4ZWi06FVSCePDbAMgMI+LV5+9FzAt01jFZLTFh6Cfdl9Y6Y/sLyyXLTLRgjCROQv43tR9JFMPiX4uRkGMqsb+Na44UBxtOTrlUTmJk73cT2QCX3DXOA/KKLT0WZy4OaxMLJNO86KuIjDtnAvi0bc+pKB7PGrAmeC4O2iL0rfcEfgesydbjx3h7dKD4m3J1visMU6+/4dSFG4I1TbGc7j4TbB3nNR4mM16c4DpDJaxHMssP2uZMwiyY6eFddbr+IzugSzg77RwpXX2AXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=536uoPkVfSNVMXY+Zcfqr/ev0JHCMwC07/KjanhsN3k=;
+ b=wZF1HIZd82phHJeDTIVjpzSCkpmjRksH0PY83o6N8M4Nk9xm7GEBbaypHVvxQ0S+ZC/SwASYFUp1F0Nz8DBL6M1LmfFG24o21VxpX6ZkT06A9LNGflpzmsMjz7rYYfZ58PuyUrEyTANZWvMJ5zRO0FfTHNBJ1QmiA5WerFLjnWcVDfCkXMUUlbSPVuapSvMXm4kCqK92LRCOm4rMbbgCcQt+AwNnEJb45wApFc65FCkYLtnRBtn4UgHZjiMA7ueKWbyZXeNh3Wh6jaZOmZiy/6IJXzLf//HH1fy6Prwq7Bq04PPHj5SyJ3vPDa1uaR5CN6J/yDkjs1Ve9gRfhm4j2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=536uoPkVfSNVMXY+Zcfqr/ev0JHCMwC07/KjanhsN3k=;
+ b=mwrdYg0ngnvp+ySQ0LlAEcy7PX2JmtnodevaGeKjvmzbVXKeWZ9zyy45b2EMYZI5iQxgF+SxglAETLmJ3c51JY8w5xj/9WAAM7dZda03PGgh4D5HaAp9M2rcItxb01C+I1PZvJV7+0CbR1i5vk9bLQyax1HriomQ0jtjwPdgnwrP70i/TuO41eM1EoH2XtRBCXsMkZOPz3oiOXYmWgh9lOpsGfDn90ERPN0zhFZ9OSHUZ+V18HVTkDl58PTaZUCZgYCMuyQt3AawOBtWLRlcT+tKXZ0UVPDHnr1Kx58pP3oezK8NlTIfSZYNNzXV7Cf37Jp+exAvbG+bPPSeBLDfPg==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SJ2PR12MB7989.namprd12.prod.outlook.com (2603:10b6:a03:4c3::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Fri, 3 Jul
+ 2026 14:51:10 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.009; Fri, 3 Jul 2026
+ 14:51:10 +0000
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Date: Fri, 03 Jul 2026 10:51:07 -0400
+Message-Id: <DJP0QWQWPSQD.2RQJ3SDQUQ35R@nvidia.com>
+Subject: Re: [PATCH v5 11/18] sgi-xp: Use higher-level allocator API
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
+ <gourry@gourry.net>, "Alexei Starovoitov" <ast@kernel.org>, "Matthew
+ Wilcox" <willy@infradead.org>, "Hao Ge" <hao.ge@linux.dev>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-rt-devel@lists.linux.dev>, <derkling@google.com>,
+ <reijiw@google.com>, "Yosry Ahmed" <yosry@kernel.org>, "Robin Holt"
+ <robinmholt@gmail.com>, "Steve Wahl" <steve.wahl@hpe.com>, "Arnd Bergmann"
+ <arnd@arndb.de>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+To: "Brendan Jackman" <jackmanb@google.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Muchun Song"
+ <muchun.song@linux.dev>, "Oscar Salvador" <osalvador@suse.de>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
+ <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
+ <byungchul@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Hao Li" <hao.li@linux.dev>, "Christoph
+ Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
+ <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
+ Rostedt" <rostedt@goodmis.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
+ <20260703-alloc-trylock-v5-11-c87b714e19d3@google.com>
+In-Reply-To: <20260703-alloc-trylock-v5-11-c87b714e19d3@google.com>
+X-ClientProxiedBy: CH0PR13CA0045.namprd13.prod.outlook.com
+ (2603:10b6:610:b2::20) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SJ2PR12MB7989:EE_
+X-MS-Office365-Filtering-Correlation-Id: 82d1fe0d-3237-4e3f-b154-08ded9128577
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|366016|921020|18002099003|22082099003|11063799006|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	dYA0FlLxIeNKn/Yt4VVelI/B2/czJyRmwD/rwBbCoB2IXElaXtCf5lgVBlhRiMy0mN4MG1/ZIcw/jAozwaioGCVnWms1ThmS7aY8utm/AyM96yyEdhWSlXFU9rL3biJiwlsAc3/uF3oJCxAJlR2UBIYn31GdmWXFCd2ZTR5q3QSMt+hGr4YQ03pur+92cvvI4UQRTpZBIg542bo9aw+fl18XtbB+3GBGb5eOME8n/77Oh4HRYi5FcBnr78nlqm69SW1MHAL1zzHnChW5MfvPApXUyfnofEN2slgV0A/WtmjiSW9/zppk95dQZ2FvpCi06AUGLrucH0+h1nUPcomofwsTcsFgJBlHICrfL9ruwhHjb4OiI/k0GM3JSoI6iEtRv/aheV+01rOd5i4riu9OZK8vWEahc/Z0mRZFhBwV+q2v8D4TaWbiDNy8hO1WoaemwZOZGRZox+vet6bDVNXWYkUp7vJUIY1KK6dAextCtLgywfSZmyHWYfGvXiSuNf78+d+/cCHJyn1rtgcDWa8hsMH2msl7s2YdiBv4KeLdpttMYIdCG/Jmfnf1HnJISzzfJdM2hxla/kjBh1xUOGL5QJUuHcnrjxJC/xGjE5iqM8/lagkOPkY/yRavVpwnVCWApsaWpRZkYnUlNB3+j7+GNXNy55+Nvn5pHd8cisUah6WLxv0CHirPLK2rObU+oeDusCIlrhVoGUGv82Y8tPCHLQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(366016)(921020)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SWM4ZUt0ZWdnTEJpekp2akpUMnJZQ05zc2NwQitoY3FWeWdzS3oxelExWE1l?=
+ =?utf-8?B?OHpGQ0VQUFVRK1Y4cStKa242SndZc2lzTjJQczBmaVRTbVk2Y0tjUVFiR0Q1?=
+ =?utf-8?B?WWhKckJ0V2VqOFpJTnljWHlRWVJINzBlQnI4bUl3VE4zeHFGVkplRm5TQVdC?=
+ =?utf-8?B?SDhVWWp1TmMrbnhRdW8zR1l3WE5mUXBjT1NjYkdJOUpEYjJJelgrTlQzM3da?=
+ =?utf-8?B?U3BzWnBXYnl2Zkg0RTR6OFMxUXlNdmRFRjBZNHJRMnZ5YjZMWitMaHZ4RmNH?=
+ =?utf-8?B?TDgvb1hmeitZbU56cXUrSjFtb3I4bEh4b1JxY0hPYjY1dGdCYkFPYUxDcGk3?=
+ =?utf-8?B?d3I1YkxzcUtMeFZRWFAxLzlUWmFEeG9hSFVJcjJrNWI1WUJiclR5Y1QyM0t0?=
+ =?utf-8?B?c1IwL2dQWnkrWTFyQnNZRHN0WWVlR2d1UDQ5KzV3c0lSUmpib0ZadmoyeWZC?=
+ =?utf-8?B?cDJVc3hEa1BzMjcvVjBTK1ZaUW40UitNUHJKMUxoK2Q1U2VhLzUyVEdzYVNE?=
+ =?utf-8?B?NGhpT0ZmQjkxcUk1NWZTeFhxS0VNNitya1FDY09pQjVDZk9mSG9qbWhEcWFF?=
+ =?utf-8?B?QXRCU3RVWEIzOUwycnBuSloxaVdEbHNhb2V2NFUyUTUzZ3ovaEg1Q1IrYlVD?=
+ =?utf-8?B?ODhCcFk5K29mTGdwMENsTTd4VnE5N05FYTFDYXBRRWpoUWwxRE5iMnkrVklU?=
+ =?utf-8?B?VER5eWR6d0V3YTR4TFVYYVdUbldLS014ZWZHUjFOeW8wbXpuTlFIME1ucWNo?=
+ =?utf-8?B?U2hkeU1JRkRZaXJ0MEh3QjkzVlNKRUFHakN2czh5SUVxaFdpMDREeEpGUTZk?=
+ =?utf-8?B?YUhQK2tyRTR0U3NUMUdZaXkyM1ZnSFFhcHJBUnc5emJ0cTEvQjlGcjZTaGY2?=
+ =?utf-8?B?UnQyemh0d2dJNUorK00zajdwZDU0Rkp5VGFNMCtQd3Y4UUkzdmVCQW9GYjMw?=
+ =?utf-8?B?aldHbkYyZWhTOXhJVk4xamgzcmtZTnRMK3M3YWdDZ1dNK0g5b2ZUVUxDNlVq?=
+ =?utf-8?B?TEFjQ212N2xoVXhSZTlIekZzakphTmdoK3BTRGZBUFY1dllVTjlpejZRSHVU?=
+ =?utf-8?B?dEI2Q3N0TDRJTDBMZ0lKMzNRVGJ5cGlVcWlwK0U3UHBNSjEwYW5tY1gxODc2?=
+ =?utf-8?B?QWY3Y2UzTUszU2FnZkcrS0xVK0JDQk1adkt1dTQ4d0VWc0x0ZGFnQVg3Yi90?=
+ =?utf-8?B?TkVNRnYyaGlteVFDdHU4czJnMU5hUFJaaE9UUXFnQWVUUTlOcmdWUEpFVlpn?=
+ =?utf-8?B?RERUaU1Qa1JvSEVzWFJjRDZhVHFsWDFVV2lkNCtoRklUOVZIUm4wRGxML3Jn?=
+ =?utf-8?B?RThhL2xJS2s3K1Bzb0haZU1yMGdZR3ZmQmNROUpBOUdtdk1LZ2hqcG1CaHp3?=
+ =?utf-8?B?OTB0TG93SStSVFZQR3p2R1ltVEkvZXhoMm05VU8xUnVqcHRubjEyTGJKdVRE?=
+ =?utf-8?B?U09PY21iK2MvYmRNL0dIL0pEZHc3dExRZW0wdnVLa0IvaHVBOXJiNGF6NFM3?=
+ =?utf-8?B?dFVwdzRQMTdvWUErYWFDQTJ0d2hZYmE4RXlHVEFHZzNrczVsOVNmY1kzK2lH?=
+ =?utf-8?B?OFBlbzRJZnAxTU10NmZ4SWNBTUhZSmsvdUhCRUJMekZtTTVwMTBRWjN3bERy?=
+ =?utf-8?B?N3M5ZkRzWEpNWFBZWDBCUGlWNnZrcWRNSktnZkdVYUpWV0h5elI0OGY5Z1kz?=
+ =?utf-8?B?NFpWWlNZRjJCUjB2NzZxbHRpeHVYRThqVUExRHdzSzUvUXdiaDFINEhhOGdo?=
+ =?utf-8?B?OGV3UXQ3bXZQVTZpWE9Wdk5JcWhzNUYzQ2lVanA4ZXJhSVBzdVlIT1I3TjNt?=
+ =?utf-8?B?OCtvM0M3aVBiVXkyOTE3cHZ3ZmRUMmdRWVhMbjF0Ri90VURZQkRMUXR5OUZm?=
+ =?utf-8?B?b1BwbFhZd1Y5TzVKVlYya1NHS3BoNThBaEViSjcySE5KaDdVTGNuMytZdE9o?=
+ =?utf-8?B?dXZCQzlFVVZkVEVjS1d4ZXNFZVlPem9kUk9iSGV6bVM1STFITXJXUGV5SGVZ?=
+ =?utf-8?B?enJSWHBWb2k1L2Q0aGhSNzIySzRTVTBoZEd6YVNwUFpoZk5SWE5TYThmS1Mv?=
+ =?utf-8?B?eHNhclBzK3gyYUg4bjkwTlRudVdsdFR5aUxkMTF6MkExVnUvNGUrY01nN1JL?=
+ =?utf-8?B?YkRreHJ0eGJhNGxOYld5K25ZemtFYUJsZEJjbGphL2JpV2VhUkhKV0lKaWxF?=
+ =?utf-8?B?ODlRYUZzQXRlSHBFMTQrMVpWZ2dtVDVoK1dsYVkwRFlEMmZjNXBRT0hRRVNy?=
+ =?utf-8?B?WlR5dy93TjRoTDlNZG9IVzFZcnNtQ2liSWUrd2ZHRDFJSDdESVVPUjN6eW9M?=
+ =?utf-8?Q?BzkHrIt1pv48gmYa9z?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82d1fe0d-3237-4e3f-b154-08ded9128577
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 14:51:10.6392
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aFhRAFq++Q7/5yUoBggwjQfAZPCVfyWY2lMghJlbvowtX/O11o0RvjRM6m47o3uv
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7989
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E2225180004
+X-Stat-Signature: 8x9ixthdkyy53c1go8myqwrnon5uftij
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A672A180007
-X-Stat-Signature: ig181rgobgszb6gwxmiat6j59ktnfn77
-X-HE-Tag: 1783090249-991430
-X-HE-Meta: U2FsdGVkX1//DmtG/oU329uTvW+iRfQ+nCeIdaJ40y3URdeRUYL9Ak81vkJG8xWNNIZo3NJCEoof2kX9WKWc50xJrZFs8rt/RJfAoipDuhQ/7dtsVd0svuTzcNv+cYZX63A6S2u7OCgqN+Nklcny9OAS9+GvpszQKCPW0APDbaEkioTISLUnievCq/DVsaAQprdLDjtleMWfU4IyP3P1925S8C9YkTTCkxHrIUNWNvJdLyKbYHDzmji7Jdq0XZ7a2MOSPgL4SmgAQCe7Wbqtetogop5mn3b+GRDqK4yMAvYDYXmdDVyRCegE2TjkHyIxPi/mI4d38RUni8swAYHCPNx+NUgmN25TOBCQhHm+6yCtwF9evGEj4v946m1dC2WYTp8jydk2ll/YCshTRGEYH0wMCvTqavsMhtSprsdiurjX90GTvn1KStIk0/Ip0KqFpJT+CttfYrGmlST6hu7WJgFT2ZzsCnRiw5jAxhcVUdBTZ4v0PhRPYhPux2cKvs63sImHfWw+Y4MiYIcM9kxMjxKDf9YcWDBr8s3uudBV5l+q+KYhShPkbup0rLIulf19+JgPA5JVyfjJIQU3519CoQ8Qc8pGeJw80FH6OhbemQqzlcnKqPvAZgwFx+N4jEEDQwuioipKJdfh6nTXJa/hHF0XP8vQbsyXpTJ64AwEhDnZe28nhwjx9Ul97JhFofciH/AxU8B6ARhoSMYfmuJKPrn/eIXW6VE0K61RX9YDP3ZB5/1TnFuDMF6riUzT8KiKiX4NV3hs8aFLZbO32og/AR1tuQ+qJrn2rGf9Y9ScNOm+s7PecirdLmZoKlpAVqgmpJqe1nwM1n9Q2Kd9Vjem0MyXTKazI8wErgm1k1E0uiRNvxe0NURT1yZXhAQk5L5uTmqu81wJf1OmMV8nlZ/S47dGNSCZ8e0JUcJkTKyLcHS+0wvilUEA6J9LqmNPSifvp1z1x6CfkoewCpSzy+8
- lbgqC1L5
- jqfu0GSOayrELrW1HU8rwBNhxdh3lUOgYOSebo+RS5yKXMtCttTDKHTi3KYn3ZI0v41LnPa6DrpVk3MSj5Rm0ixHwLyweNBZt4BoLH1wdA/di1uEz/inuu0FUPikaszeBTJUzTxe7RiM+4xmpxFEFQGPoNyJtrdpbkEZ0AaJzm5LSn5utRo+LEtfBm/GRw+WzTC7lGJedItGHAtRsCdH7HmlWPz2d2HUgjikMc66GaNKCc68NOe5T9/pr6TqYT3JOHqaPmKEyQxIqxPiJtTQjgoS2dh9zqpY5HnXX
+X-HE-Tag: 1783090275-8743
+X-HE-Meta: U2FsdGVkX195MzLXtQXaijWL4X2AKuTrGdaxq5Uk/6eiMVRugLuxsEEdol05N6VhOfp0g6H9FYNb/caBRp292M5hD4EpMf11NcDKieEcb8OGO4Ws17dRxnBXaOoO1EuoVhS+Rm7rxB/wOIca94GctYkQHTZnJoRdZFoaKWjiapI2boJN+RAWTKzV3za7OTDS05uZcmxIBceGcqAHf/Z761pdRaIO0Sembb59jOtHIjyniqwaB5jGrW9SnfDNoq/PpU64RpnizV2kpVWT2zvLpBwFnAExQLNoJlqDjGTRkPhYvdB26zuRTs7Jn+EXVVaeQnOY6VZUTvqKN7jCqD3X7R7bWy5ZkHTteoC0dpVuqTLW/bF+Fq2bN3hvRsRvQYOLIRyTLgEju1AYsZcI0HzXzpW07TxcaGsmNq97CZcyNFVCjFl/WdBWxfi5N1+0l2UxXpIZ/e8ZP2ROs1cbSAxgIjSoj/i6URJ6/oDMikS02hkCIJxeSRfoSSVlWvzYiilNYPBYrjunXTZ599vaq8RiIbf1zR0JZGg5kZG5c/MPSnKl6kfVie38pbSdcO4NeuAV1PKJpZHWWgLJbHpElk9/Xfx4+krKw8mTnKPkvDU6dzQ3qiN+uNBEdup3atZFgInzRNMDD8EJMbkRYXsmDBaCyuZ56xvP3kEGzViXJRGQ6uTTGN90ckB0JPogUiJhoyAWS7D6bLB5f20bRzqEc9MmXuXJZ+gcMi29/s1vq1QkbPjitOCUzHhxS+XnK1hasOVBq0tzfEzKPnU7DriZkl2Nog7NKPkizrgUezSLQ1PgUozHttNzclSGQosMsEKbkr2UKQ0bCubbEgAqTFDu75Sclh0kQKGkQw2+36NVWbQrsDqqzDHUSmXVfU4gtA3yQERo6SciqWAqMw2dGi3shuc7USOPtutb9BEVRR01+Sb2VP8pIqPiwWRcI6qRX5mP2l0nVZtS1cEJFAAcMsPn6I0
+ in9GOhdk
+ Mi/FcB++ASMXmTn/9LWx6ofWK6sQ1SwopND5JrmmJvgkhnSA/5+7nxHJGVUoGd4RqDzk8mfFO4NKj0g5Ry6GTtPiMvvJsIHwIfYqihi5IrRJQyH3WcRjw2dhhu0XF3WWmTJlyXMGtRtxFRltcFS3r4C8pAUceAQUaXug6ssy+kQUnw1RI5Q6eO43lKL4vD3VVMy2VszdqxbmyQcMQl34JIVHnstUMer9WW0eZuieDWAsxFRXdoDSO5MW1GajNHF6sEzqhHCtoIzXLp4hBaVRoLn4pZ64LGiGaN63AZYU9+0TNr4Qbk3ctrUVCEs7Rcxv+jT7/ncq91EFAMt3/jVE0XfV0bOY8zXsSKksALdIplsY5jsFYYJVh98mkLPZD4bwikVwZCz0tNjuFYtQ3yAQoC26fNlz8pBrEx+tbZFg+K+a0qQQp3roZk7W4IrCqEhTWtMa738Me/sIC2xlFBA3zzBnrLCK/cnhF8CSmTuyVvCYigkPJf/ft/qPMIND90aIk0Ef+euwLtAktWLz7gShVL9SvDw5pohg1TcEer1apRNPqNZQUclY8gojSjDCuaN+4n+B2SQ+JHzr9sGd2KT9gVq/bSo9ZBzxikcCwl2g7+Y0KUgJP7q2gCI2XVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,145 +190,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/7/3 17:44, Pedro Falcato wrote:
-> On Fri, Jul 03, 2026 at 10:25:07AM +0800, Leon Hwang wrote:
->> mseal.o is built only for 64-bit kernels, so 32-bit kernels fall back
->> to sys_ni_syscall() and return -ENOSYS rather than -EPERM.
->>
->> Document the -EINTR return from mmap_write_lock_killable(), fix the
->> CONFIG_MSEAL_SYSTEM_MAPPINGS typo, and describe system mappings in
->> terms of VM_SEALED_SYSMAP.
->>
->> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
->> ---
->>  Documentation/userspace-api/mseal.rst | 18 ++++++++++--------
->>  init/Kconfig                          |  2 +-
->>  mm/mseal.c                            |  4 ++--
->>  3 files changed, 13 insertions(+), 11 deletions(-)
->>
->> diff --git a/Documentation/userspace-api/mseal.rst b/Documentation/userspace-api/mseal.rst
->> index ea9b11a0bd89..1f1cf206670c 100644
->> --- a/Documentation/userspace-api/mseal.rst
->> +++ b/Documentation/userspace-api/mseal.rst
->> @@ -50,8 +50,10 @@ mseal syscall signature
->>           * The start address (``addr``) is not allocated.
->>           * The end address (``addr`` + ``len``) is not allocated.
->>           * A gap (unallocated memory) between start and end address.
->> -      - **-EPERM**:
->> -         * sealing is supported only on 64-bit CPUs, 32-bit is not supported.
->> +      - **-EINTR**:
->> +         * Interrupted while waiting for the mmap write lock.
->> +      - **-ENOSYS**:
->> +         * The kernel does not implement ``mseal()``.
->>  
->>     **Note about error return**:
->>        - For above error cases, users can expect the given memory range is
-> 
-> Honestly, this whole thing needs to be deleted. We need a proper manpage.
+On Fri Jul 3, 2026 at 8:31 AM EDT, Brendan Jackman wrote:
+> The difference between __alloc_pages_node() and alloc_pages_node() is
+> that the latter allows you to pass NUMA_NO_NODE.
+>
+> The former is going away and the latter works fine here so switch over.
+>
+> No functional change intended.
+>
+> Cc: Robin Holt <robinmholt@gmail.com>
+> Cc: Steve Wahl <steve.wahl@hpe.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Assisted-by: Gemini:unknown-model
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Acked-by: Steve Wahl <steve.wahl@hpe.com>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  drivers/misc/sgi-xp/xpc_uv.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
 
-$ man mseal
-No manual entry for mseal
-
-When searching "mseal manual" using Google, this doc is the first entry.
-
-So, this change is worthy.
-
-> 
->> @@ -62,7 +64,8 @@ mseal syscall signature
->>          memory range could happen. However, those cases should be rare.
->>  
->>     **Architecture support**:
->> -      mseal only works on 64-bit CPUs, not 32-bit CPUs.
->> +      mseal is built only for 64-bit kernels. 32-bit kernels return
->> +      ``-ENOSYS``.
-> 
-> This LGTM.
-> 
->>  
->>     **Idempotent**:
->>        users can call mseal multiple times. mseal on an already sealed memory
->> @@ -131,20 +134,19 @@ Use cases
->>  - Chrome browser: protect some security sensitive data structures.
->>  
->>  - System mappings:
->> -  The system mappings are created by the kernel and includes vdso, vvar,
->> +  The system mappings are created by the kernel and include vdso, vvar,
->>    vvar_vclock, vectors (arm compat-mode), sigpage (arm compat-mode), uprobes.
->>  
->>    Those system mappings are readonly only or execute only, memory sealing can
->> -  protect them from ever changing to writable or unmmap/remapped as different
->> +  protect them from ever changing to writable or unmapped/remapped as different
->>    attributes. This is useful to mitigate memory corruption issues where a
->>    corrupted pointer is passed to a memory management system.
-> 
-> Also LGTM.
-> 
->>  
->>    If supported by an architecture (CONFIG_ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS),
->> -  the CONFIG_MSEAL_SYSTEM_MAPPINGS seals all system mappings of this
->> -  architecture.
->> +  CONFIG_MSEAL_SYSTEM_MAPPINGS seals mappings marked with VM_SEALED_SYSMAP.
-> 
-> VM_SEALED_SYSMAP isn't meaningful to userspace.
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
 
-Got it. Will drop this change.
-
-> 
->>  
->>    The following architectures currently support this feature: x86-64, arm64,
->> -  loongarch and s390.
->> +  loongarch, riscv, and s390.
-> 
-> This is also useless, every 64-bit architecture will support this.
-
-
-Do you mean dropping this sentence, or this change?
-
-> 
->>  
->>    WARNING: This feature breaks programs which rely on relocating
->>    or unmapping system mappings. Known broken software at the time
->> diff --git a/init/Kconfig b/init/Kconfig
->> index 5230d4879b1c..12bb39f637b1 100644
->> --- a/init/Kconfig
->> +++ b/init/Kconfig
->> @@ -2112,7 +2112,7 @@ config ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
->>  	  from a kernel perspective.
->>  
->>  	  After the architecture enables this, a distribution can set
->> -	  CONFIG_MSEAL_SYSTEM_MAPPING to manage access to the feature.
->> +	  CONFIG_MSEAL_SYSTEM_MAPPINGS to manage access to the feature.
->>  
->>  	  For complete descriptions of memory sealing, please see
->>  	  Documentation/userspace-api/mseal.rst
->> diff --git a/mm/mseal.c b/mm/mseal.c
->> index 9781647483d1..0464c7b94ab9 100644
->> --- a/mm/mseal.c
->> +++ b/mm/mseal.c
->> @@ -132,8 +132,8 @@ static int mseal_apply(struct mm_struct *mm,
->>   *   addr is not a valid address (not allocated).
->>   *   end (start + len) is not a valid address.
->>   *   a gap (unallocated memory) between start and end.
->> - *  -EPERM:
->> - *  - In 32 bit architecture, sealing is not supported.
->> + *  -EINTR:
->> + *   interrupted while waiting for the mmap write lock.
->>   * Note:
->>   *  user can call mseal(2) multiple times, adding a seal on an
->>   *  already sealed memory is a no-action (no error).
-> 
-> And this whole header needs to be deleted as well. No one's looking at
-> kernel code for documentation (and if they are, we did a horrendous job
-> at actually documenting the thing).
-> 
-
-
-Just to confirm, do you mean removing the entire function comment above
-do_mseal()?
-
-Thanks,
-Leon
-
+--=20
+Best Regards,
+Yan, Zi
 
 
