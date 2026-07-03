@@ -4,107 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2C85C43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 17:48:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79D34C43602
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 18:29:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 937D56B00B6; Fri,  3 Jul 2026 13:48:43 -0400 (EDT)
+	id A9C156B00B5; Fri,  3 Jul 2026 14:29:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E0656B00B7; Fri,  3 Jul 2026 13:48:43 -0400 (EDT)
+	id A4CC56B00B6; Fri,  3 Jul 2026 14:29:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CF4B6B00B8; Fri,  3 Jul 2026 13:48:43 -0400 (EDT)
+	id 93C116B00B7; Fri,  3 Jul 2026 14:29:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AFD56B00B6
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 13:48:43 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D93FEA01BD
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:48:42 +0000 (UTC)
-X-FDA: 84948200484.19.6252A23
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 2C00914000A
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 17:48:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KSn3XOkj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 531516B00B5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:29:25 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A382A4025D
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 18:29:24 +0000 (UTC)
+X-FDA: 84948303048.30.A0826DB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E651E80009
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 18:29:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bj8wiXFD;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783100921;
-	b=rbRIXJN9lq3UJNhGhWFPxch7k/CUy4gPmudLGxrxdyh7lwSuoCpbuzLc1ZVqFOz8XU1o6F
-	d8ATHRCdx0Lb3yt53mViAzvzSTDehD3RPZP/SLkvhEz5BMzbiUN0yE9sNGBvR92zUdUH9j
-	662c98sFXjPEuSC7Znj4smqGPTDvGP8=
+	t=1783103362;
+	b=ZqL+NcU15ZjfL1RGnKCkJ36NUrPf2mvZs9DNah5nreFJoFvUBobmULxiQ5Krrghq+lkzHQ
+	QoKP66E99i4vP+KULE5n5jj5R13Kp4rHyZhWnEeMmCpfbXy+QEnYhf/LCpEsbXaEq+HG85
+	Js36tiFjH03ww4+rIovw5r3/ARyIASQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783100921;
+	s=arc-20220608; t=1783103362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GGBqB1i2lcxh2kKfWJFTM0BG47cF97dz2YCl8fcmHhA=;
-	b=XHoio1KmHw8DHHl+wYBf81wi/IJFwX6dKM0EcMLAzTbsCAUmVaEzkw6JctskdlcJwIHyWw
-	DOy7p95e6eGyeEHi3DM0yAnd/AHX8sNaAih9VBgN8HqdGtBhgU17nYBCebs9fFeodhnPIf
-	esRTqnymo7X+q7kwDuG1LV3f9Aet2Gg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KSn3XOkj;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783100919;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GGBqB1i2lcxh2kKfWJFTM0BG47cF97dz2YCl8fcmHhA=;
-	b=KSn3XOkjMucwzDecl7TvcRBT8YSow4vMTBeBCySRuzCzQCzp7tHuTZ2QJjMFv/gmxapQGH
-	spQwWO0+HKj7dS4T0tBQ2NGkVWSRLunZVotR+HvkHWzJzoEldfJh5fi6/38CgsrV9bx1yP
-	vlRDLRa8Zxke8Y/10hD7Eyl/ChPjZEQ=
-From: Usama Arif <usama.arif@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	david@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	ying.huang@linux.alibaba.com,
-	Baoquan He <baoquan.he@linux.dev>,
-	willy@infradead.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	kas@kernel.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	"Liam R . Howlett" <liam@infradead.org>,
-	ryan.roberts@arm.com,
-	Vlastimil Babka <vbabka@kernel.org>,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
-Date: Fri,  3 Jul 2026 10:48:31 -0700
-Message-ID: <20260703174832.55655-1-usama.arif@linux.dev>
-In-Reply-To: <20260630164143.1595669-1-usama.arif@linux.dev>
-References: 
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cDUa7qAvGQxAqsninsYf1imnrLZa/8omKlfZyOjK/p4=;
+	b=djPmOFZ9dDOOpAc8IzjJTLFX1dNqMgtIlpzINmWFPGIkqSVy+0wiK5OmDDP+qYpFoY5xpP
+	F0E4sTXvV0JMcZhXVbcJb7eHAbkYHU/SSy8q/P0ERU9nLcOEfw8MPNlM4jWYV+OQXeyhd4
+	CjpVDyrShUF9PSCddQFyFeKvQjcr8O8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bj8wiXFD;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 49C3660051;
+	Fri,  3 Jul 2026 18:29:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0081F000E9;
+	Fri,  3 Jul 2026 18:29:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783103362;
+	bh=cDUa7qAvGQxAqsninsYf1imnrLZa/8omKlfZyOjK/p4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Bj8wiXFDw1AEwJAJzWMHcoHUzUnO5RSLUrrdbPDDtrmHvICV4zvluTNYGrCKNReo+
+	 V2VHecn6G9LIfWRUYhHviazaY5SPs+PD1M5UTv6w3boNcTB2kk7c8VZ81fqK1AbmAd
+	 57RAJvDkiTHqnE5bsKAh+rQSmEVuCAEs9yrQTdJVFl4TPsOQ6fqSkVKiMM138D6+Rf
+	 Twkdgzz2OvoRegKiZIkL8IHSmlKgnE/rg5/I6C9SHJU0zH1mL5dkYJmbH1CiVSrtWD
+	 pBboBrk2Smc/JfNU6pSXBek5e4iYD0aLFYqs7FYnuViAFirbZ/UiaEVn+QUB9L+tsG
+	 bcf6WGk9oP15Q==
+Message-ID: <58458578-a6fb-40c8-838f-9a06a7371f76@kernel.org>
+Date: Fri, 3 Jul 2026 20:29:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/11] mm/cma: Allow dynamically creating CMA areas
+To: Thierry Reding <thierry.reding@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Hunter <jonathanh@nvidia.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Sowjanya Komatineni <skomatineni@nvidia.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Russell King <linux@armlinux.org.uk>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+ Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
+ "T.J. Mercier" <tjmercier@google.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org,
+ linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-mm@kvack.org, iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org,
+ linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>
+References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
+ <20260701-tegra-vpr-v3-6-d80f7b871bb4@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260701-tegra-vpr-v3-6-d80f7b871bb4@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E651E80009
+X-Stat-Signature: f15sjrap7kwespe4wfshyawf1ky9r5eg
 X-Rspam-User: 
-X-Stat-Signature: yrqz36714q9h166ft5yi4tugsryi3an3
-X-Rspamd-Queue-Id: 2C00914000A
-X-HE-Tag: 1783100920-887659
-X-HE-Meta: U2FsdGVkX1+DK+JU31mYEqD+ZPBTD734DZoeHJxLopmSRjLgPGL2gokWl9CxSl4HJZjlmH82inLxSX0oRe1p++iH3B4ROtTu8Cqll1kBWU3TIzUMvqbUlR/qYoK8/4rUV1mKB9PfgETWCYbZknWXKlAmjmyFb9Jw9dTvL/J+3IQQBIOybsSHAG5mUHcfdCxcgsFDq2R+UD8yXt/QAm1ze4E2ET9JdgVCqGozvPXq+d9X1EDHTl8tJ0XPSJH6QV33HA1tio9PbTHKCeRQ6x3+4/Jb4L6JsC9vibcL4L5gWKeYbp3jWHihTPlI5gvJyys9krkbjv7aMigFdkBCY/DoiNxdfp1foJMehki5g8voGGz65+8cpGd6H36qRQB571cM5totgSyJCahzYs9agfGUsH4cGwivObZDQFFGanQ5PqIbzYleEfy06U1jOwLm5nctUXSi75Qgeu1avrPiwn3yg+otlmbOtBDSEyDIGTwlbDxklfzh4CWpTgYdCCpdFFH5ZmSuXedvsX9ZetfigIokzHToGbtenWXxYU9sHKqeNSGjP33sJV8RdQxb/JEHzz0iH1lz3ghRSEmNouglOEJOLpDzfbKHFss73OVivojEprPs/Jdgzv8E/vATZCcihsH38etqNgOVH3jafukO2nRIRboWSzrrH+E52d/cTakaRRb0MxlHnX9YErcUar7WzgFnF5o2PFBmkOGXfllIwYa/9igD4cQdmM4BpCZdItR4HQBN+4a0MXrJKKWU42yfKPRwwy2i4gqHOXPnaszsbArWz+AzJta8mwV5nEVcvmCBIQl50dU1YL+QBALiWzYXEYuAYtoll7GFCNyuF2ai+DjQpaagVB7sOmNYBgGU8ORX+ClZT9wTmEgf61xom8Lb21NuzprgtsvwBB6trN+PwOM2YwmcMppUSAlWJtTyKqu0nB9KaoGUMKXRfMK2CiPMhNHUVDzxYzRnCjovPCYHLx7
- phnIUs2X
- IgIF3FwtmxlM8ONFeenmWASzj/6IgVRs25lJXewJ2w5vgE0ZLNPfSMhFmG7i7+GEGBecXRDCUZ7JBueAvb5YSNYasGHhL5W7hG1fDJ3u2oHPtVCRbN3GhfZbXGHu2k4GR6lquIKI6TebNQ4+aXoRn7RL+TppdPs4tYkSN2T13skbgXjPKYf6vNCzh67BamDNkgyjRW8pJKVKf0r+bjBQDOSqagJSkyR8H22T9
+X-HE-Tag: 1783103362-167199
+X-HE-Meta: U2FsdGVkX18b/nVa83Y3w9xn7d/ukwoh1s7zF8VG9LHXFG5UJOzrlsH+Rrz9AhuQAcoZO0EAo7Hq2yUaDVHFg/cKBvhLsHEqbZ8wcEAV/PPlCV1bTupCDM821MlPma3OfZQVoR+vxbWq1azgPRrGGo4vHfj6DR0SIbUr06dLIbxaC8jJgTf3buviKqRDPvJbRRlCujhsik4h2fXQkINP6HbQyhBG3ywX9pagoVktrYo92zZKhceAWul/9cnOZ+XPSIXrN4DtbTh06L3Lyiy3lP45GlOBfde0Fw4Yi7IEhi2KVc99Z7xu6Oo1BtK5biLEl+PFUGFapzlRxz4R4VAmXImbCa3aFwKlgI943qaqRyrRED5820U/JtXreqD9bLnyGQe3vSmjswExItbUQjp5jpEVL7I67Rh1PTvc4XLXa84/snxJlg/ueNQrkUVf10TOCoMTJbf13bU0K8PckhzgLvWhueSncwGd1YJAvoWPflHONnD7Gocs/VVyDOgtDreleYu8t0kaxomgfyFK7kaNdP9+9PWhdbEuIIM9netW6ip8mLUDIt+xVVZbWuNLOQlaVxvxC8K7SrrR1mPya+QrRCGpibfFHorS3cPxWOJYbC29JlEyGcvJFbBYtY2UKEG6qn19hZK//1zUs57IWjb1KoSkI/CbSopmkVreIcbgSNNsF9qIsAF9Hq4DHbCcdKwtMZTICwZW2s47s2nLPAYe2Atnxx+gxI2FdMxmNfIoduBJ9CWxl8lt2fz9W2/coPKpkQF3xa32zQY6sE/zHG+5RJwfHOv9I+mkH7kn7sMvAqlhPRacD5FC0nl9Qhj//stGTq+SXh/TOOCpPqwDeNcwdOUSaiZW5JleOA9vKUtexFKzVbbP6djL85IES1Nk+DUvKzwtfl6GyEijP9VMD24T6TcabEGxc92EWQr3Kz2LdhTFDCb5Va5DLvaDJCxKM1C7GAuSYYUFtilfbV83ztV
+ NxSpoPta
+ Q1jjyhgJ7ObEWNjIbvx7BHSjiBxYX7oGGZa8pV1bI5Iow6JMiVylilTlXJ+BiTiS4XvFKkXWI0qpPADe4vehn0wjEnh5nt4cBcCLlYmezbkbYe+OfDMLNvb761dvz9UvWu6oEpcMBa1X4bGb2jChDE424DkR95BeB27+8dpKXgo6TxztxZ/GwvGBQzo/XW4Al4+u+6KXS91xmduoOJJhn9sUBaPbpMu+TbefO+9mbPebAFvRrAz1KrNIC69JG7t/yDiX/V4b2HQoppP7wOwyFWuWbAaGmdK9ywgXqipIltfH4SKpN1P3bOSAV2Vj0sE3+bUfLi2d7arCh4KDNKtCDuxzEIF86KwQlzDqf+Ci7JXKwII1RBr+OnoJgEfSyA2MUV8Nn2MMw386bWVsUoymawjNVsiIT3uiL88vk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,41 +169,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 30 Jun 2026 09:34:37 -0700 Usama Arif <usama.arif@linux.dev> wrote:
-
-> This is the preparatory part of the PMD page table swapin work.  The
-> full PMD swap entry series has been split into two parts:
+On 7/1/26 18:08, Thierry Reding wrote:
+> From: Thierry Reding <treding@nvidia.com>
 > 
->   1. this preparatory series, which contains the first 6 patches. Zi [1]
->      and Lance [2] suggested to separate this out from the core series.
->   2. the PMD swap entry core series, which depends on this one. I will
->      send this once the preparatory series is merged in mm-new as v3
->      as the combined is currently at v2 [1].
->      I have not marked this prep series as v3, as its not really adding
->      support for PMD swap entries.
+> There is no technical reason why there should be a limited number of CMA
+> regions, so extract some code into helpers and use them to create extra
+> functions (cma_create() and cma_free()) that allow creating and freeing,
+> respectively, CMA regions dynamically at runtime.
 > 
-> This series does not introduce PMD swap entries and does not install any
-> new page-table entry type.  It only cleans up existing PMD softleaf
-> helpers and call sites so the follow-up PMD swap entry series can be
-> smaller and easier to review.
-> 
+> The static array of CMA areas cannot be replaced by dynamically created
+> areas because for many of them, allocation must not fail and some cases
+> may need to initialize them before the slab allocator is even available.
+> To account for this, keep these "early" areas in a separate list and
+> track the dynamic areas in a separate list.
 
-Hi Andrew,
+I want MM maintainers to review/ack this before this gets merged.
 
-The series only needs 2 small changes:
+I'm putting it on my todo list for next week (please ping me if it falls down
+the cracks and nobody else ends up reviewing it in the meantime).
 
-Removing a comment:
-https://lore.kernel.org/all/157838aa-1518-46b5-8734-feab2c42ee2a@kernel.org/
+-- 
+Cheers,
 
-and s/CONFIG_ARCH_SUPPORTS_PMD/CONFIG_ARCH_HAS_PMD_SOFTLEAVES/
-in the last patch:
-https://lore.kernel.org/all/e37df165-8de0-4924-ba19-0d43a6b7d36e@kernel.org/
-
-I am always torn between sending a fixlet on the existing series or a
-new revision.
-Just wanted to check what is easiest for you and your preference
-in situations like above?
-
-Thanks!
-Usama
+David
 
