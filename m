@@ -4,116 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E53B3C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 11:43:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E049EC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 11:43:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 907326B00BE; Fri,  3 Jul 2026 07:43:27 -0400 (EDT)
+	id D9ABE6B00C0; Fri,  3 Jul 2026 07:43:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B7286B00BF; Fri,  3 Jul 2026 07:43:27 -0400 (EDT)
+	id D4BE26B00C1; Fri,  3 Jul 2026 07:43:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CF4D6B00C0; Fri,  3 Jul 2026 07:43:27 -0400 (EDT)
+	id C62436B00C2; Fri,  3 Jul 2026 07:43:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5879A6B00BE
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 07:43:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 992768E64B
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:43:26 +0000 (UTC)
-X-FDA: 84947280012.09.28007CB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C6A82C0011
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:43:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tVEge0Bj;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id A0E8F6B00C0
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 07:43:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33F868E7A5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:43:52 +0000 (UTC)
+X-FDA: 84947281104.17.BCE21F5
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C04BA1A0005
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:43:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=axBe2JTE;
+	spf=pass (imf19.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783079005;
-	b=dTf4lM/CGXEJO7NKdGs+jHNcUK14GHdzOi7Fso3XayRugnq6o53TuZ0IqsAtJWU1cWp3g3
-	NKa0qtFSRyOPBpLaOIcr+C8kEKldBCKYVYOPqdgYdQn9P8aYixu8XaKE5TpIg7nMfrF5NN
-	06UcNEiFEZkkBeBw7QcKGPFQEgJbTKU=
+	t=1783079030;
+	b=AHiwIC6teTpxFKfhAd8myOxcMwg5RJ3oG2UtnBuIKYd/P4SZCjnAR0tsVM2M3EnS3FdsAC
+	yV6s+0EVaL8nhKRBo7j+tGl+GqLmAtbaeULPDN3n3hNCwdBVt2MsfArk9P/S7Qq9krUhzC
+	sy6zfeh3l5hQIoVx34Q0HzMI0c59tao=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783079005;
+	s=arc-20220608; t=1783079030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OBfQ0Y2amoW1Wn3Q1LbOQJjLWTvXYln7NjUvp5UVSjM=;
-	b=WMLeZwS6NQr+l9ous4ONaVhstfz5RFn+vYHmZ1LAH3wmMB7S9KQPolp17gKdVgaD2BL2Ta
-	n+j2loIrli6I729blHR5gars+TeUbq1Z6cwj4+LkV7MNmk1sQdHJ/w5FNu9e7gV51rIxvk
-	hgioZxqG3ZWgwnl/AQzJq8pZBqxn1YI=
+	bh=VSetS396SrH76litqhz6V0tLsyOUbEp17iVMUlqbZ0A=;
+	b=ND1x1nWY4WvdjUwfvBPAiZdmd87xJEoOVynu9qqKE9Lasf45QHbMF6c7mIDIKRzYZAG7R/
+	oz9FYNcd2MVX4rzZVdIT3z8FOzd7YuK1xFJXCkqOVVcphX+RLzfo6hpnNcbgCGDWgQXCrJ
+	mMS1tgJP9HvVoBPyk78VLTPqEigR6v8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=tVEge0Bj;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3DF41E2F;
-	Fri,  3 Jul 2026 04:43:19 -0700 (PDT)
-Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.31])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BC5943FAA1;
-	Fri,  3 Jul 2026 04:43:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783079004; bh=9JD/rGnP4z6sxKxaETbXjsBJM6V+qvu6dbKpCu5ZUWA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVEge0BjP5FjjmbkU4psRvLiJd6bT9jhj1hm1Pa4vOf3rdbXx6C7YaGHpoigAPzqO
-	 vKdTkxgcIiMBdS93gKBCSr4GR2SegSbmQlxjG4YynzgaC0GjPSQiSEhJAQWBhw6M0z
-	 NnXaV/42Hn1Ubhy+dmLVElzAxQsZflcB0qbag9k0=
-From: Dev Jain <dev.jain@arm.com>
-To: muchun.song@linux.dev,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	david@kernel.org,
-	liam@infradead.org
-Cc: Dev Jain <dev.jain@arm.com>,
-	riel@surriel.com,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	kas@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	apopple@nvidia.com,
-	rcampbell@nvidia.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	ak@linux.intel.com,
-	nao.horiguchi@gmail.com,
-	mel@csn.ul.ie,
-	j-nomura@ce.jp.nec.com,
-	pfalcato@suse.de,
-	tglx@kernel.org,
-	dave.hansen@intel.com,
-	jpoimboe@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com
-Subject: [PATCH v3 6/6] mm/mprotect: use huge_ptep_get() for hugetlb
-Date: Fri,  3 Jul 2026 11:41:59 +0000
-Message-ID: <20260703114202.365553-7-dev.jain@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260703114202.365553-1-dev.jain@arm.com>
-References: <20260703114202.365553-1-dev.jain@arm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=axBe2JTE;
+	spf=pass (imf19.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783079024;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VSetS396SrH76litqhz6V0tLsyOUbEp17iVMUlqbZ0A=;
+	b=axBe2JTE4wy9jYDVh/aDcxlWFqplgDs/zl2EfbLtmG9mqQTYZV5rPg/mysAbrTIYroHQun
+	imD73iN1OFVJuv2JTbrfrEOVOfWxT3+/GG9kaJQRW5kMdQ8aqP0fGcDHhwBu9Ypv9V+6iW
+	7YqnlKUsRosMN4yi746SiqKn2nh99fI=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 03 Jul 2026 11:43:39 +0000
+Message-Id: <DJOWRDASVUUV.376L8DP13F1XQ@linux.dev>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, "Gregory Price"
+ <gourry@gourry.net>, "Alexei Starovoitov" <ast@kernel.org>, "Matthew
+ Wilcox" <willy@infradead.org>, "Hao Ge" <hao.ge@linux.dev>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-rt-devel@lists.linux.dev>, <derkling@google.com>,
+ <reijiw@google.com>, "Yosry Ahmed" <yosry@kernel.org>
+Subject: Re: [PATCH v4 18/18] mm: factor out can_spin_trylock()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Brendan Jackman"
+ <jackmanb@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ "Johannes Weiner" <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Muchun
+ Song" <muchun.song@linux.dev>, "Oscar Salvador" <osalvador@suse.de>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
+ <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
+ <byungchul@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Hao Li" <hao.li@linux.dev>, "Christoph
+ Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
+ <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
+ Rostedt" <rostedt@goodmis.org>
+References: <20260702-alloc-trylock-v4-0-0af8ff387e80@google.com>
+ <20260702-alloc-trylock-v4-18-0af8ff387e80@google.com>
+ <1e162a97-1594-495d-b48e-7dafaa0a6d82@kernel.org>
+In-Reply-To: <1e162a97-1594-495d-b48e-7dafaa0a6d82@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C04BA1A0005
+X-Stat-Signature: c6xq9amt3cyyfbhcrt1pzmw876a95d9h
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C6A82C0011
-X-Stat-Signature: kjuxdj4k34et3ztiizkzmde3ina9fsg8
-X-HE-Tag: 1783079004-477458
-X-HE-Meta: U2FsdGVkX19IAfjVhXbsAnRCsSYjFTrdRD1L9UIaHT8Fuy4QhQPdqT9A90HfOk4qXYgj58HOV1q2PleqcYL6BHSn0DMxIUI+qwBK52jWxCJukVOXK/2LFLVDeb7vXdiJkaH4DqV/Ehpe9xFjYu4IZj9lYU0qY6nOmoW8L21HNNiQYOhgJMLzM5saCIEjpCGEFnEVREcN49WkPzWnyqWtCGUGvotbmomFiuy5Epq0TZQEsJSzF/3N9P0k8N+Dk/10d6DT0AJp7uF0s7IXIHnuanQ2Gc38cCKegKZNYaGjOJwe295E+VdM3AoBow/YXN9m+Z6Zc9eq874MKzqWyI/BewdMkUBLwNKU7ggKbwjKof1BHShzEc2LMEEpmMnDh7CiQCPFTRBfIBOqQwk8a8V6z/xNcCF8aW7Lf/g3g8bqTRFTKl8cysY0J18Pl2gZYOjM2tiHAGtseEGdMZeknzjyeL3VH/gdjb67wXiAiMgWKuPQxOW96QRfsFBHNytLBBbrAABmWziGwn4ZJEV3yI13Tnv2uBVffM+2fW/1hFbRRL/RksgpsmcXFTM3kpEUtzzUOKY+fWtARKAKcKS9jJiC6hYltvIiIrc7Awj0buYSD77T74GvuNj2UCZ2swOUd8xXD1o0WezDV92hLvMGnGyJ+8ndst44S3AZnpR41FmRUoS5ZjqiYBpof2czX5g9UJjRp3VqbLhVk7MU9C/CgcLghYMlzghtE26GTn/Gm/X3EX6Hbasile5KKFcus34UnQOpenr26IYsn+dYGcGJNygUlmhWQvZuhAH7U9nWgULARGWeFjBf1+cONlSg/3w0VPi6BzxMJF26L2rth8bilvrFJfC1MJeGJFULrdUWBT3eWeqPAwXpXkScPy+4vAktqa3GHiqATiVCO0v9TlJmVGGlyTMhR/XYtyECYKm9ZhmahOWcdq1GQKhF59WYy3NbqccKyrOHBIurjwjDBYSnuiq
- y3+DXWgP
- 7ge/w6Nx3sX+PfndhkFoDNhb9bJ4cgCiaOcTsd4MDPwbNz8icsKSDXQNhqppTNpmUz9Jg+LhfuinvSPXlIvptFM322OhU7OHKAydAm3HU6tkJI5xEv5tC8xZlU52gtsVA8IcilfgFWFdPbl3/sGuL+8TZcZuwWyTVhXbp52bDQZL/cRNSrNxt/cb0qBoy/zUk/ky7EenSc+SWfJxytczcmVqordiqtwe8S1ct9mfbSJFyYeN6tr0ibvExWv0Lb4GTEquk+HCguAgZvhcidlKJ7DfCkkEmYb6z+Rq9WxaJncCkBsbSu1i8u4Ft55Fkb6ZZjPLeUFPTUSCtXOHROmRMlZ4TtzXX47tl8l1oH8RBSylRvpx1Mz4Kmw2Lzg==
+X-HE-Tag: 1783079028-343645
+X-HE-Meta: U2FsdGVkX195rtcpClgek1elPRjjhW1uKjcHOcnx8dlGGFtItCqrdkE50viByoH0uwUNxFvF3/D/RpjA9y6H5k/ywtefte6/1dsVRO01k/w/7DLp4l9GlgsM4qBYQVG9fCgtJFr2+YfddJtFQdvzCMkRWX3asvuSEoIjdmHguTi0au8AO1IjHh+Z9PqDv3ln5mQdfol7XrXNHTV6mfICEaGvCACbRIE5o2X8j9AdmX/oDmG/JpDHv8/Xh3uRUYOUrvu1IkX2Xzvfij+GupifD0kGROfa5ErWnzLom08uxruob/8e1bdUt9zbz5aJixidItladijuNA9PlcsTOllFKyXG33rPprEBCkFZfSPlkQG0tYMz61s/NwkBySSJ351GCwE1PCpvqnTWBu8tI+GAmCoLKxHXZhxnstVlEcUKsn4TQvrGxCHXNmImuUnJ1HGu8/4oNN5Ys5gUyRKV77af7oxNulsl3jaJ1GCLlVDwJV2ZMsMtlDfMQHcx+o0mY5RJZMcFUZZHDvaGZD3OsX+8q8ZJRc4C4VRmDSw6kB//wYGFfRiydOzBhBnjmYhIH/ylio7G0cYk/qXss5jS87t0+mec/pUmjo9xFu0EkLoRtgCfud2UFrcEN0hC+5Tki2izwTPgjm5tG1UreaqVRjoJ7pb16uYvzF/OOT80yY4qsAqfm6DHSq0V94ipIvnl/LcF1aHRz7eUH3Wubv+6tT0DGjk4NAfFuKiV1ugijA+C0ttiP4UAWij83h8WJrSfQbeTZhjeP39pI2rTOuv+L44gMAJXTicTbOWmSM57PJKAf4zM6JvlqSqt3rJJyT5dWb2qjV4PpTw4m9BY/IsqFyn0fpvF6DciS9OnItyvlKiG1q6Xg7k1XeJ5ZbeqtaYuwAULVxCeE4Q8DTmJF6B6AOJWmU65a6Kyd4uxc1HW+rHIJU7N6c/r6Zvs4XWF0L2wAplu/0R8Dtj94aSnZa5t0P9
+ wQlZsrup
+ Y6WvbJrpX/hbyOvmrueE1zJot9H/y07dc++sLK6gTNTD33VSpRW/9IDkw8nq7s3HlzQh5M+zUexSGijz0t8NT90+U9t3WyyK+ady0kwCXL+OkeRUpUnrWsyuec0r/05NnYXyUsWqAr0e+ErDvKmIa1dOLkdSjIlqGyiAMgee2rLFUTEurDpIy43WFJLse0wlklBP6PzVP1AVJbSKSZgstowzzwBm59eN5fVujn7aQmKMuEAbsrEJy2OWCsD76jrJbjxR/uTEJ0ZYz3n2EYi/MuyU9M11fpNZoQUlL31YH7ahZMsxkuMO77uhJ8FUX04tdBMlp8C6JDMcYaWAn8Ln7v5R7UFSapURM9jNMH61+3x6g9v0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,57 +108,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-prot_none_hugetlb_entry() is the hugetlb callback for the early
-mprotect(PROT_NONE) PFN permission walk on x86.
+On Fri Jul 3, 2026 at 9:32 AM UTC, Vlastimil Babka (SUSE) wrote:
+> On 7/2/26 11:49, Brendan Jackman wrote:
+>> Deduplicate checks for whether the current context is safe for
+>> spin_trylock().
+>>=20
+>> Does this function really belong in mm/internal.h or is it generic? Not
+>> sure. If someone ends up duplicating this logic elsewhere in the kernel,
+>> that would be a shame. But goes in some generic header, someone treats
+>> it as documentation about where it's guaranteed safe to spin_trylock(),
+>> and then it emerges that there are other subtle preconditions that
+>> didn't affect the mm usecase, that would be worse. So, just be
+>> conservative and keep it local.
+>
+> Agreed. We could even use page_alloc.h ?
 
-The callback passes the decoded PFN to pfn_modify_allowed(). For a
-hugetlb callback, the pte pointer refers to a hugetlb entry. On
-architectures where hugetlb entries need huge_ptep_get(), reading that
-entry with ptep_get() can make the permission check use the wrong PFN.
-
-Use huge_ptep_get() before decoding the hugetlb PFN.
-
-Currently there is no path which can trigger a bug: huge_ptep_get() is a
-simple ptep_get() for x86, and the prot_none walk occurs only for x86.
-
-So no need to backport - use the correct helper anyways.
-
-Fixes: 42e4089c7890 ("x86/speculation/l1tf: Disallow non privileged high MMIO PROT_NONE mappings")
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- mm/mprotect.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 9cbf932b028cf..6360d8a378023 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -699,14 +699,20 @@ static int prot_none_pte_entry(pte_t *pte, unsigned long addr,
- 		0 : -EACCES;
- }
- 
-+#ifdef CONFIG_HUGETLB_PAGE
- static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
- 				   unsigned long addr, unsigned long next,
- 				   struct mm_walk *walk)
- {
--	return pfn_modify_allowed(pte_pfn(ptep_get(pte)),
--				  *(pgprot_t *)(walk->private)) ?
--		0 : -EACCES;
-+	const pte_t entry = huge_ptep_get(walk->mm, addr, pte);
-+
-+	if (pfn_modify_allowed(pte_pfn(entry), *(pgprot_t *)(walk->private)))
-+		return 0;
-+	return -EACCESS;
- }
-+#else
-+#define prot_none_hugetlb_entry	NULL
-+#endif
- 
- static int prot_none_test(unsigned long addr, unsigned long next,
- 			  struct mm_walk *walk)
--- 
-2.43.0
-
+Would be nice to shrink the scope but I think it would be "wrong" for
+slub.c to get it from there. It's not to do with the page allocator.
 
