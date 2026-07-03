@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6B4FC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 03:01:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81BF3C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 03:09:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7B906B011B; Thu,  2 Jul 2026 23:01:00 -0400 (EDT)
+	id 17CF66B014C; Thu,  2 Jul 2026 23:09:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B53C06B011C; Thu,  2 Jul 2026 23:01:00 -0400 (EDT)
+	id 1559F6B014D; Thu,  2 Jul 2026 23:09:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A68B36B0121; Thu,  2 Jul 2026 23:01:00 -0400 (EDT)
+	id 0920A6B014F; Thu,  2 Jul 2026 23:09:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 78E2B6B011B
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 23:01:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFCF8A03EC
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 03:00:59 +0000 (UTC)
-X-FDA: 84945963438.20.B15B84D
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 177DA1A0002
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 03:00:55 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=jwVQfYYX;
-	spf=pass (imf19.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CE5C96B014C
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 23:09:56 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 387371C718C
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 03:09:56 +0000 (UTC)
+X-FDA: 84945985992.24.AA4DC96
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B7ADE140004
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 03:09:52 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GvZ8vFTm;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783047658;
-	b=l4bsc7OG5Tw91iY30OrOfCECpd4SbAuiaUZ1Oo+nYg+C4OmuQrDq0RIh8448boWlay8ag4
-	s+anfO/SKXyPl/S88DI0XQ7iocGpCFoXInXZLmXFMBqBhjdl5Tch6oG6A7e8QteQlMdUsf
-	0pgCplC153tmXJm98Yst04dTVsaThXs=
+	t=1783048194;
+	b=U39CQoHi1yU/jQOd39ZMDD4WdxpZZz676uErTBhfQX+k+f5GUTmgKHHdOGmOzHvmT6Ey+Y
+	ELbu50hT58EMo+1FtKUXojMsf92ep8/26tVIyQ/8B1iqyoTeOFjwmByUdfbuKWjuqjHJsD
+	hbaQX1QsaLk3HQXki/ofSTFI5KOL+iY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783047658;
+	s=arc-20220608; t=1783048194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4bxq2yeKxZGnAf8D3UK3N3gyeY1jHATYeTe9AmeYXsg=;
-	b=heGiCLjGU0qU8bTQ3Sw8ESb7Bqo30a3bbOm8UZ6MaTLrnzBWP6EeT1KCoeGiIERHv9vkrF
-	v7QzFNeu58VCPMgiAwGDfIi2N7ueFEue6iPyleXKPxUWJMqijRZImF8tz9p6ErbFMCEtQS
-	VfHCZa6NsKsWwvnA2dAZimaPFpcV7c4=
+	bh=U7uolXzW07Pm2e3aGYT6OhAKNBbvwp/mtfuLmB1Lsck=;
+	b=aUHbg/Z8h+Z6ZxqHL8Lo+wEXZhyrZwBTzRaExclmFQBelTp3H9Sbu4SuEOOxuATFpf6fhf
+	P7Lq+BYthxaEXMjbsWsPtAg+75OtRKFl2GBYX2BVyaO9X/66xWRLnoY2D6hQpE5/FIuy8N
+	4VqMwq8mYqHf/TOT8vo60gf5yB3Gygo=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=jwVQfYYX;
-	spf=pass (imf19.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=4bxq2yeKxZGnAf8D3UK3N3gyeY1jHATYeTe9AmeYXsg=;
-	b=jwVQfYYXk4TTuhdrDvt53GPiM7wL7RYZTPRovI/DjV/PaigRmtY6FAhXhIOY6TlOvAw0u22sX
-	ZVo1D/Cqynjq64QjVVQhKejgIV3qmJyc8IkD3D9hXOYKl6rqU3DdB7W4OlIweO8lnS7mWzVlSh3
-	2WZEf5VwYRGfPvhBsUVgKVc=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gryvF5L83zRhWb;
-	Fri,  3 Jul 2026 10:51:37 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 31BC940561;
-	Fri,  3 Jul 2026 11:00:47 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 3 Jul
- 2026 11:00:46 +0800
-Message-ID: <5a4fc514-107d-403c-9e22-a25660651700@huawei.com>
-Date: Fri, 3 Jul 2026 11:00:45 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GvZ8vFTm;
+	spf=pass (imf09.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1783048189; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=U7uolXzW07Pm2e3aGYT6OhAKNBbvwp/mtfuLmB1Lsck=;
+	b=GvZ8vFTm3g7xX0nPOUomm8Ct6G3rRThtwddgHakTzShKn6G9g0G7ginZ9GgILKr4AKkfbBJ0LNwWbHcCN04JBLlAHrTieS2CTBY88OANKF193EcfKyKyDVZ/mzquy3xfiynlOJT139P+TFx+TyU/DZ2F/wsWmnf7Xg8Nw1u5ohk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R521e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X6HYWUr_1783048187;
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6HYWUr_1783048187 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 03 Jul 2026 11:09:47 +0800
+Message-ID: <4c67ac7b-e021-4e4c-ae5c-07bfc0fba9c6@linux.alibaba.com>
+Date: Fri, 3 Jul 2026 11:09:46 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] fs: stable_page_flags(): use folio_test_*() helpers
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<ziy@nvidia.com>, <luizcap@redhat.com>, <willy@infradead.org>,
-	<linmiaohe@huawei.com>, <svetly.todorov@memverge.com>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20260702110614.2176986-1-tujinjiang@huawei.com>
- <61157b05-b22a-4bcf-942b-05225837b57b@kernel.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <61157b05-b22a-4bcf-942b-05225837b57b@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 177DA1A0002
-X-Stat-Signature: hg6p1n6km3gxwz1wabqead7ds1j1537f
+Subject: Re: [PATCH 2/2] mm/migrate: exclude hugetlb folios from
+ MTHP_STAT_NR_ANON accounting
+To: Nico Pache <npache@redhat.com>, Barry Song <baohua@kernel.org>,
+ David Hildenbrand <david@kernel.org>, linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: ljs@kernel.org, willy@infradead.org, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>
+References: <20260702172548.37075-1-npache@redhat.com>
+ <20260702172548.37075-3-npache@redhat.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260702172548.37075-3-npache@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
 X-Rspam-User: 
-X-HE-Tag: 1783047655-111008
-X-HE-Meta: U2FsdGVkX19Cui02qm9wM5BxGXQ6IjYsF9koznVIucmuOXpnmjjc3iiLYrCKyHSrD7yv9riHP42GvIuF0dndORU/FlLqhhLEz5iy9NZvGiQRaMhpXvQDH9qyjleFU0MV5yPAz1G+NFZJuTj0JSNa/pk9Ule+eixqFyrPHnUTd71Y9MTL6eopsX5VjFUlQwLcB+AbZOS9p/VUJnQsAMR8HPXLZRW7HxoeFfuuEbTyA/OgJrRWjpRJgWbdp52PItw1byxyM3HBajStjfQhMxpM2FVx8X3qccdAPYz7gDv5kWGTBNMhmhWLWgjGk+q7d1Q8cHHs9KmAY5R4RM8cZgafadyqG7+TvP/duMloOFVQnoCmhOya6DPT48MM1IWGnUcjarmcTJTHocZg68qMS+hIGL6xZovGzWyKOSwn6l1+NSsfX6lmXt/gD+r32SfxPRYiywef9ZKqTysDNbZREOUPv092sb1MIYYsFbvC24fOgmaEQN1CDxFjH8kzCx727G2aZRpMiA+Y/q8BcVWi6xYnxkgE07bYJCZ2RlwCeQypQPnyb+gN03erM1oShrk4QprVinO3NDlnfgqTaJUtBk/wl4WNSEP9WnbABPfiegfgdh23ajBugeXJ+Yh9nTF/TUpa42wk9ofWMo22vHiO6W5+TAKP6WxIt54LEt7Tfxk5dtJ3GDejdPXWhy5FR7ewIGCTRx78nrkouzWB35i9TbrkoUE531XldgN4HnncS40C4BoOBcgzj6QYixSbP1KySwHQ7jr7TRPjlI0lfR/xcQPSKW89mWNARy4kUF0ZCq/UCRrYSONGy45HTDT528uy6G8XGt1PLn1roehVvbr5mb3KRRCrCEK+bf6EBsO8TtBtPAN6q715DcDDjC7GY7Pp+t6/UyQJnzVIMU4JUNDDG15F/Yp4tmgSkaEC+Xf/m9aOt+VhNEOAoXNLLHESrBngEUAESroXz091Bq4uEuYZjiH
- J4U3cPn4
- /6b/n4hop4WqZxfahIzjXJE/XemvqC+I0vApKaocrkzTCl49ArizpuPqFp154/yAeo7UdrCbrxdGcFnXlU5Px9HCAI8yk0jo++bv80Bra4fDrL62UQdLSuJwXm/UcXpJnWGfx4rlrtjq7T5++BcH0feM51dUzPKkbbEbXBg6NTtM30WieOMiPFaEVnJXDsMJGkYfAobgeBRgh60gcYwvLIYl0CbZK5HXV/kuM2JI319cvXdqM6CwYnAB3X26PKXOxdczRjqziSpu3Su0+QFlIabJvgji+g2x1tKp8e0ELaI+gsxP9sYpZ6if5KGEO/nfcrckvrbOh3nyMFjuSuIcx7bOzkpESa7a2YYE562m4vqIJC5gppRWQTVAFrJLLL1seCNWHikwqGQoEmiGoT+mtudnxn8uB6antMHQ27Cj56sjZjUqZoEgnL0KHvQ==
+X-Stat-Signature: 1e68jbxem3s1z91its3xywc89jrxacyf
+X-Rspamd-Queue-Id: B7ADE140004
+X-HE-Tag: 1783048192-97891
+X-HE-Meta: U2FsdGVkX19TdfhKaFyysEoiKM/KKz2srQLFkESOPV/MC6D5l6KiRLacTxyez2BwMmlSZcJB8zJd+yq/XQXeXkxHzEVGeNyq4pA7kvMNXvZU/4O41i0Wpf9R8o5pu60G8O9+EWB7RMgE9bKiamhAxEzfd3nSv/H5dA1yt9nJ/OV5btdaHiG1ciDNK6s84uOu1+yCDyMOTCh/IoeYfu57KG6pChiaJrCs4s/ID1saKD1yl97OMeXAp5ZRtcLzMZszFZai6qGFH0hNYyD2v8RweCk1Kv+sIkE9RaQGKBZmvBsIoFfxCwQ3gwsvPqIY45cf6wIWj9uxnqJt/ITQUo1YAbnuFv9rhIgIxYRQiwf6y93QnAQPytaKtFzLslJjsifBtT/4U/zH8MJdeUBQLYIMkFT39oPOTkOMb4DyQN3WrHmg5h6Zx+UEIgOhc1iQGiGwacgnnMfCn3oEyUPTtw/M3BfA550/WhXZsxCDkfH8wIibo8YW7KmQ3w66V9l8YprPw3iLWL2bEyhWHglyDVhOa5vJxGUDOp+HrXldXhTWha97hb/RWuqfmh7dzEoxK1+5uVxzVQltNcEyho2me+KOBVFEB4zB+EssIswaVyaXZ/EF6ALuQzMuYBPqRNcj2hh9ao5hmDtPQgGnPNyxzyzMlLtua9wMpyDFOYquJPwNHaHuXAwiJ+QxVff8bmoprux1O+6Y+dZBtTNcjnwhX2el1IIUN5tVTAGF3oWPLT19aHCUuWKg8djzgXfnWdYppBA2X86O7/ALNkHC4r2uQsIbNVdLLHu3cF/YNudyJsVSFMrT8LNxTZ7tjjygb6vjsWAw5YPRSZT6MQZVgH1r4NaXZ8PRiaiKkooReYzDZV/+aPkF5idlPaipDlQOBHYL4kntLVL8eHLORHfvol4XHHT3mBE7oJ4K0thbJ+PHOOOy15BElDMrRLsCgJOVQjuhdaotgUc5TCk7JaC8XtH4i2t
+ AJN1eRU/
+ ehxhJ10r4ZeNT4QmMHZka2U1WVwAtB6zGyu5MCHQVuXjtcnkKCW1OPExT4ur256pE3kAzHH+sFNrmH6fxz11Vt8btdwPWt9gb9rn4pQ899rwlLl+OBEHxouFr1lSraW96A3CueNpL4PjgU0mm6wzK8RokAV6WssPIwWHyXRXog6etR7AipnFN+l6RHUbd9QCtOgwRc+xpTVn4wBOneXyIH1/lbH73xE5Noo+p4sQYWeWNmzv10ZCKArSh/B4mv5MQnSn1HsCVaVHhg+PRjjeYUiovg1ZmHb9raO1RvL7MwCSfa41VdMjphQ/bbDpKWZMrvw/AimOOESVrKI0cZsgXiZIEAPD8Vt+m15h+dUd8f08yG5gQ1U5GkHjl2vr/CtC5UfMd2+N3OeD0r6xNjblaC5US7PkZ53gSp3easGrBZFvPt8ggqOMhQrygnzNia9E6DsV2//pusPYkWRIr92MEJTKY4jth1d5cEZhLVHXP88PZAA8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,28 +96,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-在 2026/7/2 20:03, David Hildenbrand (Arm) 写道:
-> On 7/2/26 13:06, Jinjiang Tu wrote:
->> This series cleans up stable_page_flags(), removing the remaining direct
->> flag manipulation and replacing with folio helpers.
->>
->> Patch 1 replaces the "1 << KPF_*" expressions with BIT_ULL() marco, to
->> avoid -Wshift-count-overflow warning for KPF_* values larger than 32.
->>
->> Patch 2 replaces direct accesses to folio->flags.f with the standard
->> folio_test_*() helper functions, which cleans up stable_page_flags() and
->> hides internal implementation details.
->>
->> This series is based on [1].
->>
->> [1] https://lore.kernel.org/all/20260629033122.774318-1-tujinjiang@huawei.com/
-> You should explain the history a bit, and why we converted to the manual checks
-> in the first place.
->
-> Now that we take a folio+page snapshot, the values cannot change concurrently
-> anymore.
 
-Yes, I only metioned commit 476d87d6a061 ("fs: stable_page_flags(): use snapshot_page()")
-in patch2. I will update to explain the history in detail.
+On 7/3/26 1:25 AM, Nico Pache wrote:
+> __folio_migrate_mapping() increments MTHP_STAT_NR_ANON for the
+> destination folio when `folio_test_anon(folio) && folio_test_large(folio)`
+> is true. However, hugetlb folios satisfy both conditions despite having a
+> completely separate accounting system; they use hugetlb_add_anon_rmap()
+> which does not touch mTHP stats, and their free path also bypasses the
+> mTHP decrement in __free_pages_prepare().
+> 
+> This causes MTHP_STAT_NR_ANON to be incremented on each hugetlb
+> migration without a corresponding decrement, permanently inflating the
+> nr_anon counter.
+> 
+> Add a !folio_test_hugetlb() check to both places in
+> __folio_migrate_mapping() so that only actual mTHP folios are counted.
+> 
+> Fixes: 5d65c8d758f2 ("mm: count the number of anonymous THPs per size")
+> Co-developed-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Nico Pache <npache@redhat.com>
+> ---
+>   mm/migrate.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index d9b23909d716..9fd50ea25d2d 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -590,7 +590,8 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+>   		/* No turning back from here */
+>   		newfolio->index = folio->index;
+>   		newfolio->mapping = folio->mapping;
+> -		if (folio_test_anon(folio) && folio_test_large(folio))
+> +		if (folio_test_anon(folio) && folio_test_large(folio) &&
+> +		    !folio_test_hugetlb(folio))
+>   			mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
+
+Yes, anonymous hugetlb mappings can reach here, so this check looks 
+reasonable to me.
+
+>   		if (folio_test_swapbacked(folio))
+>   			__folio_set_swapbacked(newfolio);
+> @@ -623,7 +624,8 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+>   	 */
+>   	newfolio->index = folio->index;
+>   	newfolio->mapping = folio->mapping;
+> -	if (folio_test_anon(folio) && folio_test_large(folio))
+> +	if (folio_test_anon(folio) && folio_test_large(folio) &&
+> +	    !folio_test_hugetlb(folio))
+
+If the hugetlb folio has a non-NULL mapping (i.e., it's a shared 
+mapping), we should migrate it via 
+hugetlbfs_migrate_folio()->migrate_huge_page_move_mapping(). In other 
+words, shared hugetlb mappings should not reach this path, so this 
+hugetlb check can be dropped. Or am I missing something?
+
+>   		mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
+>   	folio_ref_add(newfolio, nr); /* add cache reference */
+>   	if (folio_test_swapbacked(folio))
 
 
