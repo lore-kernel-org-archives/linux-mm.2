@@ -4,84 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 813BBC43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 16:28:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60122C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 16:37:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 108406B00B5; Fri,  3 Jul 2026 12:28:34 -0400 (EDT)
+	id F24AE6B00B5; Fri,  3 Jul 2026 12:37:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 092336B00B6; Fri,  3 Jul 2026 12:28:34 -0400 (EDT)
+	id EFD926B00B6; Fri,  3 Jul 2026 12:37:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC3FC6B00B7; Fri,  3 Jul 2026 12:28:33 -0400 (EDT)
+	id E13076B00B7; Fri,  3 Jul 2026 12:37:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BE9176B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:28:33 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 38D23C1143
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:28:33 +0000 (UTC)
-X-FDA: 84947998506.13.F484BD2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3C3FD40006
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:28:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="gF2WbR/W";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FF7E6B00B5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:37:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0A3041201FD
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:37:55 +0000 (UTC)
+X-FDA: 84948022110.14.CFD1AFB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 40AB7C0007
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:37:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FALyA88g;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783096111;
-	b=QC6zZDSGw6loj3neLulpLf1BggTgWeXnJyR+PfWBW7TKYP013Tzy148bqc/jiuqdX+Giij
-	hADiCWwGmPT1cHSxUwdCf2tDW/Ux4BXTaKoSU2uZejPCQbrRTEPhuvZUZgveDWQOxRsIvn
-	Z2zghrun4l4quop5vS4SfkYb5377bbo=
+	t=1783096673;
+	b=5jkIh0nAVBjrU/zUEQVHN2vkHeZw6TPEa3sgJZU7Yy2N4Oahj9hdIcp03M8XxeLXZ73euf
+	dC2qdDrAw0gxA+4AKf9BEyI5oF9Ri1U8kWJfFlPMzX+coGNK47dqAnjH+Ul1fi4yxdawYp
+	Ow7CjrBu37u07yUM5WVJ1s6Lhc86HtE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783096111;
+	s=arc-20220608; t=1783096673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hE1esvXYdfizQGHxS8HoUjMArMC+DaamFQ0LitcTbU4=;
-	b=A6nZcNmCl4ljAe28bDRkQzl96mFjp+X04LZHH1sTTcZgSYGY4xA28o9CdVW2kfRVRlTD0d
-	G9UnC5SwLUAfick+9gIh+fvOoly8/JzYbUVryhxaPSewWTyIIcw+wF8jHxF8du4mNI96GA
-	o/LuaTNJpqMseCc06Tn4DJCVOyiwliQ=
+	bh=sfgOhtUqXakhO/LJCSQi+Xtir7lK29w0aDyR77catJ8=;
+	b=7CnklHJoCHLkNiBWw8rfOypQOyWUMmutaFNN7c2LRv6ECXrBDVw69F2ScU2niNHuhn1pSX
+	rwPz3XX07ZKblQQ2ezreTjUrFqKt6dlfwzFHAMkXphR/dDteRzfc2zwdCbX2PZSmXFUo4j
+	/iQ90kH4JN6geCOC2JQdcadOKntdIqE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="gF2WbR/W";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E5DA71E7D;
-	Fri,  3 Jul 2026 09:28:25 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 24F493F905;
-	Fri,  3 Jul 2026 09:28:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783096110; bh=hcr/VLRoB6bOL7od2RJpsiqly4sCMoyU4iz0d/lMjTE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gF2WbR/Wf9hS09+xZK6JhcHHu6PbPN2K9KD3T4cUGcy8JE3xadOOPtFQtuNps/yF9
-	 aCFHuItvlieixXf9raOV51gLR8iJtvOC9FPqO8FM2wzEi9bUbGiItUJzFGPJxQqU9m
-	 L9sWLC1odQPoLYqPu8x0KiZEzsCEQiJf6+gfRvyw=
-Date: Fri, 3 Jul 2026 17:28:26 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/kmemleak: fix checksum computation for per-cpu objects
-Message-ID: <akfjKpv838nqsl78@arm.com>
-References: <20260703-kmemleak_checksum-v1-1-5e0ab7d6966f@debian.org>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FALyA88g;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E6A254064C;
+	Fri,  3 Jul 2026 16:37:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8721F000E9;
+	Fri,  3 Jul 2026 16:37:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783096671;
+	bh=sfgOhtUqXakhO/LJCSQi+Xtir7lK29w0aDyR77catJ8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=FALyA88glPg893RXkoN9RTJO/MOwhlJg9JAvwHpslsw8oc/saSVG40yzlCTjD4DYW
+	 pt2IRfk2i6zJBeIR0AOCP+1jWUbxQBrkTCz05/JpyoMmFMv6wjaD5nYDf6KPOBtSgm
+	 nWs/kLSZwQ10zcUApI0QmTcyMVwg0KkwN/pga2/AvWdb+udqLdoYSPp7bHsBLnFTzI
+	 +97XvOfKuIwa9aFsrLmJ5Sk9vJ0i8LKy0YU8jF08PMgvLXmsHxf7mYXVoDbSiWnaDJ
+	 4NPQseUUiIW89u9P5QrZHDh85nHAlBZiao71tU+rK/Z1fiB2hxsBC9pFhkjUtniCWq
+	 lmozENbGnPi4g==
+From: SJ Park <sj@kernel.org>
+To: wang lian <lianux.mm@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	daichaobing@sangfor.com.cn,
+	kunwu.chan@gmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RESEND RFC PATCH v2 0/5] mm/damon: add mTHP collapse and split actions
+Date: Fri,  3 Jul 2026 09:37:35 -0700
+Message-ID: <20260703163737.84760-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <F1C05416-5D04-4568-B8CD-D4376B0F3848@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260703-kmemleak_checksum-v1-1-5e0ab7d6966f@debian.org>
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: tju6rn7h61rcxia6oszwjdot1onz134n
-X-Rspamd-Queue-Id: 3C3FD40006
-X-HE-Tag: 1783096111-21639
-X-HE-Meta: U2FsdGVkX19f2BP3cvBUfZ03VUqP536ERsCvzMmUVWiUKDVV3pXPzzjU5fulIj84rIdNutFsG8bQ5vJ6gcW/s+fHU6FHbj0jhVgmr1bGsQOCx+gLQ1HDf5ejD2nPSXDC8Aee+x70NtYgZaZrnPA7bIg3eLBqdLMTJNIbvQyttNX0aJG5lmZCDlmhTC2fpqfDsWKfVXtfQRLKLPpzZRzGR4y1SDNILu+diDxtwx6KNkbbdqAz1iOFbuDbDF4m04Lc7MScwYJtHQKYsqSx89l8Z1HbqzqRVBgc7wxPaHSuahb3CfGpzd3Eop3xqIf5zZSzlcfBoUHLZxxjlEjZzSiyJ45hYYHZ/Vtvrt8ho7A+ZjONbVysPbVkfT986HqonpIozFQXi8Uej0qH8kQoab3kpZmu00us0ic7UDkD0fPiF7kLlO4W9iOwFQHqlRYnkEDq0kmngFkg+rIrFOmd4SULmZTc92tR2MbLoln6hvr6WUmdmYiuvSGss4JFKIVBNo+rEucPj0YcuCmj5VV8YlS7PwCVzGYMAR95Owx5/hg/5X2bxrUqks8ivcoMqhKP0rV6tTHrRxVNamdM7IivyWMte9YP6lHQXuErDKQWpRY4qrmQ1T39JQVfEzcq58WA/Zh6L9tZzGzCEueTyROVBGX0EeosRecx+JklzTbVLNXmklUUWROwPCqalrplGpJFFv9sAZpDZxQtPy5GO9R5JWy044xU+rW+hSVRq9VlC8EZyqfq+RsAilMnmhsvyPQok/hVFqdoxlC/9cedTkFKd3TD0yNj/rUfzTWtYFQysOlNBBb6Id5jUVqrFMQqlYbqC515GXS0QQj/79I50EiWLDoh+eip9uNwjvcdQuVIStioMZcdHlhR6rf9+DwWtzK7y5hKa+5UGr/NGxmTzsNgJDMnDvcEuU9Y44v9kiQPakhEjpP8fmVhCMJhuAAMPnf5GfdCtr9+4YQ9xymCD5GBQFt
- gRCbpB3f
- gDoULK26VhlRnNpbdx3bW76Q8Dk0lowWkYs2GtPb5v4CSKYL9UnJMsW/U3K/iA13rdvY9gbc60CLW/qteT2A+WmBz8YD00PJWd2YJo/G7e3lq6Ry8grv5r808cuNsmWLC7GVyCc6qMke7yQYi30OyD77E7QOso1WaFLuk2PTpTDkKkUNs60tmVJ6kpzE2FTuo6J2YeqHgUk51RJeKlC1MNo+DxeYT6o/V25wxWhSigX+d/JrC7bk+8SkDtk9Z5oIi6sIkUJGdr8STCm0k00auiE/g6SKRMKH6ySDwT5icV96svZ1epN0Q4wcdFH7led675nfO5oIU34BU8Z2clbVJV+be8A==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 40AB7C0007
+X-Stat-Signature: 5cjtbkw75ymq8orcu49sicqhf9tw9yri
+X-HE-Tag: 1783096673-800385
+X-HE-Meta: U2FsdGVkX1/Re1A0MgTyQgLEj9UG7+alT0XoSxLppvBLPH0rb8zMz64xIl9oXu95IiZWa0IJoV2P3Pc4rLcPx4fc0fvHfsgXj3IcGE9oZ8UgPK2af8d2uGoMyHNXZ1QNOz4zQrhqoBIZz3UhWLnaUHHa63lFy8ArP13I69ERgX3+USFdAEPt0IiI65qyEPxSwK1rNyEnyT8U2GLHOsETdV2Hx6OP3kxMyUeu/5HC+heHj8sXv2CQX5H5sgpFRtnVtVkj6JtNXcyqDvcu3qBu00kP98AJ6ZKxNYJqvPPhHFjVFNTwCFNp5tBc8exHbsntTYO+DByLiAhVtEevJzgq7GOejdUz3LsFeNbhbf5QGlCiDqqpMP5HANV+2CajSeT9E9dKVyiXk+yDaJN/D0hcNXxqxcmNQOFdQoADq/UEcB8kla2bV+JDHTpSy7zckf8sdS2EFyfCvQ7+kt978pofjusSxKBsEvsJLvg/HJwwjAQkQXAVk7bYzEAjWwtMbdE8vTRiA8AXMULK+ccjrrHqGx6LwIUNSLOTnYxJmEJY1owxkKEw0Ejt3Ac9vqmXd/x8Ot/frzb2D9T9U2R1lfaCewIAlhI9MRZiYeSCtgfT289+4V28NFjdB3+aJO5Fj/wBFX1P5GI7UjMMdkXebDMI9YuoPRin9kRZLDurRGsX3Lo608Hui8o5AZDh/YmHa64+fhs+hwet1lTa9+ZuoxsAOo5jeNpoVbpGqy4Pv8r9P6nAjYT84hUgaPTh5wr9ZNYk16CfVGGP5cL/oJRlAWtDPH/qdZwl0vJJ4+PZeG0fU2tuH25VMgN2mF94vShwOTHEpAt94K2vHo4TTWc3riykJnl6bqNEfgqHFcROVRbEBun8m/M05+d8XtNzQAXJ/cGK2EqIiPS++1WXJZ10AoUQ/kMai8h8xgvXUbnQk+dQICDJrUlTmNAMl6If4L+pw6OVznnYlOcVCbDLzG8BWtx
+ brJmDIXm
+ djPuHm76ieyNvC17crtQIfDg09wXt/l+2oT/4Cc1VJ2vOm+7a959KDqBvnAsyzmws63P6Hr78LbZtdchPVm10hV6yO/zfMyBn+1uZ9tRMH5hrSjZybXx5I3gf+jnxd7fX2SfssjEAKVPe7yW7HIvpByk72TMYyzmAoyKHb7EsTmLna8j5R8J+ko2M75AyZ2EFxMZ3hQVKJ7o3j2hVPo2rQpdeUPP7W1TWWxwQzbBveyRDypruaxG4gF7tt2OKDNA53XIK9GS4uGEyCruRQ31YySvd7qXOfmSWsdYx3ivej9wX2nlJCYnuCWOLK2qG/tpSnUYQVUiWY/x/eWNNwX+DPGtzejFEQVBD11nFpC5tLzCzkN6exff5s6sekXzYibQ93X0diqqK4/uZ0CYdBXaQlvR8LI+sH5GGSBuEludiQrPt1z+I9AQJ7hOQ7sFPlLB6zIDk2fWPm18qjVfHvGR53BztwSvyGrl/TpV8j1NI8wbG8Q5IfsEa5G2IxHK6zRAybAMVEWahQeK+CoaWkvzjDPmT95YH5+eZzlf+RszIkyHTgQf2iib8l4lDjMAL2jwGovgwDQcxgxbXF5nYexUn5eogNH9DLsXq1aXDFpowCyqizss49pXZuQbBCL2G/C1brqNOVcsbaER6suzkTmnwyWCAWlf/ZFodpDGhIuip3kvAsUs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,39 +107,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 03, 2026 at 09:17:24AM -0700, Breno Leitao wrote:
-> The per-cpu object checksum folds each CPU's CRC together with XOR and
-> seeds every CRC with 0. Both choices make update_checksum() miss content
-> changes:
-> 
->   - XOR is self-cancelling, so equal contents on two CPUs cancel out and
->     simultaneous identical changes leave the checksum unchanged.
->   - crc32(0, ...) over all-zero content is 0, so a freshly allocated,
->     zeroed per-cpu area checksums to 0, matching the initial value, and
->     the object is never seen to change.
-> 
-> See discussions at [0].
-> 
-> When update_checksum() wrongly reports an actively modified object as
-> unchanged, kmemleak stops greying it for an extra scan and can report a
-> live per-cpu object as a leak.
-> 
-> Fold the per-cpu CRC as a single rolling checksum across all CPUs and
-> initialise the object checksum to ~0 so the first computed value always
-> registers as a change, even for content that hashes to 0.
-> reset_checksum() is seeded the same way.
-> 
-> Link: https://lore.kernel.org/all/akfYImSNDh3OjIfR@gmail.com [0]
-> Co-developed-by: Catalin Marinas <catalin.marinas@arm.com>
+On Fri, 3 Jul 2026 09:10:51 +0800 wang lian <lianux.mm@gmail.com> wrote:
 
-Since you added co-developed-by, I think it needs this as well:
+> Hi,Lorenzo
+> 
+> > On Jul 2, 2026, at 18:23, Lorenzo Stoakes <ljs@kernel.org> wrote:
+> > 
+> > +cc all those you missed.
+> > 
+> > I really need to write a bot to do this, because I'm getting a little tired of
+> > pointing this out :))
+> > 
+> > On Thu, Jul 02, 2026 at 05:46:28PM +0800, Lian Wang wrote:
+> >> include/linux/damon.h      |  10 +++
+> >> include/linux/khugepaged.h |   9 +++
+> >> mm/damon/core.c            |   2 +
+> >> mm/damon/sysfs-schemes.c   |  77 ++++++++++++++++++++++
+> >> mm/damon/vaddr.c           | 128 +++++++++++++++++++++++++++++++++++++
+> >> mm/khugepaged.c            |  46 +++++++++++++
+> >> 6 files changed, 272 insertions(+)
+> > 
+> > You are doing damon changes, and that belongs to SJ, sure.
+> > 
+> > But you're also changing core THP code? Please ensure you cc- THP people because
+> > without our approval this cannot be merged:
+> > 
+> > $ scripts/get_maintainer.pl 20260702094633.75658-1-lianux.mm@gmail.com.mbx <mailto:20260702094633.75658-1-lianux.mm@gmail.com.mbx>
+> > SJ Park <sj@kernel.org <mailto:sj@kernel.org>> (maintainer:DAMON)
+> > Andrew Morton <akpm@linux-foundation.org <mailto:akpm@linux-foundation.org>> (maintainer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > David Hildenbrand <david@kernel.org <mailto:david@kernel.org>> (maintainer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > Lorenzo Stoakes <ljs@kernel.org <mailto:ljs@kernel.org>> (maintainer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > Zi Yan <ziy@nvidia.com <mailto:ziy@nvidia.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > Baolin Wang <baolin.wang@linux.alibaba.com <mailto:baolin.wang@linux.alibaba.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > "Liam R. Howlett" <liam@infradead.org <mailto:liam@infradead.org>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > Nico Pache <npache@redhat.com <mailto:npache@redhat.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > Ryan Roberts <ryan.roberts@arm.com <mailto:ryan.roberts@arm.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > Dev Jain <dev.jain@arm.com <mailto:dev.jain@arm.com>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > Barry Song <baohua@kernel.org <mailto:baohua@kernel.org>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > Lance Yang <lance.yang@linux.dev <mailto:lance.yang@linux.dev>> (reviewer:MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE))
+> > damon@lists.linux.dev <mailto:damon@lists.linux.dev> (open list:DAMON)
+> > linux-mm@kvack.org <mailto:linux-mm@kvack.org> (open list:DAMON)
+> > linux-kernel@vger.kernel.org <mailto:linux-kernel@vger.kernel.org> (open list)
+> > 
+> >> 
+> >> --
+> >> 2.50.1 (Apple Git-155)
+> >> 
+> > 
+> 
+> Thank you for pointing this out again, and I deeply appreciate all the tedious 
+> work you do as a maintainer to keep the mailing lists aligned. 
+> 
+> As a newcomer trying to transition into complex feature development, I must 
+> admit my initial design is far from perfect. I leveraged AI tools to assist 
+> with certain implementation paths, and although I extensively self-reviewed, 
+> tested, and reasoned through every single line of code, your and SJ's 
+> feedback clearly shows there are still major architectural flaws. Just like my 
+> very first kernel patch—which was strictly reviewed and guided by you and David H. 
+> —I know that your sharp feedback is exactly what will help me grow as a kernel engineer.
+> 
+> I will completely step back and radically rethink the design of this series, 
+> especially regarding the cross-subsystem encapsulation and locking hazards. 
 
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+No worries, take your time :)
 
-(otherwise I'm fine with suggested-by)
+> 
+> As for that bot you mentioned getting tired of running manually—let me write 
+> it for you. An imperfect newcomer who just made these exact mistakes knows 
+> precisely where the traps are. I can craft a pre-flight patch check script or 
+> a CI bot that automatically validates the `get_maintainer.pl` output against 
+> the patch file diffstat before any email is dispatched, throwing a loud warning 
+> if core MM files are touched but their respective maintainers are missing from 
+> the CC line. 
+> 
+> What do you think? I would love to build this tool to save your and other 
+> maintainers' valuable time in the future.
 
-Thanks for the investigation and posting this.
+Sounds great!  hkml already has all building blocks for doing the check, so I'm
+planning to develop such checks in hkml, but only for manual runs.  I ain't
+develop and run a bot, since I don't have that much compute resource.  Maybe
+you could save your time by reusing the hkml feature on your bot.
 
--- 
-Catalin
+
+Thanks,
+SJ
+
+[...]
 
