@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5777C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 02:08:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBA86C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 02:08:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9F2056B016C; Thu,  2 Jul 2026 22:08:46 -0400 (EDT)
+	id B9DF16B0174; Thu,  2 Jul 2026 22:08:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C8396B0174; Thu,  2 Jul 2026 22:08:46 -0400 (EDT)
+	id AD91C6B0177; Thu,  2 Jul 2026 22:08:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 907446B0175; Thu,  2 Jul 2026 22:08:46 -0400 (EDT)
+	id A163A6B0178; Thu,  2 Jul 2026 22:08:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 446676B016C
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 22:08:45 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 327101C7669
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 52BE86B0174
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 22:08:53 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90EADC1928
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 02:08:47 +0000 (UTC)
+X-FDA: 84945831894.08.80386A1
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D3D0140004
 	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 02:08:45 +0000 (UTC)
-X-FDA: 84945831810.15.CB83D08
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 82D2220002
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 02:08:43 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UaMMeUw9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3qhlHagUKCFMACvv819916z.x97638FI-775Gvx5.9C1@flex--praan.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3qhlHagUKCFMACvv819916z.x97638FI-775Gvx5.9C1@flex--praan.bounces.google.com
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=UUSLFXPi;
+	spf=pass (imf01.hostedemail.com: domain of 3rBlHagUKCFUCExxA3BB381.zB985AHK-997Ixz7.BE3@flex--praan.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3rBlHagUKCFUCExxA3BB381.zB985AHK-997Ixz7.BE3@flex--praan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783044523;
-	b=CTVBPbdStawNHf7MDXH/yNWietXFfc6VeSxwzdxw8SLumdeEN00dDObxs+zEzZJingUyjw
-	U6fq/jGPOn2Zc+N1H2gS5sAbT65wcAwtU2Q9e7hBxZPbKLpxWsC9wG+beiVyBkl806Y5C2
-	7dSrcg3bXyaKnxN0ei0U3L71uGgMUsI=
+	t=1783044525;
+	b=h8e+TBVEfUNUsfFFN61s6IJo1PqKf5u2Xm1wcEIeqnC6bUPUOCQBqBPXDm1RBoEQjE6h/c
+	DPgqkZShTr9Yiygxi94S1JbsiwbNRjslwfjIPxbJdKPhkGbfxPLb1x9FKwTRG7C+nC7UuD
+	PQ3Su/7GBbdXGQ0UIRwJ8MVWB68sl3g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783044523;
+	s=arc-20220608; t=1783044525;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=twAjwEQPJQoMPii2nLtsAn0UlOpk5gfqaTEPYw4GO2E=;
-	b=RFrw6T73G0dtH2YVDkNNMeQtP0PWo7FZpp27Af4eR/pqJq6vKaRVAFnCIGTnMZ7SW1BbO7
-	WgFOwf8R70JX9KNq7XG7d1kMFKsOGJFZU0hekkUky0EdvIBlqpyuRO58uZ0BU9b6kV7Ie6
-	JTY46OoQ03v2BrQISA/MMBXIITABXAU=
+	bh=R42hNae76A7CXiYkYtHihW2CvpPOkdd31plc72X+MXE=;
+	b=jttn9WbonjaWx8jcZc01sPBuep7RJDAn4QycVlaHDJU6HpG2Kx7CfkG2fRNClIg7Wr9BaK
+	rRtvyrEOpoO51dNImLPJ0ddVCdJFnGsC8etxFQywS1l5XPTvf/T5ytE4N6/25TVJEZpsPR
+	viUWuHzKUEHxxKqZVKUN8tQtvkd/fPQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UaMMeUw9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3qhlHagUKCFMACvv819916z.x97638FI-775Gvx5.9C1@flex--praan.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3qhlHagUKCFMACvv819916z.x97638FI-775Gvx5.9C1@flex--praan.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c88ad1558f4so107087a12.2
-        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 19:08:43 -0700 (PDT)
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=UUSLFXPi;
+	spf=pass (imf01.hostedemail.com: domain of 3rBlHagUKCFUCExxA3BB381.zB985AHK-997Ixz7.BE3@flex--praan.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3rBlHagUKCFUCExxA3BB381.zB985AHK-997Ixz7.BE3@flex--praan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-847ad67cc51so81459b3a.3
+        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 19:08:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783044522; x=1783649322; darn=kvack.org;
+        d=google.com; s=20251104; t=1783044525; x=1783649325; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=twAjwEQPJQoMPii2nLtsAn0UlOpk5gfqaTEPYw4GO2E=;
-        b=UaMMeUw9yRRm+FrCYCiQfX5HH7uKizyPCyV3jLrSBECzJAN/1iSYPctNwq/GXQQcBK
-         ZH/CZxof2rldRYuQoihD6djY/llnadCUVaYXZStvDXw+Q0orqOloNAreQnQluoUZh/zi
-         /O0zaDwO88A1W/i4Z/S3a9YBdei/uJEodbzOIiCcLMvXyX1eQaEmFcye7HpjY8JXJp1s
-         P9awFXoSwy/f0eMQUJM269RzOOH/tRLYz24sV4Rb+e9i35kgrODw3asPS9QhAViQfyYK
-         MVXHFjUkh4Lxd2r4k9N1w+I1j4dTDEyOWjTYZu/XV7Wjj9biv/+Uhbpkg92ItAWfrAfp
-         nDng==
+        bh=R42hNae76A7CXiYkYtHihW2CvpPOkdd31plc72X+MXE=;
+        b=UUSLFXPisd9ZuU4iPq6g+5ZbQ2jxFBH11TMBH4VCqHKYz+RsXHHRFYCQUPPUxd5nY2
+         S/8iHUP+ptPrqYiZcHBPxvwPoy4oQU46Zq6sCXAj9fvhB3x6S4OTzESNN5wm2Vep3eGM
+         z0QJvUtXlub6OHs0X1EfWvMp1eGvXfZJ3Wg1sXKPWND722oEz1DKa6g7BDBNqjvUPr8P
+         iH24+SNxkuG3PGC4fHono6EWDP5GgqH5nlwba36ZgQefOSjeONIWxp7be4xOgMu7ZbcX
+         DC174Zum67UzPNhsgO+i/oz6hz4b8QfXaG/QbfWGOpxrRa9wmqOlaHDu2NILJp5vu/mL
+         mWuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783044522; x=1783649322;
+        d=1e100.net; s=20251104; t=1783044525; x=1783649325;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=twAjwEQPJQoMPii2nLtsAn0UlOpk5gfqaTEPYw4GO2E=;
-        b=PlbUJGphH+Upk4+N9iEPJfQgR73YFEsEYdcyscsb6bEZQWW54X9qfRTv9j8s3pTbRN
-         7skqANA6v1UH9WXH+21Z5kIvXhawNN/ghE+15V1kHj5RApYv9ZTknxddTH0sBOFaGIIv
-         KZ0KaAAzJudi8DRJrxVBQCwr1zA7b5Mi6IO2ZhpQm4lrMJFnT9Vh2PJNrhdfqFKRLIAq
-         1LHCAaNKWe0OO1ds0eBG/1ASPjRzfDdk54BAOo6TvgdJNml3VOV26Ob/MF3TBCPa9NPN
-         zvBRECEC9lAZmaqj7dUXWHeaiMVo/LuJQWBVHFqkWzNv9pgKOaPoppLqhRkvSFUQCUnD
-         u1Ow==
-X-Forwarded-Encrypted: i=1; AFNElJ+bBbB6Igm58x/9BXK4jLSYkOq1oXZ25npJDuwVDFQ+x3NZn4qUSmE+qApSYCNK75vY4c6NPUWT1A==@kvack.org
-X-Gm-Message-State: AOJu0YzGCr6ZrcntZAP7RaISI+r8DSsVxaamNLkAOjmx/qwxM6JWTE6h
-	g8g3d4epAmILJhf9H12kAmHrAnFKRSVe4qm0djA3AuUlTrmoDgJk5IbU4R+HM1E9/0YxiAPMo5K
-	AYw==
-X-Received: from pfbhx24.prod.google.com ([2002:a05:6a00:8998:b0:847:8ef2:f06b])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:c8d:b0:847:81e2:2468
- with SMTP id d2e1a72fcca58-847c0674f36mr8855060b3a.4.1783044522128; Thu, 02
- Jul 2026 19:08:42 -0700 (PDT)
-Date: Fri,  3 Jul 2026 02:08:31 +0000
+        bh=R42hNae76A7CXiYkYtHihW2CvpPOkdd31plc72X+MXE=;
+        b=dvSu3toOC+Eqiuk3xg4PKHuJYBbMUugQhB32A3LzTtRZ7kFdlonpLOSIZOzQaf06iW
+         Hn9uZI+wQnAoHoHGnGbLpwPzJXFAHhv7ghhF81Oy+OK8UycgAGEHNDyq8JwqJzuim3ZG
+         VOmeQc3xFiUNJIhmXNN2k+RyGhS2o5Xu66RLc8tI2VFOCCQT06PGR7kyMqExFrhO2SOk
+         urmKra5m4NmegSRRTBGbTG+q50008CMVziAFvFOoy8j/4Va3O96MBvn39gRBabJCMSyP
+         QVGFesJ7ltYOJEIJVKazqus1Z0jhE5XMQ6+eTG6B/ZUJQDLbfF3MWPq+haqy6rwcKZPI
+         T7IQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+aa8tTQ0P+Xy/eK5foopCA62e4ZLgtgcIqjKGdCaLa9Rimek9gVqOfN2KtDYiHtf4WkNRzb2POvw==@kvack.org
+X-Gm-Message-State: AOJu0YyNApWADSzuquWJJd1j3MHy7BynWtgpawGrl38GTcmdNTeEXwFH
+	dMaPrSSTaa7mFfdY5ITY2e8eCtRRGhWpS4crbBX3A1txUEOMxFUVoELDR2V9uZ5y81s81cZ1lhv
+	Whg==
+X-Received: from pfcg5.prod.google.com ([2002:a05:6a00:23c5:b0:847:92f6:92e1])
+ (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2918:b0:845:c373:6525
+ with SMTP id d2e1a72fcca58-847c09344f7mr8276323b3a.41.1783044524457; Thu, 02
+ Jul 2026 19:08:44 -0700 (PDT)
+Date: Fri,  3 Jul 2026 02:08:32 +0000
 In-Reply-To: <20260703020832.1731864-1-praan@google.com>
 Mime-Version: 1.0
 References: <20260703020832.1731864-1-praan@google.com>
 X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260703020832.1731864-4-praan@google.com>
-Subject: [RFC PATCH 3/4] kho: Implement page-aware refcount restoration
+Message-ID: <20260703020832.1731864-5-praan@google.com>
+Subject: [RFC PATCH 4/4] kho: Introduce kho_split_preserved_pages() helper
 From: Pranjal Shrivastava <praan@google.com>
 To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	Pratyush Yadav <pratyush@kernel.org>
@@ -94,14 +94,14 @@ Cc: Alexander Graf <graf@amazon.com>, Samiullah Khawaja <skhawaja@google.com>,
 	David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, Pranjal Shrivastava <praan@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D3D0140004
 X-Rspam-User: 
-X-Stat-Signature: d75mmdy68dgoyarmtxr5i5j9mutwif7z
-X-Rspamd-Queue-Id: 82D2220002
-X-HE-Tag: 1783044523-8287
-X-HE-Meta: U2FsdGVkX18+WETzawVckEKaoFNIXuKZ9Za1nj2LWQbDEkOmLoDVfY+izGETaFJt0quEEwXS/QfU8CL/kBKkt+izj7VeMkf6nQDVnbye6s+F7ARlZ764O43rSA5WUqfO/ZgAaAoH4DcIJrhQ1XPKzgfTmp8WZP9l9QqjjvrSl6HNRl/R2P5UNTldHbNFadk4C93SBtQZuo1MlPFR5JcnNUYiCbwf0o13DCRD4WIsjmjkIeFXRXFvAbs1hqXXOu39+9/gmw7kkYSJNyvPPTFiVVO54k58ix3yh551dxe4Vk0EZe58epUtEzM6J4Utj+R4kyc1rb3XR/8MXEZdXjP3TA7hyznxlQmJtT5zaraOv9U60N+o7CXiDJF+0iwB2Rlv6EhRICIEnBoUHHjr4RZIC1ZGfOEkeOywoMxT1cBWIYkRl9xk3/zeJUPbAey79ziXpVeNPYx6DZ097/JynSBZAwBIZH4FR9wycO/xk4ZnU3vqPycA/5qYvSExQA9HSYwllLANuUqj3BgeqTk3QtzoWgePJ6MN+IC1fNJ0bQarS2HfutO+uQ1vLabFr/IfGOel5bRdbdzbVio3uEOrsjX0SbwP91KOxw0Uvi0YSA1/iW2HIvxNmKMmCr8SYqkf0WU6LGk2Q4VaYwTRWWjny1uPu6bGkG65P423VfNPcLJwiBbHZER8BQnMt6Tn62CQYCPO1waony7c7ZRg8T8qRfn64itHxolRds0iGdBeuUI9lA9kvEb9B+Clu4e4exXNYra8IYcGET3Z7IRk7GICc8P5FtyKTFw1LjxywrRCrwlm8v6QyZLnJ+6TSeblgRFs5zR93xN+xhjyMWkfRvTJQlHOizq0QentzJNKEsT2gmlWTedS0h6tiOLcf362TDUzGmHfyFqqQh8SMYrRlAxsXbY7S06jE8WfbLFrHSqUf3+MdJgLu1GlyD7YYk1CAVoLDZ9qmZouUWk5t6cDFlXICWF
- vbFQA1q6
- u2M63vx0GH++Y4IruvdGw9M6RxTG5ppf9L1br7fnrOM7udqh4q1zj48DMRbje8/jh9LECTfMlOD+wraTJAXWCwfYgAaa5i6bC/L8gJMOmoiT1TXnURoMnr7V8t8mxhB8a4CJJmiE0qiQmWW5YIL7EZ7Ed8wwsr/ElYUFQUoY8u6hJxIg+qpzJCd6yf8Hp1ta6xyBgUPJe9XbBWKxAH6Kg8i4uELUXwueiELMzfOXeV4NDXBGv/jvTqhn5NGwbMmQ+d/kJ4d70XloOH8jCQBu46Yf8qC946wrhqoCxorsc3vz/vv9+kdQI89AVNYeJCidZqBCxiEYMB4P4q5vtdullB6uypOvNoXR3tb/Tl+kjcdvDtbnO7MoMZ3Exi1sj7Yv+TsIzaroCRZzVOn6nRvxNvcAyCN59cGoPNQzrAEK6Jo1jgTiwsDjNP8IEMV8QMHGyU6wLPArdZrSeISK6Pg4pnuWoUsEnxeLXn4oIpN179DiosurrmXuR6J1C6IZfGi8DoqHqnNuoYoDiDwNx1C0+3Zbbh/DD3J3rx4mH
+X-Stat-Signature: srj18kr3qgx6oourfmbbn6k59a54fy84
+X-HE-Tag: 1783044525-135758
+X-HE-Meta: U2FsdGVkX18sWUKYT6UrZdbwvm7bLXCCX1ja7qyNEZrRYaALNJXVsYOeu+N7vKobp7IRFvOTgVJNkMIUMMl4KK1tA429eJEEhYd8HHvIlw1n7bntF28h/xtNTvNVJJtsh0P7s5gMEiskFJgYtmfk8zNrGPglHJ5QtkXQ+G5Coamv/VqHgEcJcK49qT2xRBjjG6OSsYc0RnYU4upy37fv/cwvswXS9aKs1mGIAeLK7r1svXl9ILU0j1EOb3pn7T6zqaj8OggIa6k/FfN93NbdhfImw+0CELv5UuYHU1zJGFffPC+YQtO5PWh0kU+JAsO32mwx83viHkEIqwgro1mmkyr/O0TphY8vatyGfdQiRvkgUvPJ6VnLsZvAa3qdtez4U5OZR8I/1jliONBxMNfw7FetHdYBhaEcWPsSgzIjoulBmjLJl8Pqew+3N+hcL4FeLM7bu8W6rRjrR9TrZA/nCaMvzeJKOKOHVDpi3qryFUN9wb2+jCAog6fttUJB+3wImQOO0oDWG381mn0GU2Qk6mKrLANXcGvjbzlTo5yN1X8bU/mMU+B+MRMWU1Ul2MB5PQNq5SsFENqhtgUINGBxPljlZH7c2LvQFxW7pmH9efnhmqPM/wZipjlkvp64bCgYbxziMdh0Hru8xFS/OkSK6y+8j4dt9DnAKiafgW6qyUnusemvIFmjJ+rEMAHEIRoTeGLH+U9gixAuIOZANFAIPesUuMWMyHiZHWK9pdjKiFV1sr0wiD9QB3wA5jd8PrEdQhBoGw5G6/M5QkAskI1bkHzBuz+tRzO+MK+P9+Bpu9jWc+pKD+YSqWccqXOqW/GAgJ3CtoQ0DqNyLL69CholmiiPsifI6vYKAhdmPNK3CaDfHAuNUDkyqapz9KlatJvZpGq51OyzoMkWnMPkkBaHZL0TOUQlIx1URg7N6NjrKS5vcO79R9TptXtgSkhqUpTuRPws8kIt/wpqYtv6ro9
+ FVCrYnIP
+ ibU21MsGoIISvlZObHgZm6wZhvhoHU9LkEWO1LNlvc+dzlnsW0GUS6GSwBDagJ5YtOQQ/Z+uTbWmymGnoHJrM3cxejIvBsRrcFbNhTSXL+baYpJULl87G6hTiH8XEQqB++/207xuC3YhxOCyKPMPzNvuRcvJpfSOKU0+nZ4ZITBQvh1h/Pttao3chLNTY6Etngmjn1n8+TsvWIKx1rsiEBYUco/OyPdQ/00a4GMHiHt+irZX0GlW3+qUpC5Rq7Vcd06WBwhShAyOCXPlVVnHsYCbq2eVCrT/bcBY1+lR7Ua+fcVNcwosrDxKrhoulTWY2aG+G6YxwCKUyKmuapnpJ8Lao91t6Pxh3F7Yq+3K1VwEJanegLXnUMYwbVteqalZApXu1i4lnrQa+2wkEXbqS6eDYwQQYUNspb+AXyhEb8r5pRk0Cyc1HGf7poKRlcQZ6ty3ZYqh+6ytYl0MFGs/xn0nVbFbMXp/fGF9cSlFGCSx1W+t6IcDn3dlpj6CdLHNKLHlh8yJOKgpOdwt2HWEObrBXfCRTLzVoTKWl5nzcFstaLWC+kxvO8EV32XVbVAyHhHTwAw96Px0pfD0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,89 +109,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The KHO restoration logic currently forces a refcount of 1 on every
-page of a multi-page block. While that is correct for split pages, it
-violates the expectations of the buddy allocator for high-order
-non-compound pages allocated by kernel user (like the DMA allocator),
-where tail pages are expected to have a refcount of 0.
+A driver may need to split a high-order allocation that has already
+been preserved. If the pages are split using split_page() manually,
+the refcounts would change but KHO won't record the change in the
+preserved page-type, resulting in a metadata mismatch during
+restoration in the new kernel.
 
-Update the restoration path to respect the preserved page type stored
-in the page->private metadata. For KHO_PAGE_CONTIG blocks, only the
-head page is given a reference count of 1. For KHO_PAGE_SPLIT blocks,
-every page is given a reference count of 1.
+Introduce kho_split_preserved_pages() to handle splitting of preserved
+pages. The helper follows an unpreserve -> split -> re-preserve sequence,
+while ensuring that the KHO radix tree is updated with the correct
+KHO_PAGE_SPLIT type bits.
+
+The helper returns 0 on success, or a negative error code if the
+re-preservation fails. Callers must ensure the provided order matches
+the original allocation and that the operation is serialized against
+other preservation API calls.
 
 Signed-off-by: Pranjal Shrivastava <praan@google.com>
 ---
- kernel/liveupdate/kexec_handover.c | 35 +++++++++++++++++-------------
- 1 file changed, 20 insertions(+), 15 deletions(-)
+ include/linux/kexec_handover.h     |  7 +++++++
+ kernel/liveupdate/kexec_handover.c | 23 +++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
+diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+index 8968c56d2d73..452e38bb2076 100644
+--- a/include/linux/kexec_handover.h
++++ b/include/linux/kexec_handover.h
+@@ -24,6 +24,7 @@ int kho_preserve_folio(struct folio *folio);
+ void kho_unpreserve_folio(struct folio *folio);
+ int kho_preserve_pages(struct page *page, unsigned long nr_pages);
+ void kho_unpreserve_pages(struct page *page, unsigned long nr_pages);
++int kho_split_preserved_pages(struct page *page, unsigned int order);
+ int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
+ void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation);
+ void *kho_alloc_preserve(size_t size);
+@@ -65,6 +66,12 @@ static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
+ 
+ static inline void kho_unpreserve_pages(struct page *page, unsigned int nr_pages) { }
+ 
++static inline int kho_split_preserved_pages(struct page *page,
++					    unsigned int order)
++{
++	return -EOPNOTSUPP;
++}
++
+ static inline int kho_preserve_vmalloc(void *ptr,
+ 				       struct kho_vmalloc *preservation)
+ {
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index d6e81f72fe5d..f6ca5e24c740 100644
+index f6ca5e24c740..ea08248901b5 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -375,11 +375,18 @@ int kho_radix_walk_tree(struct kho_radix_tree *tree,
+@@ -1018,6 +1018,29 @@ void kho_unpreserve_pages(struct page *page, unsigned long nr_pages)
  }
- EXPORT_SYMBOL_GPL(kho_radix_walk_tree);
+ EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
  
--/* For physically contiguous 0-order pages. */
--static void kho_init_pages(struct page *page, unsigned long nr_pages)
-+/* For physically contiguous pages. */
-+static void kho_restore_refcounts(struct page *page, unsigned long nr_pages,
-+				  enum kho_page_type type)
- {
--	for (unsigned long i = 0; i < nr_pages; i++) {
--		set_page_count(page + i, 1);
-+	/* Head page always gets refcount of 1. */
-+	set_page_count(page, 1);
-+	clear_page_tag_ref(page);
++/**
++ * kho_split_preserved_pages - split contiguous pages that are preserved
++ * @page: first page in the list.
++ * @order: the order of the original allocation.
++ *
++ * This function allows to split a high-order allocation that has been
++ * preserved across kexec. It unpreserves the pages, splits them using
++ * split_page() and then re-preserves them as individual pages.
++ *
++ * This function MUST only be called on pages that are currently preserved.
++ * The @order provided MUST match the order used during the initial
++ * preservation.
++ *
++ * Return: 0 on success, or a negative error code on failure.
++ */
++int kho_split_preserved_pages(struct page *page, unsigned int order)
++{
++	kho_unpreserve_pages(page, 1UL << order);
++	split_page(page, order);
++	return kho_preserve_pages(page, 1UL << order);
++}
++EXPORT_SYMBOL_GPL(kho_split_preserved_pages);
 +
-+	for (unsigned long i = 1; i < nr_pages; i++) {
-+		unsigned int count = (type == KHO_PAGE_SPLIT) ? 1 : 0;
-+
-+		set_page_count(page + i, count);
- 		/* Clear each page's codetag to avoid accounting mismatch. */
- 		clear_page_tag_ref(page + i);
- 	}
-@@ -387,16 +394,7 @@ static void kho_init_pages(struct page *page, unsigned long nr_pages)
+ /* vmalloc flags KHO supports */
+ #define KHO_VMALLOC_SUPPORTED_FLAGS	(VM_ALLOC | VM_ALLOW_HUGE_VMAP)
  
- static void kho_init_folio(struct page *page, unsigned int order)
- {
--	unsigned long nr_pages = (1 << order);
--
--	/* Head page gets refcount of 1. */
--	set_page_count(page, 1);
--	/* Clear head page's codetag to avoid accounting mismatch. */
--	clear_page_tag_ref(page);
--
--	/* For higher order folios, tail pages get a page count of zero. */
--	for (unsigned long i = 1; i < nr_pages; i++)
--		set_page_count(page + i, 0);
-+	kho_restore_refcounts(page, 1 << order, KHO_PAGE_CONTIG);
- 
- 	if (order > 0)
- 		prep_compound_page(page, order);
-@@ -421,13 +419,20 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
- 		return NULL;
- 	nr_pages = (1 << info.order);
- 
-+	/*
-+	 * If we want to restore a folio, but the memory was split in the
-+	 * previous kernel, something is wrong.
-+	 */
-+	if (WARN_ON_ONCE(is_folio && info.type == KHO_PAGE_SPLIT))
-+		return NULL;
-+
- 	/* Clear private to make sure later restores on this page error out. */
- 	page->private = 0;
- 
- 	if (is_folio)
- 		kho_init_folio(page, info.order);
- 	else
--		kho_init_pages(page, nr_pages);
-+		kho_restore_refcounts(page, nr_pages, info.type);
- 
- 	adjust_managed_page_count(page, nr_pages);
- 	return page;
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
