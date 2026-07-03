@@ -4,107 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D12E7C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 09:39:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BAB8C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 09:43:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3E0D6B00B6; Fri,  3 Jul 2026 05:39:08 -0400 (EDT)
+	id 342E66B00B6; Fri,  3 Jul 2026 05:43:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C15B36B00B7; Fri,  3 Jul 2026 05:39:08 -0400 (EDT)
+	id 2F3906B00B7; Fri,  3 Jul 2026 05:43:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2C246B00B8; Fri,  3 Jul 2026 05:39:08 -0400 (EDT)
+	id 20A096B00B8; Fri,  3 Jul 2026 05:43:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 79F446B00B6
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:39:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C3B312037F
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:39:08 +0000 (UTC)
-X-FDA: 84946966776.27.08ED0B3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5ADF220004
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:39:06 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IIdjRc2F;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EA84D6B00B6
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:43:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 72CD51A04AD
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:43:22 +0000 (UTC)
+X-FDA: 84946977444.17.5781A72
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CA09CA0004
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:43:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C9D7+C5Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783071546;
-	b=F4Vg5nvvyCVsXgb/sY7cpW2SYgEelW3iX2sfWFH5YIP6J3l1ABFP4RIpVEAoJQh4Mh4xvs
-	l4lfLWGFbPYgKfXg6KD37JJzaNWeT3wEqL6tOKVLPR0QjuHeeV/TsGVF58nChfkTJPvzUL
-	GkKyD32dP3qek/KFCaewWxlhZP3aNXA=
+	t=1783071800;
+	b=H77w2WsZBBbaNYXL1kbIgES20CsfEZpR/NTnOrLbwLKoaMcMV0x4OZFmV85oMb2IbYYa7y
+	GOTcYOEvqjuxJ0hn5Rt7cT8JzHd7cJ95hR9A3FAeGx2k3HOiX5hDzrWsCBvJmVOllE15J7
+	vXtoJkFDF9yQiNPBVWbXtczZX0Uk8Ds=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783071546;
+	s=arc-20220608; t=1783071800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/jgWAf5SwPzlqhJKQG2/7AalkDHZJDG2niv0fSajwEU=;
-	b=jnbd98OLhKrmBzaHgyXhG3XGHhG+WPTke7I5yuBYwTAoE759onysj8YBzdy85T1VFi/OAH
-	6oFIKBE0Ds+yTuf8wU6yf06oNt16lxmPyKBo8ID7Re0xsiPBvK7sfkG+3FN6kYaEn+NXSU
-	VgRUuAkagAmyUlp7GPXdVIETCYkbmf4=
+	bh=Jl/LNX0F9c5ZLakltcdxkRYciVZAqidRH+eUQNM3t2s=;
+	b=sQKZzE9lFBzWNQHslxaWly/KESRYkE3se72SOlwS6KE7Ubhm2NbVxKHGy6oejV3DNVKqIK
+	qy9sKGluxN+jb+owdX7TAy6vMdPbG1Ho6c5N6YpYptgwEVBuOGNDq7FNSdwVYz741IhMfm
+	lAi+POvF1zY5iSAx0jfM2DwiNG8YH1Q=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IIdjRc2F;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C9D7+C5Q;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9081C40B02;
-	Fri,  3 Jul 2026 09:39:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FAB1F000E9;
-	Fri,  3 Jul 2026 09:38:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 316A36001A;
+	Fri,  3 Jul 2026 09:43:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4711F00A3A;
+	Fri,  3 Jul 2026 09:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783071545;
-	bh=/jgWAf5SwPzlqhJKQG2/7AalkDHZJDG2niv0fSajwEU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IIdjRc2Ff/MhGB0w5/vA6UjULptWQXsppua/eAUQJfQd5NdXeRV+p01OWY8Bt3MPx
-	 4cCwYAFNdOfbaGdRUnh8JC/PEGaL921tNnsYvSZayZ03ymB3aeVliby82ll+FWzCaQ
-	 SIsx2dDAR0T1X9mG4D83sJAUOi+NrbIxNf5WZxypCZ98bPyoxgMMd50YEOi7wKPZTQ
-	 u7Q9/JcQ+aC7Aao4EcS84uEFUJCKZOucloXKmc1GFudydK99rNNkqs6AH6O1LYyaqq
-	 8ssYDoFNn58jqKcwT3gORSPDYeyUS9bqj8DnoMb93ezoxbBc77dlKC0CeNbveMZYb2
-	 A36yiTH0mN0NA==
-Message-ID: <21ec3b5e-8e8a-4f8c-aad9-ff9b77bd6d6e@kernel.org>
-Date: Fri, 3 Jul 2026 18:38:39 +0900
+	s=k20260515; t=1783071799;
+	bh=Jl/LNX0F9c5ZLakltcdxkRYciVZAqidRH+eUQNM3t2s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=C9D7+C5Q0gdfl7m1VND10s22intgyJT3XKAN5kYdO7kL73GTDOwJ07LLmRW7PTGo3
+	 VuIc3B4pB5Kd2Pe6zqvT0nQAqhufTgiAVt9dBuPgW2b8CXfuZs+fJUaDatfPjdc6Ae
+	 dhi7jYRLUfGyXSynFyKiHDGNlizp20A4aXwQxQxkGSnkhdlYsg1b0rR0H0MkxI4zVC
+	 QLgbV48qSBbz5kIJHncusJ4IM0y3FvhkUdfE5N3MlYePRfsQzuz3mAal5FYXOOgNmV
+	 z4ioTcAU9v94PJpLh6iiCxTaLsx8mHaLD63VXpWGExklA3P+ItS+u1hI2W7AaMQ9CJ
+	 zwMP7vo3Bn1Bg==
+From: Mike Rapoport <rppt@kernel.org>
+To: akpm@linux-foundation.org,
+	Andy Lutomirski <luto@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	linux-mm@kvack.org,
+	devicetree@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	WANG Xuerui <kernel@xen0n.name>,
+	x86@kernel.org
+Subject: Re: [PATCH v2 0/9] treewide, numa_memblks: remove redundant work during NUMA init
+Date: Fri,  3 Jul 2026 12:43:09 +0300
+Message-ID: <178306815065.2173096.9480193260074524906.b4-ty@b4>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260703041329.2797584-1-ekffu200098@gmail.com>
+References: <20260703041329.2797584-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 18/18] mm: factor out can_spin_trylock()
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com,
- Yosry Ahmed <yosry@kernel.org>
-References: <20260702-alloc-trylock-v4-0-0af8ff387e80@google.com>
- <20260702-alloc-trylock-v4-18-0af8ff387e80@google.com>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260702-alloc-trylock-v4-18-0af8ff387e80@google.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------hFDyml7LY0WmvWczM3Ou39Mo"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5ADF220004
-X-Stat-Signature: 7mhg7agrmui6iw4u8ak7tie4pr9ozon5
-X-HE-Tag: 1783071546-309010
-X-HE-Meta: U2FsdGVkX1+vxk2+QhtIZ0xKf5fcg8ncjMFXI8zaMn2ITdF9E4eAQNJ7jGbAYFjgg9TXBurSvWOkjuSD4L8TgK2pzc0rQS8mvuFcRGlgGijQxmT8/08I3NjnfXPkfRMBwur7xqs+aM0q4BR8ASKPSOxM8yPCotoUaNlTSfnyNaVT+GhtAUZ6GZlSs9CrFOyQR81x01knrgKEUFACSQWGFujuREIPNh+YkG3f6sUlC6iYBS6kSSOMAjmpsvMTdZ0YsUXKe7Y9Rrw7NrPBoLnKq2kqNJ4pnYkBJpAPW0SbrYLf2RQso81tCLbUtnoxXjX4BSyioAdG6k+n1Z7tVIKju2AdZ0B7E2gXeeOw3ykD+lPUoAFVasB5K7lYTRd1lybBRLi746VshhpcgjkFOwWt6IpLfdtgOnaHYZZRa4hVIZkV4oCOjLm//wSbY+U0K8d1rHx/E+e4fjABEtVZ7rMzrN8VW8H0I0TyLDGFu1G2UM/yCTdHJ/P9KS6icnhNJmwnud62+Ay7+5t56gyBDNgp7FSKZlm64UX9+p0mvOOWKTRS/DLEwwWN3Bl3EXGfgtswmUMcCvUt1FTSQrnO1nd6T7gs0ZGVkiM/4Q64er8Xn42o/aZV52+oimGUNj/znm03rLQvgx0fKFPaojalXQA3LuZlK/md8VOtAQ3pX6O356N+oLoMAKhqhHb0XjhZhtjbQuBloqTZxarjoBDJmLhohBJqwHFlnhfTqwDmnrbZJORy5912rGsNxh41f6PoTqvTOPwF89J8RYVYKrdrdesDrnS2aO2GaJ/zPk+bBJK5dED2h84MNDaYjr36lU+Bl+HJl0WmqLts+U4Wj81WyEv/wEKtCKW85IHZJ6AITppjnJ/cd+JFkEphjyvvewuBzM6HVCkjA/OjXN8xgCXmQTAkLZnqwctaNoXNSKKaY2gAqhCNcpoMDFLI3r1NZOikd9UcwddsV2xnUkcdn11DcJd
- NgGNJCh6
- YcxWJqDXeDuW3Xfx4/iKzv8KK1mNz1N3/nB8tKlVq1cU9TXuO3dcxCiP/CZ+vTOuC/aZpyfv7WytSVPycAv07mB/Dk599GHyDgFnajgjK+vzKgTSrRbOfYjAbCbW+TSoX20pK+k5tD8GW7JiYcvRRflRRWd2SP0d/cQEOWBN3KFLagVPkM7N3kbryEYLTrvijzfUIEwEMyjdPJEtqg6bvQqVI2vmz0A/JFNUGy09hiWmiMGZyxO+zoh91fbLTsw4VOdEgRzl7ZKyfmqCO8ekL31THk0RN4cW5P582Dq4qKUHq/KPcUdwf5JLmAenykZCoYRaJAiv0gAoJ+0Hx2duFhAyTK+r+bAcNy67e9ZTPmxblvUwQiVnGIWejgr5Jz+U/Zyzgu4sr2K6RTflGyA3Cd8aTP7li4NiSNf+GlmsJQaZOAu8GUc6pO+9rN0pmwa/GfN8ihfKpu0PBnQgciHQkbveoV7fd+nB3s0CMidfUazABjm6cCQ7Vs/JqZcQ60uMCiqk3LmLOkelVRlLdnsGZn8r4T2InC70Hf+FMHD9HIdCTDn0GA5yJT1vXlYqjyXErN7SqMsOb9N5R5btfK1A8GVZw7M2KNq7RtxULY1W5luNEcoMUMXCDlAdMsA==
+X-Stat-Signature: 6rnfz487pgq8r79pg3nqetzarufyp98x
+X-Rspamd-Queue-Id: CA09CA0004
+X-HE-Tag: 1783071800-562592
+X-HE-Meta: U2FsdGVkX1/4an9tG/UcSHnpreJZsiOzyycDaM3h64OLwd8KV5iW76sqaf4jj5glln0OOKSmvP4Oh5uXa2p9obU/gdSFx7NKSFQTFhBt1esVPgMTW1LYB7JRZbS8nUSKrs9zXev0y04F4mQTNulQ4Bezf26jbLD73+w6bXW2GMcAOVgjjDwNLe0fSzhVcL/pgAQwy8GUSkcsArxWjteUNP2rav0EtttLOg81I9L+czETwigz6mxi1LnNNunirXJwrKKxnIVLhPt3fzwt+q3Tp8AD850N1zJdIwOlcjbLfnl1BToKeT/iRdrQiFtLxPL2OMYzHdzMAyh5fstAKsAIenz5iMLc6gHngyuFHty+xVHOO38LO4f4fM2mA//mi/diQU0+3QIpf3O4omArB5EmQ9BHDERFiB3fx7omTQWR5ynFwaRSrm0mvf0elAcoLQqcO+sJFADjcrcyFCOqfohxEdedi4EC2LpZjDjgAW5r1djPeQuuS3vkPXpVlpgzsBg1Q7NLGfD16vOVgokDDQTeXKtt1jZu/7aizl0UJZNNkf+4XHMVCLCo/e9khotJYwUWMpjxfVUdDrkWFywA7PGUVI6oisWqwaN6Wbafplfrm8Q6dbMX6YNOSc0tLt5K83s4or7bEaYyJuhINJ1omYyvu80YLK0Yj/AKXSerde4/JZrou8emOmDLgD2ha08MJCHpV/mNPL30vxe6vZLVjLfpF+eSrz0itkyMa0tSvDSWDMz0oIL30zouhIpcS/or4N4DtabQgvN6XfVD1SfVVdse3alqBfuybmxKvqF1iJBS1FGraDecpIX20KZAV3ayJEnyEnFBIWVQjRdJ5HbgZyFnS8kMi48r7PsTqIZlMQX/FGdodByaVwj4Cta3X79nDh3UO2DxErmOiDqll08+/tigiPlsuPSWniVBwQZJGQx2LObUVdr28oxVCOxXK9Dh9/7mrx3aZHyZE4u5UXJNVfT
+ RHaad8oL
+ iJO0BPEfXbIWrrEW8xQVPj+yrqxXV/2wkkEnGtwLAzA4RfhygW884ywJnegvzKkqT10HzK+vqfckgcBxH+vXAimGpqrk867TpuzbK0YhNCvWa1Nx7GI65nWriud2kTtf/nRk2UPoxxkfigGbXjPRR9/MmOZtMNsGOU9qjo46AxDZNG03/Mfm5w4l7ab+29m1NF2rV4dMFDUn2fIdi+2buRyZ4QnSe/OLm12+EQQw5U5kiPQZzw3ndpSwi1TNDDIxezBFPG/z686b0ekmmigAqKCUOd6JPTFMOrmEP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,93 +114,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------hFDyml7LY0WmvWczM3Ou39Mo
-Content-Type: multipart/mixed; boundary="------------EMNg7VfEL9bzN6yUIrxUi2BK";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com,
- Yosry Ahmed <yosry@kernel.org>
-Message-ID: <21ec3b5e-8e8a-4f8c-aad9-ff9b77bd6d6e@kernel.org>
-Subject: Re: [PATCH v4 18/18] mm: factor out can_spin_trylock()
-References: <20260702-alloc-trylock-v4-0-0af8ff387e80@google.com>
- <20260702-alloc-trylock-v4-18-0af8ff387e80@google.com>
-In-Reply-To: <20260702-alloc-trylock-v4-18-0af8ff387e80@google.com>
+On Fri,  3 Jul 2026 13:13:20 +0900, Sang-Heon Jeon wrote:
+> Every existing numa_add_memblk() caller passes a valid node id and
+> separately marks that node in numa_nodes_parsed with node_set(). In
+> addition, numa_nodemask_from_meminfo() recomputes the same "nodes that own
+> memory" set from numa_meminfo, which numa_nodes_parsed already contains.
+> 
+> This redundancy implicitly depends on the callers' node_set(). So, before
+> removing the redundancy, make numa_add_memblk() set the node in
+> numa_nodes_parsed explicitly. Then remove the per-caller node_set() and
+> numa_nodemask_from_meminfo().
+> 
+> [...]
 
---------------EMNg7VfEL9bzN6yUIrxUi2BK
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Applied to numa_memblks-redundant-work branch of memblock.git tree, thanks!
 
+[1/9] mm: numa_memblks: set numa_nodes_parsed in numa_add_memblk()
+      commit: abdbd8329281f40afd381346410d6d43604af82c
+[2/9] ACPI: NUMA: remove redundant numa_nodes_parsed node_set()
+      commit: 7cbdade40fb8f440c13ccd7a02d104bf32285187
+[3/9] of/numa: remove redundant numa_nodes_parsed node_set()
+      commit: 3b1e5d902dfa832e4b175cb1f5a000236d45ceb5
+[4/9] x86/numa: remove redundant numa_nodes_parsed node_set()
+      commit: 63fa742bae02f0d2ffe95ff540a51837815abc5c
+[5/9] arch_numa: remove redundant numa_nodes_parsed node_set()
+      commit: 8b9cecbdc78c5a6cfaaf3b00ce7ebe05cf5417e7
+[6/9] LoongArch: remove redundant numa_nodes_parsed node_set()
+      commit: 3aeac07c5b1c3399487f4b38182f8cfbc3dbbd53
+[7/9] mm: numa_memblks: remove redundant numa_nodemask_from_meminfo()
+      commit: a9bafc1832d2db97813069823821ed333b8ecda6
+[8/9] arch_numa: remove redundant node_possible_map assignment
+      commit: f5a77a50a14dffb659ee8f550c824f8280e37fce
+[9/9] mm: numa_memblks: use numa_add_reserved_memblk() in numa_cleanup_meminfo()
+      commit: e55424c84afd48aa2f0f761ae0c006128ef541cf
 
+tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
+branch: numa_memblks-redundant-work
 
-On 7/2/26 6:49 PM, Brendan Jackman wrote:
-> Deduplicate checks for whether the current context is safe for
-> spin_trylock().
->=20
-> Does this function really belong in mm/internal.h or is it generic? Not=
+--
+Sincerely yours,
+Mike.
 
-> sure. If someone ends up duplicating this logic elsewhere in the kernel=
-,
-> that would be a shame.
-
-Wondering what BPF has been doing about it...
-
-> But goes in some generic header, someone treats
-> it as documentation about where it's guaranteed safe to spin_trylock(),=
-
-> and then it emerges that there are other subtle preconditions that
-> didn't affect the mm usecase, that would be worse. So, just be
-> conservative and keep it local.
-
-But yeah, agreed.
-
-> Suggested-by: Harry Yoo <harry@kernel.org>
-> Link: https://lore.kernel.org/all/397859cb-b127-4cc6-9c71-044afc99bf0c@=
-kernel.org/
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
-
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-Thanks!
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------EMNg7VfEL9bzN6yUIrxUi2BK--
-
---------------hFDyml7LY0WmvWczM3Ou39Mo
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCakeDHwAKCRCGXBN6rc5S
-1qOoAP9X/oz3Te45ijX+oZqnExbf3F/cLVlMnCzGQzkprL5sGwD/VnLjX0AY95bV
-/SjSfOk7aMvj/cla9N9FEs2kf6hCUQo=
-=jFVY
------END PGP SIGNATURE-----
-
---------------hFDyml7LY0WmvWczM3Ou39Mo--
 
