@@ -4,137 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86123C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 08:20:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17024C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 08:23:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69E2E6B00B4; Fri,  3 Jul 2026 04:20:33 -0400 (EDT)
+	id 0AE216B00B4; Fri,  3 Jul 2026 04:23:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64FC76B00B5; Fri,  3 Jul 2026 04:20:33 -0400 (EDT)
+	id 05EEB6B00B5; Fri,  3 Jul 2026 04:23:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 515CA6B00B6; Fri,  3 Jul 2026 04:20:33 -0400 (EDT)
+	id E68C36B00B6; Fri,  3 Jul 2026 04:23:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 231BD6B00B4
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:20:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A4731C3741
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:20:32 +0000 (UTC)
-X-FDA: 84946768704.21.94C0A34
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DD83E1C0007
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:20:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CaOXshCG;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B23286B00B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:23:13 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1BAC04047C
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:23:13 +0000 (UTC)
+X-FDA: 84946775466.24.9C14E6E
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 638C620009
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:23:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783066830;
-	b=sCII6gbZVix0A78eAwuI0CIYJrfVeqQ3/Lz7BYXHa1jya9UdRO2vKkqfh5W/CxxuDUtSd8
-	FWt4ZYYSP1lzesqQLyfVdFsOJBtqAd29kL3Dk58mBXs3TqI3REy+PiRkpBly7/A3EDVCJA
-	uJnlywUe6ihPj7aLdaG6WVyP2reYgKU=
+	t=1783066991;
+	b=iU7PW3WkgUyEb9GN5YbL0SVrlULACvSUZJwIRaf7DXhIQgGu6ENBJZYFsWYXC923XnHedv
+	Tnad01dBOLPbq6fst+CVjPR9CkuYZI2SuWCgsniduyQfhoDmHMJwyJPmFAihm4FNsc8jnE
+	fc3A2cpwxmj/duKCweQDLLaRxBrWwnY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783066830;
+	s=arc-20220608; t=1783066991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9eBMQkRAIIiiD1/VSxT9ESyU/aInOBlcadzqDqKcKNU=;
-	b=p/KMUEtgsxjNsrbncZTpuPKXjrScaEoQM9Sfgp7NbV1Ws31Fxr4YSPBiUDS3t+UPQws+r5
-	iTT79K3dHw7mWX3ih3DTlfOF+iC5Yybcw4VKDgaQRE8rMNX1ljXdkTz21eTON+WAxAQ4zX
-	F811rVi97r2s8rTfnyTkSXhsr49shV8=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=6XSZO/dAzdfFg424zIgOgG/s0NYwnw9ZGDYS4jtOgIo=;
+	b=uL2N4BfGXow272BqRZOUaLYn2oNeqgpgf7a4ha9KMjOd4iT+MUsKDngGQVmsrKtA2TzG4j
+	ORkNVeSDyq0brAsR4cOYEXNpM3K8gazuNlv/stFc5xDrhmg9RT9XtKo7xF8f/mNcH+8mJe
+	9c737z/kFxFp/jdIOOO+ei1UwvCxE1o=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CaOXshCG;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 56683600B0;
-	Fri,  3 Jul 2026 08:20:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CF21F000E9;
-	Fri,  3 Jul 2026 08:20:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783066830;
-	bh=9eBMQkRAIIiiD1/VSxT9ESyU/aInOBlcadzqDqKcKNU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CaOXshCG6r0+KBtTiJ19wWhAxgPjDZye71u/BG7CxHsUKpc3RHiFsgmNAeoXaP1O4
-	 6q32HMx8WwAwDQ58RRTmrRifC4mAW8dC4TvarNI8+sQgmwe920m/4AzlBEtLpLhUnv
-	 PexAmaNntL2iK8cp5YJfzouP7DSHBijvWa3ildUzneJR3Akh0lLJxwVo5vA3YfUcxN
-	 eqFZDhZZ8F1IXrGYXkgBr/Q7TTeAe7qvd3SniX7e3uYRD5TCXV2NKzTxCjRDvZ9KDv
-	 3Ac37l+nwyONhEBaK8V/CMqJYHGG2LwHPtl7RtRBk53oEbRAFDhwbs7QlbV0LO8k4Z
-	 TPLu6FVOoI9kw==
-Message-ID: <2436707a-b6ab-45ec-98e5-538e18589462@kernel.org>
-Date: Fri, 3 Jul 2026 10:20:25 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC hotfixes 2/2] mm/slab: prevent unbounded recursion in
- free path with new kmalloc type
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
- Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Danielle Constantino <dcostantino@meta.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260702-kmalloc-no-objext-v1-0-167175008538@kernel.org>
- <20260702-kmalloc-no-objext-v1-2-167175008538@kernel.org>
- <de2e0d60-6954-4b54-bbff-ae78dbf9f789@kernel.org>
- <b3f15af2-2c01-48bd-af87-e27df32388ea@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <b3f15af2-2c01-48bd-af87-e27df32388ea@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
+	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gs6Ff6X05z55RJ3;
+	Fri, 03 Jul 2026 16:23:02 +0800 (CST)
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl1.zte.com.cn with SMTP id 6638MpM7040918;
+	Fri, 3 Jul 2026 16:22:51 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp05[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Fri, 3 Jul 2026 16:22:53 +0800 (CST)
+X-Zmail-TransId: 2afc6a47715d9e1-92571
+X-Mailer: Zmail v1.0
+Message-ID: <20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn>
+Date: Fri, 3 Jul 2026 16:22:53 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <akpm@linux-foundation.org>, <david@kernel.org>
+Cc: <chengming.zhou@linux.dev>, <hughd@google.com>, <wang.yaxin@zte.com.cn>,
+        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <ljs@kernel.org>,
+        <xu.xin16@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHYxMSAwLzNdwqBLU006IHBlcmZvcm1hbmNlIG9wdGltaXphdGlvbnMgZm9yIHJtYXBfd2Fsa19rc20=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 6638MpM7040918
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Fri, 03 Jul 2026 16:23:02 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A477166.002/4gs6Ff6X05z55RJ3
 X-Rspam-User: 
-X-Stat-Signature: zwjoooephegcuztejcteiyzqea3sbf3n
-X-Rspamd-Queue-Id: DD83E1C0007
-X-HE-Tag: 1783066830-821303
-X-HE-Meta: U2FsdGVkX1+iULH70a9U2dzLOF1TTr4jQ46dDgo5p3KDd3ENbWTsHOYUHQ24NFk19oFnJoi0rOs3AK/2eigK9xSXB+evPCyDTCpdauzeVe78Ajh9fxPJYvM75sU9jR7FJFak30HNk+RFxfl8t/jeWvsc6XMsLDfovz9bbTZ79X9ZFNfGUIM0IpSv+XhIyrDeDzNZMFjPlvq6Y+pVW/XVpJ/w9g6RQNDeUrnJ60sox5YPe2Jh/h0sW7eREVqsq59tRQvow1yS8L8Aiz3YC5AkXbaAdGt94P4cUa8OSkB21OkhUMEhBx3FWO+AfEgII4J8SDBFydzqBRuhAmaIYzZLwKyJBms794Fciff6CPQoKow0ruBSA+d+azS8fhwWAKp2gGqvfttU6zD92HAiC2BTjQ7/Hlow7XtsHXb0Wd+LQNUYyyOcnBhZsgVaMlIXYgUbY3b59L2c3nn4twFX8QPRrQ0gs6snC9ATA/2Xq6RCKNTRh2hmvMHjezqggsCcsUwF0+sl0R62u2qnQEvN9MNMcEngXFQQHBpP+P+XrwrMTDC/UAxwHrQTbyOs8zgmNL8/s3eGkVox2MTH9UEDr6iiQsKekOBS7acmKu3LN8rKScQHq0UupqywSek6gmQAoH52fh0buGKJqp+RuZoBZ9UADEAaS5GTIyR3awqQX4iACn6aqILtaQeAwuRY9WdrEcrXNU8Q0/YFEQPTWShypLDsVUY8Ovj9yAgsqMq7x86t+VmrlDh88jzD6ptHV6TEe7Ca1YiOraqK+0UL4pldfb6VE+AubfhL5AlSU9y0Z9XkyhnEhVlGGmOYZJzM66naL+m3iGzTZ+L1RK5SlmMmQIN3HKqpTAJ+OUidtfcNYVKYfuOWr0jX0zloAJTc83AFy6Ckf+fgklWyHMFO4unsbnBSa2xFPhlGRyK16v4rVkJcABRTj0yMQRYs9wF62B0r6eAnefR6yLUkGaZ/l/k6peF
- YL30ttOq
- soCsjyf/aVNEdru3zQmoOQ4bu5EbHjhCahTAPUG4GNtUd//t+9fdIyH1pQ3ysbUwHs3ZYRMGIakYV/nApNc5gi491GXhBODpsDOme7zZ6D05EO7TsNWa2fuBGtKG2wddaMYamUn7aMyoCcnxjJCEAJ+5vSnJz+slACuzf3NGYeJwaDr0VvrdImiCjbHuSH3mB9rZjWQu814NqCzYwrT3hS08jx12zOQJVrTv1wgf9DDE+lOrZrVDUYlqgDCNxjZM814VN
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 638C620009
+X-Stat-Signature: kpfji94zkakdawibcqksu7ojqr5kb5oi
+X-HE-Tag: 1783066990-816282
+X-HE-Meta: U2FsdGVkX1+oH5MfPssPck637vlhncX8lUt8Ijee6oeIHtYRrY1vaEuDYJLivm6hlgKWkCdxEKzGMGqeU0jh4HlSwAInpeKAf6bCXlaXQzy17rzleMsX/7lNtemOhTOheZZ6crDkIgP0wK0sqShZshaysAO6IFGWrSAjjHMUV0x2uxat8+px8uQjD2GAvG+hreGE6pmh24MQTFimdlND7yTIV/Ip6ukvQmqcJrQ5xBtWDaMZsTUKse1aLj4mnMJD6jRUntwhM7u5ZFxsompGnDJEqcNSlVOnbdCgXw8c1/nKPVWLpx3f7IvVG0H13wqb6Di3Wl09vDOr9UCDn3ak22rn0HvnrQs1iJ9HNodw1J3dWf9cSx0moHpxirjDITAe1oZZnYurbR4qpxZ3ZMRyeoUEnBrziKfeMDxRbUMPSOJZwFVPFmKO68znFboQZRNrk6Y1ErwI+5VF336Kr6VmVyaIAFCFjlUFg96Xkw8WwQTH0+mOMNt0Zjmk6i1a0qVjqEHuCxBKAlf6uQOA6qjb5B7bK6VIo8l20NE3P+5vwUWpIg5Yzw6bAqNWpKg2Fpfyv6TzUGTf1IJnvUmzKPqyN4J3t/Xct02Q9yMoeffI4LzB1X4GVT8A1eySe+DF4Gz+8ZyWRriAhJ0v5XKVY3B6QcEHBd2gGiZd+Xs817n8bw3ppQGUPt0AFRFlCu0ETIGZ1qmN2Nslssr/CI8L+H+ccGSypc7CjURdXghEbaaWvcalaJB1GY7uNYq05//dTLzJl0Dw6FK8xSJVUPXzEWIlCjzyPVmmvJUIXczcaQaqBNC9CYalmmUjBvJ8DmKQRPbcX/Q3Yhxb6dYOfcQUG7FdN+lXLtdasHoUHRIRX9HouwScupSFD65zfJ7I4QGMwygkRmBk4qEZG1cT8USq+8FFfmEwIpRmMfz4aWijr3XQhh6TOzqAVXD2Yt3d/GDkU/RyuqHnC+iTwrm887QIFe8
+ Xb0k6KUG
+ HJNw4ssSciri5S/D4xj0GD4iM6uDXgVx/7BXGBjLHfyrvDwDTBDYjdewW2Ii0ZPeN621KxN2xIX7EfIDNXJ+8gdxT7YKW4bVHqU6UHjnT/Pix9BNoQZm6bWJc+r4pzIdnQ1X0vX/yQ/zzf9TuTLlwS70LIyic4mXXUT0fz1dgFnIP72I4vWwd306s5nolLlis8437l+TXDhmk225wOpGZQ53SaqWswCrKjHiuZTk+JvpeZ9p+GRsNmvjhQMhq8JG5H+wf3eUegocWYhxdMlDgW1t1aT/VGmqGtESfjaYnTrl7COuot8wiKwdjxWTBWAuQ8P+PE7Y7XkfW3p+CohSzmMsvs34wLb5sZZvhBuc2xc2J2RVJeDxNLTi0glNajG9X0Tn4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,35 +95,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/2/26 15:20, Harry Yoo wrote:
-> 
-> 
-> On 7/2/26 9:57 PM, Vlastimil Babka (SUSE) wrote:
->>>
->>> To achieve this, create a new kmalloc type called KMALLOC_NO_OBJ_EXT.
->>> KMALLOC_NO_OBJ_EXT caches are created when CONFIG_SLAB_OBJ_EXT is
->>> enabled, and they have SLAB_NO_OBJ_EXT flag to prevent allocation
->>> of obj_exts arrays. They remain unused until allocation of obj_exts
->>> arrays for normal kmalloc caches happens.
->> 
->> I wonder if we should just use them always (not just for kmalloc_normal) if
->> we already have them. Would there be any downside?
-> 
-> Good point!
-> 
-> That's more intuitive and sounds like it's good to separate them because
-> likely obj_exts will have longer lifetime than slab objects.
-> 
-> Not sure about impact on memory usage, need to check.
-> I'd say it's fine as long as it doesn't clearly increase memory usage.
+From: xu xin <xu.xin16@zte.com.cn>
 
-Yeah there might be more usage due to separate slabs, sheaves etc. But maybe
-also less because the separated lifetime, thus potentially lower internal
-fragmentation.
+This series fixes a severe KSM reverse-mapping performance problem
+that can freeze applications for hundreds of milliseconds under
+memory pressure especially when a lot of unrelated VMAs sharing a
+single anon_vma.
 
-> But I guess that should not be part of bugfix as it's a functional
-> change that is not required to fix the bug.
+Two key highlights:
 
-Ack.
+1. Lock hold time drops from >500ms to <2ms
+   - In our benchmark (20,000 VMAs sharing an anon_vma), worst-case
+     anon_vma lock hold time during KSM rmap walk went from 705ms
+     down to 1.67ms (max) and 1.44ms (avg).
 
+2. Real user impact
+   - The anon_vma lock is also acquired by page faults, reclaim,
+     migration, compaction, mlock, exit_mmap, and cgroup accounting.
+
+   - A long hold due to inefficient rmap walks stalls application
+     threads, causing latency spikes, reduced throughput, or even
+     container timeouts.
+
+   - The problem occurs even without fork() – VMA splitting (e.g.,
+     via mprotect or madvise over time) can create tens of thousands
+     of VMAs all attached to the same anon_vma.
+
+Real-world examples:
+
+ - JVM / Go runtime: These use mmap for heap regions and later call
+mprotect(PROT_NONE) for garbage collection barriers or guard pages,
+splitting the original VMA into thousands of small pieces over time.
+
+ - Database engines (MySQL, PostgreSQL): Large shared memory buffers
+or anonymous mappings are managed with madvise(MADV_DONTNEED) to release
+specific pages, which also splits VMAs.
+
+* Why the benchmark numbers are realistic: We observed ~20,000 VMAs sharing
+one anon_vma on a production system running a Java application with KSM
+enabled. The lock hold time before the patch was measured at 228 ms (max)
+during rmap walks triggered by memory compaction and page migration.
+The benchmark reproduces that VMA count and lock‑hold behavior in a
+controlled environment.
+
+For systems that do not have thousands of VMAs per anon_vma, the
+patch adds negligible overhead (a single pgoff comparison). For systems
+that do suffer from this issue, the improvement is dramatic:
+1) Worst‑case anon_vma lock hold time drops from hundreds of milliseconds
+to under 2 ms.2)This directly reduces blocking of parallel operations that
+need the same lock – page faults, reclaim, migration, compaction, mlock, and
+exit_mmap.
+
+End‑users will see lower tail latency (fewer application stalls),
+higher throughput under memory pressure, and no more spurious
+lockup warnings or container timeouts caused by excessive lock hold
+times.
+
+In short: workloads that do not hit this pathological pattern are
+unaffected; those that do will see a 100x to 500x reduction in lock
+hold times, which translates directly into a more responsive system.
+
+Change Log
+==========
+Changes in v11:
+Based on v10, simplify the code of [patch 3/3] and add retries case of the low
+chance of page compaction while we check PFN. (Suggested by David)
+
+Changes in v10:
+Only update patch 3/3 according to the suggestion:
+https://lore.kernel.org/all/68da8183-dbe7-40d3-b6e6-43c3f12767e2@kernel.org/
+
+
+Changes in v9:
+1. For patch 1 & 2, some update of commit description and code comments.
+2. For patch 3, fix according to the suggestion:
+https://lore.kernel.org/all/eff26d08-d824-4459-858e-277760fcb4a2@kernel.org/
+
+
+Changes in v8:
+1. Suggested by David:
+
+  * Drop the tracepoint and testbench patches and leave them as OOT patches.
+
+  * Rename pgoff into linear_page_index and update the corresponding commit
+  desciption.
+
+2. Fix AI's issue: Use process-self's KSM counter instead of global KSM counters.
+https://sashiko.dev/#/patchset/20260530165907829ZSDzDdMc110MnOflRzf9P@zte.com.cn
+
+
+Changes in v7:
+Mainly to fix some issues AI review points out at:
+https://sashiko.dev/#/patchset/20260522105234715fKI7KSsjC5XpEVMwoV6rI@zte.com.cn
+
+We have completely correct those possible flaws according to AI useful suggestions.
+- Patch 2: There are mainly 3 changes as follows.
+	(1) Use COMM-PID filtering during trace parsing to precisely match the right
+	    events.
+	(2) Graceful handling of single‑NUMA node. trigger_rmap_walk() no longer calls
+	    exit(1) when no other NUMA node is available. It returns an error, allowing
+	         the caller to clean up (disable tracepoints, restore KSM config) before exiting.
+	(3) Fair comparison for anonymous / file tests with KSM. anonymous and file‑backed tests now
+	    use fork() to create thousands of child processes, each sharing the same physical
+	    page via copy‑on‑write (or MAP_SHARED). This ensures that for all three page types
+	    the latency measurement is based on a single physical page mapped by many VMAs (≈ NR_SHARERS).
+
+- Patch 6: There are mainly 3 changes as follows.
+	(1) Fix mapping size tracking after mremap and protect the original pointer on failure.
+	(2) Use baseline delta comparison to eliminate interference from global KSM counters.
+	(3) Fix error-code confusion caused by pread/close interactions.
+
+
+
+Changes in v6:
+- Patch 1: Defining a single event class once and instantiating the individual
+	   tracepoints with DEFINE_EVENT, as AI said:
+	https://sashiko.dev/#/patchset/20260519220536792dMIKRMurt3vZ5lXC5pwh8@zte.com.cn
+
+- Patch 2: Suggested-by AI below, three useful changes are done:
+	(1) Safe event pairing – Now stores folio and rwc addresses for rmap_walk_start
+	    and matches with the same addresses in rmap_walk_end, eliminating
+	    cross‑thread interference.
+
+	(2 )KSM configuration preservation – Saves original KSM settings and restores
+	    them after the KSM test, avoiding persistent changes to system behaviour.
+
+	(3) unlink in advance to prevent potentialfile leak – unlink(filename) called
+	    immediately after mkstemp, so the temporary file is automatically removed
+	    even if the program crashes early.
+
+ - Patch 3: a separate, standalone patch to update the MAINTAINERS file.
+
+Changes in v5:
+- Patch 1: replaced local_clock() with tracepoints – no overhead
+           when tracepoints are disabled.
+- Patch 3: switched from vm_pgoff (unstable after VMA split) to a
+           linear page offset.
+- Patch 4: adapted to the linear page offset; added user-impact
+           description (real workloads, lock contention examples,
+           VMA splitting scenario).
+- Patch 5: simplified to a single process with 32 pages (instead
+           of multi-process), as suggested by David.
+
+Changes in v4:
+ - Add a tracepoint for rmap_walk
+ - Provide a testbench for rmap_walk
+ - Add vm_pgoff field in ksm_rmap_item
+ - use vm_pgoff instead of address >> PAGE_SHIFT (Suggested by David and Lorenzo)
+
+Changes in v3:
+- Fix some typos in commit description
+- Replace "pgoff_start" and 'pgoff_end' by 'pgoff'.
+
+Changes in v2:
+- Use const variable to initialize 'addr'  "pgoff_start" and 'pgoff_end'
+- Let pgoff_end = pgoff_start, since KSM folios are always order-0 (Suggested by David)
+
+xu xin (3):
+  ksm: add linear_page_index into ksm_rmap_item
+  ksm: Optimize rmap_walk_ksm by passing a suitable page index
+  ksm: add mremap selftests for ksm_rmap_walk
+
+ mm/ksm.c                          | 61 ++++++++++++++++++++---
+ tools/testing/selftests/mm/rmap.c | 81 +++++++++++++++++++++++++++++++
+ 2 files changed, 134 insertions(+), 8 deletions(-)
+
+-- 
+2.25.1
 
