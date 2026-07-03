@@ -4,95 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F85BC43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 14:52:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54BEDC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 14:55:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 710DE6B00DE; Fri,  3 Jul 2026 10:52:57 -0400 (EDT)
+	id 4CB246B00BC; Fri,  3 Jul 2026 10:55:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E8CD6B00E2; Fri,  3 Jul 2026 10:52:57 -0400 (EDT)
+	id 4A39A6B00BD; Fri,  3 Jul 2026 10:55:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 600C96B00E3; Fri,  3 Jul 2026 10:52:57 -0400 (EDT)
+	id 3B9B46B00BF; Fri,  3 Jul 2026 10:55:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ACB26B00DE
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:52:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 153516B00BC
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:55:01 -0400 (EDT)
 Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B426912018D
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:52:56 +0000 (UTC)
-X-FDA: 84947757552.12.E659319
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 88F6D140003
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:52:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mydS1cG0;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A7071673D0
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:55:00 +0000 (UTC)
+X-FDA: 84947762760.12.E3CBDDB
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 99BFE80002
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 14:54:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GoqgUdNe;
+	spf=pass (imf30.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783090375;
-	b=CHiH8PRbfh6MITLayisgXYlVNmD2IN6EzcmJpbVYkKb+Wh1A1k6MtbTY3GXvVQjhbs3vZ0
-	dAYA2uIzgRZhQH2Y0PNzFSWUS9DP1gwLUmOFwlXbiq7/Sz8BJAfha4OA4VoQhhkNIItDw4
-	eWev8GgAIW/Q8AuPj9xwFzRcTIvgUno=
+	t=1783090498;
+	b=TVEwXAYW3M1wF51dVWth6vNYP6d3sYdv4xIfH5l/LehulPPoAT/epnFZHs9er3IH8hJS2q
+	j3iTK9k7jdjiwmlNddxqpAYEAJZA255yxKHC9Doxn13wYp0AlaRprzwdDEhq22dLgK0QQU
+	StGulrXd42sIh8bSVKpXOpFy6WJ65q4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783090375;
+	s=arc-20220608; t=1783090498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=78pFcvGqBsTyEx7R+SOnLGnzaGBXiO97ypFlieLOwVk=;
-	b=blNJkqtou5YgLZAYQLZtD+COgELRbcyhufN4NUnA9I1dAJwLcNcRWRHkmP0yyZLa+4x2ik
-	GwsZXfnnQYqjOBCDaWWufmo5A1Q77wVeKA4tzbmjoY6VwjKfig8fJaKVakIHNgqngFbpx5
-	hvOM4fV547iNpnm6nPGnyl0IcxV3g6A=
+	bh=SbPuoxe9/8K5nDiss1P1G+SXa5cD6+BbCbutJ10O3gA=;
+	b=DN11hxu/MRf1npdEUBozim4zE4SuuSCBs9wkDW8/JWgCFYBTTp0W3DVkoeWF0Wz45Vy5ms
+	ZXR/i8sQeqaELbIL2cE+D5Cp2V58HAgOU48MEtwhTm/w4mRy6Ia7bbks8ZZw9vo4rpHj6B
+	/Q+UZzpRSP4JjZQDeFvhC10fXU4QTas=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mydS1cG0;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GoqgUdNe;
+	spf=pass (imf30.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <1f9e4322-1c5e-4409-9a12-ead280bfa4bd@linux.dev>
+Mime-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783090372;
+	t=1783090495;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=78pFcvGqBsTyEx7R+SOnLGnzaGBXiO97ypFlieLOwVk=;
-	b=mydS1cG0VikRlAPagxdsHIFdCh2aej7rbmihV5PMR9Pk5I2mabCesa9j97GUksl0CxTJUi
-	YLw6g7RU+UGOpukqE4gmXAQqPTOHWHg/+HnMaM3rN+i3Z8AY5nchHjk+iAqyLc+sFE3TCQ
-	sEDbRSpgdlHolEzoreltzIkrO2bKZ2A=
-Date: Fri, 3 Jul 2026 22:52:32 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v2 5/5] mm/page_alloc: remove set_page_private() in
- prep_compound_tail()
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Barry Song <baohua@kernel.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Dennis Zhou <dennis@kernel.org>,
- Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Alistair Popple <apopple@nvidia.com>,
- Dev Jain <dev.jain@arm.com>, Brendan Jackman <jackmanb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>,
- Nico Pache <npache@redhat.com>, Suren Baghdasaryan <surenb@google.com>
-References: <20260703-keep-subpage-private-zero-at-free-v2-0-2970fe777dd6@nvidia.com>
- <20260703-keep-subpage-private-zero-at-free-v2-5-2970fe777dd6@nvidia.com>
+	bh=SbPuoxe9/8K5nDiss1P1G+SXa5cD6+BbCbutJ10O3gA=;
+	b=GoqgUdNey9WibpT4bCWElWCK/Q8ZarEulgJnOwtH8yUYJA68i9+SGQflaQqhfntmLTLqoe
+	eB23ClEBpn2xCd2QuZuRlpe/F6BVVRjYG8MpJKtoXNNPTsnfkNo24Jc6bEsuCimTjf2nDr
+	Gtk6mCa7gTMDQeIwZl5Jn3GGSudvZ6Y=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 03 Jul 2026 14:54:45 +0000
+Message-Id: <DJP0TON6OW7J.EPYIYFFA5ZOZ@linux.dev>
+Cc: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
+ <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+ <kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+ <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
+ <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org"
+ <linux-s390@vger.kernel.org>, "loongarch@lists.linux.dev"
+ <loongarch@lists.linux.dev>, "linux-pm@vger.kernel.org"
+ <linux-pm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "corbet@lwn.net" <corbet@lwn.net>, "suzuki.poulose@arm.com"
+ <suzuki.poulose@arm.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+ "will@kernel.org" <will@kernel.org>, "seanjc@google.com"
+ <seanjc@google.com>, "tglx@kernel.org" <tglx@kernel.org>,
+ "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "luto@kernel.org" <luto@kernel.org>, "peterz@infradead.org"
+ <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@kernel.org"
+ <david@kernel.org>, "lorenzo.stoakes@oracle.com"
+ <lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>,
+ "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
+ <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
+ "martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com"
+ <eddyz87@gmail.com>, "song@kernel.org" <song@kernel.org>,
+ "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+ "john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
+ <kpsingh@kernel.org>, "sdf@fomichev.me" <sdf@fomichev.me>,
+ "haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
+ <jolsa@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com"
+ <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "jannh@google.com" <jannh@google.com>, "pfalcato@suse.de"
+ <pfalcato@suse.de>, "skhan@linuxfoundation.org"
+ <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com"
+ <jgross@suse.com>, "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
+ "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
+ "ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org"
+ <yosry@kernel.org>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
+ "tabba@google.com" <tabba@google.com>, "prsampat@amd.com"
+ <prsampat@amd.com>, "jthoughton@google.com" <jthoughton@google.com>,
+ "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "aou@eecs.berkeley.edu"
+ <aou@eecs.berkeley.edu>, "borntraeger@linux.ibm.com"
+ <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org"
+ <chenhuacai@kernel.org>, "baolu.lu@linux.intel.com"
+ <baolu.lu@linux.intel.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
+ "gor@linux.ibm.com" <gor@linux.ibm.com>, "hca@linux.ibm.com"
+ <hca@linux.ibm.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
+ "pjw@kernel.org" <pjw@kernel.org>, "shijie@os.amperecomputing.com"
+ <shijie@os.amperecomputing.com>, "svens@linux.ibm.com"
+ <svens@linux.ibm.com>, "thuth@redhat.com" <thuth@redhat.com>,
+ "yang@os.amperecomputing.com" <yang@os.amperecomputing.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com"
+ <urezki@gmail.com>, "zhengqi.arch@bytedance.com"
+ <zhengqi.arch@bytedance.com>, "gerald.schaefer@linux.ibm.com"
+ <gerald.schaefer@linux.ibm.com>, "jiayuan.chen@shopee.com"
+ <jiayuan.chen@shopee.com>, "rafael@kernel.org" <rafael@kernel.org>,
+ "yangyicong@hisilicon.com" <yangyicong@hisilicon.com>,
+ "vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com"
+ <jackmanb@google.com>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
+ "Itazuri, Takahiro" <itazur@amazon.co.uk>, "Manwaring, Derek"
+ <derekmn@amazon.com>
+Subject: Re: [PATCH v12 02/16] set_memory: add
+ folio_{zap,restore}_direct_map helpers
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260703-keep-subpage-private-zero-at-free-v2-5-2970fe777dd6@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Mike Rapoport" <rppt@kernel.org>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>
+References: <20260410151746.61150-1-kalyazin@amazon.com>
+ <20260410151746.61150-3-kalyazin@amazon.com>
+ <DJOUYOKL6N3R.BFIO8HEL03OA@linux.dev> <ake7aPB2O_-dAXhI@kernel.org>
+In-Reply-To: <ake7aPB2O_-dAXhI@kernel.org>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam08
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 88F6D140003
-X-Stat-Signature: 45uarhan9hpbsxpizrfzoibmzstb7u7t
-X-HE-Tag: 1783090374-331106
-X-HE-Meta: U2FsdGVkX1+fmrulPNX/GR036PYIfjPAGKXcCbEiaMPfzoWnXQfK7NPcdFFXF0B/CFEReu39+yFd74k7xF4kZdr9oI1NFyQ5wsWk04CvpGybEOIKEW8WXb1afldeQQLKHAqOWM74FPPW/nRkarEn7L8JeBhm5rnW8qK4hUkF62OONTi5NHZ3/cG07TGZYpEZcUR1flae7bVvh7xgv7iXEMrmFACidw+fRyjUPKOYwIuTf+Hn+Z0nDGwnMBTd8hg4s3lRMBlDZdpPpGIHLEu8dugk26u1diipYdXD5AVLqEN+gFHkjNi84j3X+Rp6a/riRxztsnE6BT/EyUjgi+4Ggs0lc4feuXAY6tWhVa6lGER1kV6J//HiaM7dyDxW/wLvHuafQOgHB2UyhvQR6SJmYoA5xYGmiHbPi3lskRc8xKtQQi45kZMZshKGl0qF1jqeLmgFiwJITnG/2gfeeOWGRXD57tUYMwNAdCqbjiEBqAVBFe1mWQhVLr8Nx9za1cQcFX3mhAKg25zE8D8Z+zBYjHfhEcdQdRfyuWOzKIq7upDUD8WiTDyFWQQGrT+uZELY+aFyL1wUE57vIzSdZTHqka5ww+UxkWfUuruX5daNECNdkMsV0Z1mZ/TDN45llDCT78LEocUY7sF7akW13G76xv3dIzLE+1AlnuZa6uL96yRcjspoDFciC01G2BEPseMIozn9znKMEgE+DwCpxD8ofhR96sliIUrvadc9Mh8+WU/HhViTW+W1pypz9Yb4clF7so5f53qkXTMmOHHTfkhYm8JHUSpHCEhLjzkFcrumKhbnHuAaP9cau+Jmn4AjHGQOgco/rsLv/WjcZHCeM8tllrMWDu7x6p0WwIf1BALIfhOL7XKw7Yn41RPFr3CIxu8M5T+bk0WssfInPhrS8xacq4l9SSQD10chdZSGPOVHKHVX+5gBUGjOT2kxskZAakVNc/3/WFkC8aw88gySOy0
- 6D2EwkBk
- vi5exmWB71IIBLpDcjGpVWse5tn6OJG4zFzZciPsXY0Kvyr4BRe92oKMJm4cZ5kG6lmQaqKLuBU0xL2UuDQlpQpiIhH21qvQ0scHIDlHf5yKWhTpvFJ3bCPPNVu1Jc3Dd40MTAdkXJ8zJqLj8M2tsN1JyZdxp/zhNm/9FgJvZ+X5+SX+ou/uSyi/pm45akqtTqXOqONq5NER90u3HS2oXMpwT/7FSYKF50BLZ5WdbZIUgdd3n4Mb4Yug1xDPfeqPPhu5NxlFUN+26Jgx+bXK9r+Wo3nY7msuZ+u8ztbUozZu35liXVfKBkZ1jqQ==
+X-Stat-Signature: dbd9hhzgmk8r9ux5c6bhtcyi9gxtukzi
+X-Rspamd-Queue-Id: 99BFE80002
+X-HE-Tag: 1783090498-603482
+X-HE-Meta: U2FsdGVkX1/FwOdNp3GJAPFqcSn4HlZv9Xmo9HH6LNi4/0wLHhdukIu/zBzHXfBPWueQW+SQzGmwHdpyTwJ9q1p2uinp2B03B8HgPj7AqwpaEnrGxwhU/koZCQ8iMUrjoB3yEokc0RDpu9u5qymviESANvVdjfsVEZAenacBXDqFZdVYP5CWCdyIKsUoHaJ1TYWzj1Pr21VeHveJ7lhJJs2vqFNXi6qOfkcqviz6PTUDDafgpDXPc/5W41yUCpfW1M1NBZ+dkWnx/GmJIMMAv4UXmeLvMB/jJUtGdATfFIYMr98vKcy0rehKOjBg1Q63Gs4wX1VaGT+fqLiTYG/1HUzgKJXCFczKrv8Ncksl9nVTSh4tGIX84UbfNb63zMOkdzbBk9IgJGes0eSQOmHtR2J9HZNpDMeseeDU+79iKc5yQ6EN/Ygzw42T1Q107v4S/qNOF7lTeXz/iMRmPdY9cKeBaxwVjyP85Snvy+tRv4clfbGMp0Yle3YjbyNRsgwgo/0gfYYwH64kcF7bN5am+0ETwatPxa586SafkXBF5aRBS3JNiYqGjTipp+9qyuiRGRe7w1zbbn0Fhp7AMhHbSVn5bA9tVQeuvMyyqIcvL1CMDmR/MePZeYQ1ZC4dfrtGffpU8sdwMXPxTtIc/8bioa4PUr9wFD9vcYlpLxA90d/QXkhHlyXibsteLI167Pc1a61ov8R1OH7Eml7gnjGf6Pdj8cJUNJv9UYHJ/gUg31CKMeiZq7uGpyLp7iy7LZj4FXtBrUyPN7jO73XbzS+kZ7GgvOz3AC/QgUnsRiX1y+i1XnKkS2SnVau2HmuPN6yTzjpb+cyXsS8dLnrWzaRtDA/lD8sBymbK4H9BI2b8HySUyt2nSWjR+9b72x+cLSx/uErrzWiYJrNK96/hb1lm26FbrNmZadDYy1YkYaSh5SfK1B15NG4HJ9jElejbyexWiB2OD9R5oEZ1/0lUlad
+ vI0dGlLL
+ ma06xISyUDeCk6E44Viry1l5Ctz5jlvIBHkK03rB17QgP6BmfoBFRvehVJY+JB0cJQMkHNxNA2Iv5RVvRWmzTUuYwhiM85eSy/hQeWfeOaEwDrX8G0FYA2cal30fynU7ajlNjQWXqO9SkD6DsEngkxxIwxMQmK23JcAke/SdDdv8syLAeZx7yLWts8OqH9JVjVMKHr1azF21O5I3QokQSfkoSgY9jyXSQ3Yux/2KQQeoicpg2q//GQWYJj+Y8NcPvbSbpDoYCwTcBFIwL57c7M1BTxpvyakB2WvmT2Lld4Nydt8TmOlJ45d53G/8HkdVvIgq1MOvBrNO12AqKT2yxe2ctWYMAfSKvGaTAM+3TZRJoYl6g0dZy+5tMQOJG6ZT+kDpFHplZrYy5kVyqANSCK1MZSXP80LQGmhcCxn18/cRex6NaPlIPf3xr9/cFWwbe76Gf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,38 +157,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri Jul 3, 2026 at 1:38 PM UTC, Mike Rapoport wrote:
+> On Fri, Jul 03, 2026 at 10:19:10AM +0000, Brendan Jackman wrote:
+...
+>> Alternatively, we maybe should disable secretmem for highmem systems
+>> since it evidently doesn't have any users.
+>
+> Yes, please :)=20
 
-
-On 2026/7/3 21:47, Zi Yan wrote:
-> Tail pages are expected to have (and optionally be checked) zeroed
-> ->private when they are freed. It stays true during subsequent
-> reallocation, so replace the tail_page->private initialization with a
-> VM_WARN_ON_ONCE() in compound page preparation.
-> 
-> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
-
-LGTM. Feel free to add:
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-
->   mm/internal.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index fa4fb69444ecd..fbd9fb84341bc 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -902,7 +902,7 @@ static inline void prep_compound_tail(struct page *tail,
->   {
->   	tail->mapping = TAIL_MAPPING;
->   	set_compound_head(tail, head, order);
-> -	set_page_private(tail, 0);
-> +	VM_WARN_ON_ONCE(tail->private);
->   }
->   
->   static inline void init_compound_tail(struct page *tail,
-> 
-
+https://lore.kernel.org/all/20260703-secretmem-highmem-v1-1-30d5ff944664@go=
+ogle.com/
 
