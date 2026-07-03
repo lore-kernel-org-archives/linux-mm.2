@@ -4,104 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBA86C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 02:08:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDE84C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 02:26:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9DF16B0174; Thu,  2 Jul 2026 22:08:53 -0400 (EDT)
+	id 622E36B0196; Thu,  2 Jul 2026 22:26:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD91C6B0177; Thu,  2 Jul 2026 22:08:53 -0400 (EDT)
+	id 5FA026B0197; Thu,  2 Jul 2026 22:26:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A163A6B0178; Thu,  2 Jul 2026 22:08:53 -0400 (EDT)
+	id 50F836B0198; Thu,  2 Jul 2026 22:26:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 52BE86B0174
-	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 22:08:53 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 90EADC1928
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 02:08:47 +0000 (UTC)
-X-FDA: 84945831894.08.80386A1
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D3D0140004
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 02:08:45 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UUSLFXPi;
-	spf=pass (imf01.hostedemail.com: domain of 3rBlHagUKCFUCExxA3BB381.zB985AHK-997Ixz7.BE3@flex--praan.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3rBlHagUKCFUCExxA3BB381.zB985AHK-997Ixz7.BE3@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 22FAE6B0196
+	for <linux-mm@kvack.org>; Thu,  2 Jul 2026 22:26:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7AF09403C6
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 02:26:26 +0000 (UTC)
+X-FDA: 84945876372.27.35DA050
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B878B180006
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 02:26:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HAOh61zc;
+	spf=pass (imf16.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783044525;
-	b=h8e+TBVEfUNUsfFFN61s6IJo1PqKf5u2Xm1wcEIeqnC6bUPUOCQBqBPXDm1RBoEQjE6h/c
-	DPgqkZShTr9Yiygxi94S1JbsiwbNRjslwfjIPxbJdKPhkGbfxPLb1x9FKwTRG7C+nC7UuD
-	PQ3Su/7GBbdXGQ0UIRwJ8MVWB68sl3g=
+	t=1783045585;
+	b=SCBDus6dMKHSJQom494Nilkl9kRy6mPH6AJvWtpPaaLAlyirRnt5fsPc2tZc7hNu5lIf6M
+	TrFq9Vbk8BtAjnLPhOYaNQvObOgB1I7hFRur/SRjks4GGY8NRqQf9jCL37F5+cjdKseqnx
+	9vMs1IW1s/7tvAWnMP/s1+yBdxe8tN0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783044525;
+	s=arc-20220608; t=1783045585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R42hNae76A7CXiYkYtHihW2CvpPOkdd31plc72X+MXE=;
-	b=jttn9WbonjaWx8jcZc01sPBuep7RJDAn4QycVlaHDJU6HpG2Kx7CfkG2fRNClIg7Wr9BaK
-	rRtvyrEOpoO51dNImLPJ0ddVCdJFnGsC8etxFQywS1l5XPTvf/T5ytE4N6/25TVJEZpsPR
-	viUWuHzKUEHxxKqZVKUN8tQtvkd/fPQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZI0lTmkO/UHIT4+QlSIiK8ejRok32RfZUe5uhwcA5/U=;
+	b=GaC0m1FhkI+9v06zMzJB/Aj6NQUT/+Li0vrhr6BMU4tb8O9PSd2zvz40x77FeJg4ewR1CC
+	DmDY/QWcvQKSI8ETuE/fQTpGe1GGPbp443QUv/9Ihhxidi4Isrf8a9Qx+3GxVEeAyC2Ex9
+	eu6MFuCF0+vMYEkveTdjIycq420mAr0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=UUSLFXPi;
-	spf=pass (imf01.hostedemail.com: domain of 3rBlHagUKCFUCExxA3BB381.zB985AHK-997Ixz7.BE3@flex--praan.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3rBlHagUKCFUCExxA3BB381.zB985AHK-997Ixz7.BE3@flex--praan.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-847ad67cc51so81459b3a.3
-        for <linux-mm@kvack.org>; Thu, 02 Jul 2026 19:08:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783044525; x=1783649325; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=R42hNae76A7CXiYkYtHihW2CvpPOkdd31plc72X+MXE=;
-        b=UUSLFXPisd9ZuU4iPq6g+5ZbQ2jxFBH11TMBH4VCqHKYz+RsXHHRFYCQUPPUxd5nY2
-         S/8iHUP+ptPrqYiZcHBPxvwPoy4oQU46Zq6sCXAj9fvhB3x6S4OTzESNN5wm2Vep3eGM
-         z0QJvUtXlub6OHs0X1EfWvMp1eGvXfZJ3Wg1sXKPWND722oEz1DKa6g7BDBNqjvUPr8P
-         iH24+SNxkuG3PGC4fHono6EWDP5GgqH5nlwba36ZgQefOSjeONIWxp7be4xOgMu7ZbcX
-         DC174Zum67UzPNhsgO+i/oz6hz4b8QfXaG/QbfWGOpxrRa9wmqOlaHDu2NILJp5vu/mL
-         mWuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783044525; x=1783649325;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R42hNae76A7CXiYkYtHihW2CvpPOkdd31plc72X+MXE=;
-        b=dvSu3toOC+Eqiuk3xg4PKHuJYBbMUugQhB32A3LzTtRZ7kFdlonpLOSIZOzQaf06iW
-         Hn9uZI+wQnAoHoHGnGbLpwPzJXFAHhv7ghhF81Oy+OK8UycgAGEHNDyq8JwqJzuim3ZG
-         VOmeQc3xFiUNJIhmXNN2k+RyGhS2o5Xu66RLc8tI2VFOCCQT06PGR7kyMqExFrhO2SOk
-         urmKra5m4NmegSRRTBGbTG+q50008CMVziAFvFOoy8j/4Va3O96MBvn39gRBabJCMSyP
-         QVGFesJ7ltYOJEIJVKazqus1Z0jhE5XMQ6+eTG6B/ZUJQDLbfF3MWPq+haqy6rwcKZPI
-         T7IQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+aa8tTQ0P+Xy/eK5foopCA62e4ZLgtgcIqjKGdCaLa9Rimek9gVqOfN2KtDYiHtf4WkNRzb2POvw==@kvack.org
-X-Gm-Message-State: AOJu0YyNApWADSzuquWJJd1j3MHy7BynWtgpawGrl38GTcmdNTeEXwFH
-	dMaPrSSTaa7mFfdY5ITY2e8eCtRRGhWpS4crbBX3A1txUEOMxFUVoELDR2V9uZ5y81s81cZ1lhv
-	Whg==
-X-Received: from pfcg5.prod.google.com ([2002:a05:6a00:23c5:b0:847:92f6:92e1])
- (user=praan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2918:b0:845:c373:6525
- with SMTP id d2e1a72fcca58-847c09344f7mr8276323b3a.41.1783044524457; Thu, 02
- Jul 2026 19:08:44 -0700 (PDT)
-Date: Fri,  3 Jul 2026 02:08:32 +0000
-In-Reply-To: <20260703020832.1731864-1-praan@google.com>
-Mime-Version: 1.0
-References: <20260703020832.1731864-1-praan@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260703020832.1731864-5-praan@google.com>
-Subject: [RFC PATCH 4/4] kho: Introduce kho_split_preserved_pages() helper
-From: Pranjal Shrivastava <praan@google.com>
-To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Pranjal Shrivastava <praan@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D3D0140004
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HAOh61zc;
+	spf=pass (imf16.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783045581;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZI0lTmkO/UHIT4+QlSIiK8ejRok32RfZUe5uhwcA5/U=;
+	b=HAOh61zc+mozxiYtcPNEO5Yx8iORG5T8Mkpg/vMHNt2052hHUqbiQmAarZ6Dw+Wa155V9M
+	3s5333q3wzpR9SONk7wmKAVZRq1Oa6jrucylyEZauSAr7GDU5Puc5fP1m+9Lie//AcBW+2
+	G42rxvyD2sX024RzcWXP/b0U8+rU9uQ=
+From: Leon Hwang <leon.hwang@linux.dev>
+To: linux-mm@kvack.org
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Gary Guo <gary@garyguo.net>,
+	Anand Moon <linux.amoon@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH] mm/mseal: fix mseal documentation for 32-bit kernels
+Date: Fri,  3 Jul 2026 10:25:07 +0800
+Message-ID: <20260703022507.187457-1-leon.hwang@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ky5rkpo3o3qr7h1n89ys85jubi9m1t5p
 X-Rspam-User: 
-X-Stat-Signature: srj18kr3qgx6oourfmbbn6k59a54fy84
-X-HE-Tag: 1783044525-135758
-X-HE-Meta: U2FsdGVkX18sWUKYT6UrZdbwvm7bLXCCX1ja7qyNEZrRYaALNJXVsYOeu+N7vKobp7IRFvOTgVJNkMIUMMl4KK1tA429eJEEhYd8HHvIlw1n7bntF28h/xtNTvNVJJtsh0P7s5gMEiskFJgYtmfk8zNrGPglHJ5QtkXQ+G5Coamv/VqHgEcJcK49qT2xRBjjG6OSsYc0RnYU4upy37fv/cwvswXS9aKs1mGIAeLK7r1svXl9ILU0j1EOb3pn7T6zqaj8OggIa6k/FfN93NbdhfImw+0CELv5UuYHU1zJGFffPC+YQtO5PWh0kU+JAsO32mwx83viHkEIqwgro1mmkyr/O0TphY8vatyGfdQiRvkgUvPJ6VnLsZvAa3qdtez4U5OZR8I/1jliONBxMNfw7FetHdYBhaEcWPsSgzIjoulBmjLJl8Pqew+3N+hcL4FeLM7bu8W6rRjrR9TrZA/nCaMvzeJKOKOHVDpi3qryFUN9wb2+jCAog6fttUJB+3wImQOO0oDWG381mn0GU2Qk6mKrLANXcGvjbzlTo5yN1X8bU/mMU+B+MRMWU1Ul2MB5PQNq5SsFENqhtgUINGBxPljlZH7c2LvQFxW7pmH9efnhmqPM/wZipjlkvp64bCgYbxziMdh0Hru8xFS/OkSK6y+8j4dt9DnAKiafgW6qyUnusemvIFmjJ+rEMAHEIRoTeGLH+U9gixAuIOZANFAIPesUuMWMyHiZHWK9pdjKiFV1sr0wiD9QB3wA5jd8PrEdQhBoGw5G6/M5QkAskI1bkHzBuz+tRzO+MK+P9+Bpu9jWc+pKD+YSqWccqXOqW/GAgJ3CtoQ0DqNyLL69CholmiiPsifI6vYKAhdmPNK3CaDfHAuNUDkyqapz9KlatJvZpGq51OyzoMkWnMPkkBaHZL0TOUQlIx1URg7N6NjrKS5vcO79R9TptXtgSkhqUpTuRPws8kIt/wpqYtv6ro9
- FVCrYnIP
- ibU21MsGoIISvlZObHgZm6wZhvhoHU9LkEWO1LNlvc+dzlnsW0GUS6GSwBDagJ5YtOQQ/Z+uTbWmymGnoHJrM3cxejIvBsRrcFbNhTSXL+baYpJULl87G6hTiH8XEQqB++/207xuC3YhxOCyKPMPzNvuRcvJpfSOKU0+nZ4ZITBQvh1h/Pttao3chLNTY6Etngmjn1n8+TsvWIKx1rsiEBYUco/OyPdQ/00a4GMHiHt+irZX0GlW3+qUpC5Rq7Vcd06WBwhShAyOCXPlVVnHsYCbq2eVCrT/bcBY1+lR7Ua+fcVNcwosrDxKrhoulTWY2aG+G6YxwCKUyKmuapnpJ8Lao91t6Pxh3F7Yq+3K1VwEJanegLXnUMYwbVteqalZApXu1i4lnrQa+2wkEXbqS6eDYwQQYUNspb+AXyhEb8r5pRk0Cyc1HGf7poKRlcQZ6ty3ZYqh+6ytYl0MFGs/xn0nVbFbMXp/fGF9cSlFGCSx1W+t6IcDn3dlpj6CdLHNKLHlh8yJOKgpOdwt2HWEObrBXfCRTLzVoTKWl5nzcFstaLWC+kxvO8EV32XVbVAyHhHTwAw96Px0pfD0=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B878B180006
+X-HE-Tag: 1783045584-683587
+X-HE-Meta: U2FsdGVkX1+ttus7ns/pIoU5jry5MRqm2fN7xo5EPyXAPsOWGgLQyn7ePi7IkQdqMmqwca6UvbQxzEaku3423/oskKHy4RDT0Wx5r/vJTsV6PAIzXiaQC41CxErr6/WFYg7O0vziRDyCnZnGyPQfOvLqnx22BgnEIPZpyVDWlLemOvEg1xDUS5EQaRsQP9OeupdQU4nHxgMkKw2ayON3AwNq9dmWAwf8nxrW2zZZCPGe9J1VW8hH3+YBvyzgjvC3FquM35vuMXIQ74oIKvpSMKvm3ELVsjxqCcYvLtdOatUPNBTip3JIQObGRG9Vnq1FVKZ6H4XGYOIdtUy4/brXAUUXzHklDvtO6TS8FqfpDeFUYqXG5z3UMnqRNBxgBeViYsd02cY5O03mHwYAHHQvMaSzd+pMURwhuapw3oz8nr8Y/UOW31kd0vQUlYmliMEpL2bGxUj+K66Cy7JlwI9k/P/ZQCNXclF2CQTbaecAIcpwTUkLzib+lzAhpw9jblAlLIyxw+tXm1kPN8WP+iBcUORX094h5VLjvPqAUeZZbtutjkoRW07OcO+AfnWLVfpjGvngWML2J4RnDdFi1t8dy7WTwnDxu0UJVOrQsaxrsMiGoDDkuV8UnGYYAYPS7nR0QUpKE5RRLsuZuzdFrsa2olD/ZsPfP88Y9GOHGZC7Z8p6oN34Cq60iRr5BfpjjnzCVHm90wyziiiclecuBIieF1kOsjioVG9xxXCImDirY6XSb8abBP4DE8m8MsDRJEwWF+YTjYEc8+iKv4lSMSu2Ymh0j/LfcJzTz2foR4RtoNBwTjmtB3ZlYbHyfS+GylH03/DOoPlnhlFoqkKWwqnJ3sJheDKNDa1CmThpQUD65y5fMLXZS7xAL/7uGIiVcsBjXz/QFORjb0k4HumwvE4llPN99a00hl8EBXUvU1di2HNv7E+i5JMNAH9EOimROTU29yS4EQpPBI2KmUH9BVG
+ 9yflWg2o
+ rFfWRM1f7PlgZM4DGZLRZ6NKzvEQyVgWsXNZa38jqjvJhVlwRZw/XEkdKAj6DJ/nwOJTQC3U94MOUyEgDpTLeOg08GO6S7tv3zvV+QUUsG9CXDbCL/Vc2d0wryJ/uaZ6BSjM7t5s3gDix+EuGKLfIG8Lh7iMjQA9vp+dsVSWYrk9soumjhJbAgCd95Mxs6bVZX7pAIbIIUHqdzkinrlLqaRO9F7zaM+o0Lnul+QKABpp+J/ppRTrQsa4lmFhExKrtiWqDlyENOrQ6e5S7kMDoiCAY0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,88 +108,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A driver may need to split a high-order allocation that has already
-been preserved. If the pages are split using split_page() manually,
-the refcounts would change but KHO won't record the change in the
-preserved page-type, resulting in a metadata mismatch during
-restoration in the new kernel.
+mseal.o is built only for 64-bit kernels, so 32-bit kernels fall back
+to sys_ni_syscall() and return -ENOSYS rather than -EPERM.
 
-Introduce kho_split_preserved_pages() to handle splitting of preserved
-pages. The helper follows an unpreserve -> split -> re-preserve sequence,
-while ensuring that the KHO radix tree is updated with the correct
-KHO_PAGE_SPLIT type bits.
+Document the -EINTR return from mmap_write_lock_killable(), fix the
+CONFIG_MSEAL_SYSTEM_MAPPINGS typo, and describe system mappings in
+terms of VM_SEALED_SYSMAP.
 
-The helper returns 0 on success, or a negative error code if the
-re-preservation fails. Callers must ensure the provided order matches
-the original allocation and that the operation is serialized against
-other preservation API calls.
-
-Signed-off-by: Pranjal Shrivastava <praan@google.com>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
 ---
- include/linux/kexec_handover.h     |  7 +++++++
- kernel/liveupdate/kexec_handover.c | 23 +++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ Documentation/userspace-api/mseal.rst | 18 ++++++++++--------
+ init/Kconfig                          |  2 +-
+ mm/mseal.c                            |  4 ++--
+ 3 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-index 8968c56d2d73..452e38bb2076 100644
---- a/include/linux/kexec_handover.h
-+++ b/include/linux/kexec_handover.h
-@@ -24,6 +24,7 @@ int kho_preserve_folio(struct folio *folio);
- void kho_unpreserve_folio(struct folio *folio);
- int kho_preserve_pages(struct page *page, unsigned long nr_pages);
- void kho_unpreserve_pages(struct page *page, unsigned long nr_pages);
-+int kho_split_preserved_pages(struct page *page, unsigned int order);
- int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
- void kho_unpreserve_vmalloc(struct kho_vmalloc *preservation);
- void *kho_alloc_preserve(size_t size);
-@@ -65,6 +66,12 @@ static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
+diff --git a/Documentation/userspace-api/mseal.rst b/Documentation/userspace-api/mseal.rst
+index ea9b11a0bd89..1f1cf206670c 100644
+--- a/Documentation/userspace-api/mseal.rst
++++ b/Documentation/userspace-api/mseal.rst
+@@ -50,8 +50,10 @@ mseal syscall signature
+          * The start address (``addr``) is not allocated.
+          * The end address (``addr`` + ``len``) is not allocated.
+          * A gap (unallocated memory) between start and end address.
+-      - **-EPERM**:
+-         * sealing is supported only on 64-bit CPUs, 32-bit is not supported.
++      - **-EINTR**:
++         * Interrupted while waiting for the mmap write lock.
++      - **-ENOSYS**:
++         * The kernel does not implement ``mseal()``.
  
- static inline void kho_unpreserve_pages(struct page *page, unsigned int nr_pages) { }
+    **Note about error return**:
+       - For above error cases, users can expect the given memory range is
+@@ -62,7 +64,8 @@ mseal syscall signature
+         memory range could happen. However, those cases should be rare.
  
-+static inline int kho_split_preserved_pages(struct page *page,
-+					    unsigned int order)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static inline int kho_preserve_vmalloc(void *ptr,
- 				       struct kho_vmalloc *preservation)
- {
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index f6ca5e24c740..ea08248901b5 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1018,6 +1018,29 @@ void kho_unpreserve_pages(struct page *page, unsigned long nr_pages)
- }
- EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
+    **Architecture support**:
+-      mseal only works on 64-bit CPUs, not 32-bit CPUs.
++      mseal is built only for 64-bit kernels. 32-bit kernels return
++      ``-ENOSYS``.
  
-+/**
-+ * kho_split_preserved_pages - split contiguous pages that are preserved
-+ * @page: first page in the list.
-+ * @order: the order of the original allocation.
-+ *
-+ * This function allows to split a high-order allocation that has been
-+ * preserved across kexec. It unpreserves the pages, splits them using
-+ * split_page() and then re-preserves them as individual pages.
-+ *
-+ * This function MUST only be called on pages that are currently preserved.
-+ * The @order provided MUST match the order used during the initial
-+ * preservation.
-+ *
-+ * Return: 0 on success, or a negative error code on failure.
-+ */
-+int kho_split_preserved_pages(struct page *page, unsigned int order)
-+{
-+	kho_unpreserve_pages(page, 1UL << order);
-+	split_page(page, order);
-+	return kho_preserve_pages(page, 1UL << order);
-+}
-+EXPORT_SYMBOL_GPL(kho_split_preserved_pages);
-+
- /* vmalloc flags KHO supports */
- #define KHO_VMALLOC_SUPPORTED_FLAGS	(VM_ALLOC | VM_ALLOW_HUGE_VMAP)
+    **Idempotent**:
+       users can call mseal multiple times. mseal on an already sealed memory
+@@ -131,20 +134,19 @@ Use cases
+ - Chrome browser: protect some security sensitive data structures.
  
+ - System mappings:
+-  The system mappings are created by the kernel and includes vdso, vvar,
++  The system mappings are created by the kernel and include vdso, vvar,
+   vvar_vclock, vectors (arm compat-mode), sigpage (arm compat-mode), uprobes.
+ 
+   Those system mappings are readonly only or execute only, memory sealing can
+-  protect them from ever changing to writable or unmmap/remapped as different
++  protect them from ever changing to writable or unmapped/remapped as different
+   attributes. This is useful to mitigate memory corruption issues where a
+   corrupted pointer is passed to a memory management system.
+ 
+   If supported by an architecture (CONFIG_ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS),
+-  the CONFIG_MSEAL_SYSTEM_MAPPINGS seals all system mappings of this
+-  architecture.
++  CONFIG_MSEAL_SYSTEM_MAPPINGS seals mappings marked with VM_SEALED_SYSMAP.
+ 
+   The following architectures currently support this feature: x86-64, arm64,
+-  loongarch and s390.
++  loongarch, riscv, and s390.
+ 
+   WARNING: This feature breaks programs which rely on relocating
+   or unmapping system mappings. Known broken software at the time
+diff --git a/init/Kconfig b/init/Kconfig
+index 5230d4879b1c..12bb39f637b1 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2112,7 +2112,7 @@ config ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+ 	  from a kernel perspective.
+ 
+ 	  After the architecture enables this, a distribution can set
+-	  CONFIG_MSEAL_SYSTEM_MAPPING to manage access to the feature.
++	  CONFIG_MSEAL_SYSTEM_MAPPINGS to manage access to the feature.
+ 
+ 	  For complete descriptions of memory sealing, please see
+ 	  Documentation/userspace-api/mseal.rst
+diff --git a/mm/mseal.c b/mm/mseal.c
+index 9781647483d1..0464c7b94ab9 100644
+--- a/mm/mseal.c
++++ b/mm/mseal.c
+@@ -132,8 +132,8 @@ static int mseal_apply(struct mm_struct *mm,
+  *   addr is not a valid address (not allocated).
+  *   end (start + len) is not a valid address.
+  *   a gap (unallocated memory) between start and end.
+- *  -EPERM:
+- *  - In 32 bit architecture, sealing is not supported.
++ *  -EINTR:
++ *   interrupted while waiting for the mmap write lock.
+  * Note:
+  *  user can call mseal(2) multiple times, adding a seal on an
+  *  already sealed memory is a no-action (no error).
 -- 
-2.55.0.rc0.799.gd6f94ed593-goog
+2.54.0
 
 
