@@ -4,102 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D1C7C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 19:56:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80E3FC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 20:04:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 130F76B00B5; Fri,  3 Jul 2026 15:56:54 -0400 (EDT)
+	id 1B6D36B00B5; Fri,  3 Jul 2026 16:04:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BA176B00B6; Fri,  3 Jul 2026 15:56:54 -0400 (EDT)
+	id 167606B00B6; Fri,  3 Jul 2026 16:04:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC6376B00B7; Fri,  3 Jul 2026 15:56:53 -0400 (EDT)
+	id 0559D6B00B7; Fri,  3 Jul 2026 16:04:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BFC576B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 15:56:53 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48D87A0291
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 19:56:53 +0000 (UTC)
-X-FDA: 84948523506.04.49310FE
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E3A3818000D
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 19:56:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="fbhDnA/g";
-	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783108611;
-	b=SzRt4FXQRcen2StAPTTPQ+ZCiOJ7ymhmoMUrLGNF9ozA3MMaCxAPnD/CP0Ij0KywK3sRFm
-	qYultmsTXrC6YT15Hvxxpz0890J5aScETnb1kzw5B2AFX0Wvw6e3KkwTjniLXjROr9uwe+
-	c2b+8vy3Kgq/S+ZDDlN3OUUx1GXQtps=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783108611;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C7D6E6B00B5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 16:04:47 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B65A1C12D1
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 20:04:47 +0000 (UTC)
+X-FDA: 84948543414.06.769F601
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5F47B1A0008
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 20:04:45 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=t2I845Nc;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783109085;
+	b=NpfG6aWgyhQNA8FQOLYfPe5cxODx6kFlowcJZuC53AuR6VgyBaT1eMKQdrlotDXPyCe7eA
+	3NE5pDS9PyBsSFOF0uySWo64+Re32RWBWGzXoplPtsscbaBz/RO4bHkhG/NaF3erKT5hZ9
+	pZd9mhG3iI0BsZ5Ytt8tDtwuJhPND3Q=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783109085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ec4ooeB81VdLBBWoolmCjIrqAa/mMFqe7GUMG3eUFx0=;
-	b=UQTL4CwWkYi/PrjZHcJNCSf4uuqS3nez/fzUWcHqafCLg1Ue2qg2zS+xuGpXbVl6fS4pSJ
-	2ObfZHmNhNEgb4vrhTGp9SzNhYjmkFio687AQyfFVKgFT0ehytj/03WfRsaRhcaP+fW8n8
-	q76hSU+iU2YJjJoxthQjPHJI9aGrsQ8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="fbhDnA/g";
-	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E8A7640E01DB;
-	Fri,  3 Jul 2026 19:56:47 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 591k-6jQHESx; Fri,  3 Jul 2026 19:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1783108598; bh=Ec4ooeB81VdLBBWoolmCjIrqAa/mMFqe7GUMG3eUFx0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fbhDnA/gtOESnV9bPd2jExK58X/KJ+kXFtj7TALiu2D/pTjDmFF+sq2Q5S4GTDoZs
-	 Rfn5fhAbaqjrt66z5m65Gp/yldPN4Ssmi5cPYyGdlTe7ZNjpcZ3Dqz/kW7Nv8iqp3b
-	 QkedMrE1/YPFjPknxed4vUpV0fnVmvTJzrJP4xMkdqJ6SJh4znVRjFxk5eg7GcQxJi
-	 cVXNsLkRf/3Z7BxcWNoQzn6i9aR8qN/ZGM7COx03LYky89jAHnso74jYMsfasa5dxU
-	 ykabhvjrBh3QhJuoQb+/YvMbUeieDfz142B32N5wS7fFKGWBbYMj0D9HCGeoDCqUox
-	 f4GDW8ngLep9gNMJO4JlDs7OfiBRnPIzjAScLuSOwZzLBwtwddJv9MRPUreHp6/aeA
-	 kCGiRqVO7WuBnhYBqfdL4Wjxwp2m9JnFoqK+Ido2qLgLsQAzOwd3tyXTWCusWmy2RC
-	 2Ks7tRaZj99L2v+VbpEXaKCbyZQMflIkx+YZ8cB1mJ2mXZ6HnKGSvAE56tLI6yRZi8
-	 jLl9CP+mLFDS4mTQyW//oyD1Q9w4HDNZXnRCA6FNS1XukmTlJufSbpNlAL2KemskFr
-	 OITG3TLxt6kcMu9wf16o/ao7qLJAcQ37ePi9aOi+X7Y4bVRkuGoYdm1DN4hN/VGOtk
-	 tCVkVB1slPHiLCfzotXwxa1k=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 5108940E01CE;
-	Fri,  3 Jul 2026 19:56:22 +0000 (UTC)
-Date: Fri, 3 Jul 2026 12:56:19 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: Li Zhe <lizhe.67@bytedance.com>
-Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
-	dave.hansen@linux.intel.com, david@kernel.org, kees@kernel.org,
-	linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mingo@redhat.com,
-	rppt@kernel.org, tglx@kernel.org, x86@kernel.org
-Subject: Re: [PATCH v5 7/8] x86/string: extend memcpy_flushcache() fixed-size
- fastpaths
-Message-ID: <20260703195619.GGakgT44P7lpcoMVlY@fat_crate.local>
-References: <20260702022342.GFakXLrl7ryd-g7gTu@fat_crate.local>
- <20260702073750.73840-1-lizhe.67@bytedance.com>
+	bh=caiPVIc5u9Qorek0yTCcNMWpnd4ICIjbHGVVeywoPZI=;
+	b=asJwxA173kj681S6GvVmgtRnhZiQr/KajPemTnva2nWf+BCUAoMCIAVDJRgWASvNUWxw2n
+	YbGe0oBudOJkd9foa091GVp6APBoAawOvBBab6Z5UhvUGOyq/DwMnlsvWNFOTgrIy8ydj5
+	29NE5+487BVqeGq6ej63Cb4rUPr/GSo=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=t2I845Nc;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf19.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.42 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5aebbe750f8so26217e87.1
+        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 13:04:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783109084; cv=none;
+        d=google.com; s=arc-20260327;
+        b=g6leDTheZHrwv3JTsvos9NjO0DB9Yt3jrInBdZiOSHal8SgjApslbJUMQGK7cGeQ/h
+         9X60RcXKVq91wBODHSAjcHID14W+SA3f3zRWI7zH+yji6JGifhrdeBgFeP2vWLD1g3SG
+         RazSQ5TlJz/5HQewtVnxlg3eHuwsOwXH5CzHMAeEbyiy1Hif/9QNQoj1xZEOJHntxlgq
+         0zpR1fSWyZ+AWfrYv3oKpFQJMxeYUeMD9TyIFhaLiDkENVG4CM1ReKFVqgtUuN5XgPhj
+         3ODlFTHEw5jEkzknoZ2BdLzu6p3CfZwBfC3BBMiDx5GLCNwG7MWilTdWoRmwVMy9l/XG
+         Vm0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=caiPVIc5u9Qorek0yTCcNMWpnd4ICIjbHGVVeywoPZI=;
+        fh=CGeZ6SnJsD60tx0t/jO912HdKpCNwqT/OThRCEznezI=;
+        b=dXdD57a+M0j+aAbJBUnNCzhjPi7B2day4ZByZ8WSPGeG3AH9tGb8lx5mKajQA6cL0/
+         onL+SZH9JWUt0FyQ4IFhqfGyCMZ+y+xtSLkRz8AKzDSrWdFhXkCtljzXJef9t8fCvY8N
+         HsFTNGYGWhuGli4R4vbb5BeNvWEsMc8wXd1UOug8dax02V10oNsjaZfEca4+Hy5pixqC
+         hyt8k/gQzOpCut+y/HXtLGK7u7cgw/locGHGBl0xnQbQukKKINK60SMhAFWLDGg7BrZ6
+         1zbbu6xfv3i3pm0o1PoBYTSF7OMVFhIF6drYFpj3mF4knqnhh5LCyxys+j+L7lMdp1Ha
+         bMnQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783109084; x=1783713884; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=caiPVIc5u9Qorek0yTCcNMWpnd4ICIjbHGVVeywoPZI=;
+        b=t2I845NcOohSySXXdMXjvOo5cYxlIwDYYD783SuZYZFYEE0WEQLP1pldkFay4sbmyD
+         dg3cpIH6e0U6x3tG+jV+KTaaJ7i9wPTJ3FinKT+dCRMagXXteCTEVHFCmRaZSOaFJwjv
+         umzZ3wFysHQC65ul+FppwvnEmjoXuplsBAVjBasxiYMy6yFY1qGOTSC8BRUS+8+Vb/e8
+         BLkoUu4d95vuaMu3NT5Nta7ByQTnLys7dxKgqhBwfMteSCWG7zurdUbeSDRL/H96zMup
+         EoXDertZjmz9ypHfewcxMLdABkWJ0en+f2yiyVHLdpnkR7DO2RIL+ziex8a1Hp4CFQj1
+         +vCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783109084; x=1783713884;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=caiPVIc5u9Qorek0yTCcNMWpnd4ICIjbHGVVeywoPZI=;
+        b=Pdu2QiXUVuW4UW6QaQ21A4VuE7ekSo0egjaRNxurrLkB+S5bPxfAvdTXuSxcN4glkl
+         v2TvM8VYNlGRUec2Bph7skjQefLtB155tZDnoNj3wRnUI6YHMvs5yo8P6tkIjndOod/J
+         Orbw3bnFo0CkRbAA2t1jzSvM5+V0zKLCHd2ulooIFhea5miKvGMDx6bnf5nXwPKXq2Bz
+         ++iI9uJIs73CFzZlJg38rgMygdH9PC3RsHLGA0KlZHONkFcPKQL5moxGgUDemiypCJU7
+         NEPPBnNFvm/zvKsfavBP333Qxv4Du0Wjmoyjam/60Z2TbczsnUn2KqE+rvDEdvW/oaiM
+         u2fw==
+X-Forwarded-Encrypted: i=1; AHgh+RooxL+8Mfjl78vJmYpB//pxYqB86ZDGL2tyepk6o+K9tJeE4b3Op87lOjQh5x+5v9qU5xQ9QFVmWg==@kvack.org
+X-Gm-Message-State: AOJu0Yz5ZOfDM/H/2JRW9NiMIrNbwKtqUbIvMFV8pVXh3TFR7r6QYDnp
+	j22l9UGin4AvCAqc+h2Iqyb53zgM0q0pCmbIDfSkreRgM4nYuRZ8wAiksICygvzvNQqVX01zU9r
+	6EwcaNwWxWBRLI6WP7kg9nKT+QYVo4LjTjTfo7FWV
+X-Gm-Gg: AfdE7clS65Rg9S8g+9AuTIhqt8uGyCXsYy8Hi+ViB5ysYruYyRZ2kyBRy7gSDDzrq2R
+	XbqyipKF2Rwt3VsLPMkGsx8eFtGwTr6LWcy6hDo123cbk4Vo+y3q/zDSbe9t30dDK4wwPZPNRpV
+	60yfGVWQxNtQpythV45uL+8hbiPEF37kA3GTOyNo8j270XwZFuolDFlDDvKepDbfID2WJ8EdG9K
+	fs3xQRNofbHQelg/40k5YsK75u7gBe3g4uyq5iz5NAUFZLjzsWMYJgUtXl6u8g8SPyjRILcZH8m
+	FxZsyRd6sg+awDnBeVMAnA7TaQDp5sOmEwepwt5SyhKtY8OQjDNpwE4ME36/vA==
+X-Received: by 2002:a05:6512:b28:b0:5ae:b9c5:f29f with SMTP id
+ 2adb3069b0e04-5aed45b91f2mr18854e87.2.1783109083225; Fri, 03 Jul 2026
+ 13:04:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260702073750.73840-1-lizhe.67@bytedance.com>
+References: <20260702215713.627941-1-souravpanda@google.com> <20260702162415.142571f4d8c43aa4b95b9f7c@linux-foundation.org>
+In-Reply-To: <20260702162415.142571f4d8c43aa4b95b9f7c@linux-foundation.org>
+From: Sourav Panda <souravpanda@google.com>
+Date: Fri, 3 Jul 2026 13:04:31 -0700
+X-Gm-Features: AVVi8CfnhBcwJDwHXGRiTXGwScnvInbaFovID-t0VgFmuRQDW2iG1p51j4ZIosI
+Message-ID: <CANruzcR+uQPisER8KDFH3x4C-O22xvUwQEgv2=TQ=MHooO11Gw@mail.gmail.com>
+Subject: Re: [PATCH] mm/hugetlb: Fix null pointer dereference of nodemask in hugetlb_cma_alloc_frozen_folio
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, 
+	surenb@google.com, fvdl@google.com, gthelen@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5F47B1A0008
+X-Stat-Signature: 1q5h8wcoswgkmxd41pmcg849ybc7qixc
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E3A3818000D
-X-Stat-Signature: bmb3hxrwwtdb8bhyg4ehofqt8kwtx177
-X-HE-Tag: 1783108610-220373
-X-HE-Meta: U2FsdGVkX1+CflDlUfIfhRICvt8BZQyUnqQ7q1Y0o0yXgdQ1XLvifMNnYDIK0ye2zd0J+uPqpHckinHSVh3hgNlCCNTVACmuoocCpE1cYSdxTkSBfsCYBpurmGAmT8NAmSbmrFbP9LhpzuabH7eIPKkm0ykp3xNsB4rEtXI5rgKCjnvo9LWz8ddxBIwQx6Kmlj9/puH18WswmaBBTIxB0LF0820XqOVGIU5cmR4LF2vGAzyfSFvQ/wQZTr1UmaNMBRhv9dK3emV63x3AsG81IE8vl/ULiBZPdhqSWI6v+63ZR652vqWc1PJgrWLC1vQBOpKariIj9HszQFqNSWkVA+sD1fhtXS+PHiOXC89ahfNvYKPerTlg/LVPuikwaBj4GDLdnOx5KzxlEZa42A5S8R7wg3I3H+KI62a/0gd8wAgmOLHhFKrwYyfzOl26wftbiS+dehTy7qyhQ5XZUpLEHU4eO0U5iG6KJCRtLHySEQdaYe+GVp81UsEsMpo0UGVi+iUeUiY9RWbKEy3kAmaZHuvoe0SruuDdrqThXmF3EqBee156OiTeD4EMVYlYzg5b9mH+JtLSfG6l3va+XT22iLDQDaGda/0Le+HUZ1c7iT63VjhAgd/3pLHVmYH+Z44rFrn01hS80vIVAxr1NNra5Mk+I9DZ/9qtTjdbWtFfdl/e0XXK3dF4yjMdeBCU7lyVsBDXI+mUS+0pC09V5sGbTA/6yMaO/53jfXBJIEgNrmD47OGwZqKh+5/mHRQrfxtVnVOn7AEL+ssyC3xoLsA/KuaRI/YHDWoE0NQZ27WwhEhQxObmbfRrV51mAW2c7ljRkgdUUTOEfN7zSbJoG+1bJGX43zTPEzU95YP2/iNn0yEOd4TB5T62oMHDuqN+qTdD4ANGHduVjMtM5uWCO/P2Y4S3G5fQdENp0x10fwSwwTUKPDUmz9m5+eqQ3iKA8ezb1ZpjsAd0S3kumZaGVTA
- Wl+W8cxK
- iubecd93s8W9B6pRx7PSY5UFm2pji6egbUSXsIm/lTeVsSYArGZhFDfFZHQJFBBg2d6NcFgGVYjsj5fF60dYB03g3xFN7tDNdFeDp148bxFeVImhN0NRkYr1rI7/7nAOSf2IetGomFYqLdHeBcqsgF1YCpu6LTcJSuc6uV224LDt97krb0fAeEm3ZicI1mz4TZEv8JEVyrm9GmvPVonEGEvCT+0F8L28uVv53juJsVZjs1bAROsoOIySfVJF9WKJunWAs/GUscvDnJoOpQJBuGW0gLaX7Fy1Wc82RtCZLXLZZKVTshCaKHV7VgjxH+DH/R33pmic5vNQXLcgpJEkg+QVhPA==
+X-HE-Tag: 1783109085-638732
+X-HE-Meta: U2FsdGVkX186SMvxPJta3kW+T3HhLALtYj4SG3UnwXZ5ZKrmsvtiwKIP8LjPcQU6SLOJWf0WhnhweqpLhezNDaj61ETkttSZW1JdOW38AaoLpSerooiUxjPyURdUHPlhfQl5EBur5tCFdrI2PcNB++qdr8zG1TJQ6JHKjs/FO9K8hrUCjityS9Hyk0/fyv77EU8p02NMNvtMYrVypNcvMW8c13UVkelQMNY3kg4WpJjeneg/szPNVcYYf1/MY8iIF2qn6SMhMRn33pQiy41D4P27DqSl/fJFbn8BQVvtA0Ib36crB0pamaAMwXzaUep+alLc8MQPR+NGzCiErn99aA7OGONzAd9fVF3q7c5lHdkKCNrR5Wvh1zwsx8imM9zDhEvwRLY0W+Xepl8BsQOTSfqwvEAKuMVsUeRq21/JsBS4R18ZEaZtGUYRApDeUW+1Ny+z6NSjtwZ2k7ql3nc2Sv3imFTHcx9T99qmqdMfUCrfkShD0JzoTu3z2UqlIS5mB102Hqxb/BYdY9outX64b4BcXqUspCD73UfevCHtdMsvkpio/7G8fxYRcUeUCjPLEqKItR7jKhr+QBwSUMxaZW7NlSdJOJSn8HwM2J+IrmskZQFmBWeenVMwtXhrBUbX62RF43h+hMIwnXDCVxz1YOU1By1ITfsJfwAFcN7oG59IZuI4GNamdFgDSssp35UIU1b1WfSOyhIiOeO2JI7sr7FWKuxSN5SH+TwdO4dgTLUrOel5M74kawbFYerowl9qZL7YlyE1dC8AHJA42BiZlw8AJXNizgIkMG5zs9jtaGa3FQK6vzOSJeHL+cIewx+pHFyuqB9fkYvB+S8j0flEENI8kFktd2VuzVkQrzgXrLwxMvh+yTYrXR7AO45eEqYKnGzpgz4F+TOTzcTfqqQmJa4zkQn+tl+HGWjoDy33l0OVd1JDzBxXa3Tw417ZyORx7KrrUPHENUVvvyLF7E0
+ 4OeQQG9r
+ HFjFIFjHwULTbyCmT3Ci8I1rLqRX45FBDm+qCRiEFBRFnBDFzIPJw2JtT9BZzC2JdrF31jcYaDrF9WiR/wmO/mRkob+WzZAlL3V3S5P6bkqGdQpxyU5WKZMboLsvGF0ROpcC2wjDAGva4WHC3MDm1CL0YmC566D4ONEkvQKXiWe7Yt8OoueW43BHjt+0+AZJpWCKGgk/G6N3V7RV3Lhy57tZT3BtUBOLKU5lcNWcdR1jWWZzoYnKIVRiewNPp2tOVUyLBOn/gK551jNB7N3Syci3XVYQYNYCjoPlUTnnHxfswQ9gymhKCehrPAhq8LKzkdojK0UARzpfhWBMxURJqpr9/fS3rSFD4sAB7AO5wwXut2fl9Bykfv5FpKmnaXV2pNqeVjP4W4COYgVxfrQT5bRJQF+k+jwIXzF26siBOa+3kfz17q8dbmjXTMkkfgFeEb6J4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,41 +140,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 03:37:50PM +0800, Li Zhe wrote:
-> The relevant target sizes here are the x86_64 sizeof(struct page)
-> values which patch 8 can hit: 64, 80, and 96 bytes.
-> 
-> On x86_64, CONFIG_HAVE_ALIGNED_STRUCT_PAGE keeps struct page 16-byte
-> aligned. That gives 64 bytes in the common case, 80 bytes when
-> WANT_PAGE_VIRTUAL or CONFIG_KMSAN adds extra fields, and 96 bytes when
-> both are present. I stopped there deliberately because this series does
-> not have a current caller which needs larger constant sizes.
-> 
-> The 32-byte and 48-byte cases were added only as intermediate fixed-size
-> combinations used to build those larger struct page-sized copies while
-> keeping them on the inline movnti path.
+On Thu, Jul 2, 2026 at 4:24=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
+>
+> On Thu,  2 Jul 2026 21:57:13 +0000 Sourav Panda <souravpanda@google.com> =
+wrote:
+>
+> > alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> > hugetlb_cma_alloc_frozen_folio() as a fallback to allocate from all
+> > nodes. In this case, hugetlb_cma_alloc_frozen_folio() blindly
+> > dereferences it in for_each_node_mask(), leading to a null pointer
+> > dereference.
+> >
+>
+> oh.
+>
+> > Fix this by checking if nodemask is NULL and defaulting to
+> > node_states[N_MEMORY] if it is.
+> >
+> > --- a/mm/hugetlb_cma.c
+> > +++ b/mm/hugetlb_cma.c
+> > @@ -34,6 +34,9 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int orde=
+r, gfp_t gfp_mask,
+> >       if (!hugetlb_cma_size)
+> >               return NULL;
+> >
+> > +     if (!nodemask)
+> > +             nodemask =3D &node_states[N_MEMORY];
+> > +
+> >       if (hugetlb_cma[nid])
+> >               page =3D cma_alloc_frozen_compound(hugetlb_cma[nid], orde=
+r);
+>
+> It is possible to hit this with any known testcase?
+>
+> If not, why not.  I smell the smell of dead code somewhere?
+>
 
-This needs to be in a comment over that code so that it is clear why that
-distinction has been made.
+ Currently, there are no selftests in the tree that trigger this
+specific  MPOL_PREFERRED_MANY  fallback path, which is why it has gone
+unnoticed.
 
-> Yes. The separate helper is there exactly because the added
-> 32/48/64/80/96-byte cases carry an extra 8-byte destination-alignment
-> check, while I left the existing 4/8/16-byte inline cases unchanged.
-> 
-> The intent was to keep the larger fixed-size cases on the inline
-> movnti path only when they already match the alignment assumptions
-> used by __memcpy_flushcache(); otherwise they fall back to that
-> out-of-line helper, which already handles the misaligned head/tail
-> fragments before entering its movnti loops.
+ The bug only triggers under a specific topology: Multiple NUMA nodes
+where gigantic hugepages are backed by CMA, but only on a subset of
+the nodes.
 
-Why can't the larger MOVNTI sizes deal with misaligned cases too and thus make
-the code even simpler and more straight-forward this way?
+  1. The Reproducer:
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <numaif.h>
+    #include <numa.h>
+    #include <sys/mman.h>
+    #include <unistd.h>
+    #include <string.h>
 
-Thx.
+    #define GIGANTIC_PAGE_SIZE (1UL << 30) // 1GB
 
--- 
-Regards/Gruss,
-    Boris.
+    int main(void) {
+        void *ptr;
+        unsigned long nodemask =3D 1; // Preferred Node 0
+        int ret;
 
-https://people.kernel.org/tglx/notes-about-netiquette
+        /* Allocate 1GB gigantic hugepage area without reserving */
+        ptr =3D mmap(NULL, GIGANTIC_PAGE_SIZE, PROT_READ | PROT_WRITE,
+                   MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB |
+MAP_HUGE_1GB | MAP_NORESERVE, -1, 0);
+
+        if (ptr =3D=3D MAP_FAILED) {
+            perror("mmap failed");
+            return 1;
+        }
+
+        /* Set MPOL_PREFERRED_MANY policy (mode 5) restricted to node 0 */
+        ret =3D mbind(ptr, GIGANTIC_PAGE_SIZE, 5 /* MPOL_PREFERRED_MANY */,
+                    &nodemask, sizeof(nodemask) * 8, 0);
+
+        if (ret < 0) {
+            perror("mbind");
+            return 1;
+        }
+
+        /* Trigger page fault */
+        memset(ptr, 0, GIGANTIC_PAGE_SIZE);
+
+        printf("PASS\n");
+        return 0;
+    }
+
+  2. Triggering the panic in QEMU:
+   CONFIG_CMA=3Dy
+   CONFIG_HUGETLB_CMA=3Dy
+
+  Then, boot a VM with two NUMA nodes, restricting CMA to Node 1, and
+run the reproducer (+pdpe1gb  is required).
+
+    vng -v \
+        --cpus 2 \
+        --memory 8G \
+        --user=3Droot \
+        --qemu-opts=3D" \
+            -cpu max,+pdpe1gb \
+            -object memory-backend-ram,id=3Dmem0,size=3D4G \
+            -numa node,nodeid=3D0,memdev=3Dmem0 \
+            -object memory-backend-ram,id=3Dmem1,size=3D4G \
+            -numa node,nodeid=3D1,memdev=3Dmem1" \
+        --append "hugetlb_cma=3D1:1G hugetlb_cma_only=3D1
+default_hugepagesz=3D1G hugepagesz=3D1G hugepages=3D0"
+
+  Inside the VM:
+    gcc reproducer.c -lnuma -o reproducer
+    echo 1 > /proc/sys/vm/nr_overcommit_hugepages
+    ./reproducer
+
+  3. Outcome:
+
+    [   33.586151] BUG: kernel NULL pointer dereference, address:
+0000000000000000
+    [   33.586512] #PF: supervisor read access in kernel mode
+    [   33.586680] #PF: error_code(0x0000) - not-present page
+    [   33.586879] PGD 1023c7067 P4D 0
+    [   33.587668] Oops: Oops: 0000 [#1] SMP NOPTI
+    [   33.588265] CPU: 0 UID: 0 PID: 336 Comm: reproducer Not tainted
+7.1.0-virtme #5 PREEMPT(lazy)
+    ...
+    [   33.588960] RIP: 0010:hugetlb_cma_alloc_frozen_folio+0x75/0x120
+    ...
+    [   33.592469] Call Trace:
+    [   33.592672]  <TASK>
+    [   33.592853]  only_alloc_fresh_hugetlb_folio.isra.0+0x2c/0x160
+    [   33.593127]  alloc_surplus_hugetlb_folio+0x6d/0x100
+    [   33.593284]  alloc_hugetlb_folio+0x3c5/0x660
+    [   33.593430]  hugetlb_no_page+0x3d9/0x650
+    ...
+
+>
+> Sashiko said things:
+>         https://sashiko.dev/#/patchset/20260702215713.627941-1-souravpand=
+a@google.com
+>
+
+Sashiko is right to highlight the following: By defaulting to
+node_states[N_MEMORY] instead of
+cpuset_current_mems_allowed, it appears the allocation loop could search
+all system nodes, breaking NUMA isolation for containers.
+
+I will apply &cpuset_current_mems_allowed  instead of
+&node_states[N_MEMORY] in v2.
+
+The other issue Sashiko highlighted is also valid (but unrelated to
+this patch) and I can bundle a fix for it in v2.
+
+Essentially the preferred nid needs to be extended with a
+node_isset(nid, *nodemask) check.
+
+>
+> Ackerly's "mm: hugetlb: move mpol interpretation out of
+> alloc_buddy_hugetlb_folio_with_mpol()" made big changes to
+> alloc_buddy_hugetlb_folio_with_mpol():
+> https://lore.kernel.org/20260702-hugetlb-open-up-v4-2-d53cefcccf34@google=
+.com.
+>
+> If this bug is real then it would be better to stage your fix ahead of
+> Ackerly's series.  Possibly with a cc:stable.  Then I can redo
+> Ackerly's patch on top and we'll need to check that this bug isn't
+> reintroduced.
+>
+
+Makes sense! Thanks for connecting the dots :)
 
