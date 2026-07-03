@@ -4,109 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57AD4C43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 10:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1F3BC44501
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 10:27:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29DF66B00B4; Fri,  3 Jul 2026 06:22:06 -0400 (EDT)
+	id 984756B00B4; Fri,  3 Jul 2026 06:27:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276EC6B00B5; Fri,  3 Jul 2026 06:22:06 -0400 (EDT)
+	id 90DF56B00B5; Fri,  3 Jul 2026 06:27:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B1F76B00B6; Fri,  3 Jul 2026 06:22:06 -0400 (EDT)
+	id 7D55A6B00B6; Fri,  3 Jul 2026 06:27:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E3F656B00B4
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 06:22:05 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6AD0F404D1
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:22:05 +0000 (UTC)
-X-FDA: 84947075010.09.91EEB89
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 93A5D1C0003
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:22:03 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CMk4A1ly;
-	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 5170A6B00B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 06:27:32 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD9351A047C
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:27:31 +0000 (UTC)
+X-FDA: 84947088702.20.EE7719E
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C079E40004
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 10:27:29 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of msuchanek@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=msuchanek@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783074123;
-	b=cbmDkmumRA93aPFrKz7RS81El7NA5dNqHojtWJBp1iOwsAycblGMtgFRm/Fj2kY/nwzCgl
-	7t93v8NAwgMTOWlrrOcvDuxcKXiPPAZE9FD3UZbsaMZkWKlF5hdAxDqN0UuuDKCpDs5doP
-	JO/HMshuTtdZ+ziP851FkEZHBguPDRA=
+	t=1783074450;
+	b=tYUbqBWnfYti+MhIMMHBYWDEH23ytTRMqIrXN6DW5XKASmLk2NWs4gSwY9pCUhEOuw6Izx
+	tG9dBurFGuQbVQuVNCZT635RT67MXCHOxVbkAuEDwU81puhggdYZh9PXV+tW6CSMg2GtsQ
+	N2o/Oyi9xA06O3new1r0+OfeaNx7rKM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783074123;
+	s=arc-20220608; t=1783074450;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UCfZx+03VuKV5KbdUrtfrc62wyaRC4jJXsUxJMuOZtE=;
-	b=sdpO+DYbsXvgDhogKZVWJz3Kd0nA3uevEZzaVV88TMR+Fx3b/hgwWBZuZsk9R0lP7O0JVh
-	uuP9EF3jnzuWRKBPABe1aXTvHGB6fDApWfMLbXGpT9sSUsE7ouOmW7X1j208ghnceGFGR9
-	NC+Mc/lqLEKti15h4n6uaPtgZCSF2lM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CMk4A1ly;
-	spf=pass (imf20.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783074120;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UCfZx+03VuKV5KbdUrtfrc62wyaRC4jJXsUxJMuOZtE=;
-	b=CMk4A1ly+G2fYCzb80TaV1guaJXcy6PlhSjXm3p4qWf1/R2OD8c9r4vd9eNv1x7a0QsWTl
-	6kWJLBYz+9Di8HDqfoG42cZ62OTRvDw3DJ2HRNdjFrOze7VQgLt0rqclImDT+cPIfJf4AT
-	WSc1439mr/Rg1tRkc2IiKavDdHBiyVs=
-From: Lance Yang <lance.yang@linux.dev>
-To: usama.arif@linux.dev
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	ying.huang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	willy@infradead.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	kas@kernel.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	npache@redhat.com,
-	liam@infradead.org,
-	ryan.roberts@arm.com,
-	vbabka@kernel.org,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH 1/6] mm: add softleaf_to_pmd() and convert existing callers
-Date: Fri,  3 Jul 2026 18:21:50 +0800
-Message-Id: <20260703102150.5461-1-lance.yang@linux.dev>
-In-Reply-To: <20260630164143.1595669-2-usama.arif@linux.dev>
-References: <20260630164143.1595669-2-usama.arif@linux.dev>
+	bh=vzAgs/BEsj7FHZopxvIm9zgUiYjF8OFUBMNpzRJZrjM=;
+	b=yKFBOlqLAkYtwtZFa45CrIJX4Q+fxc71rD2nJ59tSlaessmBGR++Mreh7DmYdXrONXGzvb
+	ksqYUQaRvTcKv08cjj7LisfwRI+S7+QpDuupK9f01UsFgEZFFr9F3u9Sw93THR+0czJw2w
+	htLOPur1DfLsR5oxuEd6vdlIshIJbug=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of msuchanek@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=msuchanek@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from kunlun.suse.cz (unknown [IPv6:2a07:de40:b306:2000::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8F70A74890;
+	Fri,  3 Jul 2026 10:27:27 +0000 (UTC)
+Date: Fri, 3 Jul 2026 12:27:26 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Jinjie Ruan <ruanjinjie@huawei.com>,
+	oleg@redhat.com, richard.henderson@linaro.org, mattst88@gmail.com,
+	linmag7@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com,
+	will@kernel.org, kees@kernel.org, guoren@kernel.org,
+	chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com,
+	deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au,
+	npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com, svens@linux.ibm.com,
+	ysato@users.sourceforge.jp, dalias@libc.org,
+	glaubitz@physik.fu-berlin.de, richard@nod.at,
+	anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+	luto@kernel.org, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net,
+	jcmvbkbc@gmail.com, peterz@infradead.org, wad@chromium.org,
+	thuth@redhat.com, ada.coupriediaz@arm.com, kevin.brodsky@arm.com,
+	linusw@kernel.org, yeoreum.yun@arm.com, song@kernel.org,
+	james.morse@arm.com, anshuman.khandual@arm.com, broonie@kernel.org,
+	liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com,
+	yangtiezhu@loongson.cn, sshegde@linux.ibm.com,
+	mchauras@linux.ibm.com, austin.kim@lge.com, jchrist@linux.ibm.com,
+	arnd@arndb.de, thomas.weissschuh@linutronix.de,
+	sohil.mehta@intel.com, andrew.cooper3@citrix.com, jgross@suse.com,
+	kas@kernel.org, x86@kernel.org, linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, linux-csky@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-um@lists.infradead.org
+Subject: Re: [PATCH v16 01/18] seccomp: Convert __secure_computing() to
+ return boolean
+Message-ID: <akeOjqMy7HVgRRCr@kunlun.suse.cz>
+References: <20260629130616.642022-1-ruanjinjie@huawei.com>
+ <20260629130616.642022-2-ruanjinjie@huawei.com>
+ <akdp6GAu77-ipsXA@kunlun.suse.cz>
+ <87cxx4mmim.ffs@fw13>
+ <akeIK5TRCjlKbzbp@J2N7QTR9R3>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: tkc899bgybyxxt55acokyi3des5yqkb6
+In-Reply-To: <akeIK5TRCjlKbzbp@J2N7QTR9R3>
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C079E40004
+X-Stat-Signature: o8ix6t31d4kwq7twih95aoatoi3ydj6d
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 93A5D1C0003
-X-HE-Tag: 1783074123-600751
-X-HE-Meta: U2FsdGVkX19M3fenlp1KJpkRkzSxZPVqcaoql2z00wBKzRNHpEXgD9wQF1yFdrwQFWHkpUusrelcaT9HFyGNWReDzp1KRr7AnlH881PlQXoq+OEvShoXby0Xx4DZ4Sf2tQv/xPLn3ObCkgYBSvxMJY/OjujtTBGpHSWPa3kkCT8TkQJ2vy5Li9OvbNTjrWZwnGn9g9KDS9Uvgg87YxVA8F04qemEkLghieQ1c3ciX9UqniKsgc++rWroIOjMzq9brNHWbRK3zrXvgvDmJnU6p1bYFUhvLrfnYxD6ZjgAYjLHpoZOTPQ5SAyjTcmo92PcjvYB1nIclxGa2gABC1A3qK/VYfv15d3gByWxqv96IqDJtHELI1LhpvRy8c7V9sLfn23OdQsPurTuwzeqO2xb8EIm4pK6xjnE4fdCUpFtCnVfCQCddmh3b4fqpQL/6NK8VMXjFc8lpAuwNbKb267dmFAODowTdzpHgBAuPj7P0AOukOVt7PElMGTjYOidh+HVu8DymifqX2XVvw9zCWrDDr2C6HlRyWZF1v9ehH6T2uY64bZS4ywjAMItBwNXNx9HE9qrAME98ncYJeBvj2hkGnfL76xFBWntdkR3fYIR7eCDbmPDvEMxaau2I301cqC0OyGX5q+xqevrGwpj3NzBMr5WV+0j5/94c1j8Be7pVRW40ApZTfhrn1G20XTFC6ehSy5qxmHas3YV6e/Mqu8dHarY/19Ma6wUftqNxLTdEtdGCarWPfR7+WG6RVdYybLzI3USLJiDB7JqBK0DpSv9fREHAfHWEHs6XMM16YB2uiqZzeIO9L/7/JPNnYao8wmPOLmxAwxK3aP+IjFFGtFCGoorIraV76fC53K0CXdkDw8zVmAbgfsrr0mJkk1fzA+okmUEQJ1x9ECZ5dlFXSXzGeX/ccDd2W6d4kx51TW1d9pKqvuo58Sr1PiF0lQSitMdVhydf3GVMX166RRA88E
- Nx6IWl1e
- gUPyDfpUk5baju2OeZEjZ/MXdYRevg0VPmNrPPl4PnGMDhvRSizC1rrxKjW7BY7yYsOcMzJMPvI00uRa8uZ6uDPobJtVxCfnc0D7sSd98ypbT4AkHxNiUmQ7gM4JvcRVNjTTCFt2l/x9t6VdLFQkF5hHS5BPpmq7RREQqrF+p8zjzgH9VgAUwY+RLLLanWJ2tlgTL6V9w2ACz+ASRxo9dQe6n6dAQZSApIxLRr9qOgrhCY6maIAhA5bskqzaUJyv7ztqbJuQsEnkQlxZqtXGgfK9A+fn5xfmQ6g4fhnfqQDoG3NLV18ZDDmBEjQ==
+X-HE-Tag: 1783074449-463087
+X-HE-Meta: U2FsdGVkX19PLoifDgV0nK5VpyzmCIdg4dGPP3rWPKS7N0Ne9/ywCeppHrsVFAn/6ozueO2O/tEJ3U55gz/WAfXPLPiCqW33GMMGyJB15/4V5xlqR8V9GSjw82pxfNUMU/ojPxG3ZPpj9JALGf4xPgwrdl8vy0aNihIBFjVjA3aQfgvKtoHWzLSUQzp7pi4X6v5wlgUvATkSyFQTc83NCWfLQgVRuxNiRbmiIP4AnHwMlINIyrL7yrfVeNzAnqbxpbtzIt1VWjZFSccHT4g8ylx3xFA9wgA5zemeMBxuzTvXFrH1mV5uK14jQHjXQENVPw44JSulfWPqPYvGpcJLEVuDSmz3mdSQahcn9IvQe18Rh5IhUVSK6WAQoCklB8lFR2Hi3oM04S94E61Vem2Y5bM8r2zOhUQT3+713XTJy8ly+x1BAz8IvBNrNg0g/YtPwT0EZtZTKTj07jqbTqvF0MBiKPO9wCmT+hQUfQnpWFLZiW0lni2067+7IrpTggc95Tup/jM6Z2kvTKxl2o6DM8gAFeTnMhGLhpFNjzLEZJIBLOGzI7ua2YrtOXfDcOKdjrtP8SiyHwE7903ZlpaoYl6fqwfI6w1qHTdtT8ZubeQRBczGWlCZ+BeYBr2jLddv8DNmpYJrZhdM0BVA09sexdQstgikCI0zXWnblIfXFi8opRP8eNo4vdZ2sf+K2cA23cAWQ7Tbr+aLWhlZQhbeVnNbmb64qazfE3Bpl0ap4CcdI9C0c9laauwTTVAcQXpdjJnbOMK+sFwMfEQyUqC/d2H3iKYtZk5ZY7gR5CgVNmIWpTx3bGsgu8I7/G9yX3cBTwZPHhk37Sly+SRMa9h0Sjuu0ZYiMxm0wlXZvxqAyzCtDu5y6cpV9bBBYpHFjkd2vuMhGKOfDXLCwmScXlE5mDSmumGtHozgTp5EhBmAnVz4WA7A67MdIttHby4BbwUoPfo85BRlL9UtLZ+fDfY
+ dEfoVjYp
+ wfn1Br+G6SOIZKSSaPr9fVRlVnwi2vGG7QkHSViCf+XBxCw8212KBplxsXl1/EpIhaFEIon4d3kuQV+tzzADo5aydUQ7f72seHXajqoDoyN4KhOOcU4aXifCRshqJymCYm1z+XN4oKST384qJBaH6eeFUT0bEUroaVSjB/TU9Y/Ec3A10a/AqPR6GRsvGbN7QQJ3KwVHUipiLuVzGA7T/edXOhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,24 +126,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Jul 03, 2026 at 11:00:11AM +0100, Mark Rutland wrote:
+> On Fri, Jul 03, 2026 at 11:48:49AM +0200, Thomas Gleixner wrote:
+> > On Fri, Jul 03 2026 at 09:51, Michal Suchánek wrote:
+> > > On Mon, Jun 29, 2026 at 09:05:59PM +0800, Jinjie Ruan wrote:
+> > >> -	if (secure_computing())
+> > >> +	if (!secure_computing())
+> > >>  		return -1;
+> > >
+> > > Hello,
+> > >
+> > > I am not fond of this logic inversion. The boolean is meaningless in
+> > > itself.
+> > >
+> > > Previously -1 was used to indicate that the syscall was filtered but you
+> > > chose to invert the logic choosing true to mean syscall was not filtered.
+> > >
+> > > You could choose true to mean that syscall was fitered avoiding this
+> > > inversion.
+> > 
+> > That's just wrong. Boolean logic makes more sense with having
+> > (!condition()). Just because the old 0/-1 nonsense had it the other way
+> > round does not mean it has to stay that way.
+> 
+> 100% agreed!
+> 
+> Bikeshedding below; sorry.
+> 
+> I think the bigger problem is just that secure_computing() is a terrible
+> name that does not express the intended semantic -- it's not clear
+> whether "secure computing" means "seccomp permit the syscall" or
+> "seccomp is enabled and some special rules now apply" or something else
+> entirely.
+> 
+> If we're changing the return type, it might be worth renaming the
+> function something like:
+> 
+> 	seccomp_permits_syscall()
 
-On Tue, Jun 30, 2026 at 09:34:38AM -0700, Usama Arif wrote:
->Add softleaf_to_pmd() as the PMD counterpart to softleaf_to_pte(),
->completing the symmetry of the softleaf abstraction for page table
->leaf entries.
->
->The upcoming PMD swap entry support needs to construct PMD entries
->from swap entries. Converting existing swp_entry_to_pmd() callers
->to softleaf_to_pmd() in a prep patch keeps the feature patches
->focused on new functionality rather than mixing refactoring with
->new code.
->
->Acked-by: David Hildenbrand (Arm) <david@kernel.org>
->Reviewed-by: Zi Yan <ziy@nvidia.com>
->Signed-off-by: Usama Arif <usama.arif@linux.dev>
->---
+Then not only it is clear which way the boolean value should be
+interpreted, it also pervents the accidental inversion of existing
+calls. Overall great.
 
-LGTM. Feel free to add:
+Thanks
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Michal
 
