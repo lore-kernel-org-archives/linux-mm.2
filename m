@@ -4,148 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 604DFC44500
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 09:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2CB6C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 09:21:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 319BD6B00B7; Fri,  3 Jul 2026 05:20:19 -0400 (EDT)
+	id A1FC56B00B6; Fri,  3 Jul 2026 05:21:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F1606B00B8; Fri,  3 Jul 2026 05:20:19 -0400 (EDT)
+	id 9F7316B00B9; Fri,  3 Jul 2026 05:21:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B9DC6B00B9; Fri,  3 Jul 2026 05:20:19 -0400 (EDT)
+	id 8E6BB6B00BA; Fri,  3 Jul 2026 05:21:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D73F36B00B7
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:20:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55F52A04BD
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:20:18 +0000 (UTC)
-X-FDA: 84946919316.19.088F3E5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 781A2100007
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:20:16 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJVkb6Pg;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 637DF6B00B6
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:21:06 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E30428E3B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:21:05 +0000 (UTC)
+X-FDA: 84946921290.08.B4028C3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 36F2A160005
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:21:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=er20X6E4;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783070416;
-	b=AyAd8hiczD/48ThKlELaBZsur94d5H3ga68kxrA3HYsLN1A0gQsJVDu/7CbjEXxwGWXSxb
-	VnrbCVtkGBecfpWqrpYL151nkRE75VnoiSi7BCBi7Oovw4pMwmGpaOcF4IjyLLj2sZJhri
-	FspaMU9uKCCJM8t2EMuKZCDE95AZ8DE=
+	t=1783070464;
+	b=OOCXl/hclKuBgZNUgqAxRev6PiqqfHdmO5yUwUyQ+EI2Ar7cERyAHOqkeh5UiYctxk2gea
+	ro+MjtRcZIuKHP2t3M7CFsVZso84vupOBmgCRanmB1Hdy92LCJgkQUOhDnUMAIW+DHpdWY
+	mJd/M1aaqjp9TxJ+NYjjFqsmnX0kivo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783070416;
+	s=arc-20220608; t=1783070464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d4E5IgOb18AM4fykE8ujTxtcflOecYT/ixKCIOO2gbE=;
-	b=EfYJDhHtDxBSk3FdrkWRAg+QlBloBGDzMMPSlTZMm/Wu9c3Zq4OLk6/Yew8ylacAb7WF+q
-	HaKEjdhQy2YbNZeziBGjxVBjbLSUXBm/9x1PGOa4s5XQx98yoXV9xtFG33SE4WP2p0uG8S
-	exTsZA8Qt0DZSGPEfHVkCnuARD7gM5w=
+	bh=LRHs68uZvA9um2gm65aY4M4ReG5L7r5Gco47C8yFhfw=;
+	b=wiop+6+SPPR19zJRjeyXnyiM1oPRdwt0Xu5+thK2MHtBFRV9+LQ4qYZcRML7FDIrXgkQDH
+	eP8wDl+2L30H73mKe89d2Wxe5ilWWsxmf+SzhQFxjw1P3cyiEmgeLzFfILHh3goqyIwbfc
+	lnh4A79WnDiKenXbjEa+kyCCZL1J6DY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJVkb6Pg;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=er20X6E4;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 779D942B11;
-	Fri,  3 Jul 2026 09:20:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C053F1F00A3A;
-	Fri,  3 Jul 2026 09:20:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A819B60121;
+	Fri,  3 Jul 2026 09:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97931F000E9;
+	Fri,  3 Jul 2026 09:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783070415;
-	bh=d4E5IgOb18AM4fykE8ujTxtcflOecYT/ixKCIOO2gbE=;
+	s=k20260515; t=1783070463;
+	bh=LRHs68uZvA9um2gm65aY4M4ReG5L7r5Gco47C8yFhfw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=CJVkb6Pg3U6/GUJKKU0R11dPgY0dDvWoxBBtNay3u9a0oFX8rJYKLmNrt4rxPsjW6
-	 xBqU0z7Ywh2AEz1hk/UnRQj6tNru1gpEM7P3yzhWoqTLMI4zSPvAAc1BlGGBo7QujE
-	 12cjYC7NRK4zx0ibVCLFh8uxuCbUcSE+byNhp2g+KcBBFgWPvHas7sWeWYKz/XFl+X
-	 JGD5Otbbz8BZZaxE2sAhOPOUWMub9PYN0IGUUttZ/bwPSXYT81FDiJgOJBIwPRotI1
-	 1PbxS7ibVKDlssFFr5TnTpp0mgVfFikhSog/CEg/XrFuphs+dWsz/srZJWB31EIJBr
-	 RX0Md9u4/CVDQ==
-Message-ID: <a740a4c1-85c6-4bb5-a0cd-3203bcccaccb@kernel.org>
-Date: Fri, 3 Jul 2026 11:20:07 +0200
+	b=er20X6E4CCctj3eE7ZkCYz1M034Z/dOeLXhhW4SXSHRXrNAdk8ORvRd78IdzAbnlx
+	 1XwS/Sj4Qy41VCSnWZTXn/Ueyhi9Hkl3GhMZyM02Pf2XRW4AoSTrJv/HwmO3VIFhpy
+	 H3E9Rxi9sFJ0olWtSmlvlQkcSPXm/DiXePmcUSydvdHxi2IOPNM2VvUO+xmofYmgaG
+	 KOBXjNOGM7D4+q538hTKSTBVko3mqvABUa1ZQvMRGWR03r2nnoKNTz6I+m27A6wdZN
+	 J7hUAsQXmzayViW3Mv1ZEg2RwRb/9a6JbeIudqEvgrciOYFi/iOHW6gWmPUAqtm8Ly
+	 2Ksvsni8s0uIw==
+Message-ID: <474e7222-7589-4e8b-8a3c-f85ec2335f19@kernel.org>
+Date: Fri, 3 Jul 2026 11:20:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/18] mm/page_alloc: unify
- __alloc_frozen_pages[_nolock]_noprof()
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
- <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+Subject: Re: [PATCH stable] mm/khugepaged: write all dirty file folios when
+ collapsing
+To: Lance Yang <lance.yang@linux.dev>
+Cc: pfalcato@suse.de, akpm@linux-foundation.org, ljs@kernel.org,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com,
- Yosry Ahmed <yosry@kernel.org>
-References: <20260702-alloc-trylock-v4-0-0af8ff387e80@google.com>
- <20260702-alloc-trylock-v4-5-0af8ff387e80@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260702-alloc-trylock-v4-5-0af8ff387e80@google.com>
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
+ viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+ willy@infradead.org, song@kernel.org, ehagberg@janestreet.com,
+ ziy@nvidia.com, gleventhal@janestreet.com
+References: <e924bed9-4c46-4fe3-b6cd-7c77fd9e25c8@kernel.org>
+ <20260703090232.26261-1-lance.yang@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260703090232.26261-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 358ddnrmgxoc4d8mjx3bqw4ak1tbonet
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 781A2100007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1783070416-778226
-X-HE-Meta: U2FsdGVkX18TgHdI1lymPL9399iEg3o/RiYSzns1C+UCH1aheHdSbaFeqComn7jx5lRQ2Jsv49t0+9xjTSGWWPYzmYoruVuUHKf4ZQftYyb4V/TTlEsGdXmYwpG5lEQ5GHlCPeSa/R57h++0+jlyGyOjKg9xRUYyc4+f+cUPqYIZUss8iROGxdN6cB5tMayFSWaRuBvFfFDPQUz8jLJJw/CKsOiFXTWnrgutejXmmJ7i4t17PLY9qx/Z8Il+HpRfsGGLxnF1D6ddvKRE6s2Vh7K0HOKYa4DK9vBkr6y9MSIuG7D8sslNdKkTiEqbn2soF3LIBE/s8neTs56iMei8ETVtpcTr6kk0GTQpF5pnPV2GAsQMii6Q6VEEkILmGcNBjvpKqJq5ysH/CiYnyq/le0Eya5fd2mpM0axHLbKbU6/kteIDrErGbbT1RmR4oZsK39z8oZFbTF7UkMZdVwsQNQMMqhVfHCRsz441WnG1XEfUGTwvGvqthzWUfB2EGQ/ijU9YBy4diTAlZPV69OZMzUxzZkQ2XxJkuaRbbCgEnrTa/+HMFA4EA/louG6XUNg81vgE7yeqJIoxvSbNQRVJjcZmGJJIa0jIYEt6thdgcJ2HJyFc7pFRTSvqAmGMCKbBiL6hDS7CyWPPte3Q2Jsrq5h4w+86xrah84B60a6w/IygrEdV+7hZdRBv4D9aZvHG9fLxL4+kBjSqTqG99lJwTsxBQsEQ04LeWGK55md2WVVTRKtdrQG/Cr61BHqpYy9nV+y/l/YDhbzoJ+f1nIYgVtJDSzn4ZzFwWupwLpRG+feFEBAIO/n2FPyGut1Di270JfTA+LaUx3hojCH/1abV1gMjaCRyemBJTBi0XmSZPTJgxdsfCOGH8AzBzbzj/J8ZDNWIc+Fu3xT/0INXkFabjJ55Xjh9cCLIw7O/bGOPM7+Son4EQvhLjJmsaatNQQGYuuXb+nhkcQiFko06qDr
- f/LIi5+8
- Aeh15o5iPIvLS8RhA1gZZ4fmNiit+ZVLawMfjuK7o9IhackSjcL/Q3TwPx2YvO5tQsUdAmv/ezKEZReptdRISurrnzZHfUptOAqCOjoW14IA/jgH2iZtYMzlou1jNpRJ5PTR0l1Ylh2EYgLNx0D4rYX9BobmzNuEMONjjqudG5zlfC5x48ttz7kn2USe7DX+tPyPMn2a7DVl24DAE8UHVaNAB5ALWiao4X3+9vfttVKi99DbF10p1GbXUxpRJGGe+dUt+jW2CjyHcIxhaQelOBygMhYPBf/keZ6gDF7lYop6qy5yVJp+sYAhOK2VbzT8U774zjj1SltBDMagY6HBJxjc5FuOfNvY1BSA8SIap4QdndmyLogFxDacx61pJD14jwyQCXh87hFYCuQgwWpbBS9oBd+kKkYeKSRM+hnR3wk3G6aQ=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 36F2A160005
+X-Stat-Signature: ihahrk7be61543buia1a5mzt8wz4q44a
+X-HE-Tag: 1783070464-519418
+X-HE-Meta: U2FsdGVkX1/ui06C4nnWcJxhAzU2/uGYL/EEj/dyLO3K9vWh1gST0+Bov9aiv+xEU4VebUF/5dmEsfuucaqrb3NVVPgQ+Qe3GLxT2fUeoW2W4tieJgE5mt4ojuYXDrHL5VItqKmO3OYGC5BLu9NVvrd6bT2KY3bawoFAdzart0oXn7yAEDdprJ/R7I3RKL1ASnqx8YG4KjpXAE5qdWbulhWRADLt7fCPq0klMjWpq0tStdp9/Q5A3UINwHt7No1iHANrFxSnFWVFLEXZsVTKEhQBFQZtCQZcrfwWT5l3YYeQuYuHPpvXOwBV2kWYVLE9nj7tjehFO0KLaZLcbju8Xqm6e+AWAyUpsQFoWDz8Y7kRbKReclKXCkMk/jfrL19KcQQI5Nyy/WVTssviGRZA0ERCMTgDNSKLGcgAfIMsL/AqOvfN9cdeOHMjL6D+gv0/dUhPyct45AFCsiyIvavkh6lat+Dgjw7WI/n8qWir52YGmy5Fx/bG9nb8JvL1lT6PpF/1zOcxP/vYtsylH5l8f3W6Ua/t1FABT5wi18Nh2t6mntHn4q4Ner8A4C1JhsEuawzgo/UaENv8HB5KhPdQpB4HE07loOr0dBXwhSx7IDRZ+pwR5DjwQuo63QDiNRvgJVf44UXxbXw+kch4iveLTPYsiyuhLxPgzyiO/ZYJA+WjzF9OsQEJMqt4NfDA0YuEy2dCxsspn0PycI6VDc3BBQkN61G1Jxyrjjc+F8bpd2y7nhb0ngSVJc7riNF+Xr5I7mpF15+CTMW8HQtt03rn3oukBJ/mkzlrFsapz6qhLuT5CjWGtcFMF3ijB+SZUNg9dj7/eOq6Lw4MVsAyfIItcxkmSkrZXLWn6mC+vBUxB/DOLrZJ/VwGRzXQsvKf4T6SVGx/+b40D9OsB1Gu7Q+D/x6DukysBRBFkLOQvHzXN1MjFL0U75DCZ8ncb8vPVyFa3vqEZOItcdg/vluveO3
+ LyfEGzQI
+ eYE9xYpbaU/gvYt15Ch0JlYzbWwlxZPw3LMkV/ddxs9n+tBh4zhrp42qRoC3y3lMm2cbBnP4XJU7sRwAOWuB5oQQa306/EouW4MuQXg8CKJdWaLzie1eUCEYPgdGjCPFbfShGlbNlEMvZm5IZG1toiyMVD6fQOYP7lNE2soF+en60ZQbE6yr6MyLpelCfokWn5asqFrkrmei8+aryKMEt1S+2BDtOG5TgGSANRkhVu9v80KVNHbwgQAvmYqgKdccaL1EY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,49 +145,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/2/26 11:49, Brendan Jackman wrote:
-> Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
-> main entry point function is significantly different from the normal
-> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
+On 7/3/26 11:02, Lance Yang wrote:
 > 
-> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
-> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
-> exposed to mm/) and then turn the nolock variant into a thin wrapper
-> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
-> how some of the wrappers in gfp.h do).
+> On Fri, Jul 03, 2026 at 10:55:42AM +0200, David Hildenbrand (Arm) wrote:
+>> On 7/2/26 18:54, Pedro Falcato wrote:
+>>> As-is, khugepaged and writable-file opening exclude each other. A file
+>>> cannot be open writeable and have THPs (because the filesystem is not aware
+>>> of them). khugepaged will never collapse file pages for files that are
+>>> opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
+>>> particular file is dropped. This is fine because nothing could've been
+>>> dirtied.
+>>>
+>>> However, there is an edge-case: collapse_file() might not be able to
+>>> coexist with concurrent writers, but it can coexist with dirty folios
+>>> (from previous writers). Therefore, the following can happen:
+>>>
+>>> open(file, O_RDWR)
+>>> write(file)
+>>> close(file)
+>>
+>> Okay, folios are dirty.
+>>
+>>> madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
+>>
+>> collapse_file() has
+>>
+>> 	if (!is_shmem && (folio_test_dirty(folio) ||
+>> 			  folio_test_writeback(folio))) {
+>> 		...
+>> 		result = SCAN_PAGE_DIRTY_OR_WRITEBACK;
+>> 		goto out_unlock;
+>> 	}
+>>
+>> Making us abort collapse.
+>>
+>> What am I missing?
 > 
-> For consistency, set ALLOC_WMARK_MIN explicitly in fastpath_alloc_flags
-> for the new ALLOC_NOLOCK path. This was already "done" silently in
-> __alloc_frozen_pages_nolock_noprof(): ALLOC_WMARK_MIN is 0.
+> Hmm ... dirty folios can be outside the range being collapsed ...
 > 
-> Rationale that this doesn't change anything:
+> For example:
 > 
-> 1. Simple bits: A bunch of the nolock-specific handling is just moved to
->    the new alloc_order_allowed(), alloc_nolock_allowed() and
->    gfp_nolock.
+>   write/dirty:      [6M, 8M)
+>   MADV_COLLAPSE:    [0M, 2M)
 > 
-> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
->    previously in the nolock variant:
-> 
->    a. Application of gfp_allowed_mask; this only affects early boot,
->       only flags that affect the slowpath get changed here, and the
->       nolock allocation path isn't allowed to the GFP_BOOT_MASK flags.
-> 
->    b. Application of current_gfp_context() - also only affects the
->       slowpath
-> 
-> 3. The slowpath itself: this is now just explicitly skipped under
->    !ALLOC_TRYLOCK.
-> 
-> Ulterior motive: adding an alloc_flags arg to the allocator's
-> mm-internal entrypoint can later be used to do more allocation
-> customisation without needing to create new GFP flags.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> collapse_file() only checks the folios in the collapse range, so the
+> dirty/writeback check passes for [0M, 2M). But after that, for the old
+> READ_ONLY_THP_FOR_FS case, nr_thps gets bumped for the mapping.
 
-LGTM
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+Ahh, so it's unrelated folios, thanks for clarifying that.
 
+("some non-dirty range" documents that)
+
+All makes sense to me, thanks!
+
+-- 
+Cheers,
+
+David
 
