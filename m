@@ -4,103 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC726C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 05:11:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C75C9C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 05:13:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42BBB6B00C1; Fri,  3 Jul 2026 01:11:52 -0400 (EDT)
+	id 716096B00C9; Fri,  3 Jul 2026 01:13:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DD176B00C2; Fri,  3 Jul 2026 01:11:52 -0400 (EDT)
+	id 69E186B00CB; Fri,  3 Jul 2026 01:13:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CB696B00C7; Fri,  3 Jul 2026 01:11:52 -0400 (EDT)
+	id 58CEE6B00CF; Fri,  3 Jul 2026 01:13:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 002706B00C1
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 01:11:51 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5C404168699
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:11:51 +0000 (UTC)
-X-FDA: 84946293222.12.E14CB74
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C62D5C0002
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:11:48 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mt3Z6RcJ;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 262EE6B00C9
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 01:13:08 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F6FFC1FFA
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:13:07 +0000 (UTC)
+X-FDA: 84946296414.17.978A446
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 095F94000C
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:13:05 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HqCnGi2z;
+	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783055509;
-	b=a+zwa9W7jHgBgRd1BkViopUhZb6BiEddLmnf13t0IoKWuXTdyfkXgkJVib2t0Glk2/Aw6N
-	WXnVFpqDJ9YERDnQ6OULmnXWPoRrCv5c7d3SzeLccUmpK+Y381e2YmMG/8sbN/z/aZNRWR
-	wicKFVkmszOxRdcRNba2N2PcrhUPqzE=
+	t=1783055586;
+	b=I6hjM7fGZipDf47m4dNARxjN2r7215dpQ4kk5jHOV8BspmmPkgxyEhASlU5p48yybK9dqA
+	+K6MH/mf5zkONwrFRxlLHA9UegRcYhIrmLpxD3g6TQ6ewk9ww1wFjAPFyisnyO4UbSfP5b
+	u48altKaXHgWl1oG3rxnouenAdVL0HA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783055509;
+	s=arc-20220608; t=1783055586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TclDFaPZdaXfZinZztmQXDY2osmC9ohL82aKjMqnljA=;
-	b=tf3OvgQDQazfLW1uvnlWF3iaJ5mG/8f5OedpK8zpmfp0xtuyhqA4nD5K+EAZ46pd1MaGok
-	DZ+3V8F1Jyfu0/J3oN6Y6Qmce3gZuXSCwZO2rWFUDdiT6yjQbqGV8ROImGXx55TOM9jC7W
-	ylyLno+PBkiFjND1hLwzUOSuhpWYSBc=
+	bh=d2jmDN8EDDEi8qou1T3zevjnsQGMZ5IhSTwrPgKzFh4=;
+	b=y2RgwjRbbZec5m69KIGFqnYLcOo6WCH+OhiHyL9RTAdpr8FGk0iBZrkjrXGqed5SQPXG9N
+	oJlLMkHwyTA4mynBI5wCDOcM8fYVZo/HCf61xDuU7ChCFZ3Y9ad6VF6pjDz5sYFEFmFtJG
+	MJe/gLBkW4ZM1tFpXk8fR9Zy85RVvZI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mt3Z6RcJ;
-	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783055506;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TclDFaPZdaXfZinZztmQXDY2osmC9ohL82aKjMqnljA=;
-	b=mt3Z6RcJAbFH5qjmNSVJr9og3cANnog5yCm8KOSikIlNWnWUdlzBYYJRAxJJYQPrB9K2v2
-	t/yidQofXCp8zmiyWOyphesT3hGz9lnz5aI/EeO8GKygjhDt0FxJZTf68vKAwDGvFvHdqj
-	xkCSEJlXdSaVC7mi91P395B1Vyr2Als=
-From: Lance Yang <lance.yang@linux.dev>
-To: pfalcato@suse.de
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	willy@infradead.org,
-	song@kernel.org,
-	ehagberg@janestreet.com,
-	ziy@nvidia.com,
-	gleventhal@janestreet.com
-Subject: Re: [PATCH stable] mm/khugepaged: write all dirty file folios when collapsing
-Date: Fri,  3 Jul 2026 13:11:29 +0800
-Message-Id: <20260703051129.88453-1-lance.yang@linux.dev>
-In-Reply-To: <20260702165409.164568-1-pfalcato@suse.de>
-References: <20260702165409.164568-1-pfalcato@suse.de>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HqCnGi2z;
+	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5AA3F600B0;
+	Fri,  3 Jul 2026 05:13:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30D91F000E9;
+	Fri,  3 Jul 2026 05:13:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783055585;
+	bh=d2jmDN8EDDEi8qou1T3zevjnsQGMZ5IhSTwrPgKzFh4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HqCnGi2zDjWTXnC3MspWlCf9hO0/ZN6ukeuSVhsLMfxoXT1NAObsxCFxHqAbwxAhq
+	 GkXe2fpz7+2ch+jjP9jzz/+n1jNKaYIpPTm6uMzqZjLl4XTTcLbA88btfrcAGC64Xk
+	 dgjq4bw8U/PPZV/f4PobkEObr81d8waV6vVQOo+o1Odp1XPKZWyM8XDEjD3TN5B5w0
+	 hdEFS2+ICzF2WtkZHqm0ISVHal0f+AJpG/kf8goAtMPdHBmG03KOsdT5bzD1s/nd8u
+	 MD6x+Z5V57PalXJOwjjAoXjdscFDQ625LKHgM2NrKMYqQDzdZ0pYKtHjY6nJ1g8fzz
+	 4/VMxpFvVFrdw==
+Message-ID: <77a03a9a-8461-40c3-a383-d9dc62efb801@kernel.org>
+Date: Fri, 3 Jul 2026 14:12:59 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C62D5C0002
-X-Stat-Signature: doie9oh1jc35764hcdzy6wdfto6tzx9s
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: ABI: sysfs-kernel-slab: mark cpu_partial attributes
+ deprecated
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Seongjun Hong <hsj0512@snu.ac.kr>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>
+References: <20260701141755.85119-1-hsj0512@snu.ac.kr>
+ <54e75619-3dbc-448c-81fa-122edcdad1f0@kernel.org>
+ <f047ceae-4836-40c9-bb7c-a6074bbf1a1f@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <f047ceae-4836-40c9-bb7c-a6074bbf1a1f@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------NOh23wvTE30Hws23l0EoVgJZ"
+X-Stat-Signature: uwboyo3tqx7h3dzs3ntwdrapa3186s74
 X-Rspam-User: 
-X-HE-Tag: 1783055508-401633
-X-HE-Meta: U2FsdGVkX18ee6yhp+YMejLTDraFK8or19t0ccgFpiW3ahPBCbuAz2LZ014NdBVPz5Tkx11QpN7iAYWhMlrNf4yQYuRjyhIxRGcD2i+CGB8yxLTjqxJz+/ksSUC31s7GTwlbWX6HHd8rW/GNXK6oduTdRmXcB9COimsNcw1eLaP98qHV2rmQk/Ub7e0wsUwBPtiiGUGaxhHW39VJjk8dwDONvIIgzEt2LOPnnDRQ2CzlneY3EdEA1IOgN4AdV5+OpgH1qrrWJ27qUT6C8hE2BYAqePPmSa7lmlGrcZBw6vhyC7i2az6UG2WfxoVzsf4NuK9xPcrOZ6QOqQyd8M7tj0kflySvNTukYNwCuHzMtl1wgaVwUq4zjYYPAGMrtwWvlKt12kOmbfLJuZBfkuQOx6Z7CkcJc37ZLK29T5/EaaA+TC4UeZn7uqTATPSRj+1fDYEAaMhKPjVq5PbuW/8dLGWqw4annTCRFskoA99WR2j9ShN0eHXgm4V8x5DKEexpqHOma/Sjy9rMSeLrAr8PrcmG2RGN34KFxbBujm3RRkvaxDV0hA9gHCh6ToWHfdo3Pv59c5RqaW0ncEdYs8vmgkaD8XV40TMHDo0f/1RbzCnG5uJKx4RlNct/fLoY857f959LwZr34AvMTaWPwnmpUJ3wR5/HZaLMBQHtCz+ezxkaEZfCr5YidUz2/vMaF+azg3LOn8aTAnevJfAcFC/M9z7EzIzQOJreQD8yXG24xrOU29LwzKKFLYL6Anq9VWyOdQ7yyi226tWnPS0eHTB8+k2rDkZGWI63ErlZYaUNHLPuB3FOckuKDTl21S9FfNkTr+M5RVNLf+HK6lbVcu/PY4pAUsg2i6lE3+Wv27UfTrGjP3zhDHu5PU8JvSVo7LNNa5FjqD0NEhwicdsC/a3ZLLSUVVitrg9plFwThcZ+6ZllDFF8L6ohqKFR96cFW43hhGUn3tKAkDhGXoThlPu
- dxx1AnsG
- GULXefNxlWTlQi110eai4BJf0pDW00xLz3QSe3Z4Xpf4QJeteQajRyMaU7XN1blL1TsxD6hEA8WwWw5iLeiloOQqeRR9SUjiXbiAEmJFK2lNUmaKESoXMDdFSOxgTJ2LFJ5Erq0zxxsprKHQOu4tIWsPLi5saoqWsxjtxuQQ/4lwy05NSM0nSBFPLgw2yPQKEaUlINUyXGG6dPjlSDbSeXJl8sVcOUo4mSV30TMqB/NJxXYPllicAD15C8CA1XwXvPLl6v7mIVd/5+Y+7gYaIrrvOPegBkJ+4wgfwiSJ490JV4SX82KmSoSH1WvfaxL7AKkIH834AxbC3PClDxT4YCq1g7rfzt/synHZHfWu8zfVJIJXtgt25myaYpGIQBYZW9cERXm7NToqWDvxVC65EJWCv0lqzCyFzwVBcZ0g+gFpbUPsLMBfJY2v84R6Os2vV54j1lvWMLXq8Kcs=
+X-Rspamd-Queue-Id: 095F94000C
+X-Rspamd-Server: rspam05
+X-HE-Tag: 1783055585-499661
+X-HE-Meta: U2FsdGVkX1+Zv67wY1F7Dgti2S4Xyi0iPbvHt51ioLfDeAGlUCmA/+D4cW8w/RC/HX8FyVOj9w7dtTuPiUv8ksV2bmI9QC23/hXoap8mXBrWBds+5SAXMCU4wAWTKCYx0qAPX2dYEmaDhtwEAn4zA6+2lQqe8odztt1pxnOU4S5AhDGZLewD73EqbpakbBnTzU35/SwwcWyMfI62e+zbGLFamVwLEfd7Rqrvkck/3iPw1gHHSjKK22Cf4NYF9YRCTGmOB557GbshpPLFSwHvJIKW7oxEhvP4/FKtH7t5Fh4CXDiHHXrhy5gdZ4WAQ/NHzimnbgFJylujVGryqlw3k5YmjuZ7S22QNly9N8GMnwteeip4H2wiy+9s8g4gUIPJP+A6lOY7zPhvPSrOZowznhQkG6k47Y7m8iGs/w2lSeoXYUFThDo2sfwXR56golqeeGlg6JrgUYfI/X5c3RlnHfnYJjf3ugI6EppMje/rYV9P9ctjL33qiEFfjsTdhnSAwQPdBsco7RFNEsg+OKubCfDIFs1iIbzHtNHTWCtfo8E6mZhBG6BvwaIUSDmFltp+lKmqqb3ZOJa9qeTstiUssmm+XV1KtzU6o9iyIQytifmRI5wmXmUmPexU4piJsKdM2Va464ArqhDfAJxXdSfMbe5WBaOydZ+hP275Os+EoQxzz7selLhhgycv9wGCLd5ceTwfrLhcd5ParDUc4ZUCzvDSHgq/rcCXaMuPvaFfo6ecI+E9MW+U2gY5dQDabNNCfBwMiHbrz1Tfh6Fz7P+KtPATJIgVDCvcW8Al8lerRWVZKAmeomlFGvXODAeFZeOgsDViuLYIbvbf+/Gun6cBzO9Ko0YNuwIL/uLbMYx5Cdp/xP25M58TGAnDaX29yOTXL4f5ZgWfGWUAvlFJFFIgdKEzrbkcg/JjSSDzBo3qHPY1esbbrJDW+bBGUF+bF8uMyE3h0RpthSnF65UjjR+
+ iNuAfVWh
+ LIJVAH+vhivRmIVp78fiLOSlx2q6dTnf95itxM8r4FOfcmMOsbcybc0lls1SkRG+182W4PkEHQPnSUcM60nhaIqZxKDxEBXSjn1f5JZtm7IYBXHhqypCDDaLxLEJ6W121BtvbiekD/HF3znjQxEIYcd7FYx72WLtJCQox0qDNs/78O/7sLAVHSeTddjNvDyBbhlnVYytWDcA1xaoOe+GZ8+NfoGK05iEAT85sE5mx7hxLVacDal0DArUJrJviGKjqvnA8vCi/gE+VVkE+IIP2bihRFN8XBQhgtoEVJ6EwnlUhgn43KCGnTowpq0zitd5QPjn9tNC2qaH/TjDKZWxovcz0tpR+jmO7prddhuv6/XyR7ALZnPY2T8XJVF8N6annTeWFZHdhav9+2jHtkb6CCCx7/MA33yqdHSf6WTiUByHB6eCif6i8c483CzqlClSShA/7mVoIhvLBluPHV/2CxtdoW1CKi14r+WogbWfReZ2mrs+U8QnJ+xaGlGLg5m6I3RZuNggHzCtvvRNgTwr/bMC0Y8TFD7cawHJdnLSWoonGuSBwjkaiWXeSSH1A3FiQr5X3ktCzPNv6WKs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,56 +97,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------NOh23wvTE30Hws23l0EoVgJZ
+Content-Type: multipart/mixed; boundary="------------YgT6oA9Qcxr9YGnpqYJ0rzq5";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Seongjun Hong <hsj0512@snu.ac.kr>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>
+Message-ID: <77a03a9a-8461-40c3-a383-d9dc62efb801@kernel.org>
+Subject: Re: [PATCH] docs: ABI: sysfs-kernel-slab: mark cpu_partial attributes
+ deprecated
+References: <20260701141755.85119-1-hsj0512@snu.ac.kr>
+ <54e75619-3dbc-448c-81fa-122edcdad1f0@kernel.org>
+ <f047ceae-4836-40c9-bb7c-a6074bbf1a1f@kernel.org>
+In-Reply-To: <f047ceae-4836-40c9-bb7c-a6074bbf1a1f@kernel.org>
 
-On Thu, Jul 02, 2026 at 05:54:09PM +0100, Pedro Falcato wrote:
->As-is, khugepaged and writable-file opening exclude each other. A file
->cannot be open writeable and have THPs (because the filesystem is not aware
->of them). khugepaged will never collapse file pages for files that are
->opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
->particular file is dropped. This is fine because nothing could've been
->dirtied.
->
->However, there is an edge-case: collapse_file() might not be able to
->coexist with concurrent writers, but it can coexist with dirty folios
->(from previous writers). Therefore, the following can happen:
->
->open(file, O_RDWR)
->write(file)
->close(file)
->madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
->open(file, O_RDWR)
-> nr_thps > 0
->  truncate_inode_pages()
->    /* THPs are cleared out, but so are the dirty folios */
->
->When this edge-case happens, there is data loss, as the dirty folios are
->fully discarded.
+--------------YgT6oA9Qcxr9YGnpqYJ0rzq5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Well spotted, thanks!
 
->
->Fix it by fully writing back the page cache (and waiting) when collapsing
->file THPs. Doing so provides the guarantee that no dirty folio will be
->observed while there are active THPs. To fully ensure this is safe, the
->invalidate_lock needs to be held while doing the writeout, so that
->do_dentry_open()'s page cache truncation excludes this write-and-wait.
->
->Cc: stable@vger.kernel.org
->Cc: Alexander Viro <viro@zeniv.linux.org.uk>
->Cc: Christian Brauner <brauner@kernel.org>
->Cc: Jan Kara <jack@suse.cz>
->Cc: Matthew Wilcox <willy@infradead.org>
->Cc: Song Liu <song@kernel.org>
->Cc: Eric Hagberg <ehagberg@janestreet.com>
->Cc: Zi Yan <ziy@nvidia.com>
->Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
->Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
->Closes: https://lore.kernel.org/linux-mm/CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
->Tested-by: Zi Yan <ziy@nvidia.com>
->Signed-off-by: Pedro Falcato <pfalcato@suse.de>
->---
 
-Tested on v7.1.2. I no longer see the data loss with this patch applied.
+On 7/2/26 5:28 PM, Vlastimil Babka (SUSE) wrote:
+> On 7/2/26 07:18, Harry Yoo wrote:
+>>
+>>
+>> On 7/1/26 11:17 PM, Seongjun Hong wrote:
+>>> The per-cpu slab and per-cpu partial slab mechanisms were removed whe=
+n
+>>> SLUB was converted to per-cpu sheaves in Linux 7.0. The cpu_slabs,
+>>
+>> small nit: sheaves were introduced in v6.18,
+>> but the cpu (partial) slabs layer were removed later in v7.0.
+>=20
+> Fixed up when applying by saying "fully converted" :)
 
-Tested-by: Lance Yang <lance.yang@linux.dev>
+Looks good, thanks!
+
+>>> slabs_cpu_partial and cpu_partial sysfs attributes were kept as stubs=
+
+>>> that always return 0 for backwards compatibility, but their
+>>> documentation still described them as if they were functional.
+>>
+>> Right, for backward compatibility, because, unlike files that
+>> might not exist w/o SLUB_STATS, userspace tools might assume that
+>> they always exist.
+>>
+>>> Update the three descriptions to state that the attributes are
+>>> deprecated and always read 0, and note that they are retained only fo=
+r
+>>> compatibility. While here, fix a "partialli" typo in the
+>>> slabs_cpu_partial description.
+>>>
+>>> Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
+>>> ---
+>>
+>> Overall looks good to me, so:
+>> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+>=20
+> Added to slab/for-next, thanks!
+
+Thanks!
+
+>> By the way.
+>>
+>> There's still some gap between the documentation
+>> and the implementation :)
+>>
+>> We've dropped a bunch of files that exist only on
+>> SLUB_STATS and new files introduced with by
+>> sheaves were not documented.
+>=20
+> While we are touching these files, the question is what contact to use
+> there. Some have Christoph, some Pekka, some both.
+> Seems inflexible to me and should ideally point to the slab MAINTAINERS=
+
+> entry.
+
+Agreed.
+
+> But not sure if it's possible. Documentation/ABI/README says:
+>=20
+> Contact:        Primary contact for this interface (may be a mailing li=
+st)
+
+Looking at other mm-related sysfs files:
+
+Contact:	Linux memory management mailing list <linux-mm@kvack.org>
+
+> Maybe we can propose that it can also say
+>=20
+> See the SLAB ALLOCATOR subsystem in MAINTAINERS.
+
+Replacing the contact with linux-mm mailing list and mentioning
+SLAB ALLOCATOR subsystem in MAINTAINERS sounds good to me.
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------YgT6oA9Qcxr9YGnpqYJ0rzq5--
+
+--------------NOh23wvTE30Hws23l0EoVgJZ
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCakdE2wAKCRCGXBN6rc5S
+1vfxAP9SCpQIkFDU/oly+VDOPNVw6h+A8ebDHoXAfgGj8xhZlAD/Y8bvDkASXQW4
+1jTb04fo5dlGTxe9a/HeHtm79YGbKgU=
+=pxDA
+-----END PGP SIGNATURE-----
+
+--------------NOh23wvTE30Hws23l0EoVgJZ--
 
