@@ -4,89 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 612E1C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 15:24:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1818C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 15:43:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 338F06B00D0; Fri,  3 Jul 2026 11:24:20 -0400 (EDT)
+	id 3649F6B00C2; Fri,  3 Jul 2026 11:43:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C65C6B00D6; Fri,  3 Jul 2026 11:24:20 -0400 (EDT)
+	id 315506B00C5; Fri,  3 Jul 2026 11:43:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B1DB6B00D7; Fri,  3 Jul 2026 11:24:20 -0400 (EDT)
+	id 1B8836B00C7; Fri,  3 Jul 2026 11:43:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E3DA26B00D0
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:24:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6A81A4017D
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 15:24:19 +0000 (UTC)
-X-FDA: 84947836638.17.34CC527
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DB99E6B00C2
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 11:43:48 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 52E271C6EE2
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 15:43:48 +0000 (UTC)
+X-FDA: 84947885736.10.872395B
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C0FCE40002
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 15:24:17 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Q8Aih6AY;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id A622D1C000D
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 15:43:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=uX3WhUE3;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783092257;
-	b=2qRRqP+AX22in2QiUYbffKdIg1KmW25QWqcfX5k27KVGo6hmrbSvOHRb9RIlOjk4gcwEHk
-	zsHG2EcnDIvyKsW12z0q98FxLhtHNS3Ff9DGvgS7sD9JILxGI00AvIVg0H5nZmHC8qsHvT
-	7QFSEX9DjTplnL0AZBuoOdSh8gD1VmQ=
+	t=1783093426;
+	b=IdR7K1jtoZLya++frqq4dTeUBnPahyBYVXXncXExraQaK3c6QuY2MkoTfNkSozjIIGW77s
+	ftiult0/KmeyxYFEtgZbwfBfg+Gb7h3eY/L0xm1vuA4HsSUrUaUR818bHGg3lHfDkV4+tI
+	MIiUouqcOSRLxNVfSql8YE9ZmbcucgY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783092257;
+	s=arc-20220608; t=1783093426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2osf34xTIrbXNjSX6meB3wb3DJ/HNiHPpxtcmn5q1zA=;
-	b=pYikl3lq1DkTU8hi5NlZC46bW53lGLCJLaXIal9+v2mHLXEX8n8w1x6rPmpb5M62OZxc9w
-	EAQ+YEpe/rxmLa48NeRA2hy8nD8CU1tQxIhSUOCilEp8qxO2PpZhQ/X/sVDamv9O5XNbrc
-	sSETZ1BHKWS1Lik1memYRWzUEAd/2wU=
+	bh=HFC1s3Y4qDS3AnYkAd3JDVm/WCjlowQM1/RdwiUDxyc=;
+	b=fTiSG9QggllWgpArZSMo+ME3YKwNkMQppFUPUcSnocI0jZYIXC4GE7iYOyDRy89Z+KSwVA
+	xlik5X8PS9bh7QM26DKDqAjsOfemrMFPt/hRn9iMcr3yg06U8zje1aDWrDPaqNtJ2ip/H2
+	YgS3bmNnpq7D86KM/NElhCVrIsI0Dpo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Q8Aih6AY;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=uX3WhUE3;
+	spf=pass (imf18.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=2osf34xTIrbXNjSX6meB3wb3DJ/HNiHPpxtcmn5q1zA=; b=Q8Aih6AY6Sz7z7RVwjGmox87mH
-	Ng2rRHQG/prv6AL4r1pPZRXJ+psCD8/2zyIbZfZOWLGJCvJAKrfc9PsKMyMDlQz41IBeYlxAR2ML8
-	2P9XOssci1hpi3HIyQAGf6J/heJOrBLK1ZUwVVkd4Jpibt/b9oPffpgpKkIwsuqIhJ0OmDj/DgWe5
-	h2VsnJBHk6SVjKc1KB98wc/nMu0r/SqgiNyzNf62+Y3S3RhgRBDAdyftwHwD6wafSIpy6VCOAzUwx
-	yWmQjpLS65yEVv8yTPdqwbs9tivltqsttkzdHoNhtMuPUQTjEP/QQoJOJQ2ACKZxnLdE8awc98oAg
-	2a+yQoyg==;
+	bh=HFC1s3Y4qDS3AnYkAd3JDVm/WCjlowQM1/RdwiUDxyc=; b=uX3WhUE3Ow3FP9kFIOR87QiQff
+	NgSGTJGyKb6WcuGZdLvTztT1+H1PsH/lJPYlBJ5yslnw55mk7gxdszLOJzj/oSEUssjrDDnl0TMYF
+	l0QQqLbH+dNq2ZDZ1UElkTx1NHEOwUY7uH8Olx5fi7li90Ai2dtJnHllS/Kq9G+rbyeblQMnYTygu
+	hj9a2JzEGWRlbV5cqv5XrLTrmKaL1AzSxyA3n5lOO4Dw1LSGUaqzksXc+X15d8I5KofsYj9NBqpyC
+	6I/X8yhw50sIyX+zshY5mtluaaEytht6GhdkueAJk6sqFRc7C16rpEaMZENnEJvd1ILMIfokt3v2d
+	dsVNAv6w==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1wffkH-009Ue3-1p;
-	Fri, 03 Jul 2026 15:24:02 +0000
-Date: Fri, 3 Jul 2026 08:23:57 -0700
+	id 1wfg3A-009VB6-1X;
+	Fri, 03 Jul 2026 15:43:32 +0000
+Date: Fri, 3 Jul 2026 08:43:27 -0700
 From: Breno Leitao <leitao@debian.org>
-To: kernel test robot <lkp@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Linux Memory Management List <linux-mm@kvack.org>, 
-	mm-commits@vger.kernel.org
-Subject: Re: [akpm-mm:mm-new 242/252] radix-tree.c:459:17: error: implicit
- declaration of function 'kmemleak_transient_leak'
-Message-ID: <akfT1s9f-3HgxGlD@gmail.com>
-References: <202607031019.AffpLUyg-lkp@intel.com>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, workflows@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 2/2] selftests/mm: test kmemleak's N-consecutive-scan
+ leak confirmation
+Message-ID: <akfYImSNDh3OjIfR@gmail.com>
+References: <20260626-kmemleak_twice-v1-0-ab28f7cc0971@debian.org>
+ <20260626-kmemleak_twice-v1-2-ab28f7cc0971@debian.org>
+ <akYkKgWOsYnw6ETE@arm.com>
+ <akZ4tzQw70x3RR2D@gmail.com>
+ <akeX8mFiizd65pDw@gmail.com>
+ <akfNeK7OOpvoZE9z@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202607031019.AffpLUyg-lkp@intel.com>
+In-Reply-To: <akfNeK7OOpvoZE9z@arm.com>
 X-Debian-User: leitao
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C0FCE40002
-X-Stat-Signature: gy5azshttifsuhn153grgyd961ojk5ya
+X-Rspamd-Queue-Id: A622D1C000D
 X-Rspam-User: 
-X-HE-Tag: 1783092257-236235
-X-HE-Meta: U2FsdGVkX1/shxmLpTSUlkaPh3NeC12fUZ1KedGH7R45RyLVd9+k4n3fgp9iUDISr28s/HLKp9puPTLqOTaIfA9KU0opDx/6/XXt+9967gnhgB+AUw7OdvjO3POQ2O1znkm2jySqwv4teO0MyOUyOw1+4dSZVgNcLhsmclpiRiqz9BR5QHDW08CiTibE9wB/cpiO+mltGhpdUHsrAfLINHGXdg7pARpUYpf+JH70amquLvzvpJ+4mfTedg9GoYKefaK5D7YGMKc/jkaKTzkaJBJTgrWr0D3keMAhxn54sQMhXPcUko/HDihdjkL7Y6M41zZkL99NnVBDwIfel8YRz/QasxyHr6D/Ss1WDjo712T0Q0/qrwzyM8BffgAD8fpb05dz3K8Wb8Vz3yFBLITqCL7y3LqYesL9QUyjtMEsoyJtpDb4RuW/OEH/VNGenpFkoCaCNA1nZ762sdAzoRact9vKTQ1TDRsCGj91qYlZwd7VQKEKLi3tzxaYNzSMu9sYhm0DItVJc9cMHOmBLxhs7I46fEDor6vDgqxc0MHU4GQ5kgRCj67w0lgcyTX9LoFW9zAWS/i662rOL5+tPojrLbrzkEyU6dvbrjWLfxQKl+2ybB+kEwAHDzPihYQy5VO5YLwTSY6OirRM+tjTPS094BIUqz1YWFms4BNgn2g3jNp9jIcnhmUh2MLNFlVGlLwkArDP/NdoejPvSmm5I7U9+luLTjrXCAixAKEptS5Pr3BOwgRqmxBYDAGtTANaZM04PSZ/j9CJI2y4ThM8vCZiqKFJzaHk0Kl06RSwkV2iugAVzQKO1DgqiTlPpr1vjKP/p+DrZBoJayH6tUnp/8sP77BDrkr/VX1B1TD+bZZ/G/Rrm7lZ68L/mGMRRDL9/Fuai+GjRITvPZWK15Gr1Ker9BiTz8Rd5TGArfX+EW+Rp7wi88+AISKU2E0CaZGhsQ5G8Wm9IlemsQ7YVFfrnmA
- HCE66h3d
- L3EaEkLrQjSLzaXD5Eh9P1Ew9FOcvMpV2zX0K0jOmPYmwHXiPEQlZJzazFiGx3zY8gPs5mjw7uVodWb//0hxYo/+/ifLoA8H85SbJ7ItgdIk0hIoS7DMeP3SUOO+oC7JOhQY8GD1m9UFW3JhHXVC0GgHuTclwaixY+qOSv4sjv+MWgXHy9gL5Tyu5srvFA7vbKSWAlyEOfl3d8+D4KiGHwMgu6IydXwdshNlyNhxGlKFCNZ+g1CWhwlGimWTYewBoE92IMo+xJqV8NFGSuvgr9vLtnNNdM+BQr67G+jNcL5K6AWJiC54jLh7lAV/io1QAOrC7VB8U+D5tzPewi/m3dkHJ3RLz6eF51Uai+sBa5vM058eETROM8ZcI/Z/M83EfN2pkuJWCCdUQiJie8LD8qqVAHCUjKVZL/06nmAHDleqPbKs=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: qyntjshau9ykfm9ej8xpbxhnqcr1qrzk
+X-HE-Tag: 1783093426-909135
+X-HE-Meta: U2FsdGVkX18HcddhSNEQWyV6Voy/jkT7pYv/ZlOoiPk6f8PRfuzgbLURPgcJgtyiqQBP05ul/HyC2RYx0XJHTjQcIqEOYlay8RT4LEu1G5oa8x4YZaanC8qhMd+i+Fe9yEwh2TcaGhVpyfU9z1Ipc06+BiMzMUuRSwJHYnmMEbHticlkCHFi/m5Qwu4+znsKX5eUk4+h4Z5ezreg2UrEsy6i/ew933LpVw2ti40Kj6kzbNFBU2EHgjeitDHrgjzQD6zK9mkbeGWUptPS6VIvSsY6VRmOZ4ak44+iYA6zLvZq2S1OuXXIyRZ1gk0DpPNgghnmw0mdvGIcKv+cNMTdFcIWh3D+jg+9vg3DZ344c3rl2k/JwZcQXinWCS6/Xk2u4U+rGi6vy5Jel3dh/Tp4fuiOG/aORfAwqAAZCyFkMzq13ZX3tvSVe56/F7WB4aCS2OynJt9NEujcaNLNsJgzXpw0SAvZlAkXcakYyK+IUzOZi8RwjIot7H/ytpbhWweMbS9yPw6gidU8wW8LfMfw7IHt7sbj2aeDnEdthrx7EbfvqwwfQ243Iu20XYx3jGGPgpD2A3MS5ZGE/VvN3az7X2kBhdRl2bPq3ATmt38ga4BDulaIx7Gf9OWYFJwk3X0OS7MikVKujMlGbKenpEo1ICJbTdtvGfxxtpXO4JsPfdo90kt6AfZkNSJx109N5hxf1JTTj1DSpAc3Q/tx2cGwA/oJZqeTmSGxnfC6hd9hCZgu9NiAKgnd6b1hAc7EA5z9GdmNp4X+mDwevbd7vBUBay8ApUwC7eEmqyWSBEOeajJG34GS8iUJIeuVnJw1HPWITQmB52jiMeH4u4+f6HGNGIPMI9Mpqxxan5LLTIhUplzzT7FXxfTyCgl7Gcr+JJeKQxNM6/reOZKV2kv8i8ZZoOTqhUDwJSI51WrlIS9OZZZLLCJnaYi0yrC8E32yzk+79ldStWi7GgGRmVCTwwX
+ CEZ1j65d
+ 2iuPSgJae5EuD6KNJP82WQnqEXbx9n2ivLdwXs+TF3py7PqLvuhFyrHsccBvlJt9yL7z8jC4WsXeaSm4b5MxAPkvyt8kiWxPc96SQPDuAICB/rpuZS3RndiET1vozwQ+Rcd5If+itftfkneYY1xXDdreRoh+vfCjpARzn+BjcfLpOQgTwbVfvZXeUYhQvmWlH1OGZQJSe0Unn1/vaBZzKE8/XVv4cUD3kpRbA/5v0fPlv+OvLZD86Bmd9zlQl7gsX0ZP6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,30 +104,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 03, 2026 at 10:30:59AM +0200, kernel test robot wrote:
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   e031e55776cf9193b4720a253e92539ca536d224
-> commit: 58b5601b28c144be1905eef7964bfa8457f58292 [242/252] radix-tree: fix kmemleak false positives on tree head reassignment
-> config: powerpc64-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260703/202607031019.AffpLUyg-lkp@intel.com/config)
-> compiler: powerpc64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260703/202607031019.AffpLUyg-lkp@intel.com/reproduce)
+On Fri, Jul 03, 2026 at 03:55:52PM +0100, Catalin Marinas wrote:
+> > I understand we want to detect any change in any of these per cpu field and
+> > catch it independent of the CPU. I am inclined toward that.
+> > 
+> > 	--- a/mm/kmemleak.c
+> > 	+++ b/mm/kmemleak.c
+> > 	@@ -1409,8 +1409,9 @@ static bool update_checksum(struct kmemleak_object *object)
+> > 			object->checksum = 0;
+> > 			for_each_possible_cpu(cpu) {
+> > 				void *ptr = per_cpu_ptr((void __percpu *)object->pointer, cpu);
+> > 	+                       u32 seed = object->checksum + cpu;
+> > 
+> > 	-                       object->checksum ^= crc32(0, kasan_reset_tag((void *)ptr), object->size);
+> > 	+                       object->checksum ^= crc32(seed, kasan_reset_tag((void *)ptr), object->size);
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202607031019.AffpLUyg-lkp@intel.com/
+> Yeah, the xor wasn't a great idea. What about initialising the checksum
+> value on object allocation to ~0 (for the two-scans idea) and for
+> per-cpu, just build the crc on top of the previous crc, something like:
 > 
-> All errors (new ones prefixed by >>):
-> 
->    radix-tree.c: In function 'radix_tree_extend':
-> >> radix-tree.c:459:17: error: implicit declaration of function 'kmemleak_transient_leak' [-Wimplicit-function-declaration]
->      459 |                 kmemleak_transient_leak(node);
->          |                 ^~~~~~~~~~~~~~~~~~~~~~~
+> diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+> index 7c7ba17ce7af..e196f53f9b46 100644
+> --- a/mm/kmemleak.c
+> +++ b/mm/kmemleak.c
+> @@ -687,7 +687,7 @@ static struct kmemleak_object *__alloc_object(gfp_t gfp)
+>  	atomic_set(&object->use_count, 1);
+>  	object->excess_ref = 0;
+>  	object->count = 0;			/* white color initially */
+> -	object->checksum = 0;
+> +	object->checksum = ~0;
+>  	object->del_state = 0;
+>  
+>  	/* task information */
+> @@ -981,7 +981,7 @@ static void reset_checksum(unsigned long ptr)
+>  	}
+>  
+>  	raw_spin_lock_irqsave(&object->lock, flags);
+> -	object->checksum = 0;
+> +	object->checksum = ~0;
+>  	raw_spin_unlock_irqrestore(&object->lock, flags);
+>  	put_object(object);
+>  }
+> @@ -1410,7 +1410,8 @@ static bool update_checksum(struct kmemleak_object *object)
+>  		for_each_possible_cpu(cpu) {
+>  			void *ptr = per_cpu_ptr((void __percpu *)object->pointer, cpu);
+>  
+> -			object->checksum ^= crc32(0, kasan_reset_tag((void *)ptr), object->size);
+> +			object->checksum = crc32(object->checksum,
+> +						 kasan_reset_tag((void *)ptr), object->size);
+>  		}
+>  	} else {
+>  		object->checksum = crc32(0, kasan_reset_tag((void *)object->pointer), object->size);
 
-Ack. This seems to be used by userspace tool that compile radix-tree in 
-userspace, and it doesn't understand kmemleak_transient_leak().
+Ack, this seems more robust and easier to follow than my approach,
+thanks for your insight here.
 
-V2 should have a fix for this:
+I will spin this "fix" separated (CCing stable), and send a v2 for this
+selftest with priming enabled.
 
-https://lore.kernel.org/all/20260703-radix-tree-v2-1-38bb6efb5f6e@debian.org/
+Thanks for your suggestion,
+--breno
 
