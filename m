@@ -4,163 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BAA5C43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:47:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEECAC43602
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 12:53:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 433DD6B00D8; Fri,  3 Jul 2026 08:47:52 -0400 (EDT)
+	id B1D2F6B00B6; Fri,  3 Jul 2026 08:53:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40B686B00DA; Fri,  3 Jul 2026 08:47:52 -0400 (EDT)
+	id ACD006B00B7; Fri,  3 Jul 2026 08:53:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 321486B00DB; Fri,  3 Jul 2026 08:47:52 -0400 (EDT)
+	id 9E2DC6B00B8; Fri,  3 Jul 2026 08:53:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EB5DD6B00D8
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:47:51 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6424AC0110
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:47:51 +0000 (UTC)
-X-FDA: 84947442342.13.8CBB288
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 782A220007
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:47:49 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=apno0fpW;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 670CC6B00B6
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:53:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CEA85140114
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:53:35 +0000 (UTC)
+X-FDA: 84947456790.19.4272893
+Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7421116000B
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 12:53:32 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=oU8xIwJb;
+	spf=pass (imf08.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783082869;
-	b=tGDN6j4H4BXmuRbfTxDcRjrVwt1lofQvFgXWP4N6PE41OdmOuBJkt0UV9XFw2nHv4EzqoH
-	4bM2C8Akad2uskX+jvVk1B8xKs/aKl/DP6OB9TmIu6Srk4kXFCrXG06Rthxr8znaTpOTbl
-	jys8ZoITsk3MAAPYfSZahIk6Nm9Datg=
+	t=1783083214;
+	b=6GqTJ5sr8eIfeR/0PhQDmLM/Ngg+ejy+ED8wNQZkYHbmMn8/rPxpcf3kC1LQ+4Dh4qupEt
+	w6n26NOedYw3jUqEVp91Tfwm5cK8cvS51wVruR7NB2cwT0RzhVCGUTFS1FfaFc9GCHp+0y
+	WZlWVWSo5NNNv/A2xu18xzvFVXRENIE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783082869;
+	s=arc-20220608; t=1783083214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NPYOzd2RjFg1ddO/ZLQh27mhHcI8iJ031pBNVEV3ouY=;
-	b=xdxf36cmer19ULrwmZMlpZD2kphgXHDDTgcjtvbVI8SnObV2JGliM25EUvFPkoekJRriYu
-	CaTjlFnLpUhiPUQgf81RDrb3RX4djl5YLpKdWtxu0tCdYoa8aorJ8ykr0wTZmKTcBGZYQg
-	ortuz2U20kTmT38VF3B2P2vB2BrWhFg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=5iSjvvkSDC/X60HGRmHM6EylxCOdLYgdwYl3Zikxfvs=;
+	b=ttHm9QaeVVvNsHL4HibJAP0w9Mp3fr+UFTtV5vgL7Qut1oQIIf5XPdOLh5nQ0TYulJgfPq
+	+5coH9GkZzn/Ug7cQUuyqIuQfmm0KkRXxnlZwUcjcwVk6wnNRKtNz+URr3v2zl5D2NniAL
+	ibJsvUmNkIiTKbCO5S63OVqvar/VmfE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=apno0fpW;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 734BE40606;
-	Fri,  3 Jul 2026 12:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842E11F000E9;
-	Fri,  3 Jul 2026 12:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783082868;
-	bh=NPYOzd2RjFg1ddO/ZLQh27mhHcI8iJ031pBNVEV3ouY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=apno0fpWqD4HAfuc6YJmV2FSvla0WDZdWmjkMYLOExNvhMWLblylwUrBaWPl+Y5Lr
-	 vVPu9XkgOxIw0MTVsuw5+DVKZC0dSrPeeC6RuiA5dpyzCCwzsXjBCt7dvQPaP3upDF
-	 UoOQS7pIlBb/lzqdAGul1gwrToCtjFKmgxBz7SIClX0i1cAc11z7E0BdTwYPnCBl/L
-	 WsqiCuPbM+rXit3Wd9ri2eZps2cuhVzIcraC6ZmeRWB0YpVEo7r6NnXTZwc3P9bw5h
-	 w/SXZ2mFLUM0B6FeZybDNRlTX75MnL6BGPc28ROvk0jrqPfpOVBW6CHnxz4ZNq+eRI
-	 djOJZ+YWKunJA==
-Message-ID: <997c1a4d-ee99-4214-be58-7ceb3b9b9a36@kernel.org>
-Date: Fri, 3 Jul 2026 14:47:32 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/18] mm: Some cleanups for page allocator APIs
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
- <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com,
- Yosry Ahmed <yosry@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
- Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Robin Holt <robinmholt@gmail.com>,
- Steve Wahl <steve.wahl@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dimitris Michailidis <dmichail@fungible.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
-Content-Type: text/plain; charset=UTF-8
+	imf08.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=oU8xIwJb;
+	spf=pass (imf08.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1783083200; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=5iSjvvkSDC/X60HGRmHM6EylxCOdLYgdwYl3Zikxfvs=;
+ b=oU8xIwJbYvLr3LSoMjWF8Ok6VCaSIL8vtyzSoerFkjh0g+pIoaDliaawWhQeFK+NMH95ue
+ /eAl5qGDGumt6q5VaHzwxvlaFOn4l/eXNdhyBJ/CjZaStbQfwNCn8FjK9OLy/9cRrIOR77
+ yxKIfDuauZeZrQJ5JIhtMeCKSwg0UMUY9UNvYD/y6jIyMGVJFTAMz8ZvB6csRTx9yt791L
+ XX5J4BckHm26DzzxTavED9MiYUCUjOFHxRLwBwEUBcesKPVPzF04Wz81WhH6zgzMAtN/Rc
+ 7jnx2C4yB8nF37nG9bfb4SlSVVupKA8k3BKkv6xZWUHRBiE3XHSq7wYstxwezQ==
+From: "Yijia Wang" <wangyijia.yeah@bytedance.com>
+Date: Fri,  3 Jul 2026 20:52:53 +0800
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zkrmccbzd4wmqtufqthdkszc5xom84cj
+X-Original-From: Yijia Wang <wangyijia.yeah@bytedance.com>
+Subject: [PATCH RESEND v3] selftests: mincore: fix the readahead check on large base page sizes
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0
+Content-Type: text/plain; charset=UTF-8
+To: "Shuah Khan" <shuah@kernel.org>
+X-Lms-Return-Path: <lba+26a47b0be+f22f63+kvack.org+wangyijia.yeah@bytedance.com>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, 
+	<linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, "Muchun Song" <muchun.song@linux.dev>, 
+	"Yijia Wang" <wangyijia.yeah@bytedance.com>
+Message-Id: <20260703125253.3016281-1-wangyijia.yeah@bytedance.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7421116000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 782A220007
-X-Rspamd-Server: rspam05
-X-HE-Tag: 1783082869-573358
-X-HE-Meta: U2FsdGVkX1/2QV/VjExz836jhgr1aedwYG+nmibfABgh5DODCRHX5lsSXbBgdWdkWXF181wyx+G5ddC4YGLWKMEU2v6bxdo1muf8xvalyOBgG9/8Auco1BhWIGfVVbMEwyW/oHlUOtmrwDHE8lX0RZ2IIBunFzT2lHTZAwwLntCSw2xdrYURDkMpLCUuw2HN+WuB97YsYrki1W9I1X4mV0lil6JSyNQCSBPR/MD9YqnaTQ9Zr/DoA6KQFD0co3tvRH9omnOYBbjxHqJqtzfnxtbYwf8hQo51cpYV+2vME0xwpklj3DDO4CtBqfXWCVrfVAVXoo6KK4sC6PO4I7S0+rE5D3/KXzfOlSqbE/eF9QBGtK68xptpY/Xph7HJIB/eX7YsNnhjxyDLKT9qYodIQ8S06SaR2CZYSnfWOtVxsosI56AK9/8a9rrf6vd+OgU42sqjiCipmbLw46YX6AbtVHoRwBmiqU0esaAXFHQuAtFb32E+iWiUFo9QNx29yt3WYoFhrBieQD8mR+AQkC+3+NmOBB96GXi+FhdiIR4pz3skmRBEgHPb0iXusZ49nGrO5DVqP3vaM5Mc9Fp02TYK7QCC/6H/fYVRR08Wz+JWt+08yhCZ8lziGdwXXJ3FWquuUhhYgFOftaapKAq6hepjtlOE2yI/eNA2l2QLxIulb1yZpLeFgbUy0i1o8m3DUgX58bNW6BZZG2Wj7hgOA3tDe+d4bZNFiYJ/2QO4xTlBHGJmGQTN8bZczPjslE5JSvusf/nE6E0T6Lze9ZcqYL6EBfZBh1lFNqabFsk0jk0lHWYqyEqkWzWD91LnjKs140TOgI6zxOnPmpKAj1kmahzy9nAG4+r8Hp5G2fwGm8tmJeP++332Z7QK73hbSjNTt1mtDZQl0cWFZTigyz2aYJ2q9/Vie4D/UfzzEO+xx/X/lxHzv/Ab+oxGv2SVyWtr+EAJ1monUktE8+1ed2xoNHW
- tlEV68lb
- g79HIK+9xZ0dtexNRY6F7xLNxXgZgsnhb6Yt/RQ6tXbVvTi5fVRPbKbYAVRKBTmZ9X0ztdkaieLygdHZrzFchYuMO7cGU/a9RRH7JIjsP6Y/nobZFPavYlVlXHa2eh/GDtIjQBV9YbtUbbc6hQrtizCKHacOfY+qYQIjtPRfSIbhf83KQsfYv0MuP4CVuH8hf94ScMWLKGN+OQgU5y0cD9ql3+ZrQ06aAcCkbO2ivtE89psJXTMvR3B4tCfjqEd3LgoqUJsfLLedZculGY1BN7t87kJhMKJf1YQ8oiE4LSBX5smvkK8hnhrOrPUigDkdgtX/hwExOVQxBCj3JFYpAVMqtPZEKKmSRI1lYF7lj5v7bkF0IfeavXU6mnHUZTqwMxbD5PLqn8IsyGLOc31372ARMlghdpDl6ZDGJuuZFrUQAkEuTBg368xSggtUFZX8+bD2wszcWNsIOpV71z8jgwCmllS17y2zp9iP+CL/pdtxRPXooNhvtZIdkDfqBoOHE2R4mevpc9LHsXW5GKIJymjG11pHOOrzSXD2sa6qDv2JQA1OtyJ/F7E6/eGLhimtGe8Lg+l6Sqq2aSsElgVVYhq/6D93lfkorOsmi8W4lQFOh821U2vHzv3ojWw==
+X-Stat-Signature: kkhfuwm6uqgsbrbg7asfp6stybb8bs9a
+X-HE-Tag: 1783083212-214412
+X-HE-Meta: U2FsdGVkX19XqL+zYMh6XpojMutUwKpFQFczHOdT1kIsi2bhPay5opRjwkG99jNt70MOZb1ePUxFQVzecAvQO+PKT2FllFqo0IY0PMveZcz27AlhGEh3yXZVPn9L3JGotgW6ihlkeBCqK+2X6A8LUAVffLejdzSjlpEvVgcX5opFHoAnbUlDJMrB1Ply3ZZ2tLbNWYUiLhjrs/nhhOmXvIh0MLHms0njFMRFMa9/z4OWkDAOPfJ9Fm+E46S/jCsAaeIW9xy2q5S/JrDnPIGcN1CDjxEPhpr25y/jgkRVMveqzh+IpjWgB+F+rqoLKLpNgsYgKMvrCfzn6lcsWKMXaKL3CXs/DnWIKHHES6dEZ3QjTyCMH5FAQ7rJeptQu2s1+HTOTGl2zEcNlb6ul8HeI810LhDbPn2nsHyanltzSm/YimKVasmjlZ8clVkh1uC134dWEi63qiKg9fZxLy1PJEHLQzhvY648lnR7Zr5oaTJtG5T6IdYkPbm0jqwZyZNimBJoH56Yk2hdWazfFebOvcwxHSj3tNH2LGsMyaCTYeDrMbb4Gsq64sabbbiR8AcbH5Ah7jEh29CY3mnjKE56l+NwWlp+Oi150jKWzKU2nHxyEDC1xrttLD8XXwuRwKLB6IxbIBzhktsXo+3eQLy+hHt8Vsw/76Gavge6Kf5s1Lq7ArpPHcsxvcq3SloLvBGIAnS9dLgXI0LC5pBvwk1pyZDdH17gnciG6nOqKPb8ybeJ6iTxSQHB2+jhvtjtQlREaAxZ/5Ko7ZDpA2pYIBtqIhNyloxoXHSwqPfnBA6X5DE8L+fijtgm546xWQsEF7fnPPdhtRgPeqA09dBoxfLrhtjw6GdcCJuX3C3duRE1iWgmK/jZU4RyJhXAMjMsbGv65AVSGVVez7sangGPwBodzkvW1RKBoMi20adrOts3lKplrYGO60WmY/MBFyW26bFaleVFX/+qhljckdZ1W8q
+ iW7hzDDm
+ HjlKYxXF+p5HUNO7BGcQUwONtIva1lA0QDdOJZRjsKrl+8qNt6NetFIHQMZT9KaiV0wsC4ze7l3Tz3XhuuQsVO6XFps58OckDQZu5DsRNaNSMpUZuUhMA7b0S7j07NkAtMqf0BFJp2AsHhKi10wXfVpAwRwBZm8zJso+d8fgpcokvEtdgRAKLkxot5zfUkLzKdW9FGVRN86LtEozxVBojK8SntuVqYiISEmvgUA6K6HE6HeRt/LT5Jph0nzFq3MXpshcE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,168 +88,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/3/26 14:31, Brendan Jackman wrote:
-> Based on mm-new.
+check_file_mmap faults a page in the middle of a file mapping and
+expects the readahead window to have populated further pages *after*
+it. With a large base page size this is wrong and the test fails
+reliably, e.g. on arm64 with 64K pages:
 
-Seems ready for mm-new to me. I suspect most further non-trivial page
-allocator work will conflict, so better have it in mm to be based upon.
+  # mincore_selftest.c:260:check_file_mmap:Expected ra_pages (0) > 0 (0)
+  # mincore_selftest.c:261:check_file_mmap:No read-ahead pages found in memory
+  not ok 4 global.check_file_mmap
 
-I was worried about Johannes' defrag fixes [1] that were supposed to be
-stable bacported and thus would be better to add (the next revision) to
-mm-new first. But seems like if I apply this series on mm-new, and then [1]
-on top, nothing conflicts, so the ordering shouldn't matter.
+The read-around window is read_ahead_kb / page_size pages wide and is
+centred on the faulting page (mm/filemap.c):
 
-[1] https://lore.kernel.org/all/20260626182215.1107966-1-hannes@cmpxchg.org/
+  ra->start = max(0, pgoff - ra_pages / 2)
 
-> This depends on moving alloc_tag to mm/:
-> https://lore.kernel.org/all/aj5QBtJcphPElczI@lucifer/
-> 
-> Some tweaks and cleanups for page allocator entrypoint and flags. This
-> is motivated by preparation for __GFP_UNMAPPED [1] (which will probably
-> become ALLOC_UNMAPPED in its next iteration), but all this is supposed
-> to be an improvement to the codebase in its own right: unifying code
-> paths, reducing API surface, and removing GFP flags.
-> 
-> [1] https://lore.kernel.org/all/20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com/
-> 
-> This started with unifying  __alloc_frozen_pages[_nolock]_noprof() and
-> expanded from there.
-> 
-> Unifying the nolock allocator entrypoint with the normal allocator
-> entrypoint means adding an alloc_flags argument to the later (only
-> exposed within mm/). This presents an opportunity to take advantage of
-> that arg to remove some GFP flags, if we add that alloc_flags arg a bit
-> more broadly to allocator entrypoints.
-> 
-> To distinguish between mm-internal and "public" allocator entrypoints,
-> it makes sense to use the __ prefix. There are already some public APIs
-> with that prefix. For *alloc_pages*, just removing those variants seems
-> like a nice cleanup anyway, so do that. For get_free_pages, the "__"
-> variant is the _only_ variant and it's very widely used, so it doesn't
-> seem worthwhile to modify that. Therefore, scope this "__" change
-> specifically to the *alloc_pages* API, which means we leave the
-> *folio_alloc* API untouched too, even though that could probably be
-> cleaned up if so desired.
-> 
-> Tested:
-> 
-> - KVM, mm, and BPF selftests in a QEMU VM
-> 
-> - kunit.py on x86_64
-> 
-> - For the ALLOC_NO_CODETAG bits I just booted a VM and read
->   /proc/allocinfo. I confirmed that if I remove ALLOC_NO_CODETAG, the
->   kernel crashes in early boot, so I was at least booting code that
->   depends on this logic.
-> 
-> I used Google's internal version of Antigravity (AI coding harness) to
-> do the repetitive bits, those commits are marked with Assisted-by, the
-> rest is manual.
-> 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
-> Changes in v5:
-> - Just trivial non-functional fixes.
-> - Link to v4: https://patch.msgid.link/20260702-alloc-trylock-v4-0-0af8ff387e80@google.com
-> 
-> Changes in v4:
-> - Fixed some (harmless) missing applications of ac->alloc_flags (local
->   Sashiko)
-> - Fixed various build issues.
->    - Note that Sashiko pointed out a KMSAN build issue [0], I have
->      fixed it but KMSAN builds are currently broken by objtool [1]. At least
->      mm/kmsan/init.c compiles.
->      [2] https://lore.kernel.org/all/20260629141642.628271F00A3D@smtp.kernel.org/
->      [3] https://lore.kernel.org/all/20260630104434.GC751831@noisy.programming.kicks-ass.net/t/#u
-> - Avoided setting ALLOC_NOFRAGMENT under ALLOC_NOLOCK (Sashiko, Harry)
-> - Added patch to tweak alloc_flags_cma() interface (Vlastimil)
-> - More commit messages fixups (various)
-> - Added patch to create can_spin_trylock() (Harry)
-> - Link to v3: https://patch.msgid.link/20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com
-> 
-> Changes in v3:
-> - Created mm/page_alloc.h
-> - Fixed EXPORT_SYMBOL() issues
-> - Reworded commit messages per Sashiko's pointers
-> - Dropped rename of alloc_flags arg in prepare_alloc_pages() (Suren)
-> - Renamed gfp_to_alloc_flags_nonblocking() too after rebasing onto:
->   https://lore.kernel.org/all/20260623004600.113347-1-jp.kobryn@linux.dev/
-> - Link to v2: https://patch.msgid.link/20260622-alloc-trylock-v2-0-31f31367d420@google.com
-> 
-> Changes in v2:
-> - Fixed up whitespace in nolock unification patch
-> - Introduced ALLOC_DEFAULT to replace literal 0 for alloc_flags
-> - All other patches are new
-> - Link to v1: https://patch.msgid.link/20260617-alloc-trylock-v1-1-83fd7858832e@google.com
-> 
-> ---
-> Brendan Jackman (17):
->       mm/page_alloc: rename ALLOC_TRYLOCK -> ALLOC_NOLOCK
->       mm/page_alloc: some renames to clarify alloc_flags scopes
->       mm: name some args in a function declaration
->       mm: Split out internal page_alloc.h
->       mm/page_alloc: unify __alloc_frozen_pages[_nolock]_noprof()
->       mm/page_alloc: relax GFP WARN in nolock allocs
->       mm: move some stuff to mm/page_alloc.h
->       perf/x86/intel: Use higher-level allocator API
->       KVM: VMX: Use higher-level allocator API
->       x86/virt: Use higher-level allocator API
->       sgi-xp: Use higher-level allocator API
->       net/funeth: Switch to higher-level allocator API
->       mm: Remove __alloc_pages_node()
->       mm: Move __alloc_pages() to mm/page_alloc.h
->       mm: replace __GFP_NO_CODETAG with ALLOC_NO_CODETAG
->       mm/page_alloc: drop alloc_flags arg from alloc_flags_cma()
->       mm: factor out can_spin_trylock()
-> 
-> Vlastimil Babka (SUSE) (1):
->       mm: remove the __GFP_NO_OBJ_EXT flag
-> 
->  Documentation/admin-guide/cgroup-v1/cpusets.rst  |   2 +-
->  Documentation/admin-guide/mm/transhuge.rst       |   2 +-
->  MAINTAINERS                                      |   1 +
->  arch/x86/events/intel/ds.c                       |   6 +-
->  arch/x86/kvm/vmx/vmx.c                           |   2 +-
->  arch/x86/virt/hw.c                               |   2 +-
->  drivers/misc/sgi-xp/xpc_uv.c                     |   5 +-
->  drivers/net/ethernet/fungible/funeth/funeth_rx.c |   2 +-
->  include/linux/alloc_tag.h                        |   4 +-
->  include/linux/gfp.h                              |  54 +---
->  include/linux/gfp_types.h                        |   7 -
->  include/linux/skbuff.h                           |   2 +-
->  include/trace/events/mmflags.h                   |  10 +-
->  mm/alloc_tag.c                                   |  23 +-
->  mm/compaction.c                                  |   5 +-
->  mm/hugetlb.c                                     |   4 +-
->  mm/internal.h                                    | 275 ++------------------
->  mm/khugepaged.c                                  |   1 +
->  mm/kmsan/init.c                                  |   2 +-
->  mm/memory-failure.c                              |   1 +
->  mm/memory_hotplug.c                              |   1 +
->  mm/mempolicy.c                                   |  11 +-
->  mm/migrate.c                                     |   1 +
->  mm/mm_init.c                                     |   1 +
->  mm/page_alloc.c                                  | 269 ++++++++++---------
->  mm/page_alloc.h                                  | 312 +++++++++++++++++++++++
->  mm/page_frag_cache.c                             |   6 +-
->  mm/page_isolation.c                              |   1 +
->  mm/page_owner.c                                  |   2 +-
->  mm/page_reporting.c                              |   1 +
->  mm/show_mem.c                                    |   1 +
->  mm/shuffle.c                                     |   1 +
->  mm/slub.c                                        |  17 +-
->  mm/swap.c                                        |   1 +
->  mm/vmscan.c                                      |   1 +
->  mm/vmstat.c                                      |   1 +
->  tools/include/linux/gfp_types.h                  |   7 -
->  37 files changed, 536 insertions(+), 508 deletions(-)
-> ---
-> base-commit: 32af3ff0925368eff29b2fed62f154150eb5dc10
-> change-id: 20260617-alloc-trylock-14ad37dab337
-> 
-> Best regards,
-> --  
-> Brendan Jackman <jackmanb@google.com>
-> 
+With the default 128K budget that is 32 pages on 4K but only 2 pages on
+64K, so the window becomes [pgoff-1, pgoff] and the single extra page
+lands *before* the faulted page. The forward-only scan finds nothing.
+This is not a huge-page (THP) effect; it is just a byte-sized readahead
+budget divided by a large page size plus a fault-centred window.
 
+Count readahead pages on both sides of the faulted page, and skip the
+readahead check up front when there is no usable read-around window:
+either it is narrower than two pages (readahead disabled, or the base
+page size so large that read_ahead_kb covers a single page), or the file
+has no backing block device whose read_ahead_kb can be read (e.g. on
+tmpfs). When the window is wide enough the EXPECT_GT(ra_pages, 0)
+assertion is kept, so a kernel that should read ahead but does not is
+still caught.
+
+Signed-off-by: Yijia Wang <wangyijia.yeah@bytedance.com>
+---
+How the problem was tracked down, step by step:
+
+ 1. On arm64 with 64K base pages, check_file_mmap fails:
+
+      # mincore_selftest.c:260:check_file_mmap:Expected ra_pages (0) > 0 (0)
+      # mincore_selftest.c:261:check_file_mmap:No read-ahead pages found in memory
+      not ok 4 global.check_file_mmap
+
+ 2. The test faults the middle page and scans only *forward* for the
+    readahead pages, so "ra_pages == 0" means nothing was read in after
+    the faulted page.
+
+ 3. Readahead is a byte budget (read_ahead_kb, default 128K) turned into
+    a page count: ra_pages = read_ahead_kb / page_size. That is 32 pages
+    on 4K but only 2 pages on 64K.
+
+ 4. The mmap read-around window is centred on the fault:
+    ra->start = max(0, pgoff - ra_pages / 2). With 2 pages the window is
+    [pgoff-1, pgoff] - the one extra page lands *before* the fault.
+
+ 5. Measured directly on the 64K box, varying read_ahead_kb, faulting
+    page 32:
+
+      read_ahead_kb=64  (1 page):  resident: 32          (no neighbour)
+      read_ahead_kb=128 (2 pages): resident: 31 32        (neighbour before)
+      read_ahead_kb=192 (3 pages): resident: 31 32 33     (before and after)
+
+    So the neighbour really is before the fault, and a 1-page window
+    brings in no neighbour at all. This is not a THP effect.
+
+ 6. A file with no backing block device (e.g. tmpfs) has no
+    read_ahead_kb to read and no block-device readahead at all; faulting
+    the middle page brings in only that page (before=0 after=0). The fix
+    therefore skips when the window cannot be determined, not just when
+    it is too narrow.
+
+Open question for the list: which fix do you prefer?
+
+  (a) Move the fault towards the start of the mapping so the centred
+      window always leaves a page *after* it, keeping the original
+      forward-only scan. Minimal, but the page count after the fault is
+      ceil(ra_pages/2) - 1, which is 0 whenever ra_pages <= 2; only a
+      fault within the first ra_pages/2 pages (e.g. page 0) has a page
+      after it. That changes the test's intent - it would exercise
+      readahead at the boundary, not in the interior - and still fails
+      when read_ahead_kb yields a 1-page window or on tmpfs.
+
+  (b) Scan both sides of the faulted page (this patch), and skip up front
+      when there is no usable read-around window. A little more code, but
+      page-size-agnostic and it keeps the assertion whenever a neighbour
+      is actually expected.
+
+I went with (b); happy to switch to (a) if that is preferred.
+
+An earlier posting of mine changed check_huge_pages instead - that was a
+misdiagnosis (on the 64K box that subtest merely SKIPs and was never the
+failure). Please disregard it; this version supersedes it.
+ .../selftests/mincore/mincore_selftest.c      | 82 ++++++++++++++++++-
+ 1 file changed, 80 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
+index cdd022c1c..960851286 100644
+--- a/tools/testing/selftests/mincore/mincore_selftest.c
++++ b/tools/testing/selftests/mincore/mincore_selftest.c
+@@ -12,6 +12,8 @@
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <sys/mman.h>
++#include <sys/stat.h>
++#include <sys/sysmacros.h>
+ #include <string.h>
+ #include <fcntl.h>
+ 
+@@ -174,6 +176,48 @@ TEST(check_huge_pages)
+ }
+ 
+ 
++/*
++ * Return the size of the mmap read-around window, in pages, for the block
++ * device backing the file referred to by @fd, or -1 if it cannot be
++ * determined. The window size is the device's read_ahead_kb divided by the
++ * page size; the kernel centres this window on the faulting page, so it must
++ * be at least two pages wide for any neighbouring page to be read in.
++ */
++static long readahead_window_pages(int fd, long page_size)
++{
++	char path[64];
++	struct stat st;
++	long ra_kb;
++	FILE *f;
++
++	if (fstat(fd, &st))
++		return -1;
++
++	/*
++	 * read_ahead_kb lives in the owning disk's queue/ directory. For a
++	 * whole-disk device that is the device's own queue/; for a partition
++	 * it is one level up ("..") at the parent disk.
++	 */
++	snprintf(path, sizeof(path), "/sys/dev/block/%u:%u/queue/read_ahead_kb",
++		 major(st.st_dev), minor(st.st_dev));
++	f = fopen(path, "r");
++	if (!f) {
++		snprintf(path, sizeof(path),
++			 "/sys/dev/block/%u:%u/../queue/read_ahead_kb",
++			 major(st.st_dev), minor(st.st_dev));
++		f = fopen(path, "r");
++		if (!f)
++			return -1;
++	}
++	if (fscanf(f, "%ld", &ra_kb) != 1) {
++		fclose(f);
++		return -1;
++	}
++	fclose(f);
++
++	return (ra_kb << 10) / page_size;
++}
++
+ /*
+  * Test mincore() behavior on a file-backed page.
+  * No pages should be loaded into memory right after the mapping. Then,
+@@ -194,6 +238,7 @@ TEST(check_file_mmap)
+ 	int fd;
+ 	int i;
+ 	int ra_pages = 0;
++	long ra_window;
+ 
+ 	page_size = sysconf(_SC_PAGESIZE);
+ 	vec_size = FILE_SIZE / page_size;
+@@ -224,6 +269,22 @@ TEST(check_file_mmap)
+ 		SKIP(goto out_close, "fallocate not supported by filesystem.");
+ 	}
+ 
++	/*
++	 * mmap read-around brings in a window of pages centred on the
++	 * faulting page. Its width is the backing device's read_ahead_kb
++	 * divided by the page size. If that window is narrower than two
++	 * pages - because readahead is disabled, or the base page size is so
++	 * large that read_ahead_kb covers a single page - then no
++	 * neighbouring page can ever be read in and the readahead part of
++	 * this test does not apply, so skip it. The same goes for a file with
++	 * no backing block device (e.g. on tmpfs), where the window cannot be
++	 * determined and there is no block-device readahead to exercise.
++	 */
++	ra_window = readahead_window_pages(fd, page_size);
++	if (ra_window < 2)
++		SKIP(goto out_close,
++		     "no usable readahead window for this configuration.");
++
+ 	/*
+ 	 * Map the whole file, the pages shouldn't be fetched yet.
+ 	 */
+@@ -242,8 +303,11 @@ TEST(check_file_mmap)
+ 	}
+ 
+ 	/*
+-	 * Touch a page in the middle of the mapping. We expect the next
+-	 * few pages (the readahead window) to be populated too.
++	 * Touch a page in the middle of the mapping. We expect the
++	 * surrounding pages (the readahead window) to be populated too.
++	 * The kernel centres the mmap read-around window on the faulting
++	 * page, so with a large base page size the readahead pages may
++	 * land before the touched page rather than after it.
+ 	 */
+ 	addr[FILE_SIZE / 2] = 1;
+ 	retval = mincore(addr, FILE_SIZE, vec);
+@@ -252,11 +316,25 @@ TEST(check_file_mmap)
+ 		TH_LOG("Page not found in memory after use");
+ 	}
+ 
++	/* Count readahead pages that landed before the touched page. */
++	i = FILE_SIZE / 2 / page_size - 1;
++	while (i >= 0 && vec[i]) {
++		ra_pages++;
++		i--;
++	}
++
++	/* Count readahead pages that landed after the touched page. */
+ 	i = FILE_SIZE / 2 / page_size + 1;
+ 	while (i < vec_size && vec[i]) {
+ 		ra_pages++;
+ 		i++;
+ 	}
++
++	/*
++	 * The readahead window is at least two pages wide here (narrow
++	 * windows were skipped above), so the kernel must have brought in at
++	 * least one neighbouring page on one side of the faulted page.
++	 */
+ 	EXPECT_GT(ra_pages, 0) {
+ 		TH_LOG("No read-ahead pages found in memory");
+ 	}
+-- 
+2.43.0
 
