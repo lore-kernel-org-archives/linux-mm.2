@@ -4,147 +4,206 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99B79C43602
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 09:33:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EDBBC43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 09:35:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 700306B00B4; Fri,  3 Jul 2026 05:33:03 -0400 (EDT)
+	id C34AF6B00B4; Fri,  3 Jul 2026 05:35:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D7B16B00B5; Fri,  3 Jul 2026 05:33:03 -0400 (EDT)
+	id C0C3F6B00B5; Fri,  3 Jul 2026 05:35:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EE216B00B6; Fri,  3 Jul 2026 05:33:03 -0400 (EDT)
+	id AFB426B00B6; Fri,  3 Jul 2026 05:35:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BA636B00B4
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:33:03 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 864308E484
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:32:57 +0000 (UTC)
-X-FDA: 84946951194.26.4A0C8BD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9F5B180005
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:32:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewYhOz+y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783071175;
-	b=72JSZgxCjQ0tb0I2FmrZ148ut5BlHH94kbG31WuAI3nI43tb1ggSJPs4MGJM4hgDZSG/el
-	bUwW+zxqzCt/51t59wMIKmeOCFZOvJogDnSKfkURcsl2io+JLIELEP+mkKBmh4pC/HLSDi
-	w+h25QASuRUv2/amgQAdG/cH3uKd3HU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783071175;
+	by kanga.kvack.org (Postfix) with ESMTP id A3EBA6B00B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 05:35:00 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D512C8DFC7
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:34:49 +0000 (UTC)
+X-FDA: 84946955898.19.CED08ED
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C22F51C0003
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 09:34:45 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dPsLOPGb;
+	spf=pass (imf21.hostedemail.com: domain of przemyslaw.kitszel@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=przemyslaw.kitszel@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1783071286;
+	b=Is4jTSmSv5NOSKP38G805TIplPOYQmjLbXgLYtg5Z66q4+6iRWUONaurh54XSEE8qv+JS7
+	jiUmjjDWOUp0qnkIiQ89g5lIn8KijXJVsq3kT1vGohwEIk+XrzbRZNohTM49XNLhO1vgO+
+	51/eory5zzXbXhRtCHhIOuqfjCQnf2E=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783071286;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e1pQpUBYSThfjFqXpi3CJbvoH2B8jgJGjXQchqDbIYs=;
-	b=thv4soVoc4+g3VnOy7muMDaUXpMcVehj8eshizlNe+vnAeVjEG4hvbuPF+ORkuC/gGu9Z1
-	JoTNRCAuSoaKFS2qqaLLoMR0Nl0ucyUuW6DS0bv7Hk8LNqZdfXk+IOb98/ILe6aPR2/JcF
-	bAkpLiByvTNiHPXHY6oX1enBqIyzm3g=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ewYhOz+y;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C746B41157;
-	Fri,  3 Jul 2026 09:32:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1451F000E9;
-	Fri,  3 Jul 2026 09:32:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783071174;
-	bh=e1pQpUBYSThfjFqXpi3CJbvoH2B8jgJGjXQchqDbIYs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ewYhOz+y/2ODJQiSe/1wYQEvPysmor5pP4hs4s16yHMRJct21kwF7eTWcwUsHq5jr
-	 xbKpyswZ71LI/axa/e7vJAaK0uyh+cN3GPhs4nDzG/9z77a4NzlfWMCzpiauiYyC0G
-	 otHE19G5VpTD58+dIcVh4xBBtQWZtj8UwN7J7hGJzkPc2cNMWok0Uxe6GXgGX/iaD0
-	 K3rlzEMJQfO8x7gTe1qKW2vhOk3n7DxihnDmtl3zT1cBAZ4JVjdKyaU0sRMvsJSUnB
-	 xUDixob2C4kwpPJB6mdECWk7woRCVBU5gPDlX7xWq0KJFCmSgxI0fipNd6D+r8yfKu
-	 yuDeJKhf3eneQ==
-Message-ID: <1e162a97-1594-495d-b48e-7dafaa0a6d82@kernel.org>
-Date: Fri, 3 Jul 2026 11:32:46 +0200
-MIME-Version: 1.0
+	bh=fOMfg/hLaRIh8YSOUtMa9BVWD7sF8wnQ18peF7q5fAM=;
+	b=FM40ij+Yt1uMp62k3G6JJWbNIhuJxU89K6+rkVZHk2PF2rj1613XaCJlfdKGbXmq7fUAOz
+	yXwxrbwia6RdOrUWhoitUKI0AGxXXK4DMC0zDZ4wO+A2UQVT4pNFYYD+wZpkv5E8gaxK0W
+	VuGoi8cKPnxbUmBNeUnR6sNIFFdTWnk=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=dPsLOPGb;
+	spf=pass (imf21.hostedemail.com: domain of przemyslaw.kitszel@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=przemyslaw.kitszel@intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783071286; x=1814607286;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=yHxOJyxHivqn0SYPBeJoEMENSra+VwXZ2vmsH/ACAVg=;
+  b=dPsLOPGbkZCVbKY4MNgMW9Gj1D/9TVMMvmXywNabhKH8ukAphMYhFWB/
+   6yESX/pWB4XsOEZaeqttMI9omwyrsbdaQ746bdSbNU/M9VnThAQVpL3co
+   gT4TiKFu+SwxVfXeNsEntNinTQVtissmY8WSK3kKFp+LfNrQ5gn3HbGhp
+   nCsi1hzczf8CUyfQlan9w/vHV3df9X1j+m0X4e8pV7AMotnNdYvOIMS51
+   iri29TXp6rBx7xoEJrQ0L3lWVZEqWsIIw6QV+LBtGX5MVkpYFUVXANh+0
+   Av9EN9e9PyxUWDNj1CAzTDxEijZHblYq/+K9/Sh4ghyv4WPxidLpwOkHl
+   g==;
+X-CSE-ConnectionGUID: N92l5seBRm+2eGbAONOvLw==
+X-CSE-MsgGUID: MchzCHCLSBeVTacxdGyRAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11835"; a="101364430"
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="101364430"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 02:34:44 -0700
+X-CSE-ConnectionGUID: LXl3SMZxRFqElpX5JJfqdg==
+X-CSE-MsgGUID: xa0otkENSVSmlDjmZtf2tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,145,1779174000"; 
+   d="scan'208";a="252615513"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 02:34:44 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 3 Jul 2026 02:34:43 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Fri, 3 Jul 2026 02:34:43 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.70) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 3 Jul 2026 02:34:43 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JcDI7VjTG/NEBdZRL5HDtsHq87JUcxe6l3Lmh2A4K9/bvSHyFP6RsuSjFsYOxr3vBbnGHvTZ+eiAFzkUJ+9QMmoz8rnknykxvTbBwl1rOCdXnZOm5BHYM33JMyN/5rSVqL0wsXtzBhsQqIQbZKHB7XjyXstE+U1mIfcbAILkfHItMqK6ohfAd63wUYTCqYl6IV35TN+eLX0+XmrEdUZvfBhQvOGzYIbSa0m2zcatiAXu3ChjB+ZxKwxBTqYMHMQMIYmT8MZneeFkdIIuM9Gw7WdENJl6gE0OinwUvqM3/WrsV9d21IIAAX0hiNUpMl+1cilRYd8QKp1K3ibcYA02Sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fOMfg/hLaRIh8YSOUtMa9BVWD7sF8wnQ18peF7q5fAM=;
+ b=o4dfyBPBy9qWUERVcAYeL8syk8F+gIoll6CBrGhUvJuDoWTlbb/vJP7fChTFXIsK0O9TUbCqX1t90f+ISBMdIhkUEXfmI+eGeTZaqbzfVSYI1rNgvycFRIEFXzTnSOi8AsT5dZJEadIUpE6poRsKnL3YjYh96Nl7ZiUFnUUEQZjiNFexavDs8UMYDlvzo9b/P+uLwHehS88EWmyt2f7CV/nCZBHt9hpmw52WsohPIWM3/ZgjoVDA4wLQQSzXVvc9M/VFLvCGwrycTCD5OQ7NBamWItxkWSVJG8jDUbVOHGlIcyuZkhRtAYw30fU4WQWtQ7PLADz4vkZw0uhdT0OKag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
+ by LV8PR11MB8605.namprd11.prod.outlook.com (2603:10b6:408:1e5::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Fri, 3 Jul 2026
+ 09:34:34 +0000
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0181.008; Fri, 3 Jul 2026
+ 09:34:34 +0000
+Message-ID: <0b79ccce-641a-415e-83bc-b4050bac6b95@intel.com>
+Date: Fri, 3 Jul 2026 11:34:27 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 18/18] mm: factor out can_spin_trylock()
+Subject: Re: [Intel-wired-lan] [PATCH 2/4] ice: use kzalloc() to allocate
+ staging buffer for reading from GNSS
+To: Mike Rapoport <rppt@kernel.org>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Manish Chopra <manishc@marvell.com>, Paolo Abeni
+	<pabeni@redhat.com>, Edward Cree <ecree.xilinx@gmail.com>, Sudarsana Kalluru
+	<skalluru@marvell.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-net-drivers@amd.com>, <netdev@vger.kernel.org>
+References: <20260701-b4-drivers-ethernet-v1-0-58776615db6e@kernel.org>
+ <20260701-b4-drivers-ethernet-v1-2-58776615db6e@kernel.org>
+ <d2c75404-a87f-4bb6-b17c-c921d08a1f15@intel.com>
+ <akZ4dBzkuoKPkIZT@kernel.org>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
- <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com,
- Yosry Ahmed <yosry@kernel.org>
-References: <20260702-alloc-trylock-v4-0-0af8ff387e80@google.com>
- <20260702-alloc-trylock-v4-18-0af8ff387e80@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260702-alloc-trylock-v4-18-0af8ff387e80@google.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <akZ4dBzkuoKPkIZT@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
+X-ClientProxiedBy: DUZPR01CA0019.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:46b::10) To LV3PR11MB8508.namprd11.prod.outlook.com
+ (2603:10b6:408:1b4::8)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|LV8PR11MB8605:EE_
+X-MS-Office365-Filtering-Correlation-Id: 92df8611-8bf5-425c-dbc1-08ded8e64ac0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|22082099003|18002099003|5023799004|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info: bhQRcUQWHOyLgbp9e9SyNGtGFaP9rtBXUtdf1nMl9SZMyasiKM6QLmCfDt5w/OEW3J4PcFLSyHaU5/MpV01q4CJN44mFgOp7m+gRVKlPpRh0AEFE+o9c6kH+NOMHXKKOQfmGPyRnVVNaVQejgb+UUlQrWRIF3dVyhDMU9mM1NZILFs7NGvY6E7UOYo5FNLqjgQAZqGE4vINasx/AMPucaaFS4pAcxcjXaMq5yfPdaSlNOmfLZsb7YuGXkGbMZT/CaJXhR6BlogsOf/uCTLYaLWvl7r+h4+HLKY0NSzMx18mBR8IBpSvkqcftJE94e2HBeGqrAeOp9WdbB5CYV/IvBjJBvylmu+ARIPF3MJkENaEWyiQR5g0639ap0y7NsRTUwdTfx8PTVtFAh/er4IsB53IGamakZoA92vWkN/2ydkwrNlz9NCTnAh4zE5QwIUsFHJ+Jw+im+qaP5SGh/MyfS5Ob13SW7JNNALSJBvfumaSO882LpYQQYf79DnUQFQ2FQ6P2eUexy3zsMKfxPGpKt+JO0G4vx0KjcH6qdWmD4fKsVgKcgxmZHC6onTckgNLaw3Uhf9ygwEWO8xhubrM7QpL52Zk+GT5dodhuZ1Twwtxjmh2wiXCe8RponPi3GKx270lZZ/6wBKqpEUW2HnF514Mub65jhx12oUpS/PQ21Xk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(22082099003)(18002099003)(5023799004)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZG16VUhkSldTVTZLMDZVUnh3aGp1OVpnTkgrbUgyTXZlV3hqak10ek9BRXZs?=
+ =?utf-8?B?QWFybDJqQnBxQkQzTVovaW5RcDJMM0x2bkYrTjRVTGFrT1BJUEt6TUhTUXdo?=
+ =?utf-8?B?WWZZSjJiQVF4T25kSFAxZUp2RVN3ZzdlUlhaUm9YMnUxblBhd3RmS0pnNnlr?=
+ =?utf-8?B?YVM1NjlFOGVmZHAvUGtaSzlMODRYbHBRVjJ5YVpWYVRzWWxuVWp6aHN6eGRQ?=
+ =?utf-8?B?RElFcXF6bnhQbkQxZDI3ZThtSWdDSk5rbnFKb2wzOXM2Nng1VVE4WmFjbis4?=
+ =?utf-8?B?T3dSUWlVK2dKNDZCbk55dUlHTVZUclZGU3E2V1V2dVB5MHhOTTVvaXY4K3pp?=
+ =?utf-8?B?QWNBZUdwNmFGbmhDck1zWTlVbjJrS2VIMW9TWU9oVnY3eE5adWJrdnlHN0lp?=
+ =?utf-8?B?bERENWtKZzJHOUdFNE1TWTVHa25lUTVXWFRabmF3V29yUk9KQytsT0hxTnBP?=
+ =?utf-8?B?V3UvN0NqcjFxWkR1M2N4V1VVU3lSUFl2TW9NcTJaaVV2dmlMRkh1cFhHdkZO?=
+ =?utf-8?B?TkVpVHVEbVdNUm1EU0pVTEx2ZTVVYWYvaGR2TGZNMFlsNjBnTkc4MS96VkZx?=
+ =?utf-8?B?Z24wd2RBU2VPT29maUZSL29EVlNwK29VQ0xRR1ZYTXg4TVlWT1dHWlJJczU4?=
+ =?utf-8?B?TkttckhnbldLM25tb05sSFBpVlhWQnpWUjFvdllaYXpuVWMrSVpLMUVXdVpL?=
+ =?utf-8?B?VWFESVhVamNBTEl5ZjlDbkhpaFlySit2Mkx0bHF6ZG5XVFpVZEVxUWxOanhZ?=
+ =?utf-8?B?THRpMDRHYXZlQ3lsQTVZb2IwUWlQYks5N1NNNDF1OG0yMkZhZVp4Z3QxZGpU?=
+ =?utf-8?B?dmcyT1lVMWgrSlpZNHdYKysvK25wb1ZDazNFVmFLYkE1L0Z2NmtIcTlIaHBR?=
+ =?utf-8?B?ejFENW5Fb1E1ZXdmdmZDcHllZHFNb1hRbXZweGhQYjdDK0xFT3JKZU1lWk1u?=
+ =?utf-8?B?S2REak1aai9NM3N1eGN4NnU1N3ZqVE1KTXVFeWJmcUMxOUZGZ3pKcXM5N2J0?=
+ =?utf-8?B?WmNqb0wzdU1mQTRTOHg1Y1l6eVFMQXpMYUhETmpHVFNac2pRWU5VOVM4OTN5?=
+ =?utf-8?B?cVk1WGFuWWxWcDc1SnNIL2VTb21nelVpakhLTnBGQkpzSGtIWnRyUUFRY253?=
+ =?utf-8?B?ZU54c2c1Yml1SFN0VkdDZlNCTmhEQ2svaXFsd2toRXRmakVJME5vS3FQQzZN?=
+ =?utf-8?B?QW1ZNGdpajVBZ3R5WnZTU2VKTGdWN0JPOWI3Ri81T1FVODVGNlMzMXNrdDJp?=
+ =?utf-8?B?R1drbFZXWEUwWkVlLzArR3gyNzN4SXJSaTlpNDh4OVdNWGlOb2ZuVWYvUkpm?=
+ =?utf-8?B?SHpxLzRtMWR4QUlSc1pyVjIwV2svS1M3Ulp2VWVCZjR0SHVKQW1SbDF0ejRS?=
+ =?utf-8?B?Nm4vakJEeU83V2VrMnM1TlVEZWFQcCt5OFVYd1piNVZHUSttNzJweVd0ajFE?=
+ =?utf-8?B?UlVBak5RMU1ZZkFTeHN0M1JtdU1xLzVOU3VidStRWkRhWHlnVWxXZWRSWVJi?=
+ =?utf-8?B?cUNRR3RHL0RmVEloSHB6ak9sQVQwbXJWbytXZXZ4dG5tRGcvanVPSnVHbzZx?=
+ =?utf-8?B?Z2NGZjhNbzYyM2ptYmhJemtzVDUxL09oWEpqUkdWYzdKVCs5THhnTmFFc3Uv?=
+ =?utf-8?B?M3Qvdk9qbGIwaWwrSnFPUFBBTkgzSEZaSlpGaTRmVDQzUzlKRXhJckV3ajhO?=
+ =?utf-8?B?QkJYemlTdFFxMmlzbVpCNDF6TW9uNDlvZVpMRVF5Ni9kQjFMOFZrR2J1RmVa?=
+ =?utf-8?B?TjVKQkF0WG55cGlIc1dwdStPeWFmTFo4T2dmWUJZalFDVzJjY2R3YXprd3Q1?=
+ =?utf-8?B?WEVFdWw3d0xlZzdMdEZPd2V6ZUdrbk1MTTUxU0JrRGU4a3pEbGx5QUU1QzQ3?=
+ =?utf-8?B?SFVuYUFhZEFaN0VYK0xFYWh3d2hLaXJoZjlQeGNscHJxUVJUSXBCamVDanhX?=
+ =?utf-8?B?L09XcEZ6NDNvQ1gwUjM0Q0hRK1hGWlNFdm9TSEV1MllzYU9aT1lYR3ZXbXV0?=
+ =?utf-8?B?V0diS1A2bG5tM3VLMlJYbDcwaVd2MXVGQWxCMlk5cnlaMVlFeTNGcUhFNVI3?=
+ =?utf-8?B?d1dBaFRYcEs4c0dyWmVGZkdzVzFSeHRyUklnQmJ0SW1jQWtTcWh2T1RZT0dP?=
+ =?utf-8?B?RG04N25LODBJQzFYcEtadDNTc3VEL0MzZlp2RzhVWUNud1RsNFcrTGJha3pk?=
+ =?utf-8?B?eHdEcnFzSVowNithUDBjbEU3b20yQ1cwQWxPZTg4Zko0UldLVUlEYkhJNnhS?=
+ =?utf-8?B?a1IzU3p0eEtlc3VnVnlGWUYvUGhVQk45dHF5VEpiZzFvWmlMWVBXUWhQYnN6?=
+ =?utf-8?B?UnVPeWZCakxqWW83aGdtUHVLRXBCZWVYZWpnY1VBdVFZVThlVkRwYUhMcnZs?=
+ =?utf-8?Q?HxUIet5Ncqv+7Da4=3D?=
+X-Exchange-RoutingPolicyChecked: bMLjM2M8DhtP4EvQzD+Li+YoPzDLBbVdeyIQ1WRvG3uKLXkWyahOymwuhdcrO9zI2A4vI/Zmoewc0hI2DFxERESYUAkg3W8qEH1fcDvU/EbwCodwHzopHznPnYagkquilkoAafuJq9wX48BZoLTRtdbo2Aiq4BTp3E10zu80+daMKFC4lLoaDl7TnWWpGkHgHy3dD5dmwyMObOOn0sUH7pivIV+YEmNv51UaneRuWX94v3xpUxAuIX7iyhTRpfb+DZPvPDVrxvcOhAr01fK781npr/RE4N+q9UfBRz/qIgISTGuTr3ovQA9epbx/deWIV10YzJ4ZBiztAftUGDN8ZA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92df8611-8bf5-425c-dbc1-08ded8e64ac0
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2026 09:34:34.3600
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JKcvFfV+nvnV4r7dBEizOXYjd9zXUngLk7zyhCZpR7+gUaUxti4G09KG9trGf2fJKITUQJz7nFHHw8M6CsvQchuYp2zNWunldA7nV/YtIk0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8605
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C22F51C0003
+X-Stat-Signature: ddewcic6cy5jnxn91eoy733h5nrdybyh
 X-Rspam-User: 
-X-Stat-Signature: km7j39f1n3bqiq8p59d7b631w9nigm7s
-X-Rspamd-Queue-Id: 9F5B180005
-X-HE-Tag: 1783071175-592854
-X-HE-Meta: U2FsdGVkX19JMswiQd+lJHals0aSTIMEokfiNV2ZWSEL/SscgPvmspkMGDQHg9ENm//z42XeE1Y4ov599hAVq259p45xQ6d8KjyEhk14otrW5m3aJluTq49OgnXdk9/0KBYMW8QLa5ip6Zpd2LqMvwr8w8s31h2uJcSl/ch6iMQC9GSdlqkBaX6jJ8QP3wlNeO/2+OPQIDqpX/Sl1g3f9RPfY5Bf4RsH7c6M+lQ4sT5N77He3f4TYDRf2g9g97LQkEJlmrKe78xlXRe1gbtpIOAPbv/+QJ8htLLJwhJEFLKaGCkFv5qt8bJ9QR0TYoREq4PzFH4LM1o04intCsg73ymFCtdSagGjeMn0tgwNfS3+jtWOmJHnDfCfyRUQowZAqWm/vAo0v0+4IHmih+MRA4V19MTXXRW6daO6JFXqZHq7WpPFGvQt+g8Wulil176+dWk9hit4rMOKOp0666pd60ouE8dnsNNsysBPwMBzVY3vNV9QIyqrhtszv136Oj7mZR1+251twpgTndYHRSRLCt1M743g+n9i99rJv1I345U/gAUH1B6lHYx4PszhC3ZXNbZ7wCM0Yreo865+ZeFIxK1dhkM7UE5Db/vH3L4NhK3RGlZHRvJN8zNUVPHrr8/7kCT5JVpDikAqXapd+U9VzwkchLIlIE9glLUiG4QtOKbQtq0xC3qfPF9kji19neyXj/MqygV7pXnyoJqsDmKXTBdSRADOIlsEo5SJz16VfUfn3fPhHEBbgbc8bG/uK6AQFNYdbGN1lhIaZdjEeKtIsXY+oe+IAlauZLJlEWpeAlcLwmpGTNY6xzTkCkqXZ56rpzZBWFcHXFqSiKd+aL1NvX9gSAjGBPWxzhOyLYWJAjsQUyqiFhojplCsaxO9uRFQl/evTTWDPLjAjxRMyb0hQ5biTt2EwP7KLbTEWZBhvkDw1RozfIlEukEeQzyRPUZQcDn8fJOed9rLqXmX72R
- yJg/VQ1r
- wYwm9isj2dXHdOKyXGKA9xsWdh2CJWkmPTyIILVqLIKxhd7a+2TmhDQSgYaHMqTyDnQdkeg41meI6zDYTSpn6GnLA0c35d5/MvKA+fUnmn0Rg++RKCshs4woALoahxppjcUa/PypEHJJT1KQKVr9CzFz5iFoVSaTlqk7dB9bTQp9iQjJAfiKoyH2azhEVV0PS26oRCDwhHQiVHa/0o/FUJQzoKxIA+jUx53HzgzXstjfr0epAoP0SyCMfLKKed7uP8SAp/C8HxLsUR/rCnOdiv48VYz45OoIcCnEvLj5C/TZoIOoqAguWGN8aCn4LDZrsqU+5LjREaQLM+4qoBSyL4T58BZvVP6Py5+Wdjt0NJbxEcgkA5xTzQBVHVW7A48hMtXQCRXwHYpvsCenpIYmTtCuhMj1Le2C3ZKg8Dnt8WoLCFWI=
+X-HE-Tag: 1783071285-963466
+X-HE-Meta: U2FsdGVkX1+Gzr12s0fiN3kJiOqdusDwUDNSzKyBqPkpkJapTj4owmD/yz8aEB+Ewg5yu5tel+kV/1wDQ/0wOl/KsNNL/qYIPy0WkhYBlh5bqJdMBfafP8rTPeSKVGTKnCgwHdVTdpctEjHnCtWMYd9JlpKhP0cBPNm3+SCp1SbbMHKAdFzA38aylmdXRAKJGLVZwK6gEIDuci5iSIyvC+eT/mcZkngfnz9VXn5GUD6kPJemzdF/LStnRWNBWgk2sNOPpUb9Nrm6l3Egpf6gIevrA+DXvLOkPoiuVguDeYrbf3JtNs/YvFfPKybMjgjHNeWeH8WeE0Dwv2SVdlFwbkBVzRpUA9vAujiBABrezH7CU03lKZssNjjUF+6bnxsc9y9EBhyMN+sX9gsXB6gyU2/woxUgryFr3iU2Tz3PPcqIbGtjsqpFh14UySFsaamkc+do6w33TCED3BH+eGwCV95lH4ybLkxzvTeqmOjXK3hOMERNkcDYJrzKCptykYjg29efLo8J8G8+9VkND7K4ByK2NUB4zpqP8zMdVmbVuxwv4dXM45SUCX73/1xpzGg89Z+w83s3LdPEmZ5JkzL5Sh8YW0O6oiVS/GYY9mn7eRMNjR8KGG1QbRbS+cqL3QDjSaUpgK/8J2RrsN1az4Oy/s6OwKft6w7WnpuBY/D/uMBrZ+yX0+FrOwx6DofEFXoZA77pYUZNWYy8EOlJ7Z4QnoP9Ya9xehOUAPyMxddtcnGiXwvk/Cwv/VbJ9IlTeo1lQXJz/kJt1D3Oo1oQBwR6rKhCjDTxIsKYlOyZBrPxy1LvfevTDQAcPhIolv/I/kKpqbo37pWDRBhoLirfGo+HVHypF6AqpL2rGtFgTmksGgdUHyoZCeIMH6i9APVGjLAJTY3z38XAWsNf9l+tPE+WH83CzxOmawe3l8AnadJpdx1ma582YTF0UXGj9iPUPfPKmxXEH35l0m1qh9CXtgd
+ JADlECFL
+ 66FpVWF6rla2AXjmzqifvRWscQNyBJCz7zMy4i5JLvNS+TFbeyflloTPXR6Dtp/TlqSH2/TWNkedbsUkd5Fd6Juh7rEl0ePnaH5femKW/PhOphZr5uxC+FQj1AJl9mk87b3oxM5nNyDlvqUmgoSWezXhX+MOqhla08wopDvEuchVessxLQ1FOZDvarUiycu5fHaTOQz8olNEoZuBpDlZBjlXn4ttvwGBJnojAxG10cAJBW+M2OGUOMDkPV30Hm6vEnilwMpt6i6NCkQqhXgTTB7IAstvic2n0WcYVUlk0XQYKcdEUwjPdaXIy/eQMQ4zwAtglMb9k8vzI/nX0IlRuDo1lVGTfl0Zn1Qx1oKZwCZa6rLyEkQ9z9GSzswTbSCtLOcJE46qU2lEJarKRyv9OFWCbkj1yaXF7wnUB8leKTXABSxuBwWT7PFWZivyhVqUVZ4KRTrlqsf0OmEOflw83uf+QHHzR4kPuaWefvip9F1Ilaa2DDnl/llka+U7LbOtKK+QxKSAFvTWf5Ub4mYpGVcoLpgnfmaxqWghNalvTTVmUp8jtYmH1k0cPl9vI8OlnQgRK3pCKrtiMkD6o/0d8/aSnkNrxzJrR0LeqSQVSiGr3CIwNWDvPzbXjUvwRIjyeFY5DTjybLocihjXkwSQPH7YMHwPJwpZrPbvR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,113 +211,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/2/26 11:49, Brendan Jackman wrote:
-> Deduplicate checks for whether the current context is safe for
-> spin_trylock().
+On 7/2/26 4:40 PM, Mike Rapoport wrote:
+> On Thu, Jul 02, 2026 at 03:49:36PM +0200, Przemek Kitszel wrote:
+>> On 7/1/26 15:57, Mike Rapoport (Microsoft) wrote:
+>>> ice_gnss_read() uses get_zeroed_page() to  allocate a staging buffer for
+>>> reading GNSS module data via I2C bus.
+>>>
+>>> This buffer can be allocated with kmalloc() as there's nothing special
+>>> about it to go directly to the page allocator.
+>>>
+>>> kmalloc() provides a better API that does not require ugly casts and
+>>> kfree() does not need to know the size of the freed object.
+>>>
+>>> Performance difference between kmalloc() and __get_free_pages() is not
+>>> measurable as both allocators take an object/page from a per-CPU list for
+>>> fast path allocations.
+>>>
+>>> For the slow path the performance is anyway determined by the amount of
+>>> reclaim involved rather than by what allocator is used.
+>>>
+>>> Replace use of get_zeroed_page() with kzalloc() and free_page() with
+>>> kfree().
+>>>
+>>> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> ---
+>>>    drivers/net/ethernet/intel/ice/ice_gnss.c | 5 +++--
+>>>    1 file changed, 3 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/ethernet/intel/ice/ice_gnss.c b/drivers/net/ethernet/intel/ice/ice_gnss.c
+>>> index 8fd954f1ebd6..7d21c3417b0b 100644
+>>> --- a/drivers/net/ethernet/intel/ice/ice_gnss.c
+>>> +++ b/drivers/net/ethernet/intel/ice/ice_gnss.c
+>>> @@ -2,6 +2,7 @@
+>>>    /* Copyright (C) 2021-2022, Intel Corporation. */
+>>>    #include "ice.h"
+>>> +#include <linux/slab.h>
+>>>    #include "ice_lib.h"
+>>>    /**
+>>> @@ -124,7 +125,7 @@ static void ice_gnss_read(struct kthread_work *work)
+>>>    	data_len = min_t(typeof(data_len), data_len, PAGE_SIZE);
+>>> -	buf = (char *)get_zeroed_page(GFP_KERNEL);
+>>> +	buf = kzalloc(PAGE_SIZE, GFP_KERNEL);
+>>
+>> nit:
+>> from the code it is clear that we read at most a page, and @data_len
+>> stores the actual amount needed
+>>
+>> comment:
+>> I don't know why we limit to a page, it's outside of the scope of this
+>> series, but likely you have removed the limit (which will go into the
+>> loop - single AQ call is likely limited by a PAGE too).
 > 
-> Does this function really belong in mm/internal.h or is it generic? Not
-> sure. If someone ends up duplicating this logic elsewhere in the kernel,
-> that would be a shame. But goes in some generic header, someone treats
-> it as documentation about where it's guaranteed safe to spin_trylock(),
-> and then it emerges that there are other subtle preconditions that
-> didn't affect the mm usecase, that would be worse. So, just be
-> conservative and keep it local.
+> Not sure I follow how the limit changed. buf remains PAGE_SIZE regardless
+> of allocation API.
 
-Agreed. We could even use page_alloc.h ?
+data_len passed by the caller could be bigger than PAGE_SIZE, we cap it
+to PAGE_SIZE, likely due to the old allocation method
+but I don't insist on any change to this patch (esp. given all other are
+fine)
 
-> Suggested-by: Harry Yoo <harry@kernel.org>
-> Link: https://lore.kernel.org/all/397859cb-b127-4cc6-9c71-044afc99bf0c@kernel.org/
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-> ---
->  mm/internal.h   | 23 +++++++++++++++++++++++
->  mm/page_alloc.c | 17 +----------------
->  mm/slub.c       | 10 +---------
->  3 files changed, 25 insertions(+), 25 deletions(-)
+>   
+>> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 > 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 3c00eaf5f45a4..e6f300693ffd7 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1715,4 +1715,27 @@ static inline void mm_prepare_for_swap_entries(struct mm_struct *mm)
->  	}
->  }
->  
-> +static inline bool can_spin_trylock(void)
-> +{
-> +	/*
-> +	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
-> +	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
-> +	 * task may be waiting for one rt_spin_lock, but rt_spin_trylock() will
-> +	 * mark the task as the owner of another rt_spin_lock which will
-> +	 * confuse PI logic, so return immediately if called from hard IRQ or
-> +	 * NMI.
-> +	 *
-> +	 * Note, irqs_disabled() case is ok. spin_trylock() can be called
-> +	 * from raw_spin_lock_irqsave region.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
-> +		return false;
-> +
-> +	/* On UP, spin_trylock() always succeeds even when it is locked */
-> +	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
->  #endif	/* __MM_INTERNAL_H */
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index c3b246e67ed14..a63733dac659e 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5291,22 +5291,7 @@ static inline bool alloc_order_allowed(gfp_t gfp, unsigned int order,
->  
->  static inline bool alloc_nolock_allowed(void)
->  {
-> -	/*
-> -	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
-> -	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the current
-> -	 * task may be waiting for one rt_spin_lock, but rt_spin_trylock() will
-> -	 * mark the task as the owner of another rt_spin_lock which will
-> -	 * confuse PI logic, so return immediately if called from hard IRQ or
-> -	 * NMI.
-> -	 *
-> -	 * Note, irqs_disabled() case is ok. This function can be called
-> -	 * from raw_spin_lock_irqsave region.
-> -	 */
-> -	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
-> -		return false;
-> -
-> -	/* On UP, spin_trylock() always succeeds even when it is locked */
-> -	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
-> +	if (!can_spin_trylock())
->  		return false;
->  
->  	/* Bailout, since _deferred_grow_zone() needs to take a lock */
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 3989b4758ae0a..b19dc46de73c5 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5408,15 +5408,7 @@ static void *__kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_f
->  	if (unlikely(!size))
->  		return ZERO_SIZE_PTR;
->  
-> -	/*
-> -	 * See the comment for the same check in
-> -	 * alloc_frozen_pages_nolock_noprof()
-> -	 */
-> -	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
-> -		return NULL;
-> -
-> -	/* On UP, spin_trylock() always succeeds even when it is locked */
-> -	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
-> +	if (!can_spin_trylock())
->  		return NULL;
->  
->  retry:
+> Thanks!
 > 
 
+We are fine to merge it directly via netdev.
 
