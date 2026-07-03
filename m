@@ -4,125 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C40AC43458
-	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 08:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73812C43458
+	for <linux-mm@archiver.kernel.org>; Fri,  3 Jul 2026 08:46:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E0C26B00B6; Fri,  3 Jul 2026 04:36:01 -0400 (EDT)
+	id 61E836B00B4; Fri,  3 Jul 2026 04:46:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B85B6B00B7; Fri,  3 Jul 2026 04:36:01 -0400 (EDT)
+	id 5D00F6B00B5; Fri,  3 Jul 2026 04:46:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A7F36B00B8; Fri,  3 Jul 2026 04:36:01 -0400 (EDT)
+	id 4BE7A6B00B6; Fri,  3 Jul 2026 04:46:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E453E6B00B6
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:36:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 746181A04A4
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:36:00 +0000 (UTC)
-X-FDA: 84946807680.06.ECD903F
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6DCEF40005
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:35:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=SQ89YjgR;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf12.hostedemail.com: domain of hare@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=hare@suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1B05D6B00B4
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 04:46:04 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89B884048B
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:46:03 +0000 (UTC)
+X-FDA: 84946833006.13.E0D4EBD
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7F43D100007
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 08:46:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S2BBHDf7;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783067758;
-	b=VHIYGouSdw7+jgVLMfHP5UnGsP5NXpwPtYkR/iRH1niEqdZjsEMOt4c+0vOj6SCMluRmhH
-	3yE6UWxfFFikTFXuSpaliZhdOXzK9dXm/OiDYI/fmWCrCOwJPrDOfwnpTwXLr22meJPXal
-	q9bxt6TTNeVdgrbzwJgx4nFvviH189o=
+	t=1783068361;
+	b=q9LXSd2n8cTUJTjGXsPbo9owoxRsaArcaz2lSyj9a7Y6YLhoQd73psV/+rdmRHP9Wn9Ojt
+	wbM+hz1V/jGlaDkkVgXaYEx37x2s1NI1+0w+xFwJU5os2e5g1CnJUYtPp1Ggm0IM9NEBkq
+	nJI6eAMx8Qt3UkmmiVP3IwzMb23ETP0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783067758;
+	s=arc-20220608; t=1783068361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7WAbGtIrI1EcfzFik+M+qn8x7M7ZtMBRYdePiOvKmF8=;
-	b=MnG1AKJYog3uAAJ7pH4DMueq5kphLw+L/tWsKx8x8aD0FkL7ULCcjksvlQaBgfMNA80DrB
-	iV179+2CXMBWEPtp4aY9WFHOetItiyWkgcMCKEVdZOhAWNfsDaaOctC9XKv2R5MwOvoN++
-	WPLkraGlIUh6SZbMXTLRauBDDM/j6wg=
+	bh=60Vpn3H5TSaITeEafUCSZSGw+JUZcFB/W7NF3CJRJro=;
+	b=4TKZg++m5CiKFuQOlLCOHSE90m0UuQR8RVgUl0ldNoOc4vXK/L5+jkQ6/aNSezvUxhPvvU
+	tgzMXngjB9jAzpkxMZSEjZ9IzdqaMUCxKhKQbZGyW/VP1GSFzpWhrrnopYmOFZwfcdkAlY
+	J5LsZYi8+6Fdyh/WAQdq8RJCQci99ZY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=SQ89YjgR;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf12.hostedemail.com: domain of hare@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=hare@suse.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so1872165e9.0
-        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 01:35:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1783067757; x=1783672557; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7WAbGtIrI1EcfzFik+M+qn8x7M7ZtMBRYdePiOvKmF8=;
-        b=SQ89YjgRISX39MBA2JCZbYlvkj8SKFeuC0h61A769m6NkujVSNJalLeXvGSSIMC6AB
-         CexHIK0jUnSkKM/3MyVjrjHa1lQCODVd7YHC7xnJHSqSKteSoYYbrxvobYx7eGYfsE9s
-         6a4QWlVQ1EjXSybyTUK3+jBMFAp8ijOumNqYpJj5sU3rUzq++wNc3RiGy3cp/2JSTfPQ
-         r0SCp6Gk1mcGMMsKSraLjYmUIAKyC+COmRbLy1sZCHn3HqUm8Jg+bJj6B5nvKyuIBYXH
-         g+SDkUohZqNZY3MSVVwqHllFf3oFeF/bT1SPr8DY6Pqs46DS8tS6HlOA3ZXNeNYGGvUe
-         hSZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783067757; x=1783672557;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7WAbGtIrI1EcfzFik+M+qn8x7M7ZtMBRYdePiOvKmF8=;
-        b=cr47DmbioL09A6N7ZX4TaeHWy5+/8/o9U/4MWM79K+taHN0Kkjco2fvkgfv/GzuBFM
-         Pe3VmMWClQJrKUOE8jCaMDXOtos2evkOpL/QtNQMnm8B63h8zjUciuwT5rbs5j/T3aD9
-         2mJVJTHIUECoYxO8TCTAf2xNhVShgIkGBn/UQt9KqfkAAd6erJvE/kswllMKxF29bnE5
-         bV2iKDZq2NavDhTyJ6hObAAQQXTcCOQIU1uDhbLBBX1QiFVZgXQBGkOe/rML+77JP+kJ
-         A7YE2qc71gUR9I8677Q3T2HCFVy8vQxz9dnnmY39oRi/u2mIhWMbTwHl5uDXHoB3ixum
-         rYpw==
-X-Forwarded-Encrypted: i=1; AFNElJ8llzR3c+yN3HsQ3aIXFJSKlWGTxYngX28cNcEw+4tXX3fyFtvBJWEDquEVvqgsgC1VYbWDBUV2ZQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw4MA3TAR9cUPR0z2Rlx98y581+/d6jyHf3d2lmO7qkhRMQAFAZ
-	D1jjYlChhiWm4kvAXon6/r1+6WTuQkRHSWrOgO3CPLGndynbahyDn3X1FSaoQpkLkWI=
-X-Gm-Gg: AfdE7cnvsBMkUtxJ5KHKZLa2/G4U+bCOvNcB+1WZcn948qliZMTx7jmrGF5DUE1uiVW
-	KyyGcdptfVo34kb+YUGaeF0sQi/4JPbuTcI+FJtLoDX3EsGs42UvD1zMA0Kr5obWJb7n/+OqoOX
-	dT6rLGiipjiP++xDRit6LPv7VhH5/RloaIAIUEibzKOvG0L5PesiOmr2iRKfPnPmiCiMmurjokR
-	WU/Q9WnRs3tHL0z+M42wHF7le0/qrzKi+e5oRasU04CuMzKD359noD2yWGDHeRCC16HixCmOmEC
-	ZNEzunhSx61ybGEeJoAUzsNyX6Ah3X2VqhcLUQnNGVIpgXvEKFm8ajJ0F2d3pVHL80Gur53XgqM
-	XBRHhszOL6YhEP8N34+netlfcbK2+lkBQ0G2lhNuh5UpmHwd5P1CfILrUidNOzI99nEVDYXdtd1
-	0wp5M6sh31cwjIX/jGg3WHSCDKt1LgECQks2orG7v7jcNdey8GvYqKuU8l5w==
-X-Received: by 2002:a05:600c:8590:b0:492:4363:e7eb with SMTP id 5b1f17b1804b1-493c2ba4f75mr109823175e9.32.1783067756702;
-        Fri, 03 Jul 2026 01:35:56 -0700 (PDT)
-Received: from [192.168.178.47] (aftr-62-216-205-241.dynamic.mnet-online.de. [62.216.205.241])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493ccd9d620sm33431275e9.1.2026.07.03.01.35.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jul 2026 01:35:56 -0700 (PDT)
-Message-ID: <5b03b1d4-c094-437c-8934-64b94bd37138@suse.com>
-Date: Fri, 3 Jul 2026 10:35:55 +0200
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S2BBHDf7;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <6a547571-e60e-4b36-9968-011e3d880588@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783068359;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=60Vpn3H5TSaITeEafUCSZSGw+JUZcFB/W7NF3CJRJro=;
+	b=S2BBHDf73puw0tKBLqjZuAEU/CWtMRJAxDqfOYNqFAeo8YjKSh7dR2sR+MoWh+wM1ysj/x
+	y05f5fq17vzO2zQPppAjq2CCy6FTcDHSUmRMNOfgx/4ysnNpqGIjegsfguN233t1vfPVtx
+	kpopE2aCTEIKLD3MkESUBH8/cJ+luV4=
+Date: Fri, 3 Jul 2026 16:45:34 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] scsi: ipr: use kmalloc() to allocate IPR dump buffer
- memory
-To: Mike Rapoport <rppt@kernel.org>, Brian King <brking@linux.vnet.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
- Brian King <brking@us.ibm.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, wenxiong@linux.ibm.com
-References: <20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org>
- <20260630-b4-scsi-v1-3-494fb37ebe7b@kernel.org>
- <7c8f0e70-f49c-4614-af95-002fb2be11ba@suse.com> <akTjQVQQNdeO9M28@kernel.org>
- <d92f22b9-9a4d-42f2-ba67-0371f85fedd3@linux.vnet.ibm.com>
- <akYLdBME5kgyi8Rw@kernel.org> <akdpddKBt7gV6po5@kernel.org>
+Subject: Re: [PATCH stable] mm/khugepaged: write all dirty file folios when
+ collapsing
 Content-Language: en-US
-From: Hannes Reinecke <hare@suse.com>
-In-Reply-To: <akdpddKBt7gV6po5@kernel.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, linux-mm@kvack.org,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Lorenzo Stoakes <ljs@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Matthew Wilcox <willy@infradead.org>, Song Liu <song@kernel.org>,
+ Eric Hagberg <ehagberg@janestreet.com>, Zi Yan <ziy@nvidia.com>,
+ Gregg Leventhal <gleventhal@janestreet.com>,
+ David Hildenbrand <david@kernel.org>
+References: <20260702165409.164568-1-pfalcato@suse.de>
+ <110e92b2-f7a6-487a-94a2-25ef1242afb7@linux.alibaba.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <110e92b2-f7a6-487a-94a2-25ef1242afb7@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6DCEF40005
-X-Stat-Signature: ppgfkm1rrp7wcj99nohs8gftwon5dkux
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 7F43D100007
 X-Rspam-User: 
-X-HE-Tag: 1783067758-353600
-X-HE-Meta: U2FsdGVkX18s+KyO7VoLH0UuAoykxJHVFO26jzACvmWMe2fCg2kWp8MMyGBwel2VB/3p956eHApurmbBxOCStE8rJmSZqaIm8vjUIttxF5YcWXYu23kuQUoyzrSjp7HdRCvB+AJROP6bE7h4HRp4IhkxcaGsX7TChVok+RCBuIdFEeiv8xSxZTnphqBXP2GEQ0RoNO0ZIBtLJdA5HeYR3a2n958RDgJOCE9CxbUmFwjb7t0tkk/+ub7fbJiJZ8e8hlJ26fllAIbIHHajQgL5cfO3I3xh0Aena0jvic2NA17On0sNv/zS4jBvNx6qUNG3uTQxlYQOOpITfBgZttKj09w+1Ty5XhCFE6kdC8jR6ziWJn+qaxhy7NcnecokCNZ9jytEk0PaugQF99kNG7o6PJ+Mjiuf3bNTIYA6yRmbN3/BaKwGmGVbPzjN+vEaAchJ4fUOQXd/88bcIAaQmSOHeWMJbUHbdn8SjOKED7RCm5/rfFvaLxLvVAlaQJ0RYa5DhyMbBg63/QAWi6iotCnNbTUa6pybM0ebE+E4wQQGJUmrTdzQek96Xvkl8mD+lLqgxE5xfutN5oGg4gvIKBCk4+TBOpn4l33DuaShRcL/gcbUnvpDMmAamdnIFLrg5zKtCpqA8RgOOZdF3/0RRRSEhlbiqUm3H97Ylfl4CIfjmFxFFtbjGXe6S/e6vhst0ZFCZOmMFmO/Cz2RueYgQiVjLmwIMD957JvvHqOcG5eWj9cFQZreria35Yqx6urqeKa9bsZNa/Ne+Hw4Anri5nmxboxhhVz2kpkfTFCZ+KPlLj/Rb1viFWZWRvPGZ/LyKWznFeJ8awPs3EsK4vYoW+JSJp2HImZiK9kGConXzv4bw5BjPlsPdLisOapCt3b7Ic8klvwfxUUxBEtfiKofIOHzA7WQutJj9/AkQzsjIJAbqw9ceovIzaOc3AsmtIbcXOoGUdfR8uKRRA6cHxYPGT8
- ZSvW8EP2
- d+Yy4YC9lUBg6SZR43tdHr8M/AJKVV3dDYlLM/H7bx0az1ZK7FSn9CdhAdcG0k68HuQKooM3HvDu078piMEfbnJMv5FHuaS/lbc0/tlH0VRBEwR3PnL1fhbfzz0csTl8SIxhVIaztvwPfal3lic+tdtgzOpposbtEU7ZxTl1/3Xw3/CWIMRI3UjUoxVCefqPTreW6efH9GaLQBPt5WrJsPye+yf2DK2pSylA9zXK3q2qphXqPZFadYqPDKI6e0MfIFUEPkGeX/nEFwxa8rmht+K9gW1THb4qS59YrTe6OtRKqPd5qdhIdZ5hYAwpa+xGEaV8vos2fkhaGkKUA0e4Y+kVZMR+FZ35wnNUPrhmFEimk6VYzsacWSXJCwSqychP3gKia3U/snxjzrk3pJnQt3NNrB/Dae2MkJ8IspdDIwcnSp5wYp4ItELajHOZxO9PniMd8
+X-Rspamd-Server: rspam09
+X-Stat-Signature: e7kw75ikbtx3w34odaazktj4d7d4ifi1
+X-HE-Tag: 1783068361-566152
+X-HE-Meta: U2FsdGVkX1+AimYgODECrsgk9HyMItcnlHrHpPcxaT9K1hXLqUaej7nMTXsdYRRpNwmnEiVD2gcyq/7P6TMrtGA96aPrm41q90YxqlW6jk2ROx6hYEHUaBqt5ENmTwdIbbRAPqsml/lC5/jNs08sGQC50l3A7iaGKijqQ+CWQRteJHO9rKtQrUMx0iZH+7B0oRV3NCVbv+Y8XUb5MCfWJvmPJAJcUcl8lxncicgbzZ3JHq1gfpXbuA0K8U7aeCDWpCrhNT76zYcRUysfqbDgcVBe2o1JBlxJ76yww4QSifQfQy3vxEv3UoBAARn8MOWe8cg6rekFZ+9RRm85S7YKCFmyyAYpvIeK1S/TFHggwzIQzZ13Wi7TJixbEIS9kcYiyfRGVrs0rm3w39Dd3o6wRd86DteM1cbwmw/c2PBBm0RH+T7Urb0eA96vQ/RXKgcO9ZifQqfGc9SeWMtFhLoFjcXgq27dTEuNF/49iFPCvbplf69MFdrgwTY9fGJsd7vT6NOuBQkJ3qUCb+WR3NycuP+eCf4m6W53k3SCAKKp8LzbadgvwjakgaFF4H04uzNAUmjcaMEF5Y1DtrlTGcIbkK36U/XrfvR9/1Dr4m1VzvOQ2pywnz90wXbfUAw7bSWmdRNm+MNRQ4DkNGyStNLQ81p2RsYkwFOzb/gEcaqptQgN4PV83klAtouT7k18oLSAuKpUZ1dDobM2KpHTci9hSrJK3qzjohgiO873gGGSdO3lhD2a8333fhFo78awrsGyPI8EQ4MIo7owk8H4ivugfQDxEdHctnsc4mPV7Gl7wlVG5aqbQ0iFAUtkGtFL0HP9OV2dKigeakEHnn5ZkO2Q1xp9sr8YvqbO5W61ZuT/McLOP+iRCzHX1HfaiMHxuPPajKx50oMrPwBABV3jNHQddE1cXIc75Kxj61qWRfdiILWM178Ft4Os0hiMeMyxDWVNMDEkHbDFXgfVFzcukMX
+ ZLSxe4Ck
+ FPjfZc1BwPQwriHCI9vdh3OP1unFH3lwoKgqAq3KRumr/NUhvFnd/HH+HLvDUSkOK4OoBwzNYTcsT8EEHBSshI1i7V/7z8iYFcP2FdbXQXQFpBxNU6D2u6cCfbMs1U+bp6Xd7ZluWJJ2h7SkctE9R8us7p2CzknA2ibRp82WB3FBwPDfir0hfPGFcKvHnsmx9FZZPQJ/1r3FwZAQ0sA7SxWA8aqjzJYBSG0mJyt1fwNnotRK/vyD1cJAJN7t1juQ0XoxxQLczPIY4fyeuk0Kt64maClsXKndE8X3DhvuWBbUW6lJfLIxynrskrEpah58W3mgf7T76IsnQciB1gThj4Qhem4qTYHBXBt0y7PG2gRybK8SqFxC5v/tazJ0DIXF3mJTzrzfiw1wkTFkjF1MwAymD3Hq8Qt2t5piFb0vvbeOSCYQF2lo3xfMbOi5HoLy3N4XAZt5KUWha9v9dgRIMj7t4Zipy+icz6tRQe7A54142fcM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,101 +101,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/3/26 9:49 AM, Mike Rapoport wrote:
-> On Thu, Jul 02, 2026 at 09:55:56AM +0300, Mike Rapoport wrote:
->> On Wed, Jul 01, 2026 at 04:03:48PM -0500, Brian King wrote:
->>> On 7/1/26 4:52 AM, Mike Rapoport wrote:
->>>> On Wed, Jul 01, 2026 at 09:03:06AM +0200, Hannes Reinecke wrote:
->>>>> On 6/30/26 12:54 PM, Mike Rapoport (Microsoft) wrote:
->>>>>> IPR dump machinery allocates memory to save adapter's crash dump using
->>>>>> __get_free_page().
->>>>>>
->>>>>> This memory can be allocated with kmalloc() as there's nothing special
->>>>>> about it to go directly to the page allocator.
->>>>>>
->>>>>> kmalloc() provides a better API that does not require ugly casts and
->>>>>> kfree() does not need to know the size of the freed object.
->>>>>>
->>>>>> Replace use of __get_free_page() with kmalloc().
->>>>>>
->>>>>> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
->>>>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>>>>> ---
->>>>>>    drivers/scsi/ipr.c | 4 ++--
->>>>>>    1 file changed, 2 insertions(+), 2 deletions(-)
->>>>>>
->>>>>> diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
->>>>>> index d207e5e81afe..5a212bfdeec2 100644
->>>>>> --- a/drivers/scsi/ipr.c
->>>>>> +++ b/drivers/scsi/ipr.c
->>>>>> @@ -2893,7 +2893,7 @@ static int ipr_sdt_copy(struct ipr_ioa_cfg *ioa_cfg,
->>>>>>    	       (ioa_dump->hdr.len + bytes_copied) < max_dump_size) {
->>>>>>    		if (ioa_dump->page_offset >= PAGE_SIZE ||
->>>>>>    		    ioa_dump->page_offset == 0) {
->>>>>> -			page = (__be32 *)__get_free_page(GFP_ATOMIC);
->>>>>> +			page = kmalloc(PAGE_SIZE, GFP_ATOMIC);
->>>>>>    			if (!page) {
->>>>>>    				ipr_trace;
->>>>>> @@ -3226,7 +3226,7 @@ static void ipr_release_dump(struct kref *kref)
->>>>>>    	spin_unlock_irqrestore(ioa_cfg->host->host_lock, lock_flags);
->>>>>>    	for (i = 0; i < dump->ioa_dump.next_page_index; i++)
->>>>>> -		free_page((unsigned long) dump->ioa_dump.ioa_data[i]);
->>>>>> +		kfree(dump->ioa_dump.ioa_data[i]);
->>>>>>    	vfree(dump->ioa_dump.ioa_data);
->>>>>>    	kfree(dump);
->>>>>>
->>>>>
->>>>> I _think_ we can replace this with kvmalloc, and allocate the entire
->>>>> dump buffer in one go. Once switched to kmalloc() it's kinda pointless
->>>>> to allocate separate page-sized buffers here.
->>>>
->>>> kmalloc() performance is on par with __get_free_page(), but kvmalloc()
->>>> would be slower if it falls back to vmalloc().
->>>>
->>>> I'm not familiar with the driver to say if this could be an issue here.
->>>
->>> This code only runs when the adapter has hit a fatal error, so should be
->>> extremely rare. The memory is getting allocated while the storage adapter
->>> is in a failed state, so anything running on the system at the time could
->>> be stalled until recovery is completed. This memory is allocated and should
->>> be freed soon after the adapter recovers. In order for this code to
->>> run, the iprdump daemon must be running, which will then read out the dump
->>> after the adapter is recovered, and write it to disk, after which time, the
->>> ipr driver will free the kernel memory.
+
+
+On 2026/7/3 11:49, Baolin Wang wrote:
+> 
+> 
+> On 7/3/26 12:54 AM, Pedro Falcato wrote:
+>> As-is, khugepaged and writable-file opening exclude each other. A file
+>> cannot be open writeable and have THPs (because the filesystem is not 
+>> aware
+>> of them). khugepaged will never collapse file pages for files that are
+>> opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
+>> particular file is dropped. This is fine because nothing could've been
+>> dirtied.
 >>
->> Thanks for the explanation!
+>> However, there is an edge-case: collapse_file() might not be able to
+>> coexist with concurrent writers, but it can coexist with dirty folios
+>> (from previous writers). Therefore, the following can happen:
 >>
->> So the allocation is not on the hot path and it seems to me that
->> performance differences between kmalloc() and slower vmalloc() won't move a
->> needle relatively to the entire dump procedure.
+>> open(file, O_RDWR)
+>> write(file)
+>> close(file)
+>> madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
+>> open(file, O_RDWR)
+>>   nr_thps > 0
+>>    truncate_inode_pages()
+>>      /* THPs are cleared out, but so are the dirty folios */
+>>
+>> When this edge-case happens, there is data loss, as the dirty folios are
+>> fully discarded.
+>>
+>> Fix it by fully writing back the page cache (and waiting) when collapsing
+>> file THPs. Doing so provides the guarantee that no dirty folio will be
+>> observed while there are active THPs. To fully ensure this is safe, the
+>> invalidate_lock needs to be held while doing the writeout, so that
+>> do_dentry_open()'s page cache truncation excludes this write-and-wait.
 > 
-> I looked more closely at the code. Currently the dump continues as long as
-> it can allocate memory and even if memory for the entire buffer is not
-> available there still will be some data in the dump.
+> Thanks for explaining the race, and it looks reasonable to me. One nit 
+> below.
 > 
-> With a single allocation that may be as large as 80M
-> (IPR_FMT3_MAX_IOA_DUMP_SIZE), an allocation failure would mean no data
-> would be dumped at all.
+>> Cc: stable@vger.kernel.org
+>> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+>> Cc: Christian Brauner <brauner@kernel.org>
+>> Cc: Jan Kara <jack@suse.cz>
+>> Cc: Matthew Wilcox <willy@infradead.org>
+>> Cc: Song Liu <song@kernel.org>
+>> Cc: Eric Hagberg <ehagberg@janestreet.com>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non- 
+>> shmem) FS")
+>> Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
+>> Closes: https://lore.kernel.org/linux-mm/ 
+>> CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
+>> Tested-by: Zi Yan <ziy@nvidia.com>
+>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+>> ---
+>> This patch is written against 7.1.0 (because the code no longer exists 
+>> in mainline).
+>>
+>> Zi, I kept your Tested-by, but I had to move some things around and
+>> use the invalidate lock. Please re-test if you can.
+>>
+>>   mm/khugepaged.c | 39 +++++++++++++++++++++++++--------------
+>>   1 file changed, 25 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index b8452dbdb043..0707d719a270 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -2094,32 +2094,43 @@ static enum scan_result collapse_file(struct 
+>> mm_struct *mm, unsigned long addr,
+>>           goto xa_unlocked;
+>>       }
+>> -    if (!is_shmem) {
+>> +xa_locked:
+>> +    xas_unlock_irq(&xas);
+>> +xa_unlocked:
+>> +
+>> +    /*
+>> +     * If collapse is successful, flush must be done now before copying.
+>> +     * If collapse is unsuccessful, does flush actually need to be done?
+>> +     * Do it anyway, to clear the state.
+>> +     */
+>> +    try_to_unmap_flush();
+>> +
+>> +    if (result == SCAN_SUCCEED && !is_shmem) {
 > 
-> I think the current model is better than using a single kvmalloc()
-> allocation for the entire buffer.
+> Actually, the operations below only for those mappings that do not 
+> support large folios. For mappings with large folio support, 
+> filemap_nr_thps() always returns 0, so the race described in the commit 
+> message won't happen. We can add mapping_large_folio_support() here to 
+> filter them out.
 > 
-> I'm going to send v2 that keeps kmalloc() and only changes GFP_ATOMIC to
-> GFP_NOIO if there are no objections.
-> 
+> if (result == SCAN_SUCCEED && !is_shmem && ! 
+> mapping_large_folio_support(mapping)) {
+>
 
-Fair point.
+Right! nr_thps only gets updated when !mapping_large_folio_support(mapping).
 
-You can add:
+For mappings that do support large folios, writable open won't see
+nr_thps > 0, so no truncate_inode_pages() for that case :)
 
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.com                               +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
