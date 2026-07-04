@@ -4,123 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A7C3C43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 21:14:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1943DC43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 22:08:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7B696B00A3; Sat,  4 Jul 2026 17:14:19 -0400 (EDT)
+	id 9FCC16B00A3; Sat,  4 Jul 2026 18:08:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2B886B00A4; Sat,  4 Jul 2026 17:14:19 -0400 (EDT)
+	id 9D4456B00A4; Sat,  4 Jul 2026 18:08:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1A3E6B00A5; Sat,  4 Jul 2026 17:14:19 -0400 (EDT)
+	id 8C1DE6B00A5; Sat,  4 Jul 2026 18:08:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DCA06B00A3
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 17:14:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA1B01C800E
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 21:14:18 +0000 (UTC)
-X-FDA: 84952347396.01.5BAD41B
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0705340003
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 21:14:16 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GXOX0Qfv;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D7AC6B00A3
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 18:08:23 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BEEA2A05DB
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 22:08:22 +0000 (UTC)
+X-FDA: 84952483644.08.A076606
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 18CD8140004
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 22:08:20 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="l5KA/1tb";
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783199657;
-	b=v1+yoAxcEfgWsXYExXQsULa5Cg7oC0Y/BJHDAX2DuJJMFeOH7YpM8iwXkBy1gxWZUsoCKi
-	uS3BlMGlSUROM/P1P+3ZFUaLp/il+4oU0Ll2SVtSppm4ni/kESZs0rV+qUb58kTzeUNhLw
-	bV/0Ou9aDmAClbSKLgsFMG6QPkXf7s8=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GXOX0Qfv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
+	spf=pass (imf09.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783199657;
+	s=arc-20220608; t=1783202901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wNObvvCR77mS9Inyq/bIvC7lHlQKSaAhco2QLbfN6gc=;
-	b=HuRcYM0nKc76YVo1Dv16Kkest9RqJh5VzF/QKOhzzQuFDz1GSaAXDiZgDVmLbYLdopbDKB
-	TpQClI82J2CecjDV2wmx33LA/+NBYPQ5SijUcEB+XOYw4f3nLqFlYePHNg3b7nx5VlddJh
-	dkEp+L9p76HNlE6iq9yLiutIOZfky/Y=
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c8fee9f63d5so863620a12.0
-        for <linux-mm@kvack.org>; Sat, 04 Jul 2026 14:14:16 -0700 (PDT)
+	 in-reply-to:references:dkim-signature;
+	bh=xpPUq9y1IeHXyjjjlr7/H6y5/V+mpreOLVS8riuUpgE=;
+	b=7Dox5S1vkVFlAkCwcgr0d7SRM1HcOkHvU9EkqBNEyHc/BfAiUj2Q/CFc4RCKr7qpesx1VP
+	L4ys8s46RFJrJPLff7HoBAOvYGqn3U337fFF40RuY0ec9lA2YIPNVFTxXxHKc2hcYReJ7q
+	kb9ODJs0hjrgU8mkUWwUVjFSMcJvNFA=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="l5KA/1tb";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of shijujose2008@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=shijujose2008@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783202901;
+	b=X7laV5bu15DZoceCzp+PgDX62P23lhR3VWcpTLUPO61OOW09YPzradC8GA+klLWlsLrKlp
+	IkY95ooI2H3uku0ZEtF4Ff01F/O2mNAmTxPmOVT5xQS6LD5avMbhToj7jIFTpvMOgJA0XF
+	rRTkNpcReZ4KA4lkaHrN3KK0Ubj4PR4=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4799b3f7c83so1129161f8f.2
+        for <linux-mm@kvack.org>; Sat, 04 Jul 2026 15:08:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783199656; x=1783804456; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wNObvvCR77mS9Inyq/bIvC7lHlQKSaAhco2QLbfN6gc=;
-        b=GXOX0QfvDIG+rZb4NGR/w+GlDucUS2oor10Tcvux7YCm0L8CiqzeAvyS37Jm0tlFwN
-         LejCUZzQWps4O99PHf2fTU6bzPJBpL2D81zdLmlzmtWNwQvnaqKeg2dFT0UWe1B1nyD7
-         QNUSNFirtcPIWWec0UY3vFu2LJAfQUbCICJulhNxLpUnwj/idXYXosp+RfTFkpMjb1Qu
-         IP73LWb3Px+OSkBnsyRxvChqQEtHLcmMw9oBlzAthryvRnry3SPNp3e7nrpYdp1ZA/8v
-         fpgYKheE3sFcImyK+OPhGncp+MUrJZ01V29AtnXJFaPrfwOHjjKm7Y3HH8by3cAPFdFl
-         5moQ==
+        d=gmail.com; s=20251104; t=1783202899; x=1783807699; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xpPUq9y1IeHXyjjjlr7/H6y5/V+mpreOLVS8riuUpgE=;
+        b=l5KA/1tbfd6qXa62qeCweqnXC9KVHHlBnambW3H3OvcKEf2ZrUWPjEAXIjYx/oYQL7
+         SUDgC/oDfOnCGMA9TNqZtY3+tXbZMJY8Pj9NQ1iQrMPFnR/gqF4ypf38QDZUp9wT4az7
+         2j0skGyj2yZ90YR4V52dLswZwBUrW9SYDu/Y0q8Y34cfGx3H+gBKMJQfOB4z7GxTNreC
+         OAkxgqgBf59kiUDS6MqJO8UuNiXxTD1kLQjSMbeB1QEPpsOKOleKQUoH4mmZahnczrdL
+         En1Z/7IqIPxhc0sovOQH4vthINZEcbDmv3tt3QMZBFSHko0LG9nXWRVn3Nd+MZ+qz07r
+         UAtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783199656; x=1783804456;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wNObvvCR77mS9Inyq/bIvC7lHlQKSaAhco2QLbfN6gc=;
-        b=ittXXpPDn/RIVZWA9y2oxHq6sTplQ7YeHmAQKPpLxn52VVfgod+QKJ2KI4Q1I+LESK
-         dJCZIcmylW6vHfsx/2KV+LFWT3fOZCXj3hsHu+67eeI7/PWC4FfvENV9v4ODQ2N0h5Z0
-         t2jOmllXYGReqUmml7fTVCFSzZhymS2F/bC06tzKP6eB9SZFt6/f91Bem2lfgjnZa2mw
-         8e0LFWRIJTzMs8hFEZVEZOJaFOj2qz0EJoicVrX3XCiuMhGpRezDyG3IfWrMynhVY9S/
-         NugeHr+lp3HgVYjrUbMPUe4wAq0z7EkxuObvnz3cRk2YvurACnr6T+sfQdhZ/7aDeT+i
-         +FqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9FrqVwc4nzA8e238qVVRCYUjYe6gbqz2eyM3bB5rX5y3Am2g8J2A+sP3EnNW1a0lCeowFT6pXnvw==@kvack.org
-X-Gm-Message-State: AOJu0YxCMl1ynzpM6Ahffd/qit/5mE25ovEQlpcj23OFiwfGgh3YWx3Z
-	Ebaenot+VUb9ywrN/qAIFHmAYY0L7c2uvNreXjgXn+VRc53R0awXqqO6
-X-Gm-Gg: AfdE7cn2L1Alwu5qR2v2eNUyeLhNASFE90LrzrwGBubeuV8wiDPdwFHpwhkRzPRZ1t7
-	IKvprVezxv0YuTjuf2Sg2JPlTM6ESsVHYKQBDLqN6jNhF83cSAGB5ZWE/a5CAedRrPB4idLd/4b
-	YXe6qFvyilggjn46D11bVOBQKEpnSDISwCllbCOwKri7i7DBpLm89af7JrTmPJpFUkiP9qrW5gw
-	f1r4yWhnT6d3ePXkiVdQ6orIRbSLSb3/Z6VL72DWIn5QTQPrA97SKSy5Nb703pDVBVZRtDBdXmx
-	aJ1DVdYS+KIS/aJPp6OseGE+UZT86uIUXkqjME86k+VnkJ0umF6Qg6FFPHpQnxI6w6GCWD4M2uW
-	wmu00GbpZY8luHcIgRs48ZoOFf+rqwxrmpP307AoyTKYGuAqO08WbpjMerr/HuxvvEeLtn6cm+d
-	mN1s7NXbA8qFfUZgkH11VtSmsrQAE=
-X-Received: by 2002:a05:6a21:a91:b0:3bf:a698:ce4d with SMTP id adf61e73a8af0-3c03e5ea69dmr4576055637.54.1783199655731;
-        Sat, 04 Jul 2026 14:14:15 -0700 (PDT)
-Received: from nyx.tail25a6.ts.net ([98.35.8.117])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30f38ee1333sm18515569eec.24.2026.07.04.14.14.14
+        d=1e100.net; s=20251104; t=1783202899; x=1783807699;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xpPUq9y1IeHXyjjjlr7/H6y5/V+mpreOLVS8riuUpgE=;
+        b=FhUifLJKtH/3TIVm7X1CLh1Y3NQetI6JYE0CKYJ7F21ELhcNkDgzFONbH8Q7FcK7Ru
+         woCSOXIdIlGE4mevmL/aD8YlIw2vBhyo3//GgJV6TmHuCQv0VDLlTqKAp2Ceoo+Y0VCr
+         QYAk+RlYMnOAG3SYkPA6ORrf+C97qQVgbFKWzfPRulLUWd4DKKCaQ+7tQfE35rhPTFP9
+         UnPCCt/cwfiVuRuTCItB827/VzOFftJa35r5Ck2f1Y+KwkfFT6hjIC1ROm7DSWiflAJi
+         0ObOW3uuFTpCWbWGu/JV1NHRWVU0bixDURTLFofBxXPcW+3YZXZYzIZtfMNvbpgPc+oD
+         wjww==
+X-Forwarded-Encrypted: i=1; AHgh+Rr/LDzOdooivFXFiWHr62+r4tpq/JkMOzmGk7xZobKD4u9BUaE/ntarP1PCtd6Lcc0ljyE7sn9NAQ==@kvack.org
+X-Gm-Message-State: AOJu0Yye4CxrcdiKIMIHJFzUqG0Jk2iqOJmp1L4p2e4FvvRP179dgB3C
+	J1ecNFfNM/ryKyt0MAIyIlPYUvS77fxl8A+XNHFCGRZb+6ngzjlcoCpd
+X-Gm-Gg: AfdE7cn/cKMwf3ZH4X1LG8VM2QiJNnpud3FDfJU8Ri/hHXguNE1BC/1Y0ajd9w4qSUZ
+	mypqZ9QdLisM+8RwiCQ0Nm8z39VAbrfBHH22W9OW9FUI7uI0Qf861mUPcSNT/kClfVKJgboouOS
+	PWm5hlObzIqs+zPDU6xXFkezy/yPaFgWyNwUeOHB3IEIHT3W9eQxcnXihwrg/5VtfOj4fY1ZWRA
+	kQ2jc+s1jrnXpt8LsdZoVj/iRrwJvGjJ75Uad9janOkLvkGMyLkORA/5N39GZ6zYMY49sdsggMf
+	2mfwBdeu4PfT4oxfUrH9Md/X7COF0ofDujr3IfTMy1GkB4M871xN1HE+xOc/x/2J9OSr1YthZ40
+	zP2X3ICCER+3QQaT2pH9r8KmjEY87fSTg6Fr+dCWlFJWcrZwYWSCOzxVspfJ7ROIN6YkO2rIYal
+	CMD4L5uHjm0fKgEAyhwTAgXVOGgVJ5aRIdu7TuKA8oVsTjMDqybdQ5FwHpJDhwXwqnCGUZTAIND
+	VIwUgFb5w9SLgxDAHUr+A==
+X-Received: by 2002:a05:6000:41ee:b0:475:3a97:8e2c with SMTP id ffacd0b85a97d-47aaa60d33amr5411933f8f.16.1783202899351;
+        Sat, 04 Jul 2026 15:08:19 -0700 (PDT)
+Received: from localhost.localdomain (stev-08-b2-v4wan-169520-cust2225.vm32.cable.virginm.net. [81.98.232.178])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960816sm10478477f8f.29.2026.07.04.15.08.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jul 2026 14:14:15 -0700 (PDT)
-From: Farid Zakaria <farid.m.zakaria@gmail.com>
-To: brauner@kernel.org
-Cc: david.laight.linux@gmail.com,
-	farid.m.zakaria@gmail.com,
-	jack@suse.cz,
-	jannh@google.com,
-	kees@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
+        Sat, 04 Jul 2026 15:08:18 -0700 (PDT)
+From: shijujose2008@gmail.com
+To: rafael@kernel.org,
+	bp@alien8.de,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	dferguson@amperecomputing.com,
+	linux-edac@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
 	linux-mm@kvack.org,
-	mail@johnericson.me,
-	shuah@kernel.org,
-	viro@zeniv.linux.org.uk,
-	Gemini <assistant@google.com>
-Subject: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and interpreter selection
-Date: Sat,  4 Jul 2026 14:14:09 -0700
-Message-ID: <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
-References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
+	linux-doc@vger.kernel.org,
+	tony.luck@intel.com,
+	lenb@kernel.org,
+	leo.duran@amd.com,
+	Yazen.Ghannam@amd.com,
+	mchehab@kernel.org
+Cc: jic23@kernel.org,
+	linuxarm@huawei.com,
+	rientjes@google.com,
+	jiaqiyan@google.com,
+	Jon.Grimm@amd.com,
+	dave.hansen@linux.intel.com,
+	naoya.horiguchi@nec.com,
+	james.morse@arm.com,
+	jthoughton@google.com,
+	somasundaram.a@hpe.com,
+	erdemaktas@google.com,
+	pgonda@google.com,
+	duenwen@google.com,
+	gthelen@google.com,
+	wschwartz@amperecomputing.com,
+	wbs@os.amperecomputing.com,
+	nifan.cxl@gmail.com,
+	tanxiaofei@huawei.com,
+	prime.zeng@hisilicon.com,
+	roberto.sassu@huawei.com,
+	kangkang.shen@futurewei.com,
+	wanghuiqiang@huawei.com,
+	shijujose2008@gmail.com
+Subject: [PATCH v20 0/2] ACPI: Add support for ACPI RAS2 feature table
+Date: Sat,  4 Jul 2026 23:07:43 +0100
+Message-Id: <20260704220745.110773-1-shijujose2008@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0705340003
 X-Rspam-User: 
-X-Stat-Signature: 3o7cx7u7scwug6y8nn83uda8paadokiu
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783199656-436347
-X-HE-Meta: U2FsdGVkX18QiezUf9kK5qC9GsstNcGqjzufJOrRZFuEfX8n39zy08hw5rNvgCnJ4XwsdrRnau9p4pyB/YnLLMScLNWDRnlX2CPvzSzg3EJ8gDR7ncTOJVqpQDYuoieLL8sW9YEfPLHLuXasRn+/hkw0lYjaQ7FdoSo7cxwy1rIl750nAT15FymWpB8xLTbqgNcBI4/plrgv82X6SfX6rTUErxmsUfzOXxzgr7fo1Uasww5GFUgBolZxOgWCWLD6zm3PpI7pFDtqwsfswGXKK5XNg9ipXCd79pIEJsV6857zv1cWpadnrRdMacMyAYSk7sz2ytfMzevGSziNNCaLS4g7bDtz0vh+3OfacAm0mKr6cu7hwfqe6O8/totcoloTLyi/YRV7o9H6yjMm4dCC5IWzuaMrZmKCFmyOC9KntnoDG7nLfZSC1lKt8FzJDBSKbZD65fnLz4yXnhbnf4DXk1zvXJLHbHbFPnj+5sNyWJdciJ700+ZJlx01Y4REDAiFLREHz5X4K5nh9x4qFz2rB8cn+ymXTHvEI+Erbtkfzl1iTwqrLXq61W5Jzv2iCA4KEL/t8QoelDkzIqPOpxygpdydfXXZ0t2lTpqJm1cA6ityTrBpU+pO0R63bYAP77cMXqWSO+TNWZc7LT4YPvEpTGE90LpWeLhSZKji3sdqX8XOwn1uJvMeZAtSNp5DoqLp8aAI3jpJBCTOeE0YDUATj8jhVBeWJWJvZWX4n2bQW2Pz7ntWRVmJnMW+GV3QfMIu7+3FZ9VdYJMwOsg7/t/zBfyvQwWzCXyGHvA4RSht+N49a+fmqC12xTrPB17oPz35T9SFpp5aEV/jkSYos2yyLYUe5eED1BjHBQ/i/aSsGemYiMrbm5almw6IQ/BUAMzDyS629N1VwX6sboOtFN6uwSMzD/ICqv1scE4koluckocbX1jv9Ms4iZgPr2shLnZ1xKIKu+o6kxdmYp/81Iz
- L5pnTl5u
- RHD0LC8+hyVEOYTy6zLQ09Et5rqFnGyBz4X50fbOJXt1yrrL7eA/HcBl8vCamyfVx1b+aIaQ7b57wFhq3QZgF1D7rGHDaBSnQ7q/0lwTj0ITMu1BCG6yB5IIyWo+aM1aXFx2Rn02Y+6Gfg4qxp9M9epehawLeaRcDwl3aPqgksUuIPUXBlZIsIJPmgvrWSjy5hkfGuzXa+BZhdPsa1SQE1QK2z7HiBVQdvvrvSD49pjxrTVWas8j0M2tQ0oTCtAnqu+f+8FOXC5OlJcLA8q6IwBDGTzyonwmw80Bcs9FzxbL0wVxbSyFgH2XtgdEoQ6f8lIon5fxW+66x+bCmURgg8sBA5bDaPGP3paNf6EM8L55Egrc6cQTBVy6VrJLD/eKDT+7NeJvQOfcEp3zKqI/W45JMAR2PiHVAqJBsy1TKGu1jWYBhJYofzmYWIZbPg85ERtP5wC10Kqdb51pfU/Es0DLgzzCL1ge+Qi6OPpLdKFyVyRWB7e7U9T1FbGw/f9nEPc065r34EG+76zf1TAVzOh32WhGeERYmHr9NTMsPS12mNVxc2eBZgZ8mg1i7Van5A582PzYcZ3towiDTz3rVNmbYwMa18hHAaid2S/uPWMeAsbg=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 18CD8140004
+X-Stat-Signature: h6q876sdy3ecnhri9k8trjzh6f5pg8qk
+X-HE-Tag: 1783202900-867837
+X-HE-Meta: U2FsdGVkX18wFRR8JJ2kdR0cmArlZeIZW+am3p9A3UZsM3Q3daxpAHCRMqy2y7GEWdIxqEXBq0uLF6R7KzywxvkRSOm6uPYN2MTsbSU2kK6VVpZLYPFbnuuUW2Qr9pjMdMn38Q+af7qv9k4y4iAeHNb2XZvqKDMnFKtKAB0QSV4K6Ex4IS/FEsqc5QxQ+uOaaR8Uo98y3e1tjssbuGLjLmtvNSaU6G4KkIabikhfwl4QJtOB3yfsLpeoJYsrNoM2DbBTS141f8KjWZUTf+2WLvSRvv3j7a1nUumH0oruRjFKMVmBpBAKuwePU4wB4cgbN9GmaQKcbGoQsclP2ic1n0ylwriiCgmJnDk3VRdLqjOvcGSzymO/8tQrX1TgpMWjsN/aScvzFY6HYdgLqFDkqdEShOa1iq/3OFz0xr4DBXRvCrqIw49lbWYKm4N+3yZnmu2OiqFQ5O5eRsK2CHwfSFgOE9xxU/54o3Y6rnxbD8qU0Ef+TVSDnzPce/k3qLWGKVKvnmlLgEnYJh64RePcFbjSJRW5eRlkrowYALEewdc2kQWE1A/N/wG+Ufhyf7TPLT7OlHVLb5Gl1xMUfVN2tV8zPJaLhXlWf9+EqFbquS7WUp563OwYK6aB2GCDEA8pV5DdtO4ow8f5oz/o4sdzmr5iZVsjWsCZWgehAQYZvi4aeq0lTk7WTILTd/vh+ILI2H8EwMmrN0LRJuVf22OnrxQJOTZOX/1ZtJOGTQqC9Y4dPN+F8ab9iD7/M66KJ4W2NPwngr0y7KNOAIEDPfFGZ8KCvbAAU1wwgZ0Wg9ZP6eAlzAQqodJ+YCqcSJ8pEobKm/apJYuf2hL7rnQc+YOW2B0GAEG3prIuf1smurutOTNWltw+jBsIoJtH3gR13tgRIQKha6ZOkvhQ465fCHxur8us3omN8PL02ozTjzAUfoxOJP5YEA7pIja72vB/4xWMr3cDUF8RpEaAdWtyotu
+ FH0IbCFy
+ k8Sirakf3VmDgbA/FkGXhfZSA3pkWxnHP9ugiiwrJkzVOz4Rs0KCGOFGfIrJclnHczXYgTxYPGXQCrzfi8j0Dasj/Y3QYz0pMDQm6XLVYpKKKVjgq2+0DfRWugGheICceudNsv1mFUAkAPcwikIHuloSntGlIkJ30eptmt/AUYDFijjb20vqsMvMHLkfT2FpbhdhIR2Yr6hVC4ZxPEu8vTqSi63UN2e9Va1H9rDwLJNfnHM7hLfYTUdw3xFUaexFTx/pmhmfwYe1rb7bqa2nFhccgld41RN5A255X9zAgcreYCDBrBuUK81LN1DgxEa2EP+lImnwGYi8umNY9lejJxYgGaeZenUiJIAfbnSi6Ho3rHK0kj8DAVPhxlFP12eCFX6+aLq0F19vC8nSZVPX40C1MSW1aQzDq3iG76m/gC05rdKqUTeLqKAwbnC5DuvnVai5GpY9XgGIURb/AVEI9moG6HofUGbXgFofZU8dGi2mdZMVeNLqpv8jclp0XOyyHp+xXohhsomK53WWbfpaiSYZXf7Weg+krPbDsMGglgklG+TdqVceu5pPz02vEazqKLk5v7oWBcLgrauA+ZSm3lfphahx9KmY7P4kEZMfOLIiL2zdxBa/BiOKPqmDbZROIStWFiFIRlVhzOfjG1BgnaPI5jgnp+4z6hqNLQZ0gOuLFF9IW/ml279oJ8dHL3pocZffU2avy+YvOgerBNUMXwN6XSRvLLxo1lA3fGdxOiGCbAM0BADPqDLRxkMmatv1HpIeOLI5D9+49O1laB4sq/bkMHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,446 +149,250 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Historically binfmt_misc has only matched binaries by magic bytes or file
-extension, and always redirects a match to a fixed interpreter recorded in
-the registration. This is insufficient when the match requires parsing the
-binary header (e.g. inspecting ELF program headers) or when the interpreter
-must be computed per-binary rather than hard-coded.
+From: Shiju Jose <shijujose2008@gmail.com>
 
-Introduce a new 'B' (BPF) handler type. A pinned SOCKET_FILTER program is
-registered in place of the magic/mask, and no interpreter is recorded:
+Add support for ACPI RAS2 feature table (RAS2) defined in the
+ACPI 6.5 specification, section 5.2.21 and RAS2 HW based memory
+scrubbing feature.
 
-  echo ':name:B:<bpf_pinned_path>::::<flags>' \
-      > /proc/sys/fs/binfmt_misc/register
+ACPI RAS2 patches were part of the EDAC series [1].
 
-When a binary is executed, binfmt_misc runs the program with the
-BINPRM_BUF_SIZE file-header buffer as context. Returning 1 selects the
-handler; returning 0 falls through to the remaining handlers.
+The code is based on linux.git v7.2-rc1 [2].
 
-Unlike magic/extension handlers, a 'B' handler carries no interpreter of its
-own: the program chooses it via a new helper, bpf_binprm_set_interp(). This
-lets the program compute the interpreter path however it sees fit (for example
-relative to the binary). A 'B' handler is therefore a strict superset of the
-existing magic handlers -- any of them can be expressed as a program that
-matches on the header and sets a fixed interpreter.
+1. https://lore.kernel.org/linux-cxl/20250212143654.1893-1-shiju.jose@huawei.com/
+2. https://github.com/torvalds/linux.git
 
-bpf_binprm_set_interp() is exposed to SOCKET_FILTER programs and stashes the
-chosen path on a per-CPU area that binfmt_misc reads back immediately after
-the run under migrate_disable(); only a match that set an interpreter
-allocates.
+Changes
+=======
+v19 -> v20:
+1. Added possible fixes for gemini AI reported issues shared by Borislav. Thanks.
+   https://sashiko.dev/#/patchset/20260408172850.183-1-shiju.jose%40huawei.com
+   Unfortunately could not get a local sashiko review setup to verify the fixes
+   before posting patches.
 
-Assisted-by: Gemini <assistant@google.com>
-Signed-off-by: Farid Zakaria <farid.m.zakaria@gmail.com>
----
+v18 -> v19:
+1. Fixed gemini tool reported issues sent by Borislav. Thanks.
+https://sashiko.dev/#/patchset/20260325165714.294-1-shiju.jose%40huawei.com
+ - Replace with iowriteX() and ioreadX() for reading fields in RAS2 shared memory
+   tables throughout patches considering big-endian architectures. 
+ - In ras2_send_pcc_cmd(), add extra check for non-zero last_mpar_reset,
+   changed time_delta to s64, add lockdep_assert_held().
+ - In register_pcc_channel(), handled case of pcc_chan->latency is 0
+   and fixed timeout of 0 to readw_relaxed_poll_timeout().
+ - Fixed double free case When auxiliary_device_add() fails, the driver calls
+   auxiliary_device_uninit(&ras2_ctx->adev).
+ - In parse_ras2_table(), add check to verify table length is large enough to contain the
+   num_pcc_descs elements it iterates over.
+ - Add some missing cases to acquire pcc_lock, such as ras2_hw_scrub_read_addr()
+   and ras2_hw_scrub_read_size(). 
+ - Removed clearing base and size in ras2_scrub_monitor_thread() when demand scrubbing
+   has finished, to avoid clearing the user set values, though chances are very little.
+ - Add new field set_scrub_cycle to ras2_ctx to avoid user set value is being cleared when
+   ras2_update_patrol_scrub_params_cache() is being called. 
+ - In ras2_hw_scrub_set_enabled_od(), redesigned to avoid prematurely restart the background scrub
+   due to race condition in ras2_scrub_monitor_thread(). 
+ - rename ras2_probe() to ras2_mem_drv_probe()
+ - add ras2_mem_drv_remove() and call kthread_stop() to stop the ras2_scrub_monitor_thread().
+   However unregistering the EDAC device which registered in the ras2_mem_drv_probe() will
+   automatically happen in the EDAC via the devm_add_action_or_reset() in edac_dev_register(),
+   edac_dev_unreg() and edac_dev_release().
+   
+v17 -> v18:
+1. Fixed few AI tool reported issues shared by Borislav. Thanks.
+https://lore.kernel.org/all/20260312165247.GSabLvX5DjzhDtmyuh@fat_crate.local/
+2. Re-add support for user setting scrub address range for Daniel's 
+   reply in v16, which was removed in v13 because of request to simplify the code and
+   with the expectation that the firmware will do the full node demand scrubbing and
+    may enable these attributes later in the follow-up patches.
+   https://lore.kernel.org/all/df5fe0ed-3483-4ac5-8096-447e4e560816@os.amperecomputing.com/
 
-Hey Christian,
+v16 -> v17:
+1. Merged all changes suggested by Borislav.
+https://lore.kernel.org/all/20260126171552.GJaXehSJp33nFnpvVd@fat_crate.local/
+2. Changes for Borislav's feedback "Add remove_aux_device() which unwinds everything
+   add_aux_device() does for all those devices".
 
-Thank you for the suggestion and discussion on the mailing list. I took a stab
-at your idea of driving binfmt_misc interpreter selection from a BPF program
-(hopefully this is what you had in mind). The other approach was also to use a
-static interpreter during registration but this current approach feels right.
+v15 -> v16:
+Attempt to modify throughout the code and logs for the below comments from Borislav.
+Thanks for the comments.
+https://lore.kernel.org/all/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local/
+https://lore.kernel.org/all/20251231131512.GBaVUh4NSWqvr2xhbM@fat_crate.local/
+https://lore.kernel.org/all/20260119111701.GBaW4Sres045xnfkpz@fat_crate.local/
 
-This prototype demonstrates binfmt_misc interpreter selection from a BPF program
-so the interpreter can be *computed* (e.g. $ORIGIN-relative) rather than recorded
-statically. It replaces my earlier "pluggable ELF interpreter loader registry" RFC.
+v14 -> v15:
+1. Incorporated new changes suggested by Borislav on v13.
+   https://lore.kernel.org/all/20251231131512.GBaVUh4NSWqvr2xhbM@fat_crate.local/
+   
+2. Rebase to v6.19-rc5.
 
-As this is a first draft, a few things you probably will have notes on.
-I tried my best but I am a novice here so I welcome your feedback.
+v13 -> v14:
+1. Modifications for changes wanted by Borislav.
+   https://lore.kernel.org/all/20251125073627.GLaSVce7hBqGH1a3ni@fat_crate.local/
 
- * The prototype uses socket filter type. This seemed the easiest to wire up to
-   start. My guess is it should be a dedicated type (eg. BPF_PROG_TYPE_BINFMT).
- * bpf_binprm_set_interp() is a "classic helper", but that list
-   is frozen in favour of kfuncs. A kfunc needs BTF and can't be called from
-   the raw-bytecode selftest I wrote.
- * The program only gets bprm->buf today.
-   That is enough to match on the ELF header but not to compute an
-   $ORIGIN-relative path from the binary's location, which needs bprm->filename
- * I have some selftests that exercises match + program-chosen interpreter. I don't
-   include them here yet since it seems unnecessary when discussing the idea.
+2. Changes for the comments from Randy Dunlap 
+   https://lore.kernel.org/all/4807417b-a8f7-47a3-b38a-94ea7bdbf775@infradead.org/
+   https://lore.kernel.org/all/af7b6cdc-c0a7-4896-ba6b-6bb933898d37@infradead.org/
+   https://lore.kernel.org/all/26083ba9-1979-4d14-8465-3f54f2f96d23@infradead.org/
+   
+v12 -> v13:
+1. Fixed some bugs reported and changes wanted by Borislav.
+   https://lore.kernel.org/all/20250910192707.GAaMHRCxWx37XitN3t@fat_crate.local/ 
 
-To demo the functionality, I thought it would be neat to see how this is a superset
-and can replace all the qemu binfmt usage [1].
+2. Tried modifying the patch header as commented by Borislav.
 
-  $ ./hello-aarch64;
-  -bash: /etc/binfmt-demo/hello-aarch64: cannot execute binary file: Exec format error
+3. Fixed a bug reported by Yazen.
+   https://lore.kernel.org/all/20250909162434.GB11602@yaz-khff2.amd.com/
 
-  $ bpftool prog load filter.bpf.o /sys/fs/bpf/qemu type socket
-  $ echo ':qemu-bpf:B:/sys/fs/bpf/qemu::::P' > /proc/sys/fs/binfmt_misc/register
+4. Changed setting 'Requested Address Range' for GET_PATROL_PARAMETERS
+   command to meet the requirements from Daniel for Ampere Computing
+   platform. 
+   https://lore.kernel.org/all/7a211c5c-174c-438b-9a98-fd47b057ea4a@os.amperecomputing.com/
 
-  $ ./hello-aarch64
-  AARCH64_RAN_VIA_QEMU
+5. In RAS2 driver, removed support for scrub control attributes 'addr' and
+   'size' for the time being with the expectation that a firmware will do
+   the full node demand scrubbing and may enable these attributes in the
+   future.
+   
+6. Add 'enable_demand' attribute to the EDAC scrub interface to start/stop
+   the demand scrub, which is used for the RAS2 demand scrub control.
 
-All the per-CPU guards were recommended by AI.
+v11 -> v12:
+1. Modified logic for finding the lowest contiguous phy memory addr range for
+NUMA domain using node_start_pfn() and node_spanned_pages() according to the
+feedback from Mike Rapoport in v11.
+https://lore.kernel.org/all/aKsIlFTkBsAF5sqD@kernel.org/
 
-[1] https://gist.github.com/fzakaria/bef27d2e21b0e36ffccda1cbf417b636
+2. Rebase to 6.17-rc4.
 
- fs/binfmt_misc.c         | 181 ++++++++++++++++++++++++++++++++++++---
- include/linux/bpf.h      |   1 +
- include/uapi/linux/bpf.h |   1 +
- net/core/filter.c        |   8 ++
- 4 files changed, 180 insertions(+), 11 deletions(-)
+v10 -> v11:
+1. Simplified code by removing workarounds previously added to support
+   non-compliant case of single PCC channel shared across all proximity
+   domains (which is no longer required). 
+   https://lore.kernel.org/all/f5b28977-0b80-4c39-929b-cf02ab1efb97@os.amperecomputing.com/
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 84349fcb9..cf6698d59 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -29,6 +29,11 @@
- #include <linux/fs.h>
- #include <linux/uaccess.h>
- 
-+#ifdef CONFIG_BPF_SYSCALL
-+#include <linux/bpf.h>
-+#include <linux/filter.h>
-+#endif
-+
- #include "internal.h"
- 
- #ifdef DEBUG
-@@ -41,12 +46,14 @@ enum {
- 	VERBOSE_STATUS = 1 /* make it zero to save 400 bytes kernel memory */
- };
- 
--enum {Enabled, Magic};
-+enum {Enabled, Magic, Bpf};
- #define MISC_FMT_PRESERVE_ARGV0 (1UL << 31)
- #define MISC_FMT_OPEN_BINARY (1UL << 30)
- #define MISC_FMT_CREDENTIALS (1UL << 29)
- #define MISC_FMT_OPEN_FILE (1UL << 28)
- 
-+struct bpf_prog;
-+
- typedef struct {
- 	struct list_head list;
- 	unsigned long flags;		/* type, status, etc. */
-@@ -59,6 +66,9 @@ typedef struct {
- 	struct dentry *dentry;
- 	struct file *interp_file;
- 	refcount_t users;		/* sync removal with load_misc_binary() */
-+#ifdef CONFIG_BPF_SYSCALL
-+	struct bpf_prog *bpf_prog;
-+#endif
- } Node;
- 
- static struct file_system_type bm_fs_type;
-@@ -78,10 +88,51 @@ static struct file_system_type bm_fs_type;
-  */
- #define MAX_REGISTER_LENGTH 1920
- 
-+#ifdef CONFIG_BPF_SYSCALL
-+struct binfmt_bpf_interp {
-+	char path[PATH_MAX];
-+	int len;	/* < 0 if the current program set no interpreter */
-+};
-+static DEFINE_PER_CPU(struct binfmt_bpf_interp, binfmt_bpf_interp);
-+
-+/*
-+ * bpf_binprm_set_interp - let a binfmt_misc 'B' program pick the interpreter.
-+ * @path: interpreter path, in BPF-accessible memory
-+ * @len:  number of bytes in @path
-+ *
-+ * The program computes the interpreter path however it sees fit (e.g. relative
-+ * to the binary). The path is stashed on a per-CPU area that binfmt_misc reads
-+ * back immediately after running the program under migrate_disable(), so it
-+ * cannot race with another CPU.
-+ */
-+BPF_CALL_2(bpf_binprm_set_interp, const char *, path, u32, len)
-+{
-+	struct binfmt_bpf_interp *sc = this_cpu_ptr(&binfmt_bpf_interp);
-+
-+	if (len == 0 || len >= PATH_MAX)
-+		return -EINVAL;
-+	/* @path is @len bytes of BPF memory and is not NUL-terminated. */
-+	memcpy(sc->path, path, len);
-+	sc->path[len] = '\0';
-+	sc->len = len;
-+	return 0;
-+}
-+
-+const struct bpf_func_proto bpf_binprm_set_interp_proto = {
-+	.func		= bpf_binprm_set_interp,
-+	.gpl_only	= false,
-+	.ret_type	= RET_INTEGER,
-+	.arg1_type	= ARG_PTR_TO_MEM | MEM_RDONLY,
-+	.arg2_type	= ARG_CONST_SIZE,
-+};
-+#endif /* CONFIG_BPF_SYSCALL */
-+
- /**
-  * search_binfmt_handler - search for a binary handler for @bprm
-  * @misc: handle to binfmt_misc instance
-  * @bprm: binary for which we are looking for a handler
-+ * @bpf_interp: receives a kmalloc'd interpreter path if a 'B' program chooses
-+ *              one via bpf_binprm_set_interp(); the caller must kfree() it
-  *
-  * Search for a binary type handler for @bprm in the list of registered binary
-  * type handlers.
-@@ -89,7 +140,8 @@ static struct file_system_type bm_fs_type;
-  * Return: binary type list entry on success, NULL on failure
-  */
- static Node *search_binfmt_handler(struct binfmt_misc *misc,
--				   struct linux_binprm *bprm)
-+				   struct linux_binprm *bprm,
-+				   char **bpf_interp)
- {
- 	char *p = strrchr(bprm->interp, '.');
- 	Node *e;
-@@ -103,6 +155,37 @@ static Node *search_binfmt_handler(struct binfmt_misc *misc,
- 		if (!test_bit(Enabled, &e->flags))
- 			continue;
- 
-+		/* Do matching based on BPF if applicable. */
-+		if (test_bit(Bpf, &e->flags)) {
-+#ifdef CONFIG_BPF_SYSCALL
-+			if (e->bpf_prog) {
-+				struct binfmt_bpf_interp *sc;
-+				u32 ret;
-+
-+				migrate_disable();
-+				sc = this_cpu_ptr(&binfmt_bpf_interp);
-+				sc->len = -1;
-+
-+				rcu_read_lock();
-+				ret = bpf_prog_run(e->bpf_prog, bprm->buf);
-+				rcu_read_unlock();
-+
-+				if (ret == 1 && sc->len > 0)
-+					*bpf_interp = kmemdup_nul(sc->path,
-+								  sc->len,
-+								  GFP_ATOMIC);
-+				migrate_enable();
-+
-+				pr_debug("binfmt_misc: ran BPF program for %s, ret = %u\n",
-+					 bprm->filename, ret);
-+
-+				if (ret == 1)
-+					return e;
-+			}
-+#endif
-+			continue;
-+		}
-+
- 		/* Do matching based on extension if applicable. */
- 		if (!test_bit(Magic, &e->flags)) {
- 			if (p && !strcmp(e->magic, p + 1))
-@@ -139,12 +222,13 @@ static Node *search_binfmt_handler(struct binfmt_misc *misc,
-  * Return: binary type list entry on success, NULL on failure
-  */
- static Node *get_binfmt_handler(struct binfmt_misc *misc,
--				struct linux_binprm *bprm)
-+				struct linux_binprm *bprm,
-+				char **bpf_interp)
- {
- 	Node *e;
- 
- 	read_lock(&misc->entries_lock);
--	e = search_binfmt_handler(misc, bprm);
-+	e = search_binfmt_handler(misc, bprm, bpf_interp);
- 	if (e)
- 		refcount_inc(&e->users);
- 	read_unlock(&misc->entries_lock);
-@@ -164,6 +248,10 @@ static void put_binfmt_handler(Node *e)
- 	if (refcount_dec_and_test(&e->users)) {
- 		if (e->flags & MISC_FMT_OPEN_FILE)
- 			filp_close(e->interp_file, NULL);
-+#ifdef CONFIG_BPF_SYSCALL
-+		if (test_bit(Bpf, &e->flags) && e->bpf_prog)
-+			bpf_prog_put(e->bpf_prog);
-+#endif
- 		kfree(e);
- 	}
- }
-@@ -206,15 +294,27 @@ static int load_misc_binary(struct linux_binprm *bprm)
- 	struct file *interp_file = NULL;
- 	int retval = -ENOEXEC;
- 	struct binfmt_misc *misc;
-+	char *bpf_interp __free(kfree) = NULL;
-+	const char *interpreter;
- 
- 	misc = load_binfmt_misc();
- 	if (!misc->enabled)
- 		return retval;
- 
--	fmt = get_binfmt_handler(misc, bprm);
-+	fmt = get_binfmt_handler(misc, bprm, &bpf_interp);
- 	if (!fmt)
- 		return retval;
- 
-+	/*
-+	 * A 'B' (BPF) handler carries no interpreter of its own; the program
-+	 * chooses it via bpf_binprm_set_interp(). Other handlers use the
-+	 * interpreter recorded at registration.
-+	 */
-+	interpreter = bpf_interp ? bpf_interp : fmt->interpreter;
-+	retval = -ENOEXEC;
-+	if (!interpreter[0])
-+		goto ret;
-+
- 	/* Need to be able to load the file after exec */
- 	retval = -ENOENT;
- 	if (bprm->interp_flags & BINPRM_FLAGS_PATH_INACCESSIBLE)
-@@ -238,22 +338,27 @@ static int load_misc_binary(struct linux_binprm *bprm)
- 	bprm->argc++;
- 
- 	/* add the interp as argv[0] */
--	retval = copy_string_kernel(fmt->interpreter, bprm);
-+	retval = copy_string_kernel(interpreter, bprm);
- 	if (retval < 0)
- 		goto ret;
- 	bprm->argc++;
- 
- 	/* Update interp in case binfmt_script needs it. */
--	retval = bprm_change_interp(fmt->interpreter, bprm);
-+	retval = bprm_change_interp(interpreter, bprm);
- 	if (retval < 0)
- 		goto ret;
- 
--	if (fmt->flags & MISC_FMT_OPEN_FILE) {
-+	/*
-+	 * The pre-opened interp_file (MISC_FMT_OPEN_FILE / 'F' flag) only
-+	 * applies to the statically registered interpreter; a program-supplied
-+	 * path is opened here.
-+	 */
-+	if ((fmt->flags & MISC_FMT_OPEN_FILE) && !bpf_interp) {
- 		interp_file = file_clone_open(fmt->interp_file);
- 		if (!IS_ERR(interp_file))
- 			deny_write_access(interp_file);
- 	} else {
--		interp_file = open_exec(fmt->interpreter);
-+		interp_file = open_exec(interpreter);
- 	}
- 	retval = PTR_ERR(interp_file);
- 	if (IS_ERR(interp_file))
-@@ -404,6 +509,10 @@ static Node *create_entry(const char __user *buffer, size_t count)
- 		pr_debug("register: type: M (magic)\n");
- 		e->flags = (1 << Enabled) | (1 << Magic);
- 		break;
-+	case 'B':
-+		pr_debug("register: type: B (bpf)\n");
-+		e->flags = (1 << Enabled) | (1 << Bpf);
-+		break;
- 	default:
- 		goto einval;
- 	}
-@@ -492,6 +601,45 @@ static Node *create_entry(const char __user *buffer, size_t count)
- 				}
- 			}
- 		}
-+	} else if (test_bit(Bpf, &e->flags)) {
-+		/* Handle the 'B' (BPF) format. */
-+		char *s;
-+
-+		/* The offset field actually holds the pinned BPF program path */
-+		s = strchr(p, del);
-+		if (!s)
-+			goto einval;
-+		*s++ = '\0';
-+		e->magic = p; /* Keep path in e->magic */
-+		pr_debug("register: bpf program path: %s\n", e->magic);
-+
-+#ifdef CONFIG_BPF_SYSCALL
-+		e->bpf_prog = bpf_prog_get_type_path(e->magic, BPF_PROG_TYPE_SOCKET_FILTER);
-+		if (IS_ERR(e->bpf_prog)) {
-+			err = PTR_ERR(e->bpf_prog);
-+			e->bpf_prog = NULL;
-+			kfree(e);
-+			return ERR_PTR(err);
-+		}
-+#else
-+		goto einval;
-+#endif
-+
-+		p = s;
-+
-+		/* The magic field is unused, must be empty */
-+		s = strchr(p, del);
-+		if (!s || p != s)
-+			goto einval;
-+		*s++ = '\0';
-+		p = s;
-+
-+		/* The mask field is unused, must be empty */
-+		s = strchr(p, del);
-+		if (!s || p != s)
-+			goto einval;
-+		*s++ = '\0';
-+		p = s;
- 	} else {
- 		/* Handle the 'E' (extension) format. */
- 
-@@ -524,8 +672,17 @@ static Node *create_entry(const char __user *buffer, size_t count)
- 	if (!p)
- 		goto einval;
- 	*p++ = '\0';
--	if (!e->interpreter[0])
-+	if (test_bit(Bpf, &e->flags)) {
-+		/*
-+		 * A 'B' (BPF) handler carries no interpreter of its own; the
-+		 * program picks it via bpf_binprm_set_interp(). Reject a
-+		 * statically registered one.
-+		 */
-+		if (e->interpreter[0])
-+			goto einval;
-+	} else if (!e->interpreter[0]) {
- 		goto einval;
-+	}
- 	pr_debug("register: interpreter: {%s}\n", e->interpreter);
- 
- 	/* Parse the 'flags' field. */
-@@ -602,7 +759,9 @@ static void entry_status(Node *e, char *page)
- 		*dp++ = 'F';
- 	*dp++ = '\n';
- 
--	if (!test_bit(Magic, &e->flags)) {
-+	if (test_bit(Bpf, &e->flags)) {
-+		sprintf(dp, "bpf %s\n", e->magic);
-+	} else if (!test_bit(Magic, &e->flags)) {
- 		sprintf(dp, "extension .%s\n", e->magic);
- 	} else {
- 		dp += sprintf(dp, "offset %i\nmagic ", e->offset);
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 7719f6528..3aef44b69 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -3874,6 +3874,7 @@ extern const struct bpf_func_proto bpf_ktime_get_ns_proto;
- extern const struct bpf_func_proto bpf_ktime_get_boot_ns_proto;
- extern const struct bpf_func_proto bpf_ktime_get_tai_ns_proto;
- extern const struct bpf_func_proto bpf_get_current_pid_tgid_proto;
-+extern const struct bpf_func_proto bpf_binprm_set_interp_proto;
- extern const struct bpf_func_proto bpf_get_current_uid_gid_proto;
- extern const struct bpf_func_proto bpf_get_current_comm_proto;
- extern const struct bpf_func_proto bpf_get_stackid_proto;
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 89b36de5f..dce155c5b 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -6142,6 +6142,7 @@ union bpf_attr {
- 	FN(user_ringbuf_drain, 209, ##ctx)		\
- 	FN(cgrp_storage_get, 210, ##ctx)		\
- 	FN(cgrp_storage_delete, 211, ##ctx)		\
-+	FN(binprm_set_interp, 212, ##ctx)		\
- 	/* This helper list is effectively frozen. If you are trying to	\
- 	 * add a new helper, you should add a kfunc instead which has	\
- 	 * less stability guarantees. See Documentation/bpf/kfuncs.rst	\
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 2e96b4b84..187692a4a 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -8397,6 +8397,14 @@ sk_filter_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
- 		return &bpf_get_socket_uid_proto;
- 	case BPF_FUNC_perf_event_output:
- 		return &bpf_skb_event_output_proto;
-+#if IS_BUILTIN(CONFIG_BINFMT_MISC)
-+	case BPF_FUNC_binprm_set_interp:
-+		/*
-+		 * binfmt_misc reuses SOCKET_FILTER programs to select an
-+		 * interpreter; expose the helper that lets them set it.
-+		 */
-+		return &bpf_binprm_set_interp_proto;
-+#endif
- 	default:
- 		return bpf_sk_base_func_proto(func_id, prog);
- 	}
+2. Fix for the comments from Borislav (Thanks).
+   https://lore.kernel.org/all/20250811152805.GQaJoMBecC4DSDtTAu@fat_crate.local/
+
+3. Rebase to 6.17-rc1.
+
+v9 -> v10:
+1. Use pcc_chan->shmem instead of 
+   acpi_os_ioremap(pcc_chan->shmem_base_addr,...) as it was
+   acpi_os_ioremap internally by the PCC driver to pcc_chan->shmem.
+   
+2. Changes required for the Ampere Computing system where uses a single
+   PCC channel for RAS2 memory features across all NUMA domains. Based on the
+   requirements from by Daniel on V9
+   https://lore.kernel.org/all/547ed8fb-d6b7-4b6b-a38b-bf13223971b1@os.amperecomputing.com/
+   and discussion with Jonathan.
+2.1 Add node_to_range lookup facility to numa_memblks. This is to retrieve the lowest
+    physical continuous memory range of the memory associated with a NUMA domain.
+2.2. Set requested addr range to the memory region's base addr and size
+   while send RAS2 cmd GET_PATROL_PARAMETER 
+   in functions ras2_update_patrol_scrub_params_cache() &
+   ras2_get_patrol_scrub_running().
+2.3. Split struct ras2_mem_ctx into struct ras2_mem_ctx_hdr and struct ras2_pxm_domain
+   to support cases, uses a single PCC channel for RAS2 scrubbers across all NUMA
+   domains and PCC channel per RAS2 scrub instance. Provided ACPI spec define single
+   memory scrub per NUMA domain.
+2.4. EDAC feature sysfs folder for RAS2 changed from "acpi_ras_memX" to  "acpi_ras_mem_idX"
+   because memory scrub instances across all NUMA domains would present under
+   "acpi_ras_mem_id0" when a system uses a single PCC channel for RAS2 scrubbers across
+   all NUMA domains etc.
+2.5. Removed Acked-by: Rafael from patch [2], because of the several above changes from v9.
+
+v8 -> v9:
+1. Added following changes for feedback from Yazen.
+ 1.1 In ras2_check_pcc_chan(..) function
+    - u32 variables moved to the same line.
+    - Updated error log for readw_relaxed_poll_timeout()
+    - Added error log for if (status & PCC_STATUS_ERROR), error condition.
+    - Removed an impossible condition check.
+  1.2. Added guard for ras2_pc_list_lock in ras2_get_pcc_subspace().
+        
+2. Rebased to linux.git v6.16-rc2 [2].
+
+v7 -> v8:
+1. Rebased to linux.git v6.16-rc1 [2].
+
+v6 -> v7:
+1. Fix for the issue reported by Daniel,
+   In ras2_check_pcc_chan(), add read, clear and check RAS2 set_cap_status outside
+   if (status & PCC_STATUS_ERROR) check. 
+   https://lore.kernel.org/all/51bcb52c-4132-4daf-8903-29b121c485a1@os.amperecomputing.com/
+
+v5 -> v6:
+1. Fix for the issue reported by Daniel, in start scrubbing with correct addr and size
+   after firmware return INVALID DATA error for scrub request with invalid addr or size.
+   https://lore.kernel.org/all/8cdf7885-31b3-4308-8a7c-f4e427486429@os.amperecomputing.com/
+   
+v4 -> v5:
+1. Fix for the build warnings reported by kernel test robot.
+   https://patchwork.kernel.org/project/linux-edac/patch/20250423163511.1412-3-shiju.jose@huawei.com/
+2. Removed patch "ACPI: ACPI 6.5: RAS2: Rename RAS2 table structure and field names"
+   from the series as the patch was merged to linux-pm.git : branch linux-next
+3. Rebased to ras.git: edac-for-next branch merged with linux-pm.git : linux-next branch.
+      
+v3 -> v4:
+1.  Changes for feedbacks from Yazen on v3.
+    https://lore.kernel.org/all/20250415210504.GA854098@yaz-khff2.amd.com/
+
+v2 -> v3:
+1. Rename RAS2 table structure and field names in 
+   include/acpi/actbl2.h limited to only necessary
+   for RAS2 scrub feature.
+2. Changes for feedbacks from Jonathan on v2.
+3. Daniel reported a known behaviour: when readback 'size' attribute after
+   setting in, returns 0 before starting scrubbing via 'addr' attribute.
+   Changes added to fix this.
+4. Daniel reported that firmware cannot update status of demand scrubbing
+   via the 'Actual Address Range (OUTPUT)', thus add workaround in the
+   kernel to update sysfs 'addr' attribute with the status of demand
+   scrubbing.
+5. Optimized logic in ras2_check_pcc_chan() function
+   (patch - ACPI:RAS2: Add ACPI RAS2 driver).
+6. Add PCC channel lock to struct ras2_pcc_subspace and change
+   lock in ras2_mem_ctx as a pointer to pcc channel lock to make sure
+   writing to PCC subspace shared memory is protected from race conditions.
+   
+v1 -> v2:
+1.  Changes for feedbacks from Borislav.
+    - Shorten ACPI RAS2 structures and variables names.
+    - Shorten some of the other variables in the RAS2 drivers.
+    - Fixed few CamelCases.
+
+2.  Changes for feedbacks from Yazen.
+    - Added newline after number of '}' and return statements.
+    - Changed return type for "ras2_add_aux_device() to 'int'.
+    - Deleted a duplication of acpi_get_table("RAS2",...) in the ras2_acpi_parse_table().
+    - Add "FW_WARN" to few error logs in the ras2_acpi_parse_table().
+    - Rename ras2_acpi_init() to acpi_ras2_init() and modified to call acpi_ras2_init()
+      function from the acpi_init().
+    - Moved scrub related variables from the struct ras2_mem_ctx from  patch
+      "ACPI:RAS2: Add ACPI RAS2 driver" to "ras: mem: Add memory ACPI RAS2 driver".
+
+Shiju Jose (2):
+  ACPI:RAS2: Add driver for the ACPI RAS2 feature table
+  ras: mem: Add ACPI RAS2 memory driver
+
+ Documentation/ABI/testing/sysfs-edac-scrub |  14 +-
+ Documentation/edac/scrub.rst               |  70 +++
+ drivers/acpi/Kconfig                       |  11 +
+ drivers/acpi/Makefile                      |   1 +
+ drivers/acpi/bus.c                         |   3 +
+ drivers/acpi/ras2.c                        | 509 +++++++++++++++++++
+ drivers/edac/scrub.c                       |  12 +
+ drivers/ras/Kconfig                        |  13 +
+ drivers/ras/Makefile                       |   1 +
+ drivers/ras/acpi_ras2.c                    | 562 +++++++++++++++++++++
+ include/acpi/ras2.h                        |  86 ++++
+ include/linux/edac.h                       |   4 +
+ 12 files changed, 1281 insertions(+), 5 deletions(-)
+ create mode 100644 drivers/acpi/ras2.c
+ create mode 100644 drivers/ras/acpi_ras2.c
+ create mode 100644 include/acpi/ras2.h
+
 -- 
-2.51.2
+2.25.1
 
 
