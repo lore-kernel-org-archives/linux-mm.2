@@ -4,87 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51353C43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 18:12:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3EF7C43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 18:25:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D5FB6B00BC; Sat,  4 Jul 2026 14:11:51 -0400 (EDT)
+	id 9710A6B00C2; Sat,  4 Jul 2026 14:25:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 384D66B00C5; Sat,  4 Jul 2026 14:11:51 -0400 (EDT)
+	id 921E96B00C5; Sat,  4 Jul 2026 14:25:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D6E56B00BC; Sat,  4 Jul 2026 14:11:51 -0400 (EDT)
+	id 8376D6B00C6; Sat,  4 Jul 2026 14:25:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DB28C6B00C0
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 14:11:50 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6279E12034B
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 18:11:50 +0000 (UTC)
-X-FDA: 84951887580.18.5C57A16
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CC5D140008
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 18:11:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5ZJUxpW;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CC8B6B00C2
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 14:25:01 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DF7431C3998
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 18:25:00 +0000 (UTC)
+X-FDA: 84951920760.09.E0B2D19
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 559F84000D
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 18:24:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Fyo5eWPG;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf07.hostedemail.com: domain of anuradha@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=anuradha@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783188708;
+	s=arc-20220608; t=1783189499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d/v/dE+FlmtwJgj5yRteS0MOxCozSQuxW5M8Uj1RzSo=;
-	b=WDIz5Qwu+vLWvJqO0V/9GmkoTcH7+LKMvP3tJlX7sFT3w1PnmPmh4StUlzKgf5Z0HwfWdF
-	lcD5St3jm1eYysz7k1MBAbjBLyo9YA8leJZ1+3XcZeqpIBcuhGazA5c9vJi99CfFgb7cLo
-	SFRUYzwamtloIsH392OvLtVUFg2EH4k=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=hACWZDGicwLS7HRSY+Ve9L9KGL/6WKzUt/UcgS16CTk=;
+	b=h6g5i4lUcE13pC0N2+jxHowNpn3LOxWiMGZAwMd2cNxjkgKBv+5aMv0e5rmIkizOeD2AJg
+	voRn2c3JXLP0h+LYMs9lF+Dt7XFaNVYHk/15fvZMCGD8OrNWWjV8toy4EKTZx5YTK0bF6S
+	RbonUkz1iJFp3vWwyKf+8MpADhTIWBM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5ZJUxpW;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Fyo5eWPG;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf07.hostedemail.com: domain of anuradha@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=anuradha@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783188708;
-	b=5UA+1qCu8lVYYLX5LDtOZil6aEV+cTH0i/yqDRpGo7Tq46mCA5JDC17Ee59/Z967rbNkNM
-	0O1yLH/VPd1AGaxXd2ybodL157WoTb120wng0mqEUsa2D6H1yw8ZnbEyBKoQVKmFcWUJP9
-	63Pqm0BLpL4D2Aj5v9rU2Q7D1BKiftU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C5986001A
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 18:11:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D7F1F00A3F;
-	Sat,  4 Jul 2026 18:11:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783188708;
-	bh=d/v/dE+FlmtwJgj5yRteS0MOxCozSQuxW5M8Uj1RzSo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V5ZJUxpWz862HugfoX3aFjblmAT973RDwU1aVjQ/Q7JOJ19iIufweaC8WF5ef9w6x
-	 EXlmDtjp5nwROCpEyb1pmIEOxFPCIFm1f/Ml18c4ntIBh7FF7keFtZizhdxvPluorR
-	 Ih0C8Zn0dgWnCWf3zlpVzb2bGrZ8C7mDH+A5Lwrn6Wp1ngUtLm+nVUywYGi99B551o
-	 iUG8qjkKnRjUYvouHuXiLhfw1NlnoHynBxwOcpjNOmiKgSty9VtVHYz6raltLA07zS
-	 MvEKxcicnY28RVv+eiYgYJXY3qx69ZS7374EofmWivo+imw1wrVm4evap2Bxjfqzip
-	 KZXaPwLFE/veA==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 11/11] samples/damon/prcl: do not stop DAMON for damon_call() failure
-Date: Sat,  4 Jul 2026 11:11:34 -0700
-Message-ID: <20260704181135.132956-12-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260704181135.132956-1-sj@kernel.org>
-References: <20260704181135.132956-1-sj@kernel.org>
+	t=1783189499;
+	b=fuCaT6aSG5XCcYa3qpwykiI4zCKuFNKHIIn3ILzMZLEHRZXZAuVrSMnL8K9A/m1ebj5uBH
+	tCtQDF6i4xXYtAdYw/JO44NOtAuIMtTMWcWRTgY4Vlo1c4tXrBSaKORUo5Te2YR3JmN669
+	/mLontpqleI6Sd949fL8MT3VAWUxdvo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Content-Type:MIME-Version:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=hACWZDGicwLS7HRSY+Ve9L9KGL/6WKzUt/UcgS16CTk=; b=Fyo5eWPGNiFIVwBU7hvfcIvPpI
+	VeyyBtcfK0ryqvygiV64lyxnrbR3imVT8eEuXnT/qkZ7t9QIhjBQndhA79bxeI9nAvpTa4llIOAc5
+	X7MiN+MnAsvIIiYNuEF9vz0UkYGmBlH9MZ81Z8oqNMvq9J+2nY33SEf+OlWn/8ICi1JaqsNtkO4oh
+	jKdhrou1i3o/rNhhs5+Sxapr4W6RSFjYWqYYfS8YpkjXKMMZ7E14YUuJSSO2FZWrJ56wAUWsY3Wwc
+	TGBSBqmNVNtPwmdTLy2yrDdOr4ix9wrbHxdsINw6IhhxzVg3rK3PmPfkLki/uTuywCEtZM5mDSFky
+	p9ZxJdYQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <anuradha@debian.org>)
+	id 1wg52u-0003pW-0W;
+	Sat, 04 Jul 2026 18:24:56 +0000
+Date: Sat, 4 Jul 2026 23:54:51 +0530
+From: Anuradha Weeraman <anuradha@debian.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm: avoid shadowing global mem_map in
+ sparse_init_one_section()
+Message-ID: <aklP82yPNq5lA2Na@riviera.anuradha.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k4azm71f5h8bpyetfebc9qfogribwcei
-X-Rspamd-Queue-Id: CC5D140008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1369; i=anuradha@debian.org;
+ h=from:subject; bh=JzCfrQ/XxMDqEDG/UTxdvbdbL5p0fNeF9l29YuMbLkw=;
+ b=owEBbQKS/ZANAwAKAWNttaHZGGD9AcsmYgBqSU2SctZHWggYTjB4X/SMjIOoJ0/VjekLLTjjz
+ AgPcjnCslWJAjMEAAEKAB0WIQT1a48U4BTN710Ef8FjbbWh2Rhg/QUCaklNkgAKCRBjbbWh2Rhg
+ /fu3D/9YJGjArSgVrIDJ3GXGUYa3J3R7S+DIUnW37DTUMkAhWSODztayoqyO1TRYCQHeoSkJm+6
+ bOffnyddVtE8u4BwHTMDdHmSuwN7ZcF9M+1MvqLfGlvMFXh+eM8kaGg43W8XOCu2I9yfi3Qv21m
+ vbwT1rgkz2n0NMC1JlFxXr0Z4MOL8MHy/wFZGlr7uodhDY4dSuBIKYQ3AzwB3EGRAUAY3SV3WQv
+ P0E5CrWZ9tmfVpY7q0g3QIgDupeVtU5bFTbbu4jzL8lq8eFnOWq704lyccpsKspdQzZoVkWQqvH
+ xqXkyZ8JOlFuYi27NcsDy/WmJ54H0IwcaRYKLFO8CBGf9MgG7I2VaAuitmoyuhEtNRe3qK0Qljb
+ jKGqs0XowA3qSZ0+q5u1iOoJVgF5HehKHjAGi3DD7R+0Ex9U9uj1CojCNEjXFRo9SIFsjwnXLV3
+ PQ+EHQdOmgH3O4RzQh577EhkgmxGgcGio/SLNPVVtyYrZSgH2GhZTArkp+2BwTiLpx85XOG271I
+ DPe9cTgV8ceUPe0MKggtqdA9NCD36dKoWD4PtvbwzH32tbrn/MLdvxY0cIGqXDisrRUezEnuOBO
+ +3Y/m102GMDfz/VTIYa5gE0jR2KVlF7KwkCuZdyBvnsQ1tuPgpx2HsdzbS63aIbmk9ioymEFwcG
+ tqVJESSJ3CIxRug==
+X-Developer-Key: i=anuradha@debian.org; a=openpgp;
+ fpr=F56B8F14E014CDEF5D047FC1636DB5A1D91860FD
+X-Debian-User: anuradha
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 559F84000D
+X-Stat-Signature: jp7iijb3sdpy3bq7rqgia6wwptbohnak
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783188708-642364
-X-HE-Meta: U2FsdGVkX18mOlev1+2lKjgm/QNKq3dPavYKiQ2TCWTBYLcz20aMQM7XYnBfxrTOVrwU36CBIh3f4HPQaR0XMYDoB+aCpkq4qQq/xWTxayBgVN4XDNeWNFocdG5PpOzCtlEWWywTt93kaqqnomiGXHu2PWAAEqRXSdW14NpxGOSwoiQ6AYaagbo0F3FxLCM1sNW1Otnu+mLOBP8H2YFqUDs3u7iYmo4yhojXqsIBHUCDOSezQFpqi2IkMZc+zgzK5faGKkh+j5BNO2LhcCLsexwDRyB5k0DGonjMT2Qb/u5ea8dk49xmJKSlPh7LVvEvmJ2S//hYcYtF2YNJB4W4lwNGkNvkKrY1gx7KsIlY1jxbOrGobvhCo6vRf1hBTFfeuU9DflUirb3R2604q/3bInaPZ86Lb0iFWscspo9pdmp04nyjNL23If8pTIclzE/poad/wsqQ+q0ZxVr1QLRiolLUfSpCQGjR/R4tN5raYW0zg6VetQfNo5p54dNsMerKMpvaIz3+9ST6a61/sKXheRz+wJBxWp2pMIkpw/yPUOGl+rnRU+zGgb4tVgARP50DDcdlDGVpUnO9JOUPkjQyrBqGsAV2eV/qzDtrDjTY7aMRFWL31FStB9cRTeUidn6CtlWc08CNCg8ziVEslIZ7EhzUpY0+TD05NDtkPeIw/s8s2OxLgv03Ivjo9j5uu/sMYcGGrB0OifFPZ0bHixHBlC5/uvM5jTg+TEooMVVgkfQDviw4nvGz2X1wmRsNJEn0UodZchLZXjzcJYuG2ugd1gwAXdS74AMEXapaWyyYPk4V+LUKPLKAQBbiwkadDNksumix2YVo5fiQE1btS+0h8+DwvtUi9fdZ+HTsUTJspPCmlSOvKcs7pQ3zkWXkzkr8eSPq06DetGJBsqfewUycb8305dQF5BW6oTBjoSBLmL+nxdoDnDV48/H0KNH6WokI2PHXo3gfuDWPF5LqNQO
- jLEhIoId
- NvvzEZvItZvVEdA2umgeg1j/8lTNGTCumfQ5TJz4eLyTmTrbzxUU6PepFWfIslB5fdGyCMCv4woBgJMJZBbF9mmBx0sxQV1b+NNboiiUuu1mbJJBeIHR5KFw6UK4bsfKws0Fl662FnV2h8YJDHI+/bVPuN85h3k16p/Z3c/XCscIOauXze+4GXNc/14WGxCz/OJlvtHka4Q8qXUqP8/xHc69YFNDDbFwhRe/7Q+oVuIDmC4kYWEu+DpF/OUfLtFVcDBjPMwZwDpyq//tDDicd/tDyPQ7Soj1rXWNJyf65SaLUumVlI8aemJuEL37he2zsDrdthAqBbre33Q3Xi2rJyVDxnnUnnEFoqak0
+X-HE-Tag: 1783189499-199082
+X-HE-Meta: U2FsdGVkX1+3XKAtWGyoHh6BEsglsxg8aF2+6vgoxE8Dsi6ADkMa/GXHg3mPYe+sqf7EVBYErue0TmhvlSXE1vfJ6c4Q3hQTggNaYjs1wpG7lkNuwLDMRl11KwFGGpFTkSSm6IyB7pnWBr1n29auA+Js2Q6zdD4aIn4uS3VLNl3mQNM5AQFcNiRrxrfcQDFtd1NYZcfr/QKSv6VjThdJu+nUr3q/s/qc0lrTRk5XNmYfd6RrX6C4Po14U/S4W/4REY2uAEum9VIN9DOiukc8CdIL1isEeS/8QbatXldoF4E6BFAl48cUKJfZl11sEaUK1jvlbiPKIUbZwdeH5y75XsXhJbL1H9IQDG6dsb+eKMPqFPCBuhicV18dEilTZpV1u5Dmu5snJrUa1sad6y/nE9ZpRuenLFBMi7qD/xaRWAx9U/PITMzrp9f/M2eSq0SNj5yitfSQIxpZazAKbOyQvdRFnI8RkEflwfo4o/bg//2PVid0vuvkDPDvMe3oatiqtpJcJphoWngAcwlDYXzns7B6p1iiHupMn0DwMyxSLgaH6RBx1xrcMpAou4omJbjEKOGfs4OMGu0v+fMNY2wjSHrDy3v3xjcVcznduYLVkpghHmkIB68xKnbrWN4iMlATDMfMEb6JrLQnSV4cpyE5FCDfofsQXAyOqIaGNbv6EvL0IMkcgA2U+XM5SZlAZo9nw+Q8TXVAuKSKK3vXoU5qgI9+qftkpDaCXBHLRyQTyOUX3zFglgznfSAk0NvWhYCZRHgbNg1TR1vAgou0nu1CGvylTVUWCHHY3EunxVq5dp07ie4S4R2SOlNc1LvHYOQA5mT+L+K1zZXize//oRcKrkAwUjdLXbinH3ErGWlQ5vx4QM23J99pQIZVPeB00v8i29iTDCqdaz08nfIyN1+6C+AB/84qrGWZw/n+g+FH4qETEKwWl+3xntyBfaWk36fH4zVukCstbhxny4YPvwb
+ SG0Px4jf
+ TeQ55giLxXz8mnAXCJuupDznqYRESxLOOVxENq6OLvMBfJjBCU/85Rw2Bmil53CZPBDsKUGi47Q4ivwCxQvg/M01cdGBNw0hqdS54jChkkXTWAudtPjsJQFBWUl++rvwPHrKJlf0jFwtuh890frVDbe4NfE3cY46Ck4oa8f4DYdTT1HgIRIDXK+0vttZU5ROTN6LYWB8Ybq1sqd6hcNoIxBfTaRFxAJZ3PXX1JB+2p4EPjF2e3uq+XD356OKRHz55IiqL5oDSouehnoP1P3Udf24B0/pGqZY5uL6Us+tx4o7nsT/f629lCZw5mD1VmHcp+W1V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,32 +106,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_call() failure was causing the context to be stopped, but
-asynchronously by the kdamond thread.  To handle the race,   the caller
-had to stop the context.  damon_call() is updated to do the stop on its
-own.  Remove the damon_stop() call from the damon_call() error handling.
+With W=2, sparse_init_one_section() warns because its mem_map parameter
+shadows the global mem_map declaration in linux/mmzone.h.
 
-Signed-off-by: SJ Park <sj@kernel.org>
+Rename it to section_mem_map to make that scope explicit and avoid the
+shadowing warning.
+
+No functional change.
+
+Signed-off-by: Anuradha Weeraman <anuradha@debian.org>
 ---
- samples/damon/prcl.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ mm/internal.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/samples/damon/prcl.c b/samples/damon/prcl.c
-index edeae145c4a8a..842099bd62286 100644
---- a/samples/damon/prcl.c
-+++ b/samples/damon/prcl.c
-@@ -113,10 +113,8 @@ static int damon_sample_prcl_start(void)
+diff --git a/mm/internal.h b/mm/internal.h
+index 181e79f1d6a2..4943def97167 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -957,7 +957,7 @@ void sparse_init(void);
+ int sparse_index_init(unsigned long section_nr, int nid);
  
- 	repeat_call_control.data = ctx;
- 	err = damon_call(ctx, &repeat_call_control);
--	if (err) {
--		damon_stop(&ctx, 1);
-+	if (err)
- 		damon_destroy_ctx(ctx);
--	}
- 	return err;
- }
+ static inline void sparse_init_one_section(struct mem_section *ms,
+-		unsigned long pnum, struct page *mem_map,
++		unsigned long pnum, struct page *section_mem_map,
+ 		struct mem_section_usage *usage, unsigned long flags)
+ {
+ 	unsigned long coded_mem_map;
+@@ -969,7 +969,7 @@ static inline void sparse_init_one_section(struct mem_section *ms,
+ 	 * page_to_pfn() on !CONFIG_SPARSEMEM_VMEMMAP can simply subtract it
+ 	 * from the page pointer to obtain the PFN.
+ 	 */
+-	coded_mem_map = (unsigned long)(mem_map - section_nr_to_pfn(pnum));
++	coded_mem_map = (unsigned long)(section_mem_map - section_nr_to_pfn(pnum));
+ 	VM_WARN_ON_ONCE(coded_mem_map & ~SECTION_MAP_MASK);
  
+ 	ms->section_mem_map &= ~SECTION_MAP_MASK;
 -- 
-2.47.3
+2.53.0
+
 
