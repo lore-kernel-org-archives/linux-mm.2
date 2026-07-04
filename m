@@ -4,122 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F37EC43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 00:52:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69F65C43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 00:57:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E98A06B00B5; Fri,  3 Jul 2026 20:52:10 -0400 (EDT)
+	id 3F57D6B00B7; Fri,  3 Jul 2026 20:57:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E497C6B00B6; Fri,  3 Jul 2026 20:52:10 -0400 (EDT)
+	id 3A79D6B00B8; Fri,  3 Jul 2026 20:57:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D38AA6B00B7; Fri,  3 Jul 2026 20:52:10 -0400 (EDT)
+	id 2BC826B00B9; Fri,  3 Jul 2026 20:57:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 995A36B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 20:52:10 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0BEB3A037D
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 00:52:10 +0000 (UTC)
-X-FDA: 84949267620.09.8BBCAB1
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 54F8520009
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 00:52:08 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=U3160mzR;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id F131C6B00B7
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 20:57:05 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6CCA7A037D
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 00:57:05 +0000 (UTC)
+X-FDA: 84949280010.22.788C8F4
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 595AB40007
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 00:57:03 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="SYk/KA7F";
+	spf=pass (imf07.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783126623;
+	b=I/zUMUOZ6vxL44Lk+WILCwv+UEP3U7i/1wzHLefUvoMpoO+tNoxbptXxZynWmO6vmisL9g
+	JPf2fIa3buMkcN7dxOlQlONSV1JlpeyDzZQKUQV+IDZKZzvu82B0LrxIdNRUDF5pzzypuk
+	n9QHLoWnxzCTnfp5+5YaCi6RhqSG630=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="SYk/KA7F";
+	spf=pass (imf07.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783126328;
+	s=arc-20220608; t=1783126623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t+/wZjP3VRbBrZYdXJhzA9JgmkyKgho4uGcN4xy9Q+s=;
-	b=osNDl55IEZf44KqbeUcyMWxWkZGvKg+8W/xpqn/RM5o6P76eaJ/ItflcnRmKTZPskWvqj7
-	sWpsaVfv60+8NRznb52/u/qJvJXVWowUVjfrk4h8qWbooxxB+0PbJa8R+7TWtYGZt718vQ
-	ptoJFvoPPxBWnpr179uIWwd6WXuNw3o=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=U3160mzR;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783126328;
-	b=ELuNdzQxmjG3GjptlLWaiyNE8Vtip9fdbBznRyRba9vpbRVrXfte1TioC9rZWc7dSLrZsa
-	7+WzYfLaW/jqF9jaZjrwtqepfGguB8Q376jSUnpXrUAxQRyv11V0iVQNpjGHRpd5Z0YCLU
-	mE3TRGZjZsO5acIJu5X1JKmvXjo1sFE=
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-664ee752958so1531683d50.1
-        for <linux-mm@kvack.org>; Fri, 03 Jul 2026 17:52:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1783126327; x=1783731127; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=t+/wZjP3VRbBrZYdXJhzA9JgmkyKgho4uGcN4xy9Q+s=;
-        b=U3160mzR4F2yGKKOZ7PzW9S4LZLgfy4taAxs7drolk1KN4/VRAEtVLpOruXh5P1/IX
-         NwGJjU05l4Xw6ePpqqjmBge7/3aXQCzDe5d82c45L/udUy7wka2PofljP5w4fmyPWfOC
-         GiSoq3PK44wYRvUi7Br0veftwTuiKLQ31RgAgiTLo8RPiNrsecszGsm+SJQun0xHCenv
-         Wlhcm/9sBQVOKazuvNdYriLuBXTOs9dPMcgaX+WiAS+SQCNYVXEV516ZLcVjD+I6Q0BE
-         YRqOFZUZose34CTK9cqLvdZaTNqgPavLHV+d8Dz6R5eFbxAxrnSlEJWwBwKR5a3A+ayV
-         oFxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783126327; x=1783731127;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t+/wZjP3VRbBrZYdXJhzA9JgmkyKgho4uGcN4xy9Q+s=;
-        b=f/MJJ3iuCCLsLI9jhZ+hWSzZAHsQZbpcCP6b6W0steTbqQGZyUtiB2oATLzQrfPKpr
-         ZTw4r5aqKlwb/cZSERJ0rTuU7UNi4zwHUNxUT+/4gW5aOmC40vIB6OSheZUg5YmqKWM8
-         mGxlMSUn6cfRTZbgHl+AQrMFqsoV9+mGiFkAM8QlFbszr/CdN//KUfAMrKAiks9dwOlv
-         m8tCmSwI7Nn3LGU91HPd3BuNxkP08S0UwB1P6i+hQD4ihBuSivAlx8Bwfd1rS2dSz6hH
-         osgsD5rJvi/+bsjgltrMESHkV7BjtkeW9OJAzZ0kLEiSLV2NNLCJyU0I2KX7oa48uFEC
-         ScHA==
-X-Gm-Message-State: AOJu0YxHQCf0kPkqoHRRtV3awqzn+xXRYORpNUjGwc5+XAAYpr5di8k9
-	qlMZ6PBHj5K0NiEgys8Lv7C0ay75x8bp0nXD1k2IDkAJ1N8NhtEivBgCap+QXgb6Bdk=
-X-Gm-Gg: AfdE7cl+Y34jz7rX1oqSFA7cm64KlK6DtjVti6ttDJCxAsOzS0A0wa8tJjUmaMpoFyi
-	qR9FFwliNTDfsY6mKV+ZFCTOqahKJWBkzSfVNhJTqw9y8WyrN4WA9n4s7uCyiB9u2OvwFdUd1Yi
-	WuNHjh4r3nETG83DXBGDk3XwKdEKYbIsE9zVrG5RJMIJ4rRCW282Z4Xuq+y1F6FKNa3SPdd84cv
-	cwCbbwYssEcpX0Y46vcxg1lwPY455YfN60Oy2RFfxpdjZMMWn/sB2R9XBObOdENIz1YlO3oxi+T
-	JtwSw+GO0SVF9ikIk97tuKgYQKLn3XdpStb7jfdeYJQA0nA9FFI9oTSKueyg/fhXRMwhpg2gpJR
-	PgHMp2G8srAnq6GiQWFJkRd+g1IrXX0o7y+piaoXJqmv+n8Lwn/diDpe+x+xL1TC8smhVcqQKNJ
-	JrYYqISQqJAaEtk6RgdnACTlajuyZlCDXJl2PpGPFxxAg4of6zV0YWNK3FpRGdPk0cXemPdUdtA
-	QOuPkCWEFtfk/mI5L5TZOg=
-X-Received: by 2002:a05:690e:4506:10b0:665:1e31:9164 with SMTP id 956f58d0204a3-66652eb898dmr968746d50.47.1783126327338;
-        Fri, 03 Jul 2026 17:52:07 -0700 (PDT)
-Received: from google.com (212.255.145.34.bc.googleusercontent.com. [34.145.255.212])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6664083f9f6sm1511013d50.16.2026.07.03.17.52.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jul 2026 17:52:06 -0700 (PDT)
-Date: Fri, 3 Jul 2026 20:52:05 -0400
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Alexander Graf <graf@amazon.com>, "Andersen, Tycho" <Tycho.Andersen@amd.com>, 
-	Anthony Yznaga <anthony.yznaga@oracle.com>, Baolu Lu <baolu.lu@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, David Matlack <dmatlack@google.com>, 
-	"Heyne, Maximillian" <mheyne@amazon.de>, James Gowans <jgowans@amazon.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-	Vishal Annapurve <vannapurve@google.com>, "Woodhouse, David" <dwmw@amazon.co.uk>, 
-	Luca Boccassi <luca.boccassi@gmail.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Jork Loeser <jloeser@linux.microsoft.com>, Chenghao Duan <duanchenghao@kylinos.cn>, 
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: linux-mm@kvack.org, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [Hypervisor Live Update] Notes from June 15 and June 29, 2026
-Message-ID: <akhY7Njh6LqzyWyz@google.com>
-References: <20260704004316.1109918-1-pasha.tatashin@soleen.com>
+	bh=C1EN6rIeWL899rhI3FjLhGXZyIEwiV09wTr+KM4FDTM=;
+	b=zxLNt98dw0rtM0vCB0PSNPrwr/eY771Kwg0PeqDU8euzQ7gpuhIWW1SQEYJZhooX5b/Kbi
+	707jPAEj/0c6rZ4PGxj0CbK3rqKag3PJQ/lSEgca7xY8kyvqlwg3XaKKwFYeYZUGK4KY/y
+	wYEfjNHAPTQIojge/oYxWhtn1cJ/yOk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=C1EN6rIeWL899rhI3FjLhGXZyIEwiV09wTr+KM4FDTM=; b=SYk/KA7FP2Njc/3Os3mIlmBBrQ
+	1OPq+arUCKlVVRVccWIL+WJEXCjmq0Q6n7VKu2KePL3pmbUrmwD64SGtIlek7q4gVkqy8pd5ADts5
+	A7AeTdtK+imV0kXiQZepZPH9jOvXqprXb6mWAECqjK81XGx+InJubX6UQluBb7A2zfWkdt02u81hG
+	1UKpo6MRmgWCqmHoenzMBq1In+k0xYR9XLb2/ZhTXYmBYepSxthyxCkzwtxNit7Oma5UHqURansxO
+	aU6Q+iFWdT1JkjbW9fN7LEGhJu3j03o5eDDdGdJTArlb6WVj7tETonMARJ5UEl67JqCdkUYR36eCJ
+	V2QzSZ7w==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wfogl-0000000B6IQ-0SfH;
+	Sat, 04 Jul 2026 00:56:59 +0000
+Date: Sat, 4 Jul 2026 01:56:58 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>, gfs2 <gfs2@lists.linux.dev>,
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>, Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	cgroups@vger.kernel.org, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org
+Subject: Re: iomap_writepages WARN_ON_ONCE(PF_MEMALLOC)
+Message-ID: <akhaWrUHXcubQQab@casper.infradead.org>
+References: <CAHc6FU4tz8-HmEf2_XKT0NT8N=rv5OMcY79PxTACkXAVLOAUpg@mail.gmail.com>
+ <akZEjH2Hf8-RR8yQ@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260704004316.1109918-1-pasha.tatashin@soleen.com>
-X-Stat-Signature: o3jme5xn5mk6qikeqq6p5cskoyamx65c
-X-Rspamd-Queue-Id: 54F8520009
+In-Reply-To: <akZEjH2Hf8-RR8yQ@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783126328-336300
-X-HE-Meta: U2FsdGVkX18FkuCvcuNNndB6hZ3nOwmqQEy4qvTTW5QW5S3lWpwNYYhs1HUCo8y2cNQ7Io9uoRcPQY9NiP802gvBY+t8XDgxcf1LO6rXB6QbyVXbgYbWg/tGTf0OnkZwMOeKDzVZYqH4rZAAf2vYfn8zD35LBjpN5FzoTniILWTZHY9jVr7P95wEY/lNTLd5tensGgZEeAu9aaN9JXyQXRcxFY37wV2eCtpzGKZYyAzzVOdTVVrL6soEHVGCHnJ3KLO4vyO0UJYoA6BTryPdS5jP44UHEva2Xane0wwzpLanaoSE0+2kOXYI40xZb0bHknppITrnq6PjTAfJXxv7seGfbJZ81qfkB7dXmyZd8Vu9icSsenvegtTYFQY2yYjNPypv7VlNgowukZcqNFpARtB8sxhECRHAm2qHYpWFRCcn/+tdptz6fwkPcRbGz40KVBy/BmSFbhn1oVUJV0I1V5lDHB+FdMyfX8BF1m8kVKUVwJ8mcbf6mtJtKKdabEOet1hDHcLZFnUpc24Z5aiZg4zpgqKZVJylh1rBglsNFvyQZhqGA7PbIphWixAhtVWTyzH9BFij+bHQKFUeuYULg4aSsncUqxEsB7IzsDWscTZPSOKEBPBMHoehlKagnDHse407uk0UJ0RFOvVTbH8wFmW0B4TJGlqDabAHYbnpcdSSHTF+o+Dp+/3goT73SEGnyfq4BWPez4hpkd5fucp6wjcilXDLlKrmTQuvGMs8i9tQlK79yt7X3b+9v2AAJ7DPoL3ff9NuMYqe8F382GQFS9SsyXWyWlDgCyBwL1/vJuH2pe1fsGZxeN/6ytacWP1lA1Ji6pthcaH/UDdfGDxi3JRByjADBgmtNd7zQzNAD6RPyGOBokuZ3fdjqcAGc+tDC1UDc3xvlzf3b54RtTT0ja2LauOlLneFagWp4qxkSVTgjvMPrkyEk7yJplpH+WfG1M1BoM5R0lf5eU7fxgc
- pGXp3Vrh
- 7mHdW8gFDMQRzYXWE9LxwPuhfqSQ9L6Tdjxr+AZ3MBj4+yAIHS9wIflzbi+uX/kQk4gUpOASWG9Fw4S5e1PDJjJiDfKB0A3ZtSdoEl1EmIFDzkHR/VoxCeGx+/KK42ceu8YePBO4d+hqKZH5Fm3SuIokVPv0GUTayG+LWOPpCqfDzXiNvOqdWcLPX/DgnLQFOaLP3alvYNNwPPjxzk0VnSnN9WnGd+qLCWqGdQy42ssVD/Z7gqBM8Y7mIUfbss34EdPqWdNFcXSdmIl+nu2+LjmYPJc2IyRPl9E9dRuyH2xwLOAc4Q5YDRt46bwFNyFv7oqNf/V/5QTzTZ5NMr6Kz79ZU3LjDIVIeX8H8XLcg69JBOnQLtBKM3/CG69EkVqAPRz3CSM4QBPrpAiqGgAnpSGKlyxihbeJfGmU5WJbYDlKBq5kBxxMegZ2kpQ==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 595AB40007
+X-Stat-Signature: bdwcsfja1hztcdkzeeywt1kuiuukokof
+X-HE-Tag: 1783126623-130817
+X-HE-Meta: U2FsdGVkX18RwnLtT7flf23erAB2qZ7ew8V2GvX+KKxntCgobWb4JwcbT7FsPT8vfuO/orzLOSRkTrTW01i0zDLmrbSzC2pFAq8XW6+q40tai7b6w5ZgWoszHFAPkyFWl31LPUv1ofglr6KgnYUno+svMNt49JlmugQIPqJ2YgyTum+knJVNs4SHtcrOsmemI7qyBkRHQ8t3mq3h3HyBQJ8KweU4/1k9yCPo1etVoPQu4SBW2Z0WwlXGqB1isOSpf2hcYK0sTUwWqri/MDZJMDRAkfql873RWX84f8UcxMkHmXA3m+AtHbm8pSSQA5eXN96RfqtxZZ4YFt21RNed+Th/Oq8QXQIGLpXMdik2sfgd/r6GUrvM21QOdNas08SHivjsDsBeSNzuaEadu9bCyuTdm2CBrPa7A4FzwcdOL90iaF7a5114NC9lwDOi8xjvEGZfHM8DXH+gb+4zYKDP/I1oHgIMEANhByhk27EeNQfGcTpVf5LFjE7cXnfROI9iH+w/ra4AeXjmWQN+GM1TQhsfvf8bWwse9ZsgiqDDpBt0mdyRioC1OaYqgw2pIt7lXVrHKN55dRr4EhF7XDNWE4m/OWq1eUtEy/rTPGgOc02NN5M5olWCcMEk2hFgFfLdBMNl+AYPRl1kpJwUIFJ7aRnrivl/AAsUueHFseGjspeXcDTzmlqXtN4Vz9fxTuOjEvP0gI+PfYHvwWFo3bonY4kPQz9x09z51uorbbA9bjSJqdBLgsxYTAv7wNWVco4jWqNb5tgemPD/+X3YMp5xsnKUoBgwmze5J3xV3sGem4ibRY0N/p3Svg06HPa6SeRsR2bNBTij2+x2z7NY/oYapK5lRBlpQs6b4yID4HJyQUIpV2+AxLbVuIFVpUNITNT6llFWXLG1eUS9anomvsB3C5pBoXBt8EpcfnX1e5W4L5pv1WPWwI5BO19SpciqyjSO8op9AWClxBVbT28pbuA
+ OAj2eU39
+ HQwbht/2cogErJhJkr8s/OpF8hiBv3VGGsuhi175hlGZapa2jUJ1BvYj+7cmHsQngbI5+EcQ6AeZMaLN04j47wfl37+35f1siHHcQhwgDbV+oDGcoikFk7PXBvWxy6PO8YkdOL/KgqsfqksO8j+LKk/S+aaCemRPYOIrSzNENbOxc7e1ZLKtwiipMrBH86Wm0KOmnopqD1YDcZWZwh4FbWafUkfyy1yOQ6/TC+8xoiU+sA3DWG0AdVo/juLYDBM85B/EdD2jePHezAummE6/oOsvoCAB1Xu+hDh2YSQOsBEy6XEeU/PxadHwWhIyjc6oyV9ZnnjPrP1uqHCD/TaGEa+aE7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,102 +99,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Adding missing CCs to the mailing lists.
+On Thu, Jul 02, 2026 at 03:59:24AM -0700, Christoph Hellwig wrote:
+> On Wed, Jul 01, 2026 at 10:51:06PM +0200, Andreas Gruenbacher wrote:
+> > Do you have any suggestions?
+> > 
+> > The above is on RHEL-8, but a similar code path exists in cgroups v2,
+> > triggered via:
+> > 
+> >   echo reclaim_amount > /sys/fs/cgroup/.../memory.reclaim
+> > 
+> > That code path starts with:
+> > 
+> > memory_reclaim -> user_proactive_reclaim -> try_to_free_mem_cgroup_pages ->
+> 
+> PF_MEMALLOC is a sign of direct reclaim.  cgroup code is doing really
+> weird things when it is set and it is doing writeback.
 
-On 07-03 20:43, Pasha Tatashin wrote:
-> Hi everybody,
-> 
-> Here are the combined notes from our last two Hypervisor Live Update
-> calls, held on June 15 and June 29. These notes are intended to bring
-> those who could not attend up to speed and to keep the momentum going
-> between meetings.
-> 
-> ----->o-----
-> LPC 2026 Call for Proposals
-> 
-> The Call for Proposals for the Live Update Microconference at LPC 2026
-> in Prague is open. Please make sure to submit your topics and abstracts
-> before the upcoming deadline on July 24th.
-> 
-> https://lore.kernel.org/all/ahcc3Qyuy7Oy03Iq@plex
-> 
-> ----->o-----
-> VFIO & PCIe Persistence Roadmap
-> 
-> * Roadmap Recap (June 15): Vipin Sharma outlined the five-milestone
->   roadmap for preserving PCIe endpoint functions (and upstream bridges)
->   across live updates without disrupting registers or ongoing DMA.
-> 
-> * Status Update (June 29): Vipin has addressed feedback on the v4
->   submission. Revision v5 is currently undergoing internal validation
->   and is on track for the mailing list before our next sync.
-> 
-> PCIe Core Updates
-> 
-> * v6/v7 Evolution: David Matlack is preparing the v7 PCI series. The
->   group aligned on deploying an FLB reference-counting model to maintain
->   symmetry for incoming/outgoing sessions across kexec.
-> 
-> * Pratyush Yadav suggested that drivers should explicitly isolate
->   structural "probe" routines from "retrieve" logic and separate
->   "shutdown" from "finish" callbacks. David is evaluating the
->   feasibility of deferring probes until the retrieve phase to improve
->   driver cleanliness.
-> 
-> * David is refactoring the PCI series to utilize KHO blocks.
-> 
-> IOMMU & Dependency Management
-> 
-> * v3 Status: Samiullah has posted v3 of the IOMMU persistence series,
->   addressing hot-plug handling and context entry preservation.
-> 
-> * Dependency Policy: The group agreed that the Live Update framework
->   will not enforce a hardcoded preservation sequence. Instead,
->   individual subsystem file handlers will verify dependency states
->   locally during their freeze/finish callbacks.
-> 
-> LUO, KHO
-> 
-> * Terminology Updates: "Scratch" memory is now designated as
->   "unpreserved memory" (memblock perspective). KHO "Scratch" is renamed
->   to "KHO boot memory".
-> 
-> * LUO Limits: Limits on the number of sessions and preserved files have
->   been removed and landed in upstream Linux.
-> 
-> Guest Memory (guest_memfd)
-> 
-> * Naming Conventions: Regarding the KVM file binding debate, the team is
->   moving away from the debugfs-based incremented value approach (due to
->   production compilation concerns). We are exploring using unique names
->   derived from user-space file-handler compatibility strings. Tarun will
->   escalate this to the KVM maintainers.
-> 
-> ----->o-----
-> Action Items & Next Steps
-> 
-> Pasha: Consult with Mike regarding KHO component splitting without
-> versioning support.
-> 
-> David M: Send next version of the FLB ref-count patch; refactor PCI
-> series to use KHO blocks; share recording link from June 29.
-> 
-> Pratyush: Implement rename of KHO scratch/boot mem.
-> 
-> Vipin: Submit VFIO v5.
-> 
-> Group: Review Guest Memory Preservation V3 series (Pasha/David).
-> 
-> ----->o-----
-> 
-> Next meeting will be on Monday, July 13 at 8am PDT (UTC-7), everybody is
-> welcome!
-> 
-> Join Here: https://meet.google.com/rjn-dmzu-hgq
-> 
-> Please let me know if you'd like to propose additional topics for
-> discussion, thank you!
-> 
-> Best regards,
-> Pasha
+If we're going to blame the cgroup people for doing weird things, let's
+cc them so they stand a chance of seeing this ... original at:
+
+https://lore.kernel.org/linux-fsdevel/CAHc6FU4tz8-HmEf2_XKT0NT8N=rv5OMcY79PxTACkXAVLOAUpg@mail.gmail.com/
 
