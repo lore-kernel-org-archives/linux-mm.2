@@ -4,97 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46204C43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 10:04:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F79DC43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 17:49:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D4CD6B00B5; Sat,  4 Jul 2026 06:04:18 -0400 (EDT)
+	id F39AC6B00B5; Sat,  4 Jul 2026 13:49:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0876C6B00B6; Sat,  4 Jul 2026 06:04:18 -0400 (EDT)
+	id F120A6B00B6; Sat,  4 Jul 2026 13:49:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB6FE6B00B7; Sat,  4 Jul 2026 06:04:17 -0400 (EDT)
+	id E27E46B00B7; Sat,  4 Jul 2026 13:49:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C21336B00B5
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:04:17 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4FA4014044B
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 10:04:17 +0000 (UTC)
-X-FDA: 84950658954.08.29DF7EC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id B943920009
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 10:04:15 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UxoHJZwp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id AF9216B00B5
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 13:49:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13C44140547
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 17:49:35 +0000 (UTC)
+X-FDA: 84951831510.06.E3BF5DF
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 759AA1C0003
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 17:49:33 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=luaN5odf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 3q0dJagsKCLgqmspYtnYlbYemmejc.amkjglsv-kkitYai.mpe@flex--souravpanda.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3q0dJagsKCLgqmspYtnYlbYemmejc.amkjglsv-kkitYai.mpe@flex--souravpanda.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783159455;
+	s=arc-20220608; t=1783187373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KbHzIWrPYpX4m4Z0NL+ODodGPfn2TyzbWTx1+qVPiOU=;
-	b=F2R41v3CvPw0pq6z6yEIwhcDIKQiaH0TihUnv8qwFaR2PRNKaHGKzlyaS/t0zK2tW4jddv
-	RPZ0VDlnDPLyr3YDWVfI0W5WKC0Ux1Ek3gavpuEhHCrTKw4lkmUGXkPljh5wALA+8h2MDF
-	bGqyP5JrtK9QxMRKxZxQxzrrO7EmVPA=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vk4Q1IL+H0DJ+/uFKCde3qqkuwUWo/vem0qrwOJHzYI=;
+	b=Gmd1FO5lxdUI4tsZC4IvM3U2rKIlEZh3sG7JnxF9q0qPohtszTwb+pmS6cbHCWdZL5XCHy
+	y2m5ccgJUdAaudfMt3rCSCcWPBZW+1+AR+kS/QXFFT6JJnKdk5nE1OUGTizu7y3KxSQqu6
+	Lzz8VVcG+ZEW4WGswpbfiDEl+ZhzYDc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UxoHJZwp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=luaN5odf;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf18.hostedemail.com: domain of 3q0dJagsKCLgqmspYtnYlbYemmejc.amkjglsv-kkitYai.mpe@flex--souravpanda.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3q0dJagsKCLgqmspYtnYlbYemmejc.amkjglsv-kkitYai.mpe@flex--souravpanda.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783159455;
-	b=pJm7f6qkqLw6oygqMe/kmTYbtfmIe3rDTOoRK/DYwsHP+aBSDqzxtrHfd+el0c+ochjmk5
-	MUZY/QMMRUuHmJWYb92L/061JWaZmrycG8vmCJcAyOnmjveYKmWzhTUqy1Ti+L9Ud12i2L
-	hy3kY5XPkeQ5ARKlMmf1iDx78xYCau4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B893841747;
-	Sat,  4 Jul 2026 10:04:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEBA1F000E9;
-	Sat,  4 Jul 2026 10:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783159454;
-	bh=KbHzIWrPYpX4m4Z0NL+ODodGPfn2TyzbWTx1+qVPiOU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UxoHJZwpN/Dhv5pFptb4o2RUXH763dJbi5BKR5Nj631HZO5RdRcjY+LmussJc+bU0
-	 R2enKPHE/+wAlxyq6LU1Pg353yo3vlhj9515zgRqLc2uI7ayOrWB8iOdWOuwNPby6W
-	 n6i+4IxpbeEWmK5vLrqIxXs5R2bjnonBvNaUM5dYAiYyDqBqxwsJjBRg7h2pexeiuL
-	 mg2daw2d3mVUgiFxilbNpDNgwip58ikJKGuc33EBP6Cf50kalsd9wyaXdcyMcPHiKG
-	 xwzCetNHGTUqh+Zz432FRl1j2IArbSmpXqjDKbCFwShWtNr+oHB4+euOJ7Vtm0BQNf
-	 yYnxqHhodaonw==
-Date: Sat, 4 Jul 2026 13:04:02 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Usama Arif <usama.arif@linux.dev>, david@kernel.org,
-	chrisl@kernel.org, kasong@tencent.com, ziy@nvidia.com,
-	linux-mm@kvack.org, ying.huang@linux.alibaba.com,
-	Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
-	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
-	shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
-	baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
-	npache@redhat.com, "Liam R. Howlett" <liam@infradead.org>,
-	ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
-	lance.yang@linux.dev, linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, kernel-team@meta.com
-Subject: Re: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
-Message-ID: <akjakkURVyM4x1dt@kernel.org>
-References: <akZis7j6xSjl8K_D@kernel.org>
- <20260703194502.102044-1-sj@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260703194502.102044-1-sj@kernel.org>
+	t=1783187373;
+	b=xQnmcwKmvVSMsJPiLDa88RIoQkvylMtxb34bUICMPGmW/noh7O3pMAjfsbEYRQMyYHVIIs
+	UGahP/9Q61UWDGsWZeKqW4V0I04FDte2fd8w4qXdaOAzw5WjAYDwG+9pAM3puYXTaXiAE8
+	rJzodP1I/m+ZzfhQmGc35Eei9XWCups=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-384048e7e14so740777a91.1
+        for <linux-mm@kvack.org>; Sat, 04 Jul 2026 10:49:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783187372; x=1783792172; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vk4Q1IL+H0DJ+/uFKCde3qqkuwUWo/vem0qrwOJHzYI=;
+        b=luaN5odf4YIhAWqTpvXmjcnaUHI7aTQqc/QxUnT1r6/fFFIUQ+jZmryhvdgWkpzMCj
+         McYq32h1s4KSDe6DDKLo2IYVLnf+SPoQBHT5TW2OeTotSPFDXzDAT4pW3KJ3PWXOp5TY
+         1nNoNfPaX391/gEs81WYdusO4gJVx0ft75GcnEquRgI7FbRTE8HFiTuO0KgqSbNdZW4N
+         nTQofsuIIBnb18ImpGsEHraPL8lBD9deR28J9Uh2oix+BXA9RF3jE4mTN7GEFm2sDX7N
+         kTaaiWNnxfKefDqcka9/JiJd6KmEWfvc5/U1h5SoWvxQcQyY6hjoiC7NslyCol5TVoTP
+         EQvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783187372; x=1783792172;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vk4Q1IL+H0DJ+/uFKCde3qqkuwUWo/vem0qrwOJHzYI=;
+        b=VK2+ReNRPDCZtWcfkbbWmla5QDU2wjUeD6yL+yTYY9Zt3mKccpNHeJqVdAW4gLf0zW
+         uUnv+38ZEegWj6LT1YvEh4Bn/SBVWHeqmU7s8FvZqtosIUcnQF5nZqrDVrfe+xzrxxzh
+         H5tg3YlWeKYn7aC4WhFR9NDumUREdyDWEXxQBIjjrCyc44W5+dkKwL2ddKFjyyieIX51
+         8cSi+QJvoMdoAvPtKUUefY9GyMiGiMFOevWd6cPkhoZfwpsmXWfc3nF/31nwwDDfK5ws
+         SpVHcHG/RYPHl3BYYCpf5XJ2pvbxRaNNM14xv04u/HdGIlbdWBjEZqN0qDYlic5y1Il8
+         xjSA==
+X-Forwarded-Encrypted: i=1; AHgh+RrYojwcD7p5HxQkMMu9KS42Vrs8WUNfIz1uw6ggz/dzy7Y+G7TLP/bjxzN+n+vv16c4E2kpozflXA==@kvack.org
+X-Gm-Message-State: AOJu0Yw9D3txmAWWBVbihMBc+Lv7CmbsQEe19xQZNx8TMvPyy7oATWfP
+	G1/GSwdP7ndfIr0rIDT5DrhbSMA2wyPssKh3/NugMakNhiEfyzi1Wx9596hsLws6yRHMt023495
+	5nv0U9T7J4QqHN9lp3sGTiOcVMQ==
+X-Received: from pjp15.prod.google.com ([2002:a17:90b:55cf:b0:37d:a52a:ff00])
+ (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:28c3:b0:37d:ee77:78ac with SMTP id 98e67ed59e1d1-3829f00771cmr3866565a91.19.1783187371917;
+ Sat, 04 Jul 2026 10:49:31 -0700 (PDT)
+Date: Sat,  4 Jul 2026 17:49:30 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260704174930.2885785-1-souravpanda@google.com>
+Subject: [PATCH v2] mm/hugetlb: Fix null nodemask in alloc_fresh_hugetlb_folio
+From: Sourav Panda <souravpanda@google.com>
+To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
+Cc: david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com, 
+	souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 759AA1C0003
+X-Stat-Signature: t71kudps6hfys63tuhfbom1814ugbrgm
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B943920009
-X-Stat-Signature: 1m874bya5b3m3twia8bbsgs5ym8miytj
-X-HE-Tag: 1783159455-791227
-X-HE-Meta: U2FsdGVkX1/qFejbwM4XBodNUgnqxFLD8X0KnOjpdkkDXlSO6PGxFOK8HBDRVZoA2229yTfaTQasOut8JLU71GZOs/z+dPB/+nmUsJiH7miu4Giv9hVwYZlde0sUK6z6Fpjz0r8NMe1BLbN7yZTm2TLdSWDkaphGkvFYOkGsKxqbtjvoZelgqHZ3glWvEFFtvdeR1QYKoY3c3dqn8MgYfk2nkLieB8XjTjsgRYK97/OcbZCEoKHCYDgR0v+4Ebx89qZrpQ6giMfw2bGg2js/DaXayRjWoTpBPnDkWLYC74aoPlQO286KvQPgdDfSCF/7PmDioRiaxr3dY6lbqnJB/RmrtD+4RiC4pd/0iPWKiWXaXfr0p1RovLvC9ZKwGCbH570p2dv4WYqD5VOBbgF1d2SInPpSCfA3HqLgkoH6inxKIn1MeKhbl+kxiV0hWuHHixM/avywds7Zi9+9bEFmu+nUeEvpEZjweHOnYYWRP/pKm2DFY9FPCi6RwPaGGY8KYWqabGAeDFYrryjCopa/JdNihcjTuSOqwnWkVOFXnPwdtCvN7AzpMEVTLIhqEpXPuCeR2e7FvIjlw6qfnDpD/SxqkLM2VIj9MxJ6fFrleYE1hR9msVrodm5TpCwiupWlh5hIJNfd5z5bfZ5+CcPQeIPr1iCdx15SfqDZwwxNFToWhvqRgJmarVP2AY3639ozZVqZotz4TLll9PWOXxm+R9g0COsGBitoFwJUE8tOXeglE9yucx0f3u9p0HZnPJFT5e8jWKmsdDGLWqmfEclVDg8cmIzImhBKlilg1paIuZWe4EJq3AkIpDSTGse8NR5mmzaKTI2VpEenT0LJlSkp3EK91ulB9excAySZin3auKHKSKNvzgPFLoQLa/AqAeqZjeKUwAT4fEksAgf1P9Ni5cZVOLwQoZOivHMI/trf+klvHmMqj/22K8ecHo+0hlbLJlTO71Xtz7nXnLwv0HR
- TabFlK1o
- Z80p4+5AfjnwKy+rs0IA02lTG46MP5s2wXlM0gCigcxk+M5yIVyrTaj9VUlAaIcVtqBOribtRhrb8MB2vAU+admC8B3nv/Lg6BNaiCL68PsOuGPQVhTFrurcThHHoXHcDSSQkDxWhW1RVHdu0rvwWTXyEFCaqgDmJ6N+0yubus+tJFcAacmfIH8mqLDkPoZggtbk8xHC/BCMWpsJnzqopVEhQXtCKuVVCvvLW6z3DuSWa6b6DGDfCVA5G7wjVvl3J6nkuBWmDQvPMAtgaDJxQ6BlI7RhbrA8RzjGmyJBKHf6kIqA=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783187373-779979
+X-HE-Meta: U2FsdGVkX19+EycsjhM2NKEiDZiZ/4+8VCPwm/yBcUsHjpPe+Mc1UJoEwvAxdXfpkqDZu1f1Jf+vsKj6mfV2ISVh0V7UEvlj3qCSQUz1hXsVj4i5+5frCgYdzHbgl8mOACJubfoT9p7iuAvMgaw3HH4TfNSVSOuq9M4RhgFreYBxIXJEjZPuYLjYtEIes0WIfyuVAqg1amMkA9pMDj1UwNObNHuqun1AYaSUs5qVnAmDBQaaIIdGA5eKyon7DLpTBqL1H1QINW7trxjs6g1TlUAbyR41emn4uFr6eqCGM0/XXKNP/JsS9OEJ08EYq4sUUaXx2CQcuED3jEw3QD1ZToQR9NxyDisp3sqAgtqLHQglyH5JHrSfmQ45Ujhjl/SPxfDZ6EwY5dwxZmw3jXIZbHNVBM87KzB6haexA4MrB4eGozjpSCUOiwznLf4fgaIj48OO0rtmyP+wKnZ8owyPcG8CJpCBy/HDhj+piqiAKSSNekVeHS4oACjDOtrqREbEROlL5KYcQVL2RBndZWR9LP0he3HhISmWfLP12Dl/68rHIGiTAIQnT9yXAMf/FW8kvB1pPo1PBelFguZF1/JlagaIHTKNaQEfMKD2rANT6jXyXBmqWiBMMkUMW6QDEr5uS9E4RgHSpUQ6H4Jm0K7YWMP/LisIEC99mll8DmHhbozijQgnpV1Dm8BqEPthnOipt2Z8xt5rvAIAsMjfZGwA4ZM9G7qkgwCWX4cmVoX1x+qBZy05eETHHkwPXzHf6TyrY5RlWWSkZJ4FAUAAFRaM3QKXzpzVu+pgkTwK4Qs5XLtRtpr8DHFA6Qxk+w3v7GpAaeNKU8AH87AbwJYql/6NRCXk8eCWuXGP0EpaHPpJ76g8FgHuXuJsR0spvM8nabVCEvwZnhHgS9qXHGyj4aXY509Fs5qgX9SOuyPd0Ch6psOgS6H+7DAkTU2bmFJ10TjAseCOLlMwRAXEYU92B+0
+ qA9YegdB
+ Ujf4soIy7dSjk3TCWg7t4Qm9jaV8/JSKwj72eyqJnK/jA7qBPT73akXHkpu0Lw1mKv3gAcEJ9r2JogYtOrJZzEO2jFNPRN8l++CREfgPYYyRQh2OjahZOGlC44MTQF69pd1GPJhXtDqpfJuLzPknG/hbnT/tQwC9u7cAwdf2syilpkVRfYArJLORtOVKBMiUpdgpaK60FTyBlLZtWBUSp4Fy9taKKzXHtm/Qe7XUBWtGUR0dWYN5C+lfwGjR6VRgwezVXK/kB6MQ8tyENAKrkAGE/ua/ozYteDP2n0TtMEovDjJJXCLLchwAU71LWcDOgDac8BOmeb6B7feU4aLf2R9zuFKBIJIIWVnXHWoo4+sDTxJdav/d7bmkWQqjpf0xSQVEhU4Wyss58jkMLKR3jW1OQz5ly2Cg5cwUpiXX7WR3kHyOWHxGl4ZGftsoQ9pwF4AW7I1+EvvIAW+0C8mWj+t6cnGki7pzrEq7Ge/DrGpK6u7KxB8gFGQ+NtkI0AV/ppvorg/UqheuNzR+3xauDSTvpwfpP+KMDdh+qjqI3kNzxQVsBBawoetgXhq+XhVpikjvRPgN6Nh/nS7Gz6HPyYg52w6tIhdzrNCfCNxU53+v48gXiMqse9ohFOgLb58gMHJxwApIilQkw56Ymazh5gc/h+ZOlbxCpCsgpW8lJBRL/hYPaHWmnor5M6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,54 +104,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() which blindly
+dereferences it in for_each_node_mask(), leading to a null pointer
+dereference.
 
-On Fri, Jul 03, 2026 at 12:45:01PM -0700, SJ Park wrote:
-> On Thu, 2 Jul 2026 16:08:03 +0300 Mike Rapoport <rppt@kernel.org> wrote:
-> > 
-> > CI grabs patches from patchwork and tries to apply them to one of the three
-> > bases: mm-unstable, mm-new or the latest Linus' commit merged into mm.git.
-> > 
-> > If patches apply, the other bases are not checked. 
-> > 
-> > This patches applied cleanly to mm-unstable and successfully passed (at
-> > least once :) )
-> > https://github.com/linux-mm/linux-mm/actions/runs/28544575927/
-> 
-> Awesome!
-> 
-> I found the CI script (mm-ci) on the GitHub organization.  Is the repo open to
-> contributions?
+Similarly, if the CMA allocation fails, the fallback
+alloc_contig_frozen_pages() is also called with a NULL nodemask,
+which may cause issues.
 
-Yes :)
+Fix this by explicitly checking if nodemask is NULL in
+alloc_fresh_hugetlb_folio() and defaulting to
+cpuset_current_mems_allowed. This ensures that both the CMA and
+contiguous allocators receive a valid nodemask.
 
-> If so, between GitHub PR and patches to linux-mm@ what is more
-> preferred?
+Additionally, this patch adds a missing node_isset(nid, *nodemask) check
+in hugetlb_cma_alloc_frozen_folio() to ensure the initial node allocation
+attempt respects the memory policy.
 
-The way it works, all testing update should go to mm-ci. There is a bot
-that takes them from there and generates PRs inn linux-mm that include
-patches and the CI files.
+Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sourav Panda <souravpanda@google.com>
+---
+Changes in v2:
+- Fixed in alloc_fresh_hugetlb_folio(), because we also need a right node_mask for alloc_contig_frozen_pages() as suggested by Muchun.
+- Added node_isset() check to the initial preferred node allocation in hugetlb_cma_alloc_frozen_folio() to respect memory policy, as suggested by Sashiko.
+- Added Cc stable as suggested by Andrew Morton.
+- v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@google.com/
 
-> Seems it is not running DAMON specific tests, and I want to add
-> DAMON kunit test to the test set as a first step (DAMO selftest is bit flaky on
-> some systems), if people don't mind.
+ mm/hugetlb.c     | 3 +++
+ mm/hugetlb_cma.c | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-Patches are welcome :)
-
-If DAMON selftest is flaky let's keep it out for now please, otherwise it
-would cause too much noise.
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 571212b80835..ab5deba4f7a1 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1865,6 +1865,9 @@ static struct folio *alloc_fresh_hugetlb_folio(struct hstate *h,
+ {
+ 	struct folio *folio;
  
-> I or someone else may also want to add more tests like Cc list checking [1] in
-> future.
-> 
-> [1] https://lore.kernel.org/20260703190421.100480-1-sj@kernel.org
-
-Yeah, I think it would be helpful. 
-
-> Thanks,
-> SJ
-
++	if (!nmask)
++		nmask = &cpuset_current_mems_allowed;
++
+ 	folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, NULL);
+ 	if (folio)
+ 		hugetlb_vmemmap_optimize_folio(h, folio);
+diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+index 39344d6c78d8..79dbd0baafa3 100644
+--- a/mm/hugetlb_cma.c
++++ b/mm/hugetlb_cma.c
+@@ -34,7 +34,7 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+ 	if (!hugetlb_cma_size)
+ 		return NULL;
+ 
+-	if (hugetlb_cma[nid])
++	if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
+ 		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
+ 
+ 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
 -- 
-Sincerely yours,
-Mike.
+2.55.0.rc0.799.gd6f94ed593-goog
+
 
