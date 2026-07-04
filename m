@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 305D0C43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 06:13:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 198A1C43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 06:13:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E61176B00B8; Sat,  4 Jul 2026 02:13:49 -0400 (EDT)
+	id EFD416B00BA; Sat,  4 Jul 2026 02:13:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E12806B00B9; Sat,  4 Jul 2026 02:13:49 -0400 (EDT)
+	id E606D6B00BB; Sat,  4 Jul 2026 02:13:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D29056B00BA; Sat,  4 Jul 2026 02:13:49 -0400 (EDT)
+	id D75FB6B00BC; Sat,  4 Jul 2026 02:13:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A0CA56B00B8
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 02:13:49 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A5361C05D0
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:13:49 +0000 (UTC)
-X-FDA: 84950078178.07.8F93140
+	by kanga.kvack.org (Postfix) with ESMTP id A1D7B6B00BA
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 02:13:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 233AD1C1E25
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:13:53 +0000 (UTC)
+X-FDA: 84950078346.11.AF29409
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6CD5D40002
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:13:47 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XGAx5kJm;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8A701A0003
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:13:50 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Clgh8Jsr;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783145627;
+	s=arc-20220608; t=1783145630;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pNftAvQH16BxWBwtuSfq3FcInYIuCbQ6Q+AZs1Wj1sE=;
-	b=LlTqgHxEbn2FoUp6Y5SMPnfMHY4IpVxexv/4Hc9lfo29BYhad8rSOE6hXlUTAhmJsdguId
-	HiEhOca/aF+P1qXtgCCBzteFvbQ5PAgZfjbQw8KhTCg9PClGyWrq/Batfy+Wf42fktEoYl
-	oxty7jDGgNQF7aE4JJZRQKRRKL1VPek=
+	bh=emLjy5o6r8ZJF+EiAHY/zB3OczqvGQ9Eeeqy3Pf2Faw=;
+	b=VMRrMidQupmo7GnZVrAETcwmwIllRcBEBnsO8CiC8Mozgfx3IDooK+xUeHHH+AANjRyst8
+	o8PXl1zxz0yCsC9fL4GI1Pag+ZxPGEFYi7WX39gdb7X534V/lGPpf+T5Xn/bsAEHFJDa+B
+	PubGfcitseT+zIZ7gi2RdcJTQ6oXGLI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XGAx5kJm;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Clgh8Jsr;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783145627;
-	b=ofFM2qdMFFj74HOvZmidjUnK0bbKHuSe6R67zJJSKNGl4RtEhBQEUVv+HzTBJeKVujYiqh
-	m5u1MAFcuKYlnM1mImClitlLGjhx4bvYcVcBslUk5+el0nGwpPtbAvpnqd8ZpxQn09FlBl
-	QlPdlQyjkjA7JhwJQXTlLZAeO7vCjgU=
+	t=1783145630;
+	b=DJLJmvLEuAtXBoJgODJhhGvN7e++jmryXGuN48nrixKcqNjTxTk6QDwryamCdac72UcS/f
+	Px+wbtg0QhVnDMOERgkaUR2RMkp4CD0AdUUHMfWs5rHWMdHHQ+v3XN5LPJ0qCgVJyeCVzg
+	GfCLWPL7nSXYJYq6Vb20l4DlZshbQuc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 08F2C600D8;
+	by tor.source.kernel.org (Postfix) with ESMTP id 28CED600AF;
+	Sat,  4 Jul 2026 06:13:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1251F00A3E;
 	Sat,  4 Jul 2026 06:13:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C761F000E9;
-	Sat,  4 Jul 2026 06:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783145626;
-	bh=pNftAvQH16BxWBwtuSfq3FcInYIuCbQ6Q+AZs1Wj1sE=;
+	s=k20260515; t=1783145629;
+	bh=emLjy5o6r8ZJF+EiAHY/zB3OczqvGQ9Eeeqy3Pf2Faw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=XGAx5kJmUB4VL+ROOnL0Mh3YYqtNNPySMYBqPBhIv3rySooDU1qGodkCJXr9b2DPS
-	 f/V/E8vc8bTe5gicdg5AYZqdqQCOF9ZCjXnF3dC3iER2Y/Awl/Ft9Ni5ZoQdVW8AuY
-	 kbYtGVhO2+1ezoaNvfYFH26nqRbkqYL7DTCVcYpDmimBoABCj7YlGEjMX27wz0YBlB
-	 c2J/5rxUOHvCLtplPC1hAKkC0QahdJSwcGELBALkujtylmQQkOZ2s+6UcacaZutIoL
-	 ZLoiJpv+tbeKPu/qVGCVCu25ELXyvq1u/ewknzu0oeGVUIJyIekbRC6sJBV8vPIpoH
-	 SqYPEpUjVlCHQ==
+	b=Clgh8JsrEBdQ/oKnX72d0RSb06OkNypaXXjAe3KGHnzii5UbuKYLr0SsoAneFYrgc
+	 qkKvKO3F18YV1fu/fQPB6bXsgevm6whYsfxTTsSOkA4kjyuWvUBrUSifbZcNBWIQqr
+	 sHy51Gje1SH2XwNdaEck2RaYjfPS6kdVPXxcmoyOaMknHbsC3FuHj7sILfI3r3oaMk
+	 xvTOOSI7rnJ6j5YVJb1cCqPSs+fdIaMrqdfKrLgSH3JYKneob10MjxUZdrcNAeHAHK
+	 gjAGZIhxn7ZIbsA/tevlL8B5k6rafA7tfV90Aj82lRzAPRdB2HVJqH6ZAE56Qdot20
+	 nhtIBmqdJXLLw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 04 Jul 2026 09:13:35 +0300
-Subject: [PATCH v2 2/4] scsi: proc: use kmalloc() in proc writers
+Date: Sat, 04 Jul 2026 09:13:36 +0300
+Subject: [PATCH v2 3/4] scsi: ipr: use kmalloc() to allocate IPR dump
+ buffer memory
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260704-b4-scsi-v2-2-7d2d21a810de@kernel.org>
+Message-Id: <20260704-b4-scsi-v2-3-7d2d21a810de@kernel.org>
 References: <20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org>
 In-Reply-To: <20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org>
 To: "Martin K. Petersen" <martin.petersen@oracle.com>
@@ -79,17 +80,16 @@ Cc: Brian King <brking@us.ibm.com>, Hannes Reinecke <hare@suse.com>,
  Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
  Wen Xiong <wenxiong@linux.ibm.com>, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, linux-scsi@vger.kernel.org, 
- target-devel@vger.kernel.org, Hannes Reinecke <hare@kernel.org>, 
- John Garry <john.g.garry@oracle.com>
+ target-devel@vger.kernel.org, Hannes Reinecke <hare@kernel.org>
 X-Mailer: b4 0.16-dev
+X-Stat-Signature: ywn4bipryk3y3srhgmwwbga56ojcguwn
+X-Rspamd-Queue-Id: 8A701A0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6CD5D40002
-X-Stat-Signature: 8mnun46s5phatfi4imxwf4kpcehpxhfk
-X-HE-Tag: 1783145627-604982
-X-HE-Meta: U2FsdGVkX18OUKx/2vgPisx6owgyailJyAgfnqtyJujVtLRXjum1WhUNAKaEtgL2uD9oBl5SQolWG2UmaOaue5+D4GhjrDty/t59nq+SQcFmEiwpuVOUEGx7jNGx25gm+kR/90Ewzlxz2viPhwBoRIM5Hyjekzz2p22KiWyZRT9aXCYLaN8LaRez3Qmjuir1qHN7iKuovjaJouBPlV6xqW+2bteZDLk96BXys+U9BzQKS3TybYpyIQdcrIBc2B46kHboTvyCofKzOGp5JHndbKxj3/nlVeNTZQzoKWrqDxEMZpcHVmQFYKuDpCTOZp3r6Ij53W7q7fWaDkd9/k/0NzDPbpuc9wcPgmhn2p4Mdm8MS+KG5u6zfLUofAyr3cn7KhZH83AbC0qf9vax1uOmKHMbB6RGpYZyvX6mtA98JFBBRNJw5WOBIhywek5zEItlp4vDJsPKWddoUjVpvu1Ts3dOe29/zFOE5bjJLYSbMY1GYy//d6X61d/wGpRf1oBvOba/RyK2taJ6BpQeqMNWrFS4z3lwutyKbbHqplyqkI0fkSPjBlHg1Ta5BZOgkBLwO7WW+CnaPI6DCTXsW9sodx869DXkFF4BG2QLkZd0lVXj5VxZOOPzhDxZTeKF40yoSQOwHQDB4Ges+gWo9HMreIxxUvS66ndKzAin2nxvnOLxb4hLCv4de7NGM112u4Zyb9t8YRi0iMTn4D48j+reWzYji9N6XBrBWUhAA0bVctYVDenPgfR4B0gtzhd5lQJNxDlIZvPPrGSZ6xJa8di3QmVnG0BUtmI17jgRtf71egdZX8IODnNMlk82gdFw2YmlOOGoWSrLR2Vcd13u3/Z0f1wGeuyqqqx/3aa6xQFiouOJwyo49ksje3JSbrAGupgZ8PD9JFBMkFaoR33yfZHC52u7X2r6J7RtVSAXozsncehCloB1p8UNl4d1pF7BwQqwTLpAwfjLI1RGAYD2Hb5
- Z1LjOZPN
- llO3XByLY2HXuMXM92BsidxOVP762h36uhT2FmhYw8os5uzXQfpt3V+1r/mATqZi80OlHuUSk438ML7MZqEet7IsT+eduKsACnLSkFtaHxQP1qaWq5USrhdnUNlT63eTPFmtec9uC3nO+a76UsPAKuTRc+s///oME+EZFkKDrmKwRqRDCAYReqUfjP64kqGJsil+fN1cqZUKrrYF15DPcz+htCnr4cOqKZB/mw2q+P+yZ2iW3xR2YLyBMqxAOUbbPlufnGqU5yBEuNNXimucItJ3uWyjZfc9ma4lqdyw+m4PKHQrK8nIN1X/oErIJAjEWC118738inxSdiS/SjEb0ohVywfmWhQ9e5+AkIkqkjKxUGHPl6t3oBCLteg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783145630-757024
+X-HE-Meta: U2FsdGVkX19qEVvytT4Vcxu7bTA7ot1lg/VWQf0bL4iCzhQsAXCD5NHwo6tZ5VHM0rcqlLLgNTzlmtm2SEiXMy5CVDosfJI1JBiP28rsJlvEPlo4e8yoZQtf/Ytf6UK48MDd2GVd+/5N5OTrJ2c6bYydlpvRET2i+aJ7xyLdlaLcaowPsH+yQz9JrSB4q3aIHqDhVhutECG4O2ctKFaryTPX4vcJOSDBOaaruwgTH/mrkatSGjFwmMBIMkfQ1hhBStf4usyvcv1toQB1FQqX3taJvEaDVugMYW+VPSP1gaFavFdBxU93hNHa7K0xfKwiRwqJ8PEwz5hCH32ZQ8ll2IRqn9hmnCQh4F9sIt0CSi3+w8OKzIXonxC/BrsHcv+41+CKaS4+ZGtTHY/J9y7dC10Zg919HE4uRktVjyMM/ef5W7UUbsi6vMZHrGcuPYFiPjta4COU9XVOSUo9Gy6ekyFVGQInahYt2ztM8kSpXYd/mVp+kiA4fK5V3HyCJVi3tPcvEjwPHntQ1CQB6sjtgvPIzS9SaiTYpUJqIorLWVSwieEGKDSN0ZtGW9kqQFswpvADENS8oP5NltBdS25c7OaKiLGYbxMObagEiRXe3Br+JyKNxDb6SYJTAoHISz9z1e1CewEplvQR29TD31hzSF3tUKQjbRMyDg1rayZ5sThP6wKJop377oSd8hpNYKOZ+DFyLEKYYMXUxSFjhiAGLOLv07ONWb/kgp8Y+u7SRf7eGID+eVfBwA4jyZ8gud6faz+a9K4gm+WEFFE278Vy+xWWYauMdHbkyuqDsQWkFP8NkMhD8dYXfiFfHgrIGdYHONVaRuAz4xhK8XltDs1jQC6cCpfq0aDnJa6TJkKPGEpzmAhy5hP1+QjKKnjbf8hBzc9j+wa4k+Sdl8PcVDw1GS44yMDPhAfv80AGnklPRFsYbLYvs2ceEsoXEqg7YEo/vol8dOqweBwSfikSaMz
+ nO8EZFwM
+ Yp2D2UZ3fFpS77UEgXATngx/2/6/XDUQ8QjoyYCLzcYXdpRiCGR19Jpw87lWBGemSfoDLpDyq44WnR+7gpBTeb5iJmTVlF4K5+4rJgugwBnpeYoQcSt3SUGpMRYeHtv56HNkDrL6qiBKJQlgUhZ5g3e63O4u6k84CwvQjMg1dclcSg4zeblyhk8xS+55ZNNjwQZbsm7wXOX06svGaTAxrFRlpFnadQY5H2727lG6zrhvXaB04klfLasUkzf0P9romLLKnDjQz8HBB+FGGWkEeE4oJJRpvEgFtEGK100MvubNTsVyjJg+TyEz2ylmtUaCBimnlHdvjf25sl4bnrJcEd9p6JP+srrU6cidUIxzdjzfJ+loTkxIj+xnhbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,97 +97,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-proc_scsi_host_write(), proc_scsi_write() and proc_scsi_devinfo_write()
-allocate temporary buffers for /proc writes using __get_free_page().
+IPR dump machinery allocates memory to save adapter's crash dump using
+__get_free_page().
 
-These buffers can be allocated with kmalloc() as there's nothing special
-about them to go directly to the page allocator.
+This memory can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
 kmalloc() provides a better API that does not require ugly casts and
 kfree() does not need to know the size of the freed object.
 
 Replace use of __get_free_page() with kmalloc().
 
+While on it, relax GFP_ATOMIC to GFP_NOIO for allocation of dump
+buffers.
+The allocations happen in a workqueue context, but with storage adapter
+being in a state where it can't handle I/O.
+
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+Tested-by: Wen Xiong <wenxiong@linux.ibm.com>
 Reviewed-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/scsi/scsi_devinfo.c | 5 +++--
- drivers/scsi/scsi_proc.c    | 9 +++++----
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/scsi/ipr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/scsi_devinfo.c b/drivers/scsi/scsi_devinfo.c
-index 15ffbe93ac72..2bccadf4f22f 100644
---- a/drivers/scsi/scsi_devinfo.c
-+++ b/drivers/scsi/scsi_devinfo.c
-@@ -691,7 +691,8 @@ static ssize_t proc_scsi_devinfo_write(struct file *file,
+diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
+index d207e5e81afe..19153dd24736 100644
+--- a/drivers/scsi/ipr.c
++++ b/drivers/scsi/ipr.c
+@@ -2893,7 +2893,7 @@ static int ipr_sdt_copy(struct ipr_ioa_cfg *ioa_cfg,
+ 	       (ioa_dump->hdr.len + bytes_copied) < max_dump_size) {
+ 		if (ioa_dump->page_offset >= PAGE_SIZE ||
+ 		    ioa_dump->page_offset == 0) {
+-			page = (__be32 *)__get_free_page(GFP_ATOMIC);
++			page = kmalloc(PAGE_SIZE, GFP_NOIO);
  
- 	if (!buf || length>PAGE_SIZE)
- 		return -EINVAL;
--	if (!(buffer = (char *) __get_free_page(GFP_KERNEL)))
-+	buffer = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+	if (!buffer)
- 		return -ENOMEM;
- 	if (copy_from_user(buffer, buf, length)) {
- 		err =-EFAULT;
-@@ -708,7 +709,7 @@ static ssize_t proc_scsi_devinfo_write(struct file *file,
- 	scsi_dev_info_list_add_str(buffer);
+ 			if (!page) {
+ 				ipr_trace;
+@@ -3226,7 +3226,7 @@ static void ipr_release_dump(struct kref *kref)
+ 	spin_unlock_irqrestore(ioa_cfg->host->host_lock, lock_flags);
  
- out:
--	free_page((unsigned long)buffer);
-+	kfree(buffer);
- 	return err;
- }
+ 	for (i = 0; i < dump->ioa_dump.next_page_index; i++)
+-		free_page((unsigned long) dump->ioa_dump.ioa_data[i]);
++		kfree(dump->ioa_dump.ioa_data[i]);
  
-diff --git a/drivers/scsi/scsi_proc.c b/drivers/scsi/scsi_proc.c
-index 1799dcae775c..fdc355d783da 100644
---- a/drivers/scsi/scsi_proc.c
-+++ b/drivers/scsi/scsi_proc.c
-@@ -28,6 +28,7 @@
- #include <linux/mutex.h>
- #include <linux/gfp.h>
- #include <linux/uaccess.h>
-+#include <linux/slab.h>
- 
- #include <scsi/scsi.h>
- #include <scsi/scsi_device.h>
-@@ -74,7 +75,7 @@ static ssize_t proc_scsi_host_write(struct file *file, const char __user *buf,
- 	if (!shost->hostt->write_info)
- 		return -EINVAL;
- 
--	page = (char *)__get_free_page(GFP_KERNEL);
-+	page = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (page) {
- 		ret = -EFAULT;
- 		if (copy_from_user(page, buf, count))
-@@ -82,7 +83,7 @@ static ssize_t proc_scsi_host_write(struct file *file, const char __user *buf,
- 		ret = shost->hostt->write_info(shost, page, count);
- 	}
- out:
--	free_page((unsigned long)page);
-+	kfree(page);
- 	return ret;
- }
- 
-@@ -412,7 +413,7 @@ static ssize_t proc_scsi_write(struct file *file, const char __user *buf,
- 	if (!buf || length > PAGE_SIZE)
- 		return -EINVAL;
- 
--	buffer = (char *)__get_free_page(GFP_KERNEL);
-+	buffer = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!buffer)
- 		return -ENOMEM;
- 
-@@ -467,7 +468,7 @@ static ssize_t proc_scsi_write(struct file *file, const char __user *buf,
- 		err = length;
- 
-  out:
--	free_page((unsigned long)buffer);
-+	kfree(buffer);
- 	return err;
- }
- 
+ 	vfree(dump->ioa_dump.ioa_data);
+ 	kfree(dump);
 
 -- 
 2.53.0
