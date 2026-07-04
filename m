@@ -4,93 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CBBAC43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 00:21:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEF1BC44500
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 00:39:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EBCF6B00BD; Fri,  3 Jul 2026 20:21:29 -0400 (EDT)
+	id 48F5F6B00B5; Fri,  3 Jul 2026 20:39:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 574CC6B00BE; Fri,  3 Jul 2026 20:21:29 -0400 (EDT)
+	id 43F796B00B6; Fri,  3 Jul 2026 20:39:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 491B76B00BF; Fri,  3 Jul 2026 20:21:29 -0400 (EDT)
+	id 357EF6B00B7; Fri,  3 Jul 2026 20:39:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EE08F6B00BD
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 20:21:28 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1488B4035E
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 00:21:28 +0000 (UTC)
-X-FDA: 84949190256.23.99A1214
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 61CF240004
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 00:21:26 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w9EOB3lT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783124486;
-	b=oOFWtDTXyJX3sBswXR6lv1gL1bMivjW+UUIoumyfxR8kjlYiBvl/pyg51RhxSjCP9mf8pX
-	mnRjCgFAg1P1RE0I6R8j//z0uXpebxO2CtVXRmwqNFCbKJYc9wdnz26n1+ASQvZVqmpWUR
-	g6IJyXJ67t2zkiuINAXe3Ll40PjpVrc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w9EOB3lT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0898D6B00B5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 20:39:10 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65B051C79FD
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 00:39:10 +0000 (UTC)
+X-FDA: 84949234860.20.16766B1
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2784540002
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 00:39:08 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OsAtGgpf;
+	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783124486;
+	s=arc-20220608; t=1783125548;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Udq3/2zgh/qo/G71V2iT9d+CQ5RvaKNE12ZPGhXw2jY=;
-	b=tB1xAKSlhvPVfGwSHN/GegGN+0Lashgk5DJXh2p7MAszJH3fZdnKZbdTK3RaM4ATFIpBxg
-	MeBMQzqSH9N/QaJe/BEX/TkPQ6SfPrI6VE/fAvX73JVKF8wX8PKd5BAJellDoVL97dnx1q
-	MxKv+ADTF1eEoLsKDn+vb60eYBTmriU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783124485;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Udq3/2zgh/qo/G71V2iT9d+CQ5RvaKNE12ZPGhXw2jY=;
-	b=w9EOB3lTthCQPBsNqGF0bkCe84OTmUAadNbqCqOqT6Tf04IVwAjVDBq6bEf04vFnKX2nT8
-	yMb88Y1+zhV7rAqQXWZTAykCx9MzYm33aVeoJrIrbDf+C0z2gjstdeJkxBmc4aZBleuH5n
-	+EJ4Ga97YxepfCd5rdwfTSQGuPRqDtA=
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
-To: Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	bh=Tmeyv+yKDLe4sMQPHYRfOsYX6yQ2MKLh3F1KPVmHY7E=;
+	b=sYKRZWGaU+1HfCsvvqjaR04YXjn9dtOD+8/ivXhwbJolw/3E3mIDEztLYMxbTFW0mSJE2Y
+	7/ZSslbGhyW2YzbZaT1jzhTLN/RUqXL9FpZPiHCirc5JOriNOqadGDfrtUJNo04Fzx5jA4
+	XntQw1Gvx1yR/DV45xg8hA3GjsHxH7s=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OsAtGgpf;
+	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783125548;
+	b=GQbUr5TC0a8wx3ngDWlDUSkMq7AtzoUGI95TzINWzw1AO5Y6+U5PhvO48yNSJ6We9j1yid
+	KAOQ1C7Xnykfm+KyERmsGu6+gagV64MUxBKZfJCdss3zMhghqBZPZ1LhPq+z8pfu8gtxms
+	HtDuG/r7uys3FbmhDToY42S+0Oq3Lrs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Tmeyv+yKDLe4sMQPHYRfOsYX6yQ2MKLh3F1KPVmHY7E=; b=OsAtGgpfn2ZZr0zNc4ly0ohzMQ
+	Z1saVpSbGF+o9EzTKmnHyHDrG1P94ZdjNxe/AYOxM5ySV4WyAMi5CExkGLqhrGWsyK45WZfXv1apn
+	W1x1PEsN80UGsHRRAwiIODsvazzWi3XAygJQe1DUvSE8nsEea3L6Duq1274b1yJOisaPgEAlvTYaH
+	Nt5TLyFBGOpqcudWTvSSKo0929jLnRELP+TeHSGdJojjcBA8986JvN6uf4/QU1H6sIJa1hQ3TnePo
+	ugM72E4JglvxCjXwU3XF8q9nG36o59d8rFIGxrH10IIPiljDGFd29QxUqaJsMkAjMYeKA21TPfsVN
+	tlQYC2dw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wfoPQ-0000000B5D1-34RK;
+	Sat, 04 Jul 2026 00:39:04 +0000
+Date: Sat, 4 Jul 2026 01:39:04 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	bpf@vger.kernel.org,
-	kernel-team@meta.com,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 5/5] x86/cpu: Don't reset boot CPU cpuinfo in identify_cpu()
-Date: Fri,  3 Jul 2026 17:20:46 -0700
-Message-ID: <20260704002046.3859585-6-ihor.solodrai@linux.dev>
-In-Reply-To: <20260704002046.3859585-1-ihor.solodrai@linux.dev>
-References: <20260704002046.3859585-1-ihor.solodrai@linux.dev>
+	"Liam R . Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Gary Guo <gary@garyguo.net>, Anand Moon <linux.amoon@gmail.com>,
+	Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: Re: [PATCH] mm/mseal: fix mseal documentation for 32-bit kernels
+Message-ID: <akhWKJSZLfDusVcL@casper.infradead.org>
+References: <20260703022507.187457-1-leon.hwang@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 61CF240004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260703022507.187457-1-leon.hwang@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: nixprrhjominmegoncw8pm3n4qu4zwxq
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783124486-268204
-X-HE-Meta: U2FsdGVkX1+og+ELvTK3iE8SuU9CjfJMhViPMBcphy6cwOqkD9tDNMX6G+azhvirL1fhcKPWwPq0LRGl+JVfIRDRvWvxhyz5Sd0LqRlmJeKNrxXkhDNpiAvKO7d0+JYf+siu/nt+S6pvWNwHup1NMc5nwGh3QA4N0eVlb9tJfIeLrHjxFQSCV4YHYph6Wjy5M9mNmScgb5Mv77EqrlpMxBZ2dXi4J1C5VTiolsop7SzINA9VE3YrFK7nopaxde8IFZ7cFm2vVvgwgRlkADPsvCEbqljajh+WyKXbhDLBsKROsC4zERi2KvncOYdi3VQKNhN5vUTXi7q3suHqtNIZpXVIIil/eUJCAsyzDQFcunzEF8Kiat+TdT+L7teOWUB0mYQMolexVXUqIGFKkDm3FLn0N4S7Sa8EqQfVgobvjYqFtcmLcIdYHP5cKkShbMIpKT6uGSt0ChYzWVzGSHsyMJuplN5Df9u73IlPtOUXigtMAbiUJ3ze/xJ+tmggr+oY7FpdvWGkXA9ySztwUGmTgI4ximx5Ue2j5F//TM6MLhn5+bOutJRtlNHtygddhmycj9KEwVgH2Bwz9TycfOFpEn5Djt4dl0i1t1Kygoc+N1TyzYlzi3ngNQrIx6HH9nBI+ObS+DXqfArqW9ZomlpsXC80oqDibTq68LFBogrjMwNIuJPyOkZdBbnytn3oJxgJbsowBOqYE0BmUr5qVc7b60PHEK8z/qHEh9cHjfbtw56d6VUkroq0oHfU061nCVUgfVaADvx+2nqIcR8o2RjSlCx6DTKmpGpjrXtUiWcBxNPJ3uPUEi/7DX6NGn/U8/IOjuNPfi2SQHfo7VSBrIxpLbgYJeHXMjv8evWjqZhagO3HPg1Pcmv75urRSEm8pZPNDeQtyUReDkWa9rbikBmIWRCv9HeXe4qY0Tt02qVMR8OBgPe19/qeZ/iTCI9eSURC8mgWytsdh0J3B4rW9dG
- CvExP/rL
- 2UGH/jOxYkVyadbzn6GO+g3dqYYA0wlTlNw36QOJa9tbiJ2qqnxn06O8Dbj+4bfWtQGMHekGnjlmeFXXn1TpYv0NlbJvIcHZZKmkKwQTDqIgSXUZGIIiMYKfIhHzV03gT11g/jFvWjqBaaQdjocj4oxlVi7nd5Mx0fhkTyHZhYY+9wGWAvVRJrL9Mlegdp3iBRqhNhpaFNr9mM3uz7FR1aSp0H5ibIA5aSAyKermEIaDBDu+Jtq/bj+Sv0uEfN92fKFlfOk1iBjkxmO8KhNHNex0wc2iyngspR4QHIBUgixKZwYJNL/GUuKFtVZlztcoXDiIPFOxnN2vZDA8lZRR3iwEDEDDiKpR3Rwvk
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2784540002
+X-Stat-Signature: ya6yi4hkusk8qdqa9a11eyzmxn56or8y
+X-HE-Tag: 1783125548-86787
+X-HE-Meta: U2FsdGVkX1+QBxkUo5FhHG6dOfUZteLfj77Dspac9f52XSg00v+379IeXmoowDKZdjm6E88la41hiEP/nf6RfyxvqeH2QfAOH3AVSdY7oZdrxWrJTQrP9KVe7vYn1Lk7ZUnZ6qAnnDFf+Cuko6u7eW8+VO3HJcmhdtSW2naXMZJ1Z4ThhbMjsYm7tKVZocZWFzQnpZsfPIqExdNto/nMReBOsZvl7BNDo2YH8LmJDKokK40F00ChHxxrk/NqTtIl6yZi7b5eJpVOlgLnTInaErRFXX80eGDC3KWev2IFR4TcvAf2T/hy2IQpAnnEoVQ5aOPD272QSZoVZSaHoSqDTG2uUG1WIpAXvZFGouYdwDxT8a9FQN2pm9b7OxUgCd0p4KQfFJ0HBzO/PrNMs4nigbpzfXb0gdM7p46CjYHx4mxsu8pvInXlAm+I3Y/I/BAacgyNgo0Jiby+VOlljH2KRDSyWCCZ64bz/xOZmSbQst2UR/Nty3en7ttxPlXa5UFDtPjfssB0HEpAype2YEoToepvLHHqMvr/tbBzuOx7bmSkki3v0AL1qJsLLIKq36DHgKDq23nlkJzYvq7E+FWo4M9IA4EmBC8kozrRyaAufMqTe75bZ0i4WUj90nfCfGAjkGx7qLMBK4RiH0klUg1gK/UCWXGCDzFpyzt+koBdQCtGwfOQRkmGHVkYHMSpYtliKcJXf9LVBePA5GP6lnhY68t2UOGlbb6bqI53/O+vvquiOlW+0hR3BrfOj0gDSzi/OYHK7Jfw0cAJUfqpri0+RovI/vtNaDM9Lriy/TpjvoGQGg2i4mOgRgtMB/OBKps3546HWNBodsVQPmM2V7Ved8f1RIMBzZm3dclbBsWBfHRfBeWQvLZDbbUo0DPf73FRW+SkEwOMwrmalUCsDX34NvoCjcwd2E8p6CHv8wMHQsHAqgQJQ7FoYswU6B86idihrIUV/huZkHGzU07anM8
+ 4bzZnlL1
+ FNQGxtbJv9rqcR1CT2CQlz3QIXfoJAYvgPkO1zMNnDEtkug1W/pVr2H/+SvQqS2DuzWaJdNXHVSrAfyt+6M+YC8bxWAz3+iY195IrRDSSXa68fTLd5MWQ9AXdx+bwuXP75Cv/uQfDipnzHmCf7xpx3dvPATvDzQnfn4KPEabyYn4ODwfOA8firiBOAeP2KvaT0aZILY4OgwZ7a7j5esnvAPBXTopyK4hNxa+18HWYlSrIFR1idh8AmIp5XrAoCAgoKIV5dLv41N51xb1GKW+PfLht8i43/q2aAKeVO6Ue/W2KiYFOBkV0hf5PXpu528y3/ZPl/zATxM2cIbYKEcea7p0cCTJoApnzFkHX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,66 +105,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-identify_cpu() used to rebuild c->x86_capability from scratch:
-init_cpu_info() memsets the capability array to zero and
-identify_cpu() then re-reads CPUID. On the boot CPU identify_cpu()
-runs after local_irq_enable() and before alternatives are patched. An
-interrupt delivered in the window between the memset() and
-get_cpu_cap() therefore will observe cleared x86_capability [1].
+On Fri, Jul 03, 2026 at 10:25:07AM +0800, Leon Hwang wrote:
+> Document the -EINTR return from mmap_write_lock_killable(), fix the
 
-However the boot CPU's capabilities have already been scanned, with
-interrupts off, by early_identify_cpu(). So move the init_cpu_info()
-call out of identify_cpu() into its callers, and skip it for the boot
-CPU on 64-bit.
+No, you don't understand the whole concept of "killable".  If a
+task receives a fatal signal, it dies before it returns to userspace.
+So userspace never gets to see the -EINTR.  It's fine to document inside
+the kernel that function foo() can return -EINTR, but it's pointless to
+document it for userspace.
 
-Secondary CPUs call init_cpu_info() then identify_cpu() from
-identify_secondary_cpu(), with interrupts off, exactly as
-before. 32-bit still resets in identify_boot_cpu(): it relies on the
-reset for the no-CPUID cpuid_level default.
-
-[1] https://lore.kernel.org/bpf/20260610175651.647515-1-ihor.solodrai@linux.dev/
-
-Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
----
- arch/x86/kernel/cpu/common.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 8f093c6c7ccc..cd3d7c37c174 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1986,8 +1986,6 @@ static void identify_cpu(struct cpuinfo_x86 *c)
- 
- 	c->loops_per_jiffy = loops_per_jiffy;
- 
--	init_cpu_info(c);
--
- 	if (!cpuid_feature())
- 		identify_cpu_without_cpuid(c);
- 
-@@ -2156,6 +2154,13 @@ static void identify_cpu_32(struct cpuinfo_x86 *c)
- 
- static __init void identify_boot_cpu(void)
- {
-+	/*
-+	 * The boot CPU's capabilities were already scanned in early_identify_cpu().
-+	 * However 32-bit still needs to init_cpu_info() here for the no-CPUID
-+	 * cpuid_level default.
-+	 */
-+	if (IS_ENABLED(CONFIG_X86_32))
-+		init_cpu_info(&boot_cpu_data);
- 	identify_cpu(&boot_cpu_data);
- 	if (HAS_KERNEL_IBT && cpu_feature_enabled(X86_FEATURE_IBT))
- 		pr_info("CET detected: Indirect Branch Tracking enabled\n");
-@@ -2178,6 +2183,7 @@ void identify_secondary_cpu(unsigned int cpu)
- 		*c = boot_cpu_data;
- 	c->cpu_index = cpu;
- 
-+	init_cpu_info(c);
- 	identify_cpu(c);
- 	identify_cpu_32(c);
- 	x86_spec_ctrl_setup_ap();
--- 
-2.54.0
-
+This is how "killable" differs from "interruptible".  Interruptible allows
+non-fatal signals to wake a task, and then the task can see the -EINTR.
+But many processes do not check the error code, and so read() and write()
+(despite being documented as being able to return EINTR!)  do not do so
+in practise.
 
