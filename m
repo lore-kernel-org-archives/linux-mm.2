@@ -4,92 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D06EFC43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 06:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F37A4C43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 06:28:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02F546B00BB; Sat,  4 Jul 2026 02:13:56 -0400 (EDT)
+	id D45116B00B5; Sat,  4 Jul 2026 02:28:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFC886B00BC; Sat,  4 Jul 2026 02:13:55 -0400 (EDT)
+	id D1DAB6B00B6; Sat,  4 Jul 2026 02:28:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E38E36B00BD; Sat,  4 Jul 2026 02:13:55 -0400 (EDT)
+	id C59DE6B00B7; Sat,  4 Jul 2026 02:28:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B82EF6B00BB
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 02:13:55 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E2521C5780
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:13:55 +0000 (UTC)
-X-FDA: 84950078430.12.864DFBC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 9F3C2C0009
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:13:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jmk2gMFL;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C4F06B00B5
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 02:28:10 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1D311203FE
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:28:09 +0000 (UTC)
+X-FDA: 84950114298.26.48C9075
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9E19C40006
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:28:06 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jiKOKGfF;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783145633;
+	s=arc-20220608; t=1783146487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ChsJbQD+rYLxKREcHCGErBZhvfE4abQxVMv0tWl2ri4=;
-	b=YmrZmNQt7TNXqG1Xe3CaMBEt27cMZaCxYDv8rQ8RK3JuDkKQMdiV8Wa1GQuCFpXEr9YIAQ
-	xuNdFuRg8Yr4eDjkCN3t2qCfQT3W5693Dy8Nm7LryHjGi1XbSMcblwqlB8/tH3R7uOyCkf
-	1A43ZbOYC28zE7t5g+TVvh2JbIPDSQE=
+	bh=VNDg20YoC8s8bQwkx2yeu1e8eu2LB30CjiLIJ7BaBUg=;
+	b=PcMKZoOdM/e8xFYt9aYz4LH73YZq2JA07T7k5RcMRudD4E0MyALbk86suFrsdEghkGq81P
+	VK1qfV6t93o3VJVQ/Ivfw7/Z90rmpbFx5snGmOx95tIPh0L+V9G3rbRr/qTZxkf19/E0py
+	bNx0NYn5bxLIn2je5S8sxZ4xrKU9O5o=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jmk2gMFL;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jiKOKGfF;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783145633;
-	b=sDRkIC0S2FzcRn4NUI2kZZ3qcJ8InNrGh2gvwwSztsJr7SfAzgFnZ5YkgfVagzjG+7pa6M
-	EGDJWt7kQjjdlr/In64cpXlZLbjk/931n5ADGv1JggumiqsNeCPansWvtKUxvzRYUkIJKP
-	ALQfj5yrHz5R040WJD9c7xQFGYFbBZU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4659360122;
-	Sat,  4 Jul 2026 06:13:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C40E1F000E9;
-	Sat,  4 Jul 2026 06:13:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783145633;
-	bh=ChsJbQD+rYLxKREcHCGErBZhvfE4abQxVMv0tWl2ri4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=jmk2gMFLrK3eU2lLP0K0XOJ1Pm0Uzkc7RJEuAmXhOwd75+F/e2QiRDrlyllwdNK7+
-	 b7wQ+uYlfHvWU0PmUHehslmgcJxmnK3217gkV1Xl9Y+JTBcBPOQN687QayTgxlZBXJ
-	 /5ewIJhudgeSA0G5uY3yPFK2holTLgZaFvSjEANSl+0Ox1T4WJHp3oMK6Dn9kDP3/I
-	 nVVVNdy5wti/f00rRlEtOaGzXqfUSayxeZUlhmTy5eu1IiZ8sD+71yo54zPfQHeKwC
-	 +Dwl/S7zgOdKLTh4ttH8FEgQu47KXFvAsqX8h0GvVXTZpNddSk1yMzGN2sLJMnAFPY
-	 YKGxAnmygkPlA==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 04 Jul 2026 09:13:37 +0300
-Subject: [PATCH v2 4/4] scsi: sym53c8xx_2: replace __get_free_pages() with
- kmalloc()
+	t=1783146487;
+	b=7uBcZr1t+jdwTDng+txP03xrI0qyffXd0uPFzn0lzdY9sIlrNOzeoE3wPFTwb3L6yKogsU
+	A/tknB1L/m/1/ZGsUIeLK72iqZ3ftRpgv3LVY6zCaZ4YWuAnexSf54fw7OQMAc2G2i6DtF
+	tzskXpaW5wq3SbAiawS5VyTlWbl3TVA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783146487; x=1814682487;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SYuftC8uB1rNBHxV7MO5Hs3pXpuRV7EDdT04JM2y5bY=;
+  b=jiKOKGfFyP//d5gmQq+8vUHu3cLiq40A/nPrC0S+rLHlhZx92KbhnI+u
+   L+GeKg2esEsA74G7s4Xi9LbYBPcgTOkyY9bZ0FmdjsNByO1wdvbN7hky+
+   MlljJckQs655gdrxUcZgjDcX/ahgXCxebYLRUOZFZxMsJMd06lXRQBOBN
+   iY57yMQBx2p72+GLTmgv306BwSpfPB6FBvOetoUEEIEAgKEpzgeK7MGDL
+   Pynd/Oe+yMjQIM0kcxBtXRq/06Hui5JOH0lHleOWXuQD1xWfnIbMEQOOG
+   6NMTMlHbnRfk8dq7/WZHcZe1Z71lFbBmJwtlYbUDN9JBmv0Wf6qIE1Se2
+   Q==;
+X-CSE-ConnectionGUID: JyI2cjvdSf2HRNTom8wYDQ==
+X-CSE-MsgGUID: FGS/dP8jQaG0aX0ZjCgpow==
+X-IronPort-AV: E=McAfee;i="6800,10657,11836"; a="87784790"
+X-IronPort-AV: E=Sophos;i="6.25,147,1779174000"; 
+   d="scan'208";a="87784790"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2026 23:28:05 -0700
+X-CSE-ConnectionGUID: zmKUGmO6QxOr/eQyxd19ew==
+X-CSE-MsgGUID: W3j9GpVtQQ6Qj8ZBkSEB0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,147,1779174000"; 
+   d="scan'208";a="251525268"
+Received: from igk-lkp-server01.igk.intel.com (HELO e5a8ed462067) ([10.211.93.152])
+  by orviesa006.jf.intel.com with ESMTP; 03 Jul 2026 23:27:59 -0700
+Received: from kbuild by e5a8ed462067 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wftr2-000000001h7-20Is;
+	Sat, 04 Jul 2026 06:27:56 +0000
+Date: Sat, 4 Jul 2026 08:27:55 +0200
+From: kernel test robot <lkp@intel.com>
+To: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
+	ziy@nvidia.com
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+	riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr,
+	kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com, npache@redhat.com,
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
+	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+	shikemeng@huaweicloud.com, kernel-team@meta.com,
+	Usama Arif <usama.arif@linux.dev>
+Subject: Re: [PATCH v3 11/11] selftests/mm: add PMD swap entry tests
+Message-ID: <202607040838.eEdmRDmU-lkp@intel.com>
+References: <20260703173903.3789516-12-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260704-b4-scsi-v2-4-7d2d21a810de@kernel.org>
-References: <20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org>
-In-Reply-To: <20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Brian King <brking@us.ibm.com>, Hannes Reinecke <hare@suse.com>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
- Wen Xiong <wenxiong@linux.ibm.com>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-scsi@vger.kernel.org, 
- target-devel@vger.kernel.org, Hannes Reinecke <hare@kernel.org>
-X-Mailer: b4 0.16-dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260703173903.3789516-12-usama.arif@linux.dev>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 9E19C40006
+X-Stat-Signature: uuyosrfft673h3cypuhsn1aueyq9fchd
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9F3C2C0009
-X-Stat-Signature: jmh6xjqprurn8ise61eii5uhdmcqwcpj
-X-HE-Tag: 1783145633-905255
-X-HE-Meta: U2FsdGVkX18+04kkVOhBQaI1zavI0zjJxhW0L8Uw5cdx0g14dXawtL76QjJHQk8p8nXfK7M74/GnJLFYl0MweAddalMkjUg1yBTji+oHBnerAlvkHhjGkBr58yFMQ9NiL5ekl+BbWyXUK0J89U1MUp4fa+LIT3vbNq6TPNtRAXGWY3GxzV4mjZmXyaEW9pD7RHqo98LDn0FMU3G6oWfjpHwfpe7zAPcxWNtwJHdmFqKVbWEvvDUAKnnM2mYwuQ4LQzZD1NIo+DDC9SPXJCnLv7v7AYzdHopKa+6n4pJL/qIZ1b9T/aroHnCPk4odQjZGId832zuAehkp+g89H3CNl1u/qaXn0Cx6Q6yFecDE1bQJnccd9DLs6mP1Xwvl3J8RveLRuKWHUleYevf+vaOJzpY1+TdcESa2aDNb4y6TBoLFiII2fog2zTPM3W2Ob6UhDAWQCGAbsJSn3+jos2Wwi1yCdU3EjUMSWIyWP/iD3GtsnSxrO9iQd2vdtKRfXgYBUBRvAk3xO1+zK71H29QAQMXUIjGnwtT5ho0FkuFxQy/uX2+raP8LWaGZ1pK0YumRhMgnS0Cmyd9szUduIT8EEey7GPYZteqYqX0Cs1KBOLi7V2yhZsSlCZEHANJ+Hyqgm42F2+Dc0snesZBtN+lN3DHMtgR7n14knbrik/oJeXS8ffkmD0OBMGFRTsL1zSps8kvnJ90lcUPWubSZ0zxl6bFoT2kHpy8e+lU0a/zHyaJPlxZU8FgNBg1MGF/tNjlv/NJU1ELUUF/MDY7G8bpqTfMnsTbZUO/iraKRT+rCF2JccYRWG4A92UDM6QMB4ApH01Kt5Fum2HGMC7fIHtyqbavmoz/Bu3Xw22xolUI3aV730dLf0P82dq1kFmOXW+Fq5k7M2UKcmSBfb+9j5fiSjYxzXBDFR6zJB/XLi12rHWLxVLQPAzVseJQ0OBD1NApSU68kNFxVMgtrJbrqvlG
- b4im1CQd
- 52h1GIp9hQUurOROiuTyArYIztMjZLLCj8DMAq237DJChsbeWruZbgyrJEdxrxA9Dg9yMZtb+QQ2Y/nDWeW7j/76ltAE6XXFBHAroj1q2kjX6U93rJHfxNwuC4aMOLreyJJdyaIwZrTpIoKb3VgqbH8ZfeJXxhA5txEMGgQPAPj5KAdrLdQbUfT+wHTepOP5lHvY4UnqKJgyF59V9qW15mrBkCiNp7wUNNVJfoKNbA3NVanZBhMRyeNMyCVb3+DSD9m3YO/cpJdc+2qDAnFjmUlu1TU4l1PXN0yGIG7PAOt+AwVDdkGiwwSVPd2fZyJ0W6Ek404hFfUVTXlQTXJRDZ/fFy2ktNer3Cg1fXXXrdteeqsd45Hj+LPg5BdsVPnujDCFryBk1YCVCmec=
+X-HE-Tag: 1783146486-36701
+X-HE-Meta: U2FsdGVkX1+MOi7VM/bGUe9/LEwxep0Xm+OvX8y/wpr+wz5nRnn+C3MEQ72sJrw0zJleVsvfFMP9ivE6aeyy873CggIZX1lnEXeuMzL0HdFSdGf+t61K1ANXV5FcdGbFakprxZgJ7slDJ2qKijjCh5BtVlo8N0/wm6h79CMAP9zC6JFs7/vkUoBSSmZo3g+pL1TNw1ytEVJj70XW0ryn8Huj+BJCaXcN1hD0jcDBnX4jVWeYFt8WuD6IZ/2Jdt46Ks3Ve4/+28ObGW2+gRaikJEHLhMOFi45thmMNOGvPJl3718aVHayQHiViND9yAhfA6XkOAQy1WlfABNu5GXMb8dI2MEZvDJ/3T+c1PM0Re67YLX476JV5i7aWytSTy9CotyjCOKVMm/Ue1UoTCyz6q+0jRbAnh1Ll+NE9WehVs+5WeKewK8ptPytbEMwQX7KhvmKNaNuKOgHr7CsP01aPex6fiIB7ABJ0QEgVYsrQz0oNxQj+VBFpk8kBTxjW+RYWZlCPDkIcPqDihLsorsR5yzeAWAwafDge191y8lpYDnrNUS/17wnqadDPtOeDfGNEVZcmetbaf39nCUGI5+FldHcJDiGdGhs2GV1ZwfQALid6jsIt/8jNnqFOjviryHgjVKTGQ5PCu5OWvYsEk8DUFv10zYEC07RvPKgWEHQmt8i4woQb5welJEvJXzXhAgk6QVRboGUmMHeph9Q19BqF92jxcTpcqayTsGlhYJt+xyH759GMf9B4bg41OOKEv37AsX8I3SvwMdj5eE2ntcwP6/XqLxc1AAQksUBtCspDfwgUPtDumoZrU1CDYQ93fhcsnwxC7vyhrsPujM2EQb5EplFGkGpFGRkhJIsQ2BBL3TBtYnL8EX1VwCuMBtLVpaVYbwYiKL38nzs18Lx8gxh7QRxYZbQ2kouu07WNmwv1pxN7WuF4jqvfXiq7eML2fYNDt+Fl23+nVbYBVfMSAJ
+ XdA/08mE
+ JjP6I8sSy4i4oWcR+KuVKQwKchdy0ULLpEgUOrgJTPzG1Yg9rkXA/anXyeyYK7y2Mkbncl+KL2Dy2f6RaP5VBC93CMdCk/CngRAnY8XrLAWW6/8i3xEFq9BrxwrbOnVy1ap2n/ADXcZPOa4XFSHjAsCH7afd1P0RyCGodLbng2SW1ykKhzM8F7H7EDjQKgGS3lWza02IuMKX8A6iiQyZDNByu7xe1Dgf3iPdY+OutdjD6AcMEekR0GKmzvUlynfnW093rJB5NA2YrMoNrfs72v+6tmkyxCAtTTkupTXWpKltNNIJwXul2mwL7zf8cM2QFv6kXyPcGufXm33M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,51 +119,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-sym53c8xx_2 driver has an internal memory allocator for small
-allocations of the driver structures. The backing memory for that
-allocator is allocated with __get_free_pages().
+Hi Usama,
 
-This memory can be allocated with kmalloc() as there's nothing special
-about it to go directly to the page allocator.
+kernel test robot noticed the following build errors:
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
+url:    https://github.com/intel-lab-lkp/linux/commits/Usama-Arif/mm-add-PMD-swap-entry-detection-support/20260704-014151
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260703173903.3789516-12-usama.arif%40linux.dev
+patch subject: [PATCH v3 11/11] selftests/mm: add PMD swap entry tests
+config: riscv-allnoconfig-bpf (https://download.01.org/0day-ci/archive/20260704/202607040838.eEdmRDmU-lkp@intel.com/config)
+compiler: riscv64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260704/202607040838.eEdmRDmU-lkp@intel.com/reproduce)
 
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607040838.eEdmRDmU-lkp@intel.com/
 
-Replace use of __get_free_pages() with kmalloc() and free_pages() with
-kfree().
+All errors (new ones prefixed by >>):
 
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Reviewed-by: Hannes Reinecke <hare@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
- drivers/scsi/sym53c8xx_2/sym_hipd.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+   In file included from ./include/linux/pgtable.h:6,
+                    from ./include/linux/mm.h:31,
+                    from arch/riscv/kernel/asm-offsets.c:9:
+   ./arch/riscv/include/asm/pgtable.h: In function 'pmd_swp_exclusive':
+>> ./arch/riscv/include/asm/pgtable.h:935:16: error: implicit declaration of function 'pte_swp_exclusive'; did you mean 'pmd_swp_exclusive'? [-Wimplicit-function-declaration]
+     935 |         return pte_swp_exclusive(pmd_pte(pmd));
+         |                ^~~~~~~~~~~~~~~~~
+         |                pmd_swp_exclusive
+   ./arch/riscv/include/asm/pgtable.h: In function 'pmd_swp_mkexclusive':
+>> ./arch/riscv/include/asm/pgtable.h:940:24: error: implicit declaration of function 'pte_swp_mkexclusive'; did you mean 'pmd_swp_mkexclusive'? [-Wimplicit-function-declaration]
+     940 |         return pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)));
+         |                        ^~~~~~~~~~~~~~~~~~~
+         |                        pmd_swp_mkexclusive
+>> ./arch/riscv/include/asm/pgtable.h:940:24: error: incompatible type for argument 1 of 'pte_pmd'
+     940 |         return pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)));
+         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                        |
+         |                        int
+   ./arch/riscv/include/asm/pgtable.h:758:35: note: expected 'pte_t' but argument is of type 'int'
+     758 | static inline pmd_t pte_pmd(pte_t pte)
+         |                             ~~~~~~^~~
+   ./arch/riscv/include/asm/pgtable.h: In function 'pmd_swp_clear_exclusive':
+>> ./arch/riscv/include/asm/pgtable.h:945:24: error: implicit declaration of function 'pte_swp_clear_exclusive'; did you mean 'pmd_swp_clear_exclusive'? [-Wimplicit-function-declaration]
+     945 |         return pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)));
+         |                        ^~~~~~~~~~~~~~~~~~~~~~~
+         |                        pmd_swp_clear_exclusive
+   ./arch/riscv/include/asm/pgtable.h:945:24: error: incompatible type for argument 1 of 'pte_pmd'
+     945 |         return pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)));
+         |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                        |
+         |                        int
+   ./arch/riscv/include/asm/pgtable.h:758:35: note: expected 'pte_t' but argument is of type 'int'
+     758 | static inline pmd_t pte_pmd(pte_t pte)
+         |                             ~~~~~~^~~
+   ./arch/riscv/include/asm/pgtable.h: At top level:
+>> ./arch/riscv/include/asm/pgtable.h:1218:20: error: conflicting types for 'pte_swp_exclusive'; have 'bool(pte_t)' {aka '_Bool(pte_t)'}
+    1218 | static inline bool pte_swp_exclusive(pte_t pte)
+         |                    ^~~~~~~~~~~~~~~~~
+   ./arch/riscv/include/asm/pgtable.h:935:16: note: previous implicit declaration of 'pte_swp_exclusive' with type 'int()'
+     935 |         return pte_swp_exclusive(pmd_pte(pmd));
+         |                ^~~~~~~~~~~~~~~~~
+>> ./arch/riscv/include/asm/pgtable.h:1223:21: error: conflicting types for 'pte_swp_mkexclusive'; have 'pte_t(pte_t)'
+    1223 | static inline pte_t pte_swp_mkexclusive(pte_t pte)
+         |                     ^~~~~~~~~~~~~~~~~~~
+   ./arch/riscv/include/asm/pgtable.h:940:24: note: previous implicit declaration of 'pte_swp_mkexclusive' with type 'int()'
+     940 |         return pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)));
+         |                        ^~~~~~~~~~~~~~~~~~~
+>> ./arch/riscv/include/asm/pgtable.h:1228:21: error: conflicting types for 'pte_swp_clear_exclusive'; have 'pte_t(pte_t)'
+    1228 | static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+         |                     ^~~~~~~~~~~~~~~~~~~~~~~
+   ./arch/riscv/include/asm/pgtable.h:945:24: note: previous implicit declaration of 'pte_swp_clear_exclusive' with type 'int()'
+     945 |         return pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)));
+         |                        ^~~~~~~~~~~~~~~~~~~~~~~
 
-diff --git a/drivers/scsi/sym53c8xx_2/sym_hipd.h b/drivers/scsi/sym53c8xx_2/sym_hipd.h
-index 9231a2899064..aa365e8ba66f 100644
---- a/drivers/scsi/sym53c8xx_2/sym_hipd.h
-+++ b/drivers/scsi/sym53c8xx_2/sym_hipd.h
-@@ -1110,9 +1110,9 @@ sym_build_sge(struct sym_hcb *np, struct sym_tblmove *data, u64 badd, int len)
-  */
- 
- #define sym_get_mem_cluster()	\
--	(void *) __get_free_pages(GFP_ATOMIC, SYM_MEM_PAGE_ORDER)
-+	kmalloc(PAGE_SIZE << SYM_MEM_PAGE_ORDER, GFP_ATOMIC)
- #define sym_free_mem_cluster(p)	\
--	free_pages((unsigned long)p, SYM_MEM_PAGE_ORDER)
-+	kfree(p)
- 
- /*
-  *  Link between free memory chunks of a given size.
 
--- 
-2.53.0
+vim +935 ./arch/riscv/include/asm/pgtable.h
 
+   932	
+   933	static inline bool pmd_swp_exclusive(pmd_t pmd)
+   934	{
+ > 935		return pte_swp_exclusive(pmd_pte(pmd));
+   936	}
+   937	
+   938	static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
+   939	{
+ > 940		return pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)));
+   941	}
+   942	
+   943	static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
+   944	{
+ > 945		return pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)));
+   946	}
+   947	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
