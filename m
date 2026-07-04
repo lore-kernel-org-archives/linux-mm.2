@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E554C43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 05:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9F91C44500
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 05:58:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 766956B00B5; Sat,  4 Jul 2026 01:39:04 -0400 (EDT)
+	id 876206B0005; Sat,  4 Jul 2026 01:58:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 716F96B00B6; Sat,  4 Jul 2026 01:39:04 -0400 (EDT)
+	id 826DA6B00B5; Sat,  4 Jul 2026 01:58:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 630266B00B7; Sat,  4 Jul 2026 01:39:04 -0400 (EDT)
+	id 719776B0088; Sat,  4 Jul 2026 01:58:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 268616B00B5
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 01:39:04 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3D3BA0420
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 05:39:03 +0000 (UTC)
-X-FDA: 84949990566.28.B1B3535
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 47D976B00B5
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 01:58:27 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE3EF1C7B41
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 05:58:26 +0000 (UTC)
+X-FDA: 84950039412.09.EE6EFC4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1105B40003
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 05:39:01 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5zChWYG;
-	spf=pass (imf27.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783143542;
-	b=JQOyObPWBp4rb7dTgpnXgmpCxSBzkFnM89YZyP/DLv+Vmt18pC/vE9JWH4P+e+y//RE8gJ
-	jk4bqaDFpBWP+JfA50OLWFMVbMa9oFyne1wMThCPe79RykvG6ddTtCATUe90BfpHUpMvTk
-	rwD4AOtH5Dh5vADpnJf89dobbji1yBs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z5zChWYG;
-	spf=pass (imf27.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 30C831A0005
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 05:58:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XYFOk2kT;
+	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783143542;
+	s=arc-20220608; t=1783144705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Omav1PnVWAaMZoG6fUApE0dlp68yQBo+33N50QCsh9c=;
-	b=icJiRcMcxTkDBc6DV9QMBcYFw5HgKNAAIudQpLzyljN62Gn9mYXN6DZVC/TwIu24E8/CCe
-	vsRayWO06vevd9uP8GY2KBDPNQq9nRzq/Fg0LG3duNkTuwtFm/YdQewvKuvZyEZEoA3duu
-	OjgCG8ut84rV93gipFzgPvVqINzy8dU=
+	bh=V83zC+ABVvPZfpSItIVfm+fybD7L3iVSBZB+nvmmqYw=;
+	b=xpwq+m5jZ6w//RDOfJlJMvVorv/Am7bEj60AM8gvFzuPrrE9HaGCq5UDPR23NsDms8PJFf
+	JtdwGyDq8KrXxVfWcRomMxOlxdxJRldXACO4GgeLkDhqNwmmMNmvpfDiYG70S8a8UfLIKX
+	jnNWapvGYhZ0z5T22a0RYvHJTEL8elU=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XYFOk2kT;
+	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783144705;
+	b=lv4wb4XE8a616Aly5bZee8p6pw0Py/fa0+4y7oRgStcFvfjf91/Q/RIxyELN5jAxdHey1O
+	hxUHOet6gCnQoZ2Ez2N5Qk++dhTQdJOfzfEDYkckEKS3UDfj9QlmTl5GYbeNvSmx8eazQb
+	lA8SbpvCS3LuFwT3AxI2ZigoWU+t7+4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD103437A1;
-	Sat,  4 Jul 2026 05:39:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673E01F000E9;
-	Sat,  4 Jul 2026 05:39:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F0C1743970;
+	Sat,  4 Jul 2026 05:58:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5E41F000E9;
+	Sat,  4 Jul 2026 05:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783143540;
-	bh=Omav1PnVWAaMZoG6fUApE0dlp68yQBo+33N50QCsh9c=;
+	s=k20260515; t=1783144703;
+	bh=V83zC+ABVvPZfpSItIVfm+fybD7L3iVSBZB+nvmmqYw=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=Z5zChWYGLr0SHmTjjiqBGh0M7SlqKkNtKKOqVR/nPEaLT9OlNTAKFffZ1Ozyos581
-	 ckbpJTAddK521RhDoYRpoHgCkrGEcpRK1P+h84zhGcDz/5sV2gRgFiI/hDzt5K1E7Z
-	 2WyjJTpZKXoETEh/Y2NGhFK+vCDR7SECYQg0B7oLuLTVI8Pvt2AeO1Btf/l5A9hDBC
-	 d6myTRAu7x1tu02MUEgvkfz8Gg91pFau2lx6smMw/8FtVw43BRDYHfzBt7Z4UER0SU
-	 ldl0mwaGWX+SDxH924GS3hlG6e0Aqzqv8h3gHwfhVb6H2S03qDg0HgTIP4kipKjEel
-	 qtlAcbvCR494w==
-Content-Type: multipart/mixed; boundary="===============0892255960102653600=="
+	b=XYFOk2kTGPelgRFBCFOy1e5BFq8MR3j2nf5Ucpe7/CKek5scCr344MHbsGfXFuNmW
+	 SM7L6Nm0FhGYcdqcF8sq95YTmN0Jhh+1bvL01+d4I8L3OqZb4nzcM0a44QZmuUkEqK
+	 GL49THk2qh/CLM2VQDUspnlQBGKR/fve39dyxR7GqFTAptP9L5MO2Hq3rvvtkOWVZb
+	 Tn2Lg0iLNmYHqqjLDR/XddQRkS9/G3DRPLcAYbxwcsrcrXuPBWPj2upPA87MZvt0mG
+	 oG8Ag4kev34nRzv78qXAbeBSXty8O5zELZDATZ+bH8paUbrgk/ra1kgfGxNbJW11hx
+	 muNf0rKM83uCw==
+Content-Type: multipart/mixed; boundary="===============8802271696774654361=="
 MIME-Version: 1.0
-Message-Id: <020c0e385f57d0b2dcdad92ae1ba2f411ec854dd9fb0f0eb4b4a618538b1c983@mail.kernel.org>
-In-Reply-To: <20260704045617.487664-3-ziyang.meme@gmail.com>
-References: <20260704045617.487664-3-ziyang.meme@gmail.com>
-Subject: Re: [PATCH 2/3] selftests/bpf: add memcg_stat_churn BPF-vs-memory.stat benchmark under churn
+Message-Id: <c48aa4a4b43fe15d313761d70e2113405c73ad058911cd87d573946ae1740b9e@mail.kernel.org>
+In-Reply-To: <20260704045617.487664-4-ziyang.meme@gmail.com>
+References: <20260704045617.487664-4-ziyang.meme@gmail.com>
+Subject: Re: [PATCH 3/3] selftests/bpf: add memcg_stat_churn_percpu BPF-vs-memory.stat benchmark under cross-CPU churn
 From: bot+bpf-ci@kernel.org
 To: ziyang.meme@gmail.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,bpf@vger.kernel.org
 Cc: martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org,roman.gushchin@linux.dev,kernel-team@meta.com,linux-mm@kvack.org,cgroups@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-kernel@vger.kernel.org,ziyang.meme@gmail.com,shakeel.butt@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Sat,  4 Jul 2026 05:39:00 +0000 (UTC)
+Date: Sat,  4 Jul 2026 05:58:23 +0000 (UTC)
+X-Stat-Signature: baezg1orbmwirzbqabuodzb6yf4arq5t
+X-Rspamd-Queue-Id: 30C831A0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1105B40003
-X-Stat-Signature: r5gduczfbr3qfzgqk6jyno9ekteeg61h
-X-HE-Tag: 1783143541-623445
-X-HE-Meta: U2FsdGVkX18DEFgxcPzxC5XtjSWYFlaXLcV5hdMkq2xxjxpKKMujZ4zvd6VilXnPDw0LeQ3tJosTDtUQKbuTow2uiLGjnUaI5J+EiZGgnLoS7iwMVv3vRXHX/ayiPyW/LeWYGMLEAd/NeU40Ykw0utPRQypu6dopb4+e7TQPV4TYbD9ilZhOTtKrk6DKlBOSK23fY6Cz3e2dFQiGSNZSDxn5CcI1qU1JSbmiUTXCH6UMAayw7YMI5Rz3AgS0E3CkbLmnl2uWKrdBXEidkHarMiQRz9F69j5s5QGUPK3tNhLVyMruUsjuV7Poc8vjt0o1Vma+vo9zIOlh0ZWhPAmXvXis2XCjgaXVKNPA3rfA2TOvhCrq/B4M2MNkgB6UO5IWpwT1UB6YhD49KeAtob6SXxLY1D+nCAhPeJi8HA3O4IUb1VZ+CZPowgql41g+vaS+Xndcflx9Jss4yESocjRHRX2l3ztXAf49PhUcrbqhAXrD1D1pXehUyDmdDvjXVhtoJ8VhT+ScEdks4QZ6C0w+1aljnWktyx/8KlmCe4i6raNeCV6JBrV6TEtEe+97LOoDE9v09UL67UNZDm+VZzwJbzDklhDIUV2MUBylLYIG/1+A8vU6C71l5Oy63R2rB/WR49qrBwJVCrgdzR3VUaQreGbAsMqrCVlgnAt82uYRedH4xf0EGKRKQvRtM1vkmLZO7Z5wdnIReQd3YG/Ix5ZD8hndUlmjxMbcMj7VzjjK4D2uA/a0cutyRZfegvP8S3hSB4g65Hk3hEEVxQk2fjjSuO+NkACD1FYZGsLvQl80rbh6teaRdNDUCwwGamC45PfaNGEzTGhG7bE2KhJ/cbeJqYCz1GvB9WN6YIh0ta8vgGfMiL0hL6za48rgo9EYhqNFP2l2CRHaD5fg191d6G59adOh9dAd0k3mLIVzHhC5Vclb32GgKqpFaVeobSjtRgn7psoe4G5xzyDPW+w8XOm
- nZXgzGAg
- EbAMRYpr1Amp1DFfRSAIfQW72nU2n473qvn1t5Dja+/6KLKQ8Cib25SOJTaK7ywK615Vjw7IRUqjicR/LQ62hMpzaXsdiI0I47j2btwBXGm9GUypkIml4pJRyoeIPVFXxUe71bd+b11EzTQqYNxmwSix/2bikoQjqbEdN7WXrQRPNyvCzQbNWpdnGNorVfSrR1LYgMaIC9pnpEdFNS0cZa9MPVVtlaPJat7NYJyteo0xfAP0I4LrRoDOg6D48c5X8g7eSJJ9XXSUtD2Y7PdOebLRda+Ne/iCb14gk3omNswKReJCF5nYAkFz7veRmyBjB8td/ejOJYtW3goVLwFVS23xwTGWuJvhUeDpEh9M6pFLc9mumzUjQNfYR8zrNNw7CNthaIy0OpJlXod+d9hf9K3af6D9MJ0iD8VvENwXQnPRymSiMOEBlZxC9Hp/kDr/mPCshNapavLOFl2hvx+WJbcbxCSBLo2S5xAPdZxhb8HM1UWR3bkobPVu9pXP8mdelCefxvjpUmM6BZGdOhw4DIQwOKWLRyLKXt49h
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783144705-886350
+X-HE-Meta: U2FsdGVkX19IY5g26YoAEY1A7kB/e3xT8IZ3OiIVnWWtpy4L9KpObdSLgAhX5DAcrAHy16ImhguE6otJZu9tsmnOddvGbVXtJGubJ852+I13nHOKudtX22rmeq0ERcCW4COzQg6JYNea7fyTmEyuWh2eCBXZgtxQwVN2yG1UENC75KYSoU7XBWq4qgjFQ24VpK1+0jfQi/u7v3z8aa8ZsWWiei4c45qIc+poxDB/XfaymzpmyWH7QxjN3ZakmR1ovf6VWzDTro2GyTZqvYlbtClI/jT5f0/SH9sgig5mbVI2ERibaVwu03CmStlV5fEI6AopOJLKszio0f05XUw+6c8M98n7jF0V1CERvJF9vMxPu+QUQObbdPPbFlDOo/V+bLE9raMGvVlI4msfCYAITzzJm74aZHRtah5CsU49lVozQkLLwzdaqqo+0Jw3Xsss5j2ek0uG9nd8SlOHtvloolmyxu8MTdfM9n0Dja+FPmRGPDgn79sqY/A53q1XzhrFgSDFTain39k+8qpDgXwpt9uC2Bg33dEqHaartc3PefdZ8srZGyICnaGYmwBxdCFRDWGIzl0A4TPxPX/H+GySUlTN+z5hJnZDEPcTE4lp0JTFDNtZGl9lVBQZiwemXREr4tcDN9Xba5kRe5A446e0iEFXHP6Mn7WkC4izDWvIoRKB9TsUm5Q1V0fZXjiYWwzJlQei0oYLkHwmC57ZMRh4JQxLdcQWo6LkLPxBNRhK3AM7rvKWULoP+ua+10gtpy7zSqv8kwW2cBmM6A5Ji2kTI/SIV4eOg1Y0Ek9P9XWw2SuGQoJ3H5I27HG4xoIjmSzap6ZI/1lRnuWMMBuk5+1TUYt1Vws/sprbnqgr7H8xFMaPN32CRU4NdLK5KVeaGuiIljBskwTSVsg/j9OlfeaSED5kW5eU90o52zXkkWC8VU3zSkVCoyv6Dcji2M9x/Lo/qsR7D8Is82ff9wnxrJB
+ CpDBJNm9
+ C0hs6VIKgnsyI+JNt5JlBdPtN44jbgrKilO+FE3hnEEDBzaLJINqjrVLdQZtZNqnQDi9FZZkL0Wt0Jl/5741+jDeuNESwKt4ythP9nUKgRvA0N7Fx5Tki0YxnZPeswiKJ2JDvJ3VuVRWDW34RoNPD9fTul5HzEFY2jdsBMToaTMuOK9rpxe3Em0A9oh7LwCX+WplpJ172TFsVrRjaCB5gz94alQ0V0n1kxYzjf6IOBTo0NbJzr7q7aML/KDMFfHeyyx5b2DWp4Hf/OCVLZV0j44Mbp0AmYon4tN7mMLgksrGs3HDMdeaoVjKSyCa8CPMmAsoo82e/tCwSPssX9MTZIAWQDbBFJEa9MfmT/qLGUYzevAali1hkYVzGU5dvTwU7ocXkoPbLANijQPMNLJ134bISoLa/duNlz7yeAQv5WEykeJwCIE9nXYQskQGVkgKgxo66nKDn7FOW3GYdCoTiNF1phrDVdwFXdX7xW0zfXyWUz8OGC97KAzsGjNGp9cbMPMcYvJpx9WWQFlkU3Z2FhjSCZzLevXjljHIP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,195 +88,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============0892255960102653600==
+--===============8802271696774654361==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_stat_churn.c b/tools/testing/selftests/bpf/prog_tests/memcg_stat_churn.c
+> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_stat_churn_percpu.c b/tools/testing/selftests/bpf/prog_tests/memcg_stat_churn_percpu.c
 > new file mode 100644
-> index 000000000000..3e386d0b4c03
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_stat_churn.c
 
 [ ... ]
 
-> +static long long now_ns(void)
+> +static void settle_flush(void)
 > +{
-> +	struct timespec t;
-> +
-> +	clock_gettime(CLOCK_MONOTONIC, &t);
-> +	return (long long)t.tv_sec * 1000000000LL + t.tv_nsec;
-> +}
-> +
-> +/* ---- tree construction (same shape as memcg_stat_reader) --------------- */
-> +
-> +static struct cg_node *nodes;
-> +static int n_nodes;
-> +static int n_leaves;
-> +
-> +static int add_node(const char *rel, bool is_leaf, int *keep_fd)
-> +{
-> +	int fd;
-> +
-> +	fd = create_and_get_cgroup(rel);
-> +	if (fd < 0)
-> +		return -1;
-> +	if (keep_fd)
-> +		*keep_fd = fd;
-> +	else
-> +		close(fd);
-> +
-> +	strncpy(nodes[n_nodes].rel, rel, sizeof(nodes[n_nodes].rel) - 1);
-> +	nodes[n_nodes].rel[sizeof(nodes[n_nodes].rel) - 1] = '\0';
-> +	nodes[n_nodes].id = get_cgroup_id(rel);
-> +	nodes[n_nodes].is_leaf = is_leaf;
-> +	if (is_leaf)
-> +		n_leaves++;
-> +	n_nodes++;
-> +	return 0;
-> +}
-> +
-> +/* Recursively create children of @rel. @rel must already exist and be recorded. */
-> +static int build_children(const char *rel, int fanout, int depth)
-> +{
-> +	char child[128];
-> +	int i;
-> +
-> +	if (depth == 0)
-> +		return 0;
-> +
-> +	/* Enable memory on this interior node so its children get a memcg. */
-> +	if (enable_controllers(rel, "memory"))
-> +		return -1;
-> +
-> +	for (i = 0; i < fanout; i++) {
-> +		snprintf(child, sizeof(child), "%s/c%d", rel, i);
-> +		if (add_node(child, depth == 1, NULL))
-> +			return -1;
-> +		if (build_children(child, fanout, depth - 1))
-> +			return -1;
-> +	}
-> +	return 0;
-> +}
-> +
-> +static size_t tree_capacity(int fanout, int depth)
-> +{
-> +	size_t total = 1, level = 1;
-> +	int d;
-> +
-> +	for (d = 0; d < depth; d++) {
-> +		level *= fanout;
-> +		total += level;
-> +	}
-> +	return total;
-> +}
-> +
-> +static int build_tree(int fanout, int depth, int *root_fd)
-> +{
-> +	n_nodes = 0;
-> +	n_leaves = 0;
-> +	nodes = calloc(tree_capacity(fanout, depth), sizeof(*nodes));
-> +	if (!nodes)
-> +		return -1;
-> +
-> +	if (add_node(SUBTREE_ROOT, depth == 0, root_fd))
-> +		return -1;
-> +	return build_children(SUBTREE_ROOT, fanout, depth);
-> +}
+
+The settle_flush() comment explains the reset with:
+
+> + * ~15% window asymmetry, enough to invert bpf_matched vs bpf_full on
+> + * flush-dominated cases (e.g. "hot": few cgroups churned from many CPUs).
+
+This isn't a bug, but the cases in this file are narrow/wide/widest, and
+there is no "hot" case here (or in the sibling tests).  The timed reads also
+always run with collect_full = 1, so there is no bpf_matched-vs-bpf_full
+comparison in this test.  Does this example still describe this file, or was
+it carried over from another test?
 
 [ ... ]
 
-> +static void parse_stat(char *buf, struct file_snap *o)
-> +{
-> +	char *save, *line;
-> +
-> +	for (line = strtok_r(buf, "\n", &save); line;
-> +	     line = strtok_r(NULL, "\n", &save)) {
-> +		unsigned long long val;
-> +		char name[64];
-> +
-> +		if (sscanf(line, "%63s %llu", name, &val) != 2)
-> +			continue;
-> +		o->full_sum += val;
-> +		o->full_fields++;
-> +		if (!strcmp(name, "anon"))
-> +			o->anon = val;
-> +		else if (!strcmp(name, "file"))
-> +			o->file = val;
-> +		else if (!strcmp(name, "shmem"))
-> +			o->shmem = val;
-> +		else if (!strcmp(name, "file_mapped"))
-> +			o->file_mapped = val;
-> +		else if (!strcmp(name, "pgfault"))
-> +			o->pgfault = val;
-> +	}
-> +}
-> +
-> +static int file_read_node(const char *rel, struct file_snap *o)
-> +{
-> +	char buf[8192];
-> +
-> +	memset(o, 0, sizeof(*o));
-> +
-> +	if (read_cgroup_file(rel, "memory.stat", buf, sizeof(buf)))
-> +		return -1;
-> +	parse_stat(buf, o);
-> +
-> +	if (!read_cgroup_file(rel, "memory.current", buf, sizeof(buf)))
-> +		o->current = strtoull(buf, NULL, 10);
-> +	if (!read_cgroup_file(rel, "memory.max", buf, sizeof(buf))) {
-> +		if (!strncmp(buf, "max", 3))
-> +			o->max_is_max = true;
-> +		else
-> +			o->max = strtoull(buf, NULL, 10);
-> +	}
-> +	return 0;
-> +}
+> +#define CHURN_GAP_US	(50 * 1000)
 
-[ ... ]
+The gap comment just above this says:
 
-> +static int drain_map(int mfd, struct memcg_stat_snapshot *out, int max)
-> +{
-> +	__u64 key = 0, next;
-> +	int n = 0, err;
-> +
-> +	err = bpf_map_get_next_key(mfd, NULL, &next);
-> +	while (err == 0) {
-> +		if (n < max && !bpf_map_lookup_elem(mfd, &next, &out[n])) {
-> +			sink += out[n].anon + out[n].full_sum;
-> +			n++;
-> +		}
-> +		key = next;
-> +		err = bpf_map_get_next_key(mfd, &key, &next);
-> +	}
-> +	return n;
-> +}
+> + * pays that flush inside its timed region.  This gives all four reads
+> + * (file/bpf x matched/full) approximately the same start state and folds the
 
-[ ... ]
-
-> +static bool memcg_kfuncs_available(void)
-> +{
-> +	struct btf *btf;
-> +	bool ok;
-> +
-> +	btf = btf__load_vmlinux_btf();
-> +	if (!btf)
-> +		return false;
-> +	ok = btf__find_by_name_kind(btf, "bpf_get_mem_cgroup", BTF_KIND_FUNC) > 0;
-> +	btf__free(btf);
-> +	return ok;
-> +}
-
-This isn't a bug, but several of these helpers appear nearly identical
-to the ones in prog_tests/memcg_stat_reader.c -- tree_capacity(),
-build_tree(), add_node(), build_children(), drain_map(), bpf_walk_once(),
-file_read_node(), parse_stat(), now_ns(), and memcg_kfuncs_available().
-
-The commit message notes the BPF program, map, and snapshot struct are
-reused, but the userspace tree-construction and file-reader helpers are
-duplicated rather than shared. Could the common pieces move into a small
-shared header so the two tests don't drift apart over time?
+This isn't a bug, but the sampling loop does one file_pass() and one
+bpf_pass() per sample (bpf_pass always sets collect_full = 1), so there are
+two reads per sample rather than the "four reads (file/bpf x matched/full)"
+described here.  Should this be reworded for this test?
 
 
 ---
@@ -284,5 +132,5 @@ AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/28695985027
---===============0892255960102653600==--
+--===============8802271696774654361==--
 
