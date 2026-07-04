@@ -4,70 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABB79C43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 02:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D40C43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 02:45:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55AA06B00B5; Fri,  3 Jul 2026 22:43:34 -0400 (EDT)
+	id A90306B00B5; Fri,  3 Jul 2026 22:45:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50BFB6B00B6; Fri,  3 Jul 2026 22:43:34 -0400 (EDT)
+	id A67916B00B6; Fri,  3 Jul 2026 22:45:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FA4C6B00B7; Fri,  3 Jul 2026 22:43:34 -0400 (EDT)
+	id 956B96B00B7; Fri,  3 Jul 2026 22:45:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 144D96B00B5
-	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 22:43:34 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8043A1A03A5
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 02:43:33 +0000 (UTC)
-X-FDA: 84949548306.06.B22D3AB
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5271540002
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 02:43:31 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z6AXqHVA;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 681B16B00B5
+	for <linux-mm@kvack.org>; Fri,  3 Jul 2026 22:45:38 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1D8C0120386
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 02:45:37 +0000 (UTC)
+X-FDA: 84949553514.17.1ED200A
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B194E140006
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 02:45:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mswa1nkq;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783133011;
+	s=arc-20220608; t=1783133135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y/w2//o9tLFu8D1YyHGm3x2nl7TT2wWydLVFSqS1msQ=;
-	b=Q+KFIFVKtn2I5JdvgcZc466LGxS2LXqhCKGtAt8XzVxxKxw6BDGoUR5uziyui2CkxWxoq/
-	KWqNfyOvzdOodqbI6WF3yfTFJhFoKOK6IAJaRSbgxUcgnlzChkt4xcYJNAJz/sa6vrEsJ+
-	Kb6bDX/bZAmgdBKk3FVHjcVAib7fg38=
+	bh=WqonFV7bjnqVXMcdhLtm8/HTIUbK1zFVwxuknNkA4QU=;
+	b=Ni+VlqOnBZEkCPZDrVa7m0g77CRfPv7Ad/OLUurci4c7G3A/iE9yDlZM69eQcoI+xfhHLK
+	kkfRlBbVxJY+F0+Yz7EDErezLysOnyTpPXJEMG2gdc/kW6QGsFF1P+c3orT+ZHvz+M+dwL
+	nohEUv96/40Ah7NjRXoRaWooTOyOjvU=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Z6AXqHVA;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mswa1nkq;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	spf=pass (imf09.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783133011;
-	b=i9fpV1rUxJf1wlUX40IP1gZEedFn01SKnrTZ96H+bXjx8lk4Bq6WmSYCJhkc2XVAqdR+KP
-	MeEyhtbQwbrhyg1Y25oPIGUC1KJA+1kFpGA39hQ+HvAsikW2MUTZ5zGu87XjHFWal9rJ90
-	SSyucJ4St/zSw0esgKAM8BVmS1iSATg=
+	t=1783133135;
+	b=1Mc4pTg0nfFS21fFjaDr1939EzJX78JEBkKdrTK8XXIZT2D4raiqSnxtEwyRTE+XVrQzHx
+	dzpUrprwMwGDXigdhjOZsFsggbw6xCBhAn3tmNiSu+h37yH/kLKFoBlAIZ0xthF7YlPw7U
+	xksbWG99kZg+/57Z8aMCeUO5tDl0btI=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783133008;
+	t=1783133132;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=y/w2//o9tLFu8D1YyHGm3x2nl7TT2wWydLVFSqS1msQ=;
-	b=Z6AXqHVA+9nAVYfSa3QbdfPfvb43qNaCDbGVGpDJitxEZRu/+WHXiZt1uJm2m9gWRYnLBn
-	rrMBGuwNRW8WoE+9qA6G/xghPUPVLiysithLQ4EAtBTx6p4nsscEq1kQqKczHWOE40wXsn
-	Q29B2m+VxuTz6Z/bm0e5ix4C/1bn3MQ=
+	bh=WqonFV7bjnqVXMcdhLtm8/HTIUbK1zFVwxuknNkA4QU=;
+	b=mswa1nkqFQ9QtW9ww/AdCHgZCDLOSfbp5ZssYIQod1f/1WXquwt1AqR9FlNcbAM/qByYWC
+	WDeKoy6TZu+m5xdVk3qMyxSAIX//ii+S0Ykra0/6NZBU3aK0O9n0LuIUzYcARqr7E/+b1Y
+	xBXBaea+LO3bZ0it+TyRYp/BD2E/NAc=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
- addresses
+Subject: Re: [PATCH v3 2/6] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260703114202.365553-2-dev.jain@arm.com>
-Date: Sat, 4 Jul 2026 10:42:45 +0800
+In-Reply-To: <20260703114202.365553-3-dev.jain@arm.com>
+Date: Sat, 4 Jul 2026 10:44:39 +0800
 Cc: osalvador@suse.de,
  akpm@linux-foundation.org,
  ljs@kernel.org,
@@ -105,19 +104,19 @@ Cc: osalvador@suse.de,
  anshuman.khandual@arm.com,
  stable@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <58500686-A4A0-45FD-872D-AB0EE2AD2ACC@linux.dev>
+Message-Id: <EF4E3F78-CC4A-45D4-84A8-9F1A16BB752D@linux.dev>
 References: <20260703114202.365553-1-dev.jain@arm.com>
- <20260703114202.365553-2-dev.jain@arm.com>
+ <20260703114202.365553-3-dev.jain@arm.com>
 To: Dev Jain <dev.jain@arm.com>
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5271540002
-X-Stat-Signature: z94egau56mbibjp3i4ude56ipxjohxc7
+X-Rspamd-Queue-Id: B194E140006
+X-Stat-Signature: buo6q48aca98zuqzei6t6a1x5xocis79
 X-Rspam-User: 
-X-HE-Tag: 1783133011-881465
-X-HE-Meta: U2FsdGVkX182aI+bM17CNFIr/XM8I0X8KQ2SICttAGZmovWAmwWbdIjzMndHB35/+3CcONJJDf5131BI50088LGdpBCWGYaf8phK4AcJ9lTnI1mKmIA6f50q7lpdZAJIrsBBQXI8GV/+CkzzH2kykYVoQ3fn5FG7gOtZE160Q2B3rv2gU18G1JpCzGP0n5z22/l3G/DG4C/Mee2DFCx9jhT33ltXjwIyguAdH3Iphui30AM53yNmgowlf4+YI1tSptPGQFJPQc+JTlhOAAhb0ref/jb1LxbEUrOY/Q9xjyBU7AXu5umr6wrWg/JCLlxdg83Nt2TXIKuM646QpRThQDX+KgxTileM6n8fCZ6yXFeZbwZGAlnz3fKSbghrzh4/CCIJQT4IkBN3x1BVgTlrXXmOWYFma+kHFfuSALKJiENKUjGIAWDRbnFSep6lM7M1QgJYf3LHsULL5THcYCFeYzXjfXx/eiprcrgw5e0t8cM9YogX89Ldemp/1Rh53ogkk3mOgVHfXylpaQg+Ulhzb84H9O51sOSLRAr+4qErWcWQlxQcRqO9BGRpjkrM9qJuoPA67YLfhJcyan5bVymfr3W4GwIzg5aZXGMHXfL7VzHpHJK7xrOFeVsWqtXxdpXnIqtRBW6/GKo53i1lnkBoVzheBOUDwUQOlgV9E7T5RpHe+2xoICJARxqS5O5m4WO8Wrnpafi9zdA7Ufaa5OA9K2ECRcAnC8iGaEg2uMlgH2YDqX0HaTOPF3+9dFn7S4vrWoGE82gjvlMtJpYGLd7VUqWt+nuQLy8bMQhdwgP6+68UmjLXohcTuZjNOkWBq4il2U8f5D49cDkINcbU4E/vY/KWabQjrdM/U3VT3ICtTwWdmCB37GHFffpA9Zdxjo29pXuUBohG+UGOTkA5/Ug3IrP6bVNHWG6D9Pcbf85gtME56/LmZKluzTXGq9++9f8skJgp/4bz1cL0hEWCCSy
- uaFKDwT5
- 3Hi8TSox8MGpRPZBgmbN4clawngZdp4e7Jk+XjBBaYjlRVcIh91v4LGRNhiahb0asieA6iys6535yFsMrhGb1POvOhSCPEQ3ASpfcNIRA8IjHUh7Ge0q6ADwyib8x+yD0s02qDYIfKPdtBVR9FYUvyYO8p4IFRukgFUXUaEyPukn9/2c4y6cVEI+XSLvPYJ9lIYkTNcQlYGiGLFq+HAKD8olYhVAjgoXyCsARxbv62FCwafvI10fSpd1o74VaEz9YaRyS1ijMjG7nUCbAD8uYdF/ZJ30rQNu6nt+c6iQ7JJbelSH4cDAJl0bJUEtgPJHtkcvM2XMb4/R4+F/bhtwR21GApMjUIKkIiPnlk2Tkty8MCGBce/2tVHpx9vM3S8ZlMRXU3lshX9DIYy4j/Jv5XJR/gAo0E2KhxB39AIPJCpS00CQVeEie0rGsBh7PyhGilTfq
+X-HE-Tag: 1783133134-946085
+X-HE-Meta: U2FsdGVkX1/INz9V2K3UiqtdrZch64I9DzbjDBngw2XvDxnSulurv2g1hLI+Au7f+wFCq5U8lPKsykXrT3Ac48CY1aaBvECyKF5fYi7AiN5ebZ3B/IPC5TGm7pg/j0Vjb51/fIaxlxmreFtFJHWQxDZtxzCLiomABrf870jVyWIadfQ65l5T2LE0+enWVuYZYMVrY9j4ALxX9o0ElCk3mJPcIBG/oLdPlh0gTKOQAxGE2bwdUdkKpBdAIFcyjX32zLM3/jsX4mshPI5Nuehjn5kQWkLgDix+8P3O9IsQl9nbRqLdbBrMFyl1kmRJxby/SOsSGzGPqhKW3UBpRLDoG5IGV5+eZSt5Eykqcu25K9FGKTOyQHLL2FJm83VW+yomfhtNGwUov9/q4y/UfpYgQUPZPtK6R+VvltWr/kVS0jvCjG33YC9czs1UQIymSn8ulSOTW5RimmW40t9ViRwMTICPUsSTen6F6kSrSos4M3ubKxNRUbcT/4w/c9jiP5RJzoevX60r8EZFWsfHtgRDo4Arq8BdrGA1kMo+ZQy2ncbnuU1OIr2PcWGhkd6w9r+M7Q9D6HpWCwoTLzr1uCh41MXmw3RRg5GweDu4R2HY8A4/S0zjPGL69s7e8i/Mgr2hnneND9HdFc09bChmTd3gjE+JQlcnrDObiMUzs8deOQRzkMcxaO20gdMc+OgxOjVCxaLS6zJFebIO5RhwCwPH+/CTCxIl0Y17uLgJQIolFZl+XBz93b1YT7YnbcoYes3SkOwg3M9XyXXXyBn381zMdw9bjxpQNRj1eZf7ozyiNnRC0YoAPr0++MaH3Jxci8aSFRBIhJ3gR6vxmFOlFsd2S9SAq7Lm+Szq42+X/N8J6G6cG6p1807yTnT4ypdcKql/4oLOUzp4mpd4vmkQUhO+VB1bkV6RH9/CGotoEvsHbqsoBnUkyAwYQSV55wwlL0E4CDhTeVw9Qqq8edi3HSP
+ z6NSNy6p
+ R1yqcQ2MnFVbRzDMnTzRQMz5WuOxGbd3jB5pybgr+NjwPBR35iN8hQW/wu0l1ll/o06mf7YDISOUS2Jw7XSFKJFbLAg3IAfRz019hftCII2NTvfouAhTDbr2I5UzCoTTb2swPVZs0oiqkzPCDEp/CogS2CYamqyYPEgj81wOb0cWqlN0g+/DBWuqjFRlvg/B+R0L9iX32TqikXd25KfCwNR/13i2KqUCX4zmArdvGmxhX+JgfEiqqXI587Bzck59I0L2kJfsvD3fvd4sJUE8RCavzZmlxhP5zpOeudqgLbQTX7K4uKOgM+r/ubLmE9DBdpySIBOb0r5uA9EWWP1b3Hfy/mDA+NIR6Qg0JDT9uUxftSwCSvfcb6ugHpQZ726BZl8JJdbF1krwS4zSQOB+XbNPHplzJOQZPcUJKDuTl1w2AVuZeZ8WSxSxBw7PdMTNfDscQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,31 +128,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 > On Jul 3, 2026, at 19:41, Dev Jain <dev.jain@arm.com> wrote:
 >=20
-> huge_ptep_get() can be handed a virtual address pointing to the middle =
-of
-> a contpmd/contpte mapped hugetlb folio (examples of callers are
-> pagemap_hugetlb_range, page_mapped_in_vma).
+> try_to_unmap_one() handles hugetlb folios when memory failure needs
+> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
+> case page_vma_mapped_walk() returns the pte pointer to the hugetlb =
+folio
+> in pvmw.pte, but the code reads it with ptep_get().
 >=20
-> The arm64 helper rewalks the pgtables in find_num_contig to answer =
-whether
-> the huge pte we have maps a contpmd or a contpte hugetlb folio, and
-> returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over =
-the
-> contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
-> if the addr is not aligned.
+> On arches which provide their own huge_ptep_get() to dereference a =
+huge
+> pte pointer, accessing via ptep_get() would cause pte_pfn(), =
+pte_present()
+> etc to misbehave.
 >=20
-> Fix this by aligning the pmdp pointer down to a contpmd base before
-> checking equality with the passed huge pte pointer, to correctly =
-answer
-> whether the huge pte is the base of a contpmd block.
+> It is not clear whether this has a trivially visible effect to =
+userspace.
 >=20
-> Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery =
-mechanisms")
+> Just use huge_ptep_get() for dereferencing a huge pte pointer.
+>=20
+> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use =
+page_vma_mapped_walk()")
 > Cc: stable@vger.kernel.org
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reported-by: David Hildenbrand <david@kernel.org>
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 
 Thanks.
 
