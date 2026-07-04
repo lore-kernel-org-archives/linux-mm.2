@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9F91C44500
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 05:58:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F897C43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 06:13:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 876206B0005; Sat,  4 Jul 2026 01:58:27 -0400 (EDT)
+	id A420E6B00B5; Sat,  4 Jul 2026 02:13:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 826DA6B00B5; Sat,  4 Jul 2026 01:58:27 -0400 (EDT)
+	id 9F2A56B00B6; Sat,  4 Jul 2026 02:13:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 719776B0088; Sat,  4 Jul 2026 01:58:27 -0400 (EDT)
+	id 90B8B6B00B7; Sat,  4 Jul 2026 02:13:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 47D976B00B5
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 01:58:27 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE3EF1C7B41
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 05:58:26 +0000 (UTC)
-X-FDA: 84950039412.09.EE6EFC4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 30C831A0005
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 05:58:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XYFOk2kT;
-	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 66D426B00B5
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 02:13:43 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE07B8C46D
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:13:42 +0000 (UTC)
+X-FDA: 84950077884.27.C584684
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3B6791C0005
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 06:13:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MWX88DRk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783144705;
+	s=arc-20220608; t=1783145621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V83zC+ABVvPZfpSItIVfm+fybD7L3iVSBZB+nvmmqYw=;
-	b=xpwq+m5jZ6w//RDOfJlJMvVorv/Am7bEj60AM8gvFzuPrrE9HaGCq5UDPR23NsDms8PJFf
-	JtdwGyDq8KrXxVfWcRomMxOlxdxJRldXACO4GgeLkDhqNwmmMNmvpfDiYG70S8a8UfLIKX
-	jnNWapvGYhZ0z5T22a0RYvHJTEL8elU=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ws31OmbOfyl6nG5V5F4r74N/O/5v/oyarnt17TdEJgI=;
+	b=Vxwf1LF0Qc6dP0D3UjC4fV7/x/kWWEd2HfUrEvuYTllhd4vykX2Jw1/8zD7ktlZEsOx3fI
+	eUbxhJl0dr977bWZEd+TLmC6ztPJQzmvekMnEYgKJyJQnLBzvqufqhwwu1osHwtDR+Fp/j
+	kwusufkbE3xCCZwrHJcweWgovGJjkpQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XYFOk2kT;
-	spf=pass (imf19.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MWX88DRk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783144705;
-	b=lv4wb4XE8a616Aly5bZee8p6pw0Py/fa0+4y7oRgStcFvfjf91/Q/RIxyELN5jAxdHey1O
-	hxUHOet6gCnQoZ2Ez2N5Qk++dhTQdJOfzfEDYkckEKS3UDfj9QlmTl5GYbeNvSmx8eazQb
-	lA8SbpvCS3LuFwT3AxI2ZigoWU+t7+4=
+	t=1783145621;
+	b=8qRz4TfLuxImpWXBe5MDZhO9IiQpkirhjxwF5kK0hIUgvNYHfZkX8ksSeCmT6PStNDFQJ3
+	XBmCRceZUEQbFfPuWPSxLuM0TuKu0ZRiCoUgkS/3H3xX31aJ7WYN5OTrmMvqBFedXlakvf
+	Qbo581BvPhCWlrLMKJxSocncwnMhMXs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F0C1743970;
-	Sat,  4 Jul 2026 05:58:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5E41F000E9;
-	Sat,  4 Jul 2026 05:58:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8EEE6600AF;
+	Sat,  4 Jul 2026 06:13:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F8791F000E9;
+	Sat,  4 Jul 2026 06:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783144703;
-	bh=V83zC+ABVvPZfpSItIVfm+fybD7L3iVSBZB+nvmmqYw=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=XYFOk2kTGPelgRFBCFOy1e5BFq8MR3j2nf5Ucpe7/CKek5scCr344MHbsGfXFuNmW
-	 SM7L6Nm0FhGYcdqcF8sq95YTmN0Jhh+1bvL01+d4I8L3OqZb4nzcM0a44QZmuUkEqK
-	 GL49THk2qh/CLM2VQDUspnlQBGKR/fve39dyxR7GqFTAptP9L5MO2Hq3rvvtkOWVZb
-	 Tn2Lg0iLNmYHqqjLDR/XddQRkS9/G3DRPLcAYbxwcsrcrXuPBWPj2upPA87MZvt0mG
-	 oG8Ag4kev34nRzv78qXAbeBSXty8O5zELZDATZ+bH8paUbrgk/ra1kgfGxNbJW11hx
-	 muNf0rKM83uCw==
-Content-Type: multipart/mixed; boundary="===============8802271696774654361=="
+	s=k20260515; t=1783145620;
+	bh=ws31OmbOfyl6nG5V5F4r74N/O/5v/oyarnt17TdEJgI=;
+	h=From:Subject:Date:To:Cc;
+	b=MWX88DRkGxlLPON9lrKAXoGQa79xdBX5lFfhacabPYFPrPz34p12iRiw+TNwZZqFl
+	 eHWwuUoqzxXQLe++dTq/rqQRlSk7EuxD9oiJ1dCQcNfOcDveHiOk7tUMsyxYZ5JPo6
+	 CHjCWcvK6EAdykMI0ZmaO3SF4jFWciHhfsAjez9CqPeEQLiji4hp6N3PrG6Bggj2Dq
+	 Nduf44gCIxmxfdvcRyFB9AgPD4yYK9Ff5mN6uk3HgGBBx2V0qqFgk6vMyILXOii0+e
+	 90nKN3JZ6m4Dnotxn79/J9AWOc3kyt/FrEsuoj9QFjmD5TLkVoUdM/Hq2SftGjY8/H
+	 bVjJwFTtDqAYg==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH v2 0/4] scsi: replace __get_free_pages() with kmalloc()
+Date: Sat, 04 Jul 2026 09:13:33 +0300
+Message-Id: <20260704-b4-scsi-v2-0-7d2d21a810de@kernel.org>
 MIME-Version: 1.0
-Message-Id: <c48aa4a4b43fe15d313761d70e2113405c73ad058911cd87d573946ae1740b9e@mail.kernel.org>
-In-Reply-To: <20260704045617.487664-4-ziyang.meme@gmail.com>
-References: <20260704045617.487664-4-ziyang.meme@gmail.com>
-Subject: Re: [PATCH 3/3] selftests/bpf: add memcg_stat_churn_percpu BPF-vs-memory.stat benchmark under cross-CPU churn
-From: bot+bpf-ci@kernel.org
-To: ziyang.meme@gmail.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,bpf@vger.kernel.org
-Cc: martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,shuah@kernel.org,roman.gushchin@linux.dev,kernel-team@meta.com,linux-mm@kvack.org,cgroups@vger.kernel.org,linux-kselftest@vger.kernel.org,linux-kernel@vger.kernel.org,ziyang.meme@gmail.com,shakeel.butt@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Sat,  4 Jul 2026 05:58:23 +0000 (UTC)
-X-Stat-Signature: baezg1orbmwirzbqabuodzb6yf4arq5t
-X-Rspamd-Queue-Id: 30C831A0005
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI2kSGoC/z2OTQ6CMBCFr0JmbU0LFcSV9zAsmDLAqCmmg0RDu
+ LsUjcvv5f3NIBSYBE7JDIEmFh78CukuAdfXviPFzcqQ6jTXuTEKrRInrBqNmtAey0NrYXU/ArX
+ 82pou1ZfliVdyY4xHB9ZCCkPtXR+liFHuWcYhvLcHk4nx31im/2OTUVrZ0raYFYRU4PlGwdN9P
+ 4QOqmVZPlrQABPIAAAA
+X-Change-ID: 20260611-b4-scsi-d0b0eb4895f4
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Brian King <brking@us.ibm.com>, Hannes Reinecke <hare@suse.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+ Wen Xiong <wenxiong@linux.ibm.com>, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-scsi@vger.kernel.org, 
+ target-devel@vger.kernel.org, Hannes Reinecke <hare@kernel.org>, 
+ John Garry <john.g.garry@oracle.com>
+X-Mailer: b4 0.16-dev
+X-Rspamd-Queue-Id: 3B6791C0005
+X-Stat-Signature: rfqtmffhp3zga4dt1dozcwnnez8krcgq
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783144705-886350
-X-HE-Meta: U2FsdGVkX19IY5g26YoAEY1A7kB/e3xT8IZ3OiIVnWWtpy4L9KpObdSLgAhX5DAcrAHy16ImhguE6otJZu9tsmnOddvGbVXtJGubJ852+I13nHOKudtX22rmeq0ERcCW4COzQg6JYNea7fyTmEyuWh2eCBXZgtxQwVN2yG1UENC75KYSoU7XBWq4qgjFQ24VpK1+0jfQi/u7v3z8aa8ZsWWiei4c45qIc+poxDB/XfaymzpmyWH7QxjN3ZakmR1ovf6VWzDTro2GyTZqvYlbtClI/jT5f0/SH9sgig5mbVI2ERibaVwu03CmStlV5fEI6AopOJLKszio0f05XUw+6c8M98n7jF0V1CERvJF9vMxPu+QUQObbdPPbFlDOo/V+bLE9raMGvVlI4msfCYAITzzJm74aZHRtah5CsU49lVozQkLLwzdaqqo+0Jw3Xsss5j2ek0uG9nd8SlOHtvloolmyxu8MTdfM9n0Dja+FPmRGPDgn79sqY/A53q1XzhrFgSDFTain39k+8qpDgXwpt9uC2Bg33dEqHaartc3PefdZ8srZGyICnaGYmwBxdCFRDWGIzl0A4TPxPX/H+GySUlTN+z5hJnZDEPcTE4lp0JTFDNtZGl9lVBQZiwemXREr4tcDN9Xba5kRe5A446e0iEFXHP6Mn7WkC4izDWvIoRKB9TsUm5Q1V0fZXjiYWwzJlQei0oYLkHwmC57ZMRh4JQxLdcQWo6LkLPxBNRhK3AM7rvKWULoP+ua+10gtpy7zSqv8kwW2cBmM6A5Ji2kTI/SIV4eOg1Y0Ek9P9XWw2SuGQoJ3H5I27HG4xoIjmSzap6ZI/1lRnuWMMBuk5+1TUYt1Vws/sprbnqgr7H8xFMaPN32CRU4NdLK5KVeaGuiIljBskwTSVsg/j9OlfeaSED5kW5eU90o52zXkkWC8VU3zSkVCoyv6Dcji2M9x/Lo/qsR7D8Is82ff9wnxrJB
- CpDBJNm9
- C0hs6VIKgnsyI+JNt5JlBdPtN44jbgrKilO+FE3hnEEDBzaLJINqjrVLdQZtZNqnQDi9FZZkL0Wt0Jl/5741+jDeuNESwKt4ythP9nUKgRvA0N7Fx5Tki0YxnZPeswiKJ2JDvJ3VuVRWDW34RoNPD9fTul5HzEFY2jdsBMToaTMuOK9rpxe3Em0A9oh7LwCX+WplpJ172TFsVrRjaCB5gz94alQ0V0n1kxYzjf6IOBTo0NbJzr7q7aML/KDMFfHeyyx5b2DWp4Hf/OCVLZV0j44Mbp0AmYon4tN7mMLgksrGs3HDMdeaoVjKSyCa8CPMmAsoo82e/tCwSPssX9MTZIAWQDbBFJEa9MfmT/qLGUYzevAali1hkYVzGU5dvTwU7ocXkoPbLANijQPMNLJ134bISoLa/duNlz7yeAQv5WEykeJwCIE9nXYQskQGVkgKgxo66nKDn7FOW3GYdCoTiNF1phrDVdwFXdX7xW0zfXyWUz8OGC97KAzsGjNGp9cbMPMcYvJpx9WWQFlkU3Z2FhjSCZzLevXjljHIP
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783145621-923817
+X-HE-Meta: U2FsdGVkX1+6RvcylemYFbZKO6efXmb1STKz6XdfKZF7w2e/QbFauaeaTaSJ1I8a7oBFIucOI47SlGMp+bvNcmdoOWsRd3k8TSGuRdjBS+H8wJLtUhjawfpSPjMmkQgbRvsamvPber3OeILmMU1mENSAz4HXZSoLgVrs+zpqIj1VNUeD3eVkGBY7BW91vSHD0n6lhyfneO/6mJKfTRNIw9II7RBobizWcY3yyAhAzQNqgGhVWMw17aIQ8RuVxBNmQF4Dh79aZfzKltfx4voCZ9VkdwICOyggqw+oZcx96MKqY8lvN6TY7e4NmJ7ZRMdk54iLW5AT5F/38YAobd/G29NtWgeUTFTj3lFtUpod6ozJcFbKNDSjr4nQDVO00X8LfQhnTkcM6WG+RIYP8xOtYkeGzotmLj6JdckkiOS3W/8aBasjFqC7FVoYTh+6ym9F7fQO4W/YlPIonEz/dGboth/Pt/QkZlJUtD1ooUk9QzHhvo7gC08LuygkaiKZwUT/ootswGHqM54w8g7jUu+Jh5C9XrW981evbqg8rP8RYUZIKfHAI2zgCYYqPuW/Osa40oPBvDXxAHRiYFNxdQ/TlEKJGM03TjuNqd0D9CdzbEEqNxsS/l93qte8FLmGeXq7q2x4mdrV5uc/lr8eNPGzJTtPGwS+CniVBRO0zds2Fz2PDQTKVfMqF6dT9LHrFU5albwZcPypIqMwqm5Ve4c5Hd4MMAURcKx+Ey7j7Mmq88gQO8gxWEPVywTl6Eg5S5YE83Y+Rhk3MdiMhAQn7+5qXmJNZpM3Lb++rp93+a4ZV3qfFKOBhNsDIA78HNyYNQloPDcDu+1CyAgpueYGmFy4aIyq6+MfCidItIuI1QvA45VUb7if77iokADQl07ji5BLXVuO8X921ygSos3RRNBul43Llj3l4TYjLpUcTE4FJFymbWbPlZEduBAwF2yMb73mI2X2VB58NjfYdeSolSs
+ lfG0oqBf
+ wB2TB7u7stmf7jvnrcs65imVWVuHXroYBCjnXNXN2pffn305LUjj/j+iYtYaT7eMQosDeNcZ4NhgzUjkIpD5j5md1r/GJ3TJT4YASkTG7lysVbfS2yo1V8nj6BLN58qKK22fl2thDCygchiwTZ+lRV4/KEVmLZ7gh7otsrtzf9C+tIC8LcaOi9k4b5dH/AesVAVzBXZs0dnmo+WkmhA7dKR+MyVAO1xNXUTHwluSiYpP+jCWkKS/NEP0UWFaPk33myC7PFZET4zBtzYWuOrc4/XBLyBO4Cq4czHQSBG+dv/mlVNsu5dvPhuo1oUv5bR7V4pzDJPY0PKJPbP1YEtaXmujIxuUXVjnu16qr9Amd0ljTzJ0Dbo7W8Fhz38lMdQEViprP64oLkdu/8vmEFR8/X3IVqcxZr1T4XbOQ3tTbIcHctcH97qrqjY3G+CNbAIrOU0BRyxnK131DB4DRNZk3CRQeqAxLC0cQLtG3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,49 +99,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============8802271696774654361==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This is a (small) part of larger work of replacing page allocator calls
+with kmalloc.
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_stat_churn_percpu.c b/tools/testing/selftests/bpf/prog_tests/memcg_stat_churn_percpu.c
-> new file mode 100644
+My initial intention a few month ago was to remove ugly casts [1], but then
+willy pointed out that Linus objected to something like this [2] and it
+looks like more than a decade old technical debt.
 
-[ ... ]
+Largely, anything that doesn't need struct page (or a memdesc in the
+future) should just use kmalloc() or kvmalloc() to allocate memory.
+kmalloc() guarantees alignment, physical contiguity and working
+virt_to_phys() and beside nicer API that returns void * on alloc and
+doesn't require to know the allocation size on free, kmalloc() provides
+better debugging capabilities than page allocator.
 
-> +static void settle_flush(void)
-> +{
+Another thing is that touching these allocation sites gives the reviewers
+opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+another size is appropriate.
 
-The settle_flush() comment explains the reset with:
+For larger allocations that don't need physically contiguous memory
+kvmalloc() can be a better option that __get_free_pages() because under
+memory pressure it's is easier to allocate several order-0 pages than a
+physically contiguous chunk with the same number of pages.
 
-> + * ~15% window asymmetry, enough to invert bpf_matched vs bpf_full on
-> + * flush-dominated cases (e.g. "hot": few cgroups churned from many CPUs).
+And last, but not least, removing needless calls to page allocator should
+help with memdesc (aka project folio) conversion. There will be way less
+places to audit to see if the user was actually using struct page.
 
-This isn't a bug, but the cases in this file are narrow/wide/widest, and
-there is no "hot" case here (or in the sibling tests).  The timed reads also
-always run with collect_full = 1, so there is no bpf_matched-vs-bpf_full
-comparison in this test.  Does this example still describe this file, or was
-it carried over from another test?
+Also in git:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/scsi
 
-[ ... ]
-
-> +#define CHURN_GAP_US	(50 * 1000)
-
-The gap comment just above this says:
-
-> + * pays that flush inside its timed region.  This gives all four reads
-> + * (file/bpf x matched/full) approximately the same start state and folds the
-
-This isn't a bug, but the sampling loop does one file_pass() and one
-bpf_pass() per sample (bpf_pass always sets collect_full = 1), so there are
-two reads per sample rather than the "four reads (file/bpf x matched/full)"
-described here.  Should this be reworded for this test?
-
+[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/ 
 
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+v2 changes:
+* replace GFP_ATOMIC with GFP_NOIO in ipr driver
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/28695985027
---===============8802271696774654361==--
+v1: https://patch.msgid.link/20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org
+
+---
+Mike Rapoport (Microsoft) (4):
+      scsi: target: file: use kmalloc() to allocate temporary protection buffer
+      scsi: proc: use kmalloc() in proc writers
+      scsi: ipr: use kmalloc() to allocate IPR dump buffer memory
+      scsi: sym53c8xx_2: replace __get_free_pages() with kmalloc()
+
+ drivers/scsi/ipr.c                  | 4 ++--
+ drivers/scsi/scsi_devinfo.c         | 5 +++--
+ drivers/scsi/scsi_proc.c            | 9 +++++----
+ drivers/scsi/sym53c8xx_2/sym_hipd.h | 4 ++--
+ drivers/target/target_core_file.c   | 4 ++--
+ 5 files changed, 14 insertions(+), 12 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260611-b4-scsi-d0b0eb4895f4
+
+--
+Sincerely yours,
+Mike.
+
 
