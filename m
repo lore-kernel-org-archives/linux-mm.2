@@ -4,91 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61E57C43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 08:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B8DC43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 08:15:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1DA96B00B4; Sat,  4 Jul 2026 04:05:01 -0400 (EDT)
+	id E6CD06B00B5; Sat,  4 Jul 2026 04:15:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF59F6B00B6; Sat,  4 Jul 2026 04:05:01 -0400 (EDT)
+	id DC7676B00B6; Sat,  4 Jul 2026 04:15:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0B1D6B00B7; Sat,  4 Jul 2026 04:05:01 -0400 (EDT)
+	id C8FC86B00B7; Sat,  4 Jul 2026 04:15:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 77CF76B00B4
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 04:05:01 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4025A0450
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 08:05:00 +0000 (UTC)
-X-FDA: 84950358360.17.9DF8519
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 61179180003
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 08:04:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783152299;
-	b=3j8O3LJuwZOn2EQBQKyhD24//O2JZYMPPDFfqlP2cKSSa6rE6yhailfh3jVqdy8nT2o/ka
-	JXoi+Cj/yUyJxvgEZkWESybGce99tLwhH58Yb2ZMjUnN8ZY6A7jw1ZF4FQCItYGNZWhj4Z
-	OISH1RpFQmbWtsdnjprfNkiuFJceoCk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CED46B00B5
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 04:15:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E4B0D8DE91
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 08:15:15 +0000 (UTC)
+X-FDA: 84950384190.15.451AF6D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 331DD160003
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 08:15:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=brbZmBO3;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783152299;
+	s=arc-20220608; t=1783152914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=2LSeS6OOQb//wtwByIWhmHGFDjON8rDYfvIzffmPM8k=;
-	b=kW8nOCR18Hx4qWftRdrRkDu/vQtgg/DTqC5bqi20Yr5RRbtHfINar85uDApcVyOlvhVFQS
-	RNC6dmZK4IWR3vaMg0sn1QEsLW+bgyvULiVnWUKXXvAciZAk7aJWehgcwj3CdE13sF0FFI
-	aEzIqHk5npVs42ej6fESB/1zFoIswZw=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gsjpG3qsFz5B101;
-	Sat, 04 Jul 2026 16:04:54 +0800 (CST)
-Received: from xaxapp04.zte.com.cn ([10.99.98.157])
-	by mse-fl2.zte.com.cn with SMTP id 66484npL029654;
-	Sat, 4 Jul 2026 16:04:49 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Sat, 4 Jul 2026 16:04:50 +0800 (CST)
-X-Zmail-TransId: 2afa6a48bea2383-2098a
-X-Mailer: Zmail v1.0
-Message-ID: <20260704160450302fnznThT3hBeBiwlhE-oGv@zte.com.cn>
-Date: Sat, 4 Jul 2026 16:04:50 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <vbabka@kernel.org>, <harry@kernel.org>, <akpm@linux-foundation.org>
-Cc: <hao.li@linux.dev>, <cl@gentwo.org>, <rientjes@google.com>,
-        <roman.gushchin@linux.dev>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <zhang.run@zte.com.cn>,
-        <cai.qu@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIXSBtbS9zbHViOiBmaXggbG9zdCBsb2NhbCBvYmplY3RzIHdoZW4gYnVsayByZW1vdGUgZnJlZSBiYXRjaCBmaWxscw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 66484npL029654
-X-TLS: YES
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Sat, 04 Jul 2026 16:04:54 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A48BEA6.000/4gsjpG3qsFz5B101
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JcM3qzvM9CE9LUyEh5ejys738a9htxavEeDrNfu9Niw=;
+	b=CEwaWwQMrnMyA9IKJXEEr4dvsyVkRhGl9rCrjIxyh+/UiIw9okiSFnzrWE/HAzAfJpsTC/
+	RhiSwN44A0FIRfi+1LFORT/EhHRYFXBm5IyjkO9xGNDHhg7nli6ZTE7TxfqsSHFI3eyx06
+	zKwD4amM+cbLARSu67g9nVw7K/Mjm20=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=brbZmBO3;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783152914;
+	b=NxW2Rp+t/vV/CjA8HJoAz/W6nLILAl+CTy5v6M0G5HrQs9FlIQLLRDkeuJH3i//k/HAU2m
+	tSG0ykqraBDgMEUDWIuqGwtcl6IL4W78+65xEiCK/vQ3jthrE44wTFQ+TfoIQaXTGkKXTy
+	4hg5A5sTgUhopWADLN6Od+NfkAcyJ4E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F1546001A;
+	Sat,  4 Jul 2026 08:15:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDFC1F000E9;
+	Sat,  4 Jul 2026 08:15:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783152913;
+	bh=JcM3qzvM9CE9LUyEh5ejys738a9htxavEeDrNfu9Niw=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=brbZmBO3khc8Rn0RhlAD2f3zxhQ8Lk54FRrWJ3o40CxMzEvbtszZAgjYKug9KI+R1
+	 D4QmcNO9liS+83syZdlE8AW2H/ad+hZVNdF5jT5Llr0Q8DZ2UqV5R5FjyRFBLvXtNe
+	 DV4ocmsVy3DDslVyb15H19+APdI4Y2ziYUYDDLA8sK/Vxm5xBnrKhy646yEUFtAcVs
+	 KENJgDPpLE6kCzy5FmwfyE9NxfV3+pkIAT/T5QXohbCqaJ/eoxNYD/GsPt1NM1ut2z
+	 sOYg0Egm9DlLlWsZ+jN0uYNQDMeOBTy3IFFgkWTY+NtdrTBUdrnL17Ca1tE1NFlPIw
+	 xUedqTzahARWQ==
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [RFC PATCH] fs: introduce pluggable ELF interpreter loader
+ registry
+From: Christian Brauner <brauner@kernel.org>
+To: Farid Zakaria <farid.m.zakaria@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, david.laight.linux@gmail.com, 
+ jack@suse.cz, jannh@google.com, kees@kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mail@johnericson.me, 
+ shuah@kernel.org, viro@zeniv.linux.org.uk
+In-Reply-To: <CACCo2jkCFdqa1SQ_k1_42x_KYHReqcaGEScKp8ozt3FcAX7f8Q@mail.gmail.com>
+References: <20260630185916.5a694895@pumpkin>
+ <20260702214247.1253741-1-farid.m.zakaria@gmail.com>
+ <20260703-meditation-ratsuchende-moratorium-9ecdf1f3f8bb@brauner>
+ <CACCo2jkCFdqa1SQ_k1_42x_KYHReqcaGEScKp8ozt3FcAX7f8Q@mail.gmail.com>
+Date: Sat, 04 Jul 2026 10:15:07 +0200
+Message-Id: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=14470; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=aQ02crgCZAJDLjoIKy7OXQyHMlWcCg5rlozXxxQU8b4=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR5HOQNLW+6LuYw5/iVR0dY7hzbnO62NTVU0/VcjNajq
+ 556Mw1/d5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwksZvhf+IzqeC5PinGM2Zm
+ HZqnf2pCmtbKjsBuSf/deixJdxX/JjMyNH+LW3z62KmHb5l+XFV03L1urby26c8CJUv28tCql9W
+ BbAA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 61179180003
-X-Stat-Signature: oc3wayoh34c448wzah6y85paaqjoaqok
-X-HE-Tag: 1783152298-43114
-X-HE-Meta: U2FsdGVkX1/KaKknKqhss5g/FFOqdR5r1oqSCD8op6zgYrIFufJQ9xJtxuPDCJ885uIV+so6ptKAcla1ABXf4uc9z+7yEVng8vfyF43FoFgQ22X0TXHCPr6Kj3W9hX0adOtcaGJg7JRTtiZbAV3Mr8wgRjm0ZsWPYKklVGe3VcXKOpyqAcvpeIZbcvwpD1YifDeiPXbgAQniiLStawkIwH8dkBhHCIbUu1QFF+6r4zgnPtqO49eGkiMcZXkRcKV4oCX8HJMjFgMzq6te9/L6BJG6v3HUdRUl/mIGPnrriFjGwZARBetdDjnbIl9b2Jg0h+9kAAKy6cJLml6AI0BQn7EKScloONSacjCCJ9bn0TBYAyz4/PH2XGL43gKm8CgzD96ZaIz47GaKgVRsByOKitIXVZTpoe4Wm+qR0XcyIGm+qge7Ngo68POCbk/+p2s3AQ0bWiaCHMGH6aoLCijYexDOE2KybU02ZA1IlZclR0Ll7NGw5w/E7w6y4Y1YFYxVPG6FUqNCSX5S/zjmye5RPXnCujlEjOYpctsjQ/ZGxg5cJurxpGkgyGSG45WZt+fSx/6lMPjYU8PQrJni0QuNoabKx3qhrflgOzr5/vTt/cUNKf+NK/6nRHPzVqL9q+CyibY2sDo6Fa8sWO5+PaM0nsm5p8QfbdIJikHpG4wcW6rCmILo/nS9uOBAbIMArf3H/l1n9zRwfYyZC5ThoQl2BtiEo1eRA6nM/Hi5hl2ZacfDu5P0R7Bx1U9LV5abrVRA69RMDiLw3uQpUZ9ds4JLegEr47Br8WAWKxZ09B0c3M0Vlt1BmzF4gTKuXn71FLBsGRR8kIf0xi/fq4EmMtkdS5KoGji8mWLMx6AUAVg+AJYRYTqW8tUFFXAKtbikPucKm0FxANOndWAehChqOTXhAfPDCSttsSMyYPSTguU6SWacnZTLwVxCXGYqh5UWCaRocr/3YgQ5OhnwKvesb78
- EfCkr+ml
- +wbaBUpkNP5rhMEo7o/IA0nNiwDWSt9GAKtkrnjeQSi5vk7+xjWBcuEorZ7RatK9Dd0bw/yOJaC0UGKybDZPV87rjik//ADm6YKLBHLs7eybl4VMCtZLBHP3+Wrtjlb4wfddVt9UUFMzK05TneiaLm79vPb/eHqd6t3QZ5+z50wz/bh1G1jksRs7sZeH4ztTKpJ3reB7cTB5G1w6pP2UHLuEr9Q==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 331DD160003
+X-Stat-Signature: 913b68i5szsosonkjj7dkigz4p1d1u86
+X-HE-Tag: 1783152913-787007
+X-HE-Meta: U2FsdGVkX1/4MYlI9T7WEIfh+1ffjmIdoBR3QaVyiK8/CmpV+suYltLr0YCl19FxOpMRigN46Tow6MhVfbccofvLVA7QLAVi2NlMa2/9lcgKtCncsGjp6ycsDliI0+Zk8BoWT72YWqaDXMbokMmJWYFlz05peAE6vsAooac3BY5uckOs+XVK8BIIy909sJ6xCp2nPqjbAWx0Z2Rz2gu3jBOmRI08QRGeJ/Lqb9w2GqhNNTuHsre/7594h8fz2FnnMxdGNqOrCKDbV5oijjnn3ofhIH+beFcTgtzrGxMq9vaGX/PcyMc1aSLoxTkQLi7zWEtpJ0csYhl+bLbzGuByGlVwkdxP+NH806lg44sRbn55XTIsJnxsu1XDsfqiGFbtL/RwBYTub6PDFDRVFBVxIzVT4yBkNrnwpEjVhjxs/dcj7ZJ84syvLXvDFeH0kmewDbXWHwiwaV6o/xMHkUIH/boPtRZj2wz/pMOhdTLKHJAu2TPYfPeJG8UFaIbCsv8UpxuTwxkefWj/gsqZf9r8f6yAyRgsVct2NIHWry1GNGbQGm/c39uTlw7AhBAV190l1P9JgO3bRzm9h2J7awP0v6YL9uQqNTjEgnI5cb5fyk1coqnS8WMvlE6H3tJtGpGL06t4WQMbs7GpVvEECzaEu93263da+Q0r0fN4nGXwO4TUjFq56dRQmSoEd2Z/S6rnGHXY/7pm3cRth6XE9eJ78Q4ehjCGWRRWLVrlkcbsroZHVO9ABLbEXsRCoaY78gJrFIPbAD9cBxpc3rOgx0RG0LDljRnlZawUUvJhGgujnFjSMqRhn6gNEbW3WxpMMqxASYINfetY3GheG1FNerAgvTWvzXtQY6IslirB/xqxCCuuqrqhSxAb0pUGivEL6mGCKL0MMIIy3bcnNHEUmKcLz6tcnJMZpyzCSwTyu+vuZH/KyQbyArVbWA2XyVAAsZZEdrkR5CoSzdTus6D5PXL
+ 1YyBDx6B
+ ekXHu/PI62lPxwHHlOUNZPhefKf5DF4lxk7E9k8X5N4anQRk6qeFPM8NrAC3F97VT17dv/gFljRmgRsmnBjNYR3ZbxGmvKtNtSaFM4LLEUl2YSeLp3NA4V5R7Kdg5UP2KmiWDoxla0V9MyD6epdTZka2A9f4+PFb/02SEGXcO53NAV4EnLxoJlMyatuSuRgUr4eI/hQvzygv/Glj9FwZEdHtoDFknKdThWJYOES0hYPbl0JSrI7mTriGBbu+DMeXymo3hnzyq5fwOyCSYVgPT5cGPRnYxy5B50OduKNVxqVTlvm6vAsi573SgXBwlMjszdYW30fEAy2oO+KPqo4oLgzijMAPn3OYAVW9tm377XTSJvhe/QU0ZERlFKLJaCjHgkiNURisGGW9LH7J7jQYBPA1+aRJ/PX02f1AAOknV6jEq7UN2Lxbsf8mEnP+1TQdtf67/gXaGV4aLpCCTkCX7QfgJyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,69 +107,357 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Shengming Hu <hu.shengming@zte.com.cn>
+On 2026-07-03 11:32 -0700, Farid Zakaria wrote:
+> On Fri, Jul 3, 2026 at 2:22 AM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > > Introduce a pluggable framework for ELF binary loading to allow dynamic
+> > > resolution and redirection of program interpreters (PT_INTERP). This is
+> > > primarily designed to support hermetic path resolution like NixOS $ORIGIN
+> > > relative dynamic linkers without bloating the core ELF loader or compromising
+> > > system execution security.
+> > >
+> > > Introduce a new registration interface for kernel modules to register
+> > > open_interpreter callbacks. Standard ELF loading queries this registry; if a
+> > > plugin resolves a custom segment type (like PT_INTERP_NIX), it returns a file
+> > > descriptor for the resolved interpreter. Secure execution environments
+> > > (bprm->secureexec) bypass relative resolution for safety.
+> > >
+> > > Signed-off-by: Farid Zakaria <farid.m.zakaria@gmail.com>
+> > >
+> > > diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
+> > > index 1949e25c7741..ef4277fd8050 100644
+> > > --- a/fs/Kconfig.binfmt
+> > > +++ b/fs/Kconfig.binfmt
+> > > @@ -38,6 +38,21 @@ config BINFMT_ELF_KUNIT_TEST
+> > >         only needed for debugging. Note that with CONFIG_COMPAT=y, the
+> > >         compat_binfmt_elf KUnit test is also created.
+> > >
+> > > +config BINFMT_ELF_PLUGINS
+> > > +     bool "Enable plugin support for ELF interpreter loading"
+> > > +     depends on BINFMT_ELF
+> > > +     help
+> > > +       This option allows kernel modules to register handlers to dynamically
+> > > +       resolve and override the ELF program interpreter (e.g. supporting relative
+> > > +       interpreter paths with $ORIGIN).
+> > > +
+> > > +config BINFMT_ELF_NIX
+> > > +     tristate "ELF interpreter plugin for NixOS ($ORIGIN support)"
+> > > +     depends on BINFMT_ELF_PLUGINS
+> > > +     help
+> > > +       This builds the NixOS ELF interpreter plugin. It intercepts PT_INTERP_NIX
+> > > +       headers to resolve relative and $ORIGIN interpreter paths.
+> > > +
+> > >  config COMPAT_BINFMT_ELF
+> > >       def_bool y
+> > >       depends on COMPAT && BINFMT_ELF
+> > > diff --git a/fs/Makefile b/fs/Makefile
+> > > index 89a8a9d207d1..bd81e7ff64f3 100644
+> > > --- a/fs/Makefile
+> > > +++ b/fs/Makefile
+> > > @@ -35,6 +35,7 @@ obj-$(CONFIG_FILE_LOCKING)      += locks.o
+> > >  obj-$(CONFIG_BINFMT_MISC)    += binfmt_misc.o
+> > >  obj-$(CONFIG_BINFMT_SCRIPT)  += binfmt_script.o
+> > >  obj-$(CONFIG_BINFMT_ELF)     += binfmt_elf.o
+> > > +obj-$(CONFIG_BINFMT_ELF_NIX) += binfmt_elf_nix.o
+> > >  obj-$(CONFIG_COMPAT_BINFMT_ELF)      += compat_binfmt_elf.o
+> > >  obj-$(CONFIG_BINFMT_ELF_FDPIC)       += binfmt_elf_fdpic.o
+> > >  obj-$(CONFIG_BINFMT_FLAT)    += binfmt_flat.o
+> > > diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> > > index 16a56b6b3f6c..53fa2681555a 100644
+> > > --- a/fs/binfmt_elf.c
+> > > +++ b/fs/binfmt_elf.c
+> > > @@ -35,6 +35,7 @@
+> > >  #include <linux/random.h>
+> > >  #include <linux/elf.h>
+> > >  #include <linux/elf-randomize.h>
+> > > +#include <linux/elf_plugins.h>
+> > >  #include <linux/utsname.h>
+> > >  #include <linux/coredump.h>
+> > >  #include <linux/sched.h>
+> > > @@ -870,6 +871,12 @@ static int load_elf_binary(struct linux_binprm *bprm)
+> > >       if (!elf_phdata)
+> > >               goto out;
+> > >
+> > > +     interpreter = elf_plugin_open_interpreter(bprm, elf_ex, elf_phdata);
+> > > +     if (IS_ERR(interpreter)) {
+> > > +             retval = PTR_ERR(interpreter);
+> > > +             goto out_free_ph;
+> > > +     }
+> > > +
+> > >       elf_ppnt = elf_phdata;
+> > >       for (i = 0; i < elf_ex->e_phnum; i++, elf_ppnt++) {
+> > >               char *elf_interpreter;
+> > > @@ -882,6 +889,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
+> > >               if (elf_ppnt->p_type != PT_INTERP)
+> > >                       continue;
+> > >
+> > > +             if (interpreter)
+> > > +                     continue;
+> > > +
+> >
+> >
+> > >               /*
+> > >                * This is the program interpreter used for shared libraries -
+> > >                * for now assume that this is an a.out format binary.
+> > > @@ -935,6 +945,20 @@ static int load_elf_binary(struct linux_binprm *bprm)
+> > >               goto out_free_ph;
+> > >       }
+> > >
+> > > +     if (interpreter && !interp_elf_ex) {
+> > > +             interp_elf_ex = kmalloc_obj(*interp_elf_ex);
+> > > +             if (!interp_elf_ex) {
+> > > +                     retval = -ENOMEM;
+> > > +                     goto out_free_file;
+> > > +             }
+> > > +
+> > > +             /* Get the exec headers */
+> > > +             retval = elf_read(interpreter, interp_elf_ex,
+> > > +                               sizeof(*interp_elf_ex), 0);
+> > > +             if (retval < 0)
+> > > +                     goto out_free_dentry;
+> > > +     }
+> > > +
+> > >       elf_ppnt = elf_phdata;
+> > >       for (i = 0; i < elf_ex->e_phnum; i++, elf_ppnt++)
+> > >               switch (elf_ppnt->p_type) {
+> > > diff --git a/fs/binfmt_elf_nix.c b/fs/binfmt_elf_nix.c
+> > > new file mode 100644
+> > > index 000000000000..d28b92c30939
+> > > --- /dev/null
+> > > +++ b/fs/binfmt_elf_nix.c
+> > > @@ -0,0 +1,108 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > +#include <linux/module.h>
+> > > +#include <linux/kernel.h>
+> > > +#include <linux/init.h>
+> > > +#include <linux/fs.h>
+> > > +#include <linux/path.h>
+> > > +#include <linux/namei.h>
+> > > +#include <linux/elf.h>
+> > > +#include <linux/elf_plugins.h>
+> > > +#include <linux/slab.h>
+> > > +
+> > > +MODULE_DESCRIPTION("ELF Interpreter plugin for NixOS / $ORIGIN");
+> > > +MODULE_AUTHOR("Farid Zakaria");
+> > > +MODULE_LICENSE("GPL");
+> > > +
+> > > +/* Mnemonic value for NixOS-specific program interpreter: 'N', 'I', 'X', 3 */
+> > > +#define PT_INTERP_NIX  (PT_LOOS + 0x4e49583)
+> > > +
+> > > +static struct file *nix_open_interpreter(struct linux_binprm *bprm,
+> > > +                                      struct elfhdr *elf_ex,
+> > > +                                      struct elf_phdr *elf_phdata)
+> > > +{
+> > > +     struct elf_phdr *elf_ppnt;
+> > > +     struct file *interpreter = NULL;
+> > > +     char *elf_interpreter = NULL;
+> > > +     int i, retval;
+> > > +
+> > > +     /* Find the custom Nix interpreter header */
+> > > +     elf_ppnt = elf_phdata;
+> > > +     for (i = 0; i < elf_ex->e_phnum; i++, elf_ppnt++) {
+> > > +             if (elf_ppnt->p_type == PT_INTERP_NIX)
+> > > +                     break;
+> > > +     }
+> >
+> >
+> > > +
+> > > +     if (i == elf_ex->e_phnum)
+> > > +             return NULL; /* Segment not present; fall back to others */
+> > > +
+> > > +     /* Security check: refuse relative interp resolution on secure execution */
+> > > +     if (bprm->secureexec) {
+> > > +             pr_warn_once("binfmt_elf_nix: secureexec active, refusing custom interpreter lookup\n");
+> > > +             return NULL; /* Fallback to standard PT_INTERP */
+> > > +     }
+> > > +
+> > > +     if (elf_ppnt->p_filesz > PATH_MAX || elf_ppnt->p_filesz < 2)
+> > > +             return ERR_PTR(-ENOEXEC);
+> > > +
+> > > +     elf_interpreter = kmalloc(elf_ppnt->p_filesz, GFP_KERNEL);
+> > > +     if (!elf_interpreter)
+> > > +             return ERR_PTR(-ENOMEM);
+> > > +
+> > > +     /* Read the interpreter path from the executable file */
+> > > +     retval = kernel_read(bprm->file, elf_interpreter, elf_ppnt->p_filesz, &elf_ppnt->p_offset);
+> >
+> >
+> > > +     if (retval != elf_ppnt->p_filesz) {
+> > > +             retval = (retval < 0) ? retval : -EIO;
+> > > +             goto out_free;
+> > > +     }
+> > > +
+> > > +     if (elf_interpreter[elf_ppnt->p_filesz - 1] != '\0') {
+> > > +             retval = -ENOEXEC;
+> > > +             goto out_free;
+> > > +     }
+> > > +
+> > > +     /* Path Resolution: Absolute vs. $ORIGIN */
+> > > +     if (elf_interpreter[0] == '/') {
+> > > +             interpreter = open_exec(elf_interpreter);
+> > > +     } else if (strncmp(elf_interpreter, "$ORIGIN/", 8) == 0 || strncmp(elf_interpreter, "${ORIGIN}/", 10) == 0) {
+> > > +             const char *rel_path = (elf_interpreter[0] == '$') ? (elf_interpreter + 8) : (elf_interpreter + 10);
+> >
+> >
+> > > +             struct path parent_path;
+> > > +
+> > > +             /* Reference parent directory of the executed file safely */
+> > > +             parent_path.mnt = mntget(bprm->file->f_path.mnt);
+> > > +             parent_path.dentry = dget_parent(bprm->file->f_path.dentry);
+> > > +
+> > > +             /* Open relative to parent directory */
+> > > +             interpreter = file_open_root(&parent_path, rel_path, O_RDONLY, 0);
+> >
+> >
+> > > +
+> > > +             path_put(&parent_path);
+> > > +     } else {
+> > > +             /* Naked relative paths are rejected for safety */
+> > > +             retval = -ENOEXEC;
+> > > +             goto out_free;
+> > > +     }
+> > > +
+> > > +     kfree(elf_interpreter);
+> > > +     return interpreter;
+> > > +
+> > > +out_free:
+> > > +     kfree(elf_interpreter);
+> > > +     return ERR_PTR(retval);
+> > > +}
+> > > +
+> > > +static struct elf_plugin nix_elf_plugin = {
+> > > +     .owner = THIS_MODULE,
+> > > +     .open_interpreter = nix_open_interpreter,
+> > > +};
+> > > +
+> > > +static int __init binfmt_elf_nix_init(void)
+> > > +{
+> > > +     return register_elf_plugin(&nix_elf_plugin);
+> > > +}
+> > > +
+> > > +static void __exit binfmt_elf_nix_exit(void)
+> > > +{
+> > > +     unregister_elf_plugin(&nix_elf_plugin);
+> > > +}
+> > > +
+> > > +module_init(binfmt_elf_nix_init);
+> > > +module_exit(binfmt_elf_nix_exit);
+> > > diff --git a/fs/exec.c b/fs/exec.c
+> > > index b92fe7db176c..45813bbce833 100644
+> > > --- a/fs/exec.c
+> > > +++ b/fs/exec.c
+> > > @@ -46,6 +46,7 @@
+> > >  #include <linux/key.h>
+> > >  #include <linux/personality.h>
+> > >  #include <linux/binfmts.h>
+> > > +#include <linux/elf_plugins.h>
+> > >  #include <linux/utsname.h>
+> > >  #include <linux/pid_namespace.h>
+> > >  #include <linux/module.h>
+> > > @@ -108,6 +109,52 @@ void unregister_binfmt(struct linux_binfmt * fmt)
+> > >
+> > >  EXPORT_SYMBOL(unregister_binfmt);
+> > >
+> > > +#if IS_ENABLED(CONFIG_BINFMT_ELF_PLUGINS)
+> > > +static DEFINE_MUTEX(elf_plugins_lock);
+> > > +static LIST_HEAD(elf_plugins);
+> > > +
+> > > +int register_elf_plugin(struct elf_plugin *plugin)
+> > > +{
+> > > +     mutex_lock(&elf_plugins_lock);
+> > > +     list_add_tail(&plugin->list, &elf_plugins);
+> > > +     mutex_unlock(&elf_plugins_lock);
+> > > +     return 0;
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(register_elf_plugin);
+> > > +
+> > > +void unregister_elf_plugin(struct elf_plugin *plugin)
+> > > +{
+> > > +     mutex_lock(&elf_plugins_lock);
+> > > +     list_del(&plugin->list);
+> > > +     mutex_unlock(&elf_plugins_lock);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(unregister_elf_plugin);
+> > > +
+> > > +struct file *elf_plugin_open_interpreter(struct linux_binprm *bprm,
+> > > +                                      struct elfhdr *elf_ex,
+> > > +                                      struct elf_phdr *elf_phdata)
+> > > +{
+> > > +     struct elf_plugin *plugin;
+> > > +     struct file *file = NULL;
+> > > +
+> > > +     mutex_lock(&elf_plugins_lock);
+> > > +     list_for_each_entry(plugin, &elf_plugins, list) {
+> > > +             if (!try_module_get(plugin->owner))
+> > > +                     continue;
+> > > +             mutex_unlock(&elf_plugins_lock);
+> > > +
+> > > +             file = plugin->open_interpreter(bprm, elf_ex, elf_phdata);
+> >
+> > I have to say I do not like this at all because it also means you need
+> > actual kernel modules for custom binaries. Yeech.
+> >
+> 
+> Isn't this already true via binfmt for new binary formats?
+> ELF support in binfmt itself is also built-in from what I understand.
+> 
+> Anyway, I'm not too attached to the idea, I'm just trying to
+> brainstorm on how to get it done.
+> 
+> > I think you should extend binfmt_misc for that, combining it with bpf.
+> > When binfmt_misc selects the interpreter a bpf program is run. That bpf
+> > program is passed the necessary information to make a decision. It can
+> > check whether it's in the right sandbox. Then checks if the interpreter
+> > starts with the magic ORIGIN string or whatever. Once it has determined
+> > that a binfmt_misc entry applies things progress as usual. Then you can
+> > point binfmt_misc at a static binary that finds the right loader to use.
+> >
+> 
+> My audit of this shows it might be doable, but it's definitely
+> confusing, and I'm still not clear it solves the problem -- I will
+> work through an example on my NixOS machine. I think I can patch
+> https://github.com/nix-community/nix-ld to maybe act as this
+> trampoline for binfmt_misc to read PT_INTERP_NIX. I will try that and
+> respond back if it works conceptually at least to maybe keep the
+> discussion moving forward and to explore the space more.
+> 
+> If binfmt_misc has to point to a wrapper binary, that wrapper must
+> live at a fixed, hardcoded absolute path.
+> I guess we could bootstrap it for NixOS only but one other problem I
+> forsee: /proc/self/exe is now something else than expected
+> 
+> The entire goal of relocatability is to allow binaries to run on any
+> host machine without relying on global, hardcoded system paths.
+> Just to demo how Nix is designed to let you copy code from a machine
+> to another with *ideally* no assumptions.
+> Here is a simple hello world:
+> 
+> #hello.nix
+> with import <nixpkgs> {};
+> runCommandCC "hello" {} ''
+>   mkdir -p $out/bin
+>   gcc -x c -o $out/bin/hello - <<\INNER_EOF
+> #include <stdio.h>
+> int main() {
+>     printf("Hello, World!\n");
+>     return 0;
+> }
+> INNER_EOF
+> ''
+> 
+> We can then build it:
+> > nix build -f hello.nix
+> 
+> My machine uses the default /nix/store prefix, so the interpreter is
+> set to there.
+> > patchelf --print-interpreter ./result/bin/hello
+> /nix/store/7nbi22pcc92y2fqbkyp7h3srvvklmckb-glibc-2.40-224/lib/ld-linux-x86-64.so.2
+> 
+> If I were to use a machine with a different prefix
+> /home/fmzakari/.local/nix then I couldn't "substitute" (download from
+> the cache), this binary.
 
-In free_to_pcs_bulk(), when remote_objects[] fills to PCS_BATCH_MAX,
-the code jumps to flush_remote to free the batch. If all remote entries
-have already been compacted out of p[] via tail swaps while local objects
-remain, the flush_remote path returns early since `i < size` no longer
-holds. The leftover local objects are then neither cached in the sheaf 
-nor returned to the slab freelist, causing a memory leak.
+This was just an example. The bpf program can calculate a path however
+it sees fit including making use of ORIGIN or whatever.
 
-For illustration:
- size = 64, local objects at p[0..31], remote objects at p[32..63]
- After scanning all remotes: i = 32, size = 32
- p[0..31] local objects are dropped.
-
-Replace the goto-based flush with an in-place free of full remote batches
-during the scan, then resume processing the compacted array. All local
-objects now go through the normal fast path, and the tail path only
-handles any leftover partial remote batch. The redundant next_remote_batch
-jump label is removed as well.
-
-Fixes: <989b09b73978>("slab: skip percpu sheaves for remote object freeing")
-Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
----
- mm/slub.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 9f754cf1c187..4d7e3067a5d6 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6193,7 +6193,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 	void *remote_objects[PCS_BATCH_MAX];
- 	unsigned int remote_nr = 0;
-
--next_remote_batch:
- 	while (i < size) {
- 		struct slab *slab = virt_to_slab(p[i]);
-
-@@ -6208,8 +6207,11 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 		if (unlikely(!can_free_to_pcs(slab))) {
- 			remote_objects[remote_nr] = p[i];
- 			p[i] = p[--size];
--			if (++remote_nr >= PCS_BATCH_MAX)
--				goto flush_remote;
-+			if (++remote_nr >= PCS_BATCH_MAX) {
-+				__kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
-+				stat_add(s, FREE_SLOWPATH, remote_nr);
-+				remote_nr = 0;
-+			}
- 			continue;
- 		}
-
-@@ -6293,10 +6295,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
- 	if (remote_nr) {
- 		__kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
- 		stat_add(s, FREE_SLOWPATH, remote_nr);
--		if (i < size) {
--			remote_nr = 0;
--			goto next_remote_batch;
--		}
- 	}
- }
-
--- 
-2.25.1
 
