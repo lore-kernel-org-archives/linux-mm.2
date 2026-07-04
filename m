@@ -4,99 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F79DC43458
-	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 17:49:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F290C43458
+	for <linux-mm@archiver.kernel.org>; Sat,  4 Jul 2026 18:11:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F39AC6B00B5; Sat,  4 Jul 2026 13:49:35 -0400 (EDT)
+	id DBF6A6B00B5; Sat,  4 Jul 2026 14:11:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F120A6B00B6; Sat,  4 Jul 2026 13:49:35 -0400 (EDT)
+	id D97D26B00B6; Sat,  4 Jul 2026 14:11:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E27E46B00B7; Sat,  4 Jul 2026 13:49:35 -0400 (EDT)
+	id CAD2E6B00B7; Sat,  4 Jul 2026 14:11:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AF9216B00B5
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 13:49:35 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 13C44140547
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 17:49:35 +0000 (UTC)
-X-FDA: 84951831510.06.E3BF5DF
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 759AA1C0003
-	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 17:49:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=luaN5odf;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 3q0dJagsKCLgqmspYtnYlbYemmejc.amkjglsv-kkitYai.mpe@flex--souravpanda.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3q0dJagsKCLgqmspYtnYlbYemmejc.amkjglsv-kkitYai.mpe@flex--souravpanda.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F2E96B00B5
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 14:11:47 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 21A981C0D95
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 18:11:47 +0000 (UTC)
+X-FDA: 84951887454.19.2E0FD51
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9C2D040003
+	for <linux-mm@kvack.org>; Sat,  4 Jul 2026 18:11:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h67Rk/Mg";
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783187373;
+	s=arc-20220608; t=1783188705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=vk4Q1IL+H0DJ+/uFKCde3qqkuwUWo/vem0qrwOJHzYI=;
-	b=Gmd1FO5lxdUI4tsZC4IvM3U2rKIlEZh3sG7JnxF9q0qPohtszTwb+pmS6cbHCWdZL5XCHy
-	y2m5ccgJUdAaudfMt3rCSCcWPBZW+1+AR+kS/QXFFT6JJnKdk5nE1OUGTizu7y3KxSQqu6
-	Lzz8VVcG+ZEW4WGswpbfiDEl+ZhzYDc=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=luaN5odf;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 3q0dJagsKCLgqmspYtnYlbYemmejc.amkjglsv-kkitYai.mpe@flex--souravpanda.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3q0dJagsKCLgqmspYtnYlbYemmejc.amkjglsv-kkitYai.mpe@flex--souravpanda.bounces.google.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=02ZrVxmC2Pd3XoWJ6sPqCorhWK9k9abLsU09wkVMoMw=;
+	b=CaMt1As1KPsqvjG5gd1HA0Z8Op+qg+XY3SuFgOF34FO25urvEefATrR7nw7Roe8E7vm6/Q
+	qdFFfkS/leHdYGILjYMG9ci5D6P4wodWe+mQW62KBCukfgptNwYh0Fv5Q91CsVh9SkoBSq
+	lWDJeqD0Vrs9hgpaqmD8e7YwTY49fgo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783187373;
-	b=xQnmcwKmvVSMsJPiLDa88RIoQkvylMtxb34bUICMPGmW/noh7O3pMAjfsbEYRQMyYHVIIs
-	UGahP/9Q61UWDGsWZeKqW4V0I04FDte2fd8w4qXdaOAzw5WjAYDwG+9pAM3puYXTaXiAE8
-	rJzodP1I/m+ZzfhQmGc35Eei9XWCups=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-384048e7e14so740777a91.1
-        for <linux-mm@kvack.org>; Sat, 04 Jul 2026 10:49:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783187372; x=1783792172; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vk4Q1IL+H0DJ+/uFKCde3qqkuwUWo/vem0qrwOJHzYI=;
-        b=luaN5odf4YIhAWqTpvXmjcnaUHI7aTQqc/QxUnT1r6/fFFIUQ+jZmryhvdgWkpzMCj
-         McYq32h1s4KSDe6DDKLo2IYVLnf+SPoQBHT5TW2OeTotSPFDXzDAT4pW3KJ3PWXOp5TY
-         1nNoNfPaX391/gEs81WYdusO4gJVx0ft75GcnEquRgI7FbRTE8HFiTuO0KgqSbNdZW4N
-         nTQofsuIIBnb18ImpGsEHraPL8lBD9deR28J9Uh2oix+BXA9RF3jE4mTN7GEFm2sDX7N
-         kTaaiWNnxfKefDqcka9/JiJd6KmEWfvc5/U1h5SoWvxQcQyY6hjoiC7NslyCol5TVoTP
-         EQvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783187372; x=1783792172;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vk4Q1IL+H0DJ+/uFKCde3qqkuwUWo/vem0qrwOJHzYI=;
-        b=VK2+ReNRPDCZtWcfkbbWmla5QDU2wjUeD6yL+yTYY9Zt3mKccpNHeJqVdAW4gLf0zW
-         uUnv+38ZEegWj6LT1YvEh4Bn/SBVWHeqmU7s8FvZqtosIUcnQF5nZqrDVrfe+xzrxxzh
-         H5tg3YlWeKYn7aC4WhFR9NDumUREdyDWEXxQBIjjrCyc44W5+dkKwL2ddKFjyyieIX51
-         8cSi+QJvoMdoAvPtKUUefY9GyMiGiMFOevWd6cPkhoZfwpsmXWfc3nF/31nwwDDfK5ws
-         SpVHcHG/RYPHl3BYYCpf5XJ2pvbxRaNNM14xv04u/HdGIlbdWBjEZqN0qDYlic5y1Il8
-         xjSA==
-X-Forwarded-Encrypted: i=1; AHgh+RrYojwcD7p5HxQkMMu9KS42Vrs8WUNfIz1uw6ggz/dzy7Y+G7TLP/bjxzN+n+vv16c4E2kpozflXA==@kvack.org
-X-Gm-Message-State: AOJu0Yw9D3txmAWWBVbihMBc+Lv7CmbsQEe19xQZNx8TMvPyy7oATWfP
-	G1/GSwdP7ndfIr0rIDT5DrhbSMA2wyPssKh3/NugMakNhiEfyzi1Wx9596hsLws6yRHMt023495
-	5nv0U9T7J4QqHN9lp3sGTiOcVMQ==
-X-Received: from pjp15.prod.google.com ([2002:a17:90b:55cf:b0:37d:a52a:ff00])
- (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:28c3:b0:37d:ee77:78ac with SMTP id 98e67ed59e1d1-3829f00771cmr3866565a91.19.1783187371917;
- Sat, 04 Jul 2026 10:49:31 -0700 (PDT)
-Date: Sat,  4 Jul 2026 17:49:30 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260704174930.2885785-1-souravpanda@google.com>
-Subject: [PATCH v2] mm/hugetlb: Fix null nodemask in alloc_fresh_hugetlb_folio
-From: Sourav Panda <souravpanda@google.com>
-To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
-Cc: david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com, 
-	souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 759AA1C0003
-X-Stat-Signature: t71kudps6hfys63tuhfbom1814ugbrgm
+	t=1783188705;
+	b=4nFNfKtYnOh6yADEmTrCK3uHy/jguG0a9KxqszsIiHhU0dXjxSzA2HtvKKmS5D3zTS/MP8
+	KkWaU/sLSG1tSTBTQoRCo3TnAuqL3KIKZqw1brIaA5ru/sTMgPsMMYjPR3782wZkboU4GW
+	jd4avD3tFPWLUocVZVHK7C8m1Vzb3JI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h67Rk/Mg";
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D97F26001A;
+	Sat,  4 Jul 2026 18:11:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E83D1F000E9;
+	Sat,  4 Jul 2026 18:11:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783188704;
+	bh=02ZrVxmC2Pd3XoWJ6sPqCorhWK9k9abLsU09wkVMoMw=;
+	h=From:To:Cc:Subject:Date;
+	b=h67Rk/Mgh6v0/yt1TXHrNCtuEEH5o2qoHegLeGlNDBLYcwN1yd4ORLxymfm+mARqx
+	 8ykDCr4OlpJd6nqWIU24jSRypkf/8DAhuE7cpAt4IhaJoNw7Rk6IAqSCqto0o/YPzK
+	 ilQIHsXaDAAz3AGYtNgiTqdDBmed4sX7dBr3aqjNz/Z9l0ALUsHPym8r5omHRC9+r9
+	 Jxy/Uh/wIAjo+kkEZISKORtKQgrPzB5FhVMewrJrsp7a+OZ6daTIn7q4auBq6o4g+B
+	 M1iHWqw35cmU/0UvjjsKswrlVPwmWKw5L6bngXUhUHCfevojFI7sdAyLP+qPeEf1+z
+	 zKjfMtIp4T0LA==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 00/11] mm/damon: refactor damon_{start,stop,commit}() for simple error handling
+Date: Sat,  4 Jul 2026 11:11:23 -0700
+Message-ID: <20260704181135.132956-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783187373-779979
-X-HE-Meta: U2FsdGVkX19+EycsjhM2NKEiDZiZ/4+8VCPwm/yBcUsHjpPe+Mc1UJoEwvAxdXfpkqDZu1f1Jf+vsKj6mfV2ISVh0V7UEvlj3qCSQUz1hXsVj4i5+5frCgYdzHbgl8mOACJubfoT9p7iuAvMgaw3HH4TfNSVSOuq9M4RhgFreYBxIXJEjZPuYLjYtEIes0WIfyuVAqg1amMkA9pMDj1UwNObNHuqun1AYaSUs5qVnAmDBQaaIIdGA5eKyon7DLpTBqL1H1QINW7trxjs6g1TlUAbyR41emn4uFr6eqCGM0/XXKNP/JsS9OEJ08EYq4sUUaXx2CQcuED3jEw3QD1ZToQR9NxyDisp3sqAgtqLHQglyH5JHrSfmQ45Ujhjl/SPxfDZ6EwY5dwxZmw3jXIZbHNVBM87KzB6haexA4MrB4eGozjpSCUOiwznLf4fgaIj48OO0rtmyP+wKnZ8owyPcG8CJpCBy/HDhj+piqiAKSSNekVeHS4oACjDOtrqREbEROlL5KYcQVL2RBndZWR9LP0he3HhISmWfLP12Dl/68rHIGiTAIQnT9yXAMf/FW8kvB1pPo1PBelFguZF1/JlagaIHTKNaQEfMKD2rANT6jXyXBmqWiBMMkUMW6QDEr5uS9E4RgHSpUQ6H4Jm0K7YWMP/LisIEC99mll8DmHhbozijQgnpV1Dm8BqEPthnOipt2Z8xt5rvAIAsMjfZGwA4ZM9G7qkgwCWX4cmVoX1x+qBZy05eETHHkwPXzHf6TyrY5RlWWSkZJ4FAUAAFRaM3QKXzpzVu+pgkTwK4Qs5XLtRtpr8DHFA6Qxk+w3v7GpAaeNKU8AH87AbwJYql/6NRCXk8eCWuXGP0EpaHPpJ76g8FgHuXuJsR0spvM8nabVCEvwZnhHgS9qXHGyj4aXY509Fs5qgX9SOuyPd0Ch6psOgS6H+7DAkTU2bmFJ10TjAseCOLlMwRAXEYU92B+0
- qA9YegdB
- Ujf4soIy7dSjk3TCWg7t4Qm9jaV8/JSKwj72eyqJnK/jA7qBPT73akXHkpu0Lw1mKv3gAcEJ9r2JogYtOrJZzEO2jFNPRN8l++CREfgPYYyRQh2OjahZOGlC44MTQF69pd1GPJhXtDqpfJuLzPknG/hbnT/tQwC9u7cAwdf2syilpkVRfYArJLORtOVKBMiUpdgpaK60FTyBlLZtWBUSp4Fy9taKKzXHtm/Qe7XUBWtGUR0dWYN5C+lfwGjR6VRgwezVXK/kB6MQ8tyENAKrkAGE/ua/ozYteDP2n0TtMEovDjJJXCLLchwAU71LWcDOgDac8BOmeb6B7feU4aLf2R9zuFKBIJIIWVnXHWoo4+sDTxJdav/d7bmkWQqjpf0xSQVEhU4Wyss58jkMLKR3jW1OQz5ly2Cg5cwUpiXX7WR3kHyOWHxGl4ZGftsoQ9pwF4AW7I1+EvvIAW+0C8mWj+t6cnGki7pzrEq7Ge/DrGpK6u7KxB8gFGQ+NtkI0AV/ppvorg/UqheuNzR+3xauDSTvpwfpP+KMDdh+qjqI3kNzxQVsBBawoetgXhq+XhVpikjvRPgN6Nh/nS7Gz6HPyYg52w6tIhdzrNCfCNxU53+v48gXiMqse9ohFOgLb58gMHJxwApIilQkw56Ymazh5gc/h+ZOlbxCpCsgpW8lJBRL/hYPaHWmnor5M6g==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9C2D040003
+X-Stat-Signature: im81ei98xfdg35afbauhabrnramuph36
+X-HE-Tag: 1783188705-485024
+X-HE-Meta: U2FsdGVkX1+l86ao91yCrM4gQG/QwWTaok51XuQOVYT4yvJmcD4PTJQE6F/6t2hH+SYxDGhAQo85YnNOlIMiztSWP6XP/wa3unFINYJ2tRDi3z6JUPLP2HL0WlurLYJW7FMi8cuaJPgIgvHVMPp6o3DFdcO278vnwSYFUi9qsldP6Ayx15ef0HXQwphs0cfEUXHPOoiTBRnXmkDcRG7DflvXbyIfIRy9atBhTQKPEyHY3rNBQ8w7MnPdktdjlseyvui/P45yrpLMuPe3L29X9Gr+E7DSoRslxGztgj2LYkomT4Jg3ZvcHQv8AWoBEX8v6TVEyzVLnP7dIN//v6mjBETyM9yAtczwN1iPZtiXax7bNvl+u7oscZj3gulFXohyavjDEAzIY71X2C2YYxr+ewgf6Ej3In7kXkVC5Br6aqkPNCtcpn2esk+DXPVIDDZHWoIENz1hbLbRx2aQ+pXeqU0g33//EACeJ1g0uCxLUQLelO2EQqWEvmhCvrkyQlSO8IDnYlMM1RhZy4Ku7ibxRaXGQcwALLXrQ5vFHQ0+8JikW2QcznUrNW5ENMtGSi91Ai6JgK5EWirp1KYh2W6apCECz58UpPfQiw/UKe0+Onxd+gfOBREPNRo9DA1knu7zVV5VAJNjg2e89c+a4qiAwr9cT9K0K2D4AHfQvnosu6crQm2fwiCvVRgkija7XDXC7SEsK0OHcXSzZ96cgysiFW/aTCf/houZgKws83izFUyYoFtHlMtBWnuOXBcinFus+WBXgq9d/V6IQjg0oprAJ0HTxd561ImnCrIRvpCbmVtGQkmYgEBlGwhTRmPBMXftH5OkRsqxKdn5D4mEePEKUJK9SARUdm5KYsmvukSbCWwMf6CWqwqOucG1+PLBbgTFFxlwMoxvGRty9xVtFoYVvaiGA0cUzdd6EA2/ArWJ8yTTkEmIrvEccgY+SpOmktFfGTjaoYuM5Rvl8xk7RwC
+ szw6LMxk
+ IIcJramrm6jaZB8jit6hv4hliOmzNSvkMuKv2rw6MUn/Oo34+yRv2Onw+RXWDHxcCr4TZsXR4TjYEvAivqPJM+0VUS5krHwZ+gFaz9f2jNxc2pCK7hm7qULV77orCKZBxb4jtXHxXFnhE89e/OFQIwPU0dKTXNQmhjDQvwNNeFGpGBXMpoTpqAbnL89xeHoOVk0IC4x2FtYCiSztMBi+L86T7L0xkWaOBL9NBuR5lOTvgNMmitaPrXFxBFyGxt9eMuv12
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,68 +91,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
-alloc_fresh_hugetlb_folio() as a fallback to allocate from all
-nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
-the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() which blindly
-dereferences it in for_each_node_mask(), leading to a null pointer
-dereference.
+damon_start() and damon_stop() could leave a few of requested DAMON
+contexts running when they return an error.  damon_commit() failure
+stops the DAMON context, but in an asynchronous way.  Callers should
+stop the left-over DAMON contexts.  It is easy to mistake, and indeed a
+few bugs from such mistakes were found and fixed.
 
-Similarly, if the CMA allocation fails, the fallback
-alloc_contig_frozen_pages() is also called with a NULL nodemask,
-which may cause issues.
+Refactor the core API functions to stop all contexts to avoid the
+mistakes.  Also remove the unnecessary error handlings from callers.
 
-Fix this by explicitly checking if nodemask is NULL in
-alloc_fresh_hugetlb_folio() and defaulting to
-cpuset_current_mems_allowed. This ensures that both the CMA and
-contiguous allocators receive a valid nodemask.
+Patches Sequence
+================
 
-Additionally, this patch adds a missing node_isset(nid, *nodemask) check
-in hugetlb_cma_alloc_frozen_folio() to ensure the initial node allocation
-attempt respects the memory policy.
+Patch 1 refactors damon_start() to ensure all contexts are stopped for
+failures.  Patch 2 updates unnecessary damon_start() error handling from
+mtier sample module.
 
-Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sourav Panda <souravpanda@google.com>
----
-Changes in v2:
-- Fixed in alloc_fresh_hugetlb_folio(), because we also need a right node_mask for alloc_contig_frozen_pages() as suggested by Muchun.
-- Added node_isset() check to the initial preferred node allocation in hugetlb_cma_alloc_frozen_folio() to respect memory policy, as suggested by Sashiko.
-- Added Cc stable as suggested by Andrew Morton.
-- v1: https://lore.kernel.org/linux-mm/20260702215713.627941-1-souravpanda@google.com/
+Patch 3 refactors damon_stop() to always success.  Patches 4-6 updates
+callers (damon_{sysfs,reclaim lru_sort}) to ignore the return value.
+Patch 7 update damon_stop() return value to void.  Patch 8 simplifies
+damon_stop() error handling in mtier sample module.
 
- mm/hugetlb.c     | 3 +++
- mm/hugetlb_cma.c | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+Patch 9 refactors damon_call() to stop the context before returning the
+error.  Patches 10 and 11 remove unnecessary error handlings from
+callers (wsse and prcl sample modules).
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835..ab5deba4f7a1 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1865,6 +1865,9 @@ static struct folio *alloc_fresh_hugetlb_folio(struct hstate *h,
- {
- 	struct folio *folio;
- 
-+	if (!nmask)
-+		nmask = &cpuset_current_mems_allowed;
-+
- 	folio = only_alloc_fresh_hugetlb_folio(h, gfp_mask, nid, nmask, NULL);
- 	if (folio)
- 		hugetlb_vmemmap_optimize_folio(h, folio);
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index 39344d6c78d8..79dbd0baafa3 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -34,7 +34,7 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
- 	if (!hugetlb_cma_size)
- 		return NULL;
- 
--	if (hugetlb_cma[nid])
-+	if (hugetlb_cma[nid] && node_isset(nid, *nodemask))
- 		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
- 
- 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
+SJ Park (11):
+  mm/damon/core: stop ctxs in damon_start() before returning an error
+  samples/damon/mtier: do not stop first context for damon_start()
+    failure
+  mm/damon/core: make damon_stop() never fails
+  mm/damon/sysfs: ignore damon_stop() return value
+  mm/damon/reclaaim: ignore damon_stop() return value
+  mm/damon/lru_sort: ignore damon_stop() return value
+  mm/damon/core: change damon_stop() return type to void
+  samples/damon/mtier: stop all contexts with single damon_stop() call
+  mm/damon/core: stop ctx in damon_call() before reruning an error
+  samples/damon/wsse: do not stop ctx for damon_call() failure
+  samples/damon/prcl: do not stop DAMON for damon_call() failure
+
+ include/linux/damon.h |  2 +-
+ mm/damon/core.c       | 37 ++++++++++++++++++-------------------
+ mm/damon/lru_sort.c   |  6 ++++--
+ mm/damon/reclaim.c    |  6 ++++--
+ mm/damon/sysfs.c      |  3 ++-
+ samples/damon/mtier.c |  5 +----
+ samples/damon/prcl.c  |  4 +---
+ samples/damon/wsse.c  |  4 +---
+ 8 files changed, 32 insertions(+), 35 deletions(-)
+
+
+base-commit: 39f9f608b1858e65db6d2766d692a7a700b1e0fb
 -- 
-2.55.0.rc0.799.gd6f94ed593-goog
-
+2.47.3
 
