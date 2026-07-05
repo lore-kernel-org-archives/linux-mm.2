@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4BAAC43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 16:02:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD226C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 16:02:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 045B96B00B8; Sun,  5 Jul 2026 12:01:59 -0400 (EDT)
+	id 67BA96B00B7; Sun,  5 Jul 2026 12:01:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8DCF6B00B7; Sun,  5 Jul 2026 12:01:58 -0400 (EDT)
+	id 651986B00BC; Sun,  5 Jul 2026 12:01:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D07496B00BA; Sun,  5 Jul 2026 12:01:58 -0400 (EDT)
+	id 53CF76B00B7; Sun,  5 Jul 2026 12:01:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 95E866B00B8
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 12:01:58 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D4B82C04D7
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:57 +0000 (UTC)
-X-FDA: 84955189074.06.F124D85
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 129876B00B7
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 12:01:59 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6AC7240110
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:58 +0000 (UTC)
+X-FDA: 84955189116.24.7D6A3CC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4618714000D
+	by imf19.hostedemail.com (Postfix) with ESMTP id A8C531A000C
 	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j44vOO7k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TW3jYsUn;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783267316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uJKL9EayamVjhe1Npp/S+XhWMj93f4Odi2+yyGbNAgU=;
-	b=8JDrJ7kYMj3zG7uAEdo/CprXYQiLra+Cmm6e3F2nKGX0EIzdT/xQCIQrjPCfNrDTUgoU/p
-	hp+mJAuRt90RDMGaSIcXuK0qg6Qex9xKOf6+U5MwmiCul/hSwrI/d12PpxulOZ/HIq/QHH
-	mJusO+Wot4moVI5g8un7CaFEw1eycRA=
+	bh=d/v/dE+FlmtwJgj5yRteS0MOxCozSQuxW5M8Uj1RzSo=;
+	b=DpD6d+HCDDf5KM6glAWfAe7nQfZxfFVdKeOJ0XhKC+2cw6lgiJ7gBdIpAE/JLxuafD8Hhe
+	99DEtvSA8OeWdzMLzJILTQbKD7iDPyZotLUiXpUMiaR8aRYC8lQKlN/j+jWwPo8gvk03vW
+	yyWdML2oGh9YmeytkZaxDs3I1PQI/IA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j44vOO7k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TW3jYsUn;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783267316;
-	b=z6ZRVb/jIEv6qUJSxIsA6/XtXiFSriGFuo085AkelDiotESPaOGE+NALHwPodlto19UiNG
-	FjxNV8TndJLjqmLK7rEe4M1rutQM4pO3NoCvZztWCprHIFfRGgyo3SqLZNgwORXQQtl32k
-	eoikgDjEjtyM9Rl19sI4LVqY0VAE5Y4=
+	b=xlUSeOcyG49vasX3sIla3wbbJmBGpEDpurd02PVl/hv8Qw9sFVw21BNvc/rWj3AdURf7Fe
+	dNVfT2FuVUoE7a6OxAxRUyX8cdI/cseXg0i/FfNTtKPjEJhtbXBe6NDNzjzAhBye7vo+yt
+	qf0hxq/PH5LGeH2IzoY2riA8NltqipU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9826E43C4C
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E79C1F00A3F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 032C543C67
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3F41F00A3D;
 	Sun,  5 Jul 2026 16:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783267315;
-	bh=uJKL9EayamVjhe1Npp/S+XhWMj93f4Odi2+yyGbNAgU=;
+	bh=d/v/dE+FlmtwJgj5yRteS0MOxCozSQuxW5M8Uj1RzSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=j44vOO7kQjAviWEITHTfruBjxIkGUmjYfFahmebFenaPcWLmgkypq6CaixJw48xUk
-	 gT1udXlgeWutyObvHy7QbGSjS+wcn7PnmNPC9c3pCpCj1MCDFaT9tGGuPki2S7I0Oj
-	 ddfYPk4BIrkS0WWa7u6xC+gfEwGVngGKk7W9/QCI20/21I5FW6K6HZQi3ScLpCpfqv
-	 FoLvcVTwHIbKDFwte9mzin7gLhSp+77/tMRVGJSDUHZ0LVzjaUsko9SuB/bCKZsD0Q
-	 qw0aFibpXm+5R9YGdGnLYsWF9Kl3reDBs/+RgJagFZbhYq28OjlWWOkXg/dir5/9DA
-	 u46JbaVm/b7ww==
+	b=TW3jYsUnmaIGxOT+B9VeJzZobrosiaK2eLvMXlwywcCygVzqc/gMMSTKxzwIN3ap/
+	 oRVVZEPnGJNJX8fHf2cRL2F6Sz5vqP/6NycQonk3kUS/iAIoqvQcdr3M9x1eBsiWLZ
+	 ORVfD85j2H0NKv1K4oc6wh0B55C3ZUQleqEfKNUZT1cT9eyiio9GgyAhOwvtddVJjb
+	 PFc8eGzR/nWVr0LhGbLSU8tD7rZM/8fL4ICAwF4PbHZxL6a0eTB2M8m1ZooaGqus1e
+	 x6Kh8IdkjnLbM9H7leZGgG7VTetv/iRNyF5TMceYsn2PayU0AQJaU4+o92rAx8Wpo7
+	 50V3wD0vaod2A==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 10/11] samples/damon/wsse: do not stop ctx for damon_call() failure
-Date: Sun,  5 Jul 2026 09:01:37 -0700
-Message-ID: <20260705160142.97308-11-sj@kernel.org>
+Subject: [RFC PATCH v1.1 11/11] samples/damon/prcl: do not stop DAMON for damon_call() failure
+Date: Sun,  5 Jul 2026 09:01:38 -0700
+Message-ID: <20260705160142.97308-12-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260705160142.97308-1-sj@kernel.org>
 References: <20260705160142.97308-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4618714000D
-X-Stat-Signature: x7tefsahgrwb7u8gy41xqu9puxczyu6s
+X-Stat-Signature: qnkrky9wf8dke56qgfh1p84nooz1e5jt
+X-Rspamd-Queue-Id: A8C531A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783267316-792488
-X-HE-Meta: U2FsdGVkX1/h+yxGvVNe/Yt1UTIJ3z6CqMCnXPwi4qOfl+3kKsm7n1d89JdCEJlq3vV5Cay5cqlZQQ8dyJH4QWmJLDIApwudUR5V9FyQ8Pr+YKM4kAYhvJ5NIQSIs5zZZS7lm33NHWsUQDH/8hG4/Zm/QxXjP39M3SxLWQolMn61WrHWHskbGKUHVdQEYATLrlXJi8PhiWuzGEP9WSGXYn0c+T1xY/hhvK1bLM8yil4CwcfRk9TevpBwAs3ZtfTs7f5wh4/a39Gup/28C0L8zXaaB6cOMOubyoHLz3MVcy8BSXH3YDRfaO7H2PN4iJK34mHjR/WqHerkao0BkpTwLqGe/rpB/kFM3s/9rBnpbe+eEBLI/7Ve4kZy+ZuDOtDQeSWw8J+I71GJWyI0FF9lDq8R8ZRhZ7Vqcq4Glrcd8M+qafxS/3FudJNXiepIylnrNzFsKnYhqMQGcnr3c1zuhS9RyFGJJq82TcoT2swWJ3Tc9M9Fp2yah1BGt9xVmBKkqrwGEQRfSkZ8l++c+umxkLI3PmXsy8NFxSQF/MJ8mxDSZT4BAZ/yOnglBL8QQTYuoGVyPVkw4ScBWcjVyenPd7Bxu1pVR31S7ruIrbdokVppcyBUqIqoSgXTZPZqpht8Sc29GTqriWDcUR3qmQZcDb8U3T2oWWWKRCBplbOiZrInrWyZ9BT3gXelxtpiFzPVfUg+XzAQ3wLunj1ofIroYCJX/kEGWBWGBJLlLSrh5dG6fCVTxc4hfwWYhAlqLct9rDOk8NCKIWnebJGdJ2CGCpSz6nrFHFaDwuEoehIVbth00y74WMenTO/POsO1OgjEWpWJG+lFdHhQhWbsj9nPSCYi4d0kbeQtjtm9EVrc0EACkaqwE14xIrWhK5KidB5siK5tFpgQKN6XG59FHnwEPoihHsmOa9lJthUe1LdIYMjAMVYtrEWFrATtKxFmLc7se9lFbuuVS+uvDQ1XlcS
- 0HXvvFYM
- tjFnmbxZr+iV6PUFRCarbMtlIYOagxqrZMRpFKCtEuslouhdssmAvQFk2QqQW+52Eh8cpkT071nwMtH0ZQ6AK2D0o9ZwU4k4wotJUHMqalnuGV7yjYkFq8DUVKyrcyaHH7zO8APLhd6hVtexYK9sHqRkJfVx+jt//27Ff+ZnnXieNYLlPGnuJMiMnb2pMv+N/pWC08rmfoub/7uS31TrC7LbcY5my3wS7goyG4BOVROvX/2fNSNTntnY6fyZpinlmT342GwgArPnK/x3KW2+seC2INq96michvH6lLrfx3uNg2qHugWpCvzDEZGbOCosCtpX1jEsBI96VD/3g3OIQJK8bs8zV7GZ8gI5N
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783267316-623256
+X-HE-Meta: U2FsdGVkX1/F6Wel8Il5tYy4nWNiIKxBiecZe7XmiBAoBHxnKnDhgzBwDrWDIVgGFSPmGhswoVYV5bGpqQ0LvRA4LH3jTCWmWF2e2ICsrnlr/XOz6UTOiop5Au1aYwIFhcTyspWjQu09WJ8aaysgCEmn5iQ3WSlZKk55Q/ws7iAMLQfV9oAgKyRW0HkZPPANA1+1rbtMTYg5jWUj3CroS4rHP+5mZ7HQ5ce52erW5by6U8MsOvR3PGqudvvcf0aN0X0eo7n88Xlg7h6OiP5Qz6IRqY5M4O9fYMQZPxnqE6/waiMzOE5V+IfkFF4QxhG8eijqSD4Jl7D9CH3VGSpgMsAFsNQL3pxY4dWmkqX8TC61tegg4e9ckwqfQ6U+t4gX1le4kt92Dp86d/nRin55Sj7il4lO7Vre1IoY1nxSG1l/rNZlpf0iWFRQCAag0qTuX9PkVXDiiewVftrOPZpwqniSqWx/dZOf+QaqwryFzxT9hC6k0UUSh8HKHkuqwzWmuUImy0tKZ6zWAtTayAGehAo2hO2ghUzVnVV17H0CdeYCBwwnUXemo+b2+rCVgXSqds2AhTyVoxGWP01yRgr9PFt82sIEkBTukXnbZVsHQ7zWUSeN1El5Sp8nQc1T9WSPFT4ekM5Wwt5m+V+8PctAYpIrBR+RA/nYqxrBBgo3rPwYuxxWz5f1B8AaF4oe3Wgztx+o3dZ8VIzpnu6DyV1mj/EI1vkvzTeM2YC+e52XChTAcyPciYcGRTvz7KRTsnq8s58JwM+cH5igNDHpV3VhXtIb7OQVGwX2A0EeCoRVhM8HKueHO+OgCv6dr+lni52CcsF+/wuzCUZVOt096ewJRAHvHv5OItQDNMwhwDSoFKhd5wAmQLl0U7xs931XBj3dza5Q93bCxbYjxK+UrqRl0/cZ4KqSHjhC4vA204rMju3O99aTryE4u9qOdERrJntfjCez6xr6ta+UhpMAWlq
+ N1CYlSKC
+ 90DkXxdGfnmEWUUy8DAfifI4Sja/d3pYPfuvJeMa/Zrc4MmMJ6DzvUUw42t9mZ0CsQRb1iFV/OIytUAfOMBwrcJjL2mWvYZ/TgVJmzgTDIRN1J1hKCSy2Nk1x9W+Lj126nwzAIuac+KP5nSCZ4S5Bo9BGV4PfA8pCnC6ATqKcYbgaOpUGVweepnBevKl81AibjtNDCU4vuLItF3xsXE3TQo2fulqJvd9rmlLoakuV0INzsXGsQHPNXVPKNz4UKoqJrTuMVLKsxTcmyi2JKmbU9i83J4xS3agiO95PdR9wbh3yfbdqNCg2Mz5jI9MXK2x9dDtZNIAj9QFTsY11XRfLHFqVTH/NYs7yz6JM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,15 +99,15 @@ own.  Remove the damon_stop() call from the damon_call() error handling.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- samples/damon/wsse.c | 4 +---
+ samples/damon/prcl.c | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/samples/damon/wsse.c b/samples/damon/wsse.c
-index ff5e8a890f448..37fd5da201588 100644
---- a/samples/damon/wsse.c
-+++ b/samples/damon/wsse.c
-@@ -93,10 +93,8 @@ static int damon_sample_wsse_start(void)
- 	}
+diff --git a/samples/damon/prcl.c b/samples/damon/prcl.c
+index edeae145c4a8a..842099bd62286 100644
+--- a/samples/damon/prcl.c
++++ b/samples/damon/prcl.c
+@@ -113,10 +113,8 @@ static int damon_sample_prcl_start(void)
+ 
  	repeat_call_control.data = ctx;
  	err = damon_call(ctx, &repeat_call_control);
 -	if (err) {
