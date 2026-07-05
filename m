@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D55EFC43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 15:56:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 897D5C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 16:01:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 780FE6B00A7; Sun,  5 Jul 2026 11:56:10 -0400 (EDT)
+	id 73BDB6B00A0; Sun,  5 Jul 2026 12:01:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E37D6B00A9; Sun,  5 Jul 2026 11:56:10 -0400 (EDT)
+	id 6ECEB6B00AA; Sun,  5 Jul 2026 12:01:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AAA76B00AB; Sun,  5 Jul 2026 11:56:10 -0400 (EDT)
+	id 5DBB56B00A9; Sun,  5 Jul 2026 12:01:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 35BFA6B00A7
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 11:56:10 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B94BEC0475
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 15:56:09 +0000 (UTC)
-X-FDA: 84955174458.29.D24C129
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 380C36B009E
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 12:01:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A349E8ABB6
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:54 +0000 (UTC)
+X-FDA: 84955188948.24.2D93025
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 268B040002
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 15:56:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C6MmsbUS;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 07C7AA0016
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SR0lMN6f;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783266968;
+	s=arc-20220608; t=1783267313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4VafhRbm8rnHMCZpEIBC3NAXIVyFpdQKn/cpt2JTi7U=;
-	b=P1f9KqQBg8PxgfJTf0RWzWscmmRpwvwvvDVYbpBRP4HyWvsbTdmvLH5xAZ18RYkTPuZbml
-	GtuSH+jCRmAuDYCCr1r3Utzy/j7P/FecliiwIBPCS1RFcSYVIdH4KOxq1U7ieGn1WEFlEc
-	vgRKle1jDFP20d8TGB6YCCyGH6oOuxQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783266968;
-	b=YgQP3RMbn2weNc5b/Um1Uop2jHULMx6mb0jnWznDNs00xTR2HnLGJFsXmfRiNruj7Bv+vG
-	Y38OxxgCPp937p2itEKdIemqulQTYfValxAM3NeAdhnx21TlKK19kMhjZVOTnlS+r50biD
-	bmpWfmzYY52wCPLawccMY9ZyoXhegbQ=
+	 in-reply-to:references:dkim-signature;
+	bh=1W0z3ibNTBH982L2YdX0/4RM6hemskh9KnNpifQK0MI=;
+	b=S8/1e9o33AyNXSzS/evqcUZF6jRuG8XVVVNoIH7e86itBYz6Z7h78nz0P8kOl1TGFWIVLP
+	DFqD/PbJYoQglbKPskYXl3BTXjIAfIintnEkG08nD56nsLwsWE6bbz407Q2vC0aanJEZn5
+	mZDYJdSN/+1+biYB/OEj/tTw5HZVUT0=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C6MmsbUS;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SR0lMN6f;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783267313;
+	b=JoKwbBUasF/NzS0NA56EWBbeSvCtyLJTCj1ZwmWhwv8DgzyuHDpSExEBG4PhsVQm0kXWtd
+	90ogzGZOfD206XcxiHI8XRbTuiaenpZWD7Kdu0jMQyJSprR7l4a++8apAD+rmRxgU1iO+s
+	fbng/QBCHEsFoOJI35nJoHHJfMwAxcU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7B8FE43C1B;
-	Sun,  5 Jul 2026 15:56:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397F51F000E9;
-	Sun,  5 Jul 2026 15:56:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4ED8840B6F;
+	Sun,  5 Jul 2026 16:01:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A951F000E9;
+	Sun,  5 Jul 2026 16:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783266967;
-	bh=4VafhRbm8rnHMCZpEIBC3NAXIVyFpdQKn/cpt2JTi7U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=C6MmsbUSMWJyRvF1mGdO+EmcCiAWgxvSYbcLNiXa/aQBbPxCPiH5jb6aQG4UZ4aB2
-	 VXRPOXGSkMdGrhLaFI2ofZdahjG898Ul/o5lPQac1Ba7lqSsBlljglDhmewAhNRH6B
-	 3IJeJT/9cVpZ9mVWkh9cZjWo2Iy/WwrBAZt6GtM6r0hRLINZokrlPnF6+93ldahHpa
-	 LdK0rwG1a6HRIEXnS8ClAbje3Hwaafe6ANBnTRlMppQpf/6HWEigDnthf8I0Oq+lT3
-	 7Q4X1S8ESLtOTW8fJaLPlpjF3ztNgl6eqK09j99JIQRKOpoFE/3PirGD/YZUuPrHb+
-	 HKJbhuBfjXH8Q==
+	s=k20260515; t=1783267312;
+	bh=1W0z3ibNTBH982L2YdX0/4RM6hemskh9KnNpifQK0MI=;
+	h=From:To:Cc:Subject:Date;
+	b=SR0lMN6flT0EFxpBZ+36fDvNVXyyKnZiHs1cFMhGevOEAQItisttVNkv+hCDi2sB1
+	 1QIKMFuyhQCnDomigvHYhGY/9qB6ZLJPb28KnkILt/bPc28v4Kq0i0QKZ+S5gVvavV
+	 DNbi0/qjtRSoEUxKgNkf16iiSDv9SZSlHkmD8IlOwm79itg2LlUn+GuNg0HBwzNRju
+	 HfyGNkPOqXrpR1K2RGRJPCEYqGDUjFPI6Jz5TtRZcgRHg1NhcwZKcj4QQyVs89hcKs
+	 YukTjrc8/izh557fMzIcOtwC16xblaHyQMY7god6HFUBodM3PajgMha8AXoA+NQrFT
+	 6b6fvUeVlkgqw==
 From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+To: 
 Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 8/8] mm/damon/sysfs: remove region size validation
-Date: Sun,  5 Jul 2026 08:55:59 -0700
-Message-ID: <20260705155600.96555-9-sj@kernel.org>
+Subject: [RFC PATCH v1.1 00/11] mm/damon: refactor damon_{start,stop,commit}() for simple error handling
+Date: Sun,  5 Jul 2026 09:01:27 -0700
+Message-ID: <20260705160142.97308-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260705155600.96555-1-sj@kernel.org>
-References: <20260705155600.96555-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 268B040002
-X-Stat-Signature: cfznsngty4rhxxkmnzay4u7heh757a6m
-X-HE-Tag: 1783266968-363280
-X-HE-Meta: U2FsdGVkX196Um3VjvDXaAI81YSfPvQFVACvRxnYDChbNeOvInQaiS4PuWqGYHBqctvLgorlQX0NlZhiRQN8iYwxvW2PMe+CTAkQJ7YeN3SqolnXQ5YUN5sKfRTpLnaDbsBrKxoPkG1ep5voe4zfFMBthOJkew7YeQtEQE4tRxKis6nnvAHz5TdZC0AF/AG8j57sv4Eu9zBMyDWyPkCtwJHhoMbZ285ngCn/BspM1zY/niHLro+kcHMCSxkyH4vraNuvwfsxlD0g48PGcKzyQ0hkxaVgdsN+WDbZwx4jnl4cWfqPr3/HPs5wC8gI2uwJnWe6oK1cPd5pI4Zh9UaEauBnJKBN/E2ZtvofqZwohmALm8eaTzTZeR1XlInObtEUIneiFp+ePHIzJJyREYKa2KEtwMZPMh+ZPfw94Cymo72qfX/aOflF+Je19L7WoBrgX2WxIktes8IPekO7wOAyAKTpHQJtH8+SEH1AOEWTcgknrVOCpHI1cB5uC2JZyQL+qCJI0LUn+W6TSEOOKc9gun2+DNkMCa2rwJRHXu6Wo9frF8H1Edkd34OpUg5RgLzEL7CZf+aCwMILGRaIP8npMyUOhtfNwiGA+RDnZIwBpfyhda6+aBIpb8ue/Rrqo2lCB8cyx5shRfvndXjZsgahQkNNgLmNLevPdyUpc29XoQ51WJY7pX63t8XePV/n4DIeGKv8kYt260Pd/GrkGo1mn4sF1RP1RCrdq1o+xLejbHaxT7uwAY+O8ubucKZ+PjAzUH+x3ksa9rF9F/blqZXujqqGbqLHLWdMU1T/euLtMIOi1H+e6w8ascgZxufJLjYS8r/cUenoiFGdrwTaSRrZeDIlCpcZ5QCxknnZos8cuWF10znM1kq146TMAYegtYQipDGfJdT3JyovnJmtho4xn+Z15N++338yXQ4fiJTRu2p9H2ucW802s7XH+3yJnkaaVJAHbnN32XdLQpp4c+R
- NaLZz41i
- E5+3AwCyJHoOdkJ+fTXIUozdAXN0u2EONZHLo+h+nD2DGucecdqm2hw6O7mBSzXv1f8ulJv38OFgqlLSJWIk9RdHf55KoXliNClDhDNIp2X2Jyf0C8H4Y3gakO6HZTgvFNzdhQrTug05MQOSJBRZTwAwDJEC/u8AXb+H8pwgY33XWzczAqmQSoYAdnaZMrGUavpDuF9vc5Qql4Qdy1c/OBo9RyBcDAvzeX3jjT8wxRr2Jer8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 07C7AA0016
+X-Stat-Signature: 9bk691qr93kfzabxtrdiy4j1811u5wad
+X-HE-Tag: 1783267312-571924
+X-HE-Meta: U2FsdGVkX1875slFeYl9CEgGfM92RhxPm9g35JBT89FF12kvmadYvilFzLjW1Uh/hFY+YS/j+pJ8WC4cc+lg1/k86dBwEHNlmmQkpLHCET1Sbm5Q1vFy0iWEsmPAoBjzCavL5nEFR+T/AvfVRavnVcsfigkvzkMjw2CHpDOWLzvgNfNA49wjsOz8GMZv4GL52UfFlAmV9Vha4H2BfstPeASkTi3TCMZOIWpLE88jSG0ByH/GIHQlujskIHhfwPI9zVBeACPrhl0mDZ+WufIXP/l2N2h+35Rf5JXh9ho8B0vfFAHP1cAJqO7/Ho5aDWQKoxeYtUy9fmSSIs2KQhJCboa8GvxB36svs9it2OMDRb1Gh6LOc6b7kD37LuWBz7Pt+zvse5UlkHYQjvmB5pRrutT3OdH51y6UpoE6xlcj8aXCFjM4Evas0r5mb84Jz+ZzEDnRrrRUQeKTYTARC9bwkQYKnAT+Nb9cxsU7sSzNkBeZliEO2hCdikQQz39u8qybbemVcgCJ8CeX1ALTdT7bEQ8UY/ARXqv1iljk39ZYCHHfCgM4CKfL84ASyVPpfmtdFfK+kX/L+rwR9XOaDiNasZDP/KettwgODjj/PdtcIXM+3xLui/+Kw+IurSz3zgNZNlu9QlYuLE/zN2ycU8tF7DdllPUIen7P0Om/ECKTtWJRlFakXn+k4ADBbEbUIqS57prO3qVHLsfA69Sfo24/ttZ/FSt+WvadYXkP3jruRObo5uQmO3IYVM4CpfYzeqJpFIAvTObENTY1L5cLU/Yne1lpAVag3bU6HvOTFM5OLrz0hBj6/4hcLnQdEIOgwDeN/PJN5OYz0d0uGOHPLC2kIJzK9g7OtqxYG0LOqFW+VR1cKcnGBn761nZtmklxTeOgQPrtcq/Uoxk6Cc5JsarXMxZhp/nyZ+8gO3gWB9ByI4O7Njz/Uaq3+XKhNF/nXXi9iMOgjnPeZwtV56xnXoM
+ VYgg6H6z
+ OngWjOcEkVBcuTB0lPsTK7mVBYk3V6RH7/9BbzL/2vdH707SAv6XPhvf85sLDS2EjIE3CUZmZAjjcf9aNDZ+BHUJ2wittiJcmxMbD7V+OjJc/vcBfdaY2edZM0f+2EG9okyWYiLgmX7g8L/8gLrQD1WXp2kOTHNsTAAT2WP1Mu0/TlkR8lteppOdSB9Yay3m9dP9sfbkQb51nAc59u0WMx18U3jPJLxtJ1D82W3b605bqexZcBtBinYTjV2tVCyoUkGg9a6wVSGuOlw00K9e+9qYu1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,31 +91,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON_SYSFS validates user inputs for monitoring target regions to
-disallow negative size regions.  DAMON core assumes only positive size
-regions, though.  The validation is incomplete.  Fortunately
-damon_set_regions(), which is eventually used by DAMON_SYSFS, does the
-complete validation.  Remove the incomplete and unnecessary validation.
+damon_start() and damon_stop() could leave a few of requested DAMON
+contexts running when they return an error.  damon_commit() failure
+stops the DAMON context, but in an asynchronous way.  Callers should
+stop the left-over DAMON contexts.  It is easy to make mistakes, and
+indeed a few bugs from such mistakes were found and fixed.
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 3 ---
- 1 file changed, 3 deletions(-)
+Refactor the core API functions to guarantee contexts are completely
+stopped under failures.  Remove the caller side error handlers that are
+no longer needed due to the refactoring.
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index e666dddf1feba..b65651498e0d1 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1987,9 +1987,6 @@ static int damon_sysfs_set_regions(struct damon_target *t,
- 		struct damon_sysfs_region *sys_region =
- 			sysfs_regions->regions_arr[i];
- 
--		if (sys_region->ar.start > sys_region->ar.end)
--			goto out;
--
- 		ranges[i].start = sys_region->ar.start;
- 		ranges[i].end = sys_region->ar.end;
- 		if (i == 0)
+Patches Sequence
+================
+
+Patch 1 refactors damon_start() to ensure all contexts are stopped for
+failures.  Patch 2 updates unnecessary damon_start() error handling from
+mtier sample module.
+
+Patch 3 refactors damon_stop() to always success.  Patches 4-6 updates
+callers (damon_{sysfs,reclaim lru_sort}) to ignore the return value.
+Patch 7 update damon_stop() return value to void.  Patch 8 simplifies
+damon_stop() error handling in mtier sample module.
+
+Patch 9 refactors damon_call() to return errors only after the context
+is completely stopped.  Patches 10 and 11 remove unnecessary error
+handlings from callers (wsse and prcl sample modules).
+
+Changelog
+=========
+
+Changes from RFC v1
+- RFC v1: https://lore.kernel.org/20260704181135.132956-1-sj@kernel.org
+- Fix ABBA deadlock in damon_start().
+- Wait instead of doing racy-stop in damon_call().
+
+SJ Park (11):
+  mm/damon/core: stop ctxs in damon_start() before returning an error
+  samples/damon/mtier: do not stop first context for damon_start()
+    failure
+  mm/damon/core: make damon_stop() never fails
+  mm/damon/sysfs: ignore damon_stop() return value
+  mm/damon/reclaaim: ignore damon_stop() return value
+  mm/damon/lru_sort: ignore damon_stop() return value
+  mm/damon/core: change damon_stop() return type to void
+  samples/damon/mtier: stop all contexts with single damon_stop() call
+  mm/damon/core: wait ctx stop in damon_call() before reruning an error
+  samples/damon/wsse: do not stop ctx for damon_call() failure
+  samples/damon/prcl: do not stop DAMON for damon_call() failure
+
+ include/linux/damon.h |  2 +-
+ mm/damon/core.c       | 37 +++++++++++++++++++------------------
+ mm/damon/lru_sort.c   |  6 ++++--
+ mm/damon/reclaim.c    |  6 ++++--
+ mm/damon/sysfs.c      |  3 ++-
+ samples/damon/mtier.c |  5 +----
+ samples/damon/prcl.c  |  4 +---
+ samples/damon/wsse.c  |  4 +---
+ 8 files changed, 33 insertions(+), 34 deletions(-)
+
+
+base-commit: abe5b65a9c676375c3f118d453037f2f9ebbb7ac
 -- 
 2.47.3
 
