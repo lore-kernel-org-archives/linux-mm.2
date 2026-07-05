@@ -4,117 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9B49C43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 07:30:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 993CAC43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 07:36:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CC2A6B00A2; Sun,  5 Jul 2026 03:30:46 -0400 (EDT)
+	id 1BA746B00A2; Sun,  5 Jul 2026 03:36:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A3B96B00A4; Sun,  5 Jul 2026 03:30:46 -0400 (EDT)
+	id 16A066B00A4; Sun,  5 Jul 2026 03:36:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B9FB6B00A5; Sun,  5 Jul 2026 03:30:46 -0400 (EDT)
+	id 080226B00A5; Sun,  5 Jul 2026 03:36:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1ACE76B00A2
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 03:30:46 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7287C1A0682
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:30:45 +0000 (UTC)
-X-FDA: 84953900850.09.747E835
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9800918000B
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:30:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uk8MqM1T;
+	by kanga.kvack.org (Postfix) with ESMTP id D1B666B00A2
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 03:36:04 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 332E9406BA
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:36:04 +0000 (UTC)
+X-FDA: 84953914248.13.05096E4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8F1C340007
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:36:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FWr7oYXO;
 	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783236643;
+	s=arc-20220608; t=1783236962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mUhQ5u4srEz04rLNb28RAAN9CUToZCgnPFuwRWvIo0I=;
-	b=I8c7RNeB5tKdP2f+C+RaFtU/SaKlqjrVfQa54vPkqlnYaayWkWdhZ0f9VX98R6WUU1PCwH
-	E7vl9kN6yvCuMWn0nkEbJEdEY+rXov6kXx3u58cbWivHThJfrezeOwNCOwMsdjLljUTfTz
-	YR2wwOAUTVJGNOjqO0MvL1EKmmv+QB0=
+	bh=A6ZkehhfOr5XXJ3jery3AcqU6u9rwntx9neKtZ84pmI=;
+	b=gxjpFAUfcVzbVIZe5b0lr+4Sr2MlMAPf8dWh9jopsqMQMldnlM6rEwRh/au/LXRR7LotKC
+	yEzUXxEG4A80+f65i7f+7mz7utD1Ah5nJwPjK2lnc1XG3pu8TH7P+/GMfVAFzXiSD8Lkoa
+	PwjFTS5HywiybwcyX8dQMbNyzPZ0zAQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Uk8MqM1T;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=FWr7oYXO;
 	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783236643;
-	b=fXeujJ/OehUkHC4CZ69eJ9iigl+hLqxwrAPoJunygAmesTz/SFyp7aMja7YAmYkyj5uKHu
-	pz0epJrmtat+qsNKzvwsFquBpCtCRrbP3d8QweQsqe1ANC/SVDitTu/RJBnhG+4He67+KU
-	esAyF2M4BGhy3uFe9Tf9zpC+Kn3XXMI=
+	t=1783236962;
+	b=a6ztSkg9rdEryTRcgQP9uFBBa7dgE3UY7REMHXNqU69fj58Bq5TfEGjj7CLHaGTqHEG9ns
+	cC7pxcQWqK/MnAML5zkhjj4ZQChhCBJdQo4Fgwi8hgBf1tw1eq0XQiT3Yq3Si6EUGVXxd0
+	vtO/R1MgqeiwcgY/7UGhbLKG89IUwvw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A43D402E5;
-	Sun,  5 Jul 2026 07:30:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F4E81F000E9;
-	Sun,  5 Jul 2026 07:30:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AD21A60051;
+	Sun,  5 Jul 2026 07:36:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68261F000E9;
+	Sun,  5 Jul 2026 07:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783236642;
-	bh=mUhQ5u4srEz04rLNb28RAAN9CUToZCgnPFuwRWvIo0I=;
+	d=linux-foundation.org; s=korg; t=1783236961;
+	bh=A6ZkehhfOr5XXJ3jery3AcqU6u9rwntx9neKtZ84pmI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Uk8MqM1TrvQ2Akr0P3bciF40of6gy+2r77qKifDdcmk+qMvAzZvqNZNizlgWpy2sP
-	 Sh7R8LGrcBagwPZ0SXdHjCF6fAebxasfDgpUIjtzRZnBjDhp/uPV4hFnlU98MdeovZ
-	 m6FkUJiVolp9rJDCVQ5/py1KTK1KtsVixAeVfnTQ=
-Date: Sun, 5 Jul 2026 00:30:39 -0700
+	b=FWr7oYXOt5Tp+K6Ek8q6APpXSMD+p/aNq4SvRIWBniP6sobBE8u2g/45GuabtZ7Lh
+	 5E6jKvT6FbQ902LJvZk8l9k4niP2mOqpY3EAy0PXbjEdEmkzyqGxqmXJfvqHOtrnHp
+	 7W8TPuCgfYN9bK/6++23sY3tVDsVYxqEXnEpRnKA=
+Date: Sun, 5 Jul 2026 00:35:59 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Brendan Jackman <jackmanb@google.com>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Muchun Song
- <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
- <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
- <byungchul@sk.com>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Hao Li <hao.li@linux.dev>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Steven
- Rostedt <rostedt@goodmis.org>, "Harry Yoo (Oracle)" <harry@kernel.org>,
- Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com,
- Yosry Ahmed <yosry@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo
- Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
- Clark <james.clark@linaro.org>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, Thomas Gleixner
- <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Robin Holt <robinmholt@gmail.com>, Steve Wahl
- <steve.wahl@hpe.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Dimitris Michailidis <dmichail@fungible.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH v5 00/18] mm: Some cleanups for page allocator APIs
-Message-Id: <20260705003039.c9b4bd681c059f62b375051a@linux-foundation.org>
-In-Reply-To: <997c1a4d-ee99-4214-be58-7ceb3b9b9a36@kernel.org>
-References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
-	<997c1a4d-ee99-4214-be58-7ceb3b9b9a36@kernel.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
+ david@kernel.org, liam@infradead.org, riel@surriel.com, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev, kas@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, apopple@nvidia.com,
+ rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
+ nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
+ pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
+ jpoimboe@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
+ addresses
+Message-Id: <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
+In-Reply-To: <20260703114202.365553-2-dev.jain@arm.com>
+References: <20260703114202.365553-1-dev.jain@arm.com>
+	<20260703114202.365553-2-dev.jain@arm.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8F1C340007
+X-Stat-Signature: 3cifjobuf5zgatnc5jobx786pr8tbh14
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9800918000B
-X-Stat-Signature: eodqyhft7j5f89x8y67qsmnowgs3nuw6
-X-HE-Tag: 1783236643-863814
-X-HE-Meta: U2FsdGVkX1+DU4gx7vKS31ntaXFEUcTSX/8Toz6baDcq8Baacn8bOtSAwSpMZ/5OYHk9I++W5WpzLMNDZKbKFjjHpmguu3zvla/DYXqfrEoItY2iSBuEiQ7r25YCxjnEhfDXcs58HBeowBpKwqtAgnyGjFhpEky9J9IfkIlp6J6TXWiwcIGh9njVJj0kmYE7nFTgwPe3G5Op1+UUFmGvhYkQZ6bo4waVifr2zfJ+73tI+nJ5cpFAVQXQRm3qefcaDbsmlnCU+ZMCouEY6qICwe2sT32LBXPL82XVGozOgV2aj8syZuHXEdNAh3D/6hdIj9YqIq4HG8QpkUohO/NHxeyrija47vr4rLIEY10QheNPVFKk7/RXL3reSdbyrj69LSpZZX7CeDVnwQUw6QsdvnqKpg9x3R0uezsafLEi6gsp5T+ncmKmFpUgGan8b3/uR6wNxQ7GFcvWwfbUX/E/YdevGqeYtVvV+AvYMLICiI7FFkh9N4zkMqaXq/sgKoMwdbTBkwr8jCfGPS9u8E3gG9LE3wIDs7v95TTwwKmouodlterXIFlP95PGZoZRcGjBMs3ulsoTH9Xx/WRtCwQYqTdVqkM5OpgommI8C9S5fcHAHwtskwsJsS1/NUUKO0gNfD4MGKvsl7fZQ1EUbUWXhreCYpgm9ur76gPcppaDR3VOd8NYdfolE7fRdqeZCnmb94o/IS+ae189oCJpHgndeHfGycjgBAKruQrDvrLvJJ19Qj3bR9iYYrInpkq6Orj/Zg3CGmlO4feSPjhnHPxT0bM/xSl72WgzhbvHalx0xuXkdmRQqzuny35Os0AHqdVd3NOte+GXsZB+t1M8YOXmORNkfdRbIyRtKgODUanI13YufnXS+L+gCNzwD8XvlRJhsa5phaVrbSynG21lFroYBP0UTZHcALc5Au5wGCbDv9VDNaLWbXM9vbf7cuT77dxhbqB4wPw9uiKvYSpdjGZ
- JNhbNZeo
- KbN2mpP1Z55w5LRlWvv3nJFoTDUAWqGUbooBc6bUt38zGYMsnIvOjd+BJoM+gFBZAU+0vgkHSBUFzuqj4O8XXPlrynEumC8+3yVaAXyOWCcrqYUkdgGY+66fr4EvAJYIaweRFTi547QzuzEI1Q8YOS+S6JWrTPgCKPNM6lJFSSYYXojyCDdcwR9t5DRkwBffMnnE+l6Yo5k4Qnu9LqYtIaEbK7ZesVYNnKAWSE9eEWJqSFXN7bS/Pd8hht6gAT9f2G2qPhT+IUOXXmc7RAeF0UXLh+dU0ARRGAg72hg7oHaoQHGiVhh6cfJSUL2gjN/yJBHOO/cFwW5+dqIYolG3IlLtbv/ZhiqId4fEGNsQwQKM62LY8j7hD3nBgfqZLMD6og7ER2QxQ3PsJ06YPlz5pJFhNQjf7am18Zj54xk6f+K4AOnpq6TtOtmqGUtA1h2RJ/oTquQSaXyk7MF6QSErr8w6OVw==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783236962-984912
+X-HE-Meta: U2FsdGVkX1/WV3OuMYJk7TrQlUmN9AK1CzGppTL/uxELm0wTHRw6PeggFNeZGURmslvjHyWyJh33jHw1IVPybY6bhmiILnxCoY4hhFRqwurqhyroyxf9QUibId3dPJ/Fd8qiOO7jXg7DvCiWIt471H4BXVarnp/ezI+9hjwU3qNeGFjp3Euk+Ce4YQ1KeYx6OGSIcWy4pB+rFQvXcUDQzJt8lR3m3BGAegcCj2WwCXCP+0QolfHrKUyUEStlT7Th1SkP/04EFxKTUMhmQGgP9zZmrM/4rQGzKNECq1VeB9XX4R5MPqBTeGerBFjNZobRbJkGUJ132soe/hnnZctjZ2v09r5WOrvLY0J9tI6pTITnpzTu9Mz457SNioj2mfUxy3E9I68zPXtvkDzh2RpYwVlsyuAFx0ULd8P8nCeofBKIe0s8Tg54mP5eqYmGYXsueQHuLTAReacoCG0ihKFmuYimM3Qn/ecJYR0s9nSy6rDXGsm7Mf9JcjXc0RniylzZOKK4WP6JcrEwX04uP1T1yDDTaNpxm5Da84IE1Uw2G0XCyS3vbqV884LB16ilO8CqMl3hwOAnQ59uvNU2GHTLog1eP2T8xYCi1kQl6FS43NoAOEnX3OS0aUzAUa4LopeaMib9ZAkcLb3dvyek4leC+86mjGjhvCo4Gyo1K+SD7H2C8GJSOYTFrKQRu5hKBV3DgdGfCKTdZZ6Duwgo0dYTeS6gRUx8nCyAT8fJa2yVtyTBrhAHYXrCqa9qoo0g2TDM2cYlPjYg5NEYNI+mUnBkLzG3AwVtlVPHkJxyIVzIG5RcGY1oIHB2Kyr9hcwR1Rbem6zrbyshOAmIMBMApwdlVyAq+wYvC6LmV0MoT7EpSxMOb8wLL1kxfAcH/5a38ua2i2xZVXNsUuRxeB1U1WHI56QbKRIFyupgN4ZSzDiKVx5MuJ+pIwVPLTWOd9fPAhnn2gK+ZVqVn09dchpo51j
+ bGqg0erB
+ LNtkQkp2l9gzps150/UUdSn08uf6T6kuZwtybrxgGE44dq9qg+GlTQKeSfeV7KKsBliTA7DQT/YlfSevt/AQPMFvNYVZFFgDVvTkdjZt/useosAD+5vrAmQ5RCIhpnTuG9qhFwAsChHete1Qgn2LWsH/3KtfxHmAhUMGrL2+5xALvxxdHxteprc1VxY9YSobNG15rqWK49xZZ1KIBbQeOIrLeyycFAdofIJjvwJWBudnLV4WmX2J8l7ckBPMSYUvQK/zwOYyh9Rb4f4uOCTKzVza0hbZ6qaFDiXuAbVyznnBi0qc/GI+43MtxeZEHUNNytMWFIwutDkpaK2TA/1ydbBH69aw0QJfpUvT5Y0PnGfNvkrt256iRqTMXRpFGhDvR1hQXyBj40uxwIDfHyVZ8JwEaYcAKHI9lMl3JbJROX49R+w77wrrDrccLmmfu3BzM9zU9z3a/b4RSi5g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,21 +101,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 3 Jul 2026 14:47:32 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+On Fri,  3 Jul 2026 11:41:54 +0000 Dev Jain <dev.jain@arm.com> wrote:
 
-> On 7/3/26 14:31, Brendan Jackman wrote:
-> > Based on mm-new.
+> huge_ptep_get() can be handed a virtual address pointing to the middle of
+> a contpmd/contpte mapped hugetlb folio (examples of callers are
+> pagemap_hugetlb_range, page_mapped_in_vma).
 > 
-> Seems ready for mm-new to me. I suspect most further non-trivial page
-> allocator work will conflict, so better have it in mm to be based upon.
+> The arm64 helper rewalks the pgtables in find_num_contig to answer whether
+> the huge pte we have maps a contpmd or a contpte hugetlb folio, and
+> returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over the
+> contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
+> if the addr is not aligned.
+> 
+> Fix this by aligning the pmdp pointer down to a contpmd base before
+> checking equality with the passed huge pte pointer, to correctly answer
+> whether the huge pte is the base of a contpmd block.
+> 
+> Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery mechanisms")
+> Cc: stable@vger.kernel.org
 
-OK, thanks, added.
+Please describe the userspace-visible effects of bugs when fixing them.
+Particularly when cc:stable is proposed.  Thanks.
 
-I also added some little notes to track Zi Yan's comments.
-
-Sashiko had things to say, mainly pre-existing things.
-
-	https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b714e19d3@google.com
-
-the xpc_create_gru_mq_uv() issues look like facepalms.  
 
