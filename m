@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69DB2C43602
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 20:58:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35819C44500
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 20:58:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 223E16B00A3; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
+	id D1FA26B00A5; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F9B56B00A6; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
+	id C5A2B6B00A6; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10D506B00A5; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
+	id B22256B00A7; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA5906B00A5
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:57:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4CF9E401B1
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 76FBB6B00A5
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C8A2DA01D2
 	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:57 +0000 (UTC)
-X-FDA: 84955934994.27.4300B8E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C1982120002
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:55 +0000 (UTC)
+X-FDA: 84955934994.11.C17C38E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 58FAF120005
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:56 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lc3t1gDN;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d5ZpNRl6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783285075;
+	s=arc-20220608; t=1783285076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cq/lZgoqO37AZM/wd+VdC9Z5R6uQckVYXcY7Ow/7PI8=;
-	b=jZXLgX35cbiCICb42lx7NgbAGvwrq6o+pTdTUKXZaKxz1W4+lI+SoKMBfW414Rbw5u/b1I
-	Z3tRysEGCC1BAnVZCGcYf42kzpVBCaCeckpJtHl1NiRor5DreTcRHVOnFNVH5OAX9npE9o
-	tUYIvEeOV8MKukJQEKBD7X9Wp8KP0es=
+	bh=HWM9ulbAfG9bosKr1Xo0BbZMoQtsvPUcnEqaGbAY52s=;
+	b=RQ6Jk9AaaWFVAHiDJcGIBmzS+kIbYmLAHzI1l6q5x3ZhPlci9BLGaKxg13dHaBvQBerBZJ
+	1QVxsFaMG9kHK2Oe/Zie6DShY99tYdO1TTyhP18hmNMw4ahFunAoVg7GlJ68lIxBSKfS52
+	6vz6hMyvWJFuUVAbQp6vPUoTmg5GBAc=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lc3t1gDN;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d5ZpNRl6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783285075;
-	b=RwPRdda7yNRfohNlcmB5Dfqc1ziTsqU9LI8RIqlNfS1nbARHTjbnM9pYNeNS5sd7Vrwbxn
-	REqbQxOWDa+TVScUqaK07OhMFibhyvtsnyBorF766XutE/czls1N/R673MFTtldEMg+dJG
-	+YjDWL7B/TWOHzhCCPrhv+ef1MSEZiE=
+	t=1783285076;
+	b=7AIGHZ8HGn1LaTEqJkysVAn5iOBAVd8okvvugN2R4Lp+AUSrLSG+jadmvr++/WnIYT2LG5
+	DJnN9KCbIVAqp+hkekpWIonu557yCnSxpUW8AtivpeRnfQxT5PtrW7J1c7GwOrtT1X3T3u
+	2shhdABOQcNY3IAs15I50OsJpVqOA9c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 674A2600FC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9BDDD43C53;
 	Sun,  5 Jul 2026 20:57:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF001F00A3F;
-	Sun,  5 Jul 2026 20:57:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4819D1F00A3D;
+	Sun,  5 Jul 2026 20:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783285075;
-	bh=cq/lZgoqO37AZM/wd+VdC9Z5R6uQckVYXcY7Ow/7PI8=;
+	bh=HWM9ulbAfG9bosKr1Xo0BbZMoQtsvPUcnEqaGbAY52s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=lc3t1gDNtfXoYZS3W+1hV7V78KeIb0Oo+qj2NIguCzvYm//NsMT0Y42liJ+hLlsnj
-	 uW2Etkq33qYqrHkfAp85/Zi1ubHF7Qkdlk6u3shlrtVWBE/stJQdOWZ+az7s79rXz7
-	 U5kakfVjN7LTvr2gaRKo+HkGzgHZ4peB3Bf/PoxQPRsVfUtH+gJUo/7SvyatbnBnwr
-	 vizacExzYAYxTabWIMKBmgMxq7m99fwM6Q9Lveb3mfyhAXkdTvkpEnt4PtH0BTeZKL
-	 zff+52ALIdIroPCCxTYiqh0Iv9I1z0pUnudjCy6SW6STw5so8/g24jnnq5YB220beM
-	 j5+Lad2ZjYM2w==
+	b=d5ZpNRl6fvmW83KKSXyUuTyE87rA/bXRA4wLjovZyHCnAYMuO8wFQksZ25hz4kabW
+	 JH434phDAKXBga/SdAIN8rSmdTThwWYr3eLBKC7sef82/z3T50sE+puhGzbSemQwHx
+	 sp4drReeE2DtOSUY3i5tDnSg79rzuD9TQyFiVJo0tmFzUWYs/OB4Z02B5ZujzRfT3P
+	 jaz+8RZNTa80vqKB29hhVyF0wB8CYT/x9b81s+ZHtWOWB+lOt5B4GZMsng6ueqker/
+	 wdg9HMPBBJC0es0q0Cl8cSxwt9+7nSjRgH2+znPUByyINF+3gPCFpp+w3kjZww82An
+	 dpdymwrCpN1cg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 05/16] mm/damon/core: implement damon_probe_hits_wsum()
-Date: Sun,  5 Jul 2026 13:57:27 -0700
-Message-ID: <20260705205743.98656-6-sj@kernel.org>
+Subject: [RFC PATCH 06/16] mm/damon/paddr: respect return_max_wsum
+Date: Sun,  5 Jul 2026 13:57:28 -0700
+Message-ID: <20260705205743.98656-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260705205743.98656-1-sj@kernel.org>
 References: <20260705205743.98656-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 58FAF120005
+X-Stat-Signature: sucinp9wp15885onwgouwua4oco8uoaw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C1982120002
-X-Stat-Signature: fu37g5birwzaah3xa5o1g1ri4jdqrfwb
-X-HE-Tag: 1783285075-333657
-X-HE-Meta: U2FsdGVkX1/nfMBzy5vg8TPF1aUmy50RkZM3MUYJOWvgELGOvreIqFXXhPo4Hjsy64H3IjrgplSZB6i4w7aLMfpDhEmCIMH8sq5dNfgm4DhOWZplar6Yl6G2VoOiiO+9IVhvzr0Se21XoYGNeo5Ge7A1gE18hDZbx52a4+j6F8Vcz4WRSkbLy+Hyqj6WiKihCL/rsEtTFYM0DPl+BjyA6RQ2kjTvRGDgubTqqC3fkOaC8HeQ6PV2LDUsuZq0pkrQjLV27zut0pop2o/JoKroFdWyMNHEg/B7+a8bsdt1UyR/Wxa3OlAXQppNeCwYuXR7XT2Ki+OO73Bcx3y+1mP7xGGTBx1BRSXR9UqUKKIS1Qs6P6v4VjjkK+Ag7D3IPbECAGJWGxv0jKaM4WvX4v1jFCluPv8DTC0qEaLvIlhhBrYk+cSBhfqkUdaqbMvJ23nCQGryovUBYwtDyr7qZLgbr00Ut6jd4v0auQiKqty6CxY+9Ut45Kht8Z224kGOkTc/g8BCjWXbBZCb3vZOn2iI5vMd+3YK0nsax5cDIqaFxY4xPhDfbsWTc1eZm+aJVc7mXV0ppP1iTPVy8EE/jte1a66L+7up4xytkbpK0OKP/2suPgGuJEGv6nPMftNGpjWXnSbzYklH4U/FS+FffXoIERhhWM0kLnNf+EPOhbkLzM25tVv/KMJiYjJZBByeOhFHrJonduN4UXO5TsCSUE1h6DlEjPiuwvYO0QQzVW8EGtdxuTQN/FcmtP3/Jfd0tEeqK0g3uVTp2ejudG0JBVZEzaOQ5aw7Gd5hb1qJ2b8Dew9Isb/yip9/3q6YUPbMs0VHmucvHTB1UMVTX5TBotjvQT6bvBrhux/8WAWpA4Wo9add2czFVmCMLF9bVkXTkI62+3qi7AMA1T6T6NdGsZbpH/wUovsnDt/SLigmG02hWNsj0/NG6K7OQHsn3tBM/44KORgXqgUweGf82l42LEe
- 3lq8Lp6g
- H2EDDRmawyyq/ptrGT7l2l62Reodu9urgJOSQ2v6FJKNOjOOOXl6Y96Q38S/uRl0WtPxaImZWo33ijaGzU6GUW93tPuCTvwv1QGd2xkxcIFMFDooDwdJ4iaNtOzlUa48dr6IE0kxXkhf52vlFAO5znRY/LS7cp9p8/fDvvyLxe3zM2SU5Cm5a6txsnlDcXFIijTEVPLRP2ERmTUbclopfm+8yTZZgNp9Ctl23Ykw8fR4F6gzHj2NaNKVnv9BuljTO8CwCrgJ9HcdiWO3Uw0kJU5U5LA==
+X-HE-Tag: 1783285076-721834
+X-HE-Meta: U2FsdGVkX18OaQ8olMzx0L/EuaKrv+t6Z0EG8nBcK1AXqnPhu8gGq5EfVrlp+f38Lk9Kd4m8d23ZmHJX5xDBekrRLIvV84ZCpuw2WMrQyB64haMs6HXbwFUx93BdD7l9H2W72O4yMlMpcs+z5XLL/l0US3ctZNAUxmpQr9eCRsbqLtDWM3OjT/CdnUtHkTGh65ToVxhY+GP6vrgJy+4BfvXPaQTEzhbXZ1IiwWBla/nDr9UW1XuEANs21AwFGoxKAfvGeYRaSe/JObXGLGSvQSF5h3WtlC6VReLjfl8jp4bbjiH6eyAnusLlE2xYLc0qMSi8iYFuKRA9gnoS9CA+7fwJgm0rAeqY2ddgYLgY/aKCbxWtMM+0lUVC9+pDWTQE9mkriH96r92q6XN509v3vtYxqDsJAqCTAXFlPJNVhbzk1XXDHHc2ZDRWggUiHE8K13Y/VTIUir4X6iD2i1E7kB0GWhSB7rRIggkIPO/RB6cjHirE0kpz3khp6EeYm9Wn+6LZmldCzkcTbkJJf05XP+glqznEKcxoMq/zsdgZKXTNbRAhHRhTvtqnd2GJ2YqbTc3WA/uSCy6c5qVWVtiACQYi4Jjf65bD8Hvtr2T8EG6f5v0u7LNtwZci8qzd2+jPvrD777gPMgyiJpmlO5UOy92ulwt4nkhltXPaiAMi05rZxsBFEnxOSocH5e3OlP7vVuiSXW4OGf/LBzhfRlOxaSALTkSu3are8VjyxNPBGgHnx/Lpwss1lCoeQoxaukanmlcCHonQBwcvtsfKaDEp9O2MDEZCHo11bn2EtxfiYWxHhgASjosWVyqP+rtGEIXxGw03LL60fpUIPLfBGFwfq2Msh5IMLyz/ANfcM/8ZsblC0KGngF4SbIXHcpn1Pn1tQv44Oyi5QqhexO21TAi6Bq8ubkxQS39qJppKMuojc8IWdNmlxB0aoMlJz5ZvH7IdDdnQndJ3i32ITjslard
+ yWzQP8hn
+ aIwr98uLvCd7ViJDWrZTqSxKEmiIO+9IKAyGOj8mHfRE3A0Mze677n/woOjnD9OXn99xLOGF/Hgn5jYISyRGEWhV96g8LFojVdPFCcU13xAxUZXZ2FSRd3PhQKdeGQ4FsdlFFm0BX09XdKtak0usmT4NSXEylXDV7t2EyESAu4ll7FGbsIQ3DOhW/w58ES8cQm+QLyQBJHXfBNkf7RmBcHhpP4PExZzxT9dp9WqJUbCGNJGrcEaAoXMwTYOzXGoofOfwkNLnvm6yycvIGLRsLdeuTVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,65 +93,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When damon_probe->weight is set, the weighted sum of probe hits will be
-useful.  It will be useful for not only the users but also DAMON
-internal logics like regions merging.  Implement a function for
-calculating it.
+apply_probes() ops implementation in DAMON_PADDR is ignoring
+return_max_wsum.  Respect it.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h |  2 ++
- mm/damon/core.c       | 24 ++++++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ mm/damon/paddr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 62caa67a3c40c..c43986a3aa16c 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -1011,6 +1011,8 @@ unsigned int damon_nr_accesses_mvsum(struct damon_region *r,
- 		struct damon_ctx *ctx);
- unsigned char damon_probe_hits_mvsum(int probe_idx, struct damon_region *r,
- 		struct damon_ctx *ctx);
-+unsigned int damon_probe_hits_wsum(struct damon_region *r, bool last,
-+		struct damon_ctx *ctx);
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 3eba3564a31fc..b85f88a7a38f4 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -172,6 +172,7 @@ static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
+ 	struct damon_target *t;
+ 	struct damon_region *r;
+ 	struct damon_probe *p;
++	unsigned int max_wsum = 0;
  
- int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
- 		unsigned int nr_ranges, unsigned long min_region_sz);
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index e42f512d87a11..d7d1e27d767eb 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -390,6 +390,30 @@ static bool damon_is_last_region(struct damon_region *r,
- 	return list_is_last(&r->list, &t->regions_list);
+ 	damon_for_each_target(t, ctx) {
+ 		damon_for_each_region(r, t) {
+@@ -182,7 +183,6 @@ static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
+ 			if (set_samples)
+ 				r->sampling_addr = damon_rand(ctx, r->ar.start,
+ 						r->ar.end);
+-
+ 			pa = damon_pa_phys_addr(r->sampling_addr,
+ 					ctx->addr_unit);
+ 			folio = damon_get_folio(PHYS_PFN(pa));
+@@ -193,9 +193,12 @@ static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
+ 			}
+ 			if (folio)
+ 				folio_put(folio);
++			if (return_max_wsum)
++				max_wsum = max(damon_probe_hits_wsum(r, false,
++							ctx), max_wsum);
+ 		}
+ 	}
+-	return 0;
++	return max_wsum;
  }
  
-+/**
-+ * damon_probe_hits_wsum() - Returns probe hits weighted sum of a region.
-+ * @r:		region to get the weigted sum of.
-+ * @last:	if the request is for last-window agggregated probe hits.
-+ * @ctx:	context of &r.
-+ *
-+ * Return: the weighted sum of probe hits of the region.
-+ */
-+unsigned int damon_probe_hits_wsum(struct damon_region *r, bool last,
-+		struct damon_ctx *ctx)
-+{
-+	struct damon_probe *probe;
-+	unsigned int sum = 0;
-+	int i = 0;
-+
-+	damon_for_each_probe(probe, ctx) {
-+		if (last)
-+			sum += r->last_probe_hits[i++] * probe->weight;
-+		else
-+			sum += r->probe_hits[i++] * probe->weight;
-+	}
-+	return sum;
-+}
-+
  /*
-  * Check whether a region is intersecting an address range
-  *
 -- 
 2.47.3
 
