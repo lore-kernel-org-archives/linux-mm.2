@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53197C43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 20:58:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAF48C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 20:58:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8639B6B00A7; Sun,  5 Jul 2026 16:57:59 -0400 (EDT)
+	id E1ACD6B00A9; Sun,  5 Jul 2026 16:57:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 814FB6B00A9; Sun,  5 Jul 2026 16:57:59 -0400 (EDT)
+	id D92956B00AA; Sun,  5 Jul 2026 16:57:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72AA76B00AA; Sun,  5 Jul 2026 16:57:59 -0400 (EDT)
+	id CCFA86B00AB; Sun,  5 Jul 2026 16:57:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 34D1A6B00A7
+	by kanga.kvack.org (Postfix) with ESMTP id 918046B00AA
 	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:57:59 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97DD91C0E81
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:58 +0000 (UTC)
-X-FDA: 84955935036.19.A97D049
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 15EC740002
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WwVyRiW5;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1185E166167
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:59 +0000 (UTC)
+X-FDA: 84955935078.26.4F2F740
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7ED0940004
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:57 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bu0fXxKZ;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783285077;
@@ -34,35 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CerPQCpLVt90M0nUjHgPSrY+HHMTa8twt+lmeeO7V1s=;
-	b=o1E7Pbqe/GCWr8gvY8Cx65RJPZ6GU7NX47qDxY8iZcX0zWJEGQIqGHsk5E4XlGj1fiTJxn
-	5IDddZIN10wIYKDqSWjlB/faHpbB1NrnW7NoFRm/h6/Fgel1FN++3XGPGyadB6laIXBNbY
-	0VKvvhA20IWGJKlre12EMFgfOQjoOU4=
+	bh=QEatb2PqGWEsTMpIGK5NyiCA2DZolTzT+XVQuw4N5Ko=;
+	b=4LG5fp11u6vL+YqnrF/Dn1xbwg7lR6hfAM9MPA7YGY7lENbyiQxU/MLMAQ5mULexQOksHm
+	R5zaj3r5Dgp6nSQ4gBWdkxrlDs9zs0Dn4QPv7G3NoKmMOMDkiZv7I9kAl3LkYCc7WPDnz8
+	UfZ58YAYjptbn1XRsG8YchsM0fDcKc8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bu0fXxKZ;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783285077;
-	b=634nO4YKYePC5vSOs4iOBSxJi2lbl9fAEFrxImyKuhcn00YrKZSa7zDiBf67JTqJaVarz7
-	fToro4bsgxuDy4RedtLJp0JXGgpBuYihT2vxtF12FP+mozaFdNBsA9FiHVHkkrH/bDq9Kl
-	Jrwe7caQp7DnTQR+kEllzYOWebssUeY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WwVyRiW5;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	b=qjqkuDSYK2XBkOLM6fPsfRBAH3jvX6zrdj2wsUiiVUiuj5ElLK9/OOuoCNDB7CpuYa279Y
+	OiTtCoz68KhQt3Y+UQR5PfbU2syRunBTq0j/01C8oDdDJR6OiCFBRA3Nwx9LgxQ5+b8lxF
+	JSzQ8JhrT/MShxpfajD3M7LNSe7unO4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A37BA6138A;
+	by sea.source.kernel.org (Postfix) with ESMTP id D51C443C8F;
 	Sun,  5 Jul 2026 20:57:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143901F00A3E;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828DB1F00A3F;
 	Sun,  5 Jul 2026 20:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783285076;
-	bh=CerPQCpLVt90M0nUjHgPSrY+HHMTa8twt+lmeeO7V1s=;
+	bh=QEatb2PqGWEsTMpIGK5NyiCA2DZolTzT+XVQuw4N5Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WwVyRiW5rsxPwlJh+5kk4V454aIQaLqpXiurpK0plRnh7GJjP/XZhNTwbEGWOOF7p
-	 /whtAWXYP81oJriugLVSbpDNK5IkxKJ1Ejg5rP9f0M5y997hRuFcRXDcViyiMmbNwq
-	 /06vsutBypmFJl2M9qnhwkeaRIJ4HaB9gsygso1AHWyBWv2so+irzL9xuiUrvgrg/q
-	 3/u5efHoT/MFfuflgTHEIIKR0OOsq1GC2x51NFPCQ9KwpNUzI1vh9tNkopNR6j8nCZ
-	 wDygJEbkgAaR8w5hG8/bGK6fuyCFNiEsxJkHgQGbICCRqLIeTjiCwz8/k3B9jKrXR4
-	 vCwt6LGRMvLYg==
+	b=bu0fXxKZ/4PUkgVIVNYFTK1AgzosC+xrKeRGaMPfoN/IwJlC8BDBms0qPYI3rE+vf
+	 RwYZiwBNFGgudwzd957RdTbLsyUXskvyf9Qp88PhsSf6R/6pxnOCJB608RiC6yFm7o
+	 0Cg9ypV+elSHZ5MTY/huv46qcuuhsW6+pZwUhTE9gQMYQRdhweQeRcGuS6SA2YAITm
+	 iHIXeIpIx6WfS1TuySJx6DlyJLFhjpGJwKl8fV7NVMbNJxNpLmveECn0NmtDOigj6j
+	 lyqh7EpKicI1bkgUwS1ZSTlDuW4MN0cLAdWBRIJPwCUwUfLNxY0dps3FqrIlLLVsuh
+	 c05hvto0qrD7w==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 08/16] mm/damon/core: disable access monitoring when probe weights are set
-Date: Sun,  5 Jul 2026 13:57:30 -0700
-Message-ID: <20260705205743.98656-9-sj@kernel.org>
+Subject: [RFC PATCH 09/16] mm/damon/core: set samples in apply_probes() if probe weights are set
+Date: Sun,  5 Jul 2026 13:57:31 -0700
+Message-ID: <20260705205743.98656-10-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260705205743.98656-1-sj@kernel.org>
 References: <20260705205743.98656-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 15EC740002
-X-Stat-Signature: gbfm6iiwsbgnho5err7nk53ne7d9qc64
-X-HE-Tag: 1783285076-720719
-X-HE-Meta: U2FsdGVkX19RNKhlnb82VRAoHU6EYzA02f48Mez0OuBTrBAFQofq8c21SI+Lb9zK7e7tdVw64YSrxkcDraqpNVmWhBsyetJ4tda8Lgbj0GLhtPRALRZRrz/YeQrJAj2+7gelJadlsxqe6OnkJfnNqKu5SrED1lPdjn44DijFxHGYaTl/ZKtOWwws5wng65VkAzMS1WeEG1Jgxn+9b+rM51hnMDhHcgTRYojR4UcGrKMCZLheXOLlATIQkISrra6sfoCXHy+0RHRlovpkDiWufOlHKOIepKdhLiwTYufHZBwYZoTrShfK1sNuCRi8uBlTBU7ok0d2OCAvdhqXrQjcrC0qZoeCznNC67L9P65+u+eUvCm2NEgCCNm4JfaIQl2hW8VKS4xf/6CmOMcaGU1LArVPS3g928xN5HPQN0GpqT3gAwBrKIiXelHGU5P+uq6o3jXE2kPRki3kq71fQvi6X/q5JgdB6HiuPgT+U/7FFg2Vms8kBqUNdpm+RmZRpOvtNGnzAWWpv8yaP7/8Tha5iD6nmZcjpcOA8nOIiD0Gwc+qsBd7rS2QbI+TuiJs2BzsCG3gTQD9W/BXhnWZIfTK66e1aNZzXDBNZO741iun7D7B49SjWYHfqGtpWMOj0vpIkicf9Ud8BBUmfx4g0ieh5aywJVU3TwrJJOsVW4hQhw/5EULbhCWKl+EoO/XS63YUWleD2876zZGtvlufkeX1zuGPNnyUGY/NxYEt1ShMQg2dgvBrDwTjQSFFj/pj2CGCcbAQ7nDcqws7iwBSVVLkxYzS6uaOh189rLfWHcd0GrE/1ObtMNmndbTN9cPDxTdghA4rcnoshblhIi/zU6gcMQuoCQoP14E/UjMIoIKPG/vWM2GyBxFpO0FgCY9NRmL4VumhG9zctK7hRR/C+7H1FhAhq6ds+i404/LrwyRHv35ShOz76OwFjpJMKNM1adydRvw4i6VEueReGC5Vxzz
- ijKoX2Me
- //Gr9GTmbP3bYtenKRCaQHGrfCkjt7lii4LfTWQnkgCD8ByEmAxgIb91EDG+REI8bxKpXYA6h9VH19GcHiIcJPSTsMGNGsJVUAfTVylclb2QDgfYCN69Zei5kUe/u8bSgVH3sot64kaL4HqWHVWCP5I3LMlHHt82Fjq2+uavBd9U4PWqMtlwS0vX/fxXwQmvrsFcRiB3r2z+Y7BI3yoIy0Pwy++yWIayzqkrSI3dVtOdY7sw=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7ED0940004
+X-Stat-Signature: xtmcmzog56ofeshsh9p1jfa3dxr64d7y
+X-HE-Tag: 1783285077-586636
+X-HE-Meta: U2FsdGVkX1/xJg5VrDRkv/YMkOG005EOSsxWc6q+LgB0TLne+YeHFoZ9dxY+lGjKpNDBaB7zQFo07+SxWPeEvO4GvDp2pSJBMmfbkYqb2yu4rG1UguBZeso/++NYkTN8m81OgrudRnbCq43v8+jOusxSA8WXXOEo4d2V9DvbKt0v9eQ0U5H+jPN+5RD1R1B0+UfzD/OvXzQIleD5N5KguzWVeHy8B3JycSCCrOsztVUv37rjpCNGo/PqjweLBrB30nhvWuwvEKqLufNpM6+7fAKN3m5FjYl8z7aG5IKHH05NlMoVngGiIIO0hQYYol3OUmz4sOzoCmXXwkhbhmpyzoB5Go0vHC6jImZiNzdlhcChL1S6u8X4JlNr5jGsBOznOq8e8BttWGQn8hFz8fmwaCEdDyGuSDe1qs7MmH1/xxPoKw3LFj5iq3oCk7J3ND9C8eSHFxNHp0nRIiXnePwx2rzXH021n8nDB/V1RoPPnHf5+PLrixvIOQsLT0FoMN60D16c6PPJGNCtGEntzseNwSJiOZgMe0Xdj2TA2BduZ9sLxv4R/sWSU7UQkpebbfFVhJ8JESb/0yAORwt2PlaUi3CjFyAV8e5NgMoVW4u5fiZTreG5SmVIUYfYxftIW/axgxOH1E86q1z/pV2rmMwss1MjKejX+LPkPpLv4P/1sdZLU9tVq3ejw157qi0CwbuZd1EagsXNqUXaj2s0eH1T3CM2AOtGnYDZAVyI+iVRP+BOM0cORg7uhv+03cnnZkrelEEktI+wfVSQ2v5kkfy85GY7Rwkb3Y7heK18TdaJJxn5PApJJOKJv36O1SnyV3r/7DhgQbrfJgEK6l3BsqHRdIkZb1M0CZ3TKKbCJrZE7iZEU6Ipj1jkSl94ZmHhlE8RTTVR2doRzISusTcSQjXe0qlFYrGGN1GJ/0k2sb0dy7uIXJcNPrXKtScX/X7xFyNFT1rIB9WhnOmLx4J7RX7
+ KHSzL8NS
+ TlmQGlfsCvrx3NLjUaN0fBsBRT73ejMxOx0zgieIA1qe9igPG1q0rcAMxupMk9cQKOA76CGoTa6pVdF/vxRycOcBtcIw3KmDUKYZvGRFc+qIILBn3XRXZoPAahoNlNqPJtw8kBcb9amDQYjB85QF7eR1G3dmNcPIJ8I4Rj4wUV4gx/6hvXC9yLfghkNI5PsHbhSSNNbgv7Ch9nNJKaZb0N0hUqb6gAXEXvAIRZyaF9F0fNbiBbQywBwsgklFl+9TYbd70u3JaRdxGmKbKf737axtakw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,40 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When users set probe weights, they are interested in the data
-attributes.  Not necessarily they are interested in data access
-patterns.  Disable the data access monitoring in the case.
+When probe weights are set, the prepare_access_checks() ops callback is
+not invoked, so sampling addresses of regions are unset.  Ask
+apply_probes() to set those together in the case.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ mm/damon/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 9bb884ab135ec..ad0f28469e633 100644
+index ad0f28469e633..71008ee6ca243 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -3714,17 +3714,18 @@ static int kdamond_fn(void *data)
- 		unsigned long next_aggregation_sis = ctx->next_aggregation_sis;
- 		unsigned long next_ops_update_sis = ctx->next_ops_update_sis;
- 		unsigned long sample_interval = ctx->attrs.sample_interval;
-+		bool access_check_disabled = damon_has_probe_weights(ctx);
- 
- 		if (kdamond_wait_activation(ctx))
- 			break;
- 
--		if (ctx->ops.prepare_access_checks)
-+		if (!access_check_disabled && ctx->ops.prepare_access_checks)
- 			ctx->ops.prepare_access_checks(ctx);
- 
- 		kdamond_usleep(sample_interval);
- 		ctx->passed_sample_intervals++;
- 
--		if (ctx->ops.check_accesses)
-+		if (!access_check_disabled && ctx->ops.check_accesses)
+@@ -3728,7 +3728,8 @@ static int kdamond_fn(void *data)
+ 		if (!access_check_disabled && ctx->ops.check_accesses)
  			max_nr_accesses = ctx->ops.check_accesses(ctx);
  		if (ctx->ops.apply_probes)
- 			ctx->ops.apply_probes(ctx, false, false);
+-			ctx->ops.apply_probes(ctx, false, false);
++			ctx->ops.apply_probes(ctx, access_check_disabled,
++					false);
+ 
+ 		if (time_after_eq(ctx->passed_sample_intervals,
+ 					next_aggregation_sis)) {
 -- 
 2.47.3
 
