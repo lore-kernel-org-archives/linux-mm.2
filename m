@@ -4,86 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BCA2C43602
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 08:00:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0EFDC43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 08:09:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9C716B00A1; Sun,  5 Jul 2026 04:00:04 -0400 (EDT)
+	id 69AF76B00A0; Sun,  5 Jul 2026 04:08:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4D7E6B00A2; Sun,  5 Jul 2026 04:00:04 -0400 (EDT)
+	id 625136B00A1; Sun,  5 Jul 2026 04:08:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D63686B00A4; Sun,  5 Jul 2026 04:00:04 -0400 (EDT)
+	id 4ECBA6B00A2; Sun,  5 Jul 2026 04:08:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AB37F6B00A1
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:00:04 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 29F681C3B63
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:00:04 +0000 (UTC)
-X-FDA: 84953974728.21.D1442A1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 71EB6180006
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:00:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Bw38b5kf;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 22AF56B00A0
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:08:59 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 94B5D1A068D
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:08:58 +0000 (UTC)
+X-FDA: 84953997156.05.28A962A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 735F41A0006
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:08:56 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FqQCx48U;
+	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783238402;
+	s=arc-20220608; t=1783238936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C+RTSHxP2vSyd8onNRfos1htOyq8aCrQfwRYWC8rhv0=;
-	b=OuGVpbnXLPf4tBQYLguGbnGu9fnjCrzep02xgq+SfTrkZwQbIFU2JxaLMwkrnhWllizBE2
-	loTqHQANjRvIakXcHT8Nn8rYbG0dvuOAzej+UmgXLX5bmEhc6YQA33yzyzyn+tsJuEIyyR
-	odSv5cq4jhi9/PCe5MbBselvsgGQoGk=
+	bh=WSUmvuRPVl9U9TACBIYiWbf4aORkyvu1is7CpbgFQ6k=;
+	b=gTtR0QlS2qLPUQF7xY1ob6imsF7T2xEQwi9Yy7tF9h5WzwoZNacrsAH6PAMwjIw32Y6xEy
+	45p/AAl8Z4La4d08tD6teeGT6DYQ5G6z8WfZ7540W2RfLvefmpOUIW4NOYXvyXP3+T1yvO
+	EZOx7beFmPJn6UE0LA5VHZZKBDvU3e8=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Bw38b5kf;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=FqQCx48U;
+	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783238402;
-	b=RXZEEE8B/qqlUuzwphSY4UZi7W6yhWX5AF06pJI4lAyPTc13dYLbg26JUdPO/51fgMtOn7
-	lEN8Trfl4Vhv0GUOHM5ITTy6MNAIJ+J7tBNzZNoeapjQUX0inbXbHkl3kol6YRIemEBNuk
-	39wJ6xlWb46Qg0eCqwF2+ovtm81hCzE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3ECBC435B7;
-	Sun,  5 Jul 2026 08:00:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14AA1F000E9;
-	Sun,  5 Jul 2026 08:00:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783238401;
-	bh=C+RTSHxP2vSyd8onNRfos1htOyq8aCrQfwRYWC8rhv0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Bw38b5kfGJ8hqmEOgHH5FNV548X9MkggalAx/zMvWpGcRMxJXJS+4pY+NUARg01n7
-	 +cNe5svEU3+SAubK2jGKIc7Me7FJD2vjPl9yhIJaD9RUVCcDMvKKlpb6RQfiXDdC6y
-	 hLI3tSr/Pv2BUlcgxas/bWu7AzTABrzdeHsliiiU=
-Date: Sun, 5 Jul 2026 01:00:00 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: <xu.xin16@zte.com.cn>
-Cc: <david@kernel.org>, <chengming.zhou@linux.dev>, <hughd@google.com>,
- <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>, <ljs@kernel.org>
-Subject: Re: [PATCH v11 =?UTF-8?B?MC8zXcKgS1NNOg==?= performance
- optimizations for rmap_walk_ksm
-Message-Id: <20260705010000.1f9b63735aa19fbfb5d9c24f@linux-foundation.org>
-In-Reply-To: <20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn>
-References: <20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+	t=1783238936;
+	b=XBCuDIT4s01WGZI+GLhI+udjMHJjgxMUGMQpCakP1tOgBOBt4jBZLeOQcr3MItoYCAFej0
+	EQQ1KCAgwND0VDqa0aIejZtlk/WHbYrTpdnsCm3KmYEQRQypSJSSFh/+KJkAPmHOuyo9k6
+	DU1txvPa8K9n4wAXTSWLpzTnCB8h5gw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DA63B1D70;
+	Sun,  5 Jul 2026 01:08:50 -0700 (PDT)
+Received: from [10.57.73.18] (unknown [10.57.73.18])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC3F53F905;
+	Sun,  5 Jul 2026 01:08:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783238935; bh=cIrRmXjneRyxZCYVtjOisOC7Q6AqKSJ27U6Pgn9w7QE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FqQCx48UJNUfeHogU9/y9HwEqlbbhAQ6HAGisLpAoZ06/5JM87N/K8zIXSOkQS9Lo
+	 tzFVemZDjh6FMqDs/3oBIzs/gxTzjo2BY91OzyLW22GOwYSGCjWr8ywmF0OCMoI9D1
+	 02im7RrlbLfHvqkoRtrjjP2YXspf26q5PHLafXU8=
+Message-ID: <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
+Date: Sun, 5 Jul 2026 13:38:41 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
+ addresses
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
+ david@kernel.org, liam@infradead.org, riel@surriel.com, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev, kas@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, apopple@nvidia.com,
+ rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
+ nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
+ pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
+ jpoimboe@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20260703114202.365553-1-dev.jain@arm.com>
+ <20260703114202.365553-2-dev.jain@arm.com>
+ <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 71EB6180006
-X-Stat-Signature: c5fkzwye69hrg85cmtq1nigkoqhx8if8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1783238402-366061
-X-HE-Meta: U2FsdGVkX19Ltjq1cHPHqyjx9GuLZyH2soibSGgUUMGYyPjke1XKPT0UUANZ1KxHJQnlBPbi2OJwzv5kr/zdAqGizMvOGJMdc6syda3cS8zzqVrMcVuslabso3R5SulLYdtGUQtZZF0AD3j3wyeldWuU/qz+g+dII7WobX1uJrYnQktAPJpXCEmba3cEcS4kDgUbDD4/0W8Guln5JRUXJFHPh9oAyDbe3JMTVYGh+rbQLAkIuL+QG8KXyPPkQSxZDjoKlwEY6donmoHKiMjgWW8+Df76gPAI247N5r+CZlCNFTVAGNvO/jJnUSkLGpVXsrViT2yZs9p1wg0H32w7I0DWznP/3Uiey87OsYKB1W2siNNy0xBs++AHV99kqf6EKgNunqaozLm8gVGtSUe+HrPOatX5CJO9aKoXz3vpB1/wvvI6eG5EVSICNZ1TGvx0cDLHVkd9vu5xUJMtQivbLFAaDQOutoZ7/4jZPJgX+BuFhMDzwmI1kC8FVqiOzoyHM5tNihCRhwXPlhKr6p/x0JO5SmMU5N65bTwcoHs25SiHNlhdgHs1rKbRGEoYg2zKdQFrA6YrE2mgsIXy7d2YwYLVI1trqEpTzf0nZv7a2fSoFnki0lyYCwUfHnrw09OeSW2p1o4U4HNX0EWXAYWG/D79MExslO4VJsF5bL/A0qASt4xRy4+PB5J20IH1hg8ocen/g/ohK2jHwOQZhL8qFcu03COAOfYJTHlAYmeGWxFd1qHmTCSf2bdRlJ5DUoyiyK+HSWv/V+qks1+5vb/CatD1+BcLXbtzZAuMmkTrXRVukSNlee3/2Qpu7DRfVKf7TRQ3F5KSH34TBNPiJDu9Oz786sDL3QuFmVUYnUtc9BtyGNri+mIq0c9NY50Nw0tMquYfhf9PyFGWWSsRQsy5EqakW0pFS8uanKBSMtFN0ISalU9w281gz1F8rcbDYfOyBkjFw50fi0fFTXtfyUF
- Yg47UdDR
- QkqVlhH4C0rzUVTB1I4GKceWvJmqYEox3A/l9PbrGFUpgs1sp9NMjOU2YWZ5ExgGRspFCXhMaCPaqSDnkH0ctQ7mmJtE09xvGrfldOtKhYx2QGxiMP65vXGlJUjhJj0Y/InZPGx41/ozh5M6vGZWHLmiq6TmFNbBTDB4UHzIyNsXBXDWO9SrueuSnl5vIpxoj0+UXq7DWF/gRzqRNAaJdYuQ9peZHgKqts7VR2a0gGFaSc96hSMfIIe8m8qvf7JnajfVHj/6jOdtciqEGiDqNX1WKLkRVUM23Gp592Q5F59JqMLmpOaouJhNgk1IV3DHt1lDD8Rma/8kSPmL6zffvxEhHCw+zcGU1u3SprbrbG0pAUgOAGX7zTGzj0+juIQot0JA6G/BjS86JYfrXema+aJDWrnn6UqoubctNIfHgP3SVtVZCKr6rvvDDPSV7N9VcwiVAe7GyxokFJ+kmSDrQE2dWyySJfkvMi4J0JDX7rkrsmAiOV3G0qQvtWG5/qwd7fQsK
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 735F41A0006
+X-Stat-Signature: k3pe7t73u5p99p4wwitpjqkqswuks5n8
+X-HE-Tag: 1783238936-796685
+X-HE-Meta: U2FsdGVkX185qlRyY0USRSQ20KlaPtQWapHCH2vHdZDPMbInGFWphwP6Q96TENDhbWnbE+IgGB3AuwZ/COPcMfWIMcnSNuBl12CD/fVGhYrl9JJ1fBZqTsaRf5v0lWRL0cZ0+xQqP1MvuovgJ0qHLppBoy/k/44q61XL89Mou4ftZSoss4QJbIqc3BnNNMOe0lq9W8W02Cn63s7/oToqWsOznQIcw0Ig3T3zzCPOCVNWyZMyLorecDdwWk15E4ICGkIJ+Ag1+wq8gT5XpGP3r7Q19SeEpm6+Ru7Bgtos5I+QbiaX607E8O1pN5qHzungZvi5oycC9buYqYv6SkYozJiSw2gUiq92nBBXfszVO6DB8j4ifU4b62ff4LRXuG1n21ra/j1KC07q//PjRnEIjmFr6VHgk4qeD6LDp+i8ecjVSLS5omPvgy6IJUWVm+w91uXAems766ZWo41wiyUtwPlQ/fkPiV8SbydbKkYJifyIbK5c87z+CUDzgKlIQAFjvq+ozW/32B0TfFzBdqyczru2Ikm9fVYZg99FZMHzQZluIKF3GE+M9SGlPtYI81cVvXDIHlQMS53KIrnHRKoVmiIriOmJAYrA5Jak13rPPei4y93GaVINiAAsQa9VIkCBMF3gbo4ah+Kg/WtAO8V+chkIHAhvTsBZaTWqKG+lnvMIuSPYW4eogsqGjR9ilXqLwqa3yMbUmJSeRaBi4bccCdFa5RbAZ+GMDW9rByugfoN6I9ROa7zocd3EVER/7LGODzffLHi1kJqaVywdFnUiZVjFClqLs04dVpkz42V4t/qvlSqCPr9pgH1pmEgmFuTQfROBMh56xqt6ORuEW/m0c1MHk4rZlaC+EyAk/dZu4INqwy4roCECI1ayi5rqS+Y+Dx+iZjm3J4fSfx9GpjnUPdQI2U6fQnMgpbOmwH4eqaeh7CotLfbDwgetfoT9wMKUtTWrZyp8WPPHFLCWkv5
+ ljG3snDy
+ Q553n3vRQpuBMWUG3ABPiTtJAKmg28xVQ+CUUipi1kcxD6t1x6zJo9EW/gVLu4HqgESVb1BgY74KCf1/bE3FsRNw3NtLPAOLx14GSjJ9bp8SxFNQqx5IkhRuVgsytY26wz9qxm72lDqp0j1UO0S0uCforr5DvojS8XTBDIf/IDW3/GCa/TPrZHZJsqCwn/G3ZPDqfutQRE7iip6ZOIlpVcv9LmYZfXT5bu7HoQPJxXXjhKOXspE0hPItWLyVLUS3fQt8j/MqOwttvtZXqMkAVdE5AIq4GyoGW5gtJ5BDdYzxdJJKWdiyIx072azjEaLZVt1GshnA7UCcAA9wBYLgJE1t/6aNSXqi8Jw97qfo/cu/DJrK7fpy39y3HHt5H433NE3tQpYmM8ok8zqozMgKu6N8CgQAK7RPswQsw0qu/ZM9OymxmBDHh1nUCRICX1fTZXH94
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,40 +103,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 3 Jul 2026 16:22:53 +0800 (CST) <xu.xin16@zte.com.cn> wrote:
 
-> This series fixes a severe KSM reverse-mapping performance problem
-> that can freeze applications for hundreds of milliseconds under
-> memory pressure especially when a lot of unrelated VMAs sharing a
-> single anon_vma.
-> 
-> Two key highlights:
-> 
-> 1. Lock hold time drops from >500ms to <2ms
->    - In our benchmark (20,000 VMAs sharing an anon_vma), worst-case
->      anon_vma lock hold time during KSM rmap walk went from 705ms
->      down to 1.67ms (max) and 1.44ms (avg).
-> 
-> 2. Real user impact
->    - The anon_vma lock is also acquired by page faults, reclaim,
->      migration, compaction, mlock, exit_mmap, and cgroup accounting.
-> 
->    - A long hold due to inefficient rmap walks stalls application
->      threads, causing latency spikes, reduced throughput, or even
->      container timeouts.
-> 
->    - The problem occurs even without fork() – VMA splitting (e.g.,
->      via mprotect or madvise over time) can create tens of thousands
->      of VMAs all attached to the same anon_vma.
-> 
-> Real-world examples:
 
-Again, thanks for persisting with this.  Great improvement and I'd love
-to see us get this finished off.
+On 05/07/26 1:05 pm, Andrew Morton wrote:
+> On Fri,  3 Jul 2026 11:41:54 +0000 Dev Jain <dev.jain@arm.com> wrote:
+> 
+>> huge_ptep_get() can be handed a virtual address pointing to the middle of
+>> a contpmd/contpte mapped hugetlb folio (examples of callers are
+>> pagemap_hugetlb_range, page_mapped_in_vma).
+>>
+>> The arm64 helper rewalks the pgtables in find_num_contig to answer whether
+>> the huge pte we have maps a contpmd or a contpte hugetlb folio, and
+>> returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over the
+>> contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
+>> if the addr is not aligned.
+>>
+>> Fix this by aligning the pmdp pointer down to a contpmd base before
+>> checking equality with the passed huge pte pointer, to correctly answer
+>> whether the huge pte is the base of a contpmd block.
+>>
+>> Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery mechanisms")
+>> Cc: stable@vger.kernel.org
+> 
+> Please describe the userspace-visible effects of bugs when fixing them.
+> Particularly when cc:stable is proposed.  Thanks.
 
-Please have a look through the AI review:
+Forgot for this one. It should be, on systems where CONT_PTES != CONT_PMDS
+(meaning page size is 16K) we could collect excess a/d bit state, meaning
+extra work for the kernel.
 
-	https://sashiko.dev/#/patchset/20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn
 
-That 32-bit thing looks legit, kinda fatal but easy to address.
+> 
+
 
