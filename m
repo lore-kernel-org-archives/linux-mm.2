@@ -4,140 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0805EC43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 09:06:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F09E0C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 09:17:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D98926B00A1; Sun,  5 Jul 2026 05:06:37 -0400 (EDT)
+	id A2A536B00A0; Sun,  5 Jul 2026 05:17:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D49526B00A2; Sun,  5 Jul 2026 05:06:37 -0400 (EDT)
+	id A022D6B00A1; Sun,  5 Jul 2026 05:17:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C134F6B00A4; Sun,  5 Jul 2026 05:06:37 -0400 (EDT)
+	id 917FE6B00A2; Sun,  5 Jul 2026 05:17:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 88EFF6B00A1
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 05:06:37 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1750E1A0686
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 09:06:37 +0000 (UTC)
-X-FDA: 84954142434.02.768BEBF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9AD6018000E
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 09:06:34 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="M3EVi/ZA";
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C1FA6B00A0
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 05:17:19 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C4B2D1C3B13
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 09:17:18 +0000 (UTC)
+X-FDA: 84954169356.20.D149196
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 416D2A0002
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 09:17:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VAuLMVEY;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783242394;
+	s=arc-20220608; t=1783243037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lwl2RZIgRGshSa/qt93sniK4Og2qca+KFPXUQBK5QlE=;
-	b=PgKTpCUE5Z0XA7vo5ogbbvZOlHaD20LA2FSrg7GdFpIgAM4/cFJrwoytyFmfg5MTnKB+vT
-	cK5PpeSXCc1BeA0aosDc8poyhKjJFPAOzZJG856jHanaIj58PWsEUHYtSz3ZPvF5+TaFex
-	YJFdV6kjMCNYxce7sDDyRTvZ6J/6RKI=
+	bh=1IpFmqExRpxSV8z6aiknhr9wo+Fgy2npUiahXkL8Phs=;
+	b=rdx0k9dB2uWYflpz5E4Wu07TeER0aRt0IhA7Qi5OsN9XGOJW/V9HkrQuazZm7ZXqeOiZ4W
+	nyY9LrTgxhjJGQe7Iw6c2Hy8o4x8I48W23iD2Es0THOmuzaR1l0kL/UCAA+f5xKFlqtQyW
+	ZmuV/r5/2m+BIh0sHRW9njw+YvPqiNs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="M3EVi/ZA";
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VAuLMVEY;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783242394;
-	b=DVg61VoIxS/JZXVb99LyrTs1RSjvDWTZOTPfcAWgFKcBmYynaLgLBihsnojpzVRO68r9qS
-	lMK9cUvUlHYcrROVUJYmMvrM9OQGwOWIBopGbRnLYvvrvHtosHtWiE4y5h2qk4cJE/HTxD
-	puPbIS/P7cuea/+/CAccjGZT6Z40kpg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783242394;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lwl2RZIgRGshSa/qt93sniK4Og2qca+KFPXUQBK5QlE=;
-	b=M3EVi/ZAVKMzxUk0mZ4lxfTHf4gP1snPcP/wClGfnCKUe2KZk1UuNn9bGj+W33B5tOu4qu
-	VrwQSCDLJ8CpnUaM2+37fTlXp8oFQgTp2zeRHKUicSHnVl4Md/AEpBjVBeaVjciDicXeff
-	HqM+RPF9HFL9EDo9G0fV1b5p5kcS8zE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-IzJ5rwpkNaeW_4j5A5qJ0g-1; Sun, 05 Jul 2026 05:06:33 -0400
-X-MC-Unique: IzJ5rwpkNaeW_4j5A5qJ0g-1
-X-Mimecast-MFC-AGG-ID: IzJ5rwpkNaeW_4j5A5qJ0g_1783242392
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47132f8a98aso1100258f8f.1
-        for <linux-mm@kvack.org>; Sun, 05 Jul 2026 02:06:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783242392; x=1783847192;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lwl2RZIgRGshSa/qt93sniK4Og2qca+KFPXUQBK5QlE=;
-        b=a/N9mcWVpQCkcY/+ko0VVRO9TpkCGUNanNg8540qj3iq5caX0UwQVZGEzFCPAClE7V
-         HdydGzbj/4y5rZ5rBeTMxuX9Y21Dw+iLjfYzGIhSk0rCyDjrl3jFp/uye9BDJGO2NEbA
-         LMfTzvaYtj+BVoLm2A+NeiVnnlSimqe3AdGt0MosaqUxlBnK0vfgpZBPF7Jcy1uCMw4V
-         wWUOnn+pa55Tyxoj/RUy57gW82LrTY8uChKu6j9/oFv/1UXUyuEDy5r8pssQSNRnL3ct
-         36xPJMohvxvoPuY1/sz6kA0JClR4ts07Tv4hrYabMd4caHbKZZ3DGG9+sgB3Bk0H4Uiz
-         B6Pg==
-X-Forwarded-Encrypted: i=1; AHgh+RrrJbiQxk1tBp11272/QTEXJRviUec5rSgUpGz/YhUUVxGHlUxG9Td0gOYoJHU5aYcngT0C7PmQRw==@kvack.org
-X-Gm-Message-State: AOJu0YwMIZ3BYK+Ealzn2aaFLLGKnHxMw9PS5RGVPPZPCDl+3RKCLpr1
-	jyAflpbpf7BdtVJzD2G1ctA+EqJjTxN4vc54H95STa2phfySStcZoqmBBWpxupTQ8ii5NSqyGs8
-	FWoqcoZvAwkoE0vWwjPBB152n1g4FW2xfeHDyC43TQJWgKhvqDZYk
-X-Gm-Gg: AfdE7cna6k9yQHBFusgyxeTdeJU3h74klmvwiyoaXxrIHdhLCveVPk4hKocypBUIv+R
-	cychRjwTkiaG4U34TVCW8WgPd3T+s2qogBE3WJdt7I7Czy8XKg+Ua8WWNUWBxw2GZTkwXp4t7TH
-	pCyuY6vGUJv8Fy1uAWu+Kz0XxsE33LBZkDAHjc+DoB2xdydQwtqS4kTes/3tMjuXCtuFkkjEwU5
-	j3TIg0GpZMJQquA/HKKZxOGD0ymicgLJxZXVw+mabBTNAd7b5IovBwALh338AjvNMNRd6nAnWrC
-	vfXv9qTTP0+4DQtUhUJ3cZK0EMJiH/j3ekGM2hsqnFK37tuMqq6WwCs7a6VwVvPkoES068IQcic
-	xFeu+1dERIVeBb49hgv6gQ2llHyMedf6/
-X-Received: by 2002:adf:f390:0:b0:476:cb01:6393 with SMTP id ffacd0b85a97d-47aaba588demr5679059f8f.11.1783242391653;
-        Sun, 05 Jul 2026 02:06:31 -0700 (PDT)
-X-Received: by 2002:adf:f390:0:b0:476:cb01:6393 with SMTP id ffacd0b85a97d-47aaba588demr5679022f8f.11.1783242391124;
-        Sun, 05 Jul 2026 02:06:31 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f2186bsm14405764f8f.36.2026.07.05.02.06.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jul 2026 02:06:30 -0700 (PDT)
-Date: Sun, 5 Jul 2026 05:06:27 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v3] mm: page_reporting: allow driver to set batch capacity
-Message-ID: <20260705050445-mutt-send-email-mst@kernel.org>
-References: <444c24cf39f3f3620fc90ef4695bd6b0979f4c4b.1783232420.git.mst@redhat.com>
- <20260705011635.9974cac7f0defec9961e85c4@linux-foundation.org>
- <20260705042313-mutt-send-email-mst@kernel.org>
- <20260705013956.36f649b5cb13409d9088838a@linux-foundation.org>
- <20260705044139-mutt-send-email-mst@kernel.org>
- <20260705015116.bdf3335e9a955f057a6d9c5d@linux-foundation.org>
+	t=1783243037;
+	b=CAj6WYPoNEWYs1628e+SyaMI74GvRqUJvu3Z6iEYRYQhiNmiNUQAuOelF4UwpRCpE34ftD
+	b5+ALgKj2qiidry3awsXiMQZ0sjZcxEJtJFi9sszPfycL0D4LkC6mNOD6zvT6H3hfgOAmw
+	rlfY4bFp3Ya+2TSGtS+31P4h31OzhU8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B49CB60052;
+	Sun,  5 Jul 2026 09:17:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECCA1F000E9;
+	Sun,  5 Jul 2026 09:17:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783243036;
+	bh=1IpFmqExRpxSV8z6aiknhr9wo+Fgy2npUiahXkL8Phs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VAuLMVEYo8TwyvMl9BuOQPRB8oVu13Q6owOStv6lFC4TRCjV/ZLuPxa0tKU1hDIrm
+	 dg0gtaUkMbqbt3L33a/kicGqU8qnEB6cIM7O7oNdp7bjX1G9WeY5A+ZSE6EHTz/Cw9
+	 sJT5d2OYfC5uER6oS/xOGKE9YEBlWcEsVKmFD8+DHMBh5Hd/wQlSdcmDatHc+a3H15
+	 ZVteBAdSETEBoTA9RUGpWhRrObCrMcdw3A179vqyQGUim7qjXlf4OwPDQ/xVitAKRc
+	 JNqjYRA2Oc+uqjByXkfY4k2DIEvZLWMOcjg1z98kKf9ymkVARtX+dpeiOJN4xK7ppo
+	 tm37/JOtOf5FQ==
+Date: Sun, 5 Jul 2026 12:17:10 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Anuradha Weeraman <anuradha@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: avoid shadowing global mem_map in
+ sparse_init_one_section()
+Message-ID: <akohFqkKncFzoupL@kernel.org>
+References: <aklP82yPNq5lA2Na@riviera.anuradha.dev>
 MIME-Version: 1.0
-In-Reply-To: <20260705015116.bdf3335e9a955f057a6d9c5d@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KHEZuElgHMJ2h2VWwI1QzN1xqU5ZrMStS-UF612w71M_1783242392
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <aklP82yPNq5lA2Na@riviera.anuradha.dev>
+X-Stat-Signature: rkhwmn63g8ruwkes8s44xq3nyj5udfxs
+X-Rspamd-Queue-Id: 416D2A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9AD6018000E
-X-Stat-Signature: nqcd8u39uwqrnyhjeifrood7f5chm4re
-X-HE-Tag: 1783242394-670964
-X-HE-Meta: U2FsdGVkX1+he6/USEt7N1jqttX0wHBL8Wu6mcn/VjRultKSziLT8MYKCzUeFEVO349QnG7L0JdAcLBZWqXzbpiuPj4W+riS0ouP3JbbGfNMzrqpUdRe55Wd8JMeNQwr7bywecXeNofaX0fmgKpYjX9L43fgFoYbIuVKiaVm7ua7NJAhzGC7gM+HZcMuHe0Tdba2HMLNl0SXqQU1ziGh05RALOu5+KiLv0xRKuXMORrfBJ2a1PYaBBfxWC47avAZeK+NARjsYxUYU/Oy1dwH2naKEePCYZuweRK7S0vHaKnzw3AJM40SqbS9D6EevnvtEFUNbfwZuF6+uj5n2PVHSXi0OXVnBKLDJALF9tVbkTMQvgLOb15meIixM7n7a8q7Cs8r55W6Gq6jMdIiNKGrKuoq8okerTgBAqxenhyt2qM3BwNQbxH7jbJd3VqFanCxfEWF2oaDuLWhQhWM0Y5QQBmg3F+MgtGa5CEn9bnhua4mPdBG/HGzyS0nwNsFlB1cOVLjcdsekt5G+oa/lZCrvwZv3S1eEWXn/t5qrjvZZTPzoojxguvdPhJofrMQ4yz6l+V3yTfpUty3XpNVo4Q7nJVfs9lhyU9uEiCbUkdhTp0TDzLGnJvFHLN2R/1l19ypM4eEwoWBOT6ooGj9/wtbltxhhJJEnVVc52u5hfmrxNHs8lPZYbj1EvQTo7WR3dmPyfUN0SMvGy/V8NCADD4nJHYWWCmXTvOR/tyOla+MK96MGZ3rl3OvMb7xeeKYlrLOw5ePBjZ5JvZtxDsdVBlBMYmDJKseH6r8GRVCWuT3Embh63rFUn7ivicpZsvw28N5uILG2ik43ANYv1VpNnIVWAteEqWKrPR4Da6u/aBNY54cMBeQTEPb4h/shnKuxs1jMsp0lryvPx+VJGuvqivPocry+icvMA/PbTfXdMWIC5xqcrc5ozUUu71DW6RD4P26ulGrMBNdECGBmpOKRvR
- XSa3L01p
- uLokMF5bhf7ABw42hfmE9gHE/RB8Gvag/t3o3n3vMYCau0KyiX7oyMkGAy2CQGlWDXvodPm+aTK45guBOLWCK8d6rJKMyHiiGfXxcVdZRNDCq51n7HfXs0XOIT4xG6PClzJBy2nF2eGhSZ2rdA0wJARgJ7mT1VCA034g8jQmKe0lg3+ITLzjvG/6wBOooeAVcdCXeSXdho3IhwnS2GDgt8l02Er/XKvOcb359TYpx0wKfvCJr63X0yiiQIz4exbSrwvW7fmW5b+qlSo8qleHwhvXZ9cNQGkp/6PeNHQzrR3rhT+3emRNlPfDS76ClMCiq6cePjdzuM2+UN7rfNr+Nmso3McxXQh8hUL4uAhFy4aFcW9I=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783243037-974155
+X-HE-Meta: U2FsdGVkX19AH/IzqtzpFBTfZmatmKgwxoyCPhXpTNjI0No1ludhuk4iqsLGYu1ZZT+cF+VGECmjfr5ngBNoCTqZKpFeDPKfZPjwmCPLWraFUxygw2Kj7jO9nn/VlyYJdfN72R3o1oNHAHptPdBfzjz17ctjjkqFcCxeVsq+zxPxeyyMd1ooET7WrYNlZT7xJZQ+0HgpW6+E8+q7/I/489cg9o0PqI23FOYEzVK0ryK3KQVlp6gcqbbfdlC98WoD488ZspU+xkF3RHNFEwUBOJ0qyss2kaoqljMA+bW0TNNVcq9It7e9zmy9CR5xDHnvQ8ALfZNv2k2o70AP25Su0GQUhiCXxK+4oSprI5YdUa336cr+uGZitB1slMc4Y9N2cvaBr7myeqVFUcrf6Y3fonEyatbpZpCiWpKJXFD2VNqrewCuh3iob1f4beDcQYeH/Z6Ly7NCqlbskkIGe8RFtcNnXCkHAIgvw5iuIjcfgkh77v9oyvkmxfidgzV3e5kT61X4BK/Y+3Vdqx9wTVPFW93OGltzRFvL95k6lx8pkHTq/mVPnLWzmsAF9CtVt3QcawcYd2330y1G9VdSs7OqbWGGbuhLv1WNTk8WFz95xUoByfgAuteyRaHKzkcPufyQoZVykr761a0vk3Itm0CrkM1WfhV4m6kXknMpPf8ShkfdY0IJZV9sXthtOd7ipboIocFW8ZDf3Ks9UqrryKT3kUV4kVVvqYHdfgGkkA3DX3MVrC9Wc0ZSNMi6fCp3EXHhkSuX4mrQaUqAPm8qAShDOGD6yBAm2KbeuR+Ymcuoiw/679oU2yeyCEsdr+uxH8ZLOvXo7pC3uVsDprMztJZNgCT6BS82BKhZ4q3SJrvtQy3pOABXrU6+OtJKlg/g6SK7nPNl1J9mqIGhrXWB3eKwIBT6oe6KnZIEk1vVJgtfJ/RIW9ZQq3uinhoUrvph3931kX49m4l8mhrNtGsz9pM
+ JwQjmMSW
+ Mfdv4lxbYmVPwjH8775QiyyIJgFFPBm4PQftn5kydDjNLUQbjRDJ+DtWysmVdRmZkboNL2WsZQSBwWRgnS77XmmMIK3YfO6mC07cD3WMFPhs5RRJw+i0Uj/wbxT5QY7WER3Lj9ecG9RJ3ZPTnG8+ZrfsyQL2n3nJLl6BuTB/IicQ1Vw/cd+HiTYwpEudGBjUCd+1eXQ0Rm/job0cQAQmdLF6bAuLcWph0ceCOwPev6BdVkI9H2vQbyWdOvQczB1TmBND9+rpsar8J1Aur9Irmmj0ViQxibYgTyXdNENyDshrFJJ14s3LoLPjC3dLsBYaO/qKO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,35 +92,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 05, 2026 at 01:51:16AM -0700, Andrew Morton wrote:
-> On Sun, 5 Jul 2026 04:42:38 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
+On Sat, Jul 04, 2026 at 11:54:51PM +0530, Anuradha Weeraman wrote:
+> With W=2, sparse_init_one_section() warns because its mem_map parameter
+> shadows the global mem_map declaration in linux/mmzone.h.
 > 
-> > On Sun, Jul 05, 2026 at 01:39:56AM -0700, Andrew Morton wrote:
-> > > On Sun, 5 Jul 2026 04:25:53 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> > > 
-> > > > > > If capacity is 0 or exceeds PAGE_REPORTING_CAPACITY, it defaults
-> > > > > > to PAGE_REPORTING_CAPACITY.  The 0 check and the clamping is done in
-> > > > > > page_reporting_register(), before the reporting work is scheduled,
-> > > > > > so we never get division by 0.
-> > > > > 
-> > > > > Thanks.  What's the priority here?  Should we fix 7.2?  Earlier?
-> > > > 
-> > > > If possible, I'd like it in 7.2, have a setup like this (small
-> > > > queue is useful for perf testing).
-> > > > It's very early in the cycle and the code seems straight forward...
-> > > > I judge the chances of breaking anything is tiny because
-> > > > it just failed probe previously.
-> > > 
-> > > No probs, I moved this to the the mm-hotfixes-unstable queue.  No cc:stable.
-> > 
-> > I suspect the Fixes tag will make their AI pick it anyway. But hey.
-> 
-> -stable maintainers have been asked not to do that - only backport
-> patches which have an explicit cc:stable.
+> Rename it to section_mem_map to make that scope explicit and avoid the
+> shadowing warning.
 
-Out of curiousity, is this specific to -mm?
+I suspect that the comment in mmzone.h saying that mem_map is must be
+declared for SPARSEMEM is stale and it can be guarded by #ifdef
+CONFIG_FLATMEM which will be a more correct fix.
+ 
+> No functional change.
+> 
+> Signed-off-by: Anuradha Weeraman <anuradha@debian.org>
+> ---
+>  mm/internal.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 181e79f1d6a2..4943def97167 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -957,7 +957,7 @@ void sparse_init(void);
+>  int sparse_index_init(unsigned long section_nr, int nid);
+>  
+>  static inline void sparse_init_one_section(struct mem_section *ms,
+> -		unsigned long pnum, struct page *mem_map,
+> +		unsigned long pnum, struct page *section_mem_map,
+>  		struct mem_section_usage *usage, unsigned long flags)
+>  {
+>  	unsigned long coded_mem_map;
+> @@ -969,7 +969,7 @@ static inline void sparse_init_one_section(struct mem_section *ms,
+>  	 * page_to_pfn() on !CONFIG_SPARSEMEM_VMEMMAP can simply subtract it
+>  	 * from the page pointer to obtain the PFN.
+>  	 */
+> -	coded_mem_map = (unsigned long)(mem_map - section_nr_to_pfn(pnum));
+> +	coded_mem_map = (unsigned long)(section_mem_map - section_nr_to_pfn(pnum));
+>  	VM_WARN_ON_ONCE(coded_mem_map & ~SECTION_MAP_MASK);
+>  
+>  	ms->section_mem_map &= ~SECTION_MAP_MASK;
+> -- 
+> 2.53.0
+> 
+> 
 
 -- 
-MST
-
+Sincerely yours,
+Mike.
 
