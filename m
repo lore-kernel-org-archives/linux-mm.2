@@ -4,74 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94111C43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 16:02:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CF45C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 16:02:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E69336B00AA; Sun,  5 Jul 2026 12:01:55 -0400 (EDT)
+	id 89C0B6B00B2; Sun,  5 Jul 2026 12:01:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3FCA6B00B2; Sun,  5 Jul 2026 12:01:55 -0400 (EDT)
+	id 873316B00B3; Sun,  5 Jul 2026 12:01:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D552A6B00B4; Sun,  5 Jul 2026 12:01:55 -0400 (EDT)
+	id 6C61C6B00B4; Sun,  5 Jul 2026 12:01:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A75C86B00AA
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 12:01:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18F60C047F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 429246B00B2
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 12:01:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BE68516713A
 	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:55 +0000 (UTC)
-X-FDA: 84955188990.14.57457C4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 77880A000B
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:53 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h74txumM;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+X-FDA: 84955188990.01.DF22AA6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 31244100014
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IJnISSxk;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783267313;
+	s=arc-20220608; t=1783267314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D62Tcr+yrJC0pq2paze4YieMWP4BsC6k5oHO7N7uukw=;
-	b=TwYIA6hJ9ZhnftA5EgvcuRaSDRMGJFURmQ/jgEyinCKvm5xPaFupRURLiTg3BlsNo5v78s
-	2fsidwfu4Qi0UC7VwrGR3y8ZDPjIjTBgSF3So2+hyiy02mqlcMEZlyxAgp9ivCB+2FaFNI
-	fnvTgDT3aFy52EIXvy/8sFQD5XcpTs8=
+	bh=iM2Eb2ExS7GI1ym8vhWA/m10zp74Amrd4zSKSC4zHiE=;
+	b=zV7KnnzVRMVY1dfhtc+/cSAsYusFwgNW7PiNS6woPhAMJAHMYuYE4hpIqaUdTTXHVvZkc5
+	xy9iUIBfMUcoAfWCuJ0ZxhMxDLkPrgEzvxbxrhkRrgGmNKei+J48KKBCPviwSW7mI6OnOW
+	YaJc011j9pZzTTOB4lQS/PllGMuOkow=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h74txumM;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IJnISSxk;
+	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783267313;
-	b=Z8825m05eJQmjo09oa8FRcVX2fZZumFUGMkBbjIT9ljfr21i7q1bvhDC1Rf/chNOrT5dzC
-	smDL/oADCEXzXoPfeKTbeAhLO97Qq0DVE4FpAA+qpdRmqJSt68zQrB8KNAR3Ow3lx8PRCJ
-	YIXvzsj5wlS4D7ROaF0bzvKx/RViE7M=
+	t=1783267314;
+	b=CK15wM8A4Iq+xrfDxi4k9EeUZJwgS0bq5pDYGbAmrPhSEhBkMeKBNGs8Fpo7nVttpzRgGw
+	FGC+7baH5wUD7KH2tH5zeSzKiqTHtz2yF5giyUXDopmTyYWJfL3HNOdN4N/RdaZN6vsR3o
+	dk2zW0E304mElJvjF3sVv81F7KbUWaE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1637F61389
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:01:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5ED1F00A3A;
-	Sun,  5 Jul 2026 16:01:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C606437F0;
+	Sun,  5 Jul 2026 16:01:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD5C1F00A3E;
+	Sun,  5 Jul 2026 16:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783267312;
-	bh=D62Tcr+yrJC0pq2paze4YieMWP4BsC6k5oHO7N7uukw=;
+	s=k20260515; t=1783267313;
+	bh=iM2Eb2ExS7GI1ym8vhWA/m10zp74Amrd4zSKSC4zHiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h74txumMZpI38qJ+8ds0UgfG76kuq4dBZvZsG8oRgWixjR2ioLpnk9v+4nwkRD6/u
-	 Xz/1eZvdTrwXEp4IMCyTg+Ggi1TtktKm8ks1QKoC9z991+u0bmNKeUBV4H9899SevI
-	 AvbqFRnI03L6MGvKzOOwd+oGm8Wl8BzFMqwDcAsJsGL1EmfNaZAlib9Jb6ss9RQc9Z
-	 4jgwI3zptmWQHxcDStl4E6VnC8qxhFVemG0rk/VVMHifvZPrtr/7NMoWTn8LmwJZD2
-	 fNC4kU9jX8zspaQJ5CiwwClmIXnyRx2e/jwfzE7t2PZNPW9Bfsh/hug1pgWx/QR4ue
-	 BJOlbYx5UQPLg==
+	b=IJnISSxkkJUzL4ggSYDFJhQIFv0Z32F4ZOl0DDmnFxH4QsbgjxHoqbL2ds3NMBJaz
+	 0Vr0Z5z40ckxtJCUW7Smftjol20RmwFJKSxqBOkhEQinU9yabVVVEU8bJlCT1WBtgz
+	 hjQzUfvuyZKA2a0OeDMlbiv6Bql6E+DfPgHuTb4JhyDS+Jamk71ZiSfjJ1AWz0r585
+	 1OyKPBrp+UwYqsQfWijfN3bq+w55tHPsd71mh/+e4nPbs6iBycY0Mzrm0j5vhSuVJX
+	 7kdfg2OM/yt4ewIYs4EpNtOUaB7/cFkk3AkPBl+8WciDRScYkjTXdoAtW5KagLSd8M
+	 0OHTULEOutL1A==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 02/11] samples/damon/mtier: do not stop first context for damon_start() failure
-Date: Sun,  5 Jul 2026 09:01:29 -0700
-Message-ID: <20260705160142.97308-3-sj@kernel.org>
+Subject: [RFC PATCH v1.1 04/11] mm/damon/sysfs: ignore damon_stop() return value
+Date: Sun,  5 Jul 2026 09:01:31 -0700
+Message-ID: <20260705160142.97308-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260705160142.97308-1-sj@kernel.org>
 References: <20260705160142.97308-1-sj@kernel.org>
@@ -79,12 +80,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 77880A000B
-X-Stat-Signature: u6iqkdtppyzxxsn74ws8mmmjnf9ec1fi
-X-HE-Tag: 1783267313-235718
-X-HE-Meta: U2FsdGVkX19uqS3MrrcPLDDc60N/fduyjgumFPaAM9F8/ou49wrfOj9XlxQLCwBL5nSVUctAW3RupxEivWh+R/2NfrwEYXmZpK5s+Bi66V2tVmCPoqOIeHZaA0GhxE0uPUDgX7BrFhECeXFhzFqTMXh88vVevqnw3+uXamVyzvo4+6VJ2BK4ewhmsErIYK49RbwUbhmnP9g7wjAXMg+nhJ+kvZzaBbSUu6kFg+h2lfyLOZMbWfrK1LP40pAZLN1fLT+VnM3cxZxGUQjohDLwf+HiC/kM3u9QcQRuuOKoKdm5fU6BMx+/xCALPTX3o+0sMyU+Gsn5Q47liqRxAEYKREgigKWoyqq9mguh39vtSTyy8glTJpSqWV+5fhz1oFMmHHzcnQFQ4jHpsWZ0EMNvQpzfR0ajAwJ3T1qdWDAK/vpqCLSsGcDkxL7Pb1mvrf1A5PII1EsmyhQdoj2OycQDbcxlB2HkDbebHX/D3P7n1hsp4flGsDbxtnipW1k4HLbusrYQgiGMEYSxf3T+tqQqyFb9wFj/mEAz8VpZFXRw3Iu1kbbjYPTxhtZeJ2rcMiEknMZqzdlR7FLctoPLm0awuQt7y/vR62wKtw645aHITMzy9yzK204Rno03/F8W/prtPnyr3bOT5ibQNnprjUN60YjASQve2P0X7Ykrwg1y+ebI0J7r8ygqc3ihpKJh2iZqZeyODdvZkNWT4vNaO/f/gGiGcZL3hVb8TBkwjM8GUy5KCot+IZJYPgmKVNTi3/6n4qfH5spS56SxhULd3JLsLV5cKN6tQutKx3aVaA7llkF3zxAV2Qd0E0wc3xxOVnFHHdXtwafmoEtVqKYFtgb+e3m3tIKLPoNVfOJg6/IepfQMyr09bbW0BqK7+qca0Dfh4p045KZ3F3amBO/yc1ioeZKKLYYo2sxj+GvHwx92yHGgS10he21NYKNEy+unif6m+MTRPkUf4xMTkutzmC9
- Md4VcRPs
- 79ONYg1qrcXUBadiX9/sT5NHhc7axVVdgvNXJ5Xqd3zHKGpjaI/hijF/J8giBXk7usLCASklHO8o7qcK4jlDJPQ0V19sUr8D5ChtzcoM70OIxdG9tTDfTC9aHUOoOUdSpeiC/ygNcNgMePvJiQ9zwf3UruFEx1NUTpkfpIKDpqPWzumkcSSW6HR78YhjkdDJ6Sa+4iZTXVv35n617vnErae+OTzClL2g5P2cziK2oriCiQ/HuPqYdNCxtzr9F73K91mLdO8f7bEMV1U11jEkKIHorqr57Ln9/z9CSht5grAaFErEolLIDbbJI3JCa0K5uP//imPK6nI2wSiYYDHWguDcw131TGnYEPYf/3SemyEJWzkvJ8ECn8QsaqA==
+X-Rspamd-Queue-Id: 31244100014
+X-Stat-Signature: s7dj4s8e6h1if7hfw7p6zu7kye4b86yr
+X-HE-Tag: 1783267314-457072
+X-HE-Meta: U2FsdGVkX1+dzGyg9e8qtLxKoel5fskZkoUn2VP+TS3lPeGwa+0Cqees4qV4zl5jU1diYs/GUpj1EM8a8jmfkI1A1a3qsGTS9G20MzYildbUGPljrMFxx9Tin1kKJB8olQov87coosw6e5jPxpGl9l+BCujahhjWYGvsgT/XYu7wlOjGpvUauYkybkVq0FQoxAm5ovKlVSigo0n91ycmiR1y5GLQZsTThKkc3NrNiuWjhm+JvjaNA+qglvRgZ9+DO9g0Nd9jgUBW5DEXgsNBmEYu3tEOrcuPwz/UrHAZOngJU6iev53Y3tOO6dZnNpwbj9whfwxAvUZUSeLt4F7PBsGvDvEBkErHOtuDQrFpBtAWLlmgsmJpGIKU8dcGtili0sTIt81eUsbGPmamF7PVVYYUOxtuQ4yc7rkxkHZE5qyz6okeCZWKxBZBhYRfMr/w2R8yGVHupeat0EBpOvthLq2ylZKHc0KqKPyqDES0EAIZph4TDfE85ICVERgE2e7krUs7lw+774yIsPKBvEx00x1gvm2UcLTvkfvOOlTnJ5LFlD1GwjskF57vtl+GTGEPFJ0zJ/yUusaTi/6UgCXLTUH3kiWHuHg2lUiDwYuv/2X5dCXjC883fA4WAcbaPEZrJz21qqEvQfe9vUPFwwfw9NaVkx6Ea1n0ixe12E+mv8DOdedh17+nfUvr3MWJpKxXtgzwxKMUOZtzwprEP/PO8CSi0BUu1C6FB+eVdhuXpS6P0sUA7UYEvjsuioarm2dt5F5QCZBEPaom/maJjrRBDEYdvQ9L9bPD0notevCnMou1iS6qLgkaehIjUuTY7MOG9cLg5+t5UF/5YbEy8j2me8faxSA/VDMA4IobTuvetjf/PM5OeeTh69ta+4VNpjMdKYqDuM3mS6Pw55NEaob8KAZktR74fNcHQejSE4kgcsETBoflLSddBPejEWgrdpmMxS0jTH45q+xBNyNiqZ2
+ jTINJCE9
+ wXeeSkT9IUZSv3+eBJoYoVoUtlCIviKJFsdf3lG4WiHC/jXF75D1xB3dsLiPxLinV8nlbjd8Pe695d6xIsJlt16O4WJtn1kRQogU2fxPeXYy8zlbGsH1pSy2nzn8MKvuzcyFFVlAETOB0cMSupzc9QFZpe11jGCNawuWFxWrYYcqk7A4axvJ6JqmgsMWtTq9b2ziSya+OzeaR2Gz/Nx4U6c4fkfE8236YhTMlOeJ+jI3NsFzmHHEKtRldAU8CvwaQ2WByXiflGYw8GCVU1+FgYreDqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,29 +93,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_start() was able to fail while keeping the first context running.
-mtier hence stops the first context in the case.  damon_start() is
-refactored to avoid that.  The error handling is no longer necessary.
-Remove it.
+damon_stop() return value is guaranteed to be 0.  Ignore it.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- samples/damon/mtier.c | 2 --
- 1 file changed, 2 deletions(-)
+ mm/damon/sysfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
-index e567f4edd80ea..90881e8bd441f 100644
---- a/samples/damon/mtier.c
-+++ b/samples/damon/mtier.c
-@@ -193,8 +193,6 @@ static int damon_sample_mtier_start(void)
- 	if (!err)
- 		return 0;
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index b65651498e0d1..6d7e36c9e509d 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -2262,12 +2262,13 @@ static int damon_sysfs_turn_damon_off(struct damon_sysfs_kdamond *kdamond)
+ {
+ 	if (!kdamond->damon_ctx)
+ 		return -EINVAL;
+-	return damon_stop(&kdamond->damon_ctx, 1);
++	damon_stop(&kdamond->damon_ctx, 1);
+ 	/*
+ 	 * To allow users show final monitoring results of already turned-off
+ 	 * DAMON, we free kdamond->damon_ctx in next
+ 	 * damon_sysfs_turn_damon_on(), or kdamonds_nr_store()
+ 	 */
++	return 0;
+ }
  
--	if (damon_is_running(ctxs[0]))
--		damon_stop(ctxs, 1);
- 	damon_destroy_ctx(ctxs[0]);
- 	damon_destroy_ctx(ctxs[1]);
- 	return err;
+ static int damon_sysfs_damon_call(int (*fn)(void *data),
 -- 
 2.47.3
 
