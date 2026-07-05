@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC63CC43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 20:35:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE645C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 20:48:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A60406B009E; Sun,  5 Jul 2026 16:35:39 -0400 (EDT)
+	id 71B426B009E; Sun,  5 Jul 2026 16:48:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0FDC6B00A0; Sun,  5 Jul 2026 16:35:39 -0400 (EDT)
+	id 6CB126B00A0; Sun,  5 Jul 2026 16:48:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FEB26B00A1; Sun,  5 Jul 2026 16:35:39 -0400 (EDT)
+	id 5E15A6B00A1; Sun,  5 Jul 2026 16:48:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 638796B009E
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:35:39 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E00C5167D47
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:35:38 +0000 (UTC)
-X-FDA: 84955878756.12.7C61EAE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 22F7840008
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:35:36 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Zl/aGuua";
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FCFD6B009E
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:48:24 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9A09C1C70B1
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:48:23 +0000 (UTC)
+X-FDA: 84955910886.05.1E566BF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 024B740004
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:48:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aYuX+2ZO;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783283737;
-	b=D8QbGyZEG7kLt2lmCYRJFBpOrjUJ2nmeCNEe5vdgU57gU/DT3tZgMbLe6QbAfNrtGok3Hk
-	NbT5JXbYZsPRCltPYkHAoY/wPrdY0CpTqAiaPpGyb43zUdhlGRqD/nwfn0BIC+/63QfAqb
-	HJMZpLks5hrxIL8XR1xCYtsWb8XpWT4=
+	t=1783284502;
+	b=gdpFFo5bABc94+cl2B+40thqAjV64RbIfABSHz6eGQS9p/SgUGMtiSddYQ5alp4hmD+lFU
+	7x/Mvvpf5CXeJnd2aiZn/4GGj0JO3h+DNOc4HvpV3N6CQycJYRCoOep6txBA73ZnUEr1i3
+	la/fcfJFcnU9XdI2kYRHAuU8dXCSaIg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="Zl/aGuua";
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aYuX+2ZO;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783283737;
+	s=arc-20220608; t=1783284502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sa0TmpEiPh8i2xeTaaInBr++d04DMsnt6W0yXfVSjlY=;
-	b=fA7VMMltrQ5d6INYU6Wf4XIRB4N4cP3cy6mifNNKs/kTyNrt1uBftnbtvqvx8KAPI9bh3D
-	JBYu1Br85YVQ/uzE/M2cha+F7IkEhg+tU/EguYFL8TIaXNpWcdcb9Ra1X4KPEVGX8BPbUa
-	2LafZscIAWxeplxh1S8TFEf7dcpaemI=
+	bh=qqf23XiVeF7E6IoPTpK7HKahKDWobW5oehZgHKt5vFE=;
+	b=CN+v5WaWk2Ur9mrj9tU+exGOh+qdYyGC6mBlrf4OLMIWuE4rWi9e6uEn4cJ/MM+0t1u7Lu
+	VhcjV91J7l6/7LqBjZmpJUaxV27wqTvhWq24S742AfJU3Lsyqti+DNaiKQLxdjSYsKDQEQ
+	4SDjADnJ0JA+MoFmRF4+/e6XH6gou/k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4436941FCE;
-	Sun,  5 Jul 2026 20:35:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9664E1F000E9;
-	Sun,  5 Jul 2026 20:35:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4ECEB60018;
+	Sun,  5 Jul 2026 20:48:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D7F1F000E9;
+	Sun,  5 Jul 2026 20:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783283736;
-	bh=Sa0TmpEiPh8i2xeTaaInBr++d04DMsnt6W0yXfVSjlY=;
+	d=linux-foundation.org; s=korg; t=1783284500;
+	bh=qqf23XiVeF7E6IoPTpK7HKahKDWobW5oehZgHKt5vFE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Zl/aGuuaiSi3T583VoIbLi29yqUPmVOK1rES3+kkX5GWbtgQbiq4yu4iroTC5NsDN
-	 ccYfgNXwxORiyiEz48z/8L14iADbbq4FINCXUHVD8V/fGRJwaK/0+zV7NPjBid+0D0
-	 xiCkdV2aZP1JtaDLHNtnU+bwCaSSCluH/KNZFFqY=
-Date: Sun, 5 Jul 2026 13:35:35 -0700
+	b=aYuX+2ZOPOZFALiltW8zNgEUGECOVLI+5MHUXK+ZduK/0uGZivRyZ38HaaZ+em3Sj
+	 B2I81V9AabL9RkcM1CmYlg2XcIBpVBOugSvAhT/rdlVbw3rn5r7hdtKymbTJK0GUPD
+	 zzRcW76UEZfHhXOb6lU3Y0wlp7ZY8ps7B3MjOb8c=
+Date: Sun, 5 Jul 2026 13:48:19 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
- will@kernel.org, baohua@kernel.org, Xueyuan.chen21@gmail.com,
- dev.jain@arm.com, rppt@kernel.org, david@kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org,
- jiangwen6@xiaomi.com, shanghaoqiang@xiaomi.com
-Subject: Re: [PATCH v4 5/6] mm/vmalloc: map contiguous pages in batches for
- vmap() if possible
-Message-Id: <20260705133535.3f4e484e298a52122c6d4721@linux-foundation.org>
-In-Reply-To: <CAHKocdGiK0ij7FopLi6b_rQ3CDyVr=ARbC4cCwNG=pY=iTME5Q@mail.gmail.com>
-References: <20260618084726.1070022-1-jiangwen6@xiaomi.com>
-	<20260618084726.1070022-6-jiangwen6@xiaomi.com>
-	<akPKkOt_GNbAbyN5@milan>
-	<CAHKocdGiK0ij7FopLi6b_rQ3CDyVr=ARbC4cCwNG=pY=iTME5Q@mail.gmail.com>
+To: Hongfu Li <lihongfu@kylinos.cn>
+Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, jhubbard@nvidia.com, joey.gouly@arm.com,
+ keith.lucas@oracle.com, kevin.brodsky@arm.com, usama.anjum@collabora.com,
+ yury.khrustalev@arm.com, zwisler@google.com, hongfu.li@linux.dev
+Subject: Re: [PATCH v9 0/5] selftests/mm: refactor pkey helpers and fix mmap
+ error handling
+Message-Id: <20260705134819.871dbf41d2b06681f0facf12@linux-foundation.org>
+In-Reply-To: <20260702062332.911786-1-lihongfu@kylinos.cn>
+References: <20260702062332.911786-1-lihongfu@kylinos.cn>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 22F7840008
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 93qgg5pjybrgxfhx8esa64z5psny8qho
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783283736-889424
-X-HE-Meta: U2FsdGVkX1/xNXnc6V2wMYq5BCopV+2bdtMTPGkAwRZsLXK+lP+9b5/7OPX5pzsORAsG+C1rrsMfJc7JZNQ8pkpNfw9HxfI4jRjZ1KUGNy02qPHJOUg3ENCRrZAkIwE+lu7o+YTBxqUqN01zykup3L+zibrjY9KF973jxkwDFtGzomHphXUHjyz1fPoD6YT6qJFTUvfjoFhnxhFaSZQz2dNM1DznsRJHulfRR/10Ta7eHZ8T3ey83Ry2ApleQxyP5LcM7oA4+kanfHyTBMGpGQMBALFunZiZiUocMYRK0be4jjziNrLWlq33H499pcqxf4Lo9yrYCi8+8b9K3N2HtSTa8tYPcEbwMbMrstVgd42mr/l5hpzx9bV/NhVmwwpiMMAz9AQ2ygmzi4NPB53zBEf7VwvlXRT59aGTfzTBFDDpamYYe879swKNc/LWo2Wk1dSuPFXhH9YP5+zlkv5a4DXcPzpAtd4XCRy3xIvGVBvuGkmlzY69R6W3VMw7DR6BYE4L9yWxfmYE3ZT9VzBuRfIqzL4RToBXIDuaiF4pALOA2CBeVVvVEvxbgdFZ+GYAsN0pzR/TK8EfWxzxreallF/r+2NBNBWTzcFKT228xlwEXEPqxWHMTUkL4VSqsm3IzmQ8FEvcGggVBbtVZ90wPNyj1tIJLpCoQM373yAuyqp0x9zFJ3Ta9IZtshlTJYEc3KYuKdba07ciRtkl2CPqGiCDuURHh3qNbcctPyvRMmrXMa7y/kIujkLZRV0EsDVXzPj8hdM3s2UBYMcu1agKBg8m4+uUQu8a4eCvrUzXuD/ZusDxACV+oUFrZDeb1d8AY107llLQkHTpIEEJxPqbCzSISZC9vY7nb0avGY+3wSt24oRtpvJvCW9OOQb70IHhlLu8ixbdIDEvEA+L1fO2TZTWPn7Xce0DwnllyvvlEGX1FzmNWXUHWan3GKb8gvdAQMn/WJyKBMp577XZkXo
- LdQA3f1d
- Oa+5GHNKW+bR3g3xOyWiF7855ugrCa1cYTT6God72E+dMeqsDBtb/D8xqMNht0C3JUHq7y2kxkMCac42kjUQh7VQun1AltMXGytzaQKBo25FoIlG1yQCGkyupLOFQGs2ejxpdgm/LcvkH3TijvwjyLiqzvl8+HIaHuClPt2y2zR/lw9saHmKZ+Qd7PAcTA8JWBybsm196+4ABwjbvuLOClfaVSiV5D/CC99hERwhIX8iiFsif/FPHEgvsa9emjKf50rkMDWCh5ETFFUKglQDdc+BDChqabZF9hz4+kUo7USpUf0V8hA1axTqVVJObxIoCn240vSjutaASMTN3DSbfQ5T2HibohhVISrOD2ILMTR02pE0pgHg2JYqTx1HFR/Rth2xLhWCbLyoD6PkZAYyIL2hdJnbVVVGvwUDG2ja+YYDhMcWQChqSQd5ItxF/aITRxFwL15Nn2+JTvh4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 024B740004
+X-Stat-Signature: b8u7rfxhhurytyhddw37x7t8ou7wkxbe
+X-HE-Tag: 1783284501-259340
+X-HE-Meta: U2FsdGVkX1914WXAX6Blhup0azz9HZEyETZeDoLCVvo13Ysa7QCGiP8OemJPfhs3SPIAtq78+6eOp1v11fll6T3Pda/McIFVnvSAs2kmb2woYT5c6FbbyIDX66Xk7WJh4UeeATT3Mh85a18pVlaHlI1Jv/BmIm1z0Q1fQYDrZ5Dy7vUWi3la2P4hs+2qg36grg8jyf3X7VHrWLRMyqEaRS/1+Dhcb3YT9aSGds4ACI7YxcdDm7NzLikfvguywVjKpvASsEqp+/B8itByBi0mbDHixMpqv+QaqqTlpT39tEBYyAIjpk4bPCZx/R2vNV9Yy5VhAvEnr+p2zScoJjlqxhYCWCKuxs5Gxx6qY7SNS2Eo5KS9dd4HQRMi7zeIzI6OrVUGlGbydgh0BjjmkrDrAo1OflA4S4kQRrYQdaepOdYZxij3YDVb9kBU5ZxeG9b8wCVmcexTOhGqoBRb/29W3DRYXIUFH+8UhOvtgjVJmdeWEI5PM6vAmXuTFYwJkMfo4G5ZhTIMuSNdzk3MvQ8I6P1QIzuvVSsISSQxXMt+P7/FKASm+sIgmU00Z45t2jx0IPDJfih1Ua/SOM8jJpepFpJCe99nO0jZNHQF6/0S8eVehdjjoya1G8/AXZzGE71T+iyC+rwOyAUavRdfs+XTNibxj6RS5j4Ipq0vZviHMwtjgLFpY4kM630+j4R3uevd/LYMtDk5+Up3feiAb3wh/orjzHbBprc/48bMnVVDrC+ImS1c83qYG0xrHvGQ5E9pTZWlNrMHNwmTR+TZ3cr6mkF/g5veGIG0nTiBukzX4/vKyic6YXwznOdarFeMeG8p5Vqbfo9erPxu0pF/QVf4QljaOFdzziv3mLpeKOZifCwYeZZb8hyHcBvN51P/WMNpVAHekspVIu9sg0bP2D9/43lhCBH7a5EWIsLyAP66T0tCAawVV7N/wLfgg9VheX+2ospXSnL3KSowc93yKht
+ IY+27ghQ
+ SWWttZFl34NdSmKyh0c7pHX/qlkGEk6tvBMyrzv4HI4/xopTKljRj/PFbi/EexDXbKJ3LAR1Ftofboa0Yj+GaUgf45DBQC3NZS+d4fjtyicTwcvrx6SPZJ8zSixJtIHAoasVg6JWy9X9O4Fw137epP+I50uKs0JGGE9+bVY7A+cLQjIyYpeoWSDnMoLcG9oXyvgRFVta8omdcSlXWDWZvBzefVANj/kwHgRG3Vu4Hlfo15JmaJOG5i2ibyTJjqDh45RKdHogC4w4QaKrKeEnvgdsESgvGLCyn9hPKrvjq2jQybCYsvX0BpCY2GA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,24 +94,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2 Jul 2026 17:18:51 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
+On Thu,  2 Jul 2026 14:23:27 +0800 Hongfu Li <lihongfu@kylinos.cn> wrote:
 
-> > Better naming? vmap_pages_range_batched()?
-> >
-> 
-> Yes, I’ll adopt this naming in v5.
+> The main changes in this series are to refactor shared tracing and assertion
+> helpers into a common file, unify both pkey selftests on pkey_assert() and
+> per-test tracing for consistent diagnostics, and add missing mmap() return
+> checks with MAP_FAILED used throughout for readability and consistency.
 
-Cool.
+Updated, thanks.
 
-Seems this series is due for significant updates, so I'll remove v4
-from mm.git.
+AI review might have found a pre-existing thing:
+	https://sashiko.dev/#/patchset/20260702062332.911786-1-lihongfu@kylinos.cn
 
-Some notes I took are:
-https://lore.kernel.org/a6e410bd-7413-45f0-9033-a60cd5386512@arm.com
-https://lore.kernel.org/a8ff2b34-5e5c-43c8-9de2-cf7929265853@arm.com
-https://lore.kernel.org/akPKkOt_GNbAbyN5@milan
-https://lore.kernel.org/aecf8ea2-43e3-4aad-810a-120b036d8bc2@arm.com
+> v9:
+> - In patch 1/5, define test_nr, iteration_nr and dprint_in_signal in
+>   pkey_util.c and remove them from protection_keys.c and
+>   pkey_sighandler_tests.c.
+> - In patch 1/5, cat_into_file() used the wrong argument in the open()
+>   failure message; print file instead of str. Update the commit message
+>   accordingly.
+> - In patch 2/5, align clone_raw() continuation lines to the opening parenthesis.
+> - In patch 5/5, set errno from pthread_create() return value before
+>   pkey_assert(0) on thread creation failure.
+> - Add Acked-by, Reviewed-by and Tested-by tags to each patch.
 
-Also I added
-	https://lore.kernel.org/20260630184129.4B62B1F00A3A@smtp.kernel.org
+Here's how v9 altered mm.git:
+
+ tools/testing/selftests/mm/pkey_sighandler_tests.c |   38 +++++------
+ tools/testing/selftests/mm/pkey_util.c             |    6 +
+ tools/testing/selftests/mm/protection_keys.c       |    4 -
+ 3 files changed, 25 insertions(+), 23 deletions(-)
+
+--- a/tools/testing/selftests/mm/pkey_sighandler_tests.c~b
++++ a/tools/testing/selftests/mm/pkey_sighandler_tests.c
+@@ -35,10 +35,6 @@ static pthread_mutex_t mutex = PTHREAD_M
+ static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+ static siginfo_t siginfo = {0};
+ 
+-int iteration_nr = 1;
+-int test_nr;
+-int dprint_in_signal;
+-
+ /*
+  * We need to use inline assembly instead of glibc's syscall because glibc's
+  * syscall will attempt to access the PLT in order to call a library function
+@@ -225,7 +221,10 @@ static void test_sigsegv_handler_with_pk
+ 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+ 
+ 	ret = pthread_create(&thr, &attr, thread_segv_with_pkey0_disabled, NULL);
+-	pkey_assert(ret == 0);
++	if (ret) {
++		errno = ret;
++		pkey_assert(0);
++	}
+ 
+ 	pthread_mutex_lock(&mutex);
+ 	while (siginfo.si_signo == 0)
+@@ -265,7 +264,10 @@ static void test_sigsegv_handler_cannot_
+ 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+ 
+ 	ret = pthread_create(&thr, &attr, thread_segv_pkuerr_stack, NULL);
+-	pkey_assert(ret == 0);
++	if (ret) {
++		errno = ret;
++		pkey_assert(0);
++	}
+ 
+ 	pthread_mutex_lock(&mutex);
+ 	while (siginfo.si_signo == 0)
+@@ -327,12 +329,12 @@ static void test_sigsegv_handler_with_di
+ 
+ 	/* Use clone to avoid newer glibcs using rseq on new threads */
+ 	ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
+-			     CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
+-			     CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
+-			     CLONE_DETACHED,
+-			     stack + STACK_SIZE,
+-			     &parent_pid,
+-			     &child_pid);
++			CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
++			CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
++			CLONE_DETACHED,
++			stack + STACK_SIZE,
++			&parent_pid,
++			&child_pid);
+ 
+ 	if (ret < 0) {
+ 		errno = -ret;
+@@ -501,12 +503,12 @@ static void test_pkru_sigreturn(void)
+ 
+ 	/* Use clone to avoid newer glibcs using rseq on new threads */
+ 	ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
+-			     CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
+-			     CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
+-			     CLONE_DETACHED,
+-			     stack + STACK_SIZE,
+-			     &parent_pid,
+-			     &child_pid);
++			CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
++			CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
++			CLONE_DETACHED,
++			stack + STACK_SIZE,
++			&parent_pid,
++			&child_pid);
+ 
+ 	if (ret < 0) {
+ 		errno = -ret;
+--- a/tools/testing/selftests/mm/pkey_util.c~b
++++ a/tools/testing/selftests/mm/pkey_util.c
+@@ -8,6 +8,10 @@
+ 
+ #include "pkey-helpers.h"
+ 
++int iteration_nr = 1;
++int test_nr;
++int dprint_in_signal;
++
+ #if CONTROL_TRACING > 0
+ static void cat_into_file(char *str, char *file)
+ {
+@@ -20,7 +24,7 @@ static void cat_into_file(char *str, cha
+ 	 * pkey_assert()
+ 	 */
+ 	if (fd < 0) {
+-		fprintf(stderr, "error opening '%s'\n", str);
++		fprintf(stderr, "error opening '%s'\n", file);
+ 		perror("error: ");
+ 		exit(__LINE__);
+ 	}
+--- a/tools/testing/selftests/mm/protection_keys.c~b
++++ a/tools/testing/selftests/mm/protection_keys.c
+@@ -49,11 +49,7 @@
+ #include "hugepage_settings.h"
+ #include "pkey-helpers.h"
+ 
+-int iteration_nr = 1;
+-int test_nr;
+-
+ u64 shadow_pkey_reg;
+-int dprint_in_signal;
+ 
+ noinline int read_ptr(int *ptr)
+ {
+_
+
 
