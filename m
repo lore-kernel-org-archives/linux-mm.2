@@ -4,99 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DF5AC43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 07:51:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BCA2C43602
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 08:00:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2537A6B00A1; Sun,  5 Jul 2026 03:51:29 -0400 (EDT)
+	id E9C716B00A1; Sun,  5 Jul 2026 04:00:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2043E6B00A2; Sun,  5 Jul 2026 03:51:29 -0400 (EDT)
+	id E4D7E6B00A2; Sun,  5 Jul 2026 04:00:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11A006B00A4; Sun,  5 Jul 2026 03:51:29 -0400 (EDT)
+	id D63686B00A4; Sun,  5 Jul 2026 04:00:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DEE106B00A1
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 03:51:28 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66F21406B9
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:51:28 +0000 (UTC)
-X-FDA: 84953953056.10.BF2A6BB
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AB37F6B00A1
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:00:04 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 29F681C3B63
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:00:04 +0000 (UTC)
+X-FDA: 84953974728.21.D1442A1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B40D240003
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:51:26 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1r3H7rex;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf06.hostedemail.com (Postfix) with ESMTP id 71EB6180006
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:00:02 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Bw38b5kf;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783237886;
+	s=arc-20220608; t=1783238402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JmDzrGAApB3p232sFjl+IuA3F1DiyD0h9KZAveodTsk=;
-	b=oP7KMO5uUsqggIa4MbRn6wwJmHhY2LrH2ekkk0KDPMcjDmB9ojIWi1Q3DWz9loHMu4pY2r
-	/M7rudtUZvUJPW9LF2nMMvY1/reUXm+Tod8Lda1/+xT75zz8vQkrg9q2P8HLk+hT7xRqyb
-	1E+fXfyhxHre3jKgMQtFbIoq+6dKOwE=
+	bh=C+RTSHxP2vSyd8onNRfos1htOyq8aCrQfwRYWC8rhv0=;
+	b=OuGVpbnXLPf4tBQYLguGbnGu9fnjCrzep02xgq+SfTrkZwQbIFU2JxaLMwkrnhWllizBE2
+	loTqHQANjRvIakXcHT8Nn8rYbG0dvuOAzej+UmgXLX5bmEhc6YQA33yzyzyn+tsJuEIyyR
+	odSv5cq4jhi9/PCe5MbBselvsgGQoGk=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1r3H7rex;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Bw38b5kf;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783237886;
-	b=ntc4TOq63Q/1fLmTny0CLJlipx+TQcZaM5Coqv7T+JsLT2QgoCNlmS01DZcT2o2+ltA0tz
-	LYrJlDoGlAEQw732RWrlmgaMhwAE5jJa3+IiPOF6GWzcifbRNnoxBtRA1uIUHM5dArRkXW
-	BnF24QBhyKKEx3ep+ehXmzOJd4irst8=
+	t=1783238402;
+	b=RXZEEE8B/qqlUuzwphSY4UZi7W6yhWX5AF06pJI4lAyPTc13dYLbg26JUdPO/51fgMtOn7
+	lEN8Trfl4Vhv0GUOHM5ITTy6MNAIJ+J7tBNzZNoeapjQUX0inbXbHkl3kol6YRIemEBNuk
+	39wJ6xlWb46Qg0eCqwF2+ovtm81hCzE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E22341E93;
-	Sun,  5 Jul 2026 07:51:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C02A1F000E9;
-	Sun,  5 Jul 2026 07:51:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3ECBC435B7;
+	Sun,  5 Jul 2026 08:00:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14AA1F000E9;
+	Sun,  5 Jul 2026 08:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783237885;
-	bh=JmDzrGAApB3p232sFjl+IuA3F1DiyD0h9KZAveodTsk=;
+	d=linux-foundation.org; s=korg; t=1783238401;
+	bh=C+RTSHxP2vSyd8onNRfos1htOyq8aCrQfwRYWC8rhv0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=1r3H7rexoiQDRjGFt+Qjs33P1gVqh+LD73TOTn/BTY0t13tL4G1XibQWtwbBNLJiy
-	 /AbaYonfCEjLrKKi9OkCqN7wL49L3MbO1BuGftrDMhCvBcwuagImS8gD8y1Sf6ehPP
-	 UGSpFne62asm/Cvv+3d9/HGQrxu5PpvI24+a2L/o=
-Date: Sun, 5 Jul 2026 00:51:24 -0700
+	b=Bw38b5kfGJ8hqmEOgHH5FNV548X9MkggalAx/zMvWpGcRMxJXJS+4pY+NUARg01n7
+	 +cNe5svEU3+SAubK2jGKIc7Me7FJD2vjPl9yhIJaD9RUVCcDMvKKlpb6RQfiXDdC6y
+	 hLI3tSr/Pv2BUlcgxas/bWu7AzTABrzdeHsliiiU=
+Date: Sun, 5 Jul 2026 01:00:00 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, "David Hildenbrand (Arm)"
- <david@kernel.org>, Linus Torvalds <torvalds@linuxfoundation.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Oleg Nesterov
- <oleg@redhat.com>, Peter Xu <peterx@redhat.com>, vova tokarev
- <vladimirelitokarev@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: prevent registration of special VMAs
-Message-Id: <20260705005124.307e2379ab03109e5f77bd1c@linux-foundation.org>
-In-Reply-To: <ake7PLwdHUHu4idi@lucifer>
-References: <5a993689-f730-406d-8515-8bb6025cc851@kernel.org>
-	<ajOtfdGgFQYL-T6f@kernel.org>
-	<ajOvwGs5xhnfBu-k@kernel.org>
-	<41ef0dce-e973-4947-b5e3-150fdb07f1a6@kernel.org>
-	<ajO4sLq2UBciSgOn@kernel.org>
-	<dd2ae577-9b7d-4e40-81d0-fa9fcd7e0767@kernel.org>
-	<ajO7yI541hphWRb8@kernel.org>
-	<11bae87d-73e6-4946-a41f-c5542fb40b75@kernel.org>
-	<akeJdxdZXAFb8XCr@lucifer>
-	<ake3JZJPYHP-0N7n@kernel.org>
-	<ake7PLwdHUHu4idi@lucifer>
+To: <xu.xin16@zte.com.cn>
+Cc: <david@kernel.org>, <chengming.zhou@linux.dev>, <hughd@google.com>,
+ <wang.yaxin@zte.com.cn>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <ljs@kernel.org>
+Subject: Re: [PATCH v11 =?UTF-8?B?MC8zXcKgS1NNOg==?= performance
+ optimizations for rmap_walk_ksm
+Message-Id: <20260705010000.1f9b63735aa19fbfb5d9c24f@linux-foundation.org>
+In-Reply-To: <20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn>
+References: <20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 71EB6180006
+X-Stat-Signature: c5fkzwye69hrg85cmtq1nigkoqhx8if8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B40D240003
-X-Stat-Signature: q73nmepk8on54iq8w93uhwbo5cjkxp8k
-X-HE-Tag: 1783237886-701015
-X-HE-Meta: U2FsdGVkX1/73xN18jXSKnWbIAO+c3yOEirmwoFloioH9KwBZCSbmdDlGGGEu/cyn83StsXCpOFNvHmaxOgDVu3Fs5lxKzXuJnvANw67oHbXoOpUPMcEgerhcIa2M/E06rtqa+oUeS8HUTCY0GeMhgubIV5IWZAcm1e7dU/L2nkFvaMkelTq70cJ4cWTWJqwXUw47Wx2It9mVxWBsXvH+ILqsLBnF1Gq2gmYdwXhsHOAzcAE6fIjzEbl6Qwn6PkmtgAIl5RM7vNoRIVyUTyQOglTFFgUP+F96xmHT+EgEPnb/V09vVVD9Lp7zGcCWCi24o/mgg4B8nOj0oF7vLtbkWQYMAhXJQykl0hW/wnEnsB9piZSLVlHi3tF0zfjvWawbGhPtjm9/us3zndQURLdaitj7dCRl8gLVjuThSCyNMBHD/CHKVqRDe54hTAWOPe2oBuac0CPLMequlMe9uIgWgnU4AAohjT9sWS1cTYb+l2ZQD44gYC4TPdXNqom9o+sA5SY4d0zntCdQNdvVdt4Eh+g3uPUKOQVzxaYyvg6kA8uJGsyfdnvI2HPwyqnFGhbYatQGqZCJQF3/8Ej1Is1C911wWWOBOOB6MgsSgGoJqlhnaAHKQoPwvARIuhF+X21HuAHW79Fv67vqZI7/XtS6aDcSwyqgva+z3A751TVmTOOZnigImyu0f+0rUU3Miua+xWAbn9TaBBr+h/BQDh0A6GP3aLLGvai3l2V+xGRPHqR1kjxW7G2DCxXpT/s174c29hFgVCRKEIZ8PRO2gLRXFJWQxL/mDxhrYUIJrfRRAITg6nxcF/7p/3cx7XJ88QGzHVNYPnJE4d7eJiUQQo3gy0rkbFTP3FlvUWiNpEPSrOwWZDAtZEcuE9/OpMiloaZXsUXgzvInNMGw6dJG6Dn56r9UIDzlKbZxkJK8PKxoEJ4u3XBIZlhdImcbLFpN7rHOKocRijtpkGovMc2SDe
- 77eSgYrE
- u06nFG4IUIu7+iv3yutSIU1v87IzvDbhSWHADRNjnay0pawB4ubp7wvGv8qVTMlYSRsB4jADp/X3HZnxWMmORVt0I/SMcjYqRPtLZTGDiABFzRTncqaAzJqHuPznNFbbgJxszXxLXONdtI/oMeHSqyCRvLMUBW7IGMW3EtGtXpCBm2ETjf+QxLCjsivT08mMWLbyAztiUbd4ePqSAeHlqjDkgYRUDyM+gIzezsg/vAi18mZCVtFxwYRSlKx2eCkVfMI5gBkG2o8JTJ5H8Ygq70upn0w==
+X-HE-Tag: 1783238402-366061
+X-HE-Meta: U2FsdGVkX19Ltjq1cHPHqyjx9GuLZyH2soibSGgUUMGYyPjke1XKPT0UUANZ1KxHJQnlBPbi2OJwzv5kr/zdAqGizMvOGJMdc6syda3cS8zzqVrMcVuslabso3R5SulLYdtGUQtZZF0AD3j3wyeldWuU/qz+g+dII7WobX1uJrYnQktAPJpXCEmba3cEcS4kDgUbDD4/0W8Guln5JRUXJFHPh9oAyDbe3JMTVYGh+rbQLAkIuL+QG8KXyPPkQSxZDjoKlwEY6donmoHKiMjgWW8+Df76gPAI247N5r+CZlCNFTVAGNvO/jJnUSkLGpVXsrViT2yZs9p1wg0H32w7I0DWznP/3Uiey87OsYKB1W2siNNy0xBs++AHV99kqf6EKgNunqaozLm8gVGtSUe+HrPOatX5CJO9aKoXz3vpB1/wvvI6eG5EVSICNZ1TGvx0cDLHVkd9vu5xUJMtQivbLFAaDQOutoZ7/4jZPJgX+BuFhMDzwmI1kC8FVqiOzoyHM5tNihCRhwXPlhKr6p/x0JO5SmMU5N65bTwcoHs25SiHNlhdgHs1rKbRGEoYg2zKdQFrA6YrE2mgsIXy7d2YwYLVI1trqEpTzf0nZv7a2fSoFnki0lyYCwUfHnrw09OeSW2p1o4U4HNX0EWXAYWG/D79MExslO4VJsF5bL/A0qASt4xRy4+PB5J20IH1hg8ocen/g/ohK2jHwOQZhL8qFcu03COAOfYJTHlAYmeGWxFd1qHmTCSf2bdRlJ5DUoyiyK+HSWv/V+qks1+5vb/CatD1+BcLXbtzZAuMmkTrXRVukSNlee3/2Qpu7DRfVKf7TRQ3F5KSH34TBNPiJDu9Oz786sDL3QuFmVUYnUtc9BtyGNri+mIq0c9NY50Nw0tMquYfhf9PyFGWWSsRQsy5EqakW0pFS8uanKBSMtFN0ISalU9w281gz1F8rcbDYfOyBkjFw50fi0fFTXtfyUF
+ Yg47UdDR
+ QkqVlhH4C0rzUVTB1I4GKceWvJmqYEox3A/l9PbrGFUpgs1sp9NMjOU2YWZ5ExgGRspFCXhMaCPaqSDnkH0ctQ7mmJtE09xvGrfldOtKhYx2QGxiMP65vXGlJUjhJj0Y/InZPGx41/ozh5M6vGZWHLmiq6TmFNbBTDB4UHzIyNsXBXDWO9SrueuSnl5vIpxoj0+UXq7DWF/gRzqRNAaJdYuQ9peZHgKqts7VR2a0gGFaSc96hSMfIIe8m8qvf7JnajfVHj/6jOdtciqEGiDqNX1WKLkRVUM23Gp592Q5F59JqMLmpOaouJhNgk1IV3DHt1lDD8Rma/8kSPmL6zffvxEhHCw+zcGU1u3SprbrbG0pAUgOAGX7zTGzj0+juIQot0JA6G/BjS86JYfrXema+aJDWrnn6UqoubctNIfHgP3SVtVZCKr6rvvDDPSV7N9VcwiVAe7GyxokFJ+kmSDrQE2dWyySJfkvMi4J0JDX7rkrsmAiOV3G0qQvtWG5/qwd7fQsK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,33 +91,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 3 Jul 2026 14:38:56 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+On Fri, 3 Jul 2026 16:22:53 +0800 (CST) <xu.xin16@zte.com.cn> wrote:
 
-> On Fri, Jul 03, 2026 at 04:20:37PM +0300, Mike Rapoport wrote:
-> > On Fri, Jul 03, 2026 at 11:11:14AM +0100, Lorenzo Stoakes wrote:
-> > > On Thu, Jun 18, 2026 at 11:37:10AM +0200, David Hildenbrand (Arm) wrote:
-> > > > > In a way that's an extra check for hugetlb, but it will work.
-> > > >
-> > > > My point would be that we exclude all special VMAs, except hugetlb (which is
-> > > > special but supported ... in its special way).
-> > >
-> > > Mike - you said you were respinning, it'd help my series if you respan the above
-> > > quickly so I could base my change on that :).
-> >
-> > I sent it already:
-> >
-> > https://lore.kernel.org/all/20260618095017.2553004-1-rppt@kernel.org
-> >
-> > and Andrew apparently ook it:
-> >
-> > https://lore.kernel.org/all/20260618183442.BBCD71F000E9@smtp.kernel.org
+> This series fixes a severe KSM reverse-mapping performance problem
+> that can freeze applications for hundreds of milliseconds under
+> memory pressure especially when a lot of unrelated VMAs sharing a
+> single anon_vma.
 > 
-> It's not anywhere :)
+> Two key highlights:
 > 
-> Andrew - did you take that thread as signal this should not go in?
+> 1. Lock hold time drops from >500ms to <2ms
+>    - In our benchmark (20,000 VMAs sharing an anon_vma), worst-case
+>      anon_vma lock hold time during KSM rmap walk went from 705ms
+>      down to 1.67ms (max) and 1.44ms (avg).
 > 
-> It should definitely go in. I will clean up the mess discussed there separately.
+> 2. Real user impact
+>    - The anon_vma lock is also acquired by page faults, reclaim,
+>      migration, compaction, mlock, exit_mmap, and cgroup accounting.
+> 
+>    - A long hold due to inefficient rmap walks stalls application
+>      threads, causing latency spikes, reduced throughput, or even
+>      container timeouts.
+> 
+>    - The problem occurs even without fork() – VMA splitting (e.g.,
+>      via mprotect or madvise over time) can create tens of thousands
+>      of VMAs all attached to the same anon_vma.
+> 
+> Real-world examples:
 
-Thanks, yes, I added it then hid it when Linus objected.  I'll unhide
-it now.
+Again, thanks for persisting with this.  Great improvement and I'd love
+to see us get this finished off.
+
+Please have a look through the AI review:
+
+	https://sashiko.dev/#/patchset/20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn
+
+That 32-bit thing looks legit, kinda fatal but easy to address.
 
