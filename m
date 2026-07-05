@@ -4,138 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 815FCC43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 08:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 359B5C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 08:47:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 704D16B00A2; Sun,  5 Jul 2026 04:42:49 -0400 (EDT)
+	id DECB06B00A2; Sun,  5 Jul 2026 04:47:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DC406B00A4; Sun,  5 Jul 2026 04:42:49 -0400 (EDT)
+	id D9D886B00A4; Sun,  5 Jul 2026 04:47:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F1E06B00A5; Sun,  5 Jul 2026 04:42:49 -0400 (EDT)
+	id C8BDF6B00A5; Sun,  5 Jul 2026 04:47:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 374CF6B00A2
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:42:49 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA298C26ED
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:42:48 +0000 (UTC)
-X-FDA: 84954082416.02.4CC9E98
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3B4542000E
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:42:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KwjhqWH2;
-	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783240966;
-	b=8mSqOuVI6Z+MmrxNB30buA8ca8aw7Liq36MX7viN819efyOnowXVAEgQ7HzNHs16tclWcA
-	pw/nDqcVtPU3AY536N/8BdOk3w3InJ4+Is/nq3n5Xjuv3glYNsQQoGvn1TIuEAPZRkJ6U3
-	umtHnaur3YiZLzszD3v3c8ud53pbLAg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KwjhqWH2;
-	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DAFB6B00A2
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:47:57 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13D5B9050E
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:47:57 +0000 (UTC)
+X-FDA: 84954095394.04.FBAE67B
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3C47B1C0002
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:47:55 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iS9CEnHS;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783240966;
+	s=arc-20220608; t=1783241275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OHXtK4FpIqGf3brzahyfCCX92d/AVZ7ZVXjnm2IjYlo=;
-	b=m3ljUGV/IDa5nufZo2MQ10CdFzNL57+rhraAsL3Ae8fMr2ES6Vu8XgK6qXrYKvxOYJlrMQ
-	dQdqS0DJZrVNhG60QIkYa9CB8DRovx2AmX1GrF8E+NFd2ybkxBqbFtUzAzHL5cYoDEqpYQ
-	Ncmh7GstS8OBHW5Vpq/sgDxUQsgdx40=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783240965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OHXtK4FpIqGf3brzahyfCCX92d/AVZ7ZVXjnm2IjYlo=;
-	b=KwjhqWH2qDV6rZZW9VZa1Zi1t8DDvVd7Zpdp95MA68Gdn0MNlEh834eMgna84BlUIQiUmA
-	EeVbmy2KWzGtAShwp4kxpey8NjKR3iRdmeoAkhJx9VM1UyLyvDPhhJy+Yu8Y2T/H9i9URJ
-	hZyx0Kp+1TjcOirVNmxbt7DWukrl94E=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-8-Dkgcs3FEMF-PvoiWvsR_GA-1; Sun, 05 Jul 2026 04:42:44 -0400
-X-MC-Unique: Dkgcs3FEMF-PvoiWvsR_GA-1
-X-Mimecast-MFC-AGG-ID: Dkgcs3FEMF-PvoiWvsR_GA_1783240963
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-47162f83c75so2065533f8f.1
-        for <linux-mm@kvack.org>; Sun, 05 Jul 2026 01:42:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783240963; x=1783845763;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OHXtK4FpIqGf3brzahyfCCX92d/AVZ7ZVXjnm2IjYlo=;
-        b=fkuIyNBXRFQVSbiuEzyQ5VLA3QkjFp2ILeXEAsbY6QQnOh8WNljUDeFpw67sqCn6aj
-         HKtl/UKjHVf7ei9O5BNGGwF7o0UwECFx8sUnj6EHBm+sv1CmzGqA5yhdCDgvHx0jBzTw
-         d6P0RjjDoqlixfGGwsEJ7qnjajAm5RTlb9efKvqA+Rnqmvv9XLQRcTHUf5JJB4Zufrig
-         iHLX+V7t1B1+SkP/4knX7YSWPgR9fJ9/3WqtFSonIPzleEjC5049AOUFJdA6uHdnKwBg
-         Cbcp//Plrx0Zn4NgkibX5okCG/MX5jJQ8Eue2TF7DQNjxnFKpC5XDgNoQkhM5EAy3giI
-         LU3Q==
-X-Forwarded-Encrypted: i=1; AHgh+RrBKWPZNUeZnB3+yAByg9GvhQnrUE/rVnp8jlFlsqEmiFzuGJ80Oj7s6FAkCsETrXiviA/ycyFs1Q==@kvack.org
-X-Gm-Message-State: AOJu0Yz7MJNNHbkpf12QMExbc+VKsLfCMDCtrpVa02Su5LFmsZsz7zdU
-	OUHW6zxtmzRqaLkSJ/KrCRa/BjT5cvWoe0Tnyz6kFy93fkTdR1/WydQNZdfNAr+ynq/hJyPBZIB
-	YNff74m0WQK9tt6Tl2MRWy8ycjI75bZ0s8NKQmtWjp3wkImhxxuVW
-X-Gm-Gg: AfdE7ckY6Pef3bfx0x1JjDudjjfGOiglin8c8MSuzJAyMbbc70SWQxzFqXBJTAAPYsZ
-	gwadzh8Mgb/N0D8i8wMl7p9XticRRWjYTziOn3/e+jKQbt2RYkXzF7bGWVHKfKRLlHBcJEY5aNP
-	Yz584kAOlPa/12xlzpwXX47Dk6qiLz47IemBIsM3XuWgLzF8BfMHeWzdCo7ofITJH+ts3/PFaGo
-	KSW9PpdlSt0S4I2Cs3Fn6xh0SpLFugnnea2oc6+49VIUdVpwIge+AvqtI8kxeGVSkewciMTx6mO
-	russuhsLKixyzs2+/diYrWpyDokIycoT/9HF7nUr/Kzg/qDqDqKkGLG7UAcJXstLxFeX09IXiCp
-	6MeniIzdqhJBHcNjoqWlEnLZgzOwM6tjh
-X-Received: by 2002:a05:6000:1845:b0:474:88ef:cdec with SMTP id ffacd0b85a97d-47aba8c6a4amr7086537f8f.6.1783240962802;
-        Sun, 05 Jul 2026 01:42:42 -0700 (PDT)
-X-Received: by 2002:a05:6000:1845:b0:474:88ef:cdec with SMTP id ffacd0b85a97d-47aba8c6a4amr7086499f8f.6.1783240962323;
-        Sun, 05 Jul 2026 01:42:42 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0f2186bsm14266295f8f.36.2026.07.05.01.42.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jul 2026 01:42:41 -0700 (PDT)
-Date: Sun, 5 Jul 2026 04:42:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v3] mm: page_reporting: allow driver to set batch capacity
-Message-ID: <20260705044139-mutt-send-email-mst@kernel.org>
-References: <444c24cf39f3f3620fc90ef4695bd6b0979f4c4b.1783232420.git.mst@redhat.com>
- <20260705011635.9974cac7f0defec9961e85c4@linux-foundation.org>
- <20260705042313-mutt-send-email-mst@kernel.org>
- <20260705013956.36f649b5cb13409d9088838a@linux-foundation.org>
+	bh=QzujVr18fVNG1CGW2r+8XijcSr52A2RjAyJBa5BWDew=;
+	b=jhidvMUioZ4jIofzEigNCz3L2I0MQcvq+h4HmkWQcobovxfN08MwI4+6gPMFUU84QVkIAK
+	P0SHq9yhu67JidcKrLZGutLGEL4WXzafnQl1suAdj/jXyUW/SHmn2PleD9FBNy1Y+bGhyt
+	W+0Y4T25aU1gJzxRvELzkxAmKwuAsXI=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iS9CEnHS;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783241275;
+	b=tCbaUrYGkpbDq34BmJTvYs2Yx3jzHW/JWtfqxVfx2atIcdQ5PdUz9jkwV2KK0hfU10XoU4
+	fL5fL7tEy99W8rha+ZKoEyzBONzMMUJGDfnBSSs5UROjSdFnGI8r72JXLTsGi/7ZPEDKZo
+	0sRIO8OR4rrPu/3DhrulCawbFzwv8sM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D28A61BC0;
+	Sun,  5 Jul 2026 01:47:49 -0700 (PDT)
+Received: from [10.57.73.18] (unknown [10.57.73.18])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B2283F905;
+	Sun,  5 Jul 2026 01:47:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783241274; bh=JsVD3xgu8GOXprojLDEYGOUJZZvxJv3jyyYwMODAXWw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iS9CEnHSna+motWt1dFRve7lVcWw4D/qHVvqh/moS5wd0vM7yPfDA+kl9rn6sVGFU
+	 H+hSdKJhV/DbM0rzW+yGzlZalReY3W32e5l6Dq5j2Qfbhz2RzJgZkt7Jk1cj9hsAfQ
+	 dx0nYjG6ApWeQU85l/W+hKapct41k6XhsIkYVXVA=
+Message-ID: <e4513917-e02a-4e60-9df5-f90085d6193d@arm.com>
+Date: Sun, 5 Jul 2026 14:17:39 +0530
 MIME-Version: 1.0
-In-Reply-To: <20260705013956.36f649b5cb13409d9088838a@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Oaluqed_kM5-mx2mA-ikgae3YcHpdjqwuwyrPWhQoMA_1783240963
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 6/6] mm/mprotect: use huge_ptep_get() for hugetlb
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
+ david@kernel.org, liam@infradead.org, riel@surriel.com, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev, kas@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, apopple@nvidia.com,
+ rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
+ nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
+ pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
+ jpoimboe@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260703114202.365553-1-dev.jain@arm.com>
+ <20260703114202.365553-7-dev.jain@arm.com>
+ <20260705013337.2bbc075b508b5db36b954051@linux-foundation.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260705013337.2bbc075b508b5db36b954051@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 6oa7dhopfq6qnqh7tawejtkskobamtsu
+X-Rspamd-Queue-Id: 3C47B1C0002
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3B4542000E
-X-Stat-Signature: y3hkaxgqnnxtsfojmzpdcuqo8rhyfui7
-X-HE-Tag: 1783240966-901610
-X-HE-Meta: U2FsdGVkX1/omW91s7kKsSKJyUSrBfFi0xX394na4jf0SLGrZQezCP5OWHGIn2dJtGa0MPcS/KxX2y04h5TmKhjHkKHwxEN8lqKUn3520EvlPFCsFMm9xm08b4hejbSxWY5qZvOa+kBCv7G1m827vzHlYcyOHhBIBh/bN4dEkuA9+qkwYoXKzkl5f4BGXED9K4nIBiYiavrpAfRfPss91FGNo6949VVkzCJN1JOcKbzXFIs26F9iy14VOP7ogXwshBgcbYglvxuc1Sbf0ChMzyXC7iohSruI4ptuAGdbHxU1LmlELgz+dy6reGfkZSC/hhzxK3mqAXwGw1FVvif1wtR611/FCbSg0RbH9NzPO9EWGOdNc9VW9C6DhLp7ZLVC1wq0IIG7DcYJttnBUZfPa/oWkKn6Ri53Sz0pW7sy/QVrSTLnTUrJgZDiUUs7xcIhpe302hcwnnjK7eqL2KQe4BTuvu/GS/p6EIcCJhPmRsAiaqKQx93L9i8Ct6LSMkSISCkfYQNxZke84aR84+sb6sC9CgXCmFtcMZEkyhrICFWua+c/fYgOnYPeJUPMZy7eBuDu092/mJOnVO4pyswSs3R2qhMFaaAkdUTViZl8YGZsYkIadSKNHZC3E8Y4LWpL9RPqGy8dnUjG4b56tL6CY8wJXDHjHc7Ewr/qMCJWh8ZATY3YWRnOypWZEi7d43JOz/UuOMW+dyqHcR/Jf2G0lo9qE+h8sioPb/w3xsWBmw4qx6Kqd8nOXQ0OBKHcIpgtpxC+0KhFyszfY+Q0OoW3Vmq3JXhhGaoDbuM8TnuMNJkNjTw09LXGJ9iY8mBqub74xmdvdtDdUwW+dypC+sXvcxz4j7ZpdvHcXgMjy85JmzLe8J1ou8SH18/MmlchAVNQRQlXweyfp76joMMhCYVlI0sI5lj2+OCPawhZVELl/xX9qZS6wWLEGAoasbn3o87avWedTAqsc3uWcPx9FpJ
- QYtN0gD3
- hORhJBuxMkMmU/laMm4BVqm/8hGp3/i/MkKf2nxYW/I/pxlawnhlXlUTHYwXUnk/EuadPGZQBG63skKELT4U4CIpihP9KeGd7kezC/tReE3GIsYdoHSqM41Gn0mTT+ZqQ8zhi/mmYojS+FS9bQidtvS4YiMtVKLoFypQ7Bz+0AIQcfxaYlgyMyMSXw8oIfJsshMw8rZZEVqPqdwZ76VKLKTWXz8PsY5d0vdopaNiJznos/UAi6RKNSXLG6tPMcV/tasK542IO/5wSIZ1l6PnK0wqrfrW4O4SGqp8NL1xnsCxBOQ1Q8Elr5Xnx4HtM6dQJSAJaf9hpurdomUZAXSdbssyPUUIU1y+JnfEbPJxArJOGt8c=
+X-HE-Tag: 1783241275-898834
+X-HE-Meta: U2FsdGVkX18woeyBBELeSvPLiExE5dDNjI+u0XEgQauw+Vl9Rvl0AQdJ0x/1pNn0HQ3ItxprvBUumJP2vleimWR3vo+mkvFyCasOw3K+P+s/J34YbVNvBjEYfUJ0Y6DOkxTA4MFeM2LPKI1pa0pXEKna9ji6/VT9/abF0onQte7pobta4DLGQzboLfEufIc31c6RQ3oSvcfWYzJA0//+iaLMF6MDQpbkklXCrYlBa+VZ+ZPW3haDKJ5EBJeFFxNMzYM4uo8IpYRDF8+SlvsAmPc8uqI5mOpzJ1PQ4DJEfsVMyeHtJilsLTI44KQoXZ4vbGV9sPlRJ2QKeVbC3T3TiL8MgnHTBW+A0T2b7HO6jXFSwnSAy7IY1Vh3bseSZI/Yb9p2bSLN2MdqFMnHb2kGr5kFbLSKLwg00OFjdd0K4Ik4hr8h8wQt1WeNhJtkfi484BLYSJNfHqqoVj3kMnihODu8/2vB90nfCma9Du+7w4AGlVDkaYkkua5o7WeOznQAzsEEzEV8i5FY4cOexdQIdxhp9l7RlZvyvbLRFUC9d/fyD4CXSpIwwQSOklYYm+Ssh6uSxgVSu2TqcbDQMrY6y+GlsCrUhVnZyPEjxOJDXhEpq9TjvfvFqzbgh3GDkpsiCNZpM2giSAedbPTN1MG3Va+bE+qU8L28MUa3/2yXo/axpU0ePXyKtyScukyxDLkX0JessJAjkKmrzwYwxd//ebkPLXyxFF+wOzuUND+xXsuvQ9vSjUDwY2ibSSWpD7cOnzgWQH/MxUMwK3U7SPwVOGEenVmr7Ddg2odI9usRquxmOyh+E53UDnhFBKtR5R9+1TkpHMysbnRqJ6LpVzuJCspLFK/5Eq3RUiJMCDrK9/xhM7sKLrxQCbHRt0+xHpjEt7kajAieagBRI0ehAIPOdX9cTVbyKwmqpkFSBSSAbxQ/vXgIfQoxuXq4sSlHoqRqoodH7tPahzSQVPcyY2I
+ PwKp8rko
+ k9MJgyj+X2STOxllJ79qEqpoU6iVSSHPvvT9EIO2XY1zXw+AzRcB1sT+hdH1/NWHu4sZjzx+hFxPzNdeNx3YvkBLp5mscAytcPlA5CJbC5FE6g5Bk3hL1lMhabRDqobXD2lcrYtysrBtvSjr7aXbYEk12r6edmVzqRT6grF5xHetobr1/U5KzWxkXaXpsrftJa4vX/TXCfs0D/rAP7Txw8idYZoHM/+to7/ENETspLDkHgxBaFSOQZFITR2D/Te7e+BYmz5opjO6DfPawab+9g5ECyjfDoO5xN0cjVD3QcZk7HYp6OEbHV0nLoxnShU3eJrucVX3NNE7iSmpNUWxChp7hdaUv8fcIFEJq9BIEk3JDLOvCqWWU08I6DgAvhiKAx+IQnJMRkmZs2YXdtLoGByRHJxAMPd50UVCY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,27 +102,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 05, 2026 at 01:39:56AM -0700, Andrew Morton wrote:
-> On Sun, 5 Jul 2026 04:25:53 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> 
-> > > > If capacity is 0 or exceeds PAGE_REPORTING_CAPACITY, it defaults
-> > > > to PAGE_REPORTING_CAPACITY.  The 0 check and the clamping is done in
-> > > > page_reporting_register(), before the reporting work is scheduled,
-> > > > so we never get division by 0.
-> > > 
-> > > Thanks.  What's the priority here?  Should we fix 7.2?  Earlier?
-> > 
-> > If possible, I'd like it in 7.2, have a setup like this (small
-> > queue is useful for perf testing).
-> > It's very early in the cycle and the code seems straight forward...
-> > I judge the chances of breaking anything is tiny because
-> > it just failed probe previously.
-> 
-> No probs, I moved this to the the mm-hotfixes-unstable queue.  No cc:stable.
 
-I suspect the Fixes tag will make their AI pick it anyway. But hey.
 
--- 
-MST
+On 05/07/26 2:03 pm, Andrew Morton wrote:
+> On Fri,  3 Jul 2026 11:41:59 +0000 Dev Jain <dev.jain@arm.com> wrote:
+> 
+>> prot_none_hugetlb_entry() is the hugetlb callback for the early
+>> mprotect(PROT_NONE) PFN permission walk on x86.
+>>
+>> The callback passes the decoded PFN to pfn_modify_allowed(). For a
+>> hugetlb callback, the pte pointer refers to a hugetlb entry. On
+>> architectures where hugetlb entries need huge_ptep_get(), reading that
+>> entry with ptep_get() can make the permission check use the wrong PFN.
+>>
+>> Use huge_ptep_get() before decoding the hugetlb PFN.
+>>
+>> Currently there is no path which can trigger a bug: huge_ptep_get() is a
+>> simple ptep_get() for x86, and the prot_none walk occurs only for x86.
+>>
+>> So no need to backport - use the correct helper anyways.
+>>
+>> ...
+>>
+>> --- a/mm/mprotect.c
+>> +++ b/mm/mprotect.c
+>> @@ -699,14 +699,20 @@ static int prot_none_pte_entry(pte_t *pte, unsigned long addr,
+>>  		0 : -EACCES;
+>>  }
+>>  
+>> +#ifdef CONFIG_HUGETLB_PAGE
+>>  static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
+>>  				   unsigned long addr, unsigned long next,
+>>  				   struct mm_walk *walk)
+>>  {
+>> -	return pfn_modify_allowed(pte_pfn(ptep_get(pte)),
+>> -				  *(pgprot_t *)(walk->private)) ?
+>> -		0 : -EACCES;
+>> +	const pte_t entry = huge_ptep_get(walk->mm, addr, pte);
+>> +
+>> +	if (pfn_modify_allowed(pte_pfn(entry), *(pgprot_t *)(walk->private)))
+>> +		return 0;
+>> +	return -EACCESS;
+> 
+> "EACCES".
+> 
+>>  }
+>> +#else
+>> +#define prot_none_hugetlb_entry	NULL
+>> +#endif
+> 
+> Presumably your .config resulted in this change not being tested...
+
+Thanks for folding in the fix!
+
+On arm64, this entire path does not exist. The prot none pagewalk is
+only done on x86. Also before sending patches I do an LLM review and
+very surprisingly the "language" model did not catch a language issue ...
+
+On the other thing by Sashiko, that looks wrong. There are existing
+huge_ptep_get callers not taking the lock. And, there won't be a torn
+read because we are using __ptep_get() instead of *ptep.
+
 
 
