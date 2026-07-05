@@ -4,136 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60F0C43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 08:26:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2067C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 08:33:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A66A36B00A0; Sun,  5 Jul 2026 04:26:11 -0400 (EDT)
+	id AC36C6B00A0; Sun,  5 Jul 2026 04:33:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A17876B00A1; Sun,  5 Jul 2026 04:26:11 -0400 (EDT)
+	id A744C6B00A1; Sun,  5 Jul 2026 04:33:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 906696B00A2; Sun,  5 Jul 2026 04:26:11 -0400 (EDT)
+	id 98A1B6B00A2; Sun,  5 Jul 2026 04:33:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 622BA6B00A0
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:26:11 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DB71E1C3B2C
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:26:10 +0000 (UTC)
-X-FDA: 84954040500.18.533E10F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 76F71140007
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:26:08 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KQGkMd+Z;
-	spf=pass (imf26.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783239968;
-	b=zDvzae5wN5+9CCjSqkAUS8SawY16IVK750hQUIXMxSOlqt+rmnPvMUVtghAM41iVAZXKB9
-	DYnF6/F6O8Ghi/QipqaGhCBsrutp25OmtQ35Uv2VdgiGWG9kYH3wKwUoCnNJfegjhe5osP
-	qfxAhe2HyeextOIuwfPvnh4DsxpdXGo=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KQGkMd+Z;
-	spf=pass (imf26.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 695396B00A0
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:33:42 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8ACB21C8168
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:33:41 +0000 (UTC)
+X-FDA: 84954059442.03.902F05A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BFAD740007
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:33:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eNPPFp5q;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783239968;
+	s=arc-20220608; t=1783240420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8QARhhZ6+Yy8zGrmYtr8GGmZltZ9TCRLEJ8tCyAg6hw=;
-	b=QpITE0XAi8VW4AFrprraGp7pdNld1QpDSNK38IBd5jP8SnMEJeLdqBKsFwLzYp8MtD+zYm
-	uRjd6aMtrFnsiMxLpXe5LnojQNc0iPKqAw6VCmcmqMxGM/ex9oOYgyVS0fbJax/PVolNF4
-	c2UDQbhDZAGIurismFVeERTAYINCWP0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783239967;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8QARhhZ6+Yy8zGrmYtr8GGmZltZ9TCRLEJ8tCyAg6hw=;
-	b=KQGkMd+ZWhsayUoJp8sQQSTJ3AHOpRJB4wVxhoMJk4+7OSs83giiA8njHdgfHIzCDaU9U+
-	MNNH2YvCOXDj1na/uxNlioSEBt6jst2xsEXMRpFIJKcMNVSIOCujLQ1PfWZPgTdqaRZpHZ
-	i6mWDWwA5MC5olpmWqOpXVnZCBaS1Bk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-QZabZCFWMJOvCEuQRTP_Yg-1; Sun, 05 Jul 2026 04:25:59 -0400
-X-MC-Unique: QZabZCFWMJOvCEuQRTP_Yg-1
-X-Mimecast-MFC-AGG-ID: QZabZCFWMJOvCEuQRTP_Yg_1783239958
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-493d88406cdso854465e9.1
-        for <linux-mm@kvack.org>; Sun, 05 Jul 2026 01:25:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783239958; x=1783844758;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8QARhhZ6+Yy8zGrmYtr8GGmZltZ9TCRLEJ8tCyAg6hw=;
-        b=s1v23p4N6jZPX3ORx0AN/DNCrXng20E+hbzW4H0ofVefM1fN8W8c5kq8EOipZCmZZw
-         sRzyU9latPXQ7tATlU/2ym1S0wfEagVokhge7a27iylyLjZ7xhav+gKN2Q+WVu6qu5fj
-         jwW5yscN6SarDj+40XR5EdYDlsa3M5PpTti9Ilj1NWulEVgc2Kd8MpEMdEDTGy3ajBek
-         lKnOTQprRMNxmPAeTAgqGQKnS710A/odcgE8Xr27y3ULvFvlsaSgswVE6LAmwwCi3XdB
-         DzMQVJ/cCq7b6hnqqsE2rFOquCMNf+yWpD9QRnu5C4BWiOIRx3n6DInaVJN1zt21BAmn
-         dNrQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9iF4PcDbhQu/CKbzl9t/fL+zPIzSTDSCeJoUi046F3VeP443n+QsyZ3ASo6/g5f9wWfXo01BHEiA==@kvack.org
-X-Gm-Message-State: AOJu0Yyk/GDummeUnqUCymGyvnaOvJDwopcxt47uTavOUc7oGzPKPmrQ
-	QEkxZoLEtEvsKKWRzxxfrFbdM559FeZrOLZktpeQFUh4YoSLJFh91CFi4M50EgVbP/OzPLeB8+H
-	eJs+yDCiBEokUsvOWY7b1azx5M7+diwhhaHBCUMA64m7oyZqE3I6z
-X-Gm-Gg: AfdE7cmdtQSFhPzgq3bEGfGGnV+dHGphoFHI/wmhSqVZeyxx+B0qT31tk4JtsGJyz0g
-	/Bo3S92mbkQHf13XJX+eeelpKbc/zjVpKeK3HtzcPIFAw73Nxl6Uww3bYc2G3w6h6NiLlZf2bPA
-	I0k9g3Bi/KNWBz89GIsWkISy8nIjU1at5DcPqk4Pis0RKqXf8++5m0cuuCZEUgDWLqSkkHpo18v
-	0dN0Q7skH3KY14/JovAHC7ie+Jlj3KJXOU8n7nuZWq3EFaONSXpuSTBLsk0BGMIBcXSnH+ZJRup
-	tMGJNKPaabTtqmc3/ZxbxZEKH3A/ArfnWgK/1jU6F9g/+ZUhMU5uXMIRjNx+/mw0zi/NpMdkjYO
-	w/cKgJhvBlCVBF8z8Ke/q57OPOLGEW2o3
-X-Received: by 2002:a05:600c:4687:b0:493:bd2f:c5dd with SMTP id 5b1f17b1804b1-493d11f3769mr69488715e9.21.1783239958238;
-        Sun, 05 Jul 2026 01:25:58 -0700 (PDT)
-X-Received: by 2002:a05:600c:4687:b0:493:bd2f:c5dd with SMTP id 5b1f17b1804b1-493d11f3769mr69488415e9.21.1783239957721;
-        Sun, 05 Jul 2026 01:25:57 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960816sm13749921f8f.29.2026.07.05.01.25.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jul 2026 01:25:57 -0700 (PDT)
-Date: Sun, 5 Jul 2026 04:25:53 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
-	Pankaj Gupta <pankaj.gupta@amd.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Alexander Duyck <alexander.h.duyck@linux.intel.com>,
-	virtualization@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v3] mm: page_reporting: allow driver to set batch capacity
-Message-ID: <20260705042313-mutt-send-email-mst@kernel.org>
-References: <444c24cf39f3f3620fc90ef4695bd6b0979f4c4b.1783232420.git.mst@redhat.com>
- <20260705011635.9974cac7f0defec9961e85c4@linux-foundation.org>
-MIME-Version: 1.0
-In-Reply-To: <20260705011635.9974cac7f0defec9961e85c4@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HI5Y9yHygyo2T966Z_2ZxyQk4s1TjYLdVpROnuFxOwg_1783239958
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+	bh=baTotMMHSOM5O4gBj8/uxAAtb6QXbZ9I7HQpeImF9RI=;
+	b=NOXQUTqhIQYZLRBQH6nMBEqIOoS120odTWlfFA8yGBWkwZw3wiFtcr9R4eEBJFFb6oZHjX
+	spTAueYJ5fFLRfobUZurs0ck8H97S4uMZPVLFcxwaRlnhh1HMAOhd/ToLwR7VrUxUDbV0E
+	VWe0h/29Kx1DXuX1Z5DIxmAZdEDW/bM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783240420;
+	b=fZ+T6X2KoFzXQWoflM+T8ond0XBWYYmnQ7nEZJBpo6pXvJ9f1D10Bcv5tmzIdXPSQsfBxX
+	jCMxmOdDa2O0LYCq3WL0ed55/VAkQQ1WHaUhx/r1Leu2AxvQP4CLhRWgW/1enPxt/B14yc
+	eqn5qV4IHqDCbcIUXEf1T3BbJ/0umIg=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eNPPFp5q;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A24F643A71;
+	Sun,  5 Jul 2026 08:33:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742221F000E9;
+	Sun,  5 Jul 2026 08:33:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1783240418;
+	bh=baTotMMHSOM5O4gBj8/uxAAtb6QXbZ9I7HQpeImF9RI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=eNPPFp5qbKoJvjUdtGg8w3IZMg0vNZv6+vkTJLLSWou52vAtg3PDH+YXoVUKkouG2
+	 Tp5I1zPHI6skDu0RSAecz1Q5bIQEjW4D5u6sgFWBLlB3ZBkSkoh5xEUlGn3n1eSJGK
+	 peEKGToSl+aX/tl3OJYA18f9PnOfG4kNUughduRc=
+Date: Sun, 5 Jul 2026 01:33:37 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
+ david@kernel.org, liam@infradead.org, riel@surriel.com, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev, kas@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, apopple@nvidia.com,
+ rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
+ nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
+ pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
+ jpoimboe@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+Subject: Re: [PATCH v3 6/6] mm/mprotect: use huge_ptep_get() for hugetlb
+Message-Id: <20260705013337.2bbc075b508b5db36b954051@linux-foundation.org>
+In-Reply-To: <20260703114202.365553-7-dev.jain@arm.com>
+References: <20260703114202.365553-1-dev.jain@arm.com>
+	<20260703114202.365553-7-dev.jain@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 76F71140007
-X-Stat-Signature: kkwbfztht1posbqe6451ow6zms6smzqm
-X-HE-Tag: 1783239968-509610
-X-HE-Meta: U2FsdGVkX1+hERzCjuEKI4aYrLKGHw/rtEDYCvAH6AXA9cGMZwI4tjHrD+bXUdvzJBeCb9cOPUL0a09fp5RZoxpeP9/t6osHmFrxSO9Szozlm08J5z4ANdOveQ+ulXDQD2SCrri2LasI7PrEmHQkYMJ5ciBrbn23JCobPiWdB1ybyxHwdMMDtuKMfZh4tKW9Rj5b88Kl2jEouew3davE7TVcatL/eqXMqcJQoEdKUUwD8sqHSuPvW4oXy52AIXiuSLQtQ8jLGq8XFoMYgQrwYjYLFno1MNUX1nakbD0EXU2a1j8ci1EbOcf9Kke1wdTZjo95iRTMcDqhRt2lNV5/8UyZgsBd2RgjjWI7O0BCKN0WBVsjyytijsDXK3AoIw3RY8sFdQJNE+VDJjevhIST7QIeYDLEbWbBEl7r23+zwg4VsfEsZfK2ht9yY8Y0iNdlZiT5hB4d1iwZ0PGBZ9WVF9exzGAgRNPD7yVuv46J9Xqfzj16t3zX2+NKqX+UbjoR/0OYconquC1pcmIeyCrVrfi8RlppfxR0ZToY/52MMd2kAM8ryQgdu9LrjbpWhmHuKMBLlCVxvsG8qUvneberJvamWxokT+89hiET69FgC6d5wCumBOwTGYzAjmSkNeoo1YnQL4NGcmwM1XywdzTgIP27hTLz+v7cL5MlK0y2nulhEIDYsFYZJuSiBihcH9gNCsLo8495EFZYoeyvpi0OVaWzyIWMw5eoKDBLyVZkWgDJoMqLGi5EzKg5z3gf2uzZhL4mNfnnff+P1H5bAAvQQqw81dsLkMvUp0/K5e+h0P9EtvWZWwd1NtrKbaktmiyVaYDhuuuBmk/BWgQoExRovh9fSQ8s/2i4SYM3mjGTffQ/geZi64ur1rQr7ibjw2mYjHjSHhMgOSj13KXHpGLfj9mMXjfyuHypchgg7P8JswjnKKDAROBatBAhrVLL3kH8qaYER2EJEZkI/DzEyLD
- YmO9tXVH
- NcQQL2pwq4KumYRwtqyz34zNuKKMXH+3KIOyDtZ1fgmUDRd3R/8LFJft9M3NcJn3ayN4UxnLxXRg+b1jEtDLNFndom8nMzoPAi3X4KOHhp9Ijs7CSInC2LsL12YobhyLqvWh3q0BBy6ZIZ16LoTf8Bu1rFMFj3D3cu9f2U7paQ4SuiZx9lCJ8XprDexX9krIkVZKD8DcUhmBoviJpOtMLZWNmuCl+/sUkEQWM8dAfpuNk6ZRHVgZBlYfQtgWQ200FD0ObegqYsvefU5q7XnyX5QikqyJXYb6Uffr+3NDntMRKUG7C3nozRsPvtl+dt8+DblppFY/qC836jQ0j3t2em74KgYV6w5Dh3AyDHBEhZJhHkGzvOApgIuB1DSXriL+T6/u0/zdNOMEyIbHYSuFtr6c25DroFpGS2JODJjHcDfSE3GY=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BFAD740007
+X-Stat-Signature: j74h1nwjpjgnthaupoxsjw5ues15w63q
+X-HE-Tag: 1783240419-960344
+X-HE-Meta: U2FsdGVkX1//qgco7JPjC79HwtvLrI6tPJf3ExrfQYtGsav0xkrMVTO8M4Hm5XZSBLDJsW8EQ5ZIgKKeb0lvEDF6rC2fluxihfxBZeAoQb1JwEQ8cfZicaRshDbNYipghscBvgW4bJVXF41ZbZLGdeCitiluBE0lJdfXGpM9ebNqj1TdP8nKu129tBWPip7JmtXoECYl0V/+hzrlXOLaiN6Z/xBSLSW6XL+3MoTej7+ZiB5ktR7ERgV7Lobv6iioPbD85FCoLGzzwTWInwhPrHIOAnMF7kv0HnYudDNJeUU0G3U5I0UQdCQpz1ny3QAEK4Y1oM35TTm5PSidOhrE/Y1YV4xuUouS5Z/IeLTy16bTMTGreDCN5PTp35JUg5fsTsScR9Rb2TxMWl9VObeC8nWQzKjdwFyZ6Z69XMyNzNRnvSN9BtiJRxKpnJDeCCsfNEumu/gDk36bBvI9SPlJxYXjtfTXdkND4CsZBOUBIEPt5ZVLht0PQkP8c48d1N3C+fjsW5OmDQ204BBg7HahTqFoEdFIRVNUoxfIsGPFdm/52LBWqZayzZZm+clm376p2yR1PKtQPbW1Ec2pqlsLB1sG7QxGdfpfzbINOg4sPrdNW8+j1exTdNpDE0en8G6V93x1MuKY5L6LVjl+uuZ/djvQQlhYrr5Vt4egZTWTbzrNRepfzbdfjlhvtYSL1jD4vzfGcVETHB+0CbrOVPTLai2XZ/NW0SR1+M2swv5J5mZfCB9+QzC8NRjTRJ+FyMY08fNceuXAe50T2mFnNsOiz1CsjUrO/OcX3QATjIxoByN/VRVrxR15KGrTUSfOUSkt+nRa53rL99HLukHQAvmTd0G3bgL2WS9Q5c5niFXFMYcoCL//pEnYmUiMaqxKNVufE0FrdPEJ0SytJ7yaePpXRpZ/zK5+w4TNQ5NLqTnAckxccC/ZEWGDsMrQcy/7uAbNOLiwsWG/ZXHfXU+X/+8
+ dgMrysQg
+ ncM26viiZmjYiLd/XuipOLNKTvmwcaToZjTNzoHJzZOT9pvHgMr0rS9Xcer7zwLyaCGuEcM7J4MmtRzaKgVMGVXfnCSrbcvHak/Fl5vvl9J9nkxalozERxOs0x8spk/zrdTZLftG70r5Vb7bUXPgekFqgTJ60lTWn4Zdncmq8HaTXklOJL1l1v2NatQRyMiYP0l85Hwjztg+UfwAKU0rw826q8H8yS1cGgSyaJv9YsIk12uXWPOF1WnNUwhV6kBAAFE6gMaRbHQRNcvB/va0zhnq1ibwcp8halJAXYTZfyPaLmAWG9i6vCpOBf3cF0jRw6cNk4FLAJtAIwX7A7dEhzmqmnLNukg3GTIXyRKCRcwdssvRNmU+Y80512Fw6uNnJ3ujcf5hK3Cgdqi++/I2MkZGR+uGl+1agTrpeDH3wnDi+NbOfzHlsIbCMcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,47 +100,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 05, 2026 at 01:16:35AM -0700, Andrew Morton wrote:
-> On Sun, 5 Jul 2026 02:25:13 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> 
-> > At the moment, if a virtio balloon device has a page reporting vq but
-> > its size is < PAGE_REPORTING_CAPACITY (32), the balloon driver fails
-> > probe.
-> > 
-> > But, there's no way for host to know this value, so it can easily
-> > create a smaller vq and suddenly adding the reporting capability
-> > to the device makes all of the driver fail. Not pretty.
-> > 
-> > Add a capacity field to page_reporting_dev_info so drivers can
-> > control the maximum number of pages per report batch.
-> > 
-> > In virtio-balloon, set the capacity to the reporting virtqueue size,
-> > letting page_reporting adapt to whatever the device provides.
-> > 
-> > Capacity need not be a power of two.  Code previously called out
-> > division by PAGE_REPORTING_CAPACITY as cheap since it was a power
-> > of 2, but no performance difference was observed with non-power-of-2
-> > values.
-> > 
-> > If capacity is 0 or exceeds PAGE_REPORTING_CAPACITY, it defaults
-> > to PAGE_REPORTING_CAPACITY.  The 0 check and the clamping is done in
-> > page_reporting_register(), before the reporting work is scheduled,
-> > so we never get division by 0.
-> 
-> Thanks.  What's the priority here?  Should we fix 7.2?  Earlier?
+On Fri,  3 Jul 2026 11:41:59 +0000 Dev Jain <dev.jain@arm.com> wrote:
 
-If possible, I'd like it in 7.2, have a setup like this (small
-queue is useful for perf testing).
-It's very early in the cycle and the code seems straight forward...
-I judge the chances of breaking anything is tiny because
-it just failed probe previously.
-
-> It seems that Sashiko has found a pre-existing issue, a hard-to-hit
-> error path thing:
+> prot_none_hugetlb_entry() is the hugetlb callback for the early
+> mprotect(PROT_NONE) PFN permission walk on x86.
 > 
-> 	https://sashiko.dev/#/patchset/444c24cf39f3f3620fc90ef4695bd6b0979f4c4b.1783232420.git.mst@redhat.com
+> The callback passes the decoded PFN to pfn_modify_allowed(). For a
+> hugetlb callback, the pte pointer refers to a hugetlb entry. On
+> architectures where hugetlb entries need huge_ptep_get(), reading that
+> entry with ptep_get() can make the permission check use the wrong PFN.
+> 
+> Use huge_ptep_get() before decoding the hugetlb PFN.
+> 
+> Currently there is no path which can trigger a bug: huge_ptep_get() is a
+> simple ptep_get() for x86, and the prot_none walk occurs only for x86.
+> 
+> So no need to backport - use the correct helper anyways.
+> 
+> ...
 >
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -699,14 +699,20 @@ static int prot_none_pte_entry(pte_t *pte, unsigned long addr,
+>  		0 : -EACCES;
+>  }
+>  
+> +#ifdef CONFIG_HUGETLB_PAGE
+>  static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
+>  				   unsigned long addr, unsigned long next,
+>  				   struct mm_walk *walk)
+>  {
+> -	return pfn_modify_allowed(pte_pfn(ptep_get(pte)),
+> -				  *(pgprot_t *)(walk->private)) ?
+> -		0 : -EACCES;
+> +	const pte_t entry = huge_ptep_get(walk->mm, addr, pte);
+> +
+> +	if (pfn_modify_allowed(pte_pfn(entry), *(pgprot_t *)(walk->private)))
+> +		return 0;
+> +	return -EACCESS;
 
-will look into this, thanks!
+"EACCES".
 
+>  }
+> +#else
+> +#define prot_none_hugetlb_entry	NULL
+> +#endif
+
+Presumably your .config resulted in this change not being tested...
 
