@@ -4,193 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55298C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:38:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DD64C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:43:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 200336B00E2; Mon,  6 Jul 2026 02:38:31 -0400 (EDT)
+	id 2032F6B00DD; Mon,  6 Jul 2026 02:43:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AB896B00E4; Mon,  6 Jul 2026 02:38:31 -0400 (EDT)
+	id 1DB826B00DC; Mon,  6 Jul 2026 02:43:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09AEB6B00E6; Mon,  6 Jul 2026 02:38:31 -0400 (EDT)
+	id 0A33C6B00E6; Mon,  6 Jul 2026 02:43:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CBEC56B00E2
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:38:30 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65FFD1C7B29
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:38:30 +0000 (UTC)
-X-FDA: 84957397980.11.BEB9F8F
-Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 86D88160002;
-	Mon,  6 Jul 2026 06:38:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=wdc.com header.s=dkim.wdc.com header.b="ZL66le/N";
-	dkim=pass header.d=sharedspace.onmicrosoft.com header.s=selector2-sharedspace-onmicrosoft-com header.b=feStfHNK;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of "prvs=6405674cb=Johannes.Thumshirn@wdc.com" designates 216.71.154.45 as permitted sender) smtp.mailfrom="prvs=6405674cb=Johannes.Thumshirn@wdc.com";
-	dmarc=pass (policy=quarantine) header.from=wdc.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783319907;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CC68B6B00DC
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:43:24 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A13A1C249C
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:43:24 +0000 (UTC)
+X-FDA: 84957410328.12.A130E32
+Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [91.198.250.237])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8E6A7140006
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:43:22 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=mavick.dev;
+	spf=pass (imf09.hostedemail.com: domain of m@mavick.dev designates 91.198.250.237 as permitted sender) smtp.mailfrom=m@mavick.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783320202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dq0TJQA4Nlowbiocfcd3Mf1QNcYb2VpVDSIQUZVTWos=;
-	b=5+ksq8MUEIxkYM0ZUbk/B7PVhHApfSvqDieW0wvCiOczSCjn0F5TP5mOgk7CI3HawrPYOz
-	jnWnTd8XDMDV3hH1JlhRncLCFxcxAfTI+NIfZUNtSWbV4gYkY5yvVDtLoOPAR/VLXJLfLy
-	zOZV01nr3TRaSNUPXloLxWvC8uFLAOE=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=wdc.com header.s=dkim.wdc.com header.b="ZL66le/N";
-	dkim=pass header.d=sharedspace.onmicrosoft.com header.s=selector2-sharedspace-onmicrosoft-com header.b=feStfHNK;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of "prvs=6405674cb=Johannes.Thumshirn@wdc.com" designates 216.71.154.45 as permitted sender) smtp.mailfrom="prvs=6405674cb=Johannes.Thumshirn@wdc.com";
-	dmarc=pass (policy=quarantine) header.from=wdc.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783319907;
-	b=WQ+8AEN42oOu+UjVjtTSL724NGmJScAlGm0Ko5Tf4qx/GRic5I06v4WTPLca3iKLWJz2aU
-	jDRr+xCRBW+VZRCZT0jbLHdVJc9ANJub4Hk0KqxQZAUXf+NxivPPEd2g9vzBwolpnYTC5q
-	cvoApccFzTtufNGG1Uq0ZDdf7yAS1f8=
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1783319906; x=1814855906;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Drc/pYFTYWlIEWc25fC/A83AvRw0I7Q0rKICJSN3tY4=;
-  b=ZL66le/NyyjqA0E+2bu0TfgiGaGyI1tENTlURkYY84ptEFdd46Ylcc+y
-   1I0S4rweKu+Py5w7adTMHzLAT6rTH01yV0yrhaOfwHnxuqTigZDD11GXd
-   lkC0vAMB0alT1JzN8jlxjkKR+fWaSFDtZMOUTraF3ob2lPJGNf1ZrSSwX
-   fRBNi/iwCIarXXTVsVcaeLgJ4shHsAsnlcEwOwXmQz9hXZvoZKswPOz3l
-   wI81j2ua8i9dnt8ISin+nuPJuUIza+3MM7ESe/IpKCcPrdAfuP7HPOk+j
-   NaixQQ3i3RKKjwTzd+dFquNDd4lv0njfEC9PUfbBg/5Iqwl8ZvoO740+2
-   g==;
-X-CSE-ConnectionGUID: sAVVw4vtT32mTdNOpJU1gA==
-X-CSE-MsgGUID: p0auosT7SVux9Y3FkCwlGw==
-X-IronPort-AV: E=Sophos;i="6.25,149,1779120000"; 
-   d="scan'208";a="148919721"
-Received: from mail-centralusazon11010070.outbound.protection.outlook.com (HELO DM1PR04CU001.outbound.protection.outlook.com) ([52.101.61.70])
-  by ob1.hgst.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Jul 2026 14:38:24 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p9E1kjIwIHksW/FYPJZRrF6CaHAGV6p7n5C+aTG8zcbTGFYRptuxrZbglBJm/9SxADHenBuoSGVsxVL1kY6NMYaQmiayq94NY+G8Gn3S7fUlmwqOywhid2VQKZKknGzKYaXPbfRz36sUBo69S8YDUVeROVrR3xHeAcu8FFvtxQ1Y2mz42A6E6YLLlmSjQKejW3Y0ssw8zfQ3aCGAgz+sDaqsKbnC2VeFykeCzPWbid1f6ig3c2xLSypngI2auEHiF3M72Bhb4sJRPKpdKMfbwvIEfQAN06uCXYlVMjwEm1+mHYZfJvmZkdogN4M9tC97IXWASLMiT58a/3JEA2q7SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Dq0TJQA4Nlowbiocfcd3Mf1QNcYb2VpVDSIQUZVTWos=;
- b=sZdHCSNGm3D2LlgnUnAiUymwGQPLUJ0xqcjHl2+2jlP2xP7SxrG0ASEaZUksfbeRmJtI/gp1gWauLnZO7EBjFMdb4aZjo013aVwOFr7ntLoi37iTY1LL+QeYb49kv/wY2T2WdUz6TaO1kqwEIYB+8kXPqeVAcyQmO+C2hi4cF3gwwkGIPbpqR/Bd+28r/sDWH2LCsGboS0bsloz7DsH/J2AGcHzFBcGlMQlwBLq33fzCeWd6/z1lhLz69NOgt7vGBo/mPMmUjIXrA/WiYt1Kjg5CdvOjBjHUzRcgeLVSFZKGg7gbCJ9u1/7GHe2ClGYJRyMoYDeamUcUOEpEbMQ34Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Dq0TJQA4Nlowbiocfcd3Mf1QNcYb2VpVDSIQUZVTWos=;
- b=feStfHNKe4RLxkt7rBlaAeKLiOFh78ashghhf+0X4kygR7nmHVPPtwE0A6IV8fL+MyFXeffNfIy72wtOWtZWOZWKAW194jMijowg7++ZqZnikd1XDkr57P3ebtC9vpDRW4mKErvGK3h1cxdIVqviDpIlj8mFmfC+AwzLPkQs8us=
-Received: from SA6PR04MB9447.namprd04.prod.outlook.com (2603:10b6:806:436::21)
- by DM8PR04MB8085.namprd04.prod.outlook.com (2603:10b6:8:c::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.13; Mon, 6 Jul 2026 06:38:22 +0000
-Received: from SA6PR04MB9447.namprd04.prod.outlook.com
- ([fe80::14c6:1c14:485f:1825]) by SA6PR04MB9447.namprd04.prod.outlook.com
- ([fe80::14c6:1c14:485f:1825%6]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
- 06:38:22 +0000
-Message-ID: <8583b332-0d24-4f6f-8831-69e3aad936fd@wdc.com>
-Date: Mon, 6 Jul 2026 08:38:12 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: split out a new blk_plug.h helper
-To: Christoph Hellwig <hch@lst.de>, axboe@kernel.dk
-Cc: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-aio@kvack.org, linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260706041125.642097-1-hch@lst.de>
-Content-Language: en-US
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-In-Reply-To: <20260706041125.642097-1-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0234.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e9::18) To SA6PR04MB9447.namprd04.prod.outlook.com
- (2603:10b6:806:436::21)
+	 in-reply-to:in-reply-to:references:references;
+	bh=yOVKcthDGvAJ8dvBG3cmLRLG3KzkQv//OuPlDX5LVp8=;
+	b=3ID6IH09J1IPLbKt3QEpNoQasUtJwUKK7c1y8vxqALRgdZrxBMN2vHIrvIT9Xec1mse2PU
+	FqW/Bzj1A7mmdfaihR3IAgZnXqXG16nXPubHIU1sANpTV+Om6cRY/52s5d3Gc9A2zyKfcI
+	Se/x2dPstxQNrsKCnBwZLNQI1o5+GzM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=mavick.dev;
+	spf=pass (imf09.hostedemail.com: domain of m@mavick.dev designates 91.198.250.237 as permitted sender) smtp.mailfrom=m@mavick.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783320202;
+	b=guODzUP3HwbgkMvfaZ+E4PC4URDbBAyVSZBfvt3Oxr24UVpjGhR7CYYvgECAk+gUF+BmHX
+	W9aZsUUleqht8X+npQcQ3WFPz3zt7I5KHHH3Mqve2wgmZ64YHyXAmdGJvCwzgPXezEQzng
+	Jaw6DyMTycGHiGpjITPEiWco6r48ZiI=
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4gt7r03qBCz7vTv;
+	Sun, 05 Jul 2026 02:37:52 +0200 (CEST)
+From: Eugene Mavick <m@mavick.dev>
+Date: Sun, 05 Jul 2026 08:36:56 +0800
+Subject: [PATCH 1/4] tracing: add ref_trace_final_put tracepoint
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA6PR04MB9447:EE_|DM8PR04MB8085:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a5af553-51d6-4473-ea6e-08dedb292c72
-WDCIPOUTBOUND: EOP-TRUE
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|23010399003|18002099003|22082099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	S9lAMdoaBcZmApS4lNChfKLI3R4BEaJtiMSDdSmDnm6T0ywgf4BJmu9ZSNBjwR4cMwAMFE7EcHikMbxeWDvdpQgYdXu0PrusOUD6qiLPhJ+cEKKYaMflAzlBi4j1BV1lk3BRxj570ymL+bJ2nZ1TXx13S5gSnPp1DS6msm8u/4IgPpi0KnnkIImmbKX3Cv84TMysywfgnRDJGSy7M6UkswG61aMe5l4YdLKY49SxVszLEZy5AeHh57dMRsTQo4aoixxo5d96N8fLn9bJI3YcmT30W33ksbHxLpoQE3Sa1cBbOP9jF5DxNJvgFfp/uWmEOnuKNWc9iSDjMP6J1tLCnj2I6MzxpY6kqWVB6pIT4qXKhI8iL46viyjV6YvZAEkGpIkWqfuoSLMc3ekk7tgYz1KTGrfHBujdPka7IZrdSMptMFXsRsbgQOhCJZI+T61iDWUBrHKoyjPLCf/kxweZEuhKFiqfhXrY2wEN+AxMUgphRWK7im8g8wSVcfGtPfe1ET/Wt8WhoI09+rk1/bW/Y+2FEb2W8TNbh7X7BzHJlhikdF7F8U8RBVnZog0AYfkCN96G6roaj4iOgWuL/ck1qY45xZ91vyyHtPnzqVfc7lXB5WxUTBxieBEGquZYuvkrL3iEcsYmQKsywo49MiIIp/wMPhz9PrXPZv0ZfOivHRo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA6PR04MB9447.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(23010399003)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SGduNHNoMUdBWWF0WmNHNDdOaGFmZThUVlV1bTNtZnBZWjdXMjFwYUhtZTFz?=
- =?utf-8?B?cHRlOEpUTUxRUCs2Wks1dXRVVHhGZFZRUGZ1SHJHbEN3ekQzOXhJZ1I2RXBw?=
- =?utf-8?B?alBxYkdYQWpDSXJQei8yZ1FkaFllMmlacTNWeGllZnJhS0Njc0FzVExLRjdT?=
- =?utf-8?B?MzlXQUtHb0JFdHpuMXhqQVk4MjhOQTB5MHlsditpT3RDbjEvc012dnYrRmhU?=
- =?utf-8?B?TGtYeHBtOC94TGdRYkhLSkxnVWNDb2dCZ1Izd3NFbHJCcE1pbkc2SmhsYjha?=
- =?utf-8?B?N1B1YWtkWG9SS00wVVdFMVBuckpiU1JuSU1EeG5nSFdBa2dVa1doM1FEclFl?=
- =?utf-8?B?c0pCbGl3Nlc0VGVzY29JME1yN2xqS0dOdndUcFhkblFTaEFBNWRZQ1d0eXVl?=
- =?utf-8?B?KzFqaWdibUl2dGlpNThUdzhKdjRHWHZBQVVtbFMrb0RSZ3d3N0lKNDJ6ZHR3?=
- =?utf-8?B?OVJVUmFrblJJQmNxTGZXTkJpZGRRYTdiaWNOQmlCR2g2L0JyeHhoU3FLeGFl?=
- =?utf-8?B?Y0Jrdjd0Vy9mUXZ6M1RGK0ZsaFpieWhGMTNnZFJ1Z3JrMVVlc3p6SE1hV3Rt?=
- =?utf-8?B?U3YwM0JGMzZzUHlhRVp2My81a1hTZkdOQUFkbFBkQnFiTWhmQVdleld4WEFT?=
- =?utf-8?B?ZVdScUNBdHRhOWRUUjlQUkN6WW5Qd0tHaCtUL3pCKzk5dHYweTVwZ2ExTWxO?=
- =?utf-8?B?ZVNzSXJRbk5FVzByQUt3anhVOC91aUVFckdRUkpEbGJMNC9xL1U5T0hiSUx0?=
- =?utf-8?B?ejdSWk1seUxQVHZZVDE2ajlkTGdWZ1M1cjFaV2g0Q3JBb2ZaY1RyTXRFZHZD?=
- =?utf-8?B?aHNlblYvMVVlOVU1OUFPOUs5a1RTWWk5K0d3eTE0Rm8vcGtBQlRCNkFuQ1Bw?=
- =?utf-8?B?Ykhsa3ROL2IyUFNPcUg5MFlqVGhzYnBpYXlDcXFMbEVHSHRCczdTQ1NuQ3Y4?=
- =?utf-8?B?eXkxMFdhYi9MRE9BM3JTc2ZkTis4Qlh6WVA2eGpaZVZDV2dxZHVWL2VxWGdo?=
- =?utf-8?B?SmFaSEsvR09TYlhGVnJmVFhjT3p0akt3Q0tPeUR2eFNMMnFLQnJhdUxzWG9E?=
- =?utf-8?B?OGprMG9FaVQxZVVqWmV4UE9UUlhaR3ZlbG84SXRPY2VoVUpNbDlKTUxQN3Q5?=
- =?utf-8?B?eTJJdzYwYUlEaXJ0ZTFRcDVFSzlyNlVLem1xVnF2TDErOU0rTGVpcXF4K0lq?=
- =?utf-8?B?eXdTMDh6Mm5idXlJS0FvZGtTSlNXUS9wQTBtK0JjMWdWWnU3ZFlVTnZzOW1N?=
- =?utf-8?B?NTN1cGhqMkhzQ2xCYWZjTEJZZXRwc0pwYnZDWmNmSnB5SlM3c3VTcEEzd29i?=
- =?utf-8?B?ODQzODZDbzErc3lzUzFwSWVhU2xOVG01dExZTzFMZVNRYng2bWRQR3duby9v?=
- =?utf-8?B?eHg5cldFemZQNkFiUWIyRENscW5UOWxod2dDYzJsNDRtN0tXOVlGcXNoRSsx?=
- =?utf-8?B?Y2lWTk12bHNMNzBMamVFUjcyeWhqbTF5UEtmQk1vbVJSOWR6WUIxOEI2NjJG?=
- =?utf-8?B?UUtvdElOcndZWndMZk92V3NLdlNISWVCRHJoMjFFbnBya0tRSDFob2ptTmpW?=
- =?utf-8?B?bWpkSlB5WGxFQ2FjTTNtZGJQNzJFcm9zZFNWWTFoYkxrWkV1SzdnQ25Wakwy?=
- =?utf-8?B?dE5BRDdVYm9Kblc4UDltVWpWNUJLaG1pUGRGL1hEMXVTa2g2OXdXQlZRckE3?=
- =?utf-8?B?N0tROHc0bjFKTWN1a3NrRjEweDhOUmZCQWxJZkg4bUlQNVBqa1ZsWlh5SUU2?=
- =?utf-8?B?SmJ3MHJHS2RGQTRwclRMeDBSYVFnR05LRmRPWUppWXIyeXcwQlczU2NTUjh0?=
- =?utf-8?B?L2JsT3N1cXlVZEx5V1grd29NS0I2bS8vZEh6bzNHTW5YZUNIQ0dPNUdaNGJI?=
- =?utf-8?B?L2xkdzlaSENZcExRQTV5TzhDeDNwVHZVRmRGT3JSZEtWejd2RWNXNkhBbkZp?=
- =?utf-8?B?MFV1a3NqdXI4YjdNby9Ld3p5RnhzdVBFdUZTS3lJaUZMdlRIanVQZUltZ3Er?=
- =?utf-8?B?SzZITFFRdmkwNkNLcG1DTU5STlhOc1ZvVG1pTXZXUTI2cXRpQW80UlZOOTN3?=
- =?utf-8?B?bWo2Mms0MlRzcE93ZlVtdm5YZ29wSS9neEVtdkhqcGljQXBVSC96UTYrMzF1?=
- =?utf-8?B?VU5aQUhjMkI2Ly9iR2VjMUhlV05USUxFc0R2aXBmdkl1cER0U2FaemlpL0pu?=
- =?utf-8?B?MnVqUU1ITlRoK05DZTI3bXU3Q1BBNXhzQ2YxRHQ4TlkxS093cTZYSWRvY3ky?=
- =?utf-8?B?NGprdVY0amJFVnhrdmFXaks5ejlYUTJtSlY4dEtqUWRCdm5BQjBIQTdEQWJK?=
- =?utf-8?B?V210MGcxRzY0TWRXS3NtRmVEczJKWmJydzhkSnUzeFBxZXZCeG1oblhzU1No?=
- =?utf-8?Q?ITaSJYkWt7cGWmp8=3D?=
-X-Exchange-RoutingPolicyChecked:
-	QDgp/jnQdpPdAoXTBK3xMKPSI7FY547kZeD5tQhFlpIsfoOQ2My40I0dI40mYxMM3KutTG8EhVlSoG6oP1S0zmkBdwW1zNlrvRCYDaXAtdVDnAgaQlIh9HNxIsrrBn5PoQRoQuKjzN5CdfML2gnezjhvQTG++2y7ezny2OcvzmTO88YR4DUnd6OxjE2iLj9yCBSFhbVKVJLmkbP9Go0czohDYgxf0CSzsxU7GrOI3wdSO7N4HDIO+PrTTg0UUS7YqfLRU8LlSkWPwK6ZfhYNjxMJaiL73yCTDRCJ8qeZ1P6DF9dHFgKB5hmfyet3o8Ha4O0EwqjmGX8SzoM2c4Xwcw==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	uWwBRZEGdu5Wt5XOA5GrACJXVNHBQRdU8Rqor1lkWTeorlg2KnnwRoUPFWoAr9zcH/0ldeD6XBrRNNTydJ8IPrISPOxOzwGjqdqAIZgVLvHfNX6SW4peCqnAGbtiW8Ou5U3HJVpYOLWcAJrpHHk2IO5d/qdtRQY+eIDgePNlZznn1eNx3ZwLO/Cbr/VFWUo1CP5fhcj/MbgQyoO9f0pnNdE+Tx0SbI6MDKU+Bs0X6UHagEuQF16AMlXRpDT1Q/1FtNagHUwK95cTm0hSBt8jbaLxB8A1d31VNHwwztN+bhHLwckS/jbZNi2gtzaQwV1zM6dOe2OwVofvDW991IkeQxbvWo6Vnn8aQg5AzRbXYQIYEu2PkHxnS8cWPoTvPbGKSqd13BIpmQ5mHxLE7t5XsqUg4LJXMF7gTRSaFVva7FvIi5AEMJKgsywsrKHBIK4hzZ1KTaTkyFh7yyWhGINT5l+MytfHoIqpHPJvEGNtldsFjHGEsmTI9+k0VVxaZnpXp0ButaJH2ffk7TR+csg2cPEaPDxLz1KVAu7Nfbl7xssMRjnr7I9F9hUjYSRIEsTYmOiLwWiM44qcCmr0LgIBy8DKPnoqrnjmU1s+JEJQoQi/wosoaDSsOzRVEJLm8oS9
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a5af553-51d6-4473-ea6e-08dedb292c72
-X-MS-Exchange-CrossTenant-AuthSource: SA6PR04MB9447.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 06:38:22.1435
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wTKSfJys1EzufEikFkhFmN8ZN8mzLqPyMTaV2+TrL3wETXsww7RkLdtwhFvV4GRNs5Lx/zdgU+if3lVEc64k0W44wvc5b3NPLfpS9dpfi9Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR04MB8085
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260705-refcount-final-put-trace-v1-1-a41d3fd0e869@mavick.dev>
+References: <20260705-refcount-final-put-trace-v1-0-a41d3fd0e869@mavick.dev>
+In-Reply-To: <20260705-refcount-final-put-trace-v1-0-a41d3fd0e869@mavick.dev>
+To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Boqun Feng <boqun@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Gary Guo <gary@garyguo.net>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>, 
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, Eugene Mavick <m@mavick.dev>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4836; i=m@mavick.dev;
+ h=from:subject:message-id; bh=qHwnbzvpK9wYBzbeGmnuCtzzLwF8aY1zM3ldVu/OfqE=;
+ b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFmey20tX0Uv+uo9wcO1T/IDF/s+XU9nj3XtiUxM00Jnn
+ 2Bi49neUcrCIMbFICumyFKTleCesXJWovHRST0wc1iZQIYwcHEKwETWVTL8T2+7m3q0rGDbIYVf
+ tlNavGeYX9rGcrNgn13McuubTG885Bj+Z4t5HgmRc08+Wnty8xrdb2GHFuzybQq7eF59bYOWdoM
+ mIwA=
+X-Developer-Key: i=m@mavick.dev; a=openpgp;
+ fpr=7C6A604768A99A6133C5928C9D1FCA7EDB7D344F
+X-Stat-Signature: nwhkad1g7jtnmta16yo9rmeruijcs9bb
+X-Rspamd-Queue-Id: 8E6A7140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 86D88160002
-X-Stat-Signature: ac5q6qxeibr1rwc1pgwdf8hrzf3j79qy
-X-HE-Tag: 1783319906-237251
-X-HE-Meta: U2FsdGVkX1/ccP23/8nnLdKQNeppTvtc1Id1TG6XJkfI/ncvemPo01YnBPz057IWpL+cQzXb/kDfFWN2mh/QvHsctLRccF6Jh0a8jqC5lJEtIiGtHFZ5hpNoQlcLln0wms1n6MntxMHugBXFnmZvm+3lPv5WMq21dM6b/DiduSVuyR0teMuVqg69BXP0OvknNSQ9WZjOeTfMfCm65b2nvaZU2HUKzrSSvJJ8IgurM4HU2Ev3aSjjkZWiT/wAldlTly4XeCpd0WtOfMd4VxF597NCo7cNXGD/gcipswV2P5wlZ20Lkwc9FAKz0miTAdV7We74X88q7jY6x+ckWHlRWuhdkJdKX9rU7cMhiCNRvDb6ojCLyfFgLVtm4tvwZv+1Jfs9tzFEVlbqEzE1HlZqTDaU0aiXbpZ2syDTm4uPGPwx39qGRVlNjWG09U1WBjdiuPnVgeCyJcBYiQUDIe/QZu+IS/wdDCGQ845+yiM03QqAzKRSupJyKka338W5AauCkkrBscRpzmg/zdYcdNeVtekYlaQ9i7gD7pz3EbNIHh6AqOIfGcZ2eVDqhK3QrT68sMtkwh7zRT7i0hfoQdIkwoowWhfJqOPiM/ydWIqoARySyIoqUA95FwzIjGMBX/L7Qq13F3ad6XpNMLvAD+2YTOTseSnn2xJRyjZgGtADEi6K1LjFKecJJq+VZjOT147ZWEIntBjQTJRY+pP53bkn0GydZlFIRONiwMMRold00C26LroZiV92DaXOpgX7fDgtOcytQVurqPoGbJECt67NizFki+6F4xIm1pPJWKZds1DT4ofq017VXIs+B+LYfs0tMRTWjZLegC85Z5iF8UnyQXbJmQTXby+2qfT34OIYH1Pq/9NI/wNigS2xh9ofZm/eVMV5potGfl5Yw18VI1udLtWpQRTz2HFGqBCj3SjPvrIirBIDPkkOKUeU1AEu66d5r9FV6RpCa56lBmQ51/D
- JSwzZiIa
- PV6z/pjU8sPd/wutIhEdVxGkgwEnH9koiUQO9jyuYanc/+5kyDtRfk9ova9OS5T9ZHlFeE+oTLqJFMC/mFvQ633f23eFM/l4c/nVQMuTPXKcAfw01HgDPEIvybAx2R4asodqZrrde9G1sZyZVB2pRzk60YyuvDSYmYa8JXIBPIpSmh2Hko9hfeF1xqPeUqakBFgbUIckOB2wL1HZOqru2xVa34A9tVBVeFxpvYKxs+rNkbcNdS0Ncp7p/O0shYMbyDKN5dEpkCE3vby4MKih0YDLqau8G4pt+CH+lqRI7ugjPrin+IdLPqNr3SwicltT9Esz+s9MnUcrnWhckSEAcGcoHcUKkfTfersfXTHn6xQwvlZyRZ2BNGX2Oza7hzwCJHDuB5/344XVL858XnaOA3K+SSKNSe4DqWPfyW6ddvWcCX0hbnBFg8aoPoCNcpnjbCwiZtaEbOcP7ionUJrBiarqnZKUG78Lx1/VMBF/UEd7aWqBo5pLP1WQoXVvj2MRzbKm8T4Jk3hzxXsFZn6l86WuN1VySjRCn2ENx8PY7PHHQAAC3wJ6EVZ9K9IDyFRp+xgU6G4t3l+0l/zsQw7FLRFSMC7vqdp7HStz0In4OvgjoZCsWLuF4L0iZjAmqLTucfibIw2MU62IRpBx/zZqkHNWnV03iunL40/hO+7mtcFuEkDIchpZ9vu5LTIncuhL811Ioq100c8Vk3RzQ0M+2tJrZ4hoJqg9ksOz1jB5wK4pZxlvziM4xXLud7x32vGwLwZZYbBKVtf2ouYwQ/udJhw9e4BwZBoQnUvXCzlE6jScZ++VcUE9NCD1QfFCtL1CY60vg7UGmgOKosKjHR+OeLspylw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783320202-664514
+X-HE-Meta: U2FsdGVkX1+90gBPBtCoBnrUtWq+91g2r1QKy2koc8PSgty8S6lCxHcuMneCiALQ1CO4+mXQJGgZt4h+Ed1HhTiWCCH6PhQpri+5Ypw/T5g+4F4/CmL+odZ1c2JUz7RWi/clwT+t9xPfahUXICNzZjMrjLV1RCzFE2VgI1UgWyqz51Xg1KILnLsL2Tez/cSsB+NhD4EirvUfqyfIKA4NRD+qdiFho6URDMzHpA+b7YVfnbfAF6i3TIxDxrg7ZTunOJ0C9G20fF6g2gPdFEriBFaE9p9qe2+VmczJtOQnYrk4new7pRcvhNr7PTTs6CPrL9ZK7B+HPgwG0uU8We/vU2ZCYatvOWfiQrLyGeZOAlTMhyWZznKc7PuqGaxw2PpfrYLMOjPQonEOy1lwO/acs3r8OJlVpOGuK5/fC1fHN58tQvHTFZXW3pRB1X44RwfQcBQuN7j9J/5jtmUO7lL+YVh4zhDAMQcLQE3RrAjpttMcPqv5dcoX2cYDGRK7KD/ojlSYOd2AFFwlEgVu+J8FGjV6syEbSfD1W9IxMOAn+oRhmVXsSgAPlyuOfp71hna3DjHPfaEAIvIhL7xfsSgs+7nDL1MPn2ZMyEQokiKzLV3BZAGS4yCBwbxjeNA1Qq4wP0PJjfHsNKwBAQlBVbGj11enULQtPEKOFdEIub4QtlWLROYOtBun/dyrel4G2RpXsCEDorT55z8v8VSKLqgFAkN/r3GILp1cua3poePcozR2ehm49IMyNv0s7fqvjKG9R3tyP9Af+j3lFQQk8jk+Wz7N1ZKqwQQd1iM3+cpKFJx082rLAPXhETbgWyweGV9Lbw9RM53FRleB0+nw2fKtFAPNAAcq4Xfy7RpZJ2Gn7F49q3/PlrRcyVHFEK9EXhNbsY9DqiCpi/mcE+lZwsZR4DzGhENf7NbgkuETXLA8Vk3xkfs6vALLm0H052M1N0aFuAcBY+B11mUKfyT0wsk
+ oMt16t8e
+ JpsPFJL7KZmp4OAtDWtzwZYuIWT90G3PMGTYmVpJRG913cgkBpqgkP6H7RBkL3vp5ZT6woPgLdPVCd0KJ36AVGTiTtobxc2dlRpRGyfQi6ovZQjbYFwve1on5OADgLlHegKw65bjZQtk2qaA8ZuxXdCKhC9TNbD3rK31EyEd5Zlo5l6kZWVSlUPO6HIR3pQOo8d6SAOEurBEkMBJzuKBZ0xNfMbwtWCo9NvB5MfIMvyg2bMIXRyY2VbUOM44ZiWah8hjg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -198,22 +96,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/6/26 6:11 AM, Christoph Hellwig wrote:
-> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-> index 9213a5716f95..20cb8ed7d987 100644
-> --- a/include/linux/blkdev.h
-> +++ b/include/linux/blkdev.h
-> @@ -7,6 +7,7 @@
->   
->   #include <linux/types.h>
->   #include <linux/blk_types.h>
-> +#include <linux/blk_plug.h>
->   #include <linux/device.h>
->   #include <linux/list.h>
->   #include <linux/llist.h>
->
-I know it's a lot of cross subsystem churn, but wouldn't it be cleaner 
-to not include blk_plug.h in blkdev.h, but patch the update the 
-consumers? A quick grep shows 68 files that would need updating and some 
-you already  have updated.
+Add ref_trace_final_put tracepoint and related core infrastructure
+
+ref_trace_final_put fires when a reference
+count reaches zero and the object enters its final release path.
+
+The tracepoint records three fields:
+- caller: function that called the refcounting
+  function(refcount_sub_and_test, percpu_ref_put_many)
+- fn: refcounting function(eg refcount_sub_and_test)
+- obj: refcount object(struct percpu_ref, refcount_t)
+
+Signed-off-by: Eugene Mavick <m@mavick.dev>
+---
+ MAINTAINERS                      |  2 ++
+ include/linux/ref_trace.h        | 26 +++++++++++++++++++++++
+ include/trace/events/ref_trace.h | 46 ++++++++++++++++++++++++++++++++++++++++
+ lib/Makefile                     |  2 ++
+ lib/ref_trace.c                  | 12 +++++++++++
+ 5 files changed, 88 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 10e8253181d3..8dab37726b9d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4210,7 +4210,9 @@ S:	Maintained
+ F:	Documentation/atomic_*.txt
+ F:	arch/*/include/asm/atomic*.h
+ F:	include/*/atomic*.h
++F:	include/linux/ref_trace.h
+ F:	include/linux/refcount.h
++F:	lib/ref_trace.h
+ F:	scripts/atomic/
+ F:	rust/kernel/sync/atomic.rs
+ F:	rust/kernel/sync/atomic/
+diff --git a/include/linux/ref_trace.h b/include/linux/ref_trace.h
+new file mode 100644
+index 000000000000..54e9fba9e3e9
+--- /dev/null
++++ b/include/linux/ref_trace.h
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_REF_TRACE_H
++#define _LINUX_REF_TRACE_H
++
++#include <linux/tracepoint-defs.h>
++#include <linux/instruction_pointer.h>
++
++/* Declare the tracepoint so tracepoint_enabled() can be used */
++DECLARE_TRACEPOINT(ref_trace_final_put);
++
++#ifdef CONFIG_TRACEPOINTS
++/* Wrapper function implemented in lib/ref_trace.c */
++extern void do_ref_trace_final_put(unsigned long caller, const char *fn, const void *obj);
++
++#define trace_ref_final_put(obj)						\
++	do {									\
++		if (tracepoint_enabled(ref_trace_final_put))			\
++			do_ref_trace_final_put(_RET_IP_, __func__, obj);	\
++	} while (0)
++
++#else /* !CONFIG_TRACEPOINTS */
++static inline void do_ref_trace_final_put(unsigned long caller, const char *fn, const void *obj) { }
++#define trace_ref_final_put(obj) do { } while (0)
++#endif
++
++#endif /* _LINUX_REF_TRACE_H */
+diff --git a/include/trace/events/ref_trace.h b/include/trace/events/ref_trace.h
+new file mode 100644
+index 000000000000..e6037a325be2
+--- /dev/null
++++ b/include/trace/events/ref_trace.h
+@@ -0,0 +1,46 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#undef TRACE_SYSTEM
++#define TRACE_SYSTEM ref_trace
++
++#if !defined(_TRACE_REF_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
++#define _TRACE_REF_TRACE_H
++
++#include <linux/tracepoint.h>
++
++/**
++ * ref_trace_final_put - trace when a reference count reaches zero
++ * @caller: function that called the refcounting
++ * function(refcount_sub_and_test, percpu_ref_put_many)
++ * @fn: refcounting function(eg refcount_sub_and_test)
++ * @obj: refcount object(struct percpu_ref, refcount_t)
++ *
++ * Tracepoint instrumentation can be added using the ref_trace_final_put
++ * macro defined in include/linux/ref_trace.h
++ * which uses _RET_IP_ and __func__ for caller and fn arguments respectively,
++ * thus only requiring obj arg to be supplied
++ */
++TRACE_EVENT(ref_trace_final_put,
++
++	TP_PROTO(unsigned long caller, const char *fn, const void *obj),
++
++	TP_ARGS(caller, fn, obj),
++
++	TP_STRUCT__entry(
++	__field(unsigned long, caller)
++	__string(fn, fn)
++	__field(const void *, obj)
++	),
++
++	TP_fast_assign(
++	__entry->caller = caller;
++	__assign_str(fn);
++	__entry->obj = obj;
++	),
++
++	TP_printk("caller=%pS fn=%s obj=%p", (void *)__entry->caller, __get_str(fn), __entry->obj)
++);
++
++#endif /* _TRACE_REF_TRACE_H */
++
++/* This part must be outside protection */
++#include <trace/define_trace.h>
+diff --git a/lib/Makefile b/lib/Makefile
+index f33a24bf1c19..41737090a95d 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -335,3 +335,5 @@ CONTEXT_ANALYSIS_test_context-analysis.o := y
+ obj-$(CONFIG_CONTEXT_ANALYSIS_TEST) += test_context-analysis.o
+ 
+ subdir-$(CONFIG_FORTIFY_SOURCE) += test_fortify
++
++obj-$(CONFIG_TRACEPOINTS) += ref_trace.o
+diff --git a/lib/ref_trace.c b/lib/ref_trace.c
+new file mode 100644
+index 000000000000..25f7c17c7c47
+--- /dev/null
++++ b/lib/ref_trace.c
+@@ -0,0 +1,12 @@
++// SPDX-License-Identifier: GPL-2.0
++#define CREATE_TRACE_POINTS
++#include <trace/events/ref_trace.h>
++
++//Wrapper function for functions defined entirely in header files
++void do_ref_trace_final_put(unsigned long caller, const char *fn, const void *obj)
++{
++	trace_ref_trace_final_put(caller, fn, obj);
++}
++EXPORT_SYMBOL_GPL(do_ref_trace_final_put);
++
++EXPORT_TRACEPOINT_SYMBOL_GPL(ref_trace_final_put);
+
+-- 
+2.51.2
+
 
