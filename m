@@ -4,94 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3320C43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 07:45:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DF5AC43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 07:51:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 970E46B00A1; Sun,  5 Jul 2026 03:45:28 -0400 (EDT)
+	id 2537A6B00A1; Sun,  5 Jul 2026 03:51:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 948896B00A2; Sun,  5 Jul 2026 03:45:28 -0400 (EDT)
+	id 2043E6B00A2; Sun,  5 Jul 2026 03:51:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 886AB6B00A4; Sun,  5 Jul 2026 03:45:28 -0400 (EDT)
+	id 11A006B00A4; Sun,  5 Jul 2026 03:51:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F3946B00A1
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 03:45:28 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D7B56120644
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:45:27 +0000 (UTC)
-X-FDA: 84953937894.30.49ACF0C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DEE106B00A1
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 03:51:28 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66F21406B9
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:51:28 +0000 (UTC)
+X-FDA: 84953953056.10.BF2A6BB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1FF2020002
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:45:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gRnFhPHb;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id B40D240003
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 07:51:26 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1r3H7rex;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783237526;
+	s=arc-20220608; t=1783237886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RX3le/qPT7zqjelY/UP38ySnAKXxuX0WuhVciQD3IWY=;
-	b=cv46HQ+/pZKuKNsYay29J7L7RhdHSR3KeAdKYkQ238c86r4hPh9nP9P2Ti5IMSgjGU/OIX
-	jQSbDlHbT6VX6YQ/Qwga/Jbx/lHK+Jncus9T6M4F754PhHI4bx5WHx1R0RQbRzz/CIsnaq
-	LXFGoHSp/wcrXBrpGZqpUk4kd1Sc4OE=
+	bh=JmDzrGAApB3p232sFjl+IuA3F1DiyD0h9KZAveodTsk=;
+	b=oP7KMO5uUsqggIa4MbRn6wwJmHhY2LrH2ekkk0KDPMcjDmB9ojIWi1Q3DWz9loHMu4pY2r
+	/M7rudtUZvUJPW9LF2nMMvY1/reUXm+Tod8Lda1/+xT75zz8vQkrg9q2P8HLk+hT7xRqyb
+	1E+fXfyhxHre3jKgMQtFbIoq+6dKOwE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gRnFhPHb;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=1r3H7rex;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783237526;
-	b=wSicjlo09HO80uBAqzgzulF1SJ+nEGWhRgb2u3i1gq5hNOl/Sm331erhgIyQ+Bvnkaw74a
-	HuCywGlTctVOPB6mQ4XllWammZMEmX3QFnGDwYKh5IZgiHjff4N9AfwCnQHaf7NhaDYkhR
-	CwszN2PBBeCYU9f3WW3w5iSyY1AhuAc=
+	t=1783237886;
+	b=ntc4TOq63Q/1fLmTny0CLJlipx+TQcZaM5Coqv7T+JsLT2QgoCNlmS01DZcT2o2+ltA0tz
+	LYrJlDoGlAEQw732RWrlmgaMhwAE5jJa3+IiPOF6GWzcifbRNnoxBtRA1uIUHM5dArRkXW
+	BnF24QBhyKKEx3ep+ehXmzOJd4irst8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0BC2540F2B;
-	Sun,  5 Jul 2026 07:45:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB79A1F000E9;
-	Sun,  5 Jul 2026 07:45:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8E22341E93;
+	Sun,  5 Jul 2026 07:51:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C02A1F000E9;
+	Sun,  5 Jul 2026 07:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783237524;
-	bh=RX3le/qPT7zqjelY/UP38ySnAKXxuX0WuhVciQD3IWY=;
+	d=linux-foundation.org; s=korg; t=1783237885;
+	bh=JmDzrGAApB3p232sFjl+IuA3F1DiyD0h9KZAveodTsk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=gRnFhPHbpFC/3ywofs1mMe8NkJOCzc+3slJfghrYxsxz+YxgEIGInp3iiGlEp1eca
-	 XT0aXsnw0ZrgZ1Z6y994vzNW+BgoxKw0PjUXP8gfAvSTX3cltwi1+T7VGZSTB2S7En
-	 5lafFxltUOJsBNji181n5RIUffNZSvJXONR3ZDKo=
-Date: Sun, 5 Jul 2026 00:45:23 -0700
+	b=1r3H7rexoiQDRjGFt+Qjs33P1gVqh+LD73TOTn/BTY0t13tL4G1XibQWtwbBNLJiy
+	 /AbaYonfCEjLrKKi9OkCqN7wL49L3MbO1BuGftrDMhCvBcwuagImS8gD8y1Sf6ehPP
+	 UGSpFne62asm/Cvv+3d9/HGQrxu5PpvI24+a2L/o=
+Date: Sun, 5 Jul 2026 00:51:24 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
- david@kernel.org, liam@infradead.org, riel@surriel.com, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev, kas@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, apopple@nvidia.com,
- rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
- nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
- pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
- jpoimboe@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-Subject: Re: [PATCH v3 0/6] Fix incorrect access of hugetlb pte entries
-Message-Id: <20260705004523.12817419684173cb1ed1dc57@linux-foundation.org>
-In-Reply-To: <20260703114202.365553-1-dev.jain@arm.com>
-References: <20260703114202.365553-1-dev.jain@arm.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, "David Hildenbrand (Arm)"
+ <david@kernel.org>, Linus Torvalds <torvalds@linuxfoundation.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Oleg Nesterov
+ <oleg@redhat.com>, Peter Xu <peterx@redhat.com>, vova tokarev
+ <vladimirelitokarev@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] userfaultfd: prevent registration of special VMAs
+Message-Id: <20260705005124.307e2379ab03109e5f77bd1c@linux-foundation.org>
+In-Reply-To: <ake7PLwdHUHu4idi@lucifer>
+References: <5a993689-f730-406d-8515-8bb6025cc851@kernel.org>
+	<ajOtfdGgFQYL-T6f@kernel.org>
+	<ajOvwGs5xhnfBu-k@kernel.org>
+	<41ef0dce-e973-4947-b5e3-150fdb07f1a6@kernel.org>
+	<ajO4sLq2UBciSgOn@kernel.org>
+	<dd2ae577-9b7d-4e40-81d0-fa9fcd7e0767@kernel.org>
+	<ajO7yI541hphWRb8@kernel.org>
+	<11bae87d-73e6-4946-a41f-c5542fb40b75@kernel.org>
+	<akeJdxdZXAFb8XCr@lucifer>
+	<ake3JZJPYHP-0N7n@kernel.org>
+	<ake7PLwdHUHu4idi@lucifer>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1FF2020002
-X-Stat-Signature: ap4r55amaj6b9gbq1in3quoa695w3fg5
-X-HE-Tag: 1783237525-355896
-X-HE-Meta: U2FsdGVkX1+0rVWiI/TayNvW3AaQIzQn0aD9BTS7/bu2QfB1OqJhm8YsXrig5heL0aad4bPucjvGyO0Bwia1RNIYyHRnGDVMZ2W1HwcBrcGcD708aYZVoJU515QFAo8yn7rHzQ4TPels90WLgHqByIpNMTBe7awZL3pz4ouIsEfJOEfcBu627tO83oy0fdFSz+tk0T4QdF3yG+qf8JpvzUyliQ2tPv2O6KDDsEkFt7vPSKd7n8DprhKMXB25oo4imMB3n0mS2k3PzSpMLcQHzZ6sOj75GF1/VFsCwk2uOH9PQFvPHTYyZpGrmMg84Rp7WZb4CV4WhvdhXOkMHlggDfcGiLmqEXCpwuxuf45Bi7zLhXSG6iuCtPNyn7E+/ruJV8Kd5wguDuty48nuYiqpndb9rT9tKTlqAlNvwpqOQ2EtAyB/m6otMtX8AzQsCwhL1QR/kcNzh4ped+2kjreomPh6luakBK4nSrJhJusm7RZUXaytmWnZ1WDtkjKWM322ktPrcttOuLlfzCds3jndT6D4rTkwYMyUIEgANWdertD7zOf+3K4UfBTf3EfH/HkSzevEhBvIyiC5p4HRuu54na7nWW5gR/PF0lH0JkKYt6GUWf0n3+OjC42u53TaoNyY1OuazwQVFqCYiArF9VRB9I9K+K9uYcRbbIN8iYOLo4CvBfCP0Q3au3w7VTEtBhLc99uPhvdCkiGNnYbDEedSmThDgFWfKuND3l0MssjpKxt+aXz2/tD/Vq5J0n7erGAXsonB/AD17S0ifbd9sbHx9WNWr6dtnJ/Q19qWtOntkLaJs5dIYsgE+HT0ygWHbix/sC7JWRDvwXabn41iNAY6aX1kO0xfF3cSPLL619JxRjIAnWyByxgxVJ3Bc/04BupJPbcrR/eaNtZMmF5AuPP+dvXtHklurkwsGrDCZq58UcgTwclDJRQkdEjC/DFZoKlT6V9o4cljg1gV2V79gxP
- nlviiLbG
- ABwbu2NPk9JawaquT5ot7WnQsSq9GKmlWEbGaY6pzs/nzXt6bXniSgxZvF1IgRqRVEOxpZAQumP2MJ40pYCmlxnAwE4y4IsnWScWRFzQlFzIk+Fy1mFcyCd19KzApTuXWIVxc3UCiGr+eaogAgxXDGVVYPrfvzhI9fww3qbXCJJ/weyMPVg95+VTGAkqTVrzod7E1nl5juZ6m0iP84n+YdBYWRB1pYq1cl1pfl/el4mCiCm392aGArq7MgKJTJCNYea0rkT06lXKYaukKoopljtJ+KVioE225wj4sSSlTovg+FeCSBF/1hR0oYCQX7OrsXCMbktPGOQgWoQdenxPAVb+jU3XImwXM2WFCDT3GyoqbFPrctb8aSysscC3zycxWQGCeGwFNtSX9u6HGWVXvS20Q+f9kqwEkNxJZIAyltH6Nr/oJG3Iy+WC2/gCxAMBrNsWw
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B40D240003
+X-Stat-Signature: q73nmepk8on54iq8w93uhwbo5cjkxp8k
+X-HE-Tag: 1783237886-701015
+X-HE-Meta: U2FsdGVkX1/73xN18jXSKnWbIAO+c3yOEirmwoFloioH9KwBZCSbmdDlGGGEu/cyn83StsXCpOFNvHmaxOgDVu3Fs5lxKzXuJnvANw67oHbXoOpUPMcEgerhcIa2M/E06rtqa+oUeS8HUTCY0GeMhgubIV5IWZAcm1e7dU/L2nkFvaMkelTq70cJ4cWTWJqwXUw47Wx2It9mVxWBsXvH+ILqsLBnF1Gq2gmYdwXhsHOAzcAE6fIjzEbl6Qwn6PkmtgAIl5RM7vNoRIVyUTyQOglTFFgUP+F96xmHT+EgEPnb/V09vVVD9Lp7zGcCWCi24o/mgg4B8nOj0oF7vLtbkWQYMAhXJQykl0hW/wnEnsB9piZSLVlHi3tF0zfjvWawbGhPtjm9/us3zndQURLdaitj7dCRl8gLVjuThSCyNMBHD/CHKVqRDe54hTAWOPe2oBuac0CPLMequlMe9uIgWgnU4AAohjT9sWS1cTYb+l2ZQD44gYC4TPdXNqom9o+sA5SY4d0zntCdQNdvVdt4Eh+g3uPUKOQVzxaYyvg6kA8uJGsyfdnvI2HPwyqnFGhbYatQGqZCJQF3/8Ej1Is1C911wWWOBOOB6MgsSgGoJqlhnaAHKQoPwvARIuhF+X21HuAHW79Fv67vqZI7/XtS6aDcSwyqgva+z3A751TVmTOOZnigImyu0f+0rUU3Miua+xWAbn9TaBBr+h/BQDh0A6GP3aLLGvai3l2V+xGRPHqR1kjxW7G2DCxXpT/s174c29hFgVCRKEIZ8PRO2gLRXFJWQxL/mDxhrYUIJrfRRAITg6nxcF/7p/3cx7XJ88QGzHVNYPnJE4d7eJiUQQo3gy0rkbFTP3FlvUWiNpEPSrOwWZDAtZEcuE9/OpMiloaZXsUXgzvInNMGw6dJG6Dn56r9UIDzlKbZxkJK8PKxoEJ4u3XBIZlhdImcbLFpN7rHOKocRijtpkGovMc2SDe
+ 77eSgYrE
+ u06nFG4IUIu7+iv3yutSIU1v87IzvDbhSWHADRNjnay0pawB4ubp7wvGv8qVTMlYSRsB4jADp/X3HZnxWMmORVt0I/SMcjYqRPtLZTGDiABFzRTncqaAzJqHuPznNFbbgJxszXxLXONdtI/oMeHSqyCRvLMUBW7IGMW3EtGtXpCBm2ETjf+QxLCjsivT08mMWLbyAztiUbd4ePqSAeHlqjDkgYRUDyM+gIzezsg/vAi18mZCVtFxwYRSlKx2eCkVfMI5gBkG2o8JTJ5H8Ygq70upn0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,26 +104,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  3 Jul 2026 11:41:53 +0000 Dev Jain <dev.jain@arm.com> wrote:
+On Fri, 3 Jul 2026 14:38:56 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
 
-> There are various places which use ptep_get() to get the pte entry
-> corresponding to a hugetlb folio. Some arches (like s390) have special
-> handling to compute the pteval, so they provide huge_ptep_get(). Use this
-> helper consistently.
+> On Fri, Jul 03, 2026 at 04:20:37PM +0300, Mike Rapoport wrote:
+> > On Fri, Jul 03, 2026 at 11:11:14AM +0100, Lorenzo Stoakes wrote:
+> > > On Thu, Jun 18, 2026 at 11:37:10AM +0200, David Hildenbrand (Arm) wrote:
+> > > > > In a way that's an extra check for hugetlb, but it will work.
+> > > >
+> > > > My point would be that we exclude all special VMAs, except hugetlb (which is
+> > > > special but supported ... in its special way).
+> > >
+> > > Mike - you said you were respinning, it'd help my series if you respan the above
+> > > quickly so I could base my change on that :).
+> >
+> > I sent it already:
+> >
+> > https://lore.kernel.org/all/20260618095017.2553004-1-rppt@kernel.org
+> >
+> > and Andrew apparently ook it:
+> >
+> > https://lore.kernel.org/all/20260618183442.BBCD71F000E9@smtp.kernel.org
 > 
-> Additionally, some code paths may provide huge_ptep_get with an unaligned
-> address. This is a problem on arm64 (I checked other arches and it looks
-> fine for them), which is fixed in patch 1. The fix is made to be
-> backport-friendly: the cleaner fix would be to perhaps pass the hstate
-> to huge_ptep_get() - that is wider churn and we can do that later.
+> It's not anywhere :)
+> 
+> Andrew - did you take that thread as signal this should not go in?
+> 
+> It should definitely go in. I will clean up the mess discussed there separately.
 
-Thanks, I added this series to mm-new.
-
-That means 7.2 will be released with these bugs unfixed, which may be a
-mistake.  But without knowing the userspace impact of these bugs, I
-cannot make this call :(
-
-
-Sashiko is worried about [6/6]:
-	https://sashiko.dev/#/patchset/20260703114202.365553-1-dev.jain@arm.com
+Thanks, yes, I added it then hid it when Linus objected.  I'll unhide
+it now.
 
