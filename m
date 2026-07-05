@@ -4,109 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BD1EC44500
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 15:14:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 995BFC43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 15:56:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED8C96B009E; Sun,  5 Jul 2026 11:14:53 -0400 (EDT)
+	id 58B856B009E; Sun,  5 Jul 2026 11:56:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E62566B009F; Sun,  5 Jul 2026 11:14:53 -0400 (EDT)
+	id 50E546B00A1; Sun,  5 Jul 2026 11:56:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2A7F6B00A0; Sun,  5 Jul 2026 11:14:53 -0400 (EDT)
+	id 4033D6B00A2; Sun,  5 Jul 2026 11:56:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 93FFB6B009E
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 11:14:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E9C8989053
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 15:14:52 +0000 (UTC)
-X-FDA: 84955070424.07.B8690B0
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7318F40005
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 15:14:50 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=aELJ83Jd;
-	spf=pass (imf12.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783264491;
-	b=r5kaNVdyjDPrOrhHTZ+B09xqC8y09lrwh4AwRQbw144AeT+6om643UMo3bpa694z7tPEFt
-	a0aRS+T90qlbxzsQQ/7mNWYzVqn5fIKgmbfvuOa1NgEnJ83hB+3dyYOwOr9nQxip+r6lXh
-	IIzy2VNSQGrHW9TYTiOrm0SLLbpabxQ=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=aELJ83Jd;
-	spf=pass (imf12.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 18F146B009E
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 11:56:08 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8A9AB1A0140
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 15:56:07 +0000 (UTC)
+X-FDA: 84955174374.26.E9B8FC3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0B4AA140005
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 15:56:05 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ak7sUkQ4;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783264491;
+	s=arc-20220608; t=1783266966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xVGyenC0SFTxaahRR3YV9EMNLnHoYhbouZ6rWoZdi/o=;
-	b=T0cbiBU8LIKJV/EAp6b4T4d/Sw2JHA/XFpfZhdx61AVWDwkukNtSGHLfQRa4l2z2AMaWE/
-	zHdukTJzLqOzqK8rcQTHCmODa0ldhPL6bHXQw0T8Dxszj3Uf/09WTX/sbGv1y2n01Vleb4
-	c7dXf4B/W2a0gIW2rN2qQdDyVLf8C+4=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 787C540E0163;
-	Sun,  5 Jul 2026 15:14:46 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id GHw9jlYOBmpj; Sun,  5 Jul 2026 15:14:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1783264474; bh=xVGyenC0SFTxaahRR3YV9EMNLnHoYhbouZ6rWoZdi/o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aELJ83Jd115SE497B2UiygLqfAClT8mpMnMFlXSttmta3//gs95Un85B/NXASrDIP
-	 1NycsdFSD8Bg8OBK+vwykWBIHSrYXEqhvAr4hdfURYPjz4+r+agfJ6i8f4PmylnCUA
-	 leCpEVGpt5iIBOzJK/+EgmboDVAWFbqewwRnCnnpIAhNekKUxcw6k6OUa5HHKHRN/M
-	 79m0LJERxxC8kgIpMLvBnFhoWKZ/JUPDkefJonwAbSFL2j9qU9Nrb2M2mDmnLPED18
-	 QQYNE9MO5GWWo11WjEyPKqLi7yisWKc0F9CAw5dATLv7CjGRy/JrSGmXk3TYwZaUms
-	 geB1dZpKhBTV8n9bXktERsXdjcORAWtb6GtRSrlEAplfL5tnTe91dfe5Plpnjt4eHZ
-	 s/2RCoS89ztFRULElvHotLsEp+61PwxdPEWg4MOGm4MiFEG6bu6KlFgjxCwaNcgeLl
-	 PieynOZqAki8db3hMnGeJzWM94Ec4r7QIlK8r5bvoNBjKG0/O79NYisy5Y+Z+Yhual
-	 iElPuVi5v9oJb/EsryKZkNisIYZw6Zl4OqdpeUpqoZNblwgHdd8HnD99kFZM8YWB4v
-	 JPZKv5nbOn4PNewgAGhuv1PI5ukG+RFDuXQ5TChtPdNtPx0j7GLTrkKWQZRX6hWAEg
-	 KPVD0NQmI3fZAur7nKfmpqy4=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8382540E014C;
-	Sun,  5 Jul 2026 15:13:57 +0000 (UTC)
-Date: Sun, 5 Jul 2026 08:13:54 -0700
-From: Borislav Petkov <bp@alien8.de>
-To: shijujose2008@gmail.com
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	leo.duran@amd.com, Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	jic23@kernel.org, linuxarm@huawei.com, rientjes@google.com,
-	jiaqiyan@google.com, Jon.Grimm@amd.com, dave.hansen@linux.intel.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com, jthoughton@google.com,
-	somasundaram.a@hpe.com, erdemaktas@google.com, pgonda@google.com,
-	duenwen@google.com, gthelen@google.com,
-	wschwartz@amperecomputing.com, wbs@os.amperecomputing.com,
-	nifan.cxl@gmail.com, tanxiaofei@huawei.com,
-	prime.zeng@hisilicon.com, roberto.sassu@huawei.com,
-	kangkang.shen@futurewei.com, wanghuiqiang@huawei.com
-Subject: Re: [PATCH v20 0/2] ACPI: Add support for ACPI RAS2 feature table
-Message-ID: <20260705151354.GBakp0snJ4OKmlUFiI@fat_crate.local>
-References: <20260704220745.110773-1-shijujose2008@gmail.com>
+	bh=AqypLn7HBMPm5n3CjY0saNzxrJSnEmu/vZcmx6jzwgo=;
+	b=GtkgPnZZoXTQw4PL3xlBXqJhk0Ypwm4N/v56s7OrfVNey67r1hMCSbCk3YJ/fdjsVCdDL+
+	ufA+GPumKzMijGMDXloa7ttam0fEl2SB3sVgDbgdRS+bXDjmgqLAd3biSkhvYD1Yjst571
+	N35vyDUFJ6Q12yT8/0UViTsbSKYuxG8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ak7sUkQ4;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783266966;
+	b=o/P9jeEX/drTw4tcDoUu2r9fYTLVogi/CJBDO1qRU5VTlGADtRDvSXPlBrO7w9xgFfyQwi
+	Mh/EVG+C78iyuD+Q/SFuAlHDkHAOpE9uUVgfjkH+rpGcEHVOgzQc2PjTIDMUxeGUGkADzM
+	KtsbItueGIRn4NppGhqR4sS85xKZUcM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 758CA61389;
+	Sun,  5 Jul 2026 15:56:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066F81F00A3D;
+	Sun,  5 Jul 2026 15:56:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783266965;
+	bh=AqypLn7HBMPm5n3CjY0saNzxrJSnEmu/vZcmx6jzwgo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Ak7sUkQ4wVZTIBJmrbqmax34EK515ywicFzFT5Y4soPvpvK0OuLm4agWT4ReH0wl6
+	 oVlzrPRqYWsZ8cIMEYvnYdHYAdL+EUpW4YSPFPoiX/8IJRGHngwipqq0Lw5wi2ECxP
+	 pwD64fmLs8oFOC7pY7jPFcZ9ela8TAf8IOnSfr0j+eFKzQwEFlENJ7nJe2Lcu7C4gw
+	 jw2wpeWqpnM9gYC5i0afcb7Lqtfw9cCYXvzhpbLARU0mi6pJiPCRQkXs87Ro60Ohk/
+	 dOs9EejTTyn+w4hhpU8qfk5vRY/c0Y7pxMce4ajHU0U+xLEzjSre9n+q/5yd/mJdTq
+	 hJDiOvDmG8lHA==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 1/8] mm/damon/core: safely validate src on damon_commit_ctx()
+Date: Sun,  5 Jul 2026 08:55:52 -0700
+Message-ID: <20260705155600.96555-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260705155600.96555-1-sj@kernel.org>
+References: <20260705155600.96555-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260704220745.110773-1-shijujose2008@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7318F40005
-X-Stat-Signature: jaiygqmme963sjsmfd7k1etpgkffp6ih
-X-HE-Tag: 1783264490-851581
-X-HE-Meta: U2FsdGVkX19JwAeo0lO8tUavpBuzmgU/BxXwSPkn32LnsNJ/GtrgiZKX2cajH7poyod/geW2Q9JHMqffEgjrLNLdhsOQ2l5ndwHw9OpGrwe2dKEbygF44OGkeF2r/mY7KtMJ6vhmXC5Gu2nCd5wrCCJRirAqsyzWgkwm9M6T7IEF8Zp/TtRbdHL2KP2O07wOn4cnROfRzoy53cJna6Rx5kE+X/UgY9qq3E+dfZjydbR+Ysaq2/CdZt/D+r61kxzczkBJ/y4IFDbpv1Yrn4fbAibG84kp2QFO3yfTLlBNL1Nws8OYTzMLlvvFfLQEKOY0EG331voJmlyeZ+p3LuzZyL4swePGFNBZpoObjgkycKGcy8bBtnB81fldRg0cs0FyXa2+hwW60raxTQHdV/EvtHOHJgkPp0yFFlsPcloKS4M5UsR8girm5nkL60hwhlgPWTlHTu+5X5t2KIQJWp06zKBCLLffnjI0Rw774JuXp7p1K8pm6GkXkkuneNGVWKfPma/ZZ4d4mZ2TU0ZQFAdeguvbK7gERyGhRneJ+qim9GAt5LsOHCs4Qpq7R4+lfc+wCWdhrjW4JHsMZfNBTx7UzpvCEPmc2dx2o2oM7oSp6nx2y1K6jk1r62MXcnpZTOI6XexATZefjev3Lf5VwSWBdnTbEpg4p9TxnEuQmAJhkJ3aX7JkHwbAprwLA4enjwOJIsoiWmes5QGVLbML3uoP215JGPgezmrNnJU/2PwYGUO7CzKck91pPBs7PsebhCd9TmmEcYLUWlthCilsVEDm7zOtKhMsTXFdt3kzoVSOxnDlPw01KQlkMVvPwk/ILZlcdQ/ivaEhyb1YsVTlXtvVOLWyf7XeAskorGngnktUek/VAthU7aLzDMa9MtM1BtsacBHUmKIqsc9K/5xgpiIl2a5s6sZuZOyXV6ReDe3HuZwgXpllKVIKwRBTgCACBKdnhciVexLu5DyqqZb9wHL
- N/Aa4JdE
- b490fhNRCPn5rEH8W2OdTglPLz6/NBAPtgxdqStXwr53VRegd0e//KUhzXt7O/i1tWfEraOQTRtFlBm34ZUe2CPEPWro7Jv6g27eKOuv7ZSvIJqELQO2SeGVMipNC/l0XIGj/h4cusHcHRMBE0Mh2uhYBeUQkQVyMyyf1HYsB1KobnaoqO34Re6iDvfX5dRagh3CGxcVCkmTqlBQd9Gzhd/F2xwMzPEFdcQBhQj5HH6VjaeKjtsPRJZfuoahQiybgq/TaLy8Jlo0eOPpk0mBN5fcrNqdgMVbANYB1UicoTBVDwYOI9bD3LB9CtF50XsRMb6gaOJHyV9SFHqQ0Ejs9k3wCdiSgcmspis9rw4dqAhC9TYG1qtKu2HGIEkM6X/fBMOv7OF/m1SDAB+ZcsbPRgJZ8PRfb96dewxGI44ird15ldffYZaPqkoF+hrtU6N1lwfoEOBXSWp1+5DGRKNuLpq3SAWmxAkOPlgXwFeX8/n3VFFpMipbFSSebvGJeRXgurQQL
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0B4AA140005
+X-Stat-Signature: zeyg4bj9efuxkwqwriq87wxzjmnfxwp1
+X-HE-Tag: 1783266965-84186
+X-HE-Meta: U2FsdGVkX18g8+Xgl2G03Hhv1rZQyK6R9ANlmgdxirlnOgj9PFPqa7uEC3QYjTsu0nuFueCuAUEdxBZQiBUZZkBRVZjUrQmrd7CEUP13CEDA3bgkqbWP7OtdMir6UTgUBs8r8VR1zK7jEOVt2stUo/FUcCh6WYIZUIlGiYzlA4peHp3oH28BWxGg5HhjJNeiHFNM3wZ+Co0FxCHrsawXTPRkEvgbHfLqqWmlMq0CTXANCXx05zccwBfye0CgjIH7S84O4KKcck9MUEbbwLGEOoOFaRbWF6LbLfx1KsKRr5Az1MeQO8aCTDicngIxJgCn7UhMYtgwq3bBxVDNPjJcA7hLx9tz6zwWKowUhgZ/SoGtv4NknCgJ0rVB7mUkP9Xke+znDn8KMpNODJrat45lDNUDM2XobhsLd4qQGSjc54RvKtbMMKghqqq91V5r5sbCUOv4cEB35GYry9y9gZweeGAnIsSAid3/8o9o6WZqNLqi5s4hXHiXtul3d4iH6MgK/3B8Vi2G37p1E7H2qqXhTo60PxzAYYmpPmSVwM6B6Ub8zoNetO4pK+p0bgxL73I/eMngLzlG3/oZfvP+350tIsMMaqBaugPx6f+2gvzfFg2QGFiCmlUcYv/R+BeJlImhGPopDh9zjDlbpP98TmOLJGh4R2injUlR65vbAkRSzZ04lvg+xjlOygIm52gPgjRJ67sbfuimx28gXbHVwpnJ+STnKenExUBvyGDjYi0DgsBVkydcePaVMq6iuPgW4ZlLEDFRrn24C4YGVl/SrgwxKsZ87UtCPX1napXuAbHboX8mQBtqbniOhaQDpW5FQnms6ShKEics+qkFSq4POq+65RxhEQHfDR3oyLNyipnd54CBSqjhZBG4eJQOupnMChVN9q6Feex4JYH2hrnp/s5v7rIp7KVQf1uURbhEGs6p2MTJkv/9tBxJwOcO7OnfiIh/+31Y5Uksc29vNBkgimL
+ rk9MIkfL
+ oPBbHDnvVDORSYkshdhDTvy4fJydAd1l0koEjEFhFID/d55UNbLFmFVw8iCZyo5agooQGhYBcqOCYTPDmOsupdZcpwGlId5Lejqpi3WPc8GlnipoM2321lEr+ZkTHT1OQEzFrCBQTuvNKAG1eCkq86Yb8pk07LSpcmVRF/6rqJR8pQ/20uxA412a97TI2bmYH8Y7/waniKDqv/j6lKqP9D7/icnJLDdwMSAdowj4fq/ymoXUAdrYYuWNvsig2MMWKCnbJWinlWYmiyATfRBh0izYtMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,24 +92,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 04, 2026 at 11:07:43PM +0100, shijujose2008@gmail.com wrote:
-> Changes
-> =======
-> v19 -> v20:
-> 1. Added possible fixes for gemini AI reported issues shared by Borislav. Thanks.
->    https://sashiko.dev/#/patchset/20260408172850.183-1-shiju.jose%40huawei.com
->    Unfortunately could not get a local sashiko review setup to verify the fixes
->    before posting patches.
+damon_commit_ctx() does its holistic parameter set validation while
+applying the new parameter in the set one by one.  If it finds a
+parameter is invalid, because some invalid parameters may already be
+committed (it is called "commit" but not atomic and irreversable), it
+stops the running DAMON context.
 
-Yeah, there are new issues now against this set:
+The callers of the function therefore have to validate the parameters
+before calling it.  Because the function already embeds holistic
+validation, DAMON_SYSFS reuses it in a safe way.  It creates a
+test-purpose context that is not running but mimics the running one, and
+calls damon_commit_ctx() against the test purpose context.  If it
+succeeds, the parameters are considered valid, and a real
+damon_commit_ctx() call against the running context is made with those.
 
-https://sashiko.dev/#/patchset/20260704220745.110773-1-shijujose2008%40gmail.com
+Other callers such as DAMON_RECLAIM and DAMON_LRU_SORT do not expose
+full parameters to users.  For efficiency, they validate only the known
+set of parameters.  The efficiency gain is arguably small and doubtful,
+though.  Meanwhile the maintenance overhead of the multiple different
+validations is clearly high.  We actually found and fixed a few bugs in
+the class.
 
-Thx.
+Update damon_commit_ctx() to embed DAMON_SYSFS' safe and holistic
+validation approach.  Callers can simply call damon_commit_ctx() without
+worrying if their parameters are invalid.
 
+Note that damon_commit_ctx() can still cause an unexpected stop of the
+running context, if internal memory allocation fails.  It is arguably
+unlikely since those internal allocations are too small to fail, but
+theoretically possible.  It should also be better addressed, but not
+necessarily a blocker of this small and incremental improvement effort.
+
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 61 +++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 47 insertions(+), 14 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 871c6f5257c9e..018dd5ff80324 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1664,20 +1664,7 @@ static int damon_commit_probes(struct damon_ctx *dst, struct damon_ctx *src)
+ 	return 0;
+ }
+ 
+-/**
+- * damon_commit_ctx() - Commit parameters of a DAMON context to another.
+- * @dst:	The commit destination DAMON context.
+- * @src:	The commit source DAMON context.
+- *
+- * This function copies user-specified parameters from @src to @dst and update
+- * the internal status and results accordingly.  Users should use this function
+- * for context-level parameters update of running context, instead of manual
+- * in-place updates.
+- *
+- * This function should be called from parameters-update safe context, like
+- * damon_call().
+- */
+-int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
++static int __damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ {
+ 	int err;
+ 	struct damos *scheme;
+@@ -1732,6 +1719,52 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ 	return 0;
+ }
+ 
++static struct damon_ctx *damon_new_test_ctx(struct damon_ctx *dst)
++{
++	struct damon_ctx *test_ctx;
++	int err;
++
++	test_ctx = damon_new_ctx();
++	if (!test_ctx)
++		return NULL;
++	err = __damon_commit_ctx(test_ctx, dst);
++	if (err) {
++		damon_destroy_ctx(test_ctx);
++		return NULL;
++	}
++	return test_ctx;
++}
++
++/**
++ * damon_commit_ctx() - Commit parameters of a DAMON context to another.
++ * @dst:	The commit destination DAMON context.
++ * @src:	The commit source DAMON context.
++ *
++ * This function copies user-specified parameters from @src to @dst and update
++ * the internal status and results accordingly.  Users should use this function
++ * for context-level parameters update of running context, instead of manual
++ * in-place updates.
++ *
++ * This function should be called from parameters-update safe context, like
++ * damon_call().
++ */
++int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
++{
++	struct damon_ctx *test_ctx;
++	int err;
++
++	test_ctx = damon_new_test_ctx(dst);
++	if (!test_ctx)
++		return -ENOMEM;
++	err = __damon_commit_ctx(test_ctx, src);
++	if (err)
++		goto out;
++	err = __damon_commit_ctx(dst, src);
++out:
++	damon_destroy_ctx(test_ctx);
++	return err;
++}
++
+ /**
+  * damon_nr_running_ctxs() - Return number of currently running contexts.
+  */
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+2.47.3
 
