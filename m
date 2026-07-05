@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC1B1C43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 20:58:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69DB2C43602
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 20:58:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5B876B00A2; Sun,  5 Jul 2026 16:57:57 -0400 (EDT)
+	id 223E16B00A3; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE5516B00A3; Sun,  5 Jul 2026 16:57:57 -0400 (EDT)
+	id 1F9B56B00A6; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAD396B00A5; Sun,  5 Jul 2026 16:57:57 -0400 (EDT)
+	id 10D506B00A5; Sun,  5 Jul 2026 16:57:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 70AB96B00A2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA5906B00A5
 	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 16:57:57 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D54751C0F32
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:56 +0000 (UTC)
-X-FDA: 84955934952.10.E3EC3D8
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4CF9E401B1
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:57 +0000 (UTC)
+X-FDA: 84955934994.27.4300B8E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 54F2D40003
+	by imf29.hostedemail.com (Postfix) with ESMTP id C1982120002
 	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 20:57:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K7T23N2r;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lc3t1gDN;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783285075;
@@ -34,35 +34,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ea4i8Dv0CoJkmGdBeb8J00MLK5gjFTil2XSf1WpbBk=;
-	b=GJupBxNGhG9COTP/JIK4A1NH263glwPhEKZn3OA9VZGsmAr2rKNf9rmGuSHg6gtN2ZZnvf
-	U1az7AfsA93OaOnP8atla2+v7BwKo8k7+Lmd09RYIUwMvTsR/vS4ppUsgFwrQjqhzl+qXL
-	2IQMyg/hxR7WLDxzDELQjXyDXJfihcU=
+	bh=cq/lZgoqO37AZM/wd+VdC9Z5R6uQckVYXcY7Ow/7PI8=;
+	b=jZXLgX35cbiCICb42lx7NgbAGvwrq6o+pTdTUKXZaKxz1W4+lI+SoKMBfW414Rbw5u/b1I
+	Z3tRysEGCC1BAnVZCGcYf42kzpVBCaCeckpJtHl1NiRor5DreTcRHVOnFNVH5OAX9npE9o
+	tUYIvEeOV8MKukJQEKBD7X9Wp8KP0es=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K7T23N2r;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lc3t1gDN;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783285075;
-	b=GfGuY0wn9nA5fBD2WhPrxFMDOgAz7qQLEuKe3SUxtkOPE64/c8DpEQsq+mWQIFSc+ikSPv
-	GrwiNQVNpsEmz8i0+obKxRsIQo0l8aoO9+RIVXHFU6R+kjVAKS178BvPtZoE7l1Y0lhrpj
-	mEqwofS5oivwA1csVvKpoJC0FyZRANg=
+	b=RwPRdda7yNRfohNlcmB5Dfqc1ziTsqU9LI8RIqlNfS1nbARHTjbnM9pYNeNS5sd7Vrwbxn
+	REqbQxOWDa+TVScUqaK07OhMFibhyvtsnyBorF766XutE/czls1N/R673MFTtldEMg+dJG
+	+YjDWL7B/TWOHzhCCPrhv+ef1MSEZiE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ECD41600DA;
-	Sun,  5 Jul 2026 20:57:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF341F00A3E;
+	by tor.source.kernel.org (Postfix) with ESMTP id 674A2600FC;
+	Sun,  5 Jul 2026 20:57:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF001F00A3F;
 	Sun,  5 Jul 2026 20:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783285074;
-	bh=7ea4i8Dv0CoJkmGdBeb8J00MLK5gjFTil2XSf1WpbBk=;
+	s=k20260515; t=1783285075;
+	bh=cq/lZgoqO37AZM/wd+VdC9Z5R6uQckVYXcY7Ow/7PI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=K7T23N2r1WUdhw6SQgrU+YiIab7SEZgfNIAuf1MuNya6JXnVyZAULGYW6wYNuk14e
-	 9b2M+08a6V9izNVw93MHqqL9Z8pbdQRYTdDrowDiOVCUtuB8Dtet0mCcPerCQBtBWc
-	 2dFjQqhEtFbYDtmkJpeJ0rIrBkfQo6Tzmu+qIOa6TcWYLxma4m3KN2ncWxfXZTiWNx
-	 4f+EBJv5wls0bdCTKKLPV/GwtxSG+Jali7Epik1aTWHrpXfi25DJdAYo1lqSbxxYOD
-	 pRelZaXsVKDvLNncTLGUVcaFkdlN0bXn+xqxuqY+6IGkjUopldP0KmAvy6YebuFkWq
-	 ND3uGTd5BQ3pA==
+	b=lc3t1gDNtfXoYZS3W+1hV7V78KeIb0Oo+qj2NIguCzvYm//NsMT0Y42liJ+hLlsnj
+	 uW2Etkq33qYqrHkfAp85/Zi1ubHF7Qkdlk6u3shlrtVWBE/stJQdOWZ+az7s79rXz7
+	 U5kakfVjN7LTvr2gaRKo+HkGzgHZ4peB3Bf/PoxQPRsVfUtH+gJUo/7SvyatbnBnwr
+	 vizacExzYAYxTabWIMKBmgMxq7m99fwM6Q9Lveb3mfyhAXkdTvkpEnt4PtH0BTeZKL
+	 zff+52ALIdIroPCCxTYiqh0Iv9I1z0pUnudjCy6SW6STw5so8/g24jnnq5YB220beM
+	 j5+Lad2ZjYM2w==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 04/16] mm/damon/core: ask apply_probe() to return max probe hits weighted sum
-Date: Sun,  5 Jul 2026 13:57:26 -0700
-Message-ID: <20260705205743.98656-5-sj@kernel.org>
+Subject: [RFC PATCH 05/16] mm/damon/core: implement damon_probe_hits_wsum()
+Date: Sun,  5 Jul 2026 13:57:27 -0700
+Message-ID: <20260705205743.98656-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260705205743.98656-1-sj@kernel.org>
 References: <20260705205743.98656-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 54F2D40003
-X-Stat-Signature: siq6q6npob84bwg8t17um1xemy71wqyt
-X-HE-Tag: 1783285075-367133
-X-HE-Meta: U2FsdGVkX1860GyZ1QMsQUxfcofwOeEVmCy2lEhbUeMZHMUE35K41+Dicy6mQd4WdQAt/GSaNVUxJVUVzLpWWrbLx8tFKAsjRlmqpbapMgcEbf1B5OxeRu1hcsl6jCR8hKxlr9eL70daxenu4pjJzgosDNBaxM1PKJTtsYSkZ6S0MKJIMXy46L7WOINzy4mXFJe9XNNxkks+oaXwbch4pCwQIxugLFbi+5mIv7EmY55TrC6d/zjgpFqF4UTWWVWnT/LfGVqUdXQpPdM0n6nM3T9XMyUAkAde6N0ieET6tpdsIay61fdaCnBSj8B+QSDutT3QUMBz+hHUnObtEfvml3cO5AyyO2tbsO8MfJ5W7z63J7ri9jHR9vNv6uIFCqZ/rbr71yNw42g52lJVKs32ZLY8Ea/gat6LR3sXZlp0ID6bBBEcinmslNNzIyjs1kGtEVPSmoxPmCn4a8Hq97E3nL1Br8epG4ON/ee/FRX7N5YraXb308sGfbLE0dWplDmPPFCvXONPaEXlds3Kc42hGP7TAxvBG1yp9oIFjS1OZlxG99Gj3YwMB1AnWFn0LQccIeeHFAc/feStcAlSBcxhwXS0Y3bQb0hmvfWkTdRSXXw4IbPT32SljFXmiTGG8IhQb0a9sdnAzCHxrM7rYyahCX8041qPOy0mf8aZNr/MqWi6AzJfJ1MdXRLm3LzmXiMlHgQW2J9GiQZLUBhZ4gKD5W/lIdb+KDeDOW5NRtGKB6nGABX0Tjfs8qfVTTt7HektpP8QA5FbAmcx8Ps4N5CYpjRvX7mtF7UXGuNfAEjPGCVRJzhKUCPFKJjoCSNMXm9rQySGUrvF62D9ZpQo9k6GoFbSax3BnzO5Nl5CZL9R1HY51V2BuM0Og73qMvcuLgIM74+8ywi1hpztC5nQo1OOYu5YVMHDngPqckRYLEdAf8FXGRp5OIb/UzIfkHtftbTpPBOGLNjqreiouGb/mEo
- PeFXlxoX
- G+uCZp0x8OfBHoMPPD3ag9yujuZbbAYC+MjoJEJ/PyFv6/ZUYsHzIt+sEsf+E8ilm/8MGPVZVF5yio/lySI1EyYUV41EA20nf6Eszj8yB9NXvxufTANXeuK1BNTAsChEpiceljxnpay35zjH7xLYjEVMtXxBeMVANxq7YUhUoUfPMAfLsMisvI9L3VMNBhNbBqZlimU0/aGuybPqp8bLzozdWZyYExiHRhhkyaqY1s+foqXHPjOryKJpgUuITjgEUZ8CyP+2wvvqE3bomqbVIaj96Xg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C1982120002
+X-Stat-Signature: fu37g5birwzaah3xa5o1g1ri4jdqrfwb
+X-HE-Tag: 1783285075-333657
+X-HE-Meta: U2FsdGVkX1/nfMBzy5vg8TPF1aUmy50RkZM3MUYJOWvgELGOvreIqFXXhPo4Hjsy64H3IjrgplSZB6i4w7aLMfpDhEmCIMH8sq5dNfgm4DhOWZplar6Yl6G2VoOiiO+9IVhvzr0Se21XoYGNeo5Ge7A1gE18hDZbx52a4+j6F8Vcz4WRSkbLy+Hyqj6WiKihCL/rsEtTFYM0DPl+BjyA6RQ2kjTvRGDgubTqqC3fkOaC8HeQ6PV2LDUsuZq0pkrQjLV27zut0pop2o/JoKroFdWyMNHEg/B7+a8bsdt1UyR/Wxa3OlAXQppNeCwYuXR7XT2Ki+OO73Bcx3y+1mP7xGGTBx1BRSXR9UqUKKIS1Qs6P6v4VjjkK+Ag7D3IPbECAGJWGxv0jKaM4WvX4v1jFCluPv8DTC0qEaLvIlhhBrYk+cSBhfqkUdaqbMvJ23nCQGryovUBYwtDyr7qZLgbr00Ut6jd4v0auQiKqty6CxY+9Ut45Kht8Z224kGOkTc/g8BCjWXbBZCb3vZOn2iI5vMd+3YK0nsax5cDIqaFxY4xPhDfbsWTc1eZm+aJVc7mXV0ppP1iTPVy8EE/jte1a66L+7up4xytkbpK0OKP/2suPgGuJEGv6nPMftNGpjWXnSbzYklH4U/FS+FffXoIERhhWM0kLnNf+EPOhbkLzM25tVv/KMJiYjJZBByeOhFHrJonduN4UXO5TsCSUE1h6DlEjPiuwvYO0QQzVW8EGtdxuTQN/FcmtP3/Jfd0tEeqK0g3uVTp2ejudG0JBVZEzaOQ5aw7Gd5hb1qJ2b8Dew9Isb/yip9/3q6YUPbMs0VHmucvHTB1UMVTX5TBotjvQT6bvBrhux/8WAWpA4Wo9add2czFVmCMLF9bVkXTkI62+3qi7AMA1T6T6NdGsZbpH/wUovsnDt/SLigmG02hWNsj0/NG6K7OQHsn3tBM/44KORgXqgUweGf82l42LEe
+ 3lq8Lp6g
+ H2EDDRmawyyq/ptrGT7l2l62Reodu9urgJOSQ2v6FJKNOjOOOXl6Y96Q38S/uRl0WtPxaImZWo33ijaGzU6GUW93tPuCTvwv1QGd2xkxcIFMFDooDwdJ4iaNtOzlUa48dr6IE0kxXkhf52vlFAO5znRY/LS7cp9p8/fDvvyLxe3zM2SU5Cm5a6txsnlDcXFIijTEVPLRP2ERmTUbclopfm+8yTZZgNp9Ctl23Ykw8fR4F6gzHj2NaNKVnv9BuljTO8CwCrgJ9HcdiWO3Uw0kJU5U5LA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,79 +93,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-check_accesses() DAMON ops callback returns the maximum nr_accesses of
-regions.  DAMON core uses it to calculate a reasonable region merge
-threshold.  The core will need to adjust regions for not nr_accesses but
-probe hits weighted sum in future.  For that, the core needs to know the
-maximum weighted sum of the regions.  Update the protocol for the task.
+When damon_probe->weight is set, the weighted sum of probe hits will be
+useful.  It will be useful for not only the users but also DAMON
+internal logics like regions merging.  Implement a function for
+calculating it.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h | 7 +++++--
- mm/damon/core.c       | 2 +-
- mm/damon/paddr.c      | 4 +++-
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ include/linux/damon.h |  2 ++
+ mm/damon/core.c       | 24 ++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 4dec5d314c782..62caa67a3c40c 100644
+index 62caa67a3c40c..c43986a3aa16c 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -648,7 +648,9 @@ enum damon_ops_id {
-  * of its update.  The value will be used for regions adjustment threshold.
-  * @apply_probes should apply the data attribute probes to each region and
-  * accordingly update the probe hits counter of the region.  It should also
-- * &set sampling_addr or each region if &set_samples is true.
-+ * &set sampling_addr or each region if &set_samples is true.  It should also
-+ * return maximum probe hits weighted sum of regions if &return_max_wsum is
-+ * true.
-  * @get_scheme_score should return the priority score of a region for a scheme
-  * as an integer in [0, &DAMOS_MAX_SCORE].
-  * @apply_scheme is called from @kdamond when a region for user provided
-@@ -666,7 +668,8 @@ struct damon_operations {
- 	void (*update)(struct damon_ctx *context);
- 	void (*prepare_access_checks)(struct damon_ctx *context);
- 	unsigned int (*check_accesses)(struct damon_ctx *context);
--	void (*apply_probes)(struct damon_ctx *context, bool set_samples);
-+	unsigned int (*apply_probes)(struct damon_ctx *context,
-+			bool set_samples, bool return_max_wsum);
- 	int (*get_scheme_score)(struct damon_ctx *context,
- 			struct damon_region *r, struct damos *scheme);
- 	unsigned long (*apply_scheme)(struct damon_ctx *context,
+@@ -1011,6 +1011,8 @@ unsigned int damon_nr_accesses_mvsum(struct damon_region *r,
+ 		struct damon_ctx *ctx);
+ unsigned char damon_probe_hits_mvsum(int probe_idx, struct damon_region *r,
+ 		struct damon_ctx *ctx);
++unsigned int damon_probe_hits_wsum(struct damon_region *r, bool last,
++		struct damon_ctx *ctx);
+ 
+ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
+ 		unsigned int nr_ranges, unsigned long min_region_sz);
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 7c0184cb78a50..e42f512d87a11 100644
+index e42f512d87a11..d7d1e27d767eb 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -3675,7 +3675,7 @@ static int kdamond_fn(void *data)
- 		if (ctx->ops.check_accesses)
- 			max_nr_accesses = ctx->ops.check_accesses(ctx);
- 		if (ctx->ops.apply_probes)
--			ctx->ops.apply_probes(ctx, false);
-+			ctx->ops.apply_probes(ctx, false, false);
- 
- 		if (time_after_eq(ctx->passed_sample_intervals,
- 					next_aggregation_sis)) {
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index ff4fcca949660..3eba3564a31fc 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -166,7 +166,8 @@ static bool damon_pa_filter_pass(phys_addr_t pa, struct folio *folio,
- 	return pass;
+@@ -390,6 +390,30 @@ static bool damon_is_last_region(struct damon_region *r,
+ 	return list_is_last(&r->list, &t->regions_list);
  }
  
--static void damon_pa_apply_probes(struct damon_ctx *ctx, bool set_samples)
-+static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
-+		bool set_samples, bool return_max_wsum)
- {
- 	struct damon_target *t;
- 	struct damon_region *r;
-@@ -194,6 +195,7 @@ static void damon_pa_apply_probes(struct damon_ctx *ctx, bool set_samples)
- 				folio_put(folio);
- 		}
- 	}
-+	return 0;
- }
- 
++/**
++ * damon_probe_hits_wsum() - Returns probe hits weighted sum of a region.
++ * @r:		region to get the weigted sum of.
++ * @last:	if the request is for last-window agggregated probe hits.
++ * @ctx:	context of &r.
++ *
++ * Return: the weighted sum of probe hits of the region.
++ */
++unsigned int damon_probe_hits_wsum(struct damon_region *r, bool last,
++		struct damon_ctx *ctx)
++{
++	struct damon_probe *probe;
++	unsigned int sum = 0;
++	int i = 0;
++
++	damon_for_each_probe(probe, ctx) {
++		if (last)
++			sum += r->last_probe_hits[i++] * probe->weight;
++		else
++			sum += r->probe_hits[i++] * probe->weight;
++	}
++	return sum;
++}
++
  /*
+  * Check whether a region is intersecting an address range
+  *
 -- 
 2.47.3
 
