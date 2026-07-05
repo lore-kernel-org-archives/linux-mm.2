@@ -4,88 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22DBBC43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 21:02:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26C72C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 21:11:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EFE86B00BE; Sun,  5 Jul 2026 17:02:49 -0400 (EDT)
+	id B146B6B00B8; Sun,  5 Jul 2026 17:11:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C73C6B00BF; Sun,  5 Jul 2026 17:02:49 -0400 (EDT)
+	id AEC686B00B9; Sun,  5 Jul 2026 17:11:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B6266B00C0; Sun,  5 Jul 2026 17:02:49 -0400 (EDT)
+	id A298E6B00BA; Sun,  5 Jul 2026 17:11:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DEBB06B00BE
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 17:02:48 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 69CBB401B9
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 21:02:48 +0000 (UTC)
-X-FDA: 84955947216.20.93FF42F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B82A6B00B8
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 17:11:08 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 029818C4CA
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 21:11:07 +0000 (UTC)
+X-FDA: 84955968216.01.93F70F1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8585A1C0007
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 21:02:46 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=E41w9rZK;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7396518000D
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 21:11:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N8FVIR36;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783285366;
+	s=arc-20220608; t=1783285866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3gCHWKa4Bf1jecM+x/DY8mFkX1R2/+i0CVe4zKSjV2w=;
-	b=Q3tvDnXtJpwM7q5rvFh/Kt/WTM9LkhyMRBF/fEB+y8z9lP5l/fjFDqJGgjDSE2WJXQ+6qv
-	InQzZNTC7W0kZ4DiRwk4pw6PUnxMdG+gZWJROc/cHnCZvD2ifdqBOVo5czVeCfRTZ3sLhm
-	jzvkX9l+u3c5Wl/HrWHeWtYEGixg7xg=
+	bh=GebDB3AJgijwXFEI2D6qbtBmvdEtIrR7/9BKZNSnL98=;
+	b=HcES56T0sf7YqjD0XveSbOzKhpennz4Rb/t72eEnKMN4WbB9Yh7M7lj8wZdo72ldC5sIuP
+	S6NCKYIyDiaC3Epf8zfM/MLmQKViC2FKdb7n5bNlmG1jQqtsWfEBbVkU7oqXA7NjvACJa2
+	Ztdjv+LeZj6t3kYo0S2EF8xTgDHAbLI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=E41w9rZK;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N8FVIR36;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783285366;
-	b=PucyhUlrVNxbDK6HOSwxaUT9H4/au0wF4EzZskAIgQtDwG4g3FxDtq7r3Q2L0LYIlmtydS
-	I4zaMQv3jpFCYIe7SgK1uAs5llhVaEgVjbsoEqH8d/jLkbnPo+Q0m9vr7ixsyS7QMsdZkG
-	bPo+y63+FSi+Gb1nk8zih4sIVfzzV9k=
+	t=1783285866;
+	b=m7B7QFpQQjCO6PtllCi/wf+XLqe8w3EjG8SWAyOgkcnhovDGI6/lezscD7tI6tFQl8ge2k
+	e5j0+ksEHzyMNovD6thDwpCuChMRE3zEyT/7PPWSlY4q8ydDX7Bm9q8jpw34yigxIwsloV
+	3vQeC3eX72qH9qEeiUm8OkcvpWkn5do=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 160B160018;
-	Sun,  5 Jul 2026 21:02:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CD31F000E9;
-	Sun,  5 Jul 2026 21:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783285365;
-	bh=3gCHWKa4Bf1jecM+x/DY8mFkX1R2/+i0CVe4zKSjV2w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=E41w9rZKWqcMtKADxjBWyRinhU1EDTBk02trbkitXaR5Py+y2r6IIWGCZ4QE9eOX9
-	 zvKOQQCdsLIhG8oJDZwuDDyq2aTzWkw2N8B3ri1bCyw+vIUB4ah05nrijJAdmLvQhu
-	 KXwnd0Kl744NfRIVbWFogyDhYHXhUKjWhXz8+uFo=
-Date: Sun, 5 Jul 2026 14:02:45 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Tao Cui <cui.tao@linux.dev>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org, Jiayuan Chen
- <jiayuan.chen@shopee.com>, Johannes Weiner <hannes@cmpxchg.org>, Michal
- Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: memcg: reset zswap settings in css_reset
-Message-Id: <20260705140245.179017e8360490bc3c9f5ae7@linux-foundation.org>
-In-Reply-To: <722b2c40-6d82-4eef-b3f1-245fba465bc0@linux.dev>
-References: <20260702024827.353185-1-jiayuan.chen@linux.dev>
-	<722b2c40-6d82-4eef-b3f1-245fba465bc0@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8585A1C0007
-X-Stat-Signature: qd613qkojipx3i6urk5q5j3zxykmpsau
+	by tor.source.kernel.org (Postfix) with ESMTP id D3F7A60018;
+	Sun,  5 Jul 2026 21:11:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8591F000E9;
+	Sun,  5 Jul 2026 21:11:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783285865;
+	bh=GebDB3AJgijwXFEI2D6qbtBmvdEtIrR7/9BKZNSnL98=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=N8FVIR36pgDT32drTy3Yhc60ZhdzltCghnVTYfC7vcv+x6l2mRywdYo9oh6MuNSfr
+	 rVTfX6xl6blRH7CpG6gqz4+ye+YUcjyr5refou0IVfbAOkT+kI6oSPE3UG3mLglJIS
+	 Gb4c7DqJoupGojY5uWc4P2vfVDos+L7U4Q6R5lK1XrQ3zbFGfiz3TyziZe9OYHpAOx
+	 PSc7blRkObVZHOGrjbUj14hxSqd8FP4W/XK7Loq1R3rDhVazLQuSFdMT6KwJ6RL4M9
+	 4RuaJm2jFicIFEDkaeWZJV+2QjJ5FvJAZUMc57D0/yo1cR6LA53c5KiphYyR9wz14T
+	 z5y4ds7Azqd+w==
+From: SJ Park <sj@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: SJ Park <sj@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	david@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	ying.huang@linux.alibaba.com,
+	Baoquan He <baoquan.he@linux.dev>,
+	willy@infradead.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	"Liam R. Howlett" <liam@infradead.org>,
+	ryan.roberts@arm.com,
+	Vlastimil Babka <vbabka@kernel.org>,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	kernel-team@meta.com
+Subject: Re: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
+Date: Sun,  5 Jul 2026 14:10:54 -0700
+Message-ID: <20260705211055.99706-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <akjakkURVyM4x1dt@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783285366-93046
-X-HE-Meta: U2FsdGVkX1+jkA6HvJ4YioSZ5neZAPTWnOFgWX4yTV77Kgsh9xsCkxHV6RCbcMxr/Ngoqt0Rr6Yf46LLcxRy2aep28fpw5ghH8Du0rVaDhe6MQSHZBYhmd36tvllg3OS8js7ud0VLtdmzoCLZmKQEzpCtdCOSNQGTvtYeG8zVwtSB2AQ+6Z6PCQ5HGonAmv6LyD9Nyp3tLVMZ7MfGNplM23rmFD6k5CSRYRNFYhW5PzlzMu2rgWMnMVfxY/x4Z6Hstrxc7u690ziD2Jkhw7WU/SVs381L4cL1yJmqtZqvc9infpJh5XQqJo1HCo3lhHHa53hhI32YdEW7aL1VCVM11ur0VBChZVkUoxkoI7BZT0PNqSshmmKJHWKg2Bxw/AJdiric/Zg6mvmTJCcbI6mSH7VR75IXZ5tncfxbl8qGe1OLJSGVGo0YgIDSo/cF/RymTsRMioaKyqYBG8BHy1Vjzj/zeSXJgatCUNZmoIEGZeTgZKNtZ/5IZtK8q4jHxITvWduyqEs0ihoPDc3W7fRhMZO1tjp3JpSbuoOyyw4iXh0BdqQsgX1ZxI5Plxel6a/NIot0hANZLHIIt+P7hkfsjxqqFQRYgVPiboCWPnTJE4ncEOq2K23yjyOTJl31G8MkDq/VXHB2ZXtcpU7RQRSWLaF1P+rovFlwkkqUP3AT/7GqMLHRQn95SBBqv34iFwV1xA+C9ewJ77WJKyfnNu+/INXLqg2RNfH328V2ilfFtf9VhS1lj7wvPX4D1ZS08YHZMtLl64cGg2YbhgcsYWsPxDJVz1yOD0poRYeed3q2fVCFQNWE6F69IWw8Ppr7zl98CWHdiPc0D0cANBuTFUNjaZzACzFl7fcve8G422gaelT4syUWIUWHG1mnSkmc+rpeIpqnw5a8fmcYf5DHSnjQE/y5GfP+nYDYYX0gDa7CJ+a/45povl44VXXiLY1W3912z3K/yV14hMTk/af8gR
- PLTPvfnj
- u1o611m9szPPMfRXUirNxG4IUWcrtCrJdNG26XAzLqZfvq3P2Juji6FEtGfEGk7XY/dijKewU0qP06pTxiweIZ57NNQWjlZDhvIXy72JKbIECuzLBgeyMDGwnGtBi0E0Lpxx70CCeHthzIN8c5nHqI2vTSD4jDUSWJYWxg2nqNLVShzD5JqpQoQRJjlHzVZZj9jtj5BsFOd8DjCk6kBoiyL9kJKDhbiDHi1bP85mnASFs51R8WQaxYxf6bu8GNu9aGxTtHsWiRS3i4BuGOMUSxUMxQDBM5s3CJQ73O9uyCm+WIS0=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7396518000D
+X-Stat-Signature: pfcxe1y3bszs6rx5deoa6bu51au3nnrr
+X-HE-Tag: 1783285866-199230
+X-HE-Meta: U2FsdGVkX19dGH/tjqPDcAq/fDfwIo8MwLW1Ac8A+sWjFKXet5wPBEyNxhTveby5PKpXfVduOy274xmND6aV7wdDHxP/J+LdaxFJDEA4zJIrKrQ96HFzVaWmpZFospVPaMQZc9vgykH0M3O4eNA4iNpyvXi6rM4Fe3y+a6Q/692TnmNQ+2g0iNCR+o9KXAJtCDQaHSAKnzNjmCBRm2EsGLeG2iIEMOT//M8lPlVkfIUq6p7hHpzM4BXuIMVoqLUV6jHlv8M020gaCCNDzbXVdIPVKFxMw9BAqhD0vaZUzzH9tHbDKm/fv0rPXkMwgG3Ueey9h7yzDxchUUJuPSpCsRbLgEblvvzpeOR/c8BTK3aE67qbPmGLQ3wqPbhEptbPPWHEIFskQ6vAoo7fhy0QKY1jnBaOYVnGIlhmFn7Fp2eTrvThGwc4+8WieTqwyxx5tCiQpxNY8wahN4meKARXsI0cVcuMzAL7gOFy+q6Aw9FxvfGYmp7oLdu7Ez/2JFgtquSsrRzQyiWTy8zILvgwzi9xPV6CWcxzXDf/7lgbyxFRQYHnvdCmQHzuqbD82p4uWoNPfbT70bNMyDLtgrdmnPFcaZLCxvfeAqcAh5xrTVxvIlafTA+5DftizeApoUQjmZfidMyd0kvJBpMKti33w+wZ9QPq+fg0SwnejqmLOFeUDl15WANlC/A7OQRc4tBTto77qcCl2sjsy7gCs+TnsC6F/R78MUJPHQbBJl4zNpUOeWpcCrNENXH8K1Te/VF+/KnMh0fTsaXwLxdQB5+DaMkqCvHAjPCnXd9v/r0AMzZiL9cNlTDMJSQnkKBjKEHLZ876fH8XeOjfFJnetcd6eXICYSQjH89KFiiuEXCP2MeEj6hn/OPz6TG+SYFCDJELovaaiXUqbMhksAttG+TsSvZcc5orXcb++KIJFsn0lTMYyNVyMKWXg7nDHwDJfKH8519s6YT2c9VoPxZx248
+ VSjXgzHj
+ gXCv3sKADsN+V6V3ppwdQGlxZMwKkyT8nIt73AA263D4mbueWCuLUnENDDxT/mCuc69xKKa7KNOvxVT80xKVAQMMNB7DeyVigOYZoRiW2iEHIkIINqQ0qIpFtsv2yGd930fjgZ2gX+hItrEg7jMkxs09MuUjfGivKwYpXjw0KNOuuxmq5Lwggd9paLQz5aR2RXTueGvTBIFPUmAaIPaJqBqCYDXJPZ1BXPl91HFFEx1lq9HY4d1FRStkv6X0vGxg78WBZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,21 +118,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2 Jul 2026 12:07:23 +0800 Tao Cui <cui.tao@linux.dev> wrote:
+On Sat, 4 Jul 2026 13:04:02 +0300 Mike Rapoport <rppt@kernel.org> wrote:
 
-> > 	# child/memory.swap.max and child/memory.zswam.max disappear
-> > 	echo "-memory" > /sys/fs/cgroup/test/cgroup.subtree_control
+> Hi SJ,
+> 
+> On Fri, Jul 03, 2026 at 12:45:01PM -0700, SJ Park wrote:
+> > On Thu, 2 Jul 2026 16:08:03 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+> > > 
+> > > CI grabs patches from patchwork and tries to apply them to one of the three
+> > > bases: mm-unstable, mm-new or the latest Linus' commit merged into mm.git.
+> > > 
+> > > If patches apply, the other bases are not checked. 
+> > > 
+> > > This patches applied cleanly to mm-unstable and successfully passed (at
+> > > least once :) )
+> > > https://github.com/linux-mm/linux-mm/actions/runs/28544575927/
 > > 
+> > Awesome!
+> > 
+> > I found the CI script (mm-ci) on the GitHub organization.  Is the repo open to
+> > contributions?
 > 
-> Looks good to me.
+> Yes :)
 > 
-> One trivial nit on the commit message (not the patch):
->   # child/memory.swap.max and child/memory.zswam.max disappear
->   zswam  -> zswap
+> > If so, between GitHub PR and patches to linux-mm@ what is more
+> > preferred?
+> 
+> The way it works, all testing update should go to mm-ci. There is a bot
+> that takes them from there and generates PRs inn linux-mm that include
+> patches and the CI files.
 
-I fixed that in the mm.git copy of this patch.
+Thank you for sharing the detail!
 
-> Reviewed-by: Tao Cui <cuitao@kylinos.cn>
+> 
+> > Seems it is not running DAMON specific tests, and I want to add
+> > DAMON kunit test to the test set as a first step (DAMO selftest is bit flaky on
+> > some systems), if people don't mind.
+> 
+> Patches are welcome :)
+> 
+> If DAMON selftest is flaky let's keep it out for now please, otherwise it
+> would cause too much noise.
 
-Thanks.
+Yes, surely agreed.  There is nothing to rush :)
+
+>  
+> > I or someone else may also want to add more tests like Cc list checking [1] in
+> > future.
+> > 
+> > [1] https://lore.kernel.org/20260703190421.100480-1-sj@kernel.org
+> 
+> Yeah, I think it would be helpful. 
+
+Cool, I'll try to take time to understand it more, and make some contributions.
+
+
+Thanks,
+SJ
+
+[...]
 
