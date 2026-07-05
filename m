@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 359B5C43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 08:47:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB52CC43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 08:51:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DECB06B00A2; Sun,  5 Jul 2026 04:47:57 -0400 (EDT)
+	id 9D3A26B00A2; Sun,  5 Jul 2026 04:51:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9D886B00A4; Sun,  5 Jul 2026 04:47:57 -0400 (EDT)
+	id 9AADD6B00A4; Sun,  5 Jul 2026 04:51:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8BDF6B00A5; Sun,  5 Jul 2026 04:47:57 -0400 (EDT)
+	id 8E7496B00A5; Sun,  5 Jul 2026 04:51:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DAFB6B00A2
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:47:57 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13D5B9050E
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:47:57 +0000 (UTC)
-X-FDA: 84954095394.04.FBAE67B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3C47B1C0002
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:47:55 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iS9CEnHS;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 653036B00A2
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:51:22 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D9F07404CE
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:51:21 +0000 (UTC)
+X-FDA: 84954103962.24.EB7B62B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C8F7C80007
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 08:51:18 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jWPJ6rU+;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783241479;
+	b=FdxBhGv0KIV1iIv6KeIdXieXCaSRsEXk+rS+R6xsNycBZqROlo5owwwVYf+yzqEIenUiN+
+	GiKdSvromCY0K5XYoMN8wOc6ZSiybQtJUpm06CuRS+aJCdmpKl3C1Qd9BwX9KMhComS2Lz
+	TE6yHBRbElfsTswCtV8pHsmi44kCZrQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jWPJ6rU+;
+	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783241275;
+	s=arc-20220608; t=1783241479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QzujVr18fVNG1CGW2r+8XijcSr52A2RjAyJBa5BWDew=;
-	b=jhidvMUioZ4jIofzEigNCz3L2I0MQcvq+h4HmkWQcobovxfN08MwI4+6gPMFUU84QVkIAK
-	P0SHq9yhu67JidcKrLZGutLGEL4WXzafnQl1suAdj/jXyUW/SHmn2PleD9FBNy1Y+bGhyt
-	W+0Y4T25aU1gJzxRvELzkxAmKwuAsXI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iS9CEnHS;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783241275;
-	b=tCbaUrYGkpbDq34BmJTvYs2Yx3jzHW/JWtfqxVfx2atIcdQ5PdUz9jkwV2KK0hfU10XoU4
-	fL5fL7tEy99W8rha+ZKoEyzBONzMMUJGDfnBSSs5UROjSdFnGI8r72JXLTsGi/7ZPEDKZo
-	0sRIO8OR4rrPu/3DhrulCawbFzwv8sM=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D28A61BC0;
-	Sun,  5 Jul 2026 01:47:49 -0700 (PDT)
-Received: from [10.57.73.18] (unknown [10.57.73.18])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B2283F905;
-	Sun,  5 Jul 2026 01:47:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783241274; bh=JsVD3xgu8GOXprojLDEYGOUJZZvxJv3jyyYwMODAXWw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iS9CEnHSna+motWt1dFRve7lVcWw4D/qHVvqh/moS5wd0vM7yPfDA+kl9rn6sVGFU
-	 H+hSdKJhV/DbM0rzW+yGzlZalReY3W32e5l6Dq5j2Qfbhz2RzJgZkt7Jk1cj9hsAfQ
-	 dx0nYjG6ApWeQU85l/W+hKapct41k6XhsIkYVXVA=
-Message-ID: <e4513917-e02a-4e60-9df5-f90085d6193d@arm.com>
-Date: Sun, 5 Jul 2026 14:17:39 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/6] mm/mprotect: use huge_ptep_get() for hugetlb
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
- david@kernel.org, liam@infradead.org, riel@surriel.com, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev, kas@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, apopple@nvidia.com,
- rcampbell@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, ak@linux.intel.com,
- nao.horiguchi@gmail.com, mel@csn.ul.ie, j-nomura@ce.jp.nec.com,
- pfalcato@suse.de, tglx@kernel.org, dave.hansen@intel.com,
- jpoimboe@kernel.org, catalin.marinas@arm.com, will@kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260703114202.365553-1-dev.jain@arm.com>
- <20260703114202.365553-7-dev.jain@arm.com>
- <20260705013337.2bbc075b508b5db36b954051@linux-foundation.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260705013337.2bbc075b508b5db36b954051@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
+	bh=XFER0JTg0MnvGdQz+yRx4LxJwuvQANRQsRUh9Fc5KHk=;
+	b=7tcN5kNWLwvgaL8pZeARWfOXhoad1qd1QJg5OMVvANOGPqgVNweB3N3pHvFxkAv6GW37Fu
+	3xu5HmJqUjpectQsgAE2alfrroQpOQ/jPeC7br6OX1aA+oZHC+IGPnVBCalHQlR8dWw617
+	DC0LdIsLEfC0EFeYJaw6hhmEr8Vm6l8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 10AAE40217;
+	Sun,  5 Jul 2026 08:51:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE181F000E9;
+	Sun,  5 Jul 2026 08:51:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1783241477;
+	bh=XFER0JTg0MnvGdQz+yRx4LxJwuvQANRQsRUh9Fc5KHk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=jWPJ6rU+KuF+lWRTG1lcB6g/hZQ6vFezaj4DZPhhOK3qmpJeMnsgdSKr9WR09wtKD
+	 bnLMQmH1utE+UBm04kzhAvs+55vHp2EtBMNxsl+TzmrXF2dShdCa5O77l3C2o3Jzcm
+	 mE6wMzXSZPPmZH7qr3ZbnQ2zIvjiFO6EvLhffQAc=
+Date: Sun, 5 Jul 2026 01:51:16 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, "David Hildenbrand (Arm)"
+ <david@kernel.org>, Gregory Price <gourry@gourry.net>, Zi Yan
+ <ziy@nvidia.com>, Pankaj Gupta <pankaj.gupta@amd.com>, Jason Wang
+ <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
+ =?ISO-8859-1?Q?P=E9rez?= <eperezma@redhat.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Alexander
+ Duyck <alexander.h.duyck@linux.intel.com>, virtualization@lists.linux.dev,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v3] mm: page_reporting: allow driver to set batch
+ capacity
+Message-Id: <20260705015116.bdf3335e9a955f057a6d9c5d@linux-foundation.org>
+In-Reply-To: <20260705044139-mutt-send-email-mst@kernel.org>
+References: <444c24cf39f3f3620fc90ef4695bd6b0979f4c4b.1783232420.git.mst@redhat.com>
+	<20260705011635.9974cac7f0defec9961e85c4@linux-foundation.org>
+	<20260705042313-mutt-send-email-mst@kernel.org>
+	<20260705013956.36f649b5cb13409d9088838a@linux-foundation.org>
+	<20260705044139-mutt-send-email-mst@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6oa7dhopfq6qnqh7tawejtkskobamtsu
-X-Rspamd-Queue-Id: 3C47B1C0002
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783241275-898834
-X-HE-Meta: U2FsdGVkX18woeyBBELeSvPLiExE5dDNjI+u0XEgQauw+Vl9Rvl0AQdJ0x/1pNn0HQ3ItxprvBUumJP2vleimWR3vo+mkvFyCasOw3K+P+s/J34YbVNvBjEYfUJ0Y6DOkxTA4MFeM2LPKI1pa0pXEKna9ji6/VT9/abF0onQte7pobta4DLGQzboLfEufIc31c6RQ3oSvcfWYzJA0//+iaLMF6MDQpbkklXCrYlBa+VZ+ZPW3haDKJ5EBJeFFxNMzYM4uo8IpYRDF8+SlvsAmPc8uqI5mOpzJ1PQ4DJEfsVMyeHtJilsLTI44KQoXZ4vbGV9sPlRJ2QKeVbC3T3TiL8MgnHTBW+A0T2b7HO6jXFSwnSAy7IY1Vh3bseSZI/Yb9p2bSLN2MdqFMnHb2kGr5kFbLSKLwg00OFjdd0K4Ik4hr8h8wQt1WeNhJtkfi484BLYSJNfHqqoVj3kMnihODu8/2vB90nfCma9Du+7w4AGlVDkaYkkua5o7WeOznQAzsEEzEV8i5FY4cOexdQIdxhp9l7RlZvyvbLRFUC9d/fyD4CXSpIwwQSOklYYm+Ssh6uSxgVSu2TqcbDQMrY6y+GlsCrUhVnZyPEjxOJDXhEpq9TjvfvFqzbgh3GDkpsiCNZpM2giSAedbPTN1MG3Va+bE+qU8L28MUa3/2yXo/axpU0ePXyKtyScukyxDLkX0JessJAjkKmrzwYwxd//ebkPLXyxFF+wOzuUND+xXsuvQ9vSjUDwY2ibSSWpD7cOnzgWQH/MxUMwK3U7SPwVOGEenVmr7Ddg2odI9usRquxmOyh+E53UDnhFBKtR5R9+1TkpHMysbnRqJ6LpVzuJCspLFK/5Eq3RUiJMCDrK9/xhM7sKLrxQCbHRt0+xHpjEt7kajAieagBRI0ehAIPOdX9cTVbyKwmqpkFSBSSAbxQ/vXgIfQoxuXq4sSlHoqRqoodH7tPahzSQVPcyY2I
- PwKp8rko
- k9MJgyj+X2STOxllJ79qEqpoU6iVSSHPvvT9EIO2XY1zXw+AzRcB1sT+hdH1/NWHu4sZjzx+hFxPzNdeNx3YvkBLp5mscAytcPlA5CJbC5FE6g5Bk3hL1lMhabRDqobXD2lcrYtysrBtvSjr7aXbYEk12r6edmVzqRT6grF5xHetobr1/U5KzWxkXaXpsrftJa4vX/TXCfs0D/rAP7Txw8idYZoHM/+to7/ENETspLDkHgxBaFSOQZFITR2D/Te7e+BYmz5opjO6DfPawab+9g5ECyjfDoO5xN0cjVD3QcZk7HYp6OEbHV0nLoxnShU3eJrucVX3NNE7iSmpNUWxChp7hdaUv8fcIFEJq9BIEk3JDLOvCqWWU08I6DgAvhiKAx+IQnJMRkmZs2YXdtLoGByRHJxAMPd50UVCY
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C8F7C80007
+X-Stat-Signature: 9mdpr1uiz6zbchnq9n37te1xznybbitc
+X-HE-Tag: 1783241478-99123
+X-HE-Meta: U2FsdGVkX1+IMBXFD6re6YzAB4HlLZTk8gf0q0D8pMjuI8wZPCMgPjGwJXT3MpFToRjl9RS5qHUW1j5v7hGr8Rk0NlsCegN7RqT1wmNG6xfwQ0Y2xY51fuSKOf62MPGeBwHqjJnE64mVglDBv8B1X1bfaWiVVShrk9eZJucv7+WtDiGFHfOjYfJ5VmBnlq1BNwAO8BNnB8rXpBDMv2gOuRDRFMTEHVG3Bx/9EMShxVeDRmrmyFjZhIa7lLCdXS+G+y4bVr8A5w8AEsfR+x0qkntEju6uwPoP+oWvxj2zEbyydmI+Tu0sVdJ/zr6I1JkIl+6xADKJCA/3Yz3vEvnCIQH2waw2Woc1T5wn2QmgkJ/xz/4xfoasTdbEoZPPnEhnW0MAQRR6EXzNmE1uA9dbXhP42+XDl8Wg6zr1FKpkU8GM3lNm+MpPF7u2TEVfymrJhq9cHTlzHh2DOnRJ4WTzV6+0D9AYkYvLiI+UAQ+HIRpFGJC88tAdy/3058Rc8Y80QWMdq3jGjUN/+4xWJHB0+0khmi70MyRRalUn7eacsRXucz19ekChGDgEx8ZnMtDsK6yiCe4ISThI+beAIjNYzQ/CAqDGsTVrAyxJtchBfwdPOFFjdy43SWjQSkr//z5AcQAHHrvipVDd/Bj3gQhhGXCgEZZ7i1MfNdP8bkusxNOBqVWkOaR7WYuVR49DWVGtLQ4G4STmk92WzfyiBEwHe6KogbNpqaY4UuufI2ik8k6EEiMc+l/saJ01z3BSkHFsAdo5fWtrgDjnz3hbw5A0hSShj2ozFioohRGxbP2FLkZfhZ09+H82UGdVnAY8HdWw86N1uKrQbyNNcK4WW+lOONGtIq4OsLsWcZZzoFHP/yMcRlfKNU6hY94TFUVEV2c6weCOKkcOV+L1o+PKNO8B7FclExub+wJhV/ghvpdpncr2/gMLNLmYA1cFZLWRGasu7k9O9zcP53L9oI9mDkX
+ 1oGGrdkv
+ +xRyEO5iIuyjRmKBg/FDBsRdek0eLjc0y2JVFclo9S8ycBBc0LTdv8zi0Lee9Tro/ETbF+TZuPJFjF+WGlxTCP2Hbh2ul1OzF4CCQekn/vTl1ZvqhQU72y3FRX5zzshuZ8Ixsq4Tdez13VU+sbuDQlq4TvzZash9LSTjMhLv0EVddNVDMmitr0yknTh4Pt1UMjojI2f4mTtvjnRcEjNjSac6OSdwQZhhHr7gk/9SwKScRp6UsVkGe7U6/YovbSfuhl1C1Jj7sjl9sb5VxyYsx8xcHtOnpgwtuF9NhFr5bT1njK2k6uS9Jx+utFOC7LrkmJ2ku
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,66 +103,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, 5 Jul 2026 04:42:38 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
 
-
-On 05/07/26 2:03 pm, Andrew Morton wrote:
-> On Fri,  3 Jul 2026 11:41:59 +0000 Dev Jain <dev.jain@arm.com> wrote:
+> On Sun, Jul 05, 2026 at 01:39:56AM -0700, Andrew Morton wrote:
+> > On Sun, 5 Jul 2026 04:25:53 -0400 "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> > 
+> > > > > If capacity is 0 or exceeds PAGE_REPORTING_CAPACITY, it defaults
+> > > > > to PAGE_REPORTING_CAPACITY.  The 0 check and the clamping is done in
+> > > > > page_reporting_register(), before the reporting work is scheduled,
+> > > > > so we never get division by 0.
+> > > > 
+> > > > Thanks.  What's the priority here?  Should we fix 7.2?  Earlier?
+> > > 
+> > > If possible, I'd like it in 7.2, have a setup like this (small
+> > > queue is useful for perf testing).
+> > > It's very early in the cycle and the code seems straight forward...
+> > > I judge the chances of breaking anything is tiny because
+> > > it just failed probe previously.
+> > 
+> > No probs, I moved this to the the mm-hotfixes-unstable queue.  No cc:stable.
 > 
->> prot_none_hugetlb_entry() is the hugetlb callback for the early
->> mprotect(PROT_NONE) PFN permission walk on x86.
->>
->> The callback passes the decoded PFN to pfn_modify_allowed(). For a
->> hugetlb callback, the pte pointer refers to a hugetlb entry. On
->> architectures where hugetlb entries need huge_ptep_get(), reading that
->> entry with ptep_get() can make the permission check use the wrong PFN.
->>
->> Use huge_ptep_get() before decoding the hugetlb PFN.
->>
->> Currently there is no path which can trigger a bug: huge_ptep_get() is a
->> simple ptep_get() for x86, and the prot_none walk occurs only for x86.
->>
->> So no need to backport - use the correct helper anyways.
->>
->> ...
->>
->> --- a/mm/mprotect.c
->> +++ b/mm/mprotect.c
->> @@ -699,14 +699,20 @@ static int prot_none_pte_entry(pte_t *pte, unsigned long addr,
->>  		0 : -EACCES;
->>  }
->>  
->> +#ifdef CONFIG_HUGETLB_PAGE
->>  static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
->>  				   unsigned long addr, unsigned long next,
->>  				   struct mm_walk *walk)
->>  {
->> -	return pfn_modify_allowed(pte_pfn(ptep_get(pte)),
->> -				  *(pgprot_t *)(walk->private)) ?
->> -		0 : -EACCES;
->> +	const pte_t entry = huge_ptep_get(walk->mm, addr, pte);
->> +
->> +	if (pfn_modify_allowed(pte_pfn(entry), *(pgprot_t *)(walk->private)))
->> +		return 0;
->> +	return -EACCESS;
-> 
-> "EACCES".
-> 
->>  }
->> +#else
->> +#define prot_none_hugetlb_entry	NULL
->> +#endif
-> 
-> Presumably your .config resulted in this change not being tested...
+> I suspect the Fixes tag will make their AI pick it anyway. But hey.
 
-Thanks for folding in the fix!
+-stable maintainers have been asked not to do that - only backport
+patches which have an explicit cc:stable.
 
-On arm64, this entire path does not exist. The prot none pagewalk is
-only done on x86. Also before sending patches I do an LLM review and
-very surprisingly the "language" model did not catch a language issue ...
-
-On the other thing by Sashiko, that looks wrong. There are existing
-huge_ptep_get callers not taking the lock. And, there won't be a torn
-read because we are using __ptep_get() instead of *ptep.
-
-
+So should I add one?
 
