@@ -4,90 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2D52C43458
-	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 04:46:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34176C43458
+	for <linux-mm@archiver.kernel.org>; Sun,  5 Jul 2026 05:40:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7485E6B00A2; Sun,  5 Jul 2026 00:46:27 -0400 (EDT)
+	id C66726B00A2; Sun,  5 Jul 2026 01:40:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71FF56B00A4; Sun,  5 Jul 2026 00:46:27 -0400 (EDT)
+	id C168C6B00A4; Sun,  5 Jul 2026 01:40:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 634EB6B00A5; Sun,  5 Jul 2026 00:46:27 -0400 (EDT)
+	id B05D06B00A5; Sun,  5 Jul 2026 01:40:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D1866B00A2
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 00:46:27 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 99E4F14060B
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:46:26 +0000 (UTC)
-X-FDA: 84953486772.01.D3608EE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 08A2D140006
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 04:46:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ldarkZ3e;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783226785;
-	b=pt8Dl1SFOb16Jq4CSz006WFNjCEYbW4QsHu1tuAlIANhZfY3qlXwnj2y1oIf1Gp167TR44
-	4IV0kKFofFatGUvFBTHom75RG2J5A8Bp4884l6ifLrgRu/Zt3yjMLYWyzUmPZ6SH23FPJP
-	7pHj4Htyo9H/Atp7rYYuhac6iQMhX1E=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ldarkZ3e;
-	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783226785;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 757C26B00A2
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 01:40:51 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AA39F120629
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 05:40:50 +0000 (UTC)
+X-FDA: 84953623860.14.4CE0AB9
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C0D7620003
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 05:40:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Tw1cHCuE;
+	spf=pass (imf13.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783230048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yS8tgMFHK16gSd7DdvCSlq4Fkcx4ZMA8N73FiBRXdhw=;
-	b=BAjHaibvPBEM0w0+x8oy/EodpHU3GbQY9T1EmLS/+zYTGqDPmz6vrPLaI+Ns8A4kYr4ZZy
-	8wzdAP6BBPzOF+n+5+RqF1NKli9EwHVHVFrSgs6kUkE8LIPFLyeOzlkJHj9wNNmkisNAlR
-	Pa9JyPWz01Vzz48k+ZZUr3OKSiNv+nc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 675E56111A;
-	Sun,  5 Jul 2026 04:46:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177E61F000E9;
-	Sun,  5 Jul 2026 04:46:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783226784;
-	bh=yS8tgMFHK16gSd7DdvCSlq4Fkcx4ZMA8N73FiBRXdhw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ldarkZ3egtjcsy6bcatiw7N/TsfCSvt6dAg7K6aQxhaxDhMrrfewm+k2QCypCbwHq
-	 KqnCF0r0BFVYoaGJor/NsspNjoK1l4QoH1oq7s6TVQh8ZiDgAFOEgEUYefr/8+hc0i
-	 Bleyk4L9gc6QhQ339R/XLxlu7rbEwUes6EFUFpIGluk92blmo0BuX6lOyX6GdjbIgI
-	 wSVkHIv2B5bfy12drDL1mXZbJFu5Soo8x+jgLc1bfwUTsEH/HCF1NwJ9tbv2X/wfQT
-	 Zi53YMSC6zAMBl1u3nSnO7gw+8pgaYIYcn999oEnAuMWIx9YAZpfDhT559zCvDR5Tf
-	 7+DbK450rzEqw==
-Message-ID: <7f211fa8-e2d8-4878-a8db-fd275d4c6821@kernel.org>
-Date: Sun, 5 Jul 2026 13:46:17 +0900
+	bh=nisFkIOWw8wG1u4MQ01sl1TtxhOm6wKesEiWXh9ta2U=;
+	b=qknIjil7Y5Tr7WbzANf41uXgKQWUN0XeMu3tuf72LqdiOinpj/W4dPEF8PPwGksHtQDUqA
+	TJ7n6HGYHahwpaQiNzvAE96DdSDffSfFPrTt/GdftGsNo2JweexUhnSyfoQf/Py4RRcrMc
+	UOhq+2qmhgbomBMKl5pE2/6UwTcrB2E=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783230048;
+	b=g1PFx75ycSYwsArnVTCjHG5lMMdMZNGvMpoh6k45UAB+hrL4nwMPt/N/tUaC70HIKSctDI
+	XHye2iq7OjYXDK5fx+iNHa15eY2pA8ldNPv0o1ov6mOUFH+X9ASSQ0uKVrCeDer/SqM39C
+	+/o5bco9KC3W+sF0clZyt4mro1cymn8=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Tw1cHCuE;
+	spf=pass (imf13.hostedemail.com: domain of souravpanda@google.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=souravpanda@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5aeb688ae83so46188e87.1
+        for <linux-mm@kvack.org>; Sat, 04 Jul 2026 22:40:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783230047; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XhCxAdeAaUuPUM2Z+bAy4f26HE0xGjT2Oy1li4qcaquXnEmnL52EjgyRGLGsLCSS47
+         IsQS7dwHj0e+w3s99lZbqqElfN3zQeqIvvVST5Lqki/LyhkEJqVj4sc/FDbZgBtncJ5G
+         mhG9u6QLajSMdUOjeUPWu3wFgrS4tG69vSqf3QqtnqqPJ6Jk0aAzg73a8oL/f1eSaVNt
+         X688hFq7ngJ+I4O6msMkE1DSf3bXd3suMguJGVgs6aest8mCv+h9pVDVIphe90/1pIOZ
+         7YTiwlaV15p/XFIOVJh52QGnARIxG/hJ6/Pei8NaTow0Ndm8lLqUYKIU/ZfDn9JtVNZG
+         Gqmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nisFkIOWw8wG1u4MQ01sl1TtxhOm6wKesEiWXh9ta2U=;
+        fh=VLTXg0ghRlvJ95gKkoS4G4FYyK9UYJEPNFoWbtF+ZHg=;
+        b=Y1n3qPA07IrO147VWOhUuBc72dTu4SsBhSNRY6FY+ui1C7hLPIe3Jub2qo1nfoTHl+
+         m+7E5B39PuSQMue0nF8XdMEqpJ9SBsaKNpcJ9PLEaPloEfq0aLH6CchEk/ao6xewDtP7
+         3FaQKA1nT0FZJziJD1iq005UiQYXLPzvN0OaYal0o4lZieevT8CWaQY5XSWpZoq3R7Qn
+         xkrweXAFH1L7myz7O9JtoIkUxXCFFH+s1eU8vyUDP2nTh70yM22iKcnwsB//3ATqnhhH
+         UR2ZbFztonYqKruV8VTKeqLkRJCl/WtHg9MPwNN49x0HxHPifAOVrjqIwrvSsgVN4Mam
+         ESWg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783230047; x=1783834847; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nisFkIOWw8wG1u4MQ01sl1TtxhOm6wKesEiWXh9ta2U=;
+        b=Tw1cHCuEn7FDPCjlCE1cz2lSmICoWt8hlBA3gfQvjWt2lLhPjcNOW/fHADkFWpUmYa
+         wJvJ6kiH4zdx+uRhNMoiEJOBbZyWL+pxgYyadkD60l6SPBUWXgplZHDJQ8kzTkzFpzhy
+         Z6m59wFHwHHZCk6Y51d8XuN9Eca+6GiktD1eZzSOKOt5KVFTxAAufdVOcZxABiMubnH/
+         wyKrNdDMrAo4qL5uBo8Q9qqys1EJUPLbEKn/wd8HCh2VEJ2ClcaFX2/oWiEMSC3e+J+E
+         qais08bpdzXlz0sU7xHlFuqwk0eQeav8KX0/cHJ2nIarT7trdismjFWv/LvHUnZkrEz+
+         q06w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783230047; x=1783834847;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nisFkIOWw8wG1u4MQ01sl1TtxhOm6wKesEiWXh9ta2U=;
+        b=jlXDD2WT1CD61pl+rI0bk75oOgy71YkyM9x+09vNvL0rG1zqzCiit6BTUQYvaJWmRV
+         ior2jXTFamh9AghhScb0qMSqHPL7tmP5Sk4c81uJYTtUCsLyWvElpd7KlXdlao2F0PgS
+         vezSVQxA8oOjSgYa6Wq8odbqqRR6h0Xrs/fca6in7P3uE2coBpQOdhYt/orStSoJT+aa
+         xgoguArOJgLlc/aRdUDIamQtqLKEa6cTgowJQX6fmmqg6o0HMTvclwBhl/v2qidN1h4G
+         kERFWIYeTX5eWfbIcIvoOPjw858Bwx/IjJK/Rz95d52bSfcIX0qCfEXYAM9fZCvylRhZ
+         8JKw==
+X-Forwarded-Encrypted: i=1; AHgh+Rpvf0OzDYpQ3Xf6NO5zAEVZ0N0ed50q5Sezzl0TjllxK3TC0AGOlY4e9jp97BP4zdx0MQ/SW1lnWA==@kvack.org
+X-Gm-Message-State: AOJu0YzEzTKmlG8KOstpXdjdoCNTVA8G8O6JvjGJEztlnbxK+XUIuqcv
+	TZ1KLcPLgBnVFxYCpvAoB/ZlUAAc8Nb6+wRUvY6BSrNzpT5sLngWpPAYqihk/h6pLHRdUClriSi
+	vD/7kcubW7Za660xD2ZACXbReRLX7oleaouJZ30sl
+X-Gm-Gg: AfdE7cndNYeZdGSxzlIGxyAabt0oSovpBa4BPOyNe/vYpYVFUTuZmA/6XAS/OvpHUwS
+	/gEcecgLBob/Nei/GxkXYuCVPB6o+CDBUI6KGs5vg4FYWGdbXuX78LtP1Z8GmrscV2AG0iPxA7r
+	N/gKb/HvFXYvWMwjZ05bgTYV8bGJaowEBSnyLsyPIFc/+fNpY6pZQ4OQedzwkz/qzQNRLQzEKUn
+	hljuSSoVXIELDREv4kOO3/38+vCCLtFQ1a3MywmrgeABTrzKKfd9J378HiT5fNdyVH+VKf+gykk
+	FZxZBWJ/FUaxljprz3pZxqu81fopw0oo+CMn1xU7Esb+/Z7akU6g9r5+BHkW4g==
+X-Received: by 2002:a05:6512:3f06:b0:5ae:b726:5f1f with SMTP id
+ 2adb3069b0e04-5aed45efe29mr58601e87.8.1783230046726; Sat, 04 Jul 2026
+ 22:40:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: fix lost local objects when bulk remote free
- batch fills
-To: hu.shengming@zte.com.cn, vbabka@kernel.org, akpm@linux-foundation.org
-Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- zhang.run@zte.com.cn, cai.qu@zte.com.cn
-References: <20260704160450302fnznThT3hBeBiwlhE-oGv@zte.com.cn>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260704160450302fnznThT3hBeBiwlhE-oGv@zte.com.cn>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------B0QdMbL9ogUbc1uFToe2mPr9"
+References: <20260704174930.2885785-1-souravpanda@google.com> <20260704174953.002ee4990c62cec6bbfe4391@linux-foundation.org>
+In-Reply-To: <20260704174953.002ee4990c62cec6bbfe4391@linux-foundation.org>
+From: Sourav Panda <souravpanda@google.com>
+Date: Sat, 4 Jul 2026 22:40:35 -0700
+X-Gm-Features: AVVi8Cc8VCOFqHMacKXJi6c0zmURsw5honuJBFah7xlNvGSyvyeCg7MEIxLVgkI
+Message-ID: <CANruzcQp8V-izMuR6isNrZ0WE+g6U3LTQ2kkt7z6AGXiUsfhAg@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/hugetlb: Fix null nodemask in alloc_fresh_hugetlb_folio
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, 
+	surenb@google.com, fvdl@google.com, gthelen@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 08A2D140006
-X-Stat-Signature: admpsj6bjm64cjsyaj7xnxj8r9hwixhn
-X-HE-Tag: 1783226784-833260
-X-HE-Meta: U2FsdGVkX1+gLzaBAdwxAx350p3Y5ILJyduXGUdJP8dmR6HCKWdNjB8IhBGyYngm+Bvg9yHkv0wQPAbQ1a5FcRtm24ky3JiYGB/bUrFb8e+E0n1FdCDRHXGd4PAaErEPeaOZdwCGH0vpy8PSrUuHkNp4gkjlJPvBOfc8jLzwMsRqJlMj6rDR/hPTdXiQ1vhjIMCFu+GVfqLI52gvatKwv4FyDhQxeNY/9+lboPz/sC8B9uA2LMYPP3rE5HBkTIjmk4VGZk9FjwYTHtb9scTlAgDhs7jw7oZYk6Hg2gm1blpyYHSHjK1vRfHqOvBoCUJTXPdcxaFmc5GLxE4TisMpMEJ4UKBjfv+lEfUqGKkGCntaVmBqJ9xDOrEkjSa4v7Qjo1nKJrBFvmNoATNY2714PNkZFE8WQbnCGT6a71hRcFVVo+YOojhW014ZyrE3sTy1WGKr1mYnHjIv3my8rKItijSuRwUIU3j2Iuz9jZ9w1+S6Ndg6FRbeXFDctExbTK+21z20d75TqJp4ptygFZR9wxTv9aDPllWQb9Fqp96S9d6CsEltvv78z3rUxvY+9sPZjsOEmojnynSv7PVXQwvXtC/ztFdLzJ9BaLAj2vw2KX+jFFkv/YldUmnWuI8PVTZNsYbKH9tmCCm+GeCs9pKDRUrnfsdnPon+QXnOjP2J5t/zNXpv0CYin52uY7RNuiDKjYEragGn58UfOg70YTx9bzJWRu4yq15u+lozfHL19puxtSevAOdiqMffGFC80SDmBy0oGNqACCmZTPOqAUB62Un16fOURn3O1lkkN1YD1hNxjdSQQ5cwIwtWp0Md8aLD8ksLS23xmH+8CBLv0EgV+reZWCPNh870D7ifZ5JD9bdHLGcJCfySoO4xP4OYrPlK7GRdOY9043RoxhkaABZOPuaRktINkT5KX3DwaVFIMWzGZxvvooyeWjvAOtjgo8WJWpRPmqwwi4jjmYHNyon
- hBR33kw4
- zk03wStSYFbJ7t3SRWr6wlm54TNf1xmr35dxLaEMNOOahefkg+BsxNGDgLUaOjyswtWJavOxSDr5BGhjUF5X6/y7UbD/CAltjquovD1CQJXWvsa1d4izXDA3HginQc+GpJLFMDQBEylBRENAGXEI9mv5mfwMrdpCddrYI/X7GYmvX6pSW2FV6cHdpY2AtGnYSrJAjkFrRK1dPMrsIKIkpt54ho0Yx6njDZb6iiU24auyZd2UkC5yCVW4s0WISUt/zn9wZzOigAqC66CUXpFHshDoFb361XJTikAEFtKGd6HfC6/OCxaqMAAekuQ1fpGAfckihSfimQpl47t7084GxVLD01MUiBaOzK+iT8Ju+V9GFkSuCK0yw20dB8kFfmSniyoRvAPrC0svcCcPn2rkyWs0CsCi/n6n0P46WAqFzXE3WeVDmjOEhpWfG1BLXbcpFLn04OC8shCxjkfb8efZXem99dx0NNhzZTcLQVvrP6H3nEboDDGRdrUm+nAbbcgdyylfy
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C0D7620003
+X-Stat-Signature: 16rfxkxbz5tw3dtp3fdbduwky8c33bog
+X-HE-Tag: 1783230048-398907
+X-HE-Meta: U2FsdGVkX1/E0h7wK6BJ3WhCDf3O+xzxg4d8yHAAiP5tQ1c06RcClk9XVZj98aI00rw8jQuO1Rdhhejyiw8DL5GNiq76cInBKVn257OguOaJjofolK75CpCbLmRdLV7ryj87Ur9f9KeWuulPjiCtCVSf1D2EvcTn/+e+wekXPAvHweNCpstQKYJLlTJB1ofXSGNsJ6BDgotZQQufIU3qCJhxZMKp6UUsTh8s9ly1oDtpuV2Iqjghl/TWuD0Zy5nY8tEC4Qub7j5Ts7u8HRnS6XScRKjTbRoI1+c8Wet3Qz3oodhySJVxkfqYUbmNr9RHjw0G3MHdDDIr0PsHrEXu0ljzvMNSG6uuHigYiry+8oOLjGELB9CHw6tkYVdxwR6/04IY8EOCRjhB5BEu7DOfuDFCPE5m5DnYlbNkjVkS25jhm0tde2NTiXFAPUnrLVmvhUZciQNNWNWvrCkvNhQduvgDipmmMRFtctOHIxOMDIGa8LVQd90iadKl2kGA3CFK1yEPa0DPdaGO39dX02YMMcwW07PO+j1/CNkaSmQVbIFvWEwR+92F/d+8HwZIXp864EX3NOQAIDWBBE9R7Xve9AuPvOxZzrGTKO2I8RHIr7cY/b8HIVssE9v67+dW4m+j1LVF9Ht+u2UudaMjfFZnkOtMoKF06RvIB+er7rP8ZH1ElrbaqopfbOXenlwJZ0TDp5tUyEAkLjK8olZaC7xCFBcZGD10PNIdH+0OFI4yRO+Oh2Ym19vbbPeTvW9luqNUG0gn4A4s2tus5LFSfrZZyphCwgiWRS6W9YzE4GhHnGP4cgo8ycJh2l/GXvHONAzjlKkScO2nhSSquv+Mdzz3uXAqHY+QbHiSP1HwYo7HxiYSiuCgnadPWuJLREH+pqq0kwsUJzGU1WeD0zwO9KvyF/6OBgZ6+Wh8TWo/jErDIDXXU03aRBifrT8jQJuNYk+Cqt+5VL39tDbr1m506i1
+ YkLgFAHM
+ XuTIq7qBgEMl2cRnV3FOUNMQ8irIF7DZ3V8aTNSZ0akMEcLVQRxIXHaawAc7A0gI1UAYdkDhloWUyD5bOzmCHR5Qk93LOVDnXF4Zb3DXihXXFCXVDRg/RhK0zcaUeoVhxR234Vbp82RUHyCzsxfPh04+yj+5WlqEH+D+VaPDIsKlon3niMCgjSmwZ2Mj7OeD0bUWz1ixZBDr3NjwV26qSVBN6DOOmYsDL5taFIRo/+JPf3cTiqy/PNs0CpmV3Y0IJE3+GRq9C6U41leXdUqgtMjHcI8B7fGueJ4HdR/VlL8kAp6J3iN9a2yGdrku1jiXt0Had1KyHITrLlTUOhJeviQKCxRQLoM+EMz819otSe204hBu+st266b/mv0BmqxfpWhVwXbzwlXDNZzlCp7s63qyO8OcTKPIqUEHBNYZ+pdmbyvY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,110 +140,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------B0QdMbL9ogUbc1uFToe2mPr9
-Content-Type: multipart/mixed; boundary="------------XUrLp9QppIPe1C4Gxvb0MSiE";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: hu.shengming@zte.com.cn, vbabka@kernel.org, akpm@linux-foundation.org
-Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- zhang.run@zte.com.cn, cai.qu@zte.com.cn
-Message-ID: <7f211fa8-e2d8-4878-a8db-fd275d4c6821@kernel.org>
-Subject: Re: [PATCH] mm/slub: fix lost local objects when bulk remote free
- batch fills
-References: <20260704160450302fnznThT3hBeBiwlhE-oGv@zte.com.cn>
-In-Reply-To: <20260704160450302fnznThT3hBeBiwlhE-oGv@zte.com.cn>
+On Sat, Jul 4, 2026 at 5:49=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
+>
+> On Sat,  4 Jul 2026 17:49:30 +0000 Sourav Panda <souravpanda@google.com> =
+wrote:
+>
+> > alloc_buddy_hugetlb_folio_with_mpol() can pass a NULL nodemask to
+> > alloc_fresh_hugetlb_folio() as a fallback to allocate from all
+> > nodes. If order is gigantic, alloc_fresh_hugetlb_folio() propagates
+> > the NULL nodemask down to hugetlb_cma_alloc_frozen_folio() which blindl=
+y
+> > dereferences it in for_each_node_mask(), leading to a null pointer
+> > dereference.
+> >
+> > Similarly, if the CMA allocation fails, the fallback
+> > alloc_contig_frozen_pages() is also called with a NULL nodemask,
+> > which may cause issues.
+> >
+> > Fix this by explicitly checking if nodemask is NULL in
+> > alloc_fresh_hugetlb_folio() and defaulting to
+> > cpuset_current_mems_allowed. This ensures that both the CMA and
+> > contiguous allocators receive a valid nodemask.
+> >
+> > Additionally, this patch adds a missing node_isset(nid, *nodemask) chec=
+k
+> > in hugetlb_cma_alloc_frozen_folio() to ensure the initial node allocati=
+on
+> > attempt respects the memory policy.
+>
+> Thanks, bu the changelog still doesn't explain the userspace visible
+> effects of the bug :(  Important when proposing a cc:stable bugfix.
+>
+> So can you please condense and include the info you sent in reply to
+> my v1 question?
+>
 
---------------XUrLp9QppIPe1C4Gxvb0MSiE
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Absolutely! Thanks for shepherding it :)
 
-Hi Shengming,
+I will send v3 addressing this and Sashiko's latest concern.
 
-On 7/4/26 5:04 PM, hu.shengming@zte.com.cn wrote:
-> From: Shengming Hu <hu.shengming@zte.com.cn>
->=20
-> In free_to_pcs_bulk(), when remote_objects[] fills to PCS_BATCH_MAX,
-> the code jumps to flush_remote to free the batch. If all remote entries=
+>
+> Also, Sashiko is saying stuff, as usual:
+>         https://sashiko.dev/#/patchset/20260704174930.2885785-1-souravpan=
+da@google.com
 
-> have already been compacted out of p[] via tail swaps while local objec=
-ts
-> remain, the flush_remote path returns early since `i < size` no longer
-> holds. The leftover local objects are then neither cached in the sheaf =
+Sashiko's concurrency concern is valid and can be handled with the
+  read_mems_allowed_begin() ... read_mems_allowed_retry() seq loop pattern.
 
-> nor returned to the slab freelist, causing a memory leak.
+I will send v3 with the following changes:
 
-Ouch.
-
-Interestingly, we fixed a similar memory leak in free_to_pcs_bulk()
-during the v6.18 cycle; commit cbcff934fa7d ("mm/slub: fix memory leak
-in free_to_pcs_bulk()").
-
-Hmm, I feel is a signal that the control flow is quite complicated and
-worth revisiting if we could simplify the logic there. I'm not saying we
-should do that to fix the bug, just mentioning.
-
-> For illustration:
->  size =3D 64, local objects at p[0..31], remote objects at p[32..63]
->  After scanning all remotes: i =3D 32, size =3D 32
->  p[0..31] local objects are dropped.
-
-I can see that could indeed happen.
-Interesting. How has it been undiscovered until today?
-
-Well, for this to trigger, at least PCS_BATCH_MAX (hardcoded to 32)
-objects in the sheaf should be from remote nodes.
-
-Looking at kmem_cache_free_bulk() users:
-- maple_node has sheaf_capacity =3D 32
-- skbuff_head_cache has sheaf_capacity =3D 28
-- panthor and msm drivers have sheaf_capacity =3D 4
-
-The capacity is (at least for now) purely based on the object size
-(with user-requested capacity as a minimum)
-
-Only maple_node cache (out of four users) has
-sheaf_capacity >=3D PCS_BATCH_MAX.
-
-However, for this to trigger in maple_node cache, ALL objects in the
-sheaf should have been from remote nodes. And that means there is no
-local object to leak :)
-
-So, although the logic has a leak, you cannot trigger this in reality yet=
-=2E
-
-> Replace the goto-based flush with an in-place free of full remote batch=
-es
-> during the scan, then resume processing the compacted array. All local
-> objects now go through the normal fast path, and the tail path only
-> handles any leftover partial remote batch. The redundant next_remote_ba=
-tch
-> jump label is removed as well.
->=20
-> Fixes: <989b09b73978>("slab: skip percpu sheaves for remote object free=
-ing")
-> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-> ---
---=20
-Cheers,
-Harry / Hyeonggon
-
-
---------------XUrLp9QppIPe1C4Gxvb0MSiE--
-
---------------B0QdMbL9ogUbc1uFToe2mPr9
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaknhmQAKCRCGXBN6rc5S
-1oiJAP9yRGJ0XdV2ZAHxJ346MUIWLyf26AnizXwKcn6sT5UQ8wEAhFVeSyaKEMOk
-YeYpdg+WF68xx/8IogS8hl0Dg2+olgw=
-=FnEW
------END PGP SIGNATURE-----
-
---------------B0QdMbL9ogUbc1uFToe2mPr9--
++ nodemask_t local_node_mask;
++
++ if (!nmask) {
++ unsigned int cpuset_mems_cookie;
++
++ do {
++ cpuset_mems_cookie =3D read_mems_allowed_begin();
++ local_node_mask =3D cpuset_current_mems_allowed;
++ } while (read_mems_allowed_retry(cpuset_mems_cookie));
++
++ nmask =3D &local_node_mask;
++ }
 
