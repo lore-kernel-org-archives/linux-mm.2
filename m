@@ -4,91 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4330AC43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:59:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C567C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 12:01:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271E86B00A1; Mon,  6 Jul 2026 07:59:28 -0400 (EDT)
+	id 2E9866B00C9; Mon,  6 Jul 2026 08:01:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2495D6B00A2; Mon,  6 Jul 2026 07:59:28 -0400 (EDT)
+	id 2C1066B00CB; Mon,  6 Jul 2026 08:01:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15F1E6B00A3; Mon,  6 Jul 2026 07:59:28 -0400 (EDT)
+	id 1B0C26B00CC; Mon,  6 Jul 2026 08:01:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DB0E76B00A1
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:59:27 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 47F3DA03AB
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:59:27 +0000 (UTC)
-X-FDA: 84958206774.20.4B59065
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9AB9E2000C
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:59:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwl66Jd2;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DA6CC6B00C9
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:01:14 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39B2AC1EF0
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:01:14 +0000 (UTC)
+X-FDA: 84958211268.11.872E0A2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 12E00A000E
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:01:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FNph2Rjj;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783339165;
-	b=2JiolwgZgiHLsHF5ynJ30gJB0oc7F+I4IGvxVDlzEm3Jv3I+4OWBPa9PqrgQ7eaaaL2Lnw
-	epWGPS0f8PcNyvb5sbxUVWGpg/pI3eQAqKtpLsFd+jHjss0XR3RqhlQjFZKjrdNvyzBG2D
-	ldyYWBbzk6AiEqgJpprMmArWJtsrd94=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwl66Jd2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783339165;
+	s=arc-20220608; t=1783339272;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V3erF/b265knhzDJVb6b4oDNmirucwH2jZV5nkwg6tQ=;
-	b=5XhtTbwIlze8UrWxvEoAv7TJbBjvGvEfvS8SPwx720pLtf34iokBRxG7Ivu0EttNfKFL1m
-	rL2Tp1aolcJbc13SUlrg+sve1reiAr1SK1PFU5s0YzyPqXkiJlMuGcI5rQLSK1k/o5nG4Z
-	6yXQm/wNs51brwD4oQbhFZEfGejCBTg=
+	bh=WW0L2SZejCwRpfEhR38N28+FmcBaL+orntMxtuRFWqo=;
+	b=XsmpX/EO+UHZipzJvesEC683OAvxob3af8GGaOYnbUJcBTlDOuYb0HGVB7sFU4hed5wHxO
+	S6yYTBlnKnGYDYZtuoq/JDVYKUCFS2qXWcIPx2XzWLMJUbXgPORpL7pQbA2inhnz8DSTvM
+	EQVLg+yHWIJvF2cgjs4xzmYX6LXdDKQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FNph2Rjj;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783339272;
+	b=MLPJTyHK9W+5J7RwVzoCB1vijfzrUkodt83YhHN0Iz5R1knJRmJqeq+WhHiKISnA7UGZZn
+	GX8PC+/XezN3G0IyMF2HoXxtDctcTWLLpIBnHyR4maSJSvxHdygT3e29EgSA/Ry1xEz0wd
+	LolNqm/oLW6s4Ep4BnCfzw5Lw41Tm30=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 11168600C3;
-	Mon,  6 Jul 2026 11:59:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40CC1F000E9;
-	Mon,  6 Jul 2026 11:59:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 03F6F42BA1;
+	Mon,  6 Jul 2026 12:01:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7191F000E9;
+	Mon,  6 Jul 2026 12:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783339164;
-	bh=V3erF/b265knhzDJVb6b4oDNmirucwH2jZV5nkwg6tQ=;
+	s=k20260515; t=1783339270;
+	bh=WW0L2SZejCwRpfEhR38N28+FmcBaL+orntMxtuRFWqo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cwl66Jd2LhYKHJJKFi12bQQ7Cp3/mMIdXHkk4kiHHX5CIPhcXTNTLhcClMHCK9AFV
-	 bVeonePrZGiZV94RKuRwqqzyRPBKezrxtZQJQ13YFUNW318600LJpEu3gDmEfWu8+U
-	 1ZifY8KRxsHDQYcR1yQHNuixr6Ijlzi8USCISeaNo9tucChlGUV6SoXMTzSYRdfUgQ
-	 ejuzbJXpWCagqRcIF3NgwEHm3QPmBaSdetvwpC48ln94Lg0NRoL3aTzGvyO0JMg2QF
-	 5YGJ0CXK09laAqRuWCwmYryaNYtdfzmbrfTn1b2kbwml00QeW7Y/Kcv85mBu2dEnwW
-	 pj7DnF5nAyGew==
-Date: Mon, 6 Jul 2026 12:59:12 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Lian Wang <lianux.mm@gmail.com>, damon@lists.linux.dev, 
-	linux-mm@kvack.org, daichaobing@sangfor.com.cn, kunwu.chan@gmail.com, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org
-Subject: Re: [RESEND RFC PATCH v2 0/5] mm/damon: add mTHP collapse and split
- actions
-Message-ID: <akuYh9HQerTfUo1u@lucifer>
-References: <20260702165235.86684-1-sj@kernel.org>
- <20260703190421.100480-1-sj@kernel.org>
+	b=FNph2RjjNKyXATzZlyGi9t4i8oEyjJpJy9IMpr/DL2C1UiK3yEa7e7vHQ43BpNBAx
+	 B4evmQ3V4Q6iB2Ws0vnTwKz+8GfgQ3Z6KJeBOW+k/T/zsBChjgodYTIlZM9QgNkd7B
+	 u57nGzqCEOBm3dRgxbOTMimfIz+zAubf2PJCITGA+ZZdEUiWyNJVxkerzh5huUzWY2
+	 0CCPJ478AoioIeZBZFMsNDcuby4OcYsCFLH1wwxMGxMe1Vuk9LBJOh9D4eqvP7rjdz
+	 S2VH/uxJs3EJIzcvl1ZeeNdo0Uxo6ABRrs3eEuh/yZ1kx6d7sLKNRqoW9AcrpqWb+U
+	 HaHvpuhrCsewA==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 0B21DF40068;
+	Mon,  6 Jul 2026 08:01:09 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 06 Jul 2026 08:01:09 -0400
+X-ME-Sender: <xms:BJlLaucZk5uTZMuWajBaUJtFjTSecHNHtAUSA0xFFO0X6Fy1qOD2PA>
+    <xme:BJlLavwYDifDF22hn7uzFXE8easFmz_-dPymi7uOGnO26F_p_w2qX8yNgQwXpoF3G
+    R_Gjjiy-lic67Z1EBSxY64jjmcE_91lylS6AmOYHLzsdiitdgTnT0D7>
+X-ME-Received: <xmr:BJlLasdjy0KWZQXDiLcGMyut48JV1A9484_3ZfudY6No7I4bxuyLgblw4mXCNw>
+X-ME-Proxy-Cause: dmFkZTFySgqqxLA4VZcNFCd3z+XbXwnqS4PD/nBbnsy1ojGvSM/8/gbK80lPUh9NcDV0RJ
+    rUO/qqcx2j2U37kdDcQHzTYAPKRAnrRouILhYPw+E+bTymwtMJsfavHaHRHOkkuVQP9i8D
+    5GQ0yys9VyHQmVVefvBUhL54jcpmpq5bKoyvwDP1KdSdRHsPPnl/GPwL7OzpXKLydgINdj
+    S7KcJp2WbfNiyKRPBhALsQ9yc4C0hzHM+CuLPRzHlTJmuD/NR4mpKP/tszrXUcyW9ATqpo
+    TBCgMrDphtMtmp1Ew9Wt//Ze/YA/M/0KeyZVfBnqckn8uAHLpk+UCq0/6Ob8N/M6p/3PJh
+    2j9KOuKtEJhHsB0L+EKej8BWJLh8ZHuwSvX8HiRScwJfpUYLxuvefaXaSIaNG+Br3ZvX30
+    S8F3z6hAc4TguxEPpEAQ8ggoKYpm9HjbfJPwTNlCXdeBuZBXdYqEWQrGZY2cJeJDc8OTim
+    573Sz6Gm3zGqzDkHpz3JzFC50rfUJGVEZ5Q9EREqQkEWE4FTsahLg7APRwPGgcxPo9+U1n
+    m07vsXn/BiUFWEJy0bAeBSQinQqS4jyrTTeehNq7LtFgiPI0h93PNox6mBAVpyU02z5irA
+    r8D9WSy+JV+jJH/naH6D/pYA1LrLq2oCmajkiMnajO+GBgGc35Khjd+FMaEA
+X-ME-Proxy: <xmx:BJlLap4c_1R0AoktTsL0LgGhcScgvoB4EtnJm6nEbpXXDJWkwJci7A>
+    <xmx:BJlLakYbb5bnGYTv_ubSjf6GKgqQm7lvx__piQ3mEyN1Q9riNluCuQ>
+    <xmx:BJlLamxBRAaYjhhSq6a8O9VoaBMTxDF-IurOAMwi8_HCJVKpDqwrNg>
+    <xmx:BJlLapQKVxzU8SWgJUclDq5MJhvcwNrZXXq45xLc-UO_E26sGtaeUw>
+    <xmx:BZlLakq2bHpmKFE9eEsVOX-rNHjT3Kl27xYG0-u5ffr-hK9WUOXwUIaI>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 6 Jul 2026 08:01:08 -0400 (EDT)
+Date: Mon, 6 Jul 2026 13:01:07 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, 
+	linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, 
+	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org, dev.jain@arm.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, "Liam R. Howlett" <liam@infradead.org>, 
+	ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/6] mm: extract mm_prepare_for_swap_entries() helper
+Message-ID: <akuXgognmAW0QhOX@thinkstation>
+References: <20260706114320.1643046-1-usama.arif@linux.dev>
+ <20260706114320.1643046-3-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260703190421.100480-1-sj@kernel.org>
-X-Rspamd-Queue-Id: 9AB9E2000C
+In-Reply-To: <20260706114320.1643046-3-usama.arif@linux.dev>
 X-Rspam-User: 
-X-Stat-Signature: 48jdjw45p4sssxwjnwamszb1dzgf5tyb
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783339165-323171
-X-HE-Meta: U2FsdGVkX19ggwuxAdna9EEULBgtNqzfNY9KyKenjKK5aZ/msgZ8ov7usaL04DO+yBSzIzDz2G7p5mzqzv09XV4tOOdG+Cgp/+kJPf7eYBFbpfbWlRkp81FmTrxr1c7D373b7D7o2NQJ+9muLz0SODQ3aGIO+2xjzTpkEs4eSmMGuT4BZdWhbr6JESsk2miGoARLIHZF4dK2flJitd+G6ZmjtpLDeQEFcLCdALw/zQADEiXZYu0MFr887WuFyrPuoVe6UX8EwPadVaepzoVgIkjOlNQOR+xg6myMiy6wX7LfMQucXRvqYld+neQSQvN4fm0+wt14yE3wDOT6g1EYG7Cce96g7Vfvkfso9WQQYeNI7Nr3XAPq9gpKlI2UIYhGUM6I+oLWg5qcm5I+HmjBPFlj/+J/dyLsgJ/OgbKf35MfPWV2Hv+NHvX1m5YKsuxwsZWg9RUxQ9ihyuv6H4ZPbKhhfz2E+uPGk5yWezolYlz7lYqmnKj8qgncj4wkSpemKUWuZcF1Fe4QrSRKGdCQqrikML8Kg+XayJk2TTtIPHFtyOhTSNLPt+7syBW71fIseO/BwzL46emGAZFRfzd/+rnQRboQqmtXVbttZEFAfh5QJ9FiFSn5C3/ocUCZZSoKJJscHzcB7wMc21IZWXoL8OjSu3bPsX4eqI7WSXKWV1/Ui/1kZN19eLPMgb68mow282899RS3lH/IXbwvrbodCxWH4bGQGNJW5pELp6if8wRu4Y9PIkhlZrYg3ymX3CvoqJQyvfXQyp39bveoMWiSo7/suIT05C4wUoSCMdD10ic6rbUCy6AX40LGGxCemTTDn1jaOqFwSwT6ptfd+tjUTJv2W6JB1Gj/zPIwkmLLoTtFoJdun3qUhtqKCrAFLUF8K5ze7HUqIrp6tGt/tydang0qOOnK0bl2Ff6IUwYLmls8hnWV3f+J7t698Codkbikw3w0ilffRv44/3+pXhB
- IffFS6LI
- CM/qy+w4UXoeQc6pn9drZ0fmcikC7N7/yh/CoxCYJnmGJI/vPYbJV0TggHmNWRbsIHJEAZ6fyHtDCveiSs3lR4mxSVyLSD5E6rPFKJy2vtlv596gIeS2k06/D6tcqUk+hb1PWhI25l4y6HuI21I6t5Ir/GMQiQgvz37xyIzhE7BttEK5Vkzem5X5VuIyGXywu5dRJYsyFoEhDGgL8rDd7OtMR7Pf/nWx99/icR449Wy8teAfxVEZtToqZfoJ4Wo7vxzYTXSSMtCg75VeaM46sm5TTblcTq4TUBraLvZ2Q0cqimV8A9VkYaHFODlE5AMc8T/BU4FQU41osq257Hl+b3k4BPE7/YeDkFl8R8vbt3o+6dEoQd7jfUojvMFgVnWSJBLWAJ4b7Z0ajEu47WQESzmCIMXfJZ8zSpD5qE8LvZt5PPtDKZVYUm1awOy6XHmHgGg7N4Xc4yHKaXBOlL7w2xJzuo4Wv4jlJxSeGivM3oAxtpIlOcGfKqjGb8decL8excmCvE4FYn55Jm9eFn0Up/229LDGu3lq91abw3EgXFoogUPIaAa0uzrYgxp3QQt28p0rInsYifVXt/AfYAGa6nq4p8cK07rgfKZziuUl6OzknrE3JhTUeFXj1U7QGSnld04OB0DktEyeazCFRqyCFst1queMPtR03ox56m1lR1owYHzrTawvxLl4yrw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 12E00A000E
+X-Stat-Signature: abab4rrkm76ssjg7fptiox3ws59st7s5
+X-HE-Tag: 1783339271-305128
+X-HE-Meta: U2FsdGVkX18YuolYnx1MMth4mM9Oe83sU02dkYMOzVCqlJAedFJDr8IvmpMevpvtMVUwnySnNsYLE5K+H+/u54yjyfJ7HWWEMIaSUVzIvkl2PDwTnNjCAxvNkNwLr1AoVaYXde522NlFj6xinFysMJNeBNOLRb7ZMO8KrXWknt7qk5TnMLhix7YT7eWEgwg+Pxu/InXJya3mb544Y5MEvu46cVEXfzs4Zmk2OaD/FZLIoFBdKNaP131ZHXr02jUH+VJ/lUydB8+HO2fgHTDjOhdps14zLsh47g9ERS9+HLXV79yDvTuAgjiCiYSPyQiZ3pHVAHQZ4RPlZ4qrjFC/s36SeY/Htt8LqbHPdWtjER78TPs6gkZpk2TTNGgYnNrx7cFikE7Hqd5QIzCiQ5mb0H7kWOO8l4JDDPsF8K1iEmyVz4yewpS3SmebbtjlSfRhzBt6/PyLUg1OhMB1SuW40Mv30pE75Kg900S1uJVT3G4hxKeKoyZdJtHPmscFYZz92kxk0Z1zyhK9xJNt06J2SMhR1AynUeBBsjvmD5cOq82cMvAx7aTNYYj1M5nvKDm3So0sR+EyTG7auCdQ4w4fl0REXqAmIGO68WOch2k9dEI0RWC6sTb8ITBUGyLEjBDTSTz6fAeg2jMAQ7Hsu0i8WcIi3zZMP416qrBoSnvNocyAqIXayeHvUEEWutTL8xK8Y0Ja+69RnaMREu3px5VOyoanwGmGGhJyAZlvUXmAYit4p06nWEn8p9oE15sl2XtysDV/PvrpkM6pr7l/1RfpmoMqZE2bUopPZzSAsng6bYnBDidQFq6fmeHc1Vx2iR6T6SG2fOamsxVyihHDYacqRFY2P8Xkk3SgVQzoQShnY/R/Yb9DjZTkQeAH5Sjw76Du6FgDqzBIMa4bhakNdTBb3MIZutXLVx3TSQvsc4LPyb4iqyQkslxl3jllCB0iLypf9dmAP2+8MmJ56XLZj4c
+ qZ1dE6y+
+ 6Dlhtb02T33Ujj8g3U8Et2XToSpUaYRwGnM26+r+HFpw4CnN2C7bCV2w/kY0VlGBKgoo/kZQIKYxwQynJ0rGeYQz2MGfS7B7JyS8DZxf0Nnad/Uuv9IAoNMJ8sBCxSJo/NDdVstpUb93ogbrNpzWv4Obcyl0cafJY8krSC5INJ2GwgNOAMpT0/hT9AAdZqNTSM3/30pym3mggswUaCUaRtY66eLBb3BBk38z82a92LS/VlYNkvZN208P5c7Fl9zitPirDqlpISNWPH8w5b9zUzWlDUpPycN2LIwPChhHbteJYnWjzAz4Pcex+5s+dMUomJ/x28rKGynj7uD+gbp8Ku6Gs0+Zik+wHngWj7J6uhOqdzP7NfOQlYm+eiX05e31TY49ARJIBH6r4XNvBzRAzl6bx0/GrPBbMBezbNK1FfNTIlgG+tvkbno+VIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,69 +125,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 03, 2026 at 12:04:20PM -0700, SJ Park wrote:
-> On Thu,  2 Jul 2026 09:52:34 -0700 SJ Park <sj@kernel.org> wrote:
->
-> > On Thu, 2 Jul 2026 11:23:55 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
-> >
-> > > +cc all those you missed.
-> >
-> > Thank you for doing this, Lorenzo.
-> >
-> > >
-> > > I really need to write a bot to do this, because I'm getting a little tired of
-> > > pointing this out :))
-> >
-> > Good idea.  I will also consider implementing this kind of checks to to my lzy
-> > tool box [1] or hkml [2].
->
-> I implemented [1] the check logic on hkml.  Many things to fix and improve in
-> future, but seems working at least for this series.  You can use it like below:
->
->     $ hkml patch check --check_recipients only ./0002-mm-khugepaged-add-damon-collapse-folio-range-for-external-callers.patch
->     MISSING RECIPIENTS for [RESEND RFC PATCH v2 2/5] mm/khugepaged: add damon_collapse_folio_range() for external callers
->     - Andrew Morton <akpm@linux-foundation.org>
->     - David Hildenbrand <david@kernel.org>
->     - Lorenzo Stoakes <ljs@kernel.org>
->     - Zi Yan <ziy@nvidia.com>
->     - Baolin Wang <baolin.wang@linux.alibaba.com>
->     - "Liam R. Howlett" <liam@infradead.org>
->     - Nico Pache <npache@redhat.com>
->     - Ryan Roberts <ryan.roberts@arm.com>
->     - Dev Jain <dev.jain@arm.com>
->     - Barry Song <baohua@kernel.org>
->     - Lance Yang <lance.yang@linux.dev>
->     - Usama Arif <usama.arif@linux.dev>
->     - linux-kernel@vger.kernel.org
->     $ hkml patch check --check_recipients only ./0003-mm-damon-vaddr-implement-mthp-aware-damos-collapse-handler.patch
->     MISSING RECIPIENTS for [RESEND RFC PATCH v2 3/5] mm/damon/vaddr: implement mTHP-aware DAMOS_COLLAPSE handler
->     - Andrew Morton <akpm@linux-foundation.org>
->     - linux-kernel@vger.kernel.org
->
-> It is also integrated with the interactive mails list [2], so that you can run
-> it without manually downloading the patch files.
->
-> FWIW, 'hkml patch format' automatically adds recipients based on
-> get_maintainer.pl, so this check is unnecessary for hkml users.  But this will
-> help me reviewing patches that not formatted with hkml or other similar
-> scripts.
->
-> hkml has a feature [3] to monitor new mails.  Extending it to run this new
-> check and send mails for check failures could be one of the ways to implement
-> the bot.  I'm not planning to do that by myself, though.  I will run the check
-> only for patches that look interesting to me, for now.
->
-> [1] https://github.com/sjp38/hackermail/commit/9ca6fa1f71edc7a219edeb41d4c7f91
-> [2] https://github.com/sjp38/hackermail/blob/master/USAGE.md#interactive-viewer
-> [3] https://github.com/sjp38/hackermail/blob/master/USAGE.md#monitoring-mails
->
->
-> Thanks,
-> SJ
->
-> [...]
+On Mon, Jul 06, 2026 at 04:42:04AM -0700, Usama Arif wrote:
+> When a swap entry is installed in a page table, the mm must be added
+> to init_mm.mmlist so that swapoff can find and unuse its swap entries.
+> This double-checked locking pattern is currently open-coded in
+> try_to_unmap_one() and copy_nonpresent_pte().
+> 
+> Move it into mm_prepare_for_swap_entries() in mm/internal.h and convert
+> both callers so it can be reused by upcoming PMD-level swap entry code
+> paths that also need to register the mm with swapoff.
+> 
+> copy_nonpresent_pte() previously inserted into &src_mm->mmlist rather
+> than &init_mm.mmlist, but the insertion point is irrelevant, mmlist
+> is a circular list and swapoff walks it entirely from init_mm.mmlist,
+> so only membership matters, not position.
+> 
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>  mm/internal.h | 10 ++++++++++
+>  mm/memory.c   |  9 +--------
+>  mm/rmap.c     |  7 +------
+>  3 files changed, 12 insertions(+), 14 deletions(-)
+> 
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 430aa72a4575..0360648e5726 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1955,4 +1955,14 @@ static inline int get_sysctl_max_map_count(void)
+>  bool may_expand_vm(struct mm_struct *mm, const vma_flags_t *vma_flags,
+>  		   unsigned long npages);
+>  
+> +static inline void mm_prepare_for_swap_entries(struct mm_struct *mm)
+> +{
+> +	if (list_empty(&mm->mmlist)) {
+> +		spin_lock(&mmlist_lock);
+> +		if (list_empty(&mm->mmlist))
+> +			list_add(&mm->mmlist, &init_mm.mmlist);
 
-Nice, thanks SJ! That's cool :)
+The patch is fine, but the name of the field is awful. Seeing mmlist I
+assumed it listed all mm_structs. It has to have "swap" somewhere in the
+field name.
 
-Cheers, Lorenzo
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
