@@ -4,91 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CA21C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB7DC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:45:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 678E66B00E4; Mon,  6 Jul 2026 02:43:25 -0400 (EDT)
+	id B2F276B00DA; Mon,  6 Jul 2026 02:45:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F9156B00E8; Mon,  6 Jul 2026 02:43:25 -0400 (EDT)
+	id B073C6B00E7; Mon,  6 Jul 2026 02:45:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FF6E6B00E4; Mon,  6 Jul 2026 02:43:25 -0400 (EDT)
+	id 9F6096B00DA; Mon,  6 Jul 2026 02:45:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DC0696B00E3
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:43:24 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 57AB78D072
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:43:24 +0000 (UTC)
-X-FDA: 84957410328.13.6EA9190
-Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [91.198.250.237])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7F266C0006
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:43:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7606C6B00DB
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:45:55 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D66BE402CF
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:45:54 +0000 (UTC)
+X-FDA: 84957416628.30.3F03F5C
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B8F6A20002;
+	Mon,  6 Jul 2026 06:45:52 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
 	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of m@mavick.dev designates 91.198.250.237 as permitted sender) smtp.mailfrom=m@mavick.dev;
-	dmarc=pass (policy=quarantine) header.from=mavick.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783320202;
-	b=jAZplE9+/bH5OeUZG8IJinL0KI37JVU36bNFCNC4guGfmouRkdsUTFdvQaQVNfJpuYVHN7
-	r+mmZmMGb0iQ6YIse2sSrTgyp0q4WQRf8kb4AtLqWbSa9jJ3gJPH/TUmEoNbIEQ0nJwRYq
-	yb/pvZNjZ+rFEGVwww0j4tnS/TyBx9o=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of m@mavick.dev designates 91.198.250.237 as permitted sender) smtp.mailfrom=m@mavick.dev;
-	dmarc=pass (policy=quarantine) header.from=mavick.dev
+	spf=pass (imf31.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783320202;
+	s=arc-20220608; t=1783320353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Q10jfyhsC+ilV5voSAeXf96TIcBRjbPsbwt+QWdyz88=;
-	b=p/jGXzDseM8/ugotn/VEVrezDQzaW83TQKynXpZnwpSSvX7dNUQElqGDf7xNqOj7jRuHiQ
-	4pMZOmgO0qvZuJ2Y+ot4xD4753tLeohPfOe8Nn51se4e6JjiWAMGvide0WR8OwMVxADhfc
-	QmjgvWm8QGh8YLCnbxukWb1IqVwy/dk=
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA512)
-	(No client certificate requested)
-	by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4gt66Y2ggJz7vSb;
-	Sun, 05 Jul 2026 01:20:21 +0200 (CEST)
-From: Eugene Mavick <m@mavick.dev>
-Date: Sun, 05 Jul 2026 07:19:21 +0800
-Subject: [PATCH 2/4] refcount: add ref_trace_final_put tracepoint
+	bh=nPWi6xoaRUzjJzQF9Ulwi4QFP9UEd5i6LMvnT2iqIPk=;
+	b=4dNKWRh9EaVepClCN4oHrMvnzcfinCYdzed3gtvtv4uDo9NeLdEtEkYX0+f5eAIGP9iBMv
+	gkMEcmkE1zHPtKKEK7EE1I//z8M3jsFjtb3+E9dOkZfdLd+maARb1cXC0lp8TagMlsd/wz
+	GTjCHIgMhlm4krX3LmSzBveN2PZwitU=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783320353;
+	b=G7kVbtz0vIs/Ge0IoQ6MS5vNp/jjUAqzTarj4gEr+e0EegfN+eveQXvqeWjYHhM6CF878c
+	VGqXA4uk9v27oUUVY4ZlYf/l/YFQr66O5vz+nO0Fc/UGYr5lCC5QYgZJGlekxdKSiAerN7
+	/Lft+xppQuRdYphqQiLFDGDG/q8sIlY=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id AF04068B05; Mon,  6 Jul 2026 08:45:47 +0200 (CEST)
+Date: Mon, 6 Jul 2026 08:45:47 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Cc: Christoph Hellwig <hch@lst.de>, axboe@kernel.dk,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-aio@kvack.org, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] block: split out a new blk_plug.h helper
+Message-ID: <20260706064547.GA25268@lst.de>
+References: <20260706041125.642097-1-hch@lst.de> <8583b332-0d24-4f6f-8831-69e3aad936fd@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260705-refcount-final-put-trace-v1-2-cdd0014626a9@mavick.dev>
-References: <20260705-refcount-final-put-trace-v1-0-cdd0014626a9@mavick.dev>
-In-Reply-To: <20260705-refcount-final-put-trace-v1-0-cdd0014626a9@mavick.dev>
-To: Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Boqun Feng <boqun@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Gary Guo <gary@garyguo.net>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>, 
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
- linux-mm@kvack.org, Eugene Mavick <m@mavick.dev>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=878; i=m@mavick.dev;
- h=from:subject:message-id; bh=oxdQX1dkebrHkQOKFGbMe1L7jn1KmiWYDIa5MeosIJI=;
- b=owGbwMvMwCU2V/5U3e1aE3/G02pJDFmeU5m0OA0svmvuKZ/+Std+i9ajtrd6j3jWMLTXar6ru
- 1Muszy5o5SFQYyLQVZMkaUmK8E9Y+WsROOjk3pg5rAygQxh4OIUgIl8bGL4w8s0o01x7/tJfaoS
- XwI3lcYwPc5IWnOpeM/LT1H1bvb2dYwMv9oPfpIuOfXnQJGxglzshL3PWhhsTCd6XTk/tWSS+IF
- TTAA=
-X-Developer-Key: i=m@mavick.dev; a=openpgp;
- fpr=7C6A604768A99A6133C5928C9D1FCA7EDB7D344F
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8583b332-0d24-4f6f-8831-69e3aad936fd@wdc.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7F266C0006
-X-Stat-Signature: qawyrnazkkwcchb8zzsgumx1789shewy
-X-HE-Tag: 1783320202-960619
-X-HE-Meta: U2FsdGVkX18Qrk2V+QAHicnHSFZ2IT5vXx1Av4r9NdHUjVwzykMj5RQBTyVEUBG1vTjUIdqp1A3gFqN1ow4JwR/nglbahPx1WnBqml6wbJz0zW32mrTbrMO6HSVeVhVxlq9wRMxgTl8vzmbkncfzSWVw/iLKswnvpPETUqY6YGR2igF0CExn1pvO1W8KvimjUO8uh019w0Fq0UBrg5mpCTHKwBbvr65xsquarkwh3vcX3lmy0K8+syqpA7jddKXEXiO8OLXaQbINS+9rQ38cTZ1juu/vLNqVtDn9SCBuBGfZUOjfMTT2kr2bg/14MhKnCY9ebTkqhHgQVoPhH89F2oB5w7OwIwFST9DN0wt3MqQURmpgZm4G/ByROKRMDz8K3OEFFB50MOZszZ8qgWjvz7umwNKtZicv1dtP+x49Ml/9cxAu6dDk1h4Twqr44wOYmFYYZZ81I12IOUTsJhcO7gE5u50G/vObCpWMexweE+/FFqiJTfTbAujE8+S1quhdBeUd1p0lrVR4uXiyVPwJO6Sc1S51lZB/YGklq0G0FNcIe7uQN0Eux8pXCalMFJb6lmv2E6ILBy9qJuUb7BgKRj+Al8NduVicxeqsQdzaXIRx7LzjopKZZxioz1c5DJ+0ojLzQCq3fWn1NR1wdYb6VARVkirhTNmDLmGsyGkPipqenw5WPouiS9K284Ylh83qeTBlul7q++PmL/ksSPi94f8ZN7tUcuhBniCyr4+wmPFrCErhOcuJz63PWZnOLYcoiEww1ItJsMQiAC13NZsCIeeXTcGDG9F/n9u8nLkc1Fz2D7T70tGqpv5fcz0c/vhWqh5eZjwr1reMh1rA+HqgI/h4cQSBVJOa925S08ERCe8GRHB366tDbngS3KmYi/WXbHHlXfa06bedsfnIqHQ/ocp9/7zinp6tJdarqdR9+xPMsfQT3173KKABXPVvuLvp6WxU1hxQfY3JTY1DG8z
- e4fpSyZl
- 9S9UskZS28rq2paYh2VvRVyyhAFeeSrqYN9Fi9NKIPwIKH/qjA60XNqGmQOzE+GSlN6p5Cpb2/OXRCXmkZQR/RfgXOKx8/eYOTiHUJoiWcJ+DfLLuTvUPpzifLL4rckDd9r7JA9uXmRkD3f5hex71bVkQk8D2AZ5fspadUECwrz7F8ilCZq54f2lW5EyaQi/DPnSPz6aJt2TZ9Wm+URkFjNB5cIjF+gMmz0xe84la5An/n7c=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B8F6A20002
+X-Stat-Signature: czusjx7jm1wsiio9fcbtjf9kyh65hooo
+X-HE-Tag: 1783320352-325121
+X-HE-Meta: U2FsdGVkX1/0jUIYDPqg/NZ228x+oGzeIjdq2PYHhuQ29NJT7Dzdt0FS7KcSmdGJ+iwbhdNXfFJsSasS80l9/+A2OKUpzGA6eSoyP7B2ZRrZcjjU3Ev6VtBUe/yxq6EjQ4Cn33WjlxDzdM04p6yPNNghPWTUo3+zD1vcj/I91L7H74dF6F5e0jsGK7MlJslaPIfl1TpiQWmmpKaENq3TsMG4E2JQaMclUlWYd3hoM68HuTzWgZjq5NdTsZDUdHyC4QBspgVE2e/lCd9y9EgQURNFM64cVnf/rtz2yzoemtIamB+KcgfbgI2kmg1vPozcpHtNx6VgQt6KWT3Ff6kWbjlcRlK2Vmsri/QB4IRos18XU5CzDS7AB3BoyoFTIL+cEFcNt8bZlmMBxL2fg3f099Z5//iwlgyQqVqHSBlMXDVKcBiFF1hV5OKID8IKk8ABL+OgKdt1iadC36Dm6ZBuubMV75xJ0oP6R1pQMW9vO5FtJ1QmVZMOYna/PD8tqIAoU+4cD/cMZgCgcf09vcMYfr672/wYReFgpnRrvDZcxuKIFJw3rZA1Eu3lgPtQf3VyT+pnIDDfX0AriJ+gmBljgpWK3netVfx9sCW26iM5osFCpTQCUXWDJvnW5Wbp5e4Ybizdd37X6Mr7Yjmk3suB7SMTQgZbal3NZEwQSxmpnAcAozRA2LaHey7ghG7X/kUesD/M84Ba49pqqxOVWcbDuiVctHdU/ajrQxcePuS3dkgNuc8bi2O2sXpp7Kv+TJXVe3HZZMZDMe9fU28OMNnuAuUK/XFxr/imDbhZ9bJivde+/R1GQdAGthcW5wgb2dn71G+0kyMBGsB4kQIKJfhnJ7HuoiWscMEdvNBw7hXStip/XtFune2CsmACcMA3nguLXGOEa+AxFBsmpxWk3VaeIfr2XKzynFTzlsO4QMZcsvvpeRSbZtEiqdpT0x8ZDLXbMl02Z0j0RSQLk7vnTpW
+ a4nMK+5A
+ ye+Y0KjDK7o9gTlsCcDHuiGd7TrxaXiF+LgN+jIyNs9pTJuuBXZk3eBbHaRYgfD/XiQ5Do1GGsdjOCoZHg1TQS0Z8bkMvqXxnGBb7H7jn1nn2rswDYyXzR/c5Or17TqGwDj7nkI9dB9MicnWrtBTousMb3Vpa1BGNKcpp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,37 +82,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the ref_trace_final_put tracepoint to __refcount_sub_and_test().
-This fires when a refcount_t reaches zero, capturing the caller
-address, the function name, and the refcount_t address.
+On Mon, Jul 06, 2026 at 08:38:12AM +0200, Johannes Thumshirn wrote:
+> On 7/6/26 6:11 AM, Christoph Hellwig wrote:
+>> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+>> index 9213a5716f95..20cb8ed7d987 100644
+>> --- a/include/linux/blkdev.h
+>> +++ b/include/linux/blkdev.h
+>> @@ -7,6 +7,7 @@
+>>     #include <linux/types.h>
+>>   #include <linux/blk_types.h>
+>> +#include <linux/blk_plug.h>
+>>   #include <linux/device.h>
+>>   #include <linux/list.h>
+>>   #include <linux/llist.h>
+>>
+> I know it's a lot of cross subsystem churn, but wouldn't it be cleaner to 
+> not include blk_plug.h in blkdev.h, but patch the update the consumers? A 
+> quick grep shows 68 files that would need updating and some you already  
+> have updated.
 
-Signed-off-by: Eugene Mavick <m@mavick.dev>
----
- include/linux/refcount.h | 2 ++
- 1 file changed, 2 insertions(+)
+Right now blkdev.h needs the rq_list from it.  So we'd need to move
+that to linux/types.h or something first, which feels a bit iffy.
 
-diff --git a/include/linux/refcount.h b/include/linux/refcount.h
-index ba7657ced281..7b1fbf326a21 100644
---- a/include/linux/refcount.h
-+++ b/include/linux/refcount.h
-@@ -107,6 +107,7 @@
- #include <linux/limits.h>
- #include <linux/refcount_types.h>
- #include <linux/spinlock_types.h>
-+#include <linux/ref_trace.h>
- 
- struct mutex;
- 
-@@ -393,6 +394,7 @@ bool __refcount_sub_and_test(int i, refcount_t *r, int *oldp)
- 
- 	if (old > 0 && old == i) {
- 		smp_acquire__after_ctrl_dep();
-+		trace_ref_final_put(r);
- 		return true;
- 	}
- 
-
--- 
-2.51.2
-
+And no, including blk_types.h in blk_plug.h is not a solution,
+as that is still touched far too often.
 
