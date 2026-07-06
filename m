@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00CA3C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:21:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0996C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:21:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EC1F6B00D7; Mon,  6 Jul 2026 02:20:42 -0400 (EDT)
+	id 70ACC6B00D9; Mon,  6 Jul 2026 02:20:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C4956B00D9; Mon,  6 Jul 2026 02:20:42 -0400 (EDT)
+	id 6E2076B00DB; Mon,  6 Jul 2026 02:20:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 165B76B00DA; Mon,  6 Jul 2026 02:20:42 -0400 (EDT)
+	id 55B906B00DC; Mon,  6 Jul 2026 02:20:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C3F9E6B00D7
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:41 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4283D168700
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:41 +0000 (UTC)
-X-FDA: 84957353082.25.D05AE67
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 29DA06B00D9
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:44 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 94332402B7
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:43 +0000 (UTC)
+X-FDA: 84957353166.02.A508602
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 43B9920005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:39 +0000 (UTC)
+	by imf13.hostedemail.com (Postfix) with ESMTP id 97BED20009
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:41 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783318839;
+	s=arc-20220608; t=1783318842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=dgegDgfAOUN/1B97G9Jtqj0JFMy3K4Y9ZatZEqAMWq4=;
-	b=p1Ep9P3TWpxjYXXLcrCvZPhh3WpuSujMzSBSdtvQ29/cgifdVwfQpuMOqcRYNUvhdQW95S
-	PtOLKI+cUuy07nA9IjlBndw5DuCAKgKPuTEmtNSOZNJnr624caxRKomtFCMuLPEVojprcS
-	QPLA5FpNx2RQeoiC7tYs6XgOAqZrXKA=
+	bh=R4/2pM852PDcO3szkWpMNfFRg+W3nM4E1Vu9ZcLRWDk=;
+	b=3Bl/OjRsiEgcnW9YfGF+SzKACd87ThuUf4ny5niQL/TRT2QAoJYyJSJPH4PkF0aIsZLiT7
+	eNaQ7UmkdlK5RBR5DkRLYqV41ZB5OGnrn6a38xEoAzxRxA47iBonjjlg2zbmwj0YFvEe7Z
+	W9fO8mn9smytJcs1w9sKxKAE88s8XpI=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783318839;
-	b=Is7tbVnX14GLzH5EUPi1glFev/0ydcQtBlRjfDHrWEevDQ0Q2zfdyTRpc3ryd6VY98GLx+
-	fSF2eSdSf6JfLcjQXC2pBd2Ee1sV/7EiLFGCPXHdBpZw/V8E4a5SzyLvHhJFtMKwAP2Cu8
-	AyLpZ6fXUBcum8yWkaWEoNeU84KnKwY=
-X-AuditID: a67dfc5b-c2dff70000001609-f9-6a4b49011fa5
+	t=1783318842;
+	b=Gz8HZISKBttQHi8uFwhx+eb5RHFEQp0hgmpq6Boe4boLOy/weH1JfVojuj4/SuqYnMW9bw
+	rgleJMP3l2n5A2OcJr3ZXMHvEWJocNWoIG8mBMB4xQYHL6aMp9GLAVyBQM0upH0ypAOWLi
+	3vVvzULXpnGoBTtIuATM2ecZy3Zm2+M=
+X-AuditID: a67dfc5b-c45ff70000001609-1c-6a4b4903b9ee
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -214,53 +214,54 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 23/40] dept: print staged wait's stacktrace on report
-Date: Mon,  6 Jul 2026 15:19:11 +0900
-Message-Id: <20260706061928.66713-24-byungchul@sk.com>
+Subject: [PATCH v19 24/40] locking/lockdep: prevent various lockdep assertions when lockdep_off()'ed
+Date: Mon,  6 Jul 2026 15:19:12 +0900
+Message-Id: <20260706061928.66713-25-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSb0wTdxjH97v73V1p7HKpZN5YDKSJzjFlg8DykCwE35hjxERDzBbdv0Zu
-	0g4qKYgCMQO0pS5FS5URqNUWsDLaSWmFAVoDGCAhqaDNRnGgIrRCVJp0UCOK2GJ898n3+f55
-	84hI6RSVIFKoSgW1Sl4oo8VY/HyTdReZk6v80mD8DHSa32BlWYfhYqeDholrdgQPV3QINH3r
-	GNaMIwyse0YQOK5XE9AwO09D42I1hpBNj6A5aGLg+cMbFExGniGYH6hFcLnFHbU0TCCwzs6Q
-	cH3kAQJPew0NAUM3Cb75D2HJSYOlxkOB2WRE8IfZhcHu2gumxgUCXto6GDB5fRQ8bm9m4GnQ
-	SINrajg6rw+SoOtfweCa+5cCz/3Pwaptw9B0aZoGX/9FGh441ikY7/+LgiuTdwnwGwIIbCsh
-	Bu4NWAioHmzFEPxHS0C4LYJB+/8bCkbrBgioXbhBg9d0hwJtWxcBt3SPCOgM3iZhdaaXgtWr
-	0W1vzxgDYXM0Yb+LoXv4BQPm5dTsbF5zb43mHZcciH+1akS8xhCl289CJH/afZz3RCyYH2vh
-	+HrvLr6veYbhT9+6z/AW1zHe3Z7Mt95cJHhXxxmad4WNzL6kg+Kv84VCRZmg/iLrZ3FBU9Mc
-	VTyYdeKcDVchS9rvKE7EselcR2Caes+rVzuZGNPsp5zf/5KMcTybxLnrglGPWESyvkROb6vD
-	scNmNofrCl/YCGN2G1ffsLQRkLBfcb3jo8y70kTO7hzY0OOi+rXXZiLGUjaD+y80imOlHNsa
-	x9Xf6aHfBT7mBtv92IAkFvRBB5IqVGVFckVhekpBuUpxIuXw0SIXij6c7eTrQ70oPJE3hFgR
-	km2SQPY3SiklLyspLxpCnIiUxUu278hVSiX58vIKQX30J/WxQqFkCH0iwrItkrTI8Xwpe0Re
-	KvwqCMWC+v2VEMUlVKH4b/c7t4ZzA8ocrlh7qqJ4LuUH49bx7j+zkkL7n+48+0q6u2Cpypm4
-	vWeixh7ecjiZcKaPs5WqTP0vurO7I7N76rct/5h5YHPqd3+vpYjdZ9YOZN6czMTW832Lmp2V
-	aXTrqaa8tOrLXRnKvfpaq8+Nj3xErPvlnh2136t7nniTAjJcUiBPTSbVJfK3vqqFUmwDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93nXC0uS+hilDHoSVnZg0NFDyi8FVkRUZqQSy85nZabmkYP
-	dQ1XaeloE13aslyi5mProcnIjNTeListNY2WJZoz08zpss3on8PnfL/nezh/HAEuvkf6CGQx
-	cbwiRiqXUEJCGLhOtRRt2xG5XJtOgkZ9Bto77SS8S6klYHhIQ8CV8lIKXIZ7NGjMOSQ0tqQS
-	0FRWgqBzWINgZMyAg7p6ggCXtp6GodE2GnQpCCas9Qj0Ni0OrU0PcCi9nYLBz4o/FPQ+GkSg
-	+2SnILsnhQCHKR1BbreBhp7HAfC9s4aEiY6vGLT86kNgsv/BwF6bhsClj4KrBRZ3XD9AwdiL
-	Vzhk65oQXPvUgcNgTxeC2/UfEViLUin4knkHh2b7dHgz7KDgie4CBd9tVzDor6DAmGolwfa8
-	F0GeQYug+4MVA9X1cgr0eWYCqrvu02DrHcegXa/FoMS8EzpN3QQ8yyzA3Oe6pypngiFbhbnL
-	Nwx0t2owGDUV05sKETeivkhwxZa7GKd+7aK40vxSxI05tYgbKlThnDrT3T7qc+DcWctxrvBZ
-	H8U5h99SnPWXkeCeFrDcjXNOjMt6sZSrzu2gd28OFq4P5+WyBF6xbEOoMCIn5zN57OGGxEsm
-	IhkZ/c8jLwHLrGKdN8tpD1PMAra1dRT3sDczl7VkdJPnkVCAM82+bLopg/AYM5htbOXgZdLD
-	BDOPzdL1TwZEzBq26lUD/W+pL1tSUTupe7n1svE8zMNiZjXb5mggMpHQiKYUI29ZTEK0VCZf
-	7aeMikiKkSX6hR2NNiP3O5lOjWdVoaHmgDrECJBkmgg2bY8Uk9IEZVJ0HWIFuMRbNH/hjkix
-	KFyadIJXHD2kiJfzyjo0S0BIZoq27+dDxcwRaRwfxfPHeMV/FxN4+SQj+cY5IckZ1/yDl71e
-	sijsNMp1TOSvuiHlEu8OvG+Zv2fNysCtEdNP+vrP3tv/1Tpg6bplaTi4r3FLUGHJtBBsQVFl
-	bbPm4+OHIQdiD7w8Wc2qfI3xcwfXFsU25k59sn+qT1DTHLPj4m+RS1Xc/yPW1DWaX3Y4rTyt
-	oGfEaQs87dy764uEUEZIVyzGFUrpX8zaz9NKAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTdxTG97/3f1/a0ezasXHVD5gmqCPBuUXnyeIW4mK4ypaZ+fJhGKXa
+	m7UIhbSKssWsIJ0VRREHBOqQF9M05UVsgwixruLAF0LoVkzaorYQrJAGMR3FICC2GL+c/PI8
+	z3mSkxyWlPupVaxGe1TUaZW5ClqKpVMJjWl4R2bOxif1EjAZf4fHgXEKojMmDIvmLgZM9loK
+	3O0tCIzdSzGtsp+BmbkRBrzuv0n4v+MNDeG7EQRVo+M01EwWY5i2nEMw2ZcB467TCBarj0C4
+	+iUN84NDJNRUuRFEJoMInNYSGp5VdJIwHJ2m4UHVWRqm/r1MQMjvJOBU8zUauoM9DAQsIQwD
+	FU1ErJyG6utJYK45RcTGBAEWQwqYBz0UjFnrGFhqyIf+lucMhEOVNATu/UFBlyHIgN3Xh2Bm
+	eJQAU08UQ239YxpuOR9gMC3OIPD0XKbhaesSBQbzq9ilrgEKrj33EjDQfx/DyOAFBoZ62igY
+	DXopaHvRRMOlFyEElug0A/+5GggovtOM01XCK+N5LNgcNwihtb4VCfOvK5FQ6jgudNc9YYTS
+	235GaLAfE0r/maIEhzVVaL41SQiNkSgl+MPfCHbbGVqwRyoZoXF+gtyV9rN0q0rM1RSKus+/
+	zZaqWxZ8VIFvxYnZJj9hQJaPyhDL8twm3mpMK0OSZTT1ldBxprl1vNc7R8Y5kVvDO8pDVBmS
+	siTnSebPWcpx3PiYU/H9vrblEOZS+PmrD4k4y7iv+JGSKeZdaTLf0uFazkhievvCX8sZObeZ
+	H5m+h+OlPHdFwrsfTlDvFlbyd6xeXIFkDegDG5JrtIV5Sk3upg3qIq3mxIbD+Xl2FPs4y8mF
+	rJso4t7dizgWKRJkkL4zR04pC/VFeb2IZ0lFomzt+swcuUylLPpV1OUf1B3LFfW9aDWLFUmy
+	L2ePq+TcL8qj4hFRLBB1712ClawyoE8+JMs3SrYmlvHnbb72/TvrMjLO3k3forYbO3+4en9P
+	QcC+8tNocM7c2/fbvpdWjw0l/bRDr87UF6eMov2pr5+6kuUGx9o3n9VvUw9v/86pm7Nk30hy
+	/nlo9sxFx0nl3vRw1oGusUfur4kmz3jtUPDH9houCxd2XNFWfJ9ABCRjCqxXK79IJXV65VvG
+	SGIPbQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSWUwTcRDG/f93u12q1bWCrvoAaeIRE6gmaibxwhjDCtHok9eDNrKRcqcV
+	EBW1xWpVUGzSEqkoVGm0oCDFA0ljUwIiXtSqgFCRpBa5xChHoEUsGF8m38z3my/zMDQheSpY
+	QitSj/HKVHmylBKRol0bciPRjrjE1bqeMNBpz0Bnl1cAn9QOEkaGdSTcqKygYNL0RAi66usC
+	aGrVkNDyoBxB14gOwZjfRIC2doqESX2jEIbHO4RgUCOYsjciMLr0BLS1PCegokaN4XfVHwr6
+	638hMHR7KSjsVZMwZMlDUOQzCaG3IQYGu+oEMOXpwdA6OoDA4v2Dweu4gGDSmAS3zLbguvEn
+	Bf437wgoNLQgKO32EPCr9yuCmsYvCOx3NRR8K3hEgNs7Fz6MDFHw0nCZgkHXDQw/qigo0dgF
+	4Hrdj6DYpEfg+2zHkHu7kgJjcTUJtV+fCcHVH8DQadRjKK/eCV0WHwmvCsw4eG6QergITIW5
+	OFi+YzDcr8MwbrEKo8sQN6a9QnJW22PMad9PUlzFzQrE+Sf0iBsuyyU4bUGwrR8YIrhztiyu
+	7NUAxU2MfKQ4+2gJyTWbWe7OxQnMXXsTydUWeYS7tx4QbYznkxWZvFK2+bAooTzQLkhvn398
+	1PwZn0WWeZdQCM0ya1ldg4aa1hSzgm1rGyemdSgTwdryfYJLSEQTjDuczbPkk9PGAiaebWy/
+	PwORzDLWf6cZT2sxs57t0AwK/4WGs+VVjhkmJDh/ECieYSTMOrZj6AVZgEQlaJYVhSpSM1Pk
+	iuR1UaqkhOxUxfGoI2kp1Sj4T5acwLWnaNgd40QMjaRzxBAdmygRyDNV2SlOxNKENFS8fGVc
+	okQcL88+wSvTDikzknmVEy2lSekicexe/rCEOSo/xifxfDqv/O9iOmTJWZR/MnDryLy+0zhs
+	ftJYSd76TVZ8hc36Ltvc0Fm6Xfuxx20mbFnnn2yL89S6dy683uw692xLd2xlmG9FpPOUsWjr
+	qNP6yL+nN73uXloP3fdT2SSbnXOw+NPiWQRTE1DLbE2uiGUx+xXRUB8+eDqq9KrN0WSPWDzm
+	cQT2ybQZbwkpqUqQr1lFKFXyv5jOPbtLAwAA
 X-CFilter-Loop: Reflected
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 43B9920005
-X-Stat-Signature: br6bocfqbz9zz8egdw3dtsjndbci9jj9
-X-HE-Tag: 1783318839-872997
-X-HE-Meta: U2FsdGVkX186HU4c+p3XxnycDi+Iv4GOR5Y7Zo6G5USr3/pb19IpL8lyitWeN+Tm8l2ABFLS5KP8HJ2HdCJe+kulcM1/l4eEl9w2limOav9kyq4Tvl4B1uL4/BjBjwBaDgsc8LM265Mj6ATkJvW1CaqOPc2ug0soBshzbN+aeAYt8L4uYz6nNPZQ8rli0vO5NJX2MKnDBtOPZc88kyb20XvzgPxTaobXngiscqlyrOSV3Z1IdRisQ4GBKZfLwCgVurD3QHX7NClYRjT0MA9C6qafP8qvZ7XLpCAU4I0XOltbE2lsPzRVM4EDHA+UoL7DUIgspDfgo0O+zGRAfYnq4DfRmUikH+qNnyLfvR7NjoyqcqibXBuIOPJBDG0tRPIK+1z/CTn0CiDV0jp2i9zhvAa5k+efGcgb36vQWssskqF0OO7ufJUsazBdmZElVPVDCCkFA8BmOOdNOqIvIu3aAzzmacUajAM/trSIJXC6dmVaL3tcexrnAebDpTzwf3triATVrrI04ERjmjq1HYEZpAzBqddijwOPn61NHFwYD9UYTgZyCtg4L3tdLgqieNg3ko2aBFgVQa6EJVl4vf07Zwnt8GuSWHAs8XzpFRcYXrfUocpLn7JuMgFOtwjz1LUu4JS2GffkYlm7Xd4qNUV374v3lT0ZhSl+P2cITEEPuI8JSPLe8gvC2xYKQDN5iJo6veqRjuMdusXJ7R4xRzDsTckJ8e9DTEuXpmmAi5Vpisai+fcNDO8TXKJCXDU3mWBgQXKjImOHZ2P7gNtXZQ89ORGRwOfN9aIsI8PfZ3NZNudX3+BjHMy54u/5DZMJQ9WxDfI6u8Tn2Bp99xZeO9n+Mwuid8X4kdwvzT2O6waa8cdtFZFNaEftj/O8HbregzSOz0WsgDRQQQLmKTig7g4Cz7mUCf9BwgJKrtw01QPWZ56zQzcdas/0e3uH9CIjX42Vaj8JYIw7jXvaPVKIfXZ
- YOm1h3/w
- O0B/M3MpDYMBBABLOwU0Nv2u8MPZ3XRyirr3SY1qaA/hE+dDhP/DjAbPuRiTUh2iZx4k5RkCdtRZ5VgcRJBL+ZR4okSeIuDQXz0li73A/r6J1/fPpeb4xQGNGq1vvc5i6U53QcH81bNjJ7UjYlKIBmlZ6Tl8d34ZWdYSdfQ4v6D79ci0=
+X-Rspamd-Queue-Id: 97BED20009
+X-Stat-Signature: dunzr3s4fta6a3c9swd93sky9ogc3srk
+X-HE-Tag: 1783318841-102655
+X-HE-Meta: U2FsdGVkX1/mWejN6hwbB+0ZdkodiXsbkWJHyfKCJA9a7Kh/DZAVDcQ3nanpmabLvCSDdoM5A7o8Bdu9dGN2bi9/y0iGoiuPcMrLbBXwLl0dFnQnNQeOBVQbumDoWrrT4wsbEtprr4M3rEt2yrQ4nGqJdkRklRcZxAWPlOnkjKmyIvlqihptA8O21vYW6h/O5Vm/5OefrcK+H+NvhqRt2N7nHvgtJo8o3eeQifMOg11UOoIY+hEXaDPbgIqkTsKF7ZLnBsq3d5mstD316SYcNjmhtnv7pnUWXm4luZFjlXR54L0OOXHQiZEfLdW+Ap89NKMK9x5ShmmnOo2V8iPg3OohAyym0g79AVSoXHe3Abjla5asB9h8CnRetEUDwhByGJnWoa0wPrK/bWeie87IBHasumtQxh1q64xEj4pp4DgwPFUXRr3KO/svPkRTsOg4lisli/tPoozfRUFQNWNt2Ll1EysASY7DVKdXclFuhhYhHT2gQwNYa8gm5wS3Jd0vLpySqz4wCgQaSlDvVl5ZK21WI6z6Ue4nqDrT8NmkxyguUPBvtxgaQYsR2eoZoBebVjolK8PYkuz9bJUl7mfd5hvCfwgm1EtrUZNgZsvKqLDknXHGNDx7OX615PqDCY/OwFkavsfbQdlIuSziH5u/0PFAwildCuvxZFyCADvY2EmEQnDfluX8ULgZsgnZrzkTXl/r+RdUL0ocQ1UEg2VNcEdjLGsoRvVHw13LeLEux+P/ggv/KT+2HYZbr+U+KqBMTII4o0iYdQG0YzEOxhyK1I/Gd+XOT8trq9UYpodWzYnEXbDHrD+oFjI4tOPXv3dWZt7xcY5vJVbwMIrK8fKz8xCJhSPLwAXjbSEBXSuMlU32Iz8w0stbdzKsT8WD9qn88HnKgbybK3mI5HujPdCIrMPx3SG0y/1GJzFraHUbU4Ty7sGX89TbIZ0XeJkGPxTtCMCPb1lY9RaLxk2qEDn
+ pMZUpUCO
+ Psu//+AU5jxv99HTmZRwccjIIdWq99lht/t3ErA/KiiZr2VPF1oOV9WqOgNiXNzk/t2coPfr6SGsPd26vGKqMNHl0cRpOuZpFd4GQ0z9oOH9OQl3RBH1ljxWiASWrShEl+OgtO3I7GQfkCHtcKhCE4HNsAeocTGXyDe4AKGvEpsAu514fABAT07ODvfcfaVUof917+AUV1BFGTlPDPLtgETcxAA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -268,251 +269,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, print nothing about what event wakes up in report.  However,
-it makes hard to interpret dept's report.
+lockdep provides APIs for assertion only if lockdep is enabled at the
+moment asserting to avoid unnecessary confusion, using the following
+condition, debug_locks && !this_cpu_read(lockdep_recursion).
 
-Make it print wait's stacktrace that the event wakes up.
+However, lockdep_{off,on}() are also used for disabling and enabling
+lockdep for a simular purpose.  Add !lockdep_recursing(current) that is
+updated by lockdep_{off,on}() to the condition so that the assertions
+are aware of !__lockdep_enabled if lockdep_off()'ed.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/sched.h             |  2 ++
- kernel/dependency/dept.c          | 59 ++++++++++++++++++++++++++-----
- kernel/dependency/dept_internal.h |  5 +++
- 3 files changed, 57 insertions(+), 9 deletions(-)
+ include/linux/lockdep.h  |  3 ++-
+ kernel/locking/lockdep.c | 10 ++++++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index a4e6dce98f36..b2fbcf0f00f4 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -871,6 +871,7 @@ struct dept_task {
- 	const char			*stage_w_fn;
- 	unsigned long			stage_ip;
- 	bool				stage_timeout;
-+	struct dept_stack		*stage_wait_stack;
- 	arch_spinlock_t			stage_lock;
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 60b17a2ff555..5113b7053b62 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -303,6 +303,7 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
+ 	lockdep_assert_once(!current->lockdep_depth)
  
- 	/*
-@@ -912,6 +913,7 @@ struct dept_task {
- 	.stage_w_fn = NULL,					\
- 	.stage_ip = 0UL,					\
- 	.stage_timeout = false,					\
-+	.stage_wait_stack = NULL,				\
- 	.stage_lock = (arch_spinlock_t)__ARCH_SPIN_LOCK_UNLOCKED,\
- 	.missing_ecxt = 0,					\
- 	.hardirqs_enabled = false,				\
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index e425d3ab05e5..5bf32633e1fb 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -523,6 +523,7 @@ static void initialize_ecxt(struct dept_ecxt *e)
- 	e->enirqf = 0UL;
- 	e->event_ip = 0UL;
- 	e->event_stack = NULL;
-+	e->ewait_stack = NULL;
+ #define lockdep_recursing(tsk)	((tsk)->lockdep_recursion)
++extern bool lockdep_recursing_current(void);
+ 
+ #define lockdep_pin_lock(l)	lock_pin_lock(&(l)->dep_map)
+ #define lockdep_repin_lock(l,c)	lock_repin_lock(&(l)->dep_map, (c))
+@@ -630,7 +631,7 @@ DECLARE_PER_CPU(int, hardirqs_enabled);
+ DECLARE_PER_CPU(int, hardirq_context);
+ DECLARE_PER_CPU(unsigned int, lockdep_recursion);
+ 
+-#define __lockdep_enabled	(debug_locks && !this_cpu_read(lockdep_recursion))
++#define __lockdep_enabled	(debug_locks && !this_cpu_read(lockdep_recursion) && !lockdep_recursing_current())
+ 
+ #define lockdep_assert_irqs_enabled()					\
+ do {									\
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index dc97f2753ef8..39b9e3e27c0b 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -6900,3 +6900,13 @@ void lockdep_rcu_suspicious(const char *file, const int line, const char *s)
+ 	warn_rcu_exit(rcu);
  }
- SET_CONSTRUCTOR(ecxt, initialize_ecxt);
- 
-@@ -578,6 +579,8 @@ static void destroy_ecxt(struct dept_ecxt *e)
- 		put_stack(e->ecxt_stack);
- 	if (e->event_stack)
- 		put_stack(e->event_stack);
-+	if (e->ewait_stack)
-+		put_stack(e->ewait_stack);
- }
- SET_DESTRUCTOR(ecxt, destroy_ecxt);
- 
-@@ -794,6 +797,11 @@ static void print_dep(struct dept_dep *d)
- 
- 		pr_warn("[E] %s(%s:%d):\n", e_fn, fc_n, fc->sub_id);
- 		print_ip_stack(e->event_ip, e->event_stack);
+ EXPORT_SYMBOL_GPL(lockdep_rcu_suspicious);
 +
-+		if (valid_stack(e->ewait_stack)) {
-+			pr_warn("(wait to wake up)\n");
-+			print_ip_stack(0, e->ewait_stack);
-+		}
- 	}
- 
- 	if (!irqf) {
-@@ -807,6 +815,11 @@ static void print_dep(struct dept_dep *d)
- 
- 		pr_warn("[E] %s(%s:%d):\n", e_fn, fc_n, fc->sub_id);
- 		print_ip_stack(e->event_ip, e->event_stack);
-+
-+		if (valid_stack(e->ewait_stack)) {
-+			pr_warn("(wait to wake up)\n");
-+			print_ip_stack(0, e->ewait_stack);
-+		}
- 	}
- }
- 
-@@ -1657,7 +1670,8 @@ static void add_wait(struct dept_class *c, unsigned long ip,
- 
- static struct dept_ecxt_held *add_ecxt(struct dept_map *m,
- 		struct dept_class *c, unsigned long ip, const char *c_fn,
--		const char *e_fn, int sub_l)
-+		const char *e_fn, int sub_l,
-+		struct dept_stack *ewait_stack)
- {
- 	struct dept_task *dt = dept_task();
- 	struct dept_ecxt_held *eh;
-@@ -1691,6 +1705,7 @@ static struct dept_ecxt_held *add_ecxt(struct dept_map *m,
- 	e->class = get_class(c);
- 	e->ecxt_ip = ip;
- 	e->ecxt_stack = ip ? get_current_stack() : NULL;
-+	e->ewait_stack = ewait_stack ? get_stack(ewait_stack) : NULL;
- 	e->event_fn = e_fn;
- 	e->ecxt_fn = c_fn;
- 
-@@ -1797,7 +1812,7 @@ static int find_hist_pos(unsigned int wg)
- 
- static void do_event(struct dept_map *m, struct dept_map *real_m,
- 		struct dept_class *c, unsigned int wg, unsigned long ip,
--		const char *e_fn)
-+		const char *e_fn, struct dept_stack *ewait_stack)
- {
- 	struct dept_task *dt = dept_task();
- 	struct dept_wait_hist *wh;
-@@ -1825,7 +1840,7 @@ static void do_event(struct dept_map *m, struct dept_map *real_m,
- 	 */
- 	if (find_ecxt_pos(real_m, c, false) != -1)
- 		return;
--	eh = add_ecxt(m, c, 0UL, NULL, e_fn, 0);
-+	eh = add_ecxt(m, c, 0UL, NULL, e_fn, 0, ewait_stack);
- 
- 	if (!eh)
- 		return;
-@@ -2360,7 +2375,8 @@ static void __dept_wait(struct dept_map *m, unsigned long w_f,
-  */
- static void __dept_event(struct dept_map *m, struct dept_map *real_m,
- 		unsigned long e_f, unsigned long ip, const char *e_fn,
--		bool sched_map, unsigned int wg)
-+		bool sched_map, unsigned int wg,
-+		struct dept_stack *ewait_stack)
- {
- 	struct dept_class *c;
- 	struct dept_key *k;
-@@ -2382,7 +2398,7 @@ static void __dept_event(struct dept_map *m, struct dept_map *real_m,
- 	c = check_new_class(&m->map_key, k, sub_id(m, e), m->name, sched_map);
- 
- 	if (c)
--		do_event(m, real_m, c, wg, ip, e_fn);
-+		do_event(m, real_m, c, wg, ip, e_fn, ewait_stack);
- }
- 
- void dept_wait(struct dept_map *m, unsigned long w_f,
-@@ -2498,6 +2514,9 @@ static void __dept_clean_stage(struct dept_task *dt)
- 	dt->stage_w_fn = NULL;
- 	dt->stage_ip = 0UL;
- 	dt->stage_timeout = false;
-+	if (dt->stage_wait_stack)
-+		put_stack(dt->stage_wait_stack);
-+	dt->stage_wait_stack = NULL;
- }
- 
- void dept_clean_stage(void)
-@@ -2561,6 +2580,14 @@ void dept_request_event_wait_commit(void)
- 
- 	wg = next_wgen();
- 	WRITE_ONCE(dt->stage_m.wgen, wg);
-+
-+	/*
-+	 * __schedule() can be hit multiple times between
-+	 * dept_stage_wait() and dept_clean_stage().  In that case,
-+	 * keep the first stacktrace only.  That's enough.
-+	 */
-+	if (!dt->stage_wait_stack)
-+		dt->stage_wait_stack = get_current_stack();
- 	arch_spin_unlock(&dt->stage_lock);
- 
- 	__dept_wait(&dt->stage_m, 1UL, ip, w_fn, 0, true, sched_map, timeout);
-@@ -2579,6 +2606,7 @@ void dept_ttwu_stage_wait(struct task_struct *requestor, unsigned long ip)
- 	struct dept_map m;
- 	struct dept_map *real_m;
- 	bool sched_map;
-+	struct dept_stack *ewait_stack;
- 
- 	if (unlikely(!dept_working()))
- 		return;
-@@ -2597,6 +2625,10 @@ void dept_ttwu_stage_wait(struct task_struct *requestor, unsigned long ip)
- 	m = dt_req->stage_m;
- 	sched_map = dt_req->stage_sched_map;
- 	real_m = dt_req->stage_real_m;
-+	ewait_stack = dt_req->stage_wait_stack;
-+	if (ewait_stack)
-+		get_stack(ewait_stack);
-+
- 	__dept_clean_stage(dt_req);
- 	arch_spin_unlock(&dt_req->stage_lock);
- 
-@@ -2607,8 +2639,12 @@ void dept_ttwu_stage_wait(struct task_struct *requestor, unsigned long ip)
- 	if (!m.keys)
- 		goto exit;
- 
--	__dept_event(&m, real_m, 1UL, ip, "try_to_wake_up", sched_map, m.wgen);
-+	__dept_event(&m, real_m, 1UL, ip, "try_to_wake_up", sched_map,
-+			m.wgen, ewait_stack);
- exit:
-+	if (ewait_stack)
-+		put_stack(ewait_stack);
-+
- 	dept_exit(flags);
- }
- 
-@@ -2688,7 +2724,7 @@ void dept_map_ecxt_modify(struct dept_map *m, unsigned long e_f,
- 	k = m->keys ?: &m->map_key;
- 	c = check_new_class(&m->map_key, k, sub_id(m, new_e), m->name, false);
- 
--	if (c && add_ecxt(m, c, new_ip, new_c_fn, new_e_fn, new_sub_l))
-+	if (c && add_ecxt(m, c, new_ip, new_c_fn, new_e_fn, new_sub_l, NULL))
- 		goto exit;
- 
- 	/*
-@@ -2740,7 +2776,7 @@ void dept_ecxt_enter(struct dept_map *m, unsigned long e_f, unsigned long ip,
- 	k = m->keys ?: &m->map_key;
- 	c = check_new_class(&m->map_key, k, sub_id(m, e), m->name, false);
- 
--	if (c && add_ecxt(m, c, ip, c_fn, e_fn, sub_l))
-+	if (c && add_ecxt(m, c, ip, c_fn, e_fn, sub_l, NULL))
- 		goto exit;
- missing_ecxt:
- 	dt->missing_ecxt++;
-@@ -2840,7 +2876,7 @@ void dept_event(struct dept_map *m, unsigned long e_f,
- 
- 	flags = dept_enter();
- 
--	__dept_event(m, m, e_f, ip, e_fn, false, READ_ONCE(*wg_p));
-+	__dept_event(m, m, e_f, ip, e_fn, false, READ_ONCE(*wg_p), NULL);
- 
- 	/*
- 	 * Keep the map diabled until the next sleep.
-@@ -2912,6 +2948,11 @@ void dept_task_exit(struct task_struct *t)
- 		dt->stack = NULL;
- 	}
- 
-+	if (dt->stage_wait_stack) {
-+		put_stack(dt->stage_wait_stack);
-+		dt->stage_wait_stack = NULL;
-+	}
-+
- 	for (i = 0; i < dt->ecxt_held_pos; i++) {
- 		if (dt->ecxt_held[i].class) {
- 			put_class(dt->ecxt_held[i].class);
-diff --git a/kernel/dependency/dept_internal.h b/kernel/dependency/dept_internal.h
-index 3d1cd1a9b6d4..c02783ecf0c4 100644
---- a/kernel/dependency/dept_internal.h
-+++ b/kernel/dependency/dept_internal.h
-@@ -194,6 +194,11 @@ struct dept_ecxt {
- 			 */
- 			unsigned long	event_ip;
- 			struct dept_stack *event_stack;
-+
-+			/*
-+			 * wait that this event ttwu
-+			 */
-+			struct dept_stack *ewait_stack;
- 		};
- 	};
- };
++/*
++ * For avoiding header dependency when using (struct task_struct *)current
++ * and lockdep_recursing() at the same time.
++ */
++noinstr bool lockdep_recursing_current(void)
++{
++	return lockdep_recursing(current);
++}
++EXPORT_SYMBOL_GPL(lockdep_recursing_current);
 -- 
 2.17.1
 
