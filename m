@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10C36C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:43:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16F77C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:43:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A6726B00C7; Mon,  6 Jul 2026 07:43:43 -0400 (EDT)
+	id F263F6B00C9; Mon,  6 Jul 2026 07:43:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07EDF6B00C8; Mon,  6 Jul 2026 07:43:43 -0400 (EDT)
+	id EFDA56B00CA; Mon,  6 Jul 2026 07:43:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED6E66B00C9; Mon,  6 Jul 2026 07:43:42 -0400 (EDT)
+	id E3A8A6B00CB; Mon,  6 Jul 2026 07:43:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CABB46B00C7
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:43:42 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 599DF168AB9
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:43:42 +0000 (UTC)
-X-FDA: 84958167084.19.C48EDEB
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BE4A24000A
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:43:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jrncYD8H;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783338220;
-	b=fZcVfOYe92agQ7Mcn6dufhIiN2nqz7+389TPVgh6FpgBgTGoHjSEgCaEhOQ1oa1lw57gZM
-	qJGgChZ5ASfHj1jaBkJZI6CnnQyyFocxF43S26uyFft4RMcf6bBcAjaUxhyKN70fjskUFW
-	CRFGPTNUlvod4+Kj3VaGqsf2iKsRar8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jrncYD8H;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BE1C66B00C9
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:43:47 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 335788D9A1
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:43:47 +0000 (UTC)
+X-FDA: 84958167294.20.69FE480
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8A20C180010
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:43:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=V5ynbpCl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783338220;
+	s=arc-20220608; t=1783338225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=04h6q4X00YRj/INo249IFppR4NPSnMlpfeg60RHXkVg=;
-	b=XZgx5Nc/9xbW5dH2mKVDRzZBX5SWlydIz9AILXnp/UzbYq5otZRVcg13i3JQNCz5IICABT
-	nM81PGmKguW60qnKwai+rvXYGjSyDX6OoYDzKjf87gpxMkO3LpicR9snzQqqnPt+HJTAT4
-	p1u4og0yaPsDIpNcLBnTVzG+y0A8PyU=
+	bh=eWxKWelYN6VOFhLaKXxrOAvySHVCOpFgMq2qLns63vI=;
+	b=Tq6SHEurWstAi/oUaMxFb9cc2QmKEXgeti04EfagqXVWCfnA4M9vkcK/mtiB0ZRg89WQd/
+	anp7pFZKP/NCpkGFzLzRWajKldSpOiAgG6ZTZaFDvaNybg4WBERa4Og8M96lxGfcrziGUr
+	ENdjEQ1fCnm0cRcbvMI3eIu+xTPG/bk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=V5ynbpCl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783338225;
+	b=kWaEHfaB9JJv6Miji2CmLm3PVlwC/bgJOkMS1m6MC/jFMw29I26d+6zq1L8TkcjniqBGN4
+	iwmwyjyeUs3Ifdkd4SO7p3Q5Ir/Bcw1Dkn/Qbs3r9pU39M4ot2D8e+7dJt2KAsM0gvpwCD
+	xXq6SSVvoSJQai951630Qxg3r047hUw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783338219;
+	t=1783338224;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=04h6q4X00YRj/INo249IFppR4NPSnMlpfeg60RHXkVg=;
-	b=jrncYD8Ho2kWnTw2hXqw1gb8DtIiqqIXy8XZTE09KHP5gAJbnqKwjEhPSj00+qTP31/rpF
-	ulE+06UXLsx8UJ4nUozXDDS4NkD7xMSxKLbDK3KBcWxjkTra7HOJbknXq0tSyy77WlN1eE
-	KJz/MOnG/QAsanNHRgRtyFe0iuNAKew=
+	bh=eWxKWelYN6VOFhLaKXxrOAvySHVCOpFgMq2qLns63vI=;
+	b=V5ynbpCl9moLAkHkJCyhavgIY0uKtbbrNj02UxHEGZfFnPHrwZ75oU/HAsIo3Dx4D3GQvn
+	0ih1BY11zBABC4odeg9J6/ULG0dYnF/TcGMhV6fGWqHmYFiPAychHPZikMS2AebmZKW30p
+	zWXmG3v1QMhZps2QKfguF86qHB6eYRg=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -89,22 +89,22 @@ Cc: ying.huang@linux.alibaba.com,
 	shikemeng@huaweicloud.com,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v2 2/6] mm: extract mm_prepare_for_swap_entries() helper
-Date: Mon,  6 Jul 2026 04:42:04 -0700
-Message-ID: <20260706114320.1643046-3-usama.arif@linux.dev>
+Subject: [PATCH v2 3/6] fs/proc: use softleaf_has_pfn() in pagemap PMD walker
+Date: Mon,  6 Jul 2026 04:42:05 -0700
+Message-ID: <20260706114320.1643046-4-usama.arif@linux.dev>
 In-Reply-To: <20260706114320.1643046-1-usama.arif@linux.dev>
 References: <20260706114320.1643046-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 8A20C180010
+X-Stat-Signature: x5ie4rh5swt6srpxidtqi65j6mg7kxbn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: BE4A24000A
-X-Stat-Signature: xihqgs3nihm4djuntbr8hejrww8jyd99
-X-HE-Tag: 1783338220-830192
-X-HE-Meta: U2FsdGVkX18Cp7gCM5g0y3BQJkDaxKGPaUXeXX/mKDa2ed+qQ48kEzUTLWb36PrCovCvAgvO2nXkBOjbWi+gb6RK+Qqj7ZmTeV6B67+mjWJ06vwO9x4WTo3gS/2gqaD24yQyoyONN32Pthsdhvmj2G4ogVo8r06BwESevKFft26qsIEJrD7NJ98WVBDaMiMitzay9ZgdStiS9KR/MsiAKOMEiEOCfbjKr2XVxlPVTHqN3/GYCJ2CJkrvEKfNqt9QTFAUfMnFNX5tfnSbYJLlEetMLdIZNs1/V7M2gWGmk4RzCMSxt/3b/ib2UhWD7q4gBsBCGucmaoqSCSzmX1Avl/tXFUtJ78vK3egUoy7PDJVPqYPZDvj2iZVmhrmWPd9dtLFkdrbJyKhK9DTUzAiCrlO9bX09iVk16zmHAtAqFMowF7WaqdOzLodCh+CRFETmgoYmrq4ANci7aIbdyH6c3zozb9MQdGWvr1tWuZ8IUrX5lBG3F0APj9nRmwTk/fePRhVqngdQoo5hRcVE+x1v3IVpWMehwMEYcdta6TRlSOctrGwbzEegUz7zHeZZEJse+PJfdqAn1fqt3VvBEqR2I8SNrgwUwPAnn534y/H+Z2tCHuR04aJTuJ3wlYEuUBQzCvvNedpjSFtJ/wvqyYaVe01zUe2Z5M+SbCZA1e0G+wUQwn2TR0g2Yh3FTopZfhHdk2Bzu5cfCQk6ggEXNUprJo6MaBKUV89fuD6dpVYKmk4pLxyiqDx8uYsTiC/LorqR16O/zCYJEK+v7Lo8yN/Dtik/1TH09CP/UpEVwhgXr8Gg9+WEfKF+kz7J7WY8VQXU+r3nWeE37slrhnIjGdPiNl+GkGu1ByjptXnm+fY7+vOM3emMgNP9xUdLUmudH3v+9vSlvM2knTjR0g221Z1/HODOhK0mezlhFwdQYVx84sfwvBbI71CxZnyLL/eJlYOrvf7J15J7QBrlB+Lxave
- YffXJd+0
- VozGQ8Q7Ty+ngdyAyE+/4sb9eovJmgngoJyISTM8us0Pv9cuppnkI5HzSrWJYq9tyDOgneMIcnxOWLIiK7MAjFSV6VuM4mUSUwD7VHDSbIBkDj0Exog41Hwb776N6Lgir8y2QFwkREd5TQuy4b2qC1nZiLNQza2BaD1JmxtQTDAYKymRSNJd1HfA6OITbRgwvsK5DgfM05MzeLD7zE8jz/ZKe8W+cLNmJ06lEF/C+tbHSMw42JMmlK9t9rzRIrZ74lk1tPkw0rfhJXn/zyt0hNAYxWr8lE+xTSjYvEdN4nyg69stHyE8RyFNndrHh3NZ+/NmyNM0Eda23N8ysCFfA/7cJpUTFLywJRWFY
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783338225-257360
+X-HE-Meta: U2FsdGVkX1/P1AlLrb4I7MkDAhqFzRjqqPmG5Qetq4uvJ/H3xbbgM9Onc77Oks/jHGbW46mEp4fbYX+yzlWGOYRs8VM2x3KZUMG7DPHVJ20jxUOW1KU7EAP91Q+ED1rzTnHwC9ex12M9zOMl/P4SboW3KJuH+fh9gsMbXv+2c+LQcbLi6eI87jQ0eR66IPBfuoOtE/2KMA+BZhdi7Ho1DoXbcamtOKxHy87RBg68T/1kIlwORarQRq0JnIGpYMFea4NQLAnqrh7ffpE2YQuOd8+WuNBdTm+C6ivqKbzTpjW/HtbpRI34tZmHWKdxdswS70rLewRm1YiQXWyZirWG1GQyO/AhusAKcyv8sVCSK9tPrC7FapCSOXBUkTSSP8Gt5d1N/mesJ8nLb7uN/rRw8QudvvZWs/eEt9byC7mS4gyYQolO/V5hqaNeQUhy2FBGMsVSH5eo1SJzL+kA+elOgj8ThI245aul7TZ4SHjFIyxlqguTpnXaFJL6t4BPHz2a+hMI3lt4GxbXcQHKBBM+55uxYG+y5aSzX3VMMKFM5Pd4MyjnMfkgBSBhjgj2t7oIsuZgSVpa4Hh69TQpw7zP+sjmWr2LmhB1JuoAhtLWYcYx5sJ4wF0fxmatdWKbJ8DoNfKHl/DzV3Nb5ymEAqHxSnbwxwZfp+xchwWBYYcu4pacJwpzc+/+DNps7qhlQbFFWs7o0WzWCs523APn09imY4nRHkI7eRTv81tcNVY3P18LgG01i9qXlKiC/yNj95+PYxsZ+mGPiIi6YpBgqFgdV+b3+h/xG8j+uShwXDG4HkYm6JewQLUao9Q3eUHrhAC+glW60x3Q5iJVbDSkveDBX6ytr4o4yZGtm4d+uEHDa3/7zkwvNlxdxXLOQcaiWk9AUCt6EX/Ud038oS9RiVe1l3+UZWfpfcAo+byrkcunacLOxUsgrqqYQZ5qpDYEGWKxoO60WLLaUI3NLfQ7HG5
+ UOjmp01z
+ FSg50qAB68d/16SJ4KYvvu1pMNOCNDrSoSvFLLwOQx2hzqpnTZEqy/cqfPqwkZ+g2IB0cnGXZ/MCPcDTJdwgrxsutITmF+dN5eSXu+cd0YK46nZd0fYapvEcZ6F7tdr044HJjIUyMR8+UzTZyHMKWU1SjA2pfioK0MtDT+toXWlpGUl4D9srRDqOx2mRSFZo3VIr7Ro7MtJwHEKzFKjADOAuRCZ4w3qKp+H/QRlYHIjzkow82PXBG3qgcSsOortrr3VZtdkvhtKuJy70nDUQpfRpgeEwFV1WQejwxp4ZK3IuFe7k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,87 +112,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a swap entry is installed in a page table, the mm must be added
-to init_mm.mmlist so that swapoff can find and unuse its swap entries.
-This double-checked locking pattern is currently open-coded in
-try_to_unmap_one() and copy_nonpresent_pte().
+pagemap_pmd_range_thp() assumes that every non-present PMD is a
+migration entry and unconditionally calls softleaf_to_page().  This
+will crash on any non-present PMD type that does not encode a PFN,
+such as the upcoming PMD-level swap entries.
 
-Move it into mm_prepare_for_swap_entries() in mm/internal.h and convert
-both callers so it can be reused by upcoming PMD-level swap entry code
-paths that also need to register the mm with swapoff.
+Guard the page lookup with softleaf_has_pfn(), matching how
+pte_to_pagemap_entry() already handles non-present PTEs.
 
-copy_nonpresent_pte() previously inserted into &src_mm->mmlist rather
-than &init_mm.mmlist, but the insertion point is irrelevant, mmlist
-is a circular list and swapoff walks it entirely from init_mm.mmlist,
-so only membership matters, not position.
-
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/internal.h | 10 ++++++++++
- mm/memory.c   |  9 +--------
- mm/rmap.c     |  7 +------
- 3 files changed, 12 insertions(+), 14 deletions(-)
+ fs/proc/task_mmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 430aa72a4575..0360648e5726 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1955,4 +1955,14 @@ static inline int get_sysctl_max_map_count(void)
- bool may_expand_vm(struct mm_struct *mm, const vma_flags_t *vma_flags,
- 		   unsigned long npages);
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index d32408f7cd5e..1fb5acd88ad0 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -2129,7 +2129,8 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
+ 			flags |= PM_SOFT_DIRTY;
+ 		if (pmd_swp_uffd_wp(pmd))
+ 			flags |= PM_UFFD_WP;
+-		page = softleaf_to_page(entry);
++		if (softleaf_has_pfn(entry))
++			page = softleaf_to_page(entry);
+ 	}
  
-+static inline void mm_prepare_for_swap_entries(struct mm_struct *mm)
-+{
-+	if (list_empty(&mm->mmlist)) {
-+		spin_lock(&mmlist_lock);
-+		if (list_empty(&mm->mmlist))
-+			list_add(&mm->mmlist, &init_mm.mmlist);
-+		spin_unlock(&mmlist_lock);
-+	}
-+}
-+
- #endif	/* __MM_INTERNAL_H */
-diff --git a/mm/memory.c b/mm/memory.c
-index a3fcaf8cfe8f..6637c5b13c9b 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -953,14 +953,7 @@ copy_nonpresent_pte(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		if (swap_dup_entry_direct(entry) < 0)
- 			return -EIO;
- 
--		/* make sure dst_mm is on swapoff's mmlist. */
--		if (unlikely(list_empty(&dst_mm->mmlist))) {
--			spin_lock(&mmlist_lock);
--			if (list_empty(&dst_mm->mmlist))
--				list_add(&dst_mm->mmlist,
--						&src_mm->mmlist);
--			spin_unlock(&mmlist_lock);
--		}
-+		mm_prepare_for_swap_entries(dst_mm);
- 		/* Mark the swap entry as shared. */
- 		if (pte_swp_exclusive(orig_pte)) {
- 			pte = pte_swp_clear_exclusive(orig_pte);
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 1c77d5dc06e9..b93caabd186f 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2304,12 +2304,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 				set_pte_at(mm, address, pvmw.pte, pteval);
- 				goto walk_abort;
- 			}
--			if (list_empty(&mm->mmlist)) {
--				spin_lock(&mmlist_lock);
--				if (list_empty(&mm->mmlist))
--					list_add(&mm->mmlist, &init_mm.mmlist);
--				spin_unlock(&mmlist_lock);
--			}
-+			mm_prepare_for_swap_entries(mm);
- 			dec_mm_counter(mm, MM_ANONPAGES);
- 			inc_mm_counter(mm, MM_SWAPENTS);
- 			swp_pte = swp_entry_to_pte(entry);
+ 	if (page) {
 -- 
 2.53.0-Meta
 
