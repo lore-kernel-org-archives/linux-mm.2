@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3BB6C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A2C8C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:20:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A6846B00AC; Mon,  6 Jul 2026 02:20:08 -0400 (EDT)
+	id AB3CD6B00AE; Mon,  6 Jul 2026 02:20:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7579D6B00AD; Mon,  6 Jul 2026 02:20:08 -0400 (EDT)
+	id A8A916B00AF; Mon,  6 Jul 2026 02:20:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 620066B00AE; Mon,  6 Jul 2026 02:20:08 -0400 (EDT)
+	id 8DEBC6B00B0; Mon,  6 Jul 2026 02:20:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 36F546B00AC
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:08 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ABA97402BE
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:07 +0000 (UTC)
-X-FDA: 84957351654.14.CA3013D
+	by kanga.kvack.org (Postfix) with ESMTP id 66A9B6B00AE
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:10 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D920B402BE
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:09 +0000 (UTC)
+X-FDA: 84957351738.29.67B25B5
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C4BA220002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:05 +0000 (UTC)
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0A78420002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:07 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783318806;
+	s=arc-20220608; t=1783318808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=9L42UlAi0lnEWkGneTJh/gJQ27vEegAk+CTaFEWxGWI=;
-	b=xCI+JKz421l2EDOKFAulgKaHfvnSJtGZ0CN+9vvrQfUXBw9h0+Cjw45mFbC9aW/IGcZvcO
-	qlZRwjklvl5yAcMTTj3FaL8NyPLyaw5Meg9T3T2H3v2ecDCMrrSCwKbbnkDIDa1jD1xpT4
-	26vZftM86jvN+UcCuWrd4ediHEz4AeM=
+	bh=3olgKqfia9A60Ns2brnFNnC5Em2AsBiwJjVwVNKVuYA=;
+	b=cLzjo6lnf9VY8PUL3V6tCERC1tToUkVQwJq/k6XJGsGiwWOaycPj9uIbaDrNlayFJJwwFe
+	JCaKdQEjrMRsjdurk4uHwTZgENOuAHbpeFqArCvOQOTMXALUDuuuI+8E17mDcPRCy0pmNf
+	F0RZnvPEOHt/Dhd6oZ7JJfxdgv+1uB0=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783318806;
-	b=I91D/Mtoo1adwVvS/ctvIaB+O2PfGsIjyiFjyVM+DYJ/qNFnud8jO9H/HgHWQ/33BZydpm
-	IposlUndpQhMh644shLrSWrpHU3ErrE8AX5REkCWPD3Fx9csd10ia7pnH468kwW2VeRZpU
-	rwMQIQIK5I79W9JBlg5XwXPS1mu8NYI=
-X-AuditID: a67dfc5b-c45ff70000001609-0e-6a4b48fc46c2
+	t=1783318808;
+	b=RF/Kv1IrTpuUDatb8nc65GuSUWuyQ8TXcXbxGnCYunTfsPiKlfn6Q384R3WoM6OCk+W1AU
+	/ST7I4UoPgqJ85umR0r6XeB1NLxz+5XyBTdlfAUU8r1lvdJDB6EUiieE5yxDshGoTl7Ea6
+	oUyIeUN130Y+Vdb1wkC/y8vp3+mWp8s=
+X-AuditID: a67dfc5b-c2dff70000001609-4f-6a4b48fda1b6
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -214,54 +214,54 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 07/40] dept: distinguish each work from another
-Date: Mon,  6 Jul 2026 15:18:55 +0900
-Message-Id: <20260706061928.66713-8-byungchul@sk.com>
+Subject: [PATCH v19 09/40] dept: record the latest one out of consecutive waits of the same class
+Date: Mon,  6 Jul 2026 15:18:57 +0900
+Message-Id: <20260706061928.66713-10-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxiGfc95z0c7ak46M86YU9ONzTl1asQ9OmPULfpG92ObWbKPH3Iy
-	zqRQ0BXkw2QRFLQDdNhJcRQWxke30QZYS53gNIpQQKgWWWY3WiuTlRBXjFgkE0pHMft3Jfdz
-	X/efh6fVt5kEXpuZLeszJZ2GVWJlKK5uzRzZm7bufN9LYCg+Cr7AKANTYQMGg/1bBnpvH8Pg
-	abYiCEwZEBS3RzFEjC4OKgoRRC+5EJgGjTTY2gopeNQ6x0LleCGGqqCZg/Hu3RAKXGQg6h+j
-	wDI6R8HolZMIIqZ0mHHfpKGywoPg+xE/DZPjdxG0ue4g+LvcScPQ6GLoqyhlITRYTcFEKwuD
-	A/cR1JiN83M1dgw+k5GCgCWIob+8jprfZMH0czyYK49TMFDvw2B2DzEwO7IeXNYxDppDNxkI
-	9Jxg4JeCuxzY/+hGEP5thAJbWZAGQ8cUBvu93xkwRMIIXBf+omCoo5qFslYnA3dsUQYKzNMM
-	3LJ6MLSMeSnod/Vi6Kv6CcOw+2tuewqZLj6NSZPjPEWKb0VYYvvOhsjMEyMi4cbjNCly5JLG
-	/n9YculxLSbX60TS8NUTipxxryHtVX6OFF3+kyO19sOkqCvEvLfhE+XWFFmnzZH1b2xLVqZ6
-	3JepQxNcnsVkRQXoV7YE8bwobBQnxl8rQYoF7B1ooGPMCq+KXu+/C7xEWCE6TgWZEqTkaWFo
-	uVhmOYVjwbPC22K48hsUYywkig+vn+ZiTpWQJIa7pKfO5aK19cqCRyFsEptna6gYq+dPhh/0
-	4JhTFFoUYss1J/e08Lx49UcvLkeqWrSoCam1mTkZkla3cW1qfqY2b+1nBzPsaP7dLF/OfnoB
-	TXr2dSKBR5o4FWzfk6ZmpJys/IxOJPK0ZonqlZV709SqFCn/iKw/uF9/WCdndaIXeKyJV214
-	nJuiFg5I2XK6LB+S9f+nFK9IKEBlUrL/o82fOz8sjbYrXz/nfKfnSEWev8hVfn+n7oddWxO6
-	e84mXZ0ZfDn8KD1p9q1nHPHnbuwxde3SUrXKSXifa44ocrunt7Qt7muK+3h42ZZtA9Wr1Jvx
-	ieTVOxqWZtev7GhJfHffOq/vC9+bic+VXuwMOuI9c3X7bzTWH0XpYy9+sFqDs1Kl9atofZb0
-	H7vvoU1qAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTGfd97e++lWnPXYbxBE02NbnMRNYo5U+NH9odvdCpLluwrRm/g
-	brTlQ1tEIVEppRFRDHZpiRaUMWkcLVCBqQwriIoINoKooIjVrFYJSBULBmjFotk/J7+T5zlP
-	nj8ORykvymI4dWq6pEsVk1WMnJZvW2NcEiJbNMuG8mMhz3QIHnt9MnhgaKJhJJhHQ3G1k4Gw
-	7SILeTUnZdDanUNDR5UDgXckD8G7CRsFpvpJGsLmFhaCY70sWAwIJt0tCKydZgp6OhopcNYZ
-	MLx1vWdg4NowAsszHwNF/QYaAvZjCE75bSz039gEr7wNMpjse4Ghe3QQgd33HoOv6TCCsFUL
-	Z8pqI+fW1wxMeO5QUGTpQPDnsz4KhvufIqhreYLAfS6HgeeF/1DQ5ZsJ90YCDNyyHGXgVWcx
-	hiEXA6U5bhl03h5AUGIzI/A/cmMw/lXNgLWkhob6p/+y0DkQwvDYasbgqNkKXrufhvbCMhyp
-	G3Gdnw22IiOOjJcYLJUNGMbsFeyGckTemY7TpKL2Aiamu2GGOE87EZkYNyMSLDdSxFQYWa8N
-	BiiSW7uPlLcPMmR85D5D3KOlNGkrE8jZI+OYnPAsIfWn+tj4jb/I1yZKyeoMSbd03S55Uofn
-	Ct49xO63Wx0oG11m8lEUJ/ArhdbbZ6kpZvgvhJ6esY8czc8Xagv8snwk5yi+a55wzF5ATwmf
-	898KwaI/0BTT/ELhTdtxNh9xnIKPE4LXxU+Z8wSHq+ljThS/SqgKleApVkYsvYGbdCGSl6Jp
-	FShanZqRIqqT42L12qTMVPX+2IS0lBoUeSf7gdCJSyjYtakZ8RxSzVDAhs0apUzM0GemNCOB
-	o1TRikVfbtEoFYliZpakS9up25ss6ZvRHI5WzVZs/lHapeR/F9MlrSTtlnT/q5iLislGXy/P
-	GcYrNLb4aTOSpv902Xl41rnWhIWDXd+8ERu1e7Pky67kan0FcRqq0pIQl0gMM3XsD59djakU
-	XLq5P3sOVtfVuxcvSsu+ef370HfFroZ4e/XYDa9nh7p7j+O3r7q3Z+WuzrjayK33BdJH/W29
-	Z249/G/BTu2v8j1V4QNrje3Rf6tofZK4fDGl04sfAI6fsMZKAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxiGfc95z3tOO7qcdGY7Qxe2qpuDqWNT8pgs2iVmO9E/JvBnH4k7
+	kWYUWiAHZWLYgm5tAGlT6oCMWqkWiZGi2K5GgU4+Jjj5GEhsug3FZQGCHXUrIAFbWYvZvzvX
+	c9/Xr4ej1b8xqZy+8IhOLpQMGqLEyrmU89tWxQP57/b5GDhzxUNg9HIrgri9n4XVQD8Cz48n
+	KJhvf0Yg3BdF8LilBsHcZCcD8foCeDr8Kw1TNj8NkXYCrpMBBsaGwgicDjuCGw87WBgLxygY
+	tJ2noGGWgKPhWwrq2jopGHJPYGip2ALhaTuByo5FDN6/ggwEfs+Ac+ZmDF2BXzCMd5wh8MCz
+	ykCFY4mBKzOhhKz/NoY/H4YY8A0P0TBaa2EgZJtCcDoyjeBEjxuD/6YJgXn+GQMDlm4KLixE
+	aJiwPsJgbr5KgdcTJDDT6KTgzv15Fk7fdRHweetoCNqbCESdiZmpZpmF1jEMdbFKAqdM9Qnn
+	rSUWrCMfg3MhE9riQQQR2wIDjlsPWK1WXDJZsWi6Gyei56wHiU9X7Ei8MPg3EVcW7xGxuWqF
+	EmuHt4k3Gu+zost7VPRdTBfdXbOUeC66yIjeS1VE9EbtrDgR7CIHNZ8qP8jVGfSlOnnHni+U
+	ecGGk7h46oVj/1oeoQr0s6IaKTiB3yn0TV5lqxG3lpvqDUlM+LeEUGiZTub1/OuCzzLNVCMl
+	R/PjaUJNiwUn+y/xkjDQuDXZwfwWYbbKj5NZxWcJ3/st1HN9mtDa3r3mUST45Zhzjav5XcIf
+	jwdw0inwPoVgXegmzwevCj0XQ9iGVC607hJS6wtLjZLesHN7Xlmh/tj2w0VGL0o8XMvXsc+u
+	o+hodi/iOaRJUYF2f76akUpLyoy9SOBozXrVm1sP5KtVuVLZcZ1cdEg+atCV9KINHNa8onrv
+	yVe5av5L6YiuQKcr1sn/XylOkVqBNm+2Lb8sGf0pbcc3tPePbJIPWXoDu/fmMO8UZf/gc2gN
+	qQXmjyqrvN9Nvr2Srd1vnPlwLkJe3OF7P2vdJ1339t3c1Hp9l1y8tzyjdu7skxH3az+Fy7J6
+	cmT3nttL4+mneq7FrXcyzPtcb8RGynOCmf9omz7fGB79ZrAzrYBezCkP5GlwSZ6UmU7LJdJ/
+	7tbiI2wDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTGfd/79vbSreymYrxxZtYmfibiR6Y52YxzyyLvUJa5GHWLiTR6
+	MwqlmJahmMxBWbPKxECztkphMja6CVWwpcyONBKc+IFuMFSIikBSO/moddiCfBTWmuyfk995
+	znOenD8OxyhaJEs4jS5f1OvUWhUrI7KP3y1ZF6M7szcEhxaB2fQ1PBoISOB+cRuBaMRMoKrR
+	xULM8ZsUzO6zErjRayTQdbEBwUDUjGByxsGAyTdPIGbpkEJk6qEUrMUI5v0dCGzdFgb6uq4w
+	4GouxvCiaY6F0avjCKxDARbsw8UEws5TCCqDDikMX0uD0ECrBOb7/8HQOzGGwBmYwxBo+xZB
+	zJYD52o98XXbcxZm7vzFgN3aheDHoX4GxocHETR3PEbg/9XIwpNyLwM9gWS4Gw2zcNP6HQuh
+	7ioMz5pYqDH6JdB9exRBtcOCIPjAj6Hkp0YWbNVuAr7B36XQPTqL4ZHNgqHBnQEDziCBzvJa
+	HD837rq0GBz2EhwvTzFYL7RimHLWS7fXITppOk1ovacFU9PfMZa6fnAhOjNtQTRSV8JQU3m8
+	vToWZug3nqO0rnOMpdPReyz1T9QQeqtWoD+fnMa04s466qvsl37y/ueyrYdFraZA1K/flinL
+	um83kiNPXjv2b9kIKkJ/JJUijhP4t4VzNm0pSuJYfpXQ1zfFJDiFVwqesqCkFMk4hu9ZJpxy
+	lpGEfyGvFq5Xrk54CL9CGD7pJQmW81uE771lOMECv0xoaGp7lZMU1y/OVr/SFfxm4WH4OilH
+	shq0oB6laHQFuWqNdnOqISerUKc5lnooL9eN4t/k/Gq24jKK9KS1I55DqtflsD09WyFRFxgK
+	c9uRwDGqFPnK1TuzFfLD6sLjoj7voP5LrWhoR29yRLVYnr5PzFTwX6jzxRxRPCLq/59iLmlJ
+	EVo/M/l8xJmVtyHT/eLTzL3LXbrI8bSwYsK49mb2NvbDkMerpKEP7r2XMXcldvCNqvyMz5TK
+	j6K9e3z1l996WtR/YvC81N16djL9WajTu/uXpSs2rTnxznLf/v3U32LHXoUn19y8JrXiwAiX
+	vGNTLz9undc2vVyAd201K/9sbD+afEZFDFnqjWsZvUH9H6rrtARJAwAA
 X-CFilter-Loop: Reflected
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C4BA220002
-X-Stat-Signature: thctt7yywoaoybragzmbakgqs4wttfso
-X-HE-Tag: 1783318805-820692
-X-HE-Meta: U2FsdGVkX19wfJUZhLuUjNOLyRzzcEx2/nR3v/Z+rQKXBnf6w8yj5jhOWPoX0/2AfN4IY8LxhHx+rz2IA2+CWOha/h1mbKis7pnMdqLcegv40WFMtVNJLWW5bQkPEyjDgtLx8TaUXUCzKSOLeFLTGV8UHTbds8Fv2hF+o3HuIxBIPpZkJOpJGgrjGZZ/wNEmVM3acjt36bImETij3XYXaO0Oc/6Gq0qvUnIFrR5nuH1HuNXq3KMUubSGMY0wVgEZEo+Vg0Iy5cJ4sX5ISFC+taHNRRnbF1TqtN3//smblI1LStcgzCPncTe/4hXqLUrg/yvUktufj5RiV19gNC/SvkUu1x/ylgfYvJjb6+DvtYXGUj1rfy1IdRN7lrIN2XR3nw8YMpiD3goMatBKSv/TgMYjX3e7Zntp5lbXHHhZFvZPXBob/qV2I/ODQaAjHVdUiT/8BWWnpbLKL49z5HCBDq6A7UeO3CYTnxPJQmQiQ7lPssw5HKmKU4su4jExe7c7WNBZi0KSxHn4G9YV80xe/PQeV+eprLEV24a/g+3OtioWimo5VWtR677t+RH6b3vVkgkgDWkbNICOzTHxar8ka0IKuuQcOU3rwht+YTzYDpq+QaGTHmYt3c8Lhr6Kb51Ds6QLz9TpDSf6O14gpH9+cpGxKNvJCOqwmY7i2RS+2LnULxU/YkF9Pz5cs75p28jTPJkJpinJn65zU6XF3fQfoabc2ezJJA3l+BSlpz+EMEwAXKItwEuAWERo9NWIKPfLb1KuYfyTjh73YO9WfK7bQCvZ96fnn0d5V9Tb245bjr16blfOQe3zQrkMk1aDNCEunpEoRAKS+0LLznFdH/X5x/SADH5kotwO+JZiJD7+4nzRvQ+xS3dxu+ccH1yHeK1t02fN+3XRnT48NTJxL5nTM7H+jYr7Ri4WXQaih3i/OObbLMUtUXuCGpNQZoM33673hCMf4UTioNqq7WbFPxl
- KMfyxtaw
- vGztZJzZBlX5A0ihbWz8rZ/3gcryubvUQPYjToOF6fCs4aD0h5W4OYGARY0+E/OuaPUtlIYF3MA9H7dzGPJNzDSw4k5joewmx9Y8H7IIhHtOJiRZLjAKg/fGpQL1QSSZnI54n8pB+itJDt8QW3hPjONkHmUd5VOL8WA7G1tPRFIUuw9fGDw+XAQol+yZAsX5zxBpS677NEguAfpw=
+X-Rspamd-Queue-Id: 0A78420002
+X-Stat-Signature: pazx95kie8zca4jgbyfxkqbpz1zag4zw
+X-HE-Tag: 1783318807-3184
+X-HE-Meta: U2FsdGVkX18ShPwb6h+tYrBqxiXX/CeZgcwgiH6A+ifNzclySIn9yCSrRiAIRT2yfp8krriNAuQ2kIFqd9PU1X5btPzS3qRXPXsCNtnnJctlyFXHyEZTQVtvDBfxJAAZMvL679qfUvKvtoskhS2GBJ9pbbRjK0qHksiQaAZR28bdUbiuqrXy79uZIVpPHFVWMdpsxSdmxuc3mr7NO0HIMkEcXeCqi49gSiLhOLWGL3d/kQkW+61lq0cisM8JIUVg6Rp0626q2/fzhG2HCD7BV94yTojpdQ6HuiO5n1QEAGx6d7V6Wk5fN22GjfHrmqOqgfFgu756Uqj6s6bUEvU1OAA8HRo8plGoC0YnQzPQu5wiSQSJ/nTySqkGRJlOztceEB04TCMvnVir3R0Rt7SP1hBbvNQZ2Flt+vXsYn+aD7fxFlr0A2ORYKVF7BxB+dh2faiLPA2cnsK5GCdGHgHlcDGgoffOtARvx2UR8QeK+I/yXRxSE9TPMuIyL3QXgw9nxoAZFacLWVlkQaRiP0R1xskub+9Otl9tkIxFKFYHl3cPSL1QCwU5Mtm9jMpudG+96kifkEoKGq/jjUipURIcycyByTcRmqcsR7BLIYipNFGDcnrOfh3uc5cTPZEOSe06LRbMCU0YBIfC6yXMUBJZi9zdtbkWfgqCF1xMsNvXJZtQ/AMViElHLre+RDIcOGrMLzKKe0DZ62titu9o3vBu2ew/BFWDlNP2fvBZyflDEW8YQdaocF4KVXBUNN+p6JGAHdlysjktlZOkUUSMHpJOGYzZpxoa8CDZX4apKuOgkbWvIoGKn/4zeUOUeFDW+lCb1ijzRFeJDHwACxSzRM6RVBz9OeSNndQaCeJiOTrPAtB/xD0qCHQNt1zCN25BiSr94Zw1MJiY5iLWQzprsJ66fsh2GVxT+rUUHxItQqjrh/9U27MlXjWzxwHxpJyYZoEHSszNOh6hGuXBAIOv8eu
+ dWoDEuRY
+ gk3Fyq5W/qkvi6or2TOMK1GRXp1PoHDB4miQ/t/iM8RxgAHlbtvIY3s1MrLjTgnS+64wQqJfI8/hyeosnhYRLjBew3ddGDO5pMtlieRqEODVfQJRdrxP2Ira3DkF+USHDtDLZXEpskLQpUuhu6HDx8vwhDHQmXMIwKJv1/ZwFMBGfKsfvxmssUFFjPt9wGAX2RlBoZUVSL37D31w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -269,38 +269,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Workqueue already provides concurrency control.  By that, any wait in a
-work doesn't prevents events in other works with the control enabled.
-Thus, each work would better be considered a different context.
+The current code records all the waits for later use to track relation
+between waits and events within each context.  However, since the same
+class is handled the same way, it'd be okay to record only one on behalf
+of the others if they all have the same class.
 
-So let dept assign a different context id to each work.
+Even though it's the ideal to search the whole history buffer for that,
+since it'd cost too high, alternatively, let's keep the latest one when
+the same class'ed waits consecutively appear.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- kernel/workqueue.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/dependency/dept.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index c6ea96d5b716..4a4075d0697c 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -55,6 +55,7 @@
- #include <linux/kvm_para.h>
- #include <linux/delay.h>
- #include <linux/irq_work.h>
-+#include <linux/dept.h>
+diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+index 4b4b28ddc819..3af360ba17d8 100644
+--- a/kernel/dependency/dept.c
++++ b/kernel/dependency/dept.c
+@@ -1486,9 +1486,28 @@ static struct dept_wait_hist *new_hist(void)
+ 	return wh;
+ }
  
- #include "workqueue_internal.h"
- 
-@@ -3204,6 +3205,8 @@ __acquires(&pool->lock)
- 
- 	lockdep_copy_map(&lockdep_map, &work->lockdep_map);
- #endif
-+	dept_update_cxt();
++static struct dept_wait_hist *last_hist(void)
++{
++	int pos_n = hist_pos_next();
++	struct dept_wait_hist *wh_n = hist(pos_n);
 +
- 	/* ensure we're on the correct CPU */
- 	WARN_ON_ONCE(!(pool->flags & POOL_DISASSOCIATED) &&
- 		     raw_smp_processor_id() != pool->cpu);
++	/*
++	 * This is the first try.
++	 */
++	if (!pos_n && !wh_n->wait)
++		return NULL;
++
++	return hist(pos_n + DEPT_MAX_WAIT_HIST - 1);
++}
++
+ static void add_hist(struct dept_wait *w, unsigned int wg, unsigned int ctxt_id)
+ {
+-	struct dept_wait_hist *wh = new_hist();
++	struct dept_wait_hist *wh;
++
++	wh = last_hist();
++
++	if (!wh || wh->wait->class != w->class || wh->ctxt_id != ctxt_id)
++		wh = new_hist();
+ 
+ 	if (likely(wh->wait))
+ 		put_wait(wh->wait);
 -- 
 2.17.1
 
