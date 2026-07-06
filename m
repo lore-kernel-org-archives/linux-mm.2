@@ -4,75 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB06CC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77952C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:53:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C48A96B009E; Mon,  6 Jul 2026 02:49:42 -0400 (EDT)
+	id 5721A6B00EC; Mon,  6 Jul 2026 02:53:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF92D6B009F; Mon,  6 Jul 2026 02:49:42 -0400 (EDT)
+	id 549816B00F4; Mon,  6 Jul 2026 02:53:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE7886B00B6; Mon,  6 Jul 2026 02:49:42 -0400 (EDT)
+	id 45EEC6B00FA; Mon,  6 Jul 2026 02:53:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EE316B009E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:49:42 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC64514028F
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:49:41 +0000 (UTC)
-X-FDA: 84957426162.23.14CA830
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F198F40009
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:49:39 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UZp7lfRv;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 19E506B00EC
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:53:43 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 655C9A02DD
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:53:42 +0000 (UTC)
+X-FDA: 84957436284.10.5823675
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A4034140002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:53:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atJNIUBD;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783320580;
+	s=arc-20220608; t=1783320820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZtCnYnyv7Hmpt8mLmtELq780NxRlJZLQ0qZI2absRDw=;
-	b=ntDrUYA5ppAUtqJwa8SPA9az0P45tITEpF0Wkm37XvRhVrru/3hpwAcwfAfVQqaVnZX9sX
-	jikauWWqSgrBUZyk+g/KaDcFl1hX2oE7PjuxFwKo3qEJ8Xf98TJzhp/UIpCkGTMTN4V8SU
-	u/I3qmvfNSJn0xBCk1PBA9zkAOiOExs=
+	bh=r599ktiKbulgE6viGKOYXX1IIDFeRM72i/7JTqGw39Q=;
+	b=uBlw6N2AEQqEv6KEryLg0G/pwsRYgmDI0msfmzlo4coZuOxEqnDzwYntG4VxSioPdymM1W
+	MVA3Ef4UNVyX2gvPTj/2nU2y81opNDVCf7mEPhIrQMNLb3zU2EuSpVA/EdKCGXhN7+Ru0W
+	Rq5+5aQFvjnF7axxDsHIbhRlhPY+aVI=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UZp7lfRv;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atJNIUBD;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783320580;
-	b=DUeCl0GRUSeXXvmBAIFWjTCHY/ZINxawyPDd/nwlbxBd1w2YZl7v4FE5EhOwDIcVE51X0D
-	CjTZ2CITGiSlKDiB13X2lBvNeij8bveLVa0nC32SbY+uzLFxXjpxMan9EybXPYA0ZmR4tG
-	ygscgy+fCoAzfk4Xap4gFea1UL+FnJE=
+	t=1783320820;
+	b=cgbh9AUn9PHgEC12itOht6UUEaPcnoBMtM4KHFtB0mQYoay+9ST6wmvTfVKKGZoBIJM8hN
+	CminUBn8CnXkX3QA9gKXuHxN/PBsns+9k7L1pNDFEXNk+oyMd0GNPaxxtUIGbqOk7TotrF
+	3QkuZ8EFTER1M6VWFd9VmlTQkrkXa5Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE29F43832;
-	Mon,  6 Jul 2026 06:49:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B2E1F000E9;
-	Mon,  6 Jul 2026 06:49:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2255661832;
+	Mon,  6 Jul 2026 06:53:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E7F1F000E9;
+	Mon,  6 Jul 2026 06:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783320578;
-	bh=ZtCnYnyv7Hmpt8mLmtELq780NxRlJZLQ0qZI2absRDw=;
+	s=k20260515; t=1783320819;
+	bh=r599ktiKbulgE6viGKOYXX1IIDFeRM72i/7JTqGw39Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UZp7lfRv15shr5/jiCnRRh8gt6f7FZR2Voy9nBq1Wf7WL/bVFyoFGFdtnLtFZT/RW
-	 VlvsDgVXq1HJCUsIBprHl+OZ4v7RpuZmSGSgUXuJkExqqTQzP8wEri/PN+o6bct97h
-	 qFP4NRemhz/tESWdlkezBlOrw+I4SCdpLSWFkH6b8uXt2SWOCMhIuuhIm7d7aMIc9p
-	 KXEhTP01uiDoHqSd3QcZPkLToisJ6pOh0QzrjvR/VXWaDZZvF9qCpjvW4ug5Y88boy
-	 88PB0wis58ArZBogah1C8iHnAGH8zDzCWCr75+deippDfJhEupejKo3Oe5xSmnsXgZ
-	 eMji33rOSG36w==
-Message-ID: <f986205b-1792-497e-aacb-2789e87a4483@kernel.org>
-Date: Mon, 6 Jul 2026 08:49:34 +0200
+	b=atJNIUBDok2nCDX2dEaLw3k7nTp6IPtCLm2Xswl5lz4p6HjaWtmIFddfoYcbIFy9c
+	 13csMEzZOATX0JU4evaBvmIG04nWSL7bWMm7rp3ZS+MsD3NEpoe0vOCRtwBkR8Sf2B
+	 oZhQlPTpeR2mpkUKarnydz45Q8+LY5WY4pumBBr2dvZ8YHfx8VvFKwHZw81Dw8XytN
+	 EbzPyI/hjxlEm3lDq8C7Oj498c/xUC1EIuees31yzm7BuOerMvVC38bvDRXsSfbvz5
+	 Y6TUfB8fESlL63LkwaEM5FKaTep2B8rVRsybRGlsx3eNftn6SBIPE/Z6Q5gudGIn3/
+	 vq0T2LkTYzs1A==
+Message-ID: <35b46b88-6f8a-4eb6-bef3-58389784f750@kernel.org>
+Date: Mon, 6 Jul 2026 08:53:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 0/3] KSM: performance optimizations for rmap_walk_ksm
+Subject: Re: [PATCH v11 2/3] ksm: Optimize rmap_walk_ksm by passing a suitable
+ page index
 To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
 Cc: chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, ljs@kernel.org
-References: <20260706124039747M7gtCsrOvuzDyfLMXIJ2B@zte.com.cn>
+References: <20260703162510242nxmjbcLy5ccp1dbZSK3EU@zte.com.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260706124039747M7gtCsrOvuzDyfLMXIJ2B@zte.com.cn>
+In-Reply-To: <20260703162510242nxmjbcLy5ccp1dbZSK3EU@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: htfrgapyq4s78j81ypwpetbkxec6dcno
+X-Rspamd-Queue-Id: A4034140002
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F198F40009
-X-Stat-Signature: i3kf9ih3oi4nez41jzwgszf98or3wu5w
-X-HE-Tag: 1783320579-887698
-X-HE-Meta: U2FsdGVkX18icLeW52bvB5wzTi+1fMPeBk+z16s/Rf+rbSfgm907FOvYYVwANfqpBvlRylLbJw3SRzMyGNOqtVqKOGveN1yQ7w0Tp/ypHSq74SxitRIHx9Tt7oXJZrIXjwI1xK4myTAUSpc96It8rPHyZK3xyFOwkaxjVlQrN41xs2smuuEOMC0hhnoeUzKZ6Wr2K08Vu83KXDRdbOgQwb8b/MRkAlbZaknGHKvwpFP2wZp26V0sOsZ1iGpLDqTuV5183KuazTrccZpu4ohN4umSyx1cEYc4PzX37x3/FzWaKc2LttVVAY6SVNzL5i94vAQ2ll3b/9NZ3alslWxwdWRD4F+cEGJor78VL00eZkZzTL0IUNkakzfqibPEaXAyLgMaLvhZqiQtfXr2lLOTloS+czJMNmAfHSmnB8rdceDJt+JwUs/ORhAs9zd488PZyzirIV1BjFsUEBKyBeI9rjZn9Em29KcOsPLvOlob3TmVB+wO0xKP2t2l9YccMK6UAsX0ts3p7Vs+1WO6mq7VFgaXLrJYeBxPbtGSlK2UyT2wWhcfsppwKQkQC54y16Gqtp9Sm0txLX9g5pkmLjgz5WtQ7ml4ZcgUNjh0v6TZm5ddHVCzNw4KBVE3M/XOQBJBr9gcftAbwQJQo/rRdTAKKZ+bpIN6tM6Dp971EX21QsbcfbuyQlNE4tGUfGuG4ffPxcYpTZJHq5TwzeDmTEAqRPRWvrawyCXCFGs5oJHqCmvlEXw5e8mIAWsTyv3WZuIh4zyPxPxDeEgle6OiAuOLI2nqvph3CHOzK6tpFg9QfR8c1BW6uPRIOJyxAFAIup6zkc5QnvOvf9p4Gai/PmjbDJb7/oLTrHErLc5BvpYjG1o9iwkXptBXmvZC5vPr/30177PWrnZbqXHE8dN5QOAarL7XJYyv2P43sCJWqZdVJVMx60FNfX+pTh3mn68VAgsYMTblH4PmbwJDJUJL8H+
- JJgGZ0Rr
- r8JwUJVlLF1EVfosfgE5RCz4lmtsGfXwmgamqb7ORW7+OaxJlbBFVhQOyT0nPqYrhvXhcqQKRtHlsnYGpNwsX1CzaeIRTEE9ulbkt2tIzMtrnXsoFmbeGqr0dAjMi3482sCiOEIsLBuGPV7NU4pIaVYYwt+O8uePvS0APxGt4dSj8SZh4lzxzYs4ankm2+Vlf/r/UE7+HNVy7HUUNWBspJaJwRikWh4V0iw8r16NtfwMxnxcwDeCKtl4HPgegFBD844L6IuUbc4OPKSLT9X1vouMZPncGxGnC8KuEMoUWkbmootEuav+ieNArudT0uDRWD6a0Rf59WGn0GpT1Gwuf9ztrZGXed1uxyZuzlrgDqfS4NL+sZpdUjI3qTF9rMeuznVJ+dwPpMR2KBQ4WNtLH9GBwj7DLFvBAa86kEB01VhsraUM=
+X-HE-Tag: 1783320820-62353
+X-HE-Meta: U2FsdGVkX19mZUeM47MXCDHYZaAR76LbQt5FMkLb8S3mHsO5amTQtCO/2Zh4U7fiAxmDRBZwSzlgjEEiTbAA+dv7iGuJFFWYEWEc1R2X73THQKFrVdfqAvAkwHEbW96LxVfDTlL5wFgM6URBIrF6h32kslpDDPedqC3zcUwxkRcfou03Yr6mkB6KyMc9wZXM546A9dWVpk/pNDDUkaerZ6F7KnLEnha3aeuAWNKd7V9q1jslc0TpcbzIYPe729F0Q/LW4doYMkyn6lw/owZQ3NpR14e2UlAfZKcARnSNdSi6eClC5ozUPNMKKYOuokQAMjieYoN/TWBzK6G1cq5mWA6bjwbJAkeCcoCA+kUQMOH9PJuEGetPmjTWGjQM1IwBzz4WMx2RRrSLBXoWBS2uniuo1qysn94G839vOrfomMcIXAI3HD4QwyjYqON2URhnr9GKYUmo1pYyMcb2y2nFlYZoJlwUMm1h+7ZK4G5Ar5S6/whkgvOUmtpZV5/je527J/u0ZTaiOpJrk6rZBHdZTKazIP1EKBTYGnd4PljmCNVnY6Mo9sR7El92qKoV5zElOzrCZRYmTutsO2sL5Totiqn/c7ufKG0QRMjScvl09p7egO4mGeoLvxSviDD0PkcoFUlX2cKe9shaygjdee7DSyaCywoIvZHIY1yxzLZAbH8fHkzP5abEyKYdn6+mJH00bX7awitYs3DLJvCOiO665Gg/phkdaexoYyeB2IHcT3fMT1GT8mFZD1RwYxGUgeN1d/y/BSxINgqWstwqv/pHv2m1nyQfu9eyUSvybr3D2Z+fDa02mPRzKxDVgAiNbs8jGUfpyG67vRjkhDBXxWOYGdbLKWYxf1pJnie3xwfJLiqncwKazN/falzGfnzi7aMjSsZpq8SbJrYthnQ90HgZi9u1NzZFIMW5eY6noiDn0nFkYz2U4Kv7T1LA3v0pK8xU8rgUs67Xv8nzK203wH+
+ 3wnBanmZ
+ FBUUwpb4Oy6vXOGR1GQCc/ZXKW18vePbTUcAP5qWWqWNC1EuzjLrjWhyPy1m7+OU9O8rkYkZBFXVL6f35DUVlXPQYNZ0yUeORIfDhCvOP8cPS/6rCPs3LMCUHreIUammP2D+rJraZcJZNi8M4H9Mhevd//jX9u1lfIYXgrKZg3iTiZb0XZPKCmXirpTRJxHrRSwmWOYaPwt4lKWuzVzTriDBX6HeFSgGpTG/UBzRrDMSe9kMd/BmnG6xQruNibiC1kdM1IPbNnil8lu6xOSyRJla9U+d89dd/L55dZIy0VvA9dKxi7gWJ7n8ICiAmTzLyECNDYVKJxN2SxwMUYp52vFrHKUoOHDVtcOhF6JdETyk6NzRuSs7uWYNMrl70UqLSTMgY+9REtYZG7UQhHlzjoeDmdhaI7sPcri7m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,41 +138,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/6/26 06:40, xu.xin16@zte.com.cn wrote:
->> Again, thanks for persisting with this.  Great improvement and I'd love
->> to see us get this finished off.
->>
->> Please have a look through the AI review:
->>
->> 	https://sashiko.dev/#/patchset/20260703162253688u8Str9eFLR8TGCmo7nIOF@zte.com.cn
->>
->> That 32-bit thing looks legit, kinda fatal but easy to address.
->>
+On 7/3/26 10:25, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
 > 
-> Hi, Andrew, This is not a major issue. I think it's acceptable and detailed
-> analysis is as follows:
+> User impact / Why this matters to Linux users
+> =============================================
+> When a system runs with KSM enabled and memory becomes tight, KSM pages
+> may be swapped out or migrated. The kernel then performs a reverse map
+> walk by rmap_walk_ksm to locate all page table entries that reference
+> these pages. If A large number of unrelated VMAs can attach to a single
+> anon_vma related with this KSM page, then rmap_walk might be severe
+> performance bottleneck.  In our embedded test environment, we observed
+> ~20,000 VMAs sharing one anon_vma without any fork – purely from VMA
+> splits， which cause 200~700ms duration of rmap_walk_ksm.
 > 
-> The sashiko said:
-> "
->> Looking at struct ksm_rmap_item in mm/ksm.c, the linear_page_index (unsigned
->> long) is placed in a union with an anonymous struct containing oldchecksum
->> (unsigned int), age (rmap_age_t, 1 byte), and remaining_skips (rmap_age_t,
->> 1 byte).
->> On 32-bit platforms, an unsigned long is only 4 bytes, while the anonymous
->> struct is at least 6 bytes. When break_cow(), remove_node_from_stable_tree(),
->> and remove_rmap_item_from_tree() assign rmap_item->linear_page_index = 0 to
->> reset the age-related information, it appears this will only zero the first 4
->> bytes (clearing oldchecksum). The age and remaining_skips fields would retain
->> their stale historical values from before the page was originally merged.
+> When one of those VMAs mapped a KSM page, then this KSM page's rmapping
+> will become bottleneck with hold its anon_vma lock for a long time. The
+> anon_vma lock is not only used by KSM; it is a core lock protecting the
+> VMA interval tree and is acquired by many critical memory operations:
 > 
-> Indeed, on 32-bit CPU, that patch doesn't clear age-related information, but it
-> doesn't introduce any issue because at this point the linear_page_index and
-> age-related information do not overlap, and there is no conflict between them.
-> This is clearly consistent with the logic before applying the patch, so there
-> won't be any problem.
+>   • Page faults: do_anonymous_page(), do_wp_page() (during COW)
+>   • Memory reclaim: try_to_unmap()
+>   • Page migration & compaction: migrate_pages(), compact_zone()
+>   • mlock / munlock: mlock_fixup()
+>   • Process exit: exit_mmap() (tearing down VMAs)
+>   • Cgroup memory accounting: mem_cgroup_move_charge()
+> 
+> If one thread holds the anon_vma lock for hundreds of milliseconds
+> because of an inefficient KSM rmap walk, any other thread that
+> tries to acquire the same lock (e.g., an application taking a page
+> fault, kswapd reclaiming pages, or a migration thread) will block.
+> This leads to stalled application threads, increased latency
+> spikes, and in extreme cases container timeouts or watchdog
+> triggers.
+> 
+> This patch reduces the worst-case anon_vma lock hold time during
+> ksm_rmap_walk from >500 ms to <1 ms, thereby almost eliminating
+> this source of lock contention and improving system responsiveness
+> under memory pressure.
+> 
+> Real-world examples:
+> ====================
+>  - JVM / Go runtime: These use mmap for heap regions and later call
+> mprotect(PROT_NONE) for garbage collection barriers or guard pages,
+> splitting the original VMA into thousands of small pieces over time.
+> 
+>  - Database engines (MySQL, PostgreSQL): Large shared memory buffers
+> or anonymous mappings are managed with madvise(MADV_DONTNEED) to
+> release specific pages, which also splits VMAs.
+> 
+> Root Cause
+> ==========
+> Through local debugging trace analysis, we found that most of the
+> latency of rmap_walk_ksm occurs within anon_vma_interval_tree_foreach,
+> leading to an excessively long hold time on the anon_vma lock (even
+> reaching 500ms or more), which in turn causes upper-layer applications
+> (waiting for the anon_vma lock) to be blocked for extended periods.
+> 
+> Further investigation revealed that 99.9% of iterations inside the
+> anon_vma_interval_tree_foreach loop are skipped due to the first check
+> "if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a
+> large number of loop iterations are ineffective. This inefficiency
+> arises because the start page index and the end page index parameters
+> passed to anon_vma_interval_tree_foreach span the entire address space
+> from 0 to ULONG_MAX, resulting in very poor loop efficiency.
+> 
+> Solution
+> ========
+> We cannot rely solely on anon_vma to locate all PTEs mapping this page
+> but also need to have the original page's linear_page_index. Since the
+> implementation of anon_vma_interval_tree_foreach — it essentially
+> iterates to find a suitable VMA such that the provided page index
+> falls within the candidate's vm_pgoff range.
+> 
+> vm_pgoff <= original linear page offset <= (vm_pgoff + vma_pages(v) - 1)
+> 
+> Fortunately, an earlier commit introduced the linear_page_index to struct
+> ksm_rmap_item, allowing for optimizing the RMAP walk.
+> 
+> Test results
+> ============
+> A rmap testbench can be obtained with two Out-Of-Tree patches at [1][2].
+> After applying the OOT patches and building rmap_benchmark from:
+> tools/testing/rmap/rmap_benchmark.c, we can start the performance test.
+> 
+> The testing result in QEMU is shown as follows:
+> 
+> KSM rmapping	Maximum duration		Average duration
+> 
+> Before:		705.12 ms (705119858 ns)	532.04 ms (532041586 ns)
+> After:		1.67 ms (1665917 ns)		1.44 ms (1443784 ns)
+> 
+> The benchmark numbers are realistic, since we observed ~20,000 VMAs
+> sharing one anon_vma on a production system running a Java application
+> with KSM enabled. The lock hold time before the patch was measured at
+> 228 ms (max) during rmap walks triggered by memory compaction and page
+> migration. The benchmark reproduces that VMA count and lock‑hold
+> behavior in a controlled environment.
+> 
+> [1] https://lore.kernel.org/all/202605301703094695zmVgcSC27BNR0rH0N8_x@zte.com.cn
+> [2] https://lore.kernel.org/all/20260530170404509QpJmBtpSjn3uQHeVKA2iA@zte.com.cn/
+> 
+> Co-developed-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+> Signed-off-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
 
-It keeps bringing that up, and we clearly document "might overlay age-related
-information". So just ignore this.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
