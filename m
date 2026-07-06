@@ -4,118 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81838C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 07:33:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8106EC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 07:44:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40F4B6B00D0; Mon,  6 Jul 2026 03:33:27 -0400 (EDT)
+	id 3614A6B00A1; Mon,  6 Jul 2026 03:44:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C0AF6B00D2; Mon,  6 Jul 2026 03:33:27 -0400 (EDT)
+	id 339206B00A2; Mon,  6 Jul 2026 03:44:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AF3C6B00E6; Mon,  6 Jul 2026 03:33:27 -0400 (EDT)
+	id 276856B00A4; Mon,  6 Jul 2026 03:44:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E55926B00D0
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 03:33:26 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5635D8D25E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:33:26 +0000 (UTC)
-X-FDA: 84957536412.28.01ED04B
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6D576A0005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:33:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	spf=pass (imf15.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EEDE96B00A1
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 03:44:21 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7444AC19E6
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:44:21 +0000 (UTC)
+X-FDA: 84957563922.09.55D2CC5
+Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
+	by imf29.hostedemail.com (Postfix) with ESMTP id D38AB120007
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:44:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=hC0TCeZK;
+	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783323203;
+	s=arc-20220608; t=1783323859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WQePi4wLyPUD0fjZ64FT2cofbuvtEoaT9obmuAOMw38=;
-	b=0iAU+GrfCC/zNzXOwI7UBW7QsKqcsrB0AOHDUO4e/Qq9t07pYKyGi2QxK2tAmxfy5gl17P
-	JL5x8L5W0P8+9x93FvKPB1YdBOjjiBmaR+XK6eZ3CpBVTCxGn2Esk4B7yWpxPZ9K8kvdwi
-	L9X0wNIhpuhG+7IIqrzxKiTV/QI+3SI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DWB+NjMk1HZepzF30XQzFwBn/hDq5+vh5fwlGqKis+4=;
+	b=lWJy7B6zA2vPca+Tq78ZQBx9pLKBUZd6gFpf3+1Cq4sVrDrgN5wktVdtX1uyBInV8zytvr
+	QuzlrY0fKOIjuxkK7M91pEr/WMRlHa2Kp9MnEjUp9iU7MqpcBBflLhJtjppzed5/IcLrru
+	L0eH154r27/kbh5nQ/tQJtu78yHemEM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf15.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+	imf29.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=hC0TCeZK;
+	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783323203;
-	b=5YjUPgBbBwfy+RLPC7oVtvDX/cxcJCK9CWu4K5dE2NN+xnCu9ct8S/Ee67G/HzFoDtSqAf
-	SpQha2uQDncs9ZAkl3/snaOeQ9L/wHTIVql5wF2KxUELU8PIATnTeOLrD5lp83AZXEfqN+
-	h16a6XzPCWv8aeOura9CG+UA3ULHFi0=
-X-UUID: f116c1c2790c11f1aa26b74ffac11d73-20260706
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
-	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_PRE_RE, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
-	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
-	DMARC_NOPASS, UD_TRUSTED, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF
-	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:13ffb0a9-9efd-496b-8cb1-518579bd22a4,IP:20,
-	URL:25,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:45
-X-CID-INFO: VERSION:1.3.12,REQID:13ffb0a9-9efd-496b-8cb1-518579bd22a4,IP:20,UR
-	L:25,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:45
-X-CID-META: VersionHash:e7bac3a,CLOUDID:79b2e9dab16b6ff39e1d3deb1ceed7b9,BulkI
-	D:260706044829SL9NPCNX,BulkQuantity:1,Recheck:0,SF:10|64|66|78|80|81|82|83
-	|102|127|136|841|850|865|898,TC:nil,Content:-10|0|15|50,EDM:-3,IP:-2,URL:1
-	1|94|82|1,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LE
-	S:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULN,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: f116c1c2790c11f1aa26b74ffac11d73-20260706
-X-User: lihongfu@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <lihongfu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2134534148; Mon, 06 Jul 2026 15:33:11 +0800
-From: Hongfu Li <lihongfu@kylinos.cn>
-To: akpm@linux-foundation.org
-Cc: david@kernel.org,
-	hongfu.li@linux.dev,
-	jhubbard@nvidia.com,
-	joey.gouly@arm.com,
-	keith.lucas@oracle.com,
-	kevin.brodsky@arm.com,
-	liam@infradead.org,
-	lihongfu@kylinos.cn,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	rppt@kernel.org,
-	shuah@kernel.org,
-	surenb@google.com,
-	usama.anjum@collabora.com,
-	vbabka@kernel.org,
-	yury.khrustalev@arm.com,
-	zwisler@google.com
-Subject: Re: [PATCH v9 0/5] selftests/mm: refactor pkey helpers and fix mmap error handling
-Date: Mon,  6 Jul 2026 15:32:56 +0800
-Message-Id: <20260706073256.3547055-1-lihongfu@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260705134819.871dbf41d2b06681f0facf12@linux-foundation.org>
-References: <20260705134819.871dbf41d2b06681f0facf12@linux-foundation.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	t=1783323859;
+	b=PLzlPAguEIwzYvLd8MmkuXUoX6VX3DwT8Kwr8w8d0maHTPkyfUDUukEWiRKqpcFSVoOde0
+	n2bpkQN4ukHHxdWNy5Um9rW4AKiH88vwVurznAr5UljQhb4AS0rWApcpid6xOEqrnE2pfw
+	da/dKUN0i+YUS1pFpu/HTZwI4wzW8Oo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1783323850; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=DWB+NjMk1HZepzF30XQzFwBn/hDq5+vh5fwlGqKis+4=;
+ b=hC0TCeZKMo+CD7ZABwhuUqjie2wrXJGayLjJvPFDdCCde5wEgJryYiimTdjKh4zFzpoq3w
+ 8GyQqiFxCYGUvez9FAzi4CBTknfmnbHs71Pn0Ze6V3PuuI1nfn1Lc25NmvF7sLCQ3YOGnT
+ bf28URxLxQWmnjy1i8srnyNIesd+aRn7RvR7vUyhjXv0r+S9E5zgMBijT9RtGj2DMz23/p
+ qO2EkACqzH5xTuLb3Lu2Nfb/gA9PyqzY2DBpJX4Fa/29RI5ei8JSvn7xXqlhzD/IoBTjI8
+ BWlYUaWya2RMtYbkceIit4EIJ0Ku3fMwmnlCAOR1CY4DPL8mCNO9EvktD45z9w==
+Message-Id: <20260706074346.23928-1-lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<dave.hansen@linux.intel.com>, <david@kernel.org>, <kees@kernel.org>, 
+	<linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>, <mingo@redhat.com>, <rppt@kernel.org>, 
+	<tglx@kernel.org>, <x86@kernel.org>
+Subject: Re: [PATCH v5 7/8] x86/string: extend memcpy_flushcache() fixed-size fastpaths
+To: <bp@alien8.de>
+Date: Mon,  6 Jul 2026 15:43:46 +0800
+In-Reply-To: <20260703195619.GGakgT44P7lpcoMVlY@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+X-Lms-Return-Path: <lba+26a4b5cc8+24c6be+kvack.org+lizhe.67@bytedance.com>
+References: <20260703195619.GGakgT44P7lpcoMVlY@fat_crate.local>
+X-Mailer: git-send-email 2.45.2
+Content-Transfer-Encoding: 7bit
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Mime-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6D576A0005
-X-Stat-Signature: f185gzb35x7zmsma6bhxbop3mozfewkc
-X-HE-Tag: 1783323202-411659
-X-HE-Meta: U2FsdGVkX18srBImiA0FRrhZ1WxyLqQDzv/IFKw94Xp/fMyt+Abt9KO50WEPbEuYGy90X5D4Q8DxZrWf3sM6IfqMksSQvSZG0i60pQHhotGfpztWa6p+uVNLmn/s/+8Vj0AeL/hdfz7GtQTsgxVoiSk71dTclkY7XxtiWLx+hvDPwAV+piRmZ2/bLOrzrTCfajxcCN5U7yuF5laiQDwEDVk7L0eSMZSo0555Llu4Zmt19h6YAgR5tJ5boYU0mGLh4wffqZ9hO7RkJfzd9VY/wPl3CKZNBVQ41We6HIpVa84glht3DFoCrDgpmcdLg7snlXsXwc1qsxlN3s+XwpyVO2YT6q1i8hkpCzdzKubjXk3vReSFVhA7XhFz878Twm4UrN3mytrTBwfODwEIJsvehgd/ebopT4Y6drFPeq3lPCrp3UCbeeNhfVtjsr0+Avi140jb4LaO5DHZ8ZSYZIIsUNn2qx4vXqPk0d8673IODD7Hpno/Wpv9if0ugyY2e1oy4jPNt3cX0lAP3qlG9bosjzUrIHZeOPoy0chuBeFs6a5XS+nXSbomm/5/mdJt88nHeV2m2XctmkCHTeGfoeE2P1qFhEnSLqBOX0OL+ysT6ugsNc5amFOGN3a8V4gHsEABZuvOF53r/ASW3iiFA5lHi3C2tuHPlLfG9AipbUFDa22PMyC6vBzl1qRSxbIaHKS+L0nMl+qPHbuqyLO7r1+zBEuIBp6XogilElREPPcB8y6ywdphqhc42S7YHUKgredJQMNneK2efWLjdXW56uW1kRdSEidGXTo6z2aKteiUVKUOozk19S7u8K6zrL+Gpz5saBrHlMAOU8Ca6cjTVXZbOsIlQGbxtmQmFy8e670bdCZbn3h0buUh1YBWL2Km4HzDhX58Mq8s2cY4CMb1MitmdQOWrAkGz3oT302P6iNwJpk28rVl0XvwXy+UK0Avv1svGymKh3+7G0Of6I6XGiS
- PHYdAaLC
- /3zy10nVqGELVNtfhl/rqHvs8Q/2/FPA0oVCxRzOT113JJYKRSD/sM3bt8i6mDdVPgmdA
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D38AB120007
+X-Stat-Signature: kqb691gcgzaaam9nr9mdhxbsuawrwyek
+X-HE-Tag: 1783323858-536212
+X-HE-Meta: U2FsdGVkX18IWCtj2mlsRIynUDAb4dwu1TJLB8L81a7Z7z3zb7Mw9NnWpjrZMCpOI3ZllCgUA2yWEavGm3n1PNmn0UNIJxHbyEL+KZNkWXZ4JtsCXuVMaLNIUEhGB9JWMOQFNBtXi72vgtgVAh+BqAaa6FlKRNb1TcqyMUj5iTnv9T0oix646R8IHAztgVHsTPrDOE4p4S6YI0pfDIxBoj1nyfybafJMH/FDsVC5oIfoCpyHsitSm2iIytyiusSg3YWaF4bgES/bNJbjpSXOgHOtWOcbHu1ofZzAZLuybRy7cMd/rV29UPXLulzCxY50tt1aAnFoJ5awm9hbkg/7E53Me8Ofe94TReb3EBUe88sYC+RRRagCvwbmhRibs8Ug37hGhcX+0kg7UU152BZVh5cj416nyMaq25Rzv02SQ1lKzcrXxJzTp2b9hm7V9M1I7H/PKHXvriHKsenmKd1rAPdB4ad3gl09Cn3CNlLGr7fRiDUTIqCs0B18utvtETUSzmWEp/2Qv8KiQMYyJhSVtKhoWiiaxorsNZyehqQ/9M7bLSPwbcAAEtdLdtTPmmwYRy8aE5ekQjRawz9oGLdOQNqerUgcZFM2Jtrz8BO03qG0oHH/6EvoRwFgMvv9CstVJMSZ3HWA1xFMKztyh4uqCFC8owEk0zgxvKl4Ufqpst1CIws2zItwPz6pzxgANuIe3FZU3OR2RQgShAv41znffhkHG9D6tY4B0Rle+tHlsd2eBcLDp4gCYngWIdNjC5TqDft9ClGAFFyNZnpfyRkdMGZvS0JhEH+++l6u4GAUp5BWR2ryvTu2EgvAWTpn1Ir55uCs5ALY2it4Rzdx+L3tdO3fVVo5iSXi11pYOxX5JJ1SFIVQE9FLOPUStBYndQLXm7CHWVl3X6BDP/hDH5MUL2DAsbOdHQjLi5E1qNYgRwqswq7ZUSYwHG44qp+xktjINXQ5rjxT5q0g6DhtHm+
+ Y3l5aMxB
+ kWRXaLNFZNY8ZbH177Je28UP6TKbO6+ILrAyKBUcLpKLA2urVNV+g2zPiyQ2kO0FkOm2kWTySv8KIHHS20ERXEQKABjVsRl8mWWJAQVSk9GfAifxQNPQLUgqixXfrkQiCHhVRAP6PNdT3gauvX2PIpDZ6GswuhrNtGc9JeCSy1onEwhABfYjZYwqCDZp4+uF/e/f1Ntg3HhLxhMSYmRKiAAlH7yToQaI25N2DK8Dda/0svYbtg7FbJ0vwJtDQQtd9lNl84ItyLsBpwC7N9Z8dieBm/Je0S8N2F25L
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,22 +93,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Fri, 3 Jul 2026 12:56:19 -0700, bp@alien8.de wrote:
 
-> > The main changes in this series are to refactor shared tracing and assertion
-> > helpers into a common file, unify both pkey selftests on pkey_assert() and
-> > per-test tracing for consistent diagnostics, and add missing mmap() return
-> > checks with MAP_FAILED used throughout for readability and consistency.
+> On Thu, Jul 02, 2026 at 03:37:50PM +0800, Li Zhe wrote:
+> > The relevant target sizes here are the x86_64 sizeof(struct page)
+> > values which patch 8 can hit: 64, 80, and 96 bytes.
+> >
+> > On x86_64, CONFIG_HAVE_ALIGNED_STRUCT_PAGE keeps struct page 16-byte
+> > aligned. That gives 64 bytes in the common case, 80 bytes when
+> > WANT_PAGE_VIRTUAL or CONFIG_KMSAN adds extra fields, and 96 bytes when
+> > both are present. I stopped there deliberately because this series does
+> > not have a current caller which needs larger constant sizes.
+> >
+> > The 32-byte and 48-byte cases were added only as intermediate fixed-size
+> > combinations used to build those larger struct page-sized copies while
+> > keeping them on the inline movnti path.
 > 
-> Updated, thanks.
+> This needs to be in a comment over that code so that it is clear why that
+> distinction has been made.
+
+Thanks. I will add a code comment for that in v6.
+
+> > Yes. The separate helper is there exactly because the added
+> > 32/48/64/80/96-byte cases carry an extra 8-byte destination-alignment
+> > check, while I left the existing 4/8/16-byte inline cases unchanged.
+> >
+> > The intent was to keep the larger fixed-size cases on the inline
+> > movnti path only when they already match the alignment assumptions
+> > used by __memcpy_flushcache(); otherwise they fall back to that
+> > out-of-line helper, which already handles the misaligned head/tail
+> > fragments before entering its movnti loops.
 > 
-> AI review might have found a pre-existing thing:
-> 	https://sashiko.dev/#/patchset/20260702062332.911786-1-lihongfu@kylinos.cn
+> Why can't the larger MOVNTI sizes deal with misaligned cases too and thus make
+> the code even simpler and more straight-forward this way?
 
-Thanks for the review and the Sashiko link.
-I will fix the pre-existing issue pointed out by AI review in the next revision.
+The extra IS_ALIGNED() check is meant as a conservative performance
+choice, not because MOVNTI itself would be invalid on a misaligned
+destination.
 
-Best regards,
-Hongfu
+As the Intel optimization reference manual notes, higher-throughput
+data movement usually comes with alignment considerations, and can
+be more efficient when the destination is naturally aligned.
 
+So for these larger fixed-size cases, I kept the inline path limited
+to the aligned case. For misaligned destinations, falling back to
+__memcpy_flushcache() is expected to be the better choice, since it
+already handles the unaligned head first and only then enters its
+MOVNTI loops.
+
+I will make that rationale explicit in the code comment and commit
+message in v6.
+
+Thanks,
+Zhe
 
