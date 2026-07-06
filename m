@@ -4,128 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C98C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 16:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E956C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 16:39:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE49E6B00A2; Mon,  6 Jul 2026 12:39:02 -0400 (EDT)
+	id 3F6076B00A4; Mon,  6 Jul 2026 12:39:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6E286B00A3; Mon,  6 Jul 2026 12:39:02 -0400 (EDT)
+	id 3CDFC6B00A5; Mon,  6 Jul 2026 12:39:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5D626B00A4; Mon,  6 Jul 2026 12:39:02 -0400 (EDT)
+	id 2BBDF6B00A6; Mon,  6 Jul 2026 12:39:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 81CD86B00A2
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:39:02 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0EA5C08C6
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:39:01 +0000 (UTC)
-X-FDA: 84958911282.13.AF6DA2F
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 191EEA0002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:38:59 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iO2KuBq2;
-	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783355940;
-	b=N/ZXc+0FR5aYdQtwb6V1i8jO8Hub6owj7KKhiwF4Na6YDGEU1g98yta3HswfbTlh1MFvla
-	1OXl1xLrxo4lvlH2zWbon1cNRalcxY6RWix1y93gjMWP4x4aC7V/FPHJhDZetoRt9wp8dW
-	ZzqgcKFMC6DjxJbE16V6CLQYBBPnULk=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iO2KuBq2;
-	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F0E756B00A4
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:39:07 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65D1C1C6C5E
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:39:07 +0000 (UTC)
+X-FDA: 84958911534.28.F6EDFD8
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8C55F18000D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:39:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Gwv1mqGJ;
+	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783355940;
+	s=arc-20220608; t=1783355945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Yf91G0E96liVZH8Q9brrUTzp4Zjh9n4mTBgTUdMqis=;
-	b=R9hqzpI3I/e4VoQNWMmcS3rxrQ41B65jo6Lhu/UWUsbB4FfnfhjRhNCMoWAMHb+SgVgxBp
-	rmadFiYNTtdSoUufxwgL0YvKoV/+0kiZtLqp5ZZ6kzh+FDr2hiZcy0oEbZGf63NEw2RU2Q
-	8ZygAmLLcr6u1zs7TWafC61Z+WIzaLM=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2caf4496889so335ad.1
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 09:38:59 -0700 (PDT)
+	bh=iUdu/4xkrp4af+ENG/+dz/iliEwP+6UzwIHbpWo5uXw=;
+	b=JGKyZ5NWHAc2DevBA4aAqad91FbJy2qLhF22WQs7l8rWh/siONf1KhgaINVepe1EsMZT9v
+	4mZ7aSa3vsFFxFtXsE1W6RXeIpVD37TtbDwHvCpZo6TLVad6OdTY7Sg5nZZosbqBxQxQ2c
+	Tqmr9WChdvHC1UIv8X7RixmNBquyg8Y=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Gwv1mqGJ;
+	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783355945;
+	b=6r9wV7+UqQITfE9jMq3LOmpSl5C7mWI//qezvgHXEKDQzDVoYklGB78i5Jr7y3V8EN09BM
+	maiQycCihRUfrqndDAlwiainLQP9EFz/VB82WnL+5jpjS390tlL4dlE4rLW15RDg2HM+Vr
+	DAwgAMGOzSZ54VYkJ02TlavVcIY9DAs=
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cab973140bso40062395ad.3
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 09:39:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783355939; x=1783960739; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1783355944; x=1783960744; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3Yf91G0E96liVZH8Q9brrUTzp4Zjh9n4mTBgTUdMqis=;
-        b=iO2KuBq20UoQB+hoO+lLDXLyCo2qd6+OrlQrGRaFtzH7NtAreP2hNOdijMc6YSst9/
-         c7y54RyCmFROMF1bjrx1x3kprvSVxWgJK+GccCfHd/EGYU4rzLpKe0QkPhDq/3/Ygv8F
-         unqMFkJZAkA0uhW7hRRoTeT9vGWMmy3VA/OI2qbsYMOSTI9IENK5VnSGyLw4RZpqiO9U
-         BGeHMJGZPrPSGC0ykM+CB0fXJw5ijrRY0qJDFix9OIRyHugaqOJA7jpL13ugzhRH8k9t
-         iEcrXVrqpo7VuBkUBVy4BZZgt+Y/H9E7l32flU0i3PCOlXqAAthTyRlHQD7YRWAdIopG
-         Strg==
+         :message-id:reply-to:content-type;
+        bh=iUdu/4xkrp4af+ENG/+dz/iliEwP+6UzwIHbpWo5uXw=;
+        b=Gwv1mqGJ0qD5bXIXnESFZPnn9wAkbyV3tZGupJP0Il4kBGKa1c5My6/XkDM2D4y8mi
+         xrgt7+nJ5eFSMhNkVvercNwM1gATEt3ERhL7gU8BUL2+bNmFjdN2x+H42gR2udsdPMgT
+         heweRop8MgJ/6hQ5mD9bBVMrK8VAr+Wyx5IEPrTK0BgXP7AvNXgboCkukQMVep/n3c3+
+         ctaxURh0Kt8vdUbTK87Ulnjt6b72g8q2IKzIfz+cmN21f+FeKrZANASQTiPz3WMqCTWY
+         GQEzbw+X1OM8ySLD0joj3gmarJQG/KivzPGOHodZY5M66kdS+JboK56YSzDTxT0dA959
+         MUbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783355939; x=1783960739;
+        d=1e100.net; s=20251104; t=1783355944; x=1783960744;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3Yf91G0E96liVZH8Q9brrUTzp4Zjh9n4mTBgTUdMqis=;
-        b=qecJtAWCwR4aR/+jAruo1Lv2r5FOkfWUjVimVZysZznpTo6iwarrDqR5awk5Xtx69e
-         4d3Vhr/duvLSbmPRTOFT5G8iC+/mAQUB7tWgKb3lcaPhjmmSOHrcQXlSAEDmsZkIL3+s
-         jaA8KHV2DorgWJVfvc8dneNok7ma/32K1NSnjVR/clAbFd+MhjOmHabQH7B5Be+BrvSy
-         cGiQ2iIE24GWrePp7iyoFDQIma3x7bHAqrw8x1jTu7Z77LrLPZ/hLUQ2tl7OYpNcm26J
-         OChTcg00bMN2e0XgOTmBzcCu7EPjpXJFczqXhDZrrryOUhZmDdhYncxHdbmCxf7EOlK1
-         x9gQ==
-X-Gm-Message-State: AOJu0Yy49LDYLHZzi5gYH52NE9M8nFK2U/hUGVhSXdLPBQMfmm/aDjYJ
-	dmv5qaoCna5itAzXQIMz/7vrjM8Vkb3Gn3yKAf5I4/e0ij+p3ed+XciW
-X-Gm-Gg: AfdE7clCn6DRhp8O5lAysaSc7PslV8vAP4PymXObC46ikHOQOqLlEHOrcctxIdg1d1c
-	4FnuAIp9/CzkNKpQnE6EwiQiKpYuEbLNyvWwQuNBu18PDLJsXuzeEhsGRSzu4SZvRO5rLhctyxH
-	zSH+qtHlZspu4Hj4pEnsp76R3nhrPJP53/wIbu9f97OSBVyEpeCQYbDgTvadyqJnt7ifVMi1wVn
-	ofI35djqHyA4aCE7Pf+io+C0aCRQtLEc+7kXhhxzSrnwbmWxzOhtjmCnSIWdvXD5X0NhlHoJpyF
-	I5Zm7EvliENHY8SU2B8CDvetUDWZDO3q6SAIxPgZQoZAzHQ/1gyZ/QM2ouyTYnzerYniB6eYs4I
-	8NH5zqynureKtSDR73cJDdghJvGIKzHKDNEBAsoc2H8CAhIKHmq0jXwbrD23HKf4dSnedZx9ItB
-	LQLI74OQ8=
-X-Received: by 2002:a17:903:3903:b0:2c9:e9ad:3ed3 with SMTP id d9443c01a7336-2ccbd7d2afcmr15968075ad.17.1783355939040;
-        Mon, 06 Jul 2026 09:38:59 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iUdu/4xkrp4af+ENG/+dz/iliEwP+6UzwIHbpWo5uXw=;
+        b=gF0cNJfBKUWdaeEx3/PPSreoBzKQHuWR14ZEq114r+zrajifC3alToMUAaJfRfSCt4
+         5pEhOS5Q4lQeIyVQaRWKlCACorU8Hds7UhZgLU1nrpPYmuZwHpU23F4m9R9AFMqNsObh
+         3VxBk7LcPeqC3puBlrvUXpp9A9eyR2RZv1HiDHjiaAG+Aakq2Q1ExgOsiC2P9cPfoVqS
+         NSB6cQSJosQP13iDkbbYb5y3sWt9idW+hGFI3aOGRmzeSymGk/jwyvTHL4QW17hQCUvz
+         cewWqwLvWFzSCEfcL0ubrM2J65M5+oSOjqCsTIqgi2SxeoKnnDLZVFcpxeXTmBEL9Tqb
+         fO/g==
+X-Gm-Message-State: AOJu0YxxFWEfw5QFBt/waaNfW0ZrgT8QIvmpD9bv329kmG8V3oyFF/Y2
+	hdpBp9mNNEgQ70sSfe7Kc8nuopYmzBisQxgeLgbwr2m9qFc921vGO5SE
+X-Gm-Gg: AfdE7clnJuf1wCeClRUDyX2xTnErfp0EXADR3BJ7167zNC8H/4TAVVSjP/lyj10Kais
+	g+CtEwUgBJJde+fymYBpM8r6fZNbZm0p7GYSjkdyPGHzBalwHstqzScHZWh4aGpHZB/mN7xUPtI
+	yGPZ1t7LMZbcKVXGt2IoiIqIO36/laXJ6Srjvc370iUTpp0G0bW2OOCR4Hfx3dBnWLowl1sOJeV
+	lnIVtEqdXqC5SSQl+j8WUGfCoNx1sJ4w1ezk7lYoeDx6Bs69d1LS0mt6d5ohJQ2Ho3CLAMAxkhd
+	07OgxQPBm96ohfIw+J47jgHliZJfeSnLtkg6W9mDTySwo0f4o+IZc5BuTj6ou4ov8lDR1KFy76G
+	m7JxA+NKsQhoDwRTqXFNdo3ti+fzjBsvLrkhauyz4Y3LqWrgCCsZdHZqWOuf3aZVOZ9oItp17/Z
+	nZWjO8uII=
+X-Received: by 2002:a17:902:cf0b:b0:2c1:f262:4962 with SMTP id d9443c01a7336-2ccbe7297fbmr13433165ad.20.1783355944425;
+        Mon, 06 Jul 2026 09:39:04 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad7893a8dsm53103305ad.73.2026.07.06.09.38.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad7893a8dsm53103305ad.73.2026.07.06.09.39.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 09:38:58 -0700 (PDT)
+        Mon, 06 Jul 2026 09:39:04 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: rppt@kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
+	Chris Zankel <chris@zankel.net>,
+	Max Filippov <jcmvbkbc@gmail.com>
 Cc: linux-mm@kvack.org,
 	Sang-Heon Jeon <ekffu200098@gmail.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
 	Borislav Petkov <bp@alien8.de>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Chris Zankel <chris@zankel.net>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Rich Felker <dalias@libc.org>,
 	Thomas Gleixner <tglx@kernel.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
-Subject: [PATCH v2 3/5] powerpc/fadump: remove unreachable memblock_reserve() return value checks
-Date: Tue,  7 Jul 2026 01:37:51 +0900
-Message-ID: <20260706163753.193875-4-ekffu200098@gmail.com>
+	Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [PATCH v2 4/5] xtensa: remove unreachable memblock_reserve() return value checks
+Date: Tue,  7 Jul 2026 01:37:52 +0900
+Message-ID: <20260706163753.193875-5-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260706163753.193875-1-ekffu200098@gmail.com>
 References: <20260706163753.193875-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 191EEA0002
-X-Stat-Signature: xp4b6pkqft74jsgui56r81m5x7jfich8
-X-HE-Tag: 1783355939-324043
-X-HE-Meta: U2FsdGVkX1+VQ6Z319sC2ucQfeA5mIHsdw97h5YKwiGnWTbY00Zd6WhL4LN0saVLaus6dDWqw5K9XY5o5icortfGApGaG5ZZz5O4bz8Wtb1UhlBaf+V0xZgR6RJOWLzwLsIl1qH9thsgj7Cz/kpRs4i8prI4OQCATw7hjiccNZ6RR28LJsjmJ/wozu5gbm4YvotxD7LbBxbQ7S1IJBSRnXO9wXeNw+srU63HFaSdCB9IJZQTk/vVHXtmuVuZnr8B9aR4UfS6zwTmubGyH70nxA8ywxITkJgM+fJ2pJhQtx5xln4ob2Djft05lvikEVu6ZLOMGVqV6dpGg67ST4dKUL8m1vEN2MZkcJi+LJEWWECLp5WCae9G9+gjGrtD6CuFcAQq1qA5RdKf9sZRbhuYj3MveM00Bq0hcobiiwTjq+lEUmAhgqpxaB0nneZ2QOfbW0pbJA4swKJHlUbIBnEm5B3uSWyviT6WjPa++2jkl614In3Ct9HRs2I/fGf4yAe9/Dva3A4aJgAcRxxv7fyHP0wVPJGFYaO8YjYeLkoIGarbx4Jj8G5+mzR/6EyhjJXLyBC0ADe3u3wZrEj8KIwNBSGpr0Pty87jajmc6zZ05/GqAX5ZWjNHOQHDOCfDDDr40M1dIpYgVmdPDSd+TGC7MoiE+L2I9CGOQ4Y92kcpNrbxpaOhBl3UFlgTjizXQRQRB795wyb5M32lsBlWtMUi1FVEnLUHDjYPy2j5n1gkbbkUdzYZyqh6yNrUa207OqRgSuHzv0vifLUwc5RHvJVgu8g8brX9ymzXC8CL5IB7jFMaWjfElHoMYE3GxsOdInDtP2oVdmjYIGT+dLpP9/EWM+YfpEDg4bKlLXTh/a3KYvpGMoIYjFIdQWr9Zz4iM5/fFCJyhsTRHke5Yc1SU2HwwM/rA7HFIwftAZ95sEYrQoBCssDVsP0BRtWEoRbh7f/Ny/RXvBNSkgxkDJQMl7X
- wWcbL503
- wXQFvYEJwr2AFOJRSYQb6XqrXlrUdj/EJa9apf3p2D3JcIe2m7XfreX/9051bPxcz+aIXJSXoHWlm2MpnGRwvM9C6Fj+FRgc0XLq/91mGGee7sb7K1NtE290LSblEe5nLs3KRe6lqffcXtAI0+JNNCIuUOYbSNEeqxjLgIRkqSznTa7Tp0mw5BqdKM5Gk4SpX+iuN4V96vzyo7CmxGRqTGmht/Fhy9bnPAHsSEgeEi3PEaXcurZq7hkcIl91um/+w0D1IDy3UdH41wZWt2wcM8qQTnZuvgXC9PC6k8AOKEE4eVSn7I1ZNuyges+DyUrhLeUfdS6KYstrdYCj9HiHOdmSJaMQuQWTuQX3QDLG3stk2RXfGwDMMDN0TT+K105RpcUOSLTmUPEJtPs6/dkD9fKcyXb0MKHrdUYce43r0SkaMtqlhIxdvQ1jwCcW3nYDi0CwYC32rAtvlFBc=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8C55F18000D
+X-Stat-Signature: 9fffw54673c35x66c3sahzq73jkq5h1s
+X-HE-Tag: 1783355945-494720
+X-HE-Meta: U2FsdGVkX1+OwkvK8Fa365gZWQaJq8P9gAIZR0bvmU0mqF7RYv+ZGMHKLg0JtlAopUB1tZ7aW/oPTmNvSUYiDImX95L6umfm/rFssTzFFSrkSc0fS6m+b5rzYVx7Eie8pwy5u5oXdOifbQrWwrBEO2e40Mm21iRzy15RTGwsDa+ESotRSvOULu0rInwLgGYHUVFJQXv3l1+ZkU81p8/8Yw3AvP8uRE17Nh/r/rugDPceduyjR0cqb3AbGeQmOJ/+gXn5XpGtfyige0WJX4R2FiGP1xJ1oGK4/Jcf1M86UIhr+6rjKkTdUPqZ9v/57TOT5u41mPp92nLEEWKZqA0mO2j6vlunJ/ZTVlUoufgGWG1YNY9HMsmLkMsZCK4QoZM0OsZahfQKIasCzbYadoEAaoNziq9oSE/lTXnp4kOnP7fI+jWZB5m6q4T5yWU31Sfl7ZrfGUfqrBxpwsEki8myjT/HZpBfNgxO7I2AvcB/ddAc0wa2RLoUPiwouLAyey8VMUULKsE7sHlDnLG11NllcRjr8JSZmP8xogZqFWE8c+vN43gBBudarGbGv1G1iUQnD1yRqCx/4Q+ds2vSJphXB1XdBcMoVlcStas1wlUpFXiS+ECEGXIgH74DHTVrW7+MEDSBQcLLxr4bfmiFY/kNIreXoYKF8Cx5kR8d5Zp7J4Ql4Fo/T2bc7s429CHEEU3G30CYxKrsL6n9UJPYL/D6Pi0fZuoFjA3Qb2RjBhoY1TeOGKQA3kvCU4ay1M+Nm0bGwGKwXVWeI5armMFuP4+BZssVJO45CcDIWcGZmtxnmEb2JecYM5B6ku9JQkeBOFVTaL81dPGTJpAiotvmKrEwzhF1ezSr4T/s7buTLKqSpGwPBJFHThElaT5u9GrYHfRDfl6MchmBp1gEJJhQY6Lz4D8V+BS74/UTW8jmYaNHqBDnXBml7aPmNpDlnJ+jIbdHUzs8zOcbzAK3xw6/MdR
+ 5anWvDR+
+ KR4n+r+cAZ+Wu3j1ge8kWryJNeaq0PRcXMeVi2Sl8cxJY/bd+KF+EuxDq1FcjrAKScZviXCxX/NHPgzy/vv2mNUogbnhn2w7wWoGIbu3hNR3dCNq0Lm1Zis+FJguf9xxBPIO5mYOhpnAgLY2KyGykSEt3rh/8UDGp1GfZYkhfZeFLSiaeKtQnchk3L5qVfAfHfyDzjAL8nK97IT9bLlO5+8aTKCf/YaC/QrETQLB3rPd/Xq8Htfy3TN/mC93P2I9xNfguSwXUt6jik53AfV8IVoqadP/wgt/TlcW+/Q8BhhlSkyDRJlRsegDSE2VLd3RxthIgXhkc3mfSuw7+mO9xk1RlXQg2MncnlkRYFSXKcgcPelF5zYfKDoSNpYE3XkOPkQ3VJVGAlMhGxENt3MR3ddeNSEQoV6Fx/lZQidX55ZPS1cw8l1n7DX/NuT/JldS8fS8siqhfShFF0fI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,54 +129,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-fadump_append_bootargs() and fadump_reserve_mem() both run from
-early_init_devtree(), before it calls memblock_allow_resize(). At that
-point memblock_reserve() either succeeds or panics, never returning an
-error.
+mem_reserve() wraps memblock_reserve(), and its callers check the return
+value. xtensa never calls memblock_allow_resize(), so memblock_reserve()
+either succeeds or panics, never returning an error.
 
-Therefore the return value checks are unreachable, so remove them and the
-related logic.
+Therefore the return value checks are unreachable, so remove them and make
+mem_reserve() return void.
 
 No functional change.
 
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
 ---
- arch/powerpc/kernel/fadump.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ arch/xtensa/kernel/setup.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 7f79c9aea4a9..1629a82b9528 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -154,13 +154,8 @@ void __init fadump_append_bootargs(void)
- 	if (!fw_dump.dump_active || !fw_dump.param_area_supported || !fw_dump.param_area)
- 		return;
+diff --git a/arch/xtensa/kernel/setup.c b/arch/xtensa/kernel/setup.c
+index f72e280363be..c7367b81cc36 100644
+--- a/arch/xtensa/kernel/setup.c
++++ b/arch/xtensa/kernel/setup.c
+@@ -268,10 +268,10 @@ void __init init_arch(bp_tag_t *bp_start)
+  * Initialize system. Setup memory and reserve regions.
+  */
  
--	if (fw_dump.param_area < fw_dump.boot_mem_top) {
--		if (memblock_reserve(fw_dump.param_area, COMMAND_LINE_SIZE)) {
--			pr_warn("WARNING: Can't use additional parameters area!\n");
--			fw_dump.param_area = 0;
--			return;
--		}
--	}
-+	if (fw_dump.param_area < fw_dump.boot_mem_top)
-+		memblock_reserve(fw_dump.param_area, COMMAND_LINE_SIZE);
+-static inline int __init_memblock mem_reserve(unsigned long start,
+-					      unsigned long end)
++static inline void __init_memblock mem_reserve(unsigned long start,
++					       unsigned long end)
+ {
+-	return memblock_reserve(start, end - start);
++	memblock_reserve(start, end - start);
+ }
  
- 	append_args = (char *)fw_dump.param_area;
- 	len = strlen(boot_command_line);
-@@ -632,10 +627,7 @@ int __init fadump_reserve_mem(void)
- 		    (fw_dump.ops->fadump_setup_metadata(&fw_dump) < 0))
- 			goto error_out;
+ void __init setup_arch(char **cmdline_p)
+@@ -290,11 +290,12 @@ void __init setup_arch(char **cmdline_p)
+ 	/* Reserve some memory regions */
  
--		if (memblock_reserve(base, size)) {
--			pr_err("Failed to reserve memory!\n");
--			goto error_out;
--		}
-+		memblock_reserve(base, size);
+ #ifdef CONFIG_BLK_DEV_INITRD
+-	if (initrd_start < initrd_end &&
+-	    !mem_reserve(__pa(initrd_start), __pa(initrd_end)))
++	if (initrd_start < initrd_end) {
++		mem_reserve(__pa(initrd_start), __pa(initrd_end));
+ 		initrd_below_start_ok = 1;
+-	else
++	} else {
+ 		initrd_start = 0;
++	}
+ #endif
  
- 		pr_info("Reserved %lldMB of memory at %#016llx (System RAM: %lldMB)\n",
- 			(size >> 20), base, (memblock_phys_mem_size() >> 20));
+ 	mem_reserve(__pa(_stext), __pa(_end));
 -- 
 2.43.0
 
