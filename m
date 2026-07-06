@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A0B0C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:21:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00CA3C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:21:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC13A6B00D6; Mon,  6 Jul 2026 02:20:39 -0400 (EDT)
+	id 2EC1F6B00D7; Mon,  6 Jul 2026 02:20:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D98C66B00D7; Mon,  6 Jul 2026 02:20:39 -0400 (EDT)
+	id 2C4956B00D9; Mon,  6 Jul 2026 02:20:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3B816B00D8; Mon,  6 Jul 2026 02:20:39 -0400 (EDT)
+	id 165B76B00DA; Mon,  6 Jul 2026 02:20:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 88D816B00D6
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EA07B16870E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:38 +0000 (UTC)
-X-FDA: 84957352956.01.46FD402
+	by kanga.kvack.org (Postfix) with ESMTP id C3F9E6B00D7
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:41 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4283D168700
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:41 +0000 (UTC)
+X-FDA: 84957353082.25.D05AE67
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DBED220002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:36 +0000 (UTC)
+	by imf13.hostedemail.com (Postfix) with ESMTP id 43B9920005
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:39 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783318837;
+	s=arc-20220608; t=1783318839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=MstF8XFF3bnboLjOfugxBpZu1QiAVXIcKGowHBZxBjE=;
-	b=zECt+6osFu4O5+ipctQ+JtmdzA+G+gMfuIBYpBs0cNXAYID8/0sjWYQJMiUgeb3TBn5uI6
-	W8+Dlm7ksoyhiBToqhb62P/BeFVlhsK7rN2nv95znYCa25FSVWX29+Jd2Jmz0GmOwdcItk
-	buYIExljxlNzBWhmidmyJ2/tSehaofQ=
+	bh=dgegDgfAOUN/1B97G9Jtqj0JFMy3K4Y9ZatZEqAMWq4=;
+	b=p1Ep9P3TWpxjYXXLcrCvZPhh3WpuSujMzSBSdtvQ29/cgifdVwfQpuMOqcRYNUvhdQW95S
+	PtOLKI+cUuy07nA9IjlBndw5DuCAKgKPuTEmtNSOZNJnr624caxRKomtFCMuLPEVojprcS
+	QPLA5FpNx2RQeoiC7tYs6XgOAqZrXKA=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783318837;
-	b=T3uFO3YvmnxNb6jFbecGDyfW3oKwiimiXyhgnNm2ybo7nYJRQsk8udk81mxb6wceavL3z0
-	mcVB89QqJGHioo9IlaqGJwNXRHJ7blVxxPbKunz5tNcTQqIgftkD7su6dcIxGdOpxGwHr9
-	tBnyczjVrcGH8h3si9xQhDaSzwfEjOg=
-X-AuditID: a67dfc5b-c45ff70000001609-da-6a4b4900ec5c
+	t=1783318839;
+	b=Is7tbVnX14GLzH5EUPi1glFev/0ydcQtBlRjfDHrWEevDQ0Q2zfdyTRpc3ryd6VY98GLx+
+	fSF2eSdSf6JfLcjQXC2pBd2Ee1sV/7EiLFGCPXHdBpZw/V8E4a5SzyLvHhJFtMKwAP2Cu8
+	AyLpZ6fXUBcum8yWkaWEoNeU84KnKwY=
+X-AuditID: a67dfc5b-c2dff70000001609-f9-6a4b49011fa5
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -214,54 +214,53 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 22/40] dept: track PG_locked with dept
-Date: Mon,  6 Jul 2026 15:19:10 +0900
-Message-Id: <20260706061928.66713-23-byungchul@sk.com>
+Subject: [PATCH v19 23/40] dept: print staged wait's stacktrace on report
+Date: Mon,  6 Jul 2026 15:19:11 +0900
+Message-Id: <20260706061928.66713-24-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTH99z73Jd2NrmpGJ9hNrYiw+h0c3HL2YuL2ZLt2TTLNqcx84NW
-	eiNlUExRhC3LQFG6ChNYCsFaV4p2WCp27Rgvs8oI4mpGQBShvAhMUyUMMawtqUAYYPxy8sv5
-	n/M7X47Iqnu4eFFvOCgbDdp0Da/EyolljvXsx1vTXgv+TcB07HsYHL7Hwe38FgyRsAnD6Ytu
-	HuasDQKYvJUc/NV7BENXXS2C6RkrC+HYgACWfAQVY/kYeqP/IrjXUojgZ4ePh/HyRzzMdHSy
-	UDU6xMLU2AiC39rvIPDXHOHhVmSSh4DlBA8TN04z8NDDg81ahiDU72eg3ObF0DTSLMBgeRkD
-	w84QXjjBg7XiKLNQHjBgufAHAzGnSwBnXhLMjm6EeXsmtNfeF2DopAVD3UQnB+OhMh6Grx3n
-	oCFvRABv8CqC8K1RBtxFIRZMzREM/v51UHlmkIdL/gAG01wYQXvjPwwUeeo5uOOe56C7tgtD
-	4NR5DAMdJwU413uDgeiPq6CrtJiDnx6G0BYddfl+Z6j7jBvR8LmjLC3wHaaPIz089UftmF53
-	EFrasZ42nRoSqN17iBa0TXDUV7OWVl8aY2jVVISj/eObqdf1A//ZK18p39XJ6fps2fjqe3uV
-	qZXHr+IDVzJzRksgDxXuNiOFSKRNpPFyFD/l0nrPEvNSMunri7GLHCe9SHzFIc6MlCIr3Uwg
-	Rc7ipaHl0tskVNgtLDKWkohtLsaYkSiqpDfJtIM+cSaQWk/Lkkex0K6btTGLrJbeIAOT1/Ci
-	k0jVCvKgMsA8WXiO/FnTh0uQyo6ecSG13pCdodWnb9qQmmvQ52xIyczwooVnc343u7sRTXVt
-	b0WSiDTLVLDlkzQ1p83Oys1oRURkNXGql9dsTVOrdNrcb2Rj5h7joXQ5qxWtErFmper16GGd
-	WtqvPSh/LcsHZOPTlBEV8XnIfuXEmvh1L+mnYjMrUpOfn0/BL5SKvc9+u8ui++gdUm/eZzIl
-	Xv+l0Nb4ZcbqlA8mm3fsStoX3B63t6cqkmxbvafNE0wMrnirs6pO+18F02a+P/eoYWX22ffv
-	fpHTQ4Y/9CV+Wn35V2uw6TwuufD5ePfZbYr9CdN3A1LHsQLiMjh2NmhwVqp241rWmKX9H1rs
-	1bBoAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe2xLcRTH/e799fauUbmpJW6IR5pgiMeEOd6TCL8Ri4REgqDsWrsnLbN5
-	xLqp1QxdaZetG9NZI9swK2Ok2TI2896MWTDdpMpsVGoPe3TTEf+cfM73fM8354/D0rJy0XhW
-	FXdAUMcpYuSMBEvCl6bOHhW2Pmqe90Iw6HXH4YPTJYImbRWG7i49htwbJQz4LHfEoC/LFkHd
-	2xQM9deLETi79Qh6Byw06CqGMfiMtWLo6nsvBpMWwbCjFoG5wUhDc30lDSW3tBT8Kh1ioOOB
-	F4GpzcVAVrsWg8eWgSDHbRFDe81a+O68L4Lhli8UvO3pRGBzDVHgqkpD4DNHwyWr3b9u/snA
-	wPOXNGSZ6hFcbmuhwdveiuBW7UcEjqspDHw23Kah0TUGXnd7GHhsOs3A94ZcCn6UMpCf4hBB
-	w7MOBHkWIwL3OwcFqQU3GDDnlWGoaL0nhoaOQQo+mI0UFJdtAKfNjeGpwUr5z/W7bo4DS1Yq
-	5S9fKTBdu09Bn61IHFqISK/uLCZF9nKK6F75GFJysQSRgX4jIl2FqTTRGfztg04PTU7YD5HC
-	p50M6e9+wxBHTz4mT6w8uXKqnyKZz2eTipwW8cZVWyXLIoQYVYKgnrtil0SZfbIG76uMT2wz
-	QDJK25aOAlieW8Bn3i7FI8xw0/nm5j56hAO5Kbz9jFuUjiQszTVO5jNsZ/6axnJLeHfaK/EI
-	Y24qn+fro9IRy0q5EL7XSv5lTuaLS6v+5gT45euDedQIy7iF/HvPI2xAknw0qggFquISYhWq
-	mIVzNNHKpDhV4pw98bFlyP9NtmODmXdRV+PaasSxSD5aCqHromQiRYImKbYa8SwtD5ROC1of
-	JZNGKJIOC+r4neqDMYKmGk1gsXycdN0WYZeMi1QcEKIFYZ+g/j+l2IDxyWjlw5f911Z+QrvX
-	aMNqyIvlXpsnhHbanbP4HbnZ58InjP3C7Z6ywdV71Bm6+ePPucvtVcq6kO2nzk/aGWy6a206
-	frKuwBZWEBn5bWJ4ZYayFfNBPcmJh35vayGbElYnFcTWT0o8+3iRtZxWtc04d2T+UNjiwgFv
-	0/nOvTq5PiJof6Qca5SK4Jm0WqP4AymxBXBJAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSb0wTdxjH97v73V1p7HKpZN5YDKSJzjFlg8DykCwE35hjxERDzBbdv0Zu
+	0g4qKYgCMQO0pS5FS5URqNUWsDLaSWmFAVoDGCAhqaDNRnGgIrRCVJp0UCOK2GJ898n3+f55
+	84hI6RSVIFKoSgW1Sl4oo8VY/HyTdReZk6v80mD8DHSa32BlWYfhYqeDholrdgQPV3QINH3r
+	GNaMIwyse0YQOK5XE9AwO09D42I1hpBNj6A5aGLg+cMbFExGniGYH6hFcLnFHbU0TCCwzs6Q
+	cH3kAQJPew0NAUM3Cb75D2HJSYOlxkOB2WRE8IfZhcHu2gumxgUCXto6GDB5fRQ8bm9m4GnQ
+	SINrajg6rw+SoOtfweCa+5cCz/3Pwaptw9B0aZoGX/9FGh441ikY7/+LgiuTdwnwGwIIbCsh
+	Bu4NWAioHmzFEPxHS0C4LYJB+/8bCkbrBgioXbhBg9d0hwJtWxcBt3SPCOgM3iZhdaaXgtWr
+	0W1vzxgDYXM0Yb+LoXv4BQPm5dTsbF5zb43mHZcciH+1akS8xhCl289CJH/afZz3RCyYH2vh
+	+HrvLr6veYbhT9+6z/AW1zHe3Z7Mt95cJHhXxxmad4WNzL6kg+Kv84VCRZmg/iLrZ3FBU9Mc
+	VTyYdeKcDVchS9rvKE7EselcR2Caes+rVzuZGNPsp5zf/5KMcTybxLnrglGPWESyvkROb6vD
+	scNmNofrCl/YCGN2G1ffsLQRkLBfcb3jo8y70kTO7hzY0OOi+rXXZiLGUjaD+y80imOlHNsa
+	x9Xf6aHfBT7mBtv92IAkFvRBB5IqVGVFckVhekpBuUpxIuXw0SIXij6c7eTrQ70oPJE3hFgR
+	km2SQPY3SiklLyspLxpCnIiUxUu278hVSiX58vIKQX30J/WxQqFkCH0iwrItkrTI8Xwpe0Re
+	KvwqCMWC+v2VEMUlVKH4b/c7t4ZzA8ocrlh7qqJ4LuUH49bx7j+zkkL7n+48+0q6u2Cpypm4
+	vWeixh7ecjiZcKaPs5WqTP0vurO7I7N76rct/5h5YHPqd3+vpYjdZ9YOZN6czMTW832Lmp2V
+	aXTrqaa8tOrLXRnKvfpaq8+Nj3xErPvlnh2136t7nniTAjJcUiBPTSbVJfK3vqqFUmwDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0hTcRTH+93nXC0uS+hilDHoSVnZg0NFDyi8FVkRUZqQSy85nZabmkYP
+	dQ1XaeloE13aslyi5mProcnIjNTeListNY2WJZoz08zpss3on8PnfL/nezh/HAEuvkf6CGQx
+	cbwiRiqXUEJCGLhOtRRt2xG5XJtOgkZ9Bto77SS8S6klYHhIQ8CV8lIKXIZ7NGjMOSQ0tqQS
+	0FRWgqBzWINgZMyAg7p6ggCXtp6GodE2GnQpCCas9Qj0Ni0OrU0PcCi9nYLBz4o/FPQ+GkSg
+	+2SnILsnhQCHKR1BbreBhp7HAfC9s4aEiY6vGLT86kNgsv/BwF6bhsClj4KrBRZ3XD9AwdiL
+	Vzhk65oQXPvUgcNgTxeC2/UfEViLUin4knkHh2b7dHgz7KDgie4CBd9tVzDor6DAmGolwfa8
+	F0GeQYug+4MVA9X1cgr0eWYCqrvu02DrHcegXa/FoMS8EzpN3QQ8yyzA3Oe6pypngiFbhbnL
+	Nwx0t2owGDUV05sKETeivkhwxZa7GKd+7aK40vxSxI05tYgbKlThnDrT3T7qc+DcWctxrvBZ
+	H8U5h99SnPWXkeCeFrDcjXNOjMt6sZSrzu2gd28OFq4P5+WyBF6xbEOoMCIn5zN57OGGxEsm
+	IhkZ/c8jLwHLrGKdN8tpD1PMAra1dRT3sDczl7VkdJPnkVCAM82+bLopg/AYM5htbOXgZdLD
+	BDOPzdL1TwZEzBq26lUD/W+pL1tSUTupe7n1svE8zMNiZjXb5mggMpHQiKYUI29ZTEK0VCZf
+	7aeMikiKkSX6hR2NNiP3O5lOjWdVoaHmgDrECJBkmgg2bY8Uk9IEZVJ0HWIFuMRbNH/hjkix
+	KFyadIJXHD2kiJfzyjo0S0BIZoq27+dDxcwRaRwfxfPHeMV/FxN4+SQj+cY5IckZ1/yDl71e
+	sijsNMp1TOSvuiHlEu8OvG+Zv2fNysCtEdNP+vrP3tv/1Tpg6bplaTi4r3FLUGHJtBBsQVFl
+	bbPm4+OHIQdiD7w8Wc2qfI3xcwfXFsU25k59sn+qT1DTHLPj4m+RS1Xc/yPW1DWaX3Y4rTyt
+	oGfEaQs87dy764uEUEZIVyzGFUrpX8zaz9NKAwAA
 X-CFilter-Loop: Reflected
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DBED220002
-X-Stat-Signature: jsbmu7ug1nx1jthdem5bya5jh8jzrag6
-X-HE-Tag: 1783318836-213015
-X-HE-Meta: U2FsdGVkX1/yRH36VuZkd5lyrAXZd1xFgSQLw0PwfBTQWMsnooUmxGvTNbvxgnwJr4xeiLCdya/Bo1YGEvqfqtIAF3bfVvyyQmmeXf6Isnjbf5dpR24O2FgdZUWhRGk1bFLm8Gx47wHxDxXvUlFoUlsqoqs9hyZNgLc9tPMTL9DxGONrrRoGSn9dMbT4bdRM3Yq0hz3txid9qWqB92Giqwty3iNBrvbwrjBXmttKg4Q9rZfwk/DVi4gkk2YKAtHvAL5EAfI100TT7CErUp7xOrV7Ir6xWwjkccp5ru52wEOA7vLOagjsKZTqDot2AC3qKqpKXB+BB65Swh8aE0bJLk3IV7m+QOf+rbS8Ai9vob0mzi6/U/jBagmEaTqPfMeOYq/xwHsEI3xw1cN8BChIIKNYRdSJoV+4s3QagnSIEnBwkcCHCAt33MD+nkJO8au+RaA1COewz9PRwwlekGxvSfxHLzbNmD9Xo3gNpLIe3abaFO04A05iplp4DPmy5l+t3voB967H7VbCFBv+teb9DV/yhn8W//mldstQcwdqmV+5Ji1qd19UqtgllZyxJyVylSjYLiPMkDyOceyXVMT3/qvHcYPHO4Hh4s09I13UmGyOyyl72V1uZBNejIq6ft2X/o1pD0pJg9W9kpKzGbIJCfkTf8j8fhEBSgJAl+fd1Zc9oiDoGtqCUOl+D1uO4wg4zF96R3+X7slXPuj2wM9QqkCRsD3zdFND6aJMqYQeh6/8pbt6Svw98x38hEapgFwxm+qXfCjjtJXKmaNqt8MRNEH+scJMSe/t2rL1ZdAXNEVMKUsrP+2Fa3PnS/HaP+fw8GvGzmxB8Ozt94qLozu3A9TAvChlFiLD+dEUlEaCYeLe3aXMQVFkdrUp7Celkx2SYbIZl2iqGqMzbRReYHhw1AQAFWZ7fvX+/byPJ9qmqPWmq+5vyA9wpS7Hnd73GWVgrWkiYmAc1xxYppDhJNE
- GuCByM5/
- NdPs2/HITqGsywra1cMmkL6UBun5w74P65NFiTH2p4ZnEb3kT759fE94sqKzbGZt3Atw2Jk2y7WNUfyGEKq4jUWzCIsb3ED/UeIz2bcwFd/ybIUKbbtunst/kPYW4S7va21JeHFOzyMYAh/PJjMZfp1l8Y2zQwbJORnMQC8HJ28PQRQfsTop62ukLwgH56QtgAVY9iRlh2m/3F4f6P2Y7KrtYTV7c4pDs2ZptWPeDyZ8yC6jHO+ytgFndYEKBBWaG/loYI6jOrM5ndh2LBK0tQNhv+tV+xf//Q43A
+X-Rspamd-Queue-Id: 43B9920005
+X-Stat-Signature: br6bocfqbz9zz8egdw3dtsjndbci9jj9
+X-HE-Tag: 1783318839-872997
+X-HE-Meta: U2FsdGVkX186HU4c+p3XxnycDi+Iv4GOR5Y7Zo6G5USr3/pb19IpL8lyitWeN+Tm8l2ABFLS5KP8HJ2HdCJe+kulcM1/l4eEl9w2limOav9kyq4Tvl4B1uL4/BjBjwBaDgsc8LM265Mj6ATkJvW1CaqOPc2ug0soBshzbN+aeAYt8L4uYz6nNPZQ8rli0vO5NJX2MKnDBtOPZc88kyb20XvzgPxTaobXngiscqlyrOSV3Z1IdRisQ4GBKZfLwCgVurD3QHX7NClYRjT0MA9C6qafP8qvZ7XLpCAU4I0XOltbE2lsPzRVM4EDHA+UoL7DUIgspDfgo0O+zGRAfYnq4DfRmUikH+qNnyLfvR7NjoyqcqibXBuIOPJBDG0tRPIK+1z/CTn0CiDV0jp2i9zhvAa5k+efGcgb36vQWssskqF0OO7ufJUsazBdmZElVPVDCCkFA8BmOOdNOqIvIu3aAzzmacUajAM/trSIJXC6dmVaL3tcexrnAebDpTzwf3triATVrrI04ERjmjq1HYEZpAzBqddijwOPn61NHFwYD9UYTgZyCtg4L3tdLgqieNg3ko2aBFgVQa6EJVl4vf07Zwnt8GuSWHAs8XzpFRcYXrfUocpLn7JuMgFOtwjz1LUu4JS2GffkYlm7Xd4qNUV374v3lT0ZhSl+P2cITEEPuI8JSPLe8gvC2xYKQDN5iJo6veqRjuMdusXJ7R4xRzDsTckJ8e9DTEuXpmmAi5Vpisai+fcNDO8TXKJCXDU3mWBgQXKjImOHZ2P7gNtXZQ89ORGRwOfN9aIsI8PfZ3NZNudX3+BjHMy54u/5DZMJQ9WxDfI6u8Tn2Bp99xZeO9n+Mwuid8X4kdwvzT2O6waa8cdtFZFNaEftj/O8HbregzSOz0WsgDRQQQLmKTig7g4Cz7mUCf9BwgJKrtw01QPWZ56zQzcdas/0e3uH9CIjX42Vaj8JYIw7jXvaPVKIfXZ
+ YOm1h3/w
+ O0B/M3MpDYMBBABLOwU0Nv2u8MPZ3XRyirr3SY1qaA/hE+dDhP/DjAbPuRiTUh2iZx4k5RkCdtRZ5VgcRJBL+ZR4okSeIuDQXz0li73A/r6J1/fPpeb4xQGNGq1vvc5i6U53QcH81bNjJ7UjYlKIBmlZ6Tl8d34ZWdYSdfQ4v6D79ci0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -269,416 +268,251 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Makes dept able to track PG_locked waits and events, which will be
-useful in practice.  See the following link that shows dept worked with
-PG_locked and detected real issues in practice:
+Currently, print nothing about what event wakes up in report.  However,
+it makes hard to interpret dept's report.
 
-   https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
+Make it print wait's stacktrace that the event wakes up.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/mm_types.h   |   2 +
- include/linux/page-flags.h | 125 +++++++++++++++++++++++++++++++++----
- include/linux/pagemap.h    |  37 ++++++++++-
- mm/filemap.c               |  34 ++++++++++
- mm/mm_init.c               |   2 +
- 5 files changed, 187 insertions(+), 13 deletions(-)
+ include/linux/sched.h             |  2 ++
+ kernel/dependency/dept.c          | 59 ++++++++++++++++++++++++++-----
+ kernel/dependency/dept_internal.h |  5 +++
+ 3 files changed, 57 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 3cc8ae722886..5b3f54ee0d38 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -22,6 +22,7 @@
- #include <linux/types.h>
- #include <linux/rseq_types.h>
- #include <linux/bitmap.h>
-+#include <linux/dept.h>
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index a4e6dce98f36..b2fbcf0f00f4 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -871,6 +871,7 @@ struct dept_task {
+ 	const char			*stage_w_fn;
+ 	unsigned long			stage_ip;
+ 	bool				stage_timeout;
++	struct dept_stack		*stage_wait_stack;
+ 	arch_spinlock_t			stage_lock;
  
- #include <asm/mmu.h>
- 
-@@ -219,6 +220,7 @@ struct page {
- 	struct page *kmsan_shadow;
- 	struct page *kmsan_origin;
- #endif
-+	struct dept_ext_wgen pg_locked_wgen;
- } _struct_page_alignment;
- 
- /*
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index f7a0e4af0c73..8ab39823ea31 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -198,6 +198,61 @@ enum pageflags {
- 
- #ifndef __GENERATING_BOUNDS_H
- 
-+#ifdef CONFIG_DEPT
-+#include <linux/kernel.h>
-+#include <linux/dept.h>
-+
-+extern struct dept_map pg_locked_map;
-+
-+/*
-+ * Place the following annotations in its suitable point in code:
-+ *
-+ *	Annotate dept_page_set_bit() around firstly set_bit*()
-+ *	Annotate dept_page_clear_bit() around clear_bit*()
-+ *	Annotate dept_page_wait_on_bit() around wait_on_bit*()
-+ */
-+
-+static inline void dept_page_set_bit(struct page *p, int bit_nr)
-+{
-+	if (bit_nr == PG_locked)
-+		dept_request_event(&pg_locked_map, &p->pg_locked_wgen);
-+}
-+
-+static inline void dept_page_clear_bit(struct page *p, int bit_nr)
-+{
-+	if (bit_nr == PG_locked)
-+		dept_event(&pg_locked_map, 1UL, _RET_IP_, __func__, &p->pg_locked_wgen);
-+}
-+
-+static inline void dept_page_wait_on_bit(struct page *p, int bit_nr)
-+{
-+	if (bit_nr == PG_locked)
-+		dept_wait(&pg_locked_map, 1UL, _RET_IP_, __func__, 0, -1L);
-+}
-+
-+static inline void dept_folio_set_bit(struct folio *f, int bit_nr)
-+{
-+	dept_page_set_bit(&f->page, bit_nr);
-+}
-+
-+static inline void dept_folio_clear_bit(struct folio *f, int bit_nr)
-+{
-+	dept_page_clear_bit(&f->page, bit_nr);
-+}
-+
-+static inline void dept_folio_wait_on_bit(struct folio *f, int bit_nr)
-+{
-+	dept_page_wait_on_bit(&f->page, bit_nr);
-+}
-+#else
-+#define dept_page_set_bit(p, bit_nr)		do { } while (0)
-+#define dept_page_clear_bit(p, bit_nr)		do { } while (0)
-+#define dept_page_wait_on_bit(p, bit_nr)	do { } while (0)
-+#define dept_folio_set_bit(f, bit_nr)		do { } while (0)
-+#define dept_folio_clear_bit(f, bit_nr)		do { } while (0)
-+#define dept_folio_wait_on_bit(f, bit_nr)	do { } while (0)
-+#endif
-+
- #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
- DECLARE_STATIC_KEY_FALSE(hugetlb_optimize_vmemmap_key);
- 
-@@ -419,27 +474,51 @@ static __always_inline bool folio_test_##name(const struct folio *folio) \
- 
- #define FOLIO_SET_FLAG(name, page)					\
- static __always_inline void folio_set_##name(struct folio *folio)	\
--{ set_bit(PG_##name, folio_flags(folio, page)); }
-+{									\
-+	set_bit(PG_##name, folio_flags(folio, page));			\
-+	dept_folio_set_bit(folio, PG_##name);				\
-+}
- 
- #define FOLIO_CLEAR_FLAG(name, page)					\
- static __always_inline void folio_clear_##name(struct folio *folio)	\
--{ clear_bit(PG_##name, folio_flags(folio, page)); }
-+{									\
-+	clear_bit(PG_##name, folio_flags(folio, page));			\
-+	dept_folio_clear_bit(folio, PG_##name);				\
-+}
- 
- #define __FOLIO_SET_FLAG(name, page)					\
- static __always_inline void __folio_set_##name(struct folio *folio)	\
--{ __set_bit(PG_##name, folio_flags(folio, page)); }
-+{									\
-+	__set_bit(PG_##name, folio_flags(folio, page));			\
-+	dept_folio_set_bit(folio, PG_##name);				\
-+}
- 
- #define __FOLIO_CLEAR_FLAG(name, page)					\
- static __always_inline void __folio_clear_##name(struct folio *folio)	\
--{ __clear_bit(PG_##name, folio_flags(folio, page)); }
-+{									\
-+	__clear_bit(PG_##name, folio_flags(folio, page));		\
-+	dept_folio_clear_bit(folio, PG_##name);				\
-+}
- 
- #define FOLIO_TEST_SET_FLAG(name, page)					\
- static __always_inline bool folio_test_set_##name(struct folio *folio)	\
--{ return test_and_set_bit(PG_##name, folio_flags(folio, page)); }
-+{									\
-+	bool __ret = test_and_set_bit(PG_##name, folio_flags(folio, page)); \
-+									\
-+	if (!__ret)							\
-+		dept_folio_set_bit(folio, PG_##name);			\
-+	return __ret;							\
-+}
- 
- #define FOLIO_TEST_CLEAR_FLAG(name, page)				\
- static __always_inline bool folio_test_clear_##name(struct folio *folio) \
--{ return test_and_clear_bit(PG_##name, folio_flags(folio, page)); }
-+{									\
-+	bool __ret = test_and_clear_bit(PG_##name, folio_flags(folio, page)); \
-+									\
-+	if (__ret)							\
-+		dept_folio_clear_bit(folio, PG_##name);			\
-+	return __ret;							\
-+}
- 
- #define FOLIO_FLAG(name, page)						\
- FOLIO_TEST_FLAG(name, page)						\
-@@ -454,32 +533,54 @@ static __always_inline int Page##uname(const struct page *page)		\
- #define SETPAGEFLAG(uname, lname, policy)				\
- FOLIO_SET_FLAG(lname, FOLIO_##policy)					\
- static __always_inline void SetPage##uname(struct page *page)		\
--{ set_bit(PG_##lname, &policy(page, 1)->flags.f); }
-+{									\
-+	set_bit(PG_##lname, &policy(page, 1)->flags.f);			\
-+	dept_page_set_bit(page, PG_##lname);				\
-+}
- 
- #define CLEARPAGEFLAG(uname, lname, policy)				\
- FOLIO_CLEAR_FLAG(lname, FOLIO_##policy)					\
- static __always_inline void ClearPage##uname(struct page *page)		\
--{ clear_bit(PG_##lname, &policy(page, 1)->flags.f); }
-+{									\
-+	clear_bit(PG_##lname, &policy(page, 1)->flags.f);			\
-+	dept_page_clear_bit(page, PG_##lname);				\
-+}
- 
- #define __SETPAGEFLAG(uname, lname, policy)				\
- __FOLIO_SET_FLAG(lname, FOLIO_##policy)					\
- static __always_inline void __SetPage##uname(struct page *page)		\
--{ __set_bit(PG_##lname, &policy(page, 1)->flags.f); }
-+{									\
-+	__set_bit(PG_##lname, &policy(page, 1)->flags.f);			\
-+	dept_page_set_bit(page, PG_##lname);				\
-+}
- 
- #define __CLEARPAGEFLAG(uname, lname, policy)				\
- __FOLIO_CLEAR_FLAG(lname, FOLIO_##policy)				\
- static __always_inline void __ClearPage##uname(struct page *page)	\
--{ __clear_bit(PG_##lname, &policy(page, 1)->flags.f); }
-+{									\
-+	__clear_bit(PG_##lname, &policy(page, 1)->flags.f);		\
-+	dept_page_clear_bit(page, PG_##lname);				\
-+}
- 
- #define TESTSETFLAG(uname, lname, policy)				\
- FOLIO_TEST_SET_FLAG(lname, FOLIO_##policy)				\
- static __always_inline int TestSetPage##uname(struct page *page)	\
--{ return test_and_set_bit(PG_##lname, &policy(page, 1)->flags.f); }
-+{									\
-+	bool ret = test_and_set_bit(PG_##lname, &policy(page, 1)->flags.f);\
-+	if (!ret)							\
-+		dept_page_set_bit(page, PG_##lname);			\
-+	return ret;							\
-+}
- 
- #define TESTCLEARFLAG(uname, lname, policy)				\
- FOLIO_TEST_CLEAR_FLAG(lname, FOLIO_##policy)				\
- static __always_inline int TestClearPage##uname(struct page *page)	\
--{ return test_and_clear_bit(PG_##lname, &policy(page, 1)->flags.f); }
-+{									\
-+	bool ret = test_and_clear_bit(PG_##lname, &policy(page, 1)->flags.f);\
-+	if (ret)							\
-+		dept_page_clear_bit(page, PG_##lname);			\
-+	return ret;							\
-+}
- 
- #define PAGEFLAG(uname, lname, policy)					\
- 	TESTPAGEFLAG(uname, lname, policy)				\
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 31a848485ad9..6605800ba3ad 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -1119,7 +1119,12 @@ void folio_unlock(struct folio *folio);
-  */
- static inline bool folio_trylock(struct folio *folio)
- {
--	return likely(!test_and_set_bit_lock(PG_locked, folio_flags(folio, 0)));
-+	bool ret = !test_and_set_bit_lock(PG_locked, folio_flags(folio, 0));
-+
-+	if (ret)
-+		dept_page_set_bit(&folio->page, PG_locked);
-+
-+	return likely(ret);
- }
- 
- /*
-@@ -1155,6 +1160,16 @@ static inline bool trylock_page(struct page *page)
- static inline void folio_lock(struct folio *folio)
- {
- 	might_sleep();
-+
-+	/*
-+	 * dept_page_wait_on_bit() will be called if __folio_lock() goes
-+	 * through a real wait path.  However, for better job to detect
-+	 * *potential* deadlocks, let's assume that folio_lock() always
-+	 * goes through wait so that dept can take into account all the
-+	 * potential cases.
-+	 */
-+	dept_page_wait_on_bit(&folio->page, PG_locked);
-+
- 	if (!folio_trylock(folio))
- 		__folio_lock(folio);
- }
-@@ -1175,6 +1190,15 @@ static inline void lock_page(struct page *page)
- 	struct folio *folio;
- 	might_sleep();
- 
-+	/*
-+	 * dept_page_wait_on_bit() will be called if __folio_lock() goes
-+	 * through a real wait path.  However, for better job to detect
-+	 * *potential* deadlocks, let's assume that lock_page() always
-+	 * goes through wait so that dept can take into account all the
-+	 * potential cases.
-+	 */
-+	dept_page_wait_on_bit(page, PG_locked);
-+
- 	folio = page_folio(page);
- 	if (!folio_trylock(folio))
- 		__folio_lock(folio);
-@@ -1193,6 +1217,17 @@ static inline void lock_page(struct page *page)
- static inline int folio_lock_killable(struct folio *folio)
- {
- 	might_sleep();
-+
-+	/*
-+	 * dept_page_wait_on_bit() will be called if
-+	 * __folio_lock_killable() goes through a real wait path.
-+	 * However, for better job to detect *potential* deadlocks,
-+	 * let's assume that folio_lock_killable() always goes through
-+	 * wait so that dept can take into account all the potential
-+	 * cases.
-+	 */
-+	dept_page_wait_on_bit(&folio->page, PG_locked);
-+
- 	if (!folio_trylock(folio))
- 		return __folio_lock_killable(folio);
- 	return 0;
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 3c1e785542dd..c0bff1e08a28 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -49,6 +49,7 @@
- #include <linux/sched/mm.h>
- #include <linux/sysctl.h>
- #include <linux/pgalloc.h>
-+#include <linux/dept.h>
- 
- #include <asm/tlbflush.h>
- #include "internal.h"
-@@ -1151,6 +1152,7 @@ static int wake_page_function(wait_queue_entry_t *wait, unsigned mode, int sync,
- 		if (flags & WQ_FLAG_CUSTOM) {
- 			if (test_and_set_bit(key->bit_nr, &key->folio->flags.f))
- 				return -1;
-+			dept_page_set_bit(&key->folio->page, key->bit_nr);
- 			flags |= WQ_FLAG_DONE;
- 		}
- 	}
-@@ -1191,6 +1193,13 @@ static void folio_wake_bit(struct folio *folio, int bit_nr)
- 	key.bit_nr = bit_nr;
- 	key.page_match = 0;
- 
-+	/*
-+	 * dept_page_clear_bit() being called multiple times is harmless.
-+	 * The worst case is to miss some dependencies but it's okay.
-+	 */
-+	if (bit_nr == PG_locked)
-+		dept_page_clear_bit(&folio->page, bit_nr);
-+
- 	spin_lock_irqsave(&q->lock, flags);
- 	__wake_up_locked_key(q, TASK_NORMAL, &key);
- 
-@@ -1234,6 +1243,7 @@ static inline bool folio_trylock_flag(struct folio *folio, int bit_nr,
- 	if (wait->flags & WQ_FLAG_EXCLUSIVE) {
- 		if (test_and_set_bit(bit_nr, &folio->flags.f))
- 			return false;
-+		dept_page_set_bit(&folio->page, bit_nr);
- 	} else if (test_bit(bit_nr, &folio->flags.f))
- 		return false;
- 
-@@ -1241,6 +1251,9 @@ static inline bool folio_trylock_flag(struct folio *folio, int bit_nr,
- 	return true;
- }
- 
-+struct dept_map __maybe_unused pg_locked_map = DEPT_MAP_INITIALIZER(pg_locked_map, NULL);
-+EXPORT_SYMBOL(pg_locked_map);
-+
- static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 		int state, enum behavior behavior)
- {
-@@ -1252,6 +1265,8 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 	unsigned long pflags;
- 	bool in_thrashing;
- 
-+	dept_page_wait_on_bit(&folio->page, bit_nr);
-+
- 	if (bit_nr == PG_locked &&
- 	    !folio_test_uptodate(folio) && folio_test_workingset(folio)) {
- 		delayacct_thrashing_start(&in_thrashing);
-@@ -1345,6 +1360,23 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
- 		break;
- 	}
- 
-+	/*
-+	 * dept_page_set_bit() might have been called already in
-+	 * folio_trylock_flag(), wake_page_function() or somewhere.
-+	 * However, call it again to reset the wgen of dept to ensure
-+	 * dept_page_wait_on_bit() is called prior to
-+	 * dept_page_set_bit().
-+	 *
-+	 * Remind dept considers all the waits between
-+	 * dept_page_set_bit() and dept_page_clear_bit() as potential
-+	 * event disturbers. Ensure the correct sequence so that dept
-+	 * can make correct decisions:
-+	 *
-+	 *	wait -> acquire(set bit) -> release(clear bit)
-+	 */
-+	if (wait->flags & WQ_FLAG_DONE)
-+		dept_page_set_bit(&folio->page, bit_nr);
-+
  	/*
- 	 * If a signal happened, this 'finish_wait()' may remove the last
- 	 * waiter from the wait-queues, but the folio waiters bit will remain
-@@ -1507,6 +1539,7 @@ void folio_unlock(struct folio *folio)
- 	BUILD_BUG_ON(PG_waiters != 7);
- 	BUILD_BUG_ON(PG_locked > 7);
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-+	dept_page_clear_bit(&folio->page, PG_locked);
- 	if (folio_xor_flags_has_waiters(folio, 1 << PG_locked))
- 		folio_wake_bit(folio, PG_locked);
+@@ -912,6 +913,7 @@ struct dept_task {
+ 	.stage_w_fn = NULL,					\
+ 	.stage_ip = 0UL,					\
+ 	.stage_timeout = false,					\
++	.stage_wait_stack = NULL,				\
+ 	.stage_lock = (arch_spinlock_t)__ARCH_SPIN_LOCK_UNLOCKED,\
+ 	.missing_ecxt = 0,					\
+ 	.hardirqs_enabled = false,				\
+diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+index e425d3ab05e5..5bf32633e1fb 100644
+--- a/kernel/dependency/dept.c
++++ b/kernel/dependency/dept.c
+@@ -523,6 +523,7 @@ static void initialize_ecxt(struct dept_ecxt *e)
+ 	e->enirqf = 0UL;
+ 	e->event_ip = 0UL;
+ 	e->event_stack = NULL;
++	e->ewait_stack = NULL;
  }
-@@ -1537,6 +1570,7 @@ void folio_end_read(struct folio *folio, bool success)
+ SET_CONSTRUCTOR(ecxt, initialize_ecxt);
  
- 	if (likely(success))
- 		mask |= 1 << PG_uptodate;
-+	dept_page_clear_bit(&folio->page, PG_locked);
- 	if (folio_xor_flags_has_waiters(folio, mask))
- 		folio_wake_bit(folio, PG_locked);
+@@ -578,6 +579,8 @@ static void destroy_ecxt(struct dept_ecxt *e)
+ 		put_stack(e->ecxt_stack);
+ 	if (e->event_stack)
+ 		put_stack(e->event_stack);
++	if (e->ewait_stack)
++		put_stack(e->ewait_stack);
  }
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index df34797691bd..66b68c02d8d4 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -32,6 +32,7 @@
- #include <linux/vmstat.h>
- #include <linux/kexec_handover.h>
- #include <linux/hugetlb.h>
-+#include <linux/dept.h>
- #include "internal.h"
- #include "slab.h"
- #include "shuffle.h"
-@@ -587,6 +588,7 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
- 	atomic_set(&page->_mapcount, -1);
- 	page_cpupid_reset_last(page);
- 	page_kasan_tag_reset(page);
-+	dept_ext_wgen_init(&page->pg_locked_wgen);
+ SET_DESTRUCTOR(ecxt, destroy_ecxt);
  
- 	INIT_LIST_HEAD(&page->lru);
- #ifdef WANT_PAGE_VIRTUAL
+@@ -794,6 +797,11 @@ static void print_dep(struct dept_dep *d)
+ 
+ 		pr_warn("[E] %s(%s:%d):\n", e_fn, fc_n, fc->sub_id);
+ 		print_ip_stack(e->event_ip, e->event_stack);
++
++		if (valid_stack(e->ewait_stack)) {
++			pr_warn("(wait to wake up)\n");
++			print_ip_stack(0, e->ewait_stack);
++		}
+ 	}
+ 
+ 	if (!irqf) {
+@@ -807,6 +815,11 @@ static void print_dep(struct dept_dep *d)
+ 
+ 		pr_warn("[E] %s(%s:%d):\n", e_fn, fc_n, fc->sub_id);
+ 		print_ip_stack(e->event_ip, e->event_stack);
++
++		if (valid_stack(e->ewait_stack)) {
++			pr_warn("(wait to wake up)\n");
++			print_ip_stack(0, e->ewait_stack);
++		}
+ 	}
+ }
+ 
+@@ -1657,7 +1670,8 @@ static void add_wait(struct dept_class *c, unsigned long ip,
+ 
+ static struct dept_ecxt_held *add_ecxt(struct dept_map *m,
+ 		struct dept_class *c, unsigned long ip, const char *c_fn,
+-		const char *e_fn, int sub_l)
++		const char *e_fn, int sub_l,
++		struct dept_stack *ewait_stack)
+ {
+ 	struct dept_task *dt = dept_task();
+ 	struct dept_ecxt_held *eh;
+@@ -1691,6 +1705,7 @@ static struct dept_ecxt_held *add_ecxt(struct dept_map *m,
+ 	e->class = get_class(c);
+ 	e->ecxt_ip = ip;
+ 	e->ecxt_stack = ip ? get_current_stack() : NULL;
++	e->ewait_stack = ewait_stack ? get_stack(ewait_stack) : NULL;
+ 	e->event_fn = e_fn;
+ 	e->ecxt_fn = c_fn;
+ 
+@@ -1797,7 +1812,7 @@ static int find_hist_pos(unsigned int wg)
+ 
+ static void do_event(struct dept_map *m, struct dept_map *real_m,
+ 		struct dept_class *c, unsigned int wg, unsigned long ip,
+-		const char *e_fn)
++		const char *e_fn, struct dept_stack *ewait_stack)
+ {
+ 	struct dept_task *dt = dept_task();
+ 	struct dept_wait_hist *wh;
+@@ -1825,7 +1840,7 @@ static void do_event(struct dept_map *m, struct dept_map *real_m,
+ 	 */
+ 	if (find_ecxt_pos(real_m, c, false) != -1)
+ 		return;
+-	eh = add_ecxt(m, c, 0UL, NULL, e_fn, 0);
++	eh = add_ecxt(m, c, 0UL, NULL, e_fn, 0, ewait_stack);
+ 
+ 	if (!eh)
+ 		return;
+@@ -2360,7 +2375,8 @@ static void __dept_wait(struct dept_map *m, unsigned long w_f,
+  */
+ static void __dept_event(struct dept_map *m, struct dept_map *real_m,
+ 		unsigned long e_f, unsigned long ip, const char *e_fn,
+-		bool sched_map, unsigned int wg)
++		bool sched_map, unsigned int wg,
++		struct dept_stack *ewait_stack)
+ {
+ 	struct dept_class *c;
+ 	struct dept_key *k;
+@@ -2382,7 +2398,7 @@ static void __dept_event(struct dept_map *m, struct dept_map *real_m,
+ 	c = check_new_class(&m->map_key, k, sub_id(m, e), m->name, sched_map);
+ 
+ 	if (c)
+-		do_event(m, real_m, c, wg, ip, e_fn);
++		do_event(m, real_m, c, wg, ip, e_fn, ewait_stack);
+ }
+ 
+ void dept_wait(struct dept_map *m, unsigned long w_f,
+@@ -2498,6 +2514,9 @@ static void __dept_clean_stage(struct dept_task *dt)
+ 	dt->stage_w_fn = NULL;
+ 	dt->stage_ip = 0UL;
+ 	dt->stage_timeout = false;
++	if (dt->stage_wait_stack)
++		put_stack(dt->stage_wait_stack);
++	dt->stage_wait_stack = NULL;
+ }
+ 
+ void dept_clean_stage(void)
+@@ -2561,6 +2580,14 @@ void dept_request_event_wait_commit(void)
+ 
+ 	wg = next_wgen();
+ 	WRITE_ONCE(dt->stage_m.wgen, wg);
++
++	/*
++	 * __schedule() can be hit multiple times between
++	 * dept_stage_wait() and dept_clean_stage().  In that case,
++	 * keep the first stacktrace only.  That's enough.
++	 */
++	if (!dt->stage_wait_stack)
++		dt->stage_wait_stack = get_current_stack();
+ 	arch_spin_unlock(&dt->stage_lock);
+ 
+ 	__dept_wait(&dt->stage_m, 1UL, ip, w_fn, 0, true, sched_map, timeout);
+@@ -2579,6 +2606,7 @@ void dept_ttwu_stage_wait(struct task_struct *requestor, unsigned long ip)
+ 	struct dept_map m;
+ 	struct dept_map *real_m;
+ 	bool sched_map;
++	struct dept_stack *ewait_stack;
+ 
+ 	if (unlikely(!dept_working()))
+ 		return;
+@@ -2597,6 +2625,10 @@ void dept_ttwu_stage_wait(struct task_struct *requestor, unsigned long ip)
+ 	m = dt_req->stage_m;
+ 	sched_map = dt_req->stage_sched_map;
+ 	real_m = dt_req->stage_real_m;
++	ewait_stack = dt_req->stage_wait_stack;
++	if (ewait_stack)
++		get_stack(ewait_stack);
++
+ 	__dept_clean_stage(dt_req);
+ 	arch_spin_unlock(&dt_req->stage_lock);
+ 
+@@ -2607,8 +2639,12 @@ void dept_ttwu_stage_wait(struct task_struct *requestor, unsigned long ip)
+ 	if (!m.keys)
+ 		goto exit;
+ 
+-	__dept_event(&m, real_m, 1UL, ip, "try_to_wake_up", sched_map, m.wgen);
++	__dept_event(&m, real_m, 1UL, ip, "try_to_wake_up", sched_map,
++			m.wgen, ewait_stack);
+ exit:
++	if (ewait_stack)
++		put_stack(ewait_stack);
++
+ 	dept_exit(flags);
+ }
+ 
+@@ -2688,7 +2724,7 @@ void dept_map_ecxt_modify(struct dept_map *m, unsigned long e_f,
+ 	k = m->keys ?: &m->map_key;
+ 	c = check_new_class(&m->map_key, k, sub_id(m, new_e), m->name, false);
+ 
+-	if (c && add_ecxt(m, c, new_ip, new_c_fn, new_e_fn, new_sub_l))
++	if (c && add_ecxt(m, c, new_ip, new_c_fn, new_e_fn, new_sub_l, NULL))
+ 		goto exit;
+ 
+ 	/*
+@@ -2740,7 +2776,7 @@ void dept_ecxt_enter(struct dept_map *m, unsigned long e_f, unsigned long ip,
+ 	k = m->keys ?: &m->map_key;
+ 	c = check_new_class(&m->map_key, k, sub_id(m, e), m->name, false);
+ 
+-	if (c && add_ecxt(m, c, ip, c_fn, e_fn, sub_l))
++	if (c && add_ecxt(m, c, ip, c_fn, e_fn, sub_l, NULL))
+ 		goto exit;
+ missing_ecxt:
+ 	dt->missing_ecxt++;
+@@ -2840,7 +2876,7 @@ void dept_event(struct dept_map *m, unsigned long e_f,
+ 
+ 	flags = dept_enter();
+ 
+-	__dept_event(m, m, e_f, ip, e_fn, false, READ_ONCE(*wg_p));
++	__dept_event(m, m, e_f, ip, e_fn, false, READ_ONCE(*wg_p), NULL);
+ 
+ 	/*
+ 	 * Keep the map diabled until the next sleep.
+@@ -2912,6 +2948,11 @@ void dept_task_exit(struct task_struct *t)
+ 		dt->stack = NULL;
+ 	}
+ 
++	if (dt->stage_wait_stack) {
++		put_stack(dt->stage_wait_stack);
++		dt->stage_wait_stack = NULL;
++	}
++
+ 	for (i = 0; i < dt->ecxt_held_pos; i++) {
+ 		if (dt->ecxt_held[i].class) {
+ 			put_class(dt->ecxt_held[i].class);
+diff --git a/kernel/dependency/dept_internal.h b/kernel/dependency/dept_internal.h
+index 3d1cd1a9b6d4..c02783ecf0c4 100644
+--- a/kernel/dependency/dept_internal.h
++++ b/kernel/dependency/dept_internal.h
+@@ -194,6 +194,11 @@ struct dept_ecxt {
+ 			 */
+ 			unsigned long	event_ip;
+ 			struct dept_stack *event_stack;
++
++			/*
++			 * wait that this event ttwu
++			 */
++			struct dept_stack *ewait_stack;
+ 		};
+ 	};
+ };
 -- 
 2.17.1
 
