@@ -4,133 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FA2C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 01:58:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD632C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 02:03:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 423E96B009E; Sun,  5 Jul 2026 21:58:35 -0400 (EDT)
+	id 452F96B00A0; Sun,  5 Jul 2026 22:03:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AD246B009F; Sun,  5 Jul 2026 21:58:35 -0400 (EDT)
+	id 3DCD06B00A1; Sun,  5 Jul 2026 22:03:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24E156B00A0; Sun,  5 Jul 2026 21:58:35 -0400 (EDT)
+	id 2A4D26B00A2; Sun,  5 Jul 2026 22:03:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DB4A96B009E
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 21:58:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 51A311C1348
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 01:58:34 +0000 (UTC)
-X-FDA: 84956692548.27.1F70D9F
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6866C20006
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 01:58:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lwALSInD;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783303112;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E7D056B00A0
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 22:03:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5357C1A0263
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:03:35 +0000 (UTC)
+X-FDA: 84956705190.28.7882BAE
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8C626140003
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:03:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=A5t2wwo5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783303413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hfeozLc8lfROroWi4fuwydRuWdXvG6VBqX8p8xBH/ZA=;
-	b=su3Kw3GmFLq3x31L86H8bQMzO7iWoQ2Si4ZNFfy0kU9TlQu1O37Rc+Z3CbqVwjEHeKEqRH
-	IMRSAt3ZqgCZOuJSWnRj463igLCjrckp15xBKx4ScdRpEcFleBxn5hUWjRBLqttAGNdekC
-	G8bVmF+gMT/YTBDibcZgAApzxQt3qmU=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lwALSInD;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf13.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783303112;
-	b=CPco//8my7JBEU7djdAzhapLfdfDWq9kKEBsf8CAEurjjoUAILX+h+qavQCqODOXXNoAZd
-	oGH1ZINVKnHLLxpmJ7LctRxJO5EQTdozxNFJ6Nm644+R9z/XZGLq+cJ4pv3r1FyFMl2ztP
-	ZdDypgIYHmpkvGg6LFPWVWkf1Y1c05c=
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5aeb77b3afbso2290948e87.1
-        for <linux-mm@kvack.org>; Sun, 05 Jul 2026 18:58:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783303111; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VF5P3Ux9RKrVz517ojlIAd2eXPH5f1a+CgSPRGuOoj3C2Xo606g8hhy60ZL6a4l4m/
-         +/BTquBoPJoNlg+SYMqVEBLq4qbwJsXJCtQjAG7ZcRTrgy90RODyRvOzPbdm0H5Rbue0
-         Ez/GNRggmr475ndA9R8dQ3UcPg5naxOJJ4KqfokHipiRufnz7Myhwz7GIqSi5torluNQ
-         0bb8wAKBjYPC26NwKtsz5LLIa4/zkSxU+91/OjKDge92qbUAZKJcViFubtxTml/1jCaz
-         iLXy3H1v4kctC/tuevCjJCeHf/FOvU0kwRHgIzyzkjpRLttVmrvfNyY5mvu7YsF1dl+U
-         UqTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hfeozLc8lfROroWi4fuwydRuWdXvG6VBqX8p8xBH/ZA=;
-        fh=frDq34Zm3O9+oFxr2mpDA7VECfl6pAsogSIsTY3hoRk=;
-        b=iKCx7e7FE24NrxS+bYUj4Hs907Hk5rDcpD66a5Omhru3paaVEvxBIZhmPtTHozSTDQ
-         dabB9vVfcV3zLOG5TCHb+iLyjRgzcVsnLEC1P8Qp9t6JJFyq2BjdyjkL7POz+xZGJpsv
-         3mvDUlCQ112HBkcVs5Qz3RwxE1bH5GPlzwwk3BeqD+4pdyc7ApnFbhJzRqylvvFL7myK
-         VLLN/9tEsHdn7cuZWsO2TcmKjqL8d/hmOYmyUJZHSnIwaPa6n8tB2i9/wlHFzb3Ufgw1
-         Ec81OmN7n+ENS+fw0hGvQA6tvQP5qPUXHZqogZUNpPB1YtkPXuZ6TGkWsjlL7GzIYGgi
-         9tzw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=VpbU2nD8Sf2VfGjQR5NkWq7+R61c2WqH91bcQarOxZE=;
+	b=5PSwAIskK6bZO4vG2bMLT7dsapJag1rRSGNvS/9eG9d6lSRk0UDsHCwOcBwHHvXJypy4Em
+	QMY3A6lNZivGHzBRuWWwMvoWGixxzgmHbOPs4IEj/pnINFdINplRwkRaMy4QINgZQAgT/3
+	ZOrcxjyX1aXF9I2jM9BLTy0yhpuhwNg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=A5t2wwo5;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783303413;
+	b=bCyPuGh8ZmtkOIn/uYsszfO6a3ZIB7Cwswj1Jh7bCUsd/IzGnvIfhW0uzDSGgodKgeuDJI
+	nPlBzKCsVbERj9HS8bChxl/YAY96rCdEp5NV9swP3csxB36TmPUys+MslFoCn8nEFKICjR
+	/ZawA1n/okr0CF4AJR2cExJxtWj3RLo=
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-ca00f126b7eso1151197a12.2
+        for <linux-mm@kvack.org>; Sun, 05 Jul 2026 19:03:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783303111; x=1783907911; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hfeozLc8lfROroWi4fuwydRuWdXvG6VBqX8p8xBH/ZA=;
-        b=lwALSInDZy9THQ+7uYOLyVj7bJi8eKZUKuZE6KidQDCUfbpzJdVdXHZihwXUYFIeU6
-         OuEwSG22aERLIPRunIm/W9fII8rqfAym+WZWTPL8nooKU0KsQv+eVUcqDNTHqvbkILdJ
-         uuK/dkBahGmvGtpwNzJ9JyaQqH2jBHz0HoMlJNj8qGQB5bdWw6OAkOxjg61kQRyRbYD1
-         6/TtweeO6tCJNYNOCevbAdDRptBKzg/OSbfvj4kBj/cZvKx4iQe+yAQr5tT3W3Fj329F
-         TT2LPp05X9EamMdDSmbta7iJLMriWjFzzn0/Q1rvSzYKxU1IZ97SFLWs11HfUc6NPKJ1
-         8DMw==
+        d=gmail.com; s=20251104; t=1783303412; x=1783908212; darn=kvack.org;
+        h=mime-version:user-agent:references:in-reply-to:subject:cc:to:from
+         :message-id:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VpbU2nD8Sf2VfGjQR5NkWq7+R61c2WqH91bcQarOxZE=;
+        b=A5t2wwo5sp3mPjhr2WEdYCJ2Si/sGnSvxSyRmra3aCsI6u8FgXgcmo9cD3STo+Z/m5
+         BzCzGQsoZbiNulbIcsk3Ii+moKis/XY3K9yY3yk7t4TG2f997ZSje7K1rue80NwkBkvh
+         8CAvMIUgcuQnB7s+U/p7NPspgzOYFS5I5fd5iPlPr85LbeJ6p0z3QI+CEM6d4ghY3LtK
+         Nq8hQxWv8GL3nG79ycWgffCr9foShBL2LrwSgCxZPr6IKPtCwbRmCRR0d4qMxDwychXE
+         jsbr4qPAkmxwWhdCpxxw5dlb1tCYhslSwAVIr4h2bpBpUMFZQE7+OxhVIYoz/CsRb6ui
+         vfqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783303111; x=1783907911;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hfeozLc8lfROroWi4fuwydRuWdXvG6VBqX8p8xBH/ZA=;
-        b=pROcBLyvBePFgDeOjFS4AHmFsO+J4bWpga+aEhwvQv/T9mQIjYCr8PkIhlL7R4Y6h0
-         nb9aCgum3XdcPOpUZimGQhq0tfsKQLQq/qxbiEur8IP83QT/SQ360QnDPvDIJtziO9A2
-         4kZwG4IotXI9ngbP/IwltmPnZeJ24DGHpNdsmZfl2Kp2dbNaiKRUuYyDluTI7h2VSpTF
-         gb7lGeiuUgJNTvQ38Hg1LKGjEM4EpB097AODTrgIgWyW5EOIAnzW/WHLnFXw2xe7XiI5
-         68Nbg65PO/R3c/4qy3hpwq9NZwgZfdpfuWrKX0d6MEWS2FGz0A4LgRDzVo5KqcuECGMC
-         rkmg==
-X-Forwarded-Encrypted: i=1; AHgh+Rp5FNIgbsPn9LFgmUsUtPWvmvgv13lKga7XZRQPnCUwhst4iBvvN9kctVff2AEfAoi19QRDfl3O4g==@kvack.org
-X-Gm-Message-State: AOJu0YzvvVYhgDBwlmXB3tDm4ppjfp9N+1eRz82gZ+gedt8nY1AKsw7Q
-	bpkPuDmdMsw7PmvakKAvgY+3UKMmvzp1hr8q7KCZTy8j1HZSneb5CvZYoCM2zTZfSCyositoihK
-	GGQsIOOS3AVpnFCaxoT6a/mLdVLakBvc=
-X-Gm-Gg: AfdE7clcJ2AfZPOYB4ua6xG80BdIqH+322QFhHPGPZFjku89xQyXU9pg2Wf037wPF9I
-	XfAuMo/8QDPiUkHL/Hh1EDOug4u1YWsjf5KTF++ljMwN9cM5YpHjFDI8G8ZML+DmE/DatwplieM
-	eQslskcGR9jtl1ekbwZvBVjUpJoki9lW+GmELX3uPdXORHmtS/nBadDMpppIUW8WEgb2C8ou6JR
-	i8DDj4MYd7xvRMMoTFuXcIWwq7hT4xEG/7PksBrB9y1u1OBv8DCn7S3JJgk3wAFsRxG6YXI
-X-Received: by 2002:a05:6512:8358:b0:5ae:bd5b:c68b with SMTP id
- 2adb3069b0e04-5aed50b80b8mr920536e87.37.1783303110567; Sun, 05 Jul 2026
- 18:58:30 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260608210618.3437216-1-willy@infradead.org> <20260608210618.3437216-3-willy@infradead.org>
-In-Reply-To: <20260608210618.3437216-3-willy@infradead.org>
-From: Hyunchul Lee <hyc.lee@gmail.com>
-Date: Mon, 6 Jul 2026 10:58:18 +0900
-X-Gm-Features: AVVi8CeDqc8BYSLiYYk2lLX6apbCk_RkRARPEBX1R5X1hq38Hbtq6M6jPVakieI
-Message-ID: <CANFS6bYc5uSSYWvwJZ4BgjzF0_bO9rkcFNvX2vVHnzWDi3kpuw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] ntfs: Remove use of __folio_index in handle_bounds_compressed_page()
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Namjae Jeon <linkinjeon@kernel.org>, usama.arif@linux.dev, 
-	lance.yang@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        d=1e100.net; s=20251104; t=1783303412; x=1783908212;
+        h=mime-version:user-agent:references:in-reply-to:subject:cc:to:from
+         :message-id:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VpbU2nD8Sf2VfGjQR5NkWq7+R61c2WqH91bcQarOxZE=;
+        b=KYIgPYP/KujqCJpk0HL9SCaISWG2DxMoH9rWY+/lhnndBCGNP6vxucaQjtvjPudJnv
+         IPx4mkiC7boZFLz6VoioDD7JZhD0RDJqwHNupACFI4SwuxDw5AL33zIUj2wxlqDwFfGd
+         naTAxP9iE0tZWy9BPo/Xlypy9thHxqWQ9pGP7kEmadycN9+PM+DiKHSa6DnptC5JS+d2
+         eoWsYCTSK1+bgICnE50HgiZDfRB8/xw8pqp9BMeJfbqo9VueMTPh+RkOfOtQ6ABZrEn1
+         ImOuRAMewYaTsg62QJriDRyWzujJ3Fao9CaEia4ZJ0CzYkzVUudMjmLDZzES5xR1Osxu
+         cMOw==
+X-Forwarded-Encrypted: i=1; AHgh+RoXUANDZQa20JiljBD5BuUfxd+ULY9xvQccOhtyFeFi2I0BwhLPwdlvou8W45UcgIzIAu1vlEj6YQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywmvj+chb6n/a6nYijNq+XiKRp966RnbUTYHzO2sUXg3U9ifdGy
+	7eexokWCHoxtCEz3ZcrvrF3qj3Zcg1IwZgGu6JZX3kqDtnc2Ypg+9u+R
+X-Gm-Gg: AfdE7clvoiL0lRFClwG0afYyh/KVzYUNpbjLRs01sj6gLRujULkU2zO3A1veHca9lZC
+	7od2vqA1jzS7imfBLVcDEDOLBivriEAYKWj3tngb8dhFQCrYNTsO6rE6/HZeV3Dmy+am83Z8j6/
+	0W/B906UxAC8SJJ/kqJvc+jMzrfEnkOzHT4cXkfyOq83YMEFi1BDHPkd8UOsKNQhj/u6MDGg1Ui
+	KREK1T77K7zmZUdL79oI37jeJ9LbKRg+4UbV7VONzoN700DOA48ZtJr304K665rKsrOOIGXXn7h
+	YKiQd3DDBgV1L1e5Z7KOlqQo/LRvcpkou+cJKL/wnTBlMIZLIHgPA6lZycOvFGo/OT4jI57GKys
+	nspF5hzFzQhO7JP4BIVWYwzTUXEUByPwV+uEX7WI5u4UWu3XW325aEoAuKG/0Dpdyeuzk5yd4r5
+	Hdr0qZllXiR0u87W7ksX8h8+sPajuhX+acAB97dvrUJ73K5KUak7TCoEzAIpY/JeEjH1/kfcsSO
+	1hwAm5gcDJ6
+X-Received: by 2002:a05:6300:2287:b0:3bf:a941:8932 with SMTP id adf61e73a8af0-3c03e1f54bfmr8834888637.19.1783303412412;
+        Sun, 05 Jul 2026 19:03:32 -0700 (PDT)
+Received: from mars.local.gmail.com ([240a:61:3285:c322:28fc:365:cb6f:6417])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e921d28d9sm5082966a12.24.2026.07.05.19.03.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 Jul 2026 19:03:31 -0700 (PDT)
+Date: Mon, 06 Jul 2026 11:03:27 +0900
+Message-ID: <m2qzlgub68.wl-thehajime@gmail.com>
+From: Hajime Tazaki <thehajime@gmail.com>
+To: akpm@linux-foundation.org
+Cc: liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: nommu: add sysctl_max_map_count() check for do_mmap()
+In-Reply-To: <20260705174443.08a11649b8e1c9e58e8cae22@linux-foundation.org>
+References: <20260702012830.667205-1-thehajime@gmail.com>
+	<20260705151512.5edabd9bb5d11cb6f1c6309f@linux-foundation.org>
+	<m2se5xt1ft.wl-thehajime@gmail.com>
+	<20260705174443.08a11649b8e1c9e58e8cae22@linux-foundation.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: 99jacyhks6s7kxns6rdy7jo9nbbp4ppm
+X-Rspamd-Queue-Id: 8C626140003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6866C20006
-X-Stat-Signature: zpgo171cfcybxt3tctwdrae5s1wb5jib
-X-HE-Tag: 1783303112-663073
-X-HE-Meta: U2FsdGVkX18MGGch+y5g6SI7CcuQM5YSFVzab5KGL+OTCibgjGm2/d/+mN1GGZAiZAbl9W/eJRWl5lCTdOVgM60VFv1H8kjNsgWZLnWVUoLjMznBSvPLtIcY2R+v/TP1iREJil5uL3/HS6SAn3QDempvBRM24DpX3eNDpDin23oCYue8o6K65124ram/bx0mf1VIix7H+8IDW06ZTdnN5/+EgyaxKK+EbWW6UexY/RvzI6Liqwm8dt0Iej8JNkpJWXf8T6CKArzVhnvCnIWIo0tIF87oCUPxyE+ASLumzcMoWxe3LJdmOPHNu1hdSIfpMOyQmcJ7D53i8w6/TbFBd5pxmo3Ebd5mpZwnCWBfbjF1lY/ZJhrdoOkkBPSKdCwwU5xAdMS6TqjhT+8Ci051fltPyMZAvtAiE810ebV5Y7PsGvPvd+KT5OpmJvqbAXXTPHqjnF7NhaX2uv4pjPE4ISP+U6e3736Zt78wXvfjStYvLIJ1zvlRwHqVwD7+8ENZCL40Y7Rqdi878q7QiEsnoyA7C8BfM3EOjZMPwDR2YSRLFKecAYcOh8Cqr2lZKExzWiBPYh6pgFSl7R9yI1A6aTauXKiJvZPHrjN3m0/TiJNje6veTdE976fZVw9Mw51YN0OocdQAbGi6Or0dNK7abA2/dyImoF1gtrwbLRQb4aj0CSTey91liAkuy+liC8PQEeo1cY/ReyjGMy3kb3Mr9FqkBV+ftjS32sgdpwzvSFzqnLBeUdlTFIzPAeOrev+rE1gs9xaeJo6zclm5ptzcyLk0O6eMf/5c8hiEygJ0rfFMbJFs6UCa1Pyh0dpdjqt1A0X418k3OtGie+o3PnZ5VnBp8VUrr2ioN2fpusDY1z+B9+i9oS/J1kdvxujuwIJ2SdiFxmRc8XuMdSUVP4Bv+Xj4nse6CCIlKkCAQx6NLWM1d7s7dkC+AvaPc6CiDpUOzYke6o61cF5U+cOYWEj
- p/beiC+y
- uHEw/HyC6Tv4JgvIjtQ0ZILlqEff6pFA6O2bhV5pfG+PweLal2N+2JDgRWeqK32mlN1EcVThowhv9QsW1OS/PGfxRp+hIzb8v6Ihx6VAFJw5eTcvwplZ6Tyt+ZFI8VNAFVcHrW0VCzM0mMIVU0z7yTKteQJxpwi+gtjhwxnd6O+MxSon/Eg7spp/roP5bKwyYfwmYgclQSTgig8zY32SxErF8+n/TXxdHcp3LUUFuqYtHkorirHPfnOGH//lx3HFh0bsfdqCMQSuVcpXapDTyj7tjJ7xGsAzB5s6sKf5OKD72Pj3puZeusACI/ueAdYJSyb22hmeW2A98HG9E13enQMgkg/jkG/iE0ovbHet5/SzdhtyOOe+35FkAMpP+rcQdmX9SOGkxqi+lORSBSmcFtFtdDyIiQTgTM30uUBxbJ3d3IzjMyIOpt1ciMfz/tKdCreBzTFRiTqH5Yh/61lH8a1HF4i4OgY6H3YidvdhSPFE+JHdZTSu3/Osi2BMLCJkXESSc/xMaxFijTh0iyHTYmKqxP2El4XPrqEu9
+X-HE-Tag: 1783303413-241531
+X-HE-Meta: U2FsdGVkX1+xeiJ3yAxRTP9aMzrsP9pX5zQrxoLnnMgPxCfgbKN63rVNwjzrFeTE8MoE/Ulvp7OgtSZFfFZf/NUWDxUyE+q1ZlYVDYPzS46K7idyoZnkMRe40qb/VLtwxhka15WZ2OhNyLIOS3xUGUbz4zR+kmWh8q+cyD9Q0cetQF9JBAMdQv5HmZr2NRHqFhoOaR+GsPVfi/f9nXY722NLEgD+F06LtyV4LoLruClKLcAVdDE2DeZegRCYo6TisaOXoo/dWnSve9s36c6ztrrj/ruzl0Qpp4GQreDlRW+pAPH1SfPksl8lQmz801vY/wJs/SNcNbHjLCyzwV1HVoOkreKMT3bBat410DiiCR+OxJWZlmIlanAkEzxEVzjAiY74bmYN764wCGf++23EcH+D7jCx/3QGyGxp5s9iXXwnVKSzM6vjmzuC1+BYfr/8Q8vJb5CYQzZxUdOmU5Xi8OsAjCPJGUbdZGKh8txW05ycWMXCrnLdGe5thiXgZPRTce9uvM2EPq3Rvz2J3d+B4WciTw8/5foXuQ8b9Z1bQ3VL80cDX3JXblXOr6QsJvj/VGNIsnJWJXQxEQ9CiXWRfi9qKjp33yDrib+WBOnXlD5q1O8UCO/9w0zsV0Q7tYCSlkpYGWo8QS8CRbGdiHm8BPs1uMHa/1zMIjZ0BZgTdwflBxaEp0/i6IqypFVVJfpnRYNS6bmTuSYumiefCisIu+X4cMQ6UI/2ONOrTUFnlRPf3kEHpZMfbt8cjDU15IStdj+5tST8ywwEiPbdSxQbRpERCvaWy+r6N3LW08ION42Xl0nvKORspXM9Atutxtns+/FfPI4pFAOTKRsiUeKr6EWg07f0o5KArwOfaHfLgU/ZdhIeJREtoh32pSxFRenSnK4mNIw/yLFFCrQEEk+J4fwKw5XLiQBxRRNpiko27WtpA2iHk0f0hIDfJ7DE95Fb1trh2Bp92ZDgWm+h5/0
+ dQxvoOiX
+ zCQar9M42+RpL9m06wvEoNB7SJF6g0EputBUj/o/IaTv/WO2h8mmgT0aLjzobUTEzd2XEfcWbcCoUyLEUBHZaK7RHcJ0PmmD9yMPbDXt7eZQBiCzBBRIgEvg8FE//xk01UET/YM/+CBnzO/zzXv4FUSk4NAR3F1DrFesECqReErcyRRpXzseLfORJdzLshA8Pz8oReSXS9z0T5Gnhyc6dNKwpozbV9GPw+thvgk9Q1ifXSnMT6l22Ib1lmAuIqCTpyIyVMIhDbxFhiWFu7t0JQBotS1ig/L6ZZ590/VdyeXR6vRHSZAUfGZDEvjmEj9Jt3WxyKE6lvpgZ+6odVMS5BsYL6eNcyBbP+BYn+/4j6YuQVOCSELS/u4Ro7Q+M5BOdhm8Km6XwyegHhGUL6itk0vkwBxgu+M8kNixPYXIYO66vsRPuFhB7Ktb92eYxt7+9vaTVbmnpBk2tjuCJbk1aP+purpvh4QV/lUJLs9pwF8jZmAo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,59 +125,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matthew,
+On Mon, 06 Jul 2026 09:44:43 +0900,
+Andrew Morton wrote:
+> > 
+> > I will follow up with another patch for the issue detected here.
+> 
+> Great, thanks.
+> 
+> > btw, I found (and sashiko also detected) several typos for this
+> > particular patch.  Can I send v2 patch with the additional fix, or do
+> > you prefer that I'll only send the additional patch ?
+> 
+> Ah.  Well.  Confession.  I actually quietly fed your changelog through
+> Gemini to fix up a few things, resulting in
+> 
+> : The sysctl variable vm.max_map_count (sysctl_max_map_count) is not exposed
+> : under !MMU configurations, but its default value (DEFAULT_MAX_MAP_COUNT)
+> : is still used as a allocation limit.  Currently, this limit is enforced
+> : when a VMA entry is split into two chunks (split_vma()), but it is not
+> : checked during initial allocation (do_mmap()).  As a result, if a user
+> : requests a large number of memory allocations, the system will continue
+> : allocating until it hits an Out-Of-Memory (OOM) condition.
+> : 
+> : This commit introduces a check at the beginning of do_mmap() in nommu.c to
+> : prevent this situation.
+> : 
+> : This issue was detected using the Linux Test Project (LTP) test linked
+> : below.
 
-2026=EB=85=84 6=EC=9B=94 9=EC=9D=BC (=ED=99=94) =EC=98=A4=EC=A0=84 6:06, Ma=
-tthew Wilcox (Oracle) <willy@infradead.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=
-=84=B1:
->
-> Nobody is supposed to use page->__folio_index.  Use page_offset()
-> instead, and simplify by working exclusively in loff_t instead of mixing
-> up loff_t and pgoff_t.
->
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  fs/ntfs/compress.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
-> index c904858dff3d..b279f38636d6 100644
-> --- a/fs/ntfs/compress.c
-> +++ b/fs/ntfs/compress.c
-> @@ -105,13 +105,14 @@ void free_compression_buffers(void)
->  static inline void handle_bounds_compressed_page(struct page *page,
->                 const loff_t i_size, const s64 initialized_size)
->  {
-> -       if ((page->__folio_index >=3D (initialized_size >> PAGE_SHIFT)) &=
-&
-> -                       (initialized_size < i_size)) {
-> +       loff_t pos =3D page_offset(page);
-> +
-> +       if ((pos >=3D initialized_size) && (initialized_size < i_size)) {
+thanks, this is perfect.
 
-I think the following change would address the review comments for
-this patch and patch 3/6.
+> I did this "quietly" because it feels a bit rude telling people that
+> their English isn't great ;)
+> 
+> Lots of non-English speakers appear to be using LLMs on their
+> changelogs nowadays and as long as they double-check the result, I
+> think it's working very well!
 
-if ((pos + PAGE_SIZE > initialized_size) && (initialized_size < i_size)) {
+thanks for handling this and a kind way to fix my mistakes.
+yes, the AI era.
 
->                 u8 *kp =3D page_address(page);
->                 unsigned int kp_ofs;
->
->                 ntfs_debug("Zeroing page region outside initialized size.=
-");
-> -               if (((s64)page->__folio_index << PAGE_SHIFT) >=3D initial=
-ized_size) {
-> +               if (pos >=3D initialized_size) {
->                         clear_page(kp);
->                         return;
->                 }
-> --
-> 2.47.3
->
->
+I will send a follow up patch for the additional issue.
 
+-- Hajime
 
---=20
-Thanks,
-Hyunchul
 
