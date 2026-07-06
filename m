@@ -4,90 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A7EC43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28500C43602
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:34:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DE986B009E; Mon,  6 Jul 2026 10:29:37 -0400 (EDT)
+	id 0A5036B00F5; Mon,  6 Jul 2026 10:34:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 667FE6B00A0; Mon,  6 Jul 2026 10:29:37 -0400 (EDT)
+	id 02EAF6B00F7; Mon,  6 Jul 2026 10:34:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50C756B00A3; Mon,  6 Jul 2026 10:29:37 -0400 (EDT)
+	id E38F96B00F8; Mon,  6 Jul 2026 10:34:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 276A66B009E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:29:37 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A080F168B3B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:29:36 +0000 (UTC)
-X-FDA: 84958585152.26.961C44B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B2CEF6B00F5
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:34:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D0DE120432
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:34:00 +0000 (UTC)
+X-FDA: 84958596240.09.D10F44A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0D6A1160006
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:29:34 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=grXeyKe1;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783348175;
-	b=Thn6kXBP3/8yl5pcfqDGBItd1pWu993zw8VktVqawedQq5U1/d+OeWDTx2klm4RFOzgpst
-	GptEh2zhexCYUs3U7hjQP7InWvQ6oCBjJCxzqOUM+XA/8Vk8wCO1oCwU5lZBPogKa2hlgN
-	MFmF0WTBdbNljqOuC7LuNs/RCRQfcy4=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=grXeyKe1;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 803FE40017
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:33:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZyapHbIX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783348175;
+	s=arc-20220608; t=1783348438;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SBCRhKZI583zCcBg/zj8+qNKFcYvMBYzCOYKUJEwpkU=;
-	b=dSUeTSNjfiszE25eY6r91khsn3nbrx8zIMlXk/nXFNLdtoQPYPyvNPTJ7L4XlTLdGXPzRr
-	+ZO9zIBan/n81/713yWOuah7qYrcjeb6uPq1njIcHd1iqBcs2KKwgDfFuhkx1ZUUqYPPa5
-	GELUaBgtEglC1BlqlLNqhA35/Fw/sOI=
+	bh=FZidfra1OEKhogkC2HXYCg2cBCh5erxMqJGy/hmUltA=;
+	b=XAcfsHH7haFpXcipiygyxHb8yy6B8Zox6iexI/o/9ejMG7324elZvkJFwYSkB0lLRb74Gz
+	dTPkdHHEja2xfny10BFJNrSQ8MleUYD/I9mDRXvOs7rzMkhF26wEvTFox6s1UBP/VtXqI+
+	GzIuu00c+98LiwYk3wRiiWvS+U06Bno=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZyapHbIX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783348438;
+	b=U2iwX4AgKpAqywCj5ntmwbqJuvVJ943Pu/+msPM2SP8klSA2gYJs64bp2SSfUaY9WCZ67K
+	c6ngHFUDjt2iEDo8B0vnED4qqfbNeWuNGrGkWftIfJZSVW5HGlzVdtu2/oqsp20w7FTOWe
+	ifo+59w6r3GEv6ooEhAuDXY4SAMEhhA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5342B43B7B;
-	Mon,  6 Jul 2026 14:29:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CAD1F00A3D;
-	Mon,  6 Jul 2026 14:29:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A4D5F4198B;
+	Mon,  6 Jul 2026 14:33:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21E51F000E9;
+	Mon,  6 Jul 2026 14:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783348174;
-	bh=SBCRhKZI583zCcBg/zj8+qNKFcYvMBYzCOYKUJEwpkU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=grXeyKe1dw9UXQJWwPd6e3WCw6WWVG0VN47dubQw6EL4/mx1gGIZFP0Y7ME+5KYvg
-	 yh4G9UUzszbFR9q6qW54Ebyek9BAoIZdFx4ki86ozkUCuuwL51TC/y9akZ/3zwYOU7
-	 rvEDsZVMIZJQ1WmsEOdhhwYtFFIRn+y4ep7jdesJaUBrlejcJ/0Mb7a0JG0mBFWaxy
-	 3ms1xNB/vSZcHE4wvEn60qP6Lani3uBhMi70R3IlllVow2OsZbZRzp8zZYx0CXEqiL
-	 QD9EbcBaUV78/0ezFV2bfY87Qh1e1kKdYA5c+wfav83OKa+jftcPWonwPF+jxqaoKp
-	 NOJ7lHhzO0bHA==
-From: SJ Park <sj@kernel.org>
-To: wang wei <a929244872@163.com>
-Cc: SJ Park <sj@kernel.org>,
-	shuah@kernel.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] selftests/damon: check correct path in ensure_file() not_exist case
-Date: Mon,  6 Jul 2026 07:29:28 -0700
-Message-ID: <20260706142929.93146-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260706134305.5224-1-a929244872@163.com>
-References: 
+	s=k20260515; t=1783348437;
+	bh=FZidfra1OEKhogkC2HXYCg2cBCh5erxMqJGy/hmUltA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZyapHbIXG2NOcX3c+KDvES77zPIfYC5Bs4Q4FFYAasXEnMjfTOePXBiFkIhg/Tu/G
+	 Y/6ucLjGeBbKx0HIrozVJWwICiV9tf/iAkNZ+vjINfKF7xpJtqR4wm1irD3FsSxbWY
+	 jgy97oLF3tBtPT5jdw5BxPPt+DJOvQ9CVy84JZEmZBn1seEWg+p9RgsB7djqL8KfMx
+	 V/Lf9hv8eajAPJhZn4BKMFolvLtnDZnwpslNcaoZcbTIb4Pr14oYR3evwi+O5v4GmO
+	 VIJ4ij81BAjKbCP85lKm0inpcq26Gxo2YLkfFoShz8dWYIO1PvSwPJ3YpJfFgGn0SJ
+	 vYfUGFTmbf8Iw==
+Date: Mon, 6 Jul 2026 17:33:50 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, David Hildenbrand <david@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [RFC PATCH 6/6] arm64: mm: support PMD page coalescing in the
+ linear map
+Message-ID: <aku8zidRtXPe_Rle@kernel.org>
+References: <20260611130144.1385343-1-abarnas@google.com>
+ <20260611130144.1385343-7-abarnas@google.com>
+ <799181c3-a1a1-4de7-bc6a-576d3282efb0@arm.com>
+ <akuieSDlbYdHnkCV@google.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <akuieSDlbYdHnkCV@google.com>
+X-Rspamd-Queue-Id: 803FE40017
+X-Stat-Signature: 4d6sjhxeresa8uar8u7r4mako9en91nr
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0D6A1160006
-X-Stat-Signature: bj4rte7nu1qofk5f5ng86xzedfk97mh7
-X-HE-Tag: 1783348174-653764
-X-HE-Meta: U2FsdGVkX1/LbSn2MTuqp/GsNs13QXCUa2p/zs7rWPfVgj7sZ4ay3DvvrR2gV0rgLKIgAvGD+zQ9ZH0HZGU6jqhI0Lgh2eBsdo2xJZlwo9s7V1/YR1EHw7iV13wu6soR+fZFF4w01Op66C4uF8qX/RpsmLzaDmW9jwrbU6+7i/vtT5kSDV6ULEdPVIs15hDLNgjwREPZFzdqS90IFzKG1vAfVPoNqXKBYFFCRAV4JsYVmu6L5yuCLceZrn0uRBvHTwkNCnygiixzaqK9z+GxTh2RDb+g0E8iOHAtjDgOKZm5Zl9i/iFj2dmYbeoa07g0PD2DbueQ3PzoH1W+VhVcF0CYryzMUCzUZc2XQDlm/98RbV0B+IESMkNAKym5aHiNEWR9UDQyS82gWEidt/qavMZGdA7AaEFDVhnSQhfIEVEfkTOYhL8fwfbztjhlobuOIdJyYKLGtf4ZaxeXjrsfJ5gN2tJ06FfCopC9c94YvWvR1iNiO7RJS79XghbIRA6mt8ghJxGxONvZlF4q+7GbwBzukYmtiN0tJgLUKDhQlZ9aK9yN6348oY+A7prRsAQVfTeA3wTvA2QQ/qqq781JPBV4PYRPfLqw+c8quVu7ihUR/Tox2w+oWK9BGgjtW62ReesnKWgfL5B7hkTxh/v4VA78d2axRwJPq1QwFOoX55V+i8SZ1mLujyje73/5UC6hDisnI8JQGoqWxW25PcnFnK/niyortfira14gmX/Mw9Rrc87RHznsWf4U4vXulj6mZccP2hBpsyMkFBplW5FhQXPk55ATnMSS+8mjre9jQuPHE/NxqTFKWfKXDCvh4tI1nhy8hRz4QVfZr5juAepMiyRPcptuHLbAWd21c5SlMZgrAgAQRmfAEJNjMmE0mweaYElbH6qXj6nf9NXHSkdO1nXhHOqS3RxC5oE7F99OOc7qKUbd/W10gD79cOKkldqzMsbvzemd7gProgu80R3
- Q2eOOPzq
- bpvUzEu2m1sJ0rTBKoHPhymjHYSROCIws9dvR4Wual9qLL85wACLitKeRyAhS1fe+qAK0qfRe8EfCA0P/5aIaN5q9yGfrHz0ln6OHEY1K5gS2t+h906m2OAvmCDRhSBX+YSuB5PfPQz+tuoGMfKXD31e2q4Mk7//IwyMWfC1EE9ol0Kfbpr8wHkC2BW6/HMqhgkTb9ABISYfCLxsAChvHQlYzJwO62HuiuMQlMYXfcRjOsXSZAh5yKpNSsX2xv39RNTfAputRYDcBqRLzB9tF+DoN/lmFfWZW7/betGVityytUUg8fG9fTwoaefUNTURx653w0IKzrzzN8gw=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783348438-141521
+X-HE-Meta: U2FsdGVkX19OAGL2UDQKf0Qn2x7uLcBkHEIAk9n13ibglzMNGEew79mQMxt+PPOKgdQgcBd5yTERG8RFVcn6YqgqDZ3to01UxgNRi8yW3Rtepj+/hhV6iXNW8l9/XycY8OeA3h/iyYRd6LUvEq3d7hDau+dLsF1gz2SbWbz/C/1yhSI1DzUXqzdjyzpCba4by31bEiOOUFHUM2vYYHmhhUe5JAE5ZhPireRj1E7y3cgJvdGCzwYmPtjrgUjOhXq8kkDiKEm/C3MvS74YaUC8lFMZ5ZqnA6kPmwzRcR0zJ/do6PA7mwArF5RdVIfkMoXKn3N9vEmndqg3ny2MtEFWKH9Mfw5cVC1EsjgktXLhCg+KaJZJ0IiwlVh1kMqePVa8YAr8dtBmIbp/C6Be9TDVwU8pyrR/qa6Mv2T7A5DXnX5RkLAuh3YvEfD4uTknWOWlHe2zQtNUedvHcnLCJmfOQl3R+DdBOeGSk37vrdB1plfatdUWHRgG/wxyIQo4CN5QmBUVaJQNJkSLe9SUedG62r0MS5pKgWRzHdBgfAEfADhutz5K31lf26a6yp2174hf7Q/d2bsW6I1tC6A2aJcHpoRWi4OBWuzAHCTI4klm5mnRFG8h4hb46vp+gr74dIMWgXVqdF6xKTJ8e7OGeQ6iJkm3VdbQmSzzjqjk72ECdfXZto38QghhuT96S3AIBZPz16xu7/qoNB4zgCrWd9WyKnkEBNFONM6dfgfxi89lO28aWXiX8iicHQcPCqwLEFMvhqCp32BgPRwjs/w+p72N1tSBQnfsR9S3sKvnqsHrhcKfDKGihvXKRpXhffd63p4w4adHomjoiCS47iwFiGGcurmMD9rttVkG+S+3osVTlJCf5b+YuLgN+4JsD8InXOiUSq5Z9w/m3UcSELvFfzXvrxJI0Ik+VbGcB3O6rUmkU5uj0oENPgi+JieLdarvrvObKDzwCOEbuU9wFBW31q+
+ DCNpwoBM
+ WedDqpW6C7eQLDV35nSpzarrJIPJUZMOepySLqXLeGhUysFuLkNJAsh/VCjCHnOfOCQFmTh7XkUdoVS/iALZQu6W1CHsHf1iGDTRbmQVnulIFB56qSPWa2VhoVlp9E+M4T5Q9oyoZXqnyxUKwTTGqFcab+WYaE2nHFenbzxlnpM5XjfCPdB9kskI8tyFowP5mlrFNWm+zRkqNgTeySRlk+Y29GB2CrmDYnOqCbvLc5xXgRW7RKDxLfFUzit/foG8xzZgSi30J0HPcnnGOZ555vhPNzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,38 +101,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+ Andrew
-
-On Mon,  6 Jul 2026 21:43:04 +0800 wang wei <a929244872@163.com> wrote:
-
-> In the ensure_file() function, the "not_exist" code path checks
-> whether $dir exists as a regular file.  However, the intent is to
-> verify that the target file ($file) does not exist, not the $dir.
-> Testing $dir makes the existence check effectively useless --
-> it tests the wrong path and thus never catches the case
-> where the file is unexpectedly present.
+On Mon, Jul 06, 2026 at 12:41:29PM +0000, Adrian Barnaś wrote:
+> Hi Mike,
 > 
-> Replace $dir with $file so the not_exist verification targets the
-> correct path.
-
-Nice catch, thank you!
-
+> On Fri, Jun 19, 2026 at 02:40:40PM +0100, Ryan Roberts wrote:
 > 
-> Signed-off-by: wang wei <a929244872@163.com>
+> > I don't think this is safe in general. Let's say we have a 2M region split into
+> > 512 x 4K PTEs. It's possible that the first 1M is one object and the second 1M
+> > is another object. Different CPUs could set_memory_*() on those 2 objects
+> > concurrently. If one of them then calls this function, we could end up
+> > collapsing the whole 2M while the other is trying to modify the PTEs and they
+> > will race.
+> > 
+> > Note that splitting _is_ safe (and protected by this lock) because you'd have 2
+> > objects backed by the same PMD, so they would both have to split before
+> > modifying the PTEs.
+> > 
+> > I think you'd need to ensure mutual exclusion at a higher level if doing this;
+> > probably execmem is the place that can ensure that no objects within a 2M region
+> > are racily trying to modify their permissions?
+> > 
+> > Thanks,
+> > Ryan
+> 
+> I wonder what do you think about enforcing mutual exclusion for permission
+> changes to the ROX_CACHE block as Ryan sugest?
+> 
+> Would it be appropriate to add locks (over `&execmem_cache.mutex`) to
+> `execmem_force_rw` and `execmem_restore_rox`?
+>                                                                             I
+> see that x86 has a lock that wraps entire process of updating attributes
+> (including spliting and collapsing pages):
+> ```
+> spin_lock(&cpa_lock);
+> ret = __change_page_attr(cpa, primary);
+> spin_unlock(&cpa_lock);                                            ```
+> As I understand it makes it safe already.
+> However, on ARM64 there is a split lock (which works fine for spliting) but
+> for collapsing at least on my implementation it is not sufficient as
+> Ryan pointed out.
 
-Reviewed-by: SJ Park <sj@kernel.org>
+I think the lock should be at set_memory level so that set_memory callers
+shouldn't care about the differences in arch implementations.
 
-This patch is applied to damon/next [1] tree.  If this patch is not added to
-mm.git in short term (~1 week?), I will ask mm.git maintainer (Andrew Morton)
-to pick this.  So, no action from your side is needed for now.  If it seems I
-also forgot doing that or you cannot wait for my action, please feel free to
-directly ask that to Andrew.
+I also suspect that the lockless page table walk in update_range_prot()
+isn't safe today.
+ 
+> Best regards
+> Adrian
 
-[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
-
-
-Thanks,
-SJ
-
-[...]
+-- 
+Sincerely yours,
+Mike.
 
