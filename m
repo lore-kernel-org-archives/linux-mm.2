@@ -4,91 +4,193 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13861C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55298C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:38:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D35C26B009E; Mon,  6 Jul 2026 02:29:53 -0400 (EDT)
+	id 200336B00E2; Mon,  6 Jul 2026 02:38:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE6106B009F; Mon,  6 Jul 2026 02:29:53 -0400 (EDT)
+	id 1AB896B00E4; Mon,  6 Jul 2026 02:38:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD4BB6B00A0; Mon,  6 Jul 2026 02:29:53 -0400 (EDT)
+	id 09AEB6B00E6; Mon,  6 Jul 2026 02:38:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 94AF36B009E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:29:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1E2CBC19D1
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:29:53 +0000 (UTC)
-X-FDA: 84957376266.12.E9186B4
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4E6AEC0002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:29:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qO+jFkbx;
-	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783319391;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CBEC56B00E2
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:38:30 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65FFD1C7B29
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:38:30 +0000 (UTC)
+X-FDA: 84957397980.11.BEB9F8F
+Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 86D88160002;
+	Mon,  6 Jul 2026 06:38:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=wdc.com header.s=dkim.wdc.com header.b="ZL66le/N";
+	dkim=pass header.d=sharedspace.onmicrosoft.com header.s=selector2-sharedspace-onmicrosoft-com header.b=feStfHNK;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf08.hostedemail.com: domain of "prvs=6405674cb=Johannes.Thumshirn@wdc.com" designates 216.71.154.45 as permitted sender) smtp.mailfrom="prvs=6405674cb=Johannes.Thumshirn@wdc.com";
+	dmarc=pass (policy=quarantine) header.from=wdc.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783319907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3XQkYBnHZWsJpiyDF1oAd+8WYbBHmcQTchDtP++ibmA=;
-	b=U4Ae+uBrDoZDw4kD99tmQvYbRHpxoxsqF97KlNy3mAyehzzMu0KRmtzHKP9wR6+zAhmw2j
-	u43x4UZM/H+iTAp4R4AfGDMaPnzrtUh+fOQHhFOh1Ji6jcl6fDD37/wFmmMuO4ER9HLjIc
-	6OIUYJ51oP4/qrGOQ+gzd8Gw3YBeRYw=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qO+jFkbx;
-	spf=pass (imf22.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783319391;
-	b=hdJWy7QJxz7v3VnkeQZ69UJlcZzNyuMyYfqnMXo59IlBFvBQC64oLzJzfh6ickDLt+uC9h
-	6jz6k6n35/qcZQ4Lkn65wPYFsPsts2Xq/lt8HAvaz+LIRqc1W+xHXm8vIMuIVDryXcZ+Xb
-	bgm/iw383Ul7nr5pYY428GWk6a1PCkc=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783319389;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3XQkYBnHZWsJpiyDF1oAd+8WYbBHmcQTchDtP++ibmA=;
-	b=qO+jFkbxMfLVNFyOyT2C9xJgciesprCRI0aNzSsDeA8+DQP2vHUY0p5odBTMJos6gjXI9V
-	HrDYMBdGGGXpwhGk1avVIz1/LnmEqiz9JlOg58JJpRgMtu7X/y9H8b/4BcPnJuh2HU4AAi
-	RaL1ZpF2wvW5pAmsGODfbpAWQzFSVG0=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v2] mm: memcg: reset zswap settings in css_reset
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260702024827.353185-1-jiayuan.chen@linux.dev>
-Date: Mon, 6 Jul 2026 14:28:54 +0800
-Cc: linux-mm@kvack.org,
- Jiayuan Chen <jiayuan.chen@shopee.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <152D4FB6-5540-476E-84AE-AF463929F2B2@linux.dev>
-References: <20260702024827.353185-1-jiayuan.chen@linux.dev>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+	bh=Dq0TJQA4Nlowbiocfcd3Mf1QNcYb2VpVDSIQUZVTWos=;
+	b=5+ksq8MUEIxkYM0ZUbk/B7PVhHApfSvqDieW0wvCiOczSCjn0F5TP5mOgk7CI3HawrPYOz
+	jnWnTd8XDMDV3hH1JlhRncLCFxcxAfTI+NIfZUNtSWbV4gYkY5yvVDtLoOPAR/VLXJLfLy
+	zOZV01nr3TRaSNUPXloLxWvC8uFLAOE=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=wdc.com header.s=dkim.wdc.com header.b="ZL66le/N";
+	dkim=pass header.d=sharedspace.onmicrosoft.com header.s=selector2-sharedspace-onmicrosoft-com header.b=feStfHNK;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf08.hostedemail.com: domain of "prvs=6405674cb=Johannes.Thumshirn@wdc.com" designates 216.71.154.45 as permitted sender) smtp.mailfrom="prvs=6405674cb=Johannes.Thumshirn@wdc.com";
+	dmarc=pass (policy=quarantine) header.from=wdc.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783319907;
+	b=WQ+8AEN42oOu+UjVjtTSL724NGmJScAlGm0Ko5Tf4qx/GRic5I06v4WTPLca3iKLWJz2aU
+	jDRr+xCRBW+VZRCZT0jbLHdVJc9ANJub4Hk0KqxQZAUXf+NxivPPEd2g9vzBwolpnYTC5q
+	cvoApccFzTtufNGG1Uq0ZDdf7yAS1f8=
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1783319906; x=1814855906;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Drc/pYFTYWlIEWc25fC/A83AvRw0I7Q0rKICJSN3tY4=;
+  b=ZL66le/NyyjqA0E+2bu0TfgiGaGyI1tENTlURkYY84ptEFdd46Ylcc+y
+   1I0S4rweKu+Py5w7adTMHzLAT6rTH01yV0yrhaOfwHnxuqTigZDD11GXd
+   lkC0vAMB0alT1JzN8jlxjkKR+fWaSFDtZMOUTraF3ob2lPJGNf1ZrSSwX
+   fRBNi/iwCIarXXTVsVcaeLgJ4shHsAsnlcEwOwXmQz9hXZvoZKswPOz3l
+   wI81j2ua8i9dnt8ISin+nuPJuUIza+3MM7ESe/IpKCcPrdAfuP7HPOk+j
+   NaixQQ3i3RKKjwTzd+dFquNDd4lv0njfEC9PUfbBg/5Iqwl8ZvoO740+2
+   g==;
+X-CSE-ConnectionGUID: sAVVw4vtT32mTdNOpJU1gA==
+X-CSE-MsgGUID: p0auosT7SVux9Y3FkCwlGw==
+X-IronPort-AV: E=Sophos;i="6.25,149,1779120000"; 
+   d="scan'208";a="148919721"
+Received: from mail-centralusazon11010070.outbound.protection.outlook.com (HELO DM1PR04CU001.outbound.protection.outlook.com) ([52.101.61.70])
+  by ob1.hgst.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Jul 2026 14:38:24 +0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=p9E1kjIwIHksW/FYPJZRrF6CaHAGV6p7n5C+aTG8zcbTGFYRptuxrZbglBJm/9SxADHenBuoSGVsxVL1kY6NMYaQmiayq94NY+G8Gn3S7fUlmwqOywhid2VQKZKknGzKYaXPbfRz36sUBo69S8YDUVeROVrR3xHeAcu8FFvtxQ1Y2mz42A6E6YLLlmSjQKejW3Y0ssw8zfQ3aCGAgz+sDaqsKbnC2VeFykeCzPWbid1f6ig3c2xLSypngI2auEHiF3M72Bhb4sJRPKpdKMfbwvIEfQAN06uCXYlVMjwEm1+mHYZfJvmZkdogN4M9tC97IXWASLMiT58a/3JEA2q7SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dq0TJQA4Nlowbiocfcd3Mf1QNcYb2VpVDSIQUZVTWos=;
+ b=sZdHCSNGm3D2LlgnUnAiUymwGQPLUJ0xqcjHl2+2jlP2xP7SxrG0ASEaZUksfbeRmJtI/gp1gWauLnZO7EBjFMdb4aZjo013aVwOFr7ntLoi37iTY1LL+QeYb49kv/wY2T2WdUz6TaO1kqwEIYB+8kXPqeVAcyQmO+C2hi4cF3gwwkGIPbpqR/Bd+28r/sDWH2LCsGboS0bsloz7DsH/J2AGcHzFBcGlMQlwBLq33fzCeWd6/z1lhLz69NOgt7vGBo/mPMmUjIXrA/WiYt1Kjg5CdvOjBjHUzRcgeLVSFZKGg7gbCJ9u1/7GHe2ClGYJRyMoYDeamUcUOEpEbMQ34Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
+ header.d=wdc.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dq0TJQA4Nlowbiocfcd3Mf1QNcYb2VpVDSIQUZVTWos=;
+ b=feStfHNKe4RLxkt7rBlaAeKLiOFh78ashghhf+0X4kygR7nmHVPPtwE0A6IV8fL+MyFXeffNfIy72wtOWtZWOZWKAW194jMijowg7++ZqZnikd1XDkr57P3ebtC9vpDRW4mKErvGK3h1cxdIVqviDpIlj8mFmfC+AwzLPkQs8us=
+Received: from SA6PR04MB9447.namprd04.prod.outlook.com (2603:10b6:806:436::21)
+ by DM8PR04MB8085.namprd04.prod.outlook.com (2603:10b6:8:c::11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.13; Mon, 6 Jul 2026 06:38:22 +0000
+Received: from SA6PR04MB9447.namprd04.prod.outlook.com
+ ([fe80::14c6:1c14:485f:1825]) by SA6PR04MB9447.namprd04.prod.outlook.com
+ ([fe80::14c6:1c14:485f:1825%6]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
+ 06:38:22 +0000
+Message-ID: <8583b332-0d24-4f6f-8831-69e3aad936fd@wdc.com>
+Date: Mon, 6 Jul 2026 08:38:12 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block: split out a new blk_plug.h helper
+To: Christoph Hellwig <hch@lst.de>, axboe@kernel.dk
+Cc: linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-aio@kvack.org, linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20260706041125.642097-1-hch@lst.de>
+Content-Language: en-US
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+In-Reply-To: <20260706041125.642097-1-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0234.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e9::18) To SA6PR04MB9447.namprd04.prod.outlook.com
+ (2603:10b6:806:436::21)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA6PR04MB9447:EE_|DM8PR04MB8085:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a5af553-51d6-4473-ea6e-08dedb292c72
+WDCIPOUTBOUND: EOP-TRUE
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|23010399003|18002099003|22082099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	S9lAMdoaBcZmApS4lNChfKLI3R4BEaJtiMSDdSmDnm6T0ywgf4BJmu9ZSNBjwR4cMwAMFE7EcHikMbxeWDvdpQgYdXu0PrusOUD6qiLPhJ+cEKKYaMflAzlBi4j1BV1lk3BRxj570ymL+bJ2nZ1TXx13S5gSnPp1DS6msm8u/4IgPpi0KnnkIImmbKX3Cv84TMysywfgnRDJGSy7M6UkswG61aMe5l4YdLKY49SxVszLEZy5AeHh57dMRsTQo4aoixxo5d96N8fLn9bJI3YcmT30W33ksbHxLpoQE3Sa1cBbOP9jF5DxNJvgFfp/uWmEOnuKNWc9iSDjMP6J1tLCnj2I6MzxpY6kqWVB6pIT4qXKhI8iL46viyjV6YvZAEkGpIkWqfuoSLMc3ekk7tgYz1KTGrfHBujdPka7IZrdSMptMFXsRsbgQOhCJZI+T61iDWUBrHKoyjPLCf/kxweZEuhKFiqfhXrY2wEN+AxMUgphRWK7im8g8wSVcfGtPfe1ET/Wt8WhoI09+rk1/bW/Y+2FEb2W8TNbh7X7BzHJlhikdF7F8U8RBVnZog0AYfkCN96G6roaj4iOgWuL/ck1qY45xZ91vyyHtPnzqVfc7lXB5WxUTBxieBEGquZYuvkrL3iEcsYmQKsywo49MiIIp/wMPhz9PrXPZv0ZfOivHRo=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA6PR04MB9447.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(23010399003)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SGduNHNoMUdBWWF0WmNHNDdOaGFmZThUVlV1bTNtZnBZWjdXMjFwYUhtZTFz?=
+ =?utf-8?B?cHRlOEpUTUxRUCs2Wks1dXRVVHhGZFZRUGZ1SHJHbEN3ekQzOXhJZ1I2RXBw?=
+ =?utf-8?B?alBxYkdYQWpDSXJQei8yZ1FkaFllMmlacTNWeGllZnJhS0Njc0FzVExLRjdT?=
+ =?utf-8?B?MzlXQUtHb0JFdHpuMXhqQVk4MjhOQTB5MHlsditpT3RDbjEvc012dnYrRmhU?=
+ =?utf-8?B?TGtYeHBtOC94TGdRYkhLSkxnVWNDb2dCZ1Izd3NFbHJCcE1pbkc2SmhsYjha?=
+ =?utf-8?B?N1B1YWtkWG9SS00wVVdFMVBuckpiU1JuSU1EeG5nSFdBa2dVa1doM1FEclFl?=
+ =?utf-8?B?c0pCbGl3Nlc0VGVzY29JME1yN2xqS0dOdndUcFhkblFTaEFBNWRZQ1d0eXVl?=
+ =?utf-8?B?KzFqaWdibUl2dGlpNThUdzhKdjRHWHZBQVVtbFMrb0RSZ3d3N0lKNDJ6ZHR3?=
+ =?utf-8?B?OVJVUmFrblJJQmNxTGZXTkJpZGRRYTdiaWNOQmlCR2g2L0JyeHhoU3FLeGFl?=
+ =?utf-8?B?Y0Jrdjd0Vy9mUXZ6M1RGK0ZsaFpieWhGMTNnZFJ1Z3JrMVVlc3p6SE1hV3Rt?=
+ =?utf-8?B?U3YwM0JGMzZzUHlhRVp2My81a1hTZkdOQUFkbFBkQnFiTWhmQVdleld4WEFT?=
+ =?utf-8?B?ZVdScUNBdHRhOWRUUjlQUkN6WW5Qd0tHaCtUL3pCKzk5dHYweTVwZ2ExTWxO?=
+ =?utf-8?B?ZVNzSXJRbk5FVzByQUt3anhVOC91aUVFckdRUkpEbGJMNC9xL1U5T0hiSUx0?=
+ =?utf-8?B?ejdSWk1seUxQVHZZVDE2ajlkTGdWZ1M1cjFaV2g0Q3JBb2ZaY1RyTXRFZHZD?=
+ =?utf-8?B?aHNlblYvMVVlOVU1OUFPOUs5a1RTWWk5K0d3eTE0Rm8vcGtBQlRCNkFuQ1Bw?=
+ =?utf-8?B?Ykhsa3ROL2IyUFNPcUg5MFlqVGhzYnBpYXlDcXFMbEVHSHRCczdTQ1NuQ3Y4?=
+ =?utf-8?B?eXkxMFdhYi9MRE9BM3JTc2ZkTis4Qlh6WVA2eGpaZVZDV2dxZHVWL2VxWGdo?=
+ =?utf-8?B?SmFaSEsvR09TYlhGVnJmVFhjT3p0akt3Q0tPeUR2eFNMMnFLQnJhdUxzWG9E?=
+ =?utf-8?B?OGprMG9FaVQxZVVqWmV4UE9UUlhaR3ZlbG84SXRPY2VoVUpNbDlKTUxQN3Q5?=
+ =?utf-8?B?eTJJdzYwYUlEaXJ0ZTFRcDVFSzlyNlVLem1xVnF2TDErOU0rTGVpcXF4K0lq?=
+ =?utf-8?B?eXdTMDh6Mm5idXlJS0FvZGtTSlNXUS9wQTBtK0JjMWdWWnU3ZFlVTnZzOW1N?=
+ =?utf-8?B?NTN1cGhqMkhzQ2xCYWZjTEJZZXRwc0pwYnZDWmNmSnB5SlM3c3VTcEEzd29i?=
+ =?utf-8?B?ODQzODZDbzErc3lzUzFwSWVhU2xOVG01dExZTzFMZVNRYng2bWRQR3duby9v?=
+ =?utf-8?B?eHg5cldFemZQNkFiUWIyRENscW5UOWxod2dDYzJsNDRtN0tXOVlGcXNoRSsx?=
+ =?utf-8?B?Y2lWTk12bHNMNzBMamVFUjcyeWhqbTF5UEtmQk1vbVJSOWR6WUIxOEI2NjJG?=
+ =?utf-8?B?UUtvdElOcndZWndMZk92V3NLdlNISWVCRHJoMjFFbnBya0tRSDFob2ptTmpW?=
+ =?utf-8?B?bWpkSlB5WGxFQ2FjTTNtZGJQNzJFcm9zZFNWWTFoYkxrWkV1SzdnQ25Wakwy?=
+ =?utf-8?B?dE5BRDdVYm9Kblc4UDltVWpWNUJLaG1pUGRGL1hEMXVTa2g2OXdXQlZRckE3?=
+ =?utf-8?B?N0tROHc0bjFKTWN1a3NrRjEweDhOUmZCQWxJZkg4bUlQNVBqa1ZsWlh5SUU2?=
+ =?utf-8?B?SmJ3MHJHS2RGQTRwclRMeDBSYVFnR05LRmRPWUppWXIyeXcwQlczU2NTUjh0?=
+ =?utf-8?B?L2JsT3N1cXlVZEx5V1grd29NS0I2bS8vZEh6bzNHTW5YZUNIQ0dPNUdaNGJI?=
+ =?utf-8?B?L2xkdzlaSENZcExRQTV5TzhDeDNwVHZVRmRGT3JSZEtWejd2RWNXNkhBbkZp?=
+ =?utf-8?B?MFV1a3NqdXI4YjdNby9Ld3p5RnhzdVBFdUZTS3lJaUZMdlRIanVQZUltZ3Er?=
+ =?utf-8?B?SzZITFFRdmkwNkNLcG1DTU5STlhOc1ZvVG1pTXZXUTI2cXRpQW80UlZOOTN3?=
+ =?utf-8?B?bWo2Mms0MlRzcE93ZlVtdm5YZ29wSS9neEVtdkhqcGljQXBVSC96UTYrMzF1?=
+ =?utf-8?B?VU5aQUhjMkI2Ly9iR2VjMUhlV05USUxFc0R2aXBmdkl1cER0U2FaemlpL0pu?=
+ =?utf-8?B?MnVqUU1ITlRoK05DZTI3bXU3Q1BBNXhzQ2YxRHQ4TlkxS093cTZYSWRvY3ky?=
+ =?utf-8?B?NGprdVY0amJFVnhrdmFXaks5ejlYUTJtSlY4dEtqUWRCdm5BQjBIQTdEQWJK?=
+ =?utf-8?B?V210MGcxRzY0TWRXS3NtRmVEczJKWmJydzhkSnUzeFBxZXZCeG1oblhzU1No?=
+ =?utf-8?Q?ITaSJYkWt7cGWmp8=3D?=
+X-Exchange-RoutingPolicyChecked:
+	QDgp/jnQdpPdAoXTBK3xMKPSI7FY547kZeD5tQhFlpIsfoOQ2My40I0dI40mYxMM3KutTG8EhVlSoG6oP1S0zmkBdwW1zNlrvRCYDaXAtdVDnAgaQlIh9HNxIsrrBn5PoQRoQuKjzN5CdfML2gnezjhvQTG++2y7ezny2OcvzmTO88YR4DUnd6OxjE2iLj9yCBSFhbVKVJLmkbP9Go0czohDYgxf0CSzsxU7GrOI3wdSO7N4HDIO+PrTTg0UUS7YqfLRU8LlSkWPwK6ZfhYNjxMJaiL73yCTDRCJ8qeZ1P6DF9dHFgKB5hmfyet3o8Ha4O0EwqjmGX8SzoM2c4Xwcw==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	uWwBRZEGdu5Wt5XOA5GrACJXVNHBQRdU8Rqor1lkWTeorlg2KnnwRoUPFWoAr9zcH/0ldeD6XBrRNNTydJ8IPrISPOxOzwGjqdqAIZgVLvHfNX6SW4peCqnAGbtiW8Ou5U3HJVpYOLWcAJrpHHk2IO5d/qdtRQY+eIDgePNlZznn1eNx3ZwLO/Cbr/VFWUo1CP5fhcj/MbgQyoO9f0pnNdE+Tx0SbI6MDKU+Bs0X6UHagEuQF16AMlXRpDT1Q/1FtNagHUwK95cTm0hSBt8jbaLxB8A1d31VNHwwztN+bhHLwckS/jbZNi2gtzaQwV1zM6dOe2OwVofvDW991IkeQxbvWo6Vnn8aQg5AzRbXYQIYEu2PkHxnS8cWPoTvPbGKSqd13BIpmQ5mHxLE7t5XsqUg4LJXMF7gTRSaFVva7FvIi5AEMJKgsywsrKHBIK4hzZ1KTaTkyFh7yyWhGINT5l+MytfHoIqpHPJvEGNtldsFjHGEsmTI9+k0VVxaZnpXp0ButaJH2ffk7TR+csg2cPEaPDxLz1KVAu7Nfbl7xssMRjnr7I9F9hUjYSRIEsTYmOiLwWiM44qcCmr0LgIBy8DKPnoqrnjmU1s+JEJQoQi/wosoaDSsOzRVEJLm8oS9
+X-OriginatorOrg: wdc.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a5af553-51d6-4473-ea6e-08dedb292c72
+X-MS-Exchange-CrossTenant-AuthSource: SA6PR04MB9447.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 06:38:22.1435
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: b61c8803-16f3-4c35-9b17-6f65f441df86
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wTKSfJys1EzufEikFkhFmN8ZN8mzLqPyMTaV2+TrL3wETXsww7RkLdtwhFvV4GRNs5Lx/zdgU+if3lVEc64k0W44wvc5b3NPLfpS9dpfi9Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR04MB8085
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4E6AEC0002
-X-Stat-Signature: iqjsmmz1t89wj9mcys85crh1c1pz7mge
-X-HE-Tag: 1783319391-603330
-X-HE-Meta: U2FsdGVkX1+jUjQ6nys/tVa4iMDFJYwl6q2XW1NzgETJxObcv/c3QOVhatkkZn9jsAsHXaUb9h9/CYNXWShGfQ9/FSLgsqRXSSMTM4KsBWINZ1vdDvfbM+PqlLRi2NbkzVh2hcMBWKHsHrVx82uOMaEu7h0fWx6qPLXRi43ZPEp0ndfmm5FKtrH1opK+uFHjg0KvOP6Ft+knRv1lbYpWsNPhr1Cj2JSoC2G/KwvUhkn9wSTEZv2nCF5xPAy4wzMJP8H/yGop3HCecGXifSr2ZdJ0Ybr1X0AfCmwdbSVoQrlBmOcrrox/hcNlRmbelfyMRA8f+McLsZnlONAY8TXeCtMbLGksGPjSYTMUm83c2msjBtJe3KxzHAEfMe9YfJYOV0uAaRwWiFlgDjXk1qwCeP8+c5G5/DvdppA68SzO4i4r5WGEcbd1C2RTCOBOWaFvyf0BKJn+DS93yu462fy1i5eP1AdHdgd5at4v3R0YEQsC4HkBKjjqc2WUp7+TrN+pcEdty6A4zWfvPxl+uNpSOwUPGvN4BcpneFQzK1OPqmnKbDm08z0DTEimTCstFWEfM6Ow6B0KLjYe+mu03A9nvcpl/UaqnrPl2R/KT2kVNvPrOXLAcg/yTcrz7TOpY+24OxHWKXPUBKFXlv/60zOnp4T6iVHwB5l4/BDKxC5pemk2xCGw9I/17xLVGNrW+16r2i/1w6Ils5mDpKPF/AZpJoDLsASSO3KUN0dLeyt+9nag9/S27WsQ1xOV29aqh2b7RHgvNUgWaFt9pkl2TdJGie5Tp4BE1v6YYeWDOKSa0npU3HkSL+AUI1ykFNKGIq+qeNpDIPZJtV30lIGdSudBZYkZaFBpJLNspMcMcrIn4XziWIBTh2FRpOkyNe6XggQ7vHgadTYY9cPBDmJRu5rBpgJvmFHra2BU1a4q4iY8YMaDPjgC8KCejvoaNJPvcnbxXNmSfR8kebfKwpA3CnB
- pph+0m3i
- UlFTCj13L0muZ2yfybWFuPF7iTFq+i4WtBDb6NMJLJqhuL0bI6mcQ8gUmVXJ0KP7Ni1Es6HizOHnVvGkooGGYk3z8Rmy2kFcurqLOWW4RPBPJ59qJx12Tk2WxSxvFfhqsBGidG5p+lnDMNpiqam850i1UAslSNMl/qa1b/ZXeEGqdB+UCWMjHGUyDquNSkbAMqXjQWVsyHYTjvKtDWyJE2HpoQYz1xs8FnOnQpic4eHiuZ67ihFcZG7eDIUfTczBdwyIPrrEzlRS3VWsVpx1XcYZzkyUpnW6abzLbOjjSuLdCOx3xMUELBBeiUnpHBimTceEoq1Z3MgIE9R64l9XdWwHDjg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 86D88160002
+X-Stat-Signature: ac5q6qxeibr1rwc1pgwdf8hrzf3j79qy
+X-HE-Tag: 1783319906-237251
+X-HE-Meta: U2FsdGVkX1/ccP23/8nnLdKQNeppTvtc1Id1TG6XJkfI/ncvemPo01YnBPz057IWpL+cQzXb/kDfFWN2mh/QvHsctLRccF6Jh0a8jqC5lJEtIiGtHFZ5hpNoQlcLln0wms1n6MntxMHugBXFnmZvm+3lPv5WMq21dM6b/DiduSVuyR0teMuVqg69BXP0OvknNSQ9WZjOeTfMfCm65b2nvaZU2HUKzrSSvJJ8IgurM4HU2Ev3aSjjkZWiT/wAldlTly4XeCpd0WtOfMd4VxF597NCo7cNXGD/gcipswV2P5wlZ20Lkwc9FAKz0miTAdV7We74X88q7jY6x+ckWHlRWuhdkJdKX9rU7cMhiCNRvDb6ojCLyfFgLVtm4tvwZv+1Jfs9tzFEVlbqEzE1HlZqTDaU0aiXbpZ2syDTm4uPGPwx39qGRVlNjWG09U1WBjdiuPnVgeCyJcBYiQUDIe/QZu+IS/wdDCGQ845+yiM03QqAzKRSupJyKka338W5AauCkkrBscRpzmg/zdYcdNeVtekYlaQ9i7gD7pz3EbNIHh6AqOIfGcZ2eVDqhK3QrT68sMtkwh7zRT7i0hfoQdIkwoowWhfJqOPiM/ydWIqoARySyIoqUA95FwzIjGMBX/L7Qq13F3ad6XpNMLvAD+2YTOTseSnn2xJRyjZgGtADEi6K1LjFKecJJq+VZjOT147ZWEIntBjQTJRY+pP53bkn0GydZlFIRONiwMMRold00C26LroZiV92DaXOpgX7fDgtOcytQVurqPoGbJECt67NizFki+6F4xIm1pPJWKZds1DT4ofq017VXIs+B+LYfs0tMRTWjZLegC85Z5iF8UnyQXbJmQTXby+2qfT34OIYH1Pq/9NI/wNigS2xh9ofZm/eVMV5potGfl5Yw18VI1udLtWpQRTz2HFGqBCj3SjPvrIirBIDPkkOKUeU1AEu66d5r9FV6RpCa56lBmQ51/D
+ JSwzZiIa
+ PV6z/pjU8sPd/wutIhEdVxGkgwEnH9koiUQO9jyuYanc/+5kyDtRfk9ova9OS5T9ZHlFeE+oTLqJFMC/mFvQ633f23eFM/l4c/nVQMuTPXKcAfw01HgDPEIvybAx2R4asodqZrrde9G1sZyZVB2pRzk60YyuvDSYmYa8JXIBPIpSmh2Hko9hfeF1xqPeUqakBFgbUIckOB2wL1HZOqru2xVa34A9tVBVeFxpvYKxs+rNkbcNdS0Ncp7p/O0shYMbyDKN5dEpkCE3vby4MKih0YDLqau8G4pt+CH+lqRI7ugjPrin+IdLPqNr3SwicltT9Esz+s9MnUcrnWhckSEAcGcoHcUKkfTfersfXTHn6xQwvlZyRZ2BNGX2Oza7hzwCJHDuB5/344XVL858XnaOA3K+SSKNSe4DqWPfyW6ddvWcCX0hbnBFg8aoPoCNcpnjbCwiZtaEbOcP7ionUJrBiarqnZKUG78Lx1/VMBF/UEd7aWqBo5pLP1WQoXVvj2MRzbKm8T4Jk3hzxXsFZn6l86WuN1VySjRCn2ENx8PY7PHHQAAC3wJ6EVZ9K9IDyFRp+xgU6G4t3l+0l/zsQw7FLRFSMC7vqdp7HStz0In4OvgjoZCsWLuF4L0iZjAmqLTucfibIw2MU62IRpBx/zZqkHNWnV03iunL40/hO+7mtcFuEkDIchpZ9vu5LTIncuhL811Ioq100c8Vk3RzQ0M+2tJrZ4hoJqg9ksOz1jB5wK4pZxlvziM4xXLud7x32vGwLwZZYbBKVtf2ouYwQ/udJhw9e4BwZBoQnUvXCzlE6jScZ++VcUE9NCD1QfFCtL1CY60vg7UGmgOKosKjHR+OeLspylw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,63 +198,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-> On Jul 2, 2026, at 10:48, Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
-> 
-> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> 
-> mem_cgroup_css_reset() is called when the memory controller is disabled
-> on a cgroup but the memcg cannot be destroyed because it is pinned by a
-> subsystem dependency -- for example, the io controller declares
-> .depends_on = 1 << memory_cgrp_id, so memory remains in the cgroup_ss_mask
-> and the css is hidden rather than killed.
-> 
-> The purpose of css_reset is to revert the memcg to its vanilla state so
-> that no policies are applied and the css can be safely made visible again
-> later.  Currently, all page counters (memory.max, swap.max, kmem.max,
-> tcpmem.max) and other limits (soft_limit, memory.high, swap.high) are
-> reset to their defaults, but zswap_max and zswap_writeback are not.
-> 
-> These fields are initialized in css_alloc (zswap_max = PAGE_COUNTER_MAX,
-> zswap_writeback inherited from parent) but were missing from css_reset.
-> As a result, stale zswap policies remain in effect after css_reset: the
-> zswap charge path (obj_cgroup_may_zswap) continues to enforce the old
-> zswap_max limit, and the writeback path continues to honor the old
-> zswap_writeback setting, even though the memory controller has been
-> "disabled" on this cgroup.
-> 
-> Reset zswap_max to PAGE_COUNTER_MAX and zswap_writeback to true, matching
-> their defaults in css_alloc.
-> 
-> Test:
-> echo "+memory +io" > /sys/fs/cgroup/cgroup.subtree_control
-> 
-> mkdir /sys/fs/cgroup/test
-> mkdir /sys/fs/cgroup/test/child
-> 
-> echo "+memory +io" > /sys/fs/cgroup/test/cgroup.subtree_control
-> echo 10000 > /sys/fs/cgroup/test/child/memory.zswap.max
-> 
-> # child/memory.swap.max and child/memory.zswam.max disappear
-> echo "-memory" > /sys/fs/cgroup/test/cgroup.subtree_control
-> 
-> # re-enable memory control
-> echo "+memory" > /sys/fs/cgroup/test/cgroup.subtree_control
-> 
-> # before this patch
-> cat /sys/fs/cgroup/test/child/memory.zswap.max
->    8192
-> 
-> # after this patch, same as memory.swap.max
-> cat /sys/fs/cgroup/test/child/memory.zswap.max
->    max
-> 
-> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
+On 7/6/26 6:11 AM, Christoph Hellwig wrote:
+> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+> index 9213a5716f95..20cb8ed7d987 100644
+> --- a/include/linux/blkdev.h
+> +++ b/include/linux/blkdev.h
+> @@ -7,6 +7,7 @@
+>   
+>   #include <linux/types.h>
+>   #include <linux/blk_types.h>
+> +#include <linux/blk_plug.h>
+>   #include <linux/device.h>
+>   #include <linux/list.h>
+>   #include <linux/llist.h>
+>
+I know it's a lot of cross subsystem churn, but wouldn't it be cleaner 
+to not include blk_plug.h in blkdev.h, but patch the update the 
+consumers? A quick grep shows 68 files that would need updating and some 
+you already  have updated.
 
