@@ -4,103 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B96E9C43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:05:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 438E1C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:20:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1356B00A1; Mon,  6 Jul 2026 07:05:33 -0400 (EDT)
+	id 057736B00C8; Mon,  6 Jul 2026 07:20:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9622B6B00A2; Mon,  6 Jul 2026 07:05:33 -0400 (EDT)
+	id 006CB6B00C9; Mon,  6 Jul 2026 07:20:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82BC86B00A3; Mon,  6 Jul 2026 07:05:33 -0400 (EDT)
+	id E5EAD6B00CA; Mon,  6 Jul 2026 07:20:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 45A176B00A1
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:05:33 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BA35F1A03B2
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:05:32 +0000 (UTC)
-X-FDA: 84958070904.09.740763E
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BB4C314000A
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:05:30 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VHL9KSSG;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BD3296B00C8
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:20:11 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E555A0381
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:20:11 +0000 (UTC)
+X-FDA: 84958107822.28.2ED1113
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 68447140004
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:20:08 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=KL1SYCqO;
+	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783336809;
+	b=rI8g/Who2Mt0qZZ5iqB4KyPTGuiqs42Za4Vsx2TDuayvC6Q9snAPytec2XppuNhdal7gP8
+	rlE14j8q5FNnMe/VuADdQmSvooPmrvdT6PRfDVkmo5QQx7k+7JqMUQ6h/mbRPyov1Xnhi7
+	M/FobPu5U8FKDNjVksY/BOawpuETGUU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=KL1SYCqO;
+	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783335931;
+	s=arc-20220608; t=1783336809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=70JWofOLlMgrve9aDAgHG0zmj2dWsVDmKKX/VA1fyUA=;
-	b=a7H9fto7fDY60P14rS+mdxuTJuSa/3NrNH+jUewemvAyJtFmMk7YqCNt+DzKg4bYatbKgU
-	6FCx5vpj1lrYz98/yYLbFDEtfg9uotTgQgUzdmTxkGnj5XViygrCWu2wfqBuNIc22clTcz
-	d2lYpSAeH1Hu/NsFOKQ+wVKPtaCnZmE=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VHL9KSSG;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783335931;
-	b=OscKOI7VAwm/lWVSJB8CHC1qWTUAlkeFjRsOn5bWvcxsL8ZkcrzHJFMfNNV9XipkKUC/G5
-	e7uinJXfn3YgF1qDHeOHA703y2AfZk/DzmNtc6XKshS+qslpeS8A0FDnWcDpqCup0iTYk+
-	+LYFDp1PnaXbjm8BrCaFR6yC6WpKhyw=
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783335928;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=70JWofOLlMgrve9aDAgHG0zmj2dWsVDmKKX/VA1fyUA=;
-	b=VHL9KSSGqlxRYaGJQc9uy9oiC4xOSCeQUo/nl+CaMphFOPWNd+lQJukSEIALJfU39/njtD
-	8RLuOFpl7fzzo9dgm8IwummIQjaga+zPxFmOc/m/pSGd+HghXQrb6mhFAvSvUvMOFTzAMN
-	710fjORCfQjp3SJnNqGIg+QRTJFGbS8=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH v4 01/19] mm/hugetlb: Fix boot panic with CONFIG_DEBUG_VM
- and HVO bootmem pages
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <b4b200da-f510-4fe2-95ac-c63e4467c4bd@google.com>
-Date: Mon, 6 Jul 2026 19:04:50 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Ritesh Harjani <ritesh.list@gmail.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org,
- Mike Kravetz <mike.kravetz@oracle.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BBE64A39-448D-4235-8090-74C57947FE35@linux.dev>
-References: <20260612035903.2468601-1-songmuchun@bytedance.com>
- <20260612035903.2468601-2-songmuchun@bytedance.com>
- <b4b200da-f510-4fe2-95ac-c63e4467c4bd@google.com>
-To: =?utf-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>
-X-Migadu-Flow: FLOW_OUT
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=EAxKDEsUYxlHwffEzchzY2VoONZ9w3p1pymkmYcICmQ=;
+	b=2FOBraw7FqsPdZh8v4y6Q9xjdrHMdSeXWyGxWzoHcCzjn39x2OybyK+1oTWpmJiep2la/0
+	aqq3yMVKridMlNC/auMugSOVQsDZgVfPQFXOyScXPhrpQFCQaINdqAHetStNI7fGTjuVop
+	8jnhDtgRczFlJwZAHpy4A0wysbOxIXM=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=EAxKDEsUYxlHwffEzchzY2VoONZ9w3p1pymkmYcICmQ=;
+	b=KL1SYCqOYa9/sckRtoBi6B1ccWhG5oV5VGkXgVufbgDPHSWxfAgLpGn6Z5WiZRr04XsbWxXPI
+	t0qzleQReEwKeonc10QqVECCF6dFxylv+vy41XIkcER5xrFe/YFFI5w722uhf//QEcE/7H4nEqJ
+	qpMqdHBK3V3AOeYfDBJD7RU=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gv1rY4h0vzpSwT;
+	Mon,  6 Jul 2026 19:11:25 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7688C40579;
+	Mon,  6 Jul 2026 19:20:02 +0800 (CST)
+Received: from localhost.localdomain (10.50.87.83) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 6 Jul 2026 19:20:01 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>
+CC: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, Joshua
+ Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+	<byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+	<ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+	<linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH] mm: migrate_device: fix pte_pfn/pte_dirty called on non-present PTE
+Date: Mon, 6 Jul 2026 19:19:58 +0800
+Message-ID: <20260706111958.3649651-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BB4C314000A
-X-Stat-Signature: z4kx8z9qgp9rhd5ba9bn8eccepptu4ud
-X-HE-Tag: 1783335930-193140
-X-HE-Meta: U2FsdGVkX1/TY/hb/rNTlJw8LcO4Fdcppwvs8iTFOMmtnBJ+kzOwglweEyqb3spLatEbuA88fqbQMnP+1Xgv3mk3wAUr/q7EuEtvaznvQdwJaL4utpg9liwUipkLkNztFO573k5V5NLc5/Tlfej4U31EjSYUVu8a9YyPGagHfa+c6qqKJxHrDITpluZeQ00ODD6dwI/4v/z18SQ8lJB8FcYYNHi/Aqlv9FIpE15uaOCLTR9SF40SQfoOLizzBSRSKHI5v5Ht1ajRXZCubFmqg53QXrUJqWPcOGRofDj3iAOWFi+pZk2PDXCXugFdr2vG5vcgdPlv2wEWvGszyP1sGV4HejHCgWnwSlbKx210ysRWTmJaMcUSabK7Ylac1QhaCiRy5PJpqkHbZbNLkZAKxrCVhTKkp4/zpphC8BZ3XwAExcXkG4wwG6jy9OWIC73OETkxERu7Ka4x2/43PinJu4jIvXiMAfPg5T+I3f/GsInNXqGwDxJcrloBchVK+vjMBDpColMIbz2D3YwOATa3dXlT7b4iPdixqZlq/FL9YDb2R109/LldjYzITRkl4A83P3FLpTz1vqcALb9o+45DV4hy5W8KFVtrSUhgDgPj92+/angoeeQMroZ/P8QnjFzElSBtJE1bqw0RnjfN/JF71Wm2RO6aapm7Xhz9ndNrIcSwZrtju0WUU1nJUXf00ckpkWRP4qfjdMYvvOH4H4drAb8c4ggpcuj6Uksb2E9i1xkdlB9Qo/kpgv6wOeRPOENcFfV2my7k0878wEuZEkWcHBZ3jC3AUkgde/wisczHDQZ4l3OjJ0ZpSNKntXXVTuX3uWAq73ZRtWPty+NlBXO/4Q4183dCjQaDlQAaM0Ntme16BA9Ohx6R/MV5mToGYqK1drKhZhyePnRudme2uBFzR6IldXNIABBm/543/fZACIOX4UIy21JqZ5+ZplLjM43RlLh5qUi4VRuTGQzRaEE
- XMUnDhjl
- cF9iif341E7QTtsomYeZuSXCupXj+W5Q2aTeKEcwu/uSMlr4V/2A7BmkmkapYzyplXnSODE6q4/65UH7Og2uYmQ4vtKuWrAvyo7AHKSRrvRHtjWytF2bxe3TUa0kGrAwvkaMhNxu7YqYUvioSq+pGIl4Sqq4tbKH53/jcUD65BXqcjkrQFETYEy4BsYr8lEgwH9Gf+c7Q3EZ3rn/y2cysRm1IKqAhCSOsumMoppuAW0u7k4U9m/05/zqZC6jsRPgk/m5qaWRlEx4JXYw+CKvTHw0fYGtjrI1WOmmDtnBN07Q19RMNKGolfOsEUh5bu6lgGzRPm0EmcyeAa/54yTIH4x2ggv+z3LuaHL8WgBKFSkllz9471IBaP1AFKnfkmbfefLYDdLylgkscStCubUU930ToEAkM/svoNoTUf5jIylV1+Qg38zr0Ga3zjg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 68447140004
+X-Stat-Signature: oko6pqjsben8p5pjspe9chsdct8kq61p
+X-HE-Tag: 1783336808-625779
+X-HE-Meta: U2FsdGVkX1/ohbLhptY9uQr7ryTBiYBsxsC+eo7+DzVOO3RZvainllCtIaQAfvpQlS+lev0tttaVVZFBT5oDerKCCcSZMXeVjr4P20veApQPEe7yq3U5Ce2cM9v1R0Jf15obSMza2NRER+3rzlgFkztUmq4/ozk6UWxv2CP1m5DrQrscPVfwmPrE4OJqzJlyHFkRIOErPcpC7kysM4IBgfadXxFhSmyYxYNTnQDJ4Eo/jRraegv5bJ5mKJgkPYlAk9LK35gxeXqEVyhS1xTV9c5rHXZIh5LaFcISAqY19Faz8shbCciNmnq5HB/FQU/o9mVK/2kDdVysn9oD3yCOJNNAoR3pZV4GXZXondOMqxHQKQ4WTz/S8ZfFYWlh3f/gR0D/16lChLiUF4b3Y99abrUsV9Zvd0onuTtTDJdbm1AQwgaRvp3VJ9VoxXlnGEnAcvpL1ve9FbeQVG4KqKnJidC9yvxhGeJlxw1zgTY9zOBWco059TdToucnCcy6QyKHCXyMQ2rQWsYVYXxc6GynQP/LyMb++XTCn5waopcIJ6pN/A1q++617Hy24NCyhu2i9cQ2U66sKbuVFKK/bqvEzUlqmfiRDl+1DOLCcVD0BAu67SbcyUKGshjhO0zl1rynjqv7C3g7F7dQe9L0Gre7Z5h+aP+712H5AT745PrFjmve/kFaZbv/J7NvWMoUr8pcJ+rYVi6s2HpEtpOaLXebFHfoMgSBvqi/XNZ6Hnnr3I0F7cvn06sfPRGqys2d8sDtd5/240uH4I+08oLctqyIiTz4deglvB6j041cX/5e3lNkK5WsQ6InIV1CJMGt5utRNHQn2duimpJTo2iXVNWhnAj0wr0tjWzCgzEHcYECpXvDrHyvJCVUcZjNgIY5dvYSDsSnH2YfReGuifAhvEWDuHWGIj1xzbi1yT8iDliePrIcPVnoNBGz6A0whLohoWbjs0WIlm4Ti09LjoFTbPd
+ U5xwnCnY
+ vlrFtD0EJIXh8Jm9YPZrbXu+2aMN1d/BUZcxSLNnwoNkYHfRK224gITTGxiRaS5LT2dK9+hPWyPUcoaOt/PQsbupAK0j696QPOv0/iZj3vx7KcbQTiFbUVEVfsxYog5tnu+b4v5zjquUBl1OUroEo7fTQyG8jM7nXs+9Ks2o2J2puYIysY4D9wdYbuM1spxJY7/WCyb9kU6ehHdKq2kNU8qrUNnQB3QXKvhC9zc0vELDuMNczH6LMi2xILTZqRaJyLAuRgAYPqzosPHlCLYM7sM5bVprrNnOtWvRhXcNXO49C5ZDo8kOOKbjCmN8WQUDAlXEc7a8BaPqwJCASXCbCbXOuyzVZWE54xPpUEVFev+ZrhMNw+aOgR2NOdLo39FLpmP0GLPYwPooijWNAq4WNCB3H2LJ3vI/4ZIxh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,147 +98,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+pte_pfn() and pte_dirty() have undefined behaviour when called on a
+non-present PTE. In migrate_vma_collect_pmd(), these functions may be
+invoked on non-present entries (e.g., swap PTEs), leading to potential
+crashes from pte_pfn() or incorrect dirty folio accounting from
+pte_dirty(). Fix both by guarding with pte_present() checks.
 
+Fixes: fd35ca3d12cc ("mm/migrate_device.c: copy pte dirty bit to page")
+Fixes: a3589e1d5fe3 ("mm/migrate_device.c: add missing flush_cache_page()")
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ mm/migrate_device.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-> On Jul 6, 2026, at 18:07, Micha=C5=82 C=C5=82api=C5=84ski =
-<mclapinski@google.com> wrote:
->=20
-> On 6/12/26 5:58 AM, Muchun Song wrote:
->> Commit 622026e87c40 ("mm/hugetlb: remove fake head pages") switched
->> HVO to reuse per-zone shared tail pages from zone->vmemmap_tails[].
->> Those shared tail pages were initialized in hugetlb_vmemmap_init(), =
-but
->> bootmem HugeTLB folios are prepared earlier from =
-gather_bootmem_prealloc().
->> With hugetlb_free_vmemmap=3Don, prep_and_add_bootmem_folios() can =
-access
->> pageblock flags on bootmem HugeTLB pages whose mirrored tail struct =
-pages
->> already point to the shared tail page. On CONFIG_DEBUG_VM kernels,
->> get_pfnblock_bitmap_bitidx() then dereferences the =
-still-uninitialized
->> shared tail page and can panic during boot.
->> Initialize zone->vmemmap_tails[] from gather_bootmem_prealloc(), =
-before
->> bootmem HugeTLB folios are processed, and drop the later =
-initialization
->> from hugetlb_vmemmap_init().
->> This bug only affects CONFIG_DEBUG_VM kernels, where the relevant
->> assertion is evaluated.
->> Fixes: 622026e87c40 ("mm/hugetlb: remove fake head pages")
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Oscar Salvador <osalvador@suse.de>
->> ---
->>  mm/hugetlb.c         | 25 +++++++++++++++++++++++++
->>  mm/hugetlb_vmemmap.c | 17 -----------------
->>  mm/sparse-vmemmap.c  |  2 +-
->>  3 files changed, 26 insertions(+), 18 deletions(-)
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 571212b80835..cd55524c7e30 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -3365,6 +3365,31 @@ static void __init =
-gather_bootmem_prealloc(void)
->>   .max_threads =3D num_node_state(N_MEMORY),
->>   .numa_aware =3D true,
->>   };
->> +#ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->> + struct zone *zone;
->> +
->> + for_each_zone(zone) {
->> + for (int i =3D 0; i < NR_VMEMMAP_TAILS; i++) {
->> + struct page *tail, *p;
->> + unsigned int order;
->> +
->> + tail =3D zone->vmemmap_tails[i];
->> + if (!tail)
->> + continue;
->> +
->> + order =3D i + VMEMMAP_TAIL_MIN_ORDER;
->> + p =3D page_to_virt(tail);
->> + /*
->> + * prep_and_add_bootmem_folios() can access pageblock
->> + * flags on bootmem HugeTLB pages, so initialize the
->> + * shared tail struct pages here before bootmem folios
->> + * start using them.
->> + */
->> + for (int j =3D 0; j < PAGE_SIZE / sizeof(struct page); j++)
->> + init_compound_tail(p + j, NULL, order, zone);
->> + }
->> + }
->> +#endif
->=20
-> I think it would be better if this was located in mm/hugetlb_vmemmap.c =
-as a separate function.
-
-This is actually just temporary. I already have another patch [1] that
-completely removes this code later on. So, to avoid having to update
-the entire patchset unnecessarily, I figured it's best to just leave
-it as is for now, as it's not a major issue..
-
-[1] =
-https://lore.kernel.org/all/20260702093821.2740183-10-songmuchun@bytedance=
-.com/
-
->=20
->>     padata_do_multithreaded(&job);
->>  }
->> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
->> index 133b46dfb09f..c713c0d2593a 100644
->> --- a/mm/hugetlb_vmemmap.c
->> +++ b/mm/hugetlb_vmemmap.c
->> @@ -870,27 +870,10 @@ static const struct ctl_table =
-hugetlb_vmemmap_sysctls[] =3D {
->>  static int __init hugetlb_vmemmap_init(void)
->>  {
->>   const struct hstate *h;
->> - struct zone *zone;
->>     /* HUGETLB_VMEMMAP_RESERVE_SIZE should cover all used struct =
-pages */
->>   BUILD_BUG_ON(__NR_USED_SUBPAGE > HUGETLB_VMEMMAP_RESERVE_PAGES);
->>  - for_each_zone(zone) {
->> - for (int i =3D 0; i < NR_VMEMMAP_TAILS; i++) {
->> - struct page *tail, *p;
->> - unsigned int order;
->> -
->> - tail =3D zone->vmemmap_tails[i];
->> - if (!tail)
->> - continue;
->> -
->> - order =3D i + VMEMMAP_TAIL_MIN_ORDER;
->> - p =3D page_to_virt(tail);
->> - for (int j =3D 0; j < PAGE_SIZE / sizeof(struct page); j++)
->> - init_compound_tail(p + j, NULL, order, zone);
->> - }
->> - }
->> -
->>   for_each_hstate(h) {
->>   if (hugetlb_vmemmap_optimizable(h)) {
->>   register_sysctl_init("vm", hugetlb_vmemmap_sysctls);
->> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->> index 99e2be39671b..bb23fb3077a3 100644
->> --- a/mm/sparse-vmemmap.c
->> +++ b/mm/sparse-vmemmap.c
->> @@ -342,7 +342,7 @@ static __meminit struct page =
-*vmemmap_get_tail(unsigned int order, struct zone *
->>   *
->>   * Any initialization done here will be overwritten by =
-memmap_init().
->>   *
->> - * hugetlb_vmemmap_init() will take care of initialization after
->> + * gather_bootmem_prealloc() will take care of initialization after
->>   * memmap_init().
->>   */
->> =20
->=20
-> It gets the job done.
->=20
-> Tested-by: Michal Clapinski <mclapinski@google.com>
-> Reviewed-by: Michal Clapinski <mclapinski@google.com>
-
-Really thanks for your test.
-
-Muchun,
-Thanks.
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 052167f9ad54..6e711381f092 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -411,7 +411,8 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+ 			bool anon_exclusive;
+ 			pte_t swp_pte;
+ 
+-			flush_cache_page(vma, addr, pte_pfn(pte));
++			if (pte_present(pte))
++				flush_cache_page(vma, addr, pte_pfn(pte));
+ 			anon_exclusive = folio_test_anon(folio) &&
+ 					  PageAnonExclusive(page);
+ 			if (anon_exclusive) {
+@@ -432,7 +433,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
+ 			migrate->cpages++;
+ 
+ 			/* Set the dirty flag on the folio now the pte is gone. */
+-			if (pte_dirty(pte))
++			if (pte_present(pte) && pte_dirty(pte))
+ 				folio_mark_dirty(folio);
+ 
+ 			/* Setup special migration page table entry */
+-- 
+2.27.0
 
 
