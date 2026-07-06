@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F13BBC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 23:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02869C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 23:38:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0D2E6B009D; Mon,  6 Jul 2026 19:28:46 -0400 (EDT)
+	id 2CB826B009D; Mon,  6 Jul 2026 19:38:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96F376B009E; Mon,  6 Jul 2026 19:28:46 -0400 (EDT)
+	id 2A3916B009E; Mon,  6 Jul 2026 19:38:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 839D16B009F; Mon,  6 Jul 2026 19:28:46 -0400 (EDT)
+	id 1BC476B009F; Mon,  6 Jul 2026 19:38:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 53E626B009D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 19:28:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A86CC8CD18
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 23:28:45 +0000 (UTC)
-X-FDA: 84959943810.21.D30E5FE
+	by kanga.kvack.org (Postfix) with ESMTP id DBC236B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 19:38:37 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 493A88C77D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 23:38:37 +0000 (UTC)
+X-FDA: 84959968674.18.9B98CA4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E0629140005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 23:28:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eS79emPp;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9629740004
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 23:38:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=T70ApH+i;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783380524;
+	s=arc-20220608; t=1783381115;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xY2XDGZgy2/wx1N9DCqdj5OgFf0MPlcb4W5q9mk0jSM=;
-	b=l6tDGWrUg+huwXyPDo9Tb7D61JHdMqVyZjaKOoLvKgzHPR3I18e8VypTfB3xy9z0n4NcT0
-	VhqkNO/YWzpSwOTnM1jOG4TTVHc8t8hc+iuBVnZi82krVx1M//hPcEh27ihkKPrXU3os69
-	t7NreYsk78yFRlTvpi3y06Vn5dbccKY=
+	bh=4RvaHHR1JLiGd+lSbTeUq745Smy4dv+Izz0JZQMDa24=;
+	b=0pkpaTRQ6kB87ZnzrGZLdcXEO9esVgPIG1ck4exmnmm9WqZQ3wNuIxNdDERMc09mFcb7TV
+	gXUS1yh6wIZkYGpLlnOREeebivwKwIAuRd1gIJBFuV3oyit1YYzCb6mNCyIiRfVaZoaCVr
+	Y5HRl28/UHp0ca7+o3sRo6GQ3D+8zyQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=eS79emPp;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=T70ApH+i;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783380524;
-	b=3eW3kUzf5WoW1n71nfZ08tBWikGssgDD73aEUkK05B7nmsN8RqjEekaUjp7dW6S1domVh1
-	uj4fV1AlCT96KvPIYKsNyhm6htzaYeWl6NsoLz3Gt6sjTZLJDwV9IvOnei/e0gDNAzzWLz
-	uzNQdsuD3cJvopMYZy9Aw4C4QS17SEA=
+	t=1783381115;
+	b=Om8UMhaxtijcf/Q++AzhfT38JntOgdkZn1uOanXtSIfXkwWPlBnwsotM88FNonyYFBs+NL
+	BFGvKFklW7Y2g2BbE0W1Ko3tIVeHAhVxhyrAIVuk8dLEfLW25fcD05Ghlb9uSazwpV5nso
+	5Mj+kDsy5UqEgKR4N7HuA16slZi2GXA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2CDB061834;
-	Mon,  6 Jul 2026 23:28:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382911F000E9;
-	Mon,  6 Jul 2026 23:28:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D67B4600AA;
+	Mon,  6 Jul 2026 23:38:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAAD1F000E9;
+	Mon,  6 Jul 2026 23:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783380522;
-	bh=xY2XDGZgy2/wx1N9DCqdj5OgFf0MPlcb4W5q9mk0jSM=;
+	d=linux-foundation.org; s=korg; t=1783381114;
+	bh=4RvaHHR1JLiGd+lSbTeUq745Smy4dv+Izz0JZQMDa24=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=eS79emPpoRWzK7gWR0/7petFLauhupa0yHOkTQqJxxfj6uoSowyN1sJlR9lkSzpFR
-	 FmBcPFNIRQeR7iktkkcWn3bad9AhF+ptjDuUD5M5vdsm5rF1M63PL0l+4cgmg2VL3I
-	 +ocuRwiPyyy5Anu9iCDjJLIFL6tUHqJsahR3B2fQ=
-Date: Mon, 6 Jul 2026 16:28:41 -0700
+	b=T70ApH+ir5I5cPXv98r8DrjVUoxum7BeJzgWMoS2eW2HYvEJdSbuahFtwlVhniqwG
+	 cRkLwfmlrUNps+9jh/GiNNWgNuzbOA/UWGihVUfo9zJUyGvpCSAo8OL1ufFhWfuF9N
+	 V3Tt5MLXSBBO3mq49vKsQ35HAxcJ718rQVOQEG1A=
+Date: Mon, 6 Jul 2026 16:38:33 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Hongfu Li <lihongfu@kylinos.cn>
-Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org,
- jhubbard@nvidia.com, joey.gouly@arm.com, keith.lucas@oracle.com,
- kevin.brodsky@arm.com, usama.anjum@collabora.com, yury.khrustalev@arm.com,
- zwisler@google.com, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, hongfu.li@linux.dev
-Subject: Re: [PATCH v10 0/6] selftests/mm: refactor pkey helpers and fix
- mmap error handling
-Message-Id: <20260706162841.b34d9bc1ba1aaa4be4f6254e@linux-foundation.org>
-In-Reply-To: <20260706081600.3570203-1-lihongfu@kylinos.cn>
-References: <20260706081600.3570203-1-lihongfu@kylinos.cn>
+To: Richard Chang <richardycc@google.com>
+Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel
+ Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, Axel
+ Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
+ Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, David
+ Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ "T . J . Mercier" <tjmercier@google.com>, Martin Liu
+ <liumartin@google.com>, Minchan Kim <minchan@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
+Message-Id: <20260706163833.19b6c869407d51ba8e278f56@linux-foundation.org>
+In-Reply-To: <20260706081218.3438762-1-richardycc@google.com>
+References: <20260706081218.3438762-1-richardycc@google.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: E0629140005
-X-Stat-Signature: bsbmszoyws4metgt1ifgb77tosd45i9y
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783380523-382548
-X-HE-Meta: U2FsdGVkX1/iXsxTF5rDw072ic4G21dwguUYL64b8dTV1TiMXBAOxgZE4ty8VMN5500nIIHd2qB0f2tRiaZJ5Pn4zxM1dI1LcakmWKQKYQ+SXwEgsgnJ6mg6TUN7HwTzglPpGcXSCH34I2GOR+JamSYM806l7+yJZNl70K+I/WyRXwbdZpeBDIMFWRpEiPXELxEYvzZsxal50fvI1+9XNw5WL1UbK12WqhBkvuDQRX1/3L32x7PowcgosF+ZCSmbJbog6gsVmi7KprzH3hBrjEHUUm8aK0IL0IkNJHQpZF6CWAO203Zm8zSnJNfEM+xR6wrWmMOaV5gXQs/CQjBmgIITh36T6D++nCJFz0xGXtgmR5ElWERFsJURduL6BfSTQB+Lldi7FaFRx3eH0YwwAJtCUgfNY48IMv0cSypqoqvDfUgfm6+5NJAZy1vDAX5KZMCluChKuLNThDjn5ijAq04cSE+RAlqsTqnEinBFKcNirz5Sq0XPtT4nAftkEtmskL/+YB4v0j9BW24yBezVCVSbRX+b9Cn1xdjGxZRjpPamlkm22u9EStsNQuWjpAJZb12I2e4uNLmBoVwFZDc8HLy4LHvfsKg7pVHyOYoSDR6B7+L2PstDIob9XpGCEb8OPB8ZNnbm/Dzz6Q8ZLXHWVMV232Ph/A8V/iVfZGinvzHLo0URVrWYahryT4hll699/Brw/9rmN2fI3splVY+P6pyLpvV2m98//ot7DeEM2J2HZ4OvTi6j1CpMn9oHW9X2TvPSw6OVlL/4JdGKFHOWEHVxGLVTSHgwP7od6esU7IytCnycjNtEq01JGdVV6JKkjnLtaXNTVvcenNspsRjeYgyQnmrZtTXk8YNbTjOESu/JjC6CgDGanEE9vRIIUGrkpQ2WWOC+YB4sXYAUymN15JZjB3f+YvbJ6ZKvuPoXVr56Z8dI4hukFODdl81Bp4wxfqQGfSIR7FwGn24KEfS
- tudpXZbW
- SEuL8i8uzxEi+7qTZHlCjQ9CVdYkYdgrQpYesXDa9nLxOIoVJotQKivu8aMIjnAN9HYByAA7tmK79FVcop8w4O+638p+WrpzgcvE6apQ4+nuZJJG7DtgRKVcssQa1cViTZmUvi9dhMHqkjXSkUf7jsH345QX+8hjc9C9bvz4PVf0is7Wtr6ETUfs/r11ANwLnKN+rY1uWCQVIbhwKm661IcOvgv+VCEaSlFXuZUOhBzAu9NmUuuCrgfJZofp6L/Z6gpjS
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9629740004
+X-Stat-Signature: 6byhmqi4mr31zhzcsxtn8gtohorhtfpd
+X-HE-Tag: 1783381115-842621
+X-HE-Meta: U2FsdGVkX18ipYav2tzN4tuSU2KncNBOKHBYVdBFF+2kiGzbchijW141Np57/D8qDzqpBJzp05wYUGGbPorB88SR+85vy7EYlcY7yMDtbj8rWD9kNx/kYKvw/yCDksPOiyV+mThUyix79vMj00jXkeoGudLAKD6L94EHbOH25NTUizavq0z0RTDtUbF8Caaq2vCNunuTTD4JspVJU6FpOnloYlP3psEBSjBzq2Hn1H/I0qXa/VIt/Lmfoq/0bM6WzlX94ySS5WKCZMHbdTudq0+JCwDE9UYN4nZwi+XZF/vmhVlzCKcjPuNMnaiXCqQx6ujqb6QQCHNM3M+Nt59ewf5KZw7rQqYkBZzDsnixuaTIdd77yO3Md17SBm3SqQL9ar2Xi4Bxtn6k5CTHpEjq5jkrl37eXw6on+elwC1C7OQBT02FnrEzLYaLg7PDOzh4veVrOJ89NBSiP7Hnv/EIved+zfoidKJKbvFtGX7Cfkc7vj3p38qiaLBHe77cAgfcKM6XWZ9X2LcRk+SVrvEnI9GYjHAG71u7U1XIi6Q2TgehFxeU/0DlERBdFiHbmckvxB3/hpznNZYQ2fgkDJLWkmfAdiztnKPSIClmDuiZftZuB8bIbRjwOCxTCI8xDo4krMJihflwPkq3MZv6wEjRyIlpQ5THLWoFHRqQH/Zm+X9gccHlLJKqPiFJSIoE0qwP85BU42A9IIm26GYo5EMMnG7guvrsILjV+OQBVQzV0rDZQo/mKcOSiYJDZ+Zu5RsJyTleRxgNS97ekV9Ihjyg2j28+jIBbEPcFWhOYDxf5MIJHlsRGIuG3aAZmMFWRcprLZQdFwDL6NMzDoQ5ef+4R2Jt9IqHT7P0vDza6APA15q6wGm2KdMSKyf2CwvS9CK2rBf2oGzuInugPmVfpfiMsfrRMs45Oz3gjG0cG1YgDtHhxn1ehucqNV+PI5+y9Ts4ClMOT+FPnIS6sBhViK2
+ p1hG/AUn
+ P65C0JnAuKK7YR33IjUhLpUOkwzGXF/NIlLFJkhsmV7V/ajFDjeCAeY8Zjwc7fgEDRKY8bKCFI2mPK0SZSbu5C3erMUSdrzqC1IKetu0lA8mZnqVzWdP8lZlMzKuoz1sJbUfiZWX2DM1D5IhFjWru0/UO5pT5odDMeq9gf400Rbl+EbiFMmHF8MhETbsvPmu/wrQQhubrJ4okL+JpPQW5wwbAScOsR5hSID8hwJgOha8fWXC4HyAc4k9XAfZvoVs0sdKdnnWraS/qjW76WMNzIhEhp1KyEgKE1gxCI98hfxDGtPyUDZkbwIQ325CNxfeHkPokncuDnF0/T6kDRc7t1S8tZilaxC8mUGTDRmyaT2sordA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,96 +96,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  6 Jul 2026 16:15:54 +0800 Hongfu Li <lihongfu@kylinos.cn> wrote:
+On Mon,  6 Jul 2026 08:12:18 +0000 Richard Chang <richardycc@google.com> wrote:
 
-> The main changes in this series are to refactor shared tracing and assertion
-> helpers into a common file, unify both pkey selftests on pkey_assert() and
-> per-test tracing for consistent diagnostics, and add missing mmap() return
-> checks with MAP_FAILED used throughout for readability and consistency.
+> Proactive reclaim (via memory.reclaim or node reclaim) checks for pending
+> signals in its outer loop in user_proactive_reclaim(). However, the inner
+> reclaim loops—scanning cgroups in shrink_many() and evicting folios in
+> try_to_shrink_lruvec() can run for a long time before returning to the
+> outer loop, especially on systems with many cgroups or large memory sizes.
+> 
+> This latency in responding to signals can block the freezer (both cgroup
+> freezer and system suspend), leading to freezer timeouts. This issue was
+> specifically observed on Android when attempting to freeze background
+> cgroups while proactive reclaim was active.
+> 
+> Add a signal_pending() check to should_abort_scan() for proactive reclaim
+> paths. Since should_abort_scan() is called within the inner scanning and
+> eviction loops, this allows proactive reclaim to abort early and return to
+> the outer loop, ensuring the task can enter the refrigerator in a timely
+> manner.
+> 
+> This check is limited to proactive reclaim (sc->proactive) to avoid
+> affecting reactive reclaim paths, and wrapped in unlikely() as it is a
+> slow path.
 
-Thanks, I've updated mm.git to this version.
+There are a number of ways of getting into proactive reclaim.  Have you
+checked that all of them appropriately check and handle signal_pending()?
 
-> v10:
-> - Add patch 6/6 to fix a pre-existing cleartid race: remove unused
->   settid/cleartid clone flags and wait for the clone child to exit in
->   the sigsegv test.
-
-Below is how v10 altered mm.git.  As you mentioned, this is all from
-the addition of [patch 6/6].
-
-btw, I thought the official way to wait for a child thread to exit is
-pthread_join()?  Why is that sched_yield() loop used?
-
-
- tools/testing/selftests/mm/pkey_sighandler_tests.c |   20 ++++++-----
- 1 file changed, 12 insertions(+), 8 deletions(-)
-
---- a/tools/testing/selftests/mm/pkey_sighandler_tests.c~b
-+++ a/tools/testing/selftests/mm/pkey_sighandler_tests.c
-@@ -290,7 +290,6 @@ static void test_sigsegv_handler_with_di
- 	static stack_t sigstack;
- 	void *stack;
- 	int pkey;
--	int parent_pid = 0;
- 	int child_pid = 0;
- 	u64 pkey_reg;
- 	long ret;
-@@ -330,11 +329,10 @@ static void test_sigsegv_handler_with_di
- 	/* Use clone to avoid newer glibcs using rseq on new threads */
- 	ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
- 			CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
--			CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
- 			CLONE_DETACHED,
- 			stack + STACK_SIZE,
--			&parent_pid,
--			&child_pid);
-+			NULL,
-+			NULL);
- 
- 	if (ret < 0) {
- 		errno = -ret;
-@@ -344,11 +342,19 @@ static void test_sigsegv_handler_with_di
- 		syscall_raw(SYS_exit, 0, 0, 0, 0, 0, 0);
- 	}
- 
-+	child_pid = ret;
-+
- 	pthread_mutex_lock(&mutex);
- 	while (siginfo.si_signo == 0)
- 		pthread_cond_wait(&cond, &mutex);
- 	pthread_mutex_unlock(&mutex);
- 
-+	/* Wait for child to exit before returning */
-+	do {
-+		sched_yield();
-+		ret = syscall_raw(SYS_tkill, child_pid, 0, 0, 0, 0, 0);
-+	} while (ret != -ESRCH && ret != -EINVAL);
-+
- 	ksft_test_result(siginfo.si_signo == SIGSEGV &&
- 			 siginfo.si_code == SEGV_MAPERR &&
- 			 siginfo.si_addr == NULL,
-@@ -445,7 +451,6 @@ static void test_pkru_sigreturn(void)
- 	static stack_t sigstack;
- 	void *stack;
- 	int pkey;
--	int parent_pid = 0;
- 	int child_pid = 0;
- 	u64 pkey_reg;
- 	long ret;
-@@ -504,11 +509,10 @@ static void test_pkru_sigreturn(void)
- 	/* Use clone to avoid newer glibcs using rseq on new threads */
- 	ret = clone_raw(CLONE_VM | CLONE_FS | CLONE_FILES |
- 			CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM |
--			CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID |
- 			CLONE_DETACHED,
- 			stack + STACK_SIZE,
--			&parent_pid,
--			&child_pid);
-+			NULL,
-+			NULL);
- 
- 	if (ret < 0) {
- 		errno = -ret;
-_
-
+AI review thinks that classic LRU might need the same fix:
+	https://sashiko.dev/#/patchset/20260706081218.3438762-1-richardycc@google.com
 
