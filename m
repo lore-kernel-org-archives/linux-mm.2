@@ -4,85 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D192C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 01:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 904ADC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 01:42:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3695B6B009E; Sun,  5 Jul 2026 21:18:47 -0400 (EDT)
+	id 2333E6B009E; Sun,  5 Jul 2026 21:42:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31A066B009F; Sun,  5 Jul 2026 21:18:47 -0400 (EDT)
+	id 20B4B6B009F; Sun,  5 Jul 2026 21:42:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2337D6B00A0; Sun,  5 Jul 2026 21:18:47 -0400 (EDT)
+	id 1486A6B00A0; Sun,  5 Jul 2026 21:42:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E40E76B009E
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 21:18:46 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 217901C6B5E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 01:18:46 +0000 (UTC)
-X-FDA: 84956592252.29.0F2DA5E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 68DFC1C0007
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 01:18:44 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xspm3dFI;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783300724;
-	b=xBOHZK8UiKJ9635ygdJu9YaAe+KHe2PNBVAbCnGtJ18XtpPxPRoRcyKc3THK9KOPUyPBOs
-	395Iw6+fvyrIbweXYIZGZ9Rx1c4WvL2CEmQoTuGpxyqpF5Iqp4+zZE1Faz7iECMpCZfC19
-	DaxlWStIP9A0/Z0/KPwwfHZfSsfiiWE=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=xspm3dFI;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DFF6F6B009E
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 21:42:53 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4673EA0243
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 01:42:53 +0000 (UTC)
+X-FDA: 84956653026.02.90256B8
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 11AB440008
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 01:42:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X6HU2VVf;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783300724;
+	s=arc-20220608; t=1783302171;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dCse9pyTLSRmKmhBEW/kg3N3umOx0WojuIarGT+1LjM=;
-	b=RYEUbPyPDMRgEBkXM3Ic7FN4lSjJq2MxlhAEMngAOx7J0DaqjGezFeiI3Ghlq8awWiSRha
-	TcuFVLuhnWVs2MpbcVzkVCYKfUNygcw/1oPxuOZ9eJymPdTzIX8rrIUEybDZD35FKe8P2J
-	3pOWAhRN1wwJRqfsMxRKnwA3i1S6xT4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D7AA760018;
-	Mon,  6 Jul 2026 01:18:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D741F000E9;
-	Mon,  6 Jul 2026 01:18:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783300723;
-	bh=dCse9pyTLSRmKmhBEW/kg3N3umOx0WojuIarGT+1LjM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=xspm3dFINsFpaUjIb0bOkdmGSeRBRdJkPgGxF4MG9Yf2eXwtefOV5caZkE8M+DInY
-	 Z9Rvq0vXxisksxW4151QDzPxlebMOTdFgOg7uzvSMcvg1oWEmAG5JWqaB5PLQvHOxQ
-	 qS4wur2bNJZqWmcktMhGmvByWelAPisfXorI5ddI=
-Date: Sun, 5 Jul 2026 18:18:43 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Yijia Wang" <wangyijia.yeah@bytedance.com>
-Cc: <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, <shuah@kernel.org>
-Subject: Re: [PATCH] selftests: mincore: use default huge page size for
- hugetlb test
-Message-Id: <20260705181843.6c7a2c4629cb05d47305cf14@linux-foundation.org>
-In-Reply-To: <20260626-b4-mincore-preview-v1-1-5f07aa02ab32@bytedance.com>
-References: <20260626-b4-mincore-preview-v1-1-5f07aa02ab32@bytedance.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	bh=fs3PDk+ICzT5JmREAjpkl1+i96EjXK1gwBqdT/2GxVA=;
+	b=6GkXpTe7DL+iMvGbAdWYQT2BPfe55OZfG82/ywqdzeJxaJ9XLUeQs+AQVca4sqYTCh9FhH
+	oEHm5Vc7yvoxavd0WTupbVHsMMLq9U72S8ZYnO2Qkh4pCngilUo/JHWFVh7m/IplGEgoJA
+	T+/hMEs7bCr4tMQ/VVuVGiUmxpLRfew=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X6HU2VVf;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783302171;
+	b=wFpInmExHXHIWo8gIb49aEG5sUFVagfm+6Jn+ahPUHsJoqZ1vQhYXcuDM0NCa03ujcXzpO
+	Mq0cpk3vEAGJ8WNyV8QGMi4ZAj3ugW0eL34aD61MnDcNQJGdJJ4TKyaIcw6iKx/E/ESfpk
+	Yy4NG1nyIQP0DYso6n8mW6tVfO3m+Pg=
+Message-ID: <b10aeafe-3263-4683-b318-2afd498c927d@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783302168;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fs3PDk+ICzT5JmREAjpkl1+i96EjXK1gwBqdT/2GxVA=;
+	b=X6HU2VVf9Rmd+xYkCimrMRYONFxHlj1FLzMdWaDQIJ4CIisKe6O4ebHBhIO8xFtEpzsw1V
+	if9clW5afwlt64H2wgInX7C2clZrNM4KB9RbhlwJBI4/bl5XISTBr2BGjRLv8fXIxd6+qZ
+	HNfDAc3wBC6KybvkkcQAmn7/fpWtHpI=
+Date: Mon, 6 Jul 2026 09:42:36 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH] mm/mseal: fix mseal documentation for 32-bit kernels
+Content-Language: en-US
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Alice Ryhl <aliceryhl@google.com>, Douglas Anderson <dianders@chromium.org>,
+ Gary Guo <gary@garyguo.net>, Anand Moon <linux.amoon@gmail.com>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <20260703022507.187457-1-leon.hwang@linux.dev>
+ <akhWKJSZLfDusVcL@casper.infradead.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Leon Hwang <leon.hwang@linux.dev>
+In-Reply-To: <akhWKJSZLfDusVcL@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: fc6deeadycr6hqpg5nfdemp4kys7de7n
+X-Rspamd-Queue-Id: 11AB440008
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 68DFC1C0007
-X-Stat-Signature: ypc77h1ym4n6rp9gf97op9meot5zpju7
-X-HE-Tag: 1783300724-410730
-X-HE-Meta: U2FsdGVkX18p7jgNTdvQkSi47hjmEMM0PPQ3h5TpB0oJ5OqH/58yUjzRhlqRo5rqekp0dW5y7MpIXsthTlnPgAQ3ES/RMNZn2ovQiQJmh7NZdQ5GJeBXp0hwIx5y8XLklM03zbzFIp6nw3HUIT9iSRyUYe/xlCeI+DcZGegBaYA0j9eir2ahPiG8980y3WR+BV4PQj1MLzRa/DHbd13xzthLZWKtlx5TjSiEyLIInb0TPUb2Kfw9yHOXwF9q8VztPk2Y+PtUzSE/54ach0f6J+655XzNprerLkKKzvAX7bOor4TaGIzitQ7eGDmSvWbVddVRtQqoQgPDMk5YFMkeE81a7edUhuwNyRGgGMhS1+yjCvGS13rKqkLVSJKH4uSggyWarFrJXEP30ZoNlJu/EyanaDQ2Fngxh32CpuaG11C6f2eJ+axDleljK48IoiGdhe+ezYIjKNsz3ASULjgu3AvAbcbwtl7+Nj8yp+UXlM/Q+vOZQwL/xT4pUZN05Ano15VpUYpvkzwRgbbXMj4cDm/BxfZ3exFl8T50tuxHssV9e3LVPJJmPMgGxatqV4QXkBN3NeBl62GYThHei2Lt9ce2EIsSvUsSKisN2oV52bYIHFpRDs6jE3De553y8/HB9t/T/imDil/q7WiaV9QXOIxQD2J8IM9a3kZksQ4uA5GaV961WMWCIeH38NglnocVJ/wpPfc74Hj1cLv+FlScFySPJuyJNXO6BExIetzwe9SBrIGR8AYCPSEj2HaweyQ2BLMNyYL34tzrAzJnVuN1oH5imvz3+aBbilF/SxvTJ/CInREYXXSWg5J7Frw9M3HjvBTzZjQzy3oge0iWjA/hBfpRnwjedkKNxT0O7gyaXe7k3qJVi0WUzd1NdHL2FLHPuMPn0gTTw2S67aIKRV5H+gO4zBWpu4CMJDFIZa7l1DvCT1CYrnWeCgHxQlcbQuBVuOWY8Os8I3Og+1eoz1y
- r737q18I
- qY2QwDtNoa7VAJwAjzNy0Kd2vKzRgPzmYQApkz8yycWSuqjQ6a+pU23wc4XUGsivZE2LSfBZN87BrZi7h0M0YMxgM7kZ2U/2Zrv+shhgkfoUbrgopZBR8uIWfMQQV2rV+SxIokMLpF8A8uwapJwGgBa7ZKFBJGh9Mpi5l7nDDK0fv1zOGXBUEqUqV2jZf93KTeRh0keVRjryIyIFguIyJX64KShHcIzH9h+aeBNobtdAh5JfTeI0+Do3yMNnSg47pAtevFdYbB/ukMHoEUvywowV9RcBGeZ59nB/uqLJn+lWIS8TwyqFSAg5aELOgdruchWHOiQR1RGyzzKg=
+X-HE-Tag: 1783302170-449685
+X-HE-Meta: U2FsdGVkX1/OHj2ZmTAFhb900IZFlmj1uly8EbInzzFGsR+ad96HE2cCfCCFpp44LANJScybhBMeRinCEBpGUfDtXbe6xhWVkyBXC7wDqeQKR976LYg4KrC75TxHhdciv6C95mPRPnVmv/+YUzdvBD4C/yvU+VaB4z4ypry0Fi6eMPgOlJBBy+K0G/su4AAmvem/WfPTt+42QtZ9MuyiDp8njWN9DRXUtizMIx7QAWlb8yLZHhReA/yIvSYKv9SvpRDcYry7jmdOFcrXNQHmLQfFcYLapnBEuc8yAV/MVSvQ+1+oIV41Y0+EoQxGkgmACFTtUbCP2eKKsqzqBYfBgh0/mYbXGudG0NM8KudC/ZgKtXujtqP0nI9Jhdi61WUAGY264RVGWRStHkIfd9mceFYGbn4Xa/AmyMb5aXCwJ6LJLFrhg34hu1zxWWrRnft8lt/kbG6WAY74cZ4Tc/HZIsDnweFYpOW644q3r+sSWY/bqcFoqfLT26xwG+4SGQ8U1pAC04VduyClDuuiG+/uHnFIjiO9f++Aq6VOJVsSaXfF2dk1XvYOWaNsgGZ4ROzKIy7lkaNQ9DZCYZS9vcLRwjoTGDLqbJZLqrJfj1dj2RODx83acJ04CcedqC8u6FoIOWVSt3AuLfZ4poSsvouXBwfJjS/p49mKls+Dg+l0nDmS58yH+GamUropcikx0tlK4ldCaNwTBxUYQyD4fny5emNwaZfZ/R86edoGgktv2arLiJlIvXB8aG4AlSFKA1mmLgEiVVSwjWOXJop1YtaEIPf8wPIZ5Ygf0eXLOV78HbcWjf/29uW7hRQ6yj8/fY5GiakJhDNpac+xW+Z3w6vB8iePfnbXnDV7yoBqY6ZGxvUefPMV4dHNSo/LfuwKWidaxB7D5KMkGFzA/kZ0yy2Dwc9BFuDK1UFBh8xqv8UVG80ShLsfS0+55XR5vAVgSIgbUII741zbTL+m6mQnW+j
+ EIQ6SWRi
+ 22CJu2DmypRaAAF+pBuolUPZcjnkW7y65sbDwJcbEh+1/WELiYJH6JZOZgve4SZl+Qm3KONaWrNVJlwDyc2l5llrbpKpuKqUTp/BlQrun4sfTBeGMXXbunho+5MDhraC4m+kusNbTcz/fY882uBa7IZ39ysTPx3YTDmb3w6Why/ufYn6DGU/NdD33Pg4tby18jFIhozbWtOopO0OgMM0IKte9vDXa9kbtyIoJh9FIU4slQLEbzwB7VtmQ0VAJL4Ey8SXd2oj3KGtDkXXoboLwba5vUAPE7mKp79bZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,37 +103,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Jun 2026 20:59:02 +0800 "Yijia Wang" <wangyijia.yeah@bytedance.com> wrote:
-
-> The hugetlb mincore test passes the base page size as the MAP_HUGETLB
-> mapping length.  This works on systems where the default huge page size
-> is the same as the base page size, but mmap() can fail with EINVAL before
-> mincore() is exercised when the default huge page size is larger, such as
-> on arm64 systems with 64K base pages and 2M huge pages.
+On 4/7/26 08:39, Matthew Wilcox wrote:
+> On Fri, Jul 03, 2026 at 10:25:07AM +0800, Leon Hwang wrote:
+>> Document the -EINTR return from mmap_write_lock_killable(), fix the
 > 
-> Use the default huge page size from /proc/meminfo for the hugetlb mapping
-> and unmap length.  Keep the mincore() check scoped to one base page since
-> the test only needs to verify the residency state before and after the
-> mapping is touched.  This also avoids changing the mincore() length to the
-> whole huge page, which would require a larger residency vector because
-> mincore() reports one byte per base page.
+> No, you don't understand the whole concept of "killable".  If a
+> task receives a fatal signal, it dies before it returns to userspace.
+> So userspace never gets to see the -EINTR.  It's fine to document inside
+> the kernel that function foo() can return -EINTR, but it's pointless to
+> document it for userspace.
+> 
+> This is how "killable" differs from "interruptible".  Interruptible allows
+> non-fatal signals to wake a task, and then the task can see the -EINTR.
+> But many processes do not check the error code, and so read() and write()
+> (despite being documented as being able to return EINTR!)  do not do so
+> in practise.
 
-Thanks.
 
-AI review flagged a couple of possible issues - can you please take a
-look?
+Thanks for your explanation.
 
-https://sashiko.dev/#/patchset/20260626-b4-mincore-preview-v1-1-5f07aa02ab32@bytedance.com
+Will drop the -EINTR documentation change from mseal.rst.
 
-> --- a/tools/testing/selftests/mincore/mincore_selftest.c
-> +++ b/tools/testing/selftests/mincore/mincore_selftest.c
-> @@ -22,6 +22,27 @@
->  #define MB (1UL << 20)
->  #define FILE_SIZE (4 * MB)
->  
-> +static unsigned long default_huge_page_size(void)
-
-This would be our fifth(?) implementation of default_huge_page_size()
-in tools/testing/selftests.  There's a project for someone!
+Thanks,
+Leon
 
 
