@@ -4,128 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 397F0C43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:53:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3792C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:56:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25BA16B0121; Mon,  6 Jul 2026 04:53:45 -0400 (EDT)
+	id 45D5F6B0112; Mon,  6 Jul 2026 04:56:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20CC56B0123; Mon,  6 Jul 2026 04:53:45 -0400 (EDT)
+	id 40E426B011F; Mon,  6 Jul 2026 04:56:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FC1F6B0124; Mon,  6 Jul 2026 04:53:45 -0400 (EDT)
+	id 2FC536B0121; Mon,  6 Jul 2026 04:56:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D8C106B0121
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:53:44 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 635DBC1B86
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:53:44 +0000 (UTC)
-X-FDA: 84957738768.30.1087599
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9F4361A000B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:53:42 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ddSG0rTD;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of lin2530632123@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=lin2530632123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783328022;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 060D56B0112
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:56:05 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 701F48D479
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:56:05 +0000 (UTC)
+X-FDA: 84957744690.19.3622B02
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C3EA020007
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:56:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="zRCTH/CS";
+	spf=pass (imf03.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783328163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=SMlqwe25h3RpyADH7goCEFp4DheUHmwSZ6Owz1SwkyM=;
-	b=UN58r9QQ61j78OcuJ7BN6EavZf9Qk+e5voTKoyxgNRHGKuW0ZuMvjrt4hGNSPS78nh20Gc
-	Er67i/Qbm3mxWWcdBZ4/Lxl30Kn8OPEL0esMPlFkZ9McHB+STd24BjcG7IaIUDq1t8upvo
-	gVbSL3kytA82zrrXdxg9MVrFxoTTin4=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ddSG0rTD;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of lin2530632123@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=lin2530632123@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783328022;
-	b=CCfCP/4GLskrkb2S2wLRHbXaRvUIP7YV2zoO80HAnAsuJCHzFSRm0SgRcnMC3qKpMq+dHE
-	nIZ5puMj2b9VOqTMuNiQMxM6o48DoSR5CARYRNPRdEjhCFlKOqSwscLCWyu7nw/Ip+iOub
-	jiHPzry7oP6brgUmllz45OSBE4zdD4c=
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aeb91c003eso2967015e87.3
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 01:53:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783328021; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JZL30W0OMk7vEHHtKsxezH5Id7o6AtNrJcLbPGFbeQEFXhcrt6jrqAR67+gzYi0LC9
-         YHhg+1NdQsuT1ShnsUfEMA0bJtJAPowmJ1YHirH1V38tssETCFa0v5NDLHEiyAsVqNRy
-         tD9gGVxNzajt+0wMjh50UxadPfFWj21Lecfq1AjwP1h9f/9L/DqtCieMPTAB6zsH+VHY
-         7mXacIYK02AV8l+prFHsqNrvIqTXgXUDxWqPwWuyzgL+qSjMr8EI4r5cqXbpQscPDu0p
-         WsGxEGEyo6yApew3oUxn0n/gwY1c0ft7EVkvAIRsUoudh1tEN4UrRlOJR4tvw5MaXMLK
-         GojA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=SMlqwe25h3RpyADH7goCEFp4DheUHmwSZ6Owz1SwkyM=;
-        fh=I4sq773aZxxMlCvPjLS+BYZlV7H3C0ahdc83XaM9Q4E=;
-        b=qNcbkLRrsn/E6TEBszzPFHiBHE1jbI0nTyNc6ZbnoIPdx+SYskMLRPRqIokwEZSx2x
-         lwoDeD4SLMEI0hroOTZhxc6WIkFpm4ypGixawZoNj68DR1hdoxnG70HxgfOgBHSJj5kq
-         Di5B0xSZ1leCrma1wMP0xWg6iLGY1tHFjnP+LpbANKPUVSzsLRuKRs9UnoMA35Iopkxy
-         /jifNIsLPzIBxUxSa3Jhfo4ipwQNF0ObAVJVBmQH63bnB7lOJCO06yEasin8E0uVHrMy
-         MOpNp9UexkisTuqM36zEQQ8wpX0czsxh/4dSGnc76alv5ui+/taVdg+KZN3Bkl6t3Xq0
-         lt9A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783328021; x=1783932821; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SMlqwe25h3RpyADH7goCEFp4DheUHmwSZ6Owz1SwkyM=;
-        b=ddSG0rTDeVFZG/7Ov4fZ7vOpy8zwiWn8utLT+Bu0hI4Up9MpvKAZEgoNa2FN0YF3KK
-         t2yshlAyqWrDOR+VLdNFlnfV42sL3RLaPjD+erkJiAVlzCQfETYPduIs8VXY12wfc9MY
-         BJm6DjA6cCY3TFO+LnAvzdB0D/xqhVuCn5tToTsCK733DbPuTpX8gikDLm78V0lMNYsp
-         13kQygbEhRtssgk/2v6GOMCJtCMCV1hK9ZhINYG72ex/ovOuiI49GWwdgdxJlvyZNJjo
-         i7lmePg7vkspPvxWZkGBc8lhjSXyqMjwrqr/lDF/JoS0rMNBxS7imZ3dfBGTkQf2rfzV
-         w3UA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783328021; x=1783932821;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SMlqwe25h3RpyADH7goCEFp4DheUHmwSZ6Owz1SwkyM=;
-        b=hecHYGBEkMzax2gGMWUj3IhQunc/dd9wewJ+FPzODvYLg1XkYZ0m8w6h9xZGLDHmex
-         Z2TRxRREWWqXhELQVF1g94wXRlCq2OD1PY/6voSuTOUe0lNAsLnwPQarN9o5mE/VLylJ
-         H5S6So573YPOs41bJ6xWhuvy7mWCnqQXa+nw71AYsTSgKZeG9OOynoYCSDB94K5wdsVW
-         3wEiX7Um+b3GaQvp2iAPZyc7otb+iLqn9mi72hovZZAA3IXw8mSOiuxOLBI6GvkSTwaO
-         dfjnbPf4W6mPwS8Wqc72I4Yg+OrTCyt/7fQnlP4TDNDG4iEUmceN0vyBUFQI7L+UbyoL
-         r6pg==
-X-Forwarded-Encrypted: i=1; AHgh+Rqy89lFZ7tJIBbH5/fvuqYauYjohu6a8z6pgyxTLwaQN85F+b/jhGPycLWd3hA3XBr98R4+ZnrHPA==@kvack.org
-X-Gm-Message-State: AOJu0Yxp9HptAGpLH00pLv7qHq+Ya46bNJsIwJkxxAJWGO8enxH4+Qlk
-	RCLqAY7g2uwqYq5zFX576/d6TPRmEPi+kS/VNq2u13ATTKrwLV8MMVPNl3WjI/iOTn2ps2+WJAM
-	cybvO6L8/E3bjrJBLwuX9ZiHzMaS7588=
-X-Gm-Gg: AfdE7clMPqNYo0hNn/skF3FZIbJ7SbRNVKt2xDc1cxugZKj3vTr8wq9FQanX30cfVnF
-	8hg6QRBHbFZ6fe3vVz1cHOwlCWJ9wjiZ6Lk/gtASD8x3ozPgdqcMahmXiBb2chl+WtCIgxW4B4r
-	TSz27uRcRR4uH4n6KmDBFzxxsWaMaYL6DjgXfmRC8WBm3dxLWShh/cAxROdawGI0UpRat47wcd6
-	E4kE/VnY6HrExQd5G+AQcL+aVYN/panrsKCj7xIZLIFH2vwjJJOXSfZ/XCA2w96rWOYreuYfaFT
-	CL46JxY=
-X-Received: by 2002:a05:6512:3a93:b0:5ae:bce4:b696 with SMTP id
- 2adb3069b0e04-5aed5096974mr1926455e87.15.1783328020196; Mon, 06 Jul 2026
- 01:53:40 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=X2nPCRNNSh3ZipcyRGsxu95f/swOavphUSmg+jWuubo=;
+	b=PbZTPjBajRZgV1ZmSm3oN6iiuR0xZTxlTj+cqXMvS/O6ySgEqMR/Q2Ab0Yap994PMPcz13
+	GnDuewgGMfmCVjAEJ1t1BODRcCi/jYA89VJwsJThVYJdcEaOV6p/lsSg0wtBpAb9jHQK7q
+	5XWYLwUiDJeNCM7N6UVdPVSyyzKnTy8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783328163;
+	b=y41dTDwHuYU3UIN9YzqxWAHthZdIOFVkP89BA4gTet86zwnbajVoWbEZ0C3vxvmf7VOVAp
+	d9+/MU/TGzqmNHTm8SGPTBjPujrDw9w37jhuwwJyZtbGyhJkvertHUoD/Cz3DsB58unAGH
+	YzlX0le3bs5vPD5JCMwAB9w3FWyj7aA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="zRCTH/CS";
+	spf=pass (imf03.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=X2nPCRNNSh3ZipcyRGsxu95f/swOavphUSmg+jWuubo=;
+	b=zRCTH/CSXlHBfmFgAvtvsLLee1l1ShxSlAcjEdrJkwwD8/Pt3mBMotBI/GYL7uYhENJGKK87T
+	xWuuR4Au+G4SqRJU9aTrPbVlzeSv+gS3cf4RoMD/RC7z8jliX67vP5GMnC6q+E+FfGz+ORr/J0Y
+	hzbfFZi+PpMXKbbGCpRtZDM=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4gtydq3tM8z1T4gY;
+	Mon,  6 Jul 2026 16:46:55 +0800 (CST)
+Received: from kwepemo200010.china.huawei.com (unknown [7.202.195.178])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5C1FD203B8;
+	Mon,  6 Jul 2026 16:55:53 +0800 (CST)
+Received: from huawei.com (10.44.142.85) by kwepemo200010.china.huawei.com
+ (7.202.195.178) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 6 Jul
+ 2026 16:55:52 +0800
+From: Qi Xi <xiqi2@huawei.com>
+To: Naoya Horiguchi <naoya.horiguchi@nec.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Sasha Levin <sashal@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Miaohe Lin <linmiaohe@huawei.com>, Jane Chu <jane.chu@oracle.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<sunnanyong@huawei.com>, <wangkefeng.wang@huawei.com>, <xiqi2@huawei.com>
+Subject: [PATCH stable/linux-6.6.y] mm/memory-failure: fix missing ->mf_stats count when hugetlb folio already poisoned
+Date: Mon, 6 Jul 2026 16:41:18 +0800
+Message-ID: <20260706084118.1284271-1-xiqi2@huawei.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-From: Chengfeng Lin <lin2530632123@gmail.com>
-Date: Mon, 6 Jul 2026 16:53:28 +0800
-X-Gm-Features: AVVi8Cc_OfaHslnZme8xzf47fmyoGRsBqHSwSB2ST9Aa0oZI50Fn18GQQCYwEb0
-Message-ID: <CANGjgdm=gbQj=tmakUipHz9wR-mUvMVECfvJbTm=sEufxOe20g@mail.gmail.com>
-Subject: [REGRESSION] tmpfs: flistxattr(fd) small-list slowdown after
- simple_xattrs rhashtable conversion
-To: Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.44.142.85]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemo200010.china.huawei.com (7.202.195.178)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9F4361A000B
-X-Stat-Signature: yxiqja7mjdc5cxushkdyutxqnw71678a
-X-HE-Tag: 1783328022-757867
-X-HE-Meta: U2FsdGVkX19ssJc24b89pF71ZeX83whnxZeSXXck0CvoIhqDAaeigvzMMCh4p6T2uIpSeIH5C6032Kl41lbdPu7YfDJgVc9qsk0Qpbc3hymI+RfetD8v8OcIndse46db5Hc0MSZwCVjfB9uDTX9+kl4INsstYLqL/cuUXhA+mNNNUYzA/NbOQXT0D+EtteDzWX73Xd8wr4iSLHmPrO5bkL6C5436HPVPtTe5Y3pTJ3jkkHAlhKyCSvppuEgLPsojmRT1EKoOl/+5wTUAWzzSgV1Y+jmBLo9WN26t4u8atf+k0W6AuDps54F6wJEe7MeTIlKlYWa+JwRlPqYQUKq66RBulTclZiceQSzLkp3jD8JDu0hZCi8MvoHH8PYQ9HWAT4p+I9137SuIgVde0YTBUuEoKjzY5/lVzREV+IC0EX7ts2khtmIEn9GwXQK1/ZWGavAvfgs/A1Kyzi3f1ArX+y3gm7bU+8zXswv94AWpEcN28Q/vaPTK3MGc7PIQVO70fEZyw8TJLla25n3i71in74mQe8Cbm3e8GnTgkKcHpM3DqTHs86LschaGT0E4FdrZT6KH+3YQni9l0VSPo1j/wsPkgfv7SmBejU8qsXz8IT/ACTNuytJB3fOt9PMKCfTMgjMdc+JEZrUA3jOkyHAFXZFXwCiXTaa5ajcimowtl4CWnA0HcyNRPpEStjzYEdJN0t+p7QiZPj8JO27zm7UJBGSma5G935dOyRDgnxshJ1USgNR8SwcK+1KRmFlux0YHr7k9FSmb+g39nzoJj6p/mRaUZ/34DUP7STtkidmfR0DauS9XlsZI29gXJns8bG90Zn9gFCeDPbp+K8kXMck4eiGbPGf9wqVudYEX7OFtrwpk8k5Q6kIMSp8QuxkKcM7NK4DCNcbn7yY7wYZaYkv9zufKezQK3ybXKE//KXLsqfNWYuJdERz04168PGRrB3HKkH23FwsrtuPmSyTHhV/
- 2oKv8+qu
- YMwLRiC5ifaWwSDNw5Z3MA8dJzV3I+kzrPFsFJjsZXUfbwwdwm0as2Oobz1vOpaFIad9EtqkLIZic+Zr+TkRawAvqPbYrth8BOFuA+JWSIyePAj0viKByf6iev18lySv76j2slUAYZa6wONv5rv4fP4Vmro5dkD8AgKOzXZcVDWZJdkJZgFt5ltS9PGCUnmhJP+taVfN7BEC1yYKpNEBsLeKJhmyDJjlfCj3c7Ik0396SGKqlL6m3av4CzaVwh7h3BcOkbTEF++UXCY96Yx2+GOmVu/S9JkKlyRuaCiww/PltuP9kgVlEEwEBsmhWnxHVAyv/LOHw7pU54CwI7lp+0PQMQKAmP+mS3FkjH3KNxIfAXHBec9RGDJeymeWNE/eHtS7mTvRjDKrh4okAbfvc5/BifyQpTeYYsGhNqNePKkagp7HhluDHJGyxu/bDxcnfvOPyBmHYtsb3FCny3ZUjlY3Aag==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C3EA020007
+X-Stat-Signature: qfhakgqg3beaqk8bog8csm3ug9mk4hpu
+X-HE-Tag: 1783328161-186539
+X-HE-Meta: U2FsdGVkX19rE2WhgDxd0NN4U7IfFOlyz7WLmp0QujL5S+old+AHGQxZe9Uiyg8b4ypXk4Wd+IdHdJ9kSbkO6QgV8/6u8tslv8Dd8Y6RYrxs/L2zlGlqWAJpSVZx28ZccXGUTiIix1HNuRGgC3Hwurv26yuxXZ++PE1T6ZYVOmeWjglpUw+EF0Vfx8gmjC9oLUfm11AtFyNqMF3YYy1bfTEPBVumTS4QBPMhCYuJdntpSoCtHPhVWoq/x8lBxHq2W31mZUhB4GFzhAgk6Q4FmZMbC8TE+yj4g384s75uyeY2NbPlpkuaN8xc6DLi8X9RMbz8zB90Pdi6L1D5lBDgtkMOEwvWTRH3HtPzqgXaEcpqXN+v1EVmQKsZ/95uzgMqBHE34JahLSg4O+U+ApY0eu2jWrL5SORLPEW8EkCfMPzRydJj1u8IkguET2ryqm6jXUTLSdRb5pnNT1FdmfKjCYpjVCne5LIoLUgaMOPWzwuB8w9A5QSf4TCxkthegkCYuT/CP8LngWHWK6k8eecIVM0Q/paxyelvaQ9x25Bo1uZBSXnWgo+spIE0uvsjY5vHf6T64vnPXXFRP29LuEx30H9mmjn+ltwGKTRo0ptaMmWDUjXYTM1RAAPDIsR9jQHX/Ok+baX1sBy43vbyfZcKq3SGOn8hYReDCA13tfN7qpY+SyMslZVXBs2sXHvrGqCKdQns3DhpbwNAaBf4y/EuD11mATI26fOCrt4sPl68vzBymj79JxfYfA2AK2pPW62f1xyEydzkn9tFCIV3m6iPPSem3Q7pMQNoRkx9Q5n04FfAFfS8gaRB9Zs33D7f/FW2mqgKhPCEHlhQvnGWAPCH7A4pPqH0AqG3J6IvWE9bYModPKwWlV1EKB45qBkdgweu9n/c0rU4rJQYcG25y44Ymo8flo2uDsXmCkPXOlYND7uPjF5tSLVNxSCgfMUPZbZe2DN8zAnKO1BwOW4CsVZ
+ VoqRR1wT
+ 5w8brP1lWX9qK3X+GM5Ys8KAndk6byMW3PT39+CbS7Af5avUD8vYDJCdzh7nJOt8nGeQ8iII2uL22qzwVkCquI8i92va5GzzFGRbqd5/cb0GQmMzqGb5Wq9AEyWyyRm0ZCCGxBnNfGrllwGAcZzpKqYTQP40M1zg+1lkIdqqmZh1spLsj5iCf2xtfEImUQYCJOAr2IMbR0leUnbeRmOMr3TOWbQ8g/GE+f7hqIILHoh7BT6cywkdaseeUULSudEsl3Owm2Wd7OvKcHNLVEqXSiuBm6vXnl6J0fIRnDdlQHYFRuar44mR4+aIZhRar7d7v2YK0BVBZOGNllNs+HrA3Wxul7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,122 +97,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+When a new subpage is poisoned on a hugetlb folio that has already been
+marked hwpoison (MF_HUGETLB_FOLIO_PRE_POISONED), hugetlb_update_hwpoison()
+increments num_poisoned_pages directly, but the per-node ->mf_stats is
+not updated because this path bypasses action_result(). This leaves the
+two accounting counters inconsistent within the hardware memory-failure
+path: a new poison event is counted in num_poisoned_pages but not reflected
+in the per-node mf_stats.
 
-I found a small-list flistxattr(fd) slowdown on tmpfs while looking at FS
-performance regressions.  This is a performance regression report.
+In mainline, commit a148a2040191 ("mm/memory-failure: fix missing
+->mf_stats count in hugetlb poison") fixed this by removing the direct
+num_poisoned_pages_inc() from the helper and adding action_result() calls
+in try_memory_failure_hugetlb() for the already-poisoned cases. The
+backport to linux-6.6.y as commit 252bb328b36f ("mm/memory-failure: fix
+missing ->mf_stats count in hugetlb poison") applied the refactoring
+(naming, constants, switch-case) but omitted the core counting fix,
+leaving the inconsistency in place.
 
-The scope is intentionally narrow:
+Fix this by adding a matching update_per_node_mf_stats() call alongside
+the existing num_poisoned_pages_inc() in the same block, so both counters
+stay consistent without restructuring the error path.
 
-  tmpfs + user xattrs + flistxattr(fd) + small xattr lists
+Fixes: 252bb328b36f ("mm/memory-failure: fix missing ->mf_stats count in hugetlb poison")
+Signed-off-by: Qi Xi <xiqi2@huawei.com>
+---
+ mm/memory-failure.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-The cleanest reproducer creates a tmpfs file, sets one or more `user.*`
-xattrs, and repeatedly measures:
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 86cdf36ee3bb..5f9203bf8ec1 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1947,8 +1947,10 @@ static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+ 		raw_hwp->page = page;
+ 		llist_add(&raw_hwp->node, head);
+ 		/* the first error event will be counted in action_result(). */
+-		if (ret)
++		if (ret) {
+ 			num_poisoned_pages_inc(page_to_pfn(page));
++			update_per_node_mf_stats(page_to_pfn(page), MF_FAILED);
++		}
+ 	} else {
+ 		/*
+ 		 * Failed to save raw error info.  We no longer trace all
+-- 
+2.33.0
 
-  flistxattr(fd, list, list_size)
-
-The single-xattr scenario checks that the returned list is non-empty; the
-count-gradient scenario also checks the exact returned list length.
-
-The bare-metal test machine is an x86-64 Intel Core i7-14700 system with 28
-logical CPUs and 30 GiB RAM.  The benchmark was pinned to CPU 2, and the test
-filesystem was tmpfs.
-
-On bare metal, the parent/child A/B around:
-
-  52b364fed6e1 shmem: adapt to rhashtable-based simple_xattrs with
-lazy allocation
-
-shows a clear jump.  The parent has the rhashtable infrastructure but tmpfs
-still uses the old rbtree path.  The child switches tmpfs to the lazy
-rhashtable-based simple_xattrs path.  I understand that the lazy allocation
-part is meant to avoid per-inode rhashtable overhead for tmpfs inodes that do
-not use xattrs; this report focuses on the small-list listxattr cost for tmpfs
-inodes that already have user xattrs.
-
-With one xattr, skipping the first round:
-
-  kernel / state                         flistxattr_ns_per_op
-  parent A, tmpfs old rbtree path         135.754
-  child,  tmpfs lazy rhashtable path      229.663
-  parent B, tmpfs old rbtree path         135.335
-
-That is about +69.4% for the child vs the average of the two parent runs.
-The two parent runs agree closely, and the skip-first-round ranges were:
-
-  parent A: 134.451..140.153 ns/op
-  child:   217.758..239.498 ns/op
-  parent B: 134.273..138.098 ns/op
-
-All of these runs reported `expected_match_ratio=100` and
-`unexpected_results=0`.
-
-This run used 15 rounds and 65536 iterations per target, pinned to one CPU.
-The parent and child kernels were built with the same GCC 13.3 toolchain and
-their `.config` files differ only in `CONFIG_LOCALVERSION`.
-`CONFIG_TMPFS_XATTR` was enabled, `CONFIG_KASAN` was disabled, and the configs
-had `CONFIG_DEBUG_KERNEL=y` / `CONFIG_SLUB_DEBUG=y`.
-
-I also reran the same parent/child/parent A/B with `CONFIG_SLUB_DEBUG` and
-`CONFIG_KASAN` disabled.  `CONFIG_DEBUG_KERNEL` remained enabled in this
-config because it is selected by `CONFIG_EXPERT=y`, so I am not treating this
-as a full `DEBUG_KERNEL=n` build.  In that matched production-like run,
-skipping the first round:
-
-  kernel / state                         flistxattr_ns_per_op
-  parent A, tmpfs old rbtree path         148.536
-  child,  tmpfs lazy rhashtable path      223.866
-  parent B, tmpfs old rbtree path         149.178
-
-So the child was still about +50.4% slower than the average of the two parent
-runs (`223.866 ns/op` vs `148.857 ns/op`).  This is a smaller absolute delta
-than the debug-config A/B, but it still shows the same direction after
-removing the heavier SLUB/KASAN debug options.
-
-I also ran a count gradient on the same parent/child pair:
-
-  xattr_count   parent A ns/op   child ns/op   parent B ns/op   child vs avg
-  1             156.102          242.886       156.872          +55.2%
-  4             185.109          273.756       181.206          +49.5%
-  16            312.894          378.211       315.962          +20.3%
-  64            885.222          934.356       870.759          +6.4%
-
-So this looks like a small-list fixed-cost regression rather than a claim that
-rhashtable-based xattrs are slower for every workload or every list size.  As
-the number of xattrs grows, the extra fixed cost is amortized by the list walk
-itself.  These are tight-loop microbenchmark numbers, so the absolute per-op
-cost is small; I am reporting it as a fixed-cost regression in this
-enumeration path, not as measured impact on a specific application.  I am also
-not claiming that setxattr/getxattr or non-tmpfs xattr workloads have the same
-behavior.
-
-Earlier attribution runs pointed in the same direction:
-
-  - the signal narrowed to flistxattr(fd), not fsetxattr(fd) or fgetxattr(fd);
-  - bpftrace layer timing did not point at security_inode_listxattr();
-  - the growing part was around shmem_listxattr() / simple_xattr_list();
-  - a diagnostic rbtree-backend probe recovered most of the old timing for this
-    workload, although it changes the backend shape and is only attribution
-    evidence.
-
-I am not sending the diagnostic probe as a patch, because it is only
-attribution evidence.  I wanted to ask whether this small-list tmpfs
-flistxattr(fd) slowdown is expected/acceptable from the rhashtable conversion,
-or whether a small-list fast path would be worth exploring without weakening
-the original lazy-allocation goal.
-
-Evidence bundle:
-
-  https://github.com/lcf0399/linux-regression-evidence/tree/f0a07aa70b79219bd9f47f577357d673b3a06dae/tmpfs-flistxattr-small-list
-
-Bare-metal summaries:
-
-  https://github.com/lcf0399/linux-regression-evidence/tree/f0a07aa70b79219bd9f47f577357d673b3a06dae/tmpfs-flistxattr-small-list/bare-metal
-
-Standalone reproducer:
-
-  https://github.com/lcf0399/linux-regression-evidence/tree/f0a07aa70b79219bd9f47f577357d673b3a06dae/tmpfs-flistxattr-small-list/reproducer
-
-Thanks,
-Chengfeng
 
