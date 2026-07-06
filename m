@@ -4,82 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01C81C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 13:47:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0092DC44501
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 13:47:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E58E06B00C0; Mon,  6 Jul 2026 09:47:06 -0400 (EDT)
+	id F1D966B00C2; Mon,  6 Jul 2026 09:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2FE46B00C2; Mon,  6 Jul 2026 09:47:06 -0400 (EDT)
+	id ECD7E6B00C9; Mon,  6 Jul 2026 09:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFB316B00C5; Mon,  6 Jul 2026 09:47:06 -0400 (EDT)
+	id DBD526B00CB; Mon,  6 Jul 2026 09:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A792C6B00C0
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:47:06 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 30E481C3587
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:47:06 +0000 (UTC)
-X-FDA: 84958478052.11.7D5386C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7B35F100013
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:47:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mEXCbBS1;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B0ED76B00C2
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:47:53 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4485F1403FD
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:47:53 +0000 (UTC)
+X-FDA: 84958480026.24.FAC953E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 760B640003
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:47:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T7lLSbte;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783345624;
+	s=arc-20220608; t=1783345671;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bE75Uesevd0qFjsHhZ00uNBsyFy5Mf+YUOmZN/u63ZU=;
-	b=OlEHvi7T+vIIpdux+SCnuL7FZiexzbZucvmyvigGkDD1aiaB+b8uBHEPpPdGPGJTCyU4MM
-	2fK9xSGP4LNfz77dOOMs/xE527l47Fia1CF7bGhyF9rBMu+g1oCMal+MvQ9zMSO9aPLRMc
-	IY+RJjBBX1Uj3KZcoeCvTVJUjG4wV8Q=
+	bh=XbPEspgjb9iGcX/qagd/OLVGEsMaq2T5st1yXWGMpXw=;
+	b=uCIO8enTJ/F7X97QZvxTfsB8zfUpqCw9z5ETQ7TMAB51JDE9bKqXohVSE8611kVa8Y6yEt
+	0xbz09zJsFgF11dIlhQMa5NjYKYBb3ESvCu9vd0gGcUjzMgzQLTyczavk88E2ulRLTZDDm
+	KUoxfvUlAacuPUjiPCEAuziEQUJDqpU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mEXCbBS1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T7lLSbte;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783345624;
-	b=FI5AC/FqzWxbzMqP2VNKNpzoEsDZYK7a24cz5LgLxfC+BrSJyrKtGx7xYlW3CU03zictU9
-	yCBl2FCwpeFzoG/Izi59x8/bBCBTJD00n6DYjRNlihBY8GvwvG4dfzus7f21uly3XSOYWS
-	klMzfIhNZif7YvgYBlPSB4TFivLczPo=
+	t=1783345671;
+	b=Qa13/qMeZExIS8xW3OAUK7eGFdUJFnfEtWr3n1nrgUJDWGClemLfSpKe/qBsVgysMMcSFR
+	y2IoUQwd2VrauAD8oYLRs7lbP4dLW8CtRjOkIfKfnJd0EXvSVWEO4OWUtUuR7jaPB7ptdS
+	sIPpAQZMVTDDiBvIBQNnnYnP+LWpu5o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0768B600AE;
-	Mon,  6 Jul 2026 13:47:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5483B1F00ADF;
-	Mon,  6 Jul 2026 13:46:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B3FDE429EE;
+	Mon,  6 Jul 2026 13:47:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0A41F00AC4;
+	Mon,  6 Jul 2026 13:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783345623;
-	bh=bE75Uesevd0qFjsHhZ00uNBsyFy5Mf+YUOmZN/u63ZU=;
+	s=k20260515; t=1783345670;
+	bh=XbPEspgjb9iGcX/qagd/OLVGEsMaq2T5st1yXWGMpXw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mEXCbBS1hGkkaViwffeIdfYIe5kFScAv78jQ6xrbIsLwo7aYx/WLhz7L9yw2UHucL
-	 rIDkx0WF4bI/LYiY6J5m9G5LzXJQDEQr8S4dXIjfZOOV69X+wYBg0EOTykMX8hKz+U
-	 v8dchSGhziyCz8IuNne1tZi83FFi/cscqxm7iongQMyE+tFNe8Db+DEuUQ2FOd79bq
-	 OVbBNzxcmuKW81iSJn2eKQQKbuiW8Fm0pcsWfSl/rZChQBjl4ICJ5ufNNpbGidPYqt
-	 rNBJsEvmYj1WHWU1/EJFJU1Nx7s6B7uVR4Q2Dqp+e2gWKc9oGZdPTJyxhkBWTd5uVM
-	 LJybkhEu+Oe+A==
-Message-ID: <4913bf32-3695-4983-9ad7-ea0638807453@kernel.org>
-Date: Mon, 6 Jul 2026 15:46:55 +0200
+	b=T7lLSbte1fabsTl8bqPNuY+WLRW6VPGciNfEAYPT0untF/dtC13lyqXaIO0GUsbnr
+	 XYTVpJJ5iSiIBpBoxy4cw6YQyaZpL+8tqyGQ8Um1dEpjQHgpXD8mWTKuV5TUacGD4V
+	 oJ735qQnfjo9RyoPMRCr0PXK0GeQdEC1wR80Tm/f9OCNJr+/bWfPJQAI134iqWkPly
+	 Z0K+i2IqKGqfKnpbqJ5B7sITRrsf3hZqa2a1UntZgvnAwrzBx52Ja0uDy8kHmCy9y8
+	 2HxQdNUljStTVdpR6WtuwGU+mGKZQgJwNsmUIO7lNa5o58I0xDcvjxs1nzjJ2RHi92
+	 YsuDksmPhh2Rg==
+Message-ID: <374a0a2a-444c-412b-8ab8-414dff6a2ca9@kernel.org>
+Date: Mon, 6 Jul 2026 15:47:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/5] selftests/mm: move pkey selftest helpers to
- pkey_util.c
-To: Hongfu Li <lihongfu@kylinos.cn>
-Cc: akpm@linux-foundation.org, hongfu.li@linux.dev, jhubbard@nvidia.com,
- joey.gouly@arm.com, keith.lucas@oracle.com, kevin.brodsky@arm.com,
- liam@infradead.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com,
- usama.anjum@collabora.com, vbabka@kernel.org, yury.khrustalev@arm.com,
- zwisler@google.com
-References: <436863f8-5840-4c3f-82ec-c55b46fb9969@kernel.org>
- <20260706103143.3638104-1-lihongfu@kylinos.cn>
+Subject: Re: [PATCH v5 2/8] mm: factor zone-device page init helpers out of
+ __init_zone_device_page
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
+ bp@alien8.de, dave.hansen@linux.intel.com, kees@kernel.org,
+ linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, mingo@redhat.com,
+ rppt@kernel.org, tglx@kernel.org, x86@kernel.org
+References: <38919e81-4c35-4e8b-ba2a-8af8be60b0b6@kernel.org>
+ <20260706115035.49813-1-lizhe.67@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260706103143.3638104-1-lihongfu@kylinos.cn>
+In-Reply-To: <20260706115035.49813-1-lizhe.67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: jk7w9y1p5w3a116h7cfx8u8tndjwm9kn
-X-Rspamd-Queue-Id: 7B35F100013
-X-Rspamd-Server: rspam01
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 760B640003
+X-Stat-Signature: 784mnq1ot1e36zstufunpajfj5xdjmu4
 X-Rspam-User: 
-X-HE-Tag: 1783345624-463606
-X-HE-Meta: U2FsdGVkX18RiYB8jC7Zh9tOsn1syz8xey5Ut7uYWV61eqhwMdK+k5S3WWmjWvSKunnwJxaUyNB78gUj56HUuaXPRzX+Cj/IALPBA8gTsFeCgED3pOypCkhNKg8AE7faOs6atuBEr/4t7/NW14yJF7qBwDosl/KSyLO1q/fVu0fJwwq5aE/IDkaNBK6thdyp2Gxp9gQOaAkthuNQRFsaLPUCgpDGeVMk90FskH9HhKf7pK8RmllUarjVAmWS2QsMDm5c9U/J9fXw+6wF6XcyfO3IXdpjR+V9Epwnd3/0tvuQKtdCZo49/fFsx5Sk3KdqqLHOsvPI3N/Oo7SyECYb92BTaSNTHancZGQLk/+FyFe9lSiZlzNWr3lxSo++y0NEbzr0psAEx1BcY69bVeX7OcvtwY+fLFTuIlju+9pf7mEKnP8c3fNp3mBwKohf9VASGgbck+nmxBMU//3hF1crY6X2K4gbdMmSZIno2OiUwY1iqlqSSRT45mUaZvZmoL0IsgV+WEgOmCBKPHG8Zv+DYCYKdbncg9rQCcpE56NWZ14GfA+IDJspQG49m7f1GQNaYSzpNtOeoYdt1wnPf97RvNc9yLrAAOvzvAiARpZ4FVsWr5qnQzEIEhUsojiNF0YcWkczFLho1i71IxUTu1ugCCsjOH2/DcYYjfbZf8xLnry3nH9WCo/TF8AKxIdBdn3zn7WVII6UN2ESji/97ERnJe3WNI9VQ4cgP7Zg5TEedt9pUC8vFRBrsyesIRl4VZoyQOyGZKOFYLGkP5/2KmyVIkuwWBxJ7SkOQnzCf31wymQ/im2NqmqMyvDlkXhw4v3vQ6/b6fw05c/CsIHkht28XpWk8g+p2xMhyqneeoIvFm8aPHshwfVFcwUXWBV188b0ABvUkfJTXpUGpNUvkkM2Gt1SVaWZJKXMgoLtbnrJhEDm9UFLiT9J6G/apsPoKuZv/qjiswYW29Cit6XyV17
- YL6sYqfo
- 9i+PYxn7OS6uVLtSedN0tnMiMeLgin5W3j3y7Q04b5VTbdtPgIgkpFofSejfjOOlxIg85QugrAcQxxkdRSDmR8b8DuQJLlDhJejYRUlhRR4juec3Hynm2y8YOD1HNlNPnibUh+NEDC+djrfFxFRaCGlZ2hQXwZd0yPqurwoPMLqm6ALqlYkNJ4UL0Z421GZQSAkh6BVXzGCw6J9fVa3IeYPB1xJ5GdrIkzntYKv83unb9jhinkCf8bVR29/AbGbL8TYPjNbkexTegraZi1t/w8+dpCH7VKMDT310GvCO7qKo8PwQyJvO7+4c37g==
+X-HE-Tag: 1783345671-688647
+X-HE-Meta: U2FsdGVkX1+O6WZheEI7ARxW0b3wLNplHOYOuM3M9Ro9wDNQq0E3d6xlXvfECuemQoPUqy5zdNc6kLopxUuczZlytlZPvXHTOZnEK2vgt6GinHphOiD3kxxtxRVOwb8evRMizi3W6Ae4oRcGU744kxw3BLp6QFVoE9i7UQysOWsOhYQUK6qEmPolzTesL63vm5yeYytb+mXtrsp4Vz1Jh5f4/B2n6T2WWbLu2UR4FyT4tYw27h9BkT4mSgCqDvHS11kLcS0J/A6rVjlV7cd6HVVOByOQO3rAaOHTCJqh8V9QlHAuYFo3Bv87PtF3fcUbYUON7oyAL4gsihLwLyE1w+oQhY7sOVr0iokXDZdMg2BBmQYaLhk7o9rmxZkvj/tq+9eqYQDWL4Hxdw+ZDP1w0jVFnnpkBm/0QXHdQ/MeXfgnZ90znyqD3JQvvky5sZZJpr3qiDYZIKwIOSDP+gXSfkG5UFc6hPa0IRj2XTpw6HhjpPQTQT0MW+t7EU3VMKevj9qY8f6oVA0DHK+GBpIfjr2IgtWc1v6/akz3hyGJt1OY+/RZZmZBUtcaB4nQNL0fm+eKCkVU/hRuYPTR5JTY6dvN3vr7dow6CjhSWUbiSGggUbjkF5LcsixBJoWpplDeFjc/4nHVu5WpYT4pBJ8YknxMOyakrbmIWhmDvJ9CoXXKb/m3r3C19HGM28pHWWt6nplLqyU7KJS2tCYfBkXFk1ZKdWGUMV+Gn5NnE/2hKpM8KVt9fzewjDe7/mzirGbikM/wKt3zIYkmRWjXAzumtIm4O22pvPPd8Ntr+uIAvFL1c//XwDZ0aTDqESw7fo1YGsmcyX0OmR+LIyMQcim3w6b/WF7xaw4kWNX9nS3oRe69XBRcMaQiJ9TeiyHxAw68OHLVJqSoSuVvlaHtwV/rGsK62QH2FDywV83N8o0jDWvxqK6CrXlrx6kQl737kXqr7cV6R6bLwq7bewxemJL
+ fIHMfmQp
+ T0tyVKHDGiEPhxuMq+eq4b0CwZZT53mYg15qwHI/9wlyxI1ueLm6wOewT7VSw2O5+oX2TGzPM3v9h26AGQ0ToonP4TWN3e5uh911X/YY+EFtCZJt/sIFVzCNStdM7HIEP+N1XbQ2CES/QcWvAMZmDYJheWQyMVSyVPqh0WuUIkYJ5Bl4qDR43dW3gn2mTKuOHHxoN3LFWTMPxRCWNjpDzHFikUve23sZNszEScCTOQKnppnYHohskddOS2nlMhMblmi92JNO3g40BLMMOEF2K3fCrfURirblk7zAWj/9n8RcMa5ZZ26euof8iGJ0NAnZpNqtK0vLuDKxb3js=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,42 +142,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/6/26 12:31, Hongfu Li wrote:
-> Hi,
+On 7/6/26 13:50, Li Zhe wrote:
+> On Mon, Jul 6, 2026 at 11:13:45AM +0200, david@kernel.org wrote:
 > 
->>> diff --git a/tools/testing/selftests/mm/pkey_util.c b/tools/testing/selftests/mm/pkey_util.c
->>> index 255b332f7a08..fbef3cd45447 100644
->>> --- a/tools/testing/selftests/mm/pkey_util.c
->>> +++ b/tools/testing/selftests/mm/pkey_util.c
->>> @@ -2,9 +2,99 @@
->>>  #define __SANE_USERSPACE_TYPES__
->>>  #include <sys/syscall.h>
->>>  #include <unistd.h>
->>> +#include <fcntl.h>
->>> +#include <stdio.h>
->>> +#include <string.h>
->>>  
->>>  #include "pkey-helpers.h"
->>>  
->>> +int iteration_nr = 1;
->>> +int test_nr;
->>> +int dprint_in_signal;
->>> +
->>> +#if CONTROL_TRACING > 0
+>>> +static inline bool pagemap_resets_refcount(const struct dev_pagemap *pgmap)
+>>> +{
+>>> +	/*
+>>> +	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
+>>> +	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
+>>> +	 * the count again when the allocator or driver hands the page out.
+>>> +	 */
+>>> +	switch (pgmap->type) {
+>>> +	case MEMORY_DEVICE_FS_DAX:
+>>> +	case MEMORY_DEVICE_PRIVATE:
+>>> +	case MEMORY_DEVICE_COHERENT:
+>>> +	case MEMORY_DEVICE_PCI_P2PDMA:
+>>> +		return false;
+>>> +	case MEMORY_DEVICE_GENERIC:
+>>> +		return true;
+>>> +	default:
+>>> +		WARN_ONCE(1, "Unknown memory type!");
+>>> +		return true;
 >>
->> Who sets that CONTROL_TRACING? And if it's nobody, why are we dragging this along?
+>> Wouldn't the compiler warn if we would define a new type but forgot to update it
+>> here? We're using an enum, and I thought the compiler would bail out in that case.
+>>
+>> Or are we scared of some other garbage ending up in there?
+>>
+>> Apart from that LGTM.
 > 
-> Thanks a lot for your comment.
+> Thanks.
 > 
-> CONTROL_TRACING is disabled by default. It can be enabled at build time
-> with -DCONTROL_TRACING=1 to capture extra debug info via ftrace for pkey
-> failure debugging. This patch just moves the tracing and abort-hook code
-> to the shared pkey_util.c, fully retaining the original opt-in debug logic.
-> This is based on my understanding of the existing code design, are
-> there any corner cases I overlooked?
+> I will drop the default case in v6 so a newly added enum memory_type
+> value is easier to catch during build review.
+> 
+> I will move the WARN_ONCE() after the switch so we still keep a
+> runtime guard in case some invalid value ever shows up there.
 
-This is not documented anywhere, so it's rather odd. I wonder if there is a
-single person on earth that uses this :)
+If the compiler complains, we won't need the WARN_ONCE().
 
 -- 
 Cheers,
