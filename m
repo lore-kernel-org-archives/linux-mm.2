@@ -4,136 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE4EC43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:15:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 696B1C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:17:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98A4B6B011A; Mon,  6 Jul 2026 05:15:45 -0400 (EDT)
+	id 51F906B0116; Mon,  6 Jul 2026 05:17:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93A566B011E; Mon,  6 Jul 2026 05:15:45 -0400 (EDT)
+	id 4F6CD6B0119; Mon,  6 Jul 2026 05:17:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 828E16B011F; Mon,  6 Jul 2026 05:15:45 -0400 (EDT)
+	id 3E8C26B011F; Mon,  6 Jul 2026 05:17:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 560AE6B011A
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:15:45 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D6DFD120366
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:15:44 +0000 (UTC)
-X-FDA: 84957794208.19.2AAC76E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 108176B0116
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:17:36 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 900EFA0329
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:17:35 +0000 (UTC)
+X-FDA: 84957798870.03.47BF86B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id EB06C20006
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:15:42 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PuHdcLS1;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id A732510000D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:17:33 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OqJ9j9hs;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783329453;
+	b=EVw3sFq5pHfa/W2y4vKdH1r0Pj1j60Cqsqsz96IKaafOBjibJi8KuM6Cq/Y3g6td+z+wQ7
+	wM6xd2u0WiFSoKrT9ZLVJB1WoeO3SvD6DC/18eOM7ezxsnbSOG4dOwuUT0txB/X8Ygb3vu
+	NMO6ZHBeNEmx5DSYCu2VqatppqKfUEI=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OqJ9j9hs;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783329343;
+	s=arc-20220608; t=1783329453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bokzjo0yW55RfvluZv8dBD0vpjCIgsPtps5JnOgTFww=;
-	b=zLhMoLGdO8o2UFFMsUnQeMUmxdnPFOiz/waTnBA7E5GiB858N4n/z93TxJlNXG5DgRf1e/
-	8sAW7mX7TciiAsiZrh9ZYeCv76Fp2vB+pzjkUuPUq18/wXKAGGVLTMFUfHNSXzncMpnt4O
-	1GVNQjwHSoOE8A1nae6VPU80CMEFSIk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PuHdcLS1;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783329343;
-	b=eGgHYz+elUrfR/zDp8xEwaAu1emS8iFYg9ul4I/WPYzvGOwXIgHPgYRy+CZr2i7k7dqSc2
-	E59v/sS1xrBcL4AyXE2V3nQfJ3/rQ8Xs7d8YRKprNcQoDS3gjiKtmFvwrqXtfQfB3k81DG
-	xHYD5eb232Fi1SWVHlz8OSafooV6KLc=
+	bh=LvMq3MNtjXCJ1IvPUkIecLk9KXmk63v3FWkVp2zdkBY=;
+	b=pVQKcAdnrsFbiHtXOJV7UPBkr5nhI+33KjKflN2R5b+u98Vc5830oRpfZPeNXHncdBjucD
+	dkP2HLXb54M6BbNnCwKgSdNh/kQQJg3FFBzK5WwHCnhYQCZ+p65i4JWE0Jd6/rI2ZiEQkO
+	6o2KtM79JCyhn5AotZBwbecffWXdIxA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01BEA41814;
-	Mon,  6 Jul 2026 09:15:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6B81F000E9;
-	Mon,  6 Jul 2026 09:15:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D5C60419A7
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:17:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AA81F00ACA
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783329341;
-	bh=bokzjo0yW55RfvluZv8dBD0vpjCIgsPtps5JnOgTFww=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PuHdcLS1JTZ9/r5Mr4tauz++6saoXfkiZkpk17nVpbDKcJKf9cDmGBG5lRKa/b/cb
-	 m5aHsmlaHkT+ptUZkhSvSlQLJ7I1GpFf0JpcIljNfrqqgYpiDBhQjkzQXsateYVWg+
-	 4FbzPzDDVXQjKSZ4+QTp7H2efjV4RdUOuR66Yb4kMI2VtBUj2/PlFtkJuSJYmjilVs
-	 RjSM2dUGGPJG7cvGItYbpQ/80J9wMK/LFMss6b+pi2qO4Q6AkoARLZVCO4kB3OKEej
-	 tA48zarkJbc+ndBT2e7reXXpM6FTtuqmG3Iu3b7Frg7nZbVhCMEUpDg4YXVhzR49jd
-	 w68UsR7xZn/nw==
-Message-ID: <8a6f0bc0-5b6d-406d-9d2c-d3861b5c31b5@kernel.org>
-Date: Mon, 6 Jul 2026 11:15:36 +0200
+	s=k20260515; t=1783329452;
+	bh=LvMq3MNtjXCJ1IvPUkIecLk9KXmk63v3FWkVp2zdkBY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=OqJ9j9hs1UG/s0KHESFRE+rMV1dy3UbCzarXHvvNuUZjfo6pWV1XzzMV9xzLsX+aw
+	 WXuW4iunjsDPDfwtwo1T6k9McPK4hgVTePfg1Gu5CDIy9uOkIE6WF08g0NF+8D0iM+
+	 iF7J05TACn0UV8dmSTuz1/e+So3V2x4wnX33QluzBETPZD2lgFqi9jsi5BdEDFB5e+
+	 V7Ggb3gMMIBj7irAtrx/AbPIzJQm+3TBXXjthSHN0RoMVrLge3k3wdEF2d2uhvkB7t
+	 yNZpIesYQ9hvy4b7GuGscufaGnHzTk/WAUhJPEbD7n/mU/BnRO2WDbxM1Mw7vx2tqH
+	 02uWrL/fCl8CQ==
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e50a650a0so131641385a.1
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 02:17:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RoPyg3UpTa+SZ0p+vU1Nri5lbsYn56DkKNIunA3blu/O2X2Iwp5Rqb68+ZxffEGJeJDJnGrT2Gw/Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyk13zGHroG6ArdBOPaoiGeLREYE3ipDC3rlZIQgm2EBWgT5Deo
+	8ToOxVR7OD75ssNxrlX6UW9k/Z00/j4t2WpuKw+tzrMODi+hTCEOu7fqNLk/Nm6Kq0jfBzrCq8G
+	vUKba6/+iF8/1j3fGpJbU/u8eDLFEsrA=
+X-Received: by 2002:a05:620a:19a0:b0:915:8bf1:bb10 with SMTP id
+ af79cd13be357-92e9a34480amr1332446685a.10.1783329452003; Mon, 06 Jul 2026
+ 02:17:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/8] mm: add a set_page_section_from_pfn() helper
-To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
- apopple@nvidia.com, arnd@arndb.de, bp@alien8.de,
- dave.hansen@linux.intel.com, kees@kernel.org, mingo@redhat.com,
- rppt@kernel.org, tglx@kernel.org
-Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
-References: <20260701090553.62691-1-lizhe.67@bytedance.com>
- <20260701090553.62691-4-lizhe.67@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260701090553.62691-4-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260701235955.36126-1-baohua@kernel.org> <20260701235955.36126-2-baohua@kernel.org>
+ <a9829fdd-75b3-4035-935a-f3a74fdc29bc@kernel.org> <CAGsJ_4xwfCoy3utvtAqAstKGD9ScH-n55bTTKrLiHj=c2doZFg@mail.gmail.com>
+ <aktxkCILD63YMtv_@MiWiFi-R3L-srv>
+In-Reply-To: <aktxkCILD63YMtv_@MiWiFi-R3L-srv>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 6 Jul 2026 17:17:19 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wxzC6YjpGG=MNfss9Md3ZJqZ6SR0GtFcDpHMpMGHN0gQ@mail.gmail.com>
+X-Gm-Features: AVVi8CeWbeZJ4lGs6_qeEu1Ttn-JOk_wY4xixeOfYoUs6MrET5HMDOiTeyukUHE
+Message-ID: <CAGsJ_4wxzC6YjpGG=MNfss9Md3ZJqZ6SR0GtFcDpHMpMGHN0gQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, kasong@tencent.com, shakeel.butt@linux.dev, 
+	akpm@linux-foundation.org, linux-mm@kvack.org, chrisl@kernel.org, 
+	jp.kobryn@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, 
+	ljs@kernel.org, mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, 
+	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
+	vbabka@kernel.org, youngjun.park@lge.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EB06C20006
-X-Stat-Signature: y7jk354pegpemhf8cfuyx3ziq3cxsggh
-X-HE-Tag: 1783329342-172124
-X-HE-Meta: U2FsdGVkX1/liFcNL5ebobCQxUTL/nl8lf+6wjVvJVADebqGXPbKUW1SlCSa2tqaoufalivc7DV5jNVArN2frZCvelFEKyrlhJLkyR3ygKFUBUYM4JSHqwCU7FvQ4tfQ1gpNpZ9oZgBVlZagZ62CG1rdUJ3reuLHu4cAxci3rdMHX9Ko75izCmNkd9eZMkCiLp2flk7ZNrHtWjZWPndRK7t3IWD131PauhkNhnvEzSiEGoOr7BYNeon8/cCDw6zukE2ABSzWD6r7+zQkpQ9j5eZ92jZxjK6cVbWKOzrJVwXKWHr7/n4OoduGwfneYmhvctIHe2netqj9DGe4bEDEDNRk8AHmgTIGB5gfXWBBkm7LUgXGkbY5KJip3OqeDaw+mIFY/k4Oq04bQAG6dtoJSZNmWj8XHWUvzmDJRBmTYSrWgzYYATEfRvadNeWAyWRDb948KPI7VP1SYdsVyUEr2PK8qmfvktmYrsHhR1QuxBy+YhQqnQv5XTzTVZPLHROlVonnfJ5FoG5SKZkliaNncvMVJTZiCssSfbDLgyPfqMhxtsuaDUZNhy3PqtIbzSmEU7i+zK7wWymWiaWhPQnQ82PRciHtyOmKi+lzOdZhtBxq6PONXvG9B9+AZbmLRLD7oWsv8oRXLF89qMmmisz+Yv4tqiDVWVTBjzkj2KoXcdGQxNl/dz9jc0/fJ8fEsuI2b0s5/dH7ngBL7omvTm6XqTccWrlrqG7TdrJtqsneuMyttCIej/5FU4z4/qW2dnQxcp8Z9vK4EZmBX1bMeFDf/o2UNfba98ho62jJsU0yoZlAcJ+fr/bq2SG77NnWdGQF2Z+MfGj0b6ZH1Cy8BSrPVCK7/E8YoxrZZT86jvUhiQSilcWo+n9FS0YsqSsKNqzSxKxNpCPN6weA8TpQY3OpYMpwPC4ePyl1KWSpEn1ml0UGYmxa/qjaWQyby/QQJxKjgIpqoS0ncXMiHrshXhB
- mYSZcbQB
- 6a3fmE1KbjN45x/PqKXFcEIte0PU1EG3axJ3w5W+A9n2uE24t2GVrdH99bKF60HGZxhMwVoTu/PUh1WITxLo4vMsIfjEiP/XK07OpkxzU4lTXTXTNFqK97uShAmTd3y+27Idseo1/js8Y0t61CyWLbjwpjBz7rkkfHkVdr57fjG2nTnLFkw0Q7IHkVYLjE0jYiXe4RGqtYmpSlXu6R7ruiQJ7nnFG51E5hPJl0ijBnOr6i0meAvg6x/HtNbm6HDal8Om0DSyfF3nC2EBnrn/fkw5Eu/wVL/ccQDSymkrVXFAVFvPahrjVbSuOeo3BlTYYoZcyJHM+wrLp7Yrqm3WUIIrl+l3PdnQBquRA
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A732510000D
+X-Stat-Signature: c8frm8qgxiog9gqu7mgi6rgm9i8brae8
+X-HE-Tag: 1783329453-546905
+X-HE-Meta: U2FsdGVkX18FIoqd6hEmm1rKkvkrKSGJ6yscxTqC6kLusLLKQZP73r0gq58PSL8271AXbt0QfnCFc6HB8AI7RGnL3nwHCRjftiPEThRdnIwxcb7rQEc5yDlc4BwIFvuXbHFUW9tPVdzxzjrx3OmY2AKHFDWVMGfd62aRWqicwXkABiP05n7By9spRyJefnl75Vr32OeF9KrqYVH+FzJCWTeGyIy4RTsaav+Ak7SVmAgoOKaVggx593u0CtTIi+Jf8/8n1DhZp1BhAiLDwb7t5TJPXbOI4icaavnd0OquD986cWYikQoUAdT3vQbqwM+eeZiwq3LgoFzJuYz0DutgGhT7SsafhXY2EzU4uQZIDs7suqsB7RkktxBuVi6ytaB0xJQBwDSp4ZKiiz2yipOHVsYe4oiDew+nG3YiQm8b9/YbQbmJX2aAAfbHxLnvX9kZatjAsZXIaCsjEaRI7GRFrZsrIySDSG7qHY06mElnLqYxt8Pz8XBDHUnlhF7Tbv4UFZJmLbE+PUsKDpgWLAp3vGAaVQgXsqw5+koXli1La/Hao607NV+gyIGmb8m7Ps6bUs536Nz/ADDX7Wgd8y3p9p6qdJtu5c7S4PP15nyhSSNmL//zR9VF/BLlVGud62srJ3hiihLR0LEhpFdql4r2LwufDPZ8bfY3of4U8LKMzzITKm9FbU5l7pVaZgFH1oBjX17mPf0SugMGX7YUtsaY0i2ljcu5Wm5nlUUtyk6uClEI83wY9SopifgSR1FS7WNImoSR2CQR9YXwBgIhSX7RkKsYiwBRWkqblW/O2aUagZzbriZDX4FLBo0OvxZ6a3pzaBp5I0NdSQp5p8ePguBqPQxjOfIdpxHm5oDH/D2HihZxu6dJ28h9rUpZld8O7z5oPEoKtGKRhuRrJuUHg4ApGPDvH9v8xvlLJMihcg3pDhqc6jIlksTfZlQ3MHMgLUX92N2tCCkPZu5sldrl5XY
+ nqG60VQa
+ 7CTEidtyYGdBfwheRWDeMFCCxWTHXrEt706PqjsHXQRJW9mSOY7Dvy8HsbAW4Gh7wrzel4bLvd1rvTNpGgbI+C57EcJdNM/kX/vkHwReQ+ejZEzOC4LEAH4U1TzXiL6f8YaABz+QMa3VB93l6nq6/aPTEUpTE8rcOFjT1gIMarPOy66qewXjA/QhDx0KKDOkzCestdrHJheiqE/nR3ktP9DRfcPFGi+TJ46ENiBY7dWf9n9ZHof670BBlA40+NQ0OHuryPN9hKvaGZh10Vpr5GvCjLQES3YBbd4QuJzXRirYcI02MHuHuennlxmDGlxmPuhv8EQfXlFCqMPz4t/ANo4fVOxQ+rUb+k77wCz+kWMw4f13DxYE8ADV9k+PEjl7MBjnO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,90 +108,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/1/26 11:05, Li Zhe wrote:
-> Callers that want to update section bits from a PFN currently need to
-> open-code:
-> 
-> 	set_page_section(page, pfn_to_section_nr(pfn));
-> 
-> and guard that sequence with #ifdef SECTION_IN_PAGE_FLAGS.
-> 
-> Add set_page_section_from_pfn() to wrap that update in one place. When
-> section bits are stored in page flags, the helper derives the section
-> number from the PFN and updates the page flags. Otherwise it degrades to
-> a no-op.
-> 
-> Convert set_page_links() to use the new helper so later ZONE_DEVICE
-> fast-path patches can also update section bits without open-coding
-> SECTION_IN_PAGE_FLAGS at each callsite.
-> 
-> This keeps the PFN-to-section translation local to the configurations
-> that actually store section bits in struct page flags, and avoids
-> exposing that detail to generic callers.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  include/linux/mm.h | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 485df9c2dbdd..f78afa63dd3d 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2541,11 +2541,26 @@ static inline void set_page_section(struct page *page, unsigned long section)
->  	page->flags.f |= (section & SECTIONS_MASK) << SECTIONS_PGSHIFT;
->  }
->  
-> +static inline void set_page_section_from_pfn(struct page *page,
-> +					     unsigned long pfn)
+On Mon, Jul 6, 2026 at 5:13=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> wr=
+ote:
+>
+> Hi Barry,
+>
+> On 07/06/26 at 04:18pm, Barry Song wrote:
+> > On Thu, Jul 2, 2026 at 4:05=E2=80=AFPM David Hildenbrand (Arm) <david@k=
+ernel.org> wrote:
+> > >
+> > > On 7/2/26 01:59, Barry Song (Xiaomi) wrote:
+> > > > There is a case where `folio_ref_count(folio) =3D=3D 3` and
+> > > > `!folio_test_swapcache(folio)`. In that case, both
+> > > > `folio_ref_count(folio) > 3` and
+> > > > `folio_ref_count(folio) > 1 + folio_test_swapcache(folio)` evaluate
+> > > > false, causing an unnecessary local LRU drain.
+> > > >
+> > > > During an Ubuntu boot, I observed over 5,000 redundant local LRU
+> > > > drains. For a kernel build with a minimal configuration, I observed
+> > > > more than 20,000 redundant drains.
+> > > >
+> > > > Fix this by checking against: `1 + in_swapcache + in_lrucache`
+> > > > instead of hardcoding `folio_ref_count(folio) > 3`.
+> > > >
+> > > > Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> > > > Reviewed-by: Kairui Song <kasong@tencent.com>
+> > > > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > > > Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> > > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > > > ---
+> > > The other folks should probably re-review this patch that changed qui=
+te a bit :)
+> > >
+> > >
+> > > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> >
+> > Thanks!
+> >
+> > Hi Baoquan, Shakeel, and Kairui,
+> >
+> > Would you like to re-review the patches so I can re-collect your
+> > tags? If not, are you okay with me removing your tags when I
+> > send v4?
+>
+> Is there change you need to do in a new version? If yes, please remove
+> my tags, I will review v4. Oterwise, I will check this v3. Thanks.
 
-Two tab indent.
+no change for v4. Please feel free to re-review v3.
 
-> +{
-> +	set_page_section(page, pfn_to_section_nr(pfn));
-> +}
-> +
->  static inline unsigned long memdesc_section(memdesc_flags_t mdf)
->  {
->  	return (mdf.f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
->  }
->  #else /* !SECTION_IN_PAGE_FLAGS */
-> +static inline void set_page_section(struct page *page, unsigned long section)
-> +{
-> +}
+>
+> AFAIK, usually, if patch is updated in a new version, any reviewing tags
+> from the old version should be dropped unless the change is minor or
+> trivial.
 
-Why do we need this?
+Thanks for the clarification. make sense to me.
 
-> +
-> +static inline void set_page_section_from_pfn(struct page *page,
-> +					     unsigned long pfn)
-> +{
-> +}
-
-Dito.
-
-> +
->  static inline unsigned long memdesc_section(memdesc_flags_t mdf)
->  {
->  	return 0;
-> @@ -2768,9 +2783,7 @@ static inline void set_page_links(struct page *page, enum zone_type zone,
->  {
->  	set_page_zone(page, zone);
->  	set_page_node(page, node);
-> -#ifdef SECTION_IN_PAGE_FLAGS
-> -	set_page_section(page, pfn_to_section_nr(pfn));
-> -#endif
-> +	set_page_section_from_pfn(page, pfn);
->  }
->  
->  /**
-
-
--- 
-Cheers,
-
-David
+Best Regards
+Barry
 
