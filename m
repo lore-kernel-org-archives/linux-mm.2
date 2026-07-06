@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76D1FC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 17:55:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A51FC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 17:55:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5416C6B00B4; Mon,  6 Jul 2026 13:54:59 -0400 (EDT)
+	id 4A5476B00B5; Mon,  6 Jul 2026 13:55:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 518876B00B5; Mon,  6 Jul 2026 13:54:59 -0400 (EDT)
+	id 47CC86B00B8; Mon,  6 Jul 2026 13:55:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 455E66B00B6; Mon,  6 Jul 2026 13:54:59 -0400 (EDT)
+	id 36B436B00B9; Mon,  6 Jul 2026 13:55:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 151D26B00B4
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:54:59 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A9B0401C4
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:54:58 +0000 (UTC)
-X-FDA: 84959102676.03.98EB702
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B730340004
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:54:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="jl/J1BQr";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F044B6B00B5
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:55:05 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 68E75120198
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:55:05 +0000 (UTC)
+X-FDA: 84959102970.29.38F00E3
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 77E2D40003
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:55:03 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Wa84SCXm;
+	spf=pass (imf17.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783360496;
+	s=arc-20220608; t=1783360503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=cnwJHJEouqLhDU4VS1gzSe1nEPe1/QANOGjZf+5gN18=;
-	b=gZW89F1A0XLgK6sFpGpVaswK/v7QQlEpko1i5km5D0y4U2l9PrTrXEASbH+LlUvn2DW2g+
-	fS8NB5CojF52Nnp/i5NS2hY+SY2c/3FWXfgFt6U8N2hBKMOV5KGj3w/q0dCN3GVHkM6AAl
-	Zs3W0vaHcKcwqhDQvahPEhTaixsU4xw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=A3/ULYVgYqkVHGifQ6W/LaJ1GCCnz0joJzGF3nrJAIs=;
+	b=hQO0rYmLZW1O+xaMn5gDoqG9xyllSuAwOpGKyIya2p+kLhaC71V+MAi1RfhElqamqZiX6a
+	s+DEDY2Xo/GeXnHowikcLJKErRRcAnPGU5d1lEBsi9dv1LV+TLbNNgLE4QDFJdjnEEtVbp
+	aAaUsv/W3ZKgyn30Xg0GYEzaEerAu8I=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="jl/J1BQr";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Wa84SCXm;
+	spf=pass (imf17.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.176 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783360496;
-	b=RFB0QFBE6Nr8iyU7C7B6Vz+Oe1u4wGFBlwS9fLwm3+80LAVu11Wnigb6YUgCkfgu0mSxFz
-	re6uZTyXW48xWWfQKJpx8pEFMYvgDSCt73Pfy77rOv4Y9NHSxN9mH7GmCYEBA76tZcJJs6
-	nO8ZDHLuyWQgmJH708aWVgEzZllXRNM=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cad8076b01so43000485ad.2
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 10:54:56 -0700 (PDT)
+	t=1783360503;
+	b=2o8/gBU/Hh2cwquv+o1Miy+o+62h/7VvKPt0jbBm6tOFwlD5sp53ECEE/3Gp/QO0iuhaZg
+	ysFEqSOBpk0dNfbnn5QnQmYrOCoWJeZpBbQOhCKPM18chAWNKDUD95KGhK7w/a/s6OjqrY
+	5myHnn/hs+r4DRKT8/0e3oZONXHOWOA=
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-847a483e344so102651b3a.0
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 10:55:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783360495; x=1783965295; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:user-agent:message-id:date
-         :cc:to:from:subject:from:to:cc:subject:date:message-id:reply-to;
-        bh=cnwJHJEouqLhDU4VS1gzSe1nEPe1/QANOGjZf+5gN18=;
-        b=jl/J1BQr0BHorwD9HcyW7FdnkdmJ4a6/Pk/vnyqIDdTCCgIoi0GXAuYouqMRkBwXGz
-         l4J5HggMBRYMapc00P0VBAyQ7cF6+bCEyU4U84muxdE1/s0w6BEvI097Mv3dPp+KF9E5
-         7WkCeJhmiOTx2dZA//m/lBPJ/yXz+HrsCrB0cheJNKzQWNIJdwdjy492YxGOCNtCcVCP
-         uftLCePoGwQChnM0ocGeuYPl2vxOIRg/E+W7eXAK0Vd/TLJnrFscvRsjPaPLef4mjKxY
-         9Oyg31HOkuIZZtqUSMZo+GqKcjy+V4KDebXaSEo9b76aUT7n1/RwwgBfy7bsJNxr3tQt
-         tbUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783360495; x=1783965295;
-        h=content-transfer-encoding:mime-version:user-agent:message-id:date
-         :cc:to:from:subject:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1783360502; x=1783965302; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:message-id:date:cc:to:from:subject:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=cnwJHJEouqLhDU4VS1gzSe1nEPe1/QANOGjZf+5gN18=;
-        b=kFHs8XAn0IQy3Sgx20hA+aDRvSMwgaGcjga6SRYNGlLKw4bwJRYeBPKFNDedhLWvqp
-         hEA4CxbvxfJc+InTny2DAX8sw9thSwqW+IGSE5bqH9Eve5VKKPAcGXGdTliw9UdqMtxr
-         9hmPtg5gGlLD0APdREKhLY741Am6rb90TVNba17wBdxOAWZHdjE0qqGfTADkiqBRBdxj
-         oPos/manUculfspw/FgVQLeWoiEL29jtxq6qOH+RLF7N1Lt15D/1hTi+jNLPtba7GoKm
-         1mzhKAZnJ32a1WCRacV5VJMg4Y9/pj8IW3uLWjqK5hVmiYTa4OIIOiEHAJfpJb+dnCQL
-         9cWA==
-X-Forwarded-Encrypted: i=1; AHgh+RoEunyGfIGg3MbqYsvImB8oOjC09W588eo4Yg6eum4blavfKWSX87Y+yBhPYZNOG16E9iGsMF6W5Q==@kvack.org
-X-Gm-Message-State: AOJu0YzEd/t3k8ZYEIc2mlnNPizeStIVeKCqrBv1x4TumWUMbnn2HDzv
-	qdyKChePMeRm7Tjc5TOWw2nMoTQP1yc+Wga43hmbRScmljSkeokm0pgE
-X-Gm-Gg: AfdE7ck39On/CjSeywst8KGu+ae7OlTvrFLvqFVkQJtBKyMH/58YK7p0BrrVRc54lpt
-	HjqerhTl549UU0by8870MqIhdyITHQWeIEv5HPH+W0W0E2pI8eY70CY8Xnq2x5JGqiFGgbxFgq1
-	D87LoXoamnPPxvxlbtsgFlvqxGlWWHS8BQESzmMrK/x7JpH8PsQ+CVk991odpYxf3mSQp/zUU3t
-	tXkwbQi85J6N4mmVHKyk3AD7P/qWKqkoVnAZ6vjVrmvB0HBfZIacT+uJbY62qkHg0jFjectAW5Z
-	WW8uwWiG86n/C2UVV70HyJ5xJfStIpAcr0dP3k7VEXA47Fw+TDwlrfqW+91uWk3/R+QAZMEWGFA
-	mcqZDJZIYt+5iiLNZotWFISsYTizIyoZ+HUu+OqtvzfxZBslDdAdjTTWRITQqtoPaxO1ldAHmQ8
-	vG8NS6xpoP4jcNdpGfXSdjgd+OPhp8JF74pJEjGx/xSUOjywJwTeXW+a2YdXw=
-X-Received: by 2002:a05:6a21:485:b0:398:9b42:69f7 with SMTP id adf61e73a8af0-3c08eed6b41mr1940825637.39.1783360495452;
-        Mon, 06 Jul 2026 10:54:55 -0700 (PDT)
+        bh=A3/ULYVgYqkVHGifQ6W/LaJ1GCCnz0joJzGF3nrJAIs=;
+        b=Wa84SCXmM+U4MV5aqjzlOy/2Zj+Z/nkRDr9CGus/M2OkYIwh8Fra4Pze5ThSIDMKD8
+         JL6glY8pzTqs74Hq9houA66rIfnd9dBplFe8fphA2gacEudAp0Latq0da3TlKlV8fTjV
+         C7FZsw9nyua83r5OZ9tlETJFBkII0FlJ52bUljPT0FRZroc7yYCTa6q3VzvXqlTN98y1
+         +wCZZhbtINw6wxIh9ItSUjStiAF2cEqiVisIE6kh5OlHMkirjSY1uL+iqtLJbv6Zatvy
+         munOSi4omHIEWX0j04rFXYBo26cfWxecYPSaUW12jhpk0m+GoUZf8RgbD098+UbHrMr2
+         POPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783360502; x=1783965302;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A3/ULYVgYqkVHGifQ6W/LaJ1GCCnz0joJzGF3nrJAIs=;
+        b=BvGTeHkCBf0cGkbqhRkL3IjZcAd6M5Lv8BgR0cxKFLKdHtH7drqcrGQ0fW432VR4v3
+         mSaexIPA6/AbIAWlwgJgunzt6Qls7cXz7dihzrjBa0PkIAm/3stNmRtwt77Sw41rjJeg
+         bIejfxuaKM4kLVnWAdMG2FP2KvnKfJiBcxIL4xXWKm23EHuV0jfeyQYVrSq9ajdDD+K4
+         6iLsYLf49iPLhetpEhFvCZC92JgX8c3n5kKshNLMGbcm198wJd4EfItxYuy4koJr/629
+         6olRRXmEbelfB2BNAUKm6/8cwgAOroCpVRNGwTLJ9d3KdrzFJBbDZhEGo9qFkzp0ma7Q
+         vA8A==
+X-Forwarded-Encrypted: i=1; AHgh+RqO8m6SXKYXGoJ3lodBDWxixfSZW1s3EN1cgwsGBS4DopNn4qHSrVz0eRF0HHmwLXuyWf1su5kM9A==@kvack.org
+X-Gm-Message-State: AOJu0YzbPjClox2rheN/cFpvp20Ls4ZpeuUq/Q90o2OzP3qTsBJnQZh1
+	w9YM952bht7rgarvv2ku/YhHy9bwlgUp2hUIIhWwfl+XJkmD+INNjhOZ
+X-Gm-Gg: AfdE7cnXgeUft68ow4jHx7ouFayvZLX23dDriDb4bqkLR09lqe/SaYQ2r/3z06qvJdh
+	qsjjA57MgVJj672NGVJRYwmjMWWt3NaWkA67nfoc7gvLFQd98zPNyfXPP0D6k/R7i4C83+JmVn0
+	6QPBFZaEcp1Dh0t08MlN+W4E/ugML3dJpKol+N4ZyHPmf4RCSa0hBR60cgj6/UnDnyar7NTfOWd
+	g1noPj21ttVfu7MgZuxyBh7APVLIzL3dPQapTPiocp92IS6RUb1sdznIIdB3rvzlWT2NZqGRs72
+	7xeK0fzPIfyp5dEs8yfWSsk/YRXok1GqarTuUviAXhBySyiBLhKmD90/ynvp7+zTXEuMW0oBBiR
+	/vYJ6uxlu5xHJ1G2eokeQ8P/jx+AYPA0vOOgALPMfSyibQboyRFRdlVE17PiWmIJwN8He3BSn5J
+	2h6HjYLxr2lc4ZqPRRnnbcfZzAuhY0dOyxHlfve4YXWzvbbcXQhH1bNqF+8Us=
+X-Received: by 2002:a05:6a00:2343:b0:837:f111:b70 with SMTP id d2e1a72fcca58-847e17361a6mr13746908b3a.4.1783360502202;
+        Mon, 06 Jul 2026 10:55:02 -0700 (PDT)
 Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e927a1152sm6529965a12.29.2026.07.06.10.54.53
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6b609b8sm4245376b3a.5.2026.07.06.10.55.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 10:54:54 -0700 (PDT)
-Subject: [PATCH v6 0/4] mm/hmm: Add mmap lock-drop support for
- userfaultfd-backed mappings
+        Mon, 06 Jul 2026 10:55:01 -0700 (PDT)
+Subject: [PATCH v6 1/4] mm/hmm: move page fault handling out of walk callbacks
 From: Stanislav Kinsburskii <skinsburskii@gmail.com>
 To: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
  akpm@linux-foundation.org, david@kernel.org, jgg@ziepe.ca, corbet@lwn.net,
@@ -102,20 +103,22 @@ To: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
 Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
  linux-mm@kvack.org, linux-hyperv@vger.kernel.org
-Date: Mon, 06 Jul 2026 10:54:52 -0700
-Message-ID: <178336023903.504354.7500950448226027718.stgit@skinsburskii>
+Date: Mon, 06 Jul 2026 10:55:00 -0700
+Message-ID: <178336050066.504354.12327789842078522108.stgit@skinsburskii>
+In-Reply-To: <178336023903.504354.7500950448226027718.stgit@skinsburskii>
+References: <178336023903.504354.7500950448226027718.stgit@skinsburskii>
 User-Agent: StGit/0.19
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B730340004
-X-Stat-Signature: qooheju5ou3hasqhffp6g9xu1zfexa5x
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5mtnofdke6uiwosu31txu7kz3wky8o6q
+X-Rspamd-Queue-Id: 77E2D40003
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783360496-462235
-X-HE-Meta: U2FsdGVkX18nhL+fbrklLGWRC5aNXgM0Ee8DD4nrQUrgB3DXqyyrYmAaVyX/YVOHiGDRqqoPktf+oalLIDwnAYk1vk+ZKv+VQUc5Cvjjl7Fhdc2zF0obKg5XkhbSJKQSM2SEuuCKf1VuJn8/UYQduiht0rCbsQ69ZobhEp4RAMgNSCkjqCZj8jr2HrN/cvJrtFDY5DlQmKqACUcGIA9wGcYJB9p5ZgaGCl5xo+JczTA6SSdoPrhOURGAlZc7nqmKnENFm6d1VSXZhVcMUBJF2bBgmb8FIwpIg4vCt/1451A5JWxSvnUFzWc13S+5nz11xzdtQGpdi7+oWNmbdWvbwxZV+/VbLYn20WAj23/jLhN42dR+pKqpcKd6MMsj2konztIpWOYxdODTGvswN9plWCRuTrp2btWwxk6XNJMfPbpqrqdShTdSOf3fw4S3kfSEaus8FtPdSk5WbAsu5Um70iNeTyhOXPm9uQJajRqV6FuKb6djN2iVqZrn2xgrAFvjz/9zXot8eCSP72RyplnREP/4TcepwVJlgXjoefQR1re3PriQzBtuTTZRQ3DIeZl9IYqtbOuT0pFoStO5BzrnM2D1Sk94nt3aAsaT5AngMoYNDmoSfMgSPOcU2f3lpPJOq+UBeUXzfYmCMHwj6KJzI0D1tdY3CDEGEML5QSOzKDApGuKceJNzVBEa9uCYRwh/1WuXffeyoIOkn9Umo1MEQaN5sFKr60xFxXh735ufXVSaYKepYURUJNB3u3KKBSGP7xha7y2wtfxKMDe7uGvZungqblyycggzPQKXclNhSb75ZjtawcdZpKbWmur4LJhHPJ0B6Std6TOZ7yOpcqy4RKfJhYyBdPYkFLOkCQOwgbA7IYg56Z2tCd87wubQsPimgI6gjw/HSRdRTuhvUXdCCPCBf29GVf3QjrjUgEr/ExFyUoNF9pP6ltdB/XVj+VWkoOdWs5aWsojO2mvEaAx
- wCN/oRWf
- akZrfLol5QK2YcsbK8bQL45yzfV7Vz5HEEwJTfxFT8GjvXCGwv/zHSN0uru79pe8ubzgZ43TTPjpdGZ/Iwdgrn/kdcwYvyKT7cA2KeeFKfG1lz7g7bplqqoKqxkkyiQR0UxLQjh23n9BzMpSFYJTM56WLvLc69VEXcGUAVPWgN82/RKqam55cA8h9IvHVDhVJI5EolxIcJycbf0TTCHZb/bUvBU08GSprfIOcJgzgIrxK2Wv0BKsBjocd3JTq6Px3ocZEfKH/RHA+imgj9D9I58tfm+GyQGhbhRwHZM9sOslNcnkNRjmi6kf8ihmvVmdKxvcHadBmE9pMZ7s7VCWzQgBTDUzubUtNJCTf3qFuFI+kCIWueWVe3o5hCMH37LSN3ZN4H4ff9Cy6hAZZbDxxsVGKxjvJ9luEUvlkprc/9PLyIFl3FZ0njzSEb183u6Spth/d0BU/TUQEpeYGHjS4DuSIIg3O1BJ72DLpUJwVpvvff1NxZi/MA3BBwXMcqY+FUL5i2mzDmYJ5SjcqigB+2xPYcIlg2sKZyV4Ca+BSS1QnHGg=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783360503-975277
+X-HE-Meta: U2FsdGVkX19P3uO/FpXDTVwPmga+qQdAcNOd2X18fTGLs7BosTunIZpznkshcgBUPQAfXS54qI5xTOsHNgOVv4ozEVUd9J7ITzqNRcf+rFCVdNNDHeiidRrP9tTlx7/LUJA4rt8WNVCr63JwTd6FwKfl6Aky16OBeCgfXmLZPoDZQuc2Ip7ISXgAYlOYIExBxMsXCTMANU2x7s0igOVPUUWU5627CDs/5lWcreJwlrve6u4N8RrArakACTW9aSj+KzGbW9yWUGJ8eUd5f/XVe0mJtu3DHBesyHib2f7xniRKOd7eqn+RQQNpPXtDSDvAhvmehoxnwClFS8oc1QqkP3eEX/WC4ajuGiAI106ISkj1A7yduSRiRqNdhHd3oN/uhRsYlIVztdBkAjd2oTbMb6nF7p0D6uGpa3vOwSYOzTiYt+5Km1CigAaNzbQuZXqkpR+jAc0+evkXj7NAklQZ946CCFokMlVim0JwmBi2hUtrOKxr8wlIReAEJ3+jQ/YoGkuH6nkX+EpVUexaY941aYcAJepq4/avn2A9xk2UW1VRmFvoxCBkHlylTrVebqcCaXz5+D9Ui14KsZ0hWRoVtuGqzM3LVpneqIMjbIwotuFq2HcHiLQeHTjEG4OdVAbGQwdiV/bVrmIeRQqlweGpS120aHaqaD0BXCUlrJW7i/GgsTvT4BpjwH/gslJ95UKfYGW5Oe5NBHqrArn3ssCLc9SPtR1cGc5gXYpl+CClPORN/H1LzMqzGidGY7r/PPQXEZHGeqda5777dXDshp7hLxsAjyJkqVZ4qD3GhWdxabe7wGAnybf+ALV33igEWNX2ryPyPrZ6seB2rQJ5O/3ITKigoHnWSfzlpy/pkEkrq9LP0Us9PQ5Avcx1EUC9daIsj4iMn/jm1yZFsd1vBvvS6FdQYXVn8Blt1TK33uestcjJqKn9vcb7MEK9aJsgGy5ihh3V1ySvIn83VNUXMwd
+ 15QSJYgM
+ 2KxECH+iqiA+gKo9YnONm4TljkM5wlN+WT07T2rty7zhnl9tn7rbnMokOykYuzacbp9qiJUL64XJDN5MzhhCZdV8mSbwgaadeSXGPRqAJ1ODT+QMCUPBge7TML48ZDhrmyD2HTKlZzTkJT99C3ishrsPwR9xiBerBt5GQle9gpcx5BGvf28wSv3sgbaFwlvNzd+noa0v5pT/8lLs56CMwQQTb63DYKY7IDePiOcrVX10YZTBqD0gg6rIAjTXWCyklsaPVRRh7IjYE5HVOSR2D1gZOqEEi+CL9jgPln9HVaYUoGFvQl5ivA3o95H/w8W2BBEnhbUC4AdRPAjft8FqZZ2tdO6/sJ9OF0agAoq7keKIAH3/Hm5RnKkOqJCcK9iuMOAbsDyMuuZjUPY3BsluHDsZuVvA7Ilx24sAoFA9cZCRDXx6qiHvnyXpEyXPusH99ecw1iVyiZEHgQbNSYziDcOw/Hnv2M9tQxWrRaQ0vzjTfMv9VOw7oAU8wGnBiaf0TM91bT9GGVw9VDdUpEYTKIXOIsXuDYVrP+ZHXYJjrY5ziRH4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,100 +126,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series extends the HMM framework to support userfaultfd-backed memory
-by allowing the mmap read lock to be dropped during hmm_range_fault().
+hmm_range_fault() currently triggers page faults from inside the page-table
+walk callbacks: hmm_vma_walk_pmd(), hmm_vma_walk_pud(),
+hmm_vma_walk_hugetlb_entry() and the pte-level helper all call
+hmm_vma_fault(), which in turn calls handle_mm_fault() while the walker
+still holds nested locks.  The pte spinlock is dropped explicitly by each
+caller, and the hugetlb path manually drops and retakes
+hugetlb_vma_lock_read around the fault to dodge a deadlock against the walk
+framework's unconditional unlock.
 
-Some page fault handlers — most notably userfaultfd — require the mmap lock
-to be released so that userspace can resolve the fault. The current HMM
-interface never sets FAULT_FLAG_ALLOW_RETRY, making it impossible to fault
-in pages from userfaultfd-registered regions.
+This layering does not extend cleanly to fault handlers that may release
+mmap_lock (VM_FAULT_RETRY, VM_FAULT_COMPLETED). If the lock is dropped
+while walk_page_range() is mid-traversal, the VMA can be freed before the
+walk framework's matching hugetlb_vma_unlock_read(), turning that unlock
+into a use-after-free.
 
-This series follows the established int *locked pattern from
-get_user_pages_remote() in mm/gup.c. A new helper function,
-hmm_range_fault_locked(), accepts an int *locked parameter. When the
-mmap lock is dropped during fault resolution (VM_FAULT_RETRY or
-VM_FAULT_COMPLETED), the function returns 0 with *locked = 0, signalling
-the caller to restart its walk. The existing hmm_range_fault() is
-refactored into a thin wrapper that passes NULL, preserving current
-behavior for all existing callers.
+Split the responsibilities the way get_user_pages() does. Walk callbacks
+become inspect-only: when they detect a range that needs to be faulted in,
+they record it in struct hmm_vma_walk and return a private sentinel
+(HMM_FAULT_PENDING). The outer loop in hmm_range_fault() then drops out of
+walk_page_range(), invokes a new helper hmm_do_fault() that calls
+handle_mm_fault() with only mmap_lock held, and restarts the walk so the
+now-present entries are collected into hmm_pfns.
 
-Possible approaches to lift this limitation are documented in
-Documentation/mm/hmm.rst.
+No functional change for existing callers. As a side effect the hugetlb
+callback no longer needs the hugetlb_vma_{un}lock_read dance, and every
+fault-path exit from the callbacks now releases the pte spinlock on a
+single, common path. This refactor is also a precursor for adding an
+unlockable variant of hmm_range_fault() in a follow-up patch.
 
-Changes in v6:
-  - Reworked the new API from the external int *locked pattern to
-    hmm_range_fault_unlocked(), which owns mmap_read_lock() internally.
-  - Changed the dropped-lock contract: hmm_range_fault_unlocked() now returns
-    -EBUSY when the mmap lock is dropped, and callers restart with a fresh
-    mmu_interval_read_begin() sequence.
-  - Kept hmm_range_fault() as the locked variant for existing users, preserving
-    its caller-held mmap lock contract.
-  - Added an in-tree user by converting the MSHV region fault path to
-    hmm_range_fault_unlocked().
-  - Updated Documentation/mm/hmm.rst and kernel-doc to describe the unlocked
-    helper and retry pattern.
-  - Updated commit messages to match the new API and return semantics.
-  - Kept the userfaultfd HMM selftest using the test_hmm unlocked read ioctl
-    path.
-
-Changes in v5:
- - Rework hmm_range_fault_unlockable() retry handling to retry
-   VM_FAULT_RETRY internally with FAULT_FLAG_TRIED set, matching the
-   fixup_user_fault() pattern and avoiding repeated first-retry lock drops.
- - Distinguish VM_FAULT_RETRY from VM_FAULT_COMPLETED: retry faults now
-   reacquire the mmap lock internally, while completed faults return to the
-   caller with *locked = 0 so the caller can restart with a fresh notifier
-   sequence.
- - Document the two *locked return states, including the -EINTR case when a
-   fatal signal is pending after the mmap lock has already been dropped.
- - Update comments around HMM_FAULT_UNLOCKED and the HMM fault loop to match
-   the current hmm_range_fault_unlockable() implementation.
-
-Changes in v4:
- - Rebased on 7.2-rc1
-
-Changes in v3:
- - Return -EFAULT from dmirror_fault_unlockable() when the mirrored mm can
-   no longer be pinned.
- - Add an eventfd stop signal for the userfaultfd handler thread to avoid
-   waiting for the poll timeout on successful test completion.
-
-
-Changes in v2:
-
- - Split into a preparatory refactor (new patch 1) that moves
-   handle_mm_fault() out of the walk callbacks, plus a smaller feature
-   patch on top.  Suggested by David Hildenbrand.
- - Hugetlb regions are now supported on the unlockable path; the v1
-   -EFAULT short-circuit and the hugetlb_vma_lock_read drop/retake
-   dance are gone.
- - Distinct internal sentinels for "needs fault" (HMM_FAULT_PENDING)
-   and "lock dropped" (HMM_FAULT_UNLOCKED).
- - Outer loop now re-walks after a successful internal fault so the
-   faulted pfns end up in range->hmm_pfns.
- - Kernel-doc on hmm_range_fault_unlockable() and the
-   Documentation/mm/hmm.rst example match the implementation.
- - Dropped the mshv driver conversion (v1 patch 2); will post
-   separately.
- - Selftest converted to drive the path through test_hmm with a
-   userfaultfd handler (new HMM_DMIRROR_READ_UNLOCKABLE ioctl).
-
+Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
 ---
+ mm/hmm.c |  118 +++++++++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 75 insertions(+), 43 deletions(-)
 
-Stanislav Kinsburskii (4):
-      mm/hmm: move page fault handling out of walk callbacks
-      mm/hmm: add hmm_range_fault_unlocked() for mmap lock-drop support
-      selftests/mm: add userfaultfd test for HMM unlocked path
-      mshv: Use hmm_range_fault_unlocked() for region faults
+diff --git a/mm/hmm.c b/mm/hmm.c
+index 4f3f627d2b47..2129b1ee4c35 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -33,8 +33,17 @@
+ struct hmm_vma_walk {
+ 	struct hmm_range	*range;
+ 	unsigned long		last;
++	unsigned long		end;
++	unsigned int		required_fault;
+ };
+ 
++/*
++ * Internal sentinel returned by walk callbacks when they need a page fault.
++ * The callback stores end/required_fault in hmm_vma_walk; the outer loop
++ * consumes the sentinel and never propagates it to the caller.
++ */
++#define HMM_FAULT_PENDING	-EAGAIN
++
+ enum {
+ 	HMM_NEED_FAULT = 1 << 0,
+ 	HMM_NEED_WRITE_FAULT = 1 << 1,
+@@ -60,37 +69,25 @@ static int hmm_pfns_fill(unsigned long addr, unsigned long end,
+ }
+ 
+ /*
+- * hmm_vma_fault() - fault in a range lacking valid pmd or pte(s)
+- * @addr: range virtual start address (inclusive)
+- * @end: range virtual end address (exclusive)
+- * @required_fault: HMM_NEED_* flags
+- * @walk: mm_walk structure
+- * Return: -EBUSY after page fault, or page fault error
++ * hmm_record_fault() - record a range that needs to be faulted in
+  *
+- * This function will be called whenever pmd_none() or pte_none() returns true,
+- * or whenever there is no page directory covering the virtual address range.
++ * Called by the walk callbacks when they discover that part of the range
++ * needs a page fault.  The callback records what to fault and returns
++ * HMM_FAULT_PENDING; the outer loop in hmm_range_fault() drops back out of
++ * walk_page_range() and invokes handle_mm_fault() from a context where no
++ * page-table or hugetlb_vma_lock is held.
+  */
+-static int hmm_vma_fault(unsigned long addr, unsigned long end,
+-			 unsigned int required_fault, struct mm_walk *walk)
++static int hmm_record_fault(unsigned long addr, unsigned long end,
++			    unsigned int required_fault,
++			    struct mm_walk *walk)
+ {
+ 	struct hmm_vma_walk *hmm_vma_walk = walk->private;
+-	struct vm_area_struct *vma = walk->vma;
+-	unsigned int fault_flags = FAULT_FLAG_REMOTE;
+ 
+ 	WARN_ON_ONCE(!required_fault);
+ 	hmm_vma_walk->last = addr;
+-
+-	if (required_fault & HMM_NEED_WRITE_FAULT) {
+-		if (!(vma->vm_flags & VM_WRITE))
+-			return -EPERM;
+-		fault_flags |= FAULT_FLAG_WRITE;
+-	}
+-
+-	for (; addr < end; addr += PAGE_SIZE)
+-		if (handle_mm_fault(vma, addr, fault_flags, NULL) &
+-		    VM_FAULT_ERROR)
+-			return -EFAULT;
+-	return -EBUSY;
++	hmm_vma_walk->end = end;
++	hmm_vma_walk->required_fault = required_fault;
++	return HMM_FAULT_PENDING;
+ }
+ 
+ static unsigned int hmm_pte_need_fault(const struct hmm_vma_walk *hmm_vma_walk,
+@@ -174,7 +171,7 @@ static int hmm_vma_walk_hole(unsigned long addr, unsigned long end,
+ 		return hmm_pfns_fill(addr, end, range, HMM_PFN_ERROR);
+ 	}
+ 	if (required_fault)
+-		return hmm_vma_fault(addr, end, required_fault, walk);
++		return hmm_record_fault(addr, end, required_fault, walk);
+ 	return hmm_pfns_fill(addr, end, range, 0);
+ }
+ 
+@@ -209,7 +206,7 @@ static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
+ 	required_fault =
+ 		hmm_range_need_fault(hmm_vma_walk, hmm_pfns, npages, cpu_flags);
+ 	if (required_fault)
+-		return hmm_vma_fault(addr, end, required_fault, walk);
++		return hmm_record_fault(addr, end, required_fault, walk);
+ 
+ 	pfn = pmd_pfn(pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+ 	for (i = 0; addr < end; addr += PAGE_SIZE, i++, pfn++) {
+@@ -328,7 +325,7 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
+ fault:
+ 	pte_unmap(ptep);
+ 	/* Fault any virtual address we were asked to fault */
+-	return hmm_vma_fault(addr, end, required_fault, walk);
++	return hmm_record_fault(addr, end, required_fault, walk);
+ }
+ 
+ #ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
+@@ -371,7 +368,7 @@ static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
+ 					      npages, 0);
+ 	if (required_fault) {
+ 		if (softleaf_is_device_private(entry))
+-			return hmm_vma_fault(addr, end, required_fault, walk);
++			return hmm_record_fault(addr, end, required_fault, walk);
+ 		else
+ 			return -EFAULT;
+ 	}
+@@ -517,7 +514,7 @@ static int hmm_vma_walk_pud(pud_t *pudp, unsigned long start, unsigned long end,
+ 						      npages, cpu_flags);
+ 		if (required_fault) {
+ 			spin_unlock(ptl);
+-			return hmm_vma_fault(addr, end, required_fault, walk);
++			return hmm_record_fault(addr, end, required_fault, walk);
+ 		}
+ 
+ 		pfn = pud_pfn(pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+@@ -564,21 +561,8 @@ static int hmm_vma_walk_hugetlb_entry(pte_t *pte, unsigned long hmask,
+ 	required_fault =
+ 		hmm_pte_need_fault(hmm_vma_walk, pfn_req_flags, cpu_flags);
+ 	if (required_fault) {
+-		int ret;
+-
+ 		spin_unlock(ptl);
+-		hugetlb_vma_unlock_read(vma);
+-		/*
+-		 * Avoid deadlock: drop the vma lock before calling
+-		 * hmm_vma_fault(), which will itself potentially take and
+-		 * drop the vma lock. This is also correct from a
+-		 * protection point of view, because there is no further
+-		 * use here of either pte or ptl after dropping the vma
+-		 * lock.
+-		 */
+-		ret = hmm_vma_fault(addr, end, required_fault, walk);
+-		hugetlb_vma_lock_read(vma);
+-		return ret;
++		return hmm_record_fault(addr, end, required_fault, walk);
+ 	}
+ 
+ 	pfn = pte_pfn(entry) + ((start & ~hmask) >> PAGE_SHIFT);
+@@ -637,6 +621,44 @@ static const struct mm_walk_ops hmm_walk_ops = {
+ 	.walk_lock	= PGWALK_RDLOCK,
+ };
+ 
++/*
++ * hmm_do_fault - fault in a range recorded by a walk callback
++ *
++ * Called from the outer loop in hmm_range_fault() after a callback
++ * returned HMM_FAULT_PENDING.  At this point we hold only mmap_lock;
++ * the page-table spinlock and any hugetlb_vma_lock acquired by the walk
++ * framework have already been released by the unwind.
++ *
++ * Returns -EBUSY on success (all pages faulted, caller should re-walk).
++ * Returns a negative errno on failure.
++ */
++static int hmm_do_fault(struct mm_struct *mm,
++			struct hmm_vma_walk *hmm_vma_walk)
++{
++	unsigned long addr = hmm_vma_walk->last;
++	unsigned long end = hmm_vma_walk->end;
++	unsigned int required_fault = hmm_vma_walk->required_fault;
++	unsigned int fault_flags = FAULT_FLAG_REMOTE;
++	struct vm_area_struct *vma;
++
++	vma = vma_lookup(mm, addr);
++	if (!vma)
++		return -EFAULT;
++
++	if (required_fault & HMM_NEED_WRITE_FAULT) {
++		if (!(vma->vm_flags & VM_WRITE))
++			return -EPERM;
++		fault_flags |= FAULT_FLAG_WRITE;
++	}
++
++	for (; addr < end; addr += PAGE_SIZE)
++		if (handle_mm_fault(vma, addr, fault_flags, NULL) &
++		    VM_FAULT_ERROR)
++			return -EFAULT;
++
++	return -EBUSY;
++}
++
+ /**
+  * hmm_range_fault - try to fault some address in a virtual address range
+  * @range:	argument structure
+@@ -674,6 +696,16 @@ int hmm_range_fault(struct hmm_range *range)
+ 			return -EBUSY;
+ 		ret = walk_page_range(mm, hmm_vma_walk.last, range->end,
+ 				      &hmm_walk_ops, &hmm_vma_walk);
++		/*
++		 * When HMM_FAULT_PENDING is returned a walk callback
++		 * recorded a range that needs handle_mm_fault();
++		 * hmm_do_fault() runs the fault outside walk_page_range()
++		 * (so no page-table or hugetlb_vma_lock is held) and
++		 * returns -EBUSY so the loop re-walks and picks up the
++		 * now-present entries.
++		 */
++		if (ret == HMM_FAULT_PENDING)
++			ret = hmm_do_fault(mm, &hmm_vma_walk);
+ 		/*
+ 		 * When -EBUSY is returned the loop restarts with
+ 		 * hmm_vma_walk.last set to an address that has not been stored
 
-
- Documentation/mm/hmm.rst               |   59 ++++++++
- drivers/hv/mshv_regions.c              |   14 +-
- include/linux/hmm.h                    |    1 
- lib/test_hmm.c                         |  114 ++++++++++++++++
- lib/test_hmm_uapi.h                    |    1 
- mm/hmm.c                               |  223 +++++++++++++++++++++++---------
- tools/testing/selftests/mm/hmm-tests.c |  149 +++++++++++++++++++++
- 7 files changed, 492 insertions(+), 69 deletions(-)
 
 
