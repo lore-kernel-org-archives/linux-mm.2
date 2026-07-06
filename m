@@ -4,126 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89869C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:23:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0941C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:26:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77C6F6B00DE; Mon,  6 Jul 2026 04:23:56 -0400 (EDT)
+	id B51406B00DB; Mon,  6 Jul 2026 04:26:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 753DD6B00E8; Mon,  6 Jul 2026 04:23:56 -0400 (EDT)
+	id B02026B00E8; Mon,  6 Jul 2026 04:26:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 669066B00EA; Mon,  6 Jul 2026 04:23:56 -0400 (EDT)
+	id 9F12A6B00EA; Mon,  6 Jul 2026 04:26:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 31BB56B00DE
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:23:56 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B00F58D3B7
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:23:55 +0000 (UTC)
-X-FDA: 84957663630.19.5962E56
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4AB92100006
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:23:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="auS/Rom/";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 736FB6B00DB
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:26:32 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E558216899A
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:26:31 +0000 (UTC)
+X-FDA: 84957670182.06.EF02F9D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 369CDC0007
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:26:30 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XD95iwxe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783326390;
+	b=VVz6yXKfHfjwG/7Gg/sr8/Nbwe15/3Zy5daLuG9htB2H6Nc396j4VKi0BGp4lhoFc21PsT
+	fOglJo7+MmXCFCn7QeFe2JwvLhR7iPRIQnZetVRN6qlk94fSNFqgDAB7jm7iPM/BXA0uWP
+	uogm1pghH/5K1TYI5s1GEIPr6HSaqPQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XD95iwxe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783326233;
+	s=arc-20220608; t=1783326390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KiZ7rFhsrLuWgwOq/cJtjOuC/zDIDMp/izDn3la0y/g=;
-	b=1BITmznmCOcaSA2cZSpVUhVry8+S7Ph43NywzATRWRWLCaIS42FYwnyDSGCYCcXi5EZPn5
-	cUZcpNA3FjQpOQ7rlt2Wy831keOBJlmwXWmgQPbnjKjP/+kNP2QJiA/YURQM1y75y0rCEI
-	icvNyulBnJPQqs4SDncZ7kiuslZk6Mo=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="auS/Rom/";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf05.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783326233;
-	b=sBo1UVRwbuLlFoGTtr6Pi5FeJy8SP+qv+Rf5d3XJLLj8XNni+0eRc/S/ZHHsHkWzR96fd3
-	6n5pofvIZ5ZncjBGLzZI95dKdj94NjIkRT+iQQ1+6CYjhH+Qa8KRO0h1HSulRyTo8L5xeN
-	FaD+uknf/uePq9dcIsHrdI7dKRkLqLk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783326232;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KiZ7rFhsrLuWgwOq/cJtjOuC/zDIDMp/izDn3la0y/g=;
-	b=auS/Rom/ilPrKEDZ6l8JFeIVu2P6p5DiGpWbytg97tQkOIUdzVjpoVNO2zVGtpGxUAbavt
-	Xs/FLKVoqcl75We9otbmi1YlIERc4RX5Fl5zWbdPF8lozKd7FumxWYaAhWmFD2bcMdhlp0
-	x/2icNvSGHebVrJWhmZSEPW5WMeklYU=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-616-yPvpZ0DfN0m6V8Lg3r5GrA-1; Mon, 06 Jul 2026 04:23:51 -0400
-X-MC-Unique: yPvpZ0DfN0m6V8Lg3r5GrA-1
-X-Mimecast-MFC-AGG-ID: yPvpZ0DfN0m6V8Lg3r5GrA_1783326231
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493ae2a6a72so23407535e9.0
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 01:23:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783326230; x=1783931030;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KiZ7rFhsrLuWgwOq/cJtjOuC/zDIDMp/izDn3la0y/g=;
-        b=EoIu66m5FIlcBNYpEN5KApAd2EXFRpmSdhQlOiIlp0LaL+hdA591i2+tWozB/MMNjU
-         7ISpXVZAn1Vh4SGL6avKdJFV00Ep2RBfPUfhAihrOqinpHd/3jHsHRRZ6Vb9mktLs+72
-         JOiNPltllbvhR6O1PtOtKFPoEBuSgd9rObocgllJZDI0oJ54BGI9NCis0JyQvCQD3vb2
-         D8OlXJgtg1OWeaMivZ85FuQxJt4ZdpGzbnUUaOe/eHi/W8dE5U4eUQZfHWgUCQZtmoKq
-         aNp4X4+LjS47ZktqTCHrWnUXBlGbZgk5nKHnUTq02Q6P/Tk5mCDf8Q1EMxlVfbh7i51M
-         /xRQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rqud+t6ujHPOImWSPus873OLBz6wwm7razR4Rn+EFyIYDYTjewi2FVMvEgkxRDEFHFgKQTUYdyrZA==@kvack.org
-X-Gm-Message-State: AOJu0YzZyK6dFzNbId2/NZfD1VlGOF9vqnXJxHxKSjeqM4a/Randq7wF
-	KsmrdbdbHm4jT/KHdefnVnfOZMsLkj4X/rvm4lN/lg6QXaus+Yc1/OquwdVFJKQ9Rg1A9R2kjk+
-	ZDcFaIazv5ByVFwotipN4qwKxr58ZXpc3yRp0rhy2Ienez+2ezOTU
-X-Gm-Gg: AfdE7cmwFW5jMkfGrKWAeyZ6JmE8hfLTnFL8qW3JYl02yFbTv7JVp87luU+XBfg+Min
-	iqeQADnBxd/ZBQlpjczIrrcZy9pYwCGM2jl2pKK4LS07FR2l6qybztlRR4nHeSh44sczqGeWUxc
-	Z04NSGEz2ZsizzGUopgFtb0raKOL0pHsDfXazxSUOqk7k5hqWlAIEs80abc0Clqdny/oQnoqVzx
-	xv9yvmMuBfoS4zz2WxXLu2vX2tEOjAjQID2qzdrCLXhCloLMu+w3CetYUF9vjUz2fUHCjnJBhxR
-	F9/dROXI4xVIVWeXKWfRLNMCF3/9FRBO/RVC0cqPohtUZTMKCMhcyP4b/Nd+2oC36tqG7Dr9fL+
-	7FdAg0XwIueaybqoVY3ZA4ht0JUTo8vED
-X-Received: by 2002:a05:600c:a01:b0:493:a7bc:5bcf with SMTP id 5b1f17b1804b1-493d11f033cmr112299275e9.24.1783326230332;
-        Mon, 06 Jul 2026 01:23:50 -0700 (PDT)
-X-Received: by 2002:a05:600c:a01:b0:493:a7bc:5bcf with SMTP id 5b1f17b1804b1-493d11f033cmr112298735e9.24.1783326229699;
-        Mon, 06 Jul 2026 01:23:49 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493c637bc21sm635500545e9.7.2026.07.06.01.23.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 01:23:49 -0700 (PDT)
-Date: Mon, 6 Jul 2026 04:23:46 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Adam Litke <agl@us.ibm.com>, Rusty Russell <rusty@rustcorp.com.au>,
-	virtualization@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v2] virtio_balloon: prime stats vq after
- virtio_device_ready()
-Message-ID: <20260706042207-mutt-send-email-mst@kernel.org>
-References: <2f0d0de033f3005d3b985883be3e5cf37b3f6c42.1783278596.git.mst@redhat.com>
- <13794c5e-375a-4fc5-84b4-a637d077f8a0@kernel.org>
+	bh=tmx803utrU9SauxJqUVH2L6AoBvfeqUv4jPv6Ckgibg=;
+	b=X5KMmKjcmqqYP16tZSOJ9oTszrM4COO5xjNE6pox84rI+cGurTY8cqtgVruy+d06HGG/14
+	5Juqq9qo5ZAXN2U1r+lh9G8CmN3esjmLNXXRv6+I1r8drXWcz8S3+CjFmMK41g+J3E9SYA
+	i6Ritii1LC1ypVgevWzFjlJ/gafQ9gw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B005561389;
+	Mon,  6 Jul 2026 08:26:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1641F00A3A;
+	Mon,  6 Jul 2026 08:26:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783326389;
+	bh=tmx803utrU9SauxJqUVH2L6AoBvfeqUv4jPv6Ckgibg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XD95iwxeSuM7nYOntQkQSp1XpHvUUgRt9Mm7J9d/VkZR7E80FEFMjJDyGmJ2W3djC
+	 9wn0A2P7kC2wbHe3hN+Njj9j1Xs6X+k6y5/jBwSCwDGLG8EHFgsrWjAB7WBPw4fvCD
+	 Y7/R+g18v+7739iD4xJ/z7uq1D9TSJUsFQm6Bqr8vkVSlGW03mizQKKqj46q/4Yy4x
+	 LnWl5QFzmJBiObpyDxm8FglWgHjaTedegyorDWXtgHodH70MpAr75sIwmgxuE5oSc9
+	 GBkFcjXN53YsFVNITvvNvy1s1H9e7xDLx+TZjutjsIHCTen+wvEeQLP9hQtRZ4SVoh
+	 nmjH8mUphDNvQ==
+Message-ID: <66e478ca-1234-43b8-854f-fed4a804f4fc@kernel.org>
+Date: Mon, 6 Jul 2026 10:26:22 +0200
 MIME-Version: 1.0
-In-Reply-To: <13794c5e-375a-4fc5-84b4-a637d077f8a0@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -B_oLeTy7IdkOpI8O-192tbczdLkOiwFTQBmaTBnqVY_1783326231
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: 4AB92100006
-X-Stat-Signature: 8kbm5egmkkaxhkeeyzog3c7pfpp7qyr5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/5] mm/page_alloc: remove set_page_private() in
+ prep_compound_tail()
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260703-keep-subpage-private-zero-at-free-v2-0-2970fe777dd6@nvidia.com>
+ <20260703-keep-subpage-private-zero-at-free-v2-5-2970fe777dd6@nvidia.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260703-keep-subpage-private-zero-at-free-v2-5-2970fe777dd6@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 369CDC0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783326233-68776
-X-HE-Meta: U2FsdGVkX1/SN5QgO+Nln4NS/XdORuWnugjt9IokwEaU1oJfDbQNajqxJQCH9wH0LSnXDgmfpfugvaVjfgZVSSVR3GCLoB+bXwBAcz4K4j8XAUHAozn2a6loBtuXZdhMZmyFyOEluHB7LOMKQlxN6ZX5F1N1cbWCatxIiTa2fldGGhYyyGPWtKxWOg4sElIEXRXi/Tf7bVlwFpeunGBSWnS+sOrANQ/EvpWehW6WLPff7+SDGLYLm0kwESLg2GE9TG/0KdRBt7yArsMgppdlt9lUxXOdNlZ67eE9+nmdNbTgTh3whovDunqCQSneYUFlW0gx7jzaN6vbQeR8XmRq0/ZO0pPX2t6A7o3pXTKYXY5PX2K23W5BHia2d3biv3+F+TbDbmQvyW/PABEUTVQnaBdVChUWjptlFtBuKzE3HZ/qm2qjRw+h0R6FJEpciZdhTBGsKKI+PsfG36Fy5sFQvxGP9ukD2r3WR5Gak766gzqZzUA+Passa9WwbTBGkKTY2QpBk8fDql9sEyMAvcB/foHNFE4CmZFCJEd9zokjUFgZ2xKngFXRmu8J4+CvRK8Q8piQZytgqIHAvinagDcywWAicjO+bvCv8NKGGfcPQ/ca5kPYI+qckzlSguM0i7udVKoEDieQYOmV7C/PMg4rDsW97Ys3X1JqFPXt7twvqKDdXQimNoL4GoZfwMGJFwcYcCr5VTaOnBJrIZGSrSICVH3HGWhS6veQg+0L+rwA762ccmsvg8Wv39mTZn/IGbeHjJLp8LwqG5yjyGQ8SpnHh4M5bupPI/Pqss3tLcvL6LjXzXNhHufobUz0/2fulFN3yZRong2iSjfgCHYxCFS/XOCdYJjLF5vyAOfLDWakSMA7WJ1xs/j7RTBNSmL4mk2pYr7k9LAD6zy1FmrxLh2b5gHdiXWkRHAiZWp7iFrAUUnt1PodEIgXRL6zrV1ipDV0DhE2DsJ3EsayYoqD9ju
- tUtGBWUE
- r4zkT8DYm1irSlq003qYnBC083e0Cu5wFU0mz9Yx82hyxLRnWti+ogBkk6bjlXD50Z+DZ1o69mA4m0VuURLeWWLz31QDDpQdVLGQSO8HhvslaQ5GY2BGrmBILQNegJNIXiilVbpe5VF4yjB5oncVy4GMPv7u8y3Wg0XeSwCspyRDcp5GV0f1HfYepVjOSJiGcmBXerLpZlfmvabBl27yJIYAdotMJfFOwpTMXMOoqh0qXmnPP6HJWgSmRMP9Gzy1zfGxocTrksUmdUfubZV4b6vSdk48RWDM8EzaZbImhGeOk168MsPNdNDtvZF7MPaDChXMjOQ2bfKbDf3o/ujpt+QCEy60GSA8ejWp2cMQdGynUhS5lh1n4YkM19TMvUzp28CIhjKZ5yKgDmtOnZ8WvzgGJ3kZi+4wAlrI9PZC4RO9k5s8=
+X-Stat-Signature: sbcuzz9ymu69386wocb8r4j6f63x17r4
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783326390-50358
+X-HE-Meta: U2FsdGVkX18RGBpKC4Utxqa2Pxv2J2lp0JNr5i2v+ppiuaYTn1bMeMRbmmkkIwPMh7y6Dzgt5AqO2LJywDaKNUcQr8GVH/xBdQBYLZ+66ra0TSiQYkKrvl1SKqlMpgz8tCn+HNKeWoz9DH+9f0GbBQfbyxje6GF4Z0Pxmg60C0pqe+4TTM0wIT83j9J6X7KipWFH4g8cVxDm6Ejtj2LQmLNkKwcv/5JwesKKwVitJE3QhgM0CdxeH50uRBndp8PPcpqM0x+ij8CKJURzAmosHYgpGMtdOTvtmuiahPleloCh3YkG0vXsw/mTA0ddu3aF0IlqYn9Tdabn+Xxawtr9x0kB+2pkKnem26f1JeOIWuzsY1sAokzkR/tyAvlKZc3PI4aqBrIAOR/JGgbylZwOrxn/iwFj2KCg5OZP5OIdlrCfjPZGfg7Hb4zzNhP/hhAuIDC4bqJFCY+Q0spDiz+HMWW7Re5UzhID9NSvvQS43WbFt0KADPbhxa0ftD3cCQTaG92ChR23tfj/AHf+4+idEh5oQN1VPh2XEKqDCIXX+D14Js7zgtSzEwzd507XfMIbp4WY4uCI9Jgk91ekZgFpqdBjtKdCPBxmwoKalpiBp6Kz295wuHViCvX1gC7Uf7nzcOa0ZaQwRYfQFNN8Ft1dRpAcI5e9VuOFdP7r8ZskOBc7ikTgoV/kdENMnuqljxLn7+v4/2IfludM/MRIAJnfZ1OB3FO5oQm8DqR6A8j5pAalX5GeBIKRLI9Bk+Qgn37YuQ8mamqfrgQ7lyyf04XOGbF9ZI5lzvW4evwxscJ2g82heaVeYnmpyfJSfvAPsekkt3VN+U/7bLeBxY3rHddgXD8+tNhqx3DdPHpApppcx/xowYRgMQwZSn3phThWFoWDmXK1HwGDnP53S2jiXq8c5cQbyEKfFzFx2rkpGmWDbt4iqBwrpDkZmdIIUsDiTTrz0Z45pX6Z4fGaizvsTzj
+ JT6By35c
+ 9XtzLRLtPKjH+TaVXizGuNBBpd1udpB/z47yhjuSwEcxoeeWLIlMzB7+J70hUbbJx+6uW4/PcJ0FKQk2t2i71pa0k8z9RfvjaCpmES0EvkT/xbssVUSwPxOuhVywNU1yyeXY9OfeoXaCvdanvq+hpjP+kZXAtfFwxS7YEs+HCalXC1rzWqibukzlLtaWtEPorNojItxbhf22V+9c8LNZfTnPS4NCjE//ZhWo/LlD+Ny21KnwXZiO4DtHp8AnkcJjKYu1UfmtCTufGBqJb3kMdvFgtcl4wf64Q9lsBFhCh6Lfv61tn3UkuLnrASLkYnnbX9j5M87dfIEaIf1gP2SEG677lg0p4aiW02Kng
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,129 +148,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 09:28:50AM +0200, David Hildenbrand (Arm) wrote:
-> On 7/5/26 21:12, Michael S. Tsirkin wrote:
-> > The virtio spec requires the driver not to kick the device before
-> > DRIVER_OK is set.  init_vqs() primes the stats virtqueue with a buffer
-> > and kicks the device before virtio_device_ready() is called in
-> > virtballoon_probe(), violating this requirement.
-> > 
-> > Further, if the device responds to the early kick by processing the
-> > buffer before DRIVER_OK, stats_request() fires and queues
-> > update_balloon_stats_work.  Should probe then fail and free vb, the work
-> > runs against freed memory.
-> > 
-> > To fix, move buffer setup to after DRIVER_OK. Be careful to
-> > disable update_balloon_stats_work while this is going on,
-> > to make sure it does not race with the setup.
-> > 
-> > setup_vqs() warns but does not fail probe or restore if
-> > virtqueue_add_outbuf() fails; the call never actually fails in these
-> > contexts since the queue is freshly initialized and empty.
-> > 
-> > Testing: tested that stats still work after the change.
-> > 
-> > Fixes: 9564e138b1f6 ("virtio: Add memory statistics reporting to the balloon driver (V4)")
-> > Reported-by: Sashiko:gemini-3.1-pro-preview
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Assisted-by: Claude:claude-sonnet-4-6
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > ---
-> > 
-> > changes from v1:
-> > 	check that work enable/disable is balanced
-> > 	explain how add buf never fails in probe/restore
-> > 
-> >  drivers/virtio/virtio_balloon.c | 50 +++++++++++++++++++++------------
-> >  1 file changed, 32 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> > index 088b3a0e6ce6..bc0a2b19ca7d 100644
-> > --- a/drivers/virtio/virtio_balloon.c
-> > +++ b/drivers/virtio/virtio_balloon.c
-> > @@ -611,25 +611,8 @@ static int init_vqs(struct virtio_balloon *vb)
-> >  	vb->inflate_vq = vqs[VIRTIO_BALLOON_VQ_INFLATE];
-> >  	vb->deflate_vq = vqs[VIRTIO_BALLOON_VQ_DEFLATE];
-> >  	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_STATS_VQ)) {
-> > -		struct scatterlist sg;
-> > -		unsigned int num_stats;
-> >  		vb->stats_vq = vqs[VIRTIO_BALLOON_VQ_STATS];
-> > -
-> > -		/*
-> > -		 * Prime this virtqueue with one buffer so the hypervisor can
-> > -		 * use it to signal us later (it can't be broken yet!).
-> > -		 */
-> > -		num_stats = update_balloon_stats(vb);
-> > -
-> > -		sg_init_one(&sg, vb->stats, sizeof(vb->stats[0]) * num_stats);
-> > -		err = virtqueue_add_outbuf(vb->stats_vq, &sg, 1, vb,
-> > -					   GFP_KERNEL);
-> > -		if (err) {
-> > -			dev_warn(&vb->vdev->dev, "%s: add stat_vq failed\n",
-> > -				 __func__);
-> > -			return err;
-> > -		}
-> > -		virtqueue_kick(vb->stats_vq);
-> > +		disable_work(&vb->update_balloon_stats_work);
+On 7/3/26 15:47, Zi Yan wrote:
+> Tail pages are expected to have (and optionally be checked) zeroed
+> ->private when they are freed. It stays true during subsequent
+> reallocation, so replace the tail_page->private initialization with a
+> VM_WARN_ON_ONCE() in compound page preparation.
 > 
-> That's to stop the stats queue triggering stats_request() I assume?
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+-- 
+Cheers,
 
-Yes.
-
-> Is that
-> valid before we actually added+kicked ourselves?
-
-Why not?
-
-> Also, can't we simply handle that in stats_request(), just ignoring it there?
-
-Then we'd need to maintain a special flag and I dislike that.
-
-> Then  we wouldn't have to go through the siable + enable.
-
-We'd still need to flip the flag on/off.
-
-> >  	}
-> >  
-> >  	if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_FREE_PAGE_HINT))
-> > @@ -916,6 +899,33 @@ static int virtio_balloon_register_shrinker(struct virtio_balloon *vb)
-> >  	return 0;
-> >  }
-> >  
-> > +static void setup_vqs(struct virtio_balloon *vb)
-> > +{
-> > +	struct scatterlist sg;
-> > +	unsigned int num_stats;
-> > +	bool ret;
-> > +
-> > +	if (!virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_STATS_VQ))
-> > +		return;
-> > +
-> > +	/*
-> > +	 * Prime this virtqueue with one buffer so the hypervisor can
-> > +	 * use it to signal us later (it can't be broken yet!).
-> > +	 */
-> > +	num_stats = update_balloon_stats(vb);
-> > +	sg_init_one(&sg, vb->stats, sizeof(vb->stats[0]) * num_stats);
-> > +	if (virtqueue_add_outbuf(vb->stats_vq, &sg, 1, vb, GFP_KERNEL)) {
-> > +		dev_warn(&vb->vdev->dev, "%s: add stat_vq failed\n", __func__);
-> > +		return;
-> > +	}
-> > +	virtqueue_kick(vb->stats_vq);
-> > +
-> > +	ret = enable_and_queue_work(system_freezable_wq,
-> > +				    &vb->update_balloon_stats_work);
-> > +	/* Make sure we balanced enable/disable, or we won't report stats. */
-> > +	BUG_ON(!ret);
-> 
-> A WARN_ON_ONCE() should be good enough here, no need to crash the kernel (no new
-> BUG_ON's).
-
-Will do, thanks!
-
-> -- 
-> Cheers,
-> 
-> David
-
+David
 
