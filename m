@@ -4,124 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E956C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 16:39:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A530C43602
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 16:39:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F6076B00A4; Mon,  6 Jul 2026 12:39:08 -0400 (EDT)
+	id 6B4CB6B00A6; Mon,  6 Jul 2026 12:39:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CDFC6B00A5; Mon,  6 Jul 2026 12:39:08 -0400 (EDT)
+	id 68D3C6B00AA; Mon,  6 Jul 2026 12:39:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BBDF6B00A6; Mon,  6 Jul 2026 12:39:08 -0400 (EDT)
+	id 5A4EF6B00AC; Mon,  6 Jul 2026 12:39:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F0E756B00A4
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:39:07 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 65D1C1C6C5E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:39:07 +0000 (UTC)
-X-FDA: 84958911534.28.F6EDFD8
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8C55F18000D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:39:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Gwv1mqGJ;
-	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 360306B00A6
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:39:20 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B70E71C6E34
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:39:19 +0000 (UTC)
+X-FDA: 84958912038.13.5A8F318
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 081F1A000D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:39:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Mjr3zhQP;
+	spf=pass (imf15.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783355945;
+	s=arc-20220608; t=1783355958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iUdu/4xkrp4af+ENG/+dz/iliEwP+6UzwIHbpWo5uXw=;
-	b=JGKyZ5NWHAc2DevBA4aAqad91FbJy2qLhF22WQs7l8rWh/siONf1KhgaINVepe1EsMZT9v
-	4mZ7aSa3vsFFxFtXsE1W6RXeIpVD37TtbDwHvCpZo6TLVad6OdTY7Sg5nZZosbqBxQxQ2c
-	Tqmr9WChdvHC1UIv8X7RixmNBquyg8Y=
+	bh=ln2AHNDCstBaUrT3DCw2JhDQU5MIDiC1ybsTRxhjJ6s=;
+	b=ODpX/1a2a5WFyrLRS5vPr0p4/Io9qg+j+XOwBzkeFm4v5+reSMgigpWGxR9pzp/YJAC1nL
+	cxkvCOI8emijf7yUroK/JakBjR9bIcTKFzXLkmIzLGx1vShXnaPB+Az4huHgbRH9lKZ1/L
+	4VawJZ08BOrOcv35QQ9kzRHvfB4uZwA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Gwv1mqGJ;
-	spf=pass (imf24.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Mjr3zhQP;
+	spf=pass (imf15.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783355945;
-	b=6r9wV7+UqQITfE9jMq3LOmpSl5C7mWI//qezvgHXEKDQzDVoYklGB78i5Jr7y3V8EN09BM
-	maiQycCihRUfrqndDAlwiainLQP9EFz/VB82WnL+5jpjS390tlL4dlE4rLW15RDg2HM+Vr
-	DAwgAMGOzSZ54VYkJ02TlavVcIY9DAs=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2cab973140bso40062395ad.3
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 09:39:05 -0700 (PDT)
+	t=1783355958;
+	b=QVw4FIDjOp0PXBEE9g1hjczP0q2sgqH6XRb1isQq/HsOqOjzShUoP5GieRV2wTqzjWOkJq
+	Iefhc/x9mpTt2WLVd0t8LoiHwHh1A6R2w7OZeHPlFKblpr53dKK3jix3bM2l4rsc8CnnD7
+	jXinAp9qOBsrqBEZkcsRhSZ6Kx6fKjw=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c7cfa17fedso36554935ad.3
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 09:39:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783355944; x=1783960744; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1783355957; x=1783960757; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iUdu/4xkrp4af+ENG/+dz/iliEwP+6UzwIHbpWo5uXw=;
-        b=Gwv1mqGJ0qD5bXIXnESFZPnn9wAkbyV3tZGupJP0Il4kBGKa1c5My6/XkDM2D4y8mi
-         xrgt7+nJ5eFSMhNkVvercNwM1gATEt3ERhL7gU8BUL2+bNmFjdN2x+H42gR2udsdPMgT
-         heweRop8MgJ/6hQ5mD9bBVMrK8VAr+Wyx5IEPrTK0BgXP7AvNXgboCkukQMVep/n3c3+
-         ctaxURh0Kt8vdUbTK87Ulnjt6b72g8q2IKzIfz+cmN21f+FeKrZANASQTiPz3WMqCTWY
-         GQEzbw+X1OM8ySLD0joj3gmarJQG/KivzPGOHodZY5M66kdS+JboK56YSzDTxT0dA959
-         MUbQ==
+         :message-id:reply-to;
+        bh=ln2AHNDCstBaUrT3DCw2JhDQU5MIDiC1ybsTRxhjJ6s=;
+        b=Mjr3zhQPaIpJgIwcqP8ulzvgHM560ILAve7cihnOhcDxdFPmwQtxP8FUAJoeYWTxrx
+         qjDAUSKPjaLD1xXeXuFpMeZfoKZvOqZSdkzT8nXOaRfgGdH4WZRNxmC64xUZmsdwEz3U
+         zyl5biQJIINh8MUUA76GGvnx8mUVi2hK1covsK9JYMiQhg5rmjuoPjxYXsf3Y1wS/B0U
+         W4y71he1iVjKbZMqTPEbyRRGWv2E1Yobn+K80EcfjQwWSmUtnDO7mBvG3WyV2Bp7Lgb9
+         CBmddbL92eaHAgU7ucyGLFerX3r7K0451+GyKg1n9h11sn2U/q0frrmZp3MEHHCEepR9
+         EOBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783355944; x=1783960744;
+        d=1e100.net; s=20251104; t=1783355957; x=1783960757;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iUdu/4xkrp4af+ENG/+dz/iliEwP+6UzwIHbpWo5uXw=;
-        b=gF0cNJfBKUWdaeEx3/PPSreoBzKQHuWR14ZEq114r+zrajifC3alToMUAaJfRfSCt4
-         5pEhOS5Q4lQeIyVQaRWKlCACorU8Hds7UhZgLU1nrpPYmuZwHpU23F4m9R9AFMqNsObh
-         3VxBk7LcPeqC3puBlrvUXpp9A9eyR2RZv1HiDHjiaAG+Aakq2Q1ExgOsiC2P9cPfoVqS
-         NSB6cQSJosQP13iDkbbYb5y3sWt9idW+hGFI3aOGRmzeSymGk/jwyvTHL4QW17hQCUvz
-         cewWqwLvWFzSCEfcL0ubrM2J65M5+oSOjqCsTIqgi2SxeoKnnDLZVFcpxeXTmBEL9Tqb
-         fO/g==
-X-Gm-Message-State: AOJu0YxxFWEfw5QFBt/waaNfW0ZrgT8QIvmpD9bv329kmG8V3oyFF/Y2
-	hdpBp9mNNEgQ70sSfe7Kc8nuopYmzBisQxgeLgbwr2m9qFc921vGO5SE
-X-Gm-Gg: AfdE7clnJuf1wCeClRUDyX2xTnErfp0EXADR3BJ7167zNC8H/4TAVVSjP/lyj10Kais
-	g+CtEwUgBJJde+fymYBpM8r6fZNbZm0p7GYSjkdyPGHzBalwHstqzScHZWh4aGpHZB/mN7xUPtI
-	yGPZ1t7LMZbcKVXGt2IoiIqIO36/laXJ6Srjvc370iUTpp0G0bW2OOCR4Hfx3dBnWLowl1sOJeV
-	lnIVtEqdXqC5SSQl+j8WUGfCoNx1sJ4w1ezk7lYoeDx6Bs69d1LS0mt6d5ohJQ2Ho3CLAMAxkhd
-	07OgxQPBm96ohfIw+J47jgHliZJfeSnLtkg6W9mDTySwo0f4o+IZc5BuTj6ou4ov8lDR1KFy76G
-	m7JxA+NKsQhoDwRTqXFNdo3ti+fzjBsvLrkhauyz4Y3LqWrgCCsZdHZqWOuf3aZVOZ9oItp17/Z
-	nZWjO8uII=
-X-Received: by 2002:a17:902:cf0b:b0:2c1:f262:4962 with SMTP id d9443c01a7336-2ccbe7297fbmr13433165ad.20.1783355944425;
-        Mon, 06 Jul 2026 09:39:04 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ln2AHNDCstBaUrT3DCw2JhDQU5MIDiC1ybsTRxhjJ6s=;
+        b=JzTnchWaB/dnVWnMgIXTCMlPB9GUJLMbNU7o29pzN9OL2A9rG7O3n7ZhLUUfCeQtFE
+         WQe4bxZyDyn25yLbBoFmvVL0Rc/Uj4D0+fX5P3d5+YngmhV5RqNIPe9RoITMz+ZvU0/y
+         D276io+ognleWLnZsqrJnY9Fli0kWECgPtIUhMTv82W6N2CMCHTKFfrDhJtbbQDL5Rhv
+         JRgf5/5LmZNcCkzi/+lnklGivOUTA4ZnHcPFrKDWsf9uvoKCjOECTN/SUzpt2FDgMOpv
+         SkqNWkvNhHs1oh+wjRpmSgrr6S2HLVZkDOPq80RMiaaesfzLqB0wiN2Bt2uxU69ugu/q
+         cQrQ==
+X-Gm-Message-State: AOJu0YyvJ1+/KhZH18P4P+UZqfvynaeOgTNeZ8HY4xaOXYdPei2f3Nia
+	roYoA/BH1KFQX3yQIaGEI6xtK4kY7QIMEXYG4cnvADYfId1lz8c2YueP
+X-Gm-Gg: AfdE7cnJam6mjjbmwvD2gkpkO0aR4K/MArBDHelIqIC9UuNlwwnadhaii2u9QGDpNqp
+	fxbAMsmZI2ONz6XGj5gCROqDzfxE7S2T8GiaUbnucQW1x4Xi5aDNPEChYywZ/4LB6NlkgsbzO21
+	geYssKA07PUnD7lvepkYUDidG4wHecvkkrXXMlt3u1/W0SCbO1BcejoY4N3sIjiHU+r/PO3HDPH
+	b1y5WYYU0DuH3b+jTiOBVrB33ZRjSxdCPYE5+f69hzipWDKVFo3C/cylbJAXOegbDze7L/mknyU
+	sz65iQPoo/Ty6ntSC8NYGZwPUoAjrCc2XmGn/fEtANZqHxJtJu7Bn5r2jqdygpTad7eANPsBDen
+	CFodOwyHcnlzSOcQzJJnDRwECzOsuswC/dZofauFFymwVYNQl5pc1y2BebK5qd4K5dGRUKs6qS2
+	lWmCols8I=
+X-Received: by 2002:a17:902:ec88:b0:2ca:c84b:c4a4 with SMTP id d9443c01a7336-2ccbee245d5mr14321395ad.28.1783355956959;
+        Mon, 06 Jul 2026 09:39:16 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad7893a8dsm53103305ad.73.2026.07.06.09.39.00
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad7893a8dsm53103305ad.73.2026.07.06.09.39.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 09:39:04 -0700 (PDT)
+        Mon, 06 Jul 2026 09:39:16 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: rppt@kernel.org,
-	Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>
+	Ard Biesheuvel <ardb@kernel.org>
 Cc: linux-mm@kvack.org,
 	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
 	Borislav Petkov <bp@alien8.de>,
+	Chris Zankel <chris@zankel.net>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	linux-efi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Rich Felker <dalias@libc.org>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH v2 4/5] xtensa: remove unreachable memblock_reserve() return value checks
-Date: Tue,  7 Jul 2026 01:37:52 +0900
-Message-ID: <20260706163753.193875-5-ekffu200098@gmail.com>
+Subject: [PATCH v2 5/5] Revert "tpm: do not ignore memblock_reserve return value"
+Date: Tue,  7 Jul 2026 01:37:53 +0900
+Message-ID: <20260706163753.193875-6-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260706163753.193875-1-ekffu200098@gmail.com>
 References: <20260706163753.193875-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: oq9juxp6884rcf6uzd6oi1wcxtgcssoa
+X-Rspamd-Queue-Id: 081F1A000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8C55F18000D
-X-Stat-Signature: 9fffw54673c35x66c3sahzq73jkq5h1s
-X-HE-Tag: 1783355945-494720
-X-HE-Meta: U2FsdGVkX1+OwkvK8Fa365gZWQaJq8P9gAIZR0bvmU0mqF7RYv+ZGMHKLg0JtlAopUB1tZ7aW/oPTmNvSUYiDImX95L6umfm/rFssTzFFSrkSc0fS6m+b5rzYVx7Eie8pwy5u5oXdOifbQrWwrBEO2e40Mm21iRzy15RTGwsDa+ESotRSvOULu0rInwLgGYHUVFJQXv3l1+ZkU81p8/8Yw3AvP8uRE17Nh/r/rugDPceduyjR0cqb3AbGeQmOJ/+gXn5XpGtfyige0WJX4R2FiGP1xJ1oGK4/Jcf1M86UIhr+6rjKkTdUPqZ9v/57TOT5u41mPp92nLEEWKZqA0mO2j6vlunJ/ZTVlUoufgGWG1YNY9HMsmLkMsZCK4QoZM0OsZahfQKIasCzbYadoEAaoNziq9oSE/lTXnp4kOnP7fI+jWZB5m6q4T5yWU31Sfl7ZrfGUfqrBxpwsEki8myjT/HZpBfNgxO7I2AvcB/ddAc0wa2RLoUPiwouLAyey8VMUULKsE7sHlDnLG11NllcRjr8JSZmP8xogZqFWE8c+vN43gBBudarGbGv1G1iUQnD1yRqCx/4Q+ds2vSJphXB1XdBcMoVlcStas1wlUpFXiS+ECEGXIgH74DHTVrW7+MEDSBQcLLxr4bfmiFY/kNIreXoYKF8Cx5kR8d5Zp7J4Ql4Fo/T2bc7s429CHEEU3G30CYxKrsL6n9UJPYL/D6Pi0fZuoFjA3Qb2RjBhoY1TeOGKQA3kvCU4ay1M+Nm0bGwGKwXVWeI5armMFuP4+BZssVJO45CcDIWcGZmtxnmEb2JecYM5B6ku9JQkeBOFVTaL81dPGTJpAiotvmKrEwzhF1ezSr4T/s7buTLKqSpGwPBJFHThElaT5u9GrYHfRDfl6MchmBp1gEJJhQY6Lz4D8V+BS74/UTW8jmYaNHqBDnXBml7aPmNpDlnJ+jIbdHUzs8zOcbzAK3xw6/MdR
- 5anWvDR+
- KR4n+r+cAZ+Wu3j1ge8kWryJNeaq0PRcXMeVi2Sl8cxJY/bd+KF+EuxDq1FcjrAKScZviXCxX/NHPgzy/vv2mNUogbnhn2w7wWoGIbu3hNR3dCNq0Lm1Zis+FJguf9xxBPIO5mYOhpnAgLY2KyGykSEt3rh/8UDGp1GfZYkhfZeFLSiaeKtQnchk3L5qVfAfHfyDzjAL8nK97IT9bLlO5+8aTKCf/YaC/QrETQLB3rPd/Xq8Htfy3TN/mC93P2I9xNfguSwXUt6jik53AfV8IVoqadP/wgt/TlcW+/Q8BhhlSkyDRJlRsegDSE2VLd3RxthIgXhkc3mfSuw7+mO9xk1RlXQg2MncnlkRYFSXKcgcPelF5zYfKDoSNpYE3XkOPkQ3VJVGAlMhGxENt3MR3ddeNSEQoV6Fx/lZQidX55ZPS1cw8l1n7DX/NuT/JldS8fS8siqhfShFF0fI=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783355957-181914
+X-HE-Meta: U2FsdGVkX1/LiD+IW+CNJdlFBf9/78WHMwwZppura/gM8P6IzzFqz4SXNE6sEFnVJAqJkkx1tI4nhEbMvWMCdhiuK9dP30H+g58pgJ0gbzlsywIQQkTOf6xAswP+QJFqdzMBJtIjc8FU4CPJAGaW3uVWEt5Bc+nL4eO3zo3XnPOkLkE7vRLlRnHKXmHEwx2OEgZJ16g+/E2bA5v9/JN8xm7VjhrrWL3z3xSU9Mzr9AGZ+shrDMryEkI8nMwEzPsCp76ROIiczxCuadEbNbf5+EOrbps1FCJGkvnH1khOqleRrsAin1bdLzCUbSZcVx35jM9q/L1ymdcQSbPOHM7dFUk51iZfudpX4RxdqdMFSWtKw9+AuN8/i6EQ+aXmE3MWnztYk/WcCUsF517Y59vNCIjCDNHjRFJuDEyGZ3ds2oentQ7pqGGNPYrAHMOiPvG+ypnEF9cIHwceWR9t2bZr7FPgH9BrR4SF3ljtzvmKmbLp8wrEk9a0zNzoSDy32L504LzcOKsWNTXkbNv0258WkgJ5//OgnbQwU++y1Cbwe/LmjWA8kYija2DerqeEC9sAPGkS8x8G99xt5yflBGzdJ2WwsX/QnpzCvLNMz+MFQMFDuXk8ll8lpXlvqq+r7lfvJ9FJ9+hT/ORh5ScwUCBS2GHutsRv4/2BdDP9EX3dgFvV0SlkOiyBE+aM2n5oqCWMKYGEID6Ycy/Zcurs3z+p80tIulpakvd7mQf/wzf3CpOTuk2hybseNdiPclMuad2Fmm7YrPNNmNfk7Pv2thXSLTfUsNT5Z1VTWHmfINiLy9YpKRSASRX4a51BKVY6qvwIEellxNFyEA2Yqf9nDYxk9qP5NMWCBVjcpF9v5aqh+3VbyfEydKbE37HJ0UJ9SseuVw+iYAVlBj7ymSyT3iajoiBHI5K2OhiCqldsXMvjxc+yOYedOw0Q1PE95thaQS5U3mYjiz069iFOvfWFsSb
+ VzgVId+g
+ UjscTVYo5ba5QtJYHMIX8tuUND2gmZoQEqLCjri1FN2PHLlBCD7CyZ75KGj6WZDWd8+pa+q8HF+iKBZtTiyhbReJbTrweivlPT1VsI5GSxDTpKZC5CNBTg8Jqxqs2Se1hRx1XIyF6D0hlFkdDTeXGuFyDNPFHTLJ2ajtk7yaWtD5wutEBeAEqenH+xWbk2QmZy5Ui8cDKce8BJ+4zlrCHMmrmEDcy+M3bjHb5/DVA4rozAgWxPtHncRjFdVCbkjwahQtr6eiYMzQMJDcmb5cjUsm0lMVNGFSh9WJD1m2AjLQ/Or/svbqP+jlv3B86+PHbSBNIYvRK2WO5p6+wbv1fxZJWaAmIc3N+7W2RXg5bQZCi851H1XQVy4mVhqMDCYJaMC7ITH681ryVzohp5uHT0rz0+POfW6GHUmGrgUjG64kwyr6utIfglfTUOby5UXFYDRp/WZJeUQxduLQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,54 +131,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mem_reserve() wraps memblock_reserve(), and its callers check the return
-value. xtensa never calls memblock_allow_resize(), so memblock_reserve()
-either succeeds or panics, never returning an error.
+This reverts commit c33c28f9f6e017702374e1ab907dfa5a63db5301.
 
-Therefore the return value checks are unreachable, so remove them and make
-mem_reserve() return void.
+efi_tpm_eventlog_init() runs from efi_config_parse_tables() during early
+EFI initialization, before memblock_allow_resize(). At that point
+memblock_reserve() either succeeds or panics, never returning an error.
+
+Therefore the return value check is unreachable, so restore the original
+unconditional memblock_reserve().
 
 No functional change.
 
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
 ---
- arch/xtensa/kernel/setup.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/firmware/efi/tpm.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/arch/xtensa/kernel/setup.c b/arch/xtensa/kernel/setup.c
-index f72e280363be..c7367b81cc36 100644
---- a/arch/xtensa/kernel/setup.c
-+++ b/arch/xtensa/kernel/setup.c
-@@ -268,10 +268,10 @@ void __init init_arch(bp_tag_t *bp_start)
-  * Initialize system. Setup memory and reserve regions.
-  */
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index cdd431027065..288bcf7a5b99 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -61,12 +61,7 @@ int __init efi_tpm_eventlog_init(void)
+ 	}
  
--static inline int __init_memblock mem_reserve(unsigned long start,
--					      unsigned long end)
-+static inline void __init_memblock mem_reserve(unsigned long start,
-+					       unsigned long end)
- {
--	return memblock_reserve(start, end - start);
-+	memblock_reserve(start, end - start);
- }
+ 	tbl_size = sizeof(*log_tbl) + log_tbl->size;
+-	if (memblock_reserve(efi.tpm_log, tbl_size)) {
+-		pr_err("TPM Event Log memblock reserve fails (0x%lx, 0x%x)\n",
+-		       efi.tpm_log, tbl_size);
+-		ret = -ENOMEM;
+-		goto out;
+-	}
++	memblock_reserve(efi.tpm_log, tbl_size);
  
- void __init setup_arch(char **cmdline_p)
-@@ -290,11 +290,12 @@ void __init setup_arch(char **cmdline_p)
- 	/* Reserve some memory regions */
- 
- #ifdef CONFIG_BLK_DEV_INITRD
--	if (initrd_start < initrd_end &&
--	    !mem_reserve(__pa(initrd_start), __pa(initrd_end)))
-+	if (initrd_start < initrd_end) {
-+		mem_reserve(__pa(initrd_start), __pa(initrd_end));
- 		initrd_below_start_ok = 1;
--	else
-+	} else {
- 		initrd_start = 0;
-+	}
- #endif
- 
- 	mem_reserve(__pa(_stext), __pa(_end));
+ 	if (efi.tpm_final_log == EFI_INVALID_TABLE_ADDR) {
+ 		pr_info("TPM Final Events table not present\n");
 -- 
 2.43.0
 
