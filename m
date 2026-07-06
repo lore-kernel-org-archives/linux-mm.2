@@ -4,100 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E314C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 16:01:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20CABC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 16:14:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07BD96B00CD; Mon,  6 Jul 2026 12:01:29 -0400 (EDT)
+	id 798F66B00C5; Mon,  6 Jul 2026 12:14:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02CD86B00CE; Mon,  6 Jul 2026 12:01:28 -0400 (EDT)
+	id 770C76B00C7; Mon,  6 Jul 2026 12:14:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E84C36B00D2; Mon,  6 Jul 2026 12:01:28 -0400 (EDT)
+	id 65FEC6B00C8; Mon,  6 Jul 2026 12:14:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C07A06B00CD
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:01:28 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4098BA0175
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:01:28 +0000 (UTC)
-X-FDA: 84958816656.12.9F1DD29
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 510D140015
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:01:26 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okefVVjP;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 388796B00C5
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:14:55 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D4DA8AFE9
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:14:54 +0000 (UTC)
+X-FDA: 84958850508.13.6471E07
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E919940003
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:14:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Ydnz4US+;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783353686;
+	s=arc-20220608; t=1783354493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zIjsvZIGtDb45yOCtzuITMhCZIXsn/rA4+SmB8HdYiE=;
-	b=V0DBnsf9wJbcyKnBj0kRdn/8UhDpvrUvcmcNV73h3qWd+QXA5V8XbwNvKUivEAtOW1RYKu
-	v7A+8AyWBbguLJnLGyFzFVoLCmdQ7u/QHO1wZy4uYU3vnWg5RpAWuiAhJ+2uq2FPBAMPku
-	0pYCMFJgpTBWyhu/muegW471VLbYBN0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783353686;
-	b=OXBFsQSdPifixq2JM3NLk+zvzbkch9cpGSP68/c1N0HFpz1q9WdWGi0C1HMt4QbMP4UHXy
-	LO6+Q1oQIlOdM6fsuoPfsotio071ZISBepvHBG2E6iLSsqaoMmRWnn0MffhcDTtJursrSO
-	TfUo9ciq0ERWR4jP1X4XwP+3oNl2Ba8=
+	bh=lE8+oP1XZjjpdBFy2VrkSZhpJog2DvPRMczl++eRN6E=;
+	b=2zkV7iOyLR0lGEocGrZyYT+a4WlAYhV8wrsMlrl4+bGjc4ta1YqRchb+Zb+sOR3x607UGP
+	DmGPQYyp2rruvFXt0IdK7u7iC9SN7PWkCTj1l7rmdNiHXxE3LrxnO8BpsB4wmcySCi6V2B
+	87+XG599co+bRqCs5m/zk7Q4BSUnlWs=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okefVVjP;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A07BC60098;
-	Mon,  6 Jul 2026 16:01:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E671F000E9;
-	Mon,  6 Jul 2026 16:01:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783353685;
-	bh=zIjsvZIGtDb45yOCtzuITMhCZIXsn/rA4+SmB8HdYiE=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=okefVVjPOvMtHSgZqi2LcJfAfJkW74KQqZku3zSnBXSyjlCmqe9KJoEheA1JNDmWa
-	 kQ0jbGkAdaakorgQF1UuIQyCN0/dt95BjlXgTJyQZk792sDw6TIAgBlITpL3P/aZc2
-	 sSAy2ylA+7R80ZTW7k8GNzAtWFXjj22FDWktB/TgoYVOeXiScTv2Lg7/+NbDK+j3H/
-	 QsZXlB569wdyYIOy7CXF+3jfqmqXhmtWlonHwz63z/DNFy2xO04JEkwkJ/fV2tPXjk
-	 4E09L/U4YOhPiSOg+iETgj2CXxZyygHAgfn5VARj2dix+DJkKJhR7yskyg1yrh7U6v
-	 muMvUHAqXU54A==
+	imf07.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=Ydnz4US+;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783354493;
+	b=41S4D0St2CKHlxc08yaVjEHPUm0l+ThQLyxmARKCB4KPaksC9VNpWQfPT3ygL/jFYWW0ru
+	UyU55wSzIRbRk/SblM8VVYoEirl63WoB7UdEYzmsSovqBAqvcQvqYos9JI2Q/QIT9GHk44
+	v0HTcWNcuCp+VshD6II/NCz10JybL78=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lE8+oP1XZjjpdBFy2VrkSZhpJog2DvPRMczl++eRN6E=; b=Ydnz4US+QFx44rkGq3ArU7qxzv
+	+zU4oxFKJ09GE4PHFj+Q7ERLs/y0AJITwakgtn3r7lBg9lPuOJ6TgshWCI+IFhcEjuzuCYT72PMDE
+	6lXkL4ukw9/nrvU4QLyJrOX9tHh7IkKAjh27GBOkcvnAxUkFRYOuEWDw8sOv08J74Z+RAcTVbFMkv
+	pfyYfE6rAhDMgHjxAIlwn/IJSSru4PSVUgX8Mg4+/X8Db5dBBuUWjqVjR9JDNZVcizNe7T7CPpjlc
+	aFE0Qc/z8mQW0dJ34QzI2wyOJyDTVFwzHgwhU1TkFE/m8uqD1mjZFDpeqB7dfqWIZf0YmkFJSCs1/
+	GWFRwxZQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wglxl-001Xdp-0U;
+	Mon, 06 Jul 2026 16:14:29 +0000
+Date: Mon, 6 Jul 2026 09:14:22 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v10 6/6] selftests/mm: add hwpoison-panic destructive test
+Message-ID: <akvSzb0mRSS5aCg_@gmail.com>
+References: <20260630-ecc_panic-v10-0-c6ed5b62eea2@debian.org>
+ <20260630-ecc_panic-v10-6-c6ed5b62eea2@debian.org>
+ <akjS7kiGjVwWaWEz@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and
- interpreter selection
-From: Christian Brauner <brauner@kernel.org>
-To: Farid Zakaria <farid.m.zakaria@gmail.com>
-Cc: brauner@kernel.org, david.laight.linux@gmail.com, jack@suse.cz, 
- jannh@google.com, kees@kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-mm@kvack.org, mail@johnericson.me, shuah@kernel.org, 
- viro@zeniv.linux.org.uk, Gemini <assistant@google.com>
-In-Reply-To: <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
-References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
- <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
-Date: Mon, 06 Jul 2026 18:01:19 +0200
-Message-Id: <20260706-uhren-raubbau-sinnkrise-e40a8337414b@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2085; i=brauner@kernel.org;
- h=from:subject:message-id; bh=vCKa3tHYjrHa3FtjHkl8GSix2F/vIqRMdeiR5urB4iY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR5XwxStPp6qOYYR5k0Iytj7zmukvqTzkzVBhPVDDPXX
- 7hl95Sxo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCKfVjD84WuOE9jCfejZzJNC
- LZ7JfKdd23v/b1lxJVdS+52jyh5OPUaGe+yr2ft+SZgxavO2Nb3jbS3WTLe+nWA5q+rtbaNfdZG
- 8AA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akjS7kiGjVwWaWEz@kernel.org>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 510D140015
-X-Stat-Signature: ox3711jk3w3khh458jhr3ccikbkwi5j4
-X-HE-Tag: 1783353686-698239
-X-HE-Meta: U2FsdGVkX18TxySR7T8XEfijs3bT9QF8XQNpyPPJsmooaUSBE37NhKh743X5zKoaY9jV+m9KNOG8xLSVRhmgX+mZ4WezRbxitEjyu/RX5LbAyVyqf1XrRKym72nseSQd+ghT98XjPGAWHdu7L2L9RAmzahDdCHfWP054h9Ru6vu3PdI2GMcIdiSGCkzQaq+God/2uI3gdnUo+GbG4da0Nudr7pZgT4by44gVSs52jqJn1C3iFGSp4eILooBLQshAaE6X9L9LIpF+zWwDFtexlA8B2NAsUHNJEhTR+5MbGA/mtOFxiVquuaDkfFA9nky8D3UX2egrNRRxfYjIBaBlC7uZ6GH+rLaS+Rrd/QJXBWwi8NS1D4Tr5dvFferaTZZH8NkCic2TmaNwWHvMCXYZ2cthYW5OYPi6XP+dmBSJWc6w/RQQdx3wv5n84amUGHsvcWVTubG4R9xjrpCmSaJrHtaVrwLG1ePbU+YkIXgQl+Kjqovg50+FJssGCuriXMaYmZOabaVGzI5WHo1nZ6LVVtA34Q042UaGaF30CDvSKFHHSjPuYpO0lHKd90x2UaP0sR2peJe86CnGMDP24WxlVlVN5nifH0FmBxyTbfmE4z8idPvmgk6QrBULUwch9UzQ0KzCJb9BzJANF8rB/plolvIIT0Mc0GzAKor7aPi4Mo4e7EDFsQxusmHcIHHGztFFw+7WUOYHcbHq8cQZvsWWYBc97MG7j1kj9x+qjxZ0Gu2a9T8RpdtsOE6nv/Qy2qt60vSGmSMeWiR8FU61DA6sJ8SQBv9DBtn6fg4Zs+A3z71SJ2LHlUz+mqLFGtMtd3dQGc3ESl5DikXwlXjTfardmv9mW3Ia9WaSMIp3tkOsHeKu3pKWqDtJGWxBVytZ2QiRJMM/7EnWSFtO9kQ66eeL3rZjFVFlPrP4Nn2CndWJrjnkaxaiVMFxlVWwhRYppRHi6p00PNAFxqcHvxRZQZI
- N4FJD6Xm
- t0kwuGApdAUzIavpvJtRkn3Eq6kSpaK3ndIq3Rm0nXUt5iGF5Hpx7nBAFxNGtpfycOhHASbUdHTQIwz/7+gC4Tbp2QUI7GPgnAJXgum2lCnNGVrC9HsqhDbXfr0aMGMxZiUHnO6xItHn/uQkmQlB+V3SdpuH2fRty2LLBl0K66q9k4WpXZQH0FjFAExWEOzbL6UWUgv7QlgdyuOjWCsrXQM1vu70KY9I16yh6mFwxbsM82kQi/inVSkebGt5UDUt5CgRr4adgCUEy9todv/LsiurD64L9jGI7617fGB27dSr685IVaq8j6PFxzfh3eF8wT4yKfONnYY3mBCr8xVQ1BRl9ETorHgMIWNIQiDVvD32colLdTQEezxf0U/c3mnqfFZ+s7M//uBfalqov4UrCGB1B2mh17WkZy6av+VmU1PMgjKfNB7I/jSg5IA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E919940003
+X-Stat-Signature: s93gawrfbbronb9n1wm11wuotk1ujbz4
+X-HE-Tag: 1783354492-832466
+X-HE-Meta: U2FsdGVkX1+Ze7qAlOb11YQ+0LlV2TLIKzmsiu5Q4xgy1ukzkJN05eY+BYYPV0iyqtKimFo9REAMsOvvWeJ52PWRgaDMkXr9XBf4UqoBJG8ticjNCpZTrR4leqH7ee8LhEoLfmDhccpHxhn8ik4CAaliVKn081PxobpztYVrcXs0V1dCJuynDR72YK+SbrUqc5m6LvdcZbVEFdqfbSf9Gs+7P2pgQNwTe22leYVtsBn1jUY0NgfRW8MI+mxVyg2KO5KmnUAAbfu9hSeHn+28csgA95637bg0rYxj+G5rADl+2uOnvRUH9QOgr0h12LMmsMoa09sgGwfQp+5o8+duPtxoXEG7kjFJJKg8fKYRxzkVd1jKUsQ2LMuHQS6wcZjoW4dBXhVA/h6U2aE7Ibh9HDKISeCpggeHYLHdmKMcgqFOsEnKwMNcE7ttZW1/h1pWMRjkZ9h6O6G7HZtlaEBGevd8i/hti+D3mHV00CAnJqx5t9B1Q7RuoKjxV4w2g0BWwiIyoufWb4CDqTDugdfcefMN0dk+P0rLhJXhAXQ7VuHB12Bp/BxW+GX+e3psOaf9qDDqhIFwtYP+JntqC71w9C4GPf7Vu3IwcYbiMGBPH9R5a8tItAIuIRbLNZtgWMT5LeYGW5n+Lw9SI/Fp6jh44/OfQMZBQp71zaD72NojXDMb3BCkmLHf+hFujcu+v7K21heQXx6ws+3oYHIY3tHPIYPgeQHxKmXSSdlZbNdUU7CCaj4A2iKej21+o09giaO9DsoEoGA55DBqrtxNO+XTcK0qq2P1/jomuqpftLxBr6vwmsd2v565pgMAfChj1DxmKoJUgEJX43pwkKVuzQFFVazD9Hk8UVcoxYpzLVdJz/ZFodRyTr62TamxyJzdJprDRNzWqUcYzfB2MdicI2FSbde5nHWtem1p6NWk5/h5D2FdhwiweqSSkcq6j3ThCXtSx5Va2rxJ5xtfEo+doO7
+ e/Ft15iT
+ xMxmPJgix1xw1VVHUu/Tuvb1oHjSRYndnM7JhkJLjupurEIXKxsftVMjSrRRqEvTFH9ft7929xS0TFo6nfyK9V7f9wTxPKNIWJqYe6dv0N9810KWH+VErlHIrvEy5QHoUqYOPziZ29UW1YnSEMZC+BbAKefLxcoi7lE4SkX5mF8pyHm9DN5Mvs3mhZ6d9pa+nFB7PJfJXlkAPo88+6eq3rdzrrlFvx5sI7nDWbGR41l++99c2LrcpXE3znvHzkDvK1tyefou/4rLZO4ZDIXdguOeBIrZX9WklxkynjVNOtofOxPChfaQtzs9X6/cA6NkncHv3hs9pl2pymoo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,45 +102,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Historically binfmt_misc has only matched binaries by magic bytes or file
-> extension, and always redirects a match to a fixed interpreter recorded in
-> the registration. This is insufficient when the match requires parsing the
-> binary header (e.g. inspecting ELF program headers) or when the interpreter
-> must be computed per-binary rather than hard-coded.
-> 
-> Introduce a new 'B' (BPF) handler type. A pinned SOCKET_FILTER program is
-> registered in place of the magic/mask, and no interpreter is recorded:
-> 
->   echo ':name:B:<bpf_pinned_path>::::<flags>' \
->       > /proc/sys/fs/binfmt_misc/register
-> 
-> When a binary is executed, binfmt_misc runs the program with the
-> BINPRM_BUF_SIZE file-header buffer as context. Returning 1 selects the
-> handler; returning 0 falls through to the remaining handlers.
-> 
-> Unlike magic/extension handlers, a 'B' handler carries no interpreter of its
-> own: the program chooses it via a new helper, bpf_binprm_set_interp(). This
-> lets the program compute the interpreter path however it sees fit (for example
-> relative to the binary). A 'B' handler is therefore a strict superset of the
-> existing magic handlers -- any of them can be expressed as a program that
-> matches on the header and sets a fixed interpreter.
-> 
-> bpf_binprm_set_interp() is exposed to SOCKET_FILTER programs and stashes the
-> chosen path on a per-CPU area that binfmt_misc reads back immediately after
-> the run under migrate_disable(); only a match that set an interpreter
-> allocates.
-> 
-> Signed-off-by: Farid Zakaria <farid.m.zakaria@gmail.com>
+Hello Mike,
 
-Ignoring the blatant bpf abuse here I think this is quite workable. So
-this can be turned into an actual design and patch imho...
+On Sat, Jul 04, 2026 at 12:31:26PM +0300, Mike Rapoport wrote:
+> On Tue, Jun 30, 2026 at 05:46:09AM -0700, Breno Leitao wrote:
 
-Note that binfmt_misc is namespaced and can be mounted inside of user
-namespace + mount namespaces fwiw. So a container mounting binfmt_misc
-(a fresh instance - few do) would escape that bpf program. On the other
-hand it would allow to register a custom bpf program per container if
-needed...
+> I'm looking at these awk scripts and od encodings and I wonder if wasn't it
+> simpler to write the test in C.
+> 
+> We have a bunch of helpers in tools/testing/selftests/mm/vm_utils.h for
+> accessing /proc files and there is already /proc/iomem parser in
+> tools/testing/selftests/mm/pfnmap.c that also could be lifter to vm_util
 
--- 
-Christian Brauner <brauner@kernel.org>
+I'm fine with either approach.
+
+My main concern is keeping the selftest decoupled from the feature
+itself, so that review of the test doesn't block the feature from
+landing. Would that work for you?
+
+Thanks
+--breno
 
