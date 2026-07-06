@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD0DEC43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:38:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F27FC44500
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:42:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB6536B00DA; Mon,  6 Jul 2026 04:38:25 -0400 (EDT)
+	id 814A86B00D4; Mon,  6 Jul 2026 04:42:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8D946B00DE; Mon,  6 Jul 2026 04:38:25 -0400 (EDT)
+	id 7C5EB6B00D9; Mon,  6 Jul 2026 04:42:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7CA16B00E7; Mon,  6 Jul 2026 04:38:25 -0400 (EDT)
+	id 68EC26B00DB; Mon,  6 Jul 2026 04:42:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CA596B00DA
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:38:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0346D40307
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:38:24 +0000 (UTC)
-X-FDA: 84957700170.26.7DE4F26
+	by kanga.kvack.org (Postfix) with ESMTP id 43B8D6B00D4
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:42:53 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C1BE71A0330
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:42:52 +0000 (UTC)
+X-FDA: 84957711384.14.CF991E5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 46A3040007
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:38:23 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WlYaGKhp;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 15B2220005
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:42:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIn7Iybc;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783327103;
+	s=arc-20220608; t=1783327371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a7yNDDf/DMYk3ol+1u6rxtj1rpa92gD4NKRD65REqG0=;
-	b=gRXxVyH3JCL2V7X87SH4vvwfSRMGBVW1atWG+mokG5p/pdlftTUT6MBDjsb6LBAl61u4MB
-	ex6sHrNwrtEyRDTobAkh3FvsVkK+Ui0LXiVn73pgnq6CQYhdo7XqvCgpj6I1edfyfQHzPp
-	oh1+N8uYy0iITcVhqyer8HZVRm7Dk1A=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WlYaGKhp;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=4Q5OO705sqjVj6V3CrHEmc9+5Y9WaD9cC61NbPqoX2M=;
+	b=MGiP1F3V4KMaz02QNce6RcrgKDqqjHaB4n/yEWA3Q0KjW1+XhrQRa2boFm3raiRmpq79WU
+	uZ6sARCDeViatbhYmzfEpY8a7ywpethXDrtOiyjWAVYmsNR1zxHGeE2X7peDiv7aqKXSX+
+	/ZEfxXUe0DrZ7+BsA5qFii6Nuzc3J+I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783327103;
-	b=U327MlVu7DovAwwZTqqktrlQoENF024rMqf1pw0dn3lFGuf4unhs8qWL9elT4OdLY66BKd
-	10AdBWZR0z5xDC2t6KQ8XcGTSEiu2XY5/h8FseJ3EVr/OyH4Da+UZc3ej03ReupDRFfmVB
-	e2RQkUKif9ojN2/RS9yTlfZKvyhqXuw=
+	t=1783327371;
+	b=JDjYqa8m0TNRxqn2iS7BaReMAEtovb5Z/Y6aEtj775oGekdETnQXfr1w7NG7LWRKW3pjZ8
+	Dme4YT/1+EAMKb9dS1vjuMsdaHp1em7SYSXpRNs/Bi5+mnT3MBIB/d3RZHOcSDYICM6me7
+	ZxfMpCB3d3r/ap1JlckPtdHspXN727o=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIn7Iybc;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CAB266138C;
-	Mon,  6 Jul 2026 08:38:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A4E1F000E9;
-	Mon,  6 Jul 2026 08:38:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A0B2F600C3;
+	Mon,  6 Jul 2026 08:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18FD1F000E9;
+	Mon,  6 Jul 2026 08:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783327102;
-	bh=a7yNDDf/DMYk3ol+1u6rxtj1rpa92gD4NKRD65REqG0=;
+	s=k20260515; t=1783327370;
+	bh=4Q5OO705sqjVj6V3CrHEmc9+5Y9WaD9cC61NbPqoX2M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WlYaGKhp7Q1qk9Es17ct14W0SAv9dREygoTVTuge751xR7qQzUd5HJgHnlxif4kMc
-	 oTjqSxaX6UNdsKE3Vz0O1nkU2tJllp6+AViGu2UoX9o1qmzczfwsUdeHx11ikiG8pp
-	 6KK7W7DpSGFUdWhAvT+dUHf/tE3Qijtgn23oewCoopQXdBNMnwNqCv9Hw3Qua6m5xb
-	 nQngwdxgyOZpTVuwWWZC3jxKebw7ekVzKHtLhvPWMhyHbgwzYiFyTRtlQKRJAVgW8O
-	 veY6wocFOjh55xO8fxJEIOfoAuWxpakeWAPUhuCAT+qafFla5+RCinfK5Chm40a3/s
-	 gYD+fC2qpM5bw==
-Message-ID: <6b8e4ad3-6909-4d0a-89a4-104a5ad9fe79@kernel.org>
-Date: Mon, 6 Jul 2026 10:38:18 +0200
+	b=GIn7IybcH1uE5DRSJIA+De7ml6yEreHoYtoLylpcdr3GmdnCHE1BTfJt77E81gIrC
+	 Bu4bNtxk72Z215rCaWwi1riDyON8LcC30fP0JWQbX3ZDlEKm73Z4JVvyg/VS25Tu0F
+	 U9kFe4eN8/5l2LqnonCP5kQPI4hSRTA0MtQbYniBu1TAG/o8crimtVNxICa3IGfTQm
+	 44vkMz7rqjToCBYZJ4aNovjI2sQ/eOAxpg1prfNueRtcxJoJ8C/gbEQ8WlLhIT5qVM
+	 kyHoUejLrtHyd8J44dK+2YFbFNgNWhLQeoS+kQDnIxdK/jEy7vo/AMVARDnMihBhHQ
+	 I4ZtnrgU/XBGw==
+Message-ID: <503aee9e-97fc-4889-a379-3c0a5d140554@kernel.org>
+Date: Mon, 6 Jul 2026 10:42:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] virtio_balloon: prime stats vq after
- virtio_device_ready()
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Adam Litke <agl@us.ibm.com>,
- Rusty Russell <rusty@rustcorp.com.au>, virtualization@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-References: <2f0d0de033f3005d3b985883be3e5cf37b3f6c42.1783278596.git.mst@redhat.com>
- <13794c5e-375a-4fc5-84b4-a637d077f8a0@kernel.org>
- <20260706042207-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH] mm/secretmem: disable under HIGHMEM
+To: Mike Rapoport <rppt@kernel.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Brendan Jackman <jackmanb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260703-secretmem-highmem-v1-1-30d5ff944664@google.com>
+ <20260704192603.40aa80cf9242b77aa75e8d8d@linux-foundation.org>
+ <DJQKSKCN9KIB.25WIOU9KF9CNV@linux.dev> <akpBWmnujSnj1ZEE@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260706042207-mutt-send-email-mst@kernel.org>
+In-Reply-To: <akpBWmnujSnj1ZEE@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 46A3040007
-X-Stat-Signature: o17txi8et8w3uyqznei87onhrm5ghnnq
-X-HE-Tag: 1783327103-343962
-X-HE-Meta: U2FsdGVkX19N2xCAObMh57RKGpWS5fsOVh1KM+nFGkak9Yj00fD2M+rKAY/Ml4pqPr9941chu0XuRAy8KhU63vMolM+6uShaDSWd0JKdInJk1mt97ukZH8nF5Y35JUkkMOWU1rRI7PtodmWACq8InF6NNn8ejjhjmeGVh/3evro8Lukj17oA0r4VxYJNusvi2Zoah1Kji6oKJtjSZE+uDyIlkmxcJ/3ZNgFTT3Ro1Su/BpkrGtpaS69nbAgndG5uwHu/VPB9Kf+CyEVglFchdejBMkQI4xlM0IBiYT51JtBU3mBpwTWgLDi+d9KeM8AD0/Bq3+Jnl9gCcgAo+h34gKQR9bVE0h5ceNc7LpD7oWHcAuU2g/ZyxClk9GfK0EXNpc7/UDHQR3pZ//uNgxdMSFfPt9sTwFaSv6fqmyk/0HnlTL5L6MUBINS9gTUbDUvLZ48JfQ3yuvvCtpoolbSTPgknoE1D7bAY+Hk+knqFrcAhnJGw2EwMkfYztQ1nZ+or8K2nqMAheqBE8HTdl706w1Xf52hsvpMyzB612DXMB+ZFhTQo/mlP9i4g8obSYNDTSvmpD1seXVo1Lytb5QKNGI5x+rG39xBobseC7WlXJwP8D/ACt1A+FCWizUmNCJ2qTuGRLaa74aqs6d1GKPtq2QsFGVLGu9hM/9LdI3Raxy38V9NkBtSj5ZVa1ZXi1j8BGBiiD6xl94MPDodfUaUW3S91s44KyxaI7KBLbaBSaGvRi0s1tBnb0ry+RfUFU1ak3YZif7A9nZ/pJ6uy/sYecLf4slX//Ms176pf9XU7mrjmq2EXkqc6y+O6REzPrT4kelAKPESYGJsF9XbrnF/8HoSbhol/28fGnNp4x1UAyiX8SzBraFz5ztWbkd0Rz2WjvJLbke5Wp57XzSIKw9lr4Aln1ig2/RRap4/3q3T3AE71EgOx5T+ncYGXmz9zYLBxhIAEdzUiB4I/APXfMkj
- shUozt/g
- EByCxu63BDHzH2MA9lGvK0KvLtH8eBPUZyG8ye2/2Y6Dd9BJ4kZLB4RPerl7QVw7QFiKrO7Vc3sfo5qpja9QPO9MQscGW6dO3A48ZPjSWKc/4ZIubsF4G/Q7PeloNyHMOeO3qCFY6aQmCkxIwhRiAwxG7ggpk0an+ZB6ZfQQRwTd6BeX7nkTdTgXglsQyjj8Cd7SRe+fdTxGUTfCtRcX0IYMuscOOHuxGdqz1hrrMt8InYjW5hUfESEAOVi39vNUuNp7gtrltPlM0Z9Co7+JjTuQSMQlRSQYqk+pfW05o0VeIp2YhFzT5ayaEvg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 15B2220005
+X-Stat-Signature: tareag38utzqddzgeayo4gj8uwyertwn
+X-HE-Tag: 1783327370-236134
+X-HE-Meta: U2FsdGVkX1+//Xk/PfYKb1iYxGNeV5GQU9b8Ode4lA06KmfOoXUHpDdeVS0aVhmO9RsuDx5tH/DmDneumfiuYDrrZb2V2tM43joCkBcqhJfcGIm2SOEibgdrY3p7gf64ur0WhAX/McpJrtb4cYDHGN+eZuwnS/huyLATCrS0Wzl7XsTlpsuZASpO1WTmPGnbvfgEPvL3CFIICBgUy3YLFImDbCYAzBZiXt85T53VqejKLlLnrvIEbIp3ZZFq3yavZnhnSialZsVRnlyORGrei3V0/+VU+EeuqiUFbB9dj9dC4Cdaq/z+FwJsfjVcZzcfLAYyWKXp+dnMkYuQLSM+wDhQx82bipwX01DxS58Faww1YBy/hVDsoUWaZGoA4SuqFb/ES5f4P6A4dYCvZkxd62QmLFY+pnSiSCR/fVssI4rNIZGyM1AgOqax8QOeost5XhOiQF9Fr8efZiaCvOw8xijwQM4iu3fXpOwkS2rTPhTK/cFlMCWe7GjO70QpNd9OmN36I/0zlllUQhHl0xBHzPi3/5AAEdW6qTAMZCXaJ4yuL5gHLE1pAo7XIPfqCBnjhd/zasrMJPDDEU4wyn0MS3dWRVVU2tDqNyo5RMSYcc6efn4oUviB5LhGZj4fuFAFORyaX5NDfkdzSUdTr6Wkl6k6EWTAUvMpwBj3t2rSCxkn+WWg545zh6bwC1KckjpwV2mmeZuyvIcWmfRN/+i7rjSE5wc5ZnTEoyaFYlse64kcdCNEHry/ufRQE0g7rd3Ol44WlAXWjanhNREs9+GsaX5shjCtVGMx6JXiWUw8XVkqI3xAb08krDZBm+/ZNHzGf92zcU4SmzH1Kceip4BkUowCOZ7Dk5S/9Yq3lgwsd5poha3pWozsY8hK4louKlOeQeHK9XykRrQRQzjBXNHZW+n5hxJZ8ebAmGTL8RZcExH3HWaLErKunSvvPgEszItWRZstXI/FSaPK5MYa4i/
+ hlF+yoYq
+ 64/Ceeeot8TojzV8IDeKLI7XrMXnayIsjzubi51s1QNwrVUcG2KRQhmQF8Aq9et2w7KrwFQz9+UGxigeBhwSCZxEyPFQJ4vqkpcCVSdIdxLjGhmW6+7MYFDWmg+pwyMAAoRoMFNW8TBYpdUcbWc4CLCX8zP5pdIX35ZtK9RJOIlY/GEGTOeRDMvMAolt/JuwJrJrQguJzWxQkCjern4gQ3KmtbNkrc6UCt8gQT0TBd4N9PxHRWoreYKT+LpwtLYgnfA6S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,27 +143,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>> -		virtqueue_kick(vb->stats_vq);
->>> +		disable_work(&vb->update_balloon_stats_work);
+On 7/5/26 13:34, Mike Rapoport wrote:
+> On Sun, Jul 05, 2026 at 10:46:19AM +0000, Brendan Jackman wrote:
+>> On Sun Jul 5, 2026 at 2:26 AM UTC, Andrew Morton wrote:
+>>>
+>>> Well OK, but the secretmem code is still wrong.  The patch protects
+>>> people from hitting the bug but leaves the bug in place.  Surely it would be
+>>> better to fix the bug?
 >>
->> That's to stop the stats queue triggering stats_request() I assume?
+>> I don't think the code is wrong if highmem is disabled. Certainly
+>> there is an implicit coupling between the .c file and the Kconfig file,
+>> but we could always add a BUILD_BUG_ON(IS_ENABLED(CONFIG_SECRETMEM)) to
+>> the relevant bit of code to make it explicit.
+>>
+>>> Is that as simple as adding the folio_test_highmem() test?  
+>>
+>> This would fix the WARN+SIGBUS but I don't think it resolves the fact
+>> that this configuration is completely untested - there are likely other
+>> functional bugs? But more importantly, I am not sure if secretmem
+>> actually does its security job if kmap_local_page() isn't a NOP. I
+>> think shipping a "security feature" that doesn't do what it says would
+>> be really terrible. (It might work totally fine, I dunno, but it would
+>> require some research and deep thinking that I don't really want to do
+>> for a configuration with no users).
+>>
+>>> Or switching to GFP_KERNEL?  
+>>
+>> ... Oh, that's a nice idea though :)
 > 
-> Yes.
-> 
->> Is that
->> valid before we actually added+kicked ourselves?
-> 
-> Why not?
+> GFP_USER if anything :)
 
-I was wondering whether the spec would state something about that.
+Right.
 
 > 
->> Also, can't we simply handle that in stats_request(), just ignoring it there?
+> But still with kmap() and friends not being an NOP the promise "kernel does
+> not map this memory" does not hold.
 > 
-> Then we'd need to maintain a special flag and I dislike that.
+> I think that keeping SECRETMEM and HIGHMEM mutually exclusive is
+> conceptually correct.
 
-I was hoping that we could use the device-ready indication, but there would be a
-small race window indeed.
+We could even limit it to 64BIT ;)
 
 -- 
 Cheers,
