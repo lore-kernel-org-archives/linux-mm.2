@@ -4,123 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FD3DC43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 17:30:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9651DC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 17:48:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 143B36B00BA; Mon,  6 Jul 2026 13:30:17 -0400 (EDT)
+	id 33AAD6B009D; Mon,  6 Jul 2026 13:48:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F5086B00BB; Mon,  6 Jul 2026 13:30:17 -0400 (EDT)
+	id 312006B009E; Mon,  6 Jul 2026 13:48:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00AFE6B00BD; Mon,  6 Jul 2026 13:30:16 -0400 (EDT)
+	id 228196B009F; Mon,  6 Jul 2026 13:48:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C66BE6B00BA
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:30:16 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 48E771C141D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:30:16 +0000 (UTC)
-X-FDA: 84959040432.06.A79AFDE
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6539214000A
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:30:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=exOOQ2Lj;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 013C76B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:48:45 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8802C1201BF
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:48:44 +0000 (UTC)
+X-FDA: 84959086968.17.71144A8
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B7CD91C0003
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:48:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RtCUKs2D;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783359014;
+	s=arc-20220608; t=1783360122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T9PWYu0fUk83E8iTN6ucQI9VPyecYn/0QKDiHqXI4d0=;
-	b=k5DS+t/pvb5KTa+vPvJS9FU/m7d8/Tp6iIFHGsiov46R2nKPSE1xVAn+50aYmovXd6BIu+
-	BiDH4r8s7Ek0kEypPTNi4KAXCF7G49+JP99/W65WfYduBGMzuvSQpas0AMzSdQ2chkN7Io
-	R3gfCqhsGdKkikKBBLHlpSYg8xhlBFQ=
+	bh=jHIujCKTOGPNugTb5N8DODxujrY7RJkaEbg7hUbcIIA=;
+	b=lg55JLK2amzdJS3WSkup5DDXLh9RvIl4F+BJJW3Opxk78VNXH5/T2ez+GSeQa/2Xif4r7o
+	WpWEJ6G2aaIa4VFYJZmh7tCHR8uaK8OmMHeH+Dq9fjmMl+JYNGkMes9oKl1Gmcp7bswe6d
+	Q9SbJ2G+A+z/9rPvo40YuJ4qQMXZsRg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=exOOQ2Lj;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RtCUKs2D;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783359014;
-	b=g3qltpRqNbjBuxu5bWNyvYerVxTGmJqWHR/iR/hJeqJ8UXOrG7ioG/VoZK+fzSIXBVQ1/o
-	rRyh1lfXYCAbj8RqPyIbKSq2z986c7E+57HrhnSW5XXTsB4Uex9FhV7tWc2BVlMc+94owI
-	qiNh1ioojXWvPoBqn6RVAz+DbpUexxk=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-92e7c6ec9dbso141954085a.0
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 10:30:14 -0700 (PDT)
+	t=1783360122;
+	b=Qg4lfp0Y7+GgU28wWSG/XzdINN6As7MmNpaZoHfC7RiH67yTqmeYKwdJUAFL8bo3n0wKUg
+	aX0DSKYWDeRqBhGQ8vlkmiwQnB9kBgiIDRzu9TM1dZNvyQtR7btXppfMRrWceYGWgpC9Ue
+	O/49Kxgzc3c7haj2QJg1DzTdBXv54Ds=
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3804e42ad5fso4154694a91.2
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 10:48:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783359013; x=1783963813; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T9PWYu0fUk83E8iTN6ucQI9VPyecYn/0QKDiHqXI4d0=;
-        b=exOOQ2LjvWNQU7dAomaR5E62PtVQbDcacUlFNdtxnzkpCJ2S+8DfKxknYcUFwfJurd
-         04YbKxFvJ10n4JqFnCDN3zQJxYMlw1MktPxYaTUZ+H9UF5bxOFGVefcfUhXxmkFN60Eh
-         nq+Ky4zydEeChmWpdvMI4lvaWhMSEtkXODAr20WgRqN0xxgDuC99WbEkcHpRrJd/2pGe
-         ok9HyFtRd1d6G3U8CQUoSx7m2ZUzeyilqf+zikctjshZL3rvX0F0fcjAIEdxuNRvgi2a
-         I9XSRbgf+oq5rUuS8PupPf/Z0h1i/iVuzgt3hZT+AsYN6iTh7oTfGLgg1EWFZe+IDpfO
-         Z7Cg==
+        d=gmail.com; s=20251104; t=1783360121; x=1783964921; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jHIujCKTOGPNugTb5N8DODxujrY7RJkaEbg7hUbcIIA=;
+        b=RtCUKs2D8gF6dKLOrQFnGuuN5v0UwCzAvY7bqBVqpcET6vqCpPb2POoLsstEhbP0uB
+         p5M38QaAqS7OodZTErjrkBUGYQd0A5nV57iBzA1UfdEO8A7FpjMPJqorb2vULl7zJUWb
+         4OsLXvK9cHUuhXP0Y0ryErnSfFcH1r3i2EvrAFJKnebDDhwlRaPSbgfPId8/WzvAhzyX
+         ChL8DydXB1ACUka0Do96tvPYGMCewlP/GRpPpJF7HxS9Cwg81QnCiSg+nu/Y5ZoRlVCE
+         z3EJZrfQ/FKaNsqV+wgc2485Z9VL9Cg2cW+tT9a5LmgFlExMH7tChQUq/gV622LgV8Gt
+         71Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783359013; x=1783963813;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T9PWYu0fUk83E8iTN6ucQI9VPyecYn/0QKDiHqXI4d0=;
-        b=i6oWkbiY8XfRFzengUsgzfoouFyWlmWuotn+R6B8XAh9g0lUEbm+Vub2UXeZEI0zae
-         7w1owwrkvcvtxtemAyto1TS1FQic/89CuuX034neqqJ6V+3IOBsP2WsKmY3f1xkOdXMY
-         SVU7+JGObgCkphka24LUHpcM0TJDQbB4D2N9oxEmbfTU1QTPFDbdPrQs/nlF13epN07o
-         1m6Nn8MMBaUbDEOyibpFE+p1kwJg5fO1XINeskF7ux3B3gTlaKWqjvu9Iu9E1/+SXUGq
-         oQ+ddzWLKbN5ZXsOkclpeIBW6u6gdn3qcEKSWl567bQqOz35VpQdo0mdxsp8tMndd13L
-         rGBw==
-X-Forwarded-Encrypted: i=1; AHgh+Roivc32uIb6EDdaHUEHTITljotl1n8Reyyy5+PamVQk5cyTpEjaXVNW7N4PwDZhqpmp/aw/xVRu4Q==@kvack.org
-X-Gm-Message-State: AOJu0YxZUg6pM7As+wMf7e3PYzms0zm1QtvMsPkleGQUYIyv/+RA0xKq
-	qL/JMGd4MMLLDjSbdhzK59yF0dqQAt2ua2A2XdKjUkSOVueQvSKiAcXNgDG+4tlKn9I=
-X-Gm-Gg: AfdE7clnrI2KXkNfqCnEy/JNDRHFnRREhCnXu98gSLrml9QmYMX6konv3eAqPevi1Yw
-	DpjLqZ6yHrY6k7pwPHptYW6Hp9Bti2yaBwFgELTjFN+CMMq9FN+df8vliHGKNNjmviEiAC4hoAG
-	mpyzI0NyrtVRVFf89pIJbfdrWBYx6+CouZuPCA6aCWTuGy6cCUqJpMCeuYI4EnvuNpikupfCd+0
-	QElqzys4BPmPzOlG8PybiYw+wQkDT23bA9UH+SlnzlAgYBNqcWHEwigLO+tdLTzr+dm1GG73G/y
-	vb0VxNfuKnk+p90zPZrXhS0k6uKb3Y5pYHdBPoXbnNP7FC6KOOVnRtkqDJ7YVZei+qOxtgefrES
-	jl3W2el+VDuuXsnXaJTx4YBeDyb8oKW/m402pCSPBTeokXkxo5AT11w3i9k6FRdLiRTsvy4ZVZv
-	PFzDIkBxGa51ir6jjwKujaYagbcKC/vQdfM/EoaAVwZ4PDijO7fWUPocqpQqWyBDy+YTb9
-X-Received: by 2002:a05:620a:4552:b0:916:467:558f with SMTP id af79cd13be357-92ebb4e3ad8mr220189485a.16.1783359013000;
-        Mon, 06 Jul 2026 10:30:13 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90b800ccsm987969085a.8.2026.07.06.10.30.12
+        d=1e100.net; s=20251104; t=1783360121; x=1783964921;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jHIujCKTOGPNugTb5N8DODxujrY7RJkaEbg7hUbcIIA=;
+        b=kmex6+JgOwR4tOOscs52QS0DFufJXaIbkXe4Y3d59sriGw2LjckcwAT6t0Dz8CQBG6
+         BmZCtxGgDg5ICUYNaXr+f8KEp0LF2UA105F32hZqriO3M7e9wtRZ4In/pRinYgOwY+BN
+         xm5hQE74P/GqGglRenpkH1fKDNJOcT4qO2Jyfu3Wp8NeifGvvBDCX7NMBdl6910dG0LJ
+         HQQhLwpGHQkqg25pcVrX2fjfoidKugzqTbWaA/oIarVxdE8m4JF4pNLjMuLG12W5i0Cl
+         SnyBDGBQrur56eS81IsdZ1iPTUc1rjuXUxsf/wa5NsR/FPSZ0J91vaHacpBtrKEJW1MF
+         e8HQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro3UUHEqwl0aSvcCCTkvczueI23LGVOwvqMW8SeaCQizxM7jduSGNueRTv+zxVfVErw8QWMt/gcrQ==@kvack.org
+X-Gm-Message-State: AOJu0YyDIWFrEmTu4XEsCryM5foITT3cl0t+/8WGv2TamoJ//ocsk/aQ
+	i7eMq721fV71iXSfZDXHYDIwODnBX19O8Uw+twpBJN7qG9cjJB/1u4Oy
+X-Gm-Gg: AfdE7clwLrh+i+f3gIDXUsDmQioL490rIcdmsDfnxbnDiZoCO2x2tcX3pOxB2wdNraO
+	nhiS2Mxlml5dmYMDpvpTb2nBbWDpUHOqDHXyXUynclLC/YuZSKt6u6Bp7VxkZ4ed5xo1xwSWT+J
+	bHUZXzG5lJL8mTRyYHO9qbTTu6rnjLRdU83iG5kmzSDZaxA6Y1C4GicUkCljnfNaiZCGlVRPVxV
+	sFMo13govTRc85NAXdhM29vmIoJCvo3+2ibj02v/01ADFSjr9cSldvk/8TBm040lnk7MkY1zpeJ
+	WJTl3zq6Fyg5NLV3mT72R7ZFo1s7w1n47WOmqGjzKkWdkWMxjUJ23D1lwnLKUwBlfEANiG0BOGv
+	dM1D8671Np5NJxeqIfHj9J1+zcNt08kZLJF3unuTmRc8Ye/cOxjRN/D3RwJEJS8tx13m6WPrRB9
+	2eamVVpt5GvUpq97pLiQ1j4hscvtDGUZ8v942Rw1gI0fdh
+X-Received: by 2002:a17:90b:3f88:b0:37f:9ce1:cda4 with SMTP id 98e67ed59e1d1-38759019fc1mr1587029a91.26.1783360121520;
+        Mon, 06 Jul 2026 10:48:41 -0700 (PDT)
+Received: from fedora ([2601:644:937c:6c90:6d4e:7b2d:4a39:fb0c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3812801e8d6sm5515562a91.12.2026.07.06.10.48.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 10:30:12 -0700 (PDT)
-Date: Mon, 6 Jul 2026 13:30:08 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-Message-ID: <akvmIILwRsU9mUfk@gourry-fedora-PF4VCD3F>
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
- <akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
- <87h5mkz33h.fsf@DESKTOP-5N7EMDA>
- <akPg4ANRetbjSP_b@gourry-fedora-PF4VCD3F>
- <877bnfynsr.fsf@DESKTOP-5N7EMDA>
- <akUzUqQG185XHqgL@gourry-fedora-PF4VCD3F>
- <87y0fonyrm.fsf@DESKTOP-5N7EMDA>
+        Mon, 06 Jul 2026 10:48:40 -0700 (PDT)
+Date: Mon, 6 Jul 2026 10:48:38 -0700
+From: Vishal Moola <vishal.moola@gmail.com>
+To: Dave Hansen <dave.hansen@intel.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: Mike Rapoport <rppt@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+	xen-devel@lists.xenproject.org, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Subject: Re: [PATCH v2 0/9] Convert x86 pgd_lists to ptdescs
+Message-ID: <akvqdoZI-jCn3lrk@fedora>
+References: <20260629185742.126987-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87y0fonyrm.fsf@DESKTOP-5N7EMDA>
+In-Reply-To: <20260629185742.126987-1-vishal.moola@gmail.com>
+X-Stat-Signature: qu694gj3capu314zf8uubog3in8amkfw
+X-Rspamd-Queue-Id: B7CD91C0003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6539214000A
-X-Stat-Signature: 3kdg8mp85swyo3adtiesehjxxutuaayj
-X-HE-Tag: 1783359014-212117
-X-HE-Meta: U2FsdGVkX1+oNhxDeapFsVpt2CXyGDXpS3SeRVNzQEk3XchDOpTkQ/bZZiCz7vvznqSzfgxvpR33cBYMUuHP+to6jCMmnABFftsz7Rs0NMFYYmA/EvLT8sOzxhl3Jd/H8vsHhDtgo9UUnxtyooJS146qmD36Nr4Ap9WRqf0SeSoYhHpeaULw4jqnFS65qhvX+eCkTod+mVlLRqk7WaGWNaF0UVfjPxMAgZt6rbGqjAN1iZfrxVYYQBu+n6UAVGjlK8aUTAer3QkToIH8LOOs7RCTYChFbPjT7KINQYkVJ2xPPSc1Ypg/u2xIol4ay5eE1TyhwlcUbYBA+Xi1AWo2Dn7I0ypOBUpZZ+I8RIM5e5Ejfaqu5wcTJq1YRmrXvIlZMbDzYyHAL5/3/P/MXP0KmGEKA4YTGEQ7weE5IFrlV/lFvpiZLLHIdvVsIwI7F06WDH6ENLkifSICozHTVdlc9ttfc3mwSiiPAJGIv8vERInN0FuxE2rCXDICd+CulQrLgfECdS8UsKU44urE1QNrXemRpKrHAnWEO1KhspyFAzpvuf/+QVom3o6pR/x82aLRqNaByXDAu+gyxZMRgLW4qUEkj1Oqd4J/FNFt+kKwQf0wlcPStT3e1gRQY1fXoNeTUSKDJlGo2UcmfC7h2CFmXcpIJciTc/BB+i/oUGeaQR4kf3l8gH2szpIqLhEevCtT759mlxMAZqcwJZoIeMmjNN3T5ek2gVYb41YRMxZiKrnDfOW1lKFHDnAr54As4YbpIupcAQY4OmwDRwQ4niviLtIkMaL2bMGqOM9MnpzZdB6cHzsUb+61ulXiEsFgGQJGu88VFt5L6CvRuhupWpyIWvmVmIzK2zZZBffufqhqNB1eyzEWlQdqIMkbbPAEG68nJhLdYny3Lw6qdenx6KMQtTH1ZF4Udlr26rCE//2oGXQGakAm41znDchqvZ8GXQ+GhCDyP7XaaMmKiZ2xZA/
- bApD5TX/
- NQW6OSzbHi9SEr3kM9uVChSyH3Z3giyjg0A6rflUzMrBl/da6OHlGgFj6VfZV4+5f6t0NX45W+Pfw+jxRfzUJfcmARh1+WHLxYSOA1pAGo970IoKloLeK1RPvbCe3uneBJ5pVZ2iuRLf+CsBpYo5FYqFzFUGb0HpyoMb3P1wv4q1mafg/cgOkdzl33L4L/DJPgtHqCHb70/Nmg8WUjf/H0Cq/L8WUR7LxC1DcFS9deYgm8fKOAfS+F8E18qnuDKSY4gYpLhm3D05Yrb+lqo3xBfCTKXQlFvw9xLa4cU9gplwDvMt5gNVSKmbDt9Dy+WBK2oPP2iiQUmmOHDbk/yy074nJxjvIxx8KFgfbtJvTob09BfcbSNEYujdNnyZpQ80SyWp7EGyeXuCQYPCFV/WoG67C4EXeskEFakcMTSO8tZtk+ZuO4tMoFqnsNPuNRHH/DsCG1HcpgQKKqolIrDRgm99pQENjlmrTgWVK0SfTP44mKEU=
+X-HE-Tag: 1783360122-973060
+X-HE-Meta: U2FsdGVkX19a50TaWZM0x9UZkhF6AFjb3wkA2UWLzFeQuR883edimsYaCrHp8R5cMUnVlkrJ116WiTXWbWGFN6QEQbyEt0ROvKUwhZPQaPXuYPTvrOQXKxg3wsNxrA5P6Uzd2ZjwwXQDTGB2gSXwppN/t3ELWJJJsGTTup92oFcCJhKnYFvEfaD9ejVCyGCNa92GphRA6iiV8+yoeu6kY3E1qEH3v3ue4/emw201opopevLjjpap7D6sUEsuHyDxAg4HVId443bxJgLFgMPsAQnVuhyu8SBF7KX607mATxOw/0x5VYZTGvBeZIST5rhxOeHVIqJ/HVJJgp2Z2eEg7k67LlRWh+wzpfzghTw4R5Z/X+pA58eCJz98djKat5STO98Pt6pfdp2Se/KAdwgv2WFvppj1m4vsOI/6l1P5a9bPQEnIXxnwYqyrE30fEIACTCP/FLcFvfwO5hN3eMJHB1ZtwzJHhdQXigHnEu8PlnBws4zqCCPLW2VLZIgaSW7JRRV5x2NkbHh0GxjZCU+e2YsStQ7WVqQ6TzSwjK5g3pXb5yYk8KARtkmoGK67sPIsU+vyNO/P0zAp3cObg6FFwRyfLh9vd3IBtRUgHTk7YYMJT+QbOvRQA/kcQ5npBnPyzL9ELNNYaqY6/YTautEJXKQgUEwTuNPaN/e02DOXbp+uzPZVsRN3u3MVxB3NSAhzCP/qZhuoXwUutAEeLnBlRFiSLdD/bQxupmYri167IWx3z/orgMHnL1528miDcyuKlrV5UEB2nnx5Adki7ub0P+ibvrOGTRaphjL2ZVymJbNDE/pAYgtIedltR1b84eVWHcSvpp2Ip5Bq72+v7wIoItkv0GeVrg5nFU2zjXdvGhKwrDdF0E0CWQ/8+IceQ9tcLQKfWzfAg2DhpIWedLOSDn5xxRWaqgEU9a55Kg9SsjNwtW8PHNbFT7l5/L2IXa3QeZbycYYSwCSv0iARhXU
+ n4RtEU1E
+ lv3BeNLCv9VoBNusu5KAQZBvQGn8HXat0znG3zou+neyFs4u+XV65G6mrND7EhqnjysiX6wW5qoE4vE6A/ThdH+paCK6T/hu3MRTr3SCqFR9FH72kZ1T3MpM1Vlj7rFTaZpWeE+Rm8gfukjw8JIxvjsoUUjWNvCNpCeMqLMqazbxqePpok6yU+kKmRETA3yIivQNc7f8cBZJti1c9S3TNUpDtu4DtPL8KsKQfoNW042st+AW8VtE5XL9zXtkfjkXPqfD9TsfGo5pHPiT+fk1EVlAJYefqsXW7Kwb4krGWoQ+RdG5MVMfsLmXpEX0qILWCn6K6mFj+zVF+JdUU12GJ5kStxrd4yTeQwatrZ122BDw/91bPv8S3lXpMxSny5EHv1CPrz80vo5Vyb3E4PvHvk1w4IRikaNopbG7BEg/jJooeR1QCjV6ENZkxIc1oPUHRC8MIdQJzBN87B/puj2JZkn9onSko6thXWBDi1IEtnzOZR9lpygINqiQTW3nh39DRlW6TmtRnmmATRzBjv6otDq9Gi64vhRTEC5AeChAiK1Yn99XQ8cPL1k7yhEJtOldT2NAy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,39 +124,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 07:27:57PM +0800, Huang, Ying wrote:
-> >
-> > I considered proposing MPOL_F_MOVABLE_ONLY to mean (roughly) "userland
-> > memory only" - and then slowly trying to migrate numactl to make this
-> > the default.
+On Mon, Jun 29, 2026 at 11:57:33AM -0700, Vishal Moola wrote:
+> This continues the ptdesc conversions for x86[1]. This is a necessary step
+> in preparation for the separate allocation of ptdescs from struct page.
+> Once ptdescs are not wrappers, the pgd_list should be used to find our
+> ptdesc, not page.
 > 
-> What is the right mempolicy for these random kernel allocations?  If the
-> pages are used privately by the task (not the case in your example, but
-> is it possible?), is it OK to use the mempolicy of the task?  If the
-> pages are shared, what is the correct mempolicy?  Will it be fixed?  Or
-> can we find a way to change the policy?
+> In fact, after patch 4 we can successfully boot a 32-bit x86 kernel
+> that separately allocates ptdescs.
 > 
+> All of the patches are rather straightforward, I just kept them split up
+> for ease of review. There are no intended functional changes as ptdescs
+> are currently still wrappers around struct page.
+> 
+> [1] https://lore.kernel.org/linux-mm/20260211195233.368497-1-vishal.moola@gmail.com/
+> 
+> ----------------
+> 
+> v2:
+>   - Collect Review tags
+>   - Rebase on 7.2-rc1
+> 
+> I've compiled and booted both 64 and 32 bit on a kernel with separately
+> allocated ptdescs. I ensured the codepaths were hit for all the changes
+> except Xen.
+> 
+> This applies cleanly to 7.2-rc1. Dave, can you please take this through
+> the x86 mm tree?
 
-I submitted a recommendation[1], but I think it got swalled by the kvack
-outage, i'll probably need to re-send.
+Hi Dave, will you take this through your tree? Let me know if there
+are any changes you'd like to see, or if you'd rather this go through
+some other tree.
 
-At the very least, these allocations should just use the system default
-(local node) instead of the task.
-
-I left the page-cache affected by this (so inode data DOES follow this)
-but after some testing I found this amounts to around ~0.4% of total
-memory usage when you have many small files (~64kb files, 512GB cached).
-
-I think we can probably drop the first commit and just ship the second.
-
-The fun result - when you combine this fix + private nodes [2] you can
-reliably hotplug a private node in ZONE_NORMAL so long as all tasks that
-were using the private node were reaped prior to hotplug.
-
-This is a legitimately useful improvement in my opinion.
-
-~Gregory
-
-[1] https://lore.kernel.org/all/20260701222112.2820098-1-gourry@gourry.net/
-[2] https://lore.kernel.org/all/20260222084842.1824063-1-gourry@gourry.net/
+> Vishal Moola (9):
+>   x86/mm/pat: Use IS_ENABLED() instead of ifdef
+>   x86/mm/pat: Convert __set_pmd_pte() to ptdescs
+>   x86/mm/pat: Convert collapse_pmd_page() to ptdescs
+>   x86/mm: Convert arch_sync_kernel_mappings() to ptdescs
+>   x86/mm: Convert sync_global_pgds_l5() to ptdescs
+>   x86/mm: Convert sync_global_pgds_l4() to ptdescs
+>   x86/mm: Convert pgd_page_get_mm() to ptdescs
+>   x86/xen: Convert xen_mm_pin_all() to ptdescs
+>   x86/xen: Convert xen_mm_unpin_all() to ptdescs
+> 
+>  arch/x86/include/asm/pgtable.h       |  2 +-
+>  arch/x86/include/asm/pgtable_types.h |  2 +-
+>  arch/x86/mm/fault.c                  |  8 ++++----
+>  arch/x86/mm/init_64.c                | 16 ++++++++--------
+>  arch/x86/mm/pat/set_memory.c         | 17 ++++++++---------
+>  arch/x86/mm/pgtable.c                |  4 ++--
+>  arch/x86/xen/mmu_pv.c                | 22 +++++++++++-----------
+>  7 files changed, 35 insertions(+), 36 deletions(-)
+> 
+> -- 
+> 2.54.0
+> 
 
