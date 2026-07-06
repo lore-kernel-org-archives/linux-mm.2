@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 825AAC44500
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:17:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6304C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:17:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F10E86B00D2; Mon,  6 Jul 2026 04:17:18 -0400 (EDT)
+	id 266876B00D4; Mon,  6 Jul 2026 04:17:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC2156B00D4; Mon,  6 Jul 2026 04:17:18 -0400 (EDT)
+	id 1F1016B00D5; Mon,  6 Jul 2026 04:17:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D15686B00D5; Mon,  6 Jul 2026 04:17:18 -0400 (EDT)
+	id 0B7E06B00D8; Mon,  6 Jul 2026 04:17:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 98B0D6B00D2
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:17:18 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F1761687F6
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:17:18 +0000 (UTC)
-X-FDA: 84957646956.26.6D4198B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C59386B00D4
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:17:21 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 551B31C7BA0
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:17:21 +0000 (UTC)
+X-FDA: 84957647082.15.0886FF2
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 53F072000E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:17:15 +0000 (UTC)
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6F7252000A
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:17:18 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
 	spf=pass (imf03.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783325836;
+	s=arc-20220608; t=1783325839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1eIuShldbgfS2F+AWTwqMYXkCXRBrfhzPPXQfu9x+GM=;
-	b=kwnIiHmgbE3qR7opS67/CGnUs7BmW1vdhpWD+A3/9G8Jlc7SV/jLyzg2ct2HsMA0h526zN
-	cNePSw6GTBMfZ0m6iMW4cmW+ZwRVBzHbIhV1QF1+Aior8B3kk6dWzGs9GssyvXgcroR/MF
-	lvvTOFCEsTaB+8fkWTk883kdgo45kBg=
+	bh=kdcLA45BkU2NpOqyTedJL1liMx1BIgC2J5kM2elUfu4=;
+	b=DJtg4smdw4y+coRblGgcwVGoa1QHvax2JIjHFW7GqKZbfYgnIDigjj/1iZUpWjDo9TyYo9
+	bKbwB9/NpP+Sq/rarpHdmt0O0zZYLB363IrvZEz1iv66+cdjYjWlu8cG5dj5XNbXkiB2HJ
+	EcTOu5ihlvU2lgs8AKKZvTVnzfggwMs=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
 	dkim=none;
 	dmarc=none;
 	spf=pass (imf03.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783325836;
-	b=ofCxdbULatsWGAko7PeTw5yZvUS+AXscC8KgFu5SbgXiYeGvUTDlfkeLdWBVtLEcO/+cmk
-	qkCwbGLdlYZ7ozsVc3m04z38XWd5IU0BGijSowmam01HF5BedR5d3AQ9nC5MxgzVwTrW6X
-	qoBhw8D74twa2Oc1ta/DYzI9MpuP6Is=
-X-UUID: 164890f0791311f1aa26b74ffac11d73-20260706
+	t=1783325839;
+	b=aJz8Xr1NMuQIvvUarJk1wlrsFw4psTiNXTEfM2yDdHD3tMbbGpMoYQDSdvH/1nM2xADbII
+	SqNGoenHz3Z9WBJrHdr43XKIblSIY3ErBDogTp2oaPjf7/8LwDDbERR0zNtqDi99C7/21Q
+	EcuWKA5N7ng31Ua26sqoJoNwFVC+UBI=
+X-UUID: 1828e424791311f1aa26b74ffac11d73-20260706
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
 	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
@@ -57,14 +57,14 @@ X-CTIC-Tags:
 	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
 	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:61fcc49b-5305-430f-bb49-37758679b464,IP:10,
-	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-15
-X-CID-INFO: VERSION:1.3.12,REQID:61fcc49b-5305-430f-bb49-37758679b464,IP:10,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-15
-X-CID-META: VersionHash:e7bac3a,CLOUDID:e98cc3b7f6c466163766ef6f075ec5e0,BulkI
-	D:26070214244020WDGHTJ,BulkQuantity:1,Recheck:0,SF:10|38|66|78|81|82|102|1
+X-CID-O-INFO: VERSION:1.3.12,REQID:0ae2b462-829a-40da-b9a3-77c2fe3aad86,IP:10,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.3.12,REQID:0ae2b462-829a-40da-b9a3-77c2fe3aad86,IP:10,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:e50f5e6f561ceeb78c78eac4ab826e38,BulkI
+	D:260702142446XLDVC4C6,BulkQuantity:1,Recheck:0,SF:10|38|66|78|81|82|102|1
 	27|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,B
 	ulk:41,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:
 	0,BRE:0,ARC:0
@@ -72,12 +72,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 164890f0791311f1aa26b74ffac11d73-20260706
+X-UUID: 1828e424791311f1aa26b74ffac11d73-20260706
 X-User: lihongfu@kylinos.cn
 Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
 	(envelope-from <lihongfu@kylinos.cn>)
 	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1265049232; Mon, 06 Jul 2026 16:17:11 +0800
+	with ESMTP id 858262029; Mon, 06 Jul 2026 16:17:14 +0800
 From: Hongfu Li <lihongfu@kylinos.cn>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -100,22 +100,22 @@ Cc: jhubbard@nvidia.com,
 	linux-kernel@vger.kernel.org,
 	hongfu.li@linux.dev,
 	Hongfu Li <lihongfu@kylinos.cn>
-Subject: [PATCH v10 4/6] selftests/mm: add missing mmap() return checks in pkey tests
-Date: Mon,  6 Jul 2026 16:15:58 +0800
-Message-Id: <20260706081600.3570203-5-lihongfu@kylinos.cn>
+Subject: [PATCH v10 5/6] selftests/mm: add missing pthread_create() return checks in pkey tests
+Date: Mon,  6 Jul 2026 16:15:59 +0800
+Message-Id: <20260706081600.3570203-6-lihongfu@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260706081600.3570203-1-lihongfu@kylinos.cn>
 References: <20260706081600.3570203-1-lihongfu@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 53F072000E
-X-Stat-Signature: 85o1c6739oz7p618ykymbc9sx5xk4kyo
+X-Rspamd-Queue-Id: 6F7252000A
+X-Stat-Signature: y5kzruidakaz7ofd6z1jtn7qf7x5msft
 X-Rspam-User: 
-X-HE-Tag: 1783325835-670783
-X-HE-Meta: U2FsdGVkX19gWgPK6mqQweisdjymUfAUuOYz+snqHcNb3FpV/IyZJRnxdR9aynWemu6yrc2oEkNlDf4E/cLWW6MGipzKwz2fP5DmG8VbxCxnqM5SFSAZq3VrxmAAMWTyfqYjsksu71kcZNRN7o3cAl4tyQa+c8/t7ZS5dDPxE9lVHH1bgIL87cc/05mUTcgaVC7N8J16FPnljnQMxGEaJxCOr7K10BcgN0yjNh3QkHOKo7wdbCrWRthoAUCwAwKp1VluD1B2nlhDus58dkaLZK2nhqUK5JB0kxztah6BCoDC+99MKxsbAqW0KJBtKLYzU40GXX/kG1nUC1+54/8W/a77LPyfnVA2DETYs0Tp8PidloJQO29OzpRrFkpoXEXm4BBID4/BrgQQ9DhklXw+1lmvA6pziczq58Brh5fuwt+qmxjPm8wPUPVb+3efrUtdJbfZQFhUXCmREX0GP75rLJMIhdNg7/JXdXYMuhUfEds1sTfniUxC+CSdhvHY+pJAO9v1V614U1tya/DSuLEdmpJpabsiBgXiqzxBignn7V06/domStfxkmtnUyMt44df1CPG3du7vURfFFnUunCmSrRe/yv5qHwdsusTs4/QxdiY4jh0iTVPs7e9/b7pc9c/c/XFrgInTacsUPpBuDKrHDLCjzQ/DQ+RZNXGdSWocc4sOL3h2BZonz377wJL7MGdDB1pSrd5+5wBcWMHUt03K6cYYy+1LgmXpMw4cwcV9OW/evSO0hw17pdLZ+gcBKbv+WF9SxRkchu0dCuYJDFjdynzH/NTVRh5yftTttoFnSsDM+bw5JfHbn30a662U9bzz2itcthac5ROh04JJ1JwKXXrI7THxIjDv7xExvyUbijA7AYq6RGFVwFkmaJ5TID4+qIxMRXdzoxjfi6p9f0qW25QuhF/PQYrj9Qgka36t+yjbs/yk11rOWoB6jiCTdLKfx63A9dPpro1/D8IhCm
- ibYhcjV6
- AzpqnMuMORU7jJ27nwCelyZg3Atz+Yb15aPJWLnFNjEdA7ZMeP7PyppGMlyfPvXX3EiPk97g6hXV/v1N75P8qhcw7GSn0Mh9VyVTXMCGZ6tJPg4cjGwVGqiKyM2G//1pfvimm7B5y4jmIOuGDw2iIJzP9nw==
+X-HE-Tag: 1783325838-276789
+X-HE-Meta: U2FsdGVkX18aATfgWXpbTE3ESeANJbGhrsMEzSisbnYVwoKvYsSTDJvuq84mmALtWE/6GrQntcM3TwXM7jKGUWvIADlp6p0O0JxxuWgrMCUmVpZh2lVC9XVPhuUu3CyP8/eauRZITsocVxxJiOF2OQjgmpsZP98RwTIyhQf1E8bV18y45fXHCpeJDPMH6gVoEbvixtH3XUMNQQa7O2dEIbYF0vBQWkJ3E3pM2qbXLDGn1HLkitgm7sPxzpCIkgPkJ318uqr9MTr2Y4wjuCY/HZkO3KBRjT3GCudFHdiqWvGIbGKQf6ScQwtmflcCTCgp7PsCFWqbbFPh70vbsCUCNhg+dygXvc9m/7bi4Lgzn0q30t/OrNZ0LVm9rfQE4xH+85J1Ehw53xVBihD4XVs8iqfHO5dJkR4lNoVqIEIYkzJugO7c0SNhEBS0Lk2Md5ei8nc2FzBnoWbxDf6BUr2/w+iEomvbNXIn9pqHgJMo6/amahIOs73TZVDtSeatQ4V3B6BgougxgLJPZUV6vFhTcVE6fWtQWeJ+S7cPqguFkHmkXTbU/FK68mfed6KUH29PBrQu1wqZuuLopHC3S5ScSvgv5rlD5njb0uWN7tPDcK2qwQCHlRlIUOcgs9AQ+dzjQbpN0+r1B5AJFXzlX0t7FvZEmXQaKa6SOmrrresn7PR16Rhx2ezR4FBD8LUF2iqbFh6hd1wuH7zdfzajG8H9ufjQWuHTLCMQ98HjL9VaEyQp+l9/C+Tm3WxXVItwSHQuE6gpFbQsiyky61Eh0GDXTztvAuKvWWYUeVJVYfP4xWfStFj19WLIXdYGOgi+H4R+jRXOvP+SW0uKQg1WZ4cftVuDe+jcUJA72kepdc/Ix9EyV+kY/8OTERM48O1mMW7ebU/MvZewP3VxMUH8RbC5oZseyE4pRtmMXcLqtcKpN5zbsox2atLfduWLjkt2MCh5O6pBFkUmHXgiYC0WHtQ
+ 6npLuUmL
+ iPIfZDml/MQYje3KeJYVj122q2xeVJoYuMt4d21wTiSzlXsvg9qT6bTyB8l5pQDZGiCRrDDOTyOeJxsrvlCQguj7KRswKyFC5VSL/p4QtPAlY4t3RAWypdA89Wuk7xod79xAoRFG+oRxLscq/gDMcD+i1ajTmh3JH49J9KrZdwtu/fxn7ULFLFtLuUjQGFI3w1gJH6HwIG+zsXss=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,8 +123,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add missing checks against mmap() return value, replace (void *)-1
-with MAP_FAILED for better readability and consistency.
+Add missing pthread_create() return checks in pkey sighandler tests
+to avoid hanging in pthread_cond_wait() when thread creation fails.
 
 Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
@@ -132,102 +132,39 @@ Acked-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 Tested-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- tools/testing/selftests/mm/pkey-powerpc.h          |  2 +-
- tools/testing/selftests/mm/pkey_sighandler_tests.c |  2 ++
- tools/testing/selftests/mm/protection_keys.c       | 12 +++++++-----
- 3 files changed, 10 insertions(+), 6 deletions(-)
+ tools/testing/selftests/mm/pkey_sighandler_tests.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/pkey-powerpc.h b/tools/testing/selftests/mm/pkey-powerpc.h
-index 17bf2d1b0192..2ce85580b404 100644
---- a/tools/testing/selftests/mm/pkey-powerpc.h
-+++ b/tools/testing/selftests/mm/pkey-powerpc.h
-@@ -126,7 +126,7 @@ static inline void *malloc_pkey_with_mprotect_subpage(long size, int prot, u16 p
- 			size, prot, pkey);
- 	pkey_assert(pkey < NR_PKEYS);
- 	ptr = mmap(NULL, size, prot, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
--	pkey_assert(ptr != (void *)-1);
-+	pkey_assert(ptr != MAP_FAILED);
- 
- 	ret = syscall(__NR_subpage_prot, ptr, size, NULL);
- 	if (ret) {
 diff --git a/tools/testing/selftests/mm/pkey_sighandler_tests.c b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-index 188513e94fc5..8f98e6d9349f 100644
+index 8f98e6d9349f..cbc24d6cf770 100644
 --- a/tools/testing/selftests/mm/pkey_sighandler_tests.c
 +++ b/tools/testing/selftests/mm/pkey_sighandler_tests.c
-@@ -313,6 +313,7 @@ static void test_sigsegv_handler_with_different_pkey_for_stack(void)
- 	/* Set up alternate signal stack that will use the default MPK */
- 	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
- 			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	pkey_assert(sigstack.ss_sp != MAP_FAILED);
- 	sigstack.ss_flags = 0;
- 	sigstack.ss_size = STACK_SIZE;
+@@ -220,7 +220,11 @@ static void test_sigsegv_handler_with_pkey0_disabled(void)
+ 	pthread_attr_init(&attr);
+ 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
  
-@@ -488,6 +489,7 @@ static void test_pkru_sigreturn(void)
- 	/* Set up alternate signal stack that will use the default MPK */
- 	sigstack.ss_sp = mmap(0, STACK_SIZE, PROT_READ | PROT_WRITE,
- 			      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	pkey_assert(sigstack.ss_sp != MAP_FAILED);
- 	sigstack.ss_flags = 0;
- 	sigstack.ss_size = STACK_SIZE;
+-	pthread_create(&thr, &attr, thread_segv_with_pkey0_disabled, NULL);
++	ret = pthread_create(&thr, &attr, thread_segv_with_pkey0_disabled, NULL);
++	if (ret) {
++		errno = ret;
++		pkey_assert(0);
++	}
  
-diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
-index be4a0470cc61..ae6e1530b354 100644
---- a/tools/testing/selftests/mm/protection_keys.c
-+++ b/tools/testing/selftests/mm/protection_keys.c
-@@ -582,7 +582,7 @@ static void *malloc_pkey_with_mprotect(long size, int prot, u16 pkey)
- 			size, prot, pkey);
- 	pkey_assert(pkey < NR_PKEYS);
- 	ptr = mmap(NULL, size, prot, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
--	pkey_assert(ptr != (void *)-1);
-+	pkey_assert(ptr != MAP_FAILED);
- 	ret = mprotect_pkey((void *)ptr, PAGE_SIZE, prot, pkey);
- 	pkey_assert(!ret);
- 	record_pkey_malloc(ptr, size, prot);
-@@ -605,7 +605,7 @@ static void *malloc_pkey_anon_huge(long size, int prot, u16 pkey)
- 	 */
- 	size = ALIGN_UP(size, HPAGE_SIZE * 2);
- 	ptr = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
--	pkey_assert(ptr != (void *)-1);
-+	pkey_assert(ptr != MAP_FAILED);
- 	record_pkey_malloc(ptr, size, prot);
- 	mprotect_pkey(ptr, size, prot, pkey);
+ 	pthread_mutex_lock(&mutex);
+ 	while (siginfo.si_signo == 0)
+@@ -259,7 +263,11 @@ static void test_sigsegv_handler_cannot_access_stack(void)
+ 	pthread_attr_init(&attr);
+ 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
  
-@@ -663,7 +663,7 @@ static void *malloc_pkey_hugetlb(long size, int prot, u16 pkey)
- 	size = ALIGN_UP(size, HPAGE_SIZE * 2);
- 	pkey_assert(pkey < NR_PKEYS);
- 	ptr = mmap(NULL, size, PROT_NONE, flags, -1, 0);
--	pkey_assert(ptr != (void *)-1);
-+	pkey_assert(ptr != MAP_FAILED);
- 	mprotect_pkey(ptr, size, prot, pkey);
+-	pthread_create(&thr, &attr, thread_segv_pkuerr_stack, NULL);
++	ret = pthread_create(&thr, &attr, thread_segv_pkuerr_stack, NULL);
++	if (ret) {
++		errno = ret;
++		pkey_assert(0);
++	}
  
- 	record_pkey_malloc(ptr, size, prot);
-@@ -692,7 +692,7 @@ static void *malloc_pkey(long size, int prot, u16 pkey)
- 		pkey_assert(malloc_type < nr_malloc_types);
- 
- 		ret = pkey_malloc[malloc_type](size, prot, pkey);
--		pkey_assert(ret != (void *)-1);
-+		pkey_assert(ret != MAP_FAILED);
- 
- 		malloc_type++;
- 		if (malloc_type >= nr_malloc_types)
-@@ -1110,6 +1110,7 @@ static void arch_force_pkey_reg_init(void)
- 	 * doing the XSAVE size enumeration dance.
- 	 */
- 	buf = mmap(NULL, 1*MB, PROT_READ|PROT_WRITE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
-+	pkey_assert(buf != MAP_FAILED);
- 
- 	/* These __builtins require compiling with -mxsave */
- 
-@@ -1676,7 +1677,8 @@ int main(void)
- 		ksft_print_msg("running PKEY tests for unsupported CPU/OS\n");
- 
- 		ptr  = mmap(NULL, size, PROT_NONE, MAP_ANONYMOUS|MAP_PRIVATE, -1, 0);
--		assert(ptr != (void *)-1);
-+		if (ptr == MAP_FAILED)
-+			ksft_exit_fail_perror("mmap");
- 		test_mprotect_pkey_on_unsupported_cpu(ptr, 1);
- 		ksft_test_result_pass("pkey on unsupported CPU/OS\n");
- 		ksft_finished();
+ 	pthread_mutex_lock(&mutex);
+ 	while (siginfo.si_signo == 0)
 -- 
 2.25.1
 
