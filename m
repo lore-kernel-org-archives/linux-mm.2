@@ -4,103 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 452A8C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 19:33:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A85A1C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 19:34:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 221336B00A5; Mon,  6 Jul 2026 15:33:55 -0400 (EDT)
+	id 5A55B6B009D; Mon,  6 Jul 2026 15:34:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F8526B00A6; Mon,  6 Jul 2026 15:33:55 -0400 (EDT)
+	id 57B936B009E; Mon,  6 Jul 2026 15:34:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 111026B00A7; Mon,  6 Jul 2026 15:33:55 -0400 (EDT)
+	id 495306B009F; Mon,  6 Jul 2026 15:34:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E01966B00A5
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 15:33:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6605B1679AC
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 19:33:54 +0000 (UTC)
-X-FDA: 84959351988.02.DB19D82
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8DA97140009
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 19:33:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=do+qsvS7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 224E96B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 15:34:31 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B09F8B780
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 19:34:30 +0000 (UTC)
+X-FDA: 84959353500.10.9DEA2A8
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1880E1C0002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 19:34:27 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IZEhSE9H;
+	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783366432;
+	s=arc-20220608; t=1783366469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LgeAs0ILMEUxRaUEmhq6DVdls3/aBsdrj6eO6rYrOOg=;
-	b=3RDdMH/E926K4z31vAwppGzJkmE1yz4cPPaBIn/F9qXm5/2jcypqLAkGF63gbRt1EBa3AV
-	3GvXNPIUzDsjmOHeYkD5DsY8eOd0urQ45ImgAa8Rqr8gi7RvdJ8yI7Vh0qzyav2JOux5NM
-	HH220Wu6xp3VVlhybzrJavHk6C76fVU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=do+qsvS7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	bh=6FIHHLRwVR4NtU0/LL0GRJyj4HVJuRDsfXvwLZzguVw=;
+	b=F4+txEctvihxTj3HOAKemNNJ+orFLIr+d6JaZkewADrY5BZgPPNZp/AeWmeyghvobGlLwo
+	hOaS67dnkKjwAJkBTV3JHH6ek1TOnsQk1T56v/bXeIpfsfA4WV2JWlqbSpe0bHqS6YQJ+p
+	/dHdXdpYRpWEWR08UPXEqdUr/rOAEVo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783366432;
-	b=zHaRbx7gIYoeZ5TFs+8UOgt7SostkgosdLgxjdkjz8zzRPqRPvFnVm7M2AZJpbDG+bS1Lx
-	c0kW5lkmVxDZjwTPCqfHlfX5KmgAe8ei4TK9hSTQaXuSN64p9LKMgOwPWjxFiqtZC+M+3j
-	hiWgPpQptj4CJbEZ1fMNPNFcZCNZG5M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 11FB961838
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 19:33:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE2F1F00ADE
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 19:33:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783366431;
-	bh=LgeAs0ILMEUxRaUEmhq6DVdls3/aBsdrj6eO6rYrOOg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=do+qsvS7AFlAkXCPeq2WOuGUNZLmIP/FFCnkzVr8WVRMt2kohwsPQA3So565D7jmc
-	 DilSS4ApSr9NLjZVFcpZvNVvuJKT8Gb8s9GWBJZBOjDIl7gLjikvGn6CSwsivgQQ9p
-	 xGQymHmRr4A5cOUnsGj6bNvsCufJi+BwrGJ5r/yfrWkIgxfWAj4ACdgmoMan1dK0Z3
-	 3H5o1sJiNa5bTO5yraoUmm1jivQ2ej2WNqNpIKqQfUJwuXdJpP6kTlyKmT+/SOJMvu
-	 2pQvZAKWuc+0xKgAUqkeYEBn47Bl/+yTpHQYlusZSeSKKgOe4NAWBRM3xcRQMuuBvo
-	 l+89LBB312HZQ==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-69a5ecbbfb2so1866788a12.2
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 12:33:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+TpuNN9DKQK/NPEovLlmLmgoSHgHAyExpInBTlAfWkphnU4Sd6ztL6Ii58+QwL/MHbtCBgPomkow==@kvack.org
-X-Gm-Message-State: AOJu0YxX4WKXhpTvJ7/VBzdWtLD1r+WtA3bjHt/QXRF9i3+e3lwRxGSE
-	W5DY7a1PmO/9lE7ynUSdSvq/ond/eyF9Kt0izm6xUadHYCdkB+UavF8qtp3p2zCJjxkldCqWqho
-	x2kAq32h8JX5dxEtgrNE01/gR0NsHg3s=
-X-Received: by 2002:a17:906:2b0f:b0:c12:70e8:6025 with SMTP id
- a640c23a62f3a-c15a679c178mr91843266b.21.1783366430587; Mon, 06 Jul 2026
- 12:33:50 -0700 (PDT)
+	t=1783366469;
+	b=yd3GKnwtnjgr0M9eWhwo0BnbZN5+IyBOlrhPIVwK6GCjjs79Cd9mNzeMPwXBtYnwiM5tX0
+	l7ZsZFEQufQxg5jpOji2QGzJux46tqe9AucJimjYHpv1qXPKf+NQmcsChju5IgbMyXM9Tj
+	mp1p6w3D+0NtXShImt62EYw/r64CfM0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IZEhSE9H;
+	spf=pass (imf20.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783366465;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6FIHHLRwVR4NtU0/LL0GRJyj4HVJuRDsfXvwLZzguVw=;
+	b=IZEhSE9Hn+GAtySFANf8zpZy70wX6zakvqMszh5suNaxs2g92mI7HXIFOX3/tWNbIX/g6g
+	HCrJ7FoS8rGGkXvqTUWDdbpCKNlSnIIH8FyGQ+xZwDBDSycvLiijeo5LJnMO7kTMbu5b7l
+	ZfA89c/n1BImcgpi83k/4cTN/4yc6XM=
+From: Usama Arif <usama.arif@linux.dev>
+To: Nico Pache <npache@redhat.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH 6/8] mm/khugepaged: unmap pte before releasing vma write lock
+Date: Mon,  6 Jul 2026 12:34:06 -0700
+Message-ID: <20260706193407.825323-1-usama.arif@linux.dev>
+In-Reply-To: <20260706154500.39178-7-npache@redhat.com>
+References: 
 MIME-Version: 1.0
-References: <20260629112032.20423-1-jiahao.kernel@gmail.com>
- <20260629112032.20423-5-jiahao.kernel@gmail.com> <akMJ8UfeZXrVe5LN@google.com>
- <cbbdf506-b67d-193c-2c94-bacf828d559f@gmail.com> <CAO9r8zNCEis2QHROEsM5QZsb_H4ofNjA_sE-pM7SVxtgHg_rqg@mail.gmail.com>
- <4ec2bd64-af40-8ebf-b8a8-2dd7421a1100@gmail.com> <5ce4035b-7f56-d1d2-2d2a-668446d870e8@gmail.com>
-In-Reply-To: <5ce4035b-7f56-d1d2-2d2a-668446d870e8@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 6 Jul 2026 12:33:39 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOLe5eJfNmoszCX3rtD=6YEa_7xrvDV1acVDOtZg4vWYA@mail.gmail.com>
-X-Gm-Features: AVVi8CeAj3ZDhW9qHe6cGwTDwasOvswtbG6oJ2oKJtzbR49964SalAtsxIJukwU
-Message-ID: <CAO9r8zOLe5eJfNmoszCX3rtD=6YEa_7xrvDV1acVDOtZg4vWYA@mail.gmail.com>
-Subject: Re: [PATCH v5 4/6] mm/zswap: Implement proactive writeback
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
-	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8DA97140009
-X-Stat-Signature: bbs58mjngagfo51w4nmfkxh3ra9t3uyy
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1783366432-302576
-X-HE-Meta: U2FsdGVkX18PlBbatOu8+3BVmPXoxfV38U8UKzUz+1p9v94V1v+nKyN9FfxG4hPiGDcLVZjq0g5u8acWGdlyNJ2reK+S3p2inXOjTrFRfMeXzsntWoK4/BgAtnuPdxDYEPPmf40kcIrF/cIkuwoIFlr8FAy0qnP0gf6AjZBj8VOnJ0+vr26OLIBKgrHnPvAl4FAjjX6ybzhHpTbVt6iRAGLH8cwSwDiGJHYypsijE7CUD4rZ0NXFn/dWkowc6uVZqjtOCRtuup/qCay6UOg5BnpOwLTQaNLs8zpkaojF+j/pEgbpLbf4k2xszG6jyyO3uSbXNsugM4NvPSTKPLX3jERM197VVyLlEX6e/P3lBKv6tts8Xz/bQV63oqSaZx5Zyzpc80NBdUhL5S3jWFzUMKffaHNwePyQYNEfWc6LMAK2Wov+bYhVcLGAPPCDjitIZFenVWq2AggmQOQnFVF6HmFqX/nDXZ+WTlF+91YuE2SsbBVeemIEua+RnIC3jwIdgKBkXG223A7KEeqkPXiO1TahayIR5RnyHiAuAMJ3TE3zPjAebDdAIL3gHT25CeGIL/sbL91Vy8AHzwP4imnb71fg4SrpXznVx4H16mElZJLixwqHMmrLQLGrnvkxc5+kAfT3lpQZqoUQbBdqSQMPY9zIxQ7C46J0XOwLXdV35UT8w2yof/ZfYvtp13DBdLhMtnpeHaJqLw4hj/WVBB1bgWy9kb9v4I7u+S2Y7JflB4ZSQEAKYmIc9qYvg+evlbktog0+lAcezyLsHd2Fa0FTkzi5Od5zGhKXJKwm9OkS0xSJy2Pi9UaEZYxN6jw1kUQk290OeYdgW9q9WS1sp++xv8u3OrnE6GxqT8ifD/jFMgaTEN0CJ4S4pjAAfasoCIWhAr60SwxyasMqWyazMlaIOkfG0bj8Lg+KJKyhbLmfS4BR6APOfN1kN5oxAMlaGgCnFFE9EF0mBsnA+agGfac
- ZBqrMTcg
- XOZuUqFoqryMUBWegKKShtMeRdqoQnaA/89T3q2uHbFqSUkph5EStTVt8txUGHY2KQzi4gh+MQLq9AV52jECw5tgVWlex+wtJOQUxaL6+OVXovwgNlmwbgeJ3NbT5NxfDJlVeDltdpZBGHue5v5dDGXVUYGsCmLj6ARLzhbIIRlhtQDQJZsw8beOhpdrkfzRDUOFMsODz9p8UrfFDgIEPCHcgANaWBUzkAND0YBsJwO6bUlGub0wNPBBYV3cVh0zgmFxjRaD/HFQlMosrYAKgdPIB+twBcUD63CfeJxt9a+jm3Cd3PKysBJ8B+xUMYM4KH26TFJoRnRALmRjXLhIwA+HT/JxvfYru2flsCdJWZxUD5tf6tB9FA5zKRCiJ8Nnbo6d9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1880E1C0002
+X-Stat-Signature: nkwzuwb3orm9bogojpxh3g4y6jc8geda
+X-HE-Tag: 1783366467-47177
+X-HE-Meta: U2FsdGVkX1/LfqDRzEjorhnQ7tC5thWabhw5zKIJl43r0ftVYY3vdQ2NOy4O+sQCvcQUQnaColEKrOfJWvxG0HO9plUAgadMecptjbS/Qjtu6Cvx0bJAMglSWb4U11BabsQuqz5fXEx9CDdzFHtm7DUE3cLMgPYdCUhukmTS1hvlf+Xop9D0qlgsFVCvLFbM5szd2mvcIjP+qoqfElkHW1UMzdsQg7TKULZVQloPYdVY3p4AeZ2aWh9ZFLO7r9jOttvKchXW7mYWSLAYyNahK76QxpKEP4yZymkAcSE5exBohxoQGc8OOk4UPowuGgw0IEoPJIVE+8AXqcVYkAvPkWLCBvnACSym8jUp522c56oahGUsGeYCjji6WlWV00DghVkRuhyeZkqJkiIs9uxKt1+D+BYKBpgrfYkhdKnp1Lbu3yzjfHjLn7Z0//evxDgiNe4drKPpX+50WusJYQKeQvcCeNfSEVmT7zHzckBCf5TFbekgkIU3GesvAhwMrp/wztIj2UPdr9E8/QJMTc3DWbD9/SQGZ3lA0gzVA0fgZO72SERV0sa3tOf+gQJMyv2mwHVdIhJV04xf7LpPT7QYfC7AaBWoJ25B461GEbay7kXN4NiMQmRtBFe/qMR268c4TS0Ja1K8qiog++WrQr+gK++oymuUIJZL4Z07gdNJHy4e41LMJrxZ5uiaK/eimML1n/+foGGvc3/9U2JZylLoeqOYaDsHkLbyOjdf7Jeo6ht3JZ8sFiVdM6vjwYoEHisqN1EDBEJombq5p5wnGzkcFmssgUyzybwMbrjZ2m3MJDbyN+5hFoMnY5TuM57rhWh40jnnVndAEhhSlC97tuoqfU4jW4v4e+6DBs/mtJaWAupcml4rxPXIcoJwsag3nzChCZfDtisN7pLxZZXUFXZ1KIV6/8t+QVzSYP+xNwtkXTKMESigZsK5qELGcgD3upNZCIxOtSMWDAUEeKTajoo
+ g0u+/1I2
+ 0Epu4WOaPecK40z9O4YshwzRuE5modIUFfFckXNZkErUvltrGN2MHOPNTULV1ObXnXpQG9RwSz3SvJsu4ppQQfYT3qv9+pE5qbwEwZegrveS2DlEedaPAmIvyFzXmpCEgVu7IfM2s+jCoZ5l0zWpj0IJBc5OFWx+21UBSXmzBwIu0NGguckA2sgtAlisc2h2llKk/3APXhTncKtB5Gg3PSSC3h0mVzMnWK8uNAXcUMXBx0fEvuLtcm8EnCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,74 +104,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 2, 2026 at 5:32=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> wr=
-ote:
->
->
->
-> On 2026/7/1 19:45, Hao Jia wrote:
-> >
-> >
-> > On 2026/7/1 00:10, Yosry Ahmed wrote:
-> >>>> Before going through more versions we need to figure out if this wil=
-l
-> >>>> pivot to be a proactive demotion interfcae for swap tiering.
-> >>>>
-> >>>
-> >>> Yes. Should I drop patches 4-6 in the next version and wait for swap
-> >>> tiering to be finalized?
-> >>> We can try to get the non-memcg parts (patches 1-3) merged upstream
-> >>> first. This would also give them plenty of time to bake and catch any
-> >>> potential regressions. Thoughts?
-> >>
-> >> Patches 1-2 can be sent and merged separately, yes. For patch 2,
-> >> please include some numbers for the writeback performance before and
-> >> after batching.
-> >
-> > I'd love to collect some performance data. Do you have any recommended
-> > benchmarks for this?
-> >
->
-> Perhaps the following test case could work?
->
-> Test Setup:
-> - Total memory: 32 GB
-> - zswap settings: max_pool_percent=3D1, accept_threshold_percent=3D50,
-> shrinker_enabled=3DN
-> - cgroup constraint: memory.max=3D1G
-> - Workload: Run the following stress-ng command inside the cgroup for
-> 120s to
->    continuously force zswap store failures and trigger shrink_worker():
->
->    bash -c 'echo $$ > /sys/fs/cgroup/zswaptest/cgroup.procs ; \
->    exec stress-ng --vm 4 --vm-bytes 4G --vm-keep --vm-method rand-set -t
-> 120s -q'
->
-> The following comparison results were collected over multiple runs via
-> bpftrace
-> and the 'written_back_pages' sysfs interface:
->
->                           Baseline         Patched
-> ---------------------------------------------------
-> shrink_worker wakeups       5,587             878
-> shrink_memcg calls      7,823,853       2,347,320
-> written_back                  257         781,214
->
-> Conclusion:
-> Under the same workload and duration, the patched kernel shows a
-> significant reduction
-> in both shrink_worker wakeups and shrink_memcg calls, while successfully
-> executing a
-> much higher volume of page writebacks.
+On Mon,  6 Jul 2026 09:44:53 -0600 Nico Pache <npache@redhat.com> wrote:
 
-Hmm this is actually a bit concerning. Yes, we are invoking the
-shrinker less, but we're writing back *a lot* more memory, orders of
-magnitude more. We are using a batch size of 64, and making ~1/3 of
-the calls to shrink_memcg(), so the number of written back pages
-should be ~20x more, not 3000x more? I think I am missing something.
+> We are currently dropping the anon_vma write lock before unmapping the
+> PTE. Although this is safe, due to us still holding the mmap_write_lock,
+> its safer and less confusing to switch the order of these two operations.
+> 
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Nico Pache <npache@redhat.com>
+> ---
+>  mm/khugepaged.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Also, ideally, the batching wouldn't result in significantly more
-writeback, but a similar amount of writeback over less shrinker
-invocations. If we are writing back significantly more pages then the
-batching logic is probably too aggressive?
+Would it not be better to add a comment here why its safe to do so, instead
+of extending lock hold period?
+
+I think its more confusing to hold a lock for longer than we should.
+
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index c4ea2dc1591b..3c6f1254deca 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1548,10 +1548,10 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+>  
+>  	result = SCAN_SUCCEED;
+>  out_up_write:
+> -	if (anon_vma_locked)
+> -		anon_vma_unlock_write(vma->anon_vma);
+>  	if (pte)
+>  		pte_unmap(pte);
+> +	if (anon_vma_locked)
+> +		anon_vma_unlock_write(vma->anon_vma);
+>  	mmap_write_unlock(mm);
+>  out_nolock:
+>  	if (folio)
+> -- 
+> 2.54.0
+> 
+> 
 
