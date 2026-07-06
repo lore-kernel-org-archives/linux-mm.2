@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A2C8C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:20:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B0F0C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:20:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB3CD6B00AE; Mon,  6 Jul 2026 02:20:10 -0400 (EDT)
+	id 18C9E6B00B0; Mon,  6 Jul 2026 02:20:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8A916B00AF; Mon,  6 Jul 2026 02:20:10 -0400 (EDT)
+	id 164746B00B1; Mon,  6 Jul 2026 02:20:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DEBC6B00B0; Mon,  6 Jul 2026 02:20:10 -0400 (EDT)
+	id F1EF66B00B2; Mon,  6 Jul 2026 02:20:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 66A9B6B00AE
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:10 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D920B402BE
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:09 +0000 (UTC)
-X-FDA: 84957351738.29.67B25B5
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AE0B56B00B0
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3AA0C1202F3
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:12 +0000 (UTC)
+X-FDA: 84957351864.12.A2A3528
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0A78420002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:07 +0000 (UTC)
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5C01D20003
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:09 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783318808;
+	s=arc-20220608; t=1783318810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=3olgKqfia9A60Ns2brnFNnC5Em2AsBiwJjVwVNKVuYA=;
-	b=cLzjo6lnf9VY8PUL3V6tCERC1tToUkVQwJq/k6XJGsGiwWOaycPj9uIbaDrNlayFJJwwFe
-	JCaKdQEjrMRsjdurk4uHwTZgENOuAHbpeFqArCvOQOTMXALUDuuuI+8E17mDcPRCy0pmNf
-	F0RZnvPEOHt/Dhd6oZ7JJfxdgv+1uB0=
+	bh=MKDKMytXRhwPdHk0hD4DPd/rcYOaEhPBKBI2SKj3rgE=;
+	b=oCfEwT1HPE2b8Cfrz2kQTJvOpPUq2My07fUc/2cwErx/reEFJ7SoHQYTDfi6JQoKMOpt5q
+	NyCN9xoz+JvAGSur1f723RfU8+TiRiqYOWFEF7k2BtZrSwz1lj8Hx3wPgERRX+k9U0uFXb
+	vJtVMJDtxokWuf6vmvoEg5qClUnpkM0=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783318808;
-	b=RF/Kv1IrTpuUDatb8nc65GuSUWuyQ8TXcXbxGnCYunTfsPiKlfn6Q384R3WoM6OCk+W1AU
-	/ST7I4UoPgqJ85umR0r6XeB1NLxz+5XyBTdlfAUU8r1lvdJDB6EUiieE5yxDshGoTl7Ea6
-	oUyIeUN130Y+Vdb1wkC/y8vp3+mWp8s=
-X-AuditID: a67dfc5b-c2dff70000001609-4f-6a4b48fda1b6
+	t=1783318810;
+	b=jVSa5ORNdBUCVxJI8AwSB1SxQZ7Zermr825zgZcAJy4hXQWxDr4xiQ4VGwwBX98ohgWFp9
+	bbEpgi1z6UiXZMAmvk7SkH5CtNmEl2PZ6R1ACKu4Incii/KsEp4zFvqb4iRecHp/s81yEu
+	RNw5r/0TcVwOYeMkFNGGNzq3WLoVEE0=
+X-AuditID: a67dfc5b-c45ff70000001609-6c-6a4b48fd8945
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -214,54 +214,54 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 09/40] dept: record the latest one out of consecutive waits of the same class
-Date: Mon,  6 Jul 2026 15:18:57 +0900
-Message-Id: <20260706061928.66713-10-byungchul@sk.com>
+Subject: [PATCH v19 10/40] dept: apply sdt_might_sleep_{start,end}() to wait_for_completion()/complete()
+Date: Mon,  6 Jul 2026 15:18:58 +0900
+Message-Id: <20260706061928.66713-11-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxiGfc95z3tOO7qcdGY7Qxe2qpuDqWNT8pgs2iVmO9E/JvBnH4k7
-	kWYUWiAHZWLYgm5tAGlT6oCMWqkWiZGi2K5GgU4+Jjj5GEhsug3FZQGCHXUrIAFbWYvZvzvX
-	c9/Xr4ej1b8xqZy+8IhOLpQMGqLEyrmU89tWxQP57/b5GDhzxUNg9HIrgri9n4XVQD8Cz48n
-	KJhvf0Yg3BdF8LilBsHcZCcD8foCeDr8Kw1TNj8NkXYCrpMBBsaGwgicDjuCGw87WBgLxygY
-	tJ2noGGWgKPhWwrq2jopGHJPYGip2ALhaTuByo5FDN6/ggwEfs+Ac+ZmDF2BXzCMd5wh8MCz
-	ykCFY4mBKzOhhKz/NoY/H4YY8A0P0TBaa2EgZJtCcDoyjeBEjxuD/6YJgXn+GQMDlm4KLixE
-	aJiwPsJgbr5KgdcTJDDT6KTgzv15Fk7fdRHweetoCNqbCESdiZmpZpmF1jEMdbFKAqdM9Qnn
-	rSUWrCMfg3MhE9riQQQR2wIDjlsPWK1WXDJZsWi6Gyei56wHiU9X7Ei8MPg3EVcW7xGxuWqF
-	EmuHt4k3Gu+zost7VPRdTBfdXbOUeC66yIjeS1VE9EbtrDgR7CIHNZ8qP8jVGfSlOnnHni+U
-	ecGGk7h46oVj/1oeoQr0s6IaKTiB3yn0TV5lqxG3lpvqDUlM+LeEUGiZTub1/OuCzzLNVCMl
-	R/PjaUJNiwUn+y/xkjDQuDXZwfwWYbbKj5NZxWcJ3/st1HN9mtDa3r3mUST45Zhzjav5XcIf
-	jwdw0inwPoVgXegmzwevCj0XQ9iGVC607hJS6wtLjZLesHN7Xlmh/tj2w0VGL0o8XMvXsc+u
-	o+hodi/iOaRJUYF2f76akUpLyoy9SOBozXrVm1sP5KtVuVLZcZ1cdEg+atCV9KINHNa8onrv
-	yVe5av5L6YiuQKcr1sn/XylOkVqBNm+2Lb8sGf0pbcc3tPePbJIPWXoDu/fmMO8UZf/gc2gN
-	qQXmjyqrvN9Nvr2Srd1vnPlwLkJe3OF7P2vdJ1339t3c1Hp9l1y8tzyjdu7skxH3az+Fy7J6
-	cmT3nttL4+mneq7FrXcyzPtcb8RGynOCmf9omz7fGB79ZrAzrYBezCkP5GlwSZ6UmU7LJdJ/
-	7tbiI2wDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTGfd/79vbSreymYrxxZtYmfibiR6Y52YxzyyLvUJa5GHWLiTR6
-	MwqlmJahmMxBWbPKxECztkphMja6CVWwpcyONBKc+IFuMFSIikBSO/moddiCfBTWmuyfk995
-	znOenD8OxyhaJEs4jS5f1OvUWhUrI7KP3y1ZF6M7szcEhxaB2fQ1PBoISOB+cRuBaMRMoKrR
-	xULM8ZsUzO6zErjRayTQdbEBwUDUjGByxsGAyTdPIGbpkEJk6qEUrMUI5v0dCGzdFgb6uq4w
-	4GouxvCiaY6F0avjCKxDARbsw8UEws5TCCqDDikMX0uD0ECrBOb7/8HQOzGGwBmYwxBo+xZB
-	zJYD52o98XXbcxZm7vzFgN3aheDHoX4GxocHETR3PEbg/9XIwpNyLwM9gWS4Gw2zcNP6HQuh
-	7ioMz5pYqDH6JdB9exRBtcOCIPjAj6Hkp0YWbNVuAr7B36XQPTqL4ZHNgqHBnQEDziCBzvJa
-	HD837rq0GBz2EhwvTzFYL7RimHLWS7fXITppOk1ovacFU9PfMZa6fnAhOjNtQTRSV8JQU3m8
-	vToWZug3nqO0rnOMpdPReyz1T9QQeqtWoD+fnMa04s466qvsl37y/ueyrYdFraZA1K/flinL
-	um83kiNPXjv2b9kIKkJ/JJUijhP4t4VzNm0pSuJYfpXQ1zfFJDiFVwqesqCkFMk4hu9ZJpxy
-	lpGEfyGvFq5Xrk54CL9CGD7pJQmW81uE771lOMECv0xoaGp7lZMU1y/OVr/SFfxm4WH4OilH
-	shq0oB6laHQFuWqNdnOqISerUKc5lnooL9eN4t/k/Gq24jKK9KS1I55DqtflsD09WyFRFxgK
-	c9uRwDGqFPnK1TuzFfLD6sLjoj7voP5LrWhoR29yRLVYnr5PzFTwX6jzxRxRPCLq/59iLmlJ
-	EVo/M/l8xJmVtyHT/eLTzL3LXbrI8bSwYsK49mb2NvbDkMerpKEP7r2XMXcldvCNqvyMz5TK
-	j6K9e3z1l996WtR/YvC81N16djL9WajTu/uXpSs2rTnxznLf/v3U32LHXoUn19y8JrXiwAiX
-	vGNTLz9undc2vVyAd201K/9sbD+afEZFDFnqjWsZvUH9H6rrtARJAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTdxjG+Z9bD501x4rhiPGyGqbReI2Xd4kh6IftH2UG3aZGP2gjJ1Is
+	F1sEMS4BBG1wJlhHiRSwVmwqFNRWjYpVrIqiUatFqBGoZR1YpWpYiyG21lbjt1+e53mfPB9e
+	lpR20ymsIq9QUOXJlTJGTIkDE4wLonhdzuJ39T9Dn8dHQ09ZBwWhoIaC+nMWBjTWEzTc7y2n
+	wNnWgsAT0iCoKUMQtXcicDtvkmC5WEZAjdfHQN2QXgT+u79CwNNOQ7R/mIDesREEJt9nAnwd
+	hxFEdLvhpNHGQG2NE8Epbz8Jo/5XCC52DiCwm8sZ+K/6Egku30ToqjnCQOBpPQGGcjsNDXot
+	Al2DlYI+nZaAFutv8LDaSECtnwHdhWTQ1x6MrWhtJ2Dc1CwCU2kq6B+5aBg014kg7F0CUUM+
+	dLYMi6At8ISGroEeGt4OaRnw3DtEg/XFXQTBbi8BmmshCqz/xtwTjX0MXLd3UaCJBBF0Xhkk
+	wHWtnoEBS5SGUv1HGs4Nu4n0LNxsu0zgymcRBlsaLQgHzxwkcWV1jG6PvCdxha0Y28cMFH5g
+	5PGxRwvw1bp+ETZY9+KKOwEa28zz8OnrfgKfGg3RmfO3ildlCUpFkaBalLZDnP3JUUUU2Cft
+	e/3ciUqRbWIVYlmeW8b3N6Z8x7A3owolsgw3h3e7x8k4J3GzeNvRIboKiVmSc83k/zYdpeL5
+	yVw2//BwcTxDcal8U9NlKs4SbgXfesyP4sxzM/mW8x1fexJjelu4gYizlFvOv3x/j4p38pwt
+	ke9wdDPfDqbyt8xuqhpJDCihGUkVeUW5coVy2cLskjzFvoU783OtKPZrpr/C266gUefvDsSx
+	SDZBAulrc6S0vEhdkutAPEvKkiQ/zV2XI5VkyUv2C6r87aq9SkHtQNNYSpYsWTpWnCXldskL
+	hd2CUCCovrsEm5hSitSrb68dEKWFFx/5Z+kfZR96IjMSKhnFpoDJeFaHZ0xpnyJuVq7/cfok
+	dTJsGJxeaDyesfNC8I3ro+Lsjk1NN1rLvfnBxwk9f+4picy2fNiyecvGNPWiaWv+bzrwuLcx
+	84w2+EtgvVblPt72Q3qSY9Z4gTXz08qKjDt+80iIu5G6fIVHRqmz5UvmkSq1/At0alP3ZwMA
+	AA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTWRCAPeee3l661lxrozds1kc3ovG1LgGdjWZ9ROVE1JhoYqI/pNG7
+	tlCQtAhiYhBqY0UlpUlLtKIsQiXlIVJFURuxruCK7ILoShBEYkUraNcKGh4VWxP/TL6Z+WYy
+	P4ZjFPWSaE6bliHq09Q6FSsjsi0rjItDNDF5qb8yBsymHOju9Ungv9xGAsNDZgJnL1WxEHJc
+	k4K57rQE7j/NI9BWU4mgd9iM4POYgwFTwwSBkLVJCkMjz6Rgy0Uw4WlCYG+3MtDZdpuBqiu5
+	GD7WfmFh4G4Qga3Px0KRP5dAwHkSwZl+hxT89xLgXe9NCUz0vMbw9NMgAqfvCwZf4zEEIXsK
+	nC91h8ft/7Mw1vovA0W2NgR/9vUwEPS/QHCl6TkCT0UeC68sVxno8E2Bx8MBFv62nWDhXftZ
+	DO9rWSjJ80ig/eEAgmKHFUF/lweD8cIlFuzFdQQaXtyQQvvAOIZuuxVDZd1m6HX2E2ixlOLw
+	uWHr8gxwFBlxOLzBYKu+iWHE6ZKuLkf0s6mAUJe7HlPToxBLq85VITo2akV0qNzIUJMlnN4d
+	DDD0qDuLlrcMsnR0+AlLPZ9KCH1QKtCy46OYFrYupg1neqRb1+yUrdwr6rSZov6X35NkmjFv
+	Pk73TD345kkbOoLcU/IRxwl8nDDetykfRXEsP0/o7BxhIqzkZwvuU/2SfCTjGL5jlnDSeYpE
+	/Gm8Rmg5lhVxCD9XKCurJxGW88uE6kI/irDAzxIqaxu/7YkK12vGi3GEFXy88CzQTCxIVoIm
+	uZBSm5aZqtbq4pcYUjTZadqDS/bsT61D4W9yHh4vvI6GOhK8iOeQarIcVm9MVkjUmYbsVC8S
+	OEallMfMT0xWyPeqsw+J+v279Qd0osGLfuSIaoZ84w4xScHvU2eIKaKYLuq/dzEXFX0E3S+y
+	ZEVXX3UpD2z46bd/ZD+YNk+yXWhaXpDgDV5sTsw5rFNeW3Ti0byVyT9PD0TlXF7/h/FDkut9
+	gSW24mXf9pnb1sbpg493zWbNSmdw+m59fOivD0lYIqbfWXduQ2tzRheRrVtaqj7dPedo3MOu
+	WPz21sShNe6FWbF07YNVg6tiXmtUxKBR/7qA0RvUXwEVU+f6SQMAAA==
 X-CFilter-Loop: Reflected
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0A78420002
-X-Stat-Signature: pazx95kie8zca4jgbyfxkqbpz1zag4zw
-X-HE-Tag: 1783318807-3184
-X-HE-Meta: U2FsdGVkX18ShPwb6h+tYrBqxiXX/CeZgcwgiH6A+ifNzclySIn9yCSrRiAIRT2yfp8krriNAuQ2kIFqd9PU1X5btPzS3qRXPXsCNtnnJctlyFXHyEZTQVtvDBfxJAAZMvL679qfUvKvtoskhS2GBJ9pbbRjK0qHksiQaAZR28bdUbiuqrXy79uZIVpPHFVWMdpsxSdmxuc3mr7NO0HIMkEcXeCqi49gSiLhOLWGL3d/kQkW+61lq0cisM8JIUVg6Rp0626q2/fzhG2HCD7BV94yTojpdQ6HuiO5n1QEAGx6d7V6Wk5fN22GjfHrmqOqgfFgu756Uqj6s6bUEvU1OAA8HRo8plGoC0YnQzPQu5wiSQSJ/nTySqkGRJlOztceEB04TCMvnVir3R0Rt7SP1hBbvNQZ2Flt+vXsYn+aD7fxFlr0A2ORYKVF7BxB+dh2faiLPA2cnsK5GCdGHgHlcDGgoffOtARvx2UR8QeK+I/yXRxSE9TPMuIyL3QXgw9nxoAZFacLWVlkQaRiP0R1xskub+9Otl9tkIxFKFYHl3cPSL1QCwU5Mtm9jMpudG+96kifkEoKGq/jjUipURIcycyByTcRmqcsR7BLIYipNFGDcnrOfh3uc5cTPZEOSe06LRbMCU0YBIfC6yXMUBJZi9zdtbkWfgqCF1xMsNvXJZtQ/AMViElHLre+RDIcOGrMLzKKe0DZ62titu9o3vBu2ew/BFWDlNP2fvBZyflDEW8YQdaocF4KVXBUNN+p6JGAHdlysjktlZOkUUSMHpJOGYzZpxoa8CDZX4apKuOgkbWvIoGKn/4zeUOUeFDW+lCb1ijzRFeJDHwACxSzRM6RVBz9OeSNndQaCeJiOTrPAtB/xD0qCHQNt1zCN25BiSr94Zw1MJiY5iLWQzprsJ66fsh2GVxT+rUUHxItQqjrh/9U27MlXjWzxwHxpJyYZoEHSszNOh6hGuXBAIOv8eu
- dWoDEuRY
- gk3Fyq5W/qkvi6or2TOMK1GRXp1PoHDB4miQ/t/iM8RxgAHlbtvIY3s1MrLjTgnS+64wQqJfI8/hyeosnhYRLjBew3ddGDO5pMtlieRqEODVfQJRdrxP2Ira3DkF+USHDtDLZXEpskLQpUuhu6HDx8vwhDHQmXMIwKJv1/ZwFMBGfKsfvxmssUFFjPt9wGAX2RlBoZUVSL37D31w=
+X-Rspamd-Queue-Id: 5C01D20003
+X-Stat-Signature: uqekhqi18psf8nki93da83uz41399byt
+X-HE-Tag: 1783318809-92377
+X-HE-Meta: U2FsdGVkX186AyXaEFqVRtDjIor079nBfwKoeaPpN3N84j1d+NljkMqq1ZoewHNcSYQFV4L6hQNz459N8CqTiv7gPqVhsDSV7BpTZWRXbc1Ny2VeTVc4XhJLNyrQg58/5WRxniWypiEEUe7zMsrla0U1Kb6U24u/llJjphj6kdE/LYm+/xe4+6TxAlHK/4YW40ggG2M5kyE0X1WvU43ILA8rvJ+Z2GS5iMge+t8aN/IVxBYFfXQL8gYqeQceV7eN1RF9WSEJznUAG7ZdNseAmKIBifhi2lTL+z+g3iQDS8S9Jg7ReCtQqX1VnDq8w/qUvG4aUos6SChEmw0RFmMORVMbiK6MCrGYKc9uGKVAuuK0pIdMI+D7uszwR54cdD46RW0RRSD+dtvQnQ8hV0vj6uXSM8XeYFJx5tQrzFSAIetYtzE7vQeuhC0SHvr11SHhkWRuVQCPLywLj7nkohaI/x3SGjzFARCmx1WnVdrrBNHyx8ZVEp/CBefr/drvIL295BmG/5V3AHEspQnR2WZmm9+n1Fi/N3/FL08XSNQcSJRX/E7QSlOo7cbl2UoBMfMj+9l1jYJsGLKEJndfdahxhgEzIrMU5/d2O1R7auVTmMayWoc0v10tppGnsU/JD6Acw5Le/TLeicqzjtgwqp9GR2kLZw+Y28OJITssZtaJpYIZSyBAitYBYXEGq9fF5mMmaCYbqW2ZLt3GJpQSYMUMTr7ne9BZpg6OpWtBrZrkAHntvkPLv1xbBnIHCtdo1ug8Z0qW2UnceG8PibPvuHRoa6ao8QocYsXYsUg6vB0cdSRP3YoqnW3akRp9or8G/2zbxsr7XuvFzmgIOsz+iLibPqvRKGLm0P6OyceWUEuJE4aRVWJC76COtxL73PhOaL/HZwRdBsuLqCGnhNbHmc+QYTbfZiBjkO5TxBjHvadSRXavagD/oYBJNjFVXOqyqeytgPoHKwH+Myd4f3UO76E
+ /91mz5a4
+ uA3WrxJlJSN5gNvnANohdZArbKXWNkQ4H37lQIRW+139Gmc+y/ZA5N5vpOk0Vo+P1zGr0KKPWWTsZJKLhy6BfHgY+144coq8GFPEIYemfN4BjeKAumehF681uRtwgX7eJOXNb31iLS9RQRiYZrW3tU92HgvhxLQLmkQqqrjKyegCRDtAIbJguUhiswJR365beDPoTXDw+n16zmqSfLzzbuYorQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -269,54 +269,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current code records all the waits for later use to track relation
-between waits and events within each context.  However, since the same
-class is handled the same way, it'd be okay to record only one on behalf
-of the others if they all have the same class.
-
-Even though it's the ideal to search the whole history buffer for that,
-since it'd cost too high, alternatively, let's keep the latest one when
-the same class'ed waits consecutively appear.
+Make dept able to track dependencies by wait_for_completion()/complete().
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- kernel/dependency/dept.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ include/linux/completion.h | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index 4b4b28ddc819..3af360ba17d8 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -1486,9 +1486,28 @@ static struct dept_wait_hist *new_hist(void)
- 	return wh;
- }
+diff --git a/include/linux/completion.h b/include/linux/completion.h
+index fb2915676574..bd2c207481d6 100644
+--- a/include/linux/completion.h
++++ b/include/linux/completion.h
+@@ -10,6 +10,7 @@
+  */
  
-+static struct dept_wait_hist *last_hist(void)
+ #include <linux/swait.h>
++#include <linux/dept_sdt.h>
+ 
+ /*
+  * struct completion - structure used to maintain state for a "completion"
+@@ -26,14 +27,33 @@
+ struct completion {
+ 	unsigned int done;
+ 	struct swait_queue_head wait;
++	struct dept_map dmap;
+ };
+ 
++#define init_completion(x)				\
++do {							\
++	sdt_map_init(&(x)->dmap);			\
++	__init_completion(x);				\
++} while (0)
++
++/*
++ * XXX: No use cases for now. Fill the body when needed.
++ */
+ #define init_completion_map(x, m) init_completion(x)
+-static inline void complete_acquire(struct completion *x) {}
+-static inline void complete_release(struct completion *x) {}
++
++static inline void complete_acquire(struct completion *x)
 +{
-+	int pos_n = hist_pos_next();
-+	struct dept_wait_hist *wh_n = hist(pos_n);
-+
-+	/*
-+	 * This is the first try.
-+	 */
-+	if (!pos_n && !wh_n->wait)
-+		return NULL;
-+
-+	return hist(pos_n + DEPT_MAX_WAIT_HIST - 1);
++	sdt_might_sleep_start(&x->dmap);
 +}
 +
- static void add_hist(struct dept_wait *w, unsigned int wg, unsigned int ctxt_id)
- {
--	struct dept_wait_hist *wh = new_hist();
-+	struct dept_wait_hist *wh;
-+
-+	wh = last_hist();
-+
-+	if (!wh || wh->wait->class != w->class || wh->ctxt_id != ctxt_id)
-+		wh = new_hist();
++static inline void complete_release(struct completion *x)
++{
++	sdt_might_sleep_end();
++}
  
- 	if (likely(wh->wait))
- 		put_wait(wh->wait);
+ #define COMPLETION_INITIALIZER(work) \
+-	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait) }
++	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), \
++	  .dmap = DEPT_MAP_INITIALIZER(work, NULL), }
+ 
+ #define COMPLETION_INITIALIZER_ONSTACK_MAP(work, map) \
+ 	(*({ init_completion_map(&(work), &(map)); &(work); }))
+@@ -75,13 +95,13 @@ static inline void complete_release(struct completion *x) {}
+ #endif
+ 
+ /**
+- * init_completion - Initialize a dynamically allocated completion
++ * __init_completion - Initialize a dynamically allocated completion
+  * @x:  pointer to completion structure that is to be initialized
+  *
+  * This inline function will initialize a dynamically created completion
+  * structure.
+  */
+-static inline void init_completion(struct completion *x)
++static inline void __init_completion(struct completion *x)
+ {
+ 	x->done = 0;
+ 	init_swait_queue_head(&x->wait);
 -- 
 2.17.1
 
