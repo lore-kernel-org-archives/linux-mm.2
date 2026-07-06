@@ -4,105 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E8AC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 12:57:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 308FAC43602
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 12:58:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7203A6B00A0; Mon,  6 Jul 2026 08:57:38 -0400 (EDT)
+	id 1C8EA6B00A1; Mon,  6 Jul 2026 08:57:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F8306B00A1; Mon,  6 Jul 2026 08:57:38 -0400 (EDT)
+	id 1A0F26B00B9; Mon,  6 Jul 2026 08:57:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 60DCA6B00B9; Mon,  6 Jul 2026 08:57:38 -0400 (EDT)
+	id 092076B00BB; Mon,  6 Jul 2026 08:57:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 24C476B00A0
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:57:38 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9BB13168A1A
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:57:37 +0000 (UTC)
-X-FDA: 84958353354.17.DAF1BC7
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8A16F160005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:57:35 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H88q5VQK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CCF686B00A1
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:57:58 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4B8DE8DC79
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:57:58 +0000 (UTC)
+X-FDA: 84958354236.23.37BD3C1
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 74FC74000B
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:57:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GryvCmtv;
+	spf=pass (imf07.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783342655;
+	s=arc-20220608; t=1783342676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OjFikUNuPI2n8ZZt1QEzOtihOqsefSty5HS8pTICopI=;
-	b=pE/atdr4EHDReCE4HvyFBBfv/FGAQu6POq+DqVb77s7CvzmFaqjRpWCe3Ls38FXw3uD/lf
-	Snao0Mnhkdgmpfij5hbxRcPDXElmCDzTlVnU6A1oI58+sEWI3nVydqeTq9l+0dy7eM1GoF
-	ahv9IgtEpiYaQeog9WGYRxmN37YYJds=
+	bh=hO5ho4KeiiLfcBaCI+3UMPtuUVrSULK4qaWn/9TzQms=;
+	b=Azb5fQqFSrST3wdNZsZDeudPZxV2OPFT3sSO9RWs8ysZQQ06SPpGd//H+SI3hNgXekVaVz
+	d4q2fIZ7iRzTEmulaHyzENYQdUaMxtz7MnYyrSSEch8BsHJQCSJQPp33Fr7URTM/5r3Aqu
+	D3jzdLU0F4QUx2FcXGkqlb8SxGnZklU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=H88q5VQK;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GryvCmtv;
+	spf=pass (imf07.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783342655;
-	b=jPGcxGj6UcrB0IVIBP1lhb/ONjOsTYItAaxX9zuG2Y7MJolfQDQTAt4CrpCJSyF7RW+6fz
-	x7xurdrCgc0ylzxfREoktry1hxn1hF/yVMnloBylIvmbcaBC/qVoYnWJmZ9grxSw/r5Snr
-	I0fdZ3kkcy6XW7Mx58S+aDcF75BWu/s=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783342653;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OjFikUNuPI2n8ZZt1QEzOtihOqsefSty5HS8pTICopI=;
-	b=H88q5VQK6NqQgGY3kEsq1eEr14cqrv/6DD2eN3V5JsHcJspPjquBfXAw5Apj1brCu0T6wy
-	ggVGuWusnd40U5BETbluOBlNVEtJVnFGQ4ZemBxgd/CrNi0jDnqYDbL5WF7vDrIcRH2SjL
-	GLoQoj2mjEjKEJdcGAEY+2srcf+xoXs=
-From: Usama Arif <usama.arif@linux.dev>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Usama Arif <usama.arif@linux.dev>,
+	t=1783342676;
+	b=5aAo9K+ip4REuvVlpMRh7reO/UCjfzasF8dIo4N2NZ7m6w8eT6Jqa2+9ALWzZsUt/bFovp
+	nTXClyto2kF67S8FqhVYPMcCUfEqQ74mS1XU5/74VY7WT2MbF/Du4p7nEs01JVsHWLuh+X
+	ZSiaBWtXet8IZw2LjzWyXIDuQFb3TC4=
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-847917c3678so2186426b3a.1
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 05:57:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783342675; x=1783947475; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=hO5ho4KeiiLfcBaCI+3UMPtuUVrSULK4qaWn/9TzQms=;
+        b=GryvCmtvJvaq6zNHdPXpkLuXU3eao9Wp0ZnT+d7kCu4c8HybTpjISO30MKevDEZ5Be
+         pzCCsDkURaXB7MXgSi976Cz0szEaUEGUE9rVTMkZc2rGcizh2WWwmXANdJEIAU9f8J+j
+         NzDDw03MGNl2G0d2HGefasmB2AZ28SaNXJ6kZFUxb9YiCMDIl228wak9yK2NU41dCQ8N
+         p3h6MJ8uIdFHVTik2hXDsmS/+UUfAfCpyTmM15GFJ1H8vh7R87L+LtI42rDSqheYNZZU
+         EwY13MXPag7KIO9mt+dX7mVFZBNm3ECIThxuciVKXcGN1YT0Q+mN1G2F3gOH6qYe7VOC
+         F6ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783342675; x=1783947475;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :in-reply-to:subject:cc:to:from:message-id:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hO5ho4KeiiLfcBaCI+3UMPtuUVrSULK4qaWn/9TzQms=;
+        b=EbM+D80CFrD5ByqGg8rivkbbdFrb7vjZ2vcJiaK9Yj5I+NTc3qudu7Zc4GwjE58Hp2
+         FyZb3hZihNGiVNesvU3FObFraAo4XURqOPD37GEnvwBTlC/P+r4R9X7/zrENYrWD0GXv
+         G4rxGa+pHC4rk2EZu/vpO3LNyA014EcF9a2Gq+xq/WpHvxZ2sHSDKGM4NyL0APA28sR+
+         0s5IpRIIAkjm+DdU/88lTUGqCrLqa5vBp0n8Kn8GjxLO0fVNS+SCe3xAQ9K5TAJNkU5I
+         Rl77lBtcFgOpQi1p5FCqPvdxEc8DM7Owj/ct30FGxPHGfvfBcoZWNxYT6MqKJvmEMtIX
+         oeGQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoB6D/+oRWSQbXqoocsg4LEBos4mrNh4v72gfPnHFkTYWtXCJrWrMkZ9wPeQ4q9+h4YNVmJI5UkSg==@kvack.org
+X-Gm-Message-State: AOJu0YzdIdI/ikNb72A/o9KXkJuHquk/ZE7r5y+MTfEZp/kL+tNjnTAw
+	X9pvO3bh/dkRzUloBeRoh+JV/7LOrC4Btp5TtFW+0fL74dSfxBR/ee1Q
+X-Gm-Gg: AfdE7cnY/WaU0PWlNNLKX+aJjec1zYjRJyfYvYGcREuUN2o1kYxX5iZxdW7Rb87o/Qb
+	VudO4WShNCCCsDvinVQ6HaBVnlWV3garOLKQ/pyvnJEVOKzXPUxEyp/uFuBrMa1zk9C6hOBC/lp
+	P1MUAnCvSh/rtek4/Qkxx/ks9lsMd/xD4KUKme4b7cZAl0LVO9jCeovU4SWcgLjaxn1gnnA1U1o
+	wbyJ2LiupaVWVeNnIl0apEhZ2sgirUtX86UwZN39POHN47Lvwot6hci20EToc3/hhZmp/5NjVdB
+	BQKB52SvzK+TAqk3BvF97kPkzx3njatvWSeJQzQmMbURU+F6fSPVvf/yKQr6iN3DEeStVttQVqK
+	qq9ET6TH9e0xTxhzn04VHIxgdxeWjWd422FfdCEUQwzQyBU/mBbRrp7S2JsYqgML6Kx4squl7wx
+	jYUW6tjhrfCF5zdbVvjdaGYUbsMvY/XtYBkC42SR5Sjzag1DJRquQbWqakn4mxQnY92UuOOmMuQ
+	rt1PFI7/YqP/1TeQI3hXqenbbdDx1HrsHyNmiDIWh0O
+X-Received: by 2002:a05:6a21:a91:b0:3b5:530d:d96d with SMTP id adf61e73a8af0-3c08e6b4b43mr515293637.12.1783342675118;
+        Mon, 06 Jul 2026 05:57:55 -0700 (PDT)
+Received: from mars.local.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e8f5c175dsm6341551a12.11.2026.07.06.05.57.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 05:57:54 -0700 (PDT)
+Date: Mon, 06 Jul 2026 21:57:51 +0900
+Message-ID: <m2o6gktgvk.wl-thehajime@gmail.com>
+From: Hajime Tazaki <thehajime@gmail.com>
+To: ljs@kernel.org
+Cc: geert@linux-m68k.org,
 	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	david@kernel.org,
-	ljs@kernel.org,
-	surenb@google.com,
+	willy@infradead.org,
+	liam@infradead.org,
 	vbabka@kernel.org,
-	Liam.Howlett@oracle.com,
-	ziy@nvidia.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	jthoughton@google.com,
-	aarcange@redhat.com,
-	sj@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kernel-team@meta.com,
-	kas@kernel.org
-Subject: Re: [PATCH v9 11/15] mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
-Date: Mon,  6 Jul 2026 05:57:24 -0700
-Message-ID: <20260706125726.729431-1-usama.arif@linux.dev>
-In-Reply-To: <20260706084805.8400-12-kirill@shutemov.name>
-References: 
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8A16F160005
-X-Stat-Signature: p1oyidzyer57n6egfh7nsagx9puto3j9
+	gerg@uclinux.org
+Subject: Re: [PATCH] mm: nommu: point to the write iterator upon split_vma
+In-Reply-To: <akuS-6zegY2XBa3f@lucifer>
+References: <20260702012546.665383-1-thehajime@gmail.com>
+	<20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
+	<aksn5J8Nr0JIsVpQ@casper.infradead.org>
+	<20260705222343.5d5c78cbb54839c5efcaabf5@linux-foundation.org>
+	<CAMuHMdU36O2UqfQkbbgOVSH5KFU-MZ_WO3jRsLumkUu22iC7vQ@mail.gmail.com>
+	<akuS-6zegY2XBa3f@lucifer>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-7
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1783342655-329175
-X-HE-Meta: U2FsdGVkX18QXOZeREDUDml+zCp1ZqfbeyOT2eaUcrZKbunC1RU6gM3A98+jbNgD7Fro94S/ZhSucDBBcJNRO+2m7yGY4UZ6CGNvCE8O0bQdqDbvUccGaybt6y8UcBcN4bhA6CDNkgb3yeOIJscpce9tlQ3qQyuKz1BOajQKXb1vFC+DOdB54+aq78iHSKUqtJIfmHkNmjGjFojXShugs6AM6ZkvIorTs7k4T27uTU3SqZn4LGnxRvRdSLCSOh+8gn2dK66hafpUNwtwq5wiexcIPfORgFr5GF5VoKkJ15jVIV9ahuaFJXVMAwhRO3YvmcW0bhu0H6TC0aNn55BeS28a8f8KEU3dyhsicgC4QPmPtALQkpWbM8qH0anzO10H1ZkhpnrEm96ZFpfxqKWg22uy7ATl7i8weY08JDbDXuMgY2lMVb72jc9EV6K37nEF7QX+AOzK5eUc0BgA/zeyC0dNVFT42IfCWCDHrGbVRps+554gH8XQwzsTGZRlPZNsDJo2NfaxVioJK2ualQBl6/nNAn5OFaovo12uZGlZOI+eluGrFZnxRPLWsrHUaMsRF3VV7UBmjJA50/7IeU5DS5RmJrUnfSMFvfamAyoxXdynbQ+Rh0Rn442HTGBgd60VjibZ0UGz0I0WpKobyE3cPhDfBrUAgN7v+W8hmlQEaQlifASl/VRhFOUkYxsKJY8Fsxn5Q6kp7q4rHg5iyUuKiruGZA+RJ0minYKkqRovhSmutI/o4g4Zsp1PMKq75b7d7uODn6wmc7VWSE1Voe+ETGM4uIDzxFd0y6IZgxV7Hbklu2cu7AR4W1HSktAUXrb1A5/aleCaSQroADiHG6P1DKG8IBq9tjMGp+0PiOaonnkhLkt4sZ3MlMu0IDzehI407D+RdntU3kb0WVtOvR9FWLbP/0itbDOWI7v0UqEDLl1d2b0NoCRUX82a9lI3ddDQ0Ny7Iaypw27bCZezFAO
- 6jbLjqgA
- 2Fe2uiHfDI1BWCzVtVE52UDDq5PAO4WmCEMDaJoXjDQZEL0kOrcL8KLyLQqLzBE5OGOzVvjH5fBFbWku9UwNjplJCiMNT7XCF9Qn+fJntU/w/9N4IfoTeRK3dKHDBxJ0R+0JprHc8Nji2NffChrd8RN5wCyfPzvnELRuh3RFqbH5Bn+u+RsKpaP6fL9hfecWWaFYk2KAip5VSEdSENKUpQNUQLf1ou85+ZOyQooM1RRyjfbeXjTlGf1p1NATRaSya7m6htzBCNSPYr6aEo9KI9qsdkPEEJm+8CtX3itNUZynKLhcZusSI1SRWJzs2pjghI/wBsTvXGnS3Rs5Act6JmobeiOC248HacZt1nDY/eKHZadW5JFBIGtd1xSeryEfj2Z5Q
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 74FC74000B
+X-Stat-Signature: 1mo8asabmca8zb74xrx6me4o58gfewkk
+X-HE-Tag: 1783342676-301183
+X-HE-Meta: U2FsdGVkX18wtOcPNwEFq1JuK/S3vJJ8Fv8LgQOQeZioPcogQzgKdYCj/bDxHP1GupV+4pWfRU0x7r/+inMZ7qAQoRPYgfdtYbF6VpC+YbmIa33jC85NK6z9/UP2iL1AD3iNjnx+OtlPKHlYPmdvByvGqrvNuAnmUjDvKppvanIaIVfurh4FqRjxjqYwLeYHZKeJiPlApg5PYV47Dt8T5j/HgDNubIIUw4UsS4ggyX7hnQhof579HJguMeuwEAWPQaIZSn6QRvqcT5B3gOtj01H5dcEDmHgLZEtfzvDeaOItklto0jqN5ic+iSDqRbe2pffksIaDpk30OT2Yy+xfrfS3ByUF8r0ZCmL5JR13qHquNn3RL7M8GgWkW94ldEjBJOBjtFC627n6kMUo+ggHT3CGnlKCP6/FW03KXdgINHQtPXlNDfHiMeX6167u7dHl5vE8b0OWaSAt72ChBlXcWng/1HT9Hn3WgZhmdhoN8/4tHRRYjc4Uqjj/BNafyt2erOMf9rAzohkRaxJdzYot0yEywSlK4X0nUlHqemqdIDSeIdcv1LpVVMyWsLBf9i17ERCHuh45ZyIBVbubuuqSIHmwL27iCQZCcgr/l+QSWcZG4ag5X43XSZMF75jEGo7PTvYg18n98H+0SWOo8W3x7j6ClKz6Lugp+hvP6MByvBbC4zUKozktrKL1z89Yf/AIJAEQEG6gfGFXF5FZjVXLGhucw+cddywi/nOmi4UmFi8JkdvuB96O7LmDULu1r/aDSWr51QMfqNdw66jP0nYtTXXmYtKegjMMjp45AtHiu/EG4kNSO6T4n3DDU0urVwO13uBTxX9kJJ4RWQThsu8n9cEddJVx3rCYAKyP+/qZpP5675DUOCKOBRe9aAo4dinTn8R1sdfCTUOUiilHRd35OE7r+nse3Y9PaRMi2lGN54kMZnJmDk+Wi5KAL/yP+nZwgD2bVEh/cUmfaQXt+yl
+ XhpDGBD6
+ rp8iG9vNtI5z1qjnViebtUjt9bcFwm04Fne0r5uebPzOGS4irFeVfGu+gmo05hOdA52TGDvuplvJy755VVEempAWcJnabF3QfI3gXRJwsfLN/sntyRkGNQ1hvmP9cPDl7oIzZhficN36vYfL5ye44R4oVaXH+5gq/wMMVpxKS8IqSjbgWVDJ4Jzs2KnqfJxa1GCUw8jlwWiuJ92T9BQMdgVzWhJziD0kAPAsIatgXMQ92tO1TCppvwqag/0hae9+l8gpgtxm/uQkR3cIzBTxCx7A57PmTJZl1OvecRJZC4x2XquV/GiY80M9OrcbOU53j1R7fnEchdcRW6mlsL1DWNazOXepK8owROGz2bBcDhcXPFUhZaZdPOP9DoteqMEmpqodnrw6CjGpMHE2OHrWhC7Mis3ZP17Ra3AOeecmqORv7Bp9JAgMtk8k4PZx3OrlaxRy/7CHf/sEoAFc39oakPF67PI5jtCYjQM8WDNJqRDwrXuGn1NvrbN4ms5qhOjwaPB/hIwk3Gjau042L3VhPiMadWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,272 +133,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  6 Jul 2026 09:48:00 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> PAGEMAP_SCAN already reports PAGE_IS_WRITTEN from the inverted uffd
-> PTE bit, targeting the UFFDIO_WRITEPROTECT workflow. UFFDIO_RWPROTECT
-> reuses the same PTE bit as a marker for read-write protection, but
-> "has been written" and "has been accessed" are distinct semantic
-> signals — they happen to share one PTE bit today only because the two
-> implementations share infrastructure.
-> 
-> Give RWP its own pagemap category so the UAPI does not conflate them:
-> 
->   PAGE_IS_WRITTEN   reported on VM_UFFD_WP VMAs,  !pte_uffd(pte)
->   PAGE_IS_ACCESSED  reported on VM_UFFD_RWP VMAs, !pte_uffd(pte)
-> 
-> Both still read the same PTE bit today, but each is scoped to the VMA
-> whose registered mode makes the bit meaningful. If a future
-> implementation moves RWP to a separate PTE bit, only PAGE_IS_ACCESSED
-> switches over.
-> 
-> This is a UAPI narrowing. Outside VM_UFFD_WP VMAs the uffd bit is
-> always clear, so PAGEMAP_SCAN used to flag PAGE_IS_WRITTEN on every
-> present PTE there — a meaningless duplicate of PAGE_IS_PRESENT. Now
-> PAGE_IS_WRITTEN fires only inside VM_UFFD_WP VMAs.
-> 
-> pagemap_hugetlb_category() now takes the vma like its PTE/PMD peers.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Assisted-by: Claude:claude-opus-4-6
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  Documentation/admin-guide/mm/pagemap.rst | 13 +++--
->  fs/proc/task_mmu.c                       | 63 +++++++++++++++++-------
->  include/uapi/linux/fs.h                  |  1 +
->  tools/include/uapi/linux/fs.h            |  1 +
->  4 files changed, 57 insertions(+), 21 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
-> index c57e61b5d8aa..ffa690a171c8 100644
-> --- a/Documentation/admin-guide/mm/pagemap.rst
-> +++ b/Documentation/admin-guide/mm/pagemap.rst
-> @@ -19,8 +19,11 @@ There are four components to pagemap:
->      * Bit  55    pte is soft-dirty (see
->        Documentation/admin-guide/mm/soft-dirty.rst)
->      * Bit  56    page exclusively mapped (since 4.2)
-> -    * Bit  57    pte is uffd-wp write-protected (since 5.13) (see
-> -      Documentation/admin-guide/mm/userfaultfd.rst)
-> +    * Bit  57    pte is tracked by userfaultfd (since 5.13) — in a
-> +      ``VM_UFFD_WP`` VMA this indicates a write-protected PTE; in a
-> +      ``VM_UFFD_RWP`` VMA it indicates an RWP-protected PTE. WP and
-> +      RWP are mutually exclusive per VMA, so the meaning is
-> +      unambiguous. See Documentation/admin-guide/mm/userfaultfd.rst.
->      * Bit  58    pte is a guard region (since 6.15) (see madvise (2) man page)
->      * Bits 59-60 zero
->      * Bit  61    page is file-page or shared-anon (since 3.5)
-> @@ -244,7 +247,8 @@ in this IOCTL:
->  Following flags about pages are currently supported:
->  
->  - ``PAGE_IS_WPALLOWED`` - Page has async-write-protection enabled
-> -- ``PAGE_IS_WRITTEN`` - Page has been written to from the time it was write protected
-> +- ``PAGE_IS_WRITTEN`` - Page in a ``UFFDIO_REGISTER_MODE_WP`` VMA has been
-> +  written to since it was write-protected. Only reported inside such VMAs.
->  - ``PAGE_IS_FILE`` - Page is file backed
->  - ``PAGE_IS_PRESENT`` - Page is present in the memory
->  - ``PAGE_IS_SWAPPED`` - Page is in swapped
-> @@ -252,6 +256,9 @@ Following flags about pages are currently supported:
->  - ``PAGE_IS_HUGE`` - Page is PMD-mapped THP or Hugetlb backed
->  - ``PAGE_IS_SOFT_DIRTY`` - Page is soft-dirty
->  - ``PAGE_IS_GUARD`` - Page is a part of a guard region
-> +- ``PAGE_IS_ACCESSED`` - Page in a ``UFFDIO_REGISTER_MODE_RWP`` VMA has been
-> +  accessed since RWP was applied. Only reported inside such VMAs. See
-> +  Documentation/admin-guide/mm/userfaultfd.rst for the RWP workflow.
->  
->  The ``struct pm_scan_arg`` is used as the argument of the IOCTL.
->  
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 5b55c59573a3..2d724156763d 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -2283,7 +2283,7 @@ static const struct mm_walk_ops pagemap_ops = {
->   * Bits 5-54  swap offset if swapped
->   * Bit  55    pte is soft-dirty (see Documentation/admin-guide/mm/soft-dirty.rst)
->   * Bit  56    page exclusively mapped
-> - * Bit  57    pte is uffd-wp write-protected
-> + * Bit  57    pte is tracked by userfaultfd (uffd-wp or RWP)
->   * Bit  58    pte is a guard region
->   * Bits 59-60 zero
->   * Bit  61    page is file-page or shared-anon
-> @@ -2418,7 +2418,7 @@ static int pagemap_release(struct inode *inode, struct file *file)
->  				 PAGE_IS_FILE |	PAGE_IS_PRESENT |	\
->  				 PAGE_IS_SWAPPED | PAGE_IS_PFNZERO |	\
->  				 PAGE_IS_HUGE | PAGE_IS_SOFT_DIRTY |	\
-> -				 PAGE_IS_GUARD)
-> +				 PAGE_IS_GUARD | PAGE_IS_ACCESSED)
->  #define PM_SCAN_FLAGS		(PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC)
->  
->  struct pagemap_scan_private {
-> @@ -2443,8 +2443,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
->  
->  		categories = PAGE_IS_PRESENT;
->  
-> -		if (!pte_uffd(pte))
-> -			categories |= PAGE_IS_WRITTEN;
-> +		if (!pte_uffd(pte)) {
-> +			if (userfaultfd_wp(vma))
-> +				categories |= PAGE_IS_WRITTEN;
-> +			if (userfaultfd_rwp(vma))
-> +				categories |= PAGE_IS_ACCESSED;
-> +		}
+On Mon, 06 Jul 2026 20:51:36 +0900,
+Lorenzo Stoakes wrote:
+>=20
+> On Mon, Jul 06, 2026 at 10:27:43AM +0200, Geert Uytterhoeven wrote:
+> > Hi Andrew,
+> >
+> > On Mon, 6 Jul 2026 at 07:23, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+> > > On Mon, 6 Jul 2026 04:58:28 +0100 Matthew Wilcox <willy@infradead.org=
+> wrote:
+> > > > On Sun, Jul 05, 2026 at 03:27:08PM -0700, Andrew Morton wrote:
+> > > > > Thanks.  Unfortunately we aren't very diligent about the nommu co=
+de
+> > > > > (are we?).   Perhaps appropriately - clearly this code doesn't ge=
+t used a
+> > > > > lot.
+> > > >
+> > > > Should we delete support for NOMMU?  As you say, it doesn't get much
+> > > > testing, or presumably usage.  I have this quote from #m68k a coupl=
+e of
+> > > > years ago...
+> > >
+> > > Greg is busily developing kernel code.
+> > >
+> > > > : I looked at nommu very briefly when I had my 68000 board on the b=
+ench
+> > > > : but didn=A2t get anywhere. Also didn=A2t try particularly hard. I=
+ think
+> > > > : you are better off with fuzix or OS9 if you want something unixy.
+> > > >
+> > > > (i suspect Zephyr would also be good, but it doesn't support m68k, =
+just
+> > > > arc, arm, arm64, mips, openrisc, renesas rx, riscv, sparc, x86 and =
+xtensa)
+> > >
+> > > Greg, how mush use is NOMMU Linux seeing nowadays?
+> >
+> > Nommu (SH-compatible J-Core ASIC) is used in actual products, running
+> > modern kernels.  The rationale is low interrupt latency without using
+> > a much more costly app CPU core + RT CPU core split.
+> >
+> > Please watch the recording of the "32bit and-or noMMU Linux BoF"[1]
+> > at LPC2025 for more info.
+>=20
+> This crops up now and again and people point to uses, but fails to addres=
+s the
+> real issue here.
+>=20
+> Nobody (aside from Hajime - thank you!) who uses nommu maintains or contr=
+ibutes
+> to it, or _even tests_ it as far as I can tell.
+>=20
+> We broken nommu for a year I think it was? And there wasn't one report.
+>=20
+> The last time I raised this, I was admonished and told there are critical=
+ arm32
+> nommu devices that absolutely _must_ have the latest kernel and this is
+> perfectly working code.
+>=20
+> And riscv also introduced (and I'm so very surprised Linus allowed it) a =
+brand
+> new nommu architecture (!!)
+>=20
+> And yet...
+>=20
+> If this is really so important, can those who care perhaps help out a bit=
+? At
+> least with testing?
+>=20
+> I'm a bit fed up of it really.
+>=20
+> As far as hobbyist retro stuff and upstream goes, I am sympathetic, I cam=
+e from
+> being a hobbyist (though not retro), and would be one again if I couldn't=
+ do it
+> as a job.
+>=20
+> But retro people do NOT need the latest kernel. As far as I'm concerned, =
+museum
+> piece support should be ripped out, and those who care run downstream ker=
+nels.
+>=20
+> As for the 'critical products' that must use nommu - PLEASE start
+> contributing. Please start testing. Anything.
+>=20
+> Again thank you Hajime for doing the one thing that really counts here -
+> contributing to the nommu code.
+>=20
+> Anyway, as to what Matthew said - 100% I am for us ripping it out.
+>=20
+> But it's not up to me, and unfortunately I think we'll get a clammer of v=
+oices
+> saying how important it is, and silence again when it comes to do any of =
+the
+> work.
 
-The above is an ABI change for existing PAGEMAP_SCAN users although not
-sure if there is someone that cares. Would below be a better alternative
-to limit the ABI change?
+as nommu started for embedded devices which are not easy to test, I
+agree that it is also not easy (in my opinion) to maintain.
 
-if (!pte_uffd(pte)) {
-	if (userfaultfd_rwp(vma))
-		categories |= PAGE_IS_ACCESSED;
-	else
-		categories |= PAGE_IS_WRITTEN;
-}
+indeed, buildroot images for nommu targets (with qemu) are available,
+but running/testing each of commit to the kernel tree give me more
+than 1 hour to rebuild the images (including userspace build with long
+flat binary conversion, etc) (which I'm playing under github actions
+with riscv-nommu).
+
+# yes, should use ccache :)
+
+one of the goal which I am with nommu UML (*1) is to provide an
+environment which can be tested in a simple way; runs on x86
+machines.  An extension to UML means that you can also use KUnit
+infrastructure.
+
+LTP (Linux Test Project) dropped the nommu tests 2 years ago (*2)
+(which is pity), but the reason is similar: no maintainers appeared
+when the project asked.
+
+I wish to be here to improve this situation, both mm/nommu subsystem
+and LTP, as well as any !CONFIG_MMU code in kernel tree.  This patch
+is actually discovered during LTP (re-)integration with nommu kernel,
+which I'm going to propose to LTP.
+
+I hope this helps a bit.
 
 
->  
->  		if (p->masks_of_interest & PAGE_IS_FILE) {
->  			page = vm_normal_page(vma, addr, pte);
-> @@ -2461,8 +2465,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
->  
->  		categories = PAGE_IS_SWAPPED;
->  
-> -		if (!pte_swp_uffd_any(pte))
-> -			categories |= PAGE_IS_WRITTEN;
-> +		if (!pte_swp_uffd_any(pte)) {
-> +			if (userfaultfd_wp(vma))
-> +				categories |= PAGE_IS_WRITTEN;
-> +			if (userfaultfd_rwp(vma))
-> +				categories |= PAGE_IS_ACCESSED;
-> +		}
->  
->  		entry = softleaf_from_pte(pte);
->  		if (softleaf_is_guard_marker(entry))
-> @@ -2511,8 +2519,12 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
->  		struct page *page;
->  
->  		categories |= PAGE_IS_PRESENT;
-> -		if (!pmd_uffd(pmd))
-> -			categories |= PAGE_IS_WRITTEN;
-> +		if (!pmd_uffd(pmd)) {
-> +			if (userfaultfd_wp(vma))
-> +				categories |= PAGE_IS_WRITTEN;
-> +			if (userfaultfd_rwp(vma))
-> +				categories |= PAGE_IS_ACCESSED;
-> +		}
->  
->  		if (p->masks_of_interest & PAGE_IS_FILE) {
->  			page = vm_normal_page_pmd(vma, addr, pmd);
-> @@ -2526,8 +2538,12 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
->  			categories |= PAGE_IS_SOFT_DIRTY;
->  	} else {
->  		categories |= PAGE_IS_SWAPPED;
-> -		if (!pmd_swp_uffd(pmd))
-> -			categories |= PAGE_IS_WRITTEN;
-> +		if (!pmd_swp_uffd(pmd)) {
-> +			if (userfaultfd_wp(vma))
-> +				categories |= PAGE_IS_WRITTEN;
-> +			if (userfaultfd_rwp(vma))
-> +				categories |= PAGE_IS_ACCESSED;
-> +		}
->  		if (pmd_swp_soft_dirty(pmd))
->  			categories |= PAGE_IS_SOFT_DIRTY;
->  
-> @@ -2560,7 +2576,8 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->  
->  #ifdef CONFIG_HUGETLB_PAGE
-> -static unsigned long pagemap_hugetlb_category(pte_t pte)
-> +static unsigned long pagemap_hugetlb_category(struct vm_area_struct *vma,
-> +					      pte_t pte)
->  {
->  	unsigned long categories = PAGE_IS_HUGE;
->  
-> @@ -2575,8 +2592,12 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
->  	if (pte_present(pte)) {
->  		categories |= PAGE_IS_PRESENT;
->  
-> -		if (!huge_pte_uffd(pte))
-> -			categories |= PAGE_IS_WRITTEN;
-> +		if (!huge_pte_uffd(pte)) {
-> +			if (userfaultfd_wp(vma))
-> +				categories |= PAGE_IS_WRITTEN;
-> +			if (userfaultfd_rwp(vma))
-> +				categories |= PAGE_IS_ACCESSED;
-> +		}
->  		if (!PageAnon(pte_page(pte)))
->  			categories |= PAGE_IS_FILE;
->  		if (is_zero_pfn(pte_pfn(pte)))
-> @@ -2586,8 +2607,12 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
->  	} else {
->  		categories |= PAGE_IS_SWAPPED;
->  
-> -		if (!pte_swp_uffd_any(pte))
-> -			categories |= PAGE_IS_WRITTEN;
-> +		if (!pte_swp_uffd_any(pte)) {
-> +			if (userfaultfd_wp(vma))
-> +				categories |= PAGE_IS_WRITTEN;
-> +			if (userfaultfd_rwp(vma))
-> +				categories |= PAGE_IS_ACCESSED;
-> +		}
->  		if (pte_swp_soft_dirty(pte))
->  			categories |= PAGE_IS_SOFT_DIRTY;
->  	}
-> @@ -2863,7 +2888,8 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsigned long start,
->  		goto flush_and_return;
->  	}
->  
-> -	if (!p->arg.category_anyof_mask && !p->arg.category_inverted &&
-> +	if (userfaultfd_wp(vma) && !p->arg.category_anyof_mask &&
-> +	    !p->arg.category_inverted &&
->  	    p->arg.category_mask == PAGE_IS_WRITTEN &&
->  	    p->arg.return_mask == PAGE_IS_WRITTEN) {
->  		for (addr = start; addr < end; pte++, addr += PAGE_SIZE) {
-> @@ -2938,7 +2964,8 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep, unsigned long hmask,
->  		/* Go the short route when not write-protecting pages. */
->  
->  		pte = huge_ptep_get(walk->mm, start, ptep);
-> -		categories = p->cur_vma_category | pagemap_hugetlb_category(pte);
-> +		categories = p->cur_vma_category |
-> +			     pagemap_hugetlb_category(vma, pte);
->  
->  		if (!pagemap_scan_is_interesting_page(categories, p))
->  			return 0;
-> @@ -2950,7 +2977,7 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep, unsigned long hmask,
->  	ptl = huge_pte_lock(hstate_vma(vma), vma->vm_mm, ptep);
->  
->  	pte = huge_ptep_get(walk->mm, start, ptep);
-> -	categories = p->cur_vma_category | pagemap_hugetlb_category(pte);
-> +	categories = p->cur_vma_category | pagemap_hugetlb_category(vma, pte);
->  
->  	if (!pagemap_scan_is_interesting_page(categories, p))
->  		goto out_unlock;
-> diff --git a/include/uapi/linux/fs.h b/include/uapi/linux/fs.h
-> index bd87262f2e34..34c6f219462a 100644
-> --- a/include/uapi/linux/fs.h
-> +++ b/include/uapi/linux/fs.h
-> @@ -471,6 +471,7 @@ typedef int __bitwise __kernel_rwf_t;
->  #define PAGE_IS_HUGE		(1 << 6)
->  #define PAGE_IS_SOFT_DIRTY	(1 << 7)
->  #define PAGE_IS_GUARD		(1 << 8)
-> +#define PAGE_IS_ACCESSED	(1 << 9)
->  
->  /*
->   * struct page_region - Page region with flags
-> diff --git a/tools/include/uapi/linux/fs.h b/tools/include/uapi/linux/fs.h
-> index 24ddf7bc4f25..f0a26309b6d5 100644
-> --- a/tools/include/uapi/linux/fs.h
-> +++ b/tools/include/uapi/linux/fs.h
-> @@ -364,6 +364,7 @@ typedef int __bitwise __kernel_rwf_t;
->  #define PAGE_IS_HUGE		(1 << 6)
->  #define PAGE_IS_SOFT_DIRTY	(1 << 7)
->  #define PAGE_IS_GUARD		(1 << 8)
-> +#define PAGE_IS_ACCESSED	(1 << 9)
->  
->  /*
->   * struct page_region - Page region with flags
-> -- 
-> 2.54.0
-> 
-> 
+*1 https://lore.kernel.org/all/cover.1770170302.git.thehajime@gmail.com/
+*2 https://lore.kernel.org/ltp/20240105131135.GA1484621@pevik/
+
+-- Hajime
 
