@@ -4,173 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07A3EC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 04:20:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25E20C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 04:30:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4ADB6B009E; Mon,  6 Jul 2026 00:20:09 -0400 (EDT)
+	id AD9B66B009E; Mon,  6 Jul 2026 00:30:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFB5C6B009F; Mon,  6 Jul 2026 00:20:09 -0400 (EDT)
+	id A8A886B009F; Mon,  6 Jul 2026 00:30:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC2EC6B00A0; Mon,  6 Jul 2026 00:20:09 -0400 (EDT)
+	id 9796C6B00A0; Mon,  6 Jul 2026 00:30:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 925C86B009E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 00:20:09 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F0E761202C7
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:20:08 +0000 (UTC)
-X-FDA: 84957049296.19.047541A
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2CAD1180006
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:20:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783311607;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A1B76B009E
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 00:30:11 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D99571A02AB
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:30:10 +0000 (UTC)
+X-FDA: 84957074580.13.C6B020B
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010068.outbound.protection.outlook.com [52.101.85.68])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1D8D340007
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:30:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kQUEFkg8;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of apopple@nvidia.com designates 52.101.85.68 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783312208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gP4xk+pou8S7FCFeKvxToT0jMrKkdRSbq7gt0JNjH6k=;
-	b=Zh9yc9+7sz53p6/Vvlh2/Tk6jo2zqD5ds+HiqzfYEIxPelsKkwyrICoC3COd3snZI5lQsA
-	Dc4ODmdEjwHuiq2MYDA7+Qi4PGLPEm+DWQ9P17iuwsi6YMSkrVwFjViwT6A2AS0RhfQR6r
-	VkKO53/ZW9r+B5LeYY9PEWoR66s9gQk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf06.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783311607;
-	b=GU/aWg1KCdcjo95XhZB1Pyw5K8KKdimC4JCJ5fcYTRRhdlhe71Ns4f9B7mAT4XlITNrlDK
-	Z6JS5aC2p+UDxMe8u8VA6klICOTMmNV+7TiYTfSeHUaTgv5tA8M+cgKsSEQ1+23uMbsjj1
-	pUA52rE2QzFGORa/RaFx24ANgjjLd1w=
-X-AuditID: a67dfc5b-c45ff70000001609-a8-6a4b2cf15680
-Date: Mon, 6 Jul 2026 13:19:55 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: kernel_team@skhynix.com, torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
-	gregkh@linuxfoundation.org, kernel-team@lge.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
-	hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
-	jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
-	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
-	ngupta@vflare.org, linux-block@vger.kernel.org,
-	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
-	jlayton@kernel.org, dan.j.williams@intel.com, hch@infradead.org,
-	djwong@kernel.org, dri-devel@lists.freedesktop.org,
-	rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-	hamohammed.sa@gmail.com, harry.yoo@oracle.com,
-	chris.p.wilson@intel.com, gwan-gyeong.mun@intel.com,
-	max.byungchul.park@gmail.com, boqun.feng@gmail.com,
-	longman@redhat.com, yunseong.kim@ericsson.com, ysk@kzalloc.com,
-	yeoreum.yun@arm.com, netdev@vger.kernel.org,
-	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
-	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
-	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
-	gustavo@padovan.org, christian.koenig@amd.com,
-	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
-	mcgrof@kernel.org, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
-	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v18 34/42] dept: add module support for struct
- dept_event_site and dept_event_site_dep
-Message-ID: <20260706041955.GA23385@system.software.com>
-References: <20251205071855.72743-1-byungchul@sk.com>
- <20251205071855.72743-35-byungchul@sk.com>
- <7afb6666-43b6-4d17-b875-e585c7a5ac99@suse.com>
-MIME-Version: 1.0
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=smmbt/JJKOiuIzYSXiP0r78cJIGPgw0zkFhphwekzAs=;
+	b=e+qqJ+Wfl9HCqcKSuQROT1ea6uok+GYONp3Dx1TIvY+yyirEmInOnu0zkh1SVgRG7eE9XG
+	r0k6TYzuwNb4drxtqF4Pkw+CjxSRMIPM7rMcKKv/xQC4ZxyWw6LS7GhVDkKXq+/vPLYmiS
+	AWL5h9LpVzRwgEzJ8C27IwBdyZ+Od/Y=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kQUEFkg8;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf01.hostedemail.com: domain of apopple@nvidia.com designates 52.101.85.68 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783312208;
+	b=bKxlbYxjOOw32JSm37fvZJ6b9dmzfGb2jySHQ5hBzD6wU8wv9mB5k95lFslgnzT64Qy0ZQ
+	R8Ooh2rTHc1Eu3BS5C7Ush2rNN44SiaHsrZkQ35b5aZ3xpWVQl/r4mr2/Jzg7m+yBq9lTv
+	mw1ypQOhF+Knl0uzlE2Vs8vRtah+TXM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sTemwmmlP6FNjG3dbL9tvdEb1PWnr1e9cAmJA3sE4EhPzAh12L1LdQliR1XgPxzUvpRzE0GHvNopDTVIpE8bicWma5OODKgZoQW+rINhvAIOAWG9H0tSo/r862lYZiaa75NV3EK9/E0H/OrQ9e3DxLPBqUMcRvb6j4VxZblPApafpDDFirvE9QN9z9le0ddyZp9kk/nKydneIG1GVEIeWkRVPhsZKPS5QPI+L/ck+RbL4QClt59zZvZN9yU5IK8vNSifFSP2o3pwx8VvYo4llAxknqZRv+pVZGIL51bGTO18Tv2UfLwXTUDOV4GZuuQw+As5ejC5iakh4LnSZ3LMtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=smmbt/JJKOiuIzYSXiP0r78cJIGPgw0zkFhphwekzAs=;
+ b=BGNTyRhs2YRLKgsB8n7wVftYrZoQwWn7uwPYXbuTvG8sQk9G3QAE3RpZ6yO7qS0BvRpyXMorJcvojM1AYg/sxvkCSqXEPld5aY0mQu/QbpKV5WXZBe+DIPPd10ooo10lx4vUQvxcMbIJfowl6L6MdxKNnfEHsNS2R8RzhJWTIGk/DYlYxxJstBqY2s8cjeDCGjxFyBeBULgLy+9no5lDqNeE3usKInIOOvwyT3f2vJ7i8rQJMieSBVHH8g8VYdlXVuiTTEhIEBITVyZbshmPN4slryqaqfjNMtOyaLpnCZF18Kfl04kIdw8333YB4liCScrdl7KQqxRq6WJSAtHSQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=smmbt/JJKOiuIzYSXiP0r78cJIGPgw0zkFhphwekzAs=;
+ b=kQUEFkg8wrfPBbYouqWJRm/LPhnPsF/lMnU90AMfdo/cDBlXGvotAh8mS5lsJe+Vi0ywf3/PvOvmP0/MZi5marRcnrg51pSLBMk6eSnChpoX5OYUooHWjZ0yDJxpMH4Sn3n81r7ts/GgVyv9UYJlNGaDZ5IWUtop1Vz0yKWV5hu3IEAjK0rLhW1gjSVPQzdiZHNVxsjNWnURzFJOqBffW2ECkFkNlPrDoirRsjP7n0BwnCifeZKagb5adY5z6Vq5Nkphzj86WjpynDKYoYl/nTo4Jis1xVCwF1KT6jqv17af7oVEKvciYobwwTaLiSC8H4FI8p/IUe1H/JbgesfWPA==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ MW4PR12MB6780.namprd12.prod.outlook.com (2603:10b6:303:20e::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Mon, 6 Jul 2026
+ 04:30:03 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0181.008; Mon, 6 Jul 2026
+ 04:30:03 +0000
+Date: Mon, 6 Jul 2026 14:29:56 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Cc: akpm@linux-foundation.org, jgg@ziepe.ca, leon@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] lib: test_hmm: use device devt for coherent device range
+ selection
+Message-ID: <aksu7Baw-Pe4WtuT@nvdebian.thelocal>
+References: <178277581197.172200.16265155329935822153.stgit@skinsburskii>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7afb6666-43b6-4d17-b875-e585c7a5ac99@suse.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SUUxTVxiAd+499/a2scu1k3AmyZJ1DB0oc0yXf4sxmpjlDrNsmXtRo7Mb
-	d9DSgmsFZZmhCCiSjQGTElpgVQErFMxadIjDMTQgSi0FxMYBjR3WOWhQZrvgQGzJzHw5+XL+
-	L9/5Hw5HK+rZlZw6a7+oz1JplawMy4LLTqx9uGabZt3oxDsw5ptkYLSgG0PoUQmG2rN2FhYs
-	P0ugxFHDQPGFRQwmTyUN3sFfabC3F1BQdWeSher7BRjMAYsEgr6LDCyO36PgVngawWT3UQQL
-	pkz48aSThSnTAxb+dblpqK4aRHDizjgN7b0TCLpsh1m4W36OhpHQDAtBTy0FnoEpBHWWSgSF
-	p86yYKpzYPBMzVMwZqqkoMXxIfiaAjjydGT2UyxYqgupyPFnZKPWixTMNTVLYODUGIYm4+tg
-	cQ0z4LeZJbBozYa2oJsBX98RBko6Qxgcf4wy0HU7CWrqx1jo7fBTMGFfZMBo+YeB671XMfzu
-	+l4C7s5WBhpveShwugZoCJfFwWDFdwx4y++izWlCs/M8JRQPLbCCvd6OhEeNhbRweXqGFoqc
-	B4TG69Os8Dh0kxW6wlYsXDtJhIZjjymhwrVWuGAelwhFl25LBKsjRyi6EmQ+XrNTtjFN1Kpz
-	Rf2bm/bKMhrP2PC+toyD9hvD2IgepJYiKUf49WT223bqGZddOiyJMubjSaAhgKPM8quI1ztH
-	lyKOWxG5H/JvKUUyjuZNr5B+ZwkTdV7iteTyDw+pqCPngQz37Yg6Cv44IlWn25Y6cn456a+Z
-	XGKaTyTeJ/eXfJqPI6efcFGU8htJmWlD1IjhXyPd5/uoaIbwASmZcYX/W/Nl8pvNi8sRb36u
-	an6uav6/akV0M1Kos3J1KrV2fXJGXpb6YPIX2ToHivzapkPzuzrQ7OD2HsRzSLlMDptTNQpG
-	lWvI0/UgwtHKFfKE1ds0CnmaKu9rUZ/9mT5HKxp6UByHlbHylPCBNAWfrtovZoriPlH/bEpx
-	0pVGpPyo7avEYyN1Pt1UvyYm4d2346/9HYo5uteCz+h8783KhipUb8TcoFKq7F/etL0fmPhg
-	S0PncaUhnZ37JGUPP5J6pCOUFP95Zss9f/KnV+MOuV7cYfvlGz83vz09/6+cVqO7JUkqJJCt
-	+S9Y97yqsStHPZvOVbuL6fzYjg3ElVq7W4kNGaq3Emm9QfUUwQS7vLEDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH8zz36e2lWL2rLNxpXJY6xbDh5jaS40uMfuIJZEazqNlLMju9
-	kZaCpmVMXAyW2ghlNlBtO1sVRKgMKjpwKppqB5OXiRtYN8mUVU1XJbwL1fBSsCVZ9MvJ/5z/
-	739yPhyOUUxLFnHqnFxRl6PSKlkZkW1aa0wZfT9D82FLmRSKTAXwIBCUwN8GH4HweBGBE+c9
-	LERcl6Nmw3EJtN8rJNBVX4cgEC5C8GLKxYCpaZZAxNoqhfGJ+1KwGRDMelsR2LutDPR03WDA
-	c9GAYezCDAv9Lc8Q2B4FWXD0GQgMu39A4Ay5pNB3Mw0GA9ckMNv7BMO95wMI3MEZDEHfYQQR
-	exaUVzZG4/YRFqZu/8mAw9aF4PSjXgae9T1EcLH1XwTemkIW/iv9hQF/cD7cDQ+z0GErYWGw
-	+wSGoQssVBR6JdDd2Y/gpMuKIPSPF4PxzHkW7CcbCDQ9vCqF7v5pDA/sVgx1DZ9CwB0icKu0
-	EkfPjVI/J4LLYcTR8hSD7dw1DBPuWumGakRfmCyE1jZewtR0J8JSzykPolOTVkTHq40MNZVG
-	25aBYYYeavyOVt8aYOlk+C+Wep9XEPp7pUCriicxLbudQpucvdLNG7+QrdslatV5ou6D9Ttk
-	mdU/1ZC99Zn7PH/4yUE0km5GcZzAfyJYrhdKY5rw7wqhqhCJaZZPEnp6Jhgz4riE6PzO441m
-	JOMY3v620NFYJIkxC3mt0HJ0FMcYOQ+Cv+3zGKPgjyHBdrZ+bo+cf0PoOB6c0wyfLPTM9M3x
-	DL9YODvDxWQcv06w2FNjxJv8UsF3qQ2XIrnztbDztbDzVbgCMbUoQZ2Tl61Sa1NX6rMy83PU
-	+1bu3JPdgKI/6T4wXXYFjfvTmhHPIeU8OWxI1ygkqjx9fnYzEjhGmSBfviJDo5DvUuXvF3V7
-	vtZ9qxX1zWgxR5SJ8vTt4g4Fv1uVK2aJ4l5R97+LubhFB1E53XrloyVflozeLWm7uXw+OYws
-	W8wRTa1vTI7rBosP/Xauqrxy2YKkjPurtcbZ+NyrQ/vfqypoHx06Yo7b9vRAxabdGkOid82v
-	nd6wMeGYs1NVnNpeQMc+OypYPr6xos6X5k/+vis+MPJN63BNkvGtr9agBY4lP4ZSOtNTHKse
-	x7+jJPpM1apkRqdXvQRKKENIjwMAAA==
-X-CFilter-Loop: Reflected
-X-Stat-Signature: cdhh885jezpq574ju3dkr78frwpmzm69
-X-Rspamd-Queue-Id: 2CAD1180006
-X-Rspamd-Server: rspam01
+In-Reply-To: <178277581197.172200.16265155329935822153.stgit@skinsburskii>
+X-ClientProxiedBy: SY5P282CA0070.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:203::16) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MW4PR12MB6780:EE_
+X-MS-Office365-Filtering-Correlation-Id: 84c63572-8fdd-4133-6c5a-08dedb173f6d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|18002099003|22082099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	0O+42YQ+mf9tyylIvlPGXmCIAYYmhMpodvdwzt6HJMZK5M71Sq/E2SM80L0+Yect7AY379OoPEBVQno2q1geFd0HStuKrdbRvaoYLX8i0TgOe8fFHGsZlqM78SwEGKPjDJZZSD/WjwrzhivVoSEg+4suGNJXRkxv/qfCtkeu8lt80KD9ZANQ//H+MO7/yjjNhWVjeHKRKIFjhzHEyy8t8NdkgaFVYXjRLlDKWgK/9IaAylr3hLPEXdLyt5QimoebtO6+fTv9EL/avog+S4nx+3xo5NA1ABK09bqOXTlOayRsbHjre37RkWHIKe59EsIbRq2Ib2Z9PsrzPmlAkV7V/cQ18OKzHOtZS+6FAS15oYeQnCLo785UecWRvl6KXAOQt5pXEKJMmWVblSoWZJpWS7jcle+rARltDPTVkEspOJq64p/qJhFQBrcEU+aGkIAIau/rrECA1e58Ix0AKoQ+Z9UrKN7l2iIauyF1XsPRkVNfYAg55pc4igXSYI1D8HKgby3fY6Adj9vQQCbxT5b4RMHfPz6AFIY04y3ohcEulPMVfsZpVKJTAI5m24TOnrkIGa0RNudpDmFTBNWlvJQ6VWVvc3btGVUsymUwgWo7jI/bNGpN1mqqVNmkujZibmaeSsZoo6glU0g4n1Aek6LH5TzaS16orf/5vJXWEtqM478=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(18002099003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qAi9og+pfm6U99LIGNir2YUS+eRGw7ZvAUmFQBdd35a44DskWPXmqDWCYkpJ?=
+ =?us-ascii?Q?mMsqqy2Gjb69dZRbZuoQwoqaKsAPI3qFrHstXgaqHMXymIUFe2GLbqRzuabl?=
+ =?us-ascii?Q?MzymVtjm2ugMbOWW5X/EYTn8TnFSdfvnjPLVYLg0GGSDLkiBNp7pbLAo0DCx?=
+ =?us-ascii?Q?NOG8BqgLsTAWn5E/bfte8ilRtKjOI3g+VV9n1C5aflVoOZALNraRvUHIoOJ+?=
+ =?us-ascii?Q?/429U/EGa7qT9uLbYNm2a42yUlLidaqUUoiY2bfY1hEwfXqqb+DwqZB0eP+W?=
+ =?us-ascii?Q?A+lFN420uR3AAW6ZzSeVg1d+Lr8Sa1lIUFRCES0S+SaefH16o9Wb3ePCJSND?=
+ =?us-ascii?Q?lc0E3afJ/kD988pdAm/cCQUkKx/WkCwSfZW0DGDvw1k0GZnuWg32Ylz3HQJx?=
+ =?us-ascii?Q?MjFCYmDX3N/T+VNebFm/rLoCj05ufqiEod/isd7PqWlXXxmzrCQad7EfDjah?=
+ =?us-ascii?Q?ot6274mekgbi7g0no+VGn5I/v2l9BAwrL147vgkh9zFeLqrhC7lgofcgJWwh?=
+ =?us-ascii?Q?lmoMFd0ChLv7DKM5jDUN9NMAtJoOJBpoXpAGYzXZn4pNiANlAKNN5sCjuJDP?=
+ =?us-ascii?Q?c3hTuNDMgXIZQCfFMOWehwqs2h/NJ1j1ZO3+unPZjxEwH8leeq9KAlHwZWvf?=
+ =?us-ascii?Q?8ks2CvbjvZTdm4oSXHYO8e6CPXTQfhkKL2kdJTC0A40Ov2k1N1NnhopZlEGv?=
+ =?us-ascii?Q?HRKWn2lFGsW8Ejk73ov6BHyy5J7GtBjbku5cjbgK5v/Bb9DKfQTbscXTzn22?=
+ =?us-ascii?Q?CjDl1uV4aVz9cGXxUTVExXJdklqkOlZsR553AJIfV5dExpgixZcXkaahK0Ml?=
+ =?us-ascii?Q?U6wvWe2Z9NxxulGaQDYoLJr2S+6sNgnDFKFJy1g9fGHyOD7lwdeWmEJUOU3V?=
+ =?us-ascii?Q?01sNFIfzZxCic+0evBeQYEEolQtmgiGvC2nX3jDs70xa+V9l1r7C+dBPWhZQ?=
+ =?us-ascii?Q?xXya5IDg+Jv8pwr4+BVd2rbFk1OppdSgqpCCx2Ohw1vCxrxTQ1VkMrHfPXd/?=
+ =?us-ascii?Q?gS3/bVXesbVM3Ekoi7s7qjnvcM7KqNqjqR4u1pancFvx3gbpKuqCRRcyhsHx?=
+ =?us-ascii?Q?1rxi/rzpRyrMj1wGbynSk7eCACPJMnuJLGkczDJ6fBLRiv22h3rAW13pfRib?=
+ =?us-ascii?Q?I2wpGTtx4ni8tUzSZadyN/Rz+z5BzdL1T/fLqfMIN2aFYEJNqWK6p9vmnJS9?=
+ =?us-ascii?Q?WEUXS/o0ngK+Lejaci5+o9Qk3N6DkQl1AMPdPPJIvqm98T+cvQ6fIHQ1rxml?=
+ =?us-ascii?Q?z8mzf57IPKI3sxfpGc/guaAzZJ8OakLJD/ZLkTtkrm0VlxJ/9okqWEeR/P4o?=
+ =?us-ascii?Q?v4coovlVTpmqMGMTqoK5IjuDeN31VrVDteDwzdnqM4SN4ZBVaayxzNGpIOvC?=
+ =?us-ascii?Q?AcFgbYx6KAfQ6tJnEhlAaDjof0ggRN+K38EMClB+CAJvvpSCARBJfd8iM+s8?=
+ =?us-ascii?Q?D4Mx5pqjapWzasByaiqWITbwBco/XK+MWLpGE/WBK5hJIqIF+B+QvNK+TlS8?=
+ =?us-ascii?Q?p1sQLZLUNE54mzOzsH2B2AYkeytLK5BrVnMSH0tJ2NISO2L0EXADZbGYY23F?=
+ =?us-ascii?Q?k73rnKfhJ9NbzfXWQQ8sLdcX4xTdxDfJTyQz3R2NJalxhV8RzCZbsvBxNPpX?=
+ =?us-ascii?Q?H1Ae0Vhb/c/AUc9t0OkO5YhDH+6qQgxk+5Y+60UeCAAmhkn7tUXzvZyRWXWR?=
+ =?us-ascii?Q?iuxYWqTYxKsdt7MNHCsPillvpFBWI/ennqp7j/65lffHEd3L?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84c63572-8fdd-4133-6c5a-08dedb173f6d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jul 2026 04:30:02.9457
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2gloE7A8Tz12a3wn+Hpmq8W69x7A42zsovMDKCMjb5KgF86No/tGekGzaAG/ik0zKxBVKm81ofvEQvKY7TeCPg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6780
 X-Rspam-User: 
-X-HE-Tag: 1783311605-845382
-X-HE-Meta: U2FsdGVkX1+XcaID2wGgGyEZ2CanMImSZMN+6RWi6V7nTPTxXZStWmGPWe2qlxHU5bB0S+3CcyFSS0d9cxZgyTgnNfDWVcanRLnB9DguzpG6ZVS+KDjxV7sevAvFVfoWKOEeG9nFTqd5jD1tBDhiRs79e446xQEt9Na3aZmTr9qmClCj8ZFK+W3poNzHyZdJKHfnEJXRPsa5aKLrjmkeLbgux6/3SzG2/K3UTihQIwUVNo2Cw53Lz2ANkeksQfK7Q/Wu48mvPk+XDj1o6oHOtLKYSdHvTzjwzOuscsVZG29QmXlz6jQKzcbUHgmvS6r1I82QzmvlTCTbYfgLAWBG49RL2Tj8Jf86z8Tr+HfhHEUn8g3FmuS6E9S4iEHTjLUaLlf8XKxZHPCz/XaRyJdH7/7/x49k5oIWXtxunyGW4F8Ba3sUXdMDmlsZtNRZNvM/V6qwLVxLDKxoQyVpyKLQDNACnO71fdG+4thqYKwyrVutS5YiToPeiV3H3FD5C8jSAFZXoGwlP3to1zTHPEoYzZbMSQTLwvEsFJbq60c0BsuniZLlLkduDzKSvBThA9iq3W2y/HB3UPxvEtqr4wMHDiDOahm/0ldBfKA4MR9UjYWLynRQ4EmbUTEAsILc/Ro0VhYtbVm0oB5gjiWyLMy+gIXDjcxocWLBSxYinXoPQcxVQZIgzZRWWl90iKWqSbSewi8ZscFN43oPzDXmirRAMjrFpzTge0YGs8ER9mrC6dGtcWLxHvZAxtF6LjrpAs2aDLwhQfmhT1mpxtjsEOERUrPAgK8+LyB4lFHpAjtf0hc6s0KMXHhNgm2un+DmPo3GB6JhCNS5U8gQJJHOfni1dxmdvETzz4+OfqcInVexbb5Yc6bJZM7tkbD4lcWTWHQZS9sic6JyQyluFmG7dVeChqcOXYVzRrp88Zp2ULkw1DXIuybXfsPFzvEdxppYym3zc17GHgLr0v/3yx1PnYj
- Cg73H9Ng
- RYh17OHTlAdj2Dul5afZYQemf0GFqBQOGxWQ00A/N0ibKbDChJaUTO/hcZzUux5HMI6dnbBUsMSs99h4N6Ft0GAOwaN7Co3Vs8lQBbEP4kQNsHDijly5DkM1yOpSteSnxwKN6NlLb2FKy2B99FzlIcO7Orx/0z3a/RQEKkljmdJwXt8lxjUi2660bUGZ1QrC5gC/9/f0JzZsDbUIgdlZhestRdHXwicyV8QvPgZQ3JiPtH7AumTtq2Us2Byxmcy/5GSUd
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1D8D340007
+X-Stat-Signature: a68m15ek619tf7ictj7d8p95w949ksr5
+X-HE-Tag: 1783312207-561840
+X-HE-Meta: U2FsdGVkX1+nqhnt3xxZp/dAbcRYJVt47xQ/u9+FGxHmVyX/YMALfhX/tm1RnBPR73YrEw6gW2kNdJpP6Ue7BJdFLXSBLQz5zZSybrMcvBOLNTIp06D5UVyYl2hR04jFN5/KVbaarq3ecwKSynd5ULWJ+Q/q+2RWBEVk6oaBXzMGMYehM7Y7yBtpdysD0aakV2Y4sirzy1UomuJQ0EjcuRvMRiTmAXE/7jqss4/SWWUb7gEhdbtArEx/iSqFNUNtp0sXh8Y0FGQqIn/H5wDxGC9sHvkClq+HRaIpZuwsT26GYrdhHXHxA8Mr3EeDQ3ewwMQyrMn94DqOJtLYJ4UdPq7eNQEJhOgYRIAGW8vDBJ4DKj6M7sf4MpTo39G0Ye2pnzdPlyyMkKn4EldmHZMXah2bmr0UTci6XaHx9qn/4PwhiAoC4vghFSGqg3QlWaeYRCZqBEodtt4mlFxNz6DvpJzdVLmGkgLG/eDsGTtrT4tX4DQLRMoJom6depjHtj/1xSshpsOxX4eKSee2bycxfDFza/hJAyd6Ws0uZi4/NTklaC86GWY7qJ7FnwN6263v8MqV0smiLZoiUWBxKrllTXukmBOwkClxKisF3YGx56nYviuCVztM/X0ZYv1RSPoYHoHT89sO+Ox5F8Stx+TKgn8CnK0UclQpaK9A3O+WoHlUprTSoDhbU/QCj42abrIX7d4Jvi+L/hNe3X9Wpg4OY3W3Eath7ZwkJjUtiXv8NbU0hjwIZtaVcOb5Mo424xrckfK3viCMKHciuv530Xe8VlfY9sCzNbOqPIsOYiY8Ro5+J1qCgGjaAGsSLLjfVXpZ/XpojM75ocnaYVvAjrYcSJIBlBG2WBpDdeFosJvzch/0+dDHkMIQJrz9LP4B9+gv8ZOygB3LrcNA80Tp2QFDfBjQRHnixMA4sKqWeXrlhuA2LpOAErWaWqv6WSmHbdonaBqg1fDf5LqR5fXNMBm
+ cmre4DxP
+ OmS3GhzEuk7msk8pA59Gre8IVvuv7Sr0pfb+T0AdzMh5CzxKms141/kU47Upz9is5H5dI1xLJvSYgtLNZshhCzdf/JpZbJNImzzSWNjQAWFNSwBH5v+4WxQprXtDlSSz8tMDZ9FCp7QHzs5RSexAgGs6rqLwZfQ4UeesnPm4Vtf2cEccE466YjAjtCgkomkq9qX/23xE1Imooz/x36H6pzfAYc6nl4VgVJ/EH4uyh9wJC4lM9Jtyw704Cvz/MeHlmjsDCIYMDs16c/McMNLzmb2sgdXo5URnlyT0ns9Q0KfD9i4SkvjFUWm34px2/61GbMCNUaWKg0dUr4Fkw5mFmfJE90ZjuJy5jUzjtwmRCjedFX24gteOOA8lpeGjfpFTEfWyO/l6rNi/8pIo7AKmGNI0RaBeBVnWBdsE9NK2P9lTRUPnlqOmWFjQxftp+gkpjviM81NgErBGpxjI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,333 +158,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 07, 2026 at 01:19:00PM +0100, Petr Pavlu wrote:
-> On 12/5/25 8:18 AM, Byungchul Park wrote:
-> > struct dept_event_site and struct dept_event_site_dep have been
-> > introduced to track dependencies between multi event sites for a single
-> > wait, that will be loaded to data segment.  Plus, a custom section,
-> > '.dept.event_sites', also has been introduced to keep pointers to the
-> > objects to make sure all the event sites defined exist in code.
-> >
-> > dept should work with the section and segment of module.  Add the
-> > support to handle the section and segment properly whenever modules are
-> > loaded and unloaded.
-> >
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+On 2026-06-30 at 09:30 +1000, Stanislav Kinsburskii <skinsburskii@gmail.com> wrote...
+> Commit af69016dab96 ("lib: test_hmm: implement a device release method")
+> moved the initial dmirror_allocate_chunk() call before cdev_device_add().
+> That means the struct cdev has not been added yet, so cdev_add() has not
+> initialized mdevice->cdevice.dev.
 > 
-> Below are a few comments from the module loader perspective.
+> The coherent-device range selection uses the device minor to choose between
+> spm_addr_dev0 and spm_addr_dev1. Reading MINOR(mdevice->cdevice.dev) before
+> cdev_add() therefore always sees an uninitialized dev_t. As a result, both
+> coherent devices select the same physical range, and adding the second
+> device fails due to the overlapping dev_pagemap range.
 > 
-> > ---
-> >  include/linux/dept.h     | 14 +++++++
-> >  include/linux/module.h   |  5 +++
-> >  kernel/dependency/dept.c | 79 +++++++++++++++++++++++++++++++++++-----
-> >  kernel/module/main.c     | 15 ++++++++
-> >  4 files changed, 103 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/include/linux/dept.h b/include/linux/dept.h
-> > index 44083e6651ab..c796cdceb04e 100644
-> > --- a/include/linux/dept.h
-> > +++ b/include/linux/dept.h
-> > @@ -166,6 +166,11 @@ struct dept_event_site {
-> >       struct dept_event_site          *bfs_parent;
-> >       struct list_head                bfs_node;
-> >
-> > +     /*
-> > +      * for linking all dept_event_site's
-> > +      */
-> > +     struct list_head                all_node;
-> > +
-> >       /*
-> >        * flag indicating the event is not only declared but also
-> >        * actually used in code
-> > @@ -182,6 +187,11 @@ struct dept_event_site_dep {
-> >        */
-> >       struct list_head                dep_node;
-> >       struct list_head                dep_rev_node;
-> > +
-> > +     /*
-> > +      * for linking all dept_event_site_dep's
-> > +      */
-> > +     struct list_head                all_node;
-> >  };
-> >
-> >  #define DEPT_EVENT_SITE_INITIALIZER(es)                                      \
-> > @@ -193,6 +203,7 @@ struct dept_event_site_dep {
-> >       .bfs_gen = 0,                                                   \
-> >       .bfs_parent = NULL,                                             \
-> >       .bfs_node = LIST_HEAD_INIT((es).bfs_node),                      \
-> > +     .all_node = LIST_HEAD_INIT((es).all_node),                      \
-> >       .used = false,                                                  \
-> >  }
-> >
-> > @@ -202,6 +213,7 @@ struct dept_event_site_dep {
-> >       .recover_site = NULL,                                           \
-> >       .dep_node = LIST_HEAD_INIT((esd).dep_node),                     \
-> >       .dep_rev_node = LIST_HEAD_INIT((esd).dep_rev_node),             \
-> > +     .all_node = LIST_HEAD_INIT((esd).all_node),                     \
-> >  }
-> >
-> >  struct dept_event_site_init {
-> > @@ -225,6 +237,7 @@ extern void dept_init(void);
-> >  extern void dept_task_init(struct task_struct *t);
-> >  extern void dept_task_exit(struct task_struct *t);
-> >  extern void dept_free_range(void *start, unsigned int sz);
-> > +extern void dept_mark_event_site_used(void *start, void *end);
+> Use mdevice->device.devt instead. It is initialized in
+> dmirror_device_init() before dmirror_allocate_chunk() is called and is the
+> same dev_t later passed to cdev_device_add().
 > 
-> Nit: The coding style recommends not using the extern keyword with
-> function declarations.
+> Fixes: af69016dab96 ("lib: test_hmm: implement a device release method")
+> Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
+> ---
+>  lib/test_hmm.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> https://www.kernel.org/doc/html/v6.19-rc4/process/coding-style.html#function-prototypes
-> 
-> >
-> >  extern void dept_map_init(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
-> >  extern void dept_map_reinit(struct dept_map *m, struct dept_key *k, int sub_u, const char *n);
-> > @@ -288,6 +301,7 @@ struct dept_event_site { };
-> >  #define dept_task_init(t)                            do { } while (0)
-> >  #define dept_task_exit(t)                            do { } while (0)
-> >  #define dept_free_range(s, sz)                               do { } while (0)
-> > +#define dept_mark_event_site_used(s, e)                      do { } while (0)
-> >
-> >  #define dept_map_init(m, k, su, n)                   do { (void)(n); (void)(k); } while (0)
-> >  #define dept_map_reinit(m, k, su, n)                 do { (void)(n); (void)(k); } while (0)
-> > diff --git a/include/linux/module.h b/include/linux/module.h
-> > index d80c3ea57472..29885ba91951 100644
-> > --- a/include/linux/module.h
-> > +++ b/include/linux/module.h
-> > @@ -29,6 +29,7 @@
-> >  #include <linux/srcu.h>
-> >  #include <linux/static_call_types.h>
-> >  #include <linux/dynamic_debug.h>
-> > +#include <linux/dept.h>
-> >
-> >  #include <linux/percpu.h>
-> >  #include <asm/module.h>
-> > @@ -588,6 +589,10 @@ struct module {
-> >  #ifdef CONFIG_DYNAMIC_DEBUG_CORE
-> >       struct _ddebug_info dyndbg_info;
-> >  #endif
-> > +#ifdef CONFIG_DEPT
-> > +     struct dept_event_site **dept_event_sites;
-> > +     unsigned int num_dept_event_sites;
-> > +#endif
-> >  } ____cacheline_aligned __randomize_layout;
-> >  #ifndef MODULE_ARCH_INIT
-> >  #define MODULE_ARCH_INIT {}
-> 
-> My understanding is that entries in the .dept.event_sites section are
-> added by the dept_event_site_used() macro and they are pointers to the
-> dept_event_site_init struct, not dept_event_site.
-> 
-> > diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-> > index b14400c4f83b..07d883579269 100644
-> > --- a/kernel/dependency/dept.c
-> > +++ b/kernel/dependency/dept.c
-> > @@ -984,6 +984,9 @@ static void bfs(void *root, struct bfs_ops *ops, void *in, void **out)
-> >   * event sites.
-> >   */
-> >
-> > +static LIST_HEAD(dept_event_sites);
-> > +static LIST_HEAD(dept_event_site_deps);
-> > +
-> >  /*
-> >   * Print all events in the circle.
-> >   */
-> > @@ -2043,6 +2046,33 @@ static void del_dep_rcu(struct rcu_head *rh)
-> >       preempt_enable();
-> >  }
-> >
-> > +/*
-> > + * NOTE: Must be called with dept_lock held.
-> > + */
-> > +static void disconnect_event_site_dep(struct dept_event_site_dep *esd)
-> > +{
-> > +     list_del_rcu(&esd->dep_node);
-> > +     list_del_rcu(&esd->dep_rev_node);
-> > +}
-> > +
-> > +/*
-> > + * NOTE: Must be called with dept_lock held.
-> > + */
-> > +static void disconnect_event_site(struct dept_event_site *es)
-> > +{
-> > +     struct dept_event_site_dep *esd, *next_esd;
-> > +
-> > +     list_for_each_entry_safe(esd, next_esd, &es->dep_head, dep_node) {
-> > +             list_del_rcu(&esd->dep_node);
-> > +             list_del_rcu(&esd->dep_rev_node);
-> > +     }
-> > +
-> > +     list_for_each_entry_safe(esd, next_esd, &es->dep_rev_head, dep_rev_node) {
-> > +             list_del_rcu(&esd->dep_node);
-> > +             list_del_rcu(&esd->dep_rev_node);
-> > +     }
-> > +}
-> > +
-> >  /*
-> >   * NOTE: Must be called with dept_lock held.
-> >   */
-> > @@ -2384,6 +2414,8 @@ void dept_free_range(void *start, unsigned int sz)
-> >  {
-> >       struct dept_task *dt = dept_task();
-> >       struct dept_class *c, *n;
-> > +     struct dept_event_site_dep *esd, *next_esd;
-> > +     struct dept_event_site *es, *next_es;
-> >       unsigned long flags;
-> >
-> >       if (unlikely(!dept_working()))
-> > @@ -2405,6 +2437,24 @@ void dept_free_range(void *start, unsigned int sz)
-> >       while (unlikely(!dept_lock()))
-> >               cpu_relax();
-> >
-> > +     list_for_each_entry_safe(esd, next_esd, &dept_event_site_deps, all_node) {
-> > +             if (!within((void *)esd, start, sz))
-> > +                     continue;
-> > +
-> > +             disconnect_event_site_dep(esd);
-> > +             list_del(&esd->all_node);
-> > +     }
-> > +
-> > +     list_for_each_entry_safe(es, next_es, &dept_event_sites, all_node) {
-> > +             if (!within((void *)es, start, sz) &&
-> > +                 !within(es->name, start, sz) &&
-> > +                 !within(es->func_name, start, sz))
-> > +                     continue;
-> > +
-> > +             disconnect_event_site(es);
-> > +             list_del(&es->all_node);
-> > +     }
-> > +
-> >       list_for_each_entry_safe(c, n, &dept_classes, all_node) {
-> >               if (!within((void *)c->key, start, sz) &&
-> >                   !within(c->name, start, sz))
-> > @@ -3337,6 +3387,7 @@ void __dept_recover_event(struct dept_event_site_dep *esd,
-> >
-> >       list_add(&esd->dep_node, &es->dep_head);
-> >       list_add(&esd->dep_rev_node, &rs->dep_rev_head);
-> > +     list_add(&esd->all_node, &dept_event_site_deps);
-> >       check_recover_dl_bfs(esd);
-> >  unlock:
-> >       dept_unlock();
-> > @@ -3347,6 +3398,23 @@ EXPORT_SYMBOL_GPL(__dept_recover_event);
-> >
-> >  #define B2KB(B) ((B) / 1024)
-> >
-> > +void dept_mark_event_site_used(void *start, void *end)
-> 
-> Nit: I suggest that dept_mark_event_site_used() take pointers to
-> dept_event_site_init, which would catch the type mismatch with
-> module::dept_event_sites.
-> 
-> > +{
-> > +     struct dept_event_site_init **evtinitpp;
-> > +
-> > +     for (evtinitpp = (struct dept_event_site_init **)start;
-> > +          evtinitpp < (struct dept_event_site_init **)end;
-> > +          evtinitpp++) {
-> > +             (*evtinitpp)->evt_site->used = true;
-> > +             (*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
-> > +             list_add(&(*evtinitpp)->evt_site->all_node, &dept_event_sites);
-> > +
-> > +             pr_info("dept_event_site %s@%s is initialized.\n",
-> > +                             (*evtinitpp)->evt_site->name,
-> > +                             (*evtinitpp)->evt_site->func_name);
-> > +     }
-> > +}
-> > +
-> >  extern char __dept_event_sites_start[], __dept_event_sites_end[];
-> 
-> Related to the above, __dept_event_sites_start and
-> __dept_event_sites_end can already be properly typed here.
-> 
-> >
-> >  /*
-> > @@ -3356,20 +3424,11 @@ extern char __dept_event_sites_start[], __dept_event_sites_end[];
-> >  void __init dept_init(void)
-> >  {
-> >       size_t mem_total = 0;
-> > -     struct dept_event_site_init **evtinitpp;
-> >
-> >       /*
-> >        * dept recover dependency tracking works from now on.
-> >        */
-> > -     for (evtinitpp = (struct dept_event_site_init **)__dept_event_sites_start;
-> > -          evtinitpp < (struct dept_event_site_init **)__dept_event_sites_end;
-> > -          evtinitpp++) {
-> > -             (*evtinitpp)->evt_site->used = true;
-> > -             (*evtinitpp)->evt_site->func_name = (*evtinitpp)->func_name;
-> > -             pr_info("dept_event %s@%s is initialized.\n",
-> > -                             (*evtinitpp)->evt_site->name,
-> > -                             (*evtinitpp)->evt_site->func_name);
-> > -     }
-> > +     dept_mark_event_site_used(__dept_event_sites_start, __dept_event_sites_end);
-> >       dept_recover_ready = true;
-> >
-> >       local_irq_disable();
-> > diff --git a/kernel/module/main.c b/kernel/module/main.c
-> > index 03ed63f2adf0..82448cdb8ed7 100644
-> > --- a/kernel/module/main.c
-> > +++ b/kernel/module/main.c
-> > @@ -2720,6 +2720,11 @@ static int find_module_sections(struct module *mod, struct load_info *info)
-> >                                               &mod->dyndbg_info.num_classes);
-> >  #endif
-> >
-> > +#ifdef CONFIG_DEPT
-> > +     mod->dept_event_sites = section_objs(info, ".dept.event_sites",
-> > +                                     sizeof(*mod->dept_event_sites),
-> > +                                     &mod->num_dept_event_sites);
-> > +#endif
-> >       return 0;
-> >  }
-> >
-> > @@ -3346,6 +3351,14 @@ static int early_mod_check(struct load_info *info, int flags)
-> >       return err;
-> >  }
-> >
-> > +static void dept_mark_event_site_used_module(struct module *mod)
-> > +{
-> > +#ifdef CONFIG_DEPT
-> > +     dept_mark_event_site_used(mod->dept_event_sites,
-> > +                          mod->dept_event_sites + mod->num_dept_event_sites);
-> > +#endif
-> > +}
-> > +
-> 
-> It seems to me that the .dept.event_sites section can be discarded after
-> the module is initialized. In this case, the section should be prefixed
-> by ".init" and its address can be obtained at the point of use in
-> dept_mark_event_site_used_module(), without needing to store it inside
-> the module struct.
-> 
-> Additionally, what is the reason that the dept_event_site_init data is
-> not stored in the .dept.event_sites section directly and it requires
-> a level of indirection?
-> 
-> In general, for my own understanding, I also wonder whether the check to
-> determine that a dept_event_site is used needs to be done at runtime, or
-> if it could be done at build time by objtool/modpost.
+> diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> index 9c59d1ceb5b5..c4adbf98fac7 100644
+> --- a/lib/test_hmm.c
+> +++ b/lib/test_hmm.c
+> @@ -581,7 +581,7 @@ static int dmirror_allocate_chunk(struct dmirror_device *mdevice,
+>  		devmem->pagemap.type = MEMORY_DEVICE_PRIVATE;
+>  		break;
+>  	case HMM_DMIRROR_MEMORY_DEVICE_COHERENT:
+> -		devmem->pagemap.range.start = (MINOR(mdevice->cdevice.dev) - 2) ?
+> +		devmem->pagemap.range.start = (MINOR(mdevice->device.devt) - 2) ?
 
-I appreciate your feedback and it was so helpful, but I decided to defer
-the part supporting recover events tracking - 33/42 ~ 35/42 in this
-series - to a follow-up patch later with the feedback applied, as it
-unnecessarily complicates the initial DEPT patchset and significantly
-increases the review burden.
+Makes sense to me. As Andrew mentioned we should cc: stable, but I assume he
+will add that so:
 
-	Byungchul
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
 
-> >  /*
-> >   * Allocate and load the module: note that size of section 0 is always
-> >   * zero, and we rely on this for optional sections.
-> > @@ -3508,6 +3521,8 @@ static int load_module(struct load_info *info, const char __user *uargs,
-> >       /* Done! */
-> >       trace_module_load(mod);
-> >
-> > +     dept_mark_event_site_used_module(mod);
-> > +
-> >       return do_init_module(mod);
-> >
-> >   sysfs_cleanup:
+>  							spm_addr_dev0 :
+>  							spm_addr_dev1;
+>  		devmem->pagemap.range.end = devmem->pagemap.range.start +
 > 
-> --
-> Thanks,
-> Petr
+> 
+> 
 
