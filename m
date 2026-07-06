@@ -4,146 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3DBEC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 18:17:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0772C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 18:17:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA5406B00B1; Mon,  6 Jul 2026 14:17:33 -0400 (EDT)
+	id 9614F6B00B5; Mon,  6 Jul 2026 14:17:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D56036B00B4; Mon,  6 Jul 2026 14:17:33 -0400 (EDT)
+	id 910D86B00B6; Mon,  6 Jul 2026 14:17:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C44E06B00B5; Mon,  6 Jul 2026 14:17:33 -0400 (EDT)
+	id 7D8976B00B8; Mon,  6 Jul 2026 14:17:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 960266B00B1
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:17:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14E028B484
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:17:33 +0000 (UTC)
-X-FDA: 84959159586.21.08CC66B
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8CF9EC000C
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:17:30 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CNyUy7kr;
-	spf=pass (imf28.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783361851;
-	b=oHaP+NILAsjv80T05DXu1yPfZ42ebW6e4nR+YLhLBttc8tCD+9chg/PqpQyFqsWOHDv0Co
-	ouJLnWhsUIKMFx4RN34rQmCui3QGrqjr3Dige7a+lExRXHOL/wQsSIcC//fRUE2boJnN3e
-	aHqzwq70ZUi7s65U+8sftYDO1AVKMF4=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CNyUy7kr;
-	spf=pass (imf28.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783361851;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D1D76B00B5
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:17:46 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB5E8C0F16
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:17:45 +0000 (UTC)
+X-FDA: 84959160090.16.895EB44
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AFFC8A0002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:17:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uG7lOtbg;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783361863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7OW/CenuU9P13pzjhjZutuMsDUz3ebL4YDkxxEUpTq8=;
-	b=inAQrCGTNsQpy8hpzgz50fOTyo7SjywUS1fKVUIHkHSgceirlh1kZbroq9/Vokd4ata9NI
-	wLky2H+VKedcSdaJH3g4JXRVUCCsXu2jEdlsDAkkJnG/ElU4REGEmGFn14NnQeqDxtILnx
-	Lka589By+bl3tWzJ0lsyq60PLz8gZ68=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7OW/CenuU9P13pzjhjZutuMsDUz3ebL4YDkxxEUpTq8=; b=CNyUy7krT2KWgEwmWVKxtIQ+mF
-	Vb+1q+gyB5yQGtWUUUTFfkVXSRepuw7fyFqIY66jb6ov+a2TSQuU6Oeko21f10IdvUo87ND796N2s
-	r4dJq4T0v6JLzeGf9VmqXcqhhRS0zxb+AYnr/OkLGsRdGJ59LoP8x6HtyxyIaDGX/UNF4eV4mx/6j
-	9DFL/3RA2rxLGItPLNRlN3OyyNrc4LrBZnn6Z3pAqvn4XXv6D9Sm5JmxAl/Nx6Vi/43ITWBd3Tatn
-	UF0bFlXL9IwSqecAJqVY3MLm3w3NDEriZxsXwEytou0y28YZK6qZ/ZV3pvVIppH/oIVxHPm218vXX
-	ibjZRXUw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wgnhQ-0000000GLqy-1n2W;
-	Mon, 06 Jul 2026 18:05:44 +0000
-Date: Mon, 6 Jul 2026 19:05:44 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-kernel@vger.kernel.org, max.byungchul.park@gmail.com,
-	kernel_team@skhynix.com, torvalds@linux-foundation.org,
-	damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-	mingo@redhat.com, peterz@infradead.org, will@kernel.org,
-	tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
-	sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
-	johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
-	david@fromorbit.com, amir73il@gmail.com, gregkh@linuxfoundation.org,
-	kernel-team@lge.com, linux-mm@kvack.org, akpm@linux-foundation.org,
-	mhocko@kernel.org, minchan@kernel.org, hannes@cmpxchg.org,
-	vdavydov.dev@gmail.com, sj@kernel.org, jglisse@redhat.com,
-	dennis@kernel.org, cl@linux.com, penberg@kernel.org,
-	rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
-	linux-block@vger.kernel.org, josef@toxicpanda.com,
-	linux-fsdevel@vger.kernel.org, jack@suse.cz, jlayton@kernel.org,
-	dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
-	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
-	melissa.srw@gmail.com, hamohammed.sa@gmail.com,
-	harry.yoo@oracle.com, chris.p.wilson@intel.com,
-	gwan-gyeong.mun@intel.com, boqun.feng@gmail.com, longman@redhat.com,
-	yunseong.kim@ericsson.com, ysk@kzalloc.com, yeoreum.yun@arm.com,
-	netdev@vger.kernel.org, matthew.brost@intel.com,
-	her0gyugyu@gmail.com, corbet@lwn.net, catalin.marinas@arm.com,
-	bp@alien8.de, x86@kernel.org, hpa@zytor.com, luto@kernel.org,
-	sumit.semwal@linaro.org, gustavo@padovan.org,
-	christian.koenig@amd.com, andi.shyti@kernel.org, arnd@arndb.de,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	rppt@kernel.org, surenb@google.com, mcgrof@kernel.org,
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com,
-	paulmck@kernel.org, frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
-	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
-	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
-	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
-	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
-	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
-	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
-	yuzhao@google.com, baolin.wang@linux.alibaba.com,
-	usamaarif642@gmail.com, joel.granados@kernel.org,
-	richard.weiyang@gmail.com, geert+renesas@glider.be,
-	tim.c.chen@linux.intel.com, linux@treblig.org,
-	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
-	chenhuacai@kernel.org, francesco@valla.it,
-	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
-	masahiroy@kernel.org, brauner@kernel.org,
-	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
-	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
-	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
-	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
-	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v19 22/40] dept: track PG_locked with dept
-Message-ID: <akvueAxPl8aoLvMR@casper.infradead.org>
-References: <20260706061928.66713-1-byungchul@sk.com>
- <20260706061928.66713-23-byungchul@sk.com>
+	bh=c+wxJ1Yd1HSbDSoQd0ZgV/xzQAnAHKSd8sgBz4R4ZFc=;
+	b=RVVwXOuxnXyJUGQLkc8Rs3sfcR60l9ObMgGX6pSqxCA8VtR7ep1SxMyqY/QthWbeIhDes0
+	Q+CTAjj1H0x2S1hQymRxUJXfZmhh7ANVpHn0hngUCHCOgcH/hE7y8Xe56gSdu0WqZeBmlh
+	piLAGSQ/36/ReBfFftcQMWeylOqHZCk=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uG7lOtbg;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf25.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783361863;
+	b=KkUOnwNutsL5yVPxePiLfKA5N4XyH8fgNDJU69V32IPPIJHzPQH3oexjGk/Fs/yl1m4YBl
+	YTOqMlvemnZpTi7RGtt/R6JdipQbPfrglFdu1DLUUcWZ/IOO3XGVVUUxZj8ey0X/6wEE+D
+	bNlxFPZOoqz3ls7ZrVaVKj36/nIPF/0=
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-c9a20f70263so83116a12.1
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 11:17:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783361863; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ANRiEWiWBXRBxyiH3RNCdoV1Ugs+paQAN5cttxRvlhya8PrLwhkBqW37MTbtd5cZ0w
+         L/llN7KBQAOWe4NccF0CkYDAjkXKmplAmIJi2jLDQ1uPjfEqyaE9E2FVPXMeSmiIqxvx
+         xwVYJ8dUA4M+Aia7Z4QRLLWG2EWn5vKbHINNZu9h0M4oR118IanteQ8FM3kqXp5OUvoR
+         sio90Qqnwhrd+4Tz36zyeDE++cV5lX+1uqTnlFyRreGw35A9nASTypK6UWhT0D1DNL3E
+         +oGI5Ww+hiZHby8Th87g5n/Ag8r+aHNvV9gxgxDLD1J2pxyOVJ/u1YS7pYu6igxTNhvC
+         CCTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=c+wxJ1Yd1HSbDSoQd0ZgV/xzQAnAHKSd8sgBz4R4ZFc=;
+        fh=qPynZrTw+R4VjoJRdTOY8tvsQrv7CnBiq8Qi6+3Tcyc=;
+        b=DdETt2dube0s/xudqM2U6LsWVQf/yXyZThiXAhdf61m7b9AD2/uqwufh9SCiShrxL7
+         F0tNxNSSmRAd8Cw9g9ve+69slLEKEiliWykuBBCEUq0RYVl1148BJ5ZraFKGnjdMSsFe
+         ViDMz9do8NGMmjL64nqJ1t1lqnI9IYxaMWx5ehXq2sivHD0uttUF+yR+m8WtlF7CLA/v
+         DPLhnLE6HIMvSGzLuiZizw/hLEw1n3TyyOaEQUgLdcw+5cmd7a0st39XJmJ4Q49v4zVY
+         FiC+d9bJaFPtj2jBEAe2OGUugb7iYd0rRQo2WsxaLE7kq1xcwBJYbwIOLULQnKEEs+rf
+         himA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783361862; x=1783966662; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c+wxJ1Yd1HSbDSoQd0ZgV/xzQAnAHKSd8sgBz4R4ZFc=;
+        b=uG7lOtbgY5qzobo7UhjtKoKbBAuAMsaLj/yUSKqifovCtCyyS6+SfSO8GUzr/ci7fQ
+         Ktp8s7HjuQWgjCtsSMGZG3S64cDDf3dGOYi2/KRtEqQrTvorSzguJ+a4LnW6545fpJ3D
+         EyG/OF7XFpiftXiBqnwll+f6xGePNl8tVszYhwn6fEazNXr1okWZPdk2mFWJ5rV+sG6i
+         JD7c7ca4Y9/oi26trODWMrSUAr0pUVOGphnDStr8JFn8jtiEKcJAqWK+zuFvDP0VoBZt
+         zvLJxwYbRbZOs5FRnP59lq0uCyiS+Hrs/tr62IJF3vQK6M2ZgnBq0ojjom1xpTnrIixJ
+         wygw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783361863; x=1783966663;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c+wxJ1Yd1HSbDSoQd0ZgV/xzQAnAHKSd8sgBz4R4ZFc=;
+        b=cZwuqPu5eLKDg4MosCn/qyMMb5n22hs/9ALkbxx5vqXq9KxyF9FbEKbghYSwRcaFLm
+         n8uTSLvse2ZvdRq3ZTGvygGwa9cCnXVP67Zl/ON85n4WAhboHgfgISxunlbCDO9Y7YD1
+         vf19UU7TOJIn/ZU4c4pJ0tQVvcgREbb3OaNNFxtQSzLzKua7i/wNPEfibB2zED4vYjxJ
+         CHViTU2yYJVpY67LDMD99UB+l7u0GX8PAA0DYJk3frKUaGCJ/LFmtsfVmPHVsS4QbTQK
+         AEylo1+bIMqqL3Aq7FtoYEnOrXu0N7lkSxaOg2gxWvC/tlykiIX7XFPSGayGTNMtEmOl
+         DxnA==
+X-Forwarded-Encrypted: i=1; AHgh+Rqf9SqxljDEu4I1Js0zlDFB2AL0SfJS+kAF2NqEwVUcfUP74wN9JRWIlOlNDY24lu2blvPKaDKFCA==@kvack.org
+X-Gm-Message-State: AOJu0YySvXETzbrNMsf/Ps62E+0VJulfQQXbH6dk/oQENuAB2RLhaoqa
+	ugvVBYUjtZd6iE/gHVeRavqAwWj27RqqyQdP6nO5m9NKqxGaf3sSffFyW6P0TNUr8j5qq/g4WHv
+	zaY/gimxwcqEuDWtCW3NlNL5fZGOYEDgyrQSeYw9v
+X-Gm-Gg: AfdE7clTTOf7HF7TaUTnjD8KPChFsvFD5L98971i2/vUr4LB1rXwBBDn1kWmIzzyzIJ
+	Gog60V0K6K1qumCwAEg/BthR9ovHL+1E4Ob3Q7VbdFd+nSN9FVofCxqLTabTOGBvnGkjtKqJ5hW
+	4iNAXie6gNNuW2rlc1Ao9qEm+cE/Bs0QISLuZp1fCDiLA0JdUEf/d+c920zAJZlm9FtpfLZLH0r
+	3OPavDyS7T9Cc9AA2+gjlkbc1aeNhWaqh42q+9iNHdzeFV6PmzqVh1bCKTV3v9Rhs49ZgbgRyR1
+	Ydv6TEDOmTtZ2lIttR+/k/g+FtbA3mCITr0uZdMVZtQAHK/0M5yfpfDRgoLI3barfEPCaQ==
+X-Received: by 2002:a05:6a21:6906:b0:3bf:79b5:ebdb with SMTP id
+ adf61e73a8af0-3c01caab306mr16907533637.21.1783361861894; Mon, 06 Jul 2026
+ 11:17:41 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Jul 2026 11:17:40 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 6 Jul 2026 11:17:40 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <114e2488-97ed-4740-a8e8-1edd991f26c5@arm.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com> <114e2488-97ed-4740-a8e8-1edd991f26c5@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260706061928.66713-23-byungchul@sk.com>
+Date: Mon, 6 Jul 2026 11:17:40 -0700
+X-Gm-Features: AVVi8CeLpju1khujHSRbueqIxtdXRIsffiKvTI6S-exNvUblyDgAMTgWeujtT7w
+Message-ID: <CAEvNRgFKbKfTMkqh_XF-igm07qYWfRwYJ5SH7wHcLZnqesCzTw@mail.gmail.com>
+Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
+To: Suzuki K Poulose <suzuki.poulose@arm.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 84xhf3u5t7motxna6tphgcosi5xb3em8
+X-Rspamd-Queue-Id: AFFC8A0002
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8CF9EC000C
-X-Stat-Signature: 68s7f8m9n6bkc1bb9psj8b5f4gz93qqe
-X-HE-Tag: 1783361850-39589
-X-HE-Meta: U2FsdGVkX1+GNOAi8HF65xkmgsCvwDJMAH5IwjkGZHkBFOki0RLx51gN7WQbIwUQFuogM+hu87kQbnjBlO8A3hlTQTyOREFHm5EP9odX9jmzdDVp5UpkD6V1XVWT0sSNAt1Cpap1VcOYBszdDieRTklAuXWUAXziS/yUZTf3ExEsrDhx+LtjuXcNdI8+0Fnwdo63UR+5KkWr+2G3N4bfNi0BjtZ06ruJQ0tJQUWK9qnrpnL2chjS3Sy3O13qXZbdHncsMYN5Q0lw/ITlrtGEn1Yu7Rqf5O0/ZW8j5Xo2xiN/JuAs1WzBAGkxQq1FV5c/jo91G98B2NmjVAcJdWw8AyyijiMyg6uoC5t4VHLhSQYhps9puz70PDST+sMZjcwz00IXgXU5dPuZ8xKl04nTG5fnrnPKafLAW/QZPysU/tkhiy1fEXO4IKSJB3Q9Dlq6M8zrnmkr5JbvL/YtFQa6kiQatl3yn2jAsqClAYyaBqjaJpzxda76e70D09lo9D2f9AG+nqKD+O0ucsfkQn7NJX8KQ7R17z5NTt2Fj5FPoYXoORGego4l1tOi6yBPo4hjtVS4xbDnSEKaIfsRU5MzwOcBI070E4ZXV7ft6UW0Lk+RfUnQ0JpyVmN9nj2FY2NEqGlhJ56jCk1yoB7Czwqs9++rKym4rQUiNqMGsfo9DjlFpewp/S8kWX8vY1J9WTF7/1rfzOGfPNz4fOPjiqzrbIeh9e6LqC+17XwH3PN4G76imF+ur5IjfTY5wmSkdJxEFgbn4Q822GWzzpCLO46Yhxvs7hyfaaWCswQ1RQXLGnpyWHBpr5s7/AyYI223al01pXinnGSZFKU6swBIsiwPZMkaq+U7PLz3bm6r1/kS1+zMI+cgKzBXohbbxf7VsiJhMu/wD3cci6sUV5ZdCD2aCsD+rtl4sCRrsBWQtn9caEZrP1EU++snDaOr5wYfV9J+jD4t1DCn2QO1HrV5uW5
- kvuYpxNw
- z6Fp9WMounQgqN+oTwbkuCbXuym/jQ8O38/29YYl5Ra67IH2+jQOcZsWSoA6OLkgBOYs+I10/aOfo0CxeJkYofw0vC5Y4zRGtuQ36yTnhHQtHOqsbImpqU/OFmYPK5bJQDAuwpJOz73xAOzPsMdrDlfDTqegkdfo6r00dmv9WkrxFCUHInWeti9lgNF7e97InB66Aol/6nrwT4kaymjaA1dm0WetuZFaNCPlRtPtUVIV5Dx1yEGHd+CDI6R3XcHvCZAqNewtB2M+WPEmtdB/BiHRDF/gv5Ic6pq+oKS81oXI31ZgUIbhn9rairr+RJdJ0E0nsqxeBmysnZsFroy7mcLwEYulppsO3hY2Kj6DpoBuqphXGOE9SMxOsNghnTnAsBAAQwiJrQSqCHTvASyLfIG8/P6duI/CJq0sbs1fwHkS5jqiLF5TMzcZuKJgVQI8UUdBYEmRkKOGSWEnauSsNf1NqaQH0u6q8Br+EzHfNwg8O2SQzBuIPgl5jua/XicXyXjA4zjOqolIqxgos3Y9PRnufV9TmvocJ0c6ZvLSckcyYc3WRbTq9shJREChZjMtmAAqXXWCAJO/m1hmkrF24Z4OyYA==
+X-HE-Tag: 1783361863-424612
+X-HE-Meta: U2FsdGVkX1+oQln7nsuA0C1Q9dCX2DEGBw6nap2Irbeeu/UDspoWrxxoIsDpMJX6v4yCR3zJbNMQDcv+7r50EA403r+gauWlGRPdDPKr2QHl8RYr/uYth6WtjjdmGaWPOEzWMJOHU5AO/OH+uF5FKvdSJudKONZlOgZoJvKW25uExNNjwoQ4x+BX6veULygkKn5GXwyLbVPWnHiiij8ScxpzQ1NcdStP0O/bidUrQaLwT47/Jcr152ZK2bFqfnFXp8B4VRSFBHfCFqlo4MQ3L+1gQUGGG6c+GH6mZcsBGNoUcsIX7qdrfBjtUhvl8dPS9Vl7R31wbZxuBBXfQXZPsXwFpMcGvh/EGGs1m9O/SlN0t0VVfbYNZyLk2hnXAeSwESseGXw25StKSasssMQhU1fOVvmW9wjt9Ws6tSoSyErT1N7ddHFuP46pUjv1/bD6JUFb5IbEza2Q6UPjuThBcdt9BcnEZ5EhUeJ86VyEqgYbt7FIvm7SuaBsRfEISiXX9rKV3bISGWEsGnAG9l0E5p+GOUGtOeQQc3Zw9ayBYgNNYC0eJ5stYyPAV/WcTRSC+/NBuEqhPG/gLwosMdcqC4d45x5KuEoKdmkpCOHuCKAhesdpqkevhNh+SIYvC2Urb5aTzgkP7TYMM8WqfYw/vqACjWKNpAmexBEsh6PFCg/JznzRRXzXTpUSmZbyyH3X7FVFOj+8p90MpAG02RFy2/ux+yfyey0dOkkLGKI8vBzlDZgiQ77Tg/Nh06cVgRWDBqWcKogB/yxAXfjWK+ST/bFCJjgDgxcnYNvzR1dR7UbEMx004p+FEk9jgJWC58dGFUnI4zsmFGzDVXyUijHJDfQAJtiR/cYMD6C5cAb0Si634U83iITcehmUMfpXr6I7CEMRgLilUMdpoGO93NIoSq4qoT5oJJBOTXukj2xbd0nPhs+TKwFYcJbdOnRxuKqR8+yxJnlOs0i9UjFJAED
+ toTg9f25
+ 3gUYv0YXcnsq7K3jY3vb7Hl2Ee1lXeTW2SafV4PXDM6pc9qluXgUIoSLqsE9foiKuEpBROJCd/OxtkY7qN/LakwUVOYZ+BIIgzfT7tWx6cbSUdjc2mT0gHro8g4FsoJWWWDY/43qN3zs597dcjyDOd1xcedhFy+U5rNYJzg3hXtTai5ym7KOC/uj4mlYVcqI5g8du5U19/dv7g9WTYJtjI8IZ6tle3JP7B85kXUGlyz9P/22IR24h4IpjTDv+K8Y76jgYVj5D4xioMFVNWb3/T7BfgDtulgHJ6S+E6MkT5w10jFkcfoPjrC4hdJZwnkP4n3p3xRIVXyk7rTLjIzR0MkP+0mxA4BO2+M2l6B9IFRXWaDHqFQ9Zm5PXGnoCh8NHUrnKeVeate4yr/uN+I9jCCShq11nTcMjdKwotuEI+T8YhIKtVSxJyQFxtoC3sxIRYv8xq7qozDqJcNWjYFP8WKMaQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,53 +164,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 03:19:10PM +0900, Byungchul Park wrote:
-> Makes dept able to track PG_locked waits and events, which will be
-> useful in practice.  See the following link that shows dept worked with
-> PG_locked and detected real issues in practice:
-> 
->    https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
+Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 
-> @@ -219,6 +220,7 @@ struct page {
->  	struct page *kmsan_shadow;
->  	struct page *kmsan_origin;
->  #endif
-> +	struct dept_ext_wgen pg_locked_wgen;
->  } _struct_page_alignment;
+>
+> [...snip...]
+>
+>> +static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>> +				     size_t nr_pages, uint64_t attrs)
+>> +{
+>> +	struct address_space *mapping = inode->i_mapping;
+>> +	struct gmem_inode *gi = GMEM_I(inode);
+>> +	pgoff_t end = start + nr_pages;
+>> +	struct maple_tree *mt;
+>> +	struct ma_state mas;
+>> +	int r;
+>> +
+>> +	mt = &gi->attributes;
+>> +
+>> +	filemap_invalidate_lock(mapping);
+>> +
+>> +	mas_init(&mas, mt, start);
+>> +	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
+>> +	if (r)
+>> +		goto out;
+>> +
+>> +	/*
+>> +	 * From this point on guest_memfd has performed necessary
+>> +	 * checks and can proceed to do guest-breaking changes.
+>> +	 */
+>> +
+>> +	kvm_gmem_invalidate_start(inode, start, end);
+>
+> I added support for Arm CCA KVM patches with the inplace conversion and
+> I am hitting the following issue.
+>
+> 1. I am supporting INIT_SHARED + MMAP flags.
+> 2. VMM creates the Gmem_fd with both the flags above.
+> 3. Uses the shared gmem-mmap to load the initial payloads (kernel, dtb).
+> 4. At the VM finalization time, Populate the loaded regions one by one
+>     by
+>      a) copying the images to a temparory buffer - Since CCA can't really
+>         load the contents in-place.
 
-I may not understand this quite correctly, but I think that tracking
-PG_locked dependencies in the struct page has both false positive and
-false negative problems.
+Sounds good :). I see that you blocked this in the kernel by returning
+-EOPNOTSUPP if (!src_page) [0].
 
-Imagine we have a file mapping M1 containing folio F1 at index 0 and F2
-at index 1.  It is correct locking order to lock F1 before locking F2
-(for example when doing writeback).  Later, M1 has its folios reclaimed
-and returned to the free pool.  Then each is added to mapping M2, this
-time with folio F2 at index 8 and F1 at index 9.  Now the correct order
-to lock these folios in the order F2 followed by F1.
+>      b) Set the "region" to Private in the gmem_fd (via
+> SET_MEMORY_ATTRIBUTES2)
+>      c) Invoke CCA backend to populate the private memory via
+>         ioctl(KVM_ARM_RMI_POPULATE,..) [0]
+>
 
-I don't see a part of this patch where we clear pg_locked_wgen when the
-page is returned to the page allocator.  Maybe I missed that.
+This flow sounds right.
 
-I think we should be tracking PG_locked dependencies in the owner
-of the folio.  For files, that would be in the struct address_space.
-For anon memory, I think that's in the anon_vma, but if somebody told
-me it was in some other structure, I wouldn't argue with them.
+> [0]
+> https://lore.kernel.org/all/20260513131757.116630-27-steven.price@arm.com/
+>
+>
+> 5. Additionally, VMM can mark the entire RAM to be private before the VM
+>     starts running, again via SET_MEMORY_ATTRIBUTES2. On CCA, this
+> action is measured and doesn't require the Host to "commit" memory to
+> the VM.
+> Instead the host can lazily donate memory on a fault.
+>
 
-This requires slightly more complexity than lockdep currently has.
-We don't want to use a lockdep class for each folio, obviously.  So we
-need something to say "I already have folio F1 locked, is it OK to lock
-folio F2?".  Essentially figuring out how we can track all folios in a
-given mapping the same way, and making sure that we don't deadlock on
-folios in the same mapping.
+For both TDX and SNP, the host can also lazily donate memory,
+guest_memfd supports this.
 
-If F1 and F2 are in different mappings, it's not a deadlock if F1 is in a
-filesystem mapping and F2 is in its backing dev.  It's also not a deadlock
-if F1 and F2 are both filesystem folios and the inodes are both locked.
-See vfs_lock_two_folios() in fs/remap_range.c.
+> But step (5) triggers the invalidation of both private and shared
+> mappings of the gmem area, from the kvm_gmem_invalidate_start()
+> above.
+>
+> This is because, the entire DRAM now has, some portions PRIVATE (the
+> loaded regions) and the rest are SHARED (from the Gmem_fd creation).
+>   Thus, kvm_gmem_get_invalidate_filter(Dram_start, Dram_end) causes the
+> invalidation of both "PRIVATE" and "SHARED" regions, which results
+> in the destruction of the already loaded data and things go south.
+>
 
-I have much less knowledge about anonymous memory locking order.
-Maybe it doesn't happen.  Or about locking one anon and one file folio.
-For slab memory, we don't sleep on PG_locked (it's used as a spinlock bit).
-For other kinds of memory ... I don't know.  Page migration is fun.
+This destruction will happen for TDX as well. I think we managed to get
+around this because we didn't apply conversion on the already-private
+ranges.
+
+IIUC on SNP, zapping pages in the stage 2 page tables doesn't destroy
+the data, so that's probably why it has been fine for SNP.
+
+> When we know that the kvm_gmem_invalidate_xx is triggered by a
+> conversion, we don't need to invalidate the existing pages that
+> are in the requested state. i.e., the following patch on top of
+> this series does the trick for me :
+>
+>
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index a97fcac34a0e..62e0427a49f4 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -250,16 +250,23 @@ static void __kvm_gmem_invalidate_start(struct
+> gmem_file *f, pgoff_t start,
+>                  KVM_MMU_UNLOCK(kvm);
+>   }
+>
+> +static void kvm_gmem_invalidate_start_filter(struct inode *inode,
+> pgoff_t start,
+> +                                            pgoff_t end,
+> +                                            enum kvm_gfn_range_filter
+> attr_filter)
+> +{
+> +       struct gmem_file *f;
+> +
+> +       kvm_gmem_for_each_file(f, inode)
+> +               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
+> +}
+> +
+>   static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
+>                                        pgoff_t end)
+>   {
+>          enum kvm_gfn_range_filter attr_filter;
+> -       struct gmem_file *f;
+> -
+>          attr_filter = kvm_gmem_get_invalidate_filter(inode, start, end);
+>
+> -       kvm_gmem_for_each_file(f, inode)
+> -               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
+> +       kvm_gmem_invalidate_start_filter(inode, start, end, attr_filter);
+>   }
+>
+>   static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
+> @@ -724,9 +731,14 @@ static int __kvm_gmem_set_attributes(struct inode
+> *inode, pgoff_t start,
+>          /*
+>           * From this point on guest_memfd has performed necessary
+>           * checks and can proceed to do guest-breaking changes.
+> +        * Also, we don't have to invalidate the regions that
+> +        * may already be in the requested state. Hence, we could
+> +        * explicitly filter the invalidations to the opposite
+> +        * state.
+>           */
+>
+> -       kvm_gmem_invalidate_start(inode, start, end);
+> +       kvm_gmem_invalidate_start_filter(inode, start, end,
+> +                                       to_private ? KVM_FILTER_SHARED :
+> KVM_FILTER_PRIVATE);
+>
+
+I think this makes sense. Thanks for catching this.
+
+>          if (!to_private)
+>                  kvm_gmem_invalidate(inode, start, end);
+>
+>
+> Thoughts ?
+>
+> Suzuki
+>
+>
+>>
+>> [...snip...]
+>>
 
