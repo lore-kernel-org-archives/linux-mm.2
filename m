@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFDF0C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:20:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 354FFC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:20:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2FE96B00E6; Mon,  6 Jul 2026 10:19:26 -0400 (EDT)
+	id 8C5856B00E8; Mon,  6 Jul 2026 10:19:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F082B6B00E8; Mon,  6 Jul 2026 10:19:26 -0400 (EDT)
+	id 8518F6B00EA; Mon,  6 Jul 2026 10:19:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF6C06B00E9; Mon,  6 Jul 2026 10:19:26 -0400 (EDT)
+	id 7671F6B00EB; Mon,  6 Jul 2026 10:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BD7226B00E6
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:19:26 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3E664120445
+	by kanga.kvack.org (Postfix) with ESMTP id 4A53D6B00E8
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:19:27 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE5F7120432
 	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:19:26 +0000 (UTC)
-X-FDA: 84958559532.27.D5FD236
+X-FDA: 84958559532.17.1CDE3E2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 989794000D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:19:24 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f9svTGJb;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 261461A000B
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:19:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCFQU98w;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783347564;
+	s=arc-20220608; t=1783347565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nsWIFasK6BNqNQpHNrMhe6JldAnQbV9yCA0uK0R+9K8=;
-	b=UlnvuiPGYoRL1FcdI70s214h0qYegixjq7Jp3sHAH0OSkHegFAdOpa0dScSA1oQOaB4evr
-	xNUAcN1wsdSscJaehRH229ELJ8IH611R6zLCzuGz6eSgNQyNDqQV0z0U5AtM/oBuDJ8c+h
-	1gFkNwhT0sHVDJv5sqS+FMaUH9RzxzQ=
+	bh=yJOHjYArtxH1+/qkwlfdh08BuCLZ4ONkiqi8cM2xmzA=;
+	b=p/xgL/8a0imzTNOYE6UdKeJ4IazAO5+TAAX0nqOrJSwr5Tw3cxY3Hk1SI6/WpGUZlzwjv+
+	Z2bYEwP2XbllZTey/Jafg0M/GsfiG8Y8fwV4/kf/ULOLW70MHRvVBGyHXoJPssWoAIlr3C
+	zRRL3BBHP+6hcqSjrGz9Ffv9Wg3JC2A=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f9svTGJb;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lCFQU98w;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783347564;
-	b=Xo4vPHJc5RQJGjojEX49vpA9ZFu0GdG2sXfQ5Fd2MArYc0JdikPViSEKrVfHijaxdDLpiw
-	7PGh2saYu78reRYeXlv5cnAIRJ/0A/Y4fmkmc8545+cx6KW/mqi6v3DEm/UvFlFqsxszeM
-	/vj4P/ufV/gvcM+f/SDCd7uLTh06mBw=
+	t=1783347565;
+	b=JAQuvCM6ffC6PsezBdpvAwgQfFlyHyzO8GBW3ASRMKSIDwZkhRksQNb975VzsEXGsdViqz
+	Lu0GrlRBX6WMV8zxinrhGCbSsyWrfI1cvC1Up56jij6HnHhtuxxe4ubYj3eIRWHRIjXeTP
+	qj14+ZXY79wMMkj+tVsITKyb78ZVyfM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 356D661834;
+	by tor.source.kernel.org (Postfix) with ESMTP id EDA9F60098;
 	Mon,  6 Jul 2026 14:19:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5491F00ACA;
-	Mon,  6 Jul 2026 14:19:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8101F000E9;
+	Mon,  6 Jul 2026 14:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783347563;
-	bh=nsWIFasK6BNqNQpHNrMhe6JldAnQbV9yCA0uK0R+9K8=;
+	s=k20260515; t=1783347564;
+	bh=yJOHjYArtxH1+/qkwlfdh08BuCLZ4ONkiqi8cM2xmzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=f9svTGJbnVJcSUT4h68oxYRFlse/+YbGSa20JhHmiJhsEfXyiO7Krpzx8LcppGdoV
-	 UzITVCFqS3fBvGG6pb6n4kf89YbPB3hMIcvnQfmbgnxQIBDf0YftLW4wAHX+6M5XXB
-	 KVcWO6Va0Er6E+K/g+g2Y9NjQCJQOpvMNsyoih7Y+g62Ezt5vpdUrYlBjVG3D9VZok
-	 Kuf2HikcuKCs1NMn8S2MYA4hQexqjupRVMejurkCoF7agnElLjKjy2JEASBsoh44Xr
-	 3oYZ34zbjSPv77Rxb9afeWexuytFUtcClcC+MlruNd0pt+uF1lICwmfnqdVmue4xfd
-	 WQj6yZXWC4xiA==
+	b=lCFQU98whh3Z83+9WS/sIOLJTtgnuUq+PXZYs5xCChKyY/Eqs6kxZmUqLRXSf2eK6
+	 eN6urGj6dYEJS2/ncuE1JfATWN3U97Oeqeue+GZlcinVbTMFJiG4KNMXNoWR7c88M5
+	 joOd3LCCjYi1j8iohJdvPShDaItsQ9k0PBYhX2HGFCo3XbUPm8yfyKSmw98Nd6gZvd
+	 6xoPlgXgSV6iFf83o12lFUnz1dLKIcJmz8jZ1S/U2qFnzIYMmh3MbccCIAbfl6FBHu
+	 bDfRhUpFxARcwbA39yy9UL4JJTRt4pkTnUiPzbHjyHOPMQs7dmUcYQed6LDHgBdUy3
+	 B1M701CGBv4+Q==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 11/16] mm/damon/core: get merge threshold from probe hits when weights are set
-Date: Mon,  6 Jul 2026 07:19:05 -0700
-Message-ID: <20260706141912.88445-12-sj@kernel.org>
+Subject: [RFC PATCH v1.1 13/16] mm/damon/sysfs: implement probe/weight file
+Date: Mon,  6 Jul 2026 07:19:07 -0700
+Message-ID: <20260706141912.88445-14-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260706141912.88445-1-sj@kernel.org>
 References: <20260706141912.88445-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 989794000D
-X-Stat-Signature: rk1hqntw88obdr7ghoppnq988zefbuc1
+X-Stat-Signature: oi61hwskk3xe7p19grjt9mk7xzp88kgr
+X-Rspamd-Queue-Id: 261461A000B
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783347564-261158
-X-HE-Meta: U2FsdGVkX19yEArXurMjNFNvTof/5eljMyK0DsH7Y2k9R+iIzSt7FaL4L7T0mgCiKYadjaDPB7XkN6X/2Ev8jGUF9rr7nj1VY1WSlNX3z3zJ9u/BYwQnOjPH8FS4uFvky7Lza3ensWu92xTQUpfidsetEuGprei3dLloeoE7mUnOu4vxqEXABtFxA1wbNXGCv9UAQfXTdCwsyX1lAGvPo6yEgteXIxpOoHJMiIFmWWQDJD/oQTKuGflNn1DzY3Q91KD96t9p3EK+RpgcD7qEeDjjmg+FYIPq/eT6oauzWqo9S/vjUkz7RI/Q7Xf1E7ddxmIH3cKNK4UhqVgTHFrXBxqmpIUcKxO9V+jZGZY2aYYWFZhjRdqpARelxw4Lda07qGMojWnX75Zaov5/j7KsdYi+9CXoyQDGjBqquMF6lC4cxAqeIo1qrQaeox5pcxQ5F3ECO0NTgPFnFB1WnOWj6gitEpxl4c5YCPzci9XrW0bMVNcAVaMqSrCmwwJ7ChVvZbCjE57S3d28NJBRCtaGiA8iNaqBE9iHzpxQdv9Adt//FSkVDZuK+Dll+9NBTrQZ5utDeF9AmD6dGXNHgpXZ4uylbvPJ6kjeyMImRG1a7TZCh2gBq6nQI5lj1Quj4n4HymeZveE4e35xt6HtRNbuw2cPAE+TTiKVpL3yS+TUgfeC1kpEfuDG37yAc+3sruHCbjfzAlpfsWb6736CH9Fib/EBTFE/gXnryKwE+d8xzoirVnQCSZQAnI1KxgVK7kpwHIJLdA3oODXLMPrtJ1LBVPpRglRx5O6anr+sov5nvj+72/jK856BgLtMKV0OTi8Q36sU4MWLxUecV9vhGkfSQ2nfrXYP9GR8Mq/YZacnqS8PCYvgaLXFTHDBRb/KN80WM9sYGhQy8SScCcdvvQ0cC2FhpUM5ivAHZE3p1YCEhsmYdh1a6POFinyIt6+QZZcEpKgzAgMSkqq8JkQBpIM
- YB+Plgi7
- vQ4hDl9yFuUNDlCNMLJbA2Ih53dWBXXqaBjn+jWwvetwRzZTUqsb6HcsMcf8AHeZ+XM1LDwaTtQUdjCJVNkJPa62St5E670Mkv5fGYXDsPWsDwCGyv+moZbNdjNSq5z6pv02XjDlagYs/v2aTLDX1rR22cJBX83vPvIEzqOdD4wW4bLWjcF5qh/AcvsqfPchTu2jqPR+AdoITdlStA4j2iliMTWQUh/3COSp9TUsGLndw4K0=
+X-HE-Tag: 1783347565-699703
+X-HE-Meta: U2FsdGVkX1880FYwv/dn0ql0uyN1cb2r0aX1qyJ7hKSCN2q1UdtHctg0kG1kPP/tp6nP7uB8BUMTRsM/liCoJ6gIPOrJcsWWAQViFfM7xV+fgb00SuZLO5upfAzautJh2/G/vxP0nsE2hKq6NxMq6R43uUrv4SNB1bqv3X14ttqn8uInxyaK6DyH2MnPpv/GuRAyRUE8hVdsPe2z0t9hONMd2gZQjeT//RnKaBY6JNazAUap2kA7trCIj5bDPeqDu83Ua8kOCTyWbtJqQlwA69kcNrMoEBzIh8KobDjfCsyhHa5G5uXNSMb7OjVmwq2XqMYRfx7U9OxZ4qAp/RmGYEg3ROtWOpaHLnyzTifhx5ejazsHicQiH8IVuqh/LYAwe9c76RmI6sHXUw5GEoxf7tfqXCJSHrwGyVPr5egxjQ1o8rXzCivd84BhiEjyZoN2wAPykfwcrwL/Y38v0ZlBJoId9zjH1FCTICR1LpjbMlRgnalQnEKsFyGuzWb0yRLZom//W4zjmq/2HOvWB0B7BWyg4Cgmoqq6kId/FMGG8LopAVAX0qvYif2Kdcd2aqeQgEypeiTdsPVz5StUlOlV47yEBGf3qsojNK99dj95BTO0bJB3W+QGwtgHpTRBIHoNll3vjde2nCTWCzUY2i/GMrOs59TXOM5Y9Rz1bjs6/QhRgxQ/5+emaZrURzsRCkwF1oV0hNBuYZQHyXo2XhzcpqD4/HqF10KTf+Srd0ZrB2PVmjr1he00z3pEHyJV9bgi3CzPza9ktSZslGDokrqsdLwY9r5JH0Xj7xXjqL+8PyUDH3PeUg9F6Of3Zvi+ZJjfbn0lByZ0RqzJkgNBSvKpJ9Eo35ZPKIGYyvHc1xw3BEvFjpZXJ+4nopGCqiSyuAI1Pt7HdD4YeS4bXBW90f1SSNDKsd44o1QvgrZpUAMmvnE+pnHPnDH/bGGlfWYCGYODXYkc81MUkTSqSCGV5VN
+ xzbfhCLb
+ inNr3V2wnYASs7YPPxWHRiocBkurPsgL+nI/XPNbvlPHSUhWLvqjtM/ANs7ZO6tFWLgPfD2VMiF5r2UfofdReKWS+vcDwLG2w6ZO9GfgqjZovewyQj0RldWRpDxBVdln04T+2iaEfxnV5A498f457TV0scOd80hYSdSzy8WrywtyONm4x6YD3rB8tjDYvH6RGBNfwVbUHys060pxKDWqUUvEmKcbftCF5eUW9Dh8CDHyuHHQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,53 +93,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When probe weights are set, DAMON merges regions based on their probe
-hits weighted sum.  But the merge threshold is calculated based on the
-access frequency.  Update it to retrieve the maximum probe hits weighted
-sum in the snapshot from apply_probes() ops callback, and generate the
-threshold based on it.
+Implement a new sysfs file, 'weight', under probe directory.  Users will
+be able to set the probe weight and enable the attributes only
+monitoring using it.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ mm/damon/sysfs.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index a7ca69ea8e565..83db073c74e2b 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3714,7 +3714,8 @@ static int kdamond_fn(void *data)
- 		unsigned long next_ops_update_sis = ctx->next_ops_update_sis;
- 		unsigned long sample_interval = ctx->attrs.sample_interval;
- 		bool access_check_disabled = damon_has_probe_weights(ctx);
--		unsigned int max_merge_score = 0;
-+		unsigned int max_merge_score = 0, max_wsum;
-+		bool get_max_wsum;
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 6d7e36c9e509d..b5fe036f78015 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1065,6 +1065,7 @@ static const struct kobj_type damon_sysfs_filters_ktype = {
  
- 		if (kdamond_wait_activation(ctx))
- 			break;
-@@ -3727,9 +3728,18 @@ static int kdamond_fn(void *data)
+ struct damon_sysfs_probe {
+ 	struct kobject kobj;
++	unsigned int weight;
+ 	struct damon_sysfs_filters *filters;
+ };
  
- 		if (!access_check_disabled && ctx->ops.check_accesses)
- 			max_merge_score = ctx->ops.check_accesses(ctx);
--		if (ctx->ops.apply_probes)
--			ctx->ops.apply_probes(ctx, access_check_disabled,
--					false);
-+		if (ctx->ops.apply_probes) {
-+			if (time_after_eq(ctx->passed_sample_intervals,
-+						next_aggregation_sis) &&
-+					access_check_disabled)
-+				get_max_wsum = true;
-+			else
-+				get_max_wsum = false;
-+			max_wsum = ctx->ops.apply_probes(ctx,
-+					access_check_disabled, get_max_wsum);
-+			if (get_max_wsum)
-+				max_merge_score = max_wsum;
-+		}
+@@ -1100,12 +1101,35 @@ static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *probe)
+ 	}
+ }
  
- 		if (time_after_eq(ctx->passed_sample_intervals,
- 					next_aggregation_sis)) {
++static ssize_t weight_show(struct kobject *kobj, struct kobj_attribute *attr,
++		char *buf)
++{
++	struct damon_sysfs_probe *probe = container_of(kobj,
++			struct damon_sysfs_probe, kobj);
++
++	return sysfs_emit(buf, "%u\n", probe->weight);
++}
++
++static ssize_t weight_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	struct damon_sysfs_probe *probe = container_of(kobj,
++			struct damon_sysfs_probe, kobj);
++	int err = kstrtouint(buf, 0, &probe->weight);
++
++	return err ? err : count;
++}
++
+ static void damon_sysfs_probe_release(struct kobject *kobj)
+ {
+ 	kfree(container_of(kobj, struct damon_sysfs_probe, kobj));
+ }
+ 
++static struct kobj_attribute damon_sysfs_probe_weight_attr =
++		__ATTR_RW_MODE(weight, 0600);
++
+ static struct attribute *damon_sysfs_probe_attrs[] = {
++	&damon_sysfs_probe_weight_attr.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(damon_sysfs_probe);
+@@ -1965,6 +1989,7 @@ static int damon_sysfs_set_probes(struct damon_ctx *ctx,
+ 			return -ENOMEM;
+ 		damon_add_probe(ctx, p);
+ 		sys_probe = sys_probes->probes_arr[i];
++		p->weight = sys_probe->weight;
+ 		err = damon_sysfs_set_probe(p, sys_probe);
+ 		if (err)
+ 			return err;
 -- 
 2.47.3
 
