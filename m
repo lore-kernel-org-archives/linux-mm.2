@@ -4,94 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B97CC43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 21:36:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AD59C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 22:09:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B6616B009D; Mon,  6 Jul 2026 17:36:48 -0400 (EDT)
+	id ED46F6B009D; Mon,  6 Jul 2026 18:09:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 067FD6B009E; Mon,  6 Jul 2026 17:36:48 -0400 (EDT)
+	id E844D6B009E; Mon,  6 Jul 2026 18:09:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBF776B009F; Mon,  6 Jul 2026 17:36:47 -0400 (EDT)
+	id D9AFC6B009F; Mon,  6 Jul 2026 18:09:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BFF246B009D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:36:47 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B088F6B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:09:34 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 21C62A021B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 21:36:47 +0000 (UTC)
-X-FDA: 84959661654.24.8AFBAA5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 701D540002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 21:36:45 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hXIg0GCe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783373805;
-	b=RzAFqU9f6bOGEVf/4dsnX82G4v2EmdzOLMXWzsfYHJLItyRlPaHeUhPgWiAKXZLp8bd/Kp
-	DJAxqYLu6e1TWOAP24Tld1fSmJnf5h6dGidhmrS4XdHQn9AKVoVWDJDsLQjHM+k84Der9S
-	zHn52NHe6y+mZo9AiKmlKf20KxpUXio=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hXIg0GCe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1A4E88C7C5
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:09:34 +0000 (UTC)
+X-FDA: 84959744268.24.AA94983
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9912A1C0005
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:09:32 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dd13GMsj;
+	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783373805;
+	s=arc-20220608; t=1783375772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ac21k4ticVS4yv0U1IuUM4EIwyqtnzpMkDPbmZhqQtI=;
-	b=fDgAzBWXbPpOyJUGy7GaES3Cflzf5pPiqwLsZSPTnOmJSd9uZva+9aoR2CLqumiEgzcr6n
-	qFcUaL2/bg9vE2aCYWov0sl9jieNjzkDIFPphqwyiF/TQF/Kyn5WXh29XLUZgDfNhltwFe
-	sD75tRdnF/mPnweiXXLWYvajX2vBi7I=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=M6J8rmo74YDrXmogw0vI24lrkohvz1jMylSnzHCFxoE=;
+	b=pzb+fiT5v5CI1MifjbXhvSCkSMp48BQg/rdua4G1gPaQdB52CEW+OcOM4UMWk8+yrzAZ5b
+	NyQYiiVqeK3CGtxWX4vH5YKtGOSn9WzjSkG7GBiTGKFbFqZMPGm2IE9hwPsxL58t4+gdU6
+	kNm1mDvvJZMANeOlgBnhuuQpvmOXKMk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dd13GMsj;
+	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783375772;
+	b=t6cGdaj1cYFPxdJTBDw/7rSd/v4oGbmkwvlAjH33JgS92JS5D/8yPAJ01ljErjpIQNKcsX
+	A3h/Ign0nfkEIEUgBjsr6RiFz2RzBIeVDSJamGQPED4QpjMkOkznrWMg3OkXz6ISjy73+V
+	0FNUhSmbl8Q8pcLOE5OavPh1yhgraeQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A535561834;
-	Mon,  6 Jul 2026 21:36:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F981F00A3A;
-	Mon,  6 Jul 2026 21:36:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9285D435EC;
+	Mon,  6 Jul 2026 22:09:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359DE1F000E9;
+	Mon,  6 Jul 2026 22:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783373804;
-	bh=ac21k4ticVS4yv0U1IuUM4EIwyqtnzpMkDPbmZhqQtI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hXIg0GCeF+aqjI6UETlLd3mu7zOduBcSAE5HI9lzAy3xTH6wZElghJqEyQdaD2chz
-	 /obo0A559dX7I6iYdNTjJ/bh+JRcRcJFICRaoizHtW4xtw2RHeY9AmBsvKwp52Y1TX
-	 QLyLNEcIrM3NUMhIzi+ELQjo9UFTMLQzzaNizmhiUlg43K9WVOL21NNDaAqA62CxMp
-	 aGbHQOLU1HNN6gvrJLcTPlHB6/tB9r4mE9H5dDdoJPdrCSasn7PFryQLbCmIxhnvxo
-	 YE9JJL+VKSIxixBi4tWZ1Nn4shVu8w8sSAIWJfYHrIQAAWDoKi+WOMwfWSe+EAzG49
-	 93jzKL582OdHA==
-Date: Mon, 6 Jul 2026 21:36:41 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, 
-	linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, 
-	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
-	shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, 
-	dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
-	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, 
-	lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com, 
-	shikemeng@huaweicloud.com, kernel-team@meta.com, Alexandre Ghiti <alexghiti@fb.com>
-Subject: Re: [PATCH v3 04/11] mm: zswap: add range lookup for large-folio
- swapin
-Message-ID: <akwfJekWILGd6cPS@google.com>
-References: <20260703173903.3789516-1-usama.arif@linux.dev>
- <20260703173903.3789516-5-usama.arif@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260703173903.3789516-5-usama.arif@linux.dev>
-X-Rspamd-Queue-Id: 701D540002
+	s=k20260515; t=1783375771;
+	bh=M6J8rmo74YDrXmogw0vI24lrkohvz1jMylSnzHCFxoE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dd13GMsjz+V68AoYcFSkxKjX9vuQjKuPGTosAbHMWekrMvv5wa0NLPShtkKLLNmn8
+	 GAoD8Qk0HrBF6122V2795T8BDX2P7CCCxsomh7/f9tKnyqr/N7iGrs7+oBnDQfLVs2
+	 EMPy93w5CGSDBvIWxIRjzDDdPOXd80P6NlHAsIiaGfwvqoxyEddYSOAvNDlptktnyH
+	 fMdQcGLtBUCsLuzeTL0XZ/XY5wGeG2MYheXIutoOfpYJzQ+qrXTpG7jKJwF6yj4tkw
+	 DviJlqMuiNhqjww6jO6sBHHGhYGU4nwU97ZApTFuMJ0GXnYFwObHc34RlXURbaniMl
+	 c4CesxPnQ3MQw==
+Date: Mon, 06 Jul 2026 12:09:30 -1000
+Message-ID: <1e27d727c3c35d11f6e19eca769478fc@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Farhad Alemi <farhad.alemi@berkeley.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, Gregory Price <gourry@gourry.net>, Waiman Long <longman@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alistair Popple <apopple@nvidia.com>, Byungchul Park <byungchul@sk.com>, "Huang, Ying" <ying.huang@linux.alibaba.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Zi Yan <ziy@nvidia.com>, Ridong Chen <ridong.chen@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, "Michal Koutny" <mkoutny@suse.com>
+Subject: Re: [PATCH v3] cgroup/cpuset: rebind mm mempolicy to effective_mems, not mems_allowed
+In-Reply-To: <20260706082023.60832-1-david@kernel.org>
+References: <20260706082023.60832-1-david@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: ifh5pieojqwckxosmpqnnjs6x1kfu94c
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783373805-885934
-X-HE-Meta: U2FsdGVkX18HnAyKdGcr8RAIBT6YlKLoH+z576M5ea953Cf9QlT9M055dO1+2lkOxZLIb3YsnoDcrWKAAM/ZKRASVVNp5cSvE7glFjnYctcriTSj7GNLX8hvHWvWxWzfrtjfeE/WmSeacHILZyCTdj/eMYu+Nd2KgWa12hN9lBo+q3oQxVQZss9S2O26jGryGb7aODcm55ASUprXEUUuKA+2ULhjT5Z5v+RGOrUtCwJ6Ixk7cGnrTJ7NktIk/4syGTvH0UHMdPPssyfOY6piPOAZXjGtrNtv32ywCC6dN9hX2uEXWJ6VPNJINPc8aDIbrRAK1w3YTFxGz+igrgXhs4u1h/eS/obqT74N7G6Doa2cBTYcEQG5BUvo9sobnz+qkePyllXEhkGciuqqBF7igXFAU92YdCaA0Q0MaFa/vNmKAyInG4Y6DSa4UF46kQblewgdRJ/yt5IiW/awijwl4U/i7rNLNSoBmkUe5bO9WhXtuNMPt6qEnDWS6oti+JQFZS7h/s+mAKV29ucZLsyomPS+3YwGEqtHemS1UdAXo04I3TV1cptViX8jcUvNWqmJi8Inw6VXgDHXYbRy4XOpl85RFLxiyDCviETvZpxgQKfgdt/wlFbaeDHV49fBJ3KNIgasUDxl4RbvWK8wnvP7/IOxTpv4jF1hB0R2pqtp1LMFSSX+JEWeleFrPY4Q+bjl6NjBJ/okVxxSWQx8kLyzn6ju3xqrPRYn55z4cwaUoTJxefl4ovDaDFJ5M8+ZKGVmRDv9YDHnzQIilS78r9UA2dcaFXhgBDPF2xBibuTf2IYx29QIdUy0MazoF4Ka7od8Gf7O7IdxwzvVTD39c9BzsFZZIJySo5+Be+3ATTiVyLwPQ/YKoP03xNA66p3Neam4YWWDOYarzDs+T1KKwiFmrqC+dY2O+eyKO4yZcrCnh7QXwgpLFFxprnGJNo0YU47SRLSVRX8uG5FCouzhDZv
- rDzhAxv6
- f0D/gtC6K757qe3gft9aDfGYhuU8yjxEgL6LGTWW8v1Vg1UDLv/DT91gyNzARnqzwFx7F7QbWd8oMIZHzFeFa5T2KpPoAZY+miCuEsaXH2fWbmkYXybE1QqBu91rzgwxDu+PD+0PFEsdIu9kvbNP+IR8zuAoHCPxfwBF1uiGIrd0ki6lnOeXujWZXwVdjN3dZ+YBUJLa2gY3Jt7XKkn/vvR9YY+nOBCD2fGOFq/J4k8toNfkmnOcUd2B0wGQjBjL+kf4G2KPVqV3tLeHPYpPbHgevDILHRvNJx0/s7jy1DsJBtIIwvhJNhVk666Aa8kvNfRAX
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9912A1C0005
+X-Stat-Signature: 66cye3ykab1p1sazn9kyf8oc7e1bpihj
+X-HE-Tag: 1783375772-29252
+X-HE-Meta: U2FsdGVkX1/whItFObZ8qG7/eORGDgOFGfOiOIWzvSaVUi8SqOyVFkNTngRPWtwgyYVBvGgufXLJYTmDS/aJZgmt3QAkUyQcVZmkakkDSVW9rIfptD1TL8/8X/EIB/MTrZj64DfKe9ZYP382H+cyNk+URNYB5UIWiq7ym74Q80+ER+/rbPYzl13eYBipOQkbse5hE3lSFYAhEXnh0LnLmD1tqFHkDYkJmzsKYPJP/kICT5UO+CubTNUm+fXKsek5YN9jdmrExxYA+gBaBsWRwUBFwBJ4V2Vg+UOFO2oj/U25Q9x/1+3IfdD49CowJ4KCCQmuqizXiRSDk16D37N1DFIfjaEj3xDA6Ah+PSgYhs3FQ5fIPQOvB3j5gdSsCw1u2RbmzZrqmgxKJV3CJogzbGqt2Quo/pLMU2+LW6+bSbkee29jdmKGtDxeUu3hUEc3SQ9rrOK/MGI1pRTdFuuyQKqnwuoR0JTHYxOx3RA71CUrlZ1+ekxKdRWxXa/jhV6aOk/3hHW/HdwpeEyHcAoN1BLf6jBofhFT3Dzmp6q1zJ2KeVskrMuQEsYaEV7bYZE2AzrKi3yqXUxuTP2V8WIIUY0a+rVTc97pcGaPuoYVG8W6Uk97snFe0t+urWTyn1l+7nDaPpNpQOuLJ3BwUdJCDOTdzkYVLFSIYtPCvK9u54E++G9A69dbXThU2fqt0tbb7IoLtDcnXx9D1O+VNMsxu2l4hsMX9LDGjxT7WXRHpW1UDlCUiv7Pq4WL2f/JYinp4b4R43w7X6Yhy+obga6Yb0S1fnlUTEQ4od6vG+JrqxrBhLUXWHF3BDLxoEXQccVpQ9MNZaC2TdpqykGbUw/76TXSBmQOxa31lbx0vVxgsoWzgZeQdApIdc2qh4D+hW7/sD81QMfVkbbDokOOeg8CZuLTTeY21M3xgal5SgtAPPO5ViHRzrMrpOp4oGfvOz50JIOnM8FWpvnpxcK10yl
+ z/yZnOSl
+ 2PD9h9KsAjPjH+BPIUT5hBi7+GrhxuoQa63ZAu4t/BapgOmDTo3dm64S0ntse+Imp3TpfosagL6B/wNCnexhhlVmXxQ1o1RSyVQmsEDcv8c/oQBsg9VcyZWcl0u+oMgFMJ0EQcVh+8mFcaoLZ0inwPnVzE+MaKW/gjvdntI/5x8IPLd4v1EInyrHWbux7W0wBM8ZMELiKnkZLfB/HWqlxlQ72HpGy5zNl/na1cgrbBVkPm8iG02gXdSa+eGAnrD9X5j0P8yPE2UySHZZElwXPk3ebW40KrcJghY1awMC79d1aKLX9D7PwOmaHZoJaO3J5u9HppPjHgmezkWhMMaQH8u+DWaZDv91weNTM+KUCh1Lk4CI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,141 +86,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 03, 2026 at 10:38:21AM -0700, Usama Arif wrote:
-> From: Alexandre Ghiti <alexghiti@fb.com>
-> 
-> A large folio reaches zswap_load() only when the caller expects the
-> whole range to be on disk. Zswap still stores large folios as
-> independent order-0 entries, so reconstructing a large folio from
-> zswap entries would risk returning partially initialized data.
-> 
-> Teach zswap_load() to scan the covered range. If no slot is in zswap,
-> return -ENOENT so swap_read_folio() reads the backing device. If any
-> slot is still in zswap, fail the large-folio read so the caller can
-> fall back to per-page swapin.
-> 
-> Add zswap_range_has_entry() so PMD swap-entry consumers can make the
-> same range decision before attempting PMD-order swapin.
-> 
-> Signed-off-by: Alexandre Ghiti <alexghiti@fb.com>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Hello,
 
-I found this by accident, please CC me on zswap changes :)
+Applied to cgroup/for-7.2-fixes.
 
-> ---
->  include/linux/zswap.h |  7 +++++++
->  mm/zswap.c            | 46 +++++++++++++++++++++++++++++++++----------
->  2 files changed, 43 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> index 30c193a1207e..de10aa528597 100644
-> --- a/include/linux/zswap.h
-> +++ b/include/linux/zswap.h
-> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
->  void zswap_folio_swapin(struct folio *folio);
->  bool zswap_is_enabled(void);
->  bool zswap_never_enabled(void);
-> +bool zswap_range_has_entry(swp_entry_t entry, unsigned int nr);
->  #else
->  
->  struct zswap_lruvec_state {};
-> @@ -69,6 +70,12 @@ static inline bool zswap_never_enabled(void)
->  	return true;
->  }
->  
-> +static inline bool zswap_range_has_entry(swp_entry_t entry,
-> +					 unsigned int nr)
-> +{
-> +	return false;
-> +}
-> +
->  #endif
->  
->  #endif /* _LINUX_ZSWAP_H */
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index b5a17ea20237..89dd88a5223f 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1559,6 +1559,27 @@ bool zswap_store(struct folio *folio)
->  	return ret;
->  }
->  
-> +/**
-> + * zswap_range_has_entry() - is any slot in [entry, entry + nr) in zswap?
-> + * @entry: base swap entry of the range
-> + * @nr: number of contiguous slots to check
-> + */
+Thanks.
 
-Maybe zswap_is_present() as suggested here:
-https://lore.kernel.org/linux-mm/CAO9r8zNni28A+9BiDgDTBRuvGTKnqH91kpbpjjeftfnKSeSOJg@mail.gmail.com/.
-
-IIUC this interface can be used for the same purpose, we just need to
-pass nr=1.
-
-> +bool zswap_range_has_entry(swp_entry_t entry, unsigned int nr)
-> +{
-> +	pgoff_t offset = swp_offset(entry);
-> +	XA_STATE(xas, swap_zswap_tree(entry), offset);
-> +	bool found;
-> +
-> +	if (!nr || zswap_never_enabled())
-> +		return false;
-> +
-> +	rcu_read_lock();
-> +	found = !!xas_find(&xas, offset + nr - 1);
-> +	rcu_read_unlock();
-
-Why not xa_find()? It seems to handle RCU locking as well as retrying.
-
-> +
-> +	return found;
-> +}
-> +
->  /**
->   * zswap_load() - load a folio from zswap
->   * @folio: folio to load
-> @@ -1571,10 +1592,9 @@ bool zswap_store(struct folio *folio)
->   *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
->   *  will SIGBUS).
->   *
-> - *  -EINVAL: if the swapped out content was in zswap, but the page belongs
-> - *  to a large folio, which is not supported by zswap. The folio is unlocked,
-> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
-> - *  do_swap_page() will SIGBUS).
-> + *  -EIO: if a slot in a large-folio range is unexpectedly still in zswap.
-> + *  The folio is unlocked, but NOT marked up-to-date, so that an IO
-> + *  error is emitted (e.g. do_swap_page() will SIGBUS).
->   *
->   *  -ENOENT: if the swapped out content was not in zswap. The folio remains
->   *  locked on return.
-> @@ -1593,13 +1613,19 @@ int zswap_load(struct folio *folio)
->  		return -ENOENT;
->  
->  	/*
-> -	 * Large folios should not be swapped in while zswap is being used, as
-> -	 * they are not properly handled. Zswap does not properly load large
-> -	 * folios, and a large folio may only be partially in zswap.
-> +	 * A large folio reaches zswap_load() only when its whole range is
-> +	 * expected to be on disk: PMD swap-entry consumers split before
-> +	 * calling into PMD-order swapin whenever any slot is still in zswap.
-> +	 * Confirm the range is entirely absent from zswap and return -ENOENT
-> +	 * so the caller reads it from disk; if a slot is unexpectedly still in
-> +	 * zswap, fail the read rather than return partially-initialized data.
->  	 */
-> -	if (WARN_ON_ONCE(folio_test_large(folio))) {
-> -		folio_unlock(folio);
-> -		return -EINVAL;
-> +	if (folio_test_large(folio)) {
-> +		if (zswap_range_has_entry(swp, folio_nr_pages(folio))) {
-> +			folio_unlock(folio);
-> +			return -EIO;
-> +		}
-> +		return -ENOENT;
->  	}
->  
->  	entry = xa_load(tree, offset);
-> -- 
-> 2.53.0-Meta
-> 
-> 
+--
+tejun
 
