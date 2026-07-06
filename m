@@ -4,134 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4131DC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:14:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D45DBC43602
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:19:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 254D76B00CD; Mon,  6 Jul 2026 10:14:06 -0400 (EDT)
+	id D12EA6B00C0; Mon,  6 Jul 2026 10:19:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 205316B00E2; Mon,  6 Jul 2026 10:14:06 -0400 (EDT)
+	id CBE616B00C8; Mon,  6 Jul 2026 10:19:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11CC76B00E3; Mon,  6 Jul 2026 10:14:06 -0400 (EDT)
+	id B37166B00D9; Mon,  6 Jul 2026 10:19:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DA46C6B00CD
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:14:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C6F312037C
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:14:05 +0000 (UTC)
-X-FDA: 84958546050.30.87EB010
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7B996180003
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:14:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jGI5RxHD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783347243;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 849DF6B009E
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:19:23 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1129D1A031E
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:19:23 +0000 (UTC)
+X-FDA: 84958559406.08.EC67265
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 62A2C1A0009
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:19:21 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JeYADbsi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783347561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RCUbKkMVAqXLVkO6E18NiEWI8e2TIkxGzfCQs6g1ZKo=;
-	b=K9Th9optIL9HhcN3+wnKZhJiYca5B/ZKMChh6dCAOwrvGjg8PmF/lO5LdmYeiv+etg1wmY
-	Ume3Ei0VYebtaDMEqhllrq5hL2Pd4QXzvZAlOvh2mvoQxwGy8NqTIKdWChk3RupexBlim0
-	ffWlfgRtRZi2Sg1nEMgjviGZJib5tc0=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jGI5RxHD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783347243;
-	b=bAHXNxp/QH3k8fnE1LXll96J3rLi9vJFjG9TSBKd4OceJdOEy/S3PXCGA4t3P4gh5YH/13
-	k3Tdi5XBhcG0JWIQLu9T3ORpgia7oRLyt51vtB3+oXbliHe0O3B6iZtx6OpLsBs7ukl3gf
-	NwL3DvhDZdneHQNuVZQoLQ/wnrd+MDU=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-475cb71a4ebso3249972f8f.0
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 07:14:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783347242; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BFJ4hhRbgc5GWWjw/xFgEQ0N0S0kNJI6Xt0EosGELW8QDw7kFFIwqQp2LjbcZ18Bsp
-         3PxA9aoNaP086Ab2mwFSdNGIhEx1tHDt1ZeCv/Ti14gH9DaoDExrbUPh/ec40v9Yyw7P
-         /j9kEBN+vqdRjDfHOp2CYd5PVaDp1iItwYCo5VBFkBMVQ8jpG+reQwaUPl14DWx9Hig1
-         yjgP5eHNOLBYciJ6On1e5iP+ktTEYkCwHlAsXiQ5Yl7NkYqLXOn9VVk6EeTfArTcPw3h
-         dYmiBRYmSSaU5uL5K1LQJw3TT5qBsDsF782vG/yofKas6+i97w/FPpxk7S31yajxUr/j
-         6uuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RCUbKkMVAqXLVkO6E18NiEWI8e2TIkxGzfCQs6g1ZKo=;
-        fh=5bx5GWB7Otbbbe6GD4dNj5vmwLZeMs7y8wdcY4btilE=;
-        b=WUlSk4iDAgEEf+fHd4sC77VglFyc2VtpArI4RpJVs4wCSh2RlS2dDjM/sV6xd+NN7I
-         aDrgIGo0tZh/K1fKHl+htobcMZdOeC7fyKuBtuiSduTw7XuXKJ3DrHhDQDgZICS1hZ/8
-         ecDVU4TBT5VTPfIOLbIBsCffXpAF9VFa9cBIDh2yMICSrszadfdRXWBlD29B1oF880Hn
-         0oaQlzhBsAMAvslana8Lamwj9A2QRFtFNtNpNBgvr5rls4/5u2W6iNBpcTyCY78ixAfN
-         E9iog04faUammK/Hpfu8SirtlsxHlOTT2fHkxX8mQsEmJjau9AcOdOxNKCx5fqtj/8lf
-         jP2g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783347242; x=1783952042; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RCUbKkMVAqXLVkO6E18NiEWI8e2TIkxGzfCQs6g1ZKo=;
-        b=jGI5RxHD0YouniMLs9CU2yBSty1ndY1tTlYW5RPM3qoGVGUpyfWX6Lpuijac8uskFC
-         emBLRjkku24gIDuqWEm2vvNdDKCWavtbrWlgvsoUO71iVocxUBkeWSYrEn8i1Smr4+va
-         MBSoJQVETBptD5VJzDCo5NMUg2yTQ+koAKvCsBDbDWiddZyGS3htkzTcNVLVvO7C//K1
-         HYoD8yHuxFiCtdAY5d0hnVaIfnRb47u+HennNUxyTxqL6lWnsr3I2DJ6Wxy3b13pt7m/
-         p9ME6MJzIEtDI/X0AYnHma/QixizoOiSE9NbI6vi9pTLTeIuXA48asky/a8eMjEkvZZl
-         ufVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783347242; x=1783952042;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RCUbKkMVAqXLVkO6E18NiEWI8e2TIkxGzfCQs6g1ZKo=;
-        b=s1+A8/3768MBYsKcIT8vMe8s/JJSCvG/sHOCAEAd+VDnFNOs+jlKv4YLgruUVdByXK
-         vl3GpK8EoqtUb7Ovomw000KyY8I8zZTU6OEb3O8W8bJbpS5SI7uBc535S0Vy6kGN7Abs
-         XvS93HgZz4mhT5JOH+3VbYBrJSn3+Axww/7Cq4XU/3Vbj5xj/EFQa2khOzy0wslQ23oM
-         jnAYh6DyZ63YWGJ3Va+IE079x7BObPjHXYerGcmzo+JI5XpYek8a7MW6rZalU+6CDz8O
-         PKdMM4UJPzcW31yhhcWBuH+S9/D1jA66iZpIlbhhYgYGUJK8kVLpgyslo4bI8kEg2Fj+
-         HI8Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rp33B34xhzowG7RWg5hAwwquKDW4RZCMoM2gq50cDMQZp5zFxb8YUCKOw9EFmtMViuxT48MPbleHA==@kvack.org
-X-Gm-Message-State: AOJu0Yye1+VMYMSpZKSrl/NkwEcgPIzDKwou66b/Y4jxePz5pmNI7irn
-	mWRcRZ5724HlgOBrK1gooit9VNWrmal6uAbqkKX8rbQasOmd3VXfLp1J2yyPdIh/rE3Jzyz4u3t
-	tw/WhYHFrRVx9fYGO3T4qv1rjOWPpbFY=
-X-Gm-Gg: AfdE7cmk8GzN7P3shkEeoOA448u7i8aGxQSJErWqI8OZy85rSED34LGcoguezquI9Hh
-	deHHA1eOj2f+moejRZiVX4lDLXJEaTHMO/kd1UwwjEw9HdV4csf7VkidftPzUItvl0sbjy5+S2W
-	TlJQcPFK+rjcm+M56tcdIs4nxejc0eiD6HI63KiQL1Lybz+//1cQbAb5Nv3geeQ9KaousdUER3z
-	rG9ZCqcCMViFPsU4ITOMcVOvoP8uuVFapTclUOuwkQvCgrHnERFWkV+BkQcCiEYHvpE+tvQ47zc
-	K8Xdfc8kCS0+GTAq8t1hkghf1vGDW5s=
-X-Received: by 2002:a05:600c:5309:b0:490:d38c:7836 with SMTP id
- 5b1f17b1804b1-493df082feemr8853095e9.3.1783347241905; Mon, 06 Jul 2026
- 07:14:01 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=i87JO+gJj72UbHQzbOb/N8EEBzlxHqvP8i5Djmq/yJo=;
+	b=ZIyPCkdHwa4W4SXIuUTE8oYtmeU6nkc3WeuZnDbiTTTqAUclN6rWTx4vbD6Xh4DRi+vl5X
+	xh8OUjmgB6euNqnad37Afo6uJp/0zFpPnBYFeid6K5TOJKRMm/Kr2VkjWRZ+GWXhf66Zod
+	yTWKIe7gzQPGdAGfRejnadlq/aVAJRo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JeYADbsi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783347561;
+	b=fZIW+eXpKSc5ropeA5n8yf32qlgO7SWFfBss6UY+SUDdeAREYtmszl2R0fl/KedtWRkh8S
+	eTdHd7M8f9KnjnYZb46dN3hA7ZWojeVb+sgonL0T+T5XbqKp4zJ1l9dheYw4J2U4XjsoEd
+	vhcLpqPTNGwR876brPhK0iWppCAKbfk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CBFDA60098;
+	Mon,  6 Jul 2026 14:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055221F000E9;
+	Mon,  6 Jul 2026 14:19:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783347560;
+	bh=i87JO+gJj72UbHQzbOb/N8EEBzlxHqvP8i5Djmq/yJo=;
+	h=From:To:Cc:Subject:Date;
+	b=JeYADbsi5s9q6/eNMTz/nBCYO/5f7S7GHQL3B0f1WDRWTeg9PC4TGarR3F+ov7Bja
+	 JREqATY+9eanFWJQeqjVmyzmyzdKIh7RFwSN8hJTE30cNWb1ubn3AnVTan5E3iosu0
+	 A0Y63i/708h4tQcPN6wYEZLFxVj8YLnwpBkrZo6CmgXmNiLfpkTbMp5VbzQNccPBMl
+	 pEP8BxF0XIlGQG7LgyzhFcBKkWoTbl/6LQ5Bs1qCv7QCTAx38XZhwFOiobClP9eg0d
+	 pE5TOxBQVLM7v8InqRCUXXafNES/UXvX6dnhXCbbcFRpSZ8NIHUaSURXuuvnx/hBdk
+	 HFuwcl1abDS6Q==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1 00/16] mm/damon: introduce data attributes only monitoring
+Date: Mon,  6 Jul 2026 07:18:54 -0700
+Message-ID: <20260706141912.88445-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20260704092007.3483-1-igorpetindev@gmail.com> <20260704092007.3483-4-igorpetindev@gmail.com>
-In-Reply-To: <20260704092007.3483-4-igorpetindev@gmail.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Mon, 6 Jul 2026 16:13:50 +0200
-X-Gm-Features: AVVi8CfSo_a33Q1WdaWqLuVo2tcFB5VpUhYoEy9ZG3mJd9mF_je-FZgLimqail8
-Message-ID: <CA+fCnZc2VOghj5b4Tjkz4MditvVORnAK0FRs51=i4+ZmDqsbng@mail.gmail.com>
-Subject: Re: [PATCH 3/3] kasan: common: replace magic number with KASAN_TAG_KERNEL
-To: Igor Putko <igorpetindev@gmail.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
-	vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 62A2C1A0009
+X-Stat-Signature: xtsw6skarwp477zh91cwjjsrizkrudkm
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7B996180003
-X-Stat-Signature: h4gzk999u6dhksskardbsaaiycr1gyxw
-X-HE-Tag: 1783347243-286812
-X-HE-Meta: U2FsdGVkX1+Vki0dJ9f73s8jPcLgIfDWJ1++UvFrL3c0h+UwZywe0zVXlfTPlmKFEtqSshHC0BwahOvmWQrjE4XatHyPruNGFrr3hiVfGUVVbpojPqcdic8fSkfrkpZ449xB68LcAsJ6EusbyNfzDkImHc03q1/4qY3AQi6wZl8HlKeLAV9a/SMn+M61yK+ZYt9nQMcMLva7QN2iiVJWv/Ur1NUUWUfFt/svpu3mTIBXse9w5a8mNJILFjRtmm0hVE7ZaKDkeC1HwyYn6CNikD5xpbyW2sBf6zSQGQvPuqxMsWftyVGe5BWHDpEaT2+GzRs8hNwlwit/jae46yXEHUrU34iiwJkVUilz2EV6HJWZJwoYMx1Guz6XsSp0yVQhpjL0KJuDCRQiQQsZ1JrkFYCjiJw90A9ZjDirJEe5Q8RCuG/Vxs5Vex4ASBj0BZGX9kEocranzC4lOMbBYZMBFsuSEPIBut8655ejjGkaaUHeY/97nrKNZNC/lF/Xg4Yzam2RjmZTAMvhjHsGPmrp15Z1zD33hWGe2oz9CMRPIsWYQfmoEQvK0C8SRhDx8hUR8T+7ugeWFBjRXK37iYn75NPwdQs3RnCFQ5RA3iELxBSAUIgekCe5ko/rZpxK1KCmcx/tbhEBWk+k/1kzpiOtX547EYwGEKjLtlQFtgy4MiYLxoXAeCkqi71/1L9Y5zQ+r0Bi900WKs50tasvOeDijEBf4mEX/bgjPD/XCJU3IpSTTswE1ajaIN6vVzZCc2zM5a9vbVGhk4IaEAyj2IGpieSkxdCAyhX63uhNjz4gR7kqnLwZH44duV7bMf8mHa3lJCbkzx7+pXoTxv9LNVOmEpRHWFX0Azdc1Powh8rJhUymwlzH6Hj4xSahmgqK5E0MIRfKVbZwVUtMbsj752Z7E27mgICo7U+Lb4cy3DUw2Oi1YJMQCC+mCK5UuGzhGCp1ITU6koffgBV6KP1mPl2
- rkOGNdJz
- 9M7NkdNxNsNpVM8cXJgx/W/oWpmyAbsAvSGMWlH2UQuuT8mOji9LmNR5GarJP0tjHNIja/UG9gtDbJRkHmjiA+N0mvO2gbvi2wLCJ1HZb4oHCfi903nspyeFgr5CXU0m7bTMgopCLjeZJkp3OAQxEkS+VrGukybhzunRpMyYrg/Sx5wu7HUrXL3f1Nrkd1ZUY91T/IeYvPwNT7tNC9vNHrakzGuV/1Q4fa8tnavKJ0ZdHHV5y0n0vzaoXDFR6HsegaT/xbaR+QJRqD+44RUVyPyt2wq2DK4Ybf0GdrLB7wZ3A2zQaPUSBcQcjmbhmlWWkKL/N+p3apCgpL4zCS+pq/Qw0rKEr2YdImONtl8MUVCRML69c2KUqZJ5vHJIhfDOuVI5LlhAY4MsPyAYMyCyWffIFGJ2HEHSd/MHYs6UJw9Uqdnu92TGS8F3Dt4MF1zfMFOx0SgX9zw0lTcMxlcjWSBHmc4W5RpUBbVWz8YQHKmapJYIZVyDWDM4+X4Py8jySGELWd+pbt4GOA0PHAbMNotFyFBB51lwNlVcD
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783347561-385458
+X-HE-Meta: U2FsdGVkX1/ECkGHLQiqqMxTODaGQRa0eDv6fyBhUkr+QaohO4P2AwYOJv5WNv1LNp+/XscJwLtSKOXat7Wc153gRTIZVaWFTJA3nyNCQ6w5k/B8EwSme4xqsCvLLnmC3HIfWhlz1C4j5YNdybGPKG1GUhgfQ+Ft2dwZBYsOnqzFhuKpj3IIhliNh5ZiD880BkWBVAM1cnlaimBRUoG9wWWYbXSRL7d+LiZQj0fT8IBIkxV2Ql1eBhkmqqb50hZjufpwoe3DrUGannF26SV3+LDunB70Nh6lMJHx467rABYWF/RxkQeOuX5xIE6cMME047HWCklrGynrYBCwehy5zaHShlh2wb/IBZrI9iEn0iyQFCfsWgkV18fF3C2QTmaYPyumywjGx2ngJEXosf0Fog9XriMddwbyiymxtiRfOL5QsO47aDkvlvhLS0xNPY01dMO8RyjRHERlM1AaXJvEchgybknTMx+UBSdkg4OtmoQ7TLCqlXWHJri7Bqpvv3z7n5PnJApHroX4Sp9VfBfbIid5197jgECviv3kYAabTq2rDNm+AA24w2yiGkvTX0uieNKhPmkGkGkqy/UYmHBA3y4hCsvwKNljwkFvHt/G6U3RP4kcSWv56tm0O+xbhwSJPosGEi5dg8bQtX5bBN2GvyZvFsKFO3PKrmcfY0XNcqwbEItLXTggft8YsNEbJVqLgdQ12wG7AqKxxhkYZkc4u3DZ1IBKsKruiBJeDyIDsYJTQc077KhKAS4CRZhyx91DejOwvbj+ubS0p4tYvwIv+FqjtkG0FuNSUnKtAe2uL5dWgNL4JLylwPFkk5JUQExZB6C91i+67sqClZss4vEC63TlimtkPH5K8gt6LtqcJQtz2Zc27fwTeacQwrojSEqQOIuv1aF8qI6Z+GTzqh6e2A+Mg7yX2HfI4AL8N+bT5ouBd5nLJ4LEovEWeuIQTMdDHyMPyl3yJWUVGHXeN+q
+ O/kT9jNq
+ eE6Ztbsq246sps5fPXNc3xs4cXZsohFH2oMKwfVQuAQlEXNPPS9zOHVJbBaGYhZ0zkTadIB5AcKgF4yuHQJYdpNlxG5aEEnn6FIjvrRnVgtLj2VSj6VAx2ddNKXm1JvPgyUky5Ht+ghf9prtZTqzMiQjNGI8rwXpEg+9PMof/NVnFMmiqZWiS1hoyYFxVBoS/IrjCJkIyZ3G4rpChu/pKf/BBvRXkYsHrzjputsBTsiKKD0GgyrdUKzJSYhX89OYHnno9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,40 +101,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jul 4, 2026 at 11:20=E2=80=AFAM Igor Putko <igorpetindev@gmail.com>=
- wrote:
->
-> Replace the literal 0xff in assign_tag()
-> with KASAN_TAG_KERNEL to eliminate the
-> magic number and improve code clarity.
->
-> Signed-off-by: Igor Putko <igorpetindev@gmail.com>
-> ---
->  mm/kasan/common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-> index 5faf73c8f..3e9b6b8f5 100644
-> --- a/mm/kasan/common.c
-> +++ b/mm/kasan/common.c
-> @@ -188,7 +188,7 @@ static inline u8 assign_tag(struct kmem_cache *cache,
->                                         const void *object, bool init)
->  {
->         if (IS_ENABLED(CONFIG_KASAN_GENERIC))
-> -               return 0xff;
-> +               return KASAN_TAG_KERNEL;
+TL;DR: Introduce a way to get DAMON's best effort accuracy monitoring of
+user-demanding non-access data attributes.
 
-Not sure about this change either: the notion of a tag does no apply
-to the Generic mode, so the code uses 0xff in such cases (the second
-definition of page_kasan_tag() is another case).
+Background
+==========
+
+DAMON was initially designed for only access monitoring.  It turned out
+users want to get the information together with more data attributes.
+For example, some users want to know how much of a hot memory region
+belongs to huge pages or specific cgroups.  Page level properties based
+monitoring was introduced with commit 626ffabe67c2 ("mm/damon: clarify
+trying vs applying on damos_stat kernel-doc comment") to fill the gap.
+Because it works only at snapshot level and snapshot capturing in the
+mode can induce high overhead, commit 45c49d9fd608 ("mm/damon/core:
+introduce struct damon_probe") introduced data attributes monitoring.
+
+Data attributes monitoring treats the attributes as only additional and
+subordinate information.  Data access monitoring is always turned on,
+and regions are adjusted for best accuracy of the access information. In
+some cases, users may be primarily interested in the attributes more
+than the access.  They might even not care about the access information
+at all.  Because DAMON treats data accesses as the only primary
+information, such users cannot get high quality attributes information.
+
+Design and Implementation
+=========================
+
+Introduce another way for treating data attributes as the primary
+information.  Add 'weight' property to each data attribute probe.  When
+any of the weights are set, the mode is enabled.  Data access monitoring
+is completely turned off in the mode.  For region  adjustment, the
+weighted sum of probe hit counters is used instead of the nr_accesses.
+
+Using the weights, users can specify to what attributes they are
+interested in to what degree.  DAMON will adjust the regions and provide
+the best-effort quality monitoring that is optimized for the user
+demands.
+
+Extend damon_operations for efficient use of probe hits.  Update regions
+merge and kdamond main logic to support the new mode.  Add a new struct
+field and a sysfs file for API callers and ABI users, respectively.
+
+Test
+====
+
+On ~7 GiB memory idle system, run a simple AI-assisted program.  The
+program allocates and faults 2 GiB anonymous pages.  Then, it does
+nothing but wait until the user terminates it.  Hence, the system ~2 GiB
+of anonymous pages with no active accesses.
+
+Monitor the distribution of the anonymous pages using DAMON attributes
+monitoring mode, using DAMON user-space tool, damo [1].
+
+    $ sudo ./damo start --probe_filter allow anon
+    $ sudo ./damo report access --dont_merge_regions
+    heatmap: 00000000000000000000000000000000000000000000000399999995111111146666666666666666
+    # min/max temperatures: -2,470,000,000, -1,620,000,000, column size: 99.800 MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    #   <start>      <size>       <freq> <age>         <probe hits>
+    0   4.000 KiB    79.840 MiB   0 hz   24.700 s      2
+    1   79.844 MiB   718.562 MiB  0 hz   24.700 s      8
+    2   798.406 MiB  793.148 MiB  0 hz   24.700 s      7
+    3   1.554 GiB    797.828 MiB  0 hz   24.700 s      7
+    4   2.333 GiB    794.668 MiB  0 hz   24.600 s      8
+    5   3.109 GiB    791.117 MiB  0 hz   24.500 s      0
+    6   3.882 GiB    785.312 MiB  0 hz   24 s          2
+    7   4.649 GiB    787.867 MiB  0 hz   16.200 s      6
+    8   5.418 GiB    784.477 MiB  0 hz   23.300 s      6
+    9   6.184 GiB    783.820 MiB  0 hz   18.200 s      9
+    10  6.950 GiB    797.730 MiB  0 hz   18.900 s      7
+    11  7.729 GiB    69.625 MiB   0 hz   18.900 s      0
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+Note that the line after the line starting with "intervals:" is not
+provided by the current version of 'damo'.  I manually added the legends
+line for easier understanding of these results.
+
+Each of the 12 lines after the legend line shows the DAMON-found
+regions.  Each line shows 1) index of the region, 2) start address of
+the region, 3) size of the region, 4) access frequency of the region, 5)
+age (how long the access frequency on the region was kept) of the
+region, and finally 6) the probe hit count.
+
+Because data access is the primary information that adjusts region for,
+and there is only nearly zero access on the system, regions are naively
+adjusted with the same size.  Still <probe hits> show different
+distribution of the anonymous pages, but it is obviously very rough
+information.
+
+Switch to the attributes only mode and show how it changes the picture:
+
+    $ sudo ./damo tune --probe_filter allow anon --probe_weight 100
+    $ sudo ./damo report access --dont_merge_regions
+    heatmap: 88888888888888888889888999999889999999000004888888888888889999988888898888888888
+    # min/max temperatures: -4,430,000,000, 0, column size: 99.800 MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    #   <start>      <size>       <freq> <age>         <probe hits>
+    0   4.000 KiB    60.445 MiB   0 hz   700 ms        0
+    1   60.449 MiB   1.363 MiB    0 hz   600 ms        18
+    2   61.812 MiB   144.000 KiB  0 hz   0 ns          1
+    3   61.953 MiB   1.922 MiB    0 hz   2.400 s       19
+    4   63.875 MiB   12.133 MiB   0 hz   200 ms        0
+    [...]
+    500 5.132 GiB    8.000 KiB    0 hz   2 m 15.800 s  20
+    501 5.132 GiB    8.000 KiB    0 hz   2 m 16.200 s  0
+    502 5.132 GiB    16.000 KiB   0 hz   2 m 16.900 s  20
+    503 5.132 GiB    24.000 KiB   0 hz   2 m 14.200 s  0
+    504 5.132 GiB    8.000 KiB    0 hz   2 m 14.900 s  20
+    [...]
+    923 7.534 GiB    126.637 MiB  0 hz   0 ns          6
+    924 7.658 GiB    252.000 KiB  0 hz   54.800 s      20
+    925 7.658 GiB    142.242 MiB  0 hz   300 ms        0
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+As expected, regions are adjusted to provide the best accurate picture
+for the anonymous pages distribution (<probe hits>).  The region 0
+(60.445 MiB memory from the address 4.000 KiB) has nearly zero anonymous
+pages.  The region 1 (1.363 MiB memory from the address 60.449 MiB) is
+nearly full with anonymous pages.  Region 500 (8 KiB memory from the
+address 5.132 GiB) is certainly two anonymous pages.
+
+Future Work
+===========
+
+Attributes only monitoring disables access monitoring.  We will enable
+that in future, by extending the supported attributes to include data
+accesses.  This patch series, and the future work are parts of the
+ongoing project [2] for extending DAMON.  The project aims to extend
+DAMON with primitives other than page table accessed bits such as AMD
+IBS, Intel PEBS, and Arm SPE, to provide more powerful and detailed
+information like per-CPUs/threads/reads/writes monitoring.
+
+Patches Sequence
+================
+
+Patch 1 introduces damon_probe->weight for specifying the weights of
+each attribute.  Patches 2-6 extends apply_probe() damon_ops callback to
+efficiently support the new mode.  Patch 7 extends regions merge
+function to work with probe hits in the mode.  Patch 7 also introduces
+the function for detecting the mode enablement but always returns false,
+for safe and incremental changes.  Patches 8-11 incrementally update
+kdamond_fn() to support the mode.  Patch 12 completes the mode detection
+function implementation, so that the new mode really works.  Patch 13
+introduces a new sysfs file for ABI users.  Finally, patches 14-16
+respectively updates design, usage and ABI documents for the new feature
+and interfaces.
+
+[1] https://github.com/damonitor/damo
+[2] https://lore.kernel.org/20260525225208.1179-1-sj@kernel.org/
+
+Changelog
+=========
+
+Changes from RFC
+- RFC: https://lore.kernel.org/20260705205743.98656-1-sj@kernel.org
+- Add kernel-doc comment for damon_probe->weight.
+- Fix typos in kernel-doc, design and usage documents.
+
+SJ Park (16):
+  mm/damon/core: introduce damon_probe->weight
+  mm/damon/core: ask apply_probes() ops callback to set sampling address
+  mm/damon/paddr: set samples in apply_probes() if requested
+  mm/damon/core: ask apply_probe() to return max probe hits weighted sum
+  mm/damon/core: implement damon_probe_hits_wsum()
+  mm/damon/paddr: respect return_max_wsum
+  mm/damon/core: extend merge function to work with probe hits
+  mm/damon/core: disable access monitoring when probe weights are set
+  mm/damon/core: set samples in apply_probes() if probe weights are set
+  mm/damon/core: s/max_nr_accesses/max_merge_score/ in kdamond_fn()
+  mm/damon/core: get merge threshold from probe hits when weights are
+    set
+  mm/damon/core: implement damon_has_probe_weight()
+  mm/damon/sysfs: implement probe/weight file
+  Docs/mm/damon/design: document attrs-only monitoring
+  Docs/admin-guide/mm/damon/usage: document weight sysfs file
+  Docs/ABI/damon: document probe weight file
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |   6 +
+ Documentation/admin-guide/mm/damon/usage.rst  |  11 +-
+ Documentation/mm/damon/design.rst             |  25 ++++
+ include/linux/damon.h                         |  12 +-
+ mm/damon/core.c                               | 107 +++++++++++++++---
+ mm/damon/paddr.c                              |  11 +-
+ mm/damon/sysfs.c                              |  25 ++++
+ mm/damon/tests/core-kunit.h                   |  13 ++-
+ 8 files changed, 185 insertions(+), 25 deletions(-)
 
 
-
->
->         /*
->          * If the cache neither has a constructor nor has SLAB_TYPESAFE_B=
-Y_RCU
-> --
-> 2.47.3
->
+base-commit: 6a2e3b53ae2be579022206bf5d43b87dff04fe12
+-- 
+2.47.3
 
