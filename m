@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECE90C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAFACC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:21:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8A326B00EB; Mon,  6 Jul 2026 02:21:00 -0400 (EDT)
+	id 5FA9F6B00EF; Mon,  6 Jul 2026 02:21:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C616A6B00EF; Mon,  6 Jul 2026 02:21:00 -0400 (EDT)
+	id 5AB136B00F1; Mon,  6 Jul 2026 02:21:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B02736B00F0; Mon,  6 Jul 2026 02:21:00 -0400 (EDT)
+	id 424A96B00F2; Mon,  6 Jul 2026 02:21:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8228D6B00EB
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:21:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 010761686F6
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:59 +0000 (UTC)
-X-FDA: 84957353880.01.5260377
+	by kanga.kvack.org (Postfix) with ESMTP id 169E66B00EF
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:21:01 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 93B461C1EBA
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:21:00 +0000 (UTC)
+X-FDA: 84957353880.10.A27477E
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1F6E420006
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 73D5340002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	spf=pass (imf17.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783318859;
+	b=vI03xyQvFy15NAz6H8pKNDz7f1vcUwP4seDi6lzzLo1QmsEI+epVxOPxDrgpRnvp5KEdD3
+	WB0Py3L/wxM7Dmyz/iy1yzRuK320EgDFPsXaE7FBpT1+MnVavYFv2mVLIkYFEP3JXWrrmR
+	lvM4HfOWqc5K70vTKe5FaKs912aulck=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf17.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783318858;
+	s=arc-20220608; t=1783318859;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=YcZh1vV8SgfnVfzw8dvpv0mjAeTrgvYMwuwe6YQxv7g=;
-	b=wQJfmbQbZHvDkSQiHFQ2hRwq9WZqssvD8umD93a2VAcVouVkah/HvFjiUMLS1NNwnnWOCF
-	T5sB/jWVkNFfUi9WFEmbKOSna7H+NvTKKvl9o2LhwCZT1QteLnLABDc1hYLLxmdbibEcMd
-	ST3T3qoIHA4ctB1GBaMA2YcDP6ycgyM=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783318858;
-	b=z3Gz7bziemJxddcW1FoyU/Wnl9NiSRVnkym4zzLlRXQVOkn1jhppzW3svaHtUNWQwhhSIK
-	3tBHp/K5fylJZA8/3Ufy19E0Cjp76P2sFZEIt9ayR95iCTfuRebyy9mBMfrlg3buHQrEsl
-	nQFAfAcf4UpiTOW76FxM8ayFwj5XX6Q=
-X-AuditID: a67dfc5b-c45ff70000001609-0f-6a4b49054145
+	bh=xBro/pS8XSklZi33ajlqBMARpg6j4+kbGF2NYOwbtjg=;
+	b=MY4YIcm6HHSYtV2SXLD10lMLBqaJQ/6GCsfkkXCP2fNcojbMmQ8H1jdGkNJX8McY2oD86O
+	m7y7Gpkx8hDiDOobJkMsvheEe1YBsTIi/OYEBjTaQqaQNdnoJnLSUtFB6Mgzdo1gTzO1p0
+	DaS2T1p7ScaWoaf6LTmRJeGXRMBqqcA=
+X-AuditID: a67dfc5b-c45ff70000001609-2d-6a4b4905bbfc
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -214,54 +214,53 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 32/40] completion, dept: introduce init_completion_dmap() API
-Date: Mon,  6 Jul 2026 15:19:20 +0900
-Message-Id: <20260706061928.66713-33-byungchul@sk.com>
+Subject: [PATCH v19 33/40] dept: call dept_hardirqs_off() in local_irq_*() regardless of irq state
+Date: Mon,  6 Jul 2026 15:19:21 +0900
+Message-Id: <20260706061928.66713-34-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTH99z73Beq1ZvqxkU+QJqpiFGnYeYkvoS4D141SzSafZi62Yy7
-	0VKgaRHFaUAU10zQrksRAQ24USstoK1DBOsLClIrs4zNdVAqRFZCKmIUMGWtXavx2y///zm/
-	nA+HJWVeahGrzCsQtXkKtZyWYMnE3PoVzJZtqk/Gb2aAvqwYfE9GKZie0mOobbHR0PN3KQZP
-	sxXBk2k9grLrUQwRYzcDU6FBBqLObgS2q0cJCN59icA0MkrDpLkcwXjXZogOjRFgHn1DQKQy
-	B86YPAjqR4ZIuNrtR+C0lNLwr+E3EvpH54HLdJKGib5aAgIDTgIqz9kx9AXDBPgqjQRY7Z+D
-	23Ahll9JhJozxwgwNXUQEDI3MlDT209BeGQ1ROvyYei0CUPzxCMKXP7HFAQDRhqulQwzYP+n
-	K3ZneYAE+9NYcfa8j4YbThcGfWQKQX97LQ1+W5SCkprXFHhuuyn4w+rB0DLmJcBVfQnDYO9p
-	Bh61N1EwMuylwNH7kISZU8ng+amCyswSGh2thGA7b0PCf7NGJJQZYnT32SQpHHccEBrcz2hh
-	dvovWnDO1GHhwQVeuF49xAjHbw4wQp19v+CwpAu/3BgnhIHghu3pX0rWZ4lqZaGoXbVxnyS7
-	oaWG1jiXHbz3yoBK0GzKjyiB5bkM/oG5mnrPlnoLGWeaW8p7vaG3vJBL5R0VgdiMhCW5/hS+
-	3FyB48UCbgcfcuvpOGNuMX/LcIuJs5Rby4eCHeidNIW3Xr79VpQQy5vD54g4y7hP+cHJ+zgu
-	5TlrAm+6+JB8t5DE37F4sQFJ69AHjUimzCvMVSjVGSuzi/KUB1d+k59rR7F/Mx8J725DLz07
-	OxHHIvlcKWRuVckoRaGuKLcT8SwpXyhdkrZNJZNmKYoOidr8r7X71aKuEyWzWJ4oXTNzIEvG
-	facoEHNEUSNq37cEm7CoBJ1I3Lvl8ONwX9dTVeS1sdWfduL+z8+LDfOZdVXmw6lbNZkFX+1q
-	qk/evv5D70XXvA68obQqc47uo32XNafGqi79uaOgXN2W+nHr7tycnqQ5m5cmnm0PLG76/ocv
-	lqc1mMP+Xd2RNt/vx/YU+ord3/76GZvauGo4KXmN5oXqTuvJnr6j9zbJsS5bsTqd1OoU/wM3
-	LlxMawMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0yTZxTGfb9bS13NZ23mFyXBNMFbos5kbGfReElIfC1jmYlhxmik6hcp
-	BSStY7DNCJRix8SUZi3ODxAYVALVYsELkgaCE6doLLAhGbJi0pYRilUskJabrcv+Ofmd5znn
-	yfnjiEnZPXqdWJ1zjtfmqLIUjISSfLVLv40+mJL5SakjAYyGC/DS46VhqKibgpmQkYIqh52B
-	ReGuCIzOX2n440UxBe6bLQg8M0YEc/MCCYaOZQoWzb0iCIVHRGApQrDs6kVg7TeTMOzuIsHe
-	XkTAu9YlBiYfTCOwvPIyUDlRREHQdgnBVb8ggomHB2DK00nD8ug4AS9mAwhs3iUCvN0XESxa
-	NXCtvi26bn3DwPyz5yRUWtwI6l6NkjA9MYagvfcfBK6mYgZ8ptskDHpXwZ8zQQYeW35mYKq/
-	ioDXrQzUFrto6H86iaBaMCPw/+0iQP+bgwFrtZOCjrH7IuifXCDgpdVMQIszFTw2PwV9pnoi
-	em506tZaECr1RLT8S4DlRicBYVuzaF8jwnOGyxRubrtDYMPAIoPtNXaE5yNmhEONehIbTNH2
-	QSBI4pK273BjX4DBkZm/GOyaraXwk3oON/wUIXDFs2244+qo6Ov9RyW7T/NZ6jxeu2NPuiSj
-	0SEwua4t+b+/M6FCFEkoQ3Fijv2Ua6prImPMsJu44eHwB5azG7i2cj9dhiRikh1M4C7ZyqmY
-	sYY9xIX7jEyMKTaR6zJ1iWIsZT/jwpOd6L/QBK6ltftDUFxUv7lQTcRYxiZxI8FHlAlJatGK
-	ZiRX5+Rlq9RZSdt1moyCHHX+9lNns50o+k+28wsV91Bo8EAPYsVI8ZEU9ikzZbQqT1eQ3YM4
-	MamQSzduTsmUSU+rCr7ntWdPaL/N4nU9aL2YUqyVKr/h02XsGdU5XsPzubz2f5cQx60rRApa
-	flkYvXJkqb205uNZP6xJ+rKqqaLzZPKujVscUCoE7NfcJWXJ1QM1EyWRExtSQoGp8Xi3nFPu
-	zk0vmOaHGn5IfOTD4cOmROtIvFG5em/uyoFC4cfrq1LfejRHeEzqfGS8suEKFUgr/+VzzpcW
-	SNXcrirRH3R+cdwX1B9TULoM1c6tpFaneg9Ns3PXSwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTdxjG/Z87nZWTasYRs2BqcNpFFEHzxrnNffJ4y0yW7MMWo904Slmh
+	TatcTAytihEHUru0BgoEYUOk5RKKFzpRrFAE2tACYlVAqq6MYMWoZZuUsML0y5snz/O8v08P
+	g0uGyXhGkXVU0GTJlVJKRIhCSy9tYHbtydgUsLNwtiAfhvUdBJQ32SiYs1yn4d6DkwR4G60I
+	/p614GDSI5hvdyEw+4w4XJzUE1AWtNAw2bUT5kcnMJgyv6Jg1tOPQ6trDEF73UkKBp8vg6Hw
+	NAUhXzkGL5sp8LmnEFRYjAiCj9oxOFXTREHbuIMG31QEgxGzEQNryz7oM1RjYLl4CgNTwx8Y
+	uGtGCKjVJYLFM0hCJJAM81UqcFknaBgtMRHQGOonoWdsmISpoJGC67pxGt4OBTA46wgT0PIs
+	GpRWjlDguvEUg0FHOQVFzVdJGLPNk+Dt6CNhwOoloGnCj0Gf6x4BPWVXCHjsKaGh39FAgt3j
+	xmHm/CrwXigmwW/4E0HDy2pqRxpfb7+G8bZKG+ILDNFz98U0zv/e94Li34XvU3xvNcf/VvgO
+	4y94NvBtZaM0f/rWI5qvajnGn+4Mkby9TsbX3JzE+Euvw+T+5O9F29MEpSJb0Gz88pAo/a/h
+	AlKtj80N2kCHQh+dQzEMx6ZyrbcHsA+6v1VPLGiK/ZTz+//FF/QKdjVnLw6S55CIwdnBBK6o
+	tnixtJz9kTOHxqIlhiHYRK54SL1gi9mtXO01w3tmAmdt7ljkxET9xkjFoi9ht3CPp7uJBSbH
+	Xo7hTPW95P8PK7k7dX7CgMRVaEk9kiiysjPlCmVqUnpeliI36SdVZguKrq32ROSHG+i191sn
+	YhkkXSqGHbszJKQ8W5uX6UQcg0tXiNeu25MhEafJ844LGtVBzTGloHWiVQwhjRNvnslJk7BH
+	5EeFnwVBLWg+pBgTE69DFWcCsfmxm2Rfd5pK26oSfKXrfBH2WfevPTu7TBZ3ZQ9a82SJk0kJ
+	9K5RQX78P2y5LnVOJatWqVNUb745MKPccqij8JcjszkfG90O+ulxKvFKUUn21r3jh9VnZPRA
+	3Of738geblPkGMxfhDMLI7s/62bn8j+5v/6rJ0kJztxk7XdSQpsuT5bhGq38PzJOGWtpAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xScRTH+90XV5K6Ec07bdlYT0urle30WPbmmus129r6p6juEgUzKItW
+	SyCmPWxEgUs0zZI1pTIflDWWs2UPa0n2cOWjB1FOiVZY+UBDW/+cfc/nfM93549D42InGUkr
+	0vfz6nS5UkoJCeGGJYZYMjEpde4JxxzIMR6D1g4PCa91dQT0BHIIKLjhoCBouyWAnMoLJDx6
+	oyeg6Xo5go6eHAS/+204GGuHCAiaGwQQ6H0nAIsOwZCrAYHVbcahpekeDo5qHQY/KwYp6Lr/
+	A4Hlg4eCvE4dAX77aQT5XpsAOh/IwNdxl4Shti8YvPnVjcDuGcTAU5eNIGhNg6KSqtC69TsF
+	/c+e45BnaUJw6UMbDj863yOobmhH4Lqqp+CzqQaHZs8YeNnjp+Cx5RQFPncBBt8qKCjWu0hw
+	P+1CUGgzI/C+dWFguHyDAmthJQG17+8IwN01gEGr1YxBeeV66LB7CWg0lWChc0OumxFgyzNg
+	ofIVA8u1uxj02ssEy0sR99t4huDKqpwYZ3wRpDjHRQfi+vvMiAuUGnDOaAq197v9OHe86iBX
+	2thNcX09ryjO9auY4J6UsNyVE30Yd/ZZLFeb3ybYtGKbcOluXqnI5NVzlu0Qpnx9bSQzdGMP
+	eR2QhXyjT6IwmmUWsM+rdcSwppjpbEtLLz6sJcxktirXS55EQhpnmqPZ0/bcEdN4Zidr9bWH
+	TDRNMFPZ3JcZw1jELGTtThP2LzOaLa+oG8kJC/HrA4UjXMzEs+/8DwkTEhajUWVIokjPVMkV
+	yvg4TVqKNl1xKG7XXlUlCn2T/ejA2dso0CyrRwyNpOEiWL4uVUzKMzVaVT1iaVwqEU2bkZQq
+	Fu2Waw/z6r3b1QeUvKYeRdGENEK0biu/Q8zske/n03g+g1f/n2J0WGQWulWTrfRLuFFrHdPu
+	zIjJ7t066WPUqnPYlORA8Jg2fO30yT7JlVUDWRPVTnf827hZ81dPiNJGvpiavCjxJlqcXIav
+	UanOxSQcWR3VvuXy5i/hR/cl/BkXiNZr/Pol9bNlO396Z9ZuDPTrGrelnTl/QC4rkh3+HPuA
+	SJj/9NPKmsEVW45ICU2KfF4MrtbI/wIjatboSQMAAA==
 X-CFilter-Loop: Reflected
+X-Rspamd-Queue-Id: 73D5340002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1F6E420006
-X-Stat-Signature: kfaoxudg5uqnc6henajokbf8j4jhej7t
-X-HE-Tag: 1783318857-310272
-X-HE-Meta: U2FsdGVkX186lvdUNYj2FZUf5olg2q3LvkXGoBUHQqK2tjpeDkUO+zD2M01iBteVwH6IojqJ+CgGL9UFo3D//8OCGJ9s6FhvkOjggEVeWqtnQU4jUCVkgu+V+3Wf6zCONt/sMO4pCibSyy5l/hvMFVLbkldUhF3gcALPFmLHRSVsyyopSov4sQv81MQzgsxqpfG+PZf2e2z20k1MaBybZKoWL5EDkaDqMrfqWOM+3evVhRTo9s4luR3gCOpl86q6anTBOjH66LCBbxTwTyRyUh5XdGk4vP2NqlRpZeHANspv28FhFRyDHs8os/zyK3ImeZybiYgv/SdAElq41e4OZJwmEiEffybh/ip6DnPmNBaIgzLivnokrjSuHn5WUpr325TmkQ8+h4DD6fmdfKKOWV8siabVh1CWue5RqL2SHkPq2QTHsfsOFOrKK0pRNGZJeuil4usUeGVci8u9zqQwNuI+LGt46d3TEAPXCCpQ8m1cFtT240BE1LDsDsiKqL+ymKZCGSkHRcviyIihf36Qz7d/zSKE4uByzLLL1onoNs6rnz+BXWx7GsdqEZR5wf8mbLiio4dhthE2rqTSQ7CalBid0qgvXQP/Tw1Bvb4TULFM7qk67i2ky1lGUgBZn8406TgISDv3JnO0W/pVxm/ykm15puldCPvJJDZF66Zetv64gXRk80/dGDKAdhRPq0kfgyib+8Ct67TTUKgmteQeeHbdsCG4eweS8+1yrZxcDp2QzUyIgSqmrsO1nPfR7aFv0cBg3EmvcCs+EwpV2sotZzGZ/3cof4KdpGYeJ/zgvEWh1NA5dsBe1nRqqB5H1keiuhfxKmbcFpBN6NboldEFEk25YLmbTdqdoGO4Lp4e/hyziFjkPeeGBG2b2elkYYJfrxWEN6RIa5KEO9+YQxhAknrYRs5/kv7SzrE7rwr6aqPn1z/qB6e7fwIDUSe+BX28puIEUcYn0Z90gI0QLJE
- wYcESAb2
- Tjx7xZHs9LBxob8ACk1koEFMACBV25b2DaVlbteVNjkhAettVoxhIAYO0XlnQf2h18OPc7O8V25fe11X4mnoYAXglStGqCL7tLfqokNq9I81oABMj5AsQZXHiADLI3cE0HRcjOe1n8RYZcpjbVTfvVdMBstfbt7trCi114aqoE5Rh7yoX9Ie5VM4UG3MGkFDSRNHyU0wKSdRY+X3LqrI2M9c+7g==
+X-Stat-Signature: i4wcijxz64d1e6mn1xycn4sf43rc7wn7
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783318858-713773
+X-HE-Meta: U2FsdGVkX18NR1t3knwjXaVWGl3AfQN/4XiHo2ionDD9i+dA9/13vFsNCaNAOEP4PWkQfochG548YMl10T63hQGpLjgBokBqHFQJr7sFCqe1l/0NI66ipsVPO8bHO4//tjOuoRJZ5EkpvCZDKKFi3PXgKlC72Ab2bEINWs29BC7O6ORpMkaxCHfNw6uxoIWiyBHcZNWz1wn7clyfRse6Hei5JJiVDm7naGPYtIo29jVxC0PcFf2EKJ8UVUPwtfOhKngVSVGSevhUh1dSg6iaCV9D0Ju83q41t4f0MVPdVDGI9eHWUd93JUk/5s0fXMCN5fd8lRgqtM7ZEyu9MRwIVVqXCjO5iGU5E8BuEcXDcvMASn5mUEtKQ4rWeKrREoScw+YQiJ0aPbHsP0EoE99bdamOCaZH/GLiDt4zam9Ak6cQxqYDL0noK4/Py2TwwhkTXqOOGaJtomPXMjy2xho0++8ZCvjGXf8LzvhvhILN/mHdZ+73Jwgfg4PYg6E7yk0ROgOOj6+Yajbx+ht/KC+imQEpOwkmT2sPaBlqiHiBqQtpK03icr/F+hc52qnCHlZD57Sk0AN9tBH9qg1bj4+/5JL7qP3LeUrPcj+h7nq5n5HSAEHxGEtre4e2lw8Lj5uc+RQkECpglrVyHswNiOjaAiwADNb1JT7oO1YzGFZnwOxMDF77uGLPK+TC6YBw7bWcJKfHIhKuk7bH6T9er6qy4cxnXVNgW02BEMcPZfsQukc/o4qZ/I4HAQ3EIxKvVZwx0L7rpEogY0ULOeTA63GkNMiQCC9JHNBxQ/A7cy2qKKqCGk0ACmqZANEEYtkcW+RjuUB0JeMIWg4rL1sLSRIV3DeFr5Z9R0RAMpOG58H0R1X19pMNWGZFYfRngEznFM+szeHAPBJ2Sy5nnIFrgeBa5vcuCg8bjmC/LnBtEqsRIjGwfuSe9gFG2Ula7iJJW/bRb0xDKRX4/gkroUu+HDa
+ DcK2QXqH
+ 1Yk31mhulGOr5wjP6DLrYn144dgbvnFWFwI7GCd9zDnLkzKmXVvNbBwipArTovuXYNePzQ92kRSjt6tE2gnJx9+aWJDYvVugDf+B7CiWoq5gR3FraRqALfavFyWUPv8iuTlATe2ESCaVjjMiRBDE9VN+D4/Dxu3YRpbaHxVMSE20/mRhoEJ29glDocoUUvjGpfrzf2vJzUB+hxFO4h+3zc8jM2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -269,157 +268,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, dept uses dept's map embedded in task_struct to track
-dependencies related to wait_for_completion() and its family.  So it
-doesn't need an explicit map basically.
+For dept to function properly, dept_task()->hardirqs_enabled must be set
+correctly.  If it fails to set this value to false, for example, dept
+may mistakenly think irq is still enabled even when it's not.
 
-However, for those who want to set the maps with customized class or
-key, introduce a new API to use external maps.
+Do dept_hardirqs_off() regardless of irq state not to miss any
+unexpected cases by any chance e.g. changes of the state by asm code.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/completion.h | 40 +++++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ include/linux/irqflags.h | 14 ++++++++++++++
+ kernel/dependency/dept.c |  1 +
+ 2 files changed, 15 insertions(+)
 
-diff --git a/include/linux/completion.h b/include/linux/completion.h
-index 4d8fb1d95c0a..e50f7d9b4b97 100644
---- a/include/linux/completion.h
-+++ b/include/linux/completion.h
-@@ -27,17 +27,15 @@
- struct completion {
- 	unsigned int done;
- 	struct swait_queue_head wait;
-+	struct dept_map *dmap;
- };
+diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
+index d8b9cf093f83..586f5bad4da7 100644
+--- a/include/linux/irqflags.h
++++ b/include/linux/irqflags.h
+@@ -214,6 +214,13 @@ extern void warn_bogus_irq_restore(void);
+ 		raw_local_irq_disable();		\
+ 		if (!was_disabled)			\
+ 			trace_hardirqs_off();		\
++		/*					\
++		 * Just in case that C code has missed	\
++		 * trace_hardirqs_off() at the first	\
++		 * place e.g. disabling irq at asm code.\
++		 */					\
++		else					\
++			dept_hardirqs_off();		\
+ 	} while (0)
  
--#define init_completion(x)				\
--do {							\
--	__init_completion(x);				\
--} while (0)
-+#define init_completion(x) init_completion_dmap(x, NULL)
+ #define local_irq_save(flags)				\
+@@ -221,6 +228,13 @@ extern void warn_bogus_irq_restore(void);
+ 		raw_local_irq_save(flags);		\
+ 		if (!raw_irqs_disabled_flags(flags))	\
+ 			trace_hardirqs_off();		\
++		/*					\
++		 * Just in case that C code has missed	\
++		 * trace_hardirqs_off() at the first	\
++		 * place e.g. disabling irq at asm code.\
++		 */					\
++		else					\
++			dept_hardirqs_off();		\
+ 	} while (0)
  
- /*
-- * XXX: No use cases for now. Fill the body when needed.
-+ * XXX: This usage using lockdep's map should be deprecated.
-  */
--#define init_completion_map(x, m) init_completion(x)
-+#define init_completion_map(x, m) init_completion_dmap(x, NULL)
- 
- static inline void complete_acquire(struct completion *x, long timeout)
- {
-@@ -48,8 +46,11 @@ static inline void complete_release(struct completion *x)
+ #define local_irq_restore(flags)			\
+diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
+index 007e1bc7d201..35a3667ac8b3 100644
+--- a/kernel/dependency/dept.c
++++ b/kernel/dependency/dept.c
+@@ -2095,6 +2095,7 @@ void noinstr dept_hardirqs_off(void)
+ 	 */
+ 	dept_task()->hardirqs_enabled = false;
  }
++EXPORT_SYMBOL_GPL(dept_hardirqs_off);
  
- #define COMPLETION_INITIALIZER(work) \
--	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), }
-+	{ 0, __SWAIT_QUEUE_HEAD_INITIALIZER((work).wait), .dmap = NULL, }
- 
-+/*
-+ * XXX: This usage using lockdep's map should be deprecated.
-+ */
- #define COMPLETION_INITIALIZER_ONSTACK_MAP(work, map) \
- 	(*({ init_completion_map(&(work), &(map)); &(work); }))
- 
-@@ -90,15 +91,18 @@ static inline void complete_release(struct completion *x)
- #endif
- 
- /**
-- * __init_completion - Initialize a dynamically allocated completion
-+ * init_completion_dmap - Initialize a dynamically allocated completion
-  * @x:  pointer to completion structure that is to be initialized
-+ * @dmap:  pointer to external dept's map to be used as a separated map
-  *
-  * This inline function will initialize a dynamically created completion
-  * structure.
-  */
--static inline void __init_completion(struct completion *x)
-+static inline void init_completion_dmap(struct completion *x,
-+		struct dept_map *dmap)
+ void noinstr dept_update_cxt(void)
  {
- 	x->done = 0;
-+	x->dmap = dmap;
- 	init_swait_queue_head(&x->wait);
- }
- 
-@@ -136,13 +140,13 @@ extern void complete_all(struct completion *);
- 
- #define wait_for_completion(x)						\
- ({									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__wait_for_completion(x);					\
- 	sdt_might_sleep_end();						\
- })
- #define wait_for_completion_io(x)					\
- ({									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__wait_for_completion_io(x);					\
- 	sdt_might_sleep_end();						\
- })
-@@ -150,7 +154,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_interruptible(x);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -159,7 +163,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_killable(x);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -168,7 +172,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	int __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, -1L);			\
-+	sdt_might_sleep_start_timeout((x)->dmap, -1L);			\
- 	__ret = __wait_for_completion_state(x, s);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -177,7 +181,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	unsigned long __ret;						\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_timeout(x, t);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -186,7 +190,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	unsigned long __ret;						\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_io_timeout(x, t);			\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -195,7 +199,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	long __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_interruptible_timeout(x, t);	\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
-@@ -204,7 +208,7 @@ extern void complete_all(struct completion *);
- ({									\
- 	long __ret;							\
- 									\
--	sdt_might_sleep_start_timeout(NULL, t);				\
-+	sdt_might_sleep_start_timeout((x)->dmap, t);			\
- 	__ret = __wait_for_completion_killable_timeout(x, t);		\
- 	sdt_might_sleep_end();						\
- 	__ret;								\
 -- 
 2.17.1
 
