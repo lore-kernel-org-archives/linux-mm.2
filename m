@@ -4,102 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D31FC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:18:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E65D5C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:20:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 242EA6B00E6; Mon,  6 Jul 2026 04:18:36 -0400 (EDT)
+	id DDF626B00CD; Mon,  6 Jul 2026 04:20:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F3F86B00E8; Mon,  6 Jul 2026 04:18:36 -0400 (EDT)
+	id D8F3E6B00D4; Mon,  6 Jul 2026 04:20:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E46E6B00EA; Mon,  6 Jul 2026 04:18:36 -0400 (EDT)
+	id C7E8F6B00D8; Mon,  6 Jul 2026 04:20:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D425D6B00E6
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:18:35 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4EB86120348
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:18:35 +0000 (UTC)
-X-FDA: 84957650190.18.CE7B12A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C60D6B00CD
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:20:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2EE521C7BA9
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:20:35 +0000 (UTC)
+X-FDA: 84957655230.14.CECFA9A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 613B580003
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:18:33 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtUY7xGI;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 890AA180003
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:20:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aVCzimyH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783325913;
-	b=yIbReR3Sta6HSDN5nlhB90aRHQ0DU+wjSkcpshG0oH0mk0/bGOfwA/AKj94yhPAm6Xu3+L
-	O0nMFqwFVEVjP9Lp3/5L1Jat4XNdEbMG5/7V+HvMWTBXzMX2VWJ39+1b5jlxKaN9zk0cmU
-	OmJXdPb65B5C3lvxzLKL8v/NRL1iCnk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtUY7xGI;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783325913;
+	s=arc-20220608; t=1783326033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o5s3lTRxE/V5YUOPhxcmUD7alNSYQeowuWxLscV1KZs=;
-	b=1OcsrcpbPdQzceG092dOtizG7puTsM28jzyAbDcNuiu0N+jAmOsdmVtYOtsjB1hpYrqMfe
-	qdhmX98ZVPpv4ovmtBB6lUHWJKt3jhPJ/b7BoVhQaN6Zo01vBVxM4Y+ceryH9WNLS8iM0C
-	PFdMqQwMc+KH7bNTwMQMF8lak09lGoY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YnYW7gijRWIjSN0XiWehcJ0WWReETZpoC/sP90hYzHE=;
+	b=ZJYmF+9C8W/Vmu39fiRlZk2NQ9ohkDWVcMNmMQvbT8xkUVGLU4V38k75qZ+o7JBibL2kZO
+	Fe79OZiClkR3WJgcwvK1dn1xeiQBf+p5FqTyEB/yX+nG9QbfDyDWFdl43deswK95MGGmAv
+	Nkdg+mGcEP5beZejFvXtklcleA+1QxA=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aVCzimyH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783326033;
+	b=7BhuQQNEvG06BaaGGjrgsL8nDo1DRsD+HS8vu/hmxILLp29fyVrFopyBd48WnWrLzatt4T
+	UN2/T0HBV09xHhqHsQjvKWMNskvLr68UhQpFvijiIbpDYmFUUHr+dvucewSSIIrgLijmeY
+	wyimTja8i1NwhGIVx8DiNLtwizJ5VDI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5094C4162C
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:18:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356331F00ACA
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:18:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BA5BA4162C;
+	Mon,  6 Jul 2026 08:20:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D432F1F000E9;
+	Mon,  6 Jul 2026 08:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783325912;
-	bh=o5s3lTRxE/V5YUOPhxcmUD7alNSYQeowuWxLscV1KZs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=XtUY7xGISOSQTy4FPuSdUfqFavcmAPMF+prQHSnpQqUAgVekJwh01RbUXcvWMqZHT
-	 GG9OSRSODPBOkNry+DRI2fIN6RQ8PgK/C0U0rbCR1S4A9hW8LIwaloj2BeOr3j4Ov/
-	 tvZE8Iji7FEIT3LMsrnn1wuqMqDqla8Dpv84ExiZIiw6o9pglpMSuv7mKCHohPSHNu
-	 FXZPEm948eOJm/cZivU005/11txfM1IqYa4GSowRg/rPqPCSbywyAomtWXgtJ3X7Pw
-	 xp0LqTLhggkp4pcNgOvU0KrJ0XAiaEhTyB27dFZqEnAE0FQfDa+z0jp0iv2Pduwzh3
-	 80cls/PnG8T4Q==
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e55b62640so122278985a.0
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 01:18:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqSdqP4G1/M1X3/yGYWx+EhCIaM/DD8aXjFegbUuVq6IsXprVSXNrlUhUpXaBA/7SaZjNCfZyZRcA==@kvack.org
-X-Gm-Message-State: AOJu0Yzg217efeVIrnVN8ZGRerWev+SllZJfpBmraumnIBX8fB1ssAof
-	e+eJIV6DegpeYSTwW5m/s1kdYVOFR8uj+qQKTzZEUVlDBDHscnaNNifKhu3N6Gw9Z66vvoS4OX5
-	WkZl26HUerh5n2Kdz2vTdDfqcG53QGLg=
-X-Received: by 2002:a05:620a:4710:b0:920:56af:cee6 with SMTP id
- af79cd13be357-92e9a38a1e6mr1195190785a.16.1783325911560; Mon, 06 Jul 2026
- 01:18:31 -0700 (PDT)
+	s=k20260515; t=1783326032;
+	bh=YnYW7gijRWIjSN0XiWehcJ0WWReETZpoC/sP90hYzHE=;
+	h=From:To:Cc:Subject:Date;
+	b=aVCzimyHl9Pf4Otyx+cVBSBvCfDVz5GEKxCv4yk2/DaL5sdCxQuUGd3nqsWBpVnBR
+	 /Ae/h+1PmeH9AY3XWOMcW4VHEf0E5PaOjvW3XcK2a6F2TmJPOTI4VZCer0uuGTfqL2
+	 gKe++kwH3eh81zgzhRS2gkJBQ/ltMTA19GyxeVllepgC/vgWb/2MvX2WyXpN22OpA7
+	 TUY7Uc7SGDAWXr5jbnfOZrPZwx+1goV+dAWdS02vNjz+BRiB53n/P0jRbcD9jXMTye
+	 8H0aIuntWklsEtmD4v+NVFJ29x5dSu7WyU7yjHzRtwl3CLfAejg2hsZefxKygm4n95
+	 n0vegptLfPzeA==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
+	Farhad Alemi <farhad.alemi@berkeley.edu>,
+	Gregory Price <gourry@gourry.net>,
+	Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	Byungchul Park <byungchul@sk.com>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Zi Yan <ziy@nvidia.com>,
+	Tejun Heo <tj@kernel.org>,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	stable@vger.kernel.org,
+	David Hildenbrand <david@kernel.org>
+Subject: [PATCH v3] cgroup/cpuset: rebind mm mempolicy to effective_mems, not mems_allowed
+Date: Mon,  6 Jul 2026 10:20:23 +0200
+Message-ID: <20260706082023.60832-1-david@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260701235955.36126-1-baohua@kernel.org> <20260701235955.36126-2-baohua@kernel.org>
- <a9829fdd-75b3-4035-935a-f3a74fdc29bc@kernel.org>
-In-Reply-To: <a9829fdd-75b3-4035-935a-f3a74fdc29bc@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 6 Jul 2026 16:18:19 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xwfCoy3utvtAqAstKGD9ScH-n55bTTKrLiHj=c2doZFg@mail.gmail.com>
-X-Gm-Features: AVVi8CfHg6vK3ggIODcckgd9ACuCFCVejR0-Xv6RsgkTkX5OOt2_S_h3eu4f26s
-Message-ID: <CAGsJ_4xwfCoy3utvtAqAstKGD9ScH-n55bTTKrLiHj=c2doZFg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, baoquan.he@linux.dev, kasong@tencent.com, 
-	shakeel.butt@linux.dev
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, chrisl@kernel.org, 
-	jp.kobryn@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, 
-	ljs@kernel.org, mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, 
-	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, youngjun.park@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 613B580003
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: q3xeg91q78debo8xujmgft5s7gnp5dhi
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783325913-229690
-X-HE-Meta: U2FsdGVkX1+g+/kIhpwFTpfUsxaGG5tCsfJlNJOrjY5Ev3KcKBLroVlTqC1Clq9ZDqKXVXCgYq4FwH/HYhXV4Qgi3d0Oil2fGnszZrcW/jN37ljdwInKDjTMt7BIBKD7D6FBUmaOXIAYgGymBIGZzr9HLRbfcv2u9oE5BoPyVRVQFa8Y3Z54DKJiIPu1juNcYlfobH1cOguWwLaVI3Hhce07mhktZo3ombPp0HNe9tDSotPiA6NBUIr7x6xrvkzINcTdVaOc5t6FA0Qf35xE12cKgw4fNz2qLBSwt7G+olp+RyJBXwpaqq2AE5IXwA2HWLuU/1WpB0NiLXVKtDsgWazdXZvyzQJ6DDS/qmg7oZLsOxsxOoxhfjytkqdlgU56PjxWlXXZFrIBfyeJLfsgoKbL4DdgT2LVbvcY36Mcn8XdDLT5dDfW+PuP3jsYfh2wddwz1qaDZN8c8jumvJ4HOaAC1NsYPzsojkGLMdSeyhQHA9l6JAcD98mCc6ZYxwuhiPr8oAxAAAFY4FJ3nxUZu9G3YzW1XBHW42RtQiclNZaswGjPSLYKjU5SI+ADb1Xej1BXK2dxMO+zmwFYYn55NBZrhSLrZa4YbZl0gus+p+qq+64UDbaSn43Uhs6lT3xl72g4FsA0fHDcZtTTmotg6lvi1UJFxef5dAv+MsgcsMBlby/ejNmvKg+ofz/QOoZyThE9VeUsipmhseid2cAudXMjdIfudwcrGwspO+iK8JsMSy3pzuNKBsTHy278QlwK6GJECRN4l3vDVO8thR4EO58Y0yR/CAIpi9NRQybWK04zNcasPZXw2yNgh6SS5InWPCANa7JqJlRJ5LE9dy9mXiMESeC2flWHysb8+qcEs72O3SFshk/rKhCO3UI6t1AFcjUDpMLuqDuRqrtlJa3jyh2dmaFaAhmap9eke1COW6LNw8ZXxsUAG/zrG9YDrcK6x+5FkBPI4xvl4GvaO+c
- EjWZhgJe
- 4ACUFUzQkZsdENK0H2A+3yaZzgxptHhpomYGabzJqsov1wCc8UhD5E2RCMwbzC8CD3Ada8x6RMC/TloG40oqjAfKCl90qb5VcnXqGcqA1hM5JSSa/SRjTDXAHnn16sdXYVE+12fc+clFIMao6Vs7ct/sE/PnqZU/RcFauwLrgr01jdWjHzhSRvdehbi3ngoB1Olb1VMpX/tSsi/2B+cZSEoIpFe/YpwmiMaeKV6wzJ90NHyOlCDbAYxVy+SBlVMI6+6Ojrw3kb13KcM0CFO8NLZGrKq4/mZ7zXPxUqMydJikVByI1pbJp80eETa2DuJ+VO+e1nKqEtVuUFKmCamE21KcdOV7ERzYYYw0f+nAhpNRfq95P08nSXtK6kb3v1A/ez9AQ
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 890AA180003
+X-Stat-Signature: 7o8px4sswwxbzsgau7i768w8rqcz8kt5
+X-HE-Tag: 1783326033-629510
+X-HE-Meta: U2FsdGVkX1/16v3q4nzep6DFiFt4/3ZEuaFR2ASOi3fQysC1wH9K5p8LOh7md0EIaVKdHh3dUnOmMDmlboN0kr2vWSjsJOeAbHFWLX8RNShp173OFc0v7ilZDJ0xppjOG4iBM9Z4KNkZwoBTfK5kIFQAvr5lYw3+DJUECK08It4EgADiElnXg2mFfFaGCatrHJd6rr1+cqfKGkE84L2F/o2RBWyHGIY1MCd8G1NXTlCU3cU2567RyFEe7zxtsSiewVrCmj5S2jI3eAblOCYLRnTJhKMIs2WH15r/V+d54kiPVE0lt+ozVnEpNAZAGk08Ujem9cf5z6ORUrwp1hF7K5YPxMSmQK7MR3OJsYfffggyKwGUT/dVFjJ/k4rEktQkbGmL9ojxWldBPP5sDqWMEqRfZdifOxPQNTHawpVncTC/yoNguM3ViNEmcZ28BYaaztcS+yN63h/IX+EjIQBK7QQ9y/uCcuIZ8RUmawyp+SBDHeU11FGAIH+3I+0DEBwyJdyCV1RQUcnC05kzH8VpwWtW94WuHTLMewAocAyfMqo9WJ/MOnBeXpooTchupQjdRAVeAgCPQ1Xg/EcS6KDrgfcHda22ZMVzsJahaRyVG2kKGWyP3aVHYC3zSXuTEX8JwvaFZRsT559iV2LaTtAuJ40ozJmqmVtG+C3uTdiJw0z2rjORGt06s9xzl0gBznim8ht0Ivh55pP1p5Bb7bea020oiMwbxCa5UVr7OH3arrYVrDIk9kGxQMS75UupmGXeWNamyQGO5XT7T6DuNPZ+tvX+ggAup5bC4GezRwRoioNjZh/piWIp/FspZy4E+He3qGbPDWQa2Zjtr4A33pBaIPTXIGB87fw/3QZHEl/iY83CTNcEtWRRVUPdI/Nq4fF/BwxIvMcMnZM4CeJsH+o+rQFPbtBPQejh5ii9+QjuGBKbtf8E/VArN2q5AZ5OP0INPGZYxHvg0KdyvYG9nbF
+ 248O8D6D
+ IHtdcbojwpv3Gqg1SAzBvmSd1owbPlRdaU8KSl+eV25H4xS3luxQO+eJ+11XbrD/z70cxhyJ4aiEbeX20t68x4eKW+XDTv6T4Ej5X6jmav/5XHMriMJu4A/BmWb9l/aZEFr6kc1695gQ/LneyQ4qDOiEUfya0PSJ4LcHSAFy/BYAWHOey0SNs40dY2i0YPW9pDZfPVALqOZw8NWuSdsP50ePnjsed5eLA3R+QLj47E/KLaRy4T+Zi5Y5offO/T3msfJxMiQb3lLCuDXX/WRstgqgc/92jqruwnQhPU4Lm1SG3ygDVXr//Z4My7UO1G02X7OdxwvkfY6sfljk70Abr2RCCcR9KlZoIKMZzlSOj+V5wXk7v2Nsz8AEnmM8duV/t9qtMzkki/YAOTBk3a7p77AqkHYAZxGSdgIpERmFdShUMk3FFBnCWEd66FWZPY6BZ7lmbHhcDuZSjkUPVO8hbVEKfkZtcLY4EaVtPGqbcqkBwKAR3iVidpxd1wi2I4OiK5sHilJpSVkZ1spugFKf++NocWvIFX/fwOMLMw6PbpnaPeRIpDZrxND4ksguR6ZJmGjJJsZ0JUG1g4xiqQ2DBUgq/KkPG5JDpSeVkM3gDfPN3S9g4wYs2jZmUIQDpvtni7/v+b63uTLi78pS4CDSfl2IVOcZDWjlYFgUgUvviQunh7WRDg9kZ+Ze/Aq96f2Wl5f5K5eacM8EprwBEs3H6V5NXvM65q+if9V6dsIPHi/gbD/VK3scN7ziA1mKbwAy4z/Vr0zyNCznzjCcYmz73GxKygkb9O4xxmDSfdUKjw6xKcVw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,46 +107,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 2, 2026 at 4:05=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
->
-> On 7/2/26 01:59, Barry Song (Xiaomi) wrote:
-> > There is a case where `folio_ref_count(folio) =3D=3D 3` and
-> > `!folio_test_swapcache(folio)`. In that case, both
-> > `folio_ref_count(folio) > 3` and
-> > `folio_ref_count(folio) > 1 + folio_test_swapcache(folio)` evaluate
-> > false, causing an unnecessary local LRU drain.
-> >
-> > During an Ubuntu boot, I observed over 5,000 redundant local LRU
-> > drains. For a kernel build with a minimal configuration, I observed
-> > more than 20,000 redundant drains.
-> >
-> > Fix this by checking against: `1 + in_swapcache + in_lrucache`
-> > instead of hardcoding `folio_ref_count(folio) > 3`.
-> >
-> > Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> > Reviewed-by: Kairui Song <kasong@tencent.com>
-> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> The other folks should probably re-review this patch that changed quite a=
- bit :)
->
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+From: Farhad Alemi <farhad.alemi@berkeley.edu>
 
-Thanks!
+Creating a child cpuset where cpuset.mems is never set leads to a div/0
+when a VMA mempolicy with MPOL_F_RELATIVE_NODES rebinds in response to a
+CPU hotplug event.
 
-Hi Baoquan, Shakeel, and Kairui,
+Reproduction steps:
+ 1) Create a cgroup w/ cpuset controls (do not set cpuset.mems)
+ 2) Move the task into the child cpuset
+ 3) Create a VMA mempolicy for that task with MPOL_F_RELATIVE_NODES
+ 4) unplug and hotplug a cpu
+      echo 0 > /sys/devices/system/cpu/cpu1/online
+      echo 1 > /sys/devices/system/cpu/cpu1/online
+ 5) mempolicy rebind does a div/0 in mpol_relative_nodemask on the
+    call to __nodes_fold()
 
-Would you like to re-review the patches so I can re-collect your
-tags? If not, are you okay with me removing your tags when I
-send v4?
+The cpuset code passes (cs->mems_allowed) which is not guaranteed to have
+nodes to the rebind routine.  Use cs->effective_mems instead, which is
+guaranteed to have a non-empty nodemask once we reach that code path.
 
-The concept hasn't changed since v2, but the code readability has
-improved quite a bit based on David's suggestions.
+Link: https://lore.kernel.org/all/CA+0ovCiEz6SP_sn3kN4Tb+_oC=eHMXy_Ffj=usV3wREdQrUtww@mail.gmail.com/
+Fixes: ae1c802382f7 ("cpuset: apply cs->effective_{cpus,mems}")
+Closes: https://lore.kernel.org/linux-mm/CA+0ovCgxbZkXa+OU8w3s84R3KNPNxxRfmsNR-udh+afQBbGNmw@mail.gmail.com/
+Suggested-by: Gregory Price <gourry@gourry.net>
+Suggested-by: Waiman Long <longman@redhat.com>
+Acked-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Ridong Chen <ridong.chen@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Michal Koutný" <mkoutny@suse.com>
+Cc: <stable@vger.kernel.org>
+[ david: add a comment, slightly rephrase description ]
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ kernel/cgroup/cpuset.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Best Regards
-Barry
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 591e3aa487fc1..45944b3e31ca4 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2653,7 +2653,12 @@ void cpuset_update_tasks_nodemask(struct cpuset *cs)
+ 
+ 		migrate = is_memory_migrate(cs);
+ 
+-		mpol_rebind_mm(mm, &cs->mems_allowed);
++		/*
++		 * For v1 we can have empty effective_mems, but we cannot
++		 * attach any tasks (see cpuset_can_attach_check()). For v2,
++		 * effective_mems is guaranteed to not be empty.
++		 */
++		mpol_rebind_mm(mm, &cs->effective_mems);
+ 		if (migrate)
+ 			cpuset_migrate_mm(mm, &cs->old_mems_allowed, &newmems);
+ 		else
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+-- 
+2.43.0
+
 
