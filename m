@@ -4,84 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34260C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:04:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C28EDC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:07:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1368A6B00F5; Mon,  6 Jul 2026 05:04:05 -0400 (EDT)
+	id AB2E06B00AC; Mon,  6 Jul 2026 05:07:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E7B76B0107; Mon,  6 Jul 2026 05:04:05 -0400 (EDT)
+	id A63AA6B0102; Mon,  6 Jul 2026 05:07:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F183B6B0121; Mon,  6 Jul 2026 05:04:04 -0400 (EDT)
+	id 906896B011F; Mon,  6 Jul 2026 05:07:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BCDAF6B00F5
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:04:04 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5235E168796
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:04:04 +0000 (UTC)
-X-FDA: 84957764808.13.2377D2D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8F060100004
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:04:02 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GETY1i49;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E59D6B00AC
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:07:26 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E28CC1A033C
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:07:25 +0000 (UTC)
+X-FDA: 84957773250.22.804EA85
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 344A21C000B
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:07:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ab51Wrex;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783328642;
-	b=wJCbbpjxhQQwI9q6XCH0juCsZISeF5wejbUkztahQ+xzq5qNlPwGdgpvHqEl/xM1jRrAJq
-	GrsPMKoFKKxwD8rmkYGUDmaKFdj8M7gJ+yRZw3VZ4MCzj+epOE1AyH8gwV4j9CwPnwjBiy
-	8/1qFt6gQSoHhlyJvU3R9STei231YqA=
+	t=1783328844;
+	b=6tnceWMDlLKSCA0qKJKIamGJa5NvZyhNNwkIQc4p7T9c6Bbw7qcLLGW6hF3DdNnviMUb6Q
+	TLfrn2ojJQf/WQVo76my8DuScsfUPu7Co/OlOHjYyJpHEtQy4N2df2ZMFGrk8xNocanQWq
+	E9VgYW32A6z+sU0UgkIKiQiTLBJ6FcY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GETY1i49;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ab51Wrex;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783328642;
+	s=arc-20220608; t=1783328844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5OarufiuowxPUUgdW+NmJtZnc440F7WatBguGIfARR0=;
-	b=N+IqLvOiUiF88qqcOCyqePnxUHJu1K0f5Goan9co24Wtn0QafEMrGnlAr6FQazAQouIoPH
-	lsGvqwM1fonpuvu7QrN41PMsufGw6COxB6iziGedh7nJGrGghaq7p8cvluR5sA80yNKfww
-	SZ76tum3dLu6OW4x2ewCDqnl7tdzGk4=
+	bh=vSfJQt1JiqAr2xj8Wd+P7V4byeDYrtLPRI5xJpeSUP0=;
+	b=4hUUTCml/yTxIVdmzEIDZ4piHkYMQgA8655aua+VyywDAOQLXx2Km1O82xaHMVQ95YG3W4
+	2Zm8tWS6MVs0HPj8fetqVBT1ZaiBEyW0lBgHqNRRj+cjZ0rXk+8woiwjh33hmOen4YY5qN
+	ZkGTe+QKR9owxNjEKIagM0lHVJoOpjg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B9C56412A1;
-	Mon,  6 Jul 2026 09:04:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782CA1F000E9;
-	Mon,  6 Jul 2026 09:03:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AAF5360018;
+	Mon,  6 Jul 2026 09:07:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69031F000E9;
+	Mon,  6 Jul 2026 09:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783328641;
-	bh=5OarufiuowxPUUgdW+NmJtZnc440F7WatBguGIfARR0=;
+	s=k20260515; t=1783328843;
+	bh=vSfJQt1JiqAr2xj8Wd+P7V4byeDYrtLPRI5xJpeSUP0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GETY1i49QXGftXhugiIMCearNR9AkhC56iuKwK0t5K2wOH3wfrhyFWukEzF/EnV4t
-	 v8UT44jzjaY4v4xI8UYNOW1K2G4EKo7CR6+mEftyizJ3l0iQ2Cak5HbLGOar5xxUTG
-	 8FTeHUWpquu6ToYIt89/Dx8HEsB/P/fgsRBrM25LrTmP1m1aZFu9NA0W0zSKmTpiic
-	 lIC87+DfZSD1R7fpcSOCUs/iUAkKP2eFUH1/PNU1gloVziFDiz9Xn5NO2wjXJPXAtN
-	 3KHR1PIp6A/gpDJmy0ZyOiyEwMqeRCnhZvAmPJa3IP0UIJJNNmtXdbbWFlkxWAq0ix
-	 xnA8LlPPXtjRA==
-Message-ID: <2c619662-0e6a-470e-8698-b74afea758f3@kernel.org>
-Date: Mon, 6 Jul 2026 11:03:51 +0200
+	b=ab51WrexuNkUaU0YN/LGfyHuikKjcjzTdYrZgkt4SeXddGjqYHhrvgDbj45Q6pM6L
+	 mdd3L3gatNt1KH1s/74Fp+cuwVU186o21mKvpPxRcTXR+x0d9MGcErh+A6a7umIO/n
+	 ccUc3lA6KZ25pVDkr56Q+SlNFhhZKToOFx/YeT5db/NZCCHPWERmXwwPUfY2RRMrMY
+	 rVh7cPUjiCoS+48edRJUxufhITHyYF57Fv92/jLlERKdOOjO4QOBPfYdsKqI2JPSo9
+	 70Um1vEdvCGmvYAaOwKlDGkzM6081GLnkDG1FeFllfzw34Ku31Yivi1pJb66/XUX2X
+	 1Z1/qJ72ZJl8w==
+Message-ID: <16516aae-d233-4756-a378-14ead66de36f@kernel.org>
+Date: Mon, 6 Jul 2026 11:07:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/5] Only free healthy pages in high-order
- has_hwpoisoned folio
-To: Andrew Morton <akpm@linux-foundation.org>, Jiaqi Yan <jiaqiyan@google.com>
-Cc: linmiaohe@huawei.com, ljs@kernel.org, ziy@nvidia.com, vbabka@kernel.org,
- osalvador@kernel.org, harry.yoo@oracle.com, willy@infradead.org,
- osalvador@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
- nao.horiguchi@gmail.com, william.roche@oracle.com, tony.luck@intel.com,
- wangkefeng.wang@huawei.com, jane.chu@oracle.com, muchun.song@linux.dev,
- liam@infradead.org, rientjes@google.com, duenwen@google.com,
- jthoughton@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- vbabka@suse.cz, rppt@kernel.org, shuah@kernel.org, surenb@google.com,
- mhocko@suse.com, boudewijn@delta-utec.com
-References: <20260705180714.3708947-1-jiaqiyan@google.com>
- <20260705115045.eba41efda0c46121b1d10827@linux-foundation.org>
+Subject: Re: [PATCH] mm: avoid shadowing global mem_map in
+ sparse_init_one_section()
+To: Mike Rapoport <rppt@kernel.org>, Anuradha Weeraman <anuradha@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <aklP82yPNq5lA2Na@riviera.anuradha.dev>
+ <akohFqkKncFzoupL@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260705115045.eba41efda0c46121b1d10827@linux-foundation.org>
+In-Reply-To: <akohFqkKncFzoupL@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 344A21C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8F060100004
-X-Stat-Signature: un69cfc3mag3mfaoo7u35q6z163gcydn
-X-HE-Tag: 1783328642-541860
-X-HE-Meta: U2FsdGVkX1/s20sY+oH3fTxbz/8IWV1nZzrUSht6nJmR1K31jvHeKdZdoKAQbv64n8w3AHhS3kX4rJDnIXoJ+S8XIkhkS21h9sUr5YrTlzQ8crSJF8EVFOomnixJoW0p/TX48wXohL7BKSk/2ckHiURABkVvGc+3hK+6yL5Durf5i9TQBwX3GSC70XgKzR5mczhf2mEPcirVQe+qj4sPoTvPNHEikJNdE91mkaJS4ln60F0zugP3NGEQTnKGA9IpFr2QkTUEPB0QxyFbOT6OBxI79H7hON0xxnnHwIqwpi7GnBRANl12MXrdTt/XCJcwDVQfz7Yke5Wf6I1UDLBmVzh5oPKxOxKRYhjBctjniQq9y2pAwUxsivbXFgVvB4QBJDWA5R94WA+XIFpmPGKiQUWChASGUn46zqrpFxAFPFYoz0wpd73CVfZ4UICtLBQRu40r0rlam9cwgh3wAfQGolmegR9go0WQUxkF0vwUOr99fVJcrfL7UQVSsasXX9c4cI3V/xO9H3zkSBynkZtOu6RsrkwU84vPlgrE1jj9P1n7t5q84l0vSAgYkGCFJ4SgESHMSzSkve8yLayOkhgDe6cJ6Jw2HXleD0fIzMDBXJE426RhQfJJv3vxWHtLp1QwkWVtYlwlBtnSgAQrDj/G6KJCu6jeA6M5WLR12tPK+0vq0tq/Wc9o4BanaJgXcXVN6YVQ3hNbDKGeCDKHA0kk5/n6wBGXBWI2Xz8EmEpihyTFKOWqjA2ZHRRdCry3f0geZee5xE8nwPEdkqymWA1wrI+UnSgxCb+H2u+DQP0SaBBlktIMpoz2hs1cHAZTSIJqeKveleAuGWFOq0XHAX+3qCpDB4byK9zypXtM1xcyjra34vIoqVmBAX++GpXvsBYsMleoEYXiK3aRfovtBySkBhAWTr9bcdUwEa6RrP/C989cQDoW8W8Cl0zW0fI6yE+EZfaAJ+6S9Cw7DU1xIIb
- 1Sni/uql
- XSncf9Wnw8Av4wZtAWzfMslcjEr2aSjTNL1C+vwDZ9Cbir42LvRhR3bl6tuvSQ62mICXHx2s9TIADVdR6qKRlOEbbzLBzMAOedwJIWsECpwDtaLGAiqjFQQ/4/rUnvE2ATSA27l6Iyad7qy5/CZ3mGL+LJV1JVLH4tS/kTN3cudW1FiHWexH8LCJT5xzb71JoeXW8ygQw3kIgwXSLVtU+IF0W+pOqiEdhH8SdzcYxVqtGTm+VwwJLL/oW1VaR9KY+Up3G++JtUbm9lUZZgdR1CUe92J2/OfxfQ0T0XOigU1TUnwSEfCYk9SMvhu7iEUKpiQhBiZ5S0ED9l1Raw1quKRTAyFQh/6hLFSQRSoV2OaTVSNdNwRjOmy5i48I+0vWBe7BHtUJFDF4NQmeMICungx0UzQ==
+X-Stat-Signature: b3ofnuwtd5wb7m9nh4u9pzjduic95ajp
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783328844-570228
+X-HE-Meta: U2FsdGVkX18mw0M/vGlyZMSOJFjik1+jzjHCusFHQzz1XUPhys1owiB47psffG5pX/zfFYozBXU8yCix9v6cFXiDpQigwljmey4ZNOM285LMjfPk+okKkYwY0YuFxwy2d38iji+n9snRCFyy0YybX4qJU05ujMgqEo138v904gXsn29TeabniPaTZnMJ1RXqqsYiffhm/jAydgMTn0S4fc5r/U2iEcoSxKsZ0Ylk0CUcQwTYKDQ3BW8ShXlVjXvN0FhDBob95KpNJngPGF4HTqG6YS7EZtXolfC7D3YC++nvFjsKAI1ZC07H42NpSNskgMTRynw9vEhUHTR1eP/XJATzetgZzz4fl6lFnOVnvcw3i2VceNSFSUBbj2WjD/g7qw3xLBbkT79zQ19UwDMSzWfT51J9L/oSnzKZ5zdm1dgYWAIxBxOnKoaKIkVHmFmKbbFAn55clM9he/A5Xb8ZGZj97dfBxPGIFsnttB8K6+liiCsE7l+WloYgf6VOQWtJ5yMjmn8qjr6opjM3hGa2Bwyr/Dns8sA/8mhvI/2gKmFHF0S9pmIY97G4pOCqdZpUHrBfl4rSCF98QlwbrGds7RAsHgfRO9qqehVNDw9+fUp9ROjfTqbuGET8jvQN48uiw14yLySb6G1CCy8zWjbihdYp7eAPA97J80irREtO5ORwTjORVvsrziDIU76KViBY07e1xeq2JNiY61BBkLzRZKjdWvkMzjsFM0zh4m5JQG4Fq3zzucb+dKv5bqu7gvBlczi+ZWQIq4U7rkPjBmi0b1qptnCRQ5LB4bEJLUBm3ht10LQxcSgVn+svT8S2pGNFIWgknNewTF8QyRFLQyG2mmH2ZIro+xfrP5/a4GNpD09C3AAmTQDmxT71kbEsT4R0+G/BQxXswDUY8HtgOei1FUjE6vJTuFQnlbokJm9Sk5ZDIpZY1UjpFpySZkShO6aqAVNPEzfLiIlSrdauwj1
+ T0zkS7hA
+ RUAhO62uJ4madsnNfD+jtTVDtLyHfb05fcYvlz5pXD+amnKtPEqCUbiU7QOPzDbQnSfmnmrqy1QGQ88bxcykdel4vmKqe4QaU+FQCB5pvmX5F8V7iuLKaaEjz39n5PJxnHJa/Ql+zIUEkKRbm3Ef0hbKHqPO1mKx+KLQeH2BdpdA9IDtJl8lgKIT2ENlSlaS32y+Ac7+UOnhJQj6ZjlXjmVony9HjTWA95pINC3cHVoQk/5G75fKKXzpabz3+/Ti4p749AmFh2OnYJViBctx2D7bLVH2B6Tab6eiFd9GzQWUbRyQbshSRPioo/voiAWg2MvSSWa/Qm5np5e8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,34 +139,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/5/26 20:50, Andrew Morton wrote:
-> On Sun,  5 Jul 2026 18:07:09 +0000 Jiaqi Yan <jiaqiyan@google.com> wrote:
-> 
->> At the end of dissolve_free_hugetlb_folio(), a free HugeTLB
->> folio becomes non-HugeTLB and is released to buddy allocator
->> as a high-order folio, e.g. a folio that contains 262144 pages
->> if the folio was a 1G HugeTLB hugepage.
+On 7/5/26 11:17, Mike Rapoport wrote:
+> On Sat, Jul 04, 2026 at 11:54:51PM +0530, Anuradha Weeraman wrote:
+>> With W=2, sparse_init_one_section() warns because its mem_map parameter
+>> shadows the global mem_map declaration in linux/mmzone.h.
 >>
->> ...
->>
->> Introduce free_has_hwpoisoned() to only free the healthy pages
->> and exclude the HWPoison ones in the high-order folio.
->> free_has_hwpoisoned() happens at the end of free_pages_prepare(),
->> which already deals with both decomposing the original compound
->> page, updating page metadata like alloc tag and page owner.
->> It is also only applied when PG_has_hwpoisoned indicates folio
->> contains certain HWPoison page(s) for performance reason.
->> Its idea is to iterate through the sub-pages of the folio to
->> identify contiguous ranges of healthy pages. Instead of freeing
->> pages one by one, free_has_hwpoisoned() then re-use
->> free_prepared_contig_range() [11] to decompose healthy ranges into
->> the largest possible chunks of different orders. Every chunk is
->> freed via __free_frozen_pages().
+>> Rename it to section_mem_map to make that scope explicit and avoid the
+>> shadowing warning.
 > 
-> Thanks.  I'll await further reviewer input before taking any action
-> with this series.
+> I suspect that the comment in mmzone.h saying that mem_map is must be
+> declared for SPARSEMEM is stale and it can be guarded by #ifdef
+> CONFIG_FLATMEM which will be a more correct fix.
+>  
 
-FWIW, I want Vlastimil to ack this before this goes upstream.
+Unrelated to that, I thought we don't particularly care about W=2 stuff unless
+it uncovers a real bug?
 
 -- 
 Cheers,
