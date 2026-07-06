@@ -4,85 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6555C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 18:32:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2B12C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 18:34:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92C8A6B00C5; Mon,  6 Jul 2026 14:32:35 -0400 (EDT)
+	id A1A2E6B009D; Mon,  6 Jul 2026 14:34:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DC526B00C7; Mon,  6 Jul 2026 14:32:35 -0400 (EDT)
+	id 9F1B56B00B1; Mon,  6 Jul 2026 14:34:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CE4B6B00C8; Mon,  6 Jul 2026 14:32:35 -0400 (EDT)
+	id 908006B00C8; Mon,  6 Jul 2026 14:34:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5577B6B00C5
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:32:35 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D4BFC1A01D8
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:32:34 +0000 (UTC)
-X-FDA: 84959197428.18.439A4AC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 61CAD6B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:34:27 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6F96C0A20
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:34:26 +0000 (UTC)
+X-FDA: 84959202132.10.4A61999
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 158BC40007
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:32:32 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ix4bhmJR;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id E60A080008
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:34:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E3lad+Vv;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783362753;
+	s=arc-20220608; t=1783362865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zGOE+B6wkEpBM2IpcGXFx8QZR17g+FSu0rEA2m1xu9o=;
-	b=EP2hF4ssT/zd2TUGmYjyiwpKUOiZjQtBdI7bzt9hpOStTOXqUBvaijVcb5sL+IMCcrRXcr
-	QS0QpNqOrZ8YKdo6s7WeJCuj4pzyYrmvGN6j4L7xWFecsr6jqSP2rvEyYuziRpQwLeUIV6
-	p5VKYk7wHVp2u/dxWOXPumsA5Mz8r88=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ix4bhmJR;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=vXyg4ZUkc4uNfSCtADLd0ATogR8529Lag5lnJjDA+r0=;
+	b=ej/S70GE+heLJx2ftUP1v+Sn+HtdyL0OXqkzL45jRwUnUss7JOeXACQDtXCIINWO6MSRu6
+	MuKQNwB+mXqH1o4yFiTD/KY/dkHk9m3+r/S7XGu1ZJp7cdPrc2NbWrwmius+3PuTrSMBfI
+	7qytyLco3ljL5q7fzVlSPTDDiOPXXeU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783362753;
-	b=oTOyuD334GCZRyXH2D0Zx+KeVnbHhxrAON5U+BkSUQ01AK8nk5P9g65ebzlxO5XsXdd2kd
-	wKJwmlEELOR390mEgCNlzGLTdMCIydS/8XwJ9m4pORxA92OobWZ2XxRdvHYtGsy/23wINh
-	b3QOoVNCVzwCOsu3XjhlejXjT6mEoWY=
+	t=1783362865;
+	b=4PjVBRBjuMOOGoXqMhSLPzTmMffyDhXyGn0U8juGZkIOHkerVsQSlCPBlFIOjE1XeySbls
+	SRiCyDolcoJCKPyOkeDV1ZzDayDv9dDN8AY9qbEgMlcv6BBXEpUjt2D9zlv6z3sElyB5nH
+	BdTuzDC8eRaDho/lXnPLwAKWWWuKPF8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E3lad+Vv;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3EFE3405C7;
-	Mon,  6 Jul 2026 18:32:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621181F000E9;
-	Mon,  6 Jul 2026 18:32:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BE2344090E;
+	Mon,  6 Jul 2026 18:34:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB6C1F000E9;
+	Mon,  6 Jul 2026 18:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783362752;
-	bh=zGOE+B6wkEpBM2IpcGXFx8QZR17g+FSu0rEA2m1xu9o=;
+	s=k20260515; t=1783362863;
+	bh=vXyg4ZUkc4uNfSCtADLd0ATogR8529Lag5lnJjDA+r0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ix4bhmJR7eKsC24l2YTxxFRBLjhmL4LgBvKmco8VimioUNWoZ6OX53QFUAY3E/fu6
-	 bPmipEz8QWmjsWI5jPo3cNditiRywtVRwh3X2Xl+QsGGEwg11HXrnMhlCe/9mG7IjP
-	 UQcKUMhhVB3+wcX78k3+DQzhbun6h7M1BZ8HZMBcZCLHxiTjrHno6zFcbd1kI6vC+x
-	 OreuqOVbwXg6Spqfzj7FWBHKioeMP2f1s8moXKiDc0v5HFpvMzvXber/vPcFn5DLQa
-	 fSXrr8QMf89/Yd3KBS2qny278fI9C8bk0Lld0fN9tr49n4ys/lX34U3AJCkA9tB2kg
-	 kmB7e7C+mfIJw==
-Message-ID: <72f81925-e845-45fe-bf68-753be5b4d75f@kernel.org>
-Date: Mon, 6 Jul 2026 20:32:22 +0200
+	b=E3lad+VvgRlwue6CbHT8alWSu7Qf1xXpQvr8oSaM13Ba59bcYB0/60FFCOHbacizI
+	 OzHPKaCc/zwGhxuFu8Yrsn7RX4FYJE1Rn4UC8xXTEBnsUxjzXY1tVvOyap4oYLaDYB
+	 TlxI4WRjU5RdlDLKls5X7AzSGvbHRZM19xny+6eY1TqNpIH3pRn3yu9f6JmLWtQhvn
+	 tLuowE8Udrws/gKBJnEJZ59oh4L6iDBeCBU2JYjpAyMnW9aX4S1St2upY5fvq40bJa
+	 X7tnpmvYPGvPP92N5njqINYbfmJviNQbY6pPa7vKRgEUyCqeV8TdTr2VQJkFErOihT
+	 KW5ekQHZPpqvA==
+Message-ID: <ca549367-320d-494f-b47d-24d8c1ca9fa9@kernel.org>
+Date: Mon, 6 Jul 2026 20:34:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/6] mm: rename ARCH_ENABLE_THP_MIGRATION to
- ARCH_HAS_PMD_SOFTLEAVES
-To: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, kernel-team@meta.com
-References: <20260706114320.1643046-1-usama.arif@linux.dev>
- <20260706114320.1643046-7-usama.arif@linux.dev>
+Subject: Re: [PATCH v5 3/9] mm: use enum migrate_reason instead of int for
+ migration reason parameters
+To: Ye Liu <ye.liu@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Vlastimil Babka <vbabka@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260701061101.344679-1-ye.liu@linux.dev>
+ <20260701061101.344679-4-ye.liu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260706114320.1643046-7-usama.arif@linux.dev>
+In-Reply-To: <20260701061101.344679-4-ye.liu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 158BC40007
-X-Stat-Signature: cet3kikpsdhswn9sf8e7c3xts43uzm6o
-X-HE-Tag: 1783362752-738179
-X-HE-Meta: U2FsdGVkX19Td43ASq4F0MQAeyBwsDdcB2rz0WDy90FYOOmq3HeKUZxQxN+jIjipoNSrq23NxHO/+jpKur3CPW5eVSzH/RF6pVbpJ5dqtvDHymb80ZdGoWPk+7QnQS4W1bcWByFvgXvpVaDfQDat+ydAGJaX6Y1OX0VwF7NtEwjjA2W0xKCJCKnvx2xHN/APGR6iaTc5Byi6jLteI7Igbf2CzG/+Ug2lNuTnNUBrbCDDWapdlhdYAnEpFQVuJKmNr+fXnF9j74s7hukj/Q/jPFl1Tp5MH8WMQkXAgVCF5oXY5rkczwNuKyJZGg1lW3K1Gz/ZukoZzOYXKg6cSkgmcyg4E0Nez7yzC8/K3ipLNou6mebOBSINjZFZLny0yr6ZZaScicPwu3RtcMJLk+aYmsS/wz8PGZ/CfkrTHVhiAQV7fE1f6QOK4hvkKwunabdgDKqalwRIEUTX67P1wkkImiq2wxR7M5g0d9Mw74ZZW/Qlh7uPlghzEgIIrnNx5yTI7UDkNqiEW9qU9oAucVTDi/oCfZY4tThtn6mKu0tKPQF7XffOs9ZVNyNwv4v8Fa9TbdS0mXp35YLX5Fzf3cTzT3rBa0X8Z2PmUf03WxpuiO5nYCf9Vt35PKWU2mj0YwSGNGiePwes9sd+KC8vV64RgHRke8pAzlwWgHqHjpraSEhrgEkuzgP4kxIEbxcc5gs7lh7ZMzsRSvaID5BFSD9d6e52Wa7afX0GXOWtIftWCS0csr7Nb0ooqJZyl4mFK/qOd3/Qp2fQJ4vd27JkWMW/mBY1ZEFMh89Sfss1UiOoRYnql3Iwf9YkczGheCJdllwwbkNrrdUjk2IdZeSu8GE/jzN68NQe/OvWUmoegjE02Fj3IFMOEYt65/CQacytV3HhOvid9n845mVpgsvVu+waY3TNdv458oZkdTSkf/eoGCl913PusK/8eekvXsSwkbEgW8ueBcx9X9DPhZrS03k
- 7LUv8A+h
- 6MYx79EXM4+tCz6mQheEmP+/axYp0Alvez9qVZ+0Caj4JK03/k35tNFoEcBderdbSY+FhHcR/AWpon9Pj+J/JwNbmsyeTkpXrsGouXh4PF3c4wnQct49H/6IjFueRg3phkUcWCcxE9NeAA09no1fHzUaHiVqkYwM0piNbWEKTpAqbznl8u7qHcPurXquRC24ZxLlfjRFF0YK+LPq4iC6EW541VCrhR6SF5YjPJZq1eO6VCM/L9L3cTVtNHzWRfHgQzKs0cdgRiirZKZd6NXSiAekLV+popdFaUFS/wxPJKwC+CI7+yeDrojO42gK95ugKTlygg/REl8HFTFTKe/tO86g1PP33i/YG5N5U
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E60A080008
+X-Stat-Signature: t3ysur1wdjuw1e3tx9nom6hifn4id86y
+X-HE-Tag: 1783362864-280122
+X-HE-Meta: U2FsdGVkX18LYeVkJ9zsGb6Y4vTOgiag18I6hJCod1gJAq+tJz+LWdO5J7lao6KlNEZjdMa76vtrU/n1mcDSHG6MhqrYWSyLbhFWf2wVESDeiqHPDbd1JBrcmPU31tkYrEpm+YVbOwhT9Qto3h24WGOID7Xm1Il3ItT4QaoTZog1I4G0We2+Q021e0n7DSwA0w1PBZfOZBsJJBaav8Zi6oGh7BL8ACVXCQBc0VvB81cBYdDjrEOfJaaVS1N7LKypIKRzA5dpR4MnTyhJsXW+NKsQRd80VgG8AUhDW6RgN3s0PnlqWkax3mki7g1WBJ06hhD30CmzkoBLMFoj0DdgZQ72BiG07zAflIiygAdwnKhirHNysLsJeDQffrEH8rPN9iMTX4DS2Cgu1D9UebJAYYUJ+G7nW2QF4OgRqfslyXz3yoZ6jukJPnSMfd/q4kylZRlX3fv7Efuubl0UV2mqyNmmt+sS1SdIE8LZXcCi9ruO8wtDAA2yB5PNeckQVi95JpVLbXZNy8ZDZiXKxZ6N6asn5B8BI9cu6MbtDsZGRWOKsxfsU84lZFO1Jh9sOLnnzQ5j4wYeOgtNDnCdEIM8BtNMT03eArHZq4rP+irSFf1k2HHUlJn7x2kC3CbsVZEIWpcA1+M8N+91ynKseh8J4bodEw0kE/FQtd1v+WA90uRexXHEWWf11QkYrPOlwVHTbmx8zhiH1epcnjfy1uYoisnVwkMewNL9omFlMH2g6mb3pSZ82x9CNWaHiwUiubmVlJMDjnPTCJxHXdjGUQISm5NSCBmMmK6FdgrDd5wiGUrVUJkn9K4e1poJZ+/D9aCBtmrgFBMv+EUIWrm28QJ1UEa6FQANB8RyuohBnWuSj7XXjTTi7kOy8di8T6RRZlVuBJNpsz4DS1PmNfx1fSud75TpqIhEu1zXRerdczdl5I07Nz3SDHQAJ7mRM4Rg+89gPuYVGAx3QclpuSKbxqI
+ 9VxU06he
+ slsEbM/obzBhxhQoBV65ibqp2DabEcHe4EZsnwZhrwSKOUJIo48ldFxyDwk2urJmWHbbYbpqQ0ilXpbh4CJkRjXs7ucA0NGF554pSWFEAidK4m8mD6jyTsIKXjx2aM75mSwqY5EIVPiLqkxaKljD4N++xel4GSo0ISsEiRgXgfFpscwD1ioKTnDTZKk/JJtiCS5b5u/6l4fjQGByqFY7pgX6V01WroYpgt8V/tQCcGcgAzyEOPRFom9COsAMTPQk7odq/YIqNTrbDOF7A90CB5n6lZVj5kQslPycSr85Yutbg+DeCnhnIVNO3Y540kXbY/GqyaG75CCG9q37Wli4Z0/oTUhIDqWlbKIQzx47u72oHAEyrQW4knDl1MUQ8a/2QD6uxSWParYzfa04MNhPIFILjUZVYd2i3b2MuJ3sATm7x4nU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,28 +151,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/6/26 13:42, Usama Arif wrote:
-> CONFIG_ARCH_ENABLE_THP_MIGRATION gates PMD-level migration entries.
-> PMD-level device-private entries use the same migration mechanism and
-> therefore require the same architecture support.
+On 7/1/26 08:10, Ye Liu wrote:
+> Replace all 'int reason' function parameters that carry migrate_reason
+> values with the proper 'enum migrate_reason' type.  This makes the
+> intent explicit and leverages compiler type checking.  The affected
+> subsystems are:
 > 
-> Upcoming PMD-level swap entries can use the same PMD softleaf helpers
-> without depending on page migration, so rename the architecture gate to
-> CONFIG_ARCH_HAS_PMD_SOFTLEAVES.  This describes the PMD entry capability
-> rather than one current user of it.
+>   - page_owner: __folio_set_owner_migrate_reason(),
+>                 folio_set_owner_migrate_reason()
+>   - migrate: migrate_pages(), migrate_pages_sync(),
+>              migrate_pages_batch(), migrate_folios_move(),
+>              migrate_hugetlbs(), unmap_and_move_huge_page()
+>   - hugetlb: move_hugetlb_state(), htlb_allow_alloc_fallback()
+>   - trace: mm_migrate_pages and mm_migrate_pages_start events
 > 
-> This is a pure rename: the set of selecting architectures (x86, arm64,
-> s390, riscv, loongarch, and powerpc on PPC_BOOK3S_64) and the gating
-> semantics are unchanged.
+> The 'short last_migrate_reason' struct field and internal helper
+> parameter in page_owner are intentionally left as 'short' since they
+> store per-page metadata where size matters.
 > 
-> No functional change intended.
+> No functional change.
 > 
+> Signed-off-by: Ye Liu <ye.liu@linux.dev>
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > ---
+>  include/linux/hugetlb.h        |  9 +++++----
+>  include/linux/migrate.h        |  6 ++++--
+>  include/linux/page_owner.h     |  7 ++++---
+>  include/trace/events/migrate.h |  8 ++++----
+>  mm/hugetlb.c                   |  3 ++-
+>  mm/migrate.c                   | 12 ++++++------
+>  mm/page_owner.c                |  2 +-
+>  7 files changed, 26 insertions(+), 21 deletions(-)
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 2abaf99321e9..fa828232dfcc 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -154,7 +154,8 @@ long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
+>  bool folio_isolate_hugetlb(struct folio *folio, struct list_head *list);
+>  int get_hwpoison_hugetlb_folio(struct folio *folio, bool *hugetlb, bool unpoison);
+>  void folio_putback_hugetlb(struct folio *folio);
+> -void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int reason);
+> +void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio,
+> +			enum migrate_reason reason);
 
+Two tabs indent, applies to all other cases in here as well.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Besides the "extern" Lorenzo mentioned, LGTM.
 
 -- 
 Cheers,
