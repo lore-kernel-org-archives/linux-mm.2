@@ -4,128 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42C0CC44500
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E258DC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:44:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A9D46B00A1; Mon,  6 Jul 2026 04:44:09 -0400 (EDT)
+	id 928166B00A2; Mon,  6 Jul 2026 04:44:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35AB96B00A2; Mon,  6 Jul 2026 04:44:09 -0400 (EDT)
+	id 815AD6B00A4; Mon,  6 Jul 2026 04:44:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 222E86B00A4; Mon,  6 Jul 2026 04:44:09 -0400 (EDT)
+	id 72B3B6B00A5; Mon,  6 Jul 2026 04:44:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EFFF66B00A1
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:44:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E48B1A0330
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:44:08 +0000 (UTC)
-X-FDA: 84957714576.17.BEDDC57
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 299B91C0002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:44:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TQ8xpR3B;
-	spf=pass (imf21.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C9D96B00A2
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:44:10 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A747B12034C
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:44:09 +0000 (UTC)
+X-FDA: 84957714618.02.A887A08
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D696A1C0009
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:44:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ZSY1/+jS";
+	spf=pass (imf20.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783327447;
+	b=1Qv8gWWL1NcH4M5M7IYb3nRLWrnxhyhH4tp5uzdamMMkEpO/RKyHR/o87ra7LI91OD5+tW
+	D3wVt45yaBfA5Oc0xPjb5wgCwKz1eOiUOYvseKgqmzmLK+qiqIPOAtsTRQDxGYjZ5sNUYt
+	da//blWx3rNqhHMXPtFmHqAeCKUWa8k=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ZSY1/+jS";
+	spf=pass (imf20.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783327446;
+	s=arc-20220608; t=1783327447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RLCqgq8bJA3wDjgxn0V0PvA/+/Oia2v1so+e3G6fRBo=;
-	b=NKKIY3aR12te4yknPJGJgmNraJGgwhqzNBcvU7Gk/8naWS/8doWme4R7CDtODYzPIDmbV2
-	5bM0EvYtFsmCY+a/JpC/bpjYV0qgVEkvi3vbgB7HH3eap1wpIIz8YX8vrjoNoQHtfx4hLz
-	SSyuyWEvgrLNGBguF54SYuFCnJdGh+A=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TQ8xpR3B;
-	spf=pass (imf21.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783327446;
-	b=N+mbDZtVbaeSBihlXo+/Bc/SuV9rxSuCsMaw/Ep3uH36UhdgWjRWLAo7nlSCWA6G7e0p6r
-	Qda8CLCUeJnvPzthJUeL4CzdQiRCr28UE915G65wK3nny9hhJva46TA03wnfghFBZbayDz
-	0gfZTUVfCIyiy0KRrWjtp/oEGQuKBso=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783327445;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RLCqgq8bJA3wDjgxn0V0PvA/+/Oia2v1so+e3G6fRBo=;
-	b=TQ8xpR3BtfIHIjkL6h55ltfki8UrsG+lzlNzk8Pjddr6DWTUFYRJevKJWSNfR/nfw/OLhb
-	0zSqQvGZwp4VvAghkjAXkqEll9VNTO5QwDlDF4guKl6+ofI8o04ecOZUH7+GuZx7uH/Vcn
-	l/rg7kJ/p5l/Gl6pJSgWgcPS+ocIT1M=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-612-2ky-Hgs7NBi_N2oh34xpgg-1; Mon, 06 Jul 2026 04:44:04 -0400
-X-MC-Unique: 2ky-Hgs7NBi_N2oh34xpgg-1
-X-Mimecast-MFC-AGG-ID: 2ky-Hgs7NBi_N2oh34xpgg_1783327443
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-476608a9fefso757434f8f.1
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 01:44:04 -0700 (PDT)
+	bh=LnGUu9KwPOjM9n0YvVm33uejfmZM7bns69qSuovH7P0=;
+	b=MfDU0dFy/OOlT/nz6rG21qlC1GMpSf7K8EgYEuGblNrhNSFSPY+QXKRQYucwBy58FPC7PV
+	42Ckcqxv5/0bFHKAgxu68XcZCUJMN4hNH7HSZVMK+BhW6e+HB2wA9Vv/rJC7bbe6DJwRW8
+	vtaP8mPOPYvD6eSz3J/bpoHGSM9kMww=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-36b9d265355so1935410a91.2
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 01:44:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783327447; x=1783932247; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LnGUu9KwPOjM9n0YvVm33uejfmZM7bns69qSuovH7P0=;
+        b=ZSY1/+jSKLNQjJoZMSkYyKmYSRvDcjEfyspRGsEbPOB8KtYlnJRuwjHSkbM8CV3Q6R
+         129SkHTML0rCTQifCpI9h+9+OV3n6R85tpV+AK7citEHgF67lDHxTn39FRNQXKTXAx1V
+         eLT5L4gae+ycNOi+FP4qFlx/2WnGmoXhGJeGoLovxe4bZMZOPIAbPodxGXWA90eX2iFn
+         GzgEIZlK27pCGfQ0OQ+M6Epj609a5g//k70t8e6KYS2JG3FdoqHVyxjJQlviyMvv5h4U
+         WpbrCVm+AyO52mE5cWeBF0TZt61WusMCllUkBZXwfXRNkBwbQdN87SYdmFU0O+rDBSDj
+         2lRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783327443; x=1783932243;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RLCqgq8bJA3wDjgxn0V0PvA/+/Oia2v1so+e3G6fRBo=;
-        b=oPAGs28fr2xZM+hcN56NVTifv77gm8cYsUECQwDWCknH8TZ0vhbKb6IqXUEaQM4YkN
-         NeyFGL4NuhUVcd3YphwvdGhzBfBKKPplelkZSHbDb1109+YkuhAaUh0nUGevpGT30Qw0
-         1wXmSMXIsKzDvWYklqrM3L+toJT0etv9FGZS1jr8auLNC3TZXW6hZgtfwfrrTRXxt4VX
-         BUeTW5dRbiKs5VJYkX/5/yGlnUECTTh8oO+5JApLc78smbobgCQWcl4j+UaS4FnB/Oks
-         Jn7ss/XEOst24P9wCIzrLzG/qkgkWWj31s/YRVrdjfbKGULcAd27MdSDWxdVNy77MZBl
-         Gk4Q==
-X-Forwarded-Encrypted: i=1; AHgh+Rq2m7GlzojmY0Ll30bUuvl8D871MEhFi4iZkv0tVA7UW4sRrXUlvm2oNsmfrwHEtRp356iNbwjGLQ==@kvack.org
-X-Gm-Message-State: AOJu0YzT7ICYGYoWIRKa1RqhzYttP7gpZ7BDaXUe8LcfMudz3cpYmlcS
-	CMIaIZnLB4Fijw9BfZ4NjDZNzSRfL2zVyJ99Cc7vBQHCngiabAhDAqcinCxe68tcm0vrshFDF5I
-	GSa2L+VVie9ZN/LyRAKdq0zV7txtAsSL+uHVbT3IFtgs8nbleWywr
-X-Gm-Gg: AfdE7ckHgbg8/YOub5X5hYZyZngfdwWK6CMrE0AhgnaRPdDDVKFdvsr4z6Wl9Rpytwk
-	FsvyeMaq159rWeiMl3fqR7YSKlReDbEjiL4fHHjKmMrp2yR0R1tmcmNKURSv4iARelYAhmiTmIk
-	ZCmluFXUSJbKgify+MvAdJbfPmfOevxeGIDQB3cP9Tb9Vi57fcbUIqPiX7WDo0csOAUEp4kidTu
-	W1z477XdZALAR/f9OdtShJxESOpAItxl6zR0mGir1+WUrktzHwJ5jZj4Afy+CsJ0Q9yUj8hUI6k
-	i9PvfblTZkuQkjBcaBJEukTVbIlvTXK2utFlm26FvmHLvqc2TySEyNcF8q3dFB+YwPLCRACBwnl
-	/cJLM94hJaP6dj4+BA+13+43k9iAfnD5T
-X-Received: by 2002:a5d:5d85:0:b0:473:6590:c42a with SMTP id ffacd0b85a97d-47abad9f1d4mr10815765f8f.9.1783327442856;
-        Mon, 06 Jul 2026 01:44:02 -0700 (PDT)
-X-Received: by 2002:a5d:5d85:0:b0:473:6590:c42a with SMTP id ffacd0b85a97d-47abad9f1d4mr10815728f8f.9.1783327442334;
-        Mon, 06 Jul 2026 01:44:02 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960af0sm21194916f8f.30.2026.07.06.01.44.00
+        d=1e100.net; s=20251104; t=1783327447; x=1783932247;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LnGUu9KwPOjM9n0YvVm33uejfmZM7bns69qSuovH7P0=;
+        b=cQC9pc8zM0MVGm9hebk7BeL8CKWWfJo+NkiS5szJspB2na7jf0FdX2TOthcKjLhRr6
+         sq4p1px0K/RkDf0qFKoTSZBs1HGES3cv4T5pODY2gsXn59QP3fYW65wHSbg7k/2bh2y3
+         H7gWDZbTa1AW0IU8CVRvYHCs+Nzyw48BMbqI8OK4lzmXzVMBufHXdpvJJdrG/PbzDL70
+         EourMlhlITxYHWv0hbLh0r3wRddd2Xls70GlOog5MPBGuB+8Tr+eB4/wCezMLZn3hDYN
+         H8j/h/SXE7sCG/Ui2Bt/q6yGjP27OWBHzw+AX0YKmGf71wU7s/KTtPPuHhYOSXKmw0p9
+         316A==
+X-Forwarded-Encrypted: i=1; AHgh+RohYj2eZAqzU9afhxlcXJmjNJeGByV6VCPaX5M4NuxhkLBqGBA066Xp7vbsECQTaA13KyN49HxNGw==@kvack.org
+X-Gm-Message-State: AOJu0YwoI2FpOBH1iazdtcuuGhXnYPTKVHf5NZ9dLDTBFQwd8/C+HBmV
+	iRIZzuoFSm+0RqICyRil0P78q/UOr4LnshVUeNY7ooB6bDxGZl4Oz/kv
+X-Gm-Gg: AfdE7ckQm0cNa2kZK/K1YYbUhVLXIRdTwBCFChvCZCKxCmfiI+XtByLyEa63leagTxk
+	b4WRBbvuMy74/XhXab0Nlvw4AHSn9W3SPuhKP0RiEJSQ6pWqdyLaz4NIPOigg47MAy/kGZuvzuC
+	WVs7EuPnLRLgVAscFJpN1dG8RGFxmsjCp9XDVvgRl/NEPUtp4LS7baopZu1jGrqXIbkSzgLIttQ
+	Tw9A81q7l5zSsJfbjYpl781OpcaQ0VSA8C0+b0Pj3afXG3vZGQ+JulnVziyPo+27yGZM4QYYqC5
+	KVnEQVpkv9X3EjDsP5nC9QtpRE7LUP6cjvrnTdhvF7aTC1REqahhfFiRMThTqJZgPIb41mBlqHB
+	eW9f+Yx2yORi5tZkWQrEkBRNdus8x9m1rX2rCKy/xekRNoxcWBAwXw5X476yqgXeuWoN4QB4nx8
+	yESF9TC34eIdmrWkMx1SThFuVSly0k8amfP1fod3VyEc9JZw==
+X-Received: by 2002:a17:90a:d44f:b0:36b:944b:fd81 with SMTP id 98e67ed59e1d1-382803b6538mr9020955a91.4.1783327445435;
+        Mon, 06 Jul 2026 01:44:05 -0700 (PDT)
+Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3812815c10fsm4524635a91.13.2026.07.06.01.44.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 01:44:01 -0700 (PDT)
-Date: Mon, 6 Jul 2026 04:43:59 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Adam Litke <agl@us.ibm.com>, Rusty Russell <rusty@rustcorp.com.au>,
-	virtualization@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-Subject: Re: [PATCH v2] virtio_balloon: prime stats vq after
- virtio_device_ready()
-Message-ID: <20260706044122-mutt-send-email-mst@kernel.org>
-References: <2f0d0de033f3005d3b985883be3e5cf37b3f6c42.1783278596.git.mst@redhat.com>
- <13794c5e-375a-4fc5-84b4-a637d077f8a0@kernel.org>
- <20260706042207-mutt-send-email-mst@kernel.org>
- <6b8e4ad3-6909-4d0a-89a4-104a5ad9fe79@kernel.org>
+        Mon, 06 Jul 2026 01:44:04 -0700 (PDT)
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
+To: akpm@linux-foundation.org,
+	catalin.marinas@arm.com,
+	linux-mm@kvack.org,
+	urezki@gmail.com,
+	will@kernel.org
+Cc: Xueyuan.chen21@gmail.com,
+	ajd@linux.ibm.com,
+	anshuman.khandual@arm.com,
+	david@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shanghaoqiang@xiaomi.com,
+	Wen Jiang <jiangwen6@xiaomi.com>,
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Subject: [PATCH v5 3/6] mm/vmalloc: Extract vmap_set_ptes() to consolidate PTE mapping logic
+Date: Mon,  6 Jul 2026 16:42:29 +0800
+Message-Id: <20260706084232.177786-4-jiangwen6@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260706084232.177786-1-jiangwen6@xiaomi.com>
+References: <20260706084232.177786-1-jiangwen6@xiaomi.com>
 MIME-Version: 1.0
-In-Reply-To: <6b8e4ad3-6909-4d0a-89a4-104a5ad9fe79@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: EGD-mW2GNZPTVZmsxfg5tu221mFFoYN4HwdO0tX4MJM_1783327443
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 299B91C0002
-X-Stat-Signature: j6yqotprct5g8faagxrrzkuxmuxjtweq
-X-HE-Tag: 1783327445-656508
-X-HE-Meta: U2FsdGVkX18jGnE9BFPGcGaOddE4jot0gtkigT/hHYf7BQ/HgJR0YFMjVSkvg8/eDUqIz43H1Q3syR44u/3j1xyB4lSiEKw6qQEvrJaD3rkDc6LiAGfFcnsYMsLpVGXeP5+hV+gOUaEblF1JuXyhhchPQJeNADaRTZ7pwgwHng1OZBuAdjnVX9V6hkU9F73OAX9wUU3IyLS3J2BzvqfwrUvJOd01KPg8QdM7dqYol460xiZ4DuAsr2IOezsEjJju6r5hKNTCc8pKMM+fi2/FDQZ/79pdgClxVt9rMmX5O1/yo25LNEKq66GAKmxqKYMmvrkJO747gdUWosygULfzeszwCMiu7UonZcsmx/NVqx/IvPPRqcNMUmEGsCzoVtcdSsqL0iGOOeLDwO72pfUFf/9UIUKcTwwWemAVgP2BHQemIzcBG0naYafZQcRzw5chC0I5LKzCGExDUc2uV1e0Qex1sSh6zW2ri1rqiLk6g9sKNtIhVELBo7WhQ0irS/StlrnrPRnEg8OdbFI778+U+Mwo2+vQeJQ7tWFTAzwvgQZfglpDqlKp1QgkXDSksfHMUPkVVvub/TGEAfhX10GHAsJX8zHxQrrJ5rUBNzzDR4OkmgoSx8c0uHg4Hxblp1MH2Z5v6PdwwTqEL08jiMKe2NN2Tl4WNEgRgG4RvwUF29Y3ghEQyE1/G4zrBNnsVmO7sK4BCehTz39QtQ/VI+KpMWHIqVcrBVElzE8oCocgwLdWkx1TXW+04+/EFJSrhxd7MfxCJaJn/LjL3aE9Q5CZgL9fZsnaBLlD1IHQfXkOW9h0hxfhBzSWyihAdhFt0XZidDIg9qTuopZwN9BgscnvJctViUVPydYRlMeh+Flgg6JNMSdVvoUYeP3jg/TKQvcK1P0j0k3OYS4i2Kn6WhyrV7yW3I+uGMrD7IOh7v5Xe3907Got4gk4e31eG70Q97pF+TN/whzx3QRuNrKbSCL
- jaGiXjrf
- N3uHMVCh5mrJXfUGzQv5q2weoxsyZ9sGaKPDXY8h+g3nWNgFrICkIf2+048YAGQfIVeR+Yfn4K3FQ5U6HKd8ZH4o3n7LOktcPatgNDUH1IkTcSbUDggc18+Jjc4tDD6LrRzV14R6oPYQZdFd8gd+qACHKUhWu4/7NmePu16ywApFTHfk1NeB7SZoTovGCDs2Uzq4ViFWVbL4PW1mlgr0F0fIeTrAHPbPsdmvGONUJUErJnJgimdNvlaA3R0wzek4VZvUFrv6wD0qJJnVVSWgBiXU+LRtAtEyBiomEwKWCwXFoUwNTIL54SpwzIzoSWg16TSBZ13FGzkWijdtmLCy9FDOsFj8uPzyf9FKDl0MJGaLKMl5JTDm27NUKXYzByRfnyFNl
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D696A1C0009
+X-Stat-Signature: ey4bzbdxpc55cz516hhf69omyuw48fbe
+X-HE-Tag: 1783327447-330263
+X-HE-Meta: U2FsdGVkX19z3P8nHXe7y5qGNXpsH4eZJ5DLbiIflD+ev7wETjGh4aqfR5Qy2Gj/3l/6e6qTvn+p7FwfgH7sVDYPLyQBlv4Z4C+MpYCBNK+44RYJRo+rqt6X7T2yLausLRE4nSH3FAu0S9n0KqJqPEJWBxCWnBPxah0D8dqQyUApzjEfZV7AGr2S7u/lXLYsbEx9Sy2z6MOcrfH1t10Zl6hEtj1LUXI1NqF4Ex7YwFY4wobVCbxfc4mMyijcW5Dyuou4F6k8pH+67B1fTWvERYXdoX2QbtGo3sjVOkDKjxbkV0wnW4b/FZZ5311TDYu1/9ndZSHYfHpzvLg9IFZlrSehIj3cA+NTqPaTYCL7GxOXyWqSmAMJGsZyZ9rJPcRxFvmMq3Fm82teoSdblIKnbt8Olrn6mVkV5/+ZAYNz96XgkWO9ic5elFbuBo7229jke+uZ3fUeYvCXQB278PB3fB6wt4OPLvW0I/haq2qjd3+I1DkSp/uBm5AGEPYAQOqt9aGABWo79hPvEzBv7lBJJ0CqfYOvQdSfpUoqCdCHHUHhdword7eb7Sk4c/jM3GPPM/C5N5p+p/U+aIoiqJfwpBMV0TqhB77JsCBbcC4Wu8WKxYie6WlOTrcKgHOZpgKgxa9OL/zhZ+0A+e0wOZQw7mvp31p8E8OEg+4zJzDRVvOvKDwWKvsA4grHx3y4RpI1bCBk+oMvdGI5MIJ4rhWHmnZhaTJMUdZKLLnzRvANFupyJVlyYhkiIu1dB/bUSSz2K/X4PngYOezMAqeoAk7jUGdgD/hHzRe9mt46rWrTwNd9OnBzfW6+auGRB5FfpqqcVLaLKyRG0n9lzW9K2GC1cPgeYUI9vfFUbwPPLtTcVhr8jnzfFxlKgPl6Zezb1FTlvgYiSdTcfdIM6kvd9d7nSNuDpwxjaHa9TIWhj+6TtaPQRrXhhBgpBGrsIiNqZI5TSvHhZ1D2H/Z6fcnVzCO
+ 2+J2Ld2T
+ PbXRpKhOShxDLnXKx6aGql8Cx470WtVGoH0tNIt4Y7fLV9BZlEOOqSgK1rScqhlmIWXqKp9pO9AzR5BSJF6HRVR8vJmi8ZprVlqhc8dzwc4zKTw0jXXFWRAj4zUa/yVp0+8OZaaqshn+uslCyqHP9zK58UH7ER8Rk7Arzp9tmPVTMl4o1vyqT2AFGZTY5b1NP7ACKZabY7fihRPREUi7gTCicuUzdKkxoaVYE5mH7hEmi6GSPYgOm7eaTG+S/MyteUrARcFGHsGcxlDFc2FnbYtCzYtnWCJh93bzwCCoWpmuPIs+QLvcpH0YvkcklzJiQtlH2eX/qMXRtVLCfSLWwRBIigCHZUm4Hz5t/CFhrElAPHeRygvEAEaTkHxFh5V5w21pWSRPTzzF5LnzKU/eHiXtc4MBVLuKP+RHmH5lCj1oHqKrHxr9igPCgJ/38UpYZ67Dryj1aXR3LkVczAulxV6ec8tYmVp6HRvmeMtyBQbPYuKOTToZ8J0Cot6ZfAYEFb28VyefT310g4Yw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,38 +133,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 10:38:18AM +0200, David Hildenbrand (Arm) wrote:
-> >>> -		virtqueue_kick(vb->stats_vq);
-> >>> +		disable_work(&vb->update_balloon_stats_work);
-> >>
-> >> That's to stop the stats queue triggering stats_request() I assume?
-> > 
-> > Yes.
-> > 
-> >> Is that
-> >> valid before we actually added+kicked ourselves?
-> > 
-> > Why not?
-> 
-> I was wondering whether the spec would state something about that.
+Extract the common PTE mapping logic from vmap_pte_range() into a
+shared helper vmap_set_ptes(). This handles both CONT_PTE and regular
+PTE mappings in a single function, preparing for the next patch which
+will extend vmap_pages_pte_range() to also use this helper.
 
-Sorry I do not get the question. Virtio API expects
-callers to serialize calls for each VQ. So this just prevents the work
-from running and accessing the VQ while probe calls add_buf/kick.
-I'll add a comment explaining that.
-But it has nothing to do with the spec.
+The #ifdef CONFIG_HUGETLB_PAGE guard is moved inside vmap_set_ptes(),
+so callers no longer need to handle the conditional compilation.
 
-> > 
-> >> Also, can't we simply handle that in stats_request(), just ignoring it there?
-> > 
-> > Then we'd need to maintain a special flag and I dislike that.
-> 
-> I was hoping that we could use the device-ready indication, but there would be a
-> small race window indeed.
-> 
-> -- 
-> Cheers,
-> 
-> David
+No functional change.
+
+Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+---
+ mm/vmalloc.c | 42 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 13 deletions(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 2c2f74a07f396..d7fef85b241c4 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -91,6 +91,33 @@ struct vfree_deferred {
+ static DEFINE_PER_CPU(struct vfree_deferred, vfree_deferred);
+ 
+ /*** Page table manipulation functions ***/
++
++/*
++ * Try contiguous mappings at the PTE level for arches which support them, and if
++ * requested by the caller. Fall back to PAGE_SIZE mappings otherwise.
++ *
++ * Return: mapping size.
++ */
++static __always_inline unsigned long vmap_set_ptes(pte_t *pte,
++		unsigned long addr, unsigned long end, u64 pfn,
++		pgprot_t prot, unsigned int max_page_shift)
++{
++#ifdef CONFIG_HUGETLB_PAGE
++	unsigned long size;
++
++	size = arch_vmap_pte_range_map_size(addr, end, pfn, max_page_shift);
++	if (size != PAGE_SIZE) {
++		pte_t entry = pfn_pte(pfn, prot);
++
++		entry = arch_make_huge_pte(entry, ilog2(size), 0);
++		set_huge_pte_at(&init_mm, addr, pte, entry, size);
++		return size;
++	}
++#endif
++	set_pte_at(&init_mm, addr, pte, pfn_pte(pfn, prot));
++	return PAGE_SIZE;
++}
++
+ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ 			phys_addr_t phys_addr, pgprot_t prot,
+ 			unsigned int max_page_shift, pgtbl_mod_mask *mask)
+@@ -119,19 +146,8 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ 			BUG();
+ 		}
+ 
+-#ifdef CONFIG_HUGETLB_PAGE
+-		size = arch_vmap_pte_range_map_size(addr, end, pfn, max_page_shift);
+-		if (size != PAGE_SIZE) {
+-			pte_t entry = pfn_pte(pfn, prot);
+-
+-			entry = arch_make_huge_pte(entry, ilog2(size), 0);
+-			set_huge_pte_at(&init_mm, addr, pte, entry, size);
+-			pfn += PFN_DOWN(size);
+-			continue;
+-		}
+-#endif
+-		set_pte_at(&init_mm, addr, pte, pfn_pte(pfn, prot));
+-		pfn++;
++		size = vmap_set_ptes(pte, addr, end, pfn, prot, max_page_shift);
++		pfn += PFN_DOWN(size);
+ 	} while (pte += PFN_DOWN(size), addr += size, addr != end);
+ 
+ 	lazy_mmu_mode_disable();
+-- 
+2.34.1
 
 
