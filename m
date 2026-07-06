@@ -4,120 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD632C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 02:03:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3B12C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 02:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 452F96B00A0; Sun,  5 Jul 2026 22:03:36 -0400 (EDT)
+	id 8D92D6B009E; Sun,  5 Jul 2026 22:18:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DCD06B00A1; Sun,  5 Jul 2026 22:03:36 -0400 (EDT)
+	id 88A276B009F; Sun,  5 Jul 2026 22:18:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A4D26B00A2; Sun,  5 Jul 2026 22:03:36 -0400 (EDT)
+	id 79F516B00A0; Sun,  5 Jul 2026 22:18:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D056B00A0
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 22:03:35 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5357C1A0263
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:03:35 +0000 (UTC)
-X-FDA: 84956705190.28.7882BAE
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8C626140003
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:03:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=A5t2wwo5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 51A016B009E
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 22:18:19 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A1CF114025F
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:18:18 +0000 (UTC)
+X-FDA: 84956742276.17.25E98EB
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A91E9140008
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:18:16 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cTLy58j1;
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783303413;
+	s=arc-20220608; t=1783304297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VpbU2nD8Sf2VfGjQR5NkWq7+R61c2WqH91bcQarOxZE=;
-	b=5PSwAIskK6bZO4vG2bMLT7dsapJag1rRSGNvS/9eG9d6lSRk0UDsHCwOcBwHHvXJypy4Em
-	QMY3A6lNZivGHzBRuWWwMvoWGixxzgmHbOPs4IEj/pnINFdINplRwkRaMy4QINgZQAgT/3
-	ZOrcxjyX1aXF9I2jM9BLTy0yhpuhwNg=
+	bh=LNM4IcxFKNqiDM5ljWFmkAzvvwWKz3AlHXSb+fCuWM8=;
+	b=Lk2MN7wUCh3LNMUkci5GhVRWNK7Y4Fy/YnmNqyVNVosNXv2WCnBv4FzKRDOCwfczJFh/Qi
+	QadftvfKN/CaFcp2xxPcv16wQl9LYvgPT+RyATyFng0Z+xc7ZtQD89xWjuRjOVo/LG0ufC
+	tFxpAe5FRUSxOESP85MPNQ8Mz243Nxc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=A5t2wwo5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cTLy58j1;
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783303413;
-	b=bCyPuGh8ZmtkOIn/uYsszfO6a3ZIB7Cwswj1Jh7bCUsd/IzGnvIfhW0uzDSGgodKgeuDJI
-	nPlBzKCsVbERj9HS8bChxl/YAY96rCdEp5NV9swP3csxB36TmPUys+MslFoCn8nEFKICjR
-	/ZawA1n/okr0CF4AJR2cExJxtWj3RLo=
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-ca00f126b7eso1151197a12.2
-        for <linux-mm@kvack.org>; Sun, 05 Jul 2026 19:03:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783303412; x=1783908212; darn=kvack.org;
-        h=mime-version:user-agent:references:in-reply-to:subject:cc:to:from
-         :message-id:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VpbU2nD8Sf2VfGjQR5NkWq7+R61c2WqH91bcQarOxZE=;
-        b=A5t2wwo5sp3mPjhr2WEdYCJ2Si/sGnSvxSyRmra3aCsI6u8FgXgcmo9cD3STo+Z/m5
-         BzCzGQsoZbiNulbIcsk3Ii+moKis/XY3K9yY3yk7t4TG2f997ZSje7K1rue80NwkBkvh
-         8CAvMIUgcuQnB7s+U/p7NPspgzOYFS5I5fd5iPlPr85LbeJ6p0z3QI+CEM6d4ghY3LtK
-         Nq8hQxWv8GL3nG79ycWgffCr9foShBL2LrwSgCxZPr6IKPtCwbRmCRR0d4qMxDwychXE
-         jsbr4qPAkmxwWhdCpxxw5dlb1tCYhslSwAVIr4h2bpBpUMFZQE7+OxhVIYoz/CsRb6ui
-         vfqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783303412; x=1783908212;
-        h=mime-version:user-agent:references:in-reply-to:subject:cc:to:from
-         :message-id:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VpbU2nD8Sf2VfGjQR5NkWq7+R61c2WqH91bcQarOxZE=;
-        b=KYIgPYP/KujqCJpk0HL9SCaISWG2DxMoH9rWY+/lhnndBCGNP6vxucaQjtvjPudJnv
-         IPx4mkiC7boZFLz6VoioDD7JZhD0RDJqwHNupACFI4SwuxDw5AL33zIUj2wxlqDwFfGd
-         naTAxP9iE0tZWy9BPo/Xlypy9thHxqWQ9pGP7kEmadycN9+PM+DiKHSa6DnptC5JS+d2
-         eoWsYCTSK1+bgICnE50HgiZDfRB8/xw8pqp9BMeJfbqo9VueMTPh+RkOfOtQ6ABZrEn1
-         ImOuRAMewYaTsg62QJriDRyWzujJ3Fao9CaEia4ZJ0CzYkzVUudMjmLDZzES5xR1Osxu
-         cMOw==
-X-Forwarded-Encrypted: i=1; AHgh+RoXUANDZQa20JiljBD5BuUfxd+ULY9xvQccOhtyFeFi2I0BwhLPwdlvou8W45UcgIzIAu1vlEj6YQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywmvj+chb6n/a6nYijNq+XiKRp966RnbUTYHzO2sUXg3U9ifdGy
-	7eexokWCHoxtCEz3ZcrvrF3qj3Zcg1IwZgGu6JZX3kqDtnc2Ypg+9u+R
-X-Gm-Gg: AfdE7clvoiL0lRFClwG0afYyh/KVzYUNpbjLRs01sj6gLRujULkU2zO3A1veHca9lZC
-	7od2vqA1jzS7imfBLVcDEDOLBivriEAYKWj3tngb8dhFQCrYNTsO6rE6/HZeV3Dmy+am83Z8j6/
-	0W/B906UxAC8SJJ/kqJvc+jMzrfEnkOzHT4cXkfyOq83YMEFi1BDHPkd8UOsKNQhj/u6MDGg1Ui
-	KREK1T77K7zmZUdL79oI37jeJ9LbKRg+4UbV7VONzoN700DOA48ZtJr304K665rKsrOOIGXXn7h
-	YKiQd3DDBgV1L1e5Z7KOlqQo/LRvcpkou+cJKL/wnTBlMIZLIHgPA6lZycOvFGo/OT4jI57GKys
-	nspF5hzFzQhO7JP4BIVWYwzTUXEUByPwV+uEX7WI5u4UWu3XW325aEoAuKG/0Dpdyeuzk5yd4r5
-	Hdr0qZllXiR0u87W7ksX8h8+sPajuhX+acAB97dvrUJ73K5KUak7TCoEzAIpY/JeEjH1/kfcsSO
-	1hwAm5gcDJ6
-X-Received: by 2002:a05:6300:2287:b0:3bf:a941:8932 with SMTP id adf61e73a8af0-3c03e1f54bfmr8834888637.19.1783303412412;
-        Sun, 05 Jul 2026 19:03:32 -0700 (PDT)
-Received: from mars.local.gmail.com ([240a:61:3285:c322:28fc:365:cb6f:6417])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e921d28d9sm5082966a12.24.2026.07.05.19.03.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 05 Jul 2026 19:03:31 -0700 (PDT)
-Date: Mon, 06 Jul 2026 11:03:27 +0900
-Message-ID: <m2qzlgub68.wl-thehajime@gmail.com>
-From: Hajime Tazaki <thehajime@gmail.com>
-To: akpm@linux-foundation.org
-Cc: liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: nommu: add sysctl_max_map_count() check for do_mmap()
-In-Reply-To: <20260705174443.08a11649b8e1c9e58e8cae22@linux-foundation.org>
-References: <20260702012830.667205-1-thehajime@gmail.com>
-	<20260705151512.5edabd9bb5d11cb6f1c6309f@linux-foundation.org>
-	<m2se5xt1ft.wl-thehajime@gmail.com>
-	<20260705174443.08a11649b8e1c9e58e8cae22@linux-foundation.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 99jacyhks6s7kxns6rdy7jo9nbbp4ppm
-X-Rspamd-Queue-Id: 8C626140003
-X-Rspamd-Server: rspam01
+	t=1783304297;
+	b=prbDnLgv6cnon32eQycAqF5DF8mu+JWB2Azw8aK1eahdxMa9yftFBvaJrm52DB4t1Pa5fM
+	XZ41jX4h51cLjtGBb6Acm4QDG2p0z+s+amwgriV1DEtBCJwDV2z7Fh7vQe/c5WrrmA5Koc
+	Vn9RdtiOp0KlMN9p2KqZ+wbhqxiaB/0=
+Message-ID: <eeb3e66a-c140-4347-b86f-c47da2cd9886@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783304294;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LNM4IcxFKNqiDM5ljWFmkAzvvwWKz3AlHXSb+fCuWM8=;
+	b=cTLy58j1EvgFx5vcjFvTMGe0Af738rRAdqG5mFMbavAEG+KGEZx7UB5r1NDq5x64hfV/pY
+	Wx8Y956AY9DFRZDeK2F81DpjnG3TlNH9xeHKxaKXUOTmElUspPtFeK77QUnPurG5SphNGp
+	ZB79MAuvfm1MqXKxJDv+peE7szuKY10=
+Date: Mon, 6 Jul 2026 10:18:00 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH] userfaultfd: wait on source PMD during UFFDIO_MOVE
+Content-Language: en-US
+To: Usama Arif <usama.arif@linux.dev>
+Cc: aarcange@redhat.com, ziy@nvidia.com, david@kernel.org,
+ baolin.wang@linux.alibaba.com, baohua@kernel.org, ryan.roberts@arm.com,
+ npache@redhat.com, ljs@kernel.org, dev.jain@arm.com, linux-mm@kvack.org,
+ sashiko-bot <sashiko-bot@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, hannes@cmpxchg.org, shakeel.butt@linux.dev,
+ riel@surriel.com, liam@infradead.org
+References: <20260705131231.1499198-1-usama.arif@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20260705131231.1499198-1-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1783303413-241531
-X-HE-Meta: U2FsdGVkX1+xeiJ3yAxRTP9aMzrsP9pX5zQrxoLnnMgPxCfgbKN63rVNwjzrFeTE8MoE/Ulvp7OgtSZFfFZf/NUWDxUyE+q1ZlYVDYPzS46K7idyoZnkMRe40qb/VLtwxhka15WZ2OhNyLIOS3xUGUbz4zR+kmWh8q+cyD9Q0cetQF9JBAMdQv5HmZr2NRHqFhoOaR+GsPVfi/f9nXY722NLEgD+F06LtyV4LoLruClKLcAVdDE2DeZegRCYo6TisaOXoo/dWnSve9s36c6ztrrj/ruzl0Qpp4GQreDlRW+pAPH1SfPksl8lQmz801vY/wJs/SNcNbHjLCyzwV1HVoOkreKMT3bBat410DiiCR+OxJWZlmIlanAkEzxEVzjAiY74bmYN764wCGf++23EcH+D7jCx/3QGyGxp5s9iXXwnVKSzM6vjmzuC1+BYfr/8Q8vJb5CYQzZxUdOmU5Xi8OsAjCPJGUbdZGKh8txW05ycWMXCrnLdGe5thiXgZPRTce9uvM2EPq3Rvz2J3d+B4WciTw8/5foXuQ8b9Z1bQ3VL80cDX3JXblXOr6QsJvj/VGNIsnJWJXQxEQ9CiXWRfi9qKjp33yDrib+WBOnXlD5q1O8UCO/9w0zsV0Q7tYCSlkpYGWo8QS8CRbGdiHm8BPs1uMHa/1zMIjZ0BZgTdwflBxaEp0/i6IqypFVVJfpnRYNS6bmTuSYumiefCisIu+X4cMQ6UI/2ONOrTUFnlRPf3kEHpZMfbt8cjDU15IStdj+5tST8ywwEiPbdSxQbRpERCvaWy+r6N3LW08ION42Xl0nvKORspXM9Atutxtns+/FfPI4pFAOTKRsiUeKr6EWg07f0o5KArwOfaHfLgU/ZdhIeJREtoh32pSxFRenSnK4mNIw/yLFFCrQEEk+J4fwKw5XLiQBxRRNpiko27WtpA2iHk0f0hIDfJ7DE95Fb1trh2Bp92ZDgWm+h5/0
- dQxvoOiX
- zCQar9M42+RpL9m06wvEoNB7SJF6g0EputBUj/o/IaTv/WO2h8mmgT0aLjzobUTEzd2XEfcWbcCoUyLEUBHZaK7RHcJ0PmmD9yMPbDXt7eZQBiCzBBRIgEvg8FE//xk01UET/YM/+CBnzO/zzXv4FUSk4NAR3F1DrFesECqReErcyRRpXzseLfORJdzLshA8Pz8oReSXS9z0T5Gnhyc6dNKwpozbV9GPw+thvgk9Q1ifXSnMT6l22Ib1lmAuIqCTpyIyVMIhDbxFhiWFu7t0JQBotS1ig/L6ZZ590/VdyeXR6vRHSZAUfGZDEvjmEj9Jt3WxyKE6lvpgZ+6odVMS5BsYL6eNcyBbP+BYn+/4j6YuQVOCSELS/u4Ro7Q+M5BOdhm8Km6XwyegHhGUL6itk0vkwBxgu+M8kNixPYXIYO66vsRPuFhB7Ktb92eYxt7+9vaTVbmnpBk2tjuCJbk1aP+purpvh4QV/lUJLs9pwF8jZmAo=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A91E9140008
+X-Stat-Signature: ud7ceysap7ftd3ns37dx77uwx1uyn693
+X-HE-Tag: 1783304296-953425
+X-HE-Meta: U2FsdGVkX1/DJ8tv3oijTeVbiE0aBe9KnN2h12pbpCQfNPPA3KcWQ28FtFXz+X0qGN2he00IKOLqWhQv/hP7HhtEASV5b6oQzs8L1GK3HI4orM1XM7CxAwKFZwGfyaDwKSmg26JAOqCAhY6BYI1CWVHbQcvd03XVSoGsEe0ZtF4yUuSfox78FQOzv0Cr2oUkclt6qK0Mu/cqZRaoDav0IYNvZfxEsLOTdxlxYSzqxupSIHW3BZHpRT8jAbeyg6Larv//OUQyMfx6VhK9vnfQwV+0tBBsNdrpvP1zxsgsqcGvN6DINxEuA/FZ/c7uJognjque7jqziOsfMyB5MBBmtnCVtO93OYX6jZG/D9Ip4FVPrTZOFo/lpmdhSE/X/441qNFaADsP4y+iQ0JQyKL46c2ZQvTyPNW7cTWr8YGjOR6YqGA4tPG0PQxXhgNTzZ0qzKiNDfmLixsyO5wV90aDBgKDPuaZAx7gEtRmPe5HdxV5+FB/vAMr3ZJsypGgbrp2N6vD0Y2lrF4j27YE7o9gKMyRie2nJ/+0h+rQKqJ4UCazdFipYdhagdzEE0zRrOPUuSyWPvQ1kTl2B46YEuRgsnANaDdglzjlr+D2XGBY+BfNCuzd8A7ZvzvrcsFBXaGIPfrlD+kfnRhXPrvNQrwJL2g1LfKP75l0KyLNbOMvVOFWQn62oCEWEgcBnKbQg5U+AmMt2gcs1ncFUNv1DZR6sbb76WnKSdVbSuEY1TMwFdqaeNHRsNPGfbrMoivN8fZKXJKiyPMKCar/cTKm66k1MwpuCeC/flhe5fqdxEXnDPWJFnygpTAuWgENoe2juu7qJc2lfrkyJB5PlKe4JS6SE+R6TnvAInOOA7KhqM6p86Uk6XyCnwoCjz6zkCnWd0LCKGiXneBfbibYRA6YD4W3KHPX1w2AB1bNytYxIiXRhaIIipJc0sq8OjVzx374ov9nDc8f4lvUIWA75M2jgwe
+ x31V9jjY
+ xNTCtHPmItDHWqHL8Q0X7SWyhWNV1GO1IBSJkbWBJ5OyWNxPYdsD7Fwa2UQACc+/XIpA34xM19+EgJ1NAmHoNl51F3tRYA2NDl3Fhb8BVsd3fFe35dyv+LZLPZGNdQgPDze4ytJRHceq7mmd0XgopzIqoNnUfWw6YXOrCxhphzdbN1xSl6O2HshHzK+hQzc4GJzwgJ0WvAqi2BN0Mi5ZXXtGdlFvnMukbUAgLsZfpwV+Y4rQPLfpuMjGBczS1ridFO+buBB9Iblt+F4eO7LREaSRjmCfTlZJtoQ3k8GceRPkg/nEEYG1LhqubyxGiJKxi4aViWrah3El3cp9qLb9rrELGFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,48 +94,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 06 Jul 2026 09:44:43 +0900,
-Andrew Morton wrote:
-> > 
-> > I will follow up with another patch for the issue detected here.
+
+
+On 2026/7/5 21:12, Usama Arif wrote:
+> move_pages_huge_pmd() snapshots src_pmdval under src_ptl, drops the lock,
+> and, for migration entries, waits with pmd_migration_entry_wait().
 > 
-> Great, thanks.
+> Passing &src_pmdval is wrong. pmd_migration_entry_wait() must lock and
+> re-read the real page-table PMD; on split-PMD-lock kernels, a stack
+> address also resolves to the wrong lock. softleaf_entry_wait_on_locked()
+
+Well spotted!
+
+> then waits without a folio reference, which is safe only while serialized
+> against migration-entry removal by the real PT lock.
 > 
-> > btw, I found (and sashiko also detected) several typos for this
-> > particular patch.  Can I send v2 patch with the additional fix, or do
-> > you prefer that I'll only send the additional patch ?
+> Pass src_pmd, matching __handle_mm_fault() and hmm_vma_walk_pmd().
 > 
-> Ah.  Well.  Confession.  I actually quietly fed your changelog through
-> Gemini to fix up a few things, resulting in
-> 
-> : The sysctl variable vm.max_map_count (sysctl_max_map_count) is not exposed
-> : under !MMU configurations, but its default value (DEFAULT_MAX_MAP_COUNT)
-> : is still used as a allocation limit.  Currently, this limit is enforced
-> : when a VMA entry is split into two chunks (split_vma()), but it is not
-> : checked during initial allocation (do_mmap()).  As a result, if a user
-> : requests a large number of memory allocations, the system will continue
-> : allocating until it hits an Out-Of-Memory (OOM) condition.
-> : 
-> : This commit introduces a check at the beginning of do_mmap() in nommu.c to
-> : prevent this situation.
-> : 
-> : This issue was detected using the Linux Test Project (LTP) test linked
-> : below.
+> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+> Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=8
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
 
-thanks, this is perfect.
+As Andrew and Baolin pointed out, this should go to stable ;)
 
-> I did this "quietly" because it feels a bit rude telling people that
-> their English isn't great ;)
-> 
-> Lots of non-English speakers appear to be using LLMs on their
-> changelogs nowadays and as long as they double-check the result, I
-> think it's working very well!
+With that,
 
-thanks for handling this and a kind way to fix my mistakes.
-yes, the AI era.
-
-I will send a follow up patch for the additional issue.
-
--- Hajime
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
