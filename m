@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6618C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:50:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E40FC43602
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:51:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B57926B0005; Mon,  6 Jul 2026 04:50:41 -0400 (EDT)
+	id 405D26B00A7; Mon,  6 Jul 2026 04:51:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B2FDE6B0088; Mon,  6 Jul 2026 04:50:41 -0400 (EDT)
+	id 3DDE86B0121; Mon,  6 Jul 2026 04:51:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A45A26B008A; Mon,  6 Jul 2026 04:50:41 -0400 (EDT)
+	id 2CC686B0122; Mon,  6 Jul 2026 04:51:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 766F46B0005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:50:41 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EEB32A0327
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:50:40 +0000 (UTC)
-X-FDA: 84957731040.28.D09CC9D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 05BB66B00A7
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:51:17 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8AD6E402DC
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:51:17 +0000 (UTC)
+X-FDA: 84957732594.14.0166437
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 206FF20002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:50:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ANrs69qg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id B8DB81C0009
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:51:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CMmpIc8B;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783327839;
+	s=arc-20220608; t=1783327875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8H3wDGn6Io2auw5Dq74h7CwVRzPBSpUoio1EButPo5M=;
-	b=QYTkX7a0QW8pS/aJefOaCtXBgGG3OIrRycGDLtaGkqzkBfAz+iKj+Ubedc0GRGalL+KViG
-	LGiy8tIM0vfFz0CCQms5Wk2PnKhsK/wRvHS5FPKwu345ObyUUCgsuWDFb6wiqCUMiIog2E
-	P4QTKZDDe4uXazpZu052ckQiENTAYA4=
+	bh=XzLv+da1VK2uoG9pUr+oPk8RYYDxZ2UhQ4fGhBT+UfI=;
+	b=cY47zk4iM7SeSU0gqJqarrolM+s+xxReKmaBUXhLefTG/QznsL8Z5GuvbnK9Zw2q/+Gkhw
+	wbbAbadomj2MeLlkwyEuiY3QylUGFq1BXTFM+1dvFiRWcQ4ZOgPFZ9tr00LaPkzOxLDdV5
+	sUQvO2JptX64hOwFt/TPnrhJkMAhm3k=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ANrs69qg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CMmpIc8B;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783327839;
-	b=fKMGY7xZAdu3tkHYLI70WflVZeMKD+tGphN9v27f/pUlo9qc6Y1A9ML+RpROAKsc0GH3cj
-	rBeGbnC83xqpIiUmkJaEL4sAauaROpi4fXYFSDubCpitBf5sVasp1kvdnHB+YZ04J6idpl
-	/zfx9Y/crxwrl5CZ9uREYbu183dxFu4=
+	t=1783327875;
+	b=4FNv4X4VUqrak/QyKOn5Ms/uScdYw4oIfrhmKppFaTcY9qIDgNLkvSulsFe9M5a04E1Hir
+	KcER/MSuNSWtg7bOuqkIJzCPozQ0UJVgp5usPO80z4InFyIZCqJsnBJji2nbXeocflmpsT
+	UKYXK4ijXf1k9ZO2f+XRi0uebmccYng=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 515524193F;
-	Mon,  6 Jul 2026 08:50:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249C11F000E9;
-	Mon,  6 Jul 2026 08:50:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 14BE440AC1;
+	Mon,  6 Jul 2026 08:51:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3632F1F000E9;
+	Mon,  6 Jul 2026 08:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783327838;
-	bh=8H3wDGn6Io2auw5Dq74h7CwVRzPBSpUoio1EButPo5M=;
+	s=k20260515; t=1783327875;
+	bh=XzLv+da1VK2uoG9pUr+oPk8RYYDxZ2UhQ4fGhBT+UfI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ANrs69qg8B3upFzmzz1q7UCws+ttEpVdzpUaimTCvD+uOwRkVwPhWXcUho7F/IFpN
-	 4/3l6+TGqMN52tbb57MIGpQrKX+d+7eT7XIjWnp06L7ElnOXaFdHJrztZchHeiwsBA
-	 ZrVqHR0tM0wRs2N487lJriz3Or9FEzWLT3uM2LvA/o93I3Di5DLHOlV6ohvF/Z++c6
-	 51PaDGH0EWETai89/+uekM80tJN5ttLsg3Lss2ODsuwWqsQtTqbmIL6giAN+VByDkT
-	 oshZumLA9dxRPcpU2kbrWB+QtgnBmbMFJe9l/ZB2TSu/9Zs90Z0cusfmVjzt7LM4Al
-	 lveYFOyQ64FXQ==
-Message-ID: <67c96fa1-9e9d-45fc-94fe-1e67253f5270@kernel.org>
-Date: Mon, 6 Jul 2026 10:50:29 +0200
+	b=CMmpIc8BJghNiDy/pCe9GTyMUvlDSFT5HUMJXFRfF++L/1UvvKWrD9rnn4yjenoVD
+	 5dHcgnp0FYUtLagXsim9k2A86Uv16/jzW84Wq2myLedNIHiqEWp0liHjjizBorDkaG
+	 0Sg0fukbNdlhhOQjZ5ZL8LLx79gVWn4CtiXUSLxvekkwV6HZX9IEWSiaVYFWEEhNiq
+	 k+MQ14GVNEQsBg+eDXeAMmoeow423kX3Ibdm1BdXtIrdTS5CxziVrG7yMm72YIWB2b
+	 9NDhD0ZpAMGdJNBMOxUgV8k9avzG0Dx7N5Xrr1JcH8vQZii9SH6/66is7xCTON+Sdl
+	 XDgtaStJD8VCg==
+Message-ID: <69f71507-0a42-4fdf-af33-2c596657aca1@kernel.org>
+Date: Mon, 6 Jul 2026 10:51:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/3] mm: rename swap.c to folio.c
+Subject: Re: [PATCH v7 3/3] mm: move reclaim-internal declarations out of
+ swap.h
 To: Jianyue Wu <wujianyue000@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
  Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
@@ -85,9 +86,9 @@ To: Jianyue Wu <wujianyue000@gmail.com>,
  <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
  Baoquan He <baoquan.he@linux.dev>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Matthew Wilcox <willy@infradead.org>
+ linux-doc@vger.kernel.org
 References: <20260705-ch-swap-series-plus-folio-lru-cleanup-v7-0-a028e8b5fc3d@gmail.com>
- <20260705-ch-swap-series-plus-folio-lru-cleanup-v7-2-a028e8b5fc3d@gmail.com>
+ <20260705-ch-swap-series-plus-folio-lru-cleanup-v7-3-a028e8b5fc3d@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +135,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260705-ch-swap-series-plus-folio-lru-cleanup-v7-2-a028e8b5fc3d@gmail.com>
+In-Reply-To: <20260705-ch-swap-series-plus-folio-lru-cleanup-v7-3-a028e8b5fc3d@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fduwh3merxwmgqjiy154brwuzna7qxxr
-X-Rspamd-Queue-Id: 206FF20002
-X-Rspamd-Server: rspam01
+X-Stat-Signature: seoqtzn3r7eazcwe4fpwtxsu145iymo7
+X-Rspamd-Queue-Id: B8DB81C0009
 X-Rspam-User: 
-X-HE-Tag: 1783327838-414472
-X-HE-Meta: U2FsdGVkX1+AROA2WLo60ubbKtDoT0xu5Cx6E9e/wzPYwZbPr1/NsYBGRAe7dTzA9QhSyENwepj+fY6szS29e0E3VFPjORemvrxSaPE8xPlCkYC5z/t2A1RFr6ACLY7ZvLwqX4ZhIwaBfKwzL27ir7ZgwWA2VH5ljsvM01J4MTAF2cxbwEUHw12RhKwbmysqNdwyuxsQESFOpa9RC075F86UU4W5dRf65w4lk8QESxI+mhLIBe62PiS6njcH95YxRWdeD9pjg77XX/gUCAZMwYodJkAdiSd+gsdsevL67ofL1YNamNgR3oH9tTmjPH3K4pyAx0UUYfo4ZnKrjU03Uncvr3FTtSYEz8ZMkHDgJk5sA4y48+gNOMAMdjaSE27J/UQHXUNvixDhhsEzns98lvRMcnYPKvGo2S9XMnafdp85hEtX/Zrl4hg1JroeuqT42bmYDaZ8fOaeW3rpBXqLuzqiw4kg2M8+hvbQj8r/c9Ii0c24uW9XKnLls95UiIBl7phRnN6gInbHb55+GxZHARmEHDvfy1ATrE4yzIh3mn0YvNfGZdlDnHlr7hSGQyxduWJykBAvdnJblhd+U/HKJOcM994eXqTH+tIwIK0LGZJ3sk6zgp5pCBPV8IDBCRsECRDVBJXbjYWdGo8iEij/Gz2euoPmFCOpnTKhCsWkdMJt6p8uvedGduKe53oJHBZQWzmngWcNNrN1j92bT+fjlO3g2c6qqOSj6ZM5O8rU84mi0lQ0VGZ0VCt7U0gMqK1byJo++KrbaiuF0GftDQpVkgovI3EDFKYPnfM69/bxK4fAoubtUTghM7JJ0b3UxTH9ao7ozgS3flhJxeONfpL7AEUG0ZOo0Ygvz2Uc+Z/fJG+BCrk3s3JXYpaTSQCFUdznn2qdd7FIBCLXl3zGwphR8vWyi78ytn3i058qknsaUwjLfk02LfdQpPuraayb6twiLPT/y6iRp1efzU4R53u
- As/tzfsF
- bPQdfzeERGd6c3Lihk9Y0K/HDoSrbzv25HFKyUZlv6unZ62uN4+cBViiXRRh4QA2mCAg09iPSir0G2iACrbdjm0NxW23R9pYjPrFtIAU1htjteqB9xULBssDTYk/FQhaszwlcZqzHV9TDlSDDARoHJohRRq/ntGPaF9YDDe/Go6MyWyKbrptt8Bok4Qki/oE3uHcJ65CpDKaD/CoS2DVr7GuJkiikGczUX1q3CzSBROJQRI2wUkiB2iW8HZxxRqbOorbFrtUgiDwWZHM/X4M4f1z4nINOtT2Yyd6i3YuXtbPf100zan1rEddlQ2LwR0PuKjsytZRA4XkKZ6ajlYAURXbiKDLv6zy5yklgqI/vqxCXqki80zXfAyj05Z7h/qmrGyRwNp7urYD1LwVDF/DibgTX0WFO2PP3Ny+YbLUoSlUR3WeO40BfcdgOY+4/lOgamOC8
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783327875-650271
+X-HE-Meta: U2FsdGVkX18fKQjLO7Q3zRYm22mL17x9XElVWpG0Jbc/YWPySKBPKWrCuEP6A+cY/aKfFq03YN8qWSAqXmukaH54l+ZYBL3VcpFjG7W3B+6k9Bmen1f8kS6DM/Z654jy2Xk72SQ+Yq2mGjqHsSXue2hbWBh4sOvnDdGv/1L2R5kiaidi073V1wnM7aP85ZEbYjjCUTjbE/41toYR/x6ATF/Jvl0s6tEXT5ZkWtLN5LUvgHRs0uPKy5McIao8mWg5xUQopkgVTfuznfd2cdblVgE4C1G+DdCwJhTSazkHRtlyET5lnJyD0zpHjES6Y3DZGjUj0zAVw+TxIoHtT5NOS/z2QQUEXDckDKiHilLAhHhnIW9CXzRP06gQDSiy4HvUsnOhysgMvQFm+HLlT/Fp41T3Ba+hEWZX2JKn1S+b1XydUeUPHyvdcgdvWtXJ7vsluC/gUOB3lxvXIBFY4vwKKf/kRApehdrhUkPoTzEh9IxnafSeIJmHIBt6N09miFirTWBt7MFdZ1zQPcj1kcLp1bdwSXoULRGXj0CCEcuJMRxfro2sbYirIbVoQr21xQ9VrK+6WU4LP3ka/zlKNs0fLpLrbRPo+bJMVQrM1T2QhFAIbdvcEL6j9q4x8Lp0NxgewiqS2Pw742Kn/dxHYjaBWAGoDbZP/6zs/dZRb4F9wT1RrUCV8aBMDyPp/q7Girr2eW/L8oKaQwzvdVMqnpnZH0/Jm73vGBfr9qUEYkSAdvCJ23+AH34kwtILUmAN+WCGzAFFz8mMgp6RDSLA9KVgl0xCy3QE6djwiGysOLUf4i1gLXvvVNuNIjx1p9tCDw1J+Lo7EHrh13BexXGEE9PtXxd+qtVEgyx9bYXgg/vd4PLq6OK8rvT69OPFQdlBG9nfhHQrNdkkB3bn0FdgkK7ttkLEZbmfuEuBAm5pQnpJ1aAXU0sKQms4cV5CvQEcOXfDOFWPXzwqUyP9zn9VasU
+ PS73VMkK
+ qlTdr9SJlCvBtzllbc0D4f4FMmIJ8Gcfq8YdHQNkY+hg6CZSvnkZcAsMTLLaqXPBgdEdIw9P4WjQO4pE1jCbF2HdslqdhAxqCqTs/huJ72iEkReuC1Flf+9B3+c/tb9MNFcgxpHBjmy82Or4mRbBNiEl/mOPmRkDp0QozzmOii066cDXo+5cCJYLE31tSAK6a/EnNGAMDOmnX/DwCmxOpMEaJqIecxwtWBTnMeRJDAVArWlTT+eyRQvivBvqgiqWvhCI3r5WRIh3tinkVW9mCgwvGVv2KI171PRKe427pyaF6VJZr2P4H476vx/Pkd5w82QEQME153Bbqt1gl8oCEqY7JEwQSK1SA5xVzzvsXhdslI0pbJvUZzwxsAG9ptCXkAqihe5NQGH1mJ1A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,23 +154,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/5/26 16:12, Jianyue Wu wrote:
-> Rename mm/swap.c to mm/folio.c so the filename better matches
-> the code's main responsibility.
+> Keep include/linux/swap.h focused on swap-facing interfaces by moving
+> MM-internal reclaim and workingset declarations into mm/internal.h.
 > 
-> This keeps the implementation split from swap-specific code without
-> changing the published LRU helper interfaces.
+> Leave the small set of LRU helper declarations that are used outside mm/
+> in swap.h so this cleanup does not need a new public header under
+> include/linux/.
 > 
-> Update MAINTAINERS and the remaining mm/swap.c documentation references
-> after the rename.
-> 
+> Suggested-by: Barry Song <baohua@kernel.org>
 > Suggested-by: Baoquan He <bhe@redhat.com>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 > Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
 > ---
+>  include/linux/swap.h | 75 +++++-----------------------------------------------
+>  mm/internal.h        | 67 ++++++++++++++++++++++++++++++++++++++++++++++
+
+We likely want to split that up soon, but let's do that separately.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
