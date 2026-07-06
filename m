@@ -4,90 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC5AC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:28:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD5F1C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:35:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A9CB6B00C7; Mon,  6 Jul 2026 07:28:19 -0400 (EDT)
+	id 52BEA6B00C6; Mon,  6 Jul 2026 07:35:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45AE76B00C8; Mon,  6 Jul 2026 07:28:19 -0400 (EDT)
+	id 4DD256B00C8; Mon,  6 Jul 2026 07:35:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 370DF6B00C9; Mon,  6 Jul 2026 07:28:19 -0400 (EDT)
+	id 3CBB46B00C9; Mon,  6 Jul 2026 07:35:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0990A6B00C7
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:28:18 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6FFEA8DA4F
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:28:18 +0000 (UTC)
-X-FDA: 84958128276.15.3704510
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1D96D140003
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:28:14 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HhCr3efL;
-	spf=pass (imf23.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 140FF6B00C6
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:35:26 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B768A0381
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:35:25 +0000 (UTC)
+X-FDA: 84958146210.25.826DFF6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 94E6420004;
+	Mon,  6 Jul 2026 11:35:23 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LnZg5pDE;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783337296;
+	s=arc-20220608; t=1783337723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKA2kC81pp4bhP84zmTGl4f9HCE5dXysfBVI/j2hjMs=;
-	b=ugnFnOlGBo5Ksx9F8Bc58ZuRRo05HIVDXkVgKMYnBFaf5n2/daZvB5G0HtRKVzSABSsxJs
-	BSjW84rIjp0y6XRmTldmKFRli83sUGRGWA7SjD/SdXWY42jumCrJvKWXwowVW4p9abcAHo
-	AVb/QItN4WKOJmNLISM9DOB5pjhtrTA=
+	bh=0QHNamPKjhT26TDn8HJD8lZwpsva7nZLItuVVWrKgxw=;
+	b=RP/NdXuT5UHMTLLZyou/lM7G2JKmFJGgqrEwH4Ir47g2pLmPB5vUZNdm/RhExaw9R6zqEe
+	HFlXXnocLpXwD+kIwIuMW9SswgGBlMI/jOI3tl+RCqIKlP5S1u5/UbW30oORYrZOzetzKL
+	Y22rIE0qOfowEpA4zxhkbVzNeDPHqIk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HhCr3efL;
-	spf=pass (imf23.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LnZg5pDE;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783337296;
-	b=LWNLDDvTOZVc5FFtQA9KXZ/rlV6OVtWgY6H/opAYB73TzHPvP1+NDY1Z9LPTQ70SgYACRu
-	FQw3IRaXlupUqUHq80UXg1132fB6LyvjM0dRimFaa+aENblbOdw6d+HsjBoxJn+2XprG/b
-	7NlERcKuEtsIcLWHi9YNDCiwLrM3ICw=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783337292; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=oKA2kC81pp4bhP84zmTGl4f9HCE5dXysfBVI/j2hjMs=;
-	b=HhCr3efLPWWCAzDurfEZc7dEC9KsLhN7avi4npx1esjy2c3WmvIX6k4uSHuzEiSjfvXfzPXDEGPmq96+oeDzWyDpr6wwU/YTyp+QDsreRFYm5jnAfStQ9S8iWdYFo5wQRN7hO2xIq3t762z5Ho2hZDjIsB38xBIP8BNGmtP1qbw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R481e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0X6V0sRD_1783337279;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X6V0sRD_1783337279 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 06 Jul 2026 19:28:10 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,  Andrew Morton
- <akpm@linux-foundation.org>,  David Hildenbrand <david@kernel.org>,  Zi
- Yan <ziy@nvidia.com>,  Matthew Brost <matthew.brost@intel.com>,  Joshua
- Hahn <joshua.hahnjy@gmail.com>,  Rakie Kim <rakie.kim@sk.com>,  Byungchul
- Park <byungchul@sk.com>,  Alistair Popple <apopple@nvidia.com>,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Neha Gholkar
- <nehagholkar@gmail.com>
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-In-Reply-To: <akUzUqQG185XHqgL@gourry-fedora-PF4VCD3F> (Gregory Price's
-	message of "Wed, 1 Jul 2026 11:33:38 -0400")
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
-	<akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
-	<87h5mkz33h.fsf@DESKTOP-5N7EMDA>
-	<akPg4ANRetbjSP_b@gourry-fedora-PF4VCD3F>
-	<877bnfynsr.fsf@DESKTOP-5N7EMDA>
-	<akUzUqQG185XHqgL@gourry-fedora-PF4VCD3F>
-Date: Mon, 06 Jul 2026 19:27:57 +0800
-Message-ID: <87y0fonyrm.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	t=1783337723;
+	b=ngHLr/J6DdwoskAGtPfllunvmvvEyh6vOxZlnVwA9wR09ACTsjHPYwmDmYx3NIizNETrZM
+	y2Hp5XEMdTWp+02WSAXQ88vMIaZ0v7xSLd9GUGo/MjCAdk6dKW36tAnK+KGJnopGR6fl3A
+	9yP2Uzf2SBDwW/LNZlFNpLK2Ti1eRFA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8588A40BD6;
+	Mon,  6 Jul 2026 11:35:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD121F000E9;
+	Mon,  6 Jul 2026 11:35:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783337722;
+	bh=0QHNamPKjhT26TDn8HJD8lZwpsva7nZLItuVVWrKgxw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LnZg5pDEl/YbyVjvwLOdIOB1fd9xeufnLnBVYTn0yFjkwQQIcH/hNpokUZSQy81nI
+	 Spk/ZSjZ9g7PzB3NrgPGutQ6yasP/oh/KcXyhOA7G+NNoDKfyVkahcCARefSEusPPd
+	 9ESC0k1S0n21ErvIbvmbVNonMDp9tDga79CSgtxsK+iQDTZETBcdpeon56Z51rmBuq
+	 Pd8iZquPGPJmc1tKS/jqug3yEQQV5ne1CjuIlC/S4fVHYPp5DPp3DhY+Y1/m+BphcR
+	 jB3agjkuOkEyqA4LZShAiXpXsEVdLsZxMJE4MIAH6qAINS4fzz5Y/z3aMvjcdGDBLI
+	 JQJWBfcaB9XSw==
+Date: Mon, 6 Jul 2026 14:35:14 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Brendan Jackman <jackmanb@google.com>, owner-linux-mm@kvack.org
+Subject: Re: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions
+ on execmem cache clean
+Message-ID: <akuS8uhjPBhI5mzZ@kernel.org>
+References: <20260611130144.1385343-1-abarnas@google.com>
+ <20260611130144.1385343-4-abarnas@google.com>
+ <DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev>
+ <aiuyoy8Kmr9yU4GM@kernel.org>
+ <ajK6w3YTFpVaUl3v@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: jzg3h6k1w5zg4ao6hruu7wqx8apxdxqt
-X-Rspamd-Queue-Id: 1D96D140003
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ajK6w3YTFpVaUl3v@google.com>
+X-Stat-Signature: 3hmcpga81bgh7h1gtdce4mftqhwfc6j3
+X-Rspamd-Queue-Id: 94E6420004
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1783337294-92376
-X-HE-Meta: U2FsdGVkX1/goMi/fSwZjPpzW/vad4qqoD+Ey2jbWfmbYGnR5e1io0AavpnqhnNv9Goo7yyYsra8ZI5BfgGldK9UR6YWRs/i1KwGK5BLT81SzNlD3QjNaRN0lUEA0k6qCV2XJeV2IwN41ldwT7aalogA7ThOZaP/4KOcSqvYVKktE9vW5Sp6hK3otJS/O4PwH8Glbq8alZaUutEVeCXcK6s4ixKaiKme+PFZhM4L3OoXBmS2RHDILI3bav3mKtmeYHbismsEdiNCuMXLk6HebgB/Y/gMGRqKJm7lQoXL+JFhVZZXlrsreI21MQm4hmsNpS76pDQ8r0NA0/JNY47gNjcBgfzQ0oTeHNOYHu1xp93djgGPZoTHAwXmh1aVqQSg24D1XqazxKakKWDn0S9OxsTCipWK5ZVBRPj12sUIfwMqZtyKKuPZrEvosusEjBzBYU85Pd56djHcxcP5RkSOnLVrpGX+eu2Mz31g0K626tAUZtqan6vlY4GlGJy86KBXP9/wHpyvJEV5NDCjP9+up3DnOoxoC4KUIc3ec8BWvoPCDq0sQrxlo+saRd4g9AUX8q4Iq5z3XTpO9bP7ZGXNU2bw0p85gbSmmt1OMNLjdGFB6ZCxfh2rtvL+mwIxEKUllb1RDwDNDE45WyJlm5DKJYpl6wb4/Rhnl3nyX0Nk8TMUNo5ws/M0HeqUJTx+HODnAn4XdiFJNnk9gSku8OSz0K8Cx2k6zK4IY5zm15NmQAhdK0WXcAXK4fYJGJXAkX0zLa5mwd0uVdqRvQUIQSerJMFpHwzJgEk64adfJX+nA2AfpV7tLMGHvG7xOFKFp+JVpZsHONXBoyTZKomgm7AzcP05B6wy2bA4BVK6cLL1N9JZAz6Hix/BUBdJB0dMrFhbwCDqF4QB5vtovtIaGsG4SXm/9q4s2ss80zjAkQFaU+5nMZ8zZCYJ3xL6uSMQfG5jGgivzpSHkaRmgGQRw3F
- Ib7URM3I
- ie49JuGHOTk6nlUY211Ko930TSHlAI7hBHEvf03pOgZ8wEB+rvZlEyxlkHZUJde2sN+q6ny5tvzdvUI6rsP8yf0F1T+O1iojX3Za9Aagdqfd2N+YsjZD9YQCB9bO+Jk5tGlSJCijyKYiVhx1TL/sHT0ycEBOgkC2O91fpI+/9vNgq3nGJaQ5ToXeSJVRk529MmO28kDGkP7Du8+dOkbEHivAd+OHt/JmJU9lyaVKTMUOjq0N1J2jBrG+Ogpxclz4GFT5cNMZUJPa+cPGvYbzgACus+7x6kLfLqB7GaiGcvttQOnnaY0AAyNoF4jwuF5bwwcmpT9rWZK8b5nzJ9GFeJ1gZwx7yOkexUsmh+NPa5+QHg7MHlOmiyGZB+L5jLmAJnWLyuiIc2LanULegynRroZtTgw==
+X-HE-Tag: 1783337723-73095
+X-HE-Meta: U2FsdGVkX1+mqkFno1SJuOExmm58HkAa5YIrLIojAr4eemK8hB8aDKkEBf/iHS4cgU+6ZSQHq1hKo+zq9eHYLUswyFS1s9S9ueLptG6pAdMgNwMr9/rH7DXASUoAJ6pY1mn1AJPc4zk1mk/OKIZ8c8Xj/8Y/T0T0G8BJ1Hh+3txyk9+fBjhStVEPJdvyxo5aP1R1Ac8bdbG2PnWDuNCvwTnrs/18+8M8Dkl0E982YBJjUyWTsAv15q0ffzxA+/GEtys7sQHfSRKcOYjjfGX5xYy/gj911vPbVSJiRK/vwcp7o8zzAYQMd52BkRYbFmttGxRgUVBGb9AY3WcoOhn2YhX36ms9rHdOu1099vX8RhQM5OEIbj7k6SQIOkxLChilRJNgVWac2qlaT6FuhkNLAFY3eJDyaEXm8oFYhsHD4DzRY9pCmtCtULSC748nLYPftmXt4H3qD6jPwiFFn7RVRpCezcT4M9pCKyDr4lMEvPFue+IQLPdH/3mw67ZF/X9cnPWm0+7LHbS2Tmx4sMeQlKxEsAY7bm2WvFuQMUP8XRuaWpHQTd+ND3NIsq9n5bX8HctyzvhOebwkAcOPne4dPoM1yyl7xP6O430Dzm/Uc3dDEuLdE0Xh2iXUGL/WiHWf4cY8WeJTUOASojCEX6KonDxoa0YsXHt0PI2TGQOAZYa1TyE9W20d4i94fM0GSsFMN398Lcx6R5YeMB3ZZtP/Th6VclAIcPzdXy6DKyKMfIjY/C3b9oCroI1D7fVUA5+XFgqytlnaJl9Oo9V7mLTVev0k7T5XlKE9Cz8ZpM6oP5fOKhO5QRAOIupD447yd8SD/zKjdPO1qUZLEEeMPattyGipwmQH5GOX8nKtHSvhAQbOvp7X1ewdldKygdP1NFJsp7NPKsgrpuXNTrzgXZ7gFHdq7vcCi6RpwJpbaU3LLfRjeiRS84chGDK8CKziJQAsnX9oIXBoqJXj1cNR4Eh
+ SF5rtDJA
+ zbkwWMeZo9dS261FqXezlIEeHWmyfvC/eBWr4s8y4UZg+UnbZ+uyUl8rrx9sFEvH0vjHXNOKyeZTl9Eq7oRsi0ekQ6bHQ5R0LZK4JH0q4oHN5v8P+TfpIAz1y7GX7iSUhsdZntUehCXwgPwqumlkmptbU7ZltOykSmaXfowbyvIMIkrKeAQb/7tNsT57F5vCcpWiDRvHgEyjQftFTNx2mGuMPuFc8RRgJwTUz5gCJGl5f7sjIHzkrHeM/hRSmC5Fgw9Mfy7n/QNR4lSxqMiVa07Bmgtb9BafDvHajwTfe1/wzyLo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,78 +103,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Gregory Price <gourry@gourry.net> writes:
+Hi Adrian,
 
-> On Wed, Jul 01, 2026 at 07:03:32PM +0800, Huang, Ying wrote:
->> Gregory Price <gourry@gourry.net> writes:
->> 
->> > On Tue, Jun 30, 2026 at 07:20:50PM +0800, Huang, Ying wrote:
->> >> Gregory Price <gourry@gourry.net> writes:
->> >>
+On Wed, Jun 17, 2026 at 03:18:27PM +0000, Adrian Barnaś wrote:
+> 
+> Following your suggestion, I can put together a preparatory patch series to
+> refactor the set_direct_map_* APIs to accept a nr_pages parameter. This
+> refactoring would also allow us to drop the redundant set_area_direct_map
+> helper. I could then rebase the rox_cache series on top of that.
 
-[snip]
+I've been looking at something related and I was already half way through
+adding numpages to set_direct_map when I remembered this conversation :)
 
->> 
->> Anyway, it's convenient to use numactl to manage mempolicy.
->>
->
-> It can be, but there's also many footguns with task-wide policy.
->
-> Something i found while seeing if i could make ZONE_NORMAL nodes more
-> reliably hotpluggable:
->
-> diff --git a/lib/stackdepot.c b/lib/stackdepot.c
-> index dd2717ff94bf..9ceeb56574ef 100644
-> --- a/lib/stackdepot.c
-> +++ b/lib/stackdepot.c
-> @@ -682,7 +682,15 @@ depot_stack_handle_t stack_depot_save_flags(unsigned long *entries,
->  	 * we won't be able to do that under the lock.
->  	 */
->  	if (unlikely(can_alloc && !READ_ONCE(new_pool))) {
-> -		page = alloc_pages(gfp_nested_mask(alloc_flags),
-> +		/*
-> +		 * The stack depot pool is a global, never-freed allocation.
-> +		 * Use alloc_pages_node() on the CPU-local node instead of
-> +		 * alloc_pages() so the pool does not inherit a transient task's
-> +		 * NUMA mempolicy (e.g. MPOL_BIND to a CPU-less/bound node), which
-> +		 * would strand this long-lived page on that node forever.
-> +		 */
-> +		page = alloc_pages_node(numa_node_id(),
-> +				   gfp_nested_mask(alloc_flags),
->  				   DEPOT_POOL_ORDER);
->  		if (page)
->  			prealloc = page_address(page);
->
-> This is a global, permanently allocated, resource that inherits a task
-> mempolicy's placement because that task *happened* to be the first one
-> to touch it.
->
-> There are many alloc_pages() calls (155 instances kernel-wide) that
-> inherit a task mempolicy when that's probably not what we want.
->
-> alloc_pages() is called in: net/, lib/, kexec_core/, drivers/, arch/
->
-> you can imagine a task setting `set_mempolicy(INTERLEAVE, ALL)` and the
-> result is a bunch of random driver memory gets spread all over the place
-> along with the task's heap.  Is that really what the caller wanted, or
-> did they just want userland data spread about?
->
-> But at this point it's a 20 year old interface, not much we can do about
-> it without making *someone* sad :[
->
-> I considered proposing MPOL_F_MOVABLE_ONLY to mean (roughly) "userland
-> memory only" - and then slowly trying to migrate numactl to make this
-> the default.
+Here's what I have for now:
 
-What is the right mempolicy for these random kernel allocations?  If the
-pages are used privately by the task (not the case in your example, but
-is it possible?), is it OK to use the mempolicy of the task?  If the
-pages are shared, what is the correct mempolicy?  Will it be fixed?  Or
-can we find a way to change the policy?
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=direct-map/v0
 
-[snip]
+This is only lightly build tested for arm64 and x86.
 
----
-Best Regards,
-Huang, Ying
+As this is WIP, things may change there, but I hope it can save you some
+time with your arm64 ROX cache work.
+
+> Does this sound like a good path forward?
+> 
+> Thanks,
+> Adrian
+
+-- 
+Sincerely yours,
+Mike.
 
