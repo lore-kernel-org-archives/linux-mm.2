@@ -4,83 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFE85C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:57:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1AE0C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:01:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71DCA6B00A4; Mon,  6 Jul 2026 04:57:41 -0400 (EDT)
+	id D8DA46B0118; Mon,  6 Jul 2026 05:01:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CED46B00F1; Mon,  6 Jul 2026 04:57:41 -0400 (EDT)
+	id D650E6B011F; Mon,  6 Jul 2026 05:01:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5974F6B0115; Mon,  6 Jul 2026 04:57:41 -0400 (EDT)
+	id C55B66B0122; Mon,  6 Jul 2026 05:01:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 35FB16B00A4
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:57:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC0171402FD
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:57:40 +0000 (UTC)
-X-FDA: 84957748680.16.CC14394
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D3B26B0118
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:01:03 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0611BA0329
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:01:03 +0000 (UTC)
+X-FDA: 84957757206.05.31D45FB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EE6CB120003
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:57:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IVPjzY/b";
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2BFEC4000D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:01:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FwoRmujM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783328259;
-	b=NMhv1Pe+7Mj5PhzNM7R/erzzIpS7fTGCCs38jxQvvKOR7fIRLj+pCHAm/I19DQt9/YfuS3
-	wW8M3qYR3chcZsUpPOiPlEssrGI9XhN+k4kEVpNDxuLRwR6g7yHLSOi0tIH9UAiVK6LnnR
-	X6gwaaTm5yzBOjuOJ1L63chHZbChe5s=
+	t=1783328461;
+	b=O9oLN+WxW3fOPvnnJzOIQfZh+WWPr6tpAmygVemYSCwxdSEhoMw9QC8gn2ZVszeMhmjeaz
+	woOj0G8YnbFJoYuWhPmeZ0qsKCucWwagj+bNmSSj66hGnj1b8AbDs6xL2pPqSt5ReNRT0B
+	w3tiBrIO6kWKZo9kFWWs4Sx5+LGFLPA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IVPjzY/b";
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FwoRmujM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783328259;
+	s=arc-20220608; t=1783328461;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jkxD1mDZYWnsiqnV1zbOwqumBmcmbVddb3oJ2Wo7P+g=;
-	b=YeBe5I4KkRhlDmIKW/pC61tCOFBgfiTgnjedqBFQ53gcRGIvsJlY86uYamgeUVRhR/z9FR
-	Z9EI3fFgREAaCDxeCEUpbztRRZkiU/CkDdC6iu23imVfddAYarCfAufp7lD/GiWsHNpWlJ
-	/5Ft8Zg06XYp4BEjgc1Fr7Jmf74MOFY=
+	bh=Y2p8nkhKN8t9mp7pTmf6Ynt4ux072QpIkTobc4ZCA18=;
+	b=qQf4nty9xC4z4NYmopQEESA+Dhc/vwpFig0OwU9gM/SZu5cTJP6WeIJxesAzXl5XNaTW36
+	L4f7dZMDzYgV59NKOF5rkDbMkaV/n4dmLaWowyXXeMdCTDB4QNYgtt6/D/NeDYiqdyB3dA
+	Qo8MthFEzhjuAcPHFnSqiL6L20VT6Sg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 26DFD432B1;
-	Mon,  6 Jul 2026 08:57:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806EA1F00A3D;
-	Mon,  6 Jul 2026 08:57:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4FCBC409DD;
+	Mon,  6 Jul 2026 09:01:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112BF1F000E9;
+	Mon,  6 Jul 2026 09:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783328258;
-	bh=jkxD1mDZYWnsiqnV1zbOwqumBmcmbVddb3oJ2Wo7P+g=;
+	s=k20260515; t=1783328460;
+	bh=Y2p8nkhKN8t9mp7pTmf6Ynt4ux072QpIkTobc4ZCA18=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IVPjzY/bqVgdmT5bXj2hktmiNtZM7Kw24TlGzLWs7bqU2G1tjqG1pJlVWLVxc8SFu
-	 i5O5c13zyeuCv6dJrzDpLZ8OJBHgZGHtZ8gB9aofSq8cl1P4tePCjsxAlmgkb1/nvD
-	 ybcIQZGZ0ayIyvocwbd2MP7x8d58kPq1SDtjhZOY6NHjM+G7yoP/wyvt+DFIB+LzXv
-	 LzbUXxcx5ATdVPDgHciAU9YohHZXmhbZb503ngfqhnv6XyzuzAvin/GaCZP2oLLMmk
-	 /CwIK2QUGgMGzsEAfcO8uqb6qATVHSy46ROe1yKUwDdBdBs/z3uBcOE6ZibFGiY9Gh
-	 kxiEvbVnfzZJg==
-Message-ID: <24336f56-1024-4c9b-8653-b1a4658b627c@kernel.org>
-Date: Mon, 6 Jul 2026 10:57:33 +0200
+	b=FwoRmujMe0ome16BLJ1D9b/TMcpeiIFUYp2tOrucgFjRkQnsLoRRy+gVwGwz0lqpE
+	 gnCbDR7KeGd33Vybq/kdL73A3Q5YE1YPSt4y9nWmf+4yKY23cUeEZ0jK5hugA/V2BM
+	 n/lmz0Q5WUiQB3FsIrl3vM9vgx7QjaWWpk0HraESZhimqgPh2iOgYBn5vdZcFLJPKL
+	 /jGe1RqTf+uR0vORchLLNzz3YnK7obP+U8RcMgNM+KkPwcK0BAio3yL9eZqvRHo4/X
+	 qBPLI2aODq/zvKv7qCwZEhrrFmfOmpFA+l/e8EMw5X9hKunnZ6YKVC/VDWaG8R++ry
+	 HMFNkLNe6SONg==
+Message-ID: <461b067f-6fa4-4539-882f-1ee6fbca5583@kernel.org>
+Date: Mon, 6 Jul 2026 11:00:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] virtio_balloon: prime stats vq after
- virtio_device_ready()
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Adam Litke <agl@us.ibm.com>,
- Rusty Russell <rusty@rustcorp.com.au>, virtualization@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
-References: <2f0d0de033f3005d3b985883be3e5cf37b3f6c42.1783278596.git.mst@redhat.com>
- <13794c5e-375a-4fc5-84b4-a637d077f8a0@kernel.org>
- <20260706042207-mutt-send-email-mst@kernel.org>
- <6b8e4ad3-6909-4d0a-89a4-104a5ad9fe79@kernel.org>
- <20260706044122-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH] userfaultfd: wait on source PMD during UFFDIO_MOVE
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, dev.jain@arm.com, lance.yang@linux.dev,
+ liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ljs@kernel.org, npache@redhat.com, ryan.roberts@arm.com, ziy@nvidia.com,
+ aarcange@redhat.com, shakeel.butt@linux.dev, hannes@cmpxchg.org,
+ riel@surriel.com, kernel-team@meta.com
+Cc: sashiko-bot <sashiko-bot@kernel.org>
+References: <20260705131231.1499198-1-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260706044122-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260705131231.1499198-1-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2BFEC4000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EE6CB120003
-X-Stat-Signature: yq87eqaifq5f5a7kjgbwkeu8qgb9fknf
-X-HE-Tag: 1783328258-391080
-X-HE-Meta: U2FsdGVkX1+P93MWZb3gWF+kQelvcpH6w/bZ6cqo8eXBd1qIS6TGn4GTR7/1aAD0vUbj1g3EfwbAZ+70KA37qEn72VJuAUJLNGmo2fj1nFaLbMsmVcKlZwCyDwU62FfW7yezexEHP2NHqzZz5YTvGyIv/DQiZjCe5As4ySW3QcuNAW/WPLmJkAqrbnfE+aTo2Mxup0Q+yA6h3MlusIVYPTQYioVGyQ7AqZR4Ze0GubQBZGLiZMeEIyqux6VWuqKpRmVXKbP8NR2Uw07jIRPl7QOC5Og+aH5JV2VPLXwSClcSqU2sifrg8W34GdSueeLaAnV9wGzv0U3U5BqeVNzm28wHwMQTGzziDL2CYtqcHQJY9dJM4zNV76nwB2W5hzME0uUK0uLfEhHoFazTHXUYCekFWI9yuYA9IMGf2KBuRUDx3qVF5/egLmXdG9wq8k6AcwDA1L8kDDlg+yaM0eyZHlJoGGnBvef/xCbT+xrKqwpc/kM9VPG404f/ZKudnDfcQw5vqI6eL7pfG8wPUCyMn+DxmvQcqECNR523NLsp790Fy3rX0QfJywyuCBHh0IGD0/jFQwUQhour6BL2tTQQ0F8bUImfucSwpIO8LiF/dLITnDOS0tcfAV271JVJdICfCTutDlVPpRfnX78+hS2H+pwpRUIQiycxpM3vYfCmrSOnoNpO7J2xBkPEtk+uhet08m8MUrPKRicqtBbtS3lvSzAw1xpJPDtZI+pm4ZjaAromUg+LEKaLS/FB8Z0OqFaSJ5ytkClpPlAiTmjnTo4O9BSljvN27r9EEpWiZpU7KOXhyME1uQt+G/ihsJXqlKPmtdxidJuIm+/r+AlPezHYtGjhYdDexPEWU1oHijIwpjWurAXxgYyDhld/mghN7hqYYDith0QsXu6N7hOg2PZZkXe8g7VkKknlp+rQG23bBSUV0ZyfpRt3BRITd7FAZNk85pKK69TzlvGfQZe9vLH
- Fgt5gMH6
- aET7ORmciaW+G/hiefuSQ7xqIhGcpMi2Ymh0mEZcy9DOdRwi2Dm/T40H8C2ALcn/NrMJgYaR8f874euCU3Nre6U5MfsUsQFTiQdxfdITPrV78B4kmP0g+855w1evOZh+MOtPrJupZymwnoJ2MjKWFA3SI3hgR1AxSSVCU9SeQR1EO9eRFixvyJI3/m2zqOYy54J6h7SiMA/CAIb7SvdHYM9GYebTXUp8UyD8FzOHWEmy8e5nP1voFRPr82alDl4wEOGYt7ydTM6qs8BnShrsfMAeEHSbA7k0u+bKSbNZo7JuXGlmxJsZUbQpbWw==
+X-Stat-Signature: tkupgkb16i3goqjdthizp3kwgtnetsxa
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783328460-230822
+X-HE-Meta: U2FsdGVkX19TUwTh5Gea19/F8NNpfTSnRKMHPBdfaXCjnsrUIXr7grJQwcC38QlaXds9LIABVhcjGut61EoMbOZaG/dGcdIwJN5TpOsPhZKhw6NENAj8GI6MPAoSTN+iwub6qwmnZsYhX6PKG/XxFDpigHHMWkiY8yAc6vjlcMRlUCb+GffI+yamxMMUQhfyc6dDK8XKq7J2pWb/31mXjgYLuzFuyi+jK+zGy+0uXmN42BC5nm+tlXSP56RPmZ1N3eGCys36uzxDHOgI4oc3N/gLEniwLmMDAuRDMVJnVf1g5ANnUcZCSNNZLgAg35+BH5Y4XPBHhGQZa/+duWey6Zbvo2NgsRo+jsPf/6x5f6Nb/sXJhMgW7rAk3lHMoxRJnzBDTdKu2m/XZYGjaWAE4dhB+tg9g4y8Lrc8OVRiXcnA12bR0RBJrTYCqCHjK3n97+ZpvFN7Y0ZfsogpGbMkmfH4db/jspjNqaiWEewPUYcVsS12n8GUw2hp/ntW157vPiklahi325gTJyENIm7vKLZ7G4Vnc4HPD2PMPFXSS0dQJJgqqR9eH7VDcb+jXJxc3GUWfmnqDqQWOu68cOm41MvftG9BRn8pq4Hf2OiHgj+8oToWN7DasMCdmWIXUOFwa5LbSsS6ExymQ52IDErPHhvJFfKezFo54baGvupItE0Rzvv2GV7BZujNo0Gn/H+7MWq5Z1lRtfNsTEpWR8s1E+UWspmkMCBwX9pOGdNpZZk0CaqbvbfPoaX3ZxD7lPv51z0UA9MlYAQgmp9HrV4GYv3tQF8alJ1WpfG2sKRy35pVCUC//19NktLoqcIpCrIGBH7VI0sUFSiL0pCtz9icaIsy0Ba9LhfKONC5fMgm5oC/LoPGh9/RQxxSIXK10RIGvUW76U6oYcMou7M+tRK94p1DpVP11XZwOz24FlQhkOlQ8JYuKwqwLO/TFuR8nZxRdDLXUzYYERmHsgUidTC
+ YHWdnBbH
+ xGTwQT+Kh/YupYpyfBkHfSZtbhQpvu+h6aAsd+spnCwrZLb3HHm8YFRIgu2ydGz9uvOE+QBZyhuN+lDP1dKHPFpl/+FpB7hkGNMbH/0jChywnqgtFbVrC0YKAkx52CTsxqDwDWOnxWhh0buYV6k0wV2U63zhs8weWVYc4Cz0nQ0aYAS1zdqeMrazFc6hpCb3qygbxFU5M5fEeAf+Ak4k1pCTGzv5MR5v/ZfPbBA3SDmimd31WnP9Ylffjrc1+GNARZ63vf5XBJ3XzgA/Gj7h9ULFrSR+xwx2oAeuES02KRqE7Bf771DOzLzSZ5FzSk/m5JYYdYexFZcT1Ytx7C1lquKvrtDVbF9MpUOvKY/ZCej48Y6lUAR9u92QmnrhPFqSuYznu0uwqmNO22CA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,39 +142,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/6/26 10:43, Michael S. Tsirkin wrote:
-> On Mon, Jul 06, 2026 at 10:38:18AM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> Yes.
->>>
->>>
->>> Why not?
->>
->> I was wondering whether the spec would state something about that.
+On 7/5/26 15:12, Usama Arif wrote:
+> move_pages_huge_pmd() snapshots src_pmdval under src_ptl, drops the lock,
+> and, for migration entries, waits with pmd_migration_entry_wait().
 > 
-> Sorry I do not get the question. Virtio API expects
-> callers to serialize calls for each VQ. So this just prevents the work
-> from running and accessing the VQ while probe calls add_buf/kick.
-> I'll add a comment explaining that.
-> But it has nothing to do with the spec.
+> Passing &src_pmdval is wrong. pmd_migration_entry_wait() must lock and
+> re-read the real page-table PMD; on split-PMD-lock kernels, a stack
+> address also resolves to the wrong lock. softleaf_entry_wait_on_locked()
+> then waits without a folio reference, which is safe only while serialized
+> against migration-entry removal by the real PT lock.
+> 
+> Pass src_pmd, matching __handle_mm_fault() and hmm_vma_walk_pmd().
+> 
+> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+> Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=8
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>  mm/huge_memory.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index bdd8635922f9..c0892cc533a9 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2775,7 +2775,7 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
+>  	if (!pmd_trans_huge(src_pmdval)) {
+>  		spin_unlock(src_ptl);
+>  		if (pmd_is_migration_entry(src_pmdval)) {
+> -			pmd_migration_entry_wait(mm, &src_pmdval);
+> +			pmd_migration_entry_wait(mm, src_pmd);
+>  			return -EAGAIN;
+>  		}
+>  		return -ENOENT;
 
-The device is clearly not properly initialized yet.
+Looks good and follows roughly what we do in __handle_mm_fault().
 
-Yet, we expect that we get a stats_request() callback that would try to
-queue_work(). And IIUC, the stats_request() will be directly issued by the device.
-
-In QEMU, that would mean that balloon_stats_poll_cb() runs, which would do a
-
-if (s->stats_vq_elem == NULL) {
-	...
-	return
-}
-
-virtqueue_push(s->svq, s->stats_vq_elem, 0);
-virtio_notify(vdev, s->svq);
-
-
-That's why I'm confused :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
