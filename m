@@ -4,80 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0092DC44501
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 13:47:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D629C44501
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 13:48:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1D966B00C2; Mon,  6 Jul 2026 09:47:53 -0400 (EDT)
+	id 61E626B00CB; Mon,  6 Jul 2026 09:48:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECD7E6B00C9; Mon,  6 Jul 2026 09:47:53 -0400 (EDT)
+	id 5F5CC6B00CC; Mon,  6 Jul 2026 09:48:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBD526B00CB; Mon,  6 Jul 2026 09:47:53 -0400 (EDT)
+	id 50C1B6B00CD; Mon,  6 Jul 2026 09:48:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B0ED76B00C2
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:47:53 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4485F1403FD
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:47:53 +0000 (UTC)
-X-FDA: 84958480026.24.FAC953E
+	by kanga.kvack.org (Postfix) with ESMTP id 2364F6B00CB
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:48:26 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 996D38CC27
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:48:25 +0000 (UTC)
+X-FDA: 84958481370.20.68F0BD8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 760B640003
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:47:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T7lLSbte;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id C37CC20009
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:48:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MJpvANO7;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783345703;
+	b=mb0e7PLfyLr5I03YmMA16JYNpJwXfQmrsga2tTZl4NPqoonwtEuxjtwBXsGkfSUMXEqe4c
+	98B6mMlezTFzzJIkj/XjL+oJDzOJ8e1v8YIa8gnmPem4PHwhDzy6i7qJRipjCwPT88i5E7
+	iZgj9jL2qN5Ulz6hxpk/gUwDorDZv54=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MJpvANO7;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783345671;
+	s=arc-20220608; t=1783345703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XbPEspgjb9iGcX/qagd/OLVGEsMaq2T5st1yXWGMpXw=;
-	b=uCIO8enTJ/F7X97QZvxTfsB8zfUpqCw9z5ETQ7TMAB51JDE9bKqXohVSE8611kVa8Y6yEt
-	0xbz09zJsFgF11dIlhQMa5NjYKYBb3ESvCu9vd0gGcUjzMgzQLTyczavk88E2ulRLTZDDm
-	KUoxfvUlAacuPUjiPCEAuziEQUJDqpU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T7lLSbte;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783345671;
-	b=Qa13/qMeZExIS8xW3OAUK7eGFdUJFnfEtWr3n1nrgUJDWGClemLfSpKe/qBsVgysMMcSFR
-	y2IoUQwd2VrauAD8oYLRs7lbP4dLW8CtRjOkIfKfnJd0EXvSVWEO4OWUtUuR7jaPB7ptdS
-	sIPpAQZMVTDDiBvIBQNnnYnP+LWpu5o=
+	bh=9KGHs3IaR4sMS8H8qaxq37Cq5Iqi3LZuorN5eZgO0so=;
+	b=YPdJlm5MKXdCJ880V1Ea0baHpnPfjE0qZN9GAPSSrdWSzbYVRThjKpq+H79B55mq+hcvUp
+	youmWHd9gp2nBpk3OB8t3M9fCoUVCAOed52bRkfh5X3lqYE8LxPbYgSyN2F8CcZGBTnfS9
+	Vzpz2pT3msMY3Cl3BuTg5tdukd62gU0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B3FDE429EE;
-	Mon,  6 Jul 2026 13:47:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0A41F00AC4;
-	Mon,  6 Jul 2026 13:47:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 18B28429EE;
+	Mon,  6 Jul 2026 13:48:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5101F00A3D;
+	Mon,  6 Jul 2026 13:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783345670;
-	bh=XbPEspgjb9iGcX/qagd/OLVGEsMaq2T5st1yXWGMpXw=;
+	s=k20260515; t=1783345703;
+	bh=9KGHs3IaR4sMS8H8qaxq37Cq5Iqi3LZuorN5eZgO0so=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=T7lLSbte1fabsTl8bqPNuY+WLRW6VPGciNfEAYPT0untF/dtC13lyqXaIO0GUsbnr
-	 XYTVpJJ5iSiIBpBoxy4cw6YQyaZpL+8tqyGQ8Um1dEpjQHgpXD8mWTKuV5TUacGD4V
-	 oJ735qQnfjo9RyoPMRCr0PXK0GeQdEC1wR80Tm/f9OCNJr+/bWfPJQAI134iqWkPly
-	 Z0K+i2IqKGqfKnpbqJ5B7sITRrsf3hZqa2a1UntZgvnAwrzBx52Ja0uDy8kHmCy9y8
-	 2HxQdNUljStTVdpR6WtuwGU+mGKZQgJwNsmUIO7lNa5o58I0xDcvjxs1nzjJ2RHi92
-	 YsuDksmPhh2Rg==
-Message-ID: <374a0a2a-444c-412b-8ab8-414dff6a2ca9@kernel.org>
-Date: Mon, 6 Jul 2026 15:47:43 +0200
+	b=MJpvANO7oMNOdUNCDbxaRuWKZI6IrdcFSfL/z/0IGKB1xpzEiaQ31nPCnpb23z4AQ
+	 5k2yoWzaYwh+KJPHcWoxyK8rfhSBw5GxgyOMkKY2jTUT13x8SxcBbrtZDLYd2v7b3e
+	 lBTmg/ZLXQ5yaX9qVna2VhrjoCGo54hkv9Aw2kqOr9OUQXWSO+PkwaqFggOYhBq8EX
+	 MWFKnKeKwLMLu4CKnlXubeWlKGKhnV+PiYZlWWr6q3z0CGPWZgNW4Z25UGK78BVeN7
+	 7NQiO/oBBEVvn8lgVqSeWs10wFd1EsssyH75XL0I5Cr2TH917CSeyfD8/epkSiv9G9
+	 z/84ROp/1LRHQ==
+Message-ID: <efd55e0c-8caf-4633-b876-18e8e788493a@kernel.org>
+Date: Mon, 6 Jul 2026 15:48:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/8] mm: factor zone-device page init helpers out of
- __init_zone_device_page
+Subject: Re: [PATCH v5 3/8] mm: add a set_page_section_from_pfn() helper
 To: Li Zhe <lizhe.67@bytedance.com>
 Cc: akpm@linux-foundation.org, apopple@nvidia.com, arnd@arndb.de,
  bp@alien8.de, dave.hansen@linux.intel.com, kees@kernel.org,
  linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, mingo@redhat.com,
  rppt@kernel.org, tglx@kernel.org, x86@kernel.org
-References: <38919e81-4c35-4e8b-ba2a-8af8be60b0b6@kernel.org>
- <20260706115035.49813-1-lizhe.67@bytedance.com>
+References: <8a6f0bc0-5b6d-406d-9d2c-d3861b5c31b5@kernel.org>
+ <20260706115213.50375-1-lizhe.67@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260706115035.49813-1-lizhe.67@bytedance.com>
+In-Reply-To: <20260706115213.50375-1-lizhe.67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 760B640003
-X-Stat-Signature: 784mnq1ot1e36zstufunpajfj5xdjmu4
 X-Rspam-User: 
-X-HE-Tag: 1783345671-688647
-X-HE-Meta: U2FsdGVkX1+O6WZheEI7ARxW0b3wLNplHOYOuM3M9Ro9wDNQq0E3d6xlXvfECuemQoPUqy5zdNc6kLopxUuczZlytlZPvXHTOZnEK2vgt6GinHphOiD3kxxtxRVOwb8evRMizi3W6Ae4oRcGU744kxw3BLp6QFVoE9i7UQysOWsOhYQUK6qEmPolzTesL63vm5yeYytb+mXtrsp4Vz1Jh5f4/B2n6T2WWbLu2UR4FyT4tYw27h9BkT4mSgCqDvHS11kLcS0J/A6rVjlV7cd6HVVOByOQO3rAaOHTCJqh8V9QlHAuYFo3Bv87PtF3fcUbYUON7oyAL4gsihLwLyE1w+oQhY7sOVr0iokXDZdMg2BBmQYaLhk7o9rmxZkvj/tq+9eqYQDWL4Hxdw+ZDP1w0jVFnnpkBm/0QXHdQ/MeXfgnZ90znyqD3JQvvky5sZZJpr3qiDYZIKwIOSDP+gXSfkG5UFc6hPa0IRj2XTpw6HhjpPQTQT0MW+t7EU3VMKevj9qY8f6oVA0DHK+GBpIfjr2IgtWc1v6/akz3hyGJt1OY+/RZZmZBUtcaB4nQNL0fm+eKCkVU/hRuYPTR5JTY6dvN3vr7dow6CjhSWUbiSGggUbjkF5LcsixBJoWpplDeFjc/4nHVu5WpYT4pBJ8YknxMOyakrbmIWhmDvJ9CoXXKb/m3r3C19HGM28pHWWt6nplLqyU7KJS2tCYfBkXFk1ZKdWGUMV+Gn5NnE/2hKpM8KVt9fzewjDe7/mzirGbikM/wKt3zIYkmRWjXAzumtIm4O22pvPPd8Ntr+uIAvFL1c//XwDZ0aTDqESw7fo1YGsmcyX0OmR+LIyMQcim3w6b/WF7xaw4kWNX9nS3oRe69XBRcMaQiJ9TeiyHxAw68OHLVJqSoSuVvlaHtwV/rGsK62QH2FDywV83N8o0jDWvxqK6CrXlrx6kQl737kXqr7cV6R6bLwq7bewxemJL
- fIHMfmQp
- T0tyVKHDGiEPhxuMq+eq4b0CwZZT53mYg15qwHI/9wlyxI1ueLm6wOewT7VSw2O5+oX2TGzPM3v9h26AGQ0ToonP4TWN3e5uh911X/YY+EFtCZJt/sIFVzCNStdM7HIEP+N1XbQ2CES/QcWvAMZmDYJheWQyMVSyVPqh0WuUIkYJ5Bl4qDR43dW3gn2mTKuOHHxoN3LFWTMPxRCWNjpDzHFikUve23sZNszEScCTOQKnppnYHohskddOS2nlMhMblmi92JNO3g40BLMMOEF2K3fCrfURirblk7zAWj/9n8RcMa5ZZ26euof8iGJ0NAnZpNqtK0vLuDKxb3js=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C37CC20009
+X-Stat-Signature: 938tk6gyf387357qc64r373kwwqr7fga
+X-HE-Tag: 1783345703-906717
+X-HE-Meta: U2FsdGVkX1/7Py+X0QdBTtnQyDG4TzIyYLi0HmU6r4ki+Qeu/C23cycod0e+o7AEPDTYOS5yobFIU9vbrz2x0PvflECYzB+vjZL9DUDGP30g4hOA1taMzLkl/nO4pmxl9qRSAwchF2oDcFEIG/EZhCuSkcTfiEenF1XbUTi7lWJQVMOnNuD5yT35BO7y8X72cePEOa2T5CTk7MkCVO+iD5Tazv2XXBFrSOU5PEadZGANp2FbVwENdt5LAIXy/zRPA+1fkucwyP9NY539sKuYOauQTq8/yWO0ta0Nj8Puvt21HUcl71HY2ThcHJadoDGhsH3INKbKbpZc/vKb/XUKfbXSlRGvjqMR200qsc8i84NohLnXYfcoqmmUSGFZosDduQegJNNCLu8T0ylX2+U+A9RZlUfPOwF5nwBVMRkbV9R0pEv8HhQw+48swXKUFNz2pZWB4xGcAE0oOVrK1/1DlAUUZzYdHCpHVdUHrEqp93f3djEytE+YM7BY+nZj6H6hFxe0V1eftv8LmK5AeKKsJvoShUnU8q9l4YzbhGyKcn6fZlJkp3SmNvCvQDxfjWxokcYAHvhzkjudiUn2Qj1qAbKHNsrjhlYmnz0AXzLw55PBQy84eNh2Dyln1bIqTOWtJ2Ljb6CvOV5W3V72Vdbo28qJa3AviN47JMjEZ5ZPayrQROWPn/ISOFce/6KrdTF5SNDJYWDVODlsx2qS1bCxhV6sUus+aAlTDLfWefj3nP1PTdSPcY6f+cWSbGthRcxC2vTwE67ogFIijTO9Z44rRcAoeiZC1kFzgWJbnxfnPBdkSIAkrYU/muYwiVcaBQrl/rCNaOUs2MVW2mCUvv9rP00AqpSohuLYTcj33R11979528Pj4tCRhW/x0ixpu3e99VGSp/VNRp8nk6dAz1ZUIJhXhgGeoR64I2RAZQkMxjvGCcOOd7g7LBb33o4/hDWUtv3OfOUZJvtY2aM8Ttl
+ ErFIbvxN
+ 4Ns5b0drIhUFU2o/c5Rzw9xfdo6Hh4MBA6u4dfPDuUtqICD0TVpQ1TZQq4LZ0UJrETwaSrU8exQA1uWNQmaYROSoOXV2bcWaaeglSNA/4eqRcIjR5Vr3iULKpNcNrmMJhDlhZER/M3H8hI+y8BBTv6byp0ss6dyT+ERtjLyYnUH32qcXmq6mO33J2UJRBzKa9QTlXEoCRLZg/AkSvjjWWI8recvAD9U6GyUHalZNS+8TyWYWbgK1yejOQAivHnClD2OCmcaR0TZ/gv5O6jiZF97Jav6Bm+Yt7BPd+hx9bhi6PINnS2n/3eDXcpJxuMEodlgRz115rSlT78EI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,44 +141,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/6/26 13:50, Li Zhe wrote:
-> On Mon, Jul 6, 2026 at 11:13:45AM +0200, david@kernel.org wrote:
+On 7/6/26 13:52, Li Zhe wrote:
+> On Mon, Jul 6, 2026 at 11:15:36AM +0200, david@kernel.org wrote:
 > 
->>> +static inline bool pagemap_resets_refcount(const struct dev_pagemap *pgmap)
+>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>> index 485df9c2dbdd..f78afa63dd3d 100644
+>>> --- a/include/linux/mm.h
+>>> +++ b/include/linux/mm.h
+>>> @@ -2541,11 +2541,26 @@ static inline void set_page_section(struct page *page, unsigned long section)
+>>>  	page->flags.f |= (section & SECTIONS_MASK) << SECTIONS_PGSHIFT;
+>>>  }
+>>>  
+>>> +static inline void set_page_section_from_pfn(struct page *page,
+>>> +					     unsigned long pfn)
+>>
+>> Two tab indent.
+> 
+> Thanks, I will fix the indentation in v6.
+> 
 >>> +{
->>> +	/*
->>> +	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
->>> +	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
->>> +	 * the count again when the allocator or driver hands the page out.
->>> +	 */
->>> +	switch (pgmap->type) {
->>> +	case MEMORY_DEVICE_FS_DAX:
->>> +	case MEMORY_DEVICE_PRIVATE:
->>> +	case MEMORY_DEVICE_COHERENT:
->>> +	case MEMORY_DEVICE_PCI_P2PDMA:
->>> +		return false;
->>> +	case MEMORY_DEVICE_GENERIC:
->>> +		return true;
->>> +	default:
->>> +		WARN_ONCE(1, "Unknown memory type!");
->>> +		return true;
+>>> +	set_page_section(page, pfn_to_section_nr(pfn));
+>>> +}
+>>> +
+>>>  static inline unsigned long memdesc_section(memdesc_flags_t mdf)
+>>>  {
+>>>  	return (mdf.f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
+>>>  }
+>>>  #else /* !SECTION_IN_PAGE_FLAGS */
+>>> +static inline void set_page_section(struct page *page, unsigned long section)
+>>> +{
+>>> +}
 >>
->> Wouldn't the compiler warn if we would define a new type but forgot to update it
->> here? We're using an enum, and I thought the compiler would bail out in that case.
+>> Why do we need this?
+> 
+> The empty set_page_section() helper is not needed. I will drop it in
+> v6.
+> 
+>>> +
+>>> +static inline void set_page_section_from_pfn(struct page *page,
+>>> +					     unsigned long pfn)
+>>> +{
+>>> +}
 >>
->> Or are we scared of some other garbage ending up in there?
->>
->> Apart from that LGTM.
+>> Dito.
 > 
-> Thanks.
-> 
-> I will drop the default case in v6 so a newly added enum memory_type
-> value is easier to catch during build review.
-> 
-> I will move the WARN_ONCE() after the switch so we still keep a
-> runtime guard in case some invalid value ever shows up there.
+> The no-op set_page_section_from_pfn() helper is still needed for
+> !SECTION_IN_PAGE_FLAGS so callers can use a single helper without
+> open-coding #ifdef SECTION_IN_PAGE_FLAGS at each callsite.
 
-If the compiler complains, we won't need the WARN_ONCE().
+Sorry, I meant two-tab indent :) Why we need that was clear to me.
 
 -- 
 Cheers,
