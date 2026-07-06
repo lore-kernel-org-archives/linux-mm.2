@@ -4,143 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64679C43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:46:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 947BBC44500
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:48:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50EE46B00CE; Mon,  6 Jul 2026 04:46:56 -0400 (EDT)
+	id 622846B00D4; Mon,  6 Jul 2026 04:48:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E6126B00FA; Mon,  6 Jul 2026 04:46:56 -0400 (EDT)
+	id 5F9FA6B00F4; Mon,  6 Jul 2026 04:48:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FE5B6B00FC; Mon,  6 Jul 2026 04:46:56 -0400 (EDT)
+	id 514E26B00FA; Mon,  6 Jul 2026 04:48:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0199B6B00CE
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:46:55 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8DFC71A0335
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:46:55 +0000 (UTC)
-X-FDA: 84957721590.07.C737A04
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E367280005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:46:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L3DTPkDZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DB066B00D4
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:48:11 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B596A0334
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:48:10 +0000 (UTC)
+X-FDA: 84957724740.14.AC539CB
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9AEDB20007
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:48:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="a OFqp5B";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=WS+4WjKl;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.159 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783327613;
+	s=arc-20220608; t=1783327688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aamOsmuHLb37FH1la8uw/6nypO2zKI4knV9R9WdC8zI=;
-	b=f/WzW47jUQyAKTI4/yZnG83osOFbKoRuHncPtNhZ0Z5+qbT6N45Vig3amFLDVb/uFiu9va
-	5yRdG2+97+dyvYFZc0tcNLxqk0aMVc/dPIhGGzruem10tcc6Fom6BjTIm+iNiDt9mnkgAl
-	yhDYEp15JDI5Tcpc4MmLq6KxqclrO+s=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qVEVjN5R6x87tuu84TW3KSSD/J6nesBQ6E5fheRp1Pw=;
+	b=I6vN8oQx/Dyz51ovrOmwxu03HKhWl50kkQEWBieWDemT5nSe+vuvMMJqvB8ZwCyZ7yGsmb
+	RRX6DJo7DB8W7qbdegR59yRRNc1lMhwV0rLwOK/XDayjXyluZ4K6TXAvGcz0RyioP6TCO9
+	VpjY9CdeLJ4LSbDTelpc1KFJdcBedWQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L3DTPkDZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="a OFqp5B";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=WS+4WjKl;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.159 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783327613;
-	b=DiYhIb0vP2sC+bujQlQCl9CNUaqynaZHiMKB3pmlW5ApprK2nVLxVjD74pMGGtAwbIloSR
-	7FqNvSmrWKzX9DQTtTdDMFMOYmYwQi7SmFfoOJ+jf7EtL69KbwKU3C4MXayjr5sgDGBFFy
-	/VfK1CefBSXQD9cN2Ymps7Zbdx1cNrE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51CFD6138C;
-	Mon,  6 Jul 2026 08:46:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63991F000E9;
-	Mon,  6 Jul 2026 08:46:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783327613;
-	bh=aamOsmuHLb37FH1la8uw/6nypO2zKI4knV9R9WdC8zI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=L3DTPkDZIUqx8Nk3kg9DUA6JR3HqOcCsSX4NbFsz4WFSgtNVQMdkoN5a41c62uDHv
-	 icaF8G3VgRIoGP6n4uD6rhGTP4oP3JqTLGKokoFQU50Q90ccE8OW7ZBi+a78i6djhh
-	 OV5Am7CETroE8xw1t6J4CsHdIuLYlbRsI1YALg2ZU9eL5UaEHal9eJxV5DRfSL/M1h
-	 B5nZuUCJFgaqeKICeh80D9+yBsHHLKezZHfHDc/raytvewe6gOcTukVLhi0/qQ5r6p
-	 LFQtXgKP47EPzEWteN1rHgtc6PM8M7bgUbfSp+oCHMzp6qPzikCzYqLMDhUe80knPC
-	 s4xvfwYyVo7Ew==
-Message-ID: <2e20d635-6326-48d1-af0b-776b15f47ce8@kernel.org>
-Date: Mon, 6 Jul 2026 10:46:42 +0200
+	t=1783327688;
+	b=x6MHxfjQWUlgnK6vRHWRl8HG8vPDVfke3vlgw37qWilWzWZV0FfevYLwfyaAowfUj8xpiR
+	6geqOFfQ7dCelbbM4Dex74QGVsbzzOBZq5OakoXrrTIHn3qcu+t7ZeFp0k6lURNAkIeoM4
+	XGLqSVtyrd/QVQuWwDzJ4hEcFe+qSyU=
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 3E7037A00E6;
+	Mon,  6 Jul 2026 04:48:07 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Mon, 06 Jul 2026 04:48:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:message-id:mime-version
+	:reply-to:subject:subject:to:to; s=fm3; t=1783327687; x=
+	1783414087; bh=qVEVjN5R6x87tuu84TW3KSSD/J6nesBQ6E5fheRp1Pw=; b=a
+	OFqp5BjaYRMd+pwqINsvN6TrL9tozFkdqB2APTVzrv4dW+VBwQn+8ALXR0eLtqoI
+	uJA6CowC+TtmMQao1vhHaxtgclGQtIfRYBar8JPQcaDectUEqH6MiEXgeCJO0ZVV
+	7c/zGz+EKmc7JSFZokY8Fw1wWxf+EIu8iGj0EeOqMj2lGsGtpFiET7UlOneybgNc
+	LHYG85dqLlDvcitVkfnUN/3HAnpYA0pA2dbSpsbyjxpI4KpwYFGtqWy9OHZG5yiy
+	bqOhDWl7eNalKjE/krAPpR75EyoNXSzMPiQn2FGSkHlxay5WHY28SBtwJxJpAHxc
+	EDWSm9Lu6WYzUYvhZamcQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1783327687; x=1783414087; bh=qVEVjN5R6x87tuu84TW3KSSD/J6n
+	esBQ6E5fheRp1Pw=; b=WS+4WjKloST6KW7xg7qztPB6ZkkOESa0ta4H/xQG3iQf
+	17bq3eETBaJ1uJDcvXjN2ulc8/zhYRjMK4POFTpBz+9f0vHBwU1HZJ8I6BvDC9L2
+	MFNAEoxMvle+itMNC+FM0KN7BjUgEJxVf1xSzgN7UjwvbQDVzGsvOByayXjXNLN8
+	BP3/hn/Z40QKgclkQCCazixsDedsT5A0+kkuOBKQ3yyPKBSUmKdxU4Qte32H++Qs
+	o2g0Ys5RoKamdfxwfx9WIDezjHl9iUGqPljB4mpy1ZoAReXIfp+hC0N7pZOJ+Da+
+	PtnE7QeUcrquibTKst5+1UJWfMxLuIw857W/o8Xauw==
+X-ME-Sender: <xms:xmtLam7NZl9bvH5q1Lm6n2CluGZyTHlPguD7ls4xWIQiaV7Z5CPD5A>
+    <xme:xmtLaj2T6I4lfU450rIILiorcmpwn2pVj3Lr6MMUCozhft7mD-PKYJpwRo_bW_FTe
+    su2ruP_3SZn2_y9QYV5dEr75vcUurEPwV_P7Gl0OGpa1tDEufShr0s>
+X-ME-Received: <xmr:xmtLat--SLibq4avysBGgpKf2a5IM15Me6BxDCUqnZkN4ypg3PAaHhuEUiV4HQ>
+X-ME-Proxy-Cause: dmFkZTEiWKmzgS4DmSJX9/KH6JTtcEz+rh9LhMhy3LsOii9iVKIKp2P2I0vdlfT7CGZ124
+    aI6i9MET1EkyhEuwneLp8VAIaqnTbF93R8NI26AaRBpO1lzP4oGhu0+EYDCQVYRQn4HDOZ
+    N+yvBKaYg5wasRIkLq0zIQQ7vUMLjcQLA8z/crlz9UOAGCjvTeFjBAsmVe650eGr2O0b/r
+    mxXg3lJNk4zt1Ydj5Ve9/+8DJOh83cNaN/vFvTbCrzoDA3swkhm+XOb+4mqo0cvbFV43gs
+    NhwCAP+3kVG72QfRXwZ+35ARfE/BDR6cMVR/B6clrvAn0pb5uFdrQtrmjs466/7YtTt8Gz
+    82KFoOC0FbeeHbIAxfScKLhQXIFDv4Wz09KhJxK26H35OKWTvNI8ucYhgmcsjlsS3H6ImA
+    KZG7SAoyO99pPr92ijE43Fsob9rml9DXQV1AKgSKUCU6S5r5NVnbGkJ6bCLJcamOnLNKvi
+    meGoQhPv7pFJeU9ARvG9GlNtK9YOpK1db3GeT6ecT/YTuOm2Bxx4jAl1ZO//bF+ghlEUe8
+    TASi40MlOuKaC9u9GxWlkAb9KhN/QSEV63uOVnI6ctPotCaQiCWX4PxiOUvxgOuHjNhLuk
+    jBrVxh0qLvfoFezmOHI2omn+hrrG2lW2kO8nmjqHroeM983XmzkGgEvNLNqA
+X-ME-Proxy: <xmx:xmtLasuv5ZvqiMDPKjIt7eHTpz2lmC_C6JvrzKkDPcwP0jjKgTHiSQ>
+    <xmx:xmtLahqOqKQzx7Ny-VqwZnVmnwdQBrTAjeVc6vZmw0TzvwBtKfTRYA>
+    <xmx:xmtLavHusBZg-_9OoWjJRMeSWVKQYDvFFRbjZy_6tXFveZjNqZMREg>
+    <xmx:xmtLas5oHzSbbN9jVisv6zq7FGGd4-8JGh1MZCDbSdGxPi_YvbEUsQ>
+    <xmx:x2tLah7meBzl7Eo_LinixjjEJ35QYCXu08Jg_6Ap1QqxNQYEnVjZpdDY>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 6 Jul 2026 04:48:05 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org
+Cc: ljs@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	jthoughton@google.com,
+	aarcange@redhat.com,
+	sj@kernel.org,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kernel-team@meta.com,
+	kas@kernel.org
+Subject: [PATCH v9 00/15] userfaultfd: working set tracking for VM guest memory
+Date: Mon,  6 Jul 2026 09:47:49 +0100
+Message-ID: <20260706084805.8400-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/6] mm/rmap: use huge_ptep_get() in
- try_to_migrate_one()
-To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, apopple@nvidia.com, rcampbell@nvidia.com,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, ak@linux.intel.com, nao.horiguchi@gmail.com,
- mel@csn.ul.ie, j-nomura@ce.jp.nec.com, pfalcato@suse.de, tglx@kernel.org,
- dave.hansen@intel.com, jpoimboe@kernel.org, catalin.marinas@arm.com,
- will@kernel.org, linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260703114202.365553-1-dev.jain@arm.com>
- <20260703114202.365553-4-dev.jain@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260703114202.365553-4-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E367280005
-X-Stat-Signature: eq9domg1r3uhtu9ir83tkxu94kp147ng
+X-Rspamd-Queue-Id: 9AEDB20007
+X-Stat-Signature: bdi1dx8mge1913mu7j81ya3s8dws63gc
 X-Rspam-User: 
-X-HE-Tag: 1783327613-137541
-X-HE-Meta: U2FsdGVkX19RgoubQbnNNHYvj43cDJPUQoE3yw6w4GZDkEyEVG5pSt71v6bSJKiq5xKISPNUCkg3uLIFv+xzXdt/+t7cLdL9Z11Lo7tjv+4CymZ9OTAt2g2uU89MUyEZcdB8XR8PWXdNc4rM9wwVUP9u65slOunzpxJcvs31OtqUZqqawDC0o8VyFqx11j7iz7m4YHU8W+8DhoirpNkgrUIe+zELIIW5kdW1/R6vUc0D41Qyd5ZxZXIjMtRMB14uiFGvwo1LnWqTEjaNpr2tRRk2fxdfbPpRQTPkadYGwRP4GF9J34iSkNNUyvbSe57sJeVpptqExk0sf0BvvUkPWLv91Yb9pN/w3FDB8GTewDE2xO/7v8RobQgQYd2EUU6C7Cc0LPnjP5z2zWtT1gWAvC+Sp1C9/w7WyeFLUtcCgAUkkKUKxMaXDyvbUHZ8jnmNe7RjxhwMz+/naVv+TfX/Um5qFIwr4xTdgS5q9DY7L/1Wezq7AF8K817lTpeeqmRMuuTg4SbbrcL5eG2JyVLCpLnKE2oABxZy1eegFbi52W2GEHMiDhr7ztS1Rb5eA5gJf1lMLu88Xv/zCoxkFhqiHTUNR0p7Lo+mCTz4K/e28KVWoTPuN3N2szOKn3smzQTk7DOvPK1VgaVnA7/Tj305wMxirvIgJWYh6Dwg1Jy6vw7oU2tWFT9FQH7F1gGzUR4x/ObmfYo8dbW0a+1sgg9QJGA/b5YjJVD7YIu3XjmbrDurgeQComXtIZ3zArdh5TphDY5V4bidfK52K/gCNoXNbSp99SJsK29C78MLROQnQqBJB21wpT8ZaHUzG5Xl/aSpk2J3HzvWpXyfKtz8ofryRnPY7NHgznVSvbiLnXnnTLi3YzXhg0cDQGv3noBRx/CcEgh9K/3+57qaDuVs0EDG7ZjaL/bb++VAG2kMQBYrpAw3Y/P2x0czKFupkKX3ayhPnDEtyb0gcP0HpAjuOGi
- FaTsMgoi
- 2FOhANWcuTNe0IfR15KleSyzZ2RiyLVwrFRMPqLHTW0M0gZ/s4+KktOktWKpOgwenH2DKPuXKmkKDyQIxBsbSj3whVhKQ2cUXNw+T+upFFnZzUxIkgecSFQo/AeqGbNQ0X+ZTg1t6JXPHZ6hriaqkoDE9eflTP9HcgR6GDJ+o1gVOyElof02VfdDjCMPfItGM4WsQ5yM2rva+UEmBVXY69mFqKYSvMVZrbsVepkEz7zffRYAi/r6Y3o8fXx2C+eLTI/D2LivY01Kyo6d//aHzit0JesQeu1hRis68sM2B6s3SdLpKVft9FNWeZ18kudUIv7EobFs39iyXef3b3YqDcrlX+cpCxzrtGLlylhBO1B8uTW0AXJA+zrkqWyx4SQEtpHJAOEkThPrLzdNfBPeJRLS/Wo9ozgn3aBcoekG8Xd/M6iBskYYDWsKqMte3jxfu45nQzsDlNOP/Cvkcwl5SGJcp8Q==
+X-HE-Tag: 1783327688-895600
+X-HE-Meta: U2FsdGVkX18/3/IBWMjektTMNN/6u15Va5H94hcb2DhSEBSt5Wu2GVXUH00azgjQua7rgarwKpv3w5kgY31bPITzseknNpsGigdN3Yrw2DDH7KwVxQAt6LBJUOoLOq6AEPXvyCGqlkEsvDNoJuunFONKXwQYFnR6qy0agBg1wxmJ+RBGG6DsGXAlu6GaomgKzGc23QjXB5ZwC/8eO1no9bS8lTovKNo00F5jZXpmeO5+epuJaIVlSQ3pkNxhzplkkxzfecOs3Ob2FIth6NGCN5J5HBPXazOacvvk4gwCPifsPFErTa2rpczzDn4vE6k17KeJ/9SbvyPDj4tEXZV3w5gwVdShtChqbqLV7MjVHpZD0gB5GYrUoHDcoy/utp7RaeKvWlo9LfPZd7i++6GsOM2RmS1bwQGoIG/Toulr8sD6qnd7BL4YFaTTcAV4LBsvBTf6Nj0MaoGfsWVjj64tMW5IIktCwN2e5xPHIUaYdfH2MZsJMqfWot1pTUWuw5DQmp8Z7dfxerFOoZZ0gNiPB7NLQbdUXwgdnl3lxmLMvBZF1bpt5iSVHiIb5ZLoCDCh9vID1dFdAvx8gxyKiyd8pmLIp1gUgkDrDr0HkpuK6e+9b4FYTCopzr66o13xzfLZxKk0pmE42Fnf4R4u133RY/Mi6Cz7NOmQgKsJTeG0oJ4HtZvMKEYkT8h4SBbChq2YgUHbZNYu2r1OogCsbkbRaEAnfDsWrzfosHbn9wVFcl6i5SM4kJaImf792ZSjUT5vHUtpur94BGusRizcPSC/cEYTh69ox312DZPHubtg0GeP2gTvCD5qTNZ5JpEknmgSXPduXLaZ3dSPl31RCWwxwiuJV017vrmz5XzPzsLh35HlQpWojlh7Ca8pS4s8yiJaYOr/fMX5/9oYW4qEOJuGqg5o39RCzztTU8uVGZnYOlF+yInGpfOBmJNR9IX1Q77ph8DsTuMz1rakXHRLtMJ
+ esbIX7Av
+ JjQW9rdjvFzVTAR3nyICVJzvWfJSGGbgygKl5ishQJHPkDTns4KAdKWlx/U5cvDk8Ga3x4VI8L3+Xr1CEaSy2miFw94j/EuS8r9ZJiDzKgKpedTBnWasYL1dmUN7YkvqciOxlPTkZs63L+ZvTbOZBLI2yjBORpkmSTUWq07Cnys+KjeLr2HRw/BhnXH3BMBIAjVpYABLi3Vo6rz9sCfjD3OTDu7iQVgoDm4hv74u8Es7GvS1Zcsxe5duE3PTuMMVAaXsZC4a/TSY1Ik1uesvS+OMs62NerAcywJV8fq+SppTHtMwmKjQaqAN/TXRE1OpbvHPqj/e/BmwrfX08wjUNyhiedibA/m2ePdviLvi90xXNbAQebkILdFvkUmbACDi48WdAV+Y90yMQLtGBWFCKcbIN+dOkmhzpj8XVICKAApNWeRkNRIOkbvM0Z43XhzUoxq3+FUTh8ZmvA8Q8w9C3ftSV7NAeP/ZaohfToiEKiwir5fBdftpZ+a2iLvSTc/WMkm5i5nIs19Yu2IVZJCX2NYHY8vcawfruoAse
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,33 +147,236 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/3/26 13:41, Dev Jain wrote:
-> try_to_migrate_one() is used by folio migration to replace a present
-> mapping with a migration entry. For hugetlb folios, page_vma_mapped_walk()
-> returns the pte pointer to the hugetlb folio in pvmw.pte, but the code
-> reads the huge pte entry with ptep_get().
-> 
-> On arches which provide their own huge_ptep_get() to dereference a huge
-> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
-> etc to misbehave.
-> 
-> It is not clear whether this has a trivially visible effect to userspace.
-> 
-> Use huge_ptep_get() to dereference a huge pte pointer.
-> 
-> Commit a98a2f0c8ce1 copied the bug from try_to_unmap_one into
-> try_to_migrate_one.
-> 
-> Fixes: a98a2f0c8ce1 ("mm/rmap: split migration into its own function")
-> Cc: stable@vger.kernel.org
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+This series adds userfaultfd support for tracking the working set of
+VM guest memory, so a VMM can identify hot pages and reclaim cold ones
+to tiered or remote storage.
 
+v1: https://lore.kernel.org/all/20260427114607.4068647-1-kas@kernel.org/
+v2: https://lore.kernel.org/all/cover.1778254670.git.kas@kernel.org/
+v3: https://lore.kernel.org/all/20260522133857.552279-1-kirill@shutemov.name/
+v4: https://lore.kernel.org/all/20260525113737.1942478-1-kas@kernel.org/
+v5: https://lore.kernel.org/all/20260526130509.2748441-1-kirill@shutemov.name/
+v6: https://lore.kernel.org/all/20260529172716.357179-1-kas@kernel.org/
+v7: https://lore.kernel.org/all/20260629120749.566063-1-kirill@shutemov.name/
+v8: https://lore.kernel.org/all/20260703133615.1039465-1-kirill@shutemov.name/
+
+== Changes since v8 ==
+
+Addresses the Sashiko AI review of v8; triage summary and interdiff
+were posted in the v8 thread:
+https://lore.kernel.org/all/akfmUXjqaBQnxqYX@thinkstation/
+
+  - 05/15: disable fault-around on VM_UFFD_RWP VMAs. Pre-faulted
+    neighbours are indistinguishable from accessed pages in
+    PAGEMAP_SCAN (PAGE_IS_ACCESSED) and pollute the tracked working
+    set; each page must be populated by its own fault. Also group the
+    WP/RWP flags in uffd_disable_fault_around() and
+    uffd_disable_huge_pmd_share().
+  - 06/15: change_huge_pud() rejects MM_CP_UFFD_RWP_ALL next to the
+    existing MM_CP_UFFD_WP_ALL check. Defensive only: PUD THPs are
+    DAX-only and DAX cannot be RWP-registered.
+  - 09/15: enforce the PROT_NONE accessibility check at register time
+    only instead of in vma_can_userfault(), which the unregister path
+    also calls. Previously RWP register -> mprotect(PROT_NONE) ->
+    UFFDIO_UNREGISTER failed with EINVAL until access was restored or
+    the uffd was closed.
+  - 13/15: userfaultfd_register() reads ctx->features through the
+    userfaultfd_features() helper instead of a plain load racing the
+    WRITE_ONCE() in userfaultfd_set_mode(). Benign (the tested bit is
+    not toggleable), KCSAN hygiene.
+  - 15/15: fix the documentation claim that UFFDIO_API returns the
+    supported feature bitmask on EINVAL; the kernel returns the
+    structure zeroed.
+
+The review also surfaced a pre-existing bug in
+copy_hugetlb_page_range() (present-pte accessor applied to
+hwpoison/migration swap entries, corrupting the swap offset); the fix
+was posted separately with Fixes:/Cc: stable:
+https://lore.kernel.org/all/20260703161833.57416-1-kirill@shutemov.name/
+
+114/114 of tools/testing/selftests/mm/uffd-unit-tests pass on v7.2-rc1
+(47 RWP cases plus the existing UFFD groups, no regressions).
+
+== Problem ==
+
+A VMM managing guest memory needs to:
+
+  1. detect which pages are still being touched (working-set
+     tracking);
+  2. safely reclaim cold pages to slower tiered or remote storage;
+  3. fetch them back on demand when accessed again.
+
+== Approach ==
+
+UFFDIO_REGISTER_MODE_RWP is a new userfaultfd registration mode, in
+parallel with the existing MODE_MISSING / MODE_WP / MODE_MINOR. It
+uses the same mechanism on every backing -- anon, shmem, hugetlbfs:
+
+  - PAGE_NONE on the PTE (the same primitive NUMA balancing uses)
+    makes the page inaccessible while keeping it resident;
+  - the uffd PTE bit (the one MODE_WP already owns) marks the entry
+    as "userfaultfd-tracked" so the protnone fault path can tell an
+    RWP fault apart from an mprotect(PROT_NONE) or NUMA hinting
+    fault.
+
+VM_UFFD_WP and VM_UFFD_RWP are mutually exclusive per VMA, so the
+same PTE bit safely carries both meanings depending on the
+registered VMA flag.
+
+In sync mode, the kernel delivers a UFFD_PAGEFAULT_FLAG_RWP message
+to the registered handler, and the handler resolves the fault with
+UFFDIO_RWPROTECT clearing MODE_RWP. In async mode
+(UFFD_FEATURE_RWP_ASYNC), the fault is auto-resolved in-place: the
+kernel restores the original PTE permissions and the faulting thread
+continues without a userfaultfd message ever being delivered.
+Userspace then learns which pages were touched during the cycle by
+reading PAGE_IS_ACCESSED out of PAGEMAP_SCAN -- that set is the
+working set; everything else is a reclaim candidate.
+
+UFFDIO_RWPROTECT is the protect/unprotect ioctl, mirroring
+UFFDIO_WRITEPROTECT.
+
+UFFDIO_SET_MODE flips RWP_ASYNC <-> sync at runtime under
+mmap_write_lock() + vma_start_write(), so a VMM can run in async
+mode for detection and switch to sync for race-free reclaim without
+re-registering the userfaultfd.
+
+== Typical VMM workflow ==
+
+  /* arm */
+  UFFDIO_API(features = RWP | RWP_ASYNC)
+  UFFDIO_REGISTER(MODE_RWP)
+
+  /* detection cycle (async) */
+  UFFDIO_RWPROTECT(range, RWP)
+  sleep(interval)
+
+  /* freeze the snapshot before scanning */
+  UFFDIO_SET_MODE(disable = RWP_ASYNC)                  /* sync */
+  PAGEMAP_SCAN(PAGE_IS_ACCESSED) -> hot pages (working set)
+
+  /* reclaim everything not in the hot set from the backing file */
+  fallocate(FALLOC_FL_PUNCH_HOLE, non-hot) /* or pwrite to remote */
+  UFFDIO_SET_MODE(enable  = RWP_ASYNC)                  /* resume */
+
+== Series layout ==
+
+Patches 1 to 3 are preparatory:
+
+  1: decouple protnone helpers from CONFIG_NUMA_BALANCING.
+  2-3: rename _PAGE_BIT_UFFD_WP, pte_uffd_wp() and friends to drop
+       the _WP suffix, since the bit now carries WP and RWP meaning
+       depending on the VMA flag. The SCAN_PTE_UFFD enum's ftrace
+       output string is intentionally kept as "pte_uffd_wp" so
+       trace-based tooling does not silently break.
+
+Patch 4 switches the uffd VMA-flag helpers to the vma_flags_t
+accessors (vma_test_*_mask), so the VMA_UFFD_* masks are the single
+place that knows which modes the build offers.
+
+Patches 5 to 8 add the in-kernel mechanism:
+
+  5: VM_UFFD_RWP VMA flag (aliased to VM_NONE until patch 9
+     introduces CONFIG_USERFAULTFD_RWP together with the UAPI).
+  6: MM_CP_UFFD_RWP change_protection() primitive (PAGE_NONE +
+     uffd bit, plus a RESOLVE counterpart).
+  7: marker preservation across swap, device-exclusive, migration,
+     fork, mremap, UFFDIO_MOVE, hugetlb copy, and mprotect().
+  8: handle VM_UFFD_RWP in khugepaged, rmap, and GUP.
+
+Patches 9 to 13 wire the userspace surface:
+
+  9:  UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT plumbing
+      (introduces CONFIG_USERFAULTFD_RWP).
+  10: RWP fault delivery and exposure of UFFDIO_REGISTER_MODE_RWP.
+  11: PAGE_IS_ACCESSED in PAGEMAP_SCAN.
+  12: UFFD_FEATURE_RWP_ASYNC for async fault resolution.
+  13: UFFDIO_SET_MODE for runtime sync/async toggle.
+
+Patches 14 and 15 are kernel tests and Documentation/. The matching
+man-pages series is already upstream.
+
+The series is also available at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/kas/linux.git uffd/v9
+
+Kiryl Shutsemau (Meta) (15):
+  mm: decouple protnone helpers from CONFIG_NUMA_BALANCING
+  mm: rename uffd-wp PTE bit macros to uffd
+  mm: rename uffd-wp PTE accessors to uffd
+  userfaultfd: test uffd VMA flags through the vma_flags_t API
+  mm: add VM_UFFD_RWP VMA flag
+  mm: add MM_CP_UFFD_RWP change_protection() flag
+  mm: preserve RWP marker across PTE rewrites
+  mm: handle VM_UFFD_RWP in khugepaged, rmap, and GUP
+  userfaultfd: add UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT
+    plumbing
+  mm/userfaultfd: add RWP fault delivery and expose
+    UFFDIO_REGISTER_MODE_RWP
+  mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+  userfaultfd: add UFFD_FEATURE_RWP_ASYNC for async fault resolution
+  userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
+  selftests/mm: add userfaultfd RWP tests
+  Documentation/userfaultfd: document RWP working set tracking
+
+ Documentation/admin-guide/mm/pagemap.rst     |  13 +-
+ Documentation/admin-guide/mm/userfaultfd.rst | 269 +++++-
+ Documentation/filesystems/proc.rst           |   1 +
+ arch/arm64/Kconfig                           |   1 +
+ arch/arm64/include/asm/pgtable-prot.h        |   8 +-
+ arch/arm64/include/asm/pgtable.h             |  47 +-
+ arch/loongarch/Kconfig                       |   1 +
+ arch/loongarch/include/asm/pgtable.h         |   4 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h |   8 +-
+ arch/powerpc/platforms/Kconfig.cputype       |   1 +
+ arch/riscv/Kconfig                           |   1 +
+ arch/riscv/include/asm/pgtable-bits.h        |  12 +-
+ arch/riscv/include/asm/pgtable.h             |  59 +-
+ arch/s390/Kconfig                            |   1 +
+ arch/s390/include/asm/hugetlb.h              |  12 +-
+ arch/s390/include/asm/pgtable.h              |   4 +-
+ arch/x86/Kconfig                             |   1 +
+ arch/x86/include/asm/pgtable.h               |  56 +-
+ arch/x86/include/asm/pgtable_types.h         |  16 +-
+ fs/proc/task_mmu.c                           |  98 +-
+ include/asm-generic/hugetlb.h                |  18 +-
+ include/asm-generic/pgtable_uffd.h           |  32 +-
+ include/linux/huge_mm.h                      |   7 +
+ include/linux/leafops.h                      |   4 +-
+ include/linux/mm.h                           |  65 +-
+ include/linux/mm_inline.h                    |   4 +-
+ include/linux/pgtable.h                      |  32 +-
+ include/linux/swapops.h                      |   4 +-
+ include/linux/userfaultfd_k.h                | 100 ++-
+ include/trace/events/huge_memory.h           |   2 +-
+ include/trace/events/mmflags.h               |   7 +
+ include/uapi/linux/fs.h                      |   1 +
+ include/uapi/linux/userfaultfd.h             |  54 +-
+ init/Kconfig                                 |   8 +
+ mm/Kconfig                                   |   9 +
+ mm/debug_vm_pgtable.c                        |   4 +-
+ mm/huge_memory.c                             | 170 +++-
+ mm/hugetlb.c                                 | 159 +++-
+ mm/internal.h                                |   4 +-
+ mm/khugepaged.c                              |  40 +-
+ mm/memory.c                                  | 152 +++-
+ mm/migrate.c                                 |  20 +-
+ mm/migrate_device.c                          |   8 +-
+ mm/mprotect.c                                |  70 +-
+ mm/mremap.c                                  |  17 +-
+ mm/page_table_check.c                        |   8 +-
+ mm/rmap.c                                    |  18 +-
+ mm/swapfile.c                                |   9 +-
+ mm/userfaultfd.c                             | 389 +++++++-
+ tools/include/uapi/linux/fs.h                |   1 +
+ tools/testing/selftests/mm/uffd-unit-tests.c | 884 +++++++++++++++++++
+ 51 files changed, 2468 insertions(+), 445 deletions(-)
+
+
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
 -- 
-Cheers,
+2.54.0
 
-David
 
