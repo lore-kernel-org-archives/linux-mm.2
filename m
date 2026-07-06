@@ -4,103 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C227C43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:14:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E7B0C44500
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:17:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F18E6B009E; Mon,  6 Jul 2026 04:14:19 -0400 (EDT)
+	id 60FC56B00CC; Mon,  6 Jul 2026 04:17:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87A436B009F; Mon,  6 Jul 2026 04:14:19 -0400 (EDT)
+	id 599596B00CD; Mon,  6 Jul 2026 04:17:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7933B6B00A0; Mon,  6 Jul 2026 04:14:19 -0400 (EDT)
+	id 4895B6B00CE; Mon,  6 Jul 2026 04:17:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 47CAD6B009E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:14:19 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C0F5AC1834
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:14:18 +0000 (UTC)
-X-FDA: 84957639396.06.2A3017E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DA0A9A0005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:14:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYRdQkDO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1A7F26B00CC
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:17:06 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 998D0C1834
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:17:05 +0000 (UTC)
+X-FDA: 84957646410.13.A7A6D5F
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8921440007
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:17:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	spf=pass (imf04.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783325657;
+	s=arc-20220608; t=1783325823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TB+b0ddrTLheGoCg94qx2Bfh8AlH8NtYAV5kGOWY4PU=;
-	b=MDCp0RbZKurSbHyuyKiLzWrn7XmTmxYmDLx5thV6/BrrL0YjcL7Zoe8dXgcypR/EC4cs7X
-	m6H0LBT8Px1ON9Xcz+bUCWL6saEhPPecsdRioJERKvBUTYN3Hn+7noGveNSdmnU7jsk+Ef
-	CK4BLBUn54TxJpYYbkktKmxOju8TDaw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=EqdN0nfRX0ZtDirMKcDWYNz4PQakUYyNbq2l57Z9lB8=;
+	b=lMcWjWeNOvgUlerFMv56MxmRgWnN5rDzdcnPb4LUQQKNbs2V4nYqz4tmCZ+IFfTCjMDL6L
+	6LJDTz6YgI36WoiYX0g7mbU3d77/N+KmZ4M35fzdJy8rqN6KCLRUDmkNRh5yeSfOnEiJDU
+	rxOOsQyNseShR3d4QY0GSgua2s9tXbY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aYRdQkDO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783325657;
-	b=Hk+F4eEaJwUqQo3mZLMk9HpSj8ul9E0vOjSwsMonSIip/mxhSropUdoyLnAo2zXNmxGuwe
-	81QQmGWfELoEPhk7VrveLiKoZjYGW+0JfQCI/lxZ+iJQjK87yUBsz6qz3p7CSA4mSF4QWM
-	b/iVl51/xJkYoRjSSAtRBiRLzE8XTI8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BACFA418FE
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:14:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9D91F000E9
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:14:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783325655;
-	bh=TB+b0ddrTLheGoCg94qx2Bfh8AlH8NtYAV5kGOWY4PU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=aYRdQkDOspVRkcqAGAPaMoGt0RdD+PLqNNjAV9dF1bgA/Q5oVz6VAzQUVGNet7Dei
-	 n4Yp6A/+8tA513pDUMLQnseKukhZQSousPebV3GoeY047cPKW/h5+yM9LqSicKEc4D
-	 acr8lemOdlSrqbYDLVO5wEAClD8786CLzO57yc7DQt3NNuyLQ5K1OTSlNJtsDh4KNu
-	 DErZGr7w3rWxstqPh1M+LCKCDA7apTu9eaiYAdYyvI7riXq0YtX45Kw3uqHtLHCHwF
-	 wLP0XRLg/OvbRCNWw9jB7jD4jt2GcTTa41dg9EXDqrAzKEXemiWBUUtr5HJJ1/XMts
-	 rU6zZii9aV7Iw==
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-92e85499ffbso234034385a.0
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 01:14:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RpkvMYoETyrTqOcKDKWv5OqJ9PkP+WlHCF1+/uqTT61Xq2P8pQXMPEcSuR+ATMk2Tjm+xsACX2DgQ==@kvack.org
-X-Gm-Message-State: AOJu0YyC3fQx/sXNM9BoStkZA5UEBXFHQZ+geAsw73xEhZHqjnz70yOI
-	8vleAMuacoUyjkRfVdNNLGOgMmHfYWRHei26UqFQBDKAfEMaYjY+NzydStCA+ZScH4w5QTAXLpA
-	qProKwH7NsrWNryVrcdnkX75HifZ+jYc=
-X-Received: by 2002:a05:620a:1a15:b0:914:7b4f:cf5b with SMTP id
- af79cd13be357-92e9a323027mr1226259485a.16.1783325655004; Mon, 06 Jul 2026
- 01:14:15 -0700 (PDT)
+	t=1783325823;
+	b=PwUoDYeNyOrRraqFeltHkY8+/MdNEMOmcdnpxPyFceIPvnA7ApfBamHkcjK0HSU1RtmsX3
+	2QCy2wnMpyjETyXkbJfthM5Qa7Y24D+rMpokguiG8zcmIal7bofK7KVdbh1MYTov9WdW4z
+	/LEZ6rZ2LMGoRXTScq21mBFbqF03DMA=
+X-UUID: 0cc495b0791311f1aa26b74ffac11d73-20260706
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_FG_IT, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:dbe34077-1383-4c34-9d53-cd4508c2c74e,IP:10,
+	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-15
+X-CID-INFO: VERSION:1.3.12,REQID:dbe34077-1383-4c34-9d53-cd4508c2c74e,IP:10,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:c96d5a668d2e3432a5e6483a35694a94,BulkI
+	D:2607061616569IP18YBF,BulkQuantity:0,Recheck:0,SF:10|38|66|78|102|127|136
+	|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:99|1,File:nil,RT:nil,
+	Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BR
+	R:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 0cc495b0791311f1aa26b74ffac11d73-20260706
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 975551959; Mon, 06 Jul 2026 16:16:55 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org
+Cc: jhubbard@nvidia.com,
+	joey.gouly@arm.com,
+	keith.lucas@oracle.com,
+	kevin.brodsky@arm.com,
+	usama.anjum@collabora.com,
+	yury.khrustalev@arm.com,
+	zwisler@google.com,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	hongfu.li@linux.dev,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: [PATCH v10 0/6] selftests/mm: refactor pkey helpers and fix mmap error handling
+Date: Mon,  6 Jul 2026 16:15:54 +0800
+Message-Id: <20260706081600.3570203-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20260701235955.36126-1-baohua@kernel.org> <20260701235955.36126-3-baohua@kernel.org>
- <3a185a5d-2f2c-4e9d-9cd9-8bdb236dfc5c@kernel.org>
-In-Reply-To: <3a185a5d-2f2c-4e9d-9cd9-8bdb236dfc5c@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 6 Jul 2026 16:14:03 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xoMpPE3SJfGrvoRS6PfzENZ1cLNG+po_Jt+XOABGsWMQ@mail.gmail.com>
-X-Gm-Features: AVVi8Cdjl0puxSjtBjIfqSnG5_xGwlRqh9d9ax4CxrV2obqq1fsCUOSUJyvWTbQ
-Message-ID: <CAGsJ_4xoMpPE3SJfGrvoRS6PfzENZ1cLNG+po_Jt+XOABGsWMQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] mm: drop stale folio_ref_count()==1 check in
- do_swap_page reuse logic
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baoquan.he@linux.dev, 
-	chrisl@kernel.org, jp.kobryn@linux.dev, kasong@tencent.com, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev, 
-	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, youngjun.park@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: DA0A9A0005
-X-Stat-Signature: qarm8o1tp9yixftyrzfdia3zrjcwnbmm
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783325656-300301
-X-HE-Meta: U2FsdGVkX19FOPrJzQtS0RWUUvizAURdvnDgSHK4EXvrE8I+vcyGl1RM+LYJ5nuKXoaWHCk/hFMItzMuPuvREM4M8AjoYKrYUzq4Dvl9d/beJY6mK/r89VNEiItgU4PJdJY1tmpAY50drX+rmYJjUA/TJF3XlOmxTFGUeGYzw9V8IQIwei5FNLyA22kpPfDr40A34SZEgAa2ZnNR++9ixdNn+/qMvmyqjSKkn/9bhtEZUt1MEeEP9atD6LehBAJi4SxtrskbtiYj/KE1vLgsBARQ4oyjYWZUqg9JyJqZzDMZxvJ7sZKR2yiA1jpX+hava1IApGTyRzyqm8SP8VKu34TaJi9dXWBxsvGx/doS0NfmEXQIGTmPG+FDXv+5rOxKGa4X2mbyktvz2NR7UtUqIiSm6JRwXSWZj4HznYxi72HMYzI2+iL0AIoQrd1J5xdpFriRYgRIYGWNpQ15U1V2WFcU6WlB/MhowxKj8SIfunaO0MbVtIMAXf7wSQmMOdljg9U3AOqxSnsaPKEW3NURkoNB0OI4iCoHh1+Xa1ODjPxd+O11txEVO46fzd1u+rXg3KyO0rWlTm910E+QebHCHuASg1QN3fRjSTR8vg2LjMS+CzZ0DENkh1vrDG2Gd8hKciGIplEo4x9mRZBcPwg2UdxpLBdDK62SYKlYkDrikFSoDaZq9GA0CzwOS/E1SKmEXHQzJea+jYse78A7jNx5VfbOJobNYS6umvYbWxHLBOxH2WjaMfBdB1qLKDo1kOqC0J5CG0Inmwq1gHXTRnRx5HyJ46qdVLQtsJtlEsCzAkfBcczlvJ7rQvzMfUSOl52T47Or4XwMY2mIvfU2Yd+mIQsIqh1bsyYfphhISp5ueugyV7UyOPZFL6BURVQjIJfAOls/OEfCCPpiGblbhJ1BQxD03ppJRgQ7yVACJRZqSN7JGg+QCtEG0zrW8YOWahjMEN7WyzAWPm9s6lEsZNS
- e2Gz8yJS
- zqZei8V1W3/1M+egxxMheZV4FerE0xREReXi9vy0cyU3AwsNLBGy7nLwxPK19oEK8/4lXAbTV/1oETe2YvqfX4Usmdfl8zKelSXXx88Tqm2dzWGi72hdxv6IJp6F8Dq4zx8i0sIJGk/1KAcRTf3I0fPt3ribN6JJ3Z8la7S23EMhUays04tuabWnAZTyiL1IcqEe+aF9ww7OjzJKLrN5kX2Axn7awkirs2/Byi3O15jCyHsH/0hkssjsrJLOqzkOd770cNAmEWO18g0tNuGLBMQbl0C0DeyxFhIKzhW5I7tI2jGVOzuW7Nvxpz9dkAhMp63OHKuuxidwr9PKjoi4ZKV2IQoghkqVMIRlF75fijGd5HcAHUtckUduIlxYmK338zuCE
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8921440007
+X-Stat-Signature: erzu4jnk7s5ajwxb1xrhwhsf8iaepqtq
+X-HE-Tag: 1783325822-15118
+X-HE-Meta: U2FsdGVkX1/o+yDIYR0XsrrxPuLYGvgEuowJ013Ay4RxPhJKmgNV/ukT6abVCfssyNrBjf2oUoUXhYRBUk+W+l1Vu8PMrc8Po+pJ5DZjcB0Hiq7KFNSMoetG4hCsAWIi0jEo15xZYZwDF4kEjur4/UrKlCbRmgoL6Z02d5cXg+eL3kQ1kHAKtYPrzE1Vf82K8Z/VuY5xpMqzCTy253AeVBnKT/SGLRvQB8gr5UEE9Wi6fZIH8qCAJmuV+NcOjaOBgUx/p0bz38IopTIXd53oCqQL0QFgQOGW+mhtn8ZulaHbvhuAkfvnHjDQUjpOnDHfrB6XxXucm38k5YNXj9qrb6hN9XabuohBlmJMtlfd8zxr6pUe+j7d0IKsxw9gX74rgSOJ5b3yq/uuDujgZRWmXmneRoJRSCgo+CAvkcRPrtGL1PqbL84xnf2NNCRybi6KzBzyhsAouoeTsPvmqnovNYZkmyXVcILs74/osx6fljrzAL0Pne59Uoiu7eGqfLH1pVLTNOz7qteu8Fz20U/n/XF2oaSlz+/lTuVP9MghZfJT8N0RLz1Dib3bRkIRB79v0X5smt6ipxX5DV6AmiPU7Rsjki8xzNnOqnEgjqZbOvmPfBkH8UpO0TOlR/d4oMDIESykBMUe0hLDVDFFYjlFsysd9Bw7e2PZczq6CctNfYG9IPM0Buh5lUWlC56u/IfrCv3Dhax8pWd81B32Z0kIrYIXwEVSYC1ZyGqJMRInOtcwIR0Rum9Oj5O9i4sGJAV++eY1PykX3nJJh070F6LWkHMPTYRd8ey9++bWX4dTQi+OSNuZ5OLS0QKiAHgscgz3iqokvtMNZzHBO8nGKI7AIjalcmwiLrVS4MyThdp7PQ2FBYH3m/Ksi3H2WsU3W3E7jLznjIa/1kkyAtd6qOAekmeNOs5X0FJsxV7NsbdTXoQ/ulFpvVQKSF0Hy2r/yudr8IQ9/qjMHwaLdAwGpzx
+ zZmqiPth
+ NQdCdXBdXy1Gb4x1m3FJn37ONzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,93 +120,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 2, 2026 at 4:14=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
->
-> On 7/2/26 01:59, Barry Song (Xiaomi) wrote:
-> > The "we just allocated them without exposing them to the swapcache"
-> > case no longer exists, as Kairui has routed synchronous I/O through
-> > the swapcache as well in his series "unify swapin use swap cache and
-> > cleanup flags"[1]. As a result, folio_ref_count() should never be 1
-> > in this path, since at least two references are held (base ref plus
-> > swapcache). Remove the folio_ref_count()=3D=3D1 check and update the
-> > comment accordingly.
->
-> Sashiko points out two minor things (one flagged as medium, lol, sure sur=
-e).
->
-> Here, you can clarify that folio_ref_count()=3D=3D1 is true for freshly a=
-llocated
-> pages (due to the KSM check) in which case exclusive=3Dtrue already.
+The main changes in this series are to refactor shared tracing and assertion
+helpers into a common file, unify both pkey selftests on pkey_assert() and
+per-test tracing for consistent diagnostics, and add missing mmap() return
+checks with MAP_FAILED used throughout for readability and consistency.
 
-Thanks. Sashiko's comment below seems valid. While there's no
-need to change the code, the changelog should be updated to
-reflect it. I'll do that in v4.
+Hongfu Li (6):
+  selftests/mm: move pkey selftest helpers to pkey_util.c
+  selftests/mm: unify pkey sighandler selftest assertions and tracing
+  selftests/mm: use pkey_assert on clone_raw failure in pkey test
+  selftests/mm: add missing mmap() return checks in pkey tests
+  selftests/mm: add missing pthread_create() return checks in pkey tests
+  selftests/mm: fix clone cleartid race in pkey sighandler tests
 
-"Is the claim that folio_ref_count() should never be 1 in this path accurat=
-e?
-When ksm_might_need_to_copy() allocates a fresh folio to break KSM sharing,
-the new folio bypasses the swap cache:
-do_swap_page() {
- ...
- if (!folio_test_ksm(folio)) {
-   ...
- if (folio !=3D swapcache) {
-    /*
-     * We have a fresh page that is not exposed to the
-     * swapcache -> certainly exclusive.
-     */
-  exclusive =3D true;
-  }
-  ...
-}
-In this specific case, the folio refcount would still be exactly 1 when it
-reaches this path.
-While the code change itself is safe because the KSM copy path explicitly
-sets exclusive =3D true earlier (satisfying the new if (exclusive) check
-without needing the refcount check), the rationale in the commit message
-seems to overlook this scenario."
+ tools/testing/selftests/mm/pkey-helpers.h     |   4 +-
+ tools/testing/selftests/mm/pkey-powerpc.h     |   2 +-
+ .../selftests/mm/pkey_sighandler_tests.c      | 115 ++++++++++--------
+ tools/testing/selftests/mm/pkey_util.c        |  90 ++++++++++++++
+ tools/testing/selftests/mm/protection_keys.c  |  99 ++-------------
+ 5 files changed, 165 insertions(+), 145 deletions(-)
 
->
-> >
-> > [1] https://lore.kernel.org/all/20251220-swap-table-p2-v5-0-8862a265a03=
-3@tencent.com/
-> >
-> > Acked-by: Usama Arif <usama.arif@linux.dev>
-> > Reviewed-by: Kairui Song <kasong@tencent.com>
-> > Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  mm/memory.c | 9 +++------
-> >  1 file changed, 3 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 87da78eb1abd..71e9d394816b 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -5046,13 +5046,10 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >               pte =3D pte_mkuffd_wp(pte);
-> >
-> >       /*
-> > -      * Same logic as in do_wp_page(); however, optimize for pages tha=
-t are
-> > -      * certainly not shared either because we just allocated them wit=
-hout
-> > -      * exposing them to the swapcache or because the swap entry indic=
-ates
-> > -      * exclusivity.
-> > +      * Similar logic as in do_wp_page(); however, optimize for pages =
-that are
-> > +      * certainly not because the swap entry indicates exclusivity.
->
-> s/not/not shared/
->
-> but likely you should just simplify to "... pages that are certainly excl=
-usive."
+---
+v10:
+- Add patch 6/6 to fix a pre-existing cleartid race: remove unused
+  settid/cleartid clone flags and wait for the clone child to exit in
+  the sigsegv test.
+v9:
+- In patch 1/5, define test_nr, iteration_nr and dprint_in_signal in
+  pkey_util.c and remove them from protection_keys.c and
+  pkey_sighandler_tests.c.
+- In patch 1/5, cat_into_file() used the wrong argument in the open()
+  failure message; print file instead of str. Update the commit message
+  accordingly.
+- In patch 2/5, align clone_raw() continuation lines to the opening parenthesis.
+- In patch 5/5, set errno from pthread_create() return value before
+  pkey_assert(0) on thread creation failure.
+- Add Acked-by, Reviewed-by and Tested-by tags to each patch.
+v8:
+- No code changes (relative to v7).
+- Updated Cc list: added developers identified via `git blame` and
+  `git log` on tools/testing/selftests/mm/pkey*
+v7:
+- As previously suggested, wait for v7.2-rc1 and rebased the whole series
+  on top of it. No functional code changes.
+v6:
+- Add missing pthread_create() return checks (new patch 5/5).
+- In patch 2/5, call tracing_off() at the start of test_pkru_sigreturn
+  before the SIGSEGV handler is reset to SIG_DFL, to avoid leaving ftrace
+  enabled on crash.
+v5:
+- Use ret instead of child_pid to hold the return value of clone_raw().
+- Make tracing_on(), tracing_off() non-static.
+  Remove cat_into_file() declaration from pkey-helpers.h.
+v4:
+- Base changes on top of the latest mm-unstable branch.
+- Split the first patch into three:
+  patch 1: move pkey selftest helpers to shared code;
+  patch 2: unify sighandler selftest assertions and per-test tracing;
+  patch 3: use pkey_assert() on clone_raw() failure.
+- Use ksft_exit_fail_perror() in main() for mmap() failure.
+v3:
+- Use pkey_assert() for remaining sigaction() and clone_raw() error
+  checks for consistency.
+v2:
+- Update commit message
+- Move shared tracing and assertion helpers to a common file,
+  replace assert() with pkey_assert() in sighandler tests
+- Drop assert() from main() in protection_keys.c and add a proper error
+  message instead.
+- Link to v1: https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+-- 
+2.25.1
 
-Thanks. I will fix the doc in v4.
-
-Best Regards
-Barry
 
