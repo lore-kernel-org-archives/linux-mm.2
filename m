@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B2D7C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:53:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4330AC43602
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:59:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5262F6B00D2; Mon,  6 Jul 2026 07:53:44 -0400 (EDT)
+	id 271E86B00A1; Mon,  6 Jul 2026 07:59:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D6696B00D5; Mon,  6 Jul 2026 07:53:44 -0400 (EDT)
+	id 2495D6B00A2; Mon,  6 Jul 2026 07:59:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C8636B00D7; Mon,  6 Jul 2026 07:53:44 -0400 (EDT)
+	id 15F1E6B00A3; Mon,  6 Jul 2026 07:59:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 083416B00D2
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:53:43 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 684451C7CE5
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:53:43 +0000 (UTC)
-X-FDA: 84958192326.14.9A6E41F
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6DCA4120002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:53:41 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=C5ggkEwQ;
-	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DB0E76B00A1
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:59:27 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 47F3DA03AB
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:59:27 +0000 (UTC)
+X-FDA: 84958206774.20.4B59065
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 9AB9E2000C
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:59:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwl66Jd2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783339165;
+	b=2JiolwgZgiHLsHF5ynJ30gJB0oc7F+I4IGvxVDlzEm3Jv3I+4OWBPa9PqrgQ7eaaaL2Lnw
+	epWGPS0f8PcNyvb5sbxUVWGpg/pI3eQAqKtpLsFd+jHjss0XR3RqhlQjFZKjrdNvyzBG2D
+	ldyYWBbzk6AiEqgJpprMmArWJtsrd94=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwl66Jd2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783338821;
+	s=arc-20220608; t=1783339165;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H75gp8WVKuHVfCLEZVTtpIHpv638HXTLtw28T7Z0uiw=;
-	b=O0cSrCAkrlXoW+8fIDUcKAG3CiuV21gi4F+ULYk6xHOcL9LDg5bksU0LJHWgXRei6zv0A3
-	qXk1v0OsDnu6EFTiW+tIt8Ds09VtiY3LAT+RJ7fZoX6J8VRPW+XO++ges77feh/ZcJxL1p
-	uXNt95DV3Rda08CaoA1WY+xuIS6oUdo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=C5ggkEwQ;
-	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783338821;
-	b=icL9d5zwM9cUBenzS3ZupnmHcVpmkf4+wrTUQmisOZSNZdj3Y/M8uY9gqmY31u+NWWM0C7
-	sjsM/xcw9JqfkJJX6mbXzefg8N/l5sE43Foa+gZd5OTQVfM3X0DE2Rx4lujC+GxYPgPxCX
-	mT+j03lPDXMwsjfh6oTXb+wfpBKaVWo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1783338817; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=H75gp8WVKuHVfCLEZVTtpIHpv638HXTLtw28T7Z0uiw=;
- b=C5ggkEwQLrUkTJ8W8Q8mUoo8pOWeVGFWMd9vma1eQcw78rYf+xULBso5o5K36BeE1LwACc
- JNqxpmawSbMnR7rpDnpaFiwcXj9E0OhQBVnCR9B/kyrw9q6l2IUIC5+j2ebe5AbQl2o3Qq
- wLLjPegiffJ+hE2OtzbC1x1E6ZGffEBXc9aF7O3QXNijmdkMXmXwvRaHeE9XWjOaejlKNb
- LBDmAFXuEqgkasO3SatMlRYFZXkk06ITyMj5exBUe8C2QnWnWHDxtynWlgVEsmWCT/K3cw
- 8wEoU/gy+csXJF8L5wNIAYlD+Mx4utf5OsCvFPrke/9c3J9rr2/+SnZocoMs8A==
-To: <david@kernel.org>
-Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <kees@kernel.org>, 
-	<linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<lizhe.67@bytedance.com>, <mingo@redhat.com>, <rppt@kernel.org>, 
-	<tglx@kernel.org>, <x86@kernel.org>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: Re: [PATCH v5 6/8] string: introduce memcpy_nt() helpers
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Message-Id: <20260706115313.50524-1-lizhe.67@bytedance.com>
-In-Reply-To: <c02d8cd6-a3e8-470f-a7ea-a2f2f666b10c@kernel.org>
-X-Lms-Return-Path: <lba+26a4b973f+bac885+kvack.org+lizhe.67@bytedance.com>
-X-Mailer: git-send-email 2.45.2
-References: <c02d8cd6-a3e8-470f-a7ea-a2f2f666b10c@kernel.org>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Date: Mon,  6 Jul 2026 19:53:13 +0800
-Content-Transfer-Encoding: 7bit
+	bh=V3erF/b265knhzDJVb6b4oDNmirucwH2jZV5nkwg6tQ=;
+	b=5XhtTbwIlze8UrWxvEoAv7TJbBjvGvEfvS8SPwx720pLtf34iokBRxG7Ivu0EttNfKFL1m
+	rL2Tp1aolcJbc13SUlrg+sve1reiAr1SK1PFU5s0YzyPqXkiJlMuGcI5rQLSK1k/o5nG4Z
+	6yXQm/wNs51brwD4oQbhFZEfGejCBTg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 11168600C3;
+	Mon,  6 Jul 2026 11:59:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40CC1F000E9;
+	Mon,  6 Jul 2026 11:59:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783339164;
+	bh=V3erF/b265knhzDJVb6b4oDNmirucwH2jZV5nkwg6tQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cwl66Jd2LhYKHJJKFi12bQQ7Cp3/mMIdXHkk4kiHHX5CIPhcXTNTLhcClMHCK9AFV
+	 bVeonePrZGiZV94RKuRwqqzyRPBKezrxtZQJQ13YFUNW318600LJpEu3gDmEfWu8+U
+	 1ZifY8KRxsHDQYcR1yQHNuixr6Ijlzi8USCISeaNo9tucChlGUV6SoXMTzSYRdfUgQ
+	 ejuzbJXpWCagqRcIF3NgwEHm3QPmBaSdetvwpC48ln94Lg0NRoL3aTzGvyO0JMg2QF
+	 5YGJ0CXK09laAqRuWCwmYryaNYtdfzmbrfTn1b2kbwml00QeW7Y/Kcv85mBu2dEnwW
+	 pj7DnF5nAyGew==
+Date: Mon, 6 Jul 2026 12:59:12 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: Lian Wang <lianux.mm@gmail.com>, damon@lists.linux.dev, 
+	linux-mm@kvack.org, daichaobing@sangfor.com.cn, kunwu.chan@gmail.com, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org
+Subject: Re: [RESEND RFC PATCH v2 0/5] mm/damon: add mTHP collapse and split
+ actions
+Message-ID: <akuYh9HQerTfUo1u@lucifer>
+References: <20260702165235.86684-1-sj@kernel.org>
+ <20260703190421.100480-1-sj@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260703190421.100480-1-sj@kernel.org>
+X-Rspamd-Queue-Id: 9AB9E2000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6DCA4120002
-X-Stat-Signature: b5jznpspzhop7upzmsgd6q7f8r5ezunz
-X-HE-Tag: 1783338821-618549
-X-HE-Meta: U2FsdGVkX19Db1LM92HTAArBqBYZuKh3kR8NJ6wxsZozWaFSh8BytUg7JdTu9F4oCS4SJbfY51MjyeSHdiJIlgVoIAsKo+CcMaszm9WMWcqq/J5m4DHSSO9hBMZJZeQLbCZZwqezP7L5YGJp9zYmFCfdGte8wru4SWGouVZwnFuK/hnN1qrTxcTDSU81+Mo4dti38LN42ZKrFFTKLuIBK7/0t72YtC5lV4xlRZdSlwTRYgmK/A/fIVBHatZs8k9xfFAOxobHWrArXQrqX5YOFuyggD5/pATEkDh9fbwH5CrGaq77aanNw8fBA4Tw1g73rSqJCtT8cgSMtFshDXo+1bNCA3ZCMDHjStlBdDt0dz1N6VAnjXCM+MYjF8kNjS0ssM6lmrFsoxYkow7yOCi562dgXczE+SScUu4X9EEUc5em2EhmW7iTiQw1LILevtxfsC7P3MfUhL3dtfuPSP68Qe4JXUgSEFoJ7qOBMrpLr5KYE7A6ghOU1JxlVNSPUyrkzeViOc7I111W7ERKLW6BXNOFEPwYB1dZ3AsQbFI6LDkWkalPWH1YautaExqkWPpejepfsNOoQbq8zaP13ehi0Mp+IADtiWGXv4YklVHi+TY5IXrstcDDreRaoOqn9hpDimjaFSFT4uz7RdftUfYeuAMemNdjrjZdci0he9bCLc+p0JBTh27tNj0xhIUseXQvY2rssMDOqR+98lwhPEx10AUgLJnogCQ4iKSA3UqpL5Ako666RRGYyLbEsyuJmqP2Ywk9fH3XS9SSiRs2Qg9+Q9us0/aNGgXiFEzfdsc4BL6HGon2P20T4a5FyOrc8r72HAXIWF3J1etPEgk0SoOxS9rjhMfmlqoLzCMQ21SQjBcpQDxMrSZKQRgWwbEUzuIL1sM1fxepiejBUlDi2tMHbtadSnxgMnuvobfqOnKDtLc8Hp+DNKtCNMACOTuUzdM5Hx93jIYURWjKH+kSQ52
- af2OhEYs
- ejACB8zKUilc4OwLBORms71qirTsOONMUUoFeZGbqpjME+c3y97djT2nv4Pe0cYxYtx5PJ494c4U5RxJVEO6k+w8Y81f0zIwO67Es4VlOo6MV4xnRqY2+25L64VvWCU+8vNyULC+AHJJxX3hEQd9XXs68v4OSZw9wGucNw0nkxCu386vYqLjwFuHEggBlYjlPhpdbk+3OF28fU3nBtOGIKucQEtnKSgufRpTI084HnI1UasFSgm4HsxWnqrb1JfXcYsS06f68BSU8jUgC/sF5FRBp9rjVYOqM6eDBhZDdxcNQznPGg2z7mnnFt08kJitvnhekZlBEieA5rjI=
+X-Stat-Signature: 48jdjw45p4sssxwjnwamszb1dzgf5tyb
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783339165-323171
+X-HE-Meta: U2FsdGVkX19ggwuxAdna9EEULBgtNqzfNY9KyKenjKK5aZ/msgZ8ov7usaL04DO+yBSzIzDz2G7p5mzqzv09XV4tOOdG+Cgp/+kJPf7eYBFbpfbWlRkp81FmTrxr1c7D373b7D7o2NQJ+9muLz0SODQ3aGIO+2xjzTpkEs4eSmMGuT4BZdWhbr6JESsk2miGoARLIHZF4dK2flJitd+G6ZmjtpLDeQEFcLCdALw/zQADEiXZYu0MFr887WuFyrPuoVe6UX8EwPadVaepzoVgIkjOlNQOR+xg6myMiy6wX7LfMQucXRvqYld+neQSQvN4fm0+wt14yE3wDOT6g1EYG7Cce96g7Vfvkfso9WQQYeNI7Nr3XAPq9gpKlI2UIYhGUM6I+oLWg5qcm5I+HmjBPFlj/+J/dyLsgJ/OgbKf35MfPWV2Hv+NHvX1m5YKsuxwsZWg9RUxQ9ihyuv6H4ZPbKhhfz2E+uPGk5yWezolYlz7lYqmnKj8qgncj4wkSpemKUWuZcF1Fe4QrSRKGdCQqrikML8Kg+XayJk2TTtIPHFtyOhTSNLPt+7syBW71fIseO/BwzL46emGAZFRfzd/+rnQRboQqmtXVbttZEFAfh5QJ9FiFSn5C3/ocUCZZSoKJJscHzcB7wMc21IZWXoL8OjSu3bPsX4eqI7WSXKWV1/Ui/1kZN19eLPMgb68mow282899RS3lH/IXbwvrbodCxWH4bGQGNJW5pELp6if8wRu4Y9PIkhlZrYg3ymX3CvoqJQyvfXQyp39bveoMWiSo7/suIT05C4wUoSCMdD10ic6rbUCy6AX40LGGxCemTTDn1jaOqFwSwT6ptfd+tjUTJv2W6JB1Gj/zPIwkmLLoTtFoJdun3qUhtqKCrAFLUF8K5ze7HUqIrp6tGt/tydang0qOOnK0bl2Ff6IUwYLmls8hnWV3f+J7t698Codkbikw3w0ilffRv44/3+pXhB
+ IffFS6LI
+ CM/qy+w4UXoeQc6pn9drZ0fmcikC7N7/yh/CoxCYJnmGJI/vPYbJV0TggHmNWRbsIHJEAZ6fyHtDCveiSs3lR4mxSVyLSD5E6rPFKJy2vtlv596gIeS2k06/D6tcqUk+hb1PWhI25l4y6HuI21I6t5Ir/GMQiQgvz37xyIzhE7BttEK5Vkzem5X5VuIyGXywu5dRJYsyFoEhDGgL8rDd7OtMR7Pf/nWx99/icR449Wy8teAfxVEZtToqZfoJ4Wo7vxzYTXSSMtCg75VeaM46sm5TTblcTq4TUBraLvZ2Q0cqimV8A9VkYaHFODlE5AMc8T/BU4FQU41osq257Hl+b3k4BPE7/YeDkFl8R8vbt3o+6dEoQd7jfUojvMFgVnWSJBLWAJ4b7Z0ajEu47WQESzmCIMXfJZ8zSpD5qE8LvZt5PPtDKZVYUm1awOy6XHmHgGg7N4Xc4yHKaXBOlL7w2xJzuo4Wv4jlJxSeGivM3oAxtpIlOcGfKqjGb8decL8excmCvE4FYn55Jm9eFn0Up/229LDGu3lq91abw3EgXFoogUPIaAa0uzrYgxp3QQt28p0rInsYifVXt/AfYAGa6nq4p8cK07rgfKZziuUl6OzknrE3JhTUeFXj1U7QGSnld04OB0DktEyeazCFRqyCFst1queMPtR03ox56m1lR1owYHzrTawvxLl4yrw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,42 +96,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 6, 2026 at 11:18:48AM +0200, david@kernel.org wrote:
+On Fri, Jul 03, 2026 at 12:04:20PM -0700, SJ Park wrote:
+> On Thu,  2 Jul 2026 09:52:34 -0700 SJ Park <sj@kernel.org> wrote:
+>
+> > On Thu, 2 Jul 2026 11:23:55 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+> >
+> > > +cc all those you missed.
+> >
+> > Thank you for doing this, Lorenzo.
+> >
+> > >
+> > > I really need to write a bot to do this, because I'm getting a little tired of
+> > > pointing this out :))
+> >
+> > Good idea.  I will also consider implementing this kind of checks to to my lzy
+> > tool box [1] or hkml [2].
+>
+> I implemented [1] the check logic on hkml.  Many things to fix and improve in
+> future, but seems working at least for this series.  You can use it like below:
+>
+>     $ hkml patch check --check_recipients only ./0002-mm-khugepaged-add-damon-collapse-folio-range-for-external-callers.patch
+>     MISSING RECIPIENTS for [RESEND RFC PATCH v2 2/5] mm/khugepaged: add damon_collapse_folio_range() for external callers
+>     - Andrew Morton <akpm@linux-foundation.org>
+>     - David Hildenbrand <david@kernel.org>
+>     - Lorenzo Stoakes <ljs@kernel.org>
+>     - Zi Yan <ziy@nvidia.com>
+>     - Baolin Wang <baolin.wang@linux.alibaba.com>
+>     - "Liam R. Howlett" <liam@infradead.org>
+>     - Nico Pache <npache@redhat.com>
+>     - Ryan Roberts <ryan.roberts@arm.com>
+>     - Dev Jain <dev.jain@arm.com>
+>     - Barry Song <baohua@kernel.org>
+>     - Lance Yang <lance.yang@linux.dev>
+>     - Usama Arif <usama.arif@linux.dev>
+>     - linux-kernel@vger.kernel.org
+>     $ hkml patch check --check_recipients only ./0003-mm-damon-vaddr-implement-mthp-aware-damos-collapse-handler.patch
+>     MISSING RECIPIENTS for [RESEND RFC PATCH v2 3/5] mm/damon/vaddr: implement mTHP-aware DAMOS_COLLAPSE handler
+>     - Andrew Morton <akpm@linux-foundation.org>
+>     - linux-kernel@vger.kernel.org
+>
+> It is also integrated with the interactive mails list [2], so that you can run
+> it without manually downloading the patch files.
+>
+> FWIW, 'hkml patch format' automatically adds recipients based on
+> get_maintainer.pl, so this check is unnecessary for hkml users.  But this will
+> help me reviewing patches that not formatted with hkml or other similar
+> scripts.
+>
+> hkml has a feature [3] to monitor new mails.  Extending it to run this new
+> check and send mails for check failures could be one of the ways to implement
+> the bot.  I'm not planning to do that by myself, though.  I will run the check
+> only for patches that look interesting to me, for now.
+>
+> [1] https://github.com/sjp38/hackermail/commit/9ca6fa1f71edc7a219edeb41d4c7f91
+> [2] https://github.com/sjp38/hackermail/blob/master/USAGE.md#interactive-viewer
+> [3] https://github.com/sjp38/hackermail/blob/master/USAGE.md#monitoring-mails
+>
+>
+> Thanks,
+> SJ
+>
+> [...]
 
-> > +
-> > +#define __HAVE_ARCH_MEMCPY_NT 1
-> > +/*
-> > + * Reuse the existing x86 flushcache backend as the nt copy primitive.
-> > + * Callers pair it with memcpy_nt_drain() when later stores must be
-> > + * ordered after the copy.
-> > + */
-> > +static __always_inline void memcpy_nt(void *dst, const void *src, size_t cnt)
-> > +{
-> > +	memcpy_flushcache(dst, src, cnt);
-> > +}
-> 
-> In particular if you end up with a single function (that jsut requires a write
-> memory barrier afterwards), please make this
-> 
-> #define memcpy_nt memcpy_nt
-> 
-> instead.
+Nice, thanks SJ! That's cool :)
 
-Thanks for the review.
-
-Just to make sure I understood this correctly: do you mean that, rather
-than using a separate __HAVE_ARCH_MEMCPY_NT feature macro, you would
-prefer the usual self-macro override pattern, with
-
-    #define memcpy_nt memcpy_nt
-
-in arch/x86/include/asm/string_64.h and the generic fallback kept under
-#ifndef memcpy_nt in include/linux/string.h?
-
-If so, I can rework it that way in v6. I would likely use the same
-pattern for memcpy_nt_drain() as well, unless you would prefer
-otherwise.
-
-Thanks,
-Zhe
+Cheers, Lorenzo
 
