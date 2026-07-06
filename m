@@ -4,138 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F27FC44500
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:42:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73153C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:43:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 814A86B00D4; Mon,  6 Jul 2026 04:42:53 -0400 (EDT)
+	id 5A5836B009F; Mon,  6 Jul 2026 04:43:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C5EB6B00D9; Mon,  6 Jul 2026 04:42:53 -0400 (EDT)
+	id 555BB6B00CE; Mon,  6 Jul 2026 04:43:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68EC26B00DB; Mon,  6 Jul 2026 04:42:53 -0400 (EDT)
+	id 4455E6B00D8; Mon,  6 Jul 2026 04:43:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 43B8D6B00D4
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:42:53 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C1BE71A0330
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:42:52 +0000 (UTC)
-X-FDA: 84957711384.14.CF991E5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 15B2220005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:42:50 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIn7Iybc;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1891C6B009F
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:43:53 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9BD1A1C7B6B
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:43:52 +0000 (UTC)
+X-FDA: 84957713904.05.AB02294
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D4CE41A0005
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:43:50 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=R7uVCrqd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783327430;
+	b=g4OFMxui+iUX+YpSSsLwajhwS92qbBa5sNPdaoLVsM7j/42qyEtCaMeh56QxqZ+cGzbgO2
+	a1IC+DCwqk4rWg3ww3FWmh6y8CGKlkzLqtiftP/BgGgPNEqgtlgtK5JD8kuZBW2Y14RfXw
+	C/o0HiCLlWERxJPkw39YG5yK8rLxmRo=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=R7uVCrqd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783327371;
+	s=arc-20220608; t=1783327430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Q5OO705sqjVj6V3CrHEmc9+5Y9WaD9cC61NbPqoX2M=;
-	b=MGiP1F3V4KMaz02QNce6RcrgKDqqjHaB4n/yEWA3Q0KjW1+XhrQRa2boFm3raiRmpq79WU
-	uZ6sARCDeViatbhYmzfEpY8a7ywpethXDrtOiyjWAVYmsNR1zxHGeE2X7peDiv7aqKXSX+
-	/ZEfxXUe0DrZ7+BsA5qFii6Nuzc3J+I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783327371;
-	b=JDjYqa8m0TNRxqn2iS7BaReMAEtovb5Z/Y6aEtj775oGekdETnQXfr1w7NG7LWRKW3pjZ8
-	Dme4YT/1+EAMKb9dS1vjuMsdaHp1em7SYSXpRNs/Bi5+mnT3MBIB/d3RZHOcSDYICM6me7
-	ZxfMpCB3d3r/ap1JlckPtdHspXN727o=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GIn7Iybc;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A0B2F600C3;
-	Mon,  6 Jul 2026 08:42:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E18FD1F000E9;
-	Mon,  6 Jul 2026 08:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783327370;
-	bh=4Q5OO705sqjVj6V3CrHEmc9+5Y9WaD9cC61NbPqoX2M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GIn7IybcH1uE5DRSJIA+De7ml6yEreHoYtoLylpcdr3GmdnCHE1BTfJt77E81gIrC
-	 Bu4bNtxk72Z215rCaWwi1riDyON8LcC30fP0JWQbX3ZDlEKm73Z4JVvyg/VS25Tu0F
-	 U9kFe4eN8/5l2LqnonCP5kQPI4hSRTA0MtQbYniBu1TAG/o8crimtVNxICa3IGfTQm
-	 44vkMz7rqjToCBYZJ4aNovjI2sQ/eOAxpg1prfNueRtcxJoJ8C/gbEQ8WlLhIT5qVM
-	 kyHoUejLrtHyd8J44dK+2YFbFNgNWhLQeoS+kQDnIxdK/jEy7vo/AMVARDnMihBhHQ
-	 I4ZtnrgU/XBGw==
-Message-ID: <503aee9e-97fc-4889-a379-3c0a5d140554@kernel.org>
-Date: Mon, 6 Jul 2026 10:42:46 +0200
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=itR8BbvSOUPvqHuUaLoncjOsPFlKikq0KEUNB8ftVG8=;
+	b=FhTYKhrpZFfs15QOx75aiu9ebb1oe1tsYVJzGPxsijBdxkXlYpYfaN86OzwO56vyRjrz77
+	4EV2ZNVR4aJTGLiSkupN60cPyoOgXznVxQQyx26fPoxy2acgFLgrM9Sqx0vW1tuugwcJ1m
+	Q39kUaHZF/c5+2pmRawzlU+/NO0bOMY=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3811074a8c5so1892041a91.1
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 01:43:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783327430; x=1783932230; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=itR8BbvSOUPvqHuUaLoncjOsPFlKikq0KEUNB8ftVG8=;
+        b=R7uVCrqdchTzPGxCjtB76MDL133JD6NR1aOTCGYacw0K4nVgrsAolfLjjHQFoAh21E
+         DFHnXxeUqhdUKgmnjJmEayo/eRCM+7vNLURuHeKapSdFNXUF772Nds9JJ1HFiLDWDi4W
+         Ici5RXVM/+iclsNbIgMETopJXYOScQ+p/AXMD462yXh2mYb7P4JK+g8FjmcUFnIzra0b
+         HhG944Gep5L9sxymgI0Cgndx+06tzvqZB/18FjClZrmQpryRvwxhMqaRIlpC6A1K7L/d
+         /bhcJO3MZBfN8X7HDQTFbGLev57xdlmniy6u1eXdOEzqjCkeWa2lhso1h4yYa6wnsWcy
+         CVqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783327430; x=1783932230;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=itR8BbvSOUPvqHuUaLoncjOsPFlKikq0KEUNB8ftVG8=;
+        b=pUtw+rY5uAUM0yYCa/JTBkwuaZKEqhWpRuwgqqSV2CE7XjxsjKkq/hvaY3PtQJt7Om
+         FwMxUBBo9tTCMAVEjTc1DMOI7lQnogQJAsmI2n2CDcWjCiwTYQkjZdUAZtu+BuXrjqZB
+         5RYMfHEqv86PSsCgB1L5THLPX5nKGZRkh25CeGg2CJzxR/2PStGtNa8BM9xCaK2lhdtV
+         OJH48YFgQZ9i9uESfECEWATEBSONQS+rNM66XUHh5wAE777KWZHfdg8R2Iqv7AcxYu6B
+         BjHn2k+pC49nxuze68vBT8yYI6jIVAq6TiLRGR8cYJtjw39BRkrSI/s56kaybX4k7oXn
+         8kXA==
+X-Forwarded-Encrypted: i=1; AHgh+RpIS6eYuNZnzo3H5qQdyQEsZ13GIk74o1cuOmccldk+7BT8dF/Jzvq6lR2IiW5hT2U6gdBt124WEA==@kvack.org
+X-Gm-Message-State: AOJu0YzKcnCEq4e8WRlrEtTcmYkCLTtOKVhyKgBtb+0eMcjHZ+iTA0T3
+	6YcmqAjNP1HJptQXGp3ZDeCN+ZPzkC5nbKe6+8knWTTV/emxF2Qx9ph7
+X-Gm-Gg: AfdE7cmU3ovbbWPSbjATbW4aqcVgu2GqDxK0iaDtm7qFcfjj+Ko/I8csyvONEBNKnEm
+	mTfhOq4kiozEUeWWGDhIiuY6Kls9sX3LOVziwhvRf8/z0PL2SyJEHFoQGTXYngJT67EpGsOS+7g
+	Uec9Zo4ZRLZtdcJe28vhds9QE7BMs3/hg0ldpSHTZjPunryS034I/G9G4fvLjkhJycZPyzzj0VT
+	qLnV83X4JhXjtf7XTxrVpvfc/iIk7fqa2z/dn/GtVpc2Y0dkgnkj4Ul3I9vKk6Ytd+v16Y274Ov
+	JcD6paNseeaxBN4gXFWB4cDRcdarZ2zd9gnVoWQLpUoJBy4rniX1eDHarT/aJsluCzE3RUTITzL
+	l4/uriaTpAKt3BVO5DukTo6e3cEEnsl/t3gPGndlsqwMtWDpwpPfv9R91DddO28k8LDTIXChmLH
+	sUajrN/HAZfjU2ndJx2gicz+SnuQ3+MR7T9Ic=
+X-Received: by 2002:a17:90b:4e8c:b0:37f:eaf9:4682 with SMTP id 98e67ed59e1d1-38280d9a4d4mr9682881a91.14.1783327429729;
+        Mon, 06 Jul 2026 01:43:49 -0700 (PDT)
+Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3812815c10fsm4524635a91.13.2026.07.06.01.43.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 01:43:49 -0700 (PDT)
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
+To: akpm@linux-foundation.org,
+	catalin.marinas@arm.com,
+	linux-mm@kvack.org,
+	urezki@gmail.com,
+	will@kernel.org
+Cc: Xueyuan.chen21@gmail.com,
+	ajd@linux.ibm.com,
+	anshuman.khandual@arm.com,
+	david@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	rppt@kernel.org,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shanghaoqiang@xiaomi.com,
+	Wen Jiang <jiangwen6@xiaomi.com>
+Subject: [PATCH v5 0/6] mm/vmalloc: Speed up ioremap, vmalloc and vmap with contiguous memory
+Date: Mon,  6 Jul 2026 16:42:26 +0800
+Message-Id: <20260706084232.177786-1-jiangwen6@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/secretmem: disable under HIGHMEM
-To: Mike Rapoport <rppt@kernel.org>,
- Brendan Jackman <brendan.jackman@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Brendan Jackman <jackmanb@google.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260703-secretmem-highmem-v1-1-30d5ff944664@google.com>
- <20260704192603.40aa80cf9242b77aa75e8d8d@linux-foundation.org>
- <DJQKSKCN9KIB.25WIOU9KF9CNV@linux.dev> <akpBWmnujSnj1ZEE@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <akpBWmnujSnj1ZEE@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D4CE41A0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 15B2220005
-X-Stat-Signature: tareag38utzqddzgeayo4gj8uwyertwn
-X-HE-Tag: 1783327370-236134
-X-HE-Meta: U2FsdGVkX1+//Xk/PfYKb1iYxGNeV5GQU9b8Ode4lA06KmfOoXUHpDdeVS0aVhmO9RsuDx5tH/DmDneumfiuYDrrZb2V2tM43joCkBcqhJfcGIm2SOEibgdrY3p7gf64ur0WhAX/McpJrtb4cYDHGN+eZuwnS/huyLATCrS0Wzl7XsTlpsuZASpO1WTmPGnbvfgEPvL3CFIICBgUy3YLFImDbCYAzBZiXt85T53VqejKLlLnrvIEbIp3ZZFq3yavZnhnSialZsVRnlyORGrei3V0/+VU+EeuqiUFbB9dj9dC4Cdaq/z+FwJsfjVcZzcfLAYyWKXp+dnMkYuQLSM+wDhQx82bipwX01DxS58Faww1YBy/hVDsoUWaZGoA4SuqFb/ES5f4P6A4dYCvZkxd62QmLFY+pnSiSCR/fVssI4rNIZGyM1AgOqax8QOeost5XhOiQF9Fr8efZiaCvOw8xijwQM4iu3fXpOwkS2rTPhTK/cFlMCWe7GjO70QpNd9OmN36I/0zlllUQhHl0xBHzPi3/5AAEdW6qTAMZCXaJ4yuL5gHLE1pAo7XIPfqCBnjhd/zasrMJPDDEU4wyn0MS3dWRVVU2tDqNyo5RMSYcc6efn4oUviB5LhGZj4fuFAFORyaX5NDfkdzSUdTr6Wkl6k6EWTAUvMpwBj3t2rSCxkn+WWg545zh6bwC1KckjpwV2mmeZuyvIcWmfRN/+i7rjSE5wc5ZnTEoyaFYlse64kcdCNEHry/ufRQE0g7rd3Ol44WlAXWjanhNREs9+GsaX5shjCtVGMx6JXiWUw8XVkqI3xAb08krDZBm+/ZNHzGf92zcU4SmzH1Kceip4BkUowCOZ7Dk5S/9Yq3lgwsd5poha3pWozsY8hK4louKlOeQeHK9XykRrQRQzjBXNHZW+n5hxJZ8ebAmGTL8RZcExH3HWaLErKunSvvPgEszItWRZstXI/FSaPK5MYa4i/
- hlF+yoYq
- 64/Ceeeot8TojzV8IDeKLI7XrMXnayIsjzubi51s1QNwrVUcG2KRQhmQF8Aq9et2w7KrwFQz9+UGxigeBhwSCZxEyPFQJ4vqkpcCVSdIdxLjGhmW6+7MYFDWmg+pwyMAAoRoMFNW8TBYpdUcbWc4CLCX8zP5pdIX35ZtK9RJOIlY/GEGTOeRDMvMAolt/JuwJrJrQguJzWxQkCjern4gQ3KmtbNkrc6UCt8gQT0TBd4N9PxHRWoreYKT+LpwtLYgnfA6S
+X-Stat-Signature: gmeaiug388hyx1z9dmdpjxrzqzdiy9kd
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783327430-352573
+X-HE-Meta: U2FsdGVkX1+3wDWPD5LEppXM7neF6echxOwOz4FRMmGggWn0NtCo1VT90y4vnnetGVF0pzJWb40G2cSFOWCAOnI8DMHJOgo0U7Z78k2h8DnhCU/r1fryCmiRLFXw3eQDLN+mj8+RFtax1UEkmuJ6DCGS0PQFe9ZB7ojygNxwJ0b9G2vbAG7N19ZCNaa61Q8jPGJg85jo2j9eEfbdAxaFFB+rZiCNVABXW/35TjLgqgKj93YxMFIhZ3qq2Nd8iXqmOpl1heqv/AqoY+gqzUGHSTv0ZuhI6SdSPNf7Nb8H8OvBFKNp5cXVuVxBl2lzOq6uiDOE1cGEtod0RPlvqgm2gKiwOqhrBfjvWxVQtR1rJA6zFBtJ4HpKay4DE8YnYejYqH21A3wXJUU/u1OleANgjiXgZVK/5Vpt3uVtkgwd9+Y8Qatvm+zYgh753K8l34s1tuzQkWwnVJgqC0dOFnun6X5JNnTyqvTRtOak+svUk6jFPtA4NqhC9q89wM22xMW7x6RkmDnGzzYpFUPk+JcgHwjg7ZchuLe1opY4P/F5ufzVVpOjOoy4A2syh5QDfvEn3SUHrM2DsX/poVnM8taGzP2CflIbYG0KWmkc+tsyE/Ykhtq8Tk/YYYlKp9NLF/sqzv+OVQ7ISOmrh7/d17EUZcdhenc5MaqNxG+3qaeAH/WeT6/6v0Q0Idr1wb6yqVJq79ROboRgTbS0V+WJgNQbuwcTTWMGMPL3NAMWLaUJRRSKURAovpBJ0XfxOmDb5N4swnV3VzI+mlMCH6PzWOlQewQPOknfOWprEntKjDO078a2cvJd+6MfXMW9dF9sg9XDvVmC8eMCpadYPPqQUbHKCLSs1vsoUzi/llDhH2r/PQOE4L6nZGlvEVAHmunzrREmE0UDHSnZrgMIAoprSw23JrlPGgkUwq0qeU3GiroP1zXXIEU4nQMs9GMkGtSHX89myqPe3qWayEqy0+4gvA+
+ zps2FwaO
+ FQxH6bobBKrB9p/zlhMC9/0XtkwgGdqJpOyH7nGgmv9Lg2XoLRsh+cBZVf2qd3Hml4Mio6ttFGat9bXkqZzvlKPO2Z51TzFW4QHjkL6bVWBGW+nYtPTVZG26cozotd4To8yDgGnc8/Wd6L3dMtO1kiZaWDqZND3kcoA5G14FtNlOP5J07t+vZY5UTaQnJOs5wDTq8jEjzmwrUZRCO6zBWDjCMPbQizikiNYdeZzWhtZeOJ6NiLPqDO+0tMgDEK/FlHFDZ8ZWyUdmBnwMsiaK9OoCZb6EPBSEhGKafl36ZiVkAFC1Zf5v6rT6nVilOO8JfiIrq2TuAXdDwGjA9hOzv16dQ8Ug+ju+A4OJXAMG7yd/32m/UK/Z/g51yCy0G8HgyrqNT2ZUZtsT7nlR4GaLoGK+Var+faECVKZa2tWntz2JRqo2bMvMuPi+3nA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,49 +131,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/5/26 13:34, Mike Rapoport wrote:
-> On Sun, Jul 05, 2026 at 10:46:19AM +0000, Brendan Jackman wrote:
->> On Sun Jul 5, 2026 at 2:26 AM UTC, Andrew Morton wrote:
->>>
->>> Well OK, but the secretmem code is still wrong.  The patch protects
->>> people from hitting the bug but leaves the bug in place.  Surely it would be
->>> better to fix the bug?
->>
->> I don't think the code is wrong if highmem is disabled. Certainly
->> there is an implicit coupling between the .c file and the Kconfig file,
->> but we could always add a BUILD_BUG_ON(IS_ENABLED(CONFIG_SECRETMEM)) to
->> the relevant bit of code to make it explicit.
->>
->>> Is that as simple as adding the folio_test_highmem() test?  
->>
->> This would fix the WARN+SIGBUS but I don't think it resolves the fact
->> that this configuration is completely untested - there are likely other
->> functional bugs? But more importantly, I am not sure if secretmem
->> actually does its security job if kmap_local_page() isn't a NOP. I
->> think shipping a "security feature" that doesn't do what it says would
->> be really terrible. (It might work totally fine, I dunno, but it would
->> require some research and deep thinking that I don't really want to do
->> for a configuration with no users).
->>
->>> Or switching to GFP_KERNEL?  
->>
->> ... Oh, that's a nice idea though :)
-> 
-> GFP_USER if anything :)
+This patchset accelerates ioremap, vmalloc, and vmap when the memory
+is physically fully or partially contiguous. Two techniques are used:
 
-Right.
+1. Avoid page table rewalk when setting PTEs/PMDs for multiple memory
+   segments
+2. Use batched mappings wherever possible in both vmalloc and ARM64
+   layers
 
-> 
-> But still with kmap() and friends not being an NOP the promise "kernel does
-> not map this memory" does not hold.
-> 
-> I think that keeping SECRETMEM and HIGHMEM mutually exclusive is
-> conceptually correct.
+Besides accelerating the mapping path, this also enables large
+mappings (PMD and cont-PTE) for vmap, which are currently not
+supported.
 
-We could even limit it to 64BIT ;)
+Patches 1-2 extend ARM64 vmalloc CONT-PTE mapping to support multiple
+CONT-PTE regions instead of just one.
+
+Patch 3 extracts a common helper vmap_set_ptes() that consolidates PTE
+mapping logic between the ioremap and vmalloc/vmap paths, handling both
+CONT_PTE and regular PTE mappings. This prepares for the next patch.
+
+Patch 4 extends the page table walk path to support page shifts other
+than PAGE_SHIFT and eliminates the page table rewalk for huge vmalloc
+mappings. The function is renamed from vmap_small_pages_range_noflush()
+to vmap_pages_range_noflush_walk().
+
+Patches 5-6 add huge vmap support for contiguous pages, including
+support for non-compound pages with pfn alignment verification.
+
+On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
+the performance CPUfreq policy enabled, benchmark results:
+
+* ioremap(1 MB): 1.35x faster (3407 ns -> 2526 ns)
+* vmalloc(1 MB) mapping time (excluding allocation) with
+  VM_ALLOW_HUGE_VMAP: 1.42x faster (5.00 us -> 3.53us)
+* vmap(100MB) with order-8 pages: 8.3x faster (1235 us -> 149 us)
+
+Many thanks to Xueyuan Chen for his testing efforts on RK3588 boards.
+
+Changes since v4:
+- Move pgsize update before contig_ptes check (patch 1)
+- Use rounddown_pow_of_two instead of __fls in
+  arch_vmap_pte_range_map_size (patch 2)
+- Reword comment to avoid mentioning cont_pte and remove if in
+  vmap_set_ptes (patch 3)
+- Rename vmap_batched() to vmap_pages_range_batched() (patch 5)
+- Use batch_end as the batching cursor to avoid an unused start variable
+  (patch 5)
+- Check arch_vmap_pmd_supported before PMD mapping (patch 6)
+
+Changes since v3:
+- Squash vmap_pte_range() loop variable fix into patch 4 (patch 3, 4)
+- Use shift >= PMD_SHIFT and fix *nr increment in
+  vmap_pages_pmd_range() (patch 4)
+- Pass page_shift directly without capping at PMD_SHIFT (patch 4, 5)
+- Add vm_shift() helper and pass pgprot_t to get_vmap_batch_order()
+  (patch 5)
+- Use min(order, __ffs(pfn)) for graceful pfn alignment degradation,
+  replacing IS_ALIGNED check (patch 5)
+- Remove irrelevant ioremap_max_page_shift early-exit (patch 5)
+- Add __get_vm_area_node_aligned_caller() wrapper, rename to
+  vmap_get_aligned_vm_area() (patch 6)
+
+Changes since v2:
+- Use __fls instead of fls in arch_vmap_pte_range_map_size (patch 2)
+- Add WARN_ON checks in vmap_pages_pmd_range (patch 4)
+- Fix flush_cache_vmap to use saved start address instead of the
+  already-advanced addr (patch 5)
+- Rename __vmap_huge() to vmap_batched() (patch 5)
+- Add caller parameter and unroll while(1) loop (patch 5)
+- Squash patch 7 into patch 5 (stop scanning for compound pages after
+  encountering small pages)
+
+Changes since v1:
+- Fix condition order and use PMD_SIZE instead of CONT_PMD_SIZE in
+  patch 1 (Dev Jain)
+- Squash patch 3+4 and patch 5+7 (Dev Jain)
+- Replace "zigzag" with "page table rewalk" in commit messages
+  (Dev Jain)
+- Rename vmap_small_pages_range_noflush() to
+  vmap_pages_range_noflush_walk() (Dev Jain)
+- Extract vmap_set_ptes() as a new patch to consolidate PTE mapping
+  logic between vmap_pte_range() and vmap_pages_pte_range(), handling
+  both CONT_PTE and regular mappings (Mike Rapoport)
+- Support non-compound pages in get_vmap_batch_order() by falling
+  back to physical contiguity scanning with pfn alignment check
+  (Dev Jain, Uladzislau Rezki)
+- In get_vmap_batch_order(), filter out orders that the architecture
+  cannot batch by checking arch_vmap_pte_supported_shift() directly.
+  This avoids overhead for orders 1-3 on ARM64 CONT_PTE with 4K
+  pages. (patch 5)
+
+Barry Song (Xiaomi) (5):
+  arm64/hugetlb: Extend batching of multiple CONT_PTE in a single PTE
+    setup
+  arm64/vmalloc: Allow arch_vmap_pte_range_map_size to batch multiple
+    CONT_PTE
+  mm/vmalloc: Extend page table walk to support larger page_shift sizes
+    and eliminate page table rewalk
+  mm/vmalloc: map contiguous pages in batches for vmap() if possible
+  mm/vmalloc: align vm_area so vmap() can batch mappings
+
+Wen Jiang (1):
+  mm/vmalloc: Extract vmap_set_ptes() to consolidate PTE mapping logic
+
+ arch/arm64/include/asm/vmalloc.h |   6 +-
+ arch/arm64/mm/hugetlbpage.c      |  10 ++
+ mm/vmalloc.c                     | 243 ++++++++++++++++++++++++-------
+ 3 files changed, 209 insertions(+), 50 deletions(-)
 
 -- 
-Cheers,
+2.34.1
 
-David
 
