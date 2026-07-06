@@ -4,92 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA42C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE40BC44500
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:35:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D1BC6B0121; Mon,  6 Jul 2026 05:29:53 -0400 (EDT)
+	id DA4E36B00A6; Mon,  6 Jul 2026 05:35:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5824B6B0123; Mon,  6 Jul 2026 05:29:53 -0400 (EDT)
+	id D54F16B00AA; Mon,  6 Jul 2026 05:35:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 498086B0124; Mon,  6 Jul 2026 05:29:53 -0400 (EDT)
+	id C46236B00AC; Mon,  6 Jul 2026 05:35:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 236026B0121
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:29:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 97E4C1C7BB5
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:29:52 +0000 (UTC)
-X-FDA: 84957829824.29.D3A94DE
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D170880003
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:29:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=waKnIOgl;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf30.hostedemail.com: domain of BATV+434a720473ee9d4dc2a2+8352+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+434a720473ee9d4dc2a2+8352+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783330190;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B9466B00A6
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:35:42 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 266131A0170
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:35:42 +0000 (UTC)
+X-FDA: 84957844524.12.62074F7
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 604E92000F
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:35:40 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=h7MLbwfY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of rollokb@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=rollokb@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783330540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=REXt9YCJ19JcmX4KYzCXvW7Q/+Sj9+pTne2Ktz2J2oE=;
-	b=Pt6M69YTCtuROa03qhWIh2JnHJf7DmftqGfVv6Rj4M2imXKsNJhzdQ3mpcHZSF9xUc5Rxp
-	Y/VFGfOVQJx9aOU2vmpEtSi3YLCRBIa2BT6Gt6HAs9+mvPEQ4knGqcVzl4Mv5DL9YfUJ9B
-	Chr2H9WlDmB1KI7YjHkR/HxRNraMj/M=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=waKnIOgl;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf30.hostedemail.com: domain of BATV+434a720473ee9d4dc2a2+8352+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+434a720473ee9d4dc2a2+8352+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783330190;
-	b=m5HZk++k6wWiv9qEOmTqgoXE4Pgv2Tc02zkKWy11HIzzlmu6hTOw9TPLsATnzNR9EiNVeQ
-	8RobLbdK6W3gmXAJF3CeKmUuHeiCpgToKA1k777k+PTx9yUXUXfSbh6UPSf0q6GHbrx4DW
-	vvmI+NQfRYRY0dwoDFG6qUTVXRGzl+I=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=REXt9YCJ19JcmX4KYzCXvW7Q/+Sj9+pTne2Ktz2J2oE=; b=waKnIOglODF85QjxE8UVa41fRi
-	Em1i14xKzMkUpKoxYjUja7yCr3HBvuuVDHOQQIpOHgceEkDJAG8NP6UfZFEcUdoCPtUVtipgJiVVL
-	rPworpehccZ78AGqEJPR84dpfkWa/F+YN9d7UFm4tJ0n8BD6XlmzaANup/MLwltPIrCyN2RXWwV2x
-	6YJ1sT1iBwKItqQNbAObL/vKYmFPLBoWd+AF4U7FvunEzdMVGax1pvVXNl3kcJcpuOX1xXOuEcDL3
-	9Rs7ANnudlvEyGTePdaaiDNQb2ACxEOqGKC9BaQ3I/idnUROlhUMnIjV64FWj6zIpIQ0JJortRcec
-	DfmheCLg==;
-Received: from ip-185-104-138-120.ptr.icomera.net ([185.104.138.120] helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wgfe4-0000000C1a1-1jTC;
-	Mon, 06 Jul 2026 09:29:44 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: 
-Cc: baoquan.he@linux.dev,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	usama.arif@linux.dev,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	youngjun.park@lge.com,
-	linux-mm@kvack.org
-Subject: [PATCH 1/7] shmem: provide a shmem_write_folio wrapper
-Date: Mon,  6 Jul 2026 11:29:25 +0200
-Message-ID: <20260706092933.766071-2-hch@lst.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260706092933.766071-1-hch@lst.de>
-References: <20260706092933.766071-1-hch@lst.de>
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=5l9gKFk/jvGuhbt+kDHMGw11EJgDNk5h3/iJVyYJ4P4=;
+	b=1efRI8BTr8URbeQfGHQcjZJBHGEkogkO9uXmQ3aV77PjGAGLsan5oilg3qQf811QEpac7T
+	jWG6oZulj83evgAgEO9ob0TvvC1iqW3JhuWcjgXiJK0wkSezmPFlihOkgF9lDRvAnJ2I3l
+	kbY+LBF6UP2YKtQaELP4+p2/B9GUlgk=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=h7MLbwfY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of rollokb@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=rollokb@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783330540;
+	b=A13OdJ22ZPj6Kp9Fuk7x7+x5HEyuUeYuuM9sw0ycdtWmpKiX7BrDByBsPxPAC43KgqV4hV
+	WgD11JhlaXOaXWZs84F7cpUDCqz1UF2iwriSgfBguQkjvZgV6/4aAE9xwf0ktIQAGx2HFZ
+	uo8dzCw9cqkWMk/1SccbqODI9pe8AB4=
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92eafc94c9cso53836885a.0
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 02:35:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783330539; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e79/WGmVfeUmKwJTF418Ahv7YplSa2emgsQJ14G3JK8vo1PLNi0tKH7vLXFm0ioJQ1
+         RS0mksVvuM1nfGmTcpQDujaGdUyOgZjWsIEesBcKUnIaOo7kJPqk+Zntb2QBF/+Zs2D6
+         oRMh99uihdwvirPImkYO5yNC4ywrD25FJr7qR56rBAXbeqpYt3pd694PLJiHY6SmthEW
+         vSXjo1Kv3YWV3ryuQc1CQmFNeiIphzzHi9br++7FWsA+xNTfraUfkBC6lBf6T41FP2mg
+         ygsut5WuGvUtZPC586Dtfod1DfWupbm0osSUwUbFhVjOOXEjk+NLdikuZRnWTVWt95D7
+         nJ2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:dkim-signature;
+        bh=5l9gKFk/jvGuhbt+kDHMGw11EJgDNk5h3/iJVyYJ4P4=;
+        fh=fn+w96VkXycgVaXKEqpXYH0Gw/dhHJcRpYdWUeqWTa4=;
+        b=iGxcbflJNcfKsx8S/XKYbD/Ex2FEqBifng8Zkmr/TVKMaLIxOcevVo4lMya4b3cfTO
+         Z0d96WswXZm//9rvbBK/zpufz/rRNxLI+ajkaHU1V/o5vdhF4rSBbukIrvKZyxj0eqal
+         8SX0Zq9SGIZlYm/g8eh6pocH9VqaS1mLUD8LTV4dtXJJITLtS2wvegF1FWrpnL8wqi6r
+         ADv2SwvY0irsc3176nhE2E3/CxEbmvZ8OsYiKlMoE2F3fPgG767nyG9/Gb0vz2tKXwAd
+         l3LdEdXA7Cnhfwjms8SwHO7CKjFepNLvdvL0gAMJfO08n8KeNHvaAc70lVSVRdJlqRmf
+         +CXg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783330539; x=1783935339; darn=kvack.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5l9gKFk/jvGuhbt+kDHMGw11EJgDNk5h3/iJVyYJ4P4=;
+        b=h7MLbwfYz9f8o7ZMhQbEzSrW1ZTzPZdQGVSEeu+lVPB1Ha4GtLP+U6FKK/9gPAb/ff
+         b+wVqnW5quu4zYNoebr5qR9BgF/SemZmn2neTxBkc6+5xehydQKmxtHJll8HLOEafFrr
+         XAc1utjNHYy2dZ/W24GL2TDnRGnUCf+HY6g82sFArNCpHFAEfWooVg4aEWn9JCgEgFSJ
+         QPx2vRv+pCI01slwRX/uRwIJPVn3QS3HrOQXRygxCDZkFxpQDD/SEQWtU/Wc2658Ox8u
+         I2c39vz/lVf8pnRMBA5LHnwpEwYNm4ZFMzVz54Ayu4P+jeokrDi4nLuu3GJSO5NJF5l5
+         zIfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783330539; x=1783935339;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5l9gKFk/jvGuhbt+kDHMGw11EJgDNk5h3/iJVyYJ4P4=;
+        b=lyWG9lsBoszss421ne9+JtRs3y+S0YjqcVdqXWbusS8SGtQ6M+PIefUFh0pGebghh+
+         gj10RQzBFa06sXcGkvN1YL+Dxaj+BJC2MVg4WalxjnsgvcPTQYeLZc8TyszZ338jIxvN
+         GUShDcLQxpyJOitJIS+bn0JYNUY7w0TCmdJYp586rK1Y1yekQXgA/mHKwqXeRMqiZak7
+         KenC3TFL/zlwZMomt6PxP9lXD+a1X16isjiq+XSzdtlBpcZCjilaMV8CckzjAgZsEZfk
+         i+RXdGkwZwSuNtuB4rCX0bCFW60j5491JuYpKW5Vn6Ii6TlULUrhe361V31CDz6zpZId
+         fpzg==
+X-Gm-Message-State: AOJu0Yx1TWW3w+rXix0po5EUPRKLp0R3oEuW4tE4yV8TgcBwKEe8har0
+	J08j22K+6bSYCMSAFtSvoC1y7/A2e/SXQatHzWhpSnc1Yag1Hm7vG6ebcpYpXwNUw0Xsngcu7lC
+	ExBup+5fCFoDnzy6Ps3/GDfYYaF7BzPFvWbSOJbE=
+X-Gm-Gg: AfdE7clFVWzL8fYLnIIIhJNdeQTOG1t8JcRe37w/qkPfXhRD8ZM8bF3cQNr2ZCkTSv8
+	nLezX8mtKrAazkK6EgJRBHRo2/Kt3TLtrv8bt6uTQQmG8SA4/L9hBXdGNyO7tUlPF3y03LKdalC
+	v6RX14lTusHCaPNzPhL+WNWxhome1owF1zBQOXZV6CRmlBRlPAXlPG//fLOMJtEcUleN9PjuOOp
+	bQ6LDH9/1sRUyiE2Qn/ecGNvNMoIsWV4h5A8wjJYZjHYllRDrF+hnWLRu988O1F/CyLdq9T7DvP
+	678MB+S1paTltH4c3PMJN4BDRDXU
+X-Received: by 2002:a05:620a:470b:b0:92e:76cd:9594 with SMTP id
+ af79cd13be357-92e9a3a30b3mr1252593185a.19.1783330539525; Mon, 06 Jul 2026
+ 02:35:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+From: R KB <rollokb@gmail.com>
+Date: Mon, 6 Jul 2026 10:35:28 +0100
+X-Gm-Features: AVVi8Cdq93o-zLZxex68UPGezKmDnpjldz3YEr3c-0EsuPE1PTyFzuk7gI-K4E8
+Message-ID: <CAOkhyB7RZ1Ph7+EdYpWfsJQVu7ZF26DRR3B0wZ57eq4BY_en2A@mail.gmail.com>
+Subject: Is there an existing primitive for mapping a file into another
+ process's address space?
+To: linux-mm@kvack.org, Bengamble7@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 604E92000F
+X-Stat-Signature: 8jpebqyxgdab7uyuwpyinp7ut33p5wzm
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D170880003
-X-Stat-Signature: ppd9opx1jxqw3pco1wpxaijewxj98m3h
-X-HE-Tag: 1783330190-513142
-X-HE-Meta: U2FsdGVkX1+g5DtESCLNM1vU4+114HEQglni5IWpiNGgEC+Hf4mVi27g8hfR1C5R8LeOfLWcApRYSwfZL7tdN5mqO883IkZZcWhugmGLwBkQhMibPLOdJxRTEwigzfwuFjb9Kppqqvi6JmXj0vCKubhqbDC1hTwSONqZGiJsnV3piDzmt5gkZThSsJ/6fukfTrFMTGTZPtA/SoLqyqTDPxugEHiWIp8LqiWjV5XBLXWQo4fwG4vefGmEbo2Evj0SKzO+NzR3p2FiQ+HIo/3RvxSvUBw/0L3EqAf+1AGZYyXMyfzYZQAwhqHeMeJm/xoEiZg8j7MHqhehlIVAM0QFRi9XhGSCfy402sAddC80V2jWTmjghsr1iLscYFtGcEgcqqj/njdx1AF1wWiRtoXBXihmnI5Dd47kaBfnyczB8L2wMnqBJTB95mLflFz/LjqNliXy1/HfSmx4wzLVOtbYkp1PE0u8a0jv31OpmPp59jbnmBtd1TG9Kt5Drkix5cVSvitMr1eEn//54uUfcBQvvdxdj4WHRjeMEIpsNlhLnfWmGyxrps+4/aPOuOW949CDl/8YylYNmaqWHgYGtDmwGQ0xKTon4ID/og2WaZous5CW1NeaqPNlzatsnFdoKEfnRWdtuevTKKa5UMqTV1r8KD3TB37JF4BKiE3jlz6B5ucZpMv6IDKVje664nzEe9GPJBI5DO6ir7HacijWP+IQG7X9hLV8p0vVzVXaAXHPwuNX9MAFZQcrjL+h/FxNvbzvGrM6I4VWk9xlb1Yljp4fZ/Rdyk4cftD4TIr+G8Hqe0nH9E9Bjhg28uwgfT5Y1464s0mmA37aSrY4DXycGMrU3axUs9o89NOq0qPIdCHhl4EJhNh/zSEy+QG6aIaNOfkdpgGY6ivldOaKC2lZYG5TYInegLzqr+gzTVAmgShIJtA8gaD7w0k+SmWnrUzI+3JrnF+Dcw3zYyV3LzNrHMi
- lFMLM4Wv
- NXhOgT6DRjUSG/CENFfsvBXMEnQA4MxA7Za6UHfTZKnnR8Wf3COB56tX+uFwZf9OhCQg9Kq1pDAXuJeEtLOxP5Be795AjRjEnPAglBWNk7JFZYU/DiaevkSSLdn7a6R+2K9R6IG7Mt1hpEy9lMgygRqT4H0LXuUiJnCE8XH3PaVR5/pjdb9Y30UZ5jdtPeALO1XUM6RbWB1ZmwJvdDAqFvQGfr9zBi1Wfv/PFUAVg+tE4WY8bhd7HHTPU6lDgZxNgos04fd1vMttMpuSS1Blv66SgJudCux7CC+MNEfZwr6XADowmMrn6UKN6BQsEfj/G76xpg8krcnF5SGX+Kq7JM6mWMTc008ZgSE5AK7U4CVpPYWkb9qHcJPqFXzCGFnlZayZDx5azg6jSEZkqNoWATuHafr5G6zjOt5VZ/7EO+yw+NzKQtYtJ6W4CWVXdefeRo+ZkXkJLHMT1sePhGQOcft0Tt4eD86a5lAaCxfkTB8knCxC8D1h3P31oibafTld/WYSj3jo/MUprauyyflJFuJP/mmMScOBIWfJi+m58cXRNqblFeR8TSlJEgFtZszg6l21SeI7vZ4mGQrwJgxaCrza4SpjkNMLlSrP6axq3SQlad7qQ5Ni1PqR2a41If3ijrY9kXglOc9fGqBZRObmSJq8Oew==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783330540-622216
+X-HE-Meta: U2FsdGVkX18svolnQ/9Bf99M9/8NaWUiyItEcAbxYOpHXWjH+ATVnrYaKdx7ZOXQZHdopprs21KYkJBj9EnMJ5u0Ugcmvq1upyyfh92jwZHvcw4FVv3pYaBkpvPHNHy/aRu1xbQWdmoWRdGY56/Zoz5XCRD5MMHz93o1jDVP+1pM2MIwH2WJDllyHKBU8brraAfCTFDRFsRfIgk2GwYCMe0Hj4UvQa5Ml7oMSURnlwHMmPsAASZCau9JIYKcnDKamRNTVFntUdO4d/zk36FSlDW4iLpqX1jRsvpvukwr+Cy4MqHFSmSAeXekoFeFACNUowZteYTPqVM5hMRktZ3fohVRsiO3cvUryaGlmz8iZRM8WJJYu1J5hJhHxJq1MomQyy9IbLzfZSRL0VFdbqqJeMcvpjarmZUroA/l+POgIwy2+e0g/2iTzsxHauS2RPsM/K3ecXCZbG6PxdqXAg6DStnG6L5lcHrv1+OeEHDZ5scoZ4Pi7yEOxHSIdOkFZLf9a3PZieVJa8TNJbRBw7vhfZsKuZk/Bpd3oGs0V4pMwfTKEzXZAcaa7grn0NHBBGfNPejBU+AIj4dyrDNgVNfCXktKxhIq6++sPuj/uv3J5z0lSXwUBhIKbJMQl3JOlBqsvMovNHz/K+pCaOZFw8OQw1n14q/PipY0B7AY80QVSk+DWF6p3jzAFBkrJ0sq/raiYrSB6oxoxyOwgZmyG+L19gM290Bl+9RkAS4V/ntjMh/vx5ldsA9XxntzOiiX9tqC4wnHjIhlfXeRAoRhaovmUejZKULoomxNofVSSQYeoC7M2Ak3ezZp9C0Ltq4p8+0dCHF9dBWUk0a2I2MoPCTVEQI15h5JtktfZCy0MKQsrSG8MHPrmgN4FaJZ4UjwICxGK8XYCT0L7tsoa5BHs8a1jRhG5jFpqLdZ03ffxr5DtMcD6qezXlVMXQVMKWXZEUL56AzZrGy4JsfcksdQofM
+ F1QV1e7h
+ xNerYj98y9QNcMmct7nA4qHxv1c0v+l57OwLLLbZDs93elUSelincTsHy4yvHU662j2t33F7Tedxk59/R2g6mFsqZfVgtSDBIGVx+LdLZ1ELuDB31sk2h0yvzACmUAOqLR+lxStWmUfRnWS8rTmiDVTg5Q+IW30d52jM+wWkCtbTBNZ29HY0ZPWos+Vy28fBxNTD5PmEVdIHhGktc+y2MA9dEkm5Php0hKfF8r9tD/VNLgKPreYG/sw7pQgN/U32PNyyzsvXU7j0qGXJPp4HwockyrgzDYOmUSCZBgne0DHfgLu2kvqFnRarrR/3HYqwVTBPb9u6t4Ip+Nti2GwzYD7XL+wVLJL42NxrXYtxCJJsRvgFWiAPA4nCG+xABxMeDCUwfNHqmYu+1ADrj07B/40WNFYcKS7XqencFvlpNT2nbtqvhc66OL2zPysaVmjipPOk8RMKuFn+lkRAfvGaKPHZbB8sO0PNJC+P4BKryDDsFSWfgZtjp+rzOrN8St6c8tDFj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,102 +132,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Provide a wrapper for the shmem abuses in drm to prepare for swap I/O
-refactoring by keeping swap_iocb handling entirely contained in mm/.
+Dear kernel developers,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Acked-by: Chris Li <chrisl@kernel.org>
----
- drivers/gpu/drm/i915/gem/i915_gem_shmem.c | 2 +-
- drivers/gpu/drm/ttm/ttm_backup.c          | 2 +-
- include/linux/shmem_fs.h                  | 5 +----
- mm/shmem.c                                | 7 ++++++-
- mm/swap.h                                 | 4 ++++
- 5 files changed, 13 insertions(+), 7 deletions(-)
+First time emailing, so my apologies if this is landing in the wrong place.
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-index 06543ae60706..ef9440166295 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
-@@ -325,7 +325,7 @@ void __shmem_writeback(size_t size, struct address_space *mapping)
- 		if (folio_mapped(folio))
- 			folio_redirty_for_writepage(&wbc, folio);
- 		else
--			error = shmem_writeout(folio, NULL, NULL);
-+			error = shmem_write_folio(folio);
- 	}
- }
- 
-diff --git a/drivers/gpu/drm/ttm/ttm_backup.c b/drivers/gpu/drm/ttm/ttm_backup.c
-index 81df4cb5606b..c5b813a563e7 100644
---- a/drivers/gpu/drm/ttm/ttm_backup.c
-+++ b/drivers/gpu/drm/ttm/ttm_backup.c
-@@ -117,7 +117,7 @@ ttm_backup_backup_page(struct file *backup, struct page *page,
- 	if (writeback && !folio_mapped(to_folio) &&
- 	    folio_clear_dirty_for_io(to_folio)) {
- 		folio_set_reclaim(to_folio);
--		ret = shmem_writeout(to_folio, NULL, NULL);
-+		ret = shmem_write_folio(to_folio);
- 		if (!folio_test_writeback(to_folio))
- 			folio_clear_reclaim(to_folio);
- 		/*
-diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-index e729b9b0e38d..5663dff53186 100644
---- a/include/linux/shmem_fs.h
-+++ b/include/linux/shmem_fs.h
-@@ -12,8 +12,6 @@
- #include <linux/userfaultfd_k.h>
- #include <linux/bits.h>
- 
--struct swap_iocb;
--
- /* inode in-kernel data */
- 
- #ifdef CONFIG_TMPFS_QUOTA
-@@ -123,8 +121,7 @@ static inline bool shmem_mapping(const struct address_space *mapping)
- void shmem_unlock_mapping(struct address_space *mapping);
- struct page *shmem_read_mapping_page_gfp(struct address_space *mapping,
- 					pgoff_t index, gfp_t gfp_mask);
--int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
--		struct list_head *folio_list);
-+int shmem_write_folio(struct folio *folio);
- void shmem_truncate_range(struct inode *inode, loff_t start, uoff_t end);
- int shmem_unuse(unsigned int type);
- 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b51f83c970bb..6011a7f729ae 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1736,7 +1736,12 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
- 	folio_mark_dirty(folio);
- 	return AOP_WRITEPAGE_ACTIVATE;	/* Return with folio locked */
- }
--EXPORT_SYMBOL_GPL(shmem_writeout);
-+
-+int shmem_write_folio(struct folio *folio)
-+{
-+	return shmem_writeout(folio, NULL, NULL);
-+}
-+EXPORT_SYMBOL_GPL(shmem_write_folio);
- 
- #if defined(CONFIG_NUMA) && defined(CONFIG_TMPFS)
- static void shmem_show_mpol(struct seq_file *seq, struct mempolicy *mpol)
-diff --git a/mm/swap.h b/mm/swap.h
-index 77d2d14eda42..4f86ef338a60 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -473,4 +473,8 @@ static inline unsigned int folio_swap_flags(struct folio *folio)
- }
- 
- #endif /* CONFIG_SWAP */
-+
-+int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
-+		struct list_head *folio_list);
-+
- #endif /* _MM_SWAP_H */
--- 
-2.53.0
+What I'm trying to do: I'm trying to create a process that brokers
+mmaps in different modes allowing for exclusive mutable access. I can
+do this in macOS and Windows with the kernel APIs that treat virtual
+memory regions userspace addressable objects, but I can't figure if
+there is a set of more UNIX like primitives on Linux that allow me to
+do the same thing.
 
+Basically this is the flow:
+
+  1. Client requests to read a file from a service
+  2. The service checks the entitlements
+  3. The client receives a virtual memory mapping that it can read or
+write to depending on permissions
+
+The client can't alias the virtual memory mapping (as in remap it),
+can't share the mapping with other processes (either by forking or
+sending the mappable object).
+
+Everything I can find in Linux doesn't quite do all three things:
+map-once, no further sharing, and no copying of data.
+
+  - Sending a FD. A client gets an FD but this can be dup'd and sent
+again SCM_RIGHTs and the FD can be mmap'd multiple times.
+  - userfaultfd: can't map files into existing mappings, would require copi=
+es.
+  - memfd: closest analogue, but requires data to be copied into memfd
+initially - can't map a file into an memfd.
+  - fork + pre-map + exec: works, but only when the broker is the
+client's parent, so no dynamic serving.
+
+Both XNU and Windows do this directly, and the same way: the broker
+maps the object into the target's address space, so the client never
+holds a handle to forward.
+
+  - XNU: mach_vm_map(target_task, ..., memory_object, ...,
+VM_INHERIT_NONE). The broker holds a send right to the client's task
+port and maps straight into the client. The client gets the mapping in
+its vm_map and no port to the object, and a vm_map entry isn't
+passable. VM_INHERIT_NONE handles fork.
+
+  - Windows: MapViewOfFile3(section, process, ...) maps the section
+straight into the target process. The client gets the view and holds
+no section handle =E2=80=94 nothing to remap or pass on
+
+What both have and Linux doesn't is a cross-address-space map: install
+a mapping into another process, addressed by a handle to that process.
+process_vm_readv/writev copy, they don't map, and there's no mmap that
+targets another pid. That's what forces the fd into the client.
+
+Is there a way Linux can do this with some incantation of it's API's?
+
+I've written a small 100 line kernel module that allows me to install
+the mapping without client processes having an fd.  This works by way
+of a protocol where the server puts a nonce mapped to the real fd in a
+/dev/broker device, with the client then mmap's using the nonce and
+the /dev/broker device just proxies to mmap.  I'm not a kernel dev and
+it's the first module I've written, so I don't want to drag a design
+question down into first-pass kernel code I'm not qualified to write,
+but I can send it if it helps to see the shape?
+
+I feel like something like this must already exist and I'm just being
+an idiot if I can write a tiny misc device that can emulate it :)
+
+Thanks,
+Rollo
 
