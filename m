@@ -4,77 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFC51C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 13:40:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E22C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 13:42:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E1076B00BF; Mon,  6 Jul 2026 09:40:49 -0400 (EDT)
+	id 9E3446B00C6; Mon,  6 Jul 2026 09:42:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96A1C6B00C2; Mon,  6 Jul 2026 09:40:49 -0400 (EDT)
+	id 96D706B00C7; Mon,  6 Jul 2026 09:42:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85A7E6B00C5; Mon,  6 Jul 2026 09:40:49 -0400 (EDT)
+	id 835456B00C8; Mon,  6 Jul 2026 09:42:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 549BE6B00BF
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:40:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D7DB61A040B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:40:48 +0000 (UTC)
-X-FDA: 84958462176.12.D337B67
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B9B46B00C6
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:42:30 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E28B91C7D37
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:42:29 +0000 (UTC)
+X-FDA: 84958466418.06.E92E431
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 118A210000A
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:40:46 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j5+hOnlu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1784EC0009
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:42:27 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nkgP/n7t";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783345348;
+	b=NsrQW0eSIuiBelrS2G5JwMczqIHwqjOwq2xuJmTGDtMJvaaCIKgrC8LW/tPvij7GsFKHVo
+	MJatZoE5H1WVFzy9SKMzkZdEVJLgQ3jfzAOvobRAm1M/7L7FfRsvFlsDbjNidkT6U4EV4R
+	Mg8Pk7SOLxWpddW/SMchBFPNE1r5yxM=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="nkgP/n7t";
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783345247;
+	s=arc-20220608; t=1783345348;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KjVP9wNRwuElcHLW8PNyHdq1NQan+oEfxG1mL9o1kI0=;
-	b=HKq97GJiRIcg4WxRwuU8Ei0dTgcoZELLUrspBIvG3VhYS/7zhrvliklzVUBd/f+t54kmO8
-	48DzCNPI+UQqndnewZNGDGQkBq+jaOJxDvK+tvFv1yxIEpim27xou0HY8Dp5F9bs2ELLuu
-	OiI2R6tgj380rLhojz9e+61gRIZ1RRU=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j5+hOnlu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783345247;
-	b=Nh5wVdhubdOcX7iFe3Z9BsoIImCk9/hLdpo9LNmyPoR8pfHnhiyAv6k/DtR8Ive0Wig/mb
-	3zr73nn/9tgHaQuHIHvjxQI/BjOci5HjO7SOckf+m2vwKcN1v2gDd46YMh9E0FWtknyUYw
-	8KVRXCckaIXcG40Hvnzwi6JjHbqHaCQ=
+	bh=iAlZCQGUqTVxw4RwuBqXjYr6D5K+9yUEa8qoM9jBo3M=;
+	b=bJArxWQk6HaJuluoGUD24vBL/yzNTPF4rDZ4xevmAyb1S1+KGpDKTGnMSI0PxWDlztRAKX
+	/1aU4El/kX6ep8Qw6ASOnzKQbkov7FvpC0N6eQJQBaktoFSbcrLqK+RkCsCrnq4W5UuHco
+	b9Pe/SHxa/BGsbzIN4T2gzS06MqCi7E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4636E43749;
-	Mon,  6 Jul 2026 13:40:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3711F000E9;
-	Mon,  6 Jul 2026 13:40:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 40F544025B;
+	Mon,  6 Jul 2026 13:42:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801241F00A3D;
+	Mon,  6 Jul 2026 13:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783345246;
-	bh=KjVP9wNRwuElcHLW8PNyHdq1NQan+oEfxG1mL9o1kI0=;
+	s=k20260515; t=1783345347;
+	bh=iAlZCQGUqTVxw4RwuBqXjYr6D5K+9yUEa8qoM9jBo3M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=j5+hOnlumBNxZ9I7ESOV0D4gxMh4f7CscUsAtv8E1yh4m9E9Eh3OEKB+BLEhWA5hk
-	 745oqBYDgZE13ir5RuW9pg0uf+fQb0iBXgbtykTpHJwaK2Gu7Mi28c7MK8hdTjRQ3M
-	 hpPhDKT9Lsck9y/zv650B2eRpvr/hVkygauTYAbf2PvJAYAAAsHxf0ho5uNX0KmOo3
-	 oCkF3eAT53iszNkLB9wciHheaN8bJMtTTXtj0LrBnMExxzGdAairyX/063Ouj3vdcb
-	 PjYhag5iFiOuSVyhMEd6phJQGU6VD3VZQK9gS1kYhQT4DImguqI9vJ32syvQL6cYkT
-	 Db8nxuq3AxTrg==
-Message-ID: <6ef49a9f-af0c-4bce-8402-16926424ea7a@kernel.org>
-Date: Mon, 6 Jul 2026 15:40:39 +0200
+	b=nkgP/n7twFmqF0clZhGQQG+LGD5VNF6GHhY8VIqGYI76p0Oud8VDaaFu4Ca1g8ygI
+	 2gjs+zvDxPxjjUf2vMMVBD735i92FrrTz7k7OgM1YhwpjVCtS/YkOChEOPAapHrn1+
+	 4LYVpV4gRdm9Cnw+ibIJX0bq5iO6wHjFWRNAbgMac2w9gOU2NFgRei0vgYWXEgvuDG
+	 muSQtgD2wPYMEZFTqM2tZ/U9VWqel/gArnXxN1OF0Gv9IkHkrTmy9XkWUd8uf7zyvw
+	 pcEDwzHLdKFLnEx+1VgeTZQQbb5P3pZLJ1X3Copc1oVMuNiLmdGDn5yAamD2OHyera
+	 iV/5Gerl+iSZQ==
+Message-ID: <23a81009-7ed2-43ec-9f6c-731225ac3667@kernel.org>
+Date: Mon, 6 Jul 2026 15:42:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/proc/task_mmu: count KSM-placed zero pages in smaps
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, jannh@google.com,
- pfalcato@suse.de, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20260706121323.1149847-1-tujinjiang@huawei.com>
+Subject: Re: [PATCH v2] virtio_balloon: prime stats vq after
+ virtio_device_ready()
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Adam Litke <agl@us.ibm.com>,
+ Rusty Russell <rusty@rustcorp.com.au>, virtualization@lists.linux.dev,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+References: <2f0d0de033f3005d3b985883be3e5cf37b3f6c42.1783278596.git.mst@redhat.com>
+ <13794c5e-375a-4fc5-84b4-a637d077f8a0@kernel.org>
+ <20260706042207-mutt-send-email-mst@kernel.org>
+ <6b8e4ad3-6909-4d0a-89a4-104a5ad9fe79@kernel.org>
+ <20260706044122-mutt-send-email-mst@kernel.org>
+ <24336f56-1024-4c9b-8653-b1a4658b627c@kernel.org>
+ <20260706070936-mutt-send-email-mst@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260706121323.1149847-1-tujinjiang@huawei.com>
+In-Reply-To: <20260706070936-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 118A210000A
-X-Stat-Signature: icbbd4in8bktaqnuaj4ycqrhdoc3uqpz
 X-Rspam-User: 
-X-HE-Tag: 1783345246-35852
-X-HE-Meta: U2FsdGVkX1+pt/dNloPabcnHthFLKIVmWvHK/5iXdt9b6zMOogNmBBWR/tt+EDJNz+hHRjHULsj/qOw9yq6WMMx7YYKsaqIf0EhfLMkQeHK/N7gY4lZmBhFnbLMzjB1u4wcZgsrQWwwbgEBwNyThgyZSMgf0Aqqv4CTXf1vSnQ1x8bzl9ng3+Cwqbw146CMZuIJMNRBw4/HGcF6fjjI+l3SlAYakenrg8ZW49CnyqnKQ2egJ69VHbyEu+U+oIOr3UsKPfohQTDFRNehOJmEzVDdE6xySw8x/sPndXWcecg9CJcbhgnDZ1zX7021DWj6Z+w/fuigRaf6VmmakPTnnJYY0jFhaQCIgZ2mh/oraVJa2kcD2iri7m14h6jyo0uoeC48eZOW+TjyHXANSJLyDAY7AiDnJ11hWFu/F1b69bih0Xyd5iZppMRj+rAGawTW0HydzbHCt3LuPNVmBiskgvUVjRusrJjuOAvT3cetLFznM2+1LBjWO41/KQnzzttEV+yGGASEQfzlbCPJ2isEY4P1fHBVSVTOzkgTjV07MBXoECIhEhD3Q4HSunBefTpUP3CfIUlmeOb1K3AedKUklU3A4gA3hqYw2jQ5KZgQ9WYr7W++q4pTny7URpveJw6H7O4CFUYTAinfDPgGfOv/FUDPCsFg+OXSeUNOxULpdy16FJw3RLpbaOkWmQX8Fg7rmOWfKtX8BtDjubLtwdaq+jAtU13oyGzYcGwnB0ThbrTYqtij+BrDpczo9dFDpJPW8cqMVcPBc8xkoRnvlTeTbQQPnEagu8LHHZ7wTdjaIFwtqc5pSW6gQQmVxs4O6et7oYWiv29yEDL92UORH5BNkHp1ZXO0uWDg1x2B3mvtTIpLinDYnmoOn0UmweqIdesv8BGcE3rkvlNTIiHPOYExCf6wm6iqZ1RxZjNErYjwbQ1MeJ6j43ughutk6a9+Sr2yKbNYPm1kNWT6UCsTPRd1
- jwmqp1R6
- SH8k2qR0TrvZPnrtg3x7uNWo7jIVKAi6EzzV5PfeT2iG8EM8mpOEr2veqpcgT/P3xIKFGfvJBwFFQHVpdxvzGsW27Xzy4++j1bu3WdCvcN+WoBFity6OIyS/x4TxOE3y8PrWjyMA37G8/Wp4biRaEVMekQ8unYRu4D7utlJi6VndIvMQikCYyir1HFrPvcghMXs8SopGKg3m6204Ywy4Gf34PEthGqjY5TgkOITM1gZXvzRdWq5h3Eji4u5hhFIr0brFkuk57mLurm/0gSds/cMVPtvsuaD5SBPPPrILEi9HxfYc5zNPuYAUFuZiq1qs3pri27TRXspC4k9I=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1784EC0009
+X-Stat-Signature: 6akeciwk44khf8ou755unr93m3md6poj
+X-HE-Tag: 1783345347-664145
+X-HE-Meta: U2FsdGVkX19YTl427QJB1X2aJpqVGJJgCY+dZ6UDSkO4EnIrB1twDwJ4cVMu/T0Z3uIJLaa2gAtt8yuj+Xd1A2/vxyBjHDPn3gOVlpjQDpDmBdn6aCJ3wbk4kS04ow+1aGN7Ynt3e+8OdvEmuSvhmlGlNSTzI2nnXQIwigtIlvpIsU2bZUkYQjc4E6gxMcNKzdQxvFJRPJvzGZ/iH16VBb+m51dCWTy25rxr+sAAN+w86U7jixIciTj3qDxT1vqFrXGUmXirZktTv2UFUIfUKYLPE9IkOseY6maMEeNm/xlzhtvdG4OTQJ9ihxtA0yzbEv1QFqmIA5Sbh0+lI6oloeQLfYZWOagUN3xP1svmCA0B3yF26y4ihA9G4MJtggtt+EbS4v60mb2XaN/894tjRvL0T+nZiXT4GJOcoxhaJyUe3bch/sbhxiZYlyOH9c/EJfheKIzoUsLeOjo29nTqnKarjQZPCb1PI+7ez51A4BYrEfX0g2ZvxOo/xGqOa/ntAMK6j8JvoKWStqQqlCUC5DezdSWtg8XvbKYGbSEqrfu3peeZOpwIUGf6zHuabkmQC/rqehLxbIkITHaMaTH6ikjvmTqdWagt8dgR2IOMVLXk2+z4pmYKI0gMwM7aRDfMxWjpcmFiU0ROwp5KdlfGZysR5Z1UUt6lD4bX27EzMFP5jbs4fa4vB4OuMlhlchJGx4gViahtIKNc7WPP+JROBWXJ+8Kwf9aO3yFwDg6HZZWl/qIZ4GZp8QqS8Hd78L4akUY2xAqWiX1vPqN8eamTmwYI84p1tVIsg8w6JM2P05QQPJLg3s0dPI8NMDkE2h0RKOSZ8OFJm9M9GZoCdO8JUXQk2RhPUkXkzddsGikHB2KlaEfSKaB9jpazicQrVy8XTIarfAaO7o1XqTbh4vQCVQRWkyBbW5Uo93tE4Lq2YKBQUrlhmuvRHMuRuE6RimSOz2l8Z3COPA6u/Gk21TK
+ WWpHk/4I
+ PqYLXEuvE4TiKNzOEgbpT39VD239KfFvB7hNzPkBzYguA7QYo89JjE/K7C+JJNw372Acv5WjmEpzaF0WsOsw5s/m3MN5Q8ROkCHcVzjWYNIkdLh0Bt5I9CbAMYzNYDX+ywf/sv77jLc+3WobXEgViO0HT1A+amIjo4Ht7eBZB4NIYnRY1OVkaaAxeLPBhsswY7PClY5JixmUHXMFpMUp323yUw9b0vvmz8JcwxmZosBK+GSqN18VBEU9J+I4RaO6FS6PS12N3vwIXXzkqMBeb0mfEKhlvBHO0nRtfIy09C10cjEHzLA8hNvMWhg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,30 +147,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/6/26 14:13, Jinjiang Tu wrote:
-> When KSM deduplicates a page to the kernel zero page (i.e. when
-> /sys/kernel/mm/ksm/use_zero_pages=1), it places a zero PTE with the dirty
-> bit set. vm_normal_page() returns NULL for such PTEs, so smaps_pte_entry()
-> bails out before reaching smaps_account() and these pages are never counted
-> into mss->ksm. As a result /proc/<pid>/smaps and smaps_rollup report a KSM
-> value of 0 even though the region is fully merged.
+On 7/6/26 14:59, Michael S. Tsirkin wrote:
+> On Mon, Jul 06, 2026 at 10:57:33AM +0200, David Hildenbrand (Arm) wrote:
+>> On 7/6/26 10:43, Michael S. Tsirkin wrote:
+>>>
+>>> Sorry I do not get the question. Virtio API expects
+>>> callers to serialize calls for each VQ. So this just prevents the work
+>>> from running and accessing the VQ while probe calls add_buf/kick.
+>>> I'll add a comment explaining that.
+>>> But it has nothing to do with the spec.
+>>
+>> The device is clearly not properly initialized yet.
+>>
+>> Yet, we expect that we get a stats_request() callback that would try to
+>> queue_work(). And IIUC, the stats_request() will be directly issued by the device.
 > 
-> Count KSM-placed zero pages directly in smaps_pte_entry() using
-> is_ksm_zero_pte().
+> With an in-spec device, it can happen right after virtio_device_ready.
+> We could defer it a bit, but I don't see what this gets us, and
+> this also protects against any out of spec ones.
 
-Hm.
+Agreed.
 
-We do expose "ksm_zero_pages" in /proc/<pid>/ksm_stat for calculating the KSM
-profit.
+> 
+> 
+>> In QEMU, that would mean that balloon_stats_poll_cb() runs, which would do a
+>>
+>> if (s->stats_vq_elem == NULL) {
+>> 	...
+>> 	return
+>> }
+>>
+>> virtqueue_push(s->svq, s->stats_vq_elem, 0);
+>> virtio_notify(vdev, s->svq);
+>>
+>>
+>> That's why I'm confused :)
+> 
+> First the spec says there could be interrupts for no reasons right after
+> DRIVER_OK. Second there are situations in which qemu might
+> consume a buffer without a kick and then an interrupt
+> races with the kick.
 
-Why would we want to expose it here as KSM pages?
-
-An application will notice the difference between "zeropage enabled vs.
-disabled" either way because we'll also not account zerpages towards e.g.,
-"Anonymous".
-
-So faking that something consumes memory when it actually doesn't consume memory
-is wrong?
+Okay, makes sense, thanks.
 
 -- 
 Cheers,
