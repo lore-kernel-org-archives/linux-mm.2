@@ -4,92 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79DC5C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 17:56:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5860C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 17:57:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CC736B00BF; Mon,  6 Jul 2026 13:56:35 -0400 (EDT)
+	id 964336B00C0; Mon,  6 Jul 2026 13:57:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A2A56B00C0; Mon,  6 Jul 2026 13:56:35 -0400 (EDT)
+	id 93B6E6B00C2; Mon,  6 Jul 2026 13:57:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B8D96B00C1; Mon,  6 Jul 2026 13:56:35 -0400 (EDT)
+	id 852106B00C4; Mon,  6 Jul 2026 13:57:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D61E6B00BF
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:56:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9D216C0A89
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:56:34 +0000 (UTC)
-X-FDA: 84959106708.21.F4E8B59
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E1E8C1C000D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:56:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=r8eFaac5;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783360593;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FB9F6B00C0
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:57:27 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D59FC85C9F
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:57:26 +0000 (UTC)
+X-FDA: 84959108892.28.58A28E2
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E0A0E80002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:57:24 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QJG9yFRw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783360644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nPdY0ByogXxyDQSyK1/UoEx4c72q1eJVOB8wgdz98Bs=;
-	b=0EgSX/HNe+cAB7R8VTk5TnAv8CsBxPDMMwEOsiTTVbcnG2jJLjMV/wX3OwtQmod89yisGF
-	LeK0eVc5FGX4rAA4VyBw4Mhp4247FmLuTgwLe62hiU6MyMi44wGs16/vDToaW6LWRRtUiJ
-	gyxdOOWTeR4tgfifHNERmITNW0UmXWg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783360593;
-	b=ud45UFSrlaZl5NDcPiWv9cph+B4zzdZ3UUvdNCuFLR8Ns/w+CiWyai5we2VdctykxiiPCq
-	n2Ms6/BRDg1CiHRErHa6j/G6J0NIg/pBEuuVO1RD4gwBz09IvRC0n8zBRfKFvW8WpL3XOS
-	qgKYy9nrdGDvYDdVlvWfeP7QR76k8c0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=r8eFaac5;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 09BCA600DA;
-	Mon,  6 Jul 2026 17:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D987B1F000E9;
-	Mon,  6 Jul 2026 17:56:30 +0000 (UTC)
+	bh=Jv8C3xh2TimBAFGoLe0GkKPySiDXFlD5GFpnQOyEgnw=;
+	b=EVE8YSS4HZMl7ZxnQFjSvNDgr9Cd4u5rHaHExQ+4vt7kjoRd4TN83RcUrlyTc95KJWsim2
+	2GYxP0EU63TGn1Svb55fDuQXYFD/WOxHvPUGaaiPA4JFvn7ekURUrPQauu//CRZS+37sFe
+	4HFujtCQewG9MneLcZgYzfVEVr1EYQc=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QJG9yFRw;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783360644;
+	b=RLrKV9KXBGjqNi2pGvCSBuT/snu/RnqE6RNP2xKYqHpnsh/wt5y5rT3uygdauTbFnN+7ws
+	WYSbAWAYmzC0j2khlLsUwFNGdMycfuiwSUKk8DtJJt1R4tUQU5ojLCDaCe0wWaiAlTrmrG
+	/zEUbKLChrKmDtyaHiNnsOa67gSKXzQ=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c126eb4e003so354429466b.0
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 10:57:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783360643; cv=none;
+        d=google.com; s=arc-20260327;
+        b=emPIOZ5NB68OFa+6dqup7YHERpKhBK+ZNrqBKuarnUjS4ttxmBtUhXneuXsLVp+Ru1
+         s7HB2kdumdoGN8PPYkh+WrQJbgvvGZjiMBT15+d5Yx8IYBK+qJZixnraWbn8/yDeQiyR
+         0R2W0mhqZNswBUmdfLuaZY+E27SukoChFgXODTItwbKw/BgXqkcJnU+lzW42pcZeG5F7
+         3F6ouCkshzUWAR6aeilb949M34dpY2hujjaAfB1HSIkNSbado9xDBTP1PwtaB60Ypk54
+         2DGRw83Zq0q8ko+lGDaeJUoW+TjPYdkjtbG4IocS47cyw8fkPDDiLTQbrEaryR82tRih
+         HGKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Jv8C3xh2TimBAFGoLe0GkKPySiDXFlD5GFpnQOyEgnw=;
+        fh=A1zYX8GmlVrUTdtpShwF8KHNWKp+mjjtAVBVECz7OaU=;
+        b=i5LZnLB4/l2IfUwhIbUdTVFZRPtMSphhD2R45Ac9u7txQQ/bby8LnRDnqJgMUGYxn1
+         dnEFU+Dj/ukF9fG6RudrnJBIcCTe7wrBoM1KiqjV2HnRtTGGsbKCW4gPflTYHCRvT4Bt
+         J13T8+rVaV9Hte/A18D1gu1xS4X04/6ZIcNoF/D3VPT0CVSZ0ZNSlhlDN31R5NMyVp5Q
+         lWgtDRPzwCNRxp+T09pdE8MdvtKoOplmEMPXcg8KEat20RoAp/aYVWMGc1bjNvnl3wdE
+         kjG6ymdfjFdmqOWSS/Fr7/8jP70jVQpFttDJH/V2w6835viDxyzYuNmvT1wPwDeL5ByV
+         sdNg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783360591;
-	bh=nPdY0ByogXxyDQSyK1/UoEx4c72q1eJVOB8wgdz98Bs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=r8eFaac5cRhGFt2nAQhk+Nw8XuhtQOTH71Zhoqk2uZku7l/Q5lcS2UkNP1+LfSzUH
-	 WMTkRf6v98jpjKND07SSxaUtUqq9+LzwaHqFG4UoWNmvVJiJRxsTpm4vH8wG7muiR3
-	 zooZrbK9CwZ+ZD6ijy12tH4IiYM2/oSg3jKLDg3A=
-Date: Mon, 6 Jul 2026 10:56:30 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
+        d=gmail.com; s=20251104; t=1783360643; x=1783965443; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jv8C3xh2TimBAFGoLe0GkKPySiDXFlD5GFpnQOyEgnw=;
+        b=QJG9yFRwInmiB03VTbgGG5iedNEzZcdEgzCw6AxagsTEIwefZ6YwIqMlGGEH6Y5gWj
+         YFflI+AjqShEegF64fODLb5SMVGwqKG8I7aD2MNo6T4WENF2q34zH4t5Q5WNEb5w8ri5
+         TigX3oBkT9UtVwLF0ZV8on3wJjBBddFkdHy+swA0kpUdDxrl9q+Nz4vl68NbqObMTAQZ
+         gm9Dwf1CZPjmtyZVQKI4tj9gomc+GCtqxR7ZADSewpt5fzwE2oaIcOa6O3sR3HjfBMmc
+         1/0MjfL9Ymo4n3XCnGViLqYtBM7piUrVKBD/mMsrE+QNh++QaD4RfGCXK20CaJNK1WLE
+         Y3Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783360643; x=1783965443;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Jv8C3xh2TimBAFGoLe0GkKPySiDXFlD5GFpnQOyEgnw=;
+        b=nVYb6ABq9I6gdEvz4mzLLZOGtcWG1YTPiCG+wDPEDNMVN0ply+27pBzJbm3lM39eZg
+         tx4yQ5X4hZNcNHXNPU9DJQ45OJTdpqq6HsUTPdFzuymx/8tl6QhqOPthnxKb1oxSy5AU
+         6fOwL1qSs94sVxnXIQXMdIHY+k8/CedzldqmDrOI7HYt7Ka4/FHKW/3NzN8MZLqU5Kxg
+         ZK8b6L2AeOtK3fEdf3W3yLGpLbCyGBt1c9qKkggQ3IHWRviUik5TqrmXff9A+fKxAj9k
+         jC3szZaPC0uYsqigu8cjmQy4RZbiJ3ofzkuihnmwwXjMUTeyS71+8BaAOKY82W8Sw5z2
+         YEzw==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0Ff5Y/hcrOZAFPGYXyIApRxpkPKN9J3r/DQyPFjdA4hBsy5k+EUViZXK/H6WHBcNf6D6xiktM4g==@kvack.org
+X-Gm-Message-State: AOJu0YxV9HoN913lqWG7CY6vEplvHPdW4mQCUxqoeHLvBWRIpWWEUiqa
+	W1jaS0dkaG+hcKvJqTTrOMtb9WOgqeB34ZcoZVLve6lmr4FNnHA9/PhdPRlD09JGGScXYcyAz8C
+	w7i05fAnAAc0ZnGFPGU14Am1NN3q/1u0=
+X-Gm-Gg: AfdE7ck353Sx8rz4kkg0MnIpKBsM3gAlHyNq9c4yrqurHH1eu7wd5QtoB373N0AY4lZ
+	oN67YWGEzpvioTOnG/WGHUjH7L10BoR2uldXFdqqFSNDIjOpAESmVm9ucIqT8uLj74mtQduBLYF
+	XbRX5tf1TJ/iwOUCJ+H2rAkfEFnWx+DkUUUtbTcB0zqKTFzBavnpq27oyDEd9QpIDGpF8k3+WwL
+	Z5s23pBku0iVmGmcfCG2oQoJdfOoJ3DTWzR9qrBbyr9/2G4u8R10Yyn16PTb/yADnuSFI+Skji2
+	f3IstOeFD3o3qiwrohaLjaupQuOdLQ==
+X-Received: by 2002:a17:907:787:b0:c11:f5dc:22b with SMTP id
+ a640c23a62f3a-c15a67988edmr100470966b.14.1783360643347; Mon, 06 Jul 2026
+ 10:57:23 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260703173903.3789516-1-usama.arif@linux.dev> <20260703173903.3789516-10-usama.arif@linux.dev>
+In-Reply-To: <20260703173903.3789516-10-usama.arif@linux.dev>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 7 Jul 2026 01:56:45 +0800
+X-Gm-Features: AVVi8Cd3mvIh2dZJrjG5eUoeG4qlYlk-KbyuIhshYNkrMrE3ly8p22XlCO02W88
+Message-ID: <CAMgjq7CQ+1gsptFYH+Y0GEqyYj+5QpAKjtZLekRS4h+k4f8QvQ@mail.gmail.com>
+Subject: Re: [PATCH v3 09/11] mm: handle PMD swap entry faults on swap-in
 To: Usama Arif <usama.arif@linux.dev>
-Cc: david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
- ziy@nvidia.com, linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan
- He <baoquan.he@linux.dev>, willy@infradead.org, youngjun.park@lge.com,
- hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
- alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, Liam R. Howlett
- <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka
- <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org,
- nphamcs@gmail.com, shikemeng@huaweicloud.com, kernel-team@meta.com
-Subject: Re: [PATCH v2 0/6] mm: preparatory patches for PMD level swap
- entries
-Message-Id: <20260706105630.368ab0d13c1b02d3e1df4af5@linux-foundation.org>
-In-Reply-To: <20260706114320.1643046-1-usama.arif@linux.dev>
-References: <20260706114320.1643046-1-usama.arif@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, 
+	ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, 
+	youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, 
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, 
+	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E0A0E80002
+X-Stat-Signature: z9ezohrbsjsgidm8xbgzpthyu9s6g4ep
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E1E8C1C000D
-X-Stat-Signature: f916gydjmx5st8ts9oi4dr5gzaz439d5
-X-HE-Tag: 1783360592-860018
-X-HE-Meta: U2FsdGVkX1+ODhGeBWwEzrhMPG/h1vDuja0lRDuXdq6GawRgaKJ+Pa6BWZftLXUBagjVWUu7N/0crsAPo7xpouqrnmIb7GISUSFNRMXaeI1K3Ag0/K9Kt30kq+07H18EczFuc0u+tDBWMD7IC31xzc+IWYJ+0JY7tahRrSv4bDzRGEEYi5wqoSr8PWpYWSHlN7ugHoZ+pOrOudQ4tqoqTkaOTycSVpZ34gcNXN/jhXZbLbVC5/JUlLCxGEXLqYIdCCteiRdzwdiVjRDkp2aRCBEWE8R0dHUFYWz97wFArl2mv3uBWPkjHOsxwzvUN/l6iMN4AsPBbuHUY5PZHj5UWMzLpwgqkf1P3jfXSeMQmB9y0w/CaLsbnFSqhVIRMTmtbz+k1aQMAXTQETgRcehHucUk1SipoANSsZBbK8uOWyadSq/xlFZNJK9rCcfK4bejcogXtoXPhsq54jINYJXwGclVLvqThT5CfXk5GPMqLNPUgvvu8ajx9Mn08IH4b3H6zNih2R0t0VghMbkouC85l/BadlakkvrJprK9cqohrec5xlOvwR1zEMLnvxTD1WxdTkhb0XVOK3iVpiiUlFzeFthqDa44vxpcGarKL6pdcxBpTrrH6LpmRqwsK4tZoC7/3cOBXNgo2NtJM6VatuvIIgAgwaIJ/LfwM0AdgsyRkraC38FY/MWgc2+gfG1IqGh55jIJ8wF8lY0B/Z4RCt5HSl2KUiyUJ4wbeMQmms3Y/QYHa3MxAsl5mKVt8soganU3yW85auMsZ+A8XeTMtYMIMr643NWQU/SOG7TAyy+TWYj/qTlMrTX4oFmwYBAd11Q5x6LXRJ8NuxbcRbztR0F7+XENQbOHW0hWKEdEPrfkqEFAvb8prh8SAGkJumiQZCvpVYF45gkFJPzPuSUClG0ACFr9xrn/cwsn3NrQA0h6VaYW7uhAf/2CnlTf7EpApCFPzmq77rU3tAyEcGfLN9M
- xkU1xDuD
- q03dsKM22pTMX19kPmFy1rv0gPKfCBFgQKLqLJdCrrO3Y2gahYd8Vt0zdIDK2kERGTviEjzlMU1bBIJ92+0RYxFpPzEsrwGYLSBsaRZqGc7RrU4DuXOQBR4OftrzXhkKqAJPGOhMaIs+YfQXYY2Rm2LJRKdKnfhldYhWf9FOprp0EC+SjdTAY1l7GyoDR7cNRq2xCoVdYlut9HcwfhE1HGHJXuT5zP+ul/yrj2bmEdQOV2t+hgYzhxsWRU/Z5yEnbvtJpAhDaCmKnk0k5aMMT/Zct4RhfgWQ72Im5K/KWTyCvg05RGEu1xBeetL96L0pvWDuKXrP7LW8+1oIhpc3e3DwCJjMWrk00n6DUxRz+Dp3AQHw=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783360644-855827
+X-HE-Meta: U2FsdGVkX197t2M7bsE2U2d8N/mvA+QPmqpRmZsMRF/OTwLpz5OMSJtWaj8SYhHaTID3i3nOG8MNnSsYDT8MmAtWiZEVeQNBVsCSGa021sXhSonVZPvpNHPJreym/DOtrh3gL/m9sqlpYmAzR05vdXRPtrQFhXZpjYYmW7xKsCHabJQuMlMbjXmXcwomlYA5HnxSWURHtNPMfJfnEl/8t/qxzFVpfasVLj6iRbfMjRBNUiSf8u6qti7jxeil0wdcIgCvtIMHnP/nOKk0u9+WVLiHC/yRo4Ap9dvT1FSEIyc40Hjiycst3mTFotNlhTaJqXxVvMHwIr2d3b9D4cAKl8lOG42m07fV1G99Ay5yuhZaGgzXUe2puW/R7pbbqfNAKQ1B+viIYM1Tu2dkAdZmZxgS13H+nzoStU3FESHb99Pr/HW95B/eN/KT7b8PudtbbxRKXx+hF4Tn+Gt8DoK7re9t3FMdNshsfmQ+aT0PSQs13xK5ZLR73y9skFctwjCgg0fuJlJeJg7u4Z8fPDxyW4Vvyg3snvgLzTai7z/OZW5KfAOVCosKbGUrRvKy3f5DJIxYLSyb2RugPaKELDwY99iVdkSBNHzO6rYjJ6s89W50tG84o2RM9++7DxDwMwmnm7YB4hH3F/vvCGkh5+3++wvPSMsf4Y6cvJhe/WDUh1oxHBX4+hyGwo585ALahPTnewCtKLe0DGL1EZ7uQj3VtipQQNVDSSXf3W0W3tCnL9xzZ3ZkVUNjoJvvePKZS+VK30ms9cA4Fnaah+SNT+xIjW7Ule6I4PwjRwARKXTDJhD3ZgkLT9C+eARZR2nuulkKFkAodEw4RMMdYIhE967hf77mvQ1b1+wgCSdjnR7F28tz+t/je8rPQ0VGduZUyEBnkd8oLpuspm/d3AM4Flwk3CwyUmSHOUl49hA1y0k4zv/gB6RjAWDPXLpP+HnD+2sUpG6+cfoPPMNPCNJgjp4
+ S40dDuj5
+ 7r+mU9Tw+f1Ak0hXWxMSsFYjSjdSwmLKsltiwUj6oS21mFIMQjsLQqSHa+dXyCi7iTulnrUOqrnO1kN3npuY+Pj8Ux9dq4iodtM+eHpqUzz16gRHXvban8xsif0plSlQC9Jnfly9aPpONP1HClTnBKwcgiB1473gEN5nZZesLEygAKm15rA8zZJT4ejCekgdd8//JHLzLamj+3cO9zqbIoueIUD/31PDu9c/MhPHhXGxzP78nKRSROhY0Bu86MKH8xS+YtEvOwCh8VlahAAbqTru71CzXfYaRt3vXd8NihYN/kS0p6XDjfvtvElll0TPKrKa2vuaM3s6tPkjU++IfxHSDy5mlRyZDuvo+iHf8K1heDsh15r6OURK/Kd2GBKDZ3y9FuUwOOD1LJ4KLwRrhrMGX6g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,430 +145,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  6 Jul 2026 04:42:02 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+On Sat, Jul 4, 2026 at 1:41=E2=80=AFAM Usama Arif <usama.arif@linux.dev> wr=
+ote:
+>
+> Add do_huge_pmd_swap_page() and dispatch to it from __handle_mm_fault()
+> when vmf->orig_pmd encodes a swap entry.  The handler resolves the
+> entire 2 MB mapping in one shot, mirroring do_swap_page() (PTE path)
+> at PMD granularity:
+>
+>   - Look up the folio in the swap cache; on a miss, allocate a
+>     PMD-order folio via swap_cache_alloc_folio() and read from swap.
+>
+>   - After locking, re-validate that the folio still corresponds to our
+>     entry and is still PMD-sized.  Between the unlocked cache lookup
+>     and the lock, a racing swap-in on the same entry may have removed
+>     it from the cache via folio_free_swap(), or reclaim / memory_failure
+>     / deferred-split may have split the folio into smaller folios.
+>
+>   - Restore soft_dirty and uffd_wp from the swap PMD.  Map writable
+>     only when the entry was exclusive, the VMA permits writes, and
+>     uffd-wp is not armed.  Drop the exclusive marker when the cached
+>     folio is under writeback to an SWP_STABLE_WRITES backend (zram,
+>     encrypted) so the PMD is mapped read-only; a later write COWs
+>     into a fresh folio rather than corrupting the in-flight writeback.
+>     Mirrors do_swap_page().
+>
+>   - When the resulting PMD is read-only but the fault was a write,
+>     update vmf->orig_pmd and call wp_huge_pmd() in the same handler
+>     to COW immediately rather than forcing a second fault.  Mask
+>     VM_FAULT_FALLBACK from its return: a PMD-COW that splits to
+>     PTE-level is normal, but the bit is part of VM_FAULT_ERROR and
+>     arch fault handlers BUG() on it without SIGBUS/HWPOISON/SIGSEGV.
+>     Requires exposing wp_huge_pmd() via mm/internal.h.
+>
+>   - Free the swap slot via should_try_to_free_swap() (hoisted from
+>     mm/memory.c into mm/internal.h so PTE- and PMD-level swap-in
+>     share the heuristic).
+>
+> When PMD-order resources are unavailable (folio allocation fails,
+> the cached folio was split, memcg charge fails, or swapin_folio()
+> races) split the PMD swap entry into 512 PTE swap entries via
+> __split_huge_pmd() and return 0.  The fault retries and do_swap_page()
+> takes over per-PTE.  This avoids returning VM_FAULT_OOM for transient
+> PMD-order allocation failures.
+>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-> This is the preparatory part of the PMD page table swapin work.
+Hello Usama
 
-Thanks, I updated mm.git to this version.
+Amazing work.
 
-Sashiko might have found several serious looking pre-existing issues:
-	https://sashiko.dev/#/patchset/20260706114320.1643046-1-usama.arif@linux.dev
+> ---
+>  include/linux/huge_mm.h |   9 ++
+>  mm/huge_memory.c        | 216 ++++++++++++++++++++++++++++++++++++++++
+>  mm/internal.h           |  36 +++++++
+>  mm/memory.c             |  40 +-------
+>  4 files changed, 265 insertions(+), 36 deletions(-)
+>
+> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> index 1487bf4af1a7..9ec475ccfc91 100644
+> --- a/include/linux/huge_mm.h
+> +++ b/include/linux/huge_mm.h
+> @@ -531,6 +531,15 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vm=
+f);
+>
+>  vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
+>
+> +#ifdef CONFIG_THP_SWAP
+> +vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf);
+> +#else
+> +static inline vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
+> +{
+> +       return 0;
+> +}
+> +#endif
+> +
+>  extern struct folio *huge_zero_folio;
+>  extern unsigned long huge_zero_pfn;
+>
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index fdc1a503c609..5fa60324a2f0 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -41,6 +41,7 @@
+>  #include <linux/pgalloc.h>
+>  #include <linux/pgalloc_tag.h>
+>  #include <linux/pagewalk.h>
+> +#include <linux/zswap.h>
+>
+>  #include <asm/tlb.h>
+>  #include "internal.h"
+> @@ -2312,6 +2313,221 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault =
+*vmf)
+>         return 0;
+>  }
+>
+> +#ifdef CONFIG_THP_SWAP
+> +/**
+> + * do_huge_pmd_swap_page() - Handle a fault on a PMD-level swap entry.
+> + * @vmf: Fault context. vmf->orig_pmd contains the swap PMD.
+> + *
+> + * A PMD swap entry is a compact encoding for HPAGE_PMD_NR consecutive s=
+wap
+> + * slots. If the swap cache still has one PMD-sized folio covering the r=
+ange,
+> + * map it directly at PMD level. If the range has been split into per-pa=
+ge
+> + * cache state, or zswap may have per-page state for it, split the PMD s=
+wap
+> + * entry and retry at PTE granularity.
+> + *
+> + * Return: VM_FAULT_* flags.
+> + */
+> +vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
+> +{
+> +       struct vm_area_struct *vma =3D vmf->vma;
+> +       struct mm_struct *mm =3D vma->vm_mm;
+> +       struct folio *folio;
+> +       struct page *page;
+> +       struct swap_info_struct *si;
+> +       unsigned long haddr =3D vmf->address & HPAGE_PMD_MASK;
+> +       softleaf_t entry;
+> +       swp_entry_t swp_entry;
+> +       pmd_t pmd;
+> +       vm_fault_t ret =3D 0;
+> +       bool exclusive;
+> +       rmap_t rmap_flags =3D RMAP_NONE;
+> +       enum swap_pmd_cache cache_state;
+> +
+> +       entry =3D softleaf_from_pmd(vmf->orig_pmd);
+> +       if (unlikely(!softleaf_is_swap(entry)))
+> +               return 0;
+> +
+> +       swp_entry =3D entry;
+> +
+> +       /* Prevent swapoff from happening to us. */
+> +       si =3D get_swap_device(swp_entry);
+> +       if (unlikely(!si))
+> +               return 0;
+> +
+> +       cache_state =3D swap_pmd_cache_lookup(swp_entry, &folio);
+> +       if (cache_state =3D=3D SWAP_PMD_CACHE_SPLIT)
+> +               goto split_fallback;
+> +       if (!folio) {
+> +               /*
+> +                * PMD swap entries encode ordinary per-page swap slots. =
+If any
+> +                * slot is in zswap, split and let the PTE swap path load=
+ the
+> +                * range per page. Otherwise the range is all on disk and=
+ can be
+> +                * read back as one PMD-sized folio.
+> +                */
+> +               if (zswap_range_has_entry(swp_entry, HPAGE_PMD_NR))
+> +                       goto split_fallback;
+> +
+> +               folio =3D swapin_sync(swp_entry, GFP_HIGHUSER_MOVABLE,
+> +                                   BIT(HPAGE_PMD_ORDER), vmf, NULL, 0);
 
-> v1 -> v2: https://lore.kernel.org/all/20260630164143.1595669-1-usama.arif@linux.dev/
-> - Remove unnecessary comment in patch 2 (David)
-> - s/ARCH_SUPPORTS_PMD_SOFTLEAF/ARCH_HAS_PMD_SOFTLEAVES/ and rewrite
->   the commit message (David)
->  
+Hmm, so here we always do a sync swapin which means there is no
+readahead, kind of make sense since PMD is huge, readahead might be
+not helpful and a order 0 readahead breaks following PMD. But maybe
+worth mention it in the commit message at least so it's easiler to
+follow. (partly because the name swapin_sync is a bit confusing at the
+moment, we could change that name as we improve swap readahead later).
 
-Here's how v2 altered mm.git:
+And just an idea that will it be suffient if we just use the return
+value of swapin_sync directly? If a smaller folio covers the PMD start
+entry, the smaller folio is returned and you catched that just fine.
+If a smaller folio covers a follow-up sub-entry or a sub-entry is
+freed, -EBUSY is returned here and you just do the split. And it
+doesn't do the allocation for the first lookup check, so there should
+be no thrashing issue.
 
+> +               if (IS_ERR_OR_NULL(folio))
+> +                       goto split_fallback;
+> +
+> +               /* Had to read from swap area: Major fault */
+> +               ret =3D VM_FAULT_MAJOR;
+> +               count_vm_event(PGMAJFAULT);
+> +               count_memcg_event_mm(mm, PGMAJFAULT);
+> +       }
+> +
+> +       ret |=3D folio_lock_or_retry(folio, vmf);
 
- arch/arm64/Kconfig                           |    2 +-
- arch/arm64/include/asm/pgtable.h             |    4 ++--
- arch/loongarch/Kconfig                       |    2 +-
- arch/powerpc/include/asm/book3s/64/pgtable.h |    2 +-
- arch/powerpc/platforms/Kconfig.cputype       |    2 +-
- arch/riscv/Kconfig                           |    2 +-
- arch/riscv/include/asm/pgtable.h             |    8 ++++----
- arch/s390/Kconfig                            |    2 +-
- arch/s390/include/asm/pgtable.h              |    2 +-
- arch/x86/Kconfig                             |    2 +-
- arch/x86/include/asm/pgtable.h               |    2 +-
- include/linux/huge_mm.h                      |    2 +-
- include/linux/leafops.h                      |    8 ++++----
- include/linux/pgtable.h                      |    2 +-
- include/linux/swapops.h                      |    6 +++---
- mm/Kconfig                                   |    2 +-
- mm/debug_vm_pgtable.c                        |    8 ++++----
- mm/hmm.c                                     |    4 ++--
- mm/huge_memory.c                             |    2 +-
- mm/internal.h                                |    3 ---
- mm/migrate.c                                 |    4 ++--
- mm/migrate_device.c                          |    6 +++---
- mm/rmap.c                                    |    2 +-
- 23 files changed, 38 insertions(+), 41 deletions(-)
-
---- a/arch/arm64/include/asm/pgtable.h~b
-+++ a/arch/arm64/include/asm/pgtable.h
-@@ -1534,10 +1534,10 @@ static inline pmd_t pmdp_establish(struc
- #define __pte_to_swp_entry(pte)	((swp_entry_t) { pte_val(pte) })
- #define __swp_entry_to_pte(swp)	((pte_t) { (swp).val })
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- #define __pmd_to_swp_entry(pmd)		((swp_entry_t) { pmd_val(pmd) })
- #define __swp_entry_to_pmd(swp)		__pmd((swp).val)
--#endif /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- 
- /*
-  * Ensure that there are not more swap files than can be encoded in the kernel
---- a/arch/arm64/Kconfig~b
-+++ a/arch/arm64/Kconfig
-@@ -17,7 +17,7 @@ config ARM64
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG
- 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
--	select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
-+	select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_CACHE_LINE_SIZE
- 	select ARCH_HAS_CC_PLATFORM
- 	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
---- a/arch/loongarch/Kconfig~b
-+++ a/arch/loongarch/Kconfig
-@@ -12,7 +12,7 @@ config LOONGARCH
- 	select ARCH_NEEDS_DEFER_KASAN
- 	select ARCH_DISABLE_KASAN_INLINE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG
--	select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
-+	select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
- 	select ARCH_HAS_CPU_FINALIZE_INIT
- 	select ARCH_HAS_CURRENT_STACK_POINTER
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h~b
-+++ a/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1060,7 +1060,7 @@ static inline pte_t *pmdp_ptep(pmd_t *pm
- #define pmd_mksoft_dirty(pmd)  pte_pmd(pte_mksoft_dirty(pmd_pte(pmd)))
- #define pmd_clear_soft_dirty(pmd) pte_pmd(pte_clear_soft_dirty(pmd_pte(pmd)))
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- #define pmd_swp_mksoft_dirty(pmd)	pte_pmd(pte_swp_mksoft_dirty(pmd_pte(pmd)))
- #define pmd_swp_soft_dirty(pmd)		pte_swp_soft_dirty(pmd_pte(pmd))
- #define pmd_swp_clear_soft_dirty(pmd)	pte_pmd(pte_swp_clear_soft_dirty(pmd_pte(pmd)))
---- a/arch/powerpc/platforms/Kconfig.cputype~b
-+++ a/arch/powerpc/platforms/Kconfig.cputype
-@@ -112,7 +112,7 @@ config PPC_THP
-        depends on PPC_RADIX_MMU || (PPC_64S_HASH_MMU && PAGE_SIZE_64KB)
-        select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-        select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
--       select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
-+       select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
- 
- choice
- 	prompt "CPU selection"
---- a/arch/riscv/include/asm/pgtable.h~b
-+++ a/arch/riscv/include/asm/pgtable.h
-@@ -946,7 +946,7 @@ static inline pmd_t pmd_clear_soft_dirty
- 	return pte_pmd(pte_clear_soft_dirty(pmd_pte(pmd)));
- }
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- static inline bool pmd_swp_soft_dirty(pmd_t pmd)
- {
- 	return pte_swp_soft_dirty(pmd_pte(pmd));
-@@ -961,7 +961,7 @@ static inline pmd_t pmd_swp_clear_soft_d
- {
- 	return pte_pmd(pte_swp_clear_soft_dirty(pmd_pte(pmd)));
- }
--#endif /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- #endif /* CONFIG_HAVE_ARCH_SOFT_DIRTY */
- 
- static inline void set_pmd_at(struct mm_struct *mm, unsigned long addr,
-@@ -1208,10 +1208,10 @@ static inline pte_t pte_swp_clear_exclus
- 	return __pte(pte_val(pte) & ~_PAGE_SWP_EXCLUSIVE);
- }
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- #define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
- #define __swp_entry_to_pmd(swp) __pmd((swp).val)
--#endif /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- 
- /*
-  * In the RV64 Linux scheme, we give the user half of the virtual-address space
---- a/arch/riscv/Kconfig~b
-+++ a/arch/riscv/Kconfig
-@@ -22,7 +22,7 @@ config RISCV
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM_VMEMMAP
- 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
--	select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
-+	select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_BINFMT_FLAT
- 	select ARCH_HAS_CC_CAN_LINK
- 	select ARCH_HAS_CURRENT_STACK_POINTER
---- a/arch/s390/include/asm/pgtable.h~b
-+++ a/arch/s390/include/asm/pgtable.h
-@@ -903,7 +903,7 @@ static inline pmd_t pmd_clear_soft_dirty
- 	return clear_pmd_bit(pmd, __pgprot(_SEGMENT_ENTRY_SOFT_DIRTY));
- }
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- #define pmd_swp_soft_dirty(pmd)		pmd_soft_dirty(pmd)
- #define pmd_swp_mksoft_dirty(pmd)	pmd_mksoft_dirty(pmd)
- #define pmd_swp_clear_soft_dirty(pmd)	pmd_clear_soft_dirty(pmd)
---- a/arch/s390/Kconfig~b
-+++ a/arch/s390/Kconfig
-@@ -82,7 +82,7 @@ config S390
- 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
- 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
--	select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
-+	select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_CC_CAN_LINK
- 	select ARCH_HAS_CPU_FINALIZE_INIT
- 	select ARCH_HAS_CURRENT_STACK_POINTER
---- a/arch/x86/include/asm/pgtable.h~b
-+++ a/arch/x86/include/asm/pgtable.h
-@@ -1545,7 +1545,7 @@ static inline pte_t pte_swp_clear_soft_d
- 	return pte_clear_flags(pte, _PAGE_SWP_SOFT_DIRTY);
- }
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
- {
- 	return pmd_set_flags(pmd, _PAGE_SWP_SOFT_DIRTY);
---- a/arch/x86/Kconfig~b
-+++ a/arch/x86/Kconfig
-@@ -70,7 +70,7 @@ config X86
- 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
- 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if (PGTABLE_LEVELS > 2) && (X86_64 || X86_PAE)
--	select ARCH_SUPPORTS_PMD_SOFTLEAF if X86_64 && TRANSPARENT_HUGEPAGE
-+	select ARCH_HAS_PMD_SOFTLEAVES if X86_64 && TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
- 	select ARCH_HAS_CPU_ATTACK_VECTORS	if CPU_MITIGATIONS
- 	select ARCH_HAS_CACHE_LINE_SIZE
---- a/include/linux/huge_mm.h~b
-+++ a/include/linux/huge_mm.h
-@@ -567,7 +567,7 @@ static inline struct folio *get_persiste
- 
- static inline bool thp_migration_supported(void)
- {
--	return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF);
-+	return IS_ENABLED(CONFIG_ARCH_HAS_PMD_SOFTLEAVES);
- }
- 
- void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
---- a/include/linux/leafops.h~b
-+++ a/include/linux/leafops.h
-@@ -81,7 +81,7 @@ static inline pte_t softleaf_to_pte(soft
- 	return swp_entry_to_pte(entry);
- }
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- /**
-  * softleaf_from_pmd() - Obtain a leaf entry from a PMD entry.
-  * @pmd: PMD entry.
-@@ -587,7 +587,7 @@ static inline bool pte_is_uffd_marker(pt
- 	return false;
- }
- 
--#if defined(CONFIG_ZONE_DEVICE) && defined(CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF)
-+#if defined(CONFIG_ZONE_DEVICE) && defined(CONFIG_ARCH_HAS_PMD_SOFTLEAVES)
- 
- /**
-  * pmd_is_device_private_entry() - Check if PMD contains a device private swap
-@@ -606,14 +606,14 @@ static inline bool pmd_is_device_private
- 	return softleaf_is_device_private(softleaf_from_pmd(pmd));
- }
- 
--#else  /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#else  /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- 
- static inline bool pmd_is_device_private_entry(pmd_t pmd)
- {
- 	return false;
- }
- 
--#endif /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#endif /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- 
- /**
-  * pmd_is_migration_entry() - Does this PMD entry encode a migration entry?
---- a/include/linux/pgtable.h~b
-+++ a/include/linux/pgtable.h
-@@ -1839,7 +1839,7 @@ static inline pgprot_t pgprot_modify(pgp
- #endif
- 
- #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
--#ifndef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifndef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
- {
- 	return pmd;
---- a/include/linux/swapops.h~b
-+++ a/include/linux/swapops.h
-@@ -321,7 +321,7 @@ static inline swp_entry_t make_guard_swp
- 
- struct page_vma_mapped_walk;
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- extern int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 		struct page *page);
- 
-@@ -338,7 +338,7 @@ static inline pmd_t swp_entry_to_pmd(swp
- 	return __swp_entry_to_pmd(arch_entry);
- }
- 
--#else  /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#else  /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- static inline int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 		struct page *page)
- {
-@@ -358,7 +358,7 @@ static inline pmd_t swp_entry_to_pmd(swp
- 	return __pmd(0);
- }
- 
--#endif  /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#endif  /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- 
- #endif /* CONFIG_MMU */
- #endif /* _LINUX_SWAPOPS_H */
---- a/mm/debug_vm_pgtable.c~b
-+++ a/mm/debug_vm_pgtable.c
-@@ -751,7 +751,7 @@ static void __init pmd_leaf_soft_dirty_t
- 	pmd_t pmd;
- 
- 	if (!pgtable_supports_soft_dirty() ||
--	    !IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF))
-+	    !IS_ENABLED(CONFIG_ARCH_HAS_PMD_SOFTLEAVES))
- 		return;
- 
- 	if (!has_transparent_hugepage())
-@@ -819,7 +819,7 @@ static void __init pte_swap_tests(struct
- 	WARN_ON(memcmp(&pte1, &pte2, sizeof(pte1)));
- }
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- static void __init pmd_softleaf_tests(struct pgtable_debug_args *args)
- {
- 	swp_entry_t arch_entry;
-@@ -837,9 +837,9 @@ static void __init pmd_softleaf_tests(st
- 	pmd2 = __swp_entry_to_pmd(arch_entry);
- 	WARN_ON(memcmp(&pmd1, &pmd2, sizeof(pmd1)));
- }
--#else  /* !CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#else  /* !CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- static void __init pmd_softleaf_tests(struct pgtable_debug_args *args) { }
--#endif /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- 
- static void __init swap_migration_tests(struct pgtable_debug_args *args)
- {
---- a/mm/hmm.c~b
-+++ a/mm/hmm.c
-@@ -331,7 +331,7 @@ fault:
- 	return hmm_vma_fault(addr, end, required_fault, walk);
- }
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
- 				     unsigned long end, unsigned long *hmm_pfns,
- 				     pmd_t pmd)
-@@ -391,7 +391,7 @@ static int hmm_vma_handle_absent_pmd(str
- 		return -EFAULT;
- 	return hmm_pfns_fill(start, end, range, HMM_PFN_ERROR);
- }
--#endif  /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#endif  /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- 
- static int hmm_vma_walk_pmd(pmd_t *pmdp,
- 			    unsigned long start,
---- a/mm/huge_memory.c~b
-+++ a/mm/huge_memory.c
-@@ -4868,7 +4868,7 @@ static int __init split_huge_pages_debug
- late_initcall(split_huge_pages_debugfs);
- #endif
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 		struct page *page)
- {
---- a/mm/internal.h~b
-+++ a/mm/internal.h
-@@ -1955,9 +1955,6 @@ static inline int get_sysctl_max_map_cou
- bool may_expand_vm(struct mm_struct *mm, const vma_flags_t *vma_flags,
- 		   unsigned long npages);
- 
--/*
-- * Ensure @mm is on the init_mm.mmlist so swapoff can find it.
-- */
- static inline void mm_prepare_for_swap_entries(struct mm_struct *mm)
- {
- 	if (list_empty(&mm->mmlist)) {
---- a/mm/Kconfig~b
-+++ a/mm/Kconfig
-@@ -703,7 +703,7 @@ config DEVICE_MIGRATION
- config ARCH_ENABLE_HUGEPAGE_MIGRATION
- 	bool
- 
--config ARCH_SUPPORTS_PMD_SOFTLEAF
-+config ARCH_HAS_PMD_SOFTLEAVES
- 	bool
- 
- config HUGETLB_PAGE_SIZE_VARIABLE
---- a/mm/migrate.c~b
-+++ a/mm/migrate.c
-@@ -362,7 +362,7 @@ static bool remove_migration_pte(struct
- 			idx = linear_page_index(vma, pvmw.address) - pvmw.pgoff;
- 		new = folio_page(folio, idx);
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- 		/* PMD-mapped THP migration entry */
- 		if (!pvmw.pte) {
- 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
-@@ -545,7 +545,7 @@ fail:
- }
- #endif
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
- {
- 	spinlock_t *ptl;
---- a/mm/migrate_device.c~b
-+++ a/mm/migrate_device.c
-@@ -771,7 +771,7 @@ int migrate_vma_setup(struct migrate_vma
- }
- EXPORT_SYMBOL(migrate_vma_setup);
- 
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- /**
-  * migrate_vma_insert_huge_pmd_page: Insert a huge folio into @migrate->vma->vm_mm
-  * at @addr. folio is already allocated as a part of the migration process with
-@@ -926,7 +926,7 @@ static int migrate_vma_split_unmapped_fo
- 		migrate->src[i+idx] = migrate_pfn(pfn + i) | flags;
- 	return ret;
- }
--#else /* !CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
-+#else /* !CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
- static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
- 					 unsigned long addr,
- 					 struct page *page,
-@@ -947,7 +947,7 @@ static int migrate_vma_split_unmapped_fo
- static unsigned long migrate_vma_nr_pages(unsigned long *src)
- {
- 	unsigned long nr = 1;
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- 	if (*src & MIGRATE_PFN_COMPOUND)
- 		nr = HPAGE_PMD_NR;
- #else
---- a/mm/rmap.c~b
-+++ a/mm/rmap.c
-@@ -2472,7 +2472,7 @@ static bool try_to_migrate_one(struct fo
- 				page_vma_mapped_walk_restart(&pvmw);
- 				continue;
- 			}
--#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
-+#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
- 			pmdval = pmdp_get(pvmw.pmd);
- 			if (likely(pmd_present(pmdval)))
- 				pfn = pmd_pfn(pmdval);
-_
-
+With PMD sized folio on a slower device, this try lock could fail much
+more frequently, leading to repeated faults. That's not a new issue
+and I remember Barry talked about it at the LSFMM this year, just I'm
+not sure if that will get much worse for PMD?
 
