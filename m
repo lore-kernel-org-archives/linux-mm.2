@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAFACC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:21:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 303DBC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:22:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FA9F6B00EF; Mon,  6 Jul 2026 02:21:01 -0400 (EDT)
+	id 119E46B00F8; Mon,  6 Jul 2026 02:22:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AB136B00F1; Mon,  6 Jul 2026 02:21:01 -0400 (EDT)
+	id 0CA9A6B00F9; Mon,  6 Jul 2026 02:22:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 424A96B00F2; Mon,  6 Jul 2026 02:21:01 -0400 (EDT)
+	id ED5736B00FA; Mon,  6 Jul 2026 02:22:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 169E66B00EF
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:21:01 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 93B461C1EBA
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:21:00 +0000 (UTC)
-X-FDA: 84957353880.10.A27477E
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 73D5340002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BDB4A6B00F8
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:22:01 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A46A8D0EF
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:22:01 +0000 (UTC)
+X-FDA: 84957356442.16.4DF3EE8
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1CB2620006
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:21:58 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf17.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783318859;
-	b=vI03xyQvFy15NAz6H8pKNDz7f1vcUwP4seDi6lzzLo1QmsEI+epVxOPxDrgpRnvp5KEdD3
-	WB0Py3L/wxM7Dmyz/iy1yzRuK320EgDFPsXaE7FBpT1+MnVavYFv2mVLIkYFEP3JXWrrmR
-	lvM4HfOWqc5K70vTKe5FaKs912aulck=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=sk.com;
-	spf=pass (imf17.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	spf=pass (imf31.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783318859;
+	s=arc-20220608; t=1783318919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=xBro/pS8XSklZi33ajlqBMARpg6j4+kbGF2NYOwbtjg=;
-	b=MY4YIcm6HHSYtV2SXLD10lMLBqaJQ/6GCsfkkXCP2fNcojbMmQ8H1jdGkNJX8McY2oD86O
-	m7y7Gpkx8hDiDOobJkMsvheEe1YBsTIi/OYEBjTaQqaQNdnoJnLSUtFB6Mgzdo1gTzO1p0
-	DaS2T1p7ScaWoaf6LTmRJeGXRMBqqcA=
-X-AuditID: a67dfc5b-c45ff70000001609-2d-6a4b4905bbfc
+	bh=tvW+ldDk6GdwfPY70zXMRkBEKqIF5sW1VPttrf/0Qqo=;
+	b=KfPRCdPZwgBxx92e5SSxPD122QDfLIoW2JPqFr4UcK28U7r2oJ1NBtasQ37xVwD5hIeSeh
+	0l26pHqoO7JFnkgEVm1KIlNi8KuE73YnuFLdMo3zdFfvnkTpnk58SOucBHPMJZRHR0DzRo
+	2r9/DUBo/UR0AHR9ibhpJDQ8IQypDW8=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=sk.com;
+	spf=pass (imf31.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783318919;
+	b=eIeaMK5rpo2X2g0sbNX9hPV6t47YcOwFe0WKCX2hReMCAX3MgWY5L5MCfx4F3cIIfNLSJu
+	Hy/hpTfFBBiFZUktzz9Sx5L4T/LLFDvBn110+ogarT15OkOf3/r353kWDZp2p4gwkeHPLY
+	LgDUrLTFmwSCBgs5r9atvnLF2GrBmQs=
+X-AuditID: a67dfc5b-c2dff70000001609-c6-6a4b4983a0e6
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -214,53 +214,54 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 33/40] dept: call dept_hardirqs_off() in local_irq_*() regardless of irq state
-Date: Mon,  6 Jul 2026 15:19:21 +0900
-Message-Id: <20260706061928.66713-34-byungchul@sk.com>
+Subject: [PATCH v19 34/40] rcu/update: fix same dept key collision between various types of RCU
+Date: Mon,  6 Jul 2026 15:19:22 +0900
+Message-Id: <20260706061928.66713-35-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0xTdxjG/Z87nZWTasYRs2BqcNpFFEHzxrnNffJ4y0yW7MMWo904Slmh
-	TatcTAytihEHUru0BgoEYUOk5RKKFzpRrFAE2tACYlVAqq6MYMWoZZuUsML0y5snz/O8v08P
-	g0uGyXhGkXVU0GTJlVJKRIhCSy9tYHbtydgUsLNwtiAfhvUdBJQ32SiYs1yn4d6DkwR4G60I
-	/p614GDSI5hvdyEw+4w4XJzUE1AWtNAw2bUT5kcnMJgyv6Jg1tOPQ6trDEF73UkKBp8vg6Hw
-	NAUhXzkGL5sp8LmnEFRYjAiCj9oxOFXTREHbuIMG31QEgxGzEQNryz7oM1RjYLl4CgNTwx8Y
-	uGtGCKjVJYLFM0hCJJAM81UqcFknaBgtMRHQGOonoWdsmISpoJGC67pxGt4OBTA46wgT0PIs
-	GpRWjlDguvEUg0FHOQVFzVdJGLPNk+Dt6CNhwOoloGnCj0Gf6x4BPWVXCHjsKaGh39FAgt3j
-	xmHm/CrwXigmwW/4E0HDy2pqRxpfb7+G8bZKG+ILDNFz98U0zv/e94Li34XvU3xvNcf/VvgO
-	4y94NvBtZaM0f/rWI5qvajnGn+4Mkby9TsbX3JzE+Euvw+T+5O9F29MEpSJb0Gz88pAo/a/h
-	AlKtj80N2kCHQh+dQzEMx6ZyrbcHsA+6v1VPLGiK/ZTz+//FF/QKdjVnLw6S55CIwdnBBK6o
-	tnixtJz9kTOHxqIlhiHYRK54SL1gi9mtXO01w3tmAmdt7ljkxET9xkjFoi9ht3CPp7uJBSbH
-	Xo7hTPW95P8PK7k7dX7CgMRVaEk9kiiysjPlCmVqUnpeliI36SdVZguKrq32ROSHG+i191sn
-	YhkkXSqGHbszJKQ8W5uX6UQcg0tXiNeu25MhEafJ844LGtVBzTGloHWiVQwhjRNvnslJk7BH
-	5EeFnwVBLWg+pBgTE69DFWcCsfmxm2Rfd5pK26oSfKXrfBH2WfevPTu7TBZ3ZQ9a82SJk0kJ
-	9K5RQX78P2y5LnVOJatWqVNUb745MKPccqij8JcjszkfG90O+ulxKvFKUUn21r3jh9VnZPRA
-	3Of738geblPkGMxfhDMLI7s/62bn8j+5v/6rJ0kJztxk7XdSQpsuT5bhGq38PzJOGWtpAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xScRTH+90XV5K6Ec07bdlYT0urle30WPbmmus129r6p6juEgUzKItW
-	SyCmPWxEgUs0zZI1pTIflDWWs2UPa0n2cOWjB1FOiVZY+UBDW/+cfc/nfM93549D42InGUkr
-	0vfz6nS5UkoJCeGGJYZYMjEpde4JxxzIMR6D1g4PCa91dQT0BHIIKLjhoCBouyWAnMoLJDx6
-	oyeg6Xo5go6eHAS/+204GGuHCAiaGwQQ6H0nAIsOwZCrAYHVbcahpekeDo5qHQY/KwYp6Lr/
-	A4Hlg4eCvE4dAX77aQT5XpsAOh/IwNdxl4Shti8YvPnVjcDuGcTAU5eNIGhNg6KSqtC69TsF
-	/c+e45BnaUJw6UMbDj863yOobmhH4Lqqp+CzqQaHZs8YeNnjp+Cx5RQFPncBBt8qKCjWu0hw
-	P+1CUGgzI/C+dWFguHyDAmthJQG17+8IwN01gEGr1YxBeeV66LB7CWg0lWChc0OumxFgyzNg
-	ofIVA8u1uxj02ssEy0sR99t4huDKqpwYZ3wRpDjHRQfi+vvMiAuUGnDOaAq197v9OHe86iBX
-	2thNcX09ryjO9auY4J6UsNyVE30Yd/ZZLFeb3ybYtGKbcOluXqnI5NVzlu0Qpnx9bSQzdGMP
-	eR2QhXyjT6IwmmUWsM+rdcSwppjpbEtLLz6sJcxktirXS55EQhpnmqPZ0/bcEdN4Zidr9bWH
-	TDRNMFPZ3JcZw1jELGTtThP2LzOaLa+oG8kJC/HrA4UjXMzEs+/8DwkTEhajUWVIokjPVMkV
-	yvg4TVqKNl1xKG7XXlUlCn2T/ejA2dso0CyrRwyNpOEiWL4uVUzKMzVaVT1iaVwqEU2bkZQq
-	Fu2Waw/z6r3b1QeUvKYeRdGENEK0biu/Q8zske/n03g+g1f/n2J0WGQWulWTrfRLuFFrHdPu
-	zIjJ7t066WPUqnPYlORA8Jg2fO30yT7JlVUDWRPVTnf827hZ81dPiNJGvpiavCjxJlqcXIav
-	UanOxSQcWR3VvuXy5i/hR/cl/BkXiNZr/Pol9bNlO396Z9ZuDPTrGrelnTl/QC4rkh3+HPuA
-	SJj/9NPKmsEVW45ICU2KfF4MrtbI/wIjatboSQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxiG957zng86a046N49uiaaZbGHi1CF5ljhDlix7nVviss0fGxGr
+	HKVQKCmI1EVHQbeKOBmGLqPiEFxltFE5NQpEDKuTj2ADrAwrn602VdYJwlqcDOiom/+u3Pf9
+	XL8enlYNMCt5bU6+ZMjR6NSsAiseLqlNLNm6LXO9uyIBzEe/guGxAAMDpjYMkbAZw7z1Kgdm
+	+QcGOm8XYzjaHMUQfjLEQaUJgeOyiYLQjWkElf4AC9+PmzBM2soQVAWtHIzffB+iI/cpuD3z
+	JwJbYIGCQNs3COYtWfBjrZOFkOURC/+4e2g46x+hobW+mAVPYCn0RyZZ6Ko8zsLDvtMUTFxi
+	oe9WCEG1tQJBSd1FFizVMoZmXwsHw5YKCrrLaymwNC6HW3XDGKxuDwN366s4mPNvgGiNHtrt
+	9zkYOVmJoWt0gIGrRT4Owv1+ChxlQRrMLREM8r3FonXwDTDPhxG0N92lwNNymoVRR5SB3+y9
+	GLrbOzEMuU9y4Pd5GTg1EUQQmrHRKemkwXmFIo4zDkTCP5XQ5IjzAJmN/M6S1pkaTM4dm6XI
+	d+5E0lw1wpEj1wc5UiPvJ876BFJ3bZwig6F3iNxwjCXydAW3fe3nis3pkk5bIBne3LJLkXG2
+	p5XK7d9SeL20gS5CPetLURwvCkni1wtO9hmPjbqYGLPCa6LX+4SO8TJhteg8EVzMFTwteFaJ
+	ZbYTuBTx/AtCmni+c29sg4U14pT34lOPUkgWh/7u4/5zrhLtl9qeeuIW8wtz1VSMVcImcWiy
+	A8ecomCPEx/fafr/YIX4S70XlyNlDXquAam0OQXZGq0uaV2GMUdbuG6PPltGi99mOzT3RROa
+	7v3EhQQeqZcoIeWDTBWjKcgzZruQyNPqZcr417dlqpTpGuNByaBPM+zXSXku9DKP1cuVG2cO
+	pKuEfZp8KUuSciXDs5bi41YWIWtqxPy8R8pn/lIW3wzUvutOedG1Pesz5FvTIZ/KjSinDs9d
+	WZFY+Fb2q8LOLuPSR4ONx1+JJ99u/fA9nX61eXZf+Mxa/du9u5M7ft4U/7HBl4xfikbG084v
+	3Ljw5SGO+3X3Y7fpYPnlpB0f2Rs1f+g2pqZOGcf2Gu7JwQdt3Z9O5k+ocV6GZkMCbcjT/At7
+	OUwdaQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSfUxTZxTGfd9779tLY81NIXqDiZoG8SuKZkhOVIgmRu40GhMTRRMDjV6l
+	fKmtQzFblGJjZTjbmpZIQQGlakFBQBS1SiDrHIpQi9IMsGI6HAFFkSqfdu3M/jn5nec858n5
+	47CU/C4TyaqyjorqLGWGgkhp6ba1ecu1P25JW2k6Hwt63Uno8foYeJXbRIN/VE9DcXUVgWnr
+	XQnoay8y8KRLS0PHrUoEXr8ewddJKwW6xgAN0yanBEbHuyVgzkUQcDgRWFwmCjwdjymoqs/F
+	8LnmG4HBlhEE5j4fgcKBXBqGbQUIivqtEhj4PRHeex8wEOh9h6HryxACm+8bBl/TGQTTlnS4
+	XF4XXLd8JDDZ1k5BobkDQVlfLwUjA28Q1DtfI3Bc1xL423CHArdvFnT6hwn8af6VwHtXMYYP
+	NQRKtQ4GXM8GEZRYTQj6/3JgyLtSTcBSUktD45v7EnANTmHosZgwVNZuBa+tn4anhnIcPDfo
+	uj0HrIV5OFj+wWC++QDDuM0uWV+BhK+632jBXteABd2LaSJUXapCwuSECQmjFXmUoDME25ah
+	YUo4XXdMqHg6RIQJ/0siOL6U0kJrOS9cPTuBBWPbcqGxqFeyfcMe6br9YoYqW1THJKRIU8va
+	HfhwZ8LxR/l26hRqX5mPwliei+W9r5uZEBNuEe/xjFMhjuAW8HXn+oO6lKU493y+wHaOzkcs
+	G84l89eeHAh5aG4h/8lTTUIs4+L47jGX5HvmfL6ypum/nLCgfmuqBIdYzq3mu4f/oA1IWopm
+	2FGEKis7U6nKWL1Ck56ak6U6vmLfocxaFHwn2y9Txnto1J3YjDgWKWbKYP3mNDmjzNbkZDYj
+	nqUUEbLoxVvS5LL9ypwTovpQsvqnDFHTjOaytGKObPMuMUXOHVQeFdNF8bCo/n+K2bDIUyj+
+	PO6r2bs1ENs52/HQuNH+6fYPC3t+1p1s60hagjbJR4pnLotfUxTQ7Yjyawui8knU7lfUEaNp
+	G7NkjafhUon7Rmt4Qtlzg3GMOC9E1scdIclvW/DOMynassRonX6PIjzJ1XUjGxrmHUttdS7Q
+	lEu1MSSmKd697+bY6WimM05Ba1KVq5ZSao3yX1zt3TVKAwAA
 X-CFilter-Loop: Reflected
-X-Rspamd-Queue-Id: 73D5340002
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1CB2620006
+X-Stat-Signature: muqrp31nzas4c3b49e6snmn3piztntyq
 X-Rspam-User: 
-X-Stat-Signature: i4wcijxz64d1e6mn1xycn4sf43rc7wn7
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783318858-713773
-X-HE-Meta: U2FsdGVkX18NR1t3knwjXaVWGl3AfQN/4XiHo2ionDD9i+dA9/13vFsNCaNAOEP4PWkQfochG548YMl10T63hQGpLjgBokBqHFQJr7sFCqe1l/0NI66ipsVPO8bHO4//tjOuoRJZ5EkpvCZDKKFi3PXgKlC72Ab2bEINWs29BC7O6ORpMkaxCHfNw6uxoIWiyBHcZNWz1wn7clyfRse6Hei5JJiVDm7naGPYtIo29jVxC0PcFf2EKJ8UVUPwtfOhKngVSVGSevhUh1dSg6iaCV9D0Ju83q41t4f0MVPdVDGI9eHWUd93JUk/5s0fXMCN5fd8lRgqtM7ZEyu9MRwIVVqXCjO5iGU5E8BuEcXDcvMASn5mUEtKQ4rWeKrREoScw+YQiJ0aPbHsP0EoE99bdamOCaZH/GLiDt4zam9Ak6cQxqYDL0noK4/Py2TwwhkTXqOOGaJtomPXMjy2xho0++8ZCvjGXf8LzvhvhILN/mHdZ+73Jwgfg4PYg6E7yk0ROgOOj6+Yajbx+ht/KC+imQEpOwkmT2sPaBlqiHiBqQtpK03icr/F+hc52qnCHlZD57Sk0AN9tBH9qg1bj4+/5JL7qP3LeUrPcj+h7nq5n5HSAEHxGEtre4e2lw8Lj5uc+RQkECpglrVyHswNiOjaAiwADNb1JT7oO1YzGFZnwOxMDF77uGLPK+TC6YBw7bWcJKfHIhKuk7bH6T9er6qy4cxnXVNgW02BEMcPZfsQukc/o4qZ/I4HAQ3EIxKvVZwx0L7rpEogY0ULOeTA63GkNMiQCC9JHNBxQ/A7cy2qKKqCGk0ACmqZANEEYtkcW+RjuUB0JeMIWg4rL1sLSRIV3DeFr5Z9R0RAMpOG58H0R1X19pMNWGZFYfRngEznFM+szeHAPBJ2Sy5nnIFrgeBa5vcuCg8bjmC/LnBtEqsRIjGwfuSe9gFG2Ula7iJJW/bRb0xDKRX4/gkroUu+HDa
- DcK2QXqH
- 1Yk31mhulGOr5wjP6DLrYn144dgbvnFWFwI7GCd9zDnLkzKmXVvNbBwipArTovuXYNePzQ92kRSjt6tE2gnJx9+aWJDYvVugDf+B7CiWoq5gR3FraRqALfavFyWUPv8iuTlATe2ESCaVjjMiRBDE9VN+D4/Dxu3YRpbaHxVMSE20/mRhoEJ29glDocoUUvjGpfrzf2vJzUB+hxFO4h+3zc8jM2A==
+X-HE-Tag: 1783318918-464468
+X-HE-Meta: U2FsdGVkX19UC3+7aBxP6kQa5FLGzTd86yzfU8FnuOfdmc5AGpMHMGSbQAmY5i0bdkJ3uLE+u/hIGxf+SYIa+wNGI3KcZOpQEYjFvOBsgSsHCEJHbSV0TR/CIKxn1a9A5cv8r5/olYUA1w3njenvpQZGyt+tDFhUyMDrB0iRUlNDbxMJqAPErhxCyBZt1GpcwvgEgTEbOZXF2MiogkWB3rF5kwQD1n4QXNrxy65eal7tYAuTGqEl8bxkRSYOWpbCxoYdZ3OQxP7lYYZ8NBBmIpVM7kqmmsPrg+g8o8/HxOLdcqlF5BPDRzTh8gDEAA7omgXcGeYwCmgPTjmi3knr4P15cGYQ5q+BhKnDgCs/NZNzUeQJaLvRKB4qHB7k/VhVUFejqqiPbVnkBPLLA3B24YeDvRnLktOTlKyqwDG2Tptt7HJXSFnOlkn549XZwx8BBZMVVrwfbSccyVk75eZOPTOB5A6u9yZh9A0T2dVLGnNiMCaFS/NiZTVVdlPoCHKNogN9s0E6PDnUQmh3sMvbmwtqxO7UMAarTuU+9zgBbV/voMajJavFtSdLK0u6w8yyK+Z1Wo1fiNBGAG+NRfdhLfk+OwKdJ601yuDKmlXqCzQlo3YYDDC/2nOabEiFeOXShc0Owd9XCJOqv5ZwH1m88ABwSoRdtLpJF2tDqT1VTCdKcqsLUYTHN1+0u+Yt3NFd+kEFh49qTTtvJ9VMJ0alSk8ns8Z93jdiG+YxD0ghHQteED8V35l4BgJTZ7gG1DyVdyLqoCKcunrSpiCGirFPEmMxvSbg0Ud0lPCtobX7mg9w+vc+h0xySRq1Y83b074hysJap709GljtAiRearx9vZlfl9Wodv6ECKFgtlWXlPGPdLYmblPmxD+0svk8YjD125VMFeNLl6+N59Vk+Z6Dp8uyvzAb/GRGHhhKEfW7NSYoC2S1/2YvyjKBK13z7/D2mq7XSxA9WHH6bdAsE0E
+ /OTyTjoa
+ iB5/q5GeI+ejNoxLtmD1hhvCHIORTraL+AAqOSQCHG0YoASsWqLHse3QrR/HYBLGg8W3A2pyfUAp2RT5TTOC4nRrYxHUbFISIPqg8pk4WahyXZWq1Ul3PHPhUTr/DD82xSLH46pM3cg8GwdNBtyo9ffiLn+4TMXZl/UOF/CrkPzBUmnNr9uGPw5ybjVBDv7R27M24meeRxeZwFbARoArvVZX7pFTwX+eGVkB1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -268,63 +269,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For dept to function properly, dept_task()->hardirqs_enabled must be set
-correctly.  If it fails to set this value to false, for example, dept
-may mistakenly think irq is still enabled even when it's not.
+From: Yunseong Kim <ysk@kzalloc.com>
 
-Do dept_hardirqs_off() regardless of irq state not to miss any
-unexpected cases by any chance e.g. changes of the state by asm code.
+The current implementation shares the same dept key for multiple
+synchronization points, which can lead to false positive reports in
+dependency tracking and potential confusion in debugging.  For example,
+both normal RCU and tasks trace RCU synchronization points use the same
+dept key.  Specifically:
 
+   1. synchronize_rcu() uses a dept key embedded in __wait_rcu_gp():
+
+      synchronize_rcu()
+         synchronize_rcu_normal()
+            _wait_rcu_gp()
+               __wait_rcu_gp() <- the key as static variable
+
+   2. synchronize_rcu_tasks_trace() uses the dept key, too:
+
+      synchronize_rcu_tasks_trace()
+         synchronize_rcu_tasks_generic()
+            _wait_rcu_gp()
+               __wait_rcu_gp() <- the key as static variable
+
+Since the both rely on the same dept key, dept may report false positive
+circular dependency.  To resolve this, separate dept keys and maps
+should be assigned to each struct rcu_synchronize.
+
+   ===================================================
+   DEPT: Circular dependency has been detected.
+   6.15.0-rc6-00042-ged94bafc6405 #2 Not tainted
+   ---------------------------------------------------
+   summary
+   ---------------------------------------------------
+   *** DEADLOCK ***
+
+   context A
+      [S] lock(cpu_hotplug_lock:0)
+      [W] __wait_rcu_gp(<sched>:0)
+      [E] unlock(cpu_hotplug_lock:0)
+
+   context B
+      [S] (unknown)(<sched>:0)
+      [W] lock(cpu_hotplug_lock:0)
+      [E] try_to_wake_up(<sched>:0)
+
+   [S]: start of the event context
+   [W]: the wait blocked
+   [E]: the event not reachable
+   ---------------------------------------------------
+   context A's detail
+   ---------------------------------------------------
+   context A
+      [S] lock(cpu_hotplug_lock:0)
+      [W] __wait_rcu_gp(<sched>:0)
+      [E] unlock(cpu_hotplug_lock:0)
+
+   [S] lock(cpu_hotplug_lock:0):
+   [<ffff8000802ce964>] cpus_read_lock+0x14/0x20
+   stacktrace:
+         percpu_down_read.constprop.0+0x88/0x2ec
+         cpus_read_lock+0x14/0x20
+         cgroup_procs_write_start+0x164/0x634
+         __cgroup_procs_write+0xdc/0x4d0
+         cgroup_procs_write+0x34/0x74
+         cgroup_file_write+0x25c/0x670
+         kernfs_fop_write_iter+0x2ec/0x498
+         vfs_write+0x574/0xc30
+         ksys_write+0x124/0x244
+         __arm64_sys_write+0x70/0xa4
+         invoke_syscall+0x88/0x2e0
+         el0_svc_common.constprop.0+0xe8/0x2e0
+         do_el0_svc+0x44/0x60
+         el0_svc+0x50/0x188
+         el0t_64_sync_handler+0x10c/0x140
+         el0t_64_sync+0x198/0x19c
+
+   [W] __wait_rcu_gp(<sched>:0):
+   [<ffff8000804ce88c>] __wait_rcu_gp+0x324/0x498
+   stacktrace:
+         schedule+0xcc/0x348
+         schedule_timeout+0x1a4/0x268
+         __wait_for_common+0x1c4/0x3f0
+         __wait_for_completion_state+0x20/0x38
+         __wait_rcu_gp+0x35c/0x498
+         synchronize_rcu_normal+0x200/0x218
+         synchronize_rcu+0x234/0x2a0
+         rcu_sync_enter+0x11c/0x300
+         percpu_down_write+0xb4/0x3e0
+         cgroup_procs_write_start+0x174/0x634
+         __cgroup_procs_write+0xdc/0x4d0
+         cgroup_procs_write+0x34/0x74
+         cgroup_file_write+0x25c/0x670
+         kernfs_fop_write_iter+0x2ec/0x498
+         vfs_write+0x574/0xc30
+         ksys_write+0x124/0x244
+
+   [E] unlock(cpu_hotplug_lock:0):
+   (N/A)
+   ---------------------------------------------------
+   context B's detail
+   ---------------------------------------------------
+   context B
+      [S] (unknown)(<sched>:0)
+      [W] lock(cpu_hotplug_lock:0)
+      [E] try_to_wake_up(<sched>:0)
+
+   [S] (unknown)(<sched>:0):
+   (N/A)
+
+   [W] lock(cpu_hotplug_lock:0):
+   [<ffff8000802ce964>] cpus_read_lock+0x14/0x20
+   stacktrace:
+         percpu_down_read.constprop.0+0x6c/0x2ec
+         cpus_read_lock+0x14/0x20
+         check_all_holdout_tasks_trace+0x90/0xa30
+         rcu_tasks_wait_gp+0x47c/0x938
+         rcu_tasks_one_gp+0x75c/0xef8
+         rcu_tasks_kthread+0x180/0x1dc
+         kthread+0x3ac/0x74c
+         ret_from_fork+0x10/0x20
+
+   [E] try_to_wake_up(<sched>:0):
+   [<ffff8000804233b8>] complete+0xb8/0x1e8
+   stacktrace:
+         try_to_wake_up+0x374/0x1164
+         complete+0xb8/0x1e8
+         wakeme_after_rcu+0x14/0x20
+         rcu_tasks_invoke_cbs+0x218/0xaa8
+         rcu_tasks_one_gp+0x834/0xef8
+         rcu_tasks_kthread+0x180/0x1dc
+         kthread+0x3ac/0x74c
+         ret_from_fork+0x10/0x20
+   (wait to wake up)
+   stacktrace:
+         __schedule+0xf64/0x3614
+         schedule+0xcc/0x348
+         schedule_timeout+0x1a4/0x268
+         __wait_for_common+0x1c4/0x3f0
+         __wait_for_completion_state+0x20/0x38
+         __wait_rcu_gp+0x35c/0x498
+         synchronize_rcu_tasks_generic+0x14c/0x220
+         synchronize_rcu_tasks_trace+0x24/0x8c
+         rcu_init_tasks_generic+0x168/0x194
+         do_one_initcall+0x174/0xa00
+         kernel_init_freeable+0x744/0x7dc
+         kernel_init+0x78/0x220
+         ret_from_fork+0x10/0x20
+
+Separating the dept key and map for each of struct rcu_synchronize,
+ensuring proper tracking for each execution context.
+
+Signed-off-by: Yunseong Kim <ysk@kzalloc.com>
+[ Rewrote the changelog. ]
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/irqflags.h | 14 ++++++++++++++
- kernel/dependency/dept.c |  1 +
- 2 files changed, 15 insertions(+)
+ include/linux/rcupdate_wait.h | 13 ++++++++-----
+ kernel/rcu/rcu.h              |  1 +
+ kernel/rcu/update.c           |  5 +++--
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/irqflags.h b/include/linux/irqflags.h
-index d8b9cf093f83..586f5bad4da7 100644
---- a/include/linux/irqflags.h
-+++ b/include/linux/irqflags.h
-@@ -214,6 +214,13 @@ extern void warn_bogus_irq_restore(void);
- 		raw_local_irq_disable();		\
- 		if (!was_disabled)			\
- 			trace_hardirqs_off();		\
-+		/*					\
-+		 * Just in case that C code has missed	\
-+		 * trace_hardirqs_off() at the first	\
-+		 * place e.g. disabling irq at asm code.\
-+		 */					\
-+		else					\
-+			dept_hardirqs_off();		\
- 	} while (0)
+diff --git a/include/linux/rcupdate_wait.h b/include/linux/rcupdate_wait.h
+index 4c92d4291cce..ee598e70b4bc 100644
+--- a/include/linux/rcupdate_wait.h
++++ b/include/linux/rcupdate_wait.h
+@@ -19,17 +19,20 @@ struct rcu_synchronize {
  
- #define local_irq_save(flags)				\
-@@ -221,6 +228,13 @@ extern void warn_bogus_irq_restore(void);
- 		raw_local_irq_save(flags);		\
- 		if (!raw_irqs_disabled_flags(flags))	\
- 			trace_hardirqs_off();		\
-+		/*					\
-+		 * Just in case that C code has missed	\
-+		 * trace_hardirqs_off() at the first	\
-+		 * place e.g. disabling irq at asm code.\
-+		 */					\
-+		else					\
-+			dept_hardirqs_off();		\
- 	} while (0)
+ 	/* This is for debugging. */
+ 	struct rcu_gp_oldstate oldstate;
++	struct dept_map dmap;
++	struct dept_key dkey;
+ };
+ void wakeme_after_rcu(struct rcu_head *head);
  
- #define local_irq_restore(flags)			\
-diff --git a/kernel/dependency/dept.c b/kernel/dependency/dept.c
-index 007e1bc7d201..35a3667ac8b3 100644
---- a/kernel/dependency/dept.c
-+++ b/kernel/dependency/dept.c
-@@ -2095,6 +2095,7 @@ void noinstr dept_hardirqs_off(void)
- 	 */
- 	dept_task()->hardirqs_enabled = false;
- }
-+EXPORT_SYMBOL_GPL(dept_hardirqs_off);
+ void __wait_rcu_gp(bool checktiny, unsigned int state, int n, call_rcu_func_t *crcu_array,
+-		   struct rcu_synchronize *rs_array);
++		   struct rcu_synchronize *rs_array, struct dept_key *dkey);
  
- void noinstr dept_update_cxt(void)
+ #define _wait_rcu_gp(checktiny, state, ...) \
+-do {												\
+-	call_rcu_func_t __crcu_array[] = { __VA_ARGS__ };					\
+-	struct rcu_synchronize __rs_array[ARRAY_SIZE(__crcu_array)];				\
+-	__wait_rcu_gp(checktiny, state, ARRAY_SIZE(__crcu_array), __crcu_array, __rs_array);	\
++do {													\
++	call_rcu_func_t __crcu_array[] = { __VA_ARGS__ };						\
++	static struct dept_key __key;									\
++	struct rcu_synchronize __rs_array[ARRAY_SIZE(__crcu_array)];					\
++	__wait_rcu_gp(checktiny, state, ARRAY_SIZE(__crcu_array), __crcu_array, __rs_array, &__key);	\
+ } while (0)
+ 
+ #define wait_rcu_gp(...) _wait_rcu_gp(false, TASK_UNINTERRUPTIBLE, __VA_ARGS__)
+diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
+index 9b10b57b79ad..d30dfc345532 100644
+--- a/kernel/rcu/rcu.h
++++ b/kernel/rcu/rcu.h
+@@ -12,6 +12,7 @@
+ 
+ #include <linux/slab.h>
+ #include <trace/events/rcu.h>
++#include <linux/dept_sdt.h>
+ 
+ /*
+  * Grace-period counter management.
+diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+index d98a5c38e19c..c2858650ccf5 100644
+--- a/kernel/rcu/update.c
++++ b/kernel/rcu/update.c
+@@ -409,7 +409,7 @@ void wakeme_after_rcu(struct rcu_head *head)
+ EXPORT_SYMBOL_GPL(wakeme_after_rcu);
+ 
+ void __wait_rcu_gp(bool checktiny, unsigned int state, int n, call_rcu_func_t *crcu_array,
+-		   struct rcu_synchronize *rs_array)
++		   struct rcu_synchronize *rs_array, struct dept_key *dkey)
  {
+ 	int i;
+ 	int j;
+@@ -426,7 +426,8 @@ void __wait_rcu_gp(bool checktiny, unsigned int state, int n, call_rcu_func_t *c
+ 				break;
+ 		if (j == i) {
+ 			init_rcu_head_on_stack(&rs_array[i].head);
+-			init_completion(&rs_array[i].completion);
++			sdt_map_init_key(&rs_array[i].dmap, dkey);
++			init_completion_dmap(&rs_array[i].completion, &rs_array[i].dmap);
+ 			(crcu_array[i])(&rs_array[i].head, wakeme_after_rcu);
+ 		}
+ 	}
 -- 
 2.17.1
 
