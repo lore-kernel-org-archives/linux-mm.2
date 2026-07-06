@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0621BC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD274C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:22:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47E456B0100; Mon,  6 Jul 2026 02:22:11 -0400 (EDT)
+	id 956E66B0104; Mon,  6 Jul 2026 02:22:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44EAC6B0102; Mon,  6 Jul 2026 02:22:11 -0400 (EDT)
+	id 92F996B0105; Mon,  6 Jul 2026 02:22:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 315266B0103; Mon,  6 Jul 2026 02:22:11 -0400 (EDT)
+	id 7F6F86B0106; Mon,  6 Jul 2026 02:22:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E18B86B0100
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:22:10 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 58E2C402AC
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:22:10 +0000 (UTC)
-X-FDA: 84957356820.17.5B09539
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 554426B0104
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:22:13 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2569C1277
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:22:12 +0000 (UTC)
+X-FDA: 84957356904.20.BF9748E
 Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 730D720002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:22:08 +0000 (UTC)
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9E78E20002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:22:10 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf31.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783318928;
+	s=arc-20220608; t=1783318931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=WArLovSFXaT8otVlpV7KIF50R+FCcBURwHrSO1jZKQs=;
-	b=ymJzCN96eeOgaDB5WbGsYhAL+oR7nPgIIBeeBltx/0gOvV6PJH4oe1ZETaNkTC/UsU+mpj
-	/TQP3zckosPLPoofDI//RyxpbFjkT414GKKrr83/TlyypIMuPY0uJ89wjnFXrfc3AFL+qW
-	RCztvjWr1b9MQ5yMooKoNQ7JO2UGFG4=
+	bh=vg+fiYS+NxSoKvD2GfmimQkypn79PVgf15C8WeFHTnw=;
+	b=x7oMrGhoHhgUxXDBDUAfMmkk6BPkwD0QFm7HznlEzY7u9nxEZwGSqA+8xJ6dKqvFIsbwam
+	SzjRrh3stHW+SL3yg4VFiSqPj4X1yfXiAe919LjDz+LV5ax2kx1rtNWf10Cvx+1z5YrErI
+	ui9yGWpio+ig/hronMDaLTNDu/SdeUg=
 ARC-Authentication-Results: i=1;
 	imf31.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf31.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783318928;
-	b=nDfMkZn7wNYfOX744xFxZDPY41XJLN/qeoFTWEM4zkU8mnUQ1S2GuGSaJCXQOnFeDX9v8v
-	usSSylRDNcD/SXTPKPj522Uo9iTeE5VIBmxYrS4xo1ZjMN8dWkfwADaIQMqu7T1eOi9YxH
-	DQLfcPAuvdwLuTlCc0mR/IrVIp/TYL0=
-X-AuditID: a67dfc5b-c45ff70000001609-3f-6a4b49849c85
+	t=1783318931;
+	b=ArNIzbIUmCtRmci9s1Bnl317FBzz+RCMg1hWShG+mii3KBANrS7VY6/IchW8wrvBWIjNZ9
+	V+tUM5wEq8Y/7WcS3k2QIAs/ubAQVTnbsCOJZkspwroZaa3AB699fVXjwqbEh+G9PVmEJu
+	X9eqRtyHgdNso7PCl8ZbfSA0jDZdocg=
+X-AuditID: a67dfc5b-c2dff70000001609-5d-6a4b4984e6c5
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -214,54 +214,53 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 38/40] mm: percpu: increase PERCPU_DYNAMIC_SIZE_SHIFT on DEPT and large PAGE_SIZE
-Date: Mon,  6 Jul 2026 15:19:26 +0900
-Message-Id: <20260706061928.66713-39-byungchul@sk.com>
+Subject: [PATCH v19 39/40] rust: completion: Add __rust_helper to rust_helper_wait_for_completion()
+Date: Mon,  6 Jul 2026 15:19:27 +0900
+Message-Id: <20260706061928.66713-40-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxiG957znvecNtacdYQdNQum+4xRxMnMk2USFuN8nT+mWaLJzDa7
-	cQblozQtMDFZ0k4wgsJcN8tGQUWwMqiDHBQU3GRMhMBgtjWs2zpwiN2wtrgiGBmIrcZ/V+4n
-	133/eQRW+we3XDAYC2SzUZ+rI2qsDi+pW1OydVt2yuDB5yEwNsHBiK0bQ02Lm8CCs4OH/t8+
-	x+Dw2Flwn7UxUB108jDZuwXCY10cLDhy4PjJNgIhxx0C0cnrCM5eGUXgm1gK12amCIQ9NQxE
-	Wgl4fgkh2F/fQiDgsDNQNUnAWbWfgaNnuhi472riwTnk42C8sZqHDut1HpTfexEoN0Y4qDvQ
-	gOHbYwECvs4aAqPuRQ6sznsceJuvYhi80o/h184zHMxWroCvIkEEoVkXC66ZKR4a/6viwB6M
-	8hBtmMVwYPoBB30V3QycuhthIVB5C4PiHiHwT3UtAz/P3GZg7nRsdqh9gIeBuQEGxivDMbc2
-	pjV7MBwqdWA413uPB9v0GILK4S0QOXKXS0+nTW3tDC31LhDqPuZGdOCkRBvK5hh6ofovnp5Q
-	CmnJ5TBH2xpX0fqLkwxVmsoIVaJ2nkaGh3na/83/mNZZj7L0Uq2b3570nvqNDDnXUCSb16bt
-	UWf5L/s50znV3o6Di7wVjfPlSCVIYqrktV3AT7i9rITEmYgvS37/fTbOCeJKqa0iyJUjtcCK
-	viTpsKvikfCMKEs/lJfHBEHA4otSV2dhPNaIG6TI/EXyuDNJam7tftSjiuXfz9cycdaKr0l/
-	TvXheKck1quk2xMu9FhYJv3U6MdHkOYEeqoJaQ3Gojy9ITc1OavYaNib/HF+noJiH+f6bH73
-	eRS9+m4PEgWkW6KB9LeztZy+yFKc14MkgdUlaF56ZVu2VpOhL94nm/M/NBfmypYetELAumc1
-	r85+mqEVM/UFco4sm2TzkysjqJZb0dovXtC8szLz72uZ9g3eVrXm9WWHMgwfpKYV7Fxa9hFZ
-	Fw2V7Ej8zptTurGu/f2EXcV9N01D3q9/rDm/UxpPtHhWbzYb9wVNWxOV0fSUqaeHfY7U5Oeg
-	8Fba4HqGDrp3v5VmCixuWj2xJinlXyWUcPzSJ8g6bbJV7NiT38J/uf7Nzad02JKlX7eKNVv0
-	DwH5ZkU2bQMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzVSe0hTcRjtd+/dvdfR4rKELvaHMehBYVlkfJGUBdXtSRER9E+NvOTcQ9vK
-	shJ1a7jspYtNalpmbuSjtFmZ2cisLHu6LBvpmtqaia+wLdHNbCv65+N853zncP74aFxcL4ih
-	ZarDvFolVUhIISHcvkoXp9u0JTX+qzsRDPps6PJ4BdCR20RAwG8goLimmoRJSz0FBvslAbz4
-	pCWg7VYVAk/AgGAsaMFB3zBFwKSxhQL/eCcFplwEU44WBGanEQdX2yMcqu/kYvCz9jcJA09G
-	EZh6vCQU9ecSMGI7i+Cyz0JB/7ONMORpFMCUuw+DT78GEdi8vzHwNuUhmDTL4WpZXdhu/kFC
-	8M07HIpMbQiu9bhxGO3vRnCn5QsCxw0tCd8K7uLQ7p0BHwIjJLSazpAw5CzGYLiWhFKtQwDO
-	1wMISixGBL7PDgx012tIMJfYCWjofkCBcyCEQZfZiEGVfRt4bD4CXhWUYeG64avbs8BSpMPC
-	4zsGppuNGIzbKqkkK+LG9OcJrrLuHsbp30+SXPWVasQFJ4yI81t1OKcvCK9PBkdw7lTdUc76
-	apDkJgIfSc7xq5TgXpaxXPnpCYwrfBPHNVx2UzvW7hUmJvMKWQavXrJ6vzDF9dQlSL8bdaze
-	MEXloF4qH0XRLLOcvXf6FBnBJDOfdbnG8QiOZuawded8gnwkpHGmPZY9aztHRISZDM868vPD
-	BpommLls44MjEVrErGCHQw/Jf5mxbFVt09+cqDB/K1SCRbCYSWA7R54TBUhYiqZVomiZKkMp
-	lSkSFmvkKZkq2bHFB9KUdhR+J1tWqPA+8rdvbEYMjSTTRZC0OVUskGZoMpXNiKVxSbRo3oIt
-	qWJRsjTzOK9O26c+ouA1zWg2TUhmiTbv4feLmYPSw7yc59N59X8Vo6NictAyEZaVt3Nnh7xw
-	fUJv4/mYjF0T3YduKw3HF4H80EqVOsGv7RyuiXOfLN/9NqAqr0jTC8dHK8ou1CqslfVDwTyt
-	8sTFMd9QcYfu6tr4E6HW71uTe6cH12zoGNU692YvDF4p9cRUJD6yX5gZ30z09fGPuxwzrPTD
-	n3lx7zVt69IcEkKTIl26EFdrpH8ALUQrlUoDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSWUwTURSGvTP3ToeG6qRqHJFEU3cjbgFzHozhzXGN0TfBYGNHKUIhRTYT
+	FUG0EERELdHKYtWGpSJ2wA1xwYALIKCoFQoFRAxBLAKVyCJSjG9f/pP/O+fhsLTSTnxYre6o
+	qNepw1WMHMv7vc1+p7duD1tXnuMHhpST4HB2E3APGzBcu2NlYMJ0XwavPiVhcLoNCEbGTDSk
+	PJzEMJFVI4Ph360ymKysQWBvfEqDtewUBUOlfxjI7j2FwWVJR9BbvQX6nRUEJtu+UZBnlhjo
+	Mw4wMFbfQEP25UYE1zvbaBjs7UBQVtOO4H33TGh2uxjob7pGwY9SBprq+hD0tFRSYMyxYWjq
+	G6fAYcyioNi2E5yWHgy1mWZqaicDxrvzwJSdTIElcSl0FVydui4/EtrOX8bwuv0jAefLMwSG
+	mzspMDxyY7h+5iaGK7kOBh5XvsaQXlpOoN06SSDRNEKg8Vktgdb68zJoeHSbQGeHnYBUX0eD
+	PfMrgts/zAxY3C5ZoEYYScnAQpF0jxJS3k0wgjXXioSx0SwkDN9KpoUX3120cFqKE27VfmeE
+	yl/5WHhj5oWbqaOU8PBqm0zIt8UIUsEq4cbjXmr36n3yTRoxXBsr6tduPiAPLSsqRFFfSHzL
+	hbMoEblxGvJiec6fH0h202mIneYkR4wnZrjlvN3+m/bwHG4RL53rIWlIztLc+4V8uuXcdHc2
+	d5DP/dCAPIy5pXxe2U/iYQW3kX9ruk/++RfyxaXPpkVeU3nJeA7lYSUXwLe6XmKPlOfuePEm
+	WxfzrzCff15gx5lIkY9mFCGlVhcbodaG+68JTdBp49ccjIywoal/sxwfD3qABhv3ViGORSpv
+	BQRuC1MSdWx0QkQV4llaNUexbMX2MKVCo044JuojQ/Qx4WJ0FVrAYtU8xYZfcRold1h9VDwi
+	ilGi/v+UYr18EpGhOCj+SXDxgOPrWMgS59Auokrd71dhja2TF0U9r195tzD7p28LkTahb3G8
+	yihVt1zqqJq7Ni81xDG6Izhy8a7CzyMrQ7qqM76c4MKSDmkKBjJKDpT8CYjQS3tqP+uY4NGm
+	5u4FK0rKNb6D/q0BPnaiC/T2pWdVXEzTDl3pciaocHSoev0qWh+t/gvXZoFpawMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0xTdxTHd3730UtjzbWSeONMMDXoYoLTKOM4NwT8gzuNZv8Qk02ijd5A
+	eVTTKsqI0VKqFdBAl7bRykOURoEptp2IpJFAxAc+6OqDKIhoxRFQFKnIo2JL4j8nn3O+3/PN
+	+eNwlLKJWchptHslnVado2LltHzLOmNc0W+bslbePcKj2XQIe/oCDD42tNIYHDPTePpSA4sh
+	R5MMza6TDN56Ukhj18V6wL6gGXB8ykGhqXmGxpClQ4ZjE89kaDUAzng7AG0+C4XdXdcpbPAY
+	CH5s/MLiUPsooLU/wKJ90EDjiLMU8NSAQ4aDN1LxbV8LgzO9bwg++TQM6Ax8IRhoPQoYsmVj
+	VY07vG57z+LUvQcU2q1dgGf6eykcHXwB6Ol4Dug9X8ji67J/KfQH5uLD4AiLt60lLL71nSb4
+	rpHF6kIvg767Q4AVDgvgwFMvQePZSyzaKlw0Nr+4JkPf0DTBHpuFYL1rM/Y5B2jsLKsh4XPD
+	rssL0GE3knD5n6D1nxaCE846WVItiOOmE7RY575CRNN/IVZsqGwAcWrSAuJYrZESTWXhtn14
+	hBKL3PvF2s5hVpwMPmJF76dqWrxTI4jnjk0SsfxenNh8qlf2e/If8l92STmaPEn3Y+IOeaan
+	7gLsecUceFp+FA5DkC4GjhP4NUJhz75iiOJYfpnQ3T1BRTiaXyy4jw8wxSDnKN4fI5Q6j9MR
+	YT6/U6h89AAiTPOxQpXnAxNhBf+TcN/RNMsCHyPUN7bOBkWF5xenK0iElXy88GzkJl0G8mr4
+	rg6iNdq8XLUmJ36FPjszX6s5sGLn7lwXhN/JeXC6/CqM+VPbgOdANUeBSRuzlIw6T5+f2wYC
+	R6miFUt/2JSlVOxS5/8l6XZv1+3LkfRt8D1HqxYoNm6Vdij5DPVeKVuS9ki6byrhohYehvqC
+	DKLasP/XReN/Dh46WzRn9Lb6zSuDv+qdN5ZUzqR0HCxWOSfiStakGVlH8/qUgrypto/zRy9P
+	O6t+Ftv7l23zJLjnhtITEpNal7xcLs9f70uJeZjcuTW+Pe36Z+32tavdab3xiRb/vG0JUbX9
+	LvffZ+al39QXbEi3HzN32hWTBSpan6letZzS6dVfAdgyZ0pKAwAA
 X-CFilter-Loop: Reflected
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 730D720002
-X-Stat-Signature: tjdeuductkstpf75nob9dp7ggf7qytaf
+X-Rspamd-Queue-Id: 9E78E20002
+X-Stat-Signature: 9wr5xwhtqjr44b4ih4p5p84ak9wc7a5f
 X-Rspam-User: 
-X-HE-Tag: 1783318928-891527
-X-HE-Meta: U2FsdGVkX1/8ZWMl6/u8xAEu0DmI0o61uImwZuwCEHbUU3qZtLJ7wO49fF7YVFJn3HFn9jS63aS0RNUL68+nQZ/ZuKgEqvCmAh1aUsnx1IwalMFfYLu5Tpq6sWisxuYxULBywlhwzPlybbbGWNlG0mbB1COYgIIhL8rF6Qnxr+Mt+oW1UMlzJW7FPeuntITTfTOnQpd3VI6K3OljLWKzzw7yNoa9O/bOvihAjrKhOyfcd5MyMHeBs/IcGzN1Ph/FRkot4iNSP2Sg/RuEgXuMiQnzGspv7iHXZNsvqf1c4lGqgg3kX940fh4BF8QXbY5TTQ+u9qW+v8IuSNuGjtgU99M1iW2qnLmwHaIbrJZjHhbs2xj7wGur/Un/3pgEE63P8v3Scfz/HOPuEVBSMb1aFYsGC5GOJWytZXvFAXgiV6IdskTa6gcUiDS0R3yMHW0HomWVg3LeAFXJcPhFx59hlRQc3stiA9JYUwexfCZdLYhPy0t+F/81fKOqLqGW/1uVwdwHmtOJAymiry7AS5j/Waa4RmmLN6vfMsBDDMtkaH4BrcNO/RJY/m2wi4Ba8o/AhyRYHNVVPGEyGTIvEpTPxnYOPJPPjwQQXsn8vRnjM8DwUknGutvPYT6DVmYZfRGiRTItiE8W39kJQHLYQZV2RMhpAtEqbzmz9akXU/EQ8LfNr0QhecYiJbuW/+OxkotqeQ8nqW9/KxNy9gNQFJiP/FySubgES65BEYYTYBBTQXhIGRhNZ33TlBjh+BxdBSlk/m5Q+spBHpbLFRNfUW/AYOvs1DwC2xZS3f9KN4EDh61xVDSPP2I5hTK1DJL6odPIt//HLn1UNXfEiAKFc4c3bh7da9hCUXfdg6H2MVaVu3b1a2hH4Lo4HHVEHI2a8zFjp3SzAFpUTRAokboRGqPEIvNyjJqtEGNiw+o53GNskF6ObJOBylauBdXdi5q96GwTNHqTw3sfWnaB2Ik5VMe
- xxQmnkbf
- 6M3SAT3RtT3FUI1rjXxDVOCpVMTy8jptj2TLVcU4fK59wHDbyMWjBkjtwS1dxQl0mJAFgoSpL4l4/548PZv+gjLXe5M/DiinDOS8Iyv/U9KFZYpKoJU+BjLyqGdrAW/A3KWGnZs2ZYicqyOMcMaa2hGMfllKInYrZAoA7jL0bDrSanNLlP5DutSS0RaGTCSDhSbdY3r8XGpZhnznGqd8zMFVg8qhCRP/lJPsoSBOt7JzTfQrhlLLn9PfEC6aGqP7SPl+oMrwo4m2JfHGut0rU1IbbwA==
+X-HE-Tag: 1783318930-927848
+X-HE-Meta: U2FsdGVkX19KTa/SVUj0wJ6Ivs7PtD/KY16vx4bC73j+SaX2Uta3VphBaU6KfcHg2BkmnIshCKZarCa1DINwy44+K2pjTqLcm4ozyfHHov6oQV5qRH1pGYwAn6wwBcXfuuPkMAl2Qx8J0Lw0FjgWCtyBDNpz6fKaElgldJ9Myq0GdfN7H1Q4m+/CFLIGCb3EYGrcOT50ON9rLuZyG5wtQikdX5dYBilkIYHy1xzTBHcKcCC50yqmnlG/ba5rGLR/HFQlCoO3W2im7JIhaUdCTBpuEaIFpxAX9LKd1tE2q0g8s5zSz5ifnWIL6/wag3+agzCvHnvIoFuZ1rxDTzZrRu6OUVLGvvnQP/KasJHQOsBfa/7V3hFM4YLEWWJwHH6o+EtrIYS1NJz8IMgyNjxWrnp9vW1sP+qJ+lVh9q8lkBUapv1bPUyyKERMM3/zIwnRoytV6yGYDUVpW2XJ40jezsuC+nU/hLdunqAyC2u2xfv9NtyalJR4ZcOqx6jkY82jMxuy0ckR7DhVhaUrCXfhKpoZl0WflSg09QNEfr6SO5bYdGvN5gqViImDOZl8UnD8NDe/Q+uKf/0KLTjBu9VxztwmGZTBt3PXHUdJWqtdiIbRQU5SWZOVh/L8ZSgbf0nOR6qM5ZhS9jKMXOipYwRUZoQdt4zy1lQ+F6NYu3RcQeyMf0ZA/aBE862pBrvYWwMH5ZnxDPuripaFocgJI+dsPex10d+vS4Jjl6JDPXAW1fgaI0Mc/W25MJZkZLzQNVGmugUDYkIm/BvByw7L5LrniU7wXp+pxHQBI5ibFWCih3NVa2mmCZLzUyDG4xru+seXwRZNxnvUgS3MfZbfqPL900ndCRp1NBrLxrlIAqparIq1Bm+ux6h0hJOLz+1Xpap2r8TlRIcjFE6H2WdmnvbFdXa0snPViuuNsarMB/vsgGs0gVLOXozS9GsDvEvTd7m2IQ8A9gdRLrYMg4VpOiM
+ S6PvOk8h
+ QfvT6Uz9rJbi8V9oe1W+4EqRjfpGae1ttAuU7aFOvhAGSaQqg4d7Tr4BL+LYRr/QtUc3w1YUWgmx2BlRVMJhQqpD+gNZlaaRbjdWfB27ny8zXbZ/5UoJpTE8xZ6gVNtFQ2cniGmiOF5eEdeJHKUlzspcMiSEaPX0k0zQkE8fD8Yn9MBKdVC1FQYv1qqH15TIzuG6DMznwpC5OF2mlay0BKXnCxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -269,41 +268,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yunseong reported a build failure due to the BUILD_BUG_ON() statement in
-alloc_kmem_cache_cpus().  In the following test:
+This is needed to inline these helpers into Rust code, which is required
+for DEPT to play with wait_for_completion().
 
-  PERCPU_DYNAMIC_EARLY_SIZE < NR_KMALLOC_TYPES * KMALLOC_SHIFT_HIGH * sizeof(struct kmem_cache_cpu)
-
-The following factors increase the right side of the equation:
-
-  1. PAGE_SIZE > 4KiB increases KMALLOC_SHIFT_HIGH.
-  2. DEPT increases the size of the local_lock_t in kmem_cache_cpu.
-
-Increase PERCPU_DYNAMIC_SIZE_SHIFT to 11 on configs with PAGE_SIZE
-larger than 4KiB and DEPT enabled.
-
-Reported-by: Yunseong Kim <ysk@kzalloc.com>
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/percpu.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ rust/helpers/completion.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/percpu.h b/include/linux/percpu.h
-index 85bf8dd9f087..dd74321d4bbd 100644
---- a/include/linux/percpu.h
-+++ b/include/linux/percpu.h
-@@ -43,7 +43,11 @@
- # define PERCPU_DYNAMIC_SIZE_SHIFT      12
- #endif /* LOCKDEP and PAGE_SIZE > 4KiB */
- #else
-+#if defined(CONFIG_DEPT) && !defined(CONFIG_PAGE_SIZE_4KB)
-+#define PERCPU_DYNAMIC_SIZE_SHIFT      11
-+#else
- #define PERCPU_DYNAMIC_SIZE_SHIFT      10
-+#endif /* DEPT and PAGE_SIZE > 4KiB */
- #endif
+diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
+index 5ea2eef74abc..7b55c960fe22 100644
+--- a/rust/helpers/completion.c
++++ b/rust/helpers/completion.c
+@@ -7,7 +7,7 @@ __rust_helper void rust_helper_init_completion(struct completion *x)
+ 	init_completion(x);
+ }
  
- /*
+-void rust_helper_wait_for_completion(struct completion *x)
++__rust_helper void rust_helper_wait_for_completion(struct completion *x)
+ {
+ 	wait_for_completion(x);
+ }
 -- 
 2.17.1
 
