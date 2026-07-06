@@ -4,132 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88CB5C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:18:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01DE2C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:18:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 855766B0119; Mon,  6 Jul 2026 05:18:14 -0400 (EDT)
+	id 018BD6B0121; Mon,  6 Jul 2026 05:18:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82C8C6B0121; Mon,  6 Jul 2026 05:18:14 -0400 (EDT)
+	id F32766B0123; Mon,  6 Jul 2026 05:18:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 742CA6B0122; Mon,  6 Jul 2026 05:18:14 -0400 (EDT)
+	id E48F46B0124; Mon,  6 Jul 2026 05:18:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 49C0E6B0119
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:18:14 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D4E51C016D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:18:13 +0000 (UTC)
-X-FDA: 84957800466.09.68FACD8
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6D10C100006
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:18:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=0x0f.com header.s=google header.b="TI/nd7JJ";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of daniel@0x0f.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783329491;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A8FC46B0121
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:18:57 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 390598D505
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:18:57 +0000 (UTC)
+X-FDA: 84957802314.07.2CFB5CD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 79C71A0005
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:18:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeOGQZW7;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783329535;
+	b=vVqBJDwPv8qpJ6U93BKfzCyYtB9BvgrMNse7Y6pdifWJeBm32h28FLgH02jCUCTBMZ/DLd
+	7M0FitQjSInLtefBZ+MkYV0QUfQBPWtzCdyMg/OCWRa8Tb+ghVttqhEPv38qrFRXusOI8s
+	celxEe3WbgZV5waa5f8zwj7aQLchuEY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oeOGQZW7;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783329535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DJaCVKcILOe0pMGItn9m+vGlgZ0ms+MuC1wAo8ovSu4=;
-	b=bttNbs3IykRxceUZKyB8J3vzBNtDwwpGcAMT9uhXXkNJpHaHojBaU4NNLlvfipVrk5xYM9
-	DIttrte1S83uz77ztf+N6v/sAEXQBCcg8sLBlZmMGCFJQtOfBKSlFxdi3aLyaQHt0xeZOP
-	nxM7Uii1loT6P9A31eQ8UKdajzLBHHc=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=0x0f.com header.s=google header.b="TI/nd7JJ";
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf14.hostedemail.com: domain of daniel@0x0f.com designates 209.85.215.179 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783329491;
-	b=bO/gcgw9dUmmFqrh3B8S+zyH+C2hkXXaD3Awl6cIK3gdA3PGyKzS2UHtpz3HZplqtITZUe
-	fXfPzD26GH4Xin5DFxuQf8sR0eFm8zBElCO76BStBSMxvCdyPDb1uAWJEY/lHcnGE2YHgT
-	hq3A6GNIYDXdoWsyelAd7deT6QpAAuA=
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c9e2489e117so1446083a12.0
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 02:18:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783329490; cv=none;
-        d=google.com; s=arc-20260327;
-        b=g5J81N32+PKGDx4O+5ywJgdb+X+1A5b3GPGsGCi9lKWRZGpAdyCOvy/G0fLUiFKLOl
-         g/7hSY/4YbvSlucD2jSxzSncggo/105SFhhKS/88HwUVmfj97nbo3d99VKvvwxWnJoaY
-         nF4XINvuXUwUAOGTfz/z8tJn43e7wqDjE7C3YhYCAUsw/BcthhSqUu2hex4GxbaDk0MM
-         NHnZX0MNcDWI5JSYpuAWANaPXh4dO/7mJJwXJ/wdGypEtbyxOu+Nf+LHgUu9TvhbGw/6
-         GBMiOonrgYth3jvH0TkJOrP9aqs8GtD4To8LP1+PU8Bs97jE1rN+35TK/Di+ouhiGAra
-         iQOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DJaCVKcILOe0pMGItn9m+vGlgZ0ms+MuC1wAo8ovSu4=;
-        fh=qYU9RXa+ZiingxSbvCKzmMEyEjAhI3Pz+2hyUq93vwU=;
-        b=YpX0L2BEMiRgyhj9D57xel7Q0ovIWFbI0NbCvt0IHAHeyXMWtTTujRqcMgkHJS2XPK
-         JO9EaeQLmauyvRlud9AzByEeUa39+0R520/L9+4X76RyfzQSuwb3drza7wmFB7hXLUdp
-         WOFPi0+BZxKo0IVSqA0KiokBdwCYjzpZiTMMEspnd8mtkwrxvsz9GHAgdBkRLnro7vKe
-         rvAqjIlbxQSaEQySonQMne4kcItDJDlxYT88yKIYSycLlD9kPek7NNbqPC7L8wQt4xoz
-         fG0BQudcVoGrb7m3oYFlhkkctfd4ZDi+Fe7GbS6Buz+r237Wg/eZ92gn9bm22de9884r
-         N/WA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=0x0f.com; s=google; t=1783329490; x=1783934290; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DJaCVKcILOe0pMGItn9m+vGlgZ0ms+MuC1wAo8ovSu4=;
-        b=TI/nd7JJqgQ86xqhvbJlYM1ny3oGHFSoSgZR0X24pmZMD83MOY9Pq5A6koIeqhEmQB
-         mdUTDfjCQuK1eKcPvPnTlCSL+Sk6rIzO+pkWBpAo7SN470LSxObkSol+SjDmV5tG0DEz
-         DPpUY9QpMuaxEeGfxwGjWi5FTqmsy7QiER5qc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783329490; x=1783934290;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DJaCVKcILOe0pMGItn9m+vGlgZ0ms+MuC1wAo8ovSu4=;
-        b=muyYRSnZEwDTs30BT5dgmDYVEaWKHqGbiArTq79CyukLHDBY7bgdlJS0myK6hpEg88
-         G9Cl6SW9gUnMQlyzAdfHQpW+BZj68IETY2GYqdDe3MC18gOQFDE7nck18pQHr4zUFPle
-         lAhEbidnhhYFG4dv/RuS9dnE+TQEJ9Yi63ql+mBOaIl1ss+33iw3eKqK7JtWucwuY3R9
-         eaOSw2Xvqad9t3JEbPfanbrQr0rhTy2/7loidOsmyPtQh34iXrb9VgyNdeAg+zPi/VS0
-         UcyRV4oJIEKtoFuM5NEhnqgfPTvUrEo2ZQ2nqK4Dg2AhAiBec1O0oZ+W4ugClSyUbANe
-         R2Jg==
-X-Forwarded-Encrypted: i=1; AHgh+RrwBKQLHHqoZa2Kwr0iBDzW4XZNGDS5tWbMidxPfZKCWmnG0yMV+1Ho/96xH/XwrE1bjC1CK4/FeA==@kvack.org
-X-Gm-Message-State: AOJu0YzKdQta+OcbJtv/Yqc2f76AMxnjHwCqE93sLByyKJYY+JezuKzH
-	KS9NzkV572YwFuy2JQaUU1Cd4YF2nwFyJ4ewcYZt8FOf6lnwF+s1wYOGHkenyqeaWMgmfAAesSL
-	xhgvptOzV+op2aN4Wo3dxyorPae0978KX7/RBC0HKnQ==
-X-Gm-Gg: AfdE7cnBT8XRqDcRPtK8REcfQ5jvbW0efPTAmLielluK2GHfKMsYhy0NYjO9m0U9TOR
-	4n55l4I7TjLYkMsI1BKaJSDj1IbldFUF/X02ndDrHYWFYtGU9kXjDm1hXEvobYDzAN6dwAF58W6
-	hQlg1QUPp7w9X9XO9SGXN6zGgB1nSo0bSftU4YRLY+ZVPt/RU2bEot0Z78ZhoMeYhivkM0OtTFp
-	gCdHymGt1Qmn6ZGvg1+Q+avtS1y/sjCXfv0JJ3udqrpWJ9MKt6yUpZCy/WirnBWJS/31Q+oVJWN
-	sPZRKdDN1Eyr3UjtmeMVp6FMyzEZBYg=
-X-Received: by 2002:a05:6a20:d70f:b0:3bf:7eb5:9459 with SMTP id
- adf61e73a8af0-3c03e1f82c6mr10101920637.20.1783329490121; Mon, 06 Jul 2026
- 02:18:10 -0700 (PDT)
+	bh=ziaY5WXr4Dzm49LRmQEzdVWFHT5H2HonZXNfRetu1Io=;
+	b=Jj+DqgQVck2LkXG/utoT36z5FVA0fWnfiHtaHApJsWz1ew8k3EEDU9MjA9+fQDswpWYbnc
+	1DxKwopABz8XT26khqB7c8nFVvt8tg3fLCR3VTSOkAnDWNXImputWkPAh2SlJRHaSrKtHa
+	IA0xDMURVQiVeWfXyUtuD7D/lzWLehs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E24CA60018;
+	Mon,  6 Jul 2026 09:18:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD361F000E9;
+	Mon,  6 Jul 2026 09:18:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783329534;
+	bh=ziaY5WXr4Dzm49LRmQEzdVWFHT5H2HonZXNfRetu1Io=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=oeOGQZW7+2lXYly6yT3KoxX63IAXYc6OlLNugLBcTJJexyCB1hvdNwP2WEncAgC60
+	 ky7gotRrg58K7eNVbaelwPLeWMJzEyE/FCGCPAuSXCdgd/kW/NJ5VrRj/IL50dVwvF
+	 X3V+QvNBJtV87fn4jS8LfXt+YJhKRQMf2iKHBgaAd70USwfZPMD7FycUrxmNxqqqYA
+	 cHvBDSJC5YgI2loUMag3VeDCCpDkmmKh/qLUAHlyFngVm4s7bUAjflkHWuW5oawmgc
+	 aALChYa3yR6DyIq+diGzQMaCb4yRvtuHzkL22C2kkKa15xoMqYJxAnLmPI63DYrLDe
+	 llM3mTl8BD/CA==
+Message-ID: <c02d8cd6-a3e8-470f-a7ea-a2f2f666b10c@kernel.org>
+Date: Mon, 6 Jul 2026 11:18:48 +0200
 MIME-Version: 1.0
-References: <20260702012546.665383-1-thehajime@gmail.com> <20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
- <aksn5J8Nr0JIsVpQ@casper.infradead.org>
-In-Reply-To: <aksn5J8Nr0JIsVpQ@casper.infradead.org>
-From: Daniel Palmer <daniel@0x0f.com>
-Date: Mon, 6 Jul 2026 18:17:59 +0900
-X-Gm-Features: AVVi8CfUh6ouCKz9hCfs57K7cnl0ajbJ1mOn9xdyopsccHICCksdZ-krRpRQ9Ys
-Message-ID: <CAFr9PXm5nwPMkDfG-L4Ai_9DMfUn3hhmwp0HQ70UvZx56M4C6w@mail.gmail.com>
-Subject: Re: [PATCH] mm: nommu: point to the write iterator upon split_vma
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hajime Tazaki <thehajime@gmail.com>, liam@infradead.org, 
-	ljs@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: trqhm868dngorxwyt1361a79pwoxy9kr
-X-Rspamd-Queue-Id: 6D10C100006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 6/8] string: introduce memcpy_nt() helpers
+To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
+ apopple@nvidia.com, arnd@arndb.de, bp@alien8.de,
+ dave.hansen@linux.intel.com, kees@kernel.org, mingo@redhat.com,
+ rppt@kernel.org, tglx@kernel.org
+Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+References: <20260701090553.62691-1-lizhe.67@bytedance.com>
+ <20260701090553.62691-7-lizhe.67@bytedance.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260701090553.62691-7-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783329491-255028
-X-HE-Meta: U2FsdGVkX18XvKhS0YE5DQ/8yyBJCEVrA1dw25HyIoMNLw8S2IUU6JufuDOrY5JCwEzjfR6JBV8OE/0MsXHgU/nJDDSiWHS1BrU6vNyl8JKAKMVSeiMyqdLEEOS9++JKRLGI+ZOJCMWJbQ0aXoQ3Ap+0P5ZHn8BHuGNs3TpJg3twuY8myJtyqnzg/linABwrCzOiMhLbQLGcjJ02JyllB2YqZI42wGm5hdjvVIJNCQKFu4Ad9/V5FjPzYixBfBSZejYtMOBayS7qv/Vco0YCI+tuvM+f5lyU/N88kQaxJzm8sD4K73aLjshm/qM4MDJlSFzfwmtMHtKrX/CwakmCSVuzfv0AoFKjH3KBlP+WdHIOX6D9cWYwt+3fTELXeDHjg0/YioUk2jAYYMMrrix21Jgl+t2LwKCt2j+zLjlSJ9xTGp0ASTmRVs8hJJ39yIoAaQS1bR6XUj62eBTmlXAUfIeWLWqrO/xHCKe2uy7z9TKIVJeQ9Vw3Sg7QRqAJ86KRoCSy+3SJrjA3xeiVnP8eLGisv8lphM7XmSjyyaK2dAZIA8frqc4Kg5cGwmWJ6mXUitdYhSrQnr7ZzZ4NITDx0YouCStQgaqtrOnjOgQLsmKPfCulNOCSbRDCgB177OEr2RQNbvGn8QA23GoHzvEKVmR+Ts0c5ZKmFny9EoJgtm3eeNnI0JSHRMK/XgwG/n5TAGX7ab1ZuYhhZuqN0KUnMYjnNI8CAFNDoHX+DNLgQ7/FHCLqe0vAbx47hgBfFTJ94hW1E2LVBTndMEfLQ3NyQk5tw8IhptRsDh2xDnDc3aOSV9qu6f/yzyiy4FQTn7liOJXzFhIYIm6izM6ozq6jRIQig5LDDACiK7fRdmrVsDbgFPIoVqNy982VD8d+B67YvX2Obzu+2ijTkfMTVRx1E+v3HDJfPNEiRuWTRry070U2L9n4VpGY/GlDYydnea3Km1DdEdno24dd9Ebd03l
- hD85nMFf
- 17pDq/6+kFJtJYZ/HlVyiu1xd7WNBMBQDZIWC5DcsXb8MkoVoZKIuY3v0O9qlVwaLeHJhApMIOopM9FfvAOF0jPT7QjR+4L/loRqpm6DlnkDcg171eW0Zl5exqc+CbPe0jkYcmB6xMS+vMmfhTJVy1rYHB0o+zaj9DXuGF0ePfZiEx8xtHPN+/7ULf/LUP8d2g3VL/AKJhZRg1MjU0IXbdqdBlOyvc0oBmGJvwA0VRxbzPfAJrGjc4/ezziM5XbM/znt3zdeDoRT4oGag2lnc2c2dPB2rV9IVXTr+B1FomHJm9wddh4AbsXfuAw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 79C71A0005
+X-Stat-Signature: 9g188j8yxy9mqcpud317hjedyysxy5hm
+X-HE-Tag: 1783329535-104111
+X-HE-Meta: U2FsdGVkX1/dioc9bbh9cwRvu+MtPkWZFp+Svj243Zw8zVQZmUM5s0/6AmmevuvTuFYxrg7hpiAIlCiHKtT3E36zZeLs/Paj2GCZxzewaZBqlL2DJKy5NBfEKk6WFy/846xjDGCJGc3RmSQbGl/LdS5Z3XB7yOT4hlX4VDu5bq+athBy7AYjnI7uIjv3y8w2yjpffFG0OO7QSNGPb2AEC/iX8dkHpA8F0Rj+/Z4ha/aBORErn7lnAH0ZhN5ecbpdhd7PvJDaF7DMXkdlUOBbq4KPmIXrbEk3RGnWMYb7+OnerAhD+aAuwgJMeM6m97KHO7ENRHJLVZa5mP0+ztDjvP85njvi6sMAt9ZxtzwQHfRZN/F3B+zZp8FqmseWZCClqLQi5hDCFvWEdPrrzqnXjdRthJcudXo5AyLQKac5rjmO53YmCEC7vcYDfUbKJy6FsE7qhwKilR51ciUkcf5ct5oWLmjVPk6CM8VKnHpxmytBjiOSdLDwuIGVnII0+PJ3cW9cBDqk+CR/YgoOz3SnMtyN0+kI9fPk79XMCMovOi/v9AYZYWMB2u55TY2wrMJGi444LI3UIysx0uNxPeexrQg+0N8Rd9a1Q5/3w/VEAY1P7EVkyMqY/gnw0ttcz0rAjphmctyAAwKYmZ26xiBaL7sWFlpBoVznEPq/GajfLgHSqZuFB+WVWgwhcz8nObTTPnA6byhS1Sljy49XcVp0WEVXjFIJpKvF8rTi7rwPlaSyzifXcpW0SwbOB8QN/+Y2ncbvRlqQZP4dqwbTFilwnsSDdD+1T2VG0r7k0DeRF9Q563LG1HCtTKU2tr63ZselchZFVe0Fl/DXPOlaP6gCjOTo4Ma5OkK1rmmLiol/cF0fibTxRyFCYxHlqVfwymjnkb16z/aACK69hNeu7/yb5KU/0TmxSH/b4MGeoWg07urgO9v9Eui+QaH2zySuHmT7Cj788GEAw5IUkP+BiJZ
+ DQMRMykv
+ A32ofss6FuAbZ3U5zX5fGoOU/xcLUH9Cog2yvjz1veBJ+hXsuyJF2qHHQbrFzhh/7Ucrqp4oCG0xcpafABI+I9ZPop3FXZkwacCi7Lym0C8do1RBGokhyO19+7vGYuRW/wgWMFuZDKsrprmw6hd40O5m2gwXgF67PBFM/86wlyh+7GAG3xJmZgKWIJ5yNmGJfPSGFJwBFZ0YeZwdacjJrCSBr9HC93qtc3+gYP+Nqj0UvcaSW7fR2OsmjdjNSNxK8aHQVMf46FMNnYSfU+iTRXH74eNLBKrEDjkIVrs8yarcWDFQmULsq/VIZVy4JoOyz79sUxA3w8ne59AU7Bhb8AOAqTlOE2MBlKnfQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,45 +141,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matthew,
+On 7/1/26 11:05, Li Zhe wrote:
+> Introduce memcpy_nt() and memcpy_nt_drain() for write-once copy sites
+> that want a named non-temporal copy primitive plus an explicit ordering
+> point. On x86, place the arch-visible wrapper in
+> arch/x86/include/asm/string_64.h and map it to the existing
+> memcpy_flushcache() backend plus sfence. Architectures that do not
+> override the helper fall back to memcpy() and a no-op drain in
+> include/linux/string.h.
+> 
+> The immediate user is the ZONE_DEVICE template-copy path. That path
+> populates struct page descriptors in a write-once pattern, so most
+> destination cachelines are not expected to be reused immediately after
+> the copy. A regular cached memcpy() can therefore incur avoidable
+> write-allocate traffic and pollute the cache with data that has little
+> near-term reuse.
+> 
+> This interface lets callers request that non-temporal-copy semantics
+> directly, while x86 simply reuses the existing memcpy_flushcache()
+> backend instead of adding another generic memcpy-like wrapper with
+> extra selection policy above it.
+> 
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> ---
+>  arch/x86/include/asm/string_64.h | 16 ++++++++++++++++
+>  include/linux/string.h           | 18 ++++++++++++++++++
+>  2 files changed, 34 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
+> index 4635616863f5..6f36abedc56a 100644
+> --- a/arch/x86/include/asm/string_64.h
+> +++ b/arch/x86/include/asm/string_64.h
+> @@ -100,6 +100,22 @@ static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t
+>  	}
+>  	__memcpy_flushcache(dst, src, cnt);
+>  }
+> +
+> +#define __HAVE_ARCH_MEMCPY_NT 1
+> +/*
+> + * Reuse the existing x86 flushcache backend as the nt copy primitive.
+> + * Callers pair it with memcpy_nt_drain() when later stores must be
+> + * ordered after the copy.
+> + */
+> +static __always_inline void memcpy_nt(void *dst, const void *src, size_t cnt)
+> +{
+> +	memcpy_flushcache(dst, src, cnt);
+> +}
 
-On Mon, 6 Jul 2026 at 12:58, Matthew Wilcox <willy@infradead.org> wrote:
-> Should we delete support for NOMMU?  As you say, it doesn't get much
-> testing, or presumably usage.  I have this quote from #m68k a couple of
-> years ago...
->
-> : I looked at nommu very briefly when I had my 68000 board on the bench
-> : but didn=E2=80=99t get anywhere. Also didn=E2=80=99t try particularly h=
-ard. I think
-> : you are better off with fuzix or OS9 if you want something unixy.
+In particular if you end up with a single function (that jsut requires a write
+memory barrier afterwards), please make this
 
-There are a few of us using the 68000* port for hobby projects. After
-hackernews saw that I got it running on a sega megadrive I got some
-emails from people that are running a really old nommu arm fork on an
-old mobile phone and are considering moving to mainline. I think there
-are people using it in real world important stuff on riscv and superh.
+#define memcpy_nt memcpy_nt
 
-I'm not demanding to keep it around for a few weird projects no one
-cares about just saying we do exist. :)
-I think most of us don't/won't notice mm stuff until something breaks our t=
-hing.
-I have asked the ones I know about to at least send the patches they
-have so people know there are users.
+instead.
 
-> (i suspect Zephyr would also be good, but it doesn't support m68k, just
-> arc, arm, arm64, mips, openrisc, renesas rx, riscv, sparc, x86 and xtensa=
-)
+-- 
+Cheers,
 
-I think someone suggested this before but zephyr is really not as nice
-as Linux to work with.
-I have almost mainline linux, almost mainline u-boot etc running on
-68000 with networking etc. It's even using devicetree.
-I've been working on patches for nolibc for half a year so that it's
-possible to create ELFs that run on mmu or nommu m68k instead of
-porting something linux nuttx because the linux experience is just
-better.
-
-Thanks,
-
-Daniel
+David
 
