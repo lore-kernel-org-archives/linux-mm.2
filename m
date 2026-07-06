@@ -4,81 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AD59C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 22:09:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C02BAC44500
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 22:35:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED46F6B009D; Mon,  6 Jul 2026 18:09:34 -0400 (EDT)
+	id 7B02B6B009D; Mon,  6 Jul 2026 18:35:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E844D6B009E; Mon,  6 Jul 2026 18:09:34 -0400 (EDT)
+	id 73A426B009E; Mon,  6 Jul 2026 18:35:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9AFC6B009F; Mon,  6 Jul 2026 18:09:34 -0400 (EDT)
+	id 6055D6B009F; Mon,  6 Jul 2026 18:35:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B088F6B009D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:09:34 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1A4E88C7C5
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:09:34 +0000 (UTC)
-X-FDA: 84959744268.24.AA94983
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9912A1C0005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:09:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dd13GMsj;
-	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 37AFD6B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:35:45 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9BEFE1401E9
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:35:44 +0000 (UTC)
+X-FDA: 84959810208.20.4DAD84C
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 58C0F80005
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:35:42 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iq1mSIOf;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783375772;
+	s=arc-20220608; t=1783377342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=M6J8rmo74YDrXmogw0vI24lrkohvz1jMylSnzHCFxoE=;
-	b=pzb+fiT5v5CI1MifjbXhvSCkSMp48BQg/rdua4G1gPaQdB52CEW+OcOM4UMWk8+yrzAZ5b
-	NyQYiiVqeK3CGtxWX4vH5YKtGOSn9WzjSkG7GBiTGKFbFqZMPGm2IE9hwPsxL58t4+gdU6
-	kNm1mDvvJZMANeOlgBnhuuQpvmOXKMk=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QXlheSpT7r8niLDF9M9Q+ZPasHDCny0xeaArmM5oL1g=;
+	b=d6f4HmYOJj/E76tSMzdup57YBv06L+l8RrpQObO/+6pkTsV9WWfq3XM3009qnd5uBcx9NQ
+	GHpE881BZ40FYk2OaBh7wFp1Q/TS6uGYHXOvpA0vs1JHtXJ+hcmLIk+PuUzjQwdneZEhyC
+	gErPEev9/iMzSUeT546eiCCktX3Hv4U=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dd13GMsj;
-	spf=pass (imf20.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iq1mSIOf;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783375772;
-	b=t6cGdaj1cYFPxdJTBDw/7rSd/v4oGbmkwvlAjH33JgS92JS5D/8yPAJ01ljErjpIQNKcsX
-	A3h/Ign0nfkEIEUgBjsr6RiFz2RzBIeVDSJamGQPED4QpjMkOkznrWMg3OkXz6ISjy73+V
-	0FNUhSmbl8Q8pcLOE5OavPh1yhgraeQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9285D435EC;
-	Mon,  6 Jul 2026 22:09:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359DE1F000E9;
-	Mon,  6 Jul 2026 22:09:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783375771;
-	bh=M6J8rmo74YDrXmogw0vI24lrkohvz1jMylSnzHCFxoE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dd13GMsjz+V68AoYcFSkxKjX9vuQjKuPGTosAbHMWekrMvv5wa0NLPShtkKLLNmn8
-	 GAoD8Qk0HrBF6122V2795T8BDX2P7CCCxsomh7/f9tKnyqr/N7iGrs7+oBnDQfLVs2
-	 EMPy93w5CGSDBvIWxIRjzDDdPOXd80P6NlHAsIiaGfwvqoxyEddYSOAvNDlptktnyH
-	 fMdQcGLtBUCsLuzeTL0XZ/XY5wGeG2MYheXIutoOfpYJzQ+qrXTpG7jKJwF6yj4tkw
-	 DviJlqMuiNhqjww6jO6sBHHGhYGU4nwU97ZApTFuMJ0GXnYFwObHc34RlXURbaniMl
-	 c4CesxPnQ3MQw==
-Date: Mon, 06 Jul 2026 12:09:30 -1000
-Message-ID: <1e27d727c3c35d11f6e19eca769478fc@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Farhad Alemi <farhad.alemi@berkeley.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, Gregory Price <gourry@gourry.net>, Waiman Long <longman@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Alistair Popple <apopple@nvidia.com>, Byungchul Park <byungchul@sk.com>, "Huang, Ying" <ying.huang@linux.alibaba.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Zi Yan <ziy@nvidia.com>, Ridong Chen <ridong.chen@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, "Michal Koutny" <mkoutny@suse.com>
-Subject: Re: [PATCH v3] cgroup/cpuset: rebind mm mempolicy to effective_mems, not mems_allowed
-In-Reply-To: <20260706082023.60832-1-david@kernel.org>
-References: <20260706082023.60832-1-david@kernel.org>
+	t=1783377342;
+	b=04bMjKfsZ25n4Xu26QzbcjZewcKIFEbd0lkZ7QafgN92YUVjxeVkw41zBoBKZtZhN5WUgF
+	iuthpf6TK/mBl4X+20eTjSFHyqNGQuMhXpCMdDqtDShfgaU19mqFugdtfMAiTugLsk9GRP
+	Jd1ogiMogJokWXUzs9AGGElEZJdlPi4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E1D6E1A2D;
+	Mon,  6 Jul 2026 15:35:36 -0700 (PDT)
+Received: from [10.57.37.79] (unknown [10.57.37.79])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17BE53F905;
+	Mon,  6 Jul 2026 15:35:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783377341; bh=5xW0Je1r/s8tU9FKAdzH8VS2dCLUKRAZPS9x3TJeUEs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iq1mSIOfXLG3hXRFL9Kzv3yFJEcMbbMa8QmqTZzQVZz0ukxoYCO9wIEiV1IhNjKF2
+	 JiQVfDNJORA0W4vyoEAG9Nv9JW4K9btsU/AGo0ZlZ8x2kv+Mcd5RWNMOyYQOn4y5fc
+	 wcc/AlC5LPxEhlwBgbOmsH+v7PRJKr3UQqfOja48=
+Message-ID: <6835134e-7f45-4d2c-b825-b45120e53d57@arm.com>
+Date: Mon, 6 Jul 2026 23:35:30 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for
+ KVM_SET_MEMORY_ATTRIBUTES2
+Content-Language: en-GB
+To: Ackerley Tng <ackerleytng@google.com>, aik@amd.com,
+ andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
+ <114e2488-97ed-4740-a8e8-1edd991f26c5@arm.com>
+ <CAEvNRgFKbKfTMkqh_XF-igm07qYWfRwYJ5SH7wHcLZnqesCzTw@mail.gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <CAEvNRgFKbKfTMkqh_XF-igm07qYWfRwYJ5SH7wHcLZnqesCzTw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 58C0F80005
+X-Stat-Signature: w78te4bcaqk8yirr6o7j5ms9b713djj6
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9912A1C0005
-X-Stat-Signature: 66cye3ykab1p1sazn9kyf8oc7e1bpihj
-X-HE-Tag: 1783375772-29252
-X-HE-Meta: U2FsdGVkX1/whItFObZ8qG7/eORGDgOFGfOiOIWzvSaVUi8SqOyVFkNTngRPWtwgyYVBvGgufXLJYTmDS/aJZgmt3QAkUyQcVZmkakkDSVW9rIfptD1TL8/8X/EIB/MTrZj64DfKe9ZYP382H+cyNk+URNYB5UIWiq7ym74Q80+ER+/rbPYzl13eYBipOQkbse5hE3lSFYAhEXnh0LnLmD1tqFHkDYkJmzsKYPJP/kICT5UO+CubTNUm+fXKsek5YN9jdmrExxYA+gBaBsWRwUBFwBJ4V2Vg+UOFO2oj/U25Q9x/1+3IfdD49CowJ4KCCQmuqizXiRSDk16D37N1DFIfjaEj3xDA6Ah+PSgYhs3FQ5fIPQOvB3j5gdSsCw1u2RbmzZrqmgxKJV3CJogzbGqt2Quo/pLMU2+LW6+bSbkee29jdmKGtDxeUu3hUEc3SQ9rrOK/MGI1pRTdFuuyQKqnwuoR0JTHYxOx3RA71CUrlZ1+ekxKdRWxXa/jhV6aOk/3hHW/HdwpeEyHcAoN1BLf6jBofhFT3Dzmp6q1zJ2KeVskrMuQEsYaEV7bYZE2AzrKi3yqXUxuTP2V8WIIUY0a+rVTc97pcGaPuoYVG8W6Uk97snFe0t+urWTyn1l+7nDaPpNpQOuLJ3BwUdJCDOTdzkYVLFSIYtPCvK9u54E++G9A69dbXThU2fqt0tbb7IoLtDcnXx9D1O+VNMsxu2l4hsMX9LDGjxT7WXRHpW1UDlCUiv7Pq4WL2f/JYinp4b4R43w7X6Yhy+obga6Yb0S1fnlUTEQ4od6vG+JrqxrBhLUXWHF3BDLxoEXQccVpQ9MNZaC2TdpqykGbUw/76TXSBmQOxa31lbx0vVxgsoWzgZeQdApIdc2qh4D+hW7/sD81QMfVkbbDokOOeg8CZuLTTeY21M3xgal5SgtAPPO5ViHRzrMrpOp4oGfvOz50JIOnM8FWpvnpxcK10yl
- z/yZnOSl
- 2PD9h9KsAjPjH+BPIUT5hBi7+GrhxuoQa63ZAu4t/BapgOmDTo3dm64S0ntse+Imp3TpfosagL6B/wNCnexhhlVmXxQ1o1RSyVQmsEDcv8c/oQBsg9VcyZWcl0u+oMgFMJ0EQcVh+8mFcaoLZ0inwPnVzE+MaKW/gjvdntI/5x8IPLd4v1EInyrHWbux7W0wBM8ZMELiKnkZLfB/HWqlxlQ72HpGy5zNl/na1cgrbBVkPm8iG02gXdSa+eGAnrD9X5j0P8yPE2UySHZZElwXPk3ebW40KrcJghY1awMC79d1aKLX9D7PwOmaHZoJaO3J5u9HppPjHgmezkWhMMaQH8u+DWaZDv91weNTM+KUCh1Lk4CI=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783377342-949994
+X-HE-Meta: U2FsdGVkX19o3AYf7Tj0w3LsH5Penn2OiFY6566CUdhwGETydGB+i43pHn8Jd3SdiPAnZPPZHKGB8W+2imTxfxwRjqWXXFkW7EItq2H7FbwPYPjjLJAmAL7MA7ThthzdCyqEF0MV+b9E7WP8iIqHRiW9cz4SkrBxkYQ+3V5b0P/v8CBMphDFMqtsEtJc3FcmFMq71NYTZgsIEwA/Tm2gxbwCsckG+jc2X8P1d60JD733DI91BfBLRa75Xb+Gw5G8ZHFPzOPse2BtKENP1R85RUoGQ/yplx5reK/GxPGyzZYM98gFc131PWbdAcRvPUXM2qtdKFxXwz2KQQxZ0l2VDmyWFwUQ/G+qhyo9n/GF5woLRujVC/puAJB1o1K0jQShHEYJYwOuZDZFsMhygChBJ3qFmt1Txhkvq0R2QBbgC6U1ZpG51apJJO6SmYz2xBePuRsL+Wn/SAWH0W7zWE+UlS5grEjc2FoAGJNBXRHJaH12cOiZL1sd46A9XKLmAI/BpI6eFwYlNoUlzWASxoS+cNjnyLMusqLkZYQ3MmVcncS+EtnpIHU+ysrCCwZxqxa65UBaDpCbi6KQoA4EuRrp82CiLCeACMyViDawOiaEpBXzRT+ULcPFg30wW/MUoBGly+jaRJKH4xRhz1J9IKoESSeEtXb0sUA6fT4+j9zbtPJ1um53E+NZlnkE7w19YnvILT6NDvR8SCUKVeAXDym02BKMHarrcq0+cXSIo2D4o31gf0mLDjvlrPiF/8KNyOaWAsUS0r0ML83375zaP5mK+VlkZP8/Wk0/7YSDbxL+uIsiZZAkb4ICxO2N10wY/d2LjZJONg+V4OXYMWy2+/OD1Ai0KoW+gRmP/+oTtYtKN0L+GkNpzGG7SkedqKyuAi/4BPyKNGXUspHdDL3FOCpO4ANVxhNRmIKZHdsIAbIpl7mBLhLcqWz2R4YufI/Lho2cBRQ0kyS4zfrFnjXLaW6
+ QiNWbkgx
+ jBT8IP0vbRnv0W4zbbbWvrSnX4omAGuQ45ueNFod50xp0GGLKhPkTx4lwZUm/Nc0v686PL2G6AaIsF6L53Gvt7VlmQ5Kt9sNb0XSZNHZy2qXc2abQtyeobs7+TIXv/txew5gnE6AlV/9SV3PJtb/QhTeDge1d3yduICtf0NDrt+lC2QPXcAtmGaYMw8IuzZrYWN0XDzfcispFq1uXiyYJp1Xwvb4nygmkYSE1Hw0gUzS60lg3CtpqmFUatAHHmfcs5o+cjhkXuaEkl+lddC90qmUQYNjQzDZrouqSof+q+Wf+kjqKNuLByQ9stzJFauEeofyvl+YDna78G2USINR9WHlTUSc/22r/WrtpgdwEyPyRWts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,12 +121,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On 06/07/2026 19:17, Ackerley Tng wrote:
+> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+> 
+>>
+>> [...snip...]
+>>
+>>> +static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+>>> +				     size_t nr_pages, uint64_t attrs)
+>>> +{
+>>> +	struct address_space *mapping = inode->i_mapping;
+>>> +	struct gmem_inode *gi = GMEM_I(inode);
+>>> +	pgoff_t end = start + nr_pages;
+>>> +	struct maple_tree *mt;
+>>> +	struct ma_state mas;
+>>> +	int r;
+>>> +
+>>> +	mt = &gi->attributes;
+>>> +
+>>> +	filemap_invalidate_lock(mapping);
+>>> +
+>>> +	mas_init(&mas, mt, start);
+>>> +	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
+>>> +	if (r)
+>>> +		goto out;
+>>> +
+>>> +	/*
+>>> +	 * From this point on guest_memfd has performed necessary
+>>> +	 * checks and can proceed to do guest-breaking changes.
+>>> +	 */
+>>> +
+>>> +	kvm_gmem_invalidate_start(inode, start, end);
+>>
+>> I added support for Arm CCA KVM patches with the inplace conversion and
+>> I am hitting the following issue.
+>>
+>> 1. I am supporting INIT_SHARED + MMAP flags.
+>> 2. VMM creates the Gmem_fd with both the flags above.
+>> 3. Uses the shared gmem-mmap to load the initial payloads (kernel, dtb).
+>> 4. At the VM finalization time, Populate the loaded regions one by one
+>>      by
+>>       a) copying the images to a temparory buffer - Since CCA can't really
+>>          load the contents in-place.
+> 
+> Sounds good :). I see that you blocked this in the kernel by returning
+> -EOPNOTSUPP if (!src_page) [0].
 
-Applied to cgroup/for-7.2-fixes.
+We could do the copy in kernel with src_page == dst_page, but that would
+affect the batching of Granule delegation (and at which point we might
+need a temparory buffer in the kernel as big as the vma_pagesize)
 
-Thanks.
+> 
+>>       b) Set the "region" to Private in the gmem_fd (via
+>> SET_MEMORY_ATTRIBUTES2)
+>>       c) Invoke CCA backend to populate the private memory via
+>>          ioctl(KVM_ARM_RMI_POPULATE,..) [0]
+>>
+> 
+> This flow sounds right.
+> 
+>> [0]
+>> https://lore.kernel.org/all/20260513131757.116630-27-steven.price@arm.com/
+>>
+>>
+>> 5. Additionally, VMM can mark the entire RAM to be private before the VM
+>>      starts running, again via SET_MEMORY_ATTRIBUTES2. On CCA, this
+>> action is measured and doesn't require the Host to "commit" memory to
+>> the VM.
+>> Instead the host can lazily donate memory on a fault.
+>>
+> 
+> For both TDX and SNP, the host can also lazily donate memory,
+> guest_memfd supports this.
+> 
+>> But step (5) triggers the invalidation of both private and shared
+>> mappings of the gmem area, from the kvm_gmem_invalidate_start()
+>> above.
+>>
+>> This is because, the entire DRAM now has, some portions PRIVATE (the
+>> loaded regions) and the rest are SHARED (from the Gmem_fd creation).
+>>    Thus, kvm_gmem_get_invalidate_filter(Dram_start, Dram_end) causes the
+>> invalidation of both "PRIVATE" and "SHARED" regions, which results
+>> in the destruction of the already loaded data and things go south.
+>>
+> 
+> This destruction will happen for TDX as well. I think we managed to get
+> around this because we didn't apply conversion on the already-private
+> ranges.
+> 
+> IIUC on SNP, zapping pages in the stage 2 page tables doesn't destroy
+> the data, so that's probably why it has been fine for SNP.
 
---
-tejun
+Additionally, the Guest at boot, will try to mark the entire DRAM
+as Private (RIPAS_RAM in CCA), which would trigger this anyways.
+
+Suzuki
+
+
+> 
+>> When we know that the kvm_gmem_invalidate_xx is triggered by a
+>> conversion, we don't need to invalidate the existing pages that
+>> are in the requested state. i.e., the following patch on top of
+>> this series does the trick for me :
+>>
+>>
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index a97fcac34a0e..62e0427a49f4 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+>> @@ -250,16 +250,23 @@ static void __kvm_gmem_invalidate_start(struct
+>> gmem_file *f, pgoff_t start,
+>>                   KVM_MMU_UNLOCK(kvm);
+>>    }
+>>
+>> +static void kvm_gmem_invalidate_start_filter(struct inode *inode,
+>> pgoff_t start,
+>> +                                            pgoff_t end,
+>> +                                            enum kvm_gfn_range_filter
+>> attr_filter)
+>> +{
+>> +       struct gmem_file *f;
+>> +
+>> +       kvm_gmem_for_each_file(f, inode)
+>> +               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
+>> +}
+>> +
+>>    static void kvm_gmem_invalidate_start(struct inode *inode, pgoff_t start,
+>>                                         pgoff_t end)
+>>    {
+>>           enum kvm_gfn_range_filter attr_filter;
+>> -       struct gmem_file *f;
+>> -
+>>           attr_filter = kvm_gmem_get_invalidate_filter(inode, start, end);
+>>
+>> -       kvm_gmem_for_each_file(f, inode)
+>> -               __kvm_gmem_invalidate_start(f, start, end, attr_filter);
+>> +       kvm_gmem_invalidate_start_filter(inode, start, end, attr_filter);
+>>    }
+>>
+>>    static void __kvm_gmem_invalidate_end(struct gmem_file *f, pgoff_t start,
+>> @@ -724,9 +731,14 @@ static int __kvm_gmem_set_attributes(struct inode
+>> *inode, pgoff_t start,
+>>           /*
+>>            * From this point on guest_memfd has performed necessary
+>>            * checks and can proceed to do guest-breaking changes.
+>> +        * Also, we don't have to invalidate the regions that
+>> +        * may already be in the requested state. Hence, we could
+>> +        * explicitly filter the invalidations to the opposite
+>> +        * state.
+>>            */
+>>
+>> -       kvm_gmem_invalidate_start(inode, start, end);
+>> +       kvm_gmem_invalidate_start_filter(inode, start, end,
+>> +                                       to_private ? KVM_FILTER_SHARED :
+>> KVM_FILTER_PRIVATE);
+>>
+> 
+> I think this makes sense. Thanks for catching this.
+> 
+>>           if (!to_private)
+>>                   kvm_gmem_invalidate(inode, start, end);
+>>
+>>
+>> Thoughts ?
+>>
+>> Suzuki
+>>
+>>
+>>>
+>>> [...snip...]
+>>>
+
 
