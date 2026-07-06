@@ -4,93 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA6BFC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:51:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 161E4C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 11:52:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEA926B00BC; Mon,  6 Jul 2026 07:51:51 -0400 (EDT)
+	id F0F1E6B00CE; Mon,  6 Jul 2026 07:52:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C74426B00CE; Mon,  6 Jul 2026 07:51:51 -0400 (EDT)
+	id E98876B00D2; Mon,  6 Jul 2026 07:52:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B64B36B00CF; Mon,  6 Jul 2026 07:51:51 -0400 (EDT)
+	id D64856B00D4; Mon,  6 Jul 2026 07:52:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 649F36B00BC
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:51:51 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E95E81C2D8B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:51:50 +0000 (UTC)
-X-FDA: 84958187580.03.232BFC1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 3E3F640006
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:51:49 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hbPXWlFl;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783338709;
-	b=rZi/wpZqcPODvH4uGcUrp/P0zxaY0LNvgnVTYCLQmbLHvlw1dcO1LC86tF4DTrLN5Iukaj
-	1BDvtQL7tt6mNvBpUc8cFZjrooguzvgQE+/k1rGPvOi5uKQVOeudvhAxYHau8VORbvSlkC
-	FLal2zdzQsn9dD1yJ75OFIjiWy8/XFo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hbPXWlFl;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AB7526B00CE
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:52:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C18BC1D63
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:52:44 +0000 (UTC)
+X-FDA: 84958189848.15.3328D5C
+Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DA49512000A
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 11:52:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=YgiY7HQh;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783338709;
+	s=arc-20220608; t=1783338762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eo0rbpMQEXSItLlYOrO8ragIAkZwB1eTIcTQaoCN0NU=;
-	b=vg06FKmsQTvzPuO1xVSH7ndtct/0uTc1E87it/HH2kf37tslVrWlexX1YLCJLdJN7WsljS
-	Hac6XYX1p9jz6mEYvtQRl2wlEjbBDXK5izw0kQgfKu2IOeK+pjVtfJC5u752ikopn3JD5D
-	DWlZOLZ2owrLWaZGO23CP0qpTYy8eyQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 32DA9405BF;
-	Mon,  6 Jul 2026 11:51:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3261F000E9;
-	Mon,  6 Jul 2026 11:51:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783338708;
-	bh=eo0rbpMQEXSItLlYOrO8ragIAkZwB1eTIcTQaoCN0NU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hbPXWlFlsLnZCin+8sNLUCfKnxGBRnmJ4zwRem2uK0f8ZEFC1ZMRhDNiQb8y5gLCt
-	 BlQjp/i8mDwgoarSO5j8A9SVOeDNhUnjKkkDl4hZCWBS0c1YGntrJuWsJb03LApK46
-	 Ke4H65pf50dyMTGkBcVPZeRTNRZPN1vTUxmW3K0x1u3VjYcNbobY6yDVVA2ejuW9uS
-	 ZNFx0P5cQQCDtr+P5hvl91JXOAs4IFsbYo3mA8ZX7KbSLqPCEl7n75tKPZCKxSsGvL
-	 vzF1XNJvWdKAt5vDr7pB4CsbXAXY6s4fr9yjfz5Ft9qwpOPvRyDyqgFKWf4OOogxal
-	 GNjxzYIB8Cc5g==
-Date: Mon, 6 Jul 2026 12:51:36 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Hajime Tazaki <thehajime@gmail.com>, liam@infradead.org, 
-	vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Greg Ungerer <gerg@uclinux.org>
-Subject: Re: [PATCH] mm: nommu: point to the write iterator upon split_vma
-Message-ID: <akuS-6zegY2XBa3f@lucifer>
-References: <20260702012546.665383-1-thehajime@gmail.com>
- <20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
- <aksn5J8Nr0JIsVpQ@casper.infradead.org>
- <20260705222343.5d5c78cbb54839c5efcaabf5@linux-foundation.org>
- <CAMuHMdU36O2UqfQkbbgOVSH5KFU-MZ_WO3jRsLumkUu22iC7vQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMuHMdU36O2UqfQkbbgOVSH5KFU-MZ_WO3jRsLumkUu22iC7vQ@mail.gmail.com>
+	bh=Eb4EE4GhIYXgk8IjcNOVvoBYVaWKohpIJ2vUwL57vFo=;
+	b=qw02lh+ZEFXUqpYeD6IbEdmB7A7eoUzwDH6YyeRMV2b/2wUkmYoH4yPieH4rSMZKjeGoNP
+	ba8vTwkjLK/KtR6SB4EICq5nybCdQ0GwMSai7iLLTiu6EpI5OpBVKkIC6rqyg+dRuKXALm
+	rxvR+1cZqbfj7jYqudJL3T9wmGJLc4k=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=YgiY7HQh;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783338762;
+	b=pou+/2NU/e/ehKQLHXlWxCmXU12U4E8IVeb6WB56toXrL2x/7dTUhnV7+zoW6Jn4VFx1Ip
+	anbrzGUgSvj/3qtMevLcGOnMBKFTwd7eeaCjRNLABeXbv9OF3Iu20sl0iUXn2dpFopV0KH
+	HgTpAYCsJEb/HwVWPzpH0IDWY5nj8qg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1783338756; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=Eb4EE4GhIYXgk8IjcNOVvoBYVaWKohpIJ2vUwL57vFo=;
+ b=YgiY7HQhlS2dA1kXAEeGIlvzVmf8gYfodAtIORcvHREvjp9tLVT3e9Npt+BzgiCufjFgWU
+ 8tHCH907rtgXLJu7W+k10ZBelYU+Eq/Qsfq0QsESsRuUXoZ6kCY/BW7bx6WyzQYrpCjzdl
+ 3C1IraBfcvsPSSURnpfAcBhJ4zfZu0UQ9SSz9xOTdo/gLGuVMwhpzeUJWQKLPI/8UkkfEo
+ xFnLhCk0rtCrWxZNqAuu5AySZqKQ5u5ZUfwP20qhU1OEDW8G7/YU8oY2bq/EJFNJ26BwY/
+ KKEkMBX9wKyxv5uN/9qFiT2LGPyYCPzg5Q7HnPn3QP3ZZzV5WYn3X30zqFHFbw==
+From: "Li Zhe" <lizhe.67@bytedance.com>
+To: <david@kernel.org>
+Message-Id: <20260706115213.50375-1-lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <kees@kernel.org>, 
+	<linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>, <mingo@redhat.com>, <rppt@kernel.org>, 
+	<tglx@kernel.org>, <x86@kernel.org>
+References: <8a6f0bc0-5b6d-406d-9d2c-d3861b5c31b5@kernel.org>
+X-Lms-Return-Path: <lba+26a4b9702+e4120c+kvack.org+lizhe.67@bytedance.com>
+Mime-Version: 1.0
+Date: Mon,  6 Jul 2026 19:52:13 +0800
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <8a6f0bc0-5b6d-406d-9d2c-d3861b5c31b5@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v5 3/8] mm: add a set_page_section_from_pfn() helper
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DA49512000A
+X-Stat-Signature: cbwkb4jaogei9g66bd34gei9osgupnqi
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3E3F640006
-X-Stat-Signature: wp7j3usqgztupo8uhoa677zzaxghf84u
-X-HE-Tag: 1783338709-233186
-X-HE-Meta: U2FsdGVkX1944TR4+MVh/uiAc7xypyrnHUQE8pzpVuQTMAe/JdNSSDcoyxL7C6BXyZPN7IY+xFBhhZvd5LaBd8pq/AHXqTinG6dT1KutizOdbXkFCYUzhb5pRaTglO5nJ3ANWJgcuZv++v0ZGMEgwK0Jfgf+6/VyXqOLEkIYf+Vj8TqgAUbEbScqYKQPnQMjEThbVn+C+XAQKCLyMqDAyvjqbiDz/8+mfp1igVBNb8KIk9USBNSe29GyWn652ja1nErCrrEpCu5ZLPHC1fEqn91a7GSNHLiXoaNCx/PJnxiksgzqJjzERRSqTx4Yf2HyUr7Cz06/ju2lcfqlrXp346UiK3tMnBIbfBZS0S/ooYtJ2iRgpGVYgZcSx8rjRsirICT+wJHG0n0E8lHAGDE8gbMeHatO7wv1RI9MngffyQlcg7x5stXmdkZ3JIHXyu222/cweF0YUEwJJUK7thVbBkVZgBZWgFTo87HD+EIckipJr8DI1RFErYPDKj1m5yD1RdyhAwHyXtjB7/D94hXQrZ1Ig59fiS44avBFrnzUaNEiZoxrq3mRFHIa2x+M+ZeEcq3apRnlTBdAywyTwENBI7TLY57eaqmR3ZkhzHDEgVGtUTSRmNotWlz7K8cU7zv9OjPC+Z8s3n+5cV9TJsVc8fvpOHQNklli2qWRM9QBrHSpbFRLbVhqnZS2NDF7q+lzkErS9d+gEVd6ecB2vL7ewWfnHSQDzUFEJtondOvTF2l1DcdOXNb3iejspYFzgs+4TZ3Dve8GDy/9iJa1M1/qoqggstFW8xy//6YCJ+vfpXqFBwYgEAEmmcDRadvllRntBhn/arH61fnB2puzLAkffNzPqvy1W4vpU6MIstmcp1lbk8e2zGU0cJWibxaALrDtq2ZhXUD1Ncvv93In1X/72pOcwCQBpYjOWlxuwUZeHvz+shwShhJHADhpRyna3ScQ/L97/uG2qXnIszxud76
- wxIp/Sqf
- 1Hz8frvhfL/rZHtQKDUvfmhcuyIpZYsp35oF3sAr9iq4MKmaaG3YDq3CqrA1Y8/NTVyHrpY2nCtu9I9gfmH18ln/j1jeqdWpsgnGkBzrxoZ5m9JmrpFH/FeeX6hexW/x8x+HOMXWNCGCm6zO8prRqRHfzPBiBClZrOAzzhco/KtXKtyFRnxSyED2axsMk50CuCn1zXg9KUvInnelN/hcjcsxNCxWRHb5XcyVkyODYSpRwWJyGHVZAle6Z1l9PfVwItBgFMpoN4rufshZ/lyCbhdPLw72o/YzTU6vbVXXX7AJch1Vbf7Zlvp5ItWjPSsFEmfOnj3zDvY+KeDAb+Tf9ol/gRDyegFCA0gp2i8RbrdhzJjZldILftm0ZobaXqAggjKbhpQkhVBGjzSvhR7IknCpvyAhBa0n9PXWATAl7Dn9BAcXW/SsR52KTWdL/P3+h1XS8vA+OiI14VNWU4NvwXhkEdnSy2Z780CBaPtPuBRzL4ypP4ssUWdZ3VHu+cpwRZ6G/7FfsXY8aCF3ksxOwS5ie9gwr1J/m8GRjsQhxzpgsh0iPHPlZbaezuuaax1rT4igqQDVhuKYYrRE=
+X-HE-Tag: 1783338761-909759
+X-HE-Meta: U2FsdGVkX19eGwPFSSsdghTG0BBhiWC3ycZew7kytC3hcAreFRBLU41ZjSRrnxhAk3AX+wuzcyrnDAkDkAGc5bW6jZIe1lfSAx+0neq/0Yc7Z+oyIsRYRqTiJD2i3v8ne4NenY0USCwGSSr/JzUbPJ51mDUzwOSuWtRdycguO7VlrdalcP7LMjMMn2drde8ujwr5f5lPwLLVpYO2n/Zv9/mOtqyYBlGanj2acjPUQOvcgUTe1pVZow8Cs+OcAEI90nDULOVJPmy6Qp+3pgCA/6eP/Qjwrz6PrV0VaIpGaFuIDeiOh1zCogZlZ1PHUW1DegWHZjX1leiHE3HauukwHhyKvK8srslwEldEA65jgAWj7x0/hlF1kAIH8fzlXff02Lp74MxS9mw41en1N8jsuAVnjSZ0eCY9UKLn6UK0Qmtgdhjn6s+r9pdSSds+XuGb31YyF0Q9obZKGCqGXmrbIkPWrpLhvX5ixjp2HEL55p9j857mg/CViouy/DuO0wDD/ts0pKtKjp0RHdJBRzN76ommDs3LNg43Z/mYvTvnAADGWapt9hvQzfN75Zkz8QFG7IHVprCW0VvJalyvn97G2vfU1YgjLHeNUXuN6m85ObRiJbtjTg1hwmiTzpzcPlApkLj3pjqZ82dM+AIoBIxLblnmhqgo3jw/pbv2nUTOVrUwX+1OjJzChSH88ZgdKHhNf0I2HES3Rk5abZ45600vLa3o18FOycVLqmeDF/Wsh23VLyQOU4Ki5TFs8AfaYE3n5bB2qoXKZRecGYtaJnDK0QPhbYF6eog7/vpifPSgisDeeTFacjMwfWk0a+zjewiV8YMLsQ8n5s02Yatw/YPAMYR0fDF9Si1o2xXNQClKUC4cHwKqx0Gr9dzgVzrVvozwhVpU+jc1JVkdi+wg2vCcyezZVO2gCGU3egY3yWr287rEkX1jNSfyWyyDlyT4SiXZ4Wn+E45msqwK9TGRA4O
+ liRk43BG
+ h+5YjUAfmksiiZpqUIQZykCmLgNqaEz6mPhH5v47qa/XNaPv6qkPK9qa/E91x++RqlGwlPhuHVyp+QKOKargbL4Q+ebkGVm0d4Rb0i9+QJes03jzYFs8EM1CzNV/b+NGJXxYa5dko+s+xzNU2qUERpa5+dct0H9D4w6feid6rEGOchwKDypTzHWzhCGlmdX3To3zlwXHwhzkOVWx+k2v2fY4MA+CmGKsifBIfgxxO39pOSKerVZMOrjy5Lw6NtAnKJAhLzti7FlHnjCJpgKDX9/7fDYR1j/0Ly+A+KxeXNK1X2zXc97SAfmYe/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,92 +93,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 10:27:43AM +0200, Geert Uytterhoeven wrote:
-> Hi Andrew,
->
-> On Mon, 6 Jul 2026 at 07:23, Andrew Morton <akpm@linux-foundation.org> wrote:
-> > On Mon, 6 Jul 2026 04:58:28 +0100 Matthew Wilcox <willy@infradead.org> wrote:
-> > > On Sun, Jul 05, 2026 at 03:27:08PM -0700, Andrew Morton wrote:
-> > > > Thanks.  Unfortunately we aren't very diligent about the nommu code
-> > > > (are we?).   Perhaps appropriately - clearly this code doesn't get used a
-> > > > lot.
-> > >
-> > > Should we delete support for NOMMU?  As you say, it doesn't get much
-> > > testing, or presumably usage.  I have this quote from #m68k a couple of
-> > > years ago...
-> >
-> > Greg is busily developing kernel code.
-> >
-> > > : I looked at nommu very briefly when I had my 68000 board on the bench
-> > > : but didn’t get anywhere. Also didn’t try particularly hard. I think
-> > > : you are better off with fuzix or OS9 if you want something unixy.
-> > >
-> > > (i suspect Zephyr would also be good, but it doesn't support m68k, just
-> > > arc, arm, arm64, mips, openrisc, renesas rx, riscv, sparc, x86 and xtensa)
-> >
-> > Greg, how mush use is NOMMU Linux seeing nowadays?
->
-> Nommu (SH-compatible J-Core ASIC) is used in actual products, running
-> modern kernels.  The rationale is low interrupt latency without using
-> a much more costly app CPU core + RT CPU core split.
->
-> Please watch the recording of the "32bit and-or noMMU Linux BoF"[1]
-> at LPC2025 for more info.
+On Mon, Jul 6, 2026 at 11:15:36AM +0200, david@kernel.org wrote:
 
-This crops up now and again and people point to uses, but fails to address the
-real issue here.
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 485df9c2dbdd..f78afa63dd3d 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -2541,11 +2541,26 @@ static inline void set_page_section(struct page *page, unsigned long section)
+> >  	page->flags.f |= (section & SECTIONS_MASK) << SECTIONS_PGSHIFT;
+> >  }
+> >  
+> > +static inline void set_page_section_from_pfn(struct page *page,
+> > +					     unsigned long pfn)
+> 
+> Two tab indent.
 
-Nobody (aside from Hajime - thank you!) who uses nommu maintains or contributes
-to it, or _even tests_ it as far as I can tell.
+Thanks, I will fix the indentation in v6.
 
-We broken nommu for a year I think it was? And there wasn't one report.
+> > +{
+> > +	set_page_section(page, pfn_to_section_nr(pfn));
+> > +}
+> > +
+> >  static inline unsigned long memdesc_section(memdesc_flags_t mdf)
+> >  {
+> >  	return (mdf.f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
+> >  }
+> >  #else /* !SECTION_IN_PAGE_FLAGS */
+> > +static inline void set_page_section(struct page *page, unsigned long section)
+> > +{
+> > +}
+> 
+> Why do we need this?
 
-The last time I raised this, I was admonished and told there are critical arm32
-nommu devices that absolutely _must_ have the latest kernel and this is
-perfectly working code.
+The empty set_page_section() helper is not needed. I will drop it in
+v6.
 
-And riscv also introduced (and I'm so very surprised Linus allowed it) a brand
-new nommu architecture (!!)
+> > +
+> > +static inline void set_page_section_from_pfn(struct page *page,
+> > +					     unsigned long pfn)
+> > +{
+> > +}
+> 
+> Dito.
 
-And yet...
+The no-op set_page_section_from_pfn() helper is still needed for
+!SECTION_IN_PAGE_FLAGS so callers can use a single helper without
+open-coding #ifdef SECTION_IN_PAGE_FLAGS at each callsite.
 
-If this is really so important, can those who care perhaps help out a bit? At
-least with testing?
-
-I'm a bit fed up of it really.
-
-As far as hobbyist retro stuff and upstream goes, I am sympathetic, I came from
-being a hobbyist (though not retro), and would be one again if I couldn't do it
-as a job.
-
-But retro people do NOT need the latest kernel. As far as I'm concerned, museum
-piece support should be ripped out, and those who care run downstream kernels.
-
-As for the 'critical products' that must use nommu - PLEASE start
-contributing. Please start testing. Anything.
-
-Again thank you Hajime for doing the one thing that really counts here -
-contributing to the nommu code.
-
-Anyway, as to what Matthew said - 100% I am for us ripping it out.
-
-But it's not up to me, and unfortunately I think we'll get a clammer of voices
-saying how important it is, and silence again when it comes to do any of the
-work.
-
->
-> [1] https://lpc.events/event/19/contributions/2097/
->
-> Gr{oetje,eeting}s,
->
->                         Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
-
-Thanks, Lorenzo
+Thanks,
+Zhe
 
