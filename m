@@ -4,125 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F0FC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 16:38:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C98C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 16:39:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A8226B00A0; Mon,  6 Jul 2026 12:38:57 -0400 (EDT)
+	id BE49E6B00A2; Mon,  6 Jul 2026 12:39:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37EFD6B00A1; Mon,  6 Jul 2026 12:38:57 -0400 (EDT)
+	id B6E286B00A3; Mon,  6 Jul 2026 12:39:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2956C6B00A2; Mon,  6 Jul 2026 12:38:57 -0400 (EDT)
+	id A5D626B00A4; Mon,  6 Jul 2026 12:39:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E32186B00A0
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:38:56 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DE6C1C1078
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:38:56 +0000 (UTC)
-X-FDA: 84958911072.25.3233CBE
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8F0F3160012
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:38:54 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RJD0iMfG;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 81CD86B00A2
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:39:02 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0EA5C08C6
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:39:01 +0000 (UTC)
+X-FDA: 84958911282.13.AF6DA2F
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 191EEA0002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:38:59 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iO2KuBq2;
+	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783355934;
-	b=gRNspve7zOLhaMcaMHhDmK1gGYUmlpud2/r2jg9M50TubHFL0CDmzesk2aJlPYlW/xqQF9
-	2mrV411tk5xmrq+Dcthq9qQgZAMQKd/Io6Wj7Icj5+OJZLnSG7Yq8nhjqH5CwCKjz6H/RU
-	UJmOk97odMF7SKsPlsl5bhllkvQiNOo=
+	t=1783355940;
+	b=N/ZXc+0FR5aYdQtwb6V1i8jO8Hub6owj7KKhiwF4Na6YDGEU1g98yta3HswfbTlh1MFvla
+	1OXl1xLrxo4lvlH2zWbon1cNRalcxY6RWix1y93gjMWP4x4aC7V/FPHJhDZetoRt9wp8dW
+	ZzqgcKFMC6DjxJbE16V6CLQYBBPnULk=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RJD0iMfG;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iO2KuBq2;
+	spf=pass (imf25.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783355934;
+	s=arc-20220608; t=1783355940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VtnXNaxn+fspW0Xw1nKXB6TGSGdVBv01OAGdj8wNpN0=;
-	b=gsDRufLwf1BmYc92em5MsHfIFOnFveGgVzfHM/9T7hzgglMZh7cbD1jm05rXq9p9+Ik8J0
-	9y03uzLLxB9ZJfFCIvpoOW8QU64u9UJdEEoBEqd24X/yy6W1ISPLPUGNJ57JWpSVKktYso
-	GpVvrw7iPqQKBKO0aZXHmLywGIj/6s0=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2caea3f742bso44522755ad.0
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 09:38:54 -0700 (PDT)
+	bh=3Yf91G0E96liVZH8Q9brrUTzp4Zjh9n4mTBgTUdMqis=;
+	b=R9hqzpI3I/e4VoQNWMmcS3rxrQ41B65jo6Lhu/UWUsbB4FfnfhjRhNCMoWAMHb+SgVgxBp
+	rmadFiYNTtdSoUufxwgL0YvKoV/+0kiZtLqp5ZZ6kzh+FDr2hiZcy0oEbZGf63NEw2RU2Q
+	8ZygAmLLcr6u1zs7TWafC61Z+WIzaLM=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2caf4496889so335ad.1
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 09:38:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783355933; x=1783960733; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1783355939; x=1783960739; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VtnXNaxn+fspW0Xw1nKXB6TGSGdVBv01OAGdj8wNpN0=;
-        b=RJD0iMfGOaBuloGgN47iyyCv3LD4VMfS0zACCyVHRbOzcPSCD4y1sXa4mWen9/SYFU
-         lMR2NTKmoNn7c02GmbTf5ulD+m6BHhQWs/idqerl4X+tlnulBHvsmavX2DyyYvPneW9x
-         1cVSUxSWSezfYLWXKaQJZuref3uX182tBaU81dL8y9fXLSkEmRndKp0rkPhR0UQh2Zc+
-         +ZaBXpQh+lqYZBkNemz4LYQ/ywomPOAZiPZDq5CILMBU6QR3XF8VlWbCHlkh9qNN7G6J
-         nO5vioY7KgfZyeNbIjGDZL7BWMz+hrfrbqkgVQln/9+bhv/adhur0nv4jehQKYRWgSlK
-         INiQ==
+        bh=3Yf91G0E96liVZH8Q9brrUTzp4Zjh9n4mTBgTUdMqis=;
+        b=iO2KuBq20UoQB+hoO+lLDXLyCo2qd6+OrlQrGRaFtzH7NtAreP2hNOdijMc6YSst9/
+         c7y54RyCmFROMF1bjrx1x3kprvSVxWgJK+GccCfHd/EGYU4rzLpKe0QkPhDq/3/Ygv8F
+         unqMFkJZAkA0uhW7hRRoTeT9vGWMmy3VA/OI2qbsYMOSTI9IENK5VnSGyLw4RZpqiO9U
+         BGeHMJGZPrPSGC0ykM+CB0fXJw5ijrRY0qJDFix9OIRyHugaqOJA7jpL13ugzhRH8k9t
+         iEcrXVrqpo7VuBkUBVy4BZZgt+Y/H9E7l32flU0i3PCOlXqAAthTyRlHQD7YRWAdIopG
+         Strg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783355933; x=1783960733;
+        d=1e100.net; s=20251104; t=1783355939; x=1783960739;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=VtnXNaxn+fspW0Xw1nKXB6TGSGdVBv01OAGdj8wNpN0=;
-        b=TgTBRNvV7DhBbJvwizSbWxOl0grLK8M8dCZlflKLDhnA9O2JCZvGnMl7aau8gGpP8b
-         qq2EYqXSkCrl9JnsKnxOsv1kRAaosHUWhux9QhuJOlTLSwyZZ2XYQ164QhZbUlXT5hnp
-         Qa3vHuJmlCMSIkqSa8lNGZ4MrvBj8ah3sFzyIA1owvex4DI3AIvt8D1//MBYmqIqOsId
-         ZqNMcSz8mx0lgmdpmr6rAn2/eU35VU3qBJQs6P1xb6dauFaDON9iD4XwC7oxGGNgFFew
-         AYJfjXD2yjjxFOr0aScLnfu8Rqi3n2BxOkJUBc61deG2sw8tRsF9Ur8oK7NnEdx+m+P5
-         /5iw==
-X-Gm-Message-State: AOJu0YxpC8h3RwwPlnsfl0CSeJ5Lc/ReJxn1q1d+yWTg6bSoW+VczrdM
-	Qrh4BOTgEMtjheLXEMfCnNvYEvjfrsFItfFNBTS1EV6psILb8m7ViAv0
-X-Gm-Gg: AfdE7cl0KPOSkyWCtXYfkRjytPMRlwgSi9QP9Mf9+Li/280mboXzqkOEBbEvFL6QXZ3
-	zG7vj2e0KJqby+agRyf7TG1CVw8eyNBSUsKBH6gnS6EDJta80VBlNtJ9DcbPyh8MsCvVkEl1hMP
-	eWA9EPlxSkryQ4qeQ/jhjkdT7BBrlBgaILWmUKyau026u8b7BYs/bS2X9GmoH03D3cTL2oWdEb9
-	czYwFvEZTxDQYxZL0QiQQcBQfL+W+c0G2Fs1DbPOAdst0JFhTf4U4Ap/n4IW36ow5LeMx/RKzDv
-	1bKcZc3/YWyKVwEcGY4Wutuqca+Ux933AeDWQ+HBxcl5gotoSo4r9xgKsHOn6/ll5VHKViPjMsS
-	1YM3dp4mK/pqLBNavb5jWhKAqNpj9qFh7X8WRBOb7eiq8TLhHifNZPqj0tpe8cdViGI5Od6vU+W
-	Ffyku3M3A=
-X-Received: by 2002:a17:902:d486:b0:2c7:fae7:8af with SMTP id d9443c01a7336-2ccbf0105bdmr14950715ad.24.1783355933532;
-        Mon, 06 Jul 2026 09:38:53 -0700 (PDT)
+        bh=3Yf91G0E96liVZH8Q9brrUTzp4Zjh9n4mTBgTUdMqis=;
+        b=qecJtAWCwR4aR/+jAruo1Lv2r5FOkfWUjVimVZysZznpTo6iwarrDqR5awk5Xtx69e
+         4d3Vhr/duvLSbmPRTOFT5G8iC+/mAQUB7tWgKb3lcaPhjmmSOHrcQXlSAEDmsZkIL3+s
+         jaA8KHV2DorgWJVfvc8dneNok7ma/32K1NSnjVR/clAbFd+MhjOmHabQH7B5Be+BrvSy
+         cGiQ2iIE24GWrePp7iyoFDQIma3x7bHAqrw8x1jTu7Z77LrLPZ/hLUQ2tl7OYpNcm26J
+         OChTcg00bMN2e0XgOTmBzcCu7EPjpXJFczqXhDZrrryOUhZmDdhYncxHdbmCxf7EOlK1
+         x9gQ==
+X-Gm-Message-State: AOJu0Yy49LDYLHZzi5gYH52NE9M8nFK2U/hUGVhSXdLPBQMfmm/aDjYJ
+	dmv5qaoCna5itAzXQIMz/7vrjM8Vkb3Gn3yKAf5I4/e0ij+p3ed+XciW
+X-Gm-Gg: AfdE7clCn6DRhp8O5lAysaSc7PslV8vAP4PymXObC46ikHOQOqLlEHOrcctxIdg1d1c
+	4FnuAIp9/CzkNKpQnE6EwiQiKpYuEbLNyvWwQuNBu18PDLJsXuzeEhsGRSzu4SZvRO5rLhctyxH
+	zSH+qtHlZspu4Hj4pEnsp76R3nhrPJP53/wIbu9f97OSBVyEpeCQYbDgTvadyqJnt7ifVMi1wVn
+	ofI35djqHyA4aCE7Pf+io+C0aCRQtLEc+7kXhhxzSrnwbmWxzOhtjmCnSIWdvXD5X0NhlHoJpyF
+	I5Zm7EvliENHY8SU2B8CDvetUDWZDO3q6SAIxPgZQoZAzHQ/1gyZ/QM2ouyTYnzerYniB6eYs4I
+	8NH5zqynureKtSDR73cJDdghJvGIKzHKDNEBAsoc2H8CAhIKHmq0jXwbrD23HKf4dSnedZx9ItB
+	LQLI74OQ8=
+X-Received: by 2002:a17:903:3903:b0:2c9:e9ad:3ed3 with SMTP id d9443c01a7336-2ccbd7d2afcmr15968075ad.17.1783355939040;
+        Mon, 06 Jul 2026 09:38:59 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad7893a8dsm53103305ad.73.2026.07.06.09.38.49
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2cad7893a8dsm53103305ad.73.2026.07.06.09.38.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 09:38:53 -0700 (PDT)
+        Mon, 06 Jul 2026 09:38:58 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: rppt@kernel.org,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
 Cc: linux-mm@kvack.org,
 	Sang-Heon Jeon <ekffu200098@gmail.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
 	Borislav Petkov <bp@alien8.de>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
 	Chris Zankel <chris@zankel.net>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Ingo Molnar <mingo@redhat.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	linux-kernel@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
 	Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Thomas Gleixner <tglx@kernel.org>
-Subject: [PATCH v2 2/5] sh: remove unreachable memblock_reserve() return value check
-Date: Tue,  7 Jul 2026 01:37:50 +0900
-Message-ID: <20260706163753.193875-3-ekffu200098@gmail.com>
+	Nicholas Piggin <npiggin@gmail.com>,
+	Rich Felker <dalias@libc.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Mukesh Kumar Chaurasiya <mkchauras@gmail.com>
+Subject: [PATCH v2 3/5] powerpc/fadump: remove unreachable memblock_reserve() return value checks
+Date: Tue,  7 Jul 2026 01:37:51 +0900
+Message-ID: <20260706163753.193875-4-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260706163753.193875-1-ekffu200098@gmail.com>
 References: <20260706163753.193875-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8F0F3160012
-X-Stat-Signature: ab9shn7s14g9s7841wcoi55dqtcxqnz6
-X-HE-Tag: 1783355934-486554
-X-HE-Meta: U2FsdGVkX1+7qj/MtxvDM5+c5LZ/s4kqH/cp/BIid8aCQKmvg0WMVgrh/wdLO2Z5NmtA9n/zrayJBoFuE0mlW7JkAzfwaoqcZXsHDCl7Mg3KRW+r8o2U2uhwC64fKWgylf03lKC5HIIyru7jpo27aPm9tLQp36W3DpEJE0LA+1HwySZ94v0fJYYlQIEw88vWUKLWfmNgqcz9IDnaT1mWqCAqgFRUXUghux3b2NEcrUegmfDHLcSKoHBcKCaT6dM4wjgiUmdR6m4DNZjm7h9KcQQtL5sKvXqqsiHXCkStftdh3Hsk4uoOzyD4yhXTMquxjeVHfLgWwf4LF47Q6GhNblhF/ZFLcp7LNkIOi7x6vaOsjxqgbEH0W1CP9hEJgZiTKEyLIoU3yIHdkGM8oNbD+KX4CbtaovY1xd5zhS5nEQlfRpqmruYOkHOYFEe4lZO5ySmYX2NmZV1nae8fJan3xmU22pYHSF1R56y87BfjbDaREvBgHa0JhmBH2PePsJsUNHb7tRH0Z4yErn7+f3JLTZouwjB10Y3Nt3KjTTdseBCEAgKdk6v+X+DHtdSaZxcIWZAyVj1p6WdvT+2pb541qhwpISwE0nT9nB+1Y1WxVPu09S0aez9bJsG99D/u9nMxbZDnNMgw1PD5Uaw8MA3Wzs7xpNpqLXvvwOWHqYF5es+afSDhj66vaoeTqs7XUahyxpAKdh1ohSXlPExhABU/pvT6Xj2vZKPVfbdPWpBZmpB3O5hOJr5K/mHYJF5KqQGMo8EVBSHeBTEat+MdDTMOVIc1fGUIJatNXg+x3bn5abYZAtZKls2SsXYBc2Zrl0hQUCQFWioT18MkHJEG/NuXue7vmDcsODyYDZJi2fWHfB+ayL1C782RLiZewcfuX09kOaGyuHzf1A6Fgq3HO7Edloph6PHjmNrqrGcv4xcqykXzbgEF2W8NQkddeYrBfBmIeY/jWULzDuY8E4vXsRo
- NX2x8xZE
- s+BOr+O5+4k+08wu9C9nNAtOkO7VUFueB+s262g7XjOu/rRZMWjWXrJUb23maOLu4ABc15fvqg5wOmRDW8fkOYgnsiMQhp4Z9DH9d8FPpsxe7hOOw5Kl1L0w/757yWRKIwz5TKfz03dQq1n70ygZKVJLrsj6o3qwZYAnRVG9c2YOJvfit/ew2ClFIWsdR7UNw9JIZOdvx+9x8NkIrJHtwCYSH6LAtzUJqCVeG4gobSr9zj+33C0n4NDgj6HR6CVzDkyKCE1LjnkLQ0uRxoKe7WGrFlKSHZ37l3zDWTIrr0uUQstsjtKNdFftPHFcXM4M9mfYXyiGsx2/WNq0SiTKvkXM/d60FY+cxm8g16OMhGyE7RAaUzzLqgp2fXNjD9f5thOXE+GyETF7c9H0up9G+8/xHMaMSRtfhyiFRaaKYANbnYnLWILQySMcneVTFj3U8o7WH1tSvQPoRf/s=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 191EEA0002
+X-Stat-Signature: xp4b6pkqft74jsgui56r81m5x7jfich8
+X-HE-Tag: 1783355939-324043
+X-HE-Meta: U2FsdGVkX1+VQ6Z319sC2ucQfeA5mIHsdw97h5YKwiGnWTbY00Zd6WhL4LN0saVLaus6dDWqw5K9XY5o5icortfGApGaG5ZZz5O4bz8Wtb1UhlBaf+V0xZgR6RJOWLzwLsIl1qH9thsgj7Cz/kpRs4i8prI4OQCATw7hjiccNZ6RR28LJsjmJ/wozu5gbm4YvotxD7LbBxbQ7S1IJBSRnXO9wXeNw+srU63HFaSdCB9IJZQTk/vVHXtmuVuZnr8B9aR4UfS6zwTmubGyH70nxA8ywxITkJgM+fJ2pJhQtx5xln4ob2Djft05lvikEVu6ZLOMGVqV6dpGg67ST4dKUL8m1vEN2MZkcJi+LJEWWECLp5WCae9G9+gjGrtD6CuFcAQq1qA5RdKf9sZRbhuYj3MveM00Bq0hcobiiwTjq+lEUmAhgqpxaB0nneZ2QOfbW0pbJA4swKJHlUbIBnEm5B3uSWyviT6WjPa++2jkl614In3Ct9HRs2I/fGf4yAe9/Dva3A4aJgAcRxxv7fyHP0wVPJGFYaO8YjYeLkoIGarbx4Jj8G5+mzR/6EyhjJXLyBC0ADe3u3wZrEj8KIwNBSGpr0Pty87jajmc6zZ05/GqAX5ZWjNHOQHDOCfDDDr40M1dIpYgVmdPDSd+TGC7MoiE+L2I9CGOQ4Y92kcpNrbxpaOhBl3UFlgTjizXQRQRB795wyb5M32lsBlWtMUi1FVEnLUHDjYPy2j5n1gkbbkUdzYZyqh6yNrUa207OqRgSuHzv0vifLUwc5RHvJVgu8g8brX9ymzXC8CL5IB7jFMaWjfElHoMYE3GxsOdInDtP2oVdmjYIGT+dLpP9/EWM+YfpEDg4bKlLXTh/a3KYvpGMoIYjFIdQWr9Zz4iM5/fFCJyhsTRHke5Yc1SU2HwwM/rA7HFIwftAZ95sEYrQoBCssDVsP0BRtWEoRbh7f/Ny/RXvBNSkgxkDJQMl7X
+ wWcbL503
+ wXQFvYEJwr2AFOJRSYQb6XqrXlrUdj/EJa9apf3p2D3JcIe2m7XfreX/9051bPxcz+aIXJSXoHWlm2MpnGRwvM9C6Fj+FRgc0XLq/91mGGee7sb7K1NtE290LSblEe5nLs3KRe6lqffcXtAI0+JNNCIuUOYbSNEeqxjLgIRkqSznTa7Tp0mw5BqdKM5Gk4SpX+iuN4V96vzyo7CmxGRqTGmht/Fhy9bnPAHsSEgeEi3PEaXcurZq7hkcIl91um/+w0D1IDy3UdH41wZWt2wcM8qQTnZuvgXC9PC6k8AOKEE4eVSn7I1ZNuyges+DyUrhLeUfdS6KYstrdYCj9HiHOdmSJaMQuQWTuQX3QDLG3stk2RXfGwDMMDN0TT+K105RpcUOSLTmUPEJtPs6/dkD9fKcyXb0MKHrdUYce43r0SkaMtqlhIxdvQ1jwCcW3nYDi0CwYC32rAtvlFBc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,38 +133,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-reserve_crashkernel() runs from early_reserve_mem() in paging_init(),
-before the same function calls memblock_allow_resize(). At that point
-memblock_reserve() either succeeds or panics, never returning an error.
+fadump_append_bootargs() and fadump_reserve_mem() both run from
+early_init_devtree(), before it calls memblock_allow_resize(). At that
+point memblock_reserve() either succeeds or panics, never returning an
+error.
 
-Therefore the return value check is unreachable, so remove it and the
+Therefore the return value checks are unreachable, so remove them and the
 related logic.
 
 No functional change.
 
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: Mukesh Kumar Chaurasiya (IBM) <mkchauras@gmail.com>
 ---
- arch/sh/kernel/machine_kexec.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/powerpc/kernel/fadump.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/arch/sh/kernel/machine_kexec.c b/arch/sh/kernel/machine_kexec.c
-index 37073ca1e0ad..ba9c412f14d9 100644
---- a/arch/sh/kernel/machine_kexec.c
-+++ b/arch/sh/kernel/machine_kexec.c
-@@ -165,12 +165,7 @@ void __init reserve_crashkernel(void)
- 			goto disable;
- 		}
- 	} else {
--		ret = memblock_reserve(crashk_res.start, crash_size);
--		if (unlikely(ret < 0)) {
--			pr_err("crashkernel reservation failed - "
--			       "memory is in use\n");
--			goto disable;
--		}
-+		memblock_reserve(crashk_res.start, crash_size);
- 	}
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 7f79c9aea4a9..1629a82b9528 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -154,13 +154,8 @@ void __init fadump_append_bootargs(void)
+ 	if (!fw_dump.dump_active || !fw_dump.param_area_supported || !fw_dump.param_area)
+ 		return;
  
- 	crashk_res.end = crashk_res.start + crash_size - 1;
+-	if (fw_dump.param_area < fw_dump.boot_mem_top) {
+-		if (memblock_reserve(fw_dump.param_area, COMMAND_LINE_SIZE)) {
+-			pr_warn("WARNING: Can't use additional parameters area!\n");
+-			fw_dump.param_area = 0;
+-			return;
+-		}
+-	}
++	if (fw_dump.param_area < fw_dump.boot_mem_top)
++		memblock_reserve(fw_dump.param_area, COMMAND_LINE_SIZE);
+ 
+ 	append_args = (char *)fw_dump.param_area;
+ 	len = strlen(boot_command_line);
+@@ -632,10 +627,7 @@ int __init fadump_reserve_mem(void)
+ 		    (fw_dump.ops->fadump_setup_metadata(&fw_dump) < 0))
+ 			goto error_out;
+ 
+-		if (memblock_reserve(base, size)) {
+-			pr_err("Failed to reserve memory!\n");
+-			goto error_out;
+-		}
++		memblock_reserve(base, size);
+ 
+ 		pr_info("Reserved %lldMB of memory at %#016llx (System RAM: %lldMB)\n",
+ 			(size >> 20), base, (memblock_phys_mem_size() >> 20));
 -- 
 2.43.0
 
