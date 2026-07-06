@@ -4,121 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71CE5C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 17:55:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79DC5C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 17:56:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 541856B00BD; Mon,  6 Jul 2026 13:55:28 -0400 (EDT)
+	id 6CC736B00BF; Mon,  6 Jul 2026 13:56:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F2036B00BE; Mon,  6 Jul 2026 13:55:28 -0400 (EDT)
+	id 6A2A56B00C0; Mon,  6 Jul 2026 13:56:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42FF56B00BF; Mon,  6 Jul 2026 13:55:28 -0400 (EDT)
+	id 5B8D96B00C1; Mon,  6 Jul 2026 13:56:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 05B356B00BD
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:55:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81FEA1401B8
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:55:27 +0000 (UTC)
-X-FDA: 84959103894.17.AB06919
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9CBC014000B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:55:25 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DwLN1eBq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D61E6B00BF
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:56:35 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9D216C0A89
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:56:34 +0000 (UTC)
+X-FDA: 84959106708.21.F4E8B59
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E1E8C1C000D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:56:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=r8eFaac5;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783360525;
+	s=arc-20220608; t=1783360593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gda9EnNaq+fnHp+pBJqOcXDPF8q5yM+z5/crGMT/FCk=;
-	b=D1stnbbFlFLHMenHfihR93t0LYpdksSE4I80ELxJmWouMjf2fwlq2Pk8EQWF+XIYUh6TWf
-	qe+XRjOVd1zM9PAHobKmH6gQmqqK87W+YS8EHanH4sdVdxuObNnEo+8qE1Tp6EbQtiqx9i
-	VkIrpBShPcB0C5H3o7RFH7HsqGGXaAo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DwLN1eBq;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
+	bh=nPdY0ByogXxyDQSyK1/UoEx4c72q1eJVOB8wgdz98Bs=;
+	b=0EgSX/HNe+cAB7R8VTk5TnAv8CsBxPDMMwEOsiTTVbcnG2jJLjMV/wX3OwtQmod89yisGF
+	LeK0eVc5FGX4rAA4VyBw4Mhp4247FmLuTgwLe62hiU6MyMi44wGs16/vDToaW6LWRRtUiJ
+	gyxdOOWTeR4tgfifHNERmITNW0UmXWg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783360525;
-	b=LZw/NOrVJ9FTUcGQsXAbDpOqDnj/xbZ64eD+UbcZGwOhyyQdlVw+UvzTnMEBYK6++OlqMH
-	nsyl0ChLYoMAiIk4uR1OUxWUhRccNExgK3A+dNX3/Ed2R9guqRkkwXqBB+AwX9UfowpKLk
-	fvxMthjIvzXuMX+azqLncrLeoCfkC1o=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-84592b55832so3256831b3a.3
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 10:55:25 -0700 (PDT)
+	t=1783360593;
+	b=ud45UFSrlaZl5NDcPiWv9cph+B4zzdZ3UUvdNCuFLR8Ns/w+CiWyai5we2VdctykxiiPCq
+	n2Ms6/BRDg1CiHRErHa6j/G6J0NIg/pBEuuVO1RD4gwBz09IvRC0n8zBRfKFvW8WpL3XOS
+	qgKYy9nrdGDvYDdVlvWfeP7QR76k8c0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=r8eFaac5;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 09BCA600DA;
+	Mon,  6 Jul 2026 17:56:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D987B1F000E9;
+	Mon,  6 Jul 2026 17:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783360524; x=1783965324; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:message-id:date:cc:to:from:subject:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gda9EnNaq+fnHp+pBJqOcXDPF8q5yM+z5/crGMT/FCk=;
-        b=DwLN1eBqMnUCT8WxV8iR5ppX6UR6byl2E+Qdj+/oTKZrysOJrLb0iNbV1unOOz72rR
-         mPBPYlTKBFeD78N1WyxWx6ZZug0K+z34R0sHLMysK+1z53tRJ1rGsPgnjJ+Wd+S6Ik+T
-         l61FaUOui2hfCgftny1wPGVYSfrDztRGK3k7kq7bqEmRmtQgPEvgaLENeruWAYySqmM9
-         jfMNQy/twhBITDQdqJe4e+pvMlv0g4s2aULewle4soyB4Bk87u+s1JPY8zn8hIDW8BJu
-         L4mdpImlZpjag7Lh8Qwxfcp6u9stVly413q7osISx2lDgzaAkdtEIcK9EYzwfkAhzzq0
-         OWQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783360524; x=1783965324;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gda9EnNaq+fnHp+pBJqOcXDPF8q5yM+z5/crGMT/FCk=;
-        b=DUYXHKl3rmHciuaSGKll1MtHy0441gTpGdUf8AKAqq7bcEtK4e4NsB0IhXDpelAV87
-         sY6pTGTh1wPNldahV6GazPeRJ84Zg8IFhVwJzPzjW65CrJ3Gi3IgMC30Lbo57gaB9OiX
-         NppzJg1iRJw9f2sfybKSmopYtudBP/S+iTcV/tlvo9LgimItWADoIaEFjfVUuJU2uz40
-         I8wcUa+Xs1VOGHKZfZbG0HoWR8qE9NkO15C3uaz1Q3Zogj13kOUuBjRQ7rmc9H+KpqeM
-         7ov6ZOmdOs4yuwE4FCH9XLP20n7Gn5WaP0FDzuh8epZYUU2jJ2mK5fsdN057ynd+0ysB
-         YF+g==
-X-Forwarded-Encrypted: i=1; AHgh+RoYeDhyG76LC2Nfjde+r1jfQuefa9XM6UKkiDePc1NBOstcezgdcJeAykBSEXVmx36jY2za4KElmQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx5QCEgi+JxyRjFLBb7JruoQxvcprXRQSaQUEoxgIQjEyrRt0PP
-	QmxyygZEGs7GI0IN8lJAJJcph0NnbYQJ7ybwhhpl/f7DcMJnT0nWwzxg
-X-Gm-Gg: AfdE7cmREfI3038muY8wprVwmnMNjH6gQioVQzOOqtN+vxxWK9OrsH5IKMPBLaoASUp
-	K+9bXNKaWPrEqkgVfmGcMv0jPiBPakLqOnOLvfOaKdjXRuvenb7ZHvU1nJj613Pt+yHXbaMNtQN
-	pjEgdrUxpFVCzdctYZwonb9HV3mK+7dFpWgED2eak2MyHiNwEZ1J4q0dFL8WRZECarBMdIstQTU
-	qd5T13DKqbXc3uHmOzWXH2dbovd/WkSDveMTkaArnYZVn0gqX76hMNCdPNRCReyyR8bJxurTT7P
-	GmmlwYLuNIgXXECk8BGU1xAKD/WIeEbIoWh9HC3H9ZgFZJLfstmx8F9EQBW6m+xkjE62CThREDC
-	c9CBBLQJERP142r8qsJiJ7SZxfDoWUyzE/nBCTKlt1+94HnqR/T+gHy+xmid3bq0f5dEI5wQjBq
-	8fZEcn7b6miqzx4rTOcHNvBI1QYphnNTvjqikRDx9IIlE4GSWCA3H1vVNMILw=
-X-Received: by 2002:a05:6a00:2a08:b0:847:7ece:3426 with SMTP id d2e1a72fcca58-84826da830amr1487737b3a.58.1783360524459;
-        Mon, 06 Jul 2026 10:55:24 -0700 (PDT)
-Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6b95c89sm4375268b3a.15.2026.07.06.10.55.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 10:55:23 -0700 (PDT)
-Subject: [PATCH v6 4/4] mshv: Use hmm_range_fault_unlocked() for region faults
-From: Stanislav Kinsburskii <skinsburskii@gmail.com>
-To: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- akpm@linux-foundation.org, david@kernel.org, jgg@ziepe.ca, corbet@lwn.net,
- leon@kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
- shuah@kernel.org, skhan@linuxfoundation.org, surenb@google.com,
- vbabka@kernel.org, skinsburskii@gmail.com, kys@microsoft.com,
- haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
- longli@microsoft.com
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, linux-hyperv@vger.kernel.org
-Date: Mon, 06 Jul 2026 10:55:21 -0700
-Message-ID: <178336052192.504354.1841795575701703197.stgit@skinsburskii>
-In-Reply-To: <178336023903.504354.7500950448226027718.stgit@skinsburskii>
-References: <178336023903.504354.7500950448226027718.stgit@skinsburskii>
-User-Agent: StGit/0.19
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	d=linux-foundation.org; s=korg; t=1783360591;
+	bh=nPdY0ByogXxyDQSyK1/UoEx4c72q1eJVOB8wgdz98Bs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=r8eFaac5cRhGFt2nAQhk+Nw8XuhtQOTH71Zhoqk2uZku7l/Q5lcS2UkNP1+LfSzUH
+	 WMTkRf6v98jpjKND07SSxaUtUqq9+LzwaHqFG4UoWNmvVJiJRxsTpm4vH8wG7muiR3
+	 zooZrbK9CwZ+ZD6ijy12tH4IiYM2/oSg3jKLDg3A=
+Date: Mon, 6 Jul 2026 10:56:30 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org,
+ ziy@nvidia.com, linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan
+ He <baoquan.he@linux.dev>, willy@infradead.org, youngjun.park@lge.com,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, Liam R. Howlett
+ <liam@infradead.org>, ryan.roberts@arm.com, Vlastimil Babka
+ <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org,
+ nphamcs@gmail.com, shikemeng@huaweicloud.com, kernel-team@meta.com
+Subject: Re: [PATCH v2 0/6] mm: preparatory patches for PMD level swap
+ entries
+Message-Id: <20260706105630.368ab0d13c1b02d3e1df4af5@linux-foundation.org>
+In-Reply-To: <20260706114320.1643046-1-usama.arif@linux.dev>
+References: <20260706114320.1643046-1-usama.arif@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9CBC014000B
-X-Stat-Signature: bz7gwpgho31sftyfr4oktijnh5emcwi3
-X-HE-Tag: 1783360525-938851
-X-HE-Meta: U2FsdGVkX1+whwMoGg54zS5S4DDX/FXKZo8K1hCVKguF7272tTs6FWo3Rcwm3mowuUFWnkpAcUI6Oy7fCtmijaYc3lvCC2vqVotAkgbQVNSkzPY2Et5iEg/H2jywrm8CPjL+hzXHJqr7281n1GNkvd1p0MpkMoRWnoPT91rhXSEVWnL0WHwHRQ3mWYCXf3G0tDo3oBvl9taTwp0UR2FWMy8oFhQ6WzPu8qem5X5G4BOlLG+lW62MV/ps92xLrSWLq+pWOah0CQ5xQcVB220pxwIQ3LRpQNh+kqk9S9B5pwfbCOKYv3wiNpuOWDsJQDWeqa7y6aEhQPBOCuEuk7balTE2GxY572ds2Mt8nHs+r3hKy46m1d5G5XcfN+lOAEEOPQ1Y9zkgjIPed/di5MqiBzjDyUXokfv8O7VFwLu8KkwfSkIzTiVFmsUn3ddxcSwaDL/qNZOylKu2ypzNmjs8gGg6rZFTAFcRo9C/+on2pRV2pxtxrDGqXD4lHmW6sB8i3YZAOvCftz5F/x7wje6wiFX9RILxW5+iSRWla76Go++0ZA1o0Cll+uBxg8XVKDJt+mwm2rvrGnLgY1QjxGjvj06Ly+YFpex6yN8oiuFN9etkc77TFOXPQ92m4yhwCwhvjt4SDsiOiezrWHKMulKkuD5HHXOjp4SNcO5nULB6bxC9koOVDuMf58z6zVxUt2FiT7FIS8MdOOb8NIsLJuIzOIp8KwxNHdKSt8MhV+hMfphEyFQPr+QFR65b4dIu8mf82jO/dxAvv/Joshl/Q+88pW+Z77FiDdrDWOs2KzXWz3Ex7OaH5cvNUgB+Lfrnq+111JuXTrd8zH7QCxwLLzWFUUyVcn67IvpYLA1Mv/cdrKTLVuYpEn70+RensSJplfD6RYGRrqqCMPjuteXIFNSSLcHp7AJk8bhPlZJmuVO+TQ2fqd4ziOQZmQbyzEthMoZPHKoebte6fBWRw0loOzs
- u8Mm5dkG
- 6PYFBhoSvhiBgHjtU6sxX8JELCoYkIj52QwFSttIZ+iUyf4b41jF7DYmMJ9HfLRuloI//Z6xRUsVJhf8Rn8KNpMlY7Tk15a75v8C+nCkIXJ7R/vlpTRnPTQAaFxh/rCsRn0wFPU+W8DbthTjTgRG7xLcfUByVFPX2psxidUVMiytb0DOdIOl6/ioeLCdevG+x3dz2s7X1QxOFm2x97cafyJe+yaWrAOzXx+9KHV45kQICI3WQMmNpcLByIGQ3gfUngNM4E7GG9FvmvbOfkgdx/Tf0lD+uJTvfOXcWyGLMIM3Eh0wTQSy2x41SikCYlZ3rBCv3VFI1tVJ9ameEFioKfrNUPlTBCJvTZv+nxbj/Ijt6VetEPO0FETVBzwXXGxfzaj4Im2DzHedhsXPKyaOcXm4jOehZkiF1M/DZDfobt5EGD5+KxpUCF0PRaD3T8JGwGuYYSp659oQQRILggaT9y7/DBNnN3uXNMPN6A+ypQkREZ74B57x3uwnms6CTsuC574AnaADlw8vOq/axiO6HS2hdrhOwu7DMpq2E4iU6Qh335w/L7g8pEbWYZR0dCLmKk3GYWyvknqSwm+XPaLeKfLqOvQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E1E8C1C000D
+X-Stat-Signature: f916gydjmx5st8ts9oi4dr5gzaz439d5
+X-HE-Tag: 1783360592-860018
+X-HE-Meta: U2FsdGVkX1+ODhGeBWwEzrhMPG/h1vDuja0lRDuXdq6GawRgaKJ+Pa6BWZftLXUBagjVWUu7N/0crsAPo7xpouqrnmIb7GISUSFNRMXaeI1K3Ag0/K9Kt30kq+07H18EczFuc0u+tDBWMD7IC31xzc+IWYJ+0JY7tahRrSv4bDzRGEEYi5wqoSr8PWpYWSHlN7ugHoZ+pOrOudQ4tqoqTkaOTycSVpZ34gcNXN/jhXZbLbVC5/JUlLCxGEXLqYIdCCteiRdzwdiVjRDkp2aRCBEWE8R0dHUFYWz97wFArl2mv3uBWPkjHOsxwzvUN/l6iMN4AsPBbuHUY5PZHj5UWMzLpwgqkf1P3jfXSeMQmB9y0w/CaLsbnFSqhVIRMTmtbz+k1aQMAXTQETgRcehHucUk1SipoANSsZBbK8uOWyadSq/xlFZNJK9rCcfK4bejcogXtoXPhsq54jINYJXwGclVLvqThT5CfXk5GPMqLNPUgvvu8ajx9Mn08IH4b3H6zNih2R0t0VghMbkouC85l/BadlakkvrJprK9cqohrec5xlOvwR1zEMLnvxTD1WxdTkhb0XVOK3iVpiiUlFzeFthqDa44vxpcGarKL6pdcxBpTrrH6LpmRqwsK4tZoC7/3cOBXNgo2NtJM6VatuvIIgAgwaIJ/LfwM0AdgsyRkraC38FY/MWgc2+gfG1IqGh55jIJ8wF8lY0B/Z4RCt5HSl2KUiyUJ4wbeMQmms3Y/QYHa3MxAsl5mKVt8soganU3yW85auMsZ+A8XeTMtYMIMr643NWQU/SOG7TAyy+TWYj/qTlMrTX4oFmwYBAd11Q5x6LXRJ8NuxbcRbztR0F7+XENQbOHW0hWKEdEPrfkqEFAvb8prh8SAGkJumiQZCvpVYF45gkFJPzPuSUClG0ACFr9xrn/cwsn3NrQA0h6VaYW7uhAf/2CnlTf7EpApCFPzmq77rU3tAyEcGfLN9M
+ xkU1xDuD
+ q03dsKM22pTMX19kPmFy1rv0gPKfCBFgQKLqLJdCrrO3Y2gahYd8Vt0zdIDK2kERGTviEjzlMU1bBIJ92+0RYxFpPzEsrwGYLSBsaRZqGc7RrU4DuXOQBR4OftrzXhkKqAJPGOhMaIs+YfQXYY2Rm2LJRKdKnfhldYhWf9FOprp0EC+SjdTAY1l7GyoDR7cNRq2xCoVdYlut9HcwfhE1HGHJXuT5zP+ul/yrj2bmEdQOV2t+hgYzhxsWRU/Z5yEnbvtJpAhDaCmKnk0k5aMMT/Zct4RhfgWQ72Im5K/KWTyCvg05RGEu1xBeetL96L0pvWDuKXrP7LW8+1oIhpc3e3DwCJjMWrk00n6DUxRz+Dp3AQHw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,54 +97,430 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert mshv_region_hmm_fault_and_lock() to use
-hmm_range_fault_unlocked() instead of taking mmap_read_lock() around
-hmm_range_fault() directly.
+On Mon,  6 Jul 2026 04:42:02 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 
-This lets the HMM helper own the mmap read lock and allows the MSHV fault
-path to handle mappings whose fault handlers may drop mmap_lock, including
-userfaultfd-backed VMAs. The existing caller already retries on -EBUSY
-after refreshing the mmu_interval_notifier sequence, so no control flow
-change is needed beyond using the unlocked helper.
+> This is the preparatory part of the PMD page table swapin work.
 
-Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
----
- drivers/hv/mshv_regions.c |   14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+Thanks, I updated mm.git to this version.
 
-diff --git a/drivers/hv/mshv_regions.c b/drivers/hv/mshv_regions.c
-index 6d65e5b42152..04676f06c5c7 100644
---- a/drivers/hv/mshv_regions.c
-+++ b/drivers/hv/mshv_regions.c
-@@ -388,13 +388,11 @@ int mshv_region_get(struct mshv_mem_region *region)
-  *
-  * This function performs the following steps:
-  * 1. Reads the notifier sequence for the HMM range.
-- * 2. Acquires a read lock on the memory map.
-- * 3. Handles HMM faults for the specified range.
-- * 4. Releases the read lock on the memory map.
-- * 5. If successful, locks the memory region mutex.
-- * 6. Verifies if the notifier sequence has changed during the operation.
-+ * 2. Handles HMM faults for the specified range.
-+ * 3. If successful, locks the memory region mutex.
-+ * 4. Verifies if the notifier sequence has changed during the operation.
-  *    If it has, releases the mutex and returns -EBUSY to match with
-- *    hmm_range_fault() return code for repeating.
-+ *    hmm_range_fault_unlocked() so the caller retries the range fault.
-  *
-  * Return: 0 on success, a negative error code otherwise.
-  */
-@@ -404,9 +402,7 @@ static int mshv_region_hmm_fault_and_lock(struct mshv_mem_region *region,
- 	int ret;
+Sashiko might have found several serious looking pre-existing issues:
+	https://sashiko.dev/#/patchset/20260706114320.1643046-1-usama.arif@linux.dev
+
+> v1 -> v2: https://lore.kernel.org/all/20260630164143.1595669-1-usama.arif@linux.dev/
+> - Remove unnecessary comment in patch 2 (David)
+> - s/ARCH_SUPPORTS_PMD_SOFTLEAF/ARCH_HAS_PMD_SOFTLEAVES/ and rewrite
+>   the commit message (David)
+>  
+
+Here's how v2 altered mm.git:
+
+
+ arch/arm64/Kconfig                           |    2 +-
+ arch/arm64/include/asm/pgtable.h             |    4 ++--
+ arch/loongarch/Kconfig                       |    2 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h |    2 +-
+ arch/powerpc/platforms/Kconfig.cputype       |    2 +-
+ arch/riscv/Kconfig                           |    2 +-
+ arch/riscv/include/asm/pgtable.h             |    8 ++++----
+ arch/s390/Kconfig                            |    2 +-
+ arch/s390/include/asm/pgtable.h              |    2 +-
+ arch/x86/Kconfig                             |    2 +-
+ arch/x86/include/asm/pgtable.h               |    2 +-
+ include/linux/huge_mm.h                      |    2 +-
+ include/linux/leafops.h                      |    8 ++++----
+ include/linux/pgtable.h                      |    2 +-
+ include/linux/swapops.h                      |    6 +++---
+ mm/Kconfig                                   |    2 +-
+ mm/debug_vm_pgtable.c                        |    8 ++++----
+ mm/hmm.c                                     |    4 ++--
+ mm/huge_memory.c                             |    2 +-
+ mm/internal.h                                |    3 ---
+ mm/migrate.c                                 |    4 ++--
+ mm/migrate_device.c                          |    6 +++---
+ mm/rmap.c                                    |    2 +-
+ 23 files changed, 38 insertions(+), 41 deletions(-)
+
+--- a/arch/arm64/include/asm/pgtable.h~b
++++ a/arch/arm64/include/asm/pgtable.h
+@@ -1534,10 +1534,10 @@ static inline pmd_t pmdp_establish(struc
+ #define __pte_to_swp_entry(pte)	((swp_entry_t) { pte_val(pte) })
+ #define __swp_entry_to_pte(swp)	((pte_t) { (swp).val })
  
- 	range->notifier_seq = mmu_interval_read_begin(range->notifier);
--	mmap_read_lock(region->mreg_mni.mm);
--	ret = hmm_range_fault(range);
--	mmap_read_unlock(region->mreg_mni.mm);
-+	ret = hmm_range_fault_unlocked(range);
- 	if (ret)
- 		return ret;
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ #define __pmd_to_swp_entry(pmd)		((swp_entry_t) { pmd_val(pmd) })
+ #define __swp_entry_to_pmd(swp)		__pmd((swp).val)
+-#endif /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
  
-
+ /*
+  * Ensure that there are not more swap files than can be encoded in the kernel
+--- a/arch/arm64/Kconfig~b
++++ a/arch/arm64/Kconfig
+@@ -17,7 +17,7 @@ config ARM64
+ 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+-	select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
++	select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_CACHE_LINE_SIZE
+ 	select ARCH_HAS_CC_PLATFORM
+ 	select ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+--- a/arch/loongarch/Kconfig~b
++++ a/arch/loongarch/Kconfig
+@@ -12,7 +12,7 @@ config LOONGARCH
+ 	select ARCH_NEEDS_DEFER_KASAN
+ 	select ARCH_DISABLE_KASAN_INLINE
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG
+-	select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
++	select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+ 	select ARCH_HAS_CPU_FINALIZE_INIT
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h~b
++++ a/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -1060,7 +1060,7 @@ static inline pte_t *pmdp_ptep(pmd_t *pm
+ #define pmd_mksoft_dirty(pmd)  pte_pmd(pte_mksoft_dirty(pmd_pte(pmd)))
+ #define pmd_clear_soft_dirty(pmd) pte_pmd(pte_clear_soft_dirty(pmd_pte(pmd)))
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ #define pmd_swp_mksoft_dirty(pmd)	pte_pmd(pte_swp_mksoft_dirty(pmd_pte(pmd)))
+ #define pmd_swp_soft_dirty(pmd)		pte_swp_soft_dirty(pmd_pte(pmd))
+ #define pmd_swp_clear_soft_dirty(pmd)	pte_pmd(pte_swp_clear_soft_dirty(pmd_pte(pmd)))
+--- a/arch/powerpc/platforms/Kconfig.cputype~b
++++ a/arch/powerpc/platforms/Kconfig.cputype
+@@ -112,7 +112,7 @@ config PPC_THP
+        depends on PPC_RADIX_MMU || (PPC_64S_HASH_MMU && PAGE_SIZE_64KB)
+        select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+        select HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+-       select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
++       select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
+ 
+ choice
+ 	prompt "CPU selection"
+--- a/arch/riscv/include/asm/pgtable.h~b
++++ a/arch/riscv/include/asm/pgtable.h
+@@ -946,7 +946,7 @@ static inline pmd_t pmd_clear_soft_dirty
+ 	return pte_pmd(pte_clear_soft_dirty(pmd_pte(pmd)));
+ }
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ static inline bool pmd_swp_soft_dirty(pmd_t pmd)
+ {
+ 	return pte_swp_soft_dirty(pmd_pte(pmd));
+@@ -961,7 +961,7 @@ static inline pmd_t pmd_swp_clear_soft_d
+ {
+ 	return pte_pmd(pte_swp_clear_soft_dirty(pmd_pte(pmd)));
+ }
+-#endif /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ #endif /* CONFIG_HAVE_ARCH_SOFT_DIRTY */
+ 
+ static inline void set_pmd_at(struct mm_struct *mm, unsigned long addr,
+@@ -1208,10 +1208,10 @@ static inline pte_t pte_swp_clear_exclus
+ 	return __pte(pte_val(pte) & ~_PAGE_SWP_EXCLUSIVE);
+ }
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ #define __pmd_to_swp_entry(pmd) ((swp_entry_t) { pmd_val(pmd) })
+ #define __swp_entry_to_pmd(swp) __pmd((swp).val)
+-#endif /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ 
+ /*
+  * In the RV64 Linux scheme, we give the user half of the virtual-address space
+--- a/arch/riscv/Kconfig~b
++++ a/arch/riscv/Kconfig
+@@ -22,7 +22,7 @@ config RISCV
+ 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM_VMEMMAP
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+-	select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
++	select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_BINFMT_FLAT
+ 	select ARCH_HAS_CC_CAN_LINK
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+--- a/arch/s390/include/asm/pgtable.h~b
++++ a/arch/s390/include/asm/pgtable.h
+@@ -903,7 +903,7 @@ static inline pmd_t pmd_clear_soft_dirty
+ 	return clear_pmd_bit(pmd, __pgprot(_SEGMENT_ENTRY_SOFT_DIRTY));
+ }
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ #define pmd_swp_soft_dirty(pmd)		pmd_soft_dirty(pmd)
+ #define pmd_swp_mksoft_dirty(pmd)	pmd_mksoft_dirty(pmd)
+ #define pmd_swp_clear_soft_dirty(pmd)	pmd_clear_soft_dirty(pmd)
+--- a/arch/s390/Kconfig~b
++++ a/arch/s390/Kconfig
+@@ -82,7 +82,7 @@ config S390
+ 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
+-	select ARCH_SUPPORTS_PMD_SOFTLEAF if TRANSPARENT_HUGEPAGE
++	select ARCH_HAS_PMD_SOFTLEAVES if TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_CC_CAN_LINK
+ 	select ARCH_HAS_CPU_FINALIZE_INIT
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+--- a/arch/x86/include/asm/pgtable.h~b
++++ a/arch/x86/include/asm/pgtable.h
+@@ -1545,7 +1545,7 @@ static inline pte_t pte_swp_clear_soft_d
+ 	return pte_clear_flags(pte, _PAGE_SWP_SOFT_DIRTY);
+ }
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+ {
+ 	return pmd_set_flags(pmd, _PAGE_SWP_SOFT_DIRTY);
+--- a/arch/x86/Kconfig~b
++++ a/arch/x86/Kconfig
+@@ -70,7 +70,7 @@ config X86
+ 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGRATION
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if (PGTABLE_LEVELS > 2) && (X86_64 || X86_PAE)
+-	select ARCH_SUPPORTS_PMD_SOFTLEAF if X86_64 && TRANSPARENT_HUGEPAGE
++	select ARCH_HAS_PMD_SOFTLEAVES if X86_64 && TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+ 	select ARCH_HAS_CPU_ATTACK_VECTORS	if CPU_MITIGATIONS
+ 	select ARCH_HAS_CACHE_LINE_SIZE
+--- a/include/linux/huge_mm.h~b
++++ a/include/linux/huge_mm.h
+@@ -567,7 +567,7 @@ static inline struct folio *get_persiste
+ 
+ static inline bool thp_migration_supported(void)
+ {
+-	return IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF);
++	return IS_ENABLED(CONFIG_ARCH_HAS_PMD_SOFTLEAVES);
+ }
+ 
+ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+--- a/include/linux/leafops.h~b
++++ a/include/linux/leafops.h
+@@ -81,7 +81,7 @@ static inline pte_t softleaf_to_pte(soft
+ 	return swp_entry_to_pte(entry);
+ }
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ /**
+  * softleaf_from_pmd() - Obtain a leaf entry from a PMD entry.
+  * @pmd: PMD entry.
+@@ -587,7 +587,7 @@ static inline bool pte_is_uffd_marker(pt
+ 	return false;
+ }
+ 
+-#if defined(CONFIG_ZONE_DEVICE) && defined(CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF)
++#if defined(CONFIG_ZONE_DEVICE) && defined(CONFIG_ARCH_HAS_PMD_SOFTLEAVES)
+ 
+ /**
+  * pmd_is_device_private_entry() - Check if PMD contains a device private swap
+@@ -606,14 +606,14 @@ static inline bool pmd_is_device_private
+ 	return softleaf_is_device_private(softleaf_from_pmd(pmd));
+ }
+ 
+-#else  /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#else  /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ 
+ static inline bool pmd_is_device_private_entry(pmd_t pmd)
+ {
+ 	return false;
+ }
+ 
+-#endif /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#endif /* CONFIG_ZONE_DEVICE && CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ 
+ /**
+  * pmd_is_migration_entry() - Does this PMD entry encode a migration entry?
+--- a/include/linux/pgtable.h~b
++++ a/include/linux/pgtable.h
+@@ -1839,7 +1839,7 @@ static inline pgprot_t pgprot_modify(pgp
+ #endif
+ 
+ #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+-#ifndef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifndef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ static inline pmd_t pmd_swp_mksoft_dirty(pmd_t pmd)
+ {
+ 	return pmd;
+--- a/include/linux/swapops.h~b
++++ a/include/linux/swapops.h
+@@ -321,7 +321,7 @@ static inline swp_entry_t make_guard_swp
+ 
+ struct page_vma_mapped_walk;
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ extern int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
+ 		struct page *page);
+ 
+@@ -338,7 +338,7 @@ static inline pmd_t swp_entry_to_pmd(swp
+ 	return __swp_entry_to_pmd(arch_entry);
+ }
+ 
+-#else  /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#else  /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ static inline int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
+ 		struct page *page)
+ {
+@@ -358,7 +358,7 @@ static inline pmd_t swp_entry_to_pmd(swp
+ 	return __pmd(0);
+ }
+ 
+-#endif  /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#endif  /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ 
+ #endif /* CONFIG_MMU */
+ #endif /* _LINUX_SWAPOPS_H */
+--- a/mm/debug_vm_pgtable.c~b
++++ a/mm/debug_vm_pgtable.c
+@@ -751,7 +751,7 @@ static void __init pmd_leaf_soft_dirty_t
+ 	pmd_t pmd;
+ 
+ 	if (!pgtable_supports_soft_dirty() ||
+-	    !IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF))
++	    !IS_ENABLED(CONFIG_ARCH_HAS_PMD_SOFTLEAVES))
+ 		return;
+ 
+ 	if (!has_transparent_hugepage())
+@@ -819,7 +819,7 @@ static void __init pte_swap_tests(struct
+ 	WARN_ON(memcmp(&pte1, &pte2, sizeof(pte1)));
+ }
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ static void __init pmd_softleaf_tests(struct pgtable_debug_args *args)
+ {
+ 	swp_entry_t arch_entry;
+@@ -837,9 +837,9 @@ static void __init pmd_softleaf_tests(st
+ 	pmd2 = __swp_entry_to_pmd(arch_entry);
+ 	WARN_ON(memcmp(&pmd1, &pmd2, sizeof(pmd1)));
+ }
+-#else  /* !CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#else  /* !CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ static void __init pmd_softleaf_tests(struct pgtable_debug_args *args) { }
+-#endif /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#endif /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ 
+ static void __init swap_migration_tests(struct pgtable_debug_args *args)
+ {
+--- a/mm/hmm.c~b
++++ a/mm/hmm.c
+@@ -331,7 +331,7 @@ fault:
+ 	return hmm_vma_fault(addr, end, required_fault, walk);
+ }
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
+ 				     unsigned long end, unsigned long *hmm_pfns,
+ 				     pmd_t pmd)
+@@ -391,7 +391,7 @@ static int hmm_vma_handle_absent_pmd(str
+ 		return -EFAULT;
+ 	return hmm_pfns_fill(start, end, range, HMM_PFN_ERROR);
+ }
+-#endif  /* CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#endif  /* CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ 
+ static int hmm_vma_walk_pmd(pmd_t *pmdp,
+ 			    unsigned long start,
+--- a/mm/huge_memory.c~b
++++ a/mm/huge_memory.c
+@@ -4868,7 +4868,7 @@ static int __init split_huge_pages_debug
+ late_initcall(split_huge_pages_debugfs);
+ #endif
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
+ 		struct page *page)
+ {
+--- a/mm/internal.h~b
++++ a/mm/internal.h
+@@ -1955,9 +1955,6 @@ static inline int get_sysctl_max_map_cou
+ bool may_expand_vm(struct mm_struct *mm, const vma_flags_t *vma_flags,
+ 		   unsigned long npages);
+ 
+-/*
+- * Ensure @mm is on the init_mm.mmlist so swapoff can find it.
+- */
+ static inline void mm_prepare_for_swap_entries(struct mm_struct *mm)
+ {
+ 	if (list_empty(&mm->mmlist)) {
+--- a/mm/Kconfig~b
++++ a/mm/Kconfig
+@@ -703,7 +703,7 @@ config DEVICE_MIGRATION
+ config ARCH_ENABLE_HUGEPAGE_MIGRATION
+ 	bool
+ 
+-config ARCH_SUPPORTS_PMD_SOFTLEAF
++config ARCH_HAS_PMD_SOFTLEAVES
+ 	bool
+ 
+ config HUGETLB_PAGE_SIZE_VARIABLE
+--- a/mm/migrate.c~b
++++ a/mm/migrate.c
+@@ -362,7 +362,7 @@ static bool remove_migration_pte(struct
+ 			idx = linear_page_index(vma, pvmw.address) - pvmw.pgoff;
+ 		new = folio_page(folio, idx);
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ 		/* PMD-mapped THP migration entry */
+ 		if (!pvmw.pte) {
+ 			VM_BUG_ON_FOLIO(folio_test_hugetlb(folio) ||
+@@ -545,7 +545,7 @@ fail:
+ }
+ #endif
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
+ {
+ 	spinlock_t *ptl;
+--- a/mm/migrate_device.c~b
++++ a/mm/migrate_device.c
+@@ -771,7 +771,7 @@ int migrate_vma_setup(struct migrate_vma
+ }
+ EXPORT_SYMBOL(migrate_vma_setup);
+ 
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ /**
+  * migrate_vma_insert_huge_pmd_page: Insert a huge folio into @migrate->vma->vm_mm
+  * at @addr. folio is already allocated as a part of the migration process with
+@@ -926,7 +926,7 @@ static int migrate_vma_split_unmapped_fo
+ 		migrate->src[i+idx] = migrate_pfn(pfn + i) | flags;
+ 	return ret;
+ }
+-#else /* !CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF */
++#else /* !CONFIG_ARCH_HAS_PMD_SOFTLEAVES */
+ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 					 unsigned long addr,
+ 					 struct page *page,
+@@ -947,7 +947,7 @@ static int migrate_vma_split_unmapped_fo
+ static unsigned long migrate_vma_nr_pages(unsigned long *src)
+ {
+ 	unsigned long nr = 1;
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ 	if (*src & MIGRATE_PFN_COMPOUND)
+ 		nr = HPAGE_PMD_NR;
+ #else
+--- a/mm/rmap.c~b
++++ a/mm/rmap.c
+@@ -2472,7 +2472,7 @@ static bool try_to_migrate_one(struct fo
+ 				page_vma_mapped_walk_restart(&pvmw);
+ 				continue;
+ 			}
+-#ifdef CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+ 			pmdval = pmdp_get(pvmw.pmd);
+ 			if (likely(pmd_present(pmdval)))
+ 				pfn = pmd_pfn(pmdval);
+_
 
 
