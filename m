@@ -4,101 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B83BC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 10:55:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A353C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 10:57:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 559A66B00D4; Mon,  6 Jul 2026 06:55:10 -0400 (EDT)
+	id EF8BC6B00D7; Mon,  6 Jul 2026 06:57:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 509616B00D7; Mon,  6 Jul 2026 06:55:10 -0400 (EDT)
+	id EA90A6B00DA; Mon,  6 Jul 2026 06:57:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FA486B00D8; Mon,  6 Jul 2026 06:55:10 -0400 (EDT)
+	id D98286B00DB; Mon,  6 Jul 2026 06:57:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C2D26B00D4
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:55:10 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id AA6A76B00D7
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:57:03 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 685571C7C92
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:55:09 +0000 (UTC)
-X-FDA: 84958044738.21.B138B7A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7138B120007
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:55:07 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=shX+3OKH;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C77C1C71CE
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:57:03 +0000 (UTC)
+X-FDA: 84958049526.21.2B84230
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5E0C3C0005
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:57:01 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8agmxFZ;
+	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783335307;
+	s=arc-20220608; t=1783335421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kekZYZNc2HULcFXRWQtxXNVLPrL3Z9GBbHLrRK7U5m8=;
-	b=Jdazk4FY/aTHviLHksZkBCF+pmuqMuyI5rqNb4NKhuz7QPYbOnSnruppIYmipDYJmNI/sk
-	bNTFuewiePKxj23Eu9Kc1lm8Q2+nEhTdIVG5+yB0vF/St0QlUb/nbBOc7JQcFVCDlCAwrS
-	Q9JKPW5bUOE62QOfMV+fc4GlqkFPmPY=
+	bh=9TtrHnv/qi4lGfcA8XXpkBAbAwnFcDJBMSEy+F8GNE4=;
+	b=jOuPJgkBMZdbAUVEtA8GGJj4gDKmoYtDqvMkMBLBdWaYnCvTD74tHp8K4Lqo7cvY1DJDU+
+	B1hE6llGSDAyO6Jie0pdDQtZAZJlfyCDg4gwd4+9j+wOGiCq/P4Avub2sQsIitmoIIRVKz
+	YNqLF/GVFmJpQOD6+I3octTR3O6jUp8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=shX+3OKH;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V8agmxFZ;
+	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783335307;
-	b=PwgrLG6OGz1kQfY4JfX06pBV6k2DB3uWnjkGyURmnO26u5cmo9wUsEDE4/4wJ0bwAq/N9e
-	6P69gpDgR5XGhRQCKMKvl4vzTUbHnXyNiGqytNV03ci8Q7GgZro3v6viREc0cHx45v7BjE
-	H754cOOd4dh1qG3zC3B66FT0Fq/Z5KI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4572C3297;
-	Mon,  6 Jul 2026 03:55:02 -0700 (PDT)
-Received: from [10.164.148.41] (MacBook-Pro.blr.arm.com [10.164.148.41])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 302593F85F;
-	Mon,  6 Jul 2026 03:54:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783335306; bh=kUg3SSlZYOMQVG94aHXp/3YGAOJyzCEBoYwrgN+THCA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=shX+3OKH0GDEBl7HPAkKvHndWQPXZWFDYKZCnRDHc9zSOZOlyrOtxtPdT7WkUnZn6
-	 drCorekkLPZ520O6dDK+omcH6IgAdV1z6HYRZqrAw98nqbl8DNSHUS0Yu7Cfzw9nSQ
-	 K3tyrSAYUqGV2vp3jALusUBwt8fqAi6J+2p6EhJA=
-Message-ID: <7ac558fd-1081-456b-b997-c7321241cf8c@arm.com>
-Date: Mon, 6 Jul 2026 16:24:53 +0530
+	t=1783335421;
+	b=YD9thvTsI5C+1VS1eh3tMg0hdf0ZryGh7Z9Cnk0JkgbWBBrs6MQ/oSu2T+6wL3MpKsdBxx
+	rqmSi6jClFrgycz0hln9Zl2net4zAgbmZf6jy74sB+caQ/1ah/cukt38xpxIOtRyV3TN3r
+	oI5tFneIWZDKZyZX1uBdqq9OpKKrwfs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CBF7A600DA;
+	Mon,  6 Jul 2026 10:57:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E061F000E9;
+	Mon,  6 Jul 2026 10:56:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783335420;
+	bh=9TtrHnv/qi4lGfcA8XXpkBAbAwnFcDJBMSEy+F8GNE4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=V8agmxFZj4+EhkprkJmhAyZXVvYWq4x2s9TtPvI+aPJ8hGRyPxKHBvIoSKehw29Da
+	 1ANy+GCrq2yTMvNHJ0c4MOFTIAChl8fN7PvEpo9iUlCNqtmwUvdSFRSwMB1ubc/nQj
+	 7Kl5KyOlqrk9FTmRVfFFJN1F29moAA+DqFyI0hUZHBtIE1Sqm7pIXa3aju8hzvzEzN
+	 yz3HU/aqF5kI22n3IWq4tF5c80AmHLNdEy4keV+b962CnuvzXWIYldJkYxyFdhkEZI
+	 SPNGHbDXhKh0KHIRsX8Q90irOU45Ew10VuKnzCwgDhU1gvkCqY79zdIrqvMz9lqWfG
+	 nl7hGW6N+VV5A==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B08FEF40068;
+	Mon,  6 Jul 2026 06:56:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 06 Jul 2026 06:56:58 -0400
+X-ME-Sender: <xms:-olLat-EzM_LJwbXNIQ8m56H0bVx9T6l27AEua0Yr2b4oHBccVmH5g>
+    <xme:-olLavV3vjXB-MrU1kPh94pWGUZC8oDxWnWecG0IDU6ewpN5OCz3lisE7yWX6X69I
+    B8gNQwswO-9iSguLvYfUnSD4wMqTuQ3gjH6G7-pzTVOj996tqTjpGQ0>
+X-ME-Received: <xmr:-olLagn3MWU5IvT919tfLF_S7hWKq6sYItMIdnVuDOnEgecUgbBYerrQTpAMLA>
+X-ME-Proxy-Cause: dmFkZTG3EYxLj0L6vaHvG/JQokkQgmlapkgHi3g9IW9kfpTZuouF9wXLqvehvlO32VWfHa
+    duqkk97Xe0HKhXsKxrdHqqNxki8kTptiLONgzXROpKLThcjWTWcvktV3WT6NtElSrQ5L7P
+    JC+8p1nEl3HCpzViXlrhmV7vSWrcMtCeweeEKVIc0uVTWaL3+3LvWgTvlFqEkSG644EqaC
+    oqD3l16HhA91FHOyL7u55F+RtRGyI/+KZDctCzRTvb3v0JOvk8HJd7JFhUMAqaGDdiiTjG
+    VJjpfx1J1Owby6wkIkTfqdvO8SvfXk1POhBv4co9Qvufd9gwLSR2FgcbkoO8MgsA+1wnBo
+    tz1w0KLGYpnTvNPu2XdlVEYx5zQx2A5k+0L9Vu5OB7grOD46Efooqb9DRDr5hGTPgX7rqR
+    9a/DHNcPYA9z16Dok0ztAUvgOMFTW1aqy4hiJ440P6na09coYDUsMlVHK58n8lwLiIrFms
+    03p/Vv56bjGS9mOT9oO5JqsJBQ1HDQqo7av2kSyyD+W52JyHMwVlTNRuzzaPHBRR4Izdfb
+    C1bOzI0y5MFPEfrRJO0l/gMpuuAAjgxbxNJcFyv/wUIaY/JXRGzw91DPBuh2Q+GlDKB45h
+    hznAG9RxPe5JbMCwi9l3NRVHBeAdUiLbY8Hxn33k9Z4QOJeGslOFTfzTA5wg
+X-ME-Proxy: <xmx:-olLalFYYTvofYxEUV4s9LShIBvRseh4RZY3l3XwbNim4X8QP7C_-g>
+    <xmx:-olLahSww4oFsZkGr0J7Efk-r06k42NJ3jQWsjf9L9DHyvqQtMfM2Q>
+    <xmx:-olLasQMu1HWGipJb8c6Gu-6oG-UxEDrU3Z9jjsolCTTatjkCCsuJA>
+    <xmx:-olLavcV5UuOm9YI0rEV1Yr6GswCbsa_IihLc5PiVHsX102z7qRLDA>
+    <xmx:-olLarBWU9ljjQU2yd1LTse5SOgGNCYTBY51sYKZ4RD3uRE-duKlpfv_>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 6 Jul 2026 06:56:58 -0400 (EDT)
+Date: Mon, 6 Jul 2026 11:56:57 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org
+Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com
+Subject: Addressing Sashiko AI review
+Message-ID: <akuJmbUgGRtjksPr@thinkstation>
+References: <20260706084805.8400-1-kirill@shutemov.name>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
- addresses
-From: Dev Jain <dev.jain@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
- liam@infradead.org, riel@surriel.com, vbabka@kernel.org, harry@kernel.org,
- jannh@google.com, lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, apopple@nvidia.com, rcampbell@nvidia.com,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, ak@linux.intel.com, nao.horiguchi@gmail.com,
- mel@csn.ul.ie, j-nomura@ce.jp.nec.com, pfalcato@suse.de, tglx@kernel.org,
- dave.hansen@intel.com, jpoimboe@kernel.org, catalin.marinas@arm.com,
- will@kernel.org, linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260703114202.365553-1-dev.jain@arm.com>
- <20260703114202.365553-2-dev.jain@arm.com>
- <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
- <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
- <4b4e8007-3747-457a-85cc-d1003e1c8fe2@kernel.org>
- <39a13445-dc6f-4a75-92b8-f4a122c63b89@arm.com>
-Content-Language: en-US
-In-Reply-To: <39a13445-dc6f-4a75-92b8-f4a122c63b89@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260706084805.8400-1-kirill@shutemov.name>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7138B120007
-X-Stat-Signature: ujnn3hs3cnk8xj1cp7tdza6jxsig4y68
-X-HE-Tag: 1783335307-242226
-X-HE-Meta: U2FsdGVkX18JI0dQjOC7UTzeHOZfryBHgpEaQ14gZmQeXMLQ9ag+mAR4KWyaU0CU3ziONv4kcdr8ePOjHs/tG3Pchb23mNVa0wOmdyL9G4vzEpeIDctWgmiodcqbaeXp5yO0CYi8CJPn/47fFYXdc6GkuPXSSNplOjCMhBe0OaMEJs8FaPDB8amw2804dfLbnjmV6RW3b6dIl99/N1XBtnhrwKkeZpWCZZi/8YqmQokvt1i79V1LCsSOFokbmBxt3eC4RJsHCCxhLxsbNxVZmMIpSZPym3pn8pSzCYdPyepc+0n8Rf9sazJJ6kACzis0Zml1onjMTqtUscodn5Gy2yPSUpdhpWg3YIkmOS9SEUlf0DKyxHdO1dp3jLwozR28sIFOZvjM1BPB4zXWdmoVX4hC5xkL5QWZl4lPNogUY1BxRS0CD7gTFIVP8UGviBGfCyKlJQ7k6rUPgoK1dx9RGvjqdSh3HpaL1bPDuZ9HWG9aPXq0dVeo399p4TVQp4a2SkJZnx2Xz6/6t4nOYTCk8wC2iltZQVP6l+xTeIHoq+MvIJPul2uyQ2M3CTowK6bJDaxYFTpQHgmt9CjQm9UvlOKh0KJG9DIqEBmjVC3hDRZt5n52+aEHwF8+32abcebEa64N04Iz68bxhXAnIXuPAkJLFBX6SVZQ3W9ORNfuK8sNyswJIBJjJeL9QU3aikDxW1a4e5//Mg9ZbTqekLVArxqiGIh86LMxX3rGnqG6z+q5NSLIQfLrCyYqy/8x59VbToTq8pgqz5rGq+0FOd5JkqSWXYqwNCqvKgTbAXugvUvG4fyrdK3P6gexw3gu904qzYfwfuCFNXwiI9WH67OzaJ/TqHGyb4KbEZF42u7sei0Gtydv0vj8KCHDegqiAeMyZg3F4Fv4Xj0s9ORSphLLW4I2Bf8QhJPsOjeYU0BIal2R+nzlyYNu3f7vlQIEvKoseZOucJUm8XBmpbLDofF
- ibdw9kxb
- zebZYwXWreWXPpewV/n4dUnx8TgDVaxtUgqI1Jdc7CRPaT8ILNfp1FVm+aYEd/L7pRKnGuEec8hzzRgkp0tZgF7oSqOS+B++K8b4an8XnKcCw5pxvYXFe4jcjqOEMI6h6m17auSfpJPFFdA6PsQ16I0isETO5y61GA7BCZqX8EqYQiCM9+tXpNPEC03+IlIWV7qqIfNnRQFeDO2rMvbJJuwfntHpuXzw55WnqOUo3BA/hxXMoX6FfAx+3CUVKFLWAupZ5b9SjkXBxDr4tNqTqRqOMlHpNeO21eX3dTk6R16GcT0buYCsISdI18REooAw+isQ32b0pg/GPs8d6IvN0Lmk73/MNeK+SWgkO65kW3aX4wixfEmGnzWql1qd7lBW35vRgjNLdTHAvUrChC3QsnPanHyQbrDpuvQRGLdCdkcavft0NHHZOMbXNG7ZDv+QG3ete
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5E0C3C0005
+X-Stat-Signature: tgxp4kg8e1p6f5wttztyty5h8xzk459b
+X-HE-Tag: 1783335421-917416
+X-HE-Meta: U2FsdGVkX1/4lT7zW9ZTUHlEY41zzv17Pc+AMhTYGoQhmvoA/wD88DfBNLNC+I50jp4I5R/cmelaydY8xhM7s960OGNOcLjnupzN5VCEbEmnYcnplbp7xtiXycv9pwghkX43aWCwaPcm74IhvtJOJJyGdZ7mdWTvEg/gJyMBkwwpdr5+w/VoxkbkOdlj3ez8NkkJyuV2ghFhIIbcVuIzfi7jAlyeEulZz8UeMtegZcN6so8qTIB6VIpn1G4mjofBLCaXI4AxD4k1GyC0KWIdNSUA+P4MB8SuZYl3n4w4UGKB9QImIiy1QY99RMHnw20q96Yn7BS1b1itKiM6lal4BxctssDXEBD6ljozAublEZ8svQbpaJiB5n/CEgvtMTFhLYBh8/dp+4LnKCkJjeMHe3zn/ynVMsHLLW4aCXNLgcaTLYHf6vffMaywYaq/83QhYj4dalQjMJw4qIHDbmIAZArbTMVIuaPcD1zQUKM8S2e1RcE2bzDVvV7uecR58ZAN56r9HdbQzY/VwH8aKi6xORSxUrd1bssoKy1+Z/74UYszQ9sJ6qVlXPTO1BgpSQaCz9Ihr3OOOsw9UzBEghz5zn1jjeT1yFMLTaq8SkwKCBsbNjHVtty5H73Xyp7T6YfeMeGSo5dOrajVs5g+uAlQQ3IED/7KFnTjy2KB4QwCRc9uX4vuKWehPIZm6z373eFHd2wgZrBb8l/PAfyviT7fjtJegtouTVmoPIUck/lWdFc2inxgNJXCW1VBqpHsnWLnkhNoZBN7FUtp4BWAhl6bJl82uH/oPhITyfuVIREShmIx9p2zjDyp9QfgsPDSwpLHJ48gUsehi5/BK5G4ssTlFpKrBeg9m33Q0F2LnzO73XEljXQN7WYwqC+vgLZOEWnior+TWTr286i29m9cuXlVRI0yqlJKalgiEe3ZCIRyuh3HuWzw0a1f2kG66DWYS9myfki+V0cpwjLp1KoD9AW
+ oAFopaQM
+ UjrVlYTc8iOkjZelYKRxydf2aBQAoyp7MPHdNH4Kr/IbZrByjhyGFYi1+m4tNLg4lyPGerEC84M9IPh2s01hIfwnEFJnyAo9Hje8mNG0GbZZUgqQsbGmfLhwOTsRWiJhXeaEMgRoE+ov1CT0YzmL5T4rQVl8rDh2Ua71unQaW23VD6yDqz4TFmpOzibq0ejtY2UU2PndgHEYoqYvwnP9MXLz/ahwiAZ005kDlulD4dLKF056gL5yJfdhfr7MVLNlZIkT/VbHsuzcg0IJNcOh4f9dwOMPYJu4T8epwJFkRWylvpgKHG1jdcrYRczUGqjDL/NoUdfENUeOmilUZOn6/bDFoWK4UbhfU+RMx9Tt0ak3oWyiU/gw+XJOykA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,70 +122,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
 
+I went through the Sashiko review of v9. Only one (test-only) patch
+needed changes; sent as v9.1 of 14/15 in this thread:
 
-On 06/07/26 4:22 pm, Dev Jain wrote:
-> 
-> 
-> On 06/07/26 2:15 pm, David Hildenbrand (Arm) wrote:
->> On 7/5/26 10:08, Dev Jain wrote:
->>>
->>>
->>> On 05/07/26 1:05 pm, Andrew Morton wrote:
->>>> On Fri,  3 Jul 2026 11:41:54 +0000 Dev Jain <dev.jain@arm.com> wrote:
->>>>
->>>>> huge_ptep_get() can be handed a virtual address pointing to the middle of
->>>>> a contpmd/contpte mapped hugetlb folio (examples of callers are
->>>>> pagemap_hugetlb_range, page_mapped_in_vma).
->>>>>
->>>>> The arm64 helper rewalks the pgtables in find_num_contig to answer whether
->>>>> the huge pte we have maps a contpmd or a contpte hugetlb folio, and
->>>>> returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over the
->>>>> contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
->>>>> if the addr is not aligned.
->>>>>
->>>>> Fix this by aligning the pmdp pointer down to a contpmd base before
->>>>> checking equality with the passed huge pte pointer, to correctly answer
->>>>> whether the huge pte is the base of a contpmd block.
->>>>>
->>>>> Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery mechanisms")
->>>>> Cc: stable@vger.kernel.org
->>>>
->>>> Please describe the userspace-visible effects of bugs when fixing them.
->>>> Particularly when cc:stable is proposed.  Thanks.
->>>
->>> Forgot for this one. It should be, on systems where CONT_PTES != CONT_PMDS
->>> (meaning page size is 16K) we could collect excess a/d bit state, meaning
->>> extra work for the kernel.
->>
->> Even worse, right? We could walk 128 entries, when we really should just walk 16
->> (IIRC) entries, possibly reading garbage or even worse, into a memory hole at
->> the end of memory?
-> 
-> Hmm I was thinking that the checks pte_dirty() and pte_young() wouldn't care whether
-> the pte is garbage. But, we could actually dereference a ptep pointer not having
-> backing memory at all.
-> 
-> Does the following sound good?
-> 
-> "On systems where CONT_PTES != CONT_PMDS (meaning page size is 16K), we could collect
-> excess a/d bit state, meaning extra work for the kernel. Even worse, we may iterate
-> beyond the PTE table and dereference a garbage ptep pointer to access physical
-> memory we don't own. Since the ptep pointer is a linear map address, we may run off
-> the end of the linear map, dereference a VA not mapped into the kernel pgtables and
-> cause kernel panic."
-> 
-> Although I checked on arm64, there is no case in which there is a hole after the
-> linear map, but still that assumption shouldn't be made.
+  https://lore.kernel.org/all/20260706104906.36084-1-kirill@shutemov.name/
 
-Oh but we could access a linear map address which corresponds to a DRAM hole, meaning
-there is no entry in the kernel pgtable.
+  - Tolerate EINVAL from madvise(MADV_NOHUGEPAGE) so the suite does not
+    abort on CONFIG_TRANSPARENT_HUGEPAGE=n.
+  - rwp-mprotect and rwp-fork-pin now assert the marker survived
+    (PM_UFFD_WP) before the access that auto-resolves it, so a kernel
+    that dropped the marker fails instead of passing vacuously.
 
+The finding against 11/15 is a pre-existing PAGEMAP_SCAN inconsistency,
+unrelated to RWP: an unpopulated pte is reported written by the
+PAGE_IS_WRITTEN fast path but not by the generic path. Confirmed
+reproducible; fixed separately with Fixes:/stable:
 
-> 
-> 
->>
-> 
-> 
+  https://lore.kernel.org/all/20260706104308.34741-1-kirill@shutemov.name/
 
+The rest I assessed as false positives:
+
+  - 07/15, move_pages_huge_pmd() corrupting a non-present PMD: a
+    non-present source bails (-EAGAIN/-ENOENT) before the RWP re-arm,
+    and the post-lock pmd_same() recheck rejects races -- the re-arm
+    only runs on a present PMD.
+  - 07/15, UFFDIO_MOVE re-arming RWP "destroys resolved state": this is
+    intended. A MOVE-installed page starts tracked; the next guest
+    access is the working-set event we want (async auto-resolves it).
+  - 10/15, hugetlb stale-marker livelock after UFFDIO_UNREGISTER:
+    markers are cleared on unregister and on release via
+    change_protection(MM_CP_UFFD_RWP_RESOLVE); the rwp-close tests
+    exercise this on hugetlb.
+  - 13/15, check_stable_address_space() before the VMA walk in
+    UFFDIO_SET_MODE: the ioctl holds mmget_not_zero() + mmap_write_lock
+    and only takes per-VMA locks, and a ctx on a failed-fork mm is
+    never published to userspace.
+
+The 09/15 findings (userfaultfd_clear_vma() touching ptes before
+vma_start_write(), the partial-unregister OOM rollback, and UFFDIO_MOVE
+dropping uffd-wp markers) are pre-existing and left as-is; pte-level
+access there is serialised by the pte lock.
+
+Ping me if any of these assessments seems off.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
