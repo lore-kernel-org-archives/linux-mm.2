@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13054C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:20:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 501A1C44500
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:20:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 767DD6B00EA; Mon,  6 Jul 2026 10:19:28 -0400 (EDT)
+	id F20D66B00EC; Mon,  6 Jul 2026 10:19:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 715F36B00EB; Mon,  6 Jul 2026 10:19:28 -0400 (EDT)
+	id E6BB06B00EF; Mon,  6 Jul 2026 10:19:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62E766B00EC; Mon,  6 Jul 2026 10:19:28 -0400 (EDT)
+	id D82CE6B00EE; Mon,  6 Jul 2026 10:19:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D0B56B00EA
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:19:28 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BDC2F168B59
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AD6D66B00EB
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:19:29 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34D171403F2
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:19:29 +0000 (UTC)
+X-FDA: 84958559658.14.055E55A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 75BF71A0009
 	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:19:27 +0000 (UTC)
-X-FDA: 84958559574.06.7559ED8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2FB73180002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:19:26 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A4/Yu1xa";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783347566;
-	b=NVJaI34hnajD+LJ/CSNqfyRMJRiyo9gIadYwlbUWuRvhX/g281nTqEChGroYcARHARWJs+
-	rFmYYaq6qTMkNNT752mpE/K6dHgKgtExuq29zqr60hhfCmmMFhmJtdqSQvTQ5O84AO5akM
-	3UQQELGubYVmjGsBLB83OcNrYJWOsxE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A4/Yu1xa";
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lm4hX+hF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783347566;
+	s=arc-20220608; t=1783347567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8LCoQX0bHg1OYdjWEvzo4RN1ftxPbEZ5h4yD4yU742Y=;
-	b=xnPLZZNbOo5VqkUajG60Fiy9/9ZTET5ZnCDlnyEj60kNejeL9P+I6mtL5ZrvTVYTiniGiK
-	ybkPsYEC8/R1RcXX3Ook70zNoA5IAo43tkl4NpV3ql2GYwBXZP2UEoeZcgcc/kOiavpVou
-	AhZinq75XNgmAubqFsoySLHj188swd0=
+	bh=CCjb58wtAAk5F9PdDMQvKlFN0DE7q9fXquVywqvC5OU=;
+	b=QvgsnKu6SMsgfB4MzxOYhz6f4QpjF5dxhLzDXUiuBZ6/aEuUxyVp9fh3D+Djqevuo+HEhL
+	TRwS3jS6eh89xnLwaOISxygmj0/AuUEsLlB2/fxHOlepg9+7ODDgJ+sJfDGmS2H+5BYfJo
+	fk/HprzTLjbpK+E/ncGkEY1VC1G2PD8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lm4hX+hF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783347567;
+	b=Z0Pntyepoewe2q+sTweEGF8ZLF81LdpGp0N57q87VTa3p0eK9j8rB7vvcZbgWC+YVIDuh9
+	7XeCd1Nk4g66E2t/qs07y8thbhskhMEzIRqXPgP/OLwXCMw3zgeJYFUJ0r80uBlYHoyn7D
+	IGLTRHsJHLc3DxOlP86+QFHa0R9tgQg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 042D76138D;
+	by sea.source.kernel.org (Postfix) with ESMTP id C6B0843B7A;
 	Mon,  6 Jul 2026 14:19:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2371F00A3D;
-	Mon,  6 Jul 2026 14:19:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84BD1F00A3A;
+	Mon,  6 Jul 2026 14:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783347565;
-	bh=8LCoQX0bHg1OYdjWEvzo4RN1ftxPbEZ5h4yD4yU742Y=;
+	s=k20260515; t=1783347566;
+	bh=CCjb58wtAAk5F9PdDMQvKlFN0DE7q9fXquVywqvC5OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=A4/Yu1xazNWRvU2HtJFDKJuoxFxspbxkBVePK0mvBDXbfSPpQ6ReFMeI4NJh4L96G
-	 SBZ+69qPfHZvsTAgH2OaEA7C8K6vAWvD5QKO8w96jdv0YdwgGncF3misB+kQ0IvsCW
-	 I9ukCWIWBzR0cICQW2ImK+6WuIp0XOPZMMHWgqlm1QASPj6uZYC5LEoDfC2LtqmjtU
-	 jU0LVNj28xlDvokL+xr2WsFaE1Ow5igeIhr0P/WMkp9oxLlyLPs61GfGF8Lcnx+QNu
-	 pX0dHxP14KhRqau0KAuHWu4hn6o3Z98V9RMOR3MQGbYSJF6A3QZL4DPxY/OLiQO3bw
-	 2+HLdu4Z8Ad6Q==
+	b=Lm4hX+hFLr38lYbg6+XhcImzMV1O0hlt1CbIUpGHgH8VwWJTsR2gnKJJ3H3SuPCNZ
+	 7sWSKbFX4eOcqr7MXaCaPs+8x9WU/MSFbqSwQNO0GIF5bb7Hkr5/gJsqMgbPsu2rDJ
+	 zale2tZLkRpca6Qcz8sDSvW6WhnqNMMAlmNPaTLOcMiLvFVbPpKnMMitiRifFmBN9v
+	 A4SSdyGWUKiCIkjXn9/TmxCwrsJt2dRLrY5CZl47wnhCTHhgPjXA98owH71SAcvkI0
+	 xarSFfJR18Gdh4/LNWWR7AebI4p4QRK7BdUTMiKOB7b0EeEM8al+VcYM6dldy8ZlRw
+	 UWf2irVGsbFWA==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -80,22 +81,23 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 14/16] Docs/mm/damon/design: document attrs-only monitoring
-Date: Mon,  6 Jul 2026 07:19:08 -0700
-Message-ID: <20260706141912.88445-15-sj@kernel.org>
+Subject: [RFC PATCH v1.1 15/16] Docs/admin-guide/mm/damon/usage: document weight sysfs file
+Date: Mon,  6 Jul 2026 07:19:09 -0700
+Message-ID: <20260706141912.88445-16-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260706141912.88445-1-sj@kernel.org>
 References: <20260706141912.88445-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 75BF71A0009
+X-Stat-Signature: pb6gsz3eshp7go7hz9zxfqgwxey36zg5
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2FB73180002
-X-Stat-Signature: k6us489irdorgqxoa8rbyyfuyanpcbt6
-X-HE-Tag: 1783347566-850791
-X-HE-Meta: U2FsdGVkX19FJtBFKy/BIxZZwbmWii2GlPlicTy9UYErTf1mWNTvnxfuH5qbE96ZGD2VbPmVDrnkX0E5LnBWVEYqLtRGoG1ZSzuG6jky2J+w/ypvZw0JVP9fFfwdddqfRfxUiLusqwhUiFpFMF6tP8y3I1gPyUcLUJNblzkE9nBHL6WxdhOzRP9SrsftUD109fTEhIr1QUWd6KlSgv6vtHsYFQzwvXSDTXlzb3jYlGXvB8AV80B7HPUaA7IMRasqHE25PYZU3XQhBCG8beNhDuu8Ln/ed8CtWsvazOR0H8ciA39tRw2K06C7cy8N342GHSCoo/E0CTmx4JNIHBJtYR+ufZuWgB8fNrhJg9FkNTb1yNZgJ552nmQFONE5jXu/A3zJPbuGkXc8ROil1rtrf0PyVRwl7cCLVA3Kx8wYLUVdJZjI7bXPQOOjvu5rJkrCxOONrxZ0IyzYXtFrznaHYb09hORKZhJubQtuvy5JR40lpk5AwAEZCreKepI1Nb9H32nceRuRUXqeFmA07RySzWoFmUatQJQw6n0lWl+uv/+VCZ3RFkshKF6dleUpUIX1ArVfJx2HagNZmb7nlTyJWqj21S1DMIvv1ot7RGxQ112XH2yEcmFvcYrHNKwfSHG3uw8efSOvO3deFGpnrrQU6urDCLBfzS9m0pmj+vYv2XPdPVGkF5KEm9hJDEPh9EFgbGG/ZyuadYqFvZlKW2G9DTBb4Eavt+ko0KjNp4xi3g9RWpfQ2aDdZIheKtdVxdtmqSVrimwmBjwrtAgNUAsNHeZbY/4XLzpJrv+ZFeVxnNvkBzt2Kj7X1UXUFSFyYoNPKgmAO63/9crTe38xgz/OPcP44err9zexPwhjlYbHx1FFqMrUtvKbmDkjqtE0fGhgadR9uAVoLO5/KEDkYxkzxYu/w9+5tEqx5m+y44yI7Qi4nuJU8UMpAgb89lgeyKRUV/5Pm5xvXHe0ibRgOya
- Mx6eYbiu
- 7do634+ocGDnSDCmWQ+/Fr3FYtHrU66BQvAMSWIqsorIBWJS+H28cGZ3q5SEcv4vlQbnrukQMkdlfD4NWvjqM3fxLH8IrKRL6P8Eq9L7sfa6NWSZN3bFfAe74XNp9qd2+9TMv5byO/xNCgj/jShCV+D3dGxSOjBdM69egzoyw/WQeSI+AnFi0OS+VSaRvZV1DSknSxHIcbayXXRjlQ1N+mzCVP75h8K+SSr641KgOzHAQeNb8T2+JrwrepZEPveHqtYnyrWwNKbwJDc0=
+X-HE-Tag: 1783347567-155232
+X-HE-Meta: U2FsdGVkX18NHfqx6uZDShpRGospDIIETIf6OQ02nGnVZNhS6ULmvS+U/QY+Va3s1imxcCIlzIAAEX7Zf6RUocg2UWsMAVXn1qVzqPMPmNf99VxtKWw+l42ydo60nviotYf7hjhNpWu7Hubtrs8ulW3dMYGy+7fcnUUIS9nYT3GlJvGscdsLL6cTW6iZn3urzhEQ+sI1JOjfvra6ClODDnxxOemU94m20N+apuHEC2w3E7ZYOX62/vdHtlqrd35+A0u8KEXBe9OjkFON7PIcg3avag1MN66+//YX+KK5PsuO3Gpq6BGpfx6f2jEAXUn5cImYtEpGFPWk6SFuFfMSuFtq1NkjCS/6UJ3x8QOvb/+sMmf/SWH0p9a8J/CYWImlPSj3D05164h/tC27lCiWYaVtcDJQsZcGxozgw1hL0R7fNF6yNi4EslAZK79wzNy9g/gU9FAfAWf/A9+7HCX51Bp8o9m36+GWrKtb2JFJBbzEiDvm+aYvanXRbBnJDlCqACEfWsuDnwcVsprQjwItZOwV+synoidQ0u3TVrNMikryZDN8Xe2IAa4yKgOmQ/OcDkOEZ/ObiT4wmfyTY173Jp4Iwix56/K7pHB3Q4dH9DXd2jnh6kyPXDvTQJdIlUnJj4uwyspUgpozFiPeWTdG/dCiPmd+mbEilPAuzrRodP8TIXErMwaJghLEahDUg4maU2MYWyuKLKfU7dinw96hB0roKR2OnobyprP11Vzdusi3YBzbhwjgp10OmhKRazj4hVXjzvrIJbOw+1oPDQExV5E10ZGczRldUiuqQa0b4sJJZH9vYtBZksfmBbQfOh1KBTzwmdUkKm7AosuFBVzsvFUMvImkFiEUQ4FjqTHs7ifPjIMYswpd+NGZCx30X/pYwhESpJ+ndzTU17xe4saj2auUmf3fAAN9LJd/nDZgWnYrnmMMnlCZJEc84JDkHs8shjGPS1eIapwCPEmjhwc
+ Q6gT8Pob
+ Yy9bxd+uezEcvU61QIJX5wFztcn4a6YjcZLUHYa16Y6N8KsbTu7wiGlzjcrpUNFbNYe+f4geUHF+IQnVfkPTD6hxdlEkoDEl50R4VEunrYEKnCJERqkk/alH1XlJ25LdXt1jw6nnPUURl08TwJ5RYN3W1kIhgHwbvqjM3AZ0taMWJpZ2EflLGWboDCVHFneuQY8QNMqKqh4823U/Qibvcw165ijSLNG+v+i+IIlEGZhhBiE73u5uVQtVgcSdJ8jmStTFKiOdOl73Xd4IvV9jjYt6a0HVs1o5ALThTOxJgcbj2w8wZPA33mID/Yg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,40 +105,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON design document for the attributes only monitoring mode.
+Update DAMON usage document for newly added probe weight file.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- Documentation/mm/damon/design.rst | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ Documentation/admin-guide/mm/damon/usage.rst | 11 ++++++++---
+ Documentation/mm/damon/design.rst            |  5 +++++
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index b2649ea011f93..da5f9afd08aef 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -73,9 +73,10 @@ comma (",").
+     │ │ │ │ │ │ │ intervals_goal/access_bp,aggrs,min_sample_us,max_sample_us
+     │ │ │ │ │ │ nr_regions/min,max
+     │ │ │ │ │ │ :ref:`probes <damon_usage_sysfs_probes>`/nr_probes
+-    │ │ │ │ │ │ │ 0/filters/nr_filters
+-    │ │ │ │ │ │ │ │ 0/type,matching,allow,path
+-    │ │ │ │ │ │ │ │ ...
++    │ │ │ │ │ │ │ 0/weight
++    │ │ │ │ │ │ │ │ filters/nr_filters
++    │ │ │ │ │ │ │ │ │ 0/type,matching,allow,path
++    │ │ │ │ │ │ │ │ │ ...
+     │ │ │ │ │ │ │ ...
+     │ │ │ │ │ :ref:`targets <sysfs_targets>`/nr_targets
+     │ │ │ │ │ │ :ref:`0 <sysfs_target>`/pid_target,obsolete_target
+@@ -286,6 +287,10 @@ In each probe directory, one directory, ``filters`` exists.  The directory
+ contains files for installing filters for the probe, that is used to determine
+ the data attribute for the probe.
+ 
++Each probe directory also contains ``weight`` file.  Reading from and writing
++to the file gets and sets the :ref:`attributes-only monitoring
++<damon_design_attrs_only_monitoring>` weight for the attribute of the probe.
++
+ In the beginning, ``filters`` directory has only one file, ``nr_filters``.
+ Writing a number (``N``) to the file creates the number of child directories
+ named ``0`` to ``N-1``.  Each directory represents each filter and works in a
 diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 457d6e8bc7878..6d79e7d69be84 100644
+index 6d79e7d69be84..aed6cb1cf4831 100644
 --- a/Documentation/mm/damon/design.rst
 +++ b/Documentation/mm/damon/design.rst
-@@ -316,6 +316,26 @@ Another way to do this for higher accuracy is using :ref:`DAMOS filter
+@@ -316,6 +316,8 @@ Another way to do this for higher accuracy is using :ref:`DAMOS filter
  information in page level.  But, because it is operated in page level, the
  overhead is proportional to the size of the memory.
  
-+Data Attributes-only Monitoring
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++.. _damon_design_attrs_only_monitoring:
 +
-+Data access is the primary monitoring information for DAMON.  Hence it
-+:ref:`adjusts <damon_design_data_attrs_monitoring>` regions using the access
-+:ref:`counter <damon_design_region_based_sampling>` (``nr_accesses``).  In some
-+use cases, however, users may want some of :ref:`attributes
-+<damon_design_data_attrs_monitoring>` to be the primary information.
-+
-+Data attributes-only monitoring mode supports this use case.  For the mode,
-+each attribute probe has their priority weight value.  Users can describe by
-+what combination of the attributes the primary information is decided, by
-+setting the priority weight value.  If the total sum of the weights is not
-+zero, the mode is enabled.  The regions adjustment mechanism uses the weighted
-+sum of the :ref:`probe hit counts <damon_design_data_attrs_monitoring>` instead
-+of ``nr_accesses`` in the case.  When the mode is enabled, access monitoring is
-+automatically turned off.  The access counter (``nr_accesses``) will always be
-+zero and not updated.  Hence the mode is called Data Attributes "only"
-+monitoring.
+ Data Attributes-only Monitoring
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+@@ -336,6 +338,9 @@ automatically turned off.  The access counter (``nr_accesses``) will always be
+ zero and not updated.  Hence the mode is called Data Attributes "only"
+ monitoring.
+ 
++Refer to the :ref:`admin guide <damon_usage_sysfs_probes>` to know how users
++can use the mode.
 +
  Dynamic Target Space Updates Handling
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
