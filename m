@@ -4,88 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04323C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 07:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE8A1C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:12:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E13826B00DA; Mon,  6 Jul 2026 03:46:02 -0400 (EDT)
+	id 93B1A6B00C8; Mon,  6 Jul 2026 04:12:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEB1A6B00DB; Mon,  6 Jul 2026 03:46:02 -0400 (EDT)
+	id 8EBB96B00C9; Mon,  6 Jul 2026 04:12:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D031F6B00E6; Mon,  6 Jul 2026 03:46:02 -0400 (EDT)
+	id 7B38B6B00CB; Mon,  6 Jul 2026 04:12:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A7A076B00DA
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 03:46:02 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 220EAC1A25
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:46:02 +0000 (UTC)
-X-FDA: 84957568164.02.B41DA9B
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0B463180004
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 07:45:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dTdvR0Ty;
-	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783323960;
-	b=vN0ooZ/r442yqimxsREEDzwzeOZyvkZQxN4gH9dFlseHlRszH1rYQUQtyT17oNr4XhCOeZ
-	MKsIompi8FGVHB84bLFzYoCmwL6Y/3V2T94Ap+tDyt3ri/5kzht/3qPsHxnUYLAFMBXUs8
-	6ZwJH3qee/S1HJn1ouHHBs/9x0AlYc0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dTdvR0Ty;
-	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D1596B00C8
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:12:27 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C99E2120349
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:12:26 +0000 (UTC)
+X-FDA: 84957634692.27.B53C379
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 26F0CA000B
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:12:25 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="I/Wy0pxw";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of 3Z2NLagoKCLQlcWbUlXsWWaiiafY.Wigfchor-ggepUWe.ila@flex--richardycc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3Z2NLagoKCLQlcWbUlXsWWaiiafY.Wigfchor-ggepUWe.ila@flex--richardycc.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783323960;
+	s=arc-20220608; t=1783325545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/z6wV3oJTOVm+St0XwYa3g9dR2I+dcMz7cR6ea5u0LE=;
-	b=qWMxQQhX2A9CL7s8hPvJd9AQhzhWXyT6VX+ytSl/euEH4wMJg4rkmGCYm9uaNGTXaLe1dD
-	PYsi7vsRK+5BoETKNXbsWRQxn5uSkSJRaVC8pl5V8nGtmsfZUJgO/MrJ+vpKU9q7xWJ21T
-	XOBrYoc8KqMLYlHeBuorhZzsGWrTHAQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1783323951; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=/z6wV3oJTOVm+St0XwYa3g9dR2I+dcMz7cR6ea5u0LE=;
- b=dTdvR0TyV0l782HOvbS5Rxs5l31ff73b+/mteCRsgiZLLBmDc1UwDTDHhLg7TF37RmFFbT
- A3p7OXLNnuPBVMfiytFMH0hv1Hg+9cDUl8Xjf3J5SLIDyQYU6TV5Brsl/VyGwRpWZz5d7V
- a5GO4buKYG6P2lwBOY0/HEs14IenDMx4VQjkBEkFuESxN4Tl09wwz9vLCFGeSfAWwZk2Yw
- 0rDtGl2+eaCkgVF1uJmJla0D9avSWrdAE7aZ8MBuOjss6cwjN+W16t4RVM5GiS6Q/R6KkF
- ournOd4jO7u8YaUq/H/y/FYZaXYkFL0d9lbSOHgLx6ZZElI0WBfp7WYHx//xZg==
-Subject: Re: [PATCH v5 4/8] mm: add a template-based fast path for zone-device page init
-Date: Mon,  6 Jul 2026 15:45:27 +0800
-To: <rppt@kernel.org>
-Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <david@kernel.org>, 
-	<kees@kernel.org>, <linux-arch@vger.kernel.org>, 
-	<linux-hardening@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, <lizhe.67@bytedance.com>, <mingo@redhat.com>, 
-	<tglx@kernel.org>, <x86@kernel.org>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YTUcwDBT/FSZkcadsKiSFZz3W4ZAzpY+Pf+uj15ZIZg=;
+	b=pQ0WM6AHFFVQEy4vKmM+U5xs2NHqR69zvqhoj65YM38bGXRVMB1OdfAxNXw/kNwUbSYzK0
+	7jFO7VHVmV9mNRwTx/kXQUYrq49cicpbb8wZavd4Cp0nTNEu65iRjTla2YwZYsdbzNvT6B
+	w6wcKNGbrbIP85U/FHWYAsHJrXczgmM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="I/Wy0pxw";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf15.hostedemail.com: domain of 3Z2NLagoKCLQlcWbUlXsWWaiiafY.Wigfchor-ggepUWe.ila@flex--richardycc.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3Z2NLagoKCLQlcWbUlXsWWaiiafY.Wigfchor-ggepUWe.ila@flex--richardycc.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783325545;
+	b=EkjyQmSWIkmJAGFtdqHP9K0C7ylmBh30HLr2txPm19Ch/5D6YoHRdooxEE6SfekLX0BdUS
+	4w6+QpEQMPDZ+MqOupERakukypCaB+YRZOV7py4zJVd67CkczCTK9Laky9y8x7G2QNg19O
+	w2jJaPiHpbbd4loBoNnAX+sxkOzuNqo=
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c894391f000so6923740a12.1
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 01:12:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783325544; x=1783930344; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YTUcwDBT/FSZkcadsKiSFZz3W4ZAzpY+Pf+uj15ZIZg=;
+        b=I/Wy0pxwMo8KbMlgCx8UQIDTfsRlVVCuk7FXlR8ZUbzAtYvBxftB9nJfoNXHVGtrqy
+         5qXqXm5mZLvWWGzCdgL4/x2j/ViINfvyIlzTSdE91yKRC5qSZUpLKmfn5n7EALaNN4wx
+         TDqd+l2ROBb06tPYbMyOXVfbL++v2Y1wPobuTRIvnKJoPi259qrhYhpq/UAUzXIfRwVe
+         dYTPPi/pgsGxjKYOgSfa5UKOrnrXml9tlSx04U08j9yPPff/32X7b00I4a7x5GzFeouh
+         kV/df63MNrEpUOCosolM+MVIhUPHf7dd8Ogknpy4vc5w+hS+a1Co8ynM/g6giOSQsLKS
+         a24g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783325544; x=1783930344;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YTUcwDBT/FSZkcadsKiSFZz3W4ZAzpY+Pf+uj15ZIZg=;
+        b=Qg/Wt9yzy5RPz2cblfwoYdEntsNvm1O5NQ4St5zjPJadBA5MeP2P7h629GTU9fM7jC
+         e1ezmo3+zVeqDR6tFzfUeW2UP2W19YPh48DBFOprVvtzyz7PsFg3M5YEAQvYFVTuRW/K
+         pkzDXB5tpDMAFZsMjXP+c9LTo4sbFG02k5LBu6XTMnDFj7lBYcT8SH2cci19M/RuJljT
+         3wMpW79NUqYotrSrHGkxVdGAg3n9apFCceLknUFeRMUuQLOaJ5lsHgtS+y0Tv07kLmca
+         wfnkl7WSpmDq7wBSTpqzj4TstDkAaHq23v3bo90cSea7cvSgXW128DjSfoNrEOKRuN1z
+         lfvQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqweXrw4lYfK8cLcr+RbFQpvpDOieeufORU1xdIxK6EodVHuEUvRvyEnr/FfTX5T5TqKgpzbFif9w==@kvack.org
+X-Gm-Message-State: AOJu0YzXHLKhv9+NWBT8ks9pu/VUv8GxbwRg0mEt+ILpIgbb8gqmrWAX
+	FxzrA6cgSmbQt2Hsimefc1GQpcuwx8SGpgtP+goRBWblXquGarXt9j76BupT0qhmIX7zRnsYUwx
+	YV7OAuBesHNCgO0i/HG9A
+X-Received: from pght24.prod.google.com ([2002:a63:eb18:0:b0:c99:aff5:7078])
+ (user=richardycc job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:32a2:b0:3b3:241f:66c4 with SMTP id adf61e73a8af0-3c03e4512ebmr9943428637.28.1783325543600;
+ Mon, 06 Jul 2026 01:12:23 -0700 (PDT)
+Date: Mon,  6 Jul 2026 08:12:18 +0000
 Mime-Version: 1.0
-In-Reply-To: <akfB6Qe-jKDEMUxz@kernel.org>
-X-Mailer: git-send-email 2.45.2
-X-Lms-Return-Path: <lba+26a4b5d2d+23b819+kvack.org+lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Message-Id: <20260706074527.23978-1-lizhe.67@bytedance.com>
-References: <akfB6Qe-jKDEMUxz@kernel.org>
-From: "Li Zhe" <lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.55.0.rc2.803.g1fd1e6609c-goog
+Message-ID: <20260706081218.3438762-1-richardycc@google.com>
+Subject: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
+From: Richard Chang <richardycc@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
+	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Richard Chang <richardycc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0B463180004
-X-Stat-Signature: 7ik64u6gyw3zmd8ig3qcuhkrbr3y3sg6
-X-HE-Tag: 1783323957-638167
-X-HE-Meta: U2FsdGVkX1+y+YWp7t+E7WCLKlx/4D9bNyZuy2aKvrmM3EhRzngj4aTihluljhmgyuk9aJSBgevV06zH/kk5Dmxlam5ntWo38jxkXbyhgtjbn+MtpKFmsb2A5ScDAeB7hdN/EOZqN8sWsrKG0rvtzjSjN25n1UQ3yP9rfwZWklfciY6Eq9Ixn7S24osjzqmdrEmL4PPCSoqS9RJIvvRRkbHe6aykhwW0+ioDYZQIVzgjYhoys3xiFzAb1BMq2dMnPLbmoJwsbL2qyhEP7bRpraIF56KGgu4xg8YnVjC6o7jMDdy+pmTj2DuSWZuGbeH9QQ3UnlYuzm0Cuz1FavwFOnI+7fA1k6S4ycDRV8Xo0Gt6oIr/LzYQOJfO4Q9i7mJysTo0Z8TIG0Ts377vNsoYlrMr1NtFVCry/aGjFOHgZpEjjZW1S9+Ix6KhTfOFV+DTQDmpWnCBdSnI48rg+QqJ6W+1X7GM2oQVl0u76R5og3ngbFWB0/PY90EETopgSurb/aH+S9L7CRCoQgSGz2hv2pq0mrAaIVq1rAEXS5lPXgx9yXy2tT9h3xCp5f6HGZ/rdOmyNkjIKbpVVnIN0LGDFwVnIM5023NhnfgtvdmfhlbgnystJspXNhJiEYCHJ55l1sfaGEco2OvsAoC6xrHDizRHNsUUz0MpDvhGGym95gNtxv6zvMLewDuXwLvQe+S2nQvK02LC0M2A0aH+51itvbd5l9ew/cYpoHMV2ACAw2K6bEh+ShzCVet4yfM/jkq/tObobkmBJnE2ipPZ4HSk+EgDq1wyg9cI9vVmjY5fmYDjaymqEo04GU7p7ezu0FePDL/1Atv1N/QegBtg5XIRlTzNvon84BcJ0jk6pH5BO5Fs5g4kIwJfUEf/kEyslyq93jVCvtz7dzdVYCvchECyYdbFBVATq9DDGSvh0FvvtEHw3f2IUayU1JrbDfW8mLBtDD/nD6AeccrnfNISwjv
- Ivv4i4Aa
- Rfgm1o7dPhr4vX1FR3ZcmMAypQeTXQjqUSG4K9oy8uFf4AQ6bSVbJOk/D80f1SaxtZKn++T0zc+CAQjff6f2eff//UHTPElS+VX48ACbxWR0psRR4jKsm8MKO6zVHE5PKC4ml/n4+S7AFa2y7FfUmeQ+xsUb/VvARneINURqIUU+0srCExmI/u/B0bz2VR3x16vJD3qxG3Z8dv0jFMbvRC2lHYEZzJla8ykcGwpiSjYfCbd2Ni8VgTMuWxlbfYZs6k4j8YKHrnWQqXOTuPmIjbrzdPw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 26F0CA000B
+X-Stat-Signature: x6kywhnzjstzqr53pphgq8yjwcpzuwka
+X-HE-Tag: 1783325545-271567
+X-HE-Meta: U2FsdGVkX195gVcWMoPYbcx+c/lJLXnFuv16dOk3UZRiIR2gDvawnuR+J73KyMZvykXPsQUh1d+jJm9xA8bgafVkj+OwF71ktbBCqAlHJs3meZCLlYZ3pu8gcf5i/8n3/vv4P3fea7gN7cJZn8TRchqczY0gPidgkvT3NSYWOO95q/7aJi392e3ogg86wP4/G55k6ycrhQJzd//l1JrghA8fGr5KeeoLuwUBWLXScjOfYBsasC6amNt1wfRyzGAiwXNH9STYx9+oV4/r+y6vmpt6ujdo3UnyfYX1E4PVPgljf9XB1Eaj/jY9TmC3x0ld4IOwAFg83d/L0bD3G53eSGnJOYccwYQowHlj/MFPD1ortwhk7LYrRiHdgEZuF1QyjGrAQ6oXA8+pkwyvAZeKz3aq/8QK2/IaCa4m5oL3bZU7iGDozHTJkJ4tFeHR/TMs9+d0tLZkZQIyDGjMd1VAfop+HGS8DJTLL0qLogmzY7OXU1f2S75Ky4X5HKycD06K9IAEEBss0cnas/vF5Dt/SCy5qjkrJ/7sXRvEWZITevygFOFPc81uY4AlBKWF+eU215aIn3f6t+hjJHlJqaiCV2i20CVPEro3BUWjfcIyH5LLQHrWfigNBrPE5coq1lZrMj0eyxYtjfIYn7tPAFBd8W/3bkMbxeG43tjrJ3Yd3Zwt1b6qUlGa3DM94rfoEXZcaY9FVG7cJafKtSe2UJlcvw0KC1rRDmoW6AycCoUtAfzFU1i/cELWvdJ9w/252fsO4JUNim7ncfARvHUL03y/k0CZjI3R7NKiAJwVZd/Cx/9vMxhLi3WUfbP4olvD420MuS7Y0tWldqfy8I7qkOjf2yGjUcg5crMl3pNamuvlqvrjK+V+NL1EOIho9fdP3FKKI33Afj/D3F3fQPdSWiOpCdAEXKSc0Itm/T+7pOF8Ab5pKxXIJweqRm4/aUdVIxYyX4arBH1RW2LE4NfPI2z
+ EXeVUIwM
+ QNX1YoEcIzBC9OE1g3TNEa/rhxwybf3LddeEexKq+EUOcy5N01LuSKHVaH5Ka9XfxqqhGUvaS3Nvgt4sbeATsjnN+NYWfby3hIxTfINSPXd41T8JO8AdXufZTuIzLybEjIg4KSdt9MXvuOPN0JS6+8GIgvQ2As/SNTB1h6KgackR0xd3tCI65ERJV+q5L21jeyLfOxHnm2vSuLKtYKfV8V1ncjBNFiAc5rN/eVYL6RdISZPdQearMqIYc0oEi4ddCocCqklmd8oi0g17lc2kpLJeVbkZ09ViZWf3r+PQhc9Jn7JOlJa9CbGrQVEmqbCqB8iljdOzwgrlVQdzMv8Ozyk39NESLVbZIJCzRw9s4ojEr6RkbtBTD6KVa0ITkN7Xsx+NqOm4wTmdyS2y/d9klhH8/5OjmZaspOyZbVXbBpSeifCmvuiqmXvcfYtjgBlJbo8fpJ+LmX8NISSEgE6E4eg0Tv1hXpSqZiQEl9ZM0pXlhdjjC49/DC5KWJLbR/uFTTCsoq3XCj1vhMSCEIYnfUICII6jnhHKJAnlNrInHQo88ZQTMQNgJ5a0yw3VqzFbqsgUMZ9KLEZPdtttVa8xynDx9TtA/j8lB6dO3HAElNXyVwns=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,93 +113,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 3 Jul 2026 17:06:33 +0300, rppt@kernel.org wrote:
+Proactive reclaim (via memory.reclaim or node reclaim) checks for pending
+signals in its outer loop in user_proactive_reclaim(). However, the inner
+reclaim loops=E2=80=94scanning cgroups in shrink_many() and evicting folios=
+ in
+try_to_shrink_lruvec() can run for a long time before returning to the
+outer loop, especially on systems with many cgroups or large memory sizes.
 
-> On Wed, Jul 01, 2026 at 05:05:49PM +0800, Li Zhe wrote:
-> > memmap_init_zone_device() repeats nearly identical head-page
-> > initialization for each PFN. Prepare one reusable ZONE_DEVICE head-page
-> > template through the existing slow path, refresh the PFN-dependent
-> > fields in that template before each copy, and memcpy it into each
-> > destination page.
-> >
-> > This reduces the average rebind time from 244.28 ms to 217.19 ms, or
-> > about 11%.
-> >
-> > Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
-> > ---
-> >  mm/mm_init.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 74 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/mm_init.c b/mm/mm_init.c
-> > index 4c7fad440c2a..cc8417951467 100644
-> > --- a/mm/mm_init.c
-> > +++ b/mm/mm_init.c
-> > @@ -1066,6 +1066,50 @@ static void __ref zone_device_page_init_slow(struct page *page,
-> >  		set_page_count(page, 0);
-> >  }
-> >
-> > +static inline bool zone_device_page_init_optimization_enabled(void)
-> > +{
-> > +	/*
-> > +	 * The template fast path copies a preinitialized struct page image.
-> > +	 * Skip it when the page_ref_set tracepoint is enabled.
-> > +	 */
-> > +	return !page_ref_tracepoint_active(page_ref_set);
-> > +}
-> > +
-> > +static inline void zone_device_template_page_init(struct page *template,
-> > +						  struct page *src)
-> > +{
-> > +	memcpy(template, src, sizeof(*template));
-> > +}
-> > +
-> > +/*
-> > + * 'template' is a reusable page prototype rather than a strictly immutable
-> > + * object. Most ZONE_DEVICE fields stay constant across the pages covered by
-> > + * the current template, but section bits and page->virtual may still depend
-> > + * on the PFN. Refresh those PFN-dependent fields in the template before
-> > + * copying it into @page.
-> > + */
-> > +static inline void zone_device_page_update_template(struct page *template,
-> > +		unsigned long pfn)
-> > +{
-> > +	set_page_section_from_pfn(template, pfn);
-> > +#ifdef WANT_PAGE_VIRTUAL
-> > +	if (!is_highmem_idx(ZONE_DEVICE))
-> > +		set_page_address(template, __va(pfn << PAGE_SHIFT));
-> > +#endif
-> > +}
-> > +
-> > +static void zone_device_page_init_from_template(struct page *page,
-> > +		unsigned long pfn, struct page *template)
-> > +{
-> > +	/*
-> > +	 * 'template' carries the invariant portion of a ZONE_DEVICE struct
-> > +	 * page. Update the PFN-dependent fields in place before copying it
-> > +	 * to the destination page.
-> > +	 */
-> > +	zone_device_page_update_template(template, pfn);
-> > +	memcpy(page, template, sizeof(*page));
-> > +}
-> > +
-> 
-> The whole bunch of template functions look like it could be useful for
-> initialization of the non-zone-device struct pages as well.
-> 
-> As I mentioned previously, it's interesting to see if this approach speeds
-> up normal memory map initialization as well. If if does could have a single
-> set of the template functions.
+This latency in responding to signals can block the freezer (both cgroup
+freezer and system suspend), leading to freezer timeouts. This issue was
+specifically observed on Android when attempting to freeze background
+cgroups while proactive reclaim was active.
 
-Thanks for the suggestion. I agree this is worth exploring.
+Add a signal_pending() check to should_abort_scan() for proactive reclaim
+paths. Since should_abort_scan() is called within the inner scanning and
+eviction loops, this allows proactive reclaim to abort early and return to
+the outer loop, ensuring the task can enter the refrigerator in a timely
+manner.
 
-For this series, I would prefer to keep the scope limited to the
-ZONE_DEVICE initialization path and get that part settled first.
+This check is limited to proactive reclaim (sc->proactive) to avoid
+affecting reactive reclaim paths, and wrapped in unlikely() as it is a
+slow path.
 
-After this series is settled, I plan to look into whether a similar
-template-based approach can also help normal page initialization. If it
-shows a real benefit there as well, I can follow up with a separate
-series.
+Signed-off-by: Richard Chang <richardycc@google.com>
+---
+ mm/vmscan.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks,
-Zhe
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96..fb472e924fc7 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4929,6 +4929,9 @@ static bool should_abort_scan(struct lruvec *lruvec, =
+struct scan_control *sc)
+ 	int i;
+ 	enum zone_watermarks mark;
+=20
++	if (unlikely(sc->proactive && signal_pending(current)))
++		return true;
++
+ 	if (sc->nr_reclaimed >=3D max(sc->nr_to_reclaim, compact_gap(sc->order)))
+ 		return true;
+=20
+--=20
+2.55.0.rc2.803.g1fd1e6609c-goog
+
 
