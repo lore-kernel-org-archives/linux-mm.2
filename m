@@ -4,116 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76954C43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 20:45:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 767D2C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 21:06:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 64AB16B009D; Mon,  6 Jul 2026 16:45:12 -0400 (EDT)
+	id 2F0D16B009D; Mon,  6 Jul 2026 17:06:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FC1C6B009E; Mon,  6 Jul 2026 16:45:12 -0400 (EDT)
+	id 2A1D06B009E; Mon,  6 Jul 2026 17:06:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C5D96B009F; Mon,  6 Jul 2026 16:45:12 -0400 (EDT)
+	id 195D06B009F; Mon,  6 Jul 2026 17:06:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EF1D56B009D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 16:45:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5CAA3A01FC
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 20:45:11 +0000 (UTC)
-X-FDA: 84959531622.03.805BEF2
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B031E140014
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 20:45:09 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="YF/WVVlf";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC2816B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 17:06:54 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C103120219
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 21:06:54 +0000 (UTC)
+X-FDA: 84959586348.05.9983959
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C71D9100004
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 21:06:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oTNGWIqy;
+	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783372012;
+	b=zkXdy7OdYjpf11zaaR5gKMqZ5KjNj+BusL72y4uJjohdTrpM531J/wFIkKUGjs5gC1JVNe
+	cF/ucD8kNU/mAK3GOtz+/VTpOcSnIqL6KefICy+d7RwQPkcdlsW6qsmagLbeMnfaF3NR66
+	5JQhRJXgGentKFA6Eg8yjdX75r20JAk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oTNGWIqy;
+	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783370709;
+	s=arc-20220608; t=1783372012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=XVLOymukG8mEHjr57PGE+70BcqfkinJsntMYx+ElCgI=;
-	b=2uhmwfKQYq59zX2B40uEo+4hz65vXK8rvvCE7WsAL8DP10Sl0gKLCOGBINk2Rxv/3o9i1r
-	uPg3hTp9OE6WTbqiJrBjtdubSe0qQlcbZVPvmmacT59Ql/sCbUloEYB9OWCPfOq33Efdxm
-	l4BY4Q3OMr+cFjIIiWn/DC6hDhgafls=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="YF/WVVlf";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783370709;
-	b=cZKkjrL6N9MZAxJJKWNsaI1geYYg+VHXbQAP+23spDM9hS3DKWa6CKv4s2+2n/TFbKTNEl
-	HX7QjkRbWHwcMwWIlM+r/7FScJWte96fJ9IDspxWGbuWzWBNNKxNw0XrN5GHk3EQCMvw87
-	EUzWNNUgy3yZq5+27w+aFbGmIUG/13E=
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7e9ecd7216cso1480422a34.3
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 13:45:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783370709; x=1783975509; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XVLOymukG8mEHjr57PGE+70BcqfkinJsntMYx+ElCgI=;
-        b=YF/WVVlfJ5YSeWn1t3FDiRUNehDEgzUcp67WRaYxadhJxp/v6IoZpOXaDLYzg/JIy1
-         SmKVBzbrEqVvSoDpuTi34e3t4GNij5AubjfcA5KpD4Ry3QtwoHiyJVpscxp+iKw7oxqj
-         ZFFtYQ60LN8ne3yS6H53N92aa9Sa/qkJGzD6+a4YE1ch1ExeIYcraBAQQIW3NRpEdmeH
-         Tv4lU5S92x9efTwizStWHfvTR5s1M+g2mVtc+boj6hRTAP3lROLkOrg5yBeK2kdpCbq1
-         azLa1eyZGw2/u5DwnSsZD8ntj3UPjyORlhg/g85kWl9JMCdxYsof0AlWTTCO0Eruev5s
-         w44A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783370709; x=1783975509;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XVLOymukG8mEHjr57PGE+70BcqfkinJsntMYx+ElCgI=;
-        b=VURnkCDb26LhzElgQfulItaVvuQqrb934UHGTJEPTVvlnz5OqQVF9mW6imp8y1RR6i
-         acnsOlAcCQ4iS1IX7Lji7i5cz+Zmgh6Ly+esBpkkxMubyFdkXpyrupM+wTYHbyMEd4YB
-         e7oYpS2J9ubqvAhPQ80++8LqoKPUH/csAr8LGQFP24BDlbqj9zWGvjCyBJRUtwgMozdv
-         WCebCkoy/CP6HWRGXlXFILERITzp1/d1GxDS1V8v4Osq2xMH/CKcvhZ5MANoi2YL4fWl
-         3dsQd39GjvSYdjUgFegvQLwXhRdOdRtRHvhcWxENpL4KwEE7+reBS5RoHBotpOhusXGz
-         zt/Q==
-X-Gm-Message-State: AOJu0Yx6apYjdNcEd8DuMZtkDv6FtOoka1p+68Zoe6f/LYMzufdFlM9I
-	erm3jsQsuOMi03wg14DowF0Wci5JIqXAMNclRiEyJQnEKH7a67GZXJHhlP0XjA==
-X-Gm-Gg: AfdE7ckRMId2ov3R3tCwrBx6/0FcqyPKyQWkEFzsS7cxCB00Pvl/N2AXn92OC5um3R3
-	FLw2KHcrzoqrWp2qKGEcSk29KvU7KncJGAw2t3jvy25AgurHmQ8xGXm+jYIUfoz04Omx6Gli5b4
-	a/55ZAw7exAI4jPaImt8KjP7hS5ARd4JpugyxWelHb72wRFEkkFbkg0yK9GUi/Guak4Dc/JkyZy
-	oQ73HW6xtdUJ596jIXfQq+LH78V7BTuyVz9kxQnbN4Z2lTpTX2Fz4RlpnaGX0UXqS1WCR3QAWIC
-	tiUW8METpzp9J5Pz8mNiCBm+ELGqhSJCbNhDwtbd0RvmT92IMfzRiHHn7KLApBD2xt306OgFfYv
-	OwkTxMs44CRYcxXITV/7tZExdYz2awXxkoU8A0wcvb4gmwGgcabE2GzwjdvjZ2OtVKz8ZFd8oib
-	6fZ8bC/z2W3GFpmeXe7kKwSAjxRcVSRbUjzi20nb1ZOXw=
-X-Received: by 2002:a05:6830:7307:b0:7d7:e142:2ead with SMTP id 46e09a7af769-7ebb232166bmr1568070a34.20.1783370708494;
-        Mon, 06 Jul 2026 13:45:08 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:70::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7eb8998850fsm5937937a34.11.2026.07.06.13.45.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 13:45:08 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH] mm/memory-tiers: cache top tier nodes
-Date: Mon,  6 Jul 2026 13:45:06 -0700
-Message-ID: <20260706204507.98522-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Ph6/Sa1sXBzJcwhfmqrguqXnLUqwt68zNWJ+Jfh3a1g=;
+	b=wxXXUp0rxw2fh9FxDoPOEjzVon1EVJhx4f7NkNO0GFJb5h9FLZDYDoBHf5Ylm7pk79TIlH
+	37Jijk7C5WNxKpTDeTqO71dq+KzzAzxaWhGCOY+UOAll4mjkdpd9gSYzvPLFGPBpf2lvLc
+	5YbmyIfAg6TUwobjTj0FxI8KH6uRflc=
+Message-ID: <d0d47811-44b2-490f-ad57-f9b57aa70a0a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783372009;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ph6/Sa1sXBzJcwhfmqrguqXnLUqwt68zNWJ+Jfh3a1g=;
+	b=oTNGWIqy6YtbRzDHp9j5zcAfWylNoie5maqv3I3TU9Gvu/YpDVhw9tlBJpwWbsV7xyBquX
+	hGzTtAxz95G/YH5qYlIpndSo4w4NCwB+mEMkyrKNZxNHMZPnBXEvlA+r+fV8K+z0J80Xl2
+	C0aG5veOx4fUlvAZ65W5QhAe5fBcwlg=
+Date: Mon, 6 Jul 2026 22:06:43 +0100
 MIME-Version: 1.0
+Subject: Re: [PATCH v3 09/11] mm: handle PMD swap entry faults on swap-in
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org,
+ ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, kernel-team@meta.com
+References: <20260703173903.3789516-1-usama.arif@linux.dev>
+ <20260703173903.3789516-10-usama.arif@linux.dev>
+ <CAMgjq7CQ+1gsptFYH+Y0GEqyYj+5QpAKjtZLekRS4h+k4f8QvQ@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <CAMgjq7CQ+1gsptFYH+Y0GEqyYj+5QpAKjtZLekRS4h+k4f8QvQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B031E140014
-X-Stat-Signature: xfccjoak5jquk7mh55qn6xgbfirbjboo
-X-HE-Tag: 1783370709-607079
-X-HE-Meta: U2FsdGVkX1++lsGrRtrdB8iZtHyegBXxvm8FLgEzBHeP1O8IfsdWDazLYsyIuNs1pVxQS/orMjKE3Pm/7dIeV6XI3TcC2IK4+j9TzVSSLCWP7cTHJEyxktRegzk7Bamq3Hfq66YoBkIb4YQxpXjH7VMO3GAJ9dVnDgsvwyWkiFrzbuvjX90iw9Byib/Trc+9uZW91my9KqkLhcGYpYTeqd2Rgiz4y5zeh2lCRPTL9XNjIZqs45eQ1ADlWacpQ6kDF+Ty3K9CKhHX082XcTiGgb0HkaXeCBsuoXKMUp0x6bzLy/jsQEZWwahkATX6Znt6zjGlju1teTYmbi679Nk++elWLLDkdn9GgaO1woymCPqMjBQhiFF39gFFipshiErOZRiNcXDvwBabqzn5nXqL8gkAr/1vRr8l6PHwyw6FEXUX7lpTXuo2tjqLNEsGpaapkRBh5pGQSIglWOre0x7n6LmNOZU/3YTbLAijr93pAh4apBLnPd1em2CyAmS7AnpmkoVUyXMiKXP5Q+gJpz8bX67SqO+xk6gqtpUjVhqB/XwSoyhy0Byw+twUt7MCBT07snJF3DhSL67i2DH6QkATGChenSs6GoEF9OmyhedcSl6DimOYxAqUSrhs76UbcJdWk+ZA5WDFR0M73ejUev4QmnGIxZVa+13NC6G5ljG0or4x+2SLHPOTOVutIGA+l2Fqibr8iYPUpmfTKUigE+9GZcdmyxvZEK0qWc2+6TWfYs17X5LiWmdt3OgsZhkm3Nt+A5V4SUaK8XT5hqO8jyqPtqxHCOpiorovSMh8fvDW+UmOu7ntkHbVQnU58C0bbsdqu8zser8/BLv05/XDTGMO4m6SrMwMaLhyPjrglZrBBEIUuJRokbJ7sBTPxH4kobTRh6n1VdUzK+IHJYDuWQH2SDA8dyi6A5okuiuzTUBPgNgZ/Uza3gobBXNTCR1zrgjHg/Xr2Q0T5EqWTF2e/3Z
- /BM2loSy
- SeDugSG05THZQAhsJKkGpFdyWPFp1i77HcJsgeFUNGb4y5KWMewoj98oJabV6gu3TKZn3WM2nOmEdrcsyJVzCY7y3usOF5I/19aYrTQq4mC1q7XfiOzpSnPUt374Hz80o5QDj8pMKykUE6HjlxtCkVwrYYeEO4KxCezKA/zYPOTM7ESbfEgBUrlelR0opJ+2FpRlHyi4o5wlHggxe2ptcAHBVleOvOM/pbwDjew7wqIb7toxHGO29p1U5xgKMR76GVEiiaHLm362tGtMPZKFgpMPLLUMJVTFHC+kM0cNI2Nv7zx/9kR/MxtCGjOBLvBHz+S99G1dRqXrmY12kxDYHeLFoGsKEJdCuEPexokQlAHFOTUuOh686Mh8or0gwtovW8A3Fi+fAJssoEpc5bY/RZ/0mgnyENfO9jy5qxyo08w912YZPTVxt8pPdWYjrudmARTbPTfzVmYqEuLFmPS5isb8BAdb3UTvWM3ziQ9M05O2vDBzJZbJR58iEml6wcAKQ8aIl
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C71D9100004
+X-Stat-Signature: 39rmxxw5xdzucw8cfa8a7cadi4x69zoo
+X-HE-Tag: 1783372011-61951
+X-HE-Meta: U2FsdGVkX19veBoWKMehI0majp4FbeVwf+I/YBnp5/ev/OGE/70OpVQkzqSONVcAGLgecepSschY6sxxjkLEa8AaHsVFHUwUyg6zOUhe+Su4tSAr+CeIweLglInDfTD/ZnPx7qwvpV7PpELZYDAtQLXYytPiFTTEVLzTZDlKX3FDIPBqa3IUxccqgzF2IAgY58/m0tCHIS14GzV1CCWtkUTlJBLsgeN63zq3Wcip8jgJHY6VBv4Vpau1rDe65ALggHh1gMAAleAZ9wNTeib/wVlBinRK5pzXX+NPDd2eR32O+C3JbdeupJ0xFDgx4kJiv7rUxYxiCEyRXyHecc2TVrXTUoxqgLUdYDC2RNcmSX6ZarsGTWzA33a0pwmlNHECOLzZClFVkvN/IzvlisWtrUjdxx1HzAZmJLEfNDQaiwDS0WdQOeV5xbxyXUn7QJOysnm31AU8Kfy/QkAsE+mA/OC3cSTMC8VsZabq75BE2YC3UqmpmTWvmCFQ5AlySDC4CPhAJxGRdVNO3wIBrnmXFla4VCUcp6sruauaLznxlr9NjcWheeEqec7jLI20WKSbSNmjyNkrFbQzTW85qlhLgHgrAArHs7HCC9CDLMLrc8Vi+Rwsr1yrG2q+qe6lfPorA3OJ5SeuD9JIP7P3XTKM7V9Dur45mnNEeUfQg5WAuPbcc3yKoutaew7NX5subeZpREkvL90PUAViP8emKKEIuhcS0jd8H9Y2meBMQwgNnAvYSh4/k3OjutZRfD1gbNg2I64zQIscXftXivERbfhN4WFvgx7N/w3N1Nml3ebujJ4g4YQiQ5fmfJR8zxrh6oPfxnOgzx3zYSul7qVIvwquXSKSP6l5C8QBmRCYI+aviBVoQVgFb/xIMm3X6VE70lT2vxJUzdS/SzguppUYEpoOOwjD41C7yWySwsEC76GYbhhvAoDlqwf/vKM4IA7jAfm+BzEjiqEOAqWTzMxLrd8
+ hdafZvFi
+ glTA+W9eLoveK3IS23I80U/rdCyC5UClf3UJFqna/PDdn8jK9W8pHPzYD4kqnAuCq0rm5dNUyZyT4tbB5UZjhWbwReWg/dTMgs9JhrFa/chfDKd3yykGZQdCUJd4ZinTSWjljO+TBGqZ5d6F8DUgtPbbQw1vHqoisPqVhotvTVNPReWVOSK45s9PqwwyvQ87H6pHdw/vAztUUOSEbZ/2/TV3I8GDNh8R2bxWrN2gHesBzt9s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,89 +99,215 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-node_is_toptier() is called in a few hot paths: task_numa_fault(),
-should_numa_migrate_memory(), folio_migrate_flags(), etc. Each call
-takes an RCU read section and performs the tier distance check again.
 
-Tieredness for all nodes only changes on memory node hotplugs. Instead
-of recomputing toptier nodes inside each of the hot paths above, compute
-it only on memory node hotplug events and cache the results.
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/memory-tiers.c | 36 ++++++++++--------------------------
- 1 file changed, 10 insertions(+), 26 deletions(-)
+On 06/07/2026 18:56, Kairui Song wrote:
+> On Sat, Jul 4, 2026 at 1:41 AM Usama Arif <usama.arif@linux.dev> wrote:
+>>
+>> Add do_huge_pmd_swap_page() and dispatch to it from __handle_mm_fault()
+>> when vmf->orig_pmd encodes a swap entry.  The handler resolves the
+>> entire 2 MB mapping in one shot, mirroring do_swap_page() (PTE path)
+>> at PMD granularity:
+>>
+>>   - Look up the folio in the swap cache; on a miss, allocate a
+>>     PMD-order folio via swap_cache_alloc_folio() and read from swap.
+>>
+>>   - After locking, re-validate that the folio still corresponds to our
+>>     entry and is still PMD-sized.  Between the unlocked cache lookup
+>>     and the lock, a racing swap-in on the same entry may have removed
+>>     it from the cache via folio_free_swap(), or reclaim / memory_failure
+>>     / deferred-split may have split the folio into smaller folios.
+>>
+>>   - Restore soft_dirty and uffd_wp from the swap PMD.  Map writable
+>>     only when the entry was exclusive, the VMA permits writes, and
+>>     uffd-wp is not armed.  Drop the exclusive marker when the cached
+>>     folio is under writeback to an SWP_STABLE_WRITES backend (zram,
+>>     encrypted) so the PMD is mapped read-only; a later write COWs
+>>     into a fresh folio rather than corrupting the in-flight writeback.
+>>     Mirrors do_swap_page().
+>>
+>>   - When the resulting PMD is read-only but the fault was a write,
+>>     update vmf->orig_pmd and call wp_huge_pmd() in the same handler
+>>     to COW immediately rather than forcing a second fault.  Mask
+>>     VM_FAULT_FALLBACK from its return: a PMD-COW that splits to
+>>     PTE-level is normal, but the bit is part of VM_FAULT_ERROR and
+>>     arch fault handlers BUG() on it without SIGBUS/HWPOISON/SIGSEGV.
+>>     Requires exposing wp_huge_pmd() via mm/internal.h.
+>>
+>>   - Free the swap slot via should_try_to_free_swap() (hoisted from
+>>     mm/memory.c into mm/internal.h so PTE- and PMD-level swap-in
+>>     share the heuristic).
+>>
+>> When PMD-order resources are unavailable (folio allocation fails,
+>> the cached folio was split, memcg charge fails, or swapin_folio()
+>> races) split the PMD swap entry into 512 PTE swap entries via
+>> __split_huge_pmd() and return 0.  The fault retries and do_swap_page()
+>> takes over per-PTE.  This avoids returning VM_FAULT_OOM for transient
+>> PMD-order allocation failures.
+>>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> 
+> Hello Usama
+> 
+> Amazing work.
 
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 54851d8a195b0..2e6e02ec1fce4 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -71,6 +71,7 @@ bool folio_use_access_time(struct folio *folio)
- 
- #ifdef CONFIG_NUMA_MIGRATION
- static int top_tier_adistance;
-+static nodemask_t toptier_nodes __read_mostly = NODE_MASK_ALL;
- /*
-  * node_demotion[] examples:
-  *
-@@ -276,27 +277,7 @@ static struct memory_tier *__node_get_memory_tier(int node)
- #ifdef CONFIG_NUMA_MIGRATION
- bool node_is_toptier(int node)
- {
--	bool toptier;
--	pg_data_t *pgdat;
--	struct memory_tier *memtier;
--
--	pgdat = NODE_DATA(node);
--	if (!pgdat)
--		return false;
--
--	rcu_read_lock();
--	memtier = rcu_dereference(pgdat->memtier);
--	if (!memtier) {
--		toptier = true;
--		goto out;
--	}
--	if (memtier->adistance_start <= top_tier_adistance)
--		toptier = true;
--	else
--		toptier = false;
--out:
--	rcu_read_unlock();
--	return toptier;
-+	return node_isset(node, toptier_nodes);
- }
- 
- void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
-@@ -497,19 +478,22 @@ static void establish_demotion_targets(void)
- 		}
- 	}
- 	/*
--	 * Now build the lower_tier mask for each node collecting node mask from
--	 * all memory tier below it. This allows us to fallback demotion page
--	 * allocation to a set of nodes that is closer the above selected
--	 * preferred node.
-+	 * A node stays toptier unless it belongs to a tier below
-+	 * top_tier_adistance, while each tier's lower_tier_mask collects the
-+	 * nodes of every tier below it so demotion page allocation can fall
-+	 * back to nodes closer to the selected preferred node.
- 	 */
-+	toptier_nodes = node_states[N_MEMORY];
- 	lower_tier = node_states[N_MEMORY];
- 	list_for_each_entry(memtier, &memory_tiers, list) {
-+		tier_nodes = get_memtier_nodemask(memtier);
-+		if (memtier->adistance_start > top_tier_adistance)
-+			nodes_andnot(toptier_nodes, toptier_nodes, tier_nodes);
- 		/*
- 		 * Keep removing current tier from lower_tier nodes,
- 		 * This will remove all nodes in current and above
- 		 * memory tier from the lower_tier mask.
- 		 */
--		tier_nodes = get_memtier_nodemask(memtier);
- 		nodes_andnot(lower_tier, lower_tier, tier_nodes);
- 		memtier->lower_tier_mask = lower_tier;
- 	}
--- 
-2.53.0-Meta
+Hi Kairui,
 
+Thanks! and Thanks for the review comments!
+
+> 
+>> ---
+>>  include/linux/huge_mm.h |   9 ++
+>>  mm/huge_memory.c        | 216 ++++++++++++++++++++++++++++++++++++++++
+>>  mm/internal.h           |  36 +++++++
+>>  mm/memory.c             |  40 +-------
+>>  4 files changed, 265 insertions(+), 36 deletions(-)
+>>
+>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>> index 1487bf4af1a7..9ec475ccfc91 100644
+>> --- a/include/linux/huge_mm.h
+>> +++ b/include/linux/huge_mm.h
+>> @@ -531,6 +531,15 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf);
+>>
+>>  vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
+>>
+>> +#ifdef CONFIG_THP_SWAP
+>> +vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf);
+>> +#else
+>> +static inline vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
+>> +{
+>> +       return 0;
+>> +}
+>> +#endif
+>> +
+>>  extern struct folio *huge_zero_folio;
+>>  extern unsigned long huge_zero_pfn;
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index fdc1a503c609..5fa60324a2f0 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -41,6 +41,7 @@
+>>  #include <linux/pgalloc.h>
+>>  #include <linux/pgalloc_tag.h>
+>>  #include <linux/pagewalk.h>
+>> +#include <linux/zswap.h>
+>>
+>>  #include <asm/tlb.h>
+>>  #include "internal.h"
+>> @@ -2312,6 +2313,221 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+>>         return 0;
+>>  }
+>>
+>> +#ifdef CONFIG_THP_SWAP
+>> +/**
+>> + * do_huge_pmd_swap_page() - Handle a fault on a PMD-level swap entry.
+>> + * @vmf: Fault context. vmf->orig_pmd contains the swap PMD.
+>> + *
+>> + * A PMD swap entry is a compact encoding for HPAGE_PMD_NR consecutive swap
+>> + * slots. If the swap cache still has one PMD-sized folio covering the range,
+>> + * map it directly at PMD level. If the range has been split into per-page
+>> + * cache state, or zswap may have per-page state for it, split the PMD swap
+>> + * entry and retry at PTE granularity.
+>> + *
+>> + * Return: VM_FAULT_* flags.
+>> + */
+>> +vm_fault_t do_huge_pmd_swap_page(struct vm_fault *vmf)
+>> +{
+>> +       struct vm_area_struct *vma = vmf->vma;
+>> +       struct mm_struct *mm = vma->vm_mm;
+>> +       struct folio *folio;
+>> +       struct page *page;
+>> +       struct swap_info_struct *si;
+>> +       unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
+>> +       softleaf_t entry;
+>> +       swp_entry_t swp_entry;
+>> +       pmd_t pmd;
+>> +       vm_fault_t ret = 0;
+>> +       bool exclusive;
+>> +       rmap_t rmap_flags = RMAP_NONE;
+>> +       enum swap_pmd_cache cache_state;
+>> +
+>> +       entry = softleaf_from_pmd(vmf->orig_pmd);
+>> +       if (unlikely(!softleaf_is_swap(entry)))
+>> +               return 0;
+>> +
+>> +       swp_entry = entry;
+>> +
+>> +       /* Prevent swapoff from happening to us. */
+>> +       si = get_swap_device(swp_entry);
+>> +       if (unlikely(!si))
+>> +               return 0;
+>> +
+>> +       cache_state = swap_pmd_cache_lookup(swp_entry, &folio);
+>> +       if (cache_state == SWAP_PMD_CACHE_SPLIT)
+>> +               goto split_fallback;
+>> +       if (!folio) {
+>> +               /*
+>> +                * PMD swap entries encode ordinary per-page swap slots. If any
+>> +                * slot is in zswap, split and let the PTE swap path load the
+>> +                * range per page. Otherwise the range is all on disk and can be
+>> +                * read back as one PMD-sized folio.
+>> +                */
+>> +               if (zswap_range_has_entry(swp_entry, HPAGE_PMD_NR))
+>> +                       goto split_fallback;
+>> +
+>> +               folio = swapin_sync(swp_entry, GFP_HIGHUSER_MOVABLE,
+>> +                                   BIT(HPAGE_PMD_ORDER), vmf, NULL, 0);
+> 
+> Hmm, so here we always do a sync swapin which means there is no
+> readahead, kind of make sense since PMD is huge, readahead might be
+> not helpful and a order 0 readahead breaks following PMD. But maybe
+> worth mention it in the commit message at least so it's easiler to
+> follow. (partly because the name swapin_sync is a bit confusing at the
+> moment, we could change that name as we improve swap readahead later).
+
+Yes, I’ll add this to the commit message. Thanks!
+
+Yes readahead won't be useful for PMD as you said.
+
+> 
+> And just an idea that will it be suffient if we just use the return
+> value of swapin_sync directly? If a smaller folio covers the PMD start
+> entry, the smaller folio is returned and you catched that just fine.
+> If a smaller folio covers a follow-up sub-entry or a sub-entry is
+> freed, -EBUSY is returned here and you just do the split. And it
+> doesn't do the allocation for the first lookup check, so there should
+> be no thrashing issue.
+
+The main issue over here is zswap.
+zswap still stores the range as order-0 objects. If we call PMD-order
+swapin_sync() when the cache is empty but any slot is in zswap, zswap_load()
+fails the large-folio load and leaves a non-uptodate PMD-sized folio in
+swapcache. Splitting the PMD after that is not enough unless we also delete that
+failed large folio, because the subsequent PTE fault can find the non-uptodate
+large folio and SIGBUS instead of loading the individual zswap entries.
+
+
+> 
+>> +               if (IS_ERR_OR_NULL(folio))
+>> +                       goto split_fallback;
+>> +
+>> +               /* Had to read from swap area: Major fault */
+>> +               ret = VM_FAULT_MAJOR;
+>> +               count_vm_event(PGMAJFAULT);
+>> +               count_memcg_event_mm(mm, PGMAJFAULT);
+>> +       }
+>> +
+>> +       ret |= folio_lock_or_retry(folio, vmf);
+> 
+> With PMD sized folio on a slower device, this try lock could fail much
+> more frequently, leading to repeated faults. That's not a new issue
+> and I remember Barry talked about it at the LSFMM this year, just I'm
+> not sure if that will get much worse for PMD?
+
+Agreed that PMD-sized IO can keep the folio locked longer, especially on
+slow swap devices. (Which hopefully are dying away :))
+The current behavior matches do_swap_page(): on the normal retryable fault
+path it drops the fault lock and waits for the folio unlock before returning
+VM_FAULT_RETRY, so it should not be a tight retry loop.
+The wait can be longer for 2MB IO, but the retry usually comes back to
+either an uptodate folio or a PMD that another fault already  installed.
+I think this is the right baseline behavior, and any improvement here
+belongs with the broader swap readahead / async swapin work.
 
