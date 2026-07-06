@@ -4,85 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20C9AC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:24:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAD83C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:27:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E45A6B0005; Mon,  6 Jul 2026 05:24:05 -0400 (EDT)
+	id CABA96B009D; Mon,  6 Jul 2026 05:27:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BCE36B00A4; Mon,  6 Jul 2026 05:24:05 -0400 (EDT)
+	id C84166B00A4; Mon,  6 Jul 2026 05:27:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F15156B00A5; Mon,  6 Jul 2026 05:24:04 -0400 (EDT)
+	id BC0D16B00A5; Mon,  6 Jul 2026 05:27:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C365D6B0005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:24:04 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 48BEEC1BE9
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:24:04 +0000 (UTC)
-X-FDA: 84957815208.07.1547F24
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 937906B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:27:52 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B3861C2DA7
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:27:52 +0000 (UTC)
+X-FDA: 84957824784.27.2784522
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7081240002
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:24:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cEdF47yN;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2D8084000A
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:27:50 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADhw3IVv;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783329842;
-	b=6hzUiZFweQGePJZaaKXcDf/67dTd5CgLvc8SLPQr/xTla+0QFdY1Rjm2PEIFWVBYuZVOst
-	rFnSYxbAW/1dWNLlRhvLp4FdNh5B01K9ttTvXObpa46MV5mtongM+VDjp9kZI2DzwKuRAq
-	Ksn5a56iT+Ww0KFTOHTYB/k5Pg7CSTk=
+	t=1783330070;
+	b=uXYJH5BN/hAaIXnZwTpXpQDp+3lxi8Soyzrytt+5XRwqDkzgX/+wYriuqXdLzICezx0PcE
+	0hToTsp74eTanUdMGSF7BAzKqhBFR+3hAqW/wG0n4w08dfFKYVr67CpEYrYdZ2NPjTxErP
+	XAT7TEKsf+EYjn9RjUQm+cSEBtQPPok=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cEdF47yN;
-	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ADhw3IVv;
+	spf=pass (imf01.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783329842;
+	s=arc-20220608; t=1783330070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/VCy9f/b2HN1cgotXKRxZEmm6KvtxurBOUMOHFRmRcE=;
-	b=vY7Al6o76IrHwvu7KH37LZUvhPhnmb6zNHH5bueanyP9y1IUp/BGIB42anXsC5rm/Ilh4q
-	vlnOL3TlMYUAHJIwJOeYNT8Zh1jbHuNzfwqrTWiA/3G68iyqTal3XG0hUsw2ddHZ15ZwXz
-	yOqGL17wVoqi+MlPcs05Odi66l7IHAI=
+	bh=wy27XylQTJtJ3Y2kpD07918dwUDlxLsdszQfEU+FnpI=;
+	b=CXytOIYrNsWtDt1ZHMWJLWQDGNfNySq6LLHSbldejD2C8i3ySkgstrZxIrQIpQqy7otyfX
+	EOdjvoF4Aa63AiHD9SKVpYUi8cBGs9FykHi1oUuILaiEnHRfHlZBKrMSxF7ErMZ2EZJ/t1
+	BSM53yerIcnpmy8IWKpSX+FXA81THHk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E885161383
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:24:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3CA1F000E9
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:24:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B77CD6138B
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:27:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308F81F01559
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783329841;
-	bh=/VCy9f/b2HN1cgotXKRxZEmm6KvtxurBOUMOHFRmRcE=;
+	s=k20260515; t=1783330069;
+	bh=wy27XylQTJtJ3Y2kpD07918dwUDlxLsdszQfEU+FnpI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cEdF47yNLO3pphWl9Z9UJ5UIwwKD3iEFYoNj9r5BrRVXUcTQ8Xm/St37A5LqW3NPJ
-	 PkpBs86OuUE2EpH7wIYgGeAmHYD3wiU/DnFPevt6zgUdFR0Oy9ZpFrS4leuHN8YLzn
-	 lhb03HgalTTTif4ZcViuy7HB0X9by2Dg9wNZzbwL3wzBeEgafq04CM10AsDfoFWVzM
-	 kwkt16dz+p1x0WPTLGotXgJCv9+aGukScaICd/zEacaDm+9seWO/H76rnWBRtxzYNA
-	 9HF1ECi8DKQ+PWLoW272+EVWuUFC4vROVTkR7bwepZyFt7sMDycP7F5s+WePBDUF+C
-	 3d2o37MlD21NA==
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-92e99ef0902so99173785a.2
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 02:24:01 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrukJV9Pw5YVoUJpL36NYnJele2g68y2/RVZI97rVCOd4bG2PQp96aftINgE2NQIl2ZSB1XltNbSg==@kvack.org
-X-Gm-Message-State: AOJu0YwSMA+H0ExMR8f6XWXZeJp3E5NJ8bSmcUelQigX3fSx8e3VCkL3
-	4EeYtf9z0Tf0SouPNtkry8fPOfdc/Y7eJ6dhyThxNQtAWBYw5DBAH3B94nezTZEijLl+Ys5FY8M
-	f1l+lsqKsHDuffqGvrWRb8r3UhI6jOy4=
-X-Received: by 2002:a05:620a:2620:b0:92e:61f1:6b72 with SMTP id
- af79cd13be357-92e9a3467f8mr1291272185a.13.1783329841061; Mon, 06 Jul 2026
- 02:24:01 -0700 (PDT)
+	b=ADhw3IVvIBJqwuZaCa9VifOmk4K0PmBXgNAAdXRtR3o1lRi9Qd8v+WEb6LQScrw87
+	 4U3Xgw+5gvSY+5+PlHxtJ/gK6wpFsYFCpWniDa3uVgB4XNXbZCDCSZV8fdwhXK2jJH
+	 DPlCkUoEY4fct+hRQa1WOm7C5g4Cr1C5ETvy3Iar79747XpVGrGv3B5vVb3wgmCds1
+	 Oa5b4YeWIRQsD86cFrayRkKXlhx6hFgnH2u187qWs8QnHtafBUmAyoy94WIyCdZHU5
+	 v0NLm9/5UdgjHJ9SbIVK1tVlWLdLbxr+vyX3j1uAhJlD3Fi7OUw5pk6y9fBhGEyUC0
+	 AyopSRtUNKQRQ==
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e7632b193so163701285a.2
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 02:27:49 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RpSnmOU2LnK29mheNw1+qgqXgwbjom4yuBWJNXvlu2M5Y5EBL2XAg1WwWTmUDG5dmlx9DlaZZKvHQ==@kvack.org
+X-Gm-Message-State: AOJu0YwDp+vwJkFc6bV79h4zxP7b9rLDj/oY81fEPyuLH3cQzD8Ft9Yd
+	/TNvvmnFaMQUGCYXu2xzh1YPlv9Q0fFD+jQjYwEP+xQ8j4/igGyk5O6LLa5fYGhskohtSNoJLZ5
+	6i6F5kLiE/SDIQEK6gD1ingg48el7Nts=
+X-Received: by 2002:a05:620a:459f:b0:92e:70e9:6865 with SMTP id
+ af79cd13be357-92e9a4eb48dmr1255848285a.59.1783330068520; Mon, 06 Jul 2026
+ 02:27:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260706084232.177786-1-jiangwen6@xiaomi.com>
-In-Reply-To: <20260706084232.177786-1-jiangwen6@xiaomi.com>
+References: <20260706084232.177786-1-jiangwen6@xiaomi.com> <20260706084232.177786-7-jiangwen6@xiaomi.com>
+In-Reply-To: <20260706084232.177786-7-jiangwen6@xiaomi.com>
 From: Barry Song <baohua@kernel.org>
-Date: Mon, 6 Jul 2026 17:23:48 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xpy5n_Hnb4z1CC-pYqk55NMmq8XL0p7u+WYjUSYvOnQw@mail.gmail.com>
-X-Gm-Features: AVVi8Ce5HO3aW-MIRduy27P7j1S6xo0Yi8WmdeV9cmeasUBES2Y1Oo867QtgRwc
-Message-ID: <CAGsJ_4xpy5n_Hnb4z1CC-pYqk55NMmq8XL0p7u+WYjUSYvOnQw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/6] mm/vmalloc: Speed up ioremap, vmalloc and vmap
- with contiguous memory
+Date: Mon, 6 Jul 2026 17:27:06 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4w-vUV=-EQd1fDJ5K71b=a606NPrzEubtdmBGteOmasfQ@mail.gmail.com>
+X-Gm-Features: AVVi8CdSZB9L0QzLhUWUjoEAyLiw0cSdtQRCJLhNwBUlc06gVCP3iTKrXFbv1G0
+Message-ID: <CAGsJ_4w-vUV=-EQd1fDJ5K71b=a606NPrzEubtdmBGteOmasfQ@mail.gmail.com>
+Subject: Re: [PATCH v5 6/6] mm/vmalloc: align vm_area so vmap() can batch mappings
 To: Wen Jiang <jiangwenxiaomi@gmail.com>
 Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
 	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com, 
@@ -94,12 +93,12 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7081240002
-X-Stat-Signature: i79y1xdaxndtp9ugnqaep5q7nafcqpf8
-X-HE-Tag: 1783329842-534006
-X-HE-Meta: U2FsdGVkX19wKyDiYg6dphqx/XEVV+teTA5txWtElqZWGhCpDOdAJ0/JTDGc3jgAy0wD5BkJ5u/eHMab6p7qr1+iFJFap9+bOFRQzABxOIeR9uwnLEmSuGYJ9RfOAOg/umOf5hIcfDPzOQzFGYujd09zNmnPkfzbbcKImaZtQNy4szVehlJF6oE6h6fBA/UEM2wbNQTQYjGh4TPCJjz3QZ4gV//wzC5OmIN2VYhoIk9TK+DcY46RGuXd2DzY++NBUxwl/ZqlU73qxWICG1v7Js5Rcjbh+gpU32gZ5NTAxzP40S6Zh62tJpkXc9XZvjiGZ4YhcoN4tsq/+H+ZbxwN9g1/UjyvRQDv1vFyJzknm6kdkSMMnVbh5/MoY6si4rB0jtKUzK9GJB1Uod0rcvGbQTdVn/GD5Oyc6roMCEM9y9qOEZ2Kd3uoa94kQi5RsSu7VFvb/wwSjPiow1mX35k4SkftivG5IC+TcwMosP0b7lCgBVulCllimawVsdxtwPq6p6dYDsA2h/ka2HjAZzLHnp+UfrbvUBfqQ4gAs3fbFUpI1Wa1pzVmms9Vo5l73QMhpkmUqIudlCVdCYXq2XVBXHJmOAfaw6ngULYqm0Htj16uTz8JhW2EgZb+EnZA6j8BjJUXRgtckGxKIRw3aY6tVo+O8oBG9TMRYf+0VfB96NwPRbV148qWsgkS4VLrse5j+8HD8vB0O9LA3w+6lp1begd+2WeFaUG6wtkWbP3rKQJYJVrtFd7CjEDurRyOZq6VEVtyezUv2MymQ6K8Ca4ENzx9sId/ulgclo5UmHN0i7SR6eUZoaNhlHZQ0hhUHdEm6i36F9D1O3671onDiH6sbUe2JeLhsK/hFrTd62RWLEu/za/QqSdJhZF6cc5rFe/8lIAK/tHpfCZQ2Fc2ZEc/wLjf6xNoOBIm2dMNQjc2EEdoXfWYdMUxVSAU05gY5eLTm3lLfLDeU2dfCv4puuy
- OzSrID1z
- 7zXGxXu2hiB0GMwggL0aNRdr38SKX5LWeZLudARubsspeCmTqekac8v3Etqq/Evjm//jxA9Lk0W7vNVKkSbDsAK2bRhmyGXD+zVSDFCk+nH0sk0JboN9p5E0GvCnwxG/vmzIPSn/EcK9s94vF7+w6eKr3O/ic/9cAE47Qp850trE4EChYARRn2wssEZseqFNQKW6+NdYGGbB1pJhsIa+/bjHgdMUxlTBujD76BIjh89uFP/h/lpeNyvY7iQkY7UxD090oqN6xrdW6OM1/AOs3atE3/2NzSrAVnRK1eU8/ILxYAuc/GWwDm4ipMLz3Q+C8GuAog0C8kmlUBDKrtVchmu3bpi/XTICTxeOqojSxRONRDh8V0CXCgGfffcW8sn+6azmfa+P/02o2i4S6YvFY1Qs45JHISsFhnxW3MvQ8JGmxS//wlVi86AsU9LVTpJY8u2ZTadGe+K+VZL8Qub5PznC+bg==
+X-Rspamd-Queue-Id: 2D8084000A
+X-Stat-Signature: cxwcs7yjprjrfzf33cpejrobna1aezpq
+X-HE-Tag: 1783330070-776088
+X-HE-Meta: U2FsdGVkX18FaLHOzL+XZOkZH0YP7WjS10wokEqrnEChMIXBqQdm/Z7Y/YnMeedxssDVuu7zNVqCgkSyd61RRbTUACP3Ncm2MEUkjH2+Fv/8oTyEncxY2jS3k8LDgKH9ZYauXBv6BhUi6OEvpE6lVDzCyV4iSDk0DRGzRsNBjDdEyO0jyq0HiXuZtlsBYm75+VRUIKTvo1tKQ3wqgbYpwISCEHfuWb/8tZaPS643k0yoy/sas8rAx/IMLdM+s/onOb11djZGoGBDjG8pok/Yi4K0kGI49urF9yv+yD7kBjZBE1RgTZosACcmnIocL/As+0dFw/BHOHtFpwwa0TEjMLrvyfQYJBw2piRhrPDN1OzjUjSQrrdBUIzX+MIfKdt/UzbF3vEzJmqCf7wdcM6Pc8Kwjmj/BqaQDgLP/FNnNak9I72bNeHz199KH54Z9qdRJz4mw3GoZ7zb9iDncOqqZkJ5a8dePljFkRSV/6xOzUi/A0wcdd0lKA2WXbzF6xDJJIK7IQLaxmuw11/KhzYEBGarBGjt7dYHrmSE9Ad73UF0W2eiVaCGaYwGz3Q/3Irw5thlnkUwlYlucw4gavd7OTDGxJAqenHDKwUF9W2DoxRxbyojQOnKPo9ZgErRuWby0sfv+RNVj2wyg4Pkb6QPU7BjrLjbQcYZTwj/W/bo6tTQw+zvs9zfD0oHS1ycXmtTrnS/LBZUCPqXMCOftAzTwb1N6gH51fujGVdxJDa1awggv7u699uM1QnSo8j5mCpnAKAMyOYla9VDwspRxpumV2BtNTJi7m6uWUmsX9OViWFNOTFXyysFTjMrZ7bqMweJiNxM4Vfzb/UvG3UOcBr+HqkR9pV+5VUC4CWGGE+F2WfODylJllnarDcmfrVm/zZ4DzcrO2eplUQhkHKZBi0bJDM06bvQ50LTeDdTOikEs6SqpXaigGNj/whKMWWvf7O8vVWDIMa7JmMa8cjQjHN
+ F/w0x8Fv
+ utwpLg4JlmntQXf/m06h7VrOn8fzbIvc1rF6m/OYa2bujMsFrcU5n9F8gs8nZbbphtsAVlaK3afZD0kP2qRJjCXWfpIndxO01ez2oDQp2GaXxbAAHWlQ5wypfGExM3KAX/x6jUq4SCwKNlg/d4Z2gi4KEvQurrwKgfGz15lPyQ726fZk8991SpY803EYVfgzeaWO+U/yO9/0Bdp4g13PW/oxKp15j9BgNH8tAa9+3Y6u+JOzEaR7hy9ERqzSd7N+jVamtDyz/dv53vwxckcAP+Kx5CGY6p84Mng7SdXnms6FSEgNkXce8j9VE0OMplHorQBPIxTmm5PbIC2ohYVp/1ARGQhL3tiWuWwtzDLylnM+XYmSUuKYnIPAKEVybblhSiP+wYKD/h7K/xLBypWJilXts3kmKcWURU+R831H/MQYDqSORKEzJ6NDOZ7tKP2eEFSl+4Rq+Kqw9EvnAq9rcIgkI6eAuW6KbGRKj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,52 +106,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 6, 2026 at 4:43=E2=80=AFPM Wen Jiang <jiangwenxiaomi@gmail.com>=
+On Mon, Jul 6, 2026 at 4:44=E2=80=AFPM Wen Jiang <jiangwenxiaomi@gmail.com>=
  wrote:
 >
-> This patchset accelerates ioremap, vmalloc, and vmap when the memory
-> is physically fully or partially contiguous. Two techniques are used:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 >
-> 1. Avoid page table rewalk when setting PTEs/PMDs for multiple memory
->    segments
-> 2. Use batched mappings wherever possible in both vmalloc and ARM64
->    layers
+> Try to align the vmap virtual address to PMD_SHIFT or a
+> larger PTE mapping size hinted by the architecture, so
+> contiguous pages can be batch-mapped when setting PMD or
+> PTE entries. We do not expect any significant overhead for
+> this.
 >
-> Besides accelerating the mapping path, this also enables large
-> mappings (PMD and cont-PTE) for vmap, which are currently not
-> supported.
+> Add __get_vm_area_node_aligned_caller() as a wrapper over
+> __get_vm_area_node() to simplify repeated calls with fixed
+> arguments.
 >
-> Patches 1-2 extend ARM64 vmalloc CONT-PTE mapping to support multiple
-> CONT-PTE regions instead of just one.
->
-> Patch 3 extracts a common helper vmap_set_ptes() that consolidates PTE
-> mapping logic between the ioremap and vmalloc/vmap paths, handling both
-> CONT_PTE and regular PTE mappings. This prepares for the next patch.
->
-> Patch 4 extends the page table walk path to support page shifts other
-> than PAGE_SHIFT and eliminates the page table rewalk for huge vmalloc
-> mappings. The function is renamed from vmap_small_pages_range_noflush()
-> to vmap_pages_range_noflush_walk().
->
-> Patches 5-6 add huge vmap support for contiguous pages, including
-> support for non-compound pages with pfn alignment verification.
->
-> On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
-> the performance CPUfreq policy enabled, benchmark results:
->
-> * ioremap(1 MB): 1.35x faster (3407 ns -> 2526 ns)
-> * vmalloc(1 MB) mapping time (excluding allocation) with
->   VM_ALLOW_HUGE_VMAP: 1.42x faster (5.00 us -> 3.53us)
-> * vmap(100MB) with order-8 pages: 8.3x faster (1235 us -> 149 us)
->
-> Many thanks to Xueyuan Chen for his testing efforts on RK3588 boards.
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>\
 
-Please also put Leo's data here[1] and also please collect Leo's tags in al=
-l
-patches.
+please collect Uladzislau's reviewed-by tags [1].
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+also to other patches with tags gotten in v4.
 
-Tested-by: Leo Yan <leo.yan@arm.com>
+You can use b4 which will help collect tags automatically.
 
-[1] https://lore.kernel.org/linux-mm/20260626151214.GA1794676@e132581.arm.c=
-om/
+[1] https://lore.kernel.org/linux-mm/aj6m1cFUTlr_DCdj@milan/
+
+> ---
+>  mm/vmalloc.c | 35 ++++++++++++++++++++++++++++++++++-
+>  1 file changed, 34 insertions(+), 1 deletion(-)
 
