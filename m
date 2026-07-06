@@ -4,103 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94EC9C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 12:54:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E8AC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 12:57:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C8C16B00A1; Mon,  6 Jul 2026 08:54:45 -0400 (EDT)
+	id 7203A6B00A0; Mon,  6 Jul 2026 08:57:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8790D6B00A2; Mon,  6 Jul 2026 08:54:45 -0400 (EDT)
+	id 6F8306B00A1; Mon,  6 Jul 2026 08:57:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744616B00A3; Mon,  6 Jul 2026 08:54:45 -0400 (EDT)
+	id 60DCA6B00B9; Mon,  6 Jul 2026 08:57:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 463E66B00A1
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:54:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BAFA914032B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:54:44 +0000 (UTC)
-X-FDA: 84958346088.23.E32615E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BDF2C4000B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:54:42 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OVFHaulk;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 24C476B00A0
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:57:38 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9BB13168A1A
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:57:37 +0000 (UTC)
+X-FDA: 84958353354.17.DAF1BC7
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8A16F160005
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:57:35 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H88q5VQK;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783342482;
+	s=arc-20220608; t=1783342655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O5CbBkIap44vv0dv2vbH0BDrSWl7QQVeNrKgD7wP9bs=;
-	b=aMpt2x/8spPvuj3e0NKH+dVwwEmgxxvZ0qEgK7mLqjIiJzpTlXXGK9fX9wP2ID5RSJrZSK
-	Flqy7O7CoQ6vYK357Ad0Gv3BRAELS2PsALts3jmWXVgVZUGhuyVEHF9vYpX1/VLSIbFQKx
-	lDS6yLdSDIwLVv8jJxazvPCozevAUm4=
+	bh=OjFikUNuPI2n8ZZt1QEzOtihOqsefSty5HS8pTICopI=;
+	b=pE/atdr4EHDReCE4HvyFBBfv/FGAQu6POq+DqVb77s7CvzmFaqjRpWCe3Ls38FXw3uD/lf
+	Snao0Mnhkdgmpfij5hbxRcPDXElmCDzTlVnU6A1oI58+sEWI3nVydqeTq9l+0dy7eM1GoF
+	ahv9IgtEpiYaQeog9WGYRxmN37YYJds=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OVFHaulk;
-	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H88q5VQK;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783342482;
-	b=A4nE39e8QuPrqgn4ZLWWE1lHAZU2dHGZKmetgN2FxQAjRSWgxVPPsAE5LmG8EvwlH2r4hf
-	6azYxKbpB9EUiKEhUnDfkS3/Ur0WqBeH440Njs7P1WOk0XgGSfIkpls+fmE4UdOdtCMz4m
-	Ft7bnVoDGf3VdXouwGkm0O3GGO2KAoo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ACF31439AC
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:54:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9303D1F0155B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783342481;
-	bh=O5CbBkIap44vv0dv2vbH0BDrSWl7QQVeNrKgD7wP9bs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=OVFHaulk0NPLBDGMxFVx22h4uhWSI0rSIgJg1MnyJM+e3Fyu94V3W+t6I790kmhGj
-	 x05bg1+xSP1gZkpy+epm9XPHf0jWCElNi0gZPPclgFLNlpT6z3aq+nhSx9vIvDRmJ7
-	 VVhdkEzza4n6ZY6qzSVEbJZ2JP1ojVn8bLRg0vjqNbPTDrjZG9qSswWxIvDuwUIboi
-	 02/vNMcrOoCgINQBo+zoyk2eZ4p/To3ZoVhag+kCTAfNV77UZ0gOI4wZJob2l1jH8w
-	 POme44tV3Jq7Ls9qX0SwQf5UVOkgBSaONLxbMioExxnzjqR49sPaxn53f0CUTybYld
-	 fIFCcaTLTHtgg==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e533aacf2so133945185a.2
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 05:54:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoD0q/3Bl9VnTT4YDxckaeQkRJSSOmhemv+h554FqGWM6ja5PnwZU2TzFGGYdMDiDvftMSiYbzg9g==@kvack.org
-X-Gm-Message-State: AOJu0Yy9pgjJcyG3lXQkb4XJtdiuaxyc63zXBA93h6/As+mn9lKZ5VRT
-	RrgvHxpFXd8ry7ZrT/1bGQhSZLqex0Sn6S73eVkoBtvYdTAklst6ruvF5pDexc3Sv0JUFBB6z0Y
-	C29XmsxlqzXb99Z7FjEYphxm5XCXVS+A=
-X-Received: by 2002:a05:620a:4515:b0:92b:67e6:8ac4 with SMTP id
- af79cd13be357-92ebb70e907mr53609885a.62.1783342480844; Mon, 06 Jul 2026
- 05:54:40 -0700 (PDT)
+	t=1783342655;
+	b=jPGcxGj6UcrB0IVIBP1lhb/ONjOsTYItAaxX9zuG2Y7MJolfQDQTAt4CrpCJSyF7RW+6fz
+	x7xurdrCgc0ylzxfREoktry1hxn1hF/yVMnloBylIvmbcaBC/qVoYnWJmZ9grxSw/r5Snr
+	I0fdZ3kkcy6XW7Mx58S+aDcF75BWu/s=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783342653;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OjFikUNuPI2n8ZZt1QEzOtihOqsefSty5HS8pTICopI=;
+	b=H88q5VQK6NqQgGY3kEsq1eEr14cqrv/6DD2eN3V5JsHcJspPjquBfXAw5Apj1brCu0T6wy
+	ggVGuWusnd40U5BETbluOBlNVEtJVnFGQ4ZemBxgd/CrNi0jDnqYDbL5WF7vDrIcRH2SjL
+	GLoQoj2mjEjKEJdcGAEY+2srcf+xoXs=
+From: Usama Arif <usama.arif@linux.dev>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	jthoughton@google.com,
+	aarcange@redhat.com,
+	sj@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kernel-team@meta.com,
+	kas@kernel.org
+Subject: Re: [PATCH v9 11/15] mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+Date: Mon,  6 Jul 2026 05:57:24 -0700
+Message-ID: <20260706125726.729431-1-usama.arif@linux.dev>
+In-Reply-To: <20260706084805.8400-12-kirill@shutemov.name>
+References: 
 MIME-Version: 1.0
-References: <20260706081218.3438762-1-richardycc@google.com>
-In-Reply-To: <20260706081218.3438762-1-richardycc@google.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 6 Jul 2026 20:54:28 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z+NfRbT0KYJA8Oe0QZ5nKUDLQFwE01Gy6khj6kq09JZA@mail.gmail.com>
-X-Gm-Features: AVVi8CdfHG0hck1UfRCYx5WHJjadHhzP9BH2o_DZBEbKZBrJKijblbNecG1ajMc
-Message-ID: <CAGsJ_4z+NfRbT0KYJA8Oe0QZ5nKUDLQFwE01Gy6khj6kq09JZA@mail.gmail.com>
-Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
-To: Richard Chang <richardycc@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8A16F160005
+X-Stat-Signature: p1oyidzyer57n6egfh7nsagx9puto3j9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BDF2C4000B
-X-Stat-Signature: ph6fx6dbqe88yj55o9o1rytmzha7t3dn
-X-HE-Tag: 1783342482-405596
-X-HE-Meta: U2FsdGVkX18YKMOH+zTUFnvSg2EePK12dWE1nAlc0/4RuMEJYCe3GhZguEQ69zkF2qwFo/aRv0XTD5eYPXCsybK4x0M5kpyUMg9vKGLUegqTssZbwMSOWxJJv4Xx6YYM3YPlXb6Tg8FyfQjryh03khBXuttz5M5rIVTybM6+fovMxqfBr17Bii4KFaPweTSFwBDuoKv0CbsHrWLK/SgXjvyIaGtH5p0eEMEd9Uezudau+uPFbpa9h5jV62t5MEHYYEKuNDUH9cZ6s2brLWysmY7fYRSKefCqssvJcYahUYNJCiD5PVM6nlHiXqa7wsiiJGqAjjlN5bvO209wlllqTAiJRrjMkSF7gBR0fsOobEdLjCpa4T322x6ZFwEaxW7Hd+KFQZ+uUb/8jasvfLM6UY57ZsD/f9Oo6UmNVF52ypyZ+wimYyEFDZC9PtJCW6/ekhhR8ftOcL40dNA8n5NQ8Ld6sEH/wQ7M8rOeLp7n6TKp3B8WNmIWN7mjsKMS97wnx92ntID78LERokVfwRiOoRoIS+ZR2vgI8dophydSSViMG27aBpIWSj7lqsNBepT1FYd0QvESK21TObD63XOGE85EYRCApkXnt0FC+UiXPZz3rSjRYFKJ5kFr4rStmOH2WDLS3ugcwTYfKxq7IUkpnvIe+QREeUryg0HxLBjRJXJ8K9y38/usdYqKgTgaPzXRZklRWc+cKDMgqj1KjewSDnRGf3p24kT8jdZ/vuxbJByE7Mbj0rWa2LKctVYsCWJ1f8GGoorgyecLNQDFF/YrFojlIVkh28YZxKSLsH8rdCcrfYn8yG4k2356shyT0XNleTXiHmK6P/OSQqu5tYWJsPViu4kpRSJ7QE8n34DnsJdwIwcwurPpmIBjwh4ehy144HQT85sbTr2fwEIq8tWmYJjwuAnbeb94zdKD8XgU0n5ENV8l2ZH/29mbIt6sfueuMjS7XTv9PsmrpZy1LOM
- XBvXX5Ge
- 0QeVxgQxYk++Kgfza/dVMWsl7Vt/4TCouLcDKcPahHut/C2MhTv7A7VzMS/D86JitiUok9Axy665KgOTcbCtM8I5BpojT0aoY2wFbqUvsGqY3Iql/FXfJm8c8avJnYcqAt7TChAH+vk6J8j1blOB6dDq3xNUJmSgdA8GrgZQGEiqbeKOS/sT/HdRLM/jy76xPNmJ35C7TU3RXrYaFggRTlabSBuuAOS/mWvtVhzn4wrksmqd+XI2Y7LFbM9+O2XkOxLvmJXinVMnPX31t6G1syLh6BPtUELyUOVJsOAFSniGiwMr8RVqph+WPgQ==
+X-HE-Tag: 1783342655-329175
+X-HE-Meta: U2FsdGVkX18QXOZeREDUDml+zCp1ZqfbeyOT2eaUcrZKbunC1RU6gM3A98+jbNgD7Fro94S/ZhSucDBBcJNRO+2m7yGY4UZ6CGNvCE8O0bQdqDbvUccGaybt6y8UcBcN4bhA6CDNkgb3yeOIJscpce9tlQ3qQyuKz1BOajQKXb1vFC+DOdB54+aq78iHSKUqtJIfmHkNmjGjFojXShugs6AM6ZkvIorTs7k4T27uTU3SqZn4LGnxRvRdSLCSOh+8gn2dK66hafpUNwtwq5wiexcIPfORgFr5GF5VoKkJ15jVIV9ahuaFJXVMAwhRO3YvmcW0bhu0H6TC0aNn55BeS28a8f8KEU3dyhsicgC4QPmPtALQkpWbM8qH0anzO10H1ZkhpnrEm96ZFpfxqKWg22uy7ATl7i8weY08JDbDXuMgY2lMVb72jc9EV6K37nEF7QX+AOzK5eUc0BgA/zeyC0dNVFT42IfCWCDHrGbVRps+554gH8XQwzsTGZRlPZNsDJo2NfaxVioJK2ualQBl6/nNAn5OFaovo12uZGlZOI+eluGrFZnxRPLWsrHUaMsRF3VV7UBmjJA50/7IeU5DS5RmJrUnfSMFvfamAyoxXdynbQ+Rh0Rn442HTGBgd60VjibZ0UGz0I0WpKobyE3cPhDfBrUAgN7v+W8hmlQEaQlifASl/VRhFOUkYxsKJY8Fsxn5Q6kp7q4rHg5iyUuKiruGZA+RJ0minYKkqRovhSmutI/o4g4Zsp1PMKq75b7d7uODn6wmc7VWSE1Voe+ETGM4uIDzxFd0y6IZgxV7Hbklu2cu7AR4W1HSktAUXrb1A5/aleCaSQroADiHG6P1DKG8IBq9tjMGp+0PiOaonnkhLkt4sZ3MlMu0IDzehI407D+RdntU3kb0WVtOvR9FWLbP/0itbDOWI7v0UqEDLl1d2b0NoCRUX82a9lI3ddDQ0Ny7Iaypw27bCZezFAO
+ 6jbLjqgA
+ 2Fe2uiHfDI1BWCzVtVE52UDDq5PAO4WmCEMDaJoXjDQZEL0kOrcL8KLyLQqLzBE5OGOzVvjH5fBFbWku9UwNjplJCiMNT7XCF9Qn+fJntU/w/9N4IfoTeRK3dKHDBxJ0R+0JprHc8Nji2NffChrd8RN5wCyfPzvnELRuh3RFqbH5Bn+u+RsKpaP6fL9hfecWWaFYk2KAip5VSEdSENKUpQNUQLf1ou85+ZOyQooM1RRyjfbeXjTlGf1p1NATRaSya7m6htzBCNSPYr6aEo9KI9qsdkPEEJm+8CtX3itNUZynKLhcZusSI1SRWJzs2pjghI/wBsTvXGnS3Rs5Act6JmobeiOC248HacZt1nDY/eKHZadW5JFBIGtd1xSeryEfj2Z5Q
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,54 +110,272 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 6, 2026 at 4:12=E2=80=AFPM Richard Chang <richardycc@google.com=
-> wrote:
->
-> Proactive reclaim (via memory.reclaim or node reclaim) checks for pending
-> signals in its outer loop in user_proactive_reclaim(). However, the inner
-> reclaim loops=E2=80=94scanning cgroups in shrink_many() and evicting foli=
-os in
-> try_to_shrink_lruvec() can run for a long time before returning to the
-> outer loop, especially on systems with many cgroups or large memory sizes=
-.
->
-> This latency in responding to signals can block the freezer (both cgroup
-> freezer and system suspend), leading to freezer timeouts. This issue was
-> specifically observed on Android when attempting to freeze background
-> cgroups while proactive reclaim was active.
->
-> Add a signal_pending() check to should_abort_scan() for proactive reclaim
-> paths. Since should_abort_scan() is called within the inner scanning and
-> eviction loops, this allows proactive reclaim to abort early and return t=
-o
-> the outer loop, ensuring the task can enter the refrigerator in a timely
-> manner.
->
-> This check is limited to proactive reclaim (sc->proactive) to avoid
-> affecting reactive reclaim paths, and wrapped in unlikely() as it is a
-> slow path.
->
-> Signed-off-by: Richard Chang <richardycc@google.com>
+On Mon,  6 Jul 2026 09:48:00 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> PAGEMAP_SCAN already reports PAGE_IS_WRITTEN from the inverted uffd
+> PTE bit, targeting the UFFDIO_WRITEPROTECT workflow. UFFDIO_RWPROTECT
+> reuses the same PTE bit as a marker for read-write protection, but
+> "has been written" and "has been accessed" are distinct semantic
+> signals — they happen to share one PTE bit today only because the two
+> implementations share infrastructure.
+> 
+> Give RWP its own pagemap category so the UAPI does not conflate them:
+> 
+>   PAGE_IS_WRITTEN   reported on VM_UFFD_WP VMAs,  !pte_uffd(pte)
+>   PAGE_IS_ACCESSED  reported on VM_UFFD_RWP VMAs, !pte_uffd(pte)
+> 
+> Both still read the same PTE bit today, but each is scoped to the VMA
+> whose registered mode makes the bit meaningful. If a future
+> implementation moves RWP to a separate PTE bit, only PAGE_IS_ACCESSED
+> switches over.
+> 
+> This is a UAPI narrowing. Outside VM_UFFD_WP VMAs the uffd bit is
+> always clear, so PAGEMAP_SCAN used to flag PAGE_IS_WRITTEN on every
+> present PTE there — a meaningless duplicate of PAGE_IS_PRESENT. Now
+> PAGE_IS_WRITTEN fires only inside VM_UFFD_WP VMAs.
+> 
+> pagemap_hugetlb_category() now takes the vma like its PTE/PMD peers.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
->  mm/vmscan.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..fb472e924fc7 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4929,6 +4929,9 @@ static bool should_abort_scan(struct lruvec *lruvec=
-, struct scan_control *sc)
->         int i;
->         enum zone_watermarks mark;
->
-> +       if (unlikely(sc->proactive && signal_pending(current)))
-> +               return true;
-> +
+>  Documentation/admin-guide/mm/pagemap.rst | 13 +++--
+>  fs/proc/task_mmu.c                       | 63 +++++++++++++++++-------
+>  include/uapi/linux/fs.h                  |  1 +
+>  tools/include/uapi/linux/fs.h            |  1 +
+>  4 files changed, 57 insertions(+), 21 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
+> index c57e61b5d8aa..ffa690a171c8 100644
+> --- a/Documentation/admin-guide/mm/pagemap.rst
+> +++ b/Documentation/admin-guide/mm/pagemap.rst
+> @@ -19,8 +19,11 @@ There are four components to pagemap:
+>      * Bit  55    pte is soft-dirty (see
+>        Documentation/admin-guide/mm/soft-dirty.rst)
+>      * Bit  56    page exclusively mapped (since 4.2)
+> -    * Bit  57    pte is uffd-wp write-protected (since 5.13) (see
+> -      Documentation/admin-guide/mm/userfaultfd.rst)
+> +    * Bit  57    pte is tracked by userfaultfd (since 5.13) — in a
+> +      ``VM_UFFD_WP`` VMA this indicates a write-protected PTE; in a
+> +      ``VM_UFFD_RWP`` VMA it indicates an RWP-protected PTE. WP and
+> +      RWP are mutually exclusive per VMA, so the meaning is
+> +      unambiguous. See Documentation/admin-guide/mm/userfaultfd.rst.
+>      * Bit  58    pte is a guard region (since 6.15) (see madvise (2) man page)
+>      * Bits 59-60 zero
+>      * Bit  61    page is file-page or shared-anon (since 3.5)
+> @@ -244,7 +247,8 @@ in this IOCTL:
+>  Following flags about pages are currently supported:
+>  
+>  - ``PAGE_IS_WPALLOWED`` - Page has async-write-protection enabled
+> -- ``PAGE_IS_WRITTEN`` - Page has been written to from the time it was write protected
+> +- ``PAGE_IS_WRITTEN`` - Page in a ``UFFDIO_REGISTER_MODE_WP`` VMA has been
+> +  written to since it was write-protected. Only reported inside such VMAs.
+>  - ``PAGE_IS_FILE`` - Page is file backed
+>  - ``PAGE_IS_PRESENT`` - Page is present in the memory
+>  - ``PAGE_IS_SWAPPED`` - Page is in swapped
+> @@ -252,6 +256,9 @@ Following flags about pages are currently supported:
+>  - ``PAGE_IS_HUGE`` - Page is PMD-mapped THP or Hugetlb backed
+>  - ``PAGE_IS_SOFT_DIRTY`` - Page is soft-dirty
+>  - ``PAGE_IS_GUARD`` - Page is a part of a guard region
+> +- ``PAGE_IS_ACCESSED`` - Page in a ``UFFDIO_REGISTER_MODE_RWP`` VMA has been
+> +  accessed since RWP was applied. Only reported inside such VMAs. See
+> +  Documentation/admin-guide/mm/userfaultfd.rst for the RWP workflow.
+>  
+>  The ``struct pm_scan_arg`` is used as the argument of the IOCTL.
+>  
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 5b55c59573a3..2d724156763d 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -2283,7 +2283,7 @@ static const struct mm_walk_ops pagemap_ops = {
+>   * Bits 5-54  swap offset if swapped
+>   * Bit  55    pte is soft-dirty (see Documentation/admin-guide/mm/soft-dirty.rst)
+>   * Bit  56    page exclusively mapped
+> - * Bit  57    pte is uffd-wp write-protected
+> + * Bit  57    pte is tracked by userfaultfd (uffd-wp or RWP)
+>   * Bit  58    pte is a guard region
+>   * Bits 59-60 zero
+>   * Bit  61    page is file-page or shared-anon
+> @@ -2418,7 +2418,7 @@ static int pagemap_release(struct inode *inode, struct file *file)
+>  				 PAGE_IS_FILE |	PAGE_IS_PRESENT |	\
+>  				 PAGE_IS_SWAPPED | PAGE_IS_PFNZERO |	\
+>  				 PAGE_IS_HUGE | PAGE_IS_SOFT_DIRTY |	\
+> -				 PAGE_IS_GUARD)
+> +				 PAGE_IS_GUARD | PAGE_IS_ACCESSED)
+>  #define PM_SCAN_FLAGS		(PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC)
+>  
+>  struct pagemap_scan_private {
+> @@ -2443,8 +2443,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
+>  
+>  		categories = PAGE_IS_PRESENT;
+>  
+> -		if (!pte_uffd(pte))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pte_uffd(pte)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
 
-Seems reasonable to me. I wonder if you have a script to
-reproduce the issue. I'd like to test it.
+The above is an ABI change for existing PAGEMAP_SCAN users although not
+sure if there is someone that cares. Would below be a better alternative
+to limit the ABI change?
 
-Best Regards
-Barry
+if (!pte_uffd(pte)) {
+	if (userfaultfd_rwp(vma))
+		categories |= PAGE_IS_ACCESSED;
+	else
+		categories |= PAGE_IS_WRITTEN;
+}
+
+
+>  
+>  		if (p->masks_of_interest & PAGE_IS_FILE) {
+>  			page = vm_normal_page(vma, addr, pte);
+> @@ -2461,8 +2465,12 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
+>  
+>  		categories = PAGE_IS_SWAPPED;
+>  
+> -		if (!pte_swp_uffd_any(pte))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pte_swp_uffd_any(pte)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  
+>  		entry = softleaf_from_pte(pte);
+>  		if (softleaf_is_guard_marker(entry))
+> @@ -2511,8 +2519,12 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
+>  		struct page *page;
+>  
+>  		categories |= PAGE_IS_PRESENT;
+> -		if (!pmd_uffd(pmd))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pmd_uffd(pmd)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  
+>  		if (p->masks_of_interest & PAGE_IS_FILE) {
+>  			page = vm_normal_page_pmd(vma, addr, pmd);
+> @@ -2526,8 +2538,12 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
+>  			categories |= PAGE_IS_SOFT_DIRTY;
+>  	} else {
+>  		categories |= PAGE_IS_SWAPPED;
+> -		if (!pmd_swp_uffd(pmd))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pmd_swp_uffd(pmd)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  		if (pmd_swp_soft_dirty(pmd))
+>  			categories |= PAGE_IS_SOFT_DIRTY;
+>  
+> @@ -2560,7 +2576,8 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
+>  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+>  
+>  #ifdef CONFIG_HUGETLB_PAGE
+> -static unsigned long pagemap_hugetlb_category(pte_t pte)
+> +static unsigned long pagemap_hugetlb_category(struct vm_area_struct *vma,
+> +					      pte_t pte)
+>  {
+>  	unsigned long categories = PAGE_IS_HUGE;
+>  
+> @@ -2575,8 +2592,12 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
+>  	if (pte_present(pte)) {
+>  		categories |= PAGE_IS_PRESENT;
+>  
+> -		if (!huge_pte_uffd(pte))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!huge_pte_uffd(pte)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  		if (!PageAnon(pte_page(pte)))
+>  			categories |= PAGE_IS_FILE;
+>  		if (is_zero_pfn(pte_pfn(pte)))
+> @@ -2586,8 +2607,12 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
+>  	} else {
+>  		categories |= PAGE_IS_SWAPPED;
+>  
+> -		if (!pte_swp_uffd_any(pte))
+> -			categories |= PAGE_IS_WRITTEN;
+> +		if (!pte_swp_uffd_any(pte)) {
+> +			if (userfaultfd_wp(vma))
+> +				categories |= PAGE_IS_WRITTEN;
+> +			if (userfaultfd_rwp(vma))
+> +				categories |= PAGE_IS_ACCESSED;
+> +		}
+>  		if (pte_swp_soft_dirty(pte))
+>  			categories |= PAGE_IS_SOFT_DIRTY;
+>  	}
+> @@ -2863,7 +2888,8 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsigned long start,
+>  		goto flush_and_return;
+>  	}
+>  
+> -	if (!p->arg.category_anyof_mask && !p->arg.category_inverted &&
+> +	if (userfaultfd_wp(vma) && !p->arg.category_anyof_mask &&
+> +	    !p->arg.category_inverted &&
+>  	    p->arg.category_mask == PAGE_IS_WRITTEN &&
+>  	    p->arg.return_mask == PAGE_IS_WRITTEN) {
+>  		for (addr = start; addr < end; pte++, addr += PAGE_SIZE) {
+> @@ -2938,7 +2964,8 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep, unsigned long hmask,
+>  		/* Go the short route when not write-protecting pages. */
+>  
+>  		pte = huge_ptep_get(walk->mm, start, ptep);
+> -		categories = p->cur_vma_category | pagemap_hugetlb_category(pte);
+> +		categories = p->cur_vma_category |
+> +			     pagemap_hugetlb_category(vma, pte);
+>  
+>  		if (!pagemap_scan_is_interesting_page(categories, p))
+>  			return 0;
+> @@ -2950,7 +2977,7 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep, unsigned long hmask,
+>  	ptl = huge_pte_lock(hstate_vma(vma), vma->vm_mm, ptep);
+>  
+>  	pte = huge_ptep_get(walk->mm, start, ptep);
+> -	categories = p->cur_vma_category | pagemap_hugetlb_category(pte);
+> +	categories = p->cur_vma_category | pagemap_hugetlb_category(vma, pte);
+>  
+>  	if (!pagemap_scan_is_interesting_page(categories, p))
+>  		goto out_unlock;
+> diff --git a/include/uapi/linux/fs.h b/include/uapi/linux/fs.h
+> index bd87262f2e34..34c6f219462a 100644
+> --- a/include/uapi/linux/fs.h
+> +++ b/include/uapi/linux/fs.h
+> @@ -471,6 +471,7 @@ typedef int __bitwise __kernel_rwf_t;
+>  #define PAGE_IS_HUGE		(1 << 6)
+>  #define PAGE_IS_SOFT_DIRTY	(1 << 7)
+>  #define PAGE_IS_GUARD		(1 << 8)
+> +#define PAGE_IS_ACCESSED	(1 << 9)
+>  
+>  /*
+>   * struct page_region - Page region with flags
+> diff --git a/tools/include/uapi/linux/fs.h b/tools/include/uapi/linux/fs.h
+> index 24ddf7bc4f25..f0a26309b6d5 100644
+> --- a/tools/include/uapi/linux/fs.h
+> +++ b/tools/include/uapi/linux/fs.h
+> @@ -364,6 +364,7 @@ typedef int __bitwise __kernel_rwf_t;
+>  #define PAGE_IS_HUGE		(1 << 6)
+>  #define PAGE_IS_SOFT_DIRTY	(1 << 7)
+>  #define PAGE_IS_GUARD		(1 << 8)
+> +#define PAGE_IS_ACCESSED	(1 << 9)
+>  
+>  /*
+>   * struct page_region - Page region with flags
+> -- 
+> 2.54.0
+> 
+> 
 
