@@ -4,126 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CD07C44501
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 12:47:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F672C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 12:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 18EC66B00B9; Mon,  6 Jul 2026 08:47:10 -0400 (EDT)
+	id 675AF6B009E; Mon,  6 Jul 2026 08:50:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 145936B00BC; Mon,  6 Jul 2026 08:47:10 -0400 (EDT)
+	id 5FFFC6B00A0; Mon,  6 Jul 2026 08:50:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0074C6B00BB; Mon,  6 Jul 2026 08:47:09 -0400 (EDT)
+	id 4C7F76B00A1; Mon,  6 Jul 2026 08:50:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C49216B00B9
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:47:09 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5C8CA1A03AB
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:47:09 +0000 (UTC)
-X-FDA: 84958326978.08.4C385C8
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8837B20009
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:47:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZdKFD9HW;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of abarnas@google.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=abarnas@google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 24ECB6B009E
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:50:22 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9650B12040C
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:50:21 +0000 (UTC)
+X-FDA: 84958335042.05.0A94055
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7A15E40007
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:50:19 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9iHldaB;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783342219;
+	b=gmQWwLixFW3cNvlbpTsNh9LbLPDtDcc3otE6aJg1/MYhDgfmPGeSdCeu00Dd2qmmRRGe5e
+	s+TS3X5YHNchEHdeATkB0zrzmtPmy6drWxKKAPOk80HG4HgHuuziEGxRMhULNzgcb6/ZAB
+	SogJeHwOxYLSHJZc/elwV53B2YVmuZM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9iHldaB;
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783342027;
+	s=arc-20220608; t=1783342219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Z+2hoZtpw/juCIwoax/ETRjvK9I1r7BSvf+QwuO3A8=;
-	b=wlSYwnLJDsUxSS1ykUjLpvwif0us3NdfdZMCKSzz3Crc2LNRmRJjPX0Yjs0UaN+BXh5L29
-	ScuVwNFNBK5XIwjW0tvAS6W29Phv6uFmNArMOdsnDsT+KvA4NzvDBG9qm5yZXgERc9P+F8
-	dO6J3XVgoBBttXbwHALrUBA6ELBMRZc=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZdKFD9HW;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf31.hostedemail.com: domain of abarnas@google.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=abarnas@google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783342027;
-	b=ElaJWtgCUm1KUzfnKht23kEULXMCX1Ti++CZALBJeZ8MUORlYlCstlPhnHL3inShs4zrox
-	f5crDYOttCR9TCYHY62/qku/HKJAAc7qVAY8H1y4cWwWDvbVjpAtpzCKLJLw/GJ/2Mzfcz
-	3TfSflKKKvYraNoRfvt0stndxecVhlU=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4799b3f7c83so1962433f8f.2
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 05:47:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783342026; x=1783946826; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7Z+2hoZtpw/juCIwoax/ETRjvK9I1r7BSvf+QwuO3A8=;
-        b=ZdKFD9HWp/R8FKzC9E/hE5llyayiPV80E0zyjQD+vrTFfNV1wEOcx11V5DNkhoVFCN
-         mh6K8gDuJ/hpNLtX1mfl10W2ThL9XDNoQD5sjtgLzj7uK0zN7lwfJZ1Z8UYQxpUGjl06
-         9nGarpVUjNJrwlFpUWuNLsMiHQwvmSnj/Is7XjERRfp73YgQklMxaQpez2DfxhejR2Qz
-         jeXZmVs9UA6VhPoHe3LzaRIJSCpFOrRg8PIBLxXGugFku+2TaldzAGtk4BC2HRj3mfqi
-         SX48/QMOESpwD7E6FPZCudwqwO1awYDx60fHyhXxioxGActcPe8os1yYywd6V6XRZewf
-         Se3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783342026; x=1783946826;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Z+2hoZtpw/juCIwoax/ETRjvK9I1r7BSvf+QwuO3A8=;
-        b=kZiovmeA+zRJDGg6WzQ2PmymFGcgc/2d63itxU42ybsw1p1qezuJDQE+/mJOW5GrDi
-         Jj12Zy3vOI3d+2AukyECdqFsY4WZeV1Cy6dcEVxlpDjSeW6t4yvYthlUEevQeF+UtkGF
-         K3JOUJlASi/5pRW+CCaHZPOddD7jngoL0kWTFwL2cUKqVsllTe/Yh0v24+j7oPJJu39s
-         XRu7L4RDrLVpACVk8p3HruddvFeyNBYUmr2pnu9+6d0Fk4lFcR0EUZzpPn0w44m1R0lS
-         1OfA8QArXgJB3up/L6AN9uzrEs5OQZfNIktSj2whlBIe36KZ5y0P3WeTvfG9bwIiMJ+I
-         H4qw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro0KO33hEvRNpcvXUFe7mM05xGD5i+0H7Jy6xqjkU0ok2IS0H6lwlOEwqyQDLo6eFVd2r01gVTMyg==@kvack.org
-X-Gm-Message-State: AOJu0Yy/ehVSCvjkAcW+je3q8hwjI1sndEEbEPKAl1NnCYqAHthPvbmZ
-	s9ox3JjbQ7pTymnJNY8Bufj+4OoBrr84zQMGsWvAxY9+I0szl9aMJYbmvXUlGfYXNg==
-X-Gm-Gg: AfdE7cls0Ga2YpF1bw2P84Qb83cXAw+kP5NR9bXLsffGhu7KXAfk+eXdM3u6tG3xK1g
-	LufOYDpabUiamdFSHsQGUT5dibvNWnmNKMYzWw41wBymfBYlR4wWKShCw88KuGLuw3l9VSE8S8I
-	QQKoQV1x3+YFwPSA0hXspzDNfIvcqwdLWMOKOz4mRN2loqkE8LZ1naJL3/gY75t4Q2XpCqV9wSi
-	8HX1GGEVrOloFcXjaJTf5Fv3WcMnKUMu53YPt3Ojb15e0gD6hEFTbF5WoTc8sQtDLLRwxqEibND
-	k+bgY1XxMEK95RAbjC02XN1jqXz0a8HOcdDwowNnjdxAN9tg3EJkoLxOqfbCwrzbvpptzG+ujhu
-	xHNMN0ioYsuSUZdR10i6+qStHFqf/jwIcAukEXxPP7uGFS5lBFo/c0h6nxzCrncN7fS+DTGS9FH
-	diA4VEwOHbUAqZKEAxyxJzoZcLC1FP4gZBJZGw7TU+ArjIozQ=
-X-Received: by 2002:a05:6000:2905:b0:477:2e75:522c with SMTP id ffacd0b85a97d-47aabe30701mr12311138f8f.28.1783342025703;
-        Mon, 06 Jul 2026 05:47:05 -0700 (PDT)
-Received: from google.com (97.113.76.34.bc.googleusercontent.com. [34.76.113.97])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960af0sm22530706f8f.30.2026.07.06.05.47.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 05:47:05 -0700 (PDT)
-Date: Mon, 6 Jul 2026 12:47:02 +0000
-From: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Brendan Jackman <brendan.jackman@linux.dev>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Brendan Jackman <jackmanb@google.com>, owner-linux-mm@kvack.org
-Subject: Re: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions
- on execmem cache clean
-Message-ID: <akujxlkkeS_TJ4ri@google.com>
-References: <20260611130144.1385343-1-abarnas@google.com>
- <20260611130144.1385343-4-abarnas@google.com>
- <DJ69RCVRBO0Y.3JCYSW50IC4RC@linux.dev>
- <aiuyoy8Kmr9yU4GM@kernel.org>
- <ajK6w3YTFpVaUl3v@google.com>
- <akuS8uhjPBhI5mzZ@kernel.org>
+	bh=x/DflsyFZMMMayN88xFKrPbO4xIeLNs4y3Zz8/BKzSU=;
+	b=077o7DDnva6pxwy9U0wOENi4uWWEabtrRasihyPl6qfKAW+NhTLg5H4cfgmnIziydvnV0B
+	S70DA3qw5dPdNWljWbhX0pgrLLbiRTXR/StukKdsqZu+pGrviMfVa+zCzoF07jZxUXUULC
+	14omlbb6npjggH/0YkgRJHmnztSdJ+g=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 48EAF4050A;
+	Mon,  6 Jul 2026 12:50:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB3F1F00A3A;
+	Mon,  6 Jul 2026 12:50:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783342218;
+	bh=x/DflsyFZMMMayN88xFKrPbO4xIeLNs4y3Zz8/BKzSU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Q9iHldaBZZwuLrQUeNXYgasOU2CPJWjyKJQUSk3YvITH4PYsI74DgvixGO0lHw9w4
+	 Ld9xF6TsHb/VZZqOkmpgL/fwpuUkBvgPVGIk9rpG/7B2KIRCWoq0UZbhWixAeR/T5w
+	 oAvVGoymC+QqnF8/A5W9jVzeO1xB+k6Et+fSz8g/nDZQywn73t8di44o+mH+rxLer6
+	 NGIPWGelihVNAbyow6cNKnmgVXmHwL0BaBwhn99gLKeG4Fku0o4H/8wc3ANkI7mMxz
+	 1YC5RHw385RqNOK85Wn6kH/4fzrhsvYcoUpMBNDHkzhFYhHLeKhGFnZCBxJj/n21tr
+	 Mav+lDo9u7UDw==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CF10DF40069;
+	Mon,  6 Jul 2026 08:50:16 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Mon, 06 Jul 2026 08:50:16 -0400
+X-ME-Sender: <xms:iKRLau3SIV1ga2IXEcxmtkspgJYfGXmVuL3kw5AgHScj7JgSkLnQwA>
+    <xme:iKRLaopElpCL64HvkrfO71huXOhFjVSIutlxPAW7I-fJjmbShCGbfd-Ei3qG9REUo
+    nsTi4haN97ukkKclY3Dal_3ySqhMyNyOIhMdU2WgXzRK7AqfgC6lL4>
+X-ME-Received: <xmr:iKRLaj2Dz9O6VscEvBi_NAhvto_QaPXXyX_LFtBxwxibm37O7w9X2gI0WyknAQ>
+X-ME-Proxy-Cause: dmFkZTF5xoQbiJ989r5bQ3iWyvjnYkkpnn8LZ7V/DF21MHB1XhwEDrMV3RpigyPZf9Kjbd
+    afP+mbhtkFcxAR0V96R7snet1ndSR1y+kbEFZqDtXLcgbSQ0fqMhvpzLpvMrWPvM5KjYDK
+    GEc293eRnQOyLMVp814avRhM/uJcgPZF5ND3c5YgaKA2HC866/u0RFdGAaEQfuRV9ZZNj+
+    fW6FFAX1knGAG1vcgwAvBk1xRYiQYoB2JtvDNTjC/WAezs+bDmPlNgu7fVPslaFpU1mgUZ
+    a3St44qB9vtXtxWWPrw5w90yvN7I9P81VgZ1jhxatN6PE3VdoBWD9+OzK83OWGkY3GCdo5
+    KPnKPFF/IECcZSnvNci1MgpUcjxcEAP7zgwvmQYNmJSSsxJCP63svv855l/1yEpypATk3E
+    onW8pX/4CnX+4VAr7yQpXm1vQm60XLuen732kMrkEwSW16gqg3qhwaI0Yi4COVhPoDwB37
+    IKEY2EuVna9bSVlxZuwLoRxQyg4ilz3KygVsTcogPuefre6ttKXkQy1G1kfOxe+jL/M2mt
+    L3FQ+pwqbUfIlpGLH6u3KtB3gW1t/jFSWQRI49xUSLk9N9zn4EEUI33CrYRy5I4t9XxxXF
+    t5er9dSmANX5Pz9QmuvacnuL0XCbbBlTrB2wEqBHk5j+EDGg4kD3gS4R8A+w
+X-ME-Proxy: <xmx:iKRLatyFzByqhCwGEjDurhUeAk-sai-nDxz9mInfCYQvK0TJgVhYxg>
+    <xmx:iKRLaqyemv7b5-LDKueFysi6v2D4mI5Rj9VxJGI7ymQBUxm4715yWQ>
+    <xmx:iKRLatrX4A5hWNyvLzjUwfhPt4c2h5qY9sS6NrruEwojOQ-PKGaI6A>
+    <xmx:iKRLamrrkYeGFkNlN1mzUUOEy1bMdyOO9kLAgV3Rf9OpyEZt4B_JwQ>
+    <xmx:iKRLami1xuE25QEGh4G1OocOqECH4oB2eQiTKH3TuV_6z9PIs0VHWXs7>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 6 Jul 2026 08:50:16 -0400 (EDT)
+Date: Mon, 6 Jul 2026 13:50:15 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, 
+	linux-mm@kvack.org, ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>, 
+	willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, 
+	shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org, dev.jain@arm.com, 
+	baolin.wang@linux.alibaba.com, npache@redhat.com, "Liam R. Howlett" <liam@infradead.org>, 
+	ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/6] mm: extract mm_prepare_for_swap_entries() helper
+Message-ID: <akukfKtNVEmdzXPR@thinkstation>
+References: <20260706114320.1643046-1-usama.arif@linux.dev>
+ <20260706114320.1643046-3-usama.arif@linux.dev>
+ <akuXgognmAW0QhOX@thinkstation>
+ <642efd6d-7366-4641-a999-2d419fd38f8d@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <akuS8uhjPBhI5mzZ@kernel.org>
-X-Stat-Signature: agxcjpxcmobp7xkfks5qter9wpnxyid4
-X-Rspamd-Queue-Id: 8837B20009
-X-Rspamd-Server: rspam01
+In-Reply-To: <642efd6d-7366-4641-a999-2d419fd38f8d@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1783342027-207282
-X-HE-Meta: U2FsdGVkX19v8ltpxginTp7/YdLMlStWiQWOayislaiGQWRSC88x3Gj1Sf8f4IqJsOOd6wpuvfwZg8Ez3miMEfPw5RMfeezu+4bxOSAwILMpcxu0osrOMIsJc2AdRmLdkZ4Rba5sWSvaI/4m53RjjRlhVDObmdoKbGFk2Aqlqmhz+sZaaAJ8mTITeCWc3qVeFuscwJwob+Q7E8L49t4jij9/lzvGBi8CXo3LaUStM+Mn4PV4qGDHInIvyiqUN2hioXhh4fzR2CMJZxq4UoS6Ti8RiKE3YuX6FSl6F2QEUpjrCaz7P+KwwIp/bBocr0luZTUpPaQvd7CUKTuelsDJLOyA+edW1s16zXKM6yG0ghl9TlCJ9DM0TK6g6DcFlpW5/lan/j1PG0fXm9x4lXrYHb1Gvd+3QvcdM7zVbTxeykzz8v/m/zWAjKebgOOVu7YwFHIK0O+FL2pgShn/avKLX837Z0AhUPXaFGms+A5fTjNZ6OBVO5+F03fMsdLUs6d4a2wKydIR4TxI2fuOH4/tgs9UPtwc4uH14DV5T+cbV4AQSR9DZZ+eSG7xGgsEqPSAloUxrBx2wjxaAbUacizlW4UgRaJoqNFPYfHzYjdGQ9tIG9tntmnu8ofNdO7fpjvU1BIWTEdHKBIBNaCGw7O5iMOEs96Pb5AFMXCsYpSZzKL+JK/X/iviOPM9bFmQxzD3DF3A9kh1GDNBcNvkSeEo8TTKozXImMTJhYF1KO20sGwOtKu/K/a/oaj1OV7wggOZJP2Y6oHKW4KIYwaepvZNQmIZjfqCItnGQ6ZQEuYMFCz0vfj6J7nRMcSDZzlzy3DjyJ5rhHfGL4VbFJyS/c4kGuEfAhEkjMLznrIPfhvsqwbn5ngdchBrW/kaYuYrD9T2PvRrBPgh2IcwtVPNAtOrZgKRXK2Z5WIZzSMd6K12+JRSfyekLYCdhQ8Hki3JMuN8dmAAPQ3tEPn+dFO3SQe
- ht0ASrJB
- Rrory5anHhcwBU4bhawKSaxjHAsWfdv6/l+gHcc83mlh0nvcXDd4vroIVNo1iloI7DtAEzE7bftKKu4wSYbKs/90Upzrq4QijfuzWh3K/BQVWhCOz0lFUKYh5WvXR1qnXoAht/2SVZj2XN+PJTScUSZsp3MYoInZFKSmsxT4JfcvUvgOlkSGPKti90oXDVaQaHLTz/liGbLm2oyjm0WztYJJ+aXqyI8H2LDj+RT9JT59RiRe0T6YzIjeOelZiMA1f8wWxJKbjlQkAv6tlGG8F9p3ezTpNfQ2YXScb9oxI9ghaFTD2OCI8edaTvW5Qe+HULfj4PAYS6uYhG7gbciNNSmXcIWMQ2gv4lt+tKQp6Wz9T8yjgd5VfkqFk8jsGWPz6Xd/yDHpuPYlXH99QseUCKIGMEeRkD9s7CtKXdkiEhiOxRXxqnjG8RV62HA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7A15E40007
+X-Stat-Signature: e5wmywrp1ncjc5sko9qfftwmtfmqsw4y
+X-HE-Tag: 1783342219-46653
+X-HE-Meta: U2FsdGVkX1+U+XwrQyWRPb/9/U7ZGyi9rSvFFiCQ5XWmkhseml1QBMOML6wQXJVQvF8/iKMcZtbvZn5IQdXyjEq/B9QQ5y2vN47gnqCR53dnTT248k5bDcSnTCnym91PLeHyfvB+JpaWA1wGdNASxR4CkkOnGUygNM95rRHjwGdWwN9jVEnLJOvtiQ2nhNuM8A566EcfC5Uq5mw9/Wp7WmCV0ta/eLlfx4xYD25pV0YkdnE6WwmsqHvazMV84ktjsNvF8qGrRwel6kCA7cScFgRSu0fgxIZNn3666ikIt7PMRzoOUtzYUcwnCCY2Q4D15QGIninPtkXvVOjj+piKPylhbmB2+kFVxY6AARnpTaNIr5sYQQsv06BEe7jKVjDwhusEclc0co4IcFsLIK93doCPtMJndvPJgiTXKjafN43x0/XyLht7f/lYVqCC5CG5J0UEWVpZ6fLhAfqsTYs0jo57xJhkoBDOwoHaUjw0dIjPcHSsasuBK/t/SP0/GUp52Vt5zgpCUbeNTbcBbvkTWWfSp31oxupL2D2ubWaakSRA3TBN+JBX0FjUjARiITpisnlPYE/BXz9SuCqkV+jlYpqATRkBt8zuW2a6CQnI1Y2WzDFywe54LPZ56JVaXNJMOkgbfvOiAWy5m/VzhQ4K8EvWlUoq+FuVFoi6wLr7KxrkESq5C3yKayrkPpT1KpYfRVz8dlqngLZ30bHBoy2YYnb3sPfdv/MxusHRXcCESelufInJSZIdUszCgkfSLidm5taEMlG6iSmTGbg0fVUL0p16vb3ZuzIj6AQIngYfOe9cmYg0rdroohGkAfBWC4nijbLoYTEcvzZrzEUYgJ9Bx4wZ6C6P3JbEyaKd1JGWhNxzClXloK/8inVbWO5V7gk5aVKy9ryuHP9A/Wst2l/MZyV0+PBIEY91I4z4Pk48DAXbo/7z4X22fGChUglEE0Bvpx5+pseQIASIr+7XK39
+ q4Qd5/hh
+ IPrIPcKva/idalzSH45418HyprZI4dnpFcZxbjfyThhH4gghSUk14hFV20p7/opbk0davTAe5W7nc2l4iowzS7+Gi+XrjmNRMeSSj1nrpDuxSxdnNrrFL4xvJqXGjBliBv8yZ5umnuxYtKZjyGwSdHV+kIcZ5oX2nQQ0tHo9YhOLbsebUcuXpUfgHQ2jE3ZGHejjkG8YMk6RvWmDyprvZX1Hwv3T6BnZS7S2wx8C+honM9iwTb97988n1XIEaJc/cuT3JzVJADivfRTNnQPPgOwfa9YPAKoB3Z28J3D23Wkgy2ljTBophOvAy6mVZHiY1aPPJn5s9X7VwmHr/gzzFavgkGYoCAHBgfiHjPP6kl1YgezDLbu/5iCjkkfTaTshx1A2PwPzbu3TkmNjgcFZsEDbIZxwX/IBtERYFQN/RFhe/OTv4MFz6ZPWXGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,34 +127,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 02:35:14PM +0300, Mike Rapoport wrote:
->Hi Adrian,
->
->On Wed, Jun 17, 2026 at 03:18:27PM +0000, Adrian Barnaś wrote:
->>
->> Following your suggestion, I can put together a preparatory patch series to
->> refactor the set_direct_map_* APIs to accept a nr_pages parameter. This
->> refactoring would also allow us to drop the redundant set_area_direct_map
->> helper. I could then rebase the rox_cache series on top of that.
->
->I've been looking at something related and I was already half way through
->adding numpages to set_direct_map when I remembered this conversation :)
->
->Here's what I have for now:
->
->https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=direct-map/v0
->
-                                                                            
-I did roughly the same on my local tree.                                   
-                                                                            
->This is only lightly build tested for arm64 and x86.                      
->                                                                          
->As this is WIP, things may change there, but I hope it can save you some  
->time with your arm64 ROX cache work.                                   
+On Mon, Jul 06, 2026 at 01:23:29PM +0100, Usama Arif wrote:
+> 
+> 
+> On 06/07/2026 13:01, Kiryl Shutsemau wrote:
+> > On Mon, Jul 06, 2026 at 04:42:04AM -0700, Usama Arif wrote:
+> >> When a swap entry is installed in a page table, the mm must be added
+> >> to init_mm.mmlist so that swapoff can find and unuse its swap entries.
+> >> This double-checked locking pattern is currently open-coded in
+> >> try_to_unmap_one() and copy_nonpresent_pte().
+> >>
+> >> Move it into mm_prepare_for_swap_entries() in mm/internal.h and convert
+> >> both callers so it can be reused by upcoming PMD-level swap entry code
+> >> paths that also need to register the mm with swapoff.
+> >>
+> >> copy_nonpresent_pte() previously inserted into &src_mm->mmlist rather
+> >> than &init_mm.mmlist, but the insertion point is irrelevant, mmlist
+> >> is a circular list and swapoff walks it entirely from init_mm.mmlist,
+> >> so only membership matters, not position.
+> >>
+> >> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> >> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> >> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> >> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> >> ---
+> >>  mm/internal.h | 10 ++++++++++
+> >>  mm/memory.c   |  9 +--------
+> >>  mm/rmap.c     |  7 +------
+> >>  3 files changed, 12 insertions(+), 14 deletions(-)
+> >>
+> >> diff --git a/mm/internal.h b/mm/internal.h
+> >> index 430aa72a4575..0360648e5726 100644
+> >> --- a/mm/internal.h
+> >> +++ b/mm/internal.h
+> >> @@ -1955,4 +1955,14 @@ static inline int get_sysctl_max_map_count(void)
+> >>  bool may_expand_vm(struct mm_struct *mm, const vma_flags_t *vma_flags,
+> >>  		   unsigned long npages);
+> >>  
+> >> +static inline void mm_prepare_for_swap_entries(struct mm_struct *mm)
+> >> +{
+> >> +	if (list_empty(&mm->mmlist)) {
+> >> +		spin_lock(&mmlist_lock);
+> >> +		if (list_empty(&mm->mmlist))
+> >> +			list_add(&mm->mmlist, &init_mm.mmlist);
+> > 
+> > The patch is fine, but the name of the field is awful. Seeing mmlist I
+> > assumed it listed all mm_structs. It has to have "swap" somewhere in the
+> > field name.
+> > 
+> 
+> I can send a separate patch once this is replaced to replace mmlist with
+> swap_mmlist if that sounds better?
 
-I will fetch your commits and I will keep an eye on your tree if anything  
-changes.                                                                   
+Yep, better.
 
-Thanks,
-Adrian                                                                                           
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
