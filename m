@@ -4,83 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F0E7C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 03:25:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90F44C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 03:58:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5DFA6B009E; Sun,  5 Jul 2026 23:25:30 -0400 (EDT)
+	id 2FFB96B009E; Sun,  5 Jul 2026 23:58:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0EF56B009F; Sun,  5 Jul 2026 23:25:30 -0400 (EDT)
+	id 2B0CD6B009F; Sun,  5 Jul 2026 23:58:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFCC26B00A0; Sun,  5 Jul 2026 23:25:30 -0400 (EDT)
+	id 1C6986B00A0; Sun,  5 Jul 2026 23:58:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A1906B009E
-	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 23:25:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DD29514026E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 03:25:29 +0000 (UTC)
-X-FDA: 84956911578.12.70109E2
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 929CE180009
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 03:25:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HMvSN6s8;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E3C606B009E
+	for <linux-mm@kvack.org>; Sun,  5 Jul 2026 23:58:35 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 476461C1BC7
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 03:58:35 +0000 (UTC)
+X-FDA: 84956994990.28.4853390
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 572A720002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 03:58:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=e5AadE2f;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783310313;
+	b=XCpjTwDl1DGLadXqo7S0kbOJL624yakymvw9oRCNkrMEckyNjDXUpl6uPkxwKsxJocI6i+
+	uLSn+RHpyG1a/vMoSD0ROl1KBGLa0iHMoO9OlxHQSxmO5CrIQ2uimGtDu9fQF1mHpmw+I5
+	zYd81x06xTZKButntLRlvYJaB+qpi50=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=e5AadE2f;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783308328;
+	s=arc-20220608; t=1783310313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=rfnZ/lC4Rb2GAMPajAZjxcZCPKg4CeTNBMYP2PQYiAY=;
-	b=iQvMLeObFAe1aJFcFYBzhAgwQlOrQCNcKqeSsWwGjVhhin2e4388oQGKaEHkBAezay9tE6
-	8qYgC4c/oyR93LiHhA1rAV1DEHJJT32Ww9XUilQOchdOfDPLIxxDcQp47Wj0F5ijA5z5Pr
-	DjhuW27gCmODApAIf892PwdzinB4PNg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HMvSN6s8;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783308328;
-	b=IkVSJx4FDClDIGN8KQsW4g/6CNGgd4cJcflnBXy9Oy3lrisgtNPO9U4ISmoRIwoKCa/Fyd
-	SPRu1+kluY1wQDXEchvbxZ8gvFUYxVYACW73L0G3HMboK1v37wh7DtiRPwQvknEz8kcS7t
-	fjlQ859+MIjzoGPMLnKWjBctw/Favu4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783308324; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=rfnZ/lC4Rb2GAMPajAZjxcZCPKg4CeTNBMYP2PQYiAY=;
-	b=HMvSN6s8GFhZN1qSjS1rK/av6d2ENo8yrNsIt1OWAAISn7/WK+n/C5AztvCWDn01xSJTAsw20zBzmPK3esZgEXc5crmOYys1H8lE3EnCwFhrPU/3nTjYz3+na9HpU4K2zq9CHMG9cNCTErl9pnjQ+1M+vz36Ahgo8nC0JfbA8dM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R291e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0X6PRHzq_1783308322;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6PRHzq_1783308322 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 06 Jul 2026 11:25:23 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	hughd@google.com,
-	stable@vger.kernel.org
-Cc: kasong@tencent.com,
-	baohua@kernel.org,
-	machao26@xiaomi.com,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.18.y] mm: shmem: fix potential livelock issue for shmem direct swapin
-Date: Mon,  6 Jul 2026 11:25:13 +0800
-Message-ID: <173f3fd983d735155d47e9e39d27f0c2d62a7c31.1783307463.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oPT5GCvBZJJjoFBxUutZLl6TvHZ6APGzDMMZtlpoCkw=;
+	b=3rdlss6OAzVXgkdhrWVknz/jbWnBYv6wGUc07BIXdUiXVqhbv/Ti346R8+v2Eg4VTK7W1z
+	3nq3MjBn25eSpXkdDdgpMd9wDD5ScMuV8iRyns2FyqlDN0IegmQGbtAFXZ9Kfj46mpP0nV
+	dt7ycQj6OzhiSe+cBPE6IhkVzej2w+U=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=oPT5GCvBZJJjoFBxUutZLl6TvHZ6APGzDMMZtlpoCkw=; b=e5AadE2fcatFwDztki5HGa+1/w
+	ruYgTHD6EzgtoCJFe8FDTdnLA3F3wPwBrKOjvHa7Cd9k2CId4eJNzllfe2WPVV9rBRnQ2fI3KpsSI
+	BFmEx/25BqsNOM2ttPLVOiUIjmgGxWW1XIdxkpAYjm7xwMB32fbTG2J9aw4IIF2d0vgvTeNqupAc6
+	NFVZ/nmN2C3ZyYDVu9+DK6C+wp53CCbC/8GO7Z9svPt4t1a9Z5RqWKsYEfqE5mcT9UoT3277OFawh
+	ubWmItj47cMWlq/w2FsSgxtNJY1iKy19UcvtUN04qT3/z+gdQ9TQUhXrQ3spVbrGqLFEEsk/uK6Gj
+	GcGv2VxQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wgaTU-0000000FA9e-1f9p;
+	Mon, 06 Jul 2026 03:58:28 +0000
+Date: Mon, 6 Jul 2026 04:58:28 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Hajime Tazaki <thehajime@gmail.com>, liam@infradead.org, ljs@kernel.org,
+	vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: nommu: point to the write iterator upon split_vma
+Message-ID: <aksn5J8Nr0JIsVpQ@casper.infradead.org>
+References: <20260702012546.665383-1-thehajime@gmail.com>
+ <20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 929CE180009
-X-Stat-Signature: fq8peapzctcrrk1azusg5uiiqepqnuhz
+In-Reply-To: <20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
+X-Rspamd-Queue-Id: 572A720002
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783308326-458542
-X-HE-Meta: U2FsdGVkX1+ORq4qWwLqwzjYttZ00NTsG/YncS/EDzaAf/yJcAr12AE1SF2iXJGmJY5ZfoIn4A1JDGrbGZh0ErgE4bGMx/X/15O96PPOnzG0vdRWQXwIfoYAy1vWFdWtqOL8LjRywpBXO65XLhovggitMayWSAfIlrCK7ZPo40MKUemnzFxbZ3psN8QznItA+fVhQDSBFRIoVGOcLGisHYb3BV6hcl9JCqmP5/rNOvxWF6uxEPs5LsNHq8SfpfeKqvpIR84IkzLnHzr5JR06/yXaBI/5j570E6BAkmPEWqQx0LzwaRI+5df5cceKkUa/oD8jmmRZw9fVoEw9LWpOl/o8eNhb9LPqaovZjdZo1PRTX+UCK3UN88Fcpe6MSQzZM6hnzfG/j3J+xCn2824qA+zsgk4XAyMVChPic6FSRoa3+4En87h+6lMxnvB3GDGe39rb8FNWMnH3A6yOkRaY6DyyUC6QylUOrm5HC0cpb95tlYsQsI5QKCF/1yENUjrDtXrPcc6LHisEo8a0LHp64j85MCH5FYtt1yFqpG5wCdAtLgns7d4D41CyaasXYcEsp5KYk5NGoSZMv2t8EjnXeOg4B85IUXkcHRcDLAu8K5lPJOdCLHeGxVpmlGfjwg8oslMisAdOFbv/XVYUXc6bIFtHftbKloaBAI0sUx/7Bgh45rVebvcNntbuCYX40rrz4LQPEZr+F5QrB8JTPr7GL8KFH/TPssybLvrOMUp5C8bQ983KRlhvFfZt2CgcYSbRQudKFRICsRdCQywrpqjv4zrB6ZZw/ApgOlm0u4v5Xp+UQh/IgMDvgqDXWnheSGMehAVIZAfwSN4vEqMGEzUsfguGjkkyHFQ42KfyGA806eIImOlNdZsO+mEyw5Gpr+JTEi6qShAkD3EfXlGk7I4IM9zA+L5vclE1UgW9FaWH/+9S9j+0sUAe+SpRRYK6q6QuChGanBAFnc9uGlzR9dv
- QCc7y++N
- 90gs7tGb2FYEYf3LK7up7bSsg4kmL8UKeF95fiupvrMfukQc5sfL+D+S9sXEyzknVYUdMoTmqmujT6Rk3xm3dMSHFe9+zcCIcW76eJKuuATFhm2bIQRu0mDLhQT+PnEmcybX3iXp1Gfus1uAV2Rr5tLAmnIGXtxMlgeeriWS01u/ay9jyS1qjsVbJgbt+XcyxrU0to810CAID9woJXNcnzSOfwl/UHnRPaZdQn01c95vJYUetm3w7CRnk9zz0zqlfpkvWh7tdYanuKag+xkjjkxMBIhWMremA4JpmCaQDU+L2Ce3kKMMxHHsRF1aoDD9dHsZT
+X-Stat-Signature: yjs65551rtripf8epriahuzmgguiras4
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783310312-315851
+X-HE-Meta: U2FsdGVkX19NB/AlFo00IppXfvbjg7CaWR99pqoSPxhY+m1lUuX1VKinblCNxJDR61Q0Wtdzh5F2eSEQ5LnnpQSLI2zWnKZCsIVigWpmreGembsyKUZB264EY+iBVWFIxv1NUpyKY0Wro5tylLUSwEEwaL+qt0FpvkS7EGb9w/OHbBPB2U6iXlM4B9B1TCgGObOEkT8lAzC/oqtcNUCyUdGo1K+XvrsaV8lUNTqSlKKZYAfBjsmckGJehla084w7MbMJ9YwW7eF4nLqZc2pIzGSZJ+D65zfy9OZe0oX2+iLLk3q89YMukEQ04N7aZAF2o11O0LcT9SkhKI4BwCG5c41qUESfgjvmyl8nX8+QE57h0ZkhKE1bSnwNiFRxXLqi0nJNtwmNkDvhXKUASu3ueVHeC/8TiJO2KHdXsnXwuA9gmIMH1w8CmDGwmPYVI9fqO+nGp+uxtBafPQzDv9GqrF221/sICcVRUUh5TraVArO3+AGvlsI3GO+9BgIA0GEbnvNiz8QyqPQUw6AzmfnGuGI2Y+GyLSWZrAKGYXS6pk4zrrkJAL4daoM8LBKAffrlmG09SinIhZhO1Y97CV7VIqHYQ/U8UWyIfI0PhVf1o6zjm/PsWyBY9VlHQWlasZDjy+9kscYTV+npW/5XcYKHUbsLQx+WSHYthnY8S61EoBk8HXv0rp3mvkCqVTFDnD6RDld2jbx0XgWWuKTQSS0YIPpC62bz7TxvfPERthP6Bv8m2Oi9HZ0ESgT023Ha/EZ+ALMUrTVvBw2JeFnXTpkZ83o8l48z2JGR2taBuwTDqzjWLx75oYgP/Qqb4PhbWzn+t238he5zBXRrSDzOm6NVyvherme9QZZDSmnc1ktmZNg7FG+nIgovVFKk6vbW7yTlLw3uKBbpOtz8xRYbm38Cxas+WKkIqzSYdovSMuElYkV14WEFWEsARaxfN8BcC4F8fgO49Ach+Zhz5jkU/Jd
+ /Xm5w7TY
+ KTQ57ieBYYK8aYx/x26oDIevAE36WnInbtHkT1FVbCFfSfQ/4xXBbBjI3F9Alvlx0y4ZkPa/3gCAoAxvnRnFNVNqnOT6qF1osXy73qx8N0ZO8Mp+U1UVqtlVbnPYCAiD9//ramvKdVyaPlnfK7r/j0EhEyAlTkHJ/pC6syvoUQ3yINiJWaftbLVgaBLYdCc6MHrT5UtFJbycXWMkyt8krtyOfGAA6Un8hy7y79/JiqMIBh9rnX+7DB9Esi6x+6jGtvWSiwKlSJx0jq9OG3cWR06DtYffdg7MtdWcqUwCWHOcrwJAfxz9ay6cGig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,52 +92,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When skipping swapcache for synchronous IO swap devices, swapcache_prepare()
-is used to prevent parallel swapin from proceeding with the swap cache flag.
-However, on PREEMPT kernels this can lead to a livelock, as reported by Chao[1]:
+On Sun, Jul 05, 2026 at 03:27:08PM -0700, Andrew Morton wrote:
+> Thanks.  Unfortunately we aren't very diligent about the nommu code
+> (are we?).   Perhaps appropriately - clearly this code doesn't get used a
+> lot.
 
-Thread A starts direct swapin of a shmem folio and calls swapcache_prepare()
-to set SWAP_HAS_CACHE. It may then be preempted inside workingset_refault().
-Meanwhile, a higher priority thread B also attempts direct swapin of the same
-shmem swap entry. Since swapcache_prepare() already marks the entry, thread B
-repeatedly gets -EEXIST and busy-loops waiting for thread A to finish. But as
-thread B runs at higher priority, thread A cannot preempt it, resulting in
-starvation and a livelock.
+Should we delete support for NOMMU?  As you say, it doesn't get much
+testing, or presumably usage.  I have this quote from #m68k a couple of
+years ago...
 
-Fix it by yielding the CPU with schedule_timeout_uninterruptible(1) when
-swapcache_prepare() fails, following the same approach used in commits
-029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead") and
-13ddaf26be32 ("mm/swap: fix race when skipping swapcache").
+: I looked at nommu very briefly when I had my 68000 board on the bench
+: but didn’t get anywhere. Also didn’t try particularly hard. I think
+: you are better off with fuzix or OS9 if you want something unixy.
 
-Note that mainline does not have this potential issue, which has already been
-resolved by Kairui's swap refactoring work[2].
-
-[1] https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xiaomi.com/
-[2] https://lore.kernel.org/all/20260517-swap-table-p4-v5-0-88ae43e064c7@tencent.com/
-Fixes: 1dd44c0af4fa ("mm: shmem: skip swapcache for swapin of synchronous swap device")
-Reported-by: Ma Chao <machao26@xiaomi.com>
-Closes: https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xiaomi.com/
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
-Hi Chao, could you try this patch to check if it fixes your issue? Thanks.
----
- mm/shmem.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 94c5b0d78ac3..d4cb57b3b0ef 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2066,6 +2066,8 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
- 	if (swapcache_prepare(entry, nr_pages)) {
- 		folio_put(new);
- 		new = ERR_PTR(-EEXIST);
-+		/* Relax a bit to prevent rapid repeated page faults */
-+		schedule_timeout_uninterruptible(1);
- 		/* Try smaller folio to avoid cache conflict */
- 		goto fallback;
- 	}
--- 
-2.47.3
+(i suspect Zephyr would also be good, but it doesn't support m68k, just
+arc, arm, arm64, mips, openrisc, renesas rx, riscv, sparc, x86 and xtensa)
 
 
