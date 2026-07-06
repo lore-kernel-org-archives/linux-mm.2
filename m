@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1796AC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5BAFC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 06:20:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97B4E6B00B8; Mon,  6 Jul 2026 02:20:28 -0400 (EDT)
+	id CB0FC6B00CA; Mon,  6 Jul 2026 02:20:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 950B56B00B9; Mon,  6 Jul 2026 02:20:28 -0400 (EDT)
+	id BC4B56B00CB; Mon,  6 Jul 2026 02:20:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F5766B00BA; Mon,  6 Jul 2026 02:20:28 -0400 (EDT)
+	id A3EBA6B00CC; Mon,  6 Jul 2026 02:20:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 41A3B6B00B8
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:28 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B804C1402B3
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:27 +0000 (UTC)
-X-FDA: 84957352494.22.D53B0A7
+	by kanga.kvack.org (Postfix) with ESMTP id 62DDD6B00CA
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 02:20:30 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CB19C1C7B21
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:29 +0000 (UTC)
+X-FDA: 84957352578.10.23964E9
 Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BC29E20005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:25 +0000 (UTC)
+	by imf13.hostedemail.com (Postfix) with ESMTP id F358220002
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 06:20:27 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783318826;
+	s=arc-20220608; t=1783318828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=rrQiWujWWIkGhvMiXVG/4I092tD6mL3XOIwMfDj2M1U=;
-	b=EC8HWJjsS34ezCLspv1/ne6Woz+7D73ANRhx9PTSzlmwV6GVGuaEzUGlRWBBlIRCs9cVq2
-	WDsCSef9amcWPDLyOczNDHro09rPGkDG9Lg75gl7+62G/NJzxisf9VmSeeONrM9lI1G3uZ
-	xxDL/smbqRM+YwIJEJM1wK4tBn9+EK4=
+	bh=UGkObL7oD/K2bAkUVhXxAs7YoFHUnPDSWQxkr9+NXKk=;
+	b=Mk7UyyBt1g+9dVIY36Tcamcv5aBid6N6dcIE+cJdTA9KsM7ypZlK3ohrMdrB2PstGj3JWJ
+	Uygj5QEbE7ngmmssWoJvMYQF7khfvvSY1BwukDo9Bi03BP0SmSFGg6Of+8Mb19PPzEDjak
+	D86s/HPD5QA6rhj7Yd5PG1juuJFnc1Y=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=sk.com;
 	spf=pass (imf13.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783318826;
-	b=tYjzsE1Hq4Yw8XmBOV2S37Jt38L5I0LBI3AcOkK46CrlmOGpE4dRNh9z3X1/HwAMmtU7um
-	Ul32tJN0Y8cq3P0Z1OwY6wOKhIdRgdHsys9SFcWWmtym8/OxqEKLxGisbwEVeuuVq7VoP9
-	EOj5btwTvpP+xUKNoq2jrUoc6rxPvFY=
-X-AuditID: a67dfc5b-c2dff70000001609-62-6a4b48ff0ae4
+	t=1783318828;
+	b=hSI0oSu6EJimyNMSSM5qyhpuLvuM4jsW+gwe01SPWQ27viKWy3sGkVX1qE8rGnFR81QDyx
+	aV9TH2vFkj0XP08xq4Oox+GioyqejYFbg6UicRLciGahXh5aTfQtlDfdx8rsx0OILHGtG1
+	mDAkJKoPqOUYXliJvLXMaZQiY/BPjc4=
+X-AuditID: a67dfc5b-c45ff70000001609-43-6a4b48ffa4ec
 From: Byungchul Park <byungchul@sk.com>
 To: linux-kernel@vger.kernel.org
 Cc: max.byungchul.park@gmail.com,
@@ -214,54 +214,54 @@ Cc: max.byungchul.park@gmail.com,
 	aliceryhl@google.com,
 	tmgross@umich.edu,
 	rust-for-linux@vger.kernel.org
-Subject: [PATCH v19 18/40] dept: apply timeout consideration to waitqueue wait
-Date: Mon,  6 Jul 2026 15:19:06 +0900
-Message-Id: <20260706061928.66713-19-byungchul@sk.com>
+Subject: [PATCH v19 17/40] dept: apply timeout consideration to swait
+Date: Mon,  6 Jul 2026 15:19:05 +0900
+Message-Id: <20260706061928.66713-18-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260706061928.66713-1-byungchul@sk.com>
 References: <20260706061928.66713-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTZxTH9zz3Ps+97SzedWTe6QeWLnOLBvcSISfLRtiybHczcb7ELNlL
-	XGOvo6wUU4SBGVk3S1aZsIqhDPCluMgKrYBVRKigY5YJC10rRCqC1s0ABoobsgJSZa2b3/75
-	/8755Xw4PKMeJSt5vXG3bDJqDRqqZJWRZXWp+N0N2S/dmHscDjW7KVg91QQCTS4EJe1LLCx1
-	9iCwBysYCAXOM+A+/TWGuy0PKFTevEXhTv1+BDVjtRxEbngJDEWnEEza/6IwczuMYOBWEvRW
-	fkdhbLgTQ3u4g4PgZAzDiL0Cw2+2YxjsJ1dAbdUEhsoTXgxLjlzocY1z0BT5nUDv9SsE2sxh
-	DmYHb2KwdvzDwkDHIQrX3UsErvV/z8HxoSCGaPkqCBwoIzAZrWfgatUUB5cvODA4/64i0NDZ
-	T6HFUsNB6/kSBN9OeCn01/oJDF71IuiyhjFcbG7D0Dz2CwPHnREC4zWHMfSN3uXg3k8+BH33
-	+jD8UR6JC3xzHFhG0mBxPn7EfMufBGZdjRSmbbMkM1OaKylnpZLL96nkPuJGUnvNKCdZuoY5
-	yeHJl04510g/nruNpeHJ1yVP4z4qeWYqOKlucYKRSiODWBq5co5K034/J136YZHdlPKh8jWd
-	bNAXyKYXMz5VZg0dC5JdrVxh74MFakYWWooUvCisF53uavIot/oPPOyp8LwYCi0wiZwsPCOe
-	KhuLzyh5RhhIEffXl7EJ8KSwUWzbG4kDnmeF58TwwtuJWiWki3UD5v+dKaKr5cJDjyLeN8UO
-	40RWC2nitTu/sgmnKBxViPboLP5v4WnxZ2eItSGVAz3WiNR6Y0GOVm9Yvy6ryKgvXLcjN8eD
-	4k9XXxz76CyaCWztRgKPNMtUkPletppoC/KKcrqRyDOaZNXqFzZkq1U6bdEe2ZS73ZRvkPO6
-	0Sqe1axQvRL9QqcWPtPulj+X5V2y6RHFvGKlGW2LebbsbUAk4+i0L6m9B4ptR5xcdlL+VHnq
-	2mKrMdSM+zJcjtRLW4aXv1prXL3wzcHqzQfPmH3L09Vpz46eqNA36Ao/vm9PqgvOp7/lPRMz
-	CL5tn1xce1r9hOOdufE3tu7MtPr36N6sSrbQD2y5CvKU/csOW1Ep3/X+5n0bv9oZ0LB5WdqX
-	1zCmPO2/VgO56nADAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUhTcRTG+9+X/66jxW0ZXgoxFqkU9gIWB4ooorq9SfQl6IVa7pbTOWMz
-	S0NS18re52KTmppZjtBZpplprUTJMlu5VimpqbBW4tQop0ydNou+HJ7z/M55OB8OQ0pr6QWM
-	Up0qaNRylQyLKXHcWl3MNL8jceULx1LI1Z+Brh43DZ+zGyjwjeRSUPDAhiFgqRVBbtUNGl63
-	51DQdr8cQY8vF8HYhIUEfd00BQFjswhG/J0iMGUjmLY3IzA7jSR0tL0gwfYom4DflVMYBpp+
-	ITD1uTHk92dTMGy9jOCmxyKC/pdbYbDnKQ3T3d8JaB/1IrC6pwhwN5xHEDAnwa2S6uC6+SeG
-	Ccd7EvJNbQhu93WT8Ku/F8Gj5q8I7PdyMHwz1JDgcs+Bj75hDC2mSxgGnQUEDFViKM6x0+B8
-	O4Cg0GJE4PliJ0B35wEGc2EVBXW99SJwDkwS0GU2ElBetQt6rB4KWg0lRPDc4NTDMLDk64hg
-	+UGAqeIpAX5rmWhDKeLH9Fcpvqz6McHrPwQwbyuyIX5i3Ij4kVIdyesNwbbJO0zyZ6tP8qWt
-	XsyP+z5h3j5aTPFvSjj+7oVxgs9zxPB1N7tFuzfuE69TCCplmqBZsf6wOKG9xEkfrxGdapny
-	4yx0Fl9EIQzHxnI17/L+asxGcR0dfnJGh7KLuOorHvoiEjMk64rgLluvUDNgHhvH1eoGg4Bh
-	KHYJ1+vfMmNL2DXcbVcW/S8zgiuvbPibExL0708WEjNayq7mOodfUQYkLkazylCoUp2WLFeq
-	Vi/XJiWkq5WnlsenJFeh4DtZMyfznqAR19ZGxDJINlsCG7YnSml5mjY9uRFxDCkLlURG70iU
-	ShTy9AxBk3JIc0IlaBvRQoaShUm27xUOS9lj8lQhSRCOC5r/lGBCFmShcKHp0n7x4oqD9c9j
-	PU80Ec1Ru0LLIgcDIes2OxRDYerzC78uq8/c41BEH2DIlnMVcXfH9tWc3onqwsszZUdu4Mii
-	obnxnX3Xw+dvTHrojY5JUOgXkae37DxqHcUHfftfdn1KJeNd3kDAoZJ+kG+KNYiv2bZltGSY
-	nkmob8YoWkZpE+SrlpIarfwPjIP3fkoDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUxTdxjF/d93GjtuisYLLnOpigaioqJ7dJuBLItXzRLdkmXRJbORGylC
+	wUJRjJpOEscEdHYCkYpDhJtSSgtlZIg0Y2grBRqLKFSLgC8rEl6qHbh0oKxA+PLk5Jzz/D4d
+	Bpf1k1GMUpUlqFWKVDklISTjSys2YHv2pcTlB8LhmsVEQZ71KgntfecIcJtrELzTOWiYDHpp
+	mLU5EBR363DwuP/EYfROAIFfLEBQ6tPTMGLfDbNPhzHoezuG4GXrTwgCI0MIfncMILAZzlHw
+	cMpPgbMon4KJOgrK9DoEvic2DHJvWijoHp3BoMb6FQyKPgL0JblY6LzCoKj2NgZB0UiD3tVD
+	gqNmmAbz+H0SnAO9JIz6dBQM3jtPwh/aIRqsj+0ITAU+HPKapwiwvghVbE9i4cb5SgJabE4C
+	8t5NInA0Pcegp/kaBQV1jSQMmGZJ0Or/JcHd2kmCZdiDQaejnQBnaTUBXtclGu4315LwbMhD
+	QoOrC4faiQoKfp3wIXhcMkaDOOWnE5J403UT4qf/0yF+sioX5++M+XG+qnOM4jsqOP6yawN/
+	q/QpzZdbNXyDIYa/2TKC8VbjzxRvDeho/sb0K5y/MP4Q4/t7W6j9sQclnyUJqcpsQb1p12FJ
+	suXljyjjH+pkib2S1KIO8gIKYzg2niuaHMUXdcfFN9icpth1nMcTnPeXsR9zDYW+UF/C4GzP
+	Kq5ALCTmggj2S66s0R4KGIZg13JF9elzUspu5+z9Hy0gV3E1da3zmLCQbZ4pm8fL2G2c13+P
+	mENy7G9h3N3XLmzhIZL7y+AhfkHScrTEiGRKVXaaQpkavzE5R6U8ufFIepoVhTYnnpk51IQC
+	7m/aEMsg+VIpJOxNkZGK7MyctDbEMbh8mTR6/b4UmTRJkXNKUKf/oNakCpltaCVDyFdIt7w9
+	kSRjjyqyhGOCkCGoF1OMCYvSItHZXX3pw7PDrarwoePvGbPxVnAwXirEvX8WZfzi62hL13JV
+	cuSV6vwVx2b7Amt8q91xx7+/bi7HNJf93h32z9WP6uudiV06Ji8t42/2xbRooA58K4m8HZ1y
+	yPCJ6rvi+tpPg+2ahMRNQuQHsRFbvfnrZpThD7RZp9cW7zyjMfSKciIzWbE5BldnKv4H7IC0
+	tG8DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSWUxTYRCF/e/WS7V6U4leV0yNaNwXNOMSt0T9A7HxTWKMWvUqZbcFBIzR
+	glVUMNjYEikoIhRCq0UWFU2V1ICKGkFUQEAwqShhqUuLYbNeNL5Mzsw582UehiXld+nprDo6
+	TtBEqyIVjJSSKtenLvHhkPDl9uKZkKY/BW0dLhre66op8HrSKMix2xgYNd+TQFrZVRqeNaVQ
+	UH/biqDDm4bg17CZBH2Vj4JRQ60EPIOtEjDqEPgctQhMDQYSmusfk2Cr0BHws/Q3Az1PfiAw
+	fnIxkNWto8BtSUeQ3WWWQHfNDujreEiDr/0LAU0DvQgsrt8EuKrPIRg1RcD1/HJx3fSNgeFX
+	r0nIMtYjuPGpnYQf3Z0IKmo/InAUpzDwObOShEbXRHjrdTPw3HiRgb6GHAL6SxnIS3HQ0PCy
+	B0Gu2YCg64ODgNSbdgZMuWUUVHU+kEBDzwgBbSYDAdayndBh6aLgRWY+IZ4rpu5MBXNWKiGW
+	rwQYbz0kYNBSItlciPAv/SUKl5TfJbD+zSiDbddsCA8PGRD2FKaSWJ8ptk963SQ+U34cF77o
+	ZfCQ9x2DHQN5FK7L53HB+SECX361BFdlt0t2bdkj3XBYiFQnCJplGw9Iw+wuHYr9ySRm1RTQ
+	p1EdfQH5sTwXxNdd+k6MaYabzzc3D5Jj2p+bw5dndIkZKUtyjQF8uiWDGjMmc9v43Moa0WBZ
+	ipvHG+/EjEkZt4avaZv9DxnAW0ur/2L8xPHtkdy/eDm3mm91P6UykTQPjStB/urohCiVOnL1
+	Um1EWFK0OnHpoZioMiR+k+XkyOX7yNO4w4k4FikmyGBzcLicViVok6KciGdJhb8scEFIuFx2
+	WJWULGhi9mviIwWtE81gKcVUWfBu4YCcO6qKEyIEIVbQ/HcJ1m/6afRo7bGKAElt3/eD8ftW
+	dU5Lfh3cN+lcoqJAcehB09r7TvuW3m/7VlUb1MlH2ui8Im1R4pGWgbhbJqVu1uJ18RfnLrLO
+	DQ3ca9G6g5Qx2zfcax3va9l+IsKH+rGwst+pb1dOqlzp7d86Jehp+MmzCdbjV2Y5zlft36SU
+	zffY6FA25ZGC0oapViwkNVrVH1dU5FdJAwAA
 X-CFilter-Loop: Reflected
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BC29E20005
-X-Stat-Signature: ofqmwyitowbjuwusjbcks8a3da1tsegd
-X-HE-Tag: 1783318825-323475
-X-HE-Meta: U2FsdGVkX18fnmjuzB6BwhWIU3Qtn+PJmjMv7M+sC7W3usox980ZEYq129hqKYudFRJ/Fzo5TVaH2VQMtrYIj98NwzHPJ+g1Gq4k/Iyx2YlBINCf3NhjaKplkV1S8QZVqtTtQgedWWYFLsOvgszVkmrRO1wH53GUymeJce+8LukQ2BIUYwMMzZ4zZ4w4mOymnhgYwpSWrmKM2qGOvG3RvQ73sHiupE46xTcM6HM8A9mMPkewfHZMaZjW5l5lM0kvXs6mJt4Z4a5cvNoXRKehlaiORgUkZfAEaz6NyRRU868dsQ3ipv2HD5gnVw4GRTmDAeqBQKJEY7PrUbq1SC5qfmYfag9J4oQ3xoFUXhdzu7WYSQFlJmwEW6/SFj2/cW3W9Qh5PdaQXyDJl1FZCqeAnnDOudPMXFzMI2J3Oq0ety0b7UCoLc+Wg/oA/PZQUo8m8OcByfaKMuPEdcYaN5T4YeHNcon2tCSt2EvepG4eirNKIPTxiOC9NXxaF0nWUE8Q7EHesbxFSM/Xo3qiA6Fqz+bCyrqRwoZ32TGq2hW6hKhjwFpa9UKvQTvePMBtBBGjdFa3dxJhJrtQgcfp4E9tq+tATv1PF5bOX1QlInaqw9txjtqWQI6PNNHQoEUHjEyeMDiFw0l8WbpnF9NixpY/DPxO8gHVLOXVZ+7UvUxq82MaOCru/xZuMA+FYIL3SAEQkIqMeJwIVfLczrny/MXPNgUxm7ZwDFqAm/Fi6NnESt5agmaOY3Jrrf0x8ilV1B7/PNf9weZz81tp/pV86Hn/rCj9fMPnzPVfYLdOgtgKT2ViGY0YPOfXedd+WNnrYT2uXAvm163ykUSUVbFP461Fd/Q0s9m/7obxc5UXgTfC4rOX2kMRaKUqmyAfFlZjGMbzNfWtpgeF86S7OUEsbDDGalUQUny54art30ypvz/6unMEjI5QJiwaZ2WbWJzvlPmLlECRXQlIZCljCoWAvLe
- r37zXSMw
- hmvF1dtB4D90L2uLuQB9ADzDmQnuIq1Tuyp1Dn8iLJIDvbC9jsTtdGxQ+K1I17g/bCPwk2Su5XgcBvzmy4xvh+UK6Pzw7MP3DR4u5coxQlLWJkwjCMThYTSpgr3Gor+Kyvga2mD6ZVRGxneWMvHjYaczL7dLsCE5ARLtd+bhJULvpqyQ=
+X-Rspamd-Queue-Id: F358220002
+X-Stat-Signature: mf1jgni4okxp4w14pggeer4t388otx5x
+X-HE-Tag: 1783318827-522782
+X-HE-Meta: U2FsdGVkX18UnelE9sCBggjUe//wOao9Mo7X7HVEoV0b3T9PY1vY1V/N5Nz8H/RIiObfWihamRvgA2rn4pA6bgYKihO2aspuami3Rth/eR/ClM56B6LgsGZQgf+galXSJfcGGY/VQPfC2YAetil8G+76DVRZ4R9xirWnwt8RhLDKsMj7pVuobnaIeBog95aR9FVJ29so1kQINV//FLSrOqBjeT/T6MNDI1TfsZ8kCuhqEZ4ivtN1BBZElN3QPGFeR1jp+tk0gRz4/LFdJEHrgwOu3lQmNucZsJOT3fw5KaKwzyr3Nd+Q5TRkmhLHLtSltpvIX7GtRABMmOdtcuV4c/JQwT3T/MiQhV4R+G/uMS5zejrpCtGWKlFTqFuqZze3UIUZXvHAT4tV0PmS9rzyIaXKu75CdKo+6sibjUoXGeXHvNp7EmBS+cSFGF4E64SVHpYQRMPmDCe/TXez3l1e9ykdgtogqmJmD+q3Kw9Z+Q9lO3/ioA2pwSSJudU530WA+K/s7hX857Pm7NA2CoRueuyE8QaKmJFSlm3Uzk8zSHnRzhIDejVXXPvdV4bz7Q9dDT7QEC0UtLHZdBYY1yYhnYrnvmJl5X79+SUa4hL5cVF+rP6r1KYO3N7W1jK3AIjBoXsKdyFoi8VNtbvtLcePXuQtvb+XBgpkYlkJuLQBCucEDffg8N09dOi87ri+5tQnQ/ShfgL6wWThIBF1gsSQM0tnzKoaaVZ/FvPwWD0ou97KOJPK/+hpiEea/xRWsFTSxEjmOtb90Ud6ggZMgafUbGB6oPolZAOY01WyS5be59YO3ZPQJLX8UW3r1rDTgXfkBVVYQ33jolEtWdNjp6giRyqEqtCoAx+4yZSSdbKeCxkl83HuNCBUb/vVn/2Q1FU5RdWM9bTEmV/4ChuZfCVqevYklPGmH/d3xKfcmcUdE3dxbQhhzFGovOPq743qAXP9VPsGTQn/POrJYim69Qh
+ 6rD5mg57
+ togTSDzdUoA3aK6B62nb9dzptmZ8PMGq4rD3JXoOpqQ2Rv84WSns3N3Ce8wzfy8Zfft4WL3aJmPlDAAv89vHABRrAUqE2OIoGzKMhKiNIHwovmNzBIfqTW0BiOj45l13ITfaAnP9gysz13UVP8/16YW6carYShvKnuvrM0FkijZLISc0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -270,27 +270,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Now that CONFIG_DEPT_AGGRESSIVE_TIMEOUT_WAIT was introduced, apply the
-consideration to waitqueue wait, assuming an input 'ret' in
-___wait_event() macro is used as a timeout value.
+consideration to swait, assuming an input 'ret' in ___swait_event()
+macro is used as a timeout value.
 
 Signed-off-by: Byungchul Park <byungchul@sk.com>
 ---
- include/linux/wait.h | 2 +-
+ include/linux/swait.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/wait.h b/include/linux/wait.h
-index c8f8b44060fb..a9524bc8630b 100644
---- a/include/linux/wait.h
-+++ b/include/linux/wait.h
-@@ -306,7 +306,7 @@ extern void init_wait_entry(struct wait_queue_entry *wq_entry, int flags);
- 	struct wait_queue_entry __wq_entry;					\
- 	long __ret = ret;	/* explicit shadow */				\
- 										\
--	sdt_might_sleep_start(NULL);						\
-+	sdt_might_sleep_start_timeout(NULL, __ret);				\
- 	init_wait_entry(&__wq_entry, exclusive ? WQ_FLAG_EXCLUSIVE : 0);	\
- 	for (;;) {								\
- 		long __int = prepare_to_wait_event(&wq_head, &__wq_entry, state);\
+diff --git a/include/linux/swait.h b/include/linux/swait.h
+index 277ac74f61c3..233acdf55e9b 100644
+--- a/include/linux/swait.h
++++ b/include/linux/swait.h
+@@ -162,7 +162,7 @@ extern void finish_swait(struct swait_queue_head *q, struct swait_queue *wait);
+ 	struct swait_queue __wait;					\
+ 	long __ret = ret;						\
+ 									\
+-	sdt_might_sleep_start(NULL);					\
++	sdt_might_sleep_start_timeout(NULL, __ret);			\
+ 	INIT_LIST_HEAD(&__wait.task_list);				\
+ 	for (;;) {							\
+ 		long __int = prepare_to_swait_event(&wq, &__wait, state);\
 -- 
 2.17.1
 
