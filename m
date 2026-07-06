@@ -4,77 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C28EDC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:07:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 470B1C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 09:11:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB2E06B00AC; Mon,  6 Jul 2026 05:07:26 -0400 (EDT)
+	id 318666B011E; Mon,  6 Jul 2026 05:11:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A63AA6B0102; Mon,  6 Jul 2026 05:07:26 -0400 (EDT)
+	id 2A1FB6B011F; Mon,  6 Jul 2026 05:11:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 906896B011F; Mon,  6 Jul 2026 05:07:26 -0400 (EDT)
+	id 169AA6B0120; Mon,  6 Jul 2026 05:11:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E59D6B00AC
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:07:26 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E28CC1A033C
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:07:25 +0000 (UTC)
-X-FDA: 84957773250.22.804EA85
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DBFD86B011E
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 05:11:21 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 610461C7B1B
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:11:21 +0000 (UTC)
+X-FDA: 84957783162.18.B4AA116
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 344A21C000B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:07:24 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ab51Wrex;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id AFE9012000A
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:11:19 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eG2rVnJC;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783328844;
-	b=6tnceWMDlLKSCA0qKJKIamGJa5NvZyhNNwkIQc4p7T9c6Bbw7qcLLGW6hF3DdNnviMUb6Q
-	TLfrn2ojJQf/WQVo76my8DuScsfUPu7Co/OlOHjYyJpHEtQy4N2df2ZMFGrk8xNocanQWq
-	E9VgYW32A6z+sU0UgkIKiQiTLBJ6FcY=
+	t=1783329079;
+	b=zaxy+hyadMMh5nrcapZLyNV6idmyItgWGVRM6LjaZN/QqLRGxPepaz0xf1Fg4tKOL48pU/
+	5qYeiYOCPXznfo3qqfIXn3Lo8b19+VE1gMNvpYf8hx3cdb5fykSDoC2nKsdoTSrYNB4xHL
+	/qxAV1cHHKf3qa8uiFtxhv5v31pa3zg=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ab51Wrex;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eG2rVnJC;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783328844;
+	s=arc-20220608; t=1783329079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vSfJQt1JiqAr2xj8Wd+P7V4byeDYrtLPRI5xJpeSUP0=;
-	b=4hUUTCml/yTxIVdmzEIDZ4piHkYMQgA8655aua+VyywDAOQLXx2Km1O82xaHMVQ95YG3W4
-	2Zm8tWS6MVs0HPj8fetqVBT1ZaiBEyW0lBgHqNRRj+cjZ0rXk+8woiwjh33hmOen4YY5qN
-	ZkGTe+QKR9owxNjEKIagM0lHVJoOpjg=
+	bh=QkFcj8l+oLXhC7aF9NZNqPGpSl0c31kzpzMlDAFV+QE=;
+	b=V3DtX5kkWV0UbecuKWqFT/qMeVyglrojOg+niSR7VxwYoLKO1Q3qT+MXBIP9iKux9RxWuE
+	c+SQ0ePlgzYAboZBO2gtlNpWu/aahOOlhBzxVbMR6+QixDSg0Bfv2TU15tmEH8YFNfV317
+	s1s1COUMkzIt1BeGj1YO4rZpyYgf3As=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AAF5360018;
-	Mon,  6 Jul 2026 09:07:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69031F000E9;
-	Mon,  6 Jul 2026 09:07:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4AEFA600BB;
+	Mon,  6 Jul 2026 09:11:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9FD1F000E9;
+	Mon,  6 Jul 2026 09:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783328843;
-	bh=vSfJQt1JiqAr2xj8Wd+P7V4byeDYrtLPRI5xJpeSUP0=;
+	s=k20260515; t=1783329079;
+	bh=QkFcj8l+oLXhC7aF9NZNqPGpSl0c31kzpzMlDAFV+QE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ab51WrexuNkUaU0YN/LGfyHuikKjcjzTdYrZgkt4SeXddGjqYHhrvgDbj45Q6pM6L
-	 mdd3L3gatNt1KH1s/74Fp+cuwVU186o21mKvpPxRcTXR+x0d9MGcErh+A6a7umIO/n
-	 ccUc3lA6KZ25pVDkr56Q+SlNFhhZKToOFx/YeT5db/NZCCHPWERmXwwPUfY2RRMrMY
-	 rVh7cPUjiCoS+48edRJUxufhITHyYF57Fv92/jLlERKdOOjO4QOBPfYdsKqI2JPSo9
-	 70Um1vEdvCGmvYAaOwKlDGkzM6081GLnkDG1FeFllfzw34Ku31Yivi1pJb66/XUX2X
-	 1Z1/qJ72ZJl8w==
-Message-ID: <16516aae-d233-4756-a378-14ead66de36f@kernel.org>
-Date: Mon, 6 Jul 2026 11:07:19 +0200
+	b=eG2rVnJCBidyUV6k5BBeWCCNM0F85/+WLTF1a2gL5CGxYgFLCFHCnWCFYkXxi2Gui
+	 gDSVgdzO8E6gbyBl1IAWNCCK2l/zOAT2aR1gsO7xQLSKCUDwFXdHcgwy1HRFT3xOCz
+	 eKZWz8qRLy6vOYo+YpPeOUkDqS9LlSYVzoaDIRTp+J36Z5Jg5J9M4glSVPaw1eG56j
+	 qViuc9HDHORqEf1JGyxn/2GpdcuorVLkLmARIVmJuOeYgO4vFWj0zNgi5cfqbVrP6x
+	 kvmaz3sd5ZdMQXmYDf0Her2yi6jY2CEtWmO+2AsD3bZmiL0pZUvfkuIR88Yax+Adve
+	 IU3CGjON99saw==
+Message-ID: <a1ffd1b0-f790-4c5c-af5e-541b15df3a4c@kernel.org>
+Date: Mon, 6 Jul 2026 11:11:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: avoid shadowing global mem_map in
- sparse_init_one_section()
-To: Mike Rapoport <rppt@kernel.org>, Anuradha Weeraman <anuradha@debian.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <aklP82yPNq5lA2Na@riviera.anuradha.dev>
- <akohFqkKncFzoupL@kernel.org>
+Subject: Re: [PATCH v5 1/8] mm: fix stale ZONE_DEVICE refcount comment
+To: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org,
+ apopple@nvidia.com, arnd@arndb.de, bp@alien8.de,
+ dave.hansen@linux.intel.com, kees@kernel.org, mingo@redhat.com,
+ rppt@kernel.org, tglx@kernel.org
+Cc: linux-arch@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+References: <20260701090553.62691-1-lizhe.67@bytedance.com>
+ <20260701090553.62691-2-lizhe.67@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <akohFqkKncFzoupL@kernel.org>
+In-Reply-To: <20260701090553.62691-2-lizhe.67@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 344A21C000B
 X-Rspam-User: 
-X-Stat-Signature: b3ofnuwtd5wb7m9nh4u9pzjduic95ajp
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783328844-570228
-X-HE-Meta: U2FsdGVkX18mw0M/vGlyZMSOJFjik1+jzjHCusFHQzz1XUPhys1owiB47psffG5pX/zfFYozBXU8yCix9v6cFXiDpQigwljmey4ZNOM285LMjfPk+okKkYwY0YuFxwy2d38iji+n9snRCFyy0YybX4qJU05ujMgqEo138v904gXsn29TeabniPaTZnMJ1RXqqsYiffhm/jAydgMTn0S4fc5r/U2iEcoSxKsZ0Ylk0CUcQwTYKDQ3BW8ShXlVjXvN0FhDBob95KpNJngPGF4HTqG6YS7EZtXolfC7D3YC++nvFjsKAI1ZC07H42NpSNskgMTRynw9vEhUHTR1eP/XJATzetgZzz4fl6lFnOVnvcw3i2VceNSFSUBbj2WjD/g7qw3xLBbkT79zQ19UwDMSzWfT51J9L/oSnzKZ5zdm1dgYWAIxBxOnKoaKIkVHmFmKbbFAn55clM9he/A5Xb8ZGZj97dfBxPGIFsnttB8K6+liiCsE7l+WloYgf6VOQWtJ5yMjmn8qjr6opjM3hGa2Bwyr/Dns8sA/8mhvI/2gKmFHF0S9pmIY97G4pOCqdZpUHrBfl4rSCF98QlwbrGds7RAsHgfRO9qqehVNDw9+fUp9ROjfTqbuGET8jvQN48uiw14yLySb6G1CCy8zWjbihdYp7eAPA97J80irREtO5ORwTjORVvsrziDIU76KViBY07e1xeq2JNiY61BBkLzRZKjdWvkMzjsFM0zh4m5JQG4Fq3zzucb+dKv5bqu7gvBlczi+ZWQIq4U7rkPjBmi0b1qptnCRQ5LB4bEJLUBm3ht10LQxcSgVn+svT8S2pGNFIWgknNewTF8QyRFLQyG2mmH2ZIro+xfrP5/a4GNpD09C3AAmTQDmxT71kbEsT4R0+G/BQxXswDUY8HtgOei1FUjE6vJTuFQnlbokJm9Sk5ZDIpZY1UjpFpySZkShO6aqAVNPEzfLiIlSrdauwj1
- T0zkS7hA
- RUAhO62uJ4madsnNfD+jtTVDtLyHfb05fcYvlz5pXD+amnKtPEqCUbiU7QOPzDbQnSfmnmrqy1QGQ88bxcykdel4vmKqe4QaU+FQCB5pvmX5F8V7iuLKaaEjz39n5PJxnHJa/Ql+zIUEkKRbm3Ef0hbKHqPO1mKx+KLQeH2BdpdA9IDtJl8lgKIT2ENlSlaS32y+Ac7+UOnhJQj6ZjlXjmVony9HjTWA95pINC3cHVoQk/5G75fKKXzpabz3+/Ti4p749AmFh2OnYJViBctx2D7bLVH2B6Tab6eiFd9GzQWUbRyQbshSRPioo/voiAWg2MvSSWa/Qm5np5e8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: AFE9012000A
+X-Stat-Signature: nzp8dd8t478edbhbdak4b9h75c4qjgo9
+X-HE-Tag: 1783329079-925842
+X-HE-Meta: U2FsdGVkX1/5KPA+sDBQicTxANk+Cp4vzZLHjf0fUTdfaGZd66QpFhxOqD/f1hOXeKrXC6wIbJgpGjx0is7NVpvMGMh+CvLAmHj5/o/Q6wcTqkfuzsCgS39BYJ5jYqSLJljzxIU6QqFqr6Tmmj5AkRTTY/lhxsiz976x4vdgeJuE9rfW+lb0wIPGGyhswMwTed1V9DYRy7OQtPzRrdTyjuSXZWkub5HazfmDoC23eqTxa2fU2IDHEVf0r49MpYHI3mPuweq0FAPRl4qBwSn7XonI2w3cWR+DpVZxp2EBaA0luQLAMlTH8ty/nH1OjFIzRqT7C4H2XzXWtMANN0MCYjk5Ea4YgDpjWazOptln14xWbfn7tjrNRjpkU2lQEoYgSSFIEYYWNVq6wpAeU5fR0/3+Ds4ra8QsVMj5bRIRT4dgkd1K3hqsUkfM2IzN1M48NgSH9lJlTyLat1pnf2PHZEyZlUtMS903RqFKiQ6sFnoRxj361kH5EDGqQ5T8D9Mdj5I0qC0WFrMi1a7qxwMn8k+Aw5BUvrMmu38fnXQRagvFiWbgSDgtW6qy7n68Ci3w89QQ4UG1M0wfPvcwPA0Za9fMQMktka6OqVaVtTi8wZrrsTDcCtZZswQFqw0uIKQz6Dha22wCVg+NaDQv87k1RCFq7/Ab9HXhJcIAknW9oQHpfhcZbBtVUs+JySzU5heOiXMR4Amg9NFVsrotYB+Ty2XIewxLaUJ+8h4OF+18M3rxVjdBcukH4R4Mf2a+GszHE+2wrycWKH+G7ulVAHmEHV079jElNf7OpwukCPSfv/btPbYfVMj7V8xc8j5razZAeen1RCCjE8dEQB/5EGJDwnD3QMJ5rKuahoKlaEwVI/IsdC9eLHhNtXTAzYkdxYwRW8FAPzhbo67u/FDfQdE4ZBDuuBK0xdIG0kB+1UF34R/wdw4CEAzGfsFaX5RLPuRnJba8QmPFOZMNutOJyq8
+ niv3h9ac
+ T8mDuggk68R4s5MmsNrgPLzSsmyMWR0kbgnLhy7as2tkOM/0fiINk/pPT9TWPqpaAwxvbTlvWb8ULLLVjsVNDK0+uMOQusDRxL5t9NLO/27P886SMkMTEcWzXdujRXZrh2XelUnMRm6lHzrgiT6eILC1w+km+ZpMbLpcGt3bqyRj5Bjbkns2mZTOtSECfJItHHgxoHFs94kd90Hun5cy8j3bUbXjJ9SGQZN13y8bKJ+wTiN+ZFeGr/mr/J54eGj+05gkxMp1lcqkbOd1d4+IX2g7PfOBHS1WgQLr8EpgXFHUd3nfVLot5zj1bGbPonw6/AdMdhAFEKW24Dt1gVC664h/sPD/NJtt+yXsU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,21 +141,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/5/26 11:17, Mike Rapoport wrote:
-> On Sat, Jul 04, 2026 at 11:54:51PM +0530, Anuradha Weeraman wrote:
->> With W=2, sparse_init_one_section() warns because its mem_map parameter
->> shadows the global mem_map declaration in linux/mmzone.h.
->>
->> Rename it to section_mem_map to make that scope explicit and avoid the
->> shadowing warning.
+On 7/1/26 11:05, Li Zhe wrote:
+> The comment in __init_zone_device_page() still uses the old
+> MEMORY_TYPE_* names and implies that FS_DAX pages regain a
+> refcount of 1 in the free path. That no longer matches the code.
 > 
-> I suspect that the comment in mmzone.h saying that mem_map is must be
-> declared for SPARSEMEM is stale and it can be guarded by #ifdef
-> CONFIG_FLATMEM which will be a more correct fix.
->  
+> Update the comment to describe the current policy correctly:
+> MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free path,
+> while the remaining ZONE_DEVICE types start from 0 here and raise the
+> count again when the allocator or driver hands the page out.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> ---
 
-Unrelated to that, I thought we don't particularly care about W=2 stuff unless
-it uncovers a real bug?
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
