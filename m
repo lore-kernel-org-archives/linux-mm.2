@@ -4,128 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 308FAC43602
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 12:58:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FC7BC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 13:00:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C8EA6B00A1; Mon,  6 Jul 2026 08:57:59 -0400 (EDT)
+	id 834C56B00B8; Mon,  6 Jul 2026 09:00:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A0F26B00B9; Mon,  6 Jul 2026 08:57:59 -0400 (EDT)
+	id 7E5CE6B00BC; Mon,  6 Jul 2026 09:00:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 092076B00BB; Mon,  6 Jul 2026 08:57:59 -0400 (EDT)
+	id 6D5186B00BD; Mon,  6 Jul 2026 09:00:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CCF686B00A1
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:57:58 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4B8DE8DC79
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:57:58 +0000 (UTC)
-X-FDA: 84958354236.23.37BD3C1
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 74FC74000B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 12:57:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GryvCmtv;
-	spf=pass (imf07.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4883F6B00B8
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 09:00:05 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B961D120232
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:00:04 +0000 (UTC)
+X-FDA: 84958359528.13.464933F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 54C25C0004
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 13:00:02 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KRmcX5dr;
+	spf=pass (imf22.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783342802;
+	b=2jODHIfFuO2p3HBQnJJ0ZyX/M+FAi81rmC8fwnPwQpCSue1/QoZ9ho+XmOTuvvkYMOfiUQ
+	afconz96vlKMwsVwkdh2UjnYFKgMAp1HQs8t2izFGM9uPFsk8q3jdw2jfHBKP3s7NQ0abb
+	h5FBlAb/9MveLKJMm7lVm+xr75oFqh8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KRmcX5dr;
+	spf=pass (imf22.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783342676;
+	s=arc-20220608; t=1783342802;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hO5ho4KeiiLfcBaCI+3UMPtuUVrSULK4qaWn/9TzQms=;
-	b=Azb5fQqFSrST3wdNZsZDeudPZxV2OPFT3sSO9RWs8ysZQQ06SPpGd//H+SI3hNgXekVaVz
-	d4q2fIZ7iRzTEmulaHyzENYQdUaMxtz7MnYyrSSEch8BsHJQCSJQPp33Fr7URTM/5r3Aqu
-	D3jzdLU0F4QUx2FcXGkqlb8SxGnZklU=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GryvCmtv;
-	spf=pass (imf07.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783342676;
-	b=5aAo9K+ip4REuvVlpMRh7reO/UCjfzasF8dIo4N2NZ7m6w8eT6Jqa2+9ALWzZsUt/bFovp
-	nTXClyto2kF67S8FqhVYPMcCUfEqQ74mS1XU5/74VY7WT2MbF/Du4p7nEs01JVsHWLuh+X
-	ZSiaBWtXet8IZw2LjzWyXIDuQFb3TC4=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-847917c3678so2186426b3a.1
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 05:57:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783342675; x=1783947475; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hO5ho4KeiiLfcBaCI+3UMPtuUVrSULK4qaWn/9TzQms=;
-        b=GryvCmtvJvaq6zNHdPXpkLuXU3eao9Wp0ZnT+d7kCu4c8HybTpjISO30MKevDEZ5Be
-         pzCCsDkURaXB7MXgSi976Cz0szEaUEGUE9rVTMkZc2rGcizh2WWwmXANdJEIAU9f8J+j
-         NzDDw03MGNl2G0d2HGefasmB2AZ28SaNXJ6kZFUxb9YiCMDIl228wak9yK2NU41dCQ8N
-         p3h6MJ8uIdFHVTik2hXDsmS/+UUfAfCpyTmM15GFJ1H8vh7R87L+LtI42rDSqheYNZZU
-         EwY13MXPag7KIO9mt+dX7mVFZBNm3ECIThxuciVKXcGN1YT0Q+mN1G2F3gOH6qYe7VOC
-         F6ow==
+	bh=GV9yo9jBEBI28o7XznZuNHujDFZwTfJarP6O8dyD09o=;
+	b=tdnQm1GmjWFWcGUoHOdxbBqaO0YJRdrUUGY+KSNhd6V1g1FWOZN+IJaVEUUqftw5MNnpja
+	t55bnRnyeDpHSwiuTEMGDMWy7AaNykQwOp5mBVW4vz9CxdNJ6gQOYRDiwE4Vsgd2XEHa5w
+	4TwCkHF1ekMnNXH3hjysNT2gujiY3jM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783342801;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GV9yo9jBEBI28o7XznZuNHujDFZwTfJarP6O8dyD09o=;
+	b=KRmcX5drb3QrsIMsOUZ3+JwbPN1H5Suv5EgvuEltFq0DLWd3agG/R9jtkIM3FiT2yX2hK+
+	0/J1QbluleKrlteihoo2bGJWA87kuIl58M8kFqP242GkFb1WLitjnVybiuTq7yHxtH6RlI
+	9j3S06KwNPBRfEds42i/ztG8K6061gI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-14-lk07NaFFPpSSGn1XxpkVPg-1; Mon, 06 Jul 2026 09:00:00 -0400
+X-MC-Unique: lk07NaFFPpSSGn1XxpkVPg-1
+X-Mimecast-MFC-AGG-ID: lk07NaFFPpSSGn1XxpkVPg_1783342799
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4926596eebcso19514365e9.3
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 06:00:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783342675; x=1783947475;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:subject:cc:to:from:message-id:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hO5ho4KeiiLfcBaCI+3UMPtuUVrSULK4qaWn/9TzQms=;
-        b=EbM+D80CFrD5ByqGg8rivkbbdFrb7vjZ2vcJiaK9Yj5I+NTc3qudu7Zc4GwjE58Hp2
-         FyZb3hZihNGiVNesvU3FObFraAo4XURqOPD37GEnvwBTlC/P+r4R9X7/zrENYrWD0GXv
-         G4rxGa+pHC4rk2EZu/vpO3LNyA014EcF9a2Gq+xq/WpHvxZ2sHSDKGM4NyL0APA28sR+
-         0s5IpRIIAkjm+DdU/88lTUGqCrLqa5vBp0n8Kn8GjxLO0fVNS+SCe3xAQ9K5TAJNkU5I
-         Rl77lBtcFgOpQi1p5FCqPvdxEc8DM7Owj/ct30FGxPHGfvfBcoZWNxYT6MqKJvmEMtIX
-         oeGQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoB6D/+oRWSQbXqoocsg4LEBos4mrNh4v72gfPnHFkTYWtXCJrWrMkZ9wPeQ4q9+h4YNVmJI5UkSg==@kvack.org
-X-Gm-Message-State: AOJu0YzdIdI/ikNb72A/o9KXkJuHquk/ZE7r5y+MTfEZp/kL+tNjnTAw
-	X9pvO3bh/dkRzUloBeRoh+JV/7LOrC4Btp5TtFW+0fL74dSfxBR/ee1Q
-X-Gm-Gg: AfdE7cnY/WaU0PWlNNLKX+aJjec1zYjRJyfYvYGcREuUN2o1kYxX5iZxdW7Rb87o/Qb
-	VudO4WShNCCCsDvinVQ6HaBVnlWV3garOLKQ/pyvnJEVOKzXPUxEyp/uFuBrMa1zk9C6hOBC/lp
-	P1MUAnCvSh/rtek4/Qkxx/ks9lsMd/xD4KUKme4b7cZAl0LVO9jCeovU4SWcgLjaxn1gnnA1U1o
-	wbyJ2LiupaVWVeNnIl0apEhZ2sgirUtX86UwZN39POHN47Lvwot6hci20EToc3/hhZmp/5NjVdB
-	BQKB52SvzK+TAqk3BvF97kPkzx3njatvWSeJQzQmMbURU+F6fSPVvf/yKQr6iN3DEeStVttQVqK
-	qq9ET6TH9e0xTxhzn04VHIxgdxeWjWd422FfdCEUQwzQyBU/mBbRrp7S2JsYqgML6Kx4squl7wx
-	jYUW6tjhrfCF5zdbVvjdaGYUbsMvY/XtYBkC42SR5Sjzag1DJRquQbWqakn4mxQnY92UuOOmMuQ
-	rt1PFI7/YqP/1TeQI3hXqenbbdDx1HrsHyNmiDIWh0O
-X-Received: by 2002:a05:6a21:a91:b0:3b5:530d:d96d with SMTP id adf61e73a8af0-3c08e6b4b43mr515293637.12.1783342675118;
-        Mon, 06 Jul 2026 05:57:55 -0700 (PDT)
-Received: from mars.local.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c9e8f5c175dsm6341551a12.11.2026.07.06.05.57.52
+        d=1e100.net; s=20251104; t=1783342799; x=1783947599;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GV9yo9jBEBI28o7XznZuNHujDFZwTfJarP6O8dyD09o=;
+        b=I/UM5iZ5mx5V3B6ArftopQgPR85C/wW0czUwZW//WYwNItG5jrD/ZVhtyvB7rU1/3D
+         Js97aqGAGdvV+QiKFgXFJadmdC1/tKI8R8uijrj2KNU9jDLs8YZLhL0yiPE2dMQHqvnH
+         99Po5rHdo0Pm0vDyBiq1OXtg9UW5h4tW75t464kdEyZYAaymyrkmlUtdoY4L7dK0pVul
+         e/5Tyb4/2HierDNLpZl37JzktFZ934X26BDyc52Te6YmxXgnlKFlzFDpmwEe1DQG3Xh5
+         7SaCA1RV/Hy31Bc57l++xLHDB+vFgqboBmtk9pf7SNupqWLNA9WF6OVj+TI7MI4KFrZ5
+         grdQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp5i8tQ2BKI1ftPcT5hDg24byOPwUMgbR5smC/7HN9eJPdwAQczTyBD3rTFzknRWjN5T2wBcrLfFg==@kvack.org
+X-Gm-Message-State: AOJu0Ywlqjkpys0Cm/q5R6Y7NwoObh1KBx72pFRHbeEKhPJzYX8sg71f
+	ALCaJTLHW/kB6PSGXbSQqPSIqmWBKJhH2vWeEQQjgCSUGBiJINKfcLsTon9Z+fXLaqxEnlLGvi9
+	a2GjFrEOp2RlniH6C0f1O1/WD6aeZYtxmIwuQNusXy+duu4RAXqjt
+X-Gm-Gg: AfdE7cniu3qbnBiEYWPfJ1V1E+deyGnfmV683noLzj1xxl4yOb2wSo04ZzL7fJuF1c7
+	P5P25+g7ANJr6UWEUY8uvh7ReL3k9630/VtzEEWtcku0Wx+1VuVi/uPq6US3L7M2gDtJ6SvkfwV
+	eqKGRimcN+vDzRP5wyYIZlRGV1YU7OpX2pxJYmbpvRoksFCA0LilmEq7MA3i8X9VtqZ2ckXAvYD
+	1zI6+WrjapdCYDn2KKVPaLVES+7t/uhg4NT+YItH9L+wPXJilPerWmdBJRIvN9o5Mt6dB8itrIF
+	UgToc9UdnzOtfQXODC6rSR5KxRJuG56v6hu3mX21rbynjiFMH9X6B64EKizrWS0tyGAMdwfUC0G
+	8SHiKNanzUfy6nUFX/p0sC8zMQkBctJvP
+X-Received: by 2002:a05:600c:a00a:b0:492:7142:f46e with SMTP id 5b1f17b1804b1-493df038767mr4416495e9.2.1783342799075;
+        Mon, 06 Jul 2026 05:59:59 -0700 (PDT)
+X-Received: by 2002:a05:600c:a00a:b0:492:7142:f46e with SMTP id 5b1f17b1804b1-493df038767mr4416205e9.2.1783342798623;
+        Mon, 06 Jul 2026 05:59:58 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493ccdabda3sm287154295e9.5.2026.07.06.05.59.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 05:57:54 -0700 (PDT)
-Date: Mon, 06 Jul 2026 21:57:51 +0900
-Message-ID: <m2o6gktgvk.wl-thehajime@gmail.com>
-From: Hajime Tazaki <thehajime@gmail.com>
-To: ljs@kernel.org
-Cc: geert@linux-m68k.org,
-	akpm@linux-foundation.org,
-	willy@infradead.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	gerg@uclinux.org
-Subject: Re: [PATCH] mm: nommu: point to the write iterator upon split_vma
-In-Reply-To: <akuS-6zegY2XBa3f@lucifer>
-References: <20260702012546.665383-1-thehajime@gmail.com>
-	<20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
-	<aksn5J8Nr0JIsVpQ@casper.infradead.org>
-	<20260705222343.5d5c78cbb54839c5efcaabf5@linux-foundation.org>
-	<CAMuHMdU36O2UqfQkbbgOVSH5KFU-MZ_WO3jRsLumkUu22iC7vQ@mail.gmail.com>
-	<akuS-6zegY2XBa3f@lucifer>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=ISO-8859-7
-Content-Transfer-Encoding: quoted-printable
+        Mon, 06 Jul 2026 05:59:57 -0700 (PDT)
+Date: Mon, 6 Jul 2026 08:59:53 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Adam Litke <agl@us.ibm.com>, Rusty Russell <rusty@rustcorp.com.au>,
+	virtualization@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Subject: Re: [PATCH v2] virtio_balloon: prime stats vq after
+ virtio_device_ready()
+Message-ID: <20260706070936-mutt-send-email-mst@kernel.org>
+References: <2f0d0de033f3005d3b985883be3e5cf37b3f6c42.1783278596.git.mst@redhat.com>
+ <13794c5e-375a-4fc5-84b4-a637d077f8a0@kernel.org>
+ <20260706042207-mutt-send-email-mst@kernel.org>
+ <6b8e4ad3-6909-4d0a-89a4-104a5ad9fe79@kernel.org>
+ <20260706044122-mutt-send-email-mst@kernel.org>
+ <24336f56-1024-4c9b-8653-b1a4658b627c@kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <24336f56-1024-4c9b-8653-b1a4658b627c@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: dtagJUDG43qWMlT-8FoEsTDGEwcE62-ki69DsLBHVCw_1783342799
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 74FC74000B
-X-Stat-Signature: 1mo8asabmca8zb74xrx6me4o58gfewkk
-X-HE-Tag: 1783342676-301183
-X-HE-Meta: U2FsdGVkX18wtOcPNwEFq1JuK/S3vJJ8Fv8LgQOQeZioPcogQzgKdYCj/bDxHP1GupV+4pWfRU0x7r/+inMZ7qAQoRPYgfdtYbF6VpC+YbmIa33jC85NK6z9/UP2iL1AD3iNjnx+OtlPKHlYPmdvByvGqrvNuAnmUjDvKppvanIaIVfurh4FqRjxjqYwLeYHZKeJiPlApg5PYV47Dt8T5j/HgDNubIIUw4UsS4ggyX7hnQhof579HJguMeuwEAWPQaIZSn6QRvqcT5B3gOtj01H5dcEDmHgLZEtfzvDeaOItklto0jqN5ic+iSDqRbe2pffksIaDpk30OT2Yy+xfrfS3ByUF8r0ZCmL5JR13qHquNn3RL7M8GgWkW94ldEjBJOBjtFC627n6kMUo+ggHT3CGnlKCP6/FW03KXdgINHQtPXlNDfHiMeX6167u7dHl5vE8b0OWaSAt72ChBlXcWng/1HT9Hn3WgZhmdhoN8/4tHRRYjc4Uqjj/BNafyt2erOMf9rAzohkRaxJdzYot0yEywSlK4X0nUlHqemqdIDSeIdcv1LpVVMyWsLBf9i17ERCHuh45ZyIBVbubuuqSIHmwL27iCQZCcgr/l+QSWcZG4ag5X43XSZMF75jEGo7PTvYg18n98H+0SWOo8W3x7j6ClKz6Lugp+hvP6MByvBbC4zUKozktrKL1z89Yf/AIJAEQEG6gfGFXF5FZjVXLGhucw+cddywi/nOmi4UmFi8JkdvuB96O7LmDULu1r/aDSWr51QMfqNdw66jP0nYtTXXmYtKegjMMjp45AtHiu/EG4kNSO6T4n3DDU0urVwO13uBTxX9kJJ4RWQThsu8n9cEddJVx3rCYAKyP+/qZpP5675DUOCKOBRe9aAo4dinTn8R1sdfCTUOUiilHRd35OE7r+nse3Y9PaRMi2lGN54kMZnJmDk+Wi5KAL/yP+nZwgD2bVEh/cUmfaQXt+yl
- XhpDGBD6
- rp8iG9vNtI5z1qjnViebtUjt9bcFwm04Fne0r5uebPzOGS4irFeVfGu+gmo05hOdA52TGDvuplvJy755VVEempAWcJnabF3QfI3gXRJwsfLN/sntyRkGNQ1hvmP9cPDl7oIzZhficN36vYfL5ye44R4oVaXH+5gq/wMMVpxKS8IqSjbgWVDJ4Jzs2KnqfJxa1GCUw8jlwWiuJ92T9BQMdgVzWhJziD0kAPAsIatgXMQ92tO1TCppvwqag/0hae9+l8gpgtxm/uQkR3cIzBTxCx7A57PmTJZl1OvecRJZC4x2XquV/GiY80M9OrcbOU53j1R7fnEchdcRW6mlsL1DWNazOXepK8owROGz2bBcDhcXPFUhZaZdPOP9DoteqMEmpqodnrw6CjGpMHE2OHrWhC7Mis3ZP17Ra3AOeecmqORv7Bp9JAgMtk8k4PZx3OrlaxRy/7CHf/sEoAFc39oakPF67PI5jtCYjQM8WDNJqRDwrXuGn1NvrbN4ms5qhOjwaPB/hIwk3Gjau042L3VhPiMadWg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 54C25C0004
+X-Stat-Signature: 6ztjyjm6gxrxos5nbx5hp7rgbmcngrf6
+X-HE-Tag: 1783342802-293167
+X-HE-Meta: U2FsdGVkX1+ulHWzo5cpiTYbmEAHaI8xZqG0VtA2S7k/nmuzhNzGDzVF9KzSjaqu4onY1f48RwIKk1aDTbkTo/nbFObwrfxagn92cx38v2cTXKi+YN7KrjQzXlUa1+215YwNYXFQf6/p5EFI0Rz9uLLdb4vCNK1+ROfhQgg8K2Of4pqnfg5oQNpe+XawBhMlZbgAJYyEwfxNNdD61cynRasrabUb0mzGItYneABmAI9aQWT1X38+AiDe9NRsjIr8jGL5zAu253AHcw0UqLxTc3X7Aa8Tyy5cUu0C4vlwlP2zCoZdosxkLUGhSSCv16Q9A8uFspLle/3KgygMlv7H7a2xekGPonyJdCuUOYW0zKSfjqj8JjPCi7jB8GHx5lXkk+0k7yBWdTt6fa1hrbe+OcHmts+PrgcLtwMx4xY0HTzi2CMocXvBNN36VYhqLwT6Uy4O+QtDhhhLr2mmNv4duEA6VqzTALUw71O1dZKMNM9EoOJpWqOZHbWfLTRndZLUEgx1v5UoZkCIwGzbC/mSqBNoQNGtB7rKNc95tx+Fot3GMndjL8Cim369KXbUA7CSLcK/y9SV8jLfsBbRNV/foLSOPr25VdKgOWVTp65XIK4TJyxRoC/w+J80RX/sbuTht2oasPttBY7tWFYI+lJtaXFf9EGV/8L5UAz/dj67UkvIGuTnk6N7HgozJAmHKr7bf4XcWeL5/cGOMFJqR+s2QWicGoHv4HNjhmiBgCmrBrk+q76hyfl5NvoBzUqGKiNMLyZNIZJm/KigNbtIZ2rWl0oaANrdpMdO2eGHkcpNsKdG6C6JBoFn8jdHvWVSDNuZ3PsXvkU/6soDwfi9doA3TJx/9P3gKITM7Mf3oXynYP3Z0VxrRzV3kCExvAkhDounbbGUw/JohdZ+sJcXXD3Q2sP7tyTsMYoU8f28ZdUHBTymVErpUn3WA+PcAENNf8ruGRfPkVmDGLQhouM3zii
+ Hd6lcTgD
+ wV2LyZtzw38HAU97Jop94lan3jBXXo8TfPHMvtrRZkPl1V15Dm5wpJZAOG4XTlSvSduxg7Jf1HIJcxLseWAb0IQUtwkpopdsbPmrcZKjSqXrJCTEykqesX0JwxRdlBOkN/gLaVDLYNLKay1awMRzJEAo3C6aTnCj2rr84L3gOjR6ZkcDnXkhpXB2S5XTLcH86ePPagKF4v6MCdC/L5Bp9Ttq4XnzZj/W5U2btr3M/jCi8twobNSnQtaKpcd2nFX34zcL8N+aGhzRCNuC8emMXZeJWFebjEfj3Sd/gIL0kqFLnaKbJw52IE2VT948Q0hP3Fw8hZ0vgde8s9DPUxTbeo1DeTJQ/bhYSFqHzOGcdN/QozXLcfHJKjHxN1ghCVZVMHF0T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,133 +135,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Jul 06, 2026 at 10:57:33AM +0200, David Hildenbrand (Arm) wrote:
+> On 7/6/26 10:43, Michael S. Tsirkin wrote:
+> > On Mon, Jul 06, 2026 at 10:38:18AM +0200, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> Yes.
+> >>>
+> >>>
+> >>> Why not?
+> >>
+> >> I was wondering whether the spec would state something about that.
+> > 
+> > Sorry I do not get the question. Virtio API expects
+> > callers to serialize calls for each VQ. So this just prevents the work
+> > from running and accessing the VQ while probe calls add_buf/kick.
+> > I'll add a comment explaining that.
+> > But it has nothing to do with the spec.
+> 
+> The device is clearly not properly initialized yet.
+> 
+> Yet, we expect that we get a stats_request() callback that would try to
+> queue_work(). And IIUC, the stats_request() will be directly issued by the device.
 
-On Mon, 06 Jul 2026 20:51:36 +0900,
-Lorenzo Stoakes wrote:
->=20
-> On Mon, Jul 06, 2026 at 10:27:43AM +0200, Geert Uytterhoeven wrote:
-> > Hi Andrew,
-> >
-> > On Mon, 6 Jul 2026 at 07:23, Andrew Morton <akpm@linux-foundation.org> =
-wrote:
-> > > On Mon, 6 Jul 2026 04:58:28 +0100 Matthew Wilcox <willy@infradead.org=
-> wrote:
-> > > > On Sun, Jul 05, 2026 at 03:27:08PM -0700, Andrew Morton wrote:
-> > > > > Thanks.  Unfortunately we aren't very diligent about the nommu co=
-de
-> > > > > (are we?).   Perhaps appropriately - clearly this code doesn't ge=
-t used a
-> > > > > lot.
-> > > >
-> > > > Should we delete support for NOMMU?  As you say, it doesn't get much
-> > > > testing, or presumably usage.  I have this quote from #m68k a coupl=
-e of
-> > > > years ago...
-> > >
-> > > Greg is busily developing kernel code.
-> > >
-> > > > : I looked at nommu very briefly when I had my 68000 board on the b=
-ench
-> > > > : but didn=A2t get anywhere. Also didn=A2t try particularly hard. I=
- think
-> > > > : you are better off with fuzix or OS9 if you want something unixy.
-> > > >
-> > > > (i suspect Zephyr would also be good, but it doesn't support m68k, =
-just
-> > > > arc, arm, arm64, mips, openrisc, renesas rx, riscv, sparc, x86 and =
-xtensa)
-> > >
-> > > Greg, how mush use is NOMMU Linux seeing nowadays?
-> >
-> > Nommu (SH-compatible J-Core ASIC) is used in actual products, running
-> > modern kernels.  The rationale is low interrupt latency without using
-> > a much more costly app CPU core + RT CPU core split.
-> >
-> > Please watch the recording of the "32bit and-or noMMU Linux BoF"[1]
-> > at LPC2025 for more info.
->=20
-> This crops up now and again and people point to uses, but fails to addres=
-s the
-> real issue here.
->=20
-> Nobody (aside from Hajime - thank you!) who uses nommu maintains or contr=
-ibutes
-> to it, or _even tests_ it as far as I can tell.
->=20
-> We broken nommu for a year I think it was? And there wasn't one report.
->=20
-> The last time I raised this, I was admonished and told there are critical=
- arm32
-> nommu devices that absolutely _must_ have the latest kernel and this is
-> perfectly working code.
->=20
-> And riscv also introduced (and I'm so very surprised Linus allowed it) a =
-brand
-> new nommu architecture (!!)
->=20
-> And yet...
->=20
-> If this is really so important, can those who care perhaps help out a bit=
-? At
-> least with testing?
->=20
-> I'm a bit fed up of it really.
->=20
-> As far as hobbyist retro stuff and upstream goes, I am sympathetic, I cam=
-e from
-> being a hobbyist (though not retro), and would be one again if I couldn't=
- do it
-> as a job.
->=20
-> But retro people do NOT need the latest kernel. As far as I'm concerned, =
-museum
-> piece support should be ripped out, and those who care run downstream ker=
-nels.
->=20
-> As for the 'critical products' that must use nommu - PLEASE start
-> contributing. Please start testing. Anything.
->=20
-> Again thank you Hajime for doing the one thing that really counts here -
-> contributing to the nommu code.
->=20
-> Anyway, as to what Matthew said - 100% I am for us ripping it out.
->=20
-> But it's not up to me, and unfortunately I think we'll get a clammer of v=
-oices
-> saying how important it is, and silence again when it comes to do any of =
-the
-> work.
-
-as nommu started for embedded devices which are not easy to test, I
-agree that it is also not easy (in my opinion) to maintain.
-
-indeed, buildroot images for nommu targets (with qemu) are available,
-but running/testing each of commit to the kernel tree give me more
-than 1 hour to rebuild the images (including userspace build with long
-flat binary conversion, etc) (which I'm playing under github actions
-with riscv-nommu).
-
-# yes, should use ccache :)
-
-one of the goal which I am with nommu UML (*1) is to provide an
-environment which can be tested in a simple way; runs on x86
-machines.  An extension to UML means that you can also use KUnit
-infrastructure.
-
-LTP (Linux Test Project) dropped the nommu tests 2 years ago (*2)
-(which is pity), but the reason is similar: no maintainers appeared
-when the project asked.
-
-I wish to be here to improve this situation, both mm/nommu subsystem
-and LTP, as well as any !CONFIG_MMU code in kernel tree.  This patch
-is actually discovered during LTP (re-)integration with nommu kernel,
-which I'm going to propose to LTP.
-
-I hope this helps a bit.
+With an in-spec device, it can happen right after virtio_device_ready.
+We could defer it a bit, but I don't see what this gets us, and
+this also protects against any out of spec ones.
 
 
-*1 https://lore.kernel.org/all/cover.1770170302.git.thehajime@gmail.com/
-*2 https://lore.kernel.org/ltp/20240105131135.GA1484621@pevik/
+> In QEMU, that would mean that balloon_stats_poll_cb() runs, which would do a
+> 
+> if (s->stats_vq_elem == NULL) {
+> 	...
+> 	return
+> }
+> 
+> virtqueue_push(s->svq, s->stats_vq_elem, 0);
+> virtio_notify(vdev, s->svq);
+> 
+> 
+> That's why I'm confused :)
 
--- Hajime
+First the spec says there could be interrupts for no reasons right after
+DRIVER_OK. Second there are situations in which qemu might
+consume a buffer without a kick and then an interrupt
+races with the kick.
+
+> -- 
+> Cheers,
+> 
+> David
+
 
