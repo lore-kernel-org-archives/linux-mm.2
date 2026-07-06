@@ -4,80 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A832CC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 18:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6555C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 18:32:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C5216B00C4; Mon,  6 Jul 2026 14:30:38 -0400 (EDT)
+	id 92C8A6B00C5; Mon,  6 Jul 2026 14:32:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 976296B00C5; Mon,  6 Jul 2026 14:30:38 -0400 (EDT)
+	id 8DC526B00C7; Mon,  6 Jul 2026 14:32:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 867E76B00C6; Mon,  6 Jul 2026 14:30:38 -0400 (EDT)
+	id 7CE4B6B00C8; Mon,  6 Jul 2026 14:32:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E3F76B00C4
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:30:38 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D46F68C26F
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:30:37 +0000 (UTC)
-X-FDA: 84959192514.13.DD9E0CD
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5577B6B00C5
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:32:35 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D4BFC1A01D8
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:32:34 +0000 (UTC)
+X-FDA: 84959197428.18.439A4AC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0D1044000B
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:30:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OecW2CfX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id 158BC40007
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 18:32:32 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ix4bhmJR;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783362636;
+	s=arc-20220608; t=1783362753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L6hq90wtcqxknvGtlImTGIn+jAvaQ7Sq6IZx6conix8=;
-	b=tToE+ZN0OWNmlGwjBmAwKAn3Qd1MSTQbq+FYwAmSA9Pgfukcfjf03FTTAH3G7HMXREbtJN
-	3iCVFPPXxWG3cFujK6B3Uad4M+h064kwP3KpwWo2UajZzgb7dHIVw+6zOKCZjJDlmet+fM
-	/kzEDbLafixpV3DoX8/mlEwSifAWp3g=
+	bh=zGOE+B6wkEpBM2IpcGXFx8QZR17g+FSu0rEA2m1xu9o=;
+	b=EP2hF4ssT/zd2TUGmYjyiwpKUOiZjQtBdI7bzt9hpOStTOXqUBvaijVcb5sL+IMCcrRXcr
+	QS0QpNqOrZ8YKdo6s7WeJCuj4pzyYrmvGN6j4L7xWFecsr6jqSP2rvEyYuziRpQwLeUIV6
+	p5VKYk7wHVp2u/dxWOXPumsA5Mz8r88=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OecW2CfX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ix4bhmJR;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783362636;
-	b=x/Tgp1fR2HPoHJj4Jn1ynnNA1mv0RdnWXyzhZtx6ZYEyIY5jaJ3uuivEmBjH8WyXvkUqkc
-	UnAiYPXN/HXBoA/VUNFGBQuOguFI+onzoIaEIdD+qIwZDrucmVg2l7lKJGDgCW3mNdc/Ki
-	RX5myeuMu+JEWhf5Rq+YIjHoX7a2mdU=
+	t=1783362753;
+	b=oTOyuD334GCZRyXH2D0Zx+KeVnbHhxrAON5U+BkSUQ01AK8nk5P9g65ebzlxO5XsXdd2kd
+	wKJwmlEELOR390mEgCNlzGLTdMCIydS/8XwJ9m4pORxA92OobWZ2XxRdvHYtGsy/23wINh
+	b3QOoVNCVzwCOsu3XjhlejXjT6mEoWY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0491540109;
-	Mon,  6 Jul 2026 18:30:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA671F000E9;
-	Mon,  6 Jul 2026 18:30:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3EFE3405C7;
+	Mon,  6 Jul 2026 18:32:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621181F000E9;
+	Mon,  6 Jul 2026 18:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783362634;
-	bh=L6hq90wtcqxknvGtlImTGIn+jAvaQ7Sq6IZx6conix8=;
+	s=k20260515; t=1783362752;
+	bh=zGOE+B6wkEpBM2IpcGXFx8QZR17g+FSu0rEA2m1xu9o=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OecW2CfXJieTrB7VBUxXkqof4xzWAFg2wN21LWTC1OzemsK6eQ6AAdAZmAT6ldB1L
-	 a/M2ao/MHuGQSuiEAOBx7T0JW793vr/a7lQ+IjjJ8ms6iXtgJaX2RqWwS6cKoZpME2
-	 sqRoUS+PHlDf1In0q7O9x0LNBlCMNmbULpeFW8hH1b4fj9s+2MRB9hgaxVfq16zkdM
-	 FVgBAeioYS3z0aoF+ieDJdsFOUx23RCBfe4jVyCGVtyT2qFmY8TKbOZupgfE++PwA2
-	 b+yWg2uCec3N+AAfmlfF87CS+ZpJp0GogKnccW3tGpG2P2cSAIuJ2Y+NwGWDZ1YYhK
-	 3dwJedZql+jBQ==
-Message-ID: <892b2a73-4dbd-4090-89c5-46929530b855@kernel.org>
-Date: Mon, 6 Jul 2026 20:30:29 +0200
+	b=ix4bhmJR7eKsC24l2YTxxFRBLjhmL4LgBvKmco8VimioUNWoZ6OX53QFUAY3E/fu6
+	 bPmipEz8QWmjsWI5jPo3cNditiRywtVRwh3X2Xl+QsGGEwg11HXrnMhlCe/9mG7IjP
+	 UQcKUMhhVB3+wcX78k3+DQzhbun6h7M1BZ8HZMBcZCLHxiTjrHno6zFcbd1kI6vC+x
+	 OreuqOVbwXg6Spqfzj7FWBHKioeMP2f1s8moXKiDc0v5HFpvMzvXber/vPcFn5DLQa
+	 fSXrr8QMf89/Yd3KBS2qny278fI9C8bk0Lld0fN9tr49n4ys/lX34U3AJCkA9tB2kg
+	 kmB7e7C+mfIJw==
+Message-ID: <72f81925-e845-45fe-bf68-753be5b4d75f@kernel.org>
+Date: Mon, 6 Jul 2026 20:32:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: migrate_device: fix pte_pfn/pte_dirty called on
- non-present PTE
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org
-References: <20260706111958.3649651-1-wangkefeng.wang@huawei.com>
+Subject: Re: [PATCH v2 6/6] mm: rename ARCH_ENABLE_THP_MIGRATION to
+ ARCH_HAS_PMD_SOFTLEAVES
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, kernel-team@meta.com
+References: <20260706114320.1643046-1-usama.arif@linux.dev>
+ <20260706114320.1643046-7-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260706111958.3649651-1-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260706114320.1643046-7-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0D1044000B
-X-Stat-Signature: ko815s4r1ddqtae9x69j15wxqqmax553
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783362635-65330
-X-HE-Meta: U2FsdGVkX18UG6FT6KpTktSV+J7RB/2fANXCpTNLKbUoX16RO7OipmU35EliTkw2C1i5OpDk6flnQJ4HNO2pQOyN5sGfbPlpkFkl94u7nsjI+IbLcmq66/reg76pAosGhOKZgxG98/U8srLOhXr98XV8OUp+Nt2Ha0QaJCkoLCTcDPuOEYiZpmBA5gSUqLUYlairLx/V6S8F7TW1l8g1xCR0msTr6Epo/Wp58LMCgWjgrT+7Lx4YQL2MnouYi/+sIuhgA++d/oKKUqiSgJZGAQ6C8aPMj2fAaVfL+806pdzkLplNyAwGssXZ3cTw5ywzdm1yiZAF6th/ifU5wJUnLJtsi8Kbety6yaWzmdZoiud6fTr/GT0i5PBfUF1LPrOvYgH7/isZfLJMH2UhNXTJPa8rv7ba/0I/Pvnn4+xJge59iktvJaoJf82bD2jdCs2Oc+QvVYgwBqmeoh1314Jr30efxlXiujRuUxIR1gj3jpO5ZdXZzbKskP4DwwsdSkCzKsQeePNJn1sl7QCPUcdpfNB/a6e3bwp4dv0PMBbPRxIacUQ4FFgzGi5nb9NjDrTtFtQzl+Jrz8qNJ3idr4kU0hmhhl/yDkEQ4KcdkxaQh4X7iZrbhdI780SsSIzhad6lWw1UzUILklhFOPpegkA4zktKxxs4xcWz65xZCfcuZW/+iDPRd12VVwtwRBvRYuU3UiDWKCRV5qPYC+rRdHuunc1AT1/8q7VSjLQdkQVd87eoGewkQ9J/HEeuNp5XRRwz8k89mCTYTdxNVnixTugmkIEs53wi5bwaOo4pmpfCInUgmAXY1UeUKeTeO7Y5v7h0P+suKWZlJuCO5vX7o4AU985nEIKiue4NfLzVjltsrhkWPAUE+qLgFKt0CkCA9hf0Dz+owmY3X+sF/WJrCnAG/sn4bEUYuTqIE4qgRmDXenTO1tt+oVlT49m5MzzepmXZDqqo7hbdpRZr5BZtS6U
- NW77iCfP
- uRkQWePUdz438FY2VqDWYYJO/g/Tc0jF0AOYn3fjHDKC9e2nwz68PKXNF0f0jklC7vF0NeqsDJEF3rnZxCDYEax2Bqoe4K5c31Cro1Va8KsE6jWYYXTqRDEFZnDkQqOktxw7wOhUSkreVx5t4MBgeazZtNxG43yaui7AprttJo8sU7QzygxKiYPooOJ6QegB9TRpfz2UYf8qXw8QcBr5Q8deJeJ5mEqFaRSyBrmE2Py8KKoMVCAewSXhpR3cTkeSW8kuYoZ5vn+dtEko1s/zXkXlrgldRSZRhsgJzBDd9HNmXlOlmlfOatd776vpGX4Bq/tuDvnQqd+G6hVKIFKyXxpZLywrwRiWBfEQMFHfavc0Io2ZfTxaVDHjV37nqpbBzLh5mE0HMaXT/wUGt0O5iCf42hQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 158BC40007
+X-Stat-Signature: cet3kikpsdhswn9sf8e7c3xts43uzm6o
+X-HE-Tag: 1783362752-738179
+X-HE-Meta: U2FsdGVkX19Td43ASq4F0MQAeyBwsDdcB2rz0WDy90FYOOmq3HeKUZxQxN+jIjipoNSrq23NxHO/+jpKur3CPW5eVSzH/RF6pVbpJ5dqtvDHymb80ZdGoWPk+7QnQS4W1bcWByFvgXvpVaDfQDat+ydAGJaX6Y1OX0VwF7NtEwjjA2W0xKCJCKnvx2xHN/APGR6iaTc5Byi6jLteI7Igbf2CzG/+Ug2lNuTnNUBrbCDDWapdlhdYAnEpFQVuJKmNr+fXnF9j74s7hukj/Q/jPFl1Tp5MH8WMQkXAgVCF5oXY5rkczwNuKyJZGg1lW3K1Gz/ZukoZzOYXKg6cSkgmcyg4E0Nez7yzC8/K3ipLNou6mebOBSINjZFZLny0yr6ZZaScicPwu3RtcMJLk+aYmsS/wz8PGZ/CfkrTHVhiAQV7fE1f6QOK4hvkKwunabdgDKqalwRIEUTX67P1wkkImiq2wxR7M5g0d9Mw74ZZW/Qlh7uPlghzEgIIrnNx5yTI7UDkNqiEW9qU9oAucVTDi/oCfZY4tThtn6mKu0tKPQF7XffOs9ZVNyNwv4v8Fa9TbdS0mXp35YLX5Fzf3cTzT3rBa0X8Z2PmUf03WxpuiO5nYCf9Vt35PKWU2mj0YwSGNGiePwes9sd+KC8vV64RgHRke8pAzlwWgHqHjpraSEhrgEkuzgP4kxIEbxcc5gs7lh7ZMzsRSvaID5BFSD9d6e52Wa7afX0GXOWtIftWCS0csr7Nb0ooqJZyl4mFK/qOd3/Qp2fQJ4vd27JkWMW/mBY1ZEFMh89Sfss1UiOoRYnql3Iwf9YkczGheCJdllwwbkNrrdUjk2IdZeSu8GE/jzN68NQe/OvWUmoegjE02Fj3IFMOEYt65/CQacytV3HhOvid9n845mVpgsvVu+waY3TNdv458oZkdTSkf/eoGCl913PusK/8eekvXsSwkbEgW8ueBcx9X9DPhZrS03k
+ 7LUv8A+h
+ 6MYx79EXM4+tCz6mQheEmP+/axYp0Alvez9qVZ+0Caj4JK03/k35tNFoEcBderdbSY+FhHcR/AWpon9Pj+J/JwNbmsyeTkpXrsGouXh4PF3c4wnQct49H/6IjFueRg3phkUcWCcxE9NeAA09no1fHzUaHiVqkYwM0piNbWEKTpAqbznl8u7qHcPurXquRC24ZxLlfjRFF0YK+LPq4iC6EW541VCrhR6SF5YjPJZq1eO6VCM/L9L3cTVtNHzWRfHgQzKs0cdgRiirZKZd6NXSiAekLV+popdFaUFS/wxPJKwC+CI7+yeDrojO42gK95ugKTlygg/REl8HFTFTKe/tO86g1PP33i/YG5N5U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,61 +147,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/6/26 13:19, Kefeng Wang wrote:
-> pte_pfn() and pte_dirty() have undefined behaviour when called on a
-> non-present PTE. In migrate_vma_collect_pmd(), these functions may be
-> invoked on non-present entries (e.g., swap PTEs), leading to potential
-
-Certainly not real swap PTEs, as the previous function handling is
-
-	if (!pte_present(pte)) {
-		...
-		if (!softleaf_is_device_private(entry))
-			goto next;
-
-Only device-private entries?
-
-
-> crashes from pte_pfn() or incorrect dirty folio accounting from
-> pte_dirty(). Fix both by guarding with pte_present() checks.
+On 7/6/26 13:42, Usama Arif wrote:
+> CONFIG_ARCH_ENABLE_THP_MIGRATION gates PMD-level migration entries.
+> PMD-level device-private entries use the same migration mechanism and
+> therefore require the same architecture support.
 > 
-> Fixes: fd35ca3d12cc ("mm/migrate_device.c: copy pte dirty bit to page")
-> Fixes: a3589e1d5fe3 ("mm/migrate_device.c: add missing flush_cache_page()")
-
-I suspected device-private code, but indeed, these seem to be added afterwards.
-
-But a3589e1d5fe3 only moved the flush_cache_page()? So that one seems wrong.
-
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Upcoming PMD-level swap entries can use the same PMD softleaf helpers
+> without depending on page migration, so rename the architecture gate to
+> CONFIG_ARCH_HAS_PMD_SOFTLEAVES.  This describes the PMD entry capability
+> rather than one current user of it.
+> 
+> This is a pure rename: the set of selecting architectures (x86, arm64,
+> s390, riscv, loongarch, and powerpc on PPC_BOOK3S_64) and the gating
+> semantics are unchanged.
+> 
+> No functional change intended.
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > ---
->  mm/migrate_device.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 052167f9ad54..6e711381f092 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -411,7 +411,8 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  			bool anon_exclusive;
->  			pte_t swp_pte;
->  
-> -			flush_cache_page(vma, addr, pte_pfn(pte));
-> +			if (pte_present(pte))
-> +				flush_cache_page(vma, addr, pte_pfn(pte));
->  			anon_exclusive = folio_test_anon(folio) &&
->  					  PageAnonExclusive(page);
->  			if (anon_exclusive) {
-> @@ -432,7 +433,7 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->  			migrate->cpages++;
->  
->  			/* Set the dirty flag on the folio now the pte is gone. */
-> -			if (pte_dirty(pte))
-> +			if (pte_present(pte) && pte_dirty(pte))
->  				folio_mark_dirty(folio);
->  
->  			/* Setup special migration page table entry */
 
-Changes look good.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
