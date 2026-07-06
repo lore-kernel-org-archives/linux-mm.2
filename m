@@ -4,76 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE59BC43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:46:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89F20C43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 08:46:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A63DC6B00F7; Mon,  6 Jul 2026 04:46:00 -0400 (EDT)
+	id 6206F6B009F; Mon,  6 Jul 2026 04:46:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3C0B6B00F8; Mon,  6 Jul 2026 04:46:00 -0400 (EDT)
+	id 5F7886B00CE; Mon,  6 Jul 2026 04:46:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9520A6B00F9; Mon,  6 Jul 2026 04:46:00 -0400 (EDT)
+	id 4E8F76B00F8; Mon,  6 Jul 2026 04:46:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DCC66B00F7
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:46:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E658C402E0
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:45:59 +0000 (UTC)
-X-FDA: 84957719238.21.72C46D8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 28B3D180004
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:45:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VoNyyimY;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C3516B009F
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 04:46:33 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AEE82C1A24
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:46:32 +0000 (UTC)
+X-FDA: 84957720624.06.7A6CBF6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id F22BD20010
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 08:46:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HlPUd2mz;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783327591;
+	b=0LQ4FiI48EOrk1ZY0wVLTl3QHVVzTDp6pHRWrTv3uH25uFRa9LdPkRNX1biz2AejGJ/r5C
+	7Iqiv2Y8dODylKX0dGMNP1sY3kIWOhsgNUJ6NFFlWp2/DJJgpc5cIxzC7SkUtN1G8ZCaW4
+	rXJ8huDPWNWzac2VaAehbF2GDR5eTVY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HlPUd2mz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783327558;
+	s=arc-20220608; t=1783327591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+VphFpucmenCRxzAqf6GCG3ouKRkPe9LBUQD12MWcpw=;
-	b=06NEzxNURhP+XdgK51N/JxgbSVnIijdX5ZavNFldjukmf851NNndVfyO/mWIEzbf7m0B5W
-	ZNEtVzUuyEYIfzm9PIaavxgbJnIf0kyKss7hyz97NapSxWEaqgJzb4/M1I9L/xs275b4OF
-	jw+jU6E5S92Lfkli9vVaEXimEe8FBkQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VoNyyimY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783327558;
-	b=wVWk9+rHMlFNmGbVQQ5R3ZZsFnoIfJ5db5SvO6vjXaCcCqRfVof18yha28fWGEIl3drhDi
-	U98ZUTVX72BpJXhs0lFUsaUu4UxTV76wPusFfyYwQwVWtSTjF6IdeajoMwXL4G/miqygv2
-	6SaNDtgd07HYDGLy3pSXN4fBGFWqC2A=
+	bh=dUt7AOxRukVfPJ2p/55WSVBMngsUv1Y3ji3BCuv1HZU=;
+	b=4DeU2UMlaSJ4rHwFrIrPR0U+8YQnMTW+9EWQoBUqSd0oFNthQUosAlPmJA0CPvRUKgOdpX
+	RzByjpl8x50ZEm5y8G5wbFPCwji5QN8JvHWL0zy8TvJs6ZWG/Z0p44v7KC0FZQFvDe2QBu
+	sLTCfqgk19bIIE0jryWOTFY1DzNA7rs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0169142E06;
-	Mon,  6 Jul 2026 08:45:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ED01F000E9;
-	Mon,  6 Jul 2026 08:45:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8E6C461832;
+	Mon,  6 Jul 2026 08:46:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97E11F00A3D;
+	Mon,  6 Jul 2026 08:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783327556;
-	bh=+VphFpucmenCRxzAqf6GCG3ouKRkPe9LBUQD12MWcpw=;
+	s=k20260515; t=1783327590;
+	bh=dUt7AOxRukVfPJ2p/55WSVBMngsUv1Y3ji3BCuv1HZU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=VoNyyimYnqqKLu1tQ9fTHSAp21AMnYBuiWyDfCJxhaM5/Kel8HyLFCw14x1s78N9U
-	 7mGtgGN7PQ4XmdHlIMaW/7mlNyN/cMHkDlR8PbVdbyty6JdKay20g0qf+oHdS6g7BD
-	 uF9eg8bFVbc42WPLvi/yhsVBGSO6LkgMOTX2l+QzthLuq25fpiD6WwgLlbBL/WWC2U
-	 kdApDETEjy1WcUFc6A2sdKhZdnKGL20lVZikzBik4ow8GBgILpM6f0eCBgmOBqBrF4
-	 hqE4J+OoveSZBRXmoWaSnTu/fspZaLo9MMP1OudEZa2PkV/QKRUvIlQW0v+WLjL8KI
-	 c0u/RfKS2F/2g==
-Message-ID: <4b4e8007-3747-457a-85cc-d1003e1c8fe2@kernel.org>
-Date: Mon, 6 Jul 2026 10:45:47 +0200
+	b=HlPUd2mzwaFf4msXPmbw624UQ2RQeaoEX4P/n1HCZMANG1h4a39HQaAwKLtbpzLTe
+	 6b9dm+Jyv5X5zCuA9sRQGboJyABYDxhOXTz7wRAjN49iJnrefHnFPVhRwAb5td0dbF
+	 2bhhCW6aNGevq8T6wFXUX8pErBYCLmC570vZFa801ex0KxxJjNjowVeqjTL4WDqV4Z
+	 GNoPXWJjmL5tpz8qXdNfG0//Ibc2CPy2zB7Pvh0+pblfDFqBk2hv2fCi3ggIPY9NbL
+	 rmkawtIYxjkkd1DKfwzeg7ww+m7Q2KTrkyDBMKe9HJnovHcqQ1ZboDykCbAxNXGDLs
+	 mIbCywI6rteMQ==
+Message-ID: <44bc953d-d0ab-49d1-a299-ce1fab68d134@kernel.org>
+Date: Mon, 6 Jul 2026 10:46:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] arm64: make huge_ptep_get handled unaligned
- addresses
-To: Dev Jain <dev.jain@arm.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
- liam@infradead.org, riel@surriel.com, vbabka@kernel.org, harry@kernel.org,
- jannh@google.com, lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
+Subject: Re: [PATCH v3 2/6] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
+To: Dev Jain <dev.jain@arm.com>, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, apopple@nvidia.com, rcampbell@nvidia.com,
  ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
  rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
@@ -83,9 +82,7 @@ Cc: muchun.song@linux.dev, osalvador@suse.de, ljs@kernel.org,
  will@kernel.org, linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
  anshuman.khandual@arm.com, stable@vger.kernel.org
 References: <20260703114202.365553-1-dev.jain@arm.com>
- <20260703114202.365553-2-dev.jain@arm.com>
- <20260705003559.8b124d2b94b685cc2e4e77ae@linux-foundation.org>
- <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
+ <20260703114202.365553-3-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <8fdbe0d6-87fd-441c-b6d2-baac380f6fb3@arm.com>
+In-Reply-To: <20260703114202.365553-3-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 28B3D180004
-X-Stat-Signature: o4c1uiqfcohewxdy1u678u641z9y6px8
+X-Rspamd-Queue-Id: F22BD20010
 X-Rspam-User: 
-X-HE-Tag: 1783327558-349584
-X-HE-Meta: U2FsdGVkX1+1AqtKF347XEo2ybZh4ULFWPpkHwPod13zRG+iJTUFECHJ97PdKv1o8+ZePikcZJMP92E3s26M0tPDd4agXf1mdi0DG+mUGALHmloXG7tOpIgajpYBQ2+VuuM2xl8M78BGaOLMPaVdskj9o+/tkvlEcgwRDDzw9lVxHfUT59oOgrGuLwzwVw5sYOQyGwNFtgJbC5vqCqKkBW3eW0LnC7zeIavF6wbtrZMCzpmKEgFx4gFj5+TE+ECSzRlJN/+1RxjydYZ0kh0LLELetN/X8oSCG2pTmBs6AGx6OcAvvx2BKVcahzjoBRy/6EphmwpO55CamutKhOXrH0Gh7bnX2linkIoob3USPO35Oeruyv0rpGRKxrd5b54+VbG2kvQrlTsUjhIxOAze0ZQoarcLSjeVWIwC1zJBIgCjPB4vRyqLBSvvGCJybFA3KksLIKeiafRysgd0CfLH93IIDbMiYM03WjphHaBN8t1or1Ydq/d1h/HQuZ/ApRRRRGhaT10XNl2PJEY7RR29Tt6MYtZVS23YN5S1IqhCT0wLQsKp+RSobJxQXdlfNXYndpNZtoUGspJJCHSLx6AOKdBVjOPRk+cQkMSHk1vPenFTw8mpgFsyjTLQze2mT9d9QMh5QSCzt7JLtKvgYczaVev5QwoqzkfGykPl68oCiNMmoYLEtYKDBuF5UCjMNSfwZHvXdDCumkHbq6GeEMABETDNghYKFJmZarUzf/KAjMjICOQt7zx3nflBGOMI2D9MUQP8RQy3yfnhp5mjzahwlzdHDXpJwQ8XCf01UTTTvqka+SsWhsBXEL3xLfN2LO0QvjUDQ8QKFx67Sb64QvsHhgI6JHshHN9uQvufzNnQ0+DvcC9wujI+zYWvcCcl1NYdtLARujNorjXeof+l1KgKQI+GxtPwNFR2ykaSgVK8tNuQXxnXW7mFIgmf5qiyHwcQQeizGtMykugPraubiAq
- EOqkb87o
- tE9XnpJQllOypx74R9Kt+sT+ywX5ip5U1b5JeMRz3gtgmTwApBzipUjKUznYoAJbtIz60dtfFhwIvATeH9UHjAB+RZKqE0C7qLQJXYKPjk73ligkjedkZJ7Tt6om0ObaH4LXTmcgGdyuNBCrDO8vtbG3DT4P6YbGtmTZNt6VQ3u4Yw1+q+5L6y11NGld6SklU6VhbTlJlPDQ5OmJuayA2xybcml4v+cjHXkZgztCmOPGmR5pG9SC/1FppGNZF6Cc26ixS7dZBEZGNaaHcHZofAEK+h5kX85f7h655t3FZaC0RTvHccMrwFAg5fL1vE/FILO1yg7U+1E//+ZKgvkXYHQIT47KJuMFH4jkK51/16/Gma1dV21yqrM5Ghffo7POSysrCpWftvGzZ7UWMX7Sps6DQrMhlvpHBNlsC/bB10M2ZD6NjB/SFRfacPI4YK8BUnAFfCXzZFqNsHCH7X3QBjHbRzw==
+X-Stat-Signature: yzu4qtzhtpphdq6ji55bk7hoa4eehud5
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783327590-36072
+X-HE-Meta: U2FsdGVkX19cvBkpUiVAoxMlqlGwMNqB+7oZarG7haMk8IVMQKEji+4MyTPi0YdcCCQEROG/guNTwVW4CE0Q5jR3D9FdEC8K5x770XQHl7Ma0DCKx4r5RX7CgkXuBrzi2sTmFzOIHYuBMtr3SL6oRRAyNgR+Y4Hi8vs6jcJHuojO4FCDaLu179FlY/Qzd9bqYENjo0QZG1q1pmpt1SVXa+/ihQgOyWdsdZtpX2WDSrVQDq055XxIjXnl7bE9/wyDTSmyLGKx3clMh3B+mT+l/SQk7dRURPUXh2yRcGDK9/vJhQVXA6RfCxxMY2sVjmERi5ZcHugxG8K1kGcw1U5idPWJNDgfkb/3ws9ipzuYeD/zRE6ObfA9hMpegf3+K2p6DjjjcAX94fha0ppwIAdyG3XvT64i7y2+g/6uuQ4Bk+C2VIg0v0ScPkvdue3c9nQhTIy6GXSwCTgas6MT0e5DbRD2hKsVBNB+fSv63G2YIveLKE103sOUQZu5844N9KV1AnMYt665gtoZIvoiC59k2H/+nhD1UoAQlPVGqvFgcbI2BrTkAzwhwyW9Rt8Ra9mZTTcABBTCOSakVGDscHJ3HoY4ajYxn7OpiNCHADJAFpW25vpyUTTkClGu9EI9jVu75pWk5iH6I7tm1X3TvmRb/h7NvYRgCZLwXjQ5P1EPFd3SSlZCHjN6KjDXk4/0FKoUYR+zJ1yWeO0V4nBgfDE9E+t023Du8wmt+ms8BUp9UnYJqGauPnSXCp3MeN71X201dWMklJ+5E5CRbhn+6u4m96XCh2f1sZiZa4WCMj0pHH7BgrsGAhUJdOjVYhvFaUHmn4nGnGyv/FC1H3krhuaSQYbQjTxwKmiL1g94j9KQRNp3d6w9YJDTdLtPPj/mFRowbu3zlAs617P/7F/5mID+AeBXM8NFMPDhdoWi9g8Q6GfMVIdOdYAHb6we/22yLc3RPKMm7RRVwFG8E6GnEm6
+ f5b1MErx
+ VvyZM461JqgR0nbuMvHZSOf+wjsnfeHHetQp+kPtY8YBrrQD5UwvFwclNlEFQKaDGlsUwb7fpcX/8gLqIgqZCjP9CedF5Kql/QO4+gR+leJORkf8P60lCBFsntb9fA3qhGx4xJ/185oHYxtH9kHPRGmkMC8XkHrIfRv45pliTuXfvop1ariwkoXUkz4VXT73ZWaNUaJahFY5CCOnzxJkxDrmibfFHdHQCBj7PR8K9yuEL7RAslMOeHX15itlxDCLsG9lrECIG3dPE08MJSJ1fb3Rm/gcCf1pItCGu0WCJqhXQC4ciohsfk66GWKCDqMkCScFC1aFMblBdR1Sh8SbZZq+YubQ7r2k5WbO4JDSPgUIqLGIL8MoIlIN1/Jd08jjLNcOxt+kTWbjMjwRNJF1SKkt+VxLFLHuYW9qx19k4QP3gj+x8+Xq3FgG9CtTYaJuAyOowycgn2SWfaFgBNj09qbNNbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,39 +147,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/5/26 10:08, Dev Jain wrote:
+On 7/3/26 13:41, Dev Jain wrote:
+> try_to_unmap_one() handles hugetlb folios when memory failure needs
+> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
+> case page_vma_mapped_walk() returns the pte pointer to the hugetlb folio
+> in pvmw.pte, but the code reads it with ptep_get().
 > 
+> On arches which provide their own huge_ptep_get() to dereference a huge
+> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
+> etc to misbehave.
 > 
-> On 05/07/26 1:05 pm, Andrew Morton wrote:
->> On Fri,  3 Jul 2026 11:41:54 +0000 Dev Jain <dev.jain@arm.com> wrote:
->>
->>> huge_ptep_get() can be handed a virtual address pointing to the middle of
->>> a contpmd/contpte mapped hugetlb folio (examples of callers are
->>> pagemap_hugetlb_range, page_mapped_in_vma).
->>>
->>> The arm64 helper rewalks the pgtables in find_num_contig to answer whether
->>> the huge pte we have maps a contpmd or a contpte hugetlb folio, and
->>> returns CONT_PMDS or CONT_PTES, so that it can collect a/d bits over the
->>> contiguous ptes. We can falsely return CONT_PTES instead of CONT_PMDS
->>> if the addr is not aligned.
->>>
->>> Fix this by aligning the pmdp pointer down to a contpmd base before
->>> checking equality with the passed huge pte pointer, to correctly answer
->>> whether the huge pte is the base of a contpmd block.
->>>
->>> Fixes: 29cb80519689 ("arm64: hugetlb: Cleanup huge_pte size discovery mechanisms")
->>> Cc: stable@vger.kernel.org
->>
->> Please describe the userspace-visible effects of bugs when fixing them.
->> Particularly when cc:stable is proposed.  Thanks.
+> It is not clear whether this has a trivially visible effect to userspace.
 > 
-> Forgot for this one. It should be, on systems where CONT_PTES != CONT_PMDS
-> (meaning page size is 16K) we could collect excess a/d bit state, meaning
-> extra work for the kernel.
+> Just use huge_ptep_get() for dereferencing a huge pte pointer.
+> 
+> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use page_vma_mapped_walk()")
+> Cc: stable@vger.kernel.org
+> Reported-by: David Hildenbrand <david@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
 
-Even worse, right? We could walk 128 entries, when we really should just walk 16
-(IIRC) entries, possibly reading garbage or even worse, into a memory hole at
-the end of memory?
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
