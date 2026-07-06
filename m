@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5127FC44500
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:13:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4131DC43458
+	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 14:14:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 450976B00C9; Mon,  6 Jul 2026 10:13:58 -0400 (EDT)
+	id 254D76B00CD; Mon,  6 Jul 2026 10:14:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 401486B00CD; Mon,  6 Jul 2026 10:13:58 -0400 (EDT)
+	id 205316B00E2; Mon,  6 Jul 2026 10:14:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 317416B00DC; Mon,  6 Jul 2026 10:13:58 -0400 (EDT)
+	id 11CC76B00E3; Mon,  6 Jul 2026 10:14:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 091C66B00C9
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:13:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7CCBC168B59
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:13:57 +0000 (UTC)
-X-FDA: 84958545714.08.8BA98CB
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9538AC0005
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:13:55 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GYcMZG+W;
-	spf=pass (imf22.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DA46C6B00CD
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 10:14:05 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6C6F312037C
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:14:05 +0000 (UTC)
+X-FDA: 84958546050.30.87EB010
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7B996180003
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 14:14:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jGI5RxHD;
 	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783347235;
+	s=arc-20220608; t=1783347243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=is9HVNRQZtO1NsqI/qhXurl7Mb6p1rD9Hcahyv0lRxc=;
-	b=QMyvFxXkUCq6miwv7XVW7/YgTXQn2LYTQfBqkuBbeM5WOBfyzJ2xu/hmyLTPOuhtrSYzlw
-	Z+8sFO6NDETw7Z5QsMt+OPLhjNPLvWGJPEX9OAN2pljPMCL6iJEaHtYrHwu+rjiN04v/N/
-	j6DIJYpB2miAv9MFibX7A6FTDOFY92M=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783347235;
-	b=jEBJHhDcV0hfYfCyUlBvA+n3fiaf5VojXT5tbgedlVL+tjeUOzMiIYBk3UPqQGKLLNpx8N
-	d9Q6kyMrZFWLit0Id0/sQrTRDFQktHM8VlYcfXAKz6/KYGTc0CDABdgJGhhUpg+panGBJ0
-	8gqk4KeDiMxNK0KY/41CgHguU9mT8aM=
+	bh=RCUbKkMVAqXLVkO6E18NiEWI8e2TIkxGzfCQs6g1ZKo=;
+	b=K9Th9optIL9HhcN3+wnKZhJiYca5B/ZKMChh6dCAOwrvGjg8PmF/lO5LdmYeiv+etg1wmY
+	Ume3Ei0VYebtaDMEqhllrq5hL2Pd4QXzvZAlOvh2mvoQxwGy8NqTIKdWChk3RupexBlim0
+	ffWlfgRtRZi2Sg1nEMgjviGZJib5tc0=
 ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=GYcMZG+W;
-	spf=pass (imf22.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jGI5RxHD;
 	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-4758b2a9e2aso1903621f8f.2
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 07:13:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783347234; cv=none;
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783347243;
+	b=bAHXNxp/QH3k8fnE1LXll96J3rLi9vJFjG9TSBKd4OceJdOEy/S3PXCGA4t3P4gh5YH/13
+	k3Tdi5XBhcG0JWIQLu9T3ORpgia7oRLyt51vtB3+oXbliHe0O3B6iZtx6OpLsBs7ukl3gf
+	NwL3DvhDZdneHQNuVZQoLQ/wnrd+MDU=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-475cb71a4ebso3249972f8f.0
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 07:14:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783347242; cv=none;
         d=google.com; s=arc-20260327;
-        b=mQJSlrFahalu4PjmD2g7xNb+nrGMk0X/xLbQ9bArgFziDGC3OnJEq8Jz28Himq1QZT
-         /T34Cb6rKt5nFgOGMOeWWl2BwaRsXW11uNZBz34IAznQDwXQt6DoBPIIqD+OcenjuWkd
-         GAHpLcKqfPZ7bNU1dlC73DRyZh5TPrt5e2mFYF/8SVgM6jm99xNFKW0GQKD2+d0ehBdw
-         jxR+D2xYhR5sAT5Btj4AAfCDw+4gqKJO9gE2fFxgV5WQf0QG/eBSCNilObCDhKUDwz2d
-         CpEE4gRXfbekwN51aLe97PC3eUlLOdbuN7ZIS1rMVWcdR6IHfCUtdLAc+sAJgBsTRYqd
-         G6rQ==
+        b=BFJ4hhRbgc5GWWjw/xFgEQ0N0S0kNJI6Xt0EosGELW8QDw7kFFIwqQp2LjbcZ18Bsp
+         3PxA9aoNaP086Ab2mwFSdNGIhEx1tHDt1ZeCv/Ti14gH9DaoDExrbUPh/ec40v9Yyw7P
+         /j9kEBN+vqdRjDfHOp2CYd5PVaDp1iItwYCo5VBFkBMVQ8jpG+reQwaUPl14DWx9Hig1
+         yjgP5eHNOLBYciJ6On1e5iP+ktTEYkCwHlAsXiQ5Yl7NkYqLXOn9VVk6EeTfArTcPw3h
+         dYmiBRYmSSaU5uL5K1LQJw3TT5qBsDsF782vG/yofKas6+i97w/FPpxk7S31yajxUr/j
+         6uuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=is9HVNRQZtO1NsqI/qhXurl7Mb6p1rD9Hcahyv0lRxc=;
-        fh=VoA0S6IylaFqisrMpy3/ISU7TxwKDjQCrYyK6kwLmZw=;
-        b=XDvxYwpVOUQODMORN6Abre6nhb35mO3HoyrQy+F2yN3Gx0d9o5pg9Jex6h7K9CWIPh
-         kgET5bQG0p/3ej82ZfGu5dT8N98YlRBohBwx7GkUhYrMHlc9ZZcqvvRdpW76QrTykFuj
-         dZwqufCgksnxL73FSbav6akEJNl3gi9aMyhpJQG6GOzpIW8gQ+3DBaYkpUFhQOWNLTpT
-         zDFvAxTwjCo1iXh5wYVjkkwug5pQHeesWuVuw7hPqGV3DILAurcCdovID64ahXdjoAuY
-         zPADdkmVjqTBJ6HniJnuZLGtAOF5RkX4uYUZQcbwaEGPyojPzNUvvP0ISV7BbXjECnsW
-         OJ1Q==;
+        bh=RCUbKkMVAqXLVkO6E18NiEWI8e2TIkxGzfCQs6g1ZKo=;
+        fh=5bx5GWB7Otbbbe6GD4dNj5vmwLZeMs7y8wdcY4btilE=;
+        b=WUlSk4iDAgEEf+fHd4sC77VglFyc2VtpArI4RpJVs4wCSh2RlS2dDjM/sV6xd+NN7I
+         aDrgIGo0tZh/K1fKHl+htobcMZdOeC7fyKuBtuiSduTw7XuXKJ3DrHhDQDgZICS1hZ/8
+         ecDVU4TBT5VTPfIOLbIBsCffXpAF9VFa9cBIDh2yMICSrszadfdRXWBlD29B1oF880Hn
+         0oaQlzhBsAMAvslana8Lamwj9A2QRFtFNtNpNBgvr5rls4/5u2W6iNBpcTyCY78ixAfN
+         E9iog04faUammK/Hpfu8SirtlsxHlOTT2fHkxX8mQsEmJjau9AcOdOxNKCx5fqtj/8lf
+         jP2g==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783347234; x=1783952034; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1783347242; x=1783952042; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=is9HVNRQZtO1NsqI/qhXurl7Mb6p1rD9Hcahyv0lRxc=;
-        b=GYcMZG+WOCB2YuW6E31I7HGKFeR+1XxauaStWBc3U7I9obF0vsGeWUHkz512v4OB5x
-         z2trzu1/sOrQg3g80LCywjpGg6WOhxc87w/6WGJJTL9Og1srxMCVTU2rQJAju5MXbwgS
-         nFmG2P4KOeuijBW2PvUjmxHcI2pKcmqr6jE1dLhBywhXMqMSpOPm0uX/RU9Rw9cs70gl
-         pEBO2U1BghEJsonIV5O9q1jOtlLZgc8+a7yernj0JAmDTqTfqrqGFBx8CxBcvDvVTmi/
-         AMU+fXPgho0wIkjgjBNclz62wrVjEvW0qSyCM8rH2kZBvasf79toZ/cnyOvkkhxHhxOH
-         tXlQ==
+        bh=RCUbKkMVAqXLVkO6E18NiEWI8e2TIkxGzfCQs6g1ZKo=;
+        b=jGI5RxHD0YouniMLs9CU2yBSty1ndY1tTlYW5RPM3qoGVGUpyfWX6Lpuijac8uskFC
+         emBLRjkku24gIDuqWEm2vvNdDKCWavtbrWlgvsoUO71iVocxUBkeWSYrEn8i1Smr4+va
+         MBSoJQVETBptD5VJzDCo5NMUg2yTQ+koAKvCsBDbDWiddZyGS3htkzTcNVLVvO7C//K1
+         HYoD8yHuxFiCtdAY5d0hnVaIfnRb47u+HennNUxyTxqL6lWnsr3I2DJ6Wxy3b13pt7m/
+         p9ME6MJzIEtDI/X0AYnHma/QixizoOiSE9NbI6vi9pTLTeIuXA48asky/a8eMjEkvZZl
+         ufVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783347234; x=1783952034;
+        d=1e100.net; s=20251104; t=1783347242; x=1783952042;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=is9HVNRQZtO1NsqI/qhXurl7Mb6p1rD9Hcahyv0lRxc=;
-        b=BSMO0bXvFpCImRUjPuih4p9OZN3M6kL1hE22kMh9fjtPU9/K1Bj82yeCo3szzpiEnt
-         qvWIxwZ/PkAbO1FAaAoR/8iDy/1BMKqc7eZmZDfj9WghPwpkoT53srdRnUb6760YnRJp
-         hJOXMTJ78QfsFrTLsbnlG3vrsdClFFPLP+88TLB5bvLephBgeb0h8aqfOowd5zjtjcb8
-         dUaghPdU6/3ZS86OLwn8pH9bxBJGSGlN5WYHMYMSfRybWId9WskFV2PlOeaPLdwHL/oz
-         0YTWVOfAVn4gf8shZqFpwmFelPM9O3RzlXoaWq6egYmjFPGJ9dzMl6KCsotRzHJiywQ5
-         lEGQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrGVvPW3WA8buYFbxd6+pZ2NrAIZR3J8WmUI5tZHCeUuEy9hltAyhFbFfK+XjSB+5qTEOISlnw6RQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywc7P7QAuj1oP5/L0PIoNFqyd8Qs5xgyPdFfyFFeul4AN5eEOnp
-	BzgIryVNQ5uFaTUhS88upmCkpVfOU6mvoFz55QsX2+AoY9FDIqYncd7i5g5zsLRYI7SjntTQ6yE
-	wcngZFsf1z8QLlmNcMMxpjGwedKSigtY=
-X-Gm-Gg: AfdE7ckAAWL2E+h3cgXoO/M3teEO7r6+hx/Q3F4yB4kO+cid4re9zRtjlrmQ9Ryws5D
-	fPkYX4XnkPY27O2Ma59F2+1J+4wf47l5Dezr9k1q1scrZETrlA4ni7+m3t9kNgKRuhG32SkkI7D
-	5UyrUlNWlYytWn9RUoY3zkIJnZzvsd5DRyFhS8zXvJ1uDO7txa4nihYWHIpPrMUkht69mN/mSW+
-	rfc6vubQzY/N3kFxDeEModOR0WTDKZYf/0Fmp44FX/NtDPtAF3RMbtHWCtlc+5zevNMjHPcAy//
-	AfmuTrLcr+01zXklmROFyueWBmXKn8A=
-X-Received: by 2002:a5d:6845:0:b0:472:9bf7:2f58 with SMTP id
- ffacd0b85a97d-47de66c3e2bmr335360f8f.36.1783347234124; Mon, 06 Jul 2026
- 07:13:54 -0700 (PDT)
+        bh=RCUbKkMVAqXLVkO6E18NiEWI8e2TIkxGzfCQs6g1ZKo=;
+        b=s1+A8/3768MBYsKcIT8vMe8s/JJSCvG/sHOCAEAd+VDnFNOs+jlKv4YLgruUVdByXK
+         vl3GpK8EoqtUb7Ovomw000KyY8I8zZTU6OEb3O8W8bJbpS5SI7uBc535S0Vy6kGN7Abs
+         XvS93HgZz4mhT5JOH+3VbYBrJSn3+Axww/7Cq4XU/3Vbj5xj/EFQa2khOzy0wslQ23oM
+         jnAYh6DyZ63YWGJ3Va+IE079x7BObPjHXYerGcmzo+JI5XpYek8a7MW6rZalU+6CDz8O
+         PKdMM4UJPzcW31yhhcWBuH+S9/D1jA66iZpIlbhhYgYGUJK8kVLpgyslo4bI8kEg2Fj+
+         HI8Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rp33B34xhzowG7RWg5hAwwquKDW4RZCMoM2gq50cDMQZp5zFxb8YUCKOw9EFmtMViuxT48MPbleHA==@kvack.org
+X-Gm-Message-State: AOJu0Yye1+VMYMSpZKSrl/NkwEcgPIzDKwou66b/Y4jxePz5pmNI7irn
+	mWRcRZ5724HlgOBrK1gooit9VNWrmal6uAbqkKX8rbQasOmd3VXfLp1J2yyPdIh/rE3Jzyz4u3t
+	tw/WhYHFrRVx9fYGO3T4qv1rjOWPpbFY=
+X-Gm-Gg: AfdE7cmk8GzN7P3shkEeoOA448u7i8aGxQSJErWqI8OZy85rSED34LGcoguezquI9Hh
+	deHHA1eOj2f+moejRZiVX4lDLXJEaTHMO/kd1UwwjEw9HdV4csf7VkidftPzUItvl0sbjy5+S2W
+	TlJQcPFK+rjcm+M56tcdIs4nxejc0eiD6HI63KiQL1Lybz+//1cQbAb5Nv3geeQ9KaousdUER3z
+	rG9ZCqcCMViFPsU4ITOMcVOvoP8uuVFapTclUOuwkQvCgrHnERFWkV+BkQcCiEYHvpE+tvQ47zc
+	K8Xdfc8kCS0+GTAq8t1hkghf1vGDW5s=
+X-Received: by 2002:a05:600c:5309:b0:490:d38c:7836 with SMTP id
+ 5b1f17b1804b1-493df082feemr8853095e9.3.1783347241905; Mon, 06 Jul 2026
+ 07:14:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260704092007.3483-1-igorpetindev@gmail.com> <20260704092007.3483-3-igorpetindev@gmail.com>
-In-Reply-To: <20260704092007.3483-3-igorpetindev@gmail.com>
+References: <20260704092007.3483-1-igorpetindev@gmail.com> <20260704092007.3483-4-igorpetindev@gmail.com>
+In-Reply-To: <20260704092007.3483-4-igorpetindev@gmail.com>
 From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Mon, 6 Jul 2026 16:13:42 +0200
-X-Gm-Features: AVVi8CdI6VAiNsIgWHaF26_ieG53mvsQ9Axeo2Pa2H8OoGqEhq9WkemekVMxkeI
-Message-ID: <CA+fCnZe_R7fc2ja1sBN75FSJfrpRPYLi7Zd6cgv5nciFaiw52A@mail.gmail.com>
-Subject: Re: [PATCH 2/3] kasan: common: use ALIGN_DOWN macro for stack alignment
+Date: Mon, 6 Jul 2026 16:13:50 +0200
+X-Gm-Features: AVVi8CfSo_a33Q1WdaWqLuVo2tcFB5VpUhYoEy9ZG3mJd9mF_je-FZgLimqail8
+Message-ID: <CA+fCnZc2VOghj5b4Tjkz4MditvVORnAK0FRs51=i4+ZmDqsbng@mail.gmail.com>
+Subject: Re: [PATCH 3/3] kasan: common: replace magic number with KASAN_TAG_KERNEL
 To: Igor Putko <igorpetindev@gmail.com>
 Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
 	vincenzo.frascino@arm.com, akpm@linux-foundation.org, 
@@ -125,13 +125,13 @@ Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9538AC0005
-X-Stat-Signature: 3isfosi1bmfsejk49dmjyy65i5dzusix
-X-HE-Tag: 1783347235-477798
-X-HE-Meta: U2FsdGVkX1+dYhJfyq7vojOl6sOdz1tCtb1nkD8/vDTrIi/m5PJktSeS8iXe0b91JTBX1GPloIQhbwGqq2h17/rgk7QL8VceQNCQXt1Sf0T5kFlfmXl+h/PuTFsGfMbLFbg/95FXRZNnSH/FhyMY3lWcOFLlTyMUm3QGG9Se2ACLnn9cl0x3mYHyFg4xy+l9YjrXmYdl8SttL1OlBipUvusP11vJFUKPEsh+peZsPEqp7O0Y1r10zdJEFzFf4FBmd9ycMv/I8w0/rW50xbyRWtQawm2pZWHlQrl8pyay+otnSrizCPPGwbp9y38HJcuFrA6lNkcTb/wce3fe6iw3RUqsAvTB/G7UDh89InyaDpBdr3LMFfUnZV1IJtcApiL6zoKvrb2OjX8bFqMSpsZy9baqApS1dn9oaegG1SuySNB/OJBgW75Q23d+ORrD+VF+HSqCj9UJB6xOX0CWZtvQl6EjeJ7S15mLPrjOGZrJAvdwIoogAyUxAFElPfldg3kVFpQMCVFYBCX47qteRdHGw8papCPRfYzfn5B79/1FsmNM0/YBGkR6BUEayWPDFtxg7fWhOUqaBR1uYjqV0Om2U/bmpEgvKltFuT5aTLZ71tAd3smpQhSVnSoK7fbK2p02DZtff3L2tezuo3Dc97kbWhe+6+4hjgIOfUDPR91W5YgjwgxjNJh1StJaFSiYISivIB8QXVcGqOveel8+JfNa7Cl9UP3pCNmGo7wN6/9VhQ1kYbWKtFEeAeBSJ8+ksEOEzzmBXQN05xK1rSItO/j0wZV6FdFnFwnxxS/MQvW2dwFlodNmFfQMtscbL3Ue+tV6vFHpRD/6wwEdiWetvrzeqpwVqE5lRWYUpBE0JfZjReHpKiBwPFvOUn53dNulRpiVowedVorMhOBwnsZZbLRjniDmge3UQI9ieJhoCcKFlzhIiPOy40ZPcTX+jD8+U7hECiNWNPYpMwtqMg4RrJD
- WU9HURZw
- znrm5QrshRfNKszodQ8CKN33U5mEJ9PTID07CIb2+SWLQWvhx20IbiGowHluz5fFWuoezZNdqCb++qez4hL44hqI9VzS3Dl4FvipKvtskn6gnTnBCSmG17A3vkRJQB/c+L4Atd81+245Hzuwe8rSJeU86TJ6AxHFWLE5RRSLMvzZMnLvc75w96GasukZEV89/JlPU0N+wkF4YZCy5IL56GBk+q33Mk5OtwVLP4qvWoFpYWZ0ZdpLJ63UgTfdrgeVZuwxUt49HjPbBQgdTDBOfe5OG1SCMoa4aCwa0waB6yFJV+JGvBje/QPyxGfQ3/v6j/QzVvACxtaYfyMA+bvzQwQCjvGc3cI6JvYaLDWLwlLfjT3h1hOo/6s191Sb/g/Dd6fIkYV/V9c+jkHt4Wcs/qsUO4S8qs5eqQC2pHNw7CSjzCwC+Ylt5BNapXAq0H/2SuQcbjLfJkPupY5tPF0+HCXxiSzLdA6IY1oqxLdF1HcklXlzoDogcvW01Btfjc7kDYBX/cICg2GfoKny+tlQy/fReFPV64/nPpenF
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7B996180003
+X-Stat-Signature: h4gzk999u6dhksskardbsaaiycr1gyxw
+X-HE-Tag: 1783347243-286812
+X-HE-Meta: U2FsdGVkX1+Vki0dJ9f73s8jPcLgIfDWJ1++UvFrL3c0h+UwZywe0zVXlfTPlmKFEtqSshHC0BwahOvmWQrjE4XatHyPruNGFrr3hiVfGUVVbpojPqcdic8fSkfrkpZ449xB68LcAsJ6EusbyNfzDkImHc03q1/4qY3AQi6wZl8HlKeLAV9a/SMn+M61yK+ZYt9nQMcMLva7QN2iiVJWv/Ur1NUUWUfFt/svpu3mTIBXse9w5a8mNJILFjRtmm0hVE7ZaKDkeC1HwyYn6CNikD5xpbyW2sBf6zSQGQvPuqxMsWftyVGe5BWHDpEaT2+GzRs8hNwlwit/jae46yXEHUrU34iiwJkVUilz2EV6HJWZJwoYMx1Guz6XsSp0yVQhpjL0KJuDCRQiQQsZ1JrkFYCjiJw90A9ZjDirJEe5Q8RCuG/Vxs5Vex4ASBj0BZGX9kEocranzC4lOMbBYZMBFsuSEPIBut8655ejjGkaaUHeY/97nrKNZNC/lF/Xg4Yzam2RjmZTAMvhjHsGPmrp15Z1zD33hWGe2oz9CMRPIsWYQfmoEQvK0C8SRhDx8hUR8T+7ugeWFBjRXK37iYn75NPwdQs3RnCFQ5RA3iELxBSAUIgekCe5ko/rZpxK1KCmcx/tbhEBWk+k/1kzpiOtX547EYwGEKjLtlQFtgy4MiYLxoXAeCkqi71/1L9Y5zQ+r0Bi900WKs50tasvOeDijEBf4mEX/bgjPD/XCJU3IpSTTswE1ajaIN6vVzZCc2zM5a9vbVGhk4IaEAyj2IGpieSkxdCAyhX63uhNjz4gR7kqnLwZH44duV7bMf8mHa3lJCbkzx7+pXoTxv9LNVOmEpRHWFX0Azdc1Powh8rJhUymwlzH6Hj4xSahmgqK5E0MIRfKVbZwVUtMbsj752Z7E27mgICo7U+Lb4cy3DUw2Oi1YJMQCC+mCK5UuGzhGCp1ITU6koffgBV6KP1mPl2
+ rkOGNdJz
+ 9M7NkdNxNsNpVM8cXJgx/W/oWpmyAbsAvSGMWlH2UQuuT8mOji9LmNR5GarJP0tjHNIja/UG9gtDbJRkHmjiA+N0mvO2gbvi2wLCJ1HZb4oHCfi903nspyeFgr5CXU0m7bTMgopCLjeZJkp3OAQxEkS+VrGukybhzunRpMyYrg/Sx5wu7HUrXL3f1Nrkd1ZUY91T/IeYvPwNT7tNC9vNHrakzGuV/1Q4fa8tnavKJ0ZdHHV5y0n0vzaoXDFR6HsegaT/xbaR+QJRqD+44RUVyPyt2wq2DK4Ybf0GdrLB7wZ3A2zQaPUSBcQcjmbhmlWWkKL/N+p3apCgpL4zCS+pq/Qw0rKEr2YdImONtl8MUVCRML69c2KUqZJ5vHJIhfDOuVI5LlhAY4MsPyAYMyCyWffIFGJ2HEHSd/MHYs6UJw9Uqdnu92TGS8F3Dt4MF1zfMFOx0SgX9zw0lTcMxlcjWSBHmc4W5RpUBbVWz8YQHKmapJYIZVyDWDM4+X4Py8jySGELWd+pbt4GOA0PHAbMNotFyFBB51lwNlVcD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,10 +142,9 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Sat, Jul 4, 2026 at 11:20=E2=80=AFAM Igor Putko <igorpetindev@gmail.com>=
  wrote:
 >
-> Replace the manual bitwise alignment logic in
-> kasan_unpoison_task_stack_below() with the
-> standard ALIGN_DOWN macro. This improves code
-> readability and conforms to standard kernel idioms.
+> Replace the literal 0xff in assign_tag()
+> with KASAN_TAG_KERNEL to eliminate the
+> magic number and improve code clarity.
 >
 > Signed-off-by: Igor Putko <igorpetindev@gmail.com>
 > ---
@@ -153,25 +152,27 @@ On Sat, Jul 4, 2026 at 11:20=E2=80=AFAM Igor Putko <igorpetindev@gmail.com>=
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/mm/kasan/common.c b/mm/kasan/common.c
-> index 34aa0fdce..5faf73c8f 100644
+> index 5faf73c8f..3e9b6b8f5 100644
 > --- a/mm/kasan/common.c
 > +++ b/mm/kasan/common.c
-> @@ -119,7 +119,7 @@ asmlinkage void kasan_unpoison_task_stack_below(const=
- void *watermark)
->          * because this function is called by early resume code which has=
-n't
->          * yet set up the percpu register (%gs).
->          */
-> -       void *base =3D (void *)((unsigned long)watermark & ~(THREAD_SIZE =
-- 1));
-> +       void *base =3D (void *)ALIGN_DOWN((unsigned long)watermark, THREA=
-D_SIZE);
+> @@ -188,7 +188,7 @@ static inline u8 assign_tag(struct kmem_cache *cache,
+>                                         const void *object, bool init)
+>  {
+>         if (IS_ENABLED(CONFIG_KASAN_GENERIC))
+> -               return 0xff;
+> +               return KASAN_TAG_KERNEL;
+
+Not sure about this change either: the notion of a tag does no apply
+to the Generic mode, so the code uses 0xff in such cases (the second
+definition of page_kasan_tag() is another case).
+
+
+
 >
->         kasan_unpoison(base, watermark - base, false);
->  }
+>         /*
+>          * If the cache neither has a constructor nor has SLAB_TYPESAFE_B=
+Y_RCU
 > --
 > 2.47.3
 >
-
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
 
