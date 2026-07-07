@@ -4,128 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 778AEC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 20:18:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D836C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 20:20:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C2C16B00AB; Tue,  7 Jul 2026 16:18:52 -0400 (EDT)
+	id 2A8C96B00A4; Tue,  7 Jul 2026 16:20:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 699B96B00AD; Tue,  7 Jul 2026 16:18:52 -0400 (EDT)
+	id 27F216B00AD; Tue,  7 Jul 2026 16:20:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5AFDB6B00AF; Tue,  7 Jul 2026 16:18:52 -0400 (EDT)
+	id 1BD7F6B00AE; Tue,  7 Jul 2026 16:20:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F5DD6B00AB
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 16:18:52 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5CF9A0553
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:18:51 +0000 (UTC)
-X-FDA: 84963094062.06.51947DC
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id EE7B3C000A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:18:49 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jGB7Utq1;
-	spf=pass (imf22.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783455529;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E63086B00A4
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 16:20:51 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6ACB41A057A
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:20:51 +0000 (UTC)
+X-FDA: 84963099102.08.18CD816
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4818440003
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:20:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=multikernel-io.20251104.gappssmtp.com header.s=20251104 header.b=ZY9zlA9a;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of cwang@multikernel.io designates 209.85.218.41 as permitted sender) smtp.mailfrom=cwang@multikernel.io;
+	dmarc=none
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783455649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ssf8OkM2BtIA8PHjBNZu7yGhktnYzdLzLvhW02L9WZg=;
-	b=EggObdsUEnML96dZzAJykf//r+dXXxComGDvbyxHhafCrR+LNZNbMTTIjQzj34s7Zqi9ci
-	DUpkEZOcdHZXVhVKXqBcjwxD7QIZRbneYIx8nLZZtfp0y+9MqaThr3E3lvzqIWNEhsLwD1
-	Tes/cZeVvhgDQv3ZOvDMTs0RJSeOFJo=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jGB7Utq1;
-	spf=pass (imf22.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.50 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783455529;
-	b=fkHlntfBj+ySkOrV3eohK/EmZYXfxjEdq/3aWw8/uO4xHsyKUi+1WDVfR4Wkkd5mw0LWwj
-	p6geVe5DwnY9itGkI8Ln+M7BUwCjDD1nwT45ipoMVtTH/rM7/8Muotx5241yf7PZcoZlUg
-	/TKZUrNs1VM3+IGQlN6Escyi/usWAE4=
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-43bfe209e45so2146566fac.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 13:18:49 -0700 (PDT)
+	bh=IJY4UQNwZDSX3Ty+RTKFDTWqS5ZEkBgH5FUefscWr/Y=;
+	b=UAW4ovJxsCz8jEuXsVUpBWivkVuwdYQOR/NCpMBzKcSQlKx55MAhONT3Pkgi7qc9GY7WdE
+	k4BxQcFjQ+rNZNK2TRK6fej4/P8Q7vfIIQW4gxf/RgXDK00PaGN0cYWricCGmzH2TdqAqd
+	jZpOJN7BxsTghHVnFdEpC0tnfO1HS9M=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=multikernel-io.20251104.gappssmtp.com header.s=20251104 header.b=ZY9zlA9a;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of cwang@multikernel.io designates 209.85.218.41 as permitted sender) smtp.mailfrom=cwang@multikernel.io;
+	dmarc=none
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783455649;
+	b=oXDqyrVmHnGZ8lmDnQbwmxGa/hiyNoxj2OygZWqdhPSQ22lLSX51p2sgF33WMK0SbaICOB
+	o8QEhfgAtLLn4/M1xsS+c38mr0h0+/LIoriM/vt1g+fVa1k9w1WGgWxFb5926vJLmpUqoG
+	tLrw8uDIc4gjz1ykv69dMl3qIer40k0=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c15c257a488so7758266b.3
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 13:20:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783455647; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mDdifUXi4CHVJ8dzv8ero3FbYjoSnl4ewDwFNkEaQ8KOZoIEsQgl39A1cGb2J7wwpG
+         YSCib4E8LT20bOFGbTlj8pEiUq1nRh79G9FWXicrjU2n0WJNGXsbRQz8zgEmRl9C9rm4
+         iklQSSydoCaxNgcMf6CBMr69yi8P4nCFZ8LA7zmbUH6zg3BzPsyEq9BtnO3Hnux4whrP
+         oC+na9KT5/WwM1SWI/F+AMYvhsOjwBviSveaKHVLgKudi4uUyfLvsv9M6BlzdIGcRZiO
+         JH5peiXL5QKW4vLsSrR7bcb++h4NatkGSPkSsMsVF6V3qgjeZ2JWzrrvgao450fhACDq
+         PJvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=IJY4UQNwZDSX3Ty+RTKFDTWqS5ZEkBgH5FUefscWr/Y=;
+        fh=Elr2Qr1YA28O1pphnGhN/aGvyt11LoiE0N5ecQ4VOE4=;
+        b=gFeTF3YDikWfOFT/VsGBwEHoRcyk+brzE2wc1nHHViVCdYt/+Ju9Uloo3b13o4yLU6
+         bK1826Hgb3TNX1KJpSn7Gxr3reITS5O3bp68ht5n+oIS4S2EBFD5vwuz/fyiFS7OXDcG
+         4ElunqOCuxLA7L/WsUApaET+sZEVm7CWEKvf9d8QTACqI5Bo/2Kxmr2bkIpAKtCjut19
+         T90mP6WzcP7YhwDUS9xvl6rbcQBIA9D5sI41c4Z/xJjv4GWhevYXyIWkPyJgpA1jzyxg
+         25awYd6fwVcC0r1f+Ssi8Pp+3XXRZ9ynmzaXhSIZ/Ldqj1ur95s4ZNsud6gQMRpuueKj
+         ZZJw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783455529; x=1784060329; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ssf8OkM2BtIA8PHjBNZu7yGhktnYzdLzLvhW02L9WZg=;
-        b=jGB7Utq1J2aJmdPWmcfki5wnFQQ1UMr9XYQTOpgPX/Q1tXBXsTcUMvF57mkZqIErVo
-         0IxN5wfPeX0Lffg/BaQyz3LgLG7AnYz0RxN0oXFeaTG02Eam0ggW7F8YKDiXm7Rg681j
-         BRDiLb48ZXNebPXBaPC43gKP1WcuYKKTgdqGqd4iJoMB0ZHA2TH8Ii0h4nPGv7bfYZJv
-         QwR/A+89hNr93gjjzkAdn20DC78xnfL6JEKMH+KGcjV/hGwXT7iKknkeaLXOhDHz0PBE
-         MIf0fNSx1I+mmMUmNSHrUEjW7ZC9mUfVRD5+6vaf/W/xe88Rx8uYr/nDAijAARlUfua7
-         1clA==
+        d=multikernel-io.20251104.gappssmtp.com; s=20251104; t=1783455647; x=1784060447; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IJY4UQNwZDSX3Ty+RTKFDTWqS5ZEkBgH5FUefscWr/Y=;
+        b=ZY9zlA9aslfxvDOBkzE2McUWOlgto9NUtxV60zXHvZKrObjIKEMWf7Gbd4ESkJ7zt4
+         cwRIq2l282si5x9CMxB3COUrufaKQXkcicNTODGUDLY5+dHBmlX/s0gaZaJv/7om0HUs
+         PNLX0IRbLiulaakypr8CJx5ac+Oe13BjOP+Hg9rpNMDsdSklfPgWORasXgCQFph56QgJ
+         viMOFh4OsvGwopc/9GhShOhfrXjXWP0+v4hIcyJYmAGcz9A3JGjMAbotxHCpMTc24ILV
+         Rxr5sP8yb5xGJKpZ6veqvFYRPlXpZzsi92+c3pg2cIB4BTNxe9BBt0ucILmHaaHrGW0l
+         U/lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783455529; x=1784060329;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ssf8OkM2BtIA8PHjBNZu7yGhktnYzdLzLvhW02L9WZg=;
-        b=DfYel+5iLsrFsk4XETphJRNoTJlyVbmd/hYgiYwR1efsStKf1ziMf/2l/x2hd0d0ZT
-         VD20q1lyDdFyksrPOzEuD7jU5qNlSQVtnJRBr1XvbJkU7t0Vq/XWsyVyaN436W+6zg7M
-         t9+zENF3CXxv0tICH9GxFomT1V33aEN/jncfo6ds3SB8iakD4gsJTxBEXeSFVgRehut9
-         v/8vs0FanBQ/x0j/xV7h96F+sZwcgXNKbwILnwdY2Mo6QqSUdnQesUTCXc6xxv/irSbq
-         z7/cbfXrguAugWdUNPP9icuvOVwteo+muGBHjUDhp8XHTNl/P3rTWAeKE8eMG3WwfrJ5
-         8wqA==
-X-Forwarded-Encrypted: i=1; AFNElJ9IaZuiHlv2YZ/hTfySMIGz9rG2WmF0edQ1ZWmIGL73h3UWq4GlVV5gyCymOsSoHy6rQJZG6xKKrQ==@kvack.org
-X-Gm-Message-State: AOJu0YzJ5Um5hg+Izz2M9nQd8kuKtV7k9UEWCPa7JYlovgTnPSwL/LmJ
-	JZ8FpNVNUt1oYGyUPbjXAokOCoHugV9T3pp1a/9TNdOBfaeH4+flhbbq
-X-Gm-Gg: AfdE7cm7XNUVn4iAuknwpZQpdtAi2CxANeIHCS5irawc1oFGA3Ulf8yMzM/PzcQweoT
-	39pv7lWwoCb3MRFWQv7FEbQrSVWqoovy2XEKHSxwifcllzmnfdvN1ZzbjR/SYNwXt0Anjwi/uGU
-	SxM88dQ6S/Jg/Bb1NrxIp1nMkjwfM1lA/7r/HQMKCabD4795xu9Vo8zBkcL+SbZRuZBMMC96+r4
-	hWdM74Qn9emweP2fQ7Rxh2rxf+EfHZ2atraA/YOgB8a+Fc10z8SnzSiHezDAZe61Xa8Ars4y51R
-	apG2SyQFHoTAkY1mv9orWqg61yAWugonqbyv7Akr1w8sL/DUp9Bmf2RdehDlqNTxbmBLT1xZkAF
-	E75zMfiKEJokfqWtQPKYTBaH7GqgvBU9RaS4ekRtIDSwsl+ACmOCdNxPTODKMBgEAuCzaDFeUVx
-	Ck0BJ3IzK0QGi6XjTeSIRmnwvAy41nLXwkennreXsa5XNgH5fAxv4G6EQW6GsDk2WM
-X-Received: by 2002:a05:6870:7191:b0:447:2e66:ab17 with SMTP id 586e51a60fabf-45106094374mr4457523fac.11.1783455524321;
-        Tue, 07 Jul 2026 13:18:44 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:73::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-44cfb1d1ff0sm14815254fac.7.2026.07.07.13.18.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 13:18:43 -0700 (PDT)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: usama.arif@linux.dev,
-	alex@ghiti.fr,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	willy@infradead.org,
-	linux-mm@kvack.org
-Subject: [PATCH v1 2/2] mm/memory: add anonymous mTHP folios to deferred split list
-Date: Tue,  7 Jul 2026 13:17:35 -0700
-Message-ID: <20260707201735.4113107-3-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260707201735.4113107-1-joannelkoong@gmail.com>
-References: <20260707201735.4113107-1-joannelkoong@gmail.com>
+        d=1e100.net; s=20251104; t=1783455647; x=1784060447;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=IJY4UQNwZDSX3Ty+RTKFDTWqS5ZEkBgH5FUefscWr/Y=;
+        b=PM+wSVE+CiGNlZ7rFzV9zFvEWGoBnWUB6YR97V7xe8e0t/L8EaerrMEZgmxbXQ7LqL
+         R/tbvUR9GqtVqwLDg3XzOdt71BOW7clbtizFuLC/ZFVgcliYb5yfLEDASjShsepUMjrj
+         3tpfkXzIj8zedmgzSIOXxapePSlWkl/UfSLRkO1xpX/TwwOen/vUAywUep49drNocExJ
+         1PjBGQzzbu2SUGrtW0UjSZSJ90PIHoYPsMY5S4TEPwRJnnWm6kC0RbbIuamgEbUDpg+a
+         ULbxiVlckmDhhL8PfbzD8bripX1GmvyfBCR4mXMvC3TeIAsTh5cZtVHOTMG5wpA0mjl4
+         SL5w==
+X-Forwarded-Encrypted: i=1; AHgh+Rp7vCLiU3r15gRDzVdmOt7VJrEyNLbHmxj2BLrkguN0RaKoBnP9ZNhIc7k6J6YEjJT4ih3Rrq819w==@kvack.org
+X-Gm-Message-State: AOJu0YyTLs4w7aAcNscEwV1snVSwMqnXaP6wdn+l2KdAARi2TOSLrVJo
+	QqFrAMeyq8Cef0cRkFhZs7jO+bpfElq9RBr/EUXmp3LUJAlqHv8PMjy9qodmPlyIcwH5aWwph1+
+	rAYKzPrHF7/Oxhf623606EM6l7CWOBV2Y2bLiKFvvSw==
+X-Gm-Gg: AfdE7cnd/eTz5WOFbc7UaTFeuv+rc/XyKjzJ2gYRWPSlyg63/trf0ZlJaKuAbelSe9G
+	1hFEZIM/L9yyaTe7wFNXmrL/F4JGKVMU+THkg2K6veVDnqnGUfVsDIIchUl846uRyQ9OiV8dC6H
+	ajDoiskTIJaNBMEXnEDULOMXK/lQf2mP7n+S9IP78qtVwJiBvw6L6++Rz7XjFsVvtgn6ACZ42R3
+	04aayMg4X/xSXUH5QOaegMovLuDx7ePmiqY3HiFBacsyB5otzkHjtZEijwf3UJmPVJbI1Aj0oie
+	bK60ffXXR6quNmHyPok/MGhd9hawcFLEGI89nbTyww==
+X-Received: by 2002:a17:906:d71:b0:c12:1dd4:13ea with SMTP id
+ a640c23a62f3a-c15a68c644amr278396866b.30.1783455647325; Tue, 07 Jul 2026
+ 13:20:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260704231831.354543-1-xiyou.wangcong@gmail.com>
+In-Reply-To: <20260704231831.354543-1-xiyou.wangcong@gmail.com>
+From: Cong Wang <cwang@multikernel.io>
+Date: Tue, 7 Jul 2026 13:20:35 -0700
+X-Gm-Features: AVVi8CfGLtFoJOFYimGVdvg53iul44JrwBlAlfgw7Pqj4m0vivoZqsE8rR5IEyk
+Message-ID: <CAGHCLaQwfgTJkQ5fgvGifrJNgwj-yEzoQsUzcWuSuy74KiMfJQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/7] seccomp: non-cooperative pinned-memfd argument redirect
+To: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Andy Lutomirski <luto@amacapital.net>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	Will Drewry <wad@chromium.org>, Christian Brauner <brauner@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EE7B3C000A
-X-Stat-Signature: ws6dy8kmyyk1r7xh58qp3g8sebycjamw
-X-HE-Tag: 1783455529-420653
-X-HE-Meta: U2FsdGVkX1+l0xr5YbWoiDBkHPh0LG3Qw8+x4OpIRq5ng3TSoO7fnixyY6Xom7oMPMgAUW9W2EOgY8QyhdGCDUgE1ITGm3Ku/ELnhObNjJKkWs35wncUop8zjG9ACdSd7s3TXNNUwLXmUbA9fdkaW0MSkedb+B/Yk6mK+rPi+i2uI0Fl2QFG1Rz9FSs5wZ1DUHu1UTUNbAHkP1LvdDlMuUxoihgGZmet2cvrL9kS43VuRrwubJqi+BfxbffZ6jijEFTlZMEQafF0IZqNAEAuwJfemtoYVaYuITm8S6i/LKxY3J5mDtJVRLee2W3C9ZwYKt09uAiziR6fjnlv1KuFpRyLGRGWVZdih8H7tp0AkKI46Ss+uRl2LfyVlqo5QHZXIIGaNE/gQ1tcA3JO8R9GJumJF1yUxT6rSwNXNpKVDZ23HWyn5lC9dnQQqpZoAvrLksN8UmNQ+bit0xdc39HAXdRs7aTLPPUe37TUiEw324eMVt/+oJ7KABKSe1cNq5EyI1pIpghh5l118NatcDy8q28XD02JbOYp6+SLg2cwtMUqRW43zA6zjFYsabiZPXiWoL82roy8/4HJTUE2gCysyrj3wzhGU4c5PKmYyfD2IVJa6z4BXp5fqw3l4zObpnH9IOnBs5nmE19B+tDJvjDSgKlMmM3iUCdTbkOJwJY9t+lG6Gk3Ew/pVHHKN02+ZD6rqdw7yOse6NGQPCOa2PyhqZussbVPUlc74dRGmEDyyIjJJnAZRzZ2RSqGmdjsBW4KMnKCFqgjsgvIyCGp/6SbryvUnfmz6plQMfW4hWI1yB099LxpLCgLskdGcOWPeEK0f0Jh90xHaWz6zx/H52jwf37DpymsoT5viwDRMY5o6I8EpKUJ1v7xdFTqSwR6LrCE2MeWdQ7RH/Ov3d1VMvN37Axg/lN4FU86i7wtY5R1M+5E1t+fMvc74yUqvYYPf1NZaX6sbjkfZatk+kY0eda
- ApgAuJrT
- PSkOe1ZCtatH/kQsh0cebGrxjJYVxUezF6K4vallbOOo6pHJ+yvEuex+l7mg+ydQNJsxUcLdfD1MGEJra49OpSJR7+bxpe5Rz649/HbaoFfvcyREK5oZ3zdfBK02l8giHf6FAKyzKLf3aPU5k3KxaRN1hccIxkDoMvranPaypSGvQQicJvm2oFij4+KD8nOkUvJUKVp/QJHiWNTmelJS64VJ1lNqCgPfYyvd7tP8oVFqm+L4DGTyBHRMT1jXwBvbKC57Ui6M9NyNa7/SeQBqpwbHU50/FCavsXMTNiR8xdPoPDztU5Z7xSh5Hfc0K5CVEpRsJ3Kk6hS6BPpl2MkCS/HhZ5dHV10qIpjoXvxqGLEtOLXlpYbgycITf6JsUQJ86jOyQkcBobdziDJyQ9yZeL+r3HsVX1lYlxfTf8Sb3cvfYneP9wQCZqJDXcfJZ3RelbpJ2o9v7h9BdHlLVB69eJmutwA==
+X-Rspamd-Queue-Id: 4818440003
+X-Stat-Signature: cd6wmtofdmsk7qxgcftki87hzqkpzypb
+X-HE-Tag: 1783455649-826267
+X-HE-Meta: U2FsdGVkX19LKGZeB9CG0Vbk44ShzkavWy3m0j5pLTjtA15xVsCVkzCArGEha7J5co4FhN28p4A5VAcq7a/NaYUmo8uJKQmiA+c0W9k5+NuJ8QZam+HEv8sca2lsanHfTmyh7mknE15wR76eJWjE+6357yXFtNJNEDvCVYq21pFvqVYFgJvdt3UAhYcx5r2tf0QPw2SMcR1PdTdFt+NnesLUg5G2EqazWtqI8HFCSuhauc0JvM3Qa4MI86YUoZO8j2MshiSShqweCMVsUmlkOutjmvUQhDkPtD75HRTOfLzmNZdc1rVYC0/x3JEOFH14scBS5yHaxhz7dCNbfOwMaFsw+7WQYggnhHLwO54FlSXryXG3hFjdRneaF/wUpmLyMXO/EIAEMEaraCa9TeYU49jV5+j3mAxHBsGg1NNMFa9O6590DkEyYlQNDRZqsdwEFdPoEfkiBrAd+BFydAbFXnvyD7Qhqhu5KHoNG0hmgfeb/T1GTvzHWOm+MIjfVqAB4uOwm7aOMa+kSW1kVIObRZdgH5vCh3F9HPCkkDmtCQO0ukwWJMFhniv5VZytX3hTvZ5kv0jL0B9H0Dwl4Fo4Vri0ZGbDo5nXetlMdrV05TgsZ29MJuIdSAdcN3ijTkEmINUnJaF7Fg77fKbq0BSlsPtn0KjO/ZtN6F6MU9cpU+9bt6T2qvqmHClX5azF7JOJ4mn7PxwA5WIKyGsxT+sqwdqrU9H428EokLEWQCUSr3RPo/cU4DqI6XTEIyeRaefhipHp9EQkJpt+5mjPugHggKFNhGgmuha1QTZ+OpWvzie6sgnl3tzR1dwd9lag1vix9hLZoKcxp6wbX18kp3gpkxpHlvaZ9RGyrwmmLfnwTe6NjjCjCEs8Vh4C0LgLvN+ZWs5X1rbEjZ856pKqf/NjD4i74vqY2ToiPFL4BDvnfusz4nD7IRW2/ivGyZKz1/ABVROlU/zJqQWj6dqMoxW
+ X2ml25u5
+ yHkUP9gqhKq+axKeBbB3WoVTOSMMuhzBa6CJ2I1jAT33D5xhDSM+ScbzaS/Az9aMLsH/C0wjkPurX1bykae8KVlmzfBaLGUr/AS5mgUGynQjefgKte42MBIbnZ2Hi3hA3Qw/4aldTKbgaC38O1rn10+CQA1LkcCyxD3bGBi+jVxXYwky1Mu9FhFAfGJGmfxHXooZwbKXyFvmetOzX1ma1Ti07Smx/sL1Vtj2G+FrfZWx1d6TotlxBp/HXeHwvM9QIgraQjkZh8mVzDVsswYwrlF7FYD95dWBu9rlY9/uXbo7daocZP6j4Y2eMP4Bq59Kxs1PfNjsWL7rgL3tFzpGvy+mbUPnxog5Qq36DxUyDoMB3oJQ6CVM4Zzj/l1s8ouj3VJPpCvTRqWkXPFhXU/vszmYeS/MLcKCAbq41v+MEINFpVqSdMfqvxyJIGaFQVUUmpiTJdcd7Mjw+JkTIDDIcM+EfbG8ISt2nqPpD5XnZd8ank7H76FSLXfkgLmzAkVZux85W
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,39 +137,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Unlike for PMD-sized folios, an anonymous mTHP folio doesn't get added
-to the deferred split list at fault or collapse time. As a result, a
-fully mapped mTHP folio that is mostly zero-filled doesn't get split by
-the deferred split shrinker when the system is under memory pressure.
+Hi all,
 
-Add anonymous mTHP folios to the deferred split list so that if there's
-memory pressure, a zero-filled mTHP can be split with its zero pages
-remapped to the shared zero page and then reclaimed.
+I see the AI reviews on Sashiko:
+https://sashiko.dev/#/patchset/20260704231831.354543-1-xiyou.wangcong%40gmail.com
 
-To minimize overhead on the common order-0 fault path, the
-deferred_split_folio() call is guarded by an inline folio_test_large()
-check.
+I am reviewing these reviews. Meanwhile, please let me know if you
+have any other feedback.
 
-Suggested-by: Usama Arif <usama.arif@linux.dev>
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
----
- mm/memory.c | 2 ++
- 1 file changed, 2 insertions(+)
+@Andy, does the re-validation logic in patch 5/7 look good to you?
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 6637c5b13c9b..441d918e3dc0 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5259,6 +5259,8 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
- 	folio_add_lru_vma(folio, vma);
- 	set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
- 	update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
-+	if (folio_test_large(folio))
-+		deferred_split_folio(folio, false);
- }
- 
- static void map_anon_folio_pte_pf(struct folio *folio, pte_t *pte,
--- 
-2.52.0
-
+Thanks.
+Cong
 
