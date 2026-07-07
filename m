@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38C1FC43602
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 08:27:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58C44C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 08:27:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37DEA6B00B5; Tue,  7 Jul 2026 04:27:47 -0400 (EDT)
+	id 4B6DD6B00B7; Tue,  7 Jul 2026 04:27:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32E986B00B7; Tue,  7 Jul 2026 04:27:47 -0400 (EDT)
+	id 467096B00B9; Tue,  7 Jul 2026 04:27:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21D816B00B8; Tue,  7 Jul 2026 04:27:47 -0400 (EDT)
+	id 355EE6B00BA; Tue,  7 Jul 2026 04:27:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E7DD16B00B5
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:27:46 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6E39012039A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:27:46 +0000 (UTC)
-X-FDA: 84961302132.07.098E8CF
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9865440007
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:27:44 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="R/5DCUXv";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 083B36B00B7
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:27:53 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 91BC81A0395
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:27:53 +0000 (UTC)
+X-FDA: 84961302426.12.1118CF6
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C5BBB20004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:27:51 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sMajsTlQ;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783412864;
-	b=gV2O8fLac/aDQRq5ilQ4P8i4suxWtCTJCP25P0SUYHmUdv2+LIXP+FpO7dRCWFs4E95aqO
-	RR4Ji5BOGAtSolwYoKin7KDcG4AdPNsGy2eHOsYKLRF39IWtkpg0KSHlEMKXJqnub346+6
-	6djug5Zc1+I5g3FMuN7QnXkpC/daCoE=
+	t=1783412872;
+	b=A35g+YInUh/TQP3D2mR2mygN1bNT7QwlpwInN3s4Op3KHJCeu02r6ei85MgXdRdFwcvmO1
+	cA2Q5Q5/ZFA3tYN5UiSAAPq2LDhMuK56FcbNm5lWRU11g1dK+8DxdvxMIQ3HuTTG8+hsmH
+	jCAZXwiuutEIuwJ4xaBrtAEdmQKtJ9w=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="R/5DCUXv";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sMajsTlQ;
+	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783412864;
+	s=arc-20220608; t=1783412872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yihnCEZ8cVWBNOzVl1JoQsUGqfa5cZb/NMsbpAPjbu4=;
-	b=YhMPCpQX/JDZys78P5mn/ZrQ1WD5UQ/Zl4bGRVn+E03j4QjTacTxuV2Usq7MRBX3CITCLw
-	wrpC/eEz2tSFBhbz2tHRxRxuNOsnKxEJHVdWX+5cYr/1M/mqIYkLuhrSYIGOxs29nXC6Dn
-	CoiMIBBvpWmbKF21/BIEE0fUdMx+FRY=
+	bh=3Ru8WYn++oZvGMNoRs83TkPNucu4BwEx3PldacFtQlM=;
+	b=dtvsNOG7qlFoY1HecmfYmyQHBT0QAXAa3RRjPz94hPcWINR1qIUPugXboOzZ3iZ6bsEA0N
+	NLDGcM+q/ODwn4LLNFtuPiUNDJXOMnc1IusSU2MNTG4YMe3Wu3sL7aOcJf7TabSFDfgH+w
+	5i2/tT0W7XqPWItQc9qtwzM1h4S7Wzw=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783412863;
+	t=1783412870;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:  content-type:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yihnCEZ8cVWBNOzVl1JoQsUGqfa5cZb/NMsbpAPjbu4=;
-	b=R/5DCUXvrIXSqgwmx1kRAI7I80LsohS9htiVnFyv3HzIxXkRNskpMmlWBJKmwwhxHmW0qV
-	hpRmq8hUHxz0V0MeIi0fwNoalxmtVT4FOueDChy82KJbX4N0UxijVY6Do2vDWwtFsyyknT
-	FFiGCDGQTqrGUbyEc8PpFZ9MaaH/KcU=
+	bh=3Ru8WYn++oZvGMNoRs83TkPNucu4BwEx3PldacFtQlM=;
+	b=sMajsTlQ6ayjpEYZPr+c5Aj8FZXE7p4tuArgzE3ffPxvDivEqnRksJ+z9zZJrtQ+NBr/7l
+	ETGTcNULDqxG7qKa3pl0K9iyMDqoarCSJnGxtKkNQdcO/wpXaBBJRnaZaOmPxDAYLHI8ym
+	7QZhmJvYdnmFlRhN5vxwZVN24ZWoF14=
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
@@ -74,9 +74,9 @@ Cc: akpm@linux-foundation.org,
 	chengming.zhou@linux.dev,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <baoquan.he@linux.dev>
-Subject: [RFC PATCH 09/10] mm/swapfile: implement swap_ghost_extend_max() for dynamic growth
-Date: Tue,  7 Jul 2026 16:26:11 +0800
-Message-ID: <20260707082614.95030-10-baoquan.he@linux.dev>
+Subject: [RFC PATCH 10/10] mm/swapfile: add sysfs interface for ghost swap extension
+Date: Tue,  7 Jul 2026 16:26:12 +0800
+Message-ID: <20260707082614.95030-11-baoquan.he@linux.dev>
 In-Reply-To: <20260707082614.95030-1-baoquan.he@linux.dev>
 References: <20260707082614.95030-1-baoquan.he@linux.dev>
 MIME-Version: 1.0
@@ -84,14 +84,14 @@ Content-Type: text/plain; charset=UTF-8
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 9865440007
 X-Rspam-User: 
-X-Stat-Signature: 53ykdcycyrfaxcy97zwiudk6pcdc9sbe
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783412864-523669
-X-HE-Meta: U2FsdGVkX18b5wfwIbkZifWpYC+JqiLG/1YyuYcrUooaPoIZjjdfxlYyYeNTSg4XnCuaPPVNr6TCGNn+eNX2fx8DMGUggkHdBE1hZZ4D42Y61ZKpnaCGHcuf1ORH31zd763trzLs50121pAwls82ONsJ5AvTgEflqOpwL4InYImLPF15HY9S9U9dkbTy2cLeSmRCvPMAQrpP/DijUqpZrFwl9uR4W9PY61rOYg3jZqA6T3pSacLpUSeRV3b1lOS87dBfTksZgfyfhjB+j7Wf7vy2l26QfLTy/oieOzJpYQ+jw7C8hpyhTjjFMlJJg3034cFWTMMZWcK2hx3cCc/MvBBIPYp7MS9voJr8Wc5e2UNPK/uSEsmUJaYxAs+BIWuq9hwRZj1Ug2NK1qLLKQ5qPNslhDPfjLuzu7RGBx35U/g02+MWbvVb7ZkqhP2CSGt6bvoKILOqdAcyvXa+h2UKrtuPOTlI0km/tLJhc+eUK34rXKF3y0gmPUW2QHVfp7zX9r6pEhCyyGqek3IkxW7/huySm/Mpo5M9pjl13qJ8xeMHit61AMgv4rJqisnba/XYFkRq8OyQFdFOSjjHqfsd61M+ZnVjpxMMHfMU427bWXOfibLki6QZZhL3m+K6la/tmFaQi+mBj2ajAnBkQCWnKywbQvjWjq/ZgYzHPQ/lXmdJbVSG/kOBZfr5GoMUuQVXsIrVSCMhJuLuLDRXVuTV9g3TFrSv72M9VipPFejIihJxck5pV0ddVamFUzwKy0BFvMgwEOLMyooAXzP/mRsxqGGMKAr43dXG4F+Eja5IZlFCYeko19rxfbCXPQUnMuerqqYgesfJHBQ5Y+Nj1mBVuKioqF4JpcHY1hUgs84udjQAkONwcqHTF/lnNBUUmN7lXxaKjPgb4KCKq1dai1ttbhe46byhLjYp/wZjXlsBAQfBkCBOBdQR3aX0sBzMU/cMVtv4VUsq1P8GyfBUpNx
- Mo650EPq
- j6vn8QKeWbEu/zva64NjJNzNFNKkRO2gJWH3XYgBNVl3ky+AL3s+r61/ORGTRjV+J5EGosNY2H5Tr7P+sVfbQM2o7Yd3wZcy8jZyrS8ej1FKkYYb9QMHtt2xWBd8RvQ3v3CpTqFI2NjvHkEpO2w9FatGVZxA/vR+M7oRZrzL4avQ58ClsMGMAoySzWWXXN0aYjUrdC2ts/Epsmgh+r7KHqU3Oj+E7YmkFzE2OQnwY5CetX5fEe4SjQfIaATk2/xJIWSrBGmPIZTK+2cum0NsFwStaGZZkqV32jbkSDhXxCvQinc55uh3LQen+UStWE1QUQb1mbtodVq67fyNE86PQGkhIkQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C5BBB20004
+X-Stat-Signature: amr1anfjtakqfz7ox7i754kr19ohn34m
+X-HE-Tag: 1783412871-100350
+X-HE-Meta: U2FsdGVkX1/sXoE2R+s8ek7INvazUqx1gwpHHJguLot2+Nyd04kfbVurc+SFcBhDWUiDL5yZKwzw3x5AktdfeBKNjtldQjmh4z4ArncxfnTt/z2aWz13zHHavy1zVmV7rGlhKRG7tKwDQzLSdnG0u4ybo0lD22H1YiZBI1RBKQwng7T8ZAP+aOLVGU0MP6WMrApn2gUZ30zL6wz5TUZauF5883u3Omrtoz98guoYlJSAB22iPYKuk8h1YNm594ezd7PH42PhzmoIEvmtn/Msa8f8ykM26B6wQMqiVB/ZO3CeFB+2CnSwmg97WexwbtIIvdoi3aXfxTUjlkm2MQT/G5CjoTvTTGDJFeHxh2O1pN4gjyrG+l8R5Jwx7SL5qgsDXG2Ovw4EX+at6k5s2kap7Xvycta0gm5qkyGihv3iJAo5CjF1F3nJ0rlig9yFvSSHKGUrX6+qPod0RC4r8NEINL1DBVdktBJ36k7XM0Z8wCG+507MPl1MX5Jl/rF2u7zhNWMtqPJJApIKFvMwZ4yYfSyK503ao4ZBtDRZUCee6JFqRhhkCoQBQzZzKizVmVF6xRAu4Fy84Vv7nCs2XR/IhQaVJRVAsOPT4zFIKjUFTQW5DBBZ7zfYfTNMBtcrFASgXq8J3k0JSJdrjonZsW1uWk+NZbUJxuBGlbf6iCwrXBAlj5LbPtgeA0+YBS2whTd/r1GdtFxiWE2LycKZfcO5AF4k49p9EmxHwcu+isJJI1rIEtOCPSuKXEaPcR6n69hPAnza0I7ypPB8z/riZSxPRcCccf1viPf54LtA9l92KClD6d0aO9XV9Zk4df609135LW4ziz+Q8u2R9ZlfSNzQHcNkjXybyztOiBqaKw6ZtZmKW9l6+sA1v0C/RhyMa1jaj1zphN2Kz4DY6f0tQT+2ZnAv+zM8EBwqRFtUekUjw7cHC2doKxQaxLCnAMsgmOzOozauCNZsxqyJLorRsL2
+ 0SGW0bwz
+ FUy9mEaKpmSIweHBK0YF2i/aamYtoPFO7fsCtMyd8Y2SDCdP+/ViVYSRTRoSBuYztIn+ZyP7v88/62SXW3Vx5gimdJWRevVyyn5D15JwB1eT4q6CBsTrzSIuUwwIZCrUffCFuWN3O2yhFoJ7wHoCSN2J+zupMDq5yqN+eHlFGHKv5waDHXTahRhJjcvxUhbnVYy5GrRY6uaqMilJElmmtR7hkdLyYMqx0hagdpv7iA7bhaBIMHDwlbJmADfmpXXTSof5NosGDtWMxofZ4ygWuTxQrFApEHs8snhtIHHFzYCVqJBU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,145 +99,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Allocate additional physical pages and map them at the end of the
-already-reserved sparse vmalloc area via vm_area_map_pages(). The flat
-cluster_info pointer never moves — new clusters appear contiguously at
-higher indices. New clusters are fully initialized (spinlocks, list
-heads, trailing BAD mask) before si->max is published via WRITE_ONCE.
+Add per-device attributes under /sys/kernel/mm/ghost_swap/ghost_<N>/:
+  path (RO) — dentry basename
+  max  (RW) — current max pages; write to trigger swap_ghost_extend_max()
 
-Page-pointer tracking in cluster_vm->pages is reallocated to accommodate
-additional entries. Returns -E2BIG if the requested size exceeds the
-reserved VA range. Extension is serialized by swapon_mutex.
+The ghost_kobj field ties each ghost device to its sysfs directory,
+created at swapon and removed at swapoff.
 
 Signed-off-by: Baoquan He <baoquan.he@linux.dev>
 ---
- mm/swapfile.c | 110 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 110 insertions(+)
+ include/linux/swap.h |   1 +
+ mm/swapfile.c        | 111 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 112 insertions(+)
 
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index b87688b7d4ba..d9ae2a9e33cc 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -283,6 +283,7 @@ struct swap_info_struct {
+ 	struct xarray redirect_xa;	/* ghost offset → phys swp_entry_t */
+ 	struct vm_struct *cluster_vm;	/* ghost: sparse vm_area for cluster_info */
+ 	char *ghost_name;		/* ghost: dentry name for sysfs */
++	struct kobject *ghost_kobj;	/* ghost: sysfs per-device directory */
+ #endif
+ };
+ 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index da085a75d7b5..8bf336678887 100644
+index 8bf336678887..ede10539156a 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -58,6 +58,8 @@ static void move_cluster(struct swap_info_struct *si,
- 			 enum swap_cluster_flags new_flags);
- #ifdef CONFIG_ZSWAP
+@@ -31,6 +31,8 @@
+ #include <linux/security.h>
+ #include <linux/backing-dev.h>
+ #include <linux/mutex.h>
++#include <linux/sysfs.h>
++#include <linux/kobject.h>
+ #include <linux/capability.h>
+ #include <linux/syscalls.h>
+ #include <linux/memcontrol.h>
+@@ -60,6 +62,8 @@ static void move_cluster(struct swap_info_struct *si,
  #define GHOST_MAX_CLUSTER_BYTES (64UL * 1024 * 1024)
-+static int swap_ghost_extend_max(struct swap_info_struct *si,
-+				 unsigned int new_maxpages);
+ static int swap_ghost_extend_max(struct swap_info_struct *si,
+ 				 unsigned int new_maxpages);
++static int ghost_sysfs_register(struct swap_info_struct *si);
++static void ghost_sysfs_unregister(struct swap_info_struct *si);
  #endif
  
  /*
-@@ -4247,6 +4249,114 @@ swp_entry_t ghost_redirect_to_phys(struct swap_info_struct *si, pgoff_t offset)
+@@ -3250,6 +3254,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	p->swap_file = NULL;
+ 	maxpages = p->max;
+ 	if (p->flags & SWP_GHOST) {
++		ghost_sysfs_unregister(p);
+ 		p->max = 0;
+ 		cluster_info = NULL;
+ 	} else {
+@@ -4010,6 +4015,13 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		(si->flags & SWP_AREA_DISCARD) ? "s" : "",
+ 		(si->flags & SWP_PAGE_DISCARD) ? "c" : "");
  
- 	return (swp_entry_t){};
++	if (si->flags & SWP_GHOST) {
++		error = ghost_sysfs_register(si);
++		if (error)
++			pr_warn("swapon: ghost sysfs register failed: %d\n",
++				error);
++	}
++
+ 	mutex_unlock(&swapon_mutex);
+ 	atomic_inc(&proc_poll_event);
+ 	wake_up_interruptible(&proc_poll_wait);
+@@ -4357,6 +4369,105 @@ static int swap_ghost_extend_max(struct swap_info_struct *si,
+ 	spin_unlock(&swap_lock);
+ 	return 0;
  }
 +
-+/*
-+ * swap_ghost_extend_max — Extend an active ghost swap device.
-+ * @si:  ghost device (SWP_GHOST set)
-+ * @new: new max pages (> si->max)
-+ *
-+ * Allocates physical pages and maps them at the end of the reserved
-+ * sparse vmalloc area.  si->cluster_info never moves.  New clusters
-+ * are fully initialized before si->max is published via WRITE_ONCE.
-+ *
-+ * Returns 0, -ENOMEM, -EINVAL, or -E2BIG.  Caller holds swapon_mutex.
-+ */
-+static int swap_ghost_extend_max(struct swap_info_struct *si,
-+				 unsigned int new)
++/* ─── Ghost swap sysfs interface ─── */
++
++static struct kobject *ghost_swap_kobj;
++
++static struct swap_info_struct *ghost_kobj_to_si(struct kobject *kobj)
 +{
-+	unsigned long old_max = si->max, old_nr, new_nr;
-+	unsigned long old_bytes, new_bytes, nr_new_pg;
-+	struct page **new_pglist;
-+	unsigned long i;
++	int type;
 +
-+	if (!(si->flags & SWP_GHOST) ||
-+	    !(si->flags & (SWP_USED | SWP_WRITEOK)) ||
-+	    new <= si->max)
-+		return -EINVAL;
++	for (type = 0; type < MAX_SWAPFILES; type++) {
++		struct swap_info_struct *si = READ_ONCE(swap_info[type]);
 +
-+	old_nr = DIV_ROUND_UP(si->max, SWAPFILE_CLUSTER);
-+	new_nr = DIV_ROUND_UP(new, SWAPFILE_CLUSTER);
-+	old_bytes = ALIGN(old_nr * sizeof(struct swap_cluster_info), PAGE_SIZE);
-+	new_bytes = ALIGN(new_nr * sizeof(struct swap_cluster_info), PAGE_SIZE);
-+	nr_new_pg = (new_bytes - old_bytes) / PAGE_SIZE;
-+
-+	if (old_bytes + nr_new_pg * PAGE_SIZE > si->cluster_vm->size) {
-+		pr_warn("ghost: extend to %u exceeds reserved VA (%lu bytes)\n",
-+			new, si->cluster_vm->size);
-+		return -E2BIG;
++		if (si && si->ghost_kobj == kobj && (si->flags & SWP_USED))
++			return si;
 +	}
++	return NULL;
++}
 +
-+	new_pglist = kvmalloc_array(si->cluster_vm->nr_pages + nr_new_pg,
-+				    sizeof(struct page *), GFP_KERNEL);
-+	if (!new_pglist)
-+		return -ENOMEM;
-+	if (si->cluster_vm->pages) {
-+		memcpy(new_pglist, si->cluster_vm->pages,
-+		       si->cluster_vm->nr_pages * sizeof(struct page *));
-+		kvfree(si->cluster_vm->pages);
-+	}
-+	si->cluster_vm->pages = (void *)new_pglist;
++#define GHOST_ATTR_RO(_n) \
++	static ssize_t _n##_show(struct kobject *k, struct kobj_attribute *a, char *b)
++#define GHOST_ATTR_WO(_n) \
++	static ssize_t _n##_store(struct kobject *k, struct kobj_attribute *a, \
++				  const char *b, size_t n)
 +
-+	for (i = 0; i < nr_new_pg; i++) {
-+		struct page *page = alloc_page(GFP_KERNEL | __GFP_ZERO);
-+		if (!page) {
-+			while (i-- > 0)
-+				__free_page(new_pglist[si->cluster_vm->nr_pages + i]);
++GHOST_ATTR_RO(path)
++{
++	struct swap_info_struct *si = ghost_kobj_to_si(k);
++
++	if (!si || !si->ghost_name)
++		return -ENODEV;
++	return sysfs_emit(b, "%s\n", si->ghost_name);
++}
++
++GHOST_ATTR_RO(max)
++{
++	struct swap_info_struct *si = ghost_kobj_to_si(k);
++
++	if (!si)
++		return -ENODEV;
++	return sysfs_emit(b, "%u\n", si->max);
++}
++
++GHOST_ATTR_WO(max)
++{
++	struct swap_info_struct *si = ghost_kobj_to_si(k);
++	unsigned long val;
++	int ret;
++
++	if (!si)
++		return -ENODEV;
++	ret = kstrtoul(b, 10, &val);
++	if (ret)
++		return ret;
++	if (mutex_lock_interruptible(&swapon_mutex))
++		return -ERESTARTSYS;
++	ret = swap_ghost_extend_max(si, (unsigned int)val);
++	mutex_unlock(&swapon_mutex);
++	return ret ? ret : n;
++}
++
++static struct kobj_attribute ghost_attr_path = __ATTR_RO(path);
++static struct kobj_attribute ghost_attr_max  = __ATTR_RW(max);
++static struct attribute *ghost_attrs[] = {
++	&ghost_attr_path.attr,
++	&ghost_attr_max.attr,
++	NULL,
++};
++ATTRIBUTE_GROUPS(ghost);
++
++static int ghost_sysfs_register(struct swap_info_struct *si)
++{
++	char name[32];
++	int ret;
++
++	if (!ghost_swap_kobj) {
++		ghost_swap_kobj = kobject_create_and_add("ghost_swap", mm_kobj);
++		if (!ghost_swap_kobj)
 +			return -ENOMEM;
-+		}
-+		new_pglist[si->cluster_vm->nr_pages + i] = page;
 +	}
-+
-+	if (vm_area_map_pages(si->cluster_vm,
-+			      (unsigned long)si->cluster_vm->addr + old_bytes,
-+			      (unsigned long)si->cluster_vm->addr + new_bytes,
-+			      &new_pglist[si->cluster_vm->nr_pages])) {
-+		for (i = 0; i < nr_new_pg; i++)
-+			__free_page(new_pglist[si->cluster_vm->nr_pages + i]);
++	snprintf(name, sizeof(name), "ghost_%d", si->type);
++	si->ghost_kobj = kobject_create_and_add(name, ghost_swap_kobj);
++	if (!si->ghost_kobj)
 +		return -ENOMEM;
++	ret = sysfs_create_groups(si->ghost_kobj, ghost_groups);
++	if (ret) {
++		kobject_put(si->ghost_kobj);
++		si->ghost_kobj = NULL;
 +	}
-+	si->cluster_vm->nr_pages += nr_new_pg;
++	return ret;
++}
 +
-+	for (i = old_nr; i < new_nr; i++) {
-+		struct swap_cluster_info *ci = &si->cluster_info[i];
-+		spin_lock_init(&ci->lock);
-+		INIT_LIST_HEAD(&ci->list);
-+	}
-+
-+	if (new % SWAPFILE_CLUSTER) {
-+		unsigned long base = (new - 1) / SWAPFILE_CLUSTER *
-+				    SWAPFILE_CLUSTER;
-+		unsigned long idx = base / SWAPFILE_CLUSTER;
-+		struct swap_cluster_info *ci = &si->cluster_info[idx];
-+
-+		if (!ci->count && swap_cluster_alloc_table(ci, GFP_KERNEL)) {
-+			for (i = 0; i < nr_new_pg; i++)
-+				__free_page(new_pglist[si->cluster_vm->nr_pages + i]);
-+			return -ENOMEM;
-+		}
-+		spin_lock(&ci->lock);
-+		for (i = new % SWAPFILE_CLUSTER; i < SWAPFILE_CLUSTER; i++)
-+			__swap_table_set(ci, i, SWP_TB_BAD);
-+		spin_unlock(&ci->lock);
-+	}
-+
-+	WRITE_ONCE(si->max, new);
-+
-+	for (i = old_nr; i < new_nr; i++) {
-+		struct swap_cluster_info *ci = &si->cluster_info[i];
-+		ci->flags = CLUSTER_FLAG_FREE;
-+		spin_lock(&si->lock);
-+		list_add_tail(&ci->list, &si->free_clusters);
-+		spin_unlock(&si->lock);
-+	}
-+
-+	si->pages += new - old_max;
-+	atomic_long_add(new - old_max, &nr_swap_pages);
-+	spin_lock(&swap_lock);
-+	total_swap_pages += new - old_max;
-+	spin_unlock(&swap_lock);
-+	return 0;
++static void ghost_sysfs_unregister(struct swap_info_struct *si)
++{
++	if (!si->ghost_kobj)
++		return;
++	sysfs_remove_groups(si->ghost_kobj, ghost_groups);
++	kobject_put(si->ghost_kobj);
++	si->ghost_kobj = NULL;
 +}
  #endif /* CONFIG_ZSWAP */
  
