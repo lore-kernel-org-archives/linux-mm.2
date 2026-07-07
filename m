@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5567C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:42:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7910C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:42:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 557D56B009E; Tue,  7 Jul 2026 02:42:41 -0400 (EDT)
+	id 9C4766B00C7; Tue,  7 Jul 2026 02:42:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4448F6B00C7; Tue,  7 Jul 2026 02:42:41 -0400 (EDT)
+	id 9753B6B00C9; Tue,  7 Jul 2026 02:42:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BE156B00C8; Tue,  7 Jul 2026 02:42:41 -0400 (EDT)
+	id 7EF716B00CA; Tue,  7 Jul 2026 02:42:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EF7996B009E
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:42:40 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C9321C33F0
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:40 +0000 (UTC)
-X-FDA: 84961037280.30.9405658
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C9B7540005
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:38 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dcvCpjie;
-	spf=pass (imf12.hostedemail.com: domain of 33Z9MagsKCKgaWcZIdXIVLIOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--souravpanda.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=33Z9MagsKCKgaWcZIdXIVLIOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--souravpanda.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783406558;
-	b=q81XA94p7+hn72ylcEN9hGtf9Y6xYD55jgKtoATJvMPT2s9vjEl6Q2B8ZyhQvYvdiZekq8
-	1+NXyVih1nZvKYyOXqqU8Ng1d6KJHx86DSX3GMSjwXe/gC7aQUpsbNbCoSshveN6LV5fJ4
-	S5SNrG7gEH/nQqov++3rYj35Rte5BZ8=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=dcvCpjie;
-	spf=pass (imf12.hostedemail.com: domain of 33Z9MagsKCKgaWcZIdXIVLIOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--souravpanda.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=33Z9MagsKCKgaWcZIdXIVLIOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--souravpanda.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E0CFD6B00C7
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:42:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 60C501C7D6C
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:41 +0000 (UTC)
+X-FDA: 84961037322.05.AC803CD
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AC785180006
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:39 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="wFM/pPRS";
+	spf=pass (imf16.hostedemail.com: domain of 33p9MagsKCKkbXdaJeYJWMJPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--souravpanda.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=33p9MagsKCKkbXdaJeYJWMJPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--souravpanda.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783406558;
+	s=arc-20220608; t=1783406559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S2+6BMS1LET88hmhEtqV37vGf+7f7OZkNHnFc4ohCrA=;
-	b=UayccopEn86las28pfFNTqVKo3HW8wi6cpN6Diaqj47Zbq2HYnO6r4W3/qTtjhTWPNdMQZ
-	wZeccvu9nFXtq6MSnXSxbL4L73r4G+mQ8lo6KLAB5fmmo7PZ63fc3zLY5aCYzm6B5RTxOe
-	MfWQ/SFW2qTjmrrrMMNSu9WwxCnrXAk=
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8479b45ad08so6464689b3a.3
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 23:42:38 -0700 (PDT)
+	bh=U3/6FtQizBI37BpPuKE5LV5SzdpXotLVZrr6UgpgZPY=;
+	b=1OnTwmjwDUZIlfF5Fp5U1+9EGZWAieN2TlT1hT4tTCU386JOhZf5g20LcDQ6WwSZNPz5sX
+	LU7h1nvYh4ftN2loKM+u0xCf1BBymZ1tRkjumutZVYnyKjIXvwiHGD3Bsx8ZcG/yv0CNeA
+	LqU7eroILPfSUL32ofMkTrB2ERzu9X0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="wFM/pPRS";
+	spf=pass (imf16.hostedemail.com: domain of 33p9MagsKCKkbXdaJeYJWMJPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--souravpanda.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=33p9MagsKCKkbXdaJeYJWMJPXXPUN.LXVURWdg-VVTeJLT.XaP@flex--souravpanda.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783406559;
+	b=zbUsdls6nM8/Zr9bgLpQjYAdsrF3axzYzqgweWb+qWcpf/Q7B3IIz/NJGWC3Xva7OqM4/C
+	bcGJpjYC3G+crDnB3aB9wPsRzpQIoo8ZzTBQYywxUGqeuSDOLKXgWteW0b9u8HrM0mr5iJ
+	l5A4AsJpronRsw0j8AoExCnSqbIjLy8=
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-381d039b797so2819956a91.1
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 23:42:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783406558; x=1784011358; darn=kvack.org;
+        d=google.com; s=20251104; t=1783406559; x=1784011359; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=S2+6BMS1LET88hmhEtqV37vGf+7f7OZkNHnFc4ohCrA=;
-        b=dcvCpjieoQvIdwlZ6CNrv7uDEtcB6lFRvIPDO6qPEKsPNnHNuHnDmAO6eNPDfPMqsR
-         hOSfG+cvjf614bXvLndLZd+fcXakXilkZCByQ29+8dO6CLsRkta7k0cROKU1GgEb7cze
-         9vgOpFTVTgR2OzMTy+VMkNLj0EwCp3B61VJbio/NKwzJbOkIQ2RSHe3ZZFy/1sRN7fT4
-         m2togMZoEUSeLR22UL239tpxA7SMIuffKSVMqA90574OTEQOXiuUQOE9TB3E1BCa3fCI
-         /buQ5whxauvAHCSxp0jBf22Cfe2/BStuUxqVFFByY9Um2DGkMD0r3lO5R33iv+tkfXGN
-         CZ1Q==
+        bh=U3/6FtQizBI37BpPuKE5LV5SzdpXotLVZrr6UgpgZPY=;
+        b=wFM/pPRS5VOt2uyqSe5CsX2Fw3miHHTj0XcJdOW+qb3YDqZD/e0Qv0orBmG1fQv6Si
+         2ILTc1xiJ5NDPLYEtBopzLcaxCev/23dzz4W14YxB1eEM75UoCQ1MkiArn7+BxGjVqdW
+         dHAA5ZxBvPF7mx91Z/dbZmJLusnB6kFskO5x8vzXns9Sc3d2WFsYsHJzbI3w4QcMiVLs
+         s6E913e5mo+nFZGqlmaAs/iraaVpWQ8m0CO7TnWNXFap/F7/l/xzbBBDsIiZZGew7v12
+         0BIEKRMf2aEng5+AwC0J7r/Gf6CCDScPoR46OviCUT+LUT2XvvJkStRY94Sipm+Y7AtW
+         tGfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783406558; x=1784011358;
+        d=1e100.net; s=20251104; t=1783406559; x=1784011359;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S2+6BMS1LET88hmhEtqV37vGf+7f7OZkNHnFc4ohCrA=;
-        b=GDn3YrOfg6kDjac2msgIaLPS27o49AYBb22Nl5fkemtjsstvvd1VAeRnUP9moLs8JV
-         idvNcKNOJfd3MxOodPDAGxh/rdtiYCFPRAL3dWbA74vpOtbBnD4vyF+aewjLmF/X8qC3
-         madDU5h0KVHcJyYZ6zK88NAq8OlYEqz/qHUqJPEJ8vM1w+O1QxxpsnBw3jOjhOE9ILyS
-         FPSCZosMwTioKUez67ZLf1PUqEnOiNdBDsVtBPxjygFbwbpBAyHdHC+P+D+Fo4yfAm77
-         RdqAh/1RUitTiodiQAhZRkpmzaUZJjCRJl+nghvl9cRY7avMmGKlb4ea5ajE8BdE+t7d
-         tK+g==
-X-Forwarded-Encrypted: i=1; AHgh+RoTh+jVaZQVIBbHAK8YbtT8w5WHehCfZxKp2O2jMx0oxFA+UEInfCDSHWevvY7q4UkJ441xtqEVfQ==@kvack.org
-X-Gm-Message-State: AOJu0YzGEtNmUaIeKrIrnMFsO1BjehXQ60/JY97pocOuB8r+YoXaRMLu
-	ycccIYJPVFdb/ic66I1qT+sBnOnYcPBTZr7RULGK+reWU6B97LihqcYo1A+tSPQK0d4yXLzWLPG
-	qG4wOHE1W8oX48swZjzcBB5mfwA==
-X-Received: from pfhh1.prod.google.com ([2002:a05:6a00:2301:b0:845:e874:e087])
+        bh=U3/6FtQizBI37BpPuKE5LV5SzdpXotLVZrr6UgpgZPY=;
+        b=egvs0bteaO1SO9CXKMd7uAav5MNNs41KHLqweJbbk3jQX1gpUXygbD36tq7UZkAa3N
+         CE7UrSwcxazulIY1Gtvm3L6a4XW5xfdBpt4QbJ5BPAQ165FYXQiZa5HLC2D5UWRRbtIE
+         ixrKbC0SJHe0e7EA/pwzvQNGWVk/Y1H0OpcrwDd/eCZPP9OdRg9lGiEaWKnoCxpAohc8
+         5ETcBBmtlKz1KzqrbLeZeZ6iMGcPg0JKEldPQsog/VgY+7arKjmKu49NUt28oeOXHYnk
+         hNFFTefh2zwD+gmLRjSkHCMw89W0N/b3TGCsKoKE8yE6pOTA2A2ar4nntMQTG6uPF0rS
+         D/Lg==
+X-Forwarded-Encrypted: i=1; AHgh+RoYYeoF+UIk/acPo71tV84qmMCJ6Zm2FSZdjjYKMePwtMh2dvLc4Pxdurjq9Oppt/5vXGzAMSQH2w==@kvack.org
+X-Gm-Message-State: AOJu0YwsY2H8cybEmJMQzo6XyIEpFZVUbloZ3f4pkuHkQJpovw93t1qO
+	nn+KCCgD/d7meORP2hfqDPI06bxwrN2ClBk8NwxO/V0PFJCDHTfWvdiRwMASn4FlpAhBSgp+tw/
+	VZkI03U1lS6m88hs1wV7XlhTAaA==
+X-Received: from plba2.prod.google.com ([2002:a17:903:1002:b0:2ca:f1f8:e9f8])
  (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:2350:b0:847:9367:e054 with SMTP id d2e1a72fcca58-84826e226d0mr3798373b3a.57.1783406557455;
- Mon, 06 Jul 2026 23:42:37 -0700 (PDT)
-Date: Tue,  7 Jul 2026 06:42:30 +0000
+ 2002:a17:90b:4fc5:b0:37f:9ce0:af36 with SMTP id 98e67ed59e1d1-38757c78e6dmr4191418a91.33.1783406558283;
+ Mon, 06 Jul 2026 23:42:38 -0700 (PDT)
+Date: Tue,  7 Jul 2026 06:42:31 +0000
 In-Reply-To: <20260707064235.1386552-1-souravpanda@google.com>
 Mime-Version: 1.0
 References: <20260707064235.1386552-1-souravpanda@google.com>
 X-Mailer: git-send-email 2.55.0.rc2.803.g1fd1e6609c-goog
-Message-ID: <20260707064235.1386552-2-souravpanda@google.com>
-Subject: [PATCH 1/6] mm/hugetlb: add Kconfig and basic cache infrastructure
+Message-ID: <20260707064235.1386552-3-souravpanda@google.com>
+Subject: [PATCH 2/6] mm/hugetlb: implement cache recycling and allocation
 From: Sourav Panda <souravpanda@google.com>
 To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
 Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
@@ -98,13 +98,13 @@ Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
 	linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C9B7540005
-X-Stat-Signature: 3omtabh6wqzie4sd69fp364yx5a5k9kg
-X-HE-Tag: 1783406558-297325
-X-HE-Meta: U2FsdGVkX18i820vpQwMb30xwSq7+ZtSJui8d7GEJzrvbXxkwX+nE5ImVWcd68zgVeD5f6j80yWJQv+LOpgpQ54I1BZH83DRU5I5NhH8uA4i9pzod8SYra/p1CfMIYOMepHNYCLvC9blMLJcClNEFbqVSs5RD+SxeEgOQ8WCsVQorL2aM0KcZLfHBGUZTDoBelf54o3nBA9yJrrfx8L1irC1hh92+NgmjdcOAweugSdRoBIgI7gIW+jH29mAHIPxH65zjYQqt5XguRNg5KOMiEvZUo11izV/rCBsjVmtZwqF0uNko5ViEohnU0sKoF3r8KJdfomu8oO8hZZLBu3od8Ng8BuUvuGPwA6qOsNVibQblTn6Kh/P5Sn67qga+llA07OcGzF2Rj+lvIW7EXm542O48u8j3KuoVvjt+2fPs14vxQq7oOuZzPGZ31H75rXNvDjdb7TbkNiVunV12zDGi00d/TEs1sYrF1BPkVgi+rY9pyTV+1G/F4j0xX7qX/4uiSPhLXt2SHY6aadLXx+yUI/kOjiOjr7sa6KAQBqdZcw2ZafCPOBub/tW1E9fwVNKyHAt2AL6tF4Ct4s/6GKtFhoQIm80j6aV/6Qv5CRqyvpwupgO/VKRoX3i3wVOQNP1CwgL6MrVafO787H5aSEfvrwtEZc62RXFSwaAG5LWLtZJXxvE1JJPlE4JPTFKO9Woz8vfCjU59ym4AMafMum0k+/7IcaxhG1Y4MrczIX7cf5gYJQO40O3nNZWX4BBV4/hcyNy84I08rd33Rq3fwvSzaBa5pMwnHYjDyyoikO+PcOKMEFkrKLO8FzKAbSsADQac9JAdOFJJYBLyrqKIao4LCWJSK1zh3gi5CblsQ7/vyI5YsHdk9p9pIYIyvlcXn4hNBs1D9XchegMS8LcsPLfDK85ZrX2ni7svRL+NU+//Hehg86NrLlEPlE8EPEC0LwPNXpOyxPPpha3DHR4sxZ
- 9DpfpqHh
- qIns5xodCH4nDc0iDAGMkz03UwEodpmz9YtFnXOug99JYn2NggaILA+CckHX5h5bc12PwKJYegP8zcYxUHd28CJl6lFyCiEQ0Z1dE2t+7rwDAqDavzWS14hTqkVbbsiuWORRkFe57lRByk5sClEGAOCmI9u0jrcNlW5iVLv7UEqUrzkpoiD77WK32dl2lV+SZ/SrRYZTZNDq2eh0+x93w9QxcJ8+vyL4k84SrUgNDczoiJW/Efe6DQJuMEJHBuy4I08h4OQfjIeVp6F7NqXC2Nfz5islehmXuoGF8CdPoEshE87D1m4z+QFdL4tWfVAaKqi8XhXqiFtyNcOVo9QpEX7WaZe5r//dRg+dkYZnS3hMgW7AC8I8PLE+QpYZC4amsFJqbvyKhR0ezf18mPuhzlkNsVaIt8ngc81X41hPLsym9N/UCq9IudkC2nUpb8aL7gW53uyJZmOJnqg/7+lGwCT0tAyTceAiA1utQFQYBqy8MNkMFPubpOuNL8At+TQq08KxMjLmvwbWs9w1eywhgoUoLfdXchcSc6lyHZXnkkwM/KoS15p4B1+Juwgxs0E129t2Qa5rRfXzBLWLN8wSgsOQF7VxcCxMwId41T9rHnu7TLNCdBGb+AHa3bA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AC785180006
+X-Stat-Signature: scm4g44mkotts8rnygfr4htbozd3m31m
+X-HE-Tag: 1783406559-32103
+X-HE-Meta: U2FsdGVkX1+FCZ9Id8aOboQaDHGvLQC9SPCbwIndzDvvIQtDp29aw+J9pElHvmE9Bg6sWHL/s+/CtwKdjVCV/QIwMhhzoi/qc654IwIHwXysiLckoaoSm/81p63XR/NHVZVv7dBa3JbOZPdQ3WxkEhJjPgKOEJ8C/vVcg9zqhkTLvac4l3WI156dLPVIaiJxveEvoVUURhuRauOeIB1jnzSxbiy0WCw5+2ZL2bKyZv4sMzsSLoUhhCgIs7AZSOcoNFVsUMNEski+8r/qkf2KzMeAtnm0fEqJthyc/ZUJTpb/6qODiyk6ES9H+dGhk7v065X/QfqP0KiAtaSNTnDFraLSyM65r8QFL5lAfScLytXfePFv/MR85QJhAGtgr54+8OLhQgrgpF17XefMuOwkg/pguxicpkUfl7UV41eQkpaviqnfoiYaLaC7OWzldQdC+NBRjW1NMTQPqrIn9xwBvyr9z50ENlGSUBYd6GYqYJoP8F0U0rJ6iONvXeWDAMbMq/zm5kTSiviaTB8r6lcDbITuYPnW5lZ11HPZvQYrpT4IGGtDlV6Z0avrlQGQadJXx46be5YaIvkfTUDSN0jIcrTPrwBhf1UHrWZzX6WUfC7DFnB+RKzErYAqlPGqlxmi63LAJCnU1P+AZaC3Kd4UCZMsTbHjwDC1Ccb8lWiW/1cHsg41FkPeCqKlo53daMnioCT0sr4LW9mOT2klHzCDgCbXwnx6YOVAbI+AKPpThF9s6ipeKA2yRb82bevqrS9wOyFTkQ8Owa1g/Cbp9ZoKE1lV4rn5fe2IqhERWi1HL8L6SyPsblkR5PfhEj5MqkTagGsDSnSGDryUQL/Eg3VHvWJl7ebS/Lwb6fdsn9gOwGnUVqqM7TtxCBpS2DqiVNHJCZdaMM7lcOvNU84zy3d20FOm7qZjUgpPJ6yNyOXomAqtUrx+cbnASLWIPd4sGdw5+hVoNH5rolIUbR8YUAf
+ hFBx1Knx
+ 89eaGIj/6ARU6npy1d+Mg92f8MKuxYnbP/f+i47qXASmIi2g0Nfwo/077jcw6suJO6qu4xU9c8nTScm/1biLVXgN2VGMwn53OkTykTvRXFlVqdb0Y3Xga5A3KM8K0jF1/RXewjNm8XxeQ9/4odS7QoR8+gGkxG6D6Qw1UH0WvBU/kxnnSh/+zbkx5+MAgxKmQxSVkwKfUZNF0T9kc9/dFMeVHoE4OpfIHUJIwqT8YYwivpisIZxLT0XFfE4pwgJT3xsa4nCKIoLZNEyob6ViSnh9CjrkAqlxBDXdeaCaL5sveoNZwfbt3kAwJXYwaRuh5w7IMn3ngq8Zlsvnq1Df98yTJ4yAqrUCnSFHHXuX/Okj6xemyqQUH8eyerPNW9JGwo/b+PhMr3wrkrfEEsX7VYFfoTG4WhGY9s7fHFhbBa8dTQEAsxeKw3ZWWbzc0KKDA0aZsJu3N2DFtfw3VlNfA9Benkdcc5kP4adHEF7jzfVfdgqUGS4bba/ljtNprvCs3a7fJ0Sc6thPwdy0AI0I4efyLQaTG3ryhEw9R2xo6dFYqd55dpmIcGhyx2jlqs+F39QrIL8MOEf/CZUM2+8jVVO33oIG4Hnsbrgc9HEB+NE/nFipVFs97o5Ge9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,195 +112,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce CONFIG_HUGETLB_CACHE Kconfig option and add the basic
-infrastructure for the HugeTLB dynamic cache.
+Implement the core recycling and allocation logic for the HugeTLB dynamic
+cache.
 
-This includes:
-- Adding new fields to struct hstate to track cached pages
-  (nr_cached_hugepages, max_cached_huge_pages, and node-specific versions)
-  and initializing them.
-- Introducing a new hugetlb page flag HPG_cached to track cached folios.
-- Updating remove_hugetlb_folio() to be cache-aware: if the folio has
-  HPG_cached set, decrement cache counters instead of the free page
-  counters. This prevents leaks during memory hotplug
-  (dissolve_free_hugetlb_folios).
-- Preventing inflation of free_huge_pages by cached pages to protect
-  memory reservation guarantees.
+Recycle surplus hugepages in free_huge_folio() up to max_cached_huge_pages.
+Allocate from the cache in alloc_surplus_hugetlb_folio() if pages are
+available.
+
+To ensure safety and architecture correctness:
+- Skip recycling of hardware-poisoned pages in free_huge_folio() and
+  skip poisoned pages in the cache during allocation.
+- Call arch_clear_hugetlb_flags() before caching a page to clear stale
+  architecture-specific metadata (e.g. ARM64 MTE tags, dcache dirty).
+- Use MRU (Most Recently Used) policy for allocation (taking from the
+  tail of the cache list) to prefer hot pages.
 
 Signed-off-by: Sourav Panda <souravpanda@google.com>
 ---
- fs/Kconfig              |  9 +++++
- include/linux/hugetlb.h | 14 +++++++
- mm/hugetlb.c            | 82 +++++++++++++++++++++++++++++++++++++----
- 3 files changed, 98 insertions(+), 7 deletions(-)
+ include/linux/hugetlb.h |  4 +++
+ mm/hugetlb.c            | 76 +++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 77 insertions(+), 3 deletions(-)
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index 43cb06de297f..d33d1973ce8f 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -268,6 +268,15 @@ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
- 	  The HugeTLB Vmemmap Optimization (HVO) defaults to off. Say Y here to
- 	  enable HVO by default. It can be disabled via hugetlb_free_vmemmap=off
- 	  (boot command line) or hugetlb_optimize_vmemmap (sysctl).
-+
-+config HUGETLB_CACHE
-+	bool "HugeTLB dynamic cache"
-+	help
-+	  Enables a dynamic, NUMA-aware hugepage cache for
-+	  gigantic hugepages to allow faster allocation of surplus pages.
-+	  Surplus pages are recycled into this cache upon release
-+	  instead of being freed back to the buddy allocator immediately.
-+	  Subsequent hugetlb allocations will prefer this cache.
- endif # HUGETLBFS
- 
- config HUGETLB_PAGE
 diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 2abaf99321e9..4768f52ddd35 100644
+index 4768f52ddd35..e882c99780b6 100644
 --- a/include/linux/hugetlb.h
 +++ b/include/linux/hugetlb.h
-@@ -585,6 +585,9 @@ enum hugetlb_page_flags {
- 	HPG_vmemmap_optimized,
- 	HPG_raw_hwp_unreliable,
- 	HPG_cma,
-+#ifdef CONFIG_HUGETLB_CACHE
-+	HPG_cached,
-+#endif
- 	__NR_HPAGEFLAGS,
- };
- 
-@@ -645,6 +648,9 @@ HPAGEFLAG(Freed, freed)
- HPAGEFLAG(VmemmapOptimized, vmemmap_optimized)
- HPAGEFLAG(RawHwpUnreliable, raw_hwp_unreliable)
+@@ -650,6 +650,10 @@ HPAGEFLAG(RawHwpUnreliable, raw_hwp_unreliable)
  HPAGEFLAG(Cma, cma)
-+#ifdef CONFIG_HUGETLB_CACHE
-+HPAGEFLAG(Cached, cached)
-+#endif
- 
- #ifdef CONFIG_HUGETLB_PAGE
- 
-@@ -670,6 +676,14 @@ struct hstate {
- 	unsigned int nr_huge_pages_node[MAX_NUMNODES];
- 	unsigned int free_huge_pages_node[MAX_NUMNODES];
- 	unsigned int surplus_huge_pages_node[MAX_NUMNODES];
-+
-+#ifdef CONFIG_HUGETLB_CACHE
-+	unsigned long nr_cached_hugepages;
-+	unsigned int nr_cached_hugepages_node[MAX_NUMNODES];
-+	struct list_head hugepage_cache_lists[MAX_NUMNODES];
-+	unsigned long max_cached_huge_pages;
-+	unsigned int max_cached_huge_pages_node[MAX_NUMNODES];
-+#endif
- 	char name[HSTATE_NAME_LEN];
- };
- 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index c921287489de..15be3cf54606 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1381,6 +1381,60 @@ static struct folio *alloc_gigantic_frozen_folio(int order, gfp_t gfp_mask, int
- }
+ #ifdef CONFIG_HUGETLB_CACHE
+ HPAGEFLAG(Cached, cached)
++#else
++static inline bool folio_test_hugetlb_cached(const struct folio *folio) { return false; }
++static inline void folio_clear_hugetlb_cached(struct folio *folio) { }
++static inline void folio_set_hugetlb_cached(struct folio *folio) { }
  #endif
  
+ #ifdef CONFIG_HUGETLB_PAGE
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 15be3cf54606..d00aa67b8e13 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -125,6 +125,11 @@ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end, bool take_locks);
+ static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+ 
 +#ifdef CONFIG_HUGETLB_CACHE
-+static inline bool hugetlb_folio_is_cached(struct folio *folio)
-+{
-+	return folio_test_hugetlb_cached(folio);
-+}
++static void hugetlb_cache_add(struct hstate *h, struct folio *folio, bool from_surplus);
++static void hugetlb_cache_remove(struct hstate *h, struct folio *folio, bool to_surplus);
++#endif
 +
-+static void hugetlb_cache_add(struct hstate *h, struct folio *folio, bool from_surplus)
-+{
-+	int nid = folio_nid(folio);
+ static inline bool subpool_is_free(struct hugepage_subpool *spool)
+ {
+ 	if (spool->count)
+@@ -1796,6 +1801,15 @@ void free_huge_folio(struct folio *folio)
+ 		spin_unlock_irqrestore(&hugetlb_lock, flags);
+ 		update_and_free_hugetlb_folio(h, folio, true);
+ 	} else if (h->surplus_huge_pages_node[nid]) {
++#ifdef CONFIG_HUGETLB_CACHE
++		if (h->nr_cached_hugepages < h->max_cached_huge_pages &&
++		    !folio_test_hwpoison(folio)) {
++			arch_clear_hugetlb_flags(folio);
++			hugetlb_cache_add(h, folio, true);
++			spin_unlock_irqrestore(&hugetlb_lock, flags);
++			return;
++		}
++#endif
+ 		/* remove the page from active list */
+ 		remove_hugetlb_folio(h, folio, true);
+ 		spin_unlock_irqrestore(&hugetlb_lock, flags);
+@@ -2035,8 +2049,14 @@ int dissolve_free_hugetlb_folio(struct folio *folio)
+ 		struct hstate *h = folio_hstate(folio);
+ 		bool adjust_surplus = false;
+ 
+-		if (!available_huge_pages(h))
++		if (!available_huge_pages(h) && !folio_test_hugetlb_cached(folio))
++			goto out;
 +
-+	list_move_tail(&folio->lru, &h->hugepage_cache_lists[nid]);
-+	folio_set_hugetlb_freed(folio);
-+	folio_set_hugetlb_cached(folio);
-+	h->nr_cached_hugepages++;
-+	h->nr_cached_hugepages_node[nid]++;
-+	if (from_surplus) {
-+		h->surplus_huge_pages--;
-+		h->surplus_huge_pages_node[nid]--;
++		/* If the folio is currently isolated for page reporting, skip it */
++		if (folio_test_hugetlb_cached(folio) && list_empty(&folio->lru)) {
++			rc = -EBUSY;
+ 			goto out;
++		}
+ 
+ 		/*
+ 		 * We should make sure that the page is already on the free list
+@@ -2128,6 +2148,50 @@ int dissolve_free_hugetlb_folios(unsigned long start_pfn, unsigned long end_pfn)
+ 	return rc;
+ }
+ 
++#ifdef CONFIG_HUGETLB_CACHE
++static struct folio *get_cached_folio(struct hstate *h, int nid, nodemask_t *nmask)
++{
++	int node;
++	struct folio *folio;
++
++	if (h->nr_cached_hugepages == 0)
++		return NULL;
++
++	if (nid != NUMA_NO_NODE && (!nmask || node_isset(nid, *nmask))) {
++		list_for_each_entry_reverse(folio, &h->hugepage_cache_lists[nid], lru) {
++			if (!folio_test_hwpoison(folio))
++				goto found;
++		}
 +	}
-+}
 +
-+static void hugetlb_cache_remove(struct hstate *h, struct folio *folio, bool to_surplus)
-+{
-+	int nid = folio_nid(folio);
-+
-+	list_del_init(&folio->lru);
-+	folio_clear_hugetlb_freed(folio);
-+	folio_clear_hugetlb_cached(folio);
-+	h->nr_cached_hugepages--;
-+	h->nr_cached_hugepages_node[nid]--;
-+	if (to_surplus) {
-+		h->surplus_huge_pages++;
-+		h->surplus_huge_pages_node[nid]++;
++	if (nmask) {
++		for_each_node_mask(node, *nmask) {
++			list_for_each_entry_reverse(folio, &h->hugepage_cache_lists[node], lru) {
++				if (!folio_test_hwpoison(folio))
++					goto found;
++			}
++		}
++	} else {
++		for_each_node_state(node, N_MEMORY) {
++			list_for_each_entry_reverse(folio, &h->hugepage_cache_lists[node], lru) {
++				if (!folio_test_hwpoison(folio))
++					goto found;
++			}
++		}
 +	}
++	return NULL;
++
++found:
++	hugetlb_cache_remove(h, folio, true);
++	return folio;
 +}
 +#else
-+static inline bool hugetlb_folio_is_cached(struct folio *folio)
++static inline struct folio *get_cached_folio(struct hstate *h, int nid, nodemask_t *nmask)
 +{
-+	return false;
-+}
-+
-+static inline void hugetlb_cache_add(struct hstate *h,
-+				     struct folio *folio,
-+				     bool from_surplus)
-+{
-+}
-+
-+static inline void hugetlb_cache_remove(struct hstate *h,
-+					struct folio *folio,
-+					bool to_surplus)
-+{
++	return NULL;
 +}
 +#endif
 +
  /*
-  * Remove hugetlb folio from lists.
-  * If vmemmap exists for the folio, clear the hugetlb flag so that the
-@@ -1401,12 +1455,16 @@ void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
- 	if (hstate_is_gigantic_no_runtime(h))
- 		return;
+  * Allocates a fresh surplus page from the page allocator.
+  */
+@@ -2136,10 +2200,16 @@ static struct folio *alloc_surplus_hugetlb_folio(struct hstate *h,
+ {
+ 	struct folio *folio = NULL;
  
--	list_del(&folio->lru);
--
--	if (folio_test_hugetlb_freed(folio)) {
--		folio_clear_hugetlb_freed(folio);
--		h->free_huge_pages--;
--		h->free_huge_pages_node[nid]--;
-+	if (hugetlb_folio_is_cached(folio)) {
-+		if (folio_test_hugetlb_freed(folio))
-+			hugetlb_cache_remove(h, folio, false);
-+	} else {
-+		list_del(&folio->lru);
-+		if (folio_test_hugetlb_freed(folio)) {
-+			folio_clear_hugetlb_freed(folio);
-+			h->free_huge_pages--;
-+			h->free_huge_pages_node[nid]--;
-+		}
- 	}
- 	if (adjust_surplus) {
- 		h->surplus_huge_pages--;
-@@ -4169,8 +4227,18 @@ void __init hugetlb_add_hstate(unsigned int order)
- 	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
- 	h->order = order;
- 	h->mask = ~(huge_page_size(h) - 1);
--	for (i = 0; i < MAX_NUMNODES; ++i)
-+	for (i = 0; i < MAX_NUMNODES; ++i) {
- 		INIT_LIST_HEAD(&h->hugepage_freelists[i]);
-+#ifdef CONFIG_HUGETLB_CACHE
-+		INIT_LIST_HEAD(&h->hugepage_cache_lists[i]);
-+		h->nr_cached_hugepages_node[i] = 0;
-+		h->max_cached_huge_pages_node[i] = 0;
-+#endif
++	spin_lock_irq(&hugetlb_lock);
++	folio = get_cached_folio(h, nid, nmask);
++	if (folio) {
++		spin_unlock_irq(&hugetlb_lock);
++		return folio;
 +	}
-+#ifdef CONFIG_HUGETLB_CACHE
-+	h->nr_cached_hugepages = 0;
-+	h->max_cached_huge_pages = 0;
-+#endif
- 	INIT_LIST_HEAD(&h->hugepage_activelist);
- 	snprintf(h->name, HSTATE_NAME_LEN, "hugepages-%lukB",
- 					huge_page_size(h)/SZ_1K);
++
+ 	if (hstate_is_gigantic_no_runtime(h))
+-		return NULL;
++		goto out_unlock;
+ 
+-	spin_lock_irq(&hugetlb_lock);
+ 	if (h->surplus_huge_pages >= h->nr_overcommit_huge_pages)
+ 		goto out_unlock;
+ 	spin_unlock_irq(&hugetlb_lock);
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
