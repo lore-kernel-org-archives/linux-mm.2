@@ -4,90 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF746C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 19:48:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEAD0C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 19:49:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9F3F6B009D; Tue,  7 Jul 2026 15:48:29 -0400 (EDT)
+	id E62296B00A7; Tue,  7 Jul 2026 15:49:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B78BA6B009E; Tue,  7 Jul 2026 15:48:29 -0400 (EDT)
+	id E39B16B00B6; Tue,  7 Jul 2026 15:49:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8DA76B00B4; Tue,  7 Jul 2026 15:48:29 -0400 (EDT)
+	id D76AE6B00B7; Tue,  7 Jul 2026 15:49:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DDB66B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:48:29 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD1CC40573
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:48:28 +0000 (UTC)
-X-FDA: 84963017496.15.123B18E
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7E748C000A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:48:26 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ts+EhNAt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AE5D86B00A7
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:49:32 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44E0F1C8286
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:49:32 +0000 (UTC)
+X-FDA: 84963020184.13.F07BCC8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7A8B7A000C
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:49:30 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SPFiXLkd;
+	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783453707;
+	s=arc-20220608; t=1783453770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w6YdfinE5Y+gd0K7HnYdBuEHkj0MV+94snnoeWtOoto=;
-	b=Ji/GWz0BRD/1kZbILaGMvnJyg3WgaiVahCox47/J8YeEXK4zjbdt4MlEiaQnm6EJFU+lK/
-	WW1HSa9yHgsaIkvMABHRlmtvG93R/RzTGCCUbY9XE/5/MUTA+wU5ss211pCCvYwshypt8o
-	E0mB2grEOx7YDqsgiLkqaT7tdG75Cr0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ts+EhNAt;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+	bh=qPvrbgBN5NOaJkwHcD5c8gYXF6Lb12qAhlcePlGcS6s=;
+	b=r4g69BRZGiMzjUZUjE6lxOGACzYqcqNQaBEF7LITpmmNxzmBOFKA+VUrOll6OlKQ9z/EsI
+	RV2sfGNGGS+o8DMkx6Negpl3iGnMOgS1WTWWMz+j0TkOSxD/FjWSQv51PeGpi9o/vnsifd
+	MLAGqD5mjvcDTwp2EROR6T5IxA7x1VU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783453707;
-	b=0yrHnL54B0eIRvOO+mdnSTpl0Y+SFtk8eOr4VThq+P9XBocxVemF3pMVQAXsa84kSN3kGy
-	gEvIKoDFNymVF9lPAL6Vdwk16xfML0uosnmHVj3DJiSLwYCk846R1IZNbgV3zy9iDUtTf6
-	v5trfKTcfyeN//wRdfmuDQ2ryWAdhtE=
-Date: Tue, 7 Jul 2026 12:48:04 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783453703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w6YdfinE5Y+gd0K7HnYdBuEHkj0MV+94snnoeWtOoto=;
-	b=ts+EhNAtWEHYnnXybG3Wwt1iiidVRm+7gyatv3dOousgSi3tqLDNvwRcicdMGKxA337aKI
-	1ckftnguaMosnMOhatU2126ySVCnWfLr1gHqAb3Bhq+j2SD9ICGaMp7Z6h9cGxAaOAAIp0
-	Q1w+A3G4+M6mQFMNLaJznQHkn1MCCzQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Richard Chang <richardycc@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
-Message-ID: <ak1XzPxbwBF72d1m@linux.dev>
-References: <20260706081218.3438762-1-richardycc@google.com>
+	t=1783453770;
+	b=F/byog1GTv7H7UyhzSEqIqmfm9R7gLeemLpCcyQ4qppIMMYG3rDH6W7qnOlED6oiKZVLgl
+	HBs1jjfoouftkrwmRslW5f5xEs3es9T/j4h7Vw49Z28rmfkI+NMaHglhHJbACEB5uidsvS
+	sl/ZElsXG6cO09ABbKSMXwcmeAtgoEg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SPFiXLkd;
+	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BAE9601ED
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:49:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73731F00A3A
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:49:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783453769;
+	bh=qPvrbgBN5NOaJkwHcD5c8gYXF6Lb12qAhlcePlGcS6s=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=SPFiXLkdIaqZoCwSDNao4R7bY5RWhqbOfPAF5cezml+SxMM+ps59NLY7lQUIcdZ2o
+	 GY2KFk1Po4K/TG0Nsle7xKvt5QKJM7yK5OG5hGnK6FeaEV2JwNE9a0eWd/iuUtuapl
+	 TsqgPc2ALZsOygxAYr7q4Wl8OyUdz3hGgbs9F9FxctVydsvY9hVhjEGgHqF26t8evl
+	 svGovJIrfzS65K2ziYX9ufQRvy8xAi/Jm1Qxdyi+CECv7hvC8xxRFJQReIIOYcUChn
+	 qEZIX2DYtkBDp79OUIILEUc/tAyn1g4hbIMWgaReKRsQri+s3WQfda/pB4xaMdYNvW
+	 PsTJPrAh0Waow==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-697de23bd7dso5650301a12.1
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 12:49:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq66e9S09pP2U4mQ47PbEzP6x/26FE2iZg7vhnIoduci+H3m/PyON6kdI6pdllGtWTsazJgAconOg==@kvack.org
+X-Gm-Message-State: AOJu0YxEh475PIDjPSEMJwVVwtjV981e1eeRqko2ZcRlwJwegSxXGEC8
+	dnpEuekddQJTMMEK9ONlIjC6RnR3084yCkWdBJvNaZHxI8s4e6dtulcsrHoDTrLnYR+2dO5vcT6
+	EeVUT7YFDSwhdKb8RnRyABgvvciSGV60=
+X-Received: by 2002:a17:906:18aa:b0:c0b:e9c1:93a7 with SMTP id
+ a640c23a62f3a-c15a68a1b6dmr281344366b.29.1783453768674; Tue, 07 Jul 2026
+ 12:49:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260706081218.3438762-1-richardycc@google.com>
-X-Migadu-Flow: FLOW_OUT
+References: <20260707073215.72183-1-baoquan.he@linux.dev> <CAKEwX=OuikFwr-miW+HKfnk6djMU8ehiTQPnfchFCyVcfefDLg@mail.gmail.com>
+In-Reply-To: <CAKEwX=OuikFwr-miW+HKfnk6djMU8ehiTQPnfchFCyVcfefDLg@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 7 Jul 2026 12:49:17 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zO-RwWH8Xuub48FD6i+o0GSiwEkmWtyY9TfhF1gNx51Bw@mail.gmail.com>
+X-Gm-Features: AVVi8Cd-VVaoZaih6o7sudxZ7fUdfDEt8MgJQ6KSyoYBThoAlcgT3PXapgpkgpE
+Message-ID: <CAO9r8zO-RwWH8Xuub48FD6i+o0GSiwEkmWtyY9TfhF1gNx51Bw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/7] mm: store zswap entries in swap table (Pointer entry)
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	hannes@cmpxchg.org, chengming.zhou@linux.dev, chrisl@kernel.org, 
+	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org, 
+	youngjun.park@lge.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7E748C000A
-X-Stat-Signature: ohc1y3wahwz4115yncf4ti6zkb668izz
-X-HE-Tag: 1783453706-82857
-X-HE-Meta: U2FsdGVkX1/V05/ZXS8Eil/eh/VFJ8ameHvNwY/rfY8JdObSiEZo0Er7ZfJB6jePtVX6oNYTIYwQageR/MOxUb2bHHNpbDhMANtySKNrHq6Oh4C3waIlcyyDGEBIy+m43h2S3Rd6Mvbt3ziEfFzklagmkPeuliPAFNuLy3w9+hta2kvpAL9Ceq4+LusIk1XC5RA9TbgMgfVQ3mpyvgS7XKEcZ280rQpvvyhoR1YIHZacPZeWa1t5T1gvrTOLipyHRcvQ2UX4KS4pgbPEUHNRMNl3yPy1M5pVFTo4UWJeZ9SA/Ahy9Ni3FroznSxq8eh7sBI1Qm0wdbiFxIbUb17h2XS705aENhiOshmu1Z2rNo9HJtynHL4P69nJiN5Tx6No/2uoWL1vr031XhLtUtd/p8D0CVqcE4LSt9cNBy/eY0cah85kBEsyD5bQd7Q/eTXR4/JLX3Z366AsxEaHLlWNBwPKTQU++8MAD71Kt4eDiuGWi+f+LyFT3oMOwoF0X+OaOkZJ8G/CwAFjm2jvU2JAPprRjPS/O7s8OQQo5nYI4izIpmPJKA1F4AMrvSn78skkG5YXZGrtmcSQ/dOf0k7riaQcvIUbsP7N/6HtT23v1VMBWsNjsZ0ZsJnw9Nwk5jY0juRQm3KoyyfCmWYn5aVpt8fBIW2yIJaXxRez5iHO/8ExTlVoOOwQgejsVxRoZKPTgoCH7C+cKF7IstjwHnL2olUHcMwzTnxkCAIa4PfeUnPRMrPRLXsVVF4L68dv8q8iNDrPG5g2CLC8IcJIXMPO2KgbMS8DA3tCXzngT3lP6F+WmreRgDfedRuP8jGQScPFPWImok6WEfcij2csOfCCfkcchx25uj/yr62HeYo2XJzWrrHaZdRxe8FqUbu6Y1/I3k5IyaU1xdfTPjhxBEZNfx+oRwrMQDIzF3TU9SesZL1EfnJXP0bwD8XqpIWKVh8E1Yj7upkBwBPo6QLf4qC
- S8JYTJWW
- Tb7P3JUQAjwMPLXUj5OtoJe4W6jNZdYTNZ9P/dchSZp1FwAHSomS8mJ8I40WneDbUJrrBWaEriJoatv0vYJBtls0BQ/JslScmgR+P+Ks1z8J47qPdd8BFie1G96+k+djifYwy4seDyzIh1VY9IDPySCHiePCK/gDqMyIszwibtGYJqp22aVUL/zytdvohQQa23JEFY+4HoInMsxs5XD7i+YjEgNecjNdln1djF2Z3rGlbhW0=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7A8B7A000C
+X-Stat-Signature: bdkiuimyzem19qad54jk61mw5k7rtjtr
+X-HE-Tag: 1783453770-120442
+X-HE-Meta: U2FsdGVkX185Qi89mm9OcOWaNywKNIFeH2TfrDH5s/iGkcUFD3S+KtNSDZ5cXKZ+xHjf+5Q2/uXkMf7k/fQSJkz7EDzy9AJUYBQ6xKUGjLCucKhTFL9obbVX/d9mQhKmo9csLSLHd8oKbtr7JdbL/27ovu8EE2vgUS9rqvJxf0/MEEsq4+4KCm7Cw+LXGINwQlkqYiZw+QORD3+y5/oxw0YxJ3quuLOlvt/iaRM+XhhkgOJcFsQlLGC5IViBS9HEr12SXFYtWKuiaAgbex9zEnyzGINW3kYxe7t7TYDgOxuWUxkXpYIyz/16kvRvrX3dkQPH2kb4R9+l+pKyNo4BQF5BhOOF+NGUd8pt7dyvXwlITH86OnRkwmN4HZ6nZkERS4fNx4w0Mk9XoW/4kmpFMkHCGTEux3poprCEpcTDhFLWbN62er0El3JXIasFHNHw17l0Z2CA3GBEAK9O2lGDZntclqjsm5rexEX6ogjE9STScnCzhJftHyJ3EmLQ7gOdq7TdNzGm1FeJ9KHx2QHpzMur2a/i7BCxy0O8GwYDgDqvFF76N8t8qIaKgHjUe8s7X2gq9GSaLS0rxgSW1jN84vJsWXj+bmeC1t5f51epUCBn1dzuqmMhvhf6IdL8+uvN9hTclVpTXubCqkO6YQO63Si0I4KJOh7WjX05v3ElmVd8UBkQ+TeHjCtCr2jHzXLp4778jE8N9cVM2FpuiKfn/T+5BlcAsPqTTZkKBH+YppkA/Z+1dcTNsuj3jZCP5VqCJeawOjDQjHzzn54Vhd1XAwUhkvTNMEcddOhj2x3mXkx+Pxo+iXMclWLRSHkR4RlDYFge/reW0TPb4gVxryvn3QVxiqz5qj6CE9KLJtl8s50b+fOVsByCGj0p7lYkC6CUCwBpXXMBgJRP6MDDvg99b7CKzKZturB62pfGqLm0QJSz8phVcXnMIL+0RusZt2cX7eViLsJmxIViK2CpcY/
+ RI6t57LM
+ CkTMKJYWl/VSJ6pfOxe7iUZ3uxJ7rU1QkASQn97ovBpjSw//VHwPIUe2qG3ncLqRT901Ei4q4KY1dgEtlYxqb+fPbV/2xgN2ZDUkTuByuPi2erbTo+Z30bWAwxgt1+gi4TNkpI4IsPdpN/czL+aJYpt2vORIz4bQ8ZbUH+Zcsjah6AJnAVktomQGfnaLeD4LEL9Au3lq1K3uz+01VifMlC3xd2I0fp3vKfU0xnCAtlus9IhsKObcJwo/wNUC7BjJAs0IHqCoEbbqwe1WQt3DHu/FBBqjzgjaeAcSXR/MMTFZ2d9QSwxTifflZNfE/YJo1g0256+p5Oe3/h5g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,20 +104,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 08:12:18AM +0000, Richard Chang wrote:
-> Proactive reclaim (via memory.reclaim or node reclaim) checks for pending
-> signals in its outer loop in user_proactive_reclaim(). However, the inner
-> reclaim loops—scanning cgroups in shrink_many() and evicting folios in
-> try_to_shrink_lruvec() can run for a long time before returning to the
-> outer loop, especially on systems with many cgroups or large memory sizes.
-> 
-> This latency in responding to signals can block the freezer (both cgroup
-> freezer and system suspend), leading to freezer timeouts. This issue was
-> specifically observed on Android when attempting to freeze background
-> cgroups while proactive reclaim was active.
-> 
+On Tue, Jul 7, 2026 at 12:28=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> On Tue, Jul 7, 2026 at 12:32=E2=80=AFAM Baoquan He <baoquan.he@linux.dev>=
+ wrote:
+> >
+> > Currently zswap uses a per-swap-device xarray to map swap offsets to
+> > zswap_entry pointers. This introduces an additional tree walk on every
+> > zswap entry access.
+> >
+> > This series replaces the xarray with a "Pointer" entry type stored
+> > directly in the swap cluster table. The new swp_tb_t variant embeds
+> > a zswap_entry pointer plus a entry count, eliminating the xarray and
+> > its lookup overhead entirely.
+> >
+>
+> Have you had the chance to review the virtual swap work (latest
+> version in [1])? At a first glance, it bears a lot of similarity to
+> this.
+>
+> We're envisioning this to be the future architecture for zswap :) Is
+> there anything that is missing that would satisfy your use case too?
+>
+> [1]: https://lore.kernel.org/all/20260612193738.2183968-1-nphamcs@gmail.c=
+om/
 
-Can you please explain how freezing operation was delayed due to proactive
-reclaim? 
+Yeah this doubles down on the dependency of zswap on a swapfile being
+present, but I guess the goal is for this to be complimented by your
+other series to add ghost swapfile support. This was discussed at
+length, and we don't really want to have a user-facing ghost/virtual
+swapfile concept, at least not for now. Nhat's latest proposal is
+essentially a ghost/virtual swapfile implementation that is
+transparent to userspace, AFAICT.
 
+As Nhat mentioned, if there are deficiencies in his proposal that are
+addressed by yours, I think the most productive way forward is to
+start a discussion (here or on Nhat's proposal) to figure out the best
+way forward for everyone.
 
