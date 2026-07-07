@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C90ACC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:51:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD28C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:51:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 077816B00B2; Tue,  7 Jul 2026 09:50:56 -0400 (EDT)
+	id 50D106B00B4; Tue,  7 Jul 2026 09:50:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 001206B00B4; Tue,  7 Jul 2026 09:50:55 -0400 (EDT)
+	id 492EB6B00B5; Tue,  7 Jul 2026 09:50:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D72F06B00B5; Tue,  7 Jul 2026 09:50:55 -0400 (EDT)
+	id 3367C6B00B6; Tue,  7 Jul 2026 09:50:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A71096B00B2
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:50:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2AF4B1A0448
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:50:55 +0000 (UTC)
-X-FDA: 84962116470.11.226ED25
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7B443180003
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:50:53 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VjX3EsM2;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EE5086B00B4
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:50:56 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71338A03A6
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:50:56 +0000 (UTC)
+X-FDA: 84962116512.14.5004742
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 73AC680005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:50:54 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="kNXg8Bh/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783432253;
-	b=rSD85TPg8F0yUh+i/amiB0u6UN5XWLJQ+eUWOYFvdEmchEi0a0UJiqjw7M5myyh90dohOt
-	I8CbTGqLInzl0URazjHozkQ20PL2vH/dwjirgrQu0w/GMpNhGnKTEeywLN7b9F1Sp8AY5F
-	JdByi9yTmid4vENIy7ILyPiion4jKks=
+	t=1783432254;
+	b=tIGFST7WvVSkwIp9ooWtlQmXnAM9XDlGzFsldZt37fcGGn7DxnWdZq1dR6FAmDRdFJHol3
+	3GFfplxNBoJNfjc6M3XpaaUg2gh1SVmLNNgIsOAeghHXZO+buLxYrihvnb/sK1oYxXhPrW
+	cD4yB6n4iizYGHmwYD7a/AgyThYZ9nA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VjX3EsM2;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="kNXg8Bh/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783432253;
+	s=arc-20220608; t=1783432254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=of1I7i7VNy1H4HcbkZacjpj2gDgZKYHy4CXBT3cnzFM=;
-	b=tLjIH6AxhBxRr0uwh2+is86014gduurhHE18/C3dDoybAjmRVoy+szt1Xpxf9gbyc6eDeb
-	esV/oZ65TI2P13DxSDm5XjlNmJXKiTELsWUtDmQf6MXYjQa9P2XlwdypP6UU3s97NP3TAy
-	7EoQhXWvo6Q/Ktx2YcEjIpuxhLogXLI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC76F43AD7;
-	Tue,  7 Jul 2026 13:50:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877081F00ACA;
-	Tue,  7 Jul 2026 13:50:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783432252;
-	bh=of1I7i7VNy1H4HcbkZacjpj2gDgZKYHy4CXBT3cnzFM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VjX3EsM2q3k/yVDTb4quyBr7dla8OOF2eiAEjfDZVvm5y1fbKAywgE8luHEFR4vX7
-	 Bog2C1GMW1QW+vQlw8XW9EfGQFhCcGvK0kS33yuTn9LiBaw4Xz+fJ0yCYCpdWxIpB1
-	 Arq8pFkyxdL33w2rKb6m7t8cE1SgcSJvehV0OvfDKOgBBPXinlnt0MqbZ24yimKmmm
-	 S/fjhu6lK4TovG5pVhJw/TRaJjHzSpj67ipJlxq+FF7b3P+pPNPFVE5fz0csBJbRD4
-	 SV/yfEj1dXrNa7CZabwnujff4MCN18GMuysHrHxyTurvjIe4WMP/RcFKco9WXi3ztE
-	 +wsgRQWVfA/BQ==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 7/7] mm/damon/core: handle unreset probe_hits in probe_hits_mvsum()
-Date: Tue,  7 Jul 2026 06:50:36 -0700
-Message-ID: <20260707135038.90068-8-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260707135038.90068-1-sj@kernel.org>
-References: <20260707135038.90068-1-sj@kernel.org>
+	bh=U/pD5OdgWh4vEEhKM48CFXryGtzNwFwor3KN08M92Y0=;
+	b=uMyTO0rtYZ2wnzLK9IebkJsbx8r9Pt+Wp2Z1mJrAeBW7/9xmXnteeVUEgE2D8Dg8RN4g1X
+	3oR5zAKby8exAEt/7ElU9jodP5bcU6YI66ZIU8TJWSNwniTDOI6gYqDaKfBaFdYpzPBVKG
+	lP4T4mKeggzUl9xyk5zFHxtCDo2FJtI=
+Message-ID: <dd21ee9a-a7a9-46a2-b151-0f5c486772bd@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783432252;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U/pD5OdgWh4vEEhKM48CFXryGtzNwFwor3KN08M92Y0=;
+	b=kNXg8Bh/q9j4Llb5rtZWfxrp9Lr2mMLw00i06Tq8leWaM2xmpar4qi+HxLU7esLXEoV2hT
+	lRYT5Gna157c2xqc0Rz7Zhbcegjm1LDQ8bTTfNSUnWM44I5A9LU6MiAs96di/YcXOoMgdY
+	DHVW9lVr15gj7wPwJRUzkGHE0XkrPW4=
+Date: Tue, 7 Jul 2026 21:50:31 +0800
 MIME-Version: 1.0
+Subject: Re: [PATCH] mm/mseal: fix mseal documentation for 32-bit kernels
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Douglas Anderson <dianders@chromium.org>,
+ Gary Guo <gary@garyguo.net>, Anand Moon <linux.amoon@gmail.com>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
+References: <20260703022507.187457-1-leon.hwang@linux.dev>
+ <20260703114128-2a7a4723-0060-436b-99d9-7499bd90fa82@linutronix.de>
+ <b6f5f3b2-bf62-4b77-9c74-debbed9a4738@linux.dev>
+ <20260707122827-2d6c18d3-8e02-4d9a-bb29-2ec46e759645@linutronix.de>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Leon Hwang <leon.hwang@linux.dev>
+In-Reply-To: <20260707122827-2d6c18d3-8e02-4d9a-bb29-2ec46e759645@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 73AC680005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7B443180003
-X-Stat-Signature: fsz8ois7h18z3xobzsjjjcy4iwiircpj
-X-HE-Tag: 1783432253-160449
-X-HE-Meta: U2FsdGVkX19EsHrhPvho3g8J3r2Vi9Fy8T1ZoquD6qOAHcyY1vyV02/GDmAVLyMEvTrVUqu4dqTUOQK7hpz+PytwO/vymIZj+H1GZzQrvLJIyoSfUCtiWLs1JknY0jJ4nxJ2DFla4OkYrm7Y9OCsua93FSX/t2A1NoCWGfq71vNAeEgl+b7Y64bwEnhhkFypxqj28ZT5FJbF+IV+LiU/BVfewriuDIdXOsWFNc/GHPG++tXCy3mFRL2D/vRP8Muqvir3T58bvNzo9pvoPQZAkax+99UDjX8blmeSN1gWDfRsMQARTAmGyqT5fd/IDUwoONkTIch9cn/Ushxkmz04EK3TtzxWpubApcLNxTTpI5icErOYkvLzLNo/sRBkP2XBOCBaCvj++B5XQ8PLr2BbIUXpZSSR49/99VmTROQQENjk/TkW7g/y5eg9Q/UShSZPaS1kpOTQFwfhUtytPM2VMX0JbQBwPNm77RnwV4XQFAHqz+Q7vTTnsQOVK5MhWtLNL9jsnJbkuYMjY5BE32SK1IPTvs+xZ3nFw2ECDP++8FaKjAT9bdnUGpnQH4j1/vvanQZPKzeY19DiWaBUB3pKxKgTj99AsY9JFyGVvljKg/HzvOMa7JIq3eIKMUxP/E7AIy689OoEwls0g9zuQ1fY+7eGX+v542yf2/FujJL8nFuTqDFHrlxi44qMQQwwVivd5zSW1B71dkZ6wbih0GT7Pk6ZW7Uki10mVg+bQUzhxR4sodSDSJnW1LPP6tWa0IPDunuMLJlck2owtb0MOu5620vpFAzRAAGWJNH8EhUjm5lf0D36MTwo29XwYzvaYIKdI07gurwNXNz+E7mm7UfjJUezLJOhUn2SYkpVHOUJawlQJOedfz961D97hKkuwVRmXAJYeWqG7VZyIjigyGY0AbujxXsppY3he8eGYXFdS8Obtv3bAxI/YeAxkQAeoNjQ/m/a3CXMoNVSDwRJxyf
- 02xqUYtm
- pg/MEZixIrt55i5w9MlOxHWVa8nAb1GwdRkK4Lw0QOaxbqpEvqurwzoV4EVB69DYiFuSNG3aFu/LsiwifcA/pv+lSDRrSHnItn9644s6sFybY4JcxK1Az7R0pVsToleUKROLjQjDEf1Kfa4VefSZhruCx00yTuvwZE1O5s2ZJgCrkguxxTrW5wIUD0NhKPgGPUuit07UrrqFlLvdEuwFFX54csgIVjxiz4C9d0eXw3QIpDyefMWyfgvDwhTrxz7U9Uonk6mFGHGXNk/ZQj5QlZx/a9g==
+X-Stat-Signature: 685x1j66jqqq7rsh6wq8y4yrty19h86k
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783432254-659908
+X-HE-Meta: U2FsdGVkX1+KLvWFLQ9XBt/mRyt1Zttl8vfNFmJYUsazZthMTiHypCkO8GF3GPm/iy20+X6+P7dfi2nFxJlAuZxaT+d09okdGRM/zOqzI3wFtyLQLtfwoyecdsZWvv1KQwNdRJHPoJ2bxvgHbt2eryMONW/YAPXGjjM7RLoh72Dx1cG4EOL9X6Asl8e7+aCIYsP9toMI5ud4KPqAR7JlPXN3KuhHo1oExTGV+5t406zxewR8vb15oT/usyJVRSwsbD4PTL7DAR4v+lqK+Nw44Hh5Y5EzHFCj4FD2xpiXJIYncFc0U1c60FYml9quv9mEYkC8iYDcrEmOdN+/II68okpXP6i6/e9LXoZY5iF0Y7eaX2FJrRLjuzOe5vWMr4dKwjBPq5xhPxoT2FNpKrwi7Jq/PnOy/bGe8ouGKplm4QCB/ZXQsPNe5xsDBagQ8hq9FBm7F3NVLqQ/HwuCr5qLl+noHxF6dObJ7dBEAQvHY0Zi9Rh1y6xda0XSeDi6YT87ZJCnnZnnDUBO3enq6T/6rxeMbbw426BG+wh8lmI6o+GuPWoh7G6UThUzZv/bXKr/vc3D4NAhYIBTvD6SbpqEev8OLO/xvL/8vSf04XtJ9lPnE8Kg5Lcbricr9APOclbb91C9Di1f9jxSxOCuzK7ER8jGeRBgJE/LC3kCtPFp0kkzWGwwyuiBD87bt47K6pDXSfngsS4NhDhjvJdK6r1Tqef7Q+bxhBkcarGq7svvxdPvPLkcgOkzR+aRGJV5fuX8BnNZo9Fh9b4+wE+eV+ztOrHRVTI/U9IsXsdHg2OmSJ7wZPy+r3InT7i5sSdtxp0dtXk9obbIHQKSxwJii6HS2qySmfjsWEI6+ExoQbELvgZAUPa1t6wSsWCmf6GDL0pf+ls/wXgqpiHpSVbewSHwMWkbyhqUTkyogzHLt67hYe/iARc8RBdFW4lFGoI8ddvUDDr/ClUJu0iWxtnrX8c
+ 6QJE0TeW
+ pSf5u2kZxJ7yKnZxvhdoqhqIG0OW1DyeKbhudI+1dmQmmTNNWwXbO1zjhJM9iQh+lAVD3dWCw4ow2Th3CqB0d7jCioOLPRdahkWPBIaJxC2JHQ71e1RXztZ0bR6OHKixAZ60jqlFglXJTqoGm/KpQHf8No/uUV5eSqd/S7DPVnZthy3vJjmtWwlOs0BIgXWf9IKI+Rae5RvvO9Ug90Q5R51kdULEX1WjkkjqJnb96vPQ1ZLB8n7vzSksb/E+c6ARE0VfryKK95lZSzjTwxsOoC7nHFU3uBAZ22rT3k/Ll91dfxMIMpJZhzBvpyyGWEnusraLo3Ey7b9C5l/jY24lXttGB/Rx4lt6/9bfzTffaFMBdC0U7Wjmj/wXnftj5iI9H5h5N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,40 +104,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If damon_update_monitoring_result() is called at the end of the
-aggregation interval, probe_hits is not reset.  That's because the value
-will be exposed to the user via damon_region_aggregated trace event.
+On 2026/7/7 18:34, Thomas Weißschuh wrote:
+> On Fri, Jul 03, 2026 at 11:09:55PM +0800, Leon Hwang wrote:
+>> On 2026/7/3 17:44, Thomas Weißschuh wrote:
+>>> On Fri, Jul 03, 2026 at 10:25:07AM +0800, Leon Hwang wrote:
+>>> (...)
+>>>
+>>>>    The following architectures currently support this feature: x86-64, arm64,
+>>>> -  loongarch and s390.
+>>>> +  loongarch, riscv, and s390.
+>>>
+>>> For per-architecture feature documentation we also have
+>>> Documentation/features/. Maybe move it there.
+>>
+>> Better to replace with a reference to the feature doc?
+>>
+>> +  Refer to :doc:`features/core/mseal_sys_mappings/arch-support` for the
+>> +  support status of each architecture.
+> 
+> It should automatically show up here:
+> https://www.kernel.org/doc/html/latest/admin-guide/features.html
+> 
+> See also Documentation/sphinx/kernel_feat.py
+> 
+> So I don't think an explicit link is necessary.
+> But the maintainers might disagree.
+> In my opinion the link should then go to the rendered table entry.
+> 
 
-Meanwhile, damon_probe_hits_mvsum() can be called in this state.  Due to
-its logic, it will return a value that is incorrectly high.  This could
-happen  if the user requested DAMOS schemes applied regions sysfs files
-update exactly in the time sequence.
+Let us drop the sentence following Pedro's suggestion.
 
-The impact is minor, but better to avoid.  Check the timing and simply
-return the fully aggregated last_probe_hits, like
-damon_nr_accesses_mvsum() also does.  It is not 100% accurate since it
-is the last interval's aggregation.  But better than the value that is
-completely reset.
+Thanks,
+Leon
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 9a3ff0fe55a61..093da5c0b3693 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -290,6 +290,9 @@ unsigned char damon_probe_hits_mvsum(int probe_idx, struct damon_region *r,
- 			ctx->passed_sample_intervals;
- 	left_window_bp = mult_frac(left_window, 10000, window_len);
- 
-+	if (left_window_bp == 10000)
-+		return r->last_probe_hits[probe_idx];
-+
- 	return damon_mvsum(r->probe_hits[probe_idx],
- 			r->last_probe_hits[probe_idx], left_window_bp);
- }
--- 
-2.47.3
 
