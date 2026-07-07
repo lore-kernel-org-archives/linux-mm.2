@@ -4,137 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85AC9C44501
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 22:18:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E43F4C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 22:37:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B0996B009D; Tue,  7 Jul 2026 18:18:01 -0400 (EDT)
+	id 89FE86B009D; Tue,  7 Jul 2026 18:37:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 562B46B009E; Tue,  7 Jul 2026 18:18:01 -0400 (EDT)
+	id 8299F6B009E; Tue,  7 Jul 2026 18:37:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4518A6B009F; Tue,  7 Jul 2026 18:18:01 -0400 (EDT)
+	id 6CA796B009F; Tue,  7 Jul 2026 18:37:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 12BFC6B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 18:18:01 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 833B5168D57
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 22:18:00 +0000 (UTC)
-X-FDA: 84963394320.01.8EA63F3
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 91FE316000B
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 22:17:58 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="gJhkjSK/";
-	spf=pass (imf08.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 28E066B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 18:37:15 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 51F0F1C3BF9
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 22:37:14 +0000 (UTC)
+X-FDA: 84963442788.19.DDBC9D2
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6F3F980003
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 22:37:12 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lq1lOU04;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783462678;
+	s=arc-20220608; t=1783463832;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iKVmuDGdAmRQlt0M8u1BboB4FYx2Pt1l++bC+gaSkkA=;
-	b=0LtMU4g3dwLvZoqgh7erT3byAOW+EyHK207reyEk2Q8HVfRHN6tUigSJOB3Kd0+5KlIYY/
-	QzTuJXe8mAofZmTsHxVJV7Lo1K/hE0UmIJh+1Fdesys0xUOxnq64MiCRgJvyTz/jRwmHtU
-	vaAoy+5VQXIY7Sknj3L3Ka9up53Di54=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783462678;
-	b=E18HuZbVl3cS32+G/eGP+QPtFtmnnNQjVZROjUcd2RrL071aeC9FtJP1aQN1Kbx8eo8goP
-	J6MLHdN8JuL+Wij2VXtVAGC8XxiLRFP6MXoHRsA7z1Rizh8Ln7d1/nhcax4y5lD7o8p39Z
-	cOcO2qJEiig/b1Ry35XbyAK/bED6qEQ=
+	bh=q4TK8lHvWPG5dly3sVNQQmvLHERELX/A9xEUlquBCaQ=;
+	b=2KAIAaY4E4IMiO6OntPs3L+exEjKARd6uODAVxm+EZJplN0nOqmwopLCRYhei03vYxRdM7
+	2aAg30TSbQk/dchhqaB7vu0ewE4CJHMe/Ma2msNIaIWWg6zX9/jz4+ak0p1GV7XXp/s5kH
+	llzdDlrQMB9sXVC/BdqQOlfmhMKYIK8=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="gJhkjSK/";
-	spf=pass (imf08.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Lq1lOU04;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-474303f3c72so32149f8f.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 15:17:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783462677; cv=none;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783463832;
+	b=8aOt0qvivOtqxJtgvqYRG7VDz/m2gTZnnsQZw7+fR5Yh/mScjGFmaIDigvQPV3Vz4h9++p
+	epKNmIiNQh/Ync9KeyhnzNdnXYeTstbUvETSZuce6FnPmyLly/2F1BIkq3ezVRyoUGoKcV
+	3MYVmcf5W5iklxFpT0AeG2w49CIXwHE=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-493c486f012so30605e9.3
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 15:37:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783463831; cv=none;
         d=google.com; s=arc-20260327;
-        b=OBijIZtTU4zIjIszdcEcuUQhVEmy66Z1Yg3wbg65WErkrgHSDefZ8OAIjnSWyYz1Sr
-         hXPSG+jepCiMvbiFeSSc1Nw4ozQD992YH6v3zfXfXkEvToxf597H5ldjlnRoL20YBrJ3
-         f73JjVhvltst8/yYrrXZ6oKcNSaFtiZ75OkKyVyY2V6ArvvV1dwt/c6hFtPaBnyBKyO6
-         eRe5BlWBXKDBRWX1YnQRruwDzLUFWZZCRIidVzp0AjukymFggBFFz3po0TqU6pb8wUzk
-         pLi2MfB7VKt3sn2mcRT4XX1J+dILuMbtI5sZHmdrr9QEJmKttiLss76VtdiD0KVWQdfl
-         y0eA==
+        b=I3zhAEtaDxAFW2TQXJNKPyCk6whBi/0+h6U/QLwkqBFV40m+T+EMh8mKecP7/DZnZ3
+         kUKUF6a3RrCncsO1fPm4TEXvcxVzdvPZ5VwbntMkzmZMc5XekfgbFazb8gXmIg62feCX
+         06E6/Rx8VpKAO4+gB5ANPUW5ufRPQINg4rXyz7UGjnCvYTBtdbTG5DHBoiCd+zzO+9RH
+         tqpCQFfY3mpLtX4/UijGILkqoecS8aWF6Gv7n/st8sewvKHkTcssNLZmdTEAJkqzQkFc
+         M6u0eyHNe07aiFnCDpS3FQruGiLeQ+Gbo5jsAPXBFFefSn4Y7lm0K0kyIhnBud7cl1+p
+         DyPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=iKVmuDGdAmRQlt0M8u1BboB4FYx2Pt1l++bC+gaSkkA=;
-        fh=Z4VwI8tmKUwDmscSpFcGoT3Qwu8ZGXRHAn3iCx5ATYo=;
-        b=rN31URjcAsVDKI7BkO4Ocgt11yS1JpWzeOtW8tg1JTew6nhwhcjbHJB/iXi7XomHkX
-         qyYCtMTOJFWUH7+QQ9ZQzx7M7NFf5HnMv3RKvS5XdbztBuvmqJO0ssYHQpsI1K9x92TP
-         bBVN3YpEcKzINVQZJktQ/tUhPeDQCVBXKENx9EaJeysOFgTLqGkSLNeImuKoXcF4HscZ
-         HwWmmjFMear1IVuMNYPfUY/tY39q3NZRudi3tY2iAiW2bN4KLxMT8//qMI6T7zg+PNvc
-         K6BeAdDiBmKK+VYaIGzViXTBroC6XySNW1dyj7KAfK2bOF3kEo/cEbyLFRnk0IQih0n5
-         nRSQ==;
+        bh=q4TK8lHvWPG5dly3sVNQQmvLHERELX/A9xEUlquBCaQ=;
+        fh=vaecG6QtO6r12GzAj38pAxqRjsWQrAnjzLyMhvd9eFw=;
+        b=ZpRrf41UlvpBn3UJVEPYTWfZfhNGrxu/k2we5RhKKuZx+paYOOW8tn+NmttVeyGlgP
+         SVc9ed9pJOcK8Ide2oomssC9LGR9Rv8o2nGK4YNkj+IJ5GxHkg07wGD5HYuMBaspPSuh
+         9283zKWEeBn783yEnIHuvBixVKjzUI8bnPFf+qnWX39SS7cfBHZ0oWECNvJifohjEllV
+         Rr5vaeZy6dHP6nGGiZTwRGc2pq6KNWqYqVXwIngWnEn3sg6iNwuAWSkTgRu1Qv2swgXR
+         HCltk+rTMIYSglPu23iPQUzIAgEjiPiwfOnVJvXFEnfYdRpi5QZZo87HD88mdaDnOjiC
+         ojRg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783462677; x=1784067477; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1783463831; x=1784068631; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=iKVmuDGdAmRQlt0M8u1BboB4FYx2Pt1l++bC+gaSkkA=;
-        b=gJhkjSK/9WyjMBCyYdjEbTXruiLMCDd1CeIRpUOTuR2JGLuCZnENR1303+Wwy2EDUs
-         KeznO63/mbvttEKvAnE0tibUzfjjxiWusNfOQqPpSUAeL1rg1JiGFkkb5bTPlJmZV0PO
-         w7YatMnox1b5SnWhKVapOQMduIRrjMMZXIXXvcH49BRm4+9NDYMz7Aw2LmmWEHx3b1rN
-         x1pMo2hl2034UNcdH8U2JUBxDHFaRXh3dbcrXwUJh99Wtu5DlmRIjAAZNZ3595QrBKfJ
-         3we5LNGa1rFNoQbdSsDh4SDCXTLDPJImpe8vAHkX7wIu7cFn/USfT7QmXZCMVbOQ4J5y
-         tMBQ==
+        bh=q4TK8lHvWPG5dly3sVNQQmvLHERELX/A9xEUlquBCaQ=;
+        b=Lq1lOU04HwQ/etc0RKbiysI8cbS02yp8LvbJMv2Ik9iGvjQt1mG8n0/8HAJ/p3wYhF
+         wsaRqugIABQOyxOu2OfxKv3b32GLFOiIxlg7fxAtjl3AFPcusbk3SdCX4NMlQjiI/86p
+         /2Cznk/ClgOgRSWRQc1yC9VOgW60K6lsKcTNPCUfd0G74cVu3I/Hs6swpIdeKFRdfIgl
+         VdTUBkWh1nmsReN/tUM+kRY7cPLiMeiKCTF3cG5l2AL5hanlDvKACOJm+lm7kLOulNoq
+         zQwzRZ4Yq83CFeBcMxeeWDm45PlhLCIoYiiaDD71DUMygrMK7Vz399cvTmpXL9GVQmIe
+         8yMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783462677; x=1784067477;
+        d=1e100.net; s=20251104; t=1783463831; x=1784068631;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iKVmuDGdAmRQlt0M8u1BboB4FYx2Pt1l++bC+gaSkkA=;
-        b=rx63CFCQDppHgcmpHul6N/9Ax7F8uiLyy1km1jJusXLD5Atk2oPnGiN8K0IJUQjmUu
-         5z3ONkgIbN6CkBQ0xXrD4LNghmdZpVlQ8xfZv16jCRFlfQWvQvB8Vjb1HNsXaL2dzvWY
-         7q+iw66qyZqzMpH9AkhyFzgAis5iEk1lbyoCGCLjp5D/ylnxo0NFIx8/m98S9dtkT72K
-         7/fF3CCaH5nkp8sjgEU2xnVENdGXAZ0zCDG+pB3Y1+rDrBn8kusGktNYQYXqQPVwK2Y/
-         X0JKQElPNOkOOhcc3cjs7PIwwP7qE8AGGzl/IrPvBTQp+GlV0bC45ouwvTf5nGtZTsLE
-         HjQQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoYfNSkraDAo2ZOZVGcSjHjWHmDT4h08uebwIBg8hbQPfu7b2H712IFBR4NR6xtGO5ZB7TeGLF5og==@kvack.org
-X-Gm-Message-State: AOJu0YxBSDyYX/1pBfwr3qRhyY4bQGhZjai6lC4GjhEXwEtfCJlreQGL
-	T8Tk5B7DquSmfnsQVJNVa8VHNVEoxtE/O/QpaIZySAP2FbMHymvBEjkbI2s0xKQTPnz8dQsmT+E
-	w1QKAOlNT0j/elh6skc0HD2liGkBdFt0=
-X-Gm-Gg: AfdE7cn5AGwyE46UJD3qbMnseLicitDqe2LMyy/SPsiP3HLC3Y9XCxBt+uP8MEt3yKd
-	oeVZ3VV0r57DasaFzcEp+sO5vjYNfBsG74c7nZQT1THXA+OUG/0nkJAcqH2nUXUmbbCfkE3a/1V
-	4rFIlTFBaRiGizzn5Hpw6IVgjQ+5n2crSlcINXkPd6xLN6qKiAivFfMTF1PnNmi0Pf7WrCiUj1w
-	m/MAGy+VT943R3fpDO5k59Xzq+jlPD4bqkW/y8szUoNZB+asDTeH5q0tdARHg4tfLVurXLkO+QM
-	Jg9bZxqI+p6X5iCZNuUNAIXAlSuLunUR3Nw9Xps=
-X-Received: by 2002:a5d:4112:0:b0:475:f100:3603 with SMTP id
- ffacd0b85a97d-47de6699433mr6674858f8f.50.1783462676816; Tue, 07 Jul 2026
- 15:17:56 -0700 (PDT)
+        bh=q4TK8lHvWPG5dly3sVNQQmvLHERELX/A9xEUlquBCaQ=;
+        b=KwAQg0F/HegJKW44mgf3xXlO/RCb4HuUZvq1dRUvOMzV6JX+YR1V6yPijU8UFDfxmf
+         mmwLPVe6GOMGSm8zRRVpRg2HjrYbcq1TClDJCkHMdxOReFWO5H+kq+rpk5UtDpSWCQYQ
+         EVuF+sKFsDIWQgFQLrzG+SffUGGye2iDB7rURtxyaP73/56WxhUr4b0f+ztBh9HZYWdD
+         Jyj6ebYn0IihH1u1YGjCCkELqMtYVP+6iF4klSNLay0dUc1sKqM6xWXjupxMSlhGkRVM
+         /4cc5/Fcwtqy3XwVfaU3glV6+fPNSUCRaH1o5DrMvCoC0m+sLtzO73skCQhjXYUspKVI
+         SzuQ==
+X-Gm-Message-State: AOJu0YzBlvd9IWV1xItmNurdnWiBQ3K2ZVlin8/wFjuV47GdAxDx4xLU
+	poI8PIcnUiCnhyjoK4sRdv3GoNHFomjLJ7hdgEbeB0CMlJLbqZNV6jrh/xEKUPEKNhh+qWeUcUv
+	mjCFPDeCOhY473ke2lmXL8riski05uxw=
+X-Gm-Gg: AfdE7cn+wZXOeHiddSl9TlnZuZfFlUGqYYXe14wOaVpj3THeFEgDSTgk4lS+lBiJ182
+	SpBA4reMiKHEFWHqZxukB2a9+8i3vuYSAz8DNLWmjEuGy2nQ4tFLTbyv4DsEZTNYJDHo5ng0z/t
+	EfU2VJf30maQ99vW8m4dLr8tdwMvxn7eLHksb2a9RAlmwh0iCDUgZjiIQ3AoTYp/eRUHJDKeM+a
+	9XjSkA4EbaHcW380bDpIJiB490sRRw2LiGLugi3NuihEmOrRODKrQwQDTqTnzl2yp9/hWigcVPS
+	fnUUtttv305w0ilGh7NqwLpUdCDUsoCjuzIgQuA=
+X-Received: by 2002:a05:600c:1908:b0:492:5855:1548 with SMTP id
+ 5b1f17b1804b1-493df095562mr79007795e9.27.1783463830859; Tue, 07 Jul 2026
+ 15:37:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260707073215.72183-1-baoquan.he@linux.dev> <CAKEwX=OuikFwr-miW+HKfnk6djMU8ehiTQPnfchFCyVcfefDLg@mail.gmail.com>
- <CAO9r8zO-RwWH8Xuub48FD6i+o0GSiwEkmWtyY9TfhF1gNx51Bw@mail.gmail.com>
-In-Reply-To: <CAO9r8zO-RwWH8Xuub48FD6i+o0GSiwEkmWtyY9TfhF1gNx51Bw@mail.gmail.com>
+References: <20260707082614.95030-1-baoquan.he@linux.dev> <20260707082614.95030-10-baoquan.he@linux.dev>
+In-Reply-To: <20260707082614.95030-10-baoquan.he@linux.dev>
 From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 7 Jul 2026 15:17:44 -0700
-X-Gm-Features: AVVi8CfLSXAGLb6BXSKH137TebniS890UmlTONF1mpnq6FDGxT_ENoj5hf0ba4Y
-Message-ID: <CAKEwX=MG1rxNB5bPD622h2CuXD5svV-AjbHMZwdb-Ws4h5_D_g@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/7] mm: store zswap entries in swap table (Pointer entry)
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	hannes@cmpxchg.org, chengming.zhou@linux.dev, chrisl@kernel.org, 
+Date: Tue, 7 Jul 2026 15:36:59 -0700
+X-Gm-Features: AVVi8Cewbd05P2hFQTHqsTM4xnyr8uYjwWgt3lEfqjaneePp7eM-lXAw54aTMh0
+Message-ID: <CAKEwX=OygNR_5iD+FbWKhMD9Z7fxU3+VOfqn48aRGqZzYF2e_g@mail.gmail.com>
+Subject: Re: [RFC PATCH 09/10] mm/swapfile: implement swap_ghost_extend_max()
+ for dynamic growth
+To: Baoquan He <baoquan.he@linux.dev>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
 	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org, 
-	youngjun.park@lge.com, linux-kernel@vger.kernel.org
+	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org, 
+	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6F3F980003
+X-Stat-Signature: 4qm9bptngg6u4ma1rpogetod4xkfyifd
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 91FE316000B
-X-Stat-Signature: azc475wc6q7sojiqf3m5y6d1ns3aqwg4
-X-HE-Tag: 1783462678-293440
-X-HE-Meta: U2FsdGVkX19AVjq4BWJONrfHJF2VZAXbUzQ+CdCFSWP6xNTqvBD7jzr++/62FECPBpRNgHZtgMQNeaG9r9ZxtNH2+25qLNsyKSuuja+se2CKUJlBvJyl49vHiVDnZg6nvM3/vBow1L94K9Q47JpEoSoGqH/1fsbVMI+QZTUdkNLzOj1S77HvHaPMJnVJ6DasmgInlSxx36loYOHdp0g6UkBsQT+4WK44+6OFyPDrQ9vDUuOnBYX7LJOW49l8QuAKeulE+T85ZnrIMEsGUtteatLzqsEYP6bUooAhkyhLeuWU9AePiDuFQWC2M4aiXKrfQaOnA4On4lF7yU2/5bw92buAVhbZboRUn8AblcA/Gv61g4e7ip1MYdN5XmFm5RXOe5iHpf2j6yPgTJjQ4q3PfdPu5ng4x5r1dkA9XZCd5YRy5FSC+Fy8ugJfZnQYVXRWapRN60nIE8sJkfoQIDA691t6M+iCBKdHqe01bKdJhR8H//6kRIq+BHwz4IoWBsORdSZekyox3viXvMoZIf+sPk+a4xwgSdEv1z2+hFo+SX207y/Oa/FHY6sfysywnYaScRGIOfa+2d/e6cKtZakd/dm2d301DrVTh1pHDQn0AripuTl0E7JkQ5ofR14VF4T73MPAvMV29DqT5oB+fovkMP3p8rvDGx8MWWwnfQgRfd+hqXBJ+jYB1gJ9qpp7QF2fxag7w1lj+4eKBcfDT0shXUHbcqx1uNFdvs+9JhaApjlmWTjpAM5AU5098pqP+2PyF6tUvVTMEcVPCqwno0EnK6DM/XSQL6bDCZBMs6R8RJuwFUXz5L8tYph0iDZEUMB2WZBtuniLw4gv+Y0/9IXf/Rl+53Spi51QlRRkdgnM0cJsEr5TjG+RiC+HkSt0J2AnMKzeDJybNEZ6NXWzFzc0NJaWDzH0QiwNFkEfk9tBkxMytlr2HWbBqkOWrCyWQiP/3yLIREdeGv31Huno4XV
- lYLTQxPa
- D9qLfF3+rxGRSq93ZgZpxqA0HeE/YcnHg/NCgPgs60IOBxdaIvgTGHXoYLQpeVHmM+KqgZC1NAdrM/YhXnhsAA5doe/26rQqc6IlB/K0qYGbgRcBIXh4BTXT1BmkeDBSbUC5JhaJhb/x5DDVfmSvWfdXpqV/Ix8J4lWLIMH5yF7KHXA4Brb18MEKHdjnntASqRhBHG/i5I69cISoCXlQkRibp7fQQmoJXHG6S0QsapElaXpu7P0BCtOr9fIiuhzOcnIi1oRQEf47oNaKUcAq51jVlXNAhmmlmU4qOlKvLsXn5Afs5FbMizi0NHxnL4KtKZziEdtq91gSla3meLYZW5fiy1ljtPwadLIXKPXFaGugwXqviRzzBEaXHKz/f0Po9mlM6ucp2OcWU4gJXLnmMkwKopXl5eeo41zaQweKmOK+eLnhp/xp6+SBbUSnwGLmge7QS
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783463832-164746
+X-HE-Meta: U2FsdGVkX19kPhBIWvm58AJLy0zR6mH3IZveu0o6WhoJ9LQP9d3qVIIm4VSV0B38dqufSDDDhtEdiVErAeRCvNFFiURX68fchXElmMJPm5sVUzQhbuAg6qWcFJCVtz2Ai/yBfqDwaBTzQ36bfgsYbpkj8nxx51LayuV6PM6KbYNLS9rlW6O78BfwuaOJRx4lo8XLdTwU1/mGiRF+G9JiZkATiL/l+NQypIOxKzKjpPKJKoZ7TDekDqKnoDAkyV5Zt7TICP6bR0qKdkMK719Us+1UUkG+uVMuRqOrJLnQPE6e8Ffrkn5Di/2ENgXhzyMjsLuLQmOu/gQBKejEAwtOcJhcB/QxdHms52gtaEkOfiwTe/WYsfWluoroQbVm3vt5YK0S/0P3Pw89Mb30SRPguxVRH9RTt2d0tYHTd591dJ9ksWAfQWZg5vdZsA7FBarMMAGbHzA9MxVQr4qV3LRJOkRlpU3zO1nJqglY+H/t4Oa1KUeoZjRTQqDTZmsY02FvXV8JG2yBm5z6CWlu8nY7vWbHnJXzTG4+Kp6ZZThP3JW1kRhfb4NmezvhrLJnuO3qZniuBrTbPbtUccd6yoVKasjyS3YeeeLwWOXdmmkK3vmL3MopnnDX/iNl+o7duQRKW3VSMJMe6cm/HxokheIh1EgQ+91oZ9497d8eneLAltYXD6o6GW0RfUx/SOW9hiaLWl6O2B1zuJFuI0GD2EnFze6V/l6BbP27AjayrCSHjPmFwVINXZ1YSSzAVHuPhUwllsGVKZe2on7R3wtNgdtgvk5SYMK1Gi1lu+6hoK2cumFDKlLV+LWYjzhKP+gt49GYW4YP6ukQElp06nXxXvmjiE9PpQR0YQCRPwD3rduWWWp5NDh5DckQ7BtGBbSGoJjkom8Sve1yzRIEkC8zzzqds/4lLOsLC/s3Nz562HwHjhlJB3p7mploROF5Eo971u8PFU57BwzTsvQSrgn0yBH
+ jwDZnkwW
+ z3Tn8IbuAghZqC1SavSNm9RNi6OGh/Fvyv+FbLme8ibOqNld0/RGrTpwZbmRbUpikEXzFRwdkA+L2aM3jPAYnMBrHbjf+kRUYPPuNTWh+39lopI8qy6xX8nbVTyXl8+pjQW7s0FLgx9omky4frEPElbGzJkDDlUHpnFYRokwzw1f7dgfaV8R8bjkHH29KOS8rZpTGpjHl8dvbFELToq/ltIjGTJoCvQ7NPdm0UeyXeUZw30ehYoCMv22ElwHD0CFnAcr+N6bCIK1paEimc9EyQnWmgDYv5UnZazj0J2ryuQ1i93VnnR//hHe6zD/wUrvMNyTVOq0sAguTvaVvErbnDPhjO/vsQz8Bg2GGs7p6ELBQzHCqCxNiD7O5mSM9saEVOjQV3tNYoucP3GE8wLWmaw58M92T6dzlAOMy8M7zXnl0Fil1LMkOsp9pOu3RkDl9Q8Ta
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,68 +141,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 7, 2026 at 12:49=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
+On Tue, Jul 7, 2026 at 1:27=E2=80=AFAM Baoquan He <baoquan.he@linux.dev> wr=
+ote:
 >
-> On Tue, Jul 7, 2026 at 12:28=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wro=
-te:
-> >
-> > On Tue, Jul 7, 2026 at 12:32=E2=80=AFAM Baoquan He <baoquan.he@linux.de=
-v> wrote:
-> > >
-> > > Currently zswap uses a per-swap-device xarray to map swap offsets to
-> > > zswap_entry pointers. This introduces an additional tree walk on ever=
-y
-> > > zswap entry access.
-> > >
-> > > This series replaces the xarray with a "Pointer" entry type stored
-> > > directly in the swap cluster table. The new swp_tb_t variant embeds
-> > > a zswap_entry pointer plus a entry count, eliminating the xarray and
-> > > its lookup overhead entirely.
-> > >
-> >
-> > Have you had the chance to review the virtual swap work (latest
-> > version in [1])? At a first glance, it bears a lot of similarity to
-> > this.
-> >
-> > We're envisioning this to be the future architecture for zswap :) Is
-> > there anything that is missing that would satisfy your use case too?
-> >
-> > [1]: https://lore.kernel.org/all/20260612193738.2183968-1-nphamcs@gmail=
-.com/
+> Allocate additional physical pages and map them at the end of the
+> already-reserved sparse vmalloc area via vm_area_map_pages(). The flat
+> cluster_info pointer never moves =E2=80=94 new clusters appear contiguous=
+ly at
+> higher indices. New clusters are fully initialized (spinlocks, list
+> heads, trailing BAD mask) before si->max is published via WRITE_ONCE.
 >
-> Yeah this doubles down on the dependency of zswap on a swapfile being
-> present, but I guess the goal is for this to be complimented by your
-> other series to add ghost swapfile support. This was discussed at
-> length, and we don't really want to have a user-facing ghost/virtual
-> swapfile concept, at least not for now. Nhat's latest proposal is
-> essentially a ghost/virtual swapfile implementation that is
-> transparent to userspace, AFAICT.
+> Page-pointer tracking in cluster_vm->pages is reallocated to accommodate
+> additional entries. Returns -E2BIG if the requested size exceeds the
+> reserved VA range. Extension is serialized by swapon_mutex.
 >
-> As Nhat mentioned, if there are deficiencies in his proposal that are
-> addressed by yours, I think the most productive way forward is to
-> start a discussion (here or on Nhat's proposal) to figure out the best
-> way forward for everyone.
+> Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+> ---
+>  mm/swapfile.c | 110 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 110 insertions(+)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index da085a75d7b5..8bf336678887 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -58,6 +58,8 @@ static void move_cluster(struct swap_info_struct *si,
+>                          enum swap_cluster_flags new_flags);
+>  #ifdef CONFIG_ZSWAP
+>  #define GHOST_MAX_CLUSTER_BYTES (64UL * 1024 * 1024)
+> +static int swap_ghost_extend_max(struct swap_info_struct *si,
+> +                                unsigned int new_maxpages);
+>  #endif
+>
+>  /*
+> @@ -4247,6 +4249,114 @@ swp_entry_t ghost_redirect_to_phys(struct swap_in=
+fo_struct *si, pgoff_t offset)
+>
+>         return (swp_entry_t){};
+>  }
+> +
+> +/*
+> + * swap_ghost_extend_max =E2=80=94 Extend an active ghost swap device.
+> + * @si:  ghost device (SWP_GHOST set)
+> + * @new: new max pages (> si->max)
+> + *
+> + * Allocates physical pages and maps them at the end of the reserved
+> + * sparse vmalloc area.  si->cluster_info never moves.  New clusters
+> + * are fully initialized before si->max is published via WRITE_ONCE.
+> + *
+> + * Returns 0, -ENOMEM, -EINVAL, or -E2BIG.  Caller holds swapon_mutex.
+> + */
+> +static int swap_ghost_extend_max(struct swap_info_struct *si,
+> +                                unsigned int new)
+> +{
+> +       unsigned long old_max =3D si->max, old_nr, new_nr;
+> +       unsigned long old_bytes, new_bytes, nr_new_pg;
+> +       struct page **new_pglist;
+> +       unsigned long i;
+> +
+> +       if (!(si->flags & SWP_GHOST) ||
+> +           !(si->flags & (SWP_USED | SWP_WRITEOK)) ||
+> +           new <=3D si->max)
+> +               return -EINVAL;
+> +
+> +       old_nr =3D DIV_ROUND_UP(si->max, SWAPFILE_CLUSTER);
+> +       new_nr =3D DIV_ROUND_UP(new, SWAPFILE_CLUSTER);
+> +       old_bytes =3D ALIGN(old_nr * sizeof(struct swap_cluster_info), PA=
+GE_SIZE);
+> +       new_bytes =3D ALIGN(new_nr * sizeof(struct swap_cluster_info), PA=
+GE_SIZE);
+> +       nr_new_pg =3D (new_bytes - old_bytes) / PAGE_SIZE;
+> +
+> +       if (old_bytes + nr_new_pg * PAGE_SIZE > si->cluster_vm->size) {
+> +               pr_warn("ghost: extend to %u exceeds reserved VA (%lu byt=
+es)\n",
+> +                       new, si->cluster_vm->size);
+> +               return -E2BIG;
+> +       }
+> +
+> +       new_pglist =3D kvmalloc_array(si->cluster_vm->nr_pages + nr_new_p=
+g,
+> +                                   sizeof(struct page *), GFP_KERNEL);
+> +       if (!new_pglist)
+> +               return -ENOMEM;
+> +       if (si->cluster_vm->pages) {
+> +               memcpy(new_pglist, si->cluster_vm->pages,
+> +                      si->cluster_vm->nr_pages * sizeof(struct page *));
+> +               kvfree(si->cluster_vm->pages);
+> +       }
+> +       si->cluster_vm->pages =3D (void *)new_pglist;
+> +
+> +       for (i =3D 0; i < nr_new_pg; i++) {
+> +               struct page *page =3D alloc_page(GFP_KERNEL | __GFP_ZERO)=
+;
+> +               if (!page) {
+> +                       while (i-- > 0)
+> +                               __free_page(new_pglist[si->cluster_vm->nr=
+_pages + i]);
+> +                       return -ENOMEM;
+> +               }
+> +               new_pglist[si->cluster_vm->nr_pages + i] =3D page;
+> +       }
+> +
+> +       if (vm_area_map_pages(si->cluster_vm,
+> +                             (unsigned long)si->cluster_vm->addr + old_b=
+ytes,
+> +                             (unsigned long)si->cluster_vm->addr + new_b=
+ytes,
+> +                             &new_pglist[si->cluster_vm->nr_pages])) {
+> +               for (i =3D 0; i < nr_new_pg; i++)
+> +                       __free_page(new_pglist[si->cluster_vm->nr_pages +=
+ i]);
+> +               return -ENOMEM;
+> +       }
+> +       si->cluster_vm->nr_pages +=3D nr_new_pg;
+> +
+> +       for (i =3D old_nr; i < new_nr; i++) {
+> +               struct swap_cluster_info *ci =3D &si->cluster_info[i];
+> +               spin_lock_init(&ci->lock);
+> +               INIT_LIST_HEAD(&ci->list);
+> +       }
+> +
+> +       if (new % SWAPFILE_CLUSTER) {
+> +               unsigned long base =3D (new - 1) / SWAPFILE_CLUSTER *
+> +                                   SWAPFILE_CLUSTER;
+> +               unsigned long idx =3D base / SWAPFILE_CLUSTER;
+> +               struct swap_cluster_info *ci =3D &si->cluster_info[idx];
+> +
+> +               if (!ci->count && swap_cluster_alloc_table(ci, GFP_KERNEL=
+)) {
+> +                       for (i =3D 0; i < nr_new_pg; i++)
+> +                               __free_page(new_pglist[si->cluster_vm->nr=
+_pages + i]);
+> +                       return -ENOMEM;
+> +               }
+> +               spin_lock(&ci->lock);
+> +               for (i =3D new % SWAPFILE_CLUSTER; i < SWAPFILE_CLUSTER; =
+i++)
+> +                       __swap_table_set(ci, i, SWP_TB_BAD);
+> +               spin_unlock(&ci->lock);
+> +       }
+> +
+> +       WRITE_ONCE(si->max, new);
+> +
+> +       for (i =3D old_nr; i < new_nr; i++) {
+> +               struct swap_cluster_info *ci =3D &si->cluster_info[i];
+> +               ci->flags =3D CLUSTER_FLAG_FREE;
+> +               spin_lock(&si->lock);
+> +               list_add_tail(&ci->list, &si->free_clusters);
+> +               spin_unlock(&si->lock);
+> +       }
+> +
+> +       si->pages +=3D new - old_max;
+> +       atomic_long_add(new - old_max, &nr_swap_pages);
+> +       spin_lock(&swap_lock);
+> +       total_swap_pages +=3D new - old_max;
+> +       spin_unlock(&swap_lock);
+> +       return 0;
+> +}
+>  #endif /* CONFIG_ZSWAP */
 
-Now that I have taken another look at the other series too, I realized
-that these 2 are really a big patch series, split into two. Vswap also
-merges the zswap tree into the swap table infrastructure, and the code
-paths are actually *simpler*: a lot of the swap-cache/swap refcounting
-logic remains unchanged, whether the swap entry mapped to PTE belongs
-to a virtual or physical swapfile.
+Does this only grow? Say I have a huge but temporary spike in swap
+usage, which triggers the extension of the the ghost swapfile address
+space. Do these metadata space live forever?
 
-With this new design:
-
-1. Metadata can now live in struct zswap entry, if the swapfile is
-zswap ghost swapfile.
-
-2. You need to move the metadata around if you need to do zswap writeback.
-
-It seems rather misleading to claim that the ghost zswap swapfile
-design is simpler, when a lot of the complexity involved in this layer
-merging is hidden in this optimization patch series.
-
-If you're concerned about the xarray overhead, I'm willing to consider
-the vmalloc array data structure. You can then graft the other
-optimization in this series on to the vswap work.
+If that's the case, might as well just swapon...?
 
