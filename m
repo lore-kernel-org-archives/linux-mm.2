@@ -4,140 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DED15C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:28:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37E59C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:32:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C26266B009D; Tue,  7 Jul 2026 06:28:54 -0400 (EDT)
+	id 3048C6B009F; Tue,  7 Jul 2026 06:32:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD7BA6B009E; Tue,  7 Jul 2026 06:28:54 -0400 (EDT)
+	id 2DBD56B00A0; Tue,  7 Jul 2026 06:32:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC63C6B009F; Tue,  7 Jul 2026 06:28:54 -0400 (EDT)
+	id 1CB766B00A1; Tue,  7 Jul 2026 06:32:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E3EA6B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:28:54 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F06311C38A3
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:28:53 +0000 (UTC)
-X-FDA: 84961607346.03.3EADFE9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 29B9214000E
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:28:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J9DPrGGt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E95E16B009F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:32:03 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 69D4E1C7F40
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:32:03 +0000 (UTC)
+X-FDA: 84961615326.08.27F8C25
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DF6F91C0005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:32:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJQD7ZPp;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783420132;
+	s=arc-20220608; t=1783420321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SMVVynaiIcC64geRzUrVGlqDYtKGFWyxgpAdJAcSdBc=;
-	b=w3+bqgOHtnuenOXtP3AU7cS9hn0e+fDlbZ5lwaxeIJtaurTyf358UQ+S6/lnlbifioKO/g
-	bwLd0at4n7++y3+dAd1cTSX171rveufyAKVfLqI1xoXAo+AQFmZcLRZ/dWxDMdYf9uUb0H
-	GzNmg4JaGWN/I+3jhRiUClzQhVjWf/M=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J9DPrGGt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=soT56A/TsitxOPYJdfdItvncnq3Epp2rkiDUFibzwAc=;
+	b=wA0hHsjfH3frV9Ssf+HhU4Yj+fCGWyEaOFvQmx3LmTfWw0ELUsitEQNC6We+UYSO/WcTE7
+	LkeFJjmv5n2EiPLmLBdGcPUbxJqjhcX8hKYNWnOtAzFaxI1C0w+LIkmOKbVhZuT/qrGw3k
+	Hh0MuIXrLFPFl2iyS8nXA09jna5Bqbw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783420132;
-	b=IVfepASOaVPlQ3UoI93d4EG8wQS1xu6x6xVZrhTLI4auo9dWgvZXZNypRg2DN4kG6qlYvr
-	f4qddBPbH0nkPkDYjowuUGcXhYS2yfajx6jkRyeE2el6nwdTGiknFCnZz81A5eNV6TczNe
-	xC/lCuP7d2a3sUKaRZua2u0sAeYO7mw=
+	t=1783420321;
+	b=Of1Y1lhTruYcvvvXXEFfiN4dIPI3+MmC0gQWjBkuVq7jAV09QcXaMAyO5YmUHCcOPLb6Zg
+	3EQBASNien6KXyo/W3pGKp3j79fbhFFJS06PDIPTwgPaAEwvfAKkV4ni3+A2ww6c5nuwtg
+	3qe6TXXBwmkuSVDyvzyD0yorpbcWTus=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CJQD7ZPp;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 561F043A98;
-	Tue,  7 Jul 2026 10:28:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF4F1F000E9;
-	Tue,  7 Jul 2026 10:28:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 48D5C618A6;
+	Tue,  7 Jul 2026 10:32:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E76161F000E9;
+	Tue,  7 Jul 2026 10:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783420131;
-	bh=SMVVynaiIcC64geRzUrVGlqDYtKGFWyxgpAdJAcSdBc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=J9DPrGGtlbSY0jMFPO0H35bwXuwnT5TejINnGOTJSJYtTkaazk3Bc+XgTcHakJ3sE
-	 ETbp9erswHKO+yKxyu9NxKpxfMD2j28OFBbGItqhRbbrcSMP6dnBlLmxXo5QnXD/D5
-	 xY8jmQVApbpd1uPtK/7agi/koTAqXU4yy0PRK1aAzKuy5CVPsmXDGwneDWwhVfoVze
-	 SOT4/W50EjJmAqtksgEYGTNzqVBe//V0+ksZcYJqKdFoYnH1/8TdB9PFv0KMtMIs1X
-	 yoWo8K3PuX8IcSW10U9YTZWVV5BsfJH70qgSH1nj7pE6mmSChNuiWpAHR9dSIHDHbo
-	 KOP3ZcfD0Dh/A==
-Message-ID: <b9a48d89-74f1-43d4-b7bb-be988b6855c9@kernel.org>
-Date: Tue, 7 Jul 2026 12:28:44 +0200
+	s=k20260515; t=1783420321;
+	bh=soT56A/TsitxOPYJdfdItvncnq3Epp2rkiDUFibzwAc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=CJQD7ZPpnY0LATwFP4HY6e99mGG6GCfwtV8prggnPIqZJoBT7sw1qkGBcMUymGabb
+	 thMKdB37j3Mngsn9NR0xZM3ngVTkWAKFGJ1phdZyrmdRqTmT//SItbTSX5gLMuvCGh
+	 h03dHdDBVKfa160LAt0yaBWio5lu77qjq0yudAYfiJObv5RjqQLRDbmptoyC6hGNHW
+	 E8y81BbE7fqCE9Ns7/a0r4BVgl44yGmApnpjPyV6g+rojpwE7+I26L2qbh+RXETO8y
+	 +yjDFpLtM0uRECmpnCPEvJUaccNc37yoAjGG17lTCIWiiaHTnl5i2XvNsouOomVvyo
+	 X9ITIQzR+3YOQ==
+Date: Tue, 7 Jul 2026 11:31:37 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 22/30] mm/vma: move __install_special_mapping() to vma.c
+Message-ID: <akzTj7Xv8kiUU2-w@lucifer>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <b3254231831037ca3e9757e3e05c90072e04a6aa.1782735110.git.ljs@kernel.org>
+ <akZJjNic8u0pDxgD@pedro-suse.lan>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/6] mm/hugetlb: Dynamic, NUMA-aware HugePage Cache &
- Free Page Reporting
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Sourav Panda <souravpanda@google.com>, muchun.song@linux.dev,
- osalvador@suse.de, akpm@linux-foundation.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, mhklinux@outlook.com, fvdl@google.com, gthelen@google.com,
- mike.kravetz@oracle.com, pasha.tatashin@soleen.com, rientjes@google.com,
- riel@surriel.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260707064235.1386552-1-souravpanda@google.com>
- <9624988a-366e-4884-9408-3f3b88c27290@kernel.org>
- <20260707062428-mutt-send-email-mst@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260707062428-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 29B9214000E
-X-Stat-Signature: 8udbkybkqnccica96i4fayzis86f9tfh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akZJjNic8u0pDxgD@pedro-suse.lan>
 X-Rspam-User: 
-X-HE-Tag: 1783420132-47965
-X-HE-Meta: U2FsdGVkX19nnROg0rR4amymc0W4BGkuOuU40ARfklJRaS35gD9TRKPOIIjN9lqvhvzOpU5qduxixBYh37gxggSkqGBGEUvetfUaOL0sO5zCjAPKgOjLaabIAH+SLQvw4i8XQ1n0ghvgo9imldnPdjqkwmJ7vEsLzH/WfjhC2jYXTkXgSABXZl+LWfvtTn8eIBotfeEudV4onGplIt2uhl7OCZ75hsxmSPF6Q7Ji95z59nmRkoNFyXZ9N5MHar/iX8QDXa9WmeS+QaYNDNry6lH2f8dbWpVzXAxow9bs0QlHnGM6jCnJsGbnupWczg/iTDyWzJSp3CD5z2z60gTD/Rx6beGEtJ6Avauia2qsi0/QrcpEvXhsC/aVspfOlyDaYAXeiEOYwilHQUc5rCzzVYS6os+a0oz7KrJy5JIoWj4oPewW8k9Xf7xkT9MSdRtrPyEyZUDOrU/pQ6a3kopAQzqr2DasICtEkgAhThROcyOa4RqmevyTe24IAjdowmFchEcW5zdqs/fQoNY9IV0tUur6I1iZpqImKkgFCl5+o7v6ZL2eUQeuPDkle/qjXUWAQjV2fivYBVIVHcoZPQUfMv43tr+QI5l28Qf64L5A8ikYcdZV6fHxKkl2k0tVPwWErOqCgKca4ynQnKZ+WDPF2tMqXWsnK0Mdz2Qg2Ln3VV0E4T8qQUOjPFIZwiwp1Gji0mps7n2hbryIMm+EasZGgPJ67evSxx6E3X9A7y2oJTyAAyelJWmZlzmOUpO3R44RPH42CKrSQTl2hbekE6/4IRMnnLqr+eRMOBW0ib5DXFJ4v8UWbOSrfy91315ueFexYj/I8QTCszRNua3pX5lrK4o9BkRBl1uvlQl8EaosCsqF4m9OIJpjUMbFxdfNYXYv/bMiE31KDQY78PFG1fLBXacEAmIkv5tqMsRUZ2rsz9i8ZnIdM2+/tUaW7gMjUN2GXO+YsXosXkywPs2Eebu
- oaYOJWZz
- GrhNFyGBVcprIJDmxLizssOOiriad2uUXT1pxmMFRVWBNaSa5q2zVflEC9aIC5w5zqHf/47n0BYhj98dRyT7JXzcR6pC5SgpjOLh2bihbeuvTn1YbW/EhyLtq5R5eHYC3Ye/0EMPPPBhEwOoYqPpZ6GVpKoxRFYS9mygcqu5JF5xqAqxKdMzrFSkRi1HCGRnsy1EC9ehi1ebZLQoQiOiFPmoKU8kPFJmrRJXOyvtCjoZHKktOweLDeZtm3oW+Max7uzXb
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DF6F91C0005
+X-Stat-Signature: s6ra6k7oi5xx9zy3n9kqn9no3yfsqni8
+X-HE-Tag: 1783420321-410308
+X-HE-Meta: U2FsdGVkX1/MilHrf09aYmGg6lBdI3woFIJdxCEn6DojmiY3+A5Ha+w5nXb7EB8muspjx4vHfD7YdIKYsJzMYti8HkUL6trUhx6V22e5MxuU1dBWX2Q1GPA9wadGJ7uBbSP5gK+WLrfbKHhlLAbpiO/dODuzhey1C0GmlJ1aP+mRwUMZ9f/YHcZ1MV4tsQcX5x6cHYRqvobjP4Ku0RsVOwvJyZRFxLCBCVylHaMxmrTH7gEIHj/hp3DUhFjTdaAWW1SdtKrPQoogPSFWnspMnu2Qobd1Mj9XUSKJ8KrnAMyXTULtpzKBfgpYsX/9397/7jKLoYlnAxB4XrAE9j1OpNWcnDocS6pdeG53asQG6K6hpGRiGICCduH4077rvZ5ihXgzZirKivfVIGkqzBemOHthr/HvqYecYKDYiqkwT05i0imyvCTdfIJR2LaR+H+Vnd8kCaz/FPYfjulYb/nuo60Ubh39x+AfQCTB1tpnQMBvD854lozaZ6FhysCZ0UXZjB/RLQXjE/tXcdGx70y+VvqQ9hspJxKj5jJy8JmtehYntCDtrF/lYNXWecRbHa5of15JYpEufhOnctOC+o2ZDybzZumdLFvj5I7WY03Zitd8s/Tx3OlwZ3H4RXVbtcOg9ziUmB+FJhRA+JgcqQmNcPbsOBcZBQoicmFgtb+Tcd8KZ+avgMQOCSvFxUd7mtr/oz/JmwWTCe/H/f4ynDEYLt40jcK+rq96o7ou85/Hx6Gy5N/gSr7qrG11f3I8fvJ/2/Ce44I4oY2k3sdPBEb1lDjJOoyr2tHr5UPhsKdjq0AeOf/rZgv24ujoHvQP6nhgqurdT3gzze72QeEHb+aKffplXIlCnvHSpRt4vU8ewQBQhQTcYno4bLSs8ar8OIHn5TLuyh4sg8HJjxzwXmN+Dkg92Fb5yuL3jYSK6FeP5p45rHC67es/HGiQbV9NN9wMRWqJpqzJiWa1c57NNlU
+ unHWrPAL
+ KkTtsXgqgtN6ngmeh8rjO3+GTKg7cJJYBkMN2MTvZSCub+w4sS0zJkMCoX33LNedv7LlHWBiJ5Ri/ZhxI3bUeR/qSpiReFhgz8DPpHTvL2jbobmN/TqVYwTpgm/CfQP+Wz+rcAdeGD3nyNzPycM7awgseSTzVT0AlJ4KIKzECtKNbVU0LjMj3HXUNXXyMLuIOT5x9DwI/1UFFvtpWQrv0+aAiMAMmnns9j7BsiflmCQ5GnvA2yWjgxholz4WjzNo09+zPsq8Po5DaEJJzz+WzS+063O5WXGRxm55ZmAiH6n2ec6EqKSDSMVe3j4pGBPN5cGpAKbD/N/xi3m4l/X8VUwLlLhNmR3ZWso2TuJIb5pyNIFf5pwHbnyHgoWI/ANopwXi8dPx5BHXN/YwFCFOk/wztb2KlMlE2XEH32MObYwqF5GkeFOKqmTe5gGjeWoREE6eznqN1uEcFGIA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,48 +123,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/7/26 12:25, Michael S. Tsirkin wrote:
-> On Tue, Jul 07, 2026 at 09:29:07AM +0200, David Hildenbrand (Arm) wrote:
->> On 7/7/26 08:42, Sourav Panda wrote:
->>> Overview
->>> This patch series introduces a dynamic, NUMA-aware HugePage Cache,
->>> backed by a kernel shrinker to safely return memory under pressure, and
->>> integrates it with Free Page Reporting (virtio-balloon) for HugeTLB,
->>> specifically targeting gigantic (1GB) hugepages. The goal is to solve
->>> the tradeoff between allocation latency and memory
->>> fungibility in virtualized and heterogeneous cloud environments.
->>
->> Hi,
->>
->> in general, we consider hugetlb nowadays to be mostly in feature freeze, as we
->> realized a while ago that adding more special casing on top of something too
->> special for all of MM is only going to hurt us more in the long run.
->>
->> We want to have less special casing and less special sauce, not more.
->>
->> Now, there is nothing wrong in making hugetlb be less special, by making it use
->> more of core infrastructure etc.
->>
->> But optimizing for surplus hugetlb pages by teaching hugetlb about new caches
->> and its custom free-page-reporting support rather looks like the wrong direction
->> for me?
->>
->> -- 
->> Cheers,
->>
->> David
-> 
-> 
-> It is currently bypassing free-page-reporting completely.
-> Making existing free lists not ignore free-page-reporting would
-> maybe considered "making it be less special"?
-> 
+On Thu, Jul 02, 2026 at 12:22:56PM +0100, Pedro Falcato wrote:
+> On Mon, Jun 29, 2026 at 01:23:33PM +0100, Lorenzo Stoakes wrote:
+> > This function is operating on VMAs and rightly belongs in vma.c, where it
+> > can be subject to VMA userland testing and allows us to isolate it from the
+> > rest of mm.
+> >
+> > The _install_special_mapping() function will remain in mmap.c as a wrapper,
+> > since this is used by architecture-specific code.
+> >
+> > Doing so allows us to isolate more functions in vma.c for the same reasons.
+> >
+> > This forms part of work to allow for tracking MAP_PRIVATE file-backed
+> > mappings by their anonymous virtual page offset, as doing so allows us to
+> > isolate and keep code that interacts with this together.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > ---
+> >  mm/mmap.c | 38 --------------------------------------
+> >  mm/vma.c  | 38 ++++++++++++++++++++++++++++++++++++++
+> >  mm/vma.h  |  5 +++++
+> >  3 files changed, 43 insertions(+), 38 deletions(-)
+> >
+> > diff --git a/mm/mmap.c b/mm/mmap.c
+> > index 2d09a57e3620..46174e706bbe 100644
+> > --- a/mm/mmap.c
+> > +++ b/mm/mmap.c
+> > @@ -1447,44 +1447,6 @@ static vm_fault_t special_mapping_fault(struct vm_fault *vmf)
+> >  	return VM_FAULT_SIGBUS;
+> >  }
+> >
+> > -static struct vm_area_struct *__install_special_mapping(
+> > -	struct mm_struct *mm,
+> > -	unsigned long addr, unsigned long len,
+> > -	vm_flags_t vm_flags, void *priv,
+> > -	const struct vm_operations_struct *ops)
+> > -{
+> > -	int ret;
+> > -	struct vm_area_struct *vma;
+> > -
+> > -	vma = vm_area_alloc(mm);
+> > -	if (unlikely(vma == NULL))
+> > -		return ERR_PTR(-ENOMEM);
+> > -
+> > -	vma_set_range(vma, addr, addr + len, 0);
+> > -	vm_flags |= mm->def_flags | VM_DONTEXPAND;
+> > -	if (pgtable_supports_soft_dirty())
+> > -		vm_flags |= VM_SOFTDIRTY;
+> > -	vm_flags_init(vma, vm_flags & ~VM_LOCKED_MASK);
+> > -	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+> > -
+> > -	vma->vm_ops = ops;
+> > -	vma->vm_private_data = priv;
+> > -
+> > -	ret = insert_vm_struct(mm, vma);
+> > -	if (ret)
+> > -		goto out;
+> > -
+> > -	vm_stat_account(mm, vma->vm_flags, len >> PAGE_SHIFT);
+> > -
+> > -	perf_event_mmap(vma);
+> > -
+> > -	return vma;
+> > -
+> > -out:
+> > -	vm_area_free(vma);
+> > -	return ERR_PTR(ret);
+> > -}
+> > -
+> >  bool vma_is_special_mapping(const struct vm_area_struct *vma,
+> >  	const struct vm_special_mapping *sm)
+> >  {
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index cb7222e20c93..f4de706a2728 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -3399,3 +3399,41 @@ __weak unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
+> >  {
+> >  	return vma_kernel_pagesize(vma);
+> >  }
+> > +
+> > +struct vm_area_struct *__install_special_mapping(
+> > +	struct mm_struct *mm,
+> > +	unsigned long addr, unsigned long len,
+> > +	vm_flags_t vm_flags, void *priv,
+> > +	const struct vm_operations_struct *ops)
+> > +{
+> > +	int ret;
+> > +	struct vm_area_struct *vma;
+> > +
+> > +	vma = vm_area_alloc(mm);
+> > +	if (unlikely(vma == NULL))
+> > +		return ERR_PTR(-ENOMEM);
+> > +
+> > +	vma_set_range(vma, addr, addr + len, 0);
+> > +	vm_flags |= mm->def_flags | VM_DONTEXPAND;
+> > +	if (pgtable_supports_soft_dirty())
+> > +		vm_flags |= VM_SOFTDIRTY;
+> > +	vm_flags_init(vma, vm_flags & ~VM_LOCKED_MASK);
+> > +	vma->vm_page_prot = vm_get_page_prot(vma->vm_flags);
+> > +
+> > +	vma->vm_ops = ops;
+> > +	vma->vm_private_data = priv;
+> > +
+> > +	ret = insert_vm_struct(mm, vma);
+> > +	if (ret)
+> > +		goto out;
+> > +
+> > +	vm_stat_account(mm, vma->vm_flags, len >> PAGE_SHIFT);
+> > +
+> > +	perf_event_mmap(vma);
+> > +
+> > +	return vma;
+> > +
+> > +out:
+> > +	vm_area_free(vma);
+> > +	return ERR_PTR(ret);
+> > +}
+> > diff --git a/mm/vma.h b/mm/vma.h
+> > index 47fe35e5307e..14f026bf3be4 100644
+> > --- a/mm/vma.h
+> > +++ b/mm/vma.h
+> > @@ -775,4 +775,9 @@ static inline bool map_deny_write_exec(const vma_flags_t *old,
+> >  }
+> >  #endif
+> >
+> > +struct vm_area_struct *__install_special_mapping(struct mm_struct *mm,
+> > +		unsigned long addr, unsigned long len,
+> > +		vm_flags_t vm_flags, void *priv,
+> > +		const struct vm_operations_struct *ops);
+> > +
+> >  #endif	/* __MM_VMA_H */
+>
+> I'm really annoyed that _install_special_mapping has a leading underscore.
+> That's it.
 
-Depends. We don't really want an orthogonal implementation of something we have
-in core-mm.
+Yeah it's horrible :)
 
--- 
-Cheers,
+>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-David
+Thanks!
+
+>
+> --
+> Pedro
+
+Cheers, Lorenzo
 
