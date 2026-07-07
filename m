@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F0D3C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:54:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17056C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:54:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91A4E6B00A0; Tue,  7 Jul 2026 07:54:37 -0400 (EDT)
+	id C75906B009F; Tue,  7 Jul 2026 07:54:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85D376B00A1; Tue,  7 Jul 2026 07:54:37 -0400 (EDT)
+	id C264D6B00A1; Tue,  7 Jul 2026 07:54:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 792716B00A1; Tue,  7 Jul 2026 07:54:37 -0400 (EDT)
+	id B3BCB6B00A2; Tue,  7 Jul 2026 07:54:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F96C6B009F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CAFA6B009F
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:54:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AB0C840410
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:54:36 +0000 (UTC)
-X-FDA: 84961823352.15.D37771A
-Received: from mail-m82147.xmail.ntesmail.com (mail-m82147.xmail.ntesmail.com [156.224.82.147])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0B86880004
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:54:32 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B893A03C2
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:54:37 +0000 (UTC)
+X-FDA: 84961823394.12.1BFB922
+Received: from mail-m82136.xmail.ntesmail.com (mail-m82136.xmail.ntesmail.com [156.224.82.136])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 758D414000B
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:54:34 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
 	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.147 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf23.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.136 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783425274;
+	s=arc-20220608; t=1783425275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pqBcI5SKkWC7/S1uWqd1t2HZg1Z+doSvLU4DLcIZVZk=;
-	b=wyT/bg0WOWGHd0v8takT9A1DQ1fLeFewYgJPXULWaUelgsK6p1vd283Cxz/FSbp5gw+HTC
-	3zSMZL8OFgOtRAL1nCok+Sd1wd6LmY9t/9lAQi9QwIo6I2fnyHXYsJyLpw0O3W3uLlQZtU
-	TfIhS/iWjJCirJ+dVAlwNqdj1VplUw4=
+	bh=xMLfFf3O8rXGSgATq8YSoobN8U6K0IuX4v1SD2D/9kU=;
+	b=xjUXvgTovW0vdjOa5SzG5jOEl3xTv5S+c0s3xA63gtyBzbgEKcJWP7GTtYi/z138XnIr4Q
+	xVoGM5vO/qkn3LJvlf6a5b9XbiXkXXrZg2+ap/OaLRIovtIVtDncPHS1dDTjsWADyEfIOD
+	k0qQJV/hNyJpU9bTuey8bhsjPNDXhm4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
+	imf23.hostedemail.com;
 	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.147 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
-	dmarc=pass (policy=none) header.from=easystack.cn
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf23.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.136 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783425274;
-	b=BSVWToBEcD16auqZW/JSOVmQVimu7wdbBkrYZ+++XDbq+jGtxYpTCbvSWepAeHAS0MQave
-	+3/Be3pjAg/zORhj9ts60LgjAC3Yy8p+fPL8HD2WuZ/kxoznWZtQP/qsepPIK1o8neWXm0
-	g55n4mfOGA2d8rVyW0a3/AoqGIYdxq4=
+	t=1783425275;
+	b=LDvLcfEApr8UrlntgcnlC+/0f9ngYm+2dO6eZFe4Wqj+BfCojy97rxLJKq9jcDpyhIe1Ld
+	ds4jQT4I7dDvkaPJXfmZU06x/I9mq5XnyEEZC6lTmWCoMFyB/r6lp2foZBrh3KpDo0Ym13
+	399B71EXsx1aBiNKBngwO7sWL0QoGdA=
 Received: from localhost.localdomain (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1c66e4eee;
-	Tue, 7 Jul 2026 19:54:26 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1c66e4ef7;
+	Tue, 7 Jul 2026 19:54:30 +0800 (GMT+08:00)
 From: Zhen Ni <zhen.ni@easystack.cn>
 To: akpm@linux-foundation.org,
 	vbabka@kernel.org
@@ -62,28 +62,28 @@ Cc: surenb@google.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Zhen Ni <zhen.ni@easystack.cn>
-Subject: [PATCH v12 1/4] mm/page_owner: add print_mode filter
-Date: Tue,  7 Jul 2026 19:54:08 +0800
-Message-Id: <20260707115411.1714314-2-zhen.ni@easystack.cn>
+Subject: [PATCH v12 3/4] tools/mm: add page_owner_filter userspace tool
+Date: Tue,  7 Jul 2026 19:54:10 +0800
+Message-Id: <20260707115411.1714314-4-zhen.ni@easystack.cn>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260707115411.1714314-1-zhen.ni@easystack.cn>
 References: <20260707115411.1714314-1-zhen.ni@easystack.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f3c6df3b80229kunm476cca175fa9a
+X-HM-Tid: 0a9f3c6e02d10229kunm476cca175faac
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDQktKVkhPSkNCGUwZQh1MT1YVFA
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZHUwaVkhOTUNDGk8aSE8aHVYVFA
 	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
 	lPT09IVUpLS1VKQktLWQY+
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 758D414000B
+X-Stat-Signature: g3n19nfc1e5uizkgejfzeapcee7c6prr
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0B86880004
-X-Stat-Signature: 1bwch8jcahdtekz1hx8u1ps3ukcktcff
-X-HE-Tag: 1783425272-254656
-X-HE-Meta: U2FsdGVkX18iHD42aM6ic/H7ESbM6nJ1+jQ1VMRekHc8Yhf2lUEG/pJ/PBZIiDSQ85+x+bMdxBktlSPNk0QKXgp/aR4z62QDoRiZ+sajWWp3M9TR4bfg2vtP1nQi2t5GgCpbJr+lMjNqWbr6zEsY+Q509T/QLBpVrKMOCU6jX4GbCByOfDsV8vuBnZaEEN5FXe6yyrW5KhK8hfKU2c57mZ1KItnXIeMXx8Mfhk1YaWt890yOGW5kgY/8uhvUWKzRgiHNb6R05TT8WWvZ+Ajt18w7/otEAHoPskgIHNSXDZQgnpA4eiougtCpT5gnle3N1h9mH65EQI14aCDtBQSnz74YhF3Q0dr2UNu7FsnUGT2LP0OEqhdN55uoSKX3DYAJDap9uV2yps2/I9O1Z3HMp5H6+AueKJGeZiaVOOt8UwXtU5rY6i6RH18l19Fl4LtLUPQhOOyWZThmei1YlrsX27kEkeBWSYNxUuVcnUQGzQ7ZidscKQS7IlkH7uhOd2B72Poy9xd4OTVmN874Y5hIJ+goj3FJ/6IKrlTVeVn9/RAOH6Pf0YqaxN/pjjuG10XUnwGxOa3JpgfL7IqL+r+gBJx78z6xt0u0+m6MoZefuhAej1MgjdOqxnwJnE0aAFOm3DnmzqtWbqhx0OQFTdTbPuwSTHu2Vz6n48MLvUBTOYcu9H2Pq6dyJROydXGuDegexUpEW44Q5H3gLXStjv7XMR7TvAOX2rihog9GAhKL6J1VizGQQ3JhjjZ/V7aEgekxsdz9LEdxkXtDpfZqZmVX+TUvLnN9yR7/5VlfyEvDum2Wo0YXIt0XktzBNd58msndLamwhLQZqHKHIpBXZPAPDe7Xpt3kA0BKwZPJK14z0KQmJmF11RBiEnCQnQC1bjSG2dMMVGjXwaDk25Bql9WZ7ghqKDm3dXxiJ7i1OQo6uPVo4bzfItrSVCdtrHKYONIa3Cfk1IWVSJp65b+LsR8
- zm9sLKy0
- MMgYG4rjcrYCQZBfMhl9ekKhvgmdLFpoo4AlE93GfNUJy15VTusnve1hjnhCEnrmkgS7NvZX5KvykVIOGybGLRkLYNfIt8VhctNWiyG61fslUqbfDILvI/7FhxV3irUJAIjbg1rg3P4ZsgtZXKOlaxRHebYFQSBMOCUT1yxp/HxIYAVy6+IIHjETdLuVmLi8z0IOp
+X-HE-Tag: 1783425274-847275
+X-HE-Meta: U2FsdGVkX1/owBoOetyIDMC+S5BejxdGDG+Sk9ZJCojtXuIQ3gfTzX2AUtrJwlcsgZgCkpZwxRfJyYRsJggN2VpPzyLn1d4Ox37wzH74wOtWv3U5hD/eTadDxAsg4pvzvmpVUKCSK9sNk/l9YO2TyeYDywXoPJOzOmjy2lZb2hj8lH2L4DgLryXB9VgXeB2BTIcUVSnMql+Gab881J9JcmJrS+rbxMfhvCc9lfe5RhTDKRdQFQBmYPN1FCJhLNXKb2TNKG0QyT5Z68W+PCDlDadNiRWS6xJeZ7fInMxztFEPjXRF71rDtckv52iXsipIywK1/quqpiQzQIlgSOx31q8xTpxcf2JbXXIUklSO+UXBtEpSSijOttdOuVtuTzH+wTJAGSax64qxWexFuVHaZnqrrBh4W8gSx26xY5b82rloBndfP+CXasW6qaRW+1Vt92yFRlj6mrtqOwlcY3oQKg8rvMI07cELrXN+pXKpShLojnOTvx32dChoMERuVgwCZRiXK2ZS/cjF/j+oSWmmWwSitNzSEq7sGEUWtbA02kiZaHLqSwLq4y7x8VgXkq45XfvaLpNsDw9sDG7kjs2G1PvV0WX7CWPdG4DAmy2nosg84bohYNen4j/tFbojSoJOSGPuodDtgwPcl/npgnGiReQE1eu5F9QASNhQOGKh02rDb18pXUl7SB/UjmmJVghu/0gDu11SV0GdOMoZqVgn+KIh4CoSFfapLsHIvfGeCMj9cvOIi8czpzcXwwoq1ZZWQh3WQof4MENtsj+l5xOb6SY7hfPwxXHPA8cCOZOmbY4vmtHPwchEjvZ3tJzKNIHnOLcNoP/tNt4QG7ZBAFc7wfKOuFGODJBA9uc6lLnuyK33YViEVMDwOWB76Ss+ox8wcQCupIiRFeDyNHXJ+yVNDQK5IKJTndORukW07BICjt9nWtIK1uv05+l6nsVZSJ+uuR7Yhsto3Q/eRyD0EIN
+ pRKc+yt1
+ M+AE5k6nAXUozy8yyO0KVJkVjhLTV1Z1Cl5XGx0PA49jagXIdS/C8a2lYI0WYr7O9TD39otPE5AGjt7WPcLYM4KvbLdRJ7RlZgJ+qdD+KAQbe3wVe+N4tKCgsHtWBd7x3hmBb0IEvLwEZi5peHkecPriWW1af0tCFxVVC13j9ec8WYXyl6gOyrQmAGX1jklqD5Ett
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,289 +91,406 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a print_mode filter to page_owner that allows users to choose between
-printing stack traces, stack handles, or both, providing flexibility for
-different debugging and analysis scenarios.
+Add a userspace filtering tool for page_owner that supports per-fd
+filtering with print_mode and NUMA node filters.
 
-The filter provides three modes via page_owner:
-- Writing "mode=stack" prints stack traces for each page (default)
-- Writing "mode=handle" prints only the handle number
-- Writing "mode=stack_handle" prints both stack traces and handles
+Features:
+- Three print modes: stack (default), handle, stack_handle
+- NUMA node filtering with flexible formats (single: 0, multiple: 0,1,2,
+  range: 0-3, mixed: 0,2-3)
+- Per-file-descriptor filter state for independent filtering
 
-The default stack mode maintains backward compatibility with existing
-usage, displaying complete stack traces for each page allocation.
+Usage examples:
+  # Filter by print mode
+  ./page_owner_filter -m handle
+  ./page_owner_filter -m stack_handle
 
-The handle mode dramatically reduces log size and improves performance by
-showing only the handle number instead of the full stack trace. Testing
-shows handle mode reduces output size by ~66% (84MB vs 244MB) and
-improves read performance by ~4.4x compared to full stack output. The
-mapping from handles to actual stack traces can be obtained via the
-show_stacks_handles interface.
+  # Filter by NUMA node
+  ./page_owner_filter -n 0
+  ./page_owner_filter -n 0-3
 
-The stack_handle mode prints both stack traces and handles, making it
-easier to identify pages with the same allocation pattern by comparing
-handle numbers instead of comparing large stack traces.
+  # Combined filters
+  ./page_owner_filter -m stack -n 0,1,2
+  ./page_owner_filter -m handle -n 0,2-3
 
-Example usage:
-  # Using the page_owner_filter tool (recommended)
-  ./page_owner_filter -m stack          # Print only stack traces (default)
-  ./page_owner_filter -m handle         # Print only handles
-  ./page_owner_filter -m stack_handle   # Print both stack and handles
-
-Sample output (handle mode):
-  Page allocated via order 0, migratetype Unmovable, gfp_mask 0x1100ca,
-  pid 1, tgid 1 (systemd), ts 123456789 ns
-  PFN 0x1000 type Unmovable Block 1 type Unmovable
-  Flags 0x3fffe800000084(referenced|lru|active|private|node=0|zone=1)
-  handle: 17432583
-  ...
-
-This implementation uses per-file-descriptor filter state stored in
-file->private_data, allowing each opener to have independent filter
-configuration.
+The tool validates inputs before sending commands to the kernel and
+provides clear error messages when the kernel does not support
+per-fd filtering.
 
 Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
 Tested-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
 ---
 Changes in v12:
-- Remove spinlock from page_owner_filter_state
-- Use literal 32 directly for input length check
+- No changes
 
 Changes in v11:
-- No changes
+- Add signal(SIGPIPE, SIG_IGN) to ignore SIGPIPE and handle EPIPE gracefully
+- Treat EPIPE from fwrite() and fflush() as success (broken pipe case)
 
 Changes in v10:
-- No changes
+- Improve error handling: check fwrite() and fflush() return values
+- Handle EPIPE correctly: treat broken pipe as success
 
 Changes in v9:
-- Add spinlock_t lock to struct page_owner_filter_state for concurrent access protection
+- Fix isdigit() usage: cast to unsigned char to avoid undefined behavior with non-ASCII input
+- Optimize I/O performance: replace fprintf() + fflush() in loop with fwrite() + single fflush() after loop
 
 Changes in v8:
-- Fix buffer overflow by adding bounds check between stack_depot_snprint() and scnprintf()
-- Fix unsafe string handling: use memdup_user_nul() instead of kmalloc_objs + strncpy_from_user()
-- Fix strsep() memory corruption by saving original pointer before strsep() call
-- Change format specifier from %d to %u for depot_stack_handle_t
+- Add validation to reject multiple dashes in nid list (e.g., "1-2-3")
+- Fix snprintf return value handling to prevent command overflow
 
 Changes in v7:
-- per-file-descriptor implementation
+- New patch for userspace tool
 
-Changes in v6:
-- Remove unnecessary braces in if/else statement (coding style)
-- Use stack array (char kbuf[33]) instead of kmalloc for input buffer
-
-Changes in v5:
-- No code changes
-
-Changes in v4:
-- Change from numeric (0/1) to string-based interface ("full_stack"/"stack_handle")
-- Merge infrastructure patch into this patch
-
-Changes in v3:
-- No code changes
-
-Changes in v2:
-- Renamed from 'compact mode' to 'print_mode' for better clarity
-- Use enum values (0=full_stack, 1=stack_handle) instead of boolean
-- Update debugfs filename from 'compact' to 'print_mode'
-
-v11: https://lore.kernel.org/linux-mm/20260625043101.338794-2-zhen.ni@easystack.cn/
-v10: https://lore.kernel.org/linux-mm/20260618035750.3724613-2-zhen.ni@easystack.cn/
-v9: https://lore.kernel.org/linux-mm/20260525081652.2210206-2-zhen.ni@easystack.cn/
-v8: https://lore.kernel.org/linux-mm/20260520075641.1931080-2-zhen.ni@easystack.cn/
-v7: https://lore.kernel.org/linux-mm/20260515091942.1535677-2-zhen.ni@easystack.cn/
-v6: https://lore.kernel.org/linux-mm/20260511033017.747781-2-zhen.ni@easystack.cn/
-v5: https://lore.kernel.org/linux-mm/20260507064643.179187-2-zhen.ni@easystack.cn/
-v4: https://lore.kernel.org/linux-mm/20260430163247.13628-2-zhen.ni@easystack.cn/
-v3: https://lore.kernel.org/linux-mm/20260428071112.1420380-2-zhen.ni@easystack.cn/
-    https://lore.kernel.org/linux-mm/20260428071112.1420380-3-zhen.ni@easystack.cn/
-v2: https://lore.kernel.org/linux-mm/20260419155540.376847-2-zhen.ni@easystack.cn/
-    https://lore.kernel.org/linux-mm/20260419155540.376847-3-zhen.ni@easystack.cn/
-v1: https://lore.kernel.org/linux-mm/20260417154638.22370-2-zhen.ni@easystack.cn/
-    https://lore.kernel.org/linux-mm/20260417154638.22370-3-zhen.ni@easystack.cn/
+v11: https://lore.kernel.org/linux-mm/20260625043101.338794-4-zhen.ni@easystack.cn/
+v10: https://lore.kernel.org/linux-mm/20260618035750.3724613-4-zhen.ni@easystack.cn/
+v9: https://lore.kernel.org/linux-mm/20260525081652.2210206-4-zhen.ni@easystack.cn/
+v8: https://lore.kernel.org/linux-mm/20260520075641.1931080-4-zhen.ni@easystack.cn/
+v7: https://lore.kernel.org/linux-mm/20260515091942.1535677-4-zhen.ni@easystack.cn/
 ---
- mm/page_owner.c | 116 +++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 110 insertions(+), 6 deletions(-)
+ tools/mm/Makefile            |   4 +-
+ tools/mm/page_owner_filter.c | 310 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 312 insertions(+), 2 deletions(-)
+ create mode 100644 tools/mm/page_owner_filter.c
 
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index 8178e0be557f..976c2ed6e35a 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -54,6 +54,22 @@ struct stack_print_ctx {
- 	u8 flags;
- };
+diff --git a/tools/mm/Makefile b/tools/mm/Makefile
+index f5725b5c23aa..858186a6eefd 100644
+--- a/tools/mm/Makefile
++++ b/tools/mm/Makefile
+@@ -3,7 +3,7 @@
+ #
+ include ../scripts/Makefile.include
  
-+enum page_owner_print_mode {
-+	PAGE_OWNER_PRINT_STACK,
-+	PAGE_OWNER_PRINT_HANDLE,
-+	PAGE_OWNER_PRINT_STACK_HANDLE,
-+};
+-BUILD_TARGETS=page-types slabinfo page_owner_sort thp_swap_allocator_test
++BUILD_TARGETS=page-types slabinfo page_owner_sort page_owner_filter thp_swap_allocator_test
+ INSTALL_TARGETS = $(BUILD_TARGETS) thpmaps
+ 
+ LIB_DIR = ../lib/api
+@@ -23,7 +23,7 @@ $(LIBS):
+ 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
+ 
+ clean:
+-	$(RM) page-types slabinfo page_owner_sort thp_swap_allocator_test
++	$(RM) page-types slabinfo page_owner_sort page_owner_filter thp_swap_allocator_test
+ 	make -C $(LIB_DIR) clean
+ 
+ sbindir ?= /usr/sbin
+diff --git a/tools/mm/page_owner_filter.c b/tools/mm/page_owner_filter.c
+new file mode 100644
+index 000000000000..1d1f0a38678a
+--- /dev/null
++++ b/tools/mm/page_owner_filter.c
+@@ -0,0 +1,310 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * User-space helper to filter page_owner output per-fd
++ *
++ * Example use:
++ *   ./page_owner_filter -m handle
++ *   ./page_owner_filter -m stack_handle
++ *   ./page_owner_filter -n 0,1,2
++ *
++ * See Documentation/mm/page_owner.rst
++ */
 +
-+static const char * const page_owner_print_mode_strings[] = {
-+	[PAGE_OWNER_PRINT_STACK]	= "stack",
-+	[PAGE_OWNER_PRINT_HANDLE]	= "handle",
-+	[PAGE_OWNER_PRINT_STACK_HANDLE]	= "stack_handle",
-+};
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <ctype.h>
++#include <getopt.h>
++#include <signal.h>
 +
-+struct page_owner_filter_state {
-+	enum page_owner_print_mode print_mode;
-+};
++#define MAX_CMD_LEN	512
 +
- static bool page_owner_enabled __initdata;
- DEFINE_STATIC_KEY_FALSE(page_owner_inited);
- 
-@@ -547,16 +563,20 @@ static inline int print_page_owner_memcg(char *kbuf, size_t count, int ret,
- static ssize_t
- print_page_owner(char __user *buf, size_t count, unsigned long pfn,
- 		struct page *page, struct page_owner *page_owner,
--		depot_stack_handle_t handle)
-+		depot_stack_handle_t handle,
-+		struct page_owner_filter_state *state)
- {
- 	int ret, pageblock_mt, page_mt;
- 	char *kbuf;
-+	enum page_owner_print_mode print_mode;
- 
- 	count = min_t(size_t, count, PAGE_SIZE);
- 	kbuf = kmalloc(count, GFP_KERNEL);
- 	if (!kbuf)
- 		return -ENOMEM;
- 
-+	print_mode = state->print_mode;
-+
- 	ret = scnprintf(kbuf, count,
- 			"Page allocated via order %u, mask %#x(%pGg), pid %d, tgid %d (%s), ts %llu ns\n",
- 			page_owner->order, page_owner->gfp_mask,
-@@ -575,9 +595,18 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
- 			migratetype_names[pageblock_mt],
- 			&page->flags);
- 
--	ret += stack_depot_snprint(handle, kbuf + ret, count - ret, 0);
--	if (ret >= count)
--		goto err;
-+	if (print_mode != PAGE_OWNER_PRINT_HANDLE) {
-+		ret += stack_depot_snprint(handle, kbuf + ret, count - ret, 0);
-+		if (ret >= count)
-+			goto err;
-+	}
-+
-+	if (print_mode != PAGE_OWNER_PRINT_STACK) {
-+		ret += scnprintf(kbuf + ret, count - ret, "handle: %u\n",
-+				 handle);
-+		if (ret >= count)
-+			goto err;
-+	}
- 
- 	if (page_owner->last_migrate_reason != -1) {
- 		ret += scnprintf(kbuf + ret, count - ret,
-@@ -664,6 +693,7 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 	struct page_ext *page_ext;
- 	struct page_owner *page_owner;
- 	depot_stack_handle_t handle;
-+	struct page_owner_filter_state *state = file->private_data;
- 
- 	if (!static_branch_unlikely(&page_owner_inited))
- 		return -EINVAL;
-@@ -746,7 +776,7 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 		page_owner_tmp = *page_owner;
- 		page_ext_put(page_ext);
- 		return print_page_owner(buf, count, pfn, page,
--				&page_owner_tmp, handle);
-+				&page_owner_tmp, handle, state);
- ext_put_continue:
- 		page_ext_put(page_ext);
- 	}
-@@ -847,7 +877,81 @@ static void init_early_allocated_pages(void)
- 		init_pages_in_zone(zone);
- }
- 
-+static int page_owner_open(struct inode *inode, struct file *file)
++static void usage(const char *prog)
 +{
-+	struct page_owner_filter_state *state;
-+
-+	state = kzalloc_obj(*state);
-+	if (!state)
-+		return -ENOMEM;
-+
-+	state->print_mode = PAGE_OWNER_PRINT_STACK;
-+	file->private_data = state;
-+	return 0;
++	fprintf(stderr, "Usage: %s [OPTIONS]\n", prog);
++	fprintf(stderr, "\nOptions:\n");
++	fprintf(stderr, "  -m, --mode MODE      : print_mode (stack, handle, or stack_handle)\n");
++	fprintf(stderr, "  -n, --nid NID_LIST   : NUMA node IDs (comma-separated or ranges)\n");
++	fprintf(stderr, "  -o, --output FILE    : output file (default: stdout)\n");
++	fprintf(stderr, "  -h, --help           : show this help message\n");
++	fprintf(stderr, "\nExamples:\n");
++	fprintf(stderr, "  %s -m stack\n", prog);
++	fprintf(stderr, "  %s -m handle\n", prog);
++	fprintf(stderr, "  %s -m stack_handle\n", prog);
++	fprintf(stderr, "  %s -m stack -o output.txt\n", prog);
++	fprintf(stderr, "  %s -n 0,1,2\n", prog);
++	fprintf(stderr, "  %s -m stack -n 0\n", prog);
 +}
 +
-+static int page_owner_release(struct inode *inode, struct file *file)
++static int validate_mode(const char *mode)
 +{
-+	kfree(file->private_data);
-+	return 0;
++	if (strcmp(mode, "stack") == 0 ||
++	    strcmp(mode, "handle") == 0 ||
++	    strcmp(mode, "stack_handle") == 0)
++		return 0;
++
++	fprintf(stderr, "Error: Invalid mode '%s'\n", mode);
++	fprintf(stderr, "Valid modes: stack, handle, stack_handle\n");
++	return -1;
 +}
 +
-+static ssize_t page_owner_write(struct file *file,
-+				 const char __user *buf,
-+				 size_t count, loff_t *ppos)
++static int validate_nid_list(const char *nid_list)
 +{
-+	char *kbuf;
-+	char *orig;
-+	char *token;
-+	int ret;
-+	struct page_owner_filter_state *state = file->private_data;
-+	enum page_owner_print_mode new_print_mode;
++	const char *p;
++	int i = 0;
++	int has_digit = 0;
++	int in_range = 0;
++	int prev_num = 0;
++	int curr_num = 0;
 +
-+	/*
-+	 * Maximum input length for filter commands:
-+	 * 32: print_mode command max length is 17 ("mode=stack_handle").
-+	 */
-+	if (count > 32)
-+		return -EINVAL;
++	if (!nid_list || strlen(nid_list) == 0)
++		return 0;
 +
-+	kbuf = memdup_user_nul(buf, count);
-+	if (IS_ERR(kbuf))
-+		return PTR_ERR(kbuf);
-+
-+	orig = kbuf;
-+
-+	new_print_mode = state->print_mode;
-+
-+	while ((token = strsep(&kbuf, " \t\n")) != NULL) {
-+		if (*token == '\0')
++	for (p = nid_list; *p; p++) {
++		if (*p == ',') {
++			if (!has_digit) {
++				fprintf(stderr, "Error: Invalid nid_list format\n");
++				return -1;
++			}
++			if (in_range && prev_num > curr_num) {
++				fprintf(stderr,
++					"Error: Invalid range %d-%d (start must be <= end)\n",
++					prev_num, curr_num);
++				return -1;
++			}
++			i = 0;
++			has_digit = 0;
++			in_range = 0;
++			prev_num = 0;
++			curr_num = 0;
 +			continue;
++		}
 +
-+		if (!strncmp(token, "mode=", 5)) {
-+			ret = sysfs_match_string(page_owner_print_mode_strings,
-+						token + 5);
-+			if (ret < 0)
-+				goto out_free;
-+			new_print_mode = ret;
-+		} else {
-+			ret = -EINVAL;
-+			goto out_free;
++		if (*p == '-') {
++			if (!has_digit) {
++				fprintf(stderr,
++					"Error: Invalid nid_list format ");
++				fprintf(stderr,
++					"(dash without preceding number)\n");
++				return -1;
++			}
++			if (in_range) {
++				fprintf(stderr, "Error: Multiple dashes in nid_list\n");
++				return -1;
++			}
++			prev_num = curr_num;
++			curr_num = 0;
++			i = 0;
++			has_digit = 0;
++			in_range = 1;
++			continue;
++		}
++
++		if (!isdigit((unsigned char)*p)) {
++			fprintf(stderr, "Error: Invalid character '%c' in nid_list\n", *p);
++			return -1;
++		}
++
++		if (i > 5) {
++			fprintf(stderr, "Error: NID too long (max 65536)\n");
++			return -1;
++		}
++		curr_num = curr_num * 10 + (*p - '0');
++		i++;
++		has_digit = 1;
++	}
++
++	if (!has_digit) {
++		fprintf(stderr, "Error: Invalid nid_list format\n");
++		return -1;
++	}
++
++	if (in_range && prev_num > curr_num) {
++		fprintf(stderr,
++			"Error: Invalid range %d-%d (start must be <= end)\n",
++			prev_num, curr_num);
++		return -1;
++	}
++
++	return 0;
++}
++
++int main(int argc, char *argv[])
++{
++	const char *output_file = NULL;
++	char filter_cmd[MAX_CMD_LEN];
++	FILE *output = NULL;
++	int fd = -1;
++	ssize_t ret;
++	char buf[4096];
++	int opt;
++	size_t cmd_len = 0;
++
++	signal(SIGPIPE, SIG_IGN);
++
++	static struct option long_options[] = {
++		{"mode",	required_argument, 0, 'm'},
++		{"nid",		required_argument, 0, 'n'},
++		{"output",	required_argument, 0, 'o'},
++		{"help",	no_argument,	   0, 'h'},
++		{0, 0, 0, 0}
++	};
++
++	filter_cmd[0] = '\0';
++
++	if (argc > 1) {
++		for (int i = 1; i < argc; i++) {
++			if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
++				usage(argv[0]);
++				return 0;
++			}
 +		}
 +	}
 +
-+	state->print_mode = new_print_mode;
++	/* Check if page_owner exists and is readable */
++	if (access("/sys/kernel/debug/page_owner", F_OK) != 0) {
++		if (errno == ENOENT)
++			fprintf(stderr, "Error: /sys/kernel/debug/page_owner does not exist\n");
++		else
++			perror("Error accessing /sys/kernel/debug/page_owner");
++		fprintf(stderr, "Make sure page_owner is enabled in kernel\n");
++		return 1;
++	}
 +
-+	ret = count;
++	while ((opt = getopt_long(argc, argv, "m:n:o:h", long_options, NULL)) != -1) {
++		int len;
 +
-+out_free:
-+	kfree(orig);
-+	return ret;
++		switch (opt) {
++		case 'm': {
++			const char *mode = optarg;
++
++			if (validate_mode(mode) < 0)
++				return 1;
++			len = snprintf(filter_cmd + cmd_len, MAX_CMD_LEN - cmd_len,
++				       "%smode=%s", cmd_len > 0 ? " " : "", mode);
++			if (len < 0 || cmd_len + len >= MAX_CMD_LEN) {
++				fprintf(stderr, "Error: Command too long\n");
++				return 1;
++			}
++			cmd_len += len;
++			break;
++		}
++		case 'n': {
++			const char *nid_list = optarg;
++
++			if (validate_nid_list(nid_list) < 0)
++				return 1;
++			len = snprintf(filter_cmd + cmd_len, MAX_CMD_LEN - cmd_len,
++				       "%snid=%s", cmd_len > 0 ? " " : "", nid_list);
++			if (len < 0 || cmd_len + len >= MAX_CMD_LEN) {
++				fprintf(stderr, "Error: Command too long\n");
++				return 1;
++			}
++			cmd_len += len;
++			break;
++		}
++		case 'o':
++			output_file = optarg;
++			break;
++		case 'h':
++			/* Already handled above */
++			break;
++		default:
++			usage(argv[0]);
++			return 1;
++		}
++	}
++
++	/* At least one filter must be specified */
++	if (cmd_len == 0) {
++		fprintf(stderr, "Error: At least one filter (-m or -n) must be specified\n\n");
++		usage(argv[0]);
++		return 1;
++	}
++
++	/* Open page_owner for read-write - this will fail if kernel doesn't support write */
++	fd = open("/sys/kernel/debug/page_owner", O_RDWR);
++	if (fd < 0) {
++		if (errno == EACCES || errno == EPERM) {
++			fprintf(stderr, "Error: /sys/kernel/debug/page_owner ");
++			fprintf(stderr, "does not support write access\n");
++			fprintf(stderr, "This kernel does not support ");
++			fprintf(stderr, "per-fd filtering.\n");
++			fprintf(stderr, "Please ensure you have a kernel with ");
++			fprintf(stderr, "per-fd filtering support.\n");
++		} else {
++			perror("Error opening /sys/kernel/debug/page_owner");
++		}
++		return 1;
++	}
++
++	if (output_file) {
++		output = fopen(output_file, "w");
++		if (!output) {
++			perror("open output file");
++			close(fd);
++			return 1;
++		}
++	} else {
++		output = stdout;
++	}
++
++	ret = write(fd, filter_cmd, strlen(filter_cmd));
++
++	if (ret < 0) {
++		if (errno == EINVAL) {
++			fprintf(stderr, "Error: Kernel rejected the filter command.\n");
++			fprintf(stderr, "Possible causes:\n");
++			fprintf(stderr, "  - Kernel does not support per-fd filtering\n");
++			fprintf(stderr, "  - NUMA node has no memory\n");
++			fprintf(stderr, "  - Unknown reason\n");
++		} else {
++			perror("write filter command");
++		}
++		goto out;
++	}
++
++	if ((size_t)ret != strlen(filter_cmd))
++		fprintf(stderr, "Warning: Partial write (%zd/%zu)\n", ret, strlen(filter_cmd));
++
++	/* Read and display filtered output */
++	ret = 0;
++	while ((ret = read(fd, buf, sizeof(buf))) > 0) {
++		size_t written = fwrite(buf, 1, ret, output);
++
++		if (written != (size_t)ret) {
++			if (errno == EPIPE) {
++				/* Pipe closed, treat as success */
++				ret = 0;
++				goto out;
++			}
++			perror("write output");
++			ret = -1;
++			goto out;
++		}
++	}
++
++	if (ret < 0) {
++		perror("read page_owner");
++		goto out;
++	}
++
++	if (fflush(output)) {
++		if (errno == EPIPE) {
++			/* Pipe closed, treat as success */
++			ret = 0;
++		} else {
++			perror("flush output");
++			ret = -1;
++		}
++	}
++
++out:
++	close(fd);
++	if (output != stdout)
++		fclose(output);
++	return ret < 0 ? 1 : 0;
 +}
-+
- static const struct file_operations page_owner_fops = {
-+	.owner		= THIS_MODULE,
-+	.open		= page_owner_open,
-+	.release	= page_owner_release,
-+	.write		= page_owner_write,
- 	.read		= read_page_owner,
- 	.llseek		= lseek_page_owner,
- };
-@@ -980,7 +1084,7 @@ static int __init pageowner_init(void)
- 		return 0;
- 	}
- 
--	debugfs_create_file("page_owner", 0400, NULL, NULL, &page_owner_fops);
-+	debugfs_create_file("page_owner", 0600, NULL, NULL, &page_owner_fops);
- 	dir = debugfs_create_dir("page_owner_stacks", NULL);
- 	debugfs_create_file("show_stacks", 0400, dir,
- 			    (void *)(STACK_PRINT_FLAG_STACK |
 -- 
 2.20.1
 
