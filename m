@@ -4,139 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E497DC43602
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:17:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD081C43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:18:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 989C36B00A1; Tue,  7 Jul 2026 09:17:45 -0400 (EDT)
+	id 98B936B00A3; Tue,  7 Jul 2026 09:18:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EBC06B00A2; Tue,  7 Jul 2026 09:17:45 -0400 (EDT)
+	id 9622E6B00A4; Tue,  7 Jul 2026 09:18:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B4556B00A3; Tue,  7 Jul 2026 09:17:45 -0400 (EDT)
+	id 8510C6B00A5; Tue,  7 Jul 2026 09:18:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BC796B00A1
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:17:45 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C04F6168D24
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:17:44 +0000 (UTC)
-X-FDA: 84962032848.29.90B314A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E135140002
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:17:42 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ekBlEtaX;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783430263;
-	b=RvbEoXJTrD27mNagqmpsebCS1LcckIkNNOGkiNZ5S4NsE0dOUvzK5Plv/PJjYI9UQYulnU
-	ObNuH/cKeXLuisuKhB66qso96mCgbvREnv8kypJDdASbD7JwbtDaxA+kHRMSkzjEHGC01K
-	nhOTpdk4NVw07wzTx+uVGgCOXj+gUYU=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ekBlEtaX;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CD0C6B00A3
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:18:04 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 293E1C1DFA
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:18:03 +0000 (UTC)
+X-FDA: 84962033646.30.8525B6B
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BAD0340007
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:18:00 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Gwi6RLZT;
+	spf=none (imf27.hostedemail.com: domain of brking@linux.vnet.ibm.com has no SPF policy when checking 148.163.158.5) smtp.mailfrom=brking@linux.vnet.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783430263;
+	s=arc-20220608; t=1783430280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5p98PRn2cxjDk+JJlvD1wzmliW0l2W8nSc95PJxuTqs=;
-	b=Bkkv8zeX/anP4dPR/FAbUWvqV4heiB1WZpVS/g3GqpY9+apYGGDOaHdMu2uEBoEEiyO6oD
-	nLezjJ/VMNgdiYr/Mgz6n/6AQvIlec5f/QhbRf4P34jLIT4SlTmzy38QKmJfKwfRQ4j41a
-	MvUheD88nAMRNaX+Rw7yUfZE8x8QeSU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1D68443D6C;
-	Tue,  7 Jul 2026 13:17:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1D01F0155E;
-	Tue,  7 Jul 2026 13:17:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783430262;
-	bh=5p98PRn2cxjDk+JJlvD1wzmliW0l2W8nSc95PJxuTqs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ekBlEtaXKEYUfjDrvSvzpx89vlzX8XAx0GfpW4nUJOaQ3SRolAmuk/Y7CfTfPGgJ7
-	 JP8faT51OLBKI00vsvtQZWw9WIZOFJ3rVlmmw4hHsISJu7I7SgSszbErKQ1L870E8d
-	 KIls4KWjd6p/bXVbraoj9gw0JDhauAiy1T2Ba16ZZW274Vbl+qZ+0JC+Qgt9C12Fxs
-	 vwHJ02whL36oG1D1TQm/f57N0ubo2JltZ/dSnWg49uXAigoG4zbLnXj1TDipXQh/i6
-	 ou8ugFM8ohRJLocIx6s+ZM7/hodfALjZxDkmwUMVIbVeNlu0X6hQMWJfwQ5uzJLzfr
-	 vrbb7unCQNidw==
-Message-ID: <4bfeb697-9c1f-4316-96bb-9bfd66f959df@kernel.org>
-Date: Tue, 7 Jul 2026 15:17:37 +0200
+	bh=Bj4BfAE4+Dv9IF1clDBsHZf74FIuOd3gCFc+OmsYS4c=;
+	b=A58iWMnx24C8sb7Wr6bYQuUbQRBijW740co++Vboc5fr8aD2WnGvQPj8J02E0u9OKcnBcn
+	M5GVLIXr1OBR6sp32Nr+Nx+8b04AcdEnrUZg6+97gaTbwRQ+4Sa3dxOZZ1Nsk4bmnNDwN9
+	KECCHVqQl0X3aSQK4Jz/wIVX7EvIPd8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Gwi6RLZT;
+	spf=none (imf27.hostedemail.com: domain of brking@linux.vnet.ibm.com has no SPF policy when checking 148.163.158.5) smtp.mailfrom=brking@linux.vnet.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783430280;
+	b=Foonk+0J7h815qXBxH4VgUGrzeA1BKqCn1YYZA3SrHMxVJIgy1hp36ymvfzRF+tJy8lZ2H
+	9jibfIHn7BAvLHoOQ2jj+zdHVkok9d1ahQdmcEfRSW+kIyZk+iC461FapupeUAz2zMgaKM
+	HzAm8+N6zmvAgw6+m+mAIeldRgmfPEc=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 667CIbQH3924245;
+	Tue, 7 Jul 2026 13:17:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Bj4BfA
+	E4+Dv9IF1clDBsHZf74FIuOd3gCFc+OmsYS4c=; b=Gwi6RLZT/jB7Eukpla7LGS
+	bv7oIR+bteHwnnqDHpV6/cLnrRs8Jv+wjcLjWVCoM6ACFE7cDTdz1THAnJbBS2iY
+	IQAXE6aPnnNmrPzcD+cr9xC5rDzXF9vpYjpCb5B7FbyD/67TsjYIsTiRFsyn7hE4
+	oZtOA1Bo+D04cC1VDEXDMtmBk3zwHWZpg+F+UHqgEcooJ/wGK+0yK5BHe3ESsYk1
+	4Viy9FpHBF4omb3VGsYoRLnSXvkd5iQ+PxJ+Fm1d25KT9qK1F+lpGZrXA8E7v05W
+	hjPRFLC1wY8Ah7i6ye/pUFLDP4L8z3BXgyAgRTFjd8e/3X+sF54uyVJ9YSznejyQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6qknf598-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jul 2026 13:17:50 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 667D4agi015718;
+	Tue, 7 Jul 2026 13:17:50 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7cgq34vq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jul 2026 13:17:50 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 667DHmRD14615238
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Jul 2026 13:17:48 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 75A2B5804B;
+	Tue,  7 Jul 2026 13:17:48 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9CC6558065;
+	Tue,  7 Jul 2026 13:17:47 +0000 (GMT)
+Received: from [9.10.86.145] (unknown [9.10.86.145])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  7 Jul 2026 13:17:47 +0000 (GMT)
+Message-ID: <1d47de6b-f977-4818-bcaf-0c3c02e3292c@linux.vnet.ibm.com>
+Date: Tue, 7 Jul 2026 08:17:47 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: mm: opaque hardware page-table entry handles
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Samuel Holland <samuel.holland@sifive.com>
-References: <74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com>
- <31d36023-d728-4eee-90f8-158c7066f565@kernel.org>
- <e22407d8-4509-4a53-9ba4-491b9d5c5ef7@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 3/4] scsi: ipr: use kmalloc() to allocate IPR dump buffer
+ memory
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Hannes Reinecke <hare@suse.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Brian King <brking@us.ibm.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org, wenxiong@linux.ibm.com
+References: <20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org>
+ <20260630-b4-scsi-v1-3-494fb37ebe7b@kernel.org>
+ <7c8f0e70-f49c-4614-af95-002fb2be11ba@suse.com> <akTjQVQQNdeO9M28@kernel.org>
+ <d92f22b9-9a4d-42f2-ba67-0371f85fedd3@linux.vnet.ibm.com>
+ <akYLdBME5kgyi8Rw@kernel.org> <akdpddKBt7gV6po5@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <e22407d8-4509-4a53-9ba4-491b9d5c5ef7@arm.com>
+From: Brian King <brking@linux.vnet.ibm.com>
+In-Reply-To: <akdpddKBt7gV6po5@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Q/XiJY2a c=1 sm=1 tr=0 ts=6a4cfc7e cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=20KFwNOVAAAA:8 a=czNtzi5osTd60V31_moA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 4N-KUEAOAj_OlVthmysnLUhsmPyGVqbA
+X-Proofpoint-ORIG-GUID: 4N-KUEAOAj_OlVthmysnLUhsmPyGVqbA
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA3MDEyNCBTYWx0ZWRfX/L9QY95cOfPI
+ WvCFkZ/0y4M4jcUF5upGruXAyFrb6kG0w76CrwtfcqEpjv6WpiKbpHc9QYUA1AlyOjq5V6eHeTQ
+ bg59sDhD2FPCZVRP4hNHp10wAz0SvDU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA3MDEyNCBTYWx0ZWRfX2LdwumiixgHq
+ S7K1cmOxE2pP+j9Kq56QES+7QDe7hJZDUYlTMJBeAGredg1IJvvPagIzGldVSNplCkeEz5FCyQ9
+ QGeem+QScMNFRjtH8nuZqrOuxPslpLtmcPvF2Zu+ru235YPZpRe+7RoxiWvPWfshFMoTRp47T/L
+ azrnh8jinGduC8cCewzfkEyYNHb879VIJCnNyvHgs3s1fd79OdtCbggnw4QA0nlR4h3Fx6WhakS
+ goUAfnzAGGGvv4Bvttm1JCcNRFSHySaMvInz+EzH8ejwerUS2/UpJ64zrYoaBHs7neZS1bSIQ7E
+ mswIKQMAbTUCFWa3nYb7IWFE7dWnwxlWZymZQiDG1BwP4+yVgo/snEk5KWez3Hs7w7bbjOuLSv1
+ wmQ+VM8mJaJFVwodgL9qn2/RODPrOdCpELdea3Nt/ac4lTqMds6ngm0hIKqks75txbcrDLX+xhK
+ 0/PNqYI+QdfATXdqJlg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-07_03,2026-07-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 spamscore=0 phishscore=0 priorityscore=1501
+ bulkscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607070124
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E135140002
-X-Stat-Signature: rkq99194e8rq734b3m4ezoytpf9edrxf
-X-HE-Tag: 1783430262-954560
-X-HE-Meta: U2FsdGVkX1+ce/ADufujqRCOVuDaA+w+JsqHAbaGvpBDJnIjf4NqD//88k1GkGg6ePE0FtMwFPkH+v+togmCbgxI5G0TyiusoQ5ufrqtMtAT9enudfqRMCHY2DJlnd6ISUIZAv5TipAN4/eq2sb0XofawegGrZiCy+N9xqA2JpKHtC2PcVXIciJ1fJTJVGjg2tIxUS5jnzpV5UA7WoTOpK8SkMcJaIq68ey1t66Vr4YqUpGYAxPsTfIAhmy3OWVPsaJWv3VGvVKwdBQNkanrGGD0t1hwiK8BKimMs6WjokQ/ykW9gjgx0Lr0BxB+oWNHt74qeWqPBprHYaBHl9uw3OSUf+Grr4lcYRphkV4XlxsVpyXg6MKMVQAfLWTIwykeoVc+L4ch/uFEUIa8Slf/ndeuMSEUONuSwdIdPENNWuUzXtCoBYKT+0bDuEBVg90xII/U/StiPKn6htSmUe5CKUtDnpaBfKnnqkspzJKUK5oNNynStUbHA5soRHbBxq5tHgYekghBZofVT0utQbDyiPG9dYNZhX7OwaM9axEftgEnCKbLMmIXjj8h0+hpJCvldlAmG16ZgAjSJqBISKEHdNEz24Nxp26hLbUeR2NeiuzSTKugo7Mo+fsLykeKubXixT7Ozy+n+vyiuYmxqK/tvYwpuzifiNR4SlfqnwzPybgp/vg0XEX6E+7DCEsFAYknkfR1lGFUUoJgRejMRlyaFEuflxHEYn2SCuTWLVCTWX0IeBuVuJR70NOx/WQac3436CMXUS4UHVBPra9R3GKKRQdL+phXQeF6fSzzTrmqj5Vvv5FyZasMBMV3jkVRuHI5MgpNzeuR0Pl/97M/o3eVEzGwrYtZY6/HN7Z6E5bFiBV8SRh+vW+EugXZ+/+xgWLuGkSkSr0DDMWeBITOfm9MA8rHk3TlvRxOqUz9DV1wU66UlqAALJXegNz1ZqWa61ma9f/hhe9k92aKH7skJwi
- LD1zGfKa
- 0y2vPzQRcw8PTpHOsegwDhZLwR+4j3PhRS9q3lR2p90bTjAFj59nfIUEy4b9qZe/SYwZC5huarEvc9niShGnNUra2XTJYvpg4AlHRokeWEZwB5Zto2Ata6g58uSXE1s/TSv7iHPWyDsJrLBglnj3jToCWv2cDamPePAZnQoOyFqRgaFhbM9Ist7Qj2Qbmx0QfhR7ziQ3DbK9BJ0dzqvlkbvltPktq0MiYDDFLDTaewUfDvJ9mv0nnH5t6MgjqeSrk+A0hMV3Dnh5zeFxQy+4kn5ngpW1x4TzlQ9nW
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BAD0340007
+X-Stat-Signature: p1r5bu4g993wo4wodk6d5kf95b8g8i1g
+X-HE-Tag: 1783430280-897193
+X-HE-Meta: U2FsdGVkX1893saych4qjjgAsud/wrXt1LHuoqF/G8MzCzvyuOijLaR+RC755/XIk7jC+rqxUSOhJmz716cZWriR2GuWeZL4rt0QkHD+zFN+lm9N4YIsk/5V5kVdWEFeS+8l3yPxvHXiyRwBh5X1GIJqiN0eJ5TY6PnpJbTAeS2NbFsmZMyaU9sK+ZeNJxeqADcU+BFww9/w8OwPc6Vb0BRI0LHII+A/GgAtiNHuCVIxQ68Jpja8y7tqoX7bamulSlqDWVUiwldOr4SZXnv3/UiovLEVX3IlLhWj/6U1QGtkAlUpLVY1H/pYJZ24ephDIC1WG1cFSaikRLOY/sOwGbyBsibu4r1AKl/+6BCuh2S0wl+eVozyaY0bCz8pUhFaNWadz8Luh1dzoifzFYGLHemiVQwSuFIJwi8LjI+yoBytwzsApFlplxVcqGJrBMeXC70ZJaJrT8106bG2/VfKybgP0VGV3HfyiGUGsKItTIhdAP7EYmZD+Kn6lmt5oh/wm5FtiqIzLZXFp0e+pqX5cTcKFMC0tDeRr9GAHiJnKT0iqus8MbdQoKx5F5MbFUTFPNBOk+JnPeAWmfImal5qALOtRNePrAtHDBP88/YcXZRbySrVFomBSTT431Eb8xXH0/FKhkPJt9mF+OqhYOmOpYCYwdHn80tZnaMbzOhQU1vPz+AAc6AxE/O5phJO57Jgq1/eOXXJOuLES6ICY0AdTPq0rCLM8CgQ6lRaRtnBKCECwUg66JdcDrbWytsOy9mWsbNNE/4DOMaYUUrwztZr5HYZU9mk0Hc0yaEyP02Ad+H7FycV3ipcX7qts/mZzdTrQTazP8QarmvqBHZmXmnBuEEc0v8IEeP0Udvt4KgcaORZqok2HEd9tRB6abMN6nt2jfV2HP2GPybThgbg+chtiRP6WEIU2h3FT2ghApnm2C3aznfueYTPlbtCJgH5G09E2fmxvqXYMCoXm+AHF6o
+ wLMQMsbR
+ N2S3poWicMzPedZYhouzryNQ2ySCfYYgnR+6XngzoJvWh7xJ6lGOIDy3VRer2yEZkLU1RmeRdw3HbX6vQW+JTDq25+rP7/rJ+8SdEY8FgP3lQSTmzg799BJBYVyfOvxzgl94l1+yX/BTajXObGiIMHNQ+mx9Ch09wXiaf7lTe2NoDnyYogyZl1NrJI6fkZS8pYG4ACZC4XH3S3bx5nCjn/TLWMP4aiLmUqb1ka709tpmXrrgYuLwRk0hjtgzza+cmXW546PIvM2RMYQgyAo7EF8SFj8LX8OJts8nEDRPf2pskXTWIyl9mNZ1gBb5Pf5VUFFOvvYpIyQqO4Ch1QKBWeOH3fSN07Ov9WOETAzs+2cdAgK186kjd83zWiXEy19KlIovaDxspLX00WigTYmR3oJoUOEx765a+fKoEqRYnsJa6O4L2dqmEcRHs3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,63 +152,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[...]
-
+On 7/3/26 2:49 AM, Mike Rapoport wrote:
+> On Thu, Jul 02, 2026 at 09:55:56AM +0300, Mike Rapoport wrote:
+>> On Wed, Jul 01, 2026 at 04:03:48PM -0500, Brian King wrote:
+>>> On 7/1/26 4:52 AM, Mike Rapoport wrote:
+>>>> On Wed, Jul 01, 2026 at 09:03:06AM +0200, Hannes Reinecke wrote:
+>>>>> On 6/30/26 12:54 PM, Mike Rapoport (Microsoft) wrote:
+>>>>>> IPR dump machinery allocates memory to save adapter's crash dump using
+>>>>>> __get_free_page().
+>>>>>>
+>>>>>> This memory can be allocated with kmalloc() as there's nothing special
+>>>>>> about it to go directly to the page allocator.
+>>>>>>
+>>>>>> kmalloc() provides a better API that does not require ugly casts and
+>>>>>> kfree() does not need to know the size of the freed object.
+>>>>>>
+>>>>>> Replace use of __get_free_page() with kmalloc().
+>>>>>>
+>>>>>> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+>>>>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>>>>> ---
+>>>>>>   drivers/scsi/ipr.c | 4 ++--
+>>>>>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>>>
+>>>>>> diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
+>>>>>> index d207e5e81afe..5a212bfdeec2 100644
+>>>>>> --- a/drivers/scsi/ipr.c
+>>>>>> +++ b/drivers/scsi/ipr.c
+>>>>>> @@ -2893,7 +2893,7 @@ static int ipr_sdt_copy(struct ipr_ioa_cfg *ioa_cfg,
+>>>>>>   	       (ioa_dump->hdr.len + bytes_copied) < max_dump_size) {
+>>>>>>   		if (ioa_dump->page_offset >= PAGE_SIZE ||
+>>>>>>   		    ioa_dump->page_offset == 0) {
+>>>>>> -			page = (__be32 *)__get_free_page(GFP_ATOMIC);
+>>>>>> +			page = kmalloc(PAGE_SIZE, GFP_ATOMIC);
+>>>>>>   			if (!page) {
+>>>>>>   				ipr_trace;
+>>>>>> @@ -3226,7 +3226,7 @@ static void ipr_release_dump(struct kref *kref)
+>>>>>>   	spin_unlock_irqrestore(ioa_cfg->host->host_lock, lock_flags);
+>>>>>>   	for (i = 0; i < dump->ioa_dump.next_page_index; i++)
+>>>>>> -		free_page((unsigned long) dump->ioa_dump.ioa_data[i]);
+>>>>>> +		kfree(dump->ioa_dump.ioa_data[i]);
+>>>>>>   	vfree(dump->ioa_dump.ioa_data);
+>>>>>>   	kfree(dump);
+>>>>>>
+>>>>>
+>>>>> I _think_ we can replace this with kvmalloc, and allocate the entire
+>>>>> dump buffer in one go. Once switched to kmalloc() it's kinda pointless
+>>>>> to allocate separate page-sized buffers here.
+>>>>
+>>>> kmalloc() performance is on par with __get_free_page(), but kvmalloc()
+>>>> would be slower if it falls back to vmalloc(). 
+>>>>
+>>>> I'm not familiar with the driver to say if this could be an issue here.
+>>>
+>>> This code only runs when the adapter has hit a fatal error, so should be
+>>> extremely rare. The memory is getting allocated while the storage adapter
+>>> is in a failed state, so anything running on the system at the time could
+>>> be stalled until recovery is completed. This memory is allocated and should
+>>> be freed soon after the adapter recovers. In order for this code to
+>>> run, the iprdump daemon must be running, which will then read out the dump
+>>> after the adapter is recovered, and write it to disk, after which time, the
+>>> ipr driver will free the kernel memory.
 >>
->> typedef struct {
->> 	pte_t __pte;
->> } hw_pte_t;
+>> Thanks for the explanation!
 >>
->> And then simply use
->>
->> hw_pte_t *hptep;
-> Make sense. So you have suggested to just hide put pte_t inside a structure
-> instead of complex structure of pointer. I've tried to implement and it reduces
-> churn enormously.
+>> So the allocation is not on the hot path and it seems to me that
+>> performance differences between kmalloc() and slower vmalloc() won't move a
+>> needle relatively to the entire dump procedure.
+> 
+> I looked more closely at the code. Currently the dump continues as long as
+> it can allocate memory and even if memory for the entire buffer is not
+> available there still will be some data in the dump.
+> 
+> With a single allocation that may be as large as 80M
+> (IPR_FMT3_MAX_IOA_DUMP_SIZE), an allocation failure would mean no data
+> would be dumped at all.
+> 
+> I think the current model is better than using a single kvmalloc()
+> allocation for the entire buffer.
+> 
+> I'm going to send v2 that keeps kmalloc() and only changes GFP_ATOMIC to
+> GFP_NOIO if there are no objections.
 
-Right. And for most architectures we can probable leave both types be the same
-under the hood.
+Sounds good to me
 
-So we'd only have to convert common code first, and can then e.g., look into
-making architectures that care about the difference (e.g., arm64) actually have
-it be two separate types.
-
-Just an idea to further reduce the churn and limit it only to core code (because
-I saw some very ugly stuff in some arch code that would make such a conversion
-harder).
-
-[...]
-
->> Why do we need this and what would we use it for?
-> The idea was that there should be two different functions to read value. Let's
-> leave this out of the first initial series. It is complicating the original
-> proposal.
-
-Right, let's leave that out for now. I'm currently working with Levi on an
-approach that tries to avoid the overhead due to READ_ONCE with folded page
-tables. [1]
-
-We're still struggling with some bits, but looks like we can make it fly and
-have it be fairly robust.
-
-With that, maybe there is no reason left to have separate pXXp_get() vs.
-pXXp_get_once(). TBD :)
-
-[1] https://lore.kernel.org/all/08ecabe9-0664-4aea-82fb-f9cb1739f762@kernel.org/
-
-[...]
-
->>
->> I'm still not sure about the _once() really, and if we need that right now. We
->> survived without is so far, why do we need it now?
-> The idea is to convert all current pXXp_get() to pXXp_get_once() and convert raw
-> dereference to pXXp_get(). Let's keep this idea separate for the other work. Let's
-> discuss it later sometime again later.
-
-Sounds good.
 
 -- 
-Cheers,
+Brian King
+Power Linux I/O
+IBM Linux Technology Center
 
-David
 
