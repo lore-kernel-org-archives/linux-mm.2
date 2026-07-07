@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF8F8C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98312C44500
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:47:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA1686B009D; Tue,  7 Jul 2026 06:41:27 -0400 (EDT)
+	id 766386B009D; Tue,  7 Jul 2026 06:47:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B78176B009E; Tue,  7 Jul 2026 06:41:27 -0400 (EDT)
+	id 7173A6B009E; Tue,  7 Jul 2026 06:47:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8EA56B009F; Tue,  7 Jul 2026 06:41:27 -0400 (EDT)
+	id 62D156B009F; Tue,  7 Jul 2026 06:47:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FA156B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:41:27 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E459C403AD
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:41:26 +0000 (UTC)
-X-FDA: 84961638972.06.C3D5A4D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 359F66B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:47:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5BC41C7F4C
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:47:42 +0000 (UTC)
+X-FDA: 84961654764.29.7F7DA50
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 43DB220009
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:41:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4xQ1MLY;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1025F100007
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:47:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nAwcbqQZ;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783420885;
+	s=arc-20220608; t=1783421261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oJf9TD7SQDB5FPJJW2/ET84adS4IbuPC7yAGQona0w4=;
-	b=ny3Hlhj3QRoga6IBcG1hEsYvazwSV1lkhGQcuki/2WQkT46kkSbgKtrQBMnHQigMTTCUUm
-	bAe48KTo9UUb88KFgftbfJhpTDSscTRRP6cyajCXXlIcpdPx91HRtReTs7m0/B92ZRjKiH
-	zDMGBeeFp8j8cZ3g8jPndFQxWmF9Xak=
+	bh=LLhzkk/JgHcYgAhLZKjLeN62LByel6fmISiRV1ITuB4=;
+	b=v8xx4pRTbffq1vOdhiTsFgDcA7WkZ2jdFMqEFBomYJ8NSr5Bax7vjcGRug0M4uB7FYFRjy
+	2QCFPIsw3faqi//pGoNjZmxYa0aRWVsPCb/qHQLyKgQU21/Px5uuGgcJjbNs8nmPQXFtnH
+	X22AMHzKsqhSKYfoJXRFBrS4XkOWwH4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4xQ1MLY;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nAwcbqQZ;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783420885;
-	b=JG65LdKed3WLxiv/pBuf9cJBHBFTq5a7dS05EerqXI6Jsp/D9R5FE1djqN+3OwKRQ7b/De
-	+pZaSqdPLxubr1oIwoQ5/g20Van3H+CPtn0ZVXLOwFUqUMFXbJvPgfAC5+0uDZ/8KDK/k0
-	FNIVhJbL1VqjbNyQtFWUm6hOmFHwQYY=
+	t=1783421261;
+	b=anzJesU7caXsowA2lzDXfOyqv/QHmT4220Pw2CVE2UP+cTJJ5OGSClvgG1WiF1kmNELJOF
+	EzZMG7/lFVYXs4/CaWeIrxapLXeKo/Ky4RHpvVGMDcnPEdlOOadCKPlgIcJcJuvVUv7CSY
+	Vk+pd10p96MHqpRhTGo8Nwn92BYMat0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 27A094346B;
-	Tue,  7 Jul 2026 10:41:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBB51F000E9;
-	Tue,  7 Jul 2026 10:41:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4330C40715;
+	Tue,  7 Jul 2026 10:47:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA301F000E9;
+	Tue,  7 Jul 2026 10:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783420884;
-	bh=oJf9TD7SQDB5FPJJW2/ET84adS4IbuPC7yAGQona0w4=;
+	s=k20260515; t=1783421260;
+	bh=LLhzkk/JgHcYgAhLZKjLeN62LByel6fmISiRV1ITuB4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=C4xQ1MLYDSpZyJ9vErhP7qHq91i9ikXGv0t5hCWrCl9eUTArSekW8IgLF8XGmtWKd
-	 xTIGCAyh1qfIlIufd5l17Cgwg4WqZiF4dc+/TCPc8HvDG1fNFYGWBlF0ToYxYrqjvN
-	 YneV9/r2ute74xY+Q+roObPcxwoMMhJLENuNjhLyPISKLBSurogQ/rIw6E73c+hLlm
-	 hTTkc75Ea9WO07vhZSUrk0zIjjA/Vuj7oO0Rk/wliB+L2u0OvPNR67ir9nUGC/aRRp
-	 HRIxrduui2kRQb/MqDuhLQSFwpD8S/oxg/5H6IXHtt0/ADede4e0LeTLhY0Ts2D2mS
-	 8/Zlwql9MxhGA==
-Date: Tue, 7 Jul 2026 11:41:00 +0100
+	b=nAwcbqQZ6EYWFhU6Pa79F4DwZWj+s50w7KhSPUgAeSGSsvopOpj4c3CR6Dc4BvSKY
+	 UI/T4Y1V/RDDoyeFB8sXD2vSc8XMgX7PuHapXBY0cr7IWraSANQSAw1tuqycqvya7H
+	 EOLCy/nYmsu9fsBZZUMJw29VxKcXmmkS6wgUhpYDSoopqSIeazhcGwCvu+qGCZzZfm
+	 i6rrFcDrq00hFMpsTT5W6KK6td/K2YCAI1AB22h3luD//ahG1ub28FDnVRKZXh9KJy
+	 yczJHuo2utfhmEijYANtSxrq9T9w4QGeuL41lVe4jp1n6hobidMgbC6xXylCzlyKTK
+	 rSE3IBUcHgXTg==
+Date: Tue, 7 Jul 2026 11:47:16 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -99,23 +99,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 27/30] mm/vma: correct incorrect vma.h inclusion
-Message-ID: <akzWq08xwXKqwwtq@lucifer>
+Subject: Re: [PATCH 29/30] tools/testing/vma: default VMA flag bits to 64-bit
+Message-ID: <akzZBrZC_ja-R-nJ@lucifer>
 References: <cover.1782735110.git.ljs@kernel.org>
- <22d0f4e3fe11f6fd1312734e242d008267ad142c.1782735110.git.ljs@kernel.org>
- <akZNiN5Y9fPk8bZH@pedro-suse.lan>
+ <27cd07f6dd862d92410cf9db03f7c11e5f66854d.1782735110.git.ljs@kernel.org>
+ <akZO3xI4Lt1iSbms@pedro-suse.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akZNiN5Y9fPk8bZH@pedro-suse.lan>
-X-Stat-Signature: sj36e7pfb11nnjbp1nkayk5ppqd189ha
-X-Rspamd-Queue-Id: 43DB220009
+In-Reply-To: <akZO3xI4Lt1iSbms@pedro-suse.lan>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783420885-387621
-X-HE-Meta: U2FsdGVkX187m6S0pdkqENnokVfwMLpQ2ue+IQN2GsOGsh3DhpNyKLi1coONyPxtWcEGd+16ATtljkTPaPTRAuPi5nvaAArqlFleih9Ojr4lE3EU6BfzLpqKTeYxjCHaszaZjJ3CMIM8tVrvUaJoPDoRe9dighjPNGN5aMuUWrCVmkZUo7+P/LKL2zDp8GuD8AYcK6/IHZQdM/XCypwCxNZSlkDhFSbSsQDXFx4K42QJvhXbYypheLqygbRYIfACAH+NMa1iZAbwNnWKTlukUkUTWE8LPrv4TMt/EQz+m+GBtVsI5Jc8lwwbucKOLWt9hSEbNda517iH5FFlMO8RvXvoDVp1Sri1Yx25V4M5NH1WzLaDQQQaf/iEuwU5hxRCtkqvxIeoi6g4yM3LyrBWdmuz1uNAJrcJQHkmvEk0EAbEU1jEZuB1NB7PB4fSUEl8F6gMOIett8Y1kUzY2AP1pcLzeTOOrkWrU0gmzmZER6TC13oS2NWI6k2CrkB1qE/mLTM7LGpeBZITD51i8nHrYWZxXq84gg+D9k2jQIkxZ+GHl8Oi0RQc8jMCe3/GTVzlY/Mv+eNUxqLVuwWNzkUpQjTBgSOij+fV1+z+jH8wvQ4t6eY8CgTwi9ScGxaOUZmJocXmkE/HZnbAGc1QCZt5x+GMTxspZcrK/IKAENc7mkaAOaqh3PQiYSOpyG7G/M3zFTy5ghDwAp2J3qvRytq28jeItKWg1pKFO+E06dYktKrUqc95yfqkSe1VV8m3nJEL7FO5tVHpFZn8uf7qL4HNoWmzm93IzI3ZxbUYwZQIv9jRt88WMN7bpEKPqZO0PcUztPfxZgtC+ZWs1LBSPbvbcGM5gEmR/vcG29oz34HMuO1BIlk6MAcL+8DCeix2meaj1Y9zTCetytcEaXVPHaQqlW8NBYJoy7+Y6Y3JX6IMoK/WixtSzW7+v7uvCilqwPOH2ZlMUuyms8R8FrtjGV8
- CpH9ukaR
- r8Oj0q0aYaErjtIiBu33Amrcq4i/pxcDOzjtUAUqjOPBp5/mixUaBk9o7KrQqrt3Q5B5pmiMxHusnWLakiwo8/8+KC8ULNq4qJvfN4P5y8vJG24BV2iTZg58UGTb4E+1f/vY3W8MmtlVDHbzdRVoyYPHkZ7gUxQ4xaSa1VpxmF4pyl+TgkLHpDngAuV1+CbVick1bRWq1enIhLyURufzwAj4idAZcUE31TDzr1DJFnMUmfbd3Cf8s2+LnaqbftaPkMqi8niuuvlPFwnGmPIUNxqdJ5QFgDPu0vvv0K30YsLiVxm5oG2nicIg7/AKfyzipCiiNPBxIwGKNa1sMONh0s4u6H9ctFklawEsWiQcXMONGml8+mjtkmKmxlQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1025F100007
+X-Stat-Signature: j6p97jrcdifxpd7gqsxpjd1xzp6emy4r
+X-HE-Tag: 1783421260-246967
+X-HE-Meta: U2FsdGVkX1/9Rl0H0un0tLfAkOx1M4JPk9yhocRHvBcUwXHQGng0VQovjum5ZQJ6fmJFsTSRwk2y8jEcIRvJSUAZGxATwXOqax/r5HoIPrc/LIRYVqbCo6pSMpITg4QbYW9voSqBdAEFpa9wzC+r58pdCROmFjewkRwtcnL9pghVmSNj3o4W95HlZUBbIukwtFaKiW6vcbPxbHGo1lBBqPpxlMkvaulUtA293TfoT9okpLlBwyxoYEBS7HgqWyim80rORSlrBJjgPvYG2Sr1bzvE7fpPnNO71rZy1KC9iXqqHxI0Dya/KAB1U+EiNKMCuSDnxvT5xphHzxPiC79oqW2a7Fd5UTuDyNG8T3sHt4/lwELbdK9as7LWpFuSfw3s/BkitJyWpQTs/6jeS2tGBNNqOJyjz33f1bsYf7iFYIUtB2Ai+5530QJHKxwMzQI3QkODQFE+2aiFjMATv0Sg4Xg1ExSkMlCzCu+ghsluHHLtoz2YciUOMqM09gnypbW+qBfWoMo/5msuOlgEBAOGKRjbMPVvx8DjQSL32y/FHnvHCoOUawoZpCmhXN4ECTGOmMV+6iA7cVCNJu2BjWa+thTopcy7RlIGvA5YJ7dOyLWRwFgoJSq9rfZEPE/lzrRH2T9zD91ZFi3mD/bqSYwvrRynPNseAMOq0z17bhWjhoGZODnlUzzhzgPLtZ/bOeCwTl/l59t24LfyN9yzgZz7Q9+qgOeL9DCjer7HoNoM3ljLkdKY+VqE4ItiFLhRsNJ8/ZBps7WgP8hmnxnHKQlu3Ye9XS8Sj1u8SQDubxlphok8mX4oZ0jaM3gr0AiIiemTK1oLRQc4MoB2v7/uv71bgvHMOzsjg4UjPJ3Jx6/UxuR4Zo1p49ih9Bqt08MI+g4t+Tn7UepN4ZmouPJLcGGDmTwmlkQDpP9O4DYOjGNs0yWqu2oUbUKrGXOR8sRxU5Fpb80fNz9907bZLVMqVon
+ GfUOHxQ0
+ JINaszoyNXEO5z28Ta3CiDP3tgDDaDZAJFKQCU7slfdDbohyebS8Gv85amTRq/jNglgBP106Tta0Qp969TSj2tWhs+f/1blrLpVOo+ZG4XQsvj11vHYnxicUHOX8rjoRuOQ768uupeIWbOzJhsdxnTtE+H0NtTcxfMY+A4wo6yy5r5NOzePC9YwvoC14mrMLr028f6zyiyUF0zAymxcUNo9MbipJqxRdBL9+AmgL/T4bL5g+RY16ktk0Qpi4BRLAzJ+MAfaffP2l72VrA54wMQpiIudpK4J6qs6wk8YYftX+CKvK3HKNbyfNComY/N4BwpOqViMoXgLVgZtTDlURXM9UXYYfxe1lukMSq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,58 +123,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 12:40:30PM +0100, Pedro Falcato wrote:
-> On Mon, Jun 29, 2026 at 01:23:38PM +0100, Lorenzo Stoakes wrote:
-> > The only files which should be including vma.h are the implementation files
-> > for the core VMA logic - vma.c, vma_init.c, and vma_exec.c.
+On Thu, Jul 02, 2026 at 12:44:21PM +0100, Pedro Falcato wrote:
+> On Mon, Jun 29, 2026 at 01:23:40PM +0100, Lorenzo Stoakes wrote:
+> > With all of the sanitisers turned on, setting the VMA flag bits depth to
+> > 128 by default results in overly long build times.
 > >
-> > This is in order to allow for userland testing of core VMA logic. In this
-> > cases, vma_internal.h and vma.h are included, providing both the
-> > dependencies upon which the core VMA logic requires and its declarations.
+> > Reduce this to 64 - we can always manipulate these later for testing of
+> > larger bitmaps as needed.
 > >
-> > Userland testable VMA logic is achieved by having separate vma_internal.h
-> > implementations for userland and kernel.
-> >
-> > Callers other than the core VMA implementation should include internal.h
-> > instead. This header does not need to include vma_internal.h as it only
-> > contains the vma.h declarations, for which the includes already present
-> > suffice.
-> >
-> > Update code to reflect this, update comments to reflect the fact there are
-> > 3 VMA implementation files and document things more clearly.
-> >
-> > While we're here, slightly improve the language of the comment describing
-> > vma_exec.c.
 >
-> Two random thoughts:
-> 1) perhaps vma.h -> vma_private.h
+> Hmm, what's the problem with the sanitizers? Shouldn't this just result in
+> slightly different codegen?
 
-Not a bad idea thanks!
+I'm not sure but it results in vastly longer build times. It was a fun idea but
+it partly defeats the point of the VMA userland tests.
 
-> 2) https://lore.kernel.org/all/CAHk-=wghMm2c+AYEcwYY7drSVXB27DYqc-ZXpFiq=XFs-w59wA@mail.gmail.com/
->    mm/vma/whatever.c :) would PROBABLY solve the issue of people snooping vma.h
-
-I think a vma/ subdir would probably confuse things further, I think renaming to
-vma_private.h neatly solves it actually, along with a comment maybe in the
-header itself?
-
-Then again mm/vma/{vma.c,init.c, exec.c, private.h} isn't too crazy
-either. Though vma.h is the actual 'shared' bit, and vma_internal.h is the
-private bit that the userland changes. But could switch things around vma.h ->
-mm/vma/internal.h that mm/internal.h imports, and mm/vma_internal.h becomes
-mm/vma/private.h.
-
-I think that could work but definitely a follow-up!
+Rather than spend too long investigating I'd rather we move to a sane default.
 
 >
-> >
-> > No functional change intended.
-> >
 > > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > ---
+> >  tools/testing/vma/Makefile | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/tools/testing/vma/Makefile b/tools/testing/vma/Makefile
+> > index e72b45dedda5..ef6cc558afe1 100644
+> > --- a/tools/testing/vma/Makefile
+> > +++ b/tools/testing/vma/Makefile
+> > @@ -10,7 +10,7 @@ OFILES = $(SHARED_OFILES) main.o shared.o maple-shim.o
+> >  TARGETS = vma
+> >
+> >  # These can be varied to test different sizes.
+> > -CFLAGS += -DNUM_VMA_FLAG_BITS=128 -DNUM_MM_FLAG_BITS=128
+> > +CFLAGS += -DNUM_VMA_FLAG_BITS=64 -DNUM_MM_FLAG_BITS=64
+> >
+> >  main.o: main.c shared.c shared.h vma_internal.h tests/merge.c tests/mmap.c tests/vma.c ../../../mm/vma.c ../../../mm/vma_init.c ../../../mm/vma_exec.c ../../../mm/vma.h include/custom.h include/dup.h include/stubs.h
+> >
+> > --
+> > 2.54.0
+> >
 >
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> --
+> Pedro
 
-Thanks!
-
-Cheers, Lorenzo
+Thanks, Lorenzo
 
