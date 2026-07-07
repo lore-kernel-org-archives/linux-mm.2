@@ -4,125 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C8E9C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 09:22:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3422FC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 09:27:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D81566B00A2; Tue,  7 Jul 2026 05:22:06 -0400 (EDT)
+	id 06AFE6B009D; Tue,  7 Jul 2026 05:27:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D317C6B00A4; Tue,  7 Jul 2026 05:22:06 -0400 (EDT)
+	id 01B0A6B009E; Tue,  7 Jul 2026 05:27:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C22C16B00A5; Tue,  7 Jul 2026 05:22:06 -0400 (EDT)
+	id E25326B009F; Tue,  7 Jul 2026 05:27:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 882D86B00A2
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 05:22:06 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12A6F120397
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:22:06 +0000 (UTC)
-X-FDA: 84961439052.16.81A8927
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 37CC7C000C
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:22:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BEtP+4bc;
-	spf=pass (imf28.hostedemail.com: domain of eddyz87@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=eddyz87@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AD87A6B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 05:27:17 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 47EAD1A0370
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:27:17 +0000 (UTC)
+X-FDA: 84961452114.30.E7F2081
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 89B091C0009
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:27:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWOo6k3R;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783416435;
+	b=Ft55VV5DsQzkCrRP1rApml8yhA1YoOT7OiVo0JE8YIshjpCXHsiaMjmaXR4GZYEFkPHW6W
+	nT/CO40/+5xjhcoinGGXz+K3cMiGNtPoTE8qLCYRONfZGRprKmb0cESdDQeUhi0ROfRUIW
+	/noaQkVoYr5vCAnTWt8O+cU7wa7JdJs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWOo6k3R;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783416124;
+	s=arc-20220608; t=1783416435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=czp6DDn3Tg1L7Caksu341JziUocBqKvToENHXSg/2y4=;
-	b=7WsWYszwqCiIVbrQu/tlWtmaG3MGV8nK3UOSh6f1J/lquPRjGYkNB4f24RpaePl9XE/Kl1
-	mvouhEYwI89CKAxopxhS3+q6/+lEJSXkfe+Ub03z7FXu+l2MdqcfkaCr1sMjBvtNdEj+wi
-	mmIHd7ig9TbSbZKrTf8Kg8Jmak9LOv8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BEtP+4bc;
-	spf=pass (imf28.hostedemail.com: domain of eddyz87@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=eddyz87@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783416124;
-	b=NyBz/mkhFKvBJX7e2xChq3RNPVA/QCfDwHY18++Ky/ZfuQqKL+VeEpWoGgQqBu9Qg2EsTM
-	zvKWir6B/ttV9geryvtVqLI+eYAkffmn3imurBEtQRJGusPyVrJtoKN/4pOMBVXruaNcSP
-	XnSR1wC7cPOtpdGFXTZhS9Zolq1J7UM=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1816513a91.2
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 02:22:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783416123; x=1784020923; darn=kvack.org;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=czp6DDn3Tg1L7Caksu341JziUocBqKvToENHXSg/2y4=;
-        b=BEtP+4bcW85VIwOMz7LFmXMYqB2G68hlpntswD98+ZvbNSB3a+krs2HjaOQYsFGAib
-         miWEd8q2QwFk/AEXBMRpguyzjrhdX9NHWxpJbKs5PVglo6t6gGd0TM+pfeAZXpRHkYOI
-         HGBFNFlM7YMRLDXvpSSSQ/c1+UwyKgJYDaSr104mIMvdyTPzsMoS4UWNdfZWY3wPEEsS
-         uOOpvRps8ilUsHPtjwR2nfByarCLgRoPPViUqxIbCcX43eWvABwnK/gmCtkV2UVZRHGm
-         8NWNXsqtDsLCa05utso98mr/Fyt8kD4cXt/Fly7ejDEkjlQqr7hmy57MoOYkhjq4xBG4
-         TB3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783416123; x=1784020923;
-        h=mime-version:user-agent:content-transfer-encoding:content-type
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=czp6DDn3Tg1L7Caksu341JziUocBqKvToENHXSg/2y4=;
-        b=c8Padg8GuXC61jJNzcN4H1xP8bxrKWvJQfozOr4fUb4ieXB4VFKrzpBWXYqf8/TEEc
-         H8VMjyVzSh34T9pX1h3U9YJesPWUfxmFcOk6jqWR4mYW78SI/DRFBpA8Q/f1dDOXn7Zs
-         lv2V6X8EBuYjCHYva3XEAGX83NIQ7pjaGVbZEj2Cz4RY1Xh57Bj/SYLVJJ4X8rpbcR/u
-         RMPdkvdUu261CTLrAX8ItETeHj/mzVX1U9pnTZ+y+JKT3nHBy6Xd1cKDnYtykGXh15aF
-         3iN36oqdiUR/w+WDiNmMDluSELAdRBDIH0g20OOxkXzkZAELzKkcWhxmPdCBtwVej8m+
-         0qaA==
-X-Forwarded-Encrypted: i=1; AHgh+Rqzzvf5om6ZJfJDVDcxxBSOOAHEcwZXoR8YsRUsxcLLpbihlyCyhMXbPcf/VI1ZiCeRZ88s8L+2rQ==@kvack.org
-X-Gm-Message-State: AOJu0YxSl1kTuvG9q1eTRdCrjVAXd8qmLKq3KyQ9909USRueBBLHPpyP
-	Os6yFBSCOGbalguWtFwQBGoTeCJdI8ei9EQGAOUSbJY+1crX4b00Q09G
-X-Gm-Gg: AfdE7ckUQWP1/Xor2P9ILgiLQOI8jb6hHzWFS6mW9X3ehk8luyrwDx+Ha9+DpTRt19v
-	q8A4+RIMjTphBd4bWqYEkATPjKec+ii/TiLQ2fXYFqQiqVg2HLstukMVZzkdVV+UfYoU33pu0rm
-	+JXkkVNirDY5WJuAn0xSzx4X+jhfkSXLrGCMdJs7+HfXGk07v1JfvWC3bSJ3FKKtMJPwwndaetT
-	w0JymfhsYOKXgEpVKqnxtMAvFzDfm5lDw9hozPcpSu35Q96DDmNyUz9zlB0+hzUFQKDYeQHWHqs
-	RJDaS6zuUvfwuS8WKircaRGtb9CBcTGDg2kKaPEn8IcqXFlfJliA/NQDu/zTzQnld2vmGqb/wbX
-	45zn4BTPS7KPDRmGsiN1DkfNHLMOvS0pj9di97OocOvZsEq/nUW4FD6MxxlgWyqVUQcBro7On16
-	5BKbMOqTGal4TNKBkwet+bukyHnbPKZc2M6ZXm33D0Ha18qYCINpo=
-X-Received: by 2002:a17:90b:5350:b0:37f:9cdf:f03d with SMTP id 98e67ed59e1d1-38757894fc7mr4396669a91.32.1783416123050;
-        Tue, 07 Jul 2026 02:22:03 -0700 (PDT)
-Received: from [192.168.0.13] ([38.34.87.7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d36676easm759200a91.9.2026.07.07.02.22.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 02:22:02 -0700 (PDT)
-Message-ID: <eccfd9a8dd1af1668e142b9b866194333647b0d5.camel@gmail.com>
-Subject: Re: [PATCH 0/3] selftests/bpf: compare BPF and memory.stat memcg
- stat readers
-From: Eduard Zingerman <eddyz87@gmail.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Ziyang Men <ziyang.meme@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
-  Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
- <andrii@kernel.org>, Kumar Kartikeya Dwivedi	 <memxor@gmail.com>,
- bpf@vger.kernel.org, Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
- <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa
- <jolsa@kernel.org>,  Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan
- <shuah@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	kernel-team@meta.com, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 07 Jul 2026 02:21:59 -0700
-In-Reply-To: <akxW5dzvR9e2CfGq@linux.dev>
-References: <20260704045617.487664-1-ziyang.meme@gmail.com>
-	 <bc12730fe6eccde10d36e6544607ae2464357e05.camel@gmail.com>
-	 <akxW5dzvR9e2CfGq@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-10 
+	bh=Xyxzpiw3OM9UElk+MAeq0fkOAFAIG6DAhu3VfVnuM6I=;
+	b=aXGb4GMloR7Mh5IGbQ9m6ANv18bi/UwyH8ZRIY79tExjIBCRkEQLBkD5ZpJnpUCea/qiMC
+	3ZKr+nVIdPeN6zBcfqVOmzPSmvNRS3g+kgHslAL47JoOm4Kltgh+QM61Az4LrlDKLiTcOQ
+	dlLXbH4whaKV7kZ3Lzv/QcV/aaOz/t0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 05F2A618A6;
+	Tue,  7 Jul 2026 09:27:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996591F00A3A;
+	Tue,  7 Jul 2026 09:27:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783416434;
+	bh=Xyxzpiw3OM9UElk+MAeq0fkOAFAIG6DAhu3VfVnuM6I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=gWOo6k3R34w9fw1RtN344zs/rlFr56g9/JuFLeuvFXmkLRS3YZFcB1AToHyj0dTTW
+	 PZffp/rgtQJPiJkwIVTtEjKQ1XNw9ZG9LHGTTG7MQZ5MmlS9dpCMuNiIrjVPPL5NV2
+	 xN1vz7p5mcxYGbncfuT3GfQv0lJoitPFvCy45WuGJ4tTZn1jpypDERmwq+NaCc/xEx
+	 XfZSlvdLziTtvDRtR5awfg+iBfirteTy6H4/0fT3qJ4dTGsVfQp032G5SX0nKNkHdQ
+	 wlIOyCusSe7BGlaMFd+yTmXEtLgOuw78+k9dsyuvS/AA499nIDc9JtbRaYm9a8zO4G
+	 iXzmSftTKyAZw==
+Message-ID: <84c4c2bf-397e-461c-b898-482d1a49f40b@kernel.org>
+Date: Tue, 7 Jul 2026 11:27:10 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/slub: fix lost local objects when bulk remote free
+ batch fills
+To: hu.shengming@zte.com.cn, harry@kernel.org, akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, cai.qu@zte.com.cn
+References: <202607062139095043SOsLi6TIf403tcjPf8fm@zte.com.cn>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <202607062139095043SOsLi6TIf403tcjPf8fm@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 37CC7C000C
-X-Stat-Signature: 8wyftunagmuak81qqzca8jupkwufz3ck
-X-HE-Tag: 1783416124-59772
-X-HE-Meta: U2FsdGVkX1/Wc0ddmL15Sm5ta56TGx3hZrMulamFyjfYxzuPM6Kl86FdNDFCNDD5JJ0CM2/AQR1DcqGjG5pWu44PiCjAF73LwldXEEyAHluURxBebpOEs/jYR1V+NcLlG+f7Cu0ib9oLfgp+HnYQ6j+mwDlG2UnpinOPmREEHukjN6DztQJEFqSsiO7FB3TySCNHivb0yPPMKTuGGhVaLbsyDVdrX6qD46p+9inH/1KnNahbAwgAXR188eTswGfFKvcmYWcQSZ7WoHezK9MxcUvhBVgSvA4BDX8LQQoIVxufVk0xgdnQ8P28x7aXXQyBNC56kMPMTfUZSZ+/Iqwj+SBUaNgodwxv3ACO5b8ahXoG4bSbYCGqV7jgnlbkwZ+tK8p6R2wcGCZrKHTmE3qifG1V4ZaNt/k3zvHwEgdtXHuXSdo1Bs6zb1WMcN2sBgZ8iPBmSTjupPhDHA03oBzCwINrsiAPTqE/ySr9oFEMb5TrVZc08tLbIcG4vXcq1JqrPrDkh+l5iHD8YtBkJgHzkx80maqfCtyTWxRTZezHW84LyBzfeJVG/PnsVFwR3zcNk6afIvlbxpDDFtEHhOA4g7rD95lCWDORm/NPCPf4cij2xLyz0Ne7u/vtyJrxaCdD5zInGBf5O0bZXZLVMw0X0SVBgNXhAtfhbGhqlTpjisc1U0j1gDKn+mZr1qkGNg1vyHyBTerPM8XvKxLJ8F8SuQNGIKMefw/UOxon8fMDhRt4+ay7Z8dIkzLpK66PXOEc6CezPYYPt+C+E+n767YZhzOB3OdEAo/mUjRKCWh1D6Oh+WqOxOzDXX7o3UqySpk3in2by7Ol92Vc8BPkvKfwJxhoR5Yz9Qh/VWk0ElFbdXu5zZi5fRlpPZ2MTWXsO9rmdfQdm2hVnu4Ln/zysO6aWLM5oHK6GjjXJO3LyNMEJAWWmwRMXfsfsrmvgL8WfGIj7K+7Vou6NnyDiExH5S/
- 4y9iWwJ+
- k1Ich/25+tvjZx5ngQmCzdonN9fru3kpUJfK9yh2LdLn2RnRPs8Ofqi0v+YSbFzQGMzQmiRrHzXDLsJP3A0g+tty9hEZ4aFkWwxMkvan/U2Ylel8mbj/rW/aeUKdDrDq4MODzUErZVncClFraLgIeXvxJSA1lYHMcRNnb+I7KmyZ3D5mxUTwrRuK65BCwGNvSdMrop1Sm2+JBpZmx9xCFwc8/vYdUAvc3I4BIFVu0JbNsqlm6YxkS12+xpvyhE2EC+mK8RHvpv3+Ef5pWmiHFxuOa4UpJgmAFM3Hm2IzLHaM8CgaaJhnUqrYb9ngTxIajEw8QRQWy0EWVzHBZHbiN0YDk44qfiBsaCVz0N3pXGe7rAYkmZmlQ50zBglDYVKmBy1pLcXIPU7LnhR3Up7RA8H3rfUbNRzeaB2N7BaTC6/4zaU0v2J2IHUMPpoCSbo6xsHlYqQsrcLoYuPPiBqT2dn7wehA3D42/RHI0
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 89B091C0009
+X-Stat-Signature: re767gpg16ud6tp5kbtrp15db1fie1mn
+X-HE-Tag: 1783416435-850327
+X-HE-Meta: U2FsdGVkX1/+TlUfZt5cOYmuXE1gcyNBbzTVgnI/IwENpQVW4sSEXFpYrgv5kVW5ShjewrlinVaV8v0Xk/WQ6was56Tdi8d1JxUbdjRhsM9dZP3x0f656zFJDRwbe6UTZuWmOpaXU5GmxRtKzSqCCy6shJuYM8xxtvaSfejx9Vmv6/4mTcIkShCje+FKJTad01VoEQ93zXyMrnzmgrqpHok2zXxdPh80fUviZK6lHtvb87J6btsaIQ/eu2hELZ1h74xfWKLIcBy+R43hHhgJIIl6+82LghU658qAAtOTKhz/ft3v0XLhPqJCSnqwOXiwuCEZyAPsD8ilHH7i/ljQGITIBSEBwY3kj6tLR9Rv6Qjif9hGIwf+uRH9jFhZUVdg997WKpVE6uErvcXxaVxmi+WtoANMlbcDMAhNvk1DGLwKbcFCG4ad85DQzWfsmzzHIf9II8plplOiGzSlwrMtVpRm/D4eeiyFTgOf2bCxRI2yw/sXJ7UJxAIKTEBBEJ5NGtSoh4MAU8rztEFGIYuHI9Vmge5vU/WNh3p+2hHhAdASuP0XP+dCeFeSzeG7ZUu13OXXpmL7YZonMCSPGWwWSb3a1MDhzmj4h1vo+ScjYQnDSeUM8t53d0ZKAHQBaUEWzD+heBUAIN1z3quIp6S6OiQXKoXqdj4z3l1NlpfthQIwuWey8IVUAhqTpifQL6aEWgtCQ6L1H8FaTB3tEU/5SzsD6QR+Uab6MoPW8OPCT+KD5rbivaB1Ys3OZcgTXDpGTzyHipyAL4B1whdKCB4/WqNpY/6ihdH9Nbfo1w14L74wW2KAXFmQ4HC/U52ygbOnUFVM3Twr0stuXtTSIsmCxhpm78aUjtw7lTDzJr6EzqxTBcQMXAqbO7xBMb4KdfSrdPBQObwqSNJIkYI520Gx5ij01skPnfB+Cs2VNfMVXm1nE23i9V4vt0qwaRGsfi6/utUKlfDJt7SzOmyIiwF
+ LOLhKkx0
+ Trz4TP0KRbsoxY7HjQBp0FC0uqu/bACXa2whjxwl0R18JSn9d6RLzXRsYRz3M95dWSm59Ov7qItxNujb5LiLPLB3ZM92UyUvXEKrQbBginH3zCHWen5RZMBwtegXzkMR54cYGVhY70XyneoeadkMQV0SF5C3OUqGoyBo1XOiwcIjh7L8X5ymSKx36FNeU3dUFeGJIrqNWB+AfSyQus07O69HBJohgixEINTZCzkmqgWeV/IwmClcapLoaN1v8ipwX9AShUhZica21MUiMfHytG49WMdVGrrkKbTBx5mlWRGXR4ER8OBvsmcMGggYFAr18tzinELpmegrwFFjFX5Eyn6bPrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,87 +134,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-07-06 at 18:50 -0700, Shakeel Butt wrote:
-> On Mon, Jul 06, 2026 at 05:17:50PM -0700, Eduard Zingerman wrote:
-> > On Fri, 2026-07-03 at 21:56 -0700, Ziyang Men wrote:
-> >=20
-> > [...]
-> >=20
-> > Hi Ziyang,
-> >=20
-> > I'm a bit hesitant adding 2.5K lines of code to the BPF selftests,
-> > as this code would need to be (a) maintained, (b) run at each CI invoca=
-tion.
-> > Hence, the tests added need to be relevant for the BPF sub-system.
-> >=20
-> > Regarding the benchmarking part, as you state yourself:
-> >=20
-> > =C2=A0 > In my testing (a 60-CPU VM) the BPF path is roughly an order o=
-f magnitude
-> > =C2=A0 > faster than the per-cgroup memory.stat parse for a whole-tree =
-scan, mainly
-> > =C2=A0 > because it avoids the per-cgroup open/read and string parsing.
-> >=20
-> > With this, I think the benchmarking code can be dropped altogether.
-> >=20
-> > Next, the three memcg_stat_{reader,churn,churn_percpu}.c files share a
-> > lot of utility code almost verbatim (e.g. tree definition/construction)=
-.
-> > Such duplication should be avoided.
-> >=20
-> > Finally, from the BPF point of view the test exercises the following fu=
-nctionality:
-> > - kfuncs:
-> > =C2=A0 - bpf_mem_cgroup_page_state
-> > =C2=A0 - bpf_mem_cgroup_vm_events
-> > =C2=A0 - bpf_put_mem_cgroup
-> > =C2=A0 - bpf_get_mem_cgroup
-> > - main iterator logic.
-> >=20
-> > All kfuncs but bpf_get_mem_cgroup() are thin wrappers around mm/memcont=
-rol.c code,
-> > all kfuncs including the bpf_get_mem_cgroup() are already exercised in =
-the selftests.
-> > The iterator logic itself is covered by 8 sub-tests in the prog_tests/c=
-group_iter.c.
-> > Hence two questions:
-> > - What do these new tests add in terms of tests coverage?
-> > - Why do BPF selftests need to exercise the churn and churn_percpu scen=
-arios?
-> >=20
-> > Shakeel, could you please comment as well?
->=20
-> Hi Eduard,
->=20
-> Thanks a lot for taking a look. The main motivation I had behind requesti=
-ng
-> Ziyang to send this series (beside making him learn the tooling and proce=
-ss of
-> sending patches to lkml) was to have a reference implementation and perfo=
-rmance
-> comparison for BPF based cgroup/memcg stats collection.
->=20
-> However you have correctly pointed out that selftests might not be the ri=
-ght
-> place for such kind of code as selftests are more focused on functional t=
-ests
-> and run by a lot of CIs while this is a performance benchmarking code.
->=20
-> I am wondering if there is a place for this benchmarking code in kernel u=
-nder
-> tools folder but archiving it on lkml might be good enough and should be =
-easily
-> searchable. Anyways thanks again for your time.
+On 7/6/26 15:39, hu.shengming@zte.com.cn wrote:
+> From: Shengming Hu <hu.shengming@zte.com.cn>
+> 
+> In free_to_pcs_bulk(), when remote_objects[] fills to PCS_BATCH_MAX,
+> the code jumps to flush_remote to free the batch. If all remote entries
+> have already been compacted out of p[] via tail swaps while local objects
+> remain, the flush_remote path returns early since `i < size` no longer
+> holds. The leftover local objects are then neither cached in the sheaf 
+> nor returned to the slab freelist, causing a memory leak.
+> 
+> For illustration:
+>  size = 64, local objects at p[0..31], remote objects at p[32..63]
+>  After scanning all remotes: i = 32, size = 32
+>  p[0..31] local objects are dropped.
+> 
+> Harry pointed out that, although the logic contains a real leak, it does
+> not appear to be triggerable with the current in-tree users. To hit this
+> path, at least PCS_BATCH_MAX objects, currently hardcoded to 32, need to
+> be collected in remote_objects[]. Looking at current kmem_cache_free_bulk()
+> users:
+> 
+> * maple_node has sheaf_capacity = 32
+> * skbuff_head_cache has sheaf_capacity = 28
+> * panthor and msm drivers have sheaf_capacity = 4
+> 
+> The sheaf capacity is, at least for now, derived purely from the object
+> size, with the user-requested capacity used as a minimum. Therefore, among
+> the current users, only maple_node has a sheaf_capacity large enough to
+> reach PCS_BATCH_MAX.
+> 
+> However, for the bug to trigger in maple_node, all objects in the sheaf
+> would have to be from remote nodes. In that case, there would be no local
+> objects left to leak. So this issue was found by code review rather than
+> from a runtime report, and it does not seem to be triggerable by current
+> users.
+> 
+> Still, the bug could become reachable with future users, a different sheaf
+> capacity, or a change to PCS_BATCH_MAX. Fix the logic by freeing a full
+> remote batch in place during the scan and then continuing to process the
+> compacted array. This keeps all local objects on the normal fast path,
+> while the tail path only handles any leftover partial remote batch. The
+> redundant next_remote_batch jump label is removed as well.
+> 
+> Fixes: <989b09b73978>("slab: skip percpu sheaves for remote object freeing")
 
-Hi Shakeel,
+Removed the < >
 
-We do have bpf benchmarks in the kernel tree, the entry point is
-tools/testing/selftests/bpf/bench.c. These are supposed to be
-performance measurements and are executed manually from time to time
-(quite rarely, as far as I understand), not by CI.
-However, if I understand Ziyang's assessment correctly, this code is
-not really a performance test, but kind of a load test.
+> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
 
-Thanks,
-Eduard
+Thanks! I added cc: stable anyway so we avoid unexpected surprises in case
+something else is backported there that exposes the bug. And the fix is
+small enough.
+
+Merged to slab/for-next-fixes
+
+> ---
+> Changes in v2:
+> - Incorporate Harry's detailed trigger condition analysis (thanks Harry)
+> - Link to v1: https://lore.kernel.org/linux-mm/20260704160450302fnznThT3hBeBiwlhE-oGv@zte.com.cn/
+> 
+> ---
+>  mm/slub.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 9f754cf1c187..4d7e3067a5d6 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -6193,7 +6193,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+>  	void *remote_objects[PCS_BATCH_MAX];
+>  	unsigned int remote_nr = 0;
+> 
+> -next_remote_batch:
+>  	while (i < size) {
+>  		struct slab *slab = virt_to_slab(p[i]);
+> 
+> @@ -6208,8 +6207,11 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+>  		if (unlikely(!can_free_to_pcs(slab))) {
+>  			remote_objects[remote_nr] = p[i];
+>  			p[i] = p[--size];
+> -			if (++remote_nr >= PCS_BATCH_MAX)
+> -				goto flush_remote;
+> +			if (++remote_nr >= PCS_BATCH_MAX) {
+> +				__kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
+> +				stat_add(s, FREE_SLOWPATH, remote_nr);
+> +				remote_nr = 0;
+> +			}
+>  			continue;
+>  		}
+> 
+> @@ -6293,10 +6295,6 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+>  	if (remote_nr) {
+>  		__kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
+>  		stat_add(s, FREE_SLOWPATH, remote_nr);
+> -		if (i < size) {
+> -			remote_nr = 0;
+> -			goto next_remote_batch;
+> -		}
+>  	}
+>  }
+> 
+
 
