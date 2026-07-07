@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32438C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:06:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 959A2C43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:08:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 120AC6B009D; Tue,  7 Jul 2026 07:06:52 -0400 (EDT)
+	id 8010F6B009F; Tue,  7 Jul 2026 07:08:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D1756B009E; Tue,  7 Jul 2026 07:06:52 -0400 (EDT)
+	id 78B156B00A0; Tue,  7 Jul 2026 07:08:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F02A96B009F; Tue,  7 Jul 2026 07:06:51 -0400 (EDT)
+	id 658D66B00A1; Tue,  7 Jul 2026 07:08:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C08246B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:06:51 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08EF01A0405
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:06:51 +0000 (UTC)
-X-FDA: 84961703022.14.4CF8264
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 62B0640011
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:06:48 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eNsHbIf4;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3495F6B009F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:08:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AEA07403EF
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:08:15 +0000 (UTC)
+X-FDA: 84961706550.21.559EE3A
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6DDE040006
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:08:12 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vvDpW0xf;
+	spf=pass (imf12.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783422494;
+	b=fcDHttF9R4fRiDs69e2sY4RPjvTqk8yBLhjuPwbdHGAk3NVlXW406qBPljQewo221bqM2s
+	MaHhQval6PPlz41y2Tcx44HjT3/IPpey4gWqZsGziufV3pYbAD1UElOMVg7k+0VIKvCL7H
+	24ZyZiene15zXrwbHIHXBijuNezF+wM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=vvDpW0xf;
+	spf=pass (imf12.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783422408;
+	s=arc-20220608; t=1783422494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uxQP3gLmIUzYBfoacOtJptD05zMRflOQs+DB0wW0xpo=;
-	b=3SavrQbiQD6p/lzjiLsMkX9ZBJtF8cLdrkVWLpo/w3xlD6IsPDwG5NevzYWrqpoxQ7AvL8
-	H4oKfnUF267J86mKtZsCkf8QrWfgJFK2EZ1NGVWAuNgYIC9D6DtfbaUCVk3SpEqmhy0Dua
-	ItXpDKKMp9HyfQAYeTGO7hpF7TdBGCo=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eNsHbIf4;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783422408;
-	b=DhEvIAVbtKpH2h7qmHBxxlFZz/ieTiLRofZBHWb0bgzqttL27lUMMqYahvH49Kn5dve8nw
-	v9bL52o+mddvdbXyNLHFBaZmCINAY21nrgILJ/AHIQhzLGE5nXU0IkJ8dLVPVjZAmTg7Cd
-	zAYmoMSm8BQ9jbpHxZA6hHPWmRZlGTg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C2C40618A6;
-	Tue,  7 Jul 2026 11:06:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59441F00A3A;
-	Tue,  7 Jul 2026 11:06:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783422407;
-	bh=uxQP3gLmIUzYBfoacOtJptD05zMRflOQs+DB0wW0xpo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eNsHbIf4sOdWw6JCQpCaE2eEgsRjvyXM0TUxaM/x+HUWu/rR2CciAzQqnoECZaJQP
-	 7TEpqs6ZE12aRoYV3bMmMfsJau6Ydnj7iFnb8pWmuEa7H4SjEhfeIyGFpJzvYC6GGY
-	 SOGdrZDZKX1RaGFDjE/2DkMaQfkQQOEGEpNHVXONMHdyHm4vLv+qJfHghVL5y708KS
-	 t9P1p7NQR2ry1N2SYphqCNTE7QJEopIIn2vS5+Af0aTIrPWOdVs50g/I8sZiuNvaK2
-	 Botwhf8za+Mg5LB4L/RmIP19QXFqK+9FfHiMyVhKffEK6HkilXr+z8tpQAyIPS2CXS
-	 13E8O5UYUzRVg==
-Date: Tue, 7 Jul 2026 12:06:34 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
-	Sourav Panda <souravpanda@google.com>, muchun.song@linux.dev, osalvador@suse.de, 
-	akpm@linux-foundation.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, mhocko@suse.com, mhklinux@outlook.com, fvdl@google.com, 
-	gthelen@google.com, mike.kravetz@oracle.com, pasha.tatashin@soleen.com, 
-	rientjes@google.com, riel@surriel.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH 0/6] mm/hugetlb: Dynamic, NUMA-aware HugePage Cache &
- Free Page Reporting
-Message-ID: <akzZr2jfJ0J8zox4@lucifer>
-References: <20260707064235.1386552-1-souravpanda@google.com>
- <9624988a-366e-4884-9408-3f3b88c27290@kernel.org>
- <20260707062428-mutt-send-email-mst@kernel.org>
- <b9a48d89-74f1-43d4-b7bb-be988b6855c9@kernel.org>
+	bh=ao7EL9LJmqoFPIpPMnfYLwye1FreZjwPxf1v+Z1e6zw=;
+	b=2j7+jFA/hgTIRj8XI3qGMbSnTw1atF03dt+RfgBqzVYoxIei9mXTjtj3Iuw9PYIiR++s/9
+	Ymh36OR4qnU/lQeF9ykp8TH1NglxeASnBbVZhZsJ3w34ALV5/1C8rZMjVlKpM4pGkoztjL
+	XGaxMlWlf0SFcRM2on2QNqNQjEXCQb0=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1783422489; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=ao7EL9LJmqoFPIpPMnfYLwye1FreZjwPxf1v+Z1e6zw=;
+	b=vvDpW0xf39THN1iby3AmkOxCHrCjvo0mNSoF7bAPlZRcJZ8AiZ6ETV4RBEuXw/GzussjJCDGLxY6jhDOtm/NgJtXq9BYejhFXsnSWZzEz765QESqw4vdFTOcctGDJjNLRo8EVxI8ZQPexWmVveSQulwoTwT9slnSUY17xnYDqj8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R651e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0X6dH8g._1783422486;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0X6dH8g._1783422486 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 07 Jul 2026 19:08:07 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Kaitao Cheng
+ <kaitao.cheng@linux.dev>
+Cc:  Andrew Morton <akpm@linux-foundation.org>,  Zi Yan <ziy@nvidia.com>,
+  Matthew Brost <matthew.brost@intel.com>,  Joshua Hahn
+ <joshua.hahnjy@gmail.com>,  Rakie Kim <rakie.kim@sk.com>,  Byungchul Park
+ <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,  Alistair Popple
+ <apopple@nvidia.com>,  Naoya Horiguchi <nao.horiguchi@gmail.com>,  Andi
+ Kleen <ak@linux.intel.com>,  Muchun Song <muchun.song@linux.dev>,
+  linux-mm@kvack.org,  linux-kernel@vger.kernel.org,  Kaitao Cheng
+ <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH v2] mm/migrate: Avoid copying hwpoisoned folios during
+ migration
+In-Reply-To: <ea713b4c-b248-4191-9ed2-c9e2d0f83ad9@kernel.org> (David
+	Hildenbrand's message of "Tue, 7 Jul 2026 12:08:26 +0200")
+References: <20260707090136.52904-1-kaitao.cheng@linux.dev>
+	<ea713b4c-b248-4191-9ed2-c9e2d0f83ad9@kernel.org>
+Date: Tue, 07 Jul 2026 19:08:06 +0800
+Message-ID: <87o6gjnjl5.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b9a48d89-74f1-43d4-b7bb-be988b6855c9@kernel.org>
-X-Stat-Signature: aqcuaxw8md8m7oueiroonf4cb71eh5a1
-X-Rspamd-Queue-Id: 62B0640011
+Content-Type: text/plain; charset=ascii
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783422408-508885
-X-HE-Meta: U2FsdGVkX18AkggqhyYta6q73SMR8r0C1U0vjn0ehwo/c3yXfa7Bn3cz3q3R9vkuDWRDgI56LPN3WELWoFSeNGR63WdvIy9BwZSWFXMhClwd70gjr+1hwn8LrvWI/azMUnfnIsU60tY78G/tWJk5ewKchBNsec/E30z2E+xUG49Z0p3Lah5uw8PWYGVKjPzRtSTzQrCsFf8ySA6Ay1nGZ7N37lvjQZwxQAu7aFXiQ7vS/bNUgPypKxNXN/KLiXwph9+tncf6Wlz/Lwkj4BfpMGR96WaO0c2nediR3Mwzx4C/75AuZCysp+Ar4JfU1aW9JSkFjHD/WN6OVr0cnxHQfwlCCv3/hyHDQgMdzpfTa8opJkiS64C2h5VzrhipR9haCTtX+NCQEbr+WhsPVHLOPMMGEzAgL7CMhMCuTCMls9jRXoDGPLprv5sSinoAS+AzDFxZlM9csRvW/k17dtRwZ2axplZydA1MONL7a4TtuYzthFtr6HXYs6YnMDeag5uN5U/wMkpaLe71FXfPMQjmSry4o+ME7tEDduTd/JCgamAUCQQJOs4xeLnhAHaxHo1UyDdp7k5XiSTgMbKpT30Vrc6qYNEk6SWoH2WYjqGqkH5MGOEJO5CH3kyvvDqlpqR4vEgZ32wyatmyM83PsCHoldsTNGUMxfIWLHlDYiMp/8EAguFJijTWc0DNLNyGBsCfVvR0lYmVm/4K+bCwvdaRLuFGZfvQPrHIMs5kI4rK+zEUMmP+pdb6XXb48TYx1TxPxZYSduheymRkBr4fMvFVMkswbZlScpj8MS/+MlJrL1uMeSSa5ovmWunqvedTMI5OFiEKBegLrXq+bBnBzie1zcXE+jCreE3+WHENeCD9uBthTR9+1WNG66ZNMLAr+NzDPrWQAilkUMMx4Q3tediHBqdccuFN0FSlgKM/gJcJALKpbroSuV2es5rr+fcQsGjaeGOLmHG1YXlZhmFM0P1
- 6nLKpg3n
- OAblHiCq+w5LDrhlVjDfoYWHNwyKsEHchnAaU1RN5jBIDXHtg5aTzP9wYs2wh0Y7pfWrwfM+zPHSJTLXwkSHMcz7kvmEaU5amfjbjMhjJsykTMXDXczWupa3CC6wPibvigTo01xJg6UewNTqvGttdKJtSZEkcJb/LUTjlRymFmIrfEZN4wDbPm0BokSTsfSM/FVouWEq94fcfZmCFdok9MaJNAqgaCdDnWh3X2N/mhFru6m35UOiA8/qDbOZ3lvmrX0Oa
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6DDE040006
+X-Stat-Signature: oqb4mhkyfzswkcho5kntnez6rjugouzk
+X-HE-Tag: 1783422492-986019
+X-HE-Meta: U2FsdGVkX18F/3k0dtKCXCAoC+BiN28TiqofvRX9qkUh6RkRJQJ+fWCrm4alrKuuekCsa+6sGY4OtXaNUgg1jN+akHPdRLUUACIFP/wST7+dgJHftd7FJrmFVf3ahrhkHIW2uZPF8BhyLFh1kec/3xS65lvcejmUQI0XvlW2PgzDOZnapwxvYvIl7mPwxPcqyEq9uf3cC/Ql/fK4GGrX9M67Zr6Rb8LGeGtl1Pd+k1Dh6mKZnFYfOsgTsVhh+9ofjnYrsLlXvEcETzqfMz4q6O46BgpRUOUDLKh9Fb7Oj4FNwkM494b9BoKtNht3yuIcuFC3Jc9T56fiTwDkWxVgTt4UvmOXasKYMXnuDpZweZSGOWsROdX5iZ3o2I5J6H9r5ewg4LlDxHm1jBiDhJNulHFpA4FGe+J+I3QgDJeM1UJYGuqDugCBVZ/PdSL6TSkyk0MEMxa873M6TlsSXjjAjScRv4dSs3x7QtRtAfLTT3iKddZ7Qfl+gng14/Som4CQ1CakMp3DM9MUDz4Bf8tu2AvXywXnajVl178O+tktOsV0kKOLrfXLtBEdu+c2+5WXhZD1RO6donyQKFurKcwoqVjOtDncuoPkp0FslBu5fSjOYqo37HU2a+hgLQyJTr+q7XrLQODYaVXuS3oj/Lwp1pDWYMmkOlx7XhQnwALEO4xxz7CGD+liGyX4CO0MGypkXc+ssp4NoN81Eo6istj0+2VD0NT8I++Mz7wCkOY0vRx5bRyiJcjMsK2Bqe3tnTsVPShgo7+GZICjmlSVuD/96Z6Qyzjy1/2p8rTIQvwFCuMGp6EqGQzlYO7kSyhGqQhPHFZJGQVfkmgjk0/BhTRW0UZ19rZId0fKm/DaaG7fC7PAT3HEDwR742nLBqRdgznCfmHbrG2y/usX+m/fOk6AVFHrpclkgli3+KMGfujBBPXRYwpZunpga+hDHGxcZZUa3Rkur0uuffYEJGt7BVt
+ XYmi0fXM
+ zsfV9RbEvwIQFpH9igWVsQ6AqNzjjF6s1uKXZsLvu+6pX2cum8LVW0YbCEmSHUQJLUSHHCDA4PQVnXLEtGqFGMVhddBfNlrua4bNQyy4sCy3zOzwav65GtBClO4pMP4fTOOw1z4zu31IMMPSpsg2esCJaMNfvePwUYUHeAyffmAmEuxtAGZBLC8JH4S5TiTNpgIuyDTjg+0msnQEfPycwjHLweg9JB2+hJ9VJgM6mINMsA01VX7hTcmMh3S1JCoxmvgbvrvSUeCCbDv59V76k1IvcO5sSdAjSTHU7yktR1wRxkmMCRz7V4fNyg7UJDJen1ObTpANhfyWHaIys7vj9CyVXuDL4HI5NMqlOnxgOLS6RkUavS22g0ffpPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,88 +94,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 12:28:44PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/7/26 12:25, Michael S. Tsirkin wrote:
-> > On Tue, Jul 07, 2026 at 09:29:07AM +0200, David Hildenbrand (Arm) wrote:
-> >> On 7/7/26 08:42, Sourav Panda wrote:
-> >>> Overview
-> >>> This patch series introduces a dynamic, NUMA-aware HugePage Cache,
-> >>> backed by a kernel shrinker to safely return memory under pressure, and
-> >>> integrates it with Free Page Reporting (virtio-balloon) for HugeTLB,
-> >>> specifically targeting gigantic (1GB) hugepages. The goal is to solve
-> >>> the tradeoff between allocation latency and memory
-> >>> fungibility in virtualized and heterogeneous cloud environments.
-> >>
-> >> Hi,
-> >>
-> >> in general, we consider hugetlb nowadays to be mostly in feature freeze, as we
-> >> realized a while ago that adding more special casing on top of something too
-> >> special for all of MM is only going to hurt us more in the long run.
-> >>
-> >> We want to have less special casing and less special sauce, not more.
-> >>
-> >> Now, there is nothing wrong in making hugetlb be less special, by making it use
-> >> more of core infrastructure etc.
-> >>
-> >> But optimizing for surplus hugetlb pages by teaching hugetlb about new caches
-> >> and its custom free-page-reporting support rather looks like the wrong direction
-> >> for me?
-> >>
-> >> --
-> >> Cheers,
-> >>
-> >> David
-> >
-> >
-> > It is currently bypassing free-page-reporting completely.
-> > Making existing free lists not ignore free-page-reporting would
-> > maybe considered "making it be less special"?
-> >
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-You have this completely backwards.
-
-You're advocating making hugetlb _more special_ by duplicating functionality that
-core mm already supports.
-
-I mean:
-
-mm/hugetlb.c                                 | 590 ++++++++++++++++++-
-
-Tells the whole story right?
-
-The whole issue with hugetlb is the very fact that it's a parallel
-implementation of a bunch of mm stuff in its own little world.
-
-We make it less special by mm/hugetlb.c smaller and smaller and implementing
-what it does sanely elsewhere in _core mm_.
-
+> On 7/7/26 11:01, Kaitao Cheng wrote:
+>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>> 
+>> The generic folio migration path can copy the source folio after it has
+>> been unmapped.  For normal and THP folios this goes through
+>> move_to_new_folio(), then the filesystem or anonymous migration callback,
+>> and commonly reaches folio_mc_copy().
+>> 
+>> folio_mc_copy() uses copy_mc_highpage(), but architectures without
+>> copy_mc_to_kernel support fall back to copy_highpage().  If the source
+>> folio already contains a hwpoisoned page, a normal copy can consume the
+>> poisoned memory and trigger a synchronous machine check.
 >
-> Depends. We don't really want an orthogonal implementation of something we have
-> in core-mm.
+> Well, but the code can still race with memory_failure() IIUC, so it's not really
+> safe either?
 
-Yes, exactly.
+Yes.  So the better way to fix this is to implement copy_mc_to_kernel()
+for the target architectures, or to implement the trick in the fallback?
 
-Feature freeze means feature freeze, not 'feature that core mm doesn't support
-feature freeze'.
-
-Hugetlb is a poster child for poor decision making in mm that has left us
-saddled with maintenance nightmares because we allowed 'just one more feature
-in' (TM) with little to no thought to the future.
-
-And we've all learned from that and don't want to repeat these kinds of
-mistakes, nor make existing mistakes worse.
-
-And work to improve hugetlbfs and make changes like the above are VERY welcome
-:)
-
-Laying a foundation for hugetlbfs to be more of a sane mm citizen through rework
-series is really the asking price for stuff like this in my opinion.
-
->
-> --
-> Cheers,
->
-> David
-
-Thanks, Lorenzo
+---
+Best Regards,
+Huang, Ying
 
