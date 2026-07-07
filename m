@@ -4,97 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC77FC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 00:14:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77605C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 00:17:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41DAC6B009D; Mon,  6 Jul 2026 20:14:02 -0400 (EDT)
+	id E5D3A6B009D; Mon,  6 Jul 2026 20:17:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CDBD6B009E; Mon,  6 Jul 2026 20:14:02 -0400 (EDT)
+	id E34B86B009E; Mon,  6 Jul 2026 20:17:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E3706B009F; Mon,  6 Jul 2026 20:14:02 -0400 (EDT)
+	id D732F6B009F; Mon,  6 Jul 2026 20:17:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E80586B009D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 20:14:01 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40F93120277
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:14:01 +0000 (UTC)
-X-FDA: 84960057882.16.56E6419
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id AD5FF20004
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:13:59 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QfisRpmL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id AD3C46B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 20:17:57 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 291F1120287
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:17:57 +0000 (UTC)
+X-FDA: 84960067794.27.704733D
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5E28740007
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:17:55 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FjXInoUM;
+	spf=pass (imf07.hostedemail.com: domain of eddyz87@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=eddyz87@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783383239;
+	s=arc-20220608; t=1783383475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eB1zO+hEcVPqicULA2t7Fk+v6ErU6JNrcgHBtzJJkzs=;
-	b=DfmG7UqyE2px7vpHrwH8XiUPcHBEljiFiiuFsw8Rw01KGYRbnvLTD8clRT/vIvnaVZt5Ty
-	G5k80AUHV83tDUf2/teJ4nRnwQ0fEl+oSkZ1bvaTg/Xl41em3MZ1zHkqA0ZOlAKEQcKLxS
-	nxkdcG1Val+rgqCigVIuM+n/CnxeVM8=
+	bh=NlYk0sNL0UkMJvtmh539AMWShHtruvV8sV0IdItG1l0=;
+	b=NbLmE3opJDm1feoOF2bv+bAxiZQLd//iUmN3WXVASZqcFX83YL2/fx/9no9t6jWHY4HbpI
+	xsRsDXjP9zzo7Z0g0040Ka72eEBAALEAoK+fjDDHY6QyXhdoCumeP6XnqXedBx1PqCtI1Z
+	zZtUusbi0l53waPF+Z33ek1KAU1eE5c=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QfisRpmL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FjXInoUM;
+	spf=pass (imf07.hostedemail.com: domain of eddyz87@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=eddyz87@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783383239;
-	b=Q1B09IJ8k65qF+c+AESX0SX1xit1prMKRA13ICNl0sAOqDWf6ZCEH31BS6vF9PXo86hTR6
-	90J++vJmpsaFl8UZn5kS0HnH9FyTFz0jw8lJ7RJ6Af3BFu+avAgWPnrCh9M6dxZ7ASKGZb
-	9TmKfQ+CuEd4GWk9KrGRkUQEMNKWBc8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB74A417CE;
-	Tue,  7 Jul 2026 00:13:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4061F000E9;
-	Tue,  7 Jul 2026 00:13:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783383238;
-	bh=eB1zO+hEcVPqicULA2t7Fk+v6ErU6JNrcgHBtzJJkzs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QfisRpmL2Q7w5vhJODKT4L8MN52r2hKZK1CUd5JBD+iHnkyyQ5OhUgtVxtUeEg9lB
-	 eNxlm7zM36O9+peBNmx2jkzYsEVdlBRHCfLrIgKRpICoHXwykEeEh8hOEm9BrRBFYV
-	 o2OUt+qNG7f6ak+9jD8DgsavWkBS3gZs9X+WBIk3e5iQ53XnmJd7+ENMUET9bp69qs
-	 cyjgB1Rt5a/0BQfxxMrKkWX+XW/D2oQjJXAnR75wh3q8zqOeFqiHRtcAZlYytGCg/o
-	 sjMu98VOEpUkOyXfnviw9v4NUmS3Ic2lpdJ0rsLD0Bfoned6QsYjD1y4JHy9C5VsDc
-	 7MpJqJeD2tHrw==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v1.1 00/16] mm/damon: introduce data attributes only monitoring
-Date: Mon,  6 Jul 2026 17:13:51 -0700
-Message-ID: <20260707001353.98054-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260706141912.88445-1-sj@kernel.org>
-References: 
+	t=1783383475;
+	b=CrH+ugrQZI1sodadYYgsATOBSwDf+lFRFi/5cNbakCGylj5uq77sikjBk36i7YGzFytYKW
+	rDpc5jBfCR0c/b+pe89XtyuachoiwWcgojGurYs8Bl8TxWerIPy5+SnhmKZeepJhzFcBCW
+	dApZ4/sxn9DlX47mLZWSiDbXMaRxOSc=
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3817f800c8bso2630614a91.1
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 17:17:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783383474; x=1783988274; darn=kvack.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NlYk0sNL0UkMJvtmh539AMWShHtruvV8sV0IdItG1l0=;
+        b=FjXInoUM9+YgP1i4HhV2nYgmtvkIT/5ZJ0jywJqIPi12elg2opC8U7iKv/q5I2lDwX
+         tUnL9P78Yy8WEqZZcK1XUD7c6OKOzXXA6YADxav7O08UCl42P9kiaOjK8+61lisJoBQb
+         rjKDqOHDUKOT+2Z/nE9Hg7JfkAZ7B4UWbYhu6GSmfxn1fIPBngpn4oMbgIPylXzfpNm2
+         p38vcHpa21tmZGq2hDinri2fwxuW6LfHCnYpSOGXR967byVFNA4aUK4E/jUPLVXEn918
+         gGGv9OmaWPn72PgnmQgihmC8twuru2NzGeodVVRZddEAhB/8ktQ7fKXv0Eta4cON3C/M
+         WY5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783383474; x=1783988274;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NlYk0sNL0UkMJvtmh539AMWShHtruvV8sV0IdItG1l0=;
+        b=XPNdriJhrtY5U2qvtV+NyGtxtQlv4j/xj0ADn9EjmQTKaCZInPSVSMjhjAeqzSJ5QN
+         81rQOsLKVmYHy3KuKCFqxvL1hHpbEXQZ6TVb6hNtQwztXD7NmHzXuc1BYVgnlnu9qnmN
+         C7MGovgWWMGL6Jrj6XufakUZSztC01HO/57nDjXljnIE/3tHWRb1L4sv5cXL3wOgO8TJ
+         0WlTqNw1N0BXMr62yGdULRk9SYcBkySQulYl3xwGHZe4jvgR92LaURzZFAkWJNSlFiMC
+         yNdREh47Xi19B9/R6lOEYJk2IBFB9RsbhSJqylz6mSEhhuVtdYPhqxYkT40l070v+UWC
+         v+hA==
+X-Forwarded-Encrypted: i=1; AHgh+RrAnYsvuhzY8kQNVhEyJi0H9lAPUTVJXdFmpx8WqCzTvy6PY1XsHqpQjel86981Wq1Q2wSgHBxN9A==@kvack.org
+X-Gm-Message-State: AOJu0YxwkskcBtRO2Jy4lVlG2NsPUPkz24EhjEhGzR+GhP/0TQsCVYXC
+	po0gmKTB05UTtf5C61AdW/pEAYmojL782X3d0rjMq/ojyeXhlLm1jM59
+X-Gm-Gg: AfdE7cngt1+ccQmU9eG8rwbKHswgSiTe4bXYm94u+lTwn9VoJIlXfWTvgwRvtsqJ876
+	yVNUPuAz+w4sGR3Ho0NFTitZeWoro1MZbI50WT9VPAXbRgJVq29Y/96Y1gaP4Q+/m4ShiatI6nI
+	ixYN6UQpO6SKoLYB1v+OYR5ZHf9yz+iKf+zOm1x1jaCzbjzXb3n1hRYPqLg5ZbgBzDxZchdyT2g
+	LrIFXl4vTkGfGUHLEdDgheytEt2Jby9OPgn1SB5kZXfAzY/YNMSu6Aw4d/AQ6OS1aQQcpCJjyGi
+	V/OYCT011SeIB/fFJbtdPFaNYh9qBzkTntHUq2pQ4ijKjblN1ryeOBpXx8ihVFnqSaIst8Xb6sO
+	k5LXY17FWEBJfg0W4PkUTVmr3nJoRvFWaQ6Fu4u9fbO7IT0I2YuS++X8buAIm1duXBAxWST3fQs
+	tYHEe4PLpuaA58YwVMEcQvfSrE5C88iM5Aaigqx3gcT2GUwGwXib5/yYOyLylYOwTsqPuMLQ==
+X-Received: by 2002:a17:90b:1845:b0:37f:9cdf:f0ad with SMTP id 98e67ed59e1d1-38757d76999mr2730666a91.28.1783383474243;
+        Mon, 06 Jul 2026 17:17:54 -0700 (PDT)
+Received: from ?IPv6:2a03:83e0:115c:1:275a:65bb:602c:da1d? ([2620:10d:c090:500::1:7696])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174a89a89sm1783645eec.20.2026.07.06.17.17.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2026 17:17:53 -0700 (PDT)
+Message-ID: <bc12730fe6eccde10d36e6544607ae2464357e05.camel@gmail.com>
+Subject: Re: [PATCH 0/3] selftests/bpf: compare BPF and memory.stat memcg
+ stat readers
+From: Eduard Zingerman <eddyz87@gmail.com>
+To: Ziyang Men <ziyang.meme@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
+  Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Kumar Kartikeya Dwivedi	 <memxor@gmail.com>,
+ bpf@vger.kernel.org, shakeel.butt@linux.dev
+Cc: Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil
+ Tsalapatis <emil@etsalapatis.com>,  Shuah Khan <shuah@kernel.org>, Roman
+ Gushchin <roman.gushchin@linux.dev>, kernel-team@meta.com, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, 	linux-kernel@vger.kernel.org, Shakeel
+ Butt <shakeel.butt@linux.dev>
+Date: Mon, 06 Jul 2026 17:17:50 -0700
+In-Reply-To: <20260704045617.487664-1-ziyang.meme@gmail.com>
+References: <20260704045617.487664-1-ziyang.meme@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AD5FF20004
-X-Stat-Signature: b6e61zox89oux7m6hce6u9k38bnpkffe
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783383239-499147
-X-HE-Meta: U2FsdGVkX1+hQaywJz56L+Mcjn3zEeRCNfxq2ib8Nz9WJ3/yMpIAtCgfQJYY8BH72B20QdC3X8nh1WnjD/eKDPKqlsjyizXO/AoZU8XUAu6qwtJfrWynynugWwygyX0wbyTzODw1JV+hfm8NvrOxi2LRDyk8R6H7p/HV96P9S/upWSTWlT2vgtAiV51X+dBqdQeHP2/JRrMKP60uo3C+cla4EtARJCqL8sALYDmddsVDM8hkAQCPMlIpbefDxErq+8/4JEtsU0SPUlr/nhaM3E3wTTBqmfUREFoHOutn6ELkIRjKLtvxEqTPKsf2ABXbz4uqpt3JMauebl8gz5/4iZHPkYgnjCxQO0uu7x3ZpRgxTXaNPHZ0JaNvcBUGJa58BZeEGRJO77rU+ncRGz9ZSSVcILD8ZZQDcJfmHOLytRCoRQWlhViLi03s57nd2mrtWVvjuM1xJ4ip4BW55GvsNd2ndX2A+W0Ma1Pjqw4sjmikvLaaIM/tlUC+boa8pBEz7L9V+2CVkuGN7cd2+vBUD0K0hkwpPPyuUa41QQZEEtpS7GgskX+zruHV+8cB40yoXaQQ1jS6+0mP01q4Bl1IAWcvoQ4UXUeb4nuh3utTEvHDktla2687H0V90uRjZuaKX+LZfjwYq6cWR/QqPTmtLhAS7pzQ8mprDqKF71OzlaV7ahl3/uTFqMCqdXQFkKJDokp1CRDBKH0YujowNKHDrwQq6nzk61cT5F7FlSpXZY3zaDQWB4dfbVqD8lcBQ5x5XqHB8SAl7lvBuiSMboZKCcgZkWgJjikf3wQA7hSusURLisnaLkBs/Mx+RzL5f+3Hi5NOFSD2WWQrrDZYO/27YPB5Ywy53XdpoO9AA9X3RySlmwiaGFTkES3T4tTFrVaLyWVPkPgOo3p1k21lbVKBNdqhGyb2GgmNfxTKhBO8IL5E4shJImu8FRMLVIWsFYflbRedArxnb1layk3J6M5
- tmOUVBUF
- YDVGxOrUdB4b+vipN+RLU5pacqKA2zcN1/OHF7boVUPZQTdJabgHsYmyMFwgSFV7VOz6LLaQtQgX0D2A6RC4whdOhtNmQsJepXDpEn0tff1rCH1+9AwP29/xaP4w3XS262K1Ta8+o9JKlc58YyLFAyG72XwIZ0vNg3sKUIlAr4avb9oyXXZW4JtiZ/8qcvQBdeandAiyJB9hKrtNRfBnmdiqBeau+wP4gCfU2IhvnCUNeVcFnYWJdbcvkHgX7DYLNl6Yi
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5E28740007
+X-Stat-Signature: 9kzpub5yduam97qmj16wx3ujn4roppik
+X-HE-Tag: 1783383475-983626
+X-HE-Meta: U2FsdGVkX18nQ2v61qHLfhbTnnTWkx2HnQcT90uUSki2JTOlp48Pq3JA0bIJ7Ym4HF2HdKLwuUNGcHXjojmWu4pfS9px5gsy6Ugx0kw0L6gHtoZqi6Ll6m68nElYReT6KxQlJQMgrKHYmrAS3zq/frUVgVjyOLLrf1hQElunxKoEihDABJTrNDxtSohEH7R/gV4o4yLtv3XipJ9pnyNObdfYB8nrWCk//55sBhpuCmygnCuzgXyXLf+VchlD6+xNASObgM4e7+5hCOYKE9mVQuABoFKh/UK6v5l0Vr/c5+UIuBvJ0zSrphY9S3Zb0PKq/UAwdfSkIgLJF+2lyHKZ3IEaWjRZA0yeDNHFnMObsgQdZr0/my/8XOPsQ+4A5zxfuMFbCN+uv3TUWoQvIrHrO5wRHJ4gW4dZIVs6RjGB8bxurFwEW9Puxj4KmYfbGSlvTNVq2aIwK/WqKOhbYeUyTd41EnhHzPg76ydBD7fO6TNgEl+VKcSY4xpaHWI3AstgQYYSlxHhA/c+cKR3OKhnZtkHVyIXaWUFW8TLIYIWCUwpaJEIYAO3xIpfcQBMOzUJYBzhEE55XnYriGUwAidsNoaxRv+hxfXsE464Cq7xoQdDtA8O7Nnib1afWjQEr4fzCWU63izkVLCOEMTRyVygvRqJEfmTLWFpD7qTIBkA7qcq7F0UWxjCObPRs5JyuDAMt4+jrdOZA8Yu2kRxkRduVRfX5s6yQC6nWwVPUU4YiXzskTO5ue1Imcboel62ZV20ZjNi7OMeisgHiMj/d2FL2UrtJHSAwLFQHw6EFvV1FPIZBRCU404XhTkii2gfDYPH7jXPovOJP+6A0OgWaxHduXEd+BxRjDOZPfeG+E36+/sxh/PYFi4ETuch64KVjI2nw6n6GbXFHoB44Sd7+cLvCxfdMezXj53AmFY5CLiRptl73jHpC1gHOon6oCweSn0lxyg5nF4MX2Z/4+aOuWN
+ OOXuDlpC
+ He+bFSH7stqTg2RxeY4+gjjWPZPVK26oTYQ7Dj7gWI+XuAyzS/fmOAlsGbIFK+9DyIealT/Rmx+O2b4bUrmaqsteZo0iRwRC3YeGGNbmrydUees49D9713jqFojZ40MkxYPVH9abctzvgnAhkEZSlvQeTkVDo/dSENWiWFoGwC7uBq9+JrgPXSuOvq6Mzq7j8woQwKjeXzQgXl6HAIvtbH30gpIe971bRXybGqgnjCPcVkF96PqXtVJGdBKEzmCmaMTOzGVklBU+2IIZivwr2ozqXtJz+w5EaRzpAIdeiBDjYPuGHxZb0UkQGkSugqRUoaWooFW06xrQpbxWdo9Vdh9X/lSi77cNuvFRppohstrq8Hhsd4bzEaEuoAhEpAa7QaA32LWvps0n7kgGLx9gNAopUb5KKpv3RBNe0/XbZ3uEV0WawKqh15zTVuTTuHvkiCqAroSZtphQFObIVTpELepJ23zGXoAuxTueC5Acbzrjbfyo5b5wjhEK5e5hgR2gni9SZCP60T5CE1Eg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,22 +128,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  6 Jul 2026 07:18:54 -0700 SJ Park <sj@kernel.org> wrote:
+On Fri, 2026-07-03 at 21:56 -0700, Ziyang Men wrote:
 
-> TL;DR: Introduce a way to get DAMON's best effort accuracy monitoring of
-> user-demanding non-access data attributes.
+[...]
 
-Sashiko is continuously finding a few things including integer overflows from
-wrong or weird user setups.  Those are minor issues in my opinion.  But because
-the core layer parameters validation patch series is merged into mm-new, fixing
-thosse should be straightforward.
+Hi Ziyang,
 
-I will fix simple ones in the way, as a part of the next series or as a
-separate series.
+I'm a bit hesitant adding 2.5K lines of code to the BPF selftests,
+as this code would need to be (a) maintained, (b) run at each CI invocation=
+.
+Hence, the tests added need to be relevant for the BPF sub-system.
 
+Regarding the benchmarking part, as you state yourself:
+
+  > In my testing (a 60-CPU VM) the BPF path is roughly an order of magnitu=
+de
+  > faster than the per-cgroup memory.stat parse for a whole-tree scan, mai=
+nly
+  > because it avoids the per-cgroup open/read and string parsing.
+
+With this, I think the benchmarking code can be dropped altogether.
+
+Next, the three memcg_stat_{reader,churn,churn_percpu}.c files share a
+lot of utility code almost verbatim (e.g. tree definition/construction).
+Such duplication should be avoided.
+
+Finally, from the BPF point of view the test exercises the following functi=
+onality:
+- kfuncs:
+  - bpf_mem_cgroup_page_state
+  - bpf_mem_cgroup_vm_events
+  - bpf_put_mem_cgroup
+  - bpf_get_mem_cgroup
+- main iterator logic.
+
+All kfuncs but bpf_get_mem_cgroup() are thin wrappers around mm/memcontrol.=
+c code,
+all kfuncs including the bpf_get_mem_cgroup() are already exercised in the =
+selftests.
+The iterator logic itself is covered by 8 sub-tests in the prog_tests/cgrou=
+p_iter.c.
+Hence two questions:
+- What do these new tests add in terms of tests coverage?
+- Why do BPF selftests need to exercise the churn and churn_percpu scenario=
+s?
+
+Shakeel, could you please comment as well?
 
 Thanks,
-SJ
+Eduard.
 
 [...]
 
