@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5CB1C43602
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:42:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5567C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:42:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 928366B009D; Tue,  7 Jul 2026 02:42:40 -0400 (EDT)
+	id 557D56B009E; Tue,  7 Jul 2026 02:42:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D88C6B009E; Tue,  7 Jul 2026 02:42:40 -0400 (EDT)
+	id 4448F6B00C7; Tue,  7 Jul 2026 02:42:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C8416B009F; Tue,  7 Jul 2026 02:42:40 -0400 (EDT)
+	id 2BE156B00C8; Tue,  7 Jul 2026 02:42:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AD846B009D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EF7996B009E
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:42:40 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B79258D13D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:39 +0000 (UTC)
-X-FDA: 84961037238.15.1D88F0F
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1C8021C0002
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ov+5NpAx;
-	spf=pass (imf20.hostedemail.com: domain of 33J9MagsKCKcZVbYHcWHUKHNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--souravpanda.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=33J9MagsKCKcZVbYHcWHUKHNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--souravpanda.bounces.google.com;
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7C9321C33F0
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:40 +0000 (UTC)
+X-FDA: 84961037280.30.9405658
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C9B7540005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dcvCpjie;
+	spf=pass (imf12.hostedemail.com: domain of 33Z9MagsKCKgaWcZIdXIVLIOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--souravpanda.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=33Z9MagsKCKgaWcZIdXIVLIOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--souravpanda.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783406558;
-	b=L2Syn49si0J6C7hXMmm7fn/w/ypD5OFnLNzCX7NZW9AGRMXS/0YSsnMpRCr7pdKuOu1ql+
-	SZXIgBi+rildbh8R9xnjIUBMMLcUOaTidbAXMQR2W6muIfSbAsrezm6377kjh21jueUs81
-	bHVc15ITHGAELuTkukvEDEkYZyqaRsg=
+	b=q81XA94p7+hn72ylcEN9hGtf9Y6xYD55jgKtoATJvMPT2s9vjEl6Q2B8ZyhQvYvdiZekq8
+	1+NXyVih1nZvKYyOXqqU8Ng1d6KJHx86DSX3GMSjwXe/gC7aQUpsbNbCoSshveN6LV5fJ4
+	S5SNrG7gEH/nQqov++3rYj35Rte5BZ8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ov+5NpAx;
-	spf=pass (imf20.hostedemail.com: domain of 33J9MagsKCKcZVbYHcWHUKHNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--souravpanda.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=33J9MagsKCKcZVbYHcWHUKHNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--souravpanda.bounces.google.com;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=dcvCpjie;
+	spf=pass (imf12.hostedemail.com: domain of 33Z9MagsKCKgaWcZIdXIVLIOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--souravpanda.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=33Z9MagsKCKgaWcZIdXIVLIOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--souravpanda.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783406558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xeJmdcEDb3hj4kjTojGe7izWAUg4e6NWPJspG9L+qV0=;
-	b=UwesTzDMmG7a8njmneOcdP8kuUbow8BFI7rf2fLYD4XUFJS6Yw97LXbj84f1RheqUG2y1L
-	WLo+oQcZalIFS8aP/xoVzfK7ZcHBE6I2C8OhP8fuv96AajA0eZYR5iNa7PWYvT96hhFI/l
-	gOlfnriZi5Xew/YYgTG8ELuf7qqH+as=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ccafc5e82cso19475975ad.3
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 23:42:37 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=S2+6BMS1LET88hmhEtqV37vGf+7f7OZkNHnFc4ohCrA=;
+	b=UayccopEn86las28pfFNTqVKo3HW8wi6cpN6Diaqj47Zbq2HYnO6r4W3/qTtjhTWPNdMQZ
+	wZeccvu9nFXtq6MSnXSxbL4L73r4G+mQ8lo6KLAB5fmmo7PZ63fc3zLY5aCYzm6B5RTxOe
+	MfWQ/SFW2qTjmrrrMMNSu9WwxCnrXAk=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8479b45ad08so6464689b3a.3
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 23:42:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783406557; x=1784011357; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xeJmdcEDb3hj4kjTojGe7izWAUg4e6NWPJspG9L+qV0=;
-        b=ov+5NpAxAOUHY0gZ6uUEGwqqu3cUW70BMqv+QINmO8skt3sj/QJVwJf/ZSYO9+fTat
-         L26j3nZ13bA/Cz0/XSnAI0A3zw5kwcIw6rApL+Q41uBkAbG410vdurYJL9EQacLepfVp
-         fAi4Uiy83IsBzGRRnlHmpy6HNTqY/94rH8tUFGIFTVIBadBpfoCRHLgeN499PdCfaBor
-         xtkgqzPC0zM2h/svt8EC5xbhSJZKXLuWiGUTLiZ9MJqEtqGfhO6Absq/XbkGuI81SMAe
-         19jVW25w5uapgQcYZP8UjrWcHlEFMuPnjq4BMcFLbXJQEN/tsU5wtpB+/tilSJ7hopwK
-         RHmg==
+        d=google.com; s=20251104; t=1783406558; x=1784011358; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=S2+6BMS1LET88hmhEtqV37vGf+7f7OZkNHnFc4ohCrA=;
+        b=dcvCpjieoQvIdwlZ6CNrv7uDEtcB6lFRvIPDO6qPEKsPNnHNuHnDmAO6eNPDfPMqsR
+         hOSfG+cvjf614bXvLndLZd+fcXakXilkZCByQ29+8dO6CLsRkta7k0cROKU1GgEb7cze
+         9vgOpFTVTgR2OzMTy+VMkNLj0EwCp3B61VJbio/NKwzJbOkIQ2RSHe3ZZFy/1sRN7fT4
+         m2togMZoEUSeLR22UL239tpxA7SMIuffKSVMqA90574OTEQOXiuUQOE9TB3E1BCa3fCI
+         /buQ5whxauvAHCSxp0jBf22Cfe2/BStuUxqVFFByY9Um2DGkMD0r3lO5R33iv+tkfXGN
+         CZ1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783406557; x=1784011357;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xeJmdcEDb3hj4kjTojGe7izWAUg4e6NWPJspG9L+qV0=;
-        b=bgjrxYywqSxs42lFaohuElgLvsTNDCVcn/dL19PWyOOL2/uMEeASnq/B2N5QPnqWpm
-         7+7+ZEgTxTXxxXOEStSkETofGpDrc+UEcB+UNxu/JOBh4yIDzSimJrgeOb0WgEQmQJZD
-         37lFO6nGR5LtNu9YQ+dfJtoKdA6EfJjdrNNCdB1uVc2l4NPgyBYnkxAPONLfNl+L/r01
-         zp14LNcz8TUVa1C88gEfeePi+40DrdXIlhn90F8e8QamUwOVr2Xq/dseeOK0yyyuzq5/
-         0pqJv0IOdJaYzvmeFoaXEVXXZ2mQ2S8oIGzp0mbAausscL+0ZfI0vCBSoz6UwUUBS6zw
-         c0pw==
-X-Forwarded-Encrypted: i=1; AHgh+RrNmy6LuO1+2DduOXyFYcZj0nqA1iBK9mTsr3zTmd5v3sI+xCTjaQE9nZyBNQy0Ih5OowkwWSxXWg==@kvack.org
-X-Gm-Message-State: AOJu0YzA44hZOkEYDMiN/yZqbpXtUSVAladegd4qvnM8JHF7iin2aYhi
-	sJMK6ab2aZbiveJO2SURiBQPDeKsAouFZY3R1qJkW67OgA2cnQX84y2M0FabcJ/0LcOxgJp2GWl
-	UTRVqHLVKOZEEBa4QLNifJ7vAXA==
-X-Received: from plblk15.prod.google.com ([2002:a17:903:8cf:b0:2c6:bce1:2477])
+        d=1e100.net; s=20251104; t=1783406558; x=1784011358;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S2+6BMS1LET88hmhEtqV37vGf+7f7OZkNHnFc4ohCrA=;
+        b=GDn3YrOfg6kDjac2msgIaLPS27o49AYBb22Nl5fkemtjsstvvd1VAeRnUP9moLs8JV
+         idvNcKNOJfd3MxOodPDAGxh/rdtiYCFPRAL3dWbA74vpOtbBnD4vyF+aewjLmF/X8qC3
+         madDU5h0KVHcJyYZ6zK88NAq8OlYEqz/qHUqJPEJ8vM1w+O1QxxpsnBw3jOjhOE9ILyS
+         FPSCZosMwTioKUez67ZLf1PUqEnOiNdBDsVtBPxjygFbwbpBAyHdHC+P+D+Fo4yfAm77
+         RdqAh/1RUitTiodiQAhZRkpmzaUZJjCRJl+nghvl9cRY7avMmGKlb4ea5ajE8BdE+t7d
+         tK+g==
+X-Forwarded-Encrypted: i=1; AHgh+RoTh+jVaZQVIBbHAK8YbtT8w5WHehCfZxKp2O2jMx0oxFA+UEInfCDSHWevvY7q4UkJ441xtqEVfQ==@kvack.org
+X-Gm-Message-State: AOJu0YzGEtNmUaIeKrIrnMFsO1BjehXQ60/JY97pocOuB8r+YoXaRMLu
+	ycccIYJPVFdb/ic66I1qT+sBnOnYcPBTZr7RULGK+reWU6B97LihqcYo1A+tSPQK0d4yXLzWLPG
+	qG4wOHE1W8oX48swZjzcBB5mfwA==
+X-Received: from pfhh1.prod.google.com ([2002:a05:6a00:2301:b0:845:e874:e087])
  (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:388b:b0:2ca:d463:27fc with SMTP id d9443c01a7336-2ccbf076ebdmr41254245ad.45.1783406556649;
- Mon, 06 Jul 2026 23:42:36 -0700 (PDT)
-Date: Tue,  7 Jul 2026 06:42:29 +0000
+ 2002:a05:6a00:2350:b0:847:9367:e054 with SMTP id d2e1a72fcca58-84826e226d0mr3798373b3a.57.1783406557455;
+ Mon, 06 Jul 2026 23:42:37 -0700 (PDT)
+Date: Tue,  7 Jul 2026 06:42:30 +0000
+In-Reply-To: <20260707064235.1386552-1-souravpanda@google.com>
 Mime-Version: 1.0
+References: <20260707064235.1386552-1-souravpanda@google.com>
 X-Mailer: git-send-email 2.55.0.rc2.803.g1fd1e6609c-goog
-Message-ID: <20260707064235.1386552-1-souravpanda@google.com>
-Subject: [RFC PATCH 0/6] mm/hugetlb: Dynamic, NUMA-aware HugePage Cache & Free
- Page Reporting
+Message-ID: <20260707064235.1386552-2-souravpanda@google.com>
+Subject: [PATCH 1/6] mm/hugetlb: add Kconfig and basic cache infrastructure
 From: Sourav Panda <souravpanda@google.com>
 To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
 Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
@@ -97,13 +98,13 @@ Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
 	linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1C8021C0002
-X-Stat-Signature: a34rdyfmgqbff7t19ncwgj93dtqj4q7c
-X-HE-Tag: 1783406557-479887
-X-HE-Meta: U2FsdGVkX18LearDnEFpoaal81MUV6NblxP8Y55yCnzEEFdZmODbcFtVEWQSJCt1Nrk8p1aE3reClgT0TZnlMyszNiVPli4kSLjNQUA2VLL5KXuu4kD3euGCLy3JtRcdptNlQ909kVS0//pR5ogkySVn5yFM2fTNeL6LJvoV464WJAPSL5vbzRQROhyHehTQe2Twf63X872ZuabnfnLSh3jf1q2pOFHH+D4SLE2nZaQl8MEPd3sL5uPxGyhAA6v2R2aPxMAdGPoYTLzzOMVrORA9rdnxDktNAL+D9VjB2+C1cE++dOrNck1gn5qJ2WYt2DVGXRlsmVFbgugTosvNVxLYftxjO0d3dRwildUVXUKh9VsBZzx9drpf2Sau8NOoFLuyOj6rf1AvwmompL0+ZeR/xQEcJVdPfHFe87e/+QSpfeTVlKNT2pgO/fS05lcVyzF+1Z+M/8Z6GmRzAOzmW7CHLoFlSOQVaF2T48xrY9h6eWqNi+ZLLY/QdU5rddFHe1KGjz39o9+iRsqSNdTijbBHw3HliCBI82ayXwEEl6X7VEKBO6wUMrxRWcY17MmberOey7ofw8Vnk75oWz96o20DvVbwLaZ1mAC/YBJgeQoWkL2kagALRdUvgFIvK4njc/xS894fgOyM0fdDLcVPTZpByL/ReHQpZrdj/U3tpxBJD/N9PT91O17xqyBLHjELzE+Qsaanymd/65aWgu9cfLHD+Np5GrmHrQ74ydKqJ1utOo4hiuyVO41vWeVP5nuzbZpQAEOOMXkyO2h/4iPgPTGSP3OJC+BfqlT2uhjFUO+WmNTeS35AHTO5b0WiudlAczTPuWGPRdxQKRCuW0VfCR9rWGjl1ZakOoQ4T07u4AwFQnzKUmqgJPJ7scpnJGNuz6qNMjTXpxWIBx11JrCLOHotRu/SRfoz1qjTvvnh9H2bAxz1JwR27yjsfhYHoh5J1bHUV/Fop/x7RpCl0MR
- WSYAuolh
- RXnNxJid1xogka3CXDpsNgzRJSrwpjmQbW1mAONofA8PTL4Biw6oi9AVRuUr3cw0CGRdr8Qs2Tk5+C/FrEc9R7G+r1YbXsTiJjnfsvS/zGrQ6OzvFxTceTfhu4PqiPkCIcDY/0dXeLYq0jPe5vNBw2nQ/PCxp4mFVzxH4tRQiTM+IZpxJUGmsNaqGijLMLz/WBvCiGbkgh3nHPPMQptV1UrW0vZGxBHjsPSIhz7WL4K/871JjJv6JQU1gKP3XQKbE/rQ68Eohhpk1keEiRfESfE7NsnWXhVyUOrVUZzc5gF4/hU0vXU/YYMLV7326RE7OxzQWQ5RA8JFmX6BeW+rxR06ZqfPWTPK6x861A9KLApMoW65dCh1/G4em8OE4F4OnPy24+bWedZgv3tWj9uokvoyJ0OHBzrp8AWzb1VvQ7nY0TxAFpP6W9L9wyq5h8zT9j20/JovNClj90yZy05Mpt9cZiABskdkoykIpL0l/7flcDleu2sPeqt+bES9EQDcNNVak0PSLcjs/4o3GfoRbgkQ80z0oCl/n5B9rshdeNRUKmdo2ZHY2i1xA5XFobkY59RTOOBfaSSiXnD+fRQjclrkfL8XrN0soZgv/SB5KghfhxV5JF3/Pxo5g9vfvlsmOHhJt
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C9B7540005
+X-Stat-Signature: 3omtabh6wqzie4sd69fp364yx5a5k9kg
+X-HE-Tag: 1783406558-297325
+X-HE-Meta: U2FsdGVkX18i820vpQwMb30xwSq7+ZtSJui8d7GEJzrvbXxkwX+nE5ImVWcd68zgVeD5f6j80yWJQv+LOpgpQ54I1BZH83DRU5I5NhH8uA4i9pzod8SYra/p1CfMIYOMepHNYCLvC9blMLJcClNEFbqVSs5RD+SxeEgOQ8WCsVQorL2aM0KcZLfHBGUZTDoBelf54o3nBA9yJrrfx8L1irC1hh92+NgmjdcOAweugSdRoBIgI7gIW+jH29mAHIPxH65zjYQqt5XguRNg5KOMiEvZUo11izV/rCBsjVmtZwqF0uNko5ViEohnU0sKoF3r8KJdfomu8oO8hZZLBu3od8Ng8BuUvuGPwA6qOsNVibQblTn6Kh/P5Sn67qga+llA07OcGzF2Rj+lvIW7EXm542O48u8j3KuoVvjt+2fPs14vxQq7oOuZzPGZ31H75rXNvDjdb7TbkNiVunV12zDGi00d/TEs1sYrF1BPkVgi+rY9pyTV+1G/F4j0xX7qX/4uiSPhLXt2SHY6aadLXx+yUI/kOjiOjr7sa6KAQBqdZcw2ZafCPOBub/tW1E9fwVNKyHAt2AL6tF4Ct4s/6GKtFhoQIm80j6aV/6Qv5CRqyvpwupgO/VKRoX3i3wVOQNP1CwgL6MrVafO787H5aSEfvrwtEZc62RXFSwaAG5LWLtZJXxvE1JJPlE4JPTFKO9Woz8vfCjU59ym4AMafMum0k+/7IcaxhG1Y4MrczIX7cf5gYJQO40O3nNZWX4BBV4/hcyNy84I08rd33Rq3fwvSzaBa5pMwnHYjDyyoikO+PcOKMEFkrKLO8FzKAbSsADQac9JAdOFJJYBLyrqKIao4LCWJSK1zh3gi5CblsQ7/vyI5YsHdk9p9pIYIyvlcXn4hNBs1D9XchegMS8LcsPLfDK85ZrX2ni7svRL+NU+//Hehg86NrLlEPlE8EPEC0LwPNXpOyxPPpha3DHR4sxZ
+ 9DpfpqHh
+ qIns5xodCH4nDc0iDAGMkz03UwEodpmz9YtFnXOug99JYn2NggaILA+CckHX5h5bc12PwKJYegP8zcYxUHd28CJl6lFyCiEQ0Z1dE2t+7rwDAqDavzWS14hTqkVbbsiuWORRkFe57lRByk5sClEGAOCmI9u0jrcNlW5iVLv7UEqUrzkpoiD77WK32dl2lV+SZ/SrRYZTZNDq2eh0+x93w9QxcJ8+vyL4k84SrUgNDczoiJW/Efe6DQJuMEJHBuy4I08h4OQfjIeVp6F7NqXC2Nfz5islehmXuoGF8CdPoEshE87D1m4z+QFdL4tWfVAaKqi8XhXqiFtyNcOVo9QpEX7WaZe5r//dRg+dkYZnS3hMgW7AC8I8PLE+QpYZC4amsFJqbvyKhR0ezf18mPuhzlkNsVaIt8ngc81X41hPLsym9N/UCq9IudkC2nUpb8aL7gW53uyJZmOJnqg/7+lGwCT0tAyTceAiA1utQFQYBqy8MNkMFPubpOuNL8At+TQq08KxMjLmvwbWs9w1eywhgoUoLfdXchcSc6lyHZXnkkwM/KoS15p4B1+Juwgxs0E129t2Qa5rRfXzBLWLN8wSgsOQF7VxcCxMwId41T9rHnu7TLNCdBGb+AHa3bA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,111 +112,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Overview
-This patch series introduces a dynamic, NUMA-aware HugePage Cache,
-backed by a kernel shrinker to safely return memory under pressure, and
-integrates it with Free Page Reporting (virtio-balloon) for HugeTLB,
-specifically targeting gigantic (1GB) hugepages. The goal is to solve
-the tradeoff between allocation latency and memory
-fungibility in virtualized and heterogeneous cloud environments.
+Introduce CONFIG_HUGETLB_CACHE Kconfig option and add the basic
+infrastructure for the HugeTLB dynamic cache.
 
+This includes:
+- Adding new fields to struct hstate to track cached pages
+  (nr_cached_hugepages, max_cached_huge_pages, and node-specific versions)
+  and initializing them.
+- Introducing a new hugetlb page flag HPG_cached to track cached folios.
+- Updating remove_hugetlb_folio() to be cache-aware: if the folio has
+  HPG_cached set, decrement cache counters instead of the free page
+  counters. This prevents leaks during memory hotplug
+  (dissolve_free_hugetlb_folios).
+- Preventing inflation of free_huge_pages by cached pages to protect
+  memory reservation guarantees.
+
+Signed-off-by: Sourav Panda <souravpanda@google.com>
 ---
+ fs/Kconfig              |  9 +++++
+ include/linux/hugetlb.h | 14 +++++++
+ mm/hugetlb.c            | 82 +++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 98 insertions(+), 7 deletions(-)
 
-The Core Problem: Allocation Latency vs. Memory Fungibility
-
-With highly heterogeneous workloads, latency-critical applications demand
-gigantic hugepages. However, dynamic runtime allocation of 1GB pages
-from the buddy allocator (via CMA) is slow.
-
-To bypass this latency, operators often pre-allocate hugepages
-statically. However, this locks up the memory: when the HugeTLB
-workloads are idle, that memory is completely unavailable for other
-buddy-allocator workloads (e.g., page cache, anonymous memory). If buddy
-memory is exhausted, the system will OOM even if gigabytes of HugeTLB
-pages are sitting idle.
-
-This series resolves this challenge by delivering Dynamic Fungibility:
-
-1.  Dynamic Caching: Intercepts freed surplus hugepages and recycles
-    them into a NUMA-aware cache instead of dissolving them immediately.
-2.  Fast Allocations: Satisfies subsequent dynamic allocations
-    instantly from this warm, local hugepage cache.
-3.  Kernel Shrinker Integration: Registers a NUMA-aware kernel shrinker
-    to dynamically dissolve cached pages back to the buddy allocator
-    under memory pressure, restoring host/guest memory fungibility.
-4.  Free Page Reporting Integration: For virtualized environments (Guest
-    VMs), cached pages trigger background Free Page Reporting via
-    virtio-balloon. This allows the host to reclaim the physical memory
-    while the guest retains its Vmemmap Optimization (HVO) metadata
-    savings (~14GB saved per 1TB VM)!
-
-  +---------------+   Slow Allocate  +---------------------+
-  | Buddy         | ---------------> | Active HugeTLB Page |
-  | Allocator     |                  +---------------------+
-  +---------------+                    |                ^
-    ^                                  | (1) Free to    | (2) Fast
-    | (3) Under                        v     Cache      |     Allocate
-    | Pressure                       +---------------------+
-    | Shrink()  <------------------- | HugeTLB Cache       |
-                                     +---------------------+
-                                       |
-                                       v (4) Free Page Reporting
-                                         (Host Reclaim in the case
-                                          of virtualization)
-
----
-
-Patch Series Structure
-
-Patch 1/6: mm/hugetlb: add Kconfig and basic cache infrastructure
-  - Introduces the CONFIG_HUGETLB_CACHE option, hstate tracking fields,
-    and the HPG_cached page flag.
-  - Establishes the clean helper API (hugetlb_folio_is_cached(),
-    hugetlb_cache_remove(), hugetlb_cache_add()) and updates
-    remove_hugetlb_folio() to be cache-aware, eliminating inline #ifdef
-    blocks.
-Patch 2/6: mm/hugetlb: implement cache recycling and allocation
-  - Hooks up recycling in free_huge_folio() (up to the cache limit) and
-    allocation in alloc_surplus_hugetlb_folio().
-  - Implements MRU allocation policy for maximum warmth, poison safety
-    checks, and MTE/dcache cleaning.
-Patch 3/6: mm/hugetlb: add sysfs interfaces for cache
-  - Exposes global and per-node sysfs attributes (max_cached_huge_pages,
-    nr_cached_hugepages) for dynamic userspace control, including NUMA
-    memory policy scaling.
-  - Supports dynamic delta adjustments (+1/-1) to safely scale cache
-    sizes alongside concurrent background reclaim operations.
-Patch 4/6: mm/hugetlb: add memory shrinker for cache
-  - Registers a NUMA-aware kernel shrinker to evict and dissolve cached
-    gigantic pages back to buddy under memory pressure.
-Patch 5/6: Documentation/admin-guide/mm/hugetlbpage.rst: document cache
-    interfaces
-  - Documents the Kconfig option, sysfs attributes, and shrinker
-    behavior in the admin guide.
-Patch 6/6: mm/hugetlb: support free page reporting for cached hugepages
-  - Integrates the cache with the Free Page Reporting framework (virtio-
-    balloon), introducing the HPG_reported flag and the
-    reporting/isolation/draining lifecycle.
-Sourav Panda (6):
-  mm/hugetlb: add Kconfig and basic cache infrastructure
-  mm/hugetlb: implement cache recycling and allocation
-  mm/hugetlb: add sysfs interfaces for cache
-  mm/hugetlb: add memory shrinker for cache
-  Documentation/admin-guide/mm/hugetlbpage.rst: document cache
-    interfaces
-  mm/hugetlb: support free page reporting for cached hugepages
-
- Documentation/admin-guide/mm/hugetlbpage.rst |  34 +-
- fs/Kconfig                                   |   9 +
- include/linux/hugetlb.h                      |  45 ++
- include/linux/page_reporting.h               |   1 +
- mm/hugetlb.c                                 | 590 ++++++++++++++++++-
- mm/hugetlb_internal.h                        |   9 +
- mm/hugetlb_sysfs.c                           | 158 +++++
- mm/page_reporting.c                          |  10 +-
- mm/page_reporting.h                          |   6 +
- 9 files changed, 844 insertions(+), 18 deletions(-)
-
+diff --git a/fs/Kconfig b/fs/Kconfig
+index 43cb06de297f..d33d1973ce8f 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -268,6 +268,15 @@ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
+ 	  The HugeTLB Vmemmap Optimization (HVO) defaults to off. Say Y here to
+ 	  enable HVO by default. It can be disabled via hugetlb_free_vmemmap=off
+ 	  (boot command line) or hugetlb_optimize_vmemmap (sysctl).
++
++config HUGETLB_CACHE
++	bool "HugeTLB dynamic cache"
++	help
++	  Enables a dynamic, NUMA-aware hugepage cache for
++	  gigantic hugepages to allow faster allocation of surplus pages.
++	  Surplus pages are recycled into this cache upon release
++	  instead of being freed back to the buddy allocator immediately.
++	  Subsequent hugetlb allocations will prefer this cache.
+ endif # HUGETLBFS
+ 
+ config HUGETLB_PAGE
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 2abaf99321e9..4768f52ddd35 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -585,6 +585,9 @@ enum hugetlb_page_flags {
+ 	HPG_vmemmap_optimized,
+ 	HPG_raw_hwp_unreliable,
+ 	HPG_cma,
++#ifdef CONFIG_HUGETLB_CACHE
++	HPG_cached,
++#endif
+ 	__NR_HPAGEFLAGS,
+ };
+ 
+@@ -645,6 +648,9 @@ HPAGEFLAG(Freed, freed)
+ HPAGEFLAG(VmemmapOptimized, vmemmap_optimized)
+ HPAGEFLAG(RawHwpUnreliable, raw_hwp_unreliable)
+ HPAGEFLAG(Cma, cma)
++#ifdef CONFIG_HUGETLB_CACHE
++HPAGEFLAG(Cached, cached)
++#endif
+ 
+ #ifdef CONFIG_HUGETLB_PAGE
+ 
+@@ -670,6 +676,14 @@ struct hstate {
+ 	unsigned int nr_huge_pages_node[MAX_NUMNODES];
+ 	unsigned int free_huge_pages_node[MAX_NUMNODES];
+ 	unsigned int surplus_huge_pages_node[MAX_NUMNODES];
++
++#ifdef CONFIG_HUGETLB_CACHE
++	unsigned long nr_cached_hugepages;
++	unsigned int nr_cached_hugepages_node[MAX_NUMNODES];
++	struct list_head hugepage_cache_lists[MAX_NUMNODES];
++	unsigned long max_cached_huge_pages;
++	unsigned int max_cached_huge_pages_node[MAX_NUMNODES];
++#endif
+ 	char name[HSTATE_NAME_LEN];
+ };
+ 
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index c921287489de..15be3cf54606 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1381,6 +1381,60 @@ static struct folio *alloc_gigantic_frozen_folio(int order, gfp_t gfp_mask, int
+ }
+ #endif
+ 
++#ifdef CONFIG_HUGETLB_CACHE
++static inline bool hugetlb_folio_is_cached(struct folio *folio)
++{
++	return folio_test_hugetlb_cached(folio);
++}
++
++static void hugetlb_cache_add(struct hstate *h, struct folio *folio, bool from_surplus)
++{
++	int nid = folio_nid(folio);
++
++	list_move_tail(&folio->lru, &h->hugepage_cache_lists[nid]);
++	folio_set_hugetlb_freed(folio);
++	folio_set_hugetlb_cached(folio);
++	h->nr_cached_hugepages++;
++	h->nr_cached_hugepages_node[nid]++;
++	if (from_surplus) {
++		h->surplus_huge_pages--;
++		h->surplus_huge_pages_node[nid]--;
++	}
++}
++
++static void hugetlb_cache_remove(struct hstate *h, struct folio *folio, bool to_surplus)
++{
++	int nid = folio_nid(folio);
++
++	list_del_init(&folio->lru);
++	folio_clear_hugetlb_freed(folio);
++	folio_clear_hugetlb_cached(folio);
++	h->nr_cached_hugepages--;
++	h->nr_cached_hugepages_node[nid]--;
++	if (to_surplus) {
++		h->surplus_huge_pages++;
++		h->surplus_huge_pages_node[nid]++;
++	}
++}
++#else
++static inline bool hugetlb_folio_is_cached(struct folio *folio)
++{
++	return false;
++}
++
++static inline void hugetlb_cache_add(struct hstate *h,
++				     struct folio *folio,
++				     bool from_surplus)
++{
++}
++
++static inline void hugetlb_cache_remove(struct hstate *h,
++					struct folio *folio,
++					bool to_surplus)
++{
++}
++#endif
++
+ /*
+  * Remove hugetlb folio from lists.
+  * If vmemmap exists for the folio, clear the hugetlb flag so that the
+@@ -1401,12 +1455,16 @@ void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
+ 	if (hstate_is_gigantic_no_runtime(h))
+ 		return;
+ 
+-	list_del(&folio->lru);
+-
+-	if (folio_test_hugetlb_freed(folio)) {
+-		folio_clear_hugetlb_freed(folio);
+-		h->free_huge_pages--;
+-		h->free_huge_pages_node[nid]--;
++	if (hugetlb_folio_is_cached(folio)) {
++		if (folio_test_hugetlb_freed(folio))
++			hugetlb_cache_remove(h, folio, false);
++	} else {
++		list_del(&folio->lru);
++		if (folio_test_hugetlb_freed(folio)) {
++			folio_clear_hugetlb_freed(folio);
++			h->free_huge_pages--;
++			h->free_huge_pages_node[nid]--;
++		}
+ 	}
+ 	if (adjust_surplus) {
+ 		h->surplus_huge_pages--;
+@@ -4169,8 +4227,18 @@ void __init hugetlb_add_hstate(unsigned int order)
+ 	__mutex_init(&h->resize_lock, "resize mutex", &h->resize_key);
+ 	h->order = order;
+ 	h->mask = ~(huge_page_size(h) - 1);
+-	for (i = 0; i < MAX_NUMNODES; ++i)
++	for (i = 0; i < MAX_NUMNODES; ++i) {
+ 		INIT_LIST_HEAD(&h->hugepage_freelists[i]);
++#ifdef CONFIG_HUGETLB_CACHE
++		INIT_LIST_HEAD(&h->hugepage_cache_lists[i]);
++		h->nr_cached_hugepages_node[i] = 0;
++		h->max_cached_huge_pages_node[i] = 0;
++#endif
++	}
++#ifdef CONFIG_HUGETLB_CACHE
++	h->nr_cached_hugepages = 0;
++	h->max_cached_huge_pages = 0;
++#endif
+ 	INIT_LIST_HEAD(&h->hugepage_activelist);
+ 	snprintf(h->name, HSTATE_NAME_LEN, "hugepages-%lukB",
+ 					huge_page_size(h)/SZ_1K);
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
