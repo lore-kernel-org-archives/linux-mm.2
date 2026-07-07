@@ -4,102 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA8A0C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F7D2C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:11:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C5DA6B00A0; Tue,  7 Jul 2026 07:08:28 -0400 (EDT)
+	id 150B56B00A3; Tue,  7 Jul 2026 07:11:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8760A6B00A1; Tue,  7 Jul 2026 07:08:28 -0400 (EDT)
+	id 101626B00A4; Tue,  7 Jul 2026 07:11:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73FDC6B00A2; Tue,  7 Jul 2026 07:08:28 -0400 (EDT)
+	id F31FF6B00A5; Tue,  7 Jul 2026 07:11:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CA3B6B00A0
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:08:28 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C09FE6B00A3
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:11:14 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AEBB61203F4
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:08:27 +0000 (UTC)
-X-FDA: 84961707054.19.F4984D5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D9B012000A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:08:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m4ROI35J;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3E5898DC65
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:11:14 +0000 (UTC)
+X-FDA: 84961714068.19.35DF245
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A7A27C000E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:11:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KCONi7YL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783422505;
+	s=arc-20220608; t=1783422672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dk96b/I3wsJF+jNGoexw3eefcHnup28pG3QDLNzVHEE=;
-	b=x+vnc55cpyPO43d3N/jNlZsIfKPooE+LYmoGOaqeO7zyCdnsHIfxQ3ckTfUkpJUO6PT6Q+
-	W1OHkY5dhbtsRI06dg1xoKWYcWxmfHVfDxlGOf2Pye/04ZPKen0/SSQ+n7WINwrtuBqp/n
-	oB8qNeycYqSJYg3GxvwLA/7JYdhvmMU=
+	bh=iTtyFBKpC/9Rr+IQFQF1FMdSFl6tkNhkuc41pgWUwKU=;
+	b=cEGxvgSRQSotcLvAMPIvXTLOIg0xRO3Zl13K1ywzlWbpB3WRmtMPCWB54RUBdcwf2s8hzK
+	ISwxF6xyjJUIuTRIZvzxDadfJBJSpdOwysnd2dFbgm0SQSWys7+LhZ6f64pYQVvM9M9vxC
+	QGq/iuCUCbm85wMDqa30OEzsfuUNeCo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m4ROI35J;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KCONi7YL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783422505;
-	b=wlvMVA8We5zagdJOBEgOlrY+53vGDqq0sBDP4qKO1vUg2deIbKZOI50NB7GFS/kxmkPrFE
-	WUOldzQNM4hDjrCmautGkFv8cEXURaYHylQEPWJF85gGNV/czXyKd8w3imzvjLRVDpYsE2
-	2ie6dR2pcHonPCeSHs5rQd7EAjPYNzk=
+	t=1783422672;
+	b=rQ5aYkenE7E1SApOGwoBCR1UwatfgGVWIxOmH2snYaDN4juVdG+LZDQIodyfn5sKxcSRik
+	fQnNMyirMq0xxz21T8hhPi0uAnjKxZipoVKaQhz7fGeQ4aqxCpai1YHl0CA/Ot0cK/z6dx
+	4eoFxuKCNsQjWeKzrswlKSXGnwgGohQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0D14C401CA
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:08:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E423F1F00A3A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:08:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 20C3E618AC;
+	Tue,  7 Jul 2026 11:11:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2678F1F000E9;
+	Tue,  7 Jul 2026 11:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783422504;
-	bh=Dk96b/I3wsJF+jNGoexw3eefcHnup28pG3QDLNzVHEE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=m4ROI35J0wOQazaIjxM4Sk+fJivp2OGzJixk4Vp+G26bHDOBGcQc5S0LRy7pmwiyX
-	 aXmllAPgTq0wGzCCagT1Y7OYJ2a2izNtQnFv/q6VlHcZGahAyc8TsrS2xQWFKc28Ks
-	 JUPHHlrWKB6E5UTJAnq9/PKytwRO4kacVgbogcjHoJvPhVEWA6UAx2AaRaD7JqSP/s
-	 +PY9KiqK0H6AeIxrQWVLOtIiRw3abWnQ3usSelF0D+5WU0IgTIOw7U4mMwskbshH/2
-	 sr/7HHC3N5o91uDkVT6QdEZMB+x9Ar0U+XLpsIgOnBKamIDp6JZb38O9Uanbf5L4CR
-	 X4480j4eK4HKg==
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c2cce930cso43206421cf.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 04:08:24 -0700 (PDT)
-X-Gm-Message-State: AOJu0YztdU1ybjSm++jY4yZw5VvI9o4oIxT0R2Az9U/azbBaFhtQZli9
-	lYegryUzz7s9mj+OmL3t5AynmQ+Y48Q0TcVe6OybY7UZeIh27qhN3bwicr0VjTUylWgyKLpjUmf
-	L6G6ACjg8Yf1Ipsu2/kn+r1/UnY/sy5Q=
-X-Received: by 2002:a05:620a:2629:b0:92e:5444:9274 with SMTP id
- af79cd13be357-92ebb571b03mr518535985a.30.1783422504300; Tue, 07 Jul 2026
- 04:08:24 -0700 (PDT)
+	s=k20260515; t=1783422671;
+	bh=iTtyFBKpC/9Rr+IQFQF1FMdSFl6tkNhkuc41pgWUwKU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KCONi7YLJsHj83vwhEYusXcFZ1TyfVSY7LLadiJL59mR77UUle7xHU4OxBOPBYKMS
+	 pgX65zNxXjhU3NIXPyRVMZOel1/3ooHBaL4eNPsZDAz1r8XfcTcohuvR/Now9vC7EY
+	 HxS1gOol+eYn3y5HF9jZ5C20QgqBkGj2JTJwt87fZcthWOlWp5cnMnj9fZOd7ounwy
+	 0sbCcjho8L+ai42lDB5Mhdp8hSjjnD3onbqbCJ5chwncEVh19RyZxk4iUV2gHYSHgd
+	 iGJ3zKFfYkC0BEtHH+eaaepZH5C+tDY50+uoRgZnrwx82/slD617CeeIQoFqY00Dr2
+	 WTuqa7U6gESpg==
+Date: Tue, 7 Jul 2026 12:11:01 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>, 
+	Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH] mm/kconfig: Drop redundant memory hotplug dependencies
+Message-ID: <akzecADgdyQjiDXW@lucifer>
+References: <20260707090331.52971-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
-References: <20260701235955.36126-1-baohua@kernel.org> <20260701235955.36126-3-baohua@kernel.org>
- <3a185a5d-2f2c-4e9d-9cd9-8bdb236dfc5c@kernel.org>
-In-Reply-To: <3a185a5d-2f2c-4e9d-9cd9-8bdb236dfc5c@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 7 Jul 2026 19:08:13 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zGBK7ndTyFnzdzw0tuwaQwbCChVBdkC4E1YBE0NwVHcg@mail.gmail.com>
-X-Gm-Features: AVVi8Cc5af3cgXAyx-CYU-csdAhwAVD3iMjoaFrXDwmVboib6XdZxLv1lUXSb1Q
-Message-ID: <CAGsJ_4zGBK7ndTyFnzdzw0tuwaQwbCChVBdkC4E1YBE0NwVHcg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] mm: drop stale folio_ref_count()==1 check in
- do_swap_page reuse logic
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, baoquan.he@linux.dev, chrisl@kernel.org, 
-	jp.kobryn@linux.dev, kasong@tencent.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com, 
-	nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev, 
-	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, youngjun.park@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260707090331.52971-1-kaitao.cheng@linux.dev>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A7A27C000E
+X-Stat-Signature: h38adfn5bzgbgac49t5tcc1qtm5pg7gj
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D9B012000A
-X-Stat-Signature: orasx81tcqccdq1kjqep7odmrwfqgrye
-X-HE-Tag: 1783422505-878364
-X-HE-Meta: U2FsdGVkX1+xSUXpAUDm7UHSM90E3N7vt1WX+0/axhhGBr9sHuUMkzzXflsXRGny/0YaJcqAYkUuMRr0oALSsPLffDXsxUDlc6b7aL5uotG13etqwTAEY4oPJNKp4ttabOoxGSkdCkCa0/tjtzKzXOvrQHUya/VM/Utnbn2DJZmu/PVHVMzjpQ0MAUr2A/jclVfretMlc/xieeMENBgHvJRtcHg/W6b0UN0FPL14XNAgAvZxdgpYWK3hmGWwbWGRjkS9/z5HGJ4wkG+GPHsRONhLrl5h7hnjL1eWJopUIjtKlbg5Vik2Touj7glSRWKGc8MXXn8dc8nXLbISj+4+1L/y4WQldVwNUCXCfv/7b2sOJV6NlV9P30wuUI/mmEav21RZp9da1rZ7K201YsgLMtU/ZsthbFdBz8IwrkoEJ++kx60U+f32vVIIoBmKsiYqpDkYLQ8Mo1VI5D/34HKQZUJHMI6RxK8jW8m2eLbO0oJ9qgDKGSmocLJESI+wg4X9975TzJAYCvU0hZNF9En5K6kk3PKKGG1A73oP8yIqkmaXQvCypYJ+H7fSlmjEjTgeIJTU4VpnIuog5cmmhL467u9YxTKtum3VolXJjf6r8xjdZ4MrYcOCRCCQlMxi4UKhaNfBwjVzkz9z8YDxsqlU5Vl6JVQU8lvCYLfs7D1bLLt7CkCC/GLosyvaBE4IsRGGsXNpO0UQxWSqS9hdBtD8NVh97TeUrSytA0gdebmXBSKKIHHvGa2dEqFGBAMZ5t3iTF41Y9cUhjXLK/CSZmi+4pTcJSRImcqVW0IM1CLvdo460KKFEoZqVoy3o3oiQO/Ftw1JsPqIN1j5sRSHRnsmTsQs5xkWVVsqepbjzsYO4Lzwly1Q7aED5y9tiG3o0rBkSBF15Yoqg55QWCu/8vqY/UjpmerwKKCjMcr8Rjg0l6b31USAZg71BpoeMOHNVQdnSVRF19cOT0NQrPeBsui
- NNvzEVzS
- N0DwOguG/lKm09RLxd4NQjAPYx7jNisgBaE0cI7KPTznhJiG+yELrBA6I/RVJ7m/rTWKDiQSrfxnNU9Ght1ZtcnSzcIzLzPlsGIktuJanH07nYd6LM1WSOImfb/uD43qPzKxsa3FHD67k+W5GmNNmUtZ7WzL/V4lRDBvFhgxsqseRVd2revaJxpr+u5WBoO5COzQwTPSi6hjCFjkuiZL6qCrbZilxs4pBLWGeRqarsyGHhjE50Kc7woY8+tv6xtPxBSH/SVp+hpqt5CkTAudRfjWrxTiGtu04jZFcCyWJmnB+piOtPZP9GDXcwhc4knfANGfxxunkhSN2+/c6BT4S6TUrsQpFXYXMhFPG
+X-HE-Tag: 1783422672-317136
+X-HE-Meta: U2FsdGVkX18sm4XsIH3SFUfBWajBqJkXtzvlhjen8aN+ek9AGDhg21RNGm6e3ZsFwTnJooybGOnG7ClNv48yHkmYCA/QX0EGxnCN6YbkVwUPrHWRdcOTJWUsCyE2SmQ+Pc0/O2zP+q5v6LvnF2V4xrBI6Qog5BIZpySQOSlphAcoxN9le2yg8+IRT0D5dISXTikEN74GifehKCRGUAz7STg1OY/LrRZUPeJCVL3uynh5ZzTEO1AvbpqalOlpLS8JgT7BuK9FTZZ2fXXB+Bqk3biko1JBGRgh3+Rqj5nTPsK3nn1s70OCi2d0tq5Bj2ITEaPLO6R1VZLgHaiBACrCHlICM3JLirdS2sDfIn5VShYt+7d3e/bYrqWR5XotYG3ZHjOsqStlBE1rOiqgHahPzGZTuT6q3swYbhzYqM1Bl2SsXdbk1cb4YyREGtNsMFQ1IMf8kgdodFRhzBHHZVBAT7Rj08ag4ET8HkDCDZk/OyPvqQN42xwKAMcFqPyafnbwFBvaHwzhPzkcNcyDmVvZfqVks+QOipVnPo7FLoLWpSn54HgwRtMqVe5DrkKLeYi8TzrzqQXUpGJoh3brA9BSUi0vRXfXBW+36Hjlj2E8Htpdc6kwTUf7W04erRjCMYMb6FXpv+ujvdJnDZghv5+kU93IJQkhBUCegcCpN6aVi0Nnaxp4BCRkb4qT/HlVgMonXPiWI9ml+FkJCHtWQtesmG6bVBbsHd9tC9ehIxIojeuaJWyK7Fio9ew/MWmil4BMRax6c6f/4SDHTmuY22L+uGtGWErY9jlykxqxwU6JkVCRRs0oJR1Y7t+QAO2p2DCEikm9Q/isLl9jZ/7ViugeoUS88oAkJ5RVR6T73dR+ZAyd15QNN0w5TTPnK7BKYETDHjpDR4OxhOMiJggtIJzi0TAEYmy8jcUR9HpwjJ7Dap+mWFobUZEu7HwTGK6c7jSs5O/GzryeuTqS4s4Q9Pe
+ r6XKc3Ow
+ HtCzXOs3mTtD4OQllbWWTDSv8JnzglUc2AVQyS42XLuRTsnejTKvQbvJfQPFMQQk2pzVLOsrJZT39klN/oHjYyWLoprFkL2MlAlhBCZ4kDcr3Pj0XrVHuTTanz11rocyNklzUtGT1E+sL5dE02M/LQoSQvBIZwUVZhztFepjA8H5JFFvcH0Md0BeNpshHQga/rEviqQLeIlASHCw/lbfKZt5wUJRBjzp110WR6hHRjpabuDyxjM8L03Mo6AxrdKilWXGpv5KI983YFmuL7mBZvfOK8w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,35 +94,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 2, 2026 at 4:14=E2=80=AFPM David Hildenbrand (Arm) <david@kerne=
-l.org> wrote:
+On Tue, Jul 07, 2026 at 05:03:31PM +0800, Kaitao Cheng wrote:
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
 >
-> On 7/2/26 01:59, Barry Song (Xiaomi) wrote:
-> > The "we just allocated them without exposing them to the swapcache"
-> > case no longer exists, as Kairui has routed synchronous I/O through
-> > the swapcache as well in his series "unify swapin use swap cache and
-> > cleanup flags"[1]. As a result, folio_ref_count() should never be 1
-> > in this path, since at least two references are held (base ref plus
-> > swapcache). Remove the folio_ref_count()=3D=3D1 check and update the
-> > comment accordingly.
+> MHP_MEMMAP_ON_MEMORY is defined inside the MEMORY_HOTPLUG block, and
+> MEMORY_HOTPLUG already depends on SPARSEMEM_VMEMMAP. Keep the explicit
+> MEMORY_HOTPLUG dependency for local readability, but drop the redundant
+> SPARSEMEM_VMEMMAP dependency.
 >
-> Sashiko points out two minor things (one flagged as medium, lol, sure sur=
-e).
+> ZONE_DEVICE depends on MEMORY_HOTREMOVE, which depends on MEMORY_HOTPLUG.
+> MEMORY_HOTPLUG in turn depends on SPARSEMEM_VMEMMAP. Drop the direct
+> MEMORY_HOTPLUG and SPARSEMEM_VMEMMAP dependencies from ZONE_DEVICE.
 >
-> Here, you can clarify that folio_ref_count()=3D=3D1 is true for freshly a=
-llocated
-> pages (due to the KSM check) in which case exclusive=3Dtrue already.
+> This does not change the set of valid configurations.
+>
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
 
-Hi Andrew,
+LGTM, so:
 
-I saw that you've queued this in mm-new. Thanks very much for that!
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Would you mind adding the following sentences to the end of the changelog?
+> ---
+>  mm/Kconfig | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 04fe5171bb8c..ff29f770d10a 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -596,7 +596,7 @@ config MEMORY_HOTREMOVE
+>
+>  config MHP_MEMMAP_ON_MEMORY
+>  	def_bool y
+> -	depends on MEMORY_HOTPLUG && SPARSEMEM_VMEMMAP
+> +	depends on MEMORY_HOTPLUG
+>  	depends on ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+>
+>  endif # MEMORY_HOTPLUG
+> @@ -1235,9 +1235,7 @@ config ZONE_DMA32
+>
+>  config ZONE_DEVICE
+>  	bool "Device memory (pmem, HMM, etc...) hotplug support"
+> -	depends on MEMORY_HOTPLUG
+>  	depends on MEMORY_HOTREMOVE
+> -	depends on SPARSEMEM_VMEMMAP
+>  	select XARRAY_MULTI
+>
+>  	help
+> --
+> 2.50.1 (Apple Git-155)
+>
 
-The ksm_might_need_to_copy() check may allocate a fresh folio with
-folio_ref_count() =3D=3D 1. Along that path, exclusive has already been
-set to true, so the folio can still be reused correctly.
-
-Best Regards
-Barry
+Cheers, Lorenzo
 
