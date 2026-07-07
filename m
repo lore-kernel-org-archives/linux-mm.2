@@ -4,99 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 315BDC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:41:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5CB1C43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:42:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 57A666B00B3; Tue,  7 Jul 2026 02:40:37 -0400 (EDT)
+	id 928366B009D; Tue,  7 Jul 2026 02:42:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5056A6B00B4; Tue,  7 Jul 2026 02:40:37 -0400 (EDT)
+	id 8D88C6B009E; Tue,  7 Jul 2026 02:42:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A6626B00B5; Tue,  7 Jul 2026 02:40:37 -0400 (EDT)
+	id 7C8416B009F; Tue,  7 Jul 2026 02:42:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0605F6B00B3
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:40:36 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A5B8A02FC
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:36 +0000 (UTC)
-X-FDA: 84961032072.16.AFFCD64
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B705F40007
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b="aqiA0Q/D";
-	dkim=pass header.d=linutronix.de header.s=2020e header.b="DiBkaT/r";
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf04.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AD846B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:42:40 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B79258D13D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:39 +0000 (UTC)
+X-FDA: 84961037238.15.1D88F0F
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1C8021C0002
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:37 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ov+5NpAx;
+	spf=pass (imf20.hostedemail.com: domain of 33J9MagsKCKcZVbYHcWHUKHNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--souravpanda.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=33J9MagsKCKcZVbYHcWHUKHNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--souravpanda.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783406558;
+	b=L2Syn49si0J6C7hXMmm7fn/w/ypD5OFnLNzCX7NZW9AGRMXS/0YSsnMpRCr7pdKuOu1ql+
+	SZXIgBi+rildbh8R9xnjIUBMMLcUOaTidbAXMQR2W6muIfSbAsrezm6377kjh21jueUs81
+	bHVc15ITHGAELuTkukvEDEkYZyqaRsg=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ov+5NpAx;
+	spf=pass (imf20.hostedemail.com: domain of 33J9MagsKCKcZVbYHcWHUKHNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--souravpanda.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=33J9MagsKCKcZVbYHcWHUKHNVVNSL.JVTSPUbe-TTRcHJR.VYN@flex--souravpanda.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783406434;
+	s=arc-20220608; t=1783406558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ObyCEryIwmniZMWVgbaPW4hyZdtbe1mtphtq19MumpA=;
-	b=RNNDyOKwsrkKBBuIxTjpFOjxnO1J0IzoVq9sVc75INXqT4J+XrkAFzTyjARy0DV0q0KAsf
-	1DAoxF3m/RyjtsFczhMhATV6n9k0LA5wrtHc0wmk0qZ2PtdXRV0uqiQECwu2sX8SbiKxd/
-	DBeR/n/HxG6YOtEmiafkkgC6nTizqtw=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b="aqiA0Q/D";
-	dkim=pass header.d=linutronix.de header.s=2020e header.b="DiBkaT/r";
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf04.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783406434;
-	b=poNKrApWPm+lPUn1NWzcXgubG2B/EaeOzKtvYZHG4ENj/FEuw2vISNSjdoaaTRJ8EVLzQc
-	HTiYubK0KiCYTUPpfDOhnIE5wSy0RdVBmEN+8dRFAuyxPankmKB1d77B5xaMdXAUlKWraI
-	74b4DVsKrQzoY4B1/zRDPiQ7ooGg9UQ=
-Date: Tue, 7 Jul 2026 08:40:30 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1783406432;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ObyCEryIwmniZMWVgbaPW4hyZdtbe1mtphtq19MumpA=;
-	b=aqiA0Q/De1LQTMVcPL443duYUftLEhAds/ioHhSi9c7pBkHim65H+7Uiq16TWEmbFU2a1k
-	p9uyVTd+wv4igg30l085v6rLL35cNoG3Jz+Tb3z2Oj6c5ZVwQ+fq4uPXCBy2Ky4Mys4Z0F
-	AdZbyTrY/CmhyQ7lBF4thi5AyZYNilvoCJOxEbqZnNN8SHdDTuQzIYJd6h43sszuOQTEn1
-	CQzhfMOMHVdgdJgPIytUh95nEDxPC3ckFRNz/mkWJVgJHA54k9I3MnKTFNNikPMqK4iOAL
-	5WeB8G+qbU3Fpxowc7gh5SXyldug0VS1gqR00IGRL8tlN4r0YoxC+2eANjVnIQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1783406432;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ObyCEryIwmniZMWVgbaPW4hyZdtbe1mtphtq19MumpA=;
-	b=DiBkaT/rhrfJ64NQmFry1pmfAdq55vJHTJVSi7+Yu75tSJDOmYgcUqyioM8ewOftFnQAOO
-	Pdei3mnVjhtcTMDQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Hillf Danton <hdanton@sina.com>, Kairui Song <ryncsn@gmail.com>,
-	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 01/19] zram: sleepable entry locking
-Message-ID: <20260707064030.D843llKh@linutronix.de>
-References: <20250303022425.285971-1-senozhatsky@chromium.org>
- <20250303022425.285971-2-senozhatsky@chromium.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250303022425.285971-2-senozhatsky@chromium.org>
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=xeJmdcEDb3hj4kjTojGe7izWAUg4e6NWPJspG9L+qV0=;
+	b=UwesTzDMmG7a8njmneOcdP8kuUbow8BFI7rf2fLYD4XUFJS6Yw97LXbj84f1RheqUG2y1L
+	WLo+oQcZalIFS8aP/xoVzfK7ZcHBE6I2C8OhP8fuv96AajA0eZYR5iNa7PWYvT96hhFI/l
+	gOlfnriZi5Xew/YYgTG8ELuf7qqH+as=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ccafc5e82cso19475975ad.3
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 23:42:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783406557; x=1784011357; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xeJmdcEDb3hj4kjTojGe7izWAUg4e6NWPJspG9L+qV0=;
+        b=ov+5NpAxAOUHY0gZ6uUEGwqqu3cUW70BMqv+QINmO8skt3sj/QJVwJf/ZSYO9+fTat
+         L26j3nZ13bA/Cz0/XSnAI0A3zw5kwcIw6rApL+Q41uBkAbG410vdurYJL9EQacLepfVp
+         fAi4Uiy83IsBzGRRnlHmpy6HNTqY/94rH8tUFGIFTVIBadBpfoCRHLgeN499PdCfaBor
+         xtkgqzPC0zM2h/svt8EC5xbhSJZKXLuWiGUTLiZ9MJqEtqGfhO6Absq/XbkGuI81SMAe
+         19jVW25w5uapgQcYZP8UjrWcHlEFMuPnjq4BMcFLbXJQEN/tsU5wtpB+/tilSJ7hopwK
+         RHmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783406557; x=1784011357;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xeJmdcEDb3hj4kjTojGe7izWAUg4e6NWPJspG9L+qV0=;
+        b=bgjrxYywqSxs42lFaohuElgLvsTNDCVcn/dL19PWyOOL2/uMEeASnq/B2N5QPnqWpm
+         7+7+ZEgTxTXxxXOEStSkETofGpDrc+UEcB+UNxu/JOBh4yIDzSimJrgeOb0WgEQmQJZD
+         37lFO6nGR5LtNu9YQ+dfJtoKdA6EfJjdrNNCdB1uVc2l4NPgyBYnkxAPONLfNl+L/r01
+         zp14LNcz8TUVa1C88gEfeePi+40DrdXIlhn90F8e8QamUwOVr2Xq/dseeOK0yyyuzq5/
+         0pqJv0IOdJaYzvmeFoaXEVXXZ2mQ2S8oIGzp0mbAausscL+0ZfI0vCBSoz6UwUUBS6zw
+         c0pw==
+X-Forwarded-Encrypted: i=1; AHgh+RrNmy6LuO1+2DduOXyFYcZj0nqA1iBK9mTsr3zTmd5v3sI+xCTjaQE9nZyBNQy0Ih5OowkwWSxXWg==@kvack.org
+X-Gm-Message-State: AOJu0YzA44hZOkEYDMiN/yZqbpXtUSVAladegd4qvnM8JHF7iin2aYhi
+	sJMK6ab2aZbiveJO2SURiBQPDeKsAouFZY3R1qJkW67OgA2cnQX84y2M0FabcJ/0LcOxgJp2GWl
+	UTRVqHLVKOZEEBa4QLNifJ7vAXA==
+X-Received: from plblk15.prod.google.com ([2002:a17:903:8cf:b0:2c6:bce1:2477])
+ (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:388b:b0:2ca:d463:27fc with SMTP id d9443c01a7336-2ccbf076ebdmr41254245ad.45.1783406556649;
+ Mon, 06 Jul 2026 23:42:36 -0700 (PDT)
+Date: Tue,  7 Jul 2026 06:42:29 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.rc2.803.g1fd1e6609c-goog
+Message-ID: <20260707064235.1386552-1-souravpanda@google.com>
+Subject: [RFC PATCH 0/6] mm/hugetlb: Dynamic, NUMA-aware HugePage Cache & Free
+ Page Reporting
+From: Sourav Panda <souravpanda@google.com>
+To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
+Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, mst@redhat.com, 
+	mhklinux@outlook.com, souravpanda@google.com, fvdl@google.com, 
+	gthelen@google.com, mike.kravetz@oracle.com, pasha.tatashin@soleen.com, 
+	rientjes@google.com, riel@surriel.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B705F40007
-X-Stat-Signature: 6a345itftwk4t7i1hmpbwwf38tikohs8
-X-HE-Tag: 1783406434-656068
-X-HE-Meta: U2FsdGVkX19juAf74rqf+NND3Fq3KYzFHDRnVOF5Av0VrFMXxeZStxut9Ao8v7M1BcVIQfKHkNt8V/kestU4rFP6BbcWxmck+33Z7mf9uNridbRSkikBb/v5dE/dnqcs1IRa9Zq9FLIryc68QcHPdaEreAcCgI74sxlSWkjJbCGbCsuBMX0QteT4w0osqMu8pdrTKJ9SYYctZlN4LdEGbpOVTO/TBwJLytCdLtTZHV9RD7Wd0lyF/g8iYbaWOULiR+lOW8HeczxLkAClLrcAJtj2QcCGQ/e8a+r2/ylfjiZfx8mc43XI8W7S6VEPcneHXWiJVp9RNavne5Kjv37tY5yAJCuIZbBlqsZ6d13HH+bPF21eLIE8qH+97cH8CgHgDxMpZkTjBQZQ7GdRRM21uxXMdgX7a8Cx6rcTD1pEqe7w4VN0M70ydr/5qEkYixH1mpTPhKRXWr483iggClHUdMlchZVG2kjWXHbM6JVy0Fo3kREvdefperOKxb7b4D411hWFnO0P+cYC+CEK3JX6gadmch8bFhmLuSGO3xDTCnxjK+4PmkUu7/LhpYjJqajAll2UIdKnC6JO5MWG8//bb8+i9rU3oCju6aHTahz0wF4Tg9V9q95a3hf5K43Hi+OPSKjXZ6dcooCxx8J7n/kS4mWS9OOZDGonfpp7lGkVCDZkTlBdt4D7KxNau63cA0PJF0X9wNkX1SrFJlUHFz15d2EOi4BCyStGU9Q1O8onK7R398DsDCWf3uFMfpRmgJW5lj/ziTAnye97Naq757VBNK5AOvr3pIHEcKt4TE0Qk1T2fLzvCdXRkT8k+wVAdgBi6RvxA0sahlUs+b8U+HJlNQpdgZmhoD3wvW63TWMXs0s049wRGPUtAcedpIQxCy63kX8rNI/OcczxjeqJ2m6dlt58Xp13uJQi6d0ko5FeZ5roYSVYwZO59DJAIlfCLvw+rG+SNere8bXWT0iFLWW
- hjwz9a2U
- FKFLP5eti3ztc1TS4xNoxAaTQL9AZgaga3dUCZlr5GFTD6iES+iPBR8fO1yvA7hUCsFWK4FMcoSJMjYvDJoG1Rla3NzD05c7Snol8Sb0xchLVAtzNOkz83Vrewzfuvr6WBKKchPAaTo0YDZmxfeVKZ/ns20Eah3qRbx59F3bI79ZMgQESvpvKO9wdG8uPKFPeOXPfTtX1YCoEmsKCHS4t4+cw6w==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1C8021C0002
+X-Stat-Signature: a34rdyfmgqbff7t19ncwgj93dtqj4q7c
+X-HE-Tag: 1783406557-479887
+X-HE-Meta: U2FsdGVkX18LearDnEFpoaal81MUV6NblxP8Y55yCnzEEFdZmODbcFtVEWQSJCt1Nrk8p1aE3reClgT0TZnlMyszNiVPli4kSLjNQUA2VLL5KXuu4kD3euGCLy3JtRcdptNlQ909kVS0//pR5ogkySVn5yFM2fTNeL6LJvoV464WJAPSL5vbzRQROhyHehTQe2Twf63X872ZuabnfnLSh3jf1q2pOFHH+D4SLE2nZaQl8MEPd3sL5uPxGyhAA6v2R2aPxMAdGPoYTLzzOMVrORA9rdnxDktNAL+D9VjB2+C1cE++dOrNck1gn5qJ2WYt2DVGXRlsmVFbgugTosvNVxLYftxjO0d3dRwildUVXUKh9VsBZzx9drpf2Sau8NOoFLuyOj6rf1AvwmompL0+ZeR/xQEcJVdPfHFe87e/+QSpfeTVlKNT2pgO/fS05lcVyzF+1Z+M/8Z6GmRzAOzmW7CHLoFlSOQVaF2T48xrY9h6eWqNi+ZLLY/QdU5rddFHe1KGjz39o9+iRsqSNdTijbBHw3HliCBI82ayXwEEl6X7VEKBO6wUMrxRWcY17MmberOey7ofw8Vnk75oWz96o20DvVbwLaZ1mAC/YBJgeQoWkL2kagALRdUvgFIvK4njc/xS894fgOyM0fdDLcVPTZpByL/ReHQpZrdj/U3tpxBJD/N9PT91O17xqyBLHjELzE+Qsaanymd/65aWgu9cfLHD+Np5GrmHrQ74ydKqJ1utOo4hiuyVO41vWeVP5nuzbZpQAEOOMXkyO2h/4iPgPTGSP3OJC+BfqlT2uhjFUO+WmNTeS35AHTO5b0WiudlAczTPuWGPRdxQKRCuW0VfCR9rWGjl1ZakOoQ4T07u4AwFQnzKUmqgJPJ7scpnJGNuz6qNMjTXpxWIBx11JrCLOHotRu/SRfoz1qjTvvnh9H2bAxz1JwR27yjsfhYHoh5J1bHUV/Fop/x7RpCl0MR
+ WSYAuolh
+ RXnNxJid1xogka3CXDpsNgzRJSrwpjmQbW1mAONofA8PTL4Biw6oi9AVRuUr3cw0CGRdr8Qs2Tk5+C/FrEc9R7G+r1YbXsTiJjnfsvS/zGrQ6OzvFxTceTfhu4PqiPkCIcDY/0dXeLYq0jPe5vNBw2nQ/PCxp4mFVzxH4tRQiTM+IZpxJUGmsNaqGijLMLz/WBvCiGbkgh3nHPPMQptV1UrW0vZGxBHjsPSIhz7WL4K/871JjJv6JQU1gKP3XQKbE/rQ68Eohhpk1keEiRfESfE7NsnWXhVyUOrVUZzc5gF4/hU0vXU/YYMLV7326RE7OxzQWQ5RA8JFmX6BeW+rxR06ZqfPWTPK6x861A9KLApMoW65dCh1/G4em8OE4F4OnPy24+bWedZgv3tWj9uokvoyJ0OHBzrp8AWzb1VvQ7nY0TxAFpP6W9L9wyq5h8zT9j20/JovNClj90yZy05Mpt9cZiABskdkoykIpL0l/7flcDleu2sPeqt+bES9EQDcNNVak0PSLcjs/4o3GfoRbgkQ80z0oCl/n5B9rshdeNRUKmdo2ZHY2i1xA5XFobkY59RTOOBfaSSiXnD+fRQjclrkfL8XrN0soZgv/SB5KghfhxV5JF3/Pxo5g9vfvlsmOHhJt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,65 +111,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-03-03 11:03:10 [+0900], Sergey Senozhatsky wrote:
-=E2=80=A6
-> Having a per-entry mutex (or, for instance, a rw-semaphore)
-> significantly increases sizeof() of each entry and hence the
-> meta table.  Therefore entry locking returns back to bit
-> locking, as before, however, this time also preempt-rt friendly,
-> because if waits-on-bit instead of spinning-on-bit.  Lock owners
-          of ?
-> are also now permitted to schedule, which is a first step on the
-> path of making zram non-atomic.
->=20
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-=E2=80=A6
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -58,19 +58,56 @@ static void zram_free_page(struct zram *zram, size_t =
-index);
->  static int zram_read_from_zspool(struct zram *zram, struct page *page,
->  				 u32 index);
-> =20
-> -static int zram_slot_trylock(struct zram *zram, u32 index)
-> +#define slot_dep_map(zram, index) (&(zram)->table[(index)].dep_map)
-> +
-> +static void zram_slot_lock_init(struct zram *zram, u32 index)
-> +{
-> +	static struct lock_class_key __key;
-> +
-> +	lockdep_init_map(slot_dep_map(zram, index), "zram->table[index].lock",
-> +			 &__key, 0);
-> +}
-=E2=80=A6
-> +static __must_check bool zram_slot_trylock(struct zram *zram, u32 index)
->  {
-> -	return spin_trylock(&zram->table[index].lock);
-> +	unsigned long *lock =3D &zram->table[index].flags;
-> +
-> +	if (!test_and_set_bit_lock(ZRAM_ENTRY_LOCK, lock)) {
-> +		mutex_acquire(slot_dep_map(zram, index), 0, 1, _RET_IP_);
-> +		lock_acquired(slot_dep_map(zram, index), _RET_IP_);
-> +		return true;
-> +	}
-> +
-> +	return false;
->  }
-> =20
->  static void zram_slot_lock(struct zram *zram, u32 index)
->  {
-> -	spin_lock(&zram->table[index].lock);
-> +	unsigned long *lock =3D &zram->table[index].flags;
-> +
-> +	mutex_acquire(slot_dep_map(zram, index), 0, 0, _RET_IP_);
-> +	wait_on_bit_lock(lock, ZRAM_ENTRY_LOCK, TASK_UNINTERRUPTIBLE);
-> +	lock_acquired(slot_dep_map(zram, index), _RET_IP_);
->  }
+Overview
+This patch series introduces a dynamic, NUMA-aware HugePage Cache,
+backed by a kernel shrinker to safely return memory under pressure, and
+integrates it with Free Page Reporting (virtio-balloon) for HugeTLB,
+specifically targeting gigantic (1GB) hugepages. The goal is to solve
+the tradeoff between allocation latency and memory
+fungibility in virtualized and heterogeneous cloud environments.
 
-Looking at this, is there a special need to have a lockdep map per
-table? Wouldn't it be enough to have one per zram? Logically you use the
-same __key so I don't think it makes much of a difference but you could
-lower the memory usage a bit by having less of those structs per zram.
+---
 
-Sebastian
+The Core Problem: Allocation Latency vs. Memory Fungibility
+
+With highly heterogeneous workloads, latency-critical applications demand
+gigantic hugepages. However, dynamic runtime allocation of 1GB pages
+from the buddy allocator (via CMA) is slow.
+
+To bypass this latency, operators often pre-allocate hugepages
+statically. However, this locks up the memory: when the HugeTLB
+workloads are idle, that memory is completely unavailable for other
+buddy-allocator workloads (e.g., page cache, anonymous memory). If buddy
+memory is exhausted, the system will OOM even if gigabytes of HugeTLB
+pages are sitting idle.
+
+This series resolves this challenge by delivering Dynamic Fungibility:
+
+1.  Dynamic Caching: Intercepts freed surplus hugepages and recycles
+    them into a NUMA-aware cache instead of dissolving them immediately.
+2.  Fast Allocations: Satisfies subsequent dynamic allocations
+    instantly from this warm, local hugepage cache.
+3.  Kernel Shrinker Integration: Registers a NUMA-aware kernel shrinker
+    to dynamically dissolve cached pages back to the buddy allocator
+    under memory pressure, restoring host/guest memory fungibility.
+4.  Free Page Reporting Integration: For virtualized environments (Guest
+    VMs), cached pages trigger background Free Page Reporting via
+    virtio-balloon. This allows the host to reclaim the physical memory
+    while the guest retains its Vmemmap Optimization (HVO) metadata
+    savings (~14GB saved per 1TB VM)!
+
+  +---------------+   Slow Allocate  +---------------------+
+  | Buddy         | ---------------> | Active HugeTLB Page |
+  | Allocator     |                  +---------------------+
+  +---------------+                    |                ^
+    ^                                  | (1) Free to    | (2) Fast
+    | (3) Under                        v     Cache      |     Allocate
+    | Pressure                       +---------------------+
+    | Shrink()  <------------------- | HugeTLB Cache       |
+                                     +---------------------+
+                                       |
+                                       v (4) Free Page Reporting
+                                         (Host Reclaim in the case
+                                          of virtualization)
+
+---
+
+Patch Series Structure
+
+Patch 1/6: mm/hugetlb: add Kconfig and basic cache infrastructure
+  - Introduces the CONFIG_HUGETLB_CACHE option, hstate tracking fields,
+    and the HPG_cached page flag.
+  - Establishes the clean helper API (hugetlb_folio_is_cached(),
+    hugetlb_cache_remove(), hugetlb_cache_add()) and updates
+    remove_hugetlb_folio() to be cache-aware, eliminating inline #ifdef
+    blocks.
+Patch 2/6: mm/hugetlb: implement cache recycling and allocation
+  - Hooks up recycling in free_huge_folio() (up to the cache limit) and
+    allocation in alloc_surplus_hugetlb_folio().
+  - Implements MRU allocation policy for maximum warmth, poison safety
+    checks, and MTE/dcache cleaning.
+Patch 3/6: mm/hugetlb: add sysfs interfaces for cache
+  - Exposes global and per-node sysfs attributes (max_cached_huge_pages,
+    nr_cached_hugepages) for dynamic userspace control, including NUMA
+    memory policy scaling.
+  - Supports dynamic delta adjustments (+1/-1) to safely scale cache
+    sizes alongside concurrent background reclaim operations.
+Patch 4/6: mm/hugetlb: add memory shrinker for cache
+  - Registers a NUMA-aware kernel shrinker to evict and dissolve cached
+    gigantic pages back to buddy under memory pressure.
+Patch 5/6: Documentation/admin-guide/mm/hugetlbpage.rst: document cache
+    interfaces
+  - Documents the Kconfig option, sysfs attributes, and shrinker
+    behavior in the admin guide.
+Patch 6/6: mm/hugetlb: support free page reporting for cached hugepages
+  - Integrates the cache with the Free Page Reporting framework (virtio-
+    balloon), introducing the HPG_reported flag and the
+    reporting/isolation/draining lifecycle.
+Sourav Panda (6):
+  mm/hugetlb: add Kconfig and basic cache infrastructure
+  mm/hugetlb: implement cache recycling and allocation
+  mm/hugetlb: add sysfs interfaces for cache
+  mm/hugetlb: add memory shrinker for cache
+  Documentation/admin-guide/mm/hugetlbpage.rst: document cache
+    interfaces
+  mm/hugetlb: support free page reporting for cached hugepages
+
+ Documentation/admin-guide/mm/hugetlbpage.rst |  34 +-
+ fs/Kconfig                                   |   9 +
+ include/linux/hugetlb.h                      |  45 ++
+ include/linux/page_reporting.h               |   1 +
+ mm/hugetlb.c                                 | 590 ++++++++++++++++++-
+ mm/hugetlb_internal.h                        |   9 +
+ mm/hugetlb_sysfs.c                           | 158 +++++
+ mm/page_reporting.c                          |  10 +-
+ mm/page_reporting.h                          |   6 +
+ 9 files changed, 844 insertions(+), 18 deletions(-)
+
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
+
 
