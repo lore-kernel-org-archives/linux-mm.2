@@ -4,138 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65E64C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 16:59:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 138E9C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 17:05:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49FAC6B009D; Tue,  7 Jul 2026 12:59:05 -0400 (EDT)
+	id E50F16B009F; Tue,  7 Jul 2026 13:05:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 450846B009E; Tue,  7 Jul 2026 12:59:05 -0400 (EDT)
+	id E02316B00A0; Tue,  7 Jul 2026 13:05:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31C256B009F; Tue,  7 Jul 2026 12:59:05 -0400 (EDT)
+	id CF0BD6B00A1; Tue,  7 Jul 2026 13:05:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F25146B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:59:04 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6995CA04BC
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 16:59:04 +0000 (UTC)
-X-FDA: 84962590608.20.2487CD0
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7119240012
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 16:59:02 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qnQJe+IE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=abhishekbapat@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783443542;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 94FF76B009F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:05:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C1221404CC
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 17:05:39 +0000 (UTC)
+X-FDA: 84962607198.29.2ED0AD8
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 03BE2A000E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 17:05:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="U utIYnk";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=ns2IwfsX;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783443937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V+0pheG9ogqbrNNEmsLqS/R7/lxeP3J7M6TTyjZm7Es=;
-	b=C1EzwmsN11EvOnjNjl2MI6hm3kBmSS+I7+Hqy+P6bAulyeCQ6Qln2G389LVzExHjwQEYjl
-	28NHZQEQkPyhsTtWhlIsY64EP3ZqXdl+2xIFWxq5/3ehWaR3Hcr1Lt58p79YfxuxWmdcUR
-	UsEbWx4FBj9yq6pGoln7AXnVktExr/E=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qnQJe+IE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=abhishekbapat@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783443542;
-	b=FD6N2Vul/cIUEV7OcEFxRfKw9xOy7k7hSxhdlv28Svq5wFhkzZaj7SGK88Usws/+kYIWKT
-	csyRdEjSjY6SlECP759lfaLoPEUvt0+kYqigP2EbbhAjnQA6phBhRE9ADXo4McNVMNfDzM
-	RyPmlycNfv8FSMNlp4FzYfxbCGNuyWE=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2cacef7d299so100735ad.1
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 09:59:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783443541; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YBHRfeUqy9646PzlsCX9HR8PyUOkvu0qWbWfiznaOHnHnCfXxBc6oCoijKy/PbsO8R
-         ndqqWL8NvEk2ix6Jhsvv2H8lg5ms6cdcUp6WoObb3YO9ZIWlPFqQ2UBIl7mxfwWqeb7c
-         pHOrFYF0gOsoo3teI9rIsiLs2borcAWdo+zH92sCiLIchxZlBdFBNU6dHSfZJ2a+Mnyo
-         1+t1+KaiJNV+iyTqYxh5tDk6Djth5x2FX5WXk+J4YcC7KOL2qhezmZP0sYF/9303mp4y
-         9UIBvpVbNGGHwuEhhivgxUSHRcM+U6008TAM3xKZwUf9VbLp7d+wBsVcX1H3Yhi0lTfj
-         PHTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=V+0pheG9ogqbrNNEmsLqS/R7/lxeP3J7M6TTyjZm7Es=;
-        fh=CU54av4rYnCQs3Raqxqw6cejVCdN/kHHHx+k12KHOy4=;
-        b=PgXiTv2Dq0VOKFl1QrzIH/UH/d0+yRNStQIB+x+MHeybPR7JaSFAxbBsRqSe50iwLB
-         ua+rGsnA5yNG0TsDlTYvHwF7+udKonpFUGJM5+GfzmFo2RJe3T7+nznlee7wiCPq6+iK
-         hTjTAUce4txYG7AlqlE2l2fLXmEpgk8gUCyW1ZZYxHx2BE2vONYBnrdIY0J7ebvSkHGn
-         uC0OxbzyWlFCqpnfygzjc8mVC86UfhLBDxTTFoJ0xIigqqfQuLPBrG7T0fyPG8B/FLjW
-         WwUeWTiC8afPiGssesyXvkT1nhbQapNi2bcYtCNaL0mP3vsCDaNYH4ib4oEOagLwZkUP
-         hsYQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783443541; x=1784048341; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=V+0pheG9ogqbrNNEmsLqS/R7/lxeP3J7M6TTyjZm7Es=;
-        b=qnQJe+IERtwYNOP/y/ok5BNF0/K9UWciOMFEhMtm5e4LkqETO3GAx4f1strmU5HkVm
-         6AMV4mnHdl6NyO8MCLyqa3K19RiXZGsAGTB78FvhgG5c04oRCOkFFCnPL7FQORPLN+65
-         wIMy/rAk8sGJXEC3A4FOakEkOH2mJIVIAbBS5b6YSV2LacpQSAAN19WwUz05FPpe57AX
-         BSiyxPigMM75Dcf2NQ9AQXFinpVUAnKsznlDlnv/hVyU3XBxHz81ysq2iSsC59d+pS0w
-         AXs5+zp0lSDG+HkNeJtMBIkssXYHQXEIjZIrXr57TGoGWLuaQvf81L/3YgA+ynwmLShW
-         q+wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783443541; x=1784048341;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=V+0pheG9ogqbrNNEmsLqS/R7/lxeP3J7M6TTyjZm7Es=;
-        b=au3jWdZ7S33vRaJkeSi5+Vf8XM5qpjU3/opBzf5yhy6/lLBtAGT9xq6MdN12y9yj8i
-         QIo4RL4hIGNJ+6KtOtGLIj3WXb5N8pf2p+fiKyR0ssB/Y1SgmyAPRtxLjFfK3MdvPLeV
-         SNTd8/S0xXVmzNlm8f6MIioGwvx6jVWFOYxynOn050dVxo1hG3dHT5Ot5q85sxG+W58M
-         6lWynVgZKZVec6E5aCP4ADZqD1+d0eQtYrNkOKUKMYiBOXB5xsi5NpRDn/COIr+1SvR7
-         hPNDyHnQOKeRuj1qIK/f35hCFQTj/wOm7Mk8WV2hfBORl9FJP3RMFSHgrEzaQdyFAUiD
-         8rBQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro+laWnwrO37V9ELtdsiOj40pIQKzCl2wetUBdj88qnDtnduExKhoFAE7eK2qtKVpHYKxUP8LBwJA==@kvack.org
-X-Gm-Message-State: AOJu0YzVrYElQ2CZ2jIFFu1Uib+ZaJuHI/6usc8yS49iEuoDR0vwvw8F
-	aXbpw0fYQCmUGq+d6MJ+Zz6ljCLVfTzfLC7fdm2TeouNGWgz1egmDavkQlsWNICWjwaUxHLgbnv
-	sTlRdna7yM0VywYaWsNIjfmb92UhAc+/Tk2/FaC8F
-X-Gm-Gg: AfdE7cnUhSgj76YY138F7c0+dBT3ixoNSg1BUwWCmovEoFTWBuEgYKQFp7KnOnNvgZ2
-	Mu2E31hXCXajTv0IM2F56n0tO2CvwQzT64XiFiXMdOBb90MR8azbQRQ7+1q6YVjrG+cqrqa3B3+
-	PGXW0bbBUEGbH7oRZI/GHRAJgCSNWlqR12XScjhi83u2uY77gaXkp9krv93MMVUNQLhtqSiK3Fq
-	Soa9lfjcLwgQBDAaYSKxH1Q1Hc2+8h9yn9ESSDqFtpQXr7+dO1Dm9yhjzRoI75R3TRIeS+5wjk8
-	b2rPHtKoqCrfaBEAGolWQHmRiCY=
-X-Received: by 2002:a17:903:32d2:b0:2ca:6bf:5bac with SMTP id
- d9443c01a7336-2ccc9c2e544mr3390245ad.8.1783443540658; Tue, 07 Jul 2026
- 09:59:00 -0700 (PDT)
+	bh=dh7IO6rJY00utCxWkBxZI6oDTG8b9OIvf3pFDe9X22o=;
+	b=zfkMNrSB5+7h9Px+fFlwbK51jl5qP/l7C7wYvZvMnCEFW0zQ9SbeFZUe9EuEbR0D/6a/ED
+	RVpbeDGj3/kwe0mIgT45l2P457qfKlSR4/Fs+/3RkTwzRziXuRqp7ALgAEVzkdfV4LaoYm
+	fePCYrghL8yKJGPGgZwOTXCK8OnyYPA=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="U utIYnk";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=ns2IwfsX;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.148 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783443937;
+	b=0sbZkz4n0kvOtpprmgcMV1rfaClH54NvTXxIuBRQ3VQ0/SwuIHCR2D83QlDaIjI2De0vbV
+	Qagoy/l8Gwi9ghf1Dsj+e7RJMHwkXcTGpFyMSP7WB01A3YmUL66BK8t1QVAB+QJW8VJ1bc
+	J4m8bRq35yliY9D/vT+jGM0JwdY4EBQ=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 6695CEC0182;
+	Tue,  7 Jul 2026 13:05:36 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 07 Jul 2026 13:05:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1783443936; x=
+	1783530336; bh=dh7IO6rJY00utCxWkBxZI6oDTG8b9OIvf3pFDe9X22o=; b=U
+	utIYnkMUqBeYJ/0pyMM0v6Way1XFBWXpEjI81ZdzIq5ksYmwg4RHuZ8eOJL2s34z
+	OXkIFtRPAWLdEO1hSRe2FG22YJPcUwDOmzh09uDJomBczCh9syMqywqBC+U5FCzu
+	cEfZAtuBBjBgn6RLyJbKIPQGg2FH2wgzX84j311KZXySDde7hN70rHMihzJKrydO
+	cdRlxnpIk4SdNZ38HHgISZSWNy/+ZPnuQa1Nj8HEeJEAIuX64Qw1cstKbgVo9I6H
+	Iyw6Uox3gLirGjv7Sw6bt4A7FnMltngZCkv7GW7Q/gRjsXPfkdRAT3Dv+tBJhinF
+	z9Ygngv7guvRkT+kiG6Yw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1783443936; x=1783530336; bh=dh7IO6rJY00utCxWkBxZI6oDTG8b9OIvf3p
+	FDe9X22o=; b=ns2IwfsX+9pdi/X/uLuQhb7ryjY81q6v/qiNCTwO8lVsZj9qdvz
+	icz+xzZViEdPkNAZtSPkR47iq3enMRFVz1nH7qwAtWyuSmEucQg87z/SuznyFwvm
+	A1B0O4NVaOoc3bu7//Gbq9sMn8tYB9NK5u4fKpKcMITZgM3l42a4iwD7kEHlPuLg
+	uL1CbIAE4ODoDLQQd5ilBc4kcEmnlfe9t8QvLCGMziEOGUv7sOA4MMP/6POuBNzt
+	SOr3/K31Ofth6dKdZPRkJnl4Fz1+RG8Tn+vmyqcVEWpmxU6HxUaRsT4ayPeVEcIU
+	dpNrBOd28gJBcIV3abSTNfFkQWqayK1JoPw==
+X-ME-Sender: <xms:4DFNalCMtnaJ2xvShANHrYSwsnRSzkIUSVtZeTdFoROzmQs5JcJfOw>
+    <xme:4DFNapC9KJJaGbQA2y4Ylg4fwt6EG2QUzK3z9TZ3Jn_bMIDn8GLLzWpTzXvzz69QX
+    sFM5jsYbQP5RuJ60i26RRFHiMsmTbHXwVlhKqdiUz-jykWy671b2-M>
+X-ME-Received: <xmr:4DFNao6tgthKXOngEKjQz1p1WhefLAzCojHVICjUlzzHS8w3JUKKi0jowdvZPQ>
+X-ME-Proxy-Cause: dmFkZTEGSpDUWObu6TWZb4QSLM1eEyRYKmhxlPRhOVqLounqixVImzwTqjRlbYuMfaogN+
+    kROBczESMsWnH4+pws8Be4hW1tms7ZIMwCL3biCzS7w1TMvCKK+7GkzosUFvTVFFeXhd6d
+    9mj/UlpKJJBJVMg9txZEn/uZucdLzc4ZZQ7WX9/IPzzelQLXmpzFBLwD+Ly3X8HRedtMa1
+    nJruo/mjZTWThclPzchFJES8rU61UDQVpSNAFlL8+yRw+bJwv0H3005uKjFu0WIo1N0gmS
+    Nf+88WySWFa2gIPgyREiexDBebKGgn4bO2dEjrkVW8CIKxmsEBIxV6OZwl8EOv8xYJoHe+
+    oZoZU2mFjTazV8VTLW0duM6T+OukXtF5MAxgUxiHPbipU2pxLQ/qmrsg2JHrjEIDql78/Y
+    TcVRVgN05vhNHjGHvB/d5jG1pAV7kao3283/v2+mBIO4Lr7JtGLqmjRYInimNwjadLsKUA
+    +a4TrMBSWPN5OXHtYU+cKRWsS7Uck3PgfsEeZGSc/db7A1dyMetUmS6ieRbgwLJtKGHhtY
+    wXOERzFpHBrxz/ce/83WwD5glL6E3IHppgFCsn2WXRMvurjh2J3+43mc+I2pTzqtw1BSXj
+    GK3OGSZ1hSnT1o4i71BdbvhvZ3vpOHEzwyR0NP6ewBOLYkMzqW4j33dCuolg
+X-ME-Proxy: <xmx:4DFNat04MFZnoJnwSQA9W8XJD6Laj5ax7nN7sxLvDUNsc3sABfjmvQ>
+    <xmx:4DFNasB6URuqjaIB0kV6PSVPJenfNXE6JEOHj3qajGRKnatQiS8uzQ>
+    <xmx:4DFNalHNn5S4vvllsZGZL5CDoie9B8As5F3hbo-vxUDMTH4KQ9Bz8A>
+    <xmx:4DFNahSPEHQj_yThMyj67bdlrr0Cw5FL5GWrVFqQ625I8CxqKMajUw>
+    <xmx:4DFNaiFbh355b2orDABzMgFDo-gVttvz_Sipt0O1VkhvHox51pNoNBkx>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Jul 2026 13:05:35 -0400 (EDT)
+Date: Tue, 7 Jul 2026 18:05:34 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, muchun.song@linux.dev, osalvador@suse.de, 
+	peterx@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm/hugetlb: fix swap entry corruption when clearing
+ uffd-wp at fork()
+Message-ID: <ak0w7MB_wKJtBLNu@thinkstation>
+References: <20260703161833.57416-1-kirill@shutemov.name>
+ <678ecae4-cda7-4683-9012-ed7c5c5b879f@kernel.org>
 MIME-Version: 1.0
-References: <cover.1783361692.git.abhishekbapat@google.com>
- <f6bd1ff0257987dbb7512f93595eaa6962c6153b.1783361692.git.abhishekbapat@google.com>
- <4cc47988-49b3-4b73-90ed-a0a16a56a8dc@linux.dev>
-In-Reply-To: <4cc47988-49b3-4b73-90ed-a0a16a56a8dc@linux.dev>
-From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Tue, 7 Jul 2026 09:58:48 -0700
-X-Gm-Features: AVVi8CfFdUMm1gAhA1nAbBcUBxXzhWfJGOy58ezcRxCaUnQUCzGM3HR43Ps1Zgw
-Message-ID: <CAL41Mv6SdpOd=oLp9ceBkR-q_Y73Fx6rYjFO-Zc0hiNJjCFzYA@mail.gmail.com>
-Subject: Re: [PATCH v7 6/6] kselftest: alloc_tag: extend the allocinfo ioctl kselftest
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Sourav Panda <souravpanda@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7119240012
-X-Stat-Signature: 77rb384ns4eyex7q64gwkhuytm99xadr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <678ecae4-cda7-4683-9012-ed7c5c5b879f@kernel.org>
+X-Rspamd-Queue-Id: 03BE2A000E
+X-Stat-Signature: pbjfgpgfbuc8d6a8qobjihqeorq11aeg
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1783443542-991299
-X-HE-Meta: U2FsdGVkX19WhnsjZYPAZn3xrOq480Qr9++vqPZ6qWT1Xp8XoVw/XHCKOwOe7carjvxqF5xvsWWWqIeZPbFLszPX8WvGE+aUnCyfN8MQQfAV4IlU9LWxrvbB7Q8G3H2w3aS3KA2RoEIpsYVv3PqZoaDTcSbXACJ4eo0UIGXfQJ+pAy9WSKCX1EQI13oiRHHCxt/ehXHJocMzBqvy8g6s++WHe0voCN+ZRh5MVsC1y0N/VN94jsLLlXuxX35D6384Mxk+lMLs1jYZKf89ZkwQVHlQBKZ3Pzhn2y+SVNKeUQ3zDNJP1Fvjt5vmupHi6wBJESSSbvaF+7JNn/6FnbiUFwcR92AMVvcaD88ldXrfLwkchvccOq0tB3hT3t/4D7zqPyimWADthehuNuh/890cwyaJmCMLhobtTxclbtEXQkt788YRHEG230aferhg4r+cl8RVkdlEJxG9oAVU6aZL17NtpebckslJCwOgfWYpLfRBuPsfT5qfBtpde5Yd5Z4qfmgImb5kIyNHwn5Ovt1QOO9HYxuwZVEXeoBocfpqLZwc1LpIza8zY4oBDCPeXPtv87wuoo2/sDzidtpnu3ebJQ3redMaNf5yq6gNz0VA0Xawa0nZLb05x6MrKwT3vhC4UBgfAQnz08qxMiXVY4bZYPJka5zVJNrxDO9vqm4xtpXfCBULa32/XNjfm4/reMIOlo7ieBJ7u5Ofx3ooYxEho60QJ6nvmW40WQbUmcbNX0/bzW8csxJMMdcEAJuepKTVRlZoKikqslNm41vBtpQ9XfmtKgq54pCsNNhpCv8JHjKWZaW6d+qda+1BYLVrp65mJ0f4YL4flTwY4CquuJT34FN63ElOohpIw/eM6+4MAzQblJwaOkIv5oHEaa/f9oyS6Cy3UgrgseNIS0xFrWwG4P7mEbCqsTtboGmnd3q11Xaz+ejRLZh2gHuMgw2hhqQ3Qrx9ki3QASz3c7G0Ckx
- DBBSe1T5
- 8Y9MwyOXLSJVsvkq8qZe6wbwye6ljNxkYGe4trcsYBrxzLPVFRCt/Yla3Mc+zYgH6MzD26hOrEtZZRifM9JNkA+C9TnN2vEfQl0dxrq6Kf/KLzCAR55wJOBrKEGDEqC54eIz4gJagamiz4PQKaesuF6uisp5n5iEbKW5i5UjDpijDxR3TeVU9duyahnvigatR/Ar6Vi8/meff+whE1EgGejibnNaITfmkTaNorsJouJUikESeTDFIftwWW8gn0JaNcPfwOW3jkl8eWpnp2UItGxbo8vEoaDBRa0QGiHhKl6BdbIQk/8t8fdMQRIdzI+qYikZ2M02c4UCCB0wMGoteXrEhvn7Lc/T3SSe17PiEHQqH0BU2betiBqmxpshcM8vqAAp4+1+9O8abMjc=
+X-HE-Tag: 1783443936-765294
+X-HE-Meta: U2FsdGVkX18zy8lv+0RuFvUae/gd4UE7fSQ0ip7PAKzVtc5fmA0/Bx2xaL64RRtGFajcSDHOH5UJxxIM7vqvylLZJU1pjOtJvV2hFIjQyTyeV3ejyrbEi/aQry9YFZFFxINN4FiH8q27PRwhFXapW+QYMbsszoJMPR2VRJbBodXoxzZTxzBmCRPQYSjEzK2yZUxGMVssgvDtdU6vAj3b4bV4Pvq/kd0nAZ0Fj6Wp/fBoW+xDuN8oxh9kfi/cdt3qvcCiylHWlm0AtPqq+beOVQFTBHrnL5xJ0GLZ1MRRZXUeXHhULaP1wdpuRns+Ewywm+jRHpurb7q2z9byO/J4beljFC4SjMKMxqd1YCIUZdP9fS6rIxvw4hsrdimVcjq8yWPc2QeGWX1XU7nUQlSWxTLG35Xw6OdYawLk5fu4/pr41OW4uLln1//VgPxenPz967nrSi4ZyNeHnJ6Jfp3x8/oDc+/Mg0YEAdUPtPeSgP0qmkXxL4hRKe1o3t1sLi1MoreflZGxBKphUyWXD5LQM/MjWS6Rb3zufivxdcaxGBMTlvLR/hvPjcfiWVMkJynR0mp8gVztxpywhcgq7oePZN7pz2drPxqOXX3I9dkCBu+WxRsL8iNUu4DdAFFDnqCCr3N5iEJOIb7tzIYz/v696mhirHT7ZsASG32H1U1Wc2OmHcYwJ0C0ydvz7gNTRf4+IOdN4ad5wb1BRYRw4BLB9PR+upN++f/fr+Z35ft+j2Nw6osfujUZ5+xfM6D+3dSOeFzpXKWrJLe43d+K4xD5jqdemp3G9TMUI5z0wEDzayNZskp1yz1vExI3wEwEnJRgab1efoG1iEenF4jmQLlG6nWiR3dtY57f8RdMwPxVUaaO4r1cXoSrf+JWzrmP505ENWrc8uybRLNbJYasbs5pgyO3zPazzGVPKx7hIKcNBsuL2UxrwhX1u7kfHszc4V7iyyEfFDfj+CFpMjR5hno
+ 2xKFICgz
+ bK0fNpv4S6BrdLe9cgPvFB8zkbsrHuWBvCCfviJ5OYM8t9UV0BzEtWaWmJUQ37dZxgYBFQcP2FjhS2vqKtFCBHMeik9Iz51ZxjzMRW1ogpUkzpDMahLLdPgG7vvBbuM9cxyGK26Zx4Ib7El0pPYCV2AyKj47Q3BvX3e0cGUF8DPdQ+ejwKbPVWFi3LzS0uLWhyObm3i0pgt0hUxii4+VRSp67w8Wk0KP2T8gKBDYCzmf8iMnCEbd8cfILx7yPt0HtJOf30+5tsoTcBHVoqokPF5E922TmtKlzaE4cF1/wqwM2WMw8/6xxScYc5hpQaVcoAnnwQEC58xcS77JJ5Vq19oWOku7OAw7TWhNt4tgfpRrI1KNsN/2vm5cGiW7o9OZ/bBzQRJ1yUV19b6Vi7gJueEO7txe5R1h6b4j/0ChgfKvMLYmPvDLM+ut4yZUx7TUxtfa+iI2pXrzlyFDzFGpMpuggXw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,375 +130,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 6, 2026 at 8:28=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
->
-> Hi Abhishek
->
->
-> On 2026/7/7 02:25, Abhishek Bapat wrote:
-> > Add the following 2 scenarios to the allocinfo ioctl kselftest:
-> > 1. Validate size based filtering
-> > 2. Validate lineno based filtering
-> >
-> > The first test uses "do_init_module" as the candidate function for the
-> > test. This is because the associated site will only allocate memory whe=
-n
-> > a kernel module is loaded. The return value of get_content_id() changes
-> > every time modules are loaded or unloaded. Hence, as long as
-> > get_content_id() values at the start and the end of the test are the
-> > same, the memory allocated by the do_init_module call site should also
-> > remain the same. Consequently, the test can assume consistency between
-> > the value returned by the ioctl and the procfs resulting in less
-> > flakiness.
-> >
-> > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+On Tue, Jul 07, 2026 at 05:05:49PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/3/26 18:18, Kiryl Shutsemau wrote:
+> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > 
+> > copy_hugetlb_page_range() clears the uffd-wp bit of hwpoison and
+> > migration entries with huge_pte_clear_uffd_wp(), which operates on the
+> > present-PTE bit position. Swap entries keep the uffd-wp state elsewhere
+> > -- the same branches read and set it with pte_swp_uffd_wp() and
+> > pte_swp_mkuffd_wp() -- and the present-PTE position falls into the swap
+> > payload. On x86-64 it lands in the inverted swap offset, where a
+> > naturally-aligned hugetlb PFN always has the affected bit set, so the
+> > clear advances the encoded PFN by two pages.
+> > 
+> > No userfaultfd needs to be involved: the clear is guarded only by the
+> > child VMA not being uffd-wp registered, so a plain fork() with an
+> > in-flight hugetlb migration entry (or a poisoned hugetlb page) corrupts
+> > the entry copied into the child. Instrumenting the hwpoison branch and
+> > forking after MADV_HWPOISON on a 2MB anon hugetlb page shows:
+> > 
+> >   offset before=120e00
+> >   offset after =120e02
+> > 
+> > The fallout is mostly latent: rmap walks match migration entries by
+> > folio range and remove_migration_pte() rebuilds the PTE from the folio,
+> > so a within-folio PFN skew heals once migration completes. But any path
+> > that re-encodes the corrupted offset -- e.g. hugetlb_change_protection()
+> > rewriting a writable migration entry via
+> > make_readable_migration_entry(swp_offset(entry)) -- propagates it, and
+> > an hwpoison entry misidentifies which page is poisoned.
+> > 
+> > Use pte_swp_clear_uffd_wp(), matching copy_nonpresent_pte() and
+> > move_huge_pte().
+> > 
+> > Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
+> > Closes: https://lore.kernel.org/all/20260703140011.99E601F000E9@smtp.kernel.org/
+> > Fixes: bc70fbf269fd ("mm/hugetlb: handle uffd-wp during fork()")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Assisted-by: Claude:claude-fable-5
 > > ---
-> >   .../alloc_tag/allocinfo_ioctl_test.c          | 216 +++++++++++++++++=
--
-> >   1 file changed, 215 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c b=
-/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> > index 9ce7b53078b1..092348097204 100644
-> > --- a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> > +++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> > @@ -5,6 +5,7 @@
-> >    * Copyright (C) 2026 Google, Inc.
-> >    */
-> >
-> > +#include <errno.h>
-> >   #include <fcntl.h>
-> >   #include <stdio.h>
-> >   #include <stdlib.h>
-> > @@ -312,11 +313,212 @@ static int test_function_filter(void)
-> >       return run_filter_test(&filter);
-> >   }
-> >
-> > +static int test_size_filter(void)
-> > +{
-> > +     int fd;
-> > +     struct allocinfo_tag_data_vec *tags =3D malloc(sizeof(*tags));
-> > +     struct allocinfo_tag_data_vec *procfs_entries =3D malloc(sizeof(*=
-procfs_entries));
-> > +     struct allocinfo_filter filter;
-> > +     int ret =3D KSFT_PASS;
-> > +     __u64 target_size, i, pos;
-> > +     struct allocinfo_tag_data *found_tag =3D NULL;
-> > +     const char *target_function =3D "do_init_module";
-> > +     struct allocinfo_content_id start_cont_id, end_cont_id;
-> > +     int retry =3D 0;
-> > +     const int max_retries =3D 10;
-> > +
-> > +     if (!tags || !procfs_entries) {
-> > +             ksft_print_msg("Memory allocation failed.\n");
-> > +             ret =3D KSFT_FAIL;
-> > +             goto freemem;
-> > +     }
-> > +
-> > +     fd =3D open(ALLOCINFO_PROC, O_RDONLY);
-> > +     if (fd < 0) {
-> > +             ksft_print_msg("Failed to open " ALLOCINFO_PROC ": %s\n",=
- strerror(errno));
-> > +             ret =3D KSFT_FAIL;
-> > +             goto freemem;
-> > +     }
-> > +
-> > +     do {
-> > +             found_tag =3D NULL;
-> > +             pos =3D 0;
-> > +
-> > +             if (__allocinfo_get_content_id(fd, &start_cont_id)) {
-> > +                     ksft_print_msg("allocinfo_get_content_id failed\n=
-");
-> > +                     ret =3D KSFT_FAIL;
-> > +                     goto exit;
-> > +             }
-> > +
-> > +             memset(&filter, 0, sizeof(filter));
-> > +             filter.mask |=3D ALLOCINFO_FILTER_MASK_FUNCTION;
-> > +             strncpy(filter.fields.function, target_function, ALLOCINF=
-O_STR_SIZE);
-> > +
-> > +             if (get_filtered_procfs_entries(procfs_entries, &filter))=
- {
-> > +                     ksft_print_msg("Error retrieving entries from " A=
-LLOCINFO_PROC "\n");
-> > +                     ret =3D KSFT_FAIL;
-> > +                     goto exit;
-> > +             }
-> > +
-> > +             if (procfs_entries->count =3D=3D 0) {
-> > +                     ksft_print_msg("Function %s not found in procfs\n=
-", target_function);
-> > +                     ret =3D KSFT_SKIP;
-> > +                     goto exit;
-> > +             }
-> > +
-> > +             target_size =3D procfs_entries->tag[0].counter.bytes;
-> > +
-> > +             memset(&filter, 0, sizeof(filter));
-> > +             filter.mask |=3D ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCIN=
-FO_FILTER_MASK_MAX_SIZE;
-> > +             filter.min_size =3D target_size;
-> > +             filter.max_size =3D target_size;
-> > +
-> > +             while (1) {
-> > +                     struct allocinfo_get_at get_at_params;
-> > +
-> > +                     memset(&get_at_params, 0, sizeof(get_at_params));
-> > +                     memcpy(&get_at_params.filter, &filter, sizeof(fil=
-ter));
-> > +                     get_at_params.pos =3D pos;
-> > +
-> > +                     if (__allocinfo_get_at(fd, &get_at_params))
-> > +                             break;
-> > +
-> > +                     tags->count =3D 0;
-> > +                     memcpy(&tags->tag[tags->count++], &get_at_params.=
-data,
-> > +                            sizeof(get_at_params.data));
-> > +
-> > +                     while (tags->count < VEC_MAX_ENTRIES &&
-> > +                            __allocinfo_get_next(fd, &tags->tag[tags->=
-count]) =3D=3D 0)
-> > +                             tags->count++;
-> > +
-> > +                     for (i =3D 0; i < tags->count; i++) {
-> > +                             if (strcmp(tags->tag[i].tag.function, tar=
-get_function) =3D=3D 0) {
-> > +                                     found_tag =3D &tags->tag[i];
-> > +                                     break;
-> > +                             }
-> > +                     }
-> > +
-> > +                     if (found_tag || tags->count < VEC_MAX_ENTRIES)
-> > +                             break;
-> > +
-> > +                     pos +=3D tags->count;
-> > +             }
-> > +
-> > +             if (__allocinfo_get_content_id(fd, &end_cont_id)) {
-> > +                     ksft_print_msg("allocinfo_get_content_id failed\n=
-");
-> > +                     ret =3D KSFT_FAIL;
-> > +                     goto exit;
-> > +             }
-> > +
-> > +             if (start_cont_id.id =3D=3D end_cont_id.id)
-> > +                     break;
-> > +
-> > +             ksft_print_msg("Module load detected during size verifica=
-tion, retrying...\n");
-> > +     } while (retry++ < max_retries);
-> > +
-> > +     if (start_cont_id.id =3D=3D end_cont_id.id && !found_tag) {
-> > +             ksft_print_msg("Entry with function %s not found in IOCTL=
- results\n",
-> > +                            target_function);
-> > +             ret =3D KSFT_FAIL;
-> > +     } else if (start_cont_id.id !=3D end_cont_id.id) {
-> > +             ksft_print_msg("Failed to match content_ids for procfs an=
-d IOCTL, skipping...\n");
-> > +             ret =3D KSFT_SKIP;
-> > +     } else if (found_tag && found_tag->counter.bytes !=3D target_size=
-) {
-> > +             ksft_print_msg("IOCTL entry size %llu does not match targ=
-et size %llu\n",
-> > +                            found_tag->counter.bytes, target_size);
-> > +             ret =3D KSFT_FAIL;
-> > +     }
-> > +
-> > +exit:
-> > +     close(fd);
-> > +freemem:
-> > +     free(tags);
-> > +     free(procfs_entries);
-> > +     return ret;
-> > +}
-> > +
-> > +static int test_lineno_filter(void)
-> > +{
-> > +     struct allocinfo_tag_data_vec *tags =3D malloc(sizeof(*tags));
-> > +     struct allocinfo_tag_data_vec *procfs_entries =3D malloc(sizeof(*=
-procfs_entries));
-> > +     struct allocinfo_filter filter;
-> > +     enum ioctl_ret ioctl_status;
-> > +     int ret =3D KSFT_PASS;
-> > +     __u64 target_lineno, i;
-> > +     struct allocinfo_tag_data *target_tag;
-> > +     bool found =3D false;
-> > +
-> > +     if (!tags || !procfs_entries) {
-> > +             ksft_print_msg("Memory allocation failed.\n");
-> > +             ret =3D KSFT_FAIL;
-> > +             goto exit;
-> > +     }
-> > +
-> > +     memset(&filter, 0, sizeof(filter));
-> > +
-> > +     if (get_filtered_procfs_entries(procfs_entries, &filter)) {
-> > +             ksft_print_msg("Error retrieving entries from " ALLOCINFO=
-_PROC "\n");
-> > +             ret =3D KSFT_FAIL;
-> > +             goto exit;
-> > +     }
-> > +     if (procfs_entries->count =3D=3D 0) {
-> > +             ksft_print_msg("Could not retrieve procfs entries\n");
-> > +             ret =3D KSFT_SKIP;
-> > +             goto exit;
-> > +     }
-> > +     /*
-> > +      * We depend on the procfs results to determine the line number f=
-or the filter before
-> > +      * making the ioctl query. Hence, we cannot reuse run_filter_test=
- here.
-> > +      */
-> > +     target_tag =3D &procfs_entries->tag[0];
-> > +     target_lineno =3D target_tag->tag.lineno;
-> > +
-> > +     filter.mask |=3D ALLOCINFO_FILTER_MASK_LINENO;
-> > +     filter.fields.lineno =3D target_lineno;
-> > +
-> > +     ioctl_status =3D get_filtered_ioctl_entries(tags, &filter, 0);
-> > +     if (ioctl_status =3D=3D IOCTL_INVALID_DATA) {
-> > +             ksft_print_msg("Trouble retrieving valid IOCTL entries, s=
-kipping.\n");
-> > +             ret =3D KSFT_SKIP;
-> > +             goto exit;
-> > +     }
-> > +     if (ioctl_status =3D=3D IOCTL_FAILURE) {
-> > +             ksft_print_msg("Error retrieving IOCTL entries.\n");
-> > +             ret =3D KSFT_FAIL;
-> > +             goto exit;
-> > +     }
-> > +
-> > +     for (i =3D 0; i < tags->count; i++) {
-> > +             if (tags->tag[i].tag.lineno !=3D target_lineno) {
-> > +                     ksft_print_msg("IOCTL entry %llu has incorrect li=
-neno %llu.\n",
-> > +                                    i, tags->tag[i].tag.lineno);
-> > +                     ret =3D KSFT_FAIL;
-> > +                     goto exit;
-> > +             }
-> > +
-> > +             if (strncmp(tags->tag[i].tag.function, target_tag->tag.fu=
-nction,
-> > +                         ALLOCINFO_STR_SIZE) =3D=3D 0 &&
-> > +                 strncmp(tags->tag[i].tag.filename, target_tag->tag.fi=
-lename,
-> > +                         ALLOCINFO_STR_SIZE) =3D=3D 0)
-> > +                     found =3D true;
-> > +     }
-> > +
-> > +     if (!found) {
-> > +             ksft_print_msg("Original procfs entry not found in IOCTL =
-lineno filter results.\n");
-> > +             ret =3D KSFT_FAIL;
-> > +     }
-> > +
-> > +exit:
-> > +     free(tags);
-> > +     free(procfs_entries);
-> > +     return ret;
-> > +}
-> > +
-> >   int main(int argc, char *argv[])
-> >   {
-> >       int ret;
-> >
-> > -     ksft_set_plan(2);
-> > +     ksft_set_plan(4);
-> >
-> >       ret =3D test_filename_filter();
-> >       if (ret =3D=3D KSFT_SKIP)
-> > @@ -330,5 +532,17 @@ int main(int argc, char *argv[])
-> >       else
-> >               ksft_test_result(ret =3D=3D KSFT_PASS, "test_function_fil=
-ter\n");
-> >
-> > +     ret =3D test_size_filter();
-> > +     if (ret =3D=3D KSFT_SKIP)
-> > +             ksft_test_result_skip("Skipping test_size_filter\n");
-> > +     else
-> > +             ksft_test_result(ret =3D=3D KSFT_PASS, "test_size_filter\=
-n");
-> > +
-> > +     ret =3D test_lineno_filter();
-> > +     if (ret =3D=3D KSFT_SKIP)
-> > +             ksft_test_result_skip("Skipping test_lineno_filter\n");
-> > +     else
-> > +             ksft_test_result(ret =3D=3D KSFT_PASS, "test_lineno_filte=
-r\n");
-> > +
-> >       ksft_finished();
-> >   }
->
->
-> https://sashiko.dev/#/patchset/cover.1783361692.git.abhishekbapat%40googl=
-e.com
->
-> Sashiko is really strict, but its warnings are legitimate. I ran the
-> test program on a kernel built without
->
-> CONFIG_MEM_ALLOC_PROFILING, and here are the results:
->
->
-> [root@localhost alloc_tag]# ./allocinfo_ioctl_test
-> 1..4
-> # Failed to open /proc/allocinfo for reading
-> # Error retrieving entries from /proc/allocinfo
-> ok 1 # SKIP Skipping test_filename_filter
-> # Failed to open /proc/allocinfo for reading
-> # Error retrieving entries from /proc/allocinfo
-> ok 2 # SKIP Skipping test_function_filter
-> # Failed to open /proc/allocinfo: No such file or directory
-> not ok 3 test_size_filter
-> # Failed to open /proc/allocinfo for reading
-> # Error retrieving entries from /proc/allocinfo
-> not ok 4 test_lineno_filter
-> # 2 skipped test(s) detected. Consider enabling relevant config options
-> to improve coverage.
-> # Totals: pass:0 fail:2 xfail:0 xpass:0 skip:2 error:0
-> [root@localhost alloc_tag]#
->
->
-> Looking at the test log above, some tests that ought to be skipped are
-> flagged as failures.
->
-> Would it make sense for us to go through all relevant test cases in the
-> codebase,
->
-> and check if we've missed any logic to skip tests when /proc/allocinfo
-> is missing
->
-> due to CONFIG_MEM_ALLOC_PROFILING being disabled?
->
->
-> BTW,  when merging this series into the latest mm-new branch, there will
-> be a minor header file conflict.
->
-> This is because the series at
-> https://lore.kernel.org/all/20260703-alloc-trylock-v5-15-c87b714e19d3@goo=
-gle.com
-> was merged ahead of this change.
->
-> We might want to consider rebasing this series to resolve the header
-> conflict.
->
->
-> Thanks
->
-> Best Regards
->
-> Hao
->
->
+> >  mm/hugetlb.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index 571212b80835..a4e6dd3a82f4 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -4918,7 +4918,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+> >  		softleaf = softleaf_from_pte(entry);
+> >  		if (unlikely(softleaf_is_hwpoison(softleaf))) {
+> >  			if (!userfaultfd_wp(dst_vma))
+> > -				entry = huge_pte_clear_uffd_wp(entry);
+> > +				entry = pte_swp_clear_uffd_wp(entry);
+> 
+> I think installing a hwpoison pte will actually drop the uffd marker.
+> 
+> hugetlb_change_protection() does nothing on hwpoison entrues.
+> 
+> So how could be possibly get a hwpoison entry with an uffd-wp bit set here?
+> 
+> If we indeed can't, Id assume there is nothing to clear here at all.
 
-Hi Hao,
+You are right.
 
-Thanks for bringing this up, I discussed it with Andrew as well and
-will fix it in the next version. Waiting for Suren's comments before
-posting another version.
+I am inclined to remove it in a separate cleanup patch. Any objections?
 
-Thanks!
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
