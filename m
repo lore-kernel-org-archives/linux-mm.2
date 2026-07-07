@@ -4,99 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36131C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 05:04:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1224DC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 05:06:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16EF56B009D; Tue,  7 Jul 2026 01:04:00 -0400 (EDT)
+	id C706C6B009D; Tue,  7 Jul 2026 01:06:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1202D6B009E; Tue,  7 Jul 2026 01:04:00 -0400 (EDT)
+	id C20C96B009E; Tue,  7 Jul 2026 01:06:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 010746B009F; Tue,  7 Jul 2026 01:03:59 -0400 (EDT)
+	id B371C6B009F; Tue,  7 Jul 2026 01:06:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C73EF6B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 01:03:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50E1A8CE40
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 05:03:59 +0000 (UTC)
-X-FDA: 84960788598.27.607B38B
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 68833100003
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 05:03:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	spf=pass (imf14.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D8F66B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 01:06:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D527F1C2474
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 05:06:31 +0000 (UTC)
+X-FDA: 84960794982.08.A9D205B
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 034EA40004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 05:06:29 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf12.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783400790;
+	b=8XpnmEA/qIYlmpmqPc75QacUPcKP/fCXuEyY01HNcSIdIkrCjTh7J7GumqqlKSaJjx13Si
+	cwuXco9/O2B9JxOZe8qboxjTQiw4+kPgnXgDT2o2NRfuv0O6qSwfHvfbkPl0ucye+7cT0L
+	mCeg/dV7JQxmegCNx/v6AMqILth/k6Q=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lst.de;
+	spf=pass (imf12.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783400637;
+	s=arc-20220608; t=1783400790;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=O6RzR/pMgepW/QEzSHfK1nzA/aBBle6WMwTm0+/8k4M=;
-	b=KqepqTMkoSlBJK3Ph3w4Hsp+1gHegq8XxzQ+nzxNet8EF7MxpZABu93HTS084ZbVIgyNjy
-	L+LIC7MIFFE1D4wXiwBQeazjuJhk7j4UkuXci7jw8Gayqisct7nSAWR4Jy8dcGj8334W4z
-	M5fgDWZ66LEIytF5a5RpNdYRUwEycgA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.21 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783400637;
-	b=vnb39IUSrosX2BYZPtV14qNPKKIObsxeKLRTaM4+yXK0RUqpGtGcaY7WfgiZGgkiw+g10n
-	0auQ4hZyGEDgoDBVDj9EOlYjWo31I5zX+FaNr7BjvnJih1CmeyPM7yFICPwZ/97aTcQJm3
-	KkUMezbNXrtjOi3eU/h0UfIKEuQD3Mg=
-Received: from [10.213.6.103] (unknown [36.110.52.2])
-	by APP-01 (Coremail) with SMTP id qwCowAAnytKviExqhn4OBQ--.11100S2;
-	Tue, 07 Jul 2026 13:03:44 +0800 (CST)
-Message-ID: <99eac2ba-a4e5-4885-aa81-b0c43f6fc4b2@iscas.ac.cn>
-Date: Tue, 7 Jul 2026 13:03:43 +0800
+	bh=16d7MGYrUqikrUDpqdgMw9MblR401tuy1OFO5g1w2FA=;
+	b=3zPG7pWiSFjOxepWgVizbI52znDq8glHTZOm92yfriRmHBFAlaFoixjGN58loVlPLLDIi6
+	ADUGnk4c/o/ZafC9+T1mYsl4EiiFCp7M3w8P2HHX4flboLkzj2QQZcp7rDwI671Q07TBve
+	0ywaICPdQhc2ahiISXpS7azEGYqsQ2A=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id A196B68B05; Tue,  7 Jul 2026 07:06:24 +0200 (CEST)
+Date: Tue, 7 Jul 2026 07:06:24 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@lst.de>, baoquan.he@linux.dev, chrisl@kernel.org,
+	usama.arif@linux.dev, kasong@tencent.com, nphamcs@gmail.com,
+	shikemeng@huaweicloud.com, youngjun.park@lge.com,
+	linux-mm@kvack.org, dri-devel@lists.sourceforge.net
+Subject: Re: better block swap batching and a different take on swap_ops v3
+Message-ID: <20260707050624.GB12963@lst.de>
+References: <20260706132206.935272-1-hch@lst.de> <20260706102118.6b6ecc0557edcbb2839e2ab7@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm/sparse-vmemmap: flush_cache_vmap() after
- hotplugging vmemmap
-To: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-riscv@lists.infradead.org, Muchun Song <muchun.song@linux.dev>
-References: <20260707-mark-after-vmemmap-populate-v5-1-77d1ded3cae3@iscas.ac.cn>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <20260707-mark-after-vmemmap-populate-v5-1-77d1ded3cae3@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:qwCowAAnytKviExqhn4OBQ--.11100S2
-X-Coremail-Antispam: 1UD129KBjvJXoWrtr1fJr4UZry3GF43Aw4fKrg_yoW8Jr47pr
-	Z7Can8tFs5Wryayw48u342grna9ws3t3y8JF4Fvr1j9wn8WFyjgrnxKayvgF97u3s3uayj
-	krs8u34DWFyDZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvGb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
-	8E87Iv6xkF7I0E14v26F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr1j6F
-	4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkI
-	wI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
-	73UjIFyTuYvjxUqP8nDUUUU
-X-Originating-IP: [36.110.52.2]
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260706102118.6b6ecc0557edcbb2839e2ab7@linux-foundation.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Rspamd-Queue-Id: 034EA40004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 68833100003
-X-Stat-Signature: kwfc7t3odww7squ3ntiqte4o4f7z49ax
-X-HE-Tag: 1783400635-11279
-X-HE-Meta: U2FsdGVkX1/ttbX92Bhs+bp7N7J7uqF2zW6eMNC71ISoCwVXCALbGqsXHhs8/PRwq7inBit3HDAhgmbcYZ9PuyYLrPKW1WP8VJQZelVFn1j5CLDCkyOawVz12V33ETFws95ymG+c2k96Hrjaqb8/RuCtvV5RV16uJlqncQavDOur3T2wBqQhqciiXznRkyZfTF8SzG9kEylfyVbbYpXeCNlzHn6cPs7rd5KF4QUU2kiATKoVQzwM9FJZy3UZ0aBQHhdSBpaRk8A3sEySVW3+g6p7E3kFAHp8i/p+TPvQDJJlLKIJg43xxAury+Yc3elR8bGGUsr01OWNvNCfH1fQfZI6o7BlMEaCutKxtcV2zvkN4pBap0UvMkQAwxrBW0QOyG+Dm3hEW733bdlhXFjjZgufa9KXQQK6WADuvRIBufuD75BLEKQlulSftN16g/J5Xz5uPcwH970Er9e6KupBzt47AKPznN1rFi0uLkINUJORh8zNFSRt8FPX3N9jFVs138misAfIN4rr6BuDj8x7W9Lse3naan6Nl9VwxUhmQRKG7/H18K4/uKsZPL9vXEA/DfGz2/JG3QBRZM8YFj1fgULqhiKg5cbVyeSxIN0/EI9aEJp+yX8eir4wrsTPXgKUeq7laVK/DII/49BzX/HpfZZpXaRUg2F430eclacFRoJZgjS2P98vEcgkKS9F5A6O7LZf6H4QlZlNGETn0we1uj3bnhxan1bY0ewXLCm0NF5hs8h/z1GTXuzldsW8lg/WGzZCyF7iJZ4FX5wIsx9TtE30NK84sb4zZXqpIAvjXZTXQcGx8Acnn3viWtNWEPftOEL4IO1PO/zFvYYdFsyRfFevQr0JfntV3piHeMamw7j+eX2JbaSB9UibW9xMv8gBjdeQ67Mi2sOq3bUKhjlWq5vVX9zL1LHOgOjr9UyKSqPAwFuS9p6Za6T+b+tt5wjmTcQGuPhDtbtHngW0blP
- OAGjY/oY
- t7v9RugHz93cvuULm8ypQRGrVTVrdFs/x42r7V5aWSuvVWcOT0ECO6JIv3h9yYSwcA9lwMH3DVW8pcJKzQJGrvlEkMbuKT5YFffhwSaCQGXzeY7yvtgl4qhEEgySku+Fq26D7HGW/h9oM1NPGpNLUv8owAfDmOR+2hg2U5Td9RuXrmGLs/VpZtRyjYULJcLivCMdx1Vs6cEtNvm58DleLQHgQuxd/q3qbIYFMfey5F2IKryp9atBcAvJL5OioDfOrq/L9
+X-Stat-Signature: bme7x6dfmayf1hchm5q161qszsx5wsg1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783400789-186026
+X-HE-Meta: U2FsdGVkX1/nYMHscbix6G1WMjaNY50fH3X2MzmxQIdUEBx2KdhNjula76fAusX6urnIuEyqQJSRzeMjJsPAzRjf4TuFNYr3Qyw1Ak9aqW5sXUtk3yNzfXQZJsuqnOu09cCdN+zbNJ4076wu4Nrj5J7FR7GT9E9yjmtsHFb4UX/pmpG5qBQ2SRUhVspFvP6nAuk6JMdUD/UR/ZJQx8KZF1pucxKSBnAfXmPbIjLpeQfiOg8QQdyfu633rMAWTVAepgRijMvXNYEKcgSxWpGUsjGdUK2QrG10kupgQLPWEuokdUxQm8bNABt6HHmcYG7Yb1/TF2phMhuT26Q42ktXFgevb1H/6k6FLRM2Gks7LpgeOQVcXfA7LUnKQpvdWy8gPArpWjyC17UeIJVA4FuEqIMiCwQdEM9JL/GtgieuTI41pr4FzRHfDSkGVOovoFLhoI9gegdKzSADS/N9Ws1A/HERW4Fexa+HQsju05Oai3iZAP5LjBul3F+mBaHsEqUYesNdo6mhGa5v5Kdpc1LbENhQtmpbhymmcIbnRoY8CIHSszuP3D/MNoCjBQVPf83kxkCNFfS/lBhE/pEE3VTU7F5KTwU57zNPetOAB0E+xiphTK2y9S/62q+VhO2oP0vzTI+76RnvjkGnP2OeEvfyT3ThVB4Wd00gwdU5PYzr5v/D06WQ543fsBEfo3zvr26W/27ChtJlIZwKWJR+kNMnDsqyQKTOy9SKhZFy+pxlYLH230Cs5OTKL9fuCLq50pBTsx9VtVJfg2mS3JN0AEkPztVL3yGSyLdtOX3VQ7ZsOr/H7jsQk1EFH7n8vDhzScUI6eCqC7am4glmrAizliPL/EBcgmBm3RXCdjktKRR97TD+y42u/qFIWhzWTrZlflYMxs3AmWX0Kppf/bp9IR3uvXq1VfMCVkrYlokMRjG+HSRz9hIlvnF+kfHxYZfQbV/eXZfDEFiP0frVr+IBlXx
+ HaZiKDr6
+ HAl2sEMwodgL3o2mOuJAHXIV5A9xaaTfOkjDUignvoJ7L1crtRDF9kCxV4Xb2Ssj8t1rxI2trH2j3sHWdT0Hf0izLJISibePg77UjO4vMWy76bCc8g+0iJB4DuMWv5CErJ/ef5cM8/NEFqIKpn/tl91sfIQFza0Ob1PyMStIrX8XqG+irjoDo1zr85TzPvgMwWFaF78elEEhuIA31FFo96ZiMcMBK1SSBwjAxw4HyW2VjsBfveX4s6D77diuO0ocuaEHx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,33 +80,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Please disregard. I made a mistake while submitting this patch.
+On Mon, Jul 06, 2026 at 10:21:18AM -0700, Andrew Morton wrote:
+> On Mon,  6 Jul 2026 15:21:52 +0200 Christoph Hellwig <hch@lst.de> wrote:
+> 
+> > this series makes use of the swap_iocb for block as well so that it
+> > doesn't do inefficient single-bio I/O, and then rebases the swap_ops from
+> > Baoquan on top of the now very different method structure.
+> > 
+> > When running doing kernels builds, which is a workload that doesn't
+> > really do much THP anonymous memory it still gets 2x clustering for
+> > writeout and 1.2x for reading back swap in.  The overall times do
+> > not actually change, though.
+> 
+> Thanks.
+> 
+> AI review might have found some pre-existing bugs in 
+> drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+> drivers/gpu/drm/ttm/ttm_backup.c
+> 
+> 	https://sashiko.dev/#/patchset/20260706132206.935272-1-hch@lst.de
 
-I'll send a fixed v6 later. Sorry.
+I know, but it's not really relevant to this series, and the drm
+folks keep ignoring it.  See also:
 
-On 7/7/26 12:10, Vivian Wang wrote:
-> section_activate() does not flush TLB after populating new vmemmap
-> pages. On most architectures, this is okay. However it is a problem on
-> RISC-V since there the TLB caching non-present entries is permitted,
-> which causes spurious faults on some hardwares.
->
-> This seems to be most easily reproduced with DEBUG_VM=y and
-> PAGE_POISONING=y, which causes these newly mapped struct pages to be
-> poisoned i.e. written to immediately after mapping.
->
-> Extend the RISC-V flush_cache_vmap() to also handle the vmemmap range,
-> and call it after hotplugging vmemmap, which gets the possible spurious
-> fault handled in the exception handler.
->
-> At least for now, the only other architecture with both
-> SPARSEMEM_VMEMMAP and flush_cache_vmap() is PowerPC, which has a similar
-> problem with newly valid PTEs. But there flush_cache_vmap() is just a
-> ptesync. So it should be safe to do this for generic code while having
-> minimal performance impact.
->
-> Suggested-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
-> ---
-[...]
-
+https://lore.kernel.org/all/20260609085534.GA12980@lst.de/
 
