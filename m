@@ -4,135 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F522C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 15:13:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADBAAC43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 15:19:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 384756B009E; Tue,  7 Jul 2026 11:13:56 -0400 (EDT)
+	id 4ECDB6B009D; Tue,  7 Jul 2026 11:19:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35C2A6B009F; Tue,  7 Jul 2026 11:13:56 -0400 (EDT)
+	id 49E536B009F; Tue,  7 Jul 2026 11:19:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24AEA6B00A0; Tue,  7 Jul 2026 11:13:56 -0400 (EDT)
+	id 3B2F46B00A0; Tue,  7 Jul 2026 11:19:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E9A2A6B009E
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:13:55 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 77115120427
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:13:55 +0000 (UTC)
-X-FDA: 84962325630.21.0896CF6
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 899EF14000F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:13:53 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=y2D7U56W;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=A66O33Om;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 05FF16B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:19:07 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 798F61C812D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:19:07 +0000 (UTC)
+X-FDA: 84962338734.01.E044A6C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C3B6C4000B
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:19:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eFtYzO+N;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783437233;
+	s=arc-20220608; t=1783437545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=yHnAHFidDo8khkFB9/mnK79nGDjqLvmK8s2Lu6YNrRs=;
-	b=LwC63lnqRMIH8pUGhQLEEExaO7PZIzbDgtC9jk60YS/Jh3O1qrv8Oc6xXB9v2gS3qjSfUo
-	4a5TzNkvQeHm4+9N/I5c7IZNBYGS30OR2EtVSUu94OcNtMLWzG/ROa+cbc42dDaTXe1vMs
-	9DngvR/B3LarWltKr2gbvnpJmTGuTKY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Bqq8ePT9H9VE1dEU5URVxmwV7voFDUZWfR8BEBmItJY=;
+	b=xgNTFs2/mEl7vHPXqs4/knHkB3VP5Z4Udfp/g2n+VbgsAaR1TSOYno/tM740bkP+ihGDpP
+	XyxFoCuCEHu3KdgA/1PoB1o2yIFOdP1lhjyUo/l4smW27pR+Ie9Ydy2VaAL30bWfKusANI
+	lIn/nj9JyCVQSR5du73y9ai+rE6LJz0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=y2D7U56W;
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=A66O33Om;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eFtYzO+N;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783437233;
-	b=Y+gN30im+Vjq1K/vzoHAzusY1uk1EV+O3zGmNMJv2THzMBd/IvwO99bge0X71VURrxhbGg
-	l2bxdCh86g6AeWZydKueeHnuq49rR1I+NpY8AF3bvldFM64pg2P9Dho/A+MJ512boqy4qO
-	+L5F1w0aKRRD9i9jHTWFYZQlCHwFIXM=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D32ED1400060;
-	Tue,  7 Jul 2026 11:13:52 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Tue, 07 Jul 2026 11:13:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1783437232; x=1783523632; bh=yHnAHFidDo
-	8khkFB9/mnK79nGDjqLvmK8s2Lu6YNrRs=; b=y2D7U56WVBDMlVcDzkgqSe6iKR
-	e7AQUoz61t1hrh63gYk6Yj7Sz9d18qx71ARnOEDBQjMYdLORasIoVcSX6RfdTuPp
-	GDSRPhGMh5ZE5R4bRnlKpz5Bbi9KnRcFzUyea+u0LsqGB+kd2ZwHg70iquTSB7J9
-	0iG2V5D/Mt5czH123UjK2P0X4pg9xXuEtaaLK89OPilePHyTHcfOEIXHjoSWaJaq
-	zN6wfg/3lpKuTKz3RorO2DrYzs1BIWZt3eqBv8BRUCHEa8dcTpCMM/3ABuhI70h5
-	ahH862/XE9JLV2IKinfNByyc5l0LD7wIXcgvJ59H0oXBKsNIRheExFPEbaqA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783437232; x=1783523632; bh=yHnAHFidDo8khkFB9/mnK79nGDjqLvmK8s2
-	Lu6YNrRs=; b=A66O33OmsHTi6Doh2SSYWo+yPNwdtdfNPgS7NfQAYlSzrjbEcFO
-	Bjm/ysBPVxPycknpsCqZg6UnhTBfAn/IdH5vAQq3K3Jng3jWCv34bJvA56oYfk/n
-	NT40kmBDgTzxq7dLxHNSCObZDrFV2Jip15W29KgszzXJjOapHtooB3ekwqE/QjNh
-	sKvEYY1l31Jpcs76ad8JLQsG9zAaQk6DnAGPRWWkpjjk2HLs7r0RAVE0lfTcUTrF
-	7BqfN9JZiTyB164PjNkPwm7x3vryPZ67gTPss/m4qjn+LgZPNovzM1BYiGeI7BZS
-	IJBCc8IxV1oO7AThCwSdWTW+jzjZc8v7rvQ==
-X-ME-Sender: <xms:rxdNaqWubJlzNtUGhx1wVQ4VQZgvbwrUZANDClSPY0Xku3B1a4xLHw>
-    <xme:rxdNatj3LSPPGJ7P84BieoAQVBzc6dHLrYEj-JNsUOpsda7RIJ73hi6SLabeM-1Yx
-    8Brvhwwdp8zlMxUGQTYhzMSB2E0pzLJ97yjBqLa-NtRBF9HEBg2tyiz>
-X-ME-Received: <xmr:rxdNajfpTcRiKYdxBFqUA233bKF7SXj45KcYU8vi_xeizaOyxyOO1ujPVX4nZg>
-X-ME-Proxy-Cause: dmFkZTEiLljjhqgaKKNY5aZiI+jEvjyU81SjON7V5vxdWCBsAwiOWcMHlYKbwS5Zrkx5gR
-    gCjHbuYgokG++jJItBiQhtpm+cB6FDJvAvsG3q/4/1cmcnN6cGUCTkXyE0xgArRFzlE5El
-    kS57rEdf6c7FRigb6EVHz5I8NgITm5hE9uU5jJ7Yy0irnbojHwrL3UqHqCzYahdFhlp3Rn
-    t7tNdtwaznApTVOOTQhMcpm/4Ym1ibGsImDL4LHR+9hUOdo4v2M8+/Y81ukPPhJYW+fMNY
-    pv5tppNMfiOEsQWUahBzzxe4IAVuG3YnCsItoPUwYN+1xRunHaMkQ+CwbvNWVkKR95zlPt
-    YCT+F1FZFKCD5Tg3l0hb4zMza38/aDkkI3ZK6OPxjcDlPI0/0JKJ9UmdqBCu4jaBnupI46
-    Ztsv6YbM2s/pnJVI+tQ2H9trktCIKFhZ1JM0yX70Z2AsAYadbPwRWrshFkNMsl//LcWKw8
-    bFIY/9QtE3iqHzYDXJHUVBmv+8jE88fejHKnxY8Qtkpu3BPG3XDETKgib08Zak+XLSNQxD
-    nydTe/Gvou4YUXtei3MSI5dAhhZr7CSiu9HSAwXmthzvyvnEMaGbomJyZ7sRCzyylZeLwq
-    4PwUVXGvwBNLB8rTsbYk+4evVXYRmejH+51UsudB+RAaGK2gN+Z7tMhn7V0g
-X-ME-Proxy: <xmx:rxdNaofuHWpKuAMadg7GdAasb6KLzqSzA5nVG19B2zpJcaXo0VHerw>
-    <xmx:rxdNavXN3iO5BThnNRlkyC6GbyzxCDrntc7wXLA8A9ERf740pKgiVw>
-    <xmx:rxdNasemlUMOaGffimLQbepO2jFqLJRe1OBYd4OqfZD6wBJnuIWkkw>
-    <xmx:rxdNaj8VT7-LKy3y86yuBhs_CCUY3256GQ3-JD7lAqPoJQGXTz8OAQ>
-    <xmx:sBdNatrWZXAHxK-M-H1KwytAJTNxX4CVK9ujGU-u9tp6uVAvi2p_mHRS>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 7 Jul 2026 11:13:51 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org
-Cc: usama.anjum@collabora.com,
-	peterx@redhat.com,
-	liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	david@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	stable@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v2] fs/proc/task_mmu: fix PAGEMAP_SCAN written state for unpopulated ptes
-Date: Tue,  7 Jul 2026 16:13:49 +0100
-Message-ID: <20260707151349.92143-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
+	t=1783437545;
+	b=06kzCYviOcAJ2+yDvmJkRVdkuLkY+Gun0SiAC23CHFKTyChp3riMdpYFGYh9nfRcQHeIeL
+	xdxXESc+YVCPSNHmx0CSS1UjdcfFogX6jJaCXPh04cr5HXuM0UVA5mL8KNnOB+mv7ZjhPw
+	ow6HdRDnbFZpWN9PRftanBQVI2UNG3g=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8E629434B8;
+	Tue,  7 Jul 2026 15:19:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8801F000E9;
+	Tue,  7 Jul 2026 15:18:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783437544;
+	bh=Bqq8ePT9H9VE1dEU5URVxmwV7voFDUZWfR8BEBmItJY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=eFtYzO+N6tQx//zLUjs37Jdr/KL9AUGZECht1kmEr2glyVKXj8jjiKEGsvhUdUy8W
+	 chCfiUHUifIPxfWRh40sBvnsnovCbiJNLVxaL94OJyYrw/EACkpf1D21P8j+i4WvO9
+	 znQJehBGOSztYJMXLgIi94TwIYi6wQMS+vOlIb6EZjB7oiXN1/ZmIRNK98Ar+43T6u
+	 5ClpIyyAqV/qxa1ZMHt0MlJIvteHAOsP670qG3+A+qjDWOPGUsZhf+RdKwrG0PUMfn
+	 PstxwVxTZXFARzHmI0Th6bI3ads2eQEH5bnwwGeMgZHy7mfb5NRkQcQfsMl93xFy8/
+	 GZu0Dc1cAoRCw==
+Date: Tue, 7 Jul 2026 16:18:51 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: David Carlier <devnexen@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Dev Jain <dev.jain@arm.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v8] mm: pgtable: free kernel page tables via RCU to fix
+ ptdump UAF
+Message-ID: <ak0YI9KjSstnj9rJ@lucifer>
+References: <20260706203128.162335-1-devnexen@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260706203128.162335-1-devnexen@gmail.com>
+X-Stat-Signature: h7rt95kya7xw4uf46uiinq3detkenaf3
+X-Rspamd-Queue-Id: C3B6C4000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 899EF14000F
-X-Stat-Signature: 1tg4h118abwh18jtk31eyzy7kztin5b1
-X-HE-Tag: 1783437233-705721
-X-HE-Meta: U2FsdGVkX18gIQgowBeqxqmC4yJb4FCHkFJSXLS1shk+OcCBvucViElV7QwyKuNYqyh5Y6JVVEiwmhEOaILAclf6/AWTkh1qWHW4AqKs6oKLOIu7i1wr45VrYbLCiu6vUWGSl3cfcktOukEqz5rDBkz7+aIprm2K+9XAbCJ6gK1eS4WG91pLlR+mgPypeOZGrY35MpOcGm64S0IYFORxmuvDs1RbORBEcevbiqy7EmEAb1A84iAa31wmdpCE+9uNNqBTLjBmlM01B3u+rTz5TYho5opX8cbmytzLeZx2Bw4SYIZUmSVqiVg6+K/mlLFtAoQt2Yq6lUC/e/kFo8KGgkSeVXHLY+ZGQNMELo8GjDpQ46rYbKtQHC8IGCGIixrnVNADEfOYaO12/g6oli3J0nvuJHbKrBOv8cqX6OleKk+d1nO32G94V3MekC3exBTeGm+slduuQUbMGQupj3Fw6A5MmsC3B5k1KkjswBh1rn2hUfQj0TlnttjWCzm1jds22FEuPB3m2EHLnRQD6tfqHQXLh+Uet2YpbVbfJYjnYaZg8MXCpDDu11Sr1TDjoZeEpbCmzxUbYjr6Y28l1QI1vn7eFAnKpaOqwpLQLWojkFIQvpY+d5PnQzrYNdvySrbVikVqlXVjvZKg2xrfUBEm5L94lrfRm/QxqjV/Ps5L9qyK/n13sNHtly4MQCr4CxXxtg2lniFW2pEKUrH9M1LtE7UchCSJ3zzk6Mxc0SsOyMXOcEjix4MOXo3i0QOwSPtAFLIHKP+3BM63qOPU7RJJjFGNaMa7xhtueUDRHqu1NPcuQY/iKVxBjSLhueLyXOu5osNQluJH1G6l/Qm/ehUkyPw5vJFwH/uryE9tiAbcZKjmvRb5r6B5w5zjeF9WG9oQB2yzznBdlbGKCdAPJv8IhGRNsyU/5G12MZsQ2Cds0+B/j0e0XvaIWt6r3HYOwNb7k/yw8dp+SVaQoLcJLpO
- VHVdrAsH
- dJIEHieCMi6OhrddT43PKqWvxMGi4surP57AfWxkmisZasYr+kGdQjjz8LcrsASmGHCAPPvIFDzfNmidaoZhhuCFiKXkHUnzUk73IKvMJQTJBypDt+JGIzPb9FM0ZSuf0rtc6wOUXpfcuG+5ycQuV565c1x4/35wXcAS0m6A8zDXrhG6S3hurLpGAgoEjyirOY973gktep82NivWobBOF3OdVWMXqJ9tXapSUNEt8kvcDuuOKeOzrjg1XQbKSMuEABi2ZKuVnqdcRd7O9zbdauj0VG2SAfSoFasWa9jPf8jr3I/F2+F+Ek8eDOWNQ5A3rtKgpIEidT47saVKR4Sbg5maUjV1CsafrZZFmPeeVYDT55TWL0284fKxD+oKLg1Vrha8zbJjroiM8IFIDNMTXUcxP6iCpMf21Ygaq95BJAfJzp8aoTrJQ04qhJBzTA/P8EGIZMfaDO1m9nfvie438ACK+AItFyzwMgTVtsBCNN2m3yaFm7ejq9yyN2LQIKnWXCeBpHrH+uLWQGF0BPteLni5TH7nOQqDdTbQuKBaushxkgy6+r5OqOWAj6vfCiO8nBW8IgXlqiKj30mQ=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783437545-576727
+X-HE-Meta: U2FsdGVkX189xgwuiqyc1nCJzKJm1QBXB72DmUJXxuuSD3L/zCxV1bFGgoOLMcisROP//Yc8twJcEiw25P6xxA8u6xCA+du0EsExMSeUPaut+V+hI+927e7Ob0jf+HOzARqGKwFL8WeSogRwtWLal3n2G0+fxWImBjtryUMbXln7V1NT4kilPjgQFWJKOvV8kMIhfhhJGyu/VZQmXWVpHvkwZFcjBr7GAQHuIIXtQhgg0SV75hxlEJPZ78gj7rhDKL3Ns14Gj81iCjPHTHvTJ4OqlpwrdLvkWSoOB2ZYQAJBQvW9FAMRuoIYGZoAq0fcErYbxYdaZzxZOHG2jUMOEXIR6NQrCUfZoBv8bRitgCpHgROIyaOPSio15ogPGUx9PHaH9v/4B5K5RjZHEA3X/cLJU3wXLPis1yhpZ+m8IEctXSL/cHueald2EQkub1TWl+SqMBdODxtcdSPhtZj+1jtvEua580gHBUm8E82BjiyW0SLXOn9W4JkeBr55edsL5NW7xvQ1OA/dQFXQuVIM4bsqXBxOm57qkIrmzpaaGu0s+uZ9FTi8giG5og067Lu8P10BXprVCEVwCsoekxTN4OFigKD+48tbbCaTbSAtdACG+nIqusQDxabSsSTdfjfDutkWHD4S1+aUZAgH2VB5DhjuglB6Ub+XHiA9j0SDE/GukQJwozcHohXrEd/P4NUe8MPNChYyhO0l0F+K5VGSOkq7GNt9ZA6RdSEqJ9Khb3v7NuzltAUDW/kno6g9sDlJKdYtx1Uz4oC8SPrHx3VCwwX4fYCTosVGwnxIT+SMDUehb9wzsT4EGv4mGdd6G++Zk6/YAFf5NOx1MquA3RLuvJojAnpLU8CHk6u0qsnpjUQgCwA0ElnlobJaRydIX5CnVoz5Y6KRYO8F1WVzZOC7ArTQYlNRwOTHT6tqdX1gmb24Fo0xuh4zhEWNxdBugKY1kC4uV34TZREgsA5RB0G
+ V/oc+Vzr
+ xrrNw8ZuPlanXNBbEDH8AleQIc5SapLc5yKBVuYE4FHWpkbRsICDFBnhypLO/tYO6RgC4c9WqvrZbZ0P45nBBY5JU9Smfs5Mz81/E3KnJa4ehirR/tjfWftf7SJb5m0NGRmnkJ3tVvqxn/MSkk6A2csNyaUuN0YmQ54yO7yImLxTVar3SxBj2zNYeWz7bI9+pXqdq4nXe8TUhrpLjjs2TGuvFfL6UrLTCl9VqTcpPfaQGUBU4OsKySWMGKHgwUz3hyZioj6YFUKGt3ix0MQ6rusBMr/kmhU4/hYWK9d8PS6UxKrgVquCTM3kI50clmBxTQn1UFnSpANfX0Wakw1SH5jkvkftXU7e7oUNFU8VbBEAsxD7uMK7hXdP9oP/14LjXimx4NOwzLFWo7J+DmISHDQdfB0IMtJNHrToUD+dcDLjMBDMm/DZdM+viI3y5RRiCM+4J8orBuSKVM6x1E9mXf3bIqJfO4+WsbmaStoLj77jlqG8SlQxrVMk2aDAhiMKWlSEgvNmJzl8BWyY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,167 +100,287 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Hi David C,
 
-PAGEMAP_SCAN reports an unpopulated pte differently depending on which
-path serves the request. The PAGE_IS_WRITTEN fast path in
-pagemap_scan_pmd_entry() reports a pte_none as written (and, under
-PM_SCAN_WP_MATCHING, arms a marker); pagemap_page_category() returns 0
-for the same pte_none. A request that cannot take the fast path (an
-extra category bit, category_anyof_mask or category_inverted) therefore
-reports the pte as clean and skips arming it.
+This has been through a lot of revisions so I think for the sake of expediency
+the best solution here is for me to grab this and fiddle with it a bit then post
+it out myself.
 
-A range that was populated and then MADV_DONTNEED'd reads as written via
-one mask and clean via another, and in the latter case is not re-armed
-for the next round -- an incremental-dump consumer (e.g. CRIU) using a
-richer mask drops the zapped range and stops tracking writes to it.
+TO BE VERY CLEAR - I will keep your authorship and attribution :), and simply
+stick my name on a Co-developed-by tag.
 
-Report pte_none as written in pagemap_page_category() too. A pte_none
-carries no uffd-wp marker, i.e. it is not write-protected -- the same
-condition under which the present and swap cases already report
-PAGE_IS_WRITTEN. The fast path applies no VMA test, so neither does this.
+So this will remain your patch.
 
-The hugetlb and fully-unpopulated-PMD (no page table) scans have no
-PAGE_IS_WRITTEN fast path, so they do not exhibit the per-entry
-divergence and are left unchanged.
+Cheers, Lorenzo
 
-Add a pagemap_ioctl selftest that populates a range, drops it with
-MADV_DONTNEED, and checks that the fast path and the generic
-(category_anyof_mask) path both report every page written.
-
-Fixes: 12f6b01a0bcb ("fs/proc/task_mmu: add fast paths to get/clear PAGE_IS_WRITTEN flag")
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-fable-5
----
-
-Changes since v1 [1], addressing Sashiko AI review:
-  - Report pte_none unconditionally instead of only on userfaultfd_wp
-    VMAs. v1 left the fast vs generic path mismatch in place for
-    non-uffd-wp VMAs, where the fast path applies no VMA test.
-  - Strengthen the selftest to assert both paths report every page
-    written (v1 only checked the two counts were equal, which passes
-    vacuously if both are 0).
-
-The hugetlb and fully-unpopulated-PMD scans have no PAGE_IS_WRITTEN fast
-path, so they stay self-consistent and are out of scope here.
-
-[1] https://lore.kernel.org/all/20260706104308.34741-1-kirill@shutemov.name/
- fs/proc/task_mmu.c                         | 14 +++++-
- tools/testing/selftests/mm/pagemap_ioctl.c | 56 +++++++++++++++++++++-
- 2 files changed, 67 insertions(+), 3 deletions(-)
-
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index d32408f7cd5e..d45c729ab6bb 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2432,8 +2432,18 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
- {
- 	unsigned long categories;
- 
--	if (pte_none(pte))
--		return 0;
-+	if (pte_none(pte)) {
-+		/*
-+		 * An unpopulated pte carries no uffd-wp marker, i.e. it is not
-+		 * write-protected, the same condition under which the present
-+		 * and swap cases below report PAGE_IS_WRITTEN. Report it here
-+		 * too so this generic path agrees with the PAGE_IS_WRITTEN fast
-+		 * path in pagemap_scan_pmd_entry(), which reports pte_none as
-+		 * written and, under PM_SCAN_WP_MATCHING, arms a marker. The
-+		 * fast path applies no VMA test, so neither does this.
-+		 */
-+		return PAGE_IS_WRITTEN;
-+	}
- 
- 	if (pte_present(pte)) {
- 		struct page *page;
-diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-index 762306177ad8..550d1f2c059b 100644
---- a/tools/testing/selftests/mm/pagemap_ioctl.c
-+++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -1051,6 +1051,57 @@ static void test_simple(void)
- 	ksft_test_result(i == TEST_ITERATIONS, "Test %s\n", __func__);
- }
- 
-+/*
-+ * A range that was populated and then MADV_DONTNEED'd is genuine pte_none
-+ * with no uffd-wp marker. Such a pte must read the same regardless of which
-+ * PAGEMAP_SCAN path serves the request: both the PAGE_IS_WRITTEN fast path and
-+ * the generic path (reached e.g. via category_anyof_mask) must report every
-+ * page written.
-+ */
-+static void unpopulated_scan_test(void)
-+{
-+	int npages = 16, i;
-+	long mem_size = npages * page_size;
-+	struct page_region regions[16];
-+	long fast = 0, slow = 0, ret;
-+	char *mem;
-+
-+	mem = mmap(NULL, mem_size, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (mem == MAP_FAILED)
-+		ksft_exit_fail_msg("%s mmap failed\n", __func__);
-+
-+	wp_init(mem, mem_size);
-+
-+	/* Populate, then drop: the ptes become pte_none without a marker. */
-+	memset(mem, 1, mem_size);
-+	if (madvise(mem, mem_size, MADV_DONTNEED))
-+		ksft_exit_fail_msg("%s MADV_DONTNEED failed\n", __func__);
-+
-+	/* Fast path: category_mask == return_mask == PAGE_IS_WRITTEN. */
-+	ret = pagemap_ioctl(mem, mem_size, regions, npages, 0, 0,
-+			    PAGE_IS_WRITTEN, 0, 0, PAGE_IS_WRITTEN);
-+	if (ret < 0)
-+		ksft_exit_fail_msg("%s fast scan failed\n", __func__);
-+	for (i = 0; i < ret; i++)
-+		fast += LEN(regions[i]);
-+
-+	/* Generic path: same query expressed via category_anyof_mask. */
-+	ret = pagemap_ioctl(mem, mem_size, regions, npages, 0, 0,
-+			    0, PAGE_IS_WRITTEN, 0, PAGE_IS_WRITTEN);
-+	if (ret < 0)
-+		ksft_exit_fail_msg("%s generic scan failed\n", __func__);
-+	for (i = 0; i < ret; i++)
-+		slow += LEN(regions[i]);
-+
-+	ksft_test_result(fast == npages && slow == npages,
-+			 "%s unpopulated ptes reported written by both paths (%ld, %ld of %d)\n",
-+			 __func__, fast, slow, npages);
-+
-+	wp_free(mem, mem_size);
-+	munmap(mem, mem_size);
-+}
-+
- int sanity_tests(void)
- {
- 	unsigned long long mem_size, vec_size;
-@@ -1559,7 +1610,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
- 	if (!hugetlb_setup_default(4))
- 		ksft_print_msg("HugeTLB test will be skipped\n");
- 
--	ksft_set_plan(117);
-+	ksft_set_plan(118);
- 
- 	page_size = getpagesize();
- 	hpage_size = read_pmd_pagesize();
-@@ -1737,6 +1788,9 @@ int main(int __attribute__((unused)) argc, char *argv[])
- 	/* 17. ZEROPFN tests */
- 	zeropfn_tests();
- 
-+	/* 18. Unpopulated pte scan-path consistency */
-+	unpopulated_scan_test();
-+
- 	close(pagemap_fd);
- 	ksft_finished();
- }
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
--- 
-2.54.0
-
+On Mon, Jul 06, 2026 at 09:31:27PM +0100, David Carlier wrote:
+> ptdump_walk_pgd() walks the kernel page tables under get_online_mems().
+> That does not stop vmalloc from freeing a kernel PTE page underneath the
+> walk.
+>
+> When vmap_try_huge_pmd() promotes a range to a huge PMD it collapses the
+> existing PTE table and frees it via pmd_free_pte_page(). On x86, riscv and
+> powerpc this runs without the init_mm mmap lock; only arm64 takes it, and
+> not on the block-split path. So ptdump can dereference a just-freed PTE
+> page, which is the use after free syzbot hit in ptdump_pte_entry().
+>
+> The race is not new. ptdump walks the whole kernel address space, including
+> ranges other code is actively mapping, so it reads page tables it does not
+> own. Commit 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page
+> tables") only widened the window; the Fixes tag points there for that
+> reason.
+>
+> Every other walker works on a range it owns and is the only one mutating
+> it: set_memory() on arm64/riscv/loongarch, the arm64 block-split path, the
+> openrisc DMA path and the hugetlb_vmemmap remap. Nothing frees those ranges
+> concurrently, so they cannot race and do not need RCU. ptdump is the only
+> walker that traverses ranges it does not own.
+>
+> Defer the free by an RCU grace period. pagetable_free_kernel() now frees
+> via call_rcu() in both the async and non-async configs. The async path
+> still flushes the TLB first, then queues the per-page RCU free. The page
+> stays valid until any walk that may have observed it drops its RCU read
+> lock.
+>
+> x86, arm64 and riscv reach pagetable_free_kernel() for the collapsed PTE
+> page (the ptdesc carries PT_kernel), so the deferral covers them. powerpc
+> uses its own fragment allocator: pte_free_kernel() there frees the page
+> synchronously via pte_fragment_free() and the ptdesc is not flagged kernel,
+> so defer the kernel case in pte_fragment_free() as well. arm64 also takes
+> init_mm.mmap_lock around the free under a static key; that is now redundant
+> with the RCU deferral but left in place.
+>
+> On the read side walk_page_range_debug() walks the init_mm range in bounded
+> chunks, taking rcu_read_lock() around each chunk and calling cond_resched()
+> between them. It uses the lockless walker as the mmap lock is no longer
+> held, and pgd_addr_end() to bound each chunk without overflowing at the top
+> of the address space. A walker either sees the cleared PMD and skips, or
+> keeps the page alive until it drops the lock. The owned-range walkers are
+> unchanged.
+>
+> Stop taking mmap_write_lock() in ptdump_walk_pgd() for init_mm. It never
+> guarded against this free -- most architectures free the collapsed PTE
+> table without it -- and RCU now provides the synchronisation. efi_mm and
+> current->mm page tables are not RCU-freed, so they keep the mmap write
+> lock.
+>
+> ptdump callbacks run under RCU within a chunk, so they must not sleep. The
+> arch note_page() and effective_prot() callbacks only format into the
+> preallocated seq_file buffer; the only GFP_KERNEL marker setup runs before
+> the walk, and cond_resched() happens between chunks, outside the read lock.
+>
+> Fixes: 5ba2f0a15564 ("mm: introduce deferred freeing for kernel page tables")
+> Reported-by: syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6a287988.39669fcc.33b062.00a0.GAE@google.com/T/
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: David Carlier <devnexen@gmail.com>
+> ---
+> v8: fix four issues raised by the Gemini review of v7 (relayed by Andrew).
+>     - the init_mm walk called walk_kernel_page_table_range(), which
+>       asserts init_mm.mmap_lock -- but that lock is now dropped; use the
+>       lockless walker instead.
+>     - only stop taking mmap_write_lock() for init_mm; efi_mm and
+>       current->mm are not RCU-freed and keep it.
+>     - bound each chunk with pgd_addr_end() so the last chunk does not
+>       overflow at the top of the address space.
+>     - powerpc frees kernel PTE pages synchronously via pte_fragment_free()
+>       and never sets PT_kernel, so it bypassed the RCU deferral; defer the
+>       kernel case there too.
+> v7: no code change; add version tag and per-revision changelog (Dev).
+> v6: chunk the init_mm walk in walk_page_range_debug() and take
+>     rcu_read_lock() per chunk (reverting v5's caller-side lock + assert)
+>     so the read section stays bounded on large kernel address spaces and
+>     can cond_resched() between chunks; drop the now-redundant
+>     mmap_write_lock() in ptdump_walk_pgd().
+> v5: reframe changelog around the pre-existing race and range ownership;
+>     correct the mmap-lock description (arm64 is the exception, not x86);
+>     move rcu_read_lock() into ptdump_walk_pgd() and assert it in
+>     walk_page_range_debug(); drop walk_kernel_page_table_range_rcu(); fix
+>     the pgtable-generic.c comment; document the no-sleep audit of the
+>     callbacks.
+> v4: defer the free in both the async and non-async configs, not just the
+>     async one; add a walk_kernel_page_table_range_rcu() helper.
+> v3: take rcu_read_lock() in the init_mm branch of walk_page_range_debug().
+> v2: use call_rcu() instead of synchronize_rcu().
+>  arch/powerpc/mm/pgtable-frag.c |  7 ++++++-
+>  include/linux/mm.h             |  7 -------
+>  mm/pagewalk.c                  | 36 +++++++++++++++++++++++++++++-----
+>  mm/pgtable-generic.c           | 22 ++++++++++++++++++++-
+>  mm/ptdump.c                    | 11 +++++++++--
+>  5 files changed, 67 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
+> index ae742564a3d5..1e1e88f831f7 100644
+> --- a/arch/powerpc/mm/pgtable-frag.c
+> +++ b/arch/powerpc/mm/pgtable-frag.c
+> @@ -123,7 +123,12 @@ void pte_fragment_free(unsigned long *table, int kernel)
+>
+>  	BUG_ON(atomic_read(&ptdesc->pt_frag_refcount) <= 0);
+>  	if (atomic_dec_and_test(&ptdesc->pt_frag_refcount)) {
+> -		if (kernel || !folio_test_clear_active(ptdesc_folio(ptdesc)))
+> +		/*
+> +		 * Kernel page tables may be walked locklessly under RCU by
+> +		 * ptdump, so defer their free by a grace period too, like the
+> +		 * lockless-GUP case below for user tables.
+> +		 */
+> +		if (!kernel && !folio_test_clear_active(ptdesc_folio(ptdesc)))
+>  			pte_free_now(&ptdesc->pt_rcu_head);
+>  		else
+>  			call_rcu(&ptdesc->pt_rcu_head, pte_free_now);
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 485df9c2dbdd..79408a17a1b0 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3695,14 +3695,7 @@ static inline void __pagetable_free(struct ptdesc *pt)
+>  	__free_pages(page, compound_order(page));
+>  }
+>
+> -#ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
+>  void pagetable_free_kernel(struct ptdesc *pt);
+> -#else
+> -static inline void pagetable_free_kernel(struct ptdesc *pt)
+> -{
+> -	__pagetable_free(pt);
+> -}
+> -#endif
+>  /**
+>   * pagetable_free - Free pagetables
+>   * @pt:	The page table descriptor
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index 3ae2586ff45b..fc2fe014ac8c 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -620,7 +620,7 @@ int walk_page_range(struct mm_struct *mm, unsigned long start,
+>   * Note: Be careful to walk the kernel pages tables, the caller may be need to
+>   * take other effective approaches (mmap lock may be insufficient) to prevent
+>   * the intermediate kernel page tables belonging to the specified address range
+> - * from being freed (e.g. memory hot-remove).
+> + * from being freed (e.g. memory hot-remove, vmap huge page promotion).
+>   */
+>  int walk_kernel_page_table_range(unsigned long start, unsigned long end,
+>  		const struct mm_walk_ops *ops, pgd_t *pgd, void *private)
+> @@ -643,7 +643,7 @@ int walk_kernel_page_table_range(unsigned long start, unsigned long end,
+>   * Use this function to walk the kernel page tables locklessly. It should be
+>   * guaranteed that the caller has exclusive access over the range they are
+>   * operating on - that there should be no concurrent access, for example,
+> - * changing permissions for vmalloc objects.
+> + * changing permissions for vmalloc objects, or vmap huge page promotion.
+>   */
+>  int walk_kernel_page_table_range_lockless(unsigned long start, unsigned long end,
+>  		const struct mm_walk_ops *ops, pgd_t *pgd, void *private)
+> @@ -692,9 +692,35 @@ int walk_page_range_debug(struct mm_struct *mm, unsigned long start,
+>  	};
+>
+>  	/* For convenience, we allow traversal of kernel mappings. */
+> -	if (mm == &init_mm)
+> -		return walk_kernel_page_table_range(start, end, ops,
+> -						    pgd, private);
+> +	if (mm == &init_mm) {
+> +		unsigned long addr = start;
+> +
+> +		/*
+> +		 * Walk in bounded chunks so the RCU read lock is never held
+> +		 * across the whole kernel address space.  A kernel page table
+> +		 * freed via pagetable_free_kernel() stays valid until the walk
+> +		 * that may have observed it drops the lock; releasing the lock
+> +		 * between chunks is safe as no page table pointer is held
+> +		 * across the gap. The mmap lock is not held, so use the
+> +		 * lockless walker; RCU, not the lock, keeps the table alive.
+> +		 */
+> +		while (addr < end) {
+> +			unsigned long next = pgd_addr_end(addr, end);
+> +			int err;
+> +
+> +			rcu_read_lock();
+> +			err = walk_kernel_page_table_range_lockless(addr, next, ops,
+> +								    pgd, private);
+> +			rcu_read_unlock();
+> +			if (err)
+> +				return err;
+> +
+> +			addr = next;
+> +			cond_resched();
+> +		}
+> +		return 0;
+> +	}
+> +
+>  	if (start >= end || !walk.mm)
+>  		return -EINVAL;
+>  	if (!check_ops_safe(ops))
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index b91b1a98029c..7a32e4821957 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -410,6 +410,13 @@ pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
+>  	goto again;
+>  }
+>
+> +static void kernel_pgtable_free_rcu(struct rcu_head *head)
+> +{
+> +	struct ptdesc *pt = container_of(head, struct ptdesc, pt_rcu_head);
+> +
+> +	__pagetable_free(pt);
+> +}
+> +
+>  #ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
+>  static void kernel_pgtable_work_func(struct work_struct *work);
+>
+> @@ -434,8 +441,15 @@ static void kernel_pgtable_work_func(struct work_struct *work)
+>  	spin_unlock(&kernel_pgtable_work.lock);
+>
+>  	iommu_sva_invalidate_kva_range(PAGE_OFFSET, TLB_FLUSH_ALL);
+> +
+> +	/*
+> +	 * Debug walkers (ptdump) may walk ranges they do not own and race this
+> +	 * free, so they walk under rcu_read_lock(). Free after a grace period:
+> +	 * a walker either already saw the cleared PMD, or keeps the page alive
+> +	 * until it drops the RCU lock.
+> +	 */
+>  	list_for_each_entry_safe(pt, next, &page_list, pt_list)
+> -		__pagetable_free(pt);
+> +		call_rcu(&pt->pt_rcu_head, kernel_pgtable_free_rcu);
+>  }
+>
+>  void pagetable_free_kernel(struct ptdesc *pt)
+> @@ -446,4 +460,10 @@ void pagetable_free_kernel(struct ptdesc *pt)
+>
+>  	schedule_work(&kernel_pgtable_work.work);
+>  }
+> +#else
+> +void pagetable_free_kernel(struct ptdesc *pt)
+> +{
+> +	/* Defer the free by a grace period; see kernel_pgtable_work_func(). */
+> +	call_rcu(&pt->pt_rcu_head, kernel_pgtable_free_rcu);
+> +}
+>  #endif
+> diff --git a/mm/ptdump.c b/mm/ptdump.c
+> index 973020000096..537be9995e1a 100644
+> --- a/mm/ptdump.c
+> +++ b/mm/ptdump.c
+> @@ -177,13 +177,20 @@ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd)
+>  	const struct ptdump_range *range = st->range;
+>
+>  	get_online_mems();
+> -	mmap_write_lock(mm);
+> +	/*
+> +	 * init_mm is walked locklessly under RCU by walk_page_range_debug().
+> +	 * efi_mm / current->mm page tables are not RCU-freed, so hold the
+> +	 * mmap write lock to keep them stable against concurrent teardown.
+> +	 */
+> +	if (mm != &init_mm)
+> +		mmap_write_lock(mm);
+>  	while (range->start != range->end) {
+>  		walk_page_range_debug(mm, range->start, range->end,
+>  				      &ptdump_ops, pgd, st);
+>  		range++;
+>  	}
+> -	mmap_write_unlock(mm);
+> +	if (mm != &init_mm)
+> +		mmap_write_unlock(mm);
+>  	put_online_mems();
+>
+>  	/* Flush out the last page */
+> --
+> 2.53.0
+>
 
