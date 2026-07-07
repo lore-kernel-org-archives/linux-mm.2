@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19315C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 03:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D181DC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 03:26:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB4DE6B009E; Mon,  6 Jul 2026 23:26:03 -0400 (EDT)
+	id AF6B26B009D; Mon,  6 Jul 2026 23:26:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D65986B009F; Mon,  6 Jul 2026 23:26:03 -0400 (EDT)
+	id ACD2D6B009E; Mon,  6 Jul 2026 23:26:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA20C6B00A0; Mon,  6 Jul 2026 23:26:03 -0400 (EDT)
+	id 9E6756B009F; Mon,  6 Jul 2026 23:26:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C4A26B009E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 23:26:03 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1AE531A02E5
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:26:03 +0000 (UTC)
-X-FDA: 84960541806.29.FE50822
-Received: from va-2-111.ptr.blmpb.com (va-2-111.ptr.blmpb.com [209.127.231.111])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 75FAB4000B
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:26:00 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=fiScCpEk;
-	spf=pass (imf04.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783394761;
-	b=qopPuvAuMFMxP8hg0SrUnBqmlt28u3J5Pd8fBKQdvpK3fOil8h8oOb3aTlMmems9n6fTeY
-	mi/kEDIuTs8wCL2/iFQcHwoWhqaRjNQQBj0mTKc5CIkmPsJLO2ZyO18uUUTwLVxFUrukPx
-	bo85gAzruyRbf3tIJhgOoTnT94Kscgc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=fiScCpEk;
-	spf=pass (imf04.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7777A6B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 23:26:51 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC909C1938
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:26:50 +0000 (UTC)
+X-FDA: 84960543780.20.4935203
+Received: from va-2-114.ptr.blmpb.com (va-2-114.ptr.blmpb.com [209.127.231.114])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E6BD5140004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:26:48 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ICbc6Yzf;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf09.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783394761;
+	s=arc-20220608; t=1783394809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bs4YEwGhuau8az/B0StDJAa2em7HRJjmNMnR+mFCouI=;
-	b=70SIDbOlxGW9nQYGf43sB3Rjt0X1LcPbIpwho+qyQOh0TwD3YRzMQRGtEZ/SA//IJefgMk
-	MHcwdcMgA0NukMF/4bf416boWfbevZ09m7kpIQBRlWovU8ReV0S9ft8V9O6iNLVzl1Rc39
-	gh2hy4Hy+sqfYaM43/jHH+T7g7TrPfM=
+	bh=SlatkrEAWoB+y6LZ393h4sLUiuJx4jpAjzGhZ6jaKUI=;
+	b=qaKOUYXIi4k3rvnj2IrkpnHZjsr6kHDCrfq/xDM2AhDbJRvJ4rtFKnCriqbKrbm705gd61
+	mHSN63prPgWN+EzZdxBJEr0rzTRO/EIQJ7b/yp9yLsWytUHeoDkN/gNOqgNwTWAxrUwaEu
+	EmqY1CDZELoLLfF9927YoqwGu6GChw8=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=ICbc6Yzf;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf09.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783394809;
+	b=kDXubTdpp51/OxCWu+unNUP+mMuLm8bPmuep1aY7kJ5avHuv/+vyTUyZtGot46fy2/Hn4k
+	QzA8gD9EHZzG6EKwrSpG0FsRLpJGYL9eQGIq6xLO3TLYyNpOsg8mDv/jHRW9xtlGaG6P1E
+	/tpInmeOnRO4l3OM/eJ96KhtYEdKr/o=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1783394755; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1783394803; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=Bs4YEwGhuau8az/B0StDJAa2em7HRJjmNMnR+mFCouI=;
- b=fiScCpEkj3wfzVD1WWuF2+Syv8ox4WfI8HaqdFVpOVelvwqM0RD4CEfvN+dnooIneFZVrz
- cW7QsEq2tQ185IdgwCYpLlpeDGq6mjllrJ0NlVjl/dXqNYGmAte939SISC+Kp10sUbvCpg
- n4/pCxYk4My0MeenYwN1JIEK1ucMBADepQHr58r/ATd8mvOF+4zHyNDQHSwhHJXARe8gUn
- rY6HOc1UqUk6x87aePQ5UKFl0FumrCrTZBgBgpDxgAyjcd+1+PSymhLI1v1EVOliZr0aMd
- 2hTxsapo4i08tTmxl+98xEk6X/qnDufuJ8Nrj5CtpCOkVAK54Is1VYAN3yQmyg==
-Subject: Re: [PATCH v5 2/8] mm: factor zone-device page init helpers out of __init_zone_device_page
-Date: Tue,  7 Jul 2026 11:25:30 +0800
-X-Lms-Return-Path: <lba+26a4c71c1+739c44+kvack.org+lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
+ bh=SlatkrEAWoB+y6LZ393h4sLUiuJx4jpAjzGhZ6jaKUI=;
+ b=ICbc6YzfZzXq36v7jd/D4NQthSnyK7c+sifrvuwWVOaHNe1Vb2UzuvUUvn1FjN0OnGWZJi
+ yA0W9+RKMjh7CIvSLIjt+1UkQZhf8jDa5qbS98cfl1Cw1MI5N5qN/wKlXAOvQCiCU8w90H
+ okYyMkXS1WF0435sxrIU090ExeNzKHaMr5r7uWC/SvKq0/Up+k5sgoSLRM2iHfFbo13Kz1
+ r3ufno4vTEwtvwicVMQiHIOIoxx1Ppg5wbgY0HqA6YLrhZwKELOoIWhUpFdMsp3Mn9myg0
+ 4oi9v/y32UgzwAToqjRksPNYIJaONd+BZRarP0/hz0anCJkd4J6L8c7ABlo+KA==
+Date: Tue,  7 Jul 2026 11:26:20 +0800
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
 Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
 	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <kees@kernel.org>, 
 	<linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
 	<lizhe.67@bytedance.com>, <mingo@redhat.com>, <rppt@kernel.org>, 
 	<tglx@kernel.org>, <x86@kernel.org>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Mime-Version: 1.0
-In-Reply-To: <374a0a2a-444c-412b-8ab8-414dff6a2ca9@kernel.org>
-References: <374a0a2a-444c-412b-8ab8-414dff6a2ca9@kernel.org>
+Message-Id: <20260707032620.22595-1-lizhe.67@bytedance.com>
+X-Lms-Return-Path: <lba+26a4c71f1+813597+kvack.org+lizhe.67@bytedance.com>
 To: <david@kernel.org>
-Message-Id: <20260707032530.22444-1-lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Subject: Re: [PATCH v5 3/8] mm: add a set_page_section_from_pfn() helper
 X-Mailer: git-send-email 2.45.2
-Content-Transfer-Encoding: 7bit
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+In-Reply-To: <efd55e0c-8caf-4633-b876-18e8e788493a@kernel.org>
+References: <efd55e0c-8caf-4633-b876-18e8e788493a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 75FAB4000B
-X-Stat-Signature: m51zsprzd9k7t73mrn9ts4h6b7w39d9j
-X-HE-Tag: 1783394760-165944
-X-HE-Meta: U2FsdGVkX1/bE69+QiBRPZ/7NoFzMPoQPpw3pdbYJnzes8Wo7yqqlhMAsEp+3/MRsb+PGl8IP7S8po8tQRjcny9FcmSuyJEE4zZR1nOHCRAbqiuQ+dVByLWXHQA+axnqOi/kpYmsOLRQ94yp3apspf43SmQN/4HSeQi3Mtcm+9GFEpH4Fp2ztUYKIOVAC95qXdLWpzDCDzI4xlSovGy3inYwnXYJCXR2G7Pbki0ZYYUE2df/S/7mzDn9zWvyLH+euRqWqNK40PdCw7s++qbO6Q4Lzv0Ycpesoxt8pKqhZQptHUJqi6nLhI65vKVW8aNIhtfOmJuTBr9evdS6vTazKCKNoDAmas37Zmdod0iLxr8vDWlyvaJgOdXS4u1LSZduRf2u4oC9i8dfYNEjeYNqcO42BqCLn8iTLGbawmOEVJQIDZIUChmjrvEbZedEnSMs5LN0ECpLO+ivT7Xla2YfMpnUKJ5HXp6wWiqKJjcv2VzMSo0ih0vzsXsbRgLcTjTf/4E4XzgLa8BJ/WUBHcKJwpkWl5KJ0sd1/NwozfX918CjnTLRAM7QIrcuAE/XCxQ6BdPhk7R4B8yfcmyZiyq3eUlRR5I6YCfLec/qwr6pJlefMixiQ86ucgc96fIWMEocQ+ZH+s9a44RnsQppk96UbCWb78l//tokP7GDVx/uuPvjgNvR2zxv/cIpS7SG1Loix3fRCsGg7mIh26QwtJqKk1PbwqF9sHU1U1ur3wwN93LPpcFBLa5cM7iljUKKScs2Gl6AxzTOjsTFlZTeBCRxM+e7oGBrIZ8harUZYXcjhHXhP5GYZyyMz8yXMdahO5t9HlCeZ6JkrSL3mPF9TYRbH0PflL3FUgAyfxxMcXFraQBJO1smoHG+SSOH6OSgMjup8FA902uBazhNrP/21jHzB/5T3t6xcEwfyXCYcT2p+gxhea5lhkNKKkAPwzSIRU5vgI1EQ9Bp3RxEEMX/r7q
- +dQALBji
- vvD61UoWL0AwH6Ci/ivonEYLPIGUjZqTYnbolkxuYcFBgth72NWGhSTWDX4PKZWv3+Z8bXfnLPmlVL1yR+dOSlA2zN5y/PmKxeljngXMne304Pv3B9CXWL0WOc1xxJt7lxGvwsYO37KN4TXzjCYbV3O7QPGqymuRqcpVKgAdM4lUNy/+3Hic1Qg4XXNCk1BVVC66PQW0RTgKDKziRz0K7CYXCYQVizaftKKHQ1Ybe/2pmgAiRG58a7ETxnyxFW44sBGKspASWjS7HRVIDZk4wN6Dtzsq8csks9IhMkSRn9wFsBTfoce2vAg8WgeXLpDU3Ce3Y/W9OD5V/QdSU21Dg1Jq6IA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E6BD5140004
+X-Stat-Signature: whczsc3shpagzai75dnzyeneyjqcmbz3
+X-HE-Tag: 1783394808-647883
+X-HE-Meta: U2FsdGVkX18UzEq+s3k5DG/+v7fs/qX7OAzjYNxhIqrkyiDmPHRJ/QjBQcqMvad0jE5RQa51LM+olrvdRKtDhUa+yGekcYvnaMbQwzZNKB96AiXa+ztHBej3GrJsOFiPy7j2ol/oZArpIPWzGL7PN/oBDJ67+tcDtRW2nMuj0F1+W+a90PLsngE4H+OLnJIHtxRsf+4uRY0YobWOI47mfMQgU3eTJ6SQKN7AxOyVa91wjMAGjIllluKvhw/L7jsSITlzugOQYzvqlFFNhn/LUm0MtGabFORxyosuijYHuNpzSGgaCABESCT1oJawPRSL/4qsL/eYW24qBB5Sc+Ez83GgMjBP9IqkJchIr7+MwE3kgXDFqSrr9SXxvgCaop276e2QhaCnQfTx1HWEqeyOTNrYWW5NGgPkAiQI0TqbhnpDwo13j669E40Cij6DIxnieFlhTTPxvYZ+aSYNH8JulS9Qva8Ou9uSEqKwch405qtx1HxMnO7gcUnJQZl9ZQa2PrA9AzHugndJFy5jin1MTyO8TzDCrq/r4ISpZo2n7T5/lB+EQZ54w2y+ziqHG9lpIjFfIIAz9B2L070xM4uatGjBvemk9yEMNsJ17l6RatXsEA8t0U0mWMOL/Rme64X/Wn81Q2DvDr/GAeooXJigiqglONT0igK1iU4+PADjng3XCK8IuBbb1DBoN4TZtA2c6TFExYD3UNx1gEJM6n2rfi5qN+SQUBhTJqL9lbAK89eyuydM+GIQ+252KeJA4BRmc83xptQYp7g4v1vlBDBs1mHcKXUSxHOVFEeZPAb2fR9KZgf7WgI016QPZhzU5HbltvSLbX9BTEIUufbvB4rzV2I7VVUf3H5i+VDd4EO9/gFUEAsW9naUNHYMvvdtJWymtUCNC5TdW6ws04HxChrESaOYCGwyQEBrtMRfdpd+ywBvmpYUo+VSnugboV9g/3N31BScB1rRWgPhHr/sEaX
+ bm4pts9f
+ A27S7SOtdotIABEAHMfG3/27pZa1wKLcyqaR83Rojr8mrxBbrX1Qhmc7hogeU25C3PvrtsT0DBvcZzDF0dPElih6uez7LvOYni0nDUlQI95LYPGbrZW2KXqrmgNIUqkaJ1Z2ss0u+OFQa54pFiDT63g0B6Y1o++VwO0E0zcMvEXo9dU+MM8etc4OwKuqFdOulgVWdVvLBNZxbTmXq7fg6XvasBZBZ+YW1E3luKE+xczvcGG3QJ4TF3sxPWkwy7Zs/cptdrBUWIn40HL4+bwt4+OmfbT8nx67DNyFEmQ0d6UfICuXz2kmVo2WjL7letSxfY0thqPeq9bP6nvwD13ouLO42wg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,48 +93,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 6 Jul 2026 15:47:43 +0200, david@kernel.org wrote:
+On Mon, 6 Jul 2026 15:48:16 +0200, david@kernel.org wrote:
 
-> On 7/6/26 13:50, Li Zhe wrote:
-> > On Mon, Jul 6, 2026 at 11:13:45AM +0200, david@kernel.org wrote:
-> >
-> >>> +static inline bool pagemap_resets_refcount(const struct dev_pagemap *pgmap)
+> >>> +static inline void set_page_section_from_pfn(struct page *page,
+> >>> +					     unsigned long pfn)
 > >>> +{
-> >>> +	/*
-> >>> +	 * MEMORY_DEVICE_GENERIC pages regain a refcount of 1 in the free
-> >>> +	 * path. The remaining ZONE_DEVICE types start from 0 here and raise
-> >>> +	 * the count again when the allocator or driver hands the page out.
-> >>> +	 */
-> >>> +	switch (pgmap->type) {
-> >>> +	case MEMORY_DEVICE_FS_DAX:
-> >>> +	case MEMORY_DEVICE_PRIVATE:
-> >>> +	case MEMORY_DEVICE_COHERENT:
-> >>> +	case MEMORY_DEVICE_PCI_P2PDMA:
-> >>> +		return false;
-> >>> +	case MEMORY_DEVICE_GENERIC:
-> >>> +		return true;
-> >>> +	default:
-> >>> +		WARN_ONCE(1, "Unknown memory type!");
-> >>> +		return true;
+> >>> +}
 > >>
-> >> Wouldn't the compiler warn if we would define a new type but forgot to update it
-> >> here? We're using an enum, and I thought the compiler would bail out in that case.
-> >>
-> >> Or are we scared of some other garbage ending up in there?
-> >>
-> >> Apart from that LGTM.
+> >> Dito.
 > >
-> > Thanks.
-> >
-> > I will drop the default case in v6 so a newly added enum memory_type
-> > value is easier to catch during build review.
-> >
-> > I will move the WARN_ONCE() after the switch so we still keep a
-> > runtime guard in case some invalid value ever shows up there.
+> > The no-op set_page_section_from_pfn() helper is still needed for
+> > !SECTION_IN_PAGE_FLAGS so callers can use a single helper without
+> > open-coding #ifdef SECTION_IN_PAGE_FLAGS at each callsite.
 > 
-> If the compiler complains, we won't need the WARN_ONCE().
+> Sorry, I meant two-tab indent :) Why we need that was clear to me.
 
-Thanks. I will drop the WARN_ONCE() as well in v6.
+Thanks for clarifying. I will fix the indentation in v6.
 
 Thanks,
 Zhe
