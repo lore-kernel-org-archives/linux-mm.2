@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68E3BC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 15:36:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52180C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 15:37:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BFCE6B00A0; Tue,  7 Jul 2026 11:36:35 -0400 (EDT)
+	id 227CA6B00A1; Tue,  7 Jul 2026 11:37:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 470616B00A1; Tue,  7 Jul 2026 11:36:35 -0400 (EDT)
+	id 1B1F46B00A2; Tue,  7 Jul 2026 11:37:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35EF36B00A2; Tue,  7 Jul 2026 11:36:35 -0400 (EDT)
+	id 0797D6B00A3; Tue,  7 Jul 2026 11:37:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 07FA76B00A0
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:36:34 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 64460C3301
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:36:34 +0000 (UTC)
-X-FDA: 84962382708.01.83F4374
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7843814001A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:36:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q85y9eWl;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783438592;
-	b=Fr0YwdDeBAcoGfq8jgEAfBgsl/GFMuB2H0WhqPfaXHNGhq9hJbpYdnU6Ar1f/C0inAypF4
-	0T5yfneRf7QC8u9FKQy8OPik07wupeXr3FnRRSCeh9y/ale4J93k08pItAGvxUW1sFpCM1
-	Rk/b+zrvQ433C/+1cTfXHzW1kH8XkGQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q85y9eWl;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C33E96B00A1
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:37:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 332791A0386
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:37:38 +0000 (UTC)
+X-FDA: 84962385396.04.6ADD500
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8ABBF20014
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:37:36 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXNT+cTb;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783438592;
+	s=arc-20220608; t=1783438656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4C7m57sAU2ajhrVz3LWwibeLymdgwyRapN4fL3ROCgg=;
-	b=60UzaKN0YfclwXCfFxdEiUL8aR8fzsHzQVoUmUVel5h6gN64CyD7DXqyh9j+QXO9RfmnDh
-	j6B6b36tOjSUo48LJLEU05kWwE349+f/sAEubctJmoZlf/blwYjoHREAKrriGElMR0EZ6j
-	NXapSMl4Ma0OHOONG4xdApKE/Y3TtFU=
+	bh=Y75kpJ+tFrxirHC72vKV0aIMRozRPgHfcnVZjN/92uA=;
+	b=p1XSMjXXg+7vjByhgzNrJ8kce1WPLIT/NteVjJlMrXrHcb324BIP/YGTr0WJmfgqoJJBcN
+	Qyyw8cc6Ddu5TDS1hbu0m7co9WGVxKXRr0at7iTGiHzWoG2A0q9lFo1xA1VyNPnv09ls8g
+	JgDl9KJZvO9XLytf4fOgfoKyjqZ0yCY=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fXNT+cTb;
+	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783438656;
+	b=BF5oZmODe9domtuof5LVm52f3AFY1u15UmhL1Cf+k5GyeKQQkx9qZ7hT7b3+c1e+gkLxDh
+	3zzRcIWrSgY/zdKjnMdQ80WVBDqqkqr2nLLxrxZ9jzJWoP2No4uQqQAMWIddjMM1vWqTIK
+	P0pyBxBmanBOxCt49uRPcR2sPYcoXr0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BA3E4078F;
-	Tue,  7 Jul 2026 15:36:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980DA1F00AC4;
-	Tue,  7 Jul 2026 15:36:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0C98861384;
+	Tue,  7 Jul 2026 15:37:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6E21F000E9;
+	Tue,  7 Jul 2026 15:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783438591;
-	bh=4C7m57sAU2ajhrVz3LWwibeLymdgwyRapN4fL3ROCgg=;
+	s=k20260515; t=1783438655;
+	bh=Y75kpJ+tFrxirHC72vKV0aIMRozRPgHfcnVZjN/92uA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Q85y9eWlkd19L9q3iVIFvdYAaNenM4MJZS6TC/0pjT/UDCvgPodlCDcSxpTkcey03
-	 9tKPHBkYzanpRQmeN+v6Bcaz5orxgOrHhMMXv8/MqPoudU8nVZA4A8Ea3U5RafqcnT
-	 +9TkbCyi8UQ1VsspPRgXM33y0nk3uMJgXLx/gwxxYLDyTUA2Uo43bqrzVcW60UeawL
-	 XsifpcDHbrpcYsXVG/XTmPB1lG32da44Ty9hWXBMHjbf5+GO3B/BT92q6BLJqslPD+
-	 U03yv3t3UvhKq2QO3hUNQwnsf58MppwbvDmC6lsGW4e5Z/kxsJGqRahScxnAMtZeOU
-	 YDkTGGayVPxnQ==
-Message-ID: <56608c36-634a-4b30-b29b-b3bcb5067ce1@kernel.org>
-Date: Tue, 7 Jul 2026 17:36:27 +0200
+	b=fXNT+cTbB5/UMbrshX9CQfgzbVSvTg8ddBu6d3RhTEpaXq+brilU3F978obef1TL0
+	 UQQUwbA0oDxaci4GswOr+mzOpfQHmQKSeZaRdjdrRDVXywezR++fzbrAISBj5WqNwY
+	 Y3Z9Tix9CIBB5qIUaMbvqo1JtDf8PSDZjP1HNwjH06VI//Trq/X2Y5lFScTjZo6nQV
+	 QZKqLFqpee20ulcJiTp2XMGIEGtnepw64EaCyBKUkpqa/Ps/gg3iXWN9FW3bIy50j6
+	 m37T0cBEdvKpYeLJNSqnCCBkJtNbTLZUpOCcLp7ckLL8npg1qviq/nf3555UPYbVvv
+	 JuWjyDhMrogOA==
+Message-ID: <5a933ca9-b3d5-4824-9aba-85f70f0702cc@kernel.org>
+Date: Tue, 7 Jul 2026 17:37:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 3/4] tools/mm: add page_owner_filter userspace tool
+Subject: Re: [PATCH v12 4/4] mm/page_owner: document page_owner filter
 Content-Language: en-US
 To: Zhen Ni <zhen.ni@easystack.cn>, akpm@linux-foundation.org
 Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
  hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 References: <20260707115411.1714314-1-zhen.ni@easystack.cn>
- <20260707115411.1714314-4-zhen.ni@easystack.cn>
+ <20260707115411.1714314-5-zhen.ni@easystack.cn>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -116,17 +116,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260707115411.1714314-4-zhen.ni@easystack.cn>
+In-Reply-To: <20260707115411.1714314-5-zhen.ni@easystack.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7843814001A
-X-Stat-Signature: ca544x8ruxnzh3y4zrrd69xiypuhz5wu
-X-HE-Tag: 1783438592-83157
-X-HE-Meta: U2FsdGVkX1/r5y0U6Wv9wbKFRuk4oLQp00ZZOiaUfpLK1WCPgY7YbWdipqZkQBvSshc+maJocAZdC5fHs651iNmrVi7nHXN+kPYFtu4Emyr5V+bMBTCkjDlDcXYyu1Hebfk9jBaaGyyTl6Qya83gaKYNq5bBGGwzMuTH/yZw/zNqUUPdZRRe8CN8xbMFIYltmihEnT6NdOg/jIrJd5Fmwq4jdIZHH+YGg/81MlbOqZVQW4fjT5xxY71XF5qkRoTBOSkwCm6qypyrxC491aA9ZgAuK7tFVSkzpkMLBpQ3rS0YF8gr49Qp6cJHadbR9MoDBr7jGWGEiPIxfKy7UUdwAHSDs5nAKdNx+CWpmj6w6owDFg2unV6M0DKGa0RRZpnXwETXTLCCH5UQBTRxFG3wbhi7K7hkHW5Bb7kx+D9peoWHbEvrlrXtVhWp+Tlume+xTCPTSLbkmmzn/YCg1o6ihW23fZoWwS6wcB3yfibA9k8IuBwGf9ZdwFstGS0rqsQRYXkXytjh4ooBKoMZDyTpavplZRNiOYHBQri7jHvLcwCWyK2xWJTW/Bp0hKfRm371r7/3Wy9NEEyxndPcrwRMrjzy3ZKAXwplhIzggLNQARtD5t05Sdnte1FDCchxmTMDCXfWG4oJaJ9ki2rGDF0i4l/GCEha7DChbAdoZlKzHpWb6yk9OXX91+iWm9ystzVLq1XMZIV8NckTuo9ykRZtomvBy+SpdOy1f5v5NqVT0/0aU4VkqU2zpyze0GLJmxaAdOiuaDz+NO9WuQOoNb81vPgd3a2dA7hL1wkQ5nNZeEsI2gRPTLA9DA7riwz5qzzjnYoU6bp+Hh7XD9b8IapmbAvX1mUBKkHmWukM5SquKN1EFdaUzOVe1aOUW8XXy/8d3mVNL5O7uEweD4Z4nkSXFmDSa+L1B6J9wyersCovXvZmvh8/YWTTOLp9IBg3MF2y9/u5u3FlyTaAgSd2vna
- WSMSNsD1
- RpugKxJ9HjcBU1I9CkC5z1IVlThTzCyO/yuqQ2aoX4t5rkdnfoMHvRfQgtcBdX9qb7BDDJCi72oE4IUCnbVifbv+u84zw1agq1cRQaAesCfJX4LGA4yYkE/UxLrmTkdPCMVfCPmDDIl5G70nrkQG86bfKj3blA4xxzHsy/zHZLDCLBJ+Vf5rmPJcElP9ga6KwUOOoIPVZlDPXvm9huA7vnsopSGIBoKGYCmsSrZtLMcg5CD1j8PIzxoILAJT4FxO4EooCXKPAG/nyY0GnQhDh74aj9k9bbOEVIP6os5fwF0v0uzs3+i7zvW1Bp0cqaxe3H0ag9coCtcNLJmFIbfJKbH8nEMMhDBiguL/X
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8ABBF20014
+X-Stat-Signature: m4kq6osh6k68ez4csa71nuxrwpuyzx8s
+X-HE-Tag: 1783438656-697087
+X-HE-Meta: U2FsdGVkX18xPIZRp1PEkJ9y/+5tHhZ+BPsVlAEehCkqjRZemn6I/Alb5SUi9TEU55gtKTvDWYX+9ZAxEzr/rnmPtcoqm4aGBVnkAn/DoDBQdh5zHbTNmIyAEMdxmINraE/OdJhrbxEddRhcUbpubppqTwU+890jGIuSnsDwS3DbKqYscm5OYkvjMU6Ub1+n3zf+pJVdln4acNvJb1kOxlTOWwEd3hPO8+n2k2QHCQeGAmV+dNR3EozpfK6t/9m5CMk4B9s401hS0EFWYLdfVn1B1cQSig7jna/jdpwRTNdrEJPzFL72rIWDgebMP95IDABtkU42hq98VEEu7INKfVXoeJ9/KXuYfe4a5Fc9XrnuJBxw9cNShUSWf7m7HK/pM57dRfDTJ7Rb1NzTBN/2XYFc6Eg27fKAZ+5r4LicVgfwfZeh8M1LfbkHpPdDY3FESVb7QmcdzQF++k/bA1R4FH9BxuFuOV3AqIK9hfr9t8rVVYRPKU6SEKrFEyG6Hr4Ntj+7Srs/7SjQuO9TOl/D5XiNxNPfpCLMXeP6sDrSNUivuI7KRBEgT6uecbX7IJ5I4UQlyHdKEzapsYgksy3iPskZJ0NCv4DnSMe0Y8BpTwQ8reEC6+LL87ZYnqvMFvXyEBE4uS5vi8qksM/+kE4/2VLc7R7OOo2qgMYbTyqNMoB1Z/O4Bw7vstIzbhCOvz7Oa4xl0QQj8j+WXIAV6iCFnrBCNM/3jPkvFBHRKH2+vUP7pKkM0vJ1zh4Y3ipVyAP624u57h6/g8yYGT3hU+on41PM9QE7waeRV/6+vi4vRfNn+EZR/9b/Zrj2z/DHyrvIYsSeLViXr0Kh3No5xd9jESEm1y02YzprKFYxotV9Cjr3fRSLdsXz0A2K2YwLm6AcWQEMEu7BKyA4dCc4YMLlnkXlakdym8tRm9s3fkC39+yO4GR+Z9aaPuZ9TymDNxmoS/wCH1lwVj5J/mJ3mW3
+ cAps8eUA
+ Nx6MW+VVqWARtXsXEQjJzWDSnFvCj2oAY8iW3iOAoSa7j6VG1tNQCIaZGEBKJ52mY4AgMHUz7MquY84TgPc3wMvuuA9NZko5detgvEU4oxv3E/h1H2iLviiRs52mPGZkpaLaGxP0LZjl1189IcgB9FMAg6rPA5P2vRRuWHJLINFYZe+zlviAiIcC7B4Oigllzn0yoIU6jkAH+yWcySijZDhfVG8ci/qMz/yjZ2A+uDrpODB9E9zhKGdt/6Ax5P8P4vY01B+eCK9isfohxqxuyZWAh0iuE15JIg5/0yyzemFrOYwG2razTy4fwHTH7cGmD8IToki9mf+l0DNO1fQMuLrpi7QysSKNls3QFoFKf4bOjLjZ4cpYPdc3m5V75hb5BmVAwUIRb5/dZGJNsrBxlPGe39trl0Vtg7BDpYLFbN7qymA0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,34 +135,10 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/7/26 13:54, Zhen Ni wrote:
-> Add a userspace filtering tool for page_owner that supports per-fd
-> filtering with print_mode and NUMA node filters.
-> 
-> Features:
-> - Three print modes: stack (default), handle, stack_handle
-> - NUMA node filtering with flexible formats (single: 0, multiple: 0,1,2,
->   range: 0-3, mixed: 0,2-3)
-> - Per-file-descriptor filter state for independent filtering
-> 
-> Usage examples:
->   # Filter by print mode
->   ./page_owner_filter -m handle
->   ./page_owner_filter -m stack_handle
-> 
->   # Filter by NUMA node
->   ./page_owner_filter -n 0
->   ./page_owner_filter -n 0-3
-> 
->   # Combined filters
->   ./page_owner_filter -m stack -n 0,1,2
->   ./page_owner_filter -m handle -n 0,2-3
-> 
-> The tool validates inputs before sending commands to the kernel and
-> provides clear error messages when the kernel does not support
-> per-fd filtering.
+> Add documentation for the page_owner_filter userspace tool and
+> kernel-level filtering features.
 > 
 > Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-> Tested-by: Zi Yan <ziy@nvidia.com>
 
 Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
