@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1A2FC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 19:37:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C82BC44501
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 19:37:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7E026B009D; Tue,  7 Jul 2026 15:37:10 -0400 (EDT)
+	id 84B396B009E; Tue,  7 Jul 2026 15:37:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B561E6B009E; Tue,  7 Jul 2026 15:37:10 -0400 (EDT)
+	id 822366B009F; Tue,  7 Jul 2026 15:37:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A445E6B009F; Tue,  7 Jul 2026 15:37:10 -0400 (EDT)
+	id 6EA6E6B00A0; Tue,  7 Jul 2026 15:37:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6900E6B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:37:10 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EF762168CCE
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:37:09 +0000 (UTC)
-X-FDA: 84962988978.03.6547D12
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 475E012000A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:37:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IaMgFmqU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 442286B009E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:37:14 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B95251C3B66
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:37:13 +0000 (UTC)
+X-FDA: 84962989146.13.EAC775F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D88D8180003
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:37:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="J/R1GcGe";
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783453028;
+	s=arc-20220608; t=1783453031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=gPg3vEkTcsR+KYYDQEQ2rLyjD9CYaZB6AwFxCwPiuy0=;
-	b=usT5ss75UZsTXWOSNm9AWmQ1x2NSeO7EOzbXWQ3lVv4a+ahKUIUvF7XvgtzCQ+YyCpHt7b
-	x3b5ddw4cXwq2++ReZm4PAEzQM8J6ywYoO4dDXH0QIPD4dba/pzlxWtshl0E2G2SpGW4FM
-	205yAZe8o9mB2ueDzu9X5yA6atmsLuk=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BgA1geaqq5El280u44lqj9rGD3DnVSHSrxwzp95cFOU=;
+	b=RbgiyrnYlQ0j7Zw1VyAD+L8yaPCz6v4nV7sDcZ3h8hk22drao7LIqjkrTCZcAnO66QWapo
+	Uqi6rh5Tz6KLD0kF5F4Xe+MX+BbtJoP26s9wdJimm5hJguGCgIVFopcQkWXd+W9pejy/mm
+	wJ18hzmkZVNXc6NfFrVUiAdOJ4U2RcM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IaMgFmqU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="J/R1GcGe";
+	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783453028;
-	b=x4/CluTqnioNjRvdxgbscOeLUNgPap9bMGQGf7gqQ1WZAcHKFzT2wWXxU8YSKWnmh36ygJ
-	Cr20ycijupE7GgxqKkZqnGJsPrC15yBEYPV8cnOLYm+223T4JOIMAsmR/36VoLluUP4iN/
-	+0gLwRMC3hwlwfSe/Psvlh/MhSXrze0=
+	t=1783453031;
+	b=TM2qMCWf9DmiZIhsNiL9YtdQo5gRggd1hsOIr6M2Ztdf/9eVkMzQAlg2MCNp1DDmjPoSse
+	oUGYuFgiinlmJgbE2BSchu6QzJSgPt2AC9zSg5X0Kb9pghmIv5WGgdRgW+Lir1Ol9VZ7D/
+	jS5BZoVcIUaDCI76S1kCw3TfAP5IdTQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BA36B601EC;
+	by sea.source.kernel.org (Postfix) with ESMTP id A08BF43FB0;
+	Tue,  7 Jul 2026 19:37:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA281F00A3A;
 	Tue,  7 Jul 2026 19:37:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEEFD1F000E9;
-	Tue,  7 Jul 2026 19:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783453027;
-	bh=gPg3vEkTcsR+KYYDQEQ2rLyjD9CYaZB6AwFxCwPiuy0=;
-	h=From:Subject:Date:To:Cc;
-	b=IaMgFmqU5pubSutB4iA1G7DbzzM5RtlUJsfqzS2sQXdzTzfjZMrYd20PogFsSLOBc
-	 p8qBZ+n50ZcMzHX3QujgzaxCBEqACvFhoEQx972siupx1b4zBAKPcZSS7eOoocx3Hr
-	 /+G2/b/La0Rvtfl/RonslsVnGXwyOFVTr3yKIPxGf7dTs3KVD3ABUtS/2uArK2ZK3F
-	 3BB7ahSY0kTShyiXiJldj61HeTt2Md+01Tpf3MYJKpvqBS8TSMuyvC9wEZRm752n3E
-	 DHkW2RP0vTvgN4PZ2iMGLLezxFtd5qM31XAk5iRuRjHmAbPGP+2k81K1ZMSoV14GCQ
-	 SMFe37CVIsftQ==
+	s=k20260515; t=1783453030;
+	bh=BgA1geaqq5El280u44lqj9rGD3DnVSHSrxwzp95cFOU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=J/R1GcGeuq4+Jk08FVaiJaApToeqiDQEV6pLbvoDFOseUk6N8hg5rfagsSB2xavRb
+	 TVUlUjm0QFpyNzb3JcaORHuja5/n5PIwFLOvm042VBH49wuXusAgVypXZ7MQrXrT4D
+	 sm3QbLC6ygKlzpF5CNCOFxpJifTSCsrHeCPx7T8hpQsSLOEPzYX1h1mHkTpTGvFZ9d
+	 G6A5jl/JzAtxNxGv5eBe1sgZG+b5OeTdYwfdzYu23OD2fqtz2ChB3VFrBd+TGpjUhu
+	 /yG2u6YTsOIh7/Cad8fnYUbXiuB0oOhO+OS15uSAm4l455LE7eq83CcZ2+VLHPalEp
+	 vOcan58Mh+CHg==
 From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH RFC POC 0/4] binfmt_misc: bpf-backed binary type handlers
-Date: Tue, 07 Jul 2026 21:36:44 +0200
-Message-Id: <20260707-work-bpf-binfmt_misc-v1-0-74b995c84ec1@kernel.org>
+Date: Tue, 07 Jul 2026 21:36:45 +0200
+Subject: [PATCH RFC POC 1/4] exec: stash a bpf-selected interpreter in
+ struct linux_binprm
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAE1VTWoC/yWMTQuCQBCG/4rMuZFVq4WuQteia0TsbmNO4SozZ
- oH439M6Pu/HM4KSMCnskhGEBlZu4wzZKoFQu3gn5NvMkJt8a6yx+G7lib6r0HOsmv7asAYk4+2
- mWGe2KAjmaydU8eenPcNpXybHQwmXf6Ev/6DQL9Jl6p0SenEx1EvUOO1J0sGmOUrIYJq+9tK5e
- aMAAAA=
-X-Change-ID: 20260707-work-bpf-binfmt_misc-e0b75341733e
+Message-Id: <20260707-work-bpf-binfmt_misc-v1-1-74b995c84ec1@kernel.org>
+References: <20260707-work-bpf-binfmt_misc-v1-0-74b995c84ec1@kernel.org>
+In-Reply-To: <20260707-work-bpf-binfmt_misc-v1-0-74b995c84ec1@kernel.org>
 To: Farid Zakaria <farid.m.zakaria@gmail.com>
 Cc: Daniel Borkmann <daniel@iogearbox.net>, 
  Alexei Starovoitov <ast@kernel.org>, Kees Cook <kees@kernel.org>, 
@@ -84,22 +83,22 @@ Cc: Daniel Borkmann <daniel@iogearbox.net>,
  jannh@google.com, linux-mm@kvack.org, mail@johnericson.me, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6770; i=brauner@kernel.org;
- h=from:subject:message-id; bh=yKu5qj7eKjA1JXXIoGTmnPEVv3FdKvaF/LpZwd0PtMw=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT5hiZs5W7tKJ86Sab+qgaX08U2icTV382fiCZbKzimH
- WJnurGlo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCIm/Ax/BW0mZEgy+pvWLWA+
- OfXUJ9Hvy1e8kdP/eH9pwEY2n6AHCQz/0+f8uSTUkeh/9LbzblEJdvsU+6kv1HhvXhGzOKcc/N2
- ZHQA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1700; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=ua7v+d3uKRKy32nv1LaWcJpAPv7PpPmfHINLqR8HXQk=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT5hibssbE2kvx9I+R4s8QiS7bb78Q8e87e+jMtcCLP0
+ xVseg79HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABOZuYeRYa5OkkfiTNde62PX
+ vLdOuRhjdnrmvFAfjsYZk6szXIyiUhgZzs7QYt2os2nZ5dyooqriD46/713laRDaXLqQN2Biz8Q
+ qHgA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 475E012000A
-X-Stat-Signature: mksftusdwzrc7pze3sdzggw6gezu3sbg
+X-Stat-Signature: hib5gj8m8b4j6am3cf6uhgfusntef5zg
+X-Rspamd-Queue-Id: D88D8180003
 X-Rspam-User: 
-X-HE-Tag: 1783453028-700378
-X-HE-Meta: U2FsdGVkX18tH/sOWGFNOHyA1C8gyenbrtEoNw9HfvxLx9NxsEIzlP5l7vFAo1XsGwvlCzsYNW3BFMzlESmAIK5mbEkDjtFirVfoWhuyeY4O/9vjdZJ4smGBVctpOL5YZ6mH4gNnYWPB0Yk6J6deWQ1Up4UrKmWKLlcRqsCgHWoWckNWzt5tRFG8mLHOlSxDMYzW80LWOawdQZk4HCQnXMWSOoRmPC9PGVvRUBHW9XDZJUhGaSI1UW6YFTcrF+GfyhtpTEDkmYnQghVEtXWjMJBhPv6+MmfSJQosii2ySfrnP7d3NZHDYDH1EnG0PJ2w2vIKv4Ts9uoxJsuc1ibM8umNvRFlu3BrCpWkzT2RnjWQndrJ6RwMhaOi635wtsdI09CtYbvK+iQBgwa3z0LZaS93wJufuceqZxfUa9DOJhVBFc+RI2Hap7iBDqGVnDNK9hDlAEjcAUGCYFkq/HBEanRg6Mh1aVDoX73+ce4/5NTLvfO2kZcoiNdihbQFH4UwEZyfS1W0LRYNqRp5aKpUFM8yQgW8J6MabU2eE7pwD/FeoVLYH2UVJMuhNinobJ5GyyDWcG90l6bDKFYurg3MpIZcrmFq/y2xQo6QZasI5xMjgk7/aYw55sKPmapl97qHh/4PRLRwaq98cEq3GwVB0SBAqKI/uXVuB6ccMlSwagVflpH7rE7xU403ueWcQCN4yo+G704qkdSVVv51H5FMaHAQ/TpDkW4Dvsl5J0Bl1j34dVr4hn3Nj7e9tm/pIlkAn7uW1wh2/TjYJQxjBb7siNf3wzvIWtjOVo/1tBfcY4dIGee1Mei1fxu1VeD0ovDYCGq1+2TsON8Va+DayUXoKy/ClNP02KVfTL878VB5zH0z2rq5wqrqi7nxnxI5FbkuQpOPR6H4E5Ypf4xlX8Q4PHhM416VjcybYtbZkLrjy8Ku6M7qTmxfrLizmCdRH8wDAlXTUUYNm+QzsBiz+gk
- 86XSxEEw
- 11b/EdqUCyT6rCCFneFIHOjMja0Son/Nch0VhDlXaWkmX+Om9Peb3dMk/mpT6mjtqmgWlMP3jvbeCbp6Ukv+a6NVYLRLPX6Y5qjctGqB/ouIfwnCA+dgFHm94qsZrOnCEegS2kF0ai+ykFG+ruL44FeZPRUM6OTMqJmhF7vKuSH3C22R4ZCaEgloZKxsDJ17BWbYJWpLQ/ZJAcXeWlAYfg2ixN5lTo/F+uFMkYm3QV4i8yXAA91R6ErnfC696a0iw1EIKkxSC6hZ1sEPM7KvkgPuoOtHHQrjmXTMFtxTF7q48dhFIstyo+G/iKr8aXUKEBys4MThaol4te5/+VL5PZvVhUgvX8dY/6Fr3xQIe9xBuc7a2rrdSIm1n5oU5ar6SYgGgTrVQbptkliaXMmnfDlriLF9XaCd4JnPQ
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783453031-896730
+X-HE-Meta: U2FsdGVkX1+dgCYKY4UzvacAbQR0O0PUqRh4poLfrzA+VNmQRQHrn36Z/+/EBh+JIzhw8PKzZp4zsd9efu78AAsSJ5o50BPeIEqW1+0GGDKTxXeMBKXXbCEMpkWIz+z4FtbKWdpkw9UZVuaSwpQm2iHp2Wb1uSs/JFqZSfulXA3oZBYJaaHmrBzIDlUm9RpS+GdXFtSrfUOzCMJ7e2wWsVKdlUEdpv88RwosctGeHI2zoEVjTeG62xVbRmsXh5Ldf252xGBSLm9lVbeAwlrp3+mXe05TU/Nav1mYpN+od1oAxj9s3Uj8drSxJPuzr8QCd6oZj8yA2IajeP2HTLv10n4C7zfCdoDsxCp23T/O2dD9cLvQSuzxX1KgzIJBgNqJKW2YYe9d6VQLiGdoCsVLCvJiL5eB8UjjyRnPMCKSQLZ3VM074h+5iSsTlCWvmF71yx0aKC+4xSppYTGPnuMjdNx4ZIB60pdwPt8seyZar+bzWrOjUP6L9jaUiIQ34pAfN9UKp8uREXF9DQB5xCBp48VRMg16IKzFfOh/FbXWK0YEGFydvrxB8z7/q3Brpd31+Ga2tkiQNuHIFkznawt/IL+cpQyokExkqEqcDYfNxiC1YBNgX3r3RxmNN8uV1Qmpk0LiyRaaF+tPFABA2TgAu1KIqrEp0EX9SfomrAsFmlRtMXIKaq8EwzEFVlOLxdzNm7PoaxfHF94oiSzwSH4CVNsahppV2Lkkqf2OCITULB5p4+4nvFueiW/JmenfbyEaB8oNPu7FLI5YX+inShnSUILfw8h/sJwaGN6Bzzo7SiXyq2Y6HXlFb9p5FskW+wjTeqHUzNXDTqtNswnkOvEaHuUz68ewsJ3dKyLLcXDWY7Q7evjkrFVmoZo17ViIxgg5EPnQOYpL2NJ97NJmpo/MQLZOFTaUhkugA1plFwRO2VhFexsWoTNC4GUOqwcLkW1rWgUml4JNdiqIu/RUDQa
+ Ox9IMI17
+ ACM15c7UKJaYZVJryi4qMBIb0LpUX0loNhZXrs+HyS/Tad2lsS7EE/eDADIBOg444fuSXin49FJEW3/bPZme1th9E9+fDgVcB+3TjvwSiqvtLnalXnvSRJw3mTGP+clrPhdOHNvdO8y/T5WRv9Darr70ZC2zW8u8z9AduscdEFaC/LaBwo/H6PjObs9bYQ8ZmiMRvsBfdYreGTMdlgwviE8gJeixllIMbcFaVcaNT3ku+GFP9avxafgUyGgzUGPU+oUJ0pOJr6DNqyTT+hRhKw2VgaN/X1F0HUjksraz2HuhH7fU9Nt08PLCGMmmE+ASnbgGjMNIzElqxR6z6/v0XxVQNMhBsnaHdSBc+lIhiEymmtwIJbDUJGwP4og==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,154 +106,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a POC for the nix people and Farid and Eric in particular. I
-would take my hands off the wheel now that I POCed this and hand it to
-Farid if he likes to take it forward.
+The upcoming bpf-backed binfmt_misc handlers select the interpreter for
+a binary programmatically at exec time. The selection runs before
+load_misc_binary() has copied the binary path from bprm->interp into
+the argument vector, so the selecting program cannot go through
+bprm_change_interp() directly without clobbering argv[1].
 
-VL;MR (very long, must read):
-
-For a while now Farid has been trying to make relocatable, hermetic
-binaries (think Nix-style store layouts) work without patchelf tricks
-or wrapper scripts. For such binaries the right dynamic loader can only
-be determined relative to the location of the binary itself, which
-neither PT_INTERP nor a fixed binfmt_misc interpreter string can
-express.
-
-The first attempt was $ORIGIN expansion in PT_INTERP [1]. I pushed back
-on that. Userspace guards $ORIGIN behind AT_SECURE so the kernel would
-have to make the used loader depend on the type of binary, LSMs would
-need a say, it changes long-standing behavior in ways that are ripe for
-loader injection attacks, and bprm->file may not have a usable path at
-all (memfds, deleted files, unresolvable paths). Making the kernel
-splice bprm->file back together with PT_INTERP is terrible. The second
-attempt was a pluggable ELF interpreter loader registry [2] which would
-mean actual kernel modules for custom binary formats. Also no.
-binfmt_misc was invented to kill exactly this horrendous past.
-
-What I suggested instead [3] was to put this where delegating binary
-formats to userspace already lives: binfmt_misc. The only things
-binfmt_misc cannot do today are matching programmatically and computing
-the interpreter per binary instead of using a fixed string recorded at
-registration time. Farid prototyped that with an eBPF program [4] and
-it turned out quite workable, but the prototype ran a SOCKET_FILTER
-program over bprm->buf, added a new helper to the frozen uapi helper
-list, and returned the computed path through per-CPU memory.
-
-This series is the proposal turned into what I think the bpf side
-{c,sh}ould actually look like. It is a POC: it builds, the design is
-what I want to discuss, selftests and runtime testing are still missing.
-
-A handler is an instance of the new binfmt_misc_ops struct_ops with a
-single sleepable op and a name:
-
-	struct binfmt_misc_ops {
-		int (*load)(struct linux_binprm *bprm);
-		char name[BINFMT_MISC_OPS_NAME_MAX];
-	};
-
-The load program receives the bprm as a trusted BTF pointer, so it can
-match on the header in bprm->buf, read arbitrary file content through
-bpf_dynptr_from_file() (e.g. to parse ELF program headers), and resolve
-the binary's location via bpf_path_d_path() on &bprm->file->f_path. That
-also solves the prototype's limitation of only seeing the first 256
-bytes of the file.
-
-The one genuinely new piece of bpf surface is a single kfunc:
-
-	int bpf_binprm_set_interp(struct linux_binprm *bprm,
-				  const char *path, size_t path__sz);
-
-which stages an absolute path in the bprm. It cannot go through
-bprm_change_interp() directly because load_misc_binary() copies
-bprm->interp into argv[1] after the program ran, hence the staging field
-added in patch 1.
-
-Registering (attaching) the struct_ops map publishes the handler under
-its name in a registry keyed by the registering task's user namespace.
-Activation reuses the existing text interface with a new 'B' type where
-the offset field carries the handler name and magic, mask, and
-interpreter must be empty:
-
-	echo ':origin:B:nix::::' > /proc/sys/fs/binfmt_misc/register
-
-This keeps the existing permission and namespacing model completely
-intact. Activating a handler requires the same write access to a
-binfmt_misc instance as any other registration, a container mounting
-its own instance escapes the host's entries exactly as before, and
-shadowing e.g. all ELF binaries takes the same privilege as a static
-'M' entry matching \x7fELF does today.
-
-The only novelty is that matching becomes programmable. Handler lookup
-walks the user namespace hierarchy upwards, mirroring how binfmt_misc
-instances themselves are resolved, so a handler registered on the host
-can be activated from a container's own instance without being forced
-upon it.
-
-The computed interpreter is opened with open_exec() under the caller's
-credentials and goes through the full LSM vetting as the next binprm
-level, exactly like a statically registered interpreter, so the program
-cannot widen access. It only ever redirects the caller to something the
-caller could exec anyway.
-
-The 'C' and 'F' flags are rejected for 'B' entries. 'F' has no fixed
-interpreter to pre-open and 'C' would let a program-chosen interpreter
-run with a setuid binary's credentials. AT_EXECVE_CHECK never invokes
-programs and interpreter chains stay capped by the usual ELOOP depth.
-
-A handler for the Nix case then looks roughly like:
-
-	SEC("struct_ops.s/load")
-	int BPF_PROG(nix_load, struct linux_binprm *bprm)
-	{
-		char path[256];
-		long n;
-
-		if (bpf_strncmp(bprm->buf, 4, "\x7f" "ELF"))
-			return 0;
-
-		n = bpf_path_d_path(&bprm->file->f_path, path, sizeof(path));
-		if (n < 0)
-			return 0;
-
-		/* derive the loader location from the binary's path */
-
-		return bpf_binprm_set_interp(bprm, path, sizeof(path)) ?: 1;
-	}
-
-	SEC(".struct_ops.link")
-	struct binfmt_misc_ops nix = {
-		.load = (void *)nix_load,
-		.name = "nix",
-	};
-
-Farid, this should slot underneath your qemu demo from [4] with the
-program ported to struct_ops. Feel free to take it from here.
-
-[1]: https://lore.kernel.org/20260622043934.179879-1-farid.m.zakaria@gmail.com
-[2]: https://lore.kernel.org/20260702214247.1253741-1-farid.m.zakaria@gmail.com
-[3]: https://lore.kernel.org/20260703-meditation-ratsuchende-moratorium-9ecdf1f3f8bb@brauner
-[4]: https://lore.kernel.org/20260704211409.1978485-1-farid.m.zakaria@gmail.com
+Stage the selected path in the bprm instead. The bprm is exclusively
+owned by the task doing the exec so no synchronization is needed. The
+consumer frees and clears the field once the exec attempt that set it
+is finished; free_bprm() covers all error paths.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
-Christian Brauner (4):
-      exec: stash a bpf-selected interpreter in struct linux_binprm
-      binfmt_misc: add binfmt_misc_ops bpf struct_ops
-      binfmt_misc: wire up bpf-backed 'B' entries
-      bpf: allow fs kfuncs for binfmt_misc_ops programs
+ fs/exec.c               | 1 +
+ include/linux/binfmts.h | 1 +
+ 2 files changed, 2 insertions(+)
 
- Documentation/admin-guide/binfmt-misc.rst |  40 ++++-
- fs/Kconfig.binfmt                         |  14 ++
- fs/Makefile                               |   1 +
- fs/binfmt_misc.c                          | 143 ++++++++++++++--
- fs/binfmt_misc_bpf.c                      | 275 ++++++++++++++++++++++++++++++
- fs/bpf_fs_kfuncs.c                        |  23 ++-
- fs/exec.c                                 |   1 +
- include/linux/binfmt_misc.h               |  49 ++++++
- include/linux/binfmts.h                   |   1 +
- 9 files changed, 529 insertions(+), 18 deletions(-)
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260707-work-bpf-binfmt_misc-e0b75341733e
+diff --git a/fs/exec.c b/fs/exec.c
+index b92fe7db176c..7c9e28f549a4 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1418,6 +1418,7 @@ static void free_bprm(struct linux_binprm *bprm)
+ 	/* If a binfmt changed the interp, free it. */
+ 	if (bprm->interp != bprm->filename)
+ 		kfree(bprm->interp);
++	kfree(bprm->bpf_interp);
+ 	kfree(bprm->fdpath);
+ 	kfree(bprm);
+ }
+diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+index 2c77e383e737..0070d207d54f 100644
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -65,6 +65,7 @@ struct linux_binprm {
+ 				   of the time same as filename, but could be
+ 				   different for binfmt_{misc,script} */
+ 	const char *fdpath;	/* generated filename for execveat */
++	const char *bpf_interp;	/* interpreter selected by a bpf handler */
+ 	unsigned interp_flags;
+ 	int execfd;		/* File descriptor of the executable */
+ 	unsigned long exec;
+
+-- 
+2.53.0
 
 
