@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1325C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 20:18:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 630CBC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 20:18:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8A366B00A3; Tue,  7 Jul 2026 16:18:42 -0400 (EDT)
+	id 49F0D6B00A7; Tue,  7 Jul 2026 16:18:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E61C16B00A7; Tue,  7 Jul 2026 16:18:42 -0400 (EDT)
+	id 4771E6B00AB; Tue,  7 Jul 2026 16:18:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D77206B00AA; Tue,  7 Jul 2026 16:18:42 -0400 (EDT)
+	id 3B3BD6B00AC; Tue,  7 Jul 2026 16:18:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AD2566B00A3
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 16:18:42 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2C84DA0584
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:18:42 +0000 (UTC)
-X-FDA: 84963093684.03.3177806
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6F75B18000A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:18:40 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iW1CSJsu;
-	spf=pass (imf16.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C0AA6B00A7
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 16:18:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62748168BFA
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:18:45 +0000 (UTC)
+X-FDA: 84963093810.01.D5E2AF7
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 994F61C0004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:18:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aoIR3kDZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783455520;
+	s=arc-20220608; t=1783455523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ptZsy+Ouyw1+sLnXic7jdaEgqiA6NfImBhqfXckaQ+Y=;
-	b=Cqk6QWUfPlD8bYLhKckdO10iFjPWizLwcnTDwxLK/klX20HRpq4e/M44/0aHZpDexhyGHi
-	j39cxLsGqtrdCB2gh/N2ADms3ZFlJVfnUUb2Vk3vZ8ucNVrVC8SIthq9aB3pk3IZv65cNw
-	3xbqhJBp6wwDdnkTD5j6xUdded9Yo3g=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GEN3Awww7LkykBAC9Xz53YyXDjfYr2+gNOK+5mA+IGM=;
+	b=XrBRvE+GbjwpzWGOhU/J5e0vzy6BE6bbyYdIrdHVWjBLqs5GZJwpUeUttxvhpmXI9+/wkn
+	wAJ0RW6DAYBU96/3gHWH/SVETAd0FpaF9Nnfa3kxI+UYQ0PNUxf27Q9TzuW04FXzW6pltF
+	s1tbm9wELSk6djd8sLPwSCqfU9W3llI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iW1CSJsu;
-	spf=pass (imf16.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aoIR3kDZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf21.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783455520;
-	b=ozOMwj0AWurqs8yDJCC6De+5ohKOOJvPCzK+xDfqQQ4mmHrRaV6n1hN/2FxH72QVMVS0O9
-	atlA1Cbtt2yi4KAsw8fCQnzburdNsL0HxZo47Xk37znQUJmy3CSAZ5myeU10480R7r2MVH
-	7tOBCUltJdOLip+ZJCA+CbZdo122wDY=
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6a1905287a4so2607962eaf.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 13:18:40 -0700 (PDT)
+	t=1783455523;
+	b=p3mQyfh/veDaVQ+FHgAY3quElF0iLAHKPZmMV31l4/8vcv0/MeZtnyQkhyn+MNw5DhUa2c
+	4XlW+klbAK45a+DvdUEZP+NPN5fku6Qs+mw13166xGtbLfJE1JD0P+4cDS4zqrj97v/ap+
+	F1ev+44wovAdSoJ5hi4+RGtib8dImeo=
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-446f87b6de1so2071367fac.3
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 13:18:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783455519; x=1784060319; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ptZsy+Ouyw1+sLnXic7jdaEgqiA6NfImBhqfXckaQ+Y=;
-        b=iW1CSJsuLbfAErL/Tq1JgWxH9oWmLe0butWt3QwhRhpX8xvEckmOgw2hB32Y3xViLc
-         94lR5NP2CxiwyhoYZK0+IOYRz7fJLPSo+2R5+T4xTTdThipPy1Q7/+ajkGCm2otA4die
-         vsjqeieenJOwkOjMvlyg+Q4xosDE/EfzGbp5dYl2B6HB2W5xzgCI8FhmaIU/Hu8Wkgxx
-         BdHTA5yBSIcqTsei9opn6x16lCILvBC5xtLzjehScCgzAsimDaJVkbGoqBSdhB0xfVNW
-         K7zd30YhcFmc6WRhPe9u1ZB1iD14apC131BZE1tyo05tLxULWeTLkMIktqAbCyYTmgJW
-         BFlw==
+        d=gmail.com; s=20251104; t=1783455522; x=1784060322; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GEN3Awww7LkykBAC9Xz53YyXDjfYr2+gNOK+5mA+IGM=;
+        b=aoIR3kDZRtEUBpwxy7Do2J8RSgbPssomSY3z8N3Xi+uCc5nyib0mvx3GIfxZW6qaB1
+         7YLqF4SGiASOxWpv2oQk04iIxJDHPv1i6mZbATjviOiUTkaFCuBNLCBB+Tlar3Yau2AT
+         AiBanN5Ggh3yFtmsMPI/P5G3MQgPKa2ut6CRilbjwsXOvfTkyYmxKAKz2usp0nLgs1Dk
+         SQhFACp8KpThf4blWX9Q1/ca/5CSc8N7zzeZeE/gOqgUb3ThbGjB2ibg2qduyDM+dFtu
+         IfEIeDcSNVPWRFDfrtQFMQyLbRGtqsi98AkKYSBI+0vmcf6MInnmEdVfiwHaDDNFS4fp
+         IBlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783455519; x=1784060319;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ptZsy+Ouyw1+sLnXic7jdaEgqiA6NfImBhqfXckaQ+Y=;
-        b=qqFEGhzuOqf26xTYHB+zUqqecyfUY9Nx0o++1BIeP13Oqj8mE28OcjHlZdRwZt4QjU
-         9u2HYnnQysXFJSt0Y6fb4xr0sezcu6cQnfDZTEVFyLcrO68NW+0m4eXDgI7mDJxr3d8P
-         S/I4jLZPr1TNTTGN8dCFMFpItLFRYhvOAvdgyViQj/VOqmhW2ZKxuwVx6BWC1/id2sq0
-         F4+vwdDBlQhd6A9y+Vo+ufxjLcwUQx+420Q8QrqdnFhfffBC1IXkmQnNCBQu9H9OMAAB
-         rK/gGTm76Ok4uiXq+WUSy3BNQf9U3CGM/KB3QvtNzoZlZ1NyrEQNjg6t5jCf7NpK8Jv4
-         PBCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8ednsxZMdbFXLAhI9+09UGVYM4VvoBq6M+zVNviaGLa1n/c1hjeFRWyz7Lt+4EmCADwyOjabz9mg==@kvack.org
-X-Gm-Message-State: AOJu0YwfMM15qCfmdrFvZnUSdyM16O8tEscNbVHTxTuU/o3j3Ab6xvzB
-	0WKcYiBqnN20IrUD7VKCh5kkQNkyqGmxNVdIJ2GfEgzjjXP/VnZTnhrN
-X-Gm-Gg: AfdE7clJblTaqvUK4Ov+3bQXKXyomnRMTXtcg8CBBfowyCMlIBfXZ26HUCYxLeulblu
-	zJQA1UQhqkJayX2V1U4woOyKPfVpfNbveJ5L8yD6cSrK6Yrl4xWVjteT6yj5QdOseejBz5w3LbI
-	5sitaOGJ5dNUEEgxP7lV7DBAg1JB5/3Rzx4jvVA2hjcWoML7t/h78HqvKe8jywj8t+/XoxIktNT
-	6qyIzNTQ2r9ksfOroSpcY3vr13Jjr7hSoqzORwuQh+PQd1k5kElbUQedmnplZSLb0YzI6cVCt/5
-	sXDyLp/EMNIHy2eUIJiZVHkuHXM6iDrHzCkgJkeB7086tpBmFefKTD0c1XhTq78x9tn0v2bfbWr
-	nrBft41Huc4lepAihBAbvx345efYvKusKBv1SSOdIgcyB+GAYMYNjhL95C+uvjO1DLIPCRzxN+k
-	Grr7Pirbc0L0ncfxgetGGTvq8mfzPBZitY4Djf/UN/AINi32eJTd7E+W2riShCfts=
-X-Received: by 2002:a05:6820:1f13:b0:6a1:97ab:9e0d with SMTP id 006d021491bc7-6a3556e6eafmr4248321eaf.68.1783455519275;
-        Tue, 07 Jul 2026 13:18:39 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:3::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6a36a3b0d60sm370193eaf.0.2026.07.07.13.18.38
+        d=1e100.net; s=20251104; t=1783455522; x=1784060322;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GEN3Awww7LkykBAC9Xz53YyXDjfYr2+gNOK+5mA+IGM=;
+        b=WNb20QmBSgrRJAO7qmUABMsnsu2vyOexHMPoPVCqlnxRJ+vDav1wZj9OW25DP76AUU
+         8y3B9sr/l9LJUpz5Fd0Q9zq4PpayBindbEfZPSsBJEDhrBj1o47wsu3f+GYkH5Frh+4z
+         k8eDmhXP+JNyP+xxwOy/k+pJzIJE5+041Mjf9S+4tsDKZZEjx0BvmG4Sts16FgjK+uXQ
+         qZGqU7gNGGv31AU/oDhDLiQyqGipgK/pSjRdEkVpS8RfvlRk046W1grzmKhLIbiHIGJO
+         ezjtPjmYtR18CtiLAh/c9a7XELY+WEsUvn+r4Jngkp785eAQY1BdZOGIsF0/FS3ZAyqY
+         47Zg==
+X-Forwarded-Encrypted: i=1; AHgh+RohRlnmOS3J3kxT2tryIs99kgwhwFWF+nGGstK0mfRadgSMNu16AlRt2lyWSM+scL5o05aVLcHgcw==@kvack.org
+X-Gm-Message-State: AOJu0YyV4iW16pM+q9tBSlW3r2PSqS4pEHN2fmaMhoRzRDRybWyQTSsp
+	O3i31+Cgb4ARvN8nrpDjF+ltguUWRJoDQu3qcXrr4zAupmkHppwleyRD
+X-Gm-Gg: AfdE7clRYuD3dhUAsj8zC2CxywuQqJuXzbCf1T+joowU4egrcHGvtm5unmO1ap042ub
+	iEbCpVz1XAB2pjmpVQMoCY9y6UXiDd6Or95UyAVqEhINEg20Xnb4tRdV7b5n3YvRuCRFXwVS/sk
+	sVgQ/NdYfpEzjGeWkNxfptkLvGIvzQNyc7Qzw16ePPrsfihqJFWnI/3Io5BHZnLyzjKe2UjA341
+	FPBFx90QYUQ4HdOHAR9xkujeGtqG4loS05xjjejjCBEWran5SlZPNAarcl/U0M49trs3nftPi2u
+	J/As8g+Jpa07dJaxKNsZvsBjR0M0s/y9OMPeBAAsp6VRHhqolDH5fvaoujNBloQRiLQGeUHn1tO
+	sjOTmsOIQuzQLKNE2c+Mp5ZcQ94o9Q69owps7hAlubOG6UolK9qtTpCPgMnU908og6K2JG1D9V2
+	76MmHLE5WDIkdDbUQdzUudTgSgraVHRXgxoFXOyj7YJE4JdNeDUQY2nJO42BifBIrG
+X-Received: by 2002:a05:6870:224c:b0:440:4df:c208 with SMTP id 586e51a60fabf-45105efbd4fmr3802997fac.33.1783455521667;
+        Tue, 07 Jul 2026 13:18:41 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:72::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-44cfb67156csm15130448fac.18.2026.07.07.13.18.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 13:18:38 -0700 (PDT)
+        Tue, 07 Jul 2026 13:18:41 -0700 (PDT)
 From: Joanne Koong <joannelkoong@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -109,20 +110,22 @@ Cc: usama.arif@linux.dev,
 	mhocko@suse.com,
 	willy@infradead.org,
 	linux-mm@kvack.org
-Subject: [PATCH v1 0/2] mm: split underused anonymous mTHP folios
-Date: Tue,  7 Jul 2026 13:17:33 -0700
-Message-ID: <20260707201735.4113107-1-joannelkoong@gmail.com>
+Subject: [PATCH v1 1/2] mm/huge_memory: extend thp_underused() to mTHP folios
+Date: Tue,  7 Jul 2026 13:17:34 -0700
+Message-ID: <20260707201735.4113107-2-joannelkoong@gmail.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260707201735.4113107-1-joannelkoong@gmail.com>
+References: <20260707201735.4113107-1-joannelkoong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 41cbsecz8umdftie53y83e6whp6xcs4t
+X-Rspamd-Queue-Id: 994F61C0004
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6F75B18000A
-X-Stat-Signature: y7uqhfmwysanwmd63kksjoq8kzk3k4s8
-X-HE-Tag: 1783455520-893833
-X-HE-Meta: U2FsdGVkX1+5ZsnzozwwEIARQOjWioSxpWqhVMaUg+rbJnlv66iGgrrMmnWnBgEAXglCLOFLbUnD2x6EFLkVsZkkZA0rvLKvnAMBh3mJ+YEM4TCqY8UxSXEPgSuHrXhVCOlFFI9JkrrYB5lkYcBOUotHMfaqUY6SThzBTYjErL9yMx+nqVRyCrnZG97DatJjZuV0RqSDcCcI0kAnH3Ih6hjzV9YaTWez2bkjGEIj4jQcEEr2WyUf1/SL6ZvTEp5ziJA0WdUedUKyUYO8sy1L4XjArOPuGsTmnhmUC605ndM8zef2Fljhe7EOnrLyqYKAoxLhCo1z0nBb63Y/ZBZZKVGJ58SUMNYuNIgs7ztz71rtszKRHNZqsvf9HXJl3JjnYP1DDAZov8xgOM0nlaTQ3l1c3YOfUSomvn8o0J2/9r1IbD21M+LMfXCiVGJCe619bCWbc7KbuLsFz202e4c1WTBKK/21fuzPuJbFn1ZYEXLZ0jjUScA6aa+O3E5lHma+YX+3LS5w5Mqj+AzV769nv+Li78Mof4RczqJVay9uK8F9jWZwYHqHkDR3aHNPVEVOFBh+owg1t+cY1AeQRW/uruLnoQ8tbJAH7nv5r0AuZkezsOXeEiXEGE+UhO9OgXiG39AhTLmJLd7kNea9s0NpRihsGWhFAEYCME156novRwgQ/bGix39OlLoTfGsv7cYGoc3whqVxqLs7PyAs2qyjxQ1Z7t1+V8DmRbl39YZhiUuldjC1oCV3x4YntgvDP6FsolDrYsVh4JskX+9fAcDjSg1qOIrSjLuXmHqeVv2vs4uqQqeeRfQ0FPIdtdlp8v0IilAV5mR+t2d5QGiD8GsqQmZoH0SWEZSpUL6g0tnuwlV9ZICYzY9a2cLh9XTzP/qXYOqDnbV2kvfRD32w5JyEPvI3fQLzYCAz9fQqacfxVxZRYcndVgv0/E+nURkJnW9Crt5iujPzXhhmn+C1ZSL
- iPFSm7By
- SSaM+rot/qQh5XIZNuq1V83d3lZ18UrALHJn1jbNe7MKjISUjTTh79PrWlgNUEudcPD268E5qO/vAL0tvryjr6zshLhtS/7e1wOcwF8MYLtbiIEPNBB3s/oRc1tw0KV+yWISe1yI+kuC1/fSp2bhy/hGywv0sEREAZp9WdjEwMk7KpFhoZBBZp52ZR1w2ivLkrlRpSIuBPx32qT0bhf6AM3M6SKitkWm8mV+E+GHZlLlOf0D/1gbqIHfaWUxRUmgfa+aLmoEZjjOEusw+u4Nn7Dics0y7VCFhCqrlaWATWzN6+gENCGAEhPq5RD8r6mF0wwd5ai9LGijUNY1f2gOyCpaXYp3VG+h4vVBbm1vfTVFFtxheEh6OphYjmKo3erBovutQWCtccnorahSdnwoYS+qs8et1cBoolGrWQbCC/Y1ZjIPnOiaohAqdHREC1B1Q8SlkSfVPc6noJNWukjnLgyF+AuANqPOk08dfuN4z5kpr0aQ=
+X-HE-Tag: 1783455523-98737
+X-HE-Meta: U2FsdGVkX1/On3AYbh8Njf28Nn+Ezb1xqP73qR2avs+A18hnHlbhUklGzWIFimZgNJg2BijZvjwFadnYZSanqcsEGiqW7oGqkQev5MN/ZcNaq0rnSwwpkCaUMXcO6DvOsMGlNcP5ZSeqm4bfwsEGS6y5hD6zF8DE8KaO2QIfSolTl2oVJzRLBvlAjXJol+YJ2xlC1cCPRaV5iqIavP1MnIv7XLt39hKLJHHXhp6JqWGMxFSzxmStVr+LQAdn2DqtdjegXN+w9SoNLDasOutVcFYvetRiiDFiTjj0laxr6p5WyGyOhwaCrj+vpIOmlCQmPQ4Jm7RJFWBVpzTWg25MrR9/p9J9Wfkh5EkJxfNzErfZysoPZlZ54OEmqRNkiSK2khYjl0hVlWHobg+V7MkG7uoGJi3hfowhnWZ6KattaY+8jEwr3vwYlsNs2GjWv9tDKfKtggtYyNWoZ3f6xAcw6WWvSgDUiJU3fjE3pFxjAeORfXWOu+yJyqksbXwX4v7YAdDxa0ostv07btjaSvvwfiyCx2YDjxILlryfovOUuqIRn8zldmm1fgWUiYa//T6cfkafbQcl9Ht4kelQki3CdltBJqhnvXC5gSgDyu8ts7sYo1rGkqdcTpjf7m22PvnQIeuvnO+AOiEPpX0eCDbSssghM05snDFtJjNjspNZKUeW1zVVmjhXiioDecQrK/BM8nrc1ppVbYl7+wBCEq+VE4T/uurzYsd/EO2pA8T8oBNBJIhbLj1SN1LtosDKFWV76x45e5jUd4ZIkq008Np+2wfH6nExVe8zmzHALzYgBq4xAdVkCrMsDu2jpsMMwAtXvqRZFXm9xp+6H1AuMLgL+yJcChbdB6UiYM5prkn8fhPExmGqqVhWG2bMsN9FvO8oToz07mFpjaiMoRPxfdG+fkymEfdpEPTZMVyk038zJh+uWsqM2epbBtDAQIzBBwShYfBFbw5Gvjcj6030/61
+ dOjv8Ec3
+ +8ENJbZAlojJHP1BHPwmf4fOpfwfwhq1KOzq2ymIvOSwZPstVoYNPM6QXe4RBUrZJk3mCXUhPTDmzt4CoIBZQtTzgRYIMPCAqGwMrbfLwSFxEw3YfW9vjNpXDAvrvfObNoOD2WC0gu8YzmyPBOmZYNhFXtFnw80ReY8OQ1BG38hXInTFlwaS5/x9xlLudexh210uQNTd/d9TnPL9EpPZ1mb30+40mysVLDjaesIxdwZbn+a9g3VNTJD9H/PO2D8V8aNk02gRzS/ycxHrFRzvbynI2TJkJiNHIYKtY3Hikuqhr+yNxtIuBQR6UVVVug7IXvpWLTHBAaOHGQroFWq4/bHNhCFCH07UD5sxOW/HaeEmhFtIaWt/DGODcgeDriiMUjpmBXbykO7hgZXwHFXKgY4nW8EPrr9tQd1pkuUpivHl1ejA41DIQOAD2ARVhAYY1fJWjjy6LAHAKTrtFQkwi0D+ygBjRq22W+88DCUZz6Cai39ALVpMgSkbXHXYoVJTSPxDmLaFZ+lTjQWo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,57 +133,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PMD-sized THPs that are mostly zero-filled are reclaimed under memory pressure
-by the deferred split shrinker, but this is not done for mTHP folios. At Meta,
-we would like to deploy 2M THP=always on ARM (with 64k base pages), as 2M
-provides contpte benefits and 512M is too big. However, 2M THP=always will
-result in a memory regression unless the extra unused portions of THPs can be
-broken down and reclaimed.
+thp_underused() decides whether a large folio on the deferred split
+list is underused and should be split so that its zero subpages can be
+reclaimed. However, the logic in it only accounts for PMD-sized folios.
 
-This series has two patches:
-Patch 1 - makes thp_underused() work for non-PMD-sized folios by scaling
-khugepaged_max_ptes_none proportionally to the folio size and using that
-as the threshold for how many zero-filled pages a folio can contain before
-it's considered underused. This is compatible with the mTHP collapse threshold
-at both of the values mTHP collapse supports (0 and
-KHUGEPAGED_MAX_PTES_LIMIT). If/when collapse supports intermediate values in
-the future, the thresholds can be unified. There is no functional change for
-PMD-sized folios.
+As preparatory work for splitting underused mTHP folios, make the logic
+in thp_underused() compatible with mTHP-sized folios. This uses the
+existing khugepaged_max_ptes_none sysctl value and scales it
+proportionally to the size of the folio as the threshold for how many
+zero-filled pages a folio may contain before it's considered underused.
 
-Patch 2 - adds anonymous mTHP folios to the deferred split list from the
-anonymous fault / collapse path so the shrinker can find and split them. This
-is the same mechanism PMD THPs use, extended to mTHP. It places more folios
-on the shrinker's list, but a folio that the shrinker determines is not
-underused gets removed from the list and doesn't get rescanned in the future
-unless the folio later becomes partially mapped. The logic to determine
-whether a folio is underused or not (thp_underused()) is bounded work that
-does a memcmp on at most nr_pages subpages, and runs only if shrink_underused
-is on.
+This introduces no functional changes for PMD-size folios.
 
-Testing:
-This was sanity-checked by running a VM with 64K mTHP enabled (PMD THP
-disabled, shrink_underused = 1, khugepaged/max_ptes_none=0) and having a
-process fault in 256MB of mapped mostly zero-filled 64K mTHP inside a cgroup
-with swap disabled, and then triggering reclaim (via memory.reclaim).
-  - /sys/kernel/mm/transparent_hugepage/hugepages-64kB/stats/anon_fault_alloc
-    showed that the mTHP were allocated during fault handling
-  - /sys/kernel/mm/transparent_hugepage/hugepages-64kB/stats/split and
-    /proc/vmstat's thp_underused_split_page each increased by 4096
-  - the process's resident set size stat (/proc/<pid>/status) showed a drop
-    from 257 MB to 17 MB
-
-The scanning in patch 2 was checked on the same setup with 256 MB of fully
-populated 64k mTHP folios. All 4096 folios were processed by the deferred
-split shrinker only once and did not reappear on the list in future scans.
-
-Joanne Koong (2):
-  mm/huge_memory: extend thp_underused() to mTHP folios
-  mm/memory: add anonymous mTHP folios to deferred split list
-
+Suggested-by: Usama Arif <usama.arif@linux.dev>
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+---
  mm/huge_memory.c | 12 ++++++++----
- mm/memory.c      |  2 ++
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index c0892cc533a9..ea5c350b4818 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -4413,24 +4413,28 @@ static unsigned long deferred_split_count(struct shrinker *shrink,
+ static bool thp_underused(struct folio *folio)
+ {
+ 	int num_zero_pages = 0, num_filled_pages = 0;
++	int nr_pages = folio_nr_pages(folio);
++	unsigned int max_ptes_none;
+ 	int i;
+ 
+-	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
++	max_ptes_none = khugepaged_max_ptes_none * nr_pages / HPAGE_PMD_NR;
++
++	if (max_ptes_none >= nr_pages - 1)
+ 		return false;
+ 
+ 	if (folio_contain_hwpoisoned_page(folio))
+ 		return false;
+ 
+-	for (i = 0; i < folio_nr_pages(folio); i++) {
++	for (i = 0; i < nr_pages; i++) {
+ 		if (pages_identical(folio_page(folio, i), ZERO_PAGE(0))) {
+-			if (++num_zero_pages > khugepaged_max_ptes_none)
++			if (++num_zero_pages > max_ptes_none)
+ 				return true;
+ 		} else {
+ 			/*
+ 			 * Another path for early exit once the number
+ 			 * of non-zero filled pages exceeds threshold.
+ 			 */
+-			if (++num_filled_pages >= HPAGE_PMD_NR - khugepaged_max_ptes_none)
++			if (++num_filled_pages >= nr_pages - max_ptes_none)
+ 				return false;
+ 		}
+ 	}
 -- 
 2.52.0
 
