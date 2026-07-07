@@ -4,95 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54DA4C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:33:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B1CFC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:34:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3381E6B00A4; Tue,  7 Jul 2026 10:33:50 -0400 (EDT)
+	id 1B3756B0005; Tue,  7 Jul 2026 10:34:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30FAD6B00A7; Tue,  7 Jul 2026 10:33:50 -0400 (EDT)
+	id 18BCB6B00A7; Tue,  7 Jul 2026 10:34:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24E116B00AA; Tue,  7 Jul 2026 10:33:50 -0400 (EDT)
+	id 07C8A6B00AC; Tue,  7 Jul 2026 10:34:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E8E826B00A4
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:33:49 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69DD9140321
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:33:49 +0000 (UTC)
-X-FDA: 84962224578.19.794C295
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CFCE5180011
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:33:47 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jzurjB0S;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D1F5B6B0005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:34:29 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5FDF0A0479
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:34:29 +0000 (UTC)
+X-FDA: 84962226258.02.4255D7F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6123D18000C
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:34:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cHr5YAQg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783434827;
+	s=arc-20220608; t=1783434867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lRPHBZyUrNKHZ2wYrLs9GBkE6hyCCqTsoxHyYNlEGp4=;
-	b=cQp/BZouIfJfuMGkHkCe7wEGMXHdFaoGV0DwlHadbCm4E3ORl0OcpT++1phEpgr3e9TJUJ
-	k+tapNI/75FC0O5ejwcdsVmOyyxFi2NQ6bGTU/KCQMXKJDkia/Tzc/Zdz10bMxghcOEFKt
-	7GbdhxxN1eJi5cQ414sZrTsKCJnSNaA=
+	bh=7f2N/SJQhJLGukCIcGmJQv9G5BEKubFQyKhmhbtamRg=;
+	b=ZlUwS8Gx6jAJUokuXyPfn1098e0PjV2zkdEerwq0nth4txp/rCySDgKn9I5SUkgrIG1+hX
+	DHiRzd3eqm9vgH0Xq6jIIpjyHxHhR4tN42A+Rue9Gc1edcWdnZgBIHWKACSnoZIbqVxjtd
+	nC35WhaiNcCoCaIH9d7YUKuQRrgDajM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jzurjB0S;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cHr5YAQg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783434827;
-	b=Q2VEk0l5oKSt2h/XtbYtnrQzrVffaom3HDH2Hxz5WEezdfc5Rd/s1yZSqez6iILhmX2ai5
-	yG06MWrebY3loiGqxIeamQNfwYwGIteRWYXiN2rW6EaJ/PdyTSfDTVigdlbVvHYOvniAxd
-	Fv6hTgqoAUbnL29pl49Z7l16mgA3oVw=
+	t=1783434867;
+	b=1Grcri+VlhsdHpNVYwaKLKw/D1Suyaqzxye9FW+FtvyAVlZwqlRxpnKBD6KaaXBmu9OGfd
+	WbmNDmfIb4sDzatN+c5twmltoICmyjg1CXQHVIuk5fKEvc+l16Ucz3h/Hza/E7ALxamnIa
+	G6DWbb4z12GrzDytAlveEMq1d2gZdyA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2FC0760018;
-	Tue,  7 Jul 2026 14:33:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF6D1F000E9;
-	Tue,  7 Jul 2026 14:33:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 836784188A
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:34:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676FB1F000E9
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783434826;
-	bh=lRPHBZyUrNKHZ2wYrLs9GBkE6hyCCqTsoxHyYNlEGp4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jzurjB0SxrMqwZu6uNCaUfK4c2KGCtIIYOndWXuK+m1VvRu9lrbi4I9nj96Zx/pQY
-	 E5yroM9SofgfLPNUTi6rrbpvZf9oMJsje3oxScFpQoP+BheH9AY8tU9REhT4PXuCKD
-	 WhAtxsGMH4gsy6lFf6h3HV8BmOcbRD+ft8MmdaUIQYKSvS6KYXk372FgWfu8KDOT75
-	 IOl1BeNhmV2NYab9YsUTEZEEKIdxU4VtUEL0fenczLVhigCgCWx9PvSgRJl50+GIbZ
-	 fIXgoNayIVs8XG5PvCpF76T302wAO0BK51iT22HwwtIETVfzDFxL6RyGgy3/cC2lQ1
-	 7f+sCjaN2oRGA==
-Date: Tue, 7 Jul 2026 15:33:32 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Wandun Chen <chenwandun1@gmail.com>
-Cc: vbabka@kernel.org, david@kernel.org, rostedt@goodmis.org, 
-	mhiramat@kernel.org, Alexander.Krabler@kuka.com, hughd@google.com, fvdl@google.com, 
-	bigeasy@linutronix.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, akpm@linux-foundation.org, 
-	surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
-	ziy@nvidia.com, riel@surriel.com, liam@infradead.org, harry@kernel.org, 
-	jannh@google.com, lance.yang@linux.dev, mathieu.desnoyers@efficios.com, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	pfalcato@suse.de
-Subject: Re: [PATCH v2 2/4] mm/mlock: wait for migration to finish when
- mlocking a folio
-Message-ID: <ak0C-DP_1ZrTVSLj@lucifer>
-References: <20260707125925.3725177-1-chenwandun1@gmail.com>
- <20260707125925.3725177-3-chenwandun1@gmail.com>
+	s=k20260515; t=1783434866;
+	bh=7f2N/SJQhJLGukCIcGmJQv9G5BEKubFQyKhmhbtamRg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cHr5YAQgwuJ40WYqmmXAvD5Yud1eg+3k/oTgssQil4smRcvOqud5HdZobqZ1DkSXs
+	 Cw2u7GwpXyQTAf5gUWJ7CXzBtie7nKH7vMiLPeNAcyC/5MMyR4j2peWV7JU5Xjv1tS
+	 spAe+JFdqwTmMSjtAshqBS0E2Pzjxg5wtGG99SdOZ+oSQDPla+ZjP7jiUO0Gj0IjQ0
+	 rVnHcCNxtAhm01KECAvj0tyMbxIynhgT0z8gfkpnZXroRE5kEOiCKzJrTnxgg4wrhd
+	 5UUrrTdE4F1P4mIySLv8Q4de9TTwvyQaeZT+OysYYYIeEwHeytkMTlX4AAliA4NvwJ
+	 ylhbhxHe6TVMw==
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c16ac21acso20828251cf.0
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 07:34:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Ro+ZMUSqFandBYYVoqVXx6OYmYAh6ZgOcsqkIF8ZQ3E0BynaGz/gfT7AzQAY6ptp7sWYHZGTXYZjA==@kvack.org
+X-Gm-Message-State: AOJu0YwcobQihg/U7O+inD8jqw57QhckW3+g1lxVs6JJLU7oWzY+zYNW
+	m9L4Xke7C/ve3oF7l2A+fcjx8J4JnDUt7cARV/px7C28AQdR0HIcK/n8B0BWRGHGfTUIm4qUbeR
+	Ao0JlSGZz6fb0X5HUMSRYot33XoK5QWo=
+X-Received: by 2002:a05:622a:e094:20b0:51c:7b12:1207 with SMTP id
+ d75a77b69052e-51c7b12179amr15829651cf.85.1783434865720; Tue, 07 Jul 2026
+ 07:34:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260707125925.3725177-3-chenwandun1@gmail.com>
-X-Stat-Signature: 8eo4btpu1m9h46pjaqb9hs85m6dzoo7c
-X-Rspamd-Queue-Id: CFCE5180011
-X-Rspamd-Server: rspam01
+References: <173f3fd983d735155d47e9e39d27f0c2d62a7c31.1783307463.git.baolin.wang@linux.alibaba.com>
+ <CAMgjq7AQcyypJ-VhJ_CxY6fdEph64fxjOzzYU-=EkMrHemkpzA@mail.gmail.com>
+ <8ef0b72e-a0e8-4913-8d30-519335305260@linux.alibaba.com> <CAGsJ_4z5N6FSfWt5WUZ5YmqhCzLcd3Cj1sc9B79WYX9ZbDH8Gw@mail.gmail.com>
+ <d01bae40-f94d-4e8a-baac-ad6fffa18b64@linux.alibaba.com>
+In-Reply-To: <d01bae40-f94d-4e8a-baac-ad6fffa18b64@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 7 Jul 2026 22:34:12 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zbBRe383GQLGuPivUXXnjhs2L9xFyandXkCOUotcb7Vg@mail.gmail.com>
+X-Gm-Features: AVVi8Cdk8e1_A5dUPq7XT_kY-SwTQ4Hn7kKDOOl2oDp5wOSBPnjQwov2kRW5pUQ
+Message-ID: <CAGsJ_4zbBRe383GQLGuPivUXXnjhs2L9xFyandXkCOUotcb7Vg@mail.gmail.com>
+Subject: Re: [PATCH 6.18.y] mm: shmem: fix potential livelock issue for shmem
+ direct swapin
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Kairui Song <ryncsn@gmail.com>, akpm@linux-foundation.org, hughd@google.com, 
+	stable@vger.kernel.org, machao26@xiaomi.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6123D18000C
+X-Stat-Signature: x4wqq6p96din8tna5nf3xzdyqdod4zbj
 X-Rspam-User: 
-X-HE-Tag: 1783434827-470355
-X-HE-Meta: U2FsdGVkX1+4wf1lArmcnivRgh9jrCP09hPIwu2Puqp2zRD/iQXZiJgGAojTojYM+iWAJ0hH00BR9+ybtWe4WIkygc0GenC+MOX39JIrZ3jhYpH1fPfB6Zdxi5/ILRAW2y+Pa1aFlIUkhLPI518GGkS71HwtBI21w6MOgYl8vNIOvQMQX2H1xQt8ILKFAQjNkhJb4oQ0UUkukqbwUgoLwY/HsGOK1v8vcbL7HkcsGhBD5U9QlsRiWinLOw+5yRqjpz7L/qNrphe74JqZ+0/YaJYdaPEMFCakW49kEqkY/K8NiRL3X/Bi9XJxOR+iTbgTacGI3wx/haNe7NlW+mhRjXfo2wgiVh5ujxCL2r7LFNVtqeCda3hh1RWMZR6XVptFeH+arpPtuIEkNmIdC3+79YhEqSIDir4uIZzo/KUZCkLmpgvzvka+GJGsk9l3uf+nI9TazyaxRXzNGFivkJzmAW+hIbm0O7VRdA/Gr28EYGwvDQLAk8AGT5Mn22E+sQ1gX3mGqy0QY6uP+DFrmIJndtlBrCkKHKeK/Vay3uFM6kpJp/rXXYpuwgdLOjqokM46DnjsGVM1ttm2TW02RFo32qXD9489x50gkAldYpCbjKKUz9CHRx9wRjUPISg/Px9BU//fge7C9bvZl7Nl8ZTi3/9X+7CF+lKvwtNtTrvV6jH9Oq8/oWXgtm+IAziRsRi7DDOCvUZ9p9y/Sh1Bou/Jb4xqMc/atdeDZK2xkppzOGgqVG9HrMcANd7tHIm/jGlQ9NOTu/Dc1qHwnU4tLh/gUAd9j3nvbM5UK3Bib1eOkpMNkVGMaDQ8h1ZdnzRVPlSlvCLXEobQGzh3Dv1a7II60sk9Be5l+64l/0TMu4vnKAGCwfUfvVuTibMi0Ou3OtXYp0P2AaUFNdYITeazPVI2vasUGPHcF0WDvpqC1v8lwswiiy9jJI1FADWt8XHh0tEhSoV5Md5Z/2G0sba2V3g
- zJOXC+qs
- AJgNiGLX5zmLI8NlPrAStenRtQTWZyBU9lpUXZAdQlGgU2ukeClPczEQXXPYy8McxXcGa0h+RUHf11FhgsoUcsnjuA+9iu2ekUuQZJztAX3YDrpz2yn3SkPl/rSUIbSnQVZdy2/5h+ZnF4ZtIlggQMKKoL21fMBZml6TUVvrQOqHlX2o+fpDJNXHgt8CPzXyaITvgy0T9Hsw51ki+YwM9tSUDOhcPOjQk2lsGgac4rePNev2pqPqJNNXGeRt/OwD6HUe6xqtfN8THsu9cqWiI6Sr9OEwD5pjkdAoBCWggRGSY58fIyTY8FmxK4DTBcJ97B7BMJrFYuMHJFgsEtJWwKi3IGGg3FU9RuiRAexQmtz1KGgcxNuZynh1cF9swYpcUF0Mz0oZkaU713rb47zZox1+m5SeVyfbVYvO2
+X-HE-Tag: 1783434867-763573
+X-HE-Meta: U2FsdGVkX1/pnc4z/VodTlMjjaln0n3Uw8HC0zXhNO3tE6B8NX43a0ydstzNrHNeVKVyHPrv5T6qx/WGctoyDSULTnEGedhwhJlCcbsx5N1cp3O0DPkajzRRhMXV5rJDYNT0h7jRsPakhs/cS/jGISmSonAmecGICRjZWb3y13PfNT/lwKcYlBE9KN5GBRSIXusBeVJuR5mq7qZlggGtNzKelSXzTjOBsxUhyYbhc9yrrsjDNXoZ2AiSKNI4lOXe8ZK5+1cOXHNnJytzQvwDe9Ak2fyUd33wnCzIEOFjgVsGD8yMxtFMqNgpEW3M4JA7zRxZ3ew6rXU/cetWn2y0CP6euclf1kO2wChbHtzONu1BurmGHrB7VFEN0tEG4fjalhtNDiKM4HFCZE/QyO2haCMVbQem4TNh1QecqU0oDWss615+F4TZwnbtSwGMPSUQZHM8Zfc8RGd2+4rhOQqILHHt9lkP+jV+ScKZqcFOh/044YMm6HvVbhFKEnNE1RwDI56+OmYk84Az4JEwVl+Qs4wAL7M7MuH+4ThH1gklL+3B86CsRbEhFwpqJVFcMrMeivkSgpvbNtg90Z1Ki+glydsne18wAnC0NP6j6axTFlq+KjIZHBNkDnwj3w7caWuGU3SaZ9HWWkpGL1MnFGMsqEA0b+3l6zwD5DG/EFG1VweAKCxIP+WR2hM9Kp6ur/5PILKGzVztRf4NRqgg19/2XDDCdNtOlTtKwTdO6+KnM5beRml5JFMRww63XEE5HJQWtErqp/2wuk02ELiRMdgQ2IIlUERzQNYwZKGrO98D4I/Nb+ZkUq0LDOk1Th009uDEyeLIZT+8HCX550jJsR/o9fJVPsmwVw4A37V4LKLweWTPdfK+d01F5fAQR9CWjL2GQMHkfHtP2/cgtqRawXQuaxn38p/AwngUDnzBwwH8pUf5YutGvFHd0nzkW9z9niAhdwG7WXFB5FtATfn4wuJ
+ eJ8bpmO4
+ l8iVAVhZbUFgrY++mcNYa6qEg6SkNxuXHJi9P/Za7AKuZWvPn9Xn84D4GCUfWeZ0PFJN7JGDVrwiyyNhbytMcBZDXst3IuAlyqXTzarUjipGwOlFZCCd9bDxppwSsEVvJjnisPqYTWMqRkkUf7DIp5Mm/VVfu/UUh9AATajQrczzfMhM3YyEZrYNh6dvSCVswQAYwjBEZrkTo0LJ3IV0g2VR0+FxQk9xKpQLrqKnULUkIdjypF27zDOmZuMxmEHjXXm4oIa0GPld5Qdy8jDNJ/C14k1SH8c2DlasVRzfqPHeIKggBmvinM4kIEULsbJFPgqub57Rf3A5cDeXn3PQfXdXrzgnd4a2a2TCFAuVYZ4Sz+FkSUU2xANVM1A1tHKCsBc4g
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,197 +107,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 08:59:23PM +0800, Wandun Chen wrote:
-> From: Wandun Chen <chenwandun@lixiang.com>
+On Tue, Jul 7, 2026 at 9:53=E2=80=AFAM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
 >
-> In RT kernels, sysctl_compact_unevictable_allowed is false by default,
-> when the mlock/mlockall system call try to lock all the present page,
-> the mlock_pte_range function skips non-present entries. If these
-> non-present entries are migration entries, and the migration is not
-> guaranteed to have completed before the mlock/mlockall, it may result
-> in a page fault on subsequent access, which then waits for the
-> migration to finish, causing spike latency in RT kernels.
-
-Is this really noticable and measurable?
-
-I suppose not too many ranges should be mock
-
 >
-> Fix it by waiting for the migration to complete during the mlock/mlockall
-> syscall when sysctl_compact_unevictable_allowed is false.
-
-Probably better to reference the sysctl itself rather than an arbitrary varible
-name.
-
 >
-> Fixes: 90d07210ab55 ("mm: mlock: use folios and a folio batch internally")
-
-Again I have no idea why you chose this as the fixes target, especially for
-this?
-
-But in any case, why is this separate from the previous commit? I sthis an
-entirely separate fix?
-
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-> Link: https://lore.kernel.org/lkml/c8793c0f-7156-4cb7-9e6e-7909397e2fff@kernel.org/#t
-
-A nit but please strip that #t.
-
-> ---
->  mm/mlock.c | 23 +++++++++++++++++++++--
->  1 file changed, 21 insertions(+), 2 deletions(-)
+> On 7/6/26 9:04 PM, Barry Song wrote:
+> > On Mon, Jul 6, 2026 at 8:08=E2=80=AFPM Baolin Wang
+> > <baolin.wang@linux.alibaba.com> wrote:
+> >>
+> >>
+> >>
+> >> On 7/6/26 1:59 PM, Kairui Song wrote:
+> >>> On Mon, Jul 6, 2026 at 11:25=E2=80=AFAM Baolin Wang
+> >>> <baolin.wang@linux.alibaba.com> wrote:
+> >>>>
+> >>>> When skipping swapcache for synchronous IO swap devices, swapcache_p=
+repare()
+> >>>> is used to prevent parallel swapin from proceeding with the swap cac=
+he flag.
+> >>>> However, on PREEMPT kernels this can lead to a livelock, as reported=
+ by Chao[1]:
+> >>>>
+> >>>> Thread A starts direct swapin of a shmem folio and calls swapcache_p=
+repare()
+> >>>> to set SWAP_HAS_CACHE. It may then be preempted inside workingset_re=
+fault().
+> >>>> Meanwhile, a higher priority thread B also attempts direct swapin of=
+ the same
+> >>>> shmem swap entry. Since swapcache_prepare() already marks the entry,=
+ thread B
+> >>>> repeatedly gets -EEXIST and busy-loops waiting for thread A to finis=
+h. But as
+> >>>> thread B runs at higher priority, thread A cannot preempt it, result=
+ing in
+> >>>> starvation and a livelock.
+> >>>>
+> >>>> Fix it by yielding the CPU with schedule_timeout_uninterruptible(1) =
+when
+> >>>> swapcache_prepare() fails, following the same approach used in commi=
+ts
+> >>>> 029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead") a=
+nd
+> >>>> 13ddaf26be32 ("mm/swap: fix race when skipping swapcache").
+> >>>>
+> >>>> Note that mainline does not have this potential issue, which has alr=
+eady been
+> >>>> resolved by Kairui's swap refactoring work[2].
+> >>>>
+> >>>> [1] https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xia=
+omi.com/
+> >>>> [2] https://lore.kernel.org/all/20260517-swap-table-p4-v5-0-88ae43e0=
+64c7@tencent.com/
+> >>>> Fixes: 1dd44c0af4fa ("mm: shmem: skip swapcache for swapin of synchr=
+onous swap device")
+> >>>> Reported-by: Ma Chao <machao26@xiaomi.com>
+> >>>> Closes: https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4=
+@xiaomi.com/
+> >>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> >>>> ---
+> >>>> Hi Chao, could you try this patch to check if it fixes your issue? T=
+hanks.
+> >>>> ---
+> >>>>    mm/shmem.c | 2 ++
+> >>>>    1 file changed, 2 insertions(+)
+> >>>>
+> >>>> diff --git a/mm/shmem.c b/mm/shmem.c
+> >>>> index 94c5b0d78ac3..d4cb57b3b0ef 100644
+> >>>> --- a/mm/shmem.c
+> >>>> +++ b/mm/shmem.c
+> >>>> @@ -2066,6 +2066,8 @@ static struct folio *shmem_swap_alloc_folio(st=
+ruct inode *inode,
+> >>>>           if (swapcache_prepare(entry, nr_pages)) {
+> >>>>                   folio_put(new);
+> >>>>                   new =3D ERR_PTR(-EEXIST);
+> >>>> +               /* Relax a bit to prevent rapid repeated page faults=
+ */
+> >>>> +               schedule_timeout_uninterruptible(1);
+> >>>>                   /* Try smaller folio to avoid cache conflict */
+> >>>>                   goto fallback;
+> >>>>           }
+> >>>> --
+> >>>> 2.47.3
+> >>>>
+> >>>
+> >>> Thanks! That's much more simpler than I expected. Do we need a wakeup
+> >>> queue like the one in commit 01626a1823024? Perhaps the reporter can
+> >>> help confirm and test? I personally prefer to keep it simple if shmem
+> >>> users aren't as sensitive as anon users.
+> >>
+> >> I agree. I'd like to keep the bugfix as simple as possible, if the
+> >> reporter's scenario isn't latency-sensitive.
+> >
+> > On Android, we don't see much shmem; it's much less common
+> > than anon. So the chance of this concurrency happening should
+> > be lower than for anon. However, shmem can be shared by
+> > multiple processes, so could this still happen if process A is
+> > blocked by process B?
 >
-> diff --git a/mm/mlock.c b/mm/mlock.c
-> index 97e49038d8d3..ac65de40b22b 100644
-> --- a/mm/mlock.c
-> +++ b/mm/mlock.c
-> @@ -25,6 +25,7 @@
->  #include <linux/memcontrol.h>
->  #include <linux/mm_inline.h>
->  #include <linux/secretmem.h>
-> +#include <linux/compaction.h>
->
->  #include "internal.h"
->
-> @@ -361,8 +362,17 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
->
->  	ptl = pmd_trans_huge_lock(pmd, vma);
->  	if (ptl) {
-> -		if (!pmd_present(*pmd))
-> +		if (!pmd_present(*pmd)) {
-> +			if (unlikely((vma->vm_flags & VM_LOCKED) &&
+> Could you be more specific about how that happens? I think we should fix
+> this starvation/livelock issue if you think it could still happen.
 
--> vma_test(vma, VMA_LOCKED_BIT)...
+Hi Baolin,
 
-What is the basis for your unlikely()? Don't use likely()/unlikely() just
-because it feels right. Leave them out unless you have actual profiling data to
-prove it.
+I think your change has fixed the livelock issue, but an unconditional
+one-tick sleep could still be problematic, as commit 01626a1823 tried to
+address in do_swap_page():
 
-Remove it please.
+"mm: avoid unconditional one-tick sleep when swapcache_prepare fails"
 
-But I'm also confused here - why are you checking for VMAs that already had
-VMA_LOCKED_BIT set when you are about to set it?
+If possible, I would suggest that your fix also include the change from
+commit 01626a1823 to avoid the issue caused by
+schedule_timeout_uninterruptible(1): an unconditional one-tick sleep
+could cause UI stuttering. At least, this would make the code more
+defensive.
 
-Surely this shouldn't be predicated on VMA_LOCKED_BIT?
-
-
-> +			    !compaction_allow_unevictable() &&
-
-Why do we care about compaction here? Are we assuming the softleaf migration
-entry is present only for compaction reasons?
-
-So these migration entries could be there for any reason? Does it matter? Is it
-such a big deal, on mlock, to wait for migration entries? I think probably not.
-
-But then maybe some weird workload gets affected... hmm.
-
-> +			    softleaf_is_migration(softleaf_from_pmd(*pmd)))) {
-
-Use pmd_is_migration_entry()? :)
-
-And technically you should use pmdp_get() I think? Maybe a situation where we
-don't care/need the READ_ONCE() though.
-
-> +				spin_unlock(ptl);
-> +				pmd_migration_entry_wait(vma->vm_mm, pmd);
-> +				walk->action = ACTION_AGAIN;
-> +				return 0;
-> +			}
-
-This code is really disgusting, let's please not just copy/paste open-coded
-nested horror shows like this.
-
-A good rule of thumb is if you see a bunch of code 'poking out' like this and
-certainly if you copy/paste it or something very much like it, break it out into
-a function.
-
-So:
-
-static bool wait_for_migration(const struct vm_area_struct *vma, softleaf_t entry)
-{
->>>> As above I'm not sure should even be checking this?
-	if (!vma_test(vma, VMA_LOCKED_BIT))
-		return false;
->>>> As above I'm not sure this makes sense?
-	if (compaction_allowed_unevictable())
-		return false;
-
-	return softleaf_is_migration(entry);
-}
-
-Then call it like:
-
-	if (ptl) {
-		const pmd_t pmd = pmdp_get(pmd);
-
-		if (!pmd_present(pmd)) {
-			const softleaf_t entry = softleaf_from_pmd(pmd);
-
-			if (!wait_for_migration(vma, entry))
-				goto out;
-
-			spin_unlock(ptl);
-			pmd_migration_entry_wait(vma->vm_mm, pmd);
-			walk->action = ACTION_AGAIN;
-			return 0;
-		}
-		if (is_huge_zero_pmd(pmd))
-			goto out;
-
-(etc. going *pmd -> pmd)
-
-But we could probably do even better than that, and assuming your dubious checks
-above aren't needed, we don't even need a helper then:
-
-	if (ptl) {
-		const pmd_t pmd = pmdp_get(pmd); // possibly just *pmd?
-		const softleaf_t entry = softleaf_from_pmd(pmd);
-
-		if (softleaf_is_migration(entry)) {
-			/* Wait for migration entries. */
-			spin_unlock(ptl);
-			pmd_migration_entry_wait(vma->vm_mm, pmd);
-			walk->action = ACTION_AGAIN;
-			return 0;
-		}
-		if (!pmd_present(pmd))
-			goto out;
-		etc.
-
-And similar for the PTE stuff below.
-
-This works because softleaf_from_pmd() (and pte) will give you a 'none' softleaf
-if the entry is not a softlaf entry. So you can unconditionally call it on a
-PMD.
-
->  			goto out;
-> +		}
->  		if (is_huge_zero_pmd(*pmd))
->  			goto out;
->  		folio = pmd_folio(*pmd);
-> @@ -383,8 +393,17 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
->
->  	for (pte = start_pte; addr != end; pte++, addr += PAGE_SIZE) {
->  		ptent = ptep_get(pte);
-> -		if (!pte_present(ptent))
-> +		if (!pte_present(ptent)) {
-> +			if (unlikely((vma->vm_flags & VM_LOCKED) &&
-> +			    !compaction_allow_unevictable() &&
-> +			    softleaf_is_migration(softleaf_from_pte(ptent)))) {
-> +				pte_unmap_unlock(start_pte, ptl);
-> +				migration_entry_wait(vma->vm_mm, pmd, addr);
-> +				walk->action = ACTION_AGAIN;
-> +				return 0;
-> +			}
->  			continue;
-> +		}
->  		folio = vm_normal_folio(vma, addr, ptent);
->  		if (!folio || folio_is_zone_device(folio))
->  			continue;
-> --
-> 2.43.0
->
-
-Thanks, Lorenzo
+Thanks
+Barry
 
