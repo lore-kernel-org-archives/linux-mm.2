@@ -4,95 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5785FC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 12:25:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4055C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 12:42:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46F486B009D; Tue,  7 Jul 2026 08:25:00 -0400 (EDT)
+	id 68A416B009D; Tue,  7 Jul 2026 08:42:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 446816B00A0; Tue,  7 Jul 2026 08:25:00 -0400 (EDT)
+	id 63A8C6B009E; Tue,  7 Jul 2026 08:42:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 360E56B00A1; Tue,  7 Jul 2026 08:25:00 -0400 (EDT)
+	id 550DA6B009F; Tue,  7 Jul 2026 08:42:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EE0EA6B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:24:59 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8509E168D58
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:24:59 +0000 (UTC)
-X-FDA: 84961899918.07.243E62C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DB3DD40002
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:24:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T6tmb7Sh;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 33E016B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:42:56 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B7B111A03E1
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:42:55 +0000 (UTC)
+X-FDA: 84961945110.29.BD9F619
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C9FEC80002
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:42:53 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RMFpvBiw;
+	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783427097;
+	s=arc-20220608; t=1783428173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NfZpOMpkaJDzLOKi3MjXRffgVPNSMGoyto8kV1jnWd8=;
-	b=MyE+95SuN2zeEEd+CXIrNNwfQr4dV4yl5UHEpiUb9AdTBEX2crtHyPMsvDFP1nJarDiWMI
-	Zm1IW8D7o5rRrGFnyV6g2c/YtJ1s4JJdd38RmpMATSZAIbeaj0khtpnYIYSxnz8vMgfC4f
-	tjq8opLZj6L5fWnK0GacUrrmp6DmTEE=
+	bh=8IqbW2OJCLuhVwTEUye5YebDvvSBz0huNf63qStwY4o=;
+	b=FSnDfN7iSMzc7DYEWWBriojG7IGJy2gdOjb9ghnD/ydxnzCMIyZQuxyvs9dqOq818xklAI
+	K1yEphpaSn4kbOEYtRMFNl5AMn5rrUcTYd2S3l6JY6iTtB2UNk3/u/Z9OUkzcBus52Liqw
+	VCWiBNeH95kYIii+x4Jih3z6zccXofg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T6tmb7Sh;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RMFpvBiw;
+	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783427097;
-	b=c33EgEv0mEd1KjCO7PmGW8nAtDrm6pbRxEsYXjnJkkWgjqGAbVIGAAvrlhpQfe4Zu2yISj
-	IB45n7OxmXo2nElskexb7po2sC7w9HnTtCNiO/7UVoJAoIOrqTuBpJsYJCMqrwtsZ4z+1j
-	yb5yOBuGcma+lNMe5WdF6Lx/XOSTGTs=
+	t=1783428173;
+	b=Mot8ZI+ge0xJBxVr2DtQuo3qNerTd2al8T6BxUAB0VzRysvOygvZ8oSkZj9n6p7dAP8yrQ
+	qvG5uh0eAEnKQ7Em+KB0HsdQWGbpMFTY2tzfcsf7hmEhuwNbW9+SFnP+rVwpBDUdRgK7Wn
+	XzA9+/OJL2+BzpzwFE59VuESXl//9ak=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5E96C601DE;
-	Tue,  7 Jul 2026 12:24:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F851F00A3A;
-	Tue,  7 Jul 2026 12:24:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BF377437D4
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:42:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65021F00AC4
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783427097;
-	bh=NfZpOMpkaJDzLOKi3MjXRffgVPNSMGoyto8kV1jnWd8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T6tmb7Shq5+cgN69zOoULFP7X9TcvzY8I59VD0foVDxtRg/4ABK52SR5rXSXTUvf7
-	 FGrSaIYQIlGLYK0xisZkr/jQQY03bpN2KjD7h26E1qL67liUSyDBS6rm5Kz1OpFmHS
-	 oHYcRiYa8g4bHcg/Mntj0elMmTu5xoCM37zMocd58szp3DuhvBZ1yCc8KvJDKDT5ZB
-	 58+bCxAVhKgi8SgDfqL7VhfmHwLc4ZaPjuB9rEggMJQmv1n6IStRBi/9dbEIlKxgwg
-	 YU7iY9LjUTyBRiJO7NrDLZ3AQQjQAlFjvQRSvhLmgl7n83NbYPJTVBFMGtQsjPKuZX
-	 cOFxKkMJzD7Gw==
-Date: Tue, 7 Jul 2026 13:24:46 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, kernel-team@meta.com
-Subject: Re: [PATCH 2/3] mm/pagewalk: let folio_walk_start() run under the
- per-VMA lock
-Message-ID: <akzv9FWH1peGukyp@lucifer>
-References: <20260625015053.2445008-1-riel@surriel.com>
- <20260625015053.2445008-3-riel@surriel.com>
- <ajzUCZSRU3h_UdjR@lucifer>
- <610d1c95a2f9131d5c018304f9a90afb33e8a032.camel@surriel.com>
+	s=k20260515; t=1783428172;
+	bh=8IqbW2OJCLuhVwTEUye5YebDvvSBz0huNf63qStwY4o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=RMFpvBiwSQPv6XLANZHH7BtONShiDUjyn0g+mjJBbViajpYwSWsvPQaadc+7CAABi
+	 k9r06UkbnEPefvhNvi0K9+tJU5R7JwJSv12fnqtA9PT1bbBIcTBC3tfsDigdo0vZwH
+	 CG8JMQOXU0ZZlYjozkkK68a2jvqvxcLi91VoGploD9xU7uBjMjBrXpE/+QXRMLU1vG
+	 purR8VFWXxfT83f04gkxW/LivoR6mSrnO0l3TKNN3EcrGwL8hLV5qwKbcGkrF3VaCG
+	 VScoDZZCKj+JOlaJrO9z2DJuO2uqb5cG3wdLbUbF3vmYqwsOJVhqW/duf3yRNFsR3v
+	 lwiuHfnVLuajg==
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e5c92c389so201919385a.3
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 05:42:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq/d1xiwg09SwvvtE/GVChzfXoWkNT5yqiNbkVwnI3/2ic3DPeUHl52IUJnG9AePRQaao/q9YHC/Q==@kvack.org
+X-Gm-Message-State: AOJu0YxUMjupLR1KQNoK5Pw068vq50XEtmzKQBZSw04gvsFhEYeE/Dtn
+	d3WfGIKYTrmihuQml+NAYXcyI46CoAZQzI9AgwwEiqYy+TsedhZoPPl3owQDwwyskUOW75iLf9X
+	7gyHtZZS8BOs65wy5Q/mSPsIKsARXzXg=
+X-Received: by 2002:a05:620a:1986:b0:915:9047:940b with SMTP id
+ af79cd13be357-92ebb4c8ed4mr622437885a.1.1783428171905; Tue, 07 Jul 2026
+ 05:42:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <610d1c95a2f9131d5c018304f9a90afb33e8a032.camel@surriel.com>
+References: <5790c4a4-d502-4180-82f5-47de5809a4fe@kernel.org>
+ <20260620081017.89085-1-baohua@kernel.org> <4aa8350e-712f-4380-b3bf-2ff06cf2a35d@kernel.org>
+ <CAGsJ_4xR0Ge707s8JAfd5Fw10+U+25_nuBGuVayx9qnxR+NnGQ@mail.gmail.com>
+ <c29f90c6-2075-43e8-8f0d-0d6718a0f124@kernel.org> <aj0u12N_GzGtQT6K@cmpxchg.org>
+ <3af41c23-2365-4ac1-b1b9-076b6ef7ae9e@kernel.org> <CAGsJ_4wXTpTS4RF=qPs0wvF3UosrOQ7s9-zdXpx4OKGEysf=VA@mail.gmail.com>
+ <aj5OEyV5WsVkwUWt@cmpxchg.org>
+In-Reply-To: <aj5OEyV5WsVkwUWt@cmpxchg.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 7 Jul 2026 20:42:38 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y9DDi2ctZk1m63mwqG=5XYHWBHYx8eRsXKcmJS6WuHwQ@mail.gmail.com>
+X-Gm-Features: AVVi8CdHlEciTY0UI46SD-jcTYQSLWSz_KWFcoIGgF7IiJ_6V3xd_3Dt5QVEW64
+Message-ID: <CAGsJ_4y9DDi2ctZk1m63mwqG=5XYHWBHYx8eRsXKcmJS6WuHwQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, axelrasmussen@google.com, 
+	baolin.wang@linux.alibaba.com, dev.jain@arm.com, kasong@tencent.com, 
+	lance.yang@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, ljs@kernel.org, npache@redhat.com, qi.zheng@linux.dev, 
+	ryan.roberts@arm.com, shakeel.butt@linux.dev, weixugc@google.com, 
+	yuanchu@google.com, zhaonanzhe@xiaomi.com, ziy@nvidia.com, 
+	Michal Hocko <mhocko@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Xueyuan Chen <xueyuan.chen21@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DB3DD40002
-X-Stat-Signature: irisggm7stk6zj9h8fourq5sjsfp3ndk
-X-HE-Tag: 1783427097-275945
-X-HE-Meta: U2FsdGVkX18zSxkb2Gu8XX6yRsiUHlCRmJ/5ngv8tmNJxivl5eBuZba3+OQROjRlKKIyHhZ0USUqUd75yGnx7O9U21uC4/4kKWNWnH4ux6R4sVY2OYp8Gry7Aj0rGfwydPoPNLj9s8ds8dLYWbW6bfdKTceYd235D+0+7ykG2aeo3wA4EWyAO1dkOSLB9NTx9hE1xKK63S8M62nAl2UsRaqdNDz6jNsVFJ0Q0CYHcLqFPNL2kMVBauM371DRliW4XSPyYLuCDCCOkzQFB3DgzhD6UCQu8fWV4tl5y3cy95AC2R+Xiiuih3n21YSnqJP8HD6ofeCiLU1wBxr6scshrKIOmoY7kwzCuHnt0hICkbsCuViscxSsqhA8AXVvlFCJgy73BLEX4bCUOrg7oEaYbSbP8ghvzcDh8Ll77B2CqlUWJmsNiG74bFbGx/mX7fq3i3uq33aTXhX3AG+WyW4AZqzcNBZw7HJ5Png2kvVuFmlREerNW2t7vaJb3cDHCTHq54EugCz5rnnx++Nd6eIsACdnhGyZkqxzZhY4tA2DK+s6b3b8y70BMBZnCG0zakjrDksrLaiK9NhmTIP5Q1uLTCB/oNmV7qJyUE7yIhtnSL6zOZxmgDrBA3IL86RCm4CEvqXj/7RyZHK18vN/XCfjaoTKHrxI7Zc7eI1fbIijeWHHURD6fMpSN8yQ3tesoIu8r76+6x9m2AlkBEaGiIb5uOlgyL0e4+7QU2dY+QEQYNRR4MY669r88+vIJBdaHzBtNacv5+2OszawT48KD9gdiSG6kUxdCU3Vf5yfKfWfYnutQdni6pVp7UW3vziU6zcm+VJO3K9nEK4wYU9qakYkieyL/l7UK97KHwc68cpZvqHSHU3CvOnRzvwIzn919yEGrctXdGPqci5IyC3H6sMzgR4elH8S0qfsr0OfmhUJQuzhkMtwvxJnm6S94fmHDPJYZlHzJLwv/cRestRCsbe
- DwSP8r4x
- bmJOrFxyZZ0iXnubI05tKNWBClFxsCdPxPXdrSWRuKJrzeDhtfLRrmVucMNSaEyc+3tLnag3/avaEDTYUWsd1uzqfhNfjReLgFz3Ex+ddCxRPd5vCwFDGCpxtmbXvNBePzAJQW8oGtw5b8TyUm5hdDKNBETyYvUCZEq/2p+X2VN+2H2WzV49GsnIEb5jhbA5dkpbp6tL+erOQDeqKjpkaqeD3JxgntmBlnr4yFUPCGh+OxcmATwgEq3oselV1HI0SRr/JBNaiwi7X1auigCq45MreQ/mBa+tK3n+kUj9MW04RyFZwnKiPvadOrQ3eGPk359YoAV62Sk3gdPb9rPYaObcpGFmgAyxOGk0pzit72ShfJ92qyS/3H5F3f1asCM/8HW/vxJuGdlXL+M0rZ1mrH3syeA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C9FEC80002
+X-Stat-Signature: gpkcxp8f5ajkidoa5eg16ycx61yw4wx5
+X-HE-Tag: 1783428173-706983
+X-HE-Meta: U2FsdGVkX18d9aBw66Pqt6MM6W9QG2ySxNakoA3O0rRqIUy2B+m+b0jSIIF1kA2W0afrtwl9K1jMSfPHl20DzKbDSEKOQ/6vbqFxB4MzRXYeFWLrnLDa1Xgmhl5MyQrOAXam9ULCGdwTpnBb+gXZnScou1f0QskYh3ZLm82pa83XxJ1ayHma+SBNJPp8/MCNx3aDLgvj7C2kRbeh/e2HbmQ3UJxL8zPrmD9b+/Cda2zQDhPS2F01IRMGfNqNr+fPUbLKBDWF4bgF0PhM67A7sQJSRwqIqGT8oHTrmoZonp4Sp3cFnU58iLjAl17iRMwfdIULcsm2PMFMmvKaNo85Cn/VuSOxYp96zCAzqLPsY4BRRyLE4EB840mzrx70/rjFg7wVCuyW0KjrP/bNmfeCtBpPudh/GiAajUR/DwWNKnTjtTbuesoezbZE1c/XCm2yACEq9HQFK73MXcpFiJv7UPglvvoECcXo41YgxQLQwYDHfFiMJ/LTJS0RXxbmcjExQHa2AmtboVZSF27JUGh5U6kLcSg4VLkxBKhtgKnza1F4PMuFRA/YTPhE1X9jNv3T90NXfNaxrCFKeeJTmW2wD7dZ2s5LDkrpHFHS5JOCqMy0CTczeIKSjSFGHVOmiWHPndHqbRWh6JVW3J44U0cXDeaoUJdg1SUAD/TQO6r97LUGURqaCqKByiV6+S17RErhKQdUNvObLVtRrEvz7L9YRq6uKhvi1mQw3hm8v7DxD2TdN6iquBh6SIFRAv5i4Ja2b0Y2aQMOgkxVkIh77Xwaa3v/AF+r61eUJPZhlovaKxtelBMN0H3+sAOU2+I3Vvqf5GBVhFy8BovnDwkj5guAhyG8nxLFN5SfGQ2lIqGQ5rfIlBWUpznLiR/efzc73+hrLz8XYU5YEERl2z9RvHQde7ay03G5oNb5dPnJCnzrbZenVMNRDCPXNDfcwfbUZ/fZ8Z7cozdsipjVEaPnW+K
+ m6Ox95lS
+ osVq7uI2N9143CovsCUHlEs8dCltcHaIBwRK1dY30p0IvqJvoUU5RvEg9dcW+y/YUsTj6lGLJutq+v0AmBU3l+/NNhDajQI3oOh8AWR3YJrrKTQ2p0qJBwMhmZwzqhLGTDqoi1RerrfBhsLxFTTk/qDfW/Fs00sgOQwoVLt7YOu/+eTqJoRZlBe+Jg449UuBdfdmDTGHjBJ1jAGoE4DY/VMN7fI/bn3BDCxgp66DgpR5g5USQ2CxAcrmpSzWJiMFKVLTZVPiF5Oplah7vAP0VuRzQ8FLq+AyJHXMIex6cKxdAriy+J5P0rssJz4qJWrsNSFMloDNpUQSNf+lYUwi+W4dTjOLZEvz2hiUihTPqPZnKBRtO6+/RLiQi2EMcGGDb/bN2+7uNhcOGjcqakOGE4MPAgmcuHfQrIS51
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,155 +113,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 07:20:22AM -0400, Rik van Riel wrote:
-> On Thu, 2026-06-25 at 08:34 +0100, Lorenzo Stoakes wrote:
-> > Rik, it really would have helped if you'd replied to review :)
-> >
-> > On Wed, Jun 24, 2026 at 09:50:52PM -0400, Rik van Riel wrote:
-> > > folio_walk_start() asserts the mmap lock is held.  For callers that
-> > > only
-> > > need to read a single, already-present page, the mmap lock is a
-> > > heavy and
-> > > often badly contended hammer.  Such a caller can instead hold the
-> > > per-VMA
-> > > lock, which keeps the VMA itself stable.
-> >
-> > <newline>
-> >
-> > > The per-VMA lock does not, however, keep the page tables walked
-> > > below that
-> > > VMA from being freed.  A concurrent munmap() or THP collapse of an
-> > > adjacent region in the same mm can free a shared upper-level table,
-> > > and
-> >
-> > Yeah I need to update the documentation on this at
-> > https://docs.kernel.org/mm/process_addrs.html it's more subtle than
-> > written
-> > there.
-
-Actually not so sure I do now :) I mean maybe I need to be explicit about
-the need for PTL's too. I guess 'other than the PTLs your page table walker
-will take' is kinda implicit there.
-
-> >
-> > Firstly you're wrong about munmap() - it acquires the VMA lock of the
-> > VMAs freed
-> > in the range and will only remove an upper level table if the entire
-> > range is
-> > spanned.
-> >
-> > And that's the only way higher level tables can be removed.
-> >
-> > PTE page tables can be removed via MADV_DONTNEED, but that a.
-> > acquires the VMA
-> > lock and b. frees the PTE page table under RCU.
-> >
-> > A THP collapse can happen concurrently, but PTEs are freed under RCU
-> > so you
-> > don't need to do this GUP fast imitating stuff.
-> >
-> > > THP collapse (collapse_huge_page() -> retract_page_tables()) frees
-> > > page
-> > > tables of VMAs whose lock it does not hold.  Page table freeing
-> >
-> > retract_page_tables() -> pte_free_defer() -> RCU
-> > try_collapse_pte_mapped_thp() -> pte_free_defer() -> RCU
+On Fri, Jun 26, 2026 at 6:02=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.org=
+> wrote:
 >
-> One issue here is that while we can safely read
-> the old page table under the RCU read lock, in
-> the middle of a THP collapse there is no guarantee
-> that the old page table points at the process's
-> current memory.
-
-See below.
-
+> On Fri, Jun 26, 2026 at 02:15:58PM +0800, Barry Song wrote:
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -5578,7 +5578,7 @@ int __init mem_cgroup_init(void)
+> >   *
+> >   * Returns 0 on success, -ENOMEM on failure.
+> >   */
+> > -int __mem_cgroup_try_charge_swap(struct folio *folio)
+> > +int __mem_cgroup_try_charge_swap(struct folio *folio, long *left_space=
+)
+> >  {
+> >         unsigned int nr_pages =3D folio_nr_pages(folio);
+> >         struct swap_cluster_info *ci;
+> > @@ -5611,6 +5611,10 @@ int __mem_cgroup_try_charge_swap(struct folio *f=
+olio)
+> >                 memcg_memory_event(memcg, MEMCG_SWAP_MAX);
+> >                 memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
+> >                 mem_cgroup_private_id_put(memcg, nr_pages);
+> > +               if (folio_test_large(folio))
+> > +                       *left_space =3D mem_cgroup_get_nr_swap_pages(me=
+mcg);
 >
-> Khugepaged could fix this in one of two ways:
-> - zap all readers with an IPI, and use that as
->   synchronization
-> - make sure the old page table's PTEs point at
->   the individual pages inside the new PMD
->
-> Right now khugepaged does the first.
+> It's a bit awkward to walk up the whole hierarchy again when we
+> already have the counter that failed. Please do something like this
+> (not tested!), then use page_counter_margin() against @counter:
 
-This is confusing too. Khugepaged _could_ fix this one of two ways, right now it
-_does_ the first?
+Thanks very much for your suggestion, Johannes! Sorry for the late
+reply. I've been quite busy recently, so I asked Xueyuan Chen (Cc'ed)
+to help send RFC v2, which will include your suggestion.
 
-You mean pmdp_get_lockless_sync() calls tlb_remove_table_sync_one()?
-
-But that's for GUP fast right, not folio_walk_start/end()?
-
->
-> Relying only on the RCU read lock to read the
-> page table could result in us seeing old page
-> table contents, that no longer point at the
-> current process memory.
->
-> Unless I'm missing something...
-
-I think so! Otherwise we'd already have very broken page table walkers
-right?
-
-So:
-
-pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
-			   unsigned long addr, spinlock_t **ptlp)
-{
-	spinlock_t *ptl;
-	pmd_t pmdval;
-	pte_t *pte;
-again:
-	pte = __pte_offset_map(pmd, addr, &pmdval);
-	if (unlikely(!pte))
-		return pte;
-	ptl = pte_lockptr(mm, &pmdval);
-	spin_lock(ptl);
-	if (likely(pmd_same(pmdval, pmdp_get_lockless(pmd)))) {
-		*ptlp = ptl;
-		return pte;
-	}
-	pte_unmap_unlock(pte, ptl);
-	goto again;
-}
-
-__pte_offset_map() takes the RCU lock, then locklessly retrieves a pointer
-to the PTE page table.
-
-As mentioned above, khugepaged retraction causing PTE page table freeing is
-also under RCU, so this is safe:
-
-	retract_page_tables() -> pte_free_defer() -> RCU
-	try_collapse_pte_mapped_thp() -> pte_free_defer() -> RCU
-
-And on page table retraction, importantly, the PMD entry is cleared _with
-the PTE PTL held_, e.g. in retract_page_tables():
-
-		ptl = pte_lockptr(mm, pmd);
-		if (ptl != pml)
-			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
-		...
-		if (likely(file_backed_vma_is_retractable(vma))) {
-			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
-			...
-		}
-
-		if (ptl != pml)
-			spin_unlock(ptl);
-
-For anon, we take the mmap write lock/VMA write lock anyway.
-
-And going back to pte_offset_map_lock() - we _recheck the PMD under the
-PTL_.
-
-So if the PMD was since cleared, we don't get anything stale. If it wasn't,
-then we hold the PTE PTL and exclude khugepaged from changing things under
-us.
-
-Thus folio_walk_start(), which holds the PTE PTL, is perfectly fine, and
-folio_walk_end() marks the point at which things are no longer safe (but
-then we're done with the folio).
-
-So again I don't think there's any problem here, actually.
-
-Thanks, Lorenzo
+Best Regards
+Barry
 
