@@ -4,118 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98312C44500
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F4F5C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:55:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 766386B009D; Tue,  7 Jul 2026 06:47:43 -0400 (EDT)
+	id 048CF6B009D; Tue,  7 Jul 2026 06:55:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7173A6B009E; Tue,  7 Jul 2026 06:47:43 -0400 (EDT)
+	id F3C666B009E; Tue,  7 Jul 2026 06:55:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62D156B009F; Tue,  7 Jul 2026 06:47:43 -0400 (EDT)
+	id E52B36B009F; Tue,  7 Jul 2026 06:55:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 359F66B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:47:43 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5BC41C7F4C
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:47:42 +0000 (UTC)
-X-FDA: 84961654764.29.7F7DA50
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1025F100007
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:47:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nAwcbqQZ;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id BF8A26B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:55:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45B261C7C4D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:55:53 +0000 (UTC)
+X-FDA: 84961675386.10.778E11C
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 70523100004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:55:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=NaogLiKa;
+	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783421261;
+	s=arc-20220608; t=1783421751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LLhzkk/JgHcYgAhLZKjLeN62LByel6fmISiRV1ITuB4=;
-	b=v8xx4pRTbffq1vOdhiTsFgDcA7WkZ2jdFMqEFBomYJ8NSr5Bax7vjcGRug0M4uB7FYFRjy
-	2QCFPIsw3faqi//pGoNjZmxYa0aRWVsPCb/qHQLyKgQU21/Px5uuGgcJjbNs8nmPQXFtnH
-	X22AMHzKsqhSKYfoJXRFBrS4XkOWwH4=
+	bh=qysopWPwsURO3z9WSrAVNVxTz4/XDs+oOwgZcDBRT9Q=;
+	b=AE0m0pAoLqxWlG12pVzVFCUGrKZiewzxJ8qdw3QQJt5Dx+2uYvIEG0MbRAzoYPFSEu6BFd
+	aauPcFdUn8DrWNmEd5yfXptgB/ut9KRd2sT5BZjV+fml+qmOJ0Rdiacdseyy4t1gYlP/ld
+	LYppqLLdCzPsW86+cpN57PwpAX4lvuM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nAwcbqQZ;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=NaogLiKa;
+	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783421261;
-	b=anzJesU7caXsowA2lzDXfOyqv/QHmT4220Pw2CVE2UP+cTJJ5OGSClvgG1WiF1kmNELJOF
-	EzZMG7/lFVYXs4/CaWeIrxapLXeKo/Ky4RHpvVGMDcnPEdlOOadCKPlgIcJcJuvVUv7CSY
-	Vk+pd10p96MHqpRhTGo8Nwn92BYMat0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4330C40715;
-	Tue,  7 Jul 2026 10:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA301F000E9;
-	Tue,  7 Jul 2026 10:47:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783421260;
-	bh=LLhzkk/JgHcYgAhLZKjLeN62LByel6fmISiRV1ITuB4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nAwcbqQZ6EYWFhU6Pa79F4DwZWj+s50w7KhSPUgAeSGSsvopOpj4c3CR6Dc4BvSKY
-	 UI/T4Y1V/RDDoyeFB8sXD2vSc8XMgX7PuHapXBY0cr7IWraSANQSAw1tuqycqvya7H
-	 EOLCy/nYmsu9fsBZZUMJw29VxKcXmmkS6wgUhpYDSoopqSIeazhcGwCvu+qGCZzZfm
-	 i6rrFcDrq00hFMpsTT5W6KK6td/K2YCAI1AB22h3luD//ahG1ub28FDnVRKZXh9KJy
-	 yczJHuo2utfhmEijYANtSxrq9T9w4QGeuL41lVe4jp1n6hobidMgbC6xXylCzlyKTK
-	 rSE3IBUcHgXTg==
-Date: Tue, 7 Jul 2026 11:47:16 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 29/30] tools/testing/vma: default VMA flag bits to 64-bit
-Message-ID: <akzZBrZC_ja-R-nJ@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <27cd07f6dd862d92410cf9db03f7c11e5f66854d.1782735110.git.ljs@kernel.org>
- <akZO3xI4Lt1iSbms@pedro-suse.lan>
+	t=1783421751;
+	b=JsxaHXLPPGREw4ETcnUdb6ceEozhHt7p55tUM6Ftcfwcz6HmStQLP3/hqPN5zxCwm46pFt
+	aIf19i4T8wpaCT24GNFuBqtJtxAko+GnIGTx0VfM7f0PXcrGa26WX0wwCXNZ8vB3wkVlH6
+	XujrRf9Dck+LJdI2TUY8EczC9y/hr/M=
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c999f162c9aso2600578a12.3
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 03:55:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1783421750; x=1784026550; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qysopWPwsURO3z9WSrAVNVxTz4/XDs+oOwgZcDBRT9Q=;
+        b=NaogLiKaBnQ2CAlZlSyWf5NcD/Eq3Bnef4QalbIrm9lZ7caRvoxgMvzpwLy6jZ/a6J
+         NSmIxBHY+Ctuay4F7CCVD4GwUtcLyHeo+ntfttT5mUhzVe2mpQqu1eXZ2WP3yk45fdTR
+         zjmKdZkatZWkH3MKHyifa+qQGswZLys/61svk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783421750; x=1784026550;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qysopWPwsURO3z9WSrAVNVxTz4/XDs+oOwgZcDBRT9Q=;
+        b=Cy5mUvUAuIW3q+nthiHLZutNe6XxMpkn0qMKfiqpl2r3XRTATD99L+R2ZaRrFnWcUg
+         p3DpTSkVZH2ujxfmXNmA/t9uTEUcyIKnvmZFBe3Vxq/OBPpmov9d8ISmxhd9i7ZJ0KLU
+         ZAUOvN4yxFYts1G+2jnkERv62zFO4JZGQRWVLFUizmwv5zMBXXdKNqq8JWr6vuZRHM8y
+         vpFWIdoualPjDOWSda4XkSNW3Dt+pZ0rpLwu3cHQ3mPqCo48faRQv6lPy/FMtA8aw2ij
+         BgRGzeEWOoz0tMNXLESaRgCBjHJB7Ol4NPEJe0OGTv/362RiBKweMxYZM5UWG17tJudH
+         0Yrg==
+X-Forwarded-Encrypted: i=1; AHgh+RokZitYzGxWJnsYLv1e9JHHop2O9gtwzo8SieI5DX0bht1HgmfHXRWcny5MpeG56YY6hG8TFZhgcQ==@kvack.org
+X-Gm-Message-State: AOJu0YwtMY+yrzX2VIgKERp8WbiwrRrJluYsWsuvcgeRayPRcVy+NBcA
+	lsZYanz9XwDLlk9r6GpXvJZdMCB4NMt9UxS575OwUTHQKWs1puhcxH21FmcUbnpM8pamWlBxbU1
+	uT2e7jg==
+X-Gm-Gg: AfdE7cliOyHcQJlD1nbxDVyDvaes1CvtIsSEn5dUbPsW80P9DdcSJ43dM9bZtjYFb/S
+	Ush1KIEicSjLt2Bqqwz1+3SMp20rHAsKD+zUqdbLb3V7GUgpkKHmYZm6ZP5ExV98a1wcqsDBCIq
+	Tl1l3M08JOU/08ulcsRqn5AKBRtDUMG7kRWTAzivTHyNL/FDUqkLq4RiMdiqG3Y9AMZhl7wYVle
+	DQmy+LMxAwJB4ia44BkSjFWZpkBgJzc8i+DJwu51zja8xOsSnduImQuLANDoT5AQgYSvk1nQrXe
+	29f6kZbdxi9p4tPwiakmzEYrPZGNvSs6Ya2j0XXpgPatEWF/InmNlufg0vGtIi7zXO7XTD3AjVs
+	15Q0OmeMFTpxznKDwsit+o9ilGBXtNw34Rf8vhMVbl10C00sL4AGSNQpBlbQMzS4bf3MyR+fP8a
+	tOAzXVkBNBtS8RFajw4T1A/tr+No2dHxz3miqbdHiZS6n9b9DdrLXphUJoi3jEWxo=
+X-Received: by 2002:a05:6a20:914a:b0:3c0:29c6:20ae with SMTP id adf61e73a8af0-3c08eda80c6mr5744473637.15.1783421750361;
+        Tue, 07 Jul 2026 03:55:50 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:d4f4:6328:49c0:b912])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5af6df87fsm781139a12.5.2026.07.07.03.55.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 03:55:49 -0700 (PDT)
+Date: Tue, 7 Jul 2026 19:55:46 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Hillf Danton <hdanton@sina.com>, Kairui Song <ryncsn@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 01/19] zram: sleepable entry locking
+Message-ID: <akza1qtgHm7zbjMW@google.com>
+References: <20250303022425.285971-1-senozhatsky@chromium.org>
+ <20250303022425.285971-2-senozhatsky@chromium.org>
+ <20260707064030.D843llKh@linutronix.de>
+ <aky05GBxo4VKGD58@google.com>
+ <20260707093024.DPG2lvt_@linutronix.de>
+ <akzJlY53m3XBg9Is@google.com>
+ <20260707100241.zaM2yrF5@linutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akZO3xI4Lt1iSbms@pedro-suse.lan>
+In-Reply-To: <20260707100241.zaM2yrF5@linutronix.de>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1025F100007
-X-Stat-Signature: j6p97jrcdifxpd7gqsxpjd1xzp6emy4r
-X-HE-Tag: 1783421260-246967
-X-HE-Meta: U2FsdGVkX1/9Rl0H0un0tLfAkOx1M4JPk9yhocRHvBcUwXHQGng0VQovjum5ZQJ6fmJFsTSRwk2y8jEcIRvJSUAZGxATwXOqax/r5HoIPrc/LIRYVqbCo6pSMpITg4QbYW9voSqBdAEFpa9wzC+r58pdCROmFjewkRwtcnL9pghVmSNj3o4W95HlZUBbIukwtFaKiW6vcbPxbHGo1lBBqPpxlMkvaulUtA293TfoT9okpLlBwyxoYEBS7HgqWyim80rORSlrBJjgPvYG2Sr1bzvE7fpPnNO71rZy1KC9iXqqHxI0Dya/KAB1U+EiNKMCuSDnxvT5xphHzxPiC79oqW2a7Fd5UTuDyNG8T3sHt4/lwELbdK9as7LWpFuSfw3s/BkitJyWpQTs/6jeS2tGBNNqOJyjz33f1bsYf7iFYIUtB2Ai+5530QJHKxwMzQI3QkODQFE+2aiFjMATv0Sg4Xg1ExSkMlCzCu+ghsluHHLtoz2YciUOMqM09gnypbW+qBfWoMo/5msuOlgEBAOGKRjbMPVvx8DjQSL32y/FHnvHCoOUawoZpCmhXN4ECTGOmMV+6iA7cVCNJu2BjWa+thTopcy7RlIGvA5YJ7dOyLWRwFgoJSq9rfZEPE/lzrRH2T9zD91ZFi3mD/bqSYwvrRynPNseAMOq0z17bhWjhoGZODnlUzzhzgPLtZ/bOeCwTl/l59t24LfyN9yzgZz7Q9+qgOeL9DCjer7HoNoM3ljLkdKY+VqE4ItiFLhRsNJ8/ZBps7WgP8hmnxnHKQlu3Ye9XS8Sj1u8SQDubxlphok8mX4oZ0jaM3gr0AiIiemTK1oLRQc4MoB2v7/uv71bgvHMOzsjg4UjPJ3Jx6/UxuR4Zo1p49ih9Bqt08MI+g4t+Tn7UepN4ZmouPJLcGGDmTwmlkQDpP9O4DYOjGNs0yWqu2oUbUKrGXOR8sRxU5Fpb80fNz9907bZLVMqVon
- GfUOHxQ0
- JINaszoyNXEO5z28Ta3CiDP3tgDDaDZAJFKQCU7slfdDbohyebS8Gv85amTRq/jNglgBP106Tta0Qp969TSj2tWhs+f/1blrLpVOo+ZG4XQsvj11vHYnxicUHOX8rjoRuOQ768uupeIWbOzJhsdxnTtE+H0NtTcxfMY+A4wo6yy5r5NOzePC9YwvoC14mrMLr028f6zyiyUF0zAymxcUNo9MbipJqxRdBL9+AmgL/T4bL5g+RY16ktk0Qpi4BRLAzJ+MAfaffP2l72VrA54wMQpiIudpK4J6qs6wk8YYftX+CKvK3HKNbyfNComY/N4BwpOqViMoXgLVgZtTDlURXM9UXYYfxe1lukMSq
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 70523100004
+X-Stat-Signature: r4ins5xge56oyn3hesrajji57jj765bw
+X-HE-Tag: 1783421751-55564
+X-HE-Meta: U2FsdGVkX19Ac10O8RgBj30Jd/enH8Z3T5r1v4JE/l5mMZEmq/dIQXBcrdvgHdmLtID4pDnfwavntuyCgXewEyxehtzL6f+usiZn49jEMUXU2HyjhBzZFg+vgNaIX2Va8fQ3IkeX3FKlyFib2z25iFnrvRJUOUoQSegYZZyTLmnMXsXw7YumLeEz/pR6kQLa7vqSwvC/Eyt14w/BY7mzc9VLecDs6DiRk8mQ40uGLXCmOB1ei09AAWcREVJt7wYgftUBf7Q2kWMVOpRRt8gJdp3Iq/TLGMpJG1UO1B93T43as4B43tK+wHaoHlUCIzfNdtO9ZoXvu7+XvW3JLHxV8eVVmrzd7aLsEh9BVOrhtGVKV0KaW3KV6KFL3QWDuyW+cDGgiknfCsrBSsqNTwKvi5kV8e4PAQGwN9TgnrJSPZI0uvMdFSVso2GDMco50jtY2fj+2l2nO4746usAac/g52PrkJngQvnm1scekYSaZZ4L3PfIbqk6epKo5EqaGoSbisA4Xk864ET63cJ+IdLZXsDRPV94EwsmZsezwEr3yFGL7F8T92i9vkpz0Hq9SFcxzf5Rx3tgEhsPUSmHb0wSdvGGT+38OWEN1jOeNNEmUr6g44G/tWqUlaFgDfIx0Wx86o4zXiAn8gm6e2zjPxgTtCn19OAeukHNibQaDcjtNXPLAH8camwhrgcgvX9UOfKkwnU3rGM2v+yGRXorVn9SRw/9pm6vevlG0JE/Y8F/nI3TYrGh8MNebcP3Jt7DErzhQVeqxJiiM3qb0sHbLQwb9XCNB/Ht0AhLGxUg7tKuntGmNXCVp7yKj2euJl1tT3CP4U670YrA7Uhb+P64J0adzQttrZ5EFURbPfA2nsGeaBn+oi1Le9NAv+SCdAladhG5NkYyoSX0NoRJPt8d2605ihnGOJakg37013x4HcAvTDE3KijCQ1e0qDCu4Z2sWrYATX96Z/b4UD9gUdU0kJM
+ KmE9IdXS
+ HwKwymDOOzFa/o3XR//DIKWngcu2GF3u8KgJ/JGCs5tQxRa+VCifrYhVUuyl5SqTFh84oMU5V9/Fky4cLdVhlfK0zpHgARA3iu5ek5ZlTVFA9OPk4SL+NGPiWQTT6+0TYr0HQhW24duhWSEzAbt5EK0GhplDKDhcwFXVHKGAikmW2drqzhUNIFERS5/1L62GQh9o+dLt9lJPUurK03y+iU/Qujat1ECxpkVdle21mOKc+8jOsvtF0icEiKbtiYlfL9GwdG3bboSx6wn+//KW4h4DLIcJVm/PgklQF/RUIt1OCWvMqZ221VYJZIdeNtYdHM9dIkh5Q8P4tjpmx4ynVOkbBpHtSj6AEQENTW/ybmrZB+bEpzEmkAQv2DER4F7aIuslU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,48 +122,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 12:44:21PM +0100, Pedro Falcato wrote:
-> On Mon, Jun 29, 2026 at 01:23:40PM +0100, Lorenzo Stoakes wrote:
-> > With all of the sanitisers turned on, setting the VMA flag bits depth to
-> > 128 by default results in overly long build times.
-> >
-> > Reduce this to 64 - we can always manipulate these later for testing of
-> > larger bitmaps as needed.
-> >
->
-> Hmm, what's the problem with the sanitizers? Shouldn't this just result in
-> slightly different codegen?
+On (26/07/07 12:02), Sebastian Andrzej Siewior wrote:
+[..]
+> If you have zram0 and zram1 and both have different lock chains which
+> could result in a deadlock from theoretical point of view but not in
+> reality because the zram0-swap never clash with zram1-ext4 then you
+> should have a dynamic key. That means add it struct zram and register
+> with lockdep_register_key() and assign with the lock as you did.
 
-I'm not sure but it results in vastly longer build times. It was a fun idea but
-it partly defeats the point of the VMA userland tests.
-
-Rather than spend too long investigating I'd rather we move to a sane default.
-
->
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> >  tools/testing/vma/Makefile | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/tools/testing/vma/Makefile b/tools/testing/vma/Makefile
-> > index e72b45dedda5..ef6cc558afe1 100644
-> > --- a/tools/testing/vma/Makefile
-> > +++ b/tools/testing/vma/Makefile
-> > @@ -10,7 +10,7 @@ OFILES = $(SHARED_OFILES) main.o shared.o maple-shim.o
-> >  TARGETS = vma
-> >
-> >  # These can be varied to test different sizes.
-> > -CFLAGS += -DNUM_VMA_FLAG_BITS=128 -DNUM_MM_FLAG_BITS=128
-> > +CFLAGS += -DNUM_VMA_FLAG_BITS=64 -DNUM_MM_FLAG_BITS=64
-> >
-> >  main.o: main.c shared.c shared.h vma_internal.h tests/merge.c tests/mmap.c tests/vma.c ../../../mm/vma.c ../../../mm/vma_init.c ../../../mm/vma_exec.c ../../../mm/vma.h include/custom.h include/dup.h include/stubs.h
-> >
-> > --
-> > 2.54.0
-> >
->
-> --
-> Pedro
-
-Thanks, Lorenzo
+Sounds good.  Do you have time to send a patch or do you prefer me to
+cook one (giving you the credit)?
 
