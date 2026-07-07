@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2ADBC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 02:42:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51C3DC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 02:47:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F5836B00A3; Mon,  6 Jul 2026 22:42:24 -0400 (EDT)
+	id 333426B009F; Mon,  6 Jul 2026 22:47:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CC646B00A4; Mon,  6 Jul 2026 22:42:24 -0400 (EDT)
+	id 30A536B00A0; Mon,  6 Jul 2026 22:47:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80A686B00A5; Mon,  6 Jul 2026 22:42:24 -0400 (EDT)
+	id 247A76B00A1; Mon,  6 Jul 2026 22:47:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 549F16B00A3
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:42:24 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF5A51401F1
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:42:23 +0000 (UTC)
-X-FDA: 84960431766.29.470CC2B
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 14A0D1C0002
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:42:20 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ENFRIItb;
-	spf=pass (imf20.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id DE0E16B009F
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:47:49 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 685D914029F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:47:49 +0000 (UTC)
+X-FDA: 84960445458.11.8FBBAB8
+Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [118.143.206.90])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3BBEC1C0003
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:47:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of machao26@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=machao26@xiaomi.com;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783392467;
+	b=LcL3NNxUV7AdAcynpcq6wmNCDVAURS6MJAr8ieguoug7uKEi0LU/MiwPsannUh0TCW5OwP
+	MsuMcxaVT+EU/BZ93YCE+tn8cVo5XrJH6cENlnEaeDi1dLZeVgrcAcyKayNnEOfqm3PbWE
+	m54RT6adA0WXHVS0A4t15I4EVP+IoUQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of machao26@xiaomi.com designates 118.143.206.90 as permitted sender) smtp.mailfrom=machao26@xiaomi.com;
+	dmarc=pass (policy=quarantine) header.from=xiaomi.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783392142;
+	s=arc-20220608; t=1783392467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QHzU3ct+4jvkw954wX1fuSd83oPCWlFHer4z3d/39Bo=;
-	b=VGJ4mg30OZI8qAbR+rYabVWdC3srHr/ygzWVJsbqJLHD5LFMDTytnMpn+vPYmrz9F7I9Z+
-	zbMcwUhzxTZaJkolqEdKdFqAD8ltZLMlpahcECUXE8CKDV3+eDEFiLyvIuFS9mVL124Zki
-	HHsxqGnUk6fTrYfL7BXqRYBOoazHoFs=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ENFRIItb;
-	spf=pass (imf20.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783392142;
-	b=fhpGRxshm5GEJu3eIAk8vHvXigFl8qii0nnKdxj7AuFtcpNOfOMH7aFN1mo1fP9QluMMV7
-	iP2VdqoSP4hNmJbvKrHwAgi5a4PFPgUkxL+AmoW/IwbU2Z4qbZ19iCCO4BV+gtpSh5SP+L
-	N0AWGXVwXK9mA4rIGw6XX0HEPEslHeA=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=QHzU3ct+4jvkw954wX1fuSd83oPCWlFHer4z3d/39Bo=;
-	b=ENFRIItb2F/FlVI7RJ+1OuW5ULJ7gPfCK6qW5TYjO3EKw49V27wdaITAzoTQ1PpAgizXshQMo
-	2p0b5cU2AkEhZCfY4wMIURRCVU/8aZew+KX6qeT+/p+sOMMoopwYj/K3IGZxjJOTe+A1Cg8vClN
-	0Jwit/ZqSSmIOoQ/6mULX7w=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4gvQJ02s2Hz1K96m;
-	Tue,  7 Jul 2026 10:33:04 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 661D04048B;
-	Tue,  7 Jul 2026 10:42:16 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 7 Jul
- 2026 10:42:15 +0800
-Message-ID: <3aa50eea-ad23-4b19-9b31-a111dd5efb71@huawei.com>
-Date: Tue, 7 Jul 2026 10:42:14 +0800
+	 in-reply-to:in-reply-to:references:references;
+	bh=8g6hfiuUrHYj45/NWVW48yJie+FBOMKbVbGTWrRUur4=;
+	b=uSaodq/NN1hO+wq++crjGC16Di9z00wKX7LasCI4vr6gJjKpVzTDs99NMx34JYC5OYj5cb
+	NFf5gYTyHKsmCTNMqY/wQnSVvmWpMh3ne1atux/u1Efxm1ZYBNwaVUV5HYNQnWmdhnzqHD
+	CcW6cyELYqDDCuG5jzzU2kbgnt61xXM=
+X-CSE-ConnectionGUID: +MvWi1A8TNKMbKjmX6TYCw==
+X-CSE-MsgGUID: mDAC0oK7RvCKK9NcTfJWbg==
+X-IronPort-AV: E=Sophos;i="6.25,151,1779120000"; 
+   d="scan'208";a="155188619"
+From: =?utf-8?B?6ams6LaF?= <machao26@xiaomi.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, Kairui Song
+	<ryncsn@gmail.com>
+CC: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"hughd@google.com" <hughd@google.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "baohua@kernel.org" <baohua@kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, =?utf-8?B?55Sw5a2d5paM?=
+	<tianxiaobin@xiaomi.com>, =?utf-8?B?5L+e5Lic5paM?= <yudongbin@xiaomi.com>,
+	=?utf-8?B?5p2O6bmP56iL?= <xiaoyaoli@xiaomi.com>
+Subject: =?utf-8?B?5Zue5aSNOiBbRXh0ZXJuYWwgTWFpbF1SZTogW1BBVENIIDYuMTgueV0gbW06?=
+ =?utf-8?B?IHNobWVtOiBmaXggcG90ZW50aWFsIGxpdmVsb2NrIGlzc3VlIGZvciBzaG1l?=
+ =?utf-8?Q?m_direct_swapin?=
+Thread-Topic: [External Mail]Re: [PATCH 6.18.y] mm: shmem: fix potential
+ livelock issue for shmem direct swapin
+Thread-Index: AQHdDQy4jsGVhuEAD0KP7fSRFNOkF7Zf4CGAgAFtsfA=
+Date: Tue, 7 Jul 2026 02:47:42 +0000
+Message-ID: <1ac8eb5743e244f58efa28ea46aeb4d0@xiaomi.com>
+References: <173f3fd983d735155d47e9e39d27f0c2d62a7c31.1783307463.git.baolin.wang@linux.alibaba.com>
+ <CAMgjq7AQcyypJ-VhJ_CxY6fdEph64fxjOzzYU-=EkMrHemkpzA@mail.gmail.com>
+ <8ef0b72e-a0e8-4913-8d30-519335305260@linux.alibaba.com>
+In-Reply-To: <8ef0b72e-a0e8-4913-8d30-519335305260@linux.alibaba.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.237.88.13]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/proc/task_mmu: count KSM-placed zero pages in smaps
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<liam@infradead.org>, <ljs@kernel.org>, <vbabka@kernel.org>,
-	<jannh@google.com>, <pfalcato@suse.de>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <linux-mm@kvack.org>,
-	<linux-fsdevel@vger.kernel.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20260706121323.1149847-1-tujinjiang@huawei.com>
- <6ef49a9f-af0c-4bce-8402-16926424ea7a@kernel.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <6ef49a9f-af0c-4bce-8402-16926424ea7a@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 14A0D1C0002
-X-Stat-Signature: t83dp8y1uaswjsimmzk1nzysrni1r7gf
-X-HE-Tag: 1783392140-874168
-X-HE-Meta: U2FsdGVkX1/n6nouxClb0VK6rXbxaxDx7QD5NYPJyCXCWLDlrS8DYDfuE6SmkPj/XyV19LyM7F6qHAgOpxC4uZ0wqX+HFsZJjFVSC/bgl16dDk7sdoWHmFbolmkBW5Y7E7P0THCp5sa7dDUA0V8WV/ZCiUVnEJMbdVJhYN08nCN3AQrIxVeeeGXNF6rM2G+B0FRa5eGISBJaogF6nP3wSrEhu6gsldBs0sEl5laoHnqvkEK0ka/wEPRaGYrxlDnOGMvRC7Dn0GW9xCmputDUfm0QRrMfIqr7pef51w/vHw5GY8y9YgOWWS6FTiwNWye1Vd/16ge1NEu7gUW/3YGkZfY8HqJ6UTK1+FcYDggyzBXPIj9kZpmApzzjpfwg5/a9j8W7YFWZFE0ohmlEM9pYagFANvuE4aBHw0ispLre5556W2L/V/T2xeTIqIRdo4X4g/nwnWunseTU6mf+PDwzS0C3JYq7JKlm0fhhDatMFQL/1tp+9Tb3YzCIiLUfIWXjl4/AW+yQGpVLTgr0zYJ5XrRk2TvnssbDAWYtBO6aff94sCbnyOAyxT4IBiGaOYsQ0qYXRjFoKLdKugyyKqk3tfJutSzTL0bAxT4eKn9FXfBoZG2nHDvyY16nw+bn13kGZPOPxPUrowVAsjmY2/HBZuhu0bcXa/mBJM44fk6j5C+cFTf/0ZKAr6MUrGpFaKGuHCv1ngFKEK71PkNuzF5Wz0VfEeBjWxAwCfacuoQMnmozMd7vsBoCoRfE7YZ1P0HiYTVZc6xTQuCOMr3VYNJkw6DRg20vnZad5J4oKKO2PhwLpExKsDVoTGwYGQIQcxy7s43+jg4MYoZ1qB56M/WEbOSU3iX9cyvPTOmu8UdT09LrW1tS9bHshaixRc+e9qO5yI1gicDaM6Uqfb1qxkbCMdmpQz9ORgDfWvN87BQ69YO1UznzcMEa41vkuKnvYN1Rnqfgak7rgy1MsPhZTt1
- SjMVONsP
- 4fkEdX2IOpP4YpW0wmjIk8zcH2KG/bqj41qiVQX3AR1iRg0tuXHWyNy+6ngBH0VA0tmfxelcEjbgUdTK9AuRaB0fItZXY4ikHDhDvY/vJzUgNcgbFbdEddlV1q3v+QiZHUfzC9Vv4plt9zYnP4OL/CRt8u2HUETiYPffJSwsq/s01ZyFRxQmTKcf5hSaPtkqzmYWlcybuabARwTW6qx4lT7vVc8V6TL9Nfd2oyEHr7w7aEsdxky50YwMdec7x7RfRekWUH2WBPguOdUFBX3hboC2Meim0srUq6cKv1mw/1YYjwlhol4eXAbkgiJXxyuFVZhJHWMVTrHdeBqO3NF8g3poiTjlcShHJrj2fLlwy/dwhrxdbn3aEDHxdWOic3tr/RmhzjG+v7LPU7fs=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3BBEC1C0003
+X-Stat-Signature: 34x5ifqffeu8nsg84ata46qtp4bk1bkx
+X-HE-Tag: 1783392465-449365
+X-HE-Meta: U2FsdGVkX1/LEbTvez0mGt3JNYxfXGe2bu4Z9pSJLzvJvTBz4ITV5kt9NEexB/zGh6FQT4W7yAfSuFkyqcpMr8v7y0TYjGKL6O0yAiM2evLtc6de11ixn/BDqv+N2QP0XzkKqwoUqcBM8+WazyGBGLC3i9Ol4MW+vOg+Ae+zOz3Xq1qb85nrjGFGOEfYMGVUyahjSssks413xQ+K9oCI2ZPQsrMjW+2sDmQ898Azuq2rG6v6H+msWieKIOqiem1UvjT0vUIwgeCmFJchOhYX/8Uhhs5xsakC+H3znAo1F643opbRFbqAh5NXA6mYRcV1IoPwAjw7BcoAXVmhbqTorf5MJW+V4BHcpLdu0YgoWpNv8ZbuEdooR3qJ3lgZ3Bw7ZfLb29ctsGMxeQuewbk8A1onRPsOwEXIuVTR4TXx+2ig6AYd6tdVUJbt51mQe32FkfwLQJuwhBEwnAqVmp/5Y4OMQG66ySNipUsbeWoXWF3MnoRiSt9OrlU2w/FFP+lycWGl9odtUO/267ogZNooM+kL+3PSwaQcbSW/0ErTwtvYGTdP01jNQ3VIAzmFkmSZzhgf1Q1dl4wJs+cuWQ0K/BuOHvdGD8T+ZK9y6edZ/jvHyv8QVltmORz1BsKUjMB5+0yFHOdxRwjfFeofSlIH2m2w2zyVvFZuhT+ZS0V7TU5c9cJFVsSKZ9Q10YXebtJrezffYVFBSEmoXeybLU8UlJbQ0yZNkB9L7Lrwdltgl2jFvwzGTXuIfLK02zPE+yZon/5bOxG4G953nSF4PIenCPsn1LFyAKJn+iUtlQsE5tzidQ2xLcAD9uqVsplPuexKUEHRtg9RzQgopaXiokfthNFM6dzpCpLLMf+ZgK6SKFI6Svju2Zsw9JhfJJtF7RcdXrFDVoDr73HXiCZ0ieTyD8stcjInc2p/tiDO0ZJcApVa8Xcyle/PRwzKlhdYT7/9V0cx0qZPfWU1w5hU2oL
+ 2c1SwWeo
+ tO8k2x/KSFE+251AV575EvV1Bthv7+pF0h3WxJp4+iEA3k3K3N+kETrTnj09Ytx3gad0wmFW2+/6Xc6n/UhAlBlk3Uw0mD1oz2lGtBNv4oMqlY2qWLojcVhz/dcQENe6HgWzdb99BujHBxpxXhKkleZQU7U/MTCcnWD3CbaRy1qGhLsw9R65j2wkJQh10C5QxEA4ZglPJ5sP/Pj/jrTtj33rKlZlVZCW3tkTuUxwNfC7zr/E4EB+jQsjpXMMqlNg4OaHKA1YaFVh3kaS8E8T7is8ZGGwXM31ZAtoy7YL28lf+LVfjRPwWhL8FL30F3S61PTBNgF8qHEdjv7by12YsG+q+9CJmGeViCTEnPEb2kO5vuH6+cyU69XFnsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,33 +98,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2026/7/6 21:40, David Hildenbrand (Arm) 写道:
-> On 7/6/26 14:13, Jinjiang Tu wrote:
->> When KSM deduplicates a page to the kernel zero page (i.e. when
->> /sys/kernel/mm/ksm/use_zero_pages=1), it places a zero PTE with the dirty
->> bit set. vm_normal_page() returns NULL for such PTEs, so smaps_pte_entry()
->> bails out before reaching smaps_account() and these pages are never counted
->> into mss->ksm. As a result /proc/<pid>/smaps and smaps_rollup report a KSM
->> value of 0 even though the region is fully merged.
->>
->> Count KSM-placed zero pages directly in smaps_pte_entry() using
->> is_ksm_zero_pte().
-> Hm.
->
-> We do expose "ksm_zero_pages" in /proc/<pid>/ksm_stat for calculating the KSM
-> profit.
->
-> Why would we want to expose it here as KSM pages?
-
-I wasanalyzing the KSM profit of a process comes from which VMAs. However, 
-smaps does not include the savings from ksm_zero_pages, make me fail to 
-analyze.
-
-> An application will notice the difference between "zeropage enabled vs.
-> disabled" either way because we'll also not account zerpages towards e.g.,
-> "Anonymous".
->
-> So faking that something consumes memory when it actually doesn't consume memory
-> is wrong?
+PiBPbiA3LzYvMjYgMTo1OSBQTSwgS2FpcnVpIFNvbmcgd3JvdGU6DQo+PiBPbiBNb24sIEp1bCA2
+LCAyMDI2IGF0IDExOjI14oCvQU0gQmFvbGluIFdhbmcNCj4+IDxiYW9saW4ud2FuZ0BsaW51eC5h
+bGliYWJhLmNvbT4gd3JvdGU6DQo+Pj4NCj4+PiBXaGVuIHNraXBwaW5nIHN3YXBjYWNoZSBmb3Ig
+c3luY2hyb25vdXMgSU8gc3dhcCBkZXZpY2VzLA0KPj4+IHN3YXBjYWNoZV9wcmVwYXJlKCkgaXMg
+dXNlZCB0byBwcmV2ZW50IHBhcmFsbGVsIHN3YXBpbiBmcm9tIHByb2NlZWRpbmcgd2l0aCB0aGUg
+c3dhcCBjYWNoZSBmbGFnLg0KPj4+IEhvd2V2ZXIsIG9uIFBSRUVNUFQga2VybmVscyB0aGlzIGNh
+biBsZWFkIHRvIGEgbGl2ZWxvY2ssIGFzIHJlcG9ydGVkIGJ5IENoYW9bMV06DQo+Pj4NCj4+PiBU
+aHJlYWQgQSBzdGFydHMgZGlyZWN0IHN3YXBpbiBvZiBhIHNobWVtIGZvbGlvIGFuZCBjYWxscw0K
+Pj4+IHN3YXBjYWNoZV9wcmVwYXJlKCkgdG8gc2V0IFNXQVBfSEFTX0NBQ0hFLiBJdCBtYXkgdGhl
+biBiZSBwcmVlbXB0ZWQgaW5zaWRlIHdvcmtpbmdzZXRfcmVmYXVsdCgpLg0KPj4+IE1lYW53aGls
+ZSwgYSBoaWdoZXIgcHJpb3JpdHkgdGhyZWFkIEIgYWxzbyBhdHRlbXB0cyBkaXJlY3Qgc3dhcGlu
+IG9mDQo+Pj4gdGhlIHNhbWUgc2htZW0gc3dhcCBlbnRyeS4gU2luY2Ugc3dhcGNhY2hlX3ByZXBh
+cmUoKSBhbHJlYWR5IG1hcmtzDQo+Pj4gdGhlIGVudHJ5LCB0aHJlYWQgQiByZXBlYXRlZGx5IGdl
+dHMgLUVFWElTVCBhbmQgYnVzeS1sb29wcyB3YWl0aW5nDQo+Pj4gZm9yIHRocmVhZCBBIHRvIGZp
+bmlzaC4gQnV0IGFzIHRocmVhZCBCIHJ1bnMgYXQgaGlnaGVyIHByaW9yaXR5LA0KPj4+IHRocmVh
+ZCBBIGNhbm5vdCBwcmVlbXB0IGl0LCByZXN1bHRpbmcgaW4gc3RhcnZhdGlvbiBhbmQgYSBsaXZl
+bG9jay4NCj4+Pg0KPj4+IEZpeCBpdCBieSB5aWVsZGluZyB0aGUgQ1BVIHdpdGggc2NoZWR1bGVf
+dGltZW91dF91bmludGVycnVwdGlibGUoMSkNCj4+PiB3aGVuDQo+Pj4gc3dhcGNhY2hlX3ByZXBh
+cmUoKSBmYWlscywgZm9sbG93aW5nIHRoZSBzYW1lIGFwcHJvYWNoIHVzZWQgaW4NCj4+PiBjb21t
+aXRzIDAyOWM0NjI4YjJlYiAoIm1tOiBzd2FwOiBnZXQgcmlkIG9mIGxpdmVsb2NrIGluIHN3YXBp
+bg0KPj4+IHJlYWRhaGVhZCIpIGFuZA0KPj4+IDEzZGRhZjI2YmUzMiAoIm1tL3N3YXA6IGZpeCBy
+YWNlIHdoZW4gc2tpcHBpbmcgc3dhcGNhY2hlIikuDQo+Pj4NCj4+PiBOb3RlIHRoYXQgbWFpbmxp
+bmUgZG9lcyBub3QgaGF2ZSB0aGlzIHBvdGVudGlhbCBpc3N1ZSwgd2hpY2ggaGFzDQo+Pj4gYWxy
+ZWFkeSBiZWVuIHJlc29sdmVkIGJ5IEthaXJ1aSdzIHN3YXAgcmVmYWN0b3Jpbmcgd29ya1syXS4N
+Cj4+Pg0KPj4+IFsxXQ0KPj4+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC83MDBhMmNiZjkw
+YTI0ODRmOTc5YWFjODU4ZjA4ZjVkNEB4aWFvbWkuYw0KPj4+IG9tLyBbMl0NCj4+PiBodHRwczov
+L2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA1MTctc3dhcC10YWJsZS1wNC12NS0wLTg4YWU0M2Uw
+NjRjN0ANCj4+PiB0ZW5jZW50LmNvbS8NCj4+PiBGaXhlczogMWRkNDRjMGFmNGZhICgibW06IHNo
+bWVtOiBza2lwIHN3YXBjYWNoZSBmb3Igc3dhcGluIG9mDQo+Pj4gc3luY2hyb25vdXMgc3dhcCBk
+ZXZpY2UiKQ0KPj4+IFJlcG9ydGVkLWJ5OiBNYSBDaGFvIDxtYWNoYW8yNkB4aWFvbWkuY29tPg0K
+Pj4+IENsb3NlczoNCj4+PiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvNzAwYTJjYmY5MGEy
+NDg0Zjk3OWFhYzg1OGYwOGY1ZDRAeGlhb21pLmMNCj4+PiBvbS8NCj4+PiBTaWduZWQtb2ZmLWJ5
+OiBCYW9saW4gV2FuZyA8YmFvbGluLndhbmdAbGludXguYWxpYmFiYS5jb20+DQo+Pj4gLS0tDQo+
+Pj4gSGkgQ2hhbywgY291bGQgeW91IHRyeSB0aGlzIHBhdGNoIHRvIGNoZWNrIGlmIGl0IGZpeGVz
+IHlvdXIgaXNzdWU/IFRoYW5rcy4NCj4+PiAtLS0NCj4+PiAgIG1tL3NobWVtLmMgfCAyICsrDQo+
+Pj4gICAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspDQo+Pj4NCj4+PiBkaWZmIC0tZ2l0
+IGEvbW0vc2htZW0uYyBiL21tL3NobWVtLmMNCj4+PiBpbmRleCA5NGM1YjBkNzhhYzMuLmQ0Y2I1
+N2IzYjBlZiAxMDA2NDQNCj4+PiAtLS0gYS9tbS9zaG1lbS5jDQo+Pj4gKysrIGIvbW0vc2htZW0u
+Yw0KPj4+IEBAIC0yMDY2LDYgKzIwNjYsOCBAQCBzdGF0aWMgc3RydWN0IGZvbGlvICpzaG1lbV9z
+d2FwX2FsbG9jX2ZvbGlvKHN0cnVjdCBpbm9kZSAqaW5vZGUsDQo+Pj4gICAgICAgICAgaWYgKHN3
+YXBjYWNoZV9wcmVwYXJlKGVudHJ5LCBucl9wYWdlcykpIHsNCj4+PiAgICAgICAgICAgICAgICAg
+IGZvbGlvX3B1dChuZXcpOw0KPj4+ICAgICAgICAgICAgICAgICAgbmV3ID0gRVJSX1BUUigtRUVY
+SVNUKTsNCj4+PiArICAgICAgICAgICAgICAgLyogUmVsYXggYSBiaXQgdG8gcHJldmVudCByYXBp
+ZCByZXBlYXRlZCBwYWdlIGZhdWx0cyAqLw0KPj4+ICsgICAgICAgICAgICAgICBzY2hlZHVsZV90
+aW1lb3V0X3VuaW50ZXJydXB0aWJsZSgxKTsNCj4+PiAgICAgICAgICAgICAgICAgIC8qIFRyeSBz
+bWFsbGVyIGZvbGlvIHRvIGF2b2lkIGNhY2hlIGNvbmZsaWN0ICovDQo+Pj4gICAgICAgICAgICAg
+ICAgICBnb3RvIGZhbGxiYWNrOw0KPj4+ICAgICAgICAgIH0NCj4+PiAtLQ0KPj4+IDIuNDcuMw0K
+Pj4+DQo+Pg0KPj4gVGhhbmtzISBUaGF0J3MgbXVjaCBtb3JlIHNpbXBsZXIgdGhhbiBJIGV4cGVj
+dGVkLiBEbyB3ZSBuZWVkIGEgd2FrZXVwDQo+PiBxdWV1ZSBsaWtlIHRoZSBvbmUgaW4gY29tbWl0
+IDAxNjI2YTE4MjMwMjQ/IFBlcmhhcHMgdGhlIHJlcG9ydGVyIGNhbg0KPj4gaGVscCBjb25maXJt
+IGFuZCB0ZXN0PyBJIHBlcnNvbmFsbHkgcHJlZmVyIHRvIGtlZXAgaXQgc2ltcGxlIGlmIHNobWVt
+DQo+PiB1c2VycyBhcmVuJ3QgYXMgc2Vuc2l0aXZlIGFzIGFub24gdXNlcnMuDQo+DQo+IEkgYWdy
+ZWUuIEknZCBsaWtlIHRvIGtlZXAgdGhlIGJ1Z2ZpeCBhcyBzaW1wbGUgYXMgcG9zc2libGUsIGlm
+IHRoZSByZXBvcnRlcidzIHNjZW5hcmlvIGlzbid0IGxhdGVuY3ktc2Vuc2l0aXZlLg0KDQpUaGFu
+a3MgZm9yIHlvdXIgYW5hbHlzaXMgYW5kIHRoZSBwcm92aWRlZCBmaXggcGF0Y2guIEkgd2lsbCB0
+ZXN0IGFuZCB2ZXJpZnkgaXQuIEJ5IHRoZSB3YXksIHdoZW4gaXMgdGhlIGZpeCBwYXRjaCBleHBl
+Y3RlZCB0byBiZSBtZXJnZWQgaW50byB0aGUga2VybmVsPw0KIy8qKioqKirmnKzpgq7ku7blj4rl
+hbbpmYTku7blkKvmnInlsI/nsbPlhazlj7jnmoTkv53lr4bkv6Hmga/vvIzku4XpmZDkuo7lj5Hp
+gIHnu5nkuIrpnaLlnLDlnYDkuK3liJflh7rnmoTkuKrkurrmiJbnvqTnu4TjgILnpoHmraLku7vk
+vZXlhbbku5bkurrku6Xku7vkvZXlvaLlvI/kvb/nlKjvvIjljIXmi6zkvYbkuI3pmZDkuo7lhajp
+g6jmiJbpg6jliIblnLDms4TpnLLjgIHlpI3liLbjgIHmiJbmlaPlj5HvvInmnKzpgq7ku7bkuK3n
+moTkv6Hmga/jgILlpoLmnpzmgqjplJnmlLbkuobmnKzpgq7ku7bvvIzor7fmgqjnq4vljbPnlLXo
+r53miJbpgq7ku7bpgJrnn6Xlj5Hku7bkurrlubbliKDpmaTmnKzpgq7ku7bvvIEgVGhpcyBlLW1h
+aWwgYW5kIGl0cyBhdHRhY2htZW50cyBjb250YWluIGNvbmZpZGVudGlhbCBpbmZvcm1hdGlvbiBm
+cm9tIFhJQU9NSSwgd2hpY2ggaXMgaW50ZW5kZWQgb25seSBmb3IgdGhlIHBlcnNvbiBvciBlbnRp
+dHkgd2hvc2UgYWRkcmVzcyBpcyBsaXN0ZWQgYWJvdmUuIEFueSB1c2Ugb2YgdGhlIGluZm9ybWF0
+aW9uIGNvbnRhaW5lZCBoZXJlaW4gaW4gYW55IHdheSAoaW5jbHVkaW5nLCBidXQgbm90IGxpbWl0
+ZWQgdG8sIHRvdGFsIG9yIHBhcnRpYWwgZGlzY2xvc3VyZSwgcmVwcm9kdWN0aW9uLCBvciBkaXNz
+ZW1pbmF0aW9uKSBieSBwZXJzb25zIG90aGVyIHRoYW4gdGhlIGludGVuZGVkIHJlY2lwaWVudChz
+KSBpcyBwcm9oaWJpdGVkLiBJZiB5b3UgcmVjZWl2ZSB0aGlzIGUtbWFpbCBpbiBlcnJvciwgcGxl
+YXNlIG5vdGlmeSB0aGUgc2VuZGVyIGJ5IHBob25lIG9yIGVtYWlsIGltbWVkaWF0ZWx5IGFuZCBk
+ZWxldGUgaXQhKioqKioqLyMNCg==
 
