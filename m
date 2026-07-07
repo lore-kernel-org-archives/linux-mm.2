@@ -4,61 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D87EC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:40:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34DADC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:41:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7016E6B00AE; Tue,  7 Jul 2026 02:40:28 -0400 (EDT)
+	id BBC106B00AC; Tue,  7 Jul 2026 02:40:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 640FB6B00B0; Tue,  7 Jul 2026 02:40:28 -0400 (EDT)
+	id B6CC26B00B0; Tue,  7 Jul 2026 02:40:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CD326B00B1; Tue,  7 Jul 2026 02:40:28 -0400 (EDT)
+	id A338D6B00B1; Tue,  7 Jul 2026 02:40:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D17C86B00A7
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46A0EC1BC9
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:27 +0000 (UTC)
-X-FDA: 84961031694.03.5238966
-Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
-	by imf10.hostedemail.com (Postfix) with ESMTP id EE42FC0003
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:24 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783406425;
-	b=0/0UgQIX6xcn1xl4pBK4dX5t9YmOfexmxByJtUX0jMqTz6Ti7WfFNoe2Z/g/3emhC1yxi1
-	O4EYONJWdlTJgeEK7ziePx3u9CCwLl+0Fsaxop2DPVdmY4Q73G0f8y7JvXGoB5DMvcIlxZ
-	fRikWEC2IwsOusm6mMEQxR7v/WS28cg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AB186B00AC
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:40:28 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B3811C3441
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:28 +0000 (UTC)
+X-FDA: 84961031736.24.BF435AB
+Received: from mta22.hihonor.com (mta22.honor.com [81.70.192.198])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 968ECC0005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:25 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=ZKqK2tjQ;
+	spf=pass (imf22.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
 	dmarc=pass (policy=none) header.from=honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783406425;
+	s=arc-20220608; t=1783406426;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2D7mqkZxIOeGaaTYJ5CSGULjLDMUCKtc62yniiPFJqU=;
-	b=X7BeA0jEXa5ZJZYgi6EPDx8EGkmUOa4k4h6ldYejjlWrThAt8jaXd3gA7iF+B85bJFnePv
-	C+4i2bORxrUeZMVoUYAQx9BSzPtKTspMPHHAaqnoXeQujET5jBOuDKC+sspF1Sf549ZRVh
-	+ZOsKJb2Uh0ZYVo7QlaY8y09jJOek24=
-Received: from TW005.hihonor.com (unknown [10.72.0.123])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4gvWnG1QSVzYkyb0;
-	Tue,  7 Jul 2026 14:40:18 +0800 (CST)
-Received: from TA003.hihonor.com (10.72.0.43) by TW005.hihonor.com
- (10.72.0.123) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 7 Jul
- 2026 14:40:17 +0800
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bRJcdc6HHIkHeY/WGZrtx/DJe85hcbtj03n74JS9UWs=;
+	b=VzbOGrjYXQd9nqYrcs4UmLRA84etGCy30bFBPVMos6v5RlLUf8+Z9FxSjtjeWYUcgRKmsi
+	WCPN6m8/BN7GKvggCQdihH9epKBiThMcO6x9RXvoTCEIweFiazFok38EQfde4/j6PHFEJG
+	Luhfb7XN4f9OPzKbxCdlCLJh1gMfCLA=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=ZKqK2tjQ;
+	spf=pass (imf22.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
+	dmarc=pass (policy=none) header.from=honor.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783406426;
+	b=WfKHdDqzf8pNGxKKDB1TnGLYtTorGBqrkMT4ARa5vgSTCHKAvuYs/n91dK6gfVy2iSXgCM
+	1mN/db/cTiKzXi+9c6HtK6c2EI3m/hvZupvvYKsMJRHCWDK+BkK2RnEMfbRSjihgntrFXR
+	ewziDtZ+rPD+JauzQK9iRGZT/o8E9KQ=
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=bRJcdc6HHIkHeY/WGZrtx/DJe85hcbtj03n74JS9UWs=;
+	b=ZKqK2tjQmEwe/29Z8hEet9dB8iGhvES1aUoWiDViQEkvEClWjwpSOPeMPVHgIFhuu8i4TcdJC
+	9IuZHuVC0UJ+ptPS3D+6rHgC2io8ZWaf5GxRsoHYUMfiE8FMdPm3ZTHa9raxOOwWs4Rx6tWwrYN
+	2bbevAeaofj8lR127dnMjC8=
+Received: from TW004-1.hihonor.com (unknown [10.77.232.85])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gvWnK2YFMzYly8W;
+	Tue,  7 Jul 2026 14:40:21 +0800 (CST)
+Received: from TA003.hihonor.com (10.72.0.43) by TW004-1.hihonor.com
+ (10.77.232.85) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 7 Jul
+ 2026 14:40:21 +0800
 Received: from localhost.localdomain (10.144.18.117) by TA003.hihonor.com
  (10.72.0.43) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 7 Jul
- 2026 14:40:17 +0800
+ 2026 14:40:20 +0800
 From: tao <tao.wangtao@honor.com>
 To: <akpm@linux-foundation.org>, <david@kernel.org>,
 	<catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
@@ -81,9 +88,9 @@ CC: <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
 	<linux-mm@kvack.org>, <damon@lists.linux.dev>, <shakeel.butt@linux.dev>,
 	<ryncsn@gmail.com>, <jparsana@google.com>, <dvander@google.com>,
 	<zhangji1@honor.com>, <wangzicheng@honor.com>, tao <tao.wangtao@honor.com>
-Subject: [RFC PATCH v2 02/13] mm: implement helpers for ANON_VMA_FRACTAL
-Date: Tue, 7 Jul 2026 14:32:57 +0800
-Message-ID: <20260707063308.29176-3-tao.wangtao@honor.com>
+Subject: [RFC PATCH v2 13/13] mm: Enable CONFIG_ANON_VMA_FRACTAL by default
+Date: Tue, 7 Jul 2026 14:33:08 +0800
+Message-ID: <20260707063308.29176-14-tao.wangtao@honor.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260707063308.29176-1-tao.wangtao@honor.com>
 References: <20260707063308.29176-1-tao.wangtao@honor.com>
@@ -92,14 +99,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.144.18.117]
 X-ClientProxiedBy: TW002-1.hihonor.com (10.72.0.137) To TA003.hihonor.com
  (10.72.0.43)
+X-Stat-Signature: y3ph34ggbixuixi64hnmx8bq4dfzjph7
+X-Rspamd-Queue-Id: 968ECC0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EE42FC0003
-X-Stat-Signature: j767p5p9q71wach7z8yt37afpi3417jy
-X-HE-Tag: 1783406424-772116
-X-HE-Meta: U2FsdGVkX1/b7FTiggMnufalqaxyUi2Wtl8WvF0afKSm6yiNiVOpIOWubIsq7k2lEpqCXj8/hyY0xWCq1qOrR3MsB1WjOm+ZTWl+bp+xoNnIRGAVwOJ7Izybfio3xOFnQAUSKQ5NTznuwFQXC3ZWFrmpEqICxFbHNozDGJ3ibEwCXURBYqc1Fi/67HUf0zMWJLCmBhd+ozZ/HrnekOq8fqJVizX6BntYk/VC8FV/MZE7JQw/PZ6LzeQEdVHP+f2JrvGa6e/72FmNiDRU80CvNu8zm+j6ibvfyVB8B1dyDJwkU5BUWswmHKx3R7bC3M8TiJHWbANTS3FOcLajjP9LKBYAPnXDW4a6bAq+qZfmFAq3QeMYo0rrD/oRrnj6bCPBKAUjECZYDrAjO7FbPwxrBph/kTcQZgo+fTA+yS/WDwZKBVFeIi+aLV7qHJzcM1xClzo/qp5ISHVLDX2M5kCyroXRLusXAwLKd9fWBLkaRHnSnS6oA5SrQxy1qlZWEDBnRF215EqlJ0u73rbSuLQQGZFeGzY6xNNV8BrAltVC1zE+jIDLbN1+iYy9+suYSVC2E4611aturK9DgiSzOGbNDgQqmALVRysnzd+H5ss9gpC9CgIvyE8Lc183uwEMwFTkc6e+JCo1h0/I6WkLp4Q0wJS5JI4MvmZqNg9s7VOXB5KRD/t+kn6TZ3zcGhLw86pIJ82WG4KMzAHaAagXndOAjfxQOXCxEEzODWGj9t2TKl/TDmdk1peg0uZD0LEmUPrFEabowD/9mW9zIqm/wuVKBAJcSimtTjBknthz+V50plHz/3SWKD5ODEW5DG7kBq9MYMtt3cOEGfcniBc4mHiwj2us9HOcv9KP30ft2nBZAGaCYOLYcI8f0OWntYkI9EI+NyuxCIb4/dozjwmRwJY3PonyAUDp2o+q8RbAapjciHDGcDAuSJm+jC2sSr/I0TIDcXGCxe4AFr0bRQmUzoG
- RKUqXd53
- J5hozdC1FfdIsDDCI4h0XCNf2oaczWrJBcsNC4AoN0HBVsfTRjndpjr9Fb1Jc1oSyu8qm+lrxgflXn0bG1KnalYqBz3dd28sx/hlE6w0kWaYuNz6HJve3ksZTpTT4auIMfT9wCPWGkB6OCdU+BTzKn2JvUQP5AfSoyPfMjVtfW8TuvzYI2aprfB1bcuksOeDX/1kZO8Q/hgtHLGqLOJFvR7U10lhuWGEx+b/CCv0DV2DdVsF8QTQlHJrVZCl6y6oLjODRZHusHvogelJte9UYL+a+miMUvWzf4YPxNVpWHzvvkda5CEUfd2Fxq3vzR39TUmsc2yIpIvfdvLw=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783406425-919331
+X-HE-Meta: U2FsdGVkX19E/cl8pregOq7RwvQlrpTJPnld8Q8i1n1vt0Vl/ZM1vJ6cz4UfeuxZKpcQIJ9PcZSnmwmhrXjTyWtewxP1I8WlH2zCr9vbPwVFJa+Ys2Oupm2JehgUCcmelFP2eK4ctdHB2R5axCVY58ECmynpfmlZ4W7eXConqJHPJ1kKOqGr83BXiEMwDn82LIiAwRi9NuU/4BvdvdbuM9aQBrIIE6Ndx0xmcMa+wObpUMn3z34owaeDFnm7nM4PLujR+ngCjRwd1PSCanDGkubCLHAe24/gGdAEUZtT4McqXe8MDnbfqxee5oLm5U0t6ITc9uRvORU6n4gSmLaHrUBIz+0vc5eEoyUqo7OyDtoe7WVjji2sIUEWUu0/buuTQBIWX7/9Eb/fFfCvtTcDO8cXgoptTAdyCtr2dZkDgeorM9YtIqskaa1cguQhyH4/ZQNI2tH+l5FMGn3UIZRqlvtbZM/6HvtratdFB6sR0bVuo2lrm02rQobm1Ay3D3wUNcY3s7P/Wa60qedfLcu6lbsZ3XZqQnrmlnYufPsN+1liqjevjIZoidEi3u8sXeky1xIu9twzLIJf9yMw75ycxVvcOeX9jgnU4Y2/t9DxV1QP6QiX14Z+rAsvIPqjdi9mHk8ts/qjECc56ogdJD1KIyh29ORZRFDXc5gK24sstrkaMOkLf8acp1kr+rKCd+1XsalzqKZbLyt6dX4b8nngTqXOZNNJwex7kZ+DmoOa8oH5YOVohYf9dU/aG9cCNcCBmaCPIH0DnTBslF0o+NaLxbw0JsINFp0OzP+1EdKSRxhnBb9L6I95vcmpSt9vN3rV2BzfdY1kGkXll6mQo2fIwk3kEEOy/esBauSVvWouP+bYhtoIvkCqyKwRLsrsTUG2VMFZClvGfzuhw0PwT6LjyjvbGJAYR4IhN4zmB3egLyonc+7nHhdGuWy6+NP7fns+fKvb9oK9mgKLr4Hwwu6
+ 0NNKOXUT
+ 4h0dfVr3vsMAfNsRE7vFiFSiKTeMlyoCxcpBZwAjnr6S2MOjkw6xzFYnmO3hc8i20khZ3Un2iWD73gf/gpkQ7c4W6H1NuUegWEaxq1QG5kz6fTo8pO1ScXPXQciXeE+cQOI0VvidY/acEa/ObeIOtYgvaX6c160jcBcUO+fmRo2CBJdLmbj5nX8OLrzuF0qZSJKdRozQpbZIFOH/lxvBI0RhRUNO39qB0HNiaE8LLlVj13Jvwdytag31EEfpFcjEHxMPbZ/WTpW3Qf+BxgoACWiRnFK6a2PaE+c5X6gZ+25I2HIpfHlhSIDU7mkJcHWbXH9Vn8BzjS3FaKvSXfF2180WMDlBXLlyMm9HjOHjDG1JAOi5Oazmo99XHVjk2KsII4VvTKZE2To/NOW2jFNu8Eq0lhVh6lwEumbaC20VntzwDIZA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,150 +114,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement basic helpers.
+Everything is now in place to enable CONFIG_ANON_VMA_FRACTAL and
+CONFIG_ANON_VMA_SHARED_SEMS for further testing.
 
 Signed-off-by: tao <tao.wangtao@honor.com>
 ---
- mm/internal.h | 25 +++++++++++++++
- mm/rmap.c     | 89 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 114 insertions(+)
+ mm/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index a33ed1a30f09..c1b3961b9d3e 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -271,6 +271,31 @@ static inline struct anon_node *anon_node_next_descendant(
- 	return node->depth > anon_nod->depth ? node : NULL;
- }
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 1b909819035d..9d4b81bbd4e1 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1453,7 +1453,7 @@ config LOCK_MM_AND_FIND_VMA
  
-+static inline void get_anon_node(struct anon_node *anon_nod)
-+{
-+	VM_BUG_ON(atomic_read(&anon_nod->refcount) == 0);
-+	atomic_inc(&anon_nod->refcount);
-+}
-+
-+void __put_anon_node(struct anon_node *anon_nod);
-+
-+static inline void put_anon_node(struct anon_node *anon_nod)
-+{
-+	VM_BUG_ON(atomic_read(&anon_nod->refcount) == 0);
-+	if (atomic_dec_and_test(&anon_nod->refcount))
-+		__put_anon_node(anon_nod);
-+}
-+
-+static inline unsigned long anon_node_rmap_base(struct anon_node *anon_nod)
-+{
-+	return atomic_long_read(&anon_nod->rbc) & ~ANON_RMAP_BASE_COUNT_MASK;
-+}
-+
-+static inline unsigned long anon_node_rmap_count(struct anon_node *anon_nod)
-+{
-+	return atomic_long_read(&anon_nod->rbc) & ANON_RMAP_BASE_COUNT_MAX;
-+}
-+
- #endif
+ config ANON_VMA_FRACTAL
+ 	bool "anon_vma fractal list"
+-	def_bool n
++	def_bool y
+ 	depends on MMU
+ 	help
+ 	  This option uses vma_rmap_base(vma) during rmap to compute the page
+@@ -1481,7 +1481,7 @@ config ANON_VMA_FRACTAL
  
- struct anon_vma *folio_get_anon_vma(const struct folio *folio);
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 1c77d5dc06e9..fa9d82271005 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -558,6 +558,95 @@ void __init anon_vma_init(void)
- 			SLAB_PANIC|SLAB_ACCOUNT);
- }
- 
-+#ifdef CONFIG_ANON_VMA_FRACTAL
-+
-+static struct kmem_cache *anon_node_cachep;
-+
-+static inline struct rw_semaphore *anon_node_rmap_sem(struct anon_node *node)
-+{
-+	return &node->root->rwsem;
-+}
-+
-+static inline atomic_t *anon_node_vm_lock_ref(struct anon_node *node)
-+{
-+	return &node->root->vm_lock_ref;
-+}
-+
-+static void anon_node_ctor(void *data)
-+{
-+	struct anon_node *anon_nod = data;
-+
-+	init_rwsem(&anon_nod->rwsem);
-+	atomic_set(&anon_nod->vm_lock_ref, 0);
-+	atomic_set(&anon_nod->refcount, 0);
-+}
-+
-+static inline void anon_vma_fractal_init(void)
-+{
-+	struct kmem_cache_args args = {
-+		.use_freeptr_offset = true,
-+		.freeptr_offset = offsetof(struct anon_node, fractal_list),
-+		.ctor = anon_node_ctor,
-+	};
-+
-+	anon_node_cachep = kmem_cache_create("anon_node",
-+			sizeof(struct anon_node), &args,
-+			SLAB_TYPESAFE_BY_RCU|SLAB_PANIC|SLAB_ACCOUNT);
-+}
-+
-+static inline void anon_node_free(struct anon_node *anon_nod)
-+{
-+	struct rw_semaphore *rmap_sem = anon_node_rmap_sem(anon_nod);
-+
-+	VM_BUG_ON(atomic_read(&anon_nod->refcount));
-+	VM_BUG_ON(!list_empty(&anon_nod->fractal_list));
-+	VM_BUG_ON(anon_nod->nr_children);
-+	VM_BUG_ON(anon_node_rmap_count(anon_nod));
-+
-+	might_sleep();
-+	if (rwsem_is_locked(rmap_sem)) {
-+		down_write(rmap_sem);
-+		up_write(rmap_sem);
-+	}
-+
-+	kmem_cache_free(anon_node_cachep, anon_nod);
-+}
-+
-+void __put_anon_node(struct anon_node *anon_nod)
-+{
-+	struct anon_node *root = anon_nod->root;
-+
-+	anon_node_free(anon_nod);
-+	if (root != anon_nod && atomic_dec_and_test(&root->refcount))
-+		anon_node_free(root);
-+}
-+
-+static inline struct anon_node *anon_node_alloc(struct vm_area_struct *vma,
-+		struct anon_node *parent, bool is_fork)
-+{
-+	struct anon_node *anon_nod;
-+
-+	anon_nod = kmem_cache_alloc(anon_node_cachep, GFP_KERNEL);
-+	if (!anon_nod)
-+		return NULL;
-+
-+	anon_nod->root = parent ? parent->root : anon_nod;
-+	anon_nod->parent = parent;
-+	atomic_set(&anon_nod->refcount, 1);
-+	anon_nod->depth = 0;
-+	if (parent) {
-+		get_anon_node(parent->root);
-+		anon_nod->depth = parent->depth + (1 << is_fork);
-+	}
-+	anon_nod->nr_children = 0;
-+	INIT_LIST_HEAD(&anon_nod->fractal_list);
-+	anon_nod->mm = vma->vm_mm;
-+	atomic_long_set(&anon_nod->rbc, vma_rmap_base(vma) + 1);
-+	return anon_nod;
-+}
-+
-+#endif
-+
- /*
-  * Getting a lock on a stable anon_vma from a page off the LRU is tricky!
-  *
+ config ANON_VMA_SHARED_SEMS
+ 	bool "anon_vma shared semaphores"
+-	def_bool n
++	def_bool y
+ 	depends on ANON_VMA_FRACTAL
+ 	help
+ 	  As rmap operations rarely run concurrently, and fork/delete updates
 -- 
 2.17.1
 
