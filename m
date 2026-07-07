@@ -4,104 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF70FC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 18:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1CEEC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 18:29:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC8AC6B009D; Tue,  7 Jul 2026 14:28:46 -0400 (EDT)
+	id E5FCF6B009E; Tue,  7 Jul 2026 14:29:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7A056B00A0; Tue,  7 Jul 2026 14:28:46 -0400 (EDT)
+	id E39006B009F; Tue,  7 Jul 2026 14:29:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8E2A6B00A1; Tue,  7 Jul 2026 14:28:46 -0400 (EDT)
+	id D281A6B00A1; Tue,  7 Jul 2026 14:29:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 67CCF6B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:28:46 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D34D14053D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 18:28:45 +0000 (UTC)
-X-FDA: 84962816610.18.D320E6B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DB324180005
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 18:28:43 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NFGJ6LFw;
-	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 91DC36B009E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:29:18 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0DDB9C296D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 18:29:18 +0000 (UTC)
+X-FDA: 84962817996.15.1ADDF73
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 91CFA20006
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 18:29:15 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hUUzZ3NR;
+	spf=pass (imf13.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783448956;
+	b=2KocK2WZcJ2sqFTOuIRXoqFdT9n0h1vUvyBjbISQXzZkM4v8nvzXE9MTuO5gD4yicAXUQl
+	JEmh1Z8Yr7n1+rZtmFluMX39dZHMMxOdRM/lMHRcXiczwy0AKNmS4dmCILj3kPqurjoAfm
+	x9GUpkm9Vt7sbr1V9tCOIR+NI8zUU6Q=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hUUzZ3NR;
+	spf=pass (imf13.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783448924;
+	s=arc-20220608; t=1783448956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0dH8JAh1G57HMXaVWGg//6vzyB5YjbMb2cp9YI+w6Tk=;
-	b=IU9KF1DEItZD7LQzyr7KV/tBKvnCzVeTYkFSsH/QiXnNOjxgj/NvmvSEsB5+776vaT+yal
-	HuQnJL6D/iq9axbvOGx3Uiigq3AsbRtoU7e0ERAFLN+qlEQ9w9kSIA/K2Ef1IIHrs7+PsM
-	1qlkpHviJGLvbmpzp31xVm8MAdvEQL4=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NFGJ6LFw;
-	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783448924;
-	b=rjk97pYukZXlMWc1P6cF6O0NkbY5tXLdfjQEM59PVan1yHq1XL4cUi8aP1XlM0Y8tcZtlH
-	0hJWc2ozRRE9y5YWtS9hZvEN+RShYgKN9LdTMMO0d1v4wtw+EUmcqzbkd5OEOf5mWO1BZ3
-	S54IyS7yhI2QBL56O0kS6M+Vu6903Jk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C2CBC43F69
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 18:28:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC6F1F0155B
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 18:28:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783448922;
-	bh=0dH8JAh1G57HMXaVWGg//6vzyB5YjbMb2cp9YI+w6Tk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=NFGJ6LFwMM0wniwHQRAFhpZcxkzXXZ+go5O3i2PpdW0RgRJSN8TdzgkZqSUvQQJwF
-	 MQmwUJb/vut4/QI97wjiJEf7sZvAQmdV7Rgd4epLjc+1snU2BouoclzM/0do2pntnU
-	 h/Am3/IAufzyAMNG73/Fc+iqb18RprupfmBdVicN+byvPY8mt4FOBzdfVWPi1VR3xW
-	 1qdaOLfmatCRCbm6rQ9zDIcBCgbA67cemDG4HPpZ6ibwYF0nQ9ybUbg64Rp5BZnf/U
-	 SHtdhRBDaiJB7AHMCD6GpTms0Lr9ec78ID/sVzYlYjFaguzd4xG5Cyb6wp4lQfILPt
-	 IdZzN2HypcjwA==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-6976b0c5adbso8306533a12.2
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 11:28:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rp+cGG/lPgMoUdFqD8lhpkWeS8++K/HcsDyU9dMKeWPtOTP3uan7G/IprJGHkKcMTPrzSk2CpBifw==@kvack.org
-X-Gm-Message-State: AOJu0YxVl6AZ4HN9GwJ3nbjPLfFiNn/YmTs1EheZV/3/I2naWftz6Agn
-	R5IV3UHjsBYOIQSvc9A5C46Kj0Ciga2KGRv12E2LGi7o1R3xyv2yVAfVJrzzOx8VA1/RMm6LD3U
-	PKBLCJadFEpY+GkUG3xvWv2By1I286Dw=
-X-Received: by 2002:a17:907:25c5:b0:c12:7f26:a279 with SMTP id
- a640c23a62f3a-c15a680d0bbmr487638466b.23.1783448921599; Tue, 07 Jul 2026
- 11:28:41 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=JQByjrZEnlfvBUgq55yU0uevWZpdlhSt/rPl0iueosA=;
+	b=xBaoyrqAO4AxIXk2VC3THvAFOCUC/UiCkyjLDLqR/T0yYo6tQH9aoW1/u083sNDhX97pkC
+	IC4Bd2Vu/BcOHCjbua+yT5Ldkkx2AfejdssJeerNxpQutpYU+k4/lhi6LU5UywfhKjWrdX
+	QV6g78cu3z2qcpSmn91qboeeWUydSiI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783448955;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JQByjrZEnlfvBUgq55yU0uevWZpdlhSt/rPl0iueosA=;
+	b=hUUzZ3NRn+dEucSCt03sPm+2qyUHayDCl+aLZ3zAAmdCEo3IChSutB87dNlFzcRW6DhdIA
+	9KmNrzqjmjPiOfSFwsODWiR521DDJq0Pvx3+MEor4OQA/cC6p2H6mjXIYs4EfGrnW3Ro/N
+	7binp0aVZbIQ9+jRZNoXIutRNWw+SxI=
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
+ [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677-pUGvDpomPsK43Ct2JnIg6w-1; Tue, 07 Jul 2026 14:29:13 -0400
+X-MC-Unique: pUGvDpomPsK43Ct2JnIg6w-1
+X-Mimecast-MFC-AGG-ID: pUGvDpomPsK43Ct2JnIg6w_1783448953
+Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-448d5182870so5348538fac.1
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 11:29:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783448953; x=1784053753;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JQByjrZEnlfvBUgq55yU0uevWZpdlhSt/rPl0iueosA=;
+        b=K+cwkHNTNyb1qbyVSFB0UWqsZl+8JVEseN5o+LRvRqqXrBROSPQO5TuuOHnQfKPeNW
+         z8JPvFQDsH3EMJ8qvAj+M8dYPv2kdh4xMmMB651SQgHfL7H4FdlsOEQXsEPSi0/p36/K
+         ZfsXTwoIGUhIcnS0iS3yOJH9HlHlYxMMaHLSL8QsApBBFfVoMmgJsmJZKAk9CL+lilxA
+         2J0NkRnAV8m4v/AYUVAeBJiE+Na9l8rhXjkNSKXzwdXizIjozoR6pvB4Hi+fOYuAGUIe
+         vYPVqOI37qywQet8l25rOi/7yw/aWxKGWEVLoWMl9HNSknFQh8UI2L28uLw3/IcsWbnp
+         XIGw==
+X-Forwarded-Encrypted: i=1; AHgh+RoRvUfBfL8Lt4fn+JEAH1YyyjXIRs//QdomIdC9lX5blT7hncet9FTY+LA04COkAZtvFUQCzu+eLw==@kvack.org
+X-Gm-Message-State: AOJu0YzcmpJ7EK+aJ528/icEBt147Xw5rEYuJZW3ijeICFupevQfCUJs
+	tP7Rq2dfhruBAY2U8QRMUmEaCGJXv2gwaVZIOn/H+KIn8kgnXSa4HLrRzvUO1B8xUlVmSoj5N/B
+	FRou3KoBlEouhIvgAhIACdyo062ukRexQAMLv+lARd3NHiIvgY53q
+X-Gm-Gg: AfdE7cmKpw5N/UGV56GTxO63FS3FtefNEoFZzvLJjO4Pkk86L+DXsnbgva+XVGKx35e
+	T/mlCi74tmzCnJl0ONNcCxmqyWmFEMm0XRcQd4wOQbGLtGsL7SvgRp8xl6jBSBEugOP4ucxHWaV
+	hZt8qZjXxNvGj9vbif8bYCk3347IxLfrBSiQpiI+N0L5J+G9oAKpV+dRT/XE0C/1fgQKNyaB4jo
+	JCpGD/vF0PT5NDrFDNe8kO8T74u3oFNPjf+VV9x+h/6nAlwav0qofNMv+DPitdAC+kIIJCXtenm
+	oA2gex5xIGf+xjhDXMi3YEo0j9TaKVT8SXw7FDOsDK1sfZaaSvLDJL7It9NYvCXrZ2zIQhqxlyJ
+	K33gafyzUp4sc9TUKlxU+kA4Eni7QpHHRMZXZX33AXgdo/rtLFICh4vJPeLs6iDz+ZuxCLsPbgi
+	O5f6NOow==
+X-Received: by 2002:a05:6870:9d1a:b0:43c:2d3f:95f8 with SMTP id 586e51a60fabf-451059528d0mr3915351fac.0.1783448952938;
+        Tue, 07 Jul 2026 11:29:12 -0700 (PDT)
+X-Received: by 2002:a05:6870:9d1a:b0:43c:2d3f:95f8 with SMTP id 586e51a60fabf-451059528d0mr3915329fac.0.1783448952487;
+        Tue, 07 Jul 2026 11:29:12 -0700 (PDT)
+Received: from chaithco-thinkpadp16vgen1.rmtusco.csb.cloud (184-96-191-56.hlrn.qwest.net. [184.96.191.56])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-44cfb55907dsm13550509fac.11.2026.07.07.11.29.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 11:29:11 -0700 (PDT)
+From: Charles Haithcock <chaithco@redhat.com>
+To: muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org
+Cc: Charles Haithcock <chaithco@redhat.com>,
+	david@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	arozansk@redhat.com
+Subject: [PATCH 0/2] mm/hugetlb Try to respect mempolicy when calculating surplus huge pages
+Date: Tue,  7 Jul 2026 12:28:54 -0600
+Message-ID: <20260707182900.483757-1-chaithco@redhat.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20260706081218.3438762-1-richardycc@google.com>
- <akxiZryteM-mwlyz@google.com> <CALC_0q-9JEbSH8dc0ecMzZU34rjVKzqaFYuoqjP2x8cE3UDo7A@mail.gmail.com>
-In-Reply-To: <CALC_0q-9JEbSH8dc0ecMzZU34rjVKzqaFYuoqjP2x8cE3UDo7A@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 7 Jul 2026 11:28:29 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOyfXgQoee4c2+G_8whgb6Nq86B_yw0fARwdy=or0uBuQ@mail.gmail.com>
-X-Gm-Features: AVVi8CcB1qCEDIvapMeK1t0hPshctDu160D2ocIJ-xaWRXpuClIlmKOhMx9VWwg
-Message-ID: <CAO9r8zOyfXgQoee4c2+G_8whgb6Nq86B_yw0fARwdy=or0uBuQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
-To: Richard Chang <richardycc@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"T . J . Mercier" <tjmercier@google.com>, Martin Liu <liumartin@google.com>, 
-	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ADKcIXLovUmfTQoX0LR_qd7b_QJV-U594ZChkrNj8kU_1783448953
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DB324180005
-X-Stat-Signature: rfxkq96xwdtigipfdaj6z9xp8r98143f
-X-HE-Tag: 1783448923-353070
-X-HE-Meta: U2FsdGVkX19cwZ1Ks1k+ViAZZRD45uAfjPFk4g8xGAZJ0MkJJ0Qt2PXTHIkfNzbVvx6xMWsR1HNK9EQiZZ9UtgLpUP/haOPkimH75hhmmc5UY0FE1cWSqe9L1WKsU7ijnrlNXJm9McbcQM3ozNo4McvrmYvoNvapdT9FEunxK53VeruILk82ymvVpnZ0K9Fo2xGCCwKNOoqBolA01NP2zZn+SQL71oa9S2IZJdAJAt2mEqUy7mmHWJ+lKlMHgjOYe4NtncEVl/71sEkS1OstUHNGXXsmiurXShln6INt3qU1qB8zq8srQD6h7wShvyGMKJtqCoSZ768PqnEHuGZYo64bpOXTItlbkEwn+K2fjI+LvUKTr5SHpzaMvY51fIkEMLdxgEz/uQfs3s2IqxUugdrMS4B/FkP9ly2vC7JhlZiC22zWt7slzrs2P88H+LwKyem9ybDDsdheSgsf8jFhNIC/mahGnF9SVFrGYox2juW0TmMODLlVgGql5/tW953hqOCyFU8pMFEKZQCd9WI/JAaNXyBehBGE8IQi/l7F5KMB7uLDchOTo0NFsAEy1TawZaP1+U3R8BrcfhsX44LCpzGKqUJNDHXrva6DKBze6Wz9mejWH+jUQRkq4DJKeT0Ocw6kvUjW09sMdN8jZg+y+dtXeRof5bkeO1u3LFJHtwrNhwS7EEH4rdgkwBD0XMbxCKyxa8bS17ibZCOcllfepJpxaTwL0du0zEPJUHwtKZzO4elJvzMSq5L2iOul9OO00M8akp17cTKri7GqNkrRhASZcCGNrAP6qPiBRpTluebzSPFkSceEKPeBVHWe0KEJKQI/4/dkl+OBZIXUm23dI3sAXZ2r3VPH7wSeEKrIrKC414Hb0BZ/4Qm27M539z/S6QyVLUQR2C2UP7nMnkpaLaoeFD8I1cSqa3hWPy9rdeHroLAIOZEHh9SeGTYx0Jj02cSyC2Q6Hg7OS2nLeN6
- 7mO3YM//
- H3ln9bCeE4sSrTs85WpNFRPZ85sfCHIpWs/t2huSaT8QRLbE8MMTe7027wyoEDRX6Ya3iuheKyGkljDqBnXZFPw3G/pSNpPzLJdpYklHjhemf9897NBUOHw15Npek3bCCYMhWtvA/7ZQI3NOF4A8YMuaAHidIKjbXPr9Rf0IZ1Q5q4Y3Zvs2n1E8GW9xB+a6shU0fxcU/5FxMTUyqEj/9Mea+aXf1IzGr6UkruQNUeBfrgS2jAdtUwVmyUrhGUlEZWiEXk1VYnFVdez4oErxKHk3qyrpTGwIxxtUumiMfPlC8nLlVYRvIplUB7LkffO2tKen9g+7Nu3mDw78=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 91CFA20006
+X-Stat-Signature: 1nchga83mhyyskpepnrjh7ft6ntezoni
+X-HE-Tag: 1783448955-373600
+X-HE-Meta: U2FsdGVkX1/ZtrI2YhRoGdq0JH5RkwPUskui8tiDWwX9yfAzO5VNxmqnaQfdgmB9hRVhzDlZvQjwRmaP6AdzeGt678nfuO4dLWngSnt2A4+KyIu0CxuB/0KNYu1rMMrV4PJTxaK7x/PRFiIde1zp0NiyfQF6P/CWJrNFEMbD475Fbl2r6+yUjwvyKnkra5swiUmgvReGZbtq5Fwn4yn5iHlWfpsbmFcTI+8Lww2PrYSEBk8yit/hlIsq5rb9n4FqA6mBEDflFWKWzVYNSpw2zHNgdeSPHL3gt6vpea6N+MbmloLm8swANAHZ2noBba3Pvpxy+RorgFeKQIkbG/s16xiKUbn5J+YCGhT+LvvFMHC4OSgpcTt39V+KQpZS6bGAguaE4FNorRgs9ZKhPEDrcdHNiKH4Uiiy38dg8hnyqkfKdg5bqnUkr01xBCgDbEVRQg5YiTVusiFwfIxNg7w8NkxPwZyJM5xsDZ7xxRL1w/MO0M4idrDnu2fstkNuX7c53Uj6+kBMsubPeVBi4zFxPHltzF0XP1HU+yADmdi/3N4oEyReEhQ4LC33V2dYtMMGepApfiUAc/dZlnPAT2eJDE2QdxIw9/BEN6OOds2HMsLhFZNSHnxfxSAQyG8GJd3LWvmfDiynP0zS4ME7wf+nkUSHSbBFb6vEDGxoOXKzsXbmWOJwuzSaqVhENL+yeCyoX5YFU60NajhcGKk+UY1XlpudfWsNvcwVxug3IuYsZCCxXmOE0i1rLfiWJ1DBjqmJiQ2x0S0r5qu1qXSq1Art2yjnSuv42t5avLf07exKYEzHVh6pWjhktw8JpBuqR/u5Z6fovbnC7Q1WsrzjG0UPTNwfXGBnb1roDk+O2HHdnk9zowWzLXedBoO29pe/PaEXjJCHe4FjPW7nObnLeR2X5Sdv3SRQ7xHbnnURnS9513KcnoDja8ILXhhq3XYR3VbpK8S0wAm0sBMrUGV6z8y
+ h7VnX9Zx
+ 1f89EXnD87hligqqbayToDMJprGclhmyY0ARkNeffxnAorVD0tiw2UHYLfHfK71h8E8tY93dAhsdnPUBzEYh8CthyXvv+GZjEzG01vNmlszeeO/tfhBhEaif+7BAcYAZ/3pVw7WeN9iRvmqrxdnmRntuVd5Yo/CQTZMZhh0AzGI8C62B4rZjKzKb/zGBQObvOINoAlCMdB3F4GF2/7U9sWFgdpSYCjfPwZFnOZ5HMoXErMTky/MFWRnW2hPa+KouBVdbR03R2JVuU0C2f6q5mAMZtJoEhPFNHqtBV9C4kIpDaDd9q/4g+N8qTg4S6JLf31zlUDknB76MX+iQHNJrS3d6FSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,48 +130,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Tue, Jul 7, 2026 at 10:20=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wr=
-ote:
-> >
-> > On Mon, Jul 06, 2026 at 08:12:18AM +0000, Richard Chang wrote:
-> > > Proactive reclaim (via memory.reclaim or node reclaim) checks for pen=
-ding
-> > > signals in its outer loop in user_proactive_reclaim(). However, the i=
-nner
-> > > reclaim loops=E2=80=94scanning cgroups in shrink_many() and evicting =
-folios in
-> > > try_to_shrink_lruvec() can run for a long time before returning to th=
-e
-> > > outer loop, especially on systems with many cgroups or large memory s=
-izes.
-> > >
-> > > This latency in responding to signals can block the freezer (both cgr=
-oup
-> > > freezer and system suspend), leading to freezer timeouts. This issue =
-was
-> > > specifically observed on Android when attempting to freeze background
-> > > cgroups while proactive reclaim was active.
-> > >
-> > > Add a signal_pending() check to should_abort_scan() for proactive rec=
-laim
-> > > paths. Since should_abort_scan() is called within the inner scanning =
-and
-> > > eviction loops, this allows proactive reclaim to abort early and retu=
-rn to
-> > > the outer loop, ensuring the task can enter the refrigerator in a tim=
-ely
-> > > manner.
-> >
-> > Do we still need the check in the outer loop?
->
-> I believe we still need the outer loop check. Otherwise, we will waste
-> CPU cycles entering the inner loop only to bail out.
+Presently, when calculating how many huge pages are needed when
+reserving surplus huge pages, the global count of free huge pages
+is used. When reserving with a mempolicy, the global count of free huge
+pages is used even if some/all of those free huge pages are on numa
+nodes outside of the mempolicy.
 
-(Moving your reply after the relevant text, please avoid top-posting:
-https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replying).
+Reserving surplus huge pages is ultimately best effort even without a
+mempolicy. Restrictions from cpusets and mempolicies further complicate
+calculating correct numbers of surplus huge pages to reserve and 
+maintaining which nodes those reservations belong to (see the comment in
+`hugetlb_acct_memory`).
 
-My question was whether or not it matters in practice, sure we'll
-waste some cycles but I don't think it would ultimately matter. That
-being said, seems like this change only covers MGLRU, so we still need
-the outer check at least for classic LRU.
+However, we can do a little better when reserving surplus huge pages
+with a mempolicy. This patch changes how to calculate the necessary
+amount of surplus huge pages to reserve by considering the max of either
+the amount of free huge pages on nodes in the mempolicy or the global
+amount of free huge pages. We may still attempt to reserve huge pages
+outside the mempolicy, however, we end up being more likely to reserve
+from nodes in the mempolicy.
+
+- v1: Modified `needed` calculation to use `allowed_mems_nr(h)` in order
+  to consider free hugetlb pages in our mempolicy.
+- v2: Folded in Joshua Hahn's recommendation [1] to further modify
+  `needed` calculation to take the max of either the available hugetlb
+  pages in the mempolicy or the globally available hugetlb pages. Allows
+  allocations to prioritize nodes in the mempolicy but can still fall
+  back to offnode allocations. Also added selftests to check only for 
+  the edgecase which caused this to initially be reported and sanity
+  checks.
+- v3: Split the change and tests into separate patches and clean up code
+  to better align with kernel style guidelines. Likewise, fold in Usama
+  Arif's correction [2].
+
+[1] https://lore.kernel.org/all/20260602152022.2673803-1-joshua.hahnjy@gmail.com/
+[2] https://lore.kernel.org/linux-mm/20260624144600.8159-1-usama.arif@linux.dev/
+
+Charles Haithcock (2):
+  mm/hugetlb: Prefer mempolicy nodes for calcuating surplus hugepage
+    reservation
+  selftests/mm: add surplus hugetlb mempolicy reservation tests
+
+ mm/hugetlb.c                                  |  42 +-
+ tools/testing/selftests/mm/Makefile           |   3 +
+ .../selftests/mm/hugetlb_surplus_mempolicy.c  | 491 ++++++++++++++++++
+ tools/testing/selftests/mm/run_vmtests.sh     |   1 +
+ 4 files changed, 517 insertions(+), 20 deletions(-)
+ create mode 100644 tools/testing/selftests/mm/hugetlb_surplus_mempolicy.c
+
+-- 
+2.55.0
+
 
