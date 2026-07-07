@@ -4,100 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8441C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2595C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 12:01:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA9486B009F; Tue,  7 Jul 2026 07:58:44 -0400 (EDT)
+	id 88C076B00A3; Tue,  7 Jul 2026 08:01:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A804C6B00A3; Tue,  7 Jul 2026 07:58:44 -0400 (EDT)
+	id 815666B00A4; Tue,  7 Jul 2026 08:01:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 996D46B00A4; Tue,  7 Jul 2026 07:58:44 -0400 (EDT)
+	id 704106B00A6; Tue,  7 Jul 2026 08:01:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F1C86B009F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:58:44 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 002941A041D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:58:43 +0000 (UTC)
-X-FDA: 84961833726.06.8BAE121
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 07592C000A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:58:41 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=CQap+tka;
-	spf=none (imf22.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
-	dmarc=pass (policy=none) header.from=armlinux.org.uk
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3057A6B00A3
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:01:40 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B1CB3168D56
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:01:39 +0000 (UTC)
+X-FDA: 84961841118.25.3CD2734
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf17.hostedemail.com (Postfix) with ESMTP id C17774000A
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:01:37 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=eheJY6Jw;
+	spf=pass (imf17.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783425697;
+	b=Rp83WZIXRpYGqzlf+E6q6Wx8nXV9044Xnz8u93OpUwf9TUHZNPR741xKze6FOeNuqXTySH
+	A0ywmRzMItLP5AN397FrcPgHm7Fj1cYF6oFaSY5jJz25kJTwiJ3hu4BFpLubmBt9taeI/1
+	9qMfL6N5KtyDsAVAb1xjDiOcQ99iNow=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=eheJY6Jw;
+	spf=pass (imf17.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783425522;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1783425697;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=stkx+vjsKdhX968mmJiOePHn7dujN6VJDWqehc4K6N4=;
-	b=1dJ3ONyrC36l4VBIELfkzEyBMpLwOQN+SwZBKUbv/zNMc1d8M3viEAIRWPpxytro+8pgoT
-	DsGqXbJnEWpmegsD78giRhTe8nzG3dzQ7HLK8a3j6M3B+ALanfnsaYyO0FB/GTQsRE56c8
-	KlmPPnvXKyGJ0kSU8UDFWOhmE6NhQIc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783425522;
-	b=j1oBxj7zFRraSF2ayc9Lc7pVFuYrIOOPoDY8IS8jnW91cd35Xvu3G6h5UcErAgjiv1f+E8
-	Q9M04KOG7aRQidHouiR2SPS9wXTeZSrKP3IOq3LjFEPeDLFgsKti5wVH2JSRNhsGe638ff
-	8f6pZIxeKibi5fnXadOISqhbNFFO/Cs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=armlinux.org.uk header.s=pandora-2019 header.b=CQap+tka;
-	spf=none (imf22.hostedemail.com: domain of "linux+linux-mm=kvack.org@armlinux.org.uk" has no SPF policy when checking 78.32.30.218) smtp.mailfrom="linux+linux-mm=kvack.org@armlinux.org.uk";
-	dmarc=pass (policy=none) header.from=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=stkx+vjsKdhX968mmJiOePHn7dujN6VJDWqehc4K6N4=; b=CQap+tkaox9/fVICER9FoFNvDu
-	e//Xtvd6Qs1gsrYGHA+TRKpq5dBGjLojzL9FfGAqF+24spZ1aqVFVlU0uyeRXvH8QEY9XSUM1GI4+
-	sApiwFB89AG0Yy64xD4vHmmZimtSrgLMrpXzjSDE7Z4vyLLGQelEV1efYgpyRyGPfCGsaxfj08E9a
-	nmWAe1pnoyFsQHl+gzgze0DQfQSp7FyDtz4+SLME7De/bvDvuu8whgrA8YE0p26g/XsMbHfVT6ne0
-	6Qs2eCUnsoJBmNA8dmndgy5vIf4dszJr+Wfw15tEDQSWyGoFlB0pm44BxnHSIeF7tENXo66tVldoG
-	I323MjOQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45516)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1wh4Qu-000000000mm-2UGt;
-	Tue, 07 Jul 2026 12:57:48 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1wh4Qr-000000006gy-3vIs;
-	Tue, 07 Jul 2026 12:57:45 +0100
-Date: Tue, 7 Jul 2026 12:57:45 +0100
-From: Russell King <linux@armlinux.org.uk>
-To: Qi Xi <xiqi2@huawei.com>
-Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, liam@infradead.org,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, linusw@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	sunnanyong@huawei.com, linux-mm@kvack.org, lilinjie8@huawei.com,
-	liaohua4@huawei.com
-Subject: Re: [PATCH v3 1/2] ARM: mm: fix use-after-free in __do_user_fault()
- under CONFIG_DEBUG_USER
-Message-ID: <akzpuerKqOY7qfFi@shell.armlinux.org.uk>
-References: <20260626073048.3595106-2-xiqi2@huawei.com>
- <20260706133247.145485-1-xieyuanbin1@huawei.com>
- <c11452a3-b918-4d4c-afd7-a835a1d0a3bc@huawei.com>
+	bh=2foD8/m5jsx3KDxdM1AXAhJaa/uPNeOmtxQBIkqM8nk=;
+	b=r2L7IFM64pvicpki2Xthxjo3q2gfjdrSzCWN6dDEqwUqfDlmpTwKGCPrCn0cylNu9Ookm5
+	6WmyxtOF0RiabGYXOLdwo5WPjjtn8pDRO6ddS4heRS0sQxEG4RGmJ410stYDTK1AN6Ep8u
+	8obS4STZg80zap9YM+dn/VU4WNSd2KA=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-493c55d5c7aso38986665e9.1
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 05:01:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783425696; x=1784030496; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2foD8/m5jsx3KDxdM1AXAhJaa/uPNeOmtxQBIkqM8nk=;
+        b=eheJY6JwgLuZFkdvTA5Xbo3llW05EC9R4nKcVUnvqWOUD3K1MXXVX/bhZLV4PprSrD
+         i2PiZ0UyiOUMEs+zyNga2vZZC27ONXlYjUw11jEkNgd+49EnWGJUuvX2FmCqne9uomdy
+         Zl+gHAbDSWZo9sodH++Hit+Htm4s+qGARz7G10TUQcQrwrTkrFpCr6vtyBPFO+K56kfF
+         nMj/pBOwV/b1PWV6SSSziQVKDNT3xhDwoeKN1HpztrVuICdzR+AEbXXHmIbi1BGlESiV
+         NEqVV0ihWfl2ybRLK3J910Gwi7UAS/ncNhzGH3BB52wV1YzoNaQ0ABMYozMwm51Eyzru
+         46jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783425696; x=1784030496;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2foD8/m5jsx3KDxdM1AXAhJaa/uPNeOmtxQBIkqM8nk=;
+        b=NDZwS1+qsktQUbLkRQcIEywHcXxBKbEY65MNwKRbzaVOTFSoD2lE3bAj4XxpIwDrMG
+         bHf+fHHgcJgFG6iezy094kiVMdx84Ufc007Q6TDxDmlPhed3GlO5uEy+f+Y1kWAlIX84
+         QVVwimk2CxYSftlBApeN4w4TX8ltclaRIZMy8BaLdx0RxBz0vl5sBfYemAe5RXyEYtu7
+         mwIQ9YwNAdotqnDx/IZ97cxe++LbJGL2I2Jc7wBsNwjMyPsxaqko9E4+Tke9gDYPri7C
+         Rx5IRivBkP5N9Xa6fS13Ww8HmdxMoy/rBpo9d9ct7W7Po6RR6dL7kfBE2zg0cDRdwlFg
+         7L9Q==
+X-Gm-Message-State: AOJu0YzQXsrMoSlQZEvqq6/vbgyVnfmGJ+CjYRG/H2LH5qoYqNvcklyN
+	iHJwiUwy4VuW+7jMlkywqVuv8TK+kr+aX0joiwjgo2JpHvVkw58WR2mkd7Wn0ADS/As=
+X-Gm-Gg: AfdE7cnQPqdQRYvf98yYhgKnHJviZ5+BSvDn3J9/azWTPy+NV6PrpsrmlSdtKJCzhoo
+	QxqJM9rjH8SqF1b0lpmaYwOFjvBn+qiCNfzBo4XN+aau7JDjvQvu/BLhC26AoZiWd7g/7oMvQtx
+	K9Y488cng5VDohSyPzbHjCCn9gCycXyEO/MQ258YL4kFsZEcavDz9mHcyRtMehl3oNbDnlCfIaS
+	USpmHF8XYGGoFPVaibbJ7dm0QH755Zwkfhte/iPmo5QcYaEnBwsi2F0HOSUPicuTghI8AchbhHN
+	o+J63tayDZl3/dzfll4irL/gQZJyiACSTZMwm+xb5BOFylybfZ1QdQKDStV5YHzAqST5q3mF1rV
+	M5ksIzViolkqbTCSmyzk7Va4/nQBLfQQ4ri+It66ePV1v29U11xc6LhG1nGWnAxXMFQiNM25h5D
+	VVY1EwaDh8UhIzJDGgIeS7O7U1K0Ad4P3f+KLU8g==
+X-Received: by 2002:a05:600c:3b01:b0:493:b91c:6bf with SMTP id 5b1f17b1804b1-493df0a74c1mr48992425e9.18.1783425696112;
+        Tue, 07 Jul 2026 05:01:36 -0700 (PDT)
+Received: from localhost.localdomain (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039ae44sm32347941f8f.23.2026.07.07.05.01.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 05:01:35 -0700 (PDT)
+Date: Tue, 7 Jul 2026 14:01:33 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, hannes@cmpxchg.org, 
+	yosry@kernel.org, nphamcs@gmail.com, chengming.zhou@linux.dev, tj@kernel.org, 
+	Shuah Khan <shuah@kernel.org>, mhocko@kernel.org, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Li Wang <li.wang@linux.dev>
+Subject: Re: cgroup/test_zswap failed with "zswpout does not increase after
+ test program"
+Message-ID: <akzpi93tZry0cCCe@localhost.localdomain>
+References: <c0970cee-42c2-4844-b88e-229853f08e90@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="n32fxil2i3lu57lp"
 Content-Disposition: inline
-In-Reply-To: <c11452a3-b918-4d4c-afd7-a835a1d0a3bc@huawei.com>
+In-Reply-To: <c0970cee-42c2-4844-b88e-229853f08e90@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 07592C000A
-X-Stat-Signature: ghwow6ijr5edykffwzfpswynis7z1m1s
-X-HE-Tag: 1783425521-559651
-X-HE-Meta: U2FsdGVkX1+qXinb4WsliJBJkjmha2NncxnvoJOMHIzhfGes10kZj9qzyFN9Fs5sHZJH61fwF65H8Ter1CrOr44sYGBgeXL9Epp9QQohxTxstqUgb6gZTHp++uJYfnETl8oNVqPkMqTpsctDb07Q2+nITtRd/FjF+mHh51O/87JNZuMi06Ca/3ATPkmZvFW4yrySjpZoRZCnDLvY7CKJK/vdxRFNhuaVgrPJ7wWhrF+heY105k+hFx/NbEbQTXIHhGnsBuDSHZaR1nxuTYlgdZPHrfJ9hsUR2RSl07zQ4CqgVy/XiN7kYfU93RSti9AGZJlogrtHMdfeWClRpQF6djHqXQA8ipkIB6T2kSbaj0B4TnlSslHpwK2TQWYuhqU5cUzd0V+ij0a1a3DVzeMa7rEAzlt1tA9YMX3Xt7hm7HdjpdmfIjDxP2fxwvjcRZBVfysH7Ip0RPXN3nEi4BtQs7k+f4dV2WT1lu2OtFou1NLPYGFd2QFdGZo8EdMIuOGbYwbbAB3R/+mEUushJzZYe+VBvnnpWK2FFDaOlGWw4EL4K6zurNUidHoxMwj02mXVoEmjWOkbwC+w53WU8a2qdU2oSjx5pofN5yJFWD88og7to4SCep4j4M67ohKHNy6mtdLvQ1pcqIfyZ4M92pNfmZTsrF1MUMmLGUb0Y9dYgAFseiP8T+JRepSTT5yFwSi7PZUT4DZc6D+yib5ahZwhMS682Q5Y8gG6AIseOFqZanuAuQuVCF1i8wO2ebJYGE5Au/v7nQgD4/RIxLmKLjpoJWqdK0Lff13iQv3yzlL2fHS6z0G5uHRw+N4X3wp0ww8SPTjPwswC/E++97FSKKEAp+XvLTGylLDaSQ4B5ccwdRj+AmdLS3Yr7H7BGCqsLJ3nPknxoZ7wUjWBwpFSyqLJBJgeJI1zmwpo2JtOwxJm5cKjoXugND7KlGE7WryWtLhN6BqSR6zm/KGK6KHb77m
- QAnsr6hW
- BKAPxHutidUON2z7iqClAFjkzZQe0NTncl42DnsLQgRoZtjemeu2n8Inapvha6r40447e3a1k1NU4kjMUroZAO6HkEAgPWVkRvwXroson8lESvPOXEPEsJTyDfzHx1R3FwG5XG+cMtTK/N09M7vlbh1Qx5ZEy/yq3lZRz4nyQt85c95rGOz0mV/+WuSaXtpfxyCdeUgF8d0MMkrNKbg5AG5M6oPIYNWVuj59gurjIcDAWjJFdghWsGoLWeWbtZDd7E5Tnc0T3FmO0HQKh5E/ar6MSo5pe9xNo3c+SvoPtcy/xrnV1PBpIHin4d4ifWRRUyPmGIVwL0pwQdi3dzgP8dnVrlFUOUvg60B1sp9m7Vk2AqMFx+o2+HrSoYMoFwoBkIunP30Paf5557iAyU4Iz64yVSU8r7x7pXOuVo3GXgNNee+WP2hP2hQu0SqeGlKYSpUj21ieQ7XnzaDObzUOVbpZ/DroaBXIKJkF9huHKNYqy32H0AOgo7MbZ1G4gt24uonughESrn7m1NcmbKL8McpC/X3eTorJd3xlUn/Cldt+ee8txUhAsj5Mq9fBg2c2SovwIoX6Nj+xEstviUSxrO9V88lPRQT4Fx7gzBIo5HRTz3MA=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C17774000A
+X-Stat-Signature: e99nozax96cxwbttit9eidd85beo3k7h
+X-HE-Tag: 1783425697-81597
+X-HE-Meta: U2FsdGVkX1/ud2PG6kxx2J5ibvEZC51u3UlUqdzV7I6+HDS/3q63gbEFnUZRVgAYMJGjyPOjZKBIWZVUoSTk9XhKjZORcYsuCqN+0/Yia5hi1y2o8wsjU2LGtInQeXrFruVIQyHG0PGMtwbAoPAuN6yx3kZyTdIkYDrVWBONNUWxQlIS1ybAUkIxvjhVTZq5/SksgL01cS1uOl120uODLMUdemkwX/EvddbJ3mnvxLOjv143HAw19oWlyqXEC6NOThKkv6oei3EU4d7ykeEDVvuD5bBuYVRLcBt5JBwKPPoov0UWUfKWfUXzTEHca1VgXA3TYyPvtsFoY41t4LIo7Pc3nMI7agjM/i5kaUarp2prv+Quk5FtFqY+JscD2l9LvBYV/utrcdZiFyHK5IyXfAcQKLmFB55x+by1X14d/+5qWZrY+bKT2j3spweY2JmUu9I3bUxPPxduL4NLtqtN3Pc6ACxIWE0LsKKf4830vLdl/M8RdNIzDQDxOf0aW56O1LUFq3bagHVb/Bgy7tttlUXNyX26HdYiCa4Rmsd1btJhOstoJoSu2EdKGs/D944bl6tc4aZMRaH1CWtMhmcsHDZ4v9Ya+YN/50FeG/yt1AXNxp0zD4TsIMOvEKQgor5awU/SqEnfzXo5vgcDqn1ffO8VPkdTWcB63uw0ycfG/wjHfyQM9c9Oi5i2byFcDms0s4NaiQttPXNHZ98lEA5DEDALuCsPDrJYC699VwGC/y+hAdDCpe7Bg84fKB4lke+r4veVRdTwjj2iq4WTq+U/pyz6/fX4iHHiyeonoJwcjYVLDX79WrwIqjmhWDr+GPsIrjwJljBzHlrT1gWoR2Q0mGYueAci3RdRoNyZjQy6gxbG1BPIa3jlUldbBSRqUY2G+0aJ1uatkGrfoez1HOE/+4aywZVY+7hgWEd26cN1vb4ebbDDklS5MB5AVwp2ePAgZGuIGCkU4huRvMztd8I
+ t7KXPJVd
+ 47AuPlTXdlukJU2I1RTOm1zSDG2AgYWpMxEKjGACrWBEYhzAmHqPKN7cZuj2w3XpcWD+qzoppdmchxGHHKyL2K0foAq1U20VbCPKRHRUQPI5Sn0dUCxtajdGhfgSPgicUc3U1NBdO3/2NP2h9bwjfIjRLNz1ZkHdcqdDlix0i/Wq8tZUCwRoZSyyCzvQaFzkgwPTWsZjvtKX7kdZtHsduJcvJV5syV5dOmmUs/kkllbGYKh3XoJqafKQxEszYOF5Qk+Xf6fHatZ05qwd0Ym2b3TrOd7ZSCiDjWHZd2DcgokfHcELx9QQHWqf9YR55d6ud8WEC7eVfSrFIHn5DD6o5WQhUXkT6VHwmmiq7lgA0t19SBImuZp6o37AO8Rbh7J0gx8sotF3fj+llZxe6Y6dHQbu3v/RnE1qsfJViiysv+8C69nWLidUeAoXyf2V1p8lD7VORpPhMNbGcvwohxcipuve79A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,58 +121,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 07:48:12PM +0800, Qi Xi wrote:
-> 
-> 
-> On 06/07/2026 21:32, Xie Yuanbin wrote:
-> > On Fri, 26 Jun 2026 15:30:47 +0800, Qi Xi wrote:
-> > > @@ -181,7 +181,9 @@ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
-> > >   		pr_err("8<--- cut here ---\n");
-> > >   		pr_err("%s: unhandled page fault (%d) at 0x%08lx, code 0x%03x\n",
-> > >   		       tsk->comm, sig, addr, fsr);
-> > > +		mmap_read_lock(tsk->mm);
-> > >   		show_pte(KERN_ERR, tsk->mm, addr);
-> > > +		mmap_read_unlock(tsk->mm);
-> > >   		show_regs(regs);
-> > >   	}
-> > >   #endif
-> > I found that this fix does not completely solve the problem. For a user
-> > fault, the addr could also be a kernel address. For arm32/x86, the kernel
-> > address space and user address space share the same pgd page table,
-> > but the kernel address space's page table is not protected by
-> > current->mm->mmap_lock.
-> > 
-> > I have written a use case to construct and verify this point. When A user
-> > program accesses a kernel address and triggers __do_user_fault(),
-> > show_pte() will directly print the kernel page table.
-> > 
-> > So, I suggest that:
-> > ```c
-> > 	if (user_mode(regs)) {
-> > 		struct mm_struct *const pt_mm = addr >= TASK_SIZE ?
-> > 			&init_mm : current->mm;
-> > 
-> > 		mmap_read_lock(pt_mm);
-> > 		show_pte(KERN_ALERT, pt_mm, addr);
-> > 		mmap_read_unlock(pt_mm);
-> > 	} else {
-> > 		// .. keep nothing change
-> > 		show_pte(KERN_ALERT, current->mm, addr);
-> > 	}
-> > ```
-> > 
-> > I have read this article:
-> > Link: https://docs.kernel.org/mm/process_addrs.html
-> > `mmap_read_lock(&init_mm)` should be able to ensure that the kernel
-> > address's page tables can be traversed. But I'm not quite sure if
-> > `mmap_read_lock(&current->mm)` provides protection for user-space non-VMA
-> > addresses?
-> You're right. And I think the fix is to simply skip show_pte() for kernel
-> addresses.
 
-No. This information is useful debug for kernel oops.
+--n32fxil2i3lu57lp
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: cgroup/test_zswap failed with "zswpout does not increase after
+ test program"
+MIME-Version: 1.0
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Hello Zenghui.
+
+On Tue, Jul 07, 2026 at 05:38:13PM +0800, Zenghui Yu <zenghui.yu@linux.dev>=
+ wrote:
+> Hi,
+>=20
+> Running cgroup/test_zswap on my arm64 box failed immediately with:
+>=20
+>   [root@localhost cgroup]# ./test_zswap=20
+>   TAP version 13
+>   1..8
+>   # zswpout does not increase after test program
+>   not ok 1 test_zswap_usage
+>   [...]
+
+What version of the tests do you run?
+Namely, does it have the recent patches from Li [1]?
+
+Thanks,
+Michal
+
+[1] 83476cc97bc63 ("Merge tag 'cgroup-for-7.2' of git://git.kernel.org/pub/=
+scm/linux/kernel/git/tj/cgroup") v7.2-rc1~136
+
+--n32fxil2i3lu57lp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCakzqcRsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AjPxQD/TSp3AgFunXblm/wv+t06
+iUtOKzzPQFXPcFo4roUGy6UBAPI9Y58AN6NvZtotdqoeb85Dry7/rdwq9AfzhNfP
+8pEH
+=dE8U
+-----END PGP SIGNATURE-----
+
+--n32fxil2i3lu57lp--
 
