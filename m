@@ -4,111 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFD71C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 07:18:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B55E0C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 07:18:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B76E6B00AB; Tue,  7 Jul 2026 03:18:30 -0400 (EDT)
+	id 857346B00AC; Tue,  7 Jul 2026 03:18:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98ECD6B00AC; Tue,  7 Jul 2026 03:18:30 -0400 (EDT)
+	id 8076F6B00AF; Tue,  7 Jul 2026 03:18:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A50F6B00AE; Tue,  7 Jul 2026 03:18:30 -0400 (EDT)
+	id 6CFE96B00B0; Tue,  7 Jul 2026 03:18:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 643C76B00AB
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:18:30 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F15621C7EB8
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:18:29 +0000 (UTC)
-X-FDA: 84961127538.13.640E89A
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 164A8140007
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:18:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=FNbBWTj9;
-	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 34BFC6B00AC
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:18:34 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9F6340333
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:18:33 +0000 (UTC)
+X-FDA: 84961127706.14.0916D98
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 3D08D40005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:18:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="i/HavCEp";
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783408708;
+	s=arc-20220608; t=1783408711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YsSJgGmwj8owXsbgpIZXs0JPGhRVFwHddqbby3E9Cmk=;
-	b=P1Boo50wM993B7/zqbLp1+5eyyXOAqH2H572jO6B5ePObkS1RtDd18e7oLjPYl5Ztcj2dg
-	l22LGvOkypjIDHg7/yOrvVXykOJ3IaqhBS44t1L7X2C4OCtJLUFVg7CG5ThByTZt2QQPtC
-	G3AOJ8RYFwlheXBoZy7cBCRG1PjVPG4=
+	bh=Bx7b9iYZ9vYm18Zu21dfThw3RUT+c2jDNlVCLLvzOVg=;
+	b=0FxKRNWqxYozM+tA3824qHlRt7iJDDaJ6dcn3HhIDguZhZIS3HMgmhp8GFRCEmDEgBaX2A
+	eHqj3a09r5NslK+/4PooUJFx1HrdPzUn1JpBJ1sJ44nJl6a7cTwC+L09XT7NoalFTw6+WV
+	thH+lBCWATNlsP3vhxSvjEBapC4COGE=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=FNbBWTj9;
-	spf=pass (imf26.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="i/HavCEp";
+	spf=pass (imf17.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783408708;
-	b=oVqykIS9ZFS64Mp33snKLqQeJXwXDUIeB8DvsWVWQx+Mfz9VcOYH5i+ABh+oYSQk5Aador
-	5xhTf0XFAjQPXTQMp38OnYPtvcHdPMumOrRWWJu/0AXEmTOUnmZ21+5pn8Gpj+FMI+N7Bz
-	Q9w37ylMzwGrwSssi/NU+khrJuk+eb0=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-847917c3678so211513b3a.1
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 00:18:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1783408707; x=1784013507; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YsSJgGmwj8owXsbgpIZXs0JPGhRVFwHddqbby3E9Cmk=;
-        b=FNbBWTj9r7P3HjPsTMghXE5lngOxvuLCS0AhHGqUgUc6/tqOJL9K/HV24/o36BFFOE
-         JBQujXlDL2sq6PZLvGuTmfiHW9MGzsv2NG42nxJsp4K6k0ZkMDPDHejclsx32lm8FRWN
-         2MqnnklqTcPvEzMGquAz0eQyqC9fiEjsmqSQ8=
+	t=1783408711;
+	b=KCyYNmfKaNu88dTbMmrQxnOlzoSNxuStb2rmMGF9JA1vHtlpLa8fyjzftSQPx10Nlx5kdQ
+	oeJHv9t5YyBAbCjB/fde9Y/W0DhOwJiN69rbMZmB/4rNE7aKExw9wPlqqyKPloI7D0JleQ
+	pRuujdDVkDpRSDT5qZK9xKJSdzgHGlA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783408710;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Bx7b9iYZ9vYm18Zu21dfThw3RUT+c2jDNlVCLLvzOVg=;
+	b=i/HavCEpATlAYUgVtXxgJ9VGiA+J5ESydaKwALvqq1vIpWDBZcycBSfl9GpXAOug4zlqPt
+	KmhpWGA/6kpW53rS4yiWnbIboZzYzWMzonLUnJIfnbMYru8dMySD3melSU+uMeAjFR4gmb
+	zBIplZWscmovTcyMfJ3e3t3jGVM34gw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-679-_Gaw8y92PM-ic3dhpjNhQQ-1; Tue, 07 Jul 2026 03:18:29 -0400
+X-MC-Unique: _Gaw8y92PM-ic3dhpjNhQQ-1
+X-Mimecast-MFC-AGG-ID: _Gaw8y92PM-ic3dhpjNhQQ_1783408708
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-476608a9fefso179972f8f.1
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 00:18:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783408707; x=1784013507;
+        d=1e100.net; s=20251104; t=1783408708; x=1784013508;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YsSJgGmwj8owXsbgpIZXs0JPGhRVFwHddqbby3E9Cmk=;
-        b=jvk8WVU5ybTiSfqqJk2Liw4PyHvoBl0NcHLz4jWp3Ke1TdVsF6RxR49kPng4ypd58W
-         p66vZSB3aH6TTJHhvix0Uy+m+kbd+iQgMD2ni1GXC6DDcikPuYtRCrxSaajAAzQtLu9z
-         oCyhrZCjSao9E1is/zDi3VTbA7F7HPQd9pBeTKiHJsdviNt3y2Nb1K5v0eZv1/L1Be7F
-         ko8RtJvS9vEoGlyviWr2oALaPOQ/2Toz751w2yHnya/XD+q9+0FWtyUWWoFGghqnBO2E
-         vpBspdjBYh+LMfYCCONs0LN4zLSHygoWB5ZxzipkY/NVRaAq5HtY6S40TMJf6EzmJQpj
-         CL5A==
-X-Forwarded-Encrypted: i=1; AHgh+RqDdCEQ3MnAIE7Xi98qrD48YNwNXJGTFCgccob+WUjrPjiXuipr/hEqCRVRx5/B4h94HyqZcLSwEw==@kvack.org
-X-Gm-Message-State: AOJu0YwnadcxiBubC0KerCuG27RtlhM1OXJfk7dEKOKIqRksXW9bjefc
-	091i0YTRdOvOspwiekmZdHASWRMHeAY6KvdauKGovXUZbbLTNztUFox+VebDU7NRVA==
-X-Gm-Gg: AfdE7cnbsZfd6J1V5DgINu7UN1rja8vVvs+ubrcx1sfXNjuwqZOTOnR9960xRPb9l3L
-	zpGmjz56sCr8EMneBCpFOgP/cSJ7rB42o4wMbxUhhvWTDWPkbsEyPBEVOkAbDLIWafK9iAyEPka
-	TFNNTTRYgpIFojhJGFcjc+YjzyV3I3XAI2VQaawsz5hcPmr6h+ktEo0V6pQnyxhxRtk9OxWO0ru
-	VVr2pye1uTe7yE42ROZ/IblEeO5Vk6m6NjT2syiy6sTQjzRMIMx5h9fWB4KV14UCF2NmMGmHh1h
-	9HKdJxd6JvKOIwlv4iRdSd5kAaaEOXXPbkxco5vbcbP8Rr5hKECVllCnvQdr230mahJT3kb0tj6
-	fkh3c/pcBWdJ0rV0THykQkvnCzKRvdgTFrtbSzPClWjiPlGk5Dy4c3HjrUFheepQsB2m+QjZa4x
-	aXxPTsvRACTKFqGhFZlG8CWf4FJX+ov6fzJDIcDGl//I1Po8RhJh/h
-X-Received: by 2002:a05:6a00:808a:b0:847:8d0e:5d83 with SMTP id d2e1a72fcca58-8482f522f6amr1655067b3a.26.1783408706956;
-        Tue, 07 Jul 2026 00:18:26 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:d4f4:6328:49c0:b912])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6dbdc8dsm4897307b3a.55.2026.07.07.00.18.25
+        bh=Bx7b9iYZ9vYm18Zu21dfThw3RUT+c2jDNlVCLLvzOVg=;
+        b=jEibh8aPCEbsLg2+4R+toH01dt64zJcPCEnkvTPYqu+X5Uiji2ReQY0IQI9f2rhje+
+         ZbfAcm9SDRGGbRBjLeJT3OF+NKbGt1VboZBsKhXj5tULNb0MqFev+FvhwvinOckCM253
+         8IvVsl6Z0yzzu16Qgiur87FAv1dBL93fEtHSIuvDNRRksb27nBqp38JJ6etlLpN6S3/c
+         OYujl2TCzIpRumi/n49jMvur4Qf5nP2egA2AvZ3kdhigUDdJ7/jsr9Ru4IlumtiXQpGw
+         Pmd4SRqEsI1s5FDjq7XgsOEdXTnvy8T0KG4Cw25VkI0iOTc48q+hFb/KZ5c0TYziwlnF
+         0dNA==
+X-Forwarded-Encrypted: i=1; AHgh+RpxadDukJd6J4y8/rvZxCCz2eMCOJWZ+EZuCo72HGgv6fc0MrYEAWbr509cgThi9/vMU1924QcMsg==@kvack.org
+X-Gm-Message-State: AOJu0Yzjqu2X4DZIy1/jRHF+0yvbIemRLa7pxM4F1acmhjAU7guPI76S
+	hs2HDOUF7taWOnA6TjKZYvfa2TAXpm+7oTMcrLXKSbvTZPff1NxpBe5asBRaXjH5kx/bfN8I1MP
+	oZdIPjU0lq7BBlt9rzDHFi0Uftob5oo8dqqk8n5tDxcXG2dbn05tD
+X-Gm-Gg: AfdE7cnlwaQ1S4af9NlU6cQTPkpE3SMgrtD33q+AMlCKct74TCUJU7aGyUhw+tbRzPr
+	GjjHT2x+SUQZXLF8FMgsyvG8ARt8rm+lJJ0/FgFmbUAvCIVPvTfOPNkknT8vzWYPKsb8NrVycZa
+	24cPH920vQMNDa+0wsE97dPbUIRuw20DMeG1annrnAUM5FIqadkoUgEhdMyvX5elNBZtUhYbRAY
+	AE+/jms7dR+NqBZnn/4wrAx60dz7Lcha5ZcIlZZes2lcUpfS7QXWcK5ky7BFBpmFEeo8TgXx4nT
+	sKcpB/T1Px67WteVCST1e7NI/4Uy4irlqThlZgtPyqEtF81FuxfIKYCLFVhRnEfirlXR+iXVdJD
+	XwO0Kb8cgAp/2ntwGQCVN8Dyqthlh+nt8
+X-Received: by 2002:a05:6000:43c6:20b0:474:4817:8c15 with SMTP id ffacd0b85a97d-47de9a446e0mr1123649f8f.26.1783408707973;
+        Tue, 07 Jul 2026 00:18:27 -0700 (PDT)
+X-Received: by 2002:a05:6000:43c6:20b0:474:4817:8c15 with SMTP id ffacd0b85a97d-47de9a446e0mr1123596f8f.26.1783408707388;
+        Tue, 07 Jul 2026 00:18:27 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47a9e3e2702sm32003544f8f.9.2026.07.07.00.18.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 07 Jul 2026 00:18:26 -0700 (PDT)
-Date: Tue, 7 Jul 2026 16:18:23 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Wenchao Hao <haowenchao@xiaomi.com>
-Subject: Re: [PATCH v6 0/4] mm/zsmalloc: reduce lock contention in zs_free()
-Message-ID: <akynv_js-5G88rGd@google.com>
-References: <20260626015003.2965881-1-haowenchao22@gmail.com>
+Date: Tue, 7 Jul 2026 03:18:23 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Sourav Panda <souravpanda@google.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
+	david@kernel.org, ljs@kernel.org, liam@infradead.org,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, mhklinux@outlook.com, fvdl@google.com,
+	gthelen@google.com, mike.kravetz@oracle.com,
+	pasha.tatashin@soleen.com, rientjes@google.com, riel@surriel.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 6/6] mm/hugetlb: support free page reporting for cached
+ hugepages
+Message-ID: <20260707031039-mutt-send-email-mst@kernel.org>
+References: <20260707064235.1386552-1-souravpanda@google.com>
+ <20260707064235.1386552-7-souravpanda@google.com>
 MIME-Version: 1.0
+In-Reply-To: <20260707064235.1386552-7-souravpanda@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: D_3tNOiL5rKPm-HN3TXzz4GfhheEzyatJB0IMdOngaI_1783408708
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260626015003.2965881-1-haowenchao22@gmail.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 164A8140007
-X-Stat-Signature: xhz7z66rqebs8sc4g1n6onkmhspsewr4
-X-HE-Tag: 1783408707-217590
-X-HE-Meta: U2FsdGVkX18rDl9P7tNQa+6lVlctdzSUiezP0xHhal7tj8JwcdS73ZQ6L+sLn8QTDrWKPdeX/x5FsML/wrfYeeFy5romwtioB98xsahTiEQKr4eBeO2p8+mGnQeuLdZoMMoZfuCngEtudbTv+Hp+2po3yLrmAWtbNfohHiCqPnrmDK2pC/EcSZ1Jya746uowYtnaGSPxZ+4gyVy7SDOfSFWqmZ3A4Cbwkd/0VVEWERrgbQSgmpj/mWrO0S9wRDlxf1xYyOxJYBY+GfsEfvUB17Co/0iGwo0aJFNMjfFNyFor5yK+xZgWeJMHwOysz0HqEinjcVD6Sf3NxzT/MGKkpoBxDdAhsZXU0VruSSdBLsB1Sl3a/9+F6nJxYpycQD/3ikNd4YmtsSk5kgaIfOLIZDThIccGTzIHTLb4kDgKHeUS2fT4R8PUNk1/HJaFxuqR7enyMJmhYN7qMn48utM1AQUkqsPU2jpZ4lyIv7nVP9B2OQgyDuaxwRVHw1R83/1uegYIuzCxLSHF4T0TOLnLFxUyKxzmBrBTV/8W2OctcFMYMkR1SaDcN7zoISDceQdIL6pTVcPbiC8/PWTnFoCLNhaKQxc8s4oXW9Ct8fmWWvpsETKMhJX+n3E8KEz4n6OGF2YDA6J99SW/M8FMQFFJN3UaaPl629eeWttL/cUd6XBP7/BDDiSoD/pDh5352y/Z5e/oUJP0t5Rl/R6PgKrqxpl/sxLEObU3RZ0ziUBdq3I1YEPxkSC0BnrQFp2FIjrXuoLA6VhX+9wSEPIX3MYDS5sDu8cwLYm47u+Af6CgdDU/zOEhNkkhSJJu2j3EoZEWUjm7eUtfg4+2Ne6pfJ3YW9ITmiOS1PxoOVmhF5hZliWnhztLkmCKh07HPDnb7+2kezAg5QBouroPCo+bmFP6e7xDThkreDirBffzdZfFnSnA6CMC+ln7AP+ynArw4AP5SDu6sQn0Eav75vzpymw
- hmf6csNz
- c00C/o6tESj7yp4Q5IF3/KRNpYW8IlxFa0PLB3Nf2G3pS4cuRYjmofS9ZLTyMv5Ixb1eLC68C1PaeYLlMrCyI6j0enyDQOM3uosjpNWZpWp3qv9vp3Q0oUj88eAzzpC3TZ5J5WvKtQAkcdgELl/sTHkmYh5jdgzXweIAtm0zlIIvLPyL0suXIBLTjgxscfAqv5eXjVQaRJ/Qo6KR4TJuEdFPmAVyHYoEVfu9y7GMu0S9SDR/hm2W9YpqprBzbkemPIYdgvlIaWRGCj4P3lyvkfN2gUzHItemSJAY4DfWegV0BGTlzcU8CXA0Ks9nxqaI5K/EiqGhCEZNtdXjjt6n+foBVkF445DXTodwGcM2gXlL+LLMyBO9jjeNn86XrPbEfWMhTWhMP2rmpolVeRFkZuiJxMHZ/RRIwQaZWXHQEC6GDL0LOGeFItnbwm608841gnbEEsf7R1/LSEcwJMvazYr5uyW1Lth9oul8t
+X-Rspamd-Queue-Id: 3D08D40005
+X-Stat-Signature: u11ezsp9ec1ikj1ucr5mstj1s7io7n9c
+X-HE-Tag: 1783408711-293064
+X-HE-Meta: U2FsdGVkX18kx4vcDkOTIk7njsyq8wKUByk/4f/w8ZT8gE2UA65WIEyq09RqVsyVOXKOVlBcAayW3XbD7wYBoORvklVn8iKoIbWWoS2DSlUjSaZtixXRN3/1aP+QvRRJhrYosJAg9rpzhfH3cpRmiATbz9S+9WC+TzsHkW0tcCj9Dc68wTG79Oj3Aa3/RfJ0zlTkVc+qBNDlODNbQQeSP5aG39GGbE7b2N+elb7V12E7/sunoZPKAvsC6/cSUZiHxqDAzZZBIqhYa2yUamJQNPUHELFUTUR3+p8FHn7QhYB+pmAePbG8xp5nNaW70CxJ8q+IwvsJC1xDiT3tdizRNYQEjfInyR+K/F17esmk81BCdp0KXxrRAyRKdCrUj4vGlC16h/GR4edz3JeMUCiBsdFumOUT+/HfqSFWVoznavttb2gxJGYO0n669yQasDr2nWxRamL4Xc9TtMnSP1e5UvPeG5oQLS53gnyANBLWCntGHtekAeX4B0YBa0rby5hfYgqqnsHAJieR/fbNSjuFJN/lVzHwY6dSUVnJz9RTeNY2owgzIwwV4qaiF1TBk/b/YpnlnGnm3buRbUBnYCofcjDQ5pvv/4hjMf9ki8P1v0TkWjghLERQJ3qTWT2WvLAdQCVgUPMEy3TVMTZc9MW2J/EMJL81GlvDP7qpjtYq5aoBlrO/xlzj69ZfYH2m1MTFEYnm/+x55inoUN7ceyVnYh5xlqoxUafHpA7euEXxe0bNWmOObMvY9n6d1l2Jfm7SgZzuJ+SSGGauGc3NTzqNTPXl9y/lTxTa0QWt0wIdQQXnGp+hjVyu3luLGf+XCSodRBU6n33Imfxlhuk7W3UEiJF7XPGFTG7QM2sAr+di8OpWlJKwH70D7pirm3BLhEEjQOM1P6DR3jFWhUlBN5Lk7nrwsmEDKxI+8l3rggBcBmH7F6ZdffEs34bE+1NADSlqmR8FJJ8kG/vU2CDQdQB
+ cmujFqKo
+ gLW+LTsUFECVIzKpD02eR1/ajmLjbabxTCzccLW9p/X7cE6qEixPvX2LLF0cVzmRl3m8MrvNEN9sE42cDd/9RlYUQvHMxDW9Cx/FrXcbze/wTxPZfkuM02VUbrtO8BHOmd59DSE+jaRmvdIBZqt4tj7ohCTcA0sRMGK1XRB4djxv+sC9FRKorvUI94WEwFTPpebthLSh0tD/uQoPPcWEV5PHpmzwTG7rwN95Fq+VaKh9/auBScqCHlQvkkzAXlCOJuyAd3QcriBoXFiIEWxoxtQdRSOL4Ax8oKnZX+W2+EB747sJgmOlOKuHxbkpYP7CmS4ES
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,52 +133,354 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/06/26 09:49), Wenchao Hao wrote:
-[..]
-> Changes since v5:
-> - 2/4: rename obj_handle_class_lock() to obj_class_get_and_lock().
-> - Pick up Reviewed-by from Barry Song on 2/4, 3/4, 4/4.
-> 
-> Changes since v4:
-> - 1/4: rename macros to make their intent clearer, following the
->   kernel's *_BITS convention (Nhat Pham, Barry Song).
-> - 3/4: drop the unused pool argument from __free_zspage_lockless().
-> 
-> Changes since v3:
-> - 1/4: gate ZS_OBJ_CLASS_BITS on a new spare-bit check so unsuitable
->   configs (e.g. UML, no sparsemem) fall back to plain obj layout
->   instead of breaking the build.  (sashiko AI review)
-> - 2/4: annotate handle_to_obj()/record_obj() with READ_ONCE/WRITE_ONCE
->   to silence KCSAN; sync the #if predicate with patch 1.  (sashiko AI review)
-> - 4/4: clarify when async_free_zspage() runs; pick up Reviewed-by.  (Nhat Pham)
-> - Drop Reviewed-by from Nhat Pham on 1/4 and 2/4: substantial logic
->   changes since v3, please re-review.
-> 
-> Changes since v2:
-> - 3/4: drop likely() hint and tidy up else-branch braces, per review
->   nits from Nhat Pham and Joshua Hahn.
-> - 4/4 (new): document free_zspage helper variants in a single comment
->   block, per Nhat Pham.
-> - Pick up Reviewed-by tags from Nhat Pham (1/4, 2/4, 3/4) and
->   Joshua Hahn (3/4).
-> - Fix patch 1/4 and 2/4 From: to match Signed-off-by, per Barry Song.
-> 
-> Changes since v1:
-> - Rename obj-encoding macros for clarity.
-> - Make 32-bit / 64-bit handling transparent at call sites
->   (no #ifdef in callers).
-> - Extract a helper to keep zs_free() unified.
-> 
-> Wenchao Hao (3):
->   mm/zsmalloc: encode class index in obj value for lockless class lookup
->   mm/zsmalloc: drop pool->lock from zs_free on 64-bit systems
->   mm/zsmalloc: document free_zspage helper variants
-> 
-> Xueyuan Chen (1):
->   mm/zsmalloc: drop class lock before freeing zspage
+Thanks for the patch! Yet something to improve:
 
-Folks, really sorry for not being around and not being helpful,
-I'm catching up on emails and will look at this in the coming days.
-Many, many thanks to everyone who worked on it, reviewed it,
-contributed to this work in one way or another.  Thank you!
+On Tue, Jul 07, 2026 at 06:42:35AM +0000, Sourav Panda wrote:
+> Implement free page reporting for the HugeTLB dynamic cache.
+> 
+> Register HugeTLB hstates with the page reporting framework if they
+> support caching.
+> 
+> When pages are added to the cache (either via recycling in
+> free_huge_folio or direct population via sysfs nr_cached_hugepages),
+> trigger a page reporting cycle.
+> 
+> Page reporting isolates pages from the cache list, reports them to the
+> hypervisor via virtio-balloon, and then drains them back to the cache
+> list, marking them as reported (HPG_reported).
+> 
+> If a page is allocated from the cache, or reclaimed, clear the reported
+> flag.
+> 
+> Signed-off-by: Sourav Panda <souravpanda@google.com>
+> ---
+>  include/linux/hugetlb.h        |  27 +++++++
+>  include/linux/page_reporting.h |   1 +
+>  mm/hugetlb.c                   | 125 +++++++++++++++++++++++++++++++++
+>  mm/page_reporting.c            |  10 ++-
+>  mm/page_reporting.h            |   6 ++
+>  5 files changed, 163 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index e882c99780b6..bde23edcb803 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -587,6 +587,7 @@ enum hugetlb_page_flags {
+>  	HPG_cma,
+>  #ifdef CONFIG_HUGETLB_CACHE
+>  	HPG_cached,
+> +	HPG_reported,
+>  #endif
+>  	__NR_HPAGEFLAGS,
+>  };
+> @@ -650,10 +651,14 @@ HPAGEFLAG(RawHwpUnreliable, raw_hwp_unreliable)
+>  HPAGEFLAG(Cma, cma)
+>  #ifdef CONFIG_HUGETLB_CACHE
+>  HPAGEFLAG(Cached, cached)
+> +HPAGEFLAG(Reported, reported)
+>  #else
+>  static inline bool folio_test_hugetlb_cached(const struct folio *folio) { return false; }
+>  static inline void folio_clear_hugetlb_cached(struct folio *folio) { }
+>  static inline void folio_set_hugetlb_cached(struct folio *folio) { }
+> +static inline bool folio_test_hugetlb_reported(const struct folio *folio) { return false; }
+> +static inline void folio_clear_hugetlb_reported(struct folio *folio) { }
+> +static inline void folio_set_hugetlb_reported(struct folio *folio) { }
+>  #endif
+>  
+>  #ifdef CONFIG_HUGETLB_PAGE
+> @@ -1093,6 +1098,20 @@ void hugetlb_unregister_node(struct node *node);
+>   */
+>  bool is_raw_hwpoison_page_in_hugepage(struct page *page);
+>  
+> +#ifdef CONFIG_HUGETLB_CACHE
+> +struct page_reporting_dev_info;
+> +int hugetlb_page_reporting(struct page_reporting_dev_info *prdev,
+> +			   struct scatterlist *sgl);
+> +#else /* !CONFIG_HUGETLB_CACHE */
+> +struct page_reporting_dev_info;
+> +struct scatterlist;
+> +static inline int hugetlb_page_reporting(struct page_reporting_dev_info *prdev,
+> +					 struct scatterlist *sgl)
+> +{
+> +	return 0;
+> +}
+> +#endif /* CONFIG_HUGETLB_CACHE */
+> +
+>  static inline unsigned long huge_page_mask_align(struct file *file)
+>  {
+>  	return PAGE_MASK & ~huge_page_mask(hstate_file(file));
+> @@ -1311,6 +1330,14 @@ static inline bool hugetlbfs_pagecache_present(
+>  static inline void hugetlb_bootmem_alloc(void)
+>  {
+>  }
+> +
+> +struct page_reporting_dev_info;
+> +struct scatterlist;
+> +static inline int hugetlb_page_reporting(struct page_reporting_dev_info *prdev,
+> +					 struct scatterlist *sgl)
+> +{
+> +	return 0;
+> +}
+>  #endif	/* CONFIG_HUGETLB_PAGE */
+>  
+
+why are there twice the stubs? And should this not depend on CONFIG_PAGE_REPORTING too?
+
+
+>  static inline spinlock_t *huge_pte_lock(struct hstate *h,
+> diff --git a/include/linux/page_reporting.h b/include/linux/page_reporting.h
+> index 9d4ca5c218a0..bd5a5a293dc3 100644
+> --- a/include/linux/page_reporting.h
+> +++ b/include/linux/page_reporting.h
+> @@ -27,4 +27,5 @@ struct page_reporting_dev_info {
+>  /* Tear-down and bring-up for page reporting devices */
+>  void page_reporting_unregister(struct page_reporting_dev_info *prdev);
+>  int page_reporting_register(struct page_reporting_dev_info *prdev);
+> +extern unsigned int page_reporting_order;
+
+again why twice.
+
+
+>  #endif /*_LINUX_PAGE_REPORTING_H */
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 1bc0198a695c..110c566efc3b 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -46,7 +46,9 @@
+>  #include <linux/io.h>
+>  #include <linux/node.h>
+>  #include <linux/page_owner.h>
+> +#include <linux/page_reporting.h>
+>  #include "internal.h"
+> +#include "page_reporting.h"
+>  #include "hugetlb_vmemmap.h"
+>  #include "hugetlb_cma.h"
+>  #include "hugetlb_internal.h"
+> @@ -1414,6 +1416,7 @@ static void hugetlb_cache_remove(struct hstate *h, struct folio *folio, bool to_
+>  	list_del_init(&folio->lru);
+>  	folio_clear_hugetlb_freed(folio);
+>  	folio_clear_hugetlb_cached(folio);
+> +	folio_clear_hugetlb_reported(folio);
+>  	h->nr_cached_hugepages--;
+>  	h->nr_cached_hugepages_node[nid]--;
+>  	if (to_surplus) {
+> @@ -1806,6 +1809,7 @@ void free_huge_folio(struct folio *folio)
+>  		    !folio_test_hwpoison(folio)) {
+>  			arch_clear_hugetlb_flags(folio);
+>  			hugetlb_cache_add(h, folio, true);
+> +			page_reporting_notify_free(h->order);
+>  			spin_unlock_irqrestore(&hugetlb_lock, flags);
+>  			return;
+>  		}
+> @@ -4231,6 +4235,7 @@ static int adjust_cached_huge_pages(struct hstate *h, long count, bool is_delta,
+>  			account_new_hugetlb_folio(h, folio);
+>  
+>  			hugetlb_cache_add(h, folio, false);
+> +			page_reporting_notify_free(h->order);
+>  			spin_unlock_irq(&hugetlb_lock);
+>  			cond_resched();
+>  		}
+> @@ -4310,6 +4315,7 @@ static int adjust_cached_huge_pages(struct hstate *h, long count, bool is_delta,
+>  			account_new_hugetlb_folio(h, folio);
+>  
+>  			hugetlb_cache_add(h, folio, false);
+> +			page_reporting_notify_free(h->order);
+>  			spin_unlock_irq(&hugetlb_lock);
+>  			cond_resched();
+>  		}
+> @@ -7763,3 +7769,122 @@ void fixup_hugetlb_reservations(struct vm_area_struct *vma)
+>  	if (is_vm_hugetlb_page(vma))
+>  		clear_vma_resv_huge_pages(vma);
+>  }
+> +
+> +#ifdef CONFIG_HUGETLB_CACHE
+> +static void page_reporting_drain_hugetlb(struct hstate *h,
+> +					 struct scatterlist *sgl, unsigned int nents, bool reported)
+> +{
+> +	struct scatterlist *sg = sgl;
+> +	unsigned int left = nents;
+> +
+> +	spin_lock_irq(&hugetlb_lock);
+> +	do {
+> +		struct page *page = sg_page(sg);
+> +		struct folio *folio = page_folio(page);
+> +
+> +		hugetlb_cache_add(h, folio, false);
+> +
+> +		if (reported)
+> +			folio_set_hugetlb_reported(folio);
+> +	} while (--left && (sg = sg_next(sg)));
+> +	spin_unlock_irq(&hugetlb_lock);
+> +
+> +	sg_init_table(sgl, nents);
+> +}
+> +
+> +static int hugetlb_page_reporting_cycle(struct page_reporting_dev_info *prdev,
+> +					struct hstate *h, int nid,
+> +					struct scatterlist *sgl, unsigned int *offset)
+> +{
+> +	struct list_head *list = &h->hugepage_cache_lists[nid];
+> +	unsigned int page_len = huge_page_size(h);
+> +	struct folio *folio, *next;
+> +	long budget = 100; /* Limit */
+
+why 100? and "Limit"? What kind of comment is this?
+
+
+> +	int err = 0;
+> +
+> +	if (list_empty(list))
+> +		return err;
+> +
+> +	spin_lock_irq(&hugetlb_lock);
+> +
+> +	list_for_each_entry_safe(folio, next, list, lru) {
+> +		if (folio_test_hugetlb_reported(folio))
+> +			continue;
+> +
+> +		if (budget < 0) {
+> +			atomic_set(&prdev->state, PAGE_REPORTING_REQUESTED);
+> +			break;
+> +		}
+> +
+> +		if (*offset) {
+> +			/* Isolate */
+> +			hugetlb_cache_remove(h, folio, false);
+
+are you sure this is right? in patch 2 it is:
+       if (folio_test_hugetlb_cached(folio) && list_empty(&folio->lru))
+           return -EBUSY;
+and hugetlb_cache_remove clears HPG_cached.
+
+
+> +
+> +			--(*offset);
+> +			sg_set_page(&sgl[*offset], &folio->page, page_len, 0);
+> +			continue;
+> +		}
+> +
+> +		spin_unlock_irq(&hugetlb_lock);
+> +
+> +		err = prdev->report(prdev, sgl, PAGE_REPORTING_CAPACITY);
+> +		if (!err) {
+> +			pr_info("HugeTLB page reporting: reported %u pages of size %luKB\n",
+> +				PAGE_REPORTING_CAPACITY, huge_page_size(h) / 1024);
+
+seriously?
+
+> +		}
+> +
+> +		*offset = PAGE_REPORTING_CAPACITY;
+> +		budget--;
+> +
+> +		page_reporting_drain_hugetlb(h, sgl, PAGE_REPORTING_CAPACITY, !err);
+> +
+> +		spin_lock_irq(&hugetlb_lock);
+> +
+> +		if (list_empty(list))
+> +			break;
+> +		next = list_first_entry(list, struct folio, lru);
+> +
+> +		if (err)
+> +			break;
+> +	}
+> +
+> +	spin_unlock_irq(&hugetlb_lock);
+> +	return err;
+> +}
+> +
+> +int hugetlb_page_reporting(struct page_reporting_dev_info *prdev,
+> +			   struct scatterlist *sgl)
+> +{
+> +	struct hstate *h;
+> +	int err = 0;
+> +	int nid;
+> +
+> +	for_each_hstate(h) {
+> +		if (h->order < page_reporting_order)
+> +			continue;
+> +
+> +		for_each_online_node(nid) {
+> +			unsigned int offset = PAGE_REPORTING_CAPACITY;
+> +
+> +			err = hugetlb_page_reporting_cycle(prdev, h, nid, sgl, &offset);
+> +			if (err)
+> +				return err;
+> +
+> +			/* Report leftovers */
+> +			unsigned int leftover = PAGE_REPORTING_CAPACITY - offset;
+> +
+> +			if (leftover) {
+> +				struct scatterlist *sg = &sgl[offset];
+> +
+> +				err = prdev->report(prdev, sg, leftover);
+> +				page_reporting_drain_hugetlb(h, sg, leftover, !err);
+> +				if (err)
+> +					return err;
+> +				pr_info("HugeTLB page reporting: reported %u pages of size %luKB\n",
+> +					leftover, huge_page_size(h) / 1024);
+
+again
+
+> +			}
+> +		}
+> +	}
+> +	return 0;
+> +}
+> +#endif
+> diff --git a/mm/page_reporting.c b/mm/page_reporting.c
+> index 7418f2e500bb..882496b8b2c9 100644
+> --- a/mm/page_reporting.c
+> +++ b/mm/page_reporting.c
+> @@ -2,6 +2,7 @@
+>  #include <linux/mm.h>
+>  #include <linux/mmzone.h>
+>  #include <linux/page_reporting.h>
+> +#include <linux/hugetlb.h>
+>  #include <linux/gfp.h>
+>  #include <linux/export.h>
+>  #include <linux/module.h>
+> @@ -50,12 +51,6 @@ EXPORT_SYMBOL_GPL(page_reporting_order);
+>  #define PAGE_REPORTING_DELAY	(2 * HZ)
+>  static struct page_reporting_dev_info __rcu *pr_dev_info __read_mostly;
+>  
+> -enum {
+> -	PAGE_REPORTING_IDLE = 0,
+> -	PAGE_REPORTING_REQUESTED,
+> -	PAGE_REPORTING_ACTIVE
+> -};
+> -
+>  /* request page reporting */
+>  static void
+>  __page_reporting_request(struct page_reporting_dev_info *prdev)
+> @@ -334,6 +329,9 @@ static void page_reporting_process(struct work_struct *work)
+>  			break;
+>  	}
+>  
+> +	if (!err)
+> +		err = hugetlb_page_reporting(prdev, sgl);
+> +
+>  	kfree(sgl);
+>  err_out:
+>  	/*
+> diff --git a/mm/page_reporting.h b/mm/page_reporting.h
+> index c51dbc228b94..74e05af4bac1 100644
+> --- a/mm/page_reporting.h
+> +++ b/mm/page_reporting.h
+> @@ -11,6 +11,12 @@
+>  #include <linux/scatterlist.h>
+>  
+>  #ifdef CONFIG_PAGE_REPORTING
+> +enum {
+> +	PAGE_REPORTING_IDLE = 0,
+> +	PAGE_REPORTING_REQUESTED,
+> +	PAGE_REPORTING_ACTIVE
+> +};
+> +
+>  DECLARE_STATIC_KEY_FALSE(page_reporting_enabled);
+>  extern unsigned int page_reporting_order;
+>  void __page_reporting_notify(void);
+> -- 
+> 2.55.0.rc0.799.gd6f94ed593-goog
+
 
