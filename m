@@ -4,92 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20296C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 19:16:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A84C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 19:19:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB44B6B009D; Tue,  7 Jul 2026 15:16:06 -0400 (EDT)
+	id 8486B6B009D; Tue,  7 Jul 2026 15:19:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A652D6B009E; Tue,  7 Jul 2026 15:16:06 -0400 (EDT)
+	id 7F9986B009E; Tue,  7 Jul 2026 15:19:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97A836B009F; Tue,  7 Jul 2026 15:16:06 -0400 (EDT)
+	id 6E7436B009F; Tue,  7 Jul 2026 15:19:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 64DC56B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:16:06 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E93E6168F79
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:16:05 +0000 (UTC)
-X-FDA: 84962935890.03.F1D5335
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 658C520006
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:16:04 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S+MYElig;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 347D26B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:19:23 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 83620404C7
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:19:22 +0000 (UTC)
+X-FDA: 84962944164.29.B0E338B
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+	by imf30.hostedemail.com (Postfix) with ESMTP id ADA9580002
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:19:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a5uILtWU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783451764;
-	b=SlWBniVlTndPgjgGnsyiAWeGvZNHKTdnqTKwZ/sRr3rUl/MylwFSHO2LxHGXzDXPYmAen0
-	SS9gxCzFvlBuWB275hutWxbjJJOrfJtx7Qg06nwW3jnsEbGprpXm6sro5Rf6KBuVFEX4Ta
-	qJ4A8dVsDRN7aoC2GR3Dr3CWVW9wvuI=
+	t=1783451960;
+	b=iKX1etZCPVLAlZo+DGKttfDFkxJd8KckWV6GDkFYLnh2CROKI8wUaXBJd8TsJidxT7Xys7
+	0WzrG3F8d0dchD00GUOLnYTZmdoWrKd9Bd2HOM8dNmDzrcWXW3rkGHkbwUVcqDw6+cS9mo
+	c4OTCg8166rFdFTdrOdBIYzWuSrNxTE=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S+MYElig;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=a5uILtWU;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783451764;
+	s=arc-20220608; t=1783451960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LurUoFlksu0iHTOZFjUCHWNI5YLKr1ommwx8975HPUY=;
-	b=ShF6L1+mB3OwEyYkuuzfALeyTd60Jlw+/QQjdpTBUG7s5eAaJvxo8a3Eq6XYvprPVJXi9u
-	gaEe2d5dlC9I8j29dD5BNuFnWBwq5ExD8LfUtj6POD3MEvle1VoO/2kuz2EJCciSpUZozy
-	MUcn0eVNiNWvtulbGil1aZ1U19BUDWk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EDF2760018;
-	Tue,  7 Jul 2026 19:16:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2111F000E9;
-	Tue,  7 Jul 2026 19:16:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783451763;
-	bh=LurUoFlksu0iHTOZFjUCHWNI5YLKr1ommwx8975HPUY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=S+MYEligJcni74qa/hJeahb0ju+jbDQeyYLcJBszHm2orBDAup/lw9IOwqk5Gct24
-	 /GNnUgxLlQ5Tqj8aHLX7fdyAlDX31heB5XlSfZk7aHvNhP+8Me2UJpPKSgNtymlWE8
-	 Bc1YQsy7+lAX7g++4GO7UUhfp4FnZvslok7AXZoV2PNIFQfGL/YxCMWFY4XCbJKBlL
-	 DF+KzU0tbBM0Jr/jpXhuqCgefyQ3MCpljit8Ff3lHDXab6pGHEQ944HjGX43Wy+9G8
-	 fikcykz8DqsP/cn0DeOIY1JPCY0pU0IjynsLyWCbX0jo1Jo1DWOraEXfzezhmGmUef
-	 +1r320RTv8Ylg==
-Date: Tue, 7 Jul 2026 20:15:53 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Hajime Tazaki <thehajime@gmail.com>
-Cc: geert@linux-m68k.org, akpm@linux-foundation.org, willy@infradead.org, 
-	liam@infradead.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, gerg@uclinux.org
-Subject: Re: [PATCH] mm: nommu: point to the write iterator upon split_vma
-Message-ID: <ak1PTRH3Ee7XyMAF@lucifer>
-References: <20260702012546.665383-1-thehajime@gmail.com>
- <20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
- <aksn5J8Nr0JIsVpQ@casper.infradead.org>
- <20260705222343.5d5c78cbb54839c5efcaabf5@linux-foundation.org>
- <CAMuHMdU36O2UqfQkbbgOVSH5KFU-MZ_WO3jRsLumkUu22iC7vQ@mail.gmail.com>
- <akuS-6zegY2XBa3f@lucifer>
- <m2o6gktgvk.wl-thehajime@gmail.com>
+	bh=QiqGU7OY98G2ViD6DEKb5QXbzFW9qlDntwYnyycFfIQ=;
+	b=JiF1QZ1wkWWV3diKXDQYtfzXF4HklUdqLuSHBnOE2BwNiHOfxBtUmUrLmxJdBgYpRJIaAQ
+	/N+WGTMAtupHo4OqHypPnSzg1r92YiSGH9I06PFMhNB8AzcN4855Ga9hrEoJq+zxrHYkfY
+	kTfYuh1v6k6s6zOWI1jx2Oq+dwNLw/k=
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6a347ec19a5so1072718eaf.2
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 12:19:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783451960; x=1784056760; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QiqGU7OY98G2ViD6DEKb5QXbzFW9qlDntwYnyycFfIQ=;
+        b=a5uILtWUuL4WqUPxUCljwzgc65d0LnfEQ/k5YuYjrzWLvlb4P1hy9aLUWY7Lnx6ocC
+         6MXessXNv8QHsCbZhxG6XExWN/9bRd9fMdpuRNPOti7R4qj7WZvxBBlH0oQwYnsXgW+i
+         98UxJoNcCM5/mNw6fmywiXrYQgsm8EuDsg25jP/v8zaDeT6K9mGWDFCKkgF4PSaaOUka
+         W8C2wKfii1a/drbm9L9JG7qN0HP406KAKlDKFeu/y4rEjbt4i1lx19wbEVOSBcoM8tqO
+         Inr/cRUAR3PInnExp4f0/pnFkkMfhoyckHhotrI+rHB4Rw7WP7Xt5X9y/yvVUEXgXm5M
+         j+WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783451960; x=1784056760;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QiqGU7OY98G2ViD6DEKb5QXbzFW9qlDntwYnyycFfIQ=;
+        b=QKCHsUkdrhx6XlBgNtCcd4TB/dEJygaTBIkU+SbgIi9x9+PwCYCvEeqCPSpXbEhoSD
+         G5+hRnHygwRi3WTkCJEu+Rqi+iypT3eyptCoQaFSBrtnww1OzpdmNZWUeSE8y0u/Xplz
+         /rAr5LCjakqz9S8e6XIquQnOXCaIl2jM1SmvaQW/d5m732nlR2BRZ6WfSqIoCqsaNL3t
+         KFiFgmNletuHW+CqtaZCNerpqD9EFSikh8ii4AoOrw4NkXQ5twL221WcNBj9ZZmi0E/N
+         waQFkQ/o9cVkX43LxlI+NpeV++3yISXBXqSBiVmIB05AughD1rZDgX1dqscY5afOogf/
+         VD8A==
+X-Forwarded-Encrypted: i=1; AFNElJ9DAe52GC4rsTMxi8lwqjRgc5dKX1mSXN9U0uC/e4ELht/d10wXGKi+8+yv5oLFI+DVjG5vfO5nyQ==@kvack.org
+X-Gm-Message-State: AOJu0YxHBTQG79tbbYklRF1Hz0RGsYKEOyNqX9DJsz6uN6Zgz1Tvrh5P
+	Bf2YMc8O+VTT9W2Q8nDbAY0tcZ9BTiDGS505PDR8VWBZJR0ToHoR55Xl
+X-Gm-Gg: AfdE7cmn3KtweA8VUVx06yu1TqJ3eSVG4+ZTs6DGrg4sd2xAU2QNUqMV4IHetI6o/FX
+	Uhi1x06uscf4Gqd6dTw9SLKNTsCIeXZO47ahJeXRYkAvBC+9IIVfK+b64gANUUH0Q3cFIYzwCKF
+	tiMbnCPAKVEaDrnTZMW1OausjgT+qVGwdrjIgzuqiJz/UIJF8Ro0V7mnPFygk9s8HfHJ1BUz1nB
+	IuCGQYsUg9QIVmR9RfSTQArraCzNB3bW7K+lKqijaBrMzozn3KnBPXw1N6XOTd56makUPT86AWG
+	hf0dg2Jo2xXDHizXelpQQpKtEt4R9KGw6xR2u1+gzweA4gOSB9bS9mYk651QykcptsWbgaCH/Yh
+	JAq8C3Tf07lEpCdGANLTsCbl60clhqBsj1kMnHWVVE7W2ai/zwZ3eIhOjzU+j/tCQm/l4oAzuSn
+	BfkWhev5dPPRFOG25bpy9iUdv7xlmKaC8Z9b/UHqlnTPIhmmEirVdf
+X-Received: by 2002:a05:6820:1525:b0:6a1:7d5d:d55b with SMTP id 006d021491bc7-6a355767d61mr4135973eaf.63.1783451959711;
+        Tue, 07 Jul 2026 12:19:19 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:a::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6a36a5ef513sm220102eaf.6.2026.07.07.12.19.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 12:19:19 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	byungchul@sk.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	jannh@google.com,
+	joshua.hahnjy@gmail.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	matthew.brost@intel.com,
+	npache@redhat.com,
+	rakie.kim@sk.com,
+	ryan.roberts@arm.com,
+	vbabka@kernel.org,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	shakeel.butt@linux.dev,
+	hannes@cmpxchg.org
+Subject: Re: [PATCH 0/3] mm: handle device-private PMDs in walk callbacks
+Date: Tue,  7 Jul 2026 12:19:16 -0700
+Message-ID: <20260707191917.3213033-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260707135255.292870-1-usama.arif@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <m2o6gktgvk.wl-thehajime@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: ADA9580002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 658C520006
-X-Stat-Signature: 9srgxmbr7ygxssk1rxqz8fdsb14zpfoy
-X-HE-Tag: 1783451764-39057
-X-HE-Meta: U2FsdGVkX1+lvxIr+vRHJP6RjhH4oUemstGBhUDTR181+kVGjjfkMiXeXelDLORgPca1PDHn/VGFfVFbdqqZUXaMnJ3mdF1rBj5NXqtBekgpNO/60fFsh7KpCuEDtvKRyYH4+5LKdDtmBCsxyKhx8Rz+lswmF2ow9sRbW6jgGDo09YpG/k5FUlR4G1cB02k7ZzorKcGwgaHVFMtPBJH92+xnavUS6G8pXJuYmu0Gsntua9UMrEqJxYT8mkedv0ETTAJaVSd8gGK5BLQIrGEtww75vuqaAH7oMQnDP8ZMCxDpAV1RnSm82UEtj0w40gP3yhDVx9ne80EnrLMB3MMXxptF0NbYlEA0euq+fHLefHx4yCkUy26C1lrZu484HC8YgBtpBq/zbkejmRZpzNqvq6yRzo+ivVxpMZpm2wZ6V6lMEiZZ9zFoVd0o2D6SdZFdRW3bD3FMPmQV2ilH59bSTwYODeAOPmmoGiiAj88C/atNvAPA/EOApNlss7L1Q9FCF3+cMcYN4WDuiA33fBnTba3JBc1+H/yssxL0ulTQ02LMMvmHTytwL+aQ6Vpbv/hNxGYRFC319J4ER7MYOAcGOVTqG88YLvq0A6lk9Pj38v6sig/juuaYhRZN05tJnB5YthJQvmr2DQNTx8RPWL3ZHsmkpZcVhx7EFonnQKA1fPO9DhdqfYQaOVFJ+W5VYlmb3VaznJNqY0m9rL+TfBummj0/qrRLeLv7LBmhmL2MZoaSJ+LHl8WBH1DDr5P5pxa9pBEgxqLNgaPrEVFlfVe8B9lotSAZQyG5gfh/cmslP1AQAjmi8cXtrIFuswR43XPKtJw2ed/qGW8qApTN/2MEiohnSzxBBYYGaPwCoW3+p/eXkFKOhOM5r5191CxEAzVU1wuMJ/M0WhTrtEqMDowN0vcpH9OBOrWWSiicgihy0Rl9TtVdgRj3pn9UzAAx5aMOAbeE7VjE0fUFJvhAJY4
- HcWmyUlH
- FOjRsaOKEheb2T4OgTkB4HM1O+13yVEIFZ3sMQuayxO0bZ3/vRQeYm/DSczre+skk2ZHBJEyR3V3Mpas8SNtKuDxOYQITfGPM/5e4wDw/qAqpORsyVtAHQTugXHocOCurPR7Pk/OSiCbgtB/8r9+UDk/bIIipphhen8Qhf0xd5QEhY/KT81iEGK0q2tOMhyukXf1tn5ocORyhsWxuGojZHyOk/KsnfFO7WaS6HHTkfcrKu8f4NvuZrH0+5ildaQdeHh3lt61sq81aLodP+mmujS8fY8SpUbXBTo7ec0Vs8xthCkxk1XU59CA/IV5fVVkG+DhJdqyXo0LxchLGdlpJuQsvHg==
+X-Stat-Signature: 97iriuakyegthxouknopu5wnf5aknww7
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783451960-496292
+X-HE-Meta: U2FsdGVkX18KnTc7aSazLWiYRUH5EBwSdtdEhZ7622QgNDpsgLvkBCUGy6G0pEJwPfVroyCWhDp8G5ZMPisEwzhxIw4ZNvta37ofatBXVFedJmk3ALm0ZgE5TYP2VRXz9Al26ZvzlBudtWRJZgSTk04mTcNse7w49dJUHgrFZLQksa3rUsRkb4hNLLhGMZQDWnwi5Z6BHiy6SorEhE/KiG1JqwTJHGy4T7BHwNt2671M6f9XHPxJ/MRS6bVW1HQ3pIc8SxhySrDDlhRNesjOHytY9F0Pbyfx8VybQBX4I8v9rj18ozu7jrEaVyA3/CF/8MZ/MB1Jh1GW6i5jR+/L7KqbR8pHHy/z19Z5VGRsFuJRwbtozQ+J93FVr5yPm63Mw4wpLjxiSGBbv2iV/dYXtrP9vvvgDNrPhFzmPn0Nb1/HY/JbuByV1L+xkuRT6IR74ODFUiQDLaMZgKp/jKE2ibpKORZcVDD4wCUriQYIlSrLp6SeDdewx9PsNHrShJUv7NvqsUrVHqTNWMv8eqbd2YI7F0nSFfxnhHSezJqolAb2Fig7Ilw4VkWP0IF95CfovYhdw+d4qQGWAbnTp/waqZWK07TUsWAoOBdviFBRtKEpymvctB6oztaFSY1mNYKv2KVHGhr/qG1l2NxSfGQKwxgvaglNDgFd3Vrnbs8FaAzrd9MvJAvzQ4bnlg2XQAfj8xV5MZpdmh74sY/6sQlojCCRru19j9XLNuGe/bADp4mHOpwZSCbiwRzpW0j8S2WphzkBJovPZEbsz46Pd1bT6B1IIe2V8E0roGoWkJb0pWcvmvb0SsQIzBYfns3oLlHDmAR1UvU4lL731AfZ2HuORHudzZ79H+oS7AWWxcLVP3Z55GBhw1Fu13bJu1KVtdFNu3OuqEMUGlZL9F6t7aTz8XNzBUIRDH67b4RbRkK4ORpkCLxQZber6ftO7aaHVfWJLdFzksz6BCffelZIO14
+ 5Bw052/L
+ KTl+l8eQ/5bn5P4yejt5g8ZY68vAPHHYuBFOsyTOccaV2/voJwMW7EPyzWL483bxCJPR6YhoZOO9zvDh40hFtVEJqQfny1CcFXGbmIb4m00sIEZj/FGerTtBmKpILDipa94XqC5BXiR1LrhnYkHA3re2AsgpcfFhLtpCZeOXcDpM1+/Ddzp9Gv6n1+HeAeIOmuQGyaYTem62d75lSqNxKEdUMLrWQkbFO4oXznKZ0BiwnPkMRbX8X/pUJfcWfC3+o9pktZ/WCF5tkW6IU2DlVJCLN4LrWzOKDBtJUfFvAeoORNp9W1pCj8zRshURMDk1MNVbenstP0MBa10AmlcgivCLlQpQXkWnZqfpoVCx4YN3AQNVk43N50YHVm1f/WDb2aT4BtNZ2o4DtWYzs5VxedIuuPTPMLr6G1N0FlaBY1cXPPolINQ+XHmpEC4BtHYdTcPMIwRBT1m8dPjHk1lyLxxSpdi+E7BK2T8FFJDssQAPmWfunafU/LUApep9ep44eX+dJs/EaXUCM0204bf2vE4EpzovF7VIKovIF7uNqHMbAgNEWKiZ/cJ/7hjhfMW8nuSE20mWcxkpaLWo+7m/puskLUTVNlfFtAdOz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,127 +139,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 09:57:51PM +0900, Hajime Tazaki wrote:
-> On Mon, 06 Jul 2026 20:51:36 +0900,
-> Lorenzo Stoakes wrote:
-> > This crops up now and again and people point to uses, but fails to address the
-> > real issue here.
-> >
-> > Nobody (aside from Hajime - thank you!) who uses nommu maintains or contributes
-> > to it, or _even tests_ it as far as I can tell.
-> >
-> > We broken nommu for a year I think it was? And there wasn't one report.
-> >
-> > The last time I raised this, I was admonished and told there are critical arm32
-> > nommu devices that absolutely _must_ have the latest kernel and this is
-> > perfectly working code.
-> >
-> > And riscv also introduced (and I'm so very surprised Linus allowed it) a brand
-> > new nommu architecture (!!)
-> >
-> > And yet...
-> >
-> > If this is really so important, can those who care perhaps help out a bit? At
-> > least with testing?
-> >
-> > I'm a bit fed up of it really.
-> >
-> > As far as hobbyist retro stuff and upstream goes, I am sympathetic, I came from
-> > being a hobbyist (though not retro), and would be one again if I couldn't do it
-> > as a job.
-> >
-> > But retro people do NOT need the latest kernel. As far as I'm concerned, museum
-> > piece support should be ripped out, and those who care run downstream kernels.
-> >
-> > As for the 'critical products' that must use nommu - PLEASE start
-> > contributing. Please start testing. Anything.
-> >
-> > Again thank you Hajime for doing the one thing that really counts here -
-> > contributing to the nommu code.
-> >
-> > Anyway, as to what Matthew said - 100% I am for us ripping it out.
-> >
-> > But it's not up to me, and unfortunately I think we'll get a clammer of voices
-> > saying how important it is, and silence again when it comes to do any of the
-> > work.
->
-> as nommu started for embedded devices which are not easy to test, I
-> agree that it is also not easy (in my opinion) to maintain.
+On Tue,  7 Jul 2026 06:45:06 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 
-Indeed.
+> Since commit 368076f52ebe ("mm/huge_memory: add device-private THP support
+> to PMD operations") a PMD may hold a device-private swap entry whenever
+> an HMM-based GPU driver migrates an anonymous THP folio to device memory
+> via migrate_vma_pages().
+> 
+> pmd_trans_huge_lock() succeeds for such PMDs (pmd_is_huge() returns true
+> for any non-present, non-none huge PMD), so several MM walk callbacks
+> that used to assume present THP or migration entry are now reachable with
+> a device-private PMD. The results range from a VM_BUG_ON() firing on debug
+> kernels, to an oops on a bogus vmemmap dereference, to silently isolating
+> an unrelated live folio from LRU in the aliasing case.
+> 
+> The first 2 fixes were reported as pre-existing issues by sashiko in my
+> PMD swap entry series [1]. Hopefully sashiko won't point these out
+> in the next PMD swap entry series :)
 
->
-> indeed, buildroot images for nommu targets (with qemu) are available,
-> but running/testing each of commit to the kernel tree give me more
-> than 1 hour to rebuild the images (including userspace build with long
-> flat binary conversion, etc) (which I'm playing under github actions
-> with riscv-nommu).
+Hello Usama,
 
-I've struggled to even get the buildroot images to work in any way. Right now I
-don't have a clear nommu test setup other than building nommu_virt_defconfig for
-riscv.
+Thank you for the fixes! I think all of them look good and they are fixes
+so please feel free to add my
 
->
-> # yes, should use ccache :)
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-:))
+One thing I wanted to maybe consider is for 1/3, whether it could be
+good to gate by !pmd_present() like the sites in 2/3 and 3/3, maybe
+that will be more robust in the future if there are other cases we
+should protect against (and the same as queue_folios_pte_range, which
+uses the !pte_present() check too).
 
->
-> one of the goal which I am with nommu UML (*1) is to provide an
-> environment which can be tested in a simple way; runs on x86
-> machines.  An extension to UML means that you can also use KUnit
-> infrastructure.
+For 2/3 and 3/3 we already have the !pmd_present() check, would it be
+worth considering just changing the VM_BUG_ON condition to include
+!pmd_is_device_private_entry()?
 
-Yeah.
+Just wanted to toss my 2c. Thanks again for the fixes Usama!
+Joshua
 
-Well indeed my raising the 'please let us pull this out' was initially a push
-back on that, because if we were going to pull it then that work would work
-against it, but then it became clear that that dream wasn't possible.
-
-And that makes your work on that REALLY REALLY USEFUL :) so do cc me and ping me
-on any respin and I'll try to find time to help.
-
->
-> LTP (Linux Test Project) dropped the nommu tests 2 years ago (*2)
-> (which is pity), but the reason is similar: no maintainers appeared
-> when the project asked.
-
-Yeah and it's just the same thing overall with all of this.
-
-The companies who are apparently dependent on this need to _actually pay people
-to do some even rudimentary testing_.
-
-nommu.c is co-maintained by me and Liam simply because we have done more to fix
-issues with it than nearly anybody else recently. It's just a burden that we
-took on.
-
-I'd far rather see an invested mm person take over if we do indeed have to live
-with it :)
-
-I also wonder if we couldn't find a way to implement it in a more maintainable
-way, perhaps as a 'virtual' mmu system somehow?
-
-I simply don't have the bandwidth for that myself, unfortunately.
-
->
-> I wish to be here to improve this situation, both mm/nommu subsystem
-> and LTP, as well as any !CONFIG_MMU code in kernel tree.  This patch
-> is actually discovered during LTP (re-)integration with nommu kernel,
-> which I'm going to propose to LTP.
-
-Your work is appreciated and welcome, thank you! :)
-
->
-> I hope this helps a bit.
-
-You're definitely helping here and again, much appreciated!
-
->
->
-> *1 https://lore.kernel.org/all/cover.1770170302.git.thehajime@gmail.com/
-> *2 https://lore.kernel.org/ltp/20240105131135.GA1484621@pevik/
->
-> -- Hajime
-
-Cheers, Lorenzo
+> [1] https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=6
+>  
+> Usama Arif (3):
+>   mm/mempolicy: skip device-private PMDs when queueing folios
+>   mm/madvise: skip device-private PMDs in cold and pageout walks
+>   mm/huge_memory: skip device-private PMDs in madvise_free_huge_pmd
+> 
+>  mm/huge_memory.c | 3 +++
+>  mm/madvise.c     | 3 +++
+>  mm/mempolicy.c   | 2 ++
+>  3 files changed, 8 insertions(+)
+> 
+> -- 
+> 2.53.0-Meta
 
