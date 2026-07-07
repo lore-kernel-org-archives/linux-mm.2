@@ -4,140 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E308C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 21:47:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 949DEC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 21:47:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 280076B009D; Tue,  7 Jul 2026 17:47:14 -0400 (EDT)
+	id 5B75D6B009E; Tue,  7 Jul 2026 17:47:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 257D36B009E; Tue,  7 Jul 2026 17:47:14 -0400 (EDT)
+	id 58ECA6B009F; Tue,  7 Jul 2026 17:47:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 147FE6B009F; Tue,  7 Jul 2026 17:47:14 -0400 (EDT)
+	id 4A6996B00A0; Tue,  7 Jul 2026 17:47:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE0346B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 17:47:13 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A5A26B009E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 17:47:56 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 695871A0452
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:47:13 +0000 (UTC)
-X-FDA: 84963316746.03.546CF84
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8524BC0003
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:47:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JxEpJ9yh;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783460831;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8671BC3696
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:47:55 +0000 (UTC)
+X-FDA: 84963318510.03.BA9FAB8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id BC54C180003
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:47:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uXtZIhhe;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783460873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GuBq+aZYRE3FMuFwCfSCJSRf8onKcRbnKXv804YB0UA=;
-	b=eBvc8qwff+eEPYq4FwPPiwx82XEWuZWqBuHZDh+sMpttho9ysTPlRGgLUnnxA+17WDg8LN
-	/SCyCS1moUYrx+qvkIKu8c6TOL9Um/d7HoEgbK+9MPnq6GmT80PtIKMus8rM6lgTIf8I2E
-	+31yuQS8SyrC17t77HdjmRnZXqESDfA=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JxEpJ9yh;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.49 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783460831;
-	b=tkZv9GtFPz3LCNnoZLUFDUa0C385PjQ/a/CTQ+bOEmZiN3ebjJHrqpUJXyT+YZ8fl0Lqxh
-	x3AnsTxFTJtuquU6tLhVwuQ826elhwsK2gKvVR0k9cZJAzzCnxlH1eR0xExp7QUkakzkIg
-	3RfYBlUOHUgX3pVRHBmp0oq5if8dZuo=
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5b00d1e7082so12155e87.1
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 14:47:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783460830; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UEdUi8TFCapqOxR4JT4Tuw61n69OihGLZi5v8KmUwT9lS1xHrw7+ewfN2WPJ1Y3LMr
-         OkuuVpnAbA84o8aATuRCxz5UL88mMCK6Wi6ZoViFts4qZ9pJLE7sNTqmwNIJsDxIQKIu
-         pJbJdSBeUa/EuGO936xUFJIEhBSvc7znHYuof53DFMTzhsF0DaMcbhGdq6qEQ9PJgcmD
-         lrkFH2T80/eqdymSs3Yapv1f3gZXdzCoBi34YU+evPCSLt19UvAFz6xjQvtFrsvvgEAz
-         PKGYt9a7258z8zPUdT+qlv2kp4502nj/eriJjO9HI+R+QVGeeJ3maOqogoJRjqwsUawM
-         xVew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GuBq+aZYRE3FMuFwCfSCJSRf8onKcRbnKXv804YB0UA=;
-        fh=ICGS/kEOyWr4J3OzzcDYIIoLahTphhpBB5RDlSoAeCY=;
-        b=DMgi4ryhX5A/zUYxDwbG6S/2LR38KPM2Xj174gXQB4+XmCvLCRagPsc7Aapr9dy7LY
-         hCkSKO2Q+4TmynssjFc2bvqGpFOQWH53ZRtbXe3nNikldsarZYc6eqDe3M36nNgRFHm/
-         /3PCjzE0stSWIdSVBbzeuBNwjihkuEVKRgygjsV9zCdwzatghu+7UbxwiKyP0TbEGV/1
-         yn4XsqHFNV8+BzSWnVd17Fz8YqLdltJblC7ZIAs7dV81ZoT6zHpvfdV1L49GVZ4kHj5i
-         em3jH77RSCosZyxyvvu/bZjyd0ut5gXtZgry7h256pqbEM6KwMenrSzyOsyOKJjTH7km
-         mKtQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=B/ZwkE1X/o1VkF0vxEq6jcgIp5Z3jnaP92+5KW9PAIc=;
+	b=Y3dtm0bRWiXVqoTRCdA9/C39Z/sBePa7jjlwbLgkFhKRsNV54nz+9DUmYhycNP79URRGwH
+	oIQLK+0c+3oSGnkSdD9GuP0zpGSm/izdqU3hjDAAqlgcA5Tw/dSoBD88K2s6/+y7ZsBbXF
+	M4ke0QpCFZk4rHxXlUvKTqlsqTuPRKg=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uXtZIhhe;
+	dmarc=none;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783460873;
+	b=8mT2IXzQQKi4OwcGo4twyrBjFl6Bc7ZCnVbd0FEEI3xCJvE7zqOVfVMdkD7ohNF87WG2yB
+	KXWmKPckoNoEo7VcsAtrmij4sbA1j54Fr48n9e07mSLsnjJmQQ1brxwUoc4wML5L+OSMlO
+	ZhsCY7YwLgvnl4cLtqPwUKlnF89I5mc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9AE4D43C68;
+	Tue,  7 Jul 2026 21:47:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DCA1F00A3F;
+	Tue,  7 Jul 2026 21:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783460830; x=1784065630; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GuBq+aZYRE3FMuFwCfSCJSRf8onKcRbnKXv804YB0UA=;
-        b=JxEpJ9yhmtJzd2m8CCAs8arhVp4/RtRJf3ksSUr1ZaWDLdlxEjPe4rvfWm0cV8EW/p
-         eRjmPoc8EFhBzD1f0Yaac5E9wMSloLeOqNIa8JNkACyg2zWljqOqcFG9fFN2Zwjp7d0t
-         Plb+LRfxx7WL6b+sxzoiD9kW5F0cmSiVj22EaDXv7uaKIzf13I5pzf10QWLFBhLvv0Fz
-         PDxs25fTTeVmWeZZZUYWk/msUWCpHouyKNUZSkgYpTfWSIR2bBkblLd2npBJ/YrmNB7z
-         YHec4+uebHsbiX4oBeOKcCkO8v/sTyXxTA95/Qpj3nKBjaWkvpsoOo6EL+/aZfeBo0D3
-         YN+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783460830; x=1784065630;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GuBq+aZYRE3FMuFwCfSCJSRf8onKcRbnKXv804YB0UA=;
-        b=N07gdFkVC7fkf7619uFjh/obuz0AAKg5sGbGCaYlhPocrdguX2QTqkSsC4TjMHkXgq
-         cCf90s4fcVleoJoAjs4cOw5PurOjS+VzB3vt8b/GpBdgp77VlNtbjDky2GDXhs0jL0/v
-         RJVPx0SA7jKFTJITI4rOoJ0/0rW9S7+/prHRcP4cnbzQlAP1aTGPvFooCg2SMEGwvB7A
-         zkdJqk/Ts/qFFJFCIa8FvboViyjd0XuWK6SfEvGDobczS1net3ymua7fZe1Qitvl8zGk
-         kVdsCCixn4iMP6QVTbSuAmdpIk+baAKO1c0hIixh0yjKyQxXQ3jT9tcQ5m2P1XabUJX8
-         GcTw==
-X-Forwarded-Encrypted: i=1; AHgh+RpcG5jVIWxMcfVy8VntumpcCSwAtt36Ek2E2tBQ8TR0GaTNfTs+GlbS13PjSLKNmql2FW0ZmKQ5RQ==@kvack.org
-X-Gm-Message-State: AOJu0YxkT05J+GYfQ78iqVYj3InhK5SOpTO7LxxgzRKjwSoRyXvcc6xs
-	EVrZLg4mYLsJ4pgCvkY4YJTPcKn39ASLwYUjRRU54JGVHnDxe6GFpQB2f7FzSQxHJ0RyNOqBHgX
-	rdkNkGNegHwY8TwgMwtcAtx3KiYU4JxI=
-X-Gm-Gg: AfdE7cmA8ZsALdcvVzbFCVXQERH979AKThLytsMLZ6M0kqPF+Gh0uiZvUEOJWbaRgln
-	rQQRzFCZ9m3ElXKOZtttKOnwT7V+Kbu7/rGuiSYIg+3Xemj7QEhJQEZ+MuZpyubYEtyvbdP8KnD
-	FsrVtUo+rF/21Ae2roV2+FPm9TSEL1UbDrNf37Uq3pV69J12P2gI/Y3VxWhzCH6NijZDrheO7bC
-	bFhlonTsMiVx9/SaSLkorjs+2SgoP/mC4/A4JwLar3GWPdBZGgEub6nnJ0///QyMABlOgjAoqgx
-	x+nm+iJEkJQ6jF9uwwI0T4UOoJar
-X-Received: by 2002:ac2:5082:0:b0:5ae:bf95:38e4 with SMTP id
- 2adb3069b0e04-5b007c1f0femr1110065e87.3.1783460829726; Tue, 07 Jul 2026
- 14:47:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <c0970cee-42c2-4844-b88e-229853f08e90@linux.dev>
- <CAO9r8zNJh65SZzdW8Cc8_8N5Wr+ORuRtU3kuaAX_DhLaESFYTA@mail.gmail.com>
- <CAKEwX=MMXdq7KTzcEgXfNt2L-eTmAVa+nijdyiujVOAhXQsHSg@mail.gmail.com> <CAO9r8zO-nAys0PJfXVRwLgAzwJLa9KxpMXKQKXJR7cnYKgmhRQ@mail.gmail.com>
-In-Reply-To: <CAO9r8zO-nAys0PJfXVRwLgAzwJLa9KxpMXKQKXJR7cnYKgmhRQ@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 7 Jul 2026 14:46:57 -0700
-X-Gm-Features: AVVi8CdOrDVPo69QAX-ampUYh37yFtghXiGRhoBaNYNkFWfhQkG5M-LvH_fSXDA
-Message-ID: <CAKEwX=M7axSs2FJDq0KF3GBDpd6G0J=gP_2boUJraNf8M2n3Bw@mail.gmail.com>
-Subject: Re: cgroup/test_zswap failed with "zswpout does not increase after
- test program"
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	hannes@cmpxchg.org, chengming.zhou@linux.dev, tj@kernel.org, mkoutny@suse.com, 
-	Shuah Khan <shuah@kernel.org>, mhocko@kernel.org, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8524BC0003
-X-Stat-Signature: drq5p4593z8qymuzofiutbm55kfsm9hj
+	d=linux-foundation.org; s=korg; t=1783460872;
+	bh=B/ZwkE1X/o1VkF0vxEq6jcgIp5Z3jnaP92+5KW9PAIc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=uXtZIhhegdYykPXHXq8FGb+zPLvgGwC4D3aBl58RPTA1LUBQB6oaizJFNtzInclqq
+	 P1wevONQAD/tMzoph/KQC9sNYT/rXdDaxF6jJ73pUL8k7D7hxZ+JrqV+BZBAGgsb6L
+	 TQC9VJxGe6zm5Cj5mGPnF9D6bE0eJbbTM/L55gbs=
+Date: Tue, 7 Jul 2026 14:47:51 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: longlong yan <yanlonglong@kylinos.cn>
+Cc: rppt@kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2] selftests/mm/mseal_test: Fix mmap return value check
+ in test_seal_zero_address
+Message-Id: <20260707144751.fbd08a3dd6839371d001173e@linux-foundation.org>
+In-Reply-To: <20260707031745.1039-1-yanlonglong@kylinos.cn>
+References: <akuQbvgVR8vrEFvo@kernel.org>
+	<20260707031745.1039-1-yanlonglong@kylinos.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: txo6b7nrbo54m9ymmt4pk7weq618bhkw
+X-Rspamd-Queue-Id: BC54C180003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783460831-112366
-X-HE-Meta: U2FsdGVkX19du5Db/u2WGmhJXo79jF8qF1NGrTyRpxUBsH7393MpPhOcrcIUYZBSptmHuy6GZC4E1CRpB3O7lmtNfKk/eirEMQN+txnqfMXvZO85MRzSmLglfB+KXwFtqqDJKxX1EY33AAeiHRfbJ/FT0T7eNBLEcWRbMRlS3FPjXPlXyyK3q3Hx4MRaoQAiyxe/Io2O1jdV7waZIFMEY3AcvkILrFmUitHRU/DZRCgpRw1g1L58xyA1tRVz+XUOEpQWZC77lMnX0B05FQe2rL7AFhB9qJBucnIjsE3Sa2b8FaZ7YpoekqkAXCtiTwCbZePzIqACcNf0wz9efpitZkvaQs+8LPWjm4t/0mgQW+EbApYbzGMxublr053hZ19E6uo9FFxe61eHhZgTkciqrpHKwtpSLRnzY8SyLG94sS6OtlnSKcVI1mxoShfeeZGSoawK5yaG/rUmVeu4OkyJxhsgsT5rLGult+l+PvmI2sgAsEu5E+epq2TTi3ABrnS6nHBvtsFjTc1T55hsiyAlYAPQB5toQkNUdlaUDu2JsSjGTl7/ZypZG1R1YlPFUKJLcX6i92xTt+iX2rBF2Yet41cZ7kyn493xzGNtxIgJPV7+TGygtZSnvJUyhE6UQnwoypv485qbGrcrCeveosAh2uCR8O4mBK14IypmAnFdODAm5Wr2qR3t553UXLp+Vckji9qIhhGrt606YlFIuWjfRo6qGvHqqAJ0rFrQAhi9n85EjXSiO8joyw+UYEymnsHPDgPNNRRWO2v3YwQtHIE0ye5K2KUv0abP/OCylVRM8rx0Tmcn/lVRKwM736jky6ODLmK614D5yk2KrBNCiNMseJMbbNOpBGZrKPYz0BtHB9nQz1JdoF9Av6uPjIx5JCh0sTNmH34HNzHH3mCE+2cdM5LXTf9uXI0Avo8d2ooeosj6y6nvsAeu1GFmVGIakMlVMp7Q00a0dh1mSmUi8Ff
- wDBbqMNt
- VGS9IJothgvxgxBzxAFHE/0iSEUPBj3ysWgGS3jZ4QkvzHZXO/yzQ2B4xOqcuZJysWlJ8etT0TWKYbko8rx3EHIhxWGKbT0NMtil6c6GhOLPsQYglSH9ZNTLFt43KGBQSNmJV8+yHtESp1b5VE03skCPLbNRAFQVP7YLFyvnOFom5Nx/o6rBPkmgg3L183n0CS287TzvECmsAkpnHK3LxG/yTz8W3mTXyfcGuLawCoUqPYF7IZBCuUv3ZKOniyKPMQ+Wddv2w0362qo2M1fhuslO+onPSW0OP1OViSauehubrKyVbHG/pCwTi+YAYVO/awYQyqMAV3WliVi/8I6KzU3gO1a2tqatkN7y3O9TL0oRjalT0WDSyFnsc2Kv3KUEIPRnGEqHsgyed1VMZW1/MTAWOrVZNX7/4dw1OcOFthe1wJfLrqR2wdnckv7RjJHol+WaLo17mw+LXrhTPuGTt/pr0Ew6Pe9vmBJRxNw2BVLo18P0s359ViWQQDw==
+X-HE-Tag: 1783460873-585978
+X-HE-Meta: U2FsdGVkX19tEZT+lxBMElPJWO7QEwLO4kzVuOMq/9P/NQTbh1tqKtULM1G2kp6EBQQN9TO0Hk/30TwRepAf/qaslznG7QwGjfr7AY8HF+sX64ewfv4gnNpQcltdsTyBgfhEz4FwF/IL5skW8KuToeFD4APglCowP0oLvAOul/Za5EHX/qcarBGE2E9VOyIzvcSI2MpA6OUBzl9C7HfPp+77GR3JGUfRkBRwIEpwKTJ20CjvlGakfu4pffh8ml/2GqRwSWxAbermVAxcHCMka7dcJb39+jR7AkNwTyYJzFlXtt9/lWdILKIQJ+wJBR1fH9rjanzHF2llb5nbtP59NfBazmOI3vrsH77dlLbuN2Oz2g9cy0AjQX6qqqAZXkiJCWKCtqqRgkPIqJbwHSVb4d138WFM+63Z7A9CXBQfSc70uAvW7KqbQmhmt58ZpPBTjFE2kudBOBrrrRVG/QH1GTktix7AV5jtnDKW7UXCQehBnWGtx2tEQP0NC/0szKUohAj7Qr42qwIEsu/zuHXBSm8kun4rMbDsYxhxnAUl5iZaUDp8ZZc4ktibw7Mdus29TpyJRtFTddspFi2doGYvU3AbmxeoZtDqKKIEhB3ptGS7Guf9R0+6idPh5RGWWYrqfo9OvpGFkxLFCM0nLR5AVYsQ5Qb0FoRJDpTlEqVBVNzaur4pb3tCL2OyQt2NHnusxIznv1BN0ExlZlbrjKN3Sqnqn7Ps7psJ//Sz0rDQaHMTyDbXRdBeudOQKsVMpLgrFeamgAHT2gN3VY6dZzheqXyPS7qftrED9tQcQggvf5PZXfkP3kjYzpDvMsWh0gv9u9mVxNzhLsbFJXp8YQq6dGMuVwiAGXjjvZGwOTs7xmI0b+D/WoeA9U+qrQLvSzuCxFXtwqA4OEFOcxOI41UbodFyWfXz9EudZg3fnQixXdRySBACP8+xVn0fk8wEvUMAFInZy6A9Nl4Iz/e/t2W
+ IEgA3B+G
+ 2e/CFtCHoEtNeAfWk+88TL6L3E71pqzNKumiYDaQU6HzewFV0CIr48/+FxYs2EM4ywLsDaYZXNdqTQT63bxnhoQm3XLDXnktfn3+KbyOyiZzVvTVFcxMrua1Japz8RfGSnbhLGaEM96u/XgZKLpyRJr5LfKmFs8oQmFN3PlMLJfElIgVUvn6uJ3snM1UeoGvp6d+6Hsk+GJOPZ5FV0/W0Ls5scohw8a60UF6shFsrNsWuyYbZeLN1JDHjK0U6H4LiNUR/KX8nhx5Bv6shQEkt7hvq0dn9NEP4voBAd+VvdGepuq1fnybyf0CohMQahZR/QPHFqQ0dciH4pMsQqcAkFjAdzQJRYbfs1Fzh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,38 +91,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 7, 2026 at 2:36=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrote=
-:
->
-> On Tue, Jul 7, 2026 at 2:35=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrot=
-e:
-> >
-> > On Tue, Jul 7, 2026 at 11:25=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> =
-wrote:
-> > >
-> > > On Tue, Jul 7, 2026 at 2:38=E2=80=AFAM Zenghui Yu <zenghui.yu@linux.d=
-ev> wrote:
-> > >
-> > > We were discussing a way for userspace to explicitly trigger a flush
-> > > before, which would come in handy for testing. However, we decided no=
-t
-> > > to expose flushing as a concept to userspace.
-> > >
-> > > Unfortunately I think the only way to "fix" the test is to allocate
-> > > more memory, enough to trigger a flush on most interesting setups.
-> > > Perhaps we should scale the amount of memory with the number of CPUs
-> > > so that we don't have to keep playing whack-a-mole.
-> >
-> > I don't have a good idea for writeback, but for zswap out, would
-> > MADV_PAGEOUT work here?
->
-> I don't think the reclaim mechanism is the problem, but the fact that
-> we don't have enough pending updates to flush the stats. Am I missing
-> something?
+On Tue,  7 Jul 2026 11:17:45 +0800 longlong yan <yanlonglong@kylinos.cn> wrote:
 
-Ah yeah, you're right. Hmmm.
+> The return value for a failed mmap function is MAP_FAILED.
+> According to the definition of FAIL_TEST_IF FALSE,ptr must be
+> determined to be distinct from MAP_FAILED
+> 
+> ...
+>
+> --- a/tools/testing/selftests/mm/mseal_test.c
+> +++ b/tools/testing/selftests/mm/mseal_test.c
+> @@ -482,7 +482,7 @@ static void test_seal_zero_address(void)
+>  	/* use mmap to change protection. */
+>  	ptr = mmap(0, size, PROT_NONE,
+>  		   MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> -	FAIL_TEST_IF_FALSE(ptr == 0);
+> +	FAIL_TEST_IF_FALSE(ptr != (void *)-1);
+>  
+>  	size = get_vma_size(ptr, &prot);
+>  	FAIL_TEST_IF_FALSE(size == 4 * page_size);
 
-Yeah it sucks, but maybe sleeping (more than the flush period) before
-read is the only way. Which
-is terribly implementation-dependent :(
+Has this been tested?
+
+AI review is suggesting the code was supposed to be this way and it
+appears to have a point:
+	https://sashiko.dev/#/patchset/20260707031745.1039-1-yanlonglong@kylinos.cn
 
