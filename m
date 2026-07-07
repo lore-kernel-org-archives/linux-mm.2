@@ -4,140 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9968AC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 08:21:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4508FC43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 08:26:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BBF86B00A2; Tue,  7 Jul 2026 04:21:36 -0400 (EDT)
+	id 130EB6B00A1; Tue,  7 Jul 2026 04:26:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56CE36B00A3; Tue,  7 Jul 2026 04:21:36 -0400 (EDT)
+	id 0E3346B00A2; Tue,  7 Jul 2026 04:26:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 434FC6B00A6; Tue,  7 Jul 2026 04:21:36 -0400 (EDT)
+	id F181E6B00A3; Tue,  7 Jul 2026 04:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C38B6B00A2
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:21:36 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9DE151C6945
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:21:35 +0000 (UTC)
-X-FDA: 84961286550.11.ADD4AD9
-Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CE3E720003
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:21:32 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=Pz4JCC5j;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf31.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
+	by kanga.kvack.org (Postfix) with ESMTP id C331A6B00A1
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:26:26 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 543058D580
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:26:26 +0000 (UTC)
+X-FDA: 84961298772.13.D82F463
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7C32720005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:26:24 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Qb2NMapP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783412493;
+	s=arc-20220608; t=1783412784;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0qEYw/kORu+CHB2h/1PvcuGa9W8zXV/BEp8uiX+ijrc=;
-	b=mbPplWt5ByPsOuwd7jYDkWNW69TO8gToNjHSBbC0hV0DKZkHkJyYJBr/lY7EZroBpDiGxb
-	a4/y97scMdaMqa1HFi5tc9yLbdVmXsq+88YXrNmtuxJtdcEK5B56bTu7bAU8eEkINiuhVB
-	PoZjScv9u+SL+18zkufrW6YJkJ/cxOo=
+	 content-type:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=47HDgQybI+3t5P+eb3AQpo+jGwETFx3wSiNf2a7otpQ=;
+	b=MvBHw6PNcGNNd2YveB+kvtlrwobmZTldR/FFO06Yhw0CN9kGcQra7co2mGEF6pdsRs1LdR
+	Tp4W4+jZ/EEI45OYbJJ9p71+sN9xzsK9wx72qoNNVMhi393Rwzt6Tuk+V8YJ8XKc9gVSTQ
+	004M0UPNF+J6C6v8mdiQ1vBeV2z7ZEs=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=honor.com header.s=dkim header.b=Pz4JCC5j;
-	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf31.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Qb2NMapP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783412493;
-	b=fLz7MIvTuD0Hyv5FewuzTwfbHkL8XO9uF7BfO4MhgbQuHuEze7tKOU0xJ84osmBt/D7NYq
-	jMULzEKOv3T8AkAPWVbggveMvXCay++P2bUxbA1LX3H6cJTqOyeVYznQrUQXmqp3+4sg7x
-	urKS5b7HaTlxXRPbYqB4m7LT/trvafU=
-dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=To:From;
-	bh=0qEYw/kORu+CHB2h/1PvcuGa9W8zXV/BEp8uiX+ijrc=;
-	b=Pz4JCC5jlXSi5X4B42t+HBGZjPXcu07/0QJzKOkROww8hc0n+LYFEueKq+YzBskjWdDfC7gwn
-	1H8vo4WsTs7uC2COJRcfMc7GyyM70t22qbv7XheS4lp/S98A3iFUlPsg7YpllfaEsbjXdOzLvM/
-	EmvokN6FPkEekmuGMpxr08g=
-Received: from TW004-1.hihonor.com (unknown [10.77.232.85])
-	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gvZ1x4kQfzYm4Nv;
-	Tue,  7 Jul 2026 16:21:25 +0800 (CST)
-Received: from TA001.hihonor.com (10.77.210.32) by TW004-1.hihonor.com
- (10.77.232.85) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 7 Jul
- 2026 16:21:25 +0800
-Received: from TA003.hihonor.com (10.72.0.43) by TA001.hihonor.com
- (10.77.210.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 7 Jul
- 2026 16:21:24 +0800
-Received: from TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1]) by
- TA003.hihonor.com ([fe80::998f:47ec:980d:bdf1%7]) with mapi id
- 15.02.2562.037; Tue, 7 Jul 2026 16:21:25 +0800
-From: wangtao <tao.wangtao@honor.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>, "catalin.marinas@arm.com"
-	<catalin.marinas@arm.com>, "will@kernel.org" <will@kernel.org>,
-	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	"willy@infradead.org" <willy@infradead.org>, "sj@kernel.org" <sj@kernel.org>,
-	"kees@kernel.org" <kees@kernel.org>, "luizcap@redhat.com"
-	<luizcap@redhat.com>, "zhangjiao2@cmss.chinamobile.com"
-	<zhangjiao2@cmss.chinamobile.com>, "kas@kernel.org" <kas@kernel.org>,
-	"ljs@kernel.org" <ljs@kernel.org>
-CC: "hpa@zytor.com" <hpa@zytor.com>, "liam@infradead.org"
-	<liam@infradead.org>, "vbabka@kernel.org" <vbabka@kernel.org>,
-	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>, "jack@suse.cz" <jack@suse.cz>,
-	"riel@surriel.com" <riel@surriel.com>, "harry@kernel.org" <harry@kernel.org>,
-	"jannh@google.com" <jannh@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
-	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com"
-	<peterx@redhat.com>, "ziy@nvidia.com" <ziy@nvidia.com>,
-	"baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
-	"npache@redhat.com" <npache@redhat.com>, "ryan.roberts@arm.com"
-	<ryan.roberts@arm.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
-	"baohua@kernel.org" <baohua@kernel.org>, "lance.yang@linux.dev"
-	<lance.yang@linux.dev>, "xu.xin16@zte.com.cn" <xu.xin16@zte.com.cn>,
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
-	"muchun.song@linux.dev" <muchun.song@linux.dev>, "baoquan.he@linux.dev"
-	<baoquan.he@linux.dev>, "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
-	"matthew.brost@intel.com" <matthew.brost@intel.com>,
-	"joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>, "rakie.kim@sk.com"
-	<rakie.kim@sk.com>, "byungchul@sk.com" <byungchul@sk.com>,
-	"gourry@gourry.net" <gourry@gourry.net>, "ying.huang@linux.alibaba.com"
-	<ying.huang@linux.alibaba.com>, "apopple@nvidia.com" <apopple@nvidia.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org"
-	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"damon@lists.linux.dev" <damon@lists.linux.dev>, "shakeel.butt@linux.dev"
-	<shakeel.butt@linux.dev>, "ryncsn@gmail.com" <ryncsn@gmail.com>,
-	"jparsana@google.com" <jparsana@google.com>, "dvander@google.com"
-	<dvander@google.com>, zhangji <zhangji1@honor.com>, wangzicheng
-	<wangzicheng@honor.com>
-Subject: RE: [RFC PATCH v2 00/13] mm: rework anon_vma and remove
- anon_vma_chain
-Thread-Topic: [RFC PATCH v2 00/13] mm: rework anon_vma and remove
- anon_vma_chain
-Thread-Index: AQHdDdtOKxyL+IwP/0+o3I4bi0Jgh7ZhGu0AgACbXoA=
-Date: Tue, 7 Jul 2026 08:21:24 +0000
-Message-ID: <b00a03d62c53430ca22b3f3c5e5327b5@honor.com>
-References: <20260707063308.29176-1-tao.wangtao@honor.com>
- <08c001ab-320f-4676-830b-8e4ba6a05dee@kernel.org>
-In-Reply-To: <08c001ab-320f-4676-830b-8e4ba6a05dee@kernel.org>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.163.18.240]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	t=1783412784;
+	b=PUQ2rpRwr56Y0JhsfvMuZqR2T7YDbyLeBZqdTs+TGZhhKX+IfqAZ040pGihG+MsjHtDHQ6
+	+rs6+CoxokVuwvg1mfkQ1ri23Vs84uKB8E7ctCHaEvXwkBPj/Bs7s+bwXYrxXCbFQftF/V
+	tOlOXfF793ujtU1RmcelvagtmnPQ91g=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783412782;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:  content-type:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=47HDgQybI+3t5P+eb3AQpo+jGwETFx3wSiNf2a7otpQ=;
+	b=Qb2NMapPhOb2KOQ3rJlfqhuKlRoAbITD0I7wmfCox+Ny8QM6YwO6fsZcZz5Ct6QotTK50F
+	hLXs0XGQnMbmjXKZdScN+ruY4MFHetQ8nIblM22UXvcvMnaxN+QPsUUkkqIy0v2TD5rAPI
+	KM28kDxW6Xl/EtggVHp1zkFD5DCSvbY=
+From: Baoquan He <baoquan.he@linux.dev>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	yosry@kernel.org,
+	chengming.zhou@linux.dev,
+	linux-kernel@vger.kernel.org,
+	Baoquan He <baoquan.he@linux.dev>
+Subject: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching via Redirect entries
+Date: Tue,  7 Jul 2026 16:26:02 +0800
+Message-ID: <20260707082614.95030-1-baoquan.he@linux.dev>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CE3E720003
-X-Stat-Signature: c95wpercfcsch8kuk6kgm7qf3t9r8ok8
+Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 6n1hgxsngaoqzypszksio58okpw8jqcu
+X-Rspamd-Queue-Id: 7C32720005
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783412492-67045
-X-HE-Meta: U2FsdGVkX19YdgBA43T1cWmqa+RZzBs67NRj+pRKwERUEGZBXTcV30XZwPy8r126xxzJ4WQD97C4ZZqbDCLUNzk8u2MS3iJ5clVXiDyuhT1gjkI0STZ2v8kG3DYII3ijXhUaghsaI2UFPe64q/RayeJaExae3hgjRFDl7bFLVZASGJMfe4Uh4ozAeEf+Io1o0WIKhCHqXr7iHa/s99mdhpkCdaq1MTrdYjmkmKyrWEIV7A+Z5I1yeUffxS0mnzkHPbUl6YNqfCePDqKyZki2ASfVHs0j1+dS7Q7VEOoLJSBr3cJHdsq/4FcPQz4xi7pGXB9Vond78pF+WGUs+d2WsXzcKiLWytBW4ad6IeBrPfusASRiVTqAt+gX27A/x6jgzOx1GJ6YYcmQpCDx1Tk1ol6eZ/PaaJe0pjCX4hylxViVnTZ15ay9lugzipIo4+lX5mWuUlNOjJux6IEgy9x7R/oJuYzo3dAKcdIp8HW6oNvEWqz+5fqVXV3t+PdBLZV45ec031AXtcmD7ofgU8TZXe78WodxUcwu2FzPlSxeQGSo/rJmq8MfsGa57PL73vtGaSBBgp/G0/jqJQHYvSRnqJmDL4dBsuANZU4VB7nbm7gUlzgknRajFVagnXIA7wuOYEzJ+208xX3GvUzPmIWfOXrDfAYKcmwDpIS8AXVxZmk+In7nKD3+YRl+jwFmrceCtRNBG8RBKPROBrduNh76d+VpHhXcMj+tm0Xv56Lpxg0AUabA/wNTLZXJ4dnNLeoAjLjzoVapUqd4wD9Xfd7NN8gLIo++Rj10w7+jKK3cof3FYO/Y69E3vLH77MOjTiyygdyd8++VfmZTwc89poW1GgbzG8/8ohi2QlDQeTZTaq4y/pORRCR9BDNWsNChBRyqjKLFJUWU2Klc01DOAfOxrsd/esOpsX52ocJLM4L1GHGt7IYR7T4Xyxa+8fc14OAof2UWbtm50+T7P+zpCFL
- 9Tbsaj/d
- xJCNz/bOgHYcGDZtaCsY/hwLLVcob5UwLvjFDVCr5dayL5wYeZZV4xua6hqDFQjSATpkX3BSQoC8nf8iulEjQr4PiK/kljtMxS5fiu6L+xq9rgvqCDml/R6rLwtDR43Isu48hZ5Rd4ZFw/SmqbqgLSQucSa/H886y39iCTgIwbSRwrYq5vt802vPfAKb50dqhto0U3I2MQNJc21usfrvHKVzysVO7aGKkh+/qDPU9e5IMCAk2F1uPzJfQSYwaXnKzewue4iuhhPAt+kd703tPIld1O96DaUamRZvxf8K5XJAEjOg2SFA/bEwyKgGq5HvRfnPkJZxWfrZWmsnVW4yLdcJ5BfrGlA9sJC8O5hVxUQTouqbJIMPpcIfuXcsX5LsRFLRTX3VjKZUNACe+RcEGi0iPbbZ3tcnEDfwXA2/nfgX8aP9XRQ2s6Hv761BHEz9R7GsuJlLcoDP0aI+CLjsjnwSyXcTFBnOThplsdgKSa4/GaG+AbGo8xdukgD7qaogjJ6HXHFFaRU9vOgogs50loSODU/mNZuefxJcWMPKAcXtA4FU=
+X-HE-Tag: 1783412784-64063
+X-HE-Meta: U2FsdGVkX19KischSLQjPvRjN+PwyETBvWMo4KazBpFflVGTFshX3n2eae4JaCNOwoo/qeUnLznadAWJE1PVSfhAzPJ03wW20NtoHDTUCkNtCVhUd9QKbKr0nz+HmHF4zipuOoepKF17Ejx0bktLe4x8+9NyLG9GTlg3DvaOxXV/VOPO/9DeyK4cR4qAFuTobqB4foqWAPCk22VRbgrgjf2jRg/8AO08dITEwteGeYNZZ2puxMqGlXIApR75ZWpD19lwfN4xgqDDhAo8tSlNpB1xrMXqRcEea+eQZLjbm4bG/4xB9ruwslaoT3FgWpUsNft0QhHX+jhrOjdBlF2+BExU59qo0Cs1nYY+r1wgf2FpUhiWFosMJuCqEv1s862xuWMDg1MsHyb2e6mVCR2EA/gjrNXxKAp7CvXN1ByWEThvHpjt7r87Yl+ZDXWmdENUg1Rpbb8qeDmUMqi6LwNQQgCF86TEYlpiKhNxMH4nsjQqDxzUbq+5du4xy65PRpnjRvZGG4QSydQMBjCrupBsimRZg9UM/aePH0xyvJBJ2jBiiGcJulxAS/G92Uyt1cW/C+tZQc9UsUNlTnQU4rOd0rwPaYn5tI8yzKlKT0DSonbnpBSZgyaFQIiBuPOlTMkO9YoMmSHHSVy2hs2NvKeDJ4TSZuh4kAryexFB8rsbOC77tYthGpGYISsNNXE0KoCSjSUvdkra9comNXzaM8UDSMjGx5TLVuBtUULN7Mj+eptVasWteojGWdtYBFqdf8YAfio3JonCoEMV7ZntE7pAoU1PklXZRX8N1NcSd0zrZewfEqLAbWkn4BacnIQ4KXZ/93rYYXq10uSbLfqHSB76cowBHzgG7He2I/IHEoh1ibgbB+Y/0eNUOTzgX3vRHkCf2pXych939BK1wubn/ITvhcF+cg8LauA1qcJ3EcCVug4+rolPtPvBDhJLjVV3qoyprjRGy+qBdh8Q+vqF4rg
+ 2zRASJBN
+ GE8U7uJhsm3Lo5B7pbirC3D2kWzLb7U5fgqqwUhaeb0/V7UiUMEJY6h6nAq8C2tvlv8/wFDaMhEmDWrziWy+hd0Aw5y+HYQ/A/o/NJQ+WwhZiBPxAbY8l0J29bdIod4enxwePXZOusmagzAFdM9DvwPWMQBsDc+2TjOM4JpoQhG6RwLw16ga+Mx/3P4L6mRwkoXLz0vxJj2c02BE6P6N1MqlidWJQ+Su4/7HtAHtDkv3ZZYI9fgU6x0waPznpCni0wkfb/YhdkegE1lzq0kp2f6fLbWxdAUlb6Q1hwzrg6UafpG4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,20 +95,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiANCj4gT24gNy83LzI2IDA4OjMyLCB0YW8gd3JvdGU6DQo+ID4gSGkgYWxsLA0KPiA+DQo+ID4g
-U2luY2UgdjEgd2FzIHJlbGF0aXZlbHkgY29tcGxleCBhbmQgZGlmZmljdWx0IHRvIGV4dGVuZCwg
-dGhpcyB2ZXJzaW9uDQo+ID4gYWRvcHRzIGEgc2ltcGxlciBhbm9uX3ZtYSBpbXBsZW1lbnRhdGlv
-biBhcHByb2FjaC4NCj4gDQo+IEkgcmVhbGx5IGhhdGUgdG8gcmVwZWF0IG15c2VsZiwgYnV0IHlv
-dSBzZWVtZWQgdG8gaGF2ZSBtaXNzZWQgbXkgbWFpbiBwb2ludA0KPiBbMV0NCj4gDQpJIHNhdyBp
-dCwgYW5kIEnigJl2ZSB3YWl0ZWQgZm9yIGEgd2hpbGUgYXMgd2VsbC4NCg0KSWYgdGhlcmUgYXJl
-IHRlY2huaWNhbCBpc3N1ZXMsIHBsZWFzZSBwb2ludCB0aGVtIG91dCBkaXJlY3RseS4NCk9yIGlz
-IHRoaXMgc2ltcGx5IGhvdyB0ZWNobmljYWwgZGlzY3Vzc2lvbnMgYXJlIHVzdWFsbHkgY29uZHVj
-dGVkIGluIHRoZSBMaW51eCBjb21tdW5pdHkgb3IgdGhlIG1tIHN1YnN5c3RlbT8NCg0KVGhhbmtz
-LA0KVGFvDQoNCj4gIkxvcmVuem8gaGFzIGJlZW4gaGFyZCBhdCB3b3JrIGV4cGxvcmluZyB2YXJp
-b3VzIGRlc2lnbiBvcHRpb25zIChhbmQgSSdtDQo+IGFmcmFpZCBoZSBtaWdodCBiZSBvbmUgb2Yg
-dGhlIDMgcGVvcGxlIG9uIHRoaXMgcGxhbmV0IHRoYXQgdW5kZXJzdGFuZA0KPiBhbm9uX3ZtYSBp
-biBmdWxsIGRldGFpbCksIHNvIEkgc3VnZ2VzdCB3ZSB3YWl0IGZvciBhIHJlZGVzaWduIHByb3Bv
-c2FsIGZyb20NCj4gaGltIGFuZCBzZWUgaWYgdGhhdCBpcyBkb2FibGU/Ig0KPiANCj4gWzFdIGh0
-dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC83MDM3NzYyNi01MDBkLTQ2ZjItYTNmNS0NCj4gYTBk
-MjkxNGNlMzY1QGtlcm5lbC5vcmcvDQo+IA0KPiAtLQ0KPiBDaGVlcnMsDQo+IA0KPiBEYXZpZA0K
+This series introduces a virtual "ghost" swapfile that can be backed
+by multiple physical swap devices, switching between them at runtime
+using a new "Redirect" swap table entry type.
+
+Motivation
+----------
+Physical swap devices have fixed, large sizes but a machine may only
+need a fraction at any given time.  Ghost swap decouples the logical
+swap capacity from physical swap allocation: it presents a large
+virtual swap device to userspace while lazily mapping slots to
+physical devices only when data must leave zswap (writeback).  This
+enables overcommit of swap capacity without wasting physical disk
+space, and allows the ghost device to grow dynamically at runtime.
+
+Ghost swapfile characteristics
+--------------------------------
+Ghost swap decouples logical swap capacity from physical swap allocation.
+Key properties:
+
+- No backing store required.  A ghost swap device can operate purely
+  as a zswap container — compressed pages stay in the zswap pool without
+  ever touching a physical swap device.  No physical swap device needs
+  to be attached.
+
+- Optional physical backing.  One or more physical swap devices can be
+  swapon'd alongside the ghost device, acting as writeback targets when
+  the zswap pool needs to evict cold pages.  The Redirect entry in the
+  ghost swap table links each evicted slot to its physical destination.
+
+- Dynamic size growth.  The ghost device can be extended at runtime via
+  sysfs, up to a current maximum of 1TB.  This is implemented through
+  lazy vmalloc: a sparse 64MB virtual address space is reserved at
+  swapon time to cover the full 1TB range, but physical pages for
+  cluster_info[] structures are allocated only on demand as the device
+  grows.  The cluster_info pointer never changes, so all existing
+  accessors (__swap_offset_to_cluster, cluster_index) work unchanged.
+
+- sysfs control.  Each ghost device exposes attributes under
+  /sys/kernel/mm/ghost_swap/ghost_<N>/:
+    path (RO) — backing device name
+    max  (RW) — current max pages; writing a larger value triggers
+                swap_ghost_extend_max()
+
+Design overview
+---------------
+A swap table slot can now hold a Redirect entry:
+
+  Redirect: |----- physical swp_entry_t -----|101|
+
+This stores a plain swp_entry_t pointing to a slot on a real (physical)
+swap device.  The low 3-bit mark (0b101) distinguishes it from Pointer
+(0b100), PFN (0b10), Shadow (0b1), and NULL (0) entries.
+
+The lifecycle is:
+
+1. swapon a ghost device — reserves sparse vmalloc area (64MB virtual)
+   and physically backs only the initial range.  The device starts with
+   no physical backing store: pages swapped out go to zswap, and zswap
+   pool evictions go to any concurrently attached physical device.
+
+2. zswap writeback from ghost: when the zswap pool needs to evict,
+   zswap_writeback_ghost() allocates a physical slot from any real
+   swap device, writes the data there, and plants a Redirect entry
+   in the ghost's swap table pointing to the physical slot.
+
+3. Swap-in from ghost: swap_read_folio() detects the ghost device
+   (SWP_GHOST), resolves the Redirect to the physical swp_entry_t,
+   and forwards the read I/O to the physical device.
+
+4. When the swap cache folio is removed, the Redirect entry is restored
+   from an xarray (redirect_xa) that persists the mapping, so
+   subsequent reads still find the physical backing.
+
+5. When the physical slot is freed, the ghost slot is also freed,
+   cascading through swap_range_free().
+
+Note:
+------
+Ghost swapfile is a proof of concept. Compared with the other patchset:
+[RFC PATCH v2 0/7] mm, swap:  Virtual Swap Space (Swap Table Edition),
+it explores a different approach to implementing virtual swap on top of
+the existing swap table infrastructure, with a simpler implementation.
+It builds on Chris Li's earlier ghost swapfile work and is currently
+tentatively named "ghost swapfile" — alternative naming suggestions are
+welcome. Ghost swapfile setup can also be integrated through modifications
+to the swapon API and the swapon command in util-linux, for example:
+swapon --ghost ghost_1:2G -p 5.
+
+Baoquan He (9):
+  mm/swap_table: add Redirect entry encoding for ghost swap backend
+    switching
+  mm/swap: add redirect_xa field and ghost redirect helper declarations
+  mm/swapfile: implement ghost redirect helpers and free-path cascade
+  mm/swap_state: restore Redirect entry when swap cache folio is removed
+  mm/zswap: implement ghost-to-physical writeback for backend switching
+  mm/page_io: forward ghost swap reads to physical device via Redirect
+  mm/swapfile: manage ghost cluster_info via lazy vmalloc
+  mm/swapfile: implement swap_ghost_extend_max() for dynamic growth
+  mm/swapfile: add sysfs interface for ghost swap extension
+
+Chris Li (1):
+  mm: ghost swapfile support for zswap
+
+ include/linux/swap.h |  10 +
+ mm/page_io.c         |  51 +++-
+ mm/swap.h            |  16 +-
+ mm/swap_state.c      |  28 +++
+ mm/swap_table.h      |  38 +++
+ mm/swapfile.c        | 579 ++++++++++++++++++++++++++++++++++++++++---
+ mm/zswap.c           |  98 +++++++-
+ 7 files changed, 772 insertions(+), 48 deletions(-)
+
+-- 
+2.54.0
+
 
