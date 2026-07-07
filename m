@@ -4,88 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32E57C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 12:55:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E869C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 12:59:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E6EC6B009D; Tue,  7 Jul 2026 08:55:38 -0400 (EDT)
+	id 919EA6B0005; Tue,  7 Jul 2026 08:59:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 170346B009E; Tue,  7 Jul 2026 08:55:38 -0400 (EDT)
+	id 8A3666B008A; Tue,  7 Jul 2026 08:59:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0619F6B009F; Tue,  7 Jul 2026 08:55:37 -0400 (EDT)
+	id 76B8A6B0088; Tue,  7 Jul 2026 08:59:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CDE866B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:55:37 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4891D6B009F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:59:45 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 48C921C3953
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:55:37 +0000 (UTC)
-X-FDA: 84961977114.03.570D1F0
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 757A740006
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:55:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=E6rFw4FQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5776A0422
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:59:44 +0000 (UTC)
+X-FDA: 84961987488.03.14BD4CF
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EC81B4000C
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:59:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=g8XVdsic;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783428935;
+	s=arc-20220608; t=1783429182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RocPjRVmhKRX2Gf0pkjPFphj9HwTbw1IGurD0TN9Dxs=;
-	b=VxGTtN+92LEuypQx+iKwJ2IgmxHnII+U2Lscunn92g4pLqfMC/3qR8Fe6UyTk9/qx9nMTi
-	KvymkGHO0Boubhf/efep52gKi3LxZmRHzWOqdVrRMoLO0WXpfxhuoeQ//Q186ZPVC/LSih
-	N1F2qoBX802/srqnFIJkJxK5SEjdQ8o=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=bqawGs/D2kwMuaBURT3A7nHx9bziQ0g0fHDee9Yijoc=;
+	b=HTSxCGsjsMGcYAXpgDzv73/+FBjCiorUvcdiabQc8vb+wc6GH3ED0ZZTpZziMtGg0tzPtx
+	EMn5TgtqgJxJAxzDy2szVgHN5rN0qUPV27ZTf/oouZsWNiqn/uKIep5QtqVj6ed5hvXav+
+	mOMMHzNsH+4voVoWK1c/d82e2VU/TvA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=E6rFw4FQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=g8XVdsic;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf01.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783428935;
-	b=0T6GKmgbyI+4x3urG/AxMKgp+Q21kqFhTZlx7JWPFanrOJPKANrHJm21LxpSv+rBgEdLG2
-	wJowM0HXNTukmG13NmVEFWWxtU81XOSWwljBZfyX+gZHwqSQNUIl3vDP12r/HzSeO63iGl
-	GI3SBPPjlsR+4j2I1mjJR8THcto7e74=
-Date: Tue, 7 Jul 2026 20:55:18 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783428933;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RocPjRVmhKRX2Gf0pkjPFphj9HwTbw1IGurD0TN9Dxs=;
-	b=E6rFw4FQWw2qdm0dZDuOHLoC/Hs5JB3u6KObSs3b55vka5YGoXTuSiNs71dL24GPbp971w
-	N3+3xzREEyYKKSyC4O2ACyNYf1JZw9UyRQSU+uafXAnYOzRnqJwqRYO5U2DswgIZJA58pj
-	6YEib/ysaWyxBDeMJr4qYNpnMIgBrYU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, chrisl@kernel.org,
-	david@kernel.org, jp.kobryn@linux.dev, kasong@tencent.com,
-	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
-	mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org,
-	shakeel.butt@linux.dev, shikemeng@huaweicloud.com,
-	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org,
-	youngjun.park@lge.com
-Subject: Re: [PATCH v3 1/4] mm: avoid unnecessary lru drain for
- wp_can_reuse_anon_folio()
-Message-ID: <akz3NnXR2uP9ID2E@MiWiFi-R3L-srv>
-References: <20260701235955.36126-1-baohua@kernel.org>
- <20260701235955.36126-2-baohua@kernel.org>
+	t=1783429182;
+	b=pMS/C7Q+H6gEhekhjltXImqsgFEyFW7opNElntkCIm4S+6gMftrdFNNOQgRJRbj5ffNlWi
+	jYhcE0yyqHvpZ4WutknVgDLDwPa8wrn4y8nposwV8ScyP6qOWUArbu8r07yRQZcHIPJiQg
+	y0dvdMvU5nOqLLPqpMFBKjTTJFoYqrE=
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca696c4b152so31482a12.1
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 05:59:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783429182; x=1784033982; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bqawGs/D2kwMuaBURT3A7nHx9bziQ0g0fHDee9Yijoc=;
+        b=g8XVdsic7IJGVsv9POC23sNjtEQlVjSUWelSWYuNAYafTGFOC6eNw1eHUCajmyqjvI
+         +st3duMPrHYYStNmSqbG7nUNGL5J4rzlf/PkuQyS2PnJKCnSHCy61h6RhFfEZaui22f0
+         P/GBCcb4jcl7CqbcFk67o/I8lYc+8DcnwE+aOplRWJXXA1eHl1UiGy/zsXq3UtaJfJLx
+         PmcJdPbnwaPvzQhBrCNJR7bW/seY1i49CV8WqgDkGlRxCyGJTRoVtI2UAjr8ubuBr5Px
+         +bigoXrHDiWDkRjklETuuZ4KwP7g+BBDGxC3ybSx7drCZrgCGd/y5PeRHKOzK6xQ9s6B
+         ODRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783429182; x=1784033982;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bqawGs/D2kwMuaBURT3A7nHx9bziQ0g0fHDee9Yijoc=;
+        b=V128Sm+eqMWklvMBEV1TRzvgydQe4x2Tu663UlPRZ3G8KotoxJY/hgMp78T6uzyHsZ
+         GEJqUMHZ1vlUHoyoCKm2XP83fNNHl+A7yVaC8DUChE9EDX3xTJfUIAnOkVDhytY54fDS
+         eaIzv4kFsfB5RGCQqTAtf5FVkNU8y319YV++u8kCMpkTrOcw+4GUS1rN3UHy2dZACfoP
+         CPFjg21pLOFepkAySAX9U1Y3MXTba+CGXQzo2XNOUXDDJkJc3XAo2uvv2B8zcMJF47vQ
+         Qwwar1S7FJLpozUlyuKK4hDGx4WQv6BrGbRuz7Xqnt4+K6lvuy0kpNKzn2pX0PX7zIn5
+         BtQA==
+X-Forwarded-Encrypted: i=1; AHgh+Rpu5m2/CaAVEadYdhT+NN2GHz87zK4fuYgb3r5zj4TA3dE0jXNCDAZTWvz4HmdqBrdl9VrqiYhcmQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy6Hy2ZNsqZVE4k8mZzZHJ2zGVCqcBldscgN30kwpNQGy2ogr/r
+	QuJgLIdq83D4Gf1tScjKAjjQwWzDWyR6RgrygqXVY9ogSjWx0Z1s3Q1D
+X-Gm-Gg: AfdE7clJ+NF97ZFu5LWn0vk9PwsOqxAUGe+xlXhWE9R5lwkGWW/eCZPGTvYVDs9SJRK
+	IAHnJzu7FjN5hsjI5g5JmtT1sTowLZXlHc8kNcpQs8W8bplAWXv3ggXAx1gP2ec5USCtHl3eQFb
+	QkcozKyUbqW0arEyb71zWdpSS7/3tAY7ALLmve5xqalvV3BVLh3Xzmj5bCTi/LBTuUmge4ft78+
+	UPaKL202eC5mWWlA1ykV2XxfB0k9IEuxtgrdszDLNNNwf76r6+ziwm/e6pMALNeQXIAeYLOcRg6
+	o4Ikchsz7T+8MAnLboliOL0/HDRXCcAERQThieWlsUuwl91LeYMqBN15Hu9xB1+7HhjHV1wyniu
+	Efjl6ljneq0l2T5+a9t8VL7Kf2u7SDB5Xh/D8zxpOrkhcD/CgkneHyoRql6R8CO5Gk0LXV21Ijd
+	bUTcTtg2EQapWtLhw4LuyBhxmAxQ==
+X-Received: by 2002:a05:6a00:859b:b0:848:32f5:4999 with SMTP id d2e1a72fcca58-84832f56f1dmr1523190b3a.30.1783429181654;
+        Tue, 07 Jul 2026 05:59:41 -0700 (PDT)
+Received: from intel.company.local ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6b5e566sm5415983b3a.3.2026.07.07.05.59.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 05:59:40 -0700 (PDT)
+From: Wandun Chen <chenwandun1@gmail.com>
+To: vbabka@kernel.org,
+	david@kernel.org,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	Alexander.Krabler@kuka.com,
+	hughd@google.com,
+	fvdl@google.com,
+	bigeasy@linutronix.de,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: akpm@linux-foundation.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	mathieu.desnoyers@efficios.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	pfalcato@suse.de
+Subject: [PATCH v2 0/4] mm: honour compact_unevictable_allowed in mlock and CMA paths
+Date: Tue,  7 Jul 2026 20:59:21 +0800
+Message-ID: <20260707125925.3725177-1-chenwandun1@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260701235955.36126-2-baohua@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EC81B4000C
+X-Stat-Signature: mp9ykgf5b89sr91te6z4sgnkenzcfgyi
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 757A740006
-X-Stat-Signature: nb1q9icaowbzj4njfj19jujjghtct4jk
-X-HE-Tag: 1783428935-194462
-X-HE-Meta: U2FsdGVkX1+1ewJq2WgNBCXh2UNM/OZ7ZhKatBVEjEJChVDlIgFCs1vrNdFfbxi/al9RGypHOV4GJkOLSNUqwBckQzt3Iaca8ZKswNkOvc81Y2NriUlRXTw9mIc9vz4FjlU5bM7HKL89w6iqZ/lk0U+DskdMod+ds1sAQlzZt6qMahcktLFbvoS2ootzbJQBiHXSfLlND7oVpKoxPXmqqzK7vAErPaNKFgj+1F2gXuRG9HCdLaQUNeSDOiM2safh/Mw7jggwWnJPzRTmZw8NpUyeBqBNhj4Z/fc0mRhb1gMomNhWrd8tLq5+PHnTSCL3ti/g5hCMOEz88B4epmAMnUZeTQupW3Qt7wEenhUUUczjpRosWhEVLLvaSVnZ+1IKZGjdhWh0t8LyVfFOGrlhhyBI+3wrbd+3pWh6LgigAb6t2qwhoQAicMB5+GEZ0V2jt+zrAfoeQcJ4awNiMtP1TxGa/BUkya/XhaL7BHd+hvmuALkmCn+eFnWm9T9S32u1E5zB1vskCUp9dmrVwV+gLzItnyfHB+Jc208nHYqGb6whq7lUwFEyOn0ZwdglxaGXv94kmGUD+x9HrB5FNQnO0RBYXfiKEyVF71OA5uqFgLUnk34M2GbBP+kEVnT1ALSC+7sHy702mnmkfk+/23UnqdLJtYCOS/BPxOh0DC6T0c+L/94bZtuYUm0CHKVmvY0zHY7BLkjwglfGqgsogDalGPcM7TIiP5ws1B7Vrnnrx8TfIIA0/Ivr04nzWSNKEd3uqM1JPihvZzagYCJ/KlteIFR/7Qlmiu9FHByZlBBSeYTx/Wka6aWyDD79QS2LBtguy9Sly2HKxmb6ymHPVcnBDeYOlrHBw0SQjxeXwxZo9eLSUAS84N3pw9ELQlvS1TgWFVnhvciz+01n/zajJaT0TXdEeKvBg0tjkltvl76Y10fxWXPLH+gA8pYeb7AUcdm/E5AHakLlAaCw8qWLM9y
- OYw51FtB
- P/tEUBfbV+vJo1s2qZk4bHOezeSjaicHG9wki1+lR4BcDnJXEiNpcE9sJj594AGvunsfBvM+xu3Xm8NQWaDmDBo/wEzDwo1TKd9q+9wnv5gViygh0dEmYdALHBw42uo3XdgDEMeUB2eOiz5kVXuGiO2Rk8RS9l2ApAOY3Jh1bExokdAbBej5Nd9RPADbPtfNV5NHPfIDbKfQIdUJ+lBL7cVskx6axU47fYOTH6zPwTLdTj0ZVhFth3eUXOVL9HvQwEHu16laOwNo3i+1R0szYSzAX33MHAjZTGP0oGuyYGUUhPpj/cagV+gWErZ3TmvMBHYCY0jthIhqtCh+B213dLzbntQ==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783429182-282608
+X-HE-Meta: U2FsdGVkX1/9D2C4+ySsztSAQJnQ8XEijAyGpA9JzbJkUxzTjhwTToG9AZ8GuBFadTgsVkxa5OxVXQ5s84msOEVAgvs4Nl2Wyt+5MfsB72w1flwyCNOMAgyLCQrjNsiMT3uUKH2Yi04axXrBejZ7KL02Xb1LT9ZTRuaEmdEp7y9F7Lr5EfVbaEG9Q7Ij4GC5GIHBJz7mBzEatH2U5BiDqRGjo1YGfUaDXTA7GQvjqqVoLqzEFEw1judA8YKMbZkSvqJk0ywLp8TJHUyzOKks/zbkRn8jp0r/dPoT7JpyhQPjwK2Lym6DN0bZyg7iv6XqBiU64GZzp24rBPKmD/qRLPT0DYrRNF0yWAgHUUUF+3SnYhKKBWfUaxg8YEfk+EvXJyzuv88axDCB3Jt5fK9VCi/1j3TrT/rC2cnljdMpTKeA3edytFEPHbrCdpL443cv/hEcYNA5hqSlwIg2bGnGkvm7m9D/z2w4DoyduIK+gXTVpQsvYiBzYP+zcl88pR1pjSkHw+iYYGaXxOkyoV+uDvpzc1uamFi7rWhNrfhQTKL/fUIvc94AS+rfFK8F21VH5PeFngFIWlmPydghrZzowp2hVBpJNapEQ7s//Z+wjUK1or71uGChbI5jwN0mcvrgChfeZY9dZNDpHmNPgcdP/BAUC/xuCUTM0xmKA/hAnqtb4X86PCj4TeRtkdQ/BhhwmJza6crRbEhlc8sRZh/BSckla2sCtlc+uysHBLXq+dgCeFS++qxpY4GW7rxWrJdHIUTxHeXtrdp0/NckBV7YnM8IPvElnxDviYTGoHrr/y/xlwm7qoLTTB5Rmlm8STlqu/vuM2IF7sRhRu99OVU8giwaF2wKe6WfqM64r0c6OW4sWNEg6JfMLTLFbA/Hvkk/KbfKlgQRWGX3CxXLtQTnon0h0lNIrt62IwdGt2ueZ3zAU7/tN1h2pa575C9qCQZoqelxYvZ3ZUPvZIQ/GaJ
+ geqQlLJT
+ OY5cfqSz/fpX1d0oU7osACRO3eX79eKriROqq/bJIimjdvee1MWFiojiJqLVDKMwRIVahvrl6XQhJE39MAIpiXpb0bV5/FPV9HYLk74Y4RcDVeuqaJeJd5QRLdQwjqB2r7nANsiJCeYzURPTZN0YrYsVdxihgsF5ZInIvxMKS4Xzd6CbkoqI2m8LifUB/K5fuDwR4HT3XswWEabAMKKsBtkakR8D/73/N81/ErceI41qzQRzx1NYsG+rsmUevhmMgCsIHB2mZgzSWfvvIkzy0sVCvcPH49n+jq4eIKg6wgs0G9wd0PD6mPE/uqrZs3ViUZcNshHYMRJjiO1t9H/mAsfB6jfLQsy7AbK7fqgG9tMkqJKV525iQcUTzkGeBiT2D9HUEUwU2o4k7S/K3oJ/uDrdL3gbO/r2cPQ/sf/5XwkwEbHZz7yB/BLhI3P3eUqmh2kya73V8r+rgCcctX7zb9wEjIUybyBJisgMDRTtSotpHqPwIeeczb3CbWWQ0qS5UqX6EvP0jW8PVPs901kL5A4ktp+FGjLnBQZeZs4URU48S/89klag4eeon+xXk3Dbif2H7wHBBt5Fy8ezVmKRFgtKJ1r5HNlRBtZE0duQVyjYveuY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,69 +144,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/02/26 at 07:59am, Barry Song (Xiaomi) wrote:
-> There is a case where `folio_ref_count(folio) == 3` and
-> `!folio_test_swapcache(folio)`. In that case, both
-> `folio_ref_count(folio) > 3` and
-> `folio_ref_count(folio) > 1 + folio_test_swapcache(folio)` evaluate
-> false, causing an unnecessary local LRU drain.
-> 
-> During an Ubuntu boot, I observed over 5,000 redundant local LRU
-> drains. For a kernel build with a minimal configuration, I observed
-> more than 20,000 redundant drains.
-> 
-> Fix this by checking against: `1 + in_swapcache + in_lrucache`
-> instead of hardcoding `folio_ref_count(folio) > 3`.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Kairui Song <kasong@tencent.com>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> ---
->  mm/memory.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+From: Wandun Chen <chenwandun@lixiang.com>
 
-Rechecked, LGTM,
+vm.compact_unevictable_allowed=0 (the default on RT) is meant to keep
+compaction from touching unevictable folios. Several paths still migrate
+folios that are about to become unevictable, or in CMA regions,
+installing migration entries that a later access must wait on, then
+causing latency spikes on RT kernels.
 
-Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+This series fixes those paths and adds a tracepoint for diagnosis. It is
+a rework of the RFC [1] per review feedback, mainly from Vlastimil.
 
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ff338c2abe92..87da78eb1abd 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4181,6 +4181,9 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
->  static bool wp_can_reuse_anon_folio(struct folio *folio,
->  				    struct vm_area_struct *vma)
->  {
-> +	const bool in_lru_cache = !folio_test_lru(folio);
-> +	const bool in_swapcache = folio_test_swapcache(folio);
-> +
->  	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && folio_test_large(folio))
->  		return __wp_can_reuse_large_anon_folio(folio, vma);
->  
-> @@ -4191,15 +4194,16 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
->  	 *
->  	 * KSM doesn't necessarily raise the folio refcount.
->  	 */
-> -	if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
-> +	if (folio_test_ksm(folio) ||
-> +	    folio_ref_count(folio) > 1 + in_lru_cache + in_swapcache)
->  		return false;
-> -	if (!folio_test_lru(folio))
-> +	if (in_lru_cache)
->  		/*
->  		 * We cannot easily detect+handle references from
->  		 * remote LRU caches or references to LRU folios.
->  		 */
->  		lru_add_drain();
-> -	if (folio_ref_count(folio) > 1 + folio_test_swapcache(folio))
-> +	if (folio_ref_count(folio) > 1 + in_swapcache)
->  		return false;
->  	if (!folio_trylock(folio))
->  		return false;
-> -- 
-> 2.39.3 (Apple Git-146)
-> 
+RFC --> v2:
+1. On top of the isolate-path filtering, also filter by VM_LOCKED
+   during the migration unmap step.
+
+2. Make mlock/mlockall wait for in-flight migration entries, ensuring
+   the folio is on the unevictable LRU before mlock[all] returns.
+
+3. Dropped letting CMA migration take unevictable folios; instead
+   migrate CMA folios out during mlock[all], avoiding migration at
+   cma_alloc time.
+
+4. Moved the tracepoint to the migration unmap path.
+
+[1] https://lore.kernel.org/lkml/20260604023812.3700316-1-chenwandun1@gmail.com/
+
+Wandun Chen (4):
+  mm/migrate: do not migrate folios mapped into VM_LOCKED VMAs under
+    compaction
+  mm/mlock: wait for migration to finish when mlocking a folio
+  mm/migrate: add tracepoint for folios unmapped during migration
+  mm/mlock: migrate folios out of CMA when mlocking a range
+
+ include/linux/compaction.h     |   6 ++
+ include/linux/rmap.h           |   3 +
+ include/trace/events/migrate.h |  29 +++++++
+ mm/compaction.c                |   8 +-
+ mm/migrate.c                   |  23 +++++-
+ mm/mlock.c                     | 142 ++++++++++++++++++++++++++++++++-
+ mm/rmap.c                      |  16 +++-
+ 7 files changed, 216 insertions(+), 11 deletions(-)
+
+-- 
+2.43.0
+
 
