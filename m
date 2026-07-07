@@ -4,99 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0803DC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 08:00:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD5EDC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 08:00:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAD066B00A5; Tue,  7 Jul 2026 04:00:25 -0400 (EDT)
+	id AC6756B00A6; Tue,  7 Jul 2026 04:00:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84BE6B00A6; Tue,  7 Jul 2026 04:00:25 -0400 (EDT)
+	id A50066B00AA; Tue,  7 Jul 2026 04:00:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9A6C6B00A7; Tue,  7 Jul 2026 04:00:25 -0400 (EDT)
+	id 93F676B00AB; Tue,  7 Jul 2026 04:00:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A594C6B00A5
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:00:25 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 36B301A0382
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:00:25 +0000 (UTC)
-X-FDA: 84961233210.21.1F3201B
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C4BE920005
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:00:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=RHSZIw9m;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf13.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783411223;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 66D7D6B00A6
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:00:29 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2F41120386
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:00:28 +0000 (UTC)
+X-FDA: 84961233336.16.89BF877
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	by imf06.hostedemail.com (Postfix) with ESMTP id F2ADD18000E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:00:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tvsgU7RZ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of richardycc@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=richardycc@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783411227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NZErXVYILA0JyhLzPx7dstgdMd/mXyDNDy7Kbtxxfik=;
-	b=jez2bJtvI4XzMaE2WvV7gUEA8wozPhoVmCzTbIF+1iPhOYESuu0IVruh5+yaoM0DRayyOr
-	KxR0jqN6A2mO9pnD1uWxZcfWeP4n/Kz2h3weD9XVjB0KEtESI4m2yyjJU3B2wVqQj2wtSs
-	8Cam+yKLTPN6BZac/1skhjitEYegfik=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=RHSZIw9m;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf13.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783411223;
-	b=2cDD6SVHwTTNw1ySD/nmcuYhiNWMBEkVByxAPhaemQ3OiCIi+dwMS3GhDsHt3nw4s9KAoM
-	HASq2Aby2Rd1ZfWfdqKCtrqcgnPMSy2VjUppwPctZ5cmPnoxK+SKXOHaBP5fxf2retOgBl
-	erCrB65jNEBZsUMlnVanWKSHY0FaK4g=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=NZErXVYILA0JyhLzPx7dstgdMd/mXyDNDy7Kbtxxfik=;
-	b=RHSZIw9mmbJK5Kipoz8hsc5y9s6m8u3SedHlYkMk9WqM2NSigbmffoBH62AyaclG/tNyatFop
-	eRDu0tMOb4OftQBNwW9XpD7Q4Z3PSmLHi7XHMa4CyRnZbdfqeWJqApWCnW/YKFtjpiq8C3xNVG5
-	rbopkJ0ag+xvJrHWAtJYrcU=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gvYLr3tCxz1prL6;
-	Tue,  7 Jul 2026 15:51:00 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id DD5B94057D;
-	Tue,  7 Jul 2026 16:00:15 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 7 Jul 2026 16:00:14 +0800
-Message-ID: <61cebac3-936b-4366-b1fc-35db70a2f1d0@huawei.com>
-Date: Tue, 7 Jul 2026 16:00:13 +0800
+	bh=DbAkDKiQdAHlIjM23fXX27BCEHDb70qexB45VCSeVIM=;
+	b=D7otV9epYeI0Z7Lthu6YqS2poct1wNNynRe03u2MIw3/zEIezviJMgRMRG3VprMrFsUmNl
+	5xAif//zEQ1k4Tt0Yydu0FSpo836H3leY/0odmErdwrW1LfZnwH+hItCDHA6cK8DB2C4X+
+	Hw5yQJJ/8R+gYBvAU5s09S5lVu0Bi5o=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=tvsgU7RZ;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf06.hostedemail.com: domain of richardycc@google.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=richardycc@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783411227;
+	b=aFY6s4pyfCdPGev2luKbBnho9XzKoRPlVQa1yRf0uoYJKyocbylxGFYZ7DMvt7hw9WIKYx
+	A8tfuePlcTL5h3kneeAbmlmlsdH2mFcc/m1gkw0R1GGQwl1H9b0rzrrDSJZlSWwM6Rw8fK
+	Dov8+cRSSa2c6F9WZ+G6s4WoVz4o2kw=
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b0077d7053so2270e87.1
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 01:00:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783411225; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AnwkV2tZaG4Co622XrxqPZ+X7ILI/kh/EHHpDA9cx6Ro1N2w0iIY3B6LVyg5SOiZTe
+         pRSN2KIy6b16GCLCf2/fqxWVgdGIqgkseboaU9W/SBl3wG1vo5FTQ85+stG17U1vLbxi
+         ZKatw4omv3Wx335Evh8ZGNlS+qUY+wRLZRlTYZekCDYN9FetPHjPLq9yCwmSVv9WQdU5
+         WT7s98PNHDp2cefWbsMyuN6rYMDOGP5avwDXHeWGzbDRsxLGvbR4tHDNjyocA2P32sai
+         p4OWNvquxbBYasly6OQXRb9pMANf+SOTSaCLLKNgwkArjS3Tps4pyqIa8H/mQ0YLIwkQ
+         wA+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DbAkDKiQdAHlIjM23fXX27BCEHDb70qexB45VCSeVIM=;
+        fh=L0gnifNQjb852G2cY6spb1KglK/SjTkVROPmICaKWqc=;
+        b=sOZ6Yz0c2ZXqsdMdkdfI/7I5B1cgMLwf3f0/A+zPJfz8yJSNdGGRHxms/4t4JaoL73
+         AJb9+ZjfO79A0fAfUBCldtdWGXE5qDfWw3z/mcT9sY3072njTYq77KsNVdIvR149lVvS
+         lNrZXxAB7agKCUizi1kV8kze4oJwDRcfth1twLFZDGCc7x6YidV0ysFCTwUDUXgtbgyi
+         KWukN/0XaSQCr/MDCg/rn9AzfSIF1GYMPQBGNesjM3HPJNNT6ZX30w6CcsgR+MzFq+qH
+         DkREqJULGorURVCSr4zssP9SIiasRsg900p4nZhx7RzE9SQk+a/QMJOUkeKz3wy6eJZM
+         GiOw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783411225; x=1784016025; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DbAkDKiQdAHlIjM23fXX27BCEHDb70qexB45VCSeVIM=;
+        b=tvsgU7RZygXM3n0OomsfY7PHmIwAtdmwluflphlSeOanfaZXvejHcIGt+u/AFMzPIB
+         SUcQibpIbzK7Zb2uvqy5EmTmkZPCm572O5a3hAV0UB/6R2LLplsXNSNiYFXToeTXz+n1
+         NGfMzYZeLfSU90IRFZH00dszaeC8R8DMU+YO4G7hkTvb5SCoockHUE+cyrw50zME6CfD
+         ssanu05Yw2B9lrN7Zmq63t8BrxTeCwxJ4PZ8aKHs0CBOgZ128zPImmp0EB1iq2cdYIO/
+         klYTWyweo85JkB8RzJ9YvAEmdfOSaCttr9qZdUKAK9nDL7/Cr4WpejeANYC86XhLmMa0
+         dg7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783411225; x=1784016025;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=DbAkDKiQdAHlIjM23fXX27BCEHDb70qexB45VCSeVIM=;
+        b=FNWvaWTfvtVice5Sj4VN61ATtm2GHEVZxm4paHIKiR+VJh1acJE8fNqnL4NHXWV3jj
+         kEvtFt8pCVhlU6seWqMkBOhq/xuw2TvUaixIQZ6lQil85xiv7C2GU2tFSiWXWlF1y6pC
+         /h7fcYFrJtnXaDQnkyh/+sYimprD6BabpLagSMd1O8XwLw4VjEbT5p7+Rb7XpCbsrkB6
+         bguJXLmWZPRNpX57vFd8EkhyoUhNjjD/odAbDo5DglNX4WwYova3R/WRNoz+Lt7c7s6H
+         TpH6MwrSbdG90tjNBgaAzGcjlVQa0NIfg85JE4v7tCEq4EOt2AufYkWyMxupY+Mecau5
+         vQyA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr9QTbhAObnkE/mSZZYV/KS4ihaVhtjPuRa903a/sIC3z2j6kz+f+E7X4F3JZIcT9W4SHr5TI2Q/A==@kvack.org
+X-Gm-Message-State: AOJu0YyNwKhP0N0rqxGqm/d8/Bn4dGOdS0cWBE/C3yynW2hQYoyTyDwq
+	c/BPDvANI2n6mtlHex3lCRu6XVzzFbiakRQ9iVC2Ret9VDuebDLzcYv5tigv81/imPwfwkx33C4
+	9bcsikJ058MSMPqY87h+KXhWXz2GpWfjyW+T8gNw=
+X-Gm-Gg: AfdE7clKYlV9EOO2pzfKGj28qjaqiu52H/GTJEW+pbYYlcKScbEty3Hj0HkNViFQG6f
+	O5poGHNjX3TgIHI5mYZaG9eP2V2CqRWl8NKf/oLDd3vuSLWrEwfzKOYWRNnV/7v9u5JVBzCw33u
+	Yeef/Z5UPX7ISqtTibHMQMgHEo34Swec9tD92J/VAYwVNnF2gjFMZEa7/WhZ19l511oU8JDk22+
+	VLFEA2pRz7i3SuFULg2ll6PxCEx/30VTvPFJhu5oJ1U7DlCGO5mdSAPmumUbXDJX4KRfZy6hHo1
+	aD0saA==
+X-Received: by 2002:a05:6512:3da8:b0:5ae:bfe1:737b with SMTP id
+ 2adb3069b0e04-5b00ad0be3emr126280e87.10.1783411224922; Tue, 07 Jul 2026
+ 01:00:24 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: migrate_device: fix pte_pfn/pte_dirty called on
- non-present PTE
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
-CC: David Hildenbrand <david@kernel.org>, Matthew Brost
-	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
-	<rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
-	<gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, <linux-mm@kvack.org>
-References: <20260706111958.3649651-1-wangkefeng.wang@huawei.com>
- <20260706110113.920498961e5b29b212c7a199@linux-foundation.org>
- <DJRYJCAKQVT8.1U855ME5LF6EF@nvidia.com>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <DJRYJCAKQVT8.1U855ME5LF6EF@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Stat-Signature: onjai418a93pkoyco8umnxitm6uu9sab
-X-Rspamd-Queue-Id: C4BE920005
-X-Rspamd-Server: rspam01
+References: <20260706081218.3438762-1-richardycc@google.com> <CAGsJ_4z+NfRbT0KYJA8Oe0QZ5nKUDLQFwE01Gy6khj6kq09JZA@mail.gmail.com>
+In-Reply-To: <CAGsJ_4z+NfRbT0KYJA8Oe0QZ5nKUDLQFwE01Gy6khj6kq09JZA@mail.gmail.com>
+From: Richard Chang <richardycc@google.com>
+Date: Tue, 7 Jul 2026 16:00:13 +0800
+X-Gm-Features: AVVi8Cf3ibBWWIWOluFT0ClIxymtOO0JsOIGpXKypqkH0c6u-2_EYE3zJqMFF4I
+Message-ID: <CALC_0q9fuKkfB1HnXjEALGii4uPeS-jdXcMUZjs5trAEr8mP3g@mail.gmail.com>
+Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
+	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: hzme9t5bupeu57uooa7rkjuejaoybdi6
+X-Rspamd-Queue-Id: F2ADD18000E
 X-Rspam-User: 
-X-HE-Tag: 1783411221-392737
-X-HE-Meta: U2FsdGVkX1+226SznJPRF3WOfrBB3lVjxAN2XdwP0fw+DGPXXAMcmQqtKlx0C2g9j3wcICfZuCcOfIASiVK5tkm08xYUfN6ZZj/aqXgtFdBkhHIao0AOXT+kA/aNPqFcfzJAp3ugW937ZZoCf7LeVTihEb0CJf2ney3O21MOijiZnehm+wB5KKBmrMDh6ZkhKaKXqsZlSR10pZ3DnLYIkprh3If2woXPD9PsjI1frmtcsexA+boiDSRj98tKEi0GMCE6uRZQBGBLZedQ+h62nXObI4LGrGELTayGo5AdCnV7xs0awj4qlWM5+ZQw3lA2yhoSqdWxAmT71QKl/qj7i3ChJFzedEou4vtCNRrtBWhJqhmrdAqGFAMcXKc8RvRL5/5RE9jNoBD6l8QAtnStRw5uWZq2P7F9PsjjXOPsgTQbaWFMqQjVqusXnhRwXmkrRTvK+LsrW6PKz7cDahI2D2S6tR4lS9zmUOjBmhsQoQq4icPh9ErzH4nMQrlBvu2PaoYPTuMnDGAjDYUhDCpwGndRQGKN1qhcAXN/eUqh7uJf+sjQ3ruVVAygUxuyJpJkENuziijl9faMb66YaP8D3zerlolKCse6BCbM0n6hdvsFQzb29G52LD58BrtM25KTZ4LxcKbpzt0xfM4+yd1oV8jm+Z4jZLU9Om6Hvc8dq/He0sb0pzA8PHnxseGXDH5H6/2WCcVyZEFAi3/3RRBMNjYzUg9ZluD9ZanOP1B5MfWHSIwtnz6AfDNT89WCn7bH9p9r/OijpTxSXpAcZhijBhFPDUfe2k6RtNKdMJOkHsS1SgQuhaOM8z/q/mAV2AlEvP6+4xI0rjzrqlndNMrv5hblrkakVEUlC6v+E1z8tGajqt5XmG9cLmfyyHThpIqHiZdsQBzrbivaP8WVHvGF38z27mL2uzR5UZWPz15A6HlF3A5iS2gURdELeidGtMteilkTXXFiDY0pTC9kGzj
- RXyvfnHS
- nza+eLozSxRJG+wdcxHYKWAOydOBvMAdYwVa1hhqodZZPfoOP7vAoKShOhNWrS2593A3OywGhQvPZaamTypAJ4ILXoYdefDYxtNe+uhzLPxOpsK7RXg2UMFirSzHbTWZxn0vshCuPN+YuV5raotEb09v1FaKN1QnmHYYl1LgsXO8L9xqNZfB9NWrTYxteU+YNQ0OVZAiG13jlcrGJ+kXHx/YI0qZtMZpph7xy3Ohmo5Je48E7aE5lsBvIgNsAzVINje16Cdzdf7gZpRYy1bMdZ7FDGTSTRsbn6yN7qJZuyUgrzlGOy8i71HDuiREG3uRk5FvFlac51CjcEn+PXTnZOI1nb8msd5/9M+fK6XPr2v7ckIgiMdrOvYaIxaPdeSQJoHWzAp3/56hfDDaotLHRpR66hVeE6NmBWKZBszrIokfiAmhEubKCSlXKWJ0FysVWoozQu6+20Ia5LjLx/YCpG7D1+kdXouy7WoUObobCtZQaKI785f+5sCCmK0jsxUpYddXXFGXXIS84ZsDUmk1RjYy+ZT8gxLAHp+Ib6OfwuzYyNTSz3+1BsRwDyw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783411226-357897
+X-HE-Meta: U2FsdGVkX18pTp/I+c/6vXDH8GLuOmDQJ+vRgrNeAwybc/wu7g69pio8ULbGRTQZhQoVKigGKcdBjFjyOgTgpEOYPWWb9zbVlsqSgqoPfSk5yfFtJ9T5wTxiS/iRXY1g5THjdK+pCeaG6ubvJJDbxcrtksFjCACbFIPL9i/+22LukVLjmqNFB3rVAGlUvk34f/msFTzjyfuEjJwfxxP5i//hkSewq730YGjSU9/DvVImm2wkwW9g1gAbxtRYY7aJRHKkIPSsyWIFrj6HBPQYHfELK9cwTPxDP2hSAGsbNVbTGa4JBc56gz3XTl4kGDzLD6xCh4JY5SX70wQPaazOfK1s9HcbG9enSyCdxEA3RxkYsV+eHg71fqbGW/lVD5S+yNcVSHf8WZ+4hkoUEoBfi/eNwdGxvRL9QTsk0d+jPwNu30YwbJnBEEjXDit1rPJoWoNhCVMuQBJCnP99idDrd4i3meuQOa/+h73ZTOi4T6ih/8OBNJnqa+tPx8DvN75iO/6lsHEvK9LPDb1SvA4KRECEQNcBZRviqtqLL6OzXWRPQIlzQ9u+bPEg1HxRA8pI4//UkMEg2dvf8P4FGXmt/yOaEszgztX2WvaDSao4b984a13q8RJ5omZAkkB5013Ihz77uqWrptut2bEmG/l/0686z79o7HvTyjSMShzb/iS5LkwtLXa8nSKqR3rO4IF5e6Fzp/ZOZMir0cgq1/ElQ2Y4iK9NJz9u++balah/rTBHrhzT58LGozNeoSWV39ZZ/A26e4xpNAa2dUeyvCDdXvDPhUmL75O+CU5ueAZWEMrAYh2U/vFQIjYpTZGsIPRarNBo1aF7MEF4BkL5kFo1VOM0g+tZXOJ/diJ69Ac831J5bxDKNC786PTJ0zW7tBxi3Q1a6M6KOJ0THmERdUlx1EVL4zoJlbfyXKbFlLncYYqRTDHCkdTaas8SkgayFcUgCGbJxVrq+AC84++JBxg
+ Kastan7E
+ 17+HjdyFR/Z6ebvexIEcZ6RxlJoyQHNUcu4RJ33qksg3C4i8ht0Bvj484Y5fr9O600/ZXeaJIssDx1ZuOkoB4Tx+sa49RUB7o8iJB/l5hw0q+J8Or9GdypgW3ZM1TfFXpbaoRaVdJXC2fe6JfzXUX2d6ljXXFooi8wdS7sZfJ+/OMP3Xdq7W/Eppkw+oLcXslCJphfpCWShQTk9NcChFi+d77FWiuoQJ4xFFdskRFmr9SEuIp0oAjWXgbhf+WyysA9Hcvk9T/8GLNM6vki3dUbUIIsOKHUVBwsKAs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,97 +145,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Barry,
 
+I use the following commands to test. The CGROUP_PATH depends on the
+platform settings.
 
-On 7/7/2026 9:45 AM, Zi Yan wrote:
-> On Mon Jul 6, 2026 at 2:01 PM EDT, Andrew Morton wrote:
->> On Mon, 6 Jul 2026 19:19:58 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
->>
->>> pte_pfn() and pte_dirty() have undefined behaviour when called on a
->>> non-present PTE. In migrate_vma_collect_pmd(), these functions may be
->>> invoked on non-present entries (e.g., swap PTEs), leading to potential
->>> crashes from pte_pfn() or incorrect dirty folio accounting from
->>> pte_dirty(). Fix both by guarding with pte_present() checks.
->>>
->>> Fixes: fd35ca3d12cc ("mm/migrate_device.c: copy pte dirty bit to page")
->>> Fixes: a3589e1d5fe3 ("mm/migrate_device.c: add missing flush_cache_page()")
->>
->> Should we cc:stable?
+echo 1000 > /sys/power/pm_freeze_timeout
+echo freezer > /sys/power/pm_test
+while true; do echo 1024M >
+/sys/fs/cgroup/$CGROUP_PATH/memory.reclaim; sleep 1; done
+echo mem > /sys/power/state
 
-Yes.
+BR,
+Richard
 
-
->>
->> Sashiko might have found a pre-existing issue:
->> 	https://sashiko.dev/#/patchset/20260706111958.3649651-1-wangkefeng.wang@huawei.com
-> 
-> I looked into the issue and came up with a fix below. It looks ugly, so
-> feel free to make a better one out of it.
-> 
->  From 7fa06512638a0febb79a00dba63f12818a85788b Mon Sep 17 00:00:00 2001
-> From: Zi Yan <ziy@nvidia.com>
-> Date: Mon, 6 Jul 2026 21:25:29 -0400
-> Subject: [PATCH] mm/migrate_device: avoid scanning/collecting PFNs within a
->   PMD
-> 
-> migrate_vma_collect_pmd() can drop pte lock to split a large folio and
-> restart. But the code does not handle restart properly and can cause
-> collecting inconsistent PFNs and overflowing migrate->dst and migrate->src
-> arrays. Fix it by:
-> 1. avoiding migrate_vma_collect_huge_pmd() if collection is in progress,
-> 2. skipping the rest of the range if pmd no longer points to a pte page.
-> 
-> Fixes: a30b48bf1b244 ("mm/migrate_device: implement THP migration of zone device pages")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260706111958.3649651-1-wangkefeng.wang@huawei.com
-> Assisted-by: Claude:claude-opus-4-8
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-
-
-Thank you for your fix, it looks good, there is some repetition (3
-times) regarding flush+skip in migrate_vma_collect_pmd(), but for bug
-fixes, keep it minimal is better. I don't have new ideas to improve it.
-
-> ---
->   mm/migrate_device.c | 18 ++++++++++++++++--
->   1 file changed, 16 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 052167f9ad547..d86b3989d0c59 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -257,7 +257,11 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->   	pte_t *ptep;
->   
->   again:
-> -	if (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp)) {
-> +	/*
-> +	 * Only check pmd when addr is at start, namely no pte is scanned or
-> +	 * collected, to avoid collecting inconsistent PFNs.
-> +	 */
-> +	if (addr == start && (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp))) {
->   		int ret = migrate_vma_collect_huge_pmd(pmdp, start, end, walk, fault_folio);
->   
->   		if (ret == -EAGAIN)
-> @@ -267,8 +271,18 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->   	}
->   
->   	ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
-> -	if (!ptep)
-> +	if (!ptep) {
-> +		/*
-> +		 * Skip the rest if pmd becomes huge or cleared. Flush if any
-> +		 * pte is modified
-> +		 */
-> +		if (addr != start) {
-> +			if (unmapped)
-> +				flush_tlb_range(walk->vma, start, end);
-> +			return migrate_vma_collect_skip(addr, end, walk);
-> +		}
->   		goto again;
-> +	}
->   	lazy_mmu_mode_enable();
->   	ptep += (addr - start) / PAGE_SIZE;
->   
-
+On Mon, Jul 6, 2026 at 8:54=E2=80=AFPM Barry Song <baohua@kernel.org> wrote=
+:
+>
+> On Mon, Jul 6, 2026 at 4:12=E2=80=AFPM Richard Chang <richardycc@google.c=
+om> wrote:
+> >
+> > Proactive reclaim (via memory.reclaim or node reclaim) checks for pendi=
+ng
+> > signals in its outer loop in user_proactive_reclaim(). However, the inn=
+er
+> > reclaim loops=E2=80=94scanning cgroups in shrink_many() and evicting fo=
+lios in
+> > try_to_shrink_lruvec() can run for a long time before returning to the
+> > outer loop, especially on systems with many cgroups or large memory siz=
+es.
+> >
+> > This latency in responding to signals can block the freezer (both cgrou=
+p
+> > freezer and system suspend), leading to freezer timeouts. This issue wa=
+s
+> > specifically observed on Android when attempting to freeze background
+> > cgroups while proactive reclaim was active.
+> >
+> > Add a signal_pending() check to should_abort_scan() for proactive recla=
+im
+> > paths. Since should_abort_scan() is called within the inner scanning an=
+d
+> > eviction loops, this allows proactive reclaim to abort early and return=
+ to
+> > the outer loop, ensuring the task can enter the refrigerator in a timel=
+y
+> > manner.
+> >
+> > This check is limited to proactive reclaim (sc->proactive) to avoid
+> > affecting reactive reclaim paths, and wrapped in unlikely() as it is a
+> > slow path.
+> >
+> > Signed-off-by: Richard Chang <richardycc@google.com>
+> > ---
+> >  mm/vmscan.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/mm/vmscan.c b/mm/vmscan.c
+> > index 35c3bb15ae96..fb472e924fc7 100644
+> > --- a/mm/vmscan.c
+> > +++ b/mm/vmscan.c
+> > @@ -4929,6 +4929,9 @@ static bool should_abort_scan(struct lruvec *lruv=
+ec, struct scan_control *sc)
+> >         int i;
+> >         enum zone_watermarks mark;
+> >
+> > +       if (unlikely(sc->proactive && signal_pending(current)))
+> > +               return true;
+> > +
+>
+> Seems reasonable to me. I wonder if you have a script to
+> reproduce the issue. I'd like to test it.
+>
+> Best Regards
+> Barry
 
