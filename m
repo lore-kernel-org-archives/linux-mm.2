@@ -4,122 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1E07C44500
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:17:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D24C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:18:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88FDC6B00A0; Tue,  7 Jul 2026 06:17:25 -0400 (EDT)
+	id 5D32E6B009E; Tue,  7 Jul 2026 06:18:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83F6C6B009D; Tue,  7 Jul 2026 06:17:25 -0400 (EDT)
+	id 582F86B009F; Tue,  7 Jul 2026 06:18:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 708566B00A0; Tue,  7 Jul 2026 06:17:25 -0400 (EDT)
+	id 4757F6B00A1; Tue,  7 Jul 2026 06:18:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D74C6B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:17:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCF621A03D2
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:17:24 +0000 (UTC)
-X-FDA: 84961578408.08.11CDFF1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 95707180002;
-	Tue,  7 Jul 2026 10:17:22 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGH+4V3q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 15D816B009E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:18:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90F7D1C3883
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:18:26 +0000 (UTC)
+X-FDA: 84961581012.01.398937B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2464BC0006
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:18:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LX93izZ5;
+	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783419504;
+	b=tgOdFVWNCVbT4Kz8XlqPfvyb9luWfNBTvdODIP+P2ouLWjnhRNgPnWubWzIhWX9YrMJfx5
+	Cp3eNY9JEGAURKu3abM4KstEbNDqUMAY7GHji2CyX94I8QRlmpJgMg7AmbXXGa/+QZ34CJ
+	P2oycr+rGPsUvyhc1GtbEQHN/+cYqxk=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LX93izZ5;
+	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783419443;
+	s=arc-20220608; t=1783419504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mnyEnVNjUbkl63yjftBd6ZAUslZHuhLMLE5i1q1dbiA=;
-	b=RnD5LEepETFoVwEm8clY2TX029sSxGS67zFhNu8kmjFQElZzCKRhapdKz5Beb/sbIFXJvh
-	HNeNCYDwdHhf/nFTTbWPKTov4n522oNNpARBO9xW0fxIl9fzcOewNY8YJTyWKVvbhqJW6u
-	OgIuakAg/T7064+ip/p3dFby1Aer6uM=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGH+4V3q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783419443;
-	b=ljtnav/PggB8av87J91Y+6llaQepUnzRjdHu0azYi7so4qhM3EyHwTGDzAFNd2uxiIa9Hb
-	zFwgfQRjLSwhHHXdddOm7ylLmByqWP78e+kxueaoFT5sSFMjTMfnHopq1ZM/glNSdbv9Ym
-	cQJydUDMFUKt/QEKCXaYlv4GFDWtV2A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86145419A0;
-	Tue,  7 Jul 2026 10:17:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122461F000E9;
-	Tue,  7 Jul 2026 10:17:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783419441;
-	bh=mnyEnVNjUbkl63yjftBd6ZAUslZHuhLMLE5i1q1dbiA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cGH+4V3qnWn/h2ntR4JOMP1MeFASTJyb/ukIFIKga6vmMPs4hWnZeyozgnP8o9zcj
-	 4aOepXlE5yG0XgvATIbejO38So9984JOSQXxfemV7MrbXTQdbQqJryZ7by0rmLtk6g
-	 KbyecrBlOO6RxZhZHoEJHQvN3lfQ+IRVIfllVkFrcFe5jzAzy0lAaGw02N38CG8Xem
-	 bIuNc24pIIBeQZLitf75XKOixE/v2BoAd9XaTV+y7NflJFaBKiVOSfh8s3qL1kjbV3
-	 QtnOkHzUZcffKxdXoostqrwbOmOdDgDEYFoMQefdIk5SYi6OuZQQ8BSF6bkbad2igD
-	 ZZ2I4X8hc6i0g==
-Date: Tue, 7 Jul 2026 11:16:56 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Lucas Stach <l.stach@pengutronix.de>, Inki Dae <inki.dae@samsung.com>, 
-	Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Sandy Huang <hjc@rock-chips.com>, 
-	Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>, Zack Rusin <zack.rusin@broadcom.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, 
-	Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>, Helge Deller <deller@gmx.de>, Benjamin LaHaise <bcrl@kvack.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Kees Cook <kees@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	nouveau@lists.freedesktop.org, linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, 
-	virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, 
-	linux-fbdev@vger.kernel.org, linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 03/13] mm: convert __get_unmapped_area() to use
- vma_flags_t
-Message-ID: <akzR7JQuaKEQpH5Y@lucifer>
-References: <cover.1782760670.git.ljs@kernel.org>
- <b1ad7c4443f5cba622e4c48c5a9ef15427001a93.1782760670.git.ljs@kernel.org>
- <DJRZGEZU5ESV.3IP5LEAUQJCBK@nvidia.com>
+	bh=3slwj2XyzWQtqngmhVqaSA6RBHzpXga6waGc30WeTwg=;
+	b=I32o2MyAowyaNe8RRSWRGtTdT62jRLOcnsp1Wx+RTRvr6lE269kfPQB5/Ix+9BKL8fFGP4
+	8FNC8C18xssSLKq8ga8wF6VRbcuVLcOu6T/BIupza+YY7Yz7nN7u5WeDkAUnrVn11MiGeq
+	VpqKgpojBIiSiD4weUUB0YcKtkV9dEw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783419503;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3slwj2XyzWQtqngmhVqaSA6RBHzpXga6waGc30WeTwg=;
+	b=LX93izZ59NyyNc0z2XAce97IZU+hBG+sTULIlfY9Njefax1cBNzcm3dnLLMJul00XTLCyF
+	1CLmJtvOKQhTDlJaRMDHFh9sDgjd1yldmfgkQKHVwqGdr9/bR5F+PrgvkI9oI/jLilfMAM
+	BEbsVyXZ4u4VEJdn7Pa9odLlfkwdpR0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-391-Gg0R-VOgPQK25K6vIHF8wQ-1; Tue, 07 Jul 2026 06:18:22 -0400
+X-MC-Unique: Gg0R-VOgPQK25K6vIHF8wQ-1
+X-Mimecast-MFC-AGG-ID: Gg0R-VOgPQK25K6vIHF8wQ_1783419501
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4767036f8faso2340669f8f.3
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 03:18:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783419501; x=1784024301;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3slwj2XyzWQtqngmhVqaSA6RBHzpXga6waGc30WeTwg=;
+        b=paQuZcg0APSGfSeo12/eIxV9hYeVtzvWGfq/ROOnJILIcVMRvNyMjq+ppS7gDIgHYC
+         kLU70kZf8z26nfY+8EF3z39nDI+RVLuv55LsjRf6M8JQRNWsoSr802yfAmW0PWzRrXeR
+         Ljrpx/yK4BEHPAGjVhFSDlyAh2P2EI6HJNIUN6x46TFXuLf7R+ZvxoykmobWQJU+O+mg
+         qFPELRIQdDjeGkr3PSUUECVNuMpA34V+pc6h07v+pk41Pc6uRsL7YHu0wfdEwAhOP4ZU
+         K17hgI0K1/iKrbSOfneieXiOox+85J00tM10oBu08Zwvb/OxN0xopWoZoQwm06AVXSEk
+         vd7A==
+X-Forwarded-Encrypted: i=1; AHgh+RoAacL0GFc/YaYkoaIyPqHWlprDCjwpqSwOlnauZ0KI4pRw2Lbx/cA9JfGcBF39xU5HgpKDdww78g==@kvack.org
+X-Gm-Message-State: AOJu0YxD6Pg1FbJU4V0rsUzf7WD4ZPGmCaul8dJp7jm9IeTb5LjNgE0E
+	fdiCMQMoaMuP61nd5CcF5XsYEMjKcY3Xyt6HQmI+tlzOl7MwSAl0K3/LATnq/KIS9hNUpJ1HR69
+	xIcjkJv5CcQHg3psLkfDJT3pTIPFyvDR8OOAKEvhlCdO4cFYjhVMB
+X-Gm-Gg: AfdE7clZKRUFgdBn/aOC00C/8uPLMmquRQBUhBPVSdhPvhd9+xnZIbA2vgk5DrkgmPM
+	UnPMhUlfSAPdJ6gPNsLbV1dgNGiACTpLeCDdddA6IR9L4O9TW1l7b+/SwI0Kg6X4KwRHTJEz9Nm
+	iS9NQMLzH8O/8bXjOJvY8vhPhPmX4A1wk2vTGst1f4f0QsbY7L9INT8vmQ5smLx2bcrN9r1wrbN
+	aPvn2/b/uiV65CuVB6ehu9IzyxB83hf5a8wtYTri+Bkv8dAAq++YcESczLt8wFEali4Vk1NFGfb
+	FQiqUyIYmDVKHZGVu6i2EYNzdy04EbVQfI8DREZiSevOZzcWCXTW8nUQFe0F04d0kB1x97pm4Uq
+	fNllBOW462hOb/sUbA4HWhQ/BQPz3bQlR
+X-Received: by 2002:a05:600c:c173:b0:493:c98f:12e3 with SMTP id 5b1f17b1804b1-493e3066380mr12490685e9.20.1783419501003;
+        Tue, 07 Jul 2026 03:18:21 -0700 (PDT)
+X-Received: by 2002:a05:600c:c173:b0:493:c98f:12e3 with SMTP id 5b1f17b1804b1-493e3066380mr12490105e9.20.1783419500441;
+        Tue, 07 Jul 2026 03:18:20 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0078d49sm49438995e9.0.2026.07.07.03.18.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 03:18:19 -0700 (PDT)
+Date: Tue, 7 Jul 2026 06:18:16 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Sourav Panda <souravpanda@google.com>
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
+	david@kernel.org, ljs@kernel.org, liam@infradead.org,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, mhklinux@outlook.com, fvdl@google.com,
+	gthelen@google.com, mike.kravetz@oracle.com,
+	pasha.tatashin@soleen.com, rientjes@google.com, riel@surriel.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 6/6] mm/hugetlb: support free page reporting for cached
+ hugepages
+Message-ID: <20260707032839-mutt-send-email-mst@kernel.org>
+References: <20260707064235.1386552-1-souravpanda@google.com>
+ <20260707064235.1386552-7-souravpanda@google.com>
 MIME-Version: 1.0
+In-Reply-To: <20260707064235.1386552-7-souravpanda@google.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: HoOP2jXuLK31SN7zHeNV7T7sYGy2UcHN8axK1SFCpPQ_1783419501
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DJRZGEZU5ESV.3IP5LEAUQJCBK@nvidia.com>
-X-Rspamd-Queue-Id: 95707180002
-X-Stat-Signature: etzzn6r3tnparc9zbn4psx9ro7d1nsdg
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783419442-325228
-X-HE-Meta: U2FsdGVkX18VyaPaTDfRVjPT/8RG0jv4C6nFU7z6g4M5JDEUqvPm/jjJbl0PnC18LVjb2YeJFvlJoJyWny8pdGDTCJ0Ti5bOs/qoBH6NxBUeJyVUL0HDci1A6t+UdG3sYr6bygWAYJd9uIRQlPz6EitI+wv8aUoRzMIEPW1IjsSvFRy4MTyBJgmnzJ1N6sGGbK3vexD3TwECY8LtPffVaw/0HK/dcaXkKjtwL+RRjaGgjUJIqRKoNdvH8scnX1W8XctdKjF1qfAtwZpbRHclN+ug74YXYcs2y/sOAIf8lA7JIOhgKZY+uF5IH+mQ29izbAl+fhfVWHwwDG3pnT6Ptp2QRCUzzvNrGBw1iD/1MlBQlsBi7doXTh0inkChTfOyd/7U4JLnILCyCyIJvNON5/jhaiS7jbl6RQI3Zb1HrbpZ5Oj99ea1+Nx905lUyi3DwOxljFtcc5Uiju/o9n8rgug04KR7JG90k/QDGg8jssoVZgB0++8JIZJRQC9zwlCaSbj9RcqODsU0tNPczuoy5DLcXO109Jo4xyBpMzY2/aAy+Mx8U7gKUkKjQ5KrtoOEFqfvFtPzX2rYbRdnHwWiu0nk6tWST20KDgBcW5BdFM6n8Ee5OPeOoEI16SR1CEtaXTbVs1RMfNYbVF1u8u1AIbMKh6zIugXngy2nTvffCTV+vZPpwp/P6T3MPwwQ5oGwwHPS/Y4YfeZfuLGxpD1uXWW8OIwU8pv2ZqMajg6zbwDGfzghN0TnrmFM9f6Vu7mHByW0tX5djcqm1M9020NslzWSoV/TCZTUctcPkbFR/kTK6mJRw0wHHkwf9CxfdhnzAfgfXRXTq9hOMM22FmFw8cMiUC4IJzg1HFZl+kTuDHFIFneBwa1C+7SYNfwq3WRMfqdzJ1gA6RIe1/OsgPPp3wjDh6liYdF+V+JgVOzMQWtfJiApUbqoLBO5P3fwq3jPLAKJUIj+YBgfi1a7DhH
- np82gFxQ
- h3lN/m+bKsR++CIdIdF2O3TYKRvZQgPdJR3YVeVNSV3Dpi9ZEQIpTz9QBua444hUCeqm4cYP4XKmCG4ATLQlz/TUNzbIHYJsyGAmUjpo20UHjMpgqdi9ksPOBLb5OZ8YY4Cf5c7H+Nfb7SVH9LGBM/I1i4wmO6D2OAtYfuI+6HyFdwPlZVCWPkAbBWlHLvQxKzBB1QO10nTUK6FfCIEPTPD+jHYCaCc3ryXTQn6vrUddMrM+WTfdBI/4DHGErn161p6RjagprdVHvGjL1DW0ErdYsyBvVdRzuSkVcWi4PzgYAHOCVMjRL+m1dlxAvMoi8ReKLkcgwkOG75DrWxfsG5ah96g==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2464BC0006
+X-Stat-Signature: r53oc4dairepfqgw5j7i8s1dudh4w8ta
+X-HE-Tag: 1783419504-173530
+X-HE-Meta: U2FsdGVkX19OaDhkQm12/3wq5vAd39nztVNTBVQAnMwHHRnbpvmZ8izQfwnl+xM1n0WdlgzBEMc19KJpUrt2ASEWOSCV1hpDdgcVVc56zAB8r7hTGcgFyCmVOKSVEIsR4myPgeu4cIAg3tiOZqc/I/Yo6WcXdWATgklRYM79Cd9wUKTXGAxy6D/QWarzUZ0TgmLNDjvOjx0zHZhvctwvcQ0t+52g3s+HRVjDoT533uwpe/30H1umMN+zbmsRAFr9E3Js/NcHUm7axAdwo0o2C0/5M+rYoqI3+8gGaDpikyvZsDN9ZyZZ0xh8YtGDDFArqbmsXRrmU492+K9BVxyHWz3Tf3RR6/SMahbfoiLMeg86p15NHhDLCjHKNhZmstJn2kpG7apDQM24JjyRrUlE2pT5X9xsEpgayVq8xS4bxBoMrKoES7954+7dmarZRdvGGObC0AHG7+yCoymOJSBaj8rC47m3F7aUsdVR6gzpZrLH3gXOtNWkd6UYPTdatNJeVj/fo6cX6776HRki7lAJAwj96ippTAEgWfB80sQy7GulfaR9OdF4HESvtMVpkfaWvNUWk7NJxrBRiEzw7Li4PuK13coOAMrlIPbvlmCa5iV2j48LBYfvyZpEIfm2rEIApMn3OArGLAmu3q9oe/jStlta5On6ZDabTfRL3stJoXc7Y2JrZ/7mbZ9sPkW5TNq30hO6C9neTQEBMyRLFCAggtY1WzttSr/XJ20XHhJmrFPXdOoNZ36t+3zb0zmljAA68oby2eSMRC+zt3oaxZlvF2wVzz+geWZPJt28UkWF8JCMqnxaofvvWtZhw1E0x/HNYM6ciOLQA9pUu0ODpLqTB6UXgaCWmwKio6c+/v4bAbvx3T8jc2QEwO3Usv1zK5b3KGFF9ONCbr2zonTy/KGESMYU9O1flVooNWdA66D2CdFS4tVVERHx0XS0qX8b3UvPKWqyGpa/0VJg452bG7B
+ Kq4xVBZX
+ 9Bk9AY/EjgAMjlL/evDAuLL9Z/tbXWs3Xy3zzfcmWff0bMSwYJ7D6fbzvy1gPcVC0f2wq+6XnKVmGajmkk41PWkFmEPf/ABOd8kZuCaNcpig7x1g2FsvOzT/L6Tta3NppmqtofiEBX/W1Oamzj5FL1xQqbs8yrV/b55WLxa8PTK1fboZMKdZ7IwcPeqNpnriY6w5Q/glVMuQdh8Kn4YS2lK7ClScATKfD7zsefbi2UuHJkiBMWhH3dtQFpzhE8NqgSFtO2BV7pKE8RaAHtuJ7jA08UcOkKaddc0Q3gi8gYs/4prQJKwDCICU7ujH+kKMyvTIk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,86 +134,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 10:28:24PM -0400, Zi Yan wrote:
-> On Mon Jun 29, 2026 at 3:25 PM EDT, Lorenzo Stoakes wrote:
-> > Update __get_unmapped_area() to be parameterised by vma_flags_t rather than
-> > vm_flags_t as part of the effort to move VMA flags from a system word to a
-> > bitmap.
-> >
-> > We cascade the changes up to arch_get_unmapped_area_topdown() and
-> > arch_get_unmapped_area(), where, for now, we use vma_flags_to_legacy() in
-> > order to propagate the VMA flags.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> >  fs/hugetlbfs/inode.c     |  3 ++-
-> >  include/linux/huge_mm.h  | 10 +++++-----
-> >  include/linux/mm.h       |  6 ++++--
-> >  include/linux/sched/mm.h | 12 ++++++------
-> >  mm/huge_memory.c         | 21 ++++++++++++---------
-> >  mm/mmap.c                | 27 ++++++++++++++-------------
-> >  6 files changed, 43 insertions(+), 36 deletions(-)
-> >
-> <snip>
->
-> > diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-> > index 95d0040df584..b301ec90740a 100644
-> > --- a/include/linux/sched/mm.h
-> > +++ b/include/linux/sched/mm.h
-> > @@ -193,12 +193,12 @@ unsigned long mm_get_unmapped_area(struct file *filp, unsigned long addr,
-> >  				   unsigned long len, unsigned long pgoff,
-> >  				   unsigned long flags);
-> >
-> > -unsigned long mm_get_unmapped_area_vmflags(struct file *filp,
-> > -					   unsigned long addr,
-> > -					   unsigned long len,
-> > -					   unsigned long pgoff,
-> > -					   unsigned long flags,
-> > -					   vm_flags_t vm_flags);
-> > +unsigned long mm_get_unmapped_area_vmaflags(struct file *filp,
-> > +					    unsigned long addr,
-> > +					    unsigned long len,
-> > +					    unsigned long pgoff,
-> > +					    unsigned long flags,
-> > +					    vma_flags_t vma_flags);
->
-> Want to use two-tab indentation while at it?
+On Tue, Jul 07, 2026 at 06:42:35AM +0000, Sourav Panda wrote:
+> Implement free page reporting for the HugeTLB dynamic cache.
+> 
+> Register HugeTLB hstates with the page reporting framework if they
+> support caching.
+> 
+> When pages are added to the cache (either via recycling in
+> free_huge_folio or direct population via sysfs nr_cached_hugepages),
+> trigger a page reporting cycle.
+> 
+> Page reporting isolates pages from the cache list, reports them to the
+> hypervisor via virtio-balloon, and then drains them back to the cache
+> list, marking them as reported (HPG_reported).
+> 
+> If a page is allocated from the cache, or reclaimed, clear the reported
+> flag.
+> 
+> Signed-off-by: Sourav Panda <souravpanda@google.com>
 
-Yeah sure will fix on respin!
+So if you are going to look into this, I feel the 1st step
+should be reporting pages from hugepage_freelists - this
+can be done independently.
 
->
-> <snip>
->
-> > @@ -812,19 +811,20 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
-> >  }
-> >  #endif
-> >
-> > -unsigned long mm_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
-> > -					   unsigned long len, unsigned long pgoff,
-> > -					   unsigned long flags, vm_flags_t vm_flags)
-> > +unsigned long mm_get_unmapped_area_vmaflags(struct file *filp, unsigned long addr,
-> > +					    unsigned long len, unsigned long pgoff,
-> > +					    unsigned long flags, vma_flags_t vma_flags)
->
-> Ditto.
+-- 
+MST
 
-Ack will fix!
-
->
-> LGTM.
->
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-
-Thanks!
-
->
->
-> --
-> Best Regards,
-> Yan, Zi
->
-
-Cheers, Lorenzo
 
