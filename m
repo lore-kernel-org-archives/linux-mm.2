@@ -4,99 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD28C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:51:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C55DC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:51:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50D106B00B4; Tue,  7 Jul 2026 09:50:57 -0400 (EDT)
+	id 1D9FE6B00BD; Tue,  7 Jul 2026 09:51:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 492EB6B00B5; Tue,  7 Jul 2026 09:50:57 -0400 (EDT)
+	id 164406B00BE; Tue,  7 Jul 2026 09:51:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3367C6B00B6; Tue,  7 Jul 2026 09:50:57 -0400 (EDT)
+	id 052F86B00BF; Tue,  7 Jul 2026 09:51:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id EE5086B00B4
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:50:56 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71338A03A6
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:50:56 +0000 (UTC)
-X-FDA: 84962116512.14.5004742
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 73AC680005
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:50:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="kNXg8Bh/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783432254;
-	b=tIGFST7WvVSkwIp9ooWtlQmXnAM9XDlGzFsldZt37fcGGn7DxnWdZq1dR6FAmDRdFJHol3
-	3GFfplxNBoJNfjc6M3XpaaUg2gh1SVmLNNgIsOAeghHXZO+buLxYrihvnb/sK1oYxXhPrW
-	cD4yB6n4iizYGHmwYD7a/AgyThYZ9nA=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="kNXg8Bh/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D22AE6B00BD
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:51:56 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5EB178DFD5
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:51:56 +0000 (UTC)
+X-FDA: 84962119032.24.8BEA4EB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 84C298000F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:51:54 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ykja3++f;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783432254;
+	s=arc-20220608; t=1783432314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U/pD5OdgWh4vEEhKM48CFXryGtzNwFwor3KN08M92Y0=;
-	b=uMyTO0rtYZ2wnzLK9IebkJsbx8r9Pt+Wp2Z1mJrAeBW7/9xmXnteeVUEgE2D8Dg8RN4g1X
-	3oR5zAKby8exAEt/7ElU9jodP5bcU6YI66ZIU8TJWSNwniTDOI6gYqDaKfBaFdYpzPBVKG
-	lP4T4mKeggzUl9xyk5zFHxtCDo2FJtI=
-Message-ID: <dd21ee9a-a7a9-46a2-b151-0f5c486772bd@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783432252;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U/pD5OdgWh4vEEhKM48CFXryGtzNwFwor3KN08M92Y0=;
-	b=kNXg8Bh/q9j4Llb5rtZWfxrp9Lr2mMLw00i06Tq8leWaM2xmpar4qi+HxLU7esLXEoV2hT
-	lRYT5Gna157c2xqc0Rz7Zhbcegjm1LDQ8bTTfNSUnWM44I5A9LU6MiAs96di/YcXOoMgdY
-	DHVW9lVr15gj7wPwJRUzkGHE0XkrPW4=
-Date: Tue, 7 Jul 2026 21:50:31 +0800
+	bh=x1boCJD4ze3yK/wEW/5FgvUkPVyqEy87DYSbFVshfFw=;
+	b=XZgSj1IZx808E0KtwAOyvTD082RjWRgA7ssQi/uV3zE/S+fI0eXY6wM+LtJxIuH2WoT7k8
+	6IZbMOUR86EDHBf2x84VUG7VKEn7e3DJZzx01evS/LMH/5RZEKMgCeXlFx7QTpApVOechr
+	/4MGGzxHMWZcXUIAYhE+jpyaRqLJsYk=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ykja3++f;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783432314;
+	b=pwBIjqL4UMh7So7xuwoFY2lktl+Cpxv1ctQOsbgP8IpOOI0aS+hgFdq5g2IUe1rtLFMAtF
+	9y7qo5JtpOrfAWwwS15bn+zCC6QFcm4/XvzKDt9NrhJPus41eAiLpZdsp34DfY8qQFvs4P
+	tRYZTEN57GcT92zANBgfykKcHgpVsSU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AF5C940E2E;
+	Tue,  7 Jul 2026 13:51:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1091F000E9;
+	Tue,  7 Jul 2026 13:51:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783432313;
+	bh=x1boCJD4ze3yK/wEW/5FgvUkPVyqEy87DYSbFVshfFw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Ykja3++fMvsuCuwWPyt07z6i+EEmqKxSXXP6uXHoppDRPFaM8aq2/6e4KtCYKtD7H
+	 slWahvtljCxDsivxbPDgjyTLfP4ZdVEiM8sDyI/IcwJ3Jp4SBDAVhO6yq0gMjnCATt
+	 GMkD4wfwFzlDKPuiXj+9IyspFjfGak8yOlmTpc+9j44cVxco5s2HapzK6iRnw3aRaN
+	 9Ud5Yhd150GM9K3zYbJHLw+YlKlM3ui6SnNG8O++MwfrbFosqm9fYMh9bpzbMrJxOm
+	 nambFu4niAlcn0YyOOdEUhFegl+ooonrsOP0CkYnUXemRBRcmmy3kTiwVw9GalnPIh
+	 ypJYEph7egjpw==
+Message-ID: <296662bf-66b9-4343-9104-afc56309b7fb@kernel.org>
+Date: Tue, 7 Jul 2026 15:51:49 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/mseal: fix mseal documentation for 32-bit kernels
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Paul Walmsley <pjw@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Nicolas Schier <nsc@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Douglas Anderson <dianders@chromium.org>,
- Gary Guo <gary@garyguo.net>, Anand Moon <linux.amoon@gmail.com>,
- Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20260703022507.187457-1-leon.hwang@linux.dev>
- <20260703114128-2a7a4723-0060-436b-99d9-7499bd90fa82@linutronix.de>
- <b6f5f3b2-bf62-4b77-9c74-debbed9a4738@linux.dev>
- <20260707122827-2d6c18d3-8e02-4d9a-bb29-2ec46e759645@linutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3] mm: retry page faults under per-VMA lock when
+ mmap_lock is not required
+To: Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, baohua@kernel.org,
+ shakeel.butt@linux.dev, linux-kernel@vger.kernel.org,
+ Hongru Zhang <zhanghongru@xiaomi.com>
+References: <20260626075019.1833065-1-zhanghongru@xiaomi.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <20260707122827-2d6c18d3-8e02-4d9a-bb29-2ec46e759645@linutronix.de>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260626075019.1833065-1-zhanghongru@xiaomi.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 73AC680005
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bfruy9fdb613txetjqyydwi3rbonum96
+X-Rspamd-Queue-Id: 84C298000F
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Stat-Signature: 685x1j66jqqq7rsh6wq8y4yrty19h86k
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783432254-659908
-X-HE-Meta: U2FsdGVkX1+KLvWFLQ9XBt/mRyt1Zttl8vfNFmJYUsazZthMTiHypCkO8GF3GPm/iy20+X6+P7dfi2nFxJlAuZxaT+d09okdGRM/zOqzI3wFtyLQLtfwoyecdsZWvv1KQwNdRJHPoJ2bxvgHbt2eryMONW/YAPXGjjM7RLoh72Dx1cG4EOL9X6Asl8e7+aCIYsP9toMI5ud4KPqAR7JlPXN3KuhHo1oExTGV+5t406zxewR8vb15oT/usyJVRSwsbD4PTL7DAR4v+lqK+Nw44Hh5Y5EzHFCj4FD2xpiXJIYncFc0U1c60FYml9quv9mEYkC8iYDcrEmOdN+/II68okpXP6i6/e9LXoZY5iF0Y7eaX2FJrRLjuzOe5vWMr4dKwjBPq5xhPxoT2FNpKrwi7Jq/PnOy/bGe8ouGKplm4QCB/ZXQsPNe5xsDBagQ8hq9FBm7F3NVLqQ/HwuCr5qLl+noHxF6dObJ7dBEAQvHY0Zi9Rh1y6xda0XSeDi6YT87ZJCnnZnnDUBO3enq6T/6rxeMbbw426BG+wh8lmI6o+GuPWoh7G6UThUzZv/bXKr/vc3D4NAhYIBTvD6SbpqEev8OLO/xvL/8vSf04XtJ9lPnE8Kg5Lcbricr9APOclbb91C9Di1f9jxSxOCuzK7ER8jGeRBgJE/LC3kCtPFp0kkzWGwwyuiBD87bt47K6pDXSfngsS4NhDhjvJdK6r1Tqef7Q+bxhBkcarGq7svvxdPvPLkcgOkzR+aRGJV5fuX8BnNZo9Fh9b4+wE+eV+ztOrHRVTI/U9IsXsdHg2OmSJ7wZPy+r3InT7i5sSdtxp0dtXk9obbIHQKSxwJii6HS2qySmfjsWEI6+ExoQbELvgZAUPa1t6wSsWCmf6GDL0pf+ls/wXgqpiHpSVbewSHwMWkbyhqUTkyogzHLt67hYe/iARc8RBdFW4lFGoI8ddvUDDr/ClUJu0iWxtnrX8c
- 6QJE0TeW
- pSf5u2kZxJ7yKnZxvhdoqhqIG0OW1DyeKbhudI+1dmQmmTNNWwXbO1zjhJM9iQh+lAVD3dWCw4ow2Th3CqB0d7jCioOLPRdahkWPBIaJxC2JHQ71e1RXztZ0bR6OHKixAZ60jqlFglXJTqoGm/KpQHf8No/uUV5eSqd/S7DPVnZthy3vJjmtWwlOs0BIgXWf9IKI+Rae5RvvO9Ug90Q5R51kdULEX1WjkkjqJnb96vPQ1ZLB8n7vzSksb/E+c6ARE0VfryKK95lZSzjTwxsOoC7nHFU3uBAZ22rT3k/Ll91dfxMIMpJZhzBvpyyGWEnusraLo3Ey7b9C5l/jY24lXttGB/Rx4lt6/9bfzTffaFMBdC0U7Wjmj/wXnftj5iI9H5h5N
+X-HE-Tag: 1783432314-9872
+X-HE-Meta: U2FsdGVkX18X/yQ8wQXq9KeZgpiiMJbz6xUi1jZLkGQqRuP1CLPhoc1VYQXVJbQF5te0ziJP3FpvyokQXmBa3igbxDHQb4WzrKANXrTAieEgQJFAvXQlLQWjUJUvFelvVBYAkIr2Gq5IYEsou2uFXA6ve1DTKdWDcqqr1dlxEDunkbvpl2zIyFw+8KyOVmhD8NOGmf6jwE2t6b4+uwMUIhbrJ9d4ohGhWUVT7tbkNuA6OfHzIMNi5XMZS6/jc2P1YnpBdGlFp7T1oKjTXk2JQtywsoM8xnHiGbUw/KaAEwO75+6cFcvmBkV2TexVHYJmE0sJ5jYqA5p3Lfiw4aguUOsTAClPDNUHg/9KpojznjpOch2a3UF4Lr4aRkPDm4frlZjf0J5V0nmvBWfm5pGmPxepVMSNRKesiSQEa9WvY1X78plXLrHcKCMDOo/2b1C+yuTouMvP4vhzt2mppOAfmh0rv3ijowu5d0qjgfNocYvaENPt2w47Y8DVIrtholBpjOC8qsRpVZN7vGyAuJ2J0ebLDQyRamzm0iq4dd4PzGw2J9aQKbqyPB5rsmREg2j7MBitvj9wJ6OoE55Mb3wT4VImG8hSE/XvTFzOj2Ji0qcfaeujX2z7PryTaFvHa4vKHXk5n7imagehaXiAUvzXxnpnlAMEgzxoyF/yy0Jk4tycWBmBCCABeAfYg/Az87OzXhnSiS3O9fo5DT9IC5WCkIyr+wNNT/5OJUPFzUTye7yLwUnZKuo+UUqDM9ssu1SnbsATIotbv6Tp2jkbH8LitfRYN/UQnBBNfWAAjnAx5HLIZFaLzmCw+OPGdq9PbiKi0NCdrovE+nrPGkdjnX97RAnMj4M1smtxvvXIfcdlxDruSrwM9Spb/dsI9t3MuGhUNdefhql/GJ3jJkpYFveKP8seq0NlXUCnyDCfT6s5xQsMHem3tdYiv3AlJ7ZgWM8TY4MmgMWF9189WcsGARC
+ 18YXT2UJ
+ QuAio/xElwkm6+BCGWoDeo7rKvb6RBOwZRJOtQzBgEgmwaxaV6L+0gBc8i1VgjPc3ChTQGmgA0MKGsbh2UaOACYuFWI7yhqO4bOogsEnmNLURh02oh6Aq+0oWl3ZFneCdlJkXGhhxFfKeBrGTYXNh95xJuxFcpBWwcx89BSeMaHlzblSNTxOIvHNjP6xi2ENcRxEntAtu+pX4jqSGbhjFfkFuDW09gd6zhaeMXNcZyJGyMD8Y9+C5cWuuAO0d0UAppWofLhkvrTalO7Sqowo/2VfluGjTbzS6c03cYLv58+A/juJRWoKlLUv8O2KIhBveV8yddjwX6wrXLgg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,37 +141,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/7/7 18:34, Thomas Weißschuh wrote:
-> On Fri, Jul 03, 2026 at 11:09:55PM +0800, Leon Hwang wrote:
->> On 2026/7/3 17:44, Thomas Weißschuh wrote:
->>> On Fri, Jul 03, 2026 at 10:25:07AM +0800, Leon Hwang wrote:
->>> (...)
->>>
->>>>    The following architectures currently support this feature: x86-64, arm64,
->>>> -  loongarch and s390.
->>>> +  loongarch, riscv, and s390.
->>>
->>> For per-architecture feature documentation we also have
->>> Documentation/features/. Maybe move it there.
->>
->> Better to replace with a reference to the feature doc?
->>
->> +  Refer to :doc:`features/core/mseal_sys_mappings/arch-support` for the
->> +  support status of each architecture.
+On 6/26/26 09:50, Hongru Zhang wrote:
+> From: Hongru Zhang <zhanghongru@xiaomi.com>
 > 
-> It should automatically show up here:
-> https://www.kernel.org/doc/html/latest/admin-guide/features.html
+> Currently, when a page fault returns VM_FAULT_RETRY under the per-VMA
+> lock due to folio_lock() failing, mainly because the folio is under
+> I/O, the architecture fault handler unconditionally falls back to
+> retrying with mmap_lock. This leads to mmap_lock contention.
 > 
-> See also Documentation/sphinx/kernel_feat.py
-> 
-> So I don't think an explicit link is necessary.
-> But the maintainers might disagree.
-> In my opinion the link should then go to the rendered table entry.
-> 
+> This patch introduces VM_FAULT_RETRY_HARD to mark the paths that
+> require mmap_lock. 
 
-Let us drop the sentence following Pedro's suggestion.
+Really sorry, but what a bad name :)
 
-Thanks,
-Leon
+Can we just embed the "no VMA lock" or "MMAP_LOCK" in the name somehow?
 
+VM_FAULT_RETRY_NEED_MMAP_LOCK
+VM_FAULT_RETRY_NO_VMA_LOCK
+
+
+Something like that?
+
+
+Also, we should document what the new flag means, and how it, for example, is
+always accompanied by VM_FAULT_RETRY.
+
+Best to be as clear as possible on the intended semantics.
+
+-- 
+Cheers,
+
+David
 
