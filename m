@@ -4,82 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7519AC43602
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 07:05:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E055BC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 07:08:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61CFF6B00B4; Tue,  7 Jul 2026 03:05:00 -0400 (EDT)
+	id CD9DB6B00B1; Tue,  7 Jul 2026 03:08:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CD4C6B00B5; Tue,  7 Jul 2026 03:05:00 -0400 (EDT)
+	id C8A736B00B2; Tue,  7 Jul 2026 03:08:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BC466B00B6; Tue,  7 Jul 2026 03:05:00 -0400 (EDT)
+	id B7D856B00B5; Tue,  7 Jul 2026 03:08:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 17E476B00B4
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:05:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8392F12033D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:04:59 +0000 (UTC)
-X-FDA: 84961093518.25.CC7FF35
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 88A5A6B00B1
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:08:52 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 04E6FC1CE4
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:08:51 +0000 (UTC)
+X-FDA: 84961103304.13.D9EDDA4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A469D12000D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:04:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ecTdmXvb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3C55C80002
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:08:50 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=axXuCzSC;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783407897;
+	s=arc-20220608; t=1783408130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rn/9LU+GQtcSAga8Zs0rlzpZT3fZBiZfoTOsbmoDN2A=;
-	b=3HfXgHE+p95XTo84i5jxIAjZbMK98G2FGgxr4ombm9YKSNF2b8qf+kI33tURUD89V/H/qf
-	CoiV/7SALrclMtgGHZLZm4Ibj1tT6CdbIjn2cQhRMh0YxgcDGDOhhLlGWj5py6wl5TgujY
-	mXrVTIA+4V+GxtcDvJwDLOOMaUgVkAs=
+	bh=jQBPzeQTUsoBAHhbAd8CqcjmLxqDEHm995n/RdJoJgY=;
+	b=fDEsg4/JMOoq9VEnXdTlTt6Hv3VqcYuO6k/KXwj7dEfMNWgblWi/v8lRmtXMHxXKdY/fne
+	0YgWDzP/Z5HcKxI09ttqzob9/IjWiweXCyKyYklY9VzG1GHETVMIdUghP9GLRalWPqAuEf
+	Vdx1Gy38niO6PoWddj646THoJa+XiUs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ecTdmXvb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=axXuCzSC;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783407897;
-	b=m4lp9PYWjDmefpMf2wwyqXug34Q1zr1ur6IFK/+yZnkezS0UTAxm+om2YBQcmV6EMD7Kt3
-	GFJaiZCvoHZjhx0IF0y6uUrGHF4KZTxZ9TRA84ltl5tqduiwxnS6ocRrrhHa1uG3bWhBY0
-	DeyOgVsbenBlOcwjCYjbNb6MiPYcp4M=
+	t=1783408130;
+	b=f5pHtsCWKmD/fu3WwVurzNnfx3Y7Gzxb8ynSzOFllqbcKtXVza3CzX0xY3HuaAcsBkYlu+
+	MJZ56Ic/GdlsRUiX5o1YH5V776KOJp+HFIgXExcTKXxFtjQ4uz7PKpvZPWx9ObkzCyox8Q
+	3ZurQTHDbQpKdnQ8TZUCW6oJ3HuWbT8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A74FD4391B;
-	Tue,  7 Jul 2026 07:04:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068D31F000E9;
-	Tue,  7 Jul 2026 07:04:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6A8BC407FF;
+	Tue,  7 Jul 2026 07:08:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3385E1F00A3A;
+	Tue,  7 Jul 2026 07:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783407896;
-	bh=rn/9LU+GQtcSAga8Zs0rlzpZT3fZBiZfoTOsbmoDN2A=;
+	s=k20260515; t=1783408129;
+	bh=jQBPzeQTUsoBAHhbAd8CqcjmLxqDEHm995n/RdJoJgY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ecTdmXvbW6l67Xr6a3dPQdcwSbUTUoIqu0budd14MeJe6VpH0PW8vdISsjwLbRtbi
-	 hVKjiA556BCVWoLyOZK9AtFTz/WR1rqY5yzrDV4vC2Mur8cHfCecxDkNdLtYBB56yH
-	 tF7YCn08wwUMnu0d/jPNLqxOpZheh/p36Eu9N8f0GOW4wb5ECZsClY0rQMmTg1S9KX
-	 h5fT56mpap5UO1tj/QxNWsarB6UlOMaxk8KgaG1R7mr8AFwqBc6RAs7VWgaKvvxKDl
-	 jtsWPWYDNa2ULcyAvzuPi3J4v/qISoE81jRWoB8SIgbIpq4wCUM6fsQ/1FHBhFlJvT
-	 VBwjU+bAXAIzA==
-Message-ID: <2e749bbc-86d1-4a10-9809-4777bb5061e7@kernel.org>
-Date: Tue, 7 Jul 2026 09:04:52 +0200
+	b=axXuCzSCHG3TVFRpTNM+eLZBHMPfC/7NofeFrQivYgsRWxkB5/J9Vb1VFoZziynpY
+	 yd3nsNrYGymf25QqoYLv1xUuAlvRSFRCiPLdKWA8uLpQ3XNa2IcisnCdjLEuBCFM+A
+	 FNkuawlX37GGYsreHhw4vqCFAVFiQ2vFDJJIL13lX4YNtJnU223jUvRf2xA9Bg8NqZ
+	 hm5xNtoVBVHKAsGkHSC24yWf8LGaYFjQGNInNag9q2wNAd0Wda0Amfakhwxvu59pEZ
+	 D7enSH8vK6l5jPOJq+NcKUvvSp6XBuJns6snER07SRxbmKSFFROfSS1bzqGQYqRq/Y
+	 Hovjc6Cl96Vgg==
+Message-ID: <5c128db1-7f82-4e2c-b029-5623880ea56d@kernel.org>
+Date: Tue, 7 Jul 2026 09:08:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: migrate_device: fix pte_pfn/pte_dirty called on
- non-present PTE
-To: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org
-References: <20260706111958.3649651-1-wangkefeng.wang@huawei.com>
- <892b2a73-4dbd-4090-89c5-46929530b855@kernel.org>
- <9beedaa7-0896-4aa2-810e-26042476e7a7@huawei.com>
+Subject: Re: [PATCH] mm: Standardize printing for pgtable entries
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Cc: andriy.shevchenko@linux.intel.com, usama.arif@linux.dev,
+ hughd@google.com, willy@infradead.org,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
+References: <20260707041703.658021-1-anshuman.khandual@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <9beedaa7-0896-4aa2-810e-26042476e7a7@huawei.com>
+In-Reply-To: <20260707041703.658021-1-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A469D12000D
-X-Stat-Signature: bn33c4sne8iccoaj5fy98kxxr3jy8gqp
-X-HE-Tag: 1783407897-477977
-X-HE-Meta: U2FsdGVkX1/joqCBVw8OrreXe7PAdV++s8QypA3bd+pWhIkYbNOti2WYZzsW+kPqaWMwD0ByliKPSakSUXhdf29P+QL3tqQghL3XDhzrRSG1VRIChfhfjRGnMKWMg6hSZXMeVO+ooD583jfMPkvys0pscNJTE8gb0s6uEh8Z8KzC/EGZDdoJ7rkMlFM9C+RekAezpASSgM9XhKQh075d+TDTOVcNtVD7zDUQBqsEL/hyEsmUzmv665toKaAWee0b1aMoofqVF4PuezFmqDqFPpZ4BHH8diDA2bqO8Sxu+HZMUvjuwkBAvsDhGkyd2MsfygkOdVDkLzUUXgDLPAOL0P3bPaYhiGx9++VMr1ncA48Ckr55BbK5n0KerSvzepgi+RHgierw9RpjKS1x+3jRy1IsNq2kHO7xQ2if8CEpATIPpxNHzA/7lFhYY0YCnhF+X5yxgeKOp07Dvlo+pOOBc2mQlS1xZWVRzL4g7uOR0TngMaN3hud8DDo7MWgqEPb+TEF6hyzIXWsnmorapGJIiLZqoe0VfTuoPDIIaJP/IeSeXvfeheaKnEEK5n7iEcf4i/S4+mc+qyj6nkKv0v/90JKg9qROunJzS6cSzdYzcrFosJIT8Yck1S+3WzpP8m0QBGpxE6z2TVOzVapwHYWa0GGInNxk9bI6bU7vGknIpwpF6UBDsC2YXFZW2wmNHguRDL20iLpCGTlCG99lpj2lDsmfDZQddSwwwl+FugdIncLw5qoSSt3txRkFKZyLJNWN5crsgI/tMrMkQkXhcg9oNTpUIOp5DPFpdNxOk6G2pMKzW7ekC4YU+xtS/NDPaTneh+AxV9YW9UuqqZiZ5ORCOYK3FqmDBVgvmJfkUNUUv72s9aLrx+f7fraqd7obBoqOvg2K+YN8kU91ff9O9eFxHoEHwkxNthA4/osLSehzIxwIHRjqzuqKQ5Vdfr9Srzoobm8eF7+XxiSD4Bx8xke
- G2xy/lk5
- Cc7/jZ2yoDt0mwkfPv3xZN+UNgQuO47Ai0OwaFBnKMW9orx9H2oV05MUG9JPcWqg/vRL6GxDAYQSMMn/9zAHEfMAWNMSMep5CTnbgOFKBqViQo38a4Lov5BGquUESdX6Jq3btkaPY9dCfPk9g6D/3BTgP7TymHxGK9FAPUBPaePylDQ0byr5QAQW4tavOIF509zpcyN4X0h/2yFfJ3eYTwjavYbIWVAVZIpPUAJRiajBVraEeMa/QeVTOthPbvXPaYhR8jMatsTK+sD9EudThJR2GjBfLgx+E5U81xLAR97Pv2uUNOI4X4uZlLz+Bk5KSk2lvoUD+WsFmuSTXSO2r3R4txbc5aie5pV+49GzB5YG1eDZN/jxux3NhkQ4LEYwkAbjxOgjZ3wMjzMq4VUZ2NF0gvQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3C55C80002
+X-Stat-Signature: 51mb4fpmx8b1irjn9awo4uzqemrwkedq
+X-HE-Tag: 1783408130-642124
+X-HE-Meta: U2FsdGVkX18wrheY6T+3A1hNbe70ZXWTNBGWT3mf2jpNqY8ZgZ/5fBb2Ghy+ymqlfEINlFmLAOzuDR7RN/UBiudqiMvFliz54SnJgqkqluz2runoUlS3Id4DnhjtoWIfq3iQYz1cDxNKgpPXIvk5NRUGY/0hrxE/4yr+mDbPLpzKSfjBULt0WN6ReVgXmcvR8ptlJXjpDWFvaZD4oKv2zNeWdM5lmYx2JS3QQfFtgC6a+VEWHn3WQ8yBpwHkkiMiZqLNnWkEDWfCva8S3kLR9UFfGsQ5vrKqg4/vI5AkPkuuVzGjcihSEjHwwqSOl/9dtFVbz5alk7MWNXEPaRmt4F55L1N7XlZk21941rgRcP+7wObzjQSX4jIREcCXibkbx/zIb583fQA1Pfr5s1ArZHp2kGQWMt8tQEarXLazfWRw3JJVpbxS9WikllLTNrM/fzEyfrPiEBxu+ZjcDmdhgKcec+j6YKCdmk0tsriHOgQE6UzcI+K43wCX2VWBFoMdjysja43hsGvMhe6wLvsjeXXvziXzhVOombzoZOMM7+8yaRlRYlGzRIvCLvij5BL0ypiC2mhhBhzs8RHnQxKXi5gOvujKq0i8zz+MhfVHh5qUkQmOAY4BGKSsGobAy7cKkND1smgdfDJxnb8+KOtr36fSthlq0NzUVR94ciR8el9X1QBpBX4IdRPlDmtvjMV7aR7AHQ2Tj6vGnhBoH4oAHgl3X66sgEu0mtCpFQGq5tnD+pjpMEBnZiKLQ3n7r2CapMU2Xc1p6WES0oEowjqWZg3gqZWI7ga7otqJCPxmK8OhzH/FSFmBjXr+7Y17soV97nS8ctXWVDEElTsGVq9Bxt710xMmKbIpemCoMAxiMPw73YN6T4D9n07Cca6XlGtpCogD5q8b3jMPgAqtnkUl+ntdzUVXnLeDmL4uYADdBSyVpC/1yFhMCvqEm+FWnwhLPxrjTsfXS9tGt6+AhQ7
+ JZA2U0Fk
+ z74tqvb5mPoSljILT0hhl88q4934SRutdbmtLyjhPXoeRxI3UCT8S8npEsppLuRVe0+rNKx7E1TsoCcj9ABWBkeD0EwkxcTuPOC6OWk0dokxyHLlaMEUBCI9D6cGAbd6rg9z0mD6gPLrMfnTJcBEzmHonYLhNG/1uZG1ygHqtwAS49GU0WccmlYHHk5oBdsSg5+ZaRGVDHJQQ1+anp1eg0ZQKW92fCvvHrE8ZOqqqzXS2RStQ6SwD0cYedAwM9mrD2bwA06FjFtDHx0YGPD+7/sh+mTXYDv+eOX6eh0bG1NThiD8iMNTjcfXNV77Ob5XcraNeMUqqT+GiCobJLq9VoLj8AZO2JeKSPIiD0wqra+f62ozq6OrFf1D9S9icF8iEYr3OclHz8k4fgjmJvHBN+LSoXZyU5ZlAshSiuD9Y9auc80ljs2b2VnLFptjeuraY4SSNni3fs4Lh2AE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,46 +138,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/7/26 03:28, Kefeng Wang wrote:
+On 7/7/26 06:17, Anshuman Khandual wrote:
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
 > 
+> Bad page map reporting currently stores page table entry values in an
+> unsigned long long and prints them with fixed 64-bit-oriented format
+> strings. This is inconsistent across call sites and does not work well for
+> architectures where page table entry values are not naturally represented
+> as 64-bit values, such as 32-bit or 128-bit entries.
 > 
-> On 7/7/2026 2:30 AM, David Hildenbrand (Arm) wrote:
->> On 7/6/26 13:19, Kefeng Wang wrote:
->>> pte_pfn() and pte_dirty() have undefined behaviour when called on a
->>> non-present PTE. In migrate_vma_collect_pmd(), these functions may be
->>> invoked on non-present entries (e.g., swap PTEs), leading to potential
->>
->> Certainly not real swap PTEs, as the previous function handling is
->>
->>     if (!pte_present(pte)) {
->>         ...
->>         if (!softleaf_is_device_private(entry))
->>             goto next;
->>
->> Only device-private entries?
+> Introduce a common helper to convert raw page table entry values into a
+> fixed-width hexadecimal string based on the actual entry size. Use it for
+> bad page map reporting and for dumping the page table walk in
+> __print_bad_page_map_pgtable().
 > 
-> Yes，device-private entries.
+> Pass page table entry values to the reporting path as raw bytes together
+> with their size, instead of forcing them through an unsigned long long.
+> It keeps the printed output consistent and avoids truncation or misleading
+> formatting for non-64-bit page table entries.
 > 
->>
->>
->>> crashes from pte_pfn() or incorrect dirty folio accounting from
->>> pte_dirty(). Fix both by guarding with pte_present() checks.
->>>
->>> Fixes: fd35ca3d12cc ("mm/migrate_device.c: copy pte dirty bit to page")
->>> Fixes: a3589e1d5fe3 ("mm/migrate_device.c: add missing flush_cache_page()")
->>
->> I suspected device-private code, but indeed, these seem to be added afterwards.
->>
->> But a3589e1d5fe3 only moved the flush_cache_page()? So that one seems wrong.
-> 
-> I couldn't find a more suitable commit, before a3589e1d5fe3, the
-> flush_cache_page() only called under anon_exclusive, not a device
-> private entry, so there is no issue. This is the reason why I chose
-> this commit.
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-What makes you believe device-private entries wouldn't have PAE set?
+You should add a Co-developed-by here :)
 
-This likely goes back to initial support for device-private.
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+
+[...]
+
+> +
+> +static void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
+> +{
+> +	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
+> +		snprintf(buf, buf_size, "overflow");
+> +		return;
+> +	}
+> +
+> +	switch (entry_size) {
+> +	case sizeof(u32):
+> +		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
+> +		break;
+> +	case sizeof(u64):
+> +		snprintf(buf, buf_size, "%016llx", *(const u64 *)entry);
+> +		break;
+> +#if defined(__SIZEOF_INT128__)
+> +	case sizeof(u128): {
+> +		const u64 *val = entry;
+> +
+> +		if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
+> +			snprintf(buf, buf_size, "%016llx%016llx", val[0], val[1]);
+> +		else
+> +			snprintf(buf, buf_size, "%016llx%016llx", val[1], val[0]);
+> +		break;
+
+As discussed, can we simplify that by casting to (u128) and then shifting the
+values into place?
 
 -- 
 Cheers,
