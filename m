@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6306CC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 23:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36D3BC44501
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 23:51:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F335A6B009F; Tue,  7 Jul 2026 19:51:47 -0400 (EDT)
+	id 0E1C96B00A0; Tue,  7 Jul 2026 19:51:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0A906B00A0; Tue,  7 Jul 2026 19:51:47 -0400 (EDT)
+	id 017496B00A1; Tue,  7 Jul 2026 19:51:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E479D6B00A1; Tue,  7 Jul 2026 19:51:47 -0400 (EDT)
+	id DD36B6B00A2; Tue,  7 Jul 2026 19:51:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B8F346B009F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:51:47 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2AD8B168F14
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B0F6C6B00A0
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:51:49 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1C9FE8FA87
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:51:49 +0000 (UTC)
+X-FDA: 84963630738.12.9DA18A4
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 49C184000A
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:51:47 +0000 (UTC)
-X-FDA: 84963630654.06.C0ACDB1
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6623B80003
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:51:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hZlFI5ZY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qzZd2m9U;
+	spf=pass (imf07.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783468305;
+	s=arc-20220608; t=1783468307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xg1plK6yIX0LTs5KrUD1h414rIIh4WSWs4+c6LLldXs=;
-	b=KXkMUnChGhr4C0gBv8neMBqQsf60U+pt0M4mUn0SYl8lst78geuJ+bA7aTxtqVWjDzDCNI
-	abPEVG9hvijh3kfJoQB6Zd0QsbcDmJw8HArxwTZ+0SI/eTbIT8nlFPmwhlpSPLEyjYxIbS
-	AqiauWckOk8Ug+L9urqOEagoHDjLP6c=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NjoZ3kU3AvUL0LV6smVKBwxGmvcLVEM8ZIL8h6Quy60=;
+	b=s9R2i4fByeTczA7hG1eOGnRFASK7TeXjVrkJoiJEMojiOxcmX3b28RVdfnxwlETU8fh/9E
+	1HWG3zi54Iq+f7iUrIX7jKtlsI5OEwWqiyE2ZgA1VaGBzzLnNOLCV5ZZQ/DSjwFBNx4LqA
+	6At0TPO2UAhV3lR8cnjlcXTori1L6Os=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hZlFI5ZY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qzZd2m9U;
+	spf=pass (imf07.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783468305;
-	b=KHAc0hx+H4Bk7OSMQxyEUCubSb3pO0osAEPy7lA0H+ueoPw/4SFZiIAe3M2oTOLccIJIPp
-	qnx+RdodaDbX+6f8+xvKMywUkW4X4jRL9p9XiNAsZwpKEJZVe0HxWuP1RU1QTRPNkzpTRq
-	hKK21KowhBYHAuR3DC9HFT+939VZSB8=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c7c61b5292so2566875ad.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 16:51:45 -0700 (PDT)
+	t=1783468307;
+	b=Uu1NumIQY4eL3z3BDyVHDEP3sbBRupl+TUNxvVe13fK9dlI82InxjNfn1iZm4Z7MfNmIEY
+	42ti/P4MHJ/aQOuSoHqMpJOl+4vMLhvKiaAsOwe3b1Sry3CPy3TWRZHAl0GzeAZRiNDqWX
+	37+JCHhuFXa1E6lE2qKZoDdoWREJGJc=
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cc97653887so1276455ad.1
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 16:51:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783468304; x=1784073104; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xg1plK6yIX0LTs5KrUD1h414rIIh4WSWs4+c6LLldXs=;
-        b=hZlFI5ZYeFf10lBO7UBY3kn23X+s15EocWYss3UVBlN/lhv/J/TWw9OlX2yu2Q8RJT
-         /J/n7wHi6rnphovddwDGwUSXfPJJdoiHYpOoFliCddgzgdX7vAGkyY6AUKI4v8meATsQ
-         bpiufY6UTPMxBfIaW24WUUrYVuSqgaAv3Ieq9SBGmdC/RE3p4AmjJIbrKa54tZii6ATV
-         CiESwg6hkNX9bskzCRjoLp0A98Y3ZwMNEUWybw0MIzNvigLbtz7hRDo/HdC+4ZJEFva/
-         PC0sA0WYKcrYoPhBdAUmSIQY3QF7Q4COomtNqZEmVJl7OtI2Lnm2enBBDAloiV+93PP9
-         O0zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783468304; x=1784073104;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1783468306; x=1784073106; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xg1plK6yIX0LTs5KrUD1h414rIIh4WSWs4+c6LLldXs=;
-        b=MeTqCikCurGKSX57poeIjTUqMnBIHhb7U9XoS4gX2PINMpxLCmTBWs9kmoIjDA+m1j
-         xy0HbbSmD92j3sbnlr5HE/CjvjayFC0CnaqflINcJcJb1ADQAzyWRXZNScAr3Kcjl6Ve
-         vGhWc5+FuB6mRL8KXPktB7ycjhvcO6cpDAJH1lbsaUcg5FLcKey3NtN6no97kcM6ikjO
-         cl6zyEOmO9qpzi6HrZTOg8IMg9+UYrH01sllW98qLSu+TtGYkyLnPO6w+Qw0XFvnlzKn
-         c13Ch/+vKrlSUCoM7BDpM66bh9eJlRZwwHdHUajZS5h1WgMCN6zANJyn1qaOzv3Vp2A4
-         aP1A==
-X-Forwarded-Encrypted: i=1; AHgh+RrroesZGSbW3MVhQuK9UC61BQnhMthdItbX5badU6kEuVPF4bKNtDhKk/TBrEz4cd0vFr06FIArdQ==@kvack.org
-X-Gm-Message-State: AOJu0YxiauS9MpsYqdfk9HJ4lXMY0b9Rm7YYu/TOZI1EaNKFfWbzaldK
-	ebr73YdnV/O6Bl7/+FEgZRqIRVds/Iica8ctun4OyFK0SI3Zj331L6en
-X-Gm-Gg: AfdE7clZTzKLB8ZOMiefk6hJlC55Otg2UdR08hc7AfCkhdeQd5sj3Xp+Dq3hrtATddD
-	bl17y6TE9xlkIbe6i2U+mV+BufLnoY1FX6Tl2rUy2WZU8Xu2OJwfi/pqHUaVR5qS/A8AESMq2/v
-	YQhQfHuk5F3Dqg/UIjb9rQzNfpEs3Llx/JVXVtb+Db+DDfTj8evkkaprS6YLOf1+zVIX530jHj2
-	IJ78jIdcXRX7olwDjoptmhvSduN0d5GB6nFBMyCCF3hjuF3bSzjYmxsvtJdAXKoNjrRvNiE2eJr
-	u8wHEJGzh4+hLdSsYG+rGpBa4PNOYPcj1YvLzrJQrSN5APLSfa2/3fMeXNDDLIpunRR1Vre3xAU
-	Yf3k3u41B6ZGFIMYxiOSP7AjqivIzuApGAnkgx8PZxIjv2v6oP59Yf5KP8j3mNAxLWor8Vpp39D
-	ZQ4crmrxwZbMP2kGq9bIAWO8trnKlCBqK6gGsDx0+Uiob5yxJqHQdfFMj6yVk1d66CZG3Jps2rt
-	DWNSFomGKcTIccwPA==
-X-Received: by 2002:a17:902:e84c:b0:2cb:3f63:7c3e with SMTP id d9443c01a7336-2ccea36aec5mr1391525ad.35.1783468304300;
-        Tue, 07 Jul 2026 16:51:44 -0700 (PDT)
+        bh=NjoZ3kU3AvUL0LV6smVKBwxGmvcLVEM8ZIL8h6Quy60=;
+        b=qzZd2m9U8xnH0od4sOHmeu2K+MX1uKqMZg5KAve0fYMh5ywpPqnQTn2zhLg0jVRSDF
+         iKX4ZeWv8zzWIu29sVIUIIAC3lr72wznfJ6x5Rp8xjiHVnFCUpuKU2YG3szAXtCxK8JC
+         k9qvSXacC0cgjtTC9vuImtXwyMzaKNFvsMIl+Sa6zi40D50b9q6SeiUXb6VfTFsbVaIE
+         CjJNQdJ6qpkh+bybPH6ywL+0CCVd1UFh8W9IRDD9PVeK8vVaMCqfeRuQ9SuG0H+w1sOa
+         JtED/vZYxVCvumwCVR2PgOMs1UB1CNEbxMrkH8MCCFDy3Gwa1fYS78troqywVbuzlL2g
+         ncjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783468306; x=1784073106;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NjoZ3kU3AvUL0LV6smVKBwxGmvcLVEM8ZIL8h6Quy60=;
+        b=ZMRDZGGKbOc6qH+FouOYtTmGWc4THve5rrqbsxFer6Gyhl9LAzLamq14yosl058Uln
+         epkkOSIYD5osran3y6vzgq6kp+4T5/KLocRjL6FrqTM0RDpKhIIHjm05/h+0d9wGdyeO
+         OkPWnyWBMwQyeBeBWfPO5wyFowO2jPhum46qOjg7aYvyVlxYhSxvsGnsNp3ajIS8gU70
+         KthaIEBuXlikFHryeVYK7V4NywuRDlcNqb5wnqbOlCRQB+bopHEjaWRmx55FmoV0LOtH
+         6z8aS6nBtGDFV6kaXNKkA3H23nQ0/cPVKO1qFUC8zpUmdVreeALZQgb5Q6OEsP2OfoHu
+         rJfg==
+X-Forwarded-Encrypted: i=1; AHgh+RpIjaRd8JH0faWbVIEQB5xOa7LdP5TW17oMAP+eOY2BoMRunwpmcWu1iXhrnYvo0Ayb0CAlDYJsXQ==@kvack.org
+X-Gm-Message-State: AOJu0YwSldvibfYGA8+rD9cd/gayNjGj8SknmugldeCmEOzTyoK3OCv4
+	syOa2msPsrshdbFdVv30R8EdxKDmItF4I6utnwq6N/ypLd2JeAtqHlDI
+X-Gm-Gg: AfdE7clnP3tlY/dPRasCoxWZ50TlI/adr2Qf3JZ6AdWk8S5VZQASna36t1VaHV9Udou
+	+gCGG52eYMyq7mu3vrYX7oOixLo5AahG+FTZmkqpzXr1cqn1girQdw1HpmqKAyZq0gtewVVV+rJ
+	2z1dvleeYB+QpkZc1XtoIA3VIKqND6ZER7CIrTz2JB7algGHzV02oVQ/C65xADiyBsEk7y+r0lp
+	5AEJUoLVYgQFQtrmWTh8DJGYOJqG7JW65pS3prYxw1zPPM6Vk3bnZIrwZjyR6mVoQ5F9U7pUtaX
+	Z9Ne8SUPBtnDql6Wle0nmMTVrSPq1E2kDLCMTAsNTC5jzqw3hIZqE1xjFBI0d7VSEisYyxFMiS4
+	v8T6UZQv05sBc+MZfDlwe/IA1zx514k92efiGj2s820xxkfRGDYqjOZSW7RKscDf4WmDT+xpBJz
+	gAqYoAMivOPCKGWzTcVESzFQmiE/FkwfSPlLJaMhnZsNFNqJ4yzNnI0NlZk5X04+1GeMqPPW2rT
+	VPiyKJmsSKK+6BHhw==
+X-Received: by 2002:a17:903:2286:b0:2c9:97a8:afe8 with SMTP id d9443c01a7336-2ccea3d8697mr1162125ad.43.1783468306055;
+        Tue, 07 Jul 2026 16:51:46 -0700 (PDT)
 Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb9a3sm18882265ad.13.2026.07.07.16.51.43
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb877sm18937045ad.14.2026.07.07.16.51.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 16:51:43 -0700 (PDT)
+        Tue, 07 Jul 2026 16:51:45 -0700 (PDT)
 Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
-	id A319E148F31C; Wed,  8 Jul 2026 08:51:42 +0900 (JST)
+	id 0322B148F31E; Wed,  8 Jul 2026 08:51:45 +0900 (JST)
 From: Hajime Tazaki <thehajime@gmail.com>
 To: akpm@linux-foundation.org,
 	liam@infradead.org,
@@ -103,20 +104,22 @@ To: akpm@linux-foundation.org,
 	geert@linux-m68k.org
 Cc: linux-kernel@vger.kernel.org,
 	Hajime Tazaki <thehajime@gmail.com>
-Subject: [PATCH 1/2] mm: nommu: fix the error path when vma_iter_prealloc() fails
-Date: Wed,  8 Jul 2026 08:51:36 +0900
-Message-ID: <20260707235137.498738-1-thehajime@gmail.com>
+Subject: [PATCH 2/2] mm: nommu: fix error handling on vma_iter_prealloc() failure
+Date: Wed,  8 Jul 2026 08:51:37 +0900
+Message-ID: <20260707235137.498738-2-thehajime@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260707235137.498738-1-thehajime@gmail.com>
+References: <20260707235137.498738-1-thehajime@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9bt38dt6k1kz1qayfuwisidno97bj54b
+X-Rspamd-Queue-Id: 49C184000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6623B80003
-X-Stat-Signature: 413ewghghzozcigbjw69aktppygccgmm
-X-HE-Tag: 1783468305-382717
-X-HE-Meta: U2FsdGVkX1+rZssLTzSRLxir6qwPR4w50QArCdARYu/6gX3jC7DkIjDkCH0AgLB8t2gadqK9hVF+R5mFMB+pUopXNItSuWV34ZmC3SdaeqtP82NTPGVHjD+Li77EkkMh62GZgjTu+y9stPcFTTMLxRaQtQgFbPiUuqAFq1rq3YoxvAwGNo2EBD4/Rkx5JC3FtnbYZY6uFfEJurquEOJPcYhPQ/v6kWEzeY7NuwPcuE2kf0pvNnHnX5JEkXI3jLjucjy7xZuKqNDlA7VbJ8Pd5XvvuIo6a0QS7Yu5QdUq1U4uJardiDlhxg+2uXsLtbqErR3C9rq43SC2k2x9pIRySImLJWTeh4pVlEXplX51U63fWGzhMaQqc8vRzFFz9o3CNUJ9O4EYhGpp006NVc5qnpSUGYvKvXCPoaThGPzZlLlRY3k8CL60W/MhQaxSPrjH2CUiS5CbYzcfUaU2nq7VjSLuriaIZYUgzL8rayQH05TM18S/s66UH85IBcc3hrv6iB2/j0NrP5HUWpw4yFDO9Tcxc0xt7UZSFTcpE5WxjvVq/tFHRzJZ0h302FiaKbstBGEXqIDy5IdQ8Av38ZMhT6PJBl8wx1FvSkulPCtgAFbWK39GH8Pi8l1WN08fHiGb0wAVZatFJ3TD37CTl1dXrNNJ4cOJoKwccFxqdCNMiMeOE+SVgKWvaXP/UKcswb1kGeSaosq3tDbk24w3V2YtUym/Sz7XU/ebjdrMFiQnli1rA/EzxmtdffCZtJNEmlcX4k7tkWG5mN2ZQAytvpFcCpUxWbUxgTx162Y9BpGu2OR1o08j5clmkoz3RMC54RfJjopnuS1OkvU3CnyZGykDUpouZgz8hywBDHYbOOyi++/fdtfjEK8Lllek65dsr48/kkUiFYONAOF4P4B5tMaIY39Z/lAK2L7mmu+hKOQbC25dla1allQLbrUXP4NYx457XedOaED79DLynH8M1Ln
- PEXb1o1w
- JPLPdpQjxJtjr+DN3PPw4v9HdahlXK7bTPX7gAlilvEE3zp4coNgUk6MCAjNAPy0bmVoLmTwgSdwokJm3VKq2sVFdgZJt3ArpEIWNdIQ9pr7i1FeFm+j9e3G+vFSSGVc4KhIfAxaajK6QMowfw/SRUq6iA5B60BpB+5tHKAPSBmyFFRUEipNRsrhzI6u2yDfm9cGafZymNcIk7g3yO2nIRQ8cF9vBnZIWQ/ajs8RGLJm2T2IaVSbYM5wx46M5dSasMvc2S7BXzXvHpdhSdmiyD3iNNgDwvdXUqgku/xffDdLODcEtsHPPNM1ZlvhWyYLq6Biz7R0ntN8kjekHkAHeFaGI+HJU6EuSnzTUfxFMRzzuNLq6oFzxyjoZVpVIv0NJtvOZnjjejixw02LKMeBSzfKDaQw6NnFPsdu3o8+LlqXsA33xjO2xIKoCOSLom034g5Iq2mHazeQ3VA7EEzyYr1lXvMfSjssrzmfQ8wWz4OhXnS7Mafxc8vfQbzFkyRg96tAY0DbEh8EHuY4=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783468307-645229
+X-HE-Meta: U2FsdGVkX1/qarjwGRPVAXE4JdB8L1LO68c1lqiC+Laqu74Qj5yXBXTV5zOUFnxWLodcXyf+F4gzQ0GLdFNEUxG/xR3iGFlbYT80Jgp+4S9u1GCNuc/b30vXyxZNiaCjdFhZ3BG9akYIF5AX+87afNX6DRjU6IEqDKoaWmgxN3+qJgPdDAetF3R1tduH6oBULYqmeEktToDeFLumr/VwZOW37mMARiR78zK/WBwBYDmAwaKJvsWeOAVQWDFdChsMqW5c6lKHB3bcjCtGEXdrm1/3qT7wQxaiwLuIktHyjegpdWXeTB7qF0iz0IxKdCt547wQSCqSy1c/NpbeQaKfnVoCYmwjr9+Bp3aieHEHMHGjX2DGd5d7cil9vz76E+/eqDhWwOefRjTyLwIEwsWRTpC6dHNCR21Vs+SG2Ua3aSBUyOrLHQwfZq2yRla3/kwrd5tUt5ZNZR3hPL2C3QW5CLs2XrarZGOp3Pa9yVCRSo5Y35TP3+viLYF8gPXrsYG/1c+h4raRTeLFUG2xU/CUoX+BF+4vcFKieemprnnnTC2Nyg3pB9F7OArcyQ30U2CHt9ohBfD+9QOAMhtD/E8lfgqKnt+cbb00tmxnaF432cyU6Lf8HYX21Cnre07R2PbFTDeXeGFv4gi6X3repC3/TF/FRNcoVbP2qJroa05udltuJ5Vl6o3i99r4WXTbcfFlwaEOcNbDd10ji4a5I/dCrMaHgW4bEBFu0TwbWq9XQ4yKqsMtpbWmwpsAfpvYIx6+ZiIWsLRfqzVrmhUU0VM6JHvFFe9ltA1LYxOlYJJj0QZnf/Rot1VpwuwgW5hACyrrfA2br3YU6aRlPGnCa/+RRsZ6bqJa13KuUQ5P1Pny5tTOvSLA0CjHsZN6yYF1n4PKibPoLeo+XH3xTaQE6OzznhkUbJMKRilzgP57sEV0EKglGjCDbe7J1XHW/Vc1H9veoqFiannsHVGLRglG4cf
+ zmn4ej24
+ +RNJqYTbXHWeEzFahgR7rQIjYSOiKoAqWiGa1lh/f60pqp8V3w+p1U5EYoibJqmIJbh37dEFHzuiL6tdJNLo+3VeumGtlkd61OfB5SbEvSXvmVVimR/vE+SAh/jUOydMVJz5DmuyCxK2SHV4ir2K1dUAWlbccfKVai5c8FugfaltHBA2eAHUDoaBEf0nmuG/GN8M0C8lM/fcVxMwTDmWC4sWh6a9IpjUiCkK/mx5cSmz5+xiDiNi5zuRtBom/rBvX1iQkOyPsAAtV0B//v0/zWeSVJCsVdWF2TmEHaycTvwWPyec6GZRFT4yGfDYJiqzbdY0YIKy+EEU69e1fyBs5uYxYHevhu1aoRng/eBHwcHeB9u5TrZ996G63L23MEfg1TkcN7r2IDTvZxFybZLvjJniqFpUDjNJpRWNeiVUV0mRM0naisIJeoZpONPlWalPy/C30SW0GqZhDb/ebNHJ0X47ofG/qLKtN78NG5aQVp8KVpKr2jtgYHF4gZJpj/PGIA8AsPmm2kUh226Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,64 +127,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When vma_iter_prealloc() fails in do_mmap(), it jumps to error_just_free
-without updating ret to -ENOMEM, meaning do_mmap() will return 0 on
-failure.
+If do_mmap() finds an existing overlapping shared region, it increments
+its usage, sets region to this existing pregion, and jumps to share:
 
-Additionally, this error path unconditionally frees the region struct.
-Since the region was already added to the global nommu_region_tree via
-add_nommu_region(), leaving it makes a potential dangling pointer in
-the tree and may cause a use-after-free on the next tree walk.
+	region = pregion;
+	result = start;
+	goto share;
 
-This commit fixes those issues by introducing new jump
-label, error_vma_iter_prealloc, to correctly handle the error case of
-vma_iter_prealloc(), and move the region updates after the place that
-the allocation is finished.
+When vma_iter_prealloc() fails and jumps to error_vma_iter_prealloc, the
+error path unconditionally frees the region:
 
-Those issues are discovered by Sashiko, linked below.
+error:
+	...
+	if (region->vm_file)
+		fput(region->vm_file);
+	kmem_cache_free(vm_region_jar, region);
 
-Link: https://sashiko.dev/#/patchset/20260702012830.667205-1-thehajime%40gmail.com
+This potentially leaves a dangling pointer in nommu_region_tree and
+causes RB-tree corruption.
+
+Additionally, when establishing a new private mapping, do_mmap_private()
+allocates physical pages and assigns them to region->vm_start:
+
+	base = alloc_pages_exact(total << PAGE_SHIFT, GFP_KERNEL);
+	...
+	region->vm_start = (unsigned long) base;
+
+If we later fail at vma_iter_prealloc() and jump to
+error_vma_iter_prealloc, the region struct is freed, but the backing
+physical memory doesn't seem to be freed via free_page_series().
+
+This commit fixes those issues, discovered Sashiko, linked below.
+
+Link: https://sashiko.dev/#/patchset/c8513ee5aa8444ec9bf6c276043c9f833016a2fa.1783304131.git.thehajime%40gmail.com
 Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
 ---
- mm/nommu.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ mm/nommu.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
 diff --git a/mm/nommu.c b/mm/nommu.c
-index 815ebefddfae..ad619611e83f 100644
+index ad619611e83f..24bd8c529c2a 100644
 --- a/mm/nommu.c
 +++ b/mm/nommu.c
-@@ -1181,7 +1181,6 @@ unsigned long do_mmap(struct file *file,
- 		ret = do_mmap_private(vma, region, len, capabilities);
- 	if (ret < 0)
- 		goto error_just_free;
--	add_nommu_region(region);
- 
- 	/* clear anonymous mappings that don't ask for uninitialized data */
- 	if (!vma->vm_file &&
-@@ -1199,7 +1198,9 @@ unsigned long do_mmap(struct file *file,
- 	BUG_ON(!vma->vm_region);
- 	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
- 	if (vma_iter_prealloc(&vmi, vma))
--		goto error_just_free;
-+		goto error_vma_iter_prealloc;
+@@ -1222,9 +1222,16 @@ unsigned long do_mmap(struct file *file,
+ 	up_write(&nommu_region_sem);
+ error:
+ 	vma_iter_free(&vmi);
+-	if (region->vm_file)
+-		fput(region->vm_file);
+-	kmem_cache_free(vm_region_jar, region);
 +
-+	add_nommu_region(region);
- 
- 	setup_vma_to_mm(vma, current->mm);
- 	current->mm->map_count++;
-@@ -1235,6 +1236,12 @@ unsigned long do_mmap(struct file *file,
- 	ret = -EINVAL;
++	/* if the error was from shared mapping/existing region, don't free the region  */
++	if (region->vm_usage == 1) {
++		if (region->vm_file)
++			fput(region->vm_file);
++		kmem_cache_free(vm_region_jar, region);
++
++	} else
++		region->vm_usage--;
++
+ 	if (vma->vm_file)
+ 		fput(vma->vm_file);
+ 	vm_area_free(vma);
+@@ -1240,6 +1247,11 @@ unsigned long do_mmap(struct file *file,
+ 	up_write(&nommu_region_sem);
+ 	pr_warn("Failed vma_iter_prealloc()\n");
+ 	ret = -ENOMEM;
++
++	/* in case that the region is allocated via do_mmap_private() */
++	if ((region->vm_usage == 1) &&
++	    (!file || !(vma->vm_flags & VM_SHARED)))
++		free_page_series(region->vm_start, region->vm_top);
  	goto error;
  
-+error_vma_iter_prealloc:
-+	up_write(&nommu_region_sem);
-+	pr_warn("Failed vma_iter_prealloc()\n");
-+	ret = -ENOMEM;
-+	goto error;
-+
  error_getting_vma:
- 	kmem_cache_free(vm_region_jar, region);
- 	pr_warn("Allocation of vma for %lu byte allocation from process %d failed\n",
 -- 
 2.43.0
 
