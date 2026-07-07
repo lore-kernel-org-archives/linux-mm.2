@@ -4,123 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90982C43602
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:52:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EC79C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:53:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A6F46B00BE; Tue,  7 Jul 2026 09:52:33 -0400 (EDT)
+	id 844CD6B00C0; Tue,  7 Jul 2026 09:53:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 757F06B00C0; Tue,  7 Jul 2026 09:52:33 -0400 (EDT)
+	id 7F55A6B00C2; Tue,  7 Jul 2026 09:53:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 620916B00C1; Tue,  7 Jul 2026 09:52:33 -0400 (EDT)
+	id 6E72B6B00C4; Tue,  7 Jul 2026 09:53:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 38EFD6B00BE
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:52:33 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B72B68DF91
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:52:32 +0000 (UTC)
-X-FDA: 84962120544.11.AD1A30C
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E13B24000B
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:52:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=l7tqum5C;
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783432351;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8/6KWb4PfYctYp+8gY6gHKjmETilMdBvjVRCsYZspew=;
-	b=f9o8LXorx1HnzsTWYSqKzCfWmPoBTVRqlF+onSLWd1vH1rPr90AlzWjC5/IVrjjURtRXz2
-	hspqV+vBDjURCtmHfyPtEDXv0eWSD3ULN5Vr+FR56eXrB+6GgZqDzJzh0HsRDPRsUU8S3/
-	alT7tNLbTGgyhrl3FKZzLcryDEXZAbA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=l7tqum5C;
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 461D96B00C0
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:53:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D33D9A037E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:53:10 +0000 (UTC)
+X-FDA: 84962122140.02.58DDBDF
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2F235C0004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:53:09 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HHp5WcPc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783432351;
-	b=VUFY+ou84K12kVwwJqs6KWJj8PMY233jjNQPPDgO2olxpexFvSzcT/sbYw8W+xtlLouTc7
-	8QoTtgdiAfCsJLeaHDx2yYPBJ3azxdyV29qCFWX7gGuQ+h8jaNKnp0w9UBM2F9pSf65SS7
-	qRKIjCdxOoZjCcotGcyMy1sckY/6Vzw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=8/6KWb4PfYctYp+8gY6gHKjmETilMdBvjVRCsYZspew=; b=l7tqum5CgVXYfcPwtJgTxfXiNY
-	W+Xf+yjP5ugU2fn6LRQhGIG/KXGwZERlBynLMOA5aHPAjPSm5S6XBF3IDbi0TJyAThoasln5kjxAo
-	beip/tuPnL3fLnGzJwLunkBGhyRftaYswtsTi2VOxFgEx5xtCC1s0eg4v8B8L3/mu6ZGXGnn8Qs0o
-	7nA3r1DP6GorvKH3z0hsuJe5qn6HyVDyQ4ujI5wkoVj7IXEhvFsNvBZ1gvc0rVeL3xWODUBHM+A3z
-	43wWN0u9A6AYoIpZ0/zbIr6ngSv8NaivanmsvSjuWuYwacUBuYRn+hlNll3yL8lQ0Ndj5T8P3iNwh
-	jBQJOKdg==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wh6DV-000000002t1-1k1i;
-	Tue, 07 Jul 2026 09:52:05 -0400
-Message-ID: <5c06c0ad2f2a7a039181a1775623ec06ca063dff.camel@surriel.com>
-Subject: Re: [PATCH 2/3] mm/pagewalk: let folio_walk_start() run under the
- per-VMA lock
-From: Rik van Riel <riel@surriel.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, Thomas
- Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin
- <d@ilvokhin.com>,  Borislav Petkov	 <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andrew Morton	 <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Suren
- Baghdasaryan	 <surenb@google.com>, kernel-team@meta.com
-Date: Tue, 07 Jul 2026 09:52:05 -0400
-In-Reply-To: <akzv9FWH1peGukyp@lucifer>
-References: <20260625015053.2445008-1-riel@surriel.com>
-	 <20260625015053.2445008-3-riel@surriel.com> <ajzUCZSRU3h_UdjR@lucifer>
-	 <610d1c95a2f9131d5c018304f9a90afb33e8a032.camel@surriel.com>
-	 <akzv9FWH1peGukyp@lucifer>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	t=1783432389;
+	b=htOtJ5HseQBT/50a9LHKdhgk6+TXC1RVc2NHJdMwkS7YdhBdGpCnAHaM/MO7IL7Sro4UuT
+	KUfEHVmvGxfR6nxuMxXg9PetB+/1ytsZxAMCmtTEBevy35Qyxa2aKoepu+/cjr1HOQ9wsC
+	G3hwYgE8yaQkjB39AiVFNgHlyDY1M2M=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HHp5WcPc;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783432389;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=QHrvCBDIqc3E1FZYa+jpIBEplfGugDRdYB4bBJbLc/E=;
+	b=x8Q4HWAMq02p1HMCEO3B2FzDLNcXs6qVRNIo1H74Xc8XQ/jkIBFzMsMFtQWt96k1r2SUfb
+	uQZFpAeEcBTA/vjrnCkPB+eajp9LA8dAPulr7/E5IQR/0/hW8shKAu4QRppctApvqxzcti
+	dxw0LcB6UusE+q7ny2+GYFCiDW1x5Pg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783432386;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QHrvCBDIqc3E1FZYa+jpIBEplfGugDRdYB4bBJbLc/E=;
+	b=HHp5WcPcftn7/we8jv3iWrulSaQUrvHAaRpXFsX1MKn8IOqSbM5dRaB0LBIzeu+u1EEfwv
+	XszoZPgZOG1xXYQZAuzUKHpBJaB0+SeXJriZ73WV9avGYA5oH8PZykt2DOkfCMHIiuSjOY
+	vQu5IroVVeJcUDHlh7V/Mmk4uZ8tv5A=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	apopple@nvidia.com,
+	baohua@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	byungchul@sk.com,
+	david@kernel.org,
+	dev.jain@arm.com,
+	gourry@gourry.net,
+	jannh@google.com,
+	joshua.hahnjy@gmail.com,
+	lance.yang@linux.dev,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	matthew.brost@intel.com,
+	npache@redhat.com,
+	rakie.kim@sk.com,
+	ryan.roberts@arm.com,
+	usama.arif@linux.dev,
+	vbabka@kernel.org,
+	ying.huang@linux.alibaba.com,
+	ziy@nvidia.com,
+	shakeel.butt@linux.dev,
+	hannes@cmpxchg.org
+Subject: [PATCH 0/3] mm: handle device-private PMDs in walk callbacks
+Date: Tue,  7 Jul 2026 06:45:06 -0700
+Message-ID: <20260707135255.292870-1-usama.arif@linux.dev>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 2F235C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E13B24000B
-X-Stat-Signature: sbaj3gzr9pcxjuctc6qf95tubjzkbmd8
-X-HE-Tag: 1783432349-302714
-X-HE-Meta: U2FsdGVkX1/LckPWH4N0BuPefbYi0+7pFRu8ziXE4kAw/KA9Rcz4+qjKbulBfqPRFZKKv7qoUXCaoBX2I19gd6IU7jCcthysEAss1OjG0bCs2UR1CnvDJ6sJ1FsXgaBtKH8jcD6shAdPf3BUmcdPcst4lU6/1LMfgQFNPIJhL0TtNmouic5xZ4DNSvh0RPa11TpghA8RdQtTNJ4dCCUGBpLjDPK7t35tDA/ZRsZXhwFWH9kXzlaOQOj9BLHZ6/i/bipIYexQREG1dDdLF6YyCLHxnsBOYLST1BN3fUhdjjD6dWQhwVuysI6goguJV0PFmC8cpABqnFuN18QIfgXxiPM/C9zT6U67Hgu2mK6+HueLyt6J33Xk8FxCXNUdFCbjpY41XdvEHiMuJn+Mtc/fA/7vBaexHtY0wPMm1UzT9/5I1O3P4p0GtK0hx5nccOCNVq4WdPxlbXLMnVHOQ/lZ3r4clavQUhjdSThd9AcTEUfDuTWzkvnGnKJpOt1+oFhs8ibOscpE4zw1oaQP4Ak+n9vdxer+YEvK2g5Y6ZsRaqIlJV/fkiF1TnHEXetIDpDZiM3uiHzT3F+ArWEIE83gPxTD/1oJBdm0DVk5cUk0KqBk4BrRM0oktkZ18m/H5lUo0q+9oj+MNFv6ne3k2WsMzD1fTqO3o84rpgwzuItYoxyxxtXre3IE6piaXy538UQv9+p2nTbB+TrA4lgn23CsZ3cLfhouA94moeLBwwzFR1OI3HE0M7I5zba20STZyy6IxJOFVewV4112dM+mVmQJiN87xiquVpszC1qiJP4cu2OFTdrL1dP62YbNy7UpQf2fyGMWn30NUcGEFLwwnIVIstop2cIhpNBF/UxE3mIHI4LkR81BrOjp3UPH//J+yygCEhG9FCJ0ZAzw00u3rdj5cZW+mFz5gl9qheW2ozhZRLe6ex3TLH+EK+eAPN6T8nvhyVcPXjbLiN0LxzRk2qW
- 6RXKgBdX
- +qmGEwneaELcREBlk9RkSCkcd3uvGcGNgYCXVwBuXYpF7urZVdrxBX3LD+wEYGStmH70AuAgaekuI/CVXOtSb8DOvV9qF3JJWI1Y+kfZqDXVldDlNWP7RWDN03S0QdmHrBQDia2EuG4NlEaPgisTJTyY1ExTma3ICBLa9QtHepq8CyrFtzYqIfiH9MB93UzKDugoEh1jq3PBFvUcvvWyO2n3rX1gsCb254jZVKtxbF+GmWdc+5APoexHLCfbO1T6KLcZV5deN+8QaiEE+kur/1OsEEA==
+X-Stat-Signature: ajcyi396yhxgnpx4rm1pwrsktr6jf3iy
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783432389-98637
+X-HE-Meta: U2FsdGVkX195Q5VSFz4ccEnXhU6BqC1POK9YJLo6NeKsWyoODdBqQNIgpqofETgGl6aG2Lcv9yPN1V+X4+9A8hV9C7AoCmPz56KB2pdaOT0xD1i5C/omeEkwJtoMWpnn7hAR75ymTxzGf11edzbc4eDkHyDIKf+6gyJkGy+hhnijSGedjKr3AgkSURtwaDiTXWxy0d4CWsyIOIakk6efmVuOFjqZUlj2rbo2zeAM//GrtEywnQw4eCck9Nm+xS9hZHZuOQGSANciFH2AdcYeqiMSc3StB4jTmndZTBZolGWb1HZCh+FGpCd4K5SPYGBgmU5R/uswVbm8XlsuGvyOD1sJydMT9UpaESohkSDyBivCoS8tzsjt8ISwLye2S6DFRWqRe7RREWcO6907Rhql0cEZr2qJ3o9VrzW9fss2x14G+95HPFmTG87JMzLjVFbB7G7DySJv53g7AdTQdJJBTudhv5vIP7i/7nHl0yusbIXlfvfE8O1ZRPQExE0fMsnQKQAtCNpebSHsh7aipqre+BE5Mg5cNpcGji/HCjX19uDTa2GiDl2zkX8mF0fNmWKOUS/K79WbxT+7YNiQTr4QDetph+TcR4XKJe/v8x5HNjANeeGUClajxh4bNnmrEnuT7rE/Obuk3iTzE2yIvL/+iH8KTKZs0PRHMHJBkU6so6uYGPzhzBmIhQYWcpfmW3gXhlA1SEcjFr2KAxC7pEDM3uy8YdNFEYp3x0HShmzq5LBGaONOgf44blQN24RYDQSi0as3rWu1Q3OMCgQNNgyR4+yWMTqb8Preti0vuUgXfr/3Q2foZdTJbjSDrcaLpUSSBvHrM57a9JY7Ugoi7uJBOh9q0k6y6pyEPFojmyVm32lUQjQeELi7gWiKxXUTUhsQNuoKDpj77HkY/33Ijz4DeD/Cxk1IJnFnLQ/9thKjk9kAEf9kJfIBqYCEXWyK3kEI2C8Wu/9Tr9tox27oq0j
+ zUPMmzTX
+ P9QT0CY60sYZKJq4h3a2035lQ/5D94e8CklhP5O1hbsMYGC9I7s0bDwmGEWkbpk7Yq4T62GE3/394RYSNy15EeYTsuQnBglqD6/O5T6RgYayCVFpMBCxWVmsbHor3jatsjkKiY3aws05koxFds6rjtmG7mXJpMnTfeAubkHDjKTMt0yW0av2IMg0UP3SrDNtMO69EEyCPGC34cNuA1D0XZZsYzNafdfdLgoxGENJvkPrYL2CctR88oIsz7RBU98bTHOvd0prOk4G6svej5Fo8AOp7DF/dQADVItFnksz0hToYLJWiGvz/uik6hYjatGEaFwl0e2M/Lri6djo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,17 +104,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-07-07 at 13:24 +0100, Lorenzo Stoakes wrote:
->=20
-> And on page table retraction, importantly, the PMD entry is cleared
-> _with
-> the PTE PTL held_, e.g. in retract_page_tables():
->=20
+Since commit 368076f52ebe ("mm/huge_memory: add device-private THP support
+to PMD operations") a PMD may hold a device-private swap entry whenever
+an HMM-based GPU driver migrates an anonymous THP folio to device memory
+via migrate_vma_pages().
 
-Ahhh! That's the part I was missing. Thank you.
+pmd_trans_huge_lock() succeeds for such PMDs (pmd_is_huge() returns true
+for any non-present, non-none huge PMD), so several MM walk callbacks
+that used to assume present THP or migration entry are now reachable with
+a device-private PMD. The results range from a VM_BUG_ON() firing on debug
+kernels, to an oops on a bogus vmemmap dereference, to silently isolating
+an unrelated live folio from LRU in the aliasing case.
 
-That simplifies things nicely.
+The first 2 fixes were reported as pre-existing issues by sashiko in my
+PMD swap entry series [1]. Hopefully sashiko won't point these out
+in the next PMD swap entry series :)
 
---=20
-All Rights Reversed.
+[1] https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=6
+ 
+Usama Arif (3):
+  mm/mempolicy: skip device-private PMDs when queueing folios
+  mm/madvise: skip device-private PMDs in cold and pageout walks
+  mm/huge_memory: skip device-private PMDs in madvise_free_huge_pmd
+
+ mm/huge_memory.c | 3 +++
+ mm/madvise.c     | 3 +++
+ mm/mempolicy.c   | 2 ++
+ 3 files changed, 8 insertions(+)
+
+-- 
+2.53.0-Meta
+
 
