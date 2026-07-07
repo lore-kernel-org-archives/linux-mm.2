@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0917C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 02:20:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9283C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 02:24:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5FFC6B009F; Mon,  6 Jul 2026 22:20:55 -0400 (EDT)
+	id 6B0B76B009D; Mon,  6 Jul 2026 22:24:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D37336B00A0; Mon,  6 Jul 2026 22:20:55 -0400 (EDT)
+	id 661AA6B009E; Mon,  6 Jul 2026 22:24:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4D2F6B00A1; Mon,  6 Jul 2026 22:20:55 -0400 (EDT)
+	id 579E76B009F; Mon,  6 Jul 2026 22:24:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B1526B009F
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:20:55 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1D4168CEEF
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:20:55 +0000 (UTC)
-X-FDA: 84960377670.16.6CA2658
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7C30E40007
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:20:53 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KCEfBuSV;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C4AA6B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:24:54 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A8C91A02C4
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:24:53 +0000 (UTC)
+X-FDA: 84960387666.29.CAEBBF0
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9A64A40003
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:24:51 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GgOyj+PS;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783391092;
+	b=5EHYqlP/FxwpdNBG6MpceOmfG8TBYV9H5FQjOD1Io6EozTjl7A3IZmEDGfeJTmHVpLsE4v
+	9M4IOTcaGyGBP5yI/q+Gr6SAQ3DsXAkOsuiv9mkaKEL2LNkDGYqm8rxAbbol7b3lhC04Vz
+	atUMFgV0XHNPx4tKMzPK9+cLVxdjQ08=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=GgOyj+PS;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783390853;
+	s=arc-20220608; t=1783391092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xosg6/+k33dLwMJJrHbAyu6uGR9fsXM6wffwFdaii/o=;
-	b=yiPPJTqqzQQfO35MfsEUkVwjPaeFQ91JL2+s3OwVC7VYf7mEg3UvK65HpDgT4c0Js0dIsf
-	7OZV9WP8ylbHux0/zbSk30seZbMh1FolP+A3j7OH0NTfpnLGt8L4bQOaYAZh2VmIfZ9ip+
-	u0xGFuFATXQ2Np9uYIR2xi2sPLNip/s=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KCEfBuSV;
-	spf=pass (imf27.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783390853;
-	b=JJaizWGRbT0n3p1/WqoXubsGaDPByz6/cmcpq7Fppa/WFIsh1PKwiq7MbA0eDNp9sC+3VT
-	7RvGnIOFaJjm2IPgYuQRf/q/KAWUAnFRvxHqQLBQmuPhBoPOZV3H7XDmcJonfig7p2ReKf
-	/54myAoPreDt808hIyDNwUUb/1kzzuQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E3E79600AA;
-	Tue,  7 Jul 2026 02:20:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE951F000E9;
-	Tue,  7 Jul 2026 02:20:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783390852;
-	bh=xosg6/+k33dLwMJJrHbAyu6uGR9fsXM6wffwFdaii/o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KCEfBuSVz6P2oEpTaJQx86SF3LRLHMwOshO+F40I464fgDrvexALO5NQAwULi5JXH
-	 aLJ7IZFVochK86XKQ089uoU0xYNjydNNkhjlMEHMtfMo3LelDYe3+W4OqJniPzlZAl
-	 1jK161ZjiMXJAX1RI06XVtJlQIvO16HwJdBuPxbRfgC2cWd5SRxQ7o37dGJtVHJQVk
-	 CTir5t2JUcbRRN8a97DIZ8l662PGISd6NLgKCP81i/efEPz1/L+NLpoa5SDZZ4ARSx
-	 OK/bhx6THWL4pzH0c9UuYw39G0//W8lzibYSCNgzqkp83tIZ+ozOzo+W/0X8AAUOYg
-	 YOoicMKgwdyDw==
-Date: Tue, 7 Jul 2026 02:20:50 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Richard Chang <richardycc@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
-Message-ID: <akxiZryteM-mwlyz@google.com>
-References: <20260706081218.3438762-1-richardycc@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260706081218.3438762-1-richardycc@google.com>
+	bh=QC3O2UucywZXQimgMV3VSL+pHVajRHBfYvR5TjfVN9o=;
+	b=bH0+39FhL5mQ4PHaYKTRh1lK65AJ1GTWMFp4sIlPlYwLArk161wOuZU9ONlQvolp05gAG5
+	ERBXtkE8H5mLW1YgZ+yaTm3p7ZQze3+Mh8CNq7USXQtArZDJ/mAFZMm9lovWxPjQ+h4mNs
+	L257kaLtRkLvNiZ+i+IEU9nIfwX5gPI=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783391089;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QC3O2UucywZXQimgMV3VSL+pHVajRHBfYvR5TjfVN9o=;
+	b=GgOyj+PSOUlCJ70vsX+GszKAOkfW3wnDOjrIyGCu3XZaXzgX3LmM3B4J/n+apK/kPZTCn3
+	9cKCDtlwtEhDbZEXfPxq5DaLSm6fyfuMLVJzhg6rvTwUggY7voO1opb/4soMvNQjoHeZl+
+	0ZDmSTWLfvKdnXGfcG3nL6DdAqLeUJM=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH v3 2/2] mm: memcg: reset oom_group in css_reset
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260703063826.306878-2-jiayuan.chen@linux.dev>
+Date: Tue, 7 Jul 2026 10:24:32 +0800
+Cc: linux-mm@kvack.org,
+ jiayuan.chen@shopee.com,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <7EAAB709-9AB1-43A9-AE43-8E0191BA1B2C@linux.dev>
+References: <20260703063826.306878-1-jiayuan.chen@linux.dev>
+ <20260703063826.306878-2-jiayuan.chen@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7C30E40007
-X-Stat-Signature: dytwx64n34z8p3578qb7ai8gxjfkyj6w
-X-HE-Tag: 1783390853-157887
-X-HE-Meta: U2FsdGVkX18Jr1NecmvZbAVTfDBue5giiWGQzsToKUue/phC9h3L2Xz/JmSi9Go86Ibcl1ckGQVT9ar5jkBU2lN/hCRlUzIPUtXBkgcgty+fdB3pSc7Lpt1hvBc0cnI+nK4I14JYZz9/UaWRKaMzF271GNrXOEFRnYC+00dk1C/mqMP/lW5KxdAXTlPJk5CkricolZLyljnegMIuP3wqfZZ+OVknwiprFqIh7AsSCO85GN/34/fnRzon+IfZMnZi8jfw7qrtGrD4O2b76Ivu2xSIhHEGZaiUUwAZN6Js1ax6N2poQMcfFTQd4gf90yniRP4gmS+HtpYuk/auLBjuzvN6NveofcNOMrc3MslB6119n0ce3JCvR4sfLipVsY4eQ0ZlzjlD1AkRhR8LJY1ymVpN6zl/tK9Sx+tYz4siPQ2V4QG0raK23g98Ybg29uqnUHegJ2qlXT3ufkrD980+C85xnH9oVhZD5yDwPU4bbp6bR2ySYGJuxOLw+X2o1s7KYSlMJMtuXxg94sOdM89cRRr0yBGbSzF1E+/RISaq7winWH5X8EyFDabrnYal4YwpkyTeaG7srswjRGWURtGeNVJUJmsllKLz589EnIyLVRUml34icUaPVpxPaAiADyKdE1Zgjes+PiL7OhKo7s45gQTuecmw/vDevwIub8lhdGBIbh9e41M2x0y2Obq6wB8sYFJYiVGNXEWOI7wMpJHLf9NusJsh0V5dhrUt1dCpg4YyavzALW0BmtrOzkCxTZGmj9teAEVo4ekx+W50rEWSkF4phdnOTBrXHZvcEKV9LIR3yP1ovbApB9e3s4Yld2DLlZIjup7e+6N2XDGfvUreNYFdPQm0tvBxQD4gHFL0Uv48la5jpMT+5CK8KDwGY2wA8rTm8oahXcwiJ97jlDmRGS5l96EKDIGrd7rZhYVFrkyUD6KtICkTD41oixXwjg4+MFic7XiXWYq0pAjHDcc
- HC4ze/Ec
- UhnhTzcd/QXoVZWBotO1vc7SKbz8Y6EnTYolDS3Q1us704S9VdL2fHHmp2INqZAahn4LRy57XZ+WhPrLlG5obn231Tlh+J/K5gHzGO9bhxMTwG5clq+ySqESI15Z1bY4/FimaxWzjB6rPniPCxYh3y1pEOfOlGeXApUWZ2/vZq3a5SpYJNf2X7HQAd0ACOa0UE9y83tmKPkA9iytF/9hQKhEx1+w97aCFbyZd45+6oWUtyGzfQ2MVvTveNNGYu7hykrHS5nwSKakRd0y5NZoJd+XkAsYuJrugmXQ0GT71Le+NRmzSTAPvTdfSHWf5M500Et7il1MZhmwhchRhVoAe0kBvcA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9A64A40003
+X-Stat-Signature: eeej4tqfo7y4u1mq8mjdc8jq1xu6nt8i
+X-HE-Tag: 1783391091-346928
+X-HE-Meta: U2FsdGVkX19QW5H/xXuWT6RcxVHuom75rox6/efb4c0WR2FEBZPLWtPvXXQsdkeX9XBoi5lgzgB3c6UIwgFUOxLy3m3jSzcj6tD+93YJ2ilauZJkqCl2rmDA/igqgxtJnVF+YKxOucxWZICi37IB/Z9mIiXX2CqUC2ooyPX2KFAnK2jq7lGeURehq250X4dCVIAD09/ikGhQK4iOjRrGNoJ3ASWZJXzCs5UcsUrFwkQFArko+tLU6cYwfcgAkBqUW4077Kg9YClkT3OKf1e0gaptqKr0AOM9XgeUyIrxxuH3Y9i/Th3RRkW6pCUXGEQoPzISVTzJ89cbECp2ZdNAKTK3vtDPLpOOZGYotwVcvUN+4btfP63qQlhba20MGVFRlZ1p/CpbEhLH1C8CrHymE8C6nWUnTxrdsDABOtGlGLzBgHWc2/Sos0mnkObKLV/p1IhWhvpD4OXufLRFk5F1y1CgjcIH847EMEv7Oc2HDroMZtF4XKxxPS2/jiUB4aX4gUbk++n58c1g05j/E6Br0Lo748c1TgcOwh1uZtgb6aZXdnEV3CE3AvEjXlZPhJLa+1aiSk++Sx8wI9MfO8AUIhrQFcFU/3rutgYZbOc0NKGAy0gx6dutZc60QPU02Ij5lBY7HlqQO2Xh8knVQS1Muua1vKDMpIF8C7bmLHEtw8S+DNJPif2StL6+ISqpbZuA1mbRegHgw2RglMa7ThVLep9KvdLLminJFSXTJfP+o2bFLj6Ape06XUEE9ZNmmBipKzIF00N5jdRECccWOcVHFN9TqUe2SLNkFYjNq8bsOze9mQprhWH5xObLq/8aBkyaFf352xcV8jAkXseMuJPpF+SOm1wOjY7EyI9KmKbmR6q6QGfcB/Bn5ZOmMarcYzSUn1z430KCgP84ySrmH6Z4/Q+0M3TqdBHpe2G22pGp1gm6vTsyW0Mpz/NnDPL6EK5EHoeLTWP5XQA90Ul8E/G
+ ER0LIFfu
+ iju0Z4teLGIfARScMrXjEF2m23lKl+6lOGSt5oP/idce2ynzbB+BTudSJMiTaTbk22/hlQCIGLk05bONpIhJsQ9yxZsavKHW3GsDzod6QxWaRSp5xYESw/LQIIlFqKjOrGn04FnYFZB5dTXGozyVQ4gcTVuTgJBHZ7HiqosAhL4VLf0r+xarULLMUNZ/bNw5bTsEyKKrf2GHuT0sIV0FNkLqFJVQ7qJewK/Fsp8tJJKvF2B+BoL/3OL9w4aQgnrM9bgUSuqPOElmLrIAJqsZYAiJHblsy9kQW6ITun5AUsKzxp/W596TzUDaQq1LgO5NPNQVP4i5pJbeWQ5HhfbyAs1cGKiP6tCYBj8HcsVyYI2kDtipIQgksh0tgv5bS4cMB7Jvl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,52 +97,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 08:12:18AM +0000, Richard Chang wrote:
-> Proactive reclaim (via memory.reclaim or node reclaim) checks for pending
-> signals in its outer loop in user_proactive_reclaim(). However, the inner
-> reclaim loops—scanning cgroups in shrink_many() and evicting folios in
-> try_to_shrink_lruvec() can run for a long time before returning to the
-> outer loop, especially on systems with many cgroups or large memory sizes.
-> 
-> This latency in responding to signals can block the freezer (both cgroup
-> freezer and system suspend), leading to freezer timeouts. This issue was
-> specifically observed on Android when attempting to freeze background
-> cgroups while proactive reclaim was active.
-> 
-> Add a signal_pending() check to should_abort_scan() for proactive reclaim
-> paths. Since should_abort_scan() is called within the inner scanning and
-> eviction loops, this allows proactive reclaim to abort early and return to
-> the outer loop, ensuring the task can enter the refrigerator in a timely
-> manner.
 
-Do we still need the check in the outer loop?
 
+> On Jul 3, 2026, at 14:38, Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
 > 
-> This check is limited to proactive reclaim (sc->proactive) to avoid
-> affecting reactive reclaim paths, and wrapped in unlikely() as it is a
-> slow path.
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
 > 
-> Signed-off-by: Richard Chang <richardycc@google.com>
-> ---
->  mm/vmscan.c | 3 +++
->  1 file changed, 3 insertions(+)
+> memory.oom.group defaults to disabled, but css_reset did not clear
+> memcg->oom_group when a disabled memory css is kept alive by another
+> controller dependency.
 > 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..fb472e924fc7 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4929,6 +4929,9 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
->  	int i;
->  	enum zone_watermarks mark;
->  
-> +	if (unlikely(sc->proactive && signal_pending(current)))
-> +		return true;
-> +
->  	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
->  		return true;
->  
-> -- 
-> 2.55.0.rc2.803.g1fd1e6609c-goog
+> Reset it with the other memory controller policies so a hidden memcg
+> cannot keep applying stale group OOM kill policy.
 > 
-> 
+> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks.
+
 
