@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58C44C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 08:27:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E3E1C43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 08:28:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B6DD6B00B7; Tue,  7 Jul 2026 04:27:54 -0400 (EDT)
+	id 5F1416B00B9; Tue,  7 Jul 2026 04:28:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 467096B00B9; Tue,  7 Jul 2026 04:27:54 -0400 (EDT)
+	id 5A0B96B00BB; Tue,  7 Jul 2026 04:28:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 355EE6B00BA; Tue,  7 Jul 2026 04:27:54 -0400 (EDT)
+	id 468BF6B00BC; Tue,  7 Jul 2026 04:28:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 083B36B00B7
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:27:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 91BC81A0395
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:27:53 +0000 (UTC)
-X-FDA: 84961302426.12.1118CF6
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf31.hostedemail.com (Postfix) with ESMTP id C5BBB20004
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:27:51 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sMajsTlQ;
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783412872;
-	b=A35g+YInUh/TQP3D2mR2mygN1bNT7QwlpwInN3s4Op3KHJCeu02r6ei85MgXdRdFwcvmO1
-	cA2Q5Q5/ZFA3tYN5UiSAAPq2LDhMuK56FcbNm5lWRU11g1dK+8DxdvxMIQ3HuTTG8+hsmH
-	jCAZXwiuutEIuwJ4xaBrtAEdmQKtJ9w=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sMajsTlQ;
-	spf=pass (imf31.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C1BB6B00B9
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:28:38 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A4EF7120396
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:28:37 +0000 (UTC)
+X-FDA: 84961304274.06.E5DEB9E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 01990180006
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:28:35 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dwkWD4yw;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783412872;
+	s=arc-20220608; t=1783412916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-type:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Ru8WYn++oZvGMNoRs83TkPNucu4BwEx3PldacFtQlM=;
-	b=dtvsNOG7qlFoY1HecmfYmyQHBT0QAXAa3RRjPz94hPcWINR1qIUPugXboOzZ3iZ6bsEA0N
-	NLDGcM+q/ODwn4LLNFtuPiUNDJXOMnc1IusSU2MNTG4YMe3Wu3sL7aOcJf7TabSFDfgH+w
-	5i2/tT0W7XqPWItQc9qtwzM1h4S7Wzw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783412870;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:  content-type:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3Ru8WYn++oZvGMNoRs83TkPNucu4BwEx3PldacFtQlM=;
-	b=sMajsTlQ6ayjpEYZPr+c5Aj8FZXE7p4tuArgzE3ffPxvDivEqnRksJ+z9zZJrtQ+NBr/7l
-	ETGTcNULDqxG7qKa3pl0K9iyMDqoarCSJnGxtKkNQdcO/wpXaBBJRnaZaOmPxDAYLHI8ym
-	7QZhmJvYdnmFlRhN5vxwZVN24ZWoF14=
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	yosry@kernel.org,
-	chengming.zhou@linux.dev,
-	linux-kernel@vger.kernel.org,
-	Baoquan He <baoquan.he@linux.dev>
-Subject: [RFC PATCH 10/10] mm/swapfile: add sysfs interface for ghost swap extension
-Date: Tue,  7 Jul 2026 16:26:12 +0800
-Message-ID: <20260707082614.95030-11-baoquan.he@linux.dev>
-In-Reply-To: <20260707082614.95030-1-baoquan.he@linux.dev>
-References: <20260707082614.95030-1-baoquan.he@linux.dev>
+	bh=5pdPtIHiIQoepiex1h1rTZsPNlcpN7aFZWNjXMcloL4=;
+	b=B4338cDDjaXXT1d6LoJd0wFnN0BlAHFlM2vclRPMgiGlgVJOIN2RrHsrvEYyk4bXnpWnrA
+	5BMD5wbzSUpe5HVyu5P3fpKB9R00NlTy5CKSGdnPYNBHfBcb0uLukc217xEmtl16rx07IT
+	rPIRQkzqnBkXPirMDrA22BchL/iGgJ4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783412916;
+	b=5vsGvGdFJ/dHm7hvS8IqXrm0d6cN3DdaQnLd30AxMs8UfkrKHyJ9B3syFdw+MpXM9Uih+I
+	XgBJyMi7eSJYbn6u5iNrSlOlIx7aZIm082ghWkt3J4yu/4xp7XAbXxkE1HdBgQ6nMHDazK
+	rNAEh6da944MoW3Z4fqQYCKL1IHbo00=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dwkWD4yw;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 536EE618A8;
+	Tue,  7 Jul 2026 08:28:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7681F000E9;
+	Tue,  7 Jul 2026 08:28:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783412915;
+	bh=5pdPtIHiIQoepiex1h1rTZsPNlcpN7aFZWNjXMcloL4=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=dwkWD4ywktM5Qi5tFg4O57t+Dqxw4Qv2nnHqcL/Cawk9UEuLb01dx0UgluOGAuLt/
+	 FHpw74frxj+GAztg/Ag+SEVil5vy3oHjeHOZwU2EdE6+CsBYPTOUGfQYQq+lCHZH0D
+	 NhASQTAx1yM0g9VFNCtwKNh8y4ZSGew5+5x9w12k2sduLQSOLVL1OsQoj9KDiqYu+c
+	 AAK/T8ov/hvuJqjzgCJF4cAWoPF4GZwiPVBCPkCwzp5B0u5CvbX+gOZaaaI0LewPpX
+	 e4ub4YpTE4g2aohbVzbCi9/Jfo/ZVHyz91kvaLlLttdJeJLdVJFbF3HMj1TAC0hLVU
+	 8mI5GPU4FYnKg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [RFC PATCH 0/4] kho: Support preserving unsplit high-order
+ pages
+From: Mike Rapoport <rppt@kernel.org>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+ Samiullah Khawaja <skhawaja@google.com>, 
+ David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260703020832.1731864-1-praan@google.com>
+References: <20260703020832.1731864-1-praan@google.com>
+Date: Tue, 07 Jul 2026 11:28:28 +0300
+Message-Id: <178341290876.3292146.16538284698967245356.b4-review@b4>
+X-Mailer: b4 0.16-dev
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C5BBB20004
-X-Stat-Signature: amr1anfjtakqfz7ox7i754kr19ohn34m
-X-HE-Tag: 1783412871-100350
-X-HE-Meta: U2FsdGVkX1/sXoE2R+s8ek7INvazUqx1gwpHHJguLot2+Nyd04kfbVurc+SFcBhDWUiDL5yZKwzw3x5AktdfeBKNjtldQjmh4z4ArncxfnTt/z2aWz13zHHavy1zVmV7rGlhKRG7tKwDQzLSdnG0u4ybo0lD22H1YiZBI1RBKQwng7T8ZAP+aOLVGU0MP6WMrApn2gUZ30zL6wz5TUZauF5883u3Omrtoz98guoYlJSAB22iPYKuk8h1YNm594ezd7PH42PhzmoIEvmtn/Msa8f8ykM26B6wQMqiVB/ZO3CeFB+2CnSwmg97WexwbtIIvdoi3aXfxTUjlkm2MQT/G5CjoTvTTGDJFeHxh2O1pN4gjyrG+l8R5Jwx7SL5qgsDXG2Ovw4EX+at6k5s2kap7Xvycta0gm5qkyGihv3iJAo5CjF1F3nJ0rlig9yFvSSHKGUrX6+qPod0RC4r8NEINL1DBVdktBJ36k7XM0Z8wCG+507MPl1MX5Jl/rF2u7zhNWMtqPJJApIKFvMwZ4yYfSyK503ao4ZBtDRZUCee6JFqRhhkCoQBQzZzKizVmVF6xRAu4Fy84Vv7nCs2XR/IhQaVJRVAsOPT4zFIKjUFTQW5DBBZ7zfYfTNMBtcrFASgXq8J3k0JSJdrjonZsW1uWk+NZbUJxuBGlbf6iCwrXBAlj5LbPtgeA0+YBS2whTd/r1GdtFxiWE2LycKZfcO5AF4k49p9EmxHwcu+isJJI1rIEtOCPSuKXEaPcR6n69hPAnza0I7ypPB8z/riZSxPRcCccf1viPf54LtA9l92KClD6d0aO9XV9Zk4df609135LW4ziz+Q8u2R9ZlfSNzQHcNkjXybyztOiBqaKw6ZtZmKW9l6+sA1v0C/RhyMa1jaj1zphN2Kz4DY6f0tQT+2ZnAv+zM8EBwqRFtUekUjw7cHC2doKxQaxLCnAMsgmOzOozauCNZsxqyJLorRsL2
- 0SGW0bwz
- FUy9mEaKpmSIweHBK0YF2i/aamYtoPFO7fsCtMyd8Y2SDCdP+/ViVYSRTRoSBuYztIn+ZyP7v88/62SXW3Vx5gimdJWRevVyyn5D15JwB1eT4q6CBsTrzSIuUwwIZCrUffCFuWN3O2yhFoJ7wHoCSN2J+zupMDq5yqN+eHlFGHKv5waDHXTahRhJjcvxUhbnVYy5GrRY6uaqMilJElmmtR7hkdLyYMqx0hagdpv7iA7bhaBIMHDwlbJmADfmpXXTSof5NosGDtWMxofZ4ygWuTxQrFApEHs8snhtIHHFzYCVqJBU=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 01990180006
+X-Stat-Signature: 4ms5nwwnb48a1u5nh8g81ct1ix8n53r6
+X-HE-Tag: 1783412915-970523
+X-HE-Meta: U2FsdGVkX197Gu+sh9XYvixbLc7n2L6E06kcexCsBajMxlV0+8SXZil/YArMhXNEjM+ZxkCZoUIOzerHSXwDsfZ3UHHnJkObPK6TNMtZ/zcynvZaB2g9h6XSgHya/D9LGBlDiie4ZkN8dyvf6Mh9A3lhtPPh0rYX1bPC5ouuy0NtOGB1sJDptUJ2GLKx+TU/6gLsZ44BQCdm+WQPr5BjM5YMFlZck1/U4J0ibypNIkw0m6hBq4DczFTbh3XjRh5APnNGj2wp2INWe65ft2KbU+BIvp1Po/009fOk3MTxHkOVPtgebOd0j5wgUXgvCFEabn7ZgSxgzvvyH13g9ZbjVYyahr8gF6h+B3YRPnRNwu8ONXVY6wOQwaYqXsKNam58jpkgmEZaOooej9y7u6il0TVIyXpjrq/EmW8eUh8ZDmfYoHXmtxO68HD9PQPyjR/O0A8rQdPVgQuw8axoLsfaEgOq7nQAsgTo3XPMZfKLMAzYmMUTruqd3dCD8zN4t/VwV8sBWm2Sx66DtZrdZqTsy+VDRldFJMt1aW7uzt9XBLH7vbx3TGXZz/sWdwRaHLMuNAtHS3HjiX/FtSHTuOe+znxij1YkF54bBi7Zh5PcooAzm9REZaJvbNA8ImBN8d0KzRYr76Hs/8pKYeEs4AnAL0RJ/+++0ayxZ1l4IQqKvU8xL7mHzj2ZTi2Mj1fp8FuXacVdLpVOVroXCRYSZwDkLXhTXKCbKztmz1Yby0bvrW3tIgXdT0c5ve5cJ3fXIavNjZLT53M0zAlKYl7St91nY7Ko1Rm4/Nx3+iYtgtPBIeIlkn67475mF1ee0IvpetwiO8H1bgtEYqgPF21QneiMY+ufBGWU/svNGx3W9DlmtyCzxHlUk3rPBWJdPAc2VfRTdkOAz1ci5uTu33p3xfhCPsu3tg3xQi1j0eCHbpFZr1mzpxqoNJxzl1GkBevCoppdq4nEBl1cOmGwGIrEH3r
+ JNnq3Vwn
+ MIKFEYmV6W5pyDsdqRxEXRWmJ+XqagUyc8A7FXnovwacyflW8/AADmMb/tga9MJ3jcRdInOR6XNYUBUQ67QA+w/zKq5Om1KPkryUiYhO8cx5n68CJfZ6Ge0mNery4rmkALExGqLAbo3Xn/ff8vOHzE8j53JC8GLFIr+7w/r6HA4w1gE0s5WDMHDmoy5PjdzpZ2lIJg3P0XS8miEtxff7QnFXYOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,182 +97,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add per-device attributes under /sys/kernel/mm/ghost_swap/ghost_<N>/:
-  path (RO) — dentry basename
-  max  (RW) — current max pages; write to trigger swap_ghost_extend_max()
+> This series is required for the ongoing effort to preserve DMA allocations
+> across KHO [1]. It addresses a fundamental mismatch between the current KHO
+> restoration logic and adds support for high-order buddy allocations.
+> 
+> The Problem
+> ===========
+> The current KHO restore implementation treats all multi-page blocks as
+> split pages during restoration, i.e. kho_restore_pages() initializes
+> every 4KB page with a refcount of 1.
+> 
+> However, many kernel subsystems, most notably the DMA allocator (via
+> dma_alloc_coherent), frequently return high-order non-compound pages.
+> In this unsplit state, only the head page carries a refcount of 1,
+> while all tail pages have a reference count of 0.
+> 
+> Consequently, when these contiguous but unsplit blocks are restored by
+> KHO in the new kernel, the forced refcount of 1 on tail pages causes some
+> trouble with the buddy allocator. Downstream of the eventual free path
+> the __free_pages_prepare() [2] ends up calling page_expected_state() [3]
+> when is_check_pages_enabled() returns true (only when CONFIG_DEBUG_VM or
+> debug_pagealloc=on).
+> 
+> This detects the non-zero refcounts on tail pages [4] and incorrectly
+> taints the kernel while leaking the pages in question.
+> 
+> Proposed Solution
+> =================
+> This series introduces a "Page Type" field to the KHO ABI to track the
+> refcount pattern of the preserved pages.
+> 
+> 1. KHO detects the physical state (CONTIG vs SPLIT) during preservation
+>    by peeking at the refcount of the second page in each buddy block.
+> 
+> 2. The type bit is preserved in the high bits of the KHO radix tree key
+>    (Bit 63) and stashed in page->private metadata during boot.
 
-The ghost_kobj field ties each ghost device to its sysfs directory,
-created at swapon and removed at swapoff.
+This brings a broader question - what is the best way to deal with page
+metadata. This particular case requires only a single bit and luckily we
+have a few spare high bits in the radix tree key. But what if going
+forward we'll need more than a few bits? Do we need a parallel data
+structure for the page metadata? Or something in kho_radix_leaf in
+addition to the bitmap?
 
-Signed-off-by: Baoquan He <baoquan.he@linux.dev>
----
- include/linux/swap.h |   1 +
- mm/swapfile.c        | 111 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 112 insertions(+)
+I'm not saying that a generic solution for page metadata must be a part
+of this series, but we definitely need to consider and better sooner
+than later.
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index b87688b7d4ba..d9ae2a9e33cc 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -283,6 +283,7 @@ struct swap_info_struct {
- 	struct xarray redirect_xa;	/* ghost offset → phys swp_entry_t */
- 	struct vm_struct *cluster_vm;	/* ghost: sparse vm_area for cluster_info */
- 	char *ghost_name;		/* ghost: dentry name for sysfs */
-+	struct kobject *ghost_kobj;	/* ghost: sysfs per-device directory */
- #endif
- };
- 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 8bf336678887..ede10539156a 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -31,6 +31,8 @@
- #include <linux/security.h>
- #include <linux/backing-dev.h>
- #include <linux/mutex.h>
-+#include <linux/sysfs.h>
-+#include <linux/kobject.h>
- #include <linux/capability.h>
- #include <linux/syscalls.h>
- #include <linux/memcontrol.h>
-@@ -60,6 +62,8 @@ static void move_cluster(struct swap_info_struct *si,
- #define GHOST_MAX_CLUSTER_BYTES (64UL * 1024 * 1024)
- static int swap_ghost_extend_max(struct swap_info_struct *si,
- 				 unsigned int new_maxpages);
-+static int ghost_sysfs_register(struct swap_info_struct *si);
-+static void ghost_sysfs_unregister(struct swap_info_struct *si);
- #endif
- 
- /*
-@@ -3250,6 +3254,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	p->swap_file = NULL;
- 	maxpages = p->max;
- 	if (p->flags & SWP_GHOST) {
-+		ghost_sysfs_unregister(p);
- 		p->max = 0;
- 		cluster_info = NULL;
- 	} else {
-@@ -4010,6 +4015,13 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 		(si->flags & SWP_AREA_DISCARD) ? "s" : "",
- 		(si->flags & SWP_PAGE_DISCARD) ? "c" : "");
- 
-+	if (si->flags & SWP_GHOST) {
-+		error = ghost_sysfs_register(si);
-+		if (error)
-+			pr_warn("swapon: ghost sysfs register failed: %d\n",
-+				error);
-+	}
-+
- 	mutex_unlock(&swapon_mutex);
- 	atomic_inc(&proc_poll_event);
- 	wake_up_interruptible(&proc_poll_wait);
-@@ -4357,6 +4369,105 @@ static int swap_ghost_extend_max(struct swap_info_struct *si,
- 	spin_unlock(&swap_lock);
- 	return 0;
- }
-+
-+/* ─── Ghost swap sysfs interface ─── */
-+
-+static struct kobject *ghost_swap_kobj;
-+
-+static struct swap_info_struct *ghost_kobj_to_si(struct kobject *kobj)
-+{
-+	int type;
-+
-+	for (type = 0; type < MAX_SWAPFILES; type++) {
-+		struct swap_info_struct *si = READ_ONCE(swap_info[type]);
-+
-+		if (si && si->ghost_kobj == kobj && (si->flags & SWP_USED))
-+			return si;
-+	}
-+	return NULL;
-+}
-+
-+#define GHOST_ATTR_RO(_n) \
-+	static ssize_t _n##_show(struct kobject *k, struct kobj_attribute *a, char *b)
-+#define GHOST_ATTR_WO(_n) \
-+	static ssize_t _n##_store(struct kobject *k, struct kobj_attribute *a, \
-+				  const char *b, size_t n)
-+
-+GHOST_ATTR_RO(path)
-+{
-+	struct swap_info_struct *si = ghost_kobj_to_si(k);
-+
-+	if (!si || !si->ghost_name)
-+		return -ENODEV;
-+	return sysfs_emit(b, "%s\n", si->ghost_name);
-+}
-+
-+GHOST_ATTR_RO(max)
-+{
-+	struct swap_info_struct *si = ghost_kobj_to_si(k);
-+
-+	if (!si)
-+		return -ENODEV;
-+	return sysfs_emit(b, "%u\n", si->max);
-+}
-+
-+GHOST_ATTR_WO(max)
-+{
-+	struct swap_info_struct *si = ghost_kobj_to_si(k);
-+	unsigned long val;
-+	int ret;
-+
-+	if (!si)
-+		return -ENODEV;
-+	ret = kstrtoul(b, 10, &val);
-+	if (ret)
-+		return ret;
-+	if (mutex_lock_interruptible(&swapon_mutex))
-+		return -ERESTARTSYS;
-+	ret = swap_ghost_extend_max(si, (unsigned int)val);
-+	mutex_unlock(&swapon_mutex);
-+	return ret ? ret : n;
-+}
-+
-+static struct kobj_attribute ghost_attr_path = __ATTR_RO(path);
-+static struct kobj_attribute ghost_attr_max  = __ATTR_RW(max);
-+static struct attribute *ghost_attrs[] = {
-+	&ghost_attr_path.attr,
-+	&ghost_attr_max.attr,
-+	NULL,
-+};
-+ATTRIBUTE_GROUPS(ghost);
-+
-+static int ghost_sysfs_register(struct swap_info_struct *si)
-+{
-+	char name[32];
-+	int ret;
-+
-+	if (!ghost_swap_kobj) {
-+		ghost_swap_kobj = kobject_create_and_add("ghost_swap", mm_kobj);
-+		if (!ghost_swap_kobj)
-+			return -ENOMEM;
-+	}
-+	snprintf(name, sizeof(name), "ghost_%d", si->type);
-+	si->ghost_kobj = kobject_create_and_add(name, ghost_swap_kobj);
-+	if (!si->ghost_kobj)
-+		return -ENOMEM;
-+	ret = sysfs_create_groups(si->ghost_kobj, ghost_groups);
-+	if (ret) {
-+		kobject_put(si->ghost_kobj);
-+		si->ghost_kobj = NULL;
-+	}
-+	return ret;
-+}
-+
-+static void ghost_sysfs_unregister(struct swap_info_struct *si)
-+{
-+	if (!si->ghost_kobj)
-+		return;
-+	sysfs_remove_groups(si->ghost_kobj, ghost_groups);
-+	kobject_put(si->ghost_kobj);
-+	si->ghost_kobj = NULL;
-+}
- #endif /* CONFIG_ZSWAP */
- 
- static int __init swapfile_init(void)
+> 3. kho_restore_page() applies the correct refcount pattern based on the
+>    preserved metadata.
+> 
+> 4. A new helper, kho_split_preserved_pages(), is provided for subsystems
+>    that may need to split memory after it has already been preserved.
+> 
+> Considerations
+> ==============
+> 
+> 1. A primary goal of this approach is to prevent driver/subsystem code
+>    from peeking into MM internals. Drivers should not need to understand
+>    the distinction between head/tail pages or compound metadata. The KHO
+>    core handles this internally.
+> 
+> 2. To handle rare cases where a caller might wish to split a high-order
+>    block after preservation, we provide kho_split_preserved_pages().
+
+Do you have anything particular in mind?
+
 -- 
-2.54.0
+Sincerely yours,
+Mike.
 
 
