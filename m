@@ -4,100 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBF3C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:48:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37990C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:50:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5B356B00AB; Tue,  7 Jul 2026 09:48:27 -0400 (EDT)
+	id 0ED8C6B00AD; Tue,  7 Jul 2026 09:50:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0B626B00AC; Tue,  7 Jul 2026 09:48:27 -0400 (EDT)
+	id 076AD6B00AE; Tue,  7 Jul 2026 09:50:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFD226B00AD; Tue,  7 Jul 2026 09:48:27 -0400 (EDT)
+	id EAB906B00AF; Tue,  7 Jul 2026 09:50:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 81AAE6B00AB
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:48:27 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F89B1C80BB
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:48:27 +0000 (UTC)
-X-FDA: 84962110254.19.521FFDA
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf23.hostedemail.com (Postfix) with ESMTP id AE67C14000A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:48:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="jxfgT/1X";
-	spf=pass (imf23.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783432105;
-	b=MPIbedslTQ4Eg3vPH0HrlR+A0EyS8UFeYOTUSLYq1IVeda2nheSsdiDueq3kuZYhRF4Dk2
-	mF0XIEVyp/0BcNJUVFGIV7TAixavE/l9A/dbRsWfH3xJYzBAlOlVzAHUVpvE/p6Kk6/FJV
-	UQ/jxeHSlDjgSo4pVQYgefgogam9Zl4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="jxfgT/1X";
-	spf=pass (imf23.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C1F8A6B00AD
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:50:44 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4D3EE168BD2
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:50:44 +0000 (UTC)
+X-FDA: 84962116008.10.68070A2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C99871C0007
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:50:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L2jxb3uA;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783432105;
+	s=arc-20220608; t=1783432242;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PeXRy5OWREcqxAhLOrbYEMd2NpniYtCVndcj0EJ5z58=;
-	b=2owZ7P2fZUJ3lGoIKH7QftAZ4NdYpLeEsaWguXcFmJmBD3L7gjEBrM3BVQ6ajyqdErsY1i
-	92VbhkWTa8rqMiUb6tnH1vh/WYrG2q05SZFs6XpzdfrLZzR098VRSZzNUGcfOIZsTawOyg
-	ckzXTxUHz8Xi4scV6kBAYEMMrpluK8I=
-Message-ID: <4320145e-a0ba-40f6-b99b-f01f32634f28@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783432101;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PeXRy5OWREcqxAhLOrbYEMd2NpniYtCVndcj0EJ5z58=;
-	b=jxfgT/1XOYBNftDoCCQtjO1UTLEGZqcaSM3erJbI5MSNI1hw+uNxPNVFEMZ1k1OYxIlRDQ
-	bARn0NHa6HqJR4RgWsVPTof/V3DqEHP8Agcf7McGO5jsUtB+UuoOAeU8Yl+tlkM+J2dtsj
-	WHZIZ7UGeXrjpEtk5qwhtCKwL02ZdUo=
-Date: Tue, 7 Jul 2026 21:48:02 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=nr7LiDJycW7rOXIUJ0Nv9/D3v/lvB0yYNIb1OxPaUcw=;
+	b=INLdnddddbrgfVYB68CVWTH+Rr5qItQlU0wq7HRveLphiQG+3ceq+HCVGqMF43dCevfxsk
+	T4qvma4/y3CdDclLeX+4q5cYprsFq9MUe7C/EmVh3mDHFzhCsmbmmtXqqGhJahM8EDLMeI
+	fLiyAdUaTeptjAVHaFSkLbdZFfFzvOQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L2jxb3uA;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783432242;
+	b=Ghjy1IhDGGZ5lemL7anzF0Gk0hzO4XJ01WHrv6CC47EQy9AQJPHPldsfzCSiGNIp3aKrQE
+	wwoiHbfiBbHEGrzZJiAUeg1Kd6bGJB7hmPNYdW5o1PEBpVXTcNQvbdscMDreSeMeilbPNz
+	KWwLpamqES5ru4N0rfelDUyzgrSbtmU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 26736601DE;
+	Tue,  7 Jul 2026 13:50:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1FB1F00A3A;
+	Tue,  7 Jul 2026 13:50:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783432241;
+	bh=nr7LiDJycW7rOXIUJ0Nv9/D3v/lvB0yYNIb1OxPaUcw=;
+	h=From:To:Cc:Subject:Date;
+	b=L2jxb3uAGdDvzvWsmN5zCrK1xnY0X6efwdUSRFvER7tfHfXesBy7pwDqu/Xi4xSRs
+	 WdQ0R3V8e532UpspMPX0zLEnU3xXmppIB+tTn/G3/NDkQ5OV97E8GBc4SLaLA+Rk17
+	 3l8EVZDPrhfwPl02R0dhSMuFcrnCjTTJIQPKyZud57BO9SLrP+m+KFE8MwREwuj5sw
+	 qWIG265hwlFPaNkLVXHvWyN44Og+5bqjL/bo/WynFvJa3ciFzLa+HVOymtojG9sWDT
+	 hMCumww3KCzwdSqeYbgVZxIZiCcJmmEbZ1ttQJ7G/lDRCYKWDjZtKZp5KhO5uzt5Qj
+	 tkgGlIs9W9IRA==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1 0/7] mm/damon: update probe hits for runtime parameter commits
+Date: Tue,  7 Jul 2026 06:50:29 -0700
+Message-ID: <20260707135038.90068-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/mseal: fix mseal documentation for 32-bit kernels
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Nathan Chancellor <nathan@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,
- Nicolas Schier <nsc@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Alice Ryhl <aliceryhl@google.com>, Douglas Anderson <dianders@chromium.org>,
- Gary Guo <gary@garyguo.net>, Anand Moon <linux.amoon@gmail.com>,
- Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20260703022507.187457-1-leon.hwang@linux.dev>
- <akeDk49-pPgUDek1@pedro-suse>
- <8f75dc18-dd4c-4989-a76c-eec6cc513ccf@linux.dev>
- <akzN_HNJJWBW7htL@pedro-suse.lan>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <akzN_HNJJWBW7htL@pedro-suse.lan>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AE67C14000A
-X-Stat-Signature: 44ssq96oho6inawd3j4r7ktoi5rqr77m
-X-HE-Tag: 1783432103-209437
-X-HE-Meta: U2FsdGVkX18eW8JtSO/XmHxDrrbJ5nv8yT1BH7BSZdjiFjkEtsau5H45Ye8EZqoVF5muTT82ylEmNXord9AGXUo2zYKtjbRSBuT5wjO6i01hryI44kg7uHzmlu8h7TVNRGbtAr/sLUQOH4OJLjw4kBIk7k/ANeHGRX2UN/9Hfyqn5SXJXt8hjcdSKtYeJC8cwttU6qaxF7dMwTMjiNEp29cE8Nds3k0yWPpfdi9LrOBq1ErE6MNUUCfZgr2WtAEHBmvzqZPjJLNwVqzdX2nMhmuHyj4M7xwuWGCJp7s8IDtkiSCJR19SYOAC1BO1B/zINCFlss3b02j/j8QKIXzUtM+WPU8LUJBnBHcPAW9Mz8Hw8L+2Pe3qQf1TQtg5yBWRDMsTeBokDC+LD/CmznRzD8DPmo/FXRyvp/OytWLEcJgUFD9ux2Sh3Rnq3oJfF0a0Xr0D2dZ7C6qWQ161rQcgUq+iGGL5Y21tfPEXq6XH/uoUqqtzKXfYQVhCDQWbVEolbUfto9kVHejkD5gVqcmNEHLSEbm+eBYYhP/xWK8nluPQ1jndGEymcr++xDFCllVtXlbIg81JIxEINn5J8HFLZPw8hRQFu1wnCQmBL/w0Zt7KJhZBC1+/49lst4JhWK3E1oLf+Nfx97UTsqgwH1yexDz2EkOk4hhJGlWzYsArB4pY2epYAZo6JAfXk2tG0Tlgm/4SXQzELV4zr01LhGI25+wBkJQcDX4sHD8dq6732ZwusZ32baHOAwySh4RO7/jn2/1Qb30BcPErqAQ9RYOwTQ1beFcmFiPGfuPZ8W++XC7VzHZ4/SiG84vPqU4aBDW3WmJ9v7SrCAM/F4HDt9CSYgleQfinnnk5L3PXsdPrceCNduIavugp/Zy/3yR6eaiguiPtG13z6HzoCUZtkStU0ChihQ9btsaPUbRqz9D0C3hOCtyZzPxMD7xOmIcJVDQquPMDAGf2joQR56SkZuG
- R9xSVJRH
- jyjTJc++FRjjvmltdRM7RwD0ij6i5yGb262783Xsb4q72OyT3Akp2svNL0Ib84hCuCVmWOVsxOQdad6kpG1inSTbIRQVE0XmQ7uJLra9xgXbC0M5nWyrao+TftJwxJqJT0SAupVRT/oRa8XPupV6RHaU4WzW9dr9u+UjcJL9Vzm9m8082RjiISn64/0JTrzT2mji0tJTMCiZ+O8mQeVyuj1YWm+tNfca6Ap65/ptR5udP6itdlxqsY0EawyiMR/Z2zmdjBVyQ+qnNy8FxbIB0R/xHQeG85qiWJSvT
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C99871C0007
+X-Stat-Signature: p8pmazppbk6x4wxgoftykwiyjifq1bjz
+X-HE-Tag: 1783432242-559500
+X-HE-Meta: U2FsdGVkX1+RxD3jcY/0LxQDqdihZqVJkHezsw+pQlxtIpy9r9djxfedRZH4ZqX2kMyMIRhMufO2a0tvklLW6yrt6DtehAZ5fbtiW26WLN7Fgj3qGQW7OA9tIgfHsRJdq+siHlWd+eUVpDImxWrksjCSnkwj+UQGmu7TSu5KNNYMi/RBOeetgcr4TLXf/RPPpChs522s2w/VIpKtAR20pBMu8tiIbyMjBSrxopLfRRseRGX8BR789JPEt3P78GI+GA+zZOL+d9ryv/I2547rcSdyeCBfaIutYhDUWtcBO6ziB6Ika6vX0TpMmEaaNuYENbtuvGgMpT48z0nsY/sgnDDcWVCqmtLhwdmjoZyUBtzIHZCBBXco95Qp05rLKPqE7D46pN6zl6F6rUkctC4KYIB2F9jFJEwbPR3lNhtxqW9zXCn3+MpKBOvNoJi1sM5W5sgcrokuviJym4noVT2v103w0q3Qqt6WxdQqVEGZvbqSsYCt+WhL1gI7r2Q6wzOsyCHTxU977pVatXGqgLt25jNBf0EU94a+7Li41VTOSs9cZQ13jLjyEA6Y/hFahx+F2nE7VSEU5KC2k9PLpvbQ6EdePR1ZxsyBWmTPPvOTYBWW9ErmxIPGa+1nYpeOnje4rc+jwoO5NfZXtn5aJCB0pTvchSKiv2daukIO3dvo+4k+SERUcSPAMAHVkhh96JgmEuyvzYGS0Da9EoBkX0C2wIvItyOfDYnJcL2GTIQeBERQdaWrk+TsUe032cBNCT6mw4E9hCeSG18vvEEFWnGkAn8JKPTIXh1oMK6TDzzrczYWNylAvjcG9tL8YgjMHmf76hx1xtBpWhBax2TatYLclEReJjWuvpOPzxpORKFmjL3R+xq5e0rN4GJhphHzp+sjifjilXYQTbXCx//5Lho1rJ7LptwSf9tErW/8VOTWkHuEobnCVddMg5PeN5q3vBaNJdzi4VfMqOHxCETpFNj
+ c6J42R/w
+ tD9nLlPr/JIDRkEQE32g0ZCkZSyDmN9iP/ZOoCYP28I80AF5KTBp4WsqiCMoIVwmn2IvcWDuxIH3evp+rs2Nl91kHUz8L29Xo8DUWTXtlYox0LLlJH5kP3DHkihJOC96xKNBRmU08+ibZYrRr7K09gwN93x9Vm3c2YDIlZvc8dmMQWEgBMSLsTEX2JU7HY5J/Mnq2TOyhhXJsj11NQouvevFwt7CyCxUBuJJpOmZ49SA4FGk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,76 +91,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/7/7 18:01, Pedro Falcato wrote:
-> On Fri, Jul 03, 2026 at 10:50:29PM +0800, Leon Hwang wrote:
->> On 2026/7/3 17:44, Pedro Falcato wrote:
-[...]
->>>
->>>>  
->>>>    The following architectures currently support this feature: x86-64, arm64,
->>>> -  loongarch and s390.
->>>> +  loongarch, riscv, and s390.
->>>
->>> This is also useless, every 64-bit architecture will support this.
->>
->>
->> Do you mean dropping this sentence, or this change?
-> 
-> This sentence (this is not architecture specific...).
+DAMON users can update DAMON parameters such as sampling and aggregation
+intervals at runtime.  For such changes, monitoring results that depend
+on the intervals should be properly updated for better accuracy.  For
+example, the access frequency counter (nr_accesses) is updated.  The
+data attribute monitoring counter (probe_hits) is not being updated,
+though.  Do the updates for new parameters.
+
+Patches Sequence
+================
+
+Patch 1 removes obsolete comments and test code on a function that this
+series will touch.  Patches 2-5 rename functions that are being used for
+nr_accesses update, to be able to be used for probe_hits without
+confusion.  Patch 6 does the probe_hits update.  Patch 7 update
+damon_probe_hits_mvsum() to cover a corner case from the update for
+better accuracy.
+
+Changelog
+=========
+
+Changes from RFC
+- RFC: https://lore.kernel.org/20260707043828.97900-1-sj@kernel.org
+- Remove obsolete comment and code on the test.
+
+SJ Park (7):
+  mm/damon/core: remove obsolete comment for nr_to_bp() divide-by-zero
+  mm/damon/core: s/damon_max_nr_accesses()/damon_nr_samples_per_aggr()/
+  mm/damon/core: s/accesses_bp_to_nr_accesses/sample_bp_to_count/
+  mm/damon/core: s/nr_accesses_to_accesses_bp/sample_count_to_bp/
+  mm/damon/core: s/nr_accesses_for_new_attrs/nr_samples_for_new_attrs/
+  mm/damon/core: update probe hits for new parameter commit
+  mm/damon/core: handle unreset probe_hits in probe_hits_mvsum()
+
+ include/linux/damon.h       | 10 +++---
+ mm/damon/core.c             | 64 ++++++++++++++++++++++++-------------
+ mm/damon/lru_sort.c         |  2 +-
+ mm/damon/ops-common.c       |  2 +-
+ mm/damon/tests/core-kunit.h | 31 ++++++++----------
+ 5 files changed, 62 insertions(+), 47 deletions(-)
 
 
-Got it.
-
-> 
->>
->>>
->>>>  
->>>>    WARNING: This feature breaks programs which rely on relocating
->>>>    or unmapping system mappings. Known broken software at the time
->>>> diff --git a/init/Kconfig b/init/Kconfig
->>>> index 5230d4879b1c..12bb39f637b1 100644
->>>> --- a/init/Kconfig
->>>> +++ b/init/Kconfig
->>>> @@ -2112,7 +2112,7 @@ config ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
->>>>  	  from a kernel perspective.
->>>>  
->>>>  	  After the architecture enables this, a distribution can set
->>>> -	  CONFIG_MSEAL_SYSTEM_MAPPING to manage access to the feature.
->>>> +	  CONFIG_MSEAL_SYSTEM_MAPPINGS to manage access to the feature.
->>>>  
->>>>  	  For complete descriptions of memory sealing, please see
->>>>  	  Documentation/userspace-api/mseal.rst
->>>> diff --git a/mm/mseal.c b/mm/mseal.c
->>>> index 9781647483d1..0464c7b94ab9 100644
->>>> --- a/mm/mseal.c
->>>> +++ b/mm/mseal.c
->>>> @@ -132,8 +132,8 @@ static int mseal_apply(struct mm_struct *mm,
->>>>   *   addr is not a valid address (not allocated).
->>>>   *   end (start + len) is not a valid address.
->>>>   *   a gap (unallocated memory) between start and end.
->>>> - *  -EPERM:
->>>> - *  - In 32 bit architecture, sealing is not supported.
->>>> + *  -EINTR:
->>>> + *   interrupted while waiting for the mmap write lock.
->>>>   * Note:
->>>>   *  user can call mseal(2) multiple times, adding a seal on an
->>>>   *  already sealed memory is a no-action (no error).
->>>
->>> And this whole header needs to be deleted as well. No one's looking at
->>> kernel code for documentation (and if they are, we did a horrendous job
->>> at actually documenting the thing).
->>>
->>
->> Just to confirm, do you mean removing the entire function comment above
->> do_mseal()?
-> 
-> Yes. Again, not your fault, just old gripes :)
-> 
-
-Got it.
-
-Thanks,
-Leon
-
-
+base-commit: 86f45ad9d6667f344421729eec5a9367e37bfc5b
+-- 
+2.47.3
 
