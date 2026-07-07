@@ -4,96 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E8DEC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:05:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97275C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:06:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 970586B00AF; Tue,  7 Jul 2026 10:05:29 -0400 (EDT)
+	id 948076B00B9; Tue,  7 Jul 2026 10:06:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 946F76B00B5; Tue,  7 Jul 2026 10:05:29 -0400 (EDT)
+	id 920046B00BA; Tue,  7 Jul 2026 10:06:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 884DE6B00B8; Tue,  7 Jul 2026 10:05:29 -0400 (EDT)
+	id 80F1A6B00BB; Tue,  7 Jul 2026 10:06:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F1EA6B00AF
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:05:29 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D53C81C39FB
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:05:28 +0000 (UTC)
-X-FDA: 84962153136.03.0214E8B
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 608CB1C0014
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:05:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=mJPKBpcx;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B0B16B00B9
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:06:34 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E38961202C6
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:06:33 +0000 (UTC)
+X-FDA: 84962155866.05.34402E5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 10E351A0016
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:06:31 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bFUcLTWb;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783433127;
+	s=arc-20220608; t=1783433192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rm1KNibCz+ERMVqGQLvzK/uPua2K5RXP/Arqnz8w2t0=;
-	b=NDjBIJCQil41GUts6EpJngaGecKK6QKQdoBStH40+31yBpSZ9yP3J+koNiVMqnLtv7eqkC
-	D1rPrv7RVjrUYXhlX4MPS5si0az/cOXEyS6anZiv+xWoROOK8s/1NP0hA6TRsYIZu+Otro
-	Sh9gouZiXQXJ4cPUVwMde+zllXEWJ50=
+	bh=+I9nwTpmAA6ni1EUvKuDo6D13VJBDaUZF/B29cKK82I=;
+	b=M3jYIvAOBfeyg51q1ofRPOeXplo4kouikD84V0R75mAQUfD9LAwdEUYrNDVeqbJr19OlXy
+	Wt+qnN6JCXVLeIvkYrNzHjTkUKs78w0w7Q6gzZX2XHrxsPRM1VJILcLFNFZ23C1KnHj3h2
+	j1k0jzDqpcAssq+w3UvxJwmT+oCjgGg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=mJPKBpcx;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bFUcLTWb;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783433127;
-	b=Oym3ytS7+/3Z5yjVcFuCqTDe+AS+Wt+WIjIoxcSASzJdH/dzxVHyEkik/+X6RmcuhUJCB5
-	1T5YOVgJBM3+CFIlC81Nbl9+2GXU2yLZhHjgmKu+sMlAaQx9o5O9dl+FdRIMSRhuEPJzcO
-	9j564i2xcP01pZqw/e0knVD9skrHKzU=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=rm1KNibCz+ERMVqGQLvzK/uPua2K5RXP/Arqnz8w2t0=;
-	b=mJPKBpcxf9F2zQUNY1YAPwDjh84VLxG9DD0UipCOkKffqTF7mV1KnXhZMlTlmx9xOOdCtaMC3
-	QlQyeTbwSLfO4/aKT4fx036hyhIlgMGxVUTr1eOp+Oyl6AAnVuzIMTOoYqxkHlALfXJBcBrvLHV
-	A+zRKwOs4tBqIVq6Z+6ClaQ=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gvjS50jGFzRhRF;
-	Tue,  7 Jul 2026 21:56:05 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 56D774057F;
-	Tue,  7 Jul 2026 22:05:17 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 7 Jul 2026 22:05:16 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <ljs@kernel.org>, <akpm@linux-foundation.org>
-CC: <david@kernel.org>, <liam@infradead.org>, <liaohua4@huawei.com>,
-	<lilinjie8@huawei.com>, <linusw@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux@armlinux.org.uk>, <mhocko@suse.com>,
-	<rppt@kernel.org>, <sunnanyong@huawei.com>, <surenb@google.com>,
-	<vbabka@kernel.org>, <xieyuanbin1@huawei.com>, <xiqi2@huawei.com>
-Subject: Re: [PATCH v3 1/2] ARM: mm: fix use-after-free in __do_user_fault() under CONFIG_DEBUG_USER
-Date: Tue, 7 Jul 2026 22:04:05 +0800
-Message-ID: <20260707140405.85568-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <akz8aZUW23rpyrLO@lucifer>
-References: <akz8aZUW23rpyrLO@lucifer>
+	t=1783433192;
+	b=r6QU/COMvFHakVVqV72T7U9tWHMOwDztUE2Pu+Jpgrz4XcBEJJlyfan4ioTBExFCdkMAbU
+	6WWRAKRCbeJbdQ1JuujWJOcLic8uTpEyivrHUg+STOFeWTjAGreGyUMKWUeTk62fcrsNXK
+	C7zejSB4HWPLD3cT6oHhV3+7wheUoho=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B22DF437D4;
+	Tue,  7 Jul 2026 14:06:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659B41F000E9;
+	Tue,  7 Jul 2026 14:06:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783433190;
+	bh=+I9nwTpmAA6ni1EUvKuDo6D13VJBDaUZF/B29cKK82I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bFUcLTWbY9u4JjmZ2KB27ZH9NdS6qqvpUyrJlti8p7P9PYfY7vUy+TDF2m9MzE73z
+	 6aZks5W7/06uOq8f/Va67YrTGfeXD7nj4DUwc3ZfZWg2HjMfJLi9LNlMc4pGhEVseR
+	 5xxDxObh+Y72ApN9L5A+r/zo/CVmHZR7as+gWu8ot31jnAKFagT/B+IDWYfUDCxscn
+	 87TQ8OhYiuW97PkB2ubUtUMW3Ouq7XVAqaKaeCTL9zbTTJXvpUv703WGJGG8ypWpyT
+	 VZ0V4KwU/CW5XL+WT+iKdU5CUJT6oZi0jp4lJgfdl+Y8Osw9/xiB7hSsm/aoUKxZQS
+	 IDTQtCsX+RzLQ==
+Message-ID: <825d6190-b197-40c0-972d-7ffecf74978b@kernel.org>
+Date: Tue, 7 Jul 2026 16:06:25 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemj100009.china.huawei.com (7.202.194.3)
-X-Rspamd-Queue-Id: 608CB1C0014
-X-Stat-Signature: kdjgfmyio8bbrgch4gabxdxx5yjh3g78
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] mm/rmap: convert page -> folio for hwpoison checks
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ muchun.song@linux.dev, osalvador@suse.de
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260707121128.373192-1-dev.jain@arm.com>
+ <20260707121128.373192-2-dev.jain@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260707121128.373192-2-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783433126-307189
-X-HE-Meta: U2FsdGVkX18VPq8yQdCRYOLM2+4DrnbfKQ8DaOHQjuYMvUIFCxlkwTxX/NceKiPJB+bRuSwo1QfjieZstrSwtWn5ELnjxwQFx0DHmTAm7XrjcALeZ+W6MdiX/32RV9GuLvOQQqs5rkCOgtYZxzu+KHpncAJCFX7UcD6pTUfqbmsvqFkt1rxRR+55mUF6JfgwojWH01sX2s+QcTWPophGCnUofKaSSWZnvf9KKjG/S3PyuKXdxWsHV7NrcdsGbEQN4dK0s73nnOIn2xNmDmEByx7MH0u6HmdzuLsQc7Y0QGw/ZXvyz8hYPHXgpPV/oAZZKUX1XN567E4xVAVGhUl6eTDJnQtdT+nkeya/KtNAz2b2Ar+1sJ0HVs/+KTZjGa0ywLODxwV1ARpzlbJvAZAhNa13Rp3mjYmAlFDI9fsk4X80GgreUK/DPaPXFC0ZiFoUee8nF8ryV1BD4uVuYSzVfNlppEQB2IXMQsT29ybH6nNkU/x+4cfqFPk5J3qxUIgzTP1CCDPQC8rERbdr4qPBUaO/bmRhkwhEIFfNMbxaVz0Cfwo+W0O7+xvG33wF5mAYFh3r04RphF/TyfwnQdke7aOYA2nE5TkONWl/99USTS6hsZIHqQA3KVRkfv5781Yczpqv2SBpZRJVMooa2Bv9+SllVqOJD+ZfH8snPmoK5TiBf69V8hsWKn1jA+UB4ivLWbW/9oQGDABS1Xit/sigp0xkuDRvavu8n8pnA44pnxJgodFKf+JJJjJC0tr+5J8f+hppL5n49i0Lq3Owsf4awdD5xVJkKv73zHERjsa0gl8bBjANN7iQjuhPHIMSNoIc2ISvfC1hXL0MxRxss36F2DQOsVMuedhVcFRXZ/R5VJ7IgPJRIZZorJkwqNK601UNlqOc1jeY9of0IQlKv1dsf3hzXuWm3yi2DxpqtbXMz1xjsGsgz2CEfVyNboD6MrnApogkXllcZ/OM534Fs6N
- PQkjI85h
- XqvotQzWo6Ye95fEY7UUby6gtKbF36F0BaKk3hzXfPq+PBXAoWJAW8QtsGHfeOakmlKrdVTGT5Wk58+bQ7hlMCWhfwAHeaRrW9QKi/Fy54q/PSeAIPZ0KhTd+AXQGkrxpqRJMzDCS6iAdfwtGYXMKi63LpVlD82SI/yw+y50VY07erp1jToznn+KrVboNhOgprepZAkn1EmToSRsuVKC63CTxOQ3ere+lKZax44KgpH4zpWx1FzzDCFzVmO+D2+U3WksgdPsmWfHFnaJPgZAz6Q7wCnPeLy3X1qg+fkwyYrBg7WxHENtha5daVeUqSiEKWGVr
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 10E351A0016
+X-Stat-Signature: tuz9d5hunsyiisx9mmumc16pmqxacuh4
+X-HE-Tag: 1783433191-322276
+X-HE-Meta: U2FsdGVkX1+CC9OibV74hKuP5OrMGmZpcWrLQMnKXn/pPIUsdKZ9hzGwpEHzT4LsDF7Pxj0SjAk9xN5ia6XWpeVEyU8wLUa4KC3gSeM1NnUrbwKDk/cH90JwjfYY0l/xNE+9wb8Au5V8vvpctlFv7JsH2i9oiX26ZphspYLgMxTKIF2hdbVSuv+aIb90/JSBNmHYc95j6k1jQWU6eJc09pMxFqvQ21T9dmVZxyX2eRBF7EWF6hmbUH/UQLmbLqLZGG37C3KbCZqPybH6FUnB3j+pSDFdj2y6R39oymd+C+qINm1syeDHslJhr4RflG+9IPoYr6GjiS9vAeOsKes21ogXPC6B7u8FomHo5JMTI8+g0mVcvL3aW97G7RBXOWqSPNHZJfuNFOpsWAPWUrG5BoF1p12mZ09JYpz2qQxqHGqHmWPmHWWyioskYTKZNtiC272HMq3HgqhKHDGV1b6xuYO4fn9r1MJMVFoERq3HQEkWMJ5aWt2i2Wtdj2PToomeHFR+i3B9wsVXz92iwUo+8hrPqCWAE8tMDbHZI9lEdNosOe389G75DoMw4DLRID1tigrPFfeJL/CMp/MQwmDcES7eKXEc0D/aB+dvhOixgvbP8Zm4DhlqMNn4jMlZIM7DvNSo/1Q29tK3Qhe8xChOB3mS4/B044lHdV0v/wN7XT/7+ukl9PBc8z6qQmPWqJcFAX9l3z5TLNyCqeDDxW3yFbVGXtRa3YBuQPWcAW0JpYz5dBx+ey0P5MAT3hE3fQp97sbC3yzD0PXMvcN2aAU5+EGT/zbp3mUuvVVZotidMPfLat/Anj9r5BNd+nwDZxPd+Pv2TiZEDXFlzHVCMBp6q0tThu/jw5AwezdA6Q84cE7taQxtLrjm+zkrg/T5pc3ljX+/2JTjTvPDSpiAO2wXunpzy8/cNw6vpg1LLwx/N9NzxqXukvP2eu66LMKcWQwygnfhlPZ8riJEtVphqQs
+ AtSx3Rn/
+ SWW4+06bkwVGRJsoHyuzstak5aoYXzQBaQwg9fWO8QZUyZe0h42Eehfkd74FF6tz82hMyZ099Yvs7XESnWJvNi9PBQYX2tWQiXOKVCsVd17jjiop4s6R+Ag/5OLFiBD64m/ysLfAkceeBlZHEgst3UmbbJVEQD42oKInVk6V+vNO6KndG9/H8qgvAEcjLz57Vb8EZGfuveMeNG2XmJytIn3RDfkqI0e65xw10zx3nucfX3IGS5WqbRf0Ti16Wgt0fcCBMLlk4wsI48piH9eS5zXEtz0muKXhk7wzijQPt1mcAx0u4YDy/+dgDrIy5vl6pa/VvL8zMWm87eulPppUOvGXM3Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,42 +141,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 7 Jul 2026 14:20:19 +0100, Lorenzo Stoakes wrote:
-> Well the whole reason you're faulting here might be because a userland process
-> did that right? The page tables should tell you (presumably on ARM32 :)
->
-> And I hate to repeat myself, maybe you didn't read the whole thread but... just
-> use mmap_write_lock(), this isn't necessary?
->
-> What is this trying to achieve?
->
-> You're not in a hotpath, why are you bothering to conditionally take/not take
-> the lock?
+On 7/7/26 14:11, Dev Jain wrote:
+> try_to_unmap() receives hugetlb folios only from the hwpoison path.
+> hugetlb_update_hwpoison() sets the hugetlb folio's head-page
+> hwpoison bit, and page_vma_mapped_walk() reports the hugetlb mapping at
+> the head PFN, so the previous PageHWPoison(subpage) check happened to
+> work for hugetlb.
+> 
+> For non-hugetlb folios, unmap_poisoned_folio() currently rejects large
+> folios before calling try_to_unmap(). Hence it is always the case that
+> if try_to_unmap_one() handles an hwpoisoned folio, then the head page is
+> marked with the poison bit.
+> 
+> Therefore, convert the poisoned subpage checks to folio_test_hwpoison().
+> 
+> No functional change intended, except that, while at it,
+> convert VM_BUG_* to VM_WARN_*.
+> 
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
 
-I think it is not the same thing as the previous discussion regarding
-which locks are needed for `show_pte()`.
+Yes, LGTM
 
-Now, for this bug, we have two places that need to be fixed:
-1. __do_user_fault()->show_pte();
-2. do_DataAbort()->show_pte();
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-For the first one, it must be a user fault, the judgment of
-user_mode(regs) can be omitted.
+-- 
+Cheers,
 
-For the second one, it may be a user fault or a kernel fault. If it is
-a kernel fault, it also means that this is a kernel oops.
-
-For kernel oops, according to Russell's opinion, we do not need to fix
-this bug, which means we do not need to acquire any locks, because the
-kernel may die soon. However, show_pte() still needs to be retained
-because it is useful for debugging the kernel.
-
-For user faults, we need to fix it:
-1. For user space addr (addr < TASK_SIZE), we need to acquire
-   current->mm's write lock, before show_pte(), I understand it now.
-2. For kernel space addr (addr >= TASK_SIZE), maybe we can omit
-   show_pte()? After all, user-mode programs can access any kernel address
-   to trigger user faults, but we dump the page tables of kernel
-   addresses, would that be inappropriate,
-   (e.g., posing potential security risks)?
+David
 
