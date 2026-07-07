@@ -4,103 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7703C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 04:10:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45864C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 04:17:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CA816B009D; Tue,  7 Jul 2026 00:10:21 -0400 (EDT)
+	id 2C5586B009D; Tue,  7 Jul 2026 00:17:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 37B206B009E; Tue,  7 Jul 2026 00:10:21 -0400 (EDT)
+	id 275726B009E; Tue,  7 Jul 2026 00:17:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2460B6B009F; Tue,  7 Jul 2026 00:10:21 -0400 (EDT)
+	id 18C536B009F; Tue,  7 Jul 2026 00:17:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E2D4F6B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:10:20 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E2C01C7DE2
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:10:20 +0000 (UTC)
-X-FDA: 84960653400.03.2B8FED8
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6BFD9C0003
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:10:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.25 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CE4326B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:17:26 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4068FC19AF
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:17:26 +0000 (UTC)
+X-FDA: 84960671292.21.BB64709
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 27B5880004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 04:17:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=h82mKNCw;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783397418;
+	s=arc-20220608; t=1783397844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=6VnKTEvv8e6hieMD39zqyYIYs3ocKmE599Khsg5Tf/0=;
-	b=Q4KZWkiKYEVS93xUPNLDgYYEqkxQwEi1rnqwLxOl0WGETjC275/c0NdWFH3DPQDFUzdG46
-	1Pw/wItC5cznb9NR9F2OGpMn2GjTKi1NB1Xe4sJYtWEmkvxtzzvx8vlAjtAoGVaYx5vigm
-	hgVhz53JETDFF9BUbMOSj0Cas0+5UaU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=LVyGN/WRl7ojPa3+EKkt8JGw1OdAI+cWZZCsrkjKLFI=;
+	b=fd2XK6dBTpAWyUAbwoaUkPR/aY/90YMBq09SXzfeklYYLEtW2z6BkoyufhaVFxF1rEk5OX
+	wyIfkqX5uVqnghvOxRdWCn1/WGFRyY1xu8sbI3NbFuvscVtR4Su9E+qb8+Fr0SJEHWvmBQ
+	/B9ATp7Myeyc/w9C/Rzj/nx52zwxyA0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.25 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=h82mKNCw;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf30.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783397418;
-	b=0pkz7xQmHM+rkbQ7bcVRzFDTX6CX2Rkz7HegrpUlNkZAJvljSY9oXLOCP8i9hYDWqHEWxl
-	xdO5cj/EnkdIVOluroxxP+iCPxeoXChgoBB62kbZZIw4BInmRkgsCnBd7H2DxwLnx8kb01
-	/Bl+OQXDMov29z/8EvtE/lp9nYikDDo=
-Received: from [127.0.0.2] (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowABHk8YdfExq_cVRFw--.40495S2;
-	Tue, 07 Jul 2026 12:10:05 +0800 (CST)
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-Date: Tue, 07 Jul 2026 12:10:05 +0800
-Subject: [PATCH v5] mm/sparse-vmemmap: flush_cache_vmap() after hotplugging
- vmemmap
+	t=1783397844;
+	b=OHHpBCTL9m4W8XUOTRyVcbfITBxNSzG5qeM1nsFaTB0tbLYvhc+kgJgWEiULq7v7dn13V+
+	lNt4KJMpzDoAyftFKIZduyXKkb9fCv9aLsBgNwmjC904qz79xq07yGncEAjxIi+GEK5uXh
+	2GYE6nwjmf2xvjnhrFjK2MTkW8MUy60=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A596822FC;
+	Mon,  6 Jul 2026 21:17:18 -0700 (PDT)
+Received: from a085714.blr.arm.com (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 5E9173F85F;
+	Mon,  6 Jul 2026 21:17:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783397843; bh=LAPcZjMUiw+dmAMgk2njrVFJSSkQhTT9c8eQh46CbX4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=h82mKNCw2SI/fzFZeSp9zdpWkx4XUD4wIiiuS5Pc3clPXlOdIPTYmLQjD15tBCjkX
+	 Ncbu9j2InpmYk69DluBSMKVRDkQRwUZJ2xcY/R4qMDy8Gn0Is7Z4gEWPZxFiMA2vX7
+	 /ZmbhJvAbzkTXDQaD0fJR6S1NTHrm3cj9KC/Nivg=
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Cc: andriy.shevchenko@linux.intel.com,
+	usama.arif@linux.dev,
+	hughd@google.com,
+	willy@infradead.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: [PATCH] mm: Standardize printing for pgtable entries
+Date: Tue,  7 Jul 2026 09:47:03 +0530
+Message-ID: <20260707041703.658021-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260707-mark-after-vmemmap-populate-v5-1-77d1ded3cae3@iscas.ac.cn>
-X-B4-Tracking: v=1; b=H4sIABx8TGoC/43Oy04DIRgF4FdpWEvDvdCV72G6+IF/LOpcAlNS0
- 8y7y9SFNZrq8iQn3zkXUjAnLGS/uZCMNZU0Di3ohw0JRxiekabYMhFMGKaFpj3kVwrdjJnWHvs
- eJjqN0+kNZqTG+rhzzEoXHGnClLFL56v+dPjM5eRfMMwruTaOqcxjfr/OV772/rdUOeUUjbPRa
- ueBm8dUApQthG0YyLpVxZdmmLqvCcooeAO7yKRXUv3U5K32xzfZvkGrMQ7BCfOLpm40ye5rqmk
- deh+4jsCE/a4ty/IB5XVbMMQBAAA=
-X-Change-ID: 20260525-mark-after-vmemmap-populate-68bd790839c9
-To: Alexandre Ghiti <alex@ghiti.fr>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-riscv@lists.infradead.org, Muchun Song <muchun.song@linux.dev>, 
- Vivian Wang <wangruikang@iscas.ac.cn>
-X-Mailer: b4 0.15.2
-X-CM-TRANSID:zQCowABHk8YdfExq_cVRFw--.40495S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZrWfJr15Kw4rtFykCr13CFg_yoW5tF4xpF
-	Zruwn5trZ8Wr1xWr47Zw1I9r4xJwnIga4xK3WFkry5Zws8XFyUWr95Kay8WryDJFZ5Zayx
-	Ca1Yk34rWFyUZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
-	628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4
-	IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
-	MI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJV
-	WUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
-	6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYx
-	BIdaVFxhVjvjDU0xZFpf9x0JUJWrAUUUUU=
-X-Originating-IP: [36.110.52.2]
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
-X-Stat-Signature: h97b16ta8wbxzzmbc6qi993h6yugz8sr
-X-Rspamd-Queue-Id: 6BFD9C0003
-X-Rspamd-Server: rspam01
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 27B5880004
+X-Stat-Signature: ccgehuo9sa9aan8fzg7uc4n8ryq3fauz
 X-Rspam-User: 
-X-HE-Tag: 1783397416-950512
-X-HE-Meta: U2FsdGVkX1/pvHXIGmODjbei3sRHSQ47NdItUZZAtC/OzIS3hiaYbQaGL8haQslvrfqe2yatlPa4/ph4XaRhnKQM22ni89DmKLAHiKcuCuYLK3hacoOc9cQYfhodc1PypWuNgeeTA17Bjw8pkLvjLviEsMXo0Klnsy6d99HNwDZamBGJu9x3KwyS7YoaId6P0iHy5JwEq+9trzYA58UHkIAX77uvQQlT4bjCbw0j3pWwi9V1qGRYb4+0Ol6ahJ4EjYph7lIHsvMd0zV8MpYbwSNA5QIaEq0ZnZyg5I3UigUnjo9TgzQgciG7hECVHqdR0oausmZyzmOX0NL1kKNJIedWc7IskY2xVUkpajfXUfCV7P7O7Q5rg1NeIZbKkdVRdksr9iGnTxY5DdexJHrTzZT4teIgqIBZ08lY4jm55WDPQl/sEpDuKcSNIQxCux3SE81fyenNzUQYXmhM7t0EHLzbiaONbfmWH3GvuEZG4eYuoM2ixrUYOGqZNIkVMsR/d2B/9q9gEOkmks6WqpmBVgYwmSsKdP8Jvg8/edOO/X1qVX/m83Dy8QmgxEiRnG6qZsCPboubHI8vLYTJMMAIi+XbIABGXzjFMbqQAwKiNONTNjkukx8EGY6jh1vaA3cBem6TqNR1arnY6Mn4aCEC6rkNnJWxGWJhCUvxLOU/rBbeZy1F8a/ZsE8HxMFmQoeWtVglJpWGsj/wVynup5IB5k/kcufg8SmW7fIuDWuHZ8jhGFxbs7K9AsUAqLnCktw6heK0ddV42JOc6Pm3HPTfe71fzMvTZ0zkCnKSIsEnzlXGpaX1h9l12DjDDN/FX8vurNslMwINW8VUc9chypGOkMCDm28Kj7Ct5d+oJBDZupmMTb6L90ILiuXPJnhbOv0GMAQBZWIjTMllvTb6ciVf4dkNLChRqRHRZtoo3bxeQCcMhV06Q1Ou28f8y11vQJ65delX9ZyPQrIKmhNto6D
- 7qDgdfr/
- KQVNni02ASnSJZVb2HxGUgKvAaUAfJJculrUFZFlvn7hJWI2Qyshh0IiOYUt++Uy0BSZbkgoX74C4392XF7UfPinDeySGgrzex8dmFtR+ejXpWB8X3gXGvMJPpPjocpzYNi2NjyAriqnVjCXZ5CpD9GXv+8i5VcXmfZYogo3TFHBk5xev60k+QgO0cOCutnLv3IedIhipPxHuqPSwjigkZEMTMujo3euwxDKaMbRXOz1fhfT23AjWYiAq0ASantdYQbA9gfizYBjjR8I1P2abM8hl5bGkPnCcdkRTqb4cwpIqsFOSSluZpSa91UTT0KliUTUm9QHlQ1UfYvo=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783397844-261661
+X-HE-Meta: U2FsdGVkX19dY49WFPsUf2RR5r0l37BFQ63fCtBIv6SRo6p7h/jSlNLiTaOjgt18cjek3BGHVzgDxM0Hc+0HEciUyzzEYVhFvorNRdln1RVsm9e3nqPgn6Za2SqaaaC40lBle3h9/7B2yLwYjPbY+PLSwWoIJgwSRVIYHjIR3kd2wc6XQLaNVS65R2AIE7VH3tHAE3B42TT4YC9TSeKQN9Sfn2emG1WgYnlRMcMhCynoY1jw34Bm6DbGdELRaWEfJQhxD5Dl4ABeYxqFcK3jIxpj5i9yH6wcHSCDQ063ngHkgkRwDAq2D4CS/7q4Q4szXQYqPqIvgrLJZHlQVtOju8rzT73iLR/7omyOx1qAEoPBW8WASYcNsnEekseLLVFaRA70NSGm3n4s8aa+Va8TpHxlqU5nScCxs3GiJr3atfLERuXITHRkqtr+hknUVVu6V0XR9C8/K241oAMh+N8gjnaT6KOrkB6+mgbxsvr0XqmrnMuTYdrAO2MqrbRpgRIboGYGZYjDtrDQQBd3PUFcjoCP4nLx+g5hcBUwIFGZR7F7DRddIlV8uApTqYEEpaRQXeGBJ5NlqbU1j4E4AvNr7Mab34Z5vzcv2XjQ9jeCqEZNb4LywkXFav1zO5AoQjTLTW7mNH8HL9qGD2akMCZ2XenswWcLAhMv1eHRFkPVUdMoESRcRQQAtKg4FYSKqaYahm5+wex7BhDkNfSQqkiTQdL5AvtBpJkGCXNlFCa3km2b4X1SjYWEfoeI9Fn1nDgJjCX5mksxxK8R6LiHuEe7NfqJaLZqc2DzLinG3TFgmp8W7ha6PMybqY18EoSZ2dQMrqLbgdgpYwF3+aJO1SXu+pywHmKlTvYHzSLKXCNdYqIpCsbaJWZH3BZmdCQ/KtgcmNiOadE9gs/3NfMKix/eswYP8XKMOZqotLCeBJE/jUKxfIkhifzpKZKotLAoKBOKSjyvT7k/oRj8rW4dVZk
+ KNArNhes
+ UJPzbwvXMT8pGcW0iAl9SpOKkqZBigy5wIJoR5YsXH/VIDA5b+/gN7yjsMB9JrGtj1/awcEQr5d/et3p8CCZ1C1DlLs+Jow2dHIZA/yJPjSoRNSmLNyqnIN9Yi2SjW0b0KmDCzFtjyKsPVG3E3y3E1vcPExWiU/EnHKcx7tykN1E7zZK5/ze3D78CLmJ/+st81Cv2iXu7ohzIuYWUFcE9TLFH4KR+4WCWBfs+XVAkri7HHbspc3cZNyd82b0lx+Zg84NydsyZylPkE9lFsC6n5kyDKbQ30M8BOafdLY5WTQ3P9ShRB3ahgxbT/yxgrW/RdJVAyuh5dZUbFd5Xie7Wv2yW0bd2vGTLyDg2kG0IX06dyt5iQ4a3+i4vBeANMy2LzkKL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,92 +91,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-section_activate() does not flush TLB after populating new vmemmap
-pages. On most architectures, this is okay. However it is a problem on
-RISC-V since there the TLB caching non-present entries is permitted,
-which causes spurious faults on some hardwares.
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 
-This seems to be most easily reproduced with DEBUG_VM=y and
-PAGE_POISONING=y, which causes these newly mapped struct pages to be
-poisoned i.e. written to immediately after mapping.
+Bad page map reporting currently stores page table entry values in an
+unsigned long long and prints them with fixed 64-bit-oriented format
+strings. This is inconsistent across call sites and does not work well for
+architectures where page table entry values are not naturally represented
+as 64-bit values, such as 32-bit or 128-bit entries.
 
-Extend the RISC-V flush_cache_vmap() to also handle the vmemmap range,
-and call it after hotplugging vmemmap, which gets the possible spurious
-fault handled in the exception handler.
+Introduce a common helper to convert raw page table entry values into a
+fixed-width hexadecimal string based on the actual entry size. Use it for
+bad page map reporting and for dumping the page table walk in
+__print_bad_page_map_pgtable().
 
-At least for now, the only other architecture with both
-SPARSEMEM_VMEMMAP and flush_cache_vmap() is PowerPC, which has a similar
-problem with newly valid PTEs. But there flush_cache_vmap() is just a
-ptesync. So it should be safe to do this for generic code while having
-minimal performance impact.
+Pass page table entry values to the reporting path as raw bytes together
+with their size, instead of forcing them through an unsigned long long.
+It keeps the printed output consistent and avoids truncation or misleading
+formatting for non-64-bit page table entries.
 
-Suggested-by: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
-Changes in v5:
-- Remove hook, use existing flush_cache_vmap() (Muchun)
-- Link to v4: https://patch.msgid.link/20260630-mark-after-vmemmap-populate-v4-1-febbc15da028@iscas.ac.cn
+This patch applies on v7.2-rc2
 
-Changes in v4:
-- Rebase on v7.2-rc1, drop dependencies
-- (No code changes otherwise)
-- (A concurrency fix for mark_new_valid_map was sent independently)
-  https://lore.kernel.org/linux-riscv/20260629-riscv-mm-new-valid-map-ordering-v1-1-60d8c10c6292@iscas.ac.cn/
-- Link to v3: https://patch.msgid.link/20260605-mark-after-vmemmap-populate-v3-1-a06001ac9264@iscas.ac.cn
+ mm/memory.c | 102 ++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 79 insertions(+), 23 deletions(-)
 
-(See v3 link for older changes)
----
- arch/riscv/include/asm/cacheflush.h | 3 ++-
- arch/riscv/mm/init.c                | 1 +
- mm/sparse-vmemmap.c                 | 2 ++
- 3 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
-index 8cfe59483a8f..e935db27f09f 100644
---- a/arch/riscv/include/asm/cacheflush.h
-+++ b/arch/riscv/include/asm/cacheflush.h
-@@ -56,7 +56,8 @@ static inline void mark_new_valid_map(void)
- #define flush_cache_vmap flush_cache_vmap
- static inline void flush_cache_vmap(unsigned long start, unsigned long end)
- {
--	if (is_vmalloc_or_module_addr((void *)start))
-+	if (is_vmalloc_or_module_addr((void *)start) ||
-+	    (start >= VMEMMAP_START && end <= VMEMMAP_END))
- 		mark_new_valid_map();
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe92..f0c3478f1a63 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -519,9 +519,52 @@ static bool is_bad_page_map_ratelimited(void)
+ 	return false;
  }
- #define flush_cache_vmap_early(start, end)	local_flush_tlb_kernel_range(start, end)
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 5b1b3c88b4d1..1b4f16704133 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -24,6 +24,7 @@
- #include <linux/execmem.h>
  
- #include <asm/alternative.h>
-+#include <asm/cacheflush.h>
- #include <asm/fixmap.h>
- #include <asm/io.h>
- #include <asm/kasan.h>
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 99e2be39671b..ebd3ac997f64 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -564,6 +564,8 @@ struct page * __meminit __populate_section_memmap(unsigned long pfn,
- 	if (r < 0)
- 		return NULL;
- 
-+	flush_cache_vmap(start, end);
++#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
 +
- 	return pfn_to_page(pfn);
++static void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
++{
++	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
++		snprintf(buf, buf_size, "overflow");
++		return;
++	}
++
++	switch (entry_size) {
++	case sizeof(u32):
++		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
++		break;
++	case sizeof(u64):
++		snprintf(buf, buf_size, "%016llx", *(const u64 *)entry);
++		break;
++#if defined(__SIZEOF_INT128__)
++	case sizeof(u128): {
++		const u64 *val = entry;
++
++		if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
++			snprintf(buf, buf_size, "%016llx%016llx", val[0], val[1]);
++		else
++			snprintf(buf, buf_size, "%016llx%016llx", val[1], val[0]);
++		break;
++	}
++#endif
++	default:
++		snprintf(buf, buf_size, "unsupported");
++		break;
++	}
++}
++
++#define ptval_to_str(buf, val)								\
++	do {										\
++		__auto_type __val = (val);						\
++											\
++		ptval_bytes_to_hex_str((buf), sizeof(buf), &__val, sizeof(__val));	\
++	} while (0)
++
+ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
+ {
+-	unsigned long long pgdv, p4dv, pudv, pmdv;
++	char pgd_str[PTVAL_STR_MAX];
++	char p4d_str[PTVAL_STR_MAX];
++	char pud_str[PTVAL_STR_MAX];
++	char pmd_str[PTVAL_STR_MAX];
+ 	p4d_t p4d, *p4dp;
+ 	pud_t pud, *pudp;
+ 	pmd_t pmd, *pmdp;
+@@ -532,34 +575,34 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+ 	 * see locking requirements for print_bad_page_map().
+ 	 */
+ 	pgdp = pgd_offset(mm, addr);
+-	pgdv = pgd_val(*pgdp);
++	ptval_to_str(pgd_str, pgd_val(*pgdp));
+ 
+ 	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
+-		pr_alert("pgd:%08llx\n", pgdv);
++		pr_alert("pgd: %s\n", pgd_str);
+ 		return;
+ 	}
+ 
+ 	p4dp = p4d_offset(pgdp, addr);
+ 	p4d = p4dp_get(p4dp);
+-	p4dv = p4d_val(p4d);
++	ptval_to_str(p4d_str, p4d_val(p4d));
+ 
+ 	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
+-		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
++		pr_alert("pgd: %s p4d: %s\n", pgd_str, p4d_str);
+ 		return;
+ 	}
+ 
+ 	pudp = pud_offset(p4dp, addr);
+ 	pud = pudp_get(pudp);
+-	pudv = pud_val(pud);
++	ptval_to_str(pud_str, pud_val(pud));
+ 
+ 	if (!pud_present(pud) || pud_leaf(pud)) {
+-		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
++		pr_alert("pgd: %s p4d: %s pud: %s\n", pgd_str, p4d_str, pud_str);
+ 		return;
+ 	}
+ 
+ 	pmdp = pmd_offset(pudp, addr);
+ 	pmd = pmdp_get(pmdp);
+-	pmdv = pmd_val(pmd);
++	ptval_to_str(pmd_str, pmd_val(pmd));
+ 
+ 	/*
+ 	 * Dumping the PTE would be nice, but it's tricky with CONFIG_HIGHPTE,
+@@ -567,8 +610,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+ 	 * doing another map would be bad. print_bad_page_map() should
+ 	 * already take care of printing the PTE.
+ 	 */
+-	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
+-		 p4dv, pudv, pmdv);
++	pr_alert("pgd: %s p4d: %s pud: %s pmd: %s\n", pgd_str, p4d_str, pud_str, pmd_str);
  }
  
-
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260525-mark-after-vmemmap-populate-68bd790839c9
-
-Best regards,
---  
-Vivian "dramforever" Wang
+ /*
+@@ -584,10 +626,11 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+  * page table lock.
+  */
+ static void print_bad_page_map(struct vm_area_struct *vma,
+-		unsigned long addr, unsigned long long entry, struct page *page,
+-		enum pgtable_level level)
++		unsigned long addr, const void *entry, size_t entry_size,
++		struct page *page, enum pgtable_level level)
+ {
+ 	struct address_space *mapping;
++	char entry_str[PTVAL_STR_MAX];
+ 	pgoff_t index;
+ 
+ 	if (is_bad_page_map_ratelimited())
+@@ -596,8 +639,9 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+ 	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
+ 	index = linear_page_index(vma, addr);
+ 
+-	pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
+-		 pgtable_level_to_str(level), entry);
++	ptval_bytes_to_hex_str(entry_str, sizeof(entry_str), entry, entry_size);
++	pr_alert("BUG: Bad page map in process %s  %s: %s", current->comm,
++		 pgtable_level_to_str(level), entry_str);
+ 	__print_bad_page_map_pgtable(vma->vm_mm, addr);
+ 	if (page)
+ 		dump_page(page, "bad page map");
+@@ -627,8 +671,13 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
+ 	}
+ }
+ 
+-#define print_bad_pte(vma, addr, pte, page) \
+-	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
++static void print_bad_pte(struct vm_area_struct *vma, unsigned long addr,
++			  pte_t pte, struct page *page)
++{
++	__auto_type entry = pte_val(pte);
++
++	print_bad_page_map(vma, addr, &entry, sizeof(entry), page, PGTABLE_LEVEL_PTE);
++}
+ 
+ /**
+  * __vm_normal_page() - Get the "struct page" associated with a page table entry.
+@@ -636,8 +685,9 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
+  * @addr: The address where the page table entry is mapped.
+  * @pfn: The PFN stored in the page table entry.
+  * @special: Whether the page table entry is marked "special".
+- * @level: The page table level for error reporting purposes only.
+  * @entry: The page table entry value for error reporting purposes only.
++ * @entry_size: The size of @entry.
++ * @level: The page table level for error reporting purposes only.
+  *
+  * "Special" mappings do not wish to be associated with a "struct page" (either
+  * it doesn't exist, or it exists but they don't want to touch it). In this
+@@ -697,7 +747,7 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
+  */
+ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ 		unsigned long addr, unsigned long pfn, bool special,
+-		unsigned long long entry, enum pgtable_level level)
++		const void *entry, size_t entry_size, enum pgtable_level level)
+ {
+ 	if (pgtable_level_has_pxx_special(level)) {
+ 		if (unlikely(special)) {
+@@ -710,7 +760,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ 			if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
+ 				return NULL;
+ 
+-			print_bad_page_map(vma, addr, entry, NULL, level);
++			print_bad_page_map(vma, addr, entry, entry_size, NULL, level);
+ 			return NULL;
+ 		}
+ 		/*
+@@ -741,7 +791,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ 
+ 	if (unlikely(pfn > highest_memmap_pfn)) {
+ 		/* Corrupted page table entry. */
+-		print_bad_page_map(vma, addr, entry, NULL, level);
++		print_bad_page_map(vma, addr, entry, entry_size, NULL, level);
+ 		return NULL;
+ 	}
+ 	/*
+@@ -767,8 +817,10 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ struct page *vm_normal_page(struct vm_area_struct *vma, unsigned long addr,
+ 			    pte_t pte)
+ {
++	__auto_type entry = pte_val(pte);
++
+ 	return __vm_normal_page(vma, addr, pte_pfn(pte), pte_special(pte),
+-				pte_val(pte), PGTABLE_LEVEL_PTE);
++				&entry, sizeof(entry), PGTABLE_LEVEL_PTE);
+ }
+ 
+ /**
+@@ -809,8 +861,10 @@ struct folio *vm_normal_folio(struct vm_area_struct *vma, unsigned long addr,
+ struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 				pmd_t pmd)
+ {
++	__auto_type entry = pmd_val(pmd);
++
+ 	return __vm_normal_page(vma, addr, pmd_pfn(pmd), pmd_special(pmd),
+-				pmd_val(pmd), PGTABLE_LEVEL_PMD);
++				&entry, sizeof(entry), PGTABLE_LEVEL_PMD);
+ }
+ 
+ /**
+@@ -850,8 +904,10 @@ struct folio *vm_normal_folio_pmd(struct vm_area_struct *vma,
+ struct page *vm_normal_page_pud(struct vm_area_struct *vma,
+ 		unsigned long addr, pud_t pud)
+ {
++	__auto_type entry = pud_val(pud);
++
+ 	return __vm_normal_page(vma, addr, pud_pfn(pud), pud_special(pud),
+-				pud_val(pud), PGTABLE_LEVEL_PUD);
++				&entry, sizeof(entry), PGTABLE_LEVEL_PUD);
+ }
+ #endif
+ 
+-- 
+2.43.0
 
 
