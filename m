@@ -4,96 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9430FC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 02:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16177C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 03:04:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77BBE6B00A1; Mon,  6 Jul 2026 22:49:18 -0400 (EDT)
+	id D15966B009B; Mon,  6 Jul 2026 23:04:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 753546B00A2; Mon,  6 Jul 2026 22:49:18 -0400 (EDT)
+	id CC62D6B00A0; Mon,  6 Jul 2026 23:04:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 692186B00A3; Mon,  6 Jul 2026 22:49:18 -0400 (EDT)
+	id B66456B009B; Mon,  6 Jul 2026 23:04:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46BA36B00A1
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:49:18 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BF9451A02D6
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:49:17 +0000 (UTC)
-X-FDA: 84960449154.26.99F68E8
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf07.hostedemail.com (Postfix) with ESMTP id DDA6C40002
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:49:14 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=IDuxi9vq;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783392556;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 72E9B6B009E
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 23:04:04 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE0A21C7C18
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:04:03 +0000 (UTC)
+X-FDA: 84960486366.19.919A082
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012060.outbound.protection.outlook.com [52.101.53.60])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 39FFB1C0002
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:04:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dyH3vsUH;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of apopple@nvidia.com designates 52.101.53.60 as permitted sender) smtp.mailfrom=apopple@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783393441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5i77ger88zezVroL5G7P1+2TsKTxWgK4e37XO/nKq00=;
-	b=HOfvihXgEQps4u5iDNpqbi1A3OP8kU8WRJBrb5HM7rhxRwzxqs5wgLGAY5sfG61KnfmUMv
-	bqGYYzF9bou6Goi3KePpoBkCaCSoajuEqFMPdQ5P30vENntFJifOqsr5AN3GQQwEj5mPZz
-	0TjFByK903BAnLtvive36oSFHpRJY8A=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=IDuxi9vq;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783392556;
-	b=kUzqS8cCPMD7nzDjbudsCgDqvPFCdB99NCMluPB3QHj596A1wG4/FG8CsK2rE8kN3DOOt8
-	lR3AaepCszm+Mxerh6nb/ATo1V0muiv1X71H8bfd2rEG19+UL+JmSpozwdoyGWR1V3+uXh
-	ynzW0atDfg3xwGO2/QTvv7+wBdGHSCc=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5i77ger88zezVroL5G7P1+2TsKTxWgK4e37XO/nKq00=;
-	b=IDuxi9vq1VQpihcnFfGXqwl38ueqQ2n/pwuhiwA3jcWXZUfOCRnfMPEquUhZAgeZTIRkGj1+h
-	DwxwvKL9hpelqOOnsiEerb0UPIPaQNg9piMGX8b3Qdy0glKEio86/jyycgnvwcxyUhOVFWdYZ5f
-	3pNnKRhr2FiguoUA6WybSpk=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gvQSb0HWkz12LJK;
-	Tue,  7 Jul 2026 10:40:31 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id EC2F64057D;
-	Tue,  7 Jul 2026 10:49:10 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 7 Jul
- 2026 10:49:10 +0800
-Message-ID: <2b4b3fec-18e4-48da-8ead-82d0c4970c08@huawei.com>
-Date: Tue, 7 Jul 2026 10:49:09 +0800
+	bh=eKReyStzCu60GUZcWwZ29FnEijq1osKolLGH9MuB0rs=;
+	b=ujOi99jd3KWSueh9xq+0FtmjLV4FMaX8pAkSdciQy0GOfh8cMfWWXe0UKdvELTO8jJ7Us3
+	PJiOoTEPHSb1+udU5Dp815gxWxFeJeyxZ5tAlLOPZpO3/OEoFf85O5sO0dfIcZ+BVtrQFR
+	d27rffkWsRv712f9tQDOC7lhhmcGwpk=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=dyH3vsUH;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf21.hostedemail.com: domain of apopple@nvidia.com designates 52.101.53.60 as permitted sender) smtp.mailfrom=apopple@nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783393441;
+	b=qWidhxdMa51FSdtpoRWKU774GeDBZ21IlbwdysmnmgNEREOh6H2IQGEudG3SjtpoknQnog
+	+mYh0g6fd7eM0yfUG+O+SCQksybeJFVwElhc6gTVJOIO63PoL7hGgAxGaFDEBCB6KFiamI
+	AoHT2vYITwdgy5lD2b2vH6I6Gz+iFwk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=K9hqZc7RW/7sVmXFtDa4PVrqWzzhJjeAo3JDKrUYEr7IlKKRgeMWDIsnSef1YvyJ6UTYyfjrgB0YLNC8SnAFYM6VsDT58dH4IRmBSAC+9d2FNGRo75PzjYlin2jWkBc9J6pFMP3fAYS0B1xJmQ77RdfTW0tLwdKLjj4Ft0aBcsPgM5qt/XNbUiuZ3LK0IvRb7qrdB8OzGbMIyuKmiSEhbC8bZ7rXpe3KafY6KWG/+OLLqhL9XgvhnzGpOZ06DohCtjN3MfXeAaixwvEG3V5JYnMf7JdkvXPeJu0/9scT4e2dGB1gf9em1QcY8JTwvNFTVFwmoTwSaP5K4/lixsfJMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eKReyStzCu60GUZcWwZ29FnEijq1osKolLGH9MuB0rs=;
+ b=Jom20b1E/HBeTU45pSrHATUNxJRFfMeoR60D+Qmq+EUOJvxqplh1l7rzSSPYMkhwh9b6dW5bEVn7lNPuTiPIy2Y784cqmqnBd5GGI8qCXAmQtWxBJYhpCxv/CE9IvDK+WakkkFT8Aljq4AbSqF4eDMKSnOU/s22SbHjEJCWaM8sgggPJK2lPanUlW/2uEH15IZ+SZJlVi+If/Yncr//ptteiZL95t8wQQW1UQuWyst8yDeTAkWFdNTN1bz15B7OPvZ1wCywy64hrniJtKJcrz58k4Hrx1o3GYg2zsEWcmEqx5rAGpCPTZp7SInyg0+St1hzRkdwCapjlbsYKPckWCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eKReyStzCu60GUZcWwZ29FnEijq1osKolLGH9MuB0rs=;
+ b=dyH3vsUHtMoEr6pxSrhrFj9yaoPxJLjsRx82SataptDX93hAEtyGosF5vEoy3dmIBHD3Hw3x2yXqBB4e5riisYpgH7a6ahrQMBcwlPJYLgPZa1BO8HEP8uiIEQ5qKthMIk3NWcw6G9MIG/ctcVsNK88hV62HfaMhj+GXwxyqYPGieTzFeD5/LhCWhDRREKFS0pZ5Ckoqfc4QqJv22Xm2cX1UYo673CdZPFVUtww4jLmKdGYghqaRxPKtBbBk386fyKxtqH0cI0qVYuh1SD04qGZqfz5FoobuMFMEkUFbHC9lnXvh/LTtE8MU7v/XsCY8IB6d5q5oyOGS4aUYz2OiEw==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ CYYPR12MB9015.namprd12.prod.outlook.com (2603:10b6:930:c8::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.8; Tue, 7 Jul 2026 03:03:03 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0181.008; Tue, 7 Jul 2026
+ 03:03:03 +0000
+Date: Tue, 7 Jul 2026 13:02:52 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, arnd@arndb.de, bp@alien8.de, 
+	dave.hansen@linux.intel.com, david@kernel.org, kees@kernel.org, mingo@redhat.com, 
+	rppt@kernel.org, tglx@kernel.org, linux-arch@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH v5 4/8] mm: add a template-based fast path for
+ zone-device page init
+Message-ID: <akxpS3WOP7oUBNKF@nvdebian.thelocal>
+References: <20260701090553.62691-1-lizhe.67@bytedance.com>
+ <20260701090553.62691-5-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701090553.62691-5-lizhe.67@bytedance.com>
+X-ClientProxiedBy: SY5P300CA0018.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:1ff::6) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/proc/task_mmu: count KSM-placed zero pages in smaps
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<liam@infradead.org>, <ljs@kernel.org>, <vbabka@kernel.org>,
-	<jannh@google.com>, <pfalcato@suse.de>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <linux-mm@kvack.org>,
-	<linux-fsdevel@vger.kernel.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20260706121323.1149847-1-tujinjiang@huawei.com>
- <6ef49a9f-af0c-4bce-8402-16926424ea7a@kernel.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <6ef49a9f-af0c-4bce-8402-16926424ea7a@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Queue-Id: DDA6C40002
-X-Stat-Signature: a74g88rerk3nmp71dipukxhrxgi8dk1h
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CYYPR12MB9015:EE_
+X-MS-Office365-Filtering-Correlation-Id: 690283d6-4620-4bbb-64f2-08dedbd44286
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|7416014|376014|366016|56012099006|4143699003|3023799007|22082099003|11063799006|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	lsIn/MetmaGZ/SKIlKggkkrcL0LpzuSGbzYVA5Qz6A+dvvlxIjfpx2hjifcez+uYQcclebjPQ7VyIdh271PzPQ/R2QBzPBGdnDE5A3YStMeVxTHmRERXefYVqMrU+bPPLxV3uzrY3/D6YrxjAgO7PW5yD1TIXvH1hramph6nzr9K7xlFspVMzoyZyfFZzoyWWIvZN70ruhv8RVp+nsGXEsphugHzro7ShpWAQJ8BSIhs1DThLEsiutZbbhNqd+1Tg2fuVGhv7c8pngYkRSDof/GfkgHeygy7bck2v+UB9BNbcN9nFQpD0nbcWkiU2vPGKRhnaFje8kkuZ1RF8joluKhvloAkV+6jOnpYUXtM3IQIN9YpmcPNzdn/pw5JxvZGq2Q6YZEhBhMf972syVXtALoCWb91BCEPjJhcWsd2gIMTSSNfp8iFU9GItr+v6QsqfAvR+Ap/msMmgpKetM0GwHnY2BtJIuFNCiXzcM3Iascd4pnJwHZDPcFnI6f9X25/0/MH4e3Bd/SOTbApywagQNGpA8vbh68q3R2msz8rJu92hmFo3zRoopg1ooMK05jvCXG7V17uvJLIO5FOcv9vtG37wbKR6tAeM1W5J0s7Ypee8889np24DpXA1rlhKwY3vAAMKoSZvHD7JaevvxEsQeJsy9JFKHrBrDDA1gHheKk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(376014)(366016)(56012099006)(4143699003)(3023799007)(22082099003)(11063799006)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QP6VkFD+zMJXEL59T2OntIxXv34U07I0Mqh47+RQteTDi5S/vZvPZ47tyX7u?=
+ =?us-ascii?Q?zsJsJg+DKKxB8euv+OvQimP+TQM3FQ7VLrlidpyTp+VNJzSFF8C+DqSEfOYy?=
+ =?us-ascii?Q?zc66K5bx+gVtjy2TI7mSBbYQSth4+V/IqONIc5s+bVi/AooEvGrdf5rggCfB?=
+ =?us-ascii?Q?zJiIvKLdkUrVmsg1bpwFskjqkWEsKIccIbsQVDkn96hjDYK7QewJsy4nXMCk?=
+ =?us-ascii?Q?9KVniVNgMSANUz/qrdt1/q3CMA0FSrfa2QPt3NIsirT8NloaDowqyXve5HPl?=
+ =?us-ascii?Q?VJZm5Kcsaq+6KS8w4vjgCZE4nyy2b4UQVJ+V7hyvM3N9Zb9872mk/KtuVxsi?=
+ =?us-ascii?Q?cEYsP9luHPSx28Qybxu8HfaGpjaxVIZu42B25nJ1ToBAt6wSCjaso9F/3XN2?=
+ =?us-ascii?Q?l0/0Xc39rv2+lk+qyzPU+jnkxzhORJIZjKbhmx0/HTa3zs5395c4hoWTnqui?=
+ =?us-ascii?Q?tO5Fjah5l/rDDH9tWbIQlPtI+AQLsUHBnxRe0iv1ObaT+jwy6bI0Ea7CwEFm?=
+ =?us-ascii?Q?97T4SZaSBFCjr+23hj8PyRnaQGg/3k2jgUYsKK/eV7tEofAvFHJwAoep3LF6?=
+ =?us-ascii?Q?Cv8vhobkp23dEUe0L9NQjU8enn4diLykwYAB83xGFiFjCoRB8++bc+6jVvAd?=
+ =?us-ascii?Q?2k3C9lQrY8Cnr5gwmogL2/5SRg0704J472u7aMQIeciCbhDZ5HWBZBKSoxd0?=
+ =?us-ascii?Q?svqf7QTTPQ9awI9YmHnAEd+j0OC8lR1i4W/pJoj7URe8zZE2KVZt5zo1FPk0?=
+ =?us-ascii?Q?DISy2Jf6CQPjUQ/jgYPfCiUpwULbkEPuv/6Dsb++6hbSMxJLgUaY4UDoXnEg?=
+ =?us-ascii?Q?QcRWotCQqalRrqrrNbAD5415b1iCArdQBT1SuABvIX+O8JFkQgZKS4mpSz+T?=
+ =?us-ascii?Q?c6OtKmzxuBbIOCijADBRJ0+1uaDsDANwSmp53DLntOvbEZd7xEMAxkrIiLEm?=
+ =?us-ascii?Q?zdLaavnp1LL4IZli8vIhfuTOhJ08CoJ9/IChjc5MsSe+eGrrtAvAKnUdl8u8?=
+ =?us-ascii?Q?h9aYFaN/x55ncGkaOgq0XbM+GBZOoa3+DUO4b2UFDQJf/Fu/9y2TJatMzbQx?=
+ =?us-ascii?Q?6Km0jNQTnts2WDcpMQ+Pfo7Jy2aDQ4gAB8pUUGr5cnCbqC3+szOOBkkDqUHt?=
+ =?us-ascii?Q?yjkNTb4DdKUGIrTFWO5O3VyWOWddBcTuUzN0mIBKSSLgz0o7+/m00RVyKfqT?=
+ =?us-ascii?Q?GEtdAEVDuMK6IzSuNUMdSTR3iptpLIfV9u+FmK1lBrzDcs3BdrYOWTvYQDNm?=
+ =?us-ascii?Q?EYBhgTgUfSneBQcnYvUYUKbFn8wR0P919/kqol3zhAVuGUvhxyiMtGK3gtX+?=
+ =?us-ascii?Q?3lU2wHq7BZSR8V5T50slxTKqhmp3zAYiP4qHxHgR9hQaWCqmEWF/cbA46cYb?=
+ =?us-ascii?Q?WlBuDdEGzHH1ytCmkZBxJqb/H67EBxMwHRyDpOifhmyULirtXRTKPjiyeWqp?=
+ =?us-ascii?Q?kzHgRcHcdfTWjE8hPiinYvu8oOdx1bhO7isSnzH5HXcNtjLjV7O9zdrSdw5q?=
+ =?us-ascii?Q?swTFUvluExbmcvVKPM9aMU2fNcuc7+nj/2pF3nG95Q6oiGImx79y1iNIcDrV?=
+ =?us-ascii?Q?1SIXJSxhpVbzMtqNbbJjybVnHJ93zeiLp+SC27WhWytwgIqwjIyrgUOh+wwj?=
+ =?us-ascii?Q?e19LBkKJ9XipjSZDECSKLlMbOu2XQNWKb5FDJAymSwNKS6LYjg9xDdLbWGfa?=
+ =?us-ascii?Q?HWD+dBse3O0TkzUdSr4b8pTXA7/D4wd0dvGQvJaY6whNLAEnFPTEjtgXU/pT?=
+ =?us-ascii?Q?k2QzEdUz2Q=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 690283d6-4620-4bbb-64f2-08dedbd44286
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 03:03:03.0375
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ASNhkDSyU8YBg43XP7HjYM3fVMgwa45C8T6rc6LhmqxLU/BW1XDMy1R065JQlKB3rH3CSWD2d+UBfuJb4Jz0NA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB9015
+X-Rspamd-Queue-Id: 39FFB1C0002
+X-Stat-Signature: e4ir6b75efuru4snhq3fwcjofdr4e9y5
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1783392554-221608
-X-HE-Meta: U2FsdGVkX18PvGX8vPqiIZjUiX9Tvw8fvPyiKZw3vDXGBZchGIZYysJgqYxnK2CK+X2VKuS6QMhcPGubiF5wJ5Y25/UPlPsLvJCVkNhIXwJVwCTmY4jTbYPjBcsv8NIieVWnBzd7hazAK6x5recMAeNDOdfw40LZAwgTsPR7dz9Q2vWJEnW3gIMQDP6KngiQhr9FFuXqOo3g6N7mBIzYu+2kW0Lb9nAgFABLyeLnofSW89pwieAwroQtRyKwC7pUMwGHychWx/eZwgbNQYWWsEbB6mb0+yIRfel6vZ46GiW8je0t26dWX29kzjWoXhumqudq0XcNZ7xy6qfORqjknp08AAswACmIafc0GVGnjtRFcsudyPJcjCZ25gdAOGBjIjIsbeeabq/MCqJOk3J99NJ6P1QUaVCLhREnhYtfFLoHMymQyF+akPullslnzKAvkdmPxuGPOiQ/DrvvpmmbZK18Yv0wTU7uQB4pIzEZIBYAOVyVBrUl2M4e4k1EqC0pqkS4hgziPKWLk2Qnqvl8AItDSLiuJrM0HEJ0g/yuJrzAd919lE43HqHAl+bJ3kW49egPSFUgOJqT51a77F3Z2XOYR0wNBZY1i9d8mo33DuMH8ai0AqY479uR0jiUeln3R9+TkQuS5fjr3sU1IO+w9dBAxLzG8GftEWVFDiIK/4xjEb0cjiySex2qegpBRGwFzUM8WcNhmznW73uvMA51jzeK9SslQDyChz1NqcAe1cnpzdsYkwWC9PPT8td1etsQaYgz8/qHe89L2b4mMn36lVmrPgqcrAh5UOV070J/bCBYM3OIZyJ0ZXiaD6E85sXJ9Cn/wMoNC/5QYB/ySfY8Q5urP2ppGe7Jjrfn2juWYZ2HBFuA28EwwShzvkQH3gy6VNU+QiQR0/qyAxGRi2SRKI4S7Jo+ZmEKKjt7ZTFDdNTfFi78o+Jdms83cS7h/thaUWGjmfH2qx3FKmGlcPS
- Mu6mYzvg
- aD7163sN3PvP2WG73sk9WEYokm5lLelWfPvnR/BH50XHBwqOCwcj4VM2FQy47G20KUP6d9KirCcN7RxroT41LftdMP39vSPhfG8+4LIHGdt5B7FsTfMR/UwGvvfcWKbMuy9gzIKO2LuhbcQ9U5eymZY3TBFRaC6ej5nKYCiS+Vqxed2KDrxHDfY5pmiWPfVpVj8+aZPb1z03jukSLzdCXnhwkj1qGXkwDPnK9TgR2M1QuOS5dWsup+Mj8QbbB5B9n4729Pyxd90XoeV7JHqvZ0OUYNaW50fc0LtN2R3s92mwDzfKxKLJRpTw7pi1qt4Vz+On2MNd1mom2+L8odk5daDW22SVn6QKfoQYi8fatMBcwaH49/hXPW10Hm3yfNMVqfAaVIjtC61Nz1q0=
+X-HE-Tag: 1783393441-987867
+X-HE-Meta: U2FsdGVkX18ezJHarLXicMQKfSdB3lbRftLUMZ2UCzRfIQDGKHiIGq2Oh4TeJPZama7s6fNdX4qxmFoU/Ir+r+P/lerHwcFfLmBvr7a2QPh+MeuCULZvFkjoIABLK3BnxkI54f0xTjCJ5L1bdSIc4WlH97AlpYmKA9AlR7Yeb/qMGDiqnpE58Bg8iZ99b/Jw8Uv5ZItHZL/46MifO7AQ7+DcpA7di/B8SLxGxNjV1tkkj8QMbXzGG7dTjidYjcj+Jd9dHPtWRqeUBTjQJk/L4BYbT6FuZ4Ucl1TGAhh2GAD/IgkrMNsfC7a6+FjJRO2sK8fW4rnXe0T0gkcLwSeATZTXCAoakb/lDfja9x0q5gbXX7YOnUj5wPTtcAnIpRO5PczXJFtr0iY7kvoZc5r8hI6LEmS1GrU34X38gt5UUPUQArB7vFCDAa7WnCyoNIWnyZ11r/CkFNPYTqGcm6gVK8ni/vBvytUN4gFgyHZsLrwk1oy9z9fxCWkY2V8xOcr37+nzVIb/3PmajNz7P7IyMHEkk2+362eyJgj2o6xVbZG9I1202WNZ++W/tZKcyTzwRwvw6f58U1sUIWLQvLqzPTZy5CnR92V9ZS2NxqEgGkYrTNhT1teaoHgw12oUng8FHRox5blLN/OV4C9HS3b1hkcgxbY4SwzNaMJGdsUwEwgfbKpHuXSf1/h8RpKcEzbPA30XZHmWo8mMV+9s/gZIycXBxY+cA1xB0lnsZ7sZDkKnKGoebSOWgIqjR70WSsjqNsCYLdLxsZzwoQP+7bQJTBOKr8FsNjEdIBzPTbDhc53p2OoTOtZyI2aBvjHD+DA0dq/pHVsq317mtCRSOn+/MGP+0e2F6KhJ1P1w1k+E2GE9af+CmHVtcThWxbkhxCcR6hLb1jtiSBOTWK2MVXOkv/T8cxeyXihPBeOjBY91sOyqmFIkQi8R6U1BtwGCxNprWs8miGtZxkSaRlHo+8S
+ A6NQc3dt
+ 5zlAdtZpvTThDmUMRXqCLturFhOg6C/eIBb/Qj/NSlCmJ/+jU7HfhHvW05TF+1xRgTqW3OpD4FDDdmqZH/t8vOy0xa3ELgVqGUSulvhFjlwcct2o/F01/6QrOvUbIDWfrZ8+6vvdNQ8Lrt9PoF1shwQR63Gd+l4NykNV9RMcfJ+O5YZBhSzp44o1pK522fCy5EGKArQQvwCRZFGrqAzyhSuBtcTP48fpFya7/rogJ3S6RxDcFBOUsWadS7X7+usM6lbxTkswrzxmnwQRGlxFtfDziVINWl+LZBCq4dkCWbRykA8ke98otYyvN+3oGamOY0do4ydDSlH4tAno94QYwt/O8m9tBmhuxt0K286buWc/fTA2Vnm0AIlfelk3YIjLTx7hBapB2K6/+d0k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,33 +161,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2026-07-01 at 19:05 +1000, Li Zhe <lizhe.67@bytedance.com> wrote...
+> memmap_init_zone_device() repeats nearly identical head-page
+> initialization for each PFN. Prepare one reusable ZONE_DEVICE head-page
+> template through the existing slow path, refresh the PFN-dependent
+> fields in that template before each copy, and memcpy it into each
+> destination page.
+> 
+> The optimized path assigns _refcount through the copied template, so
+> keep it disabled when the page_ref_set tracepoint is enabled.
+> 
+> This patch accelerates head-page initialization. The pfns_per_compound
+> == 1 case gets the full benefit here, compound tails are handled in the
+> next patch.
+> 
+> Tested in a VM with a 100 GB fsdax namespace device configured with
+> map=dev on Intel Ice Lake server. This test exercises the nd_pmem rebind
+> path (pfns_per_compound == 1).
+> 
+> Test procedure:
+> Rebind the nd_pmem driver 30 times and collect the memmap initialization
+> time from the pr_debug() output of memmap_init_zone_device().
+> 
+> Base(v7.2-rc1):
+>   First binding: 1456 ms
+>   Average of subsequent rebinds: 244.28 ms
+> 
+> With this patch and its prerequisites applied:
+>   First binding: 1440 ms
+>   Average of subsequent rebinds: 217.19 ms
+> 
+> This reduces the average rebind time from 244.28 ms to 217.19 ms, or
+> about 11%.
+> 
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> ---
+>  mm/mm_init.c | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 74 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 4c7fad440c2a..cc8417951467 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1066,6 +1066,50 @@ static void __ref zone_device_page_init_slow(struct page *page,
+>  		set_page_count(page, 0);
+>  }
+>  
+> +static inline bool zone_device_page_init_optimization_enabled(void)
+> +{
+> +	/*
+> +	 * The template fast path copies a preinitialized struct page image.
+> +	 * Skip it when the page_ref_set tracepoint is enabled.
+> +	 */
+> +	return !page_ref_tracepoint_active(page_ref_set);
+> +}
+> +
+> +static inline void zone_device_template_page_init(struct page *template,
+> +						  struct page *src)
+> +{
+> +	memcpy(template, src, sizeof(*template));
 
-在 2026/7/6 21:40, David Hildenbrand (Arm) 写道:
-> On 7/6/26 14:13, Jinjiang Tu wrote:
->> When KSM deduplicates a page to the kernel zero page (i.e. when
->> /sys/kernel/mm/ksm/use_zero_pages=1), it places a zero PTE with the dirty
->> bit set. vm_normal_page() returns NULL for such PTEs, so smaps_pte_entry()
->> bails out before reaching smaps_account() and these pages are never counted
->> into mss->ksm. As a result /proc/<pid>/smaps and smaps_rollup report a KSM
->> value of 0 even though the region is fully merged.
->>
->> Count KSM-placed zero pages directly in smaps_pte_entry() using
->> is_ksm_zero_pte().
-> Hm.
->
-> We do expose "ksm_zero_pages" in /proc/<pid>/ksm_stat for calculating the KSM
-> profit.
->
-> Why would we want to expose it here as KSM pages?
->
-> An application will notice the difference between "zeropage enabled vs.
-> disabled" either way because we'll also not account zerpages towards e.g.,
-> "Anonymous".
->
-> So faking that something consumes memory when it actually doesn't consume memory
-> is wrong?
+I'd drop this function and just open-code the memcpy as I think that ends up
+being clearer and removes a naming confusion - I kept mixing up the purpose of
+`zone_device_template_page_init` and `zone_device_page_init_from_template`
 
-Indeed. As Documentation/filesystems/proc.rst says, smaps shows the memory consumption of
-each mapping and flags associated with it. KSM-placed zero pages shouldn't be accounted.
+> +}
+> +
+> +/*
+> + * 'template' is a reusable page prototype rather than a strictly immutable
+> + * object. Most ZONE_DEVICE fields stay constant across the pages covered by
+> + * the current template, but section bits and page->virtual may still depend
+> + * on the PFN. Refresh those PFN-dependent fields in the template before
+> + * copying it into @page.
+> + */
+> +static inline void zone_device_page_update_template(struct page *template,
+> +		unsigned long pfn)
+> +{
+> +	set_page_section_from_pfn(template, pfn);
+> +#ifdef WANT_PAGE_VIRTUAL
+> +	if (!is_highmem_idx(ZONE_DEVICE))
+> +		set_page_address(template, __va(pfn << PAGE_SHIFT));
+> +#endif
+> +}
+> +
+> +static void zone_device_page_init_from_template(struct page *page,
+> +		unsigned long pfn, struct page *template)
+> +{
+> +	/*
+> +	 * 'template' carries the invariant portion of a ZONE_DEVICE struct
+> +	 * page. Update the PFN-dependent fields in place before copying it
+> +	 * to the destination page.
+> +	 */
+> +	zone_device_page_update_template(template, pfn);
+> +	memcpy(page, template, sizeof(*page));
+> +}
+> +
+>  /*
+>   * With compound page geometry and when struct pages are stored in ram most
+>   * tail pages are reused. Consequently, the amount of unique struct pages to
+> @@ -1121,6 +1165,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  				   unsigned long nr_pages,
+>  				   struct dev_pagemap *pgmap)
+>  {
+> +	bool use_template = zone_device_page_init_optimization_enabled();
+>  	unsigned long pfn, end_pfn = start_pfn + nr_pages;
+>  	struct pglist_data *pgdat = zone->zone_pgdat;
+>  	struct vmem_altmap *altmap = pgmap_altmap(pgmap);
+> @@ -1128,6 +1173,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  	unsigned long zone_idx = zone_idx(zone);
+>  	unsigned long start = jiffies;
+>  	int nid = pgdat->node_id;
+> +	struct page template;
+>  
+>  	if (WARN_ON_ONCE(!pgmap || zone_idx != ZONE_DEVICE))
+>  		return;
+> @@ -1142,10 +1188,36 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  		nr_pages = end_pfn - start_pfn;
+>  	}
+>  
+> -	for (pfn = start_pfn; pfn < end_pfn; pfn += pfns_per_compound) {
+> -		struct page *page = pfn_to_page(pfn);
+> +
+> +	if (!nr_pages)
+> +		return;
+> +
+> +	pfn = start_pfn;
+> +	/*
+> +	 * Seed the reusable head-page template from the first real struct
+> +	 * page, because the existing page-init and pageblock helpers expect
+> +	 * a real memmap entry rather than a stack object.
+> +	 */
+> +	if (use_template) {
+> +		struct page *page = pfn_to_page(start_pfn);
+>  
+>  		zone_device_page_init_slow(page, pfn, zone_idx, nid, pgmap);
+> +		zone_device_template_page_init(&template, page);
+> +		if (pfns_per_compound != 1)
+> +			memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
+> +				compound_nr_pages(start_pfn, altmap, pgmap));
+> +		pfn += pfns_per_compound;
 
+I think it would be clearer and less error prone to not unroll the loop here.
+Instead just initialise the template page and leave the for loop starting at
+pfn = start_pfn and let it handle the rest of the steps. I can't imagine the
+extra call to zone_deivce_page_init_from_template() would cause a noticable
+perf impact.
+
+It also avoids the obvious danger of someone updating the loop but missing the
+unrolled version above.
+
+ - Alistair
+
+> +	}
+> +
+> +	for (; pfn < end_pfn; pfn += pfns_per_compound) {
+> +		struct page *page = pfn_to_page(pfn);
+> +
+> +		if (use_template)
+> +			zone_device_page_init_from_template(page, pfn,
+> +							    &template);
+> +		else
+> +			zone_device_page_init_slow(page, pfn, zone_idx,
+> +						   nid, pgmap);
+>  
+>  		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
+>  			cond_resched();
+> -- 
+> 2.20.1
 
