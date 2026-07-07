@@ -4,117 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F4F5C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:55:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA9F1C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 048CF6B009D; Tue,  7 Jul 2026 06:55:54 -0400 (EDT)
+	id 934B96B009D; Tue,  7 Jul 2026 07:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3C666B009E; Tue,  7 Jul 2026 06:55:53 -0400 (EDT)
+	id 8E5A16B009E; Tue,  7 Jul 2026 07:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E52B36B009F; Tue,  7 Jul 2026 06:55:53 -0400 (EDT)
+	id 7D4BD6B009F; Tue,  7 Jul 2026 07:05:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF8A26B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:55:53 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 45B261C7C4D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:55:53 +0000 (UTC)
-X-FDA: 84961675386.10.778E11C
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 70523100004
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:55:51 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 55EF86B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:05:52 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5B661203EB
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:05:51 +0000 (UTC)
+X-FDA: 84961700502.09.D452160
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf05.hostedemail.com (Postfix) with ESMTP id E07AD100010
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:05:49 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=NaogLiKa;
-	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JTO44uvE;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783421751;
+	s=arc-20220608; t=1783422350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qysopWPwsURO3z9WSrAVNVxTz4/XDs+oOwgZcDBRT9Q=;
-	b=AE0m0pAoLqxWlG12pVzVFCUGrKZiewzxJ8qdw3QQJt5Dx+2uYvIEG0MbRAzoYPFSEu6BFd
-	aauPcFdUn8DrWNmEd5yfXptgB/ut9KRd2sT5BZjV+fml+qmOJ0Rdiacdseyy4t1gYlP/ld
-	LYppqLLdCzPsW86+cpN57PwpAX4lvuM=
+	bh=lD+7UB/rcPH703dszzWaFfRlura1yWF0OTvxBOmx8Qo=;
+	b=lxRFnePNYNZNU59X6YJGrCyXU1zn9a3ZX8E29mlaU0M3u8sR2FAkT8ADzUzT8suJJzTDqw
+	SsBr2w+nKlOTsjKfGoW3WrXR1q25DC+ePZu+EIDUSFYv919S5YxMoUiloPb0a2UxK9Cx7g
+	mhhBDp/v1VEOj4ClP2H5ihCn5SzAkn4=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=NaogLiKa;
-	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JTO44uvE;
+	spf=pass (imf05.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783421751;
-	b=JsxaHXLPPGREw4ETcnUdb6ceEozhHt7p55tUM6Ftcfwcz6HmStQLP3/hqPN5zxCwm46pFt
-	aIf19i4T8wpaCT24GNFuBqtJtxAko+GnIGTx0VfM7f0PXcrGa26WX0wwCXNZ8vB3wkVlH6
-	XujrRf9Dck+LJdI2TUY8EczC9y/hr/M=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c999f162c9aso2600578a12.3
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 03:55:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1783421750; x=1784026550; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qysopWPwsURO3z9WSrAVNVxTz4/XDs+oOwgZcDBRT9Q=;
-        b=NaogLiKaBnQ2CAlZlSyWf5NcD/Eq3Bnef4QalbIrm9lZ7caRvoxgMvzpwLy6jZ/a6J
-         NSmIxBHY+Ctuay4F7CCVD4GwUtcLyHeo+ntfttT5mUhzVe2mpQqu1eXZ2WP3yk45fdTR
-         zjmKdZkatZWkH3MKHyifa+qQGswZLys/61svk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783421750; x=1784026550;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qysopWPwsURO3z9WSrAVNVxTz4/XDs+oOwgZcDBRT9Q=;
-        b=Cy5mUvUAuIW3q+nthiHLZutNe6XxMpkn0qMKfiqpl2r3XRTATD99L+R2ZaRrFnWcUg
-         p3DpTSkVZH2ujxfmXNmA/t9uTEUcyIKnvmZFBe3Vxq/OBPpmov9d8ISmxhd9i7ZJ0KLU
-         ZAUOvN4yxFYts1G+2jnkERv62zFO4JZGQRWVLFUizmwv5zMBXXdKNqq8JWr6vuZRHM8y
-         vpFWIdoualPjDOWSda4XkSNW3Dt+pZ0rpLwu3cHQ3mPqCo48faRQv6lPy/FMtA8aw2ij
-         BgRGzeEWOoz0tMNXLESaRgCBjHJB7Ol4NPEJe0OGTv/362RiBKweMxYZM5UWG17tJudH
-         0Yrg==
-X-Forwarded-Encrypted: i=1; AHgh+RokZitYzGxWJnsYLv1e9JHHop2O9gtwzo8SieI5DX0bht1HgmfHXRWcny5MpeG56YY6hG8TFZhgcQ==@kvack.org
-X-Gm-Message-State: AOJu0YwtMY+yrzX2VIgKERp8WbiwrRrJluYsWsuvcgeRayPRcVy+NBcA
-	lsZYanz9XwDLlk9r6GpXvJZdMCB4NMt9UxS575OwUTHQKWs1puhcxH21FmcUbnpM8pamWlBxbU1
-	uT2e7jg==
-X-Gm-Gg: AfdE7cliOyHcQJlD1nbxDVyDvaes1CvtIsSEn5dUbPsW80P9DdcSJ43dM9bZtjYFb/S
-	Ush1KIEicSjLt2Bqqwz1+3SMp20rHAsKD+zUqdbLb3V7GUgpkKHmYZm6ZP5ExV98a1wcqsDBCIq
-	Tl1l3M08JOU/08ulcsRqn5AKBRtDUMG7kRWTAzivTHyNL/FDUqkLq4RiMdiqG3Y9AMZhl7wYVle
-	DQmy+LMxAwJB4ia44BkSjFWZpkBgJzc8i+DJwu51zja8xOsSnduImQuLANDoT5AQgYSvk1nQrXe
-	29f6kZbdxi9p4tPwiakmzEYrPZGNvSs6Ya2j0XXpgPatEWF/InmNlufg0vGtIi7zXO7XTD3AjVs
-	15Q0OmeMFTpxznKDwsit+o9ilGBXtNw34Rf8vhMVbl10C00sL4AGSNQpBlbQMzS4bf3MyR+fP8a
-	tOAzXVkBNBtS8RFajw4T1A/tr+No2dHxz3miqbdHiZS6n9b9DdrLXphUJoi3jEWxo=
-X-Received: by 2002:a05:6a20:914a:b0:3c0:29c6:20ae with SMTP id adf61e73a8af0-3c08eda80c6mr5744473637.15.1783421750361;
-        Tue, 07 Jul 2026 03:55:50 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:d4f4:6328:49c0:b912])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5af6df87fsm781139a12.5.2026.07.07.03.55.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 03:55:49 -0700 (PDT)
-Date: Tue, 7 Jul 2026 19:55:46 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Hillf Danton <hdanton@sina.com>, Kairui Song <ryncsn@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 01/19] zram: sleepable entry locking
-Message-ID: <akza1qtgHm7zbjMW@google.com>
-References: <20250303022425.285971-1-senozhatsky@chromium.org>
- <20250303022425.285971-2-senozhatsky@chromium.org>
- <20260707064030.D843llKh@linutronix.de>
- <aky05GBxo4VKGD58@google.com>
- <20260707093024.DPG2lvt_@linutronix.de>
- <akzJlY53m3XBg9Is@google.com>
- <20260707100241.zaM2yrF5@linutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260707100241.zaM2yrF5@linutronix.de>
+	t=1783422350;
+	b=SWvr1k5ky0+5GIlTho6VeF06+do2NhGUPDQJ7F9gOegsi+rO+Vr36u7ytg9oxTVD3J/2nl
+	x21KKFbliwGKpuwp5pP1S/vjOODRGbcY6GzIcrK6fMF78OJ56p2WUebJ9plPSqyx3/ipDC
+	rptlr3Y3IotMuuywb/pIOgyP6GWwqPk=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783422347;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lD+7UB/rcPH703dszzWaFfRlura1yWF0OTvxBOmx8Qo=;
+	b=JTO44uvEWN3KTcmlp/6dmwckLBSpsLJZeqJvH0aEO9gmJWR6wS09Y03pvobG6gt4m/uUHE
+	n+bZ42QwQVzkNxL0fcUYSgO8Itttuvpotp44vag3qDYoQGO0SfRx/mGSlAzWKkCG55eB5T
+	aVxVubBJezQ9Aup7miYWfeZh5Rkr4As=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH] mm/kconfig: Drop redundant memory hotplug dependencies
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260707090331.52971-1-kaitao.cheng@linux.dev>
+Date: Tue, 7 Jul 2026 19:05:12 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+Content-Transfer-Encoding: 7bit
+Message-Id: <E4DC73D4-24C0-484B-9A59-27596AF726D9@linux.dev>
+References: <20260707090331.52971-1-kaitao.cheng@linux.dev>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: xjjwmb3s1muamztfh4wdfwt6kfuoc69k
+X-Rspamd-Queue-Id: E07AD100010
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 70523100004
-X-Stat-Signature: r4ins5xge56oyn3hesrajji57jj765bw
-X-HE-Tag: 1783421751-55564
-X-HE-Meta: U2FsdGVkX19Ac10O8RgBj30Jd/enH8Z3T5r1v4JE/l5mMZEmq/dIQXBcrdvgHdmLtID4pDnfwavntuyCgXewEyxehtzL6f+usiZn49jEMUXU2HyjhBzZFg+vgNaIX2Va8fQ3IkeX3FKlyFib2z25iFnrvRJUOUoQSegYZZyTLmnMXsXw7YumLeEz/pR6kQLa7vqSwvC/Eyt14w/BY7mzc9VLecDs6DiRk8mQ40uGLXCmOB1ei09AAWcREVJt7wYgftUBf7Q2kWMVOpRRt8gJdp3Iq/TLGMpJG1UO1B93T43as4B43tK+wHaoHlUCIzfNdtO9ZoXvu7+XvW3JLHxV8eVVmrzd7aLsEh9BVOrhtGVKV0KaW3KV6KFL3QWDuyW+cDGgiknfCsrBSsqNTwKvi5kV8e4PAQGwN9TgnrJSPZI0uvMdFSVso2GDMco50jtY2fj+2l2nO4746usAac/g52PrkJngQvnm1scekYSaZZ4L3PfIbqk6epKo5EqaGoSbisA4Xk864ET63cJ+IdLZXsDRPV94EwsmZsezwEr3yFGL7F8T92i9vkpz0Hq9SFcxzf5Rx3tgEhsPUSmHb0wSdvGGT+38OWEN1jOeNNEmUr6g44G/tWqUlaFgDfIx0Wx86o4zXiAn8gm6e2zjPxgTtCn19OAeukHNibQaDcjtNXPLAH8camwhrgcgvX9UOfKkwnU3rGM2v+yGRXorVn9SRw/9pm6vevlG0JE/Y8F/nI3TYrGh8MNebcP3Jt7DErzhQVeqxJiiM3qb0sHbLQwb9XCNB/Ht0AhLGxUg7tKuntGmNXCVp7yKj2euJl1tT3CP4U670YrA7Uhb+P64J0adzQttrZ5EFURbPfA2nsGeaBn+oi1Le9NAv+SCdAladhG5NkYyoSX0NoRJPt8d2605ihnGOJakg37013x4HcAvTDE3KijCQ1e0qDCu4Z2sWrYATX96Z/b4UD9gUdU0kJM
- KmE9IdXS
- HwKwymDOOzFa/o3XR//DIKWngcu2GF3u8KgJ/JGCs5tQxRa+VCifrYhVUuyl5SqTFh84oMU5V9/Fky4cLdVhlfK0zpHgARA3iu5ek5ZlTVFA9OPk4SL+NGPiWQTT6+0TYr0HQhW24duhWSEzAbt5EK0GhplDKDhcwFXVHKGAikmW2drqzhUNIFERS5/1L62GQh9o+dLt9lJPUurK03y+iU/Qujat1ECxpkVdle21mOKc+8jOsvtF0icEiKbtiYlfL9GwdG3bboSx6wn+//KW4h4DLIcJVm/PgklQF/RUIt1OCWvMqZ221VYJZIdeNtYdHM9dIkh5Q8P4tjpmx4ynVOkbBpHtSj6AEQENTW/ybmrZB+bEpzEmkAQv2DER4F7aIuslU
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783422349-354906
+X-HE-Meta: U2FsdGVkX19WSFNjh7K/Un/aqBnZRDoby6ebmBHK86oQxG5AGTMU9JkNlIoY7RpOZ8W4ZmgFpzFKhoZttqH9KH8AFFssWuWY9WtTAtmZ+/i64TTyDWqLDGPsl5DJ+e8pvmmFQolaNI3irzbo6LkQ/R6ac8sFbmgPDvA/+oVm0V2SlH0HxCEtILGMS9BGHRbWOOm14b1JCld85TIW5qd8wQ87j7YNQvuindXI8PQgw5xP3vpKkZU0WfgOXm8Uz6qHS1AhqEW1yymmiAKNDkrGaosIXLLf00fjT8HxWjgiBYaAq97/rlu/YCJPfxoEcpNpb9nJGjuIhzUwVdPJe2jYleFqe5MmWJUcIqDxSyaa0DGtRlUTN2ZCOpW/JMn5Ezt5ynODuwrYEJSz5kMZCP2D3PFDXUb+SpGhDnTVefw6RhLTSAiKOgcXvK7hjMlYZw0fDVkPFzYZVxwR8mEIbBI4zUG0/LRa38lOHOpqTHgk+M4ZtB1YgoDXTZyXjCcyid3Oqgmo24QK6cH+CnTxGsNm6T864NN0OgGyZPlb7Hw7gxRWmRSLSf7Kh5cVHaS23jVUtLe3ocUzeJtJ/u+pDHK1xholGzB2hVbZp1wRc7dMSVLLRJvMt/hh1+7AxCTCxAIvgw1eZXbukOcnzKVKAxzp62jRo3mbkSWtNa5U64s/ohNo3K/+P++tR4NgWuFP1eENGL6KvEAj9sTSmIg3Rg7IZjO4z/VwkZ6YZZ4jHdXqqk0haCF5WsvWjlsN5vyuqvXHrcLx1wkEsVD2oZ72KDTPgso8Kc30Bk0+MqCc9jCmqeapyohqqImYktvIQIsKyjcetCezZUYgaeqUkkhgRnq0lrHov7A6IzwKHEEhsFIoEsypGXWH8BipP157x7X2qGVlc83vQqT5aSEgQhMlz8z8EiCp0TzcmbtLgbtmrI9/AG2ECnEhmDfH1z+SSOxi2Z0BMsd28JpKW2Y+ewTPcKp
+ 9YnSNHhg
+ 5uegiGRpg9wJzkwOdkwyr0L4hR46jlD8338T3gOiPUBilqa6wu1EflKfqYulgECndm2sVFu28p67hffzq9sQurghpuZFLmoAF/9sz+IQo/eBwNcv475x2O3LqmJWCKz8wkasSEj/6XfFfkDrukN43KEuTF8jIl3sVomBXp9bLt0T86pYMpYk99RRJLttaihV0bLVqoVOCUXONlKq3Z3kIwhra2P0PEIJk5UBCVHr1vtpvw2Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,14 +98,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/07/07 12:02), Sebastian Andrzej Siewior wrote:
-[..]
-> If you have zram0 and zram1 and both have different lock chains which
-> could result in a deadlock from theoretical point of view but not in
-> reality because the zram0-swap never clash with zram1-ext4 then you
-> should have a dynamic key. That means add it struct zram and register
-> with lockdep_register_key() and assign with the lock as you did.
 
-Sounds good.  Do you have time to send a patch or do you prefer me to
-cook one (giving you the credit)?
+
+> On Jul 7, 2026, at 17:03, Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+> 
+> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> 
+> MHP_MEMMAP_ON_MEMORY is defined inside the MEMORY_HOTPLUG block, and
+> MEMORY_HOTPLUG already depends on SPARSEMEM_VMEMMAP. Keep the explicit
+> MEMORY_HOTPLUG dependency for local readability, but drop the redundant
+> SPARSEMEM_VMEMMAP dependency.
+> 
+> ZONE_DEVICE depends on MEMORY_HOTREMOVE, which depends on MEMORY_HOTPLUG.
+> MEMORY_HOTPLUG in turn depends on SPARSEMEM_VMEMMAP. Drop the direct
+> MEMORY_HOTPLUG and SPARSEMEM_VMEMMAP dependencies from ZONE_DEVICE.
+> 
+> This does not change the set of valid configurations.
+> 
+> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+
+Acked-by: Muchun Song <muchun.song@linux.dev>
+
+Thanks
+
 
