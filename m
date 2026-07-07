@@ -4,138 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3FCFC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 19:32:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52CD4C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 19:34:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD62F6B009D; Tue,  7 Jul 2026 15:32:52 -0400 (EDT)
+	id 3D4C76B009D; Tue,  7 Jul 2026 15:34:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A60906B009E; Tue,  7 Jul 2026 15:32:52 -0400 (EDT)
+	id 35ED26B009E; Tue,  7 Jul 2026 15:34:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 901486B009F; Tue,  7 Jul 2026 15:32:52 -0400 (EDT)
+	id 24F026B009F; Tue,  7 Jul 2026 15:34:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 54AA36B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:32:52 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C10D8140534
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:32:51 +0000 (UTC)
-X-FDA: 84962978142.20.644B313
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 523D91C0004
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:32:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c5ElvzbZ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DDEE96B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:34:04 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F4F81C3B58
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:34:04 +0000 (UTC)
+X-FDA: 84962981208.07.96DDED8
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 818BD4000F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:34:02 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qY+BthfH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783452769;
+	s=arc-20220608; t=1783452842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UXZp/HypJus1dyeVVJpONiQNeq38HK6Hd4EzEcMoqME=;
-	b=xjSvge9tbv5o8Q+fOTLamKh5FWOUJgg44xYRjzvC/gPQ54GGJFJK8GdqRce/lyRWRtFo4V
-	FKntu4zcKocgaeXMgZxOi33UN226TFMXr5Sux5m+fSjn3JvIcPkpQrPIMF5UJ6I8aixJEJ
-	IfaYqhHhtf4hjNxmwO8SZpf/5uObGLA=
+	bh=yV5ncxbkCYl4acpcVXgqqMbkDn7uQGkSDLvd/JcyFLc=;
+	b=dZpJSyJu2qHvhZBjyn1wvUPeYeV3hudmWsB8ytZhKjiXAlrYN4rcH9VmIMQmWcitzeQ3NI
+	nM0RdbvXNjFSq4H9f7Ift5VElJ0tli4wxgJHGs90LPJKQkZO657WHXouPRKBzKdrgdsAHN
+	9nm/OsUmhzpg6rBA7NMsU5w5dn5K6R0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=c5ElvzbZ;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf18.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qY+BthfH;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783452769;
-	b=c8eMWyUMG/DwhqaQ5RIQhr7LXevEZ/+0gUjcItxozVxAgxcURGH2MCgEx0S9Lk8GEtxhap
-	ZV+61dStu0Hqr7SjRaHH74ryfWq3MsiYiqlYaIGc5TTWnhI8kfs7Axda9PD/3lotbe0jZA
-	t/21pnZxu2OWqoh1l5eOnEq8yWWIK9E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783452768;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UXZp/HypJus1dyeVVJpONiQNeq38HK6Hd4EzEcMoqME=;
-	b=c5ElvzbZGmQpwIrD8qJVocWYiss+MOuUsGfvH8r6wsSdJQISPZBelx+BBG4lYhUFGCxi2r
-	/ZVIYDhDuxxmQ5GwY3dU4kQKaJGRMoTVRiCg9XfonVXrFqTdMUr6SIxxI4Gu9EUPBt7oTe
-	8YQX/qqYVLbMtHkP7AGJTl0pOYVWd18=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-JxRgmp4NNCWSGtv85wq8ng-1; Tue, 07 Jul 2026 15:32:47 -0400
-X-MC-Unique: JxRgmp4NNCWSGtv85wq8ng-1
-X-Mimecast-MFC-AGG-ID: JxRgmp4NNCWSGtv85wq8ng_1783452766
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493c1bc7a70so43641875e9.1
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 12:32:47 -0700 (PDT)
+	t=1783452842;
+	b=jKEeOngpENUTV0QHVOBLIKzS3oMl9CDxT+N12nZ9KqTr77BJTKLlG7aeOvx9RHOlx+vecl
+	WC3qtOZyqqvnyfwj0lggIvqujT3eQ9W4tdN39D5xTJ3UC7sduuZQKAR68wVg9BO/p93ujF
+	nCPVVJmROf2joKZlDKouI4SOaTJn2Ks=
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-48d6c621a67so2168625b6e.3
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 12:34:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783452841; x=1784057641; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yV5ncxbkCYl4acpcVXgqqMbkDn7uQGkSDLvd/JcyFLc=;
+        b=qY+BthfHx51fGG+vIF6Wuh9dKdtjvMOGgiR/S8XC+Tnk+qY8jT9nBvdsJZBWOVS1tU
+         bDPaKBifHZRqUoprUZ3IS82RpiuYJ4kC6HvmIYVgLx7Y3azIlebT9zt035dVy8P4LGNA
+         2n4l7bYSgD5kMXYj/tVSGAMpKN+1SDObetIO3jeVs7/+0zAy3enZzWWh5JhbIPlxymqO
+         R8qVVYfJpDPnDgW2nRTrGs5WrBRHk2UDUa/gWGmCkbvwMUEH+u9hdk3Xptz3IzTqqRb2
+         KizZovgA43/qXC3z93drKiXQSqyNy3ccI5YeHkEJsT+hOTVKLjsM/OvnQA9rDDATaDHv
+         MEKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783452766; x=1784057566;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=UXZp/HypJus1dyeVVJpONiQNeq38HK6Hd4EzEcMoqME=;
-        b=mwjagvnnnjtv2MATyfymZRPghi4c+0o6IHOrn4SQ1jnW0A3UFas1i6XChlpbQDtZSK
-         bhnCgBPOLanHbQtXEnpJNm8hQwcY/0jyApG0YVgsXm2SOXJvTFqWQV3peyPhyUpBNIZD
-         1m6l2LkPXTDoJsDc09JYHiOF/g8QSyArAQ0tGEPeBAKlmktIw5G9pUdd0hUb7PXfxG3f
-         BqXMcCLkg6/Xc0xmBjuaILDSX1JDn80L5ITPQg/2wkvVhdd8XgNZB6wvJII+aq2c67li
-         qU/tHwhmSefNP19PPC6XYbvnsfw21pHCD3Lglg1cAKxNEgpmjcB7smhblXT89CQ+0ta6
-         DVwA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrdsrw/Q6ii1hqNY6yrveyv/XiQk6o+Y1ctSOg3afzI4DEzZFVH4IDl3Y/nurt7byUQNRD+KzY+2Q==@kvack.org
-X-Gm-Message-State: AOJu0YyptKpEJOdGyAPsFs3YPH6TnQs/701+kcMr6N7ISossMRKRngOa
-	2gbVAN9g56eQAaoS+zE4Cj7L+qmfculkQwU9HDXu4CZdV+mRuj5tIhYgcEBHUeGgxKh4jS1h3B+
-	4MZhn0Amgl0EJibDWH2J0M3qA8R01cgCgje5EpuJdN/t+K3C8p8iS
-X-Gm-Gg: AfdE7ckyGyXRrVyj3gpnvZf2SqhpwudWgcJmjYBcWuBYcaCeh7m2TkPulrbFs4PYyys
-	pvwXk3aMy37NQhV8l4oCTRi6Mk+ISnmR0uy009icW3mH9h4PwfSMEI7Pmjj4FF9wJuX3jcL1B8e
-	2kSrJ0uHN24Znn2Rh77VJKdZUItQRxdHAQz9N49sUBLDW117IY/AE3p+R+qpIOgljOIdVXXCIcC
-	SjbjefQuJ0zsHzLSOAl0oT10YZcTkjKhkTPZDiWl1lLoJqsgkBPXqGGKPSGIaX5PYvp6JxVDXIL
-	3GF8vy+qfhmLZHBCux9EIwzF2csNy5Qg5pMIs+Tx5yajqcRn+7MXRCZW4YHNn9ArlgM2N8Irs3s
-	qQnINmxW30bXJpC7Gg9JRVHnubXPiFBnn
-X-Received: by 2002:a05:600c:8286:b0:493:c412:b806 with SMTP id 5b1f17b1804b1-493df04241amr74639955e9.0.1783452766057;
-        Tue, 07 Jul 2026 12:32:46 -0700 (PDT)
-X-Received: by 2002:a05:600c:8286:b0:493:c412:b806 with SMTP id 5b1f17b1804b1-493df04241amr74639615e9.0.1783452765524;
-        Tue, 07 Jul 2026 12:32:45 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e5a572c3sm2863305e9.1.2026.07.07.12.32.42
+        d=1e100.net; s=20251104; t=1783452841; x=1784057641;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yV5ncxbkCYl4acpcVXgqqMbkDn7uQGkSDLvd/JcyFLc=;
+        b=rD+Oj9qw2iNrzGRbPZQwcyHdLsQZGVaqx+UNBykQ6QaSVpQY+2+jxjlGTzYcVvk2U9
+         HiLdkDTwKxrIMIz4OMqKu82H5wdhj/Rl7Xw1bwSO2QQ3WaiE823oHBtYVVgIcRH/X0Ap
+         hlqHhU2kb4qOvMOhg5+BqZuuCAryHrlnKkhwgVDYyXQDrQ5C4pM/JNpUPkEVfGBdQCfW
+         NvuRFPLaB4gZaq1+RpkVrNpmHrQ+/FyryS6qcIjDAfyD2g73on0GJjq+qN2A0Fgo9/mX
+         URbU0HPr+SSXtbrf10D4177Lt41IqpbvwfvFAKMOZnKZaY3dl4z3L8P1EepWRT+ffn9Y
+         JtzA==
+X-Forwarded-Encrypted: i=1; AFNElJ/XroFKnSJsXeCVj/5urfR5cZI7lsOgPpjEspc9edX0LY4Swyn/l9eQ485Tz6i23TXcNsOo0fU0Pw==@kvack.org
+X-Gm-Message-State: AOJu0YwjqbPnM++jpcwEmiecwkcKyE+dl/ALivUYItWanoSpsSbSaQz1
+	YYQhGSW8tvxs1pKdlLW3QjqTdog5NP/8DoKGVZGtxdV4rebdf8U95YJx
+X-Gm-Gg: AfdE7cnBVm33JwMYT1woUsJKlyPF+Fwi/sXXTeD/4HNJOIbge6A3f2Q/TwJLthfpk3u
+	zfgtf38P6i2v6nA/pKiUDlADjKA53/TjQRy1UXPTrGRVQr/L67Pzw/Tnb6ucefWhISujoQ2U/H3
+	Eifnm0Zi0Tsz2NATUjf2cE5/HSooG3AaOQlDi/0GUo6+NVkAsm8/fPEYP7B18IFwlgjYno9kQqF
+	KbvcRAW53jxpvwTiHz8ssNg75eD8w1AMPnxa32xT9hEeF99+muW02oC5ifsj/Hjec/YEpXxpEd6
+	4IaRcag+2BzPUq5MX7A3Wd71+iu4m7DOIliTFaWdMAKsRz8+qUOkJUPtxcm9BsArhDdMexkdSdd
+	fGvALi8Hs+k8lRNLmsjFmswW3tJawUO3G1VRI7E/Yqvdmr31fGCelpl2zxBDqdd7PFXmRwX33PT
+	kaB1V5B5FqywiY9oKdgJAgHJsG26poNuyE+PyghVo4xUQS2MLyF/T8ig==
+X-Received: by 2002:a05:6808:2205:b0:497:e0bc:afe2 with SMTP id 5614622812f47-49fdba4150amr4147933b6e.4.1783452840534;
+        Tue, 07 Jul 2026 12:34:00 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:49::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4a1adca6bedsm181768b6e.8.2026.07.07.12.34.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 12:32:44 -0700 (PDT)
-Date: Tue, 7 Jul 2026 15:32:41 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Sourav Panda <souravpanda@google.com>, muchun.song@linux.dev,
-	osalvador@suse.de, akpm@linux-foundation.org, liam@infradead.org,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, mhklinux@outlook.com, fvdl@google.com,
-	gthelen@google.com, mike.kravetz@oracle.com,
-	pasha.tatashin@soleen.com, rientjes@google.com, riel@surriel.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH 0/6] mm/hugetlb: Dynamic, NUMA-aware HugePage Cache &
- Free Page Reporting
-Message-ID: <20260707152755-mutt-send-email-mst@kernel.org>
-References: <20260707064235.1386552-1-souravpanda@google.com>
- <9624988a-366e-4884-9408-3f3b88c27290@kernel.org>
- <20260707062428-mutt-send-email-mst@kernel.org>
- <b9a48d89-74f1-43d4-b7bb-be988b6855c9@kernel.org>
- <akzZr2jfJ0J8zox4@lucifer>
- <20260707095843-mutt-send-email-mst@kernel.org>
- <ak0xWgpJPSaNWPsl@lucifer>
+        Tue, 07 Jul 2026 12:34:00 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Charles Haithcock <chaithco@redhat.com>
+Cc: muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	arozansk@redhat.com
+Subject: Re: [PATCH 1/2] mm/hugetlb: Prefer mempolicy nodes for calcuating surplus hugepage reservation
+Date: Tue,  7 Jul 2026 12:33:57 -0700
+Message-ID: <20260707193358.3434034-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260707182900.483757-2-chaithco@redhat.com>
+References: 
 MIME-Version: 1.0
-In-Reply-To: <ak0xWgpJPSaNWPsl@lucifer>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 0iPbh9x5SOcOUq369xWk0oImUYDaxWae9xVHNtEFltg_1783452766
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 523D91C0004
-X-Stat-Signature: nmmb6ij4ccrnsjjoxf5emfu5qk3i5cyr
+X-Rspamd-Queue-Id: 818BD4000F
+X-Stat-Signature: uhz5q1j6bmttwjbh3ugejwtc4tmay1cq
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1783452769-427960
-X-HE-Meta: U2FsdGVkX18y+ueiQzrYrpdeX+1bENIm8FH16nE4z0FD/crgC0/hSp33xNZGUztvPVP4yl0bkwz16wBTtqVo7xCCS2G6PfgOIaesAPIgPorA9YD7/fLgwM62JY5Jg+C4wBMxjGdWXJAxurvLdl+anB09PnKTExHxmeYG4Eql9iCiAQAkh6Rutu9WBf3GCtJFaCwp1gHW293e2rnLz2OrTrVldHQ0RyPydGHm8N1CMBz/ITt3Z4ZbVzH2EYxrBwUpQmEIKkExKJGMU49+WUvOeStWUqBIMSwx1CAblEDpY3kgzM3zKYgjwSEf5D9tkjtg5ZrmwtavXWNynvZJH2l3lO8dnr7jOkz9n2A60F/HOSgvfRV1xb2Os1CHEnwanw/EVlnQ+ntQlpK9Zu2aK4H0lteaWc1idBbRvgvgHpu3jE7qhw0XvB+ZcEBsD+SnR74JXAr1PLb6DDQcpSVCpuzCmmeypcqykUHDzkhKZ2vp6SefGCKrariHNYir2O1BvvckUYB/9T87cf0u2IIl7yCLdHvz9i0wYfo5CV6lawsp1BhrXs2wwgVdM++UTNdpoJwXd+vxsidJt4ZZx1cZ6trpoVcOJ2cbfWn2DBmW/MoBu8XNjbJ95G/ymXRyPrUlK1pBZoSDiIgjbZhOIlZgEGuWvWhyVPfZs3giyap0BnnGz8DjUrtoi6oNkt1eV6kDog/6yRRkB8xNCJNdComWoIDTmrLPozd7kcSceu85kE7+akntz8fSpdhrMGV5SaUCzx5K1vDJO/5eCYFMm8y1RDoVGtHkjW6y7/xotQWauhQORYJG7yhpRpdhuzttbTDZGAbPemd4Y9I0NESLLvAMQIG9dYPengSyzEX7Q16h4PeOTwVaRVrlMBQoVCI85ONRcKMmyltZGhom20caOQpyR6Kx+eAB7jMaNQQtCuJ8OG3BpVRXHnk0POT0GxW6w/PewdwtXi0VGmiZy/P211xJbDr
- H127kEmi
- 70rwEfXQ7dMJ8T0Wh6XYNb1sK2RflGC6l0SyPyss68Kbt+Wlf7iL3HhISz6tofneuYhcBVRwSM5zOvEI1McbtsvZToDLMGUUTplXL+jwihn5DHHLn7sD5JsUldyLFk4mH8X4ANSWYnh3CCAzwZBwpRK+57AxejSK8QHlE2o+areeJHEsShrJ7uo8AfL1s2C6TZ/gCv+6shMIsorIpNPeTRJykbx9eOtaT9iujX7GqHWARHGLoMWV+PlqrJ0husii0ZbSRaA4u++TdjsJ4sAuwnJXZixWnDmd++tZwOYl4BGlbAGnO6a659amkfisapMVDvt8719h/rrqlAv8rR0QGJd2at+ukLyw1NWD7wURQPo2zLv4=
+X-HE-Tag: 1783452842-655810
+X-HE-Meta: U2FsdGVkX185FwjcO7BNb5hVSunsQoNj1F3btiQOsNPZOaAyXeaMR1JI9NLaypwtTk7XC6zjiqGbfO9CSS/6dmHHCKEgi7Zgza+bqOvAOgY8js9pGyYrDh1SmyajHMimSefmjDGZQlQYxyHD73j66y/durtFeSMNmVUK6hy3AQHwYxrnKnsEA6lQ3yhbL3hN2zC3GcpOPCL2tUuE55oAyVN27l/iWxsMogyearrWV83DAbiJEPLtH6HPm3W/lq7fW1ciURIGpC0CZ0c6y/3zS3iqqILpWrZd5nkbNBcRgYDeZWW1MwWlIWE2RprYo5yyc8YFhIWJzvlxGuzjI4VyGLTihvlZKdN1KIb/chAyIm0dGk8YGYoiDg5ZdFfv9iPo3HMPRQuYUnfW5Jx6YYC83riDmgrRpcq47KZKKS2USQCSAr4/MeXvtO8uDsZJEeVngPDra+ZOAKe69mF/bCGCAn0Vo6ya89MUDHDN7qewCrOtqoeEhyzugQSjhZ0TQr1lWXDMGXVcHgRrC5rwIUcV82vDObmO+UhdKIH1sG/Mp9D/Fz5rDLIY5kAYQqupzJkN+kRgFUxpRrVWkk62YkBMJNHJGiV1+8j8tVAYbJKVhTa0tLiuY67QQA6i6VcvybdngMbR9gX+ZWU4WeXhZz4Gubwsq9ufTk8GYtq/vpNXQMTtCfwi8u1BK01WKapIQnUBZROS1eNKEbwlwlVTopx+cphjpYfMwO9fPZOcm1QjXtueEF/AbRqIM4bj/sEJVMD3L6VkygBUAEppQQ+05ztr77Vncl9MWirWi6FIg3okVuW2Yw7g0QicWeY4nq/srdN3NXFEN9Cp7n/Gkew+Nx94yXMk4LnSXwIw6qdqII7+kEteaMhn2hP1oA5rVNN+j+9mHOXAkPjwEV+4nz2Ogch/sNHgDOVWe3kOrMRxqjFuiTXoU2g4jjuw6RuTTgDIjFJM5PefioIWD6VEI1szwxO
+ ottmNu77
+ EYkHtTEnsdwCYQ9w0oItTWm2WvPwWaF+Eg6aQCuhLKXIMtBXcA3C8qPG3hTQTex650/mbE29fAMSXzqh+4/5yTypKFcCHRZ1XrQ0PMQGBrJPKcDsajhDb6ZQYXcP3dfYxO1B9QGgEDgu9dK6Bwrvx6+qP5Bad3fGEAMAxeYjE2hu0O1xmlLEvwG+Bp78LbKOWRMozdc7G9E/QaY3p+wKoSrFF4ec5zu9HoCXUMjctcK1f0HLzmH2E+ZaV8ZegzX6Ao2kmXDQStYl9pVRrgUqvWAgqRd0yy9YU8uJjsEmxgv+lr6W+AOvDBJTQMXYZY7Dv+vIok2rIui7rRCdaLcWurIIs873i+qrE4JyYhupMrPIB+7NwbWhAe9+c+vknlH1KK/aB+WYKwzd9jIotE7In0ZoQTNyt8TwoXTntFYiNboKP1X/fJz7ddEqkrrdtkhQLctRlke1v9tHNJoi+P1Z5A7km9EBJkgLKtbyTIkzm2pZki+HUAMF9RAyhxgPor7SzGtJBew+GrOoirMyo7NYevoal1PR8+oxvgYTFoUtWgUDKVox/PJ2pnQ10hJIRxfog3XOARTQP6UBSgoSlaLqsGuy6lvfN6XfOVpRw0K5rVJ/b0w6Oj3cc7tXvHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,129 +122,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 07:46:28PM +0100, Lorenzo Stoakes wrote:
-> On Tue, Jul 07, 2026 at 10:01:55AM -0400, Michael S. Tsirkin wrote:
-> > On Tue, Jul 07, 2026 at 12:06:34PM +0100, Lorenzo Stoakes wrote:
-> > > On Tue, Jul 07, 2026 at 12:28:44PM +0200, David Hildenbrand (Arm) wrote:
-> > > > On 7/7/26 12:25, Michael S. Tsirkin wrote:
-> > > > > On Tue, Jul 07, 2026 at 09:29:07AM +0200, David Hildenbrand (Arm) wrote:
-> > > > >> On 7/7/26 08:42, Sourav Panda wrote:
-> > > > >>> Overview
-> > > > >>> This patch series introduces a dynamic, NUMA-aware HugePage Cache,
-> > > > >>> backed by a kernel shrinker to safely return memory under pressure, and
-> > > > >>> integrates it with Free Page Reporting (virtio-balloon) for HugeTLB,
-> > > > >>> specifically targeting gigantic (1GB) hugepages. The goal is to solve
-> > > > >>> the tradeoff between allocation latency and memory
-> > > > >>> fungibility in virtualized and heterogeneous cloud environments.
-> > > > >>
-> > > > >> Hi,
-> > > > >>
-> > > > >> in general, we consider hugetlb nowadays to be mostly in feature freeze, as we
-> > > > >> realized a while ago that adding more special casing on top of something too
-> > > > >> special for all of MM is only going to hurt us more in the long run.
-> > > > >>
-> > > > >> We want to have less special casing and less special sauce, not more.
-> > > > >>
-> > > > >> Now, there is nothing wrong in making hugetlb be less special, by making it use
-> > > > >> more of core infrastructure etc.
-> > > > >>
-> > > > >> But optimizing for surplus hugetlb pages by teaching hugetlb about new caches
-> > > > >> and its custom free-page-reporting support rather looks like the wrong direction
-> > > > >> for me?
-> > > > >>
-> > > > >> --
-> > > > >> Cheers,
-> > > > >>
-> > > > >> David
-> > > > >
-> > > > >
-> > > > > It is currently bypassing free-page-reporting completely.
-> > > > > Making existing free lists not ignore free-page-reporting would
-> > > > > maybe considered "making it be less special"?
-> > > > >
-> > >
-> > > You have this completely backwards.
-> > >
-> > > You're advocating making hugetlb _more special_ by duplicating functionality that
-> > > core mm already supports.
-> > >
-> > > I mean:
-> > >
-> > > mm/hugetlb.c                                 | 590 ++++++++++++++++++-
-> > >
-> > > Tells the whole story right?
-> > >
-> > > The whole issue with hugetlb is the very fact that it's a parallel
-> > > implementation of a bunch of mm stuff in its own little world.
-> > >
-> > > We make it less special by mm/hugetlb.c smaller and smaller and implementing
-> > > what it does sanely elsewhere in _core mm_.
-> > >
-> > > >
-> > > > Depends. We don't really want an orthogonal implementation of something we have
-> > > > in core-mm.
-> > >
-> > > Yes, exactly.
-> > >
-> > > Feature freeze means feature freeze, not 'feature that core mm doesn't support
-> > > feature freeze'.
-> > >
-> > > Hugetlb is a poster child for poor decision making in mm that has left us
-> > > saddled with maintenance nightmares because we allowed 'just one more feature
-> > > in' (TM) with little to no thought to the future.
-> > >
-> > > And we've all learned from that and don't want to repeat these kinds of
-> > > mistakes, nor make existing mistakes worse.
-> > >
-> > > And work to improve hugetlbfs and make changes like the above are VERY welcome
-> > > :)
-> >
-> > Fair enough.
-> >
-> > > Laying a foundation for hugetlbfs to be more of a sane mm citizen through rework
-> > > series is really the asking price for stuff like this in my opinion.
-> >
-> > Lorenzo, do you know *how* you want it reworked? Could you write it up
-> > at a high level?
-> > Because if not, it's not really practical to make it the asking price.
-> 
-> Michael, you're an experienced maintainer, I'm surprised I have to tell you that
-> the burden for that lands on the submitter.
+On Tue,  7 Jul 2026 12:28:55 -0600 Charles Haithcock <chaithco@redhat.com> wrote:
 
-Oh sure, "fix bugs A,B,C before you add to this mess" is a classic way
-to actually not end up with even more of a mess.  But I usually do try
-to be explicit of what are specific issues I want submitter to address.
-I don't really feel figuring that out lands on the submitter.
+> Currently, reserving surplus hugetlb pages in a mempolicy still use
+> global counters for calculating how many hugetlb pages to reserve.
+> Modify this to consider the nodes in the mempolicy first but fall back
+> to all possible nodes.
 
-> Nor does a no from a maintainer require an alternative be provided.
-> 
-> In any case, I felt I was clear above but to reiterate - do the opposite of what
-> the issues are:
-> 
-> - Implement things in core mm without it being treated as a separate entity.
-> 
-> - Reduce the propagation of if (hugetlb) { ... something specific ... } strewn
->   through the code base.
-> 
-> - De-duplicate the appalling parallel implementations — and not by pulling
->   things out 'just for hugetlb', but by making it ordinary.
-> 
-> There are a WHOLE HOST of issues and problems and difficulties with doing all of
-> that. But that's just the reality of it - again, the burden of figuring that out
-> is on the submitter.
+Hi Charles, thank you for the patch, this looks good to me!
 
-Thanks, I hope the above is specific enough for Sourav.
+Personally I like the description of the commit in the cover letter
+because it provides a bit more context. Do other reviewers have
+thoughts on this? In any case, the code LGTM : -)
 
-> So the price for entry is high, very high, but that doesn't make the no any less
-> emphatic - we're not going to accept the problem being made any worse.
-> 
-> Note that I'm currently working on reworking the anon rmap which is similarly
-> problematic. I didn't get nor expect detailed guidelines on how to do so. The
-> burden's on me, and it's equally a high price to pay.
-> 
-> But setting the bar such that the codebase is as good and robust as it can be
-> both now and in the future is what maintainership is about.
-> 
-> Thanks, Lorenzo
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 
+BTW this is a little strange but Sashiko seems to have failed to apply
+this patch [1] which is strange because when applying on the exact
+same commit db6ed2a3d3106 "mm/swap, PM: hibernate: atomically replace hibernation pin"
+as Sashiko tried, it worked & compiled for me with no errors at all...
+
+[1] https://sashiko.dev/#/patchset/20260707182900.483757-1-chaithco%40redhat.com
+Sashiko's error log:
+
+Trying baseline: mm/mm-new (db6ed2a3d31068ca5577466591b2521dee0508ca)
+Patch 41962/2 (ID: 108031) failed to apply.
+Application failed.
+
+> Suggested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Signed-off-by: Charles Haithcock <chaithco@redhat.com>
+> ---
+> 
+> - v1: Modified `needed` calculation to use `allowed_mems_nr(h)` in order
+>   to consider free hugetlb pages in our mempolicy.
+> - v2: Folded in Joshua Hahn's recommendation [1] to further modify
+>   `needed` calculation to take the max of either the available hugetlb
+>   pages in the mempolicy or the globally available hugetlb pages. Allows
+>   allocations to prioritize nodes in the mempolicy but can still fall
+>   back to offnode allocations. Also added selftests to check only for 
+>   the edgecase which caused this to initially be reported and sanity
+>   checks.
+> - v3: Split the change and tests into separate patches and clean up code
+>   to better align with kernel style guidelines. Likewise, fold in Usama
+>   Arif's correction [2].
+> 
+> [1] https://lore.kernel.org/all/20260602152022.2673803-1-joshua.hahnjy@gmail.com/
+> [2] https://lore.kernel.org/linux-mm/20260624144600.8159-1-usama.arif@linux.dev/
+> 
+>  mm/hugetlb.c | 42 ++++++++++++++++++++++--------------------
+>  1 file changed, 22 insertions(+), 20 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index f24bf49be0..f5e678e997 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -2255,6 +2255,23 @@ static nodemask_t *policy_mbind_nodemask(gfp_t gfp)
+>  	return NULL;
+>  }
+>  
+> +static unsigned int allowed_mems_nr(struct hstate *h)
+> +{
+> +	int node;
+> +	unsigned int nr = 0;
+> +	nodemask_t *mbind_nodemask;
+> +	unsigned int *array = h->free_huge_pages_node;
+> +	gfp_t gfp_mask = htlb_alloc_mask(h);
+> +
+> +	mbind_nodemask = policy_mbind_nodemask(gfp_mask);
+> +	for_each_node_mask(node, cpuset_current_mems_allowed) {
+> +		if (!mbind_nodemask || node_isset(node, *mbind_nodemask))
+> +			nr += array[node];
+> +	}
+> +
+> +	return nr;
+> +}
+> +
+>  /*
+>   * Increase the hugetlb pool such that it can accommodate a reservation
+>   * of size 'delta'.
+> @@ -2277,7 +2294,8 @@ static int gather_surplus_pages(struct hstate *h, long delta)
+>  		alloc_nodemask = cpuset_current_mems_allowed;
+>  
+>  	lockdep_assert_held(&hugetlb_lock);
+> -	needed = (h->resv_huge_pages + delta) - h->free_huge_pages;
+> +	needed = max_t(long, (delta - allowed_mems_nr(h)),
+> +			((h->resv_huge_pages + delta) - h->free_huge_pages));
+>  	if (needed <= 0) {
+>  		h->resv_huge_pages += delta;
+>  		return 0;
+> @@ -2311,8 +2329,9 @@ static int gather_surplus_pages(struct hstate *h, long delta)
+>  	 * because either resv_huge_pages or free_huge_pages may have changed.
+>  	 */
+>  	spin_lock_irq(&hugetlb_lock);
+> -	needed = (h->resv_huge_pages + delta) -
+> -			(h->free_huge_pages + allocated);
+> +	needed = max_t(long, ((delta - allowed_mems_nr(h)) - allocated),
+> +			((h->resv_huge_pages + delta) -
+> +				(h->free_huge_pages + allocated)));
+>  	if (needed > 0) {
+>  		if (alloc_ok)
+>  			goto retry;
+> @@ -4513,23 +4532,6 @@ static int __init hugepage_alloc_threads_setup(char *s)
+>  }
+>  __setup("hugepage_alloc_threads=", hugepage_alloc_threads_setup);
+>  
+> -static unsigned int allowed_mems_nr(struct hstate *h)
+> -{
+> -	int node;
+> -	unsigned int nr = 0;
+> -	nodemask_t *mbind_nodemask;
+> -	unsigned int *array = h->free_huge_pages_node;
+> -	gfp_t gfp_mask = htlb_alloc_mask(h);
+> -
+> -	mbind_nodemask = policy_mbind_nodemask(gfp_mask);
+> -	for_each_node_mask(node, cpuset_current_mems_allowed) {
+> -		if (!mbind_nodemask || node_isset(node, *mbind_nodemask))
+> -			nr += array[node];
+> -	}
+> -
+> -	return nr;
+> -}
+> -
+>  void hugetlb_report_meminfo(struct seq_file *m)
+>  {
+>  	struct hstate *h;
+> -- 
+> 2.55.0
 
