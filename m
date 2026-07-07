@@ -4,61 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 045B7C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:40:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42115C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:40:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94BDD6B00AA; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
+	id E54C26B00AB; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8614C6B00B0; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
+	id E04686B00AF; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74D8C6B00AF; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
+	id 949F56B00A7; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 40F566B00A7
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 40FC96B00AA
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A757E1A0327
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A6372120321
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:26 +0000 (UTC)
-X-FDA: 84961031652.25.852B653
-Received: from mta20.hihonor.com (mta20.honor.com [81.70.206.69])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 92507C0007
+X-FDA: 84961031652.16.700D146
+Received: from mta22.hihonor.com (mta22.hihonor.com [81.70.192.198])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 66439A0004
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=W+rm16pI;
 	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf28.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
+	spf=pass (imf25.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783406424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s4ZVTpsUqlEoYqDe1sMhypLxORjnx7/nhjbpgiQ8tYc=;
-	b=ztxTZ93yg3TwRZUPCFrhUuhd1JJtBMYdzdcOLOHcI4a1pY2Kac1EDG8qlfG8KFGeTmT1uz
-	CUENGp0fmfF91SnYKv3IRPiQfH1LevyoFu853rwopXPzTn6aOI6xyy5eZWyh2YH+i9i2pF
-	ffY8DalZjmOpemgNF6duJ3pw7ewHbGM=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2HAQWJ3pVwWfob9ODqC/Kr1JqfriaUqoCgw5Fb97ovc=;
+	b=X5uaoXEThrcLaWWguIHQMqL6SCIJAEApeX9m5dEtEYglUMVLFCGtXm32eyO43DjNLHXQeq
+	5ecCvx9G7EcmqPGsObISIAnafMgB+2MYrZEXBjfX3RiFOf30lYlzsfjZpFgWfUpcPBmRSj
+	+UGcOfMqIovxxVI4xtcAC8HlejPpc1s=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
+	imf25.hostedemail.com;
+	dkim=pass header.d=honor.com header.s=dkim header.b=W+rm16pI;
 	dmarc=pass (policy=none) header.from=honor.com;
-	spf=pass (imf28.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
+	spf=pass (imf25.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.192.198 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783406424;
-	b=b15fc+sex7oV5Ib7aaEsXo8EQoMYF9p2hLvhHtisGLZbQWdskWnrnNnfICks9ZgxiFVMRw
-	Wf1eYJ/kV7Un27Ka9sCBHwSsAgPySWSDQ3+EKsMH2gd3iKUSGHt8cLuO7evovHhOM2YUZ/
-	PGNvdesIIdSlngjhKh1G86IytqF1lY0=
-Received: from TW003.hihonor.com (unknown [10.77.199.161])
-	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4gvWnG3lZLzYm43k;
-	Tue,  7 Jul 2026 14:40:18 +0800 (CST)
-Received: from TA003.hihonor.com (10.72.0.43) by TW003.hihonor.com
- (10.77.199.161) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 7 Jul
- 2026 14:40:16 +0800
+	b=7Vy8yKli0QH7qLq5UzO1BSS6oBHBSkDSEF9dgmjXGOvLgdykQrqvzU31U5DLkC3H3pg4iI
+	8kUMvRZtef3GIFZLuhhVatLkfWFJDto4TO+W4k+uPXoPowe/pJkXd/IN1Wr8Kr8Ln7D1nu
+	i2815MsuSPUWnzJFziwuDMYVKe+tgb0=
+dkim-signature: v=1; a=rsa-sha256; d=honor.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=To:From;
+	bh=2HAQWJ3pVwWfob9ODqC/Kr1JqfriaUqoCgw5Fb97ovc=;
+	b=W+rm16pI01FqtDtqFMYMSfa+ApAyTpe0XPZq3wSew34VUomsQ5Z38SmDdLwIE9QlWhhEVdpcA
+	893xUhztJ0YcExPDl1Ioi+xR5VoNJ4hPCJ9JRhKS/wLhu5pd8mtwlFTEF4t4fhjKTxFWhJgN+3y
+	uVHrTwHvP35Hm0vNQ4FwpEM=
+Received: from TW006-1.hihonor.com (unknown [10.77.215.153])
+	by mta22.hihonor.com (SkyGuard) with ESMTPS id 4gvWnH0THRzYl1nh;
+	Tue,  7 Jul 2026 14:40:19 +0800 (CST)
+Received: from TA003.hihonor.com (10.72.0.43) by TW006-1.hihonor.com
+ (10.77.215.153) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 7 Jul
+ 2026 14:40:18 +0800
 Received: from localhost.localdomain (10.144.18.117) by TA003.hihonor.com
  (10.72.0.43) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 7 Jul
- 2026 14:40:17 +0800
+ 2026 14:40:18 +0800
 From: tao <tao.wangtao@honor.com>
 To: <akpm@linux-foundation.org>, <david@kernel.org>,
 	<catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
@@ -81,9 +88,9 @@ CC: <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
 	<linux-mm@kvack.org>, <damon@lists.linux.dev>, <shakeel.butt@linux.dev>,
 	<ryncsn@gmail.com>, <jparsana@google.com>, <dvander@google.com>,
 	<zhangji1@honor.com>, <wangzicheng@honor.com>, tao <tao.wangtao@honor.com>
-Subject: [RFC PATCH v2 03/13] mm: implement __anon_node_prepare for ANON_VMA_FRACTAL
-Date: Tue, 7 Jul 2026 14:32:58 +0800
-Message-ID: <20260707063308.29176-4-tao.wangtao@honor.com>
+Subject: [RFC PATCH v2 05/13] mm: implement anon_node_fork_with_prev for ANON_VMA_FRACTAL
+Date: Tue, 7 Jul 2026 14:33:00 +0800
+Message-ID: <20260707063308.29176-6-tao.wangtao@honor.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260707063308.29176-1-tao.wangtao@honor.com>
 References: <20260707063308.29176-1-tao.wangtao@honor.com>
@@ -92,14 +99,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.144.18.117]
 X-ClientProxiedBy: TW002-1.hihonor.com (10.72.0.137) To TA003.hihonor.com
  (10.72.0.43)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 66439A0004
+X-Stat-Signature: oznewqx9cef6e6fk5wygb9n97ye6fzgg
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 92507C0007
-X-Stat-Signature: t6fh6fsx5o56kc56xq13wwesstd96tyt
-X-HE-Tag: 1783406423-44585
-X-HE-Meta: U2FsdGVkX1/bWi0qbtOEb1O2XdgHu6HAZKFovXNGamAPgFBqWwhbgAuqHd/EYLe1k7+1i39Y4R6ZaIeDibkK3BrQA3bGFUMgO1ZYpzmmJTiwbRN+7K+neBudgtDbkuEylULan2l4oBDI24C8Hf5xMOQnp5Q99sIQtIn0jq5JnNFqW0+Yc6M9qwiqpYuGHRsjjojpy4EdbLosQuuIjl8I6/8zwHLJSd/ZE0AGevgIh72uuNpyhFIDTwo0NHObjJXbwYgje5D3puk1cFLmVXrsfOMWVGupj+uNPHNpyUoEh7G6rpORDFTIxhOBPhWCeEvI67jRFYq2I5QD/bicXH31khprWFyGN5on9CwdZdVu5HzUUWWkiK9BRyBz6UJFgflEd5v6eik7cBVOcIAAPRacQWZByFPYeZuYmI0XADxW4/cAtUeX6VlAjH+F9f6tm4hKFrsvpTD4yEjpWT5DKM0MK6B8RkudZFBZmyHonnwn3FmoLjHHmo0VjhiPNNJBa/OfWMXTmocStEyRavsauLCeGt53GtoMMf4AXEPLrEpDopZjH91U+VhbBRQu31rCVD/ZFhfWX7rf3ozpQAVuk55ZVB8FkVhgCumGfeGvGTVID5kXbH7lK31N0DSytCnSFCYHbQcCjAQI5uHl4b22sFCI3wTg0p26aR+1rLojz0W3b7H85YNAxENI4tdi1j3mXhEM3Tek0r6wSCHM3wiZyZGHE5yrICTpjV3sHKgVWaC3DmLlHmrrmYsiWN8dnegH528rlmr4iimqff8fGy2ZZp8Htwx330SczNoj42IJwfCvfecveBdng57ag0HXtljMMZDnCOG53PaW5v56r1xcJd8OeSPmVxmzEd1RKmbOsM4J95HoV9pnKj6rEpB5ZT31zbcthMcbu+NCSkbhQe0lwtrkd151XC5OnzTt04ZNA1TCpvPuJflPqpA3thxLc11WgM7FmnZ9iiCIJjB2VrPC4TL
- VFp1wJ0w
- /o8AzyyLAa+9YdSpq4D5cD918gB1Ax5wzRaGnES1W1f4Rfw+zcmvd8QHhQGgcpyjND78byXldvkod9MBvtlHWXUMPgpqiWYJUEsgkdWWTROLtuyaO/65+uepGjWV/O0T3pB0ohiwsGd02njd9ZSgZ4rfINROt6QrpuH752FCSQeFn8mPls8ljtbsk/DywLPhbhKJ+h46It+NmlMxo7WxSaQxhSFPCVE2ikk4pPm1/G4o4wLm3ZAibmRqkeEZCkOsT73sc22RTRcgX23+dGmPl1JxRHhkB1xViZCajDCGer2+dwXK+S1fMQtEJ6qxAy0LynMCtB7mNP2SMwT4=
+X-HE-Tag: 1783406423-959036
+X-HE-Meta: U2FsdGVkX1+BeAFOE6vE+7SOMwbGbavBUy1mqZU1Gu/P2lWDhaW4yvGYVGfUMifJxkuboIwJrfwkxmsGILFn0OSPiLg+pYm3K+Wrw2wlz1L5qk4E6qVHK42b/7VzifQ6AWNlmHG7mr8AMz6lOyfR7XLYKnrPIdLQwUJ+c3N/aLI9RJKo/Vi9e4+ONhXQdmHMVPC9uK+6QT0LEQ9MwOdjHV4GHGkOutF+1jP8GAJG3q+bycT2K2J5rehHKpq3jtjcaVFVR51ByzZJNQXbg3Saozt8dUibgKgE5HGRxXplumYRKZDCEZz65fskzsrXDsjfqUUSU/k1VbwjbzDayO+Ju46CeMXyJ4g/daPPScPs56oU17MJHVJKqKhHDxOPblKvEATl0tvSn6EJXREl1cdQO6BJwPF9PlgrXXjDcOPG/a6WxGJ3l9Jb97pPaaLQsGzbE2IUr6WIvfHNMRymzm2dXd0gmi5C0jJtYHCRabMS2YQ6N+FjONpngShz7FBRVT9+n+OTPBgZPfngEwAHF/ebwHziUrZl9DiGks6vk0Uw2Yhi+2HZ9YjQW2X42PEX0T4D2YGKxHhW7GDaSN02ZCWZKwkIZrvITuBIwIWPPXF2BSI2EkNKD+x6hbwwwowVNKhrcdEUS+GFPN0WA7wu/cUDG1M3qxbI1ZNLDrkIH0DO857EN2DSvhmPwd/Wl5oCYy1kZi/h3PhETzaw3FkDAsr8ODJfgIAfQ9+USVKf8k8dMcmIwCXesbPFUoiZs7f+kc4q/m4aXgpRQBow7J8kbrfOzS0o5LMsOLXoHjel0FXpJRyZHdT+iLSuNZS6jeoyCubi+seaOz43ayVNuL3IvilKDQb0QeSmap83qaRTeEpxf4cAY2g0nJWqhIzSg33tvYUrBowoGCLiDxO0jDXiElfCLWOTo3NwD2/Su/6QbdFXLGRo6dtg1u9zwDGIkBa7uzawJfbZLy4RLBVBKAT7YS5
+ zVzfY74r
+ 1h3in8P/zGxyemHNbipv02Q20TvA9NUcBhNxFnQzYykQ5iC2UTqKgwqkEObhldctC9VMvVYPpk1yHrm4LtpDnhCTdC12dcB7xIYCIFeIoy9kLP5HhHQTmGU8GwnnXgrTq+VZJbdh8m39nWY8LxRz92YpZNaD6xWZNg3XRqCl0/aHHR4NJolmWj1Kmo56dfvWefNG8fU8zBgjvCdy8uzJEsDmsmyRdu03lKZTFqDo0UH7zs0AmYJW5Tk4obDpAA1ha0GhtDrsV2bdDvJdgQ8ZGV1ImNX0mO3hf+GSXYffXZ6PrM6s6scc0BBrXcEfnf86PFY0eToBJLlUD9KESdK28Wq/ZUrjA/fxQT0DoYa1Z4Z9EzaHXsEn9oUG9Yv1aAuju0wF9ZlCnF7sbiRSpgivgwUD+U6Y7Vo1rDQY+zDv9oIYCfvU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,108 +114,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add anon_node APIs corresponding to existing anon_vma operations:
-
-- anon_node_clone() corresponds to anon_vma_clone()
-- __anon_node_prepare() corresponds to __anon_vma_prepare()
-- anon_node_fork_with_prev() corresponds to anon_vma_fork()
-- unlink_anon_nodes() corresponds to unlink_anon_vmas()
-
-Implement __anon_node_prepare() first to keep the patch small.
+Fork handling introduces two additional parameters to help child VMAs
+clone anon_node. The logic follows three cases:
+1) Fast path: clone the anon_node with the previous VMA.
+2) Reuse an empty anon_node from an ancestor.
+3) Allocate a new anon_node and insert it into fractal_list.
 
 Signed-off-by: tao <tao.wangtao@honor.com>
 ---
- mm/internal.h | 11 ++++++++++
- mm/rmap.c     | 58 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 69 insertions(+)
+ mm/rmap.c | 72 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index c1b3961b9d3e..710baf02575b 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -314,6 +314,17 @@ int anon_vma_fork(struct vm_area_struct *vma, struct vm_area_struct *pvma);
- int  __anon_vma_prepare(struct vm_area_struct *vma);
- void unlink_anon_vmas(struct vm_area_struct *vma);
- 
-+#ifdef CONFIG_ANON_VMA_FRACTAL
-+int anon_node_clone(struct vm_area_struct *vma, struct vm_area_struct *src,
-+	enum vma_operation operation);
-+int anon_node_fork_with_prev(struct vm_area_struct *vma,
-+	struct vm_area_struct *pvma, struct vm_area_struct *vma_prev,
-+	struct vm_area_struct *pvma_prev);
-+int __anon_node_prepare(struct vm_area_struct *vma);
-+void unlink_anon_nodes(struct vm_area_struct *vma);
-+
-+#endif
-+
- static inline int anon_vma_prepare(struct vm_area_struct *vma)
- {
- 	if (likely(vma->anon_vma))
 diff --git a/mm/rmap.c b/mm/rmap.c
-index fa9d82271005..b98ba6a83272 100644
+index 74817876107a..93fa04c5a007 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -645,6 +645,64 @@ static inline struct anon_node *anon_node_alloc(struct vm_area_struct *vma,
- 	return anon_nod;
+@@ -667,6 +667,17 @@ static inline bool try_untrack_rmap(struct anon_node *anon_nod,
+ 	return false;
  }
  
-+static bool try_track_rmap(struct anon_node *anon_nod, unsigned long rmap_base)
++static bool try_reuse_anon_node(struct anon_node *anon_nod,
++		unsigned long new_rbc)
 +{
-+	const unsigned long rbc_max = rmap_base + ANON_RMAP_BASE_COUNT_MAX;
++	long old_rbase;
 +
-+	return rmap_base == anon_node_rmap_base(anon_nod) &&
-+		atomic_long_add_unless(&anon_nod->rbc, 1, rbc_max);
++	if (anon_node_rmap_count(anon_nod))
++		return false;
++	old_rbase = anon_node_rmap_base(anon_nod);
++	return atomic_long_try_cmpxchg(&anon_nod->rbc, &old_rbase, new_rbc);
 +}
 +
-+static inline bool try_untrack_rmap(struct anon_node *anon_nod,
-+		unsigned long rmap_base, bool *test_empty)
+ /* attach an anon_node to the VMA. */
+ int __anon_node_prepare(struct vm_area_struct *vma)
+ {
+@@ -788,6 +799,67 @@ int anon_node_clone(struct vm_area_struct *vma,  struct vm_area_struct *src,
+ 	return anon_node_track_rmap(anon_nod, vma);
+ }
+ 
++static struct anon_node *fork_reuse_ancestor(struct anon_node *parent,
++		struct vm_area_struct *vma)
 +{
-+	const unsigned long rbc_max = rmap_base + ANON_RMAP_BASE_COUNT_MAX;
-+	unsigned long rbc = atomic_long_read(&anon_nod->rbc);
++	struct anon_node *root = parent->root;
++	struct anon_node *node;
++	unsigned long new_rbc = vma_rmap_base(vma) + 1;
++	/* At least N anon_nodes between parent and root: P -> a1 .. aN -> R */
++	const unsigned int ANON_DEPTH_REUSE_THRESHOLD = 1 + (5 << 1);
 +
-+	if (rbc > rmap_base && rbc <= rbc_max) {
-+		rbc = atomic_long_dec_return(&anon_nod->rbc);
-+		*test_empty = (rbc == rmap_base);
-+		return true;
++	if (parent->depth < ANON_DEPTH_REUSE_THRESHOLD)
++		return NULL;
++
++	/* Release from leaf only; parent is stable, no lock needed. */
++	for (node = parent; node != root; node = node->parent) {
++		if (READ_ONCE(node->nr_children) > 1)
++			continue;
++		/* Replace with the new_rbc atomically. */
++		if (!try_reuse_anon_node(node, new_rbc))
++			continue;
++
++		node->mm = vma->vm_mm;
++		vma_set_anon_node(vma, node, false);
++		return node;
 +	}
-+	return false;
++
++	return NULL;
 +}
 +
-+/* attach an anon_node to the VMA. */
-+int __anon_node_prepare(struct vm_area_struct *vma)
++/* Clone an anon_node from prev or fork one from the parent pvma. */
++int anon_node_fork_with_prev(struct vm_area_struct *vma,
++	struct vm_area_struct *pvma, struct vm_area_struct *prev,
++	struct vm_area_struct *pvma_prev)
 +{
-+	struct mm_struct *mm = vma->vm_mm;
++	struct anon_node *parent = vma_anon_node(pvma);
++	struct anon_node *anon_nod = vma_anon_node(prev);
 +	unsigned long rmap_base = vma_rmap_base(vma);
-+	struct anon_node *anon_nod;
-+	struct anon_vma *anon_old = NULL, *anon_new;
-+	bool test_empty = false;
 +
-+	mmap_assert_locked(mm);
-+	might_sleep();
++	if (!parent)
++		return 0;
 +
-+	anon_nod = NULL; /* Fix find_mergeable_anon_vma(vma) later. */
-+	if (anon_nod) {
-+		anon_new = (struct anon_vma *)anon_nod;
-+		if (try_track_rmap(anon_nod, rmap_base) &&
-+		    !try_cmpxchg(&vma->anon_vma, &anon_old, anon_new))
-+			try_untrack_rmap(anon_nod, rmap_base, &test_empty);
-+		if (vma->anon_vma)
++	/* Drop inherited anon_nod. */
++	vma->anon_vma = NULL;
++
++	/* 1) Fast path: clone the anon_node with the previous VMA. */
++	if (anon_nod && pvma_prev && parent == vma_anon_node(pvma_prev)) {
++		if (try_track_rmap(anon_nod, rmap_base)) {
++			vma_set_anon_node(vma, anon_nod, false);
 +			return 0;
++		}
 +	}
 +
-+	anon_nod = anon_node_alloc(vma, NULL, false);
-+	if (unlikely(!anon_nod))
-+		return -ENOMEM;
++	/* 2) Reuse an existing anon_node. */
++	anon_nod = fork_reuse_ancestor(parent, vma);
++	if (anon_nod)
++		return 0;
 +
-+	anon_new = (struct anon_vma *)anon_nod;
-+	/* maybe prepared by another thread */
-+	if (!try_cmpxchg(&vma->anon_vma, &anon_old, anon_new)) {
-+		try_untrack_rmap(anon_nod, rmap_base, &test_empty);
-+		put_anon_node(anon_nod);
-+	}
-+
-+	return 0;
++	/* 3) Fork a new anon_node. */
++	return anon_node_add_child(parent, vma, true);
 +}
++
 +
  #endif
  
