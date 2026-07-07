@@ -4,123 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77605C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 00:17:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFD3EC43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 00:51:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5D3A6B009D; Mon,  6 Jul 2026 20:17:57 -0400 (EDT)
+	id 6F86D6B009D; Mon,  6 Jul 2026 20:51:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E34B86B009E; Mon,  6 Jul 2026 20:17:57 -0400 (EDT)
+	id 6A60F6B009E; Mon,  6 Jul 2026 20:51:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D732F6B009F; Mon,  6 Jul 2026 20:17:57 -0400 (EDT)
+	id 5985A6B009F; Mon,  6 Jul 2026 20:51:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AD3C46B009D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 20:17:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 291F1120287
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:17:57 +0000 (UTC)
-X-FDA: 84960067794.27.704733D
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5E28740007
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:17:55 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FjXInoUM;
-	spf=pass (imf07.hostedemail.com: domain of eddyz87@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=eddyz87@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 232D06B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 20:51:25 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 73E3C8CE77
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:51:24 +0000 (UTC)
+X-FDA: 84960152088.01.8A6F251
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 44EF44000A
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:51:22 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=P3vnLQIW;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783383475;
+	s=arc-20220608; t=1783385482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NlYk0sNL0UkMJvtmh539AMWShHtruvV8sV0IdItG1l0=;
-	b=NbLmE3opJDm1feoOF2bv+bAxiZQLd//iUmN3WXVASZqcFX83YL2/fx/9no9t6jWHY4HbpI
-	xsRsDXjP9zzo7Z0g0040Ka72eEBAALEAoK+fjDDHY6QyXhdoCumeP6XnqXedBx1PqCtI1Z
-	zZtUusbi0l53waPF+Z33ek1KAU1eE5c=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8uOJumz4s0qki0r71srSZl6Uj8heGPfbTOJSjApvouk=;
+	b=5oyehNsTUsocw7ExDIojh+JnmYGEpkbhyAPNbC73wE1bhyoOio+JnUSkM1D3WTMNGNEmW3
+	87+dtHJL8JcXUKRqB1MnONbn2jqgP279PyIMy5lExWxmd/wbxS5ov6lK3SI8DhK/uSMV7x
+	jkKAOVMMqMdKdnN61h9COgivc0MviL8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FjXInoUM;
-	spf=pass (imf07.hostedemail.com: domain of eddyz87@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=eddyz87@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=P3vnLQIW;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783383475;
-	b=CrH+ugrQZI1sodadYYgsATOBSwDf+lFRFi/5cNbakCGylj5uq77sikjBk36i7YGzFytYKW
-	rDpc5jBfCR0c/b+pe89XtyuachoiwWcgojGurYs8Bl8TxWerIPy5+SnhmKZeepJhzFcBCW
-	dApZ4/sxn9DlX47mLZWSiDbXMaRxOSc=
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3817f800c8bso2630614a91.1
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 17:17:55 -0700 (PDT)
+	t=1783385482;
+	b=xjfx7ltz7rWxwlJ1HXkF35RDKgV6dv1uVl9n4y28urj4E+00t/+MQRfDd5ookyCaZp/7un
+	Ru6BhP9326m3wzFoWglpSRfYGDPGeu4GEaeraw5uuRq0zKwx0wB3tp9M0yIOUZ0u4PSwaA
+	8Oh3w4Sl3gQ05sBJVSp7Ar8fUk10lAo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0FB0640BCF;
+	Tue,  7 Jul 2026 00:51:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9ED1F000E9;
+	Tue,  7 Jul 2026 00:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783383474; x=1783988274; darn=kvack.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NlYk0sNL0UkMJvtmh539AMWShHtruvV8sV0IdItG1l0=;
-        b=FjXInoUM9+YgP1i4HhV2nYgmtvkIT/5ZJ0jywJqIPi12elg2opC8U7iKv/q5I2lDwX
-         tUnL9P78Yy8WEqZZcK1XUD7c6OKOzXXA6YADxav7O08UCl42P9kiaOjK8+61lisJoBQb
-         rjKDqOHDUKOT+2Z/nE9Hg7JfkAZ7B4UWbYhu6GSmfxn1fIPBngpn4oMbgIPylXzfpNm2
-         p38vcHpa21tmZGq2hDinri2fwxuW6LfHCnYpSOGXR967byVFNA4aUK4E/jUPLVXEn918
-         gGGv9OmaWPn72PgnmQgihmC8twuru2NzGeodVVRZddEAhB/8ktQ7fKXv0Eta4cON3C/M
-         WY5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783383474; x=1783988274;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NlYk0sNL0UkMJvtmh539AMWShHtruvV8sV0IdItG1l0=;
-        b=XPNdriJhrtY5U2qvtV+NyGtxtQlv4j/xj0ADn9EjmQTKaCZInPSVSMjhjAeqzSJ5QN
-         81rQOsLKVmYHy3KuKCFqxvL1hHpbEXQZ6TVb6hNtQwztXD7NmHzXuc1BYVgnlnu9qnmN
-         C7MGovgWWMGL6Jrj6XufakUZSztC01HO/57nDjXljnIE/3tHWRb1L4sv5cXL3wOgO8TJ
-         0WlTqNw1N0BXMr62yGdULRk9SYcBkySQulYl3xwGHZe4jvgR92LaURzZFAkWJNSlFiMC
-         yNdREh47Xi19B9/R6lOEYJk2IBFB9RsbhSJqylz6mSEhhuVtdYPhqxYkT40l070v+UWC
-         v+hA==
-X-Forwarded-Encrypted: i=1; AHgh+RrAnYsvuhzY8kQNVhEyJi0H9lAPUTVJXdFmpx8WqCzTvy6PY1XsHqpQjel86981Wq1Q2wSgHBxN9A==@kvack.org
-X-Gm-Message-State: AOJu0YxwkskcBtRO2Jy4lVlG2NsPUPkz24EhjEhGzR+GhP/0TQsCVYXC
-	po0gmKTB05UTtf5C61AdW/pEAYmojL782X3d0rjMq/ojyeXhlLm1jM59
-X-Gm-Gg: AfdE7cngt1+ccQmU9eG8rwbKHswgSiTe4bXYm94u+lTwn9VoJIlXfWTvgwRvtsqJ876
-	yVNUPuAz+w4sGR3Ho0NFTitZeWoro1MZbI50WT9VPAXbRgJVq29Y/96Y1gaP4Q+/m4ShiatI6nI
-	ixYN6UQpO6SKoLYB1v+OYR5ZHf9yz+iKf+zOm1x1jaCzbjzXb3n1hRYPqLg5ZbgBzDxZchdyT2g
-	LrIFXl4vTkGfGUHLEdDgheytEt2Jby9OPgn1SB5kZXfAzY/YNMSu6Aw4d/AQ6OS1aQQcpCJjyGi
-	V/OYCT011SeIB/fFJbtdPFaNYh9qBzkTntHUq2pQ4ijKjblN1ryeOBpXx8ihVFnqSaIst8Xb6sO
-	k5LXY17FWEBJfg0W4PkUTVmr3nJoRvFWaQ6Fu4u9fbO7IT0I2YuS++X8buAIm1duXBAxWST3fQs
-	tYHEe4PLpuaA58YwVMEcQvfSrE5C88iM5Aaigqx3gcT2GUwGwXib5/yYOyLylYOwTsqPuMLQ==
-X-Received: by 2002:a17:90b:1845:b0:37f:9cdf:f0ad with SMTP id 98e67ed59e1d1-38757d76999mr2730666a91.28.1783383474243;
-        Mon, 06 Jul 2026 17:17:54 -0700 (PDT)
-Received: from ?IPv6:2a03:83e0:115c:1:275a:65bb:602c:da1d? ([2620:10d:c090:500::1:7696])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-31174a89a89sm1783645eec.20.2026.07.06.17.17.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 17:17:53 -0700 (PDT)
-Message-ID: <bc12730fe6eccde10d36e6544607ae2464357e05.camel@gmail.com>
-Subject: Re: [PATCH 0/3] selftests/bpf: compare BPF and memory.stat memcg
- stat readers
-From: Eduard Zingerman <eddyz87@gmail.com>
-To: Ziyang Men <ziyang.meme@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
-  Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
- <andrii@kernel.org>, Kumar Kartikeya Dwivedi	 <memxor@gmail.com>,
- bpf@vger.kernel.org, shakeel.butt@linux.dev
-Cc: Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil
- Tsalapatis <emil@etsalapatis.com>,  Shuah Khan <shuah@kernel.org>, Roman
- Gushchin <roman.gushchin@linux.dev>, kernel-team@meta.com, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org,
- linux-kselftest@vger.kernel.org, 	linux-kernel@vger.kernel.org, Shakeel
- Butt <shakeel.butt@linux.dev>
-Date: Mon, 06 Jul 2026 17:17:50 -0700
-In-Reply-To: <20260704045617.487664-1-ziyang.meme@gmail.com>
-References: <20260704045617.487664-1-ziyang.meme@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
-MIME-Version: 1.0
+	d=linux-foundation.org; s=korg; t=1783385480;
+	bh=8uOJumz4s0qki0r71srSZl6Uj8heGPfbTOJSjApvouk=;
+	h=Date:From:To:Cc:Subject;
+	b=P3vnLQIWwam8IAG2S03dhCCtK72bBTkslQRQn7osCFj6SM/HzrbIBrYKukNIiFEqG
+	 Vw3ksOcc0k6Hg47K+1519inXpofFXBTgEA2HcdxgaTsD+WW+5MNLVrLzXulgat8Dm9
+	 SGijZv4IYlC+0fMUTDItRlEx1CDnd6I+RnHmx0AM=
+Date: Mon, 6 Jul 2026 17:51:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] hotfixes for 7.2-rc3
+Message-Id: <20260706175120.2411eb28603d28ac0424a573@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5E28740007
-X-Stat-Signature: 9kzpub5yduam97qmj16wx3ujn4roppik
-X-HE-Tag: 1783383475-983626
-X-HE-Meta: U2FsdGVkX18nQ2v61qHLfhbTnnTWkx2HnQcT90uUSki2JTOlp48Pq3JA0bIJ7Ym4HF2HdKLwuUNGcHXjojmWu4pfS9px5gsy6Ugx0kw0L6gHtoZqi6Ll6m68nElYReT6KxQlJQMgrKHYmrAS3zq/frUVgVjyOLLrf1hQElunxKoEihDABJTrNDxtSohEH7R/gV4o4yLtv3XipJ9pnyNObdfYB8nrWCk//55sBhpuCmygnCuzgXyXLf+VchlD6+xNASObgM4e7+5hCOYKE9mVQuABoFKh/UK6v5l0Vr/c5+UIuBvJ0zSrphY9S3Zb0PKq/UAwdfSkIgLJF+2lyHKZ3IEaWjRZA0yeDNHFnMObsgQdZr0/my/8XOPsQ+4A5zxfuMFbCN+uv3TUWoQvIrHrO5wRHJ4gW4dZIVs6RjGB8bxurFwEW9Puxj4KmYfbGSlvTNVq2aIwK/WqKOhbYeUyTd41EnhHzPg76ydBD7fO6TNgEl+VKcSY4xpaHWI3AstgQYYSlxHhA/c+cKR3OKhnZtkHVyIXaWUFW8TLIYIWCUwpaJEIYAO3xIpfcQBMOzUJYBzhEE55XnYriGUwAidsNoaxRv+hxfXsE464Cq7xoQdDtA8O7Nnib1afWjQEr4fzCWU63izkVLCOEMTRyVygvRqJEfmTLWFpD7qTIBkA7qcq7F0UWxjCObPRs5JyuDAMt4+jrdOZA8Yu2kRxkRduVRfX5s6yQC6nWwVPUU4YiXzskTO5ue1Imcboel62ZV20ZjNi7OMeisgHiMj/d2FL2UrtJHSAwLFQHw6EFvV1FPIZBRCU404XhTkii2gfDYPH7jXPovOJP+6A0OgWaxHduXEd+BxRjDOZPfeG+E36+/sxh/PYFi4ETuch64KVjI2nw6n6GbXFHoB44Sd7+cLvCxfdMezXj53AmFY5CLiRptl73jHpC1gHOon6oCweSn0lxyg5nF4MX2Z/4+aOuWN
- OOXuDlpC
- He+bFSH7stqTg2RxeY4+gjjWPZPVK26oTYQ7Dj7gWI+XuAyzS/fmOAlsGbIFK+9DyIealT/Rmx+O2b4bUrmaqsteZo0iRwRC3YeGGNbmrydUees49D9713jqFojZ40MkxYPVH9abctzvgnAhkEZSlvQeTkVDo/dSENWiWFoGwC7uBq9+JrgPXSuOvq6Mzq7j8woQwKjeXzQgXl6HAIvtbH30gpIe971bRXybGqgnjCPcVkF96PqXtVJGdBKEzmCmaMTOzGVklBU+2IIZivwr2ozqXtJz+w5EaRzpAIdeiBDjYPuGHxZb0UkQGkSugqRUoaWooFW06xrQpbxWdo9Vdh9X/lSi77cNuvFRppohstrq8Hhsd4bzEaEuoAhEpAa7QaA32LWvps0n7kgGLx9gNAopUb5KKpv3RBNe0/XbZ3uEV0WawKqh15zTVuTTuHvkiCqAroSZtphQFObIVTpELepJ23zGXoAuxTueC5Acbzrjbfyo5b5wjhEK5e5hgR2gni9SZCP60T5CE1Eg=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 44EF44000A
+X-Stat-Signature: 4dagadttk8ckiaxdf8hr5d5qexwy17cb
+X-HE-Tag: 1783385482-50821
+X-HE-Meta: U2FsdGVkX18I0Z98sJTx/Xm+iBb16WhrGbD8B4CEhQISXVUgyJ3KfKaaFy8G7UDlzCD+TTqCaQs3Q8JNAHIj4aYt0uPxmyBGYW4JHUZS9D3I2IUqdqofeEQiWktMf7uuOXSpmfbRJWq78Wd5YAshg5o5XNRVK2H6MyEZiubgqonbh1lwZuddvz5os74nrRt+H9jsbB0jGTCBUYcxmF43WGlotyMmn4c9fSOrtI1McrD1Tvb7bi9BmltnMqytjLvtuj8G//BEqeuBP1Sg6fQyqIfKibHrbgFNXMAaTWtNJXfwrFD1xpWadc2MFa4bR2BO3/d0Kl0IaX8RCD2RM2qGwqpmkZf+rCx5wvCaJXmw/r7YH6UTQ2+QuKTSTZXftqNSn9wmsFnjtWJzrBtVsqOAJNPbgONNi0rx6Ao3D6LbXTGTiCtufASJo0PcBOc8tMWZERikzLThj7JjvJGmmnTgWxH81f5qC3ayjKkm+N0uLmB9BdrUc/A8PFDBs53SYmcaknABt6dPn3ydKz1RV/ScmSwTvpCxNCtlsdXmSwr+epHSKx9cDGAluthrTKeQu1xsJdQpwSflx2RhUpFBez4l4leG5SP0Yy/4tSOwwCjAsWO10hP0b/Drf6lSNvvgMcLCe7UOl4Rm8blsBP8CtLBCO/OtT/XoKEbA9blpcLIfPGCA2Lp68TlZ+kMriygk42yNMc4oH0klonq955s/mLRU781YR1htNuPE+EYxh4qjdHfPxideJXGlhyo042nJCSp4qDCOhHsZ+fhT0y63pjIU6fImmaykcqFZGoMoYFOBri/bbfVpkIEwth54F7PPilBixx2fPG6v19tV9X7lDqidxUGtRsuqKgqjF+CsSfsQpPHzy0Hhh0Tca8mQW9BbV80R//KpHa4fEbMTB3csy7thfbBWpBqdHvAHb3G4YUvYbT27jpfwAO9Kog5VGIMxB5B/3EXATFR5WbXR6jXYmjK
+ Ezy8DYM/
+ 3PhvTYOfaoYkpyz5rMVqeKKXehKKV2R4M4xIfdDWDcb7H8/QJtlDAr921tYcE3zFDr4ZGuxcmMTAjYUnuYKjiBpLZaw9RvKytFKoDLGQbNbqm7GBrv4akea278XpDxaVBww1lyLVM6ArSAffd/1cXGD1pUeI1SxuMg8Bz2UVpvfUIAFVHKQooN3vN6ihAxpL02cgEaAg3fant7wMdS4wOc0IBkCzP2mFj4rhFP7TbeFmEBvTjD6svDvG4G4zuI9UzVvOLrcFSREQxO+fxNqzsO4igYw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,55 +86,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2026-07-03 at 21:56 -0700, Ziyang Men wrote:
 
-[...]
+Linus, please merge this batch of MM and non-MM hotfixes, thanks.
 
-Hi Ziyang,
 
-I'm a bit hesitant adding 2.5K lines of code to the BPF selftests,
-as this code would need to be (a) maintained, (b) run at each CI invocation=
-.
-Hence, the tests added need to be relevant for the BPF sub-system.
 
-Regarding the benchmarking part, as you state yourself:
+The following changes since commit dc59e4fea9d83f03bad6bddf3fa2e52491777482:
 
-  > In my testing (a 60-CPU VM) the BPF path is roughly an order of magnitu=
-de
-  > faster than the per-cgroup memory.stat parse for a whole-tree scan, mai=
-nly
-  > because it avoids the per-cgroup open/read and string parsing.
+  Linux 7.2-rc1 (2026-06-28 12:01:31 -0700)
 
-With this, I think the benchmarking code can be dropped altogether.
+are available in the Git repository at:
 
-Next, the three memcg_stat_{reader,churn,churn_percpu}.c files share a
-lot of utility code almost verbatim (e.g. tree definition/construction).
-Such duplication should be avoided.
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-07-06-17-49
 
-Finally, from the BPF point of view the test exercises the following functi=
-onality:
-- kfuncs:
-  - bpf_mem_cgroup_page_state
-  - bpf_mem_cgroup_vm_events
-  - bpf_put_mem_cgroup
-  - bpf_get_mem_cgroup
-- main iterator logic.
+for you to fetch changes up to 039892c35f9d8f5ea00d7c2ed1c25224f28b11d7:
 
-All kfuncs but bpf_get_mem_cgroup() are thin wrappers around mm/memcontrol.=
-c code,
-all kfuncs including the bpf_get_mem_cgroup() are already exercised in the =
-selftests.
-The iterator logic itself is covered by 8 sub-tests in the prog_tests/cgrou=
-p_iter.c.
-Hence two questions:
-- What do these new tests add in terms of tests coverage?
-- Why do BPF selftests need to exercise the churn and churn_percpu scenario=
-s?
+  tools/include: include stdint.h for SIZE_MAX in overflow.h (2026-07-01 19:02:56 -0700)
 
-Shakeel, could you please comment as well?
+----------------------------------------------------------------
+20 hotfixes.  17 are for MM.  12 are cc:stable and the remaining 8
+address post-7.1 issues or aren't considered suitable for backporting.
 
-Thanks,
-Eduard.
+A two patch series from SJ addresses a couple of quite old DAMON issues.
+A two patch series from Yichong Chen fixes tools/virtio build issues.  The
+remaining patches are singletons.
 
-[...]
+----------------------------------------------------------------
+Jan Kara (1):
+      mm: a second pagecache maintainer
+
+Jinjiang Tu (1):
+      fs/proc: fix KPF_KSM reported for all anonymous pages
+
+Ketan (1):
+      mm: page_ext: add count limit to page_ext_iter_next to prevent invalid PFN access
+
+Lorenzo Stoakes (1):
+      MAINTAINERS: add Lance as an rmap reviewer
+
+Pedro Falcato (1):
+      mm: do file ownership checks with the proper mount idmap
+
+Qi Zheng (2):
+      mm: shrinker: fix shrinker_info teardown race with expansion
+      mm: shrinker: fix NULL pointer dereference in debugfs
+
+Radu Rendec (1):
+      mailmap: add entries for Radu Rendec
+
+SJ Park (2):
+      mm/damon: add a kernel-doc comment for damon_ctx->probes
+      mm/damon: add a kernel-doc comment for damon_ctx->rnd_state
+
+Sarthak Sharma (1):
+      selftests/mm: fix ksft_process_madv.sh test category
+
+SeongJae Park (3):
+      mm/damon/sysfs-schemes: fix dir put orders in access_pattern_add_dirs()
+      mm/damon/sysfs-schemes: put stats for scheme_add_dirs() internal error
+      mm/damon/ops-common: handle extreme intervals in damon_hot_score()
+
+Yichong Chen (2):
+      tools/virtio: add missing compat definitions for vhost_net_test
+      tools/include: include stdint.h for SIZE_MAX in overflow.h
+
+Zenghui Yu (3):
+      selftests/mm: pagemap_ioctl: use the correct page size for transact_test()
+      selftests/mm: hmm-tests: include linux/mman.h to access MADV_COLLAPSE
+      samples/damon/mtier: fail early if address range parameters are invalid
+
+Zi Yan (1):
+      mm/compaction: handle free_pages_prepare() properly in compaction_free()
+
+ .mailmap                                        |  4 ++
+ MAINTAINERS                                     |  3 +-
+ fs/proc/page.c                                  |  2 +-
+ include/linux/damon.h                           | 11 +++-
+ include/linux/fs.h                              |  5 ++
+ include/linux/page_ext.h                        | 19 ++++--
+ mm/compaction.c                                 |  7 +--
+ mm/damon/ops-common.c                           |  1 +
+ mm/damon/sysfs-schemes.c                        | 17 +++---
+ mm/filemap.c                                    |  2 +-
+ mm/madvise.c                                    |  3 +-
+ mm/mincore.c                                    |  3 +-
+ mm/shrinker.c                                   | 13 +++-
+ mm/shrinker_debug.c                             | 10 ++--
+ samples/damon/mtier.c                           |  3 +
+ tools/include/linux/overflow.h                  |  1 +
+ tools/testing/selftests/mm/hmm-tests.c          |  1 +
+ tools/testing/selftests/mm/ksft_process_madv.sh |  2 +-
+ tools/testing/selftests/mm/pagemap_ioctl.c      | 12 ++--
+ tools/virtio/asm/percpu_types.h                 |  7 +++
+ tools/virtio/linux/completion.h                 |  9 +++
+ tools/virtio/linux/device.h                     |  1 +
+ tools/virtio/linux/dma-mapping.h                |  1 +
+ tools/virtio/linux/mod_devicetable.h            | 14 +++++
+ tools/virtio/linux/virtio_features.h            | 79 +++++++++++++++++++++++++
+ 25 files changed, 187 insertions(+), 43 deletions(-)
+ create mode 100644 tools/virtio/asm/percpu_types.h
+ create mode 100644 tools/virtio/linux/completion.h
+ create mode 100644 tools/virtio/linux/mod_devicetable.h
+ create mode 100644 tools/virtio/linux/virtio_features.h
+
 
