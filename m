@@ -4,176 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C593C44501
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:46:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8C56C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:55:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 091B46B00A7; Tue,  7 Jul 2026 10:46:35 -0400 (EDT)
+	id 77FA46B00A3; Tue,  7 Jul 2026 10:55:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 042796B00AC; Tue,  7 Jul 2026 10:46:34 -0400 (EDT)
+	id 731186B00A6; Tue,  7 Jul 2026 10:55:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4F0D6B00AE; Tue,  7 Jul 2026 10:46:34 -0400 (EDT)
+	id 61FBE6B00AA; Tue,  7 Jul 2026 10:55:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B98CF6B00A7
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:46:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3DA081A036A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:46:34 +0000 (UTC)
-X-FDA: 84962256708.27.3B83F8F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 758F0140012
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:46:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oRGOucgc;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 31FC26B00A3
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:55:15 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 88D798DD74
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:55:14 +0000 (UTC)
+X-FDA: 84962278548.12.4040A36
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C2AFDC0009
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:55:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QV+ks0HY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783435592;
+	s=arc-20220608; t=1783436112;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FyJTjmzLXvUvFLzrQN34wu7M/KTk4kD6uDDPgg62Ebo=;
-	b=xbqkBiCpHKMimVo6+wP6D7xt2Ey7kDCWLogLq0lM6tZAJgeTRf5CAVpEOW363lRQNBpAjq
-	DNSsfVnsofiEUzuQ7qZCmoTbXRBLODt9wSjJu0FtNQODN0h62kAFbEzUVWE6lsGV+p+iDX
-	WKTvEawNRMOnSebQqlX3UO45J1Jdg98=
+	bh=/9mCzb7g+yV56krs+YlAAmkKn3Oaov1WcfK8GbeZDIg=;
+	b=EhJaRWKcV81suFdw6X5lzupUQR90gjZ9Jwx84FnMfMODSL3x7gR0nRvTvnoOxoyCKeCdTZ
+	DxVXvSr5dr98a1nJ8A/2jD6jtPbJhMHCmmOoqn/g7+YfxRpZXsGD2woyMvFQiKTXd7C6sX
+	jxsJtGZPvCpHM1IhSrN/ocEZdDZCnek=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oRGOucgc;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QV+ks0HY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783435592;
-	b=LYKKy8S5O6RjEofjEib/pnWe48Vw+MK3329/bN/NCZ+IgSoGeJapxkY1akKRidMmBCebwI
-	Xd0+Ra8v8CRNneQoYc+l4ST0P40WbbWMGlazI1LhKwuYNO68GYdHaxoWfr5w56o6gbjEt0
-	zGzgUKDzw2wiSEPKsomEUTSAletku4E=
+	t=1783436112;
+	b=PAL+u4Rq4cMKXucp4nqNI6JY48v4AMEX6BMHdjhDcvQ7dJYezxTQLTvhrcZLlz8Z67F+et
+	2oG23jvLMjfGZvs6gZZoUQ6bw39alS8/qVal3VAAHYRA3FRJw/BHRGACc2MwMrVrQaT6ZC
+	BPCvP0HcO404OdKKQM469qODbF5X/PM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E938E60018;
-	Tue,  7 Jul 2026 14:46:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390961F000E9;
-	Tue,  7 Jul 2026 14:46:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 06B1541328;
+	Tue,  7 Jul 2026 14:55:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB471F000E9;
+	Tue,  7 Jul 2026 14:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783435591;
-	bh=FyJTjmzLXvUvFLzrQN34wu7M/KTk4kD6uDDPgg62Ebo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oRGOucgcfN2Yes0Extb8h8W7tLIHXjvV+6zuJc++fMaVdFnf1IsJQx3tVT4bew1Ka
-	 34nw4k5PU+suyZGMV/UJ3kr4xAHK/n38Vd7ZBfh3O2WuL+1X5CJzr0C4g5t9SWPRBP
-	 GNLn6Bx1gtPzwOwf49qRGTS6B1blWyWH9GySpfW2+nWTFzf4gJjOpk1PJp75bjFNyo
-	 +H9vyxQjzKLBKM2jALz9WcbY8GshYzUeOj5qP+RsL57vyIQL0HzZVxpHG3jRVUugIs
-	 Sz8bz0HzW6G0Ho1SK0s3w0QOqUtuiDC4V8QsppZD6WMtrbDdXqLYlerFUEnEubiBD4
-	 OqLxGA/LgHBSg==
-Message-ID: <03762de9-c695-4cdd-8c25-4fc31335ea15@kernel.org>
-Date: Tue, 7 Jul 2026 16:46:13 +0200
+	s=k20260515; t=1783436111;
+	bh=/9mCzb7g+yV56krs+YlAAmkKn3Oaov1WcfK8GbeZDIg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QV+ks0HYntwA9uKhowNtp8zOo9GveHkOSIFIr0wmdDYgDYdv+dH5Hb/h7TcwMjmad
+	 LcgNzfOkd5JYiUhz7QRIgW2A6EbwtvXiXxusWJDUeLYbt1LZ2Cd1QiumWq7LCBjf1r
+	 KBEnnWL/Quo3at5Tw/5VImKsO36vd1NY/MvgZtn4d2sEYuS1WatlnewFdElJGqVt10
+	 ck/Rkva/2KBOeS+uYqW3Gqt7t4KnvErVhOX5pQ1NzkuOQUIzZyb86gkERENikJ5GES
+	 u0Tg6ai7S90OPcXfssPxfx5gdkJiHgOxonLyoHgS1t0BVYun8G0TKAnBINd2+oLKK/
+	 8LtjNwIPskezg==
+Date: Tue, 7 Jul 2026 15:54:57 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Wandun Chen <chenwandun1@gmail.com>
+Cc: vbabka@kernel.org, david@kernel.org, rostedt@goodmis.org, 
+	mhiramat@kernel.org, Alexander.Krabler@kuka.com, hughd@google.com, fvdl@google.com, 
+	bigeasy@linutronix.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, akpm@linux-foundation.org, 
+	surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, riel@surriel.com, liam@infradead.org, harry@kernel.org, 
+	jannh@google.com, lance.yang@linux.dev, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	pfalcato@suse.de
+Subject: Re: [PATCH v2 4/4] mm/mlock: migrate folios out of CMA when mlocking
+ a range
+Message-ID: <ak0OZKzapUefmA3v@lucifer>
+References: <20260707125925.3725177-1-chenwandun1@gmail.com>
+ <20260707125925.3725177-5-chenwandun1@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/30] mm: add kdoc comments for vma_start/last_pgoff()
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>,
- Simon Schuster <schuster.simon@siemens-energy.com>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
- <lumag@kernel.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett"
- <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
- SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>,
- Kees Cook <kees@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
- etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <cover.1782735110.git.ljs@kernel.org>
- <8c618dfd7de419e3b797b8bd1cd921d4c5b8878b.1782735110.git.ljs@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <8c618dfd7de419e3b797b8bd1cd921d4c5b8878b.1782735110.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260707125925.3725177-5-chenwandun1@gmail.com>
+X-Stat-Signature: 657d76xsn7535p3y7mzgite5t9acmong
+X-Rspamd-Queue-Id: C2AFDC0009
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 758F0140012
-X-Stat-Signature: pns6e9e7q48j5iarchkhk91tsn9eim3j
-X-HE-Tag: 1783435592-451659
-X-HE-Meta: U2FsdGVkX1/hCO5tYUm/ZDdONFYwoN1jj4DWixW5NlOxGa/lwMzcuSRSoFMGaPRCEPzFGPvricHcaxBsoG/ClAtTFmeO73XqmXly8oQ2ioJqDtDQe4nNkq7h9w+wswNm3fZILC56z7pcC0aXdZtwQWu0pJM17ejbyJlHTMcl29mNvnD8iO8pc1WzXNJhsaXhs/3Ts579uwH9oPa624xmDQP5IyyiGZUd7GeeoX0HzR+8fYN47Qq10Yly3jTOm08uvHCqnOWtlW1dS+mc/VZPfyWQBACWcupxpdWjBXMCdDu2v/On/a6lRaVu31EHmVqOcWVX6Vxdy26h5OdAwmvXGA8fgNg28AjjYZp2CLIWBjusNgBestk6XbTzqwmnZI2a7kOsg5g9bcHL2NVveqp3zf0eSlvuuvBc6MTZqChGABuAT5U1U/Lzkza1FROSCJJ3rrZw2ehNP6pCJgFmdk5RAjhV4DaL/RhVhe2HH9hUmMWNa5BkxtjOOYePre+IT039mveB7oBcQu6RvN9PM/CLNmyuwREzViEDPNmCc3gLD70PSNX+oqaElF2Rncn358SjhKflPV+g3rW04LqWvS6h48sZzB98qXimjZL1A+KPFr7TtAfJST5/8V0K9K/94OD29XEeUqErs7dmSY/Ba4BRmAxRDl5EaFraxx7Q03KHEBw9vlQaklOq/uQwYtwjqHsAqnoiEMXo5FXV9vVu9G6maI2deyyAj5aPA96+cU5+UtXCfOTcLCuVCSAz3nFaeq5x6mG6k3mFZy6YJr3eK0P9d80AXOVNTEXQ+dMGe/k2XGnBg2p4Cyx1kNmEYFOzJ7/BR/gXg90sY9ZHnlF9Db9DO4HidiXrR4TpgvMYb/4vlrbU8+p0yz0Zqu1iHgZIJB+/EfDiciTSK5ZkIG5lGwPxqppmKAxPsmInqEHg0LN7rRmKM5CrEHw9c4C3CqtwJMSvZUCp0tg9CjFv7AnUHhv
- 4SzgL8nj
- Wap6OidgYcZgYXedkIqXoR1yiUi12Dxm8qaRUjI7tE1/9du+oXWHCKqMJsys9nXVP2vD3bcG5Zgd2w0vyb65uDt2NNTVMjj4MXVDAzYMHa8MNTklj0VystGoZ09tWO6f1If/jHnWf5Q+J44tthI3my7xLDEYTDtpndDM6B7Cp71+BpVWNLdLActdKfkRBUBKJq/XIzyYxyOxq0EwfGJK4DmI5qWByOVQqYQqi8N1d0pGld3+AoFIeAXlFGlCtYQBUYuLF8AeU2bsFTn5WvfWLaBiBDqNkxX8CUSfv6QWfEGcBLEAdJNQMhRRXMmavbNeE2VHPjGugraY9UbSEiJ6m/BRxVRJEoQJ4QiF/4LGv+KGY7oMewVPO5/ixebbYPFDqdTJJyJgkIogplzjYe/NljaGQVw==
+X-HE-Tag: 1783436112-814086
+X-HE-Meta: U2FsdGVkX1+C5kVdtz1jqGEzY3+5kVQxlxllyjJyylJyTX+Rp+Iy4A5WPFIuu1xcwMX2E5UYGuaPfLTwDR+tmxMq7VO7CQ3aIisaqppVb4SHrIuTP6av2oAVdjPfzcwU1vcBbvIye5nmA6YyTSQc/WUYZr3l++/IZuPNtRpgiKjokFjKJ96rFxeJ6MJM1iJ2+bdpkteC5SJS7TpkYOlLIlP9fLFtMIUPsaVraTJCTY0L8JfijY/84BkubHXx6Al7jkM9bnTw5JeAotrFe7+khB+N+h+LmKljbBOtqpJTHhbiM5HTD1vPABqeRyXR+O74ytt4eG0kvETtimHu7DoqYB4Zjk7YM6wHhQnGgEFFcy1Q3SUyKTajY21aDj/CF85OjkQyrcdpzg0d+GKNSKoDn4XD2Nr11DSILsvuFfOHk74W8XOQ8BeZj/r3rJxMk3rB9l/dMhGknJ5nZDojJcLOkE1oGz1UIM+4Cb2ihDi+SdX+XDDW/XRxXvcznmtI7K4wAsAu+KvvUnBEtYzImVT0ks5x5SsAlBCb70X4o9aixyvroLAPxFWC3ONu2lWP5XFROaz/JYPYGWtNZmjvxVRcHkr+dHKI+1BguK05fGocvIwtBWjG+uyK18BtmZmO36wpgh/ha/jwZeegUMYotN6rXQntu4ZfWx476MMwdv2GRtTDwIzihm44fX/Sz9qiutKQHZY6dY7JoO3uqyzbJRbiKr/ado7i6p4Y7LomtZZ7hVMoO2d8mC5rtbdWvpCUxZYDHOtgyYFN9XJhTpeJHAZS2QyE3cJtGXcO40oXu5h4kL/TrZWU7+se9MCAiVGzJq9RKXRk5FzTqeVisj1zhTuS28+miNKeJ0ibOTDlkh4qJdl7NMKsW5xBC/U5N7H7s+V8/AVN6e7mR5wc44PIg0vOb2hzYqo/Zn3sf9Fo5NNZcjbJtT8B0lOzFmWpZutdE5Dj6vJRs8JSecpV1K81iz7
+ Bwrl2oHo
+ zCkgiU/WJXHXDMILZ9E05ILTOCI/WoxTrp4m5jjk3lAvpf4SkRyhb543cbvvy+2q1IN0jLEOHLX2KUoTk74LLKDeOEGCp7qxROypbwSQ9ESKyqyz5Zl9u25X/1YoGpFLJMKJtpuR080J2hJZMMAGZuL3m/2Yk0lkm55HOvt4SBICzx+bBLXhfDWmE6JNaMKaBnbUkeTLDOJ2on4f/v54RZ9lciTLi0mTZoKCwWTpZCdOMcnv50utqawUV9DPd/itS55IE3Tn3sZeJn5st/2vW/g47z34MT7aI2XbVCMeyL2LAPv8C8dkikCMUSfHIoROnuOBliBWRSh0R/YTQVquX9LtFhL50V2HQSBDl/JEoVzJGyw4Z1cfGkWeJ4z4rkOtwNsfK+9YzDQcDzh1+WbOgg5TEzd6ndtJiRJoN5Z1asXYfjRQM4/zKhVzbjiV68TZnCkAj3QWtfO2dDms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,48 +100,285 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 14:23, Lorenzo Stoakes wrote:
-> Describe what vma_start_pgoff() and vma_last_pgoff() actually provide in
-> detail.
-> 
-> This is in order that we can differentiate this between functions that will
-> be added in a subsequent patch which provide a different page offset.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+On Tue, Jul 07, 2026 at 08:59:25PM +0800, Wandun Chen wrote:
+> From: Wandun Chen <chenwandun@lixiang.com>
+>
+> The region covered by mlock[all] may contain CMA pages. cma_alloc installs
+> migration entries in the page table, if a memory access occurs at this
+> point, it must wait for the migration to complete, which may cause
+> latency spikes on the RT kernels.
+>
+> Try to move the migration cost into the mlock[all] caller, which is
+> typically a setup path. So reduce the chance of latency spikes on RT
+> kernels by migrating the currently mapped CMA pages out of CMA region.
+
+'reduce the chances of latency' so do you have any data to back this invasive
+change or not?
+
+And for RT, but nothing in here at all checks for RT? You're using this
+compaction sysctl as an RT check somehow? That's gross.
+
+This doesn't feel like the right solution.
+
+>
+> Suggested-by: Frank van der Linden <fvdl@google.com>
+> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+> Link: https://lore.kernel.org/all/CAPTztWZpnX1j8-7yeppVUsxE=O9hbVeqricDjZt8_pnN7a-kBQ@mail.gmail.com/#t
 > ---
->  include/linux/mm.h | 26 ++++++++++++++++++++++++++
->  1 file changed, 26 insertions(+)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 059144435729..2f00c75e66bd 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4278,11 +4278,37 @@ static inline unsigned long vma_pages(const struct vm_area_struct *vma)
->  	return (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+>  mm/mlock.c | 119 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 118 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/mlock.c b/mm/mlock.c
+> index ac65de40b22b..f56c685533f5 100644
+> --- a/mm/mlock.c
+> +++ b/mm/mlock.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/memcontrol.h>
+>  #include <linux/mm_inline.h>
+>  #include <linux/secretmem.h>
+> +#include <linux/migrate.h>
+>  #include <linux/compaction.h>
+>
+>  #include "internal.h"
+> @@ -428,6 +429,119 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+>  	return 0;
 >  }
->  
-> +/**
-> + * vma_start_pgoff() - Get the page offset of the start of @vma
-> + * @vma: The VMA whose page offset is required.
-> + *
-> + * If the VMA is file-backed, this is the page offset into the file.
-> + *
-> + * If the VMA is anonymous, this is the virtual page offset of the start of the
-> + * VMA - if unfaulted, then vma->vm_start >> PAGE_SHIFT, if faulted then the
-> + * virtual page offset at the time of first fault.
-> + *
-> + * Note that if @vma is a MAP_PRIVATE file-backed mapping, then this returns the
-> + * file offset.
+>
+> +#ifdef CONFIG_CMA
 
-There is the ugly case of @vma being a MAP_PRIVATE PFNMAP mapping, where it
-returns something different.
+Ugh yuck. This is horrible. Why are we polluting mlock.c with CMA stuff?
 
-(remap_pfn_range_prepare_vma() -> vma->vm_pgoff set to PFN)
+Also no comment?
 
--- 
-Cheers,
+> +static int mlock_collect_migratable_pte_range(pmd_t *pmd, unsigned long addr,
+> +			unsigned long end, struct mm_walk *walk)
+> +{
 
-David
+You've literally copy/pasted mlock_pte_range(), this is disgusting.
+
+Please don't copy/paste code like this, this isn't PHP, it's the kernel, it's
+completely unacceptable.
+
+> +	struct vm_area_struct *vma = walk->vma;
+> +	struct list_head *folio_list = walk->private;
+> +	spinlock_t *ptl;
+> +	pte_t *start_pte, *pte;
+> +	pte_t ptent;
+> +	struct folio *folio;
+> +	unsigned int step = 1;
+> +
+> +	if (!(vma->vm_flags & VM_LOCKED))
+
+Once again vma_test(vma, VMA_LOCKED_BIT) please.
+
+But also, again (since you copy/pasted), why? You're literally mlocking here...
+
+You going for that 'mlocking already mlocked ranges' sweet spot or am I missing
+something?
+
+> +		return 0;
+> +
+> +	ptl = pmd_trans_huge_lock(pmd, vma);
+> +	if (ptl) {
+> +		if (!pmd_present(*pmd)) {
+> +			if (unlikely(softleaf_is_migration(softleaf_from_pmd(*pmd)))) {
+
+OK so you're not actually checking for CMA here at all, you're just doing the
+migration wait stuff... again here? What?
+
+> +				spin_unlock(ptl);
+> +				pmd_migration_entry_wait(vma->vm_mm, pmd);
+> +				walk->action = ACTION_AGAIN;
+> +				return 0;
+> +			}
+> +			goto out;
+> +		}
+> +		if (is_huge_zero_pmd(*pmd))
+> +			goto out;
+> +		folio = pmd_folio(*pmd);
+> +		if (folio_is_zone_device(folio))
+> +			goto out;
+> +		if (is_migrate_cma_page(&folio->page))
+
+Err isn't this per-page, and you just checked that this is a huge folio, and
+you're only checking the first page? That seems wrong?
+
+> +			isolate_folio_to_list(folio, folio_list);
+
+Then you just take the whole folio?
+
+It's really horrible that you're burying this in copy/pasted code from the rest.
+
+> +		goto out;
+> +	}
+> +
+> +	start_pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
+> +	if (!start_pte) {
+> +		walk->action = ACTION_AGAIN;
+> +		return 0;
+> +	}
+> +
+> +	for (pte = start_pte; addr != end; pte += step, addr += step * PAGE_SIZE) {
+> +		step = 1;
+> +		ptent = ptep_get(pte);
+> +		if (!pte_present(ptent)) {
+> +			if (unlikely(softleaf_is_migration(softleaf_from_pte(ptent)))) {
+> +				pte_unmap_unlock(start_pte, ptl);
+> +				migration_entry_wait(vma->vm_mm, pmd, addr);
+
+BTW I also wonder if we have guaranteed forward progress here if say a migration
+happened to migrate back and forth again across a range...?
+
+> +				walk->action = ACTION_AGAIN;
+> +				return 0;
+> +			}
+
+Again, since you copy/pasted, same comment - this is disgusting.
+
+And again I'm confused why you're waiting here again after you did it previously
+due to the previous commit that already does it?
+
+And why for a non-CMA range, if somebody happens to set CONFIG_CMA they now get
+this done twice?
+
+> +			continue;
+> +		}
+> +		folio = vm_normal_folio(vma, addr, ptent);
+> +		if (!folio || folio_is_zone_device(folio))
+> +			continue;
+> +		step = folio_mlock_step(folio, pte, addr, end);
+> +		if (is_migrate_cma_page(&folio->page))
+> +			continue;
+
+You mean ! surely?
+
+Why are you inverting this vs. the above? you replied to the patch so maybe you
+correct this there.
+
+> +		isolate_folio_to_list(folio, folio_list);
+
+And again you bury the actual point of this in one easily missed line and zero
+comments.
+
+No.
+
+> +	}
+> +	pte_unmap(start_pte);
+> +out:
+> +	spin_unlock(ptl);
+> +	cond_resched();
+> +	return 0;
+> +}
+
+Yeah this is just completely unacceptable. You have to find a way to deduplicate
+code. Copy/paste code dumps are not ok.
+
+But at the same time, you're dumping CMA crap in core mm mlock code which is
+horrible, you've also dumped some migration code so you're really mixing things
+up here horribly, and it doesn't seem justified?
+
+> +
+> +static const struct mm_walk_ops mlock_collect_migratable_ops = {
+> +	.pmd_entry	= mlock_collect_migratable_pte_range,
+> +	.walk_lock	= PGWALK_RDLOCK,
+> +};
+> +
+> +static void mlock_migrate_cma_range(unsigned long start, unsigned long len)
+> +{
+> +	struct mm_struct *mm = current->mm;
+> +	unsigned long end = start + len;
+> +	LIST_HEAD(folio_list);
+> +	struct migration_target_control mtc = {
+> +		.nid = NUMA_NO_NODE,
+> +		.gfp_mask = GFP_HIGHUSER | __GFP_NOWARN,
+> +		.reason = MR_SYSCALL,
+> +	};
+> +
+> +	if (compaction_allow_unevictable())
+> +		return;
+
+Again you're assuming compaction for some reason. Why?
+
+It feels like you're just gating specific behaviour for your workload on this
+flag and assuming that's ok.
+
+> +
+> +	lru_cache_disable();
+
+What, why?
+
+> +
+> +	if (mmap_read_lock_killable(mm))
+> +		goto out;
+
+OK so you got a fatal signal and you don't bother telling anybody about it and
+just skip migration?...
+
+> +
+
+Weird whitespace...
+
+> +	walk_page_range(mm, start, end, &mlock_collect_migratable_ops,
+> +			&folio_list);
+> +	mmap_read_unlock(mm);
+> +
+> +	if (list_empty(&folio_list))
+> +		goto out;
+> +
+> +	if (migrate_pages(&folio_list, alloc_migration_target, NULL,
+> +			  (unsigned long)&mtc, MIGRATE_SYNC, MR_SYSCALL, NULL))
+> +		putback_movable_pages(&folio_list);
+> +out:
+> +	lru_cache_enable();
+> +}
+> +#else
+> +static inline void mlock_migrate_cma_range(unsigned long start,
+
+inline in a .c file? Why? Drop it.
+
+> +					   unsigned long len)
+> +{
+> +}
+> +#endif /* CONFIG_CMA */
+> +
+>  /*
+>   * mlock_vma_pages_range() - mlock any pages already in the range,
+>   *                           or munlock all pages in the range.
+> @@ -678,6 +792,7 @@ static __must_check int do_mlock(unsigned long start, size_t len, vm_flags_t fla
+>  	error = __mm_populate(start, len, 0);
+>  	if (error)
+>  		return __mlock_posix_error_return(error);
+> +	mlock_migrate_cma_range(start, len);
+
+Err, unconditionally?
+
+>  	return 0;
+>  }
+>
+> @@ -790,8 +905,10 @@ SYSCALL_DEFINE1(mlockall, int, flags)
+>  	    capable(CAP_IPC_LOCK))
+>  		ret = apply_mlockall_flags(flags);
+>  	mmap_write_unlock(current->mm);
+> -	if (!ret && (flags & MCL_CURRENT))
+> +	if (!ret && (flags & MCL_CURRENT)) {
+>  		mm_populate(0, TASK_SIZE);
+> +		mlock_migrate_cma_range(0, TASK_SIZE);
+
+Err what? Why are you doing this? You're forcing a wait on migration of
+literally everything across the whole of the process whether or not they're CMA
+ranges, but as a one time thing?
+
+
+> +	}
+>
+>  	return ret;
+>  }
+> --
+> 2.43.0
+>
+
+In general this feels like the wrong solution for a specific workload that
+sticks horrible stuff in core mm and I don't really love it :)
+
+Thanks, Lorenzo
 
