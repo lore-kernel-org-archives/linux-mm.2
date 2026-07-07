@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E471AC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:04:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A37ADC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:05:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C58196B00A6; Tue,  7 Jul 2026 09:04:30 -0400 (EDT)
+	id 8D69E6B0005; Tue,  7 Jul 2026 09:05:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C08916B00A7; Tue,  7 Jul 2026 09:04:30 -0400 (EDT)
+	id 886D66B00A7; Tue,  7 Jul 2026 09:05:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD1916B00AA; Tue,  7 Jul 2026 09:04:30 -0400 (EDT)
+	id 728DA6B00AA; Tue,  7 Jul 2026 09:05:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D2A86B00A6
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:04:30 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B53B1C141F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:04:30 +0000 (UTC)
-X-FDA: 84961999500.15.C25F92D
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2BA47A0004
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:04:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EhEg32KL;
-	dmarc=pass (policy=reject) header.from=google.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 455D06B0005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:05:02 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B011B4043F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:05:01 +0000 (UTC)
+X-FDA: 84962000802.27.6FA44FF
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C810780009
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:04:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="oFvwoUO/";
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=aliceryhl@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783429468;
-	b=n0mhBtgL+4KNNk6J/36j0twdVmLUF1mu+1lyCmALCGzP53Mdiod8ovMSlreMdJqWHMQ2Q0
-	SYFG+oCc1Y3Xyb3FH8IFbqV1IcYziF2lqkp5k1VMp5zcyRjGcueU5yRxd/vRwOQMb7nhoQ
-	QYxZkvorfHltkzBhZEDtd7Ir8k/DeyI=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=EhEg32KL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=aliceryhl@google.com
+	spf=pass (imf02.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783429468;
+	s=arc-20220608; t=1783429499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kMZTTwd8MYpbLMhgPf9wJy+JM0u3tngYW75375hm26s=;
-	b=x/yNnXBUYttWISnuVnEtGfAb0qa6uFQl9CZUyx0eNBcBZ6iXiy0eaYIHLhHcE8bYrD0+ax
-	ndD8z2nTIAoLKUZaRHWEHx+jWm7y1ZIp9yulK3/RKIo9sZHactp2/MpsHla8X9ArJwBUtn
-	6+yH7S0BQm53kLSeOumEiyyuxtKM6LA=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-493c733f15aso40224325e9.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 06:04:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783429466; cv=none;
+	bh=Qa3HvUOBiikHOm2hv7akwkWqjggqpxhg4jyWQbcbbM4=;
+	b=hKXyseIzzyYZCEhwt1MbjErNuyfcS41VKf1bqZjeDpJsIhQYTDw0TnGzCag/Q6jCC0uQBB
+	3R3icUKOuM/uDxs2/QURFRbxKpefJdogPNgJECdOmucU6veUjwz2jRZTk8Zp7ZoW+ZbR9y
+	xdDW8GmFyTKpDg9lfnA5gfWDaG0xPjg=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="oFvwoUO/";
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of aliceryhl@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=aliceryhl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783429499;
+	b=l00mAECQXIzwrlQkp8ABWhDnXP0X8X9ajLtLLsAjLzl3wy/pDGIjw74Bf2Q677A/JjzpU6
+	ZGxZwkAKC1/422qw+KfJ1FZ7beQjz9ztROeuFY1UydwU6yRio22tk9cD0ThpxLgrePq3nC
+	T4O7ReZM5R/W+YZBZQ6OOBDNrBUt/Dw=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493bfe9f886so22847215e9.0
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 06:04:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783429498; cv=none;
         d=google.com; s=arc-20260327;
-        b=DxnygU/JwkRA7psiad+4eylN1Ys3mI411dEdURkMXK07jVP6hKlI1CoQuYBU7Xsei/
-         LEv7z+IMZtGU+6k/7rPXfyGlM3uezj+82DdGUPlkIDAkOtjXDreCdpuGEe8EjZOZ8liY
-         ZHqUdSz3BEr83UdmJfPYG43C9Yzn06bkNg/puX+9BQC5ag1h6E1rcijDlNNaaR65dIs3
-         /2EZOXELJK6Bv/Sqiq8Fs9D808XulqCGnwcbAZH8A0hkvS7f8AdWwtCG4fORfqv5NFZR
-         gqT1WzPJaA+rM/sVCL5wFVsybnjI3AcaqFbjcAtyaxWYmV1pqR+fXUkNzf71qZepFLwW
-         mS+g==
+        b=iMnjpxH1zui0/D3Bfb/85Dk6PHrNwzcfwypfMimrn0/0943FCga+UzQJNc52vkIWTN
+         mn5RU6Z8wzFgwGi6bKk8qYMLvgiJq8tCpqOBG6aXJMNd3eO8TymZTc95E5S55mr2a1oF
+         YKY24hUz8iH3z3YLE6aFFEWDa6UAmv/kkNvQHGeUkF8a6G/utOAiFExTwXl82p69AKbM
+         NWfkuTALgmbTUp4gsTOh2NuZU/6xe2dVF/WUjWAp2a/JI1/GVLtk28ywwuQWDgwrquO2
+         uAIqqcsIZcjdtS1IgH4GxkCXcRf6vrqZaRBihU3IQXZUOhqJGoiPhs7fVSPggjCeHMYw
+         cc+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=kMZTTwd8MYpbLMhgPf9wJy+JM0u3tngYW75375hm26s=;
-        fh=YwC0YhC4q0k/4wbbaR9u/lf82StNOgZSEes7ebaA4P4=;
-        b=EsX0u6Bj0VlQOBypW9sxEIKn+OdPVyr0VxkWVk1uhiiBnYG901A2nEl5H55Bz8mD1U
-         fgCr9HDDaZdrh/RKMpQvsUISI95f7a++YBuUhd9ok9OeHPLpNdc0eELRI2eCqti9KAK+
-         CtfkcjTWhxBm295pua2VzpbXkBmOB0vm+Q52l/zUKb4tSWzAEuwCw3OIV77UjXGVPKHi
-         YQMytyfglJKoO9mpS1OeHil1VHVEWd2JRkKa4cP760f9i4WU7j7Em0kQ0yoSlRXqvVNx
-         7jueAd5MoyNls8D4XCMq4uUbwhgejRpY2K5MfUKUf+wZzE+Jh+BgEusWyaWd00hy5O0v
-         M6oQ==;
+        bh=Qa3HvUOBiikHOm2hv7akwkWqjggqpxhg4jyWQbcbbM4=;
+        fh=Iy6Y30bQaK5Cou2gNLSfal3wybF+yguxgob56U0s+FY=;
+        b=auYjhrnw5vkYgUaWJE/MREd3BvOXhIac0GSOVO7MQaC6+R/B1LBZ8XT3gS6oMno42P
+         FidjrdSdVu+vPqlK9SpVQOt0QKUuMbPL/ZaZThnaRBUC+pY1dyboayaRg3aQe+7rklx/
+         K3MqZ31p35UMIwu3Sy2qan69HzAsi7dOX/ohgJEGNGiup26YLCeDmJlUW78c3RSwzDsl
+         V4kySBB48cSMFsdmEx6KrrY2wyMXFOyiRNcQChfTJjhPtPweoRdpe5H1CUi8mEgjGpMX
+         kz7q7d4KVapKIOjt5+k6OT/GQl2RDXvZ/OgOUB5PaNSM/G0TcTIO7r0WCmrbuEz0lwMA
+         GL1w==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783429466; x=1784034266; darn=kvack.org;
+        d=google.com; s=20251104; t=1783429498; x=1784034298; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kMZTTwd8MYpbLMhgPf9wJy+JM0u3tngYW75375hm26s=;
-        b=EhEg32KLFU2zKAllECmB0OccTf7pl4nY55WpJESXTWso48vxVaTcCVtoiLDblXaS4h
-         qLy8ofaGfM9JH13TX9XI5rulxXzttSMry8lfZC/W/SZ2qvqYCekj62LhAsyqK9myBnDn
-         5eVwoZ6OhJV3UyOuXH+RdL6TEJe+xKKLE4RFhEdyvuwxWEZ/L5P6SGbrHHECocc98A4w
-         iGOqNFvCBtvsO7DJRhc63FvpnznTRm3Uut0LZP8gds/M0WEx01qMuEF2o43hzVQIcrXg
-         RCr+cpnb+oh4enguBwLPS0mf2uZ9EbAHH1CnjygLOU4ScLNRg0SzIOdJCYxG2ZDqwYhE
-         AvHw==
+        bh=Qa3HvUOBiikHOm2hv7akwkWqjggqpxhg4jyWQbcbbM4=;
+        b=oFvwoUO/WIUvsK1BiORtkwuAQ5Xsg0z7+4OmgOd+mgMnr28MPpxgNer3Vb7uEfiZpa
+         /WkzHKt58SdSd/0nO5pvCWt+M2WtQhs53xTd2++IoehrSUwu8zYznQ1YMiSEPyQsxofG
+         99z8NyQ/87kfKHYvWX7Bi3h43e1b12lZIJjhhJiwpWjls3tY29TpxuLBuZ3WZSgK51zJ
+         abn9OGzctstK10KNutbBcWU5cfOKctUUgHqP2x5B9fHc7UBIXaPNqd1bO0tRLlgdiidJ
+         TfLk1UxgFvuBnC3DR3Ng3XzstOL9yAZaJx0vTCxwLLJ7HpCbFQ+AWkHFWJr1j4uwempG
+         iV7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783429466; x=1784034266;
+        d=1e100.net; s=20251104; t=1783429498; x=1784034298;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=kMZTTwd8MYpbLMhgPf9wJy+JM0u3tngYW75375hm26s=;
-        b=R0k3r2PfLDrR+K/IdzowoMkxra2dmwOkimvwdPrTfn1Mlf3CKXiN2B4A/7KV+jtFJN
-         JMfTbduVmlw6K62Ir9r2q4WNjfp5RXxUyoztnbO6Old3mSwvYUR4ldinJAlPaz3bcj1p
-         Gw3MlWfcb/JMSTmzpRgyTkK8lSNHnvUMbEep09Kd2NZ37B+4+5ixS33Do7TqCrX2Qpxv
-         4RmS871cDGASPHK42R9zKrZThc+6cFQzgNrDvvIOgDkzUaa9ndf1n0juTE/hJQQqPEnw
-         0XV4XclW85T2WgMfdpCTaILXrTWL3YhPblO91RjxxumioKE+znLbMN4vkYkYURPrzazn
-         Z2pQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrG6qqmKwmYcPW2eTQ4/XQy3CZMI/ivGSgz/BOUl9ZDkZN60AFcnFZIZc5n3dq8QaKmB2T5fJRDog==@kvack.org
-X-Gm-Message-State: AOJu0YwTfQQiT6YvMbJ+U9ndi6Ia9BjU+k0YT0tEBnsmD1o+CXsySfJa
-	JI9yeYFbnQsxOXlHjYXShf/NuaqqiKszAF/vDWYx5ajG1bLKLcRUxBQkZM2d5TwzUn+/rDa4vco
-	Ny0cbUKEBRd5gnaYpJNWaJk3ihVybnxBWOuDtVBEg
-X-Gm-Gg: AfdE7clogApe5IW38FMeGODVvi2KbEbCnQt6psbDwQrLk5wL+7r1nJAiS1LSasVrFU1
-	fPEMwtDzY6gzuqYWVakxxDE4Hyl1GydPjTher1Xezmz5xI6gCTPQ7wyTBH43Wuovmk48JNopAwt
-	zxAq0/wbC1zjgf0IJiP7QUZxZ2/p0HWrE6obglcbcJ3yaTxzdbYgb0PDzZkXGRMJc8EQFS56mBL
-	fXaJnhIZqujZspS20JsTXxqxGFYgji1fvS9ruoUne+JsD77uf3UJCv27CFt0c7Mz04foJoOpUw/
-	h3wBaOeoEZJoUsN9DgzRMmKCsPI=
-X-Received: by 2002:a05:600c:3e14:b0:493:bc4a:e7d3 with SMTP id
- 5b1f17b1804b1-493df0a08d1mr56240095e9.39.1783429465838; Tue, 07 Jul 2026
- 06:04:25 -0700 (PDT)
+        bh=Qa3HvUOBiikHOm2hv7akwkWqjggqpxhg4jyWQbcbbM4=;
+        b=RfXeN3mF6r7rtRuHEX15bXbVJBefcTVJKl5amoeD8OQ+zYbJSn215p9uChTxMOxn0z
+         gQF9OK8uI7kvnTeQn/H88vRNeXidwCWSzhy4pw0kCSyB8Ujs7qG8JYUPCEGatUdd/l9r
+         jdC7A8GfTYbN/jXLA1a68FAIbrG88M1ueYnRANDFLt5sJKG8PmT9Wv4e917RFho8qFh9
+         MtnZODzBjFpWvmxhT72cJKQMnSTlWBr9CxntRlL7ISZKVYzy4URONwLIApYXL1Y5CVSR
+         vmATrunltgxmGK7J0QGtkWj85RTeiYjmgfdjxwcTMVvdDIeNeKlK6iEXhTk/rMS9IhYL
+         gI1A==
+X-Forwarded-Encrypted: i=1; AHgh+RpvPoeTgfmMelHCzbPzwNSrlrZhUFPrw46CrVvzJPksyWyvclaheP+8u2sZL/V1yEfy5hZlr534Pw==@kvack.org
+X-Gm-Message-State: AOJu0Yz8WwdIpOHRkdkZxTxqZ9JkabN9149OjezkHFxr19Ilb/wTGr9R
+	U65xuyHOBEy8NUZMNpHOVzxCuMKdzubYcqy9W7BrkTPwPFnTiO6y2b67dBtQWvJPyJxeqprQVqA
+	PemO5GbxdeBvlYj9rq8BZxBYyx5MgjdFS/Eb0XcWANhKcVkyA5/wQGEN6
+X-Gm-Gg: AfdE7ck4xL0USr4Xd90lufBP75dt74JykBsYTFem6Aj3C4VJoTJQ+4axHesbuFlyLfu
+	gWS5Q5DvRMAteXrpFT3F6jh8PFo/+dlok7icXDVP3v/8NNJa/16VyUa6SvGrgAVX91ImQEI1QG7
+	mxI+AWvFpljVvx4KWMZAs2dJQgflGbT9LJVMm/vHn6eBqCgJAhC6lIxGrsF49y1DAkQR9Zlj+vm
+	oIXQQVfYOj1cRRBRnXeI63xaV14qAKXKPogxBIUgP+6GbcQTRhmsRBJo3NyiUM2GJeTL0bqksNb
+	fx9zMgnhR2RwgUbVmGpJunBhRBs=
+X-Received: by 2002:a05:600c:8b70:b0:493:b6e4:fb2b with SMTP id
+ 5b1f17b1804b1-493df06e943mr52096855e9.25.1783429497735; Tue, 07 Jul 2026
+ 06:04:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260626-unique-ref-v19-0-2607ca88dfdf@kernel.org> <20260626-unique-ref-v19-4-2607ca88dfdf@kernel.org>
-In-Reply-To: <20260626-unique-ref-v19-4-2607ca88dfdf@kernel.org>
+References: <20260626-unique-ref-v19-0-2607ca88dfdf@kernel.org> <20260626-unique-ref-v19-3-2607ca88dfdf@kernel.org>
+In-Reply-To: <20260626-unique-ref-v19-3-2607ca88dfdf@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 7 Jul 2026 15:04:13 +0200
-X-Gm-Features: AVVi8CcTh9Rs6YX_7yLE2pYLhG0EOfuYJdmTfdwdI6hvKkhrcisIrByGWFuDPNk
-Message-ID: <CAH5fLgguLAQG7mUwD1NPECYSsPdpPD_tLskU3NdwLZhKR1H=aQ@mail.gmail.com>
-Subject: Re: [PATCH v19 4/8] rust: page: convert to `Ownable`
+Date: Tue, 7 Jul 2026 15:04:45 +0200
+X-Gm-Features: AVVi8Cd8GrEsrkEwxzhRkanTcpbMUA7MU6OpTudOnt7DIfIGqhosSlF_BI7LYTM
+Message-ID: <CAH5fLggMeHUgXj7JGYSJejUrR2PdWymOOb+3E1VmHokzcox4hg@mail.gmail.com>
+Subject: Re: [PATCH v19 3/8] rust: implement `ForeignOwnable` for `Owned`
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -143,17 +143,17 @@ Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlasti
 	linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
 	dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
 	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>
+	linux-pwm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2BA47A0004
 X-Rspam-User: 
-X-Stat-Signature: rsjzgsmut67bdmn4ih5c4u4p5c9ozeb6
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783429468-531830
-X-HE-Meta: U2FsdGVkX1/lxcytdVSlnN/etg60+6kSUV8WsBV7rUI7nYJqkpkLXwxXy/5EBGhGax0J6bvVGMBzsI513aziPv5uzhbseYn0ttkZkAhbO7kqbzuHJKt1OfR1coi/b0Rs2b6k8SVGjCYtb7UNyTtvFznzjkU8ZFf31Sqc9Y+ho5Kjy5SPvjsqYl5NXRCMjNcrt7vTqWCqx94+549iJF/ytYgaTO0gSzEdoT4P3fXP0SVUEwJknZWAyAyachA+c+CVnMf4KAQ2DH0TskXZZ+NM2W1lbdpuxTOm3zqvA1LR7JWw6HtWQ9JYd0FX0ig+APnsn3OyO2F3HJa0V4h0D0V0BO4THQDfGxrI9jBiSx0we2wehV0cXaMZUeCRZjaF0ZGXaJwYMVOhPKs7D3ry3rExQNGANyrJiGJca5e0yv+H09IFKgOPIW2sd6Xcje0DFJ46GRDEm222lM2aOIHYGVZ99hcLl1HE67TTg2795khBXVkkjiKhoPRmAy6IiPWItJfxOyryrrKcRzbMM3VmqfXsRUZC1r0IRZJxzdEC97oE5mJT6+Zsji3Mzc29gNA6ty133NKF0Suylhhbeu6e3YGl59+inRwsIx5yfRhnU3hPxYpExGVyj9pzbgnycfk7oNSitBXvylpmxWFNVZ+OvBLZsHa307xTngEzaUcDq+vIurePXi1snY6s4Qkp07NzkE25212DakbeuHCeTV3GoY7JY82AK0R1+tt7eO5yZ8vBgpvqhEQbdehP8ctZe7dsUlheI3fyJ+Uhi9OiUWK7Lb6nkjh0TpZidYi6KtTvFAHPnMHye8NKppgewq470KNQOKRRqT/h1WYI3yggGqvQkDSN6aLrWP7hzUQIX/VD+vFfNrvhl0STG35Tq0Czr0qdd9xZQlJGDEid55/Q87dLrN8I0PPQKKQhbssG2emIhEGQC8ajrEN0sSAZnTCyoqEmdVEkJVJ2rIpcPEuinx8aOML
- edbTHiwb
- 4nt5/HpJ7EGewwLswwbYpX3bp6TeFFFSZaQAKJRvi9aJrEgbgB+Z2/1uNmWGB/TcqaQ4TgwQGtXAGOYmH+icx4eTBU8YMcpol7b0GOE37DWcaFOS5Ap3jBPo5YPWah3eZ/sX4DZhCM0cfCitByBIQlqMfKKN39mbtTkei+nw4FrQdLfAFQGOIV15zinQa4vgG1BUgygaeek8X2Dw2zUgR8ZCNRVK6VB3Ykah12r1DFwQ4PSWKQMuA9XjoivVOf7p+BAqCFI/i+cGxRYI6CQfIF4y9nKO0fSSD8Qzbk/F1UtUrwcZxkBhFZSricfqZEDBJFtoT8rtRBqzgszeHdUtkUnN0CjumRrMsDgdxiDpnUpo6yl3ijrdtxygsVGKh17zF+b/fKPXbxMLskg0Zy2NwPuRvfWu3XtvKmvhRQlcVGEfVoU/ao7Ce8uy+t56zXs8T8Vjg13BQKLjq9CUZv5ODkgqje0nz4E3Wt8fXf2TXm4RpySDCbXx9mIcC8eUA2+pRB4CuCRl2/hxNPIo=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C810780009
+X-Stat-Signature: wsmwtromqw3yx4ydpcnu5jnqmr5kxb3a
+X-HE-Tag: 1783429499-370473
+X-HE-Meta: U2FsdGVkX1/S4ItccEx4EPc7LNmwCJtXEWJJcz7FMXHxkHYSozvXb2tVkG5ve91wOK50thEa/aK5mrNCBdzflY3Wkg2gtes+pjcKM4tb3V/GBJw6gGgiRXZbMBTql7d4XT2L9UpwPcC8IZpWH6G30GUxkUGQ/HNAFMPRbHt24rjxAtLUs7YVruSjdaJKxQwnylXXz8V3nkIn/+OfNcUG2zBrWW0NHWoBexPVU43UKLX3mwI15W0WWENJG0uE/e3sCc/geBorCVFuqltCPut1ulMgIYJosFNebmEuQfpo+Fz5Q7RVD+ghx/xP6R+OvBljrhXGuRETtc3BYdGYULAE+PjGtLoRWlJ8EgCGPCW0aeOOS52ze+ZZXcCzDT0qp7jxEfRHG6r1Wlh5KtGWHFocfSUEn4Ie1RoL909bY3iVJCxKhL8KK9vbuLZcg5yWqFIUcKp3gxmq7LOqfpFskeMld9QJ10aJwKNZy/afy/4rpaix4j8jxh/u5xnh8M2APnk3QT+3D2sL8SJWiKRXq4lGVGHvxP+hdZ3d5Z6ClbLOwoNCYShiuhlsLQdKLyJYiUSBrhIl/+vp28gsL9iDU0SXx5XTTT+OWjqE6EWtIy4wyMLJZBtamxYCRYqHriH56Fp7ucZokLTDoVYfe6cMcXzrCPfE9w1HNUfeP9kM9ByyBmC5ZX1dtJJ5sX7IJFF/aN/oSQmengNR4quvJdPquJda2vQAp943Mr6UB8Le6mEpLnNIt6fjX/ulde6fIQNRnrmYGyJrcjfgeC5BAOvf9Y2dyFK+qy9hLOhl1Kd9E0NAM4/qqz6klK7A33KwV+z0TQtlaHIt4y71sz1R1GWx8pEjdRcq2igy99M+H9pa+l+mfqJNFAjU25gTsvTalNrHH6EXfXOEEimklFbh1lJdxUKuKvt1vNtRBFcCKpw43jdGUXM9YRoPHIGSOToH9n785/5MtCfkUhDwYqGbGwdRNuy
+ Of5Ko2pe
+ 5t64LTjDpod0rPBPFAOygUsR3Nqci9i471uQTgMLQP5nUlpkC/inOJOFgJH7n+7/MVKy7QYqPiOQw6J2yLUduhbSETpVqexc1WI05QrRCN83te6XYrET3zT/Hpplr5bJCpFgrX8zzV7BlRTQ/9Qo8GftzzvqG8DafxZGm1hnmWNcMriknZBjpYUK2nxruMK9TyCObUfQdJKd9Z4kOIDuh6BPp124yerO8Sxejg4qAzIVQ3W2MQMzpPBR5bHQkFk/RdmcUCZJ6h+aJDFRZ3c+WaT3yeyf6SYMg3ph9UgC898kjzEjdplpFIwWbgz4J00LOdtyxUHTE93tjxKuaDOrmtopK0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,30 +161,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 1:56=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
+On Fri, Jun 26, 2026 at 1:55=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
 .org> wrote:
 >
-> From: Asahi Lina <lina@asahilina.net>
+> Implement `ForeignOwnable` for `Owned<T>`. This allows use of `Owned<T>` =
+in
+> places such as the `XArray`.
 >
-> This allows Page references to be returned as borrowed references,
-> without necessarily owning the struct page.
+> Note that `T` does not need to implement `ForeignOwnable` for `Owned<T>` =
+to
+> implement `ForeignOwnable`.
 >
-> Remove `BorrowedPage` and update users to use `Owned<Page>`.
->
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> [ Andreas: Fix formatting and add a safety comment, update users. ]
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > Reviewed-by: Gary Guo <gary@garyguo.net>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
->      /// Returns a raw pointer to the page.
->      pub fn as_ptr(&self) -> *mut bindings::page {
-> -        self.page.as_ptr()
-> +        Opaque::cast_into(&self.page)
-
-cast_into() is mainly used when you have a raw pointer to opaque. When
-you have a reference, you can just do self.page.get()
-
-Alice
 
