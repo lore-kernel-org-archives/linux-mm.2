@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 431B1C43602
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:35:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF8F8C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:41:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26E7E6B00A2; Tue,  7 Jul 2026 06:35:55 -0400 (EDT)
+	id BA1686B009D; Tue,  7 Jul 2026 06:41:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2470B6B00A4; Tue,  7 Jul 2026 06:35:55 -0400 (EDT)
+	id B78176B009E; Tue,  7 Jul 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15EBB6B00A5; Tue,  7 Jul 2026 06:35:55 -0400 (EDT)
+	id A8EA56B009F; Tue,  7 Jul 2026 06:41:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD7716B00A2
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:35:54 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6522C1C7E43
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:35:54 +0000 (UTC)
-X-FDA: 84961625028.25.3692FEF
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FA156B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:41:27 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E459C403AD
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:41:26 +0000 (UTC)
+X-FDA: 84961638972.06.C3D5A4D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id AD3224000D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:35:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=muEHhNZS;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 43DB220009
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:41:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4xQ1MLY;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783420552;
+	s=arc-20220608; t=1783420885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZIdJ2kWnZSzaIc2VKvx3tV02RUSZsKP0aF813USpRQY=;
-	b=MeddSrJyJy7NzFK7Nus+S7WpmCt3GUy5FHdewa+XjdBoFKLTfmJl8DJad1p/5hxJFECNmf
-	170nCnQWv5eMRLEZ0qAfEzHuFheZz288F5aXdqa5AZroDYw2v4Dyg/R8eLV0kfOSk7jyRk
-	rXZ9J1i8StDX8j+7QPGLkevlSXyGwCE=
+	bh=oJf9TD7SQDB5FPJJW2/ET84adS4IbuPC7yAGQona0w4=;
+	b=ny3Hlhj3QRoga6IBcG1hEsYvazwSV1lkhGQcuki/2WQkT46kkSbgKtrQBMnHQigMTTCUUm
+	bAe48KTo9UUb88KFgftbfJhpTDSscTRRP6cyajCXXlIcpdPx91HRtReTs7m0/B92ZRjKiH
+	zDMGBeeFp8j8cZ3g8jPndFQxWmF9Xak=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=muEHhNZS;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C4xQ1MLY;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783420552;
-	b=S9iDzL4sTk0KLy+0iEfANcep9D8+LiPzQdfqt6x63aKhQSYryxW4AJ46iMEJilILOZgtDj
-	zvJun410oM8utatErCNWYlRpAIiiLrkaIZinC8vtB3fVHEJ0RtKvfNj9pTtZE6oTl0aVz9
-	n8R6De4mb/WPmTTjXjq5w2dPNVlDzNo=
+	t=1783420885;
+	b=JG65LdKed3WLxiv/pBuf9cJBHBFTq5a7dS05EerqXI6Jsp/D9R5FE1djqN+3OwKRQ7b/De
+	+pZaSqdPLxubr1oIwoQ5/g20Van3H+CPtn0ZVXLOwFUqUMFXbJvPgfAC5+0uDZ/8KDK/k0
+	FNIVhJbL1VqjbNyQtFWUm6hOmFHwQYY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C8A77411A4;
-	Tue,  7 Jul 2026 10:35:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF751F000E9;
-	Tue,  7 Jul 2026 10:35:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 27A094346B;
+	Tue,  7 Jul 2026 10:41:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBB51F000E9;
+	Tue,  7 Jul 2026 10:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783420551;
-	bh=ZIdJ2kWnZSzaIc2VKvx3tV02RUSZsKP0aF813USpRQY=;
+	s=k20260515; t=1783420884;
+	bh=oJf9TD7SQDB5FPJJW2/ET84adS4IbuPC7yAGQona0w4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=muEHhNZSQ0LSJO5dQUblRtk+3KNiW1Sexx9P7JyID1p9Hp3xGv0J4UbRG+fY5Nk5k
-	 lfNOH48QJc7HVhAUIDSaP4FNnIxe1mCFgX523zuLO4ghOrfTq4nTYzyBZzGlQjIANh
-	 G5dVcytVLi1Y4Go7lt7Hi1xf1O/iRDFx8vFh8b1fkkLSr//7hIoyAOX0XNg3mhaHuE
-	 /MZdzFdyC5bAY2+EfgYmdAJYL+l14uqVN6YBlzzFherZX3IvuvVVB4464w8KwAKHFR
-	 Cb6iDTk1N1p2T8kQle7lANNppyIF7SnaCJrLWMjV2fVD3A9nrBk/dbzE9PoWVE/mTu
-	 kXgj2SJWBNUbA==
-Date: Tue, 7 Jul 2026 11:35:27 +0100
+	b=C4xQ1MLYDSpZyJ9vErhP7qHq91i9ikXGv0t5hCWrCl9eUTArSekW8IgLF8XGmtWKd
+	 xTIGCAyh1qfIlIufd5l17Cgwg4WqZiF4dc+/TCPc8HvDG1fNFYGWBlF0ToYxYrqjvN
+	 YneV9/r2ute74xY+Q+roObPcxwoMMhJLENuNjhLyPISKLBSurogQ/rIw6E73c+hLlm
+	 hTTkc75Ea9WO07vhZSUrk0zIjjA/Vuj7oO0Rk/wliB+L2u0OvPNR67ir9nUGC/aRRp
+	 HRIxrduui2kRQb/MqDuhLQSFwpD8S/oxg/5H6IXHtt0/ADede4e0LeTLhY0Ts2D2mS
+	 8/Zlwql9MxhGA==
+Date: Tue, 7 Jul 2026 11:41:00 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -99,24 +99,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 25/30] mm/vma: update vmg_adjust_set_range() to offset
- pgoff instead
-Message-ID: <akzVxx6vIeiXO-cV@lucifer>
+Subject: Re: [PATCH 27/30] mm/vma: correct incorrect vma.h inclusion
+Message-ID: <akzWq08xwXKqwwtq@lucifer>
 References: <cover.1782735110.git.ljs@kernel.org>
- <910f7b5be78232304dc7ca01cd57c6f5ca8f3d13.1782735110.git.ljs@kernel.org>
- <akZLhkjsJ_3sGdox@pedro-suse.lan>
+ <22d0f4e3fe11f6fd1312734e242d008267ad142c.1782735110.git.ljs@kernel.org>
+ <akZNiN5Y9fPk8bZH@pedro-suse.lan>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akZLhkjsJ_3sGdox@pedro-suse.lan>
-X-Stat-Signature: z4af9bcj8n56mrehh4j6tsno9cot4eqn
-X-Rspamd-Queue-Id: AD3224000D
+In-Reply-To: <akZNiN5Y9fPk8bZH@pedro-suse.lan>
+X-Stat-Signature: sj36e7pfb11nnjbp1nkayk5ppqd189ha
+X-Rspamd-Queue-Id: 43DB220009
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1783420552-662886
-X-HE-Meta: U2FsdGVkX1/HQdKeTa3RIccDFtZCYXX9vJWgD3eRCnmR3RVIbsO7lnsaCfeQKoRDgF9AK6a5FIH5JeeYQ1OEJuPA5VHeWAP5jq37gXfOGgoVRzw6WK/K4cC70Yf3Z88ld4d60aoIZnSuWVG9eUKb2QvnsxDQyBAc5sE0aIR8F+8wWRVzXSFd2Js/791SPUkyA4iEnBh50l9SibWb0YSDuHz2eZtWx+fspfnFETQZuMc6X+3QfLcXbJxWEhHWGQtnk0IdT006zggaY3OdZXocBpAwdR6+fd51lvQiQZFfMm1maYbUmZ5z62QkgLfYrElEJgW7nJXKeFvr2eI572PwqOCco9itF0BfaQnO8Squknj7PVZ/Mo2NjepZVHZQIZJ3TdamJ10T6lCJ2j6lu5J2YznWSQcQAErZ4qPNspn7lW8MwUD9rOnU9rCRtKhTjkAEZfwEjNIg8LwaNQYvT4cdV9HTYqV+aDswVoT94FeVh/D6Kh+Wtu0mPwMtJsEKqxTNk1Fx5DuNMSEJe0UErHrpPMHkT9ynATsHX0I7IzO5mTHcHYNId9kq4iF1IUxnUPFYYpdrMVhidQpIElnxvnUulaPmlxsojiOG6vvuIB0aSjujKdNCO2R2HV1j7RDkJm2Dl1eXxHP6PSJRp0H98veIkbg1MaagVhoMnw8cq7HPNTHSOFMsjzFrwZf6iiuCnmN5YHkrpBKR2Xh/K8+vg2qAeaFHzEQmlf+DiCPXJix3Y0/Q2Z8dsmzlRKzGb5Ord8pZT46xEh9xXL5RFAytdbb6xeEhOEoPMP++naUMYfWJme6eZrzacQC43Lu2x09cBViiG9KkJ55wQQqK5glq8SPyY0udLTbtgWh1H27SuQ2JX6x1kz0M6qjOioduTcSoq/WN8NU3jfajCD5+WO+1Sis/HVnam69B4Qx3Gf3iSxSz9LKzCbm3Q3TG7KLuZMRMEw9WN2shPfZV2BQToY8R1QZ
- 2pEOSaQo
- HrI6Vcu+zNkLXT/5ZbAsf5mfaEvfL3VwzI3d+l8F0L3GBUSbI3Mup1c6EZLe0Ko00nZ+Rf1gDfcfSWcENu1e6M8iBumfHLbiYfSU3UEaLWgIuqYIAMy99hyjmmwo9J7p29gQRL+kHZKxvvLn6rdhG1kDAvxwBNkSpX4p7AoJS4MzPnJ8UkjVGwfiIEG8f5LTKlh8cjrWFIzFv3XnwXx++/O4bxXixt8n4Pej4HnDkxK/s/6S7bQln6WiLUOH8WJgUedkVjnESaTN5hAGlyCR/f5gXqTyyn2B6BjY/CaYofpZ+v35JwRWJx1UMZ6fSigOvXonjAX/scLRLk6zsKSLYzZtPbJVp2lr06tRLnsGv7Zs4O/Ud5g6Oy1AN33xGOmDtw0cz5xA56efWw9M=
+X-HE-Tag: 1783420885-387621
+X-HE-Meta: U2FsdGVkX187m6S0pdkqENnokVfwMLpQ2ue+IQN2GsOGsh3DhpNyKLi1coONyPxtWcEGd+16ATtljkTPaPTRAuPi5nvaAArqlFleih9Ojr4lE3EU6BfzLpqKTeYxjCHaszaZjJ3CMIM8tVrvUaJoPDoRe9dighjPNGN5aMuUWrCVmkZUo7+P/LKL2zDp8GuD8AYcK6/IHZQdM/XCypwCxNZSlkDhFSbSsQDXFx4K42QJvhXbYypheLqygbRYIfACAH+NMa1iZAbwNnWKTlukUkUTWE8LPrv4TMt/EQz+m+GBtVsI5Jc8lwwbucKOLWt9hSEbNda517iH5FFlMO8RvXvoDVp1Sri1Yx25V4M5NH1WzLaDQQQaf/iEuwU5hxRCtkqvxIeoi6g4yM3LyrBWdmuz1uNAJrcJQHkmvEk0EAbEU1jEZuB1NB7PB4fSUEl8F6gMOIett8Y1kUzY2AP1pcLzeTOOrkWrU0gmzmZER6TC13oS2NWI6k2CrkB1qE/mLTM7LGpeBZITD51i8nHrYWZxXq84gg+D9k2jQIkxZ+GHl8Oi0RQc8jMCe3/GTVzlY/Mv+eNUxqLVuwWNzkUpQjTBgSOij+fV1+z+jH8wvQ4t6eY8CgTwi9ScGxaOUZmJocXmkE/HZnbAGc1QCZt5x+GMTxspZcrK/IKAENc7mkaAOaqh3PQiYSOpyG7G/M3zFTy5ghDwAp2J3qvRytq28jeItKWg1pKFO+E06dYktKrUqc95yfqkSe1VV8m3nJEL7FO5tVHpFZn8uf7qL4HNoWmzm93IzI3ZxbUYwZQIv9jRt88WMN7bpEKPqZO0PcUztPfxZgtC+ZWs1LBSPbvbcGM5gEmR/vcG29oz34HMuO1BIlk6MAcL+8DCeix2meaj1Y9zTCetytcEaXVPHaQqlW8NBYJoy7+Y6Y3JX6IMoK/WixtSzW7+v7uvCilqwPOH2ZlMUuyms8R8FrtjGV8
+ CpH9ukaR
+ r8Oj0q0aYaErjtIiBu33Amrcq4i/pxcDOzjtUAUqjOPBp5/mixUaBk9o7KrQqrt3Q5B5pmiMxHusnWLakiwo8/8+KC8ULNq4qJvfN4P5y8vJG24BV2iTZg58UGTb4E+1f/vY3W8MmtlVDHbzdRVoyYPHkZ7gUxQ4xaSa1VpxmF4pyl+TgkLHpDngAuV1+CbVick1bRWq1enIhLyURufzwAj4idAZcUE31TDzr1DJFnMUmfbd3Cf8s2+LnaqbftaPkMqi8niuuvlPFwnGmPIUNxqdJ5QFgDPu0vvv0K30YsLiVxm5oG2nicIg7/AKfyzipCiiNPBxIwGKNa1sMONh0s4u6H9ctFklawEsWiQcXMONGml8+mjtkmKmxlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,86 +123,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 12:29:54PM +0100, Pedro Falcato wrote:
-> On Mon, Jun 29, 2026 at 01:23:36PM +0100, Lorenzo Stoakes wrote:
-> > We are calculating the pgoff as an offset, since we have vma_add_pgoff()
-> > and vma_sub_pgoff() available, just offset this value directly and use
-> > __vma_set_range() for vma->vm_[start, end] values.
+On Thu, Jul 02, 2026 at 12:40:30PM +0100, Pedro Falcato wrote:
+> On Mon, Jun 29, 2026 at 01:23:38PM +0100, Lorenzo Stoakes wrote:
+> > The only files which should be including vma.h are the implementation files
+> > for the core VMA logic - vma.c, vma_init.c, and vma_exec.c.
 > >
-> > We take care to update the range before offsetting the page offset, so the
-> > adjusted VMA's vm_start and vm_pgoff are mutually consistent at the point
-> > the page offset helpers operate - this matters once vma_set_pgoff() comes
-> > to assert invariants which relate the two.
+> > This is in order to allow for userland testing of core VMA logic. In this
+> > cases, vma_internal.h and vma.h are included, providing both the
+> > dependencies upon which the core VMA logic requires and its declarations.
 > >
-> > Doing so lays the foundation for future work which allows for use of
-> > virtual page offsets for MAP_PRIVATE-file backed mappings.
+> > Userland testable VMA logic is achieved by having separate vma_internal.h
+> > implementations for userland and kernel.
+> >
+> > Callers other than the core VMA implementation should include internal.h
+> > instead. This header does not need to include vma_internal.h as it only
+> > contains the vma.h declarations, for which the includes already present
+> > suffice.
+> >
+> > Update code to reflect this, update comments to reflect the fact there are
+> > 3 VMA implementation files and document things more clearly.
+> >
+> > While we're here, slightly improve the language of the comment describing
+> > vma_exec.c.
+>
+> Two random thoughts:
+> 1) perhaps vma.h -> vma_private.h
+
+Not a bad idea thanks!
+
+> 2) https://lore.kernel.org/all/CAHk-=wghMm2c+AYEcwYY7drSVXB27DYqc-ZXpFiq=XFs-w59wA@mail.gmail.com/
+>    mm/vma/whatever.c :) would PROBABLY solve the issue of people snooping vma.h
+
+I think a vma/ subdir would probably confuse things further, I think renaming to
+vma_private.h neatly solves it actually, along with a comment maybe in the
+header itself?
+
+Then again mm/vma/{vma.c,init.c, exec.c, private.h} isn't too crazy
+either. Though vma.h is the actual 'shared' bit, and vma_internal.h is the
+private bit that the userland changes. But could switch things around vma.h ->
+mm/vma/internal.h that mm/internal.h imports, and mm/vma_internal.h becomes
+mm/vma/private.h.
+
+I think that could work but definitely a follow-up!
+
+>
 > >
 > > No functional change intended.
 > >
 > > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> >  mm/vma.c | 15 ++++-----------
-> >  1 file changed, 4 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index e3355eab11f2..0579fc8c9bd5 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -714,9 +714,6 @@ void validate_mm(struct mm_struct *mm)
-> >   */
-> >  static void vmg_adjust_set_range(struct vma_merge_struct *vmg)
-> >  {
-> > -	struct vm_area_struct *adjust;
-> > -	pgoff_t pgoff;
-> > -
-> >  	if (vmg->__adjust_middle_start) {
-> >  		/*
-> >  		 * vmg->start    vmg->end
-> > @@ -735,8 +732,8 @@ static void vmg_adjust_set_range(struct vma_merge_struct *vmg)
-> >  		struct vm_area_struct *middle = vmg->middle;
-> >  		const unsigned long delta = vmg->end - middle->vm_start;
-> >
-> > -		pgoff = vma_start_pgoff(middle) + (delta >> PAGE_SHIFT);
-> > -		adjust = middle;
-> > +		__vma_set_range(middle, vmg->end, middle->vm_end);
-> > +		vma_add_pgoff(middle, delta >> PAGE_SHIFT);
-> >  	} else if (vmg->__adjust_next_start) {
-> >  		/*
-> >  		 *                Originally:
-> > @@ -764,13 +761,9 @@ static void vmg_adjust_set_range(struct vma_merge_struct *vmg)
-> >  		struct vm_area_struct *next = vmg->next;
-> >  		const unsigned long delta = next->vm_start - vmg->end;
-> >
-> > -		pgoff = vma_start_pgoff(next) - (delta >> PAGE_SHIFT);
-> > -		adjust = next;
-> > -	} else {
-> > -		return;
-> > +		__vma_set_range(next, vmg->end, next->vm_end);
-> > +		vma_sub_pgoff(next, delta >> PAGE_SHIFT);
-> >  	}
-> > -
-> > -	vma_set_range(adjust, vmg->end, adjust->vm_end, pgoff);
-> >  }
->
-> Maybe this should be squashed with That Other Patch that touches this.
-
-Ah this separation makes more sense from the point of view of the virt pgoff
-stuff in the RFC (see [0]).
-
-And would rather keep as vaguely bitesized as possible :>)
-
->
-> Anyway,
 >
 > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
 Thanks!
 
->
-> --
-> Pedro
-
 Cheers, Lorenzo
-
-[0]:https://lore.kernel.org/linux-mm/cover.1782745153.git.ljs@kernel.org/
 
