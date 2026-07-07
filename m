@@ -4,129 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68D24C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66B9AC43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:20:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D32E6B009E; Tue,  7 Jul 2026 06:18:27 -0400 (EDT)
+	id 253596B0005; Tue,  7 Jul 2026 06:20:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 582F86B009F; Tue,  7 Jul 2026 06:18:27 -0400 (EDT)
+	id 204236B0088; Tue,  7 Jul 2026 06:20:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4757F6B00A1; Tue,  7 Jul 2026 06:18:27 -0400 (EDT)
+	id 0CC796B00A1; Tue,  7 Jul 2026 06:20:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 15D816B009E
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:18:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 90F7D1C3883
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:18:26 +0000 (UTC)
-X-FDA: 84961581012.01.398937B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2464BC0006
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:18:24 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CDA606B009E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:20:40 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A712403BD
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:20:40 +0000 (UTC)
+X-FDA: 84961586640.10.F68590A
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 835A2C000B
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:20:37 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LX93izZ5;
-	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vJW3jw9F;
+	spf=pass (imf28.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783419504;
-	b=tgOdFVWNCVbT4Kz8XlqPfvyb9luWfNBTvdODIP+P2ouLWjnhRNgPnWubWzIhWX9YrMJfx5
-	Cp3eNY9JEGAURKu3abM4KstEbNDqUMAY7GHji2CyX94I8QRlmpJgMg7AmbXXGa/+QZ34CJ
-	P2oycr+rGPsUvyhc1GtbEQHN/+cYqxk=
+	t=1783419638;
+	b=qCOBaKqgU6I3jnj/BUW81gvcVS4r6ykUi2HwrVWKIgzGy60qGtgiNX53jjyjmGRzIMAGaS
+	BCtUZKrJplT4+ZOkZzXnQ7h9SMaO11eyUwjMIxAdp2v9xkwCYhHHAndg0vYfqm2RlKzbsn
+	/0p05YfP2QYOzjXW0n/auQh2BMkqiM0=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LX93izZ5;
-	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vJW3jw9F;
+	spf=pass (imf28.hostedemail.com: domain of m.szyprowski@samsung.com designates 210.118.77.11 as permitted sender) smtp.mailfrom=m.szyprowski@samsung.com;
+	dmarc=pass (policy=none) header.from=samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783419504;
+	s=arc-20220608; t=1783419638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3slwj2XyzWQtqngmhVqaSA6RBHzpXga6waGc30WeTwg=;
-	b=I32o2MyAowyaNe8RRSWRGtTdT62jRLOcnsp1Wx+RTRvr6lE269kfPQB5/Ix+9BKL8fFGP4
-	8FNC8C18xssSLKq8ga8wF6VRbcuVLcOu6T/BIupza+YY7Yz7nN7u5WeDkAUnrVn11MiGeq
-	VpqKgpojBIiSiD4weUUB0YcKtkV9dEw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783419503;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3slwj2XyzWQtqngmhVqaSA6RBHzpXga6waGc30WeTwg=;
-	b=LX93izZ59NyyNc0z2XAce97IZU+hBG+sTULIlfY9Njefax1cBNzcm3dnLLMJul00XTLCyF
-	1CLmJtvOKQhTDlJaRMDHFh9sDgjd1yldmfgkQKHVwqGdr9/bR5F+PrgvkI9oI/jLilfMAM
-	BEbsVyXZ4u4VEJdn7Pa9odLlfkwdpR0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-391-Gg0R-VOgPQK25K6vIHF8wQ-1; Tue, 07 Jul 2026 06:18:22 -0400
-X-MC-Unique: Gg0R-VOgPQK25K6vIHF8wQ-1
-X-Mimecast-MFC-AGG-ID: Gg0R-VOgPQK25K6vIHF8wQ_1783419501
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4767036f8faso2340669f8f.3
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 03:18:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783419501; x=1784024301;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3slwj2XyzWQtqngmhVqaSA6RBHzpXga6waGc30WeTwg=;
-        b=paQuZcg0APSGfSeo12/eIxV9hYeVtzvWGfq/ROOnJILIcVMRvNyMjq+ppS7gDIgHYC
-         kLU70kZf8z26nfY+8EF3z39nDI+RVLuv55LsjRf6M8JQRNWsoSr802yfAmW0PWzRrXeR
-         Ljrpx/yK4BEHPAGjVhFSDlyAh2P2EI6HJNIUN6x46TFXuLf7R+ZvxoykmobWQJU+O+mg
-         qFPELRIQdDjeGkr3PSUUECVNuMpA34V+pc6h07v+pk41Pc6uRsL7YHu0wfdEwAhOP4ZU
-         K17hgI0K1/iKrbSOfneieXiOox+85J00tM10oBu08Zwvb/OxN0xopWoZoQwm06AVXSEk
-         vd7A==
-X-Forwarded-Encrypted: i=1; AHgh+RoAacL0GFc/YaYkoaIyPqHWlprDCjwpqSwOlnauZ0KI4pRw2Lbx/cA9JfGcBF39xU5HgpKDdww78g==@kvack.org
-X-Gm-Message-State: AOJu0YxD6Pg1FbJU4V0rsUzf7WD4ZPGmCaul8dJp7jm9IeTb5LjNgE0E
-	fdiCMQMoaMuP61nd5CcF5XsYEMjKcY3Xyt6HQmI+tlzOl7MwSAl0K3/LATnq/KIS9hNUpJ1HR69
-	xIcjkJv5CcQHg3psLkfDJT3pTIPFyvDR8OOAKEvhlCdO4cFYjhVMB
-X-Gm-Gg: AfdE7clZKRUFgdBn/aOC00C/8uPLMmquRQBUhBPVSdhPvhd9+xnZIbA2vgk5DrkgmPM
-	UnPMhUlfSAPdJ6gPNsLbV1dgNGiACTpLeCDdddA6IR9L4O9TW1l7b+/SwI0Kg6X4KwRHTJEz9Nm
-	iS9NQMLzH8O/8bXjOJvY8vhPhPmX4A1wk2vTGst1f4f0QsbY7L9INT8vmQ5smLx2bcrN9r1wrbN
-	aPvn2/b/uiV65CuVB6ehu9IzyxB83hf5a8wtYTri+Bkv8dAAq++YcESczLt8wFEali4Vk1NFGfb
-	FQiqUyIYmDVKHZGVu6i2EYNzdy04EbVQfI8DREZiSevOZzcWCXTW8nUQFe0F04d0kB1x97pm4Uq
-	fNllBOW462hOb/sUbA4HWhQ/BQPz3bQlR
-X-Received: by 2002:a05:600c:c173:b0:493:c98f:12e3 with SMTP id 5b1f17b1804b1-493e3066380mr12490685e9.20.1783419501003;
-        Tue, 07 Jul 2026 03:18:21 -0700 (PDT)
-X-Received: by 2002:a05:600c:c173:b0:493:c98f:12e3 with SMTP id 5b1f17b1804b1-493e3066380mr12490105e9.20.1783419500441;
-        Tue, 07 Jul 2026 03:18:20 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0078d49sm49438995e9.0.2026.07.07.03.18.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 03:18:19 -0700 (PDT)
-Date: Tue, 7 Jul 2026 06:18:16 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Sourav Panda <souravpanda@google.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, liam@infradead.org,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, mhklinux@outlook.com, fvdl@google.com,
-	gthelen@google.com, mike.kravetz@oracle.com,
-	pasha.tatashin@soleen.com, rientjes@google.com, riel@surriel.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 6/6] mm/hugetlb: support free page reporting for cached
- hugepages
-Message-ID: <20260707032839-mutt-send-email-mst@kernel.org>
-References: <20260707064235.1386552-1-souravpanda@google.com>
- <20260707064235.1386552-7-souravpanda@google.com>
+	bh=lmb/5Y9eqdFEyGZnoKkjY5KUURxdOJiW/7gAlorWsrg=;
+	b=WWrE3zQfxPWcYiE5HaR76gWmBm6bVw7DW4T9yZmSW7IhoFkZ1sg7UQMlsr55FnBBfyBGlf
+	Ae2RAigTuwgAbSzt2bqub47es/rjxMVdj7y7nIVBjyKlDDfgqWH0qvti5c5h5H6AOeDN7O
+	2PsbDntP3q7Ik2hOO7T8nDlq232Qf2c=
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260707102035euoutp01d3dc90bf4014d838d7eebda80f13f64b~-_rWma4nZ0389303893euoutp01X
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:20:35 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260707102035euoutp01d3dc90bf4014d838d7eebda80f13f64b~-_rWma4nZ0389303893euoutp01X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1783419635;
+	bh=lmb/5Y9eqdFEyGZnoKkjY5KUURxdOJiW/7gAlorWsrg=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=vJW3jw9FiZcG7/UHGkwH5JaAnf6ymNATTIxiifa8jlb3yOBOH89Uxh08+r7oDerxK
+	 EsZlhcXiTTGBxrPKV9jqlCOxkEOVuGH7hnN2EzBNjFuPApcWvDHEmCGtwJRVBF100F
+	 URSllvY91M4pWP+UFs1gKAqGZkVKvNvgkBMmLRYg=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260707102035eucas1p1c2fe59754f05ce2ac4d33a261d491e9f~-_rWYpPrG2875828758eucas1p16;
+	Tue,  7 Jul 2026 10:20:35 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260707102034eusmtip12c241a5a2db256b2323ea93fdaf0bc36~-_rVbfelg1926719267eusmtip14;
+	Tue,  7 Jul 2026 10:20:34 +0000 (GMT)
+Message-ID: <54596eee-191d-4370-a0e1-44b5b7387c3a@samsung.com>
+Date: Tue, 7 Jul 2026 12:20:33 +0200
 MIME-Version: 1.0
-In-Reply-To: <20260707064235.1386552-7-souravpanda@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HoOP2jXuLK31SN7zHeNV7T7sYGy2UcHN8axK1SFCpPQ_1783419501
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 17/30] mm: prefer vma_[start,end]_pgoff() to
+ vma->vm_pgoff in kernel/
+To: Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+	linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	damon@lists.linux.dev
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <ea87349d63205bf4c26ea79854f179a9bf8cfb0b.1782735110.git.ljs@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260707102035eucas1p1c2fe59754f05ce2ac4d33a261d491e9f
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260629122451eucas1p29aab6e559201e31a45e7051d4a700347
+X-EPHeader: CA
+X-CMS-RootMailID: 20260629122451eucas1p29aab6e559201e31a45e7051d4a700347
+References: <cover.1782735110.git.ljs@kernel.org>
+	<CGME20260629122451eucas1p29aab6e559201e31a45e7051d4a700347@eucas1p2.samsung.com>
+	<ea87349d63205bf4c26ea79854f179a9bf8cfb0b.1782735110.git.ljs@kernel.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2464BC0006
-X-Stat-Signature: r53oc4dairepfqgw5j7i8s1dudh4w8ta
-X-HE-Tag: 1783419504-173530
-X-HE-Meta: U2FsdGVkX19OaDhkQm12/3wq5vAd39nztVNTBVQAnMwHHRnbpvmZ8izQfwnl+xM1n0WdlgzBEMc19KJpUrt2ASEWOSCV1hpDdgcVVc56zAB8r7hTGcgFyCmVOKSVEIsR4myPgeu4cIAg3tiOZqc/I/Yo6WcXdWATgklRYM79Cd9wUKTXGAxy6D/QWarzUZ0TgmLNDjvOjx0zHZhvctwvcQ0t+52g3s+HRVjDoT533uwpe/30H1umMN+zbmsRAFr9E3Js/NcHUm7axAdwo0o2C0/5M+rYoqI3+8gGaDpikyvZsDN9ZyZZ0xh8YtGDDFArqbmsXRrmU492+K9BVxyHWz3Tf3RR6/SMahbfoiLMeg86p15NHhDLCjHKNhZmstJn2kpG7apDQM24JjyRrUlE2pT5X9xsEpgayVq8xS4bxBoMrKoES7954+7dmarZRdvGGObC0AHG7+yCoymOJSBaj8rC47m3F7aUsdVR6gzpZrLH3gXOtNWkd6UYPTdatNJeVj/fo6cX6776HRki7lAJAwj96ippTAEgWfB80sQy7GulfaR9OdF4HESvtMVpkfaWvNUWk7NJxrBRiEzw7Li4PuK13coOAMrlIPbvlmCa5iV2j48LBYfvyZpEIfm2rEIApMn3OArGLAmu3q9oe/jStlta5On6ZDabTfRL3stJoXc7Y2JrZ/7mbZ9sPkW5TNq30hO6C9neTQEBMyRLFCAggtY1WzttSr/XJ20XHhJmrFPXdOoNZ36t+3zb0zmljAA68oby2eSMRC+zt3oaxZlvF2wVzz+geWZPJt28UkWF8JCMqnxaofvvWtZhw1E0x/HNYM6ciOLQA9pUu0ODpLqTB6UXgaCWmwKio6c+/v4bAbvx3T8jc2QEwO3Usv1zK5b3KGFF9ONCbr2zonTy/KGESMYU9O1flVooNWdA66D2CdFS4tVVERHx0XS0qX8b3UvPKWqyGpa/0VJg452bG7B
- Kq4xVBZX
- 9Bk9AY/EjgAMjlL/evDAuLL9Z/tbXWs3Xy3zzfcmWff0bMSwYJ7D6fbzvy1gPcVC0f2wq+6XnKVmGajmkk41PWkFmEPf/ABOd8kZuCaNcpig7x1g2FsvOzT/L6Tta3NppmqtofiEBX/W1Oamzj5FL1xQqbs8yrV/b55WLxa8PTK1fboZMKdZ7IwcPeqNpnriY6w5Q/glVMuQdh8Kn4YS2lK7ClScATKfD7zsefbi2UuHJkiBMWhH3dtQFpzhE8NqgSFtO2BV7pKE8RaAHtuJ7jA08UcOkKaddc0Q3gi8gYs/4prQJKwDCICU7ujH+kKMyvTIk
+X-Rspamd-Queue-Id: 835A2C000B
+X-Stat-Signature: wrjy41w76mb8pfd4cumtij54y15jzq43
+X-HE-Tag: 1783419637-220668
+X-HE-Meta: U2FsdGVkX19lueLBzW6/lAYVzM7b8c7w/IJ04/uSefyaNAY1GJ/D+HnK+OuDZOfsRA3YHhdjiAu5pTWA33oL668SI+mSNq2we6Yk6TedcTyEgG61mThufp2d/EkYMkWIzsw0po6tgyI3kV6150RKai+duMxedlAqHDOHWmk71g2HZKc6eIoi+EemBh191RC9LiB7EVTvhVAKnAXlB0qsR/kp0J7owu/+UVzjfAi0VOhkJFNfqiqfjBKuI67aP67fu5pZUspV5qaz0K9bkJ/QMTm5fl297V5nYajsrN2xX5XGMws2kxthD1BlIZJXuB1Nquapegryq15hpyA7QQKSoMDedXGOr5LmEvoavdgLWoNulWVsw0KjPMmBLWzy5wZeh0GaTsorw+3iKHHZAqLY/0vfLnFkZdLBxxSq4akmekL9Y4bumpgNd7PD9HryavZ5e9zkONUYu+s6LVFf45hxPKSCjeYPP+cFx55oO8gz5jpF7rGqHeOEdHS1SzUl6r0kn8yqHWiySlxo8ZPEELsM27bUILR5mzbafXtIkJ5hjaLSm02yVQ6q4s8fPoQzuKI2XgEJ4kW3EcFW2UmjXP1auHq/IOWyss7eg7ZftFf3hqIY11eO6rFlaY5xhSTFi/sMSN+CvHQhbC+iS6yH0R2CfWhapwtTJP9/HdpuZpisYoqOdYn05wHuauzT11ma+sMwo8jE7ynensO+tqJEWwdLiUT4Id1/LdH5iD/XRHIGuL+wymcF+v9CCHxCmtdl5k8zTeumQ/vlEO3F7JK5hDvvHCCNHJljEQlRSOL5PaNcLKvG17h32xmZ7EV/4zEW91ktOd6BAV7RhZRf0H5FuQYEtrYSTzs23MspSR6D291LxrvnsqtRCraer4kYFhY6RqLJvxd22nj1mTJ/+8rsIgWTpdx4fExPaSiWu6JmHxMxlcccSIqj2Upg7RPKdy3uwVun25ciO/fzjHszI3qSfpL
+ 5L21iYii
+ n/xQR9lC/8B7W47xe7n81JAyseVVLGWsg5CLzjFDoFkgPnxrGj5rPjtA1Fd7qQTj+jn8owezhgDGI4mgvtMtNg+FvzIMZTEhkgOddPaU7DuuoUcCUnw0K2K9rSGlpWD+sXT2U59jo7wwidTt/pXrJHPrH58yUlXo6eW4X0aDs225PWCT+WifO8u4lDQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,30 +113,286 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 06:42:35AM +0000, Sourav Panda wrote:
-> Implement free page reporting for the HugeTLB dynamic cache.
-> 
-> Register HugeTLB hstates with the page reporting framework if they
-> support caching.
-> 
-> When pages are added to the cache (either via recycling in
-> free_huge_folio or direct population via sysfs nr_cached_hugepages),
-> trigger a page reporting cycle.
-> 
-> Page reporting isolates pages from the cache list, reports them to the
-> hypervisor via virtio-balloon, and then drains them back to the cache
-> list, marking them as reported (HPG_reported).
-> 
-> If a page is allocated from the cache, or reclaimed, clear the reported
-> flag.
-> 
-> Signed-off-by: Sourav Panda <souravpanda@google.com>
+On 29.06.2026 14:23, Lorenzo Stoakes wrote:
+> Be consistent in using vma_start_pgoff() and vma_end_pgoff(), which clearly
+> indicates which part of the VMA the page offset refers to and aids
+> greppability.
+>
+> This is part of a broader series laying the ground to provide a virtual
+> page offset for MAP_PRIVATE-file backed anon folios.
+>
+> No functional change intended.
+>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+>  kernel/dma/coherent.c      |  7 ++++---
+>  kernel/dma/direct.c        |  6 ++++--
+>  kernel/dma/mapping.c       |  8 +++++---
+>  kernel/dma/ops_helpers.c   |  4 ++--
 
-So if you are going to look into this, I feel the 1st step
-should be reporting pages from hugepage_freelists - this
-can be done independently.
 
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com> # for kernel/dma
+
+
+>  kernel/events/core.c       | 20 +++++++++++---------
+>  kernel/events/uprobes.c    | 11 +++++++----
+>  kernel/kcov.c              |  2 +-
+>  kernel/trace/ring_buffer.c |  3 ++-
+>  8 files changed, 36 insertions(+), 25 deletions(-)
+>
+> diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
+> index bcdc0f76d2e8..2d3195eb7e83 100644
+> --- a/kernel/dma/coherent.c
+> +++ b/kernel/dma/coherent.c
+> @@ -236,14 +236,15 @@ static int __dma_mmap_from_coherent(struct dma_coherent_mem *mem,
+>  {
+>  	if (mem && vaddr >= mem->virt_base && vaddr + size <=
+>  		   (mem->virt_base + ((dma_addr_t)mem->size << PAGE_SHIFT))) {
+> -		unsigned long off = vma->vm_pgoff;
+> +		const pgoff_t pgoff_start = vma_start_pgoff(vma);
+> +		const pgoff_t pgoff_end = vma_end_pgoff(vma);
+>  		int start = (vaddr - mem->virt_base) >> PAGE_SHIFT;
+>  		unsigned long user_count = vma_pages(vma);
+>  		int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+>  
+>  		*ret = -ENXIO;
+> -		if (off < count && user_count <= count - off) {
+> -			unsigned long pfn = mem->pfn_base + start + off;
+> +		if (pgoff_start < count && pgoff_end <= count) {
+> +			unsigned long pfn = mem->pfn_base + start + pgoff_start;
+>  			*ret = remap_pfn_range(vma, vma->vm_start, pfn,
+>  					       user_count << PAGE_SHIFT,
+>  					       vma->vm_page_prot);
+> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+> index 4391b797d4db..436310d6e4a2 100644
+> --- a/kernel/dma/direct.c
+> +++ b/kernel/dma/direct.c
+> @@ -534,6 +534,8 @@ int dma_direct_mmap(struct device *dev, struct vm_area_struct *vma,
+>  	unsigned long user_count = vma_pages(vma);
+>  	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+>  	unsigned long pfn = PHYS_PFN(dma_to_phys(dev, dma_addr));
+> +	const pgoff_t pgoff_start = vma_start_pgoff(vma);
+> +	const pgoff_t pgoff_end = vma_end_pgoff(vma);
+>  	int ret = -ENXIO;
+>  
+>  	vma->vm_page_prot = dma_pgprot(dev, vma->vm_page_prot, attrs);
+> @@ -545,9 +547,9 @@ int dma_direct_mmap(struct device *dev, struct vm_area_struct *vma,
+>  	if (dma_mmap_from_global_coherent(vma, cpu_addr, size, &ret))
+>  		return ret;
+>  
+> -	if (vma->vm_pgoff >= count || user_count > count - vma->vm_pgoff)
+> +	if (pgoff_start >= count || pgoff_end > count)
+>  		return -ENXIO;
+> -	return remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
+> +	return remap_pfn_range(vma, vma->vm_start, pfn + pgoff_start,
+>  			user_count << PAGE_SHIFT, vma->vm_page_prot);
+>  }
+>  
+> diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
+> index 4fe04669e5e6..c986639044e9 100644
+> --- a/kernel/dma/mapping.c
+> +++ b/kernel/dma/mapping.c
+> @@ -761,12 +761,14 @@ EXPORT_SYMBOL_GPL(dma_free_pages);
+>  int dma_mmap_pages(struct device *dev, struct vm_area_struct *vma,
+>  		size_t size, struct page *page)
+>  {
+> -	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+> +	const pgoff_t pgoff_start = vma_start_pgoff(vma);
+> +	const pgoff_t pgoff_end = vma_end_pgoff(vma);
+> +	const unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+>  
+> -	if (vma->vm_pgoff >= count || vma_pages(vma) > count - vma->vm_pgoff)
+> +	if (pgoff_start >= count || pgoff_end > count)
+>  		return -ENXIO;
+>  	return remap_pfn_range(vma, vma->vm_start,
+> -			       page_to_pfn(page) + vma->vm_pgoff,
+> +			       page_to_pfn(page) + pgoff_start,
+>  			       vma_pages(vma) << PAGE_SHIFT, vma->vm_page_prot);
+>  }
+>  EXPORT_SYMBOL_GPL(dma_mmap_pages);
+> diff --git a/kernel/dma/ops_helpers.c b/kernel/dma/ops_helpers.c
+> index 20caf9cabf69..6b5f9208d31c 100644
+> --- a/kernel/dma/ops_helpers.c
+> +++ b/kernel/dma/ops_helpers.c
+> @@ -39,7 +39,7 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
+>  #ifdef CONFIG_MMU
+>  	unsigned long user_count = vma_pages(vma);
+>  	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+> -	unsigned long off = vma->vm_pgoff;
+> +	unsigned long off = vma_start_pgoff(vma);
+>  	struct page *page = dma_common_vaddr_to_page(cpu_addr);
+>  	int ret = -ENXIO;
+>  
+> @@ -52,7 +52,7 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
+>  		return -ENXIO;
+>  
+>  	return remap_pfn_range(vma, vma->vm_start,
+> -			page_to_pfn(page) + vma->vm_pgoff,
+> +			page_to_pfn(page) + vma_start_pgoff(vma),
+>  			user_count << PAGE_SHIFT, vma->vm_page_prot);
+>  #else
+>  	return -ENXIO;
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index 954c36e28101..d6d2d557ccb8 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -6998,7 +6998,7 @@ static void perf_mmap_open(struct vm_area_struct *vma)
+>  	refcount_inc(&event->mmap_count);
+>  	refcount_inc(&event->rb->mmap_count);
+>  
+> -	if (vma->vm_pgoff)
+> +	if (vma_start_pgoff(vma))
+>  		refcount_inc(&event->rb->aux_mmap_count);
+>  
+>  	if (mapped)
+> @@ -7032,7 +7032,7 @@ static void perf_mmap_close(struct vm_area_struct *vma)
+>  	 * The AUX buffer is strictly a sub-buffer, serialize using aux_mutex
+>  	 * to avoid complications.
+>  	 */
+> -	if (rb_has_aux(rb) && vma->vm_pgoff == rb->aux_pgoff &&
+> +	if (rb_has_aux(rb) && vma_start_pgoff(vma) == rb->aux_pgoff &&
+>  	    refcount_dec_and_mutex_lock(&rb->aux_mmap_count, &rb->aux_mutex)) {
+>  		/*
+>  		 * Stop all AUX events that are writing to this buffer,
+> @@ -7190,7 +7190,8 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
+>  	 */
+>  	for (pagenum = 0; pagenum < nr_pages; pagenum++) {
+>  		unsigned long va = vma->vm_start + PAGE_SIZE * pagenum;
+> -		struct page *page = perf_mmap_to_page(rb, vma->vm_pgoff + pagenum);
+> +		struct page *page = perf_mmap_to_page(rb,
+> +				vma_start_pgoff(vma) + pagenum);
+>  
+>  		if (page == NULL) {
+>  			err = -EINVAL;
+> @@ -7348,6 +7349,7 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
+>  	u64 aux_offset, aux_size;
+>  	struct perf_buffer *rb;
+>  	int ret, rb_flags = 0;
+> +	const pgoff_t pgoff_start = vma_start_pgoff(vma);
+>  
+>  	rb = event->rb;
+>  	if (!rb)
+> @@ -7366,11 +7368,11 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
+>  	if (aux_offset < perf_data_size(rb) + PAGE_SIZE)
+>  		return -EINVAL;
+>  
+> -	if (aux_offset != vma->vm_pgoff << PAGE_SHIFT)
+> +	if (aux_offset != pgoff_start << PAGE_SHIFT)
+>  		return -EINVAL;
+>  
+>  	/* already mapped with a different offset */
+> -	if (rb_has_aux(rb) && rb->aux_pgoff != vma->vm_pgoff)
+> +	if (rb_has_aux(rb) && rb->aux_pgoff != pgoff_start)
+>  		return -EINVAL;
+>  
+>  	if (aux_size != nr_pages * PAGE_SIZE)
+> @@ -7400,7 +7402,7 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
+>  		if (vma->vm_flags & VM_WRITE)
+>  			rb_flags |= RING_BUFFER_WRITABLE;
+>  
+> -		ret = rb_alloc_aux(rb, event, vma->vm_pgoff, nr_pages,
+> +		ret = rb_alloc_aux(rb, event, pgoff_start, nr_pages,
+>  				   event->attr.aux_watermark, rb_flags);
+>  		if (ret) {
+>  			refcount_dec(&rb->mmap_count);
+> @@ -7457,7 +7459,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+>  		if (event->state <= PERF_EVENT_STATE_REVOKED)
+>  			return -ENODEV;
+>  
+> -		if (vma->vm_pgoff == 0)
+> +		if (!vma_start_pgoff(vma))
+>  			ret = perf_mmap_rb(vma, event, nr_pages);
+>  		else
+>  			ret = perf_mmap_aux(vma, event, nr_pages);
+> @@ -9884,7 +9886,7 @@ static bool perf_addr_filter_vma_adjust(struct perf_addr_filter *filter,
+>  					struct perf_addr_filter_range *fr)
+>  {
+>  	unsigned long vma_size = vma->vm_end - vma->vm_start;
+> -	unsigned long off = vma->vm_pgoff << PAGE_SHIFT;
+> +	unsigned long off = vma_start_pgoff(vma) << PAGE_SHIFT;
+>  	struct file *file = vma->vm_file;
+>  
+>  	if (!perf_addr_filter_match(filter, file, off, vma_size))
+> @@ -9974,7 +9976,7 @@ void perf_event_mmap(struct vm_area_struct *vma)
+>  			/* .tid */
+>  			.start  = vma->vm_start,
+>  			.len    = vma->vm_end - vma->vm_start,
+> -			.pgoff  = (u64)vma->vm_pgoff << PAGE_SHIFT,
+> +			.pgoff  = (u64)vma_start_pgoff(vma) << PAGE_SHIFT,
+>  		},
+>  		/* .maj (attr_mmap2 only) */
+>  		/* .min (attr_mmap2 only) */
+> diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+> index f23cebacbc6d..244651380ca1 100644
+> --- a/kernel/events/uprobes.c
+> +++ b/kernel/events/uprobes.c
+> @@ -144,12 +144,14 @@ static bool valid_vma(struct vm_area_struct *vma, bool is_register)
+>  
+>  static unsigned long offset_to_vaddr(struct vm_area_struct *vma, loff_t offset)
+>  {
+> -	return vma->vm_start + offset - ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
+> +	return vma->vm_start + offset -
+> +		((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
+>  }
+>  
+>  static loff_t vaddr_to_offset(struct vm_area_struct *vma, unsigned long vaddr)
+>  {
+> -	return ((loff_t)vma->vm_pgoff << PAGE_SHIFT) + (vaddr - vma->vm_start);
+> +	return ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT) +
+> +		(vaddr - vma->vm_start);
+>  }
+>  
+>  /**
+> @@ -1482,7 +1484,7 @@ static int unapply_uprobe(struct uprobe *uprobe, struct mm_struct *mm)
+>  		    file_inode(vma->vm_file) != uprobe->inode)
+>  			continue;
+>  
+> -		offset = (loff_t)vma->vm_pgoff << PAGE_SHIFT;
+> +		offset = (loff_t)vma_start_pgoff(vma) << PAGE_SHIFT;
+>  		if (uprobe->offset <  offset ||
+>  		    uprobe->offset >= offset + vma->vm_end - vma->vm_start)
+>  			continue;
+> @@ -2453,7 +2455,8 @@ static struct uprobe *find_active_uprobe_speculative(unsigned long bp_vaddr)
+>  	if (!vm_file)
+>  		return NULL;
+>  
+> -	offset = (loff_t)(vma->vm_pgoff << PAGE_SHIFT) + (bp_vaddr - vma->vm_start);
+> +	offset = (loff_t)(vma_start_pgoff(vma) << PAGE_SHIFT) +
+> +		(bp_vaddr - vma->vm_start);
+>  	uprobe = find_uprobe_rcu(vm_file->f_inode, offset);
+>  	if (!uprobe)
+>  		return NULL;
+> diff --git a/kernel/kcov.c b/kernel/kcov.c
+> index 1df373fb562b..b19b473c366a 100644
+> --- a/kernel/kcov.c
+> +++ b/kernel/kcov.c
+> @@ -512,7 +512,7 @@ static int kcov_mmap(struct file *filep, struct vm_area_struct *vma)
+>  
+>  	spin_lock_irqsave(&kcov->lock, flags);
+>  	size = kcov->size * sizeof(unsigned long);
+> -	if (kcov->area == NULL || vma->vm_pgoff != 0 ||
+> +	if (kcov->area == NULL || vma_start_pgoff(vma) ||
+>  	    vma->vm_end - vma->vm_start != size) {
+>  		res = -EINVAL;
+>  		goto exit;
+> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+> index 56a328e94395..dfa493d54ef9 100644
+> --- a/kernel/trace/ring_buffer.c
+> +++ b/kernel/trace/ring_buffer.c
+> @@ -7613,7 +7613,8 @@ static int __rb_inc_dec_mapped(struct ring_buffer_per_cpu *cpu_buffer,
+>  static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
+>  			struct vm_area_struct *vma)
+>  {
+> -	unsigned long nr_subbufs, nr_pages, nr_vma_pages, pgoff = vma->vm_pgoff;
+> +	unsigned long nr_subbufs, nr_pages, nr_vma_pages;
+> +	pgoff_t pgoff = vma_start_pgoff(vma);
+>  	unsigned int subbuf_pages, subbuf_order;
+>  	struct page **pages __free(kfree) = NULL;
+>  	int p = 0, s = 0;
+
+Best regards
 -- 
-MST
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
 
