@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F7D2C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B955C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:27:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 150B56B00A3; Tue,  7 Jul 2026 07:11:15 -0400 (EDT)
+	id 11FA96B009D; Tue,  7 Jul 2026 07:27:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 101626B00A4; Tue,  7 Jul 2026 07:11:15 -0400 (EDT)
+	id 0D0E26B009E; Tue,  7 Jul 2026 07:27:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F31FF6B00A5; Tue,  7 Jul 2026 07:11:14 -0400 (EDT)
+	id F2DED6B009F; Tue,  7 Jul 2026 07:27:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C09FE6B00A3
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:11:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3E5898DC65
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:11:14 +0000 (UTC)
-X-FDA: 84961714068.19.35DF245
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A7A27C000E
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:11:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KCONi7YL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CCC496B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:27:19 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 63F7A1A0403
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:27:19 +0000 (UTC)
+X-FDA: 84961754598.26.B7D7C72
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3230B20004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:27:15 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=MCO77LEv;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf31.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783422672;
+	s=arc-20220608; t=1783423637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iTtyFBKpC/9Rr+IQFQF1FMdSFl6tkNhkuc41pgWUwKU=;
-	b=cEGxvgSRQSotcLvAMPIvXTLOIg0xRO3Zl13K1ywzlWbpB3WRmtMPCWB54RUBdcwf2s8hzK
-	ISwxF6xyjJUIuTRIZvzxDadfJBJSpdOwysnd2dFbgm0SQSWys7+LhZ6f64pYQVvM9M9vxC
-	QGq/iuCUCbm85wMDqa30OEzsfuUNeCo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=h/eXOacRdygoTlNNYt5Ne3MwbXvwRuPWbyCjVwOiNWI=;
+	b=KTJs5y46+Y+thWQ4OoYW4QC2fzaqDMTcIl2A1wanTSAPBhq1XCWrVmBOgKyD6vVLCbtfyM
+	ceg8GOGCwAMuzIUEiwa0WpFeKuKy19YhbRMB4A6ADdZac6kB/1CmsNXRHlqYiXY4LDauHs
+	unZVeVpNuLHlGI0XeUX2eF2LSy7k+t0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KCONi7YL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=MCO77LEv;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf31.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783422672;
-	b=rQ5aYkenE7E1SApOGwoBCR1UwatfgGVWIxOmH2snYaDN4juVdG+LZDQIodyfn5sKxcSRik
-	fQnNMyirMq0xxz21T8hhPi0uAnjKxZipoVKaQhz7fGeQ4aqxCpai1YHl0CA/Ot0cK/z6dx
-	4eoFxuKCNsQjWeKzrswlKSXGnwgGohQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 20C3E618AC;
-	Tue,  7 Jul 2026 11:11:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2678F1F000E9;
-	Tue,  7 Jul 2026 11:11:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783422671;
-	bh=iTtyFBKpC/9Rr+IQFQF1FMdSFl6tkNhkuc41pgWUwKU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KCONi7YLJsHj83vwhEYusXcFZ1TyfVSY7LLadiJL59mR77UUle7xHU4OxBOPBYKMS
-	 pgX65zNxXjhU3NIXPyRVMZOel1/3ooHBaL4eNPsZDAz1r8XfcTcohuvR/Now9vC7EY
-	 HxS1gOol+eYn3y5HF9jZ5C20QgqBkGj2JTJwt87fZcthWOlWp5cnMnj9fZOd7ounwy
-	 0sbCcjho8L+ai42lDB5Mhdp8hSjjnD3onbqbCJ5chwncEVh19RyZxk4iUV2gHYSHgd
-	 iGJ3zKFfYkC0BEtHH+eaaepZH5C+tDY50+uoRgZnrwx82/slD617CeeIQoFqY00Dr2
-	 WTuqa7U6gESpg==
-Date: Tue, 7 Jul 2026 12:11:01 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Muchun Song <muchun.song@linux.dev>, 
-	Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH] mm/kconfig: Drop redundant memory hotplug dependencies
-Message-ID: <akzecADgdyQjiDXW@lucifer>
-References: <20260707090331.52971-1-kaitao.cheng@linux.dev>
+	t=1783423637;
+	b=XjGJV8Z2xfsdLAjUdG3AOUkf0GzzmW5pZ0Rab7Fw85INYi3/gN5hPZy78yB79FzzfDn7Ii
+	9Rzu2uxCytSQIKc16sFm3eqplPFuL864I4K4XwUCTRzeRI4+lJJw11SiOHfC/v8k7Q8EjR
+	wkoC1Q9qOhqvyF7gvy55BALHms/PbIA=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=h/eXOacRdygoTlNNYt5Ne3MwbXvwRuPWbyCjVwOiNWI=;
+	b=MCO77LEvkwdC2ebCBq+MONBVJu+d16Nsz2fIyfzvdDI24k0M7hqHM/hL+ecqDPaf3P6rjTTlC
+	8Q5w5mAYx2UjB0/DOQCwwBgzx4xaO8XAt3xAL7xHWoxRYrSlBqELFwM3SfAgyCJdFicmDiLAPna
+	ACBNOUnNkk9QUoIAEEcqKno=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4gvdxg32zmz1K97T;
+	Tue,  7 Jul 2026 19:17:59 +0800 (CST)
+Received: from kwepemj100016.china.huawei.com (unknown [7.202.194.10])
+	by mail.maildlp.com (Postfix) with ESMTPS id A3C824055B;
+	Tue,  7 Jul 2026 19:27:11 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemj100016.china.huawei.com
+ (7.202.194.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Tue, 7 Jul
+ 2026 19:27:11 +0800
+From: Wupeng Ma <mawupeng1@huawei.com>
+To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
+	<akpm@linux-foundation.org>, <baolin.wang@linux.alibaba.com>
+CC: <mawupeng1@huawei.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH] mm/hugetlb: fix missing migratable flag on same-node hugetlb migration
+Date: Tue, 7 Jul 2026 19:02:54 +0800
+Message-ID: <20260707110254.3147686-1-mawupeng1@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260707090331.52971-1-kaitao.cheng@linux.dev>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A7A27C000E
-X-Stat-Signature: h38adfn5bzgbgac49t5tcc1qtm5pg7gj
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemj100016.china.huawei.com (7.202.194.10)
 X-Rspam-User: 
-X-HE-Tag: 1783422672-317136
-X-HE-Meta: U2FsdGVkX18sm4XsIH3SFUfBWajBqJkXtzvlhjen8aN+ek9AGDhg21RNGm6e3ZsFwTnJooybGOnG7ClNv48yHkmYCA/QX0EGxnCN6YbkVwUPrHWRdcOTJWUsCyE2SmQ+Pc0/O2zP+q5v6LvnF2V4xrBI6Qog5BIZpySQOSlphAcoxN9le2yg8+IRT0D5dISXTikEN74GifehKCRGUAz7STg1OY/LrRZUPeJCVL3uynh5ZzTEO1AvbpqalOlpLS8JgT7BuK9FTZZ2fXXB+Bqk3biko1JBGRgh3+Rqj5nTPsK3nn1s70OCi2d0tq5Bj2ITEaPLO6R1VZLgHaiBACrCHlICM3JLirdS2sDfIn5VShYt+7d3e/bYrqWR5XotYG3ZHjOsqStlBE1rOiqgHahPzGZTuT6q3swYbhzYqM1Bl2SsXdbk1cb4YyREGtNsMFQ1IMf8kgdodFRhzBHHZVBAT7Rj08ag4ET8HkDCDZk/OyPvqQN42xwKAMcFqPyafnbwFBvaHwzhPzkcNcyDmVvZfqVks+QOipVnPo7FLoLWpSn54HgwRtMqVe5DrkKLeYi8TzrzqQXUpGJoh3brA9BSUi0vRXfXBW+36Hjlj2E8Htpdc6kwTUf7W04erRjCMYMb6FXpv+ujvdJnDZghv5+kU93IJQkhBUCegcCpN6aVi0Nnaxp4BCRkb4qT/HlVgMonXPiWI9ml+FkJCHtWQtesmG6bVBbsHd9tC9ehIxIojeuaJWyK7Fio9ew/MWmil4BMRax6c6f/4SDHTmuY22L+uGtGWErY9jlykxqxwU6JkVCRRs0oJR1Y7t+QAO2p2DCEikm9Q/isLl9jZ/7ViugeoUS88oAkJ5RVR6T73dR+ZAyd15QNN0w5TTPnK7BKYETDHjpDR4OxhOMiJggtIJzi0TAEYmy8jcUR9HpwjJ7Dap+mWFobUZEu7HwTGK6c7jSs5O/GzryeuTqS4s4Q9Pe
- r6XKc3Ow
- HtCzXOs3mTtD4OQllbWWTDSv8JnzglUc2AVQyS42XLuRTsnejTKvQbvJfQPFMQQk2pzVLOsrJZT39klN/oHjYyWLoprFkL2MlAlhBCZ4kDcr3Pj0XrVHuTTanz11rocyNklzUtGT1E+sL5dE02M/LQoSQvBIZwUVZhztFepjA8H5JFFvcH0Md0BeNpshHQga/rEviqQLeIlASHCw/lbfKZt5wUJRBjzp110WR6hHRjpabuDyxjM8L03Mo6AxrdKilWXGpv5KI983YFmuL7mBZvfOK8w==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3230B20004
+X-Stat-Signature: 1hc1itz94fz9q4mn7myns5sgkbkprzsu
+X-HE-Tag: 1783423635-420022
+X-HE-Meta: U2FsdGVkX19IKoi0kqDtNiS1NFZl8MVKGOoS40YnGj/nHp79sdIVZDjvComZKiHwkqTvzpH6WA6DIYuiE9nW8rDeNa/ZslO79Xx7FkMfeuN4xnnQ35YZHJdTGSwoidkYLpaHi+2fkp8n3gu/vo4EMpT9g3xgUQbEGDa1eE9NL3fggLzWgEe9lc9AHpjQMILY1N4uBnsY+cHV6vVlnimtp0pjMV9nr8ynxw38dBtfU6lw1qUihrI+7mNqYjpvw+oFe4ynKqnJbPP23l6KLkavbJQHuOvwHUcl8rW9X1PcSGhejfuxamq9BVENQw+7rZH4T31MN8Rv4+S8c/kCgv3PM5PSTbiBhtPg189KgMe3ujRtiFhq3EDrlfyUgO1sdIOYpn3+dY0qFH4isRsOcqhcU6dgG8FL7CyOLrOgcUuwk91xyw0Z1vP2U9yk1TBh89l3DLmTQvdUM7OYNkgER6Swdjv287t7IYA5p3WOq7FB8SIkK5rqvI71DIQyqSWdYieG4+/QndB4XjZDNHcuyaqXmpH8tpkMtg6F0FhPrWpFZnrEzuvTU+c3QKTTcMJowrCe6vAtnCfXkCtG+dmZDMNnXo8kGAE8n13/QI+kAI6D1PJG9D+wO+Hzi0LM88/o3kCyJdU1+fadzMf/adIhxExLIux0E37qV60h9XSvIWmEffVeh5madrCcyK9R+ExHeXnx4+azpgq/5WMYYLoDkUliemEd9QXMaKSYp5RQCgpjKtYCqFfGaGF55ZpRQKgwa51wOiWyfy5qgjtIQ5BeFoWw4x+nYY9xx1auPmc6or2lVsEm8Mb3uTX34xTP93Jltavlk8bfgSc6H+RFUkHaikSfFMmRu37An+qr8JXQbedPom721bXdzXR78k2MOyMU+yKGnzYhXSjM1LE0M4VmKNZXUpyRWpvVRc2GDloW8s5UNAtrfxOAMwE2gXEJQrc9s7B7OaZbnBdE9zXHvrW4ddn
+ kck4qpy2
+ zA96Z44BC13xvgp93zkYz5z+3pNmQ0y9qCO7B31xkXnDpRx/mLKZvSmSK/q5pTOfuDhLhd4uHWSL3TI56wS7ciRUMI+yJ9RDpHTffgutvCsE1SQCKDWYnK9mk61uvmiGbZEO9IrtEVJXUXG/zBnatyqMm2BXnYsdwWk7VprxKX/kCnMX+Z3Rxa76BpJGY6LxYwzaXMUm+uXLzl1a3WH07wpsBms7Hnr9sBnB18QdvlGl//GIpZmDocyyI2+20ZG+Yqj+OJKX65c+O8+qQBUQhKhe+QmEsxIsDHi/6CzxeMcpLcHk3Y1ZeG99xcutlNds1SpoZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,56 +95,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 05:03:31PM +0800, Kaitao Cheng wrote:
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
->
-> MHP_MEMMAP_ON_MEMORY is defined inside the MEMORY_HOTPLUG block, and
-> MEMORY_HOTPLUG already depends on SPARSEMEM_VMEMMAP. Keep the explicit
-> MEMORY_HOTPLUG dependency for local readability, but drop the redundant
-> SPARSEMEM_VMEMMAP dependency.
->
-> ZONE_DEVICE depends on MEMORY_HOTREMOVE, which depends on MEMORY_HOTPLUG.
-> MEMORY_HOTPLUG in turn depends on SPARSEMEM_VMEMMAP. Drop the direct
-> MEMORY_HOTPLUG and SPARSEMEM_VMEMMAP dependencies from ZONE_DEVICE.
->
-> This does not change the set of valid configurations.
->
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+Commit ba23f58de896 ("mm/migrate: don't call
+folio_putback_active_hugetlb() on dst hugetlb folio") moved setting of
+the migratable flag and active-list placement from
+folio_putback_active_hugetlb(dst) into move_hugetlb_state(), so that
+the freshly allocated destination folio is handled where allocation is
+known to have succeeded.
 
-LGTM, so:
+Unfortunately, the new code was appended after the existing
+temporary-folio block in move_hugetlb_state(), which contains an early
+return added earlier by commit 5af1ab1d24e08 ("mm/hugetlb: optimize
+the surplus state transfer code in move_hugetlb_state()"):
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+  if (folio_test_hugetlb_temporary(new_folio)) {
+      ...
+      if (new_nid == old_nid)
+          return;                       <-- skips the new code
+      ...
+  }
 
-> ---
->  mm/Kconfig | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 04fe5171bb8c..ff29f770d10a 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -596,7 +596,7 @@ config MEMORY_HOTREMOVE
->
->  config MHP_MEMMAP_ON_MEMORY
->  	def_bool y
-> -	depends on MEMORY_HOTPLUG && SPARSEMEM_VMEMMAP
-> +	depends on MEMORY_HOTPLUG
->  	depends on ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
->
->  endif # MEMORY_HOTPLUG
-> @@ -1235,9 +1235,7 @@ config ZONE_DMA32
->
->  config ZONE_DEVICE
->  	bool "Device memory (pmem, HMM, etc...) hotplug support"
-> -	depends on MEMORY_HOTPLUG
->  	depends on MEMORY_HOTREMOVE
-> -	depends on SPARSEMEM_VMEMMAP
->  	select XARRAY_MULTI
->
->  	help
-> --
-> 2.50.1 (Apple Git-155)
->
+  /* added by ba23f58 */
+  folio_set_hugetlb_migratable(new_folio);
+  list_move_tail(&new_folio->lru, ...&h->hugepage_activelist);
 
-Cheers, Lorenzo
+When the destination folio is temporary (i.e. the hugetlb pool was
+exhausted and the migration callback fell back to
+alloc_migrate_hugetlb_folio()) and the migration does not cross a
+node -- the common case, and always true on a single-NUMA system --
+move_hugetlb_state() returns before setting the migratable flag or
+adding the new folio to the active list. The destination folio is
+then installed in the page table but cannot be isolated afterwards,
+since folio_isolate_hugetlb() rejects folios without the migratable
+flag; a subsequent soft-offline, hard-offline or memory-hotplug
+offline of that folio fails with -EBUSY.
+
+This was reproduced on a single-NUMA arm64 VM: a second
+MADV_SOFT_OFFLINE on an already-migrated hugetlb page returned EBUSY
+and logged "hugepage isolation failed".
+
+Keep the surplus adjustment, which is the only part that depends on
+the node crossing, guarded by `if (new_nid != old_nid)', while making
+the migratable flag and active-list placement unconditional. This
+preserves the cleanup intent of ba23f58 and closes the early-return
+hole.
+
+Fixes: ba23f58de896 ("mm/migrate: don't call folio_putback_active_hugetlb() on dst hugetlb folio")
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+---
+ mm/hugetlb.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 571212b80835..cafadfdb63c0 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7211,14 +7211,14 @@ void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio, int re
+ 		 * There is no need to transfer the per-node surplus state
+ 		 * when we do not cross the node.
+ 		 */
+-		if (new_nid == old_nid)
+-			return;
+-		spin_lock_irq(&hugetlb_lock);
+-		if (h->surplus_huge_pages_node[old_nid]) {
+-			h->surplus_huge_pages_node[old_nid]--;
+-			h->surplus_huge_pages_node[new_nid]++;
++		if (new_nid != old_nid) {
++			spin_lock_irq(&hugetlb_lock);
++			if (h->surplus_huge_pages_node[old_nid]) {
++				h->surplus_huge_pages_node[old_nid]--;
++				h->surplus_huge_pages_node[new_nid]++;
++			}
++			spin_unlock_irq(&hugetlb_lock);
+ 		}
+-		spin_unlock_irq(&hugetlb_lock);
+ 	}
+ 
+ 	/*
+-- 
+2.43.0
+
 
