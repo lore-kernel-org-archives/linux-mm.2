@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41EE0C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 12:47:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32E57C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 12:55:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 337E46B00A0; Tue,  7 Jul 2026 08:47:28 -0400 (EDT)
+	id 1E6EC6B009D; Tue,  7 Jul 2026 08:55:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30F356B00A1; Tue,  7 Jul 2026 08:47:28 -0400 (EDT)
+	id 170346B009E; Tue,  7 Jul 2026 08:55:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FE7C6B00A2; Tue,  7 Jul 2026 08:47:28 -0400 (EDT)
+	id 0619F6B009F; Tue,  7 Jul 2026 08:55:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 010356B00A0
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:47:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 917151A03FC
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:47:27 +0000 (UTC)
-X-FDA: 84961956534.10.13EA4C2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EBDC1180004
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:47:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dh2ykrRT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783428446;
-	b=Zrdh7XQSGVhsYsGxOL7HwqJ6o6by4MsvBSGb/GIevI0s2papRp4AIYavDtFaLA2uqDOEb3
-	gtxVOkIHvKUmikFl5WTl/9aqH3UDBxWUDfWgGhTh3HUI/a7P2Qr2DM8GtOUutz4LEq0EcR
-	XKuuSXNOCJnKAqeI1+JRI5b2V2/nKmU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dh2ykrRT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CDE866B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:55:37 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 48C921C3953
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:55:37 +0000 (UTC)
+X-FDA: 84961977114.03.570D1F0
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 757A740006
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:55:35 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E6rFw4FQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783428446;
+	s=arc-20220608; t=1783428935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hEE3m3WVJuBFnAm3gjDrsTE+bClUghMxtBjGH4/4pak=;
-	b=eUBzhO0osjuGUI6rKIRcqJqgErU151tIkwSTqMmrTlrrLGbMqzyCj4FnQNbZvRCPpMBRRS
-	7201Du44MmEQslADq8gsxQQitKN7DOV87PbeDvQvxbQEHNZSSUqecfFmoDqxbjinA4dZAN
-	9O5M2Uk0xs59G1a+w8/NEx3wVJ8PKmg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DB8E641429;
-	Tue,  7 Jul 2026 12:47:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F51F1F00A3D;
-	Tue,  7 Jul 2026 12:47:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783428444;
-	bh=hEE3m3WVJuBFnAm3gjDrsTE+bClUghMxtBjGH4/4pak=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dh2ykrRTucW/VBrxB9M+J/VOLxuu8Lp95gVoTmE/Xe1V/jHHEAVNrNpBPWO+ZIBXt
-	 HG+X8VMiuLB4EZ9AKx7hjBsSp++azCCCIWW/C337n6ePgDj45+2IvH3Ms3ctzZQW8X
-	 kvD21TM/G5banmvITBwHlXzBgWdEgf/b1ajmy+3+asmEKFWAckNYgoCcpZDiOphpcd
-	 VC4WI0myBdBHSmnabwjUPsIaXePp2p6H2sRRuYtoNlLoX2MW8n0pjYjQBDi2OQDdYV
-	 ngTsYJmUH7nO8cyxfaaE2MM+N/yece/OeonxsgVKvveXcZwK+8IYV6OXIHuwG+j4Oy
-	 r4gBfxReXLBmQ==
-Date: Tue, 7 Jul 2026 13:47:14 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Russell King <linux@armlinux.org.uk>
-Cc: Qi Xi <xiqi2@huawei.com>, Xie Yuanbin <xieyuanbin1@huawei.com>, 
-	akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, linusw@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, sunnanyong@huawei.com, 
-	linux-mm@kvack.org, lilinjie8@huawei.com, liaohua4@huawei.com
-Subject: Re: [PATCH v3 1/2] ARM: mm: fix use-after-free in __do_user_fault()
- under CONFIG_DEBUG_USER
-Message-ID: <akz1LNXtM2ign5u1@lucifer>
-References: <20260626073048.3595106-2-xiqi2@huawei.com>
- <20260706133247.145485-1-xieyuanbin1@huawei.com>
- <c11452a3-b918-4d4c-afd7-a835a1d0a3bc@huawei.com>
- <akzpuerKqOY7qfFi@shell.armlinux.org.uk>
+	bh=RocPjRVmhKRX2Gf0pkjPFphj9HwTbw1IGurD0TN9Dxs=;
+	b=VxGTtN+92LEuypQx+iKwJ2IgmxHnII+U2Lscunn92g4pLqfMC/3qR8Fe6UyTk9/qx9nMTi
+	KvymkGHO0Boubhf/efep52gKi3LxZmRHzWOqdVrRMoLO0WXpfxhuoeQ//Q186ZPVC/LSih
+	N1F2qoBX802/srqnFIJkJxK5SEjdQ8o=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E6rFw4FQ;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783428935;
+	b=0T6GKmgbyI+4x3urG/AxMKgp+Q21kqFhTZlx7JWPFanrOJPKANrHJm21LxpSv+rBgEdLG2
+	wJowM0HXNTukmG13NmVEFWWxtU81XOSWwljBZfyX+gZHwqSQNUIl3vDP12r/HzSeO63iGl
+	GI3SBPPjlsR+4j2I1mjJR8THcto7e74=
+Date: Tue, 7 Jul 2026 20:55:18 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783428933;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RocPjRVmhKRX2Gf0pkjPFphj9HwTbw1IGurD0TN9Dxs=;
+	b=E6rFw4FQWw2qdm0dZDuOHLoC/Hs5JB3u6KObSs3b55vka5YGoXTuSiNs71dL24GPbp971w
+	N3+3xzREEyYKKSyC4O2ACyNYf1JZw9UyRQSU+uafXAnYOzRnqJwqRYO5U2DswgIZJA58pj
+	6YEib/ysaWyxBDeMJr4qYNpnMIgBrYU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, chrisl@kernel.org,
+	david@kernel.org, jp.kobryn@linux.dev, kasong@tencent.com,
+	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
+	mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org,
+	shakeel.butt@linux.dev, shikemeng@huaweicloud.com,
+	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org,
+	youngjun.park@lge.com
+Subject: Re: [PATCH v3 1/4] mm: avoid unnecessary lru drain for
+ wp_can_reuse_anon_folio()
+Message-ID: <akz3NnXR2uP9ID2E@MiWiFi-R3L-srv>
+References: <20260701235955.36126-1-baohua@kernel.org>
+ <20260701235955.36126-2-baohua@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akzpuerKqOY7qfFi@shell.armlinux.org.uk>
-X-Rspamd-Queue-Id: EBDC1180004
+In-Reply-To: <20260701235955.36126-2-baohua@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: bdmkhcup7eh8f6d67fox3frs3zrj7c6k
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783428445-265113
-X-HE-Meta: U2FsdGVkX18jchsc79GyaNHSuBuugKbKp4lYRNI3noo7W/eBdeg81oIZd7vbbDl7bhdqtI18xg8jUz9Rdn+P23k21np6raOAB454Yjktl2KMIdNvPLU4s/yjSv5R2ufMCakTikXWRF41QNUaPb1R77EkhNHE0RGISOK0uicInW3WeJjrbaUEKUc5ITbz5GkiuWpDoz7/OTBK249QJGxgtKpzvevuNCtzbr8tlmpsBRfmigpD4VVI/JlMw+FRi4tUfviVrfBRbaUAcsTNtGuSuCRitP0PlayztKmgNJlWbB3m2ID6XkVk3jdtPraaNz/d1w68aopoIRbIYGqoOcstkhK9sYlsdCzVJay3fenRXjq35VieDTMFrw4oj0Q/JJdWGLqX5oy5DAVjDF3jzKsPB1QTaKf11cQPQJla5v1XHis3RUJ2Y93iokSmqlg1Mo5rh13lXh5z/dAZbKTxsyrnCKDmY+PyB1sJ3RIEiifeCErJVCdy2SDGyjH5jbkrSH5/F+QjymEKam9lMMN4tG22dD0eQu5pjtJ0uWsRkeDw3pkcy0nPqxn8TemzssgA7dPpY7Z5s++KxKvWeQkXfcDxnfbJ040PWUdXTKGDXiQ/M0smzZCK/gjEfL76giJTWNVzqynMEt+StB9cgltBHkzfVDpmbuFsC9kkmPPa5T7VLDkLYAx3PGcYcSgPV8h4r6PEsZtzLIU/jegmxatFJ8ioI4fdYc4Lr/nKOvRMltFVRmEyX7ovkYQEo7EtZ8lpQTG66OfaVcH1YyBovxrmgFFFJVpKC06y7AO3NJRmU6+mKBiHWuzZ0M/Lf6EWz+O0gglG8qq+C5T4MaMHC0kOs4DUbPiIanRW9lwfA7IKABu/dLVByizZlenIwG6i9emDGuHLhBPn1ZbNii+2LgKRhShVvq3bioBmGwVO32tnqO528tm//MCNPne6AT6NhmvJQy/0TCrMTN9g6wt7/qek5x/
- qjhpaNNA
- btIFWU1vzqdCOAmF/SVdbXpDWCzzop9IkDDIy0+3X2LWmaRaGlVRlSQeUtkfQrirXUNpkbd4LW//bztAWSbTCDmYLX7eI7sdNTf06knUhKNdI4vdhMPA+SJLzIssFy9JrbclVMkHC3jAs0xzNKXvh+CUDoLdM0Ecxi+XUF0wxlokT3/HfJJd+Fbrkk6yTlCC2HbDEKkbOVPncQ2m3zXsPxlR1d3fw3Yk8x+WlDjLzC8Y5LzGJm24lSztUOP9UKL8n5kb4h4ntpgr6NR4pEdt0SxdNf2+YpO1GMggQK0qIujFy3qwpOuJ8SXgWe9Gh9SWwU+wEyAnKLcHht7V0cAHhBDlCywmWBTdsNJPb6gMg6RAwXBU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 757A740006
+X-Stat-Signature: nb1q9icaowbzj4njfj19jujjghtct4jk
+X-HE-Tag: 1783428935-194462
+X-HE-Meta: U2FsdGVkX1+1ewJq2WgNBCXh2UNM/OZ7ZhKatBVEjEJChVDlIgFCs1vrNdFfbxi/al9RGypHOV4GJkOLSNUqwBckQzt3Iaca8ZKswNkOvc81Y2NriUlRXTw9mIc9vz4FjlU5bM7HKL89w6iqZ/lk0U+DskdMod+ds1sAQlzZt6qMahcktLFbvoS2ootzbJQBiHXSfLlND7oVpKoxPXmqqzK7vAErPaNKFgj+1F2gXuRG9HCdLaQUNeSDOiM2safh/Mw7jggwWnJPzRTmZw8NpUyeBqBNhj4Z/fc0mRhb1gMomNhWrd8tLq5+PHnTSCL3ti/g5hCMOEz88B4epmAMnUZeTQupW3Qt7wEenhUUUczjpRosWhEVLLvaSVnZ+1IKZGjdhWh0t8LyVfFOGrlhhyBI+3wrbd+3pWh6LgigAb6t2qwhoQAicMB5+GEZ0V2jt+zrAfoeQcJ4awNiMtP1TxGa/BUkya/XhaL7BHd+hvmuALkmCn+eFnWm9T9S32u1E5zB1vskCUp9dmrVwV+gLzItnyfHB+Jc208nHYqGb6whq7lUwFEyOn0ZwdglxaGXv94kmGUD+x9HrB5FNQnO0RBYXfiKEyVF71OA5uqFgLUnk34M2GbBP+kEVnT1ALSC+7sHy702mnmkfk+/23UnqdLJtYCOS/BPxOh0DC6T0c+L/94bZtuYUm0CHKVmvY0zHY7BLkjwglfGqgsogDalGPcM7TIiP5ws1B7Vrnnrx8TfIIA0/Ivr04nzWSNKEd3uqM1JPihvZzagYCJ/KlteIFR/7Qlmiu9FHByZlBBSeYTx/Wka6aWyDD79QS2LBtguy9Sly2HKxmb6ymHPVcnBDeYOlrHBw0SQjxeXwxZo9eLSUAS84N3pw9ELQlvS1TgWFVnhvciz+01n/zajJaT0TXdEeKvBg0tjkltvl76Y10fxWXPLH+gA8pYeb7AUcdm/E5AHakLlAaCw8qWLM9y
+ OYw51FtB
+ P/tEUBfbV+vJo1s2qZk4bHOezeSjaicHG9wki1+lR4BcDnJXEiNpcE9sJj594AGvunsfBvM+xu3Xm8NQWaDmDBo/wEzDwo1TKd9q+9wnv5gViygh0dEmYdALHBw42uo3XdgDEMeUB2eOiz5kVXuGiO2Rk8RS9l2ApAOY3Jh1bExokdAbBej5Nd9RPADbPtfNV5NHPfIDbKfQIdUJ+lBL7cVskx6axU47fYOTH6zPwTLdTj0ZVhFth3eUXOVL9HvQwEHu16laOwNo3i+1R0szYSzAX33MHAjZTGP0oGuyYGUUhPpj/cagV+gWErZ3TmvMBHYCY0jthIhqtCh+B213dLzbntQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,20 +93,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 12:57:45PM +0100, Russell King wrote:
-> On Tue, Jul 07, 2026 at 07:48:12PM +0800, Qi Xi wrote:
-> > You're right. And I think the fix is to simply skip show_pte() for kernel
-> > addresses.
->
-> No. This information is useful debug for kernel oops.
+On 07/02/26 at 07:59am, Barry Song (Xiaomi) wrote:
+> There is a case where `folio_ref_count(folio) == 3` and
+> `!folio_test_swapcache(folio)`. In that case, both
+> `folio_ref_count(folio) > 3` and
+> `folio_ref_count(folio) > 1 + folio_test_swapcache(folio)` evaluate
+> false, causing an unnecessary local LRU drain.
+> 
+> During an Ubuntu boot, I observed over 5,000 redundant local LRU
+> drains. For a kernel build with a minimal configuration, I observed
+> more than 20,000 redundant drains.
+> 
+> Fix this by checking against: `1 + in_swapcache + in_lrucache`
+> instead of hardcoding `folio_ref_count(folio) > 3`.
+> 
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> ---
+>  mm/memory.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
 
-Yup see my reply, just upgrade it to an mmap write lock and you should be
-safe to keep this.
+Rechecked, LGTM,
 
->
-> --
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 
-Cheers, Lorenzo
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ff338c2abe92..87da78eb1abd 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4181,6 +4181,9 @@ static bool __wp_can_reuse_large_anon_folio(struct folio *folio,
+>  static bool wp_can_reuse_anon_folio(struct folio *folio,
+>  				    struct vm_area_struct *vma)
+>  {
+> +	const bool in_lru_cache = !folio_test_lru(folio);
+> +	const bool in_swapcache = folio_test_swapcache(folio);
+> +
+>  	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && folio_test_large(folio))
+>  		return __wp_can_reuse_large_anon_folio(folio, vma);
+>  
+> @@ -4191,15 +4194,16 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+>  	 *
+>  	 * KSM doesn't necessarily raise the folio refcount.
+>  	 */
+> -	if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
+> +	if (folio_test_ksm(folio) ||
+> +	    folio_ref_count(folio) > 1 + in_lru_cache + in_swapcache)
+>  		return false;
+> -	if (!folio_test_lru(folio))
+> +	if (in_lru_cache)
+>  		/*
+>  		 * We cannot easily detect+handle references from
+>  		 * remote LRU caches or references to LRU folios.
+>  		 */
+>  		lru_add_drain();
+> -	if (folio_ref_count(folio) > 1 + folio_test_swapcache(folio))
+> +	if (folio_ref_count(folio) > 1 + in_swapcache)
+>  		return false;
+>  	if (!folio_trylock(folio))
+>  		return false;
+> -- 
+> 2.39.3 (Apple Git-146)
+> 
 
