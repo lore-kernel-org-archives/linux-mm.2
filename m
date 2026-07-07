@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53F31C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 12:11:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C648C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 12:11:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31F7A6B009E; Tue,  7 Jul 2026 08:11:48 -0400 (EDT)
+	id 7DC526B00A0; Tue,  7 Jul 2026 08:11:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D0986B009F; Tue,  7 Jul 2026 08:11:48 -0400 (EDT)
+	id 78DB06B00A1; Tue,  7 Jul 2026 08:11:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19AB86B00A0; Tue,  7 Jul 2026 08:11:48 -0400 (EDT)
+	id 6C73D6B00A2; Tue,  7 Jul 2026 08:11:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E7E1B6B009E
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:11:47 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5AC1F403FD
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:11:47 +0000 (UTC)
-X-FDA: 84961866654.15.F1F11D5
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4248A6B00A0
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 08:11:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AD863C2885
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:11:51 +0000 (UTC)
+X-FDA: 84961866822.26.757AFFD
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 71C724000A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:11:45 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cbIDQqJA;
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf04.hostedemail.com (Postfix) with ESMTP id E53164000B
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 12:11:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RDDfbMhK;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783426305;
+	s=arc-20220608; t=1783426310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=StZ5pwSjJvQJQ08vSJxzLNH2+TxNH3/JjgTAf3W+27Y=;
-	b=wDr4Bv6xMXx6ZcX0y0WbbVY/ZePELCy43c0ce7zHvcm7bIdnIysveETbsl05m7YqT8sC5H
-	uwxcE6bInD2rvFs6cQoQR91tsHCaTMhdH3YAy80l16U1Lsv/DQolW6eadjk1mfdusi6b8e
-	JEFOIxidTQabIwVjzQk7zO08LAq+Bos=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=o9t9Q6Kvk9LeaKFla87co3gQLnfC4fapY8lVNivs0V4=;
+	b=spvUJlx9dt4hJZB7X4b7FyamkQ/G9tJdZr2ZGaLccapvzXkH79JukdIhhorTbGzrqk2Ihf
+	2I+cLrBO0jiQyNnJ45xmebBkBPl4HhgqIgkj2txQO2qIuapLSwODLMMuA0pWLNVABE/2li
+	UltCYH0rGZ/z6fi5v680BUu/HFaPqTA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=cbIDQqJA;
-	spf=pass (imf17.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=RDDfbMhK;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783426305;
-	b=iBk6BriJPSGncYVtqGKHUpD9U9b1z4Kizy2by9H3YgxV50/B2Bo/NfSAysebNpEGGUexeF
-	93kex5LhZeSsMV6EGVRfEkYmT6QZGUqjqz5eLxVUHgwyJU8lG0YLqgdnCBMYiZNF96fXE/
-	0ENZHmlT40AY470f/4u2k2uKmQWIqck=
+	t=1783426310;
+	b=qHiAZxmSPyBdlXFTeajjLi5OcRGPEguNejFghGq410QzxuPN6btVZw/mpMR3gjegt4MjdJ
+	V2IEZUSv8+q4Zrnl4mOg5FPUHxNN4i0aHfV5Hq5hsWF7goG/aKd5PaUzXoLxELKEQVbhQx
+	PyPxEiIcGy3j0PFtHIywHnn6KYTSkrs=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0E7131A00;
-	Tue,  7 Jul 2026 05:11:40 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D1FDB1A2D;
+	Tue,  7 Jul 2026 05:11:44 -0700 (PDT)
 Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1BC523F7B4;
-	Tue,  7 Jul 2026 05:11:39 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id EB5053F7B4;
+	Tue,  7 Jul 2026 05:11:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783426304; bh=o7VwJh7uSVaoe4ejn5xYBJ0uFGWhULPUCA9+6098DIw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cbIDQqJAPUtiB+qhOVOe3tJ1PNzbhZ0euJHBipCjwhbt/zKVz3VBdoYOsEkcvsVvq
-	 3OBF4jp/vkO8GaZKBcZhGFaEJ/u9Ye5VLnC2a817ao4bA4cQnocG4ZI9K+gqyUfCZw
-	 dGUjIy+u+2xT2jV7bHbbdnO1pL3PMyigoFhdchis=
+	t=1783426309; bh=sG8kuXUpuA3bXsCULrMf6aBnRcFdA5YshgzZNs3gKMs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RDDfbMhKhCUcNWpBtfuzJuvj/2D0+DwL0pAugw5qs9KqoeI5Z2YF95UOostcjvRsD
+	 sLgqwtT9pcyCQptuyXi4R2oTkDLwMkjT2NqkJFAhmlbtHpQhHCMUx5j39fFdGfNx1z
+	 ypyQhW72HI/InrjqEE8zpYQGMDlsh09A5M7H2yn4=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -77,20 +77,22 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	linux-kernel@vger.kernel.org,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH 0/5] mm/rmap: Refactor try_to_unmap_one
-Date: Tue,  7 Jul 2026 12:11:18 +0000
-Message-ID: <20260707121128.373192-1-dev.jain@arm.com>
+Subject: [PATCH 1/5] mm/rmap: convert page -> folio for hwpoison checks
+Date: Tue,  7 Jul 2026 12:11:19 +0000
+Message-ID: <20260707121128.373192-2-dev.jain@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260707121128.373192-1-dev.jain@arm.com>
+References: <20260707121128.373192-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: htt5h6y4diiffarj7fg14xy3u44h4xfw
+X-Rspamd-Queue-Id: E53164000B
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 71C724000A
-X-Stat-Signature: pj1tosp3ru387hec3uueq7dohc87imxw
-X-HE-Tag: 1783426305-257734
-X-HE-Meta: U2FsdGVkX1/cCLedvTSBvjI1gALRYMIXJH7pfNGhXiVSa7zCrej5tnpeBJ0DjXKe/S/SIFmggkgxf455qH4JhsYycIlEH6Wo/+esYHBXv+JZvIiNuKm8i/TOvifkhWBy+sMyAK1cxbvcHWQEh/nvq14P/u+AnRaK3PSivmF8as2YFZ6I/0tH40IBAADZvefpx6Vzd5UT5SC688jO/1NeDmP+tY97CirwN0MZVoHVpiFM6FXT5YSE50LJ2Q47Zzer+Rq47nY5WK+/K9eJadKjkTflYu8dY88PMGHB4zaocXFTIgGlLVQ5QRwpeyQZQY7vdgs3WfdByVkCFY0lgZ6MYx9LftfMxI40iPgvn8mdCKHsfw+vM7Px/RA51fmcAibLdX7EE1rGNDU3Qfw2TFg4V587e8Z6Q+OekSnZEsuH5JdPoZljBYS87/hATsnWKk2YtGXysonTqPo6ZO+rq4fnT/FOl98LWgeqEehWPJRczhcmiiGZMDMjYOkGFH7gxXeBtr2oravRFxCmsJHlUmze0ecl0QBosJEF6a/TyPT6BoHrth43L3UX9yhnZgqP1Q5thz++yON1OQiOhYMOOKDC/mjo/yYEmKBpTzDQTpOTxbNrb8vG4Ua3uAToEpqnPfPlGx+EJfAngGlkHvNbw2KAGrwfrTIhb30SxSeQyEY9AT0D00ngVnx0RWXzCM/OloxBAQq/Q9UFhaiy9b6qb64JdSFWJN1ptjNlChinPGlwoRhIWHzrihZ6zZJQrQlUwx65RQ6F/UpB9t4loH8tbVgOXezxUCoRm7/GENC//TPnN20fl2x0/M5t+BeA4ypIyOfnHPXdbxRdO7dzeJJi4mUNb+E6Td09OCXJECX5te45NP84xZ1TXVLh8uxqf8iOnDo5skivJuTmnb3VMOkPIPiul9mlPA7FCXS2BBfZN15U4vYEHldg4qyvP50dflK6+BG/tdgPMWI0o6FNRbP9yTO
- zKWdVUS+
- dxij0Fb8T38CNYAHrMmqhqP5Pg9svseCnjK08cBvjwGBrqR3ZIU/n3gx1jDQ8aSjZgfMzubAocMp6rmV4TbIrDcE6h4OJvJw7DiN2RgHxI/4KNV/uhSx6LkV95DLoT4g29TtK5Z40qCNGUbZ5uD+opKEg/aUKUozWbZ/3k47kFhMfljQO38a1MSJKrTyyLsSLpTczE0QTeEjmrsWe5rfgLUa6V1l++XfAJc85+a3jm0brogaDrWq8pE0jowxtiTLXwWWqviTHRQIQGylV95WcV5Gj1371pn4nqWPROGTtH9NFMpVQer958RXzok6u0YpyZGis
+X-HE-Tag: 1783426309-859035
+X-HE-Meta: U2FsdGVkX1/phtRvLagtL7Nc1B4i3uUFOGrUFCNWcx+wYpZuqRSQrr2WBRIskgrDNYS8atmdsPJCUlgrgGx3z5bRzphemJwFRDuaQmKNTQfNG7CYhsgKVNgPgTQCYQzE49jLfiVuVjufFZsV9LpAC+xQCDEXzCTzDdFjiY5lnlBIcTaQqxxoiyCxBI9W3Kz/jf/WfaTwxkB8UT34+V0aefU3S+YACYkaU2GFLHTtO9QyZ4WW6KW6GyfKwNBbud+oLlvIq90gpvDrbyHsW5DCf0ntUA+pVxpWm+MuP/J5b/vzRfVuIJhT2xJgdnems1OuIm6/I3V71zLM1D3seiNZuzs/Welr0ZsXw3zaddjeNhs4oQx3jJ3VVGHioicFlZ9g0Y/seOMxWIcnV1gDCSzrfHoJTqNTyC4aAp8c2BOvms5FnPB0hSmPVWvDnj1AT19j0D2IxpCp6t7VVhISc/k4Y2nFbnaDNhPj14Mc3dZWCSXISlNTn0x83BYlZ/DBnsIH53dqsJnG94z1zwJ4z7aRT04nBV+KpUZTu5ItgQeEH2L92wn/palLRPIkXYyCD2vxb/HMriAA2DbqCw3g+eG508nYps5UCxnQURRNKBnOgKbd5qM6oxEFZGk95kJCPdI2VspMdgkluiqYMp3S5YhFZD8XpDSgUpzS2kEyg8I30pYV36BHB6X3AXFtVZNJTtvYeKiKYu8xpg25P49SLOOd/UAXLuNe3QYk7UZYo4nKsBRM5BjcQtdlZRDJj0eNVC8I7+1vLTW/ghliKCQciw8/QDee5yAmrpho4deM1GqQhtWdp9tScoRvGkvGCh/Agil4JKC+RHF9z7FYz8Mx5ORo9kYtyAFI3QCNneVZWDcgfl9Ftwz9j8wHZzFC+1no7Y9P4gR3hukvQHllZK/Ee3gr4eqW8mvNRvxhYzY76X/6lNgka4f1/HQqWL+GzBOQkCV2ALlFQghb+ZaiS+qicAk
+ /trk9OUK
+ TtVzeRJRyniZEzZLZSrkigtxEb9VrNGKvpVNaZMoakPakugC1W9OdbrLcFugMfjRByEauFjV51JemuQxFaznpdmJ5Lqb6F25e+qpB0MAg52H9TJglVgIWWDzov4twGFpp+ElXO90SmtuZMu5UG1UyN7+vBG8ZgOBdjx63/QcWuH64P4chvaHu3KLaOXShaqA8XBjYdFJq5WdZ/IKBJRyit7UIBs+8AfrOSx/5reo8eKfPzcyDijwGKoifjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +100,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In preparation for batching anonymous large folio unmapping to optimize it,
-refactor try_to_unmap_one. This series refactors hugetlb, anon-lazyfree
-and anon-swapbacked logic into their own functions, significantly
-reducing the length of the huge try_to_unmap_one.
+try_to_unmap() receives hugetlb folios only from the hwpoison path.
+hugetlb_update_hwpoison() sets the hugetlb folio's head-page
+hwpoison bit, and page_vma_mapped_walk() reports the hugetlb mapping at
+the head PFN, so the previous PageHWPoison(subpage) check happened to
+work for hugetlb.
 
+For non-hugetlb folios, unmap_poisoned_folio() currently rejects large
+folios before calling try_to_unmap(). Hence it is always the case that
+if try_to_unmap_one() handles an hwpoisoned folio, then the head page is
+marked with the poison bit.
+
+Therefore, convert the poisoned subpage checks to folio_test_hwpoison().
+
+No functional change intended, except that, while at it,
+convert VM_BUG_* to VM_WARN_*.
+
+Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
-Split out from
-https://lore.kernel.org/all/20260526063635.61721-1-dev.jain@arm.com/
+ mm/rmap.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-mm-selftests pass on arm64, built on arm64 and x86.
-
-Dev Jain (5):
-  mm/rmap: convert page -> folio for hwpoison checks
-  mm/rmap: Add try_to_unmap_hugetlb_one
-  mm/rmap: refactor some code around lazyfree folio unmapping
-  mm/rmap: refactor anon swapbacked folio unmap in try_to_unmap_one
-  mm/rmap: add anon folio unmap dispatcher function
-
- include/linux/hugetlb.h |   1 +
- mm/rmap.c               | 425 +++++++++++++++++++++++-----------------
- 2 files changed, 244 insertions(+), 182 deletions(-)
-
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 9939400e77c79..dbb077f8443e3 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2122,10 +2122,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 			bool anon = folio_test_anon(folio);
+ 
+ 			/*
+-			 * The try_to_unmap() is only passed a hugetlb page
+-			 * in the case where the hugetlb page is poisoned.
++			 * The try_to_unmap() is only passed a hugetlb folio
++			 * in the case where the hugetlb folio contains a
++			 * poisoned page.
+ 			 */
+-			VM_BUG_ON_PAGE(!PageHWPoison(subpage), subpage);
++			VM_WARN_ON_FOLIO(!folio_test_hwpoison(folio), folio);
+ 			/*
+ 			 * huge_pmd_unshare may unmap an entire PMD page.
+ 			 * There is no way of knowing exactly which PMDs may
+@@ -2204,7 +2205,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+ 		/* Update high watermark before we lower rss */
+ 		update_hiwater_rss(mm);
+ 
+-		if (PageHWPoison(subpage) && (flags & TTU_HWPOISON)) {
++		/*
++		 * With TTU_HWPOISON, we only expect small folios or hugetlb
++		 * folios here for now.
++		 */
++		if (folio_test_hwpoison(folio) && (flags & TTU_HWPOISON)) {
+ 			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+ 			if (folio_test_hugetlb(folio)) {
+ 				hugetlb_count_sub(folio_nr_pages(folio), mm);
 -- 
 2.43.0
 
