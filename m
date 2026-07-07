@@ -4,176 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00DC1C44501
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:41:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6AC9C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:46:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCF5F6B00A5; Tue,  7 Jul 2026 10:41:34 -0400 (EDT)
+	id 7E3936B00A3; Tue,  7 Jul 2026 10:46:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA6336B00A7; Tue,  7 Jul 2026 10:41:34 -0400 (EDT)
+	id 794B76B00A7; Tue,  7 Jul 2026 10:46:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C22F46B00AB; Tue,  7 Jul 2026 10:41:34 -0400 (EDT)
+	id 683736B00AA; Tue,  7 Jul 2026 10:46:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 869B96B00A5
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:41:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 035F9A045F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:41:33 +0000 (UTC)
-X-FDA: 84962244108.27.84BBCE6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A9C26B00A3
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:46:09 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A84B71A0497
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:46:08 +0000 (UTC)
+X-FDA: 84962255616.23.781A472
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4AF77A0002
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:41:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H6S9GekB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0839E100006
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:46:06 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BpkPQxRV;
+	spf=pass (imf05.hostedemail.com: domain of horms@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=horms@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783435292;
+	s=arc-20220608; t=1783435567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=71V4Q+fhRuX9RNQVEGMko4OqAR8knd22tkZhvdbZbMI=;
-	b=0nz0L7JskYpltK0VrENQc9qYyV0M7y6Uc3JsfifRT70vkrKNS4i4pQpG1UyBWLiAUYM5BR
-	6uk17fS0clYQjlOq6pIUMi8dM6pb0G3qcjhURg/HP+0u794YTY8JyHERxB/RQFblFYTzkZ
-	3t/zT7oAdW42cSflDxRTCs0WeYq2Ha0=
+	bh=38uJr8hVPGVJpV7RT0QtVixAplTyJQKOmyP/3Wvejkk=;
+	b=qY3h+NrKsi84N5MQg2aSTcSJFLzeChAgCfXq0LfYjchvxYokcfEihLeDRsWMqPQ8SRTgoT
+	iYQ8oEThCkkiAiMC2gqwKftiT8dbYZJtnnecybycyDpFcHcSjguLFBXy5hdnNNW6OxXzZC
+	+wE3s3X+4eSGHeoJq7rovjJerIY02Bg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H6S9GekB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BpkPQxRV;
+	spf=pass (imf05.hostedemail.com: domain of horms@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=horms@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783435292;
-	b=npeOFEWT+klnSebX6WhzxKNymykZYneqmyLk3xX8TLX7EhKXbfAYEeDgdBknOmP/qXc89M
-	qoFQQHRPiBkWlrfgoisijGvce1g0VZmjWGxqowug96rUxYeTwsoYefmsQAGUUIwN36z3Zj
-	uDEu52B7O+IQakUgAsw58f5Slf9DpdA=
+	t=1783435567;
+	b=rP+RYnjWnrlBdYPuiZwBwbQPKAn/TVcYyVP5IHSln8HyZmog2yFBnSd3DkF4B10jyjSkRK
+	/PO8ClBEuXwAopHK7NCg5dNNKHLj4rH3kHFRkXXOquhiV1bhji3m39sPJl5OnCBu6FYJnf
+	DVlpdHR9VYuLXCa1WVhqwWfDDs7br9c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A483660018;
-	Tue,  7 Jul 2026 14:41:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62881F000E9;
-	Tue,  7 Jul 2026 14:41:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 876DB60018;
+	Tue,  7 Jul 2026 14:46:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2066F1F000E9;
+	Tue,  7 Jul 2026 14:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783435291;
-	bh=71V4Q+fhRuX9RNQVEGMko4OqAR8knd22tkZhvdbZbMI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=H6S9GekB83Pwow3x4U+RGkMBW6FVgTqC0SvdFufnMoKWlCtG64eGWIdcoIifrbKPl
-	 youmdPGzUebakqVJ6nUDHINdl5i/eKAjQ8dRvXH6TADBdph93e7i30Zx1WuCMbWWay
-	 5OOeInR/PJgYjMji1bzTvQuqWqx9qg+JZfS8PyeGGMG4mSs0eCGSWBeDekl883Yk0R
-	 8mO19JNWyy9BB0as5ZmoOzQbOYyuSob2g2lkJu4u0r3yByO2EXyb6ZQHrcrVkhRjBu
-	 Av9G04braM0zU/FBB2N3aGVHAfKU8KZmjiL9q5mOPtmU8s/CH6MaUr94cwbUD2/HZf
-	 0883rVQ4waFyg==
-Message-ID: <69dfe4ac-3800-4e67-93f1-d21a8a39e23d@kernel.org>
-Date: Tue, 7 Jul 2026 16:41:14 +0200
+	s=k20260515; t=1783435566;
+	bh=38uJr8hVPGVJpV7RT0QtVixAplTyJQKOmyP/3Wvejkk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BpkPQxRVjX7WXA/JEprOiZavYtpKUwCoXkGlay8OFTxOO3pBbm4Srga6ztyH+1G9J
+	 lK186j+V1CMVof8L6JnsbKESfM9aIozW2Fx5vLrzsSg8fNxMP82rXmD1RvGKwxmWTR
+	 toZSpjPZFfeMKf8ftXcFnxIWjZ59vBwOUbLfRcTdXK9hM4AdfUY23GHcs17g8mi4Km
+	 sYOaH1qvo7ncsQHtpLwY+T5IIOGF8UlSyExgMxbNm0iIpp7tzTLzlWINFiO2aFZki5
+	 mTuTothfBivZ9KvlFwlGUoGRccKPFG9tF5Q8RAWeV0x0tDP9G04KiXwRTm3QUUMy9E
+	 m4/nOvrkforfQ==
+Date: Tue, 7 Jul 2026 15:46:01 +0100
+From: Simon Horman <horms@kernel.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Jakub Kicinski <kuba@kernel.org>, b43-dev@lists.infradead.org,
+	libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 0/4] drivers/net: replace __get_free_pages() with
+ kmalloc()
+Message-ID: <20260707144601.GH1364329@horms.kernel.org>
+References: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/30] mm: move vma_start_pgoff() into mm.h and clean up
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>,
- Simon Schuster <schuster.simon@siemens-energy.com>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
- <lumag@kernel.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett"
- <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
- SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>,
- Kees Cook <kees@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
- etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <cover.1782735110.git.ljs@kernel.org>
- <b28b698df4c009e85c4728446ca5863d8e633164.1782735110.git.ljs@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <b28b698df4c009e85c4728446ca5863d8e633164.1782735110.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4AF77A0002
-X-Stat-Signature: huaxwegxuhnw6h95ta1kk6oj915dc1tu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260701-b4-drivers-wireless-v1-0-60264cdf2efe@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783435292-414082
-X-HE-Meta: U2FsdGVkX1/TaAAFKScRAivBLEFS8hkgsNOwWHAW+tn+YTvp1U08iAc4sNULsoCE+ptAXvkFZ3l6vuwe5y6l9s9CpJtZ4yfDVw1EpFrYcEaa7FMQnb0+CcDQF0hmVO3iV0eQVkU2EFFx6FomuWKyKLy376gZAyCks26fhUQ62xLKjs/zaz0h5K3C7KJNnzhi5JGk2FMyHrpfP/n8oFfpvx/PtAiEaSI2BrxdhQuwkVsHV+bUjbjVz/T8ONHEhARWJSpaS5f5aEmTTvvV1uVWmE5IyN9ZYk0wuoqZ2BtGaFhGkKF8CWrHKeVC8js8ig3S23GWrv68f0HOyHwrtPtkvzUrkSeIKQjlrVaSfCcbmrjcYKEEgJyA1wzLTN5mNUpZh4tX0AIP/if3EzHGLlJoGHlHnmlm9zKoJHNUcuIAedA0viPY9BZ7QBTtO10mP5I/R0pZxrX7xkr+Q/MRejnupPpkqhSrVGPLYs2zFWUOax97yFtptSXJzSjJduEkIesSwRHE2h30qfM5gC23RRtWJ4gIK9INHkTOCZHHMQg5oEILsaAbiP+at/7QFPj+ry3+DXtK4nHgPd1irPor1omUhf56uhi7r0wtgybKezN+VDSwK8ujrxkpFGd5J7aXT4d9c0vwEcqIyKdsamAcCuVgIr9xAA5VqIIPyLchwy4nhPrwwSR2PzdH1ONUrWl2uOItDwPCBqkRDR5lRro7aBNsqnySa2AEO1ZFW42Dx3JAWndLFpmK8gMAXdVvg1yiSmBntChot0l9Fqh0mVGwzeLekCQPfAIbIsdNVjnR8nYOsNJ4sMRTgwhBEt2pNiaa4duyq0V5UJCDWkVXU6uKlufo4o0HyqCbmsjkwZSimqz28LeL0Fn5gpWioM4GaqkpY8SXuGVf6C2CIsJLCXf8TM34hT87hy6ut008rhLPgSuQPmd78AhXJo/KKyGnMxxDc3dtVMtBlIv4uaqGPQAyLnJ
- ja/U7u3L
- cYyGBnJW0stjL4QkEdLIWdkc8zpWnX0qiOS5aG76Uif+nAreUDAMPB2xedqb/uHCv0GOu1sEBpPuUg2i0BGfPvle1zbhvIdNZscelZshkilFmOh5a8NsvEu6JGdfRUWs0cIqMClFByDb1TX/6JdE8P6pAezIFOQLOcUPvDIQ1hcmTTvIZYrKQ+6ELUanBZ3Dluuh490bM4eC2FlpAeTJdDgW7mvrJKGZAWyrlzll+P9L1A67DBBmZ4Nm3LjZGWipp/EwArJEJOecOj2Oexr1eKm7gaFnsqYe8hqlrxyMZw5zIVS6Lg8PS+roa5lFxDCEsfYlkuvhkrxa+3TnpHehlxN4fib8k2UjPjIcVZVWHJ2HOGBCAZYof9x+huiylxJmV9p9CVrVIBif0LOVi5JBibAR/UH7Eta6CIu4mPTaOnAOvk9s=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0839E100006
+X-Stat-Signature: e1arx7jaz3tj5xiczm8wtit4j4oprcci
+X-HE-Tag: 1783435566-610935
+X-HE-Meta: U2FsdGVkX1/0wZIlOG0aERpD3lJkvwFhrN830zpJ3RXrXbye2HdvsFZLMwfecD2ZOJ1vhHKVc4qTV+5M/fU+2l17RQZJPnt5RBl+vq2c1PAn+wXc37uNdWWDHx3fh3Ur11RYfR9dIytKrMrYBdFPt+eXhhaU+i2NpR7vltu3Vhn/LNAFJt57+0WEiyhd+LJ8FjW+UUsFVX42usynq1cCtDqJlLgBoQj+6nInTNw3Ob77KzCsP2l93SvF0xouw3j308HRE1fLaj5ELE2F9VybSUt1TMwkMKowSx8MCXzr/zrS535WVlg0dfcY8CoHhWYY2Bveuu3w79SHjkV+qtpQsFU3UD5dSDi4KfDOuMakhcph4eDBG4eO8xpNU63Scl9X1Bns1t8woenjHgMGI0nbnUQjNqkJb40HkjAgf18fWVCiIwq5JEMPlHlu41Om7JSXCqrU+qwSUy95GAxPbalg+aQPvdUYvQVbmo82bqjkayVhFtSM/6TYMWqBgUSa9ie4PWdkeBZqSf3JUOkMWN9K6G4CWsGZraW+5WedU70zjaE23rv5UYSBsvvO/PRXsXC1pK/bli7tJI6tqWzKFBAAbe3U1HAFhw2cqfiHCWMk4w9oxa/VArxTyqur7M3JNMMvj+Z2hCiRwHC2zxy/egT0qifFFjo5cBKpBPwCEpCKc4wj6VESaYWkPVL1aT0lF7fj0VPrCmAFE/A4tDghJ1HzZsg1zfSScN35A6pbid6F/7iypECwmyz+AMx/Hiy6g+t1jliFeCaFw4/8/s4fr32/ABelnXvFq1/Uwe2pmJjtcdfXZOfYQJ/ADQuJUmvlJO+is9o6ymretWalShA0ESU+rZVfHdpF+vMyFVkqcpTMeYrRXtPJVUGGyzdJyjW6IBt4/h36VybQzoTBSFdNMAx5MNrVpJlvRO1q15FwYYVyFpGAfw0Uih0+vyarEB2HGPSrbldgLVQxPrBxIjWYzsx
+ UuI2qL0q
+ HJVk3ws+5z3kd88KNNK9RuxgFEkgQMdYqvuI/DiB2FW4CM55L+G4DvY1Dn9FjXYmZm6EKfpZgBNoSqfoyzsLowuxNT2hTaKnjKOPFKwVN1LwljgPYsatPwk+sFGeBFLBB7CQrAmUGjC7bsi276GhGfuaUzIvwE/B2Aljh9haC22QoVaCdmZYjhHlMwqaajfBUxD7qjvNbyh11lVlvBCJM8bDFNreAIIXSqkIkQclWbBRYyKEei3Q36Fzhr60BX04SrglN2pmLqlXuBe9hgJ2ZGvVIl2qdgms6aD4iML2x51rSUz49GlhiiuKbC/dZ8FEJEwdaPpNgZ+5NJcCXuVsdq63IR6wK3KZegu7TxSYdbTg0tNfJwQmpan2Su2DAcowEOH2GusvpHyVy3SgszC5sTh5uWS79yZgV/9hvVgnOd5KnjvrkWAFN6/JLzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,27 +96,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 14:23, Lorenzo Stoakes wrote:
-> vma_last_pgoff() already lives there, so it's a bit odd to keep
-> vma_start_pgoff() in mm/interval_tree.c. Move them together.
+On Wed, Jul 01, 2026 at 04:59:09PM +0300, Mike Rapoport (Microsoft) wrote:
+> This is a (small) part of larger work of replacing page allocator calls
+> with kmalloc.
 > 
-> These each return unsigned long, which pgoff_t is typedef'd to. Make this
-> consistent and have these functions return pgoff_t instead.
+> My initial intention a few month ago was to remove ugly casts [1], but then
+> willy pointed out that Linus objected to something like this [2] and it
+> looks like more than a decade old technical debt.
 > 
-> Additionally, express vma_last_pgoff() in terms of vma_start_pgoff(), since
-> we wrap the vma->vm_pgoff access, we may as well use it here.
+> Largely, anything that doesn't need struct page (or a memdesc in the
+> future) should just use kmalloc() or kvmalloc() to allocate memory.
+> kmalloc() guarantees alignment, physical contiguity and working
+> virt_to_phys() and beside nicer API that returns void * on alloc and
+> doesn't require to know the allocation size on free, kmalloc() provides
+> better debugging capabilities than page allocator.
 > 
-> Also while we're here, const-ify the VMA and cleanup a bit.
+> Another thing is that touching these allocation sites gives the reviewers
+> opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+> another size is appropriate.
 > 
-> No functional change intended.
+> For larger allocations that don't need physically contiguous memory
+> kvmalloc() can be a better option that __get_free_pages() because under
+> memory pressure it's is easier to allocate several order-0 pages than a
+> physically contiguous chunk with the same number of pages.
 > 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> And last, but not least, removing needless calls to page allocator should
+> help with memdesc (aka project folio) conversion. There will be way less
+> places to audit to see if the user was actually using struct page.
+> 
+> Also in git:
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/drivers-net-wireless
+> 
+> [1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+> [2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
+> 
 > ---
+> Changes in v2:
+> - split out wireless drivers from a larger set 
+> - use kzalloc() instead of kmalloc() + memset in b43legacy
+> 
+> v1: https://patch.msgid.link/20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+For the series:
 
--- 
-Cheers,
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-David
 
