@@ -4,127 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71AD2C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 741FEC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 07:01:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 572636B00A7; Tue,  7 Jul 2026 02:57:05 -0400 (EDT)
+	id 52B516B00A0; Tue,  7 Jul 2026 03:01:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 549CC6B00AF; Tue,  7 Jul 2026 02:57:05 -0400 (EDT)
+	id 4DC046B00B5; Tue,  7 Jul 2026 03:01:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 460146B00B8; Tue,  7 Jul 2026 02:57:05 -0400 (EDT)
+	id 3A4A16B00B6; Tue,  7 Jul 2026 03:01:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 192D46B00A7
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:57:05 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8F870C1C2F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:57:04 +0000 (UTC)
-X-FDA: 84961073568.02.34D32E0
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 13712C0005
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:57:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A47IAmZm;
-	spf=pass (imf22.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 134576B00A0
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:01:25 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B815A0300
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:01:24 +0000 (UTC)
+X-FDA: 84961084488.15.2843478
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D181F4000B
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:01:22 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoZG+FAi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783407422;
+	s=arc-20220608; t=1783407682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c0FBWE8Jb5+vMlrP70d2roSOjCV4VZTmyKyzdZd5y78=;
-	b=f4lzFiWmdgExkYM544VgaT2bvUvyWLchbCQvmwpwCpJpb6Q2GrEG2692I8rzdW8hiBEEyz
-	QTda9tadVY8mkgnySlJe7ZNd4BTAhhLSQMw0fJDtXhh3v5qma7QyYh5tH42UvHu5vHOlao
-	NstLgg4UEHKniuI+l5cCRhB4re7Uqe8=
+	bh=8nMQF9iK728jaHfWKAl1oxb3wEavhMGIGIQQBs08uWU=;
+	b=Y97R1+2JtlE9e/xfwlDG93OMIqaE8+Mi/8JHfLXxOCvnNQ2aj4lLSCvfQXDGDEY/WY0XxC
+	2m7FXlf8ZcpGsWR3fOkNwPHK7AEB23gwzDCIBlaveXEcVwG47CQjY7895T6iVxUBXmot4h
+	I6ukz5l5evTKR+SpdFcMT2+5zBJwue8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A47IAmZm;
-	spf=pass (imf22.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoZG+FAi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783407422;
-	b=NMeBxeDWQbvMvgsA/dJwEFHdoLmRTDQ7sVdyTanzd5sylSqEc1AR1uoIu1ttS1atAZYdES
-	/HRI31iks9mmvRT+nDirKuScjXQbn5tpfLxYPN1RWQGVVQqg+lK4MIV8WSjxRJIbhNNmcs
-	K6DRX0+crlwh/jUkzAyhf7HI9jjNDic=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783407421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c0FBWE8Jb5+vMlrP70d2roSOjCV4VZTmyKyzdZd5y78=;
-	b=A47IAmZm7FeS/wJVPxxVj7fHbJUZOlQ897si8dDMrjWMNFZXfldeznOxqpnO6tESzQSA9U
-	AoNy6XEVfCDsRpkaW+g3kaghqdSDosaA9dWIQXlQzJ4wHXfnyTLTHWS19A+iKJDYDhdNqR
-	HC3B+R1q3l7PIkaqoRBxJU8XH+tVh40=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-49I708dyMjSTuWbGs1ZU_g-1; Tue, 07 Jul 2026 02:57:00 -0400
-X-MC-Unique: 49I708dyMjSTuWbGs1ZU_g-1
-X-Mimecast-MFC-AGG-ID: 49I708dyMjSTuWbGs1ZU_g_1783407419
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49244130073so25707655e9.1
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 23:57:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783407419; x=1784012219;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c0FBWE8Jb5+vMlrP70d2roSOjCV4VZTmyKyzdZd5y78=;
-        b=N2e5iZAUudFm4XQVvA27qjpDBlqMb2cx1kk9FBtWa1e8MgigPjhb4SbBFT4q/9B/Sq
-         5R4m/arn3lBgEVFOh2VDJX93/CCNmAKt+fhaN2r/bCViMUmaBq/qQCnxAavT0PbLOhKk
-         1MQ1Vw7GxzOiez2TSd7rekHQY5arhqNS48XoCSna6WNf0QHTxtPEx8ge/dHR/2bood2z
-         7SwXBLLw6PK5D9vQS8Q3C0/N9EteKyBrd0i+sAEZlXoH5RaJBcs4BkX1dWk3oG0cVeiE
-         Zwv7J2IXwd8zB5ONh3hXLUP7cqsfDyAbZBsqYDB6jGviXU4te0y4na4o9WLejev+6CJN
-         jJWw==
-X-Forwarded-Encrypted: i=1; AHgh+RqAAhsSGeUIvn+NOdKbWXrlIizqW1PTjnhqTSOrm6iDzwBeTxW8pSSJM3KWL3YWylQrE/0bCYZ/jg==@kvack.org
-X-Gm-Message-State: AOJu0YwNfLxujI3irRf4CcpzpoN+TmSjhe/460hkLR1y+hl7Izhi8B/c
-	rXhEbIwIAOq4gABJXis6jJgMJ7O10p1U/jx4SVPtgx4T0XtMFWmtwgq92wopDeMQHvGHsc/hdH7
-	M9a7kwe3/uOJ0y7+A9kdWT92f8QCBd0CVU/iohJin/PvHBiihLs3e
-X-Gm-Gg: AfdE7clJNSbsa3Y6e0BzBWaRwIl/9AFKu4J9givtPIMZUcYg533UMpg0hEJp0drROxK
-	PGGLCDi0ZSZ+yaIu/Z3MPgTf5THHPwCBc63ZrNgiBEMQ65AcfhlconON/U5YZB0QRPffWCa7Sa0
-	sH8zXQrDewNyp72LNpCqRT6zLdOPCxwkbwqgt6G5i+kQsGUJVdq3Vvi4aAwMyzYM/0PsHt7EAe9
-	Z2LVD9XzDp6OaOq9ssxp/9dK4F4MBz5CD6G8xmcWEcb/8CzxcW76VeL26cmfH88/kXje1DhLp3B
-	6YVF+0yhxaKJ1D/yHBXn1GfBFbttjtARkNkjxgLor21ndhn6C/uCIJYaHk0Y57ZFsC1WQIT52XV
-	4u/ImxIaVTzxEtr7wP/a1B7CVDPPHg3dX
-X-Received: by 2002:a05:600c:83c9:b0:493:bc31:b2ae with SMTP id 5b1f17b1804b1-493df040597mr40628265e9.10.1783407418838;
-        Mon, 06 Jul 2026 23:56:58 -0700 (PDT)
-X-Received: by 2002:a05:600c:83c9:b0:493:bc31:b2ae with SMTP id 5b1f17b1804b1-493df040597mr40628075e9.10.1783407418369;
-        Mon, 06 Jul 2026 23:56:58 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0fc1348sm30919825e9.14.2026.07.06.23.56.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2026 23:56:57 -0700 (PDT)
-Date: Tue, 7 Jul 2026 02:56:54 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Sourav Panda <souravpanda@google.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, liam@infradead.org,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, mhklinux@outlook.com, fvdl@google.com,
-	gthelen@google.com, mike.kravetz@oracle.com,
-	pasha.tatashin@soleen.com, rientjes@google.com, riel@surriel.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [RFC PATCH 0/6] mm/hugetlb: Dynamic, NUMA-aware HugePage Cache &
- Free Page Reporting
-Message-ID: <20260707024744-mutt-send-email-mst@kernel.org>
-References: <20260707064235.1386552-1-souravpanda@google.com>
+	t=1783407682;
+	b=DXE9W6LnqOrlxN1eWwxhfPHbIiRoIJea0dM3rzU7Jf+ZJKoj/c8hp73XzR0twyM6SdN51E
+	vnBBlZIj+fmdvqJIAVQ0ptnCjqA675KjSGiD1ZbtzsFZBDnvLNFC/dZkf1Ur0eICcfMOvk
+	AaG7fxpick5EbWv49ney+XNy4/nvOWE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 365DC601DE;
+	Tue,  7 Jul 2026 07:01:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CD71F000E9;
+	Tue,  7 Jul 2026 07:01:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783407681;
+	bh=8nMQF9iK728jaHfWKAl1oxb3wEavhMGIGIQQBs08uWU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RoZG+FAiYOh7N/YyQC+cC7CslMmQU2SOM06P5nPWu1gu2qX2Ye3qHB0GWnn7sIBVt
+	 7NLWJ2C9ORJQKRRKgoXoaB2KFiaBFu5gkdfNewh/Y+HO0NAQJOg4K3FpOWyMCkvSEf
+	 oDz3UESvJxy4dJcABhpe8VUAjM7/MIVkVWBaLpMXUF+vKN60NZeiBfyfvrdhgzL9Qx
+	 YVemSw8dsdOHBqyABeulcUCCtEVqqLEEZB9dGtAXq5zzcD8kL+DjkJJHr2DlS0N1bX
+	 6Uylhickpd+JF3duYPoAueIzC0jgRPQw6vqjmYvKycbMktocEwWvSg7H5NwaEazYZI
+	 KQ9WDnMScRCEw==
+Message-ID: <08c001ab-320f-4676-830b-8e4ba6a05dee@kernel.org>
+Date: Tue, 7 Jul 2026 09:01:04 +0200
 MIME-Version: 1.0
-In-Reply-To: <20260707064235.1386552-1-souravpanda@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ivdbsh9_o5evF72Q_ZytqssNjiFh29neuP5GHSZvvYU_1783407419
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 00/13] mm: rework anon_vma and remove
+ anon_vma_chain
+To: tao <tao.wangtao@honor.com>, akpm@linux-foundation.org,
+ catalin.marinas@arm.com, will@kernel.org, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ willy@infradead.org, sj@kernel.org, kees@kernel.org, luizcap@redhat.com,
+ zhangjiao2@cmss.chinamobile.com, kas@kernel.org, ljs@kernel.org
+Cc: hpa@zytor.com, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, jack@suse.cz, riel@surriel.com,
+ harry@kernel.org, jannh@google.com, jgg@ziepe.ca, jhubbard@nvidia.com,
+ peterx@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, xu.xin16@zte.com.cn,
+ chengming.zhou@linux.dev, muchun.song@linux.dev, baoquan.he@linux.dev,
+ nao.horiguchi@gmail.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com, pfalcato@suse.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, damon@lists.linux.dev,
+ shakeel.butt@linux.dev, ryncsn@gmail.com, jparsana@google.com,
+ dvander@google.com, zhangji1@honor.com, wangzicheng@honor.com
+References: <20260707063308.29176-1-tao.wangtao@honor.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260707063308.29176-1-tao.wangtao@honor.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 13712C0005
-X-Stat-Signature: 58nd6ibhpi1nexch7ou64rpykukfofxg
-X-HE-Tag: 1783407421-80132
-X-HE-Meta: U2FsdGVkX187W3w8oUia7eXVwKzNBGtlwUlOuqSI8qdgBx6fcqv7tj5Z9ygk4pWr+LTEsSkckvZ8rHPmqmB4ZoTpwWHGGupcKQIFBMycFyrwccX0glStQrx/xOXtOaDmsoWuZ+iKWXmtw6pd8iH2g600e8uYafvP0dEyUljMsRCGbtqDSQ86WcevgVN8OB7ZHvrU6l/hUyTngx0WTucFufCcrZP7eEdpwGg0bDZKh2vbqfldmi4y8LpjFV+40BTkNjK6iMNbmlOubMalk+ZFTCWkzWqhLBrtdrSAcXfA3ij0IFNwwGxobC7sMDwcOCdmGn0oyBHJvgJNEq8t4C7FBp4gwv7qkM9q7lB3HV8Sq4jK7LwcvXJC875FmS9vyh64RRKkBJ6im9AtPPfu87tqm82KSQ/WISZR9H2vvgI2pnjvu3sA+NwXET8x5HRYIjTwkiBWods23iVdVY6AspPp8lDVZq6XhmRTfD7h0kc2xCFztWPhjGiUQ7vl7I6jD8XAmsYtWCwASQyzsr/BPQuDQZpvaV1MdokYQGJqR7K39tMZZ3izBJFpFqKzB9WM9HFXO6TVbnohjFvjUsFaiF2krjK6TCSrCXT2uTfQ9ORQoj8I6ipThG0MXS82T8wpF1UhoeruAuGswdnR8bk0sjIwNHzltYlHhW/S6QhRoRJmgkEmvEzwiA8ndBWeLuz+CyLsPkHKBUBq7p/rQM8WXCEjuAjgAdUU+RWdnnVqFxO1NroJCFpqXdnv0/zOs5fcjsF8DGN8Q2aaG085RnAVMxCoDIWDPN5VZn/ICZaxt/STigV+0+NDVy2Ikfdj1ueiUBO0ovsBi36zjT3VJT+e6woCDr0+Co5j7gwrVX1nQs5DobXyDMR0c/43ojvRXYjmZ1LB8fZkSNTxbk2wsJIe1ZwDuoTOqSBNLWga3xcS2IBeVZeoSO4li0bNkx6Au3R8TIXs7fQamzqvUFR0/TSP9rY
- Q13Wi+Iu
- Nci5VCGr+LkeEOmKAaVkoy8KFf/GgPlqaiirML5O3Oo2qg0ztA9qoVfNIvw0I0eXlUaM/VYjkSdgnqo+BZbHUtNKAgeuQBY/cfdF8TcvloYs43vfxawGKgCFz9+XNH/iLguJCDDT4Fl6pvqDoHbpW+Kbr6un84FlY4p9tMEBHv/dhZiXFXbPuM2uhHzdaIBJIj9x6IWKllmpH55VZMfAS6JoB/SQd0OnI37258Z9fNtpwLRufnvQxkV/8p4uPJa1QzdjGRXwWBEcsVxqnUPttU0tAV9eEO5uSxrWBbBImq1pslFU=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D181F4000B
+X-Stat-Signature: tz77gu1r4ofpd7utnuh84mcq65ci4etd
+X-HE-Tag: 1783407682-995459
+X-HE-Meta: U2FsdGVkX1/bn+iKm4F3IM0H9681X554GLDEwyFGbH7/LPX75B16NHp79tdnOrkML/ts5QdA0ZSgy0FZjQrH6w2qn3pFoyeEgG8BHIiebDcsmvyZpzzYP09lf/5wbo+NZAIFyzmP/P3/Mxa2+aOMCfLszkuwG78tH6Z3rAav8HeaWFZV1d4fPyBfa6IOZE3xrjAjZjRihhluYjSLGtLLHHGWrUuF2hIIWiQ/P9yGWF/K4aDWHdTKwEN7hwY64As+cAKR1x8tapaldIpaUmmLQoXJgIIOBBIItjYSenaRC3H5OFwu0xxX0gVSO0lH2mYvCl1iUABOCj30HY75qv5g3T6EekdaYTlGMP+Eu6r6snRsRZuJxvfUxP2c5CoNlAve3PadNHuWstQMqRJwZRWEOmGk8QMITF5Dt+DlPCi1mgoTqVsjkhW9V2KHJDc6rGT15EMwzMRD47sFbjNajc4JkxHK37r9ao29SKzKlkN6rK7Jc9bzZgUSBKfw5duAmWSOvWrkUHUIvton3i3osdPR6DtMN+Oo9Hy6YJ+7F1PGWxwIbhSze+jmMOT09Nc850BEoXrtPFw3VP4xBbuWEOmXd7cCMOIWl5WLdfAKDR7ihNZ0hxRtcrhDlqCqxXDCx5H6qqgYVR33MEAFOG2hE4M9+VnG30lO2uQrOC0N3q9U6bW4DFBJkhwWsDZeAr+6VD/i6T/5eILSGLptAgC4mM3x/3msx8i0VrA8yETYBZxL1JwhGn01p/G2v+axJ4QDtXoBEwcV1rm6opcOGPMHE7itzAQqfH1zV3YkqdSWuh6DL4gZ1CGY9fg2XVucXQC9e+d2iRx3IMlgZgCHGyNaKfrfxszDjFI+oDDPiGv41FR/4Moh62Mzwkqe4OfTe3SY3DB/XToTCxwKZobztztT/4f+EZfa4FCepGfjW94hT+vv2m916kxB1T4VMzo8EEk2tmdZrSdeXTzbPnOXs3P9i0E
+ N4YGn4N2
+ AX7CLta5TejvNlBX4klQUi7Ew0U55K9EVBF5ji8ZnkSecLwSybholusHHb0vt72Zci4chWLmxpa2bn0N07Bo1ee+OdfsiRr1bEsa+Tt6ayocFaag/oLzfyoSCsdG3C73msA+PNYoJlqsEKL80wp8BqOjAuNtpcB7l4pscsaOD24C6EDI+Q3SxwE5i2W1fptaNmwyCduQZPnW6CY8qxrlrq8onVopOdR38tmrlzaGiHyxmfe4+7WIamBFRqC5j1RFGDHVCKChX9ylUWaw16aOjb69TpfcUL31NWYjxo9Kx3VyYhmvKo4PhbUf+p7s014PYmLbYLtCVBLoOSFL6Ky4Uir9eUx2CTWlQ6BwWeL9ixAGTy1Vxm79/sH24mWvZ3JWHH9khiTzQQn7NfX4uv9YEawiU9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,120 +154,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 06:42:29AM +0000, Sourav Panda wrote:
-> Overview
-> This patch series introduces a dynamic, NUMA-aware HugePage Cache,
-> backed by a kernel shrinker to safely return memory under pressure, and
-> integrates it with Free Page Reporting (virtio-balloon) for HugeTLB,
-> specifically targeting gigantic (1GB) hugepages. The goal is to solve
-> the tradeoff between allocation latency and memory
-> fungibility in virtualized and heterogeneous cloud environments.
+On 7/7/26 08:32, tao wrote:
+> Hi all,
 > 
-> ---
-> 
-> The Core Problem: Allocation Latency vs. Memory Fungibility
-> 
-> With highly heterogeneous workloads, latency-critical applications demand
-> gigantic hugepages. However, dynamic runtime allocation of 1GB pages
-> from the buddy allocator (via CMA) is slow.
-> 
-> To bypass this latency, operators often pre-allocate hugepages
-> statically. However, this locks up the memory: when the HugeTLB
-> workloads are idle, that memory is completely unavailable for other
-> buddy-allocator workloads (e.g., page cache, anonymous memory). If buddy
-> memory is exhausted, the system will OOM even if gigabytes of HugeTLB
-> pages are sitting idle.
-> 
-> This series resolves this challenge by delivering Dynamic Fungibility:
-> 
-> 1.  Dynamic Caching: Intercepts freed surplus hugepages and recycles
->     them into a NUMA-aware cache instead of dissolving them immediately.
-> 2.  Fast Allocations: Satisfies subsequent dynamic allocations
->     instantly from this warm, local hugepage cache.
-> 3.  Kernel Shrinker Integration: Registers a NUMA-aware kernel shrinker
->     to dynamically dissolve cached pages back to the buddy allocator
->     under memory pressure, restoring host/guest memory fungibility.
-> 4.  Free Page Reporting Integration: For virtualized environments (Guest
->     VMs),
+> Since v1 was relatively complex and difficult to extend, this version
+> adopts a simpler anon_vma implementation approach.
 
-I was going to look into this part, thanks for working on this.
+I really hate to repeat myself, but you seemed to have missed my main point [1]
 
-> cached pages trigger background Free Page Reporting via
->     virtio-balloon. This allows the host to reclaim the physical memory
->     while the guest retains its Vmemmap Optimization (HVO) metadata
->     savings (~14GB saved per 1TB VM)!
+"Lorenzo has been hard at work exploring various design options (and I'm afraid
+he might be one of the 3 people on this planet that understand anon_vma in full
+detail), so I suggest we wait for a redesign proposal from him and see if that
+is doable?"
 
-Why "!" - that's 1.5%, seems surprisingly modest.
-Are you sure it's working as intended?
+[1] https://lore.kernel.org/all/70377626-500d-46f2-a3f5-a0d2914ce365@kernel.org/
 
->   +---------------+   Slow Allocate  +---------------------+
->   | Buddy         | ---------------> | Active HugeTLB Page |
->   | Allocator     |                  +---------------------+
->   +---------------+                    |                ^
->     ^                                  | (1) Free to    | (2) Fast
->     | (3) Under                        v     Cache      |     Allocate
->     | Pressure                       +---------------------+
->     | Shrink()  <------------------- | HugeTLB Cache       |
->                                      +---------------------+
->                                        |
->                                        v (4) Free Page Reporting
->                                          (Host Reclaim in the case
->                                           of virtualization)
-> 
-> ---
-> 
-> Patch Series Structure
-> 
-> Patch 1/6: mm/hugetlb: add Kconfig and basic cache infrastructure
->   - Introduces the CONFIG_HUGETLB_CACHE option, hstate tracking fields,
->     and the HPG_cached page flag.
->   - Establishes the clean helper API (hugetlb_folio_is_cached(),
->     hugetlb_cache_remove(), hugetlb_cache_add()) and updates
->     remove_hugetlb_folio() to be cache-aware, eliminating inline #ifdef
->     blocks.
-> Patch 2/6: mm/hugetlb: implement cache recycling and allocation
->   - Hooks up recycling in free_huge_folio() (up to the cache limit) and
->     allocation in alloc_surplus_hugetlb_folio().
->   - Implements MRU allocation policy for maximum warmth, poison safety
->     checks, and MTE/dcache cleaning.
-> Patch 3/6: mm/hugetlb: add sysfs interfaces for cache
->   - Exposes global and per-node sysfs attributes (max_cached_huge_pages,
->     nr_cached_hugepages) for dynamic userspace control, including NUMA
->     memory policy scaling.
->   - Supports dynamic delta adjustments (+1/-1) to safely scale cache
->     sizes alongside concurrent background reclaim operations.
-> Patch 4/6: mm/hugetlb: add memory shrinker for cache
->   - Registers a NUMA-aware kernel shrinker to evict and dissolve cached
->     gigantic pages back to buddy under memory pressure.
-> Patch 5/6: Documentation/admin-guide/mm/hugetlbpage.rst: document cache
->     interfaces
->   - Documents the Kconfig option, sysfs attributes, and shrinker
->     behavior in the admin guide.
-> Patch 6/6: mm/hugetlb: support free page reporting for cached hugepages
->   - Integrates the cache with the Free Page Reporting framework (virtio-
->     balloon), introducing the HPG_reported flag and the
->     reporting/isolation/draining lifecycle.
-> Sourav Panda (6):
->   mm/hugetlb: add Kconfig and basic cache infrastructure
->   mm/hugetlb: implement cache recycling and allocation
->   mm/hugetlb: add sysfs interfaces for cache
->   mm/hugetlb: add memory shrinker for cache
->   Documentation/admin-guide/mm/hugetlbpage.rst: document cache
->     interfaces
->   mm/hugetlb: support free page reporting for cached hugepages
-> 
->  Documentation/admin-guide/mm/hugetlbpage.rst |  34 +-
->  fs/Kconfig                                   |   9 +
->  include/linux/hugetlb.h                      |  45 ++
->  include/linux/page_reporting.h               |   1 +
->  mm/hugetlb.c                                 | 590 ++++++++++++++++++-
->  mm/hugetlb_internal.h                        |   9 +
->  mm/hugetlb_sysfs.c                           | 158 +++++
->  mm/page_reporting.c                          |  10 +-
->  mm/page_reporting.h                          |   6 +
->  9 files changed, 844 insertions(+), 18 deletions(-)
-> 
-> -- 
-> 2.55.0.rc0.799.gd6f94ed593-goog
+-- 
+Cheers,
 
+David
 
