@@ -4,139 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26DECC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:13:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5996C44501
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:15:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 099E96B009D; Tue,  7 Jul 2026 06:13:52 -0400 (EDT)
+	id AD5746B009D; Tue,  7 Jul 2026 06:15:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 022D46B009E; Tue,  7 Jul 2026 06:13:51 -0400 (EDT)
+	id A5FEB6B009E; Tue,  7 Jul 2026 06:15:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2E5C6B00A1; Tue,  7 Jul 2026 06:13:51 -0400 (EDT)
+	id 94DBE6B00A0; Tue,  7 Jul 2026 06:15:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B0A486B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:13:51 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 285A2A035B
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:13:51 +0000 (UTC)
-X-FDA: 84961569462.20.10899D0
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3DC05180009
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:13:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=bKZnnUQ1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf06.hostedemail.com: domain of richardycc@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=richardycc@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783419229;
-	b=ISIgaxOakgf3oErBzfqqXVW3OECFpWO+1Q2pAvy1NdkyFSjLsDwFafPdBRby32+B1Mzzm8
-	fiLRoa+qyCyJXFnXeA9obQwd3IuxwWIutIUdru84j3KO9O/70DyEHcSrOlgZc/wh0UNpBs
-	DIc8u1gbnzstmM7ADkzt5s1MAkvrtss=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=bKZnnUQ1;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf06.hostedemail.com: domain of richardycc@google.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=richardycc@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783419229;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 695CF6B009E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:15:31 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DC6671203D0
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:15:30 +0000 (UTC)
+X-FDA: 84961573620.28.BB39950
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 681CE40008;
+	Tue,  7 Jul 2026 10:15:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HluYhwOW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783419328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dIiBAR9I++5qifrUGbXaNfcl0FnWexBb9Aph8XOMqWQ=;
-	b=pRCnX2vZdnjMSzQ/ijG/7aL/EV/UGa1lgIR1rn5MTn45pgzRMCx3JwaAM0C5NwjBd5Ko98
-	Pbj3hnpYn4SPIKPehDVFBczpwKTSSmDJNVWRXlHVDLeDwd5eByy6AvnQkB7N0Tj3ihEjLB
-	HXgp+9sffnD+kJeEypWTDd/54r/zEeg=
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5aeb6bdeaeaso4254e87.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 03:13:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783419228; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dnOT7W3Um9QUXKRhrIYI3qT07ngzIlOqy9p5rZA5Etu6n2bcytb2d4kIET878l6sNx
-         +Yo7naO+SUlFeOJg1fIHsNYSe6Z3tMsfSV/yPl/ER0za7JMRe25s/80yYnijvPlzD6dM
-         45sz4C9aWRkisTZa/1rjw835QIq4TWrvDMVPUKuMCcowyQakLkahA1wtPb/fqGU55P4Z
-         SBT6AJFjPMh26rslJC6gtVBNh4sq5+e12n0gDx674wneS5pZHXTBbmi2323cKMf7/EXB
-         4nsmTYephHMhnhwS9pnXCA5WLxoz1K4+xND9ZU7/z7h7oUN4IbaryOBHXsKOxBHqBiKP
-         x3dg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dIiBAR9I++5qifrUGbXaNfcl0FnWexBb9Aph8XOMqWQ=;
-        fh=UNkInL952gv0ag68gcabbIoms+K1MrKq/iC9Rmz/FC4=;
-        b=AWpM9zKkhbBn967QYP8XCX6OIYPzNALwWGUETghfJ3gOByEDBpVgDRD3b+FziKK/yG
-         TM1qKbrrgT34DBpAA79RrdOc01HQZZDcxZ0JMbut6FlQTtKNLuZ9xd1jajEz29MJVqYc
-         cn+yPvZj8aT6pXhKXsrXNrbtpwz9uHBfMhATOdVrl5NoqDAmVo5LQSF86Q05SEOORV+H
-         Bb0qgx8d5eUtiJAAScNR8N0F3zg5cCkFhrKvl2P+DPIeABLSk97lWxilmrHpgnuj00r+
-         2/mNPXisg0qmQZ/KxVFiUvobrBjTr6j0MdSy8QSPqjeEIW6iSCpEg5dB0pyZCjFGwuyN
-         1MAw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783419228; x=1784024028; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dIiBAR9I++5qifrUGbXaNfcl0FnWexBb9Aph8XOMqWQ=;
-        b=bKZnnUQ1CWE+TMJDQE4+qjUw1Cx91DEwof+ef3hZ+dNVEZNLX9q3f6xBQNhCMAd05L
-         cTmOJcQazsESGupGRS9e0G7EsW3vXY+jSeSw9hfYzP43E2f0m4o0LnHlC7wfbzV54qTZ
-         wB23RmOHGGC/9PRDguPYn0X5ETHRGSDWtWqgqJtJ4PNA6tgNJbu0UD4KPkkXvFOcvFiz
-         hR/sXBHr/jXq113ArXmG5WpOEYD1lXveKfg/ZI4UpRXNqq/9reel8LubXnrKSH8ZQrmU
-         9HPsvWHvuFPx+cvVitRpWQUTkDKMS/Rsrsd8Wk1FvOA54EeRC+WKukYtNVmEOLVp6Uyq
-         8sOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783419228; x=1784024028;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dIiBAR9I++5qifrUGbXaNfcl0FnWexBb9Aph8XOMqWQ=;
-        b=tSrmH6UfkBzzY9L0CYfkzLsQMaktM9jo4uUDut4S+hhz9xUFCFSfdJChWCOnTfEaKd
-         8HT9QZVMUVubkNqC5UDitYDq8CerwQq2yeCBiSTu4g5E+bfTGw47WtwH3FCWj5T4Q/sk
-         5GEyFiE3hu4TCJE4oyZjnYwFWCZwM79owFSJSK+fWOlYu8RyObt9eZSdiKHia6XOcYGl
-         6DYLhRhyfwAhlZB4QSwaXk4cn8QSmiALIAJNiEJZrAV2eSVUxKyilAQrTVU6F61cf0Ue
-         pDsqhsd7C6Upd+Wwls4QY0kL7YEp6Z9pNCzc/JxbIIO/PKNPsPZIip5aPHhG0E+DFexY
-         mINw==
-X-Forwarded-Encrypted: i=1; AHgh+RrUnfSaqruaimtYZUrrnDjXhGcOvzXV2GP39UDgV/BS5v6OUWcsPudk6Z69i7JkaMUcC2cbuMfwcg==@kvack.org
-X-Gm-Message-State: AOJu0YztVjVopXsQy9tjLjn1kTL2OBm85Dao6/lmkhLYWXXoquAafQqK
-	3cIAnQP86ogjkhh/hztfQBN8kdhiU5UpoyyIAmHKVm1yITEeoBgbx2crnkpwEIOL0kqqQTav+oz
-	W9u+TKMLgE7s2Dh1a1lNsU4V/ya3mhSOPM/RsU8g=
-X-Gm-Gg: AfdE7ckoI/beEkOttzjYrcYe80jOlCbp2BEXNOFZXAt1/QRcjG8JzNncTU2bvpziTUZ
-	jd6yniXhYj6L39Jwf2UaXX/gdktJkIoS9HSiYVgLweGj98XFPDEEM6eQAKCVHMR+zCIh4UI9AI9
-	PqJj3i58i2zkfUrEyjW81flHdYobAWTuTzAdmWED8iKz9q+B6/Jvs5W0XVJIDRg3Wke/WYH3ma6
-	V1AMY1lKLccUz7MgB5VOC7KKxgzaiu8xIS/lFCkfVUav/bfQ3UzULbtM27RsXacwre68bI=
-X-Received: by 2002:a05:6512:23a9:b0:5ae:b99d:7df8 with SMTP id
- 2adb3069b0e04-5b00ad1c9fbmr139776e87.9.1783419227276; Tue, 07 Jul 2026
- 03:13:47 -0700 (PDT)
+	bh=mNSla9Czr4vFeuTIzrP/cHDzh+yx/IrTUvaJ5OnP34U=;
+	b=40SLamEjSesUqlL8YC5H7McIxGcNSRw0JC5/EW11Rz/MH9E8mK7/IFp62T3Mi6cPquoK9L
+	Q9PuX4FFADfAfnHXVZzvQcMS1RZVu0HT/ZjWAeaRhjmeZ/S+nwUj4/adRDZNBt73F9+4xD
+	rhvsdH/1jtJgxky+57tqxi6kPQu4IaU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HluYhwOW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783419328;
+	b=YmzLChtiXVLbcDWoCDnyU97NEzH3PHdbGATDB6CbMPv8DWV8ASKtGR7LsZoJMVSXe5ge3a
+	HhCJPE9vGxOXzzeHqG7Kt+OsBbEZ8VUQ7DzL9lV/g25qt6zU3jsWEg4v7Kdb8mrjEmiM9X
+	SSw/iAV2c3hM3Ko6uQY3ZErqX6MNzkc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 64240424AD;
+	Tue,  7 Jul 2026 10:15:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAC81F00A3D;
+	Tue,  7 Jul 2026 10:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783419327;
+	bh=mNSla9Czr4vFeuTIzrP/cHDzh+yx/IrTUvaJ5OnP34U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HluYhwOWRqwjbw9mnNEjPVnyh7tR+UBSnSv/otgjpUQBigWOwZUJOYkpU0LnGQPOd
+	 9JWuafQR68ncbIWqn0jW8jTfwPafpmeDnt2Wvr8VLfjDqTgkyFdLwQrzBX5aGYlPBy
+	 bdDr9uov5pNq61DLoYMBBHIrYLPaluS9cGGvVLuwrNNgpnc0PxTOy1Y4Jv6WgqJLPU
+	 g8L2HsabDqHedwwaZisYTmwsI8Liu2LIO7hoQNV8VhXPReqA934JiUn5O3mwQK8rxr
+	 zZFBy1M3lH7Q7XggDkvTulkUo1eG7DFZ7mTqdd75PKoMBF8VkjG7TCZVSFf+WpnFzU
+	 vO+QqUik5Cd9A==
+Date: Tue, 7 Jul 2026 11:15:02 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Lucas Stach <l.stach@pengutronix.de>, Inki Dae <inki.dae@samsung.com>, 
+	Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Sandy Huang <hjc@rock-chips.com>, 
+	Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Gerd Hoffmann <kraxel@redhat.com>, 
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>, Zack Rusin <zack.rusin@broadcom.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, 
+	Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>, Helge Deller <deller@gmx.de>, Benjamin LaHaise <bcrl@kvack.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Kees Cook <kees@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
+	Takashi Iwai <tiwai@suse.com>, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org, 
+	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
+	nouveau@lists.freedesktop.org, linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, 
+	linux-fbdev@vger.kernel.org, linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 02/13] mm/vma: update do_mmap() to use vma_flags_t
+Message-ID: <akzRdIS8ZotxIOFR@lucifer>
+References: <cover.1782760670.git.ljs@kernel.org>
+ <e0ac58ad2b88ff7e2f0024e3286b2e786f79ca32.1782760670.git.ljs@kernel.org>
+ <DJRZ2QCEIVA6.1AZF5S891NKS4@nvidia.com>
 MIME-Version: 1.0
-References: <20260706081218.3438762-1-richardycc@google.com> <20260706163833.19b6c869407d51ba8e278f56@linux-foundation.org>
-In-Reply-To: <20260706163833.19b6c869407d51ba8e278f56@linux-foundation.org>
-From: Richard Chang <richardycc@google.com>
-Date: Tue, 7 Jul 2026 18:13:35 +0800
-X-Gm-Features: AVVi8CdxK0WqWyeEcicOwyReY531WgJ6a57xkiWR0RxCmKdwJsyNFveihOPMgik
-Message-ID: <CALC_0q9GKMzLPb5XSxE8BcasSsjJJBbu3-euToLDE3yszuotdw@mail.gmail.com>
-Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 3DC05180009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DJRZ2QCEIVA6.1AZF5S891NKS4@nvidia.com>
+X-Rspamd-Queue-Id: 681CE40008
+X-Stat-Signature: jnk5a1a8zj9nsgkhzympscsgyq6zo86c
 X-Rspam-User: 
-X-Stat-Signature: 1m1dqitustejp7doutcp4sc63npxu8gr
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783419229-4389
-X-HE-Meta: U2FsdGVkX1/yma1O+0+juGlJdh7RsBt3mASOC2CFisSlPLGWkBn5/uReznvn/ojqyftGB7UwQb1aeQ0UU1yV8S8eLm6dgz+Cw/UbjzE7y3b9nLJd4PfGYHK2v00oMZ/95IahZ4cXyudZO4bVAoN2AULacIQJnkJ1HSlRRFwohSOtLl7K61wGY2m9YWDQasf2aRRsXXvlosfdG+SZWxw2hFKydyIhbhWIcKBljtCySBB3ikbk1JTWEH+kkd91gDiwJFbMqSfQuTxeMulwlDVUhz3o/m5s4+n32TogTruxRFjCTLCoMDpOMUkg01gq8TdoLbmD7COA2P3bejIpuB+bA5+U/4yvnidYMZZWmOdA3xPcZfei4Iox7+ZAud/rTGjyBM4NcU0Z/U7lvRjR551uXuX4X4aXR8TtlSitRzFB4J6AtMR/vrvZXJ2t3fkdRN1IlRAPmzFTdS9f+pBDaiYDcEZot92MmKhtv0bLSidhNQ483rGFiJPBeE1jHgHNAikXjTjl+2oQRUUqHSOE+HFY631/5BWiMTO8jks/F+EN2LZOp4sVIUjqBG50raruw20v+D2yaWejjp7duQaCMakd2qHAE2byv0G7nbpe/L8RR3HnIj8AUiIVbrdsEalW42GkGAqywDSSLjB/m6Dn2iPd/g3XspJZ7tPTlXjgYKjvP12pl7xzfhzfY7bjg3Cj6Giirth5wIN/gvBcHh68TTLiSai1fzIiTqOfbHpKQqxoVOImG28lYfe3BkTWyUrw161MlYn3NAwoH5NJf1CIv0njzGMGpcgK5zOFotyMCjy4noEcaOkhmJCATaWCSOhJ92CPNjjAV+V5RAzkdCRMrN0MPduwoyaIhZUXMcu0VC+Zqr9lbQjz6uWuL+Cw/LMty0QMVsMV+k/aBN4qXnga+thlkqn3QPzdCrR974M6qSWZDu2zr4TKzr0pdpCnPfK/BZBkeSe9tWwK73b+X6J5Tke
- Bcw9k5m0
- ywGwOIwPqiibjrY4hYQ48WoqB9K8TXmHZdXICZBhAhSsyJ6hN9fzPpNtImbcx/twBPCBqIAdo0NEazbRyzjdSEffZbiTQAwf2SGpgmT+tyDmRc/VuRDgIdNfWWp+dUgdDKNSY3jqnscQXhMIdVALLPxOygCEe+1kmp0UsHQqeEkrOwR8ITlxWWl0mpqggraf3YcvQe2b2gSG6NCB0jXdYIDvAcoZyhBBxH1o5GuNOlqMvs8G8vSy1nHvLL5k2I85JeLhOEjfUbGxIrpy45Q4vicWpq7unxHgVZMLXPZr4HqRchnXIxxryVI0OVP86BHO+0Avl5gnjdb0C0qnZApkgtEcZkbfCy/H7uS8jElOoIQP55rffbA/j8ItxGb+Zva02Ri4h
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783419328-264574
+X-HE-Meta: U2FsdGVkX19gV93LKRyHURenwy1vj1VjzJiy6CBAe9eEuISE/XWizdMDUCWZoXp7hu9Iyvq+oRrUIdcmo5+c231AQpJZd/+lg5dYjf2DM+IgxDz0BKC6ERYulmmj2Z1hUOP1kovXwBoJC8YbHMqEfW54UR0vTI/s0RL3qy6bezOThHZyYa1Y5saOoPB4uL82WDWw7kfKUYTDmZh7Ps5sXm2G9J8Tj36kbNcvHPSNpdN465qz74WEozrMHieIurBEgeDISltpSXwogVo32nLWwvHJk08LPL4G3dAjgVifZQv0Os4NorWGKnkwLL2jPF2954j2iJIf83m4iWDEtmqS2GLqZmSejmYO/k0YeKTyUWaiFegJ/cvhlRhH+qGceh44zHKsdrLatYoondptLCA40kj8hD07EF5Aq+LKJZO9om0tlLSsPel4mg2gCQjW9DEPG70vkBgaccUdOOT5qT+63ObkWVknmCyUQu6ylyS35JZi27jN3tQoTauJ9TIwwKtG0Fuzpvzd9eF4X8PtcMS3HNGNE0ItrhpWR7ZtHVuMVQqVnOVMdRrZhNEP7+5C7Jcv79KBL3NKCs3HoxPCbRbLbrMfU7ljprVQRJQh6cl5qcInitxceymq9KDugIQwf+eBC5JpRHQb3miDg15oyi05Dhk90vACvdyKED0THYrNuvFMRDWjsRrHXXdJPzU0z/MvhW28QK51nnQMCRwWZBTquP0z83MJNd2caK+TIai+9ftP5D0Ho0LVN99v4rIY3BnsOOEmCnsx+shBAsPFf70YqMQcF62rLSG2mOjR3qXg4SwN+JKgZm2qZ6J4zU8wbY77OFq9vkzGd567JhZvjz0J52MI6TLZFPC4II2j2FqakH52DLDEXo7PFwdN7vAAm3ydnXtwuVqNlE7xALZuVH2u4TRgq8cMQnKrs4zlN2B7zmxNmHcruH/NkK1zAb+GBIllcf8+tFAkRRZ7Sl03CsI
+ SfdMHMEO
+ yduJZciHbxDTKCB9V+265vOZgs69HgbDcMHyPLYqrrpL61Ntl3VItipOd/5s7OrYw/fub3hnrrZgFfglF3+jIcT2VK324Mf2JO7dWz8ckJpgmC3MkTzcw/+d5VsXyS8bqIC5rPK2NYYJNzoKUeUeJ/mAAUhFnDmdWlFE8FEyaS9pVZcowSmYFCSdPBvKBWlXCJAklJX3Ya0Wh95IPk9jEZRdkQTMGplInimXMAJu7sY5eUThra7inb0VCB29JLYvg4USuaaONdfs+t2z1lPfJSMoUOUjOz1lVgP7rZshpmO+g81hq9Z1l4PWNFeRGvSKEAXT7n07M65+LxlsKjfODMEPxQGh31BqXHdFq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,63 +126,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
-
-I believe there are three ways to trigger proactive reclaim:
-1. Cgroup Proactive Reclaim: memory_reclaim()  ->  user_proactive_reclaim()
-2. Node Proactive Reclaim: reclaim_store()  ->  user_proactive_reclaim()
-3. Debugfs lru_gen: lru_gen_seq_write() -> run_cmd()  ->  run_eviction()
-
-Methods (1) and (2) are covered by this patch, while (3) already
-includes a while (!signal_pending(current)) check in run_eviction().
-
-Regarding the AI feedback on the Classic LRU path, that is a valid
-point. Since we have only observed this issue with MGLRU, I suspect it
-is because in Classic LRU, the scan target per iteration is strictly
-bounded by get_scan_count(), which ensures it returns to the outer
-loop (where signals are checked) much more frequently.
-
-On Tue, Jul 7, 2026 at 7:38=E2=80=AFAM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Mon,  6 Jul 2026 08:12:18 +0000 Richard Chang <richardycc@google.com> =
-wrote:
->
-> > Proactive reclaim (via memory.reclaim or node reclaim) checks for pendi=
-ng
-> > signals in its outer loop in user_proactive_reclaim(). However, the inn=
-er
-> > reclaim loops=E2=80=94scanning cgroups in shrink_many() and evicting fo=
-lios in
-> > try_to_shrink_lruvec() can run for a long time before returning to the
-> > outer loop, especially on systems with many cgroups or large memory siz=
-es.
+On Mon, Jul 06, 2026 at 10:10:32PM -0400, Zi Yan wrote:
+> On Mon Jun 29, 2026 at 3:25 PM EDT, Lorenzo Stoakes wrote:
+> > The core do_mmap() function accepts a vm_flags_t parameter which it then
+> > manipulates before passing to mmap_region() to do the heavy lifting of the
+> > memory mapping.
 > >
-> > This latency in responding to signals can block the freezer (both cgrou=
-p
-> > freezer and system suspend), leading to freezer timeouts. This issue wa=
-s
-> > specifically observed on Android when attempting to freeze background
-> > cgroups while proactive reclaim was active.
+> > Update do_mmap() to instead accept a vma_flags_t parameter, and adjust all
+> > the logic within do_mmap() to manipulate this instead.
 > >
-> > Add a signal_pending() check to should_abort_scan() for proactive recla=
-im
-> > paths. Since should_abort_scan() is called within the inner scanning an=
-d
-> > eviction loops, this allows proactive reclaim to abort early and return=
- to
-> > the outer loop, ensuring the task can enter the refrigerator in a timel=
-y
-> > manner.
+> > This is as part of the ongoing effort to convert VMA flags from a system
+> > word size to a bitmap type which allows us to unrestrict the number of VMA
+> > flags, as well as gain control over how VMA flag manipulation occurs.
 > >
-> > This check is limited to proactive reclaim (sc->proactive) to avoid
-> > affecting reactive reclaim paths, and wrapped in unlikely() as it is a
-> > slow path.
+> > We do not cascade these changes to all functions which accept vm_flags_t,
+> > but rather use vma_flags_to_legacy() where necessary, specifically
+> > deferring converting calc_vm_prot_bits(), calc_vm_flag_bits() and
+> > __get_unmapped_area() to vma_flags_t.
+> >
+> > Also utilise the new vma_flags_can_grow() predicate which correctly handles
+> > the case of architectures without upward growing stacks.
+> >
+> > As part of this change, introduce VMA_SHADOW_STACK so we can correctly
+> > handle the case of the shadow stack not being defined.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> > ---
+> >  arch/mips/kernel/vdso.c |  4 +--
+> >  fs/aio.c                |  2 +-
+> >  include/linux/memfd.h   |  6 ++--
+> >  include/linux/mm.h      |  6 ++--
+> >  ipc/shm.c               |  3 +-
+> >  mm/memfd.c              | 15 ++++-----
+> >  mm/mmap.c               | 67 ++++++++++++++++++++++++-----------------
+> >  mm/nommu.c              |  3 +-
+> >  mm/util.c               | 10 +++---
+> >  mm/vma.c                |  7 ++---
+> >  mm/vma.h                |  2 +-
+> >  11 files changed, 69 insertions(+), 56 deletions(-)
+> >
 >
-> There are a number of ways of getting into proactive reclaim.  Have you
-> checked that all of them appropriately check and handle signal_pending()?
+> <snip>
 >
-> AI review thinks that classic LRU might need the same fix:
->         https://sashiko.dev/#/patchset/20260706081218.3438762-1-richardyc=
-c@google.com
+> >
+> > -static int check_write_seal(vm_flags_t *vm_flags_ptr)
+> > +static int check_write_seal(vma_flags_t *vma_flags_ptr)
+> >  {
+> > -	vm_flags_t vm_flags = *vm_flags_ptr;
+> > -	vm_flags_t mask = vm_flags & (VM_SHARED | VM_WRITE);
+> > -
+> >  	/* If a private mapping then writability is irrelevant. */
+> > -	if (!(mask & VM_SHARED))
+> > +	if (!vma_flags_test(vma_flags_ptr, VMA_SHARED_BIT))
+> >  		return 0;
+> >
+> >  	/*
+> >  	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
+> >  	 * write seals are active.
+> >  	 */
+> > -	if (mask & VM_WRITE)
+> > +	if (vma_flags_test(vma_flags_ptr, VMA_WRITE_BIT))
+> >  		return -EPERM;
+> >
+> >  	/*
+> >  	 * This is a read-only mapping, disallow mprotect() from making a
+> >  	 * write-sealed mapping writable in future.
+> >  	 */
+> > -	*vm_flags_ptr &= ~VM_MAYWRITE;
+> > +	vma_flags_clear(vma_flags_ptr, VMA_MAYWRITE_BIT);
+> >
+> >  	return 0;
+> >  }
+>
+> This function alone changed its original behavior, since vm_flags is a
+> snapshot of *vm_flags_ptr, but after the change this snapshot is gone.
+> But its only caller memfd_check_seals_mmap() gets vm_flags_ptr from the
+> input parameter of do_mmap(), so the overall behavior does not change.
+
+Right yeah, the snapshot was always just a convenience thing :)
+
+>
+> <snip>
+>
+> > +		case MAP_DROPPABLE: {
+> > +			vma_flags_t droppable = VMA_DROPPABLE;
+> > +
+> > +			if (vma_flags_empty(&droppable))
+> >  				return -EOPNOTSUPP;
+> > +			vma_flags_set_mask(&vma_flags, droppable);
+> > +
+> >  			/*
+> >  			 * A locked or stack area makes no sense to be droppable.
+> >  			 *
+> > @@ -515,23 +527,24 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
+> >  			 */
+> >  			if (flags & (MAP_LOCKED | MAP_HUGETLB))
+> >  			        return -EINVAL;
+> > -			if (vm_flags & (VM_GROWSDOWN | VM_GROWSUP))
+> > +			if (vma_flags_can_grow(&vma_flags))
+> >  			        return -EINVAL;
+> >
+> > -			vm_flags |= VM_DROPPABLE;
+> > -
+>
+> Lance pointed out the reordering of setting VMA_DROPPABLE and checking
+> of can_grow, but these flags are not overlapped and there is no parallel
+> writer to vma_flags. So it is still no functional change, just not
+> mechanical changes. :)
+
+Right yes exactly :)
+
+>
+> Otherwise, LGTM.
+>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+Thanks!
+
+>
+> --
+> Best Regards,
+> Yan, Zi
+>
+
+Cheers, Lorenzo
 
