@@ -4,101 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D8CEC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 831D5C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:34:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7190E6B009F; Tue,  7 Jul 2026 07:29:50 -0400 (EDT)
+	id 59A336B00A1; Tue,  7 Jul 2026 07:34:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C9586B00A0; Tue,  7 Jul 2026 07:29:50 -0400 (EDT)
+	id 54AFF6B00A2; Tue,  7 Jul 2026 07:34:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BABF6B00A1; Tue,  7 Jul 2026 07:29:50 -0400 (EDT)
+	id 439DE6B00A3; Tue,  7 Jul 2026 07:34:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2653F6B009F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:29:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 982FEC2569
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:29:49 +0000 (UTC)
-X-FDA: 84961760898.09.B7D25E8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A88F210000F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:29:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CiZitJhy;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 17A4C6B00A1
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:34:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 85CF31A0421
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:34:41 +0000 (UTC)
+X-FDA: 84961773162.11.3AC69AF
+Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BD363120005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:34:37 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=S0HZYj6i;
+	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783423787;
+	s=arc-20220608; t=1783424079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zed0CSJYp5L4Z8pg50A4nffbazSM4sxmWmqQFaANC/A=;
-	b=F2WmrF8LC8ZBp/5QZjM4o9HxjVmIJJxlMV4K1U3LhTNxP1WEWup/+w8EmKSqqwVIwfDE+X
-	Dm/HONLlu1V4YU5L6tkDlQftIUoTkst4Wb3DxjcXol3nNXnX32kR9Cq8xTgra3X/EbVCSJ
-	QWi3Pn0Yvs4kC1e7z8ucCXJYCMCglHQ=
+	bh=jQE3oIJ4htoW+wFqKdDDzBtKjMtLRHL9VUuCAay6Gu0=;
+	b=rgxdEbXL2WqSDtYhUWFue0e0VhOudk66eZFFw2ku4aZh8x4CiwMdVwXED0KHw2c4xRE8iK
+	b9ij7Ok/hU3mTAKDrYauBU4SwVKYueAeJXsY2qidBoKuMqurDe2xCL6p9T3s6OsjvqSCLN
+	2nbRKgG6vTS9dO2rtLO1KrN7ckm+1Nk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CiZitJhy;
-	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=S0HZYj6i;
+	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783423787;
-	b=zZg9OrnoV5okaJQAarMWXcfcdbm+GcJYY5gNcXJLcutrC6j/TTkc/bWAEYKF3Gj8lvib9x
-	mgUz4YTlFg1uaAEFo2fVfrm3JvjG2QfyA0IeWvSyXa1py2z+O/rn6aEaTmLHxkC9jSMu7T
-	77dQ/qjVORFcs2S5BKBGgujcCY8SN8A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9274543B3F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:29:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771321F00A3A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:29:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783423786;
-	bh=Zed0CSJYp5L4Z8pg50A4nffbazSM4sxmWmqQFaANC/A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=CiZitJhyO/OqeCnAge840Sp2s7ojzbRGuB67K5Mpg7UiErH0PpcGcSbHxTyffVQyc
-	 7skL8kk+ci0+ueKnPPFr6Stej69Kdl8vblbB13gUUTlf1KVjxi7n6rdPPZr8vUHTuJ
-	 U56HHN7o7C0h9eMt0CuM7M3TyByeBry8PSnDJvXjyTOcVfGertQXU1h/ppmGqEVTgN
-	 ywCzX/ElCuURW8HyW5+8+Php22yIf7uttVW4iG103pdBHg1vv3TYIjwzoL4lEK1OyZ
-	 Mn+21BYoVfupRUvx+p9dxUIhWbpONFOpNVChANwG6fLFSVzsJflRYI4rxv+bzQPiww
-	 5GBggSZlA+wqQ==
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-7383cdb7800so3065134137.1
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 04:29:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Ros5VvxlbmcZTAzMNnw0cIHukmc2IAu3ufzH/MtOoUqwX08o/vD8qwO1oxZf0zR7I/SngoCZxHbPA==@kvack.org
-X-Gm-Message-State: AOJu0YzKHnyENhY7eDrH6yNzyAgjDMEydBsyrSYTKGriVtGtDQhwcG2O
-	vISO/leImR0eU+YzCYVJNcIeX9Zsh4ANgjP4kP+Gs3HT9ifhWEPD904gFG5Xb57YURP3rRsHlUV
-	UodxdwzmaSA7X/6xN5BXUl7h6FPcUewM=
-X-Received: by 2002:a05:6102:560f:b0:744:a77a:a342 with SMTP id
- ada2fe7eead31-744b7f1d365mr2457244137.22.1783423785493; Tue, 07 Jul 2026
- 04:29:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260624075700.751467-1-alex@ghiti.fr> <CAGsJ_4xM=WnFO-OuwVude-DQ_UkaCi_zF_bXBP9Li5+ZPNy0VQ@mail.gmail.com>
- <CAKEwX=Oew86XUYYT49MWo27DnbEpZCnPn7+Kc-uQvavHBpf9XQ@mail.gmail.com>
-In-Reply-To: <CAKEwX=Oew86XUYYT49MWo27DnbEpZCnPn7+Kc-uQvavHBpf9XQ@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 7 Jul 2026 19:29:33 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xi1pYS+r4Oae=B1t7ANnHptb1+nBkrSY_zcqEeCdf=sw@mail.gmail.com>
-X-Gm-Features: AVVi8Cei_4Juc_b6wqCse91dJbRUadaheneap8ksIE0yRNOD_9TYgiiqWfQGQDY
-Message-ID: <CAGsJ_4xi1pYS+r4Oae=B1t7ANnHptb1+nBkrSY_zcqEeCdf=sw@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: bypass swap readahead for zswap
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, hannes@cmpxchg.org, 
-	yosry@kernel.org, chengming.zhou@linux.dev, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, kasong@tencent.com, chrisl@kernel.org, usama.arif@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rdza3ps4dzc318imq6j64db16b7qpgdz
-X-Rspamd-Queue-Id: A88F210000F
+	t=1783424079;
+	b=w3bm4zhb9Mf+I29d6H4ZfcrMRIaPoePAKCz3MgQpOYYl9Bwf6QJdPCXJuGQRUnSl7PUy5e
+	bv+uvyAbNP1FHDjnLqRZ8oM9aGNky2xfYApo7pkWTnQzGpvz9JqMspzVRoeGNNS9Bsed4U
+	1b1OzhbjGGWAc3X1vbKsMnok2CCmvLo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1783424072; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=jQE3oIJ4htoW+wFqKdDDzBtKjMtLRHL9VUuCAay6Gu0=;
+ b=S0HZYj6iA/8doMYhRv7PwCxyEjwG6yYdBTwX0CGw0zVs0c+gaQ3KMv3Nr30+Q8pkPvZkDP
+ 1elSkLWqTSqBgWJXGUnYbgDpBpgw6g0KhF4oQSKG5jyeOB8ZPUTNtGlrlNrrAUnFbfhqZh
+ li8F2SESyx+3UqSjOq5nN9f/IaSmeDP67Twqg2Epvjj/vby8Qx11wNnCPNyNZumV4GQ3Dm
+ QvyWKIoqfZb8KI1wGir5jyRIMKp5/jR7WxpFJZvnopRLNxd+48Neq3BC9R/UfcidI4xQ17
+ mJ1fTN5Hlmq/IS5Ee9ZEkAa4RQNDI43MS89PNob21AY4hsCqojimrG/UOsP9sA==
+Cc: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
+	<dave.hansen@linux.intel.com>, <david@kernel.org>, <kees@kernel.org>, 
+	<linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>, <mingo@redhat.com>, <rppt@kernel.org>, 
+	<tglx@kernel.org>, <x86@kernel.org>
+In-Reply-To: <20260706171902.GCakvjhl5U89iJdaNP@fat_crate.local>
+To: <bp@alien8.de>
+Date: Tue,  7 Jul 2026 19:34:09 +0800
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26a4ce446+79f3e7+kvack.org+lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+References: <20260706171902.GCakvjhl5U89iJdaNP@fat_crate.local>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Message-Id: <20260707113409.71996-1-lizhe.67@bytedance.com>
+X-Mailer: git-send-email 2.45.2
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v5 7/8] x86/string: extend memcpy_flushcache() fixed-size fastpaths
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783423787-694578
-X-HE-Meta: U2FsdGVkX1+Ld/hUNrTPaCjBn2XyEBGAIA3Ckx9+tDU45BuVNiTPi2U5n9utgD6o+n0xHwX+gtPbPCWbqD36WqWsi5AvDnr/X71mV9JDjjEKD1EOohhIoWWPM3Wiieycj+tAJjKBdlFHmdEd+Drs1QuknPJVLXrbnMGsxgegc2Wm+BMzoey7QlApPqc1+I8NO8ayvHpUWKwlwAATMaDE7KzNJzmzplJcjqcurQlL9ZHeKYPTtOf5oWbS5CWZ3u1TXR9j8zSKVD/LJ/wqGV8qeJtyis9HuP7DlqecXjqgOuGQ9Uu8qMhdRYqwWFL+GVvhf5muaFxp+IxYqOBG6QNSg6WAtABQWpfjxnN5Wmbfne8clRSdSU+bb+L3wxW6iZwfnqdLZhCMCXi2GL/PCTgn0rPqxVpM9dBQKXgj+Y4p+DYx0e+QwDHp90uGrAE6zvmnmbOEMwzU2/ykhVjprjHz4g+e+dz5Ekt1Ys2wTtbZjk0A2YPlhuQ2xJV/PVU2IJvgJml8jIqcybsZ42hUWnXd8vilnjS4rm0zrFXjR5xOher+0EExPo0H2e7G8wNYPHUrdD7XtNY5qFIDub6tC/SHcpws8ZyaPDnEIBRX0PKtK7WAxtbvDqx/uMQe7k0GvTdjjQ+uFhDMIb0/jhFfg0DX95mj4AQVMhCltd9M36MXoKwyv0wPBpYlI19EVGSOZIuo/G+ksYM7KdcD9xwwtSXSDK+UNpGm3fbhqscE0iOK5Y8nylVlNguZkkSuehz9Ys+sTMQmEsqstjVD+o+Cg6d8yQbz+MMYbIkakC6sB9nCZfrGCFfPB9/u5H+qPQoLrjAN6brLBZ5AU7A5X4YN6LxiD7oN+hra+QqEHxaqdRyAIZrPbwcAr33ZN8JAmjktbfLbHAcbP1KHTPvP2QXEPTkxBPHeDz6H10kSsch/NcaUg0lc0hONXxW4F2539HkZsdDjr1x6G0USVPZsMiZoMAn
- hLBqQPiB
- pFBZt3fl+j2KDToZPv4Pt7eFd1cAlQZg+LVItZEpPvTpY2gpnHiqu24wPlnbLZeVIz7pNV0cMyq8aSTLcAADPTuyD8rbSuRuIWSC+v26jgPjLwv5qrnGUYG5JxIm0qkGxLCAOtDjUz5Y84SSKRWCIeANlo4Fmzv6hj9avG2ABlZq/591e6XuEjxWjlnOcn3MsqKeL7y8YVVzkYWzR1AEy4F4NYTekkWP/WVsN4ZY2z3o8eOEbdcazaN7Vb0yKbXfVVPGaehkqVYi/bXiR/Gsljenzhbt+kYXI7FKF3ht3vMsbgOhiCZu4IK4Xmd6IOlK3mnih0O4KNiNIRkQ=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BD363120005
+X-Stat-Signature: f5punadia9npjf5konb99d9ang8n1tpt
+X-HE-Tag: 1783424077-744661
+X-HE-Meta: U2FsdGVkX18PN+J4RawAUXTih+NezMVcGwm1xXZ2vBATqQ06/4G7fL8ebk30w72SM1BkMO1mVY+cYgDsXJg8qUAhvH5nR9UsBotLLeSag2RzpxZ/Na4bpLSVVDOKyqEawjMfrZV7LB6fhPfxuUZm4h8T6NYKXpia3s7wwDVc32dEFTWRxZLsyrjbePwUslXMpYDLJEEodmAgjDuVP7O/bGW91jijD80WjsC3P0jCIo/nb97xZ/1vi4hew6AgPIk85jCzIA7zMbcqTnWfd5kajAVPrAAoOK9WIUbGJQTuzN7Ryjs77en3QOtPpy1pUHtp8pwWH2qiz+u8ojJzCUUKl/Tua8/38M1ZFicl6VuXxkuOwPfuTaF3cabpf47aOnLeG7OyLa76a2/OLBLtHI5XGck2jmlFdBrt1lFx6ve8VizuHQutdYTt6AZ0ZzIgzjaIzwkgow1uIFagzeOL/QpxN4Mrh/M8PhZh3mkOnwQCe5de7MpAu33gbotbjCGJcZnf7F4xRgYglisxbCUovB+zmHe6FMYH6KHmcIznDJHzDkajZHCMzY6gKwTkeTCYlbVXspHSzbHU6R42N3hQq8Tpj8N7s1HmPwM5fhPPkPNP9id0hkJa+hNZoe9iE/uM4iuWjJ3oeUMdyjKeyIivintTpIhvgAMe/xey76jB432Mgrtice4+4bM8JGcJJJshokVBkPDhIzJN4jkz5PmoFUVM7Sol0xLvo6hUyCD+QmhTycK77YedO8Nq1oOMwkG+QPaHCTuZxFkD808ElziRJa2H8g0xoOPmJFOxujg6Ox64UFEk9eTf/g4joXyiztRjPGgtpdx6m1oPyYXt35hWdt24BnjLBJ/jobe8ktJQFVUWg4IMaLDyADxmDK/5bknOS2uHQCQC9ba8Jbhd0IpyOiDhP0kPozJ82c3PILOPubLgLUcxrBjC2Kgt/pRrkrysmfr+F0u4aIS8cD++ya+sR1u
+ 9J4Jd0ae
+ ynkBezqEwJTJjzqsQ3zzX0NFr/SkIS4/e90h6gMWD6h3TfHMBepmCQ7+8ZJ5dUpPgAEWsTfRbSUx60mpW30o8gdjHCc+W1vg3NlnQorJ1j/nCpSCaANz5fEKpGfZCSiYECLg4oQUHANse998rQul03lstiYwq8wq4tIB1g/x4UAQu5i/lyZyeega88LXY4r+l8XbmLwNC7WMS2v7LjAfIfBZjaZVbK0kMtAeEBN5N/8P6hCMFsxbGWgndc09z1OdfhyCofLeRRxfVnvS2B9y+odeiASn3Im6ovhE/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,113 +93,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 12:39=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
-e:
->
-> On Wed, Jun 24, 2026 at 12:24=E2=80=AFPM Barry Song <baohua@kernel.org> w=
-rote:
+On Mon, 6 Jul 2026 10:19:02 -0700, bp@alien8.de wrote:
+
+> On Mon, Jul 06, 2026 at 03:43:46PM +0800, Li Zhe wrote:
+> > The extra IS_ALIGNED() check is meant as a conservative performance
+> > choice, not because MOVNTI itself would be invalid on a misaligned
+> > destination.
+> 
+> Dude, you can't just wait for me to pull every unobvious decision in the code
+> out of you - you need to write it down in your commit messages! I'm not a mind
+> reader, you know.
+> 
+> > As the Intel optimization reference manual notes, higher-throughput
+> > data movement usually comes with alignment considerations, and can
+> > be more efficient when the destination is naturally aligned.
+> 
+> This can't get any more vague.
+> 
+> > So for these larger fixed-size cases, I kept the inline path limited
+> > to the aligned case. For misaligned destinations, falling back to
+> > __memcpy_flushcache() is expected to be the better choice, since it
+> > already handles the unaligned head first and only then enters its
+> > MOVNTI loops.
 > >
-> > Basically, I have been seeing the same issue recently. If the
-> > readahead swap entries are also in zswap, we end up doing the
-> > decompression during one page fault, but then need another page fault
-> > to fetch the page from the swap cache and install the mapping. In that
-> > case, readahead may not be beneficial.
->
-> You're playing with zswap? Nice :)
+> > I will make that rationale explicit in the code comment and commit
+> > message in v6.
+> 
+> No, you need to show whether the alignment brigns anything and then add it or
+> remove it. We don't do things based on hearsay in the kernel - only on hard
+> performance numbers.
 
-Hi Nhat,
+Thanks. I measured the exact tradeoff on the physical x86_64 host with
+an out-of-tree microbenchmark.
 
-Sorry for the late reply. I've been quite busy recently.
-I used to work on zswap when I was in the server industry. These days, I
-still play with it from time to time, mostly for fun.
+The question for this patch is whether misaligned 32/48/64/80/96-byte
+copies should still stay in the fixed-size switch, or whether an extra
+alignment check should redirect them to the generic
+__memcpy_flushcache() path.
 
->
-> It does feel like we're leaving some obvious wins on the table with
-> zswap here, so any ideas are much appreciated :)
+To isolate that choice, I benchmarked two memcpy_flushcache()-style
+helpers which shared the same generic body. The only difference was
+whether those fixed-size cases always stayed in the fixed-size MOVNTI
+switch, or whether misaligned destinations were redirected to the
+generic path:
 
-For my part, I'm not against either zram or zswap. They both play
-important roles in their respective domains. :-)
+variant A:
+    switch (len) {
+    case 32 ... 96:
+        do fixed-size MOVNTI stores;
+        return;
+    default:
+        generic __memcpy_flushcache()-style body;
+    }
 
->
-> >
-> > On the other hand, if the readahead swap entries are not in zswap, the
-> > situation is different.
-> >
-> > For example, suppose we fault on the swap entry for address 1 MB and
-> > readahead brings in the entry for 1 MB + 4 KB. If both entries are in
-> > zswap, readahead does not seem like a good trade-off. However, if the
-> > 1 MB + 4 KB entry is not in zswap and would otherwise require storage
-> > I/O, then readahead can be beneficial.
->
-> Yeah I can see the edge case you and Yosry brought up here. As we move
-> towards supporting multiple swap backends in the same system, that can
-> certainly happen. I'm hoping that locality will bail us out - pages
-> close together in virtual address space hopefully have similar
-> lifetime, access temperature, compressibility, and will go to the same
-> swap backend, etc. - but who knows :)
->
-> What if we still follow the readahead logic, but at each slot in the
-> readahead window, we check if the entry is owned by zswap or is of a
-> sync-io devices, in which case we skip the readahead...?
+variant B:
+    switch (len) {
+    case 32 ... 96:
+        if (!IS_ALIGNED(dst, 8))
+            goto generic_path;
+        do fixed-size MOVNTI stores;
+        return;
+    default:
+    generic_path:
+        generic __memcpy_flushcache()-style body;
+    }
 
-That sounds fine to me. I'm just not sure how complex the code would
-be. Would the readahead path need to check whether folios are in zswap
-or not? That sounds like a pain.
+On the same CPU, with the same source buffer, destination layout,
+stride, and iteration count, I measured the median time per memcpy.
+The wmb() was used only to separate rounds and was not included in the
+timed interval.
 
->
-> That way, we will still submit the IO work, but spare the ones that
-> require synchronous decompression work, which might affect latency...?
+For offset 0, the two variants were essentially the same. For
+misaligned destinations (offsets 1..7 averaged), keeping those sizes in
+the fixed-size switch took about:
 
-Yes, but it seems like it could get quite complex. So I'm fine with
-either the current approach in this patch, or simply disabling
-readahead once we're sure we're using zswap, without even checking
-whether the current swap-in is coming from zswap.
+    32-byte memcpy: 0.410 us
+    48-byte memcpy: 0.411 us
+    64-byte memcpy: 0.426 us
+    80-byte memcpy: 0.426 us
+    96-byte memcpy: 0.428 us
 
->
-> >
-> > So I implemented a rather ugly fault_around-like mechanism in
-> > do_swap_page(). At least with page-cluster =3D=3D 1, I am seeing a
-> > performance improvement, as the readahead folios can be mapped
-> > directly and do not require a second page fault.
->
-> Hmm so what your proposal buys us is, if we're already doing readahead
-> (synchronously), might as well install the pages in the window into
-> the page tables? :)
+Redirecting the same misaligned cases to the generic
+__memcpy_flushcache() path took about:
 
-Yes, because it avoids another page fault. Handling two pages in a
-single page fault is faster than handling two separate page faults,
-each faulting in one page. Since we've already read the data out
-synchronously, we don't want to fault on it again. The downside is
-that it increases the complexity of do_swap_page().
+    32-byte memcpy: 0.962 us
+    48-byte memcpy: 0.956 us
+    64-byte memcpy: 0.923 us
+    80-byte memcpy: 0.998 us
+    96-byte memcpy: 1.001 us
 
-I'm not even trying to sell my approach=E2=80=94I did it just for fun.
-do_swap_page() is already quite complex, and my fault-around
-implementation only makes it more complicated. So I don't really want
-to push for it to be merged upstream. I think it will become much more
-attractive once we have hardware-assisted decompression in
-do_swap_page(), where we no longer spend CPU cycles on
-decompression.
+So based on these measurements, the extra alignment check is not buying
+us anything here. It consistently makes the misaligned 32/48/64/80/96
+cases slower by redirecting them to the generic path.
 
->
-> Could you explain to me how does this improve performance? If the
-> pages are needed, we are transferring some work from future page
-> faults to the current page fault. If the pages are not needed, then we
-> are just wasting cycles right?
+I will drop the separate alignment check and fold 32/48/64/80/96 into
+the main fixed-size switch in the next version.
 
-Yep. I'm only seeing improvements with page-cluster=3D1, which uses a
-small readahead window. For page-cluster > 2, I'm seeing performance
-regressions on workloads such as kernel builds. On the other hand, a
-larger page-cluster provides a bigger benefit for sequential swap-ins.
-So it's not a universal win.
-
->
-> >
-> > It is admittedly quite ugly and is only meant as a proof of concept :-)
->
-> Dw, arguably it's easier to reason about with everything open-coded ;)
-
-Thanks for your kind words.
-
-Best Regards
-Barry
+Thanks,
+Zhe
 
