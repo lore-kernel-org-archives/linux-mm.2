@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12017C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:40:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B363C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:40:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A9A36B00A5; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
+	id 649B36B00A4; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10D166B00A7; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
+	id 63CD96B00AE; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEF3F6B00A6; Tue,  7 Jul 2026 02:40:26 -0400 (EDT)
+	id 46ECE6B00A4; Tue,  7 Jul 2026 02:40:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A45836B00A4
+	by kanga.kvack.org (Postfix) with ESMTP id F16056B00A4
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:40:26 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1EED01402DF
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 735AD1C7E3D
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:26 +0000 (UTC)
-X-FDA: 84961031652.20.103AE77
-Received: from mta21.hihonor.com (mta21.honor.com [81.70.160.142])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B6A1640006
+X-FDA: 84961031652.10.66BA737
+Received: from mta20.hihonor.com (mta20.hihonor.com [81.70.206.69])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 23F1740003
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:40:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
+Authentication-Results: imf27.hostedemail.com;
 	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf27.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783406424;
+	b=w3ILgMnuNwS1F1kW0ZYa19rPG/mJs3yyGouksXaf/PSBeoPb05ZFeaOtUefDeCmQ57MdYW
+	93bo5u/sUn0lHfDLH7MKSEqG1C39MmVkkVkVNOF/oBgGTTT0jGM99iC3V04glAOLZKcS9f
+	LmTX5mpywdiWkjZZzd7GFEYmdRWFj0I=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=honor.com;
+	spf=pass (imf27.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.206.69 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783406424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u0y+Ho83lWhjY7imeTQ8Q4fyMnkTkspsw+CHMLSZIHc=;
-	b=RuXuy+lG4pV8MMKaUk3mQKJvn4P+bHT7nSl10xJYbZgVZyN2Q3XO8uNF6ZUF1Rvl9eqD+7
-	UlASBoeo87oDJpG1OdfS0FA97C612uaD4fQhFV+aW6nKYgA4tBMsivmuv0O3OYHXBWtM7u
-	nNa9YTjIcQGLk1cSwvgzK2TfnBCesxo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of tao.wangtao@honor.com designates 81.70.160.142 as permitted sender) smtp.mailfrom=tao.wangtao@honor.com;
-	dmarc=pass (policy=none) header.from=honor.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783406424;
-	b=Bv1PD15aiPmwUb+EjaxvgqoANcDyHCorbPFUuG4O1WNZ4CVDVzyMND9v8k6iiYLrdfwsW0
-	/8CjKI9Q+HWyzbGYCTc3yebr/mP6SCROsr6jJgKHYFvv80vB+9R9IQ7eome4ypBq4fIuXq
-	oMbot3gP4wRysD74wxIIj2rxL0HaNTE=
-Received: from TW001.hihonor.com (unknown [10.77.229.151])
-	by mta21.hihonor.com (SkyGuard) with ESMTPS id 4gvWnJ5jTJzYmWKW;
-	Tue,  7 Jul 2026 14:40:20 +0800 (CST)
-Received: from TA003.hihonor.com (10.72.0.43) by TW001.hihonor.com
- (10.77.229.151) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 7 Jul
- 2026 14:40:20 +0800
+	bh=T+EB3Bs6Tc+TX0QDMHUKD9l3LyWUIYDVGvyqyXzKsrA=;
+	b=SSozGbP+L9gnQrPpfeGlhw+pIK0/pvCbrrBaXryardAZRTScHdsrLXnCXRm/sV1XbuMB3f
+	M90N/MPveliyc/lZSJRvtysrOBiM8OTdTdYf5PjdQaJr6+rYIXnUHuGmCLHtE4gVFHHKsu
+	ewrsJjA9S/dyTEUjLVPBAtkQQA9p09M=
+Received: from TW004-1.hihonor.com (unknown [10.77.232.85])
+	by mta20.hihonor.com (SkyGuard) with ESMTPS id 4gvWnH2XkwzYm5Zg;
+	Tue,  7 Jul 2026 14:40:19 +0800 (CST)
+Received: from TA003.hihonor.com (10.72.0.43) by TW004-1.hihonor.com
+ (10.77.232.85) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 7 Jul
+ 2026 14:40:19 +0800
 Received: from localhost.localdomain (10.144.18.117) by TA003.hihonor.com
  (10.72.0.43) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 7 Jul
- 2026 14:40:20 +0800
+ 2026 14:40:18 +0800
 From: tao <tao.wangtao@honor.com>
 To: <akpm@linux-foundation.org>, <david@kernel.org>,
 	<catalin.marinas@arm.com>, <will@kernel.org>, <tglx@kernel.org>,
@@ -81,9 +81,9 @@ CC: <hpa@zytor.com>, <liam@infradead.org>, <vbabka@kernel.org>,
 	<linux-mm@kvack.org>, <damon@lists.linux.dev>, <shakeel.butt@linux.dev>,
 	<ryncsn@gmail.com>, <jparsana@google.com>, <dvander@google.com>,
 	<zhangji1@honor.com>, <wangzicheng@honor.com>, tao <tao.wangtao@honor.com>
-Subject: [RFC PATCH v2 11/13] mm: optimize rmap for ANON_VMA_FRACTAL with PVL
-Date: Tue, 7 Jul 2026 14:33:06 +0800
-Message-ID: <20260707063308.29176-12-tao.wangtao@honor.com>
+Subject: [RFC PATCH v2 06/13] mm: implement unlink_anon_nodes for ANON_VMA_FRACTAL
+Date: Tue, 7 Jul 2026 14:33:01 +0800
+Message-ID: <20260707063308.29176-7-tao.wangtao@honor.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20260707063308.29176-1-tao.wangtao@honor.com>
 References: <20260707063308.29176-1-tao.wangtao@honor.com>
@@ -92,14 +92,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.144.18.117]
 X-ClientProxiedBy: TW002-1.hihonor.com (10.72.0.137) To TA003.hihonor.com
  (10.72.0.43)
+X-Rspamd-Queue-Id: 23F1740003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B6A1640006
-X-Stat-Signature: zsmm7yzk1wpdij146jbe3qhc6q6tnxit
-X-HE-Tag: 1783406423-671290
-X-HE-Meta: U2FsdGVkX1+Q5z86EW9JgJUd/DIlrPrnhR25P5lLbmIDx9SKapIEyMECWpu2aLRmkpDXAie9eysv1+k7PT66aFYT9H+26OTIrBxq5o91lgrQ1Z0BlqskURRp34GyJS4rwQpP0c8/w2f07ALQS5OVNWhYpIObKIngn+5AczujVQaiDdS8ZLllHijiphjEbgiiF4L2Y0XlYv2cBjUeco3pIYavLl78Z29Ay7mjtzy7XA3HZTF1UB2F0N2mXOlvhDIlkkzV4LqfCTAPx6gpfuKK+/XQYFXFmJVrbheOfU3+wsZ9uzhuzmMks/T8T/W6q45fuFoNoJgWV5Fl1A90H6ENkBbaaASYi0eekXNyEHWf2EFoF+nztsgiiJUD7DRwUZMFZnPz5+DWfuOnlOqpTaDf/5qPBEOa6+0IsZDQ/0ivadjORVK+XxTOX1opCn2PUeRPfMrTkrpPWtzMppddmpYHP5PyCTDGR+NlbdsUr/4e/kIV5SCaz4lnoLBgMjz7Mm7o8Qd0vDsDLcxLey7dT8Ktv2cQJrP/v3WZaWXWkgexWfi20iNp+41N7xNH4SAExiM4ZVRT7jLlABA/G26Rim2MQKL4/88Y21EePuHz/qbsKi/7FlYDw53cJ5dRhqhC7va9EgYxpSu0pGwr5Ui0kIoxObcl2JE2rZi3v/06pFLa2ggRWT+2EohR4yt4rfoOQyCWKUyWBQaQy+03FuNV6f3ctbjJcefCbsr7m9QhQ6Rej/tbt/xmitfJEitXRDiPcaC0yW18CJvYG+dORrzZ6iiz1/djSr2C9U0deldIqROrQVJmu3hG7uW0NOaND1O3FJp3QQHjEC1O+GdageMbk0ZRCxJeqGhlCcfkSzAWBZ08Qwn1Qb7YJPa4T3mvLALEbT58GVrLnoTtJSvU6Qzm4E9Rqs+5ofJdUOo+UrgZlcAyWiFfV2M+UenALEAIZhHQ84n8/h0Z36+fN6/3+ON/OPc
- os0TaCyn
- pJ8mxfywZylc6jscHB4fZdX+0hX+jLEwF3BdyOrgr3X17//TGxd86Pe8ypvZGMwaT3mk1F9YAWCYgA5ThvB93qsqTYmDnUU9teZTuIvrmEJ0KCWGWorZjBg31s8Lu1sRoIARX6A/ujyKyCO9vi5hnPalEjWlEa7IhWKD9jQbkVp4ukSY9vcyhx7eKNnXO2/fUEjIavTeMp+W3w8OpFjROf4zYbeevPC4okQxWMZebnAJ6n5TQR35C5tJl6oIR4e0Mpo/NDtB5x6AXcbl1k1AxW1sisU+1hDtxjxM9hM73bKyiO71W7QcEn8KGdFnkN4zMyUgTHSY3JymamqfLzotGPZVza9+RUFw7gBuwQk0rJvfhJGmUe9mZZQUu8g==
+X-Stat-Signature: oio8becj7wctb1oiqxjgf7jcdj9ogcq4
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783406423-703050
+X-HE-Meta: U2FsdGVkX1/F6IN/JpuDKcqAmJl7n5saoIls2iFr7o19qhV54bl5M+85yan6NYV/nGG4d+E8TYFUaASJaUiw6NiZ7on8eNYwmXmDkGaiuB1hAiGi/zkJ1n6Oa2dW1/Ex7zzToGpLhTu4F8ZAx5V1UvT0O1LjTzV0vol7JuKTzJdzU09r/nJYFGbdkis0hQDu0fB4w9Mwg4zLbKO63ceavPtQInufNuWxGNfjHXMyqQK693Cy6Xuqpeb5jd7aTHi4gVdls0oRmY08PSCfp8LSr0RMd3OrNqL/H7MU3+BRZot4oniWANvViZ2IyNunyD8OmXHiJKAnmEmPAKnDfMB8nj3hPPPNr4tG6RXsSW0Q97RFZyDzpMQEOnht/iBOTdJP/lgdtlc3AwV/EEsNTqo05M9leCz8p6j12S5HL5R91BTpcb554vRHA1HOIj/aN+mGJIGyyhMcuDgUEu0UUmA4F1BF2i49NlGbgIV7U3vsxGYL7kB9W22tUl3eBy9vEx0CPYpNe1A5Xp1uHY79Fzrm9kYHeziBUmshAKEa63XGRR2iShhqxZHwXQJHJjzpcZEpI0rR7kLPorbFjjk2OiUEKyjIRDDKPoDbs8SjlBfKns/pkcqZDp4DLqBep7eCcW1bPDlZxpKXaEgEz3rWDgsyWrw53d9WZCQmQ+3mAluTeYujpHRohAXI1VYklfTcwQDLfkgADJ7UEnyP16KAq8gCBn+z9J3QfHBeHsoakF6fZMkzejZH67X9y2xDMniQOPzIjVIoVuXg53m/k0fw38hau7qGaUPxlUHO8Ryz0QrzCR7WHvfY16u/PBX3AWT29N9VD3P5Yc1bxTjgKngRPcuXRUwfjuNBeCeq8Oje/L4/rZ9A1F7HWHbaAP1/FsTDSKXdafvZQNftdsNZr+BSSwHAzm7zC6kYtpONT7VFzneOh8vI281txvoJYuBOrZ0wvsp4QgcG/j6gh06NLG+7I/j
+ pJjqOqXA
+ bhIKdB2yYT0Ky4IgVHji40QZm03QEMHoj94IlZ/D/O2PCJ0rmnlFw5RUfmkeRXIr5AH2EN/w1VyEz+hrkY7A+6G2oUOtR4j98/y4UxYrmYa/IX1fibptv9O4z/HBSsr6ScyHFO6fqoa5wqf/3uVmgZ1qEOw8rRGoHtkBqE7Roq2D9VkMAjzMsO/oCOYBThDPmg8op1XM4nZJ828N67mL+mRLIiHcbt03NVVHg4eLxwQrFapxXEJ77i04Q+uYqBOeKp3QscrgTLmCgUyzGB80cvJrGCAyzT57juYpHZEsZR5uqoiO/9ylapbge5HI3ZwTCODMwGVRSNG77qkk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,171 +107,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Leaf anon_nodes have no children, and a given address can belong to at
-most one VMA. In this case, PVL can protect the rmap.
+Detaching an anon_node may require traversing or removing it from the
+fractal list, so the lock must be held.
+
+Releasing an anon_node may propagate through the parent chain, while
+the actual release can be performed outside the lock.
 
 Signed-off-by: tao <tao.wangtao@honor.com>
 ---
- mm/internal.h | 22 ++++++++++++++++++
- mm/rmap.c     | 64 ++++++++++++++++++++++++++++++++++++++++++++++++---
- 2 files changed, 83 insertions(+), 3 deletions(-)
+ mm/rmap.c | 88 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 205f1b5226aa..f8dd2120b780 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -354,6 +354,23 @@ int anon_node_trylock_rmap(struct anon_node *anon_nod);
- void anon_node_lock_rmap(struct anon_node *anon_nod);
- void anon_node_unlock_rmap(struct anon_node *anon_nod);
- 
-+#define ANON_RMAP_LEAF_VMA	1
-+#define ANON_RMAP_FLAGS 	(ANON_RMAP_LEAF_VMA)
-+
-+static inline bool anon_rmap_is_leaf_vma(void *anon_rmap)
-+{
-+#ifdef CONFIG_PER_VMA_LOCK
-+	return ((unsigned long)anon_rmap & ANON_RMAP_FLAGS) == ANON_RMAP_LEAF_VMA;
-+#else
-+	return false;
-+#endif
-+}
-+
-+static inline struct vm_area_struct *anon_rmap_to_leaf_vma(void *anon_rmap)
-+{
-+	return (void *)((unsigned long)anon_rmap & ~ANON_RMAP_FLAGS);
-+}
-+
- #define ANON_RMAP_FOREACH_VMA(anon_vma, addr, start, last, rmap_proc_vma) \
- do { \
- 	struct vm_area_struct *vma = NULL; /* must be named vma */ \
-@@ -362,6 +379,11 @@ do { \
- 	unsigned long _pgoff = (start); \
- 	unsigned long _nr = 0, _total = 1; \
- 	\
-+	if (anon_rmap_is_leaf_vma(_anon_nod)) { \
-+		vma = anon_rmap_to_leaf_vma(_anon_nod); \
-+		(rmap_proc_vma); \
-+		break; \
-+	} \
- 	while (_nod) { \
- 		vma = anon_node_lookup_vma(_nod, (addr), _pgoff); \
- 		if (vma) \
 diff --git a/mm/rmap.c b/mm/rmap.c
-index 11239838b722..d1099a2fef0a 100644
+index 93fa04c5a007..ea3557d3b56c 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
-@@ -572,6 +572,8 @@ void __put_anon_vma(struct anon_vma *anon_vma)
- 
- static struct kmem_cache *anon_node_cachep;
- 
-+
-+
- static inline struct rw_semaphore *anon_node_rmap_sem(struct anon_node *node)
- {
- 	return &node->root->rwsem;
-@@ -1035,9 +1037,48 @@ void anon_node_lock_rmap(struct anon_node *anon_nod)
- 
- void anon_node_unlock_rmap(struct anon_node *anon_nod)
- {
-+#ifdef CONFIG_PER_VMA_LOCK
-+	/* Corresponds to folio_lock_anon_vma_read(). */
-+	if (anon_rmap_is_leaf_vma(anon_nod)) {
-+		vma_refcount_put(anon_rmap_to_leaf_vma(anon_nod));
-+		return;
-+	}
-+#endif
-+
- 	up_read(anon_node_rmap_sem(anon_nod));
+@@ -859,6 +859,94 @@ int anon_node_fork_with_prev(struct vm_area_struct *vma,
+ 	return anon_node_add_child(parent, vma, true);
  }
  
-+static struct vm_area_struct *trylock_leaf_vma_rmap(
-+		struct anon_node *anon_nod, const struct folio *folio,
-+		struct mm_struct **other_mm)
++/* Returns true if untrack succeeds. */
++static bool anon_node_untrack_rmap_locked(struct anon_node *anon_nod,
++		struct vm_area_struct *vma, struct anon_node **release_node)
 +{
-+	unsigned long pgoff_start = folio_pgoff(folio);
-+	unsigned long pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;
-+	unsigned long addr = anon_node_rmap_address(anon_nod, pgoff_start);
-+	struct mm_struct *mm = anon_nod->mm;
-+	struct vm_area_struct *vma;
-+	int oldcnt;
++	struct anon_node *root = anon_nod->root;
++	struct anon_node *node = anon_nod;
++	struct anon_node *empty_nod = NULL;
++	bool test_empty = false;
 +
-+	if (anon_nod->nr_children)
-+		return NULL;
++	do {
++		if (try_untrack_rmap(node, vma_rmap_base(vma), &test_empty))
++			break;
++		node = anon_node_next_rbc_child(anon_nod, node);
++	} while (node);
 +
-+	if (!addr || !mm || !mmget_not_zero(mm))
-+		return NULL;
-+
-+	vma = vma_lookup(mm, addr);
-+	mmput_async(mm);
-+	if (!vma || vma_last_pgoff(vma) < pgoff_end)
-+		return NULL;
-+
-+	if (!__refcount_inc_not_zero_limited_acquire(&vma->vm_refcnt, &oldcnt,
-+						     VM_REFCNT_LIMIT)) {
-+		return NULL;
++	if (!test_empty) {
++		VM_BUG_ON_VMA(!node, vma);
++		return (bool)node;
 +	}
 +
-+	*other_mm = (vma->vm_mm == mm) ? NULL : vma->vm_mm;
-+	return vma;
++	if (node->nr_children == 0)
++		empty_nod = node;
++	else if (node == anon_nod) {
++		/* Replace an rbc child. */
++		node = anon_node_next_rbc_child(anon_nod, anon_nod);
++		if (node && try_reuse_anon_node(anon_nod,
++						atomic_long_read(&node->rbc))) {
++			atomic_long_set(&node->rbc, 0);
++			empty_nod = node;
++		}
++	}
++	/* may be released up the parent chain */
++	*release_node = empty_nod;
++	while (empty_nod && empty_nod != root) {
++		struct anon_node *parent = empty_nod->parent;
++
++		/* delete the empty_nod first, release later. */
++		list_del_init(&empty_nod->fractal_list);
++		empty_nod->mm = NULL;
++		if (--parent->nr_children == 0 && !anon_node_rmap_count(parent))
++			empty_nod = parent;
++		else {
++			empty_nod->parent = NULL;
++			break;
++		}
++	}
++	return true;
 +}
 +
- #endif
- 
- /*
-@@ -1117,6 +1158,8 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
- {
- 	struct anon_vma *anon_vma = NULL;
- 	struct anon_vma *root_anon_vma;
-+	struct vm_area_struct *leaf_vma = NULL;
-+	struct mm_struct *other_mm = NULL;
- 	unsigned long anon_mapping;
- 
- 	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -1130,6 +1173,15 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
- 
- 	anon_vma = (struct anon_vma *) (anon_mapping - FOLIO_MAPPING_ANON);
- 	root_anon_vma = READ_ONCE(anon_vma->root);
-+#if defined(CONFIG_PER_VMA_LOCK) && defined(CONFIG_ANON_VMA_FRACTAL)
-+	leaf_vma = trylock_leaf_vma_rmap(anon_vma, folio, &other_mm);
-+	if (leaf_vma && !other_mm && folio_mapped(folio)) {
-+		rcu_read_unlock();
-+		return (void *)leaf_vma + ANON_RMAP_LEAF_VMA;
++static void release_anon_nodes(struct anon_node *anon_nod)
++{
++	struct anon_node *root = anon_nod->root;
++
++	while (anon_nod) {
++		struct anon_node *parent = anon_nod->parent;
++
++		put_anon_node(anon_nod);
++		anon_nod = (anon_nod != root) ? parent : NULL;
 +	}
-+	if (unlikely(other_mm))
-+		mmgrab(other_mm); /* put vma after unlock. */
-+#endif
- 	if (down_read_trylock(&root_anon_vma->rwsem)) {
- 		/*
- 		 * If the folio is still mapped, then this anon_vma is still
-@@ -1156,9 +1208,8 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
- 	}
++}
++
++/* Remove link between this VMA and its anon_node. */
++void unlink_anon_nodes(struct vm_area_struct *vma)
++{
++	struct anon_node *anon_nod = vma_anon_node(vma);
++	struct rw_semaphore *rmap_sem;
++	struct anon_node *release_node = NULL;
++
++	/* Always hold mmap lock, read-lock on unmap possibly. */
++	mmap_assert_locked(vma->vm_mm);
++
++	/* Unfaulted */
++	if (!anon_nod)
++		return;
++
++	rmap_sem = anon_node_rmap_sem(anon_nod->root);
++	down_write(rmap_sem);
++	anon_nod = vma_anon_node(vma); /* Recheck after locking. */
++	if (anon_nod) {
++		anon_node_untrack_rmap_locked(anon_nod, vma, &release_node);
++		vma->anon_vma = NULL;
++	}
++	up_write(rmap_sem);
++
++	if (release_node)
++		release_anon_nodes(release_node);
++}
++
  
- 	if (!folio_mapped(folio)) {
--		rcu_read_unlock();
- 		put_anon_vma(anon_vma);
--		return NULL;
-+		goto out;
- 	}
- 
- 	/* we pinned the anon_vma, its safe to sleep */
-@@ -1176,10 +1227,17 @@ struct anon_vma *folio_lock_anon_vma_read(const struct folio *folio,
- 		anon_vma = NULL;
- 	}
- 
--	return anon_vma;
-+	goto out_unlocked;
- 
- out:
- 	rcu_read_unlock();
-+out_unlocked:
-+#ifdef CONFIG_PER_VMA_LOCK
-+	if (leaf_vma)
-+		vma_refcount_put(leaf_vma);
-+#endif
-+	if (other_mm)
-+		mmdrop(other_mm);
- 	return anon_vma;
- }
+ #endif
  
 -- 
 2.17.1
