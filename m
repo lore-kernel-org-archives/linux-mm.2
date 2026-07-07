@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5996C44501
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:15:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1E07C44500
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:17:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD5746B009D; Tue,  7 Jul 2026 06:15:31 -0400 (EDT)
+	id 88FDC6B00A0; Tue,  7 Jul 2026 06:17:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5FEB6B009E; Tue,  7 Jul 2026 06:15:31 -0400 (EDT)
+	id 83F6C6B009D; Tue,  7 Jul 2026 06:17:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94DBE6B00A0; Tue,  7 Jul 2026 06:15:31 -0400 (EDT)
+	id 708566B00A0; Tue,  7 Jul 2026 06:17:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 695CF6B009E
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:15:31 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DC6671203D0
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:15:30 +0000 (UTC)
-X-FDA: 84961573620.28.BB39950
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D74C6B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:17:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCF621A03D2
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:17:24 +0000 (UTC)
+X-FDA: 84961578408.08.11CDFF1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 681CE40008;
-	Tue,  7 Jul 2026 10:15:28 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HluYhwOW;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 95707180002;
+	Tue,  7 Jul 2026 10:17:22 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGH+4V3q;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783419328;
+	s=arc-20220608; t=1783419443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mNSla9Czr4vFeuTIzrP/cHDzh+yx/IrTUvaJ5OnP34U=;
-	b=40SLamEjSesUqlL8YC5H7McIxGcNSRw0JC5/EW11Rz/MH9E8mK7/IFp62T3Mi6cPquoK9L
-	Q9PuX4FFADfAfnHXVZzvQcMS1RZVu0HT/ZjWAeaRhjmeZ/S+nwUj4/adRDZNBt73F9+4xD
-	rhvsdH/1jtJgxky+57tqxi6kPQu4IaU=
+	bh=mnyEnVNjUbkl63yjftBd6ZAUslZHuhLMLE5i1q1dbiA=;
+	b=RnD5LEepETFoVwEm8clY2TX029sSxGS67zFhNu8kmjFQElZzCKRhapdKz5Beb/sbIFXJvh
+	HNeNCYDwdHhf/nFTTbWPKTov4n522oNNpARBO9xW0fxIl9fzcOewNY8YJTyWKVvbhqJW6u
+	OgIuakAg/T7064+ip/p3dFby1Aer6uM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HluYhwOW;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cGH+4V3q;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783419328;
-	b=YmzLChtiXVLbcDWoCDnyU97NEzH3PHdbGATDB6CbMPv8DWV8ASKtGR7LsZoJMVSXe5ge3a
-	HhCJPE9vGxOXzzeHqG7Kt+OsBbEZ8VUQ7DzL9lV/g25qt6zU3jsWEg4v7Kdb8mrjEmiM9X
-	SSw/iAV2c3hM3Ko6uQY3ZErqX6MNzkc=
+	t=1783419443;
+	b=ljtnav/PggB8av87J91Y+6llaQepUnzRjdHu0azYi7so4qhM3EyHwTGDzAFNd2uxiIa9Hb
+	zFwgfQRjLSwhHHXdddOm7ylLmByqWP78e+kxueaoFT5sSFMjTMfnHopq1ZM/glNSdbv9Ym
+	cQJydUDMFUKt/QEKCXaYlv4GFDWtV2A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 64240424AD;
-	Tue,  7 Jul 2026 10:15:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAC81F00A3D;
-	Tue,  7 Jul 2026 10:15:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 86145419A0;
+	Tue,  7 Jul 2026 10:17:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122461F000E9;
+	Tue,  7 Jul 2026 10:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783419327;
-	bh=mNSla9Czr4vFeuTIzrP/cHDzh+yx/IrTUvaJ5OnP34U=;
+	s=k20260515; t=1783419441;
+	bh=mnyEnVNjUbkl63yjftBd6ZAUslZHuhLMLE5i1q1dbiA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HluYhwOWRqwjbw9mnNEjPVnyh7tR+UBSnSv/otgjpUQBigWOwZUJOYkpU0LnGQPOd
-	 9JWuafQR68ncbIWqn0jW8jTfwPafpmeDnt2Wvr8VLfjDqTgkyFdLwQrzBX5aGYlPBy
-	 bdDr9uov5pNq61DLoYMBBHIrYLPaluS9cGGvVLuwrNNgpnc0PxTOy1Y4Jv6WgqJLPU
-	 g8L2HsabDqHedwwaZisYTmwsI8Liu2LIO7hoQNV8VhXPReqA934JiUn5O3mwQK8rxr
-	 zZFBy1M3lH7Q7XggDkvTulkUo1eG7DFZ7mTqdd75PKoMBF8VkjG7TCZVSFf+WpnFzU
-	 vO+QqUik5Cd9A==
-Date: Tue, 7 Jul 2026 11:15:02 +0100
+	b=cGH+4V3qnWn/h2ntR4JOMP1MeFASTJyb/ukIFIKga6vmMPs4hWnZeyozgnP8o9zcj
+	 4aOepXlE5yG0XgvATIbejO38So9984JOSQXxfemV7MrbXTQdbQqJryZ7by0rmLtk6g
+	 KbyecrBlOO6RxZhZHoEJHQvN3lfQ+IRVIfllVkFrcFe5jzAzy0lAaGw02N38CG8Xem
+	 bIuNc24pIIBeQZLitf75XKOixE/v2BoAd9XaTV+y7NflJFaBKiVOSfh8s3qL1kjbV3
+	 QtnOkHzUZcffKxdXoostqrwbOmOdDgDEYFoMQefdIk5SYi6OuZQQ8BSF6bkbad2igD
+	 ZZ2I4X8hc6i0g==
+Date: Tue, 7 Jul 2026 11:16:56 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Zi Yan <ziy@nvidia.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -102,23 +102,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, 
 	linux-fbdev@vger.kernel.org, linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 02/13] mm/vma: update do_mmap() to use vma_flags_t
-Message-ID: <akzRdIS8ZotxIOFR@lucifer>
+Subject: Re: [PATCH 03/13] mm: convert __get_unmapped_area() to use
+ vma_flags_t
+Message-ID: <akzR7JQuaKEQpH5Y@lucifer>
 References: <cover.1782760670.git.ljs@kernel.org>
- <e0ac58ad2b88ff7e2f0024e3286b2e786f79ca32.1782760670.git.ljs@kernel.org>
- <DJRZ2QCEIVA6.1AZF5S891NKS4@nvidia.com>
+ <b1ad7c4443f5cba622e4c48c5a9ef15427001a93.1782760670.git.ljs@kernel.org>
+ <DJRZGEZU5ESV.3IP5LEAUQJCBK@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DJRZ2QCEIVA6.1AZF5S891NKS4@nvidia.com>
-X-Rspamd-Queue-Id: 681CE40008
-X-Stat-Signature: jnk5a1a8zj9nsgkhzympscsgyq6zo86c
+In-Reply-To: <DJRZGEZU5ESV.3IP5LEAUQJCBK@nvidia.com>
+X-Rspamd-Queue-Id: 95707180002
+X-Stat-Signature: etzzn6r3tnparc9zbn4psx9ro7d1nsdg
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1783419328-264574
-X-HE-Meta: U2FsdGVkX19gV93LKRyHURenwy1vj1VjzJiy6CBAe9eEuISE/XWizdMDUCWZoXp7hu9Iyvq+oRrUIdcmo5+c231AQpJZd/+lg5dYjf2DM+IgxDz0BKC6ERYulmmj2Z1hUOP1kovXwBoJC8YbHMqEfW54UR0vTI/s0RL3qy6bezOThHZyYa1Y5saOoPB4uL82WDWw7kfKUYTDmZh7Ps5sXm2G9J8Tj36kbNcvHPSNpdN465qz74WEozrMHieIurBEgeDISltpSXwogVo32nLWwvHJk08LPL4G3dAjgVifZQv0Os4NorWGKnkwLL2jPF2954j2iJIf83m4iWDEtmqS2GLqZmSejmYO/k0YeKTyUWaiFegJ/cvhlRhH+qGceh44zHKsdrLatYoondptLCA40kj8hD07EF5Aq+LKJZO9om0tlLSsPel4mg2gCQjW9DEPG70vkBgaccUdOOT5qT+63ObkWVknmCyUQu6ylyS35JZi27jN3tQoTauJ9TIwwKtG0Fuzpvzd9eF4X8PtcMS3HNGNE0ItrhpWR7ZtHVuMVQqVnOVMdRrZhNEP7+5C7Jcv79KBL3NKCs3HoxPCbRbLbrMfU7ljprVQRJQh6cl5qcInitxceymq9KDugIQwf+eBC5JpRHQb3miDg15oyi05Dhk90vACvdyKED0THYrNuvFMRDWjsRrHXXdJPzU0z/MvhW28QK51nnQMCRwWZBTquP0z83MJNd2caK+TIai+9ftP5D0Ho0LVN99v4rIY3BnsOOEmCnsx+shBAsPFf70YqMQcF62rLSG2mOjR3qXg4SwN+JKgZm2qZ6J4zU8wbY77OFq9vkzGd567JhZvjz0J52MI6TLZFPC4II2j2FqakH52DLDEXo7PFwdN7vAAm3ydnXtwuVqNlE7xALZuVH2u4TRgq8cMQnKrs4zlN2B7zmxNmHcruH/NkK1zAb+GBIllcf8+tFAkRRZ7Sl03CsI
- SfdMHMEO
- yduJZciHbxDTKCB9V+265vOZgs69HgbDcMHyPLYqrrpL61Ntl3VItipOd/5s7OrYw/fub3hnrrZgFfglF3+jIcT2VK324Mf2JO7dWz8ckJpgmC3MkTzcw/+d5VsXyS8bqIC5rPK2NYYJNzoKUeUeJ/mAAUhFnDmdWlFE8FEyaS9pVZcowSmYFCSdPBvKBWlXCJAklJX3Ya0Wh95IPk9jEZRdkQTMGplInimXMAJu7sY5eUThra7inb0VCB29JLYvg4USuaaONdfs+t2z1lPfJSMoUOUjOz1lVgP7rZshpmO+g81hq9Z1l4PWNFeRGvSKEAXT7n07M65+LxlsKjfODMEPxQGh31BqXHdFq
+X-HE-Tag: 1783419442-325228
+X-HE-Meta: U2FsdGVkX18VyaPaTDfRVjPT/8RG0jv4C6nFU7z6g4M5JDEUqvPm/jjJbl0PnC18LVjb2YeJFvlJoJyWny8pdGDTCJ0Ti5bOs/qoBH6NxBUeJyVUL0HDci1A6t+UdG3sYr6bygWAYJd9uIRQlPz6EitI+wv8aUoRzMIEPW1IjsSvFRy4MTyBJgmnzJ1N6sGGbK3vexD3TwECY8LtPffVaw/0HK/dcaXkKjtwL+RRjaGgjUJIqRKoNdvH8scnX1W8XctdKjF1qfAtwZpbRHclN+ug74YXYcs2y/sOAIf8lA7JIOhgKZY+uF5IH+mQ29izbAl+fhfVWHwwDG3pnT6Ptp2QRCUzzvNrGBw1iD/1MlBQlsBi7doXTh0inkChTfOyd/7U4JLnILCyCyIJvNON5/jhaiS7jbl6RQI3Zb1HrbpZ5Oj99ea1+Nx905lUyi3DwOxljFtcc5Uiju/o9n8rgug04KR7JG90k/QDGg8jssoVZgB0++8JIZJRQC9zwlCaSbj9RcqODsU0tNPczuoy5DLcXO109Jo4xyBpMzY2/aAy+Mx8U7gKUkKjQ5KrtoOEFqfvFtPzX2rYbRdnHwWiu0nk6tWST20KDgBcW5BdFM6n8Ee5OPeOoEI16SR1CEtaXTbVs1RMfNYbVF1u8u1AIbMKh6zIugXngy2nTvffCTV+vZPpwp/P6T3MPwwQ5oGwwHPS/Y4YfeZfuLGxpD1uXWW8OIwU8pv2ZqMajg6zbwDGfzghN0TnrmFM9f6Vu7mHByW0tX5djcqm1M9020NslzWSoV/TCZTUctcPkbFR/kTK6mJRw0wHHkwf9CxfdhnzAfgfXRXTq9hOMM22FmFw8cMiUC4IJzg1HFZl+kTuDHFIFneBwa1C+7SYNfwq3WRMfqdzJ1gA6RIe1/OsgPPp3wjDh6liYdF+V+JgVOzMQWtfJiApUbqoLBO5P3fwq3jPLAKJUIj+YBgfi1a7DhH
+ np82gFxQ
+ h3lN/m+bKsR++CIdIdF2O3TYKRvZQgPdJR3YVeVNSV3Dpi9ZEQIpTz9QBua444hUCeqm4cYP4XKmCG4ATLQlz/TUNzbIHYJsyGAmUjpo20UHjMpgqdi9ksPOBLb5OZ8YY4Cf5c7H+Nfb7SVH9LGBM/I1i4wmO6D2OAtYfuI+6HyFdwPlZVCWPkAbBWlHLvQxKzBB1QO10nTUK6FfCIEPTPD+jHYCaCc3ryXTQn6vrUddMrM+WTfdBI/4DHGErn161p6RjagprdVHvGjL1DW0ErdYsyBvVdRzuSkVcWi4PzgYAHOCVMjRL+m1dlxAvMoi8ReKLkcgwkOG75DrWxfsG5ah96g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,125 +127,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 10:10:32PM -0400, Zi Yan wrote:
+On Mon, Jul 06, 2026 at 10:28:24PM -0400, Zi Yan wrote:
 > On Mon Jun 29, 2026 at 3:25 PM EDT, Lorenzo Stoakes wrote:
-> > The core do_mmap() function accepts a vm_flags_t parameter which it then
-> > manipulates before passing to mmap_region() to do the heavy lifting of the
-> > memory mapping.
+> > Update __get_unmapped_area() to be parameterised by vma_flags_t rather than
+> > vm_flags_t as part of the effort to move VMA flags from a system word to a
+> > bitmap.
 > >
-> > Update do_mmap() to instead accept a vma_flags_t parameter, and adjust all
-> > the logic within do_mmap() to manipulate this instead.
-> >
-> > This is as part of the ongoing effort to convert VMA flags from a system
-> > word size to a bitmap type which allows us to unrestrict the number of VMA
-> > flags, as well as gain control over how VMA flag manipulation occurs.
-> >
-> > We do not cascade these changes to all functions which accept vm_flags_t,
-> > but rather use vma_flags_to_legacy() where necessary, specifically
-> > deferring converting calc_vm_prot_bits(), calc_vm_flag_bits() and
-> > __get_unmapped_area() to vma_flags_t.
-> >
-> > Also utilise the new vma_flags_can_grow() predicate which correctly handles
-> > the case of architectures without upward growing stacks.
-> >
-> > As part of this change, introduce VMA_SHADOW_STACK so we can correctly
-> > handle the case of the shadow stack not being defined.
+> > We cascade the changes up to arch_get_unmapped_area_topdown() and
+> > arch_get_unmapped_area(), where, for now, we use vma_flags_to_legacy() in
+> > order to propagate the VMA flags.
 > >
 > > No functional change intended.
 > >
 > > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 > > ---
-> >  arch/mips/kernel/vdso.c |  4 +--
-> >  fs/aio.c                |  2 +-
-> >  include/linux/memfd.h   |  6 ++--
-> >  include/linux/mm.h      |  6 ++--
-> >  ipc/shm.c               |  3 +-
-> >  mm/memfd.c              | 15 ++++-----
-> >  mm/mmap.c               | 67 ++++++++++++++++++++++++-----------------
-> >  mm/nommu.c              |  3 +-
-> >  mm/util.c               | 10 +++---
-> >  mm/vma.c                |  7 ++---
-> >  mm/vma.h                |  2 +-
-> >  11 files changed, 69 insertions(+), 56 deletions(-)
+> >  fs/hugetlbfs/inode.c     |  3 ++-
+> >  include/linux/huge_mm.h  | 10 +++++-----
+> >  include/linux/mm.h       |  6 ++++--
+> >  include/linux/sched/mm.h | 12 ++++++------
+> >  mm/huge_memory.c         | 21 ++++++++++++---------
+> >  mm/mmap.c                | 27 ++++++++++++++-------------
+> >  6 files changed, 43 insertions(+), 36 deletions(-)
 > >
+> <snip>
+>
+> > diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+> > index 95d0040df584..b301ec90740a 100644
+> > --- a/include/linux/sched/mm.h
+> > +++ b/include/linux/sched/mm.h
+> > @@ -193,12 +193,12 @@ unsigned long mm_get_unmapped_area(struct file *filp, unsigned long addr,
+> >  				   unsigned long len, unsigned long pgoff,
+> >  				   unsigned long flags);
+> >
+> > -unsigned long mm_get_unmapped_area_vmflags(struct file *filp,
+> > -					   unsigned long addr,
+> > -					   unsigned long len,
+> > -					   unsigned long pgoff,
+> > -					   unsigned long flags,
+> > -					   vm_flags_t vm_flags);
+> > +unsigned long mm_get_unmapped_area_vmaflags(struct file *filp,
+> > +					    unsigned long addr,
+> > +					    unsigned long len,
+> > +					    unsigned long pgoff,
+> > +					    unsigned long flags,
+> > +					    vma_flags_t vma_flags);
+>
+> Want to use two-tab indentation while at it?
+
+Yeah sure will fix on respin!
+
 >
 > <snip>
 >
-> >
-> > -static int check_write_seal(vm_flags_t *vm_flags_ptr)
-> > +static int check_write_seal(vma_flags_t *vma_flags_ptr)
-> >  {
-> > -	vm_flags_t vm_flags = *vm_flags_ptr;
-> > -	vm_flags_t mask = vm_flags & (VM_SHARED | VM_WRITE);
-> > -
-> >  	/* If a private mapping then writability is irrelevant. */
-> > -	if (!(mask & VM_SHARED))
-> > +	if (!vma_flags_test(vma_flags_ptr, VMA_SHARED_BIT))
-> >  		return 0;
-> >
-> >  	/*
-> >  	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
-> >  	 * write seals are active.
-> >  	 */
-> > -	if (mask & VM_WRITE)
-> > +	if (vma_flags_test(vma_flags_ptr, VMA_WRITE_BIT))
-> >  		return -EPERM;
-> >
-> >  	/*
-> >  	 * This is a read-only mapping, disallow mprotect() from making a
-> >  	 * write-sealed mapping writable in future.
-> >  	 */
-> > -	*vm_flags_ptr &= ~VM_MAYWRITE;
-> > +	vma_flags_clear(vma_flags_ptr, VMA_MAYWRITE_BIT);
-> >
-> >  	return 0;
+> > @@ -812,19 +811,20 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
 > >  }
->
-> This function alone changed its original behavior, since vm_flags is a
-> snapshot of *vm_flags_ptr, but after the change this snapshot is gone.
-> But its only caller memfd_check_seals_mmap() gets vm_flags_ptr from the
-> input parameter of do_mmap(), so the overall behavior does not change.
-
-Right yeah, the snapshot was always just a convenience thing :)
-
->
-> <snip>
->
-> > +		case MAP_DROPPABLE: {
-> > +			vma_flags_t droppable = VMA_DROPPABLE;
-> > +
-> > +			if (vma_flags_empty(&droppable))
-> >  				return -EOPNOTSUPP;
-> > +			vma_flags_set_mask(&vma_flags, droppable);
-> > +
-> >  			/*
-> >  			 * A locked or stack area makes no sense to be droppable.
-> >  			 *
-> > @@ -515,23 +527,24 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
-> >  			 */
-> >  			if (flags & (MAP_LOCKED | MAP_HUGETLB))
-> >  			        return -EINVAL;
-> > -			if (vm_flags & (VM_GROWSDOWN | VM_GROWSUP))
-> > +			if (vma_flags_can_grow(&vma_flags))
-> >  			        return -EINVAL;
+> >  #endif
 > >
-> > -			vm_flags |= VM_DROPPABLE;
-> > -
+> > -unsigned long mm_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
+> > -					   unsigned long len, unsigned long pgoff,
+> > -					   unsigned long flags, vm_flags_t vm_flags)
+> > +unsigned long mm_get_unmapped_area_vmaflags(struct file *filp, unsigned long addr,
+> > +					    unsigned long len, unsigned long pgoff,
+> > +					    unsigned long flags, vma_flags_t vma_flags)
 >
-> Lance pointed out the reordering of setting VMA_DROPPABLE and checking
-> of can_grow, but these flags are not overlapped and there is no parallel
-> writer to vma_flags. So it is still no functional change, just not
-> mechanical changes. :)
+> Ditto.
 
-Right yes exactly :)
+Ack will fix!
 
 >
-> Otherwise, LGTM.
+> LGTM.
 >
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
 
 Thanks!
 
+>
 >
 > --
 > Best Regards,
