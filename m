@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40378C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF0B9C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:28:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A3E36B00A6; Tue,  7 Jul 2026 10:26:12 -0400 (EDT)
+	id B1CF56B00A3; Tue,  7 Jul 2026 10:28:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 155576B00AA; Tue,  7 Jul 2026 10:26:12 -0400 (EDT)
+	id ACE006B00A5; Tue,  7 Jul 2026 10:28:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06D046B00AB; Tue,  7 Jul 2026 10:26:12 -0400 (EDT)
+	id 9BE3B6B00AC; Tue,  7 Jul 2026 10:28:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D30FD6B00A6
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:26:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 497E0A0358
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:26:11 +0000 (UTC)
-X-FDA: 84962205342.13.19DDCBC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D3546B00A3
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:28:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E27D01A0487
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:28:21 +0000 (UTC)
+X-FDA: 84962210802.17.8A13558
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5E97840006
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:26:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OGl6sOyk;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0D5EEC0005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:28:19 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lLUj0RXq;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783434369;
+	s=arc-20220608; t=1783434500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCVwdRoQOoP+N6WsXBwnYD4SR1Rf4w9pPgdBdTS1BFw=;
-	b=K2p9aFL3JizStJIsZOmyS1UggnQN8GJP7Ak2tFl8NC4YQWNySkzn/jyJoNMD//pPGK/beK
-	smKs8HHl5YRWgbc7/typ1dILgKDhqGshkZSPn0hi9jUaKj7l4G8DB1t17rIlC8PGR+lZh0
-	enNrp5bP0UD+jX1g4fRlTpjzuSSmxXw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783434369;
-	b=NkF/L16zQh50+YTCb8ifeGH6tkDWaWbQLPFaaA1llrEdMR99uDup7kQRn6QtYjn/Gtptk+
-	Qm9t0d6bVF/77TQY/52nnRId/DFHoZRHrXsCjmcWfmnLEMvizrUt9FeN9GKoIo4FUjFtNK
-	EKAu8//qZX3kBx6OZSe78Qs1jmlFSDA=
+	bh=SMQ8K9VfUIpA2XT73iQzn2WJ6V6USrzYPAEG4w2/L94=;
+	b=mSLdYnljwK78Wvk4rsSoucZvZON/gRQpSmW0L/TeESzRR5IeQFuT8AlEJhZNBRp3vZT66h
+	9Hfri83Qk09gdXzZEqNqJ7AkCSYs48EXN/Cqldh6J5rbfTbV3abLIw7ssBDialT+mtCxWT
+	4K21BK6qS18vkx0vxvPDafo6ziDnagw=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OGl6sOyk;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lLUj0RXq;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783434500;
+	b=x4PPYoDWe86PqWmfrlkcCfxG3C440dPoDcW1kBa6+Y/oW+ZxjGaSVNeI5BOjfvbSA3h7Np
+	g3DVFX4sF1//JYkyIOdBbYE+9pNhow0ADLKkDccCBqCxizsFPDYdxKcpGUvZ/0hyKktkUJ
+	alB10oOWLV9kv2PIvSMO0pTIo4ZJNZM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86E1743C49;
-	Tue,  7 Jul 2026 14:26:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CA01F00A3A;
-	Tue,  7 Jul 2026 14:26:04 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4099F42ADC;
+	Tue,  7 Jul 2026 14:28:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0412B1F000E9;
+	Tue,  7 Jul 2026 14:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783434368;
-	bh=PCVwdRoQOoP+N6WsXBwnYD4SR1Rf4w9pPgdBdTS1BFw=;
+	s=k20260515; t=1783434499;
+	bh=SMQ8K9VfUIpA2XT73iQzn2WJ6V6USrzYPAEG4w2/L94=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OGl6sOykpiKuUGpPHYNW3WsssRjASb58n/v+6w4wigNQnm45sUm2cXaKSfDidrUzc
-	 3TMlGcU+6HxYy/Jz0JrMmF0OXfYgOwsVli/Au+F95g7+6yZqMB1dzhm/kT1e7TAhaF
-	 wiWO6tTmG+eE7AMFB2xAgFpPM69bTpivyA2TtibNIODXgjpLPDpwJfFTxpW5YU1+hX
-	 QheZ8hXHu3X3v9IkQYbhwGTa8myw0VrgXcri6E12B5sXkN8KaS5NMP91RUY/lr/U7w
-	 +AUgO3bx8yrsyWyqinrp/OtkE9SGuDz8msiUUTfvnvXCfpj7tF+M8ZJA1+Z12a0d28
-	 5r6D8VDXA1OhA==
-Message-ID: <1221180d-6217-401f-a479-3a5d9684659e@kernel.org>
-Date: Tue, 7 Jul 2026 16:26:03 +0200
+	b=lLUj0RXqa3eqVSWa8s3jcLRzvPAoxXywuBBbtB7eGxbsslO52vc2uQi76DXyAQ/Uo
+	 1k6hzKcGoTWdwSskzPk3fXkyS9wDJBndvI1/c30aawuCArJtFmFwmY9YZgO2W5sYhA
+	 VtkeOJPuAyGMaSKSmRPT7NYc5h7dJub2XY4T0rfN9irI/IK/bPx8eTLkcQiHcRn54G
+	 e+UzX8IH0ElSGDmyTkrpcdLutlBYQD1dnghqosFDVj3CpzhE6Z8XE+HWqUiG+4qFve
+	 LqZ95gSpLLgfHSfmBOupEsM9hAon1Vx2suTZp2jDGzZYloHcDfyZjpnpdTJkeyW3Z7
+	 UyXmhFnuBFB0g==
+Message-ID: <50b0de85-0bb9-4d09-b32e-31a3a4661379@kernel.org>
+Date: Tue, 7 Jul 2026 16:28:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm/rmap: refactor anon swapbacked folio unmap in
- try_to_unmap_one
+Subject: Re: [PATCH 5/5] mm/rmap: add anon folio unmap dispatcher function
 To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
  muchun.song@linux.dev, osalvador@suse.de
 Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
@@ -77,7 +76,7 @@ Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
  anshuman.khandual@arm.com
 References: <20260707121128.373192-1-dev.jain@arm.com>
- <20260707121128.373192-5-dev.jain@arm.com>
+ <20260707121128.373192-6-dev.jain@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260707121128.373192-5-dev.jain@arm.com>
+In-Reply-To: <20260707121128.373192-6-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: cwg668qte6sshox7e6ak51gyahubkfwr
+X-Rspamd-Queue-Id: 0D5EEC0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5E97840006
-X-Stat-Signature: b4kadbnq6dyj85u1otyzh7ibgikkqtb7
-X-HE-Tag: 1783434369-553877
-X-HE-Meta: U2FsdGVkX1+DQOK91RHx08mzLKLbc+Zjk8rz+T2wtW3SvmGkORLnx+inhOZ53SHDVEdLdKx2OpxMXtXuxhHnsirDMfGBGyMKFqTyxLECMI6tOYlswoQQj9nwmozSxTQgSC2gOvKQMDRaECjOHOzbiCbb79YhaOzcjL3eaPP+lBHYa9Wbw87TUnQVocUoiAtsL8AZgluL09Bu2TORfOq36bEFR4VMh585SdVShVKtJllNQOXE12fr2DTPKsdxORRkXgP4zfWDNmnpDqRM8hCq8xVy0zL+sVnJ5gonF+yZqtfVotAc2E6iIC7kYSAozmdAMPHnsUZCJJcS6b27eOSK8BH6o3Wn2iqL5VQbkrw2In8xtg1308M3m50gC8At9IYUqvMnfCETUjoBfxUWJiJ/C7tH13YgiCQqHOep46uvTzZYsDawt3EG6HUTJ0afH5zgj55GCZ/yNcgL9WUWkPwdClAU88kK7qMhEsRyL0kv83ZOCGTwQ64MYfRBpgzVAWNp4PgxU7tBBF982Ek5ZR0DZ1lz1Tfg9ME0gvTewZ78kARwZea8CSp8jIXgrn1i5lYblbB03JlEcCPLLYIL4bhGOberO4auaTcZNxfCSqdqmNKDfNhxF9wq9HV9Wp49GirrVK8uji5/XtLms2xRQu+IpDVmEjVqhYCXnNmmawUHEunus2B2xfnALut+KP7oWW5zFFzaDLvLOqU/m7XQcgalKGdYFrgMqg14KXjl+0Zg8xye6+1v5uvo0HUEclpx1y56i36OgTy6Hl+K4FFNrd6SzfqSq2UWDzSEM9iw2R0SVCqro0X7Y5BHmNeq83l9ocCssCvvO78Ollp6uPkBjq8V+XRrwwJpkDDkjej9ykVXnYi7MrgcBLelQ5kpvXzAaaEYwMAap1FTsrGOpKFt6r3jTe9HHMuwty8E8nUHYJ8Bu4uCi8dDbAHJ679MYfmeN9P+hNsmkMxPB3bVDGyQwSj
- kLW5YZs1
- 0tb0nxKFxUmPHI9g43a7FPUIpWfy93pp7HelyI7EyJrvqyK2MPAlHzn4HQIAC2faJY2wlbK10hHtuySsVJ6ckCLpojmuXaYtAl6skOxCVWUx5X7aEOg3W7zPmuGlhyMrFMIcaHOdFz3GBvANhz5BvQBcu9RHNW6zuBEZRk8fresAakzdC9qzuVGL5f3R4dKqT4/iIF27A0YjiNfbgFLDkShdzjkudo2xAorI4GOowR+Elro2y24JBIz/3erSQyG5MsZxg2An5JwnxoJtqHrMwi4fk95E42I+P9HAHuBHKkOc3o4CfNdEUgV6OY2MGjXf89PpoQuyiCHEgiYmbh77YaGHZlKFP8mWeBJlxaUsyF4qTsJY=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783434499-799489
+X-HE-Meta: U2FsdGVkX1//W+XRs14z0PzTW15TUnn/ZRPOHA5vk3fZl+XUwWXWvC5YCKeFe10korL/ECqnv0s68CSH8yfiru+KLEMdLEymceTQgHpABP1gfhIsb/EwAOmYVN8ATD4ywCD+bSYDh2/LXHZZFFuGZrhQnm46jaa6qVd1P/WttvzxM0NlkUH7W0+6VUfvhqc1rAz7tRiu2obvEJmpjJHVXypwKWiJKarQgsEz+R/P3mAyQKblpIX4O8do11anQxbkLn6T+eolezGn0O7SEhaUOt47UCzQShd9JXYvL0Ml1I5MZU1MyjjQZalQUn6lhG8bYqCtA9A9TI6E5kty94mitXR0XRvKmRr1jHuk/BNH5B2lmZxlEpoREIgULBCQfYo33d2F/rwLYKW9jmwWhewRWqvcAWen4q3e+7ywiw6nOQQgv3/FpQpqhrcB93qhDsAVcRElboS857gIlEsbc28vvUm5mluUQLbDxM9fLMQ1BhTVwxYbUhQ1bNFqJ6WVtnousJWvXv/eDmTetEwJY7JXxhMG2eZR46y3Z4jMn+VNr0/m0CVEa7xQYhtBOIvO3v3SIlt0KoblwMFgD7nQGAF5wqgUUwYOC7Eu3fY4kgT/GoSNHKq0W3mgGBfEHVHq/1zqUtJ4K/1eaPxLyEVueCXZ3g/ZQqZgartj4ylKB9kuo9vGeDbydI5oSFsVuQH7IbI/UcPAuS9pB2QmLpUmazPcMqHGCkIS7fYtAVSFRDksAwMWTvJ6imPavJBEd+h0YR5vTQQaIqZ3OkSU37WkT8zgvgnGkKw8wQ9y+CRribml0O+TxLgmxf26PxaNwUBT0q44mtN9FlbNqKe4hxqdWnV/nBD2GufALcrVtTUrE3G47wpp2nDWoWw0h6/wD6OmWD08BmA66izc+JImajJcOYKjRGtd124NPxTUqqakSa/pus1FyyzdDvCj27wfO0sD0SUeOQskwQwebOlLQw5nBVY
+ Qye+C/MD
+ Cf6dkISRB4nDu7syqBnaHCv7vIKd9hi+KpnUWebmgizKNGgCuNNAV+TBsshPWGZ3+RmU+l9Pa+5kbpaGysL9sgxd6sf5H3/18wQPiOCJ4wA8ZojNLuIriog9YaNw4x18qtsQNw70w9A8908TpqCDxkTeSxRvszsnE2n/BudiYEPoIbx7bzd8CzZgJ43/6SaRL/GX8DSasvLmJ0QVTrydh1dw5T8AtKNKD6o1sRUVtccI7Meb5u/eT2IHkfGZ659FV5DrbJqbwQuBpHovvjBGiHJNSTcU2+tOoyl6KzgqOfqFdT7iwoB2+ElmiVZGoyFzewPkO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,108 +142,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/7/26 14:11, Dev Jain wrote:
-> Refactor anonymous swapbacked folio unmap to ttu_anon_swapbacked_folio().
+> Add ttu_anon_folio() as the common entry point for anonymous folio
+> unmapping. It dispatches to the lazyfree or swapbacked helper as
+> appropriate, and centralizes restoration of cleared PTEs on failure.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
 > ---
->  mm/rmap.c | 105 ++++++++++++++++++++++++++++++++----------------------
->  1 file changed, 62 insertions(+), 43 deletions(-)
+>  mm/rmap.c | 59 +++++++++++++++++++++++++++++++++----------------------
+>  1 file changed, 36 insertions(+), 23 deletions(-)
 > 
 > diff --git a/mm/rmap.c b/mm/rmap.c
-> index 00b571c2a1bab..ade78df5be2bd 100644
+> index ade78df5be2bd..f021ecd51a4a2 100644
 > --- a/mm/rmap.c
 > +++ b/mm/rmap.c
-> @@ -2113,6 +2113,64 @@ static inline bool ttu_anon_lazyfree_folio(struct vm_area_struct *vma,
+> @@ -2171,6 +2171,40 @@ static inline bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma, struct
 >  	return true;
 >  }
 >  
-
-BTW, no need for the "inline" for most of these functions (applies to other
-patches as well).
-
-> +static inline void set_swp_pte_at(struct mm_struct *mm, unsigned long address,
-> +		pte_t *ptep, swp_entry_t entry, pte_t pteval, bool anon_exclusive)
-
-It's confusing that we say "set_swp_pte_at", but the pte_t we was is actually
-the old pte.
-
-Can we instead have a function that creates us a swap_pte from the other data,
-and then do the set_pte_at() in the caller?
-
-static pte_t swp_pte_prepare(...)
-{
-	...
-	return swp_pte;
-}
-
-> +{
-> +	pte_t swp_pte = swp_entry_to_pte(entry);
-> +
-> +	if (anon_exclusive)
-> +		swp_pte = pte_swp_mkexclusive(swp_pte);
-> +
-> +	if (likely(pte_present(pteval))) {
-> +		if (pte_soft_dirty(pteval))
-> +			swp_pte = pte_swp_mksoft_dirty(swp_pte);
-> +		if (pte_uffd_wp(pteval))
-> +			swp_pte = pte_swp_mkuffd_wp(swp_pte);
-> +	} else {
-> +		/* Device-exclusive entry */
-> +		if (pte_swp_soft_dirty(pteval))
-> +			swp_pte = pte_swp_mksoft_dirty(swp_pte);
-> +		if (pte_swp_uffd_wp(pteval))
-> +			swp_pte = pte_swp_mkuffd_wp(swp_pte);
-> +	}
-> +
-> +	set_pte_at(mm, address, ptep, swp_pte);
-> +}
-> +
-> +static inline bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma, struct folio *folio,
+> +static inline bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
 > +		struct page *subpage, unsigned long address, pte_t *ptep,
-
-Subpages do not exist :)
-
-> +		pte_t pteval)
+> +		pte_t pteval, unsigned long nr_pages)
 > +{
-> +	bool anon_exclusive = folio_test_anon(folio) && PageAnonExclusive(subpage);
-
-const?
-
-> +	swp_entry_t entry = page_swap_entry(subpage);
 > +	struct mm_struct *mm = vma->vm_mm;
-> +
-> +	if (folio_dup_swap(folio, subpage) < 0)
-> +		return false;
+> +	bool ret;
 > +
 > +	/*
-> +	 * arch_unmap_one() is expected to be a NOP on
-> +	 * architectures where we could have PFN swap PTEs,
-> +	 * so we'll not check/care.
+> +	 * Store the swap location in the pte.
+> +	 * See handle_pte_fault() ...
 > +	 */
-> +	if (arch_unmap_one(mm, vma, address, pteval) < 0) {
-> +		folio_put_swap(folio, subpage);
+> +	if (unlikely(folio_test_swapbacked(folio) !=
+> +			folio_test_swapcache(folio))) {
+> +		WARN_ON_ONCE(1);
 > +		return false;
 > +	}
 > +
-> +	/* See folio_try_share_anon_rmap(): clear PTE first. */
-> +	if (anon_exclusive && folio_try_share_anon_rmap_pte(folio, subpage)) {
-> +		folio_put_swap(folio, subpage);
+> +	/* MADV_FREE page check */
+> +	if (!folio_test_swapbacked(folio)) {
+> +		ret = ttu_anon_lazyfree_folio(vma, folio);
+> +		if (ret)
+> +			add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
 
-I recall I stumbled over this before, but there is no way to undo the
-arch_unmap_one(), right?
+Can't the be handled in there as well?
 
-> +		return false;
+> +	} else {
+> +		/* nr_pages > 1 not supported yet */
+> +		ret = ttu_anon_swapbacked_folio(vma, folio, subpage, address,
+> +						ptep, pteval);
 > +	}
 > +
-> +	mm_prepare_for_swap_entries(mm);
-> +	dec_mm_counter(mm, MM_ANONPAGES);
-> +	inc_mm_counter(mm, MM_SWAPENTS);
-> +	set_swp_pte_at(mm, address, ptep, entry, pteval, anon_exclusive);
-> +	return true;
+> +	if (!ret)
+> +		set_ptes(mm, address, ptep, pteval, nr_pages);
+
+It might be cleaner to do that in the caller, where we actually removed the ptes
+in the first place?
+
+> +
+> +	return ret;
 > +}
 > +
+>  /*
+>   * @arg: enum ttu_flags will be passed to this argument
+>   */
+> @@ -2351,31 +2385,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>  			 */
+>  			dec_mm_counter(mm, mm_counter(folio));
+>  		} else if (folio_test_anon(folio)) {
+> -			/*
+> -			 * Store the swap location in the pte.
+> -			 * See handle_pte_fault() ...
+> -			 */
+> -			if (unlikely(folio_test_swapbacked(folio) !=
+> -					folio_test_swapcache(folio))) {
+> -				WARN_ON_ONCE(1);
+> +			if (!ttu_anon_folio(vma, folio, subpage, address,
+> +					    pvmw.pte, pteval, nr_pages))
+>  				goto walk_abort;
+> -			}
+>  
+> -			/* MADV_FREE page check */
+> -			if (!folio_test_swapbacked(folio)) {
+> -				if (!ttu_anon_lazyfree_folio(vma, folio)) {
+> -					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+> -					goto walk_abort;
+> -				}
+> -				add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+> -				goto finish_unmap;
+> -			}
+> -
+> -			if (!ttu_anon_swapbacked_folio(vma, folio, subpage, address,
+> -						pvmw.pte, pteval)) {
+> -				set_pte_at(mm, address, pvmw.pte, pteval);
+> -				goto walk_abort;
+> -			}
+>  			goto finish_unmap;
+>  		} else {
+>  			/*
+
+Very nice.
 
 -- 
 Cheers,
