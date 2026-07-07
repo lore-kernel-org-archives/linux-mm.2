@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E80CC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:42:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF13BC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 06:42:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271936B00C9; Tue,  7 Jul 2026 02:42:43 -0400 (EDT)
+	id DBC816B00CB; Tue,  7 Jul 2026 02:42:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D3B66B00CB; Tue,  7 Jul 2026 02:42:43 -0400 (EDT)
+	id D6E9F6B00CD; Tue,  7 Jul 2026 02:42:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 074016B00CC; Tue,  7 Jul 2026 02:42:42 -0400 (EDT)
+	id C0CFB6B00CE; Tue,  7 Jul 2026 02:42:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF0726B00CB
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:42:42 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 8B1A56B00CB
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:42:45 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 32AA61A02ED
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:42 +0000 (UTC)
-X-FDA: 84961037364.02.F19E290
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 04C641A0328
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:44 +0000 (UTC)
+X-FDA: 84961037490.02.C945EA9
 Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 75EF040006
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eSRMPxdA;
-	spf=pass (imf11.hostedemail.com: domain of 3359MagsKCKocYebKfZKXNKQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--souravpanda.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3359MagsKCKocYebKfZKXNKQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--souravpanda.bounces.google.com;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4454520005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:42:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Z76tJDtR;
+	spf=pass (imf03.hostedemail.com: domain of 34Z9MagsKCKweagdMhbMZPMSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--souravpanda.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=34Z9MagsKCKweagdMhbMZPMSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--souravpanda.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783406560;
+	s=arc-20220608; t=1783406563;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iyFxv+a9AoNecfBItBeqHuAUs1hY8V/dePzFhTlOMv8=;
-	b=2xbheybFQZ2n2m6gwB6q+Z2eFPy3FG7o12WlRDrpPUbCX9obLsNzM253O+dcy2h9TPXLSx
-	iMqmM0uNaYG+M5AqSNFKuLC+3FQ4M+CBl1sbDlcCzxvqf24K00UL2hyhlOgq4rXNYy0Fd4
-	tEAAjWgGZh9jlJbQPf/uH8682qRC0/A=
+	bh=zbIFtySlJ/B4vAMWak3mVgchLPUkdC1Nvsmy15z5aNM=;
+	b=m7vDbxLYYGNZ0lIF8udJc1BaprZWaTWqo5qvWuLkYw3fIe68VqnBaWlmBRWNBFszTWGUyo
+	KR8hROEu7DRnHXt40vZmO3nzXfsll2QkLlIK3a6gl0JLEdacRjQ8MKe4xfPv/eCVSMA1iw
+	ZpGOqtAoWWsCTk6UUGKu4MpELyMSsig=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eSRMPxdA;
-	spf=pass (imf11.hostedemail.com: domain of 3359MagsKCKocYebKfZKXNKQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--souravpanda.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3359MagsKCKocYebKfZKXNKQYYQVO.MYWVSXeh-WWUfKMU.YbQ@flex--souravpanda.bounces.google.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Z76tJDtR;
+	spf=pass (imf03.hostedemail.com: domain of 34Z9MagsKCKweagdMhbMZPMSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--souravpanda.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=34Z9MagsKCKweagdMhbMZPMSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--souravpanda.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783406560;
-	b=Ek6dFGKVgVLa6Nd0Yzxk3WKR8QTDyzBA9s2BJvSborO5vj/sg7R11bpJvrZWKmMAZV6YPM
-	e5zbvi9hXy283SNY5N7ZC2Yb3PKNTLTct8RWbhH79uHPjZjsJo6ovxQ6S5kIvd6AbzTl6a
-	jF2h4/NecqXZ64IVz1GjBbeUp9JvY8I=
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8423f1fe39eso7821148b3a.1
-        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 23:42:40 -0700 (PDT)
+	t=1783406563;
+	b=KGftp5Urgc17EpI/JmJ9SudmeMJoVx4aI4u6bb+2Y6InaCc6IdKJGDILUvP48BlwhDJfAr
+	hFVuro07IG0PYz9RmdReuAMxxDW0c/3wT6iIM5r1uMOTaoaF53e0uujNHrg41BFHDHr1v8
+	uKSK10WmzP9Qtv5kbeIAuViBkxXHM9Q=
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-845bc2e658aso3514144b3a.3
+        for <linux-mm@kvack.org>; Mon, 06 Jul 2026 23:42:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783406559; x=1784011359; darn=kvack.org;
+        d=google.com; s=20251104; t=1783406562; x=1784011362; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=iyFxv+a9AoNecfBItBeqHuAUs1hY8V/dePzFhTlOMv8=;
-        b=eSRMPxdAFL+bcaTVmcHrlBD/q2lS1ZO7sRp6a5L+YnBnX1kqT3pku15H+MIetWC0Ik
-         FWORdvAy+hDUhEbVPHSqcaTMaXh7/C0Mrjl7YHJrR53WRFRrxj2L2o33TCC67EMzLgYF
-         lzIOtrFf/ekJP1D+ZNhO2W/7uymr5cS4OAyUCmVkh0dcEll075bIyALexP+PIU99Jzfb
-         9SFD6ncpMOixqPBim9irb0bn0ZDD+GPmA6UryQYLK+ULXZ38pG4s9ovOxRxdoB3N25C/
-         /OBiRsuMh3R9SvAkQN9twFrDvZBeougtUto2ccDlU54C3Byp9GIdrSJ2RWeFEOLSIGrs
-         HaAA==
+        bh=zbIFtySlJ/B4vAMWak3mVgchLPUkdC1Nvsmy15z5aNM=;
+        b=Z76tJDtRM9wSQD2rl9CrCuWP3pye3wzugnVaCJ5smeCwevXe6ShT7f6RCq3gQQ8/Pv
+         wkUS0qFemkVo+/TCyl2kJqphdmdBeUBLVFxfZoIfS4iCiCyZAsquzl1Ty2YU84kmcdgx
+         9cEFfJ74WBNNjS+VaO7W1xnX35sAp19NvRWEdpIJ4hjO/HKNPjop5AJn9ApLp1VK9Aco
+         sd8zBsEmtAu13O2ozz+dQtmwsyqjxyMwZDbahpyOctWX7k9vEmsKZTGnUrOucCvECuMs
+         n4uSj4xFW0PUcsHCr+KU1crRUQmd4XRSsU3jrc+7qNwKF0ngwJSNuAHnr/ru6KtH4Kpd
+         AJ7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783406559; x=1784011359;
+        d=1e100.net; s=20251104; t=1783406562; x=1784011362;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=iyFxv+a9AoNecfBItBeqHuAUs1hY8V/dePzFhTlOMv8=;
-        b=HO3dwDhnESGD6GC9ivbGW5Qh0asBrwaDR4cYwvTl9XX9C1RfdNDPKWmI0ntnAl56U7
-         xhCJgxTdpiPClUQRsroKehrrT3hLaNVh963dGwXPgn1JLNBOtk7apUbSLfxdNcehyhNS
-         Bci5yWSoYQzfedls1kXLvuai9wsC+ER8e+XyaPBSm8GjwBXiBKDM8AF+V+uw6ZT38DEQ
-         w1TRqItrlX/gaBAYZXASdz5a886q2BVOVQwYHVO2GxhSIf9Ds6ILAIF8BjyTjxNHy/3p
-         b8kvXY1yCtYeJqgYKyUQ3+ulmEILXe8rgmd+tlds5Wyt1CM9PUr8TAYR6298Za8b2Szt
-         A/Tw==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/yNP8zNc167jVtwoxSrjT5wGMA4HjINyCEAmP/tSmkxENWSJJp7csqyZmw3ddavV65pXlEXyWvw==@kvack.org
-X-Gm-Message-State: AOJu0YyrdddlC+1mSd1QxpypY053joFiZwcBUuSbPQ5SRn99tBYo0tUv
-	rpOx8N8EJG8JRdU5bgbLZ9Rm09LrWCtX3n+yrrSqPAJL+68ITK4aTB6JbBwQzXPL3aIypbgn5RJ
-	+hefLFwYoIgq1DN9Fm7WBSHBBYA==
-X-Received: from pfop8.prod.google.com ([2002:a05:6a00:b48:b0:845:3a81:a435])
+        bh=zbIFtySlJ/B4vAMWak3mVgchLPUkdC1Nvsmy15z5aNM=;
+        b=Oc5lEOPnjQphic2IDrotOaY87vo22V0fytAUMA/aDPPg4k9gWDOB6RX7J+zJ+UJDeg
+         m7eE8xBh4NkO9aXulIN+8SlS4yFjn2G3Ujr9Eh8lDXFcvozjblrXE9PoUiEcBrsw7N29
+         1S0SR/ePmDy39c+RYd/KW4e6Iu+XV/Ofxdd73G3F4bn5xfVs3kDha79hoSZOXSpUAupe
+         nDF+IZVlxJQ3CPrMKVD5aomdWrGpU9vUhA++MtwsCSklJ6+hX4g9MwDSzBoOjdL8dyCN
+         Nyxuj+tvsoHjnwbkBRlbhYDe9ZUCb854buQlPSESgPn3PKNYisjXe0yHrs13B6LVmHnu
+         /eEg==
+X-Forwarded-Encrypted: i=1; AHgh+RrE3/ELdA/MHjBi5TdTesq0Jx+S7V0SsT1QeNHB5VqqkEHyFA0XmBPj5ub36axVxKOJcy2Rwio8ng==@kvack.org
+X-Gm-Message-State: AOJu0YxIpHG2hnSfinmzq0qeDKTmn8pJ3YG48N9rh1kz6aluikxEAFsa
+	wfNCwt7Omf5MIx0MZZsZsSkvs1KYWXFQVUqxzahcZNfu1ZKMugmGD8KoWO4wlq1YfjfNG6Dp/BW
+	0ZkGqBnvHT9/Dof0aI7V1LD07Bw==
+X-Received: from pfbbx25.prod.google.com ([2002:a05:6a00:4299:b0:847:82b3:aca])
  (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:1488:b0:847:9745:2f91 with SMTP id d2e1a72fcca58-84826db0eefmr3988189b3a.28.1783406559141;
- Mon, 06 Jul 2026 23:42:39 -0700 (PDT)
-Date: Tue,  7 Jul 2026 06:42:32 +0000
+ 2002:a05:6a00:94a4:b0:848:2e3c:9955 with SMTP id d2e1a72fcca58-8482e3c9a98mr1470448b3a.4.1783406561929;
+ Mon, 06 Jul 2026 23:42:41 -0700 (PDT)
+Date: Tue,  7 Jul 2026 06:42:33 +0000
 In-Reply-To: <20260707064235.1386552-1-souravpanda@google.com>
 Mime-Version: 1.0
 References: <20260707064235.1386552-1-souravpanda@google.com>
 X-Mailer: git-send-email 2.55.0.rc2.803.g1fd1e6609c-goog
-Message-ID: <20260707064235.1386552-4-souravpanda@google.com>
-Subject: [PATCH 3/6] mm/hugetlb: add sysfs interfaces for cache
+Message-ID: <20260707064235.1386552-5-souravpanda@google.com>
+Subject: [PATCH 4/6] mm/hugetlb: add memory shrinker for cache
 From: Sourav Panda <souravpanda@google.com>
 To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
 Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
@@ -100,13 +100,13 @@ Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
 	linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 75EF040006
-X-Stat-Signature: khf6j1by53ppchid8jn38xfxqk4psh7k
-X-HE-Tag: 1783406560-371146
-X-HE-Meta: U2FsdGVkX197/zBbLAEmadxsdODTT+n4/IvjVvJvZ3qaGizZmdvNTqS68psKsVW99h8V49APCI7bTCp3Ot65rvRXCl/u265JuM/Ad0JHr1XdKF4qEyfuCgb5sQAgQex2aRBEPEA9F9LRsaRHNoCUzTogn2j/qxHG+EaOJ62FSihZpkxmbcn/3wnFZEr+lsQq1boNMML2tznUsfmfyer0Texxj3aFZYx4Y9p1IUxcikTZKugAa/fVWoMkSq8BO8UheYEI13H+vyTxs80sLXmdnqcZP6FBfWWeJ3tl3hSzwsg2mV6DlomDLe3dYLjVnu+r9HADEOC6RNsPaBIZqZ4wpOSj9ViQCuYdukQPpk6TkBsTgStxNnxAbCkJh/ASwyv4yn9Ns3uJh+SE9AFKXXYkUTFpYGtob+C+8ckqsNdhCFhnvOETu+f5fJUlaO7vhcy4znC0j9MzvR3RGUM0YJ8dKLS2VJ5D4TZJV3i8U6XQAq3nm1a0pX774+KyzVZ0ZocvFdLfLjSYvKSsLzYWTSxwqwlgMCXamqt3Zury8Vf2zNSB3ElITtVHyO9/YCvmLBFV85Rptx5SO6DxJeORenEKMFDITtQYDRPr/UWVk7IQ8oMyr0J/cE8VfVGTtAHu4owAtOBIdGBdyt4wpj41ozXZEYBdhQmqYu1o2389wVkgCWsW0wSEzef4CXPO6B105w+wuHvyWP+7memzpaPZ6Q4Y7n4qDhS5jPX01ljctarUz3IHKr2YagkEQuWUyg3jaSyruE79jFL9TO/mSoZqehLL2tARaH17odm+9Qrw28KhxRJyYqcBjbZFpYsbWUoL86mWEQ8LVig1lTntPq9vx0vbQeQ8PiZw7pYVwFMr3C8NRySQEQDvdd9k7ESImkMjuhtXVqcfer9W9Q+n+Pn6TaLjvIN/Ht3EsFJidVo8dQVW5+qIqHM0gisHpdkydeQreK8tit/bOe+07tXVOypEtZi
- B9YAcsHN
- 3IIILHEEAZz5LhYTSJpXi1dfTyA6QE1GYp/55zlXIqR2UiXCcSvAaMDIiquOHNJ64MbHYDS/TnPJYmPceMQ1Plc0Zozr/zdql6YB1wmQF9499oNrUga1VQpWFipvj9aFyGD4BinHCWHp8uKf9QGA9SUl/oAEHe0uxhu/27zgBYAjQDVSESahxGtNsipwJt0VcI1MdgOB+Gi6QjFrO8mIGBh1S8WTUFINUkVHXlrG4rP3bj6tLdKIHI8a22nNaonItmRHesz1gUQqxXIf0J22zVvGVKLWumYxo2GjdfMPvuJ2JzPUoO90NKOCrGZt3+TbNzXAvAlLA52CF+00uvn4ff0nccaN+/JkvB7JysBXwDQOD9e63dRNdN49rp+Q+4elqbYF6CJ59CRtu/KO8fPHnfIBK30yxSWo2jEvvLhesSV0OAmybN+jiKn/kPOey/Sg40Op3XyJ1tzN/9J/kTRSmN2P25Aq6o6Q1Vvh63hj2HBfq36wYx/jdoq5AhLeJgD/E0No7ff2iqHATeL7uRWbkbDbxPXCKro55CE7WJsBjwZrL/O7bIlXlmz2x+m7M0pgQEeidhUoHz9c5wSFtpU6zsPldoGbe7yRGXFv1osr6lUP9BvzbEne4uaonJA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4454520005
+X-Stat-Signature: e3u6oz4sf48cn6h88p4nttzj3jyed4s9
+X-HE-Tag: 1783406563-567484
+X-HE-Meta: U2FsdGVkX18iyIQJKeacjBFH6f7YdRmHAaHNY/sROA6smCFUj/cBlBLN9HXcnHFIVK82YcjsM+pWf0/9Nsvv/e+OllOcmKVScR99waRD4aTVD/W3TdrbrrcYkkEfImO08aemJA9F/pkRGD6ugkTXGgied2NxFD7VESW5epZ0oz5xkXRQkqcbgVrWYZAhMK4i/8kmSGhYqOgn9rqy/aDbD9U5mTV38YSkzste8mUZIzYA1p1bxr1cDlZF5kf8uVlF/YW2StjFH2Dlu5DI3XrcYfHmGahbqUxKYqvR433Kfb4RAAnxz8VOD/VtzKmxRXy5318Awl/a6TTRp2OHUr/ZMQYtW6W/qDRtLbQpHOu2wcB6gJ4Zyt83ckyK1cdjPfglNUGNgUY0m04HuWxavoPbdXrY/CJAcPND+dmqpLjc3fgUl44PE3McL9hQ/r2W2nv9CYipbcEuJGITErF31reALPacO9g/+7oOjOsLo4nVwhjhwBZ9n5IkkNywkVzMTEmEIcDdLwXfJqdK2CNewfoi7EweeJ95mjryp/zdQVW0tvBbeYMk2r+dkBp/ecgGg2U9VAcCmJCsRYr+v7xWalag0HpB6Sx0tgdY7bEN6xAnXpffXng5WlGu4k1UjEAGDFlfiYu69rpbUJhi566bLFO/8vhm8nZqzbTngLfG2FukqLIfchuDyT/4vvHfccdj7mnxEj6+NKJAzG32hMmCDXiq1TZcksB0na9WNnr7C8azdiiCePt88zmV+8fZ1qd+FzjPVr7tmpTdjKpD6HJcBmEwjBUCDsjIG5FpyKlr9MMCyoMaa5mis82jyrkDv3E29u5kvWSVUBQw+pmV6jC/AfkXzEDW84gCHH7EXoTF80+QCacIkTNqxm1ayJMaQl23u5oNulzSjTHhvqHn1sa6s6sygcy3BlH/sU47Y/g6Q+wVEHDl/w2YlVMdrQoSvq0UG+BKqSwiXnQ2+LWCy8E0rl9
+ DaUlY50A
+ yQDJAg9gP4irSmzFmZRvT2rt+x+f026ACpZKZhAj+V7srpdgZZ0L0sIrE6HiqymJm0rYHeygUfXRg+2zquvppABY/f7bCrGCRg7azhnEIVUwsIMmaxcvK+6T09NKLvAvkgBHxAYkFHrUQj1Mvy93kSa7kmfRXXEpmyPDTV8s2PfCsDBcW0FYn+WnwKCZDnhQ+HXm5gf3uzLmvEh7C29XWEyG1GqCsYpFZRdIyRFZQpmODMHmeAwyBdhEM/QvV0quhDTl3M0sH5eP/5Kt7nxyhW069gWmw7MFJLbBp1EfHhSl/KebLoxj8ERaexZMeqayw3at70pxLvo4IzLqljOZkNWLwjavKxdHxN0mtWQdD5mtxZaG8nCnSEywbktEq2frb3/DzbU5KUI/mfajCV+D/eUxSewS0aoO/h6TgyVHjV14ZyGQKfRVyILb8kQiqKTUhr1jnmztrB2yp6MzwapVqOi2slJblAIKpzhyU4ps4g14NNa64S6O3srH55oACGXW2kCOagO/Ph80bR+DR+VzalXYGDH3njz8MKs0YzGyztm+OXm1iFOnoYRZ+de21vROtosbAES2en6X3M+LDDC5D50NbUMDvPzXXRrog2h8+IKNEQ8Aodau70idFtQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,487 +114,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce sysfs interfaces to control and monitor the HugeTLB dynamic
-cache.
+Register a memory shrinker for the HugeTLB dynamic cache to
+reclaim cached pages under memory pressure.
 
-Expose the following attributes under:
-/sys/kernel/mm/hugepages/hugepages-<size>/
-- max_cached_huge_pages: Max limit of cached hugepages (global).
-- nr_cached_hugepages: Current number of cached hugepages. Writing to
-  this file allows manual expansion or contraction of the cache.
-  These interfaces support writing delta values (e.g. "+1" or "-1")
-  in addition to absolute values, allowing orchestrators (e.g. borglet)
-  to dynamically scale the cache without racing against the kernel
-  shrinker.
+Implement hugetlb_shrinker_count to report the number of cached pages
+(currently limited to gigantic pages in the shrinker) and
+hugetlb_shrinker_scan to free them back to the buddy allocator.
 
-Also expose node-specific versions under node sysfs if CONFIG_NUMA.
-
-Implement adjust_cached_huge_pages to handle the actual expansion
-(allocating fresh hugepages to cache) and contraction
-(freeing cached hugepages to buddy).
-
-For expansion and contraction correctness:
-- Global expansion interleaves allocations across allowed nodes.
-- Node-specific expansion enforces the global cache limit ceiling and
-  overcommit limits, uses __GFP_THISNODE to prevent fallback, and accounts
-  to the actual allocated node using folio_nid().
-- Contraction uses LRU (Least Recently Used) policy (taking from the
-  head of the cache list) to discard cold pages first.
+The shrinker scan uses LRU policy to reclaim the coldest pages first.
 
 Signed-off-by: Sourav Panda <souravpanda@google.com>
 ---
- mm/hugetlb.c          | 230 ++++++++++++++++++++++++++++++++++++++++++
- mm/hugetlb_internal.h |   9 ++
- mm/hugetlb_sysfs.c    | 158 +++++++++++++++++++++++++++++
- 3 files changed, 397 insertions(+)
+ mm/hugetlb.c | 77 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index d00aa67b8e13..f18a3123cbcb 100644
+index f18a3123cbcb..1bc0198a695c 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -4171,6 +4171,236 @@ long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
- 	return -EBUSY;
- }
+@@ -4399,6 +4399,68 @@ ssize_t __max_cached_huge_pages_store_common(bool obey_mempolicy,
  
-+#ifdef CONFIG_HUGETLB_CACHE
-+static int adjust_cached_huge_pages(struct hstate *h, long count, bool is_delta, int nid,
-+				    nodemask_t *nodes_allowed, bool update_limit)
+ 	return err ? err : len;
+ }
++
++static unsigned long hugetlb_shrinker_count(struct shrinker *shrink,
++					    struct shrink_control *sc)
 +{
-+	struct folio *folio;
-+	int err = 0;
++	struct hstate *h;
++	unsigned long count = 0;
++	int nid = sc->nid;
 +
-+	mutex_lock(&h->resize_lock);
-+
-+	if (is_delta) {
-+		long current_val;
-+
-+		if (nid == NUMA_NO_NODE)
-+			current_val = update_limit ? h->max_cached_huge_pages :
-+						     h->nr_cached_hugepages;
-+		else
-+			current_val = update_limit ? h->max_cached_huge_pages_node[nid] :
-+						     h->nr_cached_hugepages_node[nid];
-+
-+		current_val += count;
-+		if (current_val < 0)
-+			current_val = 0;
-+		count = current_val;
++	for_each_hstate(h) {
++		count += h->nr_cached_hugepages_node[nid];
 +	}
++	return count;
++}
 +
-+	if (nid == NUMA_NO_NODE) {
-+		int temp_next_node = first_node(*nodes_allowed);
++static unsigned long hugetlb_shrinker_scan(struct shrinker *shrink,
++					   struct shrink_control *sc)
++{
++	struct hstate *h;
++	int nid = sc->nid;
++	unsigned long freed = 0;
++	unsigned long to_scan = sc->nr_to_scan;
 +
-+		if (update_limit) {
-+			h->max_cached_huge_pages = count;
-+		} else if (count > h->max_cached_huge_pages) {
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		/* Expansion */
-+		while (!update_limit) {
-+			unsigned long curr;
-+
-+			spin_lock_irq(&hugetlb_lock);
-+			curr = h->nr_cached_hugepages;
-+			spin_unlock_irq(&hugetlb_lock);
-+
-+			if (curr >= count)
-+				break;
-+
-+			folio = alloc_pool_huge_folio(h, nodes_allowed,
-+						      NULL, &temp_next_node);
-+			if (!folio) {
-+				err = -ENOMEM;
-+				break;
-+			}
-+
-+			spin_lock_irq(&hugetlb_lock);
-+			if (h->nr_cached_hugepages >= count) {
-+				spin_unlock_irq(&hugetlb_lock);
-+				update_and_free_hugetlb_folio(h, folio, false);
-+				break;
-+			}
-+
-+			account_new_hugetlb_folio(h, folio);
-+
-+			hugetlb_cache_add(h, folio, false);
-+			spin_unlock_irq(&hugetlb_lock);
-+			cond_resched();
-+		}
-+
-+		/* Contraction */
-+		while (1) {
-+			unsigned long curr;
++	for_each_hstate(h) {
++		while (freed < to_scan) {
 +			struct folio *folio = NULL;
++			bool atomic = true;
++
++			/*
++			 * Only do synchronous vmemmap restoration if the caller
++			 * context allows blocking and FS reclaim (GFP_KERNEL compatible).
++			 * Otherwise, defer to workqueue to avoid lock inversion.
++			 */
++			if (gfpflags_allow_blocking(sc->gfp_mask) &&
++			    (sc->gfp_mask & __GFP_FS))
++				atomic = false;
 +
 +			spin_lock_irq(&hugetlb_lock);
-+			curr = h->nr_cached_hugepages;
-+			if (curr <= count) {
++			if (list_empty(&h->hugepage_cache_lists[nid])) {
 +				spin_unlock_irq(&hugetlb_lock);
 +				break;
 +			}
 +
-+			int node;
-+
-+			for_each_node_mask(node, *nodes_allowed) {
-+				if (!list_empty(&h->hugepage_cache_lists[node])) {
-+					folio = list_first_entry(&h->hugepage_cache_lists[node],
-+								 struct folio, lru);
-+					break;
-+				}
-+			}
-+
-+			if (!folio) {
-+				spin_unlock_irq(&hugetlb_lock);
-+				break;
-+			}
++			folio = list_first_entry(&h->hugepage_cache_lists[nid],
++						 struct folio, lru);
 +
 +			remove_hugetlb_folio(h, folio, false);
 +			spin_unlock_irq(&hugetlb_lock);
 +
-+			update_and_free_hugetlb_folio(h, folio, false);
-+			cond_resched();
++			update_and_free_hugetlb_folio(h, folio, atomic);
++
++			freed++;
++			if (current->reclaim_state)
++				current->reclaim_state->reclaimed += pages_per_huge_page(h);
 +		}
-+	} else {
-+		if (update_limit) {
-+			h->max_cached_huge_pages_node[nid] = count;
-+		} else if (count > h->max_cached_huge_pages_node[nid]) {
-+			err = -EINVAL;
-+			goto out;
-+		}
-+
-+		/* Node expansion */
-+		while (!update_limit) {
-+			unsigned long curr;
-+			gfp_t gfp_mask = htlb_alloc_mask(h) | __GFP_THISNODE;
-+
-+			spin_lock_irq(&hugetlb_lock);
-+			curr = h->nr_cached_hugepages_node[nid];
-+			if (h->nr_cached_hugepages >= h->max_cached_huge_pages) {
-+				spin_unlock_irq(&hugetlb_lock);
-+				err = -ENOSPC;
-+				break;
-+			}
-+			spin_unlock_irq(&hugetlb_lock);
-+
-+			if (curr >= count)
-+				break;
-+
-+			folio = alloc_fresh_hugetlb_folio(h, gfp_mask,
-+							  nid, nodes_allowed);
-+			if (!folio) {
-+				err = -ENOMEM;
-+				break;
-+			}
-+
-+			spin_lock_irq(&hugetlb_lock);
-+			if (h->nr_cached_hugepages_node[nid] >= count) {
-+				spin_unlock_irq(&hugetlb_lock);
-+				update_and_free_hugetlb_folio(h, folio, false);
-+				break;
-+			}
-+
-+			account_new_hugetlb_folio(h, folio);
-+
-+			hugetlb_cache_add(h, folio, false);
-+			spin_unlock_irq(&hugetlb_lock);
-+			cond_resched();
-+		}
-+
-+		/* Node contraction */
-+		while (1) {
-+			unsigned long curr;
-+			struct folio *folio = NULL;
-+
-+			spin_lock_irq(&hugetlb_lock);
-+			curr = h->nr_cached_hugepages_node[nid];
-+			if (curr <= count) {
-+				spin_unlock_irq(&hugetlb_lock);
-+				break;
-+			}
-+
-+			if (!list_empty(&h->hugepage_cache_lists[nid]))
-+				folio = list_first_entry(&h->hugepage_cache_lists[nid],
-+							 struct folio, lru);
-+
-+			if (!folio) {
-+				spin_unlock_irq(&hugetlb_lock);
-+				break;
-+			}
-+
-+			remove_hugetlb_folio(h, folio, false);
-+			spin_unlock_irq(&hugetlb_lock);
-+
-+			update_and_free_hugetlb_folio(h, folio, false);
-+			cond_resched();
-+		}
++		if (freed >= to_scan)
++			break;
 +	}
 +
-+out:
-+	mutex_unlock(&h->resize_lock);
-+	return err;
++	return freed;
 +}
 +
-+ssize_t __nr_cached_hugepages_store_common(bool obey_mempolicy,
-+					   struct hstate *h, int nid,
-+					   long count, bool is_delta, size_t len)
-+{
-+	int err;
-+	nodemask_t nodes_allowed, *n_mask;
-+
-+	if (hstate_is_gigantic_no_runtime(h))
-+		return -EINVAL;
-+
-+	if (nid == NUMA_NO_NODE) {
-+		if (!(obey_mempolicy &&
-+		      init_nodemask_of_mempolicy(&nodes_allowed)))
-+			n_mask = &node_states[N_MEMORY];
-+		else
-+			n_mask = &nodes_allowed;
-+	} else {
-+		init_nodemask_of_node(&nodes_allowed, nid);
-+		n_mask = &nodes_allowed;
-+	}
-+
-+	err = adjust_cached_huge_pages(h, count, is_delta, nid, n_mask, false);
-+
-+	return err ? err : len;
-+}
-+
-+ssize_t __max_cached_huge_pages_store_common(bool obey_mempolicy,
-+					     struct hstate *h, int nid,
-+					     long count, bool is_delta, size_t len)
-+{
-+	int err;
-+	nodemask_t nodes_allowed, *n_mask;
-+
-+	if (hstate_is_gigantic_no_runtime(h))
-+		return -EINVAL;
-+
-+	if (nid == NUMA_NO_NODE) {
-+		if (!(obey_mempolicy &&
-+		      init_nodemask_of_mempolicy(&nodes_allowed)))
-+			n_mask = &node_states[N_MEMORY];
-+		else
-+			n_mask = &nodes_allowed;
-+	} else {
-+		init_nodemask_of_node(&nodes_allowed, nid);
-+		n_mask = &nodes_allowed;
-+	}
-+
-+	err = adjust_cached_huge_pages(h, count, is_delta, nid, n_mask, true);
-+
-+	return err ? err : len;
-+}
-+#endif /* CONFIG_HUGETLB_CACHE */
-+
++static struct shrinker *hugetlb_cached_pages_shrinker;
+ #endif /* CONFIG_HUGETLB_CACHE */
+ 
  ssize_t __nr_hugepages_store_common(bool obey_mempolicy,
- 					   struct hstate *h, int nid,
- 					   unsigned long count, size_t len)
-diff --git a/mm/hugetlb_internal.h b/mm/hugetlb_internal.h
-index 1d2f870deccf..16ed9ac9dc05 100644
---- a/mm/hugetlb_internal.h
-+++ b/mm/hugetlb_internal.h
-@@ -114,4 +114,13 @@ extern void hugetlb_sysctl_init(void);
- static inline void hugetlb_sysctl_init(void) { }
- #endif
+@@ -4502,6 +4564,21 @@ static int __init hugetlb_init(void)
  
+ 	for (i = 0; i < num_fault_mutexes; i++)
+ 		mutex_init(&hugetlb_fault_mutex_table[i]);
++
 +#ifdef CONFIG_HUGETLB_CACHE
-+ssize_t __nr_cached_hugepages_store_common(bool obey_mempolicy,
-+					   struct hstate *h, int nid,
-+					   long count, bool is_delta, size_t len);
-+ssize_t __max_cached_huge_pages_store_common(bool obey_mempolicy,
-+					     struct hstate *h, int nid,
-+					     long count, bool is_delta, size_t len);
++	hugetlb_cached_pages_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
++						       SHRINKER_NONSLAB,
++						       "hugetlb-cached-pages");
++	if (!hugetlb_cached_pages_shrinker) {
++		pr_warn("HugeTLB: Failed to allocate shrinker\n");
++	} else {
++		hugetlb_cached_pages_shrinker->count_objects = hugetlb_shrinker_count;
++		hugetlb_cached_pages_shrinker->scan_objects = hugetlb_shrinker_scan;
++		hugetlb_cached_pages_shrinker->batch = 1;
++		shrinker_register(hugetlb_cached_pages_shrinker);
++	}
 +#endif
 +
- #endif /* _LINUX_HUGETLB_INTERNAL_H */
-diff --git a/mm/hugetlb_sysfs.c b/mm/hugetlb_sysfs.c
-index 79ece91406bf..682a3805e6ff 100644
---- a/mm/hugetlb_sysfs.c
-+++ b/mm/hugetlb_sysfs.c
-@@ -277,6 +277,152 @@ static ssize_t demote_size_store(struct kobject *kobj,
+ 	return 0;
  }
- HSTATE_ATTR(demote_size);
- 
-+#ifdef CONFIG_HUGETLB_CACHE
-+static ssize_t nr_cached_hugepages_show_common(struct kobject *kobj,
-+					       struct kobj_attribute *attr, char *buf)
-+{
-+	struct hstate *h;
-+	unsigned long nr_cached;
-+	int nid;
-+
-+	h = kobj_to_hstate(kobj, &nid);
-+	if (nid == NUMA_NO_NODE)
-+		nr_cached = h->nr_cached_hugepages;
-+	else
-+		nr_cached = h->nr_cached_hugepages_node[nid];
-+
-+	return sysfs_emit(buf, "%lu\n", nr_cached);
-+}
-+
-+static ssize_t nr_cached_hugepages_store_common(bool obey_mempolicy,
-+						struct kobject *kobj, const char *buf,
-+						size_t len)
-+{
-+	struct hstate *h;
-+	long count;
-+	bool is_delta = false;
-+	int nid;
-+	int err;
-+	const char *p = skip_spaces(buf);
-+
-+	if (*p == '+' || *p == '-') {
-+		is_delta = true;
-+		err = kstrtol(p, 10, &count);
-+	} else {
-+		unsigned long ucount;
-+
-+		err = kstrtoul(p, 10, &ucount);
-+		count = (long)ucount;
-+	}
-+	if (err)
-+		return err;
-+
-+	h = kobj_to_hstate(kobj, &nid);
-+	return __nr_cached_hugepages_store_common(obey_mempolicy, h, nid, count, is_delta, len);
-+}
-+
-+static ssize_t nr_cached_hugepages_show(struct kobject *kobj,
-+					struct kobj_attribute *attr, char *buf)
-+{
-+	return nr_cached_hugepages_show_common(kobj, attr, buf);
-+}
-+
-+static ssize_t nr_cached_hugepages_store(struct kobject *kobj,
-+					 struct kobj_attribute *attr, const char *buf, size_t len)
-+{
-+	return nr_cached_hugepages_store_common(false, kobj, buf, len);
-+}
-+HSTATE_ATTR(nr_cached_hugepages);
-+
-+#ifdef CONFIG_NUMA
-+static ssize_t nr_cached_hugepages_mempolicy_show(struct kobject *kobj,
-+						  struct kobj_attribute *attr,
-+						  char *buf)
-+{
-+	return nr_cached_hugepages_show_common(kobj, attr, buf);
-+}
-+
-+static ssize_t nr_cached_hugepages_mempolicy_store(struct kobject *kobj,
-+						   struct kobj_attribute *attr,
-+						   const char *buf, size_t len)
-+{
-+	return nr_cached_hugepages_store_common(true, kobj, buf, len);
-+}
-+HSTATE_ATTR(nr_cached_hugepages_mempolicy);
-+#endif
-+
-+static ssize_t max_cached_huge_pages_show_common(struct kobject *kobj,
-+						 struct kobj_attribute *attr, char *buf)
-+{
-+	struct hstate *h;
-+	unsigned long max_cached;
-+	int nid;
-+
-+	h = kobj_to_hstate(kobj, &nid);
-+	if (nid == NUMA_NO_NODE)
-+		max_cached = h->max_cached_huge_pages;
-+	else
-+		max_cached = h->max_cached_huge_pages_node[nid];
-+
-+	return sysfs_emit(buf, "%lu\n", max_cached);
-+}
-+
-+static ssize_t max_cached_huge_pages_store_common(bool obey_mempolicy,
-+						  struct kobject *kobj, const char *buf,
-+						  size_t len)
-+{
-+	struct hstate *h;
-+	long count;
-+	bool is_delta = false;
-+	int nid;
-+	int err;
-+	const char *p = skip_spaces(buf);
-+
-+	if (*p == '+' || *p == '-') {
-+		is_delta = true;
-+		err = kstrtol(p, 10, &count);
-+	} else {
-+		unsigned long ucount;
-+
-+		err = kstrtoul(p, 10, &ucount);
-+		count = (long)ucount;
-+	}
-+	if (err)
-+		return err;
-+
-+	h = kobj_to_hstate(kobj, &nid);
-+	return __max_cached_huge_pages_store_common(obey_mempolicy, h, nid, count, is_delta, len);
-+}
-+
-+static ssize_t max_cached_huge_pages_show(struct kobject *kobj,
-+					  struct kobj_attribute *attr, char *buf)
-+{
-+	return max_cached_huge_pages_show_common(kobj, attr, buf);
-+}
-+
-+static ssize_t max_cached_huge_pages_store(struct kobject *kobj,
-+					   struct kobj_attribute *attr, const char *buf, size_t len)
-+{
-+	return max_cached_huge_pages_store_common(false, kobj, buf, len);
-+}
-+HSTATE_ATTR(max_cached_huge_pages);
-+
-+#ifdef CONFIG_NUMA
-+static ssize_t max_cached_huge_pages_mempolicy_show(struct kobject *kobj,
-+						    struct kobj_attribute *attr,
-+						    char *buf)
-+{
-+	return max_cached_huge_pages_show_common(kobj, attr, buf);
-+}
-+
-+static ssize_t max_cached_huge_pages_mempolicy_store(struct kobject *kobj,
-+						     struct kobj_attribute *attr,
-+						     const char *buf, size_t len)
-+{
-+	return max_cached_huge_pages_store_common(true, kobj, buf, len);
-+}
-+HSTATE_ATTR(max_cached_huge_pages_mempolicy);
-+#endif
-+#endif /* CONFIG_HUGETLB_CACHE */
-+
- static struct attribute *hstate_attrs[] = {
- 	&nr_hugepages_attr.attr,
- 	&nr_overcommit_hugepages_attr.attr,
-@@ -285,6 +431,14 @@ static struct attribute *hstate_attrs[] = {
- 	&surplus_hugepages_attr.attr,
- #ifdef CONFIG_NUMA
- 	&nr_hugepages_mempolicy_attr.attr,
-+#endif
-+#ifdef CONFIG_HUGETLB_CACHE
-+	&nr_cached_hugepages_attr.attr,
-+	&max_cached_huge_pages_attr.attr,
-+#ifdef CONFIG_NUMA
-+	&nr_cached_hugepages_mempolicy_attr.attr,
-+	&max_cached_huge_pages_mempolicy_attr.attr,
-+#endif
- #endif
- 	NULL,
- };
-@@ -359,6 +513,10 @@ static struct attribute *per_node_hstate_attrs[] = {
- 	&nr_hugepages_attr.attr,
- 	&free_hugepages_attr.attr,
- 	&surplus_hugepages_attr.attr,
-+#ifdef CONFIG_HUGETLB_CACHE
-+	&nr_cached_hugepages_attr.attr,
-+	&max_cached_huge_pages_attr.attr,
-+#endif
- 	NULL,
- };
- 
+ subsys_initcall(hugetlb_init);
 -- 
 2.55.0.rc0.799.gd6f94ed593-goog
 
