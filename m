@@ -4,86 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E0C1C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 09:38:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D142C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 09:42:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C1006B00A0; Tue,  7 Jul 2026 05:38:35 -0400 (EDT)
+	id 1C0656B009D; Tue,  7 Jul 2026 05:42:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 698586B00A1; Tue,  7 Jul 2026 05:38:35 -0400 (EDT)
+	id 1983A6B009E; Tue,  7 Jul 2026 05:42:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D6556B00A3; Tue,  7 Jul 2026 05:38:35 -0400 (EDT)
+	id 0AFE46B009F; Tue,  7 Jul 2026 05:42:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F7A46B00A0
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 05:38:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A955B8D94E
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:38:34 +0000 (UTC)
-X-FDA: 84961480548.21.2806057
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AA973A000B
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:38:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oTcK4EVx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DC2F06B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 05:42:57 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68AFDA03A3
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:42:57 +0000 (UTC)
+X-FDA: 84961491594.10.A5CF62F
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8E00F80002
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:42:55 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=YvHISaTr;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783417113;
+	s=arc-20220608; t=1783417375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=81JSG6w2tPh5xLW4dgWvCCuTi+vlHxWAgKmbEEuJMmI=;
-	b=zI8yhoEH05AN/wS/Mll2USe5Z/a85Sei4qhK2m9XjiDQbtfqH5k4CaWHBj1CmcU891f8Vg
-	daSjWKWrjWKMnlloe0IG81D8qDKzdLqQ//0IC6M7abeOUHd9IgMwzzi0u3Soms8KV4OsDv
-	KmpkZH+DZYRY6bAZaoRbrOorQOoK8os=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NG43xqiTlZetTkoltquLMxLW5gZsV1d7NlplgwQVb0s=;
+	b=Ay/vMAwnfIW+NCGVuGGqD/yUD4IjAcaHNi1T4KiCUKrXxo+Q92ZOqg0Z9rOC3FaPIz5Eu0
+	vZFWpy8IxlDMkst85pcoGI26wIaQn+iwt1EZW2XmZn3F7W13GdpQb+LMcd17KZ+ViT09Hp
+	xPE1KVmORXp0z67Sp9y2JiBhi+Y52ZY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oTcK4EVx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of zenghui.yu@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+	imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=YvHISaTr;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783417113;
-	b=IHCX0fiMp5pwjn9fR/t+GX3vVLN4a8ml/DkzSeeQJt9oSoktTmZvr698U1YULBQvex9IWS
-	3xoUS+lmJPmbWpUuGr2kyse9MnAUB8Fi9s4SBiyuP0qO93fMHECP9U7TxBFXJQT4n4uAC9
-	a+C9M8+RNG6NKOxo8vAQ557/+qTu7SQ=
-Message-ID: <c0970cee-42c2-4844-b88e-229853f08e90@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783417110;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=81JSG6w2tPh5xLW4dgWvCCuTi+vlHxWAgKmbEEuJMmI=;
-	b=oTcK4EVx2B8Ljv/pIfP+FxJpn76Oi0kUf3J23SeIOMhzRT3149x1fiJ51nZ/X39c5ViT/j
-	eAAZqMFSbGlvr82wJ/GBtyVd86/HH99DRyhRcFwWvgEDx4d2RjIOEF3A4eJA8zA3c3uQsL
-	gICmKcQwZKkcUPNad2N2MuofNU4E3Wk=
-Date: Tue, 7 Jul 2026 17:38:13 +0800
+	t=1783417375;
+	b=quF88nnOSW2HliTGKQg0qRnSW+2ZJ8CL9sNeh89YVqiop4ZoZCHiCuxRwHQBzRNMK7Isj4
+	fq7AvnkoyM+JywvrE+t/I/xH5pPzsldX/RsOA9o8Dt/QcHx5nkEGfdIQFRwgGygZjSMWSw
+	PYr2ltBKHjuCStNwPz9f/V7wbRCD/i4=
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1828172a91.2
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 02:42:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1783417374; x=1784022174; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NG43xqiTlZetTkoltquLMxLW5gZsV1d7NlplgwQVb0s=;
+        b=YvHISaTrS2QGbpg9T/8iD2LowJbJCakhoWlmlCGB6P2wNXiiyR5rTEEf8db1QLMeNX
+         JqqnnhfXxebe34f53Pr2fy3n3gpRJpDlpVpD/t+xnKIXcn2aBE6dDXOdff2rCkTdfEPP
+         wqjM6SvcthNO4RKzOXbUkz7QIps5nFxKW7tLg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783417374; x=1784022174;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NG43xqiTlZetTkoltquLMxLW5gZsV1d7NlplgwQVb0s=;
+        b=swpGBzHOKNz6dSHGW1mnJn5A/g9sSLYn9LvC5sPbAel/U5t3u2Pfwns23U93PZyZHq
+         7nDd0YG5wsGr8zqAKblj5w0W2WCqsH35FYlzws+RXsYmQ5f/arhLyA5feA3Rl88s61cZ
+         LAbm5E9c8P9IWFCamu+8hFlHLkOjPQjzu3n2O0kPnvBk7qUaBdQYaH5hLdNGeoGI5q/a
+         xPvF5zwhgGTPGQfEq7IcHH37+fnYQ9koVBbOGEd2pjbtfwk7N+MEwZ/aYu6uCB3jnYkC
+         Nnu9IfO+IHFiXKQFTv9UmJwgrfm7Cl7SJtZ/oGgAEBFodjpMrb+fqaorQqzJPEjAaNyh
+         44gw==
+X-Forwarded-Encrypted: i=1; AHgh+RrZ4TjNG+E9Zi1xp6F2bgEG1AdQj4tEyEDR1S+e9AkuoQ4wJzYDWP6TQL7hw34EQvU5U3vcRI9POg==@kvack.org
+X-Gm-Message-State: AOJu0Yz9i5sAQl3N9P8JfCtij8hsvvqUaEfeg+gs7W5OCMmG2qRjb17e
+	6hFYhEc9e0nMmhOiMUAkzb/2cs/lLtanBzgPOrJF+j2mf4AhDwNkjC3enu5zF1fqNw==
+X-Gm-Gg: AfdE7cm9E3GYEcrtpAmYTkS/m0fWEEJzeroglF3xmkcLsS7mQgPU63QlBU7AmfqNPuj
+	OS5xylQXtjkRlj4+eq/JWcrk0PpEmNiGmBus3NB010MzQ4YU4EQm+Y3vp2iPsKip29zBMxW0D/t
+	YgwIE/X3mVoPCsT6MX5hT6oTFmrPqsA63wZK/LgU4iP4oI+GYDTvLmLRA3V21aBql/nvvr1w4so
+	f5KgxerLyggpvlizRzvITiHLy9koA0Cxv12MAxQY0Ej6llGWq1LDfbOhH0ETHpABLVRfL6LIssG
+	ZTCOgxvvG/NF1VCn+R3MdHWw/xK7am26NgJxwavrvlnSMYwtOqbNdI2X9tROQ2FobiULV+fOWQM
+	r7/etC/36l4zPNpdn1hZSViAXcTt0FDYzyko2pQM7pp11CC5Iv9lCsqheAIITtYsTY+ccQDZFlK
+	/3vhOrgq9AcBbMm4l3U4IWdZcvxJg8x/hkGyF5U/Unnr1i5N4zhpPb
+X-Received: by 2002:a17:90b:3808:b0:37f:9cdf:f037 with SMTP id 98e67ed59e1d1-387572b3d9fmr4095937a91.26.1783417374535;
+        Tue, 07 Jul 2026 02:42:54 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2031:6:d4f4:6328:49c0:b912])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d20a2f2fsm797739a91.13.2026.07.07.02.42.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 02:42:54 -0700 (PDT)
+Date: Tue, 7 Jul 2026 18:42:50 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Hillf Danton <hdanton@sina.com>, Kairui Song <ryncsn@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 01/19] zram: sleepable entry locking
+Message-ID: <akzJlY53m3XBg9Is@google.com>
+References: <20250303022425.285971-1-senozhatsky@chromium.org>
+ <20250303022425.285971-2-senozhatsky@chromium.org>
+ <20260707064030.D843llKh@linutronix.de>
+ <aky05GBxo4VKGD58@google.com>
+ <20260707093024.DPG2lvt_@linutronix.de>
 MIME-Version: 1.0
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zenghui Yu <zenghui.yu@linux.dev>
-To: linux-mm@kvack.org, cgroups@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: cgroup/test_zswap failed with "zswpout does not increase after test
- program"
-Cc: hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com,
- chengming.zhou@linux.dev, tj@kernel.org, mkoutny@suse.com,
- Shuah Khan <shuah@kernel.org>, mhocko@kernel.org,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: chasftsogtmietfu7mpw45kzpwphyon9
-X-Rspamd-Queue-Id: AA973A000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260707093024.DPG2lvt_@linutronix.de>
+X-Stat-Signature: oscixyz1h4jcc4ms7repxyy1cc3r31xm
+X-Rspamd-Queue-Id: 8E00F80002
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783417112-676403
-X-HE-Meta: U2FsdGVkX1+uOqk4pyMIPreurWTNWStrTB3edYa+mMVdB4ypeISE9uI6pUp21m3q7A3vkEHVp/PI85wkU2kwYIPsfDzRrWrCFIbLoltUrhrBcuti84lYvTA1PZrU9iyYFkcRWzPtKn/DSMHh4b4e4b1sfHDrKnR/fih/tanmbZVXlbXn7Pko0Td4jaYnRrp0tw9XD/+n6gASs6OyRdnvltDnr52tQoT8B9MIVdwLotwpDQoBa+qWxMUGFQWXDAZcUhc36KlNpuL8GY1shBdlW6lrL0WrvxeyxSfFNp4k2Ry2XiuyhlZ/ih3wGuKLOB5T1t8KtwH+7h0hncK1chzO8N6w+fE4uXbNWO764TIlzonjD+fg4HAkTcsGuIiZeSgP/PiWnEiPaYXf/MY9Yvp5nIB2bfj694i+Dna+IJt3OkybD6l8e959aBmdytQwLOKo9lWciNJbLyggMQ+eac7NFSa3Cvh1Mnc8UET+0InRZXbYm16WgbwYvX9gU4wPE7dE2b+d+sN838Ti3ovi2xR2Wgip+zLHk1AeeeNK0m5EzF69k1AkZtnqaxlO8dxdFckEOsVCDtKOvMXHZlk8zF3Ux185iPEqgd3OpBN+xC0C67YuOD22WY5lxJFfNLhwTVBbGmaI7fUQqoVNM4Wc020VZXhI7/ObU9ugaOW67ItxvPu8vyPi753mX8SAu8bsnFVKtahWWJkfaKYh4Rk0QDBfQ+TIqVFsHuNDHiuZF+wtQ1bZsSFs7az3bVTzvVGYgS+Hvx8NdEGAhZMS3GFxyL6TyvvwK8KbtgpStH+eHctcr8EuNi5xpOBAR1mFNLmQ9keLJW2DSoudHD1x9l8Q7l+raYRoh02DX9yD8nBpSLzDBIXca465CVF5iAFiJI1cV1Qj8I2ZVQVyWEQrZZLLYMhr3Lm7yUdhAs72pmSv319Ngo4sfgnS8C54FUJjrQLaZaj86P13c7oXmWLKmdvDkgl
- 8daL7gEP
- +Gw7DiNoJ4ycw9hmFlV5ENBso8M0ICVe3rMVGulparNArlRHLoDPXXiQx0oB7ttxbkab9lNzEY0Qii3UWDop5+bWD6nTBwj+0/Dye8it8am7DprCIl10jApHuPpqNeuxUJnqjV9B+XR2zzm8FLIy+8pH+63xdypw1rHaRPP+IdpdmjzSy/fQeqkH/d6LbBi1rbxElUz065rPQHFJS1S6JXZf7PgZ23Vm5HGjkfBnt/aGU8XKkvd2/tmECoyV+fNM6rtHa
+X-HE-Tag: 1783417375-259058
+X-HE-Meta: U2FsdGVkX1+uAKVMooOG5/9aa44N+hEQer8nzkhetNX1LQkZCkVpsMnw2wdWepoICWabi7vFXHCbjXbzlKolEhjdaK45s94QaP207wg8uLATMID0wfczK9hzGtFDfd7yOchH8KpbXQkongXdjrQ8xcZ4xUqwm938bkCLpIVzSY6I8AaD65/W12lWcMBIYedGb+CIDW2dKqrBs/Iouhd4v3sB4/oXq6tP+X1Yq1tixLFVg2dVObUJHDQd21JkHt8EKCtGjCswAvfcAbwivhQ8KVmq2ePzPqXvAgX82z9BCC+mgmAXCRNqiVDDRINO/BIELOtcyEcLHoDp+84ptMeM+FJveP856cCXZGvONayQkftxoqkS/xcACimLJHGhQzrJVzbe1BMoE5qVQ06wkC3lvuGpjSUMjGhuAll0DJW4EHPZQb0zS82W8hnVWv0ebEH6Gmu0x22aNeC2HrtkbvQ/GETUsXJ2CUGBkUej1Q+mN1sC52wethg0Kqw0X6RWxGsSbUuNKRmPqYytvCmFi/OBl4Dj8t4GgoWQ6d2wRqI3wfZC+h9XhYADTi+SBLXhu5T1g8O8/jVPCSvyJsVhx2XPBgisf4Y6aj/A3zebp1Dz+T7WQgB7JSfaWImBrN/uNtdDEIQ/NveEbOLMdfcBCT823XYh+VC2LcEQlX8HZxE6F703mE+rMNxRZ5EFi5fW1HtwlfuNYlcZ0KCqMSeH3nqY/MjYElUAnJHtnobXHIEx/SHttgWc7MO5NCRbM4Fq2iY/KNKisVrOKq5DlZs91O8lJOVN5s3JRFpHKoIkh4CtGZz9jNJYY3xvoDMvJh7zu7R9ejNZEeWz8h5dc9tN9/siJgVvmVM9LxZRKwxSoCk4jM7D6yRzfU+F1DlFOt6xc/4YaAEn5GcIEd/hCKneO2nqp5nGp/ZGFKJs6PUObARsxt1NJQRkzdY1ozYUEilMaiYZcRj/4svoayaBVNNLYOx
+ vK9k0fm+
+ uqVtBqb0Qdphtnaw8fjL21o7nhATmzwNtL9BOm90rlnMyzeI+kuHFGWOW82uKbs4W6HsHO5hDxnluAdkeAe4zXLN03FHKSyugzXH/IKsXRZZ5U//jV/XmDIlN1YbD3WYAxrDvLG3gsUYgmQlYogwQaR/Kx+KCgKtB2yumMwvkpQf74PlSUK+MTF5O/olaI7lEXcHn8q5P6k8gcZcI4O7nhHjB3wK7lMtQ+yBBd735L1xN2LH7f0nCHjifAWxuHegEAmhmkxTv5UhUOiOXXktd4CZr/rFJlhfb3EejWtZGJJMlWQh0sZtQt8idbfJziEfieJd5ir7nk3pArbK2tl9Bj1KfVXhzcUdTsBtzaVDnk52heKE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,58 +121,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On (26/07/07 11:30), Sebastian Andrzej Siewior wrote:
+> > > >  static void zram_slot_lock(struct zram *zram, u32 index)
+> > > >  {
+> > > > -	spin_lock(&zram->table[index].lock);
+> > > > +	unsigned long *lock = &zram->table[index].flags;
+> > > > +
+> > > > +	mutex_acquire(slot_dep_map(zram, index), 0, 0, _RET_IP_);
+> > > > +	wait_on_bit_lock(lock, ZRAM_ENTRY_LOCK, TASK_UNINTERRUPTIBLE);
+> > > > +	lock_acquired(slot_dep_map(zram, index), _RET_IP_);
+> > > >  }
+> > > 
+> > > Looking at this, is there a special need to have a lockdep map per
+> > > table? Wouldn't it be enough to have one per zram? Logically you use the
+> > > same __key so I don't think it makes much of a difference but you could
+> > > lower the memory usage a bit by having less of those structs per zram.
+> > 
+> > So the idea was to separate lockdep maps and keep them per-device
+> > because various zram devices can be on different IO paths with very
+> > different locking graphs.  E.g. zram0 can be a swap device with all
+> > the locks that swap layer has, while zram1 can be a "normal" block
+> > device mounted with ext4 with all the locks that ext4/vfs bring.
+> 
+> Ach so index will be 0 for zram0 and 1 for zram1? In that case it is
+> different from what I assumed. But you use the same key so I think it
+> will be the same lock from lockdep's point of view. Like it will
+> complain if you do
+> 	zram_slot_lock(zram, 0);
+> 	zram_slot_lock(zram, 1);
 
-Running cgroup/test_zswap on my arm64 box failed immediately with:
-
-  [root@localhost cgroup]# ./test_zswap 
-  TAP version 13
-  1..8
-  # zswpout does not increase after test program
-  not ok 1 test_zswap_usage
-  [...]
-
-I'm sure that pages are successfully written into zswap by checking the
-count_memcg_events(.., idx=ZSWPOUT, ..) trace events. But "zswpout_after"
-in test_zswap_usage() is 0 and results in this failure.
-
-I guess the problem is that (in this particular case) the memcg stats has
-not been flushed when userspace reads it.
-
- memcg_stat_format()
-   mem_cgroup_flush_stats()
-     __mem_cgroup_flush_stats(.., force=false)
-       needs_flush = memcg_vmstats_needs_flush();
-
- static bool memcg_vmstats_needs_flush(struct memcg_vmstats *vmstats)
- {
- 	return atomic_long_read(&vmstats->stats_updates) >
- 		MEMCG_CHARGE_BATCH * num_online_cpus();
- }
-
-I can image that memcg_vmstats_needs_flush() will return false because I'm
-testing a 16k-page-size kernel on a box with 96 cpus..
-
-As we have a periodic flusher flushed all the stats every 2 seconds, I use
-the following diff to wait the flusher to expose the accurate stats to
-userspace.
-
-diff --git a/tools/testing/selftests/cgroup/lib/cgroup_util.c b/tools/testing/selftests/cgroup/lib/cgroup_util.c
-index 3ce134509041..9596f294da0b 100644
---- a/tools/testing/selftests/cgroup/lib/cgroup_util.c
-+++ b/tools/testing/selftests/cgroup/lib/cgroup_util.c
-@@ -95,6 +95,8 @@ int cg_read(const char *cgroup, const char *control, char *buf, size_t len)
- 
- 	snprintf(path, sizeof(path), "%s/%s", cgroup, control);
- 
-+	sleep(2);
-+
- 	ret = read_text(path, buf, len);
- 	return ret >= 0 ? 0 : ret;
- }
-
-I have no idea how to "fix" it properly. Please have a look!
-
-Thanks,
-Zenghui
+index is PAGE_SIZE granularity "block" of device that holds compressed
+data.  So they go from 0 to zram->disksize / PAGE_SIZE.  Should I use
+dedicated per device key as well?
 
