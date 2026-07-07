@@ -4,94 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39000C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 15:38:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A9CCC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 15:41:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33DD66B00A1; Tue,  7 Jul 2026 11:38:57 -0400 (EDT)
+	id 61FE36B008A; Tue,  7 Jul 2026 11:41:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C68A6B00A2; Tue,  7 Jul 2026 11:38:57 -0400 (EDT)
+	id 5D0166B00A1; Tue,  7 Jul 2026 11:41:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1914B6B00A3; Tue,  7 Jul 2026 11:38:57 -0400 (EDT)
+	id 497F66B00A2; Tue,  7 Jul 2026 11:41:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DCEE76B00A1
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:38:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A9EE403C7
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:38:56 +0000 (UTC)
-X-FDA: 84962388672.23.5496B16
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E457220010
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:38:53 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf03.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2127E6B008A
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:41:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A14011204C9
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:41:34 +0000 (UTC)
+X-FDA: 84962395308.20.FA013DE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E4F7E180010
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 15:41:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cIrRwsun;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783438734;
+	s=arc-20220608; t=1783438893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=++Cjevhqskve0JMvE9muxDAncKraaU5muuQKRDN3N74=;
-	b=7pk4MdH0cXY3+8g/GvxWGjxAMuPJyXjgN9SMOabdqlmNiAhZSZdb4g21epXibbJak2YEfH
-	RA8n6h8tl8nlVMII416/K8S+re1ZyqKjvJgy/U8hxLGL5+2LZsJQ5hg98iJ3EMN6lt/u/B
-	wJ+gh4X+QE30ita5gLeY1blfdJcIsGs=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Q1Kwud0dvJdx+NdcimkPz3yZCGnaN/yJ0h1aVkDOmMY=;
+	b=riEO5ueNxqPvamXQ6bt+PwQ6feHe4BYTA4u0UL2h6jkoifhwpgy+atxXkRcRHvjgCgYVuP
+	nY5MwOlGhyMUPdJYoQuoJz6eCr8Vh8eBIkLcIxQJbrElG4j2jXs6L+lxolwasf+6tC2y75
+	2U7zgPKpBLY2N2YwNh5/rA5q3XGj98Y=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf03.hostedemail.com: domain of hu.shengming@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=hu.shengming@zte.com.cn
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cIrRwsun;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783438734;
-	b=r8ShSFiqSemOzmqZyVXswQiGlIza+gyYnabS/lACvhMxKeARYGfUb+D3zobsuWA80y/nKh
-	aYwOj5+CNi0gYmg92Ws99G2cIIKugHCY+/90ww3/luUPesXLW3LpZdIdkBEB0Xpdb+6UHy
-	35L+qyn8uavgLu2XOut9koQzVT3AV58=
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gvlkg3ym2z5BNRf;
-	Tue, 07 Jul 2026 23:38:51 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 667FcgRf096224;
-	Tue, 7 Jul 2026 23:38:42 +0800 (+08)
-	(envelope-from hu.shengming@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Tue, 7 Jul 2026 23:38:45 +0800 (CST)
-X-Zmail-TransId: 2af96a4d1d85338-1a558
-X-Mailer: Zmail v1.0
-Message-ID: <20260707233845825QFxhT8ZP5Ej4atrE04d1K@zte.com.cn>
-In-Reply-To: <84c4c2bf-397e-461c-b898-482d1a49f40b@kernel.org>
-References: 202607062139095043SOsLi6TIf403tcjPf8fm@zte.com.cn,84c4c2bf-397e-461c-b898-482d1a49f40b@kernel.org
-Date: Tue, 7 Jul 2026 23:38:45 +0800 (CST)
-Mime-Version: 1.0
-From: <hu.shengming@zte.com.cn>
-To: <vbabka@kernel.org>
-Cc: <harry@kernel.org>, <akpm@linux-foundation.org>, <hao.li@linux.dev>,
-        <cl@gentwo.org>, <rientjes@google.com>, <roman.gushchin@linux.dev>,
-        <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <zhang.run@zte.com.cn>, <cai.qu@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2Ml0gbW0vc2x1YjogZml4IGxvc3QgbG9jYWwgb2JqZWN0cyB3aGVuIGJ1bGsgcmVtb3RlIGZyZWUgYmF0Y2ggZmlsbHM=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 667FcgRf096224
-X-TLS: YES
-X-ENVELOPE-SENDER: hu.shengming@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Tue, 07 Jul 2026 23:38:51 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A4D1D8B.000/4gvlkg3ym2z5BNRf
-X-Stat-Signature: zo4wc6himzwt7rs7wqfu9hhs7qkaxd8n
-X-Rspamd-Queue-Id: E457220010
+	t=1783438893;
+	b=b57U9WPlxQliCo2WhsS9S+zFn5kXX8wy3/DSWrI+rrt64O4l2rViwcoCnPuGiYTYi6g8RN
+	sW2kEnrYc+CnT7V3A0/HdCSha2h/OU7FizJWzeXhvS4bCAOkXIJOl3zdhv/iHb6Qp02IZV
+	KI5DkVQ7wy9u4GE1rwy3tUjxzXkxio8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0C35F42B68;
+	Tue,  7 Jul 2026 15:41:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CED1F000E9;
+	Tue,  7 Jul 2026 15:41:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783438891;
+	bh=Q1Kwud0dvJdx+NdcimkPz3yZCGnaN/yJ0h1aVkDOmMY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=cIrRwsunHV1lDrfE3muhzbxHCOAELWIUY4Y8Dr11AdxgevUodaWpzzfaQgziBJqFg
+	 Z60VV1AYFgIGExsq+K4YD+E8mINg+UGjQjUucqjzcYkgvyChec5TQWT0r8JRcDzzsO
+	 ajeOF6AnC3vYj9l0S8854nCl1kGiv6wC6OWjfR1j5vCDMbro8IHNrAuBnjzLg2/wuL
+	 VqonITdE1JIZFFud4MWnWk9fVlfKdlXHpLspgt148IMfd9dcj7xTk/HgJ6AtxoGDq9
+	 A1oZLgLvBqEPzV03Fl4gc3HqWQhBJod8ryZmA41BJag+VMtLxNAh6tIiEUqhF3XZp1
+	 hBkNn203hcJFA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  kexec@lists.infradead.org,
+  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org,  linux-pci@vger.kernel.org,  Adithya Jayachandran
+ <ajayachandra@nvidia.com>,  Alexander Graf <graf@amazon.com>,  Alex
+ Williamson <alex@shazbot.org>,  Bjorn Helgaas <bhelgaas@google.com>,
+  Chris Li <chrisl@kernel.org>,  David Rientjes <rientjes@google.com>,
+  Jacob Pan <jacob.pan@linux.microsoft.com>,  Jason Gunthorpe
+ <jgg@nvidia.com>,  Jonathan Corbet <corbet@lwn.net>,  Josh Hilke
+ <jrhilke@google.com>,  Leon Romanovsky <leonro@nvidia.com>,  Lukas Wunner
+ <lukas@wunner.de>,  Mike Rapoport <rppt@kernel.org>,  Parav Pandit
+ <parav@nvidia.com>,  Pranjal Shrivastava <praan@google.com>,  Saeed
+ Mahameed <saeedm@nvidia.com>,  Samiullah Khawaja <skhawaja@google.com>,
+  Shuah Khan <skhan@linuxfoundation.org>,  Vipin Sharma
+ <vipinsh@google.com>,  William Tu <witu@nvidia.com>,  Yi Liu
+ <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 03/12] PCI: liveupdate: Track incoming preserved PCI
+ devices
+In-Reply-To: <CALzav=fN8m9+rso7RSLR35bozZpNKv6McOR3jv1-ngxApM1BCg@mail.gmail.com>
+	(David Matlack's message of "Mon, 29 Jun 2026 11:48:55 -0700")
+References: <20260522202410.3104264-1-dmatlack@google.com>
+	<20260522202410.3104264-4-dmatlack@google.com>
+	<178144432039.1257322.9644414453415904478.b4-review@b4>
+	<ajBgj_aSuzMZG47e@google.com> <2vxzechulmcp.fsf@kernel.org>
+	<CALzav=fN8m9+rso7RSLR35bozZpNKv6McOR3jv1-ngxApM1BCg@mail.gmail.com>
+Date: Tue, 07 Jul 2026 17:41:25 +0200
+Message-ID: <2vxzechen6xm.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: mns79yix7g1u4z3k81dfef176yqh4yxu
+X-Rspamd-Queue-Id: E4F7E180010
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783438733-171041
-X-HE-Meta: U2FsdGVkX19wt8CvemSCqWzFMNW7FuSNd/3+NLydzR/nyUU2sDZYK71LQBQ7FjX67zfX0UfVyGACXgfuiyb06vw4mD/0Lnwt7Pft2lawy8y+hyTm+i/mi7On1IBjcQOrVRQfVjr3yKHGQq9+QPs4lqnpOnJ8IT0ki/uNIShT6amXPN9IMW5dNKz3ceL5J/G8IysLSib2DpqrXkAWjQxYdq99KbWMgmPa7DAtUdwtafeNcoN96IqvInOm2OxrNhU49TQrv+0kS019fL4kvM00bO61eIA5Bnzj10uQaNghExYIuz2YHJofzDd7rPnB7zCSFrfilt8Tiia/dIQmj5B6VTa8JexWnwQtoQyWO7SumpSUUZOSIxHBf3wVbfbQ72TFVGRBi0TBXDAiHjFpGMu9vyiQmgvFpqVibsmPrXMghbOCPFOsRCwEYD9ioPpcQ+5DbQli6ZS1gJf6ZXU0mpX9gYNtudRFOi2v6oOFajtWqbaKdHytAiBcuG/NYJG1oGFDmuDcF45FLpVFt/ABHPPjYKBPek5RC0x6pw098wzOs8jAHDgNFG5Ifc/1ghxZSe0W8336JG7R7bVcn8kwY15Q8fJJxHMhOGs1acCeBFOWoGpUT+G9KsbBcTSZfSRDvqGyhn65xYoR3SH4U1ghB0AyjuxUOR1FLlpixpNeHe0ourwC5Y4ncO2S9eJ/gXkAerjFi89QlFZvfdtWigXL857jnyjssDzXDbTp8Wn97cOQj5MOtxKNash9QqeOrfnHLYiF0I9OSyfU2wgZpkwScZK6xKg872J1rsrJHj2xzERYADMG/Mtp65I//6gbVu8fxDZiV/PZFqrxCXdq1eMazjPOe73k4Ve5X79baqK8ERQhK26kUfSFdBD5yaLy8UzhRMSHX3AM3iqEvEqMun+Wo+V5111nwYtzGvbilq58pcB5/ihbqNVkTkRb3Yg6xYJU2kmjIf1FCblU7ZjdnKMbdMk
- 212KT9Vp
- baACr0ahy/uPZDiuU61u4BYOknxxRzGnI4n0ClIyoP7ZuTKF3mBKm3K6lTXtsJy8Cunj8O6zSKTxembejGSdikglBRJjFV+gF4/wD+eXbCqNBuofWOhRF1w77VB50QcTwWL/wxWsHlK7OkB34tgPi6txiCXsE5R7ybhd3KCfOGArBr6qZP3FjeSn/mpvYdGmAxm5oUkdKTDr0SQrL/0zEyHgo8g==
+X-HE-Tag: 1783438892-957787
+X-HE-Meta: U2FsdGVkX18t94G/rj/zlipDH9myffGZSlzD4W2bCYlGulwuv+fY4CPhtEzL6mLYjCyrOiOluTUgyTLxb+H6Sm4taHeIEpLV/oPGXIuJgbRrE59FYba2leITE5/mk0giL3XAiFm+/k0CCtVY3ImVkCj1/loyZSB3qS3KgHRyIEzLh/m0cq1eP1VXNkOVTbzdPRJVAVivfQWdK0xW2/RE7rDxzbq/hi+h4bWC12zCA/rsUKYmD722ktxTp0YAV6tAPY2sQX7yUqjHoCaPFFIb3fRtR0a1XjNY76Nq9GqIDRp/gXOLKXvhAjHzUzSwG8+5Yh65sbGGbdmmBVT5j7yjA/ZKGcD+XP30o3r9AIHaVURvzIuOKnxamh0F1DE9ZIKrnz1isIlGu9Dg3oRRaVERQMP0nV3P3IJDOZYXXBf4oa/o1Fnl0eTM0dpX1yIe3030stvoJ+6++yatyE58k1Q6SQb5gMQmPX++0pzqRycL1w3mJ34YNgO5iSEFxahYrpbvnxcwacp1q8/SSA0C9GESStapHaxYrrIWxAwIwb4e2hn13inlCIcVktakgQOn94taId49vX6alXjCEcJbRVe2vJ1PVzwYK6VBya+K6jCLQaXVqXaJtQrfvT9cC3KMRp+WAmqKon15USA9PQHbZRjFHQ+6Nh9cV2II6hZySf8siJCFmUEe8KqBWmyVPEDh4urwPprvXiA6PmKzEChLFvcKbIjArRMynXcqpivUsqngKtxEQINzGdx85frH/lRbhcWFOL/YEZBt0OGkvlWsuW2YBVqTV28QcuBsAJgHZTiS+wFWOhxGOMveTAw4S9rhq/Zhsjn4p60gwWKxzl6/FfEoZd9/VsrKCZOde+dMsF5sN97a83ZfTyEZI5evWbJ3vWuuBR7t4CD0O2GqK2J+CY6FY5Gf9gqL1nQaZU1umia370wiTyOGhvo0Ldh+nM2zsbZDvpsf7grEjrOS0wAyb51
+ 6pkc0QQe
+ 0eLTMtu+Fyl4RyTgrebX0BWNX7a2YXgeRJCoad5NgjOkM3lDzKYiVr/pYCgWVc9p31XIo9Fdw37ZfGtrX0Tm66Zef3PiG+qVGIv+a7EptUpQ6t8LKxj4YPsx2E1mV4VSgUAsAEkzZiGTrPOUpIdjOIQMCVbhxux3cmNgWt+aDkJy0Xxz+fMi5ci2xcJwVjt2tS+E0EWZEOeCFoXf9rpBDnWCn+tmUHxmixQsEsOgPLxCO/8nN3tXVL45WDe41TTOEGXEn/2io4E5NPkQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,68 +112,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Vlastimil wrote:
-> On 7/6/26 15:39, hu.shengming@zte.com.cn wrote:
-> > From: Shengming Hu <hu.shengming@zte.com.cn>
-> > 
-> > In free_to_pcs_bulk(), when remote_objects[] fills to PCS_BATCH_MAX,
-> > the code jumps to flush_remote to free the batch. If all remote entries
-> > have already been compacted out of p[] via tail swaps while local objects
-> > remain, the flush_remote path returns early since `i < size` no longer
-> > holds. The leftover local objects are then neither cached in the sheaf 
-> > nor returned to the slab freelist, causing a memory leak.
-> > 
-> > For illustration:
-> >  size = 64, local objects at p[0..31], remote objects at p[32..63]
-> >  After scanning all remotes: i = 32, size = 32
-> >  p[0..31] local objects are dropped.
-> > 
-> > Harry pointed out that, although the logic contains a real leak, it does
-> > not appear to be triggerable with the current in-tree users. To hit this
-> > path, at least PCS_BATCH_MAX objects, currently hardcoded to 32, need to
-> > be collected in remote_objects[]. Looking at current kmem_cache_free_bulk()
-> > users:
-> > 
-> > * maple_node has sheaf_capacity = 32
-> > * skbuff_head_cache has sheaf_capacity = 28
-> > * panthor and msm drivers have sheaf_capacity = 4
-> > 
-> > The sheaf capacity is, at least for now, derived purely from the object
-> > size, with the user-requested capacity used as a minimum. Therefore, among
-> > the current users, only maple_node has a sheaf_capacity large enough to
-> > reach PCS_BATCH_MAX.
-> > 
-> > However, for the bug to trigger in maple_node, all objects in the sheaf
-> > would have to be from remote nodes. In that case, there would be no local
-> > objects left to leak. So this issue was found by code review rather than
-> > from a runtime report, and it does not seem to be triggerable by current
-> > users.
-> > 
-> > Still, the bug could become reachable with future users, a different sheaf
-> > capacity, or a change to PCS_BATCH_MAX. Fix the logic by freeing a full
-> > remote batch in place during the scan and then continuing to process the
-> > compacted array. This keeps all local objects on the normal fast path,
-> > while the tail path only handles any leftover partial remote batch. The
-> > redundant next_remote_batch jump label is removed as well.
-> > 
-> > Fixes: <989b09b73978>("slab: skip percpu sheaves for remote object freeing")
-> 
-> Removed the < >
-> 
+On Mon, Jun 29 2026, David Matlack wrote:
 
-Oh, thanks :)
+> On Thu, Jun 25, 2026 at 7:35=E2=80=AFAM Pratyush Yadav <pratyush@kernel.o=
+rg> wrote:
+>>
+>> Hi David,
+>>
+>> On Mon, Jun 15 2026, David Matlack wrote:
+>>
+>> > On 2026-06-14 01:38 PM, Pasha Tatashin wrote:
+>> >> On Fri, 22 May 2026 20:24:01 +0000, David Matlack <dmatlack@google.co=
+m> wrote:
+>> [...]
+>> >> > +  }
+>> >> > +
+>> >> > +  pci_info(dev, "Device was preserved by previous kernel across Li=
+ve Update\n");
+>> >> > +  dev->liveupdate.incoming =3D dev_ser;
+>> >> > +
+>> >> > +  /*
+>> >> > +   * Hold the ref on the incoming FLB until pci_liveupdate_finish(=
+) so
+>> >> > +   * that dev->liveupdate.incoming does not get freed while it is =
+in use.
+>> >> > +   */
+>> >>
+>> >> How would that work? If finish is not called FLB stays around until t=
+he
+>> >> next reboot.
+>> >
+>> > True... I think if the PCI core trusts drivers to call
+>> > pci_liveupdate_finish() then we don't need to hold onto the incoming
+>> > reference here.
+>>
+>> That was my point when I was arguing against refcounts on outgoing FLBs.
+>> This is very easy to abuse, especially when we are talking about device
+>> drivers. And this refcounting mechanism makes the FLB no longer
+>> file-lifecycle-bound, since now it is entirely up to drivers to decide
+>> the lifecycle of this data.
+>
+> The PCI core holds a reference to the incoming FLB for as long as it
+> maintains a pointer to that FLB in struct pci_dev
+> (dev->liveupdate.incoming). The lifetime of that pointer is aligned
+> with the lifetime of the file as long as the driver calls
+> pci_liveupdate_finish() in its file finish() callback.
+>
+> If there is a bug in the driver that causes it to not call
+> pci_liveupdate_finish() then the FLB will leak past the file yes. But
+> the alternative would be to leak a pointer to freed memory in
+> dev->liveupdate.incoming, which could lead to UAF.
+>
+> Leaking the FLB seems safer than UAF, which is why I went for the
+> refcounting approach.
 
-> > Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
-> 
-> Thanks! I added cc: stable anyway so we avoid unexpected surprises in case
-> something else is backported there that exposes the bug. And the fix is
-> small enough.
-> 
-> Merged to slab/for-next-fixes
+Hmm, that does make sense. I still feel a bit odd doing this, but since
+I don't have any better ideas, I think let's keep this as-is. If this
+does turn out to be a real problem, we can fix it later. This is kernel
+internal API anyway.
 
-Sounds good to me. Thanks for taking it!
+Also, I didn't know the plan was to do VFIO only. I thought at some
+point in the near future we will get support for PF drivers. With only
+VFIO, I think this is a lot simpler and problems will be a lot easier to
+fix since there is only one user. I was mainly worried about random
+drivers holding on to PCI/LUO core data structures.
 
---
-With Best Regards,
-Shengming
+>
+> Another approach entirely would be to drop the
+> dev->liveupdate.incoming and do the xarray lookup everytime instead.
+
+But then you'd need to have a lifetime for the xarray, no?
+
+>
+>>
+>> I have been thinking about this a bit more in the last couple days, and
+>> I wonder if we are doing this right. Here's an idea I have been thinking
+>> of.
+>>
+>> We should make live update a first class citizen in PCI. Instead of
+>> patching in liveupdate via the liveupdate.incoming field, and letting
+>> drivers figure out when to use it, we should separate out probe and
+>> retrieve paths entirely.
+>>
+>> Probe and retrieve are fundamentally different operations. While they
+>> may share some common initialization logic for the _software_ state, how
+>> they interface with the hardware is completely different. I think mixing
+>> the two will result in driver code being more spaghetti by having
+>> liveupdate checks sprayed out all over.
+>
+> We are only planning on supporting Live Update for VFIO drivers for
+> the forseeable future. The VFIO work during probe is almost entirely
+> software state setup. The only hardware logic we need to "if" out in
+> the vfio-pci driver's probe() is putting the device into a low-power
+> mode via the runtime power manager. So I don't think we will get any
+> benefit from this approach, and it would be a lot more intrusive to
+> both the PCI core driver framework, and VFIO itself, to support this.
+>
+>> This series doesn't add support for any drivers, but looking at some of
+>> the code we have downstream, I see this problem. The liveupdate code is
+>> all over the place in the driver and it is very hard to wrap one's head
+>> around how the device is actually retrieved.
+>
+> You can find the vfio-pci driver changes here:
+>
+>   https://lore.kernel.org/kvm/20260511234802.2280368-1-vipinsh@google.com/
+>
+> Let's keep the discussion focused on upstream VFIO drivers since that
+> is all we are planning to support right now due to LUO's requirement
+> of file-based preservation. The downstream driver changes we are
+> carrying is not reflective of what we want to support upstream.
+>
+>> So I think PCI core should track preserved devices, and if the device is
+>> preserved, it should skip the probe and wait for retrieve. Retrieve does
+>> the full initialization of the device. This fits in with the LUO model
+>> as well. You can make retrieve a callback of struct pci_driver and do
+>> some wrappers to talk with LUO, so device drivers don't directly
+>> interface with LUO at all.
+>>
+>> We should do similar things on the shutdown path. Shutdown is a
+>> fundamentally different operation from freeze, and so we should separate
+>> them out as well.
+>
+> This is speculative. In practice, we haven't needed to change VFIO's
+> shutdown() or probe() functions so far. The only change I anticipate
+> needing is skipping runtime power management "put" during probe() I
+> mentioned above.
+>
+> If we actually made retrieve() a first-class callback and used that
+> instead of probe(), VFIO would internally just call its probe()
+> function because that would be the cleanest way to set up all the
+> software state it needs to manage the device.
+
+Right, for only VFIO this doesn't make much sense. I wrote this thinking
+we will add PF preservation support at some point.
+
+>
+>> This solves the lifetime problem as well. When PCI core is initializing,
+>> it knows for sure that no retrievals are going to happen. That's because
+>> none of the drivers have registered yet. So it can safely access the FLB
+>> and initialize its state. After that, drivers can register themselves
+>> and start accepting retrieve() calls. Once the last driver goes away,
+>> the FLB is freed automatically.
+>
+> It's not so simple. The PCI core does not really initialize itself.
+> Scanning devices gets triggered externally, e.g. by ACPI, device
+> trees, runtime hotplug events, etc., and that is when the PCI core
+> gets notified about a device. None of this is synchronized with "when
+> drivers have registered", which I assume you are referring to
+> registering with LUO.
+>
+>>
+>> I am sorry for suggesting a big refactor at v6, but the early versions
+>> looked good to me at the time, and I only thought more deeply about this
+>> when trying to figure out how we can make the lifetimes cleaner.
+
+--=20
+Regards,
+Pratyush Yadav
 
