@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C308EC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:53:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55719C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:53:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B05426B00C5; Tue,  7 Jul 2026 09:53:27 -0400 (EDT)
+	id 426776B00C7; Tue,  7 Jul 2026 09:53:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB5406B00C7; Tue,  7 Jul 2026 09:53:27 -0400 (EDT)
+	id 3D6F36B00C9; Tue,  7 Jul 2026 09:53:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97CAB6B00C8; Tue,  7 Jul 2026 09:53:27 -0400 (EDT)
+	id 29EF06B00CA; Tue,  7 Jul 2026 09:53:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 695AB6B00C5
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:53:27 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EDE2C6B00C7
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:53:33 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D61948E03A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:53:26 +0000 (UTC)
-X-FDA: 84962122812.23.F60E1F7
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 45C1540007
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:53:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bYkSyVJT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783432405;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZNieEZShBstUzDyBdKEZjg40ErjOe3pCONmkHz2f2NU=;
-	b=53F888Affhx3GQyvMNtVhOpuZKMFTnLkaaIO641V5VMElVf1xPBzpWm0p7ZhfLMKgtAE9V
-	Jpx7rBEgbY98bvV1yzB+zr5aon6u71+WgJS5Ac8Zt/ipUmDTZBU3QyR1sdhTFsKP+/p7lh
-	5B5uYgNXO/tLf8oH+l9ICtVJsviActQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bYkSyVJT;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 788824041F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:53:33 +0000 (UTC)
+X-FDA: 84962123106.23.4417631
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E464F4000C
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:53:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bOEfrOOd;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783432405;
-	b=AFJIFA9nXw+5/GwKX1VmVlSbaDuQnMkD8vI0IIQ2eetpzRa4TCIwPFy75gXeyVj4QyfucO
-	PE2uZTMKSENuCn96F5rbpj0CzaYDOhIMlXisl/SKLGYLusGH4/JeJ4GhwKMupsSfePUTcy
-	T8xPDg/wB76TnYnVvwXMzNba7CWl/88=
+	t=1783432412;
+	b=w5ObouU4WHeJ7EnQUF8NV87yrj6VALIwv88aPqAB32B5SF5WZ5H9er9ztT8dCvBOkrpG1n
+	Zh236TvuGoem9zlrKKK7gQ11RSKU7VwEuzFjIkE9/rzq0pA+JHAqgP/B47DI+BmdAZiwTY
+	pj5TemnJ696laBzHvTjfphr7EaDYCvY=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bOEfrOOd;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783432412;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=quqW7QPkkOmuZBsVPZ6/a3v09/W0iGtXtzNekQUkyPQ=;
+	b=IN36mrv3UiJ18mZiBNTJ9lSGv+86HT5NkN/yltNBlwekvxzbOrIpoaJSvAAn5xIKAgc7H0
+	UZpuBtpcCrOP/pg5o1pqS5rWYyeEFJgRV2aXpawJsrH/Ua2XOyZWCJepFen1hH04w/ZlC+
+	ruQTAR/9+N2FF9q/13UXyo9JUsHRaBs=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783432403;
+	t=1783432410;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZNieEZShBstUzDyBdKEZjg40ErjOe3pCONmkHz2f2NU=;
-	b=bYkSyVJTtzsRN0UiAcHbt/cyKKroaVboVIWR3bg/YXaqXEkK2FTX+ZAGB6DDLW+Wby0YNr
-	ggDdrVmcF2HoNHs60oL7e3lzWqxQCoKfPHvJKBQdOsJCUd9GWUHo1/amQmGExaFWDnYwce
-	2z424wczcPb+6ghfs4nVRGIeNg61Wf8=
+	bh=quqW7QPkkOmuZBsVPZ6/a3v09/W0iGtXtzNekQUkyPQ=;
+	b=bOEfrOOdGuOrim4uKpsIvxxBxZIz2xNb0Lp6GVAkmYdPwWkfmxFv6q82lsGngNwTn0Uhtp
+	0PC09+w0Q0nUSEvYgcdT5eDKB6MtOIP+K18zkmp6Oz768mkISYkUXPW/EEug62fjQXhSqm
+	oitahOP5nju9IzBuRypc8sqyu+1TQZg=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	apopple@nvidia.com,
@@ -85,23 +85,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	ziy@nvidia.com,
 	shakeel.butt@linux.dev,
 	hannes@cmpxchg.org
-Cc: sashiko-bot <sashiko-bot@kernel.org>
-Subject: [PATCH 2/3] mm/madvise: skip device-private PMDs in cold and pageout walks
-Date: Tue,  7 Jul 2026 06:45:08 -0700
-Message-ID: <20260707135255.292870-3-usama.arif@linux.dev>
+Subject: [PATCH 3/3] mm/huge_memory: skip device-private PMDs in madvise_free_huge_pmd
+Date: Tue,  7 Jul 2026 06:45:09 -0700
+Message-ID: <20260707135255.292870-4-usama.arif@linux.dev>
 In-Reply-To: <20260707135255.292870-1-usama.arif@linux.dev>
 References: <20260707135255.292870-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 45C1540007
-X-Stat-Signature: t4mg71zn88wu378s1tt9t481r53hqa8i
 X-Rspam-User: 
-X-HE-Tag: 1783432405-948171
-X-HE-Meta: U2FsdGVkX1/hTDSLM2TcZZo6DBmt9zqCwcF8Mr4nIkrhyXe/MfNNx07hj42J5++T1F5thCitNxSy0Jq9FvGZq1iYVl80VQnMmoObp0pyNfAZiRCzODUt0/2sZoVUxGrBo6R9511gGQSEy4nxcRVPK5XP0z1FyyMJhrTpILT2hwh6S1oUJA17qYH57V16pxrLKU0MhdurnpNz+dC8kzBxJxmoky4PHm/+ZBQX8E3uA2HQ04+QP81rx3zYoCk2PmVdCP00QmdZKMFPH7w12kIdlPKYJFESIwVsV/fLwMIwnGtcXgpgDJnfD5XEdfdJPPR55VZyKb38KWVfwTQT+JGpppoz2f3y4AyvO8PBwv3pff7P0OzKssmN49GpYsd64YQQrOxWeT2x+YbVNSxGfw4mmoqeQuxXKy/Uk2NBhQaMXZTQRmAK5Bz7VMKryDJ7PasZW4gKZxZW4zMI1/UkM3nO1X9PtOYYLamHZN2ytDxNQg5b0czZOTMbVGMqpwkkdJTN1BY8A+yiy1aHQpYFt2niln/a8CvR2auQ1CMrIW7DJoe+W2EEq/mYou0GbI2LA5VbO8k4vcVJEGsO4OOu/2BHJBgf2l5Rxhv/6rE58Ur4aC94F2QDC8W5kxKb51du3oxm+SGjifF1ytEGQqk9eGy6RaSwKzODTtA60yOywPO2LyUfVHxHfTBNYrKniwsJ4VCvDc0U0g8wEsi9vrYL+XFLaj7LBS5XVnKr/EZ5A4Zv147wVmMVCibvT9dBuGi/g31xtYDV4Rh9DKptX33c5NIdXhXzpJAjSgDnAtiwjOJQd9Ak9ZmiWQMKtbPPb6pHBCa77ZTho4xy2bJn2yxTP/nq7tmrq54LNfizgKYDah+ZQFZX0jWJ5/7jJBkMaiPVsOG2m+bjpxmg/TbPhsR15JPibVXA0A+a1TYMK4gNV+ztRiBzbV/HvqEoJaudPeU/8rLmrdQm6ADWZBqH7+h4IsO
- 8x8gUin9
- iEAVixeofhirxQM1II8QCeBflYa+tdrqef58fGdslImMbVt4D5X6SiO9dZhzuwxjj7GD6tlUjqVFh7PZOf90pple2QPpu4LpvEyndntw5xSYDFY5dqY/ZzKAMdCcqY5YRmZfTtuVvMBzn3s8uiMG4vQtEs4+Q2SnZUOB1xBpROHs8eVuszMPopbPeu0E3VvKb6FchT4IyAooLy2y+QLBxO/gNbqCNukTBY2gdRrffnZb+qr1CXG6dYBewUacJFnmPjLGJrY/qv26WTt0/NSA1YJXY1yZtMb1US38b08VSMfEbMbix1cl+XSyYGsVlbvWqCdMznmUMViRDVGY3TIZgrOoUBvR9WndWWv2R5AAkP2Q0lVw=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E464F4000C
+X-Stat-Signature: 3gtyach748c1bk3xm6wyb7m46eusomo9
+X-HE-Tag: 1783432411-331580
+X-HE-Meta: U2FsdGVkX19GF6e6grDtpI4TaY2/903heq10gyXD1d7X288bW/roiIXBYWDga4bSZVcIAvi6nj+wafL7vzsoLlCyerzcsE8mHINgUtMcg7FPoDHGkcbr9AvJ5svoh5lt21cDJSXDqLJt5HMZ67W9y4mMsU/80QZqUsxyhilxgO2MPiRlwh65yxvWmEJbScweoZerQICjFa+Ih2mZa9QcLYDx0NSbk+pw6y5Fcrbvj5dRAsZ7efUeKb/xo1rMxwxWSaNH4Xdr3LDoXbv100LXar3P3JiGgwRt1f2+4JeZuuLrAT2oJEWugw3RoVR2+fVv69yTzirWtX88NsTWPv1EktBDy0jI4p4aiFb0gorSGYLH0JNt7F4G1X0nZJzxT9rN0fKWQC+a3AzdY4tREuzfY4KzdCfRYXVOHaXLnOJrjLKue0kV2kzDl8wnRWSMcU+YAvJl6yC2o8KVN2/eVrW1jf6KmiHvB+KaeLIR4dzjMW2tOJ4Avk1PPxt0blivnHnkv70CwuA1FCNarm4pYtyQIUwlqI42bAyBdrx7I2zBnrTHzqjBXY5AJ8Nrq6YJ9+SuHtOuaSg0y+UCoQk8DNKARDdN3xj7sa2pWoSeI2+2ZkcBoV4A/L7N1kYQ0gQJtoGjwjqWbgRwm40ddmqIm74xzU7VF4WrvnbDUzckFsiZOW77mb0Layhm/6GKH65fFc5iAXQZV/UCLhKZlko29Ljm3z1XmJzaECN8z7OBF6BnkQaWKvdNTeJPDpyS3IVI3ere3X4dPD6681Bh3VUhYsxhaNVqptD279ropwiPRmgx6rQsXjXrmB2L+0Kf8XtS6HxIoZwthETWeM6cajrE6aJKUPG16AI71fixa5OZZWPQCt6O2cZ5h0h+sjvI30nKwmzB+6sW0bFkZ5GkS4CiPJ6BLveq0lpnsQT/rUBsPgNlqHYSsFbUspQ7mWi9gXZT1/Gf72NmUGobCdUpt5MeafL
+ DDQWgB2P
+ 7WiXlZJX+jkXPB8ta/Vr8PZwRZkkdizi5eQTnQXFiXGqD+vW70Ie4mfV4yqMKEW8/Kw5dilIOYMQvVSiPE7d4rPECrRIPHWphCiDYwODCdBQK1rG+pwI8GCVVTisiYfiyhHIFmV+o1xhLQAiahl0I7+31icS7sVCqIZdiv91nv878lLjse27mkM9JTwTnVPI5PX9MvqN/NgSg4ZQrw+EPchArQFraoyzhioqvFNsrMWJ5NpcdyftSnAx4ftDjspFuyPWPVJ24fJSO5AWkmkqMbIhS62kg6vuh1PkO4XhivmGG/yWZNzarkTmw+K8srFSfdRy6jaw19A51FUKqVikJfR6Ufa6GGojUgyViW5WvZLTC4HIiiqYIa4AQXg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,41 +108,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-madvise_cold_or_pageout_pte_range() takes pmd_trans_huge_lock(), whose
-pmd_is_huge() check returns true for a device-private PMD. The subsequent
-!pmd_present() branch has a VM_BUG_ON() asserting migration is the only
-allowed non-present case; a device-private PMD trips it.
+madvise_free_pte_range() checks pmd_trans_huge(*pmd) unlocked, then
+madvise_free_huge_pmd() takes pmd_trans_huge_lock().
+pmd_is_huge() returns true for a device-private PMD, so orig_pmd can
+be device-private and hit the VM_BUG_ON() on the !pmd_present() branch.
 
-Potential trigger: an HMM-based GPU driver races with
-madvise(MADV_COLD)/MADV_PAGEOUT: pmd_trans_huge(*pmd) reads true, then
-migrate_vma_pages() flips the PMD to a device-private entry before the
-PMD lock is acquired.
+Potential trigger: an HMM-based GPU driver races with madvise(MADV_FREE):
+migrate_vma_pages() flips the PMD to a device-private entry between the
+caller's pmd_trans_huge() check and the callee's pmd_trans_huge_lock().
 
-Skip device-private PMDs after taking the lock, before the !pmd_present()
-check.
+Skip device-private PMDs after taking the lock, before the
+!pmd_present() check.
 
-Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=6
 Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/madvise.c | 3 +++
+ mm/huge_memory.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 9292f60b19aa..870be398c6f3 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -384,6 +384,9 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- 			return 0;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index c0892cc533a9..cfce9f31b30e 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2296,6 +2296,9 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	if (is_huge_zero_pmd(orig_pmd))
+ 		goto out;
  
- 		orig_pmd = *pmd;
-+		if (pmd_is_device_private_entry(orig_pmd))
-+			goto huge_unlock;
++	if (pmd_is_device_private_entry(orig_pmd))
++		goto out;
 +
- 		if (is_huge_zero_pmd(orig_pmd))
- 			goto huge_unlock;
- 
+ 	if (unlikely(!pmd_present(orig_pmd))) {
+ 		VM_BUG_ON(thp_migration_supported() &&
+ 				  !pmd_is_migration_entry(orig_pmd));
 -- 
 2.53.0-Meta
 
