@@ -4,98 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 206F8C43602
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 07:24:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C945C43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 07:25:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 135436B009D; Tue,  7 Jul 2026 03:24:12 -0400 (EDT)
+	id 1AD0C6B00AB; Tue,  7 Jul 2026 03:25:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10D836B00AB; Tue,  7 Jul 2026 03:24:12 -0400 (EDT)
+	id 15EA36B00AE; Tue,  7 Jul 2026 03:25:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04AFF6B00B2; Tue,  7 Jul 2026 03:24:11 -0400 (EDT)
+	id 0743D6B00AF; Tue,  7 Jul 2026 03:25:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D63F16B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:24:11 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 630771C355D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:24:11 +0000 (UTC)
-X-FDA: 84961141902.02.F12A12F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CD5CE20008
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:24:09 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPerxWTj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D73326B00AB
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 03:25:31 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 696A340348
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:25:31 +0000 (UTC)
+X-FDA: 84961145262.20.865AE0C
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BB37A140005
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:25:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=KT0UD5uu;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=+4EDqKFR;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf23.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783409049;
+	s=arc-20220608; t=1783409129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AIB+BapHUzxV/CmBubl0Ce2T16FkAn0tCi+DQMi1NGA=;
-	b=u+U+y9cw4kTvbG9kfX5Mqg4lWVt3IUwH0eGIqVlvqHLW/CV8IQLLjrmbTETjgNcXdvCHIK
-	2O12VOKTUKMRX+l53604r6hLI8U9YhxjUnnlBpnxQENPnfHazWJFF9XEN1MAtezq0JKWHS
-	ABeuvZYVbDmxRlqbcutjPRHUkwk4ae4=
+	bh=C0SVmj43u6l568Vfp1SIbsWqwMiAdzs6ix36MxKXktw=;
+	b=X50eQSf5Ca+twjm92JcqucxpbVXgoenP4K611ug7eeFbveX276ZC12vz3Hg7hFINNLxlaD
+	xw/uKbrwvSftpiuF38+J6HQM1Etw79uEedn5SaLoDHgJYrJx8x7bcKaM3k2wSIQKG3vTX5
+	PfVKO0OaNZ4w1fBfxcb3dssUpFF6uWI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPerxWTj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=KT0UD5uu;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=+4EDqKFR;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf23.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783409049;
-	b=rDJ8PGSmcg/9aKEjYlZF3k6qyLLPfgPChpqffUMnemyLcQKa5BOs6KgJfgE6qhR2uJ3bww
-	+B++0myGVi4KJW18Y/e+T9/anwIHaTnpWuRtSkhVdgAqq5eh5HVG2cj7QtRaFX9W3q7gns
-	s3ep6QsxJoyf7xvkmLKq8cVGwap9SwQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 34D78601DE;
-	Tue,  7 Jul 2026 07:24:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F8E1F000E9;
-	Tue,  7 Jul 2026 07:24:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783409048;
-	bh=AIB+BapHUzxV/CmBubl0Ce2T16FkAn0tCi+DQMi1NGA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HPerxWTj/wR/yz9KqR7BZ/IE74mbMjRVdfVb/Na/vo3crjk7v7RkPkkYTA7oAGN7l
-	 5EKfl+gdyapyQpbNfITb611pxx3ENjIBTmAcaN26elsvf00r97h8TwXf3qZhw7+B0A
-	 4T8+W93k0iBaAhuqFPoslEDKCs3dt36Wsm1rQwFLRKBQ+y3XZ1qGbmUBuEqlhKSZFu
-	 U29dKQZ44cXhfda1viJ6wn/gnz9Gf59/RcUsVHEUCZFx0k/DwxPr3gqs4xVezR3mR8
-	 o1NMhxcG45RFk+L8j94ly1pa9t9+uDj823pW4sqQjCJF8iFir+E5lvhr0zbwbWAFtC
-	 Ca/kv4P02wFtw==
-Date: Tue, 7 Jul 2026 08:23:57 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Linus Torvalds <torvalds@linuxfoundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Oleg Nesterov <oleg@redhat.com>, Peter Xu <peterx@redhat.com>, 
-	vova tokarev <vladimirelitokarev@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] userfaultfd: prevent registration of special VMAs
-Message-ID: <akypf9pq8NCeZlMi@lucifer>
-References: <ajOvwGs5xhnfBu-k@kernel.org>
- <41ef0dce-e973-4947-b5e3-150fdb07f1a6@kernel.org>
- <ajO4sLq2UBciSgOn@kernel.org>
- <dd2ae577-9b7d-4e40-81d0-fa9fcd7e0767@kernel.org>
- <ajO7yI541hphWRb8@kernel.org>
- <11bae87d-73e6-4946-a41f-c5542fb40b75@kernel.org>
- <akeJdxdZXAFb8XCr@lucifer>
- <ake3JZJPYHP-0N7n@kernel.org>
- <ake7PLwdHUHu4idi@lucifer>
- <20260705005124.307e2379ab03109e5f77bd1c@linux-foundation.org>
+	t=1783409129;
+	b=6AE0VbuyXJeZfBNhufRzdGMl3sbe8+0Tt6RO60d/W0KCQZmPq9R2COwY1AkzT8G9yj+WLA
+	yzZ4lFIt3FMibRP8NA7aDe8JF72EshtvK5RrBFiQ2YSqdyPD51bOCj3/156fjeGghjhFQE
+	RKPE4vS61YyJ0rLlJtVnipWxuxcw3Ck=
+Date: Tue, 7 Jul 2026 09:25:24 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1783409125;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C0SVmj43u6l568Vfp1SIbsWqwMiAdzs6ix36MxKXktw=;
+	b=KT0UD5uuroQgmma8e/nNFcR9pvRXjp4CaD73G/T19FB7EWt6R73S74goA7TXZKreWgKiFN
+	XRiMV3m/EktH0egO1mL37XT5YGSTEFcp5v/vonHTHQnIR/+6Bc67le1kIZLjAPDCyZu07h
+	7LdK9lID3uyN9DEyLDeSDoxew4hVl2boZeEWsk1nKKKwd40+vit75nA1TiEBV/BHXiUOPc
+	4pgVV2UuQGK3Wd0tjnur5FU7RrCmmvlO4Y/C8+mQHwuioHRPzl3QC2yhPIIHDMQ+HeD+Rh
+	51KltR3mfGzh836zVKO0jztpjVA9lRLxE7z9STG5QWYKHWD3keYMoxen/FbH2w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1783409125;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C0SVmj43u6l568Vfp1SIbsWqwMiAdzs6ix36MxKXktw=;
+	b=+4EDqKFREOOi3NVU93iHrf7aROCmKVXGt6YpxPmSL3ddlN1J20iHCZLTHuKfZkzE+08Vei
+	E1zAi+JCJXG1iNAw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Hillf Danton <hdanton@sina.com>, Kairui Song <ryncsn@gmail.com>,
+	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 04/19] zram: remove max_comp_streams device attr
+Message-ID: <20260707072524.9IkUhJ8G@linutronix.de>
+References: <20250303022425.285971-1-senozhatsky@chromium.org>
+ <20250303022425.285971-5-senozhatsky@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260705005124.307e2379ab03109e5f77bd1c@linux-foundation.org>
+In-Reply-To: <20250303022425.285971-5-senozhatsky@chromium.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CD5CE20008
-X-Stat-Signature: b9tawksmzdygghfr9b5f85w6pq1d3yed
-X-HE-Tag: 1783409049-454573
-X-HE-Meta: U2FsdGVkX1/R+I6QywhI5QWsKusd/Zdo23XCexeYMcSoffzgADuscObY3J8puTEh5hW639lEHe22gDDZj+e5DF8zAlGDmBWS9S4moOzXw6DOHeF8Tfazk+6Uc6sHxC5Z6eCcu5ndB3IRkacuQCsYvb/Xpxg12tHrM9LiyGGMKht+IBv0bPG/ww8JhfbQexs9bdUUqCcFSxthwiVB8d1Ag1pMVqHcFTBzv/pIlDEmmINHaWe3RMElrjlu7lGmcVkNjFejyvEUWRNIJaJXqlWIVKbVSxFN4U/gM4xoetIGO7VjO/V0giO3A2qzurwM7JaZJwgwJstSQEQNFV1kCv6lweKAs5UbKWsXqKB/0VRPV2TgxZYLQ5jYH4e6kh7d3GEMTCP6sEIEL3chwHcOWE/676HEnQDJrAjDbKIHAh6IDapG3f45qic1680bSkWuvFNcC/YhZplinZ3sDariUL4/1xIL2DEnWdNmaKFtSJJCHz2j2o1CcybqExn9JofOky+zn0uA6Mlw8q15lKVk2QrKxWsOF1Pw2dRFaj47nboMkwLrJORpdJ19JJl8W4i0SdBGMOtMWk4l94TFMpEMwRpaRk26s+Yn1+i38QyDAb0Z7tyaE7/LidkRs/KmKk9bmgGvdeG8q5JK+DJBN6iOfyisYvF4AiHoVYXfPgKy7Q+m7Q8tzve4uOQGxvoGnZqd5dvrPwgLLmDg8vGLRZJP6ISHhVnjF5LIwrxTYHyUKK20XwXk54dAKdDVMr49n1hiP7j9DpHeB4wnEP2UcU9ELXTZMqye/QEFiHf2eV4kCn6uWRgTsZ9UY9nqiHstVk8/guS/Ecjtkb2K3NCjz/UpBnUzxF57MRxjnzUR/mjMmQI2O6INY0HJsyYH1FYraLQl94x8JS+jnThmmQvX+NbqYk97/lucnFyjcQwdXmuWIQMZlETS7+exrK0Xdr7SfQVuCfQHnGRUmpyoT6/sOM98r4y
- iioCSOX6
- Q+A+kwuawvjiK/U+0jB7JWde+Xgq1BEjjGDiacE1iQZigtqItJFrJtBjLdlKP8Zki4DGdwg2v51A8iWhpU99G2HAC2ITioWBym0p/9sC7GNyNWnsUEuNEqt0/uVfOrXdEXjpJbqafU5dXCEi+E0k5jKRdMUAYpgjeONsy0rK6lk8pTHztdLApjL06WuSQJqUoH9C8ZanbOW1F1TY5Dm1xaOjdbx2C4NAuQtm7DxGDOpx2ZxRSBrYX4wz1HJjBnEsgshvwPawe0NFwxbFUqjQX1TJGJw==
+X-Rspamd-Queue-Id: BB37A140005
+X-Stat-Signature: iigd6u8dcsiy7tj4rmjjfakobfyffqdg
+X-HE-Tag: 1783409129-31022
+X-HE-Meta: U2FsdGVkX1+e4+9uSWR7HCY00aeiiq9AUqPIcu3znX32ssR6SQ50174HacFntamx00TvIyGh6LYlmOKT/gcC1LZT3aWbg8+uCt1LIuKYubsslHuIwQV2VX1dF0vB2tlKclSQ82F1ITIdoie3gBBU6mFM+V8P+19MRY1ezF4yiylpRHERb8rpF00rvXahOtPOdyQoF+IG10m9Lr/TmODPPzoVlRV4Felw2VF8Jd022eSjui0alFx6Fqdc4YcGSFkNrStFPA8IPPL5lGPXZjEvQlRsXjGkcxOXR4jUBYfE/A9KGJIbVtXF2kNQBlP0Kwf6KNTnW1g8imA8VPgsMCjoiUCpYzrJ0q5RaUBhoYhcEfyMIeaDsSSv+QM4xqS8LQ8XRsAKMS5BRE2suIFe6FTRy6E7C8K0Jsl/YBPBSmz1nXDc3J6/fvg58Dg80ymYSZtEjrk+8byNo7YUNci6vVh/dtU3ZClLQA+h03nnVlebdTdAY01/2NES0XDlsGWNrWN90WhzYGedEPnEEusvDT0wSJ9Hi0cUUfNQzkqe1VKqvqgOzfSsZyeHWht9U7cvjrPUZfQ55Dp6gSbKTagEmzA7b9beItVvf0fAIrXbdw2EB2QgWjhD6N6z1EHJhbiWF+DJjdKeMJ95EVzK/FW3Af1SHByWkKT6XZkAPiGsl+blK7tc7imlGARr2rnaC7XV+9l/JTV/MXycboQcZP2GWHEhYAqg8MyDwAGAIfv8OpMlEgcd1opR4sjIiksL/8MUsABzcKcGnYJFjrVeQoQDt6O2DdVGxZwNZmSzw+vZFpUaphvTdb/hvlql86+NAjppB4QOQEdJnjZCUpZX/W/Pbw2oFvs9FkMefsNzwUQe452Zzg6wBitbWwYr+ms8d4ZtA7PVhwFPf+z1logAODlFVFCsZu3AH4LLL03qtRzt/AgeSqL7zn/ft73QThXahGy2jvOkdwdX7SJ/PIphqC1Y1OM
+ cz7Nltbf
+ haLDe2iCHvmH/lr4uHKmmBzu27vJ7Muv2X5LQxfsmtTh7vWcNzPd6w1Uh2aWMjdo4modpEPqXrYXQKOZR1aId15lHHJ0KF+AGxlAcDEyjh9v2e4s1CQPhF/pVk3VSDs6u8ClkxSkXHCsjR1P3PuKyHvmWtV0be6r5xmfpzyst0f6/kYRe1gckxEs7uIYvTLFjUd83Sh8w/xD1fvoQAD+oBudQKPLAGDxLLZ8NOWDp9DUkPUOfH+RPYKtgWw49gi/05/+A4LiT4nvZb0KJIcowQgNuJ0mgOkmscg5Z
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,36 +100,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jul 05, 2026 at 12:51:24AM -0700, Andrew Morton wrote:
-> On Fri, 3 Jul 2026 14:38:56 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
->
-> > On Fri, Jul 03, 2026 at 04:20:37PM +0300, Mike Rapoport wrote:
-> > > On Fri, Jul 03, 2026 at 11:11:14AM +0100, Lorenzo Stoakes wrote:
-> > > > On Thu, Jun 18, 2026 at 11:37:10AM +0200, David Hildenbrand (Arm) wrote:
-> > > > > > In a way that's an extra check for hugetlb, but it will work.
-> > > > >
-> > > > > My point would be that we exclude all special VMAs, except hugetlb (which is
-> > > > > special but supported ... in its special way).
-> > > >
-> > > > Mike - you said you were respinning, it'd help my series if you respan the above
-> > > > quickly so I could base my change on that :).
-> > >
-> > > I sent it already:
-> > >
-> > > https://lore.kernel.org/all/20260618095017.2553004-1-rppt@kernel.org
-> > >
-> > > and Andrew apparently ook it:
-> > >
-> > > https://lore.kernel.org/all/20260618183442.BBCD71F000E9@smtp.kernel.org
-> >
-> > It's not anywhere :)
-> >
-> > Andrew - did you take that thread as signal this should not go in?
-> >
-> > It should definitely go in. I will clean up the mess discussed there separately.
->
-> Thanks, yes, I added it then hid it when Linus objected.  I'll unhide
-> it now.
+On 2025-03-03 11:03:13 [+0900], Sergey Senozhatsky wrote:
+> --- a/Documentation/admin-guide/blockdev/zram.rst
+> +++ b/Documentation/admin-guide/blockdev/zram.rst
+> @@ -107,7 +93,7 @@ Examples::
+>  For the time being, the `comp_algorithm` content shows only compression
+>  algorithms that are supported by zram.
+>  
+> -4) Set compression algorithm parameters: Optional
+> +3) Set compression algorithm parameters: Optional
+>  =================================================
 
-Thanks!
+You could take the opportunity and remove the numbering. html links work
+and you could refer to a section without the number. See
+	https://docs.kernel.org/admin-guide/blockdev/zram.html#set-compression-algorithm-parameters-optional
+
+:)
+
+Sebastian
 
