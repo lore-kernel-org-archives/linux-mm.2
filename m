@@ -4,102 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8F0FC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:34:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD907C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 11:48:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CECE6B00A3; Tue,  7 Jul 2026 07:34:54 -0400 (EDT)
+	id B81266B009D; Tue,  7 Jul 2026 07:48:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A6AF6B00A4; Tue,  7 Jul 2026 07:34:54 -0400 (EDT)
+	id B58106B009E; Tue,  7 Jul 2026 07:48:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BC786B00A5; Tue,  7 Jul 2026 07:34:54 -0400 (EDT)
+	id A713D6B009F; Tue,  7 Jul 2026 07:48:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5191B6B00A3
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:34:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E7ACD1C38E1
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:34:53 +0000 (UTC)
-X-FDA: 84961773666.26.94C6ADA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 293E6140009
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:34:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KxElatQY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 829EF6B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 07:48:27 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 10F681C724F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:48:27 +0000 (UTC)
+X-FDA: 84961807854.08.9D28840
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9D68640004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 11:48:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="Lp9/IJDW";
+	spf=pass (imf12.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783424092;
+	s=arc-20220608; t=1783424905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xD7a/PykFMk76eX8/Vohs5LQ/Ovej1+QHxfa9aUv6iI=;
-	b=3RP0a+F3rKyEpyPGKKRCTZ0fK7TtfaCiP8ErSj0mIjUG6h0eck8vHWS88MC6dZAPWe18hS
-	VVgxACXD1V4pweDHGy1/nd+WCuhkWXrASodGBa7VrkgnYqmzbRcrwS8JXTsTgRd0Pi2p6s
-	mDThTh7OC1LvoFlseemOiVWvBLhR75k=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KxElatQY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=GQ0mvywMk1VYYOPBF5PvfJak/QAKIBpitC3KAeG7XY0=;
+	b=oQQJ7MLx5mR1RsnRbMlKG5tsD+yXQZ6ZFvdnJ90jI4LJxcrtvTirHgYNTKaFYwQK1ZY2HV
+	6Qm0IZYKDiK37cvBbBHV9eu97wEnbXXMPeq0/2YKnnWmbhu4YXu4ige3GjNzMnzq/fRcMM
+	xF00UofZmNoYnsiQsP1DbYvpf7lPHUY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783424092;
-	b=If8XSDyZCfXmjweEsdgCgtifHKtV+JQbP+VD8Jx11nGSFLLc0/lAiwTdczc+UnQQoQPRJi
-	vkVpwCccgN1HqSU31TV0apP74Nvvuc0fWocLbJotAOhr/qwawX+nLfNfR61zu7C/MQQFUT
-	ZRqqb5dGZLdIemLqGOIMkNgipluc/SU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1033C405C7;
-	Tue,  7 Jul 2026 11:34:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386571F000E9;
-	Tue,  7 Jul 2026 11:34:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783424090;
-	bh=xD7a/PykFMk76eX8/Vohs5LQ/Ovej1+QHxfa9aUv6iI=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=KxElatQYxv1NDV7ZRp28MI4mwxdFDntYF6Wepqb+KQ0fCpXULtGhYLd1ZwhCpwE5t
-	 smUsPY7tDXC1bPg67nofX7s8Zo74QTynRz1eShZn35qt2duFR5eYxL6JmgjGjMtXhv
-	 zsMPeiuJAJi1POB0mFeQRQynkJe56KdkvaxghcaRLcFsNZOHNBnnXqmO+380NF0w0z
-	 MlrXBWM5TER/rH5e6S4PzGWlxXoSKiQnmgXK3blzKFGetTn5VZlGGnH0Pn7GRKNSOk
-	 Dxpmkz2e1ZSjzv43OudYSdCbrS5nXC1YDfyJVuKikpnW7HN1XZIx/uCusz4ZEFkQzD
-	 boLajUpNZhiiw==
+	t=1783424905;
+	b=t5xZKYIwnyL0tc8XG8V6WjyXzlfxaPfi0A8b3VIexhbf0REljda+wi1bm6ljiljFqiparf
+	oA2kP6JmT03bH2a7fP1YFxWtFNt+V1aNtQcy9ubu6hX2mx3zyZ3QiMCpKyQlkkwH1iGFLc
+	bfsCUz4SCuYE81pXArW0AsJ4az1YsxA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="Lp9/IJDW";
+	spf=pass (imf12.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=GQ0mvywMk1VYYOPBF5PvfJak/QAKIBpitC3KAeG7XY0=;
+	b=Lp9/IJDW0+fMhUe2D2c7Pxs+psR2xzhuJBRSozphimRGSOx/peqUwYuBnRGHBZfVoaMu6L4iC
+	UkKTve2BKsVhZCC8/8/OQMn1T4wsjMlaJjcR8BQtbUdmD72ShTagpcLqBR53ClUDZZDnYgZAG9k
+	6LYz4Th35zqYGoyXSpwTTqc=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gvfQb0MvzzpStg;
+	Tue,  7 Jul 2026 19:39:35 +0800 (CST)
+Received: from kwepemo200010.china.huawei.com (unknown [7.202.195.178])
+	by mail.maildlp.com (Postfix) with ESMTPS id A17B440575;
+	Tue,  7 Jul 2026 19:48:13 +0800 (CST)
+Received: from [10.174.178.56] (10.174.178.56) by
+ kwepemo200010.china.huawei.com (7.202.195.178) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 7 Jul 2026 19:48:12 +0800
+Message-ID: <c11452a3-b918-4d4c-afd7-a835a1d0a3bc@huawei.com>
+Date: Tue, 7 Jul 2026 19:48:12 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and
- interpreter selection
-From: Christian Brauner <brauner@kernel.org>
-To: Farid Zakaria <farid.m.zakaria@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>, david.laight.linux@gmail.com, 
- jack@suse.cz, jannh@google.com, kees@kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mail@johnericson.me, 
- shuah@kernel.org, viro@zeniv.linux.org.uk, Gemini <assistant@google.com>
-In-Reply-To: <CACCo2jm5=xrQNfak=TdO=2oh0DC5pe+atj=UfuTa8Y9s8GVkqg@mail.gmail.com>
-References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
- <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
- <20260706-uhren-raubbau-sinnkrise-e40a8337414b@brauner>
- <CACCo2jm5=xrQNfak=TdO=2oh0DC5pe+atj=UfuTa8Y9s8GVkqg@mail.gmail.com>
-Date: Tue, 07 Jul 2026 13:34:46 +0200
-Message-Id: <20260707-campieren-fingen-himbeeren-e4b682bd8e63@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1976; i=brauner@kernel.org;
- h=from:subject:message-id; bh=zBPUW+WQ/GjuRupYdwz/7FHmp89KGxrLyUS9t0y2NyU=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT5PAm/Ib/tm2Wn+4vyDv75We5Ws38unHZes8Mkw9zG6
- JnkzP62jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIm8/cnIcGRNwrINtdMr/8eX
- hyzkbDET+dxxbnX9Zz5vrp1LRfL2rWT4Z7Dz3jdV9ijN8xOEfghc5k3QOpNw8bz073THWa7T38i
- asgAA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] ARM: mm: fix use-after-free in __do_user_fault()
+ under CONFIG_DEBUG_USER
+To: Xie Yuanbin <xieyuanbin1@huawei.com>, <akpm@linux-foundation.org>,
+	<linux@armlinux.org.uk>, <david@kernel.org>, <ljs@kernel.org>,
+	<liam@infradead.org>, <vbabka@kernel.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <linusw@kernel.org>
+CC: <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<sunnanyong@huawei.com>, <linux-mm@kvack.org>, <lilinjie8@huawei.com>,
+	<liaohua4@huawei.com>
+References: <20260626073048.3595106-2-xiqi2@huawei.com>
+ <20260706133247.145485-1-xieyuanbin1@huawei.com>
+Content-Language: en-GB
+From: Qi Xi <xiqi2@huawei.com>
+In-Reply-To: <20260706133247.145485-1-xieyuanbin1@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.56]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemo200010.china.huawei.com (7.202.195.178)
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 293E6140009
-X-Stat-Signature: kashdgsfidydp1haad9fkhx8exge3unf
-X-HE-Tag: 1783424091-398627
-X-HE-Meta: U2FsdGVkX18OOrrSqQDKVERYZnaqpSjRxNDqDAVzxXXczOTNHNM5Vhxcc2xwWDItU7VV+RE6QU+Yo1OcyzwOUincWQkQMay2EcpnjOr5VcfFP6EB/BEsParWzoJeg2p/6ei2q93NmOqk/GPQEk1M0NW2HfJFLJUCkTvk+/2iou5RwUQFHTbIPm/s9zPOFPwi4C/ggX3KvAZhskPbr3MuZAOh3o3dLmiyK1XHIZ3K5/dbEnf587Gj1CBSHA4wQsMQgAseCW8eSCbDaVDZk+QddQ+lUOEYPTgEpZ9LiX4glklddxQ8riaK/5SPdsO7bgpA2S6gPEqzUBQjCYX+tXJJMZ0WuSjneWwEL7Cnp+NU78dDtL7s+9GVCD1nCgVOOxJVqbRV7YKwDHWhI3HsyuP+mHUmKdof5gCikXDnFiJ0xporNWZTiu3A0+uflTpQYRwyU6nJK2FVn6JH1g90qw9AdVMHrKQz5vxoC1nowldcImrRINfAxEjLfOLwtH7Nlv6rmtg8LZ5MVdV14oowu5m2B2Gj7NGWbWVaRGW1wWu12YLe8BpPslSG61vfsdbLCfIUL72dG1VGt8m/nyDgNMGqL19T5H3XNcyvARWKtSVWDDdMn2xIWvEeCSHf/M06CEcDwabxEFQKHdjqanwwHBz+5QkKS2+AKXcfR2vVY61GVGhd9rSATZ7dkZCZCH05loBElsszUkFFpM49Du7RI3xZnhZ/tBVJF/fYh44BqjEOfUFVtipWqnelCFw/5Wb9nVN5E757KHWFL/I6Ozi9yHcOJTXz2ij9BAg5h/4p6AChEdjouD0lU6wHtxl3Fi1yxoJzIqsDGs+KdwPZD25yq5YFdddULxYC6fpVsTgZS0F8jD51+TLz4H9wR7G43f/W0YnBiwTm9VtacdZNOzglfZ3AZr1QjPk++THNXd2cNWUJg+c9uAlLf057yBnoy3x3ZjQRR41zg44yj2fd4HwDhr8
- mX0zEzhu
- AeqIw5TVJeObiSRBQ80QoP4k9xyqV7he5DSvmYg1upAD0+clleQpDQZWh6LPBNVvaoqVt49sQAfQk76bitfzIcT5mRliCFJr1uLX0vz5PGcDH73gLd47PBZsgYRV/qz27Uwm5aBs8yzbFZLcVfP6vlQm10xt6+nP1eASYLTc3LtV7GuVQY5rfovEVKaAdKrUsnyph0cFrhKLmLFvaBKPS1CnwCYSzpPRyE8k96QowEDz47JeoCQHndEVUJfaU13G2/qJPSTdi5rXEY2xJD32z1bf4f7ZhabBOmEZJmWHuirBnvZESp/uilmMjW1FE58RgfTjcnBuhYG4HGps/rXoFRNUj/0jEuB9wWT8VJiIaYi8kmNGSHbZX20ynw8QETXMHFA8WBuymVUxTghBg/bawWKUSdIOoEO2ACwFffcavomMuu1A0USdjewea6A==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9D68640004
+X-Stat-Signature: 7x8qs6gbg8q86533zr7orj55xiztnkny
+X-HE-Tag: 1783424903-109113
+X-HE-Meta: U2FsdGVkX1+UeVFXtSWgZrUf2ZKJteGvyigN88kKPNtA2g9AXqEQF+1grhFplI1c2JvBr3ra0gPrYUfNr2FWGGP8GGoakJXu8kRUvsWtAZ9wcuw3tP1zZ7P5c6V8qM1FUOx4/8JSyPklQzHe9Y/Hyq8M+Ma6hFFPpugIR8dBeV9uFUrbRrb9sHxiXXj7NT7lXoKaqdtvm0OXWdkfubZtP+RjR2+yK5n3UBlFSfZcWjfzzOvW9LUG7VI7inXAWn1EdGv9I7MCD34yFnsYxbCox6hIuFcg/sVQO0mvD1WWe8+DmV/oSiU2WlLyD6Ve1UP7RmQf0gnb7NGBgLgca2vEedmW1JJWH7Y16N6niMksGxqfO3/llyl7KmdwCs4R0z6AQZAZA3w1+tc3ywEqXLg1CRKd+EMyKJkKnT9g3mfbwXt1UwTNKSITDFWnVl7XMPoatT0+gB9WNODONncm+xFLj+2yyjsJ3xuaMLHLKNlMhcoI/3witvGOduCSENgxNdlCQVRfxtYKZ45glmsjJu1Mqhj2iyR+vun1AHN9n3BhCcGhEc4XEM/9Liyf+M97a+XiR+oeuqH8p9R9VProoSRVxHK2fmt8CnEsufZQVfseWIcl58z/cgI+6Aj7Ri70f8l0VeOfT9fBqqhRoWRy3QdbzYfJkwD4pl21IoEAgiIc/wM2efvLokXeqiHop+43SkGny0VU4nNyhlOYyos8Dd9QpU7mCnhabQXiCIR8XyOZfQ4xzPqLOfmaYZ6MEHCDVgXOX+3GcCo1PrnuKmx6/RDx6aOdCW7HYhRiHjo64X0c0NvmQTsJYwjDI2U5qEe5bxAkoBaknX6QxEQ3tY3pujG0ZFZEdUDW1dtp7RaBXBChHCdRB8hIP+9UcxRoo5axGqtiGRma/ou9fSHPiZJffnVDIaL2AtKEh2DjdjHvqQ7Br4ra2/EYoX40EIXoEHoEOmCScsNKYAExNtN7pMMIW9X
+ fA/jeQN8
+ zIEJeWiGiRp0J4aJRKv9KR/NuH5K6Pw7bevQHN6IDNmvrqFjl0DJsAIgXZ5friD6dA6ME7E5bsOz/qQlz/U6avjbSm6B2rvngVCfR/EBE24C24EEaHCDAmIrK4U7MYR4cjQgA0Y50SCYlOCSzRGOSd/QsOGkeC9kwDEdPnmtwDdqvps0Nu/hMWPmQOstIJK5FWktSv0B3QcsL7xp5LXTgAmJmfi8yr8hw3ymMM4i2DCeF50dBwdPu7qPt5Uy+Uz/5i9BkyI0Pa6w1ku1gqAyfq767rpqvPkCDzLds4OWb50yWtv1K45i92jYzIM8PD5Jef3IP1N8MXaazWey4vOQdO0U6qWsIWEDZJJHjIpHvO4wLvKCKnQCkVTjfI3hT3w2WbW/mdT7IQ/VEP1UZ27K6YV8St/v4gFmf9gpgqjUPXhOOH4roIUPWRzLtGLgCeM+thQSZtblZ2teLNh25GwQYHQqmIFyYzMK6IBSH03H+rGSNwLC2cq5iU7ydBinTKpFE3lsfo5dFPYmfjzJOaULYylSg5rYuuQIqkElIhhEepNBPGNE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,48 +104,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-06 09:47:53-07:00, Farid Zakaria wrote:
-> On Mon, Jul 6, 2026 at 9:01 AM Christian Brauner <brauner@kernel.org> wrote:
-> 
-> > Ignoring the blatant bpf abuse here I think this is quite workable. So
-> > this can be turned into an actual design and patch imho...
-> 
-> Glad to see you think this proposal is in the right direction.
-> Just for my edification, when you say "balatant bpf abuse", you mean
-> how it abuses the socket bpf type?
-> If so, do you have any guidance on a new type or should I just take a
-> stab at it.
-> 
-> For the proper RFC patch unbastardized with tests, should I start a
-> new thread or is
-> the convention to keep attaching it to this same thread?
 
-Always start a new thread and bump the version number. So we're at v3
-now, if I'm counting correctly.
 
-Fwiw, if you have access to an LLM you can try and setup b4 to manage
-patch series. It's quite easy once you get the hang of it.
+On 06/07/2026 21:32, Xie Yuanbin wrote:
+> On Fri, 26 Jun 2026 15:30:47 +0800, Qi Xi wrote:
+>> @@ -181,7 +181,9 @@ __do_user_fault(unsigned long addr, unsigned int fsr, unsigned int sig,
+>>   		pr_err("8<--- cut here ---\n");
+>>   		pr_err("%s: unhandled page fault (%d) at 0x%08lx, code 0x%03x\n",
+>>   		       tsk->comm, sig, addr, fsr);
+>> +		mmap_read_lock(tsk->mm);
+>>   		show_pte(KERN_ERR, tsk->mm, addr);
+>> +		mmap_read_unlock(tsk->mm);
+>>   		show_regs(regs);
+>>   	}
+>>   #endif
+> I found that this fix does not completely solve the problem. For a user
+> fault, the addr could also be a kernel address. For arm32/x86, the kernel
+> address space and user address space share the same pgd page table,
+> but the kernel address space's page table is not protected by
+> current->mm->mmap_lock.
+>
+> I have written a use case to construct and verify this point. When A user
+> program accesses a kernel address and triggers __do_user_fault(),
+> show_pte() will directly print the kernel page table.
+>
+> So, I suggest that:
+> ```c
+> 	if (user_mode(regs)) {
+> 		struct mm_struct *const pt_mm = addr >= TASK_SIZE ?
+> 			&init_mm : current->mm;
+>
+> 		mmap_read_lock(pt_mm);
+> 		show_pte(KERN_ALERT, pt_mm, addr);
+> 		mmap_read_unlock(pt_mm);
+> 	} else {
+> 		// .. keep nothing change
+> 		show_pte(KERN_ALERT, current->mm, addr);
+> 	}
+> ```
+>
+> I have read this article:
+> Link: https://docs.kernel.org/mm/process_addrs.html
+> `mmap_read_lock(&init_mm)` should be able to ensure that the kernel
+> address's page tables can be traversed. But I'm not quite sure if
+> `mmap_read_lock(&current->mm)` provides protection for user-space non-VMA
+> addresses?
+You're right. And I think the fix is to simply skip show_pte() for 
+kernel addresses.
+For do_DataAbort() fallback:
 
-> > Note that binfmt_misc is namespaced and can be mounted inside of user
-> > namespace + mount namespaces fwiw. So a container mounting binfmt_misc
-> > (a fresh instance - few do) would escape that bpf program. On the other
-> > hand it would allow to register a custom bpf program per container if
-> > needed...
-> 
-> That makes sense -- but you will need CAP_BPF etc.. to load the new
-> programs though
-> if inside a userns.
+	if (user_mode(regs)) {
+		if (addr < TASK_SIZE) {
+			mmap_read_lock(current->mm);
+			show_pte(KERN_ALERT, current->mm, addr);
+			mmap_read_unlock(current->mm);
+		}
+	} else {
+		show_pte(KERN_ALERT, current->mm, addr);
+	}
 
-Right, bpf tokens exist to delegate bpf access to containers. Not always
-ideal but it works for such cases. My main point was to communicate that
-containers are able to disconnect themselves from being able to execute
-binaries by mounting an empty binfmt_misc instance, iirc. I should
-remember that as I did that work but I kinda don't exactly. :)
+For a user-mode fault on a kernel address, printing kernel page tables via
+show_pte() does not help. And The fault address is already printed above.
+So it's safe and reasonable to skip it.
 
-In any case, I think it wouldn't be crazy to allow registering "default"
-handlers that appear in all binfmt_misc instances if needed so
-containers with separate binfmt_misc always have the bpf program
-available. Just thinking out loud...
+Same pattern applies to __do_user_fault().
 
+> Also cc to mm maintainers:
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Liam R. Howlett <liam@infradead.org>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Linus Walleij <linusw@kernel.org>
 
 
