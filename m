@@ -4,91 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02869C43458
-	for <linux-mm@archiver.kernel.org>; Mon,  6 Jul 2026 23:38:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC77FC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 00:14:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CB826B009D; Mon,  6 Jul 2026 19:38:38 -0400 (EDT)
+	id 41DAC6B009D; Mon,  6 Jul 2026 20:14:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A3916B009E; Mon,  6 Jul 2026 19:38:38 -0400 (EDT)
+	id 3CDBD6B009E; Mon,  6 Jul 2026 20:14:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BC476B009F; Mon,  6 Jul 2026 19:38:38 -0400 (EDT)
+	id 2E3706B009F; Mon,  6 Jul 2026 20:14:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DBC236B009D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 19:38:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 493A88C77D
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 23:38:37 +0000 (UTC)
-X-FDA: 84959968674.18.9B98CA4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9629740004
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 23:38:35 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=T70ApH+i;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E80586B009D
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 20:14:01 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40F93120277
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:14:01 +0000 (UTC)
+X-FDA: 84960057882.16.56E6419
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id AD5FF20004
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 00:13:59 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QfisRpmL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783381115;
+	s=arc-20220608; t=1783383239;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4RvaHHR1JLiGd+lSbTeUq745Smy4dv+Izz0JZQMDa24=;
-	b=0pkpaTRQ6kB87ZnzrGZLdcXEO9esVgPIG1ck4exmnmm9WqZQ3wNuIxNdDERMc09mFcb7TV
-	gXUS1yh6wIZkYGpLlnOREeebivwKwIAuRd1gIJBFuV3oyit1YYzCb6mNCyIiRfVaZoaCVr
-	Y5HRl28/UHp0ca7+o3sRo6GQ3D+8zyQ=
+	bh=eB1zO+hEcVPqicULA2t7Fk+v6ErU6JNrcgHBtzJJkzs=;
+	b=DfmG7UqyE2px7vpHrwH8XiUPcHBEljiFiiuFsw8Rw01KGYRbnvLTD8clRT/vIvnaVZt5Ty
+	G5k80AUHV83tDUf2/teJ4nRnwQ0fEl+oSkZ1bvaTg/Xl41em3MZ1zHkqA0ZOlAKEQcKLxS
+	nxkdcG1Val+rgqCigVIuM+n/CnxeVM8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=T70ApH+i;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QfisRpmL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783381115;
-	b=Om8UMhaxtijcf/Q++AzhfT38JntOgdkZn1uOanXtSIfXkwWPlBnwsotM88FNonyYFBs+NL
-	BFGvKFklW7Y2g2BbE0W1Ko3tIVeHAhVxhyrAIVuk8dLEfLW25fcD05Ghlb9uSazwpV5nso
-	5Mj+kDsy5UqEgKR4N7HuA16slZi2GXA=
+	t=1783383239;
+	b=Q1B09IJ8k65qF+c+AESX0SX1xit1prMKRA13ICNl0sAOqDWf6ZCEH31BS6vF9PXo86hTR6
+	90J++vJmpsaFl8UZn5kS0HnH9FyTFz0jw8lJ7RJ6Af3BFu+avAgWPnrCh9M6dxZ7ASKGZb
+	9TmKfQ+CuEd4GWk9KrGRkUQEMNKWBc8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D67B4600AA;
-	Mon,  6 Jul 2026 23:38:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAAD1F000E9;
-	Mon,  6 Jul 2026 23:38:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783381114;
-	bh=4RvaHHR1JLiGd+lSbTeUq745Smy4dv+Izz0JZQMDa24=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=T70ApH+ir5I5cPXv98r8DrjVUoxum7BeJzgWMoS2eW2HYvEJdSbuahFtwlVhniqwG
-	 cRkLwfmlrUNps+9jh/GiNNWgNuzbOA/UWGihVUfo9zJUyGvpCSAo8OL1ufFhWfuF9N
-	 V3Tt5MLXSBBO3mq49vKsQ35HAxcJ718rQVOQEG1A=
-Date: Mon, 6 Jul 2026 16:38:33 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Richard Chang <richardycc@google.com>
-Cc: Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel
- Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, Axel
- Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
- Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, David
- Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- "T . J . Mercier" <tjmercier@google.com>, Martin Liu
- <liumartin@google.com>, Minchan Kim <minchan@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
-Message-Id: <20260706163833.19b6c869407d51ba8e278f56@linux-foundation.org>
-In-Reply-To: <20260706081218.3438762-1-richardycc@google.com>
-References: <20260706081218.3438762-1-richardycc@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+	by sea.source.kernel.org (Postfix) with ESMTP id AB74A417CE;
+	Tue,  7 Jul 2026 00:13:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4061F000E9;
+	Tue,  7 Jul 2026 00:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783383238;
+	bh=eB1zO+hEcVPqicULA2t7Fk+v6ErU6JNrcgHBtzJJkzs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=QfisRpmL2Q7w5vhJODKT4L8MN52r2hKZK1CUd5JBD+iHnkyyQ5OhUgtVxtUeEg9lB
+	 eNxlm7zM36O9+peBNmx2jkzYsEVdlBRHCfLrIgKRpICoHXwykEeEh8hOEm9BrRBFYV
+	 o2OUt+qNG7f6ak+9jD8DgsavWkBS3gZs9X+WBIk3e5iQ53XnmJd7+ENMUET9bp69qs
+	 cyjgB1Rt5a/0BQfxxMrKkWX+XW/D2oQjJXAnR75wh3q8zqOeFqiHRtcAZlYytGCg/o
+	 sjMu98VOEpUkOyXfnviw9v4NUmS3Ic2lpdJ0rsLD0Bfoned6QsYjD1y4JHy9C5VsDc
+	 7MpJqJeD2tHrw==
+From: SJ Park <sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v1.1 00/16] mm/damon: introduce data attributes only monitoring
+Date: Mon,  6 Jul 2026 17:13:51 -0700
+Message-ID: <20260707001353.98054-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260706141912.88445-1-sj@kernel.org>
+References: 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AD5FF20004
+X-Stat-Signature: b6e61zox89oux7m6hce6u9k38bnpkffe
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9629740004
-X-Stat-Signature: 6byhmqi4mr31zhzcsxtn8gtohorhtfpd
-X-HE-Tag: 1783381115-842621
-X-HE-Meta: U2FsdGVkX18ipYav2tzN4tuSU2KncNBOKHBYVdBFF+2kiGzbchijW141Np57/D8qDzqpBJzp05wYUGGbPorB88SR+85vy7EYlcY7yMDtbj8rWD9kNx/kYKvw/yCDksPOiyV+mThUyix79vMj00jXkeoGudLAKD6L94EHbOH25NTUizavq0z0RTDtUbF8Caaq2vCNunuTTD4JspVJU6FpOnloYlP3psEBSjBzq2Hn1H/I0qXa/VIt/Lmfoq/0bM6WzlX94ySS5WKCZMHbdTudq0+JCwDE9UYN4nZwi+XZF/vmhVlzCKcjPuNMnaiXCqQx6ujqb6QQCHNM3M+Nt59ewf5KZw7rQqYkBZzDsnixuaTIdd77yO3Md17SBm3SqQL9ar2Xi4Bxtn6k5CTHpEjq5jkrl37eXw6on+elwC1C7OQBT02FnrEzLYaLg7PDOzh4veVrOJ89NBSiP7Hnv/EIved+zfoidKJKbvFtGX7Cfkc7vj3p38qiaLBHe77cAgfcKM6XWZ9X2LcRk+SVrvEnI9GYjHAG71u7U1XIi6Q2TgehFxeU/0DlERBdFiHbmckvxB3/hpznNZYQ2fgkDJLWkmfAdiztnKPSIClmDuiZftZuB8bIbRjwOCxTCI8xDo4krMJihflwPkq3MZv6wEjRyIlpQ5THLWoFHRqQH/Zm+X9gccHlLJKqPiFJSIoE0qwP85BU42A9IIm26GYo5EMMnG7guvrsILjV+OQBVQzV0rDZQo/mKcOSiYJDZ+Zu5RsJyTleRxgNS97ekV9Ihjyg2j28+jIBbEPcFWhOYDxf5MIJHlsRGIuG3aAZmMFWRcprLZQdFwDL6NMzDoQ5ef+4R2Jt9IqHT7P0vDza6APA15q6wGm2KdMSKyf2CwvS9CK2rBf2oGzuInugPmVfpfiMsfrRMs45Oz3gjG0cG1YgDtHhxn1ehucqNV+PI5+y9Ts4ClMOT+FPnIS6sBhViK2
- p1hG/AUn
- P65C0JnAuKK7YR33IjUhLpUOkwzGXF/NIlLFJkhsmV7V/ajFDjeCAeY8Zjwc7fgEDRKY8bKCFI2mPK0SZSbu5C3erMUSdrzqC1IKetu0lA8mZnqVzWdP8lZlMzKuoz1sJbUfiZWX2DM1D5IhFjWru0/UO5pT5odDMeq9gf400Rbl+EbiFMmHF8MhETbsvPmu/wrQQhubrJ4okL+JpPQW5wwbAScOsR5hSID8hwJgOha8fWXC4HyAc4k9XAfZvoVs0sdKdnnWraS/qjW76WMNzIhEhp1KyEgKE1gxCI98hfxDGtPyUDZkbwIQ325CNxfeHkPokncuDnF0/T6kDRc7t1S8tZilaxC8mUGTDRmyaT2sordA=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783383239-499147
+X-HE-Meta: U2FsdGVkX1+hQaywJz56L+Mcjn3zEeRCNfxq2ib8Nz9WJ3/yMpIAtCgfQJYY8BH72B20QdC3X8nh1WnjD/eKDPKqlsjyizXO/AoZU8XUAu6qwtJfrWynynugWwygyX0wbyTzODw1JV+hfm8NvrOxi2LRDyk8R6H7p/HV96P9S/upWSTWlT2vgtAiV51X+dBqdQeHP2/JRrMKP60uo3C+cla4EtARJCqL8sALYDmddsVDM8hkAQCPMlIpbefDxErq+8/4JEtsU0SPUlr/nhaM3E3wTTBqmfUREFoHOutn6ELkIRjKLtvxEqTPKsf2ABXbz4uqpt3JMauebl8gz5/4iZHPkYgnjCxQO0uu7x3ZpRgxTXaNPHZ0JaNvcBUGJa58BZeEGRJO77rU+ncRGz9ZSSVcILD8ZZQDcJfmHOLytRCoRQWlhViLi03s57nd2mrtWVvjuM1xJ4ip4BW55GvsNd2ndX2A+W0Ma1Pjqw4sjmikvLaaIM/tlUC+boa8pBEz7L9V+2CVkuGN7cd2+vBUD0K0hkwpPPyuUa41QQZEEtpS7GgskX+zruHV+8cB40yoXaQQ1jS6+0mP01q4Bl1IAWcvoQ4UXUeb4nuh3utTEvHDktla2687H0V90uRjZuaKX+LZfjwYq6cWR/QqPTmtLhAS7pzQ8mprDqKF71OzlaV7ahl3/uTFqMCqdXQFkKJDokp1CRDBKH0YujowNKHDrwQq6nzk61cT5F7FlSpXZY3zaDQWB4dfbVqD8lcBQ5x5XqHB8SAl7lvBuiSMboZKCcgZkWgJjikf3wQA7hSusURLisnaLkBs/Mx+RzL5f+3Hi5NOFSD2WWQrrDZYO/27YPB5Ywy53XdpoO9AA9X3RySlmwiaGFTkES3T4tTFrVaLyWVPkPgOo3p1k21lbVKBNdqhGyb2GgmNfxTKhBO8IL5E4shJImu8FRMLVIWsFYflbRedArxnb1layk3J6M5
+ tmOUVBUF
+ YDVGxOrUdB4b+vipN+RLU5pacqKA2zcN1/OHF7boVUPZQTdJabgHsYmyMFwgSFV7VOz6LLaQtQgX0D2A6RC4whdOhtNmQsJepXDpEn0tff1rCH1+9AwP29/xaP4w3XS262K1Ta8+o9JKlc58YyLFAyG72XwIZ0vNg3sKUIlAr4avb9oyXXZW4JtiZ/8qcvQBdeandAiyJB9hKrtNRfBnmdiqBeau+wP4gCfU2IhvnCUNeVcFnYWJdbcvkHgX7DYLNl6Yi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,32 +102,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  6 Jul 2026 08:12:18 +0000 Richard Chang <richardycc@google.com> wrote:
+On Mon,  6 Jul 2026 07:18:54 -0700 SJ Park <sj@kernel.org> wrote:
 
-> Proactive reclaim (via memory.reclaim or node reclaim) checks for pending
-> signals in its outer loop in user_proactive_reclaim(). However, the inner
-> reclaim loops—scanning cgroups in shrink_many() and evicting folios in
-> try_to_shrink_lruvec() can run for a long time before returning to the
-> outer loop, especially on systems with many cgroups or large memory sizes.
-> 
-> This latency in responding to signals can block the freezer (both cgroup
-> freezer and system suspend), leading to freezer timeouts. This issue was
-> specifically observed on Android when attempting to freeze background
-> cgroups while proactive reclaim was active.
-> 
-> Add a signal_pending() check to should_abort_scan() for proactive reclaim
-> paths. Since should_abort_scan() is called within the inner scanning and
-> eviction loops, this allows proactive reclaim to abort early and return to
-> the outer loop, ensuring the task can enter the refrigerator in a timely
-> manner.
-> 
-> This check is limited to proactive reclaim (sc->proactive) to avoid
-> affecting reactive reclaim paths, and wrapped in unlikely() as it is a
-> slow path.
+> TL;DR: Introduce a way to get DAMON's best effort accuracy monitoring of
+> user-demanding non-access data attributes.
 
-There are a number of ways of getting into proactive reclaim.  Have you
-checked that all of them appropriately check and handle signal_pending()?
+Sashiko is continuously finding a few things including integer overflows from
+wrong or weird user setups.  Those are minor issues in my opinion.  But because
+the core layer parameters validation patch series is merged into mm-new, fixing
+thosse should be straightforward.
 
-AI review thinks that classic LRU might need the same fix:
-	https://sashiko.dev/#/patchset/20260706081218.3438762-1-richardycc@google.com
+I will fix simple ones in the way, as a part of the next series or as a
+separate series.
+
+
+Thanks,
+SJ
+
+[...]
 
