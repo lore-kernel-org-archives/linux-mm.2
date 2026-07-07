@@ -4,116 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D142C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 09:42:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4118C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:01:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C0656B009D; Tue,  7 Jul 2026 05:42:58 -0400 (EDT)
+	id B0AF46B009D; Tue,  7 Jul 2026 06:01:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1983A6B009E; Tue,  7 Jul 2026 05:42:58 -0400 (EDT)
+	id AE1F76B009E; Tue,  7 Jul 2026 06:01:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AFE46B009F; Tue,  7 Jul 2026 05:42:58 -0400 (EDT)
+	id 9D1A46B009F; Tue,  7 Jul 2026 06:01:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DC2F06B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 05:42:57 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68AFDA03A3
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:42:57 +0000 (UTC)
-X-FDA: 84961491594.10.A5CF62F
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8E00F80002
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:42:55 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=YvHISaTr;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 736286B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:01:41 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE0DA140319
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:01:40 +0000 (UTC)
+X-FDA: 84961538760.02.F940997
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C4EA41C0014
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:01:38 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gOIc2B+e;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VCy3qV65;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YfKB6ADp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=irpFKmdD;
+	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783417375;
+	s=arc-20220608; t=1783418499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NG43xqiTlZetTkoltquLMxLW5gZsV1d7NlplgwQVb0s=;
-	b=Ay/vMAwnfIW+NCGVuGGqD/yUD4IjAcaHNi1T4KiCUKrXxo+Q92ZOqg0Z9rOC3FaPIz5Eu0
-	vZFWpy8IxlDMkst85pcoGI26wIaQn+iwt1EZW2XmZn3F7W13GdpQb+LMcd17KZ+ViT09Hp
-	xPE1KVmORXp0z67Sp9y2JiBhi+Y52ZY=
+	bh=TEAbL1M0/ghnef9LV/36CqxYqXKnSdaC1uxYTQoK448=;
+	b=grKTNHYl1GJkggUwXrgcG4m5KLVvxJtM917tF4PuxWcQacIEABLV8BPF1I9BGpRHlP4qHM
+	q3p78K8/Ftz8ERauG5uq/Scv1MxUZXqh0wPA06RNVkuK/Cs4kpu7FXGf4WbY3/C6HqgAe9
+	uHxIdNSUiKdcvJ42KvkMRGBTgTfsxXE=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=YvHISaTr;
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gOIc2B+e;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=VCy3qV65;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YfKB6ADp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=irpFKmdD;
+	spf=pass (imf18.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783417375;
-	b=quF88nnOSW2HliTGKQg0qRnSW+2ZJ8CL9sNeh89YVqiop4ZoZCHiCuxRwHQBzRNMK7Isj4
-	fq7AvnkoyM+JywvrE+t/I/xH5pPzsldX/RsOA9o8Dt/QcHx5nkEGfdIQFRwgGygZjSMWSw
-	PYr2ltBKHjuCStNwPz9f/V7wbRCD/i4=
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1828172a91.2
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 02:42:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1783417374; x=1784022174; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NG43xqiTlZetTkoltquLMxLW5gZsV1d7NlplgwQVb0s=;
-        b=YvHISaTrS2QGbpg9T/8iD2LowJbJCakhoWlmlCGB6P2wNXiiyR5rTEEf8db1QLMeNX
-         JqqnnhfXxebe34f53Pr2fy3n3gpRJpDlpVpD/t+xnKIXcn2aBE6dDXOdff2rCkTdfEPP
-         wqjM6SvcthNO4RKzOXbUkz7QIps5nFxKW7tLg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783417374; x=1784022174;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NG43xqiTlZetTkoltquLMxLW5gZsV1d7NlplgwQVb0s=;
-        b=swpGBzHOKNz6dSHGW1mnJn5A/g9sSLYn9LvC5sPbAel/U5t3u2Pfwns23U93PZyZHq
-         7nDd0YG5wsGr8zqAKblj5w0W2WCqsH35FYlzws+RXsYmQ5f/arhLyA5feA3Rl88s61cZ
-         LAbm5E9c8P9IWFCamu+8hFlHLkOjPQjzu3n2O0kPnvBk7qUaBdQYaH5hLdNGeoGI5q/a
-         xPvF5zwhgGTPGQfEq7IcHH37+fnYQ9koVBbOGEd2pjbtfwk7N+MEwZ/aYu6uCB3jnYkC
-         Nnu9IfO+IHFiXKQFTv9UmJwgrfm7Cl7SJtZ/oGgAEBFodjpMrb+fqaorQqzJPEjAaNyh
-         44gw==
-X-Forwarded-Encrypted: i=1; AHgh+RrZ4TjNG+E9Zi1xp6F2bgEG1AdQj4tEyEDR1S+e9AkuoQ4wJzYDWP6TQL7hw34EQvU5U3vcRI9POg==@kvack.org
-X-Gm-Message-State: AOJu0Yz9i5sAQl3N9P8JfCtij8hsvvqUaEfeg+gs7W5OCMmG2qRjb17e
-	6hFYhEc9e0nMmhOiMUAkzb/2cs/lLtanBzgPOrJF+j2mf4AhDwNkjC3enu5zF1fqNw==
-X-Gm-Gg: AfdE7cm9E3GYEcrtpAmYTkS/m0fWEEJzeroglF3xmkcLsS7mQgPU63QlBU7AmfqNPuj
-	OS5xylQXtjkRlj4+eq/JWcrk0PpEmNiGmBus3NB010MzQ4YU4EQm+Y3vp2iPsKip29zBMxW0D/t
-	YgwIE/X3mVoPCsT6MX5hT6oTFmrPqsA63wZK/LgU4iP4oI+GYDTvLmLRA3V21aBql/nvvr1w4so
-	f5KgxerLyggpvlizRzvITiHLy9koA0Cxv12MAxQY0Ej6llGWq1LDfbOhH0ETHpABLVRfL6LIssG
-	ZTCOgxvvG/NF1VCn+R3MdHWw/xK7am26NgJxwavrvlnSMYwtOqbNdI2X9tROQ2FobiULV+fOWQM
-	r7/etC/36l4zPNpdn1hZSViAXcTt0FDYzyko2pQM7pp11CC5Iv9lCsqheAIITtYsTY+ccQDZFlK
-	/3vhOrgq9AcBbMm4l3U4IWdZcvxJg8x/hkGyF5U/Unnr1i5N4zhpPb
-X-Received: by 2002:a17:90b:3808:b0:37f:9cdf:f037 with SMTP id 98e67ed59e1d1-387572b3d9fmr4095937a91.26.1783417374535;
-        Tue, 07 Jul 2026 02:42:54 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2031:6:d4f4:6328:49c0:b912])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d20a2f2fsm797739a91.13.2026.07.07.02.42.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 02:42:54 -0700 (PDT)
-Date: Tue, 7 Jul 2026 18:42:50 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Hillf Danton <hdanton@sina.com>, Kairui Song <ryncsn@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 01/19] zram: sleepable entry locking
-Message-ID: <akzJlY53m3XBg9Is@google.com>
-References: <20250303022425.285971-1-senozhatsky@chromium.org>
- <20250303022425.285971-2-senozhatsky@chromium.org>
- <20260707064030.D843llKh@linutronix.de>
- <aky05GBxo4VKGD58@google.com>
- <20260707093024.DPG2lvt_@linutronix.de>
+	t=1783418499;
+	b=O0EZ1BaCy8NZb48NsgU6rgImdpSXeNJcDbz6Awkw8QOIJVsMbGpJ4d/zkhfQPQhWqytba4
+	d9N2b+h3Axn2asSMEiPFlRXGqD5/LqkJVs1wMQMRFk+k3j3F+lM1D5s41KCn77hlNWe2Wn
+	JSVmKOvrS5PvjNKMqP+GEkcDht8uY/8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3E79175A9B;
+	Tue,  7 Jul 2026 10:01:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783418497; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TEAbL1M0/ghnef9LV/36CqxYqXKnSdaC1uxYTQoK448=;
+	b=gOIc2B+eLvoLABzAqdkUuYfpzzSVVKJelO0iKAFgU1sKPX7ZaXgZQxrssdoXDTLqn8DLu/
+	womM9c2JkmXvQYcNDiOH1WNxY0coxixigXjtC7411D8C8d0f4xinxV+yVV/NOf91jOHwcM
+	ptyA7aKnybM9Hh6pIAeoc2hVsjgomlU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783418497;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TEAbL1M0/ghnef9LV/36CqxYqXKnSdaC1uxYTQoK448=;
+	b=VCy3qV65NFPjGEJjqyiO22JkaGuFrbKz3NUhdco96BNrfu88ivbQbBamXrHPTqWb2P22G6
+	EA7yLoyowm4nZJDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1783418496; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TEAbL1M0/ghnef9LV/36CqxYqXKnSdaC1uxYTQoK448=;
+	b=YfKB6ADpL21itX1hNy1ZEguUiw+qaVf8Ucix/wdPn+RTYlfsOUjDnfzGs7MydHP+ckmi9o
+	xM5FfJwxBxKKTbyCziVI2ZM7no989EeiRYaVxU7euR+suBitdPL2ZCVV96WXslVTSy0nSs
+	cgCyOxSY4FTBeoqsnUGerIrJoh924nk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1783418496;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TEAbL1M0/ghnef9LV/36CqxYqXKnSdaC1uxYTQoK448=;
+	b=irpFKmdDKMASxbs8FyKLRk7YXm2AoMY4WTUB3qXCxlErfpe//rLmxM/U290kRJF37ZwAz9
+	dZJrpKCm31NXa+Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 82CAC779AE;
+	Tue,  7 Jul 2026 10:01:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IowEHH7OTGqNYAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 07 Jul 2026 10:01:34 +0000
+Date: Tue, 7 Jul 2026 11:01:32 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Leon Hwang <leon.hwang@linux.dev>
+Cc: linux-mm@kvack.org, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, 
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, Alice Ryhl <aliceryhl@google.com>, 
+	Douglas Anderson <dianders@chromium.org>, Gary Guo <gary@garyguo.net>, Anand Moon <linux.amoon@gmail.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH] mm/mseal: fix mseal documentation for 32-bit kernels
+Message-ID: <akzN_HNJJWBW7htL@pedro-suse.lan>
+References: <20260703022507.187457-1-leon.hwang@linux.dev>
+ <akeDk49-pPgUDek1@pedro-suse>
+ <8f75dc18-dd4c-4989-a76c-eec6cc513ccf@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260707093024.DPG2lvt_@linutronix.de>
-X-Stat-Signature: oscixyz1h4jcc4ms7repxyy1cc3r31xm
-X-Rspamd-Queue-Id: 8E00F80002
-X-Rspamd-Server: rspam01
+In-Reply-To: <8f75dc18-dd4c-4989-a76c-eec6cc513ccf@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1783417375-259058
-X-HE-Meta: U2FsdGVkX1+uAKVMooOG5/9aa44N+hEQer8nzkhetNX1LQkZCkVpsMnw2wdWepoICWabi7vFXHCbjXbzlKolEhjdaK45s94QaP207wg8uLATMID0wfczK9hzGtFDfd7yOchH8KpbXQkongXdjrQ8xcZ4xUqwm938bkCLpIVzSY6I8AaD65/W12lWcMBIYedGb+CIDW2dKqrBs/Iouhd4v3sB4/oXq6tP+X1Yq1tixLFVg2dVObUJHDQd21JkHt8EKCtGjCswAvfcAbwivhQ8KVmq2ePzPqXvAgX82z9BCC+mgmAXCRNqiVDDRINO/BIELOtcyEcLHoDp+84ptMeM+FJveP856cCXZGvONayQkftxoqkS/xcACimLJHGhQzrJVzbe1BMoE5qVQ06wkC3lvuGpjSUMjGhuAll0DJW4EHPZQb0zS82W8hnVWv0ebEH6Gmu0x22aNeC2HrtkbvQ/GETUsXJ2CUGBkUej1Q+mN1sC52wethg0Kqw0X6RWxGsSbUuNKRmPqYytvCmFi/OBl4Dj8t4GgoWQ6d2wRqI3wfZC+h9XhYADTi+SBLXhu5T1g8O8/jVPCSvyJsVhx2XPBgisf4Y6aj/A3zebp1Dz+T7WQgB7JSfaWImBrN/uNtdDEIQ/NveEbOLMdfcBCT823XYh+VC2LcEQlX8HZxE6F703mE+rMNxRZ5EFi5fW1HtwlfuNYlcZ0KCqMSeH3nqY/MjYElUAnJHtnobXHIEx/SHttgWc7MO5NCRbM4Fq2iY/KNKisVrOKq5DlZs91O8lJOVN5s3JRFpHKoIkh4CtGZz9jNJYY3xvoDMvJh7zu7R9ejNZEeWz8h5dc9tN9/siJgVvmVM9LxZRKwxSoCk4jM7D6yRzfU+F1DlFOt6xc/4YaAEn5GcIEd/hCKneO2nqp5nGp/ZGFKJs6PUObARsxt1NJQRkzdY1ozYUEilMaiYZcRj/4svoayaBVNNLYOx
- vK9k0fm+
- uqVtBqb0Qdphtnaw8fjL21o7nhATmzwNtL9BOm90rlnMyzeI+kuHFGWOW82uKbs4W6HsHO5hDxnluAdkeAe4zXLN03FHKSyugzXH/IKsXRZZ5U//jV/XmDIlN1YbD3WYAxrDvLG3gsUYgmQlYogwQaR/Kx+KCgKtB2yumMwvkpQf74PlSUK+MTF5O/olaI7lEXcHn8q5P6k8gcZcI4O7nhHjB3wK7lMtQ+yBBd735L1xN2LH7f0nCHjifAWxuHegEAmhmkxTv5UhUOiOXXktd4CZr/rFJlhfb3EejWtZGJJMlWQh0sZtQt8idbfJziEfieJd5ir7nk3pArbK2tl9Bj1KfVXhzcUdTsBtzaVDnk52heKE=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C4EA41C0014
+X-Stat-Signature: brr5sixpwpcykreng9g9ximyd9k9ex1q
+X-HE-Tag: 1783418498-51658
+X-HE-Meta: U2FsdGVkX18M7IsoVVve1yKtHrJsJPhKrco1JsmHA+SRdZcyCKMK3fjE1sdtQq3oMPsMJ3cPgpahOlJ6G0T1WU4QcchecAnN6cMzJ8hKJYZtmTtuRk2Xzc/9UQl62PPPQlSSI03SiiayMqcJNYOAiRNZtM25Uffq38UDRpMAzWOtp02dWQa6EjgW5QmqnPwsyI6lyurkxEvwziIHaNjFTRcPF6WBh7vfNDfJymaMbvEkQ5qaQuq8sEOuuxirOqGCWX9Si/RitRgqqELudi7oagbBr2AkhbRZBDMWceIpyYqoK51n27N/UrxHh8J8EPrcpU6HRPVvTdQIq5mLxK7LKGGm3Ex+/6UkHkMkm94qJYXz6WobZA48eBX8RvJC1BaHJ9pbmI+azwVY7HzJk3POGzXVr1kR/jqq8wUYvtdreyMPpMQk15cc40LsDUjuB/ANxugmdpEL/slN75mbG06aScnmXkK+OyXv0aw7rVyjSPc5MbNu0UnWD1YS4P0gkmnQjXJgRn41IDbcssk82fyQfmvMzWkmHN7z7hiwgmraX2Peex3NvVOkaCl7yEXdXIBEEq5n9IbZ65FpoQPafPAkdFPAHaDUYRT1XyMNMNwgXsQH0T+kWHK4JB9UsroCALkqWrahE/FSNr4l/w0E8m5lAf/7LFnyrql8ss7Ns+mKTx070iE0+Bm44wDS1FVpI1yT8VI6hqpDnhPkF2FkGxiFsEFxtcUmA6Zx+DcbnXTGCm6z4FR6qAdyV+PBZp2Y0DxwS635Tqk2Fql/K67rN1gVb/yVb9Fl2eYYrdLPIYTIISg+lUTvbkU1uFeweYBBrgAOlvPLu+XvHLYOwtuTJpWV4c3lZ0e9JiaAhppgWXt1EOrASUf+ao/MP2NxOR5I97Rp9/2LLHFY6EPZ7DIrRAhAFRThOKqk0arYVkiZLOBe0nKFnAHMCntUja17CGj3xAQb0DCmCsPoBWwlhDC68qy
+ UwQCi/rt
+ +W3XVleMyvRJNjnd8RqR94PsDE6yTa/uTZ8fHVXnIRz7lme9jD4VOpaXpCcalrho6T7tzbSQnMkWZfCe53lhr/20O8gszeSccSAlmbFKteACbtnZN92+gJKSVjdzbQuAEIXUG/8Fe0xV6lm7pJj48tN1+rRajN6Nq4lYoAjEuAprZUGNrtmOMTOBYv5TWNzZ52zXH7lXaeO8v/L3suw8mU9iWDn1rvVA9xMc6lzHMj9Ax3SdiknGRNU/ImgsUtBFIIcrDmYmHrcmAk19EURWBgYUzY2nBXqAtG5mCdoJHNvs+PRGBRxlW/3009HNrsb38h7UOBML6bJNzNmTCYyvKUbYvjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,36 +141,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/07/07 11:30), Sebastian Andrzej Siewior wrote:
-> > > >  static void zram_slot_lock(struct zram *zram, u32 index)
-> > > >  {
-> > > > -	spin_lock(&zram->table[index].lock);
-> > > > +	unsigned long *lock = &zram->table[index].flags;
-> > > > +
-> > > > +	mutex_acquire(slot_dep_map(zram, index), 0, 0, _RET_IP_);
-> > > > +	wait_on_bit_lock(lock, ZRAM_ENTRY_LOCK, TASK_UNINTERRUPTIBLE);
-> > > > +	lock_acquired(slot_dep_map(zram, index), _RET_IP_);
-> > > >  }
-> > > 
-> > > Looking at this, is there a special need to have a lockdep map per
-> > > table? Wouldn't it be enough to have one per zram? Logically you use the
-> > > same __key so I don't think it makes much of a difference but you could
-> > > lower the memory usage a bit by having less of those structs per zram.
+On Fri, Jul 03, 2026 at 10:50:29PM +0800, Leon Hwang wrote:
+> On 2026/7/3 17:44, Pedro Falcato wrote:
+> > On Fri, Jul 03, 2026 at 10:25:07AM +0800, Leon Hwang wrote:
+> >> mseal.o is built only for 64-bit kernels, so 32-bit kernels fall back
+> >> to sys_ni_syscall() and return -ENOSYS rather than -EPERM.
+> >>
+> >> Document the -EINTR return from mmap_write_lock_killable(), fix the
+> >> CONFIG_MSEAL_SYSTEM_MAPPINGS typo, and describe system mappings in
+> >> terms of VM_SEALED_SYSMAP.
+> >>
+> >> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> >> ---
+> >>  Documentation/userspace-api/mseal.rst | 18 ++++++++++--------
+> >>  init/Kconfig                          |  2 +-
+> >>  mm/mseal.c                            |  4 ++--
+> >>  3 files changed, 13 insertions(+), 11 deletions(-)
+> >>
+> >> diff --git a/Documentation/userspace-api/mseal.rst b/Documentation/userspace-api/mseal.rst
+> >> index ea9b11a0bd89..1f1cf206670c 100644
+> >> --- a/Documentation/userspace-api/mseal.rst
+> >> +++ b/Documentation/userspace-api/mseal.rst
+> >> @@ -50,8 +50,10 @@ mseal syscall signature
+> >>           * The start address (``addr``) is not allocated.
+> >>           * The end address (``addr`` + ``len``) is not allocated.
+> >>           * A gap (unallocated memory) between start and end address.
+> >> -      - **-EPERM**:
+> >> -         * sealing is supported only on 64-bit CPUs, 32-bit is not supported.
+> >> +      - **-EINTR**:
+> >> +         * Interrupted while waiting for the mmap write lock.
+> >> +      - **-ENOSYS**:
+> >> +         * The kernel does not implement ``mseal()``.
+> >>  
+> >>     **Note about error return**:
+> >>        - For above error cases, users can expect the given memory range is
 > > 
-> > So the idea was to separate lockdep maps and keep them per-device
-> > because various zram devices can be on different IO paths with very
-> > different locking graphs.  E.g. zram0 can be a swap device with all
-> > the locks that swap layer has, while zram1 can be a "normal" block
-> > device mounted with ext4 with all the locks that ext4/vfs bring.
+> > Honestly, this whole thing needs to be deleted. We need a proper manpage.
 > 
-> Ach so index will be 0 for zram0 and 1 for zram1? In that case it is
-> different from what I assumed. But you use the same key so I think it
-> will be the same lock from lockdep's point of view. Like it will
-> complain if you do
-> 	zram_slot_lock(zram, 0);
-> 	zram_slot_lock(zram, 1);
+> $ man mseal
+> No manual entry for mseal
+> 
+> When searching "mseal manual" using Google, this doc is the first entry.
+> 
+> So, this change is worthy.
 
-index is PAGE_SIZE granularity "block" of device that holds compressed
-data.  So they go from 0 to zram->disksize / PAGE_SIZE.  Should I use
-dedicated per device key as well?
+Yes, I agree. To be clear, my main gripe is with the current state of things,
+not your patch.
+> 
+> > 
+> >> @@ -62,7 +64,8 @@ mseal syscall signature
+> >>          memory range could happen. However, those cases should be rare.
+> >>  
+> >>     **Architecture support**:
+> >> -      mseal only works on 64-bit CPUs, not 32-bit CPUs.
+> >> +      mseal is built only for 64-bit kernels. 32-bit kernels return
+> >> +      ``-ENOSYS``.
+> > 
+> > This LGTM.
+> > 
+> >>  
+> >>     **Idempotent**:
+> >>        users can call mseal multiple times. mseal on an already sealed memory
+> >> @@ -131,20 +134,19 @@ Use cases
+> >>  - Chrome browser: protect some security sensitive data structures.
+> >>  
+> >>  - System mappings:
+> >> -  The system mappings are created by the kernel and includes vdso, vvar,
+> >> +  The system mappings are created by the kernel and include vdso, vvar,
+> >>    vvar_vclock, vectors (arm compat-mode), sigpage (arm compat-mode), uprobes.
+> >>  
+> >>    Those system mappings are readonly only or execute only, memory sealing can
+> >> -  protect them from ever changing to writable or unmmap/remapped as different
+> >> +  protect them from ever changing to writable or unmapped/remapped as different
+> >>    attributes. This is useful to mitigate memory corruption issues where a
+> >>    corrupted pointer is passed to a memory management system.
+> > 
+> > Also LGTM.
+> > 
+> >>  
+> >>    If supported by an architecture (CONFIG_ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS),
+> >> -  the CONFIG_MSEAL_SYSTEM_MAPPINGS seals all system mappings of this
+> >> -  architecture.
+> >> +  CONFIG_MSEAL_SYSTEM_MAPPINGS seals mappings marked with VM_SEALED_SYSMAP.
+> > 
+> > VM_SEALED_SYSMAP isn't meaningful to userspace.
+> 
+> 
+> Got it. Will drop this change.
+> 
+> > 
+> >>  
+> >>    The following architectures currently support this feature: x86-64, arm64,
+> >> -  loongarch and s390.
+> >> +  loongarch, riscv, and s390.
+> > 
+> > This is also useless, every 64-bit architecture will support this.
+> 
+> 
+> Do you mean dropping this sentence, or this change?
+
+This sentence (this is not architecture specific...).
+
+> 
+> > 
+> >>  
+> >>    WARNING: This feature breaks programs which rely on relocating
+> >>    or unmapping system mappings. Known broken software at the time
+> >> diff --git a/init/Kconfig b/init/Kconfig
+> >> index 5230d4879b1c..12bb39f637b1 100644
+> >> --- a/init/Kconfig
+> >> +++ b/init/Kconfig
+> >> @@ -2112,7 +2112,7 @@ config ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+> >>  	  from a kernel perspective.
+> >>  
+> >>  	  After the architecture enables this, a distribution can set
+> >> -	  CONFIG_MSEAL_SYSTEM_MAPPING to manage access to the feature.
+> >> +	  CONFIG_MSEAL_SYSTEM_MAPPINGS to manage access to the feature.
+> >>  
+> >>  	  For complete descriptions of memory sealing, please see
+> >>  	  Documentation/userspace-api/mseal.rst
+> >> diff --git a/mm/mseal.c b/mm/mseal.c
+> >> index 9781647483d1..0464c7b94ab9 100644
+> >> --- a/mm/mseal.c
+> >> +++ b/mm/mseal.c
+> >> @@ -132,8 +132,8 @@ static int mseal_apply(struct mm_struct *mm,
+> >>   *   addr is not a valid address (not allocated).
+> >>   *   end (start + len) is not a valid address.
+> >>   *   a gap (unallocated memory) between start and end.
+> >> - *  -EPERM:
+> >> - *  - In 32 bit architecture, sealing is not supported.
+> >> + *  -EINTR:
+> >> + *   interrupted while waiting for the mmap write lock.
+> >>   * Note:
+> >>   *  user can call mseal(2) multiple times, adding a seal on an
+> >>   *  already sealed memory is a no-action (no error).
+> > 
+> > And this whole header needs to be deleted as well. No one's looking at
+> > kernel code for documentation (and if they are, we did a horrendous job
+> > at actually documenting the thing).
+> > 
+> 
+> Just to confirm, do you mean removing the entire function comment above
+> do_mseal()?
+
+Yes. Again, not your fault, just old gripes :)
+
+-- 
+Pedro
 
