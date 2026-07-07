@@ -4,141 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7FBFC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:08:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 696A8C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:08:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 832206B009D; Tue,  7 Jul 2026 06:08:35 -0400 (EDT)
+	id 599D66B009E; Tue,  7 Jul 2026 06:08:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8091A6B009E; Tue,  7 Jul 2026 06:08:35 -0400 (EDT)
+	id 5711C6B00A1; Tue,  7 Jul 2026 06:08:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71E876B00A1; Tue,  7 Jul 2026 06:08:35 -0400 (EDT)
+	id 4B1D46B00A2; Tue,  7 Jul 2026 06:08:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4ED296B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:08:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D2D181C7F40
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:08:34 +0000 (UTC)
-X-FDA: 84961556148.21.F2F0D87
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 28AC61C0003
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:08:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X6bW6IZ7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 27C706B009E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:08:46 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AAE09A0324
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:08:45 +0000 (UTC)
+X-FDA: 84961556610.02.23BF427
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf01.hostedemail.com (Postfix) with ESMTP id CD8B040007
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:08:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lJA3uk1u;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783418913;
+	s=arc-20220608; t=1783418924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iWPuPHES2Vj+Hpx9x4PpWWKB9PNpoKVRJlr6DknglJ0=;
-	b=pzSeVRQL7F/VhypslcTdBZfB+siaZMyqC6l1hS0g2lVfrjXFq3yIF81iKZawMXN0Te+JvN
-	35+WDVVw/2Yh56Ocy7LJpeX6hGe7HDPHcIzPhFNpprLVK1PTea32QJzSnFcfbewPFuyC1V
-	Rv8SaWnvUQ73m5tMcH9Hvntt5T8AfL8=
+	bh=TUY55oS394CtAuTTigq+2eRfUqPG18NKirH243JNBP0=;
+	b=BCGx4PUUJY86WO0V5FsySpqXgWCdSfV5dHSkLrVr3XeOiJJ5C39WWvq7AuFMHcB3b/CRez
+	Gi4+fb2aMI0ldjISDPJSFh/DjrUtXp5p97cq/+7vdu88y2XVxPRbzGSRrCwUDM0fgf0EY+
+	rEf0SYhNbbuSo8OW3v5qQmLKATqFMF0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X6bW6IZ7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lJA3uk1u;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783418913;
-	b=nqyPnXSVhxjaBTeJORWSCWF2Ru3MAFs8Z0bR1ebo9u1nNPnez/S1NmHyKGZhShp2rKJMFc
-	mfcIh2gruBWWXc4KTAuUaYGwrhPis5zpRioGVFKAhMn//HUaaB/wn9rzEamF5LzUKOHrSb
-	fm+WP9pSS89CRdwzrQU4AVltAPuJkC8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B4A83618A6;
-	Tue,  7 Jul 2026 10:08:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55E11F000E9;
-	Tue,  7 Jul 2026 10:08:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783418912;
-	bh=iWPuPHES2Vj+Hpx9x4PpWWKB9PNpoKVRJlr6DknglJ0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=X6bW6IZ7dFcKRgkT/2wU1TgO3ksnK3HpyVnM+mmOXcYwtJu6Jz+4NhKYoPSRiVqCW
-	 HIj+aky7TYvJJYoMpMcc6X4RVH2zototSzP5XjTqp8gkSQDQfP6Y7XvRDcfiPFXqQn
-	 jph461cm0SwaF0FvLf/ndNwDEXxreM+rO8d0P0EO8VWFN9gYaYzLFuimJiSyM+pzKu
-	 wKEvqLI/peX3H6x2RLAJOZj/vwmbdi6VlByxZKHChlMD9dYp8utVoXeKXL1pUyQiHM
-	 iYe57d1imqAss5kvOXDP935Y05SAhmftxl0i2QgHoAIYaPkPYjRczu8gMsDpsnixt1
-	 AdO4iyaPao2FQ==
-Message-ID: <ea713b4c-b248-4191-9ed2-c9e2d0f83ad9@kernel.org>
-Date: Tue, 7 Jul 2026 12:08:26 +0200
+	t=1783418924;
+	b=Y/SGw89dr8/w3ivWXQWk4ZEe4vtwDsKTkRWymDPaIqSha2wCWNKdT3nYQ4O5bQa3AoZhBd
+	QnmnjDfbhobO+xpTiGO0ztSItMvE3HKS6U3YnvH4KxOsVhcpeI5zzTahlJEown/lkpqSTg
+	vGPPZdfPX5+Wz046oQ0sQA3Hfxn/75U=
+Message-ID: <5d423660-dae1-4ab9-a656-7e488cf98321@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783418919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TUY55oS394CtAuTTigq+2eRfUqPG18NKirH243JNBP0=;
+	b=lJA3uk1ukFUMfWyOdmT6NDSS6hxI2mmC8DrlSshGOnPVKLBhJRCY+4xQgy128Vr/Y2mtjI
+	Vpg1W6uVYZQs9rrq2fdwT1N/rrhYR1MU1u3Q8iOWa3zaztOREs5vZdtIhOlgz8/+tYiIA+
+	Y2npszhgSvrVEVA7tVaetbbllI63P2w=
+Date: Tue, 7 Jul 2026 11:08:36 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate: Avoid copying hwpoisoned folios during
- migration
-To: Kaitao Cheng <kaitao.cheng@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>, Andi Kleen
- <ak@linux.intel.com>, Muchun Song <muchun.song@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Kaitao Cheng <chengkaitao@kylinos.cn>
-References: <20260707090136.52904-1-kaitao.cheng@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v3 04/11] mm: zswap: add range lookup for large-folio
+ swapin
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org, ying.huang@linux.alibaba.com,
+ Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+ "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
+ Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ kernel-team@meta.com, Alexandre Ghiti <alexghiti@fb.com>
+References: <20260703173903.3789516-1-usama.arif@linux.dev>
+ <20260703173903.3789516-5-usama.arif@linux.dev> <akwfJekWILGd6cPS@google.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260707090136.52904-1-kaitao.cheng@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <akwfJekWILGd6cPS@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 28AC61C0003
-X-Stat-Signature: b1bc888zucocwkg7chr8pnbsufq8nknm
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783418912-163587
-X-HE-Meta: U2FsdGVkX1/dBFFqeJKKBUgoiM6nQ2ERt4o8ux1NvnEb7cprsPTRNYEYHNL0XbqTS93U03ZC5FcV7yciUbchD9dGpBNPIa5JeskQlIPxp4yO7an9bkfI2d5Q/LOD01LfZlL8bWJEK/M7t5jkgH52Scd4UXTffRxkWPL6MyPT8hcOtzO/fRAOWDR8m6ifxFv6EkMkbjPq2VQND/s+RYRauK09/BAqJSke9XTTJEwVVjz0/awnstjca+MG4XThTdBHicvzMNL9LFyrUWgij+Uzd0fG3bcU6jGvXxy9+c3aSRyKFzE0xoYihAmeSWAgG31QJwFzsAXYLAUcqmMyV2RocuwIPMXU5b0aV2WRD1Fw8DgX1bOfNvQK/aAaedXeHw8w4oz0SeT/jA9wbDjRdu5xP98AJSGB9qV6kzisOw/6rwaEUdUVrTwNRns0VsUsUwCu3qlEFSLtX7qXpwHDo+xZtMdEJ7MdyIuR1OdnOtHyl5zS0Hfot60fb28vlesywJDcL79B3d8MSbIf4X3g6pKiKkcmDHqv3qJcfLPuBtYWt/NSS4MM3QXZjS48+CSqAGv/u2DwejrfC9pEv0NTZeAJuMpzzn5Qm86Z5Ny0v4nZnsWbFOpgSGqyS9AwtZ6+hPnlIgSoiG3w8wX04JahPRk3DiVzt4MUYu67FL+RRMXE0au2xHzzIYmlvL2pS212gRrwlKq6UhlGL2O1P5rVkYvvvwX/xd5QzqCDvcuMSuO9EzTYlQqv6TgAOoYhq+p6KGieltX2VcYDP1a+R+yCNlUX9+Lj+5KAC2IZ2tPqvpVka5NMh4pDnjwAKDx8rvjDZmC9bc+BKnWmnfl6OTeOUVfQ5ZECYiIwLnK7NddNEE07Q5oFshW4Eu8a+AqgRClS6SeFeqveldP1aujlHuMgqfnZLV6mGTPvvSlX1YPj+QFGdLQnPXOvG7FTsqrdOVCJ7k2HskzEg8ExROiEUpcZu/1
- dla3nA3i
- 3kvR0iLCtqm71Rv7a+m4zXCM8cuefgHOwITLkYZbSxHriyPQWHD1XVVdn7EZZ/gObhvgr9sAcC0LKIlAj8XySGtRrKkdIvknzO5TGXu3snL6goznhdXKPG3Oo/PaPndgDUBXJaXV62AsEn0p2J6A5NzaXYpfTXV3axqNPi64Poqjj9MRDI7qeRVnvetD4Eyg1G70hM56D/ay9rl+07CpnjXNi13ns7ezyf9ulHl02yLjdJmqe/vsPChZjJgtbR/IinMknkSSAETIJbdsTz9aRzynh7PLeMCfm5ZqI08E42AbfATHBCCbkqeWa5wEyP6Jh7awQ/ZgYtPf4GPg=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CD8B040007
+X-Stat-Signature: 6ghu17jif8fqjwm1q66do7sxud9hgxcd
+X-HE-Tag: 1783418922-718348
+X-HE-Meta: U2FsdGVkX19LY6zWDHPlB0xlRynKkdax+pM20QaAeVeil650SF/XEKVj28KpP0fQbY+VAgCCNFSMsMgpv4IZCV27fEs3E1dnJOMz7BtzJy+qgctL5HoqQd2k+TuE+gweyc6w+EpFl1IQm019xl5oSYGFUOgm+yfQC9azNsnLGLI/Mgq3n8uBm0srxzI1/VuJN6jhtT4MBsBRbtv8KiADjt+vWE/hcOTRAz0Nng+l+0VO1i9zVKVAYxoO5u9zfBg13b2/UejAVp2p7Z+QsEvS8VUlZ+aZt2piEJBVqM/6jXzmsLzVtFoFeR6vGFG0c3EohSsQzbWQ6cRJHQSm4SQj1Z8mYPTbfQf/+/iQqjJiehz+iVpIxdoTyYjKEueLQz+6K6CN3rFm+l7aKNMNsOr8lTgoH6/6MOIKLG8dyhZSXc27RH25TAHzdpx3R7GtHtF3k8tnPmHpINiKcgjFvqyz3dL029pEP7QpK4h9yrSvVbvTTUwEx8Na+27tGl3BMel8JmA+/ZuHZX7Xvc0b9rZwtMxkaAOCvTnsbxvAVnpbze1BZ9MxKXJDTS+vxiC4UO/mO1hOMzhy9/RmAggoIRwJT1ShWGE9fgSfsVfQjGzIJkSG1RwkUCaHSB40zmDyHp00UEwBlu15BtZ29DLijmo1KRMnYQUIoFhPSMEiYQ9vIk3Dz6eLLlnTHOYhpPhL+ZFc9qcWoxIav3ywxI2baFeKe3v8zxwjYNjD9iuvmHCRKsr5iYJoqjV/sjW12agqRyPn8z/5RB3IjNrGYXgtmY+9Cf33u2fTW5pZ+2o+FcHEhSSa9t/iWarrzTAsMwDQUcQ3RYri+lgKOcTORRp7hizvuyHW3IBo/LXE7aR9jHv5hyjJ51rVdjyAgKT/gIXskylOlCFAdrl0ybixx2+htuVOEU3LTLCEkEtnzOBGGuOHJ3W7/pjIEQ7+ZnkGFw+EPyqc/0EJXYZdkub+iGbW0Ep
+ N6aHdsDP
+ Zq2b2u6eH8jqaPOBLcaFLjd0VW8DSJS7kDw1IhpdsxWXtRz6cIdq7LQjEl3RDh/gimI8pmtzWFbRfvP11/3marN6kn56Pm27/HUCVDwWU17Zt7GA45xxXqcXZpM3igerVlx/nH8dbHMI5aFSImtTm9fNiwwQl6FlMYDiYDiPDbV5cMO4bB1hpp2Y4alnre3VJn7eO3U6HHg5OvNQB74VLioHTVh1OMRtZDGBMJUhTYzsQKvBNcuLa6uPJFqG0gkIAJlh/yju35zL2NupV7jQ7lxe+ng8yutotfQH8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,24 +100,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/7/26 11:01, Kaitao Cheng wrote:
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+
+
+On 06/07/2026 22:36, Yosry Ahmed wrote:
+> On Fri, Jul 03, 2026 at 10:38:21AM -0700, Usama Arif wrote:
+>> From: Alexandre Ghiti <alexghiti@fb.com>
+>>
+>> A large folio reaches zswap_load() only when the caller expects the
+>> whole range to be on disk. Zswap still stores large folios as
+>> independent order-0 entries, so reconstructing a large folio from
+>> zswap entries would risk returning partially initialized data.
+>>
+>> Teach zswap_load() to scan the covered range. If no slot is in zswap,
+>> return -ENOENT so swap_read_folio() reads the backing device. If any
+>> slot is still in zswap, fail the large-folio read so the caller can
+>> fall back to per-page swapin.
+>>
+>> Add zswap_range_has_entry() so PMD swap-entry consumers can make the
+>> same range decision before attempting PMD-order swapin.
+>>
+>> Signed-off-by: Alexandre Ghiti <alexghiti@fb.com>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > 
-> The generic folio migration path can copy the source folio after it has
-> been unmapped.  For normal and THP folios this goes through
-> move_to_new_folio(), then the filesystem or anonymous migration callback,
-> and commonly reaches folio_mc_copy().
+> I found this by accident, please CC me on zswap changes :)
 > 
-> folio_mc_copy() uses copy_mc_highpage(), but architectures without
-> copy_mc_to_kernel support fall back to copy_highpage().  If the source
-> folio already contains a hwpoisoned page, a normal copy can consume the
-> poisoned memory and trigger a synchronous machine check.
 
-Well, but the code can still race with memory_failure() IIUC, so it's not really
-safe either?
+Sorry about this! I will CC you in all future revisions of this series.
+>> ---
+>>  include/linux/zswap.h |  7 +++++++
+>>  mm/zswap.c            | 46 +++++++++++++++++++++++++++++++++----------
+>>  2 files changed, 43 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+>> index 30c193a1207e..de10aa528597 100644
+>> --- a/include/linux/zswap.h
+>> +++ b/include/linux/zswap.h
+>> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
+>>  void zswap_folio_swapin(struct folio *folio);
+>>  bool zswap_is_enabled(void);
+>>  bool zswap_never_enabled(void);
+>> +bool zswap_range_has_entry(swp_entry_t entry, unsigned int nr);
+>>  #else
+>>  
+>>  struct zswap_lruvec_state {};
+>> @@ -69,6 +70,12 @@ static inline bool zswap_never_enabled(void)
+>>  	return true;
+>>  }
+>>  
+>> +static inline bool zswap_range_has_entry(swp_entry_t entry,
+>> +					 unsigned int nr)
+>> +{
+>> +	return false;
+>> +}
+>> +
+>>  #endif
+>>  
+>>  #endif /* _LINUX_ZSWAP_H */
+>> diff --git a/mm/zswap.c b/mm/zswap.c
+>> index b5a17ea20237..89dd88a5223f 100644
+>> --- a/mm/zswap.c
+>> +++ b/mm/zswap.c
+>> @@ -1559,6 +1559,27 @@ bool zswap_store(struct folio *folio)
+>>  	return ret;
+>>  }
+>>  
+>> +/**
+>> + * zswap_range_has_entry() - is any slot in [entry, entry + nr) in zswap?
+>> + * @entry: base swap entry of the range
+>> + * @nr: number of contiguous slots to check
+>> + */
+> 
+> Maybe zswap_is_present() as suggested here:
+> https://lore.kernel.org/linux-mm/CAO9r8zNni28A+9BiDgDTBRuvGTKnqH91kpbpjjeftfnKSeSOJg@mail.gmail.com/.
+> 
+> IIUC this interface can be used for the same purpose, we just need to
+> pass nr=1.
 
--- 
-Cheers,
+Yes, this sounds better, will change in next revision.
 
-David
+> 
+>> +bool zswap_range_has_entry(swp_entry_t entry, unsigned int nr)
+>> +{
+>> +	pgoff_t offset = swp_offset(entry);
+>> +	XA_STATE(xas, swap_zswap_tree(entry), offset);
+>> +	bool found;
+>> +
+>> +	if (!nr || zswap_never_enabled())
+>> +		return false;
+>> +
+>> +	rcu_read_lock();
+>> +	found = !!xas_find(&xas, offset + nr - 1);
+>> +	rcu_read_unlock();
+> 
+> Why not xa_find()? It seems to handle RCU locking as well as retrying.
+> 
+
+Ack, will change in next revision, Thanks!
+
+>> +
+>> +	return found;
+>> +}
+>> +
+>>  /**
+>>   * zswap_load() - load a folio from zswap
+>>   * @folio: folio to load
+>> @@ -1571,10 +1592,9 @@ bool zswap_store(struct folio *folio)
+>>   *  NOT marked up-to-date, so that an IO error is emitted (e.g. do_swap_page()
+>>   *  will SIGBUS).
+>>   *
+>> - *  -EINVAL: if the swapped out content was in zswap, but the page belongs
+>> - *  to a large folio, which is not supported by zswap. The folio is unlocked,
+>> - *  but NOT marked up-to-date, so that an IO error is emitted (e.g.
+>> - *  do_swap_page() will SIGBUS).
+>> + *  -EIO: if a slot in a large-folio range is unexpectedly still in zswap.
+>> + *  The folio is unlocked, but NOT marked up-to-date, so that an IO
+>> + *  error is emitted (e.g. do_swap_page() will SIGBUS).
+>>   *
+>>   *  -ENOENT: if the swapped out content was not in zswap. The folio remains
+>>   *  locked on return.
+>> @@ -1593,13 +1613,19 @@ int zswap_load(struct folio *folio)
+>>  		return -ENOENT;
+>>  
+>>  	/*
+>> -	 * Large folios should not be swapped in while zswap is being used, as
+>> -	 * they are not properly handled. Zswap does not properly load large
+>> -	 * folios, and a large folio may only be partially in zswap.
+>> +	 * A large folio reaches zswap_load() only when its whole range is
+>> +	 * expected to be on disk: PMD swap-entry consumers split before
+>> +	 * calling into PMD-order swapin whenever any slot is still in zswap.
+>> +	 * Confirm the range is entirely absent from zswap and return -ENOENT
+>> +	 * so the caller reads it from disk; if a slot is unexpectedly still in
+>> +	 * zswap, fail the read rather than return partially-initialized data.
+>>  	 */
+>> -	if (WARN_ON_ONCE(folio_test_large(folio))) {
+>> -		folio_unlock(folio);
+>> -		return -EINVAL;
+>> +	if (folio_test_large(folio)) {
+>> +		if (zswap_range_has_entry(swp, folio_nr_pages(folio))) {
+>> +			folio_unlock(folio);
+>> +			return -EIO;
+>> +		}
+>> +		return -ENOENT;
+>>  	}
+>>  
+>>  	entry = xa_load(tree, offset);
+>> -- 
+>> 2.53.0-Meta
+>>
+>>
+
 
