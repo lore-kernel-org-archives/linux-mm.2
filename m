@@ -4,118 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03436C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8354FC43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 10:25:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA6B36B0005; Tue,  7 Jul 2026 06:23:09 -0400 (EDT)
+	id 606226B009E; Tue,  7 Jul 2026 06:25:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B315D6B009F; Tue,  7 Jul 2026 06:23:09 -0400 (EDT)
+	id 5DDC56B009F; Tue,  7 Jul 2026 06:25:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F8686B00A0; Tue,  7 Jul 2026 06:23:09 -0400 (EDT)
+	id 4F3FC6B00A0; Tue,  7 Jul 2026 06:25:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 668096B0005
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:23:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D30BB1C3888
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:23:08 +0000 (UTC)
-X-FDA: 84961592856.01.A6043FD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3729C1C0009
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:23:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MwBekEDD;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 23B316B009E
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 06:25:49 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D80B1203BE
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:25:48 +0000 (UTC)
+X-FDA: 84961599576.11.60DD348
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 34FE7C0002
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:25:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ET1/u8IB";
+	spf=pass (imf22.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783419786;
+	s=arc-20220608; t=1783419946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uO9n1BXbcFKpE0ytmifaDUpJQYF7fOJjd6hhXMsbhnw=;
-	b=W8YVnCgKoVcGd7pp5FIlJuBfQcey1rmDLR1yqvqIYxe8DAeC+UW8Uy8OSJXquzOXn80dvx
-	uJetBNJkzkvIPgCIQWz/FO6velglqHQXxsAA+8JzKhJKl/P/xR50e5xC/VRGaxfLD9r8Na
-	13caBaLdRhCnExAfAbxQES52Q4S5gfA=
+	bh=VR1L8Tfvs37DPjneOYKS8+jqtMz73BhJHMeN7x0oADU=;
+	b=OOjyJlvHBCJaEtd3+Ry9OBb2WwHffmzKxycHcw1Deyp0Q5e37QdQe8yqwNByTjQPtbckNq
+	3HhNVK3o+1rXq9c0FPDZdbetRxtoQtOggKYPXSLR1AAmK8exejpg04qJN1Mn47ZQDQ7Ql6
+	3ky2Z7FU1174VC658KbR6ZIfBR20qak=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MwBekEDD;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="ET1/u8IB";
+	spf=pass (imf22.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783419786;
-	b=wNvmN9z/Zrdq5zSK1Woq69/cDb9COqktqpDPOuVanfVp6SelTfftmqvyccjwR1qXf+/J9g
-	TCp3wY9ZzhBTt/v7YS3uxEEYDZeT7Xv8atCTSmBt96mYVetTLh2NeV8D+ZJEuOkII1uIpI
-	U2hj0VRBC5l3Vs5nfNyOgqrcgu7qkwM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 67D1F40F17;
-	Tue,  7 Jul 2026 10:23:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3940D1F000E9;
-	Tue,  7 Jul 2026 10:22:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783419785;
-	bh=uO9n1BXbcFKpE0ytmifaDUpJQYF7fOJjd6hhXMsbhnw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MwBekEDDrqDWUBl7OB2GiRJo9KVaANF531LqDSCiYXdCwUfPfgV15P9ZY/fY6CVA6
-	 F8ic/FjF/V4shqvt1ft98lkWSY+mj6ovzE4pr5gR635QrF0JPDro+njddQUcumSdQh
-	 kZ2VtL+NJM1IHpwBv5iKE1Mc7Oizq03fbEHOGyZREuLCbOunsQHWCjKQPfsYIeYhTn
-	 nkzNe0/N0Uo+DMFOtkRTMhjaVVt0gFL67IW/5ZfXccVzW25bfqi117JnWf+/k8p1+/
-	 tBKgrRhHBxTqzBMhkUG4DH3unKVaBJ/A7PbihSPTdfDg8mw0xEEWq1UREm34Vk39Dl
-	 CNZCNxZb4WFjQ==
-Date: Tue, 7 Jul 2026 11:22:41 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 21/30] mm/vma: add and use vma_[add/sub]_pgoff()
-Message-ID: <akzTTCgF1_d7DDZZ@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <794044881e454fd8ac13e59d5ff5fc86fca08b03.1782735110.git.ljs@kernel.org>
- <akZI0n1U32Ptd0ye@pedro-suse.lan>
+	t=1783419946;
+	b=SkYaxGS0w2p1+XL3/SwGxmcCnRFD2r46YS4TMMR7yqjS3/PMC9Weoxm/XafDlnb/6be714
+	vlsB01Q76nQdZqDhnXIvP8jb5Mi1jzfdis4SwL6th0kbNrO9G5o6eItN3dH2Ngiz6l/zRT
+	ylWNDEF7ynatNXs5cnv0wHB4UukCpkM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783419945;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VR1L8Tfvs37DPjneOYKS8+jqtMz73BhJHMeN7x0oADU=;
+	b=ET1/u8IBfPQN1+dYA5WR1p3QUb4q9LsNu2aZE0qcY2ivSSyo/QsWtqlW8SIrU1B2z7NDLF
+	WCfdnOjgj7IouBS/ar6F+sekWpGkgZ12B0ArqJ3gdDjoRZjnZpdvzXPOdkKZTrFK7/4nc7
+	tadoSATc5qxFyEo6mTiPWgVanhZRINA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-695-PvP8OjCtOXqHRykzgaBsdA-1; Tue, 07 Jul 2026 06:25:42 -0400
+X-MC-Unique: PvP8OjCtOXqHRykzgaBsdA-1
+X-Mimecast-MFC-AGG-ID: PvP8OjCtOXqHRykzgaBsdA_1783419941
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-493ba771d1bso37674125e9.2
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 03:25:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783419941; x=1784024741;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VR1L8Tfvs37DPjneOYKS8+jqtMz73BhJHMeN7x0oADU=;
+        b=k2TA211NuKymsyD63YSl0JGM3vuwB6gb9QPhu3mObH//q1bjPP02m7UwAliSNzkL6a
+         iNtiEMYK4ebGSwEbdgAkZam+laXwI3DOLrxFR/zwvRhVJHKEJJ5Gng9xaLMYL9EMoZal
+         vCJ5tT0K7FzyyIImwLaFUaGIoLXKJQdBm4FnCnPBgxzZN6boSHN/EbJZ3J8phsrKWCwI
+         1Fz6ic1QbxWYSbnr/HLdBjG3ncsS4H8E7bTOGbDE5dChG8o5OPGLOOwA7K7bwK6MnNiu
+         tbl2PyEU2nyiLAaoo8CDF8LgaK/cqFJAYiwrs5hojCQNjwpZD3u3yF+6CTVpF0pYtULh
+         S9Kw==
+X-Forwarded-Encrypted: i=1; AHgh+RreTBAxIMY36q6IyXCeBWYRSH5ACvzUyqjsmia1+fhKfn8PrXqkBLxMK0tYpho+RtoVANR92cj1SQ==@kvack.org
+X-Gm-Message-State: AOJu0YwOXFJIeiO2ZrbcwWB7i/+N+vzEygRnHi5JDMs9oeYPrGQrka3a
+	ER3QGKl8daVi7GIzNFfdWzvTk4mI5zrtq8WYSP8ayU6047MmOZOceKoDcztjOzhWW2XdBH31Cls
+	4H59V9BKypYWdTo4J9jWp2w1sUHQwy9Pu3HCaRyFr9tPqqkgFXkY7
+X-Gm-Gg: AfdE7cm7I5hy+lZpfpcxyuAHn6HRIxCc3jRAc1NU5NxaWFESQmeGKA0pV39fFi9LJj8
+	WA99eQTyldaCu+Pq34Iws6L1ShEjrQOXWYUZcaA8/U96mwJoLlelsNhSTKyyT6HzBNr1YnP/+Lq
+	IgOihtSFXnHzZs+LiNUFPTQUadl4K/W3bxBkZpFFuFFaFkquwplWp3FUYaiLKXFk54TIAQ9tINV
+	E0ZTjyfseUptVUWuIuT8TngIcj3CsETiLAYeCrVltDY6Lz37yvKl+um55D0J6oKU2DJr7ghsbS/
+	r2n4HskbqjFLWnMVleRZ4HNQEvfJf3iCarFM+uWvovBBytdw0Ug7E0TVRysL8Ujxjd23naCVuUw
+	ldyVz5LN4n2kbEyWiVD1Szz9bikhVZj+F
+X-Received: by 2002:a05:600c:1383:b0:493:b647:1acd with SMTP id 5b1f17b1804b1-493df090a95mr49448655e9.36.1783419941258;
+        Tue, 07 Jul 2026 03:25:41 -0700 (PDT)
+X-Received: by 2002:a05:600c:1383:b0:493:b647:1acd with SMTP id 5b1f17b1804b1-493df090a95mr49448105e9.36.1783419940603;
+        Tue, 07 Jul 2026 03:25:40 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa039b126sm32286020f8f.24.2026.07.07.03.25.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2026 03:25:40 -0700 (PDT)
+Date: Tue, 7 Jul 2026 06:25:36 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Sourav Panda <souravpanda@google.com>, muchun.song@linux.dev,
+	osalvador@suse.de, akpm@linux-foundation.org, ljs@kernel.org,
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, mhklinux@outlook.com,
+	fvdl@google.com, gthelen@google.com, mike.kravetz@oracle.com,
+	pasha.tatashin@soleen.com, rientjes@google.com, riel@surriel.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH 0/6] mm/hugetlb: Dynamic, NUMA-aware HugePage Cache &
+ Free Page Reporting
+Message-ID: <20260707062428-mutt-send-email-mst@kernel.org>
+References: <20260707064235.1386552-1-souravpanda@google.com>
+ <9624988a-366e-4884-9408-3f3b88c27290@kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <9624988a-366e-4884-9408-3f3b88c27290@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4RoeKMfu3ds6d6kG5Os3JvvX66jKpWHZ87Ei-EvwTy0_1783419941
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akZI0n1U32Ptd0ye@pedro-suse.lan>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3729C1C0009
-X-Stat-Signature: k54fbks8ye7udf1jdz6g371bmsxngooa
-X-HE-Tag: 1783419786-127418
-X-HE-Meta: U2FsdGVkX1+gQwX47N5CsbavJftKiupuC7B9qJIQhg12JAVXcekbrYbRJHLYptfRitvr1qQQ2BuvfT01VhRC24vzDkEDeufuuF00BABfH3f06Dg8SCp9hLEDPZemgT98uklr2xZeTckw5x3ivUW+CP7WAjIjZeJ0vTbPyYiAwiuI/M/dL02EdWrHsVuJ3f456YgYv1EOkFKQ87T5ldNRn1tMXn8UC7J4JvrIhRrHMOPnuy312wlWw9n8UPVXwLGQVely4BN5gBRKPpmyzbBXbtNokEr7cILoDtAeZTkYeI3ZBzC1KjOwjGhbfrowIyYa/NDwdly84jSkjkyA5pRF2xBMCcgfjrrXe3i4W9IRfJZ5580VLevTY0VL5c5ho6DXKBne+N2gE/okNQM6wjEr1+o1u1tvFIAh3Fevk/mguVx9GJx6VelDa8AQLTHjsyCFdeQDD17dB4wGsmMHLFVNkrUHdYscL4UZmAcwaKNj7IKJCm4FZ4WMKRfF63l+fLpfHHtgKnheLeQhyFT5NHICgfZlRDSyH5psNSUKQpkTgS9RgBuMCgiJ3oRdHQ7SGlIuduDp7Xb7JgULyqzGGpCRjfqhgDIUGlop4sG4q0JSDijeqJrD95uoFsL+Zd3XUIHSy6RbvDgwAiNPUYj9G0Lq59g7GpSJSTW0CuexZGGHDy1RNps2PjDliYgEIEvveDSD4u80o2L/mx3VwqZZDCpbBTIfRJCKC1oEC4EvyMqCArJUcr54J4aQOc7y/l7FtpLgrVlBvLsCI5JUEaew3NdJ7AUklFWIH1CmZRIDaX13AO15foFXqwQCSrkGjqFgvwzml9H1kO4g85pndx5EZh+Tm9Foo5b8oqm/9MEP4wZrkxE+h2xI/Rt1nMPt5ZfT5WlGSGcpMzuCOVG8yxaG0Yd+Z00D+jYGkZ+D0RYqLwdFLQm2aOUXSbE9qA44dtYuRC9xAyD7zmNbkUUR2sXLfRW
- +g/i1GHC
- vnlhEx0ubuc55HWzZU2YU6dWcEZMZfPH7pJtxE/ZRYsb4rrhu4DV8a4Gqe2MUaCdq9bnXlohMlawh+4KYQTrG3l2zBj7/iGEmMaNWguPB5nF98KBxPZFf1ssHimXkzkUdXO+9WisKPSiji1W9lWDe1p0a0k/oGkreEH8yoaiGeJTdNSQNsAHVlBeNkerPq0EaRCJ28uc0gkAeK3pBH42Abr8u4IhVzp9BYmcjMIsn6f1m0oVtSw2McttQ6lmUUDRThmjJgC8YYogE5pkHWNtYmuDGIG4D+7gVAOqkSjLZxo8NqkH1LSaNPhdPpzEmLwvTPb9YyKf7gbOSVhh8pI+bj/gfZZDukkl6yfv3azNcSOh2vem6wijLhO5xZAvd0kghG3YeUF/tAtQf7rUvKwfNELiOJw==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 34FE7C0002
+X-Stat-Signature: 4gzx7fxff1q6ttau9s35n6rd1qqoe5i6
+X-HE-Tag: 1783419946-315898
+X-HE-Meta: U2FsdGVkX19jniZcAGbghGoJH1q9V83NjoTUqIIOF0E3CfbPba3wH3u2gdZBC0NJulyB7keJsDoWJ9KY6VHgyQg+x3E0ihpbrORYnIAxZyUWqs60AlP3jN3NwZ3DPcYGLHu20er5geArL51u2u/k1krEWqK+6ZlTp3ojNOsjP61JIttW91zFkk24fAaJO2j1SAQuYmacAoBxo4I57uFCR+NrnIFWRkfq3mk22YhmTrMmzgUBs09QmnVa0S0DxwYuEVDtjvhsFXyuK3/ZxCdA/RNjvL1zcbY0+tbpFY3PMOM+7a0WZhvea+LrC7lxnzF49PAANlaRD4ILwMt4ys7Go+8HPBOc4tL/DpNPV4p6HFZV7HfW/me4Q0PUVE+DIWZRxAMTLI75ijz6bgTGT1SZSf+2ywhBltsc/QL3A7kIAyYRd4Y1UVbac4MgCJj7bN0Q8dRVIYejjuVE56ZYoHptKMsxBHmiASUbYUctpy9Ga/ZIBPqPMpeiIjyJm4CORRd/qidBfrKqrOTxZDnnau10CyggSz/no9wSg1Epmkf4c5pvQapMd926SSsMXKoY93ej0je2bpe4qzZ0zQBaTkDxLpYCkWycjI9yoFC8X6qGYUUHq/jK4MdhcUCI9db8j4faO9qrpJoOGh+ugJAmsY4iZEn73Fk5CnrVaAXPUbTyVr8bezhj0Gynz4TVqL3rdD1j5yDZ1CXhCefa/iNEoL6psjANnTzcqcuLRy54AgqvxYuxwwVkF9Kh2ShKAEQvFmI5piZE7Sxl4COVrZAep/AZ6UFZ171QPkeNdVLYfTDIW1Qb9FacOJqf2p/bh2P/WN0bYnUngBGK5j7hs0QWOsHkGLrnkvJWDrh86VbcgkV7TVNI0lUGLCANnv/djBSuC2WOUVyl/ErYf+9NlbV3OiELV/f+IJzDW5Zb/sL8nIubP0Atvyt9t2VXJhaZ1KTZQJsbN/QGKF/hVSMjzh+eJLx
+ WkJBkq8O
+ ArK0adTWTH/3cnQHnP4rqgQ/r6Nx2UaZIjNguqlFPuOJzxW6j//cGJCj6W+U8TOtzBaY2+4APEDAkLG9hrJMVTEttzPlC1JFFLRvuxafxcQczFw8Oh8N1RYiiIj88WI93L3PME1uIm6/wIzQmd/J9mosxcJqBsEG4jkIzLpqr6+kUUCsh21XP3F6+aHZWNiDcLWCMug21hTBf/ZvN1B/TREo4Dw38hW+i0k3JoPEV6hXAbsBBffFZQCL06mRn5c5HBjGtTuOqEagWHylL0T43CGE3sx9WvFoQBZhageaMKLQrI81n7RjudkRsqqDHkI9OivFuOTha8v23NB4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,161 +134,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 12:20:10PM +0100, Pedro Falcato wrote:
-> On Mon, Jun 29, 2026 at 01:23:32PM +0100, Lorenzo Stoakes wrote:
-> > Add helpers for adding or subtracting to a VMA's page offset, exposed
-> > internally for VMA users within mm in mm/vma.h.
-> >
-> > This is to lay the foundations for tracking anonymous page offset for
-> > MAP_PRIVATE file-backed mappings, where adding and subtracting from this
-> > value must be reflected in both the file and anonymous offsets.
-> >
-> > These are used on VMA split and downward stack expansion.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> >  mm/nommu.c                      |  6 ++++--
-> >  mm/vma.c                        |  6 +++---
-> >  mm/vma.h                        | 12 ++++++++++++
-> >  tools/testing/vma/include/dup.h | 13 ++++++++++++-
-> >  4 files changed, 31 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/mm/nommu.c b/mm/nommu.c
-> > index 7333d855e974..c7fafcd87c14 100644
-> > --- a/mm/nommu.c
-> > +++ b/mm/nommu.c
-> > @@ -41,6 +41,7 @@
-> >  #include <asm/tlbflush.h>
-> >  #include <asm/mmu_context.h>
-> >  #include "internal.h"
-> > +#include "vma.h"
-> >
-> >  unsigned long highest_memmap_pfn;
-> >  int heap_stack_gap = 0;
-> > @@ -1338,7 +1339,8 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-> >  		region->vm_top = region->vm_end = new->vm_end = addr;
-> >  	} else {
-> >  		region->vm_start = new->vm_start = addr;
-> > -		region->vm_pgoff = new->vm_pgoff += npages;
-> > +		vma_add_pgoff(new, npages);
-> > +		region->vm_pgoff = vma_start_pgoff(new);
-> >  	}
-> >
-> >  	vma_iter_config(vmi, new->vm_start, new->vm_end);
-> > @@ -1355,7 +1357,7 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-> >  	delete_nommu_region(vma->vm_region);
-> >  	if (new_below) {
-> >  		vma->vm_region->vm_start = vma->vm_start = addr;
-> > -		vma->vm_pgoff += npages;
-> > +		vma_add_pgoff(vma, npages);
-> >  		vma->vm_region->vm_pgoff = vma_start_pgoff(vma);
-> >  	} else {
-> >  		vma->vm_region->vm_end = vma->vm_end = addr;
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index 185d07397ca6..cb7222e20c93 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -517,7 +517,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-> >  		new->vm_end = addr;
-> >  	} else {
-> >  		new->vm_start = addr;
-> > -		new->vm_pgoff += linear_page_delta(vma, addr);
-> > +		vma_add_pgoff(new, linear_page_delta(vma, addr));
-> >  	}
-> >
-> >  	err = -ENOMEM;
-> > @@ -556,7 +556,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-> >
-> >  	if (new_below) {
-> >  		vma->vm_start = addr;
-> > -		vma->vm_pgoff += (addr - new->vm_start) >> PAGE_SHIFT;
-> > +		vma_add_pgoff(vma, (addr - new->vm_start) >> PAGE_SHIFT);
-> >  	} else {
-> >  		vma->vm_end = addr;
-> >  	}
-> > @@ -3305,7 +3305,7 @@ int expand_downwards(struct vm_area_struct *vma, unsigned long address)
-> >  				vm_stat_account(mm, vma->vm_flags, grow);
-> >  				anon_vma_interval_tree_pre_update_vma(vma);
-> >  				vma->vm_start = address;
-> > -				vma->vm_pgoff -= grow;
-> > +				vma_sub_pgoff(vma, grow);
-> >  				/* Overwrite old entry in mtree. */
-> >  				vma_iter_store_overwrite(&vmi, vma);
-> >  				anon_vma_interval_tree_post_update_vma(vma);
-> > diff --git a/mm/vma.h b/mm/vma.h
-> > index 2342516ce00e..47fe35e5307e 100644
-> > --- a/mm/vma.h
-> > +++ b/mm/vma.h
-> > @@ -247,6 +247,18 @@ static inline pgoff_t vmg_end_pgoff(const struct vma_merge_struct *vmg)
-> >  	return vmg_start_pgoff(vmg) + vmg_pages(vmg);
-> >  }
-> >
-> > +static inline void vma_add_pgoff(struct vm_area_struct *vma, pgoff_t delta)
-> > +{
-> > +	vma_assert_can_modify(vma);
-> > +	vma->vm_pgoff += delta;
-> > +}
-> > +
-> > +static inline void vma_sub_pgoff(struct vm_area_struct *vma, pgoff_t delta)
-> > +{
-> > +	vma_assert_can_modify(vma);
-> > +	vma->vm_pgoff -= delta;
-> > +}
-> > +
-> >  #define VMG_STATE(name, mm_, vmi_, start_, end_, vma_flags_, pgoff_)	\
-> >  	struct vma_merge_struct name = {				\
-> >  		.mm = mm_,						\
-> > diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-> > index 7ed165c8d9bc..41fea90a344d 100644
-> > --- a/tools/testing/vma/include/dup.h
-> > +++ b/tools/testing/vma/include/dup.h
-> > @@ -1163,6 +1163,11 @@ static inline struct vm_area_struct *vma_next(struct vma_iterator *vmi)
-> >  	return mas_find(&vmi->mas, ULONG_MAX);
-> >  }
-> >
-> > +static inline bool vma_is_attached(struct vm_area_struct *vma)
-> > +{
-> > +	return refcount_read(&vma->vm_refcnt);
-> > +}
-> > +
-> >  /*
-> >   * WARNING: to avoid racing with vma_mark_attached()/vma_mark_detached(), these
-> >   * assertions should be made either under mmap_write_lock or when the object
-> > @@ -1170,7 +1175,13 @@ static inline struct vm_area_struct *vma_next(struct vma_iterator *vmi)
-> >   */
-> >  static inline void vma_assert_attached(struct vm_area_struct *vma)
-> >  {
-> > -	WARN_ON_ONCE(!refcount_read(&vma->vm_refcnt));
-> > +	WARN_ON_ONCE(!vma_is_attached(vma));
-> > +}
-> > +
-> > +static inline void vma_assert_can_modify(struct vm_area_struct *vma)
-> > +{
-> > +	if (vma_is_attached(vma))
-> > +		vma_assert_write_locked(vma);
-> >  }
->
-> These hunks in dup.h look lost. Should perhaps be on the previous patch
-> (adding the helpers).
+On Tue, Jul 07, 2026 at 09:29:07AM +0200, David Hildenbrand (Arm) wrote:
+> On 7/7/26 08:42, Sourav Panda wrote:
+> > Overview
+> > This patch series introduces a dynamic, NUMA-aware HugePage Cache,
+> > backed by a kernel shrinker to safely return memory under pressure, and
+> > integrates it with Free Page Reporting (virtio-balloon) for HugeTLB,
+> > specifically targeting gigantic (1GB) hugepages. The goal is to solve
+> > the tradeoff between allocation latency and memory
+> > fungibility in virtualized and heterogeneous cloud environments.
+> 
+> Hi,
+> 
+> in general, we consider hugetlb nowadays to be mostly in feature freeze, as we
+> realized a while ago that adding more special casing on top of something too
+> special for all of MM is only going to hurt us more in the long run.
+> 
+> We want to have less special casing and less special sauce, not more.
+> 
+> Now, there is nothing wrong in making hugetlb be less special, by making it use
+> more of core infrastructure etc.
+> 
+> But optimizing for surplus hugetlb pages by teaching hugetlb about new caches
+> and its custom free-page-reporting support rather looks like the wrong direction
+> for me?
+> 
+> -- 
+> Cheers,
+> 
+> David
 
-Yeah, it's because the VMA code starts actually using them in a way that
-otherwise breaks the tests at this point, but you're right, functionally it'd be
-nicer to add them at the point they're introduced.
 
-Will fix that up on respin!
+It is currently bypassing free-page-reporting completely.
+Making existing free lists not ignore free-page-reporting would
+maybe considered "making it be less special"?
 
->
-> Anyway, Obviously Correct(tm).
->
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-
-Thanks!
-
->
-> --
-> Pedro
-
-Cheers, Lorenzo
 
