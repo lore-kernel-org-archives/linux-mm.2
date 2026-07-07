@@ -4,102 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B1CFC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:34:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00DC1C44501
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 14:41:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B3756B0005; Tue,  7 Jul 2026 10:34:30 -0400 (EDT)
+	id DCF5F6B00A5; Tue,  7 Jul 2026 10:41:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18BCB6B00A7; Tue,  7 Jul 2026 10:34:30 -0400 (EDT)
+	id DA6336B00A7; Tue,  7 Jul 2026 10:41:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07C8A6B00AC; Tue,  7 Jul 2026 10:34:30 -0400 (EDT)
+	id C22F46B00AB; Tue,  7 Jul 2026 10:41:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D1F5B6B0005
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:34:29 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5FDF0A0479
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:34:29 +0000 (UTC)
-X-FDA: 84962226258.02.4255D7F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6123D18000C
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:34:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cHr5YAQg;
+	by kanga.kvack.org (Postfix) with ESMTP id 869B96B00A5
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 10:41:34 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 035F9A045F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:41:33 +0000 (UTC)
+X-FDA: 84962244108.27.84BBCE6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4AF77A0002
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:41:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H6S9GekB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783434867;
+	s=arc-20220608; t=1783435292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7f2N/SJQhJLGukCIcGmJQv9G5BEKubFQyKhmhbtamRg=;
-	b=ZlUwS8Gx6jAJUokuXyPfn1098e0PjV2zkdEerwq0nth4txp/rCySDgKn9I5SUkgrIG1+hX
-	DHiRzd3eqm9vgH0Xq6jIIpjyHxHhR4tN42A+Rue9Gc1edcWdnZgBIHWKACSnoZIbqVxjtd
-	nC35WhaiNcCoCaIH9d7YUKuQRrgDajM=
+	bh=71V4Q+fhRuX9RNQVEGMko4OqAR8knd22tkZhvdbZbMI=;
+	b=0nz0L7JskYpltK0VrENQc9qYyV0M7y6Uc3JsfifRT70vkrKNS4i4pQpG1UyBWLiAUYM5BR
+	6uk17fS0clYQjlOq6pIUMi8dM6pb0G3qcjhURg/HP+0u794YTY8JyHERxB/RQFblFYTzkZ
+	3t/zT7oAdW42cSflDxRTCs0WeYq2Ha0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cHr5YAQg;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H6S9GekB;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783434867;
-	b=1Grcri+VlhsdHpNVYwaKLKw/D1Suyaqzxye9FW+FtvyAVlZwqlRxpnKBD6KaaXBmu9OGfd
-	WbmNDmfIb4sDzatN+c5twmltoICmyjg1CXQHVIuk5fKEvc+l16Ucz3h/Hza/E7ALxamnIa
-	G6DWbb4z12GrzDytAlveEMq1d2gZdyA=
+	t=1783435292;
+	b=npeOFEWT+klnSebX6WhzxKNymykZYneqmyLk3xX8TLX7EhKXbfAYEeDgdBknOmP/qXc89M
+	qoFQQHRPiBkWlrfgoisijGvce1g0VZmjWGxqowug96rUxYeTwsoYefmsQAGUUIwN36z3Zj
+	uDEu52B7O+IQakUgAsw58f5Slf9DpdA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 836784188A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:34:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676FB1F000E9
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 14:34:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A483660018;
+	Tue,  7 Jul 2026 14:41:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62881F000E9;
+	Tue,  7 Jul 2026 14:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783434866;
-	bh=7f2N/SJQhJLGukCIcGmJQv9G5BEKubFQyKhmhbtamRg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cHr5YAQgwuJ40WYqmmXAvD5Yud1eg+3k/oTgssQil4smRcvOqud5HdZobqZ1DkSXs
-	 Cw2u7GwpXyQTAf5gUWJ7CXzBtie7nKH7vMiLPeNAcyC/5MMyR4j2peWV7JU5Xjv1tS
-	 spAe+JFdqwTmMSjtAshqBS0E2Pzjxg5wtGG99SdOZ+oSQDPla+ZjP7jiUO0Gj0IjQ0
-	 rVnHcCNxtAhm01KECAvj0tyMbxIynhgT0z8gfkpnZXroRE5kEOiCKzJrTnxgg4wrhd
-	 5UUrrTdE4F1P4mIySLv8Q4de9TTwvyQaeZT+OysYYYIeEwHeytkMTlX4AAliA4NvwJ
-	 ylhbhxHe6TVMw==
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c16ac21acso20828251cf.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 07:34:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Ro+ZMUSqFandBYYVoqVXx6OYmYAh6ZgOcsqkIF8ZQ3E0BynaGz/gfT7AzQAY6ptp7sWYHZGTXYZjA==@kvack.org
-X-Gm-Message-State: AOJu0YwcobQihg/U7O+inD8jqw57QhckW3+g1lxVs6JJLU7oWzY+zYNW
-	m9L4Xke7C/ve3oF7l2A+fcjx8J4JnDUt7cARV/px7C28AQdR0HIcK/n8B0BWRGHGfTUIm4qUbeR
-	Ao0JlSGZz6fb0X5HUMSRYot33XoK5QWo=
-X-Received: by 2002:a05:622a:e094:20b0:51c:7b12:1207 with SMTP id
- d75a77b69052e-51c7b12179amr15829651cf.85.1783434865720; Tue, 07 Jul 2026
- 07:34:25 -0700 (PDT)
+	s=k20260515; t=1783435291;
+	bh=71V4Q+fhRuX9RNQVEGMko4OqAR8knd22tkZhvdbZbMI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=H6S9GekB83Pwow3x4U+RGkMBW6FVgTqC0SvdFufnMoKWlCtG64eGWIdcoIifrbKPl
+	 youmdPGzUebakqVJ6nUDHINdl5i/eKAjQ8dRvXH6TADBdph93e7i30Zx1WuCMbWWay
+	 5OOeInR/PJgYjMji1bzTvQuqWqx9qg+JZfS8PyeGGMG4mSs0eCGSWBeDekl883Yk0R
+	 8mO19JNWyy9BB0as5ZmoOzQbOYyuSob2g2lkJu4u0r3yByO2EXyb6ZQHrcrVkhRjBu
+	 Av9G04braM0zU/FBB2N3aGVHAfKU8KZmjiL9q5mOPtmU8s/CH6MaUr94cwbUD2/HZf
+	 0883rVQ4waFyg==
+Message-ID: <69dfe4ac-3800-4e67-93f1-d21a8a39e23d@kernel.org>
+Date: Tue, 7 Jul 2026 16:41:14 +0200
 MIME-Version: 1.0
-References: <173f3fd983d735155d47e9e39d27f0c2d62a7c31.1783307463.git.baolin.wang@linux.alibaba.com>
- <CAMgjq7AQcyypJ-VhJ_CxY6fdEph64fxjOzzYU-=EkMrHemkpzA@mail.gmail.com>
- <8ef0b72e-a0e8-4913-8d30-519335305260@linux.alibaba.com> <CAGsJ_4z5N6FSfWt5WUZ5YmqhCzLcd3Cj1sc9B79WYX9ZbDH8Gw@mail.gmail.com>
- <d01bae40-f94d-4e8a-baac-ad6fffa18b64@linux.alibaba.com>
-In-Reply-To: <d01bae40-f94d-4e8a-baac-ad6fffa18b64@linux.alibaba.com>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 7 Jul 2026 22:34:12 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zbBRe383GQLGuPivUXXnjhs2L9xFyandXkCOUotcb7Vg@mail.gmail.com>
-X-Gm-Features: AVVi8Cdk8e1_A5dUPq7XT_kY-SwTQ4Hn7kKDOOl2oDp5wOSBPnjQwov2kRW5pUQ
-Message-ID: <CAGsJ_4zbBRe383GQLGuPivUXXnjhs2L9xFyandXkCOUotcb7Vg@mail.gmail.com>
-Subject: Re: [PATCH 6.18.y] mm: shmem: fix potential livelock issue for shmem
- direct swapin
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Kairui Song <ryncsn@gmail.com>, akpm@linux-foundation.org, hughd@google.com, 
-	stable@vger.kernel.org, machao26@xiaomi.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6123D18000C
-X-Stat-Signature: x4wqq6p96din8tna5nf3xzdyqdod4zbj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/30] mm: move vma_start_pgoff() into mm.h and clean up
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>,
+ Simon Schuster <schuster.simon@siemens-energy.com>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>,
+ H Hartley Sweeten <hsweeten@visionengravers.com>,
+ Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov
+ <lumag@kernel.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+ Thierry Reding <thierry.reding@kernel.org>,
+ Mikko Perttunen <mperttunen@nvidia.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
+ Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Suren Baghdasaryan <surenb@google.com>, "Liam R . Howlett"
+ <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
+ SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>,
+ Kees Cook <kees@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
+ etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
+ linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
+ iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+ damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <b28b698df4c009e85c4728446ca5863d8e633164.1782735110.git.ljs@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <b28b698df4c009e85c4728446ca5863d8e633164.1782735110.git.ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4AF77A0002
+X-Stat-Signature: huaxwegxuhnw6h95ta1kk6oj915dc1tu
 X-Rspam-User: 
-X-HE-Tag: 1783434867-763573
-X-HE-Meta: U2FsdGVkX1/pnc4z/VodTlMjjaln0n3Uw8HC0zXhNO3tE6B8NX43a0ydstzNrHNeVKVyHPrv5T6qx/WGctoyDSULTnEGedhwhJlCcbsx5N1cp3O0DPkajzRRhMXV5rJDYNT0h7jRsPakhs/cS/jGISmSonAmecGICRjZWb3y13PfNT/lwKcYlBE9KN5GBRSIXusBeVJuR5mq7qZlggGtNzKelSXzTjOBsxUhyYbhc9yrrsjDNXoZ2AiSKNI4lOXe8ZK5+1cOXHNnJytzQvwDe9Ak2fyUd33wnCzIEOFjgVsGD8yMxtFMqNgpEW3M4JA7zRxZ3ew6rXU/cetWn2y0CP6euclf1kO2wChbHtzONu1BurmGHrB7VFEN0tEG4fjalhtNDiKM4HFCZE/QyO2haCMVbQem4TNh1QecqU0oDWss615+F4TZwnbtSwGMPSUQZHM8Zfc8RGd2+4rhOQqILHHt9lkP+jV+ScKZqcFOh/044YMm6HvVbhFKEnNE1RwDI56+OmYk84Az4JEwVl+Qs4wAL7M7MuH+4ThH1gklL+3B86CsRbEhFwpqJVFcMrMeivkSgpvbNtg90Z1Ki+glydsne18wAnC0NP6j6axTFlq+KjIZHBNkDnwj3w7caWuGU3SaZ9HWWkpGL1MnFGMsqEA0b+3l6zwD5DG/EFG1VweAKCxIP+WR2hM9Kp6ur/5PILKGzVztRf4NRqgg19/2XDDCdNtOlTtKwTdO6+KnM5beRml5JFMRww63XEE5HJQWtErqp/2wuk02ELiRMdgQ2IIlUERzQNYwZKGrO98D4I/Nb+ZkUq0LDOk1Th009uDEyeLIZT+8HCX550jJsR/o9fJVPsmwVw4A37V4LKLweWTPdfK+d01F5fAQR9CWjL2GQMHkfHtP2/cgtqRawXQuaxn38p/AwngUDnzBwwH8pUf5YutGvFHd0nzkW9z9niAhdwG7WXFB5FtATfn4wuJ
- eJ8bpmO4
- l8iVAVhZbUFgrY++mcNYa6qEg6SkNxuXHJi9P/Za7AKuZWvPn9Xn84D4GCUfWeZ0PFJN7JGDVrwiyyNhbytMcBZDXst3IuAlyqXTzarUjipGwOlFZCCd9bDxppwSsEVvJjnisPqYTWMqRkkUf7DIp5Mm/VVfu/UUh9AATajQrczzfMhM3YyEZrYNh6dvSCVswQAYwjBEZrkTo0LJ3IV0g2VR0+FxQk9xKpQLrqKnULUkIdjypF27zDOmZuMxmEHjXXm4oIa0GPld5Qdy8jDNJ/C14k1SH8c2DlasVRzfqPHeIKggBmvinM4kIEULsbJFPgqub57Rf3A5cDeXn3PQfXdXrzgnd4a2a2TCFAuVYZ4Sz+FkSUU2xANVM1A1tHKCsBc4g
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783435292-414082
+X-HE-Meta: U2FsdGVkX1/TaAAFKScRAivBLEFS8hkgsNOwWHAW+tn+YTvp1U08iAc4sNULsoCE+ptAXvkFZ3l6vuwe5y6l9s9CpJtZ4yfDVw1EpFrYcEaa7FMQnb0+CcDQF0hmVO3iV0eQVkU2EFFx6FomuWKyKLy376gZAyCks26fhUQ62xLKjs/zaz0h5K3C7KJNnzhi5JGk2FMyHrpfP/n8oFfpvx/PtAiEaSI2BrxdhQuwkVsHV+bUjbjVz/T8ONHEhARWJSpaS5f5aEmTTvvV1uVWmE5IyN9ZYk0wuoqZ2BtGaFhGkKF8CWrHKeVC8js8ig3S23GWrv68f0HOyHwrtPtkvzUrkSeIKQjlrVaSfCcbmrjcYKEEgJyA1wzLTN5mNUpZh4tX0AIP/if3EzHGLlJoGHlHnmlm9zKoJHNUcuIAedA0viPY9BZ7QBTtO10mP5I/R0pZxrX7xkr+Q/MRejnupPpkqhSrVGPLYs2zFWUOax97yFtptSXJzSjJduEkIesSwRHE2h30qfM5gC23RRtWJ4gIK9INHkTOCZHHMQg5oEILsaAbiP+at/7QFPj+ry3+DXtK4nHgPd1irPor1omUhf56uhi7r0wtgybKezN+VDSwK8ujrxkpFGd5J7aXT4d9c0vwEcqIyKdsamAcCuVgIr9xAA5VqIIPyLchwy4nhPrwwSR2PzdH1ONUrWl2uOItDwPCBqkRDR5lRro7aBNsqnySa2AEO1ZFW42Dx3JAWndLFpmK8gMAXdVvg1yiSmBntChot0l9Fqh0mVGwzeLekCQPfAIbIsdNVjnR8nYOsNJ4sMRTgwhBEt2pNiaa4duyq0V5UJCDWkVXU6uKlufo4o0HyqCbmsjkwZSimqz28LeL0Fn5gpWioM4GaqkpY8SXuGVf6C2CIsJLCXf8TM34hT87hy6ut008rhLPgSuQPmd78AhXJo/KKyGnMxxDc3dtVMtBlIv4uaqGPQAyLnJ
+ ja/U7u3L
+ cYyGBnJW0stjL4QkEdLIWdkc8zpWnX0qiOS5aG76Uif+nAreUDAMPB2xedqb/uHCv0GOu1sEBpPuUg2i0BGfPvle1zbhvIdNZscelZshkilFmOh5a8NsvEu6JGdfRUWs0cIqMClFByDb1TX/6JdE8P6pAezIFOQLOcUPvDIQ1hcmTTvIZYrKQ+6ELUanBZ3Dluuh490bM4eC2FlpAeTJdDgW7mvrJKGZAWyrlzll+P9L1A67DBBmZ4Nm3LjZGWipp/EwArJEJOecOj2Oexr1eKm7gaFnsqYe8hqlrxyMZw5zIVS6Lg8PS+roa5lFxDCEsfYlkuvhkrxa+3TnpHehlxN4fib8k2UjPjIcVZVWHJ2HOGBCAZYof9x+huiylxJmV9p9CVrVIBif0LOVi5JBibAR/UH7Eta6CIu4mPTaOnAOvk9s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,121 +181,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 7, 2026 at 9:53=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 7/6/26 9:04 PM, Barry Song wrote:
-> > On Mon, Jul 6, 2026 at 8:08=E2=80=AFPM Baolin Wang
-> > <baolin.wang@linux.alibaba.com> wrote:
-> >>
-> >>
-> >>
-> >> On 7/6/26 1:59 PM, Kairui Song wrote:
-> >>> On Mon, Jul 6, 2026 at 11:25=E2=80=AFAM Baolin Wang
-> >>> <baolin.wang@linux.alibaba.com> wrote:
-> >>>>
-> >>>> When skipping swapcache for synchronous IO swap devices, swapcache_p=
-repare()
-> >>>> is used to prevent parallel swapin from proceeding with the swap cac=
-he flag.
-> >>>> However, on PREEMPT kernels this can lead to a livelock, as reported=
- by Chao[1]:
-> >>>>
-> >>>> Thread A starts direct swapin of a shmem folio and calls swapcache_p=
-repare()
-> >>>> to set SWAP_HAS_CACHE. It may then be preempted inside workingset_re=
-fault().
-> >>>> Meanwhile, a higher priority thread B also attempts direct swapin of=
- the same
-> >>>> shmem swap entry. Since swapcache_prepare() already marks the entry,=
- thread B
-> >>>> repeatedly gets -EEXIST and busy-loops waiting for thread A to finis=
-h. But as
-> >>>> thread B runs at higher priority, thread A cannot preempt it, result=
-ing in
-> >>>> starvation and a livelock.
-> >>>>
-> >>>> Fix it by yielding the CPU with schedule_timeout_uninterruptible(1) =
-when
-> >>>> swapcache_prepare() fails, following the same approach used in commi=
-ts
-> >>>> 029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead") a=
-nd
-> >>>> 13ddaf26be32 ("mm/swap: fix race when skipping swapcache").
-> >>>>
-> >>>> Note that mainline does not have this potential issue, which has alr=
-eady been
-> >>>> resolved by Kairui's swap refactoring work[2].
-> >>>>
-> >>>> [1] https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4@xia=
-omi.com/
-> >>>> [2] https://lore.kernel.org/all/20260517-swap-table-p4-v5-0-88ae43e0=
-64c7@tencent.com/
-> >>>> Fixes: 1dd44c0af4fa ("mm: shmem: skip swapcache for swapin of synchr=
-onous swap device")
-> >>>> Reported-by: Ma Chao <machao26@xiaomi.com>
-> >>>> Closes: https://lore.kernel.org/all/700a2cbf90a2484f979aac858f08f5d4=
-@xiaomi.com/
-> >>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> >>>> ---
-> >>>> Hi Chao, could you try this patch to check if it fixes your issue? T=
-hanks.
-> >>>> ---
-> >>>>    mm/shmem.c | 2 ++
-> >>>>    1 file changed, 2 insertions(+)
-> >>>>
-> >>>> diff --git a/mm/shmem.c b/mm/shmem.c
-> >>>> index 94c5b0d78ac3..d4cb57b3b0ef 100644
-> >>>> --- a/mm/shmem.c
-> >>>> +++ b/mm/shmem.c
-> >>>> @@ -2066,6 +2066,8 @@ static struct folio *shmem_swap_alloc_folio(st=
-ruct inode *inode,
-> >>>>           if (swapcache_prepare(entry, nr_pages)) {
-> >>>>                   folio_put(new);
-> >>>>                   new =3D ERR_PTR(-EEXIST);
-> >>>> +               /* Relax a bit to prevent rapid repeated page faults=
- */
-> >>>> +               schedule_timeout_uninterruptible(1);
-> >>>>                   /* Try smaller folio to avoid cache conflict */
-> >>>>                   goto fallback;
-> >>>>           }
-> >>>> --
-> >>>> 2.47.3
-> >>>>
-> >>>
-> >>> Thanks! That's much more simpler than I expected. Do we need a wakeup
-> >>> queue like the one in commit 01626a1823024? Perhaps the reporter can
-> >>> help confirm and test? I personally prefer to keep it simple if shmem
-> >>> users aren't as sensitive as anon users.
-> >>
-> >> I agree. I'd like to keep the bugfix as simple as possible, if the
-> >> reporter's scenario isn't latency-sensitive.
-> >
-> > On Android, we don't see much shmem; it's much less common
-> > than anon. So the chance of this concurrency happening should
-> > be lower than for anon. However, shmem can be shared by
-> > multiple processes, so could this still happen if process A is
-> > blocked by process B?
->
-> Could you be more specific about how that happens? I think we should fix
-> this starvation/livelock issue if you think it could still happen.
+On 6/29/26 14:23, Lorenzo Stoakes wrote:
+> vma_last_pgoff() already lives there, so it's a bit odd to keep
+> vma_start_pgoff() in mm/interval_tree.c. Move them together.
+> 
+> These each return unsigned long, which pgoff_t is typedef'd to. Make this
+> consistent and have these functions return pgoff_t instead.
+> 
+> Additionally, express vma_last_pgoff() in terms of vma_start_pgoff(), since
+> we wrap the vma->vm_pgoff access, we may as well use it here.
+> 
+> Also while we're here, const-ify the VMA and cleanup a bit.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
 
-Hi Baolin,
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-I think your change has fixed the livelock issue, but an unconditional
-one-tick sleep could still be problematic, as commit 01626a1823 tried to
-address in do_swap_page():
+-- 
+Cheers,
 
-"mm: avoid unconditional one-tick sleep when swapcache_prepare fails"
-
-If possible, I would suggest that your fix also include the change from
-commit 01626a1823 to avoid the issue caused by
-schedule_timeout_uninterruptible(1): an unconditional one-tick sleep
-could cause UI stuttering. At least, this would make the code more
-defensive.
-
-Thanks
-Barry
+David
 
