@@ -4,212 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0943CC44500
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 02:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FD6BC43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 02:12:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B80C66B009D; Mon,  6 Jul 2026 22:11:26 -0400 (EDT)
+	id 699A86B009E; Mon,  6 Jul 2026 22:12:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B035C6B009F; Mon,  6 Jul 2026 22:11:26 -0400 (EDT)
+	id 64A286B009F; Mon,  6 Jul 2026 22:12:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97C996B00A1; Mon,  6 Jul 2026 22:11:26 -0400 (EDT)
+	id 512136B00A0; Mon,  6 Jul 2026 22:12:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 560A56B009E
-	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:11:26 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B416D8CFAC
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:11:25 +0000 (UTC)
-X-FDA: 84960353730.24.E25B647
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012031.outbound.protection.outlook.com [52.101.53.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 53C5A160002;
-	Tue,  7 Jul 2026 02:11:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Rqgyb5dt;
+	by kanga.kvack.org (Postfix) with ESMTP id 13E896B009E
+	for <linux-mm@kvack.org>; Mon,  6 Jul 2026 22:12:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D5671C7577
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:12:16 +0000 (UTC)
+X-FDA: 84960355872.20.D17C49E
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010002.outbound.protection.outlook.com [52.101.201.2])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B1B154000A
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 02:12:13 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=pqbWFbOj;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	spf=pass (imf01.hostedemail.com: domain of apopple@nvidia.com designates 52.101.201.2 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783390282;
+	s=arc-20220608; t=1783390333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OZWTKtclRrOfAi6ihxJKjALnLRbRSlyjEScPsGFqTuY=;
-	b=b5JUgFOUPCPX2ZlOQiQcc5i5EMUoJeOJdFliAGRqPkJQ+eCleBzqxwJgdyrtz4orvTwU6a
-	p1t4f9DhfBpuFwr3JLNaLkQM4OKOqNPaAGUDweODwXQsR2cFP3V3LP+5JfwfwGpSWuHllK
-	rVRdtETZLjdmBJp4MBGmXHxqi814hc0=
+	bh=zAep4Z7YZHWpN+0mlNJbDGkhzQbeuCt/R48sLWPFmrc=;
+	b=53/1vDfNHag99IJd1bpjfOBon84Ntb2sDsXJpIXNWwmw5A2BB8fugaHqZtyF9bhWIxK+Gf
+	5NIh/zVVxR0nEQ5uhLO5lQpV+Rus1UTG59PP32NnEsPqOvXkePfK2J5IORgBogmMlV0eJw
+	Dq11mycpQZzBpNDzFeaSjAUS/RpmOSY=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Rqgyb5dt;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=pqbWFbOj;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	spf=pass (imf01.hostedemail.com: domain of apopple@nvidia.com designates 52.101.201.2 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
 	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783390282;
-	b=2EuwydCKfNRgxHV1yyjXVuiGI7MTVt13HGs5B9xd7Q0s1OYevfv/DzsWwSeKDrSVGrPods
-	LKsWLKqVgBXEWRixOiqjT7pR87wnRZHa1Hw1DaKcFgxPe/M53oIoJgUy+BbqbrhAP8uwjm
-	FmkComsn3XsFrQ7dPPlu2XsLLi+w+7I=
+	t=1783390333;
+	b=nd8UblGrphd84lwvk4OfKGRDrNZqAn+AgVQESx9h76N85MEsd/oKYFtDQIRZ4i8GhyLqZ1
+	QKmJtQL+tBBaNprKRSLgfuOU7X0MuEMOvu7NuFNkP7hKMLynGjo6QF9Dt0hpxPtsFkOit4
+	iOX2bilFX1X9v6cI+cZmUiaFnGY2sbY=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wto1kG7x0lEigIZjZ69KzWs14cA7cKiTp/PLlUYQ1SbEn6vaSZvcPqgLnvs8uwlKZqvcSYGJhRpvFX5UHgIHDnncQCsBSQjYfQjJVguZaHEdE87aDk3nE2nrAKQqqQmFO4KsePviBaZmU6V9PPCdkT40T8XYYrNkLiC98LTc7zphww9NBz4YrLfAYTa7HhQQzL8fBCq8QlxsI9VxcTUvEc/OcTzZEBxSAy0VPiXnG8LzWHLkoXoMMmax6mc88IMZTiEzYoACoz/7vrJL1B0RBw811K1HfmjUGgn5MKC874AbjePd3kq5OoOMXCK6Er0CbfeE2RY8JSZsAPkEWp1dFQ==
+ b=rI81+BhvSOllLdmzUul+PrWx4xOwng4w6m3Hi7rNaWdgVtf29qaoryPLRaeK4HHxeWJJCCFDYtNQgyboBPSY1Kzv1G79dZuDNnpsZ5n2+3FLRrvnNlJJnn3Wvz5rg5zjXffbIthKSd38U6TmN/FLlhaI8QYHJ8Nkdvz7aM240+jhQ4qCcASCX3BvjyiSR/MVBwmMZuiIJj7LG+xHaQDKfD7xUp62aWdWoZm7e2pDrdTsgBPFByDdCItV68Tzd4rPPswPIzh/8OmkjYkEDYdIX4drTkxQC1b8Yyfce480Qv74gY2SaX3wOJ8TAp76INlWrt/vI5KAqyzYiR3/WhPSew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OZWTKtclRrOfAi6ihxJKjALnLRbRSlyjEScPsGFqTuY=;
- b=rOp17A2cjBZEQEXbDH2sBM6PvUTJtENgAj5XN8/fkoSg6bAFrbdy5Y6OHlZiiwBMYh9GdhXLB+FPEevN0ewpRoWB7XBrtocviJ8FKT5r9QUewzAcHYkasjQpkysBZ5slVb9OMqsGbnYMOtDzj2WjxvpMekP/iX+Ci3Ru0k44y9xq3UUJWANTOB7V/4JZT+OmaSI1vlNApSXNSKaIaw3RDSSQSIILaOYmHbjVl9EnuXNmZaKgMZ1sBdIC5g1mp08ZB+Vr53zB44yzjNwAvwxmmmOTXZv0lp2ATm0cl6pWBfLEbCnLBswhE+tzTPxA3Hu2vkhoAvYfEFQTsMn1hHdC5w==
+ bh=zAep4Z7YZHWpN+0mlNJbDGkhzQbeuCt/R48sLWPFmrc=;
+ b=IV9cV+t2hrYhLq3UFInbaq+H/FJCO7/Ybl41g8u+9/CF8qjWSsLiL/1hsN1QuZw0Ou+YyIjBUGD+LBe4ZIMmoMklhs20hf/4JmpmAH3owO++Nh7ODZW7m6afpl/PiYh8Hn7F6Al5w2PjKyHabz6wOZc2NercPxUOePvv797/Z/b7nhDSlEzJuI19dxWoKoIQIGMKkbPYQmyjGfxweWjWwnHtSoY/usyWr7gILKRxsq+e/qVFcuUxx3ao3kOrZlPxjldI7AOI+20VHRx6eRhkGQ/lmPuWmaZyM4DdL/iRxk8DNPP8n8ctheuAdhxa8D65rBVB+1GLQPGX0VjT2eAxrg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OZWTKtclRrOfAi6ihxJKjALnLRbRSlyjEScPsGFqTuY=;
- b=Rqgyb5dtBICsv78jQL9CwbjetB2CWZIlnhEcFGW1C9li+Ru/Uy+5fcKr6zrgltXGzrsIT9vMr8bMZssBqUgNwQGhb6qwRGbNRJQQtGQJURWS00Y7bBaPCYRCivowXwIJ0y+POE3CPVtBs6JzNlSzoT+z9aUcEJnL3CaluTQeU3AkbAVrJMv1FqmGq1mHhXPUsHPuzFAEflLIqRz9Z/gSfROp3V6fJm7o7ld/RFlNgV1oj7u610vnR1FRoZkoZryJ2/ABNDr0exj258xjZxGp4OD4zM2TVCaeOwUzd/c+FqTBPTHawE3xLuapQa2olUY7dc6YqlmJLzBQA0MO6p5hbg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CY5PR12MB6177.namprd12.prod.outlook.com (2603:10b6:930:26::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Tue, 7 Jul 2026
- 02:11:13 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.009; Tue, 7 Jul 2026
- 02:11:13 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 06 Jul 2026 22:10:32 -0400
-Message-Id: <DJRZ2QCEIVA6.1AZF5S891NKS4@nvidia.com>
-Subject: Re: [PATCH 02/13] mm/vma: update do_mmap() to use vma_flags_t
-Cc: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>, "Madhavan Srinivasan"
- <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Lucas
- Stach" <l.stach@pengutronix.de>, "Inki Dae" <inki.dae@samsung.com>,
- "Seung-Woo Kim" <sw0312.kim@samsung.com>, "Kyungmin Park"
- <kyungmin.park@samsung.com>, "Krzysztof Kozlowski" <krzk@kernel.org>,
- "Peter Griffin" <peter.griffin@linaro.org>, "Jani Nikula"
- <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
- <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
- "Tvrtko Ursulin" <tursulin@ursulin.net>, "Rob Clark"
- <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov" <lumag@kernel.org>,
- "Lyude Paul" <lyude@redhat.com>, "Danilo Krummrich" <dakr@kernel.org>,
- "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>, "Sandy Huang"
- <hjc@rock-chips.com>, =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Andy Yan" <andy.yan@rock-chips.com>, "Thierry Reding"
- <thierry.reding@kernel.org>, "Mikko Perttunen" <mperttunen@nvidia.com>,
- "Jonathan Hunter" <jonathanh@nvidia.com>, "Gerd Hoffmann"
- <kraxel@redhat.com>, "Dmitry Osipenko" <dmitry.osipenko@collabora.com>,
- "Zack Rusin" <zack.rusin@broadcom.com>, "Matthew Brost"
- <matthew.brost@intel.com>, "Thomas Hellstrom"
- <thomas.hellstrom@linux.intel.com>, "Oleksandr Andrushchenko"
- <oleksandr_andrushchenko@epam.com>, "Helge Deller" <deller@gmx.de>,
- "Benjamin LaHaise" <bcrl@kvack.org>, "Alexander Viro"
- <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
- "Muchun Song" <muchun.song@linux.dev>, "Oscar Salvador"
- <osalvador@suse.de>, "David Hildenbrand" <david@kernel.org>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>,
- "Nico Pache" <npache@redhat.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
- Yang" <lance.yang@linux.dev>, "Hugh Dickins" <hughd@google.com>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jann
- Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Kees Cook"
- <kees@kernel.org>, "Jaroslav Kysela" <perex@perex.cz>, "Takashi Iwai"
- <tiwai@suse.com>, <linux-mips@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <dri-devel@lists.freedesktop.org>, <etnaviv@lists.freedesktop.org>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-samsung-soc@vger.kernel.org>, <intel-gfx@lists.freedesktop.org>,
- <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
- <nouveau@lists.freedesktop.org>, <linux-rockchip@lists.infradead.org>,
- <linux-tegra@vger.kernel.org>, <virtualization@lists.linux.dev>,
- <intel-xe@lists.freedesktop.org>, <xen-devel@lists.xenproject.org>,
- <linux-fbdev@vger.kernel.org>, <linux-aio@kvack.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-sound@vger.kernel.org>
-To: "Lorenzo Stoakes" <ljs@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <cover.1782760670.git.ljs@kernel.org>
- <e0ac58ad2b88ff7e2f0024e3286b2e786f79ca32.1782760670.git.ljs@kernel.org>
-In-Reply-To: <e0ac58ad2b88ff7e2f0024e3286b2e786f79ca32.1782760670.git.ljs@kernel.org>
-X-ClientProxiedBy: CH2PR15CA0023.namprd15.prod.outlook.com
- (2603:10b6:610:51::33) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+ bh=zAep4Z7YZHWpN+0mlNJbDGkhzQbeuCt/R48sLWPFmrc=;
+ b=pqbWFbOjAgxqavsHcPQLl04BefxSn2OPmoWGJn7+bY6DnQLvK+RD52kgDEO0Q5LndONPHI95rPzgU0Yb3Q9zBYstaRYbRm+Om4aNDFG+xjbWkIsWIcE0M5Sogm6yQnfxmYWuPB9RD+8DFhF2wSwfc6T9gn1bEaK92Ut4Si9Q4Z0Vpx6a/+tmIog+JeQE/tHBX7588MGj77RN81PJK1qY0X8ImItthPaU0YoDj7BXWhapFUe2uwiiZifIWkob5UpQ4/RtjMcjs0upsVZUngAPl3gf4exwAvDgCHgVHS+a5aPS43FirUNXPgvYccXw/c9M8cAoeSlWeJboXmwzzo756w==
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ PH7PR12MB6444.namprd12.prod.outlook.com (2603:10b6:510:1f8::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.10; Tue, 7 Jul 2026 02:12:09 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::5807:8e24:69b0:f6c0%4]) with mapi id 15.21.0181.008; Tue, 7 Jul 2026
+ 02:12:08 +0000
+Date: Tue, 7 Jul 2026 12:12:02 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: akpm@linux-foundation.org, arnd@arndb.de, bp@alien8.de, 
+	dave.hansen@linux.intel.com, david@kernel.org, kees@kernel.org, linux-arch@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	mingo@redhat.com, rppt@kernel.org, tglx@kernel.org, x86@kernel.org
+Subject: Re: [PATCH v4 0/8] mm: speed up ZONE_DEVICE memmap initialization
+Message-ID: <akxc3nMedKYo7Xdv@nvdebian.thelocal>
+References: <aiEoByaQdRR3xtM5@nvdebian.thelocal>
+ <20260605095243.45803-1-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260605095243.45803-1-lizhe.67@bytedance.com>
+X-ClientProxiedBy: SY5PR01CA0006.ausprd01.prod.outlook.com
+ (2603:10c6:10:1fa::10) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY5PR12MB6177:EE_
-X-MS-Office365-Filtering-Correlation-Id: a46e7ba9-5394-4512-992e-08dedbcd0520
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|PH7PR12MB6444:EE_
+X-MS-Office365-Filtering-Correlation-Id: d6d265dd-1fa0-46fa-1e80-08dedbcd25a2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|7416014|18002099003|22082099003|56012099006|4143699003|11063799006|6133799003;
+	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|7416014|22082099003|18002099003|6133799003|3023799007|11063799006|56012099006|4143699003;
 X-Microsoft-Antispam-Message-Info:
-	2eWtQE73CZSQ5v6QF5lztmsrSjPVumC5SvOZh5US96jgFfWckz/iaPIzlQl0IN4B9SRX7EbdnQoB2ClMvwl3QnklzfP+cGwQ0U2ns95Je2jZD/TuCMCwu5dHfriEqwM+rRiG4co9f5lLSn4hRTkZntECv2ITNa8uwsi1FGDLfLh1NgZDL34zp92+yucm7lzpv7R4c98FmxtXF4I19kqh/5gkPp0amOxupLrfWChopAaqL0WnwPeDgFuz7rp4vVYJaLVCAG/zzlIxASIecZH/ps72iemw8N49bkbCOZOtH7el24e84fYs++uhUvTUqxevuoamYcqyFaoptWPsZ9eHTMpXIXHfHbrbsTynVAdpH/zn72gFl0wtqm4h6bcRq8wDitcVQXoFoO/5ZnyrpwsLFlcQ2dNt30h0ZR6I3FuD1F7wubUbX0C2AmDmHwe8Y50zhllp/1es1GAb770bORFA+5rggFnE+F5ijvSsNz4S1fZ67ntonEVJ8R6IWT7YOBEVAzmpG0n8HWcncN/W4BU9qZgFzJSpmeUmWLfLt18PuVgrLucwmPQqb1nAf0lS76MIGhy3CYNWcJXXK9sSCzWA8+LZmqPmuiC5l8YNyjOf0m48gbj79Ur5Fsmi+Onn4al4JTWG3RoHqS4h+19gFkHjf0A6Bmz0T+OTx8atHnXM2eo=
+	Yx82ipFP5NGopnzvCRxU7N6F4mbSg37a3XANOKxg+hdRCiAR91PxyULcNAQOr7WflpbBgRxUFoRMZNScn5D8Jp4BpSgdRhaRSSl3LXyun/jFPy6eJMQKdBay/Cb7xyeJ9HsrRAmBNQ1lRU0Q0K6Y0t8Y5UWy6Z68HOc2yY1Q1ay/3ftk+i3g21QI/5JLLMFQtvHL5SatFgkSDtCNZACdO8uce9xnuiThhm6y2E7mZbLGhDuP+gCwN8sx76sI1yrLOHD6nk14PIapoPJHHB1CP+EYYtjSlPLVvd+eqky7zViJqTIsDHqTfnsaVRoLffY6p9kPgZ8xn77ScR9syfNcMpQPUTM796QThalUhc7JRY+uqbK9ch582wsXcSvrrnMdy5FYy75c4R7SEhukq5b9vVgjXf3GC0fXAG9FESnscjiH9C627R/Td7gBndvm0AbtaUSJb3BP2QeCG0YI2SnV9a2YZS2xrQGwQVJ8ENJ19C8IANkbtwKqHMk8mo5DUqxteTYwujwIryVmJVe53Vt7XfVEtoJszdG17r0KYOfAPo+/tx1GFzO8X3c2QcrpkVWyoBCL64oCs8ChT6+xQ8GPnM11ZEGWYqJna10Nczi4wE0/KcqLHY7X6hCa99ClgchSXUNZSTeJCiqhZdJLZR/lorQlNQ6lbkYQKUHFBg8UShM=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(7416014)(18002099003)(22082099003)(56012099006)(4143699003)(11063799006)(6133799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(7416014)(22082099003)(18002099003)(6133799003)(3023799007)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q2tKU2lvSDV6bmNzb2V2alBFSURBSVhXcW54RHhWWklmYlFCYTVOZzdHaHpX?=
- =?utf-8?B?K1NWbjNDN1dQRW82Y0ZYUVlTc1huSTA3RnNQMmk4TTJmT1REVzdmcnBqTHo0?=
- =?utf-8?B?MTJzZk10LzdsMlNuMm9oWk5FOFBpWm10dGgxS0dMekZZbnlPUDhwWFFrUzdk?=
- =?utf-8?B?azhPMktCbDhjNDRHWHRxSk1KM003RXFPWlBNbmk5OGljL0dKTjJ3cXp0cmZZ?=
- =?utf-8?B?WlAzd3l5c2cyMXVOdTRmN0l0UUVUbzdrakxXMTV4QUtrSU5ZemdUSUM4blJ2?=
- =?utf-8?B?Z3BVTnVYSTZ5TnpBOEpqQlA3LzB6Rm55Q2FDUWFmbnNSSitpekR3MFFIazhX?=
- =?utf-8?B?NlBSa0hYaUpRWHdrYXg1Sjd2MjcyZlZ6dy9hN0wrejA5dzk5V2hjYXFIMlFz?=
- =?utf-8?B?bUt1SWYwb2VZY2o2eS9qQ3ZUSXpCWHR6SHBoYkhaOEpYNFp6R2VRdE5URGJs?=
- =?utf-8?B?dkFtR0dybjdnS0FUWjNpSWVCWmVyQ1RFVGFTRVZlYnd3MDVlZGZ0ZU9sMVNm?=
- =?utf-8?B?cGJkUmxIQmdGSDZCaTBNUkZoN0JlS3Iwc015TjhBYTlDL1dud3lEdFJsRzZC?=
- =?utf-8?B?bjRKSkwrWUtlNWdQZmRYbTBxNTlYVmdHQ3hkUWNZSGpqN2duMUVrdFRSSkNM?=
- =?utf-8?B?M2l2RVpUUlRqUzNYVzU2T1VFaGFJdmVaV1Q3OWpBVDRhSmxpbEVaa1ZrbWNw?=
- =?utf-8?B?MlhNUDJsQUh4b3BndHNFZGFmYkRUOFYvbFM3NkJJa2JrRUxCZWNjSkgvZkVr?=
- =?utf-8?B?OUp0Sit6ODlDMmEvZ1UrTm94T0VEaHEvYmRuZGtrREptTXpYbHVZZTNaTUNL?=
- =?utf-8?B?SS9IY21UWEJ5eW43SnpEamVCeGNybGZKQXcvZHBlSDJiUTZFdlZEaUtUdS9C?=
- =?utf-8?B?ak54OVRxWlBuWWNFOVpEVnlaN01iZGZ5bmtPOFRwbWtaRTFZc28rUkFQMUhp?=
- =?utf-8?B?dSthYjgweWZjaWxBSytYQUZFM1AzSnl3bDNPY2hxQXovVGVzV28vRzJ6ODhM?=
- =?utf-8?B?NmJ0a3dNeXA4UE9uRkVQZjU5Z0JqaURMa0l4OGJHS09oY3dpUm5DRkRJSkcv?=
- =?utf-8?B?SWpxME9OMUJHVnBkYXZaWVZNOE5oTnNXVlBNSlg3aUltN0FIdFNLeFNaYTd2?=
- =?utf-8?B?WjlWNGVXQnRuVkRaK3FuTXU5bVc1c2xNMFdncjk4MEdPN0RDSEhZMEErSXVn?=
- =?utf-8?B?ZktUTnZzYXJQUUZ4SWVseHpaLzhHc3UyRisxTnIrdXI5WHFtOGhwZ0QvQTA1?=
- =?utf-8?B?SEcvNk5xUjMzVzhBWWVsYjB1RHVPbUZ6R0xackxRNktncWIwY0xqcTE3aWRv?=
- =?utf-8?B?RkdmR3IwZjF6UFd4VFQ1YWJoWUYyT2FNUU4zZ0tmZWtENlVSOTFRNTZIc3N3?=
- =?utf-8?B?S0J2TzdvRS9OSWtLeVRKbG5JQ2dqV2tRVGFSYUhXYWc4c1NCVlVjbW9rRlhv?=
- =?utf-8?B?OG5FREJEZjJHc1ZyK0MzckdoQThnSERaYm0rdGlqRTYvUFo5OVAveFduWkxm?=
- =?utf-8?B?Y3RoNVl6ZVRHRjBEWG8zdEpXMDB0UmtOa1prUWpKenFMVkk1Y2N0ZXc3c0ls?=
- =?utf-8?B?VnIzdWhZWG01ZXJCQjFhdUlEMlE0WGxIWVVNREJpcUhLNHhLS2d6clltdXJX?=
- =?utf-8?B?S3RqMEpyTXFQeUJ5UUU2WEJKQnVqc0pycjdXZVRzOUk4d0pjWEt3L2NaUEpw?=
- =?utf-8?B?VGRBVjBzZU5OS1RMMG9NckdoekxOc041Y1pJWUo4Mmw2NXRNV0o2SnZXdHNX?=
- =?utf-8?B?MFNnM0pLbU1tZWZiWUFxS1AwTHNpVE9jQ0tDY0Nqd0xSWVYzQzMyQmpWNVIv?=
- =?utf-8?B?cFhsYmdZdHBIamVNcUJOVkYvc2JrUHZGZUg2QlR2K2VjMmhObjFUMHkzUkw1?=
- =?utf-8?B?cUdNYW83N1phOHpDRkhjd204a2V3bFk3cFRud2FVekdKcWFBelBSSi9lYnFR?=
- =?utf-8?B?OHNBcjVnaUljdzRlYW95a2p0dEp5ajh0d2tLVFExVWtJUDFTZkFGSWxSRWRE?=
- =?utf-8?B?dXlLWVFWYU1IWi9ucEx4bUVMZVJNdFpwbERmOXROWjZWSXVMQnQyNDV4TWZQ?=
- =?utf-8?B?ckQ0ZWY3eGlscFZSSm9lREpZTzJJNExuSnJmNHdNUmhYZGVMbS8rU3FROER0?=
- =?utf-8?B?Rkd3VHhqQW1uWGFtcmZMSjR1M2hyNHl5N0tuWEFyd1Z5NUhZaWpibHhZOXo5?=
- =?utf-8?B?SVArbHRFcnVBVFByVmEzWUZzZW9qaVE3RTIrTTVUTG9rUExlbE5jcE1GS01O?=
- =?utf-8?B?bXdvNnZSWEFlbVVET013VHVyWUFiY1NDUGRRdUtQWVR0OHpPM0ZRK2xIb20x?=
- =?utf-8?Q?JDrw2oFXXOPm0reTxK?=
+	=?us-ascii?Q?ncHhGG9nduJ+pph605CivG/Lq5DZO3jdmh5QoLMae00hXOGd5IxNLdqlB2Zk?=
+ =?us-ascii?Q?g6PRe5gvttUwwSj6qZndO1jY3RLkVTl6Vt7WKHkdXCm731JHoI02HbseADWn?=
+ =?us-ascii?Q?eWMudd+AwypduFtP//wEyItLHyJ4/39YvcF3VItzx7xTbrbuyZp9uV/jhV27?=
+ =?us-ascii?Q?6V9gtCjRLW1eRDL9RO7D7tY5dVOQ2sz2LNVn1z6g32ewFUuZLgYsW5NgbWW9?=
+ =?us-ascii?Q?Rq2vj4L4L2W4hwYsNZQkc/AQPtigWumzVDo0wKNXDW2+5lYhEngHRjNt/kCQ?=
+ =?us-ascii?Q?bF/lPeIdhh3yMYuKRTU7pj34+io+hHMe0SA8cxtNf6abQyJ3TBRrccF/6qGo?=
+ =?us-ascii?Q?ka0A3/7B9PyV7UfF6sv74kl3/CTBkrHHybhv6KMCUAkX9SNajCRj5P1uEDAL?=
+ =?us-ascii?Q?6RB2oA0RHpZs2zQYdNYzKEckLMKgb/lsl76ue99DH3XDb32AEute3eZqwVvV?=
+ =?us-ascii?Q?0qYhB4kejltUAC30c8dTCAifl9AUEx027F7IiBLUn6L5cF9IS2s7NdlMlJ/x?=
+ =?us-ascii?Q?mRzFIYLrkq5LnTDXt2jgvsHylVrjVTCt8rc42fT5afRMVfEyO/DA7HBPIy80?=
+ =?us-ascii?Q?eaPRN4yzMfuDhmYFKmqeVAyO2Y38L23CcLlRNO25dTwG4F1wElCTWQa1po0Y?=
+ =?us-ascii?Q?0k9tqLoO35I95Qzc3Y/i3EXJW2pFLIgv37D4aphMhuUVUuTdye/WPlKqbwAD?=
+ =?us-ascii?Q?su1wEBQ/sIYPlIC+yIgEW5rF0iX0D7t8UgcozuJjC/xKzfRmFuLtF4d8BHJ+?=
+ =?us-ascii?Q?7jpJftfM3I7vFUNrTmhk4KdGvo8jvHFjl68FHGBeG+w00HHSnQu2UVQVk+tm?=
+ =?us-ascii?Q?d6MCz+Fy3c3i23nRsGOq1eUclRFKhgXTAdcKiYqTEFB6ioK53S8zoiSXvpoF?=
+ =?us-ascii?Q?DcpzEOThztUrfLHXf1qc8tB/XDIgc2yDTizbiYphXmOM3R5MwFA9bauhN6xz?=
+ =?us-ascii?Q?r0NAPtY/UYQFoXur2yJZjO+4avD3N3jcwoVjkH3auy5Wqv+GjnVMDCTw1Ihf?=
+ =?us-ascii?Q?aLZNNw1bHwPhProokMrAvfpLxSlYJIBAAp7cTxo6oKUwDzzdgEK1+MxwRjY8?=
+ =?us-ascii?Q?27xqzAHFgxkSH/BxdIobiBogIm8ncLzRpAvmUrAE93bvjc3aq1JI9iJwj08j?=
+ =?us-ascii?Q?ekAFvNdV4gBKsHjLIprWBfAe9Ftb0cscy7gZaC7IbOC2hscg+Vd7xm6joQeL?=
+ =?us-ascii?Q?Iuyr8m0lMNVQlYFKdNovepHU9Z+fw5+xPo8ZkNVsdGbku7OOtMQIlMGldwew?=
+ =?us-ascii?Q?rKN/HZ1p5RIqWBbjtNyw7iTaMQX4zqtukg+zYKR2XtAIXWWQceM9qoDdCS+V?=
+ =?us-ascii?Q?Bf26o3cfGXKrvEKW6DTS53gM8MxaAWADATZQA9nYD9aW8absuiAveYq0lvfk?=
+ =?us-ascii?Q?HKYuk5rUSNAPIQ3DDddKvXMOs4/GRKXI3/vvFCtyEUJUxh6hPeE5VFfIhfFa?=
+ =?us-ascii?Q?90Qn8Zvct/z1Hrmd5u1a9PwLkE6QMjZjhmxCSLjbKfsGWkOMIoyWCyGXwcP8?=
+ =?us-ascii?Q?HEwo53fXCzJVaHEG+qUpLaIAGju0Y4/BoPXxj6NHAq4HIZTZH/kecmo0owuS?=
+ =?us-ascii?Q?iB2KxR3FNpWm2kS4mFRjOM83vXzDARxmLBXibb8mTcTdOFpFm1zzbgXBjkcL?=
+ =?us-ascii?Q?S2CAC3g4Fn8l8BRdOVFoCLlxXeGbqk8CLXFN21BsulbVJ2Muk9QFHzcuzLiK?=
+ =?us-ascii?Q?KDLEMJGrWOs2o2me6Kbo3WBPuJk1ZemlQpKEGKzNROVG2dj3L3azEFryZbaY?=
+ =?us-ascii?Q?BbJhcB43hA=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a46e7ba9-5394-4512-992e-08dedbcd0520
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6d265dd-1fa0-46fa-1e80-08dedbcd25a2
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 02:11:13.5375
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 02:12:08.2706
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PkW8PLSCAM9OoBbuQEoPHlbtWH7slCizpMnfj3r3at8+bkAV7ft0tvr+nIf15jXf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6177
+X-MS-Exchange-CrossTenant-UserPrincipalName: V49MpHYISMq6jUat0DGQ/GgP5oYtzoMI4AkQgs0S4rp+DPbKnlgQbscXK7IzLhD8Y0kkeinxLkxreaenkoO+5g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6444
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 53C5A160002
-X-Stat-Signature: 3axcbirrbq51zapa8rbui8q76wc8s1j7
-X-HE-Tag: 1783390282-269415
-X-HE-Meta: U2FsdGVkX1/m9wmViT7CHI9rnKkIYFunjJv4VSnhN3IFCF1JyiQRWjFqAHA5vXE8abF30o0j2op3JTw/wHr5fkDtRNrNU3w56ICvRmyOCAITZ8hHDACv0CvhGp4r8s8cbk6YGXO3cbqCRvMAmmVMgSRwDGReVzG+SDAHHyPLUPyDzjNHYnG6n0FSDPXGmcgdZlw4kGxK0k0WsnMVVb1ssc6XPRk4HocN2b717SgRWPXrW+cSVOvwvAY6ZMjH3SRCtB+5sRPLxOm0N6MDbu0+tEDQsDo1YEcCJQTP8JjTNs1YWb/pj4L4I6OLTqfFCDaTxI9PbONDpOSp3oEFMp4SwJWvD+0qiPgRF49pRSxGZLolWGJiGw9V5oNuYcmdv+mWKJeCV5QD4/fckeecHC57bk0z29xHCT+vcEXNmFUwU57q+f3nfCdeZE+NKq1SM//Swf0frVpYisJJuyg0/zWyBlsDAg/BeE8+FyACNPswmKHQImXEnJQoJnXHIk6EHjzFj9ec1T4ka35n0NMynw1+EXcIehFqIixabQV/1aEvtKawZZC8SIqExfK7yuZLs59DxRZOly0cpCShyCl2vhknq7pY1LQs+ZxUPA4aS3hOOOG4TlBABonansdCgiKeAPw5AWXxpUYTyhUN14w1CjejjvI2yS7/TKBxDUm09O66oU7zIfIeIta5+H6C5m/kK3ZBXD+WasnCqJEZgXf31qLWTpKUnka3z60d4D6Yd6/qthtI/Qb42NVPEl9LnEsyRvUgTZXh3MweuSxzMv+7b+ShjV4Kre9VGKWdm6lVU3XzB2E5vmOrph1gbcbvj1qLrZ9TLS+hAgvEDFwpRAy0vB/uIRbr221pJXIFklbzKk40/Bgf3fh5Bkqt3OEx5mLTHbudZVoDU9kLoSUKIpGKKzMPjhVIwE/YhMOdvyAJvN3OZd9HRqFZ5948iITLl0JYvuot3d9KzBi298gA7MSRhtp
- cd8Up0eJ
- 1n9mvtwKW7XPhjKpa6d56s8X5AvuUMSbwpcfhAgp502BnZ6dlt0jhabf4zsR2+G6DMbo9UqvYaotIdgbbYyVOX9XuaafZNQZhaz0wTe2LRzxnMOaT6g0GkqsxoWOD/1tFHeqEaIioWnis/crmyLpFZB2SwFgpPuUMgMGvXNpRVuzPbMvbfDXA8F6QCPq83gcTeBWhFxafeQgp9PvP2J1v7TAtW6SV2kGSDJ3R5yPkXURTHECA9EJbifzwV0C+BCoc1/beKNMoebloxltzEL5OBnqWfn1uzgcCIJrqdrJiIGiPyktDKneXtPLUxorNhwHJ/TbuMeAoiZY1Aldc/Kon3woUHm+tPoVHiAyCHHfaToxwi7HfmbFLrvKhg6f0NahegOtyG7qeNYGrMf3pDcgw6W03w3I3TFMYqcUd/ZccTQ8MGg9RMAzgK2rKAnnhz7rqeMcSkz4MbN1XSZkI/Jy7n0K5pA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B1B154000A
+X-Stat-Signature: 5jfspyp6uau39pin9h95medcd781zs15
+X-HE-Tag: 1783390333-368672
+X-HE-Meta: U2FsdGVkX19H24KSBqNNL1XN7px7hiXUZ3iKOfwMTUnmMWA5yY6L4E6t+V8fQxlADmXqIJCbgYqSzvvVYyN9cEtPQjdVNvqWfYE+PEZbkf2qKfstyyl5NF2baPBs7rTJOhk9Giu0dtNQvMC85xFavdtIm0P7kFFi8nMkHSbZMhBo0O2tDvThwVE8ZksnEhx7PruRrzPUCAhOqA68naG8BT5Q6gKDGrdDpxJVlkAGWdM4qqZDu5Rj/UX9QiFfZ9KFNzJ7wVpDh12XsCXw/fDbFBTVT/kQr5I650ISZ3q8rdA4d2aNlbvwFuJKD6xpv6FYFd9VqOe7c9ILiNcXSnra2M4C06AoExhf6z+ZQ0hTmCmgxOq+wL3xSDpZ+T1aBUcz3vaGkTUZLE5vZmVXiH6pNzNkkcZyK9Z1eXbDWmQklmNUAwMksCu9TLnHw7u38jnsLhaD99X/NVvlniz/i6VZ/H2QTEKklx/z9Ynbe1FrlX2gV96rWGjU4nhyShfKINzggHPd4yg65QVLQNBIdcsiNgHSQdpy7DOjrckx32Q5YOmScckvXvVm6c5OuMM7Trwef0N+hhDcjb/+0pez0diPZV64/WqaTLl0NmE+HMUA4AuxY9TtJYUIWgGrC4Cs8NEGPaSx3W5CH6zseizkzZr/87idd7AqX8O6QgId+rySF1ZWZlrCI7hSEChIjuvS0iXImtnXPgCRkVvrgj3sEsADkb3PSQfOWSDuKb4FfSzWY5nRuz65bcjr17eM8miNxAtNyRMAUmZlRr/U3NO7KKmbKlIA2glt78CsmZfQADIbCIgTuMRCiLfaI5zFfu+znahy9uFHty4znA4VPk0G/rsE36rHzpKf1vVQ8Kh6hfENFlSLro8k1DS2a83RIkLwcmL1J5DYyuW7TNwt7J3Xek1HzKjomX/YlNClNhngl6QJZNNp54eM3fBd4LZk2NBR4bEB20ypDnEIhq1uq4QoujH
+ UNtz4KPT
+ eTTn/HIMJb+XoFX7GT4xM7VhPY0rhA1kfWLLji3VL+2CjXxvbfJJl6l7DPebCb3iItM9YPqXq8pB6BLD9KvLKCKOsJTqGhqJsGAG/Hxxnj8SusPwzCFi34fmBuSmYmdMiX4mfrLv9nO/n9HuyEvTHiR3cGH2F3Aagd4ZgDCHryMk/31gNV+IOczhkl084F7c1l/QJ1EqJETPfQ21Blf/8/hNBUKxgKTXTAnprS4HGg+gfmSvlR27Bp+JgKNPG2VH2iuXu0opU6SMaPRe8IrBNN7SFDivo4HrsOhVWKemM195Kmta9SBPV98l7SgS1lpjCtIXtG1tV4SblHbRxZ/9udr2iBtD4/nvfmK9Vmbz8xKWL4TkMzvwIGqLQbMGKNhObl9CKbr3Jqco8HZ444WJiH8+iPYm3jSKpTgCMJ/h1q2iQGI78Ka0ZA4+oZQtVBjDZ3uBiNeOO7aqMy89/UDKZ1EmoHg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -217,123 +160,255 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon Jun 29, 2026 at 3:25 PM EDT, Lorenzo Stoakes wrote:
-> The core do_mmap() function accepts a vm_flags_t parameter which it then
-> manipulates before passing to mmap_region() to do the heavy lifting of th=
-e
-> memory mapping.
->
-> Update do_mmap() to instead accept a vma_flags_t parameter, and adjust al=
-l
-> the logic within do_mmap() to manipulate this instead.
->
-> This is as part of the ongoing effort to convert VMA flags from a system
-> word size to a bitmap type which allows us to unrestrict the number of VM=
-A
-> flags, as well as gain control over how VMA flag manipulation occurs.
->
-> We do not cascade these changes to all functions which accept vm_flags_t,
-> but rather use vma_flags_to_legacy() where necessary, specifically
-> deferring converting calc_vm_prot_bits(), calc_vm_flag_bits() and
-> __get_unmapped_area() to vma_flags_t.
->
-> Also utilise the new vma_flags_can_grow() predicate which correctly handl=
-es
-> the case of architectures without upward growing stacks.
->
-> As part of this change, introduce VMA_SHADOW_STACK so we can correctly
-> handle the case of the shadow stack not being defined.
->
-> No functional change intended.
->
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
->  arch/mips/kernel/vdso.c |  4 +--
->  fs/aio.c                |  2 +-
->  include/linux/memfd.h   |  6 ++--
->  include/linux/mm.h      |  6 ++--
->  ipc/shm.c               |  3 +-
->  mm/memfd.c              | 15 ++++-----
->  mm/mmap.c               | 67 ++++++++++++++++++++++++-----------------
->  mm/nommu.c              |  3 +-
->  mm/util.c               | 10 +++---
->  mm/vma.c                |  7 ++---
->  mm/vma.h                |  2 +-
->  11 files changed, 69 insertions(+), 56 deletions(-)
->
+On 2026-06-05 at 19:52 +1000, Li Zhe <lizhe.67@bytedance.com> wrote...
+> On Thu, 4 Jun 2026 18:14:05 +1000, apopple@nvidia.com wrote:
+> 
+> > On 2026-06-03 at 18:01 +1000, Li Zhe <lizhe.67@bytedance.com> wrote...
+> > > memmap_init_zone_device() can spend a substantial amount of time
+> > > initializing large ZONE_DEVICE ranges because it repeats nearly
+> > > identical struct page setup for every PFN.
+> > >
+> > > This series reduces that overhead in eight steps.
+> > >
+> > > The first patch fixes a stale comment in __init_zone_device_page() so
+> > > the documented refcount policy matches the current ZONE_DEVICE code.
+> > >
+> > > The second patch factors the reusable pieces out of
+> > > __init_zone_device_page() so later patches can share the same logic
+> > > without changing the existing slow path.
+> > >
+> > > The third patch adds set_page_section_from_pfn(), so callers that want
+> > > to refresh section bits from a PFN no longer need to open-code
+> > > SECTION_IN_PAGE_FLAGS handling.
+> > >
+> > > The fourth patch adds a template-based fast path for ZONE_DEVICE head
+> > > pages. Instead of rebuilding the same struct page state for every PFN,
+> > > it prepares one reusable template through the existing slow path,
+> > > refreshes the PFN-dependent fields in that template, and copies it to
+> > > each destination page.
+> > >
+> > > The fifth patch extends the same template-based approach to compound
+> > > tails, so pfns_per_compound > 1 can also benefit from the fast path.
+> > >
+> > > The sixth patch introduces memcpy_streaming() and
+> > > memcpy_streaming_drain() as a generic interface for write-once copies.
+> > > Architectures that do not provide a specialized backend, or cases that
+> > > cannot safely use one, fall back to memcpy().
+> > >
+> > > The seventh patch extends x86 memcpy_flushcache() small fixed-size
+> > > fastpaths so struct-page-sized streaming copies can stay on the inline
+> > > path when alignment permits.
+> > >
+> > > The last patch switches the ZONE_DEVICE template-copy path over to
+> > > memcpy_streaming(). It keeps pageblock-aligned PFNs on regular memcpy(),
+> > > uses memcpy_streaming() for the remaining write-once copies, and drains
+> > > streaming stores before later metadata updates that may depend on them.
+> > >
+> > > This is not intended as a steady-state data-path optimization. Its
+> > > benefit is in pmem bring-up paths where memmap_init_zone_device()
+> > > dominates device online / rebind latency, such as:
+> > >   - fsdax or devdax namespace creation and reconfiguration
+> > >   - nd_pmem / dax_pmem driver bind or rebind
+> > >
+> > > In those paths, the kernel initializes a large vmemmap range once and
+> > > does not immediately benefit from keeping the copied struct page state
+> > > hot in cache. Reducing write-allocate traffic in that one-time setup
+> > > path can therefore reduce end-to-end device bring-up latency.
+> > >
+> > > The optimized path is disabled when the page_ref_set tracepoint is
+> > > enabled, and sanitized builds remain on the slow path so their
+> > > instrumented stores are preserved.
+> > >
+> > > Testing
+> > > =======
+> > >
+> > > Tests were run in a VM on an Intel Ice Lake server.
+> > >
+> > > Two PMEM configurations were used:
+> > >   - a 100 GB fsdax namespace configured with map=dev, which exercises
+> > >     the nd_pmem rebind path (pfns_per_compound == 1)
+> > >   - a 100 GB devdax namespace configured with align=2097152, which
+> > >     exercises the dax_pmem rebind path (pfns_per_compound > 1)
+> > >
+> > > For each configuration, the corresponding driver was unbound and
+> > > rebound 30 times. Memmap initialization latency was collected from the
+> > > pr_debug() output of memmap_init_zone_device().
+> > >
+> > > The first bind is reported separately, and the average of subsequent
+> > > rebinds is used as the steady-state result.
+> > >
+> > > Performance
+> > > ===========
+> > >
+> > > nd_pmem rebind, 100 GB fsdax namespace, map=dev
+> > >   Base(v7.1-rc6):
+> > >     First binding: 1466 ms
+> > >     Average of subsequent rebinds: 262.12 ms
+> > >   Full series:
+> > >     First binding: 1359 ms
+> > >     Average of subsequent rebinds: 108.36 ms
+> > >
+> > > dax_pmem rebind, 100 GB devdax namespace, align=2097152
+> > >   Base(v7.1-rc6):
+> > >     First binding: 1430 ms
+> > >     Average of subsequent rebinds: 229.12 ms
+> > >   Full series:
+> > >     First binding: 1273 ms
+> > >     Average of subsequent rebinds: 100.17 ms
+> > 
+> > The results here are impressive, but I've been having trouble replicating them
+> > with hmm_test on my local development machines. Both an older AMD machine and
+> > a newer Arrow Lake based machine shows ~3% worse performance with this series
+> > applied doing ZONE_DEVICE_PRIVATE.
+> > 
+> > This is based on measuring the memremap_pages() call when inserting test_hmm.ko
+> > in a VM using the following hack to measure 10 64GB memremaps. Is there an easy
+> > way for me to replicate your results in a VM? Or is there something in my
+> > testing that I'm missing here?
+> > 
+> > ---
+> > 
+> > diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+> > index 213504915737..a1d5463dbc86 100644
+> > --- a/lib/test_hmm.c
+> > +++ b/lib/test_hmm.c
+> > @@ -34,7 +34,7 @@
+> > 
+> >  #define DMIRROR_NDEVICES		4
+> >  #define DMIRROR_RANGE_FAULT_TIMEOUT	1000
+> > -#define DEVMEM_CHUNK_SIZE		(256 * 1024 * 1024U)
+> > +#define DEVMEM_CHUNK_SIZE		(64 * 1024 * 1024 * 1024UL)
+> >  #define DEVMEM_CHUNKS_RESERVE		16
+> > 
+> >  /*
+> > @@ -565,6 +565,8 @@ static int dmirror_allocate_chunk(struct dmirror_device *mdevice,
+> >  	unsigned long pfn_last;
+> >  	void *ptr;
+> >  	int ret = -ENOMEM;
+> > +	int i;
+> > +	u64 t0, total = 0;
+> > 
+> >  	devmem = kzalloc_obj(*devmem);
+> >  	if (!devmem)
+> > @@ -613,6 +615,22 @@ static int dmirror_allocate_chunk(struct dmirror_device *mdevice,
+> >  		mdevice->devmem_capacity = new_capacity;
+> >  		mdevice->devmem_chunks = new_chunks;
+> >  	}
+> > +
+> > +	for (i = 0; i < 10; i++) {
+> > +		t0 = ktime_get_ns();
+> > +		ptr = memremap_pages(&devmem->pagemap, numa_node_id());
+> > +		total += ktime_get_ns() - t0;
+> > +		if (IS_ERR_OR_NULL(ptr)) {
+> > +			if (ptr)
+> > +				ret = PTR_ERR(ptr);
+> > +			else
+> > +				ret = -EFAULT;
+> > +			goto err_release;
+> > +		}
+> > +		memunmap_pages(&devmem->pagemap);
+> > +	}
+> > +	pr_info("avg memremap %llu ns\n", total / i);
+> > +
+> >  	ptr = memremap_pages(&devmem->pagemap, numa_node_id());
+> >  	if (IS_ERR_OR_NULL(ptr)) {
+> >  		if (ptr)
+> > @@ -629,7 +647,7 @@ static int dmirror_allocate_chunk(struct dmirror_device *mdevice,
+> > 
+> >  	mutex_unlock(&mdevice->devmem_lock);
+> > 
+> > -	pr_info("added new %u MB chunk (total %u chunks, %u MB) PFNs [0x%lx 0x%lx)\n",
+> > +	pr_info("added new %lu MB chunk (total %u chunks, %lu MB) PFNs [0x%lx 0x%lx)\n",
+> >  		DEVMEM_CHUNK_SIZE / (1024 * 1024),
+> >  		mdevice->devmem_count,
+> >  		mdevice->devmem_count * (DEVMEM_CHUNK_SIZE / (1024 * 1024)),
+> 
+> Thanks for the feedback and for sharing your test results.
 
-<snip>
+Sorry for the delay, this got lost in my inbox.
 
-> =20
-> -static int check_write_seal(vm_flags_t *vm_flags_ptr)
-> +static int check_write_seal(vma_flags_t *vma_flags_ptr)
->  {
-> -	vm_flags_t vm_flags =3D *vm_flags_ptr;
-> -	vm_flags_t mask =3D vm_flags & (VM_SHARED | VM_WRITE);
-> -
->  	/* If a private mapping then writability is irrelevant. */
-> -	if (!(mask & VM_SHARED))
-> +	if (!vma_flags_test(vma_flags_ptr, VMA_SHARED_BIT))
->  		return 0;
-> =20
->  	/*
->  	 * New PROT_WRITE and MAP_SHARED mmaps are not allowed when
->  	 * write seals are active.
->  	 */
-> -	if (mask & VM_WRITE)
-> +	if (vma_flags_test(vma_flags_ptr, VMA_WRITE_BIT))
->  		return -EPERM;
-> =20
->  	/*
->  	 * This is a read-only mapping, disallow mprotect() from making a
->  	 * write-sealed mapping writable in future.
->  	 */
-> -	*vm_flags_ptr &=3D ~VM_MAYWRITE;
-> +	vma_flags_clear(vma_flags_ptr, VMA_MAYWRITE_BIT);
-> =20
->  	return 0;
->  }
+> I reran the measurements on my side using two setups. I do not
+> currently have access to physical PMEM hardware on my side, and the
+> target use case for this work is a virtualized environment. So my
+> measurements were taken in a guest using a 100G emulated pmem device
+> backed by a regular file on the host filesystem.
+> 
+> First, I followed your modified test_hmm.c approach, i.e. looping
+> over memremap_pages() / memunmap_pages() and measuring the average
+> memremap time in the MEMORY_DEVICE_PRIVATE case, where the vmemmap
+> backing comes from normal system RAM. On this setup, I got:
+> 
+> - base kernel: avg memremap 222.0 ms
+> - patches 1-5 only: avg memremap 206.9 ms
+> - full 8-patch series: avg memremap 264.1 ms
+> 
+> I also enabled the pr_debug() timing inside memmap_init_zone_device()
+> for the same setup, and the numbers tracked that closely:
+> 
+> - base kernel: 221.0 ms
+> - patches 1-5 only: 206.0 ms
+> - full 8-patch series: 260.1 ms
+> 
+> So on this path, patches 1-5 seem to help, but the full 8-patch series
+> does not.
 
-This function alone changed its original behavior, since vm_flags is a
-snapshot of *vm_flags_ptr, but after the change this snapshot is gone.
-But its only caller memfd_check_seals_mmap() gets vm_flags_ptr from the
-input parameter of do_mmap(), so the overall behavior does not change.
+Interesting. Thanks for replicating my testing, it's good to have confirmation.
 
-<snip>
+> Second, I also tested a benchmark-only setup corresponding to the
+> FS_DAX map=dev case, where the memmap itself is allocated from the dax
+> altmap range rather than normal DRAM. On that setup, I got:
+> 
+> - base kernel: avg memremap 200.8 ms, pr_debug 196.4 ms
+> - full 8-patch series: avg memremap 117.2 ms, pr_debug 113.5 ms
+> 
+> So on my side, the full series shows a clear gain in the
+> FS_DAX + altmap case, but not in the MEMORY_DEVICE_PRIVATE / DRAM-backed
+> vmemmap case.
+> 
+> If convenient, could you also try the same kind of measurement from my
+> cover letter, or at least enable the pr_debug() in
+> memmap_init_zone_device(), to check whether the delta is visible there
+> on your setup as well?
 
-> +		case MAP_DROPPABLE: {
-> +			vma_flags_t droppable =3D VMA_DROPPABLE;
-> +
-> +			if (vma_flags_empty(&droppable))
->  				return -EOPNOTSUPP;
-> +			vma_flags_set_mask(&vma_flags, droppable);
-> +
->  			/*
->  			 * A locked or stack area makes no sense to be droppable.
->  			 *
-> @@ -515,23 +527,24 @@ unsigned long do_mmap(struct file *file, unsigned l=
-ong addr,
->  			 */
->  			if (flags & (MAP_LOCKED | MAP_HUGETLB))
->  			        return -EINVAL;
-> -			if (vm_flags & (VM_GROWSDOWN | VM_GROWSUP))
-> +			if (vma_flags_can_grow(&vma_flags))
->  			        return -EINVAL;
-> =20
-> -			vm_flags |=3D VM_DROPPABLE;
-> -
+Will do.
 
-Lance pointed out the reordering of setting VMA_DROPPABLE and checking
-of can_grow, but these flags are not overlapped and there is no parallel
-writer to vma_flags. So it is still no functional change, just not
-mechanical changes. :)
+> Also, if you have time, could you please try your modified test_hmm.c
+> setup with patches 1-5 only? On my side that configuration still shows
+> a measurable improvement.
 
-Otherwise, LGTM.
+Unfortunately I'm unlikely to get time this week or next, but I will try.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Given these results, I would also appreciate your advice on how best
+> to evolve the series. My current understanding is that patches 1-5 are
+> a more generic optimization, while patches 6-8 are only beneficial in
+> some cases. Do you think patches 1-5 alone would already be a
+> reasonable candidate for upstreaming?
 
---=20
-Best Regards,
-Yan, Zi
+I'm looking at v5 now, but they generally seemed like a nice clean-up overall
+anyway so should be ok to upstream.
 
+> For patches 6-8, I am not yet sure what the right direction is. Would
+> it make more sense to expose some explicit opt-in mechanism so that
+> the movnti-based path is selected only when desired, or does it make
+> more sense to use that path unconditionally for FS_DAX map=dev case?
+
+I think it's better to keep things simple and do it unconditionally - even if it
+sometimes results in a small (~3%) degredation for the DEVICE_PRIVATE/COHERENT
+cases I think that's an ok cost to pay as these are typically only initialised
+once at driver load.
+
+> I would also be interested in your view on why the FS_DAX + altmap
+> case shows a large gain while the DRAM-backed vmemmap case shows a
+> regression with the full series. I do not think I fully understand
+> that difference yet.
+
+I'm not familiar with the hardware used here but I wonder if it's simply that
+the performance difference between movnti vs. mov is much greater for pmem
+backed memory rather than DRAM? In other words this only shows real benefits for
+altmap+pmem and doesn't make much difference for DRAM?
+
+- Alistair
+
+> Thanks,
+> Zhe
 
