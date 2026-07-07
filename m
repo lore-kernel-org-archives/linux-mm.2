@@ -4,141 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD5DDC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 23:43:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 130CEC44501
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 23:49:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 760836B009D; Tue,  7 Jul 2026 19:43:13 -0400 (EDT)
+	id DF61C6B009D; Tue,  7 Jul 2026 19:49:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7312F6B009F; Tue,  7 Jul 2026 19:43:13 -0400 (EDT)
+	id DCDA36B009F; Tue,  7 Jul 2026 19:49:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61FC36B00A0; Tue,  7 Jul 2026 19:43:13 -0400 (EDT)
+	id CE37C6B00A0; Tue,  7 Jul 2026 19:49:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2056C6B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:43:13 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7DC75C396B
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:43:12 +0000 (UTC)
-X-FDA: 84963609024.28.98134FD
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 78021160003
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:43:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JgCZThLq;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=ackerleytng@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783467790;
-	b=MWPWtQfvlpbSIeeQNAOh7yjMPZWp7hrD7DFvc1br/26SYsx7r0StUoFgKcsCjUloYhbhoW
-	CfY27ak+kF2QHcGqmgGDeVE7o9zm5nsPUqFKue5FThgXnEFP2Eb5K+xuiHh1CVVQjmTnN2
-	H0ECruNUHMN0RqAUceIU1xO/d/7ySlI=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=JgCZThLq;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A33776B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:49:33 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1926B1405AE
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:49:33 +0000 (UTC)
+X-FDA: 84963625026.27.6660E10
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011049.outbound.protection.outlook.com [52.101.62.49])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4FB85A0007
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:49:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZDv5Uu8C;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.62.49 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783467790;
+	s=arc-20220608; t=1783468170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n3UVaE4mni4e0wrMPZkd5SybFeneup4yLV+B30RBW2c=;
-	b=JNhb2nysOcJfsyQxzGG05lc4CnWNB6ckqRlTPidWmTlhuKYarSaz1EwzUb1LDERk4LPxZ6
-	2xflPVolXYgCtbIVDPBxfakuWtZ1qamusKtp9JAyl8yXqRMLtZx2fwyi2JTvRcZAAV9gMZ
-	t3uAf7TR/IFCtSbxEFcmDcQUzrRnNZU=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cc7ef7ec27so1814805ad.1
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 16:43:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783467789; cv=none;
-        d=google.com; s=arc-20260327;
-        b=P+QSXzeQWY/ZPH+eJo6HyV3x5DtGdEreaIEzrbkh0OIZNhfuAHz/BVcSqB2vXeNczO
-         nqeB0bxY44TWmalsnHt3iriLaLduahgQb6uFSI8CPUJj6ezusx2tgQX21hFmiB7tbjP3
-         L8sHl6vNLseBndNcC0/QW/7Q28Ktt8ZoNH2l8pREziL7UdwSv76pJXZQbFlPZ9Msr5i3
-         SJh1CImsWpWrtVWz29REOL68/3NA16VvdDgdW9jF+resu8zSV5Dw1a8rfj40RiK+GURI
-         KqT83CRc664jNPrT13inMiNC+EDvPfKUvikWaDNF7BdPnlX3Oxc0v/bPLg3Sv/UcAKG4
-         m1VQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=n3UVaE4mni4e0wrMPZkd5SybFeneup4yLV+B30RBW2c=;
-        fh=cNcO1B5jZxYGe1HDR+QtfnITiG/aPAOR+h61yNQ+4Y4=;
-        b=CCE++1W+AL/19300KyL0xeKwSFRpjgS16O9hoD2nv7DUY6uumbUbSJ78A3A48Jn5qH
-         DIZ90Wld+cnF8oAUMwp6B/5/1ed0k/8dtOTPUFVR9Bl9eBDicrJRox324DuGpeyGQW3c
-         OOE5xXEiuhl3LDQqKz6yCLWOX6JNYqRmPw88v82LhdVeAB6v4kFlc/v/Ub4Uax4RI/Af
-         GKTsLLopmSXH33OgF0JCT61xrhxK3wIsIsfH+PmQb+zQDGG+2bD6P91mNpVq49jAuDwH
-         GBAY8HwcR2GhgtLaubS3MifiGV/t9mB6kMStKYqayJMQvDRk3f3fdDVdHL0H5IKRlJmd
-         26hQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783467789; x=1784072589; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=n3UVaE4mni4e0wrMPZkd5SybFeneup4yLV+B30RBW2c=;
-        b=JgCZThLqxHR1eAvBjUZQSvL0LFXovctCeR12nlBfpZ1Jm1bAcNDViGbSwDwtpfWoi9
-         IqzQe1F9tIq1CviHX2DQKfJHDvLhfPkPoqdbuKBBwhAveoWrVHMa0v1YCPnreahWqvKu
-         7sFKDH+0aS/YSqSfEJX8/HKhRe+Tly3OqbhtuZifTW4lZ/02SXjVY0hd+Vfl5nZMwjoe
-         rNLvYgBAB7LBzMTbFAZZxeTqWRjegKVIq8dTiYAPPCdULIu928Y7yv7HH8l6SixWj1Vg
-         s1CVb3HYib0B8koX5frCjcH3O64dm9LMLldgs3rB2OtFYG7KqHKrdskHerZcPlaWENNU
-         498A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783467789; x=1784072589;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=n3UVaE4mni4e0wrMPZkd5SybFeneup4yLV+B30RBW2c=;
-        b=M15DtQnjMuBY0ouEEhtu7VbqClA/TaqQhdBoi1CDbshNi3D+nRX4zJ7lqCCDq/SH+o
-         ypzFLsE3OKmAEmqzYqmPvuwfpU1Z/jXzIffTGBR0otVgHqIXXcBZuiC06Ajq084WJ8fh
-         Tjz7YUcthrfN8CvRogYjJDCqAaRTUiG0uiNqDFwFfGWFVtyEUBueV2UycR+PmXQq3O6i
-         aYcUDl6gU/I8gsx5JzWGFJVRH3GmY5cP1xH5ckEMTvmjNMSQsbPUJygJjwEaZjSae5o5
-         BDRAMi/UXQ7TWJkjS7vYJj0NHV8DbLbVTZNxDK7zOMXE2LvM1LRR9x9CtfqO7P/pE7Mw
-         32Eg==
-X-Forwarded-Encrypted: i=1; AHgh+RoMkX05jnWMXyvti32MSIXElhXYAM6w5N2N0TU9YeencAO/+tIH8lt7RW6Ndhs6S/M5Jby6uhxQlg==@kvack.org
-X-Gm-Message-State: AOJu0YxfBQXr25Na9xrvR+wcgK2eWJ8IJ8jR3uThFq4o1pfSaUhFXZjy
-	sBiknWtjjXL9KYY7TyKY+MvzMdcOO6rUvwKN079uNCcWqLiFAsxodudAwpMiRwuBR3Qy3X9yCLj
-	k6CcgGq6sm0sHv0o7CvuGpWygNonfYOSugMUd1oIo
-X-Gm-Gg: AfdE7ckNcYkLvmyZcVfvrQI80/nx3NismRb/r1Ij6WWOvVUCvw4unQtkEoLgztO8Ieh
-	bwCAdFRNwGEy4gkqSs8bB7dtoE9hrzcFUSZ9+mPOfon2bcmuywbtgLnJFnJwdpq5s56MRJ7x9qB
-	ZT1UIRW/VEHADCRUBPBXeRXbsWYRGYh1weoEv75s+FqtbxAeQaVUJDAE+Xeg87HbkHavq4T8L3j
-	4JI43V37ulrrYYuGeUC0VLZbNRB4I++2Y0XaKaI/vOuVRwQi+u7yqaDq3/LUiVq8a0+ro8iqvx5
-	ogiNHtZsafJEU5ryy4rbIWKkZ/aLVkMFr0UCKYNDzvh6dewD2KXzL0noUhg=
-X-Received: by 2002:a05:6a21:4613:b0:3c0:9c19:65ba with SMTP id
- adf61e73a8af0-3c09c19685cmr5335865637.66.1783467788850; Tue, 07 Jul 2026
- 16:43:08 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 7 Jul 2026 16:43:08 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 7 Jul 2026 16:43:08 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260707-hugetlb-alloc-failure-fixes-v1-1-5bbd3a4b836d@google.com>
-References: <20260707-hugetlb-alloc-failure-fixes-v1-0-5bbd3a4b836d@google.com>
- <20260707-hugetlb-alloc-failure-fixes-v1-1-5bbd3a4b836d@google.com>
+	bh=Eg5GQEE6Y45IDyBExRx0aJ+khpkhsqARkor+2d8RvH4=;
+	b=IUqvhGoHlr8ZSOFakSdh05IBR+LrD70XjlttExg/bw2n7FB2aNvsvBemBKI3X22IenXj0V
+	oVnTQuHmGIXsrAfyL7/HdriZWRDp6pq0KqGUHdGHk73E87NqIIdlqd652zWC9jc4m5K9qg
+	LnF/K5JXnUf2KA/5TrhhWqVbj67QRWU=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ZDv5Uu8C;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf25.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.62.49 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783468170;
+	b=QcGm35vgdFzYek3Cwj9/GhBsztcdZYX1hiRnJd655DKIF9xFa3xfzWPGeW7VO/z/3a8xo0
+	B0Xg7rcygC2HTowf1hLuAYyFd4SvHFEexiSYRn91yTITgh1ajEV2zqXOgZ/jGAN+znbPdJ
+	7abMJJAr81+/vDBMpH9A9JumoXMpGxU=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hoitmmBjft92hNzQwe2ldxqmexQr7vgB341ZZoU0nlg2G/DU1Rn1BFbcbcVmC/+fJY8vXt0a0MsrKOCPVBUGG/HPPLNqTwjJEsHirSIrm5GuoLjBcLEci+TeZejBmAgTVqvFI8CjPoPm4r3HUs0brVGf2N/yVp+dWjHs1h3gsFo9Mp9Q/RWg47qLzsQn0csynxSITQsW//rx2WKk07NgWqOKEsIOfLCYrQT84zkO+UDe+e1AakQ8hbuhPd4QJG/85736Og/8tPJdwMNUKGE8Dy4ZHXy0NyhysaecGWOoupYq+te4yfjXY3fnT0HpbLbjXySh6NDNiwqUuFdftFePxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Eg5GQEE6Y45IDyBExRx0aJ+khpkhsqARkor+2d8RvH4=;
+ b=WzALlqoZZLKr/cAv4mAw95nJZq1TazjqO152gHzqEtOSiH1B4Vt7dvCRx93ri5gjrrN09nmSWM7xEF5LX+WExLqIuU6DV5uetnsDFnYRkL6vZFyF3dpebjrjKSPsWadW5/JXhxxS2C+KmT+6tLbhHEUEZ6KXivCSOQ5GyOMmikZyEuaxBm1BoT8Cqg0BiaN4lnZDIvrsTGlI0KsSWA9fpwpgvhhHoedApSqPI0ZbdUmlIa9IkH6xpGsucfM3SM32sNHiagfZLuYYqzBYleZoMqrR/mqUzbwphuhvhwgSQGwTgVB2RN5IITaOtGjJQUpE68PCrT2jfvVVY6C2J5yEfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Eg5GQEE6Y45IDyBExRx0aJ+khpkhsqARkor+2d8RvH4=;
+ b=ZDv5Uu8CSMZHc//HXzoYji2GPVAV9XcKEImi864msbzolK0KWjcZZmCkrFyFIhf1xwu+sUx2nkZU4qFB/UpwqyhdPOvDMovWDnSYM5amUhhHR+xBd3LP6in3UEcgKeOhaAJGqLjqmtC77txBfYJ90YUfVGnoJdjLL/p54v1r5aVs8f125Insr+AOj7DbBOZ1hScN+sOgBkzyczdYOEeBBpdyPN1ilBNiGf9n6gx8Ga9XdcLP0HTKw9toeLJRoUmlUnz6IWcxQ/UU6DHAUF8hgS7V4Vp0ajQ6AxnND6g0JlDzUeivbGQRy/xV4I/G3J1m9c4Qd6gDy+EvHm2S0q1H4g==
+Received: from BL0PR12MB4995.namprd12.prod.outlook.com (2603:10b6:208:1c7::23)
+ by PH8PR12MB7110.namprd12.prod.outlook.com (2603:10b6:510:22e::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Tue, 7 Jul
+ 2026 23:49:25 +0000
+Received: from BL0PR12MB4995.namprd12.prod.outlook.com
+ ([fe80::dde:9068:4b1a:53e2]) by BL0PR12MB4995.namprd12.prod.outlook.com
+ ([fe80::dde:9068:4b1a:53e2%4]) with mapi id 15.21.0181.012; Tue, 7 Jul 2026
+ 23:49:25 +0000
+Date: Wed, 8 Jul 2026 09:49:12 +1000
+From: Balbir Singh <balbirs@nvidia.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com, 
+	baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com, 
+	david@kernel.org, dev.jain@arm.com, gourry@gourry.net, jannh@google.com, 
+	joshua.hahnjy@gmail.com, lance.yang@linux.dev, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, matthew.brost@intel.com, 
+	npache@redhat.com, rakie.kim@sk.com, ryan.roberts@arm.com, vbabka@kernel.org, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
+	sashiko-bot <sashiko-bot@kernel.org>
+Subject: Re: [PATCH 1/3] mm/mempolicy: skip device-private PMDs when queueing
+ folios
+Message-ID: <ak2MUFRwzw1-VyvX@parvat>
+References: <20260707135255.292870-1-usama.arif@linux.dev>
+ <20260707135255.292870-2-usama.arif@linux.dev>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260707135255.292870-2-usama.arif@linux.dev>
+X-ClientProxiedBy: MEWPR01CA0300.ausprd01.prod.outlook.com
+ (2603:10c6:220:1f0::15) To BL0PR12MB4995.namprd12.prod.outlook.com
+ (2603:10b6:208:1c7::23)
 MIME-Version: 1.0
-Date: Tue, 7 Jul 2026 16:43:08 -0700
-X-Gm-Features: AVVi8Cdkxy_uLHBGKMtikCwJBqC5wFlF7LuzWe_xURHjVnwiHZs7EJgvhqSZovk
-Message-ID: <CAEvNRgEz5tRNi6xYcVv-wK-q4pecpZZa1q+1sUiEk6dnVjYjmw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mm: hugetlb: Fix subpool usage leak on allocation failure
-To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
-	Wupeng Ma <mawupeng1@huawei.com>, fvdl@google.com, rientjes@google.com
-Cc: vannapurve@google.com, erdemaktas@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 78021160003
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR12MB4995:EE_|PH8PR12MB7110:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8166314b-14a9-46f9-2b9a-08dedc82600f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|11063799006|18002099003|56012099006|4143699003|6133799003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	YrMHpTg7lW1dJq9M/uFVjhLrohvIrJPzUEGVORBQVEGlpKrcVwX2+cV/aV/uDH1GM0sXy3Zpuj+Kw4E0Qjlj4UcHlhS5KB5zNhpQPR0M3+7My8J9ddrJt2lMjspi1rTckzDuneDiLj8sjumafls+x1hGgHJCPhqwLV8cFvl5qJvh1JrzjWlR9/QGfPX/UORgIq4ocXuGa6eVgh7TMs+tRMORMqMBsrjAdWIO/2lAovWCSrGUnfsVFX6C6y3+QZ5flxn5zeYucD/frHwmZ7ybcY8NNuEqiJn3LhcfqDhTZD2Fm3rOuGYHMCB1+fK/Z34InvL0AWM6H310rFxsylWKSTLYJfeoCSjDOTGEVfTieTqKzOojI+w5KR/5nLxsoZD9SAY9BGHPfIcWJknWYlDOcjyAg6aFIYhvaM5VBbbrNN2f7gdjmK+8VAk096/ziRNLquTMXneprTfLrRyEDe1Iu/s0U5AVHkR3lDNrhRQW2dsbvhFaZebgPl9yK3hWC50WHoByR9fFtQAIfnKn6Gy5UZdo2uv6AOe7ffGPSDR12Kd3k4/kyRBC4Rw3V2+87hErbfFlj5mnsyLBcnch4ZT1sx5QgEtu6rY9S6WpDczW7k+0XojMDGrn5BR40XGbiBCY6kTM4RR4oyqwcqpmV1Olw6C02mCcE+e7bAdh33D8kI0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR12MB4995.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(11063799006)(18002099003)(56012099006)(4143699003)(6133799003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?T9CcZiBbO3LT7yZf9cEXSkwrg2bxLjwZTnpkRmy/v4bx43NE38Gil6YVydEL?=
+ =?us-ascii?Q?5jtekRuesocegM1I9Ggmmf+LaKfesZh8JcVt2CTiYxmmu5qobN+ScBLzHFXV?=
+ =?us-ascii?Q?U6vEYsh3BrbyoqdGI4SbZ8jbkkONZ2FN7b6OFqi6BAgi5l/u0ljHzZijp0aJ?=
+ =?us-ascii?Q?PUJQELO2tBZxgt5C4gL8DAqAzgglnIz6IqG3A0t5MRqu9qM5TdhNRy4mZvHd?=
+ =?us-ascii?Q?EgZZH1TnWmatVaeEDGRAqFn/o/uHQwfOcX042vhcFfnC7EZf2moD9ujUYpD9?=
+ =?us-ascii?Q?y11CZovsanXntXUpvA9kVEd03X6uW5/fBxayN44UQ2oNWEv/edtz8FPtLagI?=
+ =?us-ascii?Q?EUIF0IFiYfo/adJlU+mGOfGOWy0lDcIbj9Vy2WiLa2GRbAHJkwJJIqL09ug4?=
+ =?us-ascii?Q?5Lir5wRB3YzlF3sOQmLSW1Vb5B0DVQbfFaI0XyUc9kyc1E+zol/zV1nHjCby?=
+ =?us-ascii?Q?fpPcq3HxdTV0G2Hwm+z9QCV/rBHfyNb11zWRApk00ABGhS3Tb6iGuS0vI/rP?=
+ =?us-ascii?Q?AXzYqTjzBzBesRgU4REzgfy4v7CmBcP0vT1YJ6xeNErAnlVAGKxZFw4dnozL?=
+ =?us-ascii?Q?+SawI1KpUcKtxj6QYqDkjdpoTYxV9MGfmpwve8PpSYk7/YL7gcoTyRFTUZeF?=
+ =?us-ascii?Q?ADsY0iWmc9COlznqZppuIOrwhyC9r1I6pn+tCYe6TQ8DICnyDm1TJzK16yPc?=
+ =?us-ascii?Q?qA1+ruCOBVj5pdi1HFqR12D70ICX3VQSCOb4th80jGIurX9YROL3+gDiy3x4?=
+ =?us-ascii?Q?MIAg8UY1Vxeaallwfc657KyYDi8y+pUZD+SWfodz7ljIxiPaviz3tU/LZvrX?=
+ =?us-ascii?Q?nxU3i4VKdtwo3OpZjIw3A1TjkKgOdOPp3bDHmFqYHUZ+ftXpxByl0jtaykUC?=
+ =?us-ascii?Q?X9rfsAPx6cOAnuvgw8GbORPLW2TAncrDfZTpglNrESdo0s0oooTWzAeuHaJH?=
+ =?us-ascii?Q?NRF5nLksypv3YdTIUUP/pnH5kApRV+/NdunNtmpzUA4ANGgjUZYaG81sXtr8?=
+ =?us-ascii?Q?44YTnOzcs7KzZbDsRSOQeNK51OyZzYszY4f//3hMQnPc4Z5L0frCQZomrq8l?=
+ =?us-ascii?Q?+CX1yMLRxtYcbFvfn9gwltrk04R5kbEoZUHKZ56aUl9uc0lPyDrnU3xLBtum?=
+ =?us-ascii?Q?oDKUgmBNunrZllNLwp5g5mhj2PhM2Af6kdXdf2lvtSHwP1qnEhBAXaRD+4w/?=
+ =?us-ascii?Q?e9okP9nyIn4fOd/SPPEyzIxEJNyKX6+yEsRACwn8Gr7enxi2rie+E9ifryhZ?=
+ =?us-ascii?Q?6dAJ88Yp/0mxOWhFW+h46Sxyx5NrHoHW+EPtn/0HVhU3MmSMYe87WZQrcHYo?=
+ =?us-ascii?Q?AjupOSsWdSdQvi6yB+5S1Qg6/n5PCBe5ANY5HnSfqzZoiVfXT+KtLLVuyTR6?=
+ =?us-ascii?Q?W2XXOtqdEJDriP9A/lI558VmiqrHN7AMhPt0Tcryp1Or0mkFjRaVpg+8Vebh?=
+ =?us-ascii?Q?ZvS+aDtDfdLfRihOS9zmDHQwQpbPHpRas+DIzw1EfCntyt64Bn2sao9OqUL/?=
+ =?us-ascii?Q?rLYayNDFc3+OV1UGJxY6elb1N1ElJrp0ehanuTOPf33xhcZIbIlB3cH0Ag2l?=
+ =?us-ascii?Q?UD9gm6bjswUpbvZRu9j9sIjlHlXO8l4ZA21gObkT4c3dq3NH5ZIxsp24qZ16?=
+ =?us-ascii?Q?kHkdbvM/ibGnt0RrndvdYLS26nwj8vfWj6NYbYsET4beRkUunLRox5EP8l2h?=
+ =?us-ascii?Q?N9CNQcAKS0Zae8kZ4IdOIuGfZg5LcNTGwuGtdR5fQHPL6bh8?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8166314b-14a9-46f9-2b9a-08dedc82600f
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR12MB4995.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2026 23:49:25.7504
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7NJqxPDut3brSZSsK4e+z0n/BtsKEbw8+xe1TH6tYzIVeWHNkK35OmQTxqFA5Ww1x/HqPwf5d1J917tBL9CyXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7110
+X-Rspamd-Queue-Id: 4FB85A0007
+X-Stat-Signature: qa6ycetxpzzpm1fd7yj8syxbwenhiige
 X-Rspam-User: 
-X-Stat-Signature: pen18u3eoejhh5opcz43xzdnfd6zkok3
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783467790-393765
-X-HE-Meta: U2FsdGVkX18gTlnam7FmldKMUKHry4E5YayPUGsNSmPqxf9cu69N8Ct4mmgCBGDThrfSNpqQXInE3XAErmJq6SasFkaup5eQMkk1LGkvSb2hUshehsPqNuX9wco6im/+2ikrtIRtKHvtl52CrEIDVzka+bNYsK2WDz3bLccEZIRWENHO9Pm+9lhJcrKWHDCTQ0aczabzv/0MGrlHwqkzf7auF+8wiBmbHIyU3Awnu91KjOzvJbwzZbCNDobmzQVUAsMSuOEZZh3FFhy4d9K/lxXWDJ6IDoS+7giVYMqfNPMS5w/HZTNmXfisB+eVN8n0vFsgmQAXBahnvlxnEZHhZD5w34yjs1B3u9tF4P2rEKRkrpVrt1wdzpgjn8CEhkzvhVfWcuUUcnWjkMiQgMWyWEQNoE4aY3s5EZZ06IKoib08B95X0e648jbqOb0IDSNtX3LiuiYZfYMFcxj/CA4hIRBi5B1Hh9+LavSkr7axe7PskjMfDEYkMBp+tXzGYWkvP4DRG0UWymyZghmfDlU/3jnjAawR8rc8uCzuMVksu74E21rZpqRz8czpqRyFhGvcfYlG6KKGFNMlahtaOLT5Ou3K2CXZaHSnoz03eLxa9wr5InmaV0p5Bspg1tDhDq58WIBR9W7mP6nLZPDK5+2HMx/GJgEjmxbQMGO0is+oOEfhcOS9Fxj7nXMBtL5727efZckMRGNvZLDcwhvgD4pXgoZs8wbafy5s1W8dRCoaB1c8OsIbWHdpDuXvZp51hLDQ6nanoqFZOp2Lxhy6zBAr+Ej0XHwALArFc2EgM+ZGY+0OeI45fuKNrJRX3zZmylt//obpeCc+dYLKLqm2c5KQxof/34yhv1i/+gk/4tx8RQODM66QiMJUtoGdWni/R7v+RLK/hyjUxwox6akahc2piRPF4imgtGhz1OTBFXxriGUYM3qUXS7wLFi0HCER7M91FMPcklRcPcl3PHG7TF+
- tFjV4PPa
- CnPLlZqzMMVvpn+OAZeqaisoYbm3r9Qoh4K1v4hWNUqzvtv+58O75czyrLfrspuAPz0j/QM7S/AqJbKfetydRtUEp6a3WN5iwwY9Vr1BSQmg4Orb1gavsTrKyCipd+aAhx2bAK++RCdYZwvqwm7izzyvzUAFM9hKuLUP8wKt21fUXsVM6DHsNZrtAXmdsiQhNoG+aUpH0E5uQx4v6m80hrH3sBsotY905SJ2IIxLja8Ho1oI7TGZ6/dt1MaTsQ5wY4YHrSSJmKF3Lezss5wHhwcGK7Yq9GQL3XdRTWEyVWf164Dfqf5lud09PK1TkaQ7eq+6BKjrcbWUNNYoY3ybAsRcA3b51o8GNp4EqlUyR5uYbD3vvY3LAc9d36zgtyeqsZdre/iWjlrx6O/6FuggC0vDPUdTJ25WU4ki4RV6FtGHwaJqkxlYiNYw0Mxu1kW5LA0rGfEnd2ZTLug3qy8yFMXgTXl2TRQiVjNH8VrgypqZMs1A=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783468170-117260
+X-HE-Meta: U2FsdGVkX1+vMbVoQIqz+LaDuojzSniKPjkRnXDS3UFocJWxi/2YoIw5EM3d0x1kNm2aghsGBtl0XJQM7juksNdeMV47mTianx9ihybdaL9lF5PEALjyhuasQ8VM6xzhDMkoDRs450x5cV1iq/sAGeQNUjLUp173UfgTYG6O491QAR36LWfbZqFPMkLFgneeB9nVI+2L6UZsh0YS69MTDuXuSy/+ll1arj1TiQMUj4lL3xjTt5u222/DNNJiYSm68wZtKPtZfv/MEXy8ekAUI8Ut8SOQZRCcX7SrzA0OLGWGPHJRvCqQPzbhlDHwD4kh0jIcYCHvv7/r9w3/gaZIRucMr+3SNJiVVzsld/6rCE89yjJHVtuzDHWJoxC2MbwaSfj7bSnq8P7IHzm0ZPKL5Doyg5iEzDg1oEHK6AEu0/9TpOY2AiV/5S8WWbotGI/W9iCxr4Tz2+isvhumHrcbkO+7G8Kgf+Bx3PQ3c5xa5biQ83+J990K6ySJSGqZlASbks2zcYVvPFutMKK66eE7TFXwxslFOtUCUC8Q+97fbPKh/O5HaT16D6qc+cyQTQSRhO/MKFK1E2qHtAMBpmM1inZrtXk4Gtng/HgR5BSIESF8VMnEcMEsbzXdD6uoXm7x/58xDMhrDpyRmG/CbCkV32qdiSc5WiJBvPKRUvvzeGc8RQ1YMTRF+WCFC295dIKYRlwFiQpqG2cmlZf+f7PdNwWb5KJCA+PREnCMEOgFu+TJxLOjennIXiBR0z08YVw6dYSnN2a8LTpgV1XlyRt7PlPHHnUMpkRhRANwKXKY0ACf2QzUUWZiv7z2lzGWfnwCBfCmEL3+k6ODvi2i52bc/v6ObUp9tETX5J6N3ovejR5NoLy621qQ+LS6PLK4cwRz/0iXvQ7hifeBJrHWAUhH6yh6BY4y5RT7HYtCT+MktVKdgQfeAx1f2DZ/VE9GVvRh7Wizsf3L8qNJZ79IRJo
+ 6lMZjLtb
+ A57hIz+8CEwxtH6q+/+5oM3QwtPOf+56Ypan1jTnjjop4YM6YbFg7KfFOjz9eoTXNFSHWXEakH+Osb1kMB+PMbr1rd3KXoWORffYNhxydUJlTVVNwbH9ineE8Su+Baill2PPSHyO32JXPH1dQ2/lnu9T23MIISVO/1Ln3wYP06HQ/MiISsu/gtGo/BjOg9+q/Q+hpACeNrG9FW6tV3nJUSV8OQM96d98ExtYaMbOG6plu4xweXhiP60FT5KQnB/J40vlisRKA6RInuhEkKrOoAFCDeump4bS8HxVzv0AhI5WaZXXK6Hey5qcDUlPNaoE9WFQacf1MvVoJbm6ofD2t65d1A9uRLPrDzOeb+p7PsKNy2K7j7i77OGxXF9AgPXLP6jf1P/M2uTdXtdvcVLlIdr0MzzqatbetrrEAZjkZ4mLs3luv40k5El+dC9m3F+/ifW/i25kheyc+v4SHeoaFcOOjvT+rAgfArfGZs2N6BmNPeR5o1U/4IAVWzRcM5L2F4yPwao0JTcdMtkQtNmHQYbISIAKVK7OviHFqkgTXlJGW3cJ2t6wZCBP5HQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,92 +165,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-writes:
-
-> From: Ackerley Tng <ackerleytng@google.com>
+On Tue, Jul 07, 2026 at 06:45:07AM -0700, Usama Arif wrote:
+> queue_folios_pmd() is called under pmd_trans_huge_lock(), whose
+> pmd_is_huge() check returns true for any non-present, non-none huge
+> PMD - including a device-private swap entry. Passing such a PMD to
+> pmd_folio() extracts garbage bits as a PFN and returns a bogus folio
+> pointer.
+> 
+> Potential trigger: an HMM-based GPU driver migrates an anonymous THP
+> folio to device memory via migrate_vma_pages(), leaving a device-private
+> PMD. Userspace then calls mbind(), migrate_pages() or
+> set_mempolicy_home_node() on that range.
+> 
+> Skip device-private PMDs, matching how queue_folios_pte_range() skips
+> device-private PTE entries by checking !pte_present().
 >
-> When alloc_hugetlb_folio() fails early (e.g. buddy allocation failure or
-> hugetlb cgroup charging failure) and gbl_chg == 1 (meaning a reservation
-> was not used, but a global page was allocated instead), the subpool page
-> acquired via hugepage_subpool_get_pages() must still be returned.
->
-> Currently, the error path out_subpool_put: only calls
-> hugepage_subpool_put_pages() if !gbl_chg is true. If gbl_chg is 1, it
-> skips it, permanently leaking the subpool's used_hpages counter.
->
-> Fix this by calling hugepage_subpool_put_pages() unconditionally if
-> map_chg is true. Only call hugetlb_acct_memory() to adjust global
-> reservations if !gbl_chg is true, to prevent underflowing the global
-> resv_huge_pages counter.
->
-> Fixes: a833a693a490e ("mm: hugetlb: fix incorrect fallback for subpool")
-
-My bad. This isn't the right fix, I'm kind of re-introducing the bug
-that a833a693a490e tried to fix. Let me think about a better fix.
-
-
-This is what Sashiko had to say:
-
-Can this unconditional call to hugepage_subpool_put_pages() lead to
-resv_huge_pages underflowing?
-
-If a hugetlbfs mount is configured with a minimum size but no maximum size
-(so max_hpages == -1), spool->used_hpages remains 0. When the subpool's
-reserve is exhausted, the next allocation will use a global page
-(gbl_chg == 1).
-
-If that allocation fails later in alloc_hugetlb_folio() (for example, hitting
-a cgroup limit), we now reach this error path and call
-hugepage_subpool_put_pages(spool, 1).
-
-Because spool->used_hpages < spool->min_hpages, hugepage_subpool_put_pages()
-will increment spool->rsv_hpages. However, because gbl_chg == 1, we skip
-calling hugetlb_acct_memory().
-
-This appears to leave the new subpool reservation without backing from the
-global counter. When the successfully allocated pages are eventually freed,
-won't resv_huge_pages be decremented out of balance, eventually underflowing
-to ULONG_MAX and causing gather_surplus_pages() to exhaust system memory?
-
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+> Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=6
+> Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > ---
->  mm/hugetlb.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
->
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 571212b80835e..e607dcbb2fc3e 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -2858,7 +2858,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->  	struct hugepage_subpool *spool = subpool_vma(vma);
->  	struct hstate *h = hstate_vma(vma);
->  	struct folio *folio;
-> -	long retval, gbl_chg, gbl_reserve;
-> +	long retval, gbl_chg;
->  	map_chg_state map_chg;
->  	int ret, idx;
->  	struct hugetlb_cgroup *h_cg = NULL;
-> @@ -3009,13 +3009,11 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->  		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
->  						    h_cg_rsvd);
->  out_subpool_put:
-> -	/*
-> -	 * put page to subpool iff the quota of subpool's rsv_hpages is used
-> -	 * during hugepage_subpool_get_pages.
-> -	 */
-> -	if (map_chg && !gbl_chg) {
-> -		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
-> -		hugetlb_acct_memory(h, -gbl_reserve);
-> +	if (map_chg) {
-> +		long gbl_reserve = hugepage_subpool_put_pages(spool, 1);
-> +
-> +		if (!gbl_chg)
-> +			hugetlb_acct_memory(h, -gbl_reserve);
+>  mm/mempolicy.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 914f81863db5..eda817539c77 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -659,6 +659,8 @@ static void queue_folios_pmd(pmd_t *pmd, struct mm_walk *walk)
+>  		qp->nr_failed++;
+>  		return;
 >  	}
->
->
->
-> --
-> 2.55.0.795.g602f6c329a-goog
+> +	if (unlikely(pmd_is_device_private_entry(*pmd)))
+> +		return;
+
+The changelog lead me to believe that this is skipped via
+!pmd_present()? Do we need to skip just device private entries Shouldn't
+we set qp->nr_failed++ similar to what we do for migration entries or do
+we silently ignore them?
+
+>  	folio = pmd_folio(*pmd);
+>  	if (is_huge_zero_folio(folio)) {
+>  		walk->action = ACTION_CONTINUE;
+> 
+
+Thanks,
+Balbir
 
