@@ -4,136 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C55DC43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:51:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90982C43602
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:52:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D9FE6B00BD; Tue,  7 Jul 2026 09:51:57 -0400 (EDT)
+	id 7A6F46B00BE; Tue,  7 Jul 2026 09:52:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 164406B00BE; Tue,  7 Jul 2026 09:51:57 -0400 (EDT)
+	id 757F06B00C0; Tue,  7 Jul 2026 09:52:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 052F86B00BF; Tue,  7 Jul 2026 09:51:56 -0400 (EDT)
+	id 620916B00C1; Tue,  7 Jul 2026 09:52:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D22AE6B00BD
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:51:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5EB178DFD5
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:51:56 +0000 (UTC)
-X-FDA: 84962119032.24.8BEA4EB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 84C298000F
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:51:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ykja3++f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 38EFD6B00BE
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:52:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B72B68DF91
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:52:32 +0000 (UTC)
+X-FDA: 84962120544.11.AD1A30C
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E13B24000B
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:52:29 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=l7tqum5C;
+	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783432314;
+	s=arc-20220608; t=1783432351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x1boCJD4ze3yK/wEW/5FgvUkPVyqEy87DYSbFVshfFw=;
-	b=XZgSj1IZx808E0KtwAOyvTD082RjWRgA7ssQi/uV3zE/S+fI0eXY6wM+LtJxIuH2WoT7k8
-	6IZbMOUR86EDHBf2x84VUG7VKEn7e3DJZzx01evS/LMH/5RZEKMgCeXlFx7QTpApVOechr
-	/4MGGzxHMWZcXUIAYhE+jpyaRqLJsYk=
+	bh=8/6KWb4PfYctYp+8gY6gHKjmETilMdBvjVRCsYZspew=;
+	b=f9o8LXorx1HnzsTWYSqKzCfWmPoBTVRqlF+onSLWd1vH1rPr90AlzWjC5/IVrjjURtRXz2
+	hspqV+vBDjURCtmHfyPtEDXv0eWSD3ULN5Vr+FR56eXrB+6GgZqDzJzh0HsRDPRsUU8S3/
+	alT7tNLbTGgyhrl3FKZzLcryDEXZAbA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ykja3++f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=l7tqum5C;
+	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783432314;
-	b=pwBIjqL4UMh7So7xuwoFY2lktl+Cpxv1ctQOsbgP8IpOOI0aS+hgFdq5g2IUe1rtLFMAtF
-	9y7qo5JtpOrfAWwwS15bn+zCC6QFcm4/XvzKDt9NrhJPus41eAiLpZdsp34DfY8qQFvs4P
-	tRYZTEN57GcT92zANBgfykKcHgpVsSU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF5C940E2E;
-	Tue,  7 Jul 2026 13:51:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1091F000E9;
-	Tue,  7 Jul 2026 13:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783432313;
-	bh=x1boCJD4ze3yK/wEW/5FgvUkPVyqEy87DYSbFVshfFw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ykja3++fMvsuCuwWPyt07z6i+EEmqKxSXXP6uXHoppDRPFaM8aq2/6e4KtCYKtD7H
-	 slWahvtljCxDsivxbPDgjyTLfP4ZdVEiM8sDyI/IcwJ3Jp4SBDAVhO6yq0gMjnCATt
-	 GMkD4wfwFzlDKPuiXj+9IyspFjfGak8yOlmTpc+9j44cVxco5s2HapzK6iRnw3aRaN
-	 9Ud5Yhd150GM9K3zYbJHLw+YlKlM3ui6SnNG8O++MwfrbFosqm9fYMh9bpzbMrJxOm
-	 nambFu4niAlcn0YyOOdEUhFegl+ooonrsOP0CkYnUXemRBRcmmy3kTiwVw9GalnPIh
-	 ypJYEph7egjpw==
-Message-ID: <296662bf-66b9-4343-9104-afc56309b7fb@kernel.org>
-Date: Tue, 7 Jul 2026 15:51:49 +0200
+	t=1783432351;
+	b=VUFY+ou84K12kVwwJqs6KWJj8PMY233jjNQPPDgO2olxpexFvSzcT/sbYw8W+xtlLouTc7
+	8QoTtgdiAfCsJLeaHDx2yYPBJ3azxdyV29qCFWX7gGuQ+h8jaNKnp0w9UBM2F9pSf65SS7
+	qRKIjCdxOoZjCcotGcyMy1sckY/6Vzw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=8/6KWb4PfYctYp+8gY6gHKjmETilMdBvjVRCsYZspew=; b=l7tqum5CgVXYfcPwtJgTxfXiNY
+	W+Xf+yjP5ugU2fn6LRQhGIG/KXGwZERlBynLMOA5aHPAjPSm5S6XBF3IDbi0TJyAThoasln5kjxAo
+	beip/tuPnL3fLnGzJwLunkBGhyRftaYswtsTi2VOxFgEx5xtCC1s0eg4v8B8L3/mu6ZGXGnn8Qs0o
+	7nA3r1DP6GorvKH3z0hsuJe5qn6HyVDyQ4ujI5wkoVj7IXEhvFsNvBZ1gvc0rVeL3xWODUBHM+A3z
+	43wWN0u9A6AYoIpZ0/zbIr6ngSv8NaivanmsvSjuWuYwacUBuYRn+hlNll3yL8lQ0Ndj5T8P3iNwh
+	jBQJOKdg==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wh6DV-000000002t1-1k1i;
+	Tue, 07 Jul 2026 09:52:05 -0400
+Message-ID: <5c06c0ad2f2a7a039181a1775623ec06ca063dff.camel@surriel.com>
+Subject: Re: [PATCH 2/3] mm/pagewalk: let folio_walk_start() run under the
+ per-VMA lock
+From: Rik van Riel <riel@surriel.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, Thomas
+ Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin
+ <d@ilvokhin.com>,  Borislav Petkov	 <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Andrew Morton	 <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Suren
+ Baghdasaryan	 <surenb@google.com>, kernel-team@meta.com
+Date: Tue, 07 Jul 2026 09:52:05 -0400
+In-Reply-To: <akzv9FWH1peGukyp@lucifer>
+References: <20260625015053.2445008-1-riel@surriel.com>
+	 <20260625015053.2445008-3-riel@surriel.com> <ajzUCZSRU3h_UdjR@lucifer>
+	 <610d1c95a2f9131d5c018304f9a90afb33e8a032.camel@surriel.com>
+	 <akzv9FWH1peGukyp@lucifer>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3] mm: retry page faults under per-VMA lock when
- mmap_lock is not required
-To: Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, baohua@kernel.org,
- shakeel.butt@linux.dev, linux-kernel@vger.kernel.org,
- Hongru Zhang <zhanghongru@xiaomi.com>
-References: <20260626075019.1833065-1-zhanghongru@xiaomi.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260626075019.1833065-1-zhanghongru@xiaomi.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bfruy9fdb613txetjqyydwi3rbonum96
-X-Rspamd-Queue-Id: 84C298000F
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783432314-9872
-X-HE-Meta: U2FsdGVkX18X/yQ8wQXq9KeZgpiiMJbz6xUi1jZLkGQqRuP1CLPhoc1VYQXVJbQF5te0ziJP3FpvyokQXmBa3igbxDHQb4WzrKANXrTAieEgQJFAvXQlLQWjUJUvFelvVBYAkIr2Gq5IYEsou2uFXA6ve1DTKdWDcqqr1dlxEDunkbvpl2zIyFw+8KyOVmhD8NOGmf6jwE2t6b4+uwMUIhbrJ9d4ohGhWUVT7tbkNuA6OfHzIMNi5XMZS6/jc2P1YnpBdGlFp7T1oKjTXk2JQtywsoM8xnHiGbUw/KaAEwO75+6cFcvmBkV2TexVHYJmE0sJ5jYqA5p3Lfiw4aguUOsTAClPDNUHg/9KpojznjpOch2a3UF4Lr4aRkPDm4frlZjf0J5V0nmvBWfm5pGmPxepVMSNRKesiSQEa9WvY1X78plXLrHcKCMDOo/2b1C+yuTouMvP4vhzt2mppOAfmh0rv3ijowu5d0qjgfNocYvaENPt2w47Y8DVIrtholBpjOC8qsRpVZN7vGyAuJ2J0ebLDQyRamzm0iq4dd4PzGw2J9aQKbqyPB5rsmREg2j7MBitvj9wJ6OoE55Mb3wT4VImG8hSE/XvTFzOj2Ji0qcfaeujX2z7PryTaFvHa4vKHXk5n7imagehaXiAUvzXxnpnlAMEgzxoyF/yy0Jk4tycWBmBCCABeAfYg/Az87OzXhnSiS3O9fo5DT9IC5WCkIyr+wNNT/5OJUPFzUTye7yLwUnZKuo+UUqDM9ssu1SnbsATIotbv6Tp2jkbH8LitfRYN/UQnBBNfWAAjnAx5HLIZFaLzmCw+OPGdq9PbiKi0NCdrovE+nrPGkdjnX97RAnMj4M1smtxvvXIfcdlxDruSrwM9Spb/dsI9t3MuGhUNdefhql/GJ3jJkpYFveKP8seq0NlXUCnyDCfT6s5xQsMHem3tdYiv3AlJ7ZgWM8TY4MmgMWF9189WcsGARC
- 18YXT2UJ
- QuAio/xElwkm6+BCGWoDeo7rKvb6RBOwZRJOtQzBgEgmwaxaV6L+0gBc8i1VgjPc3ChTQGmgA0MKGsbh2UaOACYuFWI7yhqO4bOogsEnmNLURh02oh6Aq+0oWl3ZFneCdlJkXGhhxFfKeBrGTYXNh95xJuxFcpBWwcx89BSeMaHlzblSNTxOIvHNjP6xi2ENcRxEntAtu+pX4jqSGbhjFfkFuDW09gd6zhaeMXNcZyJGyMD8Y9+C5cWuuAO0d0UAppWofLhkvrTalO7Sqowo/2VfluGjTbzS6c03cYLv58+A/juJRWoKlLUv8O2KIhBveV8yddjwX6wrXLgg=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E13B24000B
+X-Stat-Signature: sbaj3gzr9pcxjuctc6qf95tubjzkbmd8
+X-HE-Tag: 1783432349-302714
+X-HE-Meta: U2FsdGVkX1/LckPWH4N0BuPefbYi0+7pFRu8ziXE4kAw/KA9Rcz4+qjKbulBfqPRFZKKv7qoUXCaoBX2I19gd6IU7jCcthysEAss1OjG0bCs2UR1CnvDJ6sJ1FsXgaBtKH8jcD6shAdPf3BUmcdPcst4lU6/1LMfgQFNPIJhL0TtNmouic5xZ4DNSvh0RPa11TpghA8RdQtTNJ4dCCUGBpLjDPK7t35tDA/ZRsZXhwFWH9kXzlaOQOj9BLHZ6/i/bipIYexQREG1dDdLF6YyCLHxnsBOYLST1BN3fUhdjjD6dWQhwVuysI6goguJV0PFmC8cpABqnFuN18QIfgXxiPM/C9zT6U67Hgu2mK6+HueLyt6J33Xk8FxCXNUdFCbjpY41XdvEHiMuJn+Mtc/fA/7vBaexHtY0wPMm1UzT9/5I1O3P4p0GtK0hx5nccOCNVq4WdPxlbXLMnVHOQ/lZ3r4clavQUhjdSThd9AcTEUfDuTWzkvnGnKJpOt1+oFhs8ibOscpE4zw1oaQP4Ak+n9vdxer+YEvK2g5Y6ZsRaqIlJV/fkiF1TnHEXetIDpDZiM3uiHzT3F+ArWEIE83gPxTD/1oJBdm0DVk5cUk0KqBk4BrRM0oktkZ18m/H5lUo0q+9oj+MNFv6ne3k2WsMzD1fTqO3o84rpgwzuItYoxyxxtXre3IE6piaXy538UQv9+p2nTbB+TrA4lgn23CsZ3cLfhouA94moeLBwwzFR1OI3HE0M7I5zba20STZyy6IxJOFVewV4112dM+mVmQJiN87xiquVpszC1qiJP4cu2OFTdrL1dP62YbNy7UpQf2fyGMWn30NUcGEFLwwnIVIstop2cIhpNBF/UxE3mIHI4LkR81BrOjp3UPH//J+yygCEhG9FCJ0ZAzw00u3rdj5cZW+mFz5gl9qheW2ozhZRLe6ex3TLH+EK+eAPN6T8nvhyVcPXjbLiN0LxzRk2qW
+ 6RXKgBdX
+ +qmGEwneaELcREBlk9RkSCkcd3uvGcGNgYCXVwBuXYpF7urZVdrxBX3LD+wEYGStmH70AuAgaekuI/CVXOtSb8DOvV9qF3JJWI1Y+kfZqDXVldDlNWP7RWDN03S0QdmHrBQDia2EuG4NlEaPgisTJTyY1ExTma3ICBLa9QtHepq8CyrFtzYqIfiH9MB93UzKDugoEh1jq3PBFvUcvvWyO2n3rX1gsCb254jZVKtxbF+GmWdc+5APoexHLCfbO1T6KLcZV5deN+8QaiEE+kur/1OsEEA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,35 +128,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/26/26 09:50, Hongru Zhang wrote:
-> From: Hongru Zhang <zhanghongru@xiaomi.com>
-> 
-> Currently, when a page fault returns VM_FAULT_RETRY under the per-VMA
-> lock due to folio_lock() failing, mainly because the folio is under
-> I/O, the architecture fault handler unconditionally falls back to
-> retrying with mmap_lock. This leads to mmap_lock contention.
-> 
-> This patch introduces VM_FAULT_RETRY_HARD to mark the paths that
-> require mmap_lock. 
+On Tue, 2026-07-07 at 13:24 +0100, Lorenzo Stoakes wrote:
+>=20
+> And on page table retraction, importantly, the PMD entry is cleared
+> _with
+> the PTE PTL held_, e.g. in retract_page_tables():
+>=20
 
-Really sorry, but what a bad name :)
+Ahhh! That's the part I was missing. Thank you.
 
-Can we just embed the "no VMA lock" or "MMAP_LOCK" in the name somehow?
+That simplifies things nicely.
 
-VM_FAULT_RETRY_NEED_MMAP_LOCK
-VM_FAULT_RETRY_NO_VMA_LOCK
-
-
-Something like that?
-
-
-Also, we should document what the new flag means, and how it, for example, is
-always accompanied by VM_FAULT_RETRY.
-
-Best to be as clear as possible on the intended semantics.
-
--- 
-Cheers,
-
-David
+--=20
+All Rights Reversed.
 
