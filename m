@@ -4,90 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 461C2C43458
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:20:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AC53C43458
+	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 13:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 374906B00A4; Tue,  7 Jul 2026 09:20:33 -0400 (EDT)
+	id 466CD6B009F; Tue,  7 Jul 2026 09:24:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 352226B00A5; Tue,  7 Jul 2026 09:20:33 -0400 (EDT)
+	id 43D776B00A5; Tue,  7 Jul 2026 09:24:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 265446B00A6; Tue,  7 Jul 2026 09:20:33 -0400 (EDT)
+	id 355EF6B00A7; Tue,  7 Jul 2026 09:24:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 022E46B00A4
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:20:32 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6459912043D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:20:32 +0000 (UTC)
-X-FDA: 84962039904.01.75636E1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BD2A1180017
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:20:30 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WcsyS1rN;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783430430;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F3FBB6B009F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 09:24:24 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6170C1A029A
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:24:24 +0000 (UTC)
+X-FDA: 84962049648.19.D6A4367
+Received: from mail-yx1-f46.google.com (mail-yx1-f46.google.com [74.125.224.46])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 75617A0003
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 13:24:22 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GoMWlXPM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.46 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783430662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ThonobVbutjdpxgi4zCNaSyVPNB4espWFRa4yco1WyI=;
-	b=t7CoX99w3kl14cQCwJsHXQTqVH7lVs4Ei7phiPvJbt2OfqM2a76VEEbLTbYTdL5MngZ65K
-	QKAQFEh2oV0ER9slL6dSp5Qhd0nZS59e/pK+xOCtC6bT2XeffLWNmELi8h+39kl9siok/6
-	wLqSE4aRGEXTSlETc+5m/dx1+s0y0q0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783430430;
-	b=qIUaCiQ3DXMf9i80rhQHIg7XTvTgaOwczCKHaqYDv2A+v8H8rKE0knk/7999P/Rv7WGOSe
-	cPRWsXJ66ZWcfRThKsJm+mMQtEhytE+/J4OIXIA2f17efV0awILr8BjLCS7DkXJPr57Kj4
-	6uuejOkPlFC/qIwptqSFJTF57YanW8k=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WcsyS1rN;
-	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E212D40711;
-	Tue,  7 Jul 2026 13:20:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289511F000E9;
-	Tue,  7 Jul 2026 13:20:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783430429;
-	bh=ThonobVbutjdpxgi4zCNaSyVPNB4espWFRa4yco1WyI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WcsyS1rNE6zpcJVBcO6MxkNMQ+nR+95qJS5iXV1kQ5CxwF2mZYtdDYpZTej7gCmS9
-	 4qI533fxLYj4yayOmzWhL2+jhmX+KXpWvHuB1qF3Hnd8pM4Kh1/S6+JU/JzEsYq4j2
-	 ptzrWG7Mkr9iVH/adrDExEHfHN6+/itICaG2k9BIHYfd/m2/zYEt4H84kX9Jw1tDHc
-	 cpYnwRUMn1wFSAlKAefI9Z+htPe5TaMjG763Xuacmc84aH2TwLV5NqC49Nt+Yq+C7B
-	 uF2/D3NeP2p4B7kSKotFUyELmyRYpDmb6sba+EYTl2L6jZ/J78cLQYnYcm20RYtxdb
-	 UvBxkn0uXde9g==
-Date: Tue, 7 Jul 2026 14:20:19 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: linux@armlinux.org.uk, akpm@linux-foundation.org, david@kernel.org, 
-	liam@infradead.org, liaohua4@huawei.com, lilinjie8@huawei.com, linusw@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	mhocko@suse.com, rppt@kernel.org, sunnanyong@huawei.com, surenb@google.com, 
-	vbabka@kernel.org, xiqi2@huawei.com
-Subject: Re: [PATCH v3 1/2] ARM: mm: fix use-after-free in __do_user_fault()
- under CONFIG_DEBUG_USER
-Message-ID: <akz8aZUW23rpyrLO@lucifer>
-References: <akzpuerKqOY7qfFi@shell.armlinux.org.uk>
- <20260707131409.79043-1-xieyuanbin1@huawei.com>
+	bh=9b8BbHxhkf1CoCrJjN2FxRZeuKaAhw6KBsFbbBlQaHQ=;
+	b=aGtlrz2yGL282RAWrmy2AHcfZ7apiY85R8D3JF7LvrEQsGUS6YbuZo8MMNo1cx5+DRKoCD
+	a8JggBNNW72q8a6BdCUpGaCyYSQ7BBOOEf1WJKPPDSM6zrrbsxkcGoj4uUrrNPJoJlFT4r
+	NpCIHit6oA8WK029Jqfe2u2nZmJb/dg=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GoMWlXPM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.46 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783430662;
+	b=jgeYnJNG8uafsRYiFnkVlohuoYhYnEGZ3XYzDtyUp3tVqccg+N5Vys92VxxsMECGjXZ79B
+	Fa+rtOauDYhqBT8lu8vYRUrG56A05p28AyR8qldACcrhuyN6jYFXmNbdTXD9WcItULZEIt
+	yb3vDZIdeaj5ySvD/6bkQnWDGibhbyQ=
+Received: by mail-yx1-f46.google.com with SMTP id 956f58d0204a3-664dd23829eso3817203d50.3
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 06:24:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783430662; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kE+uuR+/ZFYBgTV/JToPYoEv/qUH8XMjud5NzWEaNrxx8kqQRP1AdWu8mHmig1a8zp
+         Zn46pNeEVYcUQtfF2U2ozTrIjMrTz3SAImlDFif84EftMDP0I4zjTqcD4doPuRZYmymD
+         F5Hf1TwThU7JlislXvJhiE9owGvVK8CvuhPonDYWMYAeEEfAQQtkNDk1Ec6HBa2e+ZOJ
+         wX4aanIYF5zo6q7FA0H2RcJTkytK8iR2oJHCo6LaVZCwbjskVNE/W5eAzeG7s32Z+EH0
+         7ANC1g8wj5dCRJxOYjSROpjBAsLrvOf88WuMni+xzncwOiRgCC1HBnIecixXrCWhVXOM
+         bt0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9b8BbHxhkf1CoCrJjN2FxRZeuKaAhw6KBsFbbBlQaHQ=;
+        fh=NzVUeuzYRglgwzpQR4v9WHTEIHrYnlz0y5YqrW6daf8=;
+        b=rDkwqvdPwvC/EwbvlqGPLr6D0tOmGbn55vI4YFc9jE6KMrwpuFyemfknN8hthyBgSH
+         +QdB3yfq4Mbg44Qp29ZAK/eouXuYla9q3NeVXzP6XnxMy0uWItfu7L7fZQVeN5dWmEdW
+         1ciiPQSICUzj5gX2h9uRSE582Pi37jWqHLVvPfkJwZUh+/TJdWfAVRRQkgXHpcpDGmsw
+         qal4QztWhR8R+gaRITVtNWDsEtZzn2NgBn6qo3FzZy0aPSwX44xPwPP+HtKYZa6rsUZM
+         Una7LTfoBCiPVhn8wrjSMfs4+lSbKsfwOTdkBFZzhEzRKjCvec++UTcKC+OPKBRwciMT
+         pZuA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783430661; x=1784035461; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9b8BbHxhkf1CoCrJjN2FxRZeuKaAhw6KBsFbbBlQaHQ=;
+        b=GoMWlXPMAcs3QAa2JWNyWy/5vS3If9gG14WMo27Qv5X4hyVLvYPDnHiPJuAsNaEbIf
+         JKQLRlJuK0F/hK+XzoIKG6ltnH5SYzOw8W1e2pP+tD06Kng5pL49nV2QyZJy9jM1zkX5
+         5KvcreT/8LQrAUDeDy3PBS08Vfmb+gCYS/vtZjxgvwS82fiAg3jCjY2Ab24/dwATlA27
+         AHCdC8nccFW9rwZqwqhDtuBxWCcd2gBN8ubcSadF3+tX7b0rIPftey9YBhaH3robfWLW
+         50DbZvjp60An+CrjNzYvA9TRXUp1ZpK3nIPG32sSOebKMcoThSNKxZ65lytkIJ8BZRhi
+         75iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783430661; x=1784035461;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9b8BbHxhkf1CoCrJjN2FxRZeuKaAhw6KBsFbbBlQaHQ=;
+        b=ityXCBi8pELdLie06dbINS1hHzheWC7zNjsajHzBBfeyFKv9J0pXcBl70o27G+7zPP
+         q39NFvvV8yIfNJD7a7T3jbuYOK/XHD+RmORkW/LccD/zIM2CjzYH0HKlzeMUZEPewWro
+         h7mRS54eOclQ8k9sq1+s5MAqDH9ixDPjfTGfjRxp1ChvmDJHKALHz8E7QeLleCZXviLK
+         AW/qSuxdlAXigrgL8tHdRMUfzpsvoE+epqIdAK6YVKzlG7JV+Ix+fCU+H50PrwVv5DWy
+         T8k56xKZseVxA9GCddfYokEU8JV5j58pehTAAhd9uLjMfWRtzn9YcgRWaFhW3gboqgsx
+         +wcg==
+X-Forwarded-Encrypted: i=1; AHgh+RqsvdEG9Vb2zaZSuHL/CLruh/X2Qdg9MUDAmv3NQuGpqfFPmIj5xGOCTZjJHJaII3FErB5g+xk/aA==@kvack.org
+X-Gm-Message-State: AOJu0YxAH4QqDKLibBYauenJGzOUyv+3Zb7yQBLa+tBt5wobI1JzV9Ei
+	m3N0sVXyQKHcooIORVGlMfe6McuYQzEyg59JDLLIfUSWb6P0PO+u1CIRyk0A0lnQcF7kEX36/OG
+	XAWD9Mv8g4cl28PYWuFz4/2rVqXbrfK4=
+X-Gm-Gg: AfdE7ck5fykY2x6uf3HIzAAMzWydoBmYjerHqA921O3fgZL/omPAzUGJZYJ7B4+CGps
+	Gjc1hK77ZzJAtudmd2S/AS0hb0U1gsU4XIp7HRv9xuPSBpzsCrbEapymhVk/IXB0Le4PtmB2J0k
+	m7FlTnGNrg8xbR9suSzMrhtayjE++IBFKmZwPKYVQDRhJtpJmWMg/rKlwD1ls3/z2UJNwW6W9T3
+	/tXV8h/m3VtpD+SpBdJEcULYtzs8an1FLaYdikK7JcDC0SZUnrAhFjEpALrFBaTWcIicg==
+X-Received: by 2002:a53:adcf:0:b0:667:8b90:2ecd with SMTP id
+ 956f58d0204a3-6678b9053c4mr1264848d50.108.1783430661475; Tue, 07 Jul 2026
+ 06:24:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260707131409.79043-1-xieyuanbin1@huawei.com>
+References: <20260706163753.193875-1-ekffu200098@gmail.com> <akyZ5DhIV_Grn1Kc@kernel.org>
+In-Reply-To: <akyZ5DhIV_Grn1Kc@kernel.org>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Tue, 7 Jul 2026 22:24:09 +0900
+X-Gm-Features: AVVi8CdmNSJCGxYOGWnK5wJL_8NTvAWhpJlXJNdpTu_SgODQvmfDBt7ZZCk7fE4
+Message-ID: <CABFDxME7ig1SQDB39TUeUXoAOA2jSRhg6h-bm0kUHrHzGYeE-A@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] treewide: remove unreachable memblock_reserve()
+ return value checks in early boot
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, Chris Zankel <chris@zankel.net>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Rich Felker <dalias@libc.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-mm@kvack.org, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, linux-efi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-sh@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: eoe4ezby4yenj97wk5rt4ph8p74h36rt
+X-Rspamd-Queue-Id: 75617A0003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BD2A1180017
-X-Stat-Signature: j4j6eq9pnzh76moi83me3r9d1cpihjqq
-X-HE-Tag: 1783430430-641101
-X-HE-Meta: U2FsdGVkX194P22mhcGnupBXM34xKE0W93Ut8BhBSDTKpZmiUyTAtIGVWX2FMToACx/UtTWx8ohn+KMZ1Pdt4HwRc/PYUYnPx3oV9XFlzd2K9Q2RN+fya1QYI+VCNGJMYNKse6BpYXKjtV5kLBK9EKHQw8O6vtUJzKpG5BPTtPp5Va2hTj9AcseTLG1lFJ2kj8h2b7KTO9RId3fU/WktQz3DaW3NDgwJ2CSoOKrHZg5UZUbXrO9bwtcVqntFqZazHXD3677y1smc8yd4tSu6uyv6D6hXJvYfj4QmuYEjIukblrmB0OrcFH4Gxdn1dbgYfk1EHZWp7sVDPbiDbqoF1WVp4VOByGxIu68V4FvlwCQqkA96KemeT5wqWpVT0sT12NdjgQ2fMQjWUgj65pxGcN+cJbfkT9C4bA/wNSLKJgPtiplooGd03cOEbTDrrFIiBGC3U58HP0ah8zf3vCMOik/OS1+6iipXgY5SrUDfWkauKhemUXtmG81YJxbmebhLXDkhPgI5WJwLtJab4SvqdOBlw1umuBQsZh8UCYAQo0zsCtXNuRsr7hG8Sd5sMz5bDksfz1PPs8hCZnqiM+3wCg8AGIZyfDa7aMSel63tiWqXSxUmZ6YLOcJS/xmUnqXpF4/XqfN2/vwjoGb+FnyVDudZ7BjVWaMv7eX9eXsmbIZlqmMc5cc6CTksGR0PAHySmQdjAaJRh2XMyR8t4KGIROoNFUB5FWc/+s3aRFCSV5HFK4q/1uM7JClu5jlIeL3JlQ6npbJfZ4XHniCfSx4N9WYIY+g0xUOXbrLqu0qtNFH4teOf7GweLJyV7X6ummc12Hbvf16zoKYRCiP/jytT7SygLrGvBTOa/Qu1nM98ONSloBVvzX8zZxKWvPmzPKEW1BriUii1snktXH4BwiiRMwIqxAMJ8SYq9F9nRr+K8pSCOuR/i0/yh7NEn0/juuXYsmlzt/S12d2EBNu+FLD
- zDEe3uDf
- hb7fOWm8dOhpVq7mJZ/4a5vFInTKLsU1140g+lVSIO3CRvjS1NXwCgutqcCf3ZRabuV9cW8ue2C9Uvn6Sipa7SvY/5mt3YJh3cGhOgtFy4B29r1u2qlDwEl/fb4YejkvF0UKzQE2laY/vS5REOcKyRlzKI0X1emKOQGk5rVObmnx2DV/sHDzIf9DrhaBLNnjhOs0mNMdbxOukSiZb/G8Wi9GSyKjvEJwrcG0vo40excIcyEj2Lb4TQtm9jDJP6c0oh1ywSaJwxNcAKXqOgt18rByq1fLAJfKuvzoOfojFAJOBjgo=
+X-HE-Tag: 1783430662-5543
+X-HE-Meta: U2FsdGVkX1+uqg+2xPRWgbCJE4MoRabeAJPr7fZPjMKfe9o4lVUGCZr8lDgzXNmq0+oxVoFOSkhMsnGgfXgQx3esihxpm5hyKxy/M81ads78oHqERQs0DWyy1X5UBM9ZIV5gQmifoF1+0o2krGJcAkOhHHCcPBiIotT675OLmrB8neXvPOOhpomW8HAVohUy6A4fCM9Fu/0GAF1IJbflK6yEm0O08rkOLHHFD/X1W7vtzCMvXJ5ZysfPEsqKTGE7l0pprb4wvDAa3Kr4BU9kY6JlaD5nrJpiyCYzLFPDSH7BV/uJhCGzjmUSSlJJOHtC1yEIiWihhcMKC20XPu1/qn6g/0OgEGwmjEMoGQoZzL/5QdWsH/TuXt5zEVQ+qmodO2Uta40BidLlIa/JkGMj37f/YVgyNdgiax9zmjwW/U8ndXvMtUDHC3uWWQMJ7i6GXH2jxQTvMH+wgW/IDqlOe18uk0oO3F0lLT/6eYXIrZkDl8DuHNN2nWpf6Zlux+gzN/Fm3VxYHHSPD2eq3huq0tuTpNLyljvdKU6oIvYdcsho+n3BgcfDra8H39b5ewt0AfNKBsy6Uef1kg+BvA8OulvEz416jGlr7focsnHQhrK7y8bXx3B+TCq1MgsKPRTN2g9QWNRhbjvi47xc+o7HRMSK1FOsJekDA183u8xxWJ9Zgey6oP7GPQJsIexIVFSJx83s55hlgxrPfUeKupHJM4syWWt31KPbRmtPL+Rhxg9AEJgrDOTg4q9XBrt8PoBTYNR3l0gBc+ns+8/1OPORQtXjdig5YZYkwOWksVih1YcOFA/6A4B61pIOKak7LycvJ6yA1Hs6TSOPqW+G7UU71crAosGzO6nZ4e86EaM0rx/i2ZactZF+tkxFD1dIlysTePS4mWxg5pPQyxL3kvuc+gk7OtL025sJEol/c4WJ7ADdszl5S09aCXO9dzGt5kIo5T09514N1FXDGdoBsAf
+ 7vCtvs9K
+ xFFbq5+NbdUFA3ML1pMMyBa8j6TUzUCcEoqT95nfc2GH2pmaBBtT3Ilj660ov7jNIc17quTG5zlI7h/6xt/C6krbLMUPRSED6cqaibs5bHxXd0V72RgMH2nHx0jWVpc8kgVVHg7rYeRdrFohQ0/l+01tvZxmiQnd13p5EObT8GNSdevOSQ/l4/BcP95DkBVvGHGDB9mu3sko33t3xD89jQyoOcTi6dW9YUi0JBRnZTGTepWkOof998tr/Qwjqtw95gOwe1blkkMYIK12yDp6UsxufCCaZ8FtNFRjzZAZ0CMnoMUbFeL/00t0LjShVgVE5C5zPioq/o63S8OwDy0UlJBRXpN9gbyBT6wg9sB+aQywEF+4Y+3IbjiqhZqU3XiRoNX7Yle8vR5bHNhO1uin3+Abe9hBKwvYrMQpf5UTCPaxZLQ5mVvtxa2w5XzX2e2uk4FPzOHT+sbnecS4EBYdD2gjmjw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,40 +146,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 09:14:09PM +0800, Xie Yuanbin wrote:
-> On Tue, 7 Jul 2026 12:57:45 +0100, Russell King wrote:
-> > No. This information is useful debug for kernel oops.
+Hi Mike,
+
+On Tue, Jul 7, 2026 at 3:17=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wrot=
+e:
 >
-> For kernel oops, I think it should be `!user_mode(regs)`, Qi Xi's reply:
+> Hi Sang-Heon,
 >
-> On Tue, 7 Jul 2026 19:48:12 +0800, Qi Xi wrote:
-> > For do_DataAbort() fallback:
+> On Tue, Jul 07, 2026 at 01:37:48AM +0900, Sang-Heon Jeon wrote:
+> > memblock_reserve() can only return an error after memblock_allow_resize=
+()
+> > has been called. Before that it either succeeds or panics, never return=
+ing
+> > an error.
 > >
-> >	if (user_mode(regs)) {
-> >		if (addr < TASK_SIZE) {
-> >			mmap_read_lock(current->mm);
-> >			show_pte(KERN_ALERT, current->mm, addr);
-> >			mmap_read_unlock(current->mm);
-> >		}
-> >	} else {
-> >		show_pte(KERN_ALERT, current->mm, addr);
-> >	}
+> > Before memblock_allow_resize() is called, the return value checks of
+> > memblock_reserve() are unreachable and can be removed.
 >
-> changes nothing to kernel oops. It only skip show_pte() for user-mode
-> faults, and the fault addr is a kernel address, which means a user
-> program is trying to access a kernel address.
-> I think it is reasonable to skip show_pte() in this case?
+> I'd rather keep these checks.
+>
+> Removing them relies on internal details of memblock_reserve() implementa=
+tion
+> and the existing event sequence. If the code would move around relying on
+> panic in memblock_reserve() may not be correct.
+>
+> And the few bytes and cycles the change saves do not worth the churn.
 
-Well the whole reason you're faulting here might be because a userland process
-did that right? The page tables should tell you (presumably on ARM32 :)
+Makes sense to me.
 
-And I hate to repeat myself, maybe you didn't read the whole thread but... just
-use mmap_write_lock(), this isn't necessary?
+But most early boot callers of memblock_reserve() don't check the
+return value, so I thought we already rely on its internal behavior
+anyway. So the few remaining checks just looked a bit inconsistent to
+me.
 
-What is this trying to achieve?
+Would you still prefer to keep these checks? If so, I'm fine with
+dropping this patch series. It's not a big deal :)
 
-You're not in a hotpath, why are you bothering to conditionally take/not take
-the lock?
+Thank you for taking the time to review this series.
 
-Thanks, Lorenzo
+> --
+> Sincerely yours,
+> Mike.
+
+Best Regards,
+Sang-Heon Jeon
 
