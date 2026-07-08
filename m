@@ -4,128 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4B8DC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F92C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:49:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A14786B008C; Wed,  8 Jul 2026 09:36:24 -0400 (EDT)
+	id DD8E06B0005; Wed,  8 Jul 2026 09:49:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99D036B0092; Wed,  8 Jul 2026 09:36:24 -0400 (EDT)
+	id D8A0D6B0088; Wed,  8 Jul 2026 09:49:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 865086B0093; Wed,  8 Jul 2026 09:36:24 -0400 (EDT)
+	id C9FE26B008A; Wed,  8 Jul 2026 09:49:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 56A846B008C
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:36:24 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D894E1C0D73
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:36:23 +0000 (UTC)
-X-FDA: 84965708646.06.10EDCEA
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id EC82B18000C
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:36:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bwnCS62h;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A68176B0005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:49:04 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2CE1B1A016B
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:49:04 +0000 (UTC)
+X-FDA: 84965740608.29.7A94064
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf05.hostedemail.com (Postfix) with ESMTP id BCF3310000D
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:49:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mXbZxdXN;
+	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783517781;
+	s=arc-20220608; t=1783518542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gyj4hWA1vtXNSml0ZMlyH4/ogXNrmE8njxVw7g3pFsU=;
-	b=8WOEflvLdOAgC1LQH05ehUn9WlNb9or8AKFbSx8LxnNqJAAH98LrdrnQm54YHYuDsmdxwe
-	DK016XjuxOYEHRPEUxKjqNf75qoSyGRWJjdohOoLz8GbYJlSFE2JhunGbHpuy18U5AQkCm
-	kMoasIU7DAQ6DMwcztlYK+LKUSEn5mY=
+	bh=TEGzzoFWcnNWGGmasKpR7vNO3wPHNttV6bHdoJJUeuk=;
+	b=YkhFONr32YLzEzwTjgKx7EQBEy6QGZYdAUZysUHvyMcJzD+SRdQ4czX9tx8R6p1668gc+n
+	hVmIk0UD0xuLiRwmZ9SD2gZDW58LH6tRqLUWhoYT5LPYZRzV1wsEGAFGTtLvLc7H0Z5Em7
+	Ay8+9wafCuIiSS9rX1d5ictSo0aRzKI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bwnCS62h;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mXbZxdXN;
+	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783517781;
-	b=osZjJ0hjXR5pw3l2aRkGN+pmI19W5TcdxE1sYCdHimzjEIhgaGp1grmn0RAvOdv9J1NLhk
-	oGEtWbaXD4JKex37extAjJoqUC/sL8MmGnw5TTC/4gwNtuDz2eG7wh6VikP1n3lCcklIAg
-	2MH4NHMwpbDrW8b6MnxqqhOlGxDV2u0=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cc6dd436c6so7149125ad.2
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 06:36:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783517781; x=1784122581; darn=kvack.org;
-        h=content-type:mime-version:user-agent:references:in-reply-to:subject
-         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=gyj4hWA1vtXNSml0ZMlyH4/ogXNrmE8njxVw7g3pFsU=;
-        b=bwnCS62hWokwwYZ53GA+m5sJVagBKV450LcHNnSmODjN4nvNI3iVbI+4O89ATP/2gY
-         uAAdwvJ+fDlkypLLLeV3HDjKAV2wAXaxkON61Ygt+9EYsu1hDgVAxINPzJjFVmOqC1oi
-         PYJLOSBt9yYbU0qhlGdjUBUUW6s/U2XMwUPeP+E1UtdBK+L8RUfl5BazSdZTfP8E//HA
-         wQ/wH4TcFvu9q2zCDGjLt6FGajDcBr11brIhqlWw3woWK7miYoFPiKJW11w0r0tY++RQ
-         z7PBnPnkZmlAlJf9QJ3h25U6ejVbssrjfyw2str11aAZZP65Unb3mi3mHtKKZCLaIftX
-         zfsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783517781; x=1784122581;
-        h=content-type:mime-version:user-agent:references:in-reply-to:subject
-         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gyj4hWA1vtXNSml0ZMlyH4/ogXNrmE8njxVw7g3pFsU=;
-        b=G8khMKW4TpIl6e1o1Xkv/eNVoncf3OoW//AinSF7Px096vT+u8QjkktXcROlOaDTVF
-         YAIUWIQnE+ePcvNwmT1yhmCJb0YNGIoiGLZ3NfGfGy+aU0rVe2HGNm+rN98Q+kfFif0p
-         qTVoHfyUuBaW4v2z3UfiONIQNkTivHd7VGoA/cF/bPxw4pbsdkc2RaDOUF27zY1Usb+g
-         9uLKkWsnlkdVoC09wxfpXhpFBKXpZCndH21XTnGBegWf0D1nzb7oKzwQ31raLQBErpY4
-         r0hTBVP2sLta5otnJiRIu+5nyQip6nKFG+PU3puYUJj7jusmGcos3KTTiG/uawu4P/mi
-         5Kyw==
-X-Forwarded-Encrypted: i=1; AHgh+RoZ72cXVPTbAZG1R8I5GuJkss9TSzYw07VdPb2JNZmXtkjQ+flleq9DggxKZ2UD1hnSFceEzlXU3w==@kvack.org
-X-Gm-Message-State: AOJu0Yz72i/NBNaS5XYYexAyTYMWgD71rbBGbU3OhbqjNihBPObtD4NL
-	rQlBJ9RaLJWVvZzOQyIzitbcpLobUvVCADVCC3ZrqxtkgjKkywr/SZw9
-X-Gm-Gg: AfdE7cmk2r+XW+r+Mj6GS9Z4INk7PKu6sY46jZJMHSRNN6X7M8/p1tUTFAlKlxgNu4+
-	RdMRn973g6hTZFFPDYYtieFQLbbo6RPVnsNJ+dRyeb30BZDJzTY0x3O2mCoBjgAkLlQ3cWxjnz4
-	TrnuZfwY1BGzdCBB45U1Vca/gKNgJjZxms5W7+dOaoN1MXjUvPQA3oARr1YJPiiUEoAVWgDz5J3
-	WLKOmrxSq1WUBNJBgz2UV548k1Co5YzBC03BFktEKD4Y7re2kJLZ8l7vnSgX4e9cldT5lz1m1WG
-	L9vPC4QWbN24/bW21mRTJi3VDDjR2pa4rx2bImrs7kiWIPr0gijcXRtERaq5OvgTuEYTT3UcRKJ
-	GsN+woeiJ7rzJMU89x+QY7kLa/c/QF6taycHIH/gVPOMYeSGBIMYifyyOF9z4fgNUnhZB0ilePe
-	PLoTAkvtgMBiEAizcHSD92jpQlmSGjHkatzZiSq+o5l2ic8WkJ1BD1jF09ItuDEQbCQN2s7LL26
-	VzC4q9iQqLPk+BrkBANrDx8jcu2uaNA4kMSOsqe0IaY
-X-Received: by 2002:a17:903:38c4:b0:2ca:cde5:29c4 with SMTP id d9443c01a7336-2ccea587847mr23958075ad.47.1783517780714;
-        Wed, 08 Jul 2026 06:36:20 -0700 (PDT)
-Received: from mars.local.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d5c804sm28186045ad.82.2026.07.08.06.36.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 06:36:20 -0700 (PDT)
-Date: Wed, 08 Jul 2026 22:36:17 +0900
-Message-ID: <m2h5m9txgu.wl-thehajime@gmail.com>
-From: Hajime Tazaki <thehajime@gmail.com>
-To: ljs@kernel.org
-Cc: geert@linux-m68k.org,
-	akpm@linux-foundation.org,
-	willy@infradead.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
+	t=1783518542;
+	b=Ykf6jMsA3OzcQ466baqEUMZpzAo5VZTzQ6Sk+cjVXWgwLuqMakMRQtbYwGEdX819uB6o8G
+	JTPGyz6U9k7tpalP15Z499pD74WzSo44DeSdN5/y6LHsc43I6IAIc0ZymGh2FZKKa+kbUI
+	DlEC1Af0bo0ecpsdhugRUSkfMIL3Cho=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783518539;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TEGzzoFWcnNWGGmasKpR7vNO3wPHNttV6bHdoJJUeuk=;
+	b=mXbZxdXNK8zwfiH+BaVAX/a14LKht5ZVC+Wv7EwJmNmgfH7LWboOjRCpvZuv44yqZ92n+L
+	HTpOJmwORQJdus2K/nxg2k5sHDV24WBE1jpcCO3Xmgfz/8evz+Zw4qadzjqXk+l1Ie5Dkb
+	HqYuO1oM26W/bUjStsW0rqIMNmJO8nA=
+From: Usama Arif <usama.arif@linux.dev>
+To: Sayali Patil <sayalip@linux.ibm.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	gerg@uclinux.org
-Subject: Re: [PATCH] mm: nommu: point to the write iterator upon split_vma
-In-Reply-To: <ak1PTRH3Ee7XyMAF@lucifer>
-References: <20260702012546.665383-1-thehajime@gmail.com>
-	<20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
-	<aksn5J8Nr0JIsVpQ@casper.infradead.org>
-	<20260705222343.5d5c78cbb54839c5efcaabf5@linux-foundation.org>
-	<CAMuHMdU36O2UqfQkbbgOVSH5KFU-MZ_WO3jRsLumkUu22iC7vQ@mail.gmail.com>
-	<akuS-6zegY2XBa3f@lucifer>
-	<m2o6gktgvk.wl-thehajime@gmail.com>
-	<ak1PTRH3Ee7XyMAF@lucifer>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+	linux-kselftest@vger.kernel.org,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Liam.Howlett@oracle.com,
+	linuxppc-dev@lists.ozlabs.org,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: Re: [PATCH v3 1/3] selftests/mm: handle EINVAL when configuring gigantic hugepages
+Date: Wed,  8 Jul 2026 06:48:50 -0700
+Message-ID: <20260708134851.4153021-1-usama.arif@linux.dev>
+In-Reply-To: <2e3b585cbb30b2fc495dcd49d75de6f6da61861c.1783446924.git.sayalip@linux.ibm.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EC82B18000C
-X-Stat-Signature: izr1tr4d7ynz73fk4wraxn6jburr96yk
-X-HE-Tag: 1783517781-385037
-X-HE-Meta: U2FsdGVkX19Be+sdEtiip3+WxtgVVDWq+Zxbktl3RYeLLB1GgeoO6IC5UvkXvWEAlPtSFwixzYzbqSaO8VkiOS948QFhye/gQVIeUzc230uwBF79DCnXoyLyAYCfpklvXJuo+qKMfLR5J05I+g0/qeSSSqTenCGYvmfJIiuXpekG5NDVgDosu02xKkAznv6iyh9ywfAxnQYYTg5i6k/3s8fz7kTX/PSJ0awfbqTenphjM2zWA2tR7gAyH4eSU/7SWQoJr60IfHce/1QIkBv/IWqsrMccAM8Pu2qcFS7dc5S7PfhjQedzEM6p3D5N+W9jDAkKtlMT9qil7MXDy4qxAgeLd9k06hzgUsKBRNd4v8gmNVom2m7VWNSlkzf7K/YfsQ92trvjR3/qKPw4NZ0PGYGYGVNvzPl4BD6db8bk2PcKVgt4mJ0I43BE5Ylt2tapoVOKeCb3F+M070cEnlAerjHIORRBnFhvBLUmtGDoM37YRc1J7wVcXvlZjLByHYU8i1s9Dd88hJQ/HLNsdJ27E3Z3s93RGrL6wh2aMwBZ60BHEYDHwLHdT8eSAA5pyDUE6fC6qSqesa0nj/yo6gkKYmTMTst3Ef87AUV88hPX+MbULVofHO9jLqEzwcFxnkw1xhFealy7KLjCdnj5RpKndYpvqW+s5V8W82Jw2svrW+YgTzhia1jmxEkAJ4L2c7MlZmM40Q7ulYg9tnNXYveGkLET+pbiHCSxpGuJkdGPlP9KTekBgkiPRdda4p1EetsjBcSAj+IuimLF1H7W3IlTRfRrQIUL3pUDAG4QSMwuLIwpFu3KLm6XecSYvMZgqk0QQkX/38jELQgSvRRINYaFSuLOB/er9QkTAodCU1j3rytehS2FrgJBkc7Q8Vf5Va2d/rLAOv1vdmbk0VrBnDi/3TalXu+/hg0ClPGDhAxRq0BuN/jNNl+V7AdHEwDSzdMme0oyb2ut/jdbm9Ug3A+
- 9gGRfiM7
- UckSFpBVo+SPxlr7HJUNFjcPTTTVs8O6fu10mDVl4c2R7bdbr4YEgphpeff1krNOK8rk8BZ9twXIhzKdlmJMoyhhWujc681slZCecbCzpw1586s9yH5Ig42xHPqKA9gCaowrbWBasneDYg9zoAV40Cf2BcyDlskvN+KOCtpbzKOT3i+GsV1oc64bFYbME6rq2NwgVA5UmrVD6KMBexLgMSvuzQAWMBoVgSeoyFaZM+ZaDEp2cu+AwmVX99t8JARuSpf1mmW0f1FPuO79vITqKuSuXo0JiVzgig2IOuIHnF6eeDXXwSlUTt9n3ugjBQAuwj/akur8tfalxqVsu/ODu5vYQ1Tv1sVmdC7cKdU/B774F5EsFwm2IVBCEbCW9xDkUx6BECUh0basGB7e8rOIBxQALAA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BCF3310000D
+X-Stat-Signature: swswox1o4bh8xq6hpz6e954z8rg7enby
+X-HE-Tag: 1783518541-172865
+X-HE-Meta: U2FsdGVkX18EONQCRPk9Ji/5LQAOVA1IDQms0E3mrq4J5lWV/TYryRVdn3GbjCH0Z14P4gRzYeUS1tDoAofJoVvU+0OjDiw6NsyZLDpeN114UjOdTmJJaBK8Q2EaWmGOZwAvHD9qhbpkQkUratR1QkBiPuUDmxTtouXc6qMru5HvjJ4EhQscwEWeCAwfq5pI9KLAfsGU7pTHQIjPW3r0LJla0qcolOAbUk9R9cWbzTS9tuckWjFbw/F7U+xIegYpD1UmOA3qDpA9t+O1Ddo7Q17Rold4INBnlBVLwFWRMM2lPGMXaMzlDG8/csHmkXABlY4W7bNIisaXsDY6Rv6PK+iLyF3Xqi4pF6QUIxhz8yVnv8PQLR1XiFnAY/Su6+ySLgfn3nB3tqfbKABoaY5pjxyaf+7kjZckYbNotmS9UdAzgQyyg592fwyXsIYfyIC61dUHIeH7ok6jkmSGG53UvTKWIe4dSyFyejntzOVux/s4NbiDxqv7KTylEv6GWSkZtG4L7HXQBhmczWQlYPDrmsFWm1aH+trfFJTNK6WtAqo5N+zOJ9Q9e7HuZPyZvihn9LlklksDSADfF6W8OJ2p2E1VzzIyEGo2b7i7HIL/iU+An3V5s/5g8tEPz74oMaMJ2I/gukdqJtf7RhtifVYWUJ+0EpH51m6lvBrhAa89OlnQpJkKrTYqoVAuVKHUL94l3XI4VJ7TfaIOEzVcZxLILor40Z422x1trXWFvbGJELsRdtRisJnobdFfA2WMpXIpakeM9YkIBNr9r/m42vhNpVm7OncQMpal1A/jEBdFcySUH5/5jzyv1ZYvzGqA1NOjLgraQeEUbBWP1CoBMtZTI+6w3HC4UWySUDU91BfUy2tiIcpDbD4hMgsKWBcpSjSPLR7+mRCNDeO6MwBtwfhneTn86jc2PBoWlBg3yifKmDl3mcaJurfkfM+OjgUIqdt6d62RjEjj463ev2/2Uvv
+ HB/rCY5Q
+ cc5Vu133IayOhnl+fnrz/PP1oPRYAxPzttOqZ/525/hZTYvSqhdjYtiYLF8bz5r1WscOyFk2ZRCS7VbsP4+6Ra4lBwKXHc3V2jRK1mVliKOSrROrT8RxSWNiuMq6UcQdVe4KP6Zmty188fKkM8/EN71YpFx5uZI6IV59xa8pM3LPFqTSqTrriVid1taOBdyDOd9QieihzwXflC2sH8Ygsnbrb8c5fVvc7QNSij8tRwy1C8cKM9CIfX99otySjry2u+AYzQ5cLfPx2TFl1DN8x+xUXaHycfqlUcwVM65iqrr5i66l1c6POImQTnYxXo2jtsZhk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,99 +101,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed,  8 Jul 2026 12:29:05 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
 
-Hello Lorenzo,
+> Some MM selftests attempt to configure the amount of
+> HugeTLB pages of different sizes by writing to nr_hugepages.
+> 
+> PowerPC hash MMU pSeries systems advertise gigantic hugepage sizes
+> but do not support runtime allocation of such pages, writes
+> to the corresponding nr_hugepages file fail with -EINVAL.
+> This causes the test to bail out even though the failure is due
+> to a platform limitation rather than the
+> functionality being tested.
+> 
+> Ignore -EINVAL when configuring nr_hugepages so that tests continue to
+> run on systems where gigantic hugepage allocation is unsupported.
+> 
+> Before patch:
+>    -------------------------
+>    running ./hugetlb-madvise
+>    -------------------------
+>    TAP version 13
+>    1..1
+>      [INFO] detected hugetlb page size: 16777216 KiB
+>      [INFO] detected hugetlb page size: 16384 KiB
+>     ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
+>     Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+>     Bail out! /sys/kernel/mm/hugepages/hugepages-16777216kB/nr_hugepages
+>     write(0) failed: Invalid argument
+>     Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+>     [FAIL]
+> 
+> After patch:
+>    -------------------------
+>    running ./hugetlb-madvise
+>    -------------------------
+>    TAP version 13
+>    1..1
+>     [INFO] detected hugetlb page size: 16777216 KiB
+>     [INFO] detected hugetlb page size: 16384 KiB
+>    ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
+>    Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+>    [PASS]
+> 
+> Fixes: 27477b28b74f ("selftests/mm: hugepage_settings: add APIs to get and set nr_hugepages")
+> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+> ---
+>  .../testing/selftests/mm/hugepage_settings.c  |  2 +-
+>  tools/testing/selftests/mm/vm_util.c          | 26 ++++++++++++++++---
+>  tools/testing/selftests/mm/vm_util.h          |  1 +
+>  3 files changed, 24 insertions(+), 5 deletions(-)
+> 
 
-On Wed, 08 Jul 2026 04:15:53 +0900,
-Lorenzo Stoakes wrote:
-
-> > as nommu started for embedded devices which are not easy to test, I
-> > agree that it is also not easy (in my opinion) to maintain.
-> 
-> Indeed.
-> 
-> >
-> > indeed, buildroot images for nommu targets (with qemu) are available,
-> > but running/testing each of commit to the kernel tree give me more
-> > than 1 hour to rebuild the images (including userspace build with long
-> > flat binary conversion, etc) (which I'm playing under github actions
-> > with riscv-nommu).
-> 
-> I've struggled to even get the buildroot images to work in any way. Right now I
-> don't have a clear nommu test setup other than building nommu_virt_defconfig for
-> riscv.
-> 
-> >
-> > # yes, should use ccache :)
-> 
-> :))
-> 
-> >
-> > one of the goal which I am with nommu UML (*1) is to provide an
-> > environment which can be tested in a simple way; runs on x86
-> > machines.  An extension to UML means that you can also use KUnit
-> > infrastructure.
-> 
-> Yeah.
-> 
-> Well indeed my raising the 'please let us pull this out' was initially a push
-> back on that, because if we were going to pull it then that work would work
-> against it, but then it became clear that that dream wasn't possible.
-> 
-> And that makes your work on that REALLY REALLY USEFUL :) so do cc me and ping me
-> on any respin and I'll try to find time to help.
-
-thanks, will cc from next spin.
-
-> >
-> > LTP (Linux Test Project) dropped the nommu tests 2 years ago (*2)
-> > (which is pity), but the reason is similar: no maintainers appeared
-> > when the project asked.
-> 
-> Yeah and it's just the same thing overall with all of this.
-> 
-> The companies who are apparently dependent on this need to _actually pay people
-> to do some even rudimentary testing_.
-> 
-> nommu.c is co-maintained by me and Liam simply because we have done more to fix
-> issues with it than nearly anybody else recently. It's just a burden that we
-> took on.
-> 
-> I'd far rather see an invested mm person take over if we do indeed have to live
-> with it :)
-> 
-> I also wonder if we couldn't find a way to implement it in a more maintainable
-> way, perhaps as a 'virtual' mmu system somehow?
-> 
-> I simply don't have the bandwidth for that myself, unfortunately.
-
-If you meant that 'a way to implement it in a more maintainable' is
-about the code structure, the current nommu.c is reasonably
-abstracted, which contributes a bit to reduce the maintenance burden.
-
-I thought that what missing is a resource of tests and eyes to look at
-those test results.
-
-I agree that the tests should be done by the people who are using the
-code.  Moreover (and ideally), the code should be maintained by the
-people who're using.
-I think I can help at least the former part.  For the latter part, I
-wish to help as well but I'm still a very immature developer of mm
-subsystem (who struggled with addressing Sashiko reviews...).
-
-> > I wish to be here to improve this situation, both mm/nommu subsystem
-> > and LTP, as well as any !CONFIG_MMU code in kernel tree.  This patch
-> > is actually discovered during LTP (re-)integration with nommu kernel,
-> > which I'm going to propose to LTP.
-> 
-> Your work is appreciated and welcome, thank you! :)
-> 
-> >
-> > I hope this helps a bit.
-> 
-> You're definitely helping here and again, much appreciated!
-
-m(_ _)m
-
--- Hajime
+Acked-by: Usama Arif <usama.arif@linux.dev>
+ 
 
