@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 560B3C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:51:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 883E6C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:52:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BCD96B0092; Wed,  8 Jul 2026 03:51:02 -0400 (EDT)
+	id 6960B6B00A2; Wed,  8 Jul 2026 03:52:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 493AB6B0096; Wed,  8 Jul 2026 03:51:02 -0400 (EDT)
+	id 6454D6B00A3; Wed,  8 Jul 2026 03:52:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 383A36B00A0; Wed,  8 Jul 2026 03:51:02 -0400 (EDT)
+	id 536816B00A4; Wed,  8 Jul 2026 03:52:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 11BA36B0092
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:51:02 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8ED001C3D02
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:51:01 +0000 (UTC)
-X-FDA: 84964838322.07.811A7B8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AD7F6B00A2
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:52:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B08824062B
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:52:43 +0000 (UTC)
+X-FDA: 84964842606.30.B438E4F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A2404140009
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:50:59 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="m/dsYTHV";
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id EAC1DA0002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:52:41 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FnMLMPl+;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783497059;
+	s=arc-20220608; t=1783497162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b1XQkZo2eR7ZM42tf1xDfDsvue3fQhs/RXMdTrjh2OM=;
-	b=Ee/PuZXbgk17pPAFUsCiqD6+P2A1YoBYSW6O7RwB8s9ss7ZC5/7EhNPABSa80sJDwT69/z
-	OmN2N7v2willJdAIUqYIsMropVp3Z13hnmmb5seD1HNL0AnSFp2CkiECpUhaR56qQxCLUy
-	fDB6MdCKBhJ2CjovNIiuB3LoipsaC3c=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="m/dsYTHV";
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=bWtEFlyIBpXMvKiDy1pvoBypm88zNYTkMdGjO/FtoKY=;
+	b=QtwHTsb5Pcv4lpYkZKWwZl7vqVPRV0fWFnDPLwkwp741DPzhUJobPlY6BwSShD5bE76Xzz
+	YHhGYjQ/Gp/SkFvwzinJ4vM7w+VC4j/Zc4isNRTqY8MjrBDH6T0CJRdQPPHU9wFHUbM0MX
+	RXMKBYqv8PiZFeVw+bKCSF5nFFjgtcE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783497059;
-	b=pnLQDIjnbTvrV+32qBRiYjECcmHeCifV6T6CgCY0qQrum5oe/fc+vF4nAAha3cIQHVfzE8
-	0BR4arIpXppBHgQbH5f4Qmkb0/HaVIcXPuxHLrIdd1bQktpm7lte8qZj8lR/gHOAC6LIZR
-	ABWKUPp1mBpJanjmSSSn01jzaun78Gs=
+	t=1783497162;
+	b=HvgvmudswFDwaJv9W5CK7gU+GTIULhm6eOmhM8Ck163973NKwuK0QlnY+iKVHzIfe/QBGG
+	iGw9q9tarh5lBlRMHmRgIneyIdPKfiKgIkBt0Z2/UQkLN7eadPpSmsqFL01qX+aj55mNOv
+	hZtL2PBLDJPi/eDWqdMxptlJrTRhLyY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FnMLMPl+;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DCE4141B23;
-	Wed,  8 Jul 2026 07:50:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3F11F00A3D;
-	Wed,  8 Jul 2026 07:50:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1953242E89;
+	Wed,  8 Jul 2026 07:52:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A7E1F000E9;
+	Wed,  8 Jul 2026 07:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783497058;
-	bh=b1XQkZo2eR7ZM42tf1xDfDsvue3fQhs/RXMdTrjh2OM=;
+	s=k20260515; t=1783497161;
+	bh=bWtEFlyIBpXMvKiDy1pvoBypm88zNYTkMdGjO/FtoKY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=m/dsYTHVHuIvELsx8PPNfFFI5J7f0fJ5q48N89vKvt1BK7Lwil/6XCJJUw61F/WL3
-	 u8dXmp4kqrkNDUyVgGMxCzeQpv01gqoOVZrQXkcorNJl7HrwfWWQoYXD74ycQtuwU5
-	 ZYeLImtZ4oLH8ZYhrdFwQsL7mKe3rPsNKVsMF/+xC0ikE1uxE1aDW1LF/6gLMroriM
-	 QM0PDcfDNkgNLVMyn/If/6RtfZ2mvuL/5rcO11s3CgZmgvpIKuUTLxNieCS9vE1qp/
-	 XIEoxCL/QIRSDgYLRNIPq7NT7RVh4ZMzmhzCq4M7jieE5xKxm8DsZGCvyEOVRluDN8
-	 tMJAaOTiXq4bA==
-Message-ID: <79ab5b36-c9a3-4af4-b9ba-7fa883cc5323@kernel.org>
-Date: Wed, 8 Jul 2026 09:50:55 +0200
+	b=FnMLMPl+it7PS4Stb8ZECCtFTf5XbRZwfJtYsrRc7MXssz/cfKIqDNiEIQrRPMw+n
+	 oM0NmaftDSDUNHJ6JkTOlNLiJm0jVfyEaUx/0ViqTHJ7w5sbNxztzbhBDyWzgtfHIA
+	 mLOC+5nNOwAp25pb6cwkXnNRS4E87uWIbHNARD7v6j5mRu3hIEofBEObKyB2wjZUMN
+	 1i3w5XgBcQlEKAe6AWxs6qtrrZhoDCZle3FXR2wkuQw+zn/dnIpsaMS0HAPHRb5vr5
+	 1F/ZGYmhBJdh/N8/iW2bxz2zPA0ILyVcOMxshVcHNWR1FNhF/HJZT7gND8C18mdiLs
+	 IMuAVEAEwMW0g==
+Message-ID: <bd190dd0-fbe5-4772-aa7a-a4ffd2c925b6@kernel.org>
+Date: Wed, 8 Jul 2026 09:52:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/ksm: Initialize the addr only once in
- collect_procs_ksm
+Subject: Re: [PATCH RESEND 2/2] mm/ksm: Use precise linear_page_index instead
+ of the whole address space
 To: xu.xin16@zte.com.cn, akpm@linux-foundation.org, chengming.zhou@linux.dev
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <202607081219094603lvrfl0HWd-31cAGrp79l@zte.com.cn>
+References: <20260708122218298hWVcT2XtcT3UnK0QdTwuA@zte.com.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <202607081219094603lvrfl0HWd-31cAGrp79l@zte.com.cn>
+In-Reply-To: <20260708122218298hWVcT2XtcT3UnK0QdTwuA@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A2404140009
-X-Stat-Signature: 38izajatewrqz9z5r85guay6h5kmbsr7
-X-HE-Tag: 1783497059-348230
-X-HE-Meta: U2FsdGVkX19JQfwsBxWrwcjQ6HDFUWqZ7GcJQDeWks55gVAGFDBevf/X+b1/cjHWzzQ6c8O2CSW8R4nE6trmgC+kqlPymRn8G5cJwX4fFsUwR9S6A/C7qOv+qCtZu9tRVrHCZGh5PGuG+0i8VkitA67+p2z1cGQ0Ue3970WttYL1BsSRxs1JbdRbIVuOuNuLlG1HnyS79+MaUBl/zosXLyIrGO4o4Prok+gKyGhZER66QHmhOo8iqbPw2vButfbjBR/ULsgSENrL0oQfnLVFKXp3PlF4cXgH0YN/PtpoaK8ScAE4ueAILXIUI+fRZSsuxESSCASXG/5KXu6BzBtR6HdTVJKJv9BTOY1YucORmLf94Iqv1Fm4s92sjE8uijn/4+NzIVmbf/hx46noGpmZrcnxH6kIrW9o40p3gp42/kEA5gdGgv2Df8IwiQd2GGcgixN3xZJaORuoFvj9oJi0r97ayjMHO3sfZbB7xvyokwP4wE4Pq+nko2SNE5yhYgUCXIQsOMb/qk6wA0/yaMHgdFIM92Dhx7cwWlAnShTX3XrlOWsHdjmd+6GPpEKJYZBq0oWXIWiY371N78DVuGRLpXJVk/nNJNJqpKmmNZTTJVhXlmy9hdfAqDxuqQ4f6lzFUDC2u+opQEuwkYDiIeuBGej3qUXeXcSBd+267i2M3lecukNS91fJmcF3RElIxRy3ZBR2WrEBxoNjI9AmQDEvDPQ7AwgBBs34w3SioqTbzLii7nzW5pPyzD3f2FydFXyoPALtwureZV5iNeaGOt1C4vC8FhkCOPCTLJOH1f2yi2mdZPKgcECh9a1JVdMzzfSEXa/tRDfbV24QeJaiKEbewszKkvpAR+LUZrlS72uveKdB3BGlPvSm7s85Hw14xnhS2ANaJhAw8Qxod9CbLgvFSawKspgB742yUdIotxl47K87uHeTytLdPo5fE3EKcy0lrZ3tJCgX4MhveD+O9nb
- E3AmbZb8
- yFox9/Dix3sDBchb2dYxdkA32eR8VK6JF/v+52bA5yPA2Bhe4cubpFG2AYP8kVAofmy9cpyvL7ZJ5QKWlOzoDyG7twwbifUudqMCxpmXC29Fj+lGxFWtRhGr4ukmvKfAMsIQNPcKSwW3RlVa2vGb9LPN5iKnbzzuiX3rBFwSh9dhGCAbse0aznW6LqeC5mgPrUo3d2A9TwZFPaqt/Dh559Z3Tb3j0q1amterLJ2QLhDJGGHIxAh+REc2Bm3+bfiZBYEEMRFadydM0+m6Eme9aFk/aMmqhK53h2LR/oznkschTYgBwbdaB0l8i2qsKrPjRcsC6zUIag87TqpO/YGegQGW0A041Mk0FTaoRE5CVcV/H3ATaQdiJoJ8cI5IRqB0J9gfF8O6LHh4MCYo3hSA2858FnCt4ph+9+xQPlAUQlARmEhQHukP5Ndwp1TKIo9kRQTVu
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EAC1DA0002
+X-Stat-Signature: fwtjgsxk4o3ynyuzi7jhk9uq79izku7o
+X-HE-Tag: 1783497161-821891
+X-HE-Meta: U2FsdGVkX19mKjkjeizyPfii00dreVKUOLQ+alRhPwl8K+pEBRrbSDiFGwUsJ9hFf1h7VelP8o/nIIueoXvQB/z0P46P0eNrw1xBakBoVGbhv4x98q2+JO3eb6kqKLhY+2gq657jZUv5wzEbkPynSB6PcChJiD8+t+SL+eYWmXuy1QMHMn2S7wYEn17+yThwSONDUAYk3+37HS+ldS3g+HQ092PPaNj9TN1AFf/weaWBvb3g2sJbNQRx9acS2LYWDnpTzdWnUIJbgsKNCrG3IpR0Qgli8I7cxgPi8E2PdYBueEMmoVX1LGUKGrnddVDIsr6BF5BfVGzckVPiVZDprQAwIytrzj2iuaNtYn0lrkvOaljYQteD2PsgZbjeM5J38eCumFHZ7OmUI12/7yifK94w0c5l8QgnjMuK4iphALkLjUwIkG8amyPxRho2l/cTWiskEJSuzs/LWQGy4efNNfAEr425deu6w7rNEee8Jsb16bRkUHwRMaMx8GXzm8t5m1+/EcQCvAk02o/1NdMbD0Euazo0c3zmtgzTWZ6A1UvFhss7D9eLoJodmt6C7Wcr9aK5WtptJvpeccXUeIxjK+3Q2Nw5Jy948r4/4PVZH6+XNSvZpdTwJCMvL6AbCJ3zOR0mmCXCNOEfYsd2ZcVs1g8qXd65NGvu0OF90yM6FnFexLVawgDBI6J8tCjjPZJaAylsPRgNunNUV391ZUcxWdXhaAAnxxIHK/YWq33RBe0GZKif6cXISMNP+QKQoAUABGUYEed77Ba+LLrR5KFSKUC0Y8/IdD6B8UWZCPO9ixaUDh244fJdFHRSjtmpTUtsJ5jLjiR9r44goNjC0fCV+astFWnuqHIdRvItpi3iVZ0TpnHJjAPmW7qBJNCJYTl/IlTJGKudtMFqMQbTaqPHfDp2Ztw3xCEKAo74jDmpdMmsOt6X/K+8Mwt/3ur2lqyP59mC1IlTTchkISTB9jK
+ o9ZRfbQ4
+ ZNy7U/4JUQUWADJSXqCxpx8BpC7rvAIV6NRad+34paQWWo6pp3sZJuioIwPTCitNZ+peE+Yk8RBny80KB/Tw2ad+1lWnApgSlTSGmCj2XXT+VwzjWxzfvuyxUaJ0SLT9zWwwW7m6bjU1wXteANjFj3Mmtcm3Gu57HptABSXT3cHFOMDULfLyox9doAUMwaHZ+DqMokdaIcAEWCAsbPc7Ydt5+CKswjew/Z3zOq8FbmGH8NIvfSbOao95JPFE96Zp+rTkpp2tgPpVjDHfov11rYrPxhEZPMMBRR93SJH/AbhuGS0pO6acooI8wmTbUBoBQEhRMqqYrLVI7mqpfEsGQkQUkNqdFt6FbZ/IxazYj6U2ePQo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,17 +137,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/8/26 06:19, xu.xin16@zte.com.cn wrote:
+On 7/8/26 06:22, xu.xin16@zte.com.cn wrote:
 > From: xu xin <xu.xin16@zte.com.cn>
 > 
-> Similar with 318d87b8fa7 ("ksm: initialize the addr only once in rmap_walk_ksm"),
-> Only initialize the addr only once in rmap_walk_ksm because the addr variable
-> doesn't change across iterations.
-> 
-> Signed-off-by: Xu Xin <xu.xin16@zte.com>
-> ---
+> Since an earlier commit introduced the linear_page_index to struct
+> ksm_rmap_item[1], allowing for optimizing the RMAP walk, we can use it
+> to locate more precisely all processes that hit the KSM page, which will
+> decrease a lot of unvalid iterations.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+It's awkward to reference a commit by a mailing list link. The other patch is
+not upstream yet. Best to wait for that to go in first, so you can properly
+reference the commit.
 
 -- 
 Cheers,
