@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1BBC44501
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:54:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82905C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:54:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D48206B008C; Wed,  8 Jul 2026 09:54:07 -0400 (EDT)
+	id 840A26B0093; Wed,  8 Jul 2026 09:54:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF9006B0092; Wed,  8 Jul 2026 09:54:07 -0400 (EDT)
+	id 72C846B0095; Wed,  8 Jul 2026 09:54:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C35FD6B0093; Wed,  8 Jul 2026 09:54:07 -0400 (EDT)
+	id 558B76B0096; Wed,  8 Jul 2026 09:54:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F9B06B0092
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:54:07 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 256996B0092
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:54:08 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 224E8C04DF
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BE43892F7
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:54:07 +0000 (UTC)
-X-FDA: 84965753334.22.5A4C122
+X-FDA: 84965753334.22.3949556
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8D58520009
+	by imf10.hostedemail.com (Postfix) with ESMTP id E7711C0006
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:54:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIpsp811;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lf6kEsmS;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783518845;
+	b=Zbmw8t+T4JzhdAwIsL1GtSvbaZZ4YjAuAQ7O5+tZ0mW1Uh2q4U4iv0OFyTZVHww9/iWQ8R
+	Hl/8d73pfZ4+N3H66ggX678IsEllubJkc7dPqla21Nua0/PksVPG1jmN4SuBZrdkAkyweF
+	q6L6Eyr1DEHUdBH6c3M4clZTZT9C4jA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lf6kEsmS;
+	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783518845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JCC9FMAOFAsuAQp9u1XHHxd8HHnGHTKjPJp30Yo3v74=;
-	b=u9ZW/oCWFZZHhErwSCrab5EV2KYJDc756k3owUFby2knlA/osUffOKFM/R5K+RHcsRPdzL
-	6qRnZwpjgXN6QmPAqEo+Jije/0l4Z30rdrwBf38Aasg6a9odR7Yh7WpGQy30pzrzYg3oV2
-	qLjjfDIC4Q2IJn3dYDo7O689JzdRXU0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MIpsp811;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783518845;
-	b=aFKslEicJwXCXw3bkFGRFRT9URa8o5RlqBs5hYPmtBk/x4o05bK0MBcfRmhf6T9/7ZANhd
-	RH5Bi6ucONlMEOdC+9r0qH9ZL0YhzR2Y+MMi0TFad2E+BlufYx7452TFOMiCYxtZnRcLXw
-	uvKj4UrLPj1H4rrYLKrq5vUHqbHDi54=
+	bh=mTeI5Dbt+ALLrinCjjWwHybLZIRmQonrPoimOF6qJBY=;
+	b=wgfGgVbWN/ij3agguiC51FZR2nZgEs3G3lMdKQx5IO/OJ5JDVP8LLjPuSVwkt55EnERgss
+	9Dournsij/lk/sd9V4d2y48O5BIqlB1xEdgq86hvaAldTn8naT2SCCphIX1oLYQCkqEOzg
+	lMGL51FyPsN+CAXXOTyiFfDh/t8xKe8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1FD646001D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 820266001A;
 	Wed,  8 Jul 2026 13:54:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A831F00A3D;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAE51F00A3A;
 	Wed,  8 Jul 2026 13:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783518844;
-	bh=JCC9FMAOFAsuAQp9u1XHHxd8HHnGHTKjPJp30Yo3v74=;
+	s=k20260515; t=1783518845;
+	bh=mTeI5Dbt+ALLrinCjjWwHybLZIRmQonrPoimOF6qJBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MIpsp811cUjkjWYr4smf0LDaEVsHjkLVNw6d3l9DZt+KvbYTyUTWZGGlf+awyll2v
-	 wFpiKYWCEMtusCJRIa9ZbbZBq/1EDYsohHL8Iv0gtRTAaPjn81L8yt+GT/amzFq2pd
-	 uxXNdZK15RCQbm/3k1yQBb9fz4yk1YoeeS7OB6FtQn7kV0ID4DNfOwipsB/4SYS+is
-	 siKdLjhaGtkBOO55wbg1Fb7CLaswMJ1bs08MRoHaarXqnErSLoQNYwgGlmJo/ovlBr
-	 Jz3inmBDWiwaT5zgPmvEXJnBpw7SGz3ccT8mbNc2hUDsmiO5qL1hxVsSkM3RaHyNWi
-	 cw4SfHnhMBOLg==
+	b=Lf6kEsmSr9mS1Ao8BNaCRDvYa6F1wSAzUqgTOv7PcASjgzndRIU0GWHqXzIxoygok
+	 aOMZQ/L12Dm1dHUUSy1cGqIZ0Ul066NCOfbBdTPs5WquYn/VJ1XugiDoC+EZRjkA3P
+	 ToJrv1DwMGpwe7R+PL9nsewFk4BPXGSZJdDrb7GwVZuBuvlZbsKFZ5WJjcsF75lMsP
+	 P+u90EuH8WD9hPOEtUBZ2xRl6kSR6ysd9g4XuKCyxoZutuw4W21PDNsJ2hThMXq01t
+	 Ol5y+ZJTrl7EGsBT+IA2JIy5/dvsXFXtfPyb5rxXkzYZ+GJNWEd2SusSONpvqqql8N
+	 oh6txPeeLXVSA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/7] mm/damon/core: remove comment and test for nr_to_bp() divide-by-zero
-Date: Wed,  8 Jul 2026 06:53:51 -0700
-Message-ID: <20260708135359.122587-2-sj@kernel.org>
+Subject: [PATCH 2/7] mm/damon/core: s/damon_max_nr_accesses()/damon_nr_samples_per_aggr()/
+Date: Wed,  8 Jul 2026 06:53:52 -0700
+Message-ID: <20260708135359.122587-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260708135359.122587-1-sj@kernel.org>
 References: <20260708135359.122587-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8D58520009
-X-Stat-Signature: zemk8fqaxxz9wpg6n9mozawt5rntj5tc
 X-Rspam-User: 
-X-HE-Tag: 1783518845-388784
-X-HE-Meta: U2FsdGVkX1+NtrYIrk2QB0op11nWKC/dBYfc6zyTKxUevU77ROQN7+ielm65OZfOMdXj2yVFC3fFCDVWTwlVkCONkRhjkDq5xM1J+y8w8ASaFDhtRWSr2iU8tR1hkMWohR61bWDFVpkyE5Hqip62k9yeAfjarvb1YNOLLboGwSsR128Rvp+7t5365xX1qP2+GopwkgBCBm/b42jeGYJ04e4C4WzeQ7gogWeOlqKIIBu/FxsrhmeFKjLgONmU0xI+id2RX8r4zZW/rZZOp3kcq305uJADbp6ckVyFRK7t2I++ePFA+IyjwPOaSk88g3/PolA5vfTj+D15hj/bHhOagb/WipkEHJBjYSofT9jRrDM8+VHC5mwPl+o7jmWQ3kPROkZjIQyYll804oqEIQsHBHZWEMGfAWpZF9k1emNh1/zwZOfUE+WKYppnob1PFzUApUoXrjjgbDRyGWpOzfwF8R9ZpaK4vKP0NHXR2SW2OGRyzB8P0BpuGVk/e/tClB7XiQWo0IErG43cBSHX7mYldFUwiSwFSm7O1ESQZw9zbFocc8QcPqTlrFla7Zcc7B0yrmTWE4ZGa+WO6h5f7nuEdg8tFzbCJ8nI+phrkpRJ51QKJzP5NLUKkZ6VOlB2R+Tm1Mrp8ZIWZcCrGwVlYp/+b8dbqZPFaQ9hR9bmdgfVWM+geYb4pXPq+3eauRwTa2Sd2uY5i0/EnXupVdE2ZM1EdYC8uy/ZpHB8CcTqqOB+jKvpy0UZHBlfO4nmGbMtDZdYAofynsQjW3nCFvbwOtt+TBRi8HUeeR5pPnDvz5f1lFpToS31lXwp/qimpnDt4qj+fHCr1Rq8u8As/xitUIfr+KzVmFxZcAiSkunBiXjL8/zlBEwDdYGV0jMzs2VwxUPe6Tv8f4ihpCO0Ti9/LU+rxIde0qLyYRMIuL80e0740/7G77c8HTcLKJwbgG8TMT5tJMIAW3RKLDp2MJ6JbqM
- 3TnDhBT4
- KPVZmtT7EG62qbBCLiPU3TQZY+0OQKjSB/HtA2SFzirIcao6cid1mg/FP8wunQGs7F0LSk38hkRitZtYnN9pxdr6juLv69HBaO6GcI1F3ihhT3uiItYOhJMIgCbM7+b+JPO0/KTYzRmhH1djF1Ja99VVEr5kwLbahtngV3cjlOZMU3bf2qKXNxMwY9iWME86aiJl0kqubufsuFAECrZGGvLWhYg3iXXntWr01HAqiUxepwIY3OzfJNcZBXkPPHeMVMFqSqJ6k2mb3DOt6jG7RXiP9Kg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E7711C0006
+X-Stat-Signature: bpfenec18fwmkewhq9n15dgkknohrprh
+X-HE-Tag: 1783518845-234758
+X-HE-Meta: U2FsdGVkX1+BJVI+nauInCk0ob7zN7WzYwO42jim4Rvp1Hrk6LqxqTeDQFnQdeVvXWArSNedR9I4l6MHsC5QiTpX23HSlA6RvhWg9qk6yqIu0OUq2iXO5vY1xyf0Z/x9oLuulhxKTOBdI2Wvq4zlJbPA7ynhXfMyPFOc396aMkJQ+Lv841q7ouvmnVA0+1yCx0zw+6g6pGskmqceFRE+R9kB/kVzcnCJEno2TFD1ADIi7ENqSXPskAWn+BN9I/xkCbZvid+FYxeEkd3Ze398yJFQEGmTPIJrbT+0qLBBGnKYguXkPwkf0RGvSMsEG9Hxgg5y3RHG/1Jt6TjmCl5GXKSJmq8cELfjBerHAQkbAk9J/KnZ+7p38PuOHfnr/e1kR+Vjy4B+cxlzk/9vtjbrkCaBR67M5Ap7P1L0tLEreI3cCLCzHnR7rNW7dH2RbrYBIwkqE6DEEWGeNrJWi2S9HBfYVdaQMbxdnupueSDXh6DeaKAeveepnwnp5eRCnYcu217Yd5iOiGNIiEpaLefAPDgy3bXPfWFGNQgQ35weQE0n8NLE26mY1vM4KS9LhmFnLI5e7cCjkw7mfXmam1vGSFIaHQMsGUn8sGfEhriWwVrimxINWDOgdh/ccnVvEQtmhMItuwOKrsK72J54TZ+R1QCxocxPN512Tn8W3vJAfk4QPwpGrr6ki+mKhP1CobIcp49cSVPpXK0vcV04GVbA83Pyh8TtGMMqqT0csbaqJNU0vJCYtadfDH9h3nxtn6hzzjX9ecMrdDIOYx3cBFo1lZr8sbeSEPZsXmFD1ER9oObgPGgidO9fqGunOk/x2WogRM7DmIfLz78BjkVY8RCc0EZrQ2EuTZcocb1ARizJBtuHTaAsAZQmLpRfTF6WNcF3xehr4FGWwdYqpWp4VtiBWGgiO/VKsNhD+b+zWK8eBoB4q45LecfaIrGFnJP9CpRq9bYZ5exirYgNQLRBOAO
+ n35xhu3/
+ Q1sEmuB05qihjdCH+qaavod4NV29TK++4dzk5+7Lvsgt7FyyKYasej0TbfN1GeVuoPoePF73tS+CPb62cCciXFqBo7LaSPLMJPIcm+tss0nqRDE8kI77hGzmSQeZAgVeTZ3o5zWBz9R8t2GBNwGb/cxEjoWJ8+wb+9I4gzCWswGeO7U20xD6ZJslxPkQSlrJPb37HDWfyW5tB7L7kO3k4NGYinjDURUlMaCyLdF39TMnjIm0Qjm2Go3M2zUTzm4jrGB86cVqKaKauHOerimX6DLzZPistuWQnsvXqhylN8nvT+CnVfims8UO084Pdr6mjkVLkvnJZVnFT+MgUhfEPk3ENRM8y2mU/LeGN6kAGF5BLqp0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,82 +92,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The comments on damon_nr_accesses_to_accesses_bp() and its unit test
-warn it can trigger division-by-zero when the aggregation interval is
-zero.  Commit 35d4a3cf70a8 ("mm/damon/ops-common: handle extreme
-intervals in damon_hot_score()") modified damon_nr_samples_per_aggr() to
-always return non-zero.  Hence no division-by-zero of the note can
-happen.  Remove the obsolete comment on the function.  The test code was
-written to test the division-by-zero case, which cannot happen anymore.
-Having it makes no sense.  Entirely remove the test code and its
-comment.
+damon_max_nr_accesses() actually returns the number of samples DAMON
+checks for each region per each aggregation interval.  Rename it to
+better describe what it really does and not confusing for more general
+uses.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c             |  8 +-------
- mm/damon/tests/core-kunit.h | 23 -----------------------
- 2 files changed, 1 insertion(+), 30 deletions(-)
+ include/linux/damon.h | 10 ++++++----
+ mm/damon/core.c       |  4 ++--
+ mm/damon/lru_sort.c   |  2 +-
+ mm/damon/ops-common.c |  2 +-
+ 4 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 390e00b3685ef..a15005db82899 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -883,13 +883,7 @@ static unsigned int damon_accesses_bp_to_nr_accesses(
- 	return accesses_bp * damon_max_nr_accesses(attrs) / 10000;
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 19b7e839bde0b..63f596957c1f1 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -1056,15 +1056,17 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
+ 	return ctx->ops.id == DAMON_OPS_VADDR || ctx->ops.id == DAMON_OPS_FVADDR;
  }
  
--/*
-- * Convert nr_accesses to access ratio in bp (per 10,000).
-- *
-- * Callers should ensure attrs.aggr_interval is not zero, like
-- * damon_update_monitoring_results() does .  Otherwise, divide-by-zero would
-- * happen.
-- */
-+/* Convert nr_accesses to access ratio in bp (per 10,000) */
+-static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
++/* Returns number of samples per aggregation interval */
++static inline unsigned int damon_nr_samples_per_aggr(
++		const struct damon_attrs *attrs)
+ {
+ 	unsigned long sample_interval;
+-	unsigned long max_nr_accesses;
++	unsigned long nr_samples;
+ 
+ 	sample_interval = attrs->sample_interval ? : 1;
+-	max_nr_accesses = min(attrs->aggr_interval / sample_interval,
++	nr_samples = min(attrs->aggr_interval / sample_interval,
+ 			(unsigned long)UINT_MAX);
+-	return max_nr_accesses ? : 1;
++	return nr_samples ? : 1;
+ }
+ 
+ 
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index a15005db82899..177e5abc981ef 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -880,14 +880,14 @@ static unsigned int damon_age_for_new_attrs(unsigned int age,
+ static unsigned int damon_accesses_bp_to_nr_accesses(
+ 		unsigned int accesses_bp, struct damon_attrs *attrs)
+ {
+-	return accesses_bp * damon_max_nr_accesses(attrs) / 10000;
++	return accesses_bp * damon_nr_samples_per_aggr(attrs) / 10000;
+ }
+ 
+ /* Convert nr_accesses to access ratio in bp (per 10,000) */
  static unsigned int damon_nr_accesses_to_accesses_bp(
  		unsigned int nr_accesses, struct damon_attrs *attrs)
  {
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 0124f83b39b83..278d46632eff4 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -575,28 +575,6 @@ static void damon_test_set_regions(struct kunit *test)
- 			}, 3);
+-	return mult_frac(nr_accesses, 10000, damon_max_nr_accesses(attrs));
++	return mult_frac(nr_accesses, 10000, damon_nr_samples_per_aggr(attrs));
  }
  
--static void damon_test_nr_accesses_to_accesses_bp(struct kunit *test)
--{
--	struct damon_attrs attrs = {
--		.sample_interval = 10,
--		.aggr_interval = ((unsigned long)UINT_MAX + 1) * 10
--	};
--
--	/*
--	 * In some cases such as 32bit architectures where UINT_MAX is
--	 * ULONG_MAX, attrs.aggr_interval becomes zero.  Calling
--	 * damon_nr_accesses_to_accesses_bp() in the case will cause
--	 * divide-by-zero.  Such case is prohibited in normal execution since
--	 * the caution is documented on the comment for the function, and
--	 * damon_update_monitoring_results() does the check.  Skip the test in
--	 * the case.
--	 */
--	if (!attrs.aggr_interval)
--		kunit_skip(test, "aggr_interval is zero.");
--
--	KUNIT_EXPECT_EQ(test, damon_nr_accesses_to_accesses_bp(123, &attrs), 0);
--}
--
- static void damon_test_update_monitoring_result(struct kunit *test)
- {
- 	struct damon_attrs old_attrs = {
-@@ -1572,7 +1550,6 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_split_above_half_progresses),
- 	KUNIT_CASE(damon_test_ops_registration),
- 	KUNIT_CASE(damon_test_set_regions),
--	KUNIT_CASE(damon_test_nr_accesses_to_accesses_bp),
- 	KUNIT_CASE(damon_test_update_monitoring_result),
- 	KUNIT_CASE(damon_test_set_attrs),
- 	KUNIT_CASE(damon_test_mvsum),
+ static unsigned int damon_nr_accesses_for_new_attrs(unsigned int nr_accesses,
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index e8c389ad3226f..7e077084cb03a 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -303,7 +303,7 @@ static int damon_lru_sort_apply_parameters(void)
+ 		goto out;
+ 
+ 	err = -ENOMEM;
+-	hot_thres = damon_max_nr_accesses(&attrs) *
++	hot_thres = damon_nr_samples_per_aggr(&attrs) *
+ 		hot_thres_access_freq / 1000;
+ 	hot_scheme = damon_lru_sort_new_hot_scheme(hot_thres);
+ 	if (!hot_scheme)
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 6bdd1cfd3863a..89c694f6e4fa8 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -112,7 +112,7 @@ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 	int hotness;
+ 
+ 	freq_subscore = r->nr_accesses * DAMON_MAX_SUBSCORE /
+-		damon_max_nr_accesses(&c->attrs);
++		damon_nr_samples_per_aggr(&c->attrs);
+ 
+ 	age_in_sec = (unsigned long)r->age * c->attrs.aggr_interval / 1000000;
+ 	if (age_in_sec)
 -- 
 2.47.3
 
