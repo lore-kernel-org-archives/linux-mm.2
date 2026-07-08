@@ -4,87 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B642C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:54:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0399EC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:55:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 706D96B0098; Wed,  8 Jul 2026 09:54:10 -0400 (EDT)
+	id E0F3B6B00A5; Wed,  8 Jul 2026 09:55:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DE966B0099; Wed,  8 Jul 2026 09:54:10 -0400 (EDT)
+	id DE7716B00A6; Wed,  8 Jul 2026 09:55:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A6016B009D; Wed,  8 Jul 2026 09:54:10 -0400 (EDT)
+	id D005D6B00A7; Wed,  8 Jul 2026 09:55:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 336C96B0099
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:54:10 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE591167485
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:54:09 +0000 (UTC)
-X-FDA: 84965753418.30.C61D1BA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 216C914000E
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:54:08 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="S/nLD9o/";
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783518848;
-	b=OnHf7D2MnFIADtEqlQvnTeEHaWb4BRmP1Cp9XtXgJtcaRsvwuXvCf3gAFqMwHRth9OVcgd
-	iL2sSNfP0fkzJgixUBTD+MFvyZ1CYMAR4WmOJwIDqZX3ItMJcdQ7KOCufFBoSNEnaoMtIV
-	nJrwO7/Ld5UtswtV6dsJec6FmX0f+6g=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="S/nLD9o/";
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ABE226B00A5
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:55:28 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E31A4016A
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:55:28 +0000 (UTC)
+X-FDA: 84965756736.04.5869541
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 67CC440007
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:55:26 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ApkfZAPe;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783518848;
+	s=arc-20220608; t=1783518926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FjsCU14SCNwzNXGXZ9ta5DksRZeNC0xj5z1tjd9bQ8A=;
-	b=um/PGeHM2RbMTkUHac2dM8e2SB9g/Xj9R1SVCPsD8f/0zwd8oZg1znC0O+h3r63H2WFPac
-	cuQmdrNj2Aq7oLDtk58zkdA2MuGQ5TqqdhzFm0WmAOxXxQqeeCV5LAF2d0nrH8CeaD1+O6
-	99hGkM0l03IA4BoPNlXzNwrkN1misNs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7753141E91;
-	Wed,  8 Jul 2026 13:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDD91F00ADB;
-	Wed,  8 Jul 2026 13:54:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783518847;
-	bh=FjsCU14SCNwzNXGXZ9ta5DksRZeNC0xj5z1tjd9bQ8A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S/nLD9o/Qjh5tLPHZqt1VNLZ0pYci7WKgWei0fOiiIL7v1uDHsi+1JOGmXBNrP8yb
-	 Qor5+oDR4q2k7eAAeiKqlYmxFX/4KaYFrj3khAxKzgyMXpGgjxZ4oXkYd9xJ11f7NU
-	 pbON4T27mUBQPijrP08XfiB3jzxwCUOejAyzlTgeOB2Avlq7BAyjHDOpmXETx1reCb
-	 Ihj58yCh7axxdgD/EsifvO694uENNrVq4k4zNTLOFgJyKDiHKFmMQE8duZNSHk3B8K
-	 gcD5fkpWvgwD/64QMNhyE6rp90INaypFchsMXJlWgP1omWbfeWjhXZ1hYUK5FHx3Jr
-	 V2k1nP6Z0/W6Q==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
+	bh=DumeYOm4RAsOVh0uQBPFbd4lfQ35Js58LdeDgME4iC8=;
+	b=MEYtt+/zAByDf0Ncxb3lzuY5NOUyA35Ti5NvgGpZh8C0Fc5VnM/IqSPFofm+DfIZ9CSoFg
+	L8l1WWR3TE1tz4UNMsmIfknVhkgi0r8asus9Uw9IUC+XP99/sPmJ/2cSahrK3gWmoxOPWu
+	JAma7/qTiieezlx+AK5C+b00CFsfkY0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ApkfZAPe;
+	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783518926;
+	b=BTgwjpDxVuz7s4Mnm1Ww7ey+WPV6UF3nOzQAB0oCuByYeHQ44Yzz+ZuNl70UtNuin/lKcj
+	H60TSu0E/jduxUERIWcNPwS6KtdA6YT8e+kXHNpeR7k1XTwctIO46JEP5xtVxWLyxRDmZ5
+	ja+cmw3xeehwl6LLFOwuc9ClezRQKCw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783518924;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DumeYOm4RAsOVh0uQBPFbd4lfQ35Js58LdeDgME4iC8=;
+	b=ApkfZAPexPaSLNtsfl42DBx1qyChc5EO2KpX8eeuck2SebANu8tOXOMCQ1T+/zOIgmk5bY
+	4ee5xmFvzYgajiV3YeMtkSbdFKoo1DTlJed8IyOX2toProdSQ1KS5WwncTjvJLWvf3O0wz
+	lP4gXygReDf/aARZ4m/KTneai1EYZ3A=
+From: Usama Arif <usama.arif@linux.dev>
+To: Sayali Patil <sayalip@linux.ibm.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 7/7] mm/damon/core: handle unreset probe_hits in probe_hits_mvsum()
-Date: Wed,  8 Jul 2026 06:53:57 -0700
-Message-ID: <20260708135359.122587-8-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260708135359.122587-1-sj@kernel.org>
-References: <20260708135359.122587-1-sj@kernel.org>
+	linux-kselftest@vger.kernel.org,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Liam.Howlett@oracle.com,
+	linuxppc-dev@lists.ozlabs.org,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: Re: [PATCH v3 2/3] selftests/mm: fix ksm NUMA merge test for systems with memoryless NUMA nodes
+Date: Wed,  8 Jul 2026 06:55:02 -0700
+Message-ID: <20260708135503.180169-1-usama.arif@linux.dev>
+In-Reply-To: <78a3b0e3fb94004c0710872c5bab6f7381b7d63c.1783446924.git.sayalip@linux.ibm.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: bj3dcqp7mjbwer4hznijtskotbuf6pum
+X-Rspamd-Queue-Id: 67CC440007
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 216C914000E
-X-Stat-Signature: jbnaj95pr8ncx8rjunu89ssu3dhyezcr
-X-HE-Tag: 1783518848-415625
-X-HE-Meta: U2FsdGVkX18xZVB2FNiAMpDmTosgLoo9eNA1Zc+k+eNGBi4w5WIyHZw39Itolsq8EzYFra2K8086KwsEjEX6NQ0O7tDRtAKo+Y3baDPEQuj/fMSENONOkNvqOk+goBWg8nWiaHkOoI4F12YougRyKC7OVJOFsvS5w0I9os+StbElKwdjKkoJQgYddYac4Ircr5Sy7hdRDch+RMS+Exl+r1scaN5GKMIkB+CfOMkIDBRX/wlFlfHX7koNCFORyK6fx0e4T6suNjlsU3IGO7xyDICPemCgL++OC7OQbofOd6kPqQQz8TadnK0xOR4l34eNQIdNDx+xGxKrFwTaNwkYAcRTQAFAw2MhzS2KoagBr0NM7GhRgaZ4zBu27v19oc8C9HFo2s5ZDWmy3QkvMbNse0PlJ5FaTfx/Wi+7T9FYq4ToDQhNOS568jEavpbMsnr9rLMaz6Vn+psS2imneuyNinjVRExQPWTC3RXYexhcEMddC84IcRxRpF5Gte12GwEUBY2CR+64jNp+LRMHCWHo5ckQli9RKeLNa+ZJumH80FuL7OKg25cQWNVfLsu9F1gw118i5Lpx7b7ux/5bq22H8LGZWDtBl0QMxhr7/C47LO9FVOHvnu+2oQQs4pLdO21yGxCXipDEKmARKGaVARZ7dJAbzPtGUL/wi5PfJ/5hMYTssMPR61nYTwfIkXbYiSQTdbbqmS2l7aY5Al10wOxs0a90kWaqsl0LJIf0rtDfuIFZvHWMoDdgoFyjdVqKiPbGNuFgAmJYdedq3nW6TUKNsMVDnqqs5RkIDmBpM2d6izR2pmgrQ8s8YsXUaamzXKIZyzbZCP5AkpJQb7wQoALMnjB4/4olbi/n0kdAS9w4TqV/6p2MDEVzOMdXBLv753cJBLJiTDiRxNZIsxhKU5MfpSnmzO2KjHesdnyZzoFUOklSNcoJVZcfxFC3an13Yw9uGXMiyq3M2e0ok+zoU3+
- nQXcplqO
- peSuc1PLMqVfjd7VC3OdrCrldDzh3at3k53SPprvUnZ0j+waMR9QYLB7CUrHQ0He0Ylzg68j8eZkFxUZLIyhijT7iFb3gMfG6oFCEeOB9XRW2EZeNyvpGKGBwtkC2gYU/z9L24bNFisv0VhEXdVvEFryTV2yuV8XewaYM1b4HqdYFFsmP64kVlYkdSFzjx0ltYoWDI1yOWIyTAqtVCQFb2BhtK5jRDE/zlSQMeEywwo9jTq5xjtCCGNi/k+2yzTHDUlyZeekON02TNsb7h75kz2fX0ZwSEKd1Cu5Xfz1AfhhigruJutRZy2sU8hv89fBW5tzgyhYHLx8n7UHnPgGfGSCKBVy3nih8vf/ahjiF4YCM2HlMrWP1r8b+Nw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783518926-483927
+X-HE-Meta: U2FsdGVkX190FBizK2JIh6tB2sO8T6ZGXvhlnjgOe1Onq+t/mFZNlkWIyAG0O2odpXauP7TOxCOARo2/db8E2U/sYHC0v/r2pBmevqgHAfCg6jRg8zY5agvzDfqoHOeZJ7yFr++3FM/O6vcdy+bxUCO+vI3TzwLtrfAWSc9snrzq34MndAs8w87r7wvR5CxyqV7WLYetpx2PBUxTFSkEv5kW3ozNXdnJN3gOPZsZifSnt0kn2Gj3mKdET9TZu+wYr5IqLdE5ace43pTOsgRjDLH/ERvG9F+6f/L37E2fmAW0uJ9e/erV5pc+tMfwMKugH79tIs9Z+IMi3hYHkybGUb+lPTbqSPWO6xzCMogTbzLHCqe3mvx7JfSzYS1xmQwvP0gRU0+RyGRjvx3atn1g7cS1xBSP+ypxqv6MmTJE2kxo4ATI8vW7SVkUOm9ekzsZfpGkJ/WsCxuHIrS7V3/NzReotyeY3c2IocDXTl96zuwpxuVDgfRYWFbgR4+UFJvePc+b0O561PkEAA0Ow9UbBaY4ov3HzeBZrNGQe8W25EEUHt3PPPk+TYcynMZOPN/VTNqVpGPEy/AL5oCCmT+Y/defDBN5T94Vg8GjZz8TR6DBz+7+9K8La7xHMJBEqJQu0+k3X48Jef/LvwdcpbjFawcjzxlmgD+L9wN0azyGbpNBHCt/qVfzI9u6DVj3tdqpaeohVA8MvgMsSu3fzXXgfhNtGPJkUWJXLW1KFtuHP5BcCWG1+FSgdwtSycZv3iQhhujf+xT0cQsxehj85nscST8L4cLmeYvbEbs7mtexj2jfCa+DhjfM06QtstxD1QG2/sKVs4CEoKLEJXHSbtkEy/IUJX5+MAdkIccGGvVNJGyfwV5ACI0E4bkAli0hbhyzPMBNMHpQBoJBNBdbvzOw/tyVmJRvK4GC6B1jG8Rgklrl1d+ne3msIwXMM9zjKRJXBSeXAml1BymycyXtYMB
+ bhFKk2cI
+ m1zmiTYJaZwRkQFc3Gf5+jjHjqRkJmoALMELIbtg3by4gBDmVTytJzc8uWe4QTTQdGjRAgQhbHas7eIolibPq+dMApMpjzazEw/E2HApzTmwg4i2c7RF1gWfy0FYgb4L6kt2OkEudOfy6aN8HbdEPYamCa3DxcMEDR5SBZM42KqIHUauk99oMAQzbGb86ARn4T3WjdY2nBHnWDfq92derpD3JQFFP0HbcHT3LGfTt+i8yg6r1lypsUJqnIbi8/rNFqZVcMC6nuXS/x70PVlAaWbYu1finnOKYw3nsPwYE1kALSCufCdwN7OKBEkHcKBf/Iv1B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,40 +101,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If damon_update_monitoring_result() is called at the end of the
-aggregation interval, probe_hits is not reset.  That's because the value
-will be exposed to the user via damon_region_aggregated trace event.
+On Wed,  8 Jul 2026 12:29:06 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
 
-Meanwhile, damon_probe_hits_mvsum() can be called in this state.  Due to
-its logic, it will return a value that is incorrectly high.  This could
-happen  if the user requested DAMOS schemes applied regions sysfs files
-update exactly in the time sequence.
+> The KSM NUMA merge test allocates identical pages on different NUMA
+> nodes and verifies KSM behavior with merge_across_nodes enabled and
+> disabled.
+> 
+> On systems with memoryless NUMA nodes, for example:
+>  #numactl  -H
+>       available: 2 nodes (0,4)
+>       .....
+>       node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+>       node 0 size: 14825 MB
+>       node 0 free: 1382 MB
+>       node 4 cpus:
+>       node 4 size: 0 MB
+>       node 4 free: 0 MB
+> 
+> the test may attempt to allocate memory on a node without memory,
+> causing numa_alloc_onnode() to fail and resulting in a spurious test
+> failure.
+> 
+> The test currently checks numa_num_configured_nodes() to determine
+> whether sufficient NUMA nodes are available. However, configured nodes
+> do not necessarily have memory.
+> 
+> Reuse the existing get_first_mem_node() and get_next_mem_node()
+> helpers to locate NUMA nodes that actually contain memory, and skip
+> the test when fewer than two such nodes are available.
+> 
+> Before patch:
+>        ---------------------------
+> 	running ./ksm_tests -N -m 1
+>        ---------------------------
+>         mbind: Invalid argument
+>         ok 1 KSM NUMA merging
+> 	Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+>         [PASS]
+>        ok 1 ksm_tests -N -m 1
+>        ---------------------------
+>         running ./ksm_tests -N -m 0
+>        ---------------------------
+>         mbind: Invalid argument
+>         not ok 1 KSM NUMA merging
+> 	Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
+>         [FAIL]
+>        not ok 2 ksm_tests -N -m 0 # exit=1
+> 
+> After patch:
+>        ---------------------------
+>         running ./ksm_tests -N -m 1
+>        ---------------------------
+>         At least 2 NUMA nodes with memory must be available
+> 	ok 1
+> 	SKIP KSM NUMA merging
+> 	Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
+>         [PASS]
+>         ok 1 ksm_tests -N -m 1
+>        ---------------------------
+>         running ./ksm_tests -N -m 0
+>        ---------------------------
+>         At least 2 NUMA nodes with memory must be available
+> 	ok 1
+> 	SKIP KSM NUMA merging
+> 	Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
+>         [PASS]
+>         ok 2 ksm_tests -N -m 0
+> 
+> Fixes: e3820ab252dd ("selftest/vm: fix ksm selftest to run with different NUMA topologies")
+> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+> ---
+>  tools/testing/selftests/mm/ksm_tests.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
+> 
 
-The impact is minor, but better to avoid.  Check the timing and simply
-return the fully aggregated last_probe_hits, like
-damon_nr_accesses_mvsum() also does.  It is not 100% accurate since it
-is the last interval's aggregation.  But better than the value that is
-completely reset.
-
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 15d31285515d6..11473aa1f70f4 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -290,6 +290,9 @@ unsigned char damon_probe_hits_mvsum(int probe_idx, struct damon_region *r,
- 			ctx->passed_sample_intervals;
- 	left_window_bp = mult_frac(left_window, 10000, window_len);
- 
-+	if (left_window_bp == 10000)
-+		return r->last_probe_hits[probe_idx];
-+
- 	return damon_mvsum(r->probe_hits[probe_idx],
- 			r->last_probe_hits[probe_idx], left_window_bp);
- }
--- 
-2.47.3
+Acked-by: Usama Arif <usama.arif@linux.dev> 
 
