@@ -4,136 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C40F5C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 04:03:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A0AC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 04:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 766C46B0092; Wed,  8 Jul 2026 00:03:42 -0400 (EDT)
+	id 1D8946B0088; Wed,  8 Jul 2026 00:13:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 717F26B0093; Wed,  8 Jul 2026 00:03:42 -0400 (EDT)
+	id 1B0FC6B008A; Wed,  8 Jul 2026 00:13:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 606B76B0095; Wed,  8 Jul 2026 00:03:42 -0400 (EDT)
+	id 0C6826B008C; Wed,  8 Jul 2026 00:13:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 304546B0092
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:03:42 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95187169143
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:03:41 +0000 (UTC)
-X-FDA: 84964265442.07.393B894
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A442040006
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:03:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rDBmzqPr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783483419;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE4D86B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:13:04 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B329902BC
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:13:04 +0000 (UTC)
+X-FDA: 84964289088.06.B60B6E2
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 70C6440007
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:13:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UCEZEhKb;
+	spf=pass (imf07.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783483982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5f9YSxVBCXgs70OHQgvPnqlSIpM0evs7erfFRXLGbl0=;
-	b=7vl0bTpNkd7W7GO9VFaa/EqpyEeQps+MlFgSudMpeG9ZLO5aYM/uo9TsWCnk+kWJkZjoTY
-	i5ABqwIL/r5Zudu1uOy5+Y3hRCIWAHh3PL158JP0A6SYovhsp1DrJzlolRAT1ROhhvOGxn
-	/jdH7C5l5pNAb7yTxifutu8+i4n4FDs=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rDBmzqPr;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf04.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783483419;
-	b=7sUv7xxbVrYkULpnPk6h8qfWuFL5hgnXZuixal1fgQiLLwLWOijmXyksN4TkM6CtwQ/UfI
-	eaCOxD5kFylYMG1QRw1iw19JmwQMFHQTwWzuWCrULou7DKuAQR12gVltjNMocNUCEc0/I2
-	mUF8dyLp9ePS9mBkUWhGTgC4ajOvqPs=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-472326ca506so118223f8f.2
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 21:03:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783483418; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iT3E2JRMnhTOw9VdWeq2bxzYdh14+BrqbvR5Ge3k5UC0nyVhcCAkoqrg7E0vte8Qd7
-         9/0dL4kXFAJKwPE0P43uK9khKeseR96VNh0jMxqnT5VUF0ZZwWG6Pw4ncL4JTyF9uA/s
-         DFLaWjmTNSDs/+pMiUCd8e+zB/EnCD+fCzU8XcdgJIPa60aT4fGvUm9jPr+86po4a8EZ
-         yF1/W1l6M+Rb4sF8Pi/wDlcf0HRCfplRGKFo5w/OiCweLeGu9r2PzJ3jrrLMFqzSgsof
-         c0pS/iqoVYunMK+gBDd0P6dPO/yvUTeuXTA+PjETWChhuQNMJUChv3eYFoL+un/8APT/
-         HQ8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5f9YSxVBCXgs70OHQgvPnqlSIpM0evs7erfFRXLGbl0=;
-        fh=ogRlBGkRiSd3wfPInP8qPPdH2LCvSGtYhpJIgTc3R0E=;
-        b=neZd0W7Nei25gncunMD5lhw9xhuJuFUbxXEonDqY01i77LtmNCThfHCKq1BBpOiJ2q
-         ABxyAPKiSOAzFRq+ff2AysMF+3vcvwwdfJpgV09EWQXV22EQkJRJ1wMtrgLhMy2pYzbz
-         JDBgkDwh1mi0si8GUGofq5i1bY+EpfXaAnVxVf5ov/sfGs7gJV1knwxxw7B/q2Efaf/T
-         Ywhc3uOsuMLPOooCbHC2VKiRSt66j68e2as4nkyEGEv9zDTkZ291A4RmmzUVAuMNL+Cl
-         n8LFGS51FwMohFS1oEKPjgBSe9D9Ozgz7Fzc3ptucJti0LhZiGy9OgiRsjfR9E3v7gZr
-         PlzQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783483418; x=1784088218; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5f9YSxVBCXgs70OHQgvPnqlSIpM0evs7erfFRXLGbl0=;
-        b=rDBmzqPrSH08+Zmo0oNBFYcT5pF4xFxBV4eohWnJs5zSK51k4GgEmiUQwUQV2+W8GG
-         GIPrRqJdLkBBIN1Sh5DZ0AKsiMehFRUIL4zHmMYYveZFj2rlcxrjzcWFBSLTwLhPe23u
-         IrLoDdi1vx/8Uw0L2HkxB8u9S39ICMp8JNrB6Fy0SsHZipfqkvjfR/Oh1rrvZSOehNys
-         ir/7XZMLgDPcywpdCfRZRCAmyqGVF/D52GKY7O1nc2ac7AvaD0dVDMppSqQlTrDW3i7U
-         0wZbGSScCc6gtLud4FGkCQIL94K9PL+C3/NksNRgTpvFlUHjlXAn/lU/c2cw1jt8hFZZ
-         nsZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783483418; x=1784088218;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5f9YSxVBCXgs70OHQgvPnqlSIpM0evs7erfFRXLGbl0=;
-        b=bjWQwC2a+NG/heE2dsha+Uy+boRQAiNhm8ufZamKZ8IH9RlJqXThRA0Ol/swaHLe3s
-         ITKqcoCqY1jNSLxRp7I6uDBRhkmJbx9OfKVlcdqx3Qt81b/wRbs3nnxwhOpvIeLMeLDq
-         wXyZJx5OOfMfjDPNRee/elXBGyDRqdwwFN67uIDAjS4Xt2qlK37/0zTmIbxjJz2/g2Q5
-         IGg1/cDnmJ+oJOqAROkrHoQctHFZJZq85odk/tAXS2D/DbthhguaHSN1ZBAZ9CogsNsf
-         2BBgQx3amOXkzAdRxF9NPxNJIwtmiRutFngO2FPeLqbxIap8UFYKkMYV7CqEQfihZnJW
-         Iy+Q==
-X-Forwarded-Encrypted: i=1; AHgh+RqVa4YL/FCLOe0RPvqrRHKdqzqVkXrph1ydszBDcIOErsRHCInydzfJaMB/ctOZB9D+IVie02wupw==@kvack.org
-X-Gm-Message-State: AOJu0YzXLlHPzqidXXcOFMd/FeY4RneOTpBSzirI75kIt0y2KrtX/QBY
-	YuK1YSxL0d22upC9dI+Yjdj//IYq+hv/9YiOnq12/wooozZu/TFESe1PZS8aKeSf4OZWogi3cJ8
-	igQWK1pTnToW9MFiO8BdBxoiWE7kc0C8=
-X-Gm-Gg: AfdE7cmKlirMcpA7Ym1I3zk4AEysBmp0E3kF6PnSt4pRP0fl9e/LC+YuEhIz9Dl2XLu
-	5vwJH0mYZBcHJ1nqW0eFVxMNPrvZuxrh6sGgTR4R8AhaMF9rkR45f0VBsKd+l0JTFB48gXLX6qn
-	GZI1m2oVjD8KUb2XJ1HuFtQd6EITqfQD+7Yy8sZw+6Ywewdklc84uEdjBVJFv0IsZd+KcBqJvgO
-	cjpugCsC3PcMmAoj0Fw4KZTYKLyfCA5ENLt9JScbOq9y21RY0d8NxmkE4RTRne9XDaX6RtIjMuQ
-	htPLtyB2JFxEvewXSu/t8G9ZJeuTV3PX6YZrsWHUG4VKf3ZKXZ9Q
-X-Received: by 2002:a05:6000:4012:b0:476:82c:b869 with SMTP id
- ffacd0b85a97d-47df076a515mr452916f8f.35.1783483418003; Tue, 07 Jul 2026
- 21:03:38 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JgCF/d1GzpHoQKC1qhkhHRFZUTixiHjHsF4UG1qii78=;
+	b=TebRz8J2SFAWfoGvfQyMn9NMEb01exVcegEXI5SkNByRtasZnGf65bJBRO+X5biRLo57HQ
+	osEPBTB6IWinjyIewl3eX/vE/rYrGYFeJVvC0oMinj4zb2ll7oWODwqHP4jTeTq4URL4bg
+	62FlEtKfmjXIFoWFRgDOmuAs/GPJxyc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UCEZEhKb;
+	spf=pass (imf07.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783483982;
+	b=mbPkQvUMLsdXQ3XtIwRWX44bmwKUFgJ+59DVuG2RCafg389IUNGr0HDeNnJBjI6/XT7U4G
+	CeVqBk/gDpiguIjIHQhdarohpKqjySmrv31I3Ak7nSEjVSsUCy+w/U40GgLrBMX9nVS5Wi
+	eBRh1m0o5uIcPjfjZbTQ6iGSs8Ow3+A=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783483980;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JgCF/d1GzpHoQKC1qhkhHRFZUTixiHjHsF4UG1qii78=;
+	b=UCEZEhKbX1dlK8CTrdLBo+EbszDWU9fQk1ecn+HXPsx6OtoBHPR+eExQ7BoZfUFlrQ65KK
+	MMLe9Daz2f5ZX/BppB246vI1n8S9CcG6HjYg7nlKm4VopaL2mOFEN9hyOW4AczVNFUdC+T
+	V3fd0oNUO6yYwI4YFXwkYVexyT6CvhM=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: stable@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: jiayuan.chen@shopee.com,
+	jiayuan.chen@linux.dev,
+	yingfu.zhou@shopee.com,
+	willy@infradead.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Huang Ying <ying.huang@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y 6.1.y 6.6.y 0/1] mm/vmscan: flush deferred TLB before freeing large folios in reclaim
+Date: Wed,  8 Jul 2026 12:12:35 +0800
+Message-ID: <20260708041237.289026-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-References: <20260707201735.4113107-1-joannelkoong@gmail.com> <20260707201735.4113107-2-joannelkoong@gmail.com>
-In-Reply-To: <20260707201735.4113107-2-joannelkoong@gmail.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Tue, 7 Jul 2026 21:03:25 -0700
-X-Gm-Features: AVVi8Cc5sic8bM6HuFdDc_h_VTfdVOKdBzcATnohiXqX6fFTnY_WFqYD-vuZmp0
-Message-ID: <CAJnrk1bmu3ibwiYk8C1PX2x-DZWhDYz7V=mSj=OAMeuVvVbNfA@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] mm/huge_memory: extend thp_underused() to mTHP folios
-To: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org
-Cc: usama.arif@linux.dev, alex@ghiti.fr, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, liam@infradead.org, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A442040006
-X-Stat-Signature: x1s7tryijyijregtdku4i531qoow1489
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783483419-32744
-X-HE-Meta: U2FsdGVkX1+YKCj+Rxib3iXINHnVKe9C6QyAeXFRxMShpjMJ0bas4hBfPzHH1sMmwCnZRJP6j0edFrdcO6e+bUQfc1lhnjPEF86n/c4TCj8goZS8IdFpZzxVWMVnKWfIyLMnSFqXiPLLW1gdVsPYzLu0Rs4mkdCJQ9OXCoT3ytLdtjSbsBavlGc/fDtZEUgJ39dpip6NuLuB1KBEIAwoplPTr5qCPdU9znb9C/KVUkHV9VPdKeWWIFOVuEVe+2zqqXGIgPdQbn0j7C/9syrHwfo8ghYNMn90mlelhb6Y4VxeFv3PUxCx3Ps/bY87d6QfXAmq0iEF6NlqrptNT1JajV5+9xGFWjizA8VrP1OlJL/kU3u7K/RZfohz8Vig6cf1kIie1Qns7iF/kv6AdBCHeH2t3ZbCOdifuANPR1/WABmr2d50mifoWLrJ2AiLXZpz2WLf13a8qFvugJK09drvrnoaMwiR/vJrij2raZpenDVUuoU6kqqTnwRjiIz02f/i/HzYv9kKdTQvDro1JYa2heAvwI3Fa6KfBvYUSQxuYhZMFimWyBhpiXNCjsIizo5DeV94u2vFTTfmjyRaN8eOyntGWyAPAur8UlDpzmlCI5HqGZpv2YqAy/5psn8zXNg1A9uPPWjC73qfIlleF7X1aYvFsINObKEUVRZ6q2eBcbSch1CH5qL8cZDJuiUgYmAOLibMMsKnOuodVg5IRybl/B4Azm2LH43JL/nHEMVg8F/QvG3kBzeQ8tDfOoRBFchsDArkMUIkcBMuUutaWTk/xwgV+Fn1wzp6DXnpdbiqyiQ7bTngEWzKgS+a2g+2HT+aA4WEtbBFGssV4aExpBIdEsS3I0qopGwg9zcy1ufBEXk4/mQ2VXng6CZZSFspeCRNRrxY3gxkcJRM8c76sV/F3v/0w4PfvGiNRbeecUTD/PahSIf4btaKoWHPqMQwskYSWGO2ZbX9gJuqEAcc8dj
- Jcq9QVxW
- cI8D+ijFICx+aQZUKcYBjKzIb1PF7O07zsxCGohzv0AtiAuRHKGErrLsBSECprJUT1uTNOtgWwaCFSEEYEdjOrmqeB6OSlKvS7Rvl5zJbRDK8n2g5DTR23s5A0N1qC1Ygg1Svp9dhQcP5zoMdMTRrcZlzs2trOfV1WPpTjYNO5IeRXdwkZyXjL+usNiahHnQWTW7kgc6Xz2kYtE4mQY54CzoNvAAcRKWI7ST0O1mlAKg4eADqwZ+fV14HIxL7R0XyKhJSyA8H60e//lnwJwDIyMWuckgV/4fAR/VtykTzupw48xNU2XjW/l5zkdtkBUaOitAAvt9Co+SRMC28pZRLC6d3Cb7HMRSOAMO3N8yjpzkl/4AoTWDUkWdfYMOYjk+y6es+IaMNXDLJgTrG+oYkiHXB354sDH2M4+s7NpRKQH1rKUKuofsSg+NxuTCaVgEr2yhH2BSvF8xYZrVeanSV4nVhifS0NdbnJM8qGbjAhG+n/GaFJC8J9vPsyqiKcbq437r+08gzp1MGfSwt69NTete8/g==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 70C6440007
+X-Stat-Signature: epcaezedidprx8q916xtkywd1wpkperi
+X-HE-Tag: 1783483982-100625
+X-HE-Meta: U2FsdGVkX18+SDRFh3Ip7G0MuYga0Wzrr0G/9f4Z8hnoOZdnmGGBahR0fdhleAFY0MF8n6VjBBVjUxwudYqSW/W0lUdE4o13/Di6/8jgmIx+KQUujAKmHrPX5J2ZX+h/24RcgWuM9YAVnjUGwZhXJQCu4pfymfD3hAjXD5ovPZUAasDCaRTfvAKwJ4yV4wiGunW9JwsDN7AP4q9i16tY9IBhqDXVYzqsArkicXGTLnaasa8ntmD024sMMKJpqcVyW8SfXkMQye7cK6/Uh6yMUl6++tgJPX04j7ZvXXB2zQQvAv73MYmgxGPrZJ2STzrPSHBZj8+dqCadaYUTYivAlb37g8HJpruyIDAnCXfqs6QB3OtanymnkejrVSz5v2IZL9LvqAVoMp6stUaEUsqSnu/Q1jlV4WXylM/FE6VWfYBVgFtpsYh1ic9+KQr5Rieew1ZjTLd3M1wpHtlXqmdT95hlB9pXM+kWG2iDDR4NuEfCfirrsJmGgo1WrgFc7fRUmxbpFxfYnIOb1JOfNsOEJH86yek5xLrN60Z4EK5ljwuGy8fB2iL6+dQSX3nglmsxw5t9CBSlOctC6wIzZzLXibYHmT4+y9FLAxJ357mN7wEHpb+tPpB3L1BGyduiHypjIPbwdi5KWYRoFxsEWhMPKjV8sgrdAP6OG2nUrGo+Y5ZphRli0NtrVuHl5UBr7pVkMMO/VQqVjQ3dHGQYc3855TjzZH0OtnWX+YKTtD8t8cXc8NrAyKrX9vy/C7ZZcCI+0Fz4PZShoyzPgBYd6ZxqK9BkdOTwT/pDq/p2IgQPQ6+sRqIJyEDko4wsxKcP2lE+s+CY1UCET+wvycWb8xQrz9x1H45TBgShahKeKl7tx5pnhdoK5yTCNy7LJP7H5pePZ/LB6GCkVqqpft6Lyjwk9uv+EjS3mI0tl+k13iD/1+3TEhe3r+UpQpc/H2WBX0bQYnA+kl1OZvmX3kLhEGh
+ ozyoFpHU
+ ucXkGiEMszZ4M8BzCUlUaNiFFC3lheZoAAb9rHm/jnoJ9DTy9anYyD1pfWi790vdyRw8cuRfv/4o9yd9BEvrpvJ0jpSzb1988eRd7JhCFx0SnP+Fck3hSCc+ZNoLh208/GMKZkq4h0Y+T7LLOz50jAIgfkUPTK1jY0vNidAN1Dp0dhUWoSE07tIInvonHqHHnvrel
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,66 +89,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 7, 2026 at 1:18=E2=80=AFPM Joanne Koong <joannelkoong@gmail.com=
-> wrote:
->
-> thp_underused() decides whether a large folio on the deferred split
-> list is underused and should be split so that its zero subpages can be
-> reclaimed. However, the logic in it only accounts for PMD-sized folios.
->
-> As preparatory work for splitting underused mTHP folios, make the logic
-> in thp_underused() compatible with mTHP-sized folios. This uses the
-> existing khugepaged_max_ptes_none sysctl value and scales it
-> proportionally to the size of the folio as the threshold for how many
-> zero-filled pages a folio may contain before it's considered underused.
->
-> This introduces no functional changes for PMD-size folios.
->
-> Suggested-by: Usama Arif <usama.arif@linux.dev>
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> ---
->  mm/huge_memory.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index c0892cc533a9..ea5c350b4818 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -4413,24 +4413,28 @@ static unsigned long deferred_split_count(struct =
-shrinker *shrink,
->  static bool thp_underused(struct folio *folio)
->  {
->         int num_zero_pages =3D 0, num_filled_pages =3D 0;
-> +       int nr_pages =3D folio_nr_pages(folio);
-> +       unsigned int max_ptes_none;
->         int i;
->
-> -       if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
-> +       max_ptes_none =3D khugepaged_max_ptes_none * nr_pages / HPAGE_PMD=
-_NR;
-> +
-> +       if (max_ptes_none >=3D nr_pages - 1)
->                 return false;
+Hi,
 
-Andrew kindly directed me to a comment by Sashiko [1]:
+We were chasing random user-space segfaults on our production kernels.
+They were fully non-deterministic, and the fault address reported for each
+SIGSEGV was itself random and had nothing to do with the code that was
+actually running -- which smells like a stale TLB entry, not corrupted
+data.
 
-"Does this scale calculation unintentionally disable underused splitting fo=
-r
-small mTHPs with valid sysctl settings?
-Due to integer division truncation, max_ptes_none >=3D nr_pages - 1 can mat=
-ch
-configurations that aren't the sysctl sentinel (HPAGE_PMD_NR - 1).
-...
-Should the sentinel check remain against the raw
-khugepaged_max_ptes_none value before scaling?"
+We managed to reproduce it with stress-ng: under memory pressure the
+workers take random SIGSEGV/SIGILL too, again at random fault addresses.
 
-Sashiko is right. I'll fix this up in v2 and keep the original
-khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1 check on the raw
-non-scaled value.
+It turns out we're missing a TLB flush. In reclaim, shrink_folio_list()
+tears down the PTEs with a deferred, batched flush. Order-0 folios are
+collected and only freed after that batch is flushed by
+try_to_unmap_flush(). Large folios, though, are freed right away at the
+free_it label via destroy_large_folio(), which runs *before* the flush. So
+a large folio's pages can go back to the allocator and get reused while
+some other CPU still has a stale TLB entry pointing at them -- and that CPU
+then reads or executes through the old translation into a page that now
+belongs to someone else. When it's executable text mapped as a large
+folio, the CPU literally fetches instructions out of a reused page, which
+is where the random crashes come from. (This is about file-backed large
+folios, not anonymous THP, so transparent_hugepage=never doesn't help.)
 
-Thanks,
-Joanne
+How we reproduce it:
+- Make a cgroup and set memory.high.
+- Run ~45 stress-ng workers in it (e.g. --cpu N --cpu-method all).
+- Alongside, run a tiny program that keeps allocating anonymous memory to
+  push the cgroup over memory.high and keep reclaim busy.
+Dropping caches first (echo 3 > /proc/sys/vm/drop_caches) makes the text
+refault as large folios and reproduces it much faster.
 
-[1] https://sashiko.dev/#/patchset/20260707201735.4113107-1-joannelkoong@gm=
-ail.com
+To be 100% sure about the mechanism, we filled every reclaimed large folio
+with 0xCC (INT3) and held onto it instead of freeing it. Under the repro,
+stress-ng workers immediately hit INT3 at instruction pointers inside their
+own text -- i.e. CPUs were fetching instructions through stale TLB entries
+from freed, poisoned pages. stress-ng has no INT3 in its binary, so the
+only way to execute one is through a stale translation into a freed page.
+Several CPUs hit it within the same microsecond, which lines up nicely with
+a single batched unmap whose flush was skipped on more than one CPU.
+
+Upstream this got fixed as a side effect of
+commit bc2ff4cbc329 ("mm: free folios in a batch in shrink_folio_list()")
+which sends large folios down the same flush-before-free batch path.
+
+The patch below is the minimal fix: just flush the deferred batch before
+freeing a large folio inline.
+
+Jiayuan Chen (1):
+  mm/vmscan: flush deferred TLB before freeing large folios
+
+ mm/vmscan.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+-- 
+2.43.0
+
 
