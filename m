@@ -4,97 +4,204 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ABEBC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:31:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82530C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE83C6B0005; Wed,  8 Jul 2026 09:31:14 -0400 (EDT)
+	id 614C06B008A; Wed,  8 Jul 2026 09:34:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC3926B0088; Wed,  8 Jul 2026 09:31:14 -0400 (EDT)
+	id 5C54C6B008C; Wed,  8 Jul 2026 09:34:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFD536B008A; Wed,  8 Jul 2026 09:31:14 -0400 (EDT)
+	id 4180C6B0092; Wed,  8 Jul 2026 09:34:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B38A66B0005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:31:14 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BF24167771
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:31:14 +0000 (UTC)
-X-FDA: 84965695668.01.923EAA3
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4B77F40006
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:31:10 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=D3HZZaiO;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783517472;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=/BT9GUmElz7H+MklEp3iXPCkHH6+mV/ugMOuRvPF6mw=;
-	b=PM9fKMsqbg8P4KFx4HCz4zrI2B2di9wKUkDT0st4+I/W81WTmplhTOSCU5XMPBExO/U0vl
-	1lqLakAfUNKM2vpQ87WHXdmXGlQ63kS46IfBh9ElaFh3pZfME3sHA+dqluVEiPYYgIl/vj
-	ukxPBcczde6TzuXYnmYigprqfYufQgg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=D3HZZaiO;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf27.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 021696B008A
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:34:01 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6B1831A0117
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:34:01 +0000 (UTC)
+X-FDA: 84965702682.06.25EA681
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D86B720002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:33:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=pa09iNox;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=gnHraThe;
+	spf=pass (imf13.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783517472;
-	b=LyUmVnTpgrCR/rzJqk0L9EgPfQSGp76p4y804UVVFxFYmX06WT7yCejwUMPAdPKHxXGWfb
-	ltt6CsfUfv1B1U7xvclD6WD8bswuawf1WZP3WjjaKT8iTJ1/rEqnzJEqJGHyM9ttBmAJeb
-	ZyqbqxBCYYpv0C2CPIgs/2Z7n85w5+w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783517470; x=1815053470;
-  h=date:from:to:cc:subject:message-id;
-  bh=S9GwKFM0OhOTKmUwIau5gYp0Qb0n8ErXwvwgML0c4sU=;
-  b=D3HZZaiOIp/e9Gv/itEdAME009wnQmbhqWy7/Nesm4dxT47jn1D4L/Wd
-   o8WCulOvlq87uyn6qHjI9C7aVfMVyDsea8iSikY/F+B1WyieJRzAMcaN9
-   fErhqFpx6G37BUeK7dMrEDZtB2JoN1lM2RdyBN5jNQp+WEo9DkQkFxguP
-   EO9T9+nd0hPWjppWKTc92NqyDE1O51lWbVcLsV+rsJDURUoLwGBbbDqhz
-   6hexhQYaRRmji/Q5wtLU6SH8mqNP2plzJ4R299qYxIEN2TKkOrD4xoCLm
-   uTZcA8KqSbKW8TYdoiqBknlkcmGEJbcCao0ZB5pYIHcZCD/zX7NBKgVZ4
-   A==;
-X-CSE-ConnectionGUID: Opl3W3FiQOGx+oF0EuI8bA==
-X-CSE-MsgGUID: cs7wsr+hQbqU1K/R1T9TYw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="87861156"
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="87861156"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 06:31:09 -0700
-X-CSE-ConnectionGUID: 5hD/MdjUSUmbnih1b5dWnQ==
-X-CSE-MsgGUID: VnrgdbivQbGr+I6tr3LtZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
-   d="scan'208";a="253802024"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 08 Jul 2026 06:31:07 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1whSMi-00000000GQV-0gVH;
-	Wed, 08 Jul 2026 13:31:04 +0000
-Date: Wed, 08 Jul 2026 21:30:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- 302dfbff3e73be2ba5723237c6303244ec27cebb
-Message-ID: <202607082153.gEvkpee7-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: eq4zs4z43bx64hkbax7ofrm6qwy1aayw
-X-Rspamd-Queue-Id: 4B77F40006
-X-Rspamd-Server: rspam01
+	t=1783517639;
+	b=PKLtrEmkRyNBdDvI92D846/TGrpV9vfnrKdr9ul+ycdPprk1nFlJtzEyeIt/qP6R2ndWXo
+	2zWVhJiFtTEcpuQ23mMUtIIXeYVMPucrG4h2J5KcQxk9n0xBcWI8xjNniYxVn8HRgrfCSz
+	2jNzeMGymh5fW5+IYVMPrAXVT/CIlDI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=pa09iNox;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=gnHraThe;
+	spf=pass (imf13.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783517639;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IRQynWna6sRRY09ddhiwfcGdZVllZvwJvTf0JuNMmDs=;
+	b=DCOsAKzL1TtREtt6tzfwYIgpHDj24gz2wF352u+T5HbI0B5n69I1p3eNT9+zQjIk82IlcD
+	gWLRHlx/s/gWRAZndCQ3Nrnl3iUYcn/qz/Cnnx0AgkVn7XyIAO9rnhqkrMgkBTCAk1TERK
+	j3l192+DnyVqMa/WYt/92ctIpN+JOwE=
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 668C3eq12758834
+	for <linux-mm@kvack.org>; Wed, 8 Jul 2026 13:33:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	IRQynWna6sRRY09ddhiwfcGdZVllZvwJvTf0JuNMmDs=; b=pa09iNox1RBbGNDJ
+	r/AZCAnIBytaT20TK6Qw9Bd81qfxRpEpU8WOtGE0KPxrodZYQx2FVBI0NjLkO5ND
+	QDzFlNud6dRGybMiFUPM16RcGfWFtTmC5JknJpzBO4W4fcbLGXFo9drSd/7U1Mz6
+	PT+jLZyUt0JWqfFMtkmXy6/l5dKrogb4eQcMQ0WuoCdZbC3HxvgmcAtjx1IdvfZN
+	8fiX4HM9oD0YgkX2IReXKkNqI8K6eAmPMkx8IfBSOLqsshzGpKNvewbXmL2Vlh24
+	GipAsHy9AmzYEnyjH2EHmxCwIaentIlJ9N8X9sPCbR2QS9hzxR7tF+SuoBVTJe9v
+	Mm4xfg==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f95e5vmuq-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Wed, 08 Jul 2026 13:33:57 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c8952346bb9so613240a12.2
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 06:33:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1783517637; x=1784122437; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IRQynWna6sRRY09ddhiwfcGdZVllZvwJvTf0JuNMmDs=;
+        b=gnHraThec7bxWPmG7KUyANKiqSJemEUk2c0egNzuq0uzNDYivXjdKLCd27ofZFa/Bj
+         deI0K8m60JrKPAZg22FS5me4CWI/UfCJPJOPNC9ai51Oi+Diqw1Yo+4cF44+6lo+NUeJ
+         npO9xYk+TynC3AGdflvMd5b32qJh0Zci03whhQx+0g/JmgBJxUC8MwmLxW+sFdlZAl6a
+         IhAsjOmsjCOtpQaRsPzGGkkwudmRKdvkVhzCbuFNict6xkdO8uw5YWscNvGKME7VzNKq
+         NfZr3FnRyVDbLLgNFKa88wsG56NcJ2MOu/S33KdAZuzlKieS/n0AwdHNZMtfW6d1/n1A
+         ckBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783517637; x=1784122437;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=IRQynWna6sRRY09ddhiwfcGdZVllZvwJvTf0JuNMmDs=;
+        b=AG3ewGQgDvRjwKRjLJxMb4u3s6R1AdPgPq1b3GpAy9VMmwDaLoDBPcM34OVtT4TQu/
+         7zg+l8SIXiDaofRBkXilsqHxXQWVUGAaitfFefpqVVJgwfyJLxQ1jYPmfwe18lvqHWYy
+         pD8sgWSy8xP/Oav/GShv3w0exC2Watg+Za2MYboUwrV0ZF+Z7ijgWNJS/+lZYvf7Rjn3
+         ddrFFxSToi2a5ceggRuRwUv55AjTqkucy0WfQM1To/w+p95WlfZU61ZJoMjLNpElz8Hg
+         AXCTSB3qtn8Y9BvRV0Cheq1cPZJ+MuRd5hSfYP0uuk2O8N9tsDRmRBECmeYn5/szxrPc
+         PLSg==
+X-Forwarded-Encrypted: i=1; AHgh+RplY4G+cxK8qxuWgGGJM1vYBUgybZYWhxezXRu040wwSGe1xAXd/P7C9CZJCm//rhg9tDKxTjHrwg==@kvack.org
+X-Gm-Message-State: AOJu0YyRcplw0mkpALgGWgxsfgGNsTiD2oTmHMsltRVo8Mh3ZmWH5f4u
+	Ot4OQV9ecRG19pYEeFy84+5sa9MF4w/DEixB1SpDwI4Rlac0WyK/TzDWALJ3fD16TXr35f2HDpg
+	kDebRZQNR9msoHRlG+74I7iVCZqAb9YY9WUNhvdtkqg2hXFbrwXxmMQ==
+X-Gm-Gg: AfdE7cn1sd7YOfDUx7mYhqmNm90g7UX0h4PN96C3BNEjhbMJPcn8ViqEDKN6BeCZvv9
+	IXvLYxJ2NIlbIm7rwaCJkSE1r0infLzHtWytoppeZbdy2csNBmJzaESPCaDl1vZmFy2NkQTU9zC
+	6VTTh2wr6Tt6E+1QFqySXZ7F6rMHdblSAqjdRM+WN2H9OOk9TrrzT6hYfBnu/zvuFeK/7p44qdN
+	3Gkx+j2/NNTAsQiQEyO129jIk69foa0md89YddBLbFz9YgQuIdgjTrN5Ubv8j4W+BrEQgpb592o
+	IYC5UI9Jm8WbwJTsuyu+Ozs1Vjl0iLvSegwf9kd4Pl7YhIqd4rP5yKI1zi3L3kes+zwkQsrX4AT
+	2A4rI8RoYR122PCsaRZt6OkaJSrA9I3PwTEtKuA==
+X-Received: by 2002:a05:6a20:549d:b0:3bf:6c04:a819 with SMTP id adf61e73a8af0-3c0bd19ef66mr3411946637.58.1783517635926;
+        Wed, 08 Jul 2026 06:33:55 -0700 (PDT)
+X-Received: by 2002:a05:6a20:549d:b0:3bf:6c04:a819 with SMTP id adf61e73a8af0-3c0bd19ef66mr3411808637.58.1783517634778;
+        Wed, 08 Jul 2026 06:33:54 -0700 (PDT)
+Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-13b659c865asm21540617c88.11.2026.07.08.06.33.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 06:33:54 -0700 (PDT)
+Date: Wed, 8 Jul 2026 19:03:36 +0530
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+        Eugen Hristev <ehristev@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@gentwo.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Anna-Maria Behnsen <anna-maria@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+        Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+        K Prateek Nayak <kprateek.nayak@amd.com>,
+        David Hildenbrand <david@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Brendan Jackman <jackmanb@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>, Petr Mladek <pmladek@suse.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Saravana Kannan <saravanak@kernel.org>, workflows@vger.kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 01/26] kernel: Introduce meminspect
+Message-ID: <20260708133336.yjpn3tyket6zldt6@hu-mojha-hyd.qualcomm.com>
+References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
+ <20260708-meminspect-v3-v3-1-7aa5a0a74d5c@oss.qualcomm.com>
+ <ak34Q7gIJedcGe5d@lucifer>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ak34Q7gIJedcGe5d@lucifer>
+X-Proofpoint-GUID: Rbpz-ThXsmO8_yMey2FK1ofnJLtxMm9t
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDEzMyBTYWx0ZWRfXz8dAwh7zEsdZ
+ HJtJUVJmiUPTHRXRuLmc0WBuVGhGMOYvUjKO9ICDpDKrpkGxdHqWFXVhp9wGYKZJLsITdnXDqSM
+ Qe2Ra+EKj9E0BjEAE6c+oJ4Ks9UA9mE=
+X-Authority-Analysis: v=2.4 cv=CNoamxrD c=1 sm=1 tr=0 ts=6a4e51c5 cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=37rDS-QxAAAA:8
+ a=Y3Laj8ir0quC8G1ZeEYA:9 a=Rhe99fLlrzPB6ALC:21 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22 a=cvBusfyB2V15izCimMoJ:22
+ a=k1Nq6YrhK2t884LQW06G:22
+X-Proofpoint-ORIG-GUID: Rbpz-ThXsmO8_yMey2FK1ofnJLtxMm9t
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDEzMyBTYWx0ZWRfX1PAgrCCRoRhT
+ eP1iZqNDoTX2DCUBQ4TO+ORuHzTLV0icfUXvXRexZeHirEDS9FMyVW6hUHVXopZPVzzE+FO0iFO
+ Ou0FP/OXN4+PGuP6DbHJhQjkHj5e2kFw20l4cyzVsXxOIEotXmplsZvsj/StMTPycJ8kMCacBCC
+ yUkKyedvXYBlAwluSRosYQHOXLAXGFXByJ11jkUW15xHZsWGlKZqvqReDkW3p0g6yrIlc/FSjOh
+ ESkD/LQfNQMLf6XZ+C3YYzf3uH1gfjPsoNJnyPZ6XK2gLdeUG1i0bzV6jrQXADqI5mZG9N+lfcE
+ BM1JgNc/0N7sWlPehsUMfftLPzhCKMERhWOgzOpcvELzYI6miXE1B0WRGaMw4u7ZAXazLuzkI94
+ 08qf/+WaC0kK2m4cUmVOTMwTQNjS/CeE4IWwsOLcMuv/WmQ2jINIMI9unYzdOdAFg92LfCe7wAv
+ SXm5n3NrBivDNKazN/g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-08_02,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 adultscore=0 phishscore=0 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 bulkscore=0 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080133
 X-Rspam-User: 
-X-HE-Tag: 1783517470-13385
-X-HE-Meta: U2FsdGVkX18MswLCVwxLsR36aDtA0X4k2BIGXHDYTXrc9Zmf583bTEewfmLmM3/hTyPXwiUQyZdDVlflQvJhvnwhHKJ9KV4ukq+zlcJ42ahRR8jHkjcRSIianIMtJNiHZnPqje7cUS531rXLAb/Mb4+8Dl99pjo3cnA4+gyW8uLiW89rD3HdWvyn3E6wEp9mpPII+X/r62+d55yQWvmayA6U/VRAHR1MgJkIRLRAWnOSXuVSju7KeENi7qpnOMT/7cLakqiKsyMNunAgk4Jbs/7xX6edoSdJhWqJztiqTJaV4gDqKBNxpV6VZo/QP0xA+R1o3avGQV+/KYd7vxejCvKT18Twc58y6TYjawVwb0X081GdsmEXAx0CvuGsxsk2ZOWpdeBK7Khh8lxI51610QTdnE5zI98f2T+VnCHCkEN5KBmIZz+VQSOBVmOJjbP76uqTRDEEIAeF6D6aLI0j2ghBhHXMNXh9z7pMrNJVMvUwnL+ELlZ2/Vjv6N6acziFSvrqBVJyMitkBQq6KlmYG8HxcAyXYLTVicVvJTXMTXhPGwnuCEegt2yfelF0+T75NG6789/aZHjAaGK80b7l6oq7Rkfv0L2RZWI8AFDIm6oxEMG17wuspm8hb8N4neJHv+9kYWj1Cb/8J0RCqwRN3V1zZoFrdrIbWiXYNUPv9iI2YKFrueEaN/bR/vMzXE6Yws4+O2cox/LcJyY4FX1R7UGEKvNr7imgKNGNPYEdlxl5H9jeiiZCP1xLjGueN8lTQ9KnSyQ9vuuWxq+Gjy72e3SXT7F/kF3Y7u/gXcI8Erf5oubRAgi9e1xW6XWGf+XY7YpgaJ/Ii0opoEo5D9/ssNZY5YAAy4ebx/Ebq+CdMqJRL8T0191RWxL14214dd96A+y3e3yyAYeF70UvJfzH5e88d2fjt4vok8/47lNCOfVKpLrSWxSRtLxQCLTE52R2z4gu2s1FnQ2PzMeTnFp
- Yl4I2Dcc
- aB7x3Glkgzqi7CJI9fiTPjQB4kjZEMHTmYoYW6DAPxTCHCpkaa1xDQ0AJddtThMnpfOdqUv4fD8kpRFrbKnU7cWEXZqMrO/l+6dduBAUzc4UsDMpxx+FGNwSs24srm6JJVt13u9ql7RlOpyLpeJ//SXFQduBlkcA4To+pLJxH+nNplqte5GLCr9kxP+a4f2i90VC4kDeo/+pKc3s=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D86B720002
+X-Stat-Signature: 4smky8uh9uroo3x5qu6rwuax7jyosrhe
+X-HE-Tag: 1783517638-779950
+X-HE-Meta: U2FsdGVkX1+Azo6UQ4FXtF9djrVVW06B7Eos6YI+iQEtHkxs1CgaCeMlo+JslP7bjJIW0O+ggBvIl9jyjB7dn+aezE6feZM5l3f4Mx6W3hVPTjv/bGcvXVBveAJCJR8DN1FiFyxaOpja6tFaSnTIwYXjWobkrZIbkl8ZKov8QtG5kyi0t58eTDg+6VVM7EsuQB0DD1YbWlb/oyPhSDR7UBrlckiKA+HendUg6qgkw3Uc24wly5KSxdMYGJMPDSJiizCpDDDfVcVyDduPHHR1eZ2TPOq2BF80hhhvhcCEYus8C+lQJMwFFGtWdbJ8oAidCEgys9wv7/+r7/pC8zAxmeUL0aDsf04WHb8xoqvWRuA1bEBaCawss/jYCMAyd2Z/YvW/KhIbwgNKd1yWT5YbXHDUc6c0lFOc1/61KSqQ2jc5S0XA3OWpYz8hOo4ztij2bxa7l4B99Nf5wQ1c318Vi9i9EHMnreHjmU3SRpai6lePB8tKwiXRLk+8m/SVOoDi2orwBkz59h8Sl4IdZIKBO/ft5cDnFx/BLiu+v/BsoSL26DOCKghXvH9wnBcvk6uIdQ3XQvjMDZ1wkHO/YuI3DsUsYsqm9MdpTOzvpt8S/MsLms3yW4b7PcGCVAyjuEwUA9IH5WZaO5iOAVX2axg05IXsWNTdamgoot11Y66Y5V0fi4eKXAIKiFhtHiwosaichn79gqafCyGtSbWfgMh1Ou47/GX4OihPrlWVbOYMqcOnMPXxcvitnfrnqwFXgTsWeKXsX9OLe1j7gD4otcR53Wa/68H6TINViS1g2J8uGmNAXKzSgjndyKoXaJCnmleTXnlmdg6CdHJnrMbCswINmI5tQiARiEPvRUSDxseUR+msDmUbh5AEVAjrMRSADkRxognk3/WqK0lWWIRYBUdHzItaPdHvAXfWJWpxxP+E6LfONIuIZguSTWo5oVy55uYNBMH55gIJIKow5QTuUou
+ GWlCFYs6
+ 1DtaMlNQPRva9qkjivgB8aPKk/1Ti629dJlhZX2s83ADnuntkf4kx4435YEzqZ+HuRZuoNKgQhZNhZhVd8WTZ7ygO5XOrQiJZrX0EIhwd2X29l4Pf3AezmD5NvObYCzTGIIZg48QlI+7ZhfbpgaCap25iFIdIeFg1s+DEX5GtCYxn8QCgYnnnaREaFvFhMzBHi72FjKz9/4AG7urmdkXS/RHJcbuDj7MMu+yVLX9P7elPSv9SRr4p75EjdWCooIqBzi9yRsfL3PZ78MZTepMlSPFOpaLSHKxajudMe4/jRhF8KI/+6u8HRrX7mHeJWiMeAy+jc6W351i+bfc8PPWa17n6VUKUXKqXiIa4cpMQsms3x6PxRrlyHvqsERp/PQR4mO15Rz0is1KS19GDRLpulI4jzK0oPo0Fz+E792flMwj44vCLjrcENO4gtkUqeP89vAhjIDaiOFGtc5Ku4UawP5wOQIiDx4RFpY/7I7fZRewh3gMpRTiLBANVnz6gj6AaV1p3M+ngJvMreiRNvlq5Q6f5IhBggb9ZZr3Y5BwMieBkI51IsDNan2EVlhK4e7RAiReMlTm801obmx3uKIH455H48+YyabI81h7Gfx60BrSjaSZUIw9R61AGXaQoyHrQXAtUXSURj258Vf4YazIi1Y2Y7MzNE9Tj3PZi1LKg5hrslc5Kn8X01gqLDfBaDNEhGTJKXLJan42sRFOX+riwGqCgysC+lNKutaFrMBWyTnlotuvXcYbHoUaQa4mR6QcypGrXqnvtbeacQhSHliddZZly8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,353 +209,1316 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: 302dfbff3e73be2ba5723237c6303244ec27cebb  mm/swap, PM: hibernate: atomically replace hibernation pin
+On Wed, Jul 08, 2026 at 08:38:13AM +0100, Lorenzo Stoakes wrote:
+> This is an unmergeable mess of a patch but I have broader concerns:
+> 
+> * I'm very concerned that this is just one giant workaround to
+>   EXPORT_SYMBOLS() for unexported memory, or really just a way for drivers
+>   to stuff arbitrary VAs/PAs in some global region.
+> 
+> * I'm also very concerned about memory lifecycle - saying a physical range
+>   X-Y is Z doesn't mean it's forever that? And for virtual addresses it's
+>   even more problematic - are you going to put vmalloc pointers there that
+>   can get unmapped? Or direct map ranges that might end up unmapped for
+>   various reasons? What about memory hotplug?...
 
-elapsed time: 735m
+Static entries (patches 02–21) are all kernel .data/.bss symbols
+ init_mm, cpu masks, kallsyms arrays, printk ring buffer descriptors,
+etc. These are never freed, never remapped, and live for the full kernel
+lifetime. There is no lifecycle issue for these.
 
-configs tested: 333
-configs skipped: 12
+The unregister API exists precisely for lifecycle management.  No
+vmalloc memory is registered in this series. The only dynamic
+registrations today are the ELF header (CMA allocation,
+intentionally never freed) and vmcoreinfo (a static kernel
+buffer).
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Memory hotplug is a legitimate gap for the NUMA node_data registration.
+Currently, all the tagged region are required by crash-utility
+to launch and get dmesg from the collected elf.
 
-tested configs:
-alpha                             allnoconfig    gcc-16.1.0
-alpha                            allyesconfig    gcc-16.1.0
-alpha                               defconfig    gcc-16.1.0
-arc                              allmodconfig    clang-23
-arc                              allmodconfig    gcc-16.1.0
-arc                               allnoconfig    gcc-16.1.0
-arc                              allyesconfig    clang-23
-arc                              allyesconfig    gcc-16.1.0
-arc                                 defconfig    gcc-16.1.0
-arc                         haps_hs_defconfig    gcc-16.1.0
-arc                            randconfig-001    gcc-16.1.0
-arc                   randconfig-001-20260708    gcc-13.4.0
-arc                   randconfig-001-20260708    gcc-16.1.0
-arc                            randconfig-002    gcc-16.1.0
-arc                   randconfig-002-20260708    gcc-13.4.0
-arc                   randconfig-002-20260708    gcc-15.2.0
-arc                   randconfig-002-20260708    gcc-16.1.0
-arm                               allnoconfig    clang-17
-arm                               allnoconfig    gcc-16.1.0
-arm                              allyesconfig    clang-23
-arm                              allyesconfig    gcc-16.1.0
-arm                                 defconfig    clang-23
-arm                                 defconfig    gcc-16.1.0
-arm                         lpc32xx_defconfig    clang-17
-arm                            randconfig-001    gcc-16.1.0
-arm                   randconfig-001-20260708    gcc-11.5.0
-arm                   randconfig-001-20260708    gcc-13.4.0
-arm                   randconfig-001-20260708    gcc-16.1.0
-arm                            randconfig-002    gcc-16.1.0
-arm                   randconfig-002-20260708    gcc-10.5.0
-arm                   randconfig-002-20260708    gcc-13.4.0
-arm                   randconfig-002-20260708    gcc-16.1.0
-arm                            randconfig-003    gcc-16.1.0
-arm                   randconfig-003-20260708    gcc-13.4.0
-arm                   randconfig-003-20260708    gcc-16.1.0
-arm                   randconfig-003-20260708    gcc-8.5.0
-arm                            randconfig-004    gcc-16.1.0
-arm                   randconfig-004-20260708    gcc-13.4.0
-arm                   randconfig-004-20260708    gcc-16.1.0
-arm                   randconfig-004-20260708    gcc-8.5.0
-arm64                            allmodconfig    clang-23
-arm64                             allnoconfig    gcc-16.1.0
-arm64                               defconfig    gcc-16.1.0
-arm64                          randconfig-001    gcc-9.5.0
-arm64                 randconfig-001-20260708    clang-23
-arm64                 randconfig-001-20260708    gcc-9.5.0
-arm64                          randconfig-002    gcc-9.5.0
-arm64                 randconfig-002-20260708    clang-23
-arm64                 randconfig-002-20260708    gcc-9.5.0
-arm64                          randconfig-003    gcc-9.5.0
-arm64                 randconfig-003-20260708    gcc-9.5.0
-arm64                          randconfig-004    gcc-9.5.0
-arm64                 randconfig-004-20260708    gcc-15.2.0
-arm64                 randconfig-004-20260708    gcc-9.5.0
-csky                             allmodconfig    gcc-16.1.0
-csky                              allnoconfig    gcc-16.1.0
-csky                                defconfig    gcc-16.1.0
-csky                           randconfig-001    gcc-9.5.0
-csky                  randconfig-001-20260708    gcc-11.5.0
-csky                  randconfig-001-20260708    gcc-9.5.0
-csky                           randconfig-002    gcc-9.5.0
-csky                  randconfig-002-20260708    gcc-9.5.0
-hexagon                          allmodconfig    clang-23
-hexagon                          allmodconfig    gcc-16.1.0
-hexagon                           allnoconfig    clang-23
-hexagon                           allnoconfig    gcc-16.1.0
-hexagon                             defconfig    clang-23
-hexagon                             defconfig    gcc-16.1.0
-hexagon                        randconfig-001    gcc-11.5.0
-hexagon               randconfig-001-20260708    clang-23
-hexagon               randconfig-001-20260708    gcc-11.5.0
-hexagon               randconfig-001-20260708    gcc-13.4.0
-hexagon                        randconfig-002    gcc-11.5.0
-hexagon               randconfig-002-20260708    clang-21
-hexagon               randconfig-002-20260708    gcc-11.5.0
-hexagon               randconfig-002-20260708    gcc-13.4.0
-i386                             allmodconfig    clang-22
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-16.1.0
-i386                             allyesconfig    clang-22
-i386                             allyesconfig    gcc-14
-i386                 buildonly-randconfig-001    clang-22
-i386        buildonly-randconfig-001-20260708    clang-22
-i386                 buildonly-randconfig-002    clang-22
-i386        buildonly-randconfig-002-20260708    clang-22
-i386                 buildonly-randconfig-003    clang-22
-i386        buildonly-randconfig-003-20260708    clang-22
-i386        buildonly-randconfig-003-20260708    gcc-14
-i386                 buildonly-randconfig-004    clang-22
-i386        buildonly-randconfig-004-20260708    clang-22
-i386        buildonly-randconfig-004-20260708    gcc-12
-i386                 buildonly-randconfig-005    clang-22
-i386        buildonly-randconfig-005-20260708    clang-22
-i386        buildonly-randconfig-005-20260708    gcc-14
-i386                 buildonly-randconfig-006    clang-22
-i386        buildonly-randconfig-006-20260708    clang-22
-i386        buildonly-randconfig-006-20260708    gcc-14
-i386                                defconfig    clang-22
-i386                                defconfig    gcc-16.1.0
-i386                  randconfig-001-20260708    clang-22
-i386                  randconfig-001-20260708    gcc-14
-i386                  randconfig-002-20260708    clang-22
-i386                  randconfig-002-20260708    gcc-14
-i386                  randconfig-003-20260708    clang-22
-i386                  randconfig-004-20260708    clang-22
-i386                  randconfig-004-20260708    gcc-14
-i386                  randconfig-005-20260708    clang-22
-i386                  randconfig-006-20260708    clang-22
-i386                  randconfig-007-20260708    clang-22
-i386                  randconfig-007-20260708    gcc-12
-i386                           randconfig-011    clang-22
-i386                  randconfig-011-20260708    gcc-14
-i386                           randconfig-012    clang-22
-i386                  randconfig-012-20260708    gcc-14
-i386                           randconfig-013    gcc-14
-i386                  randconfig-013-20260708    clang-22
-i386                  randconfig-013-20260708    gcc-14
-i386                           randconfig-014    clang-22
-i386                  randconfig-014-20260708    gcc-14
-i386                           randconfig-015    gcc-14
-i386                  randconfig-015-20260708    gcc-14
-i386                           randconfig-016    gcc-14
-i386                  randconfig-016-20260708    gcc-14
-i386                           randconfig-017    gcc-14
-i386                  randconfig-017-20260708    gcc-13
-i386                  randconfig-017-20260708    gcc-14
-loongarch                        allmodconfig    clang-19
-loongarch                        allmodconfig    clang-23
-loongarch                         allnoconfig    clang-20
-loongarch                         allnoconfig    gcc-16.1.0
-loongarch                           defconfig    clang-23
-loongarch                      randconfig-001    gcc-11.5.0
-loongarch             randconfig-001-20260708    gcc-11.5.0
-loongarch             randconfig-001-20260708    gcc-13.4.0
-loongarch                      randconfig-002    gcc-11.5.0
-loongarch             randconfig-002-20260708    clang-23
-loongarch             randconfig-002-20260708    gcc-11.5.0
-loongarch             randconfig-002-20260708    gcc-13.4.0
-m68k                             allmodconfig    gcc-16.1.0
-m68k                              allnoconfig    gcc-16.1.0
-m68k                             allyesconfig    clang-23
-m68k                             allyesconfig    gcc-16.1.0
-m68k                                defconfig    clang-23
-m68k                                defconfig    gcc-16.1.0
-microblaze                        allnoconfig    gcc-16.1.0
-microblaze                       allyesconfig    gcc-16.1.0
-microblaze                          defconfig    clang-23
-microblaze                          defconfig    gcc-16.1.0
-mips                             allmodconfig    gcc-16.1.0
-mips                              allnoconfig    gcc-16.1.0
-mips                             allyesconfig    gcc-16.1.0
-nios2                            allmodconfig    clang-20
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-23
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-23
-nios2                               defconfig    gcc-11.5.0
-nios2                          randconfig-001    gcc-11.5.0
-nios2                 randconfig-001-20260708    gcc-11.5.0
-nios2                 randconfig-001-20260708    gcc-13.4.0
-nios2                 randconfig-001-20260708    gcc-9.5.0
-nios2                          randconfig-002    gcc-11.5.0
-nios2                 randconfig-002-20260708    gcc-11.5.0
-nios2                 randconfig-002-20260708    gcc-13.4.0
-nios2                 randconfig-002-20260708    gcc-8.5.0
-openrisc                         allmodconfig    clang-20
-openrisc                         allmodconfig    gcc-16.1.0
-openrisc                          allnoconfig    clang-23
-openrisc                          allnoconfig    gcc-16.1.0
-openrisc                            defconfig    gcc-16.1.0
-parisc                           allmodconfig    gcc-16.1.0
-parisc                            allnoconfig    clang-23
-parisc                            allnoconfig    gcc-16.1.0
-parisc                           allyesconfig    clang-17
-parisc                           allyesconfig    gcc-16.1.0
-parisc                              defconfig    gcc-16.1.0
-parisc                         randconfig-001    clang-22
-parisc                randconfig-001-20260708    clang-22
-parisc                randconfig-001-20260708    gcc-12.5.0
-parisc                         randconfig-002    clang-22
-parisc                randconfig-002-20260708    clang-22
-parisc                randconfig-002-20260708    gcc-10.5.0
-parisc64                            defconfig    clang-23
-parisc64                            defconfig    gcc-16.1.0
-powerpc                          allmodconfig    gcc-16.1.0
-powerpc                           allnoconfig    clang-23
-powerpc                           allnoconfig    gcc-16.1.0
-powerpc                      bamboo_defconfig    clang-21
-powerpc                        randconfig-001    clang-22
-powerpc               randconfig-001-20260708    clang-22
-powerpc               randconfig-001-20260708    gcc-11.5.0
-powerpc                        randconfig-002    clang-22
-powerpc               randconfig-002-20260708    clang-22
-powerpc               randconfig-002-20260708    gcc-13.4.0
-powerpc64                      randconfig-001    clang-22
-powerpc64             randconfig-001-20260708    clang-22
-powerpc64             randconfig-001-20260708    clang-23
-powerpc64                      randconfig-002    clang-22
-powerpc64             randconfig-002-20260708    clang-22
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    clang-23
-riscv                             allnoconfig    gcc-16.1.0
-riscv                            allyesconfig    clang-23
-riscv                               defconfig    clang-23
-riscv                               defconfig    gcc-16.1.0
-riscv                          randconfig-001    clang-23
-riscv                 randconfig-001-20260708    clang-23
-riscv                 randconfig-001-20260708    gcc-8.5.0
-riscv                          randconfig-002    clang-23
-riscv                 randconfig-002-20260708    clang-23
-riscv                 randconfig-002-20260708    gcc-8.5.0
-s390                             allmodconfig    clang-17
-s390                             allmodconfig    clang-23
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-16.1.0
-s390                                defconfig    clang-18
-s390                                defconfig    gcc-16.1.0
-s390                           randconfig-001    clang-23
-s390                  randconfig-001-20260708    clang-20
-s390                  randconfig-001-20260708    clang-23
-s390                           randconfig-002    clang-23
-s390                  randconfig-002-20260708    clang-23
-sh                               allmodconfig    gcc-16.1.0
-sh                                allnoconfig    clang-23
-sh                                allnoconfig    gcc-16.1.0
-sh                               allyesconfig    clang-17
-sh                               allyesconfig    gcc-16.1.0
-sh                                  defconfig    gcc-14
-sh                                  defconfig    gcc-16.1.0
-sh                             randconfig-001    clang-23
-sh                    randconfig-001-20260708    clang-23
-sh                    randconfig-001-20260708    gcc-16.1.0
-sh                             randconfig-002    clang-23
-sh                    randconfig-002-20260708    clang-23
-sh                    randconfig-002-20260708    gcc-9.5.0
-sparc                             allnoconfig    clang-23
-sparc                             allnoconfig    gcc-16.1.0
-sparc                               defconfig    gcc-16.1.0
-sparc                 randconfig-001-20260708    gcc-16.1.0
-sparc                 randconfig-001-20260708    gcc-8.5.0
-sparc                 randconfig-002-20260708    gcc-8.5.0
-sparc64                          allmodconfig    clang-20
-sparc64                             defconfig    clang-23
-sparc64                             defconfig    gcc-14
-sparc64               randconfig-001-20260708    clang-22
-sparc64               randconfig-001-20260708    gcc-8.5.0
-sparc64               randconfig-002-20260708    clang-20
-sparc64               randconfig-002-20260708    gcc-8.5.0
-um                               allmodconfig    clang-17
-um                                allnoconfig    clang-17
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-16.1.0
-um                                  defconfig    clang-23
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260708    gcc-14
-um                    randconfig-001-20260708    gcc-8.5.0
-um                    randconfig-002-20260708    clang-23
-um                    randconfig-002-20260708    gcc-8.5.0
-um                           x86_64_defconfig    clang-23
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-22
-x86_64                            allnoconfig    clang-22
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-22
-x86_64               buildonly-randconfig-001    gcc-12
-x86_64      buildonly-randconfig-001-20260708    clang-22
-x86_64      buildonly-randconfig-001-20260708    gcc-12
-x86_64               buildonly-randconfig-002    gcc-12
-x86_64      buildonly-randconfig-002-20260708    gcc-12
-x86_64      buildonly-randconfig-002-20260708    gcc-14
-x86_64               buildonly-randconfig-003    gcc-12
-x86_64      buildonly-randconfig-003-20260708    gcc-12
-x86_64               buildonly-randconfig-004    gcc-12
-x86_64      buildonly-randconfig-004-20260708    clang-22
-x86_64      buildonly-randconfig-004-20260708    gcc-12
-x86_64               buildonly-randconfig-005    gcc-12
-x86_64      buildonly-randconfig-005-20260708    gcc-12
-x86_64      buildonly-randconfig-005-20260708    gcc-14
-x86_64               buildonly-randconfig-006    gcc-12
-x86_64      buildonly-randconfig-006-20260708    clang-22
-x86_64      buildonly-randconfig-006-20260708    gcc-12
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-22
-x86_64                randconfig-001-20260708    gcc-14
-x86_64                randconfig-002-20260708    clang-22
-x86_64                randconfig-002-20260708    gcc-14
-x86_64                randconfig-003-20260708    clang-22
-x86_64                randconfig-003-20260708    gcc-14
-x86_64                randconfig-004-20260708    clang-22
-x86_64                randconfig-004-20260708    gcc-14
-x86_64                randconfig-005-20260708    clang-22
-x86_64                randconfig-005-20260708    gcc-14
-x86_64                randconfig-006-20260708    gcc-14
-x86_64                         randconfig-011    gcc-14
-x86_64                randconfig-011-20260708    clang-22
-x86_64                randconfig-011-20260708    gcc-14
-x86_64                         randconfig-012    gcc-14
-x86_64                randconfig-012-20260708    clang-22
-x86_64                         randconfig-013    clang-22
-x86_64                randconfig-013-20260708    clang-22
-x86_64                         randconfig-014    gcc-14
-x86_64                randconfig-014-20260708    clang-22
-x86_64                randconfig-014-20260708    gcc-14
-x86_64                         randconfig-015    gcc-14
-x86_64                randconfig-015-20260708    clang-22
-x86_64                randconfig-015-20260708    gcc-14
-x86_64                         randconfig-016    clang-22
-x86_64                randconfig-016-20260708    clang-22
-x86_64                randconfig-071-20260708    clang-22
-x86_64                randconfig-072-20260708    clang-22
-x86_64                randconfig-073-20260708    clang-22
-x86_64                randconfig-074-20260708    clang-22
-x86_64                randconfig-074-20260708    gcc-14
-x86_64                randconfig-075-20260708    clang-22
-x86_64                randconfig-076-20260708    clang-22
-x86_64                randconfig-076-20260708    gcc-14
-x86_64                               rhel-9.4    clang-22
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-22
-x86_64                    rhel-9.4-kselftests    clang-22
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-22
-xtensa                            allnoconfig    clang-23
-xtensa                            allnoconfig    gcc-16.1.0
-xtensa                           allyesconfig    clang-20
-xtensa                           allyesconfig    gcc-16.1.0
-xtensa                randconfig-001-20260708    gcc-8.5.0
-xtensa                randconfig-002-20260708    gcc-16.1.0
-xtensa                randconfig-002-20260708    gcc-8.5.0
+> 
+> * I hate the idea of exposing information about physical (and virtual!)
+>   memory ranges to drivers arbitrarily, drivers are notorious for doing the
+>   wrong thing (TM) and this is just asking for people to do 'interesting'
+>   things with this stuff.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+flow:
+
+  kernel subsystems (owners of the data)
+       │  annotate their own symbols
+       ▼
+  meminspect table  (PA + size, kernel-internal)
+       │  pushed to registered backends only
+       ▼
+  platform backend driver  (e.g. qcom-minidump)
+       │  writes PA+size pairs to SMEM
+       ▼
+  firmware   ── actual consumer
+       │  reads kernel memory directly via hardware privilege
+       ▼
+  crash dump
+
+The driver should not dereference the addresses. It should not "do the wrong
+thing" with them beyond writing them into a firmware-readable table —
+which is its entire purpose.
+
+The closest upstream analogy is /proc/vmcoreinfo, which already exposes
+kernel symbol addresses, struct offsets, and memory layout to crash
+analysis tools. meminspect is a more selective, machine-readable variant
+of the same concept, scoped to platforms where kdump and pstore are not
+viable (no kexec support, RAM contents lost on reboot, no persistent
+storage).
+
+I can further fine tune only restrict to specific backend or remove traverse
+or notifier API that arbitrary code can call. The registration can be gated by
+backend platform driver, not by an open subscription API.
+
+If the concern is that future drivers will misuse the framework beyond
+its intended purpose i.e., a valid long-term worry, and I am  open
+to adding documentation constraints or restricting the API further
+(e.g., limiting to a single backend registration).
+
+> 
+> On Wed, Jul 08, 2026 at 11:01:40AM +0530, Mukesh Ojha wrote:
+> > From: Eugen Hristev <ehristev@kernel.org>
+> >
+> > Memory inspection mechanism allows registration of a specific
+> > memory area (or object) for later inspection purposes. Ranges are
+> > added into an inspection table, which can be requested and
+> > analyzed by specific drivers. Drivers would interface with any
+> > hardware mechanism that will allow inspection of the data,
+> > including but not limited to: dumping for debugging, creating a
+> > core dump, analysis, or statistical information. Drivers can
+> > register a notifier to know when new objects are registered, or
+> > to traverse an existing inspection table. The inspection table is
+> > created ahead of time such that it can be later used regardless
+> > of the state of the kernel (running, frozen, crashed, or any
+> > particular state).
+> 
+> This is the complete opposite of what a commit message should be...
+> 
+> Firstly it's an totally unacceptable, unreadable wall of text.
+> 
+> Secondly you're not at all describing what you're doing in this commit
+> here.
+> 
+> As far as I can tell from the code here, you're explicitly only supporting
+> ELF registered ranges (perhaps static also?)
+> 
+> I mean this is clearly not the whole thing, despite what the commit msg
+> suggests, as you have 25 further commits (!)
+> 
+> The commit message should explain WHAT THE PATCH IS DOING, the trade-offs,
+> the motivation, anything that needs to be called out.
+> 
+> It does absolutely none of that and instead you get what seems like
+> marketing copy in a giant unbroken, unreadable, paragraph.
+
+Surely, I could have explained more about the problem and how it
+tries to solve it, and its limitations if any, instead of just
+the introduction part.
+
+> 
+> >
+> > Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+> > Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> 
+> This patch is seriously far from being even vaguely upstreamable, and for
+> an effective v5 this is concerning.
+> 
+> > ---
+> >  Documentation/dev-tools/index.rst      |   1 +
+> >  Documentation/dev-tools/meminspect.rst | 144 ++++++++++
+> >  MAINTAINERS                            |   9 +
+> >  include/asm-generic/vmlinux.lds.h      |  13 +
+> >  include/linux/meminspect.h             | 270 +++++++++++++++++++
+> >  init/Kconfig                           |   1 +
+> >  kernel/Makefile                        |   1 +
+> >  kernel/meminspect/Kconfig              |  18 ++
+> >  kernel/meminspect/Makefile             |   3 +
+> >  kernel/meminspect/meminspect.c         | 474 +++++++++++++++++++++++++++++++++
+> >  10 files changed, 934 insertions(+)
+> 
+> This changelog is completely ridiculous for a single patch.
+> 
+> This is kernel 101 stuff... you don't send everything in a single commit
+> including documentation + MAINTAINERS changes...!
+> 
+> You have to split things up into logical parts.
+>
+
+I surely did a very poor job not changing too much from version
+v1. It is indeed waiting for such comments to be addressed for it
+to be on the right path, thank you, will split  it logically.
+
+> >
+> > diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/index.rst
+> > index 59cbb77b33ff..ea2989ca1566 100644
+> > --- a/Documentation/dev-tools/index.rst
+> > +++ b/Documentation/dev-tools/index.rst
+> > @@ -40,3 +40,4 @@ Documentation/process/debugging/index.rst
+> >     autofdo
+> >     propeller
+> >     container
+> > +   meminspect
+> > diff --git a/Documentation/dev-tools/meminspect.rst b/Documentation/dev-tools/meminspect.rst
+> > new file mode 100644
+> > index 000000000000..4ca10e33e4fd
+> > --- /dev/null
+> > +++ b/Documentation/dev-tools/meminspect.rst
+> > @@ -0,0 +1,144 @@
+> > +.. SPDX-License-Identifier: GPL-2.0
+> > +
+> > +==========
+> > +meminspect
+> > +==========
+> > +
+> > +This document provides information about the meminspect feature.
+> > +
+> > +Overview
+> > +========
+> > +
+> > +meminspect is a mechanism that allows the kernel to register a chunk of
+> > +memory into a table, to be used at a later time for a specific
+> > +inspection purpose like debugging, memory dumping or statistics.
+> 
+> What's a chunk of memory? Physical memory? MMIO ranges? Virtual ranges? Direct
+> map? Vmalloc?
+> 
+> Be more specific.
+
+That's a valid concern to be addressed; it should be a directly
+mapped region and should be documented and WARN on if it is not
+directly mapped memory.
+
+> 
+> > +
+> > +meminspect allows drivers to traverse the inspection table on demand,
+> > +or to register a notifier to be called whenever a new entry is being added
+> > +or removed.
+> 
+> I absolutely hate the idea of exposing a table of pointers to 'memory' that has
+> lifetime information to drivers with arbitrary context.
+> 
+> What about security?
+
+I see a point with the current implementation: meminspect core is
+more open in such a sense that anybody can register a notifier
+and traverse the table, so it really need not be a device.
+However, current users like qcom minidump and google debug-kinfo
+are platform drivers. I can fix that by removing notifiers and
+having the backend supply ops callbacks, like how the pstore
+backend does it.
+
+
+> 
+> > +
+> > +The reasoning for meminspect is also to minimize the required information
+> > +in case of a kernel problem. For example a traditional debug method involves
+> > +dumping the whole kernel memory and then inspecting it. Meminspect allows the
+> > +users to select which memory is of interest, in order to help this specific
+> > +use case in production, where memory and connectivity are limited.
+> 
+> Again this is so vague it's uselses...
+
+The intention of meminspect is to get minimal information from
+the kernel that gets registered with any backend firmware so that
+the firmware can dump it from a field device such as a mobile
+phone or any device..
+
+> 
+> > +
+> > +Although the kernel has multiple internal mechanisms, meminspect fits
+> > +a particular model which is not covered by the others.
+> 
+> This is nebulous nonsense you have to explain WHY and what exactly it gives that
+> others don't.
+> 
+> You can very well inspect specific areas of memory using
+
+Ack, it should rightly explain why the other models do not fit.
+
+> 
+> > +
+> > +meminspect Internals
+> > +====================
+> > +
+> > +API
+> > +---
+> > +
+> > +Static memory can be registered at compile time, by instructing the compiler
+> > +to create a separate section with annotation info.
+> > +For each such annotated memory (variables usually), a dedicated struct
+> > +is created with the required information.
+> > +To achieve this goal, some basic APIs are available:
+> > +
+> > +* MEMINSPECT_ENTRY(idx, sym, sz)
+> > +  is the basic macro that takes an ID, the symbol, and a size.
+> > +
+> > +To make it easier, some wrappers are also defined
+> > +
+> > +* MEMINSPECT_SIMPLE_ENTRY(sym)
+> > +  uses the dedicated MEMINSPECT_ID_##sym with a size equal to sizeof(sym)
+> > +
+> > +* MEMINSPECT_NAMED_ENTRY(name, sym)
+> > +  is a simple entry that has an id that cannot be derived from the sym,
+> > +  so a name has to be provided
+> > +
+> > +* MEMINSPECT_AREA_ENTRY(sym, sz)
+> > +  registers sym, but with the size given as sz, useful for e.g.
+> > +  arrays which do not have a fixed size at compile time.
+> > +
+> > +For dynamically allocated memory, or for other cases, the following APIs
+> > +are defined::
+> > +
+> > +  meminspect_register_id_pa(enum meminspect_uid id, phys_addr_t zone,
+> > +                            size_t size, unsigned int type);
+> > +
+> > +which takes the ID and the physical address.
+> 
+> What about lifetime?...
+> 
+> Exposing arbitrary physical memory to drivers is just a big nope.
+
+
+> 
+> > +
+> > +Similarly there are variations:
+> > +
+> > + * meminspect_register_pa() omits the ID
+> > + * meminspect_register_id_va() requires the ID but takes a virtual address
+> > + * meminspect_register_va() omits the ID and requires a virtual address
+> > +
+> > +If the ID is not given, the next available dynamic ID is allocated.
+> > +
+> > +To unregister a dynamic entry, some APIs are defined:
+> > + * meminspect_unregister_pa(phys_addr_t zone, size_t size);
+> > + * meminspect_unregister_id(enum meminspect_uid id);
+> > + * meminspect_unregister_va(va, size);
+> > +
+> > +All of the above have a lock variant that ensures the lock on the table
+> > +is taken.
+> > +
+> > +
+> > +meminspect drivers
+> > +------------------
+> > +
+> > +Drivers are free to traverse the table by using a dedicated function::
+> > +
+> > + meminspect_traverse(void *priv, meminspect_iter_cb_t cb)
+> > +
+> > +The callback is called for each entry in the table.
+> > +
+> > +Drivers can also register a notifier with meminspect_notifier_register()
+> > +and unregister with meminspect_notifier_unregister() to be called when a new
+> > +entry is added or removed.
+> > +
+> > +Data structures
+> > +---------------
+> > +
+> > +The regions are stored in a simple fixed size array. It avoids
+> > +memory allocation overhead. This is not performance critical nor does
+> > +allocating a few hundred entries create a memory consumption problem.
+> > +
+> > +The static variables registered into meminspect are annotated into
+> > +a dedicated .inspect_table memory section. This is then walked by meminspect
+> > +at a later time and each variable is then copied to the whole inspect table.
+> > +
+> > +meminspect Initialization
+> > +-------------------------
+> > +
+> > +At any time, meminspect is ready to accept region registration
+> > +from any part of the kernel. The table does not require any initialization.
+> 
+> 
+> 
+> > +In case CONFIG_CRASH_DUMP is enabled, meminspect creates an ELF header
+> > +corresponding to a core dump image, in which each region is added as a
+> > +program header. In this scenario, the first region is this ELF header, and
+> > +the second region is the vmcoreinfo ELF note.
+> > +By using this mechanism, all the meminspect table, if dumped, can be
+> > +concatenated to obtain a core image that is loadable with the `crash` tool.
+> > +
+> > +meminspect example
+> > +==================
+> > +
+> > +A simple scenario for meminspect is the following:
+> > +The kernel registers the linux_banner variable into meminspect with
+> > +a simple annotation like::
+> > +
+> > +  MEMINSPECT_SIMPLE_ENTRY(linux_banner);
+> > +
+> > +The meminspect late initcall will parse the compile-time table
+> > +and copy the entry information into the inspection table.
+> > +At a later point, any interested driver can call the traverse function to
+> > +find out all entries in the table.
+> > +A specific driver will then note into a specific table the address of the
+> > +banner and the size of it.
+> > +The specific table is then written to a shared memory area that can be
+> > +read by upper level firmware.
+> 
+> This feels like you're finding a way to export things that aren't exported...?!
+
+Umm... The intention was to share this information for debugging
+purposes.
+
+> 
+> > +When the kernel freezes (hypothetically), the kernel will no longer feed
+> > +the watchdog. The watchdog will trigger a higher exception level interrupt
+> > +which will be handled by the upper level firmware. This firmware will then
+> > +read the shared memory table and find an entry with the start and size of
+> > +the banner. It will then copy it for debugging purpose. The upper level
+> 
+> This feels like a giant workaround to provide EXPORT_SYMBOLS()
+
+Well, it was not an intention to share this with everybody but
+with the backend device representing a platform device.
+
+> 
+> > +firmware will then be able to provide useful debugging information,
+> > +like in this example, the banner.
+> > +
+> > +As seen here, meminspect facilitates the interaction between the kernel
+> > +and a specific firmware.
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index c3f72058a2f2..fdad8ef377c8 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -16892,6 +16892,15 @@ F:	arch/*/include/asm/sync_core.h
+> >  F:	include/uapi/linux/membarrier.h
+> >  F:	kernel/sched/membarrier.c
+> >
+> > +MEMINSPECT
+> > +M:	Eugen Hristev <eugen.hristev@linaro.org>
+> > +M:	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> > +L:	linux-kernel@vger.kernel.org
+> > +S:	Maintained
+> > +F:	Documentation/dev-tools/meminspect.rst
+> > +F:	include/linux/meminspect.h
+> > +F:	kernel/meminspect/*
+> > +
+> >  MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION
+> >  M:	Mike Rapoport <rppt@kernel.org>
+> >  L:	linux-mm@kvack.org
+> > diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+> > index 5659f4b5a125..3122ddf5517a 100644
+> > --- a/include/asm-generic/vmlinux.lds.h
+> > +++ b/include/asm-generic/vmlinux.lds.h
+> > @@ -506,6 +506,8 @@
+> >  	FW_LOADER_BUILT_IN_DATA						\
+> >  	TRACEDATA							\
+> >  									\
+> > +	MEMINSPECT_TABLE						\
+> > +									\
+> >  	PRINTK_INDEX							\
+> >  									\
+> >  	/* Kernel symbol table */					\
+> > @@ -904,6 +906,17 @@
+> >  #define TRACEDATA
+> >  #endif
+> >
+> > +#ifdef CONFIG_MEMINSPECT
+> > +#define MEMINSPECT_TABLE						\
+> > +	. = ALIGN(8);							\
+> > +	.inspect_table : AT(ADDR(.inspect_table) - LOAD_OFFSET) {	\
+> > +		BOUNDED_SECTION_POST_LABEL(.inspect_table,		\
+> > +					   __inspect_table, , _end)	\
+> > +	}
+> > +#else
+> > +#define MEMINSPECT_TABLE
+> > +#endif
+> > +
+> >  #ifdef CONFIG_PRINTK_INDEX
+> >  #define PRINTK_INDEX							\
+> >  	.printk_index : AT(ADDR(.printk_index) - LOAD_OFFSET) {		\
+> > diff --git a/include/linux/meminspect.h b/include/linux/meminspect.h
+> > new file mode 100644
+> > index 000000000000..a9eb93c6ea2f
+> > --- /dev/null
+> > +++ b/include/linux/meminspect.h
+> > @@ -0,0 +1,270 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +#ifndef _MEMINSPECT_H
+> > +#define _MEMINSPECT_H
+> > +
+> > +#include <asm/page.h>
+> > +#include <linux/notifier.h>
+> > +
+> > +enum meminspect_uid {
+> > +	MEMINSPECT_ID_NONE = 0,
+> > +	MEMINSPECT_ID_ELF,
+> > +	MEMINSPECT_ID_VMCOREINFO,
+> > +	MEMINSPECT_ID_CONFIG,
+> > +	MEMINSPECT_ID__totalram_pages,
+> > +	MEMINSPECT_ID___cpu_possible_mask,
+> > +	MEMINSPECT_ID___cpu_present_mask,
+> > +	MEMINSPECT_ID___cpu_online_mask,
+> > +	MEMINSPECT_ID___cpu_active_mask,
+> > +	MEMINSPECT_ID_mem_section,
+> > +	MEMINSPECT_ID_jiffies_64,
+> > +	MEMINSPECT_ID_linux_banner,
+> > +	MEMINSPECT_ID_nr_threads,
+> > +	MEMINSPECT_ID_total_nr_irqs,
+> > +	MEMINSPECT_ID_tainted_mask,
+> > +	MEMINSPECT_ID_taint_flags,
+> > +	MEMINSPECT_ID_node_states,
+> > +	MEMINSPECT_ID___per_cpu_offset,
+> > +	MEMINSPECT_ID_nr_swapfiles,
+> > +	MEMINSPECT_ID_init_uts_ns,
+> > +	MEMINSPECT_ID_printk_rb_static,
+> > +	MEMINSPECT_ID_printk_rb_dynamic,
+> > +	MEMINSPECT_ID_prb,
+> > +	MEMINSPECT_ID_prb_descs,
+> > +	MEMINSPECT_ID_prb_infos,
+> > +	MEMINSPECT_ID_prb_data,
+> > +	MEMINSPECT_ID_clear_seq,
+> > +	MEMINSPECT_ID_high_memory,
+> > +	MEMINSPECT_ID_init_mm,
+> > +	MEMINSPECT_ID__sinittext,
+> > +	MEMINSPECT_ID__einittext,
+> > +	MEMINSPECT_ID__end,
+> > +	MEMINSPECT_ID__text,
+> > +	MEMINSPECT_ID__stext,
+> > +	MEMINSPECT_ID__etext,
+> > +	MEMINSPECT_ID_kallsyms_num_syms,
+> > +	MEMINSPECT_ID_kallsyms_offsets,
+> > +	MEMINSPECT_ID_kallsyms_names,
+> > +	MEMINSPECT_ID_kallsyms_token_table,
+> > +	MEMINSPECT_ID_kallsyms_token_index,
+> > +	MEMINSPECT_ID_kallsyms_markers,
+> > +	MEMINSPECT_ID_kallsyms_seqs_of_names,
+> > +	MEMINSPECT_ID_swapper_pg_dir,
+> > +	MEMINSPECT_ID_DYNAMIC,
+> > +	MEMINSPECT_ID_MAX = 201,
+> 
+> Err why 201?
+
+Ideally, there should not be any limit, but to add more context,
+this was one of the backend limitation and should be removed from
+here.
+
+> 
+> > +};
+> 
+> This feels like a bunch of stuff you didn't document?
+
+If it looks worth documenting, I will do it..
+
+> 
+> > +
+> > +#define MEMINSPECT_TYPE_REGULAR		0
+> > +
+> > +#define MEMINSPECT_NOTIFIER_ADD		0
+> > +#define MEMINSPECT_NOTIFIER_REMOVE	1
+> 
+> Broken indentation...
+
+Ack.
+
+> 
+> > +
+> > +/**
+> > + * struct inspect_entry - memory inspect entry information
+> > + * @id: unique id for this entry
+> > + * @va: virtual address for the memory (pointer)
+> 
+> Err what?? Virtual address as mapped how? Are you now assuming things are
+> mapped?
+
+It should be directly mapped virtual addresses and should be
+documented.
+
+> 
+> > + * @pa: physical address for the memory
+> > + * @size: size of the memory area of this entry
+> > + * @type: type of the entry (class)
+> 
+> 'Class'?
+
+Ack.
+
+> 
+> > + */
+> > +struct inspect_entry {
+> > +	enum meminspect_uid	id;
+> > +	void			*va;
+> > +	phys_addr_t		pa;
+> > +	size_t			size;
+> > +	unsigned int		type;
+> > +};
+> > +
+> > +/**
+> > + * typedef meminspect_iter_cb_t - Iterator callback for meminspect traversal
+> > + * @priv: private data passed through from the caller of meminspect_traverse()
+> > + * @ie:   pointer to the current inspect_entry; read-only, table lock held
+> > + *
+> > + * The table lock is held by the caller; the callback must not call any
+> > + * meminspect_table_lock() or meminspect_table_unlock() variants.
+> > + */
+> > +typedef void (*meminspect_iter_cb_t)(void *priv, const struct inspect_entry *ie);
+> 
+> So drivers can now just access some tagged region, with a VA that err I
+> guess we just assume is valid when accessed and a PA that err I guess we
+> just assume is still being used for what it was tagged for?
+> 
+
+Currently, all the tagged one are trusted as directly mapped
+one.
+
+> This seems insane?
+> 
+> > +
+> > +#ifdef CONFIG_MEMINSPECT
+> > +/* .inspect_table section table markers*/
+> > +extern const struct inspect_entry __inspect_table[];
+> > +extern const struct inspect_entry __inspect_table_end[];
+> > +
+> > +/*
+> > + * Annotate a static variable into inspection table.
+> > + * Can be called multiple times for the same ID, in which case
+> > + * multiple table entries will be created
+> > + */
+> > +#define MEMINSPECT_ENTRY(idx, sym, sz)						\
+> > +	static const struct inspect_entry __UNIQUE_ID(__inspect_entry_##idx)	\
+> > +	__used __section(".inspect_table") = {					\
+> > +		.id = idx,							\
+> > +		.va = (void *)&(sym),						\
+> > +		.size = (sz),							\
+> > +	}
+> > +/*
+> > + * A simple entry is just a variable, the size of the entry is the variable size
+> > + * The variable can also be a pointer, the pointer itself is being added in this
+> > + * case.
+> > + */
+> > +#define MEMINSPECT_SIMPLE_ENTRY(sym)	\
+> > +	MEMINSPECT_ENTRY(MEMINSPECT_ID_##sym, sym, sizeof(sym))
+> > +/*
+> > + * In the case when `sym` is not a variable, but a member of a struct e.g.,
+> > + * and we cannot derive a name from it, a name must be provided.
+> > + */
+> > +#define MEMINSPECT_NAMED_ENTRY(name, sym)	\
+> > +	MEMINSPECT_ENTRY(MEMINSPECT_ID_##name, sym, sizeof(sym))
+> > +/*
+> > + * Create a more complex entry, by registering an arbitrary memory starting
+> > + * at sym. The size is provided as a parameter.
+> > + * This is used e.g. when the symbol is a start of an unknown sized array.
+> > + */
+> > +#define MEMINSPECT_AREA_ENTRY(sym, sz) \
+> > +	MEMINSPECT_ENTRY(MEMINSPECT_ID_##sym, sym, sz)
+> > +
+> > +/* Iterate through .inspect_table section entries */
+> > +#define for_each_meminspect_entry(__entry)		\
+> > +	for (__entry = __inspect_table;			\
+> > +	     __entry < __inspect_table_end;		\
+> > +	     __entry++)
+> > +
+> > +#else
+> > +#define MEMINSPECT_ENTRY(...)
+> > +#define MEMINSPECT_SIMPLE_ENTRY(...)
+> > +#define MEMINSPECT_NAMED_ENTRY(...)
+> > +#define MEMINSPECT_AREA_ENTRY(...)
+> > +#endif
+> > +
+> > +#ifdef CONFIG_MEMINSPECT
+> > +
+> > +/*
+> > + * Dynamic helpers to register entries.
+> > + * These do not lock the table, so use with caution.
+> > + */
+> > +void meminspect_register_id_pa(enum meminspect_uid id, phys_addr_t zone,
+> > +			       size_t size, unsigned int type);
+> > +void meminspect_table_lock(void);
+> > +void meminspect_table_unlock(void);
+> > +
+> > +#define meminspect_register_pa(...) \
+> > +	meminspect_register_id_pa(MEMINSPECT_ID_DYNAMIC, __VA_ARGS__, MEMINSPECT_TYPE_REGULAR)
+> > +
+> > +#define meminspect_register_id_va(id, va, size) \
+> > +	meminspect_register_id_pa(id, virt_to_phys(va), size, MEMINSPECT_TYPE_REGULAR)
+> > +
+> > +#define meminspect_register_va(...) \
+> > +	meminspect_register_id_va(MEMINSPECT_ID_DYNAMIC, __VA_ARGS__)
+> > +
+> > +void meminspect_unregister_pa(phys_addr_t zone, size_t size);
+> > +void meminspect_unregister_id(enum meminspect_uid id);
+> > +
+> > +#define meminspect_unregister_va(va, size) \
+> > +	meminspect_unregister_pa(virt_to_phys(va), size)
+> > +
+> > +void meminspect_traverse(void *priv, meminspect_iter_cb_t cb);
+> > +
+> > +/*
+> > + * Producers, or registrators, are advised to use the locked API below
+> > + */
+> > +#define meminspect_lock_register_pa(...)			\
+> > +	do {							\
+> > +		meminspect_table_lock();			\
+> > +		meminspect_register_pa(__VA_ARGS__);		\
+> > +		meminspect_table_unlock();			\
+> > +	} while (0)
+> > +
+> > +#define meminspect_lock_register_id_va(...)			\
+> > +	do {							\
+> > +		meminspect_table_lock();			\
+> > +		meminspect_register_id_va(__VA_ARGS__);		\
+> > +		meminspect_table_unlock();			\
+> > +	} while (0)
+> > +
+> > +#define meminspect_lock_register_va(...)			\
+> > +	do {							\
+> > +		meminspect_table_lock();			\
+> > +		meminspect_register_va(__VA_ARGS__);		\
+> > +		meminspect_table_unlock();			\
+> > +	} while (0)
+> > +
+> > +#define meminspect_lock_unregister_pa(...)			\
+> > +	do {							\
+> > +		meminspect_table_lock();			\
+> > +		meminspect_unregister_pa(__VA_ARGS__);		\
+> > +		meminspect_table_unlock();			\
+> > +	} while (0)
+> > +
+> > +#define meminspect_lock_unregister_va(...)			\
+> > +	do {							\
+> > +		meminspect_table_lock();			\
+> > +		meminspect_unregister_va(__VA_ARGS__);		\
+> > +		meminspect_table_unlock();			\
+> > +	} while (0)
+> > +
+> > +#define meminspect_lock_unregister_id(...)			\
+> > +	do {							\
+> > +		meminspect_table_lock();			\
+> > +		meminspect_unregister_id(__VA_ARGS__);		\
+> > +		meminspect_table_unlock();			\
+> > +	} while (0)
+> > +
+> > +#define meminspect_lock_traverse(...)				\
+> > +	do {							\
+> > +		meminspect_table_lock();			\
+> > +		meminspect_traverse(__VA_ARGS__);		\
+> > +		meminspect_table_unlock();			\
+> > +	} while (0)
+> > +
+> > +int meminspect_notifier_register(struct notifier_block *n);
+> > +int meminspect_notifier_unregister(struct notifier_block *n);
+> > +
+> > +#else
+> > +static inline void meminspect_register_id_pa(enum meminspect_uid id,
+> > +					     phys_addr_t zone,
+> > +					     size_t size, unsigned int type)
+> > +{
+> > +}
+> > +
+> > +static inline void meminspect_table_lock(void)
+> > +{
+> > +}
+> > +
+> > +static inline void meminspect_table_unlock(void)
+> > +{
+> > +}
+> > +
+> > +static inline void meminspect_unregister_pa(phys_addr_t zone, size_t size)
+> > +{
+> > +}
+> > +
+> > +static inline void meminspect_unregister_id(enum meminspect_uid id)
+> > +{
+> > +}
+> > +
+> > +static inline void meminspect_traverse(void *priv, meminspect_iter_cb_t cb)
+> > +{
+> > +}
+> > +
+> > +static inline int meminspect_notifier_register(struct notifier_block *n)
+> > +{
+> > +	return 0;
+> > +}
+> > +
+> > +static inline int meminspect_notifier_unregister(struct notifier_block *n)
+> > +{
+> > +	return 0;
+> > +}
+> > +
+> > +#define meminspect_register_pa(...)		do { } while (0)
+> > +#define meminspect_register_id_va(...)		do { } while (0)
+> > +#define meminspect_register_va(...)		do { } while (0)
+> > +#define meminspect_lock_register_pa(...)	do { } while (0)
+> > +#define meminspect_lock_register_va(...)	do { } while (0)
+> > +#define meminspect_lock_register_id_va(...)	do { } while (0)
+> > +#define meminspect_lock_traverse(...)		do { } while (0)
+> > +#define meminspect_lock_unregister_va(...)	do { } while (0)
+> > +#define meminspect_lock_unregister_pa(...)	do { } while (0)
+> > +#define meminspect_lock_unregister_id(...)	do { } while (0)
+> > +#endif
+> > +
+> > +#endif
+> > diff --git a/init/Kconfig b/init/Kconfig
+> > index fa42fb264c9c..adbe607b7b62 100644
+> > --- a/init/Kconfig
+> > +++ b/init/Kconfig
+> > @@ -2294,6 +2294,7 @@ config TRACEPOINTS
+> >  source "kernel/Kconfig.kexec"
+> >
+> >  source "kernel/liveupdate/Kconfig"
+> > +source "kernel/meminspect/Kconfig"
+> >
+> >  endmenu		# General setup
+> >
+> > diff --git a/kernel/Makefile b/kernel/Makefile
+> > index 1e1a31673577..7c74a4f94a81 100644
+> > --- a/kernel/Makefile
+> > +++ b/kernel/Makefile
+> > @@ -52,6 +52,7 @@ obj-y += locking/
+> >  obj-y += power/
+> >  obj-y += printk/
+> >  obj-y += irq/
+> > +obj-y += meminspect/
+> >  obj-y += rcu/
+> >  obj-y += livepatch/
+> >  obj-y += liveupdate/
+> > diff --git a/kernel/meminspect/Kconfig b/kernel/meminspect/Kconfig
+> > new file mode 100644
+> > index 000000000000..18ff511ad4cf
+> > --- /dev/null
+> > +++ b/kernel/meminspect/Kconfig
+> > @@ -0,0 +1,18 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +config MEMINSPECT
+> > +	bool "Allow the kernel to register memory regions for inspection purpose"
+> > +	depends on !CRASH_DUMP || DMA_CMA
+> 
+> Why does it depend on CONFIG_DMA_CMA?
+
+It uses CMA for contiguous memory to store ELF metadata for all
+segments, which will be the very first entry in the table. The
+dma_alloc_from_contiguous() and dma_common_contiguous_remap()
+APIs are used for this purpose.
+
+> 
+> > +	help
+> > +	  Inspection mechanism allows registration of a specific memory
+> > +	  area (or object) for later inspection purposes. Ranges are added
+> > +	  into an inspection table, which can be requested and analyzed by
+> > +	  specific drivers. Drivers would interface any hardware mechanism
+> > +	  that will allow inspection of the data, including but not limited
+> > +	  to: dumping for debugging, creating a coredump, analysis, or
+> > +	  statistical information.  The inspection table is created ahead
+> > +	  of time such that it can be later used regardless of the state of
+> > +	  the kernel (running, frozen, crashed, or any particular state).
+> 
+> Another wall of text and it's not at all clear what this is suppose to do,
+> this needs to be completely reworked.
+
+Ack.
+
+> 
+> > +
+> > +	  Note that modules using this feature must be rebuilt if this
+> > +	  option changes.
+> > diff --git a/kernel/meminspect/Makefile b/kernel/meminspect/Makefile
+> > new file mode 100644
+> > index 000000000000..09fd55e6d9cf
+> > --- /dev/null
+> > +++ b/kernel/meminspect/Makefile
+> > @@ -0,0 +1,3 @@
+> > +# SPDX-License-Identifier: GPL-2.0
+> > +
+> > +obj-$(CONFIG_MEMINSPECT) += meminspect.o
+> > diff --git a/kernel/meminspect/meminspect.c b/kernel/meminspect/meminspect.c
+> > new file mode 100644
+> > index 000000000000..d9d38f484f1f
+> > --- /dev/null
+> > +++ b/kernel/meminspect/meminspect.c
+> > @@ -0,0 +1,474 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/crash_core.h>
+> > +#include <linux/dma-map-ops.h>
+> > +#include <linux/errno.h>
+> > +#include <linux/meminspect.h>
+> > +#include <linux/notifier.h>
+> > +#include <linux/vmcore_info.h>
+> > +
+> > +static DEFINE_MUTEX(meminspect_lock);
+> > +static struct inspect_entry inspect_entries[MEMINSPECT_ID_MAX];
+> > +
+> > +static ATOMIC_NOTIFIER_HEAD(meminspect_notifier_list);
+> > +
+> > +#ifdef CONFIG_CRASH_DUMP
+> > +
+> > +#define CORE_STR "CORE"
+> > +
+> > +static struct elfhdr *ehdr;
+> > +static size_t elf_offset;
+> > +static bool elf_hdr_ready;
+> > +
+> > +static void append_kcore_note(char *notes, size_t *i, const char *name,
+> > +			      unsigned int type, const void *desc,
+> > +			      size_t descsz)
+> > +{
+> > +	struct elf_note *note = (struct elf_note *)&notes[*i];
+> > +
+> > +	note->n_namesz = strlen(name) + 1;
+> > +	note->n_descsz = descsz;
+> > +	note->n_type = type;
+> > +	*i += sizeof(*note);
+> > +	memcpy(&notes[*i], name, note->n_namesz);
+> > +	*i = ALIGN(*i + note->n_namesz, 4);
+> > +	memcpy(&notes[*i], desc, descsz);
+> > +	*i = ALIGN(*i + descsz, 4);
+> > +}
+> > +
+> > +static void append_kcore_note_nodesc(char *notes, size_t *i, const char *name,
+> > +				     unsigned int type, size_t descsz)
+> > +{
+> > +	struct elf_note *note = (struct elf_note *)&notes[*i];
+> > +
+> > +	note->n_namesz = strlen(name) + 1;
+> > +	note->n_descsz = descsz;
+> > +	note->n_type = type;
+> > +	*i += sizeof(*note);
+> > +	memcpy(&notes[*i], name, note->n_namesz);
+> > +	*i = ALIGN(*i + note->n_namesz, 4);
+> > +}
+> > +
+> > +static struct elf_phdr *elf_phdr_entry_addr(struct elfhdr *ehdr, int idx)
+> > +{
+> > +	struct elf_phdr *ephdr = (struct elf_phdr *)((size_t)ehdr + ehdr->e_phoff);
+> > +
+> > +	return &ephdr[idx];
+> > +}
+> > +
+> > +static int clear_elfheader(const struct inspect_entry *e)
+> > +{
+> > +	struct elf_phdr *phdr;
+> > +	struct elf_phdr *tmp_phdr;
+> > +	unsigned int phidx;
+> > +	unsigned int i;
+> > +
+> > +	for (i = 0; i < ehdr->e_phnum; i++) {
+> > +		phdr = elf_phdr_entry_addr(ehdr, i);
+> > +		if (phdr->p_paddr == e->pa &&
+> > +		    phdr->p_memsz == ALIGN(e->size, 4))
+> > +			break;
+> > +	}
+> > +
+> > +	if (i == ehdr->e_phnum) {
+> > +		pr_debug("Cannot find program header entry in elf\n");
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	phidx = i;
+> > +
+> > +	/* Clear program header */
+> > +	tmp_phdr = elf_phdr_entry_addr(ehdr, phidx);
+> > +	for (i = phidx; i < ehdr->e_phnum - 1; i++) {
+> > +		tmp_phdr = elf_phdr_entry_addr(ehdr, i + 1);
+> > +		phdr = elf_phdr_entry_addr(ehdr, i);
+> > +		memcpy(phdr, tmp_phdr, sizeof(*phdr));
+> > +		phdr->p_offset = phdr->p_offset - ALIGN(e->size, 4);
+> > +	}
+> > +	memset(tmp_phdr, 0, sizeof(*tmp_phdr));
+> > +	ehdr->e_phnum--;
+> > +
+> > +	elf_offset -= ALIGN(e->size, 4);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static void update_elfheader(const struct inspect_entry *e)
+> > +{
+> > +	struct elf_phdr *phdr;
+> > +
+> > +	phdr = elf_phdr_entry_addr(ehdr, ehdr->e_phnum++);
+> > +
+> > +	phdr->p_type = PT_LOAD;
+> > +	phdr->p_offset = elf_offset;
+> > +	phdr->p_vaddr = (elf_addr_t)e->va;
+> > +	if (e->pa)
+> > +		phdr->p_paddr = (elf_addr_t)e->pa;
+> > +	else
+> > +		phdr->p_paddr = (elf_addr_t)virt_to_phys(e->va);
+> > +
+> > +	phdr->p_filesz = ALIGN(e->size, 4);
+> > +	phdr->p_memsz = ALIGN(e->size, 4);
+> > +	phdr->p_flags = PF_R | PF_W;
+> > +	elf_offset += ALIGN(e->size, 4);
+> > +}
+> > +
+> > +/*
+> > + * This function prepares the elf header for the coredump image.
+> > + * Initially there is a single program header for the elf NOTE.
+> > + * The note contains the usual core dump information, and the vmcoreinfo.
+> > + */
+> > +static int init_elfheader(void)
+> > +{
+> > +	struct elf_phdr *phdr;
+> > +	void *notes;
+> > +	unsigned int elfh_size, buf_sz;
+> > +	unsigned int phdr_off;
+> > +	size_t note_len, i = 0;
+> > +	struct page *p;
+> > +
+> > +	struct elf_prstatus prstatus = {};
+> > +	struct elf_prpsinfo prpsinfo = {
+> > +		.pr_sname = 'R',
+> > +		.pr_fname = "vmlinux",
+> > +	};
+> > +
+> > +	/*
+> > +	 * Header buffer contains:
+> > +	 * ELF header, Note entry with PR status, PR ps info, and vmcoreinfo.
+> > +	 * Also, MEMINSPECT_ID_MAX program headers.
+> > +	 */
+> > +	elfh_size = sizeof(*ehdr);
+> > +	elfh_size += sizeof(struct elf_prstatus);
+> > +	elfh_size += sizeof(struct elf_prpsinfo);
+> > +	elfh_size += sizeof(VMCOREINFO_NOTE_NAME);
+> > +	elfh_size += ALIGN(vmcoreinfo_size, 4);
+> > +	elfh_size += (sizeof(*phdr)) * (MEMINSPECT_ID_MAX);
+> > +
+> > +	elfh_size = ALIGN(elfh_size, 4);
+> > +
+> > +	/* Length of the note is made of :
+> > +	 * 3 elf notes structs (prstatus, prpsinfo, vmcoreinfo)
+> > +	 * 3 notes names (2 core strings, 1 vmcoreinfo name)
+> > +	 * sizeof each note
+> > +	 */
+> > +	note_len = (3 * sizeof(struct elf_note) +
+> > +		    2 * ALIGN(sizeof(CORE_STR), 4) +
+> > +		    VMCOREINFO_NOTE_NAME_BYTES +
+> > +		    ALIGN(sizeof(struct elf_prstatus), 4) +
+> > +		    ALIGN(sizeof(struct elf_prpsinfo), 4) +
+> > +		    ALIGN(vmcoreinfo_size, 4));
+> > +
+> > +	buf_sz = elfh_size + note_len - ALIGN(vmcoreinfo_size, 4);
+> > +
+> > +	/* Never freed */
+> > +	p = dma_alloc_from_contiguous(NULL, buf_sz >> PAGE_SHIFT,
+> > +				      get_order(buf_sz), true);
+> > +	if (!p)
+> > +		return -ENOMEM;
+> > +
+> > +	ehdr = dma_common_contiguous_remap(p, buf_sz,
+> > +					   pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
+> > +					   __builtin_return_address(0));
+> > +	if (!ehdr) {
+> > +		dma_release_from_contiguous(NULL, p, buf_sz >> PAGE_SHIFT);
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	memset(ehdr, 0, elfh_size);
+> > +
+> > +	/* Assign Program headers offset, it's right after the elf header. */
+> > +	phdr = (struct elf_phdr *)(ehdr + 1);
+> > +	phdr_off = sizeof(*ehdr);
+> > +
+> > +	memcpy(ehdr->e_ident, ELFMAG, SELFMAG);
+> > +	ehdr->e_ident[EI_CLASS] = ELF_CLASS;
+> > +	ehdr->e_ident[EI_DATA] = ELF_DATA;
+> > +	ehdr->e_ident[EI_VERSION] = EV_CURRENT;
+> > +	ehdr->e_ident[EI_OSABI] = ELF_OSABI;
+> > +	ehdr->e_type = ET_CORE;
+> > +	ehdr->e_machine = ELF_ARCH;
+> > +	ehdr->e_version = EV_CURRENT;
+> > +	ehdr->e_ehsize = sizeof(*ehdr);
+> > +	ehdr->e_phentsize = sizeof(*phdr);
+> > +
+> > +	elf_offset = elfh_size;
+> > +
+> > +	notes = (void *)(((char *)ehdr) + elf_offset);
+> > +
+> > +	/* we have a single program header now */
+> > +	ehdr->e_phnum = 1;
+> > +
+> > +	phdr->p_type = PT_NOTE;
+> > +	phdr->p_offset = elf_offset;
+> > +	phdr->p_filesz = note_len;
+> > +
+> > +	/* advance elf offset */
+> > +	elf_offset += note_len;
+> > +
+> > +	strscpy(prpsinfo.pr_psargs, saved_command_line,
+> > +		sizeof(prpsinfo.pr_psargs));
+> > +
+> > +	append_kcore_note(notes, &i, CORE_STR, NT_PRSTATUS, &prstatus,
+> > +			  sizeof(prstatus));
+> > +	append_kcore_note(notes, &i, CORE_STR, NT_PRPSINFO, &prpsinfo,
+> > +			  sizeof(prpsinfo));
+> > +	append_kcore_note_nodesc(notes, &i, VMCOREINFO_NOTE_NAME, 0,
+> > +				 ALIGN(vmcoreinfo_size, 4));
+> > +
+> > +	ehdr->e_phoff = phdr_off;
+> > +
+> > +	/* This is the first coredump region, the ELF header */
+> > +	meminspect_register_id_pa(MEMINSPECT_ID_ELF, page_to_phys(p),
+> > +				  buf_sz, MEMINSPECT_TYPE_REGULAR);
+> > +
+> > +	/*
+> > +	 * The second region is the vmcoreinfo, which goes right after.
+> > +	 * It's being registered through vmcoreinfo.
+> > +	 */
+> > +
+> > +	return 0;
+> > +}
+> > +#endif
+> 
+> Put /* <condition> */ on the end of big #endif blocks please.
+
+Ack.
+
+> 
+> > +
+> > +/**
+> > + * meminspect_unregister_id() - Unregister region from inspection table.
+> > + * @id: region's id in the table
+> > + *
+> > + * Return: None
+> > + */
+> > +void meminspect_unregister_id(enum meminspect_uid id)
+> > +{
+> > +	struct inspect_entry *e;
+> > +
+> > +	WARN_ON(!mutex_is_locked(&meminspect_lock));
+> > +
+> > +	e = &inspect_entries[id];
+> > +	if (!e->id)
+> > +		return;
+> > +
+> > +	atomic_notifier_call_chain(&meminspect_notifier_list,
+> > +				   MEMINSPECT_NOTIFIER_REMOVE, e);
+> > +#ifdef CONFIG_CRASH_DUMP
+> > +	if (elf_hdr_ready)
+> > +		clear_elfheader(e);
+> > +#endif
+> > +	memset(e, 0, sizeof(*e));
+> > +}
+> > +EXPORT_SYMBOL_GPL(meminspect_unregister_id);
+> > +
+> > +/**
+> > + * meminspect_unregister_pa() - Unregister region from inspection table.
+> > + * @pa: Physical address of the memory region to remove
+> > + * @size: Size of the memory region to remove
+> > + *
+> > + * Return: None
+> > + */
+> > +void meminspect_unregister_pa(phys_addr_t pa, size_t size)
+> > +{
+> > +	struct inspect_entry *e;
+> > +	enum meminspect_uid i;
+> > +
+> > +	WARN_ON(!mutex_is_locked(&meminspect_lock));
+> > +
+> > +	for (i = MEMINSPECT_ID_ELF; i < MEMINSPECT_ID_MAX; i++) {
+> > +		e = &inspect_entries[i];
+> > +		if (e->pa != pa)
+> > +			continue;
+> > +		if (e->size != size)
+> > +			continue;
+> > +		meminspect_unregister_id(e->id);
+> > +		return;
+> > +	}
+> > +}
+> > +EXPORT_SYMBOL_GPL(meminspect_unregister_pa);
+> > +
+> > +/**
+> > + * meminspect_register_id_pa() - Register region into inspection table
+> > + *		 with given ID and physical address.
+> > + * @req_id: Requested unique meminspect_uid that identifies the region
+> > + *	This can be MEMINSPECT_ID_DYNAMIC, in which case the function will
+> > + *	find an unused ID and register with it.
+> > + * @pa: physical address of the memory region
+> > + * @size: region size
+> > + * @type: region type
+> > + *
+> > + * Return: None
+> > + */
+> > +void meminspect_register_id_pa(enum meminspect_uid req_id, phys_addr_t pa,
+> > +			       size_t size, unsigned int type)
+> > +{
+> > +	struct inspect_entry *e;
+> > +	enum meminspect_uid uid = req_id;
+> > +
+> > +	WARN_ON(!mutex_is_locked(&meminspect_lock));
+> > +
+> > +	if (uid <= MEMINSPECT_ID_NONE || uid >= MEMINSPECT_ID_MAX)
+> > +		return;
+> > +
+> > +	if (uid == MEMINSPECT_ID_DYNAMIC)
+> > +		while (uid < MEMINSPECT_ID_MAX) {
+> > +			if (!inspect_entries[uid].id)
+> > +				break;
+> > +			uid++;
+> > +		}
+> > +
+> > +	if (uid == MEMINSPECT_ID_MAX)
+> > +		return;
+> > +
+> > +	e = &inspect_entries[uid];
+> > +
+> > +	if (e->id)
+> > +		meminspect_unregister_id(e->id);
+> > +
+> > +	e->pa = pa;
+> > +	e->va = phys_to_virt(pa);
+> > +	e->size = size;
+> > +	e->id = uid;
+> > +	e->type = type;
+> > +#ifdef CONFIG_CRASH_DUMP
+> > +	if (elf_hdr_ready)
+> > +		update_elfheader(e);
+> > +#endif
+> > +	atomic_notifier_call_chain(&meminspect_notifier_list,
+> > +				   MEMINSPECT_NOTIFIER_ADD, e);
+> > +}
+> > +EXPORT_SYMBOL_GPL(meminspect_register_id_pa);
+> > +
+> > +/**
+> > + * meminspect_table_lock() - Lock the mutex on the inspection table
+> > + *
+> > + * Return: None
+> > + */
+> > +void meminspect_table_lock(void)
+> > +{
+> > +	mutex_lock(&meminspect_lock);
+> > +}
+> > +EXPORT_SYMBOL_GPL(meminspect_table_lock);
+> > +
+> > +/**
+> > + * meminspect_table_unlock() - Unlock the mutex on the inspection table
+> > + *
+> > + * Return: None
+> > + */
+> > +void meminspect_table_unlock(void)
+> > +{
+> > +	mutex_unlock(&meminspect_lock);
+> > +}
+> > +EXPORT_SYMBOL_GPL(meminspect_table_unlock);
+> > +
+> > +/**
+> > + * meminspect_traverse() - Traverse the meminspect table and call the
+> > + *		callback function for each valid entry.
+> > + * @priv: private data to be passed to the callback
+> > + * @cb: meminspect iterator callback that should be called for each entry
+> > + *
+> > + * Return: None
+> > + */
+> > +void meminspect_traverse(void *priv, meminspect_iter_cb_t cb)
+> > +{
+> > +	const struct inspect_entry *e;
+> > +	int i;
+> > +
+> > +	WARN_ON(!mutex_is_locked(&meminspect_lock));
+> > +
+> > +	for (i = MEMINSPECT_ID_ELF; i < MEMINSPECT_ID_MAX; i++) {
+> > +		e = &inspect_entries[i];
+> > +		if (e->id)
+> > +			cb(priv, e);
+> > +	}
+> > +}
+> > +EXPORT_SYMBOL_GPL(meminspect_traverse);
+> > +
+> > +/**
+> > + * meminspect_notifier_register() - Register a notifier to meminspect table
+> > + * @n: notifier block to register. This will be called whenever an entry
+> > + *		is being added or removed.
+> > + *
+> > + * Return: errno
+> > + */
+> > +int meminspect_notifier_register(struct notifier_block *n)
+> > +{
+> > +	return atomic_notifier_chain_register(&meminspect_notifier_list, n);
+> > +}
+> > +EXPORT_SYMBOL_GPL(meminspect_notifier_register);
+> > +
+> > +/**
+> > + * meminspect_notifier_unregister() - Unregister a previously registered
+> > + *		notifier from meminspect table.
+> > + * @n: notifier block to unregister.
+> > + *
+> > + * Return: errno
+> > + */
+> > +int meminspect_notifier_unregister(struct notifier_block *n)
+> > +{
+> > +	return atomic_notifier_chain_unregister(&meminspect_notifier_list, n);
+> > +}
+> > +EXPORT_SYMBOL_GPL(meminspect_notifier_unregister);
+> > +
+> > +#ifdef CONFIG_CRASH_DUMP
+> > +static int __init meminspect_prepare_crashdump(void)
+> > +{
+> > +	const struct inspect_entry *e;
+> > +	int ret;
+> > +	enum meminspect_uid i;
+> > +
+> > +	ret = init_elfheader();
+> > +
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	/*
+> > +	 * Some regions may have been registered very early.
+> > +	 * Update the elf header for all existing regions,
+> > +	 * except for MEMINSPECT_ID_ELF and MEMINSPECT_ID_VMCOREINFO,
+> > +	 * those are included in the ELF header upon its creation.
+> > +	 */
+> > +	for (i = MEMINSPECT_ID_VMCOREINFO + 1; i < MEMINSPECT_ID_MAX; i++) {
+> > +		e = &inspect_entries[i];
+> > +		if (e->id)
+> > +			update_elfheader(e);
+> > +	}
+> > +
+> > +	elf_hdr_ready = true;
+> > +
+> > +	return 0;
+> > +}
+> > +#endif
+> > +
+> > +static int __init meminspect_prepare_table(void)
+> > +{
+> > +	const struct inspect_entry *e;
+> > +	enum meminspect_uid i;
+> > +	int ret;
+> > +
+> > +	meminspect_table_lock();
+> > +	/*
+> > +	 * First, copy all entries from the compiler built table
+> > +	 * In case some entries are registered multiple times,
+> > +	 * the last chronological entry will be stored.
+> > +	 * Previously registered entries will be dropped.
+> > +	 */
+> > +	for_each_meminspect_entry(e) {
+> > +		inspect_entries[e->id] = *e;
+> > +		if (!inspect_entries[e->id].pa && inspect_entries[e->id].va)
+> > +			inspect_entries[e->id].pa = virt_to_phys(inspect_entries[e->id].va);
+> > +	}
+> > +#ifdef CONFIG_CRASH_DUMP
+> > +	ret = meminspect_prepare_crashdump();
+> > +	if (ret)
+> > +		pr_warn("meminspect: failed to prepare crashdump ELF header: %d\n", ret);
+> > +#endif
+> > +	/* if we have early notifiers registered, call them now */
+> > +	for (i = MEMINSPECT_ID_ELF; i < MEMINSPECT_ID_MAX; i++)
+> > +		if (inspect_entries[i].id)
+> > +			atomic_notifier_call_chain(&meminspect_notifier_list,
+> > +						   MEMINSPECT_NOTIFIER_ADD,
+> > +						   &inspect_entries[i]);
+> > +	meminspect_table_unlock();
+> > +
+> > +	pr_debug("Memory inspection table initialized\n");
+> > +
+> > +	return 0;
+> > +}
+> > +late_initcall(meminspect_prepare_table);
+> >
+> > --
+> > 2.53.0
+> >
+> 
+> Thanks, Lorenzo
+
+-- 
+-Mukesh Ojha
 
