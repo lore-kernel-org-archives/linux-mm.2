@@ -4,128 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68625C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 11:47:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 710A4C43602
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 11:47:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14D5B6B0005; Wed,  8 Jul 2026 07:47:11 -0400 (EDT)
+	id 6F2FD6B00A5; Wed,  8 Jul 2026 07:47:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FDD86B008A; Wed,  8 Jul 2026 07:47:11 -0400 (EDT)
+	id 6A3CF6B00A6; Wed,  8 Jul 2026 07:47:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0139B6B0092; Wed,  8 Jul 2026 07:47:10 -0400 (EDT)
+	id 5BA7B6B00A7; Wed,  8 Jul 2026 07:47:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CF2746B0005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:47:10 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 54A2B1A070B
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:47:10 +0000 (UTC)
-X-FDA: 84965433420.22.711B9D7
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D5F9920002
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:47:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=thingy.jp header.s=google header.b=anB4SJg7;
-	spf=pass (imf31.hostedemail.com: domain of daniel@0x0f.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783511228;
-	b=abQhiUtIvLcmeO+YSjljdD/l7wvTurh7UFNxCPHTPySUDn/caalZiyb//P4HMeI1cYHPmZ
-	b/XEaPIFUohwmQDjzpNOvjEhM7da6UyX1BC9frQeAR5RWlZ4+qRRsJkYggaWhmQ5gE4YVm
-	gbJ7EOs+mFV0B1JZHVyhGLe/XhtRVLw=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=thingy.jp header.s=google header.b=anB4SJg7;
-	spf=pass (imf31.hostedemail.com: domain of daniel@0x0f.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=daniel@0x0f.com;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783511228;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AA7E6B00A5
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:47:37 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BAA1A91405
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:47:36 +0000 (UTC)
+X-FDA: 84965434512.13.3A66B04
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EC4AC40003
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:47:34 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OzVWildZ;
+	spf=pass (imf27.hostedemail.com: domain of praan@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783511254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e9LcL2EmsnAfaS8zlx+7ddixnoRQmUi/LbnHQfSgG2I=;
-	b=4OnHVGlef8NW/O5oNaNXhCnffxzE+pjvA/kRbfVO6PXZrJPACp3+Qm5H2znt5RENOc4TJA
-	JiSJGs9NgNCLOGkXkfDMU83cOuDmCXM3RSgmPjzHZDjyGDVWvlLh3E/EwXyFvu0aZgAijM
-	yoVFRGB8cZ05hZIwkdTgYVzJuGY1V1o=
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-385b78b44a0so586092a91.0
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 04:47:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783511226; cv=none;
-        d=google.com; s=arc-20260327;
-        b=isPkTAk2dTC/aPley3WFCP4oPdPh6gcmjxfCfP0mmncxFhUbTFSQl4Gw2lHpiib8ob
-         GpdyDrb/+BDi+P3yW8LmgCkb/FwjXkTSIxtxNcJbm2/Gy4x05L3MVSkiCsbsplq7/ac7
-         a0fOs3pSc6/CmVKRIqjdxuV1RL+FSJCI8KVFy3MsxAGOPV6uksPQP68ov9U7G0QOgHfP
-         ALI9pbEHjcvEElYbKrC/D1X5xhjC8r9kchGfKOag8oxqkg4i2iKAP4s9Yl3Y77NKNGSJ
-         m2T1UG7RCazq8330ZtPYvhvS0k+hoEYcnKKC7gx1FrXrS15LGXkAJs4QvQUpt4EJ5C3y
-         +tyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=e9LcL2EmsnAfaS8zlx+7ddixnoRQmUi/LbnHQfSgG2I=;
-        fh=POuKkLZc+RcoehNikg5LR574ALtRCwvvPwV87CGtUGw=;
-        b=kjilGfGBn9ME8p5Dxn9KG+mcxQbhp7nmehhdQYUHDBQTrS7ILLhNLS7KFObpH/Mfpx
-         f+DWAHeqx0YFzUmO5kzS61sLe5oyBUPk+HgYiI61KSpAUHPgKoRbPz6NMOkdxK0OaOST
-         92xJbf0xEx4pCzBbZ+VeYE9TPoMIqtTauOwsn0auJycjPAAmOVDVotAEDD2CWP3DlYlT
-         1aaMookhNRnurs3ZWkmlctxxjuEmH9Yby2HF+zZRyNHjVCTUSBHWAYY4HwYcQF0Y0Kb5
-         V9mxJ6pXB2gzSegDx3lbA1UvJCA1q49iRXAJZaBxqZ++0nqrPLATgFBY1rS/XTv44Guy
-         MmZw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=yQthvAmb6mZfzW7rEXSGGNwecmdXpDNmUVxAWD35bFk=;
+	b=dnnf8766XUK9hBdc3Hbm4rt7Zr3mOfLN0cjHMoD0tnRjWvaUio79WqN15gyCn+mIMakYCR
+	QweRnAnSuzH4RfIf/Br+z2IPFjX3kci58vUuzftgP5pL0Wf2UNQ2syeZmV4e5rPprkhhdv
+	TfbwiUIGEyDs++mvWZ59mZo5AsyYLU8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OzVWildZ;
+	spf=pass (imf27.hostedemail.com: domain of praan@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783511254;
+	b=D4e6X7KF1eBxli0hK6INsdycHMa1Ug9SPeODkJAq1uhEowp0d3U3odVhV98Fqi0kE0uwNr
+	Dv9HDryOjy6wZJRk8COEpoxwAMV6+JPJOK1w+1MS4haCUYtblLbdSXL7E4zcudmtx19krp
+	xkwAVOjZefSoPxlRBKZuLuyLGOd6PyI=
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cab97c86bdso76715ad.1
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 04:47:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thingy.jp; s=google; t=1783511226; x=1784116026; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=e9LcL2EmsnAfaS8zlx+7ddixnoRQmUi/LbnHQfSgG2I=;
-        b=anB4SJg7EQy6EBVoWl1ieYJxkQB8lx0W3/CUUsMrtb6/dof3kidmWNeG+67cHVGjmK
-         sDKF5iedlxkK33w1Jc6/8YJdikxUWKR05Xfs8bwx31XSoimKm0fwoTKtxdaGKmxwXHDY
-         BAytpXXdgWEia76LKzbiAZQCbm/2I4Z/35aBg=
+        d=google.com; s=20251104; t=1783511254; x=1784116054; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=yQthvAmb6mZfzW7rEXSGGNwecmdXpDNmUVxAWD35bFk=;
+        b=OzVWildZPWSVOwFhHsNIudOIAsA58vOpoGzKXkPmHSfqPpBNxudlqsGFizI7DbkOwJ
+         7jsz7ugPiOAxV4t+BlFTpTjh6rl+fLFlC57Do1KFtMf0aVo0nKJOnICYb4tXFD84Ebe4
+         tdiGznIpbA5tng7ZXF1U34YGADfvG6UREoWd9jyjOJ/PXsFBeY/XMekbmGmdV4RETRIC
+         DT6uPNTVXwCtf78VUGhkZpAvlpDwhkHWkj8jlLIci8mMRbse7nQQI0UWui33mK9uSXj8
+         H9PL7WDBq4FQJhJz3HwhNlpIAS4r3YPkMlKGBLrduJOcAG1cGdDqp4AhWaHyqTJBFC3f
+         FP1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783511226; x=1784116026;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e9LcL2EmsnAfaS8zlx+7ddixnoRQmUi/LbnHQfSgG2I=;
-        b=RzFvM6GgDeatsfmSo64KLSZbvc6yPSdM7RLk8LJ1Rjxfl3p8Be5MWwnygozguuEJlm
-         kriUmtPNUpCXkCiERQ5Hb7lN65HtqKC/QWADFegBRW/AT4QJWHY2GX6j/8Na8J3+LTdV
-         7Bzl7GjM67ngyTnFASI4Z3cIGT+7MeWqSXPxKFtyMHhthG+pg55drhEx2GkZykv3QmI3
-         lejQkk27kLeJeJ+/N+eFFcwlnQLmtMYzr1Q65J9L7oy7JLlZzRNIGdLDJCrhA/47uRrx
-         FF0F86pQaAGNVQ3TJQPnXo3H+B4SDngXmZTT4q9qLJVtKcqrj12PUBbgxPUUivxGM4Ge
-         6ubQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrHmDHFaqDXaY/voR1OitikxLSuTXjRlD3/KA95Bu2YBmVhEZLttNe+HDKwVSOqnO14u9Xk5+HXRQ==@kvack.org
-X-Gm-Message-State: AOJu0YwA8z9o1tIoyRu32s+AqOpo5xy1jgByWGmz/gV3N3pGuD2Hlecf
-	wSY2D/wrAUCGPMx57JBFULJw1C/IwXN/lcoKwHzQNgbQgt5jcV6dEH/ZXBowsdmeme3g+8qT9/d
-	5cB2Ps7vZc5jZytiD3Fy7MeQBvj3Pop3DNOaZ0Si0pA==
-X-Gm-Gg: AfdE7cm0mgeXfyza6Ug6KpUM+BAdI1kIFnJmxtFJdk+DP56EIZDv8CTjycIMcbmxBdE
-	5XaikM8LqlJIPbrR204l0LqzW1aKbTwvUmUZr+eZgLz7e4ggc8onpDc+QuCc+v8cJYWrcnEwwjH
-	vimoJiX6RXdOP/RqRSXrdi2mSF3WEuVtXvxAzUT6iXWPkU8kPAeONiTfXLlvi85ETTExnrEvw2R
-	H5U+Si263DeHgbV4WjkiY2VTd/1EvnXwyCegSSqwf116TcJP/KIuz/jJ/oH0C68pBKjmEOvrhJa
-	60ihL4+7HAJwTiGbLNqt/iU92kF3fZo=
-X-Received: by 2002:a05:6a20:12cf:b0:3b3:fdb0:2288 with SMTP id
- adf61e73a8af0-3c0bc55cd9amr3035041637.0.1783511226436; Wed, 08 Jul 2026
- 04:47:06 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783511254; x=1784116054;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=yQthvAmb6mZfzW7rEXSGGNwecmdXpDNmUVxAWD35bFk=;
+        b=UHNSxNI01wAErSKKIR9JxoBc0Y8B5A9nFNVZkXoK+9BsVPTe6ABVPl5ZQ2geEzm5fh
+         6VvQOzYVZt0OUdp0WmNUK7qlti3XSEx0SpV6Zqu/ILDLl1F88pp7hH+K5LBeJQSwtpe6
+         G0oNy1aGSeGJj+wDOZHyoZZppoTyOuA9mtQRdHLV+0ppyNBOhnPVUvKnZch7g+of75Ni
+         QDFVbqUmwdy71iw9nGwB8sa+1e8LAYwOCKG9rohvWyGp80zRvnWAywtfJR2dJ9Z3k7yw
+         dS3NUgcXYz9PVp9jXxSHtMBgw5/HGSrgwULJDgawt5rtaxJGwvdbRmoLnW3/mp+c//40
+         3eLg==
+X-Forwarded-Encrypted: i=1; AHgh+RpVpKQm4LcaSMbMfyebjnEinPjCh2Wkr1gvrFGfH573w60bnNn4r+4HH8LkFFHlgn4lU9tWlvRetg==@kvack.org
+X-Gm-Message-State: AOJu0YyhcQTBnd6QLodW4Kefi/M3h0r0FEL+vqBqPmf7P94STe8Jo6Gw
+	Mgrc2t65YE66mBnrpDir3Fbwl9LDKr0ru9gIHoldQcxGa4cf7x4egrcv1m5GMFx4Fw==
+X-Gm-Gg: AfdE7cnPOxYsqWcfm6MTk9/a0YE/2RoYC0FaJfASTMvh4IJc1zzditiRNMFbQ0IMibp
+	cgKd39M4MNuAhHLbkW52bQS/b2zfg+98p9TzeFoTvA8stFiE4AfH0M1e/df3UH6yUSNKQtuczNr
+	jcNMGeBDWf1DaQR+f8oGWSeSi2gDzF92npTAC1u+xyNyeoM8aTXXoW+8PPlbbdYiN/5OArrv2jR
+	h6W/WP0YjkWj6oTYNG0A6wX/w/hNJDShJZ6DAPSd9RvrCtjdLc6tjYZTmIXpQhIuo3QYWe29kaT
+	lEpAmWPd8vltgfD0D6rQ5xZofS0TSGBcBxnHoSql9EFx6YIckAwJ/ICvvWi0CCjZBCyWXR8seGh
+	GsYy/c7PC/NWQwmFLNgbzRKUyMgz/kEE8Ek41wlZRqeZLRMua421mz9OjNlRViGVlsJGjsDTVfT
+	PtnEEebr4ZL7xBSvwrwRg/cF2mIVfVa/8Sw15kK2faEdSwtxI=
+X-Received: by 2002:a17:903:2442:b0:2c7:a13a:7fe6 with SMTP id d9443c01a7336-2ccc9c48162mr6446945ad.10.1783511253251;
+        Wed, 08 Jul 2026 04:47:33 -0700 (PDT)
+Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d36676easm2656833a91.9.2026.07.08.04.47.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 04:47:32 -0700 (PDT)
+Date: Wed, 8 Jul 2026 11:47:27 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Trond Myklebust <trondmy@kernel.org>, linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Anna Schumaker <anna@kernel.org>,
+	Shivaji Kant <shivajikant@google.com>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 6/7] nfs: Optimize direct I/O to use folios for
+ requests
+Message-ID: <ak44z-X-SKKhkBkg@google.com>
+References: <20260616134000.2733403-7-praan@google.com>
+ <7ee3bcfdd6126c93cbb1c219bf601182b95c10d9.camel@kernel.org>
+ <ajGGpDvzZdkGtSbN@google.com>
+ <ajP8ZTTLYkICFTO_@infradead.org>
+ <ajQ21kH1ZVajS2Y7@casper.infradead.org>
+ <aj4iiD5C_yyLeb3U@infradead.org>
+ <akevQfFVteCOD6LM@google.com>
+ <akfAgy52s_Gch2KG@infradead.org>
+ <akzsO_vmYX_7Umjd@google.com>
+ <ak4A6IEmWNi27I2d@infradead.org>
 MIME-Version: 1.0
-References: <20260523130445.1101818-1-daniel@thingy.jp> <20260629205854.0062b1fc9588ba9928bb1707@linux-foundation.org>
-In-Reply-To: <20260629205854.0062b1fc9588ba9928bb1707@linux-foundation.org>
-From: Daniel Palmer <daniel@thingy.jp>
-Date: Wed, 8 Jul 2026 20:46:53 +0900
-X-Gm-Features: AVVi8CfinkEnutyTpIrgqLtLXGqwtm_mnz0TIuLo6KCJIR5SV-U6B6T7w6u6n30
-Message-ID: <CAFr9PX=2sZxr2BaisdnX4nB5zvM7J9zkU6zWihd8mNxOJ=TudQ@mail.gmail.com>
-Subject: Re: [PATCH] tmpfs/ramfs: Let memfd_create() work on nommu
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ak4A6IEmWNi27I2d@infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D5F9920002
-X-Stat-Signature: qjstbus9utqo18eynmwzua7o9gn6fkok
-X-HE-Tag: 1783511227-457328
-X-HE-Meta: U2FsdGVkX182z9j/dlLc7i01R7s0pA98AJJGu2YbSrdQGJMWp49ZiFwhW7PXaVoyPoSkxNmbTcFtL/n8HrtbaAi1YdW+5vUauL5pdj9yixfHlcOp1UmvdU0DM+Lq+3RGIUHqnT6jBOBKfxuCEa85snIoQIogMyU7VM/M7J1IvNNEtWvNLQe+frb1YxGYZlv0m6Ff5eRtfHlPQN1EMQEn6NKUDwtrv2Bv2jSxW1tHc2kUkr0ZPjvpLHgTtu2AD58ej6sIiJ9nP8RsToOV05n5ZP5saavHg9taFN3cIgrh+92xfoo/8XqwuLUKTufJsLiHclRr790MBu66UQ4WRsa6Mb/RoPBIVfqOk9doS3UgILzg/ViSJx4tLcD/yNt0psfCNz+DtpKQ7r3sJJYHGQnKxwDWMqUw4y4WdpUlEhqRkvcrXCYAiwYort2YlJgIvWgfwjdPJEhPMdeIDbReMZ8Ipb05KXHxaDpMP/nhzg7KJ8BgQaL2cmqG8eSnx+U7S8KtyNcLrZfCoASvwW6TH1667iH11wT5ZvtfoBQ2o84wv32x0bs5682Zgvda8zvT+HzcjJKVhD0kXH5ncyznV6iDO/m6Z8j7TVErAN9TpWyoJ0U7owMKkArz/f7980KuwNp8iOWgeODCr7jIGjbSse7sVVT7kR0j+w/ICEHWb+FtZUPOnj7kvJeiL5LVJ2dP8kKha3KwsYfcXN0frAZcJ8nMPb2vth/WVwN5Xob5j81gVa2aXZ7E7gSOosgrdC8PJ/aNq+d1Xh+04YMg8cH85jxxqMVoadpmwGelIvkaICTztxpAQ8PGevlAM1zVNRqglR6VvtL9YCdm/uW26KQn9RnjqyFmMFsIcen23/qPBbBGevBXqmfDC8kDJYH/gPqJ0gQwnMCHD0DYs3AJFHzKyPuwXTgiFhJHym7qAVJvN3/0S7NfS0az5RsNVzsao+uvaiLutfqw8jlJEhrwzmBwCt8
- 3pcmmN3q
- UIzZ0vxtF6cVlrT6egcEQUZ0lg4uE/XvAOIolRHU3Hr60DP155DHLGgnLWhdD1+vQViDrrnH+xo2cHgLXJAmf8rfL5KW9DfbJS6jE6LtqVsQDh+WEzqYH45pZAhyXBGHPCpzwhUUkBsO8PK+sksz5sfzJqPnHw2UjrbkGVByNd/FBGSff0YeRkqyvPOjv1Hrgj7T2ACl0kSGBnqKGLV/X+trfvmy2PB3PXt8w2DZMxYD5Nzmjy/GXOvtgDxkjZM9gmyftfkSdSFlNjNIy3X6nWe/JWPCyUK+xU57pgvaLk3sAnwiGE+CQTvN+hppUJi8d9chXik1Nl5UI2gd5rNGvZ3ODUXRt+6PeICJa3sf+9UbINDyqSSl6qDDl7m2w9oTiTeonwfwhQj9CzATwDsksUYueK+CRUC4lu+6VNssVQXcE6L/ZDdUmseYZtLapybUz5YrxBVFVzlOhym6BhG8UBE0DOu1WObwpzgBtzh/7Tqiu5Qo=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EC4AC40003
+X-Stat-Signature: 6qajhxas5yotzphyfawwayeu99gk48on
+X-HE-Tag: 1783511254-269271
+X-HE-Meta: U2FsdGVkX19GqwLzIfl4aiNNhAqDCfkzM7ao+Y4qBZ5hUuASaVI20YNt60QrrwRuBWyznIkF0OG2HLX4OICcWg0e1H3OiEGjR0X4gmTGNfDTab/weUwdxtRf506rSDMdJqyaZ6aMTQYpfp7j9dhy1iubfYgxe7oFvDqm5Z76UhQ8B1iTpQpsxe2hSql2tyQI1ibeJauAnA7QIINhEcVJvZ/nMjaltRJPkYuORIkdqvo2JavknG0jRQCOTq2N6Jpj9j5webzoKlQ8LgwzS2xPM/4b/uCNlMQtTjJL8s5t50zX8J9mblSfAqoou77MvxuyXAV3l2DBr3JKXgCCt/NZJswmJ/OX2feM82FqQdwQuEeGqt5/mdsSEQF9SgTIGpv6y7wnCHwdZuC/h/+2Kzg8EQmLggnEgS6Fyt/uzx/LRdPY4uJ4SC2hFoHIF+WvURNFJzvqRn+E8BpfOo1oeVx72mo+hcYUJAbNSODEtxkL3tXue+5dI6UAaqUnEFtP6//XvDG1XSro4Y4gSS3xT6C7RWC68o3drBfhKYoH0+YvLNaNW2ZZEAtD1IP2Sk+UomcJVB8ULxONTZ85IwUYPloAQr39OIHEqxVlJrz367xCVylakrIGMNzKqf3MtLz2MFhcwIm/xXT5W/9yaJqSD6b5jTfYQK2dYWNfuowwoaxCdlOucHoxW+0P2Rxvb46VoYsdEN3JUIV8pEUOtsJHC2bU+s9PKytHgIWps5DE+3NnsndyJOh0/nAjf6MlxzjmdY9qhqzumf/pJvazNWn4Z+5FPMQVSr9AXHp4+DMh4Nd2aTFx88saRRc9QNiMUX6wa2Ao7rw/XbO7UpLj7D2TdsPNO3LkOdzYJzwQbpviiCqKsMFmPByATsfkov/jMnp7i0f1yKhIapTOnhzDz4WjrzthS/nEkUmuBB4l9STqeoOqJxnzujKlHgdFSCSvKc9f3noGChxJ3ClbGwawSqj8Y80
+ xCjZE9US
+ V39W0Uyzz5bC2CzrGyPWOESOd7yQMttEhcm4Y8Z/ZWuORaM01vWeroIsKy7p8wD3/1zjSgXHa9gCE/7HUcPlw1djZMJ89QvRhmvwk6j8LOdlCECByfAHttsFs7pBqgGzFoz66dBdu4sc+NCLCWjzgWMQDODcVfW03wGJPmy2LH4a6n2cg+RMp9LZ4k7C4eeEjTVjwQGHNqWIcQS5QaYf2xbaNRrvkX0Trbh8dykIRYPDV41zz63jJd6LdTMQx0zVaYpwt1a7x4OyVjJUCcEU27LulXr5JPnur2HIS7Xa6o6Nbbzr40EBWfI8DJ4qu5qiNg32uq4F1COXhNEYtV95qBSJIUw46/u+aVyz+1RGDqLMLhsA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,24 +131,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+On Wed, Jul 08, 2026 at 12:48:56AM -0700, Christoph Hellwig wrote:
+> On Tue, Jul 07, 2026 at 12:08:27PM +0000, Pranjal Shrivastava wrote:
+> > Ack. I see! Thanks!
+> > 
+> > Regarding the page_folio impasse, how do you suggest we proceed? Should
+> > I expose and use get_contig_folio_len() from bvec? Or should I move the
+> > NFS helper into the iov_iter lib? (or both).
+> 
+> Sounds like the best way forward for now.
 
-On Tue, 30 Jun 2026 at 12:58, Andrew Morton <akpm@linux-foundation.org> wrote:
-> Sashiko had no complaints but it seems to have found some unrelated
-> bugs:
->
->         https://sashiko.dev/#/patchset/20260523130445.1101818-1-daniel@thingy.jp
+Ack. I'll reuse get_contig_folio len and move the nfs extractor to
+iov_iter for v3.
 
-I took a look at this, made my own fix, fed it to fable check/clean it
-up and it seems to think after its fixes the sashiko reported issues
-will be corrected.
-I asked fable if it thought there was anything else major in the same
-file and there are a few minor things but apparently the bugs sashiko
-reported are the major issues.
+> 
+> > Also, do you suggest sending the Folio move as a standalone patch if it
+> > is blocking the rest of the series or do we prefer keeping these in a
+> > single series?
+> 
+> Sorry if I'm thick, but I'm not sure what "folio" move means.  In doubt
+> if you think you can get a series merged quicker without a later part
+> I'd split it.
 
-Once I've tested it a bit more I'll send it.
+Apologies for being unclear. I meant I could post a standalone series
+that moves NFS Direct I/O to folio, i.e. break out Patches 6 & 7 to
+another series, if that makes sense?
 
 Thanks,
-
-Daniel
+Praan
 
