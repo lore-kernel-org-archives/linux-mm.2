@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19784C44508
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 23:49:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 660DFC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 23:49:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 735D56B008C; Wed,  8 Jul 2026 19:49:00 -0400 (EDT)
+	id 428686B0092; Wed,  8 Jul 2026 19:49:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70D9B6B0092; Wed,  8 Jul 2026 19:49:00 -0400 (EDT)
+	id 3FF846B0093; Wed,  8 Jul 2026 19:49:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 624206B0093; Wed,  8 Jul 2026 19:49:00 -0400 (EDT)
+	id 279A66B0095; Wed,  8 Jul 2026 19:49:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3472F6B008C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED3E16B0092
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 19:49:00 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 91C84168BEE
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 23:48:59 +0000 (UTC)
-X-FDA: 84967252398.28.AE732FB
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DE934C000B
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 23:48:57 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="nmXoiJ/0";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 36OFOaggKCEEvnkdzdmdjrrjoh.frpolqx0-ppnydfn.ruj@flex--skhawaja.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=36OFOaggKCEEvnkdzdmdjrrjoh.frpolqx0-ppnydfn.ruj@flex--skhawaja.bounces.google.com
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6B9A78D284
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 23:49:00 +0000 (UTC)
+X-FDA: 84967252440.06.E10D777
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BB6A5180002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 23:48:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=FejxYfbJ;
+	spf=pass (imf16.hostedemail.com: domain of 36eFOaggKCEIwole0eneksskpi.gsqpmry1-qqozego.svk@flex--skhawaja.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=36eFOaggKCEIwole0eneksskpi.gsqpmry1-qqozego.svk@flex--skhawaja.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783554537;
+	s=arc-20220608; t=1783554538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aFhl1KlUjTv27006fhIt6b3pOPGmn7+PIUCxNMQiXPw=;
-	b=uzoUxHpO79HpQEV0QkvRDmLd8VA5LeOIGAiznqU6YbcoGVo7Fl1QMOCPmhiGq9pMOwPPKk
-	HrwY3F0BsZIuwlLa5si972ONr3lluwUgDgYyERyt6Jk/oQ0tpRP2yPMN64qf8h9tYQEIuE
-	8lnE48F6YTT5qTWs/Kgmn9CRyE7Aqks=
+	bh=lkcC1WuBJfDnOUDpo4VCYaNuz/sum/AUORjsX5C4m/M=;
+	b=16NDqjRGMv3qpJBlmargbc7lhVhiQpt9/9SYM3ronXlInA/mP9tNrJjGWOR9asObiFLrfu
+	Gfu+0J73ZIMOB1F00OTBx7BtbdBbI3sLitOjRN3mxTwfW09cnHIk8fKX4WqHX0NS2gMjzf
+	4A4OWMOH9mCgL6D/qDpgccfPJibRGuM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="nmXoiJ/0";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf22.hostedemail.com: domain of 36OFOaggKCEEvnkdzdmdjrrjoh.frpolqx0-ppnydfn.ruj@flex--skhawaja.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=36OFOaggKCEEvnkdzdmdjrrjoh.frpolqx0-ppnydfn.ruj@flex--skhawaja.bounces.google.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=FejxYfbJ;
+	spf=pass (imf16.hostedemail.com: domain of 36eFOaggKCEIwole0eneksskpi.gsqpmry1-qqozego.svk@flex--skhawaja.bounces.google.com designates 209.85.215.201 as permitted sender) smtp.mailfrom=36eFOaggKCEIwole0eneksskpi.gsqpmry1-qqozego.svk@flex--skhawaja.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783554537;
-	b=XL1Gdrg6MYifaHQF+XPWi7tmm6ZlnBJmWOk5yI3om6RC4xqxuV5xzlM8IEBldaNNlQsTsI
-	M/KklbHhHmyrb69PlcVO1gvnzecDu3PKerja0cb96swJj7DHsqhbXkCbkK2zFvSAn61/KZ
-	xuhRGTy+SgXmNzSKzfCM916SfyqdJfU=
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-84770f89b99so436191b3a.1
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 16:48:57 -0700 (PDT)
+	t=1783554538;
+	b=5tAV1Uy+C79dI18vh0K4a2AOJN1RQG+Aiuh8IjS7So5ckS7zcJdgl4wUz08rgHRR7KUhQH
+	K/qajl+5G0Qi4H711LB7wy+ZCAW54efVaXevW0hmRXUF5jjVciOu+yxaThxeVnfV/EI/qA
+	0RUfjiKK4rrMomKWslW5uIPd1+OcvZ4=
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c88aab7c1d4so1272401a12.3
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 16:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783554537; x=1784159337; darn=kvack.org;
+        d=google.com; s=20251104; t=1783554538; x=1784159338; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=aFhl1KlUjTv27006fhIt6b3pOPGmn7+PIUCxNMQiXPw=;
-        b=nmXoiJ/0zbqIGmJSbgn4DUYHXAWuTym1hHqasVdtQZGxvlOgkQj4g8fh/UL9WlFJWk
-         oV8miPvF4LCHqq35N+UgFCGO/Af9XkxfFm9g4G0N0l3ov1rFUCRt15C1cBTQXYAvWaab
-         1P9LQokH53WyKR4SPx3ggqeKOWhJEtVN2WO3j/gsWNy1fFt2QHHMg4NE3ENh51jzjMEh
-         4abbpQXioxbExlWfrHHLBtwwB4IXlWv8ICRjPqjn9Wn2wMw5ug+sEMwME7o8QrDLbXeq
-         t6BFFFsxJGNgTga6cJ9lctUZjBNysJs5jIXibirtoeTBzd6o20dgLCUB+2vldroO84y6
-         sAtQ==
+        bh=lkcC1WuBJfDnOUDpo4VCYaNuz/sum/AUORjsX5C4m/M=;
+        b=FejxYfbJ5rMTgvzquNK42iEct5Vi4wmtZ8cE3eL+zTGvZXWb5xcQ4+37MVSyG02U2Y
+         zR01X7FeopDQ0WXWr5gaZFS3XA6CKLoghsRYFMbkwJJr90MWB6nfaMFRkP3zeS1MZ7XA
+         4ST9QEPRBZSwkBs5v1PvGiqxfpUEx2fanEz6HH0aZuORtssmGhakXKHrZcSlul6gE4ci
+         xihhufkjxMrTEXTfqOCip6hkesIE/hHQ70XyUw+EP3DZMK6ewAkPdQnklKEHgAG0FHio
+         NwXGEkRgZ04KX9ITk4AD4/Q5Ql8Ybevo+7JELkzBx0xZQgMv2O50Ogu7ECuWc+2l3qoa
+         blZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783554537; x=1784159337;
+        d=1e100.net; s=20251104; t=1783554538; x=1784159338;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=aFhl1KlUjTv27006fhIt6b3pOPGmn7+PIUCxNMQiXPw=;
-        b=dr0Ey50DUot8SyAp5pok8ir6qIOokUivNZIy675e/WI90YY/LiIlNbuLkYG2nHOiJ2
-         1z/oauEWiGqnSZ4t+ZRMaWdLxrB5JxefVmPxM2Hy46rO4F18Xjb2dC8QhZcNqMKDQhOY
-         RBT9vfoPmibHXRn/a2/f1Z+sp3ASPJfrQYZ37PIEssTRuAOGr2JMboZSqVBhMD9Wy0nM
-         ci+AMImds7VVAl3BtvjOmbwKakgWePL8yJl/s8im4oz/UpLW6JP5qdFEUQQ62LX9rTvd
-         RXR36VnrGhkjOt6AfSIfmtbYIrtyc0k6MbSGsFBoG/MXLQZtvYeQAzqvNC327rCCdPAS
-         lxXQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoRd/ckrDt6ox7BjR1sIV2kysEhbmzPE+vrMRgw8INxGzONabx0Dp7WsPdulqZp9vr8ydBxatrO4Q==@kvack.org
-X-Gm-Message-State: AOJu0Yycc/atRHPTZe/UX3+Rlob2njVF4tPnyhN4mNyHOZFeAJqp6/UM
-	YHBYyKfaa7TsmjuYm+7raW54B5KquZ9z3vAR+ryHfzDPx/GTlHk/KzdbZe7Zkn6rs7A0LtSApLu
-	VQC5rc6uyx0RznA==
-X-Received: from pfcp8.prod.google.com ([2002:a05:6a00:a248:b0:848:4e44:7f19])
+        bh=lkcC1WuBJfDnOUDpo4VCYaNuz/sum/AUORjsX5C4m/M=;
+        b=eM+FqzXgwN2NtH2L3E1FDq/47hbOFVtWll4/F2scAlZIFpT1LChpJnzCmaaFMl+HVp
+         xAOdS2GxBlnoWgbBx5LT278oUPXc4gvpBWYTqTKzIkHBYlrgSuT4Y+Y3fLwHEGpGYuZt
+         uYU5pSH2YE9R1Plpjw0oMd2FMzv1i0Xuuxy4sy3OOEAXE5S7bGMDcTTZcaWRhMGapbaT
+         aoy/ZRipjNsQxGcLgk+xkPklW+SWPqJlAGrPqaxI/TrsQPsPdqSIDQ4F355DdB7FWHt2
+         KNzhWOVQg9m/kB/eMo/ymZw04MvZq1TPUjygoOfDMd068BYMxKHt5cWiGzs1fJN07HA+
+         OM5A==
+X-Forwarded-Encrypted: i=1; AHgh+RpftBA8By8yd0Ld7PK4UyrA94LF4CrwRYDdo8Nlth7e31ljyRxW6vKTzMxDKBj2/8PMW3urVqBBfQ==@kvack.org
+X-Gm-Message-State: AOJu0YzvPcJsuTplKq28MJnm0uQgtRHl2tRjV5zP+kR3+Ms3k9a6jbjF
+	bOJ0Ac4DeQQmoauT3adpfHMcejoFXtednzGvjgJ4xlQSHGMoK6Hpq2wQKs1n+9q9kml8/0du67j
+	JSEc3KnykGbyc/Q==
+X-Received: from pgbe38.prod.google.com ([2002:a63:5026:0:b0:c99:aff5:7092])
  (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:3e12:b0:848:411f:3969 with SMTP id d2e1a72fcca58-84842ee66f7mr4071344b3a.20.1783554536532;
- Wed, 08 Jul 2026 16:48:56 -0700 (PDT)
-Date: Wed,  8 Jul 2026 23:48:46 +0000
+ 2002:a05:6a21:e082:b0:3c0:9c19:659f with SMTP id adf61e73a8af0-3c0bd23427fmr5506792637.71.1783554537333;
+ Wed, 08 Jul 2026 16:48:57 -0700 (PDT)
+Date: Wed,  8 Jul 2026 23:48:47 +0000
 In-Reply-To: <20260708234854.4044652-1-skhawaja@google.com>
 Mime-Version: 1.0
 References: <20260708234854.4044652-1-skhawaja@google.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260708234854.4044652-3-skhawaja@google.com>
-Subject: [RFC PATCH v2 02/10] dma/pool: Add an API to check if DMA allocation
- is from pool
+Message-ID: <20260708234854.4044652-4-skhawaja@google.com>
+Subject: [RFC PATCH v2 03/10] dma: contiguous: Add API to check if an
+ allocation is from CMA
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Marek Szyprowski <m.szyprowski@samsung.com>, Will Deacon <will@kernel.org>, 
 	Jason Gunthorpe <jgg@ziepe.ca>
@@ -101,13 +101,13 @@ Cc: Samiullah Khawaja <skhawaja@google.com>, Pasha Tatashin <pasha.tatashin@sole
 	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: DE934C000B
-X-Stat-Signature: 5uoe1jdmgkezzf4j31ka6yt6c3kxsnzr
-X-HE-Tag: 1783554537-41370
-X-HE-Meta: U2FsdGVkX1/a30dqmB6KRvnkFVJo9dES2p4++CS1S53IbKflSKba0NU9mzWLDBSsXfYxHpg1j1ofvE1Wt2k1kxhvkLqQFxcSTkk/AawpQA4fTwhy/L34AljPM3qVFTohvMsR/W2XJ8ZzUFpvhsMNoD6Ns0D75ld/kXA9h55XWDtUxBLllJfo/Rkmy3sTLg9f3NyO9OpnlEYee8vUiza/Z/vBtVmERCXAFXnDTP4d1fCK7JV5Aauq8v9c/j2OdpxutLtgl2SuKLIiGeuaYNy5RgnKYXLaglvFZg2B8nO4Oo74LFFAe7hNY7ljO+BVSqsw9SD9g9zwlwQV0/zZhpCosAMtzaL0Iz9SBVECkfmz7YnUyrjEAhcCKmwFUlx2FtinhwlWgS894wfQFLBMt4F1iBzgYvGTvkwKq1smquxe4ctPL0QJx5xjrmRxL9TwYMwhK4LKUWAsVsJ4j7BhZrOC7tTLOWM82vDY5PBn9b9MpbhofFHakPYsWKra8ljhcMVux+LgSjpBAzV0TjtCuBInvrrnt9DtYSlmj4/Xq2HDKn2wIlsZMUa/gL5N6d1bBPCfnoqyEYmD8YnOLdxbmZINImeicp9lhGgOHLMIzwPZDjwsHOOLJgD8ggwctTe3eoUEWvgSHh833cuHfErW0dlN3W9REuxuMS1db2Us0HpoKDQYmqaTeLH16/dgPqXhEpAR0tqIm0FTwWK+mYYnwBoxRTiKc0eIY12Rqi0QubG+16sd6OOd9NtEfI48Ub/nbGYqtQ+Pu0ZJQnPlRn1xhbmCBMj4RSeprPgL8B4cwtsPaZYYbb0FCbHspUpvcFLZJwby5BXWWo6BPbGAdQCqysynafP40kvx75NbIwQJqMqA45rKId/7H3iUpEaao2DXZvNf8M8RsQH4L/0GYW6LPfAbJ+n6iaGQEfM8LjwKYBfWfX8lvYdW3BeR17MBCXNNbsDfiBwdJ1Mav06pwLweKvJ
- F+Y2tT9X
- Uo5pIb1ilAwd/1xgeCicx+35wwxKPMrDw/lMtDa5GsR81ZJzRWst94tkvB3KCaJm3tkl55UTtjQjTaMEio+B2Ow/6SpObowqk+Ww5T7cSnJ4v08gi8cPoCMJUQUWyd9WkeAt3pF+Trat8zy1b5eZTsfP3fQUb1+rAWhV2OqwZuZ7Z+1KldFA15oSPph4ptAiC3MI0UoEiYfwY+7EQHB9NcQi3C8qFmf9ll6m3elO8A4bATX0RvUcx5KxkMHyj1fabsUG4+b0QSrn6thgM6quLK/kdHlM2BwNZbK9AA+CY2AWDENJjtWRaumzNqYi2qbVn6aKbjDPqyiH0FDz7+1sHn9dgyFl1xfp5GPSW5EHtudQ5DyOUVY7vDWpJbJoXZxCH/qoZH50b21x4wcTKa7vi6Y7NvNSIccGkSWLTUSRESjFWRA7mxB36RCML/Qcf49LfUtjWyuUy/VstNIdRnwAxcBJL81djBHTPN0HPYC5NAujtR85W70qGzPovriX+yWP7kYHvH4x3CJQ7NpvAbTJzb+QsZKLVy2p4CHEooTr7+UYG3FOp2mVPCeOfrWEH56YTDTRmQzZUxTOpalRS0OF7n5lhbgBbkzn6F0e6QKP5o7I+MC8CUMzmCuVLDQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BB6A5180002
+X-Stat-Signature: si8amoux88ywcx6rnj1k5jmbdifgw8i8
+X-HE-Tag: 1783554538-539446
+X-HE-Meta: U2FsdGVkX1+Bp9+13OY/0QyTNsdwMEOX6q2BnmWpOg7VpShmWS0HTuoHay66C70zUvpLQvBZjovhtgoZeQfE2ZHw/x8IQMfaZcmzkML4rzpJnO9ivc1+4r2foTK6j4qTp9SsLX50DESyE4iCFB0gRS7D81vzxaSzVQZhLsnEtfNb7FDNraZzctsWWAlwIGCTGpUcW9sOc3b4Aa8795Xcq2RTFpeA0y50UA9K2sXjHLbmHazAdxelGMUD4WBbv4eHYrMFdLonuTcsZnxjX17CTuWKtp7VJFvRaXrYcnrEvgWJekq657zOlq7qcI+tKS0tysJmWAoQlwCRfVU1YcntdR7Lnx/Fcr+rNytx2HWdGD3R+41LwshiyDtONKceLVmnATJJhSh/2Ixejn5jjUA+z1z4LhMteBWGyQilazM10eQsyz7UttjHqDMLxdZcuOxm5DCiTapx+w8KcKwQjKruigtRr5aB3lW+5++GiXJ+uQG1yoaZ7BC7+BzuYzqKlhAMxiRHv5u20ulIc0186XJfZnB74+i51ki4JYgcdIaLC6B5TYe8SRrF5z7nJzR7/R+hJqkqn/fH+D81eDm47fhgYlBxNx5ZpMO3BycAIJzT3+8Lh2moIKuqcx4Cc3VjEGQpecpm89GOd8w11aWIC5TJPhtJdWRT52RyJNRRP9o0QJwYnU4S2UpPhYylA5GycErRhjzus5w3dP2Lja5uuJGfY5BzPGJciFK+VOqHdT3+F/GkoUeHa7dJocNKEBgGHmNhWFCrPGHZSk7KOJFWb9rJm1MtggYV3YSODQWiuyIIj9QDvVjBrS6YQWBkf2NAqsVbgNGTofoV1tN5sdHjXSC/b8KPkVl4NqgnTFgJv42IIDg84FZTJWUx/9sHRHHJIsOKOv8quW1qhKqIWfqc8fuaptvYgFnBgcy7FWX/FH3I17k4RgBkKXbls7VsI3gxlH71LFrMFx0OnOivgiPkpa6
+ UxjeKCNF
+ 36enLN6k24yB/h1fejCGJlIxYQQ4tAmE3j0gpcvnR7NIKk6+CrF84QxARkwYPlQZ7xo+qmcw5Grys5T5xhcJ1PsNHuvaflVgXXK4eWXSOKkiuqmbnTnQrWYjQa579uy3iHq/s3ZDmgrRQDU1mCjuaXrKRLzj5mQA0foQfd69WixtXzvoaxCet/9ccKeDx277bsnmk05svl8LOVKDc6FplKKRrCvtFgFcgTJ6xrEtlAGs5fs2lUZoKAF/Eh8sQDrBDOf0gJbIGEI9YCeOuLESnqvhCUNY0u27bJdHhq9MjOONmWJtDwmOivC1DbHSmffSVMvmLQdIh9EQPt+t0SjctP4u+eyXT2DSpMQpQKhGMKkqIaZx0DyTswJF1vRVcBK/yDAgLwN+9VOGwD6aMeqcNTQa1gHERshxKmPA4d1tkldLzMCYed/wZ5Eg8pVlV8Xr7LmwPJN+y5crsFy1yfUJRreyqsayARRtNTpb2KCIltz0wiC5rxVT7jUSksC+EM4C80HDO1BPEIQZo8RAzTjlfkeCgb0/bk1Iuoc+abv5rElDGwNJfnOq1RdUBaW2mSuQ8bHUZMtNgEfhtswAo7vn112aJig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,49 +115,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DMA allocations can be done through DMA pools, add an API that can be
-used to check if an allocation is done from a pool. This will be used in
-the later commit during preservation of DMA allocation.
+Add an API that uses cma_for_each() to check whether a DMA allocation is
+from a CMA region.
 
 Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 ---
- include/linux/dma-map-ops.h |  1 +
- kernel/dma/pool.c           | 13 +++++++++++++
- 2 files changed, 14 insertions(+)
+ include/linux/dma-map-ops.h |  6 ++++++
+ kernel/dma/contiguous.c     | 24 ++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
 diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
-index 6a1832a73cad..9382785a2faa 100644
+index 9382785a2faa..9b91c839ceb5 100644
 --- a/include/linux/dma-map-ops.h
 +++ b/include/linux/dma-map-ops.h
-@@ -216,6 +216,7 @@ struct page *dma_alloc_from_pool(struct device *dev, size_t size,
- 		bool (*phys_addr_ok)(struct device *, phys_addr_t, size_t));
- bool dma_free_from_pool(struct device *dev, void *start, size_t size);
+@@ -106,6 +106,7 @@ struct page *dma_alloc_contiguous(struct device *dev, size_t size, gfp_t gfp);
+ void dma_free_contiguous(struct device *dev, struct page *page, size_t size);
  
-+bool dma_is_from_pool(void *start, size_t size);
- int dma_direct_set_offset(struct device *dev, phys_addr_t cpu_start,
- 		dma_addr_t dma_start, u64 size);
- 
-diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-index 2b2fbb709242..d1a0bb03e478 100644
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -307,3 +307,16 @@ bool dma_free_from_pool(struct device *dev, void *start, size_t size)
- 
- 	return false;
+ void dma_contiguous_early_fixup(phys_addr_t base, unsigned long size);
++bool dma_is_from_cma(phys_addr_t phys, size_t size);
+ #else /* CONFIG_DMA_CMA */
+ static inline struct cma *dev_get_cma_area(struct device *dev)
+ {
+@@ -145,6 +146,11 @@ static inline void dma_free_contiguous(struct device *dev, struct page *page,
+ {
+ 	__free_pages(page, get_order(size));
  }
 +
-+bool dma_is_from_pool(void *start, size_t size)
++static inline bool dma_is_from_cma(phys_addr_t phys, size_t size)
 +{
-+	struct gen_pool *pool = NULL;
-+
-+	while ((pool = dma_guess_pool(pool, 0))) {
-+		if (!gen_pool_has_addr(pool, (unsigned long)start, size))
-+			continue;
-+		return true;
-+	}
-+
 +	return false;
 +}
+ #endif /* CONFIG_DMA_CMA*/
+ 
+ #ifdef CONFIG_DMA_DECLARE_COHERENT
+diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+index 03f52bd17120..0b1702bf39ca 100644
+--- a/kernel/dma/contiguous.c
++++ b/kernel/dma/contiguous.c
+@@ -130,6 +130,30 @@ struct cma *dev_get_cma_area(struct device *dev)
+ }
+ EXPORT_SYMBOL_GPL(dev_get_cma_area);
+ 
++struct dma_cma_check_data {
++	phys_addr_t start;
++	phys_addr_t end;
++};
++
++static int dma_cma_check_area(struct cma *cma, void *data)
++{
++	struct dma_cma_check_data *chk = data;
++
++	if (cma_intersects(cma, chk->start, chk->end))
++		return 1;
++	return 0;
++}
++
++bool dma_is_from_cma(phys_addr_t phys, size_t size)
++{
++	struct dma_cma_check_data chk = {
++		.start = phys,
++		.end = phys + size - 1,
++	};
++
++	return cma_for_each_area(dma_cma_check_area, &chk) != 0;
++}
++
+ #ifdef CONFIG_DMA_NUMA_CMA
+ 
+ static struct cma *dma_contiguous_numa_area[MAX_NUMNODES];
 -- 
 2.55.0.795.g602f6c329a-goog
 
