@@ -4,111 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CB77C44501
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:53:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03B7FC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:53:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 621746B00A3; Wed,  8 Jul 2026 03:53:00 -0400 (EDT)
+	id EAF386B0092; Wed,  8 Jul 2026 03:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D10E6B00A5; Wed,  8 Jul 2026 03:53:00 -0400 (EDT)
+	id E5E506B0095; Wed,  8 Jul 2026 03:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C3536B00A6; Wed,  8 Jul 2026 03:53:00 -0400 (EDT)
+	id D50116B0096; Wed,  8 Jul 2026 03:53:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F6F26B00A3
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:52:59 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7CDE91A06B9
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:52:59 +0000 (UTC)
-X-FDA: 84964843278.26.D32C045
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A68466B0092
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:53:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 272ABC1B8D
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:53:53 +0000 (UTC)
+X-FDA: 84964845546.13.68BBCD3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E615F140004
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:52:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H9YaHWQr;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6D95280002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:53:51 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PSXkx+AD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783497177;
+	s=arc-20220608; t=1783497231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7K4NCcrN3IVlK9BJtN3q7S9JVAIiJu4qBDxqNODXPvM=;
-	b=fiEkzPUPJuKkNaP+iXkpV+Uaq9+PX+FuI0Z4aH8VnNYwx7UcDXbP2ECS4KpjO6H60vZJF4
-	F9PFY0n1y8vDJYSuOT21fmWvOEbduap651+HyBnoPGnshArERT0MkhP9n8O4IK5m/ub//q
-	a5YYvuO27DKcIPXhtYjqvo7REtY62uU=
+	bh=Kz17m858MwgmWF0pwgeoxvWnX7L23Knguhas3J0CszA=;
+	b=tx6NVnQ4uPGiD+Cl2lQ8gq9I5V2wkRyBoLHtHP5UAu5bS3zUbjCNVql6du7WVz75oQl8sG
+	wW8gKZN2Dm0Tcf0Z62i2g9qnsteLT68+1Bs1tmDC+PiamFUs+lZX8CvVcSoyg93DtvMuoZ
+	RvFslxRj28I9SDOwDYuB0vCLy8Qz72w=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H9YaHWQr;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PSXkx+AD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783497177;
-	b=2bzqB2LWmxG7gdoPH+4my/jcaW88Xf2USG907W77i4xuIYFLcbjsYE5FdUolQnQDQVk+i5
-	BmuQgEA5LdXdl0fTu/yoDu0I9CUenJikJooU44PPZR7RYldfS/cljHVMiHuCuLLt0+ZGQt
-	tLQMiQSHsFAtgcX3AT64hW3vujhBPdU=
+	t=1783497231;
+	b=Y6nENIlvs/Mo0cLPgh7cG35m7kvySWf/7b3CZ/u7mUR514rSWmj4zFTGOG7GcNuUrdcOXa
+	SseFt3ACi46/+dEf8eD9S41im6oC14+Hxl+rT6b4Bi0s9HZL4L+nHfKqt8EpgVit0/gWlk
+	D71R6buUFY35ypxDGuvmXgxFkOQZWC0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 63C9860008;
-	Wed,  8 Jul 2026 07:52:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFF11F00A3D;
-	Wed,  8 Jul 2026 07:52:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 051F56001A;
+	Wed,  8 Jul 2026 07:53:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E00D1F00A3A;
+	Wed,  8 Jul 2026 07:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783497177;
-	bh=7K4NCcrN3IVlK9BJtN3q7S9JVAIiJu4qBDxqNODXPvM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=H9YaHWQrK1YujDYyV6crTr6KbOYfjzzQIBWVR7KE/419stnNd4ED/M5LA5tCOsCDB
-	 36pgz7R6/0Zf0am5FTTAZXpKWlctvMKmZ7IhwGjLLqXMEVSXpZhmILwnH4MEgyImci
-	 xzlIxy3qsNMJBRt4Oq1ZJrXCytH2i2dTNpcM4K5lcVbdc0zu9bAvOnVZCCZG+e2SLU
-	 9DOmhcPONM14BRhrGKxlKlMgTPA2Xm+rELQNHcsW+T2I5NJtH02mPB/JjN9IUBlicR
-	 lL7B298F3VYVAPUZiBiv1DGsnNqp2PefONaDjlqtIKu6Fyr1mMHbRtPn8CKsuiTBVI
-	 FvJ1smPFQdcEg==
-Date: Wed, 8 Jul 2026 08:52:36 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Eugen Hristev <ehristev@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-arm-msm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 14/26] mm/init-mm: Annotate static information into
- meminspect
-Message-ID: <ak4A3u9VfmDZA4-i@lucifer>
-References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
- <20260708-meminspect-v3-v3-14-7aa5a0a74d5c@oss.qualcomm.com>
+	s=k20260515; t=1783497230;
+	bh=Kz17m858MwgmWF0pwgeoxvWnX7L23Knguhas3J0CszA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PSXkx+ADZfW3APdL8Mcv3m10d6qta0/K0OCwLF8sTK6GVdKLsDTDR9oB7raWgQ0zs
+	 BC34mH5WyyCkbdi0QS63qH82iF1si5BWu1ADcxa/rr/62PEx0+qm5nVLUzSk12Ck/1
+	 mA5Woi6fdPI2b/DDfuP0elY1sY1UxwCG1Prid+/m8fDrMas+hiSsOJkAqD99N6yN3P
+	 Uy8es6zRdjoVIsq5u0tK8FpQYs5DkeJScw8GFAodtHmnmR3tnqVNj0HnuJAkX+7guQ
+	 /PVD7RV6x9KllwmT6DTcdtkilMZMB5a6RblqzK6MM13EwVn11Gqe0ZC3hoY5DFfWDo
+	 N67YHdLZs2nwg==
+Message-ID: <38ad90d8-0887-4cb9-b874-53ce35b6dbfe@kernel.org>
+Date: Wed, 8 Jul 2026 09:53:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708-meminspect-v3-v3-14-7aa5a0a74d5c@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/ksm: Initialize the addr only once in
+ collect_procs_ksm
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org, chengming.zhou@linux.dev
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <202607081219094603lvrfl0HWd-31cAGrp79l@zte.com.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <202607081219094603lvrfl0HWd-31cAGrp79l@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6D95280002
+X-Stat-Signature: wt1n7nczzq3j6gfus7msfahst6jbgr39
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E615F140004
-X-Stat-Signature: 7yois8g4yccrpngnoowr35bznid9ec88
-X-HE-Tag: 1783497177-303355
-X-HE-Meta: U2FsdGVkX19f18wOrm9N4tHd1+6f7tYd0bK4Htgr4C+PuOKND+KfUm5kqR9VFsePPz112Mi7nFij+t7Jt+NoyBew9HllMbAVsqO3XNn2/Mj0mUEkxRhwQ6n4r2lhdFC2NwoTTWSa1pn8dniDu0YojtqbeQwdKBnaP6EhnUHQPrEthgmAqNVMdfM17QVtkVVk2iWoUEImhl43spfSbB94PE69yu6+OxFs4EvamiarTCMcaXBdFSwuaxhInYNsgXx3fbh39PP8N0/4xw+yUGQwN25v9GoFZrcnwuMeJfXen6gaFL44Rod9+WKf/yoYWb1jE8RBE7/2KLtq7sMlIcuiSugB95bIhyXiiSZ5wHB5078R9cpUPYiFyTt3L78Qs4wpXHu4oGTgpYkckur8wkv/3J8ffUjuqL7NchfV7Ul7bXgg5txBTzdCf/OzJpeIE2ipDvrNgD2iFexdTUiOI70rNhFiST/J9dfGenedrWip5AhMr1O6bOAQhIYrL4OPbcVU5OyTD1NTfwdEFVi2lZaKwtuz8/kqoaoyuAM3cX4I2/d4G1zzHChw5BUN8ZMRIGGgPJklI3uboF16TqbhWVpBFX9vrqcx+zHit3dHvYvxGCvWJlYtTOZPs7nq2yeA3Fd7x0Nrn17PYYXlCf8iR8cdw1MXMnk8xrF66VLCeopy80oXgQeJHfbgoTZDhK1yW9kEhWbRs0ELdolpzdCbj7YgmtPgAEU7/ZxPzA+k+DglQLAglfiVSv/vpeRU8k/GcgL8EfHhqTlfh7/ACY8o4PaOf8b8HwonjU87pnRFdh0xN0bffS/ykoVs1+3y4qEsUfJ6jhrA2a1CXYzvH+9csr23A3NwqF++FSQFuq/L+Zy50xoLlA2t9613nufUdh8H1vPo6lIdgy+UEQuYXfL0bGgYxmQ7m00atIJ68eHuW4f2yQhTdfFv+XMb7daYgHDGnuRqBn5QnBXXO67r9sMMFeb
- B5ZJm1RC
- wkkfktvxeex8AiwOyVoJ+LylUUjE2w/xztY1a3DXMwsPSQYwcBDgNzxwzOmQgmxf+28q4G82JD/fZhPU67qyCv/pslggP8BGDeTepxeLMVAUkUQNIVyW/5PVETGWqB+FZivmb8NrmWBac0TmwYSr8z6OvBHbulJ9SArPRRpV/BLx+jenbOHbQQOdabP23xr8X9mdesYpssC1j6UAS4NePvhQDTFQtJ/R7liGmeR0dFeYT7mBdexa1jYiYV49vRXJMl4pDfhulySpPNt37Fsev9x2NZOInnXWaV8C0RPJ9nOAvgvmRDwTmfoVn6Y9mOs4tJlhePjVBK8AdmpKMR3WDYkU+dJsnI1xHketkhuPfbDllGRZ47wtkHzonvvbZBx+p0q6WJzR+yAQtRGanqiERYqAv70jzSKH/yaPgwNDa0ltCdRibJwZWpX5tEAp/9lyjuNEBRjPnrnBE9NUqQgHXsVC03Q==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783497231-908671
+X-HE-Meta: U2FsdGVkX18vA+Z1M4CNc124tI4XNCWvHSttOHfLrrfne2veGVpRmTsvdkhWVCKom/ZUjbn9cb5PfFMCGKM14pk7v070F7QP/rlSAfF4QAUYh+1LNU7tLkPD+Xh6LudrMKuiI4s+LjGHLZiWrFwoOqTAGWtHW36X6I7r6yE26Zre9GJrMqyD2LS/rsIFqkJylgkUyuaYwQuCWInuCdGxwajHu1CnFtLar5tyctJ09GyOhLxILUwDy6GkRwMFgByl9sCiuAze32fQ2iq8f5VWyJb3kg+/qQ+8N+RBJfXnNHRV3yaiLT0zbh7Tv0Jj3qNHd549Sb/7GPIxrEiWedLtJsgXCEbOa3N9MRSxMHs87qKHBR97zGSpWuGpwOZiHVqAe7LxuMy5GNqzJjj1hM1Sa+r0hRFU7BgAtlrhvU9XKmulEp7k1WDowN5u2TjncgZjHxatIVVkYrlPvUV9M1/nheEroDnCI68gG5BIzkTC7lpODDSNW0HDtkTezyaOKxnk5APOhA+spc7k6znYssWP9cBzycRXXBfXnHGDoHSkn4F8glg7zYdK5iQGQeh5FZEhF/lAv6FVnpR6hLmyUkT2A9mWvetD89NeWPdF23rmmCJ5N7G2ZG1yPLiC2F7dfqzBYNtw2dgTkPImkyzXzsnUoLhAgOLSs3OnhAkQGDVBrsEfLjqR5d6c4Mb0U2ysPXZe91iIN7vzfFlMrLvbmuZ6S1BeX7vhvXzvZ3LO3yuba9ZCMN91W2/AuSziMAVHBYg+d8VwrUwUoyKEH71Y4vX412rzxurlSFHSTUefJM9nxA+T8vWZgyANluwEMcT2XyiOy+4mxrUvlgY353Cwy7KQ2V2ivzi8m/X/Uut2KIDOPfasv8I9ZxTR6oksPuU1We9noGjPmE3xaM6LukJW/tig6T480WuBx7TyXOlQgU2wwwZEykHIxiGuS+/Knr8lxifqi6/1JtYN3x9xxw+/cRq
+ p4pAGGYQ
+ 1YtsWYhrRyGm2tR2g9uVhAG/qhqEZtSNO158d8PkflCAozyMM2rguAEgQ8hrRWJqkbSm8q2v6n0bANNlLMxe0HUWJxKfr1tb0t59QHSbdbQDulQZl/NA/OfnKJc4D3qZv9bsq53dn7g7Ozg2j4ErevoUTWrWfwQ4sLTWJ0FLJafyn0tnLHh02P9RaBdk2Q+LSPzkZtN1mRUt8SscS1/78JMVgnE+/X9aVUDJfSKMO8lzgVDbAARgd896ITqy/EsR0h1vvQbmlDw36TqVHnVWLbgIqOWnbT3EaF8x/i1pPujUtoUm2d1vsDotJgR8WSV1hTIRK1v5kPOTSqOY31MkrDwiViTsUMOYQ12W/A6lnvMLjKt+EekonLVVYb4kLYB8B6ym5q/qFYhM8va2kIKhk2uRX/NOktELRP6ENBDnW7LHTL6g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,96 +137,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-NAK.
+On 7/8/26 06:19, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
+> 
+> Similar with 318d87b8fa7 ("ksm: initialize the addr only once in rmap_walk_ksm"),
 
-You're exporting internal mm stuff to drivers, in no world are you going to
-do that, sorry.
+checkpatch.pl should complain here
 
-On Wed, Jul 08, 2026 at 11:01:53AM +0530, Mukesh Ojha wrote:
-> From: Eugen Hristev <ehristev@kernel.org>
->
-> Annotate vital static information into inspection table:
->  - init_mm
->  - swapper_pg_dir
->  - _sinittext
->  - _einittext
->  - _end
->  - _text
->  - _stext
->  - _etext
->
-> Information on these variables is stored into dedicated meminspect
-> section.
->
-> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+"Similar as commit 318d87b8fa7 ("ksm: initialize the addr only once in
+rmap_walk_ksm")," ...
+
+> Only initialize the addr only once in rmap_walk_ksm because the addr variable
+
+s/Only/only/, but you une one "only" too much here.
+
+> doesn't change across iterations.
+> 
+> Signed-off-by: Xu Xin <xu.xin16@zte.com>
 > ---
->  mm/init-mm.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/mm/init-mm.c b/mm/init-mm.c
-> index 3e792aad7626..cf53058410b1 100644
-> --- a/mm/init-mm.c
-> +++ b/mm/init-mm.c
-> @@ -7,6 +7,8 @@
->  #include <linux/cpumask.h>
->  #include <linux/mman.h>
->  #include <linux/pgtable.h>
-> +#include <linux/meminspect.h>
+>  mm/ksm.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index c1dcc3cb4831..337eb04a9340 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -3289,7 +3289,7 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>  		rcu_read_lock();
+>  		for_each_process(tsk) {
+>  			struct anon_vma_chain *vmac;
+> -			unsigned long addr;
+> +			const unsigned long addr = rmap_item->address & PAGE_MASK;
+>  			struct task_struct *t =
+>  				task_early_kill(tsk, force_early);
+>  			if (!t)
+> @@ -3299,7 +3299,6 @@ void collect_procs_ksm(const struct folio *folio, const struct page *page,
+>  			{
+>  				vma = vmac->vma;
+>  				if (vma->vm_mm == t->mm) {
+> -					addr = rmap_item->address & PAGE_MASK;
+>  					add_to_kill_ksm(t, page, vma, to_kill,
+>  							addr);
+>  				}
 
-Hate the idea of a very specific inspection mechanism hooking into core mm
-initialisation in general.
 
-If you thing needs to do this, your thing is broken IMO.
+-- 
+Cheers,
 
-> +#include <asm/sections.h>
-
-Err sections? So now this file is now a dumping ground for meminspect ELF
-section declarations?
-
->
->  #include <linux/atomic.h>
->  #include <linux/user_namespace.h>
-> @@ -19,6 +21,13 @@
->
->  const struct vm_operations_struct vma_dummy_vm_ops;
->
-> +MEMINSPECT_AREA_ENTRY(_sinittext, sizeof(void *));
-> +MEMINSPECT_AREA_ENTRY(_einittext, sizeof(void *));
-> +MEMINSPECT_AREA_ENTRY(_end, sizeof(void *));
-> +MEMINSPECT_AREA_ENTRY(_text, sizeof(void *));
-> +MEMINSPECT_AREA_ENTRY(_stext, sizeof(void *));
-> +MEMINSPECT_AREA_ENTRY(_etext, sizeof(void *));
-
-Is this just a weird way of getting ELF symbols?
-
-> +
->  /*
->   * For dynamically allocated mm_structs, there is a dynamically sized cpumask
->   * at the end of the structure, the size of which depends on the maximum CPU
-> @@ -50,6 +59,9 @@ struct mm_struct init_mm = {
->  	INIT_MM_CONTEXT(init_mm)
->  };
->
-> +MEMINSPECT_SIMPLE_ENTRY(init_mm);
-> +MEMINSPECT_AREA_ENTRY(swapper_pg_dir, sizeof(void *));
-
-Absolutely, positively not, this is totally insane and COMPLETELY violates
-separation between drivers and mm.
-
-We already let drivers access FAR too much.
-
-Exporting core mm internals would be like giving up on any semblence of
-separation of concerns.
-
-> +
->  void setup_initial_init_mm(void *start_code, void *end_code,
->  			   void *end_data, void *brk)
->  {
->
-> --
-> 2.53.0
->
-
-Thanks, Lorenzo
+David
 
