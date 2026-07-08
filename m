@@ -4,120 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22C8CC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 01:13:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3609C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 01:14:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1C3B6B0092; Tue,  7 Jul 2026 21:13:49 -0400 (EDT)
+	id 8D0026B0092; Tue,  7 Jul 2026 21:14:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCC196B0093; Tue,  7 Jul 2026 21:13:49 -0400 (EDT)
+	id 8A1376B0093; Tue,  7 Jul 2026 21:14:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE1A26B0095; Tue,  7 Jul 2026 21:13:49 -0400 (EDT)
+	id 743846B0095; Tue,  7 Jul 2026 21:14:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A44846B0092
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:13:49 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3231E6B0092
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:14:47 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 211A21C81BF
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:13:49 +0000 (UTC)
-X-FDA: 84963837378.19.F0BE85B
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4EB71A0004
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:13:47 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rV94xKHO;
-	spf=pass (imf25.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9024E16901E
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:14:41 +0000 (UTC)
+X-FDA: 84963839562.19.2DA8C1F
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 637E1180002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:14:38 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=HyLsUw4S;
+	spf=pass (imf06.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783473227;
+	s=arc-20220608; t=1783473279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JCiHdm5WORGJykvyk9QwONa9C2e3Uk4DwaO5rlXDywo=;
-	b=nCiggisitHOwOgZAunRr9dPhLmsRRsoMOqqeKLxctiEdbbwUlVZG2zNtgWgQYbEuyAcAPt
-	15nzX41HVvnCyY6YltMhF0cb8L5uJ++b6wmiO7NPUmfrHbHn5N8iQoCYlNWvqhuwySuinM
-	8qr159Ukjix9scuXlswVawEBOk0Tf9E=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=rV94xKHO;
-	spf=pass (imf25.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=ku4PapYckW8dbwQ0G/KnJTyAyuoC7+bOFDK3+GhNzig=;
+	b=mEoFMq+K6KJBtAamiP2DpxAxcJGZki0UXJJBpBcf0/KW8odAJEd9zD6ylTQXOF43GXVc5k
+	6m1tVgTLhDcQV5BJtu/kw8a/WsRH8rbE6GBpoXs96bPKoNDJMzquL9MPjkWwxCFdT96Y8p
+	qftqDy/uWeNechxjTJnYxPCi1vB4iNo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783473227;
-	b=kdAteK4nAhm8dKYS3OckcvMcsj57lPivoXQTu1mgHk81vDQDqc26tTMKskGW4un6+OOwTw
-	NSM1fSVuaA12Xf1jaEnBxwuPLmPabc1cHh6twW5hpcT4G1LbSpnUFAK5q2E/9GxDVw077D
-	wZaLQBOo4mt+gSPKICTWXyf9YvqNpN8=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-847917c3678so782758b3a.1
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 18:13:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783473226; x=1784078026; darn=kvack.org;
-        h=content-type:mime-version:user-agent:references:in-reply-to:subject
-         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=JCiHdm5WORGJykvyk9QwONa9C2e3Uk4DwaO5rlXDywo=;
-        b=rV94xKHOk1OQC5qKKLXam3OUJ8JkeEzo0I4GuPi6HmLikoN+0Y7lxWoGrp5kNHwvGM
-         aqXie5/ICuPr3lAb59sjrJUHcDpPAY/xlu4bpInYt2AZBIjhRXsaxylmwBudqcExJXKn
-         ufd0ydRfCJwXZE3GkoLfW1/k9a+VBSMP5DCqx8ZHc+ohkUWENeA3NTSUHc79mOrliEaR
-         laU00QgJh1JqXXRR5FU/BPkOBuZxrHo6SJActss/HohgGKMHnOROz1/eDE524NKYT8f5
-         RsqQjhyQRYAwnVq7bZUvByfTfG87vOotKVHYyTdxSbPWXvQgSV22cB8O2TNZ5G9OyJZZ
-         JKng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783473226; x=1784078026;
-        h=content-type:mime-version:user-agent:references:in-reply-to:subject
-         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=JCiHdm5WORGJykvyk9QwONa9C2e3Uk4DwaO5rlXDywo=;
-        b=kR5MzVkTvNh0Ah4+y6dD61zm1dyRImkrfbiE4R8AH/paQkXwhTGAygXpr3LY+/re4+
-         rp1P8b7Li6c7WKGKwSjWeYW/DGQ891h5wfDnY32zMXScHrbgaWMoLWM7bYK6lK7hlUVD
-         UHv0BgwVnKkANutVJDnDLx0914V5wetn+J9Rjb+eaJF1iKPY7jaPulJ67Tkiubkktv6C
-         Ki8ohmWMMSPqPmcvM3IEhB8Q/WI1mOOd695jbduvapBelU9KaNtsxySqmecBuyIU2zJX
-         8GmPlJApYXjxtHOxDVVZZSq4gf74DyBHKd+Gn0qdT681mc7qd0UYIu86uhIaoxx/5Fa2
-         9Zlw==
-X-Forwarded-Encrypted: i=1; AHgh+Rr4Ae4L3reK/RZnAhK6MNr6ritjt7X+8Cpq798hEnC+K2YJCNWJeDzJHukcL7Jv+nM/DzrQHyskjw==@kvack.org
-X-Gm-Message-State: AOJu0Yw1W44WCKK89BC9/vIQ0lJWNgs5zIf9VEat68dWQPte5g2/d/LX
-	bDXdtmEuVVtM2l/NR7CotNw/ypSFj3CVN5ShWVZFwRVtdJA+WqTdVZFL
-X-Gm-Gg: AfdE7cm84C/bvhcq9vZJ4c8y0B9gsUdAWofMKiOd/sSQZBmR9Smc+nqDaueqDa4hrw2
-	CAnEzOv4dDtVska6ZMb2H2c7caNmoKaMKV2w0Smw35t4CvLLhK2hFyYIv9/FhrVF0+YN+41ewzn
-	GBi5guXNX2bYbncWtHE63bOMov0QwbacohJHI8BQO0mADwtpkhl4khaOBu5+IjlDKMo2jScG27M
-	tyYspT9/059alyVQkRBffXFU/QtNG6ffMsbey7cv9OdNHsdY6XC4SWZjDXnIrArBwy2KoZ0DifU
-	DRxqIUX7jOCMzcnvLbzAG8fmYvT5MleAozFc5h0ODn06Wy1kbkviD/MdU+C9UpdgEy5FvX8aJ28
-	SUMZ2KTxdsUlDNCxbuhfeEQPlSy2uJjZ5cjl8urVkq6GjniWEP6V7PDlJrnlPu3vahktkWcKG3K
-	RwiQXHCKpOdKpysl7p2HMwh0A9mhD6QWFl5UDniBXe9xH2/VVXG5ysUD7RC9q2c8LCIHk6LJTsH
-	RqfPvlrob1mrI1J
-X-Received: by 2002:a05:6a00:99f:b0:842:50fd:4c13 with SMTP id d2e1a72fcca58-84842ed15abmr497445b3a.4.1783473226084;
-        Tue, 07 Jul 2026 18:13:46 -0700 (PDT)
-Received: from jupiter.local.gmail.com ([240a:61:5255:2f60:a40a:bf83:e8bc:50ff])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6db29d1sm6247787b3a.53.2026.07.07.18.13.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 18:13:45 -0700 (PDT)
-Date: Wed, 08 Jul 2026 10:13:42 +0900
-Message-ID: <m1a4s29tbt.wl-thehajime@gmail.com>
-From: Hajime Tazaki <thehajime@gmail.com>
-To: akpm@linux-foundation.org
-Cc: liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	linux-mm@kvack.org,
-	geert@linux-m68k.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: nommu: fix the error path when vma_iter_prealloc() fails
-In-Reply-To: <20260707173910.928c74a7e4dc8a1fdfddae3d@linux-foundation.org>
-References: <20260707235137.498738-1-thehajime@gmail.com>
-	<20260707173910.928c74a7e4dc8a1fdfddae3d@linux-foundation.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/26.3 Mule/6.0
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+	t=1783473279;
+	b=bL4qaG+lrtQlP0t35OQYaW6IGear2adc+goL3BIWiXkPzB7aWoanWmChiBvY8q99rnlpr2
+	4bJgLCxOHyjTI6tl3ICzJ8l7Pl5bhyn5z78I0xxwLMtmMzE4IzrgT6+XspBgw4is3aQ5PN
+	ZtbIlAt4Fjwz9xJ8Vcxqtob6tDPDQrE=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=HyLsUw4S;
+	spf=pass (imf06.hostedemail.com: domain of mawupeng1@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=mawupeng1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ku4PapYckW8dbwQ0G/KnJTyAyuoC7+bOFDK3+GhNzig=;
+	b=HyLsUw4SAyn+5/J+UNKHlyWI/SvXesd1deNMourwRlHUxMnLz0xWEkaXYtx0v0bOXs2V1oTe/
+	kG/Mzrsyf85a4i2A5wMvEaX1qJcuHq3w0fSQU3tEuFESsxEtD5DIbY5gXcW1ntBcv9S4hQJ3e7K
+	PwpvEMp1gG3CPvf6dkr4T2g=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4gw0Jy1CMDz12LHk;
+	Wed,  8 Jul 2026 09:05:54 +0800 (CST)
+Received: from kwepemj100016.china.huawei.com (unknown [7.202.194.10])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8AC4340561;
+	Wed,  8 Jul 2026 09:14:33 +0800 (CST)
+Received: from [10.174.177.15] (10.174.177.15) by
+ kwepemj100016.china.huawei.com (7.202.194.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 8 Jul 2026 09:14:32 +0800
+Message-ID: <7ce07560-3314-4d5a-b81a-14a68b471995@huawei.com>
+Date: Wed, 8 Jul 2026 09:14:32 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+CC: <mawupeng1@huawei.com>, <muchun.song@linux.dev>, <osalvador@suse.de>,
+	<david@kernel.org>, <baolin.wang@linux.alibaba.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/hugetlb: fix missing migratable flag on same-node
+ hugetlb migration
+To: <akpm@linux-foundation.org>
+References: <20260707110254.3147686-1-mawupeng1@huawei.com>
+ <20260707132138.d11a3a759bac55ea5f0f8c22@linux-foundation.org>
+From: mawupeng <mawupeng1@huawei.com>
+In-Reply-To: <20260707132138.d11a3a759bac55ea5f0f8c22@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.15]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemj100016.china.huawei.com (7.202.194.10)
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4EB71A0004
-X-Stat-Signature: 9mwzhdjmc5omstordsna3thhzgauwtc1
-X-HE-Tag: 1783473227-389292
-X-HE-Meta: U2FsdGVkX1/hLfeygZrsQZ82ifNZ47PQWDC8+6oRpp11yG6SWbAz2mRrF/0omP1ywi+jGVHGCQZMGLf87bC23Vkey/ezGmVEKJTdYrjMw8BnwO4/6IVOya3gOl2sMySwvopKbnNesPDqCjvFpFFA079qjALwSE+1H2JZlTAxxHIbZHHZVNKIsy63vAU51JwLWZOrUDGjBIwmhkhB3Fn5r9GNadVUB8R8pFXXfE8REpuuEhmPK310y2PPd0BP/+0RYZUQ7oCloGhittkI9BX6YU6x7wV/DSaVpihdA3VpLmHB4HolmxePpRarD6EfT1o1OBE+y27yQNnpgPxROQioWXtiQZ1yn4hoHdqD4X95UrxTN7/7OngUPphCJD7rD3k1QqlIKnInPJNpHBgjBTD7YbgApYxk5P2piav6EvUZZhO/KkGsuXlXpio/YL1oWX7IpjW0VAgvkHT+uEbeB3BsIcrvVhnQHUSBYi0DgEB9MApj1WUU0xEayHQauC5AOQ1xHMKMfHNDmf69r7/12CBAWR1HmC0HpObodAoaJ2i8hiji0RQAdPc8htjFcGr00y8KFZKPiAIPDcoeiV9Jtivri6XAU3JRwFLi6yBT+mDpnj9NB0MKNOihASzsjWAaAU3hO1UxYibJZfUDu1CdxFWf/tXIrGNgVm+/r9+q/mZoe2eEfE7QjR71V4GpPupndvnUhkjIB1caghe4xrW6L5+wUx7bKUk0zEA3+38SdCklrabJob+nqiGt8kLKko1SA2Jb+tpnSzrCftxemUQvjklhuJ2PXfHhnWfTGTA0pE1R/AMRcd+J/dxWcfQJO+HYWxxjECyS0FEtBVJRXg+MHR452ujUSaReNReOYg55CkSpDpBi6/527buMpAwEofFbavtfM7mZ0PgaPqhYbZUUzwfOO51SAPFlJV00E0OMKG93ebaUhChp22Gv+bKTGiSRSCexU1Vyl8eWEJchkb+W6TB
- QRrgD/H9
- nHQLJyOguKkoZ9h8lqksIzcOzy61MPbMgdMMRZcO12JA59+YQa9+jdTe0sjzmd3u0kR06F6idL06HD7kAboiMu7YuHcNGtitfp33K9a7LsV/Jdo6d0YkVvPCjIs7kBRHTNiDIP+nEjuuj7NJAvyUMXBh4xunSQQRwXTbLS3Otj2uA5EXHI9/i+p5lAVxq5VemmpsiP7Z4VpPM7V3wdb513d2a9eNdBf5qoCp7HqIbvskngHO/YxyyRoPzglYcr2o3Z9sZgE+f6bHWQeTQsGPg6nj5vg5e9kkPyD+Ya7v/BYy2lIe626jSJk60OcaWhIsarRkeY+YGzTVuUIEBwUtQJqE/9H8PQW8T/nnFhRvkYHKjcE/1ZPhQAcyJmfgFAPLEaguEFHNSjVoc1rfJQiBYQ69iWiW2BxuIuxu/o7Yv3Tn0r8bgdbk/TedwVEDuJN6XPmdq7dl23adG5mvgXssY9XFYZZqk3v7PePrl2E3zl8yf2cFdLNPiHiyO0jBAawQTvj1bv3N7eoSfm9s7bc/RyBUCUJQi/nf4WfiGar5EGENe3EZEzuROhMrQPw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 637E1180002
+X-Stat-Signature: d3nthrmgjfm4btqafts7cs5e49da9zs9
+X-HE-Tag: 1783473278-819627
+X-HE-Meta: U2FsdGVkX18SncFL2LwdJGFBgx/gW0AY+xmHzbvCPtpbyDcHEHSt8A6migwVHmYTrAaV3ittxVBGpcmXrhCX/+YJ02EPdlEDNkZOCmaNJoq7b3o/pRVJlB3bGO3Jz8uysdaZBCEv/fC6s3J6qOFs/9ofE7VPxzddEZgAcYsGnNVlm8NVMFjzWCmrXqi6SchymfvJSDBwV0ftQGMHzRJ+pKHZLTBRpw1+rscsB//F/uYiDb46jwU6Tl+WrbHv4+QoiLrl1M1F7Jdbk+YhGB+uzeyp6GAOq/eu4U2G3zPFnP9TE/lUIM7Yx6uGhB9h7irdYqUEHIOgIUKrrd8pHHHBsR/PR/s0fTMXMtE/s9h0vl1zEwMhD9ATX/EKuuUZcORsixAHbn19L7pwwVP8OkCzBs4KKZrNgq567JtZ+J2AytjNAv+k7Y7BeENVegXudcCpnLhwTObHIcp41isGoeLxtHfSr6KSm6bc0CgYmUDt8GynEk0If5sv/tKaw2H4vOL1lxhDoXF59T1LQ1htSMVjo8H4vFUjqDVIWpEYue82LVy2Op8Y+uHUhLO8gHDxUbm1wHZh+E8QmFV3zB1Jjd+RtX3XULR5Lnm5R/i5qdTErEnkU6Ikwexf3BvTNrFDRtxfQMNIpIaXLpQXTalJVNI6g5E+ElHqYt4u9doWLvlCknDmhg8Jvc0Lmu+ZCftVnoVpe7qgsj17V0NKUZN9/JeByMwJvZUiK1jlRSCCoq41OAuSwvHXdBllgcubqtinD40vgyUTC8hUWE1AldV0O7Kfu9FFejFo6vEzcJZ058gX9x1jiw30gpULlPNBB7e2OKJkr9GNI5ZaWE+nWbzXfPcrOaWnZ98E5tmPHTXzhe9aKQ0ueiiXUjV4w2dHhwSu000ecBvN+794LrTxjpw8OTDUEHmynycaY+hQrR/LNCvlVWjzedo5j4KdpOjsteBlUR+BinMrvvb1qE0xNE80ZpT
+ B5Sitj+s
+ uWmt0b4V5eU93QIuecicEiQymqSpw0a2uGefe6Owt1blMIpFQal5bto1n5/gamGh3NS1pkafxwl8OR2A99GuRLaPh+haQEBa3Dvag18SSWiHJh17fKfu7GBQIBJxceuwxcaM6ztY9l/9CxLRaLBctR1XEWcuqLh9ia03QEtVyDYnI6BP2iEVGh1qdvO7KvHAkG4RyEzIDIC0TO88rKvr/zTczQsL311T4/f0Y1aAnEhlTViIOx+oSWB/sEi2L8ux4uuIYgP1bnI+nT2JeFvslTZvysPrtM/+Meh7NR7cX5YGhrNUxwHi7cgmVpV7AOEnvO/Kk7v5bEz7FaYOtYl/PrRXYPtc/cTH+ZO+xxVOn1tz8yo8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,25 +101,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Wed, 08 Jul 2026 09:39:10 +0900,
-Andrew Morton wrote:
 
-> > Those issues are discovered by Sashiko, linked below.
+On 周三 2026-7-8 04:21, Andrew Morton wrote:
+> On Tue, 7 Jul 2026 19:02:54 +0800 Wupeng Ma <mawupeng1@huawei.com> wrote:
 > 
-> Thanks.  Now I'm wondering if you regret opening this can of worms ;)
+>> Commit ba23f58de896 ("mm/migrate: don't call
+>> folio_putback_active_hugetlb() on dst hugetlb folio") moved setting of
+>> the migratable flag and active-list placement from
+>> folio_putback_active_hugetlb(dst) into move_hugetlb_state(), so that
+>> the freshly allocated destination folio is handled where allocation is
+>> known to have succeeded.
+>>
+>> Unfortunately, the new code was appended after the existing
+>> temporary-folio block in move_hugetlb_state(), which contains an early
+>> return added earlier by commit 5af1ab1d24e08 ("mm/hugetlb: optimize
+>> the surplus state transfer code in move_hugetlb_state()"):
+>>
+>>   if (folio_test_hugetlb_temporary(new_folio)) {
+>>       ...
+>>       if (new_nid == old_nid)
+>>           return;                       <-- skips the new code
+>>       ...
+>>   }
+>>
+>>   /* added by ba23f58 */
+>>   folio_set_hugetlb_migratable(new_folio);
+>>   list_move_tail(&new_folio->lru, ...&h->hugepage_activelist);
+>>
+>> When the destination folio is temporary (i.e. the hugetlb pool was
+>> exhausted and the migration callback fell back to
+>> alloc_migrate_hugetlb_folio()) and the migration does not cross a
+>> node -- the common case, and always true on a single-NUMA system --
+>> move_hugetlb_state() returns before setting the migratable flag or
+>> adding the new folio to the active list. The destination folio is
+>> then installed in the page table but cannot be isolated afterwards,
+>> since folio_isolate_hugetlb() rejects folios without the migratable
+>> flag; a subsequent soft-offline, hard-offline or memory-hotplug
+>> offline of that folio fails with -EBUSY.
+>>
+>> This was reproduced on a single-NUMA arm64 VM: a second
+>> MADV_SOFT_OFFLINE on an already-migrated hugetlb page returned EBUSY
+>> and logged "hugepage isolation failed".
+>>
+>> Keep the surplus adjustment, which is the only part that depends on
+>> the node crossing, guarded by `if (new_nid != old_nid)', while making
+>> the migratable flag and active-list placement unconditional. This
+>> preserves the cleanup intent of ba23f58 and closes the early-return
+>> hole.
 > 
-> 	https://sashiko.dev/#/patchset/20260707235137.498738-1-thehajime@gmail.com
+> Thanks, I'll queue this for test and review.
+> 
+>> Fixes: ba23f58de896 ("mm/migrate: don't call folio_putback_active_hugetlb() on dst hugetlb folio")
+> 
+> It sounds like we should backport this into -stable kernels?
 
-indeed, this is why I wished to do it locally to avoid this noise (but
-failed/struggled to prepare the local sashiko due to lack of
-subscription for me..).
+Yes, it is precisely because this patch was backported to 6.6 stable that
+we discovered this issue.
 
-I'm sorry for the noise but this is what I wanted to know so, no problem
-for me.
+> 
+> 
 
-> afaict, all these issues pertain to failures from vma_iter_prealloc().
-
-yes, will look into detail and get you back with another spin.
-
--- Hajime
 
