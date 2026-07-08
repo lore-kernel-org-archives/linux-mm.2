@@ -4,101 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D68A1C44503
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 19:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 274D1C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 20:14:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F1DA6B0088; Wed,  8 Jul 2026 15:33:01 -0400 (EDT)
+	id D1D3C6B0088; Wed,  8 Jul 2026 16:14:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C8CA6B008A; Wed,  8 Jul 2026 15:33:01 -0400 (EDT)
+	id CA74B6B008A; Wed,  8 Jul 2026 16:14:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E1AD6B008C; Wed,  8 Jul 2026 15:33:01 -0400 (EDT)
+	id B47C46B008C; Wed,  8 Jul 2026 16:14:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E0386B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 15:33:01 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C83921C1875
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 19:33:00 +0000 (UTC)
-X-FDA: 84966607320.03.F4F2C59
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CDC67140005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 19:32:58 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z6/VH4TR";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 73BC66B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:14:48 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE750402E7
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:14:47 +0000 (UTC)
+X-FDA: 84966712614.25.EFE1FEF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4656740002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:14:45 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0UxfMaa;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783539178;
+	s=arc-20220608; t=1783541685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3RyCmZq0/lE6QV6OMT7U3gz7Iu3knKbBW94ncX2y3jo=;
-	b=NLB3NPkp+QVRPIK5YoADvu+zRBuje/pQtqQJyUPPAbFy8SRRMseKxkfp+vx0ZgzFTeBzb1
-	QNKUKq9Gc2M4XPChxfH+voFu5qyTR1tI5v/84tlbd1IF3kzbxeM6EOV0tyDc1YkV6hLx/t
-	5u2gTjv4uhXDvWwx77+F+YNEyReZt+0=
+	bh=n/dH7u+EpgXCIs6Pm5DlLAIaA07OdnJPol506/hGZPc=;
+	b=BXNqGAH4nxi9ngd83DC3xzDkq3g3VJWd/pm4vjcFfiO7nynlRrmqIhj/6fKKUV9Fc0JQkr
+	WTFCG8y8neLUO+S8ivbvxZbcxLGl+emEzUcRbm5A+LrPHAsT9Mno/pFO/wxbv7B9451Yb4
+	RL7ud/AGzMZKxoPhpDl++3f3JHcPbkw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z6/VH4TR";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0UxfMaa;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783539178;
-	b=YR7mTH9OP2FPo782lDr1GVLpQ2FOGy5iqg8t7C7HbePVWM8HcQhPLA3fseBtoIkcujxMZW
-	B6audl4RYoVNblb4REfsolDUMkgSqWN1eoHCSeDWMz4iYsMWCbDjTgRtAHnuQo8JdoHezA
-	OhXUqi5PqZ0ewR1lCUFkVb/ZOHZbroY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BFD6B43FD5
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 19:32:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44C21F00ACF
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 19:32:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783539177;
-	bh=3RyCmZq0/lE6QV6OMT7U3gz7Iu3knKbBW94ncX2y3jo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Z6/VH4TRt22RQl9qp8z4DRL9//5CpEY3KsWplCr3tSsIxSxcKY+X2mryMOAHXwZQw
-	 wECHunrPYNovRTZzwqvb/faGdh52R+EdyhGe//YE9/Suc3pAAhwqTTtXDi6FG2bzmE
-	 /xSix+IBqWTMTisbKlBqs7EBOmHkNFLHQffyzoh9sOnrkEipohUB90//5V9zIScK08
-	 9yrhMFhhWjW0aGr+VYUHoroZ5ZlyRXX/W/w/7i4ATJ5dd9ZPlf5WKE2rMwHOsxd8px
-	 jSybX5fDMV8YpV79wxngjHZAfyW1+ca4dpBHNwwITGDND6g0hwuFDwtHZx1my/U0Yj
-	 YioYttkBJAiCQ==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6984169c126so1838697a12.1
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 12:32:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RoTPYTs6ZCzrqIDWiHTKNKcZx5ur5UMB6jdBwnaVUy2vW0vXfScbKzxMOtwVjSAlkmBywJIa+6Dyw==@kvack.org
-X-Gm-Message-State: AOJu0YwSlf2PDYTaKa+l+XnvmGeF3PkZUVmd3yKcVcRD5gx00SPARqdn
-	BkLfjACRZiL+7VcQpE0ySepzsVkVosSyXtyG83zVfjjaOkHtpVlYerQqLw4kKePOycbI+twSVHX
-	/l1XAgTyPnUffk9FIKQnaYMGwjirl3yo=
-X-Received: by 2002:a17:907:72cb:b0:c12:8664:6adc with SMTP id
- a640c23a62f3a-c15cde72297mr190966766b.13.1783539176532; Wed, 08 Jul 2026
- 12:32:56 -0700 (PDT)
+	t=1783541685;
+	b=wOJXeQ0sASf9c3uNIU7uBRcHItqE/d+pYbuxxNTCisbEdXDXz3jlI9VrkmguWrEEBEGlE/
+	pFC8+i93lR55LkjcACgCVG3JGeohb0XTNzc2WwSvn30VV0ntaBLgflOtYk9bLg7HtXG+pv
+	RQ6aP7im1Wbgaa78Y0G4kcgU/hzmWfQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783541684;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n/dH7u+EpgXCIs6Pm5DlLAIaA07OdnJPol506/hGZPc=;
+	b=A0UxfMaaTFVVDaj9LtO/hTMT0TTXZfIqsPflYgTqHn/1auw+rpo4oII2kkVOr1G7NVh3nl
+	uTHyq6/9sf3Me5m8azJWz765TsgDaarFTaUJSAawGztECTOs7lrAp/wOE9K6hki0CG+/uO
+	HzdscPJnK4Rv9IO0PODPHnx7MhBwjqY=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-308-fmCU1yYzM8aPUUel8WJlvA-1; Wed, 08 Jul 2026 16:14:41 -0400
+X-MC-Unique: fmCU1yYzM8aPUUel8WJlvA-1
+X-Mimecast-MFC-AGG-ID: fmCU1yYzM8aPUUel8WJlvA_1783541680
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e9f6f0240eso1303914a34.3
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 13:14:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783541680; x=1784146480;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=n/dH7u+EpgXCIs6Pm5DlLAIaA07OdnJPol506/hGZPc=;
+        b=MTH0hGXVNDHIIDQUFu/Vy6qoRsU6UNV8RCXRME67yX5gZkqBMKaz6iPtQXArzeqm52
+         cAzP7080povq+Qasx8FDR3pT7u7Iz4Ilhmxw4LwkQ0Ri29IiCO/1uTL9ngDnIKnkY1kY
+         Pg5U28/8c6Ps2Gi5Mo5ZDdUa//+fpSFVzPxb1naNYXqyEyUiu95IkQ5GUMIsKBdbTMTQ
+         iVmjumqUZHx5iS2ppS6niOSJN+XlxS1nF/63QkWWc8gp+OEHfv3En3hcHZV1YA63nV4Q
+         H+uQCggscfN4XGNqO20mT5utP5z12BibOe0UJE+dNbB1vODtGHmyecT3FsCJj0YWi9fm
+         5Meg==
+X-Forwarded-Encrypted: i=1; AFNElJ9QnS+3pVYe1UHdyOE+qs+7XCDnlRlrL6hIoIOhX1/+JX/4UVbasjlXCijCPEz2xhGmYwKnA7tiuw==@kvack.org
+X-Gm-Message-State: AOJu0YweTDLoY0WINz1ara85m/kT98S7F0m8ZNx8kiOhdcKdf9AYvsN+
+	+cKzRC3906vfi7En1SzHYfymUqg4iePzq8Vf9JpxxkkOrsrB2RoS0wJhaMKp/kNC6IoJ8dUMzN+
+	IDZXzS0rt3GQRTZTcDGxDYT8TmbCkid74F9clRS8nvHm7W96+WCpX
+X-Gm-Gg: AfdE7cnZylurQWMsWu4mLR+Ew3mAU6jCASTILbLW4KfIuBZbUq7/oTXCk0DmJ+FlBuV
+	0T47fle3CjA4sbUDms3xXWaYAai3hjYlXnLuo+sa7VqGW7A9He9J0pABWgbLNFj4ZDnsG4PzSLA
+	ayOZnDUL2gmV37G15noIAPjN4pX10nJj+EEVQWhFFiJOYdPGQwCgC9eWPWKFRdrOCFFIBtkbRmb
+	z6/LNufd+gDn1oi3lwf/n7I7n4kfy5zCj7bUFAbvB7YXAhBvyCfvY2/i4xx0QMMoCd6rXI0vaOu
+	ZJ44+xoahyB6I+iyG5KKObriAGUTx8yU1wLeaB8NWi9qYj3jgSvO3hbvJ9PzqvDXvRzNbopfCWs
+	Uj6IshXdqaA==
+X-Received: by 2002:a05:6830:2589:b0:7e3:d199:3164 with SMTP id 46e09a7af769-7ebcfe7ad5bmr2983139a34.11.1783541680389;
+        Wed, 08 Jul 2026 13:14:40 -0700 (PDT)
+X-Received: by 2002:a05:6830:2589:b0:7e3:d199:3164 with SMTP id 46e09a7af769-7ebcfe7ad5bmr2983090a34.11.1783541679717;
+        Wed, 08 Jul 2026 13:14:39 -0700 (PDT)
+Received: from [192.168.8.207] ([45.81.3.233])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcb2631dfsm2528223a34.13.2026.07.08.13.14.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2026 13:14:38 -0700 (PDT)
+Message-ID: <9b0fb337-88e5-484c-8618-09ed2274444e@redhat.com>
+Date: Wed, 8 Jul 2026 14:16:12 -0600
 MIME-Version: 1.0
-References: <20260702180908.150136-1-yunzhao@cloudflare.com>
- <akbHBZP9HxOJMtQB@cmpxchg.org> <CAO9r8zOiwgG80EjqdZFgWQvODUe1RzecLemxcB7xXNm_f3XfbA@mail.gmail.com>
- <6ecf5579-0b3b-4e8c-a625-bbf0a4a48f94@kernel.org>
-In-Reply-To: <6ecf5579-0b3b-4e8c-a625-bbf0a4a48f94@kernel.org>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 8 Jul 2026 12:32:44 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zP6JrZcBnzb8A3A9V8so4gJMWLvrJQ7VwPyyU417GikQg@mail.gmail.com>
-X-Gm-Features: AVVi8CeIZgFy1fjHketasniUWUIBn3aMxNf0vO9cS8k43flb8mYqC_6dJss1YaI
-Message-ID: <CAO9r8zP6JrZcBnzb8A3A9V8so4gJMWLvrJQ7VwPyyU417GikQg@mail.gmail.com>
-Subject: Re: [PATCH] mm/zswap: use ratelimited stats flush in zswap_shrinker_count()
-To: Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Yunzhao Li <yunzhao@cloudflare.com>, linux-mm@kvack.org, 
-	nphamcs@gmail.com, yosryahmed@google.com, shakeel.butt@linux.dev, 
-	akpm@linux-foundation.org, zhouchengming@bytedance.com, 
-	James Houghton <jthoughton@google.com>, kernel-team <kernel-team@cloudflare.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 99afkaxqaax9wuuc3ir9ctfeqd316pni
-X-Rspamd-Queue-Id: CDC67140005
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] selftests: do not override CFLAGS set by the build
+ environment
+To: Aleksei Oladko <aleksey.oladko@virtuozzo.com>,
+ Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Seth Forshee <sforshee@kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Reinette Chatre
+ <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>,
+ James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Paul Walmsley
+ <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Abhinav Saxena <xandfury@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, raquini@redhat.com
+References: <20260306002100.519673-1-aleksey.oladko@virtuozzo.com>
+From: Nico Pache <npache@redhat.com>
+In-Reply-To: <20260306002100.519673-1-aleksey.oladko@virtuozzo.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Qk3e9hGrIrRs20_OkdNqFrtK15eK6GFNU3C1D5MmD-Y_1783541680
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4656740002
+X-Stat-Signature: gbetf9f3wkz4ufpenbnxahqz6wnew5zj
 X-Rspam-User: 
-X-HE-Tag: 1783539178-885361
-X-HE-Meta: U2FsdGVkX18B6VvMRMmVqhHafDpHjMoBMx2JMtZihnwQbW2/9347SmmC6stuUMihWkXbKRI9Y/XH87briDTRsDvuhIr0HJrpgHZ7mnDLLgXxZdXug8BaVSG51EPo+NE/Ww0+Z5MeNFguIgtDK6lV7w5ftISzHchkojqQ8p27YIbuYEgHi7xRC80FBh3UyFsd2xhEx8IF/3aglCfyNQ4PwgdOnzmNo4OfJsnpSpxO0R5yy8Vs5clUrZdB7d8jj8Cas+hUDsWkNwD559aI7WnyXgk5i5uWSXjYCKKOPw9FkB3ajVzsirCWvA9Wac6k6rdiOFOlw+U/HFC43QIDLHb5kqsBfY0MqJ4LMnrxS4MX6DUxmZwZyGK0Pow/9y8Keyvk77IxAuap/g7IgvHvJtePxG3EabTIX9FWkhTMjjscWk8EjYepS7pG7yM2/Mr+6wBg/7Ij9SC4KZeuUgM/b/cvITs+TB4Ggp7bQdTG0vRDnvOzDiWyuIVg0sUSetpucEzi0qZiKtpXiOc3CEnTALj3uH+C5nfL/FC4uqN507KerYuP03LHaouEuPwF8zkXwdtS5JXi5ERADpx5iOxo1E6xllQs5yMGYSVnFJw3hrT5fOWKJ3q1GUzotpOrCKi/RHfHZirh5tAKDMWyyW8uDxm+1Lb1WT2m80AHqig8v0T8npXkfhoTsSrx0noJq0uN0vBwOFJfqU9qZQFL8dzkHPsgLfamI/mfOAV4bxNx0y/Q0Mra6fvSriUfCDm/i3He3sQsWgbNGZQBiTJmAXrXAN+GePvvtqIxPt651CjdP5T9TQyuPwC96joz0OhrHIjcrtA9oLuM+sNoDjf7JY5JF9ZbLrNkNFEP2e1gi17p4UcLSqcyh8L8OK/FM8+2mqgnTDgI2/bM2tp7SImLxOJadmLGu5gQE1m1+4+BRYxXGRlYsPiP+qbPg2+c0HUYVwxPuoRlnTY35BT+mN4l0g2ezhB
- XrTh0gtH
- 9onZS/ngJnm69eHOKGSabyLLHVkrG7k2+863EgsR6c5UXT6PCJw1PSGABrjdS896sstF1rqj18d5nvjwV2mBa0xXz7i2tUIJ/OfDhc55QfouoSJJOxZK0ZILT0OrYjfYdmms0g7mRqwSJptmDiyDqTxiOQ1c1/3eIPlxAzNGnpceiygFSXi2+m74/ahw1wQY+dNiMzZ2BlL2LY6iIojrzlkBjILQ+8cwpvS9t8wpWdg97a4OKP0BWYsFGrRJQfX70UmQeTeZl8aANNgKiPYEk1QmV93yk8w+GwwKNkpkebRpVgyZMmCc6ttr+v6i6DR8KhZvthamwTilbnnmmxANnqSrtG2O+sRTg9+nF2IyqlXPzUN47g/TAnWAEY9WhHFXOl3+UMfaRdCAIAPd8AYd0jwzDPmPfQxVqXf/PFSSvrPknVfcrdtnLRBqNvpqYC7WH/BwI62v9kgo2mz6cMiVWIj7zt8BBROfypTewivuo9+H2slMSPA+StjNx64yrPfnqgF1s
+X-HE-Tag: 1783541685-277322
+X-HE-Meta: U2FsdGVkX1+RBv1j/TCSzdVk4Nm5ZMDrukug5+EN6y2AJp+tkGIL4tNSqI0w9HnHHiWjGKMQuiQFWFr1lXDTKEnK1H/L7uZ7nb1xGkR7TH5f27RKZZfRLNW4UPWBhukQaI+joFMEN6cwqmqLGnDA40TcnEzvWuypWnPIw6xho3jJXhTYQd9dOXT9ITygNLFlKq0zx2lNPYRJ0nNhPqwe6+My37V24Secb3RNLqKMDRzU0I57rv+K4PyjOGa84iCRHiYPZAbV5qdIVfRyvZZnpn+p6Zv8uQlHqPUcz27IKSJfmd43MZQ3LRJg1Ts+4LCJ/kRKvgJDDcpNzKfjMjGVbpeaU0D7LTAmGdK3BIzw5vuBAtb7SYKTjXqhVecFxXb3IivkyLgQicKha0OrlVIYL6gAg3pr/5Y6h5cOOHz8jQ0WJ3E83qtPrujuOKFuA5xXOQ1qaaUT3OnPpIKFaqDBVTxmGiYIBEMAtIkjkLmE/skF4fOM9AZVNh9bwTFsoaZ7E7Gn67ahfN9E4mitKQCV7LYO6g+ldxp/K/90jy2jtOEWZsSw54JSTbFxdTJZwMxrEEQ3VdvI/dfiRxQEjr1mUpXsLJMdwxu6b6jkq080Hyz5bgi8dAJCy9WXc1bQQW2sfqNRRohZ8859/hTEysWJsG6EKzfRpCbGAjH0DkbIZza9galQCPu2SKBEBhvC1kY5a/K9TCc/EKrankm9FNt/UW1WFgDvqbvsKyILnnVwLdUoRL2yjFEjFgofel1QQcsAhgmWzak0I8oT4H0aCK8lbJpy4lOVOKKz/Ruu4u/9XTVummH6bkdYJDOM8/fuwOGVHF/czIWrMCC5mUqtcBJYrqeEJ6aVZU0K/Q8Aec2+MQulNUGLGxdTe7DByi8kYtRlN7d1Aj6VPN3+0rQD5H5v8v/5R/eiXPejSqdhYn13KS+8LvMrlS57MUCycpvt6wo6+ZYc7k7PWb9nXpCxrpz
+ s85tNtgy
+ oFDAT5YbeaOlzHtcs9GtcRt5WSGMiW7Aaugb1k08kZ/F1xTGA6KA2oow5hUuxg3JtWlpm/hM3lorrISpEqD6FH+aew0orTjERKKyC4cNsxBrFYG4D64+Nieyt+0GWH7IYtYbOxqE7M+el1/EZ09VUbjTWxsE+Gb1LkH5BQGpcXPV4eJcm7ynTHRJaf5etkB+hV2GhTB61XTgOWLpI1kaNQ6OBzzPylue63XEh+E69ET5A1dSpg2Fhh5DstO+B4uoLbCJfhGuCoh3N1Bb+KQGSI/Bl0t5yZI5dc33pUwY5bQQ2t/1wRoYpUFOK746GI0o9JUTgdj1iL6OUTVSGmz1/2H4jO95OLf6OEgI8RzWItlEqeSh1wzrGUZSpkK3uNBYlDKHU6hpwTd2LDtVOgIoXNTVVt8pLg+S3/AU2IUeLqnPv16aZbo1+RapKB+rpj+ZCj65xPXovlHt2SIDvo6YM6M0Q0ocJIrii3Du1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,159 +142,224 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 8, 2026 at 2:11=E2=80=AFAM Jesper Dangaard Brouer <hawk@kernel.=
-org> wrote:
->
->
->
-> On 06/07/2026 21.46, Yosry Ahmed wrote:
-> > On Thu, Jul 2, 2026 at 6:01=E2=80=AFPM Johannes Weiner <hannes@cmpxchg.=
-org> wrote:
-> >>
-> >> On Thu, Jul 02, 2026 at 11:07:35AM -0700, Yunzhao Li wrote:
-> >>> zswap_shrinker_count() calls mem_cgroup_flush_stats(), which takes th=
-e
-> >>> global cgroup rstat lock synchronously. On machines with many CPUs an=
-d
-> >>> NUMA nodes, this creates severe lock contention in the kswapd reclaim
-> >>> path:
-> >>>
-> >>>    - Multiple kswapd threads (one per NUMA node) run concurrently.
-> >>>    - do_shrink_slab() invokes zswap_shrinker_count() for each
-> >>>      memcg-aware shrinker pass.
-> >>>    - Each call flushes the full cgroup rstat hierarchy under the glob=
-al
-> >>>      lock.
-> >>>
-> >>> On AMD EPYC 9684X machines (96 cores, 192 threads, 12 NUMA nodes)
-> >>> running production workloads with zswap enabled, perf shows 2.88% of
-> >>> kernel cycles in osq_lock contention from this path:
-> >>>
-> >>>       2.88%  [k] osq_lock
-> >>>                --__mutex_lock.constprop.0
-> >>>                    --__cgroup_rstat_lock
-> >>>                        --cgroup_rstat_flush_locked
-> >>>                            --cgroup_rstat_flush
-> >>>                                --zswap_shrinker_count
-> >>>                                    do_shrink_slab
-> >>>                                    shrink_slab
-> >>>                                    shrink_node
-> >>>                                    balance_pgdat
-> >>>                                    kswapd
-> >>>
-> >>> 84% of kswapd kernel cycles are spent in
-> >>> shrink_slab -> zswap_shrinker_count -> cgroup_rstat_flush, not in act=
-ual
-> >>> page reclaim (shrink_lruvec).
-> >>>
-> >>> Controlled A/B on identical hardware and workload:
-> >>>
-> >>>    shrinker=3DY: 2.88% osq_lock, memory PSI 1.58%
-> >>>    shrinker=3DN: 0.00% osq_lock, memory PSI 0.57%
-> >>>
-> >>> eBPF-based rstat lock wait measurement across 8 production metals
-> >>> confirms the contention splits cleanly along shrinker enablement:
-> >>>
-> >>>    shrinker=3DY: 50-250x more contended lock acquisitions (248/s vs 1=
-.1/s)
-> >>>    shrinker=3DN: baseline lock wait (0.0017 s/s vs 1.04 s/s)
-> >>>
-> >>> zswap_shrinker_count() only produces a heuristic estimate, scaled by
-> >>> compression ratio via mult_frac(). The actual writeback happens in
-> >>> zswap_shrinker_scan(). Slightly stale stats are acceptable here.
-> >>>
-> >>> Switch to mem_cgroup_flush_stats_ratelimited(), which only flushes if
-> >>> the periodic 2-second flusher is one full cycle late. This matches th=
-e
-> >>> approach already used in prepare_scan_control() (mm/vmscan.c) for the
-> >>> same reclaim path.
-> >>>
-> >>> After applying this patch, rstat flush latency and lock wait time on
-> >>> shrinker=3DY machines dropped to the same level as shrinker=3DN contr=
-ols,
-> >>> while the zswap shrinker continues to function (pool size remains
-> >>> bounded under the max_pool_percent cap).
-> >>>
-> >>> Previously discussed:
-> >>>    - Chengming Zhou (Dec 2023): rstat contention from
-> >>>      zswap_shrinker_count [1]
-> >>>    - Shakeel Butt (Aug 2024): zswap_shrinker_count still uses sync
-> >>>      flush [2]
-> >>>    - Yosry Ahmed (Aug 2024): suggested eliminating in-kernel
-> >>>      flushers [3]
-> >>>    - Jesper Dangaard Brouer (Sep 2024): cgroup/rstat V11 patch [4]
-> >>>
-> >>> [1] https://lore.kernel.org/linux-mm/20231206103935.3440502-1-zhouche=
-ngming@bytedance.com/
-> >>> [2] https://lore.kernel.org/linux-mm/CALvZod7LFxLCxVpOFH8b2Ppm8T40HPG=
-MKQwX_=3DNPCWB_mFW+oQ@mail.gmail.com/
-> >>> [3] https://lore.kernel.org/linux-mm/CAJD7tkYvFyOSX+rP_FKGBhxvZiCDxtp=
-sNp-c5CGOA-4Bq9oXSg@mail.gmail.com/
-> >>> [4] https://lore.kernel.org/linux-mm/172616070094.2055617.17676042522=
-679701515.stgit@firesoul/
-> >>>
-> >>> Suggested-by: Jesper Dangaard Brouer <hawk@kernel.org>
-> >>> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-> >>> Signed-off-by: Yunzhao Li <yunzhao@cloudflare.com>
-> >>> Tested-by: Yunzhao Li <yunzhao@cloudflare.com>
-> >>
-> >> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> >>
-> >> A lot can happen in 2s, but I agree doing this every time is
-> >> silly. vmscan has been good with 2s for a while, so this should be
-> >> fine as well. We can re-evaluate if we run into weird behavior.
-> >
-> > Hmm actually we are starting to exercise kernels with the 2s change in
-> > the vmscan path, and we are observing some seemingly premature OOM
-> > kills for VMs under memory pressure. We are still looking into it, but
-> > I would honestly hold off on adding another ratelimited flush here. It
-> > may not be as big of a deal for the zswap path, but I'd rather fix
-> > this properly instead of just plugging it. We should probably move
-> > away from using rstat for zswapped/zswap_b stats and use page counters
-> > as we discussed previously (i.e. eliminating the flushes to begin
-> > with).
-> >
-> > (Adding James here as he's looking into the premature OOM kills interna=
-lly)
->
-> IMHO it doesn't make any sense to hold off on this patch.
-> This only relates to zswap path with shrinker enabled. Today we are
-> forced to run with shrinker disabled.
->
-> If you find some better approach to ratelimited flush, then that is
-> great.  You can change this code again for your use-case. No reason to
-> stall this patch IMHO.
 
-I think we should at least try a proper solution before falling back
-to the whack-a-mole approach here. I don't like the ratelimited flush
-because we use stale stats and the formulas start making less sense.
-If it causes any problems, it's hard to reason about them. I agree
-it's probably not gonna cause significant problems with the zswap
-shrinker, but we should at least make an attempt at a proper fix
-before resorting to this.
 
-I *think* we should stop using rstat for MEMCG_ZSWAPPED and
-MEMCG_ZSWAP_B. We can probably use per-memcg atomics for those, and
-just iterate the parents and update the counters. It will also get rid
-of the flush in obj_cgroup_may_zswap(), which is also problematic if
-memory.zswap.max is used. Yes, it's more expensive, but I suspect it
-may be just fine. The reclaim path is a slow path anyway. The fault
-path is probably more concerning but we won't know unless we try.
-rstat has a heavily optimized update path and a really expensive read
-path, and I think that tradeoff just doesn't make much sense in the
-zswap case.
+On 3/5/26 5:21 PM, Aleksei Oladko wrote:
+> Some kselftests Makefiles assign CFLAGS using 'CFLAGS=...'
+> which overrides any CFLAGS provided by the build environment.
+> 
+> If the environment set flags, overriding CFLAGS may result in
+> inconsistent compiler and linker options and cause build failures,
+> for example when building PIE binaries:
+> 
+>   # export CFLAGS="-fPIE"
+>   # export LDFLAGS="-pie"
+>   # make -C tools/testing/selftests/ TARGETS=mount_setattr
+>   make: Entering directory '/build/kernel/tools/testing/selftests'
+>   make[1]: Entering directory '/build/kernel/tools/testing/selftests/mount_setattr'
+>     CC       mount_setattr_test
+>   /usr/bin/ld: warning: -z pack-relative-relocs ignored
+>   /usr/bin/ld: /tmp/ccikConN.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIE
+>   collect2: error: ld returned 1 exit status
+>   make[1]: *** [../lib.mk:222: /build/kernel/tools/testing/selftests/mount_setattr/mount_setattr_test] Error 1
+> 
+> Fix this by appending to CFLAGS using 'CFLAGS+=' instead of
+> overriding them.
+> 
+> The fix is not applied to the Makefiles in x86, riscv, mm, arm64
+> and powerpc as they fully define their flags.
+> 
+> Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
 
-Can we try doing that instead? If there aren't significant performance
-regressions it would put us in a much better place imo.
+This is very much needed (I cant confirm for all the cases you changed here but
+we are experiencing the same thing internally).
 
-Also, a curious question, the changelog says:
-> while the zswap shrinker continues to function (pool size remains
-> bounded under the max_pool_percent cap).
+However this does not apply. Can you please do a refresh/RESEND and hopefully
+you get more attention on the second round.
 
-AFAICT the shrinker's goal is not to keep the pool size under the cap,
-that should happen regardless of whether or not the shrinker is
-enabled. The shrinker proactively writes back memory from zswap as
-part of reclaim, rather than waiting for the limit (global or memcg)
-to be hit. What disadvantages are you running into with disabling the
-shrinker?
+Cheers,
+-- Nico
+
+
+> ---
+>  tools/testing/selftests/efivarfs/Makefile             | 2 +-
+>  tools/testing/selftests/exec/Makefile                 | 2 +-
+>  tools/testing/selftests/firmware/Makefile             | 4 ++--
+>  tools/testing/selftests/ipc/Makefile                  | 4 ++--
+>  tools/testing/selftests/mount/Makefile                | 4 ++--
+>  tools/testing/selftests/mount_setattr/Makefile        | 2 +-
+>  tools/testing/selftests/move_mount_set_group/Makefile | 2 +-
+>  tools/testing/selftests/resctrl/Makefile              | 2 +-
+>  tools/testing/selftests/safesetid/Makefile            | 2 +-
+>  tools/testing/selftests/signal/Makefile               | 2 +-
+>  tools/testing/selftests/timens/Makefile               | 2 +-
+>  tools/testing/selftests/tty/Makefile                  | 2 +-
+>  tools/testing/selftests/vDSO/Makefile                 | 2 +-
+>  13 files changed, 16 insertions(+), 16 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/efivarfs/Makefile b/tools/testing/selftests/efivarfs/Makefile
+> index e3181338ba5e..f6c412059af3 100644
+> --- a/tools/testing/selftests/efivarfs/Makefile
+> +++ b/tools/testing/selftests/efivarfs/Makefile
+> @@ -1,5 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> -CFLAGS = -Wall
+> +CFLAGS += -Wall
+>  
+>  TEST_GEN_FILES := open-unlink create-read
+>  TEST_PROGS := efivarfs.sh
+> diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
+> index 45a3cfc435cf..54cdefb9ccb0 100644
+> --- a/tools/testing/selftests/exec/Makefile
+> +++ b/tools/testing/selftests/exec/Makefile
+> @@ -1,5 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0
+> -CFLAGS = -Wall
+> +CFLAGS += -Wall
+>  CFLAGS += -Wno-nonnull
+>  CFLAGS += $(KHDR_INCLUDES)
+>  
+> diff --git a/tools/testing/selftests/firmware/Makefile b/tools/testing/selftests/firmware/Makefile
+> index 7992969deaa2..dd9acf972cf5 100644
+> --- a/tools/testing/selftests/firmware/Makefile
+> +++ b/tools/testing/selftests/firmware/Makefile
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  # Makefile for firmware loading selftests
+> -CFLAGS = -Wall \
+> -         -O2
+> +CFLAGS += -Wall \
+> +          -O2
+>  
+>  TEST_PROGS := fw_run_tests.sh
+>  TEST_FILES := fw_fallback.sh fw_filesystem.sh fw_upload.sh fw_lib.sh
+> diff --git a/tools/testing/selftests/ipc/Makefile b/tools/testing/selftests/ipc/Makefile
+> index 50e9c299fc4a..5a5577767a35 100644
+> --- a/tools/testing/selftests/ipc/Makefile
+> +++ b/tools/testing/selftests/ipc/Makefile
+> @@ -3,11 +3,11 @@ uname_M := $(shell uname -m 2>/dev/null || echo not)
+>  ARCH ?= $(shell echo $(uname_M) | sed -e s/i.86/i386/)
+>  ifeq ($(ARCH),i386)
+>          ARCH := x86
+> -	CFLAGS := -DCONFIG_X86_32 -D__i386__
+> +	CFLAGS += -DCONFIG_X86_32 -D__i386__
+>  endif
+>  ifeq ($(ARCH),x86_64)
+>  	ARCH := x86
+> -	CFLAGS := -DCONFIG_X86_64 -D__x86_64__
+> +	CFLAGS += -DCONFIG_X86_64 -D__x86_64__
+>  endif
+>  
+>  CFLAGS += $(KHDR_INCLUDES)
+> diff --git a/tools/testing/selftests/mount/Makefile b/tools/testing/selftests/mount/Makefile
+> index 2d9454841644..38361a896363 100644
+> --- a/tools/testing/selftests/mount/Makefile
+> +++ b/tools/testing/selftests/mount/Makefile
+> @@ -1,7 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  # Makefile for mount selftests.
+> -CFLAGS = -Wall \
+> -         -O2
+> +CFLAGS += -Wall \
+> +          -O2
+>  
+>  TEST_PROGS := run_unprivileged_remount.sh run_nosymfollow.sh
+>  TEST_GEN_FILES := unprivileged-remount-test nosymfollow-test
+> diff --git a/tools/testing/selftests/mount_setattr/Makefile b/tools/testing/selftests/mount_setattr/Makefile
+> index 4d4f810cdf2c..fbdb8f69b548 100644
+> --- a/tools/testing/selftests/mount_setattr/Makefile
+> +++ b/tools/testing/selftests/mount_setattr/Makefile
+> @@ -1,6 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  # Makefile for mount selftests.
+> -CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2 -pthread
+> +CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2 -pthread
+>  
+>  LOCAL_HDRS += ../filesystems/wrappers.h
+>  
+> diff --git a/tools/testing/selftests/move_mount_set_group/Makefile b/tools/testing/selftests/move_mount_set_group/Makefile
+> index 94235846b6f9..8771a5491ea3 100644
+> --- a/tools/testing/selftests/move_mount_set_group/Makefile
+> +++ b/tools/testing/selftests/move_mount_set_group/Makefile
+> @@ -1,6 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  # Makefile for mount selftests.
+> -CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2
+> +CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2
+>  
+>  TEST_GEN_FILES += move_mount_set_group_test
+>  
+> diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
+> index 984534cfbf1b..1d566a91faa7 100644
+> --- a/tools/testing/selftests/resctrl/Makefile
+> +++ b/tools/testing/selftests/resctrl/Makefile
+> @@ -1,6 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  
+> -CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2
+> +CFLAGS += -g -Wall -O2 -D_FORTIFY_SOURCE=2
+>  CFLAGS += $(KHDR_INCLUDES)
+>  
+>  TEST_GEN_PROGS := resctrl_tests
+> diff --git a/tools/testing/selftests/safesetid/Makefile b/tools/testing/selftests/safesetid/Makefile
+> index e815bbf2d0f4..d3811515d8e3 100644
+> --- a/tools/testing/selftests/safesetid/Makefile
+> +++ b/tools/testing/selftests/safesetid/Makefile
+> @@ -1,6 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  # Makefile for SafeSetID selftest.
+> -CFLAGS = -Wall -O2
+> +CFLAGS += -Wall -O2
+>  LDLIBS = -lcap
+>  
+>  TEST_PROGS := safesetid-test.sh
+> diff --git a/tools/testing/selftests/signal/Makefile b/tools/testing/selftests/signal/Makefile
+> index e0bf7058d19c..6c437f95132d 100644
+> --- a/tools/testing/selftests/signal/Makefile
+> +++ b/tools/testing/selftests/signal/Makefile
+> @@ -1,5 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> -CFLAGS = -Wall
+> +CFLAGS += -Wall
+>  TEST_GEN_PROGS = mangle_uc_sigmask
+>  TEST_GEN_PROGS += sas
+>  
+> diff --git a/tools/testing/selftests/timens/Makefile b/tools/testing/selftests/timens/Makefile
+> index f0d51d4d2c87..357077792395 100644
+> --- a/tools/testing/selftests/timens/Makefile
+> +++ b/tools/testing/selftests/timens/Makefile
+> @@ -1,7 +1,7 @@
+>  TEST_GEN_PROGS := timens timerfd timer clock_nanosleep procfs exec futex vfork_exec
+>  TEST_GEN_PROGS_EXTENDED := gettime_perf
+>  
+> -CFLAGS := -Wall -Werror -pthread
+> +CFLAGS += -Wall -Werror -pthread
+>  LDLIBS := -lrt -ldl
+>  
+>  include ../lib.mk
+> diff --git a/tools/testing/selftests/tty/Makefile b/tools/testing/selftests/tty/Makefile
+> index 7f6fbe5a0cd5..e9c22dafe5e1 100644
+> --- a/tools/testing/selftests/tty/Makefile
+> +++ b/tools/testing/selftests/tty/Makefile
+> @@ -1,5 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0
+> -CFLAGS = -O2 -Wall
+> +CFLAGS += -O2 -Wall
+>  TEST_GEN_PROGS := tty_tstamp_update tty_tiocsti_test
+>  LDLIBS += -lcap
+>  
+> diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/vDSO/Makefile
+> index e361aca22a74..1f4628ceb975 100644
+> --- a/tools/testing/selftests/vDSO/Makefile
+> +++ b/tools/testing/selftests/vDSO/Makefile
+> @@ -11,7 +11,7 @@ TEST_GEN_PROGS += vdso_test_correctness
+>  TEST_GEN_PROGS += vdso_test_getrandom
+>  TEST_GEN_PROGS += vdso_test_chacha
+>  
+> -CFLAGS := -std=gnu99 -O2 -Wall -Wstrict-prototypes
+> +CFLAGS += -std=gnu99 -O2 -Wall -Wstrict-prototypes
+>  
+>  ifeq ($(CONFIG_X86_32),y)
+>  LDLIBS += -lgcc_s
+
 
