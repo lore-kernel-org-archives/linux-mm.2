@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60207C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 01:33:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94AF6C43602
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 01:33:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AAEB6B0088; Tue,  7 Jul 2026 21:33:01 -0400 (EDT)
+	id A60B26B008A; Tue,  7 Jul 2026 21:33:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 382516B008A; Tue,  7 Jul 2026 21:33:01 -0400 (EDT)
+	id A11C56B008C; Tue,  7 Jul 2026 21:33:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BF406B008C; Tue,  7 Jul 2026 21:33:01 -0400 (EDT)
+	id 94D8E6B0092; Tue,  7 Jul 2026 21:33:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 03A7A6B0088
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:33:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 72DC116903D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 684176B008A
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:33:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D74A11405E3
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:33:00 +0000 (UTC)
-X-FDA: 84963885720.01.551E484
+X-FDA: 84963885720.11.F1F4C2E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D873810000B
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:32:58 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HEvBl7SB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783474378;
-	b=cafLh9SV6CcHhbsmfllLraod8DWZ2UlVUVZqXhSrALjyJNMCqOJ31ctpb/OjZQQ6b2sg8d
-	mcWqrCknvL3eXnHaeguvYIx0z8BFnif/f7SexziEJ9GAez6K+2SRxsJAl98zo2A0IaPmah
-	WQQTOkD3FVUQjVP0towl3t3rQDgMuus=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HEvBl7SB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id 37004180007
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:32:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ESVkzhHw;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783474378;
+	s=arc-20220608; t=1783474379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=I8QrNb/C+cvH7yIXprKVZCOZdxfCmRYXj28pAZUqsXg=;
-	b=6Mbq4jQx1uW1Lg/U/YXb1Y/SXaGcCkUbqAckQL/PcaC3Par7rgSVvRhjuWJpL2Lk2Sxtqt
-	qtTczJNPD3B68hCeGJdAKBObM25wgYoKlWQ4qP048dKbgt689kxnyRNW3zojVkCkBjsJvW
-	vAE2MutsWO1Uu3Os2reTNNcs43HRp0c=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=T+VOUcpSDlU3fuzMuw/UnhEEzVcjPNsnHwRJeSaH3SA=;
+	b=01LXM2dXsyJhbel8C9fcmx6Jfw8heRgwg5BZ+Q4erO2TPXc+PjtNGXtr4YJSBQgd8UTA6U
+	bsco9UMfiVMxHZNKwG4GhdR3FREtxIDNE9ep0XtXdRNtfN3+56U3rQD+tvqkEuNCKPThx6
+	dPCN7VYjM8XcdJ3mwTvcaf1XWBQ8t/8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ESVkzhHw;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783474379;
+	b=JcHSJYCQodR+WYnz2dSE2ia+9XxECGoQrizjcqg5D6RkyFhfRKxM1kv+xqtM6dtg7XIusy
+	moSGDiE4vfUsIWXqr69tXGFtkKG0bEezSE61dKL8rAkS7G+dpEsEMNmF8vpd9IEpDHEeKl
+	DIxzikC8B8+TgXfSXyimpxSm++hHScQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEE264012C;
-	Wed,  8 Jul 2026 01:32:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1EB1F000E9;
+	by sea.source.kernel.org (Postfix) with ESMTP id 8639040705;
+	Wed,  8 Jul 2026 01:32:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC02E1F00A3A;
 	Wed,  8 Jul 2026 01:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783474377;
-	bh=I8QrNb/C+cvH7yIXprKVZCOZdxfCmRYXj28pAZUqsXg=;
-	h=From:To:Cc:Subject:Date;
-	b=HEvBl7SBTjtN3xOHmo6QnCYsDOCSq0tUXKDtcYO+ampOiSjh2eZ9dmSbIVM8E8fcq
-	 SLxs2t9uY1KTqpW/c8QT+D6YCmicgfJ/DAH4Wua1W/dRM6Kyrl9WR82hm4mNvkXin5
-	 lKR+uz5tKc0535K4zVpZ53pC2VlRT+G7+IpSx7D5Jg3DPhhIUV0U0EzLvJt0VHUIb/
-	 YdTa3jJ5pqvmcV+j7suaHWzwRCtoEXy/4wWTLGCWMIjfWHTa2j6pt0ZyG415KrhVr6
-	 Eo7jZJyCRo//W+msBiuyD90ibtMFQMMv0OQz5EWeNsPZ3TYxl2cYaEW2mTECiRtbwB
-	 Pzv9VOTn80cfw==
+	s=k20260515; t=1783474378;
+	bh=T+VOUcpSDlU3fuzMuw/UnhEEzVcjPNsnHwRJeSaH3SA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ESVkzhHw0s2qBTPVfEyF/jPjOX+JKGUFB47v8c78YsrlEtdX4+3//kpYIvSWvNl7m
+	 kNS8q5Kx4OFadZm/wdtDw8Ql755HvxiUI949gn8+rMy+af7fWGts3/8sMkjzyph6Z3
+	 sRpj08NMY9XKUFqH9NHRhf/Qjbdys99kUGRQMXQhY6RIotJqoTTQfdKACgpD0m2yHb
+	 l9GJhMKUdGzs+N/9mg0nqCXJAVtBKSemJX20twrXm6L8ohkjIXqN6BfOGPHfqkK75e
+	 1Pka7mi1nzq88ogt+z1ijBo2LwMLnvaWNM2zL6v7Fj/+mpdeYTRJ+kAuRaI0smBQIX
+	 +0Q5aZNvFdHpQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,20 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 0/7] mm/damon: update probe hits for runtime parameter commits
-Date: Tue,  7 Jul 2026 18:32:43 -0700
-Message-ID: <20260708013252.95888-1-sj@kernel.org>
+Subject: [RFC PATCH v1.2 1/7] mm/damon/core: remove comment and test for nr_to_bp() divide-by-zero
+Date: Tue,  7 Jul 2026 18:32:44 -0700
+Message-ID: <20260708013252.95888-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260708013252.95888-1-sj@kernel.org>
+References: <20260708013252.95888-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D873810000B
+X-Stat-Signature: 8o9rxbm38ghouadzi5peeci67hotsiax
+X-Rspamd-Queue-Id: 37004180007
 X-Rspam-User: 
-X-Stat-Signature: 3ig3uhturw1b8mm9gz9t98nf9dthcmiy
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783474378-643479
-X-HE-Meta: U2FsdGVkX19Aeso6I3+/J3+S3o/lyQfAlkpERnM3JoKxIJq+YHSE+6buvwPX6txVPmNG9vaHJeQIOgrMTtzX5V5SQmZrrhbKC+yWsLL6KTaebNQINV8N5X7Of4qDCSXVMUe2WrvXQGlH7zxwXBzN5c68ie1vAYenRqMaGE5QLP6iohlSSpBpgxzFqEYrBEZbTkFFGIO5ujJi/Wr18HirzZLIOkGPw5v3axQfryWYigmcWGr8RFVGuSeZ1DcpNb0+7irC6iafHET4W9VbLwSkvRiiaFS+WIj7InGSp1Q8+wCYDSvkezA4/0dloNfGRLjZIWEP2oMgr6hAYiWpYKRH/m/NCwh5xRvCUHk+E0mLDqBts5dvgduhN8YY8ec20CpBcIXB26KEKxWnTBG8nR19hqRIzyj5dP/uXkNxKScZKC2Eo3ZLuGtHRYcNZmkKFSzLc05bb7jPfsHuBUE3xivuq7+7e05aDMHLmD4pNSsdkkEU5g2ZiPAJh4nVdyyjyiAlP4uPsrYN5k1t5p6UGJBcfcUDv/gkP5td1sOD7Bb5tWfrwpSpLmfy2iEyWCNF6RA6d/Fn31GJIyjbfVCwOgZzTFSIy67TSS5Lu63K8fHNpUVN3+0fMB6DvrBVPcBq8YyxaXTfmwjWbn6DtHzS5BouQrRbeql2K3d58jcJc7iw3V8pDdC+G7Lit8/Bwf1jMT653unjL+wkzdVpLuFSKcCOBrdD3WgGRri2WTyYJ3CpLQgjG7sdZaDQeLjWWxIwF/pEQzT1XIT/2cAOg0+VLUYPO5EYa0VKADIkWIrd25b1KwhcgKtHQMqF2M+d2ByPq7n1Jhd9kpvJe2OkK+9VljH/d4/VYgf5kSZODvedlWSNhAxLmUAsIh7F/36pSt3b3VznEdwG27LVVpN80R+3T1pxiceey/DsYE9ZkHsLFQrYv9Au0DXdN8wJnGp1pmn+xnwKLkKLBdl2EVdTgbPbHTb
- NZVmPzOs
- rmUKi5NFbWjJzJrqVT0PlImT4BsST9ARDco5ZaA7Z+dJXFswD+tCcvjzZsRmQnwBBaxVw1DCvCmcbSA2keqcrPCBimFdAhRXNkSw61Ylwzxaxq6VXpD0tktae/6Na1ppIsYwBtmiwNSP1/Y3jORrfUYdtOADtDy63JKeKlVaLOjNeA0Gbg5/tzldTp1kwYDnl1eucasDsmygv1ngmoXnL3fBOXpicJzGUWrEQUMHkkvwXLL8=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783474379-50614
+X-HE-Meta: U2FsdGVkX18bypdur1UOb8BH433LA7VhYHthq2THT1kLK6eSwqetP4DOY6JeFbQVwZshpHdKSzlhVA+7+mK4HOtw1eTSQTVDZ6rHyHKy8Pu80sbw38Kv8MJPj0I0ITp48ZWSc3GI4bGMQJMKBoaBuO38Qygvu14WKxL5L/uQHmyO8ohNhINwol52zVTRYA+GVqMbFRDtf6w2WncLlu8xlDA92xennVo45/iCO61LX+O7FDHWeQqFE86N4ZIAoVVjgEy/TsgguU9ZCA1R8szF/k7+D83dtjVTguUXyIKj+UCif7znag9NpYEbIP8IozKX8iaztif5ziKuDVjrS6bvyZuqzHfeYd5/AdKOo5ptkexeo8/SvsDl/lJW4/LX9T7etHyZZtAPdx9OFMyRMuDWwyyqCbFwRr6l+zwWJdSDyuEimOYCHMaGdReKt4Fsroc70gPW1GABvDPAFyyZC2SyGuZW3GzBMKFeJ2XCjWCSAkVRIvhVDLe44wRecnjMOMQ9jq6a95IiBfdnjjkCYhmrEq2aZ83OyKhf3fMp5SiBmLeaXCaz2RyA28trjeaAxeVZkS8AwxoC6Q1pzFLlrHoDj+sOw7WY4Kx7+oBfonlBnDr7TZs8nezClfsKFnHEhXl8tNuqKJUSXWix5gm0Vrd6HMyOwWFAhutHFjTgUVANyDEALnRumXk9WJCLtV7tFtKOqfVEk/cnroDIe5GBoBtfJZd+LT6LByykjdArhRBGC+RhMas/IKtn1qntu46I7xXUHomSFTLbgHzO1T0mWVYKQW7r1EGqG7vI1GOFDSSS9aLZ9jm6e/oOZvTY/Fg0tdul7NKuDf1QtiVagHg0xhfpMGW0gVUDuzsc6tED+ETUnY6SOUuhRroHL0hiwGcsMAU+qdtNJtZ/+QTDiwGL4fVUMm7hizzH5fydrLULmBnSPo0+gnYqCqGiC4ScMV3RgMQyz/4WCiO8GqTOHWB9uSq
+ EBbPSL2o
+ KVDWw32Kj1ZeHmc1eMyYORWHS4HWGK6ZrD6huQZ4rd+biC5rq7yP+bkbZKUzZSncJRxn7/JlTvBRaZtuTWP7XXkYK8Yscjba2OfLUOpH7J6lYiB5nJV+EydZBG8SVvKTFJfNRWHuJNiDaFHhHUROglIPb7BXWQnq5KvW805Ij/mI5+qcyjaJLCqPeimlFNT5I+Wi3diunlT4k03sUDZcK605YvO0+AAWj+S98pxkOcsp0VyehVhGtF10nnJkAz0VpzTNWb9TOQ9NRYRs4VN9Wz6Buew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,53 +93,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON users can update DAMON parameters such as sampling and aggregation
-intervals at runtime.  For such changes, monitoring results that depend
-on the intervals should be properly updated for better accuracy.  For
-example, the access frequency counter (nr_accesses) is updated.  The
-data attribute monitoring counter (probe_hits) is not being updated,
-though.  Do the updates for new parameters.
+The comments on damon_nr_accesses_to_accesses_bp() and its unit test
+warn it can trigger division-by-zero when the aggregation interval is
+zero.  Commit 35d4a3cf70a8 ("mm/damon/ops-common: handle extreme
+intervals in damon_hot_score()") modified damon_nr_samples_per_aggr() to
+always return non-zero.  Hence no division-by-zero of the note can
+happen.  Remove the obsolete comment on the function.  The test code was
+written to test the division-by-zero case, which cannot happen anymore.
+Having it makes no sense.  Entirely remove the test code and its
+comment.
 
-Patches Sequence
-================
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c             |  8 +-------
+ mm/damon/tests/core-kunit.h | 25 +++++++++----------------
+ 2 files changed, 10 insertions(+), 23 deletions(-)
 
-Patch 1 removes obsolete comments and test code for a function that this
-series will touch.  Patches 2-5 rename functions that are being used for
-nr_accesses update, to be able to be used for probe_hits without
-confusion.  Patch 6 does the probe_hits update.  Patch 7 update
-damon_probe_hits_mvsum() to cover a corner case from the update for
-better accuracy.
-
-Changelog
-=========
-
-Changes from RFC v1.1
-- RFC v1.1: https://lore.kernel.org/20260707135038.90068-1-sj@kernel.org
-- Remove obsolete divide-by-zero test with comments as a separate patch.
-- Remove obsolete comment removal part in a rename commit message.
-- Rename name-changed function parameters.
-Changes from RFC
-- RFC: https://lore.kernel.org/20260707043828.97900-1-sj@kernel.org
-- Remove obsolete comment and code on the test.
-
-SJ Park (7):
-  mm/damon/core: remove comment and test for nr_to_bp() divide-by-zero
-  mm/damon/core: s/damon_max_nr_accesses()/damon_nr_samples_per_aggr()/
-  mm/damon/core: s/accesses_bp_to_nr_accesses/sample_bp_to_count/
-  mm/damon/core: s/nr_accesses_to_accesses_bp/sample_count_to_bp/
-  mm/damon/core: s/nr_accesses_for_new_attrs/nr_samples_for_new_attrs/
-  mm/damon/core: update probe hits for new parameter commit
-  mm/damon/core: handle unreset probe_hits in probe_hits_mvsum()
-
- include/linux/damon.h       | 10 +++---
- mm/damon/core.c             | 65 +++++++++++++++++++++++--------------
- mm/damon/lru_sort.c         |  2 +-
- mm/damon/ops-common.c       |  2 +-
- mm/damon/tests/core-kunit.h | 38 +++++++++++-----------
- 5 files changed, 68 insertions(+), 49 deletions(-)
-
-
-base-commit: 29da8f7d1b66215addd212b9b7191a203e322b8c
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 390e00b3685ef..a15005db82899 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -883,13 +883,7 @@ static unsigned int damon_accesses_bp_to_nr_accesses(
+ 	return accesses_bp * damon_max_nr_accesses(attrs) / 10000;
+ }
+ 
+-/*
+- * Convert nr_accesses to access ratio in bp (per 10,000).
+- *
+- * Callers should ensure attrs.aggr_interval is not zero, like
+- * damon_update_monitoring_results() does .  Otherwise, divide-by-zero would
+- * happen.
+- */
++/* Convert nr_accesses to access ratio in bp (per 10,000) */
+ static unsigned int damon_nr_accesses_to_accesses_bp(
+ 		unsigned int nr_accesses, struct damon_attrs *attrs)
+ {
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 0124f83b39b83..b2a280556b841 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -575,26 +575,20 @@ static void damon_test_set_regions(struct kunit *test)
+ 			}, 3);
+ }
+ 
+-static void damon_test_nr_accesses_to_accesses_bp(struct kunit *test)
++static void damon_test_max_nr_accesses(struct kunit *test)
+ {
+ 	struct damon_attrs attrs = {
+-		.sample_interval = 10,
+-		.aggr_interval = ((unsigned long)UINT_MAX + 1) * 10
++		.sample_interval = 0,
++		.aggr_interval = 0,
+ 	};
+ 
+-	/*
+-	 * In some cases such as 32bit architectures where UINT_MAX is
+-	 * ULONG_MAX, attrs.aggr_interval becomes zero.  Calling
+-	 * damon_nr_accesses_to_accesses_bp() in the case will cause
+-	 * divide-by-zero.  Such case is prohibited in normal execution since
+-	 * the caution is documented on the comment for the function, and
+-	 * damon_update_monitoring_results() does the check.  Skip the test in
+-	 * the case.
+-	 */
+-	if (!attrs.aggr_interval)
+-		kunit_skip(test, "aggr_interval is zero.");
++	/* Zero aggregation interval doesn't cause division by zero */
++	KUNIT_EXPECT_EQ(test, damon_max_nr_accesses(attrs), 1);
+ 
+-	KUNIT_EXPECT_EQ(test, damon_nr_accesses_to_accesses_bp(123, &attrs), 0);
++	/* Too large aggregation interval doesn't cause overflow */
++	attrs.aggr_interval = (unsigned long)UINT_MAX + 1;
++	KUNIT_EXPECT_GE(test, damon_max_nr_accesses(attrs), 0);
++	KUNIT_EXPECT_LE(test, damon_max_nr_accesses(attrs), UINT_MAX);
+ }
+ 
+ static void damon_test_update_monitoring_result(struct kunit *test)
+@@ -1572,7 +1566,6 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_split_above_half_progresses),
+ 	KUNIT_CASE(damon_test_ops_registration),
+ 	KUNIT_CASE(damon_test_set_regions),
+-	KUNIT_CASE(damon_test_nr_accesses_to_accesses_bp),
+ 	KUNIT_CASE(damon_test_update_monitoring_result),
+ 	KUNIT_CASE(damon_test_set_attrs),
+ 	KUNIT_CASE(damon_test_mvsum),
 -- 
 2.47.3
 
