@@ -4,94 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3104C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 09:11:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 241C1C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 09:14:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B28C6B0088; Wed,  8 Jul 2026 05:11:03 -0400 (EDT)
+	id E72666B009B; Wed,  8 Jul 2026 05:14:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 716396B008C; Wed,  8 Jul 2026 05:11:03 -0400 (EDT)
+	id E22D06B009D; Wed,  8 Jul 2026 05:14:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 604566B0092; Wed,  8 Jul 2026 05:11:03 -0400 (EDT)
+	id CECA96B00A0; Wed,  8 Jul 2026 05:14:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DAB66B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:11:03 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A2EEE1A06E1
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:11:02 +0000 (UTC)
-X-FDA: 84965039964.08.865B745
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D443B10000B
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:11:00 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jzKzjmpr;
-	spf=pass (imf05.hostedemail.com: domain of hawk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hawk@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A12C86B009B
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:14:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15A9516927E
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:14:23 +0000 (UTC)
+X-FDA: 84965048406.10.9A7754A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4D924180002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:14:21 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SDfjEVLN;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783501861;
+	s=arc-20220608; t=1783502061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dW8sOSS3FdbEHsIw7SmlY+a62m8HNpwrJ4kN8Xbnhvo=;
-	b=nvEEhSXurGQvK+cW2F/1HIcXloFZH5M8cGYQbF6N9mcJe6h903xyg0uFHMi7gDwHyro+1O
-	M3fhM5NWRd/ujCvpj49Y4CnZlh5HPfqrxuvkoSCPs8z4MAZWpZkpbPt1CmVUNLX/EbDTx2
-	+ry6iwJnLmxWoOytlBbrWA1kBrneUZQ=
+	bh=AXXHqKxP6hZn4M2zHTw2/0ZaLNmtz5Sx6sgLJ6b0uwI=;
+	b=zEBVuJIofpvXKUZkEcvlSrR7p2NxWHeFlqMdL7z7B5VT/wwG77051JpVX6Rw33TxHmfwqQ
+	4MltwDZWgdhG+lRP0GBJ1KiOjoTsIeuGj7mg4buzSTI/qPYZF40XZb5XA0HMmwAw+eY2QN
+	BMfQ7/Z7S8caZ1JX9p8O8lghmIg6Lxo=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jzKzjmpr;
-	spf=pass (imf05.hostedemail.com: domain of hawk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hawk@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SDfjEVLN;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783501861;
-	b=8rUtk5LHq9Q3PDXvxl2j1iUd6K7kCv2kz+G6UTxOO1/OexwqNe2rX9WYdSEj7+ckZSqQ8L
-	TawaAxYmBxUhCg71iglX6tlva9M/9LA6fQxLAF3EjcPo84tKWmsZQ6f26R4P4UUEWNcJFF
-	sNvpCDh1xoLCTGdGb/UMJqkHxzyYIAU=
+	t=1783502061;
+	b=ASu7Vtw0n/u0PqwhYZQluJgSp2m+2nnstj4ZDEnUs37xIGUQVGjltAahJz4zzb9bO86Puj
+	SrFO2q4Vw1D2VIyISR/Wcp2gtKHCDZzZCxW8hbvrHdgJ3X26c398pwnA3v6yTP1NK0O3ME
+	3ucp51ValCITgtBtjNNzd2ipi55VbNs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 17FCB43714;
-	Wed,  8 Jul 2026 09:11:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94FD1F000E9;
-	Wed,  8 Jul 2026 09:10:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B3BED6001A;
+	Wed,  8 Jul 2026 09:14:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511C11F000E9;
+	Wed,  8 Jul 2026 09:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783501860;
-	bh=dW8sOSS3FdbEHsIw7SmlY+a62m8HNpwrJ4kN8Xbnhvo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jzKzjmprrtAOmJenR33gNI8QcTeXaSiCijAPzz7I5lb1f9acyW1+/Nb7SRI9gMcUS
-	 lfrVrHRC5RmFWHThkB8JCysrrMXx0clTrSR4TiZiGDXe0yUv8md52iHmmiVZ4l2RLv
-	 2wdfiiaNOl+K29l0kxbYVLYUS/S6t44oNd5rt9twDSUnQOzi+0Bf14YUfoSO/NC12J
-	 RiHiyv/WxSUR4wCdE/yrOOnbZpoUhiTVBqoGQc4psjGI28t7uacHbLEMPoy7jAgSSg
-	 2qIAhOe3Yp6GZwV8Mdk9FPble5wDFSDAHx7OXwnX9WYS/LhY8dtwqMDXoV8kcIxZJg
-	 EckozkOO6YhIA==
-Message-ID: <6ecf5579-0b3b-4e8c-a625-bbf0a4a48f94@kernel.org>
-Date: Wed, 8 Jul 2026 11:10:56 +0200
+	s=k20260515; t=1783502060;
+	bh=AXXHqKxP6hZn4M2zHTw2/0ZaLNmtz5Sx6sgLJ6b0uwI=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=SDfjEVLNuk28Tl68PJynCZdX2Kqgk26eXL56PM60LwXTOto0CWSTAjFNmFJ1ICrYq
+	 vqKrIquj1RTSThYPAkkuZKFMEJJILzNSscRunJ+pgIFSSh08YkyGtgsH+nZaKdzukn
+	 iMDAjHrz9fsaEewNzgyTNI9QMu4QTS+qbl27g0QQgeEfdyLidSY4tBRWjVFvII4m6L
+	 Mg/MUO6Uw6puC7rRRegBzohlNiUOQs2CdfsxP6+YUfd7hMmehUFo1qX1cTgCMUcWIL
+	 wqzswdBa2dXxFUhqGkvLSZImHcXAPEpFi5jpruDOtR2AEu7JW3YD54smjQflkIk7t1
+	 p8lCaVreY3Ppg==
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/zswap: use ratelimited stats flush in
- zswap_shrinker_count()
-To: Yosry Ahmed <yosry@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: Yunzhao Li <yunzhao@cloudflare.com>, linux-mm@kvack.org,
- nphamcs@gmail.com, yosryahmed@google.com, shakeel.butt@linux.dev,
- akpm@linux-foundation.org, zhouchengming@bytedance.com,
- James Houghton <jthoughton@google.com>,
- kernel-team <kernel-team@cloudflare.com>
-References: <20260702180908.150136-1-yunzhao@cloudflare.com>
- <akbHBZP9HxOJMtQB@cmpxchg.org>
- <CAO9r8zOiwgG80EjqdZFgWQvODUe1RzecLemxcB7xXNm_f3XfbA@mail.gmail.com>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <CAO9r8zOiwgG80EjqdZFgWQvODUe1RzecLemxcB7xXNm_f3XfbA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Subject: Re: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and
+ interpreter selection
+From: Christian Brauner <brauner@kernel.org>
+To: Farid Zakaria <farid.m.zakaria@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, david.laight.linux@gmail.com, 
+ jack@suse.cz, jannh@google.com, kees@kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mail@johnericson.me, 
+ shuah@kernel.org, viro@zeniv.linux.org.uk, Gemini <assistant@google.com>
+In-Reply-To: <DJSPBVXTF02G.3SKLB9EO89GPT@gmail.com>
+References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
+ <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
+ <20260706-uhren-raubbau-sinnkrise-e40a8337414b@brauner>
+ <CACCo2jm5=xrQNfak=TdO=2oh0DC5pe+atj=UfuTa8Y9s8GVkqg@mail.gmail.com>
+ <20260707-campieren-fingen-himbeeren-e4b682bd8e63@brauner>
+ <20260707-wortreich-kanal-zensor-9386ef4f38f7@brauner>
+ <DJSPBVXTF02G.3SKLB9EO89GPT@gmail.com>
+Date: Wed, 08 Jul 2026 11:14:09 +0200
+Message-Id: <20260708-welken-dystopie-ertrugen-56a3b5f7ab66@brauner>
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2372; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=nQTJehsrNjH/qX4EOyzAlTO+RBHcG/yjYW9gYuuUFIA=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT5iTy+4ej3eN+rzKsRBx4ms/YfnOB6fLmtKfum3MBTZ
+ v/k56+f1VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjARdy1Ght8F4v9ZvLd8PqCw
+ cTPv7+My2zQPTK7c/yLBYM7VFfW/Jr1iZPh6ZUP0oay2dbVyE06brmj+s+j8sXc2qYsnh76+F7G
+ 2WJ8LAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Stat-Signature: 7iiw134i6eaiuzkybidi6ebo5pbwp4ob
+X-Rspamd-Queue-Id: 4D924180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D443B10000B
-X-Stat-Signature: 9zkk5gbkztz9d76atudf9z8jg9hgo7ho
-X-HE-Tag: 1783501860-552414
-X-HE-Meta: U2FsdGVkX18Tgd43mx38i1AGLIpc/o1nWg8UEM4lu0CcxW+T9vfZ9M3xywTADP6JZSmIgMDH5TNIop5tJujWKii+zfhCmmYerxUYX2RdJZfnDcniLAcxCkcxPEzQjAoFuunLZg94ebZr8vUJC5BCHlnZcqt9v6tQ0gjAUm6vqSKkZU1E0i37OiV15dJsCCLyG6yWRAWkIuNVzSNxdgX+dG4NwSHl9jC4AqikcXqRFePA5ZvEvNgc7D9QhmGNK/3y/FtHNbmQwb4ka80VNXld3j6dT8zBf67HoAkhAF51jnZmm3CEnHBMnQxrz5aPYEJrZ3PSNM+7tQWou4JofplUSAIIgx38lHRpy3I6IIRbbgOj6duC9lzG88ScnQ4gHrEOF+HsvCxs9EDVbHoUVOtdCXVcrpBqB19H6g9ALsG0hS19qj9ym3wmJ0YeRBGiayMBI1tkQS/z18hhjsvOGYH44I5AuW/DIDZI31ap/+Qox2YqDQlFrc+1A0A/KNfTSBKCwDeXSBPWxOXI09+cOs36JE1fSE5tNhiHDY+rVD9ptKb47oKamAream/SbVKG3pZz+lM3uIf8ZvcnaSSJFCDWKgNp5Jr6ksKuOrffxyhgtqp6+dsCSx7ff9VpwYUwP0uOYK6NVu1HCjqCsEOVr286UZ7mo95Y+bcyIH9wdeAbiMDJFjOVxNvcTxZtAjtTluvTcwq2Jwcn74H4nqTOLrXzNUnp3xYH6615LK+yeDczBg2/HxwOXGcqcLK9boQvmZTDfdSDkSsAq7rAHgEqfYvzbU6auNmxOa32I0nz3JG0un8Q6E0SvTpBKjtGgdQ4OWMLBJjfaIdjAlUtpkNPOgK4lCum2hggXOngkjH80eDihm/tm8oitWu4cM1KU8gJeS8fJZ+jw4s2662xz5pkCr1P0rkuZiC+cL1HEp+FN8pfBBe+wHsHRbbzyKWDjAZU/xTwlCCbGos9nyOyrFlPU87
- DWYvDTzc
- Hq5c+CZyAdomom1kU+9FH1zlUVDdZ7YOtwPgqILZ/e8POvEEke3LBZTz7O2jqb7wwnJN/4D1JaCNTRuMAaVICssCO2v/7ArJVkvOmLVeaXaqqI6kbGjMB3YuUp611THUdhQuW5+C/d8WfssyV+IRerIb/ZFjlwG6K1hkuVMIXt7XrDKKZ9ObxTNOVx4ZsNssfvmxQ0OelNQef33Km9nlysHMDQ+S8WDHc7oA0ibhu6HiE7wZmYLme1U3m1acAcv4ej6maKc3vkLKKPx4B9kOtCTRafYN/P/NTstjddj5AsEjdv0/3hVEdA50feGaLeWNepPJwWVIeDXLSM95JiaURpcqgsIsGgpCN1B797saAwkMNnF8G9KNo6NIxMp+NBC0x76IMlaafHUE7/gpCRc2skf7H4OOPlYqq2RGYJSZiiZmGXE8LnrNuUYUvl/ad3JxKTdOY4O3AlDqM0N2hZoe8KAWE0rmGbNoq9uVA6pNUOEOxl8eIIq6aII8BHVzxjmwFvW7X
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783502061-765321
+X-HE-Meta: U2FsdGVkX1+slS+hTwChXcgIflwDhU5eGfvfvCcm+xFwMuflNG77Kdc/FNHjVu738X1ztVawuwGolJW0UnxuL6x2yOsGx3uAlhwPq5UNQxach5qbBgk6St9VGQcVuWyn3w7UI30yGf6M4qkxdYprHRWFr4Zd0YdjSqV7Q1GxeN7DYbIsOHl/CdARzMNwhapmt7z7OoPlpVO9NzVhwBCjC2oTCR52k6JFGKGr45dxO8uHxTiNMdN/jApWdvFMlBl9IGy7hvOjUNhRIbnOS+Grj38GAuPx/aRCU5Y2vRkq7DFUvLSIc41CUasxZz+I4M2lPinaATzBZvviAPh6zTOREZzOEuaHDTg24vV5J5aJhEMwJ3n/IoH5+pc0pYW72jW0lqdpauuGmvozDQuWN2C2vhIprge7zRQkgGPSSNhK0TipoZ6Q4den9CymTUnNNQxOEFO47t5PZPzItrrDpE3jVCq/yYcoFLJMv0aRKV+3c3eu3KUmTlvjelxv5P6k471woQK7JpLKLSaQ4RdkjM8e+m1Ochz2O2sc8cVz2n4oYmueh3Lm+CmdYVcvEtRGSwFFeDirBvcEqpMFdsCyQQhgRlxPRCb1w2nxLSmdlCPqAToaivkj5t4VS8rGk2oaVU1NSefKiDqjYPfYIX5S7xczC7jh7/Kxxcl2JS1N80u9znR9MMTrBFbx5ddSpX1+/Zhc4LgWYaluIa6thnluomv8aMacXxVayA/JZ8Csx6M2dZ/O7S2ykZncv8LhWasO15/fMGPIDH5Lq29XQg3X75itE+LKl4CvZGnUCu13UH11zI7j99ik0lq6FhRUUDvQMVKXGm4SHUbszc6FoZaIlq9JCE8FhQKEnr7MqH2vBExvwjT0LElQfh1LoRgAcXq3PLmerODTs1Nzx6l3ZfhHk1i1uUTUqxbPw5r0fZVbMxM9vMa5MEovWSULjFShPlF+ni8IOqMkHOPvxoT/A5uGQpz
+ tzEoe7kB
+ EsEWp/HSB6XSywT5IvqE+qoARClHg7HHd36KWc2q476DIxCkqqQUVNPCq661LwJ8D4pRnXwxhyZKU4ivjMPXr0CNFPm1UXWPt6syVaXGsWEzzYZzFDZNNBKdnLz9HCdI2X+p8otVg6IwKCfAPIAIyJlufp400LrDANe0njjAJ5/gu1+RfQ/3HiIM+2LEbBbq/k3uPGESlkO7U/XAgJhCfh4F0FEZ/bkyOn4U+r20Qn2f9XoqnnNOzNT1E8atxIM+ZZ4gyFXHhyzRPcWcXAggMlYK6RoUaGEQBHaUPfIpyCzhkvZMgGvntcq4meHGToDU0x+NWfELHPLTxMVo9dccW6UUdFzHXL3EoRZT6rYhcFvq5/5/I2DTuc+/Bo5YK3cD1S232sxQ2x0J4I39Hu9pTyej8adydMnBK0FZhGhOJ5O5/tLuvbexN+xnG9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,113 +110,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 06/07/2026 21.46, Yosry Ahmed wrote:
-> On Thu, Jul 2, 2026 at 6:01 PM Johannes Weiner <hannes@cmpxchg.org> wrote:
->>
->> On Thu, Jul 02, 2026 at 11:07:35AM -0700, Yunzhao Li wrote:
->>> zswap_shrinker_count() calls mem_cgroup_flush_stats(), which takes the
->>> global cgroup rstat lock synchronously. On machines with many CPUs and
->>> NUMA nodes, this creates severe lock contention in the kswapd reclaim
->>> path:
->>>
->>>    - Multiple kswapd threads (one per NUMA node) run concurrently.
->>>    - do_shrink_slab() invokes zswap_shrinker_count() for each
->>>      memcg-aware shrinker pass.
->>>    - Each call flushes the full cgroup rstat hierarchy under the global
->>>      lock.
->>>
->>> On AMD EPYC 9684X machines (96 cores, 192 threads, 12 NUMA nodes)
->>> running production workloads with zswap enabled, perf shows 2.88% of
->>> kernel cycles in osq_lock contention from this path:
->>>
->>>       2.88%  [k] osq_lock
->>>                --__mutex_lock.constprop.0
->>>                    --__cgroup_rstat_lock
->>>                        --cgroup_rstat_flush_locked
->>>                            --cgroup_rstat_flush
->>>                                --zswap_shrinker_count
->>>                                    do_shrink_slab
->>>                                    shrink_slab
->>>                                    shrink_node
->>>                                    balance_pgdat
->>>                                    kswapd
->>>
->>> 84% of kswapd kernel cycles are spent in
->>> shrink_slab -> zswap_shrinker_count -> cgroup_rstat_flush, not in actual
->>> page reclaim (shrink_lruvec).
->>>
->>> Controlled A/B on identical hardware and workload:
->>>
->>>    shrinker=Y: 2.88% osq_lock, memory PSI 1.58%
->>>    shrinker=N: 0.00% osq_lock, memory PSI 0.57%
->>>
->>> eBPF-based rstat lock wait measurement across 8 production metals
->>> confirms the contention splits cleanly along shrinker enablement:
->>>
->>>    shrinker=Y: 50-250x more contended lock acquisitions (248/s vs 1.1/s)
->>>    shrinker=N: baseline lock wait (0.0017 s/s vs 1.04 s/s)
->>>
->>> zswap_shrinker_count() only produces a heuristic estimate, scaled by
->>> compression ratio via mult_frac(). The actual writeback happens in
->>> zswap_shrinker_scan(). Slightly stale stats are acceptable here.
->>>
->>> Switch to mem_cgroup_flush_stats_ratelimited(), which only flushes if
->>> the periodic 2-second flusher is one full cycle late. This matches the
->>> approach already used in prepare_scan_control() (mm/vmscan.c) for the
->>> same reclaim path.
->>>
->>> After applying this patch, rstat flush latency and lock wait time on
->>> shrinker=Y machines dropped to the same level as shrinker=N controls,
->>> while the zswap shrinker continues to function (pool size remains
->>> bounded under the max_pool_percent cap).
->>>
->>> Previously discussed:
->>>    - Chengming Zhou (Dec 2023): rstat contention from
->>>      zswap_shrinker_count [1]
->>>    - Shakeel Butt (Aug 2024): zswap_shrinker_count still uses sync
->>>      flush [2]
->>>    - Yosry Ahmed (Aug 2024): suggested eliminating in-kernel
->>>      flushers [3]
->>>    - Jesper Dangaard Brouer (Sep 2024): cgroup/rstat V11 patch [4]
->>>
->>> [1] https://lore.kernel.org/linux-mm/20231206103935.3440502-1-zhouchengming@bytedance.com/
->>> [2] https://lore.kernel.org/linux-mm/CALvZod7LFxLCxVpOFH8b2Ppm8T40HPGMKQwX_=NPCWB_mFW+oQ@mail.gmail.com/
->>> [3] https://lore.kernel.org/linux-mm/CAJD7tkYvFyOSX+rP_FKGBhxvZiCDxtpsNp-c5CGOA-4Bq9oXSg@mail.gmail.com/
->>> [4] https://lore.kernel.org/linux-mm/172616070094.2055617.17676042522679701515.stgit@firesoul/
->>>
->>> Suggested-by: Jesper Dangaard Brouer <hawk@kernel.org>
->>> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
->>> Signed-off-by: Yunzhao Li <yunzhao@cloudflare.com>
->>> Tested-by: Yunzhao Li <yunzhao@cloudflare.com>
->>
->> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
->>
->> A lot can happen in 2s, but I agree doing this every time is
->> silly. vmscan has been good with 2s for a while, so this should be
->> fine as well. We can re-evaluate if we run into weird behavior.
+On 2026-07-07 15:44 -0700, Farid Zakaria wrote:
+> On Tue Jul 7, 2026 at 12:45 PM PDT, Christian Brauner wrote:
+> > On 2026-07-07 13:34 +0200, Christian Brauner wrote:
+> >> On 2026-07-06 09:47:53-07:00, Farid Zakaria wrote:
+> >> > On Mon, Jul 6, 2026 at 9:01 AM Christian Brauner <brauner@kernel.org> wrote:
+> >> > 
+> >> > > Ignoring the blatant bpf abuse here I think this is quite workable. So
+> >> > > this can be turned into an actual design and patch imho...
+> >> > 
+> >> > Glad to see you think this proposal is in the right direction.
+> >> > Just for my edification, when you say "balatant bpf abuse", you mean
+> >> > how it abuses the socket bpf type?
+> >> > If so, do you have any guidance on a new type or should I just take a
+> >> > stab at it.
+> >
+> > I drafted a POC for you that should be closer to how this should look
+> > like with the bpf people in Cc. I'll let you lead from now on. I just
+> > wanted to help you out and illustrate a more viable direction. Might be
+> > that the bpf people want it done differentely. Let's see.
 > 
-> Hmm actually we are starting to exercise kernels with the 2s change in
-> the vmscan path, and we are observing some seemingly premature OOM
-> kills for VMs under memory pressure. We are still looking into it, but
-> I would honestly hold off on adding another ratelimited flush here. It
-> may not be as big of a deal for the zswap path, but I'd rather fix
-> this properly instead of just plugging it. We should probably move
-> away from using rstat for zswapped/zswap_b stats and use page counters
-> as we discussed previously (i.e. eliminating the flushes to begin
-> with).
+> Cool. I just saw the POC.
+> (I'm trying out aerc to view the patch series. I will also try b4, I've
+> never set it up before)
+> I will rework my qemu demo to use the struct_ops and go through my own
+> testing to see it work.
 > 
-> (Adding James here as he's looking into the premature OOM kills internally)
+> That looks very similar to what I was researching with an LLM. I was
+> just going over the idea of struct_ops bpf (a new concept to me) and
+> using traditional bpftool load, a new bpf program type and kfuncs.
+> 
+> You put out a surprising amount of polished code -- thank you.
 
-IMHO it doesn't make any sense to hold off on this patch.
-This only relates to zswap path with shrinker enabled. Today we are
-forced to run with shrinker disabled.
+I would not call this polished and it also lacks any tests... I've not
+given the locking much thought and maybe there's easy wins on the table
+I haven't been considering.
 
-If you find some better approach to ratelimited flush, then that is
-great.  You can change this code again for your use-case. No reason to
-stall this patch IMHO.
+> I would have had to lean on an LLM (heavily) and from the patches I've
+> put up so far they still have quite the gap to cover in terms of polish.
 
---Jesper
+This isn't my first bpf ride in both kernel and userspace.
+
+> What does "take it from here" mean in practicality?
+
+Bring it over the finish line so I can merge it into my tree. :)
+If the bpf people have no comments or worries than we're done. If they
+want changes I'd appreciate if you could make them and slap you
+Co-developed-by onto the whole thing as necessary.
+
+Also, please ensure that this works for all the cases you're
+considering.
 
 
