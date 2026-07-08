@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0729C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 20:32:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AD17C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 21:13:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B96A86B008C; Wed,  8 Jul 2026 16:32:04 -0400 (EDT)
+	id CB6B16B0088; Wed,  8 Jul 2026 17:13:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6EB76B0092; Wed,  8 Jul 2026 16:32:04 -0400 (EDT)
+	id C68496B008A; Wed,  8 Jul 2026 17:13:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A845B6B0093; Wed,  8 Jul 2026 16:32:04 -0400 (EDT)
+	id B80386B008C; Wed,  8 Jul 2026 17:13:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C1406B008C
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:32:04 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E694FA02AF
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:32:03 +0000 (UTC)
-X-FDA: 84966756126.25.6A9B977
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 37238140003
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:32:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=LiWDR19f;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C5A36B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 17:13:45 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E761AC1651
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 21:13:44 +0000 (UTC)
+X-FDA: 84966861168.17.F4F09BC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2DACC18000B
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 21:13:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YyDX2QRZ;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783542722;
+	s=arc-20220608; t=1783545223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E4BLWSX3Vyc8lOAOY+GGo9U//3Ro2nywmJm3Vhy72n0=;
-	b=kJtI5/E3MANHNu0ibBuNakSsT1T5/I+qYVy67l+yheeZZ1/4XICkVb1XK5zpAjO5YdI8xb
-	ZoYJQcp9vKD8nM9C6YisSqWKzjLQiEvIgmJ/8VKPLp1WwmRJG7nqm4CAJwLaWKtsYCB4VE
-	fDe69mrStlm6sUmNUKcy4ylrrHG+UYc=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=LiWDR19f;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	bh=DRV8RZcUgp9koMPGwe0xKyk7ys1YKTWHC+0HjcxhXIc=;
+	b=S/qKc/JHK1WOf4XsXPaIth5HmO479bkGDP1lAKvnX1wJv4jdm4p8XRxK7frrN9UKbH/20s
+	rjouhjvkCk6qBawlqNjuRiPKM3QobECYqnZh++yQMTz/Xe58+ZL/FGnaNO3f3DHCi+gPY0
+	n5PUIs3du5xEZn14+eNdfgFjEfzqNO8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783542722;
-	b=bSYEAAUvLm1yaM3W/I20bMucdvQPq/MO7ZvIDi0xZlZkimFkyumUe32uOKxBFn1Indf4wU
-	fKiA6RThGef+nNfxIt7u3ogGR9ZfQmXGL2J5s/TbUT9++V1ZxCzvXA7iaFLuo2U8sI6XDP
-	OX95ou0pA74qzkIgyxhqN5yinP89OSM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=E4BLWSX3Vyc8lOAOY+GGo9U//3Ro2nywmJm3Vhy72n0=; b=LiWDR19fAijsMT3WBjoeg9Zq69
-	Nc2aIbkflyUMpXatmwy+fWPYKlaS3HozBAB9Jw42/sWUigzxN8lF1l7Dpyn6fVHZ837uRcECeMVlb
-	gIksgkjmrowgediYGSSl3jzBIqy7eHHOko9S1NFnLrWJtMZQI/0ORmhRMPrI6NSh4e/i+YddNlnf8
-	aw+fMlrzR5T0boM+zT8KLqfEcuCUnXPC22J1uZeoXmtYvcQ3wiShcVwDVbJx0efkMXTBKmIXe3wKg
-	/Do69tz/xjkLMS+hgPHDdWXrpXPgpVd5ngf+UUMmRrcC+RZMCWF826WBsHtK5jv8WDA2BCXyzfbQc
-	WCjLFdoA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whYvr-00000003NyN-1ohE;
-	Wed, 08 Jul 2026 20:31:48 +0000
-Date: Wed, 8 Jul 2026 21:31:47 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Luiz Capitulino <luizcap@redhat.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/util: don't read __page_2 for order-1 folios in
- snapshot_page()
-Message-ID: <ak6zsw5R4Ub8FnmQ@casper.infradead.org>
-References: <20260708201954.686111-1-aboorvad@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708201954.686111-1-aboorvad@linux.ibm.com>
-X-Rspamd-Queue-Id: 37238140003
-X-Stat-Signature: rj8esini589g3oxqpjmf69d79498j5ga
+	t=1783545223;
+	b=Z5W6fGSLm3tb5mRSJ1CFd5jhIMoTjjIakBdn4Z0Ki0G0cwCKBHt436jbExyDoQfXHdSfM6
+	uknuRLdpoYwiWSJcZmk86EGC98emVbOFpp8caW1o5iB+CJHSicvA0EVvAPK1dEv58Fm+A6
+	L2mh42Oy9gb2/97f1MpbIMVMJRSGmmM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YyDX2QRZ;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E1F46001A;
+	Wed,  8 Jul 2026 21:13:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2861F000E9;
+	Wed,  8 Jul 2026 21:13:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1783545222;
+	bh=DRV8RZcUgp9koMPGwe0xKyk7ys1YKTWHC+0HjcxhXIc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=YyDX2QRZGyO4x2WFzpzwDfX3EZIIEl7M8KugZ11wKCSdJcUbehz6ToqI1PYLf+ac3
+	 7m82cp+LKCckDKAKW09runSGNC4vN6ENxM42OMO250gdWfdTYbabl3zYw2c0+d46B0
+	 IhS8yBDBWMuTQ0sa/cmcPj5SHnJbdhQFndpZmqqA=
+Date: Wed, 8 Jul 2026 14:13:41 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Abhishek Bapat <abhishekbapat@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, Kent Overstreet
+ <kent.overstreet@linux.dev>, Hao Ge <hao.ge@linux.dev>, Shuah Khan
+ <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
+Subject: Re: [PATCH v8 0/6] alloc_tag: introduce IOCTL-based filtering for
+ MAP
+Message-Id: <20260708141341.972033b394dfcc98439b36f9@linux-foundation.org>
+In-Reply-To: <cover.1783532853.git.abhishekbapat@google.com>
+References: <cover.1783532853.git.abhishekbapat@google.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783542721-547938
-X-HE-Meta: U2FsdGVkX18HZA+mcDNOyPXvWN0otPtfiqSs5yJD5Pn9Tg8k1/Yg/DNzHdhA9I5/1udv44lJ32HUyRzKiviujR8LaMi4cf1oFJnnXF33gcqnjCkJRMDvmvYI1W9uGGuYSvFf79BYNWnxhkBpA/yESG19IbZiDy75UgHwnvo82lpTGmhP8ujylTNBaeGG4PzgtGGoE/uiqTd4wJf3qkcYkSrNxqrW3ycmTWi992/uirA8P6qywvxXU0Yb+gv3BCveejd75ZB3M6LeV6D2YIf39Wkh35WRpXgx/B9hxfH75wbG9B5GcGcW4JYBnfrowGzTWMZUBrxY6mH2xL/k+Elo+7rPm3Gdpi/jN7RSIYOUFAHWGSD5cVoKQhlhXWvJ3cGdHeT0ZbOz/M2zq+FSA2cmFdIgr1PHiq0zGxO/x1BZA3NCSxYzlsuJzIhuLwjEl0sTsMN5juWu+sXEmg4rVHE2pW9ogrBs0aR8X4YMKuBcPAW6QZUp8mLKGL8JVEldiZ/rDrhuguJDLcSGgp429uv8EvDvk8rjAXZ3oyX1vqOsM2pvEY16GMJPES9P1Snc40Rp3zIL1PQvUCVteRjBezZbc9tmCYwTmNsA/lN0HMAcIR9GzrGLbuPeRR1Dmq++3G8KNEMzKK7im2sfa/JslC1X9fOwxYN9csJLUjGF2Fv7CHgIPmWmpUHwJo+1h4HCOWyJijHlYnShkl885foO+4w9vorhB7QqJ4Q1B7dEjPEMsLIjRC3X8EEY+gNqn/+uDj5J08/EzYMK2/Q6OL9rOenv6xtto53h2qPCOmplRlHUeilGgXbgTjaOl0MoYCCpZGPsaGnqISHP2RDB4FL/7j5pBSvZHv/rz3cX2KwQXGJZnVmfUUYoDDiGrqekuJGO/B47j7BKUxN2notbbpmmfFoIqqUPJlxyuDPv5TtcjRZ+f9Jb45dcLXjcNVxkNSpmbtFmIiGD8FFMpFVeJlX5TjT
- LJpVTu5X
- YdLhisrFE5XroK5kRRoFI4Vj80s/IOANTJHB5vsBjKrMSF28VU3tuOI3yHs/nqU583zZ94XiE2BXbjwWVUZ+Cax6mDbs8yOGOTRsdj7b4XwUlN/rWeyB3lK93WkmdQxnwXxnm50AZdpVhEiZ+qKwKQ7y9o8u1YA7Lg9h/uTAUz1mF2EGDN3HEIR+nKneyGbutbmuqt2hzUpYSqO9OJqVLI9fTWp5a+2hbScUsN6QtVjklmv29TKJ7cJSGPdvwcs4UTKH72tERBfvrxggAXYdmiVtdz9DIKY8q7XEEgrEHz53xQGnfEzAK/8/noIjHV9fWRspyuQ3oJkvUi0INuqYfl87ALWZO//Kmp+2cVUoYI1ZyH4y7SAeg4Clt82BLRS/BJRefnbwvyAL31W4KA4pz8cqqLu7QSY7uXJMq4atoIa7XYaH9ZC0dTuRRQJQL5sKDobDTGctaF3zKtihyKS+p7LxLER1E2X1ZfwzI
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2DACC18000B
+X-Stat-Signature: s9pyhq6ty6gq9ke3udws7f68og1c6qxr
+X-HE-Tag: 1783545223-477146
+X-HE-Meta: U2FsdGVkX18ygjnQjdic9nct5prkR0J5gKFG+W58VsQSJy1yTDpd8lAI+E0q3A4NuKSbdEi6Qa8FaH8aXpCBiASY426o8/KB9re/u4s0cKeFcvsaWh3ylW+jtuZ8KIa59o6EoqeT9T6HZ0BfRhZRBLxXLKlhtuy3jJDRnz9iK0GQF1DrLsgWvR5VDjyYNGxSA2j+z2Kyg2pn0ZjcpWuaidaJ/ddfu4nWHB4ZgO0RkYQooEE9tIsCfclk4gyZ48veomO1j0l5I8U8D6aSkMTE6huM1+8GCZa+SN8XndToyKFEF+0Aa9MEsTF1L85HC0eBrtUtxFCL8/J6JKQbAHS66IidAc/MRjkRJHQC8OKqk1nc5sV/AiM13K1tWnFBLrDM7BQ1oCfPHj2qJSKqamjtMSSmdOTVnXyE7JEHoVB7qKi8LyklKo+K6nH4rIQoLHM9K+roc/8ZjghfQWA22y6eABVcIq2ujWIxw/Zt/GyQ/A+Y4/xKtmKi8XDyJZiL+rAArwcbXIe3Dy2ThTxwP31e/knvxKidD6PLBGVIeyZpx/54K4KND6Bx0biqdRiXBC1Z30PQVLX1TQk1y3lTTTo7a1N9+jJ29PhpHle1Vb8ufq9PFg5+j4vJz98jhq8ehHD9Cx7vKCpmlts0SG00HXE8E7x2IK+5JpoBGbBJg9ysM7OAMYk6/fCj3UPCJfB+9tDhVa8TmkAYfdXXYBQkVwcKKZklravnaLRi80pGJOpof8WuZxhWtnmCaCB5KPMokAiIytjzsRRs9UPulnPnrvV+BZre3F23xHekOsuxzyuUPSdiEUcEk8ZOoYIQHVDb12rr6mFLmhTlpt96gTHlgJVpGnlB3jJmdJcHFAZEGhRvnElYflMbtb5lYDkOHVER+XYQHApL92HwwqBhpuzhJ14ZRd2RNAO/rs/DwT+e7uLhYN7Guz3TZT02PVn3jJXsKdrfpvNROZVmPnyHU7D1xXA
+ KLA0DNPl
+ PE+TZgMlA3IPBq92kZtNc+2STpoLBK6GPQHBVR1FjAkSllAecdXXZDYfQM/bqKG8kGhU18q4EZiVPyAB051KhKzKDoTnLDaooxTU+4F1lD5rtjZDc+Np8O+oiBpi1Mzu4QRmldqIzsty7eC/EbQxkNi2u1KlgNcrLx5leonE1qxsdeKdzzqJdQQmvn+Nrbq9EmadFU2Sp58bPgJHMjXAubZb0hGfwmLNuVLGCSFij8uUZi/1XV6YrX1DOomPTGJNvWeEbXTBtkDpkHJm40SMBdFaIsv6FDeZ2VeuOckw1qg52Ag8WTDhjl01DD4QSJZCNVAAx7tSpjFDOUCnSF8Eozj+gwUm/IjZpssCexZmla1ytZfdY7KU+gZHl5B5jqSv9r4Kr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,55 +93,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 01:49:54AM +0530, Aboorva Devarajan wrote:
-> snapshot_page() currently reads __page_2 after checking nr_pages > 1,
-> but it should only do so when nr_pages > 2.
-> 
-> During DLPAR memory remove on a 22 TB ppc64le LPAR, snapshot_page()
-> oopsed on the page isolation path while reading an order-1 folio's
-> __page_2 from an adjacent absent section (unmapped vmemmap).
-> 
-> Fix this to avoid reading memmap that doesn't exist (e.g., a vmemmap
-> hole).
+On Wed,  8 Jul 2026 18:01:22 +0000 Abhishek Bapat <abhishekbapat@google.com> wrote:
 
-I appreciate you're absolutely swimming in it, but there's absolutely
-no need to inflict IBM terminology on the rest of us ;-)
-That second paragraph could simply be:
+> Currently, memory allocation profiling data is primarily exposed through
+> /proc/allocinfo. While useful for manual inspection, this text-based
+> interface poses challenges for production monitoring and large-scale
+> analysis:
+> 
+> 1. Userspace must parse large amounts of text to extract specific
+> fields.
+> 2. To find specific tags, userspace must read the entire dataset,
+> requiring many context switches and high data copying.
+> 3. The kernel currently aggregates per-CPU counters for every allocation
+> size, even those the user intends to filter out immediately.
+> 
+> This series introduces a new IOCTL-based binary interface for allocinfo
+> that supports kernel-side filtering.
 
-If an order-1 folio is allocated at the end of a vmemmap section,
-__page_2 will not exist and reading it will cause a fault.
+Thanks.  The important bits are reviewed, let's get this in there for
+some testing.
 
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Sashiko had a lot to say:
 
-> Fixes: 31a31da8a618 ("mm: move _pincount in folio to page[2] on 32bit")
-> Cc: stable@vger.kernel.org # v6.15+
-> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-> Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> ---
-> v1 -> v2:
->  - Condense the commit message.
->  - Drop the code comment.
-> 
->  mm/util.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/util.c b/mm/util.c
-> index af2c2103f0d95..34cb43b3eaa4c 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -1353,7 +1353,7 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
->  	if (ps->idx < MAX_FOLIO_NR_PAGES) {
->  		memcpy(&ps->folio_snapshot, foliop, 2 * sizeof(struct page));
->  		nr_pages = folio_nr_pages(&ps->folio_snapshot);
-> -		if (nr_pages > 1)
-> +		if (nr_pages > 2)
->  			memcpy(&ps->folio_snapshot.__page_2, &foliop->__page_2,
->  			       sizeof(struct page));
->  		set_ps_flags(ps, foliop, page);
-> -- 
-> 2.54.0
-> 
-> 
+	https://sashiko.dev/#/patchset/cover.1783532853.git.abhishekbapat@google.com
+
+I think you've already been over this.  but please double-check - maybe
+it found something new.
+
 
