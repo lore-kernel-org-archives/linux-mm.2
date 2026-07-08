@@ -4,162 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30EE3C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 08:40:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DFB5C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 08:41:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0975E6B009F; Wed,  8 Jul 2026 04:40:57 -0400 (EDT)
+	id 071906B00A1; Wed,  8 Jul 2026 04:41:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06EE06B00A1; Wed,  8 Jul 2026 04:40:57 -0400 (EDT)
+	id 049226B00A7; Wed,  8 Jul 2026 04:41:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC7246B00A4; Wed,  8 Jul 2026 04:40:56 -0400 (EDT)
+	id EA0D36B00A9; Wed,  8 Jul 2026 04:41:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C45B66B009F
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:40:56 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 41E0690E1F
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:40:56 +0000 (UTC)
-X-FDA: 84964964112.27.2CD7F4E
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011071.outbound.protection.outlook.com [52.101.52.71])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 57E0CC0002
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:40:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=agnjzEY5;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.52.71 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783500053;
+	by kanga.kvack.org (Postfix) with ESMTP id BFAB26B00A1
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:41:14 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 407061C8486
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:41:14 +0000 (UTC)
+X-FDA: 84964964868.15.93E2BD3
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0A5AB140002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:41:11 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OvGk7kjb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783500072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+FqGvOW4kOFTtL4fCnVLYrzWIQbgvV72MGfaGYZz0FQ=;
-	b=Q3a4yvL+ZQJHQ2rSRO5Ak/CGVeueP6aupjus4c9wjGwy0kptOPlGZ3JgG2ViAfeU0BlS44
-	mBpAXR9Ca0ZWE21GaC3v45/Sx/5KMCjiSZFaBV/bfgjga5vMoByvQbxlt9QF5TCmGiszZp
-	fwOgBMQCdo+yQuf/oSTEvvdwg7tUtSw=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=agnjzEY5;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf10.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.52.71 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783500053;
-	b=HDundsKxlBOgXNrHEHBNe2ubz5WkHXvD6MU+zEqrAEJOGHdVTjwjtir4n/rLaT42tLeTo4
-	MgTirLwmaLPMdsSKV3k78Zh1rfnHOIfKYp6AWYWcmeX2CIlebXTikHsRHWta+QF1K1RSbi
-	82ghoaTsulrM8iykTxH9lYZRcLdKtGQ=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ryidJWeRp8GZF/FJ8TYVzeiHsO2UMBZw9iA9OCyksdyOS1QWW9gkSolofUAy4s9vVc6i34YCN4UFsgzXhBMeMo+euGe0hLSI2s9cThDPBRhWAX6YEWUfBB8dUCGkURiuhPocQjyHguS8KqXx5w00vqaeS1VEjfLfPaglv0TxwRm6rH3oSxIavproqpD0ANSphuweAt2WeZ+jpfzGcqzruZAnBZ0SlDbwBGc+xmCJb/zG7KJ7GU1Y6Bu3/MptRq3wfFTZhYuiPJmkuQnOGaBdMy9WW4Oy7qBq7PTSpbHEoVaMu3My6CqkdSWqt2kUdZBqZo2vErFOR1b/ZRaWCy4OmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+FqGvOW4kOFTtL4fCnVLYrzWIQbgvV72MGfaGYZz0FQ=;
- b=Xfz9gMAD3+JN2TbEwzGmTIlcBwzPorbwRTfIyMmX5rKY0hLiyMg6aSQ8N4cQRjD4qL+7pfnJP7/XztUrttG24zb+w0dqS4AguBxkCv4siQTEEJTTWB3octLAYLB+saPkafVoTtojQNFp+jvoq1NFgTd8hdQLvA+RvP62AphElRR9+gb0odduwPKB2R1gkXDyYmtBjTTX/MRa3gezkfccjhB0KXMwNOBG0gHmOXJWLndIlwqCGD+0bMhstvRUmeGw+i4TmTJq7ZJjfsMG1UJgkw/sAah5W8SqUeyvADxpElu0hTQiJ+MESe+G9vR8RdwQu3KMUIIXzNZvcP1ZxT3hrg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+FqGvOW4kOFTtL4fCnVLYrzWIQbgvV72MGfaGYZz0FQ=;
- b=agnjzEY5uEaEMNG99XdMvTeitOWgk4uyJoW5noXQNdMLrA00MN87x3GLiEASuhpy98ZOmnEyBrCZBQY/ET0Jg6rjpUPYl9H80hs5Pqw7TtqrexO/SP+BDmqHYOJl9Y7R3iQJT3XjCBUOUAyHa5j7dXw3kpujBzMAaayW4Dao0LdiFnq7d2cgZeqgev4PdfUhdSL8gzhv2jkzhrfKKYn3WdqfRpZwKg888ENuYNDs3EwlT3dqle2uHM0PBDaF+vT2g8Y9O8e4N2PLH6thF+jH6XOed95b71MsHqF4empZRTmnwxhdL41BLBe9fV5cA/B0hDoohQI2f1Z7IruQjczxBw==
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
- by SJ0PR12MB8168.namprd12.prod.outlook.com (2603:10b6:a03:4e7::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
- 2026 08:40:48 +0000
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe%3]) with mapi id 15.21.0181.012; Wed, 8 Jul 2026
- 08:40:48 +0000
-Date: Wed, 8 Jul 2026 18:40:43 +1000
-From: Balbir Singh <balbirs@nvidia.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Usama Arif <usama.arif@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com, baohua@kernel.org, 
-	baolin.wang@linux.alibaba.com, byungchul@sk.com, david@kernel.org, dev.jain@arm.com, 
-	gourry@gourry.net, jannh@google.com, joshua.hahnjy@gmail.com, lance.yang@linux.dev, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	matthew.brost@intel.com, npache@redhat.com, rakie.kim@sk.com, ryan.roberts@arm.com, 
-	vbabka@kernel.org, ying.huang@linux.alibaba.com, ziy@nvidia.com, 
-	shakeel.butt@linux.dev, hannes@cmpxchg.org
-Subject: Re: [PATCH 0/3] mm: handle device-private PMDs in walk callbacks
-Message-ID: <ak4MjMvQeaD2r_Xq@parvat>
-References: <20260707135255.292870-1-usama.arif@linux.dev>
- <ak0FtLIlTyCo_8lB@lucifer>
- <fde1372f-5d80-4a1b-8bbb-11441db9f55d@linux.dev>
- <ak4It9Hm8S01Nun9@lucifer>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ak4It9Hm8S01Nun9@lucifer>
-X-ClientProxiedBy: MEWPR01CA0175.ausprd01.prod.outlook.com
- (2603:10c6:220:1f2::16) To CH2PR12MB5001.namprd12.prod.outlook.com
- (2603:10b6:610:61::18)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|SJ0PR12MB8168:EE_
-X-MS-Office365-Filtering-Correlation-Id: 31f740d5-d52a-46ff-86fc-08dedccc9c2f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|22082099003|11063799006|4143699003|18002099003|56012099006|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	gGpM3MhkY9MeC7yqsPn2Cf5j2bDPTGVD3L9WeWeMDQSNQ8nfw/FTc4V6JFvzZ1IYLmJsGOrc0mXz5gd9KCU2lRTf+QkkX9W6kqiW9JbFZ4Oh3EUIPvkNAaScXoatjA/TEzs1c8BAU/b96jnzrZQgZhoPRZAjpNAR1CH1PN3w+cVZ9JmTDFgb8ooEaQ8jqinfMBMbjVtJbQLb/oAhmyUoJ5d4wZ6ku106Rt0RicZTXtTbG6SqV1ydqtF7DNPjzOl9XVxojVZRrcM1+XTAiVEexAXzvpO0phGgHzkaYI+23tKOhkbSh9luuVf6niyByE5AbaCPp1YbDtfuVVTDM+FWakeuy9oBgd41PkKErHjh8Bfbg8x3F5+GLNbOgBqoHr/SwS66sTLXF+ygxXyv85Tqv0mW3mMpwFNK4KpMFqnGWFKmCdOs57fGnqRIjZENeDeOB/WaxVxt/Xg6SNBPZcFfV+Yx/qMKtJMUCbIrGa+Ix2Xoy7uFFooSfrV31OVBHxHbgi5AG6bNztP2h2BbKF3JgzizmAhb1I3W2+BM8HV6FJ/YVa2gnQZCeNPpvnexDGjyGN4ePxVxvx+fCpdCx4bQ5mqyCc2ZMxLVR9W4x8SJXr2SRPlplnl4/q0BsdnQDHEFVakkXhepwpVXut5P0sOSxU8/HTj5z1n4rM+XSIqclUg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(22082099003)(11063799006)(4143699003)(18002099003)(56012099006)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Aacq3mc29afsV6D2vDrJwMcf9dUopV7xnChtZBbLmz6Ply7UMlCRVxArLLXm?=
- =?us-ascii?Q?nz94rRcRR18mCCRQWALstmhKSJGdog2GT7p4ffsg+oQDc9zLPvbGWlJp+OH9?=
- =?us-ascii?Q?f+rVBMTjp72FM4wvd1irLwi/0v/fHcQD4r80U2nnupUgZjtt8CnHa7xkJFfk?=
- =?us-ascii?Q?k5BYQnaGzhTkj/g/INqh8+2IGLr4Qp32NjUWlmvN211jNUTWYx84LdsR6dpu?=
- =?us-ascii?Q?msnthnUkxsRrDB4Nbly496MfG1ryBGnjgiPp9ueJJQWZST76fF1MzL1B3iib?=
- =?us-ascii?Q?EbEmuwAdOwa8VNgkw7OeBhZCRigIYpSC+zGDoFH4DPaCtpi4xzFM14WTx3Av?=
- =?us-ascii?Q?vGyW3UIkTEsvpna+OhahfBoq9ZQ7uESb0IJ/faZM5lG95imz/U84uQ/Ol6mi?=
- =?us-ascii?Q?CIL4FuHywg+7e+5dKdWuHVlRAaqTd6gjlEo21kW25gUYieHaqgh95AgU7sTD?=
- =?us-ascii?Q?cerOBGiyTVsmjhwlPyxWfgNT8tIKOGeXkX1IKJPJ+gowlyYmh/ohDCV/Q/sZ?=
- =?us-ascii?Q?A509PWZIgevQZsKNlboJx4ixji8aQQv3nSdHHB2y+8o7BYFqwkcQjUj2mAGM?=
- =?us-ascii?Q?zf/I/WAF0o+uhS3XV2+49C6ID9Q+mRxLjRiThEZdwcvhjxSJ4Fr92dFhLnkv?=
- =?us-ascii?Q?+mEC1brNRg81Bf9Zm//eOJnvjdvKoeW7IFEg8ajN7pt2N/IFVkcFzHFXc9AF?=
- =?us-ascii?Q?AHPizPnwEwWE/3FIyXHUDp98vmVpfJLMzOY25kr98Db/bSAjkIk8kIX40cLT?=
- =?us-ascii?Q?6PyrjOKldKLQz2AaAloQnP9HivnRUqdPmbYNWVEtpnSl9HwNFinMrKUciKio?=
- =?us-ascii?Q?aXsW3fusyOtLExJ4FuKvFcTKGRmotu1OJX6RNBDe+U+9x2WY91lcnYn5wVZE?=
- =?us-ascii?Q?AUTQovuzTdpZFPaNLFiyEN+3R97Hzqlzi810NZFuHdHi+56Mh/A/sdAQek6s?=
- =?us-ascii?Q?ApefgZWpt0nc43Wq4RGbSerOZLxkQrkIZowmklODgUvkMq4Bh4jvH7BkGcSU?=
- =?us-ascii?Q?T1nCGPgHtGs+YLqjdZNIKxuxk2J/hvrLulGTZaJHtwsQSlcPj11RTtHcYnH6?=
- =?us-ascii?Q?JMATvTO0HU5Zwcql+0uJInC4Qc6Bbzqs8i56GBHkRIze8iIaqQKLWQUbxE1x?=
- =?us-ascii?Q?EC2GEZNLJPncuOTkGgcgkE/J8E7MdcHR1r6plzMFPmjgJfYQ1g+f4PAoaWew?=
- =?us-ascii?Q?w4kIngBzEt37+dNHPXVT5Mie/wUTs+KH4+EymAsoKxHooluODI04ecPjb9on?=
- =?us-ascii?Q?pBAuSyF9FNCMN7qSMrIlXMEhZbdeR9o4K3UeZ3UkJOQ4MY175M+wMH4zssj4?=
- =?us-ascii?Q?b48M4uB7BpXFLL6ZLh6HGMguzU6iiZETXZ6ewDgSJTZK1v5s8j17AUaLrMsb?=
- =?us-ascii?Q?0Fe/pb8Z6EUbwjRjqgUPvhBdwRax0qZNI/2O186nbXhBC4+xKDDlS8aGoMmn?=
- =?us-ascii?Q?SjLDBJkdZqThmA8M3qA4pUgDIvKZreOOMYXRpSMTIa5z0cgmVo5pjQtdCz2i?=
- =?us-ascii?Q?Z3Lc2UocWrFI9no9T3/VP+lkwPkZqVRX+t9BNLJAv5ymmjAx/oeiYolnaRta?=
- =?us-ascii?Q?6lIplU6D5movocfj82SBRQwj9DdeJaDQwrh01ohDMOVT5PvkaJ7fRM1laX79?=
- =?us-ascii?Q?3/uQaMMeCFBBTyEOFbCdTPJ9aWghO1SmkXwPmzguEaBMrGNTUs7iVqbv6GGC?=
- =?us-ascii?Q?VHYNx2sJLDV6tS64NT9qXpKNTO37MdxNC3N4Ou9KefXzBwkI/J1YVk3xpm5+?=
- =?us-ascii?Q?AoSpcNo0gg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 31f740d5-d52a-46ff-86fc-08dedccc9c2f
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 08:40:48.7983
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HBCGv1XInwW9kSw/PqhaC1IR1XuT5fILhDEPXXy2VMEqYLhof6mPNdJGSgrCbIY7my3DZhf0nN3/LQi8mYeyTA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8168
+	bh=ay+9OguP1CPg4hxcwdLNZzQguCP70IcEDhADkyACGAk=;
+	b=Pwp0gTB/iNtqxVPxLfgEQwBHNaooW/JxpbQg8qMSQReAkHjyihSONf3rm1XMk4PakVoTwM
+	Q47GhYU6iO2spjxMfkL+7am6TDd8S6j+nLb6cRPXk1tF0A/Ob4UCnI7W4G8sgXjx4oY0OS
+	g91utyeECvxtUy5LXvbMmZsNlE+zHQQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OvGk7kjb;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf23.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783500072;
+	b=Wng2c9y2q7WrRHVAeat5VC6d3Fwj5xTOCwGrpxUd4iOT8UziClqYWmWBEghLMZEJU4krcx
+	8+nyq54zNzxmvKzZCE+IDXFj9ZJjFHT+LKiFow3axAOz9o9MYi9pzMu4zf+CAfjPqA/wIZ
+	u4UEVg9A2VsA8E7toaL2gL/csQlChzc=
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783500069;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ay+9OguP1CPg4hxcwdLNZzQguCP70IcEDhADkyACGAk=;
+	b=OvGk7kjb39KFWuxACeNMnS7v1JI+VETDHS84VGeCho8vtj13MVjNluWrOZeplrHioBIW/0
+	Los52tU8eF3fjBVRHlv71jep751FjBXKQC6BGy0+eIvMbkjjkBJ2KkUGVIpG5zyY7eTYCf
+	DcYiEISinnyTMInnxhLZlUKkaC9trDI=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260708031129.3503195-1-jthoughton@google.com>
+Date: Wed, 8 Jul 2026 16:40:27 +0800
+Cc: Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Nikos Nikoleris <nikos.nikoleris@arm.com>,
+ Linu Cherian <linu.cherian@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Nanyong Sun <sunnanyong@huawei.com>,
+ Yu Zhao <yuzhao@google.com>,
+ Frank van der Linden <fvdl@google.com>,
+ David Rientjes <rientjes@google.com>,
+ linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FC9E78F0-8FF7-44AF-A848-8401B4702488@linux.dev>
+References: <20260708031129.3503195-1-jthoughton@google.com>
+To: James Houghton <jthoughton@google.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 0A5AB140002
+X-Stat-Signature: 6fnn7du8pkf86imxp6tzedkk6rkm43sf
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 57E0CC0002
-X-Stat-Signature: oshfugret8abqegh7rrao6xpt4wum945
-X-HE-Tag: 1783500053-234644
-X-HE-Meta: U2FsdGVkX1+szxp8e2guwLsj2Y/Xj79AJfiK3paJII3X/g3/GH3KW7Vz7QqjIb9SNAf4Jjgwl4M6c82amqOLD6ll+Vtld2tpv0+GRcJr/QxQGIcfM2bNo2FT2R52jN+76iRYNfcUHeczGczu9BnRXPulVM6jPWcN/uOppHN0RMx24ux0NCAZoC9MFYOV+tttX1uJfHcgFKBLmfiAp4a6B7jJ0PSWx/PNN2K4luEXfYQvdrcTDkdnumAQQPXS7unBhXh5wGE5drjKC+3eVojqUjg7YccbkQGkEfICVaf9fIF6fdUlsd+uFHmC9VJ3zauDoAGLTobt1oXwdR5DnLHeIMevx9FdyCWEtQ6TyNnimGTd3IaAan+VDJ+L+NvJTGHRMXJgCMfG128qRoIBx9fTGwiG+XfvfH1EY9UDReTz05sXObpMGb5UgkaGXTYXukvs7UdmpVq1MUd+BvIn/fkwuye+zVNk8Flse2+d0as06r5QDugIFSMU5Yi6mUHYBySTkPbhlTj4hgq2p3H3J5rtm8sX82O0wjsPfb9M6MVMXKGuZ/we/jJPr3b5uX/zmjpio/qvMYgK8VIEAy7PziRVNDndweWGd0b+YshzXWluuwR+UIVn8EjnOAjSjI7WRFP5/3esbaJ9JEfMuu42IIr0VbCbxgghpND2fyQqvaQKJFk+7QciKEEq5RKbfnE8TcjF4opRE31U5TUSu0RRnzTfpv6DE4YbqHb5ZJb/tVWCQsqKHs4T4kMT5Ii+hJT8hRRjvpAFPQctitYclTtvscTJOu7xnUqid+2UVTbGJY9yZxC2vHCd7m2CZI3Aiwo8nun8aQ9KM8InPVuj2P5vP1pMDd0Jn+P+BvoLRSQqqhGXsXtGRYB/rd+eGw4le4E2rIeGv9VdCwpyeCbmO0DP/LXEA+M1KZrH6kHFKcwZaMUS+QaMZRosJsPf+Y0KXQR+nudQFvCnJ7hE2WR6Ln9fPr0
- AaNbhfBc
- ElpAHwPl3VVjyxlm6JNW/nzkBA0WlvPMkPA5mcvUysKO94/OMgWyy70siKxVNy0E9vQea5XTofIyQ1igCPOg4pRB19zu7EiUqYhorpPedAocE/3RegUF2JWFJQDpUOAWgWDoII0Yx4XerKcdmCcezZp3JU90zWXINm13hUMCYaRbkCYrde+WkdEJsNKxf9FX77D5fp8HPoDJIv/pCe606YdengI8XrUyMvFLstuLElzPJDAKyGQ89WDx0TwZueHlo2jH13il3bwjrfPSe3m6kBltf+wWk0WaqunWwO76KHP2lO8OV3r/lxS6TuqwrneHAC8QNHJAAaBAERFH+ZOJEcSZm2fBprDcgbuDcTTvLVu38PSKFhEBlqMPh2A+XIyLVmG/Fy7wLsxZ3HmJqyHTufIv/YSLFMHGZbwgn3GbTkQzOlax+6E0TCw39m1NQCfYDpjj+PQRPyP87zVDAYww5Co0GxJn1c1T/sJgE
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783500071-18033
+X-HE-Meta: U2FsdGVkX1/ywEYcF/l/H1SStecTQk2OzeKcsqmYmL1KvihGl0cNhr/VjiYEQQXg3aSdy0T28LWT/4KOeukZjhvmVZ6FuAYFvBVpL+35+wfMFeJVLDT7gOtHdGPHR/+WFOaijFCe7uW+Tex1TCkYSQ+09TnKQazvIt5XWb8XRFnkysLv9M3GBEq5hsRyZ0Ei6+ktQz9seDoJvtd2Kec1o2MDQfk3oxwjVjfSwDq6OWo/hoLm4sOZDVupY6R4IkT+uHn5wyM0w/bLfn6lrus5kWH13DK4r52flYxNxVWE7oJgyRtitFKIonpT+FzpqvfEGaLhxpCPaE8ePY86ZLh4yfQypaqzjFtoHRu2/h8l4k89Ea+6RdwioWkHFnluPHREJ30cIPl9gqN6TTAVv9q1yBwS0gsR5p3xeL7WSWMQ4wKXEyp/RZe69JxPW3gahLS4+e/UAv1M9rB0/X0OwX1CIJxJFV+PbwVv1Tm9sb5LHIxj0J8LBK15BznVzQyPou9WZzGgkvLrCIdN/vAAMhRhh+z9p94xlpW0jjuUrHhb0LDvzLlRtS3NV/nrjyKg6aTgHOi3aw/ohDlfhfLA/yO1tGdnegvmmt8TD8hzxsdDyy2l7WQML9ggFMD2ryMmqxTppEZrXmIjxofrGf9jtS5NRWN7q04L1zLcM3ww8g7uzJ5rPUEeTq5Bua7MrDHf+3rZKihmvai2TVf/me60DBKe1u4a8fzGTQMqwr3Tdc6oWJuEHQ1zSbPin3dWtkicIPYHMz7MZstGQLz5Loilm4c4KDSD1/PnHh9XxwMxpAyMDiH74/PaeojXLpFleoG8/6tyyG83SOt8F1kDjzaM7VAGbSIQsG8wPgAprXhHKxflZh0xiSsoQP4CLFZL5+2hm/XXrpcfxRqeIN+4O+ppQvSXo6w7tKJIcp1SDquE1hcs9rUZUkV+8Mqtle4LubNrMicK6XvWZydLQxwp1Uf9rUq
+ 2y9egj5S
+ fQ1bsPS1ePYb2cgMpigLXav8pHpAZxWUJIWdXEv1jEpNMq78G+hM8ds5/aoSDFXSqLKFw5SjHBfM2WRLFDos3B1o3ZmZHVy1rEZiQm0s1ebkudmflDrT2XQgsjzH8w3TcAycZxwdge757G60Odqbz9+c2AQTJ+tTV//O/ORuOwYldvDZnrUAXjlW0lt4lNixfIGGOnEcB/FmhVjUVWAtE4uSg7NDK0eYFZdriNL0/IwuqqKHyp22sRMbrg2U3VcZSqaPTcgw2ELMmuPNgnezUkTy0FEwtkZQJ14VXRIqIvGOUyuGmeywI4x2zTSNcAo+XOiJoBAyvc0G7AdI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,34 +103,265 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 09:23:36AM +0100, Lorenzo Stoakes wrote:
-> On Tue, Jul 07, 2026 at 03:12:11PM +0100, Usama Arif wrote:
-> > I think maybe we should modify get_maintainers.pl so that if there is
-> > a "Fixes" in commit message, than the author of that commit is also
-> > in the output from that script?
-> >
-> 
-> I thought it did that already, but it's forbidden perl magic that I dare not
-> look at so who knows :P
-> 
-> Wasn't nagging per se about that (for once :P), often people who'd be good to cc-
-> get missed anyway even doing all the right things, so just wanted to make sure
-> Balbir was aware, also so we can make sure there's no other device private PMD
-> stuff lurking! :)
->
 
-Yes, thanks for brining it to my attention! I have started looking at
-the set of changes again to see if
 
-1. I can improve test coverage (mempolicy tests for example) and madvise
-2. If there is lurking code that has not been tested at my end or
-covered.
+> On Jul 8, 2026, at 11:11, James Houghton <jthoughton@google.com> =
+wrote:
+>=20
+> Hi everyone,
+>=20
+> This patch series uses a trick with the Access Flag on CPUs that =
+support
+> hardware update of the AF to update vmemmap page table entries without
+> introducing a time window where CPUs accessing the vmemmap might =
+fault.
+>=20
+> By avoiding faults, the HugeTLB vmemmap optimization (HVO) can be
+> implemented correctly on arm64 in a much more straightforward way than
+> previously attempted, most recently here[1] (please see [1] for a
+> breakdown of the other approaches attempted before).
 
-It's a slow burn, but I do appreciate a Cc, I skim through linux-mm, but
-the volume may make me miss topics of interest due to TZ and other
-factors depending on when I check email.
+Hi,
 
-> Cheers, Lorenzo
+Thanks for your ongoing efforts on supporting HVO on arm64. This is =
+truly
+one of the most useful features that arm64 has been missing for a while.
 
-Cheers, Balbir
+>=20
+> For large-memory systems that allocate most of their available memory =
+to
+> HugeTLB, HVO saves a huge amount of memory (1.5% of system memory).
+>=20
+> This series has four parts:
+>  1. Some preparatory changes (patches 1-3)
+>  1. Bare minimum HVO support (patches 4-10)
+
+It looks like there is a typo in the number here.
+
+>  2. Drop BBML2_NOABORT requirement for HVO (patches 11-13)
+>  3. Drop the user-configurable Kconfig for HVO (patches 14-18)
+>=20
+> Parts 3 and 4 are technically optional. More details below.
+>=20
+> The main functional caveat with this series is that bootmem HugeTLB
+> pages are not "pre-HVOed". They will be HVOed, but because at pre-HVO
+> time SMP CPUs have not been enabled, we cannot query for full system
+> support.
+
+Do you mean that the support for AF might vary across different CPUs?
+I'm not that familiar with arm64, so it seems a bit strange to me that
+such basic hardware features can differ so much from one CPU to another.
+
+>=20
+> This series is based on 7.2-rc2 (0e35b9b6ec0f).
+>=20
+> This series almost 100% cleanly applies to mm-new, which has some of
+> Muchun's HVO patches, with one trivial conflict. I imagine this series
+> will conflict pretty heavily with some of Muchun's other patches[2].
+
+You know, as we iterate on HVO, the codebase is becoming increasingly
+complex and difficult to maintain. Aside from the work in [2] that you
+mentioned, I actually have some local patches aimed at refactoring
+hugetlb_vmemmap.c as well to reduce this maintenance complexity. I =
+really
+want to avoid piling more code on top of it right now, as that would
+only make things worse.
+
+Therefore, my personal suggestion is that if this approach is
+theoretically validated on arm64, it it better to wait until the HVO
+refactoring is complete, and then review your work based on the clean
+codebase. For now, what we need to focus on is evaluating the =
+feasibility
+and soundness of the approach itself. What do you think?
+
+>=20
+> -- The AF trick --
+>=20
+> The trick is that translations with the AF unset cannot be cached in =
+the
+> TLB (see Rule R_DWZCQ in the Arm ARM), so they can be atomically =
+updated
+> without needing a full break-before-make sequence.
+>=20
+> So the PTE update sequence becomes:
+>  1. Atomically clear the AF on the existing PTE.
+>  2. Invalidate the TLB.
+>  3. cmpxchg the AF=3D0 PTE with the new PTE. If this fails, goto 1.
+>=20
+> If there is a CPU on the system that does not support hardware access
+> flag updates, clearing the AF is problematic, as those CPUs might =
+fault
+> on the vmemmap usage. Therefore, HVO compatbility checks all CPUs for =
+HW
+> AF updates.
+
+Sorry, I am not familiar with arm64, so I will leave it to the arm64
+maintainers (or experts) to verify the feasibility here. Once the =
+viability
+of the approach is confirmed, I will look into the HVO-related =
+implementation
+details and consider how to support this feature on top of the =
+refactored
+code in the future.
+
+>=20
+> -- Application to HVO --
+>=20
+> HVO relies on the following page table transitions:
+>  - When enabling HVO for a page, PMD block entries in the vmemmap are
+>    shattered into PMD table entries. The first PTE remains mapped
+>    normally (RW mapping to a real page of struct pages), but the
+>    remaining PTEs in the vmemmap are mapped read-only to a shared
+>    page of struct pages (that is, there is an OA change and a
+>    permissions change).
+
+Just to clarify, does OA mean Output Address? Please spell it out for
+readers who are less familiar with this context.
+
+Muchun,
+Thanks.
+
+>  - When disabling HVO for a page, the RO PTEs are remapped back to RW
+>    PTEs that point to newly reallocated pages of struct pages. The
+>    PMD block -> table transition is not undone.
+>=20
+> In patches 4-10 of this series, I use the Access Flag trick to do the =
+PTE
+> OA and permissions updates. We rely on BBML2_NOABORT for the PMD block
+> -> table transition.
+>=20
+> In patches 11-13, I re-use the Access Flag trick to do the PMD block =
+->
+> table transition without needing BBML2_NOABORT. For systems that =
+support
+> BBML2_NOABORT, the logic is unchanged.
+>=20
+> I am aware of Linu's BBML3 patches; I've opted not to rebase onto them
+> for now, but I am happy to do so later.
+>=20
+> -- Late-onlining of CPUs that do not support HW AF --
+>=20
+> One of the complications with this series is how to handle =
+late-onlining
+> of CPUs that do not have HW AF when HVO is in use. Naively, if HVO (HW
+> AF) is supported on all boot CPUs and the kernel is compiled with HVO
+> support, late CPUs that do not support HVO will not be onlined. This =
+is
+> a regression.
+>=20
+> This series provides two ways of dealing with this. First, add a
+> default-off Kconfig for users to enable HVO support, avoiding the
+> regression. This is not ideal.
+>=20
+> Patches 14-18 get rid of the new Kconfig by allowing onlining of
+> HVO-incompatible late CPUs as long as HVO is not actively in use.
+>=20
+> -- Litmus test --
+>=20
+> The following Herd litmus test demonstrates the PTE update routine:
+>=20
+>  AArch64 TTDFaultlessUpdate
+>  Variant=3Dvmsa
+>  TTHM=3DHA
+>  {
+>   uint64_t x=3D1;
+>   uint64_t y=3D2;
+>   [PTE(x)]=3D(oa:PA(x), af:1);
+>   0:X0=3DPTE(x); 1:X0=3DPTE(x);
+>   0:X1=3Dx; 1:X1=3Dx;
+>   pteval_t 0:X2=3D(oa:PA(x), af:0);
+>   pteval_t 0:X3=3D(oa:PA(y), af:1);
+>  }
+>   P0                | P1             ;
+>   LDR X4,[X0]       | L0:            ;
+>   MOV X5,X4         | LDR X2,[X1]    ;
+>   CAS X4,X2,[X0]    |                ;
+>   DSB ISHST         |                ;
+>   LSR X9,X1,#12     |                ;
+>   TLBI VAALE1IS,X9  |                ;
+>   DSB ISH           |                ;
+>   ISB               |                ;
+>   CAS X2,X3,[X0]    |                ;
+>  exists
+>    0:X5=3D0:X4 /\ (* First CAS must succeed *)
+>    (fault(P1:L0) \/ ~(1:X2=3D2 \/ 1:X2=3D1))
+>=20
+>  (* This test should not violate BBM requirements. *)
+>=20
+> This test must be run with herdtools with Nikos's changes[3] to more
+> accurately model BBM requirements. When tried, the output will notably
+> *not* contain the "Warning-BBM-expected" flag.
+>=20
+> -- Testing --
+>=20
+> I haven't yet done extensive testing of this series. HVO is correctly
+> freeing pages on my system, and the hugetlb-vmemmap test passes. =
+Freeing
+> HVOed HugeTLB pages also seems to function normally.
+>=20
+> [1] =
+https://lore.kernel.org/linux-arm-kernel/20241107202033.2721681-1-yuzhao@g=
+oogle.com/
+> [2] =
+https://lore.kernel.org/linux-mm/20260513130542.35604-1-songmuchun@bytedan=
+ce.com/
+> [3] https://github.com/herd/herdtools7/pull/1864
+>=20
+> James Houghton (18):
+>  hugetlb_vmemmap: Always flush TLB if needed upon PTE remapping
+>  hugetlb_vmemmap: Move vmemmap_get_tail up
+>  hugetlb_vmemmap: Leave pages partially HVOed upon restore failure
+>  hugetlb_vmemmap: Use try_update_vmemmap_pte to update in-use PTEs
+>  hugetlb_vmemmap: Allow architectures not to allow HVO at runtime
+>  arm64: Rename cpu_has_hw_af to system_has_hw_af
+>  arm64: Add system_supports_hvo
+>  arm64: Implement try_update_vmemmap_pte using the AF trick
+>  arm64: Prevent HVO if the HVO system feature is not enabled
+>  arm64: Support hugetlb vmemmap optimization
+>  hugetlb_vmemmap: Use try_populate_vmemmap_pmd for replacing in-use
+>    PMDs
+>  arm64: Implement try_populate_vmemmap_pmd using AF trick
+>  arm64: Drop BBML2_NOABORT requirement for HVO
+>  hugetlb_vmemmap: Rename mm/hugetlb_vmemmap.h to
+>    mm/hugetlb_vmemmap_internal.h
+>  hugetlb_vmemmap: Add a way to permanently disable HVO when needed
+>  arm64: Allow "optional" CPU features to be required sometimes
+>  arm64: Permit onlining of HVO-incompatible late CPUs if HVO is not in
+>    use
+>  arm64: Remove user-selectable HVO Kconfig
+>=20
+> MAINTAINERS                                   |   3 +-
+> arch/arm64/Kconfig                            |   1 +
+> arch/arm64/include/asm/cpucaps.h              |   2 +
+> arch/arm64/include/asm/cpufeature.h           |  39 ++-
+> arch/arm64/include/asm/hugetlb.h              |   7 +
+> arch/arm64/include/asm/pgalloc.h              |  54 ++++
+> arch/arm64/include/asm/pgtable.h              |  57 ++++-
+> arch/arm64/kernel/cpufeature.c                |  43 ++++
+> arch/arm64/tools/cpucaps                      |   1 +
+> arch/loongarch/include/asm/pgalloc.h          |   8 +
+> arch/loongarch/include/asm/pgtable.h          |   8 +
+> arch/riscv/include/asm/pgalloc.h              |   8 +
+> arch/riscv/include/asm/pgtable.h              |   8 +
+> arch/x86/include/asm/pgalloc.h                |   8 +
+> arch/x86/include/asm/pgtable.h                |   8 +
+> include/asm-generic/hugetlb.h                 |   7 +
+> include/linux/hugetlb_vmemmap.h               |  20 ++
+> include/linux/pgalloc.h                       |  20 ++
+> include/linux/pgtable.h                       |  21 ++
+> mm/hugetlb.c                                  |   2 +-
+> mm/hugetlb_sysfs.c                            |   2 +-
+> mm/hugetlb_vmemmap.c                          | 237 +++++++++++++-----
+> ...b_vmemmap.h =3D> hugetlb_vmemmap_internal.h} |   6 +-
+> mm/sparse-vmemmap.c                           |   2 +-
+> 24 files changed, 489 insertions(+), 83 deletions(-)
+> create mode 100644 include/linux/hugetlb_vmemmap.h
+> rename mm/{hugetlb_vmemmap.h =3D> hugetlb_vmemmap_internal.h} (95%)
+>=20
+>=20
+> base-commit: 0e35b9b6ec0ffcc5e23cbdec09f5c622ad532b53
+> --=20
+> 2.55.0.795.g602f6c329a-goog
+>=20
+
 
