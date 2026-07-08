@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A9EFC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 23:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00A97C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 23:49:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 500ED6B0098; Wed,  8 Jul 2026 19:49:04 -0400 (EDT)
+	id EFE216B0099; Wed,  8 Jul 2026 19:49:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44E226B0099; Wed,  8 Jul 2026 19:49:04 -0400 (EDT)
+	id ED5A56B009B; Wed,  8 Jul 2026 19:49:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 279DF6B009B; Wed,  8 Jul 2026 19:49:04 -0400 (EDT)
+	id DC4166B009D; Wed,  8 Jul 2026 19:49:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD6946B0098
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 19:49:03 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40B9F8D284
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 23:49:03 +0000 (UTC)
-X-FDA: 84967252566.16.8A5F7A4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ABF6D6B0099
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 19:49:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B136C13B2
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 23:49:04 +0000 (UTC)
+X-FDA: 84967252608.20.13A3CDD
 Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8A0801C0003
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 23:49:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cmuYGTxk;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7A3C0C0007
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 23:49:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="a/zUf/JP";
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 37OFOaggKCEUzroh3hqhnvvnsl.jvtspu14-ttr2hjr.vyn@flex--skhawaja.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=37OFOaggKCEUzroh3hqhnvvnsl.jvtspu14-ttr2hjr.vyn@flex--skhawaja.bounces.google.com
+	spf=pass (imf10.hostedemail.com: domain of 37eFOaggKCEY0spi4iriowwotm.kwutqv25-uus3iks.wzo@flex--skhawaja.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=37eFOaggKCEY0spi4iriowwotm.kwutqv25-uus3iks.wzo@flex--skhawaja.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783554541;
+	s=arc-20220608; t=1783554542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q+S3FWpLmbV8ubn+1hh1NL45mx9rPGtnbGgWXMOw/Cc=;
-	b=ti27jzku65ztiHFQEKcZUThCZUKSiOAqAx9Cy8ZaK7/2fxZzkx6XuMg0xsgvQUNZruUF1x
-	AzpvJ5m/X0qGjUGKoBXJizjJyGtP428og5iEq/PDgFme4jqHzRf/L1g8FEl1T0/mY9lWyR
-	ZBRHMl3IIbXLz2DjLjM1tUYN4ul3/ZU=
+	bh=Mg8HPDVADkikyFkQazKzK0at34W1Wn3VUkaO82xr5dA=;
+	b=LI7USrOKbtiKaVrn5+yBln50G19X7+8lfCPxnT4Y7IucV7YdG7y+EtthfO0vIUbIQqf0Hy
+	1Y9kitHwxNZurcIkSOs8L1jSbkpEzOew3gotRLPtng11XrJQ8YhOO6opZFqUMr+orF9jds
+	Ac+32aHuknApSFBwoFln/ZmSxb4htc8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cmuYGTxk;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="a/zUf/JP";
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 37OFOaggKCEUzroh3hqhnvvnsl.jvtspu14-ttr2hjr.vyn@flex--skhawaja.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=37OFOaggKCEUzroh3hqhnvvnsl.jvtspu14-ttr2hjr.vyn@flex--skhawaja.bounces.google.com
+	spf=pass (imf10.hostedemail.com: domain of 37eFOaggKCEY0spi4iriowwotm.kwutqv25-uus3iks.wzo@flex--skhawaja.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=37eFOaggKCEY0spi4iriowwotm.kwutqv25-uus3iks.wzo@flex--skhawaja.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783554541;
-	b=vrkcimTeyjro8QMnij3ocJfAy37F4FSh0C2nXNGSqPmbI2cEs/zc36TH/IHRXEsavS2ShG
-	G9bFL7BNoBw88qZdrPP/IqdwAHpxnJtasiy9lVNYx1XUV+oxdKWF5zrVev6J1dXVvjP+6G
-	yjzyJhUsnCkiEMJFiPCBqnW3bM1hiOM=
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8478ff5d801so2334846b3a.2
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 16:49:01 -0700 (PDT)
+	t=1783554542;
+	b=3gKYshQwDeYAfDCtz00pvZq6ykdtqMUhQS9dUvNHeDLWAJD1MDJwLKbX1kHLnI1vSVP2wa
+	Gd+lBTlYygFqldRLmpzPSjXPwvmPd73WipF1qjWpeK6ld1WaXqZykhQwiYTcUq/tTSs5eC
+	P0bAydTZTykL6JIvFCIm6gJPbR4JA1s=
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-848551b54f5so570778b3a.0
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 16:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783554540; x=1784159340; darn=kvack.org;
+        d=google.com; s=20251104; t=1783554541; x=1784159341; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Q+S3FWpLmbV8ubn+1hh1NL45mx9rPGtnbGgWXMOw/Cc=;
-        b=cmuYGTxkwKTVYhG3v4UZEgLR+rLpokyqJKZRfDuq9+tTaXmpmx+rKd7QuP+5rjVTgU
-         iTc7gi9pD+xn6VjagiuMyRzzhSRQKvvqkBfNl0mlIHIm8nLJ6z/8MCBMrbLMpc1Y7GVu
-         KC5Rn6bb2Jtsr7eUuxgoQASJ7Z5zqvR6HGoG0QXPmNjwHGlUarrnqe4Hm0VA1TqbhKJi
-         TsDKW04NyYFJJc1Yfa2ROIhfmFSFPHSGVXk66VvH9P0nnu2Ry0w1gVxnIjonwMAeXaCa
-         XXGl0tCzQpO6JyfBdD5btV8tlq2Dy/7Ybdu2KW8ulINiRKRj7jg4Vim9h0iWHuaadcKZ
-         rvVg==
+        bh=Mg8HPDVADkikyFkQazKzK0at34W1Wn3VUkaO82xr5dA=;
+        b=a/zUf/JPbD2TnDNPQ7FGT833SXY0hxMW9cWaMIcN+1W9mMNmuVv0v7zVKyCsPq2mQf
+         6jgeS6wEUaIZ8a5cLpkasa9wMaVfHSKjv6ZdOB8PBGgyb58PNnNiimivX13pp8E7Ge3u
+         jnG2RzgDA1dzJIKQkuDtJt812drE7NN8jZ5uTKhyW3yaaqIvl7vXL+tktocrj6O/jmLZ
+         +OXlpQZHVf+O7gM9ohxzZVGbnai8MhhkaR4JK00gSyY3l2YyhrJqq/yryZZ2xSNvdr+4
+         R/QOieHBa2vYHl46Q3tVR3/WFq1pZs3JPT3m81LRaAqFydYSKBhLQSEvt+XHGkkA3cHf
+         bUzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783554540; x=1784159340;
+        d=1e100.net; s=20251104; t=1783554541; x=1784159341;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Q+S3FWpLmbV8ubn+1hh1NL45mx9rPGtnbGgWXMOw/Cc=;
-        b=n6vQ/fRWLZw6jhmcI1WGJFvIZWjloXLHBKjsktjWDzqe7aKsCzrTkVWlM+XqhIL37d
-         dvodhWV7HucBJDtDW0D/QQKrElTIacNHAkSnXJrBDW/iOENOeh4cciGVR8kUrE686aev
-         zUpwOiry3UNhqYKybRFWNEmX25VcCBx8pDxliVEVYR1shx7hjiKeY+5tbJ4OHNkpHsgf
-         7oFUzPFFFGylzocCAD9Jl+JEiMAZW9lqgAhaNmzXvnLwNiw+Tax4pUxVp+sbAVEfRnKE
-         iUK/EtZHqlU5YRhGdGkDxvKDjBIHh29y5bH1gyEZkk+sLbivFVbqxVZEyNHkm1QUJZkC
-         mbpg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr05KJXikW7DvuPiiLBloSJWhAMl37shB2R2jgElHOe0UlwP6/zs2ie5W1uDtDQAJPTSTP4PjE9iA==@kvack.org
-X-Gm-Message-State: AOJu0YwTJkrlLdWDqDzE70J3r8v42bUSKzYRsTRlnvLh776w//JVUiLN
-	vduARU9EQeGTXp1SoRmw6Fc8WAi7u/KViIguW8iYhbpz3uEKoBg9qm7EdywCHakLG+9CySU56Ea
-	AfVg4pK+PCI1KMg==
-X-Received: from pfqp3.prod.google.com ([2002:aa7:9e83:0:b0:847:9570:daf0])
+        bh=Mg8HPDVADkikyFkQazKzK0at34W1Wn3VUkaO82xr5dA=;
+        b=VBoRKEpwlCWL9jqPdDxvVINkTKM3aVXxWwrxOeppCmr3vvnJk7+Pe0MmFGknJ3+uzk
+         C+1JsHHtpdp8/J0+3Ln+iDLzN14bbd/kQPnOlW09C+nIU24En5yar9buT/cszoCuLS6j
+         2xSKbXlZa0iWdS4vtVtO2Tq+2tM6XF9Wr0rDJ9SiMjJV8tp8LKRyeeOt+pmspSp5cpQc
+         jkbErzJQagJbnzs7VbmNk162HozrLyI4GzVylNlug38N7OqSgWi8meInFCFMQUpLEPNP
+         XUm2PzlTl0woXQfjJ1lVjKV2ag7jRfF/jSyIfiTRqIOt7ImSCI5gWkcfX2dKt0sql8k7
+         xqTg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr4OITnd+gkRNHm6hHI9L9k9BMRRgqSX6DnOutKpE3yAxaWR1IrW0xEfFaga3vtuOMW7ccR9vS31A==@kvack.org
+X-Gm-Message-State: AOJu0YzedUsXaQKbO89olHnrZh6UobKrajaSqdjaxTt8QBAWoFNTSbK9
+	gmzQg8cMyGUxBzdZHzLnnqb2JGVMiAYBpXwgZidfgswubrlvRimuHrb0795FArq3rcueFzxqIV3
+	5bGjA0HTex0IHfg==
+X-Received: from pfoc15.prod.google.com ([2002:aa7:880f:0:b0:847:ada8:bf86])
  (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:8f0b:b0:842:708f:39be with SMTP id d2e1a72fcca58-84842fdf097mr4788740b3a.5.1783554540334;
- Wed, 08 Jul 2026 16:49:00 -0700 (PDT)
-Date: Wed,  8 Jul 2026 23:48:50 +0000
+ 2002:a05:6a00:1826:b0:842:706e:ad43 with SMTP id d2e1a72fcca58-8484324665bmr4017531b3a.33.1783554541070;
+ Wed, 08 Jul 2026 16:49:01 -0700 (PDT)
+Date: Wed,  8 Jul 2026 23:48:51 +0000
 In-Reply-To: <20260708234854.4044652-1-skhawaja@google.com>
 Mime-Version: 1.0
 References: <20260708234854.4044652-1-skhawaja@google.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260708234854.4044652-7-skhawaja@google.com>
-Subject: [RFC PATCH v2 06/10] dma-mapping: Add API to preserve/restore DMA allocation
+Message-ID: <20260708234854.4044652-8-skhawaja@google.com>
+Subject: [RFC PATCH v2 07/10] dma-mapping: Add support of preserving dmam allocations
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Marek Szyprowski <m.szyprowski@samsung.com>, Will Deacon <will@kernel.org>, 
 	Jason Gunthorpe <jgg@ziepe.ca>
@@ -99,14 +99,14 @@ Cc: Samiullah Khawaja <skhawaja@google.com>, Pasha Tatashin <pasha.tatashin@sole
 	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: xptsw5sm3amzmueoixgtxuz16gcecbc4
-X-Rspamd-Queue-Id: 8A0801C0003
+X-Stat-Signature: 4fhcc8q5mjnp1hm41scre87mgdn94866
+X-Rspamd-Queue-Id: 7A3C0C0007
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783554541-588025
-X-HE-Meta: U2FsdGVkX1/KT9pwMVxYAo8t3A8QsG/Gp0Fw/hQAJkaB21OTueozgUCLz99Ffi4QbVKCzCNfUrRxQBwomIy77Tlk+uwcyZHcirk1hW3u6iTc/3koImk8VOT2in1RPuPyqG+5Q0kHYvgMtDLQ9TQqEFiPfzEHa5ht4BCRMYQJWaD5gW6PK0HU4j1cS08Jca1uakGpNkjVkH+RB5sfQhdfi2t2bIYhonjen/wQo3rs2xchOXvX+EhOu3pcQ0SSLRw6dnQSrHwp6HBXcYgsMorBvq239Es0YMvg0xgXybWU2a1FYQp88gs2a8oJJDzL2dECn5HRZnWatUcB1v+Y/yl49xDfy6kcvoRKP1b+1sh0L9RcwFrpKIc4fa7ZD0gT1BJA40snzppxcHfACn1NUOrtz9Li43ZEGRyr9sEHsIxHo1314J5lnY7nlYCbcdJ56+pJgidAyza0aa3hEcFxeNY1vgeKxSNdkHKvGHehKjf//z+AMoafbU+uafqc/r8aj1juVjORzfSwi0fFLqcn0Jvxpj5cNMeBkKE26la1yUqFBlJaSaKps+ssms13yVJMS+rasg7StGcm5+KqabBGMJHiWr8M+oKcaJBbYndgFL36/4Kz3dYxK+6YEFRgU4GrfI1jqZc/ZsEa3omsz18d2e1YCUa6o4P7zqCzdl+BkFG/od+SXW2nMcbAAgU3ZuZ76yulFWX8XuI4LYslhSPS5NQWQJdaCu1acO21E+kV8kZdMkdOhbTBNlE2P4Kl++STDgOSmrwmxsCnlTKDaZtb386QkD7IdhqRy+5cpDz5qpbKX5O6XSFPjeJike8XEWjhI0SYgAOMRn7Z5OZkUxgKmf95lIyKFnT7qGbm7tH98/FWVtYMrWu5B+9zS1YI2zcSQ15d2gxGPqVP3GcVXnl3aYCvQDTPHCEn8svcibGSp9RefQT0aESNFrbUT9Za64jxwwDarJbmas2JXq1zYUUbAN0
- 6MwR1D0L
- cp28sKrYWNJhsszqSfNaHWq0g9qunWE7p1f62N5vvO2CAfom2haaNX2jn9U7xQcDce0Y5wzoveEfnORrYz2IPEwVQ7o1COMsSxakIki97WHmOXpAoGkDIAuUTuTebvP51vdxrKpMI2jU0eZlw5XmvDNLbvobT36uo2JTTA/t2MIBMYtRe8JF8TvRHGBWh+hoIAU5bXLbLEwkpIA9WS9YeTSURz2O+3Mjta/z1y2sfZDCYtwHbqYayujVHlebfbsRAM56dLo0ySDkf0cW0BuJoyB7HWLZTvWNIxyLApFM0D1Y0BXhEuY84afJT6GuoBk5N1+CGGpkLMCUvZGJQSex8J0ajYpbxFkS8OYAJoo79CIylxftqV5eZL7c+PyWDFWo/Ipz8sxgBX2gbcuaVYakkc0fOyvJYwgWdHu6sPmNoR7+X8k6pgpGA/FZOaNtdJkfNoh6VuN5aD/vlPR0EygqGmsDmvw324VjD81veCecfPErTXmqH+/9LUeFJ57wYN0nymbPahh2ReRzOxh4B0ugBrXWxIZ57VgUeo9ksZBptq43hj+4qD3TbWlqIiSvQS+OrQV2z7/iO4RWrxtm1oZfaqhaUHPvSP0XFu4OV
+X-HE-Tag: 1783554542-191573
+X-HE-Meta: U2FsdGVkX19t6x/JGGSi+MZ1tWeZlFztCgXRNyNzzss+7iHMnNQncZzg3PI/Ue1AgTMREZO6Xk5B9MVybX6jCLfxo/0omx+wrUW4NGyLTfaGpnEzNvMDYdDo5PGWdjZlqeSYoMtkO0RVEh5RhQNUxdDrSXBCOI/L3z0Y1QoAthzedQPTHA9KJ2vr4CgdkLR1cjqeospheMlqKujdzcDXbabdhKftLbU/hECFo7YGwN9jUvtVeh13bGlSIBZx3r6wciRpKmFCPBrUFzO4hed+FDUtjM+pgEfeTk613twuSTJKM8OalD0FrskHpix+reJHpS0ywVqpUTP+RStmi1ATe55Z6XqkYnAGfhuLXr3sBNxq4C1b768Wg43+8+YIZNxkwO+XY0Kq5gye++Qq+K5vJnQghDyMyuoB38UXXr0lWJmxLelNBOmjwgQ2GeHO5k8UO/IPAafl+P+8zVEUjhdynNZakj6NkNWDjf4TW4dctKx8q3VkzpdlL9OJ9cOVIffREFsv/nZbFxEvHWLmxyp/abMcF8DZolAdF3GGg8QbdUBynCNbrMIK3LJ9Gh40uCyij9q4DMb/+dnOQqLb9kRnY2VEKWjDfVh+Q60C9M/A3K+2cjLowu20bf5t6gYDs28YSTnPwW9bgUy2b/EwY21mT1zIBoPTMpsXunCwsfWp1aI0nUkZT9Qes6++hZ8xDbzjywui5HeSWY0oxhouZo3QVnUkej/dQouibha56ZP7VSK3WoCOFrgx+uRWL+pRX2HbfxL90VWgTAypErt/S8WxA9hX/LwZHQjxNeVTv/KiSuPN18b1KcrFEPn1SRO2523yuSvwFlEXvhnmaJXReWG4YMlMcD+x4cY9UQuJG0o+k4P2NhQmWh7piKCyw4sHsJPJiwLTpepbyjFfnfYmrhgMstsqXk5RywIUx92/A6vZfHtOdHjcSEEuglZ9v2WMCUr6zMwruNNc2rJ9Uv03lo7
+ db509N4U
+ WJsExxTuWrXEElKZSUH6IyRavkv9Rw/Hpv5LdcHV7/q5Vsj5Ssckk/HTg2kZFNJJqtd7JdLfEWngJCojn9JoxED7Cfs1y/JFYe6v/2oUCgH1tBDLi2nn4c+16T2LeS6stormUy7x9UZw4kdOyh+nVjhxoe4zEmllISySwPV2CculMqoBI2DRT7oDvLzKpfKWaC3vcC9366iBJWR9DiNZfOBltGzEDaU2R0U8C3gVbF4SfFhcB31YTkONe57IO/RemFE2X+lYWmdZuJWwtWmge0SyBFeBbcg0uqaF/m17KCmwkrZv7sWOb6YpZ9KnLvuenCteQPN+Q5KcjE9giEbhAIx1Ks7D6nIjwpmjGoG8DxANlJgKg1L49CdhYEFmzLtYtzrmcxT1xIVT+bJBCbRgt7BHLZPkM443sn0eZ4S0NIM72cu60eX/rDLfkIzxTOAQHyfu/Ba6hdg8DuK6xyrpbXSPHxVBQp07V8JOxx4jjpR7Ei5+E8ViNWcoGm0cylcuXJ7Rv6ekUTw3dGNEqzByOgMuC6KkjgbUjQbAoYem7WTr+EAUPQNBJNCD+t7V/L93zJYTO25hpusDuriRm/z9mUIbYxBmKzmenI2tS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,157 +114,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add new DMA APIs that allow preserving/restoring DMA allocations across
-live update.
+Device drivers use dmam_* allocation APIs for managed lifecycle of DMA
+allocations. Add support of preserving managed DMA allocations so these
+can be preserved and on restore these are managed again.
 
 Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 ---
- include/linux/dma-mapping.h | 50 +++++++++++++++++++++++++++++++++++++
- kernel/dma/mapping.c        | 49 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 99 insertions(+)
+ include/linux/dma-mapping.h | 50 ++++++++++++++++++++++
+ kernel/dma/mapping.c        | 83 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 133 insertions(+)
 
 diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index db8ab24a54f4..3756fc15467b 100644
+index 3756fc15467b..4c0c428b6b1c 100644
 --- a/include/linux/dma-mapping.h
 +++ b/include/linux/dma-mapping.h
-@@ -210,6 +210,15 @@ void *dma_vmap_noncontiguous(struct device *dev, size_t size,
- void dma_vunmap_noncontiguous(struct device *dev, void *vaddr);
- int dma_mmap_noncontiguous(struct device *dev, struct vm_area_struct *vma,
- 		size_t size, struct sg_table *sgt);
-+#ifdef CONFIG_DMA_LIVEUPDATE
-+int dma_preserve_allocation_attrs(struct device *dev, void *cpu_addr,
-+				  size_t size, dma_addr_t dma_handle,
-+				  unsigned long attrs, u64 *state);
-+void dma_unpreserve_allocation(struct device *dev, u64 state);
-+void *dma_restore_allocation_attrs(struct device *dev, size_t size,
-+				   dma_addr_t *dma_handle, gfp_t gfp,
-+				   unsigned long attrs, u64 state);
-+#endif
+@@ -218,6 +218,14 @@ void dma_unpreserve_allocation(struct device *dev, u64 state);
+ void *dma_restore_allocation_attrs(struct device *dev, size_t size,
+ 				   dma_addr_t *dma_handle, gfp_t gfp,
+ 				   unsigned long attrs, u64 state);
++int dmam_preserve_allocation_attrs(struct device *dev, void *cpu_addr,
++				   size_t size, dma_addr_t dma_handle,
++				   unsigned long attrs, u64 *state);
++void dmam_unpreserve_allocation(struct device *dev, void *cpu_addr,
++				size_t size, dma_addr_t dma_handle, u64 state);
++void *dmam_restore_allocation_attrs(struct device *dev, size_t size,
++				    dma_addr_t *dma_handle, gfp_t gfp,
++				    unsigned long attrs, u64 state);
+ #endif
  #else /* CONFIG_HAS_DMA */
  static inline dma_addr_t dma_map_page_attrs(struct device *dev,
- 		struct page *page, size_t offset, size_t size,
-@@ -496,6 +505,26 @@ static inline bool dma_need_unmap(struct device *dev)
+@@ -523,6 +531,25 @@ static inline void *dma_restore_allocation_attrs(struct device *dev, size_t size
+ {
+ 	return NULL;
  }
- #endif /* !CONFIG_HAS_DMA || !CONFIG_DMA_NEED_SYNC */
- 
-+#if !defined(CONFIG_DMA_LIVEUPDATE) || !defined(CONFIG_HAS_DMA)
-+static inline int dma_preserve_allocation_attrs(struct device *dev, void *cpu_addr,
-+						size_t size, dma_addr_t dma_handle,
-+						unsigned long attrs, u64 *state)
++
++static inline int dmam_preserve_allocation_attrs(struct device *dev, void *cpu_addr,
++						 size_t size, dma_addr_t dma_handle,
++						 unsigned long attrs, u64 *state)
 +{
 +	return -EOPNOTSUPP;
 +}
 +
-+static inline void dma_unpreserve_allocation(struct device *dev, u64 state)
++static inline void dmam_unpreserve_allocation(struct device *dev, void *cpu_addr,
++					      size_t size, dma_addr_t dma_handle, u64 state)
 +{
 +}
 +
-+static inline void *dma_restore_allocation_attrs(struct device *dev, size_t size,
-+						 dma_addr_t *dma_handle, gfp_t gfp,
-+						 unsigned long attrs, u64 state)
++static inline void *dmam_restore_allocation_attrs(struct device *dev, size_t size,
++						  dma_addr_t *dma_handle, gfp_t gfp,
++						  unsigned long attrs, u64 state)
 +{
 +	return NULL;
 +}
-+#endif
-+
+ #endif
+ 
  struct page *dma_alloc_pages(struct device *dev, size_t size,
- 		dma_addr_t *dma_handle, enum dma_data_direction dir, gfp_t gfp);
- void dma_free_pages(struct device *dev, size_t size, struct page *page,
-@@ -618,6 +647,27 @@ static inline void *dma_alloc_coherent(struct device *dev, size_t size,
+@@ -797,6 +824,29 @@ static inline void *dmam_alloc_coherent(struct device *dev, size_t size,
  			(gfp & __GFP_NOWARN) ? DMA_ATTR_NO_WARN : 0);
  }
  
-+static inline int dma_preserve_coherent_allocation(struct device *dev, void *cpu_addr,
-+						   size_t size, dma_addr_t dma_handle, u64 *state)
++static inline int dmam_preserve_coherent_allocation(struct device *dev, void *cpu_addr,
++						    size_t size, dma_addr_t dma_handle, u64 *state)
 +{
-+	return dma_preserve_allocation_attrs(dev, cpu_addr, size,
-+					     dma_handle, 0, state);
++	return dmam_preserve_allocation_attrs(dev, cpu_addr, size,
++					      dma_handle, 0, state);
 +}
 +
-+static inline void dma_unpreserve_coherent_allocation(struct device *dev, u64 state)
++static inline void dmam_unpreserve_coherent_allocation(struct device *dev, void *cpu_addr,
++						       size_t size, dma_addr_t dma_handle,
++						       u64 state)
 +{
-+	dma_unpreserve_allocation(dev, state);
++	dmam_unpreserve_allocation(dev, cpu_addr, size, dma_handle, state);
 +}
 +
-+static inline void *dma_restore_coherent_allocation(struct device *dev, size_t size,
-+						    dma_addr_t *dma_handle,
-+						    gfp_t gfp, u64 state)
++static inline void *dmam_restore_coherent_allocation(struct device *dev, size_t size,
++						     dma_addr_t *dma_handle,
++						     gfp_t gfp, u64 state)
 +{
-+	return dma_restore_allocation_attrs(dev, size, dma_handle, gfp,
-+					    (gfp & __GFP_NOWARN) ? DMA_ATTR_NO_WARN : 0,
-+					    state);
++	return dmam_restore_allocation_attrs(dev, size, dma_handle, gfp,
++					     (gfp & __GFP_NOWARN) ? DMA_ATTR_NO_WARN : 0,
++					     state);
 +}
 +
- static inline void dma_free_coherent(struct device *dev, size_t size,
- 		void *cpu_addr, dma_addr_t dma_handle)
+ static inline void *dma_alloc_wc(struct device *dev, size_t size,
+ 				 dma_addr_t *dma_addr, gfp_t gfp)
  {
 diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 23ed8eb9233e..3b07bf30722c 100644
+index 3b07bf30722c..aec1222ab5ae 100644
 --- a/kernel/dma/mapping.c
 +++ b/kernel/dma/mapping.c
-@@ -12,6 +12,8 @@
- #include <linux/gfp.h>
- #include <linux/iommu-dma.h>
- #include <linux/kmsan.h>
-+#include <linux/kexec_handover.h>
-+#include <linux/kho/abi/dma_alloc.h>
- #include <linux/of_device.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-@@ -628,6 +630,53 @@ u64 dma_get_required_mask(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(dma_get_required_mask);
+@@ -37,12 +37,25 @@ struct dma_devres {
+ 	void		*vaddr;
+ 	dma_addr_t	dma_handle;
+ 	unsigned long	attrs;
++#ifdef CONFIG_DMA_LIVEUPDATE
++	bool is_preserved;
++#endif
+ };
+ 
+ static void dmam_release(struct device *dev, void *res)
+ {
+ 	struct dma_devres *this = res;
  
 +#ifdef CONFIG_DMA_LIVEUPDATE
-+int dma_preserve_allocation_attrs(struct device *dev, void *cpu_addr,
-+				  size_t size, dma_addr_t dma_handle,
-+				  unsigned long attrs, u64 *state)
-+{
-+	const struct dma_map_ops *ops = get_dma_ops(dev);
-+
-+	if (dma_is_from_dev_coherent(dev, cpu_addr))
-+		return -EOPNOTSUPP;
-+
-+	if (dma_alloc_direct(dev, ops))
-+		return dma_direct_preserve_allocation(dev, cpu_addr, size,
-+						      dma_handle, attrs,
-+						      state);
-+
-+	return -EOPNOTSUPP;
-+}
-+EXPORT_SYMBOL(dma_preserve_allocation_attrs);
-+
-+void dma_unpreserve_allocation(struct device *dev, u64 state)
-+{
-+	const struct dma_map_ops *ops = get_dma_ops(dev);
-+
-+	if (dma_alloc_direct(dev, ops))
-+		dma_direct_unpreserve_allocation(dev, state);
-+}
-+EXPORT_SYMBOL(dma_unpreserve_allocation);
-+
-+void *dma_restore_allocation_attrs(struct device *dev, size_t size,
-+				   dma_addr_t *dma_handle, gfp_t gfp,
-+				   unsigned long attrs, u64 state)
-+{
-+	const struct dma_map_ops *ops = get_dma_ops(dev);
-+	void *cpu_addr = NULL;
-+
-+	WARN_ON_ONCE(!dev->coherent_dma_mask);
-+
-+	if (dma_alloc_direct(dev, ops))
-+		cpu_addr = dma_direct_restore_allocation(dev, size, dma_handle,
-+							 gfp, attrs, state);
-+
-+	debug_dma_alloc_coherent(dev, size, *dma_handle, cpu_addr, attrs);
-+	return cpu_addr;
-+}
-+EXPORT_SYMBOL(dma_restore_allocation_attrs);
++	/*
++	 * Freeing the preserved memory is dangerous as it can cause UAF in the
++	 * current or next kernel if the memory is still being used by the
++	 * device.
++	 */
++	if (WARN_ON(this->is_preserved))
++		return;
 +#endif
 +
+ 	dma_free_attrs(dev, this->size, this->vaddr, this->dma_handle,
+ 			this->attrs);
+ }
+@@ -675,6 +688,76 @@ void *dma_restore_allocation_attrs(struct device *dev, size_t size,
+ 	return cpu_addr;
+ }
+ EXPORT_SYMBOL(dma_restore_allocation_attrs);
++
++int dmam_preserve_allocation_attrs(struct device *dev, void *cpu_addr,
++				   size_t size, dma_addr_t dma_handle,
++				   unsigned long attrs, u64 *state)
++{
++	struct dma_devres match_data = { size, cpu_addr, dma_handle };
++	struct dma_devres *dr;
++	int ret;
++
++	dr = devres_find(dev, dmam_release, dmam_match, &match_data);
++	if (!dr)
++		return -EINVAL;
++
++	if (dr->is_preserved)
++		return -EINVAL;
++
++	ret = dma_preserve_allocation_attrs(dev, cpu_addr, size, dma_handle, attrs, state);
++	if (ret)
++		return ret;
++
++	dr->is_preserved = true;
++	return 0;
++}
++EXPORT_SYMBOL(dmam_preserve_allocation_attrs);
++
++void dmam_unpreserve_allocation(struct device *dev, void *cpu_addr,
++				size_t size, dma_addr_t dma_handle, u64 state)
++{
++	struct dma_devres match_data = { size, cpu_addr, dma_handle };
++	struct dma_devres *dr;
++
++	dr = devres_find(dev, dmam_release, dmam_match, &match_data);
++	if (!dr)
++		return;
++
++	if (!dr->is_preserved)
++		return;
++
++	dma_unpreserve_allocation(dev, state);
++	dr->is_preserved = false;
++}
++EXPORT_SYMBOL(dmam_unpreserve_allocation);
++
++void *dmam_restore_allocation_attrs(struct device *dev, size_t size,
++				    dma_addr_t *dma_handle, gfp_t gfp,
++				    unsigned long attrs, u64 state)
++{
++	struct dma_devres *dr;
++	void *vaddr;
++
++	dr = devres_alloc(dmam_release, sizeof(*dr), gfp);
++	if (!dr)
++		return NULL;
++
++	vaddr = dma_restore_allocation_attrs(dev, size, dma_handle, gfp, attrs, state);
++	if (!vaddr) {
++		devres_free(dr);
++		return NULL;
++	}
++
++	dr->vaddr = vaddr;
++	dr->dma_handle = *dma_handle;
++	dr->size = size;
++	dr->attrs = attrs;
++
++	devres_add(dev, dr);
++
++	return vaddr;
++}
++EXPORT_SYMBOL(dmam_restore_allocation_attrs);
+ #endif
+ 
  void *dma_alloc_attrs(struct device *dev, size_t size, dma_addr_t *dma_handle,
- 		gfp_t flag, unsigned long attrs)
- {
 -- 
 2.55.0.795.g602f6c329a-goog
 
