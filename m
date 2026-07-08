@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8825C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:33:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 838F7C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:33:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA8316B0095; Wed,  8 Jul 2026 03:33:25 -0400 (EDT)
+	id 8669D6B0096; Wed,  8 Jul 2026 03:33:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7EC46B0096; Wed,  8 Jul 2026 03:33:25 -0400 (EDT)
+	id 817D96B0098; Wed,  8 Jul 2026 03:33:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D6F8D6B0098; Wed,  8 Jul 2026 03:33:25 -0400 (EDT)
+	id 6DFFC6B0099; Wed,  8 Jul 2026 03:33:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B1EEC6B0095
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:33:25 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 432F4A0645
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:33:25 +0000 (UTC)
-X-FDA: 84964793970.26.BA28F96
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6B01E1C0003
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:33:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n37SAsGq;
-	spf=pass (imf20.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783496003;
-	b=uLcRQmtxfluWqiSLOi6+pAKQTkes6T7i0UBzfJx8Brlvx7NODteYklYK0u+nhGCZrOQ0Xx
-	hqdc6/mI0NBvaPK7wps1CTYGbqpdDxUwxnOj/mWTj5OCNabsPBIOnx2LmrEg09NORAw3Zx
-	/8PQthLy7aW6Hvk5SGeT5kcNA7xg1fs=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=n37SAsGq;
-	spf=pass (imf20.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BA356B0096
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:33:35 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CAD6BC4062
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:33:34 +0000 (UTC)
+X-FDA: 84964794348.30.A18655B
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E8060180010
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:33:32 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qIqyU8KS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783496003;
+	s=arc-20220608; t=1783496012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=prmr/Jndi+BNbM07sqH6cB8cxDm8c7W6tjC6zXyacuQ=;
-	b=P23BIIJeyy3I53WMA3xhhob2ZMy8GIrcBK+ILingBCVHcMSqAUghrazLVR3FkYnL0okH0n
-	doboHz08yn/FPZa+KlS0fOD2yBo1p9DwrBYD5bxi176yNWpjEAqeiv+Uk5bSS7WLTgA32R
-	S8hF60N47CofByDnb+UXVpBNOQ55lKU=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-490d6730461so348695e9.3
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 00:33:23 -0700 (PDT)
+	bh=jCozUlpgp0dXtm0FXnemR31LLTWCBlc2ogyMjG7W414=;
+	b=thXGFF0tew257POsbUBQeTxDSNTlnQQz2j55iqImh4Xx4ZamAoLViJZQqAj2WVwGMQZbSJ
+	UicLVXvc6c2XsTA3gSEO0GFE2PlGufWQW8+q1yuJkC9SyV043p7eA3HZKhz97oAG0iMNlA
+	rzurt6UzVvC1iflNHHmZiXDNntuu3DA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qIqyU8KS;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783496012;
+	b=d/VrCvKSSgC/asRCB4rki3qTop9JM8d9cg3yXbZe1DV3vIoBZtwWAmjIQA4M2YSTmGCDeb
+	CNSn0MXYPFoyPCOdoqFdzmJ4Sx63px+KRoX1m/vXxHOy+HOpASuEwM2aFCONiK71jdvXSN
+	S6V2JvdeJNdLA/VX6EgTYpCrQmnfQa4=
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493c1efb503so628255e9.2
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 00:33:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783496002; x=1784100802; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1783496012; x=1784100812; darn=kvack.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=prmr/Jndi+BNbM07sqH6cB8cxDm8c7W6tjC6zXyacuQ=;
-        b=n37SAsGq7JrVB+fH2ft04kq3YzCXNnx5gmAwgAosScDksWZuzepvLmRvxO/peZLcvO
-         0b9p++jVunxY1YyuNZxfEcxmJNJ+XgfU4l+0MO0H2/O9BDDKA8brAjvGAiycdxq/dmR7
-         bHLjPqHAqZgXp3/0gT88w/FMSNirxmug2JVZBFf+ayehmyG9oPlwHAhs4N7mHSO4ZCYN
-         bexbCKyyoTYlvqPctVo0M4N/xBX6mG9JxZ0de1ThpaHMpacaOaYiPorkmob84EJsDDqg
-         DMshzr2vA/abJ9scmxRlXqPhymr0ctecIyK4VeYHlEgder8CPuf/xmgAfshkcInMX2tl
-         3mEA==
+        bh=jCozUlpgp0dXtm0FXnemR31LLTWCBlc2ogyMjG7W414=;
+        b=qIqyU8KSoUQP/fRkubkVGIZbQecHsu2SylZYAfilsygESSNaabMUsYQhhiLkOOrPw6
+         PzmWSU3IEIaejzNmEuOyh8EIvZLRi8GfmJPKrcAcLEr7o3pX76l+1sjRFg4XZD0g1eHR
+         LUg0/Z1oz7g3K6PERfUJq7j4+o3jg4RYlGYflQmmqW5Gih7SI7nNqCyIYBT6HfEPkEU/
+         xsdjeB9ut1YfwYs7KSrp4zznibDmwCY42I8jcGR9qCVdqey/iUTFbG4NlgpH2DfHwP7n
+         wlkAmmCtX85F50FEUjddOGUtkxUF+YpVQLE1oWweKXvBsHFhk6eenCc1LnRYoLJmwF0V
+         FlEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783496002; x=1784100802;
+        d=1e100.net; s=20251104; t=1783496012; x=1784100812;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=prmr/Jndi+BNbM07sqH6cB8cxDm8c7W6tjC6zXyacuQ=;
-        b=O7oDCTjYzNWIGobNO73Buqkdcce9jCGHFjbRDTMN2UpJBz3Db7OXQpTywScyhikKW4
-         0dYlJlKpowYn8vLYI+I5fazGmI/bhf51ROnzw4471VV/seMu92Jr/C/ayhpqZPSZk11Y
-         yKD4r/hG5Bnr2uo30BTgTRyuJaoDj/gIpNE5diwTMhR+kUCnZWlP2zul/C+a6Ojo6Pae
-         Xb6MNUm3tkioT4lxhEURSZHok1Pip5kGdyWMUyW+SqlpbSY1hZEJFBGeBkqbzjvoGEEr
-         o2nmIuQqDx4m/Gu9mnXXCF9z644dujgpJLYFGX/hSECxtjw9excrHr5UTt6ck7Z5ZJn3
-         KuPQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoYQPZN2MtADrA43vUj/JohqFiqiuVxIdBqpC6+NJGe5WUvdpQgEPhmF9kKJOWLXOfZD0Yy1TS35g==@kvack.org
-X-Gm-Message-State: AOJu0Yz4IcPGaa1IQzReGMUT7hAVLdFoypM59ahizciFBoOYzPdVWfUf
-	XTBYTyXEIhHcQa9A5Zyl5iqYUG0Ua2Y9IqJOJmizeT5iPuGpgrGD8rSf
-X-Gm-Gg: AfdE7cmXDNM99s2IFPzK02bmOu3G9laite6PKPm8FEj5nxc+DyvZcH++6XV4Dgt97Up
-	taPWyzKNZnB1tS8rsNZSG9TeaMOCDAzvqmdtiUEoE0BVWwJt4uXN2MbssRYCzQ4KZRZRYOuUBTT
-	ZAyE0lapbW2+voyX50ZOJs5KaiNt6E3Bw65WswW9siyzjI8nWZxBT1VCzD9MNvH3DEr7DyvpGFq
-	ktO9CYAZJtOBEZIX1lhP+4Hn7Nf3W0IZOdZDvuh2CZkZvEWosjwNWZF2lrhlbHSLgWUR10g8Q0v
-	V5Kyi9NOb57PiZXLXy5pYaYR4I2NZCbKmYv1G/RZ92fElFp83+eWibK/3SPSerBp5pmc/hCHBkr
-	ZMM4Eikhr0u5EfMhq3XpLV4OG2tOTz3/OUtnlacCvxF9rO4Pi9xfjte14nk3ttWdWJJ4diINnNv
-	stYZJS3sSC6WZ86p7r/3yyQvOvhrbRFOjW8cPnIWFmX0G/wbxOtQqsTTG83UABlPCrnBssSUJ5J
-	uS5E4am35G8tQP5
-X-Received: by 2002:a05:600c:828c:b0:490:b227:da9b with SMTP id 5b1f17b1804b1-493e6820934mr7102715e9.1.1783496002095;
-        Wed, 08 Jul 2026 00:33:22 -0700 (PDT)
+        bh=jCozUlpgp0dXtm0FXnemR31LLTWCBlc2ogyMjG7W414=;
+        b=nkd413p3JFgb7MjJPaS1RQGkyE+Bxtx19w5VOxe9K9BGwptUlYC2W76FOzmVjcrVkI
+         SI+jzLLCMIKlw9Dq/OY5SYYLNBQZ07DwiCneOMXLUK6s5ra9WFzOCWfktvFWQd4eaf91
+         1WfogUsGev0XN1XmOiJjr0sLtTivetmhSr0/iZXnXe/yiuajihcoZtWMkYt+lnZuSN9X
+         du/FnGhlahgsGaBlyVN65gLBthd4bEfXZViDisD1DsBFjolpr1VHJsqdCEY0+DW0pkn2
+         VR5xWTVi+oG7LgVP3gqzqvsfyuM//ITYRMQq68Bg/Kl2MDl9OP9nJKuOiHpC6E7wdUBE
+         LRZg==
+X-Forwarded-Encrypted: i=1; AHgh+RpA+FG1TF+5dmi7vgHZu0g5d6wlida6Ei3QnsxXJLa91Y3AEZ2VFPMFTiqaD2MRSz+Ac2uM0ALixw==@kvack.org
+X-Gm-Message-State: AOJu0Yz4b2fyvpB9FjnmtiUsr9GcfflNZ+uDHcDFg9hn0sGBqO7WT1y6
+	/c7Rh2UTb1E21frvv9bP+oNNLCogXQ7ni/xfd7RpzeSY5FyuN5fLbGgAIDQpXDus
+X-Gm-Gg: AfdE7clYH9oND2RibRnnwHo8YAZftkAYcj2TgJBmPCB2Z7Xdp2DDml690g71yIa4Eo/
+	5l4GK3dEzIdlKts4P6DAvLcVCaUv6z7lTYTdivoXAjFM5Or/opfafrm5UqdBxHGjZYONkaA4/xj
+	tTmeSeGRlxmWAbwmlkn+5AEa0No0eGeorslvwkTglFid3GbxofJie+a3Kz8DyEEAcV5kUZyDouD
+	QYFg3DB5eUiLsYsJO2Z2jm3NSP+GS59fLnC4CjiN2ItBuMZuKLvpxuw3HRS5AR2ofQQtgN8VuU9
+	nfKZ/t/9OjaaQyUFZUZpmtYFeQNNx3YwsNOPExFJ7SSrZa30YcD2aBNgU1mSt8RUbyPkHmhZxN5
+	9GXXiYaKtFF0idAqcBQda1l23TDBaR795MP+ALDrQeNfRgzLYrBkIT5a2wwnEPD7+KhG5ZuLuTd
+	Ngf9xlYMpsL0qhMwcn8Tl1Ns9deqB5JNN6m8eIQ9pX8iLvKd9ISdNpVJTXTjkVslMoE+cgJHzcn
+	4h/F1+a45cEMtO6
+X-Received: by 2002:a05:600c:3b28:b0:492:4a7a:e415 with SMTP id 5b1f17b1804b1-493e7e88d26mr1166605e9.2.1783496011537;
+        Wed, 08 Jul 2026 00:33:31 -0700 (PDT)
 Received: from doehyun-dev.pradel.rg.cispa.de (x06.xlate.fw.cispa.de. [195.37.157.6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e610532fsm32876355e9.0.2026.07.08.00.33.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e610532fsm32876355e9.0.2026.07.08.00.33.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 00:33:21 -0700 (PDT)
+        Wed, 08 Jul 2026 00:33:30 -0700 (PDT)
 From: Doehyun Baek <doehyunbaek@gmail.com>
 To: Alex Shi <alexs@kernel.org>,
 	Yanteng Si <si.yanteng@linux.dev>
@@ -105,23 +105,23 @@ Cc: Dongliang Mu <dzm91@hust.edu.cn>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Doehyun Baek <doehyunbaek@gmail.com>
-Subject: [PATCH v6 3/7] docs/zh_CN: update DAMON index translation
-Date: Wed,  8 Jul 2026 07:32:42 +0000
-Message-ID: <20260708073246.1652828-4-doehyunbaek@gmail.com>
+Subject: [PATCH v6 4/7] docs/zh_CN: update DAMON start translation
+Date: Wed,  8 Jul 2026 07:32:43 +0000
+Message-ID: <20260708073246.1652828-5-doehyunbaek@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260708073246.1652828-1-doehyunbaek@gmail.com>
 References: <20260708073246.1652828-1-doehyunbaek@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E8060180010
+X-Stat-Signature: 8gyg5foxq9mm5xw9x3uezcjypt18rtdj
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6B01E1C0003
-X-Stat-Signature: 3mjgxbr5h43shd8s4n7r975k51gedmyc
-X-HE-Tag: 1783496003-533372
-X-HE-Meta: U2FsdGVkX1/yzzDnRQ7QQt3WLxrb8WlDCzI4i6IJAh34GnKivvTtmbL19RK6MZN6EAM5Z77XnN6MvtVMaI7lD3fjdH9ehr84MGkuyLrIw/xz3vMBf28SRRge3Xzau0EpLJnmudQJIqSNdJ+9cAGLWZN91ABK3Y4hxVzutCKBMgLZ/eVfCgmKN0iGLDTHaFZcabRK0WVeMju1Aapp28XbutlySAzdutvIkZZvjme8DHELVZSjmaF/KXE6gctQFlw85RKtZ1kTnFokHDvsePdjMyxnAA4OjalxpsBum1kcAA4v3g3gHzQHKkcrtmUJ6Rg6uuUtLqcBeMCYnlMe1c/Ajx2JCLErMf6wzxd4g2JlktcR7v2BdpxI33/fVmKbDqSlS1zAFDNeUAAU2eDKZrWyey34sNy6EuvdfrHraj3hRa1Jj4fDF8rSn7Nt1bQn6ija7gotf2DGY+0m2GeTaouTFx1L+qc4h+s1kAqRBqUo3EtayG79r8WCVtlMayeem1HBL3eCRqvTwyaPUDjUz79MHNuSF8FQsiA6AdLxbMpd3ZtZi6wpyNh+GaB9F0FxKEaOFIchxwSn1ntXMmZphkj+d4LGpsTMVoywIK8aRBGqtqL2FdurXKM+CG8/2GatH/YB1YkNP7CZ/O/7lf9rUj8d1V1JBHh3JrPg+reBtSjn4CO9E6/+IdsEF5vofSKQzBj+IkN8BxCaQJ+ST+iE23UABUZKK2tsvoS9elN5cUEjgcK+fqLqry2A3gR9Tt53GVY72noXmThthw24B4E5LbXyvfop/MNmuXwipKhIhRnHsqlGXJpb5fKE4gvks9rhK2N8Ergmboqp69h4oaohR5uBTilr39Ql0V74rjOMM/sx5xXaHQbAFTqU3OUwJBcuVZzII4qtFJ7NejYEkd9177IW6BysiU5j4u89u+dqNiJXur2hgPr2xc8iOMwqyHz6WcB77xhRvzw8w4dxQfB1mUY
- ITIMXk3b
- zNA7UNj/vg6NQOmYJfo5GuQ0VbdVrX/j/r/hA0h22z1iZzSkSwvgtzX495o+jQc7Q6y3PHyvfnFZK+13ZEepdn/FWL0m5LMX4fxAfMF5u/M788tSLexufQ6WTqhM3YsoJHc061+aBphR7kuLgFaI5J+GVQx0EVcKylHiGPhPK4ToqTTeZOZemWj+xWVV6FAjfQcZxRf29Riyz+U9s1qDQhc6SEKZYduyDv26Iy1ZBD4VjSuOV6+wPmxGsGesYA7taOouBTnGuhygLQ9pXubHeZQDdfg0Byt/2SOxERH2BoUr1qxgC0EEIJPaq70DsGvVq2bfbUez4ZWYOlE4As+HL4R6o5UmFxt0+y3JvDxjO6piD5vmrHW0purWR0P2qryYSW3LGA6N/Z4qcdZMTEFIe/3eocc6IWws7LOw1uFNKL5XyHBehotVsvOMH/72LpVFWabzDf3PmKXgUGkRZStadIJVaaVNC9CIj8BoyEkrVW0xH7ESSDo0LqjRTCw==
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783496012-951249
+X-HE-Meta: U2FsdGVkX1/NftubtX1WLQ2slIZ4vMLkglkoTnuuz09oBrG0op3oY+YEvfUiPL5yoowMTswxxsOTJ2YY1lC4/rv8ukt5s92txnl6oghhYCehY8YPuaFCsO9e8f2uR4xOUMAuXhZG6RFkz9IBQpj5eRwfT1yoJRURVJIId0QwE6UsKinu0VDerSg+KmCJalzrukpKNZyesRsbE+a5nfReNzunPymjSPpXfa+gjBqQew1r3Z3F4DP1vetj8AA3ULKkSPFt8Ng6XSd+sPVdW/Fy7MBpy058bcm/c4mTUieniGnDLH1BImPr+ZR/2KoCvp4vg7L+Ao+8SDzQFPbf68r/V1qFwIJ5AB2fsUqIRuhh26uAs9r3fzWrX1kHgu1WXN4vhXKhKAd3ntnUnl1PQfxzGDBs39QzYui9VzN9EJ7yacexryBEzMCsJY5d/cPYunqYcx8L2pAlmXILx7zX21lksyHUHPH4g1ga/r7WeqvZkKFgUztIHMQSA8P3wFMZSSIKVcYi6BDL+Ijypl4GyzsQRgvCNPpUzM+2pE0ePh5lKCy/Cvt24/70cVN7WgbxNoN0+243Z0rZtsvtXxJW4E/N8uz4G9omT3y07XRz0TyDGPDJTDZhkkcfO1MeRut4yT7QkH563jWa8RSwqQgJqFuPJTEU0k2rskcUmSugC0pOhZksXyj1B/N8C1HPo3P6g4u41JM8IwCKHi+HZQaU49inL3dYFSWsSc5ivc9HMCyWa31Hi9givtLpfI05e4rCFy3DmDtCfM0uVC1zWquZqg3w0gZhAKMRywPcNq8zkNy3LqeI18/3Rol5okDc/fZDA1rVCWcABNWGJ7PJaPs7UokaeWy34WWl/j8RpgstJhMZVSQX1R8Xx7Z1wCVfltAyfESzAUjtY+DeJ+3RlxiQ7LR4AbSvcVUpjE27EPR1l7R3gfe7vn5Vt2vQkgRDDYYhmgiqpZjodvSBWtM2MKxvKan
+ yMRjcqsg
+ mTwOGTWNk3brZAQJ8YHnePiS6LWk33bcY7/Eq9LZMsdo3ahUY9gnCnLimt9/j9mViE15gaDCsV6g4TN76NKDsOWgmISJVHjd4ahk+JnedlBAWYRR30bnh7sEMA30d72VUBjrggt6PLZvvoItTadRMa6zSwv7tfey2LcIM/56RHZS56UDWlGsJ94dcr2hDfMsaxVGSoLgIR0sCX8J8+MMrHoChfI5PqZUgEMDGrcoPZSs54aFehlgQEazh1R74p+bBECZc8JjFcD6KyX72kKhYMj7FTcaZ2zs5+VAALVQBDRB9qbCk/rTfX8ecozfarmO4rPrkZQnwJpE/EWwX5QhKKh6Q/3pryrim7OPHmAZ/qILwCZTLgIevnvR6lNMUNgwbk7zxHknOQWufhKDhoFmPFu7lduI8+2Z4VqmIYPVK1GNVNl1o10SBqWN1jFLAinXgMRxO+kOow5zN07/B0F99Fx2bVO5Ss3/aRz1T/OITjJTGCdscG86CSujcxsiTbl137YK8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,47 +129,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the Chinese translation of .../admin-guide/mm/damon/index.rst.
+Update the Chinese translation of .../admin-guide/mm/damon/start.rst.
 
 Update the translation through commit c9380cdd949d
 ("Docs/{admin-guide,mm}/damon: fix DAMON documentation details").
 
 Signed-off-by: Doehyun Baek <doehyunbaek@gmail.com>
 ---
- .../zh_CN/admin-guide/mm/damon/index.rst          | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ .../zh_CN/admin-guide/mm/damon/start.rst      | 63 ++++++++++++++++---
+ 1 file changed, 54 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/translations/zh_CN/admin-guide/mm/damon/index.rst b/Documentation/translations/zh_CN/admin-guide/mm/damon/index.rst
-index 6f8676a50b38..77bbfa7c25dc 100644
---- a/Documentation/translations/zh_CN/admin-guide/mm/damon/index.rst
-+++ b/Documentation/translations/zh_CN/admin-guide/mm/damon/index.rst
-@@ -9,12 +9,12 @@
+diff --git a/Documentation/translations/zh_CN/admin-guide/mm/damon/start.rst b/Documentation/translations/zh_CN/admin-guide/mm/damon/start.rst
+index cff7b6f98c59..1a7f3382dd15 100644
+--- a/Documentation/translations/zh_CN/admin-guide/mm/damon/start.rst
++++ b/Documentation/translations/zh_CN/admin-guide/mm/damon/start.rst
+@@ -35,18 +35,63 @@ https://github.com/damonitor/damo找到。下面的例子假设DAMO在你的$PAT
+ 这并不是强制性的。
  
- :校译:
+ 因为DAMO使用了DAMON的sysfs接口（详情请参考:doc:`usage`），你应该确保
+-:doc:`sysfs </filesystems/sysfs>` 被挂载。
++``sysfs`` 被挂载。
++
++
++拍摄数据访问模式快照
++====================
++
++下面的命令展示程序在执行时刻的内存访问模式。::
++
++    $ git clone https://github.com/sjp38/masim; cd masim; make
++    $ sudo damo start "./masim ./configs/stairs.cfg --quiet"
++    $ sudo damo report access
++    heatmap: 641111111000000000000000000000000000000000000000000000[...]33333333333333335557984444[...]7
++    # min/max temperatures: -1,840,000,000, 370,010,000, column size: 3.925 MiB
++    0   addr 86.182 TiB   size 8.000 KiB   access 0 %   age 14.900 s
++    1   addr 86.182 TiB   size 8.000 KiB   access 60 %  age 0 ns
++    2   addr 86.182 TiB   size 3.422 MiB   access 0 %   age 4.100 s
++    3   addr 86.182 TiB   size 2.004 MiB   access 95 %  age 2.200 s
++    4   addr 86.182 TiB   size 29.688 MiB  access 0 %   age 14.100 s
++    5   addr 86.182 TiB   size 29.516 MiB  access 0 %   age 16.700 s
++    6   addr 86.182 TiB   size 29.633 MiB  access 0 %   age 17.900 s
++    7   addr 86.182 TiB   size 117.652 MiB access 0 %   age 18.400 s
++    8   addr 126.990 TiB  size 62.332 MiB  access 0 %   age 9.500 s
++    9   addr 126.990 TiB  size 13.980 MiB  access 0 %   age 5.200 s
++    10  addr 126.990 TiB  size 9.539 MiB   access 100 % age 3.700 s
++    11  addr 126.990 TiB  size 16.098 MiB  access 0 %   age 6.400 s
++    12  addr 127.987 TiB  size 132.000 KiB access 0 %   age 2.900 s
++    total size: 314.008 MiB
++    $ sudo damo stop
++
++上面示例的第一条命令下载并构建一个名为 ``masim`` 的人工内存访问
++生成程序。第二条命令要求 DAMO 用给定命令启动该程序，并让 DAMON
++监测新启动的进程。第三条命令从 DAMON 取回该进程当前被监测访问
++模式的快照，并以人类可读的格式显示该模式。
++
++输出的第一行以单行热图格式显示各区域的相对访问温度（热度）。热图
++中的每一列表示被监测虚拟地址空间上大小相同的区域。列在该行中的
++位置和列上的数字表示该区域的相对位置和访问温度。``[...]`` 表示
++虚拟地址空间中未映射的巨大区域。第二行显示帮助理解热图的附加信息。
++
++从第三行开始，输出的每一行显示进程的哪个虚拟地址范围
++（``addr XX size XX``）被访问得有多频繁（``access XX %``），以及
++持续了多长时间（``age XX``）。例如，大小约为 9.5 MiB 的第十一个
++区域在最近 3.7 秒内被访问得最频繁。最后，第四条命令停止 DAMON。
++
++请注意，DAMON 不仅能监测虚拟地址空间，还能监测包括物理地址空间在内
++的多种地址空间。
++
  
--============
--监测数据访问
--============
-+========================================
-+DAMON：数据访问监测和访问感知系统操作
-+========================================
+ 记录数据访问模式
+ ================
  
--:doc:`DAMON </mm/damon/index>` 允许轻量级的数据访问监测。使用DAMON，
--用户可以分析他们系统的内存访问模式，并优化它们。
-+:doc:`DAMON <../../../mm/damon/index>` 是一个 Linux 内核子系统，用于高效的
-+数据访问监测和访问感知系统操作。
+ 下面的命令记录了一个程序的内存访问模式，并将监测结果保存到文件中。 ::
  
- .. toctree::
-    :maxdepth: 2
-@@ -23,7 +23,4 @@
-    usage
-    reclaim
-    lru_sort
--
--
--
--
-+   stat
+-    $ git clone https://github.com/sjp38/masim
+-    $ cd masim; make; ./masim ./configs/zigzag.cfg &
++    $ ./masim ./configs/zigzag.cfg &
+     $ sudo damo record -o damon.data $(pidof masim)
+ 
+-命令的前两行下载了一个人工内存访问生成器程序并在后台运行。生成器将重复地逐一访问两个
++第一行命令再次运行该人工内存访问生成器程序。生成器将重复地逐一访问两个
+ 100 MiB大小的内存区域。你可以用你的真实工作负载来代替它。最后一行要求 ``damo`` 将
+ 访问模式记录在 ``damon.data`` 文件中。
+ 
+@@ -57,7 +102,7 @@ https://github.com/damonitor/damo找到。下面的例子假设DAMO在你的$PAT
+ 你可以在heatmap中直观地看到这种模式，显示哪个内存区域（X轴）何时被访问（Y轴）以及访
+ 问的频率（数字）。::
+ 
+-    $ sudo damo report heats --heatmap stdout
++    $ sudo damo report heatmap
+     22222222222222222222222222222222222222211111111111111111111111111111111111111100
+     44444444444444444444444444444444444444434444444444444444444444444444444444443200
+     44444444444444444444444444444444444444433444444444444444444444444444444444444200
+@@ -117,8 +162,8 @@ https://github.com/damonitor/damo找到。下面的例子假设DAMO在你的$PAT
+ 数据访问模式感知的内存管理
+ ==========================
+ 
+-以下三个命令使每一个大小>=4K的内存区域在你的工作负载中没有被访问>=60秒，就会被换掉。 ::
++以下命令使每一个大小>=4K的内存区域在你的工作负载中没有被访问>=60秒，就会被换掉。 ::
+ 
+-    $ echo "#min-size max-size min-acc max-acc min-age max-age action" > test_scheme
+-    $ echo "4K        max      0       0       60s     max     pageout" >> test_scheme
+-    $ damo schemes -c test_scheme <pid of your workload>
++    $ sudo damo start --damos_access_rate 0 0 --damos_sz_region 4K max \
++                      --damos_age 60s max --damos_action pageout \
++                      --target_pid <pid of your workload>
 -- 
 2.43.0
 
