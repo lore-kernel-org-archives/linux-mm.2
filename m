@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70C47C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 21:25:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7475FC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 21:35:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E5116B0088; Wed,  8 Jul 2026 17:25:00 -0400 (EDT)
+	id 34C276B0088; Wed,  8 Jul 2026 17:35:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26EE56B008A; Wed,  8 Jul 2026 17:25:00 -0400 (EDT)
+	id 2FD566B008A; Wed,  8 Jul 2026 17:35:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 187CC6B008C; Wed,  8 Jul 2026 17:25:00 -0400 (EDT)
+	id 215FD6B008C; Wed,  8 Jul 2026 17:35:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E7C8A6B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 17:24:59 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C14FC19FC
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 21:24:59 +0000 (UTC)
-X-FDA: 84966889518.20.3C4C310
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0C98340007
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 21:24:56 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f9q8IM11;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EC4B26B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 17:35:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6689B1202EE
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 21:35:55 +0000 (UTC)
+X-FDA: 84966917070.09.91B4E0C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2F65610000D
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 21:35:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=1YurD4Bp;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf05.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783546554;
+	b=gWWY0kLC+BcWwcNSL/eDqFtyWEbbR9vpsIr/HXMpcoTDOjDmFTBW/ql1a4xBIxtTCVApUd
+	uexztEEy5VcTz9hWaQwKI2YKgl6/UPiDQnSFfDgxoJo8eprI/pccIL72nZykHWhCC2iuZe
+	kNP8Q/qvT8r/RixYzMON8smJcDJlx38=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=1YurD4Bp;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf05.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783545897;
+	s=arc-20220608; t=1783546554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QHVYNoMQA0BhF9UmwrbZnACd7dxHrgpxo3RgAW0uzE0=;
-	b=ZQ3tpwESesyWtGyba8XORRDOIByP10SP9PXRMIgWs2iCmbgHHp1Qgn72uWME7UOOU5KH2L
-	culK1+gPPPTrNB0yPHfALSxFuLkoGMfZ6tCbPQ+N1TApt4xWHup4wBbWXDx9K8gsHBnuce
-	/s6Afo0x4aaFYu/+8y3zkgMyqWt/VgI=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=f9q8IM11;
-	dmarc=none;
-	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783545897;
-	b=EpQDP4O2G9GvvhptQLEOS0y8CdVaHMMILqTUy4opKL+yNHqG+SROham8XKQnUiRcZYUjDe
-	2wrD+u2HjsnIsS+0d5iKBls8c76FJn7/55fVW2tWYAx3X0QoliN1PcADOKFn4o+HcstfsB
-	9bHUve8miU66DWSfexwU2Vxe2ujiw4c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 70E9361372;
-	Wed,  8 Jul 2026 21:24:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354441F00A3D;
-	Wed,  8 Jul 2026 21:24:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783545896;
-	bh=QHVYNoMQA0BhF9UmwrbZnACd7dxHrgpxo3RgAW0uzE0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=f9q8IM11qE8X9+BfI6N1CjNBm3AQU7pEkZNUuV4Cl3yOhQv4CeYXe22CypVW+3bS/
-	 pE13Yn5jTc+bK9brIzcnZHoNdr30zsDRo/NY8NvsKtJiG8XaMHp8pUCm4aE4kAVw+O
-	 aCJrVof2nQdsv8zTXFlLKEfjwTr7D4lk/H+YiaUg=
-Date: Wed, 8 Jul 2026 14:24:54 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner
- <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil
- Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
- Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Gerald
- Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian
- Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
- <svens@linux.ibm.com>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
- <osalvador@suse.de>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-s390@vger.kernel.org
-Subject: Re: [PATCH 00/10] mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE (Part 2)
-Message-Id: <20260708142454.fba56ae6372b473c0f2ef05a@linux-foundation.org>
-In-Reply-To: <20260708-bootmem_info_part2-v1-0-156ce4986598@kernel.org>
-References: <20260708-bootmem_info_part2-v1-0-156ce4986598@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0C98340007
-X-Stat-Signature: spufex33dhg3ca5ety15uj5xyhi7dufi
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=v5GQi58UpKN/xjPR77HNmT/9H9qJkRbf6vrytCHrfhY=;
+	b=ARkPTNRZMagGDqKYSejlQc6NqeVYlYNR8zZqK7OMq2CcsR3wjmVAbyMuf3XXoZHLnUje1u
+	RcrxgNE/lu5UC23RtELJHlPONrjmYJuH4uEsDy4JtTwZ7MgQVlNVoHpM/Ym/y1lEEgFp+t
+	R46//mb5SsQ61pwqmJLUpmv4hCvKENA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=v5GQi58UpKN/xjPR77HNmT/9H9qJkRbf6vrytCHrfhY=; b=1YurD4BphaNx7EJvKravGeZ5f3
+	STQE+OxHlj4n5qi4TV9obhX9YI2u++s8edlTugW83CTAFB0W/FMf6D9likbdfWwxEReUSj1vN5aaK
+	if3Xn/kz7QVu/cxxRPEddlRzdjt2ya1Jh00ONYsz3qZjyaietR18jRY/i8xx8KuO/OMbnpnurk+GG
+	MXnLGnZk7z3b+C+wz9r+mW1/npZeWajHTUfPu4tanNSILdY1Uzb2ZFU29noQCXmzoFWjzLQoKFYhV
+	P3ol4yQaZbxCzmfB29c5vD3kj+yYSBBYKYgzfnbo1gBtIChepwgwXLv5gtx6Qa4F9kplY+eRIb38S
+	HwmKTjEw==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1whZvp-00000000SCc-0q1x;
+	Wed, 08 Jul 2026 21:35:49 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-doc@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/page_owner: avoid docs build warning
+Date: Wed,  8 Jul 2026 14:35:48 -0700
+Message-ID: <20260708213548.469155-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.54.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2F65610000D
 X-Rspam-User: 
-X-HE-Tag: 1783545896-429421
-X-HE-Meta: U2FsdGVkX19MxwNh75InDz60x3FkmMZ+Je5PAz2aSoAKe7ou2yubMmCVVT1XLNeFUc94BdjjRGaXZxakHf2RSvOK6n3RII3azoQWgNe5wFtHXA7+6aXu2jA4LWzP6LRcuqYy36ZQIxYSMEbc/pgJcYaLtrhU0POUSU+t9WmBjTVi720x4XZlQ+NQJxyh38Z7tyHKeshVTJnkIqEfBQOy/tzWXpNV3R2ZzJhUfuqroqlFnm/jaLKY3Feq+O9NUdSRV2EtpE5v+Xq9xeZefFyZeHGUE2HTRxXCPQuTP2SB+JGveewnpiMKQ1ChbuSvCm49QiHO1JS/Mngc6IOUApgxfIqCnBmtgrW4N/DEKk7aM+dGHq+dhSfD2om4NtHw1G52VoKQqilUwVuk4Nn3V/awsuVpeVNhXLcoqmPwcTE//cms/Wv+HniT/qZ0Pr2IAORYLVfRXBkfRfzpaz8osPVLfXiaZYNxVtvVNoz8CtyMHRLqHnw+EgUmcnYaZRME5PISJ++GSUE3fdkHO9kGuWnmCLHhjMRClZpkTWXF+5NZRO69mOlH3bxa8h7TWSx0Aihrqy418+313DAsOlllPb3w1awzoq8ZGviUoZYyJL3YGHCrwzm1cbmWTqGQF0kVM9Zdy/ejU16xPHtXe7oGUmFR5CLNj65nh06y194PV4hQvr/RqBjNZZ59Ncve8Q5vV6iifV/SxWSBs9brsOqT5vraFt3MDDDgvuEwtZt97vqVfGgJmBAx/ON2sC/M/jUOyVDMOw6P81ngqlCznmIXxovSKIyPi8uEj4bXX6V173+K5RoIkblEQuFIV7eRxIUJPHGK2C7J1AnBo8XuPhnmmKW4MN27289uqRqzCSQXZl55Cb5cM0BhrgslkJ82OKWKJNFPN7a36+L0RRZjvrJNRl8aqJcuas7ZG0jNIEJz526maCP/ykUYn4DxynLPlV1YjcsOWtp9+M1s/rMAKbZMlgQ
- bTuzV2Kc
- NZXLeJFP3TnqB4tggnQV0BhDXct2OT8UpeV7/b93A5/s/AfaeyagpeAjLNReOlqpoVv0T7PHoSpIoSqARq2HOhkDqWadYU5uxI/r/EbQ8o7bHr+vPdvKUOPnqPd/yFQViS9P24nwacDQpdALoNMxx45UH3CniD0rlbo3q5l1LQauR8cx8AHMznBP+DWO9mUR6hl/bnybvftvCjszr783JV8EGFABslugXoIAZv7CiiFO+3csnzBlSFKrvy2hJO86bvmdYMJfviOagNlWJHNNsh830XldhfHY47FUaf38BCBURAA3Px7fZyV5vqGI594tEsuxK
+X-Stat-Signature: 3fr3sgdyofgutwbic1nskcd96oakzjic
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783546553-298035
+X-HE-Meta: U2FsdGVkX1+9YYhiPbZXp8UKW3oVZOveFGnkEaIrltoXUIg+8QgSYbAQJwz7iUBQ7f5UzScPfUr6RXC1D1JjEjF2jtOnuD1owsbihkZoi8g9vBGZbDFAPHROYbqei+cN6pX6hMhsceYw1xU6CAaPRscbVFiqsON01bLwfD6yKAb64djK1rR2ID5OJrvOYuv6jOUU/eLKNfvNn23W2KJFN1ubF9g1YhObL9sPovkPTLzEEKfvQpCb/CjysILGdwDE4tlACp2yexgs1qA7dTKQ1e+JqNkxG7Gf4GNnYE6ZBVgCu+IkY99qceuT09HOeAK08JYWb5ZSF+WdAFzmlbMYqYRKlqwHy9wowaIJ4O6GZzFni89LXYkJKWr+2IFPl1CcA5KPutt0G68d32TTXTZkohxOPlWG8IgpSRlhHfAT3nMBlX+ZCFmO3vnWUgeSFIxc3mqMErNESahHiNmLfa3o8tcdmLim2xQ7uWoqv8A6YNMB7hy6c6RLvglj3oxjt5hEzBFlqeNgKAgwgXrQYr7/nkRM1dSuZZ0IZ1oJfXKp1usKKRuVpTUJpOx/0rVWjpyNpc3dqGoNwoxM9g+47g9Nrb5RCfP0rbw0tn9KfVhASNf+4lkpgxbYx2qWAXzmzoA1Wk+Mrb8433mZLIJqcZ1J9qZqGKHiP0yzzqEiWWcYXVARxp5oLV/BbkR6fWB0cHCD4dobB+6lIX/26V0aVq+I1Z+Wfrnet4vGRaeDy0sLxmDDcsYS8+s8RyOCYLS1RVRI/C9ykwiDJI8Ii/mcew2J5zie/2hIFIPiqwrDGC6lGhFjn+8C/5NmnlREhCdaSQUFDR+M1Ks25w9wUiogfXcS+bwQGZvGz/fs2ie0ENJkFwPXILlwogcx5Xnq4C2NSttQ25YUaGpsw3WJn1DRzyuE6PTMkLjWpYWDNYuFOkV4ZcyWY5BTQ6bDLGdI5DNu6OW1a7jWwJ+rB3kqLc2spGs
+ VAL7jV5G
+ hInd/aptx8A0jNumEMYZAUq7YbxDm/XQzjvrvaWmeQyExMb/S4tsrOEWdp7f83FWcOy4XMTKY9Kc9fQHZRnp3qrHe1O2VMlZwWruEgUCQLGGc91jYgL1k3qnQNcZYBxBgTZ7tkRlC+UISKWvv7zNSkH0ps9Onl2gAWAfLQHYaI6sab+7XdOA7iJvcIU/qKgMybasf+FV5IP0iA78ajqZ7xKsdxzpnNKhXmYL/yFkwIf1NNM/c1bSSgjTY3EDNbil/wzr4YgcGmvHo1Qlstgt4NV0Vlz+kn6PcI2Y+jVTUz5JoRdSKx8FtQ9gMOYoqVgI6xvpUzLQPLg9vicsPYejwoJ00IpsxlERG9ZIWNeVkd8HEtHG+DaFsbeLT53Iftip3VvZpxzvidvx7Bmr2ApKhNQYzh3vmitfLaqslO7oXwdeWaKmE2RBXgBuhJFnG4TqAjnM+VeMFWGAjFvhTKY7UOpTQ9zAWyWvrfn1mBUxEkKEVXGqG/zFBJg0eRKz66/d2uNVM/9XKCGEtz+7EQJYH9kM3U3XqaEHv5p3aKw8GpueJm5cuK5kLvzvQBLhorL739JOX+TvMR9rhDZ+lNC0o1wPKA7nnXgoDY3ZK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,11 +92,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 08 Jul 2026 16:10:55 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+Fix literal block and indentation to prevent a docs build warning:
 
-> Let's remove the remaining pieces of CONFIG_HAVE_BOOTMEM_INFO_NODE,
-> performing some smaller cleanups around freeing of reserved vmemmap
-> pages on the way.
+Documentation/mm/page_owner.rst:70: WARNING: Literal block expected; none found. [docutils]
 
-Thanks, looks pretty simple.   I'll add it to mm-new, along with a note that [02/10] is to-be-updated.
+Fixes: c34eea8cecca ("mm/page_owner: document page_owner filter")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+---
+OK, there may be a better way but I didn't find it.
+
+Cc: Zhen Ni <zhen.ni@easystack.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: linux-doc@vger.kernel.org
+Cc: linux-mm@kvack.org
+
+ Documentation/mm/page_owner.rst |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+--- linux-next-20260706.orig/Documentation/mm/page_owner.rst
++++ linux-next-20260706/Documentation/mm/page_owner.rst
+@@ -65,14 +65,15 @@ un-tracking state.
+ Usage
+ =====
+ 
+-1) Build user-space helpers::
++1) Build user-space helpers:
++::
+ 
+-To filter page_owner output:
++   To filter page_owner output:
+ 
+ 	cd tools/mm
+ 	make page_owner_filter
+ 
+-To sort and analyze page_owner output:
++   To sort and analyze page_owner output:
+ 
+ 	cd tools/mm
+ 	make page_owner_sort
 
