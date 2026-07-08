@@ -4,137 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 274D1C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 20:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 650E6C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 20:22:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1D3C6B0088; Wed,  8 Jul 2026 16:14:48 -0400 (EDT)
+	id 121836B0088; Wed,  8 Jul 2026 16:22:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA74B6B008A; Wed,  8 Jul 2026 16:14:48 -0400 (EDT)
+	id 0D2A96B008A; Wed,  8 Jul 2026 16:22:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B47C46B008C; Wed,  8 Jul 2026 16:14:48 -0400 (EDT)
+	id F06006B008C; Wed,  8 Jul 2026 16:22:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 73BC66B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:14:48 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE750402E7
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:14:47 +0000 (UTC)
-X-FDA: 84966712614.25.EFE1FEF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4656740002
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:14:45 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0UxfMaa;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C45046B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:22:26 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 470CD168D25
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:22:26 +0000 (UTC)
+X-FDA: 84966731892.10.D2F31B3
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 121F3C0006
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:22:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Cr+j+iOX;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf10.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783541685;
+	s=arc-20220608; t=1783542144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n/dH7u+EpgXCIs6Pm5DlLAIaA07OdnJPol506/hGZPc=;
-	b=BXNqGAH4nxi9ngd83DC3xzDkq3g3VJWd/pm4vjcFfiO7nynlRrmqIhj/6fKKUV9Fc0JQkr
-	WTFCG8y8neLUO+S8ivbvxZbcxLGl+emEzUcRbm5A+LrPHAsT9Mno/pFO/wxbv7B9451Yb4
-	RL7ud/AGzMZKxoPhpDl++3f3JHcPbkw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=tknLwERrIw+KuUXCBYFFzSBxUeBG9hYB7jy23J8B18Y=;
+	b=kFeCLebYWjAazqp2R4CO12YUnGU7DRfb6Fl1WoCkDPTmWCBA1GtD9bTobhbdxmOPLem0Vj
+	iNuymBq1byv73bSDc2sfOjyzqdchFjccKtGXDcOfH9e6X0/Wmj8qO2c8eeDM8ZbP5gdHrI
+	Ta8CysteFwyVhLVPnDhBwbO3FA9zx7o=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=A0UxfMaa;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf17.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Cr+j+iOX;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf10.hostedemail.com: domain of aboorvad@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aboorvad@linux.ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783541685;
-	b=wOJXeQ0sASf9c3uNIU7uBRcHItqE/d+pYbuxxNTCisbEdXDXz3jlI9VrkmguWrEEBEGlE/
-	pFC8+i93lR55LkjcACgCVG3JGeohb0XTNzc2WwSvn30VV0ntaBLgflOtYk9bLg7HtXG+pv
-	RQ6aP7im1Wbgaa78Y0G4kcgU/hzmWfQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783541684;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n/dH7u+EpgXCIs6Pm5DlLAIaA07OdnJPol506/hGZPc=;
-	b=A0UxfMaaTFVVDaj9LtO/hTMT0TTXZfIqsPflYgTqHn/1auw+rpo4oII2kkVOr1G7NVh3nl
-	uTHyq6/9sf3Me5m8azJWz765TsgDaarFTaUJSAawGztECTOs7lrAp/wOE9K6hki0CG+/uO
-	HzdscPJnK4Rv9IO0PODPHnx7MhBwjqY=
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
- [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-308-fmCU1yYzM8aPUUel8WJlvA-1; Wed, 08 Jul 2026 16:14:41 -0400
-X-MC-Unique: fmCU1yYzM8aPUUel8WJlvA-1
-X-Mimecast-MFC-AGG-ID: fmCU1yYzM8aPUUel8WJlvA_1783541680
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7e9f6f0240eso1303914a34.3
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 13:14:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783541680; x=1784146480;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=n/dH7u+EpgXCIs6Pm5DlLAIaA07OdnJPol506/hGZPc=;
-        b=MTH0hGXVNDHIIDQUFu/Vy6qoRsU6UNV8RCXRME67yX5gZkqBMKaz6iPtQXArzeqm52
-         cAzP7080povq+Qasx8FDR3pT7u7Iz4Ilhmxw4LwkQ0Ri29IiCO/1uTL9ngDnIKnkY1kY
-         Pg5U28/8c6Ps2Gi5Mo5ZDdUa//+fpSFVzPxb1naNYXqyEyUiu95IkQ5GUMIsKBdbTMTQ
-         iVmjumqUZHx5iS2ppS6niOSJN+XlxS1nF/63QkWWc8gp+OEHfv3En3hcHZV1YA63nV4Q
-         H+uQCggscfN4XGNqO20mT5utP5z12BibOe0UJE+dNbB1vODtGHmyecT3FsCJj0YWi9fm
-         5Meg==
-X-Forwarded-Encrypted: i=1; AFNElJ9QnS+3pVYe1UHdyOE+qs+7XCDnlRlrL6hIoIOhX1/+JX/4UVbasjlXCijCPEz2xhGmYwKnA7tiuw==@kvack.org
-X-Gm-Message-State: AOJu0YweTDLoY0WINz1ara85m/kT98S7F0m8ZNx8kiOhdcKdf9AYvsN+
-	+cKzRC3906vfi7En1SzHYfymUqg4iePzq8Vf9JpxxkkOrsrB2RoS0wJhaMKp/kNC6IoJ8dUMzN+
-	IDZXzS0rt3GQRTZTcDGxDYT8TmbCkid74F9clRS8nvHm7W96+WCpX
-X-Gm-Gg: AfdE7cnZylurQWMsWu4mLR+Ew3mAU6jCASTILbLW4KfIuBZbUq7/oTXCk0DmJ+FlBuV
-	0T47fle3CjA4sbUDms3xXWaYAai3hjYlXnLuo+sa7VqGW7A9He9J0pABWgbLNFj4ZDnsG4PzSLA
-	ayOZnDUL2gmV37G15noIAPjN4pX10nJj+EEVQWhFFiJOYdPGQwCgC9eWPWKFRdrOCFFIBtkbRmb
-	z6/LNufd+gDn1oi3lwf/n7I7n4kfy5zCj7bUFAbvB7YXAhBvyCfvY2/i4xx0QMMoCd6rXI0vaOu
-	ZJ44+xoahyB6I+iyG5KKObriAGUTx8yU1wLeaB8NWi9qYj3jgSvO3hbvJ9PzqvDXvRzNbopfCWs
-	Uj6IshXdqaA==
-X-Received: by 2002:a05:6830:2589:b0:7e3:d199:3164 with SMTP id 46e09a7af769-7ebcfe7ad5bmr2983139a34.11.1783541680389;
-        Wed, 08 Jul 2026 13:14:40 -0700 (PDT)
-X-Received: by 2002:a05:6830:2589:b0:7e3:d199:3164 with SMTP id 46e09a7af769-7ebcfe7ad5bmr2983090a34.11.1783541679717;
-        Wed, 08 Jul 2026 13:14:39 -0700 (PDT)
-Received: from [192.168.8.207] ([45.81.3.233])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcb2631dfsm2528223a34.13.2026.07.08.13.14.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jul 2026 13:14:38 -0700 (PDT)
-Message-ID: <9b0fb337-88e5-484c-8618-09ed2274444e@redhat.com>
-Date: Wed, 8 Jul 2026 14:16:12 -0600
+	t=1783542144;
+	b=AWgEtSkEJRz7CfO4rF/+lFGL7yq0tZNq+JMDWf4hqooBcD3JUzctvdxb727oysgip9W+zm
+	an0gLsSWsKd/el/NAvnLqogk/2b5zbEWAEkW3N74zDiogv3J1d64yR7b1q/ww1CJGfYIXe
+	n00N8rhecavNlLNO8d97RImdoFTX8Ng=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 668KIKKa3699062;
+	Wed, 8 Jul 2026 20:20:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=tknLwERrIw+KuUXCBYFFzSBxUeBG9hYB7jy23J8B1
+	8Y=; b=Cr+j+iOXewxEAY6jFJQ0UoUWwF7De1VDHWQJlAOzfegxHUMyw7Rdvl3xw
+	BFHSzsd7Zn5pqGApoqPOcB0ItW/s/U0JnvC5hwaoq9j+XATOHg/rzuvnfkquNpMa
+	yTSEDcTmj0YC6lLaxpqhykyQ9O6zC8HM4HkO5SzPE0HuodAzTTJrt/nOcmb6B8J0
+	a90ZnHCHfOoYl1eSdLl5ZTDNGjTUOuzlhwbz/PJY9WqxCfV1d7SFpLRuhqtOArBy
+	uo1rzM3uzSCPKMYebRsVobWD4mL/gJAFDnHTT8NMBkNjQp/Ba9vSt4paUmWLnZAJ
+	STSpmo3y2zQuwCtT7gW/C3s91hCtA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f6rkdxnyj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jul 2026 20:20:04 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 668KJhs0023235;
+	Wed, 8 Jul 2026 20:20:04 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f7eqg9k44-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jul 2026 20:20:03 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 668KK0Mo24969686
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Jul 2026 20:20:00 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E94C220040;
+	Wed,  8 Jul 2026 20:19:59 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2909420043;
+	Wed,  8 Jul 2026 20:19:56 +0000 (GMT)
+Received: from aboo.ibm.com.com (unknown [9.39.25.152])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  8 Jul 2026 20:19:55 +0000 (GMT)
+From: Aboorva Devarajan <aboorvad@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Luiz Capitulino <luizcap@redhat.com>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, aboorvad@linux.ibm.com,
+        stable@vger.kernel.org
+Subject: [PATCH v2] mm/util: don't read __page_2 for order-1 folios in snapshot_page()
+Date: Thu,  9 Jul 2026 01:49:54 +0530
+Message-ID: <20260708201954.686111-1-aboorvad@linux.ibm.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests: do not override CFLAGS set by the build
- environment
-To: Aleksei Oladko <aleksey.oladko@virtuozzo.com>,
- Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
- Christian Brauner <brauner@kernel.org>, Seth Forshee <sforshee@kernel.org>,
- Tony Luck <tony.luck@intel.com>, Reinette Chatre
- <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>,
- James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, Paul Walmsley
- <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Abhinav Saxena <xandfury@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, raquini@redhat.com
-References: <20260306002100.519673-1-aleksey.oladko@virtuozzo.com>
-From: Nico Pache <npache@redhat.com>
-In-Reply-To: <20260306002100.519673-1-aleksey.oladko@virtuozzo.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Qk3e9hGrIrRs20_OkdNqFrtK15eK6GFNU3C1D5MmD-Y_1783541680
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=M7J97Sws c=1 sm=1 tr=0 ts=6a4eb0f5 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=RAioF0-LDSMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=ySnz47qbrfd7rJXDOpkA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDE5OSBTYWx0ZWRfX5mDbOq6xxWQi
+ Md8rcKeDavIliKimRjqWK4Th1p+hb/s96U7lAxydA8YbM5l/i8p9v3D3aup1gmeBjCYc1gCbIuz
+ OmUxkhUAxSZ+y9pB6ltFH+c1tQsgDFcOnQKiqqzcM/Guum91eXzY+oicuIKCMV8YWKq4IDGiAnY
+ ZHm5+CEaYgrnx/jY4rh6mxhaqFJpdn0qyMyX0r6NPyq6OYGwjqgbNd8gyFSJhEUmFKNfOZ2/bmp
+ ZIykLl5s6ATGu6vPjJ6Bnz2GxASsf1hJDaGNiYisz+ePjEc1krK2ZvM9PuuzKVwyVsgqAKQHS50
+ 7rEcfRYHm4PWnDfL8QIXnF+paT9ZgvYgnRRzrFLLruiCAp2guG7xKkSBaQytWVmnSseZxaProZy
+ jiF0xvasFimeAU3dP/Y+NaM2UX9xjiLtBGeTfAGIMA6q5K4XO1m4IOkVal3gooU9ENVHCvl78sR
+ KlQlSvjsp2xZGvo2BFw==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDE5OSBTYWx0ZWRfXxVPDhdDTJqjW
+ +DXsqtkyUjv6DPl8mTZ7lfoBLwwh/8v7PjZ04VhoVxffwe9KPTU/oT8AdXK36td2qJZDz2PuABC
+ wPCCfMbD1Kkk3S88IvAxmB+VJ/hTGfo=
+X-Proofpoint-GUID: xMBIo49HIMLhvUE5H9tE-NFN1IQ8dBuy
+X-Proofpoint-ORIG-GUID: 8tLAzdzqwcadh2QqphpNWfyNEjWxcXcW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-08_04,2026-07-08_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1015 adultscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080199
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4656740002
-X-Stat-Signature: gbetf9f3wkz4ufpenbnxahqz6wnew5zj
+X-Rspamd-Queue-Id: 121F3C0006
+X-Stat-Signature: 8hq11uxh33yohsitncta4j33x3btzx7w
 X-Rspam-User: 
-X-HE-Tag: 1783541685-277322
-X-HE-Meta: U2FsdGVkX1+RBv1j/TCSzdVk4Nm5ZMDrukug5+EN6y2AJp+tkGIL4tNSqI0w9HnHHiWjGKMQuiQFWFr1lXDTKEnK1H/L7uZ7nb1xGkR7TH5f27RKZZfRLNW4UPWBhukQaI+joFMEN6cwqmqLGnDA40TcnEzvWuypWnPIw6xho3jJXhTYQd9dOXT9ITygNLFlKq0zx2lNPYRJ0nNhPqwe6+My37V24Secb3RNLqKMDRzU0I57rv+K4PyjOGa84iCRHiYPZAbV5qdIVfRyvZZnpn+p6Zv8uQlHqPUcz27IKSJfmd43MZQ3LRJg1Ts+4LCJ/kRKvgJDDcpNzKfjMjGVbpeaU0D7LTAmGdK3BIzw5vuBAtb7SYKTjXqhVecFxXb3IivkyLgQicKha0OrlVIYL6gAg3pr/5Y6h5cOOHz8jQ0WJ3E83qtPrujuOKFuA5xXOQ1qaaUT3OnPpIKFaqDBVTxmGiYIBEMAtIkjkLmE/skF4fOM9AZVNh9bwTFsoaZ7E7Gn67ahfN9E4mitKQCV7LYO6g+ldxp/K/90jy2jtOEWZsSw54JSTbFxdTJZwMxrEEQ3VdvI/dfiRxQEjr1mUpXsLJMdwxu6b6jkq080Hyz5bgi8dAJCy9WXc1bQQW2sfqNRRohZ8859/hTEysWJsG6EKzfRpCbGAjH0DkbIZza9galQCPu2SKBEBhvC1kY5a/K9TCc/EKrankm9FNt/UW1WFgDvqbvsKyILnnVwLdUoRL2yjFEjFgofel1QQcsAhgmWzak0I8oT4H0aCK8lbJpy4lOVOKKz/Ruu4u/9XTVummH6bkdYJDOM8/fuwOGVHF/czIWrMCC5mUqtcBJYrqeEJ6aVZU0K/Q8Aec2+MQulNUGLGxdTe7DByi8kYtRlN7d1Aj6VPN3+0rQD5H5v8v/5R/eiXPejSqdhYn13KS+8LvMrlS57MUCycpvt6wo6+ZYc7k7PWb9nXpCxrpz
- s85tNtgy
- oFDAT5YbeaOlzHtcs9GtcRt5WSGMiW7Aaugb1k08kZ/F1xTGA6KA2oow5hUuxg3JtWlpm/hM3lorrISpEqD6FH+aew0orTjERKKyC4cNsxBrFYG4D64+Nieyt+0GWH7IYtYbOxqE7M+el1/EZ09VUbjTWxsE+Gb1LkH5BQGpcXPV4eJcm7ynTHRJaf5etkB+hV2GhTB61XTgOWLpI1kaNQ6OBzzPylue63XEh+E69ET5A1dSpg2Fhh5DstO+B4uoLbCJfhGuCoh3N1Bb+KQGSI/Bl0t5yZI5dc33pUwY5bQQ2t/1wRoYpUFOK746GI0o9JUTgdj1iL6OUTVSGmz1/2H4jO95OLf6OEgI8RzWItlEqeSh1wzrGUZSpkK3uNBYlDKHU6hpwTd2LDtVOgIoXNTVVt8pLg+S3/AU2IUeLqnPv16aZbo1+RapKB+rpj+ZCj65xPXovlHt2SIDvo6YM6M0Q0ocJIrii3Du1
+X-HE-Tag: 1783542143-750503
+X-HE-Meta: U2FsdGVkX1+iLEsbfEnlUq7TKfwEPkDMIiEMX8pLGvaBIo6hSCh5unGO/v9g0/MA/wWPHDwW+OTkCyXItTMuUHORy32OZaCnxAO78kEvhtbZ3J3JH0o4eAsKia6vQLolys9xiiMjTmYcjutdA9EyUmKMskcamKqSvLDZM7Shue5sGfMjgdkG3QID1TySalWD8crIceEYz6uMmMl4xBUoA+ID3nXPcaSRPpEd2YlCGPKGr1kzyKRvrz/ZfOJ3L702WieZziv7G52XZc5AeFu7lFVAhkoJ0MLFSlszkaTNsZNgzsPubcpSwvo7Prn2Jt6Us1evCQnaLaMqk0V1/O4r7TjSnLRM6u0DqK8wAS2Wt9eShSFFMkxzEO6opxGEgg5k5xcqBt1Z4FiJ996QeNdK4GsXpvzIz79W0tvCM8Q8n3ZtEDh6Ptt9vr0liy/DCszdiN+SEqQ9EluxMMADCbP780cfnXhXAJur/b9RxuDbDKes/5fLcZuudJCpxx4lqh09hOV8l3LRWcul87+cKR+THPd9Fs0mQC7rtMmvdT/OFyj3QuXH8gEjGto2r02PtTAmwd4bzx8+VE0N5egTswY/4HDm9LBBl7uUMoxu+6vNU5+qqOjCDZdUp0pdr/1l5zHxsY1T5amPLFc6djDEj+oaLzc5V7nNGMrPl8nIMuUCTGfazROiT+DXE5mfLhv1LymOay0OMqCNdg5reHDzoqoScpgIMirbGG+iuij1XqJKl2NSacLX17lY6+4WIKC02hEyPr1q38NNatU2wNR6njuKFiltvVtRnCkA5CDj5hkAcGj3Equ20BVz2Ib69BmAcBfp/Sl2R/FY39OJroCv/SehfiR6ejiMinDNFrEtj+NUh+A67rs8mzdjuSK5WEtNa49NgSJavNfaH1eSPkFcUkfjO8+4HMxNjCXIwUSYRcJPDBfyM1k0aW+duksoG9Npk3r4TQ2e2aQ0WoOcrJJb+DI
+ nIXUnxeX
+ EUUqDUvnne/BTDELHChkBgAKe+efPTlBmcvWxJ3tal1I+83NvupIsKNLH3yKIO20JYcf06++kqHFeMmKSvTY+KfaBcZ9cATR7A+cNqEJu5G+QRyz0ZBMUERd4z1q1Ge1CmxVXxCTx+FFn6BDbWfeZGFG135MmEmYrAZW+vN0i+T22LL4EzjRxmfSRjI4NViP2sRAbHU/eDZFTPxvUlZx6eX5fiSjFCnlxmAT+TijoV4gQMIlnDm9lNCQPqx0yJeWV8jbrMOz/5IjX/ueq5XH+yjYXbt8u8maK03Hn/Mjc09Fbcb3QDhCa0CtoJgUNWJmKwq6VDgJFcBIn1vr78E6BHD1ImJ9zEc+VgfmV3C68rtkANNnEzHF2PxvLx8Rje6rRIhct75lSFY5xAXN9aDpzfkFJkgww6Z6c7z0rrLMilSZ79kmhxupfKEWNlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,224 +144,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+snapshot_page() currently reads __page_2 after checking nr_pages > 1,
+but it should only do so when nr_pages > 2.
 
+During DLPAR memory remove on a 22 TB ppc64le LPAR, snapshot_page()
+oopsed on the page isolation path while reading an order-1 folio's
+__page_2 from an adjacent absent section (unmapped vmemmap).
 
-On 3/5/26 5:21 PM, Aleksei Oladko wrote:
-> Some kselftests Makefiles assign CFLAGS using 'CFLAGS=...'
-> which overrides any CFLAGS provided by the build environment.
-> 
-> If the environment set flags, overriding CFLAGS may result in
-> inconsistent compiler and linker options and cause build failures,
-> for example when building PIE binaries:
-> 
->   # export CFLAGS="-fPIE"
->   # export LDFLAGS="-pie"
->   # make -C tools/testing/selftests/ TARGETS=mount_setattr
->   make: Entering directory '/build/kernel/tools/testing/selftests'
->   make[1]: Entering directory '/build/kernel/tools/testing/selftests/mount_setattr'
->     CC       mount_setattr_test
->   /usr/bin/ld: warning: -z pack-relative-relocs ignored
->   /usr/bin/ld: /tmp/ccikConN.o: relocation R_X86_64_32 against `.rodata.str1.8' can not be used when making a PIE object; recompile with -fPIE
->   collect2: error: ld returned 1 exit status
->   make[1]: *** [../lib.mk:222: /build/kernel/tools/testing/selftests/mount_setattr/mount_setattr_test] Error 1
-> 
-> Fix this by appending to CFLAGS using 'CFLAGS+=' instead of
-> overriding them.
-> 
-> The fix is not applied to the Makefiles in x86, riscv, mm, arm64
-> and powerpc as they fully define their flags.
-> 
-> Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+Fix this to avoid reading memmap that doesn't exist (e.g., a vmemmap
+hole).
 
-This is very much needed (I cant confirm for all the cases you changed here but
-we are experiencing the same thing internally).
+Fixes: 31a31da8a618 ("mm: move _pincount in folio to page[2] on 32bit")
+Cc: stable@vger.kernel.org # v6.15+
+Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+---
+v1 -> v2:
+ - Condense the commit message.
+ - Drop the code comment.
 
-However this does not apply. Can you please do a refresh/RESEND and hopefully
-you get more attention on the second round.
+ mm/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Cheers,
--- Nico
-
-
-> ---
->  tools/testing/selftests/efivarfs/Makefile             | 2 +-
->  tools/testing/selftests/exec/Makefile                 | 2 +-
->  tools/testing/selftests/firmware/Makefile             | 4 ++--
->  tools/testing/selftests/ipc/Makefile                  | 4 ++--
->  tools/testing/selftests/mount/Makefile                | 4 ++--
->  tools/testing/selftests/mount_setattr/Makefile        | 2 +-
->  tools/testing/selftests/move_mount_set_group/Makefile | 2 +-
->  tools/testing/selftests/resctrl/Makefile              | 2 +-
->  tools/testing/selftests/safesetid/Makefile            | 2 +-
->  tools/testing/selftests/signal/Makefile               | 2 +-
->  tools/testing/selftests/timens/Makefile               | 2 +-
->  tools/testing/selftests/tty/Makefile                  | 2 +-
->  tools/testing/selftests/vDSO/Makefile                 | 2 +-
->  13 files changed, 16 insertions(+), 16 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/efivarfs/Makefile b/tools/testing/selftests/efivarfs/Makefile
-> index e3181338ba5e..f6c412059af3 100644
-> --- a/tools/testing/selftests/efivarfs/Makefile
-> +++ b/tools/testing/selftests/efivarfs/Makefile
-> @@ -1,5 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> -CFLAGS = -Wall
-> +CFLAGS += -Wall
->  
->  TEST_GEN_FILES := open-unlink create-read
->  TEST_PROGS := efivarfs.sh
-> diff --git a/tools/testing/selftests/exec/Makefile b/tools/testing/selftests/exec/Makefile
-> index 45a3cfc435cf..54cdefb9ccb0 100644
-> --- a/tools/testing/selftests/exec/Makefile
-> +++ b/tools/testing/selftests/exec/Makefile
-> @@ -1,5 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0
-> -CFLAGS = -Wall
-> +CFLAGS += -Wall
->  CFLAGS += -Wno-nonnull
->  CFLAGS += $(KHDR_INCLUDES)
->  
-> diff --git a/tools/testing/selftests/firmware/Makefile b/tools/testing/selftests/firmware/Makefile
-> index 7992969deaa2..dd9acf972cf5 100644
-> --- a/tools/testing/selftests/firmware/Makefile
-> +++ b/tools/testing/selftests/firmware/Makefile
-> @@ -1,7 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  # Makefile for firmware loading selftests
-> -CFLAGS = -Wall \
-> -         -O2
-> +CFLAGS += -Wall \
-> +          -O2
->  
->  TEST_PROGS := fw_run_tests.sh
->  TEST_FILES := fw_fallback.sh fw_filesystem.sh fw_upload.sh fw_lib.sh
-> diff --git a/tools/testing/selftests/ipc/Makefile b/tools/testing/selftests/ipc/Makefile
-> index 50e9c299fc4a..5a5577767a35 100644
-> --- a/tools/testing/selftests/ipc/Makefile
-> +++ b/tools/testing/selftests/ipc/Makefile
-> @@ -3,11 +3,11 @@ uname_M := $(shell uname -m 2>/dev/null || echo not)
->  ARCH ?= $(shell echo $(uname_M) | sed -e s/i.86/i386/)
->  ifeq ($(ARCH),i386)
->          ARCH := x86
-> -	CFLAGS := -DCONFIG_X86_32 -D__i386__
-> +	CFLAGS += -DCONFIG_X86_32 -D__i386__
->  endif
->  ifeq ($(ARCH),x86_64)
->  	ARCH := x86
-> -	CFLAGS := -DCONFIG_X86_64 -D__x86_64__
-> +	CFLAGS += -DCONFIG_X86_64 -D__x86_64__
->  endif
->  
->  CFLAGS += $(KHDR_INCLUDES)
-> diff --git a/tools/testing/selftests/mount/Makefile b/tools/testing/selftests/mount/Makefile
-> index 2d9454841644..38361a896363 100644
-> --- a/tools/testing/selftests/mount/Makefile
-> +++ b/tools/testing/selftests/mount/Makefile
-> @@ -1,7 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Makefile for mount selftests.
-> -CFLAGS = -Wall \
-> -         -O2
-> +CFLAGS += -Wall \
-> +          -O2
->  
->  TEST_PROGS := run_unprivileged_remount.sh run_nosymfollow.sh
->  TEST_GEN_FILES := unprivileged-remount-test nosymfollow-test
-> diff --git a/tools/testing/selftests/mount_setattr/Makefile b/tools/testing/selftests/mount_setattr/Makefile
-> index 4d4f810cdf2c..fbdb8f69b548 100644
-> --- a/tools/testing/selftests/mount_setattr/Makefile
-> +++ b/tools/testing/selftests/mount_setattr/Makefile
-> @@ -1,6 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Makefile for mount selftests.
-> -CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2 -pthread
-> +CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2 -pthread
->  
->  LOCAL_HDRS += ../filesystems/wrappers.h
->  
-> diff --git a/tools/testing/selftests/move_mount_set_group/Makefile b/tools/testing/selftests/move_mount_set_group/Makefile
-> index 94235846b6f9..8771a5491ea3 100644
-> --- a/tools/testing/selftests/move_mount_set_group/Makefile
-> +++ b/tools/testing/selftests/move_mount_set_group/Makefile
-> @@ -1,6 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Makefile for mount selftests.
-> -CFLAGS = -g $(KHDR_INCLUDES) -Wall -O2
-> +CFLAGS += -g $(KHDR_INCLUDES) -Wall -O2
->  
->  TEST_GEN_FILES += move_mount_set_group_test
->  
-> diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
-> index 984534cfbf1b..1d566a91faa7 100644
-> --- a/tools/testing/selftests/resctrl/Makefile
-> +++ b/tools/testing/selftests/resctrl/Makefile
-> @@ -1,6 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
-> -CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2
-> +CFLAGS += -g -Wall -O2 -D_FORTIFY_SOURCE=2
->  CFLAGS += $(KHDR_INCLUDES)
->  
->  TEST_GEN_PROGS := resctrl_tests
-> diff --git a/tools/testing/selftests/safesetid/Makefile b/tools/testing/selftests/safesetid/Makefile
-> index e815bbf2d0f4..d3811515d8e3 100644
-> --- a/tools/testing/selftests/safesetid/Makefile
-> +++ b/tools/testing/selftests/safesetid/Makefile
-> @@ -1,6 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->  # Makefile for SafeSetID selftest.
-> -CFLAGS = -Wall -O2
-> +CFLAGS += -Wall -O2
->  LDLIBS = -lcap
->  
->  TEST_PROGS := safesetid-test.sh
-> diff --git a/tools/testing/selftests/signal/Makefile b/tools/testing/selftests/signal/Makefile
-> index e0bf7058d19c..6c437f95132d 100644
-> --- a/tools/testing/selftests/signal/Makefile
-> +++ b/tools/testing/selftests/signal/Makefile
-> @@ -1,5 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> -CFLAGS = -Wall
-> +CFLAGS += -Wall
->  TEST_GEN_PROGS = mangle_uc_sigmask
->  TEST_GEN_PROGS += sas
->  
-> diff --git a/tools/testing/selftests/timens/Makefile b/tools/testing/selftests/timens/Makefile
-> index f0d51d4d2c87..357077792395 100644
-> --- a/tools/testing/selftests/timens/Makefile
-> +++ b/tools/testing/selftests/timens/Makefile
-> @@ -1,7 +1,7 @@
->  TEST_GEN_PROGS := timens timerfd timer clock_nanosleep procfs exec futex vfork_exec
->  TEST_GEN_PROGS_EXTENDED := gettime_perf
->  
-> -CFLAGS := -Wall -Werror -pthread
-> +CFLAGS += -Wall -Werror -pthread
->  LDLIBS := -lrt -ldl
->  
->  include ../lib.mk
-> diff --git a/tools/testing/selftests/tty/Makefile b/tools/testing/selftests/tty/Makefile
-> index 7f6fbe5a0cd5..e9c22dafe5e1 100644
-> --- a/tools/testing/selftests/tty/Makefile
-> +++ b/tools/testing/selftests/tty/Makefile
-> @@ -1,5 +1,5 @@
->  # SPDX-License-Identifier: GPL-2.0
-> -CFLAGS = -O2 -Wall
-> +CFLAGS += -O2 -Wall
->  TEST_GEN_PROGS := tty_tstamp_update tty_tiocsti_test
->  LDLIBS += -lcap
->  
-> diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/vDSO/Makefile
-> index e361aca22a74..1f4628ceb975 100644
-> --- a/tools/testing/selftests/vDSO/Makefile
-> +++ b/tools/testing/selftests/vDSO/Makefile
-> @@ -11,7 +11,7 @@ TEST_GEN_PROGS += vdso_test_correctness
->  TEST_GEN_PROGS += vdso_test_getrandom
->  TEST_GEN_PROGS += vdso_test_chacha
->  
-> -CFLAGS := -std=gnu99 -O2 -Wall -Wstrict-prototypes
-> +CFLAGS += -std=gnu99 -O2 -Wall -Wstrict-prototypes
->  
->  ifeq ($(CONFIG_X86_32),y)
->  LDLIBS += -lgcc_s
+diff --git a/mm/util.c b/mm/util.c
+index af2c2103f0d95..34cb43b3eaa4c 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1353,7 +1353,7 @@ void snapshot_page(struct page_snapshot *ps, const struct page *page)
+ 	if (ps->idx < MAX_FOLIO_NR_PAGES) {
+ 		memcpy(&ps->folio_snapshot, foliop, 2 * sizeof(struct page));
+ 		nr_pages = folio_nr_pages(&ps->folio_snapshot);
+-		if (nr_pages > 1)
++		if (nr_pages > 2)
+ 			memcpy(&ps->folio_snapshot.__page_2, &foliop->__page_2,
+ 			       sizeof(struct page));
+ 		set_ps_flags(ps, foliop, page);
+-- 
+2.54.0
 
 
