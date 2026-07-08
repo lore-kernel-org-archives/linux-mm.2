@@ -4,112 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7D9FC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 08:01:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A804AC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 08:02:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 858E36B008A; Wed,  8 Jul 2026 04:01:25 -0400 (EDT)
+	id 6FFE56B0093; Wed,  8 Jul 2026 04:02:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 830566B00A4; Wed,  8 Jul 2026 04:01:25 -0400 (EDT)
+	id 6D0316B0096; Wed,  8 Jul 2026 04:02:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 727726B008A; Wed,  8 Jul 2026 04:01:25 -0400 (EDT)
+	id 5E6506B0098; Wed,  8 Jul 2026 04:02:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44B156B008A
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:01:25 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AAC9F90C06
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:01:24 +0000 (UTC)
-X-FDA: 84964864488.07.7B815F9
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F2A664000D
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:01:22 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sVZtVJu+;
-	spf=pass (imf17.hostedemail.com: domain of lgs201920130244@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lgs201920130244@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 237056B0093
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:02:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9F76390884
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:02:04 +0000 (UTC)
+X-FDA: 84964866168.18.173252A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CDF48100006
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:02:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=anY9iFvV;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783497683;
-	b=pN3o0i4YtgPcXp5Mhz4XdxPd/1KH69KlClF+WYxUyBYZJIh0LIKHo84gTuu5BuKBG9ddKw
-	Pca3YsK6rVg5V0wzJlqmyGJlmjJ6QZPs9JPwfurKzapUHjLW595aQacDnR/paYHz4VirSG
-	8MhD2G1eLnRgFaQVmXYkr2hLcnTCdNg=
+	t=1783497722;
+	b=8LqmVEZPVUi7BwWlIdnFsb3tDFxqAN6D54AD/ZCh31EmG4OmIimidSCwfOqcEJZsuBqGQM
+	/I3QKUcMsm59CQvHnPpuige3zA0CnPjKStq1LOsXCWBshPcEm09FheFvSGgGB7o5NQTL4S
+	VuXrMX2frad/ipp8VhwDsyGU/c14W4Q=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sVZtVJu+;
-	spf=pass (imf17.hostedemail.com: domain of lgs201920130244@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=lgs201920130244@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=anY9iFvV;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783497682;
+	s=arc-20220608; t=1783497722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=GSvkn80MrAt5cl0VSMEKjTET3Rwq+Bm6+Heg6Nd7va8=;
-	b=G+xl1LrxUclM/qxJmwra8HMonLsDub8J+PmLRCvI+qr4z+p+ZioR89K4tmDpDBifMUNY7R
-	2O+qGPnNQ/y0Br3SKMTvWKN+tyzG3z1ZpgaaU0unmLpu3aU4SqoKqg+VvbAiTaMwD6O85I
-	BkYNhnw2T2RYsTQ60LFrO8SviGWZwbc=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cacb8416a1so3549605ad.1
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 01:01:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783497682; x=1784102482; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GSvkn80MrAt5cl0VSMEKjTET3Rwq+Bm6+Heg6Nd7va8=;
-        b=sVZtVJu+4gggQMLKk16FgdqJrCBFXRcik46IJRmimc8p+hSTOZA/TsW1fPZtanbfEO
-         c2QDJAMmn13z3PSqMUHsBzRWYh4ax8mlJQsUvvyaIFFngmUZtG7gB4/GrPrZ+P+JLFkX
-         kjSZpYVEEfhqwK9m+FIS9wJGzS/wp8nJDnKyBHn49uI5G2SPqJJnEWuUnZ9FVWIz5baF
-         xxVDA3KMj6ahVjNflkd1x3ARPUS1EakpVu4KzFc6EUvQeLjXVkmLyPPQep+6BO+JkuH0
-         a5YmIaV0s356owcYm9pqR9ytbK2lQTkdMIPEhev99EwL5AB7u1+nii0CdHH5V5x3PU0w
-         4P5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783497682; x=1784102482;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GSvkn80MrAt5cl0VSMEKjTET3Rwq+Bm6+Heg6Nd7va8=;
-        b=eD3WT/S1eU4ZG/+5zu1euWN3GDhk/LdRLhQE5is7Nvy3nq88kb3yKh45o8G2I8/GJI
-         QYBOcWCqunWxHDj0dfcNpRxcDsU/9wqfkco9uzpjJDSlIX8p9/vVpqNqvIKAY+Ie6H0+
-         c11XTT2UsXHcO0NbsNwY2zVnx/sa8C/pipQsmmRQp5QQQecQ/p+j4psFHVCVPk44oGIy
-         q7eXSPCgQtbnvGzLsxuSQJkD72xczFLVU+AsPgRagUnCzi2N1yswYYh90saAfY6jhIl3
-         6xIFfwPYJLzQ7b8jOtcxpSBIQucGH6XyyMq6bnHzJw5vQrvGZpbRrDiBJXAafBCOmzD1
-         r/sA==
-X-Forwarded-Encrypted: i=1; AHgh+RrU7AnKiS6CSnWhBF7d7h1dFrmM2g17113KmTzO7MznX+oR2K2uWili361SH7rqcMQwDpuEzm6q9Q==@kvack.org
-X-Gm-Message-State: AOJu0Yx9mQYteV6qdwCzG07GDIBYnMKE5Jx3vcjTUdQybvBAR04uqTZf
-	gN/7BUwbjVS7h8p2LB0eozW9wlVH8OKibsEiQbiONPT4z9DV2RvQBD9H
-X-Gm-Gg: AfdE7cllYjpM/yTmfwerx+LKQ+iNpwJ3eARQz6Vs60SWhTTAxV+eoKtRJuA90j9erh3
-	Bs1OLH91oflYnesTEVrLbqJwOroXrDPU9qUZGkuxp/oJGiDZIuk+Nuw0iMl7KE2V9k2qB0HiMsr
-	wFdapeW93M/dhrUE5CmeV5jb05uO6GEaq5rN0MLsRjYKT2NeXq3MSQQMxfxgrmo34KHecgZQz/J
-	oPuPEXXjNrDR95d/oWlneyklU/9a3lmbU4JQYHFlORL82A0bkY19HN5JsbO3bG12tsD6Wj+n9yb
-	utgzCVUa4QHEdKUeY+EpEksRIGKvw5uVTygxbc2d9XaHBV7eeZhcCOhliv3M3PiVFokfH3uHuBk
-	8rfNKbIMrWcvPRNGvjyYNOqsKf1P2BORbav+CVkp+94gMEtDPEVHLljdns5PtWeR6NCLNx+Zvkq
-	gEBUmuWdrT+EARhw==
-X-Received: by 2002:a17:903:1247:b0:2c9:c952:6e9 with SMTP id d9443c01a7336-2ccea373186mr15894145ad.2.1783497681729;
-        Wed, 08 Jul 2026 01:01:21 -0700 (PDT)
-Received: from lgs.. ([152.32.214.178])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf77e4sm23942245ad.22.2026.07.08.01.01.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 01:01:21 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>
-Subject: [PATCH] mm/damon/sysfs-schemes: fix tried_regions setup failure cleanup
-Date: Wed,  8 Jul 2026 16:01:07 +0800
-Message-ID: <20260708080107.727043-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fbC2R2B/TJoZXvgq7yPBJZuA/UIk/LBDKVBSzpYKJWQ=;
+	b=zAZoIE5I5GNKw+DRx68nWRuVMSFD5v4jirUb4iXVwlrYXMz9ApMETJ39n2PLNTa3E6t98U
+	GY6TKmjG7t2/N5QlcYJbP7YqgGpqyxk04mPi9+eTdPLfILJLwQ15udFrJFMXmPE8Ugx4Ck
+	hRzNiTB+S/+hn3cQ+iKpp85QTTDohCQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0C7BA405E8;
+	Wed,  8 Jul 2026 08:02:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823F21F000E9;
+	Wed,  8 Jul 2026 08:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783497721;
+	bh=fbC2R2B/TJoZXvgq7yPBJZuA/UIk/LBDKVBSzpYKJWQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=anY9iFvV+9Pi7h4zJsJ8hfBbZmFlrbD8v0wa+xxwMM+w0xEnlPZZXUNCSs0asISWt
+	 wYLf9KT6zqc1EKvKwKkTRfVCTc9koejZG+cld52PacRzqffUCOluc3Kr5Ve/4aps0n
+	 k2DVw225WHKpyOhvNr3cHyj61B/jxQf06AayZWEyf0Bc30US21ppUmrsxCHwSWlkG6
+	 ip2Wl5W/rtGgh0SCwfpvEsQN7j2VRAe6pSaYwGI/5y+Wm04XySNjJb6RUngBsMDpJs
+	 20AZzkrpgToSUWmVr0wsemc9PdNW+4ZKwlcYeNV2gTRSzK9+9edjDohhSRCR5AfhqG
+	 jjhgiLFK4ZONg==
+Message-ID: <876c533f-6709-43a0-8595-143a8b9c9201@kernel.org>
+Date: Wed, 8 Jul 2026 10:01:57 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] mm: Standardize printing for pgtable entries
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Cc: andriy.shevchenko@linux.intel.com, usama.arif@linux.dev,
+ hughd@google.com, willy@infradead.org, ryan.roberts@arm.com,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org
+References: <20260708032824.969752-1-anshuman.khandual@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260708032824.969752-1-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F2A664000D
-X-Stat-Signature: qu4skw1t35dmu4tx58i936bohrn4y7ws
-X-HE-Tag: 1783497682-964215
-X-HE-Meta: U2FsdGVkX1/qxfFCum5K8rwdYZoJ8+kqNYvSpMhvCudBcDy/ax+ISBx7yrq2U//ss/rZ56dcV49csKq/nCLVhnfaXjPFMpgMS2BW04PSh8w1zzkABn/qK1Ch4DfvKwPyqX2cnzG3XOwsBp1F+BORbd542U07O6LdysnscYqkRJNpPDP+oTQk057QUvLr9BXxuuqA4bpuK87mP7odSQT94T611h08sqOHtl4YfOM0niS+VM5tMKxznUf/PIWqj3upHXm0JohzQ/X0Iuj7LkF9O2k6Vzt1p7Atgp9SpfTCxouqU9UC1wRBwU25JWc5rEwR4SFh0W7K187F0kndSbvaCpuyCTyNlcMpA1ANSQxtIZ/KF7LxCUDwS/B03ezKHwUn92Jg3Ip9twuJAVd9epP/i0e1LJAZhcHnf6Qzst5yfTZDAwvq/lcFmLL+dIwMCyHY4eROkzgBgOyUEegq6gDliQtLm8j6Ian4JsMLiZkPKcIsoXPATlieiTpQR5/OO9zFIICmMXLn08PfF/UR2z4DLsH0zrywLG72FRbaACDhrqturUhKpsrHVstWIGLdhcN/2utxqxWzxJmuRQFyckDZzDBDuu8LY43OMpJbPGjOIpa42RGqcUbWxQChpmsiDllpegveUKX6idC6o0lA6W1XD/MzbIQs+XkeRprJfi/dVSX4jJM3q41tqhnTzK+r7VgNyinNmmSZcRI8fsTRwN/emlb90QyUOus2XdawE85i+4J6W3bwuLIZsfjXCXnaMQ0Q2gSn3syGZmgU0Ci76oDu6xJ/5Cje3B+1r46NOWFgUXZ4icGdVzXWa8LuwG3MNld9Af37l27q1DcscUF4PWOAprn8bA6KALbSHcuYutHIjqrM6UW89BsBnZ2uLZ/x1/KeSiOwcj1xs2TtINDthWGF1zOcpc5lzcaFoH40IzXpXf+H/S3ZW9Uh2YpYZ/cgEP4OVL2EXb8XjrliDzn9eSb
- sNU5tnkp
- +J7QnWbcNu3ov0sHn082AilHsArfoxPtRgRIYOZriEpV8moFQm8KzBuGFrs/4mFmf9LVdEqfWJfQliI9zOuuOAri/h1ghi8lo/aGeLcvHForOLt7/GrmAT5sr/F7xpYCW8J5lBY8nBxf7R9ydFokg87wrS/fQh+XzPsXcqJj4V8Zcd/D394pPR2ZdepFRkB9yA5hzQ3RR7dZf7+A+ijbuVbrdN/ZGOYfbL+NrnGjLj08PmiZHK3GE+hrQJQ6iTw9nriP9R7mdqeT8zp/G2wiTH7PNDWuonpfEuthNnG4ZUhlQWSJafDOJdUMs8wl5aMaKCrIlCh/rXiUPPQoVPTU8BqDbLmaw3V8Mq2aRAx0Okn3BPiDFwC/A85+KgEQuEwhyvEQPKa3RQTUSkJt6WLOD8GgNw1buyoPY7faYi9tW2BEwr0Jium/FRlX5f8CzI+gh0Vmbz2aOcmgVZ/k=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CDF48100006
+X-Stat-Signature: 7qdcjxxjnp5b6swhfswh6hx39kzcts4n
+X-HE-Tag: 1783497722-665540
+X-HE-Meta: U2FsdGVkX18oEiWYY5Nm9ZncCbxt+gFRe3V79OA+aX6vAnuMvyiJtdrZUvruyQjP0+4nZ9LiwxIeHit43x+JE73yZrdofW8+LZ01enPQPewzEx6EX6sU3+8ZF2cEn8Rojzc5Ju3G5O3gkvjwrDVmLjWTY/l1xbXwx31yb7jpqKdE9SShQVEc9f6YapGVvg64Otk6LcxkvGrw+bB3YXWhMQWWljmiKPMVCQNEMmtovEvWZLvlelMPd5BaEQbZGCfxrG9nzDIFRadHknKPfgpKnzsILV6+z+jhQnwRhC97cUQCWhIyQ+7y2xroV5fmh5XQDgKTY6ngE1tnhgHNka5ss5S2vkltWYOPTbuZ+mGG+2OLyKWP5uFnb9gVs/7Eph9Q752KafsjB72fGgvBa0l91clfIMPvBBgZrZFZqNGjrD8a8TskWugpJ0VIZAAbBcjVmSCnGbvx6wFugHnF+7bdN5Cev4WiHhybUUN1KDTfQVYIYg7g0vDKRXLACUGwehtVQ045cRlF80GUczzpW15pdSKQm9QiUIY075KhuayrfbIscidwYMRv6mTS+lkjtfoptZ1M91H9gyosJfKLuoydB950G2CvyztRTZ9d591HwG50sIlOmpCw4TD6wwTcsFslq+HkcW1i83NjIWQfMooS8Qn51exmmDYoFhZ7t041KP9FPjqo6dvvctax7zI7/TPm+mn0D+5MA0WTH5TwL9iQ0WlCM44uzn3fcKMEMqvNugtl8SulvfzD71Kawmq2ML8nnN2no//0h1IiSMydDNCTB4qpLiq7f0cVdeE8DOQmjR7pY4mIugA61wXNgzzAxoNlfbaaV9yWhxX0TVfKaei0WL68CRDrr+Mdy70jNYSK97kl54mJ0DJDeYGvfYHczqMjwWYz/dGxipSqmER1Bl1N50t8S8VXpL449lsm1WVaGDS/dyGwiLOXc97KF8kv6lrkrTWAQtAA0dMGONJ73sa
+ 6vfmWiWP
+ pq4M2TzBXz/1HdId9cJ5dJcaVyHCfOnDJbzUL3Kvb9cJL0qLZhsS50ra+zFWwUgHWfBdZigJ3DFdNW7c2t5D4it3WNokzDKbNhrRCiemIp+3zfIP9G50/adZ1bGSJiF0TPbpRH9bTK/2wqqrlptguZW08M5h4tmRmXVYuaNpTSLFdCQykWW5vtP2x6eG33U56j7z+OWyMrsCe9t5ecPFDt1byuVRipoMsf4k7V02RDRW3S+4sotrhyo9nRjqYLdZD8SKvChjOf/meNtNqktit119yC3uZCYoLt2kkrM0d5Qs/tm1Xj+L2JK7JW8N6K9r428Szb/rmldfprAFFpLSLhJXPQZO2nYpKGqMadMXEojkEWLj3o8eaUdf1uH5V6vd1euMVxQJw57qKZ+E+iI66IzhY002LM6gCjsTcvlGsbbnzddsjrOAjNBgafme8KU/SkmqemlBLiuKIrzA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,50 +138,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_scheme_add_dirs() sets up the tried_regions directory after
-the stats directory has already been created.
+On 7/8/26 05:28, Anshuman Khandual wrote:
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> 
+> Bad page map reporting currently stores page table entry values in an
+> unsigned long long and prints them with fixed 64-bit-oriented format
+> strings. This is inconsistent across call sites and does not work well for
+> architectures where page table entry values are not naturally represented
+> as 64-bit values, such as 32-bit or 128-bit entries.
+> 
+> Introduce a common helper to convert raw page table entry values into a
+> fixed-width hexadecimal string based on the actual entry size. Use it for
+> bad page map reporting and for dumping the page table walk in
+> __print_bad_page_map_pgtable().
+> 
+> Pass page table entry values to the reporting path as raw bytes together
+> with their size, instead of forcing them through an unsigned long long.
+> It keeps the printed output consistent and avoids truncation or misleading
+> formatting for non-64-bit page table entries.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-If damon_sysfs_scheme_set_tried_regions() fails, scheme->tried_regions
-has not been assigned. The error path nevertheless jumps to
-put_tried_regions_out and dereferences scheme->tried_regions while
-trying to put its kobject.
+I still think you should add your
 
-This can dereference uninitialized memory because struct
-damon_sysfs_scheme is allocated with kmalloc-style allocation and
-scheme->tried_regions is only assigned after tried_regions setup
-succeeds.
+Co-developed-by :)
 
-On tried_regions setup failure, start cleanup from the last successfully
-created directory, stats, instead of trying to put tried_regions.
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> This patch applies on v7.2-rc2
+> 
+> Changes in V2:
+> 
+> - Dropped space after ":" during print per Matthew
+> - Dropped CONFIG_CPU_BIG_ENDIAN per David
+> 
+> Changes in V1:
+> 
+> https://lore.kernel.org/all/20260707041703.658021-1-anshuman.khandual@arm.com/
+> 
+>  mm/memory.c | 98 ++++++++++++++++++++++++++++++++++++++++-------------
+>  1 file changed, 75 insertions(+), 23 deletions(-)
+> 
 
-Fixes: 5181b75f438d ("mm/damon/sysfs-schemes: implement schemes/tried_regions directory")
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- mm/damon/sysfs-schemes.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+In general, LGTM (I wrote of it, lol)
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 329cfd0bbe9f..0668a0e53971 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2516,12 +2516,12 @@ static int damon_sysfs_scheme_add_dirs(struct damon_sysfs_scheme *scheme)
- 		goto put_filters_watermarks_quotas_access_pattern_out;
- 	err = damon_sysfs_scheme_set_tried_regions(scheme);
- 	if (err)
--		goto put_tried_regions_out;
-+		goto put_stats_out;
- 	return 0;
- 
--put_tried_regions_out:
--	kobject_put(&scheme->tried_regions->kobj);
--	scheme->tried_regions = NULL;
-+put_stats_out:
-+	kobject_put(&scheme->stats->kobj);
-+	scheme->stats = NULL;
- put_filters_watermarks_quotas_access_pattern_out:
- 	kobject_put(&scheme->ops_filters->kobj);
- 	scheme->ops_filters = NULL;
+> diff --git a/mm/memory.c b/mm/memory.c
+> index ff338c2abe92..a2b63af82792 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -519,9 +519,48 @@ static bool is_bad_page_map_ratelimited(void)
+>  	return false;
+>  }
+>  
+> +#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
+
+We could reduce the stack space for !__SIZEOF_INT128__, but not sure if worth it.
+
+__print_bad_page_map_pgtable() will currently consume 132 bytes for strings,
+guess that's still tolerable.
+
 -- 
-2.43.0
+Cheers,
 
+David
 
