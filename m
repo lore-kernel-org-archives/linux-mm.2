@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECEB5C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 01:33:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B38EEC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 01:33:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA70B6B0095; Tue,  7 Jul 2026 21:33:03 -0400 (EDT)
+	id 50A1C6B0098; Tue,  7 Jul 2026 21:33:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE3E66B0099; Tue,  7 Jul 2026 21:33:03 -0400 (EDT)
+	id 4E2406B0099; Tue,  7 Jul 2026 21:33:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE6E56B009B; Tue,  7 Jul 2026 21:33:03 -0400 (EDT)
+	id 3AA1F6B009B; Tue,  7 Jul 2026 21:33:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 839306B0096
+	by kanga.kvack.org (Postfix) with ESMTP id 06C046B0098
 	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:33:03 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA50F1A0621
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:33:02 +0000 (UTC)
-X-FDA: 84963885804.05.160E581
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 665A640007
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E17240636
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:33:03 +0000 (UTC)
+X-FDA: 84963885846.27.C45892C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D4950C0004
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:33:01 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=heclTDqe;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HXtSayPc;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783474381;
+	b=q5l3ZpqrBX+lF1sPZc8Gxt9gY89oW5gueUCeyaiIijbz7vcrPrZzy+0Y4l5aLqCmm7Dhhx
+	4+tKSo6gYja2slcwRDAOcfgH1xqVCGajQmYy9Kg2Cf55UjdUMP45oLJw8Mx64fgnHUyDLe
+	M1XpVW13dHPXWH8RYwtX9cLeHWg+PPk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HXtSayPc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783474381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kBkRo862BPXwBpQ3hpxe1i0H8YwLqc3ssoJnqfIV6Y0=;
-	b=FIX5WW+UDn88JgATNWOX9fD9T4nsIA5wVBoJ/Ni5tKTFqefIc1+6Z9esa57KFCQmp8EAsR
-	9UIKoEjND4onqinkC4PKXqZEyW0iV1WxHPWsfeWGb1HzCDlaInhSn1idh/DEJR2BKMGenv
-	cLeBMAstmdQGcDIWoGxzuMp0lgNR6hs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=heclTDqe;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783474381;
-	b=KPfeioNkC4N8aovvV+3TpKxf0Pv3Z+TF2pM9eydhnTNQXnMPL8WJ/WMcrLWlJE1qJRQpfW
-	pZ+KztWF1hngjgJ75jAJ0p2HJYJZD60XB0n04sF0MMxjCBxr+xTtluGlI/Xg6DYsmq5Oek
-	zqB/m3XytrIpFPGzeldpZo8CFgPwzrI=
+	bh=FjsCU14SCNwzNXGXZ9ta5DksRZeNC0xj5z1tjd9bQ8A=;
+	b=PBxazDULvjRmfqeSSGgOFBP7ylWTr4OCenscAo6+bQXH4T6ZSGRz1vvP6lcDVutMLZyYCv
+	7qzhP0PncZ+WAEffO/SvMbE8FNbS3xhz4CY5pMowBOQuqO7lfw/Ceqh+2eCOMchbjbGDF6
+	rYudrbf1AIcrGlyOM6E+VSEl1tRO7SI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0632D6111A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C11143EA5;
 	Wed,  8 Jul 2026 01:33:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AB21F00A3F;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7431F00AC4;
 	Wed,  8 Jul 2026 01:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783474380;
-	bh=kBkRo862BPXwBpQ3hpxe1i0H8YwLqc3ssoJnqfIV6Y0=;
+	s=k20260515; t=1783474381;
+	bh=FjsCU14SCNwzNXGXZ9ta5DksRZeNC0xj5z1tjd9bQ8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=heclTDqelzIekG/623CyypPelqAkSlRKqmiD9kNgKNjZlvl7P3OjN7wp2jZQmXQeN
-	 MN8UTOd6OIgoV1Iwoh5f44qXiY+LT4DduN63cmlhLSYRrRhMJti61K+amLF15XtzwN
-	 XKgcLDpXvJfeMcsEKqW2TvtUVMFljAooGW1pyLM7JNFVJliBleXVawnwvvIuxEJ+Ul
-	 09kVtdjB/GG1B5u7lOVsH8MAFJQIWlyVKyFKeD0m2G2953uPEurQQAYY1HC/iKLROt
-	 d4turGu5ecfBAmkZbw0Y4syBRZBlEmqK5uTqexksn2oT/dLUjrHioPl8u8D2jMkFGO
-	 1F+aCf179RBtQ==
+	b=HXtSayPcIrnTvIdhY8+194PjZp5sGsg8Medv91bhy97ot0hoTraDvNj6fY67jTCty
+	 1crqQ1KHRomInq0HarD9mAMRIP6O2ltitsb7TrClu3EKRXJXZtsNmUtIqXsKAIc/60
+	 9YNCMrGTDpwghpF3Ij+LGyiCDSA8HvxtXN8FGl6vsS+7KdpwEemGxB3mhzFMBdBQox
+	 a77Pv25/e/n8oy0/GGaJI+dj58tYYzMMs+3TP6isNqHNsMbucvMVl8zlYrNQCTl9x5
+	 SW7YSmh8DN6+1y59qrNK2RaynXKD1tKyZkDOX/VTiUO+UE8czZbjBL0eOajGc+F3of
+	 Ez//E7Q0UPrCg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 6/7] mm/damon/core: update probe hits for new parameter commit
-Date: Tue,  7 Jul 2026 18:32:49 -0700
-Message-ID: <20260708013252.95888-7-sj@kernel.org>
+Subject: [RFC PATCH v1.2 7/7] mm/damon/core: handle unreset probe_hits in probe_hits_mvsum()
+Date: Tue,  7 Jul 2026 18:32:50 -0700
+Message-ID: <20260708013252.95888-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260708013252.95888-1-sj@kernel.org>
 References: <20260708013252.95888-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 665A640007
-X-Stat-Signature: kakbqutg5i18uc4xegpzgmx3mqi3ub4q
+X-Rspamd-Queue-Id: D4950C0004
 X-Rspam-User: 
-X-HE-Tag: 1783474381-140360
-X-HE-Meta: U2FsdGVkX18pBQYfxJ0+NxjDH3+qc9Epzi76PDJTE3OL414x6RixQQdAkLrWrY23qfRfkVX1BBnGrGr4fAg+XzOi1I67KjdX6DFzGOQ1maS/qEhlAODXD59jNaPxSolqe8Gr0FaRtAZrja3pCBcDnxUFEVNaoziRZpnNyiWd9LV80GUs7efO4xVfTl2oQi+kABvnBc/8Ekh7oS76vKqiExXnCUMCsntLlIr8UD8++f/m5BT/Pq3ZU7kI+5P4AKt0oYcm/AQKySjfmrDnpWVR0VLknhJaqP8Cxiv2aGD25yRPBsn9z/kmhX9iITDklHRvZTecXjiFzpTpPp0gvQLYq4hVnfJv8nxCroBRytfc/Bikwh0S5TktihCmSBbNA9QDAZUxEpOvWVAgfupdTzoZ/wwYE3LFXAhF38XwpenhA3uaJwWmNN2/w5B8KBBys4ZMuupR1Ye5pIRzP7VhidAYNLFfeST28vXk8D7uUNlxnVmqjtdrN6E22ipc8QPAVS6OJnY+Yn1Rqfg0v9WmwzeuOfbyV/HVeMwCdOIOz77Uk5vRXCSYquQcouZ8zS4hKpeBAApEqgCa/FGJTDQrtHUfTngWf60s6atVdWR/rBsps+gmZ+nNvuc0q8H3XdMY+DHMkpuR1I7MaXSUfF0py3g14ScUUbj30IVec554pmmthYyLTlW9aHYkjELrlifT7rvsX5etGwET2TaHwTGUqNWcrdoyRZxv6YbC5ZY0kZwVLhwGPnENdn2p52iN/mIDnROmaZnT7at9mMV8z5YIIDwb7eMI2bqLLcZroQ7TI9evz7lYSQWs/eBTNzbFZxTvk6gkMl+GAbd+/cgEfQ4aeSWigtBqi2vjRoQlV501NK0AQ4Nxwq+E+pGadX9mkRKwDJvXBWkcDEtck6HeZX13xBUqNFWAZk8Il/PZwxXp20aDryBgJlJOBZPoCS8HANKQEbW+8ilRfd9tvxbUyaPAf4a
- xcyYpxTh
- GumtrtD4kNR0q8VnY1ruVj46wCg0NTMZfEUlgoO/z/Z7uD/pDRnCiHNnCZaOIF2oN2nqYhL0AM7/TPpT3rjBmaxaFbEPH10vLeZfwY4OkvT4xrE4cRMPTfh2+j14T3/DsmunYEabKiBsnGEu+Gk8Ct4iy6JeeKifdq9BEjfLptG5YbEnKuAl0+3+Br5/bqn6FmOeEojg/ARZnMddneZdTXyI7nfyiBHO/T2mtwVnsis3yogE=
+X-Stat-Signature: w1cuab69cht6iqqt86wh9h5f3weax9yu
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783474381-90395
+X-HE-Meta: U2FsdGVkX1/ZU16W7GpWjuqRudfatJCXzLoijo1SS5i0hMZUkIfe2lxqAhLHbm9pZ8A8lvuJKTw0YO7jUdotvbkYD7/unIz9QSGKzFH12SX5Wbf8X98aSpi4JKvLx01p/lnEWkzU0DC8O4lR9A00q8TswddtdgRx5nWGVnGY75EpuBF6GMeKm4a/i5CfcyRyKofHZKc5WjMdRqpwgEsOAWFYkbzfFD7bcXRJt/Qcane9gwdvH+KtqA6ToP+89vgK+1+33sJJu1ey+zRNP21N2ZXE7yeKylyCeqUljZ7ZdLZ840C3Tre8WPr1KzfE7fUgz+xcGras/DqP/ybru3IKruvps1Q7WpD69aVYzD7NQiq0M+ALyM514rKZqO62yhmVZGmjUDKmWOUHZbUSZ8bck72UINzbtFSdrl/B2MUQz0L+9x7I85Pxp4Zrp6BNJfshzOrfYgRzlKu8sc8f47z3eN5HuK9kS8G4dWWhA938pyWZ5hVtjoOAX55XeMv0YtNrGv9jGj6btKpZlfiRYrh3nMyJsVc2ONX3w0XxPyjux1ZvufPiJb/NYGDRrQ/jWj82suLgMg5tYzjA5usN5kyFVuyYH8+V8mHgc34WLWx33rcNSK3ZKr4Cix3Ae8tIREbsfsgthiMgz+EMC/QZnxICJ+zIWDoixDKFArk969jlmpxOhCMv9v5k2PStBane77emvrP9+lmhrXaW9EvJjkuIrycdOG/qqK45Z7Z89p/kwaLlsTHgYcz2+dKlLGOIOFMvHPQN/aC8H9JJco7qCCShGS/1z6ADJz9MfK4ekxkGQpdVpjk0zGn8j9lMlfKpJm0USOgsJpR1Z4Io8g3Q5QWc3PT7yfkG6v77NH9kn/c595znqJPMpsxguUFjpYNZx46hQB4NF1QVxV2rOi6knizimf/1WKAQH+t7dPofsqTcENJ95cOuoWR7/I2Y3q68cleG0OyZ1mtvlYceo9VgZfy
+ G6wh40CZ
+ n4o1bIhijXwV+Xd+5vDOvUVJTDIJ6R4/lzEq4X+onQ1a7w2PvC63oz7qZqjmB1jVUAk7Mrzp+0v/8+7F1UqqGI2YXZpdlxZEm3Mejjnl72HeFSYC8Ie4mVjKPzl5EzoqbYrhhIw51ObFOGabYjfjL6pc+BmQNxMngCNbyi+6WJMJDPEQTRuwmhT6D/O9QGB9BupgjEbSS/0JZg6teTgp60sT73MaNxlxuF7NMVXZiWmYh24gNRB0oL9bhVh/CrXbYLS8/RktE2Ts9WS7kTeNKeMJf6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,114 +93,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Users can update DAMON parameters at runtime.  If the samples and/or
-aggregation intervals are updated in this way, monitoring results
-depending on the intervals should also be updated for a more accurate
-snapshot.  The age and nr_accesses are properly updated, while
-probe_hits are not updated in the way.  Do the update.
+If damon_update_monitoring_result() is called at the end of the
+aggregation interval, probe_hits is not reset.  That's because the value
+will be exposed to the user via damon_region_aggregated trace event.
+
+Meanwhile, damon_probe_hits_mvsum() can be called in this state.  Due to
+its logic, it will return a value that is incorrectly high.  This could
+happen  if the user requested DAMOS schemes applied regions sysfs files
+update exactly in the time sequence.
+
+The impact is minor, but better to avoid.  Check the timing and simply
+return the fully aggregated last_probe_hits, like
+damon_nr_accesses_mvsum() also does.  It is not 100% accurate since it
+is the last interval's aggregation.  But better than the value that is
+completely reset.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c             | 28 +++++++++++++++++++++++++---
- mm/damon/tests/core-kunit.h | 13 ++++++++++---
- 2 files changed, 35 insertions(+), 6 deletions(-)
+ mm/damon/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 800ff6b6d2473..15d31285515d6 100644
+index 15d31285515d6..11473aa1f70f4 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -897,10 +897,32 @@ static unsigned int damon_nr_samples_for_new_attrs(unsigned int nr,
- 			damon_sample_count_to_bp(nr, old_attrs), new_attrs);
- }
+@@ -290,6 +290,9 @@ unsigned char damon_probe_hits_mvsum(int probe_idx, struct damon_region *r,
+ 			ctx->passed_sample_intervals;
+ 	left_window_bp = mult_frac(left_window, 10000, window_len);
  
-+static void damon_update_probe_hits(struct damon_region *r,
-+		struct damon_attrs *old_attrs, struct damon_attrs *new_attrs,
-+		bool aggregating, struct damon_ctx *ctx)
-+{
-+	struct damon_probe *p;
-+	int i = 0;
++	if (left_window_bp == 10000)
++		return r->last_probe_hits[probe_idx];
 +
-+	damon_for_each_probe(p, ctx) {
-+		r->last_probe_hits[i] = damon_nr_samples_for_new_attrs(
-+				r->last_probe_hits[i], old_attrs, new_attrs);
-+		if (!aggregating)
-+			r->probe_hits[i] = damon_nr_samples_for_new_attrs(
-+					r->probe_hits[i], old_attrs,
-+					new_attrs);
-+		else
-+			r->probe_hits[i] = 0;
-+		i++;
-+	}
-+}
-+
- static void damon_update_monitoring_result(struct damon_region *r,
- 		struct damon_attrs *old_attrs, struct damon_attrs *new_attrs,
--		bool aggregating)
-+		bool aggregating, struct damon_ctx *ctx)
- {
-+	damon_update_probe_hits(r, old_attrs, new_attrs, aggregating, ctx);
-+
- 	r->last_nr_accesses = damon_nr_samples_for_new_attrs(
- 			r->last_nr_accesses, old_attrs, new_attrs);
- 	if (!aggregating)
-@@ -940,8 +962,8 @@ static void damon_update_monitoring_results(struct damon_ctx *ctx,
- 
- 	damon_for_each_target(t, ctx)
- 		damon_for_each_region(r, t)
--			damon_update_monitoring_result(
--					r, old_attrs, new_attrs, aggregating);
-+			damon_update_monitoring_result(r, old_attrs, new_attrs,
-+					aggregating, ctx);
+ 	return damon_mvsum(r->probe_hits[probe_idx],
+ 			r->last_probe_hits[probe_idx], left_window_bp);
  }
- 
- /*
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index b2a280556b841..219d02c98624a 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -597,32 +597,39 @@ static void damon_test_update_monitoring_result(struct kunit *test)
- 		.sample_interval = 10, .aggr_interval = 1000,};
- 	struct damon_attrs new_attrs;
- 	struct damon_region *r = damon_new_region(3, 7);
-+	struct damon_ctx *ctx;
- 
- 	if (!r)
- 		kunit_skip(test, "region alloc fail");
-+	ctx = damon_new_ctx();
-+	if (!ctx) {
-+		damon_free_region(r);
-+		kunit_skip(test, "ctx alloc fail");
-+	}
- 
- 	r->nr_accesses = 15;
- 	r->age = 20;
- 
- 	new_attrs = (struct damon_attrs){
- 		.sample_interval = 100, .aggr_interval = 10000,};
--	damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
-+	damon_update_monitoring_result(r, &old_attrs, &new_attrs, false, ctx);
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses, 15);
- 	KUNIT_EXPECT_EQ(test, r->age, 2);
- 
- 	new_attrs = (struct damon_attrs){
- 		.sample_interval = 1, .aggr_interval = 1000};
--	damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
-+	damon_update_monitoring_result(r, &old_attrs, &new_attrs, false, ctx);
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses, 150);
- 	KUNIT_EXPECT_EQ(test, r->age, 2);
- 
- 	new_attrs = (struct damon_attrs){
- 		.sample_interval = 1, .aggr_interval = 100};
--	damon_update_monitoring_result(r, &old_attrs, &new_attrs, false);
-+	damon_update_monitoring_result(r, &old_attrs, &new_attrs, false, ctx);
- 	KUNIT_EXPECT_EQ(test, r->nr_accesses, 150);
- 	KUNIT_EXPECT_EQ(test, r->age, 20);
- 
- 	damon_free_region(r);
-+	damon_destroy_ctx(ctx);
- }
- 
- static void damon_test_set_attrs(struct kunit *test)
 -- 
 2.47.3
 
