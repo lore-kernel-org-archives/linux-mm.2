@@ -4,123 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC707C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 15:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBF32C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 15:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADD9E6B008C; Wed,  8 Jul 2026 11:39:24 -0400 (EDT)
+	id D88606B0088; Wed,  8 Jul 2026 11:44:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A8E726B0092; Wed,  8 Jul 2026 11:39:24 -0400 (EDT)
+	id D315C6B0092; Wed,  8 Jul 2026 11:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A5236B0093; Wed,  8 Jul 2026 11:39:24 -0400 (EDT)
+	id C47DE6B0093; Wed,  8 Jul 2026 11:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 728F76B008C
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:39:24 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BB5E6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:44:28 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2E41A01DB
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 15:39:23 +0000 (UTC)
-X-FDA: 84966018606.01.B64C218
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8A4E01C0005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 15:39:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XjjwPWtF;
-	spf=pass (imf20.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783525161;
-	b=TnCIRKmiMFiKtl9jtSVgWUHbWKAmdlxD5Em2Wt9zCYBDD28jIK5z5/VCAZHE4sWi3V8xBK
-	uIoUjbrwCVYnq36ZXv6RzTHbynmZLMuiidYxT8Vte+yQZBqaX+GQ5Qn8cgihDhTacI90i1
-	8MFBAeagqR48d23K+tp/fybksc1hwyk=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XjjwPWtF;
-	spf=pass (imf20.hostedemail.com: domain of chaithco@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=chaithco@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0C9788C200
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 15:44:28 +0000 (UTC)
+X-FDA: 84966031416.01.1C1A989
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 4D9F814000B
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 15:44:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gD2LbyFU;
+	spf=pass (imf23.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783525161;
+	s=arc-20220608; t=1783525466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zBiHyNBlQUysgWQZDi0Q5QxcKieaA1+OV3DOTBzoFAY=;
-	b=gxUDrr+jfSZFYLyG206plNBTPSGru/mtaUYUnVCbJEvweswpjJH74TOVmwFB5riX8H+Y2P
-	LZ0X0szGYNi0uYz/SrE0xV4Qy9QWZA7c56J/512cW0XjZaPm0fvSzLEAJsIuEeFjLGxfq+
-	GhvtSHYzPJNNK0GiBCLqILQCaP3Ybbw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1783525161;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zBiHyNBlQUysgWQZDi0Q5QxcKieaA1+OV3DOTBzoFAY=;
-	b=XjjwPWtFHZ8epWiK8c4f79R0BBZdYSaD5Y93kUw+EQDeDKJqej5GdvlfmW5XRrey5/5RPk
-	hw+CPE7oOZN3VUZAcAEyaDuCZvPgk5Ubt86FW6dTWGhOWgoCbIwwbIkOACAybqvAYZZy0j
-	f2SGP93oXfTIdtncLrX3E4c6lFRyeNI=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-383-vEb4QUcoOGGSe9GJkPX1dg-1; Wed, 08 Jul 2026 11:39:19 -0400
-X-MC-Unique: vEb4QUcoOGGSe9GJkPX1dg-1
-X-Mimecast-MFC-AGG-ID: vEb4QUcoOGGSe9GJkPX1dg_1783525159
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-4893fc86bebso1176035b6e.0
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 08:39:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783525159; x=1784129959;
-        h=content-type:mime-version:references:in-reply-to:message-id:cc:to
-         :subject:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zBiHyNBlQUysgWQZDi0Q5QxcKieaA1+OV3DOTBzoFAY=;
-        b=JyfpgqA/n0foepjpnPwRUHf+W/7IF8Flw2LYzqyYpY3KGE35qkARzE+CBVvGuzbmot
-         9dqc4JZ8mCvi+iks4cWjYxHIuGqnCQVyn1CcpYBYr/qoycYHgzXwzLfNQRL8TpjCeFji
-         EubLQ5SucmyCjmAoLqzzw6yFdtA1Hg6m2Xte4fbRiV7G9Fas/7kl+yX9npJFJIldlsGO
-         goyLJvEVwhobfp4Sw9iXUz1desN4yj4qN7P+SoHzJ32lPgM7h2VQuSCNR516QnZvA5IK
-         8rfFXtXyGT6BbwdN3WYa1MUI56e9GUxOlhh5QD79T9yD6BzCQasEx+qPBFzJmSDRsoEw
-         aePg==
-X-Forwarded-Encrypted: i=1; AFNElJ8UA2yq0OPK5UFXZrAq0H1JGX2Sf8bIsLoNNtUhVm9/rWV8TtsjtniOKaFYvWgRxYDZDaKvm9XUUQ==@kvack.org
-X-Gm-Message-State: AOJu0YzbxkaPh5dxiSsHk/FRaAEiwJ1ZQXjnLcp4F1gX9t7Ppzq7gpRl
-	GSaib2q+W75ejewJ+MSj9x6VUzTrfY7QDN1rji/IqJ1fBhH3B4lktqhuVjSLx3W5Q17xnYxfVgh
-	Ge+qg/kY/Yn3JywFCI08Ein6OWu3hL5O5QnAbXCVveKX0wi0Tm6OV
-X-Gm-Gg: AfdE7cl8u2U14BC57HcSTCn4/dBP79bNVZNUfVgs2tJYGRXxb/scgXd5PCZ/7wTHbwn
-	i0hISZjde4JtT2DfdciLZx2fB/tVUokkWFm2VFlYC9sFm9/oegdfA9olI1zwROcWDi+iaCKSeEZ
-	B7kJhzmr7Jx6ZfVejBJ1KETVNEt3ImYscEFlybJUvoJEfrYeg/Icj+ZuTQaPIXy33xxOZVhe/3n
-	CIeFUcLYeTHXV3jvTY9oVmspCrHZ4W1wRzOLp1tdGFJ2e9rEB8MUqfkqZvbfn/vJwpNdz3Km3uL
-	VGnfDs6GPHl+YSmPNb8rEba0K77WAcl+XWJcNJOUBE7H+I3u0M7jamESJEbaQ0y1O94Go9W0JwY
-	0KEYeluDcD+23Vkp+V6/DivvvforHz7wSqfXSiNXJlmc=
-X-Received: by 2002:a05:6808:17a8:b0:485:a99c:cfe3 with SMTP id 5614622812f47-4a2062141a2mr2582661b6e.42.1783525159063;
-        Wed, 08 Jul 2026 08:39:19 -0700 (PDT)
-X-Received: by 2002:a05:6808:17a8:b0:485:a99c:cfe3 with SMTP id 5614622812f47-4a2062141a2mr2582624b6e.42.1783525158649;
-        Wed, 08 Jul 2026 08:39:18 -0700 (PDT)
-Received: from [192.168.1.59] (184-96-191-56.hlrn.qwest.net. [184.96.191.56])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4a1b02e5abbsm1924246b6e.15.2026.07.08.08.39.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 08:39:17 -0700 (PDT)
-Date: Wed, 08 Jul 2026 09:39:11 -0600
-From: chaithco@redhat.com
-Subject: Re: [PATCH 1/2] mm/hugetlb: Prefer mempolicy nodes for calcuating
- surplus hugepage reservation
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
-	david@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	arozansk@redhat.com
-Message-Id: <BT4VHT.DYI921C1JF9G@redhat.com>
-In-Reply-To: <20260707193358.3434034-1-joshua.hahnjy@gmail.com>
-References: <20260707182900.483757-2-chaithco@redhat.com>
-	<20260707193358.3434034-1-joshua.hahnjy@gmail.com>
-X-Mailer: geary/46.0
+	bh=GSWfbulqSrBo9Aqd7HgrfFBKoFGaoPICpJEsQJ+UIgU=;
+	b=DerciE9+WAnjCZmRWu6EKLCE7VLQ77xKPh4QbSbMjBTu3u9shrSE0UX30IclidRXvBmguM
+	5pWhNnMt081coOlhMNgVvz0AMaEFHg2uLMl5MecQqmnSWD7G3y3pEFrJAnpMiUNEfh2Qgu
+	XyChqcRO/assVgZ/aL33Fhng0+oy7n4=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gD2LbyFU;
+	spf=pass (imf23.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783525466;
+	b=oFK9oas+t0ABDdHynZExla1lmkCzPqkvBw9F5EsBcp0LzyrRsdb10QxGANqFG0hkjwEFhu
+	ae7s+KHDn1ioY1l2CwDuuNXz3Zu7Nbalu5sF38CpCqKzNJTLbQTSxF/yUtfAMLwRwcwh7/
+	2mrkylLwxr1Jb/czcv7+RiVCosck794=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=GSWfbulqSrBo9Aqd7HgrfFBKoFGaoPICpJEsQJ+UIgU=; b=gD2LbyFUU/rJB39UftdTVK1Cja
+	q3sdym9kOxqYAMbmfziKPav4nzPT4JSbMtHvxwQeDx3ytcuTJBwFJwBc97zAzeMlCXiyDisguVtvt
+	wyyHy1z2GcCskAoHo8RDzXAAOtQGKLCIPaOdRkr7eDMZuk8+fUGnMHJ7MvXRLpHfoEu7OEL1wLRy5
+	lN667xO9g6OfNMUUIz8zasgC9pjdLWLb3eK88bAJv7suItiY5MbVfWXiaLSaTz/OaVAHgDn39nxQ1
+	xg2Ys7XLRA8p1v3s/W22OY8/VYkESKQVa9/sGygnZW9/agP95YNlCUtukBVeY81mBjinJDsZo1Rs5
+	vyyWo6tg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1whURh-0033JE-0q;
+	Wed, 08 Jul 2026 15:44:21 +0000
+Date: Wed, 8 Jul 2026 08:44:17 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Liam R. Howlett (Oracle)" <liam@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org
+Subject: Re: [PATCH v2 03/19] maple_tree: Add write lock checking with
+ lockdep sequence numbers
+Message-ID: <ak5v9UDuieA-dNUh@gmail.com>
+References: <20260630190843.3563858-1-liam@infradead.org>
+ <20260630190843.3563858-4-liam@infradead.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: H5SDGpg6PfDgQmJdP8Voio2vGdKvmePSQW3jgg6_Eeg_1783525159
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260630190843.3563858-4-liam@infradead.org>
+X-Debian-User: leitao
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8A4E01C0005
-X-Stat-Signature: 949fi6qbfsyf66tmo98979sk6u5s9oww
-X-HE-Tag: 1783525161-535609
-X-HE-Meta: U2FsdGVkX19vMRrx3wu7pmgVlCbPo05PfyEv6MkSdoJBKXbDf+1uLd4TZQvAWPqtkbNMHrujG1qen1vOHwMP/I5p4zbMyMii3kBA/qX9DHODdBUzHaeyy5NpaY0Hq9ZDXwOE+D7dUolnirWJZaUuJtiellP8Y9ClSm1fBvN3R3FeLZFUBzdchBV9eDiq44Qz26PtL76sjGDk37/V7rrM900wHjeTmGpy8QTcHRISVtzrXMV4kAa3q6wPGa+GfJ8mRc0wsvi3tPADw52Xpw4K0ipoTFcvitDv4UGH0NWs3HiznxPCvYpJcy2opSplqv2fSBAceHx3EDEgA/VzdZIPI5H6LeQodgOQVdwoRkP4nmAJN8xWQy9ecRqNUMnoy1L46wtGTssUEV2Wi5DsQc8sNxxncwUzeeBTRpsU5IHiAgrJj/rNCQfgveR6pS+dLoww/vHyq8KPm9ZAMKHtxSgMFF1dvJWTx0HvhZmsWqA4ouySrUYWNIMrLzHJHjawK8mf8uF1zSsL/XT2vfe7tRd72xHwzlgQKZNFtbrElRWpYDvN/vUbR4P0QCuaclFJFbHcyqkFWV5Ckx7lklbuTdufcznkz3HscIa9Uf53RZO8vDCMyeVomlO9odBRDhBJD2lAyDXczcsowPItx1o5zvZtJVsZMTsDynkISmmYTNS2LmB6/C+ev10DFtk6TI+WKpe7QfRainH943dCDLg2f6MenoHAxp1Lbb09d9U/4C/bW9WPYACNjSskn9dNKQcL0WyHbRiJyNX4x8PrmxSYxe8kqLr2+1jqS1/nHiW7G9e0T9W6mYOgpTBWoiDVLs3mGgs6tu3dXv3bTGoE8k3usaDdsUO8M8fdZg2cVo37Lhc9tg07ZfjzDAQ7ryAAOD4xCQI+Wgt1YkdX2Ni7rnO6B48lbNYe2okmo+bNMNT+jtmL4Hg8ttkqGWqGW37crkV5aG2F2+Kz+2yqib1P5nbQBLu
- qtJBIBza
- eP0lSifnjoebM8mx3FPB9rIgW8pE6NMfOr1B7fEJ71JZD07TktLstYwwdqDUUQ334/GpalUBxFCDeCZXtTRDXQFo7W5LSdo5723Ulcq9Z2JImGXbrbyMITOE1ocGWKpQUN5XysTsXEMZ6o+M/lLc3Mqbd5P22nE35M3KTuNAULcaLeAmdeA32fqeWEu0SORw7dOZZBCQeYh2tTyVF4surLv8xdy/oPxHGvtE71MOsYz0NYAIsXFPy50ovado67HTymSk1Xi9eHZw438CKQ4FP46pv0Xk3Jr66/E03lQpvGyZM1qC3OT9Wz0V//qeRcxKDcV47g0Nf2psshJsnHJtBVzmlyRjrlY9qNs1kzTsmmqmDxIcYHNa3nnb/84CpEDDJnqghWtvdzss1WkWjYYqINTwpzFnsB5rpTjB1
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4D9F814000B
+X-Stat-Signature: semxiyjb6zmgwoq5fzhju5iawqra4hmz
+X-HE-Tag: 1783525466-229959
+X-HE-Meta: U2FsdGVkX18kEYsOAaESSRi9l77Zg6sliuI/1SvyJXKFG0fxUJMzro5bzQtmHwxKsJPExxBwURA2ctUYSdzFro1jLPvcV6HWP5riAcM8CL5cZUoo91Vfs90dFFi4Lv4RwGsgE6E7rYGVe28y/pC7BxVM1KOLZ9SBa35+L9FWPt/eNR3wTSFWoJGRAAQYhoYfuy4sTrA2DW+LSzDgKMZbJNP+/9p+OxgwFH35JCLXaKNO7L3+LhjIEy4MOgO5wNr/UEYRGBHii9LidgZZQRU/sSRRARtkBVwJ54NtRawYQGLa3ngYhqGlAQBpyDx9wJ1Kz+8wNZF829PLtbR4c0BDO0mdYmLwQ/RdTDVIO99vBR8dmTDzmHVRgTLySFh0L5WteQhZl/YF002IMDvpGvoqAi7eQ8LtozUE4OKVywsXJ7koci1v5Xm2+dfMoasCWEKeNpMa4yR+PgvQgfcpcauZ4qD7RXKwcBCEir7NOlUwbYDG8NQQBzDLZjuX828EQR9DejmFQw/krNNjtTg1Rj4g0NG690wb9KMwxCxf8cbD4uVkvgHyx22ZF0fPbe1ls/fH1ZtPyncwjKNF1joI684lRxl9Pv5CmphYirFqWI8AMceCplZVfGGQ8gCQ5jc05NXoT6HM8gDPxAaBGkYDY8XuLA4y2hRRZ0brHKixWFaRaE4tOIGtNpMNb0XcprfNP7O0AWduUTtM/yYx72FXrroixAyQucprnz1ubtKkTqWCO7USiMvFgnH75LKhyvLsIMMtMyhx8YPRWu1HNAgama7+C8UYGLXkF1+XIC4emQDh+Iu/rRQd8oL/SjjAYt9EkeUMt5MkElevu75u2uH8j6qDPIvtkmO6/q/UZFy19K2ZrO7cmftXVqA2n/3xuZXAKMY0owgULtfYGpo6NxvlwwoeUhVQcQV9IABO7oIFEl7Ux39JZsROihEEy0I0O30M6FKtuNtzGJyVj7Bnei7fLBO
+ 4+D7OtuS
+ 1EeFlcK4ZMbWZ2i8GO0xjS9epasVMvXAGOtCl0Kzod9uhPtBwYGzpRl97kIzLTYchbWbA/sqlB/A0CYAz/GRxh2y2gogIEjjbghousLbm4yhV42xkjsOkT8L1bLXNKRkvPSlsdka4MH5YdvGN8CStJ7CJqA9aPn15fkmNji+JtT0llcOuJc4RmCBO0T8CcNt4u/m+b8qeJy7bvRJFFU5Ae8VnU26Z/AHh30RAXmXMcBSQ7zjLFVOFCcd8dtUdg4nK5uuJzZzGch5SL5uLcDR5Q5jSU5Gd2blxeCVsrfVwYFiiPW4Zla3R+/bq6dPq1qQqFbRs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,33 +96,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello Liam,
 
+On Tue, Jun 30, 2026 at 03:08:27PM -0400, Liam R. Howlett (Oracle) wrote:
+> +#ifdef CONFIG_RCU_STRICT_GRACE_PERIOD
+>  	if (!mt_locked(mas->tree)) {
+>  		if (mt_in_rcu(mas->tree))
+>  			WARN_ON_ONCE(poll_state_synchronize_rcu(mas->rcu_gp));
 
-On Tue, Jul 7 2026 at 12:33:57 PM -07:00:00, Joshua Hahn 
-<joshua.hahnjy@gmail.com> wrote:
- > On Tue,  7 Jul 2026 12:28:55 -0600 Charles Haithcock 
-<chaithco@redhat.com> wrote:
- >
- > Hi Charles, thank you for the patch, this looks good to me!
- >
- > Personally I like the description of the commit in the cover letter
- > because it provides a bit more context. Do other reviewers have
- > thoughts on this? In any case, the code LGTM : -)
+Testing next-20260706 on arm64 under a stress-ng + fork/exit/mprotect workload,
+I'm hitting the new maple_tree write-lock sequence check:
 
-Thank you! If people prefer, I can copy the cover letter contents to 
-the main
-patch notes. Just let me know!
+    WARNING: lib/maple_tree.c:1188 at mas_store_prealloc+0x2a8/0xac0
 
- > BTW this is a little strange but Sashiko seems to have failed to 
-apply
- > this patch [1] which is strange because when applying on the exact
- > same commit db6ed2a3d3106 "mm/swap, PM: hibernate: atomically 
-replace hibernation pin"
- > as Sashiko tried, it worked & compiled for me with no errors at 
-all...
+It fires from several core mm paths — fork (dup_mmap), exit (exit_mmap),
+and mprotect (__split_vma) — across multiple processes. The two cleanest
+traces are both in the mprotect path:
 
-Interesting; is this something I need to act on in any way?
-> 
+    WARNING: lib/maple_tree.c:1188 at mas_store_prealloc+0x2a8/0xac0, CPU#67
+    Call trace:
+     mas_store_prealloc+0x2a8/0xac0 (P)
+     vma_iter_store_new+0x2b4/0x3c8
+     vma_complete+0x258/0x7c0
+     __split_vma+0x64c/0x770
+     vma_modify+0x11fc/0x1808
+     vma_modify_flags+0x18c/0x220
+     mprotect_fixup+0x22c/0x4e8
+     do_mprotect_pkey+0x558/0x720
+     __arm64_sys_mprotect+0x88/0xa8
 
+    WARNING: lib/maple_tree.c:1188 at mas_prev+0x160/0x1a8, CPU#67
+    Call trace:
+     mas_prev+0x160/0x1a8 (P)
+     __split_vma+0x658/0x770
+     vma_modify+0x11fc/0x1808
+     vma_modify_flags+0x18c/0x220
+     mprotect_fixup+0x22c/0x4e8
+     do_mprotect_pkey+0x558/0x720
+     __arm64_sys_mprotect+0x88/0xa8
 
+Is this a known issue?
 
