@@ -4,121 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D254FC43602
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 14:10:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 332E8C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 14:11:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0FE46B0005; Wed,  8 Jul 2026 10:10:41 -0400 (EDT)
+	id 273EF6B0088; Wed,  8 Jul 2026 10:11:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC0A06B0088; Wed,  8 Jul 2026 10:10:41 -0400 (EDT)
+	id 24B406B008C; Wed,  8 Jul 2026 10:11:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AAEDA6B008C; Wed,  8 Jul 2026 10:10:41 -0400 (EDT)
+	id 18AF56B0092; Wed,  8 Jul 2026 10:11:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C7A76B0005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 10:10:41 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F277DC0666
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:10:40 +0000 (UTC)
-X-FDA: 84965795040.30.6B9D415
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1E9C8180005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:10:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="jGnRC/tc";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=julianbraha@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E5FFE6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 10:11:09 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 878D38B5E5
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:11:09 +0000 (UTC)
+X-FDA: 84965796258.27.5F502EB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A2AE61A000F
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:11:07 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hN/SiEhT";
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783519839;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1783519867;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AFwfd7Yn4EH4PNUXJ3nn4zm9f+PLaHGLkpoj3xgsyrM=;
-	b=HBfO6yetSTNAq8AStTX9oV7eLkrrqD/+ct8C9KIcBAsYUA11Tn972GIpfP6m1+RBmXGGXa
-	1yiSrf3E8u1Iw2DyvgyvHxzz/oY3Q+U2jNZXuFRih08r2hRsCCqfS8pQqX8LFMu5wKoz6B
-	A5F0mudMvBMN5LD3+H+jBiLJdnFizKI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Ko4Hdlv9loLHMeM4kMSWr4+ckWdvKkB6i/m+lF4LdTE=;
+	b=ReI5UiwcddzFdtnNKXKwJU7eInks/TF2neXd+6NNKWD+oLN/0sQro//++aW97SS6IHPt2T
+	/G6lZv6xVJW/wLPO6WGgprZ8y11DNJd4845CYEUggPeGI7YGNHYEMDgG49UqnjJwZ4jEv1
+	o4cp0R0BXEzVvvAOAPg9XavNBYUr//s=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="jGnRC/tc";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of julianbraha@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=julianbraha@gmail.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hN/SiEhT";
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783519839;
-	b=d63/V2Gz8246Ac3KoRyccbr/mAWnJBTXFdxnqT2feIQsaYYisDq613JQHPnbP+SIl23gDW
-	23sgmtsqu9mOhHJDeIjkimPyaRDVaNCPByA6LrXybu9uLr0I1p4sYT4a8+YOIGT5u4vhHa
-	SjX0Mza3hpjzY+sXpegmzfAurm0b0To=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-493bf73ec2aso4261335e9.2
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 07:10:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783519837; x=1784124637; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=AFwfd7Yn4EH4PNUXJ3nn4zm9f+PLaHGLkpoj3xgsyrM=;
-        b=jGnRC/tc8KJ4aR6VF0+0QrNabceVEiP8XgBvWx8kIT/rBQRk2Puxce+4KKxQM9lYZl
-         Li14jHXbBrYM0PQKbv10iKxDvjw0XZZlH2yMTcGGlt+59oNiS7ziu3wtqDgaH1h8936/
-         aXhKyYK30GyCxB+7fyMZYrsDYGeqKkULDLH5i3GmUxp+pruXTbvURNdCjnKsNlcRHmgh
-         LrEuwcBnGUDy7PK7bYBSA0J/nughrZwqizz1GOtqxokBlUK0WFTLgMM03JJ3/BtaTJh1
-         e8/6J6R0baUeALUZqF84GhC+JK0DE6we/cQ6U7iXNSV2NR+BrnLHCNGMD0koOboPps2S
-         uE9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783519837; x=1784124637;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AFwfd7Yn4EH4PNUXJ3nn4zm9f+PLaHGLkpoj3xgsyrM=;
-        b=mldo2grgRnRS02BnGv4R5qObpUcKey0vhi1Ie/3+IgwQ9eoEV65jaKiTiMIwemkFlM
-         shfh+5It6i/e1zMSp0JjL1fG9h8LRjzoUj4ThD0qlyvwcCIDkkFl+oppE7j2lFWMlUH4
-         p9rbuntwS1SZj2VMLiOvrGgAGDWuAaMpv7yzMm2BgY8oODJDy/eFhqUFiGX2nx91kLcu
-         ctVpwN4VvphFv4MMJDYMxVvs5+9xxgBCA1uifGqEFQ1saoYG3ZYmxptUBg8lRiv7/baJ
-         23VjmqfkvCC5sjGFEG60MJZwOy8QCZxyN6hOqJxWkTq5HeMUZ9XhXwgFU9W1X3DYMkpC
-         5o6w==
-X-Gm-Message-State: AOJu0Yx7tF6XyIinTG0an5txxSUuOJ14BdxsAEduDVntcgk18dlh2Ucc
-	7k3prNbU0iB1RYYZwieKRGOev1HAhW02fhWe74QDY+sDXs1UCe0FkvlI
-X-Gm-Gg: AfdE7clicNkat5H01jfc6zrnP2gXxsvWLVqdxikpqxD1/jqCRMl+g43puH1wlY8PN8V
-	tx1Kmvfrw1MqYdlCj55Vnquv7fOna4XHoqTQNjpEtKjFbg7oZ14D1nDHLHVR3vwpR1Xq59SUc9u
-	jh98ieb7VJvCvN2pjtyN+8AnMBPcMFApnFtaGItqrFQB1h4WhELVZ7M5NhIMzwQyPLkDutv13Ps
-	hc9Yj/4cfzM7z30kx/dzVpbIKt/sFdrBkoX7ZWNmjTnT33gAKqXBrFMQOFb247Azt095vPS6JRQ
-	uxNkLAnx7ICsQ1+ZZxA1x4LRdfivvAAZCeHHWIXW/XuMEhz3GpgUyKpFVufscybVPn3RStqoU6T
-	FvUIE7I3pH2x94lS3NBzuTed9fxTf+oXTklzLhO4Q/cblpInjeXXoWAXIBYMICm8L49lW/QBcMf
-	+lz9o6lavyXT/DB3MTf8uWL7jlqpbkH0MFmJ0F7VlNlrP3JKGTFUs4YEoKB2MTsCrfjixm8E6Jq
-	CcB+PZW
-X-Received: by 2002:a05:600c:3e11:b0:493:df1d:7488 with SMTP id 5b1f17b1804b1-493e6904b5dmr32367975e9.16.1783519837353;
-        Wed, 08 Jul 2026 07:10:37 -0700 (PDT)
-Received: from [10.128.11.240] (195-23-151-163.net.novis.pt. [195.23.151.163])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e0fbb410sm145207215e9.12.2026.07.08.07.10.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jul 2026 07:10:31 -0700 (PDT)
-Message-ID: <4769c44a-4345-4015-afd8-1bba2474d81e@gmail.com>
-Date: Wed, 8 Jul 2026 15:10:29 +0100
+	t=1783519867;
+	b=1dQJShxcw3YyNGtVDmNW7ZPg5J9FsxKjQmkY6q4JtOO3N5ELpXCEpZRU7R0W8AJIjC9Jgt
+	JGnz2CKWlwQbv5Mv71xkmx2KAu3fAyD9ZCkNDocJTOwIAWVT5zQsyIeMmtt3aviMFM0MH7
+	m3EXJZdN7j1hopmrskq53x/GEACaO1g=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 74D65402D6;
+	Wed,  8 Jul 2026 14:11:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3D41F000E9;
+	Wed,  8 Jul 2026 14:10:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783519866;
+	bh=Ko4Hdlv9loLHMeM4kMSWr4+ckWdvKkB6i/m+lF4LdTE=;
+	h=From:Subject:Date:To:Cc;
+	b=hN/SiEhTywl8ROd8W5sQTNgOaPwlrPqNaKn1PwiH4xjk4c8RCtMwP5MIq/zye8n/1
+	 AMsqvOw8AsRS/YWKgazxPunLd+6nmh4gofbHsSwHmtNqxVxUiGpiaqc1RjhERCEoB3
+	 OPMbft3hBw5/p9OOcBLH2fqZ7UktJBuHCDUd2o40KLGzqP3xMgGBakYiJhYl1fL+MW
+	 JzRE+ebX2nGw/tvXWsl1Dbsno6N2eETLR6WoUtnJVpZFXLM7/LVqz8aA6ogU78XWSS
+	 YJdJrLYcpV6XVxLChmpq8+8kLJa421lxsAwHRPeYYTgdNZ0ZjE+cK4ZTyeH96wODoT
+	 GsPA3y9CHNA4A==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 00/10] mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE (Part 2)
+Date: Wed, 08 Jul 2026 16:10:55 +0200
+Message-Id: <20260708-bootmem_info_part2-v1-0-156ce4986598@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/kconfig: Drop redundant memory hotplug dependencies
-To: Kaitao Cheng <kaitao.cheng@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Muchun Song <muchun.song@linux.dev>, Kaitao Cheng <chengkaitao@kylinos.cn>
-References: <20260707090331.52971-1-kaitao.cheng@linux.dev>
-Content-Language: en-US
-From: Julian Braha <julianbraha@gmail.com>
-In-Reply-To: <20260707090331.52971-1-kaitao.cheng@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 1E9C8180005
-X-Stat-Signature: izr9o3syigmx7nr4gwmxgdbfbxau1rk7
+X-B4-Tracking: v=1; b=H4sIAG9aTmoC/x3MQQqAIBBA0avErBPKLKqrRISTU80iDZUIpLsnL
+ d/i/wSBPFOAsUjg6ebAzmbUZQHroe1Ogk02yEp2lZK9QOfiSefCdnPLpX2UQiGiUq0ZsDGQw8v
+ Txs8/neb3/QBoG3oHZAAAAA==
+X-Change-ID: 20260428-bootmem_info_part2-4bbb445d9b3d
+To: Dave Hansen <dave.hansen@linux.intel.com>, 
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Zi Yan <ziy@nvidia.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Muchun Song <muchun.song@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-s390@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-HE-Tag: 1783519838-389467
-X-HE-Meta: U2FsdGVkX1/lfDoJhjvqn+jLyxztI7l3B0AQd96xghkZ3roOWfdSmxZkDeoLJoPjbphdr1O3bx/AZSU8MxaMpKVcF5YiwbvBOiaKz4G7BrVx0Px3Ru3ipoOUGin84oPKKYCUlsJI5sOmKhAhEQtHYUIghBo2LT+qvrKdlUQqnSrjslbaEwnTeHu6Nea4L5DviG7LLrXQHO9dskzC4oL7gloEs3tUIM9hcDOTkthJVQET3HHyfSYODckxucoSbeoDuYRw2q9bbms9OtXwz3a2J1JL6OQmKtAaIaW4A17tCm+CS1ccGlsTK1FuOlMWUvyn8Q4wtv9s4O/aXz2Sd+0hksR+1psupbfkTgYjoKhbHdzhuh1YMxxMHKMsy82JZolDG1m4Nl0sXR4jw2CmBmHgA1Q8RmzSY0f99AwOxXlCuSLkc4ldReGP+Pdi6RnT0D0CIG/RcFbrljaINGTAvO7lTlYFBES01i2niqLc+GN/8Jti8eYOLMOIqyNcvp76l/n2sh4VUiAn0x91LYeir7wEY6gvTKeKBpokC7cMc+f1WVzJNd6OtSKIR0zorsF+fWgbUsEkhHF9q/f+axiH6iFrj6ksrA3F+VmWZabjglXR7hhV1zWt4V1G6N7SwTHMHW0bYIlVP1VmW8I8Qk/pTWTwwB/W5N59xcJyg9LchsYPFduaLKgfKK8Rk5IoU8Bn/CRrFQywicqcpP42rRzRVQaIbtqpX/sasgexxPoMp1prWbgh55KUoQe4oS9oRs/QyGUMCpFqlJsaXq+LtwaXnO3cp/RC3l1WzfBFpTKGuLpCKgCfXs+x2bu11F9yQt/CJmepY9sEPLJ29Ut3a6wJgMNm/XWL8R7964a3FT8b5IezydMtfkPB9G7DA7Q5i/yv8TGiqnBBIWp4S12T6yJNUX0UUFELZcypkw0IzUuP50B0+FRIt/B+o8f6BG92i47JzF0dCnu33HTvwy9dvvSUNSz
- CTiayXXw
- BG3eGu8wb+E6yalVAmOGC1OkBCncTwHObgY+Axzfc9Ht7Te7W/eSi4+9uQhNT+MBkmIILjkU1oFsJnnwpayxOHcIzQup3EbeTbNTCjxj2j2tJbXYgX0jGv74oTtjFwBNyhja26/ECAf8nRGzjIV2etr9dgtUI+bi7DnLRo6SIKQQAA/1XwlKv4sJ8BJJAci61I5k5O6uNEKhM3VQTFrSXlrbGyCj2Y4bU/gVz4PjtxWqYAXlnfVOh77+8rUkvt9W24KIvseO1g7k/SlwGFw2mCOGaCGMmAXxd/16dXa9QYzvsBrn7meRk53tmiuzGz4UmjwwEQWt7Iczj5zy81vRn1sZ6Q/PRNf3WW+sr7ywAOB/xQbsj73x21mO8K1VVRB5WjZ/ViF1Gb0CRYP4LfUO5JdRl2CqmxGngh9ArTj94WU4X2E4T1fKdZeCHWfcXnJUqHu29
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A2AE61A000F
+X-Stat-Signature: 94jy8ezjbh978cxrzt3w1gcx573hai5m
+X-HE-Tag: 1783519867-700666
+X-HE-Meta: U2FsdGVkX18Lz3V4r3V31/MOxGbZbaYO+CGpVY5nVqOZFRIq0wMblIcPvYPWDpNMddFTfk96d+TDobRZaZgW6BUpXs3hYFtq445bG3VrCZqomT8pPuNUF2fZLGk5Y3fxyBcTClwKbOWF8ayFLWsn3VlXT4YRdz6vj0F+qUukT6tJfg95DvfvtrReQ+PtWFKClK12cKihqTm2Sh+Sr/dO+iNI3LG2lIbbqHsl+Rbro+GRGNgokvET/0cavLNUhpzEAVPOHjzjE9xuBgd6xXxjIVQhLNY6A52ILlUhrQfgHoVawhPSIf4aFTd4Wakdg5d06W9fv8MzSxpGYppc0lVjbwRJmT89evDBk9R9Te03BHyy48d6xOgzoAhvdfR3UTbKDIjVd05mekVYKSwbsXTKaDIYiZK0lOpvZOh3hBgWTqPqGv1olzsrTkj+ma+ZjPlvdhl+3wAbziFg5hn4JAhu6dv8CSKlVRyCkGy1r8pAZ/V65Z6c1umYIUYXqJrsS5EQ0sMKTjY2RnY4LJ9GO2iCklPbmfu/nmKiLj5xyPd2JFjZKtCF4K95gBr5Ey/0lE2s7exge3Aq6yrFpvGRpO1v5MaSWx++uc2P/iFG53wjkvCdazNAWNw4NbAPzlVHUu5mPnILAyuKJk5WiUhD2Mz0ei+NH7uKUrX3/+jVU3hVcZQMScink6xioNqosGIyfAYgTpnlCTJxVUbOKqMrd3rfilwXMu0rBvVwRN7zzSSQfpIt9dRLeUxJTBWcuzBKVYtRzibIn3IjulMZ86EUUa62q5mWUNrWP6lE4uF2tq0xBlXwSMIvh63nScqM5ZjqrP3JLNewIpr6HxHmMU+zfWNS4crQzR8j9yO4MLDBms+Cth4zuG/10tPtTNjT5S2OMctH/mIdjpa1mARhvHUTXLJi2tOLJe73ojXFm8iJTerHJB8yeMw5v4fELGP/ohXsutfCuvni38AgT+nTTdhItcg
+ 6omu+WU8
+ ogHwV7ey63Y9TLpMza1nhQCwdJ905dKJF2bxg9QocOndynTLkPr1cT3nX1SNOqdwAr1QdDrMbiqNIKc1mV8xpdzbPp4e+XH5IrAytxKa88aM7JShXHFZarvidzUtffjZDTSd3wp0pyxMvDMktP3THTMMIvsL8u4bKRbMjxcDVIcDMPF0uddn2RXtk7AEZhSQa19nFXuWJnWMzR+Ku9ktVP4o1hWlUBvUOXRUL0hIwsnl7XzNJt5rudBk0JhZgbyatzFXxLmM3nw+LoKZ6aZlT5l6STA+sYKv6t3AV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,22 +107,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kaitao,
+Let's remove the remaining pieces of CONFIG_HAVE_BOOTMEM_INFO_NODE,
+performing some smaller cleanups around freeing of reserved vmemmap
+pages on the way.
 
-On 7/7/26 10:03, Kaitao Cheng wrote:
-> MHP_MEMMAP_ON_MEMORY is defined inside the MEMORY_HOTPLUG block, and
-> MEMORY_HOTPLUG already depends on SPARSEMEM_VMEMMAP. Keep the explicit
-> MEMORY_HOTPLUG dependency for local readability, but drop the redundant
-> SPARSEMEM_VMEMMAP dependency.
+Tested on x86-64 with hugetlb vmemmap optimization in combination with
+KMEMLEAK. Heavily cross-compiled.
 
-I love a good kconfig cleanup, but why keep both the
-'if MEMORY_HOTPLUG..endif' and the 'depends on MEMORY_HOTPLUG'?
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+David Hildenbrand (Arm) (10):
+      x86/mm: drop order parameter from free_pagetable()
+      mm: provide free_reserved_pages(), removing x86 variant
+      s390/mm: use free_reserved_pages() in vmem_free_pages()
+      mm/bootmem_info: allow calling free_bootmem_page() on pages without a bootmem_type
+      x86/mm: stop marking vmemmap as SECTION_INFO
+      x86/mm: stop marking page tables as MIX_SECTION_INFO
+      x86/mm: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
+      mm/hugetlb_vmemmap: remove bootmem_info leftovers
+      mm/sparse: remove bootmem_info.h include
+      mm/bootmem_info: remove CONFIG_HAVE_BOOTMEM_INFO_NODE
 
-The "local readability" could be achieved with a comment if keeping the
-'if..endif'.
+ MAINTAINERS                  |   1 -
+ arch/s390/mm/vmem.c          |   4 +-
+ arch/x86/mm/init_64.c        | 134 ++++---------------------------------------
+ include/linux/bootmem_info.h |  89 ----------------------------
+ include/linux/mm.h           |   8 ++-
+ mm/Kconfig                   |   8 ---
+ mm/Makefile                  |   1 -
+ mm/bootmem_info.c            |  72 -----------------------
+ mm/hugetlb_vmemmap.c         |   8 +--
+ mm/page_alloc.c              |  33 ++++++++---
+ mm/sparse.c                  |   1 -
+ 11 files changed, 46 insertions(+), 313 deletions(-)
 
-And if we don't want the comment and would prefer the explicit
-'depends on', then why not remove the 'if..endif'?
+---
 
-- Julian Braha
+base-commit: d11ba1f570615ec8d4814d6313ee1d7075a33787
+
+change-id: 20260428-bootmem_info_part2-4bbb445d9b3d
+
+--
+
+Cheers,
+
+David
+
 
