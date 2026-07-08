@@ -4,212 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAE1FC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 02:07:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1757C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 02:16:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 904D56B0088; Tue,  7 Jul 2026 22:07:02 -0400 (EDT)
+	id 8A22D6B0088; Tue,  7 Jul 2026 22:16:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DB646B008C; Tue,  7 Jul 2026 22:07:02 -0400 (EDT)
+	id 879C26B008A; Tue,  7 Jul 2026 22:16:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A2546B0093; Tue,  7 Jul 2026 22:07:02 -0400 (EDT)
+	id 768676B008C; Tue,  7 Jul 2026 22:16:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4708A6B008A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 22:07:02 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC2CD1405C2
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 02:07:01 +0000 (UTC)
-X-FDA: 84963971442.26.E8B439E
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012047.outbound.protection.outlook.com [52.101.53.47])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8A9F01C0003;
-	Wed,  8 Jul 2026 02:06:58 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TQB45CXy;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783476418;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 416156B0088
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 22:16:06 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ABCA81A062B
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 02:16:05 +0000 (UTC)
+X-FDA: 84963994290.18.24D0AE0
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D9E8C40004
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 02:16:03 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Q7sBN4SF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783476964;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fxkh07Qy3vfJQz6eckpUMmnibc6JICptSkx8IL0VI+4=;
-	b=6fiWIjc2wWRMlHYeo+7mQtqcPKMlhrC2SyYxR+CIaTWvQ9aJDiU0pmmJAcN045hq9x8Uwm
-	dP83qC/9zT+g+qPJd8cLgOwWmSYwxqfX2ni86frlps/Si1xve4wnh70P44+MYJ5LG+EyiL
-	wogckjEIGt6zQbNx963yvl4zHTaqB1I=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TQB45CXy;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.53.47 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783476419;
-	b=IwSbWPAthpiL1fZdT8lKmTVyHPV7m5kfBHpSYoUppexPNOeXuJ+TAUUgwE2jJBHvbPoXo5
-	jdxxPud5dxwGQIQEEYzGQUqBLWq8jQZsKUtuh6WktJAxILaU9vPfzgApB3ZfnbRVO1i0Lv
-	LinsfOQXn2ZyyYQIT1ln+XKAi6SaWhw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PDwLDSUw+IeP6Zq0PpjhOkFDOi0ADTY6sYbGnsZbiwyBhgUNFivWcqXcshfoKHYaXd8tIE2EIPV7G3Axrx1jMNFlOhNEJr5XeCWlILsKGRWWE7knLDUANNmbOU62x/Pp96Z7vaUs28UEUA/U/D3VAXokKhxiuXFBIIGjPeatulygyHJqswqs30+5lL+97+tpGwidvArsDuPDkLeBck0xidag2MaiOYCHHnuJPJj24f7CpBV7MvGZslv3fRHcKHzQogVfvG1xUVJHfQNE0KGa7wqAfuOIfkNmLU6bIM5Vie1fjZD58fxxNoIRIUiniuBDWAw+Dc6Q9Xka2kzD50yrIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fxkh07Qy3vfJQz6eckpUMmnibc6JICptSkx8IL0VI+4=;
- b=eynz3YDdxgirvdmsUHHCUndJtuyPKtLoXcdm0CRk4Q9rCQP9Ucm+sqf2qQYCsb83egpD6uLBFs+dZ5b7I/AP59Uk6OBUg+VqKbnK/2GIc8y0772AycBUZz/Oe2GIQNmk5KAmYJezjbq8wxOiylaWzenXKhFXEaFdplUL41SsypMf6tXYWiO3mh/WsF0KVFPQ9TCgn/E807ZvaCXyZPzrgoD3SZgQEE/WX/zvlTSokpP25sYv5ABv4eggWN9/GcVZIUq9S+7KVaE4ZaztgCNQ56Wtq1LtMm+tSj1g9C2wHECAWQNdRV2gHtDHfD3arHXqnDdNTzXYpsRFluqcL3T/NA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fxkh07Qy3vfJQz6eckpUMmnibc6JICptSkx8IL0VI+4=;
- b=TQB45CXydMl+HmnMfcz5R23gRQbCpfOYoyTTpdrxZBMCaKlMuiXnz4gy7ozMvP4V/T9BLsDCio/HU5ksZcF+8E3b3dF9KR1TlEeVCBirhk6N5ZBP1vsod8PmT4fIiP0cvK+QoffU4JfL8hf/1kNuZDgGvNLDrkxl6Xx+NB3ViGtqRzkhNrU3ACAPBNkXCuOaUDXgBbvcMta1zc6eMtQa2TZD0CR9JyK0FXLnrbroI4k7a5wP+cvm51ZddI+nYhTtuiJ/o75HoGBmjQcQWOLA5lyiLu/5ZQyftgD6uQ+hI9mWJJ2w1ErIlMHK330fObXuOQzB5DzB5aGq+gaeKXgxWA==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SN7PR12MB8002.namprd12.prod.outlook.com (2603:10b6:806:34b::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
- 2026 02:06:40 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.009; Wed, 8 Jul 2026
- 02:06:40 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 07 Jul 2026 22:06:37 -0400
-Message-Id: <DJSTMAD98OD5.3JRZ25CI375A2@nvidia.com>
-Subject: Re: [PATCH 05/13] mm: prefer mm->def_vma_flags in mm logic
-Cc: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>, "Madhavan Srinivasan"
- <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Lucas
- Stach" <l.stach@pengutronix.de>, "Inki Dae" <inki.dae@samsung.com>,
- "Seung-Woo Kim" <sw0312.kim@samsung.com>, "Kyungmin Park"
- <kyungmin.park@samsung.com>, "Krzysztof Kozlowski" <krzk@kernel.org>,
- "Peter Griffin" <peter.griffin@linaro.org>, "Jani Nikula"
- <jani.nikula@linux.intel.com>, "Joonas Lahtinen"
- <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi" <rodrigo.vivi@intel.com>,
- "Tvrtko Ursulin" <tursulin@ursulin.net>, "Rob Clark"
- <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov" <lumag@kernel.org>,
- "Lyude Paul" <lyude@redhat.com>, "Danilo Krummrich" <dakr@kernel.org>,
- "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>, "Sandy Huang"
- <hjc@rock-chips.com>, =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Andy Yan" <andy.yan@rock-chips.com>, "Thierry Reding"
- <thierry.reding@kernel.org>, "Mikko Perttunen" <mperttunen@nvidia.com>,
- "Jonathan Hunter" <jonathanh@nvidia.com>, "Gerd Hoffmann"
- <kraxel@redhat.com>, "Dmitry Osipenko" <dmitry.osipenko@collabora.com>,
- "Zack Rusin" <zack.rusin@broadcom.com>, "Matthew Brost"
- <matthew.brost@intel.com>, "Thomas Hellstrom"
- <thomas.hellstrom@linux.intel.com>, "Oleksandr Andrushchenko"
- <oleksandr_andrushchenko@epam.com>, "Helge Deller" <deller@gmx.de>,
- "Benjamin LaHaise" <bcrl@kvack.org>, "Alexander Viro"
- <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
- "Muchun Song" <muchun.song@linux.dev>, "Oscar Salvador"
- <osalvador@suse.de>, "David Hildenbrand" <david@kernel.org>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>,
- "Nico Pache" <npache@redhat.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
- Yang" <lance.yang@linux.dev>, "Hugh Dickins" <hughd@google.com>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jann
- Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Kees Cook"
- <kees@kernel.org>, "Jaroslav Kysela" <perex@perex.cz>, "Takashi Iwai"
- <tiwai@suse.com>, <linux-mips@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <dri-devel@lists.freedesktop.org>, <etnaviv@lists.freedesktop.org>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-samsung-soc@vger.kernel.org>, <intel-gfx@lists.freedesktop.org>,
- <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
- <nouveau@lists.freedesktop.org>, <linux-rockchip@lists.infradead.org>,
- <linux-tegra@vger.kernel.org>, <virtualization@lists.linux.dev>,
- <intel-xe@lists.freedesktop.org>, <xen-devel@lists.xenproject.org>,
- <linux-fbdev@vger.kernel.org>, <linux-aio@kvack.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-sound@vger.kernel.org>
-To: "Lorenzo Stoakes" <ljs@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <cover.1782760670.git.ljs@kernel.org>
- <3b4ccdc38819b42ddc79ee5a795831208ac7986c.1782760670.git.ljs@kernel.org>
-In-Reply-To: <3b4ccdc38819b42ddc79ee5a795831208ac7986c.1782760670.git.ljs@kernel.org>
-X-ClientProxiedBy: BL1P221CA0040.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:5b5::15) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UmQtFcg5BnE+HoKS+RxOdBQIXBStOlUwpFUvAsM5KO0=;
+	b=ZyWohQoA7CTkufXFLnarLf4pIaLoj2PUWwd+a/P6n1Arbq6ORx0+CWzeeovsHh+QnLr+B7
+	NocLm76kNzAw47xdc+Mqb0DXV1ZCpg6lSZl5VyD/dKkB7u+2ikVOIr02mBUbGzrO6uRs6E
+	T05BlgYplEd1FSjuwVbQoQ5Am4fgVsI=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Q7sBN4SF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783476964;
+	b=TuGeGsnaLVJe6T6xVZ8T20sIXfuMUA1xrxDc9HTZoF9M+RQgaPB/oL5AbWkbm+jJhyuCaX
+	s4KSnEcl+xE7+/rQp5Y2AMuvgbWn6Q7IF9j29oGvSpi7aWi7qssNeX5KobS4G/s+UxfiZI
+	YfY8EKAxhJ/P1pXxHjqLHv9i/+2YGGg=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783476961;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UmQtFcg5BnE+HoKS+RxOdBQIXBStOlUwpFUvAsM5KO0=;
+	b=Q7sBN4SFnVajibgAHLOg1f34zl7JbZJYH1b9rvEFlPK4uBAbB3YYAxJnh4F+8l2RRGU8R6
+	2OePgtmfO4vMXgtoWW2KlnnYmtM3YUeWb+ak0c7FL3z7IyuS+Rx3ORkIC4CpLhKSZ6Pb3I
+	JlMcmc+sD816dOKbVO/soGWxueiwYkQ=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH v10] mm: fix ASSERT_EXCLUSIVE_BITS by passing memdesc_flags_t by pointer
+Date: Wed,  8 Jul 2026 10:15:25 +0800
+Message-ID: <20260708021525.627503-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SN7PR12MB8002:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac094335-3773-468a-5753-08dedc958c92
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|1800799024|7416014|376014|18002099003|22082099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	iMFI8np7I/AWw64xPVM6y4lT8ZkON4Jwo2t9b13ONoVnmdxjRp8aQV0PhZ+Adop8d6jiZC8phMVWRPVhBMfC0WO2TQobowJGP5wIPf1p7WdNDGMGENRQS0OwXX6vFWO8r117+nVgBh+0e90vB78pYp9GhNwGC1Lecu51r+UKVcv8IrKLtdiNlI6if8HcL9Hmdv8saPByxgwi/qpjbtfQ8Z7LoN2/Jk0ew8+LcIxa9wrKUHtftobfOSSHfpmDR9XPJt6im/YqVMuR4DAhGZPxTQAfJJNP+XR/u8G9zAfYvJvFXAHbkIxwWKm/iHGKB8cDgKGpLeQXtzBjxhkjEXzVRwgGcmCY4TP517Ste4nk8v3alhVAPYn9r8ZZMF/+cws7rI7SuUfOuyx/d4RfekMdZdvXu4rcEPmU986X8ehuh02Qe7Kf92+UGOPv6+wvUHMaPzxqdJlg7U0lN6XgG2ytbMxRskoB6gR7Km4wQ3L8S0ayJR4EQVyj1V1i+bU4DW2nPXpTxFwquzyfH1mQdbVTG6YQMKKc2kSAqbXhYMyX10LeRSTn2b+DYDzrP5uzqgm1ptirAmbZa7EUh/jzdaf4cQznFUfUE6SIHcerOPU6bJyv3362A9/Wm/TFsZhV+sf1qEgCwif6Y548IjdizZ1kUdBASBTXmUmVubj+hPai1nE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(7416014)(376014)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a0hPSDIyZlRCdkgyUTdVanZjOWlRY1doTjJvNzZ2Y3ZocC9NdlM3S3owVlR6?=
- =?utf-8?B?UnNUU1JQeVpiUEtMelZlWjdOYnQ2L3dSemFUSFVMalB0NC9CVHJGWXplc2Jj?=
- =?utf-8?B?U2hTUUhMRFFHSHlIdFZ6QkVmWHNwajdHWFBlcEZRT29jaTV4eU50OFc2OWRq?=
- =?utf-8?B?WUVzZGFWQjQ4Q3p6U3hzVDdFZzlzZGRvUmxlT0NIVlRWYVVXaUlDd01PdHMz?=
- =?utf-8?B?WUpxTmpyYUoxTHN4ZzJvNGZHZFBLZ2lXT1FKSGwvUnM1aHM3V1NnNktmYkpY?=
- =?utf-8?B?T2JoYXVIQzd5YVdvMVZmQ3Jud2ptVTdhZUNyYmt3ZGQxQjdSWWNPZERaVnVJ?=
- =?utf-8?B?STB2VGh4ZDVadmRUV0ZyV3I0N05ZeU5PdGlDQlpIVlB5YSt3ZzNwTFJuV0RC?=
- =?utf-8?B?QUY3bERGVGNJSjRQMjFkYVZ1cjkrUGpkcmpHZjB6ZExuMEI5TjdUZjE4V3Nt?=
- =?utf-8?B?bitPY3krZDVySmh5OTNWYjNFMVAyWmMzZlFvb0F0TEtqdkljS0k5cWVJVGF3?=
- =?utf-8?B?TVBiYU94L0RvNDZEdVN0TC85OEpKdmJncENwQTB0ZG5mcE90RVJrU3NISHVq?=
- =?utf-8?B?Q1ZqSHYwK0FhV1dJdEJCalYvSHZJMXNBTERwNU5xcjV5M3R4WFpGVlFoS1hs?=
- =?utf-8?B?OVhxaENZODFOQjlZUlRBSGhwelUrRFRrQlhMUnA2eSt1ZGkyMWJrZU1yMVVC?=
- =?utf-8?B?NUF4aHJIcjRoRXlDYStxOUpXb1o1dVdCM1BheElYREJSQUxaTlh0NnN5SUl6?=
- =?utf-8?B?ZmdMVElBZXQ4QmtFVjZBaVlqMmd5ZTVyRnZtd0lSVGJRbHNPZTdLWldwUXA1?=
- =?utf-8?B?L1hHM09QR3h4ZDBPRXY3cmU5Ykc4UGJkaVBna2h6ZzV6NVVlVVRwRllMWW9o?=
- =?utf-8?B?NUh3TjlHWFhqQmJSdjlWQUFEZ0hMQ3ZROEM3bG1QMjcyL0pBNzNxTkFHYlVo?=
- =?utf-8?B?WEZ6bDk2MDEwTWpKVHF5TTV0K3h6MUd2eGVOa1VFVmliczRGOE1wUENLRWp1?=
- =?utf-8?B?aHBCWVZGdG5mRGtCKzU2S3R2WlZBQ1Ewek4wWVN5cXM0ei85elRCemxyY2Y4?=
- =?utf-8?B?UG5ETDdPQ3I2T0xWRTdFWmc2QUluTWxvemJRbmtRUHFONTZCZVVzVmd2bTRs?=
- =?utf-8?B?clRPNnU3RHcrOE5ZQWZacWZqWnBjM0ExZHJhR3orUEM0WEFZUFQrZHk2RVNC?=
- =?utf-8?B?TmZiRlVFbDRuOXhzOVZ5YzZvNVcyaTR0WURHbUhZYjR3ZjdjN0tpdGIzVWxX?=
- =?utf-8?B?RzMzRTJaSmp5TTA4YzJGaEx4ZE5BbHBjVkM5anRYcFZHVFh4K0t3TCtVTW95?=
- =?utf-8?B?UmNPVnE5QXJydDR4bG1PWXNyQTg4SnVnWFQ5RFhQRlhxSTk4Q2ZGdWVHVGlU?=
- =?utf-8?B?aDNySS81N1E2ZG9HYUZjL3B0TVhDM1h3bjdPenBvRmFvV2NHMjVWMndjTEpi?=
- =?utf-8?B?YjBJcGgyRTBDbGhkdHVsWTRXbXRWUTNFdGJ1aHgvNXcyUHcwUW5oUkNTdTlv?=
- =?utf-8?B?WGd1azRHNEZ6dlVvRy9naEh4aVMvWDErd3ZoS2lFTmZvNWlrM0pMSFFYcDU2?=
- =?utf-8?B?dHFpODc2REVVQnNlckxyUGVWdTZaVUVJUmM5VzVGLzh6QnFyR2d0bndGY1Ix?=
- =?utf-8?B?eklkWU1XRlFPa0ttU2E5b3dXMGJmUmdUMnZDTkE5cWRHclNua3ZpK0J0OTU1?=
- =?utf-8?B?cURjMThKc04yblc4ZGp0VmRjM3NqMlpZekUxU1VvRk9ENWdiL0QvQjRQeEpy?=
- =?utf-8?B?bDNPb3FWbm5wWWdBZHlOSFRlN25IOTZOZW10ZmlWaDV3UmZLVnVUUUpzRGNS?=
- =?utf-8?B?RUU2d1dFdFZSeis3YWU1TitpcmJuOTVkY0xuV1RwaHQ5SFdMa1JueXhxQ1RP?=
- =?utf-8?B?TUFFakZQMzRyYlFoOU5LQzdXTmdFclkrbisxRXUrcVlhUW5hZzc4Nkh6TVlY?=
- =?utf-8?B?T2FTdlNLeUxNSUJwS01zVk5tLy9VUCtxM0p1eWJ2WU5lQmtRRGRxdHZ0S1g0?=
- =?utf-8?B?RVc4U1NoTDN3NlNTUWhleGRwR20zcUVQTDhydGxQdXZ6Qy9Xb3pQRXlXQlpy?=
- =?utf-8?B?a2JjaXVFb1l4LzV1RjFwcjBJK05FUEFVMnBVeHVKeS9yMXNlanBBTmZYQVRK?=
- =?utf-8?B?Q3l4cEFWRGNmbmJmbGh0TVJXZ1BQb2hXTWhxOFZKdDBKOHV4SisrcFhiMHdh?=
- =?utf-8?B?YzR1M1J2ZjUzLytZRVI3STFCZU9uRWFKWVpJOW5HL3h5ODdjaTJwOHNCYitD?=
- =?utf-8?B?WFpTRmNqaGoxelpvZUszbWRHR3dCd0xDUzhYWTlMcXlNbklmdWRRQm5ScVRL?=
- =?utf-8?Q?f6CEVTaQcxx00X3U5/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac094335-3773-468a-5753-08dedc958c92
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 02:06:40.1798
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Gu7sX/Z7mv4RuOC95YjYOLCi9nGkXpxnvm0lhGfXg4m4cYNnRv/RF7+fqebqkUqo
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8002
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: rq1r97xopk7i14raf7wtjcntc1nxfjwq
+X-Rspamd-Queue-Id: D9E8C40004
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8A9F01C0003
-X-Stat-Signature: 839pfc73e4tiwuz9mzg7ywtx9rn5o16n
-X-HE-Tag: 1783476418-739602
-X-HE-Meta: U2FsdGVkX1+oOd64mqb8oNawAjCcphFXePY2R1GFD8pcMYsIlFw1vPSZInb6lJ/PjubKBDFU/IQRghHF+X0YOlc8Dfj09HEyPWtw5qEZ3jEbMmKK47Ssh1OdBidvKHMcnKyh8dJwFf9TbARynkCbfbu8epWYuys0mlpBbDUjXs5sq/HWrbTF8+8StyRK0F1UHjHpV+7H01WmG3yEj+gWo9+t5hZMJuGnVZYOg3KTPAo85tsTW5eguR8xooD0nbG0YejiglsLCStw4tqJCak8Y3MLF3JxnpPYAOvaIfV2VQnsLBGtdtte59MIiag+xizucPZlxD4bH2TDjc9NH/Pq1fJeSJRd7s07J/rvyLYUdtpZvNaxADrlCc3jfz+JxG44n74NXCZY6UIdiErXJ0ydbuYqLT85gMLJZQPGeEWfMSNghgFMkJFZw+YRbqcTzWijLsTUsxi2NvS3KkgPBBhxWQ0j9O0F9vcU5S4/KaVcKy8I2gAzMkZvXVT5JcZGk0TJDj1aNC7EUaMfAbo66ZcnR6rCuLA9SCtRgqgXqMssAUGU0XFMTIVSABbmth3GhJjMkxulc2gJa/eRAUie9SDtGVjCNqfZ+zm6Vi4hVrHGn8FLBSHYh/2bK5kwkUcCUINtmC4HaeYhUn52UkezI9F2nbLWX6hNCo9JlU0sZKYueaUl8Xx75XtibGDZqDEUxdrx20kZAPa2iPj8ZxpDJdO5lIMkxAVIT4vYv6f6FJbdP7y12k1BeGKw+rgYlbKurZiut1Z/bNqoO4YJE+CcZ+ezlRqZsL/0zlJyBSOUoloKUyQVyukJK9szuFxMA+qdMismLp8CtZa7/hRUfisLCkU5QEB0iPsqmTJe3xLa6iO6UKynX+Ca8VDVG1JFnq7PPt70ykOwkV03Y7w+fo/7NU3v5QZMNCq52KxTrA/IsBWHdQNNAVurcvITT+SKmOalSgzpulOo8O2Ix4stwKC/YJQ
- ykT2WmEd
- tBX6HkSWBdh1cD2g89abLnZx6Zl57e64r976TL/f4OuwgZryvpnZH8qGGiP6gZkIrweJkdH1rfLUuZbqrYf27Ju3HaIJjWzmJWcFGVg2fm3Ab75A8bMOkRIx9mEbMNHMm7Eskj28xS8+zRQGbQJj/bB9TSumPeCFi3j+SURRxLryu0aT6FQdwnzYcJSC0Dukin3eyHTRipC8ff0gpHiz1fmMwFJ71NX/FId+LmpNw8KVvokNZkOofTDA57tA+EcqI9hYOFNIuG6ujwARbvNJ4crd4vsh7rLD4Pj/qKoadwJEQCqxb8jxpvTx5SU52yeSMyJWB0oPxew2JFt7MJKNbh2YwWvW4SUUz8uEUmyOoQHc9fYZ8WU7QFJ9PUhrAqC1fQccA65iA99sErTS6VcQAzI+CTAmRP5FTU7iPmDVsaaK5YNj6BJ9O8k4vbikhQaFXPeYpWSE0SGbOuaCmxdUKxNgv+g==
+X-HE-Tag: 1783476963-48417
+X-HE-Meta: U2FsdGVkX185WUp4lakxuWqXnjqA6nKrDSxR22hSnq6UjACo05Ybvbz0vjsb0FCV5NbAifXEvJ7sIFsOpfdOqhuWT+qh2TYr+cUHz76mHBZhDZFx978L7GkYC9EnvNc6al6iJh7TBTxyfzCclbLDaKPryeRVQEuBjJdHsPLgSG+HyMxyzOb8BHb49F8Z+V/y3NqQAW1QEYw5UHjprhcCKMqlP0G4hiFqlBKlvy24M9RMu5sEfwf+VH6XnQHOfGE6nosG/IvY9OOWtvakt1KIcPjndgWHraUTkfFeCUYrmUswdaXCP6+c+nTexaV9Rw4DO1vcOzTdF7W0mEJhdYOh8hMq2KvizcbEiDVVYYq32XpuAiGJnE+mVlgnQHEcZPlWJ/F7Erf+UmF/o2CA784t3C2XU6fZ3pDKuRU9B1TJuJNx3iaXarUsoCmqt/ba0F0jcNC+OTgcoTezJ5Sxcte4vWcIMCth4gB0PeRF1PozOIIz5OvAQ5DkwpMwmxQeHoqRivsb+bzn7yvsO84NeJdwCzEH6eR8op/T1A4bZgF1b6Q0KlN5dVdc8lZefqgGCWfSZY+igcIdch+l/kfJHCLWlyc44zhcGSTuS0UTijSnhc1tlvI7+KYIImf3shr9+XxJllm15YOVJaK8XT/ScRO7vuI5qxoIovDHXJDL8jeya54+fCUZcKsyUJDMoPkeEd50FptJr0r4ROhcMxYcPrG9vwp1rQy99CwbXssmxgiIbsGFkJFqcYFu366JwmINFn89MhOFLafzxpeVdaJYxjAW/OOGsYATrprsfzs1BKvmngx2w/sSg+erIh+exex0S6I/nwXQ43KAFtQeHGuy9QHuENSzQMXjm46V9GbYD7MZhFsOLahpTB1sOWoJPgr7VlBooR2mloEM0yk7evPkphgb6DcmZY1FG9AEaV80l9MPlcfECgNjRGfyqb8swo0I5T7x7y2n5GLiNjEZsXDUnh0
+ ZYqOm0yy
+ b0XU9LTX3LkR3F/3mjg/AlyI6yXOP66ZF/D39tn9y20zgOQqnOqPvXuepbI9qR7V4xU7NCgSC58bxvgpRpFXJqzRAAgRwR5DJdeU975ROe9nA0RmIvGvJjHmNIHpOfTT9gERtaCDYUKG9UVOrhSPhcfCkOfbdBzc06nj+2sal74MeApxpzRifNa6J1s/r7xoJ6ZLssw42Oe0C7Z8oJD6APF4zrby3mu72kZA6nFu0c/kkzmt1LUhD81wLBqvvhbR3S8ZZGIjQrmwOD5oUmI8rL2I5DQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -217,33 +98,326 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon Jun 29, 2026 at 3:25 PM EDT, Lorenzo Stoakes wrote:
-> Currently mm->def_flags (of type vm_flags_t) is union'd with
-> mm->def_vma_flags (of type vma_flags_t).
->
-> As part of the effort to convert vm_flags_t usage to vma_flags_t (in orde=
-r
-> to no longer be arbitrarily limited to a system word size for VMA flags),
-> prefer mm->def_vma_flags to mm->def_flags throughout the mm logic.
->
-> No functional change intended.
->
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
->  mm/debug.c |  2 +-
->  mm/mlock.c | 13 +++++++------
->  mm/mmap.c  | 11 ++++++-----
->  mm/vma.c   |  4 ++--
->  4 files changed, 16 insertions(+), 14 deletions(-)
->
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-LGTM.
+KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
+page->flags and folio_trylock()/folio_lock() concurrently doing
+test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+  BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
 
+The race is benign: nid/zone bits are set once at page init and never
+overlap with PG_locked.  However, ASSERT_EXCLUSIVE_BITS() inside
+memdesc_nid/zonenum() was checking a by-value copy of the flags word,
+not the live page->flags, so it failed to annotate the real access.
 
---=20
-Best Regards,
-Yan, Zi
+Change memdesc_nid(), memdesc_zonenum(), memdesc_section(), and
+memdesc_is_zone_device() to take a const memdesc_flags_t * and update
+all callers to pass &page->flags / &folio->flags, so
+ASSERT_EXCLUSIVE_BITS() operates on the actual shared word.
+
+Guard the ASSERT_EXCLUSIVE_BITS() call in memdesc_zonenum() under
+ZONES_WIDTH != 0 to avoid a zero-mask check on configs where the zone
+field is absent.  memdesc_section() needs no such guard, since
+SECTIONS_WIDTH is never 0 wherever SECTION_IN_PAGE_FLAGS is defined.
+Under CONFIG_NUMA=n, memdesc_nid() itself is stubbed to "return 0"
+instead of reading page->flags, since NODES_MASK is 0 and the check
+can never fire; page_to_nid()/folio_nid() now just call memdesc_nid()
+unconditionally and rely on that stub, instead of duplicating the
+CONFIG_NUMA split at each call site.
+
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+Changelog:
+v10:
+According to the comments of David, drop the redundant CONFIG_NUMA split
+in page_to_nid()/folio_nid() and remove the SECTIONS_WIDTH != 0 guard
+around ASSERT_EXCLUSIVE_BITS() in memdesc_section().
+v9:
+Add the SECTIONS_WIDTH check to memdesc_section.
+v8:
+According to the comments of Andrew, include kcsan-checks.h in mm.h.
+Incorporate David's patch that switch memdesc_nid(), memdesc_zonenum(),
+memdesc_section() and memdesc_is_zone_device() to take a const
+memdesc_flags_t * instead of using a per-accessor macro/call-site hack.
+Update all callers accordingly and extend the same exclusive-bits check
+to memdesc_section() and memdesc_is_zone_device(), guarded by
+SECTIONS_WIDTH != 0 / reusing ZONES_WIDTH != 0 to avoid zero-mask checks
+on configs without the corresponding field.
+v7:
+According to the comments of Sashiko, restrict the memdesc_nid() macro
+to CONFIG_NUMA, keeping a plain "return 0" static inline stub otherwise,
+and re-add a local page pointer in page_to_nid() to avoid evaluating
+PF_POISONED_CHECK(page) twice.
+v6:
+According to the comments of David, turn memdesc_nid() from a static
+inline function into a macro so ASSERT_EXCLUSIVE_BITS() can check the
+caller's page->flags/folio->flags directly.
+v5:
+According to the comments of Sashiko, guard the ASSERT_EXCLUSIVE_BITS()
+calls with #ifndef NODE_NOT_IN_PAGE_FLAGS (for nid) and #if
+ZONES_WIDTH != 0 (for zonenum).
+According to the comments of David, avoid calling
+PF_POISONED_CHECK(page) twice in page_to_nid().
+According to the warning of lkp, switch the CONFIG_NUMA=n
+page_to_nid()/folio_nid() stubs from macros to static inline functions.
+v4:
+According to the comments of Andrew and Sashiko, set
+page_to_nid()/folio_nid() as static inline stubs returning 0
+under CONFIG_NUMA=n.
+v3:
+According to the comments of Andrew and Sashiko, move
+ASSERT_EXCLUSIVE_BITS out of memdesc_nid()/memdesc_zonenum()
+into the page/folio call sites.
+v2:
+According to the comments of David, remove useless comments and use
+ASSERT_EXCLUSIVE_BITS() in memdesc_nid() instead of data_race() in
+page_to_nid().
+
+ include/asm-generic/memory_model.h |  2 +-
+ include/linux/mm.h                 | 28 ++++++++++++++++++++--------
+ include/linux/mm_inline.h          |  4 ++--
+ include/linux/mmzone.h             | 26 ++++++++++++++------------
+ mm/page_alloc.c                    |  6 +++---
+ mm/slab.h                          |  2 +-
+ mm/sparse.c                        |  2 +-
+ 7 files changed, 42 insertions(+), 28 deletions(-)
+
+diff --git a/include/asm-generic/memory_model.h b/include/asm-generic/memory_model.h
+index fd74de50b054..c6b4eafaf4cb 100644
+--- a/include/asm-generic/memory_model.h
++++ b/include/asm-generic/memory_model.h
+@@ -53,7 +53,7 @@ static inline int pfn_valid(unsigned long pfn)
+  */
+ #define __page_to_pfn(pg)					\
+ ({	const struct page *__pg = (pg);				\
+-	int __sec = memdesc_section(__pg->flags);		\
++	int __sec = memdesc_section(&__pg->flags);		\
+ 	(unsigned long)(__pg - __section_mem_map_addr(__nr_to_section(__sec)));	\
+ })
+ 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 2101e5205fc0..01683d50b3cd 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -37,6 +37,7 @@
+ #include <linux/bitmap.h>
+ #include <linux/bitops.h>
+ #include <linux/iommu-debug-pagealloc.h>
++#include <linux/kcsan-checks.h>
+ 
+ struct mempolicy;
+ struct anon_vma;
+@@ -2286,22 +2287,32 @@ static inline int page_zone_id(struct page *page)
+ }
+ 
+ #ifdef NODE_NOT_IN_PAGE_FLAGS
+-int memdesc_nid(memdesc_flags_t mdf);
++int memdesc_nid(const memdesc_flags_t *mdf);
+ #else
+-static inline int memdesc_nid(memdesc_flags_t mdf)
++#ifdef CONFIG_NUMA
++static inline int memdesc_nid(const memdesc_flags_t *mdf)
+ {
+-	return (mdf.f >> NODES_PGSHIFT) & NODES_MASK;
++	ASSERT_EXCLUSIVE_BITS(mdf->f, NODES_MASK << NODES_PGSHIFT);
++	return (mdf->f >> NODES_PGSHIFT) & NODES_MASK;
+ }
++#else
++static inline int memdesc_nid(const memdesc_flags_t *mdf)
++{
++	return 0;
++}
++#endif
+ #endif
+ 
+ static inline int page_to_nid(const struct page *page)
+ {
+-	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
++	const struct page *p = PF_POISONED_CHECK(page);
++
++	return memdesc_nid(&p->flags);
+ }
+ 
+ static inline int folio_nid(const struct folio *folio)
+ {
+-	return memdesc_nid(folio->flags);
++	return memdesc_nid(&folio->flags);
+ }
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+@@ -2541,12 +2552,13 @@ static inline void set_page_section(struct page *page, unsigned long section)
+ 	page->flags.f |= (section & SECTIONS_MASK) << SECTIONS_PGSHIFT;
+ }
+ 
+-static inline unsigned long memdesc_section(memdesc_flags_t mdf)
++static inline unsigned long memdesc_section(const memdesc_flags_t *mdf)
+ {
+-	return (mdf.f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
++	ASSERT_EXCLUSIVE_BITS(mdf->f, SECTIONS_MASK << SECTIONS_PGSHIFT);
++	return (mdf->f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
+ }
+ #else /* !SECTION_IN_PAGE_FLAGS */
+-static inline unsigned long memdesc_section(memdesc_flags_t mdf)
++static inline unsigned long memdesc_section(const memdesc_flags_t *mdf)
+ {
+ 	return 0;
+ }
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index a8430a7ae054..efcddb9925ad 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -650,7 +650,7 @@ static inline bool vma_has_recency(const struct vm_area_struct *vma)
+ static inline size_t num_pages_contiguous(struct page **pages, size_t nr_pages)
+ {
+ 	struct page *cur_page = pages[0];
+-	unsigned long section = memdesc_section(cur_page->flags);
++	unsigned long section = memdesc_section(&cur_page->flags);
+ 	size_t i;
+ 
+ 	for (i = 1; i < nr_pages; i++) {
+@@ -660,7 +660,7 @@ static inline size_t num_pages_contiguous(struct page **pages, size_t nr_pages)
+ 		 * In unproblematic kernel configs, page_to_section() == 0 and
+ 		 * the whole check will get optimized out.
+ 		 */
+-		if (memdesc_section(cur_page->flags) != section)
++		if (memdesc_section(&cur_page->flags) != section)
+ 			break;
+ 	}
+ 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 242ec3cb8b52..0507193b3ae3 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1272,31 +1272,33 @@ static inline bool zone_is_empty(const struct zone *zone)
+ #define KASAN_TAG_MASK		((1UL << KASAN_TAG_WIDTH) - 1)
+ #define ZONEID_MASK		((1UL << ZONEID_SHIFT) - 1)
+ 
+-static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
++static inline enum zone_type memdesc_zonenum(const memdesc_flags_t *flags)
+ {
+-	ASSERT_EXCLUSIVE_BITS(flags.f, ZONES_MASK << ZONES_PGSHIFT);
+-	return (flags.f >> ZONES_PGSHIFT) & ZONES_MASK;
++#if ZONES_WIDTH != 0
++	ASSERT_EXCLUSIVE_BITS(flags->f, ZONES_MASK << ZONES_PGSHIFT);
++#endif
++	return (flags->f >> ZONES_PGSHIFT) & ZONES_MASK;
+ }
+ 
+ static inline enum zone_type page_zonenum(const struct page *page)
+ {
+-	return memdesc_zonenum(page->flags);
++	return memdesc_zonenum(&page->flags);
+ }
+ 
+ static inline enum zone_type folio_zonenum(const struct folio *folio)
+ {
+-	return memdesc_zonenum(folio->flags);
++	return memdesc_zonenum(&folio->flags);
+ }
+ 
+ #ifdef CONFIG_ZONE_DEVICE
+-static inline bool memdesc_is_zone_device(memdesc_flags_t mdf)
++static inline bool memdesc_is_zone_device(const memdesc_flags_t *mdf)
+ {
+ 	return memdesc_zonenum(mdf) == ZONE_DEVICE;
+ }
+ 
+ static inline struct dev_pagemap *page_pgmap(const struct page *page)
+ {
+-	VM_WARN_ON_ONCE_PAGE(!memdesc_is_zone_device(page->flags), page);
++	VM_WARN_ON_ONCE_PAGE(!memdesc_is_zone_device(&page->flags), page);
+ 	return page_folio(page)->pgmap;
+ }
+ 
+@@ -1311,9 +1313,9 @@ static inline struct dev_pagemap *page_pgmap(const struct page *page)
+ static inline bool zone_device_pages_have_same_pgmap(const struct page *a,
+ 						     const struct page *b)
+ {
+-	if (memdesc_is_zone_device(a->flags) != memdesc_is_zone_device(b->flags))
++	if (memdesc_is_zone_device(&a->flags) != memdesc_is_zone_device(&b->flags))
+ 		return false;
+-	if (!memdesc_is_zone_device(a->flags))
++	if (!memdesc_is_zone_device(&a->flags))
+ 		return true;
+ 	return page_pgmap(a) == page_pgmap(b);
+ }
+@@ -1321,7 +1323,7 @@ static inline bool zone_device_pages_have_same_pgmap(const struct page *a,
+ extern void memmap_init_zone_device(struct zone *, unsigned long,
+ 				    unsigned long, struct dev_pagemap *);
+ #else
+-static inline bool memdesc_is_zone_device(memdesc_flags_t mdf)
++static inline bool memdesc_is_zone_device(const memdesc_flags_t *mdf)
+ {
+ 	return false;
+ }
+@@ -1338,12 +1340,12 @@ static inline struct dev_pagemap *page_pgmap(const struct page *page)
+ 
+ static inline bool is_zone_device_page(const struct page *page)
+ {
+-	return memdesc_is_zone_device(page->flags);
++	return memdesc_is_zone_device(&page->flags);
+ }
+ 
+ static inline bool folio_is_zone_device(const struct folio *folio)
+ {
+-	return memdesc_is_zone_device(folio->flags);
++	return memdesc_is_zone_device(&folio->flags);
+ }
+ 
+ static inline bool is_zone_movable_page(const struct page *page)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 8a5c93fe1c41..a63733dac659 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6998,15 +6998,15 @@ static void __free_contig_range_common(unsigned long pfn, unsigned long nr_pages
+ 			continue;
+ 		}
+ 
+-		if (start && memdesc_section(page->flags) != start_sec) {
++		if (start && memdesc_section(&page->flags) != start_sec) {
+ 			free_prepared_contig_range(start, i - nr_start);
+ 			start = page;
+ 			nr_start = i;
+-			start_sec = memdesc_section(page->flags);
++			start_sec = memdesc_section(&page->flags);
+ 		} else if (!start) {
+ 			start = page;
+ 			nr_start = i;
+-			start_sec = memdesc_section(page->flags);
++			start_sec = memdesc_section(&page->flags);
+ 		}
+ 	}
+ 
+diff --git a/mm/slab.h b/mm/slab.h
+index 281a65233795..9ded319495a0 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -179,7 +179,7 @@ static inline void *slab_address(const struct slab *slab)
+ 
+ static inline int slab_nid(const struct slab *slab)
+ {
+-	return memdesc_nid(slab->flags);
++	return memdesc_nid(&slab->flags);
+ }
+ 
+ static inline pg_data_t *slab_pgdat(const struct slab *slab)
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 324213d8bdcb..058ef9300367 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -43,7 +43,7 @@ static u8 section_to_node_table[NR_MEM_SECTIONS] __cacheline_aligned;
+ static u16 section_to_node_table[NR_MEM_SECTIONS] __cacheline_aligned;
+ #endif
+ 
+-int memdesc_nid(memdesc_flags_t mdf)
++int memdesc_nid(const memdesc_flags_t *mdf)
+ {
+ 	return section_to_node_table[memdesc_section(mdf)];
+ }
+-- 
+2.43.0
 
 
