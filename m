@@ -4,122 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E82B6C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 05:32:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 177C5C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 05:32:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0E1C6B0088; Wed,  8 Jul 2026 01:32:17 -0400 (EDT)
+	id D98D56B008A; Wed,  8 Jul 2026 01:32:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E5E56B008A; Wed,  8 Jul 2026 01:32:17 -0400 (EDT)
+	id D69576B008C; Wed,  8 Jul 2026 01:32:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D5D96B008C; Wed,  8 Jul 2026 01:32:17 -0400 (EDT)
+	id C0A126B0092; Wed,  8 Jul 2026 01:32:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AB616B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:32:17 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C1BAE169199
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:32:16 +0000 (UTC)
-X-FDA: 84964488672.28.DD8EAAD
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D98EAA0005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:32:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Cut39ALd;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=JUDu3cE+;
-	spf=pass (imf25.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7FD8F6B008A
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:32:33 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B0571C3C9F
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:32:33 +0000 (UTC)
+X-FDA: 84964489386.01.EBC4AAE
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2B976160005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:32:29 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=f7xorGSn;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=YiAklhNS;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (imf08.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783488734;
+	s=arc-20220608; t=1783488750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=czYreYtUDL+AdDzbHXCs5wN19gIieyN8OCDp8PV2k9U=;
-	b=27X4GjWNvjRdqaVHAgnFJv+CcpUBqDXEc/PZ+x8kcC0MnJPsd49HOZZLK9KGwLQQoW7OMW
-	7OEdVzEE2qhOAGcewJetw/R4ThWTifpHcylix3oEtydrDWmjV0tzM+iHU0I55FlFJuSa2j
-	vuPCQNggVFOXqwIOWOciXuJB5+TTTCI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2UlZIVibfpd8EiTrzJIuWoHo83AyTv6ZN+29VIlyxn4=;
+	b=MCmvn2lLeDQ7mXuWT2W1OUd9bkiMisXooRNiScg613sl2nj9dSWvGX2PInFoG0DBUFhs35
+	n183gdiKG6jn1G9B9Dq7WnM4mvnvjXkV499Cmb8PmKhKhB4Vjyfx3sn1YF+nNg1kZQidpH
+	yTsWsLkX7oZHTGwsSDh4/XZDlMkTFkk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Cut39ALd;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=JUDu3cE+;
-	spf=pass (imf25.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=f7xorGSn;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=YiAklhNS;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	spf=pass (imf08.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783488734;
-	b=a8WyOhjmPfWj2eSpTm5fFV8pt5q8WBGIlLea/EYs2Jtm36dB89hd6HPKEUWi9YdSy6IR2M
-	exNm9190EpggAgtqzlhBKG8Du0vRmKnIT1Ch0aX1xSOKPoIEcCDq5+MSQa03oFAAu+nHwV
-	Mg9kdXE5FBmDJv87ZEKwtTlWVSMoIms=
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66842OSn1695664
-	for <linux-mm@kvack.org>; Wed, 8 Jul 2026 05:32:12 GMT
+	t=1783488750;
+	b=QGWHdFrwikAHHkAtWnM39mkl6X9YcLifrzqgYcNTkQA+ZDtY/ka5tdxzS6+uMLFXNwv5BO
+	HbZpF5/iCd72xC2T2N+BPy17S3e5eLT5g/0YcClV0To1oKt752jDB13sCbm5qhI4jcF/G6
+	7vf9YHMmAppzcRxd63UOe92baoDVqVY=
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66842ZxP1491290
+	for <linux-mm@kvack.org>; Wed, 8 Jul 2026 05:32:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=czYreYtUDL+AdDzbHXCs5w
-	N19gIieyN8OCDp8PV2k9U=; b=Cut39ALdm6I1OC8vWl96nLZcN6XhsMvALPLFtS
-	KdwjiSWy6rdGIdnj3OZ/En+ZCFYbw9cdGcvnDuzLFyRleVRN0I+fVGxiXLkEBZ43
-	Xe2NIEoBX/PLxxgJccrS9bCeCiM5nIX2I2kyNggwGjlvBPOrvqdTfxUDvMrpapU1
-	mc6uwBeKHD2IKphaijz0v29kbZZgmDgw7r+QbfR2/yGfZyJs4PWN/UZ6tECHAyyC
-	jFySUfRaBZeljxs0dBd2aZe8LVWeo1FyXj9JMRTnfnCtoRTqN3kPkmC6eEXsPPOr
-	Myhf8pCg5f2G5krZ2kHehINuSDtiUa4VGZ/kZ8rDdPW5c49w==
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9csw8s8h-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2UlZIVibfpd8EiTrzJIuWoHo83AyTv6ZN+29VIlyxn4=; b=f7xorGSn3tkhgRd1
+	cTuwWHbqzuRBH/bk6CJcKZLo6SWYxtjFylTyUKbMk8rC5hY6S1VjcvHBPrmnRnlX
+	zI3+Pk5cS7XvzcMirqdqgv1MmljsyEwYxGYso+j928SPs2gHJrRODya03r4jOv5N
+	PwMIzoYEKOvERlrzhYcJl5ioCms02Vgt3dme7AssGfaz12Ndfq1OAf1nM8w0xyxF
+	16KX3goYl6bLkG4MwnMDiSuOTwW+Sjq7rK9NLmwuZ77tYzXZePBSVxGYe9JHjzvh
+	hMdiwtOQW9lXt/kyNk2IbEKnWBTejDIwd1vTKPuGSg4W2GIWtbI020oL2VgNdi1j
+	jH4llQ==
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9b5g947e-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 08 Jul 2026 05:32:12 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-845ea8fd3easo746978b3a.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 22:32:12 -0700 (PDT)
+	for <linux-mm@kvack.org>; Wed, 08 Jul 2026 05:32:28 +0000 (GMT)
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-848415e9e8eso543621b3a.2
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 22:32:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783488731; x=1784093531; darn=kvack.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=czYreYtUDL+AdDzbHXCs5wN19gIieyN8OCDp8PV2k9U=;
-        b=JUDu3cE+oHwVdrQXCna3wNNe8tTz3JpDB29dj5kQao7KB3qVm9Sp25OqgJlvJLr0pU
-         M74ZNAyYfvkjD1Twkw7kfE+CHIfFGHwuYeGXCT0iqdEu9fGmvmTjofhLEQGoU0a0EoSb
-         yy8E4j8sqS5xLnFuHx4msBAc7n2qECdlk6Gs5fWXlbyYZXjNlL4Zhqo9scep53v9bXp1
-         VbMK+6W91OBpxwIIYzideCCCaZLsV56xhOrJ8t/ly6uykZ0sx+IG+KfhxVEW6zlVJEcv
-         HnHgFZc79zVhNgmZOb/GouNyCJMgMy6ACfnkp1Meb7+8JuH1I/FPdwV0e4tFFTLBULZp
-         ghcQ==
+        d=oss.qualcomm.com; s=google; t=1783488748; x=1784093548; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2UlZIVibfpd8EiTrzJIuWoHo83AyTv6ZN+29VIlyxn4=;
+        b=YiAklhNSa2wYvmBWdhRzO2Jd3BuaR30ZdRdPAGBXY9LOTq1Q3XdczchwonGWfp41gb
+         lGUrVRqpmnOeRaVk7Ba9PE8GgVl/GsAJRqQj7hvP56YJaS+w44azCMZ6FaPTGD7RJnFc
+         q05MOaTDD9Y/dp1dzItiB9I9bw9C0Heeccq++SWgKQ1kX92VYFBbIqUHwcvVLtxF2rcr
+         EE61WpKcTMwwu/jsWpI6ixe34W6pbthdGt4un1Ik1TO2l/m174kf3fk/uOrasV9TTWyj
+         7KCjZmG09cPy/4cw4e+u22LX2PCle3WRwd8NSRDnEjbnvXH9dKWMZ6Tb2sBKNtIi1ruN
+         OU0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783488731; x=1784093531;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=czYreYtUDL+AdDzbHXCs5wN19gIieyN8OCDp8PV2k9U=;
-        b=kZ9tTd7qVcuHIrl+r1p57sqWAnUEHeneqIY9s8eyX9bDbCF4pIWwdoSfP6As2Otq2v
-         bZj4UPkiUm5iorzGnsaKtF/E+FMYMnLLU50lJ4QvUBef4I57WNy+MW9wINkr+oQpWU4d
-         1nU90MlvDBs7WdQjDc33giT/ta37eEhYd/iPYZrnHIMMqIkW3j1fFmu9MQQVtPczrd9J
-         uGY8rYe5mBW7rLQmR1RBnFjACB+DszF9nMibknd8lpggUis5iFXemc3eWqerIq18RTiY
-         h0LwAchIL5lwNfheTYE9tF61hHKb+C6fjqXf2Pzx9lOMw/+iXz34Y/6ZaTGkIxXAT//8
-         +Vzw==
-X-Forwarded-Encrypted: i=1; AHgh+RoTAhVIx1KwYRiadpbrqNgaSlqhkBFdGqzSlPb+ydWGVV4MjwIeKVm7TFZgo5BUpFON3VhRTEsDig==@kvack.org
-X-Gm-Message-State: AOJu0YzT92Igc/+35w/DE8EY9bXr2eu1v3GkV810rZu02WV4xneIYG2Q
-	qf9ZcFN96cfw6kHtv74GmAFd0TlitwQ1C7DRnUYD8UvuMkEK31n7tMZr6q0gAFq/jRavfwzaNmD
-	GqeCSJwQY40p4VUmhmi1Zu6GIPzIcC2DnkDYRqxdDBkPRZ57lKDwCdw==
-X-Gm-Gg: AfdE7cnJ4YU1ufwouV5/zFgun/07681nNugXtND3DNuJG+41kejQCRZEsCvH2aAkstE
-	GC9NqGv4rBwgvs3u44l+xvy/1A2CIgBXV3EXwZkSJ5Ejk57NTiGzpXrgwxWByr+qhONsa+0YpM0
-	Hz9u6Gi2j+SxP+S5u5QWjzyAUttcONIcVr44PTOIqj7b1p+St8judJWiG/KUZiagLITzR0e5GFD
-	H5VonHICJ9+HpEFzKJysKlKXcSn4yJeYmSpvYu6ujX0KuhjHolMgXGa4NzFC+NYjwroXCR3P9u/
-	PHoGTOmae8SuZuoH1NqWeriq3D+2TyDPua4feOmRSw56kZNMvDdsqk3XGONI6Ah8mW0P+DHoOqx
-	uHtOZefJEYvzBoMPe9BUDwCEa5w81USvVXh1teQ==
-X-Received: by 2002:a05:6a00:35c4:b0:848:2f77:e2d6 with SMTP id d2e1a72fcca58-848438f8ee3mr1051256b3a.63.1783488731026;
-        Tue, 07 Jul 2026 22:32:11 -0700 (PDT)
-X-Received: by 2002:a05:6a00:35c4:b0:848:2f77:e2d6 with SMTP id d2e1a72fcca58-848438f8ee3mr1051201b3a.63.1783488730339;
-        Tue, 07 Jul 2026 22:32:10 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783488748; x=1784093548;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2UlZIVibfpd8EiTrzJIuWoHo83AyTv6ZN+29VIlyxn4=;
+        b=Lk3aBQCs+2F7yXcpfOLflH1ICduUoDA+7BbPcxeYRFypgDSwSMEnxIxgyX9OP2LTg8
+         8Pznx8VNK85uYvDrh9/uD74ETlho1QZ0L/Kz0p0HGJ6LrI0ETsHHtRNCEnxrc6xNe1DS
+         ltIttigswAMV+QVIATctYUGh0Vhjsm8uc2Zl8bKyos6WJnHUUsY07kCvM0KZ3kkTgwnz
+         nXA+FjVgIUJxNYXl2d+B2F+DbfCYGRACUhNmC8bcmCXWSXFkcxSmnc9Y7MSgbX3SD12l
+         189Yx+/sKcNZbxcS5/EFscapPyuivCmmnHTBXjTQlsTafdxkzU4c5CHOGUl8+e3d6axq
+         243A==
+X-Forwarded-Encrypted: i=1; AHgh+Rr5khG3/R1Yh3jXIqzazyaQTo2vDzrMReVhttkh5dNnUED64cIOhTbbHZS7vK5ybCl6Nb2oOW62/g==@kvack.org
+X-Gm-Message-State: AOJu0Yx2fmsZSCQ7mJAjCHiDBAFngJr5ekCf5IMjKvMkisCEDX+zdb1/
+	v8sLkvqlR46v79IFRQjEYvaJMUKhADf0jlU3AbLWTTtMHffqB+pfzdRbuYRH+az5FVQG7DwOkz8
+	Pytlwybez0Rr72VHlq/RForg1YAZtpTf5yuFetxrdvtOdU11L7h1jnQ==
+X-Gm-Gg: AfdE7cmYqw5G05RqBV+xvCXsm+DdJfQDg4TMdzpXSYPFKyTWtXcFWWBoYJkPXCH8z4a
+	N60czg9q/jbmuPke9j5cNSUzWYJNxSipwIF3FQppGrXWK4qL00hjKs++SobJnlERZwF5Wt+b5fs
+	+0KmK3+atVhD7K4cqkxJZ1aBWM2KkF2jcaZ/nW67oV1TS7ZPnCg41hqIePPvkgbXRTCFFDF43jV
+	y/nqidoAkDjAEXNvr8J+8lAO/CuizBy2tswrAJbScRTEHERHDLgQisYqradSHL/DCnP6+SpJ2j1
+	WfGHSHcEXS8UjvvvTBqrH67NQaNZBa8iFA0Joje3vD4AOsut03OMAg+WTCl55Sw9o9ZS4eJk7wI
+	ym8igOan8mdY/i54CvcgWmud2KucEQWPawiixpw==
+X-Received: by 2002:a05:6a00:94a2:b0:848:4809:51da with SMTP id d2e1a72fcca58-84848095566mr345786b3a.50.1783488747244;
+        Tue, 07 Jul 2026 22:32:27 -0700 (PDT)
+X-Received: by 2002:a05:6a00:94a2:b0:848:4809:51da with SMTP id d2e1a72fcca58-84848095566mr345693b3a.50.1783488746369;
+        Tue, 07 Jul 2026 22:32:26 -0700 (PDT)
 Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6db29d1sm6484592b3a.53.2026.07.07.22.31.54
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6db29d1sm6484592b3a.53.2026.07.07.22.32.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 22:32:09 -0700 (PDT)
+        Tue, 07 Jul 2026 22:32:25 -0700 (PDT)
 From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Subject: [PATCH v3 00/26] Introduce meminspect
-Date: Wed, 08 Jul 2026 11:01:39 +0530
-Message-Id: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
+Date: Wed, 08 Jul 2026 11:01:40 +0530
+Subject: [PATCH v3 01/26] kernel: Introduce meminspect
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALvgTWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
- vPSU3UzU4B8JSMDIzMDcwML3dzU3My84oLU5BLdMmNdc7OUFAtDM7NkkzRDJaCegqLUtMwKsHn
- RsbW1AKGb7OFfAAAA
+Message-Id: <20260708-meminspect-v3-v3-1-7aa5a0a74d5c@oss.qualcomm.com>
+References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
+In-Reply-To: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
 To: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
         Eugen Hristev <ehristev@kernel.org>,
         Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
@@ -162,50 +163,49 @@ Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
         Eugen Hristev <ehristev@kernel.org>
 X-Mailer: b4 0.14-dev-f7c49
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783488714; l=11849;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783488714; l=33009;
  i=mukesh.ojha@oss.qualcomm.com; s=20250708; h=from:subject:message-id;
- bh=HBaTfEP8damwWWnMzQH/YpuAPB3B7/0j3KtNT81MfVA=;
- b=/7Bc4SpQMM9aD5ZEDXUU1K2SLYjZnnKa3Vk/3lp46pAbPqaevvkOXjBjX2jHejKnoEi9OjiAP
- gX32aEuqU/EDvmeDvxh+TKTuGcp8RF4OsVMztsVrL/BICpCO73gT3gK
+ bh=KH3mHgbi2s3PjaGSL0rvvW+S0Ryh28FGRdTIZA8SodA=;
+ b=qqUV47FptMIoE2ON8cbgzqhWLo02DhyQzv15i6loIAVxcdMkrVlr9lNo7UdFzuewFyKPw9/te
+ fI1GwlpG+Z3DdyDOhn24sdGJ4zR2YjO9WLp8u1+0iU1o4sZEZNe4Oe0
 X-Developer-Key: i=mukesh.ojha@oss.qualcomm.com; a=ed25519;
  pk=eX8dr/7d4HJz/HEXZIpe3c+Ukopa/wZmxH+5YV3gdNc=
-X-Proofpoint-ORIG-GUID: yMq4hcZtXE0eEn56D5HpId8qg8wlng5Z
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfX7bNQ2J/nfgLg
- NeW2SWJuySvUCXtAfyoUqXbbh0uifGqPHz973SZAev2Hb1am62XJe60uyZXkrSc9r8p48GI+eV9
- m+wRqOT47T8357axNwRxltVl0G0e0Wo=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfX7aGMO2fb4Bhj
- P/MusPFyNjl0fu5f7cPljWNpJL7GvJVu7H73O4waisVYMQAhnfQ3fkL+f3RzDL0rFfJM610Z5iQ
- cBRakLpReohpy49IUu+968PnZOXWKfGNeLv/sQgLnvLxTx1TmcefFzhGpx5YTVDqlqRAHfTsCxb
- FbebuOaD5jcuOdbZX3k9awZKnzjyRKpgEZd6fkLotAcwsNyZujRbeGtdMJzd4IssNfVPJHlHppv
- mixdOBpLOErxbeoq9ZgNm7RIHFT0VCmwXiY5wb531grj09fWQyOHv1p3qZy/VteanjbBZS2HL0W
- 2WysNjIq7XUvPKeap9DoHi/ix+XzjB7vBWYIrVgUaNNUeiWcd13YoQq8iR1AQoj0Yum3m4HODL7
- cs184jG1NE7NWjKfSr1TaFqV3aSfIr1ue5SSb+zBXOhPZ26SOw9wUX7IdchBd2nlRtD+Sw0MmV4
- P7BagWkeKPbgzzQpnxw==
-X-Authority-Analysis: v=2.4 cv=HaYkiCE8 c=1 sm=1 tr=0 ts=6a4de0dc cx=c_pps
- a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfX+2hCFaELT8xd
+ +ECsIpj65zGdp8TBYY8+JmIE3sd4ov+ZSzXVOWCJ4rR1ZO/mHCAqsfubVGwh1eA82dTIenG4cQV
+ B8wKD9l3jvdgCTMwS+Ci54d97ZOFSRQ=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfX9cGoW7Tcqsjh
+ 1xRZklndXu/x7vn9h/KoqOg3C6F58mpID2U6ZL8Go+md04CSKbqHKnXeiGMSpZDmrcvyQyxSBbk
+ xOQZ2To46zZ0rHfsAPsg4i3tfgGL/tY5jUPb8WGkkhfyOYDZ/zGHIL7gv0bAzO5ic4OIg7MIegi
+ +6oQW7sSJKSMO/Gd7ak78192q5HM/V5eVekLKREVQKTbemNG/P7c1PGjrnCruZIGun5UHyohHa/
+ IF7cx0h39suq1IkJs/3ZuO2amv21J/CUJFLJANsnL8GWCXlRVCv76wRT8P82o2P+3cXqVaw2d9n
+ FvtiujTg7ogijgwMLYj3p1W8RRAWrnhmTpP7IPSgJfPrvF7QmeKZMqzY+qW2eYGPJISSoUCr6je
+ 6U1gL1ggcmI3Xl3f0n1ad+grpHqH4Kgr0eUWzcqCL4tRylgZXBelVnGuBZRPfUkqPv6FoMrZ/JF
+ amN1fAitpgZkh2/5UxQ==
+X-Proofpoint-ORIG-GUID: oXHzrdSfCukZQdD37E33qx8nThi4h0jl
+X-Authority-Analysis: v=2.4 cv=JLULdcKb c=1 sm=1 tr=0 ts=6a4de0ed cx=c_pps
+ a=rEQLjTOiSrHUhVqRoksmgQ==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=vnREMb7VAAAA:8 a=Oh2cFVv5AAAA:8 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=KKAkSRfTAAAA:8 a=1XWaLZrsAAAA:8 a=pHSkyj2oBRdTMXCnRkcA:9
- a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22 a=7KeoIwV6GZqOttXkcoxL:22
- a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-GUID: yMq4hcZtXE0eEn56D5HpId8qg8wlng5Z
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=37rDS-QxAAAA:8
+ a=n5v8ppSJA3wPCkGJsRoA:9 a=_LG0Lte88zW-95Wx:21 a=QEXdDO2ut3YA:10
+ a=2VI0MkxyNR6bbpdq8BZq:22 a=cvBusfyB2V15izCimMoJ:22 a=k1Nq6YrhK2t884LQW06G:22
+X-Proofpoint-GUID: oXHzrdSfCukZQdD37E33qx8nThi4h0jl
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-07_06,2026-07-06_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1011 adultscore=0
- malwarescore=0 suspectscore=0 priorityscore=1501 spamscore=0 bulkscore=0
+ clxscore=1011 phishscore=0 lowpriorityscore=0 malwarescore=0 adultscore=0
+ suspectscore=0 spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080050
+X-Rspamd-Queue-Id: 2B976160005
+X-Stat-Signature: oi9fnhmg53ga31cer9no6j6yykrzt18e
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D98EAA0005
-X-Stat-Signature: f1iazuj3fyzk8zfq55uc7iyat9jtnha4
-X-HE-Tag: 1783488733-249608
-X-HE-Meta: U2FsdGVkX19WKG+KCknPyUv0SIHrFRld/CpEdxZ2goMWIEvmpysg6eMiK5XGrmjMQbSkGXWJI5MydmzKcAJ6uGfF8yjSTSvj1Y62J0xuARcaIPOBnVs9yTw8QAJjoMj95fE1AaOL0DKT3s0n9Qo8eJVgHihNAAlpnrfy8IK9/d2K8tNeJ5XCczYRa0VnkCCxUV0VIVqfv1NGm3yZAgbC8qrpTOf+D3harTBE4m6OBN1f3anJIZqtY8dAEyndAXBze/4n8o5pPW4OSoGqE2r6rxIvjI/nsvV24lFDPFLLFt9LarjTmhuOVssZyymcq/5TxBHDa9Ee2uq7uc0WEakl8lvf162sqK+AqGk8BiztkYVBDcSKDLCnaYBJ5+KNxtb1dupgWhYhhBzXZ72riuUuR9+WvdLEPiiH6MSBs22HNf/AFbiQ5SxSv8y7xBp4KHXRNM8iQieJdSve8h6iUGxzz/ZKJdqQ2kK7GGR9moBCcWHGlmZCkF4ANEcTO7eAT/XsfmD+cn7DthQYw+7/qut5rUWVeKKPrZo9fNjcmaA0JBNV01EqtlGDbdIVHn/sFKHGluXmUrg70vcJkn9yZfutOkCX1JiTt0Zsu5i4qgrOTkcYievjmHnAEqEwzdXuWucKJFNfRumo4C3qgWZ5+xkzSafpG34I0UzLIZNRlYUggzyEplfijVj2bUJwKbsGW4H0heiBYZ4vS3EIPvsVFLSx1fdsl9rTEeUQZcvqC9kUgA8fmv7zCSImbkNY2EFzQKFe7/OfjEeNxozOG8mo1dRlDQlJA0N0+61LgSPe+w2ZHdt9nENcXIzx4yPQj7r7akvOIpYLiAhzBJU8xJRy6+AUaA4Z7RQvQLwzg0pHryro6H+PjKPs8x0RMeJbaQnb83bnnnv38nuyKDncJuMldFoq3mp/ufNRuNAiA6KjxUez3qVcsDVeP/Nj8veAcaJa7bo354ea2Wmx/9+GebP67ZH
- +foCsVnF
- HEYopnsVvs8NgqEn2u/BDiOe/WfDMjDCjaNr05Ztm0mEh4IU/cq8ZDxEL/q2IqbKqtrSeN2b2ydskZArbGSYm53w2NnaGeOsqiX8dYNamS80sPHLslos5kd0QlzQSXvo3IMW4qrxD619jw8sj7X4Mtssrlubk4Ommlzc6F7WSS6RWnFMsNaQELPnSoIvN3dL9TNOL2PxC+m/PjRS8ZIChHUSuG69pGr1U2bvTJcSGyahTt7BMqCZDD2r0/Bl3eLfYpItxyCAUXXFLLcT6UYNcSiGa/00Ak2yn4JIq38ELG2HeygRXQjRan8kC2krAPSo6pgGyxUDcmtVd7yBxIuluRUzZl4EcjUoBvAuvWGzVoOJa8lgBQfL6XuQxdbDU2NfAj1lp/GLyNS/Yc0nJFHLnJUOZPW+tY+4foIxOVYa8VuF4pFXe9Vj7YfunEO65ml18NxPViYO3DztjjgR8tl2bxAytyCW3ZyEYP8RafLkknt0qSAKVnYKzQKpoHn0d95TFpIVkG1p4XJqcZiQlcueYhPB0Gl0wR0qHKdclgYCsCxZUtLKUP1WEippgsjXboRtsHRvIHvxKqw1v+9ju1iXEnQvUxqjt7Hum7xdt32E2YPDj2n+NZHB66qrdFFaOy/FB54pzudw/DW+EobNq6zZiYCUzIykqdw9v80yXDZS9lPyFU+ZoWi1+SUfSupLb9mS1RPs8KYicXZ5Dk7oo/mSVxCUneeIN7/0RRc/If8fKpfnDMBFLZ+74xVF7LKa1xmcGVCnI
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783488749-603491
+X-HE-Meta: U2FsdGVkX18gv7caV40opQ1oUSyOdaNlEO28yJCBYNLBtjsM6gerQ9FNK9t/RVK5Z+cB2eZKare/XVskFQIp9mCDaFPOUACe/b/9Wt+ZC1oNTObg9TeiUpBGa2+XZSwmVNNGK6kVEL6NCNBPAhUQ2DN6yFJNfX9oijSguCMUpT2E4wlPEOPyY7q4zOcPQRiGwBlgAZ/Kop/wixaPSQ0D+JT49ZFrzOFvsf4s41l1CuEjMoxi9++91yY/h7J0HSreNSryMwDyxpgPLoLzhCA69tcGiRb2IFPWc4O+ASoU3whuG7zd3hP8ARIeOn3UAunptHfW1dWwuS2+YIJ0ZRUx2AtdOozYpT5lXGNdl1wdEHwvlGidi7ZL4iCFo2mkEiUdQ5+2NGHqjgINPY2j6tc+To4SskI8BX4+TE+B/VQKRyUrMtIUFm2kM9bt0WfWB1sFb7YuCvc4lVvqs7V4FDq53BVFooqLy0W2Eeopa+A5EQQ8J4mlM4g2SVBHE+yjkxxM7L4pI0GPCwu6jNv6vLe4Ztp8WSYRPTwYQU8CV5BLzFZ8l+vWUBqpQwZCrZ22BUzTs4huqxO+vTbEXeJcxPc9zn5e4hQaYZorB0z2qtIQTnL7k6+sn13Nxv2MP0EcO9hh0m2erPvyK5elx3Yt9Flg5ChiQdvXCTyU0rQ0DyeVLEx3Js0KnbNukYh/b7fSW7pezlTcX1NCMRz0FKvPytbe1OOC1kjDPrHArCw1SRPEFRWK4X6yTEJq72yrK3aUfQx15jNfKPGulWoYc0Jg724EFj9tEfY/52K2LIh2iuWIem2qQTuIiTh6o3ogDSBliYRKWQYa2ffPwafl8FlUgqlxp93B8bThesyjsQ4ayalqT63daEpEHqd9iHNJItnwpcdJaOEbxj1teKJgH2eKD1EXNsC+ghUqR29tFJ6yA+J7XNsO03vEyW0yTvflzlHkAje8H5wv5Danr1a5rH5CBtI
+ KvkgSsPt
+ btOyDmaTaxVryHB3sV3kb5/fBL1pM+TYM4n8IHcM5xVqNNL69mG2WX+DCsc5MX8ID64heMXjo9Gsmw1dHQozgV7Oey0s2B7YNYIp3v+gE5t0hmTOcq0sqw4k15xfZdZpal8kIPuPsPSmBLV8m09yYe/iViaLmicAph57E8Pigp8wtyAiLjL2mOhzNlhIa44QLu2vjBatf0v2Z5KPpTnBackjkg3bposZnRZrIkQdyp6Fty7bYpkKUoH2uGm0ejm3aFvr378Ihr+1cKUwa+iC6t5n1pIdFi7UPbF35k2eq/Yay0Vc4mpFZIIdBH+/kA/BucWUEiJNzp40Er8dNtq+VEnilQMBsYu5Pgkk2/Wv8SvzlCj+Go447+neNmAGWBAi3jNYa7AvpqMlM3NrP57QKdoKaVpEVzZKNX6SBZeGNrq5WxdsTjygG3K8Vkrc+dM571z1VXRERmChMCLvE6LXrIP/CTC+jVnqtHyUvF5X4BOJXZNSVN3jzA9aOLs/LPB3xOdiz8VFPqtccD7Fobmc3jbKQLBVAGIonU6oZI7UBPseVfpWGpjpm72KNs3BWPgf2eywqAurFfv0JYpHqr7g2EVjQF5leFbA+dTNS+oQLk9uRYBvH9lZKOqpsaw69WbYL/4l92TmpihREeQ5pDiRUyK4qrGjtbbhl907zjJFLXNjNww3KDHs4asIu3eMVWg6UAxdmqIOLmPf98uBWSfif3j9rWQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -213,229 +213,1061 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-First of all, I want to thank Eugene for his excellent work on this
-series. What began as the Qualcomm Minidump driver from me has now
-evolved into meminspect. He also presented meminspect at Linux
-Plumbers 2025.
+From: Eugen Hristev <ehristev@kernel.org>
 
-Video of the recording is available here for anyone interested:
-https://www.youtube.com/watch?v=aDZv4-kOLSc
+Memory inspection mechanism allows registration of a specific
+memory area (or object) for later inspection purposes. Ranges are
+added into an inspection table, which can be requested and
+analyzed by specific drivers. Drivers would interface with any
+hardware mechanism that will allow inspection of the data,
+including but not limited to: dumping for debugging, creating a
+core dump, analysis, or statistical information. Drivers can
+register a notifier to know when new objects are registered, or
+to traverse an existing inspection table. The inspection table is
+created ahead of time such that it can be later used regardless
+of the state of the kernel (running, frozen, crashed, or any
+particular state).
 
-Introduction: Memory inspection mechanism
-
-meminspect is a mechanism which allows the kernel to mark specific
-memory areas for memory dumping or specific inspection, statistics,
-usage.  Once regions are marked, meminspect keeps an internal list with
-the regions in a dedicated table.  Further, these regions can be
-accessed using specific API by any interested driver.  Regions being
-marked beforehand, when the system is up and running, there is no need
-nor dependency on a panic handler, or a working kernel that can dump the
-debug information.  meminspect can be primarily used for debugging. The
-approach is feasible to work when pstore, kdump, or another mechanism do
-not. Pstore relies on persistent storage, a dedicated RAM area or
-flash, which has the disadvantage of having the memory reserved all the
-time, or another specific non volatile memory. Some devices cannot keep
-the RAM contents on reboot so ramoops does not work. Some devices do not
-allow kexec to run another kernel to debug the crashed one.  For such
-devices, that have another mechanism to help debugging, like firmware,
-meminspect is a viable solution.
-
-meminspect can create a core image, similar with /proc/vmcore, with only
-the registered regions included. This can be loaded into crash tool/gdb
-and analyzed. This happens if CRASH_DUMP=y.  To have this working,
-specific information from the kernel is registered, and this is done at
-meminspect init time, no need for the meminspect users to do anything.
-
-This version of the meminspect patch series includes two drivers that
-make use of it: one is the Qualcomm Minidump, and the other one is the
-Debug Kinfo backend for Android devices, reworked from this source here:
-https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/drivers/android/debug_kinfo.c
-written originally by Jone Chou <jonechou@google.com>
-
-Tested on Qualcomm SA8775P (Lemans EVK) on next-20260707 with the
-minidump backend: kernel crash dump regions correctly captured
-via firmware.
-
-This series introduces a new cross-subsystem framework and, to
-avoid merge ordering issues, I suggest the entire series be taken
-via the mm tree. Subsystem maintainers for touched files have
-been CC'd; I request an Acked-by from them if the respective
-patches look fine from their side.
-
-Alternatively, the qcom backend patches (22-24) can be deferred
-to Bjorn's qcom tree in a follow-on series once the core
-meminspect framework lands.
-
-*** How to use meminspect with minidump backend on Qualcomm platform guide ***
-
-Prerequisites:
-Crash tool compiled with target=ARM64.
-
-Target kernel must be built with: CONFIG_DEBUG_INFO_REDUCED=n;
-this will have vmlinux include all the debugging information
-needed for the crash tool and CONFIG_MEMINSPECT,
-CONFIG_CRASH_DUMP, and the driver CONFIG_QCOM_MINIDUMP.
-Kernel arguments: Kernel firmware must be set to mode 'mini' by kernel
-module parameter like this : qcom_scm.download_mode=mini
-
-After the kernel boots and the minidump module is loaded,
-everything is ready for a possible crash. Upon triggering a
-forced kernel crash, the target board will wait in download mode,
-where QDL (https://github.com/linux-msm/qdl) running on the host
-connected to the target (here, Lemans EVK) can be used to collect
-minidump.elf from the target device onto the host.
-
-Currently, --minimal mode is being used to get dmesg log from
-crashed device.
-
-Without --minimal mode, the crash tool needs to be patched to
-not crash on missing symbols and needs to be tuned, which I am
-currently working on in parallel.
-
-crash> log
-[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x514f0014]
-[    0.000000] Linux version 7.0.0-rc3-next-20260309-00028-g528b3c656121 (@21e3bca4168f) (aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #5 SMP PREEMPT Tue Mar 10 18:18:41 UTC 2026
-
-*** Debug Kinfo backend driver ***
-I need help with the testing of this driver, Anyone who actually wants
-to test this, feel free to reply to the patch. we have also written a
-simple DT binding for the driver.
-
-Thanks in advance for the review, and apologies if I missed addressing any comment.
-
--Mukesh
-
-Changes in v3: https://lore.kernel.org/lkml/20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com/
-- Addressed most of doc. comments and binding and 0-day kernel
-  test robot warning.
-- Add timekeeping: Register tk_data into meminspect
-- fixed some of the bugs identified during testing.
-- Fix missing return before dev_err_probe() in qcom_md_probe(); all
-  three error paths (SMEM lookup, table validation, table init) now
-  correctly abort probe on failure
-- Fix meminspect_traverse() kernel-doc: @priv description corrected
-- Fix meminspect.rst: replace stale MEMINSPECT_ITERATOR_CB type name
-  with the actual meminspect_iter_cb_t typedef
-- Add kernel-doc for meminspect_iter_cb_t typedef
-- Lot of code formating and style change as per coding standard.
-
-Changes in v2: https://lore.kernel.org/lkml/20251119154427.1033475-1-eugen.hristev@linaro.org/
- - Fixed doc warnings
- - Fixed kernel-test robot warnings.
- - Took Mike suggestion to remove mark inspect flag for dynamic memory.
- - Added R-b for printk patch.
- - Modified some commit messages for clarity.
- - corrected binding change for debug-kinfo as per Rob suggestion.
-
-Changelog for meminspect v1:
-- rename to meminspect
-- start on top of v2 actually, with the section and all.
-- remove the backend thing, change the API to access the table
-- move everything to kernel/
-- add dependency to CRASH_DUMP instead of a separate knob
-- move the minidump driver to soc/qcom
-- integrate the meminspect better into memblock by using a new memblock flag
-- minor fixes : use dev_err_probe everywhere, rearrange variable declarations,
-remove some useless code, etc.
-
-Changelog for RFC v3:
-- V2 available here : https://lore.kernel.org/all/20250724135512.518487-1-eugen.hristev@linaro.org/
-- Removed the .section as requested by David Hildenbrand.
-- Moved all kmemdump registration(when possible) to vmcoreinfo.
-- Because of this, some of the variables that I was registering had to be non-static
-so I had to modify this as per David Hildenbrand suggestion.
-- Fixed minor things in the Kinfo driver: one field was broken, fixed some
-compiler warnings, fixed the copyright and remove some useless includes.
-- Moved the whole kmemdump from drivers/debug into mm/ and Kconfigs into mm/Kconfig.debug
-and it's now available in kernel hacking, as per Randy Dunlap review
-- Reworked some of the Documentation as per review from Jon Corbet
-
-Changelog for RFC v2:
-- V1 available here: https://lore.kernel.org/lkml/20250422113156.575971-1-eugen.hristev@linaro.org/
-- Reworked the whole minidump implementation based on suggestions from Thomas Gleixner.
-This means new API, macros, new way to store the regions inside kmemdump
-(ditched the IDR, moved to static allocation, have a static default backend, etc)
-- Reworked qcom_minidump driver based on review from Bjorn Andersson
-- Reworked printk log buffer registration based on review from Petr Mladek.
-
+Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 ---
-Eugen Hristev (21):
-      kernel: Introduce meminspect
-      init/version: Annotate static information into meminspect
-      mm/percpu: Annotate static information into meminspect
-      cpu: Annotate static information into meminspect
-      genirq/irqdesc: Annotate static information into meminspect
-      timers: Annotate static information into meminspect
-      kernel/fork: Annotate static information into meminspect
-      mm/page_alloc: Annotate static information into meminspect
-      mm/show_mem: Annotate static information into meminspect
-      mm/swapfile: Annotate static information into meminspect
-      kernel/vmcore_info: Register dynamic information into meminspect
-      kernel/configs: Register dynamic information into meminspect
-      mm/init-mm: Annotate static information into meminspect
-      panic: Annotate static information into meminspect
-      kallsyms: Annotate static information into meminspect
-      mm/mm_init: Annotate static information into meminspect
-      sched/core: Annotate runqueues into meminspect
-      remoteproc: qcom: Move minidump data structures into its own header
-      soc: qcom: Add minidump backend driver
-      soc: qcom: smem: Add minidump platform device
-      meminspect: Add debug kinfo compatible driver
+ Documentation/dev-tools/index.rst      |   1 +
+ Documentation/dev-tools/meminspect.rst | 144 ++++++++++
+ MAINTAINERS                            |   9 +
+ include/asm-generic/vmlinux.lds.h      |  13 +
+ include/linux/meminspect.h             | 270 +++++++++++++++++++
+ init/Kconfig                           |   1 +
+ kernel/Makefile                        |   1 +
+ kernel/meminspect/Kconfig              |  18 ++
+ kernel/meminspect/Makefile             |   3 +
+ kernel/meminspect/meminspect.c         | 474 +++++++++++++++++++++++++++++++++
+ 10 files changed, 934 insertions(+)
 
-Mukesh Ojha (5):
-      timekeeping: Register tk_data into meminspect
-      mm/numa: Register node data information into meminspect
-      mm/sparse: Register information into meminspect
-      printk: Register information into meminspect
-      dt-bindings: reserved-memory: Add Google Kinfo Pixel reserved memory
+diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/index.rst
+index 59cbb77b33ff..ea2989ca1566 100644
+--- a/Documentation/dev-tools/index.rst
++++ b/Documentation/dev-tools/index.rst
+@@ -40,3 +40,4 @@ Documentation/process/debugging/index.rst
+    autofdo
+    propeller
+    container
++   meminspect
+diff --git a/Documentation/dev-tools/meminspect.rst b/Documentation/dev-tools/meminspect.rst
+new file mode 100644
+index 000000000000..4ca10e33e4fd
+--- /dev/null
++++ b/Documentation/dev-tools/meminspect.rst
+@@ -0,0 +1,144 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++==========
++meminspect
++==========
++
++This document provides information about the meminspect feature.
++
++Overview
++========
++
++meminspect is a mechanism that allows the kernel to register a chunk of
++memory into a table, to be used at a later time for a specific
++inspection purpose like debugging, memory dumping or statistics.
++
++meminspect allows drivers to traverse the inspection table on demand,
++or to register a notifier to be called whenever a new entry is being added
++or removed.
++
++The reasoning for meminspect is also to minimize the required information
++in case of a kernel problem. For example a traditional debug method involves
++dumping the whole kernel memory and then inspecting it. Meminspect allows the
++users to select which memory is of interest, in order to help this specific
++use case in production, where memory and connectivity are limited.
++
++Although the kernel has multiple internal mechanisms, meminspect fits
++a particular model which is not covered by the others.
++
++meminspect Internals
++====================
++
++API
++---
++
++Static memory can be registered at compile time, by instructing the compiler
++to create a separate section with annotation info.
++For each such annotated memory (variables usually), a dedicated struct
++is created with the required information.
++To achieve this goal, some basic APIs are available:
++
++* MEMINSPECT_ENTRY(idx, sym, sz)
++  is the basic macro that takes an ID, the symbol, and a size.
++
++To make it easier, some wrappers are also defined
++
++* MEMINSPECT_SIMPLE_ENTRY(sym)
++  uses the dedicated MEMINSPECT_ID_##sym with a size equal to sizeof(sym)
++
++* MEMINSPECT_NAMED_ENTRY(name, sym)
++  is a simple entry that has an id that cannot be derived from the sym,
++  so a name has to be provided
++
++* MEMINSPECT_AREA_ENTRY(sym, sz)
++  registers sym, but with the size given as sz, useful for e.g.
++  arrays which do not have a fixed size at compile time.
++
++For dynamically allocated memory, or for other cases, the following APIs
++are defined::
++
++  meminspect_register_id_pa(enum meminspect_uid id, phys_addr_t zone,
++                            size_t size, unsigned int type);
++
++which takes the ID and the physical address.
++
++Similarly there are variations:
++
++ * meminspect_register_pa() omits the ID
++ * meminspect_register_id_va() requires the ID but takes a virtual address
++ * meminspect_register_va() omits the ID and requires a virtual address
++
++If the ID is not given, the next available dynamic ID is allocated.
++
++To unregister a dynamic entry, some APIs are defined:
++ * meminspect_unregister_pa(phys_addr_t zone, size_t size);
++ * meminspect_unregister_id(enum meminspect_uid id);
++ * meminspect_unregister_va(va, size);
++
++All of the above have a lock variant that ensures the lock on the table
++is taken.
++
++
++meminspect drivers
++------------------
++
++Drivers are free to traverse the table by using a dedicated function::
++
++ meminspect_traverse(void *priv, meminspect_iter_cb_t cb)
++
++The callback is called for each entry in the table.
++
++Drivers can also register a notifier with meminspect_notifier_register()
++and unregister with meminspect_notifier_unregister() to be called when a new
++entry is added or removed.
++
++Data structures
++---------------
++
++The regions are stored in a simple fixed size array. It avoids
++memory allocation overhead. This is not performance critical nor does
++allocating a few hundred entries create a memory consumption problem.
++
++The static variables registered into meminspect are annotated into
++a dedicated .inspect_table memory section. This is then walked by meminspect
++at a later time and each variable is then copied to the whole inspect table.
++
++meminspect Initialization
++-------------------------
++
++At any time, meminspect is ready to accept region registration
++from any part of the kernel. The table does not require any initialization.
++In case CONFIG_CRASH_DUMP is enabled, meminspect creates an ELF header
++corresponding to a core dump image, in which each region is added as a
++program header. In this scenario, the first region is this ELF header, and
++the second region is the vmcoreinfo ELF note.
++By using this mechanism, all the meminspect table, if dumped, can be
++concatenated to obtain a core image that is loadable with the `crash` tool.
++
++meminspect example
++==================
++
++A simple scenario for meminspect is the following:
++The kernel registers the linux_banner variable into meminspect with
++a simple annotation like::
++
++  MEMINSPECT_SIMPLE_ENTRY(linux_banner);
++
++The meminspect late initcall will parse the compile-time table
++and copy the entry information into the inspection table.
++At a later point, any interested driver can call the traverse function to
++find out all entries in the table.
++A specific driver will then note into a specific table the address of the
++banner and the size of it.
++The specific table is then written to a shared memory area that can be
++read by upper level firmware.
++When the kernel freezes (hypothetically), the kernel will no longer feed
++the watchdog. The watchdog will trigger a higher exception level interrupt
++which will be handled by the upper level firmware. This firmware will then
++read the shared memory table and find an entry with the start and size of
++the banner. It will then copy it for debugging purpose. The upper level
++firmware will then be able to provide useful debugging information,
++like in this example, the banner.
++
++As seen here, meminspect facilitates the interaction between the kernel
++and a specific firmware.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c3f72058a2f2..fdad8ef377c8 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16892,6 +16892,15 @@ F:	arch/*/include/asm/sync_core.h
+ F:	include/uapi/linux/membarrier.h
+ F:	kernel/sched/membarrier.c
+ 
++MEMINSPECT
++M:	Eugen Hristev <eugen.hristev@linaro.org>
++M:	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
++L:	linux-kernel@vger.kernel.org
++S:	Maintained
++F:	Documentation/dev-tools/meminspect.rst
++F:	include/linux/meminspect.h
++F:	kernel/meminspect/*
++
+ MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION
+ M:	Mike Rapoport <rppt@kernel.org>
+ L:	linux-mm@kvack.org
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 5659f4b5a125..3122ddf5517a 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -506,6 +506,8 @@
+ 	FW_LOADER_BUILT_IN_DATA						\
+ 	TRACEDATA							\
+ 									\
++	MEMINSPECT_TABLE						\
++									\
+ 	PRINTK_INDEX							\
+ 									\
+ 	/* Kernel symbol table */					\
+@@ -904,6 +906,17 @@
+ #define TRACEDATA
+ #endif
+ 
++#ifdef CONFIG_MEMINSPECT
++#define MEMINSPECT_TABLE						\
++	. = ALIGN(8);							\
++	.inspect_table : AT(ADDR(.inspect_table) - LOAD_OFFSET) {	\
++		BOUNDED_SECTION_POST_LABEL(.inspect_table,		\
++					   __inspect_table, , _end)	\
++	}
++#else
++#define MEMINSPECT_TABLE
++#endif
++
+ #ifdef CONFIG_PRINTK_INDEX
+ #define PRINTK_INDEX							\
+ 	.printk_index : AT(ADDR(.printk_index) - LOAD_OFFSET) {		\
+diff --git a/include/linux/meminspect.h b/include/linux/meminspect.h
+new file mode 100644
+index 000000000000..a9eb93c6ea2f
+--- /dev/null
++++ b/include/linux/meminspect.h
+@@ -0,0 +1,270 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _MEMINSPECT_H
++#define _MEMINSPECT_H
++
++#include <asm/page.h>
++#include <linux/notifier.h>
++
++enum meminspect_uid {
++	MEMINSPECT_ID_NONE = 0,
++	MEMINSPECT_ID_ELF,
++	MEMINSPECT_ID_VMCOREINFO,
++	MEMINSPECT_ID_CONFIG,
++	MEMINSPECT_ID__totalram_pages,
++	MEMINSPECT_ID___cpu_possible_mask,
++	MEMINSPECT_ID___cpu_present_mask,
++	MEMINSPECT_ID___cpu_online_mask,
++	MEMINSPECT_ID___cpu_active_mask,
++	MEMINSPECT_ID_mem_section,
++	MEMINSPECT_ID_jiffies_64,
++	MEMINSPECT_ID_linux_banner,
++	MEMINSPECT_ID_nr_threads,
++	MEMINSPECT_ID_total_nr_irqs,
++	MEMINSPECT_ID_tainted_mask,
++	MEMINSPECT_ID_taint_flags,
++	MEMINSPECT_ID_node_states,
++	MEMINSPECT_ID___per_cpu_offset,
++	MEMINSPECT_ID_nr_swapfiles,
++	MEMINSPECT_ID_init_uts_ns,
++	MEMINSPECT_ID_printk_rb_static,
++	MEMINSPECT_ID_printk_rb_dynamic,
++	MEMINSPECT_ID_prb,
++	MEMINSPECT_ID_prb_descs,
++	MEMINSPECT_ID_prb_infos,
++	MEMINSPECT_ID_prb_data,
++	MEMINSPECT_ID_clear_seq,
++	MEMINSPECT_ID_high_memory,
++	MEMINSPECT_ID_init_mm,
++	MEMINSPECT_ID__sinittext,
++	MEMINSPECT_ID__einittext,
++	MEMINSPECT_ID__end,
++	MEMINSPECT_ID__text,
++	MEMINSPECT_ID__stext,
++	MEMINSPECT_ID__etext,
++	MEMINSPECT_ID_kallsyms_num_syms,
++	MEMINSPECT_ID_kallsyms_offsets,
++	MEMINSPECT_ID_kallsyms_names,
++	MEMINSPECT_ID_kallsyms_token_table,
++	MEMINSPECT_ID_kallsyms_token_index,
++	MEMINSPECT_ID_kallsyms_markers,
++	MEMINSPECT_ID_kallsyms_seqs_of_names,
++	MEMINSPECT_ID_swapper_pg_dir,
++	MEMINSPECT_ID_DYNAMIC,
++	MEMINSPECT_ID_MAX = 201,
++};
++
++#define MEMINSPECT_TYPE_REGULAR		0
++
++#define MEMINSPECT_NOTIFIER_ADD		0
++#define MEMINSPECT_NOTIFIER_REMOVE	1
++
++/**
++ * struct inspect_entry - memory inspect entry information
++ * @id: unique id for this entry
++ * @va: virtual address for the memory (pointer)
++ * @pa: physical address for the memory
++ * @size: size of the memory area of this entry
++ * @type: type of the entry (class)
++ */
++struct inspect_entry {
++	enum meminspect_uid	id;
++	void			*va;
++	phys_addr_t		pa;
++	size_t			size;
++	unsigned int		type;
++};
++
++/**
++ * typedef meminspect_iter_cb_t - Iterator callback for meminspect traversal
++ * @priv: private data passed through from the caller of meminspect_traverse()
++ * @ie:   pointer to the current inspect_entry; read-only, table lock held
++ *
++ * The table lock is held by the caller; the callback must not call any
++ * meminspect_table_lock() or meminspect_table_unlock() variants.
++ */
++typedef void (*meminspect_iter_cb_t)(void *priv, const struct inspect_entry *ie);
++
++#ifdef CONFIG_MEMINSPECT
++/* .inspect_table section table markers*/
++extern const struct inspect_entry __inspect_table[];
++extern const struct inspect_entry __inspect_table_end[];
++
++/*
++ * Annotate a static variable into inspection table.
++ * Can be called multiple times for the same ID, in which case
++ * multiple table entries will be created
++ */
++#define MEMINSPECT_ENTRY(idx, sym, sz)						\
++	static const struct inspect_entry __UNIQUE_ID(__inspect_entry_##idx)	\
++	__used __section(".inspect_table") = {					\
++		.id = idx,							\
++		.va = (void *)&(sym),						\
++		.size = (sz),							\
++	}
++/*
++ * A simple entry is just a variable, the size of the entry is the variable size
++ * The variable can also be a pointer, the pointer itself is being added in this
++ * case.
++ */
++#define MEMINSPECT_SIMPLE_ENTRY(sym)	\
++	MEMINSPECT_ENTRY(MEMINSPECT_ID_##sym, sym, sizeof(sym))
++/*
++ * In the case when `sym` is not a variable, but a member of a struct e.g.,
++ * and we cannot derive a name from it, a name must be provided.
++ */
++#define MEMINSPECT_NAMED_ENTRY(name, sym)	\
++	MEMINSPECT_ENTRY(MEMINSPECT_ID_##name, sym, sizeof(sym))
++/*
++ * Create a more complex entry, by registering an arbitrary memory starting
++ * at sym. The size is provided as a parameter.
++ * This is used e.g. when the symbol is a start of an unknown sized array.
++ */
++#define MEMINSPECT_AREA_ENTRY(sym, sz) \
++	MEMINSPECT_ENTRY(MEMINSPECT_ID_##sym, sym, sz)
++
++/* Iterate through .inspect_table section entries */
++#define for_each_meminspect_entry(__entry)		\
++	for (__entry = __inspect_table;			\
++	     __entry < __inspect_table_end;		\
++	     __entry++)
++
++#else
++#define MEMINSPECT_ENTRY(...)
++#define MEMINSPECT_SIMPLE_ENTRY(...)
++#define MEMINSPECT_NAMED_ENTRY(...)
++#define MEMINSPECT_AREA_ENTRY(...)
++#endif
++
++#ifdef CONFIG_MEMINSPECT
++
++/*
++ * Dynamic helpers to register entries.
++ * These do not lock the table, so use with caution.
++ */
++void meminspect_register_id_pa(enum meminspect_uid id, phys_addr_t zone,
++			       size_t size, unsigned int type);
++void meminspect_table_lock(void);
++void meminspect_table_unlock(void);
++
++#define meminspect_register_pa(...) \
++	meminspect_register_id_pa(MEMINSPECT_ID_DYNAMIC, __VA_ARGS__, MEMINSPECT_TYPE_REGULAR)
++
++#define meminspect_register_id_va(id, va, size) \
++	meminspect_register_id_pa(id, virt_to_phys(va), size, MEMINSPECT_TYPE_REGULAR)
++
++#define meminspect_register_va(...) \
++	meminspect_register_id_va(MEMINSPECT_ID_DYNAMIC, __VA_ARGS__)
++
++void meminspect_unregister_pa(phys_addr_t zone, size_t size);
++void meminspect_unregister_id(enum meminspect_uid id);
++
++#define meminspect_unregister_va(va, size) \
++	meminspect_unregister_pa(virt_to_phys(va), size)
++
++void meminspect_traverse(void *priv, meminspect_iter_cb_t cb);
++
++/*
++ * Producers, or registrators, are advised to use the locked API below
++ */
++#define meminspect_lock_register_pa(...)			\
++	do {							\
++		meminspect_table_lock();			\
++		meminspect_register_pa(__VA_ARGS__);		\
++		meminspect_table_unlock();			\
++	} while (0)
++
++#define meminspect_lock_register_id_va(...)			\
++	do {							\
++		meminspect_table_lock();			\
++		meminspect_register_id_va(__VA_ARGS__);		\
++		meminspect_table_unlock();			\
++	} while (0)
++
++#define meminspect_lock_register_va(...)			\
++	do {							\
++		meminspect_table_lock();			\
++		meminspect_register_va(__VA_ARGS__);		\
++		meminspect_table_unlock();			\
++	} while (0)
++
++#define meminspect_lock_unregister_pa(...)			\
++	do {							\
++		meminspect_table_lock();			\
++		meminspect_unregister_pa(__VA_ARGS__);		\
++		meminspect_table_unlock();			\
++	} while (0)
++
++#define meminspect_lock_unregister_va(...)			\
++	do {							\
++		meminspect_table_lock();			\
++		meminspect_unregister_va(__VA_ARGS__);		\
++		meminspect_table_unlock();			\
++	} while (0)
++
++#define meminspect_lock_unregister_id(...)			\
++	do {							\
++		meminspect_table_lock();			\
++		meminspect_unregister_id(__VA_ARGS__);		\
++		meminspect_table_unlock();			\
++	} while (0)
++
++#define meminspect_lock_traverse(...)				\
++	do {							\
++		meminspect_table_lock();			\
++		meminspect_traverse(__VA_ARGS__);		\
++		meminspect_table_unlock();			\
++	} while (0)
++
++int meminspect_notifier_register(struct notifier_block *n);
++int meminspect_notifier_unregister(struct notifier_block *n);
++
++#else
++static inline void meminspect_register_id_pa(enum meminspect_uid id,
++					     phys_addr_t zone,
++					     size_t size, unsigned int type)
++{
++}
++
++static inline void meminspect_table_lock(void)
++{
++}
++
++static inline void meminspect_table_unlock(void)
++{
++}
++
++static inline void meminspect_unregister_pa(phys_addr_t zone, size_t size)
++{
++}
++
++static inline void meminspect_unregister_id(enum meminspect_uid id)
++{
++}
++
++static inline void meminspect_traverse(void *priv, meminspect_iter_cb_t cb)
++{
++}
++
++static inline int meminspect_notifier_register(struct notifier_block *n)
++{
++	return 0;
++}
++
++static inline int meminspect_notifier_unregister(struct notifier_block *n)
++{
++	return 0;
++}
++
++#define meminspect_register_pa(...)		do { } while (0)
++#define meminspect_register_id_va(...)		do { } while (0)
++#define meminspect_register_va(...)		do { } while (0)
++#define meminspect_lock_register_pa(...)	do { } while (0)
++#define meminspect_lock_register_va(...)	do { } while (0)
++#define meminspect_lock_register_id_va(...)	do { } while (0)
++#define meminspect_lock_traverse(...)		do { } while (0)
++#define meminspect_lock_unregister_va(...)	do { } while (0)
++#define meminspect_lock_unregister_pa(...)	do { } while (0)
++#define meminspect_lock_unregister_id(...)	do { } while (0)
++#endif
++
++#endif
+diff --git a/init/Kconfig b/init/Kconfig
+index fa42fb264c9c..adbe607b7b62 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2294,6 +2294,7 @@ config TRACEPOINTS
+ source "kernel/Kconfig.kexec"
+ 
+ source "kernel/liveupdate/Kconfig"
++source "kernel/meminspect/Kconfig"
+ 
+ endmenu		# General setup
+ 
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 1e1a31673577..7c74a4f94a81 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -52,6 +52,7 @@ obj-y += locking/
+ obj-y += power/
+ obj-y += printk/
+ obj-y += irq/
++obj-y += meminspect/
+ obj-y += rcu/
+ obj-y += livepatch/
+ obj-y += liveupdate/
+diff --git a/kernel/meminspect/Kconfig b/kernel/meminspect/Kconfig
+new file mode 100644
+index 000000000000..18ff511ad4cf
+--- /dev/null
++++ b/kernel/meminspect/Kconfig
+@@ -0,0 +1,18 @@
++# SPDX-License-Identifier: GPL-2.0
++
++config MEMINSPECT
++	bool "Allow the kernel to register memory regions for inspection purpose"
++	depends on !CRASH_DUMP || DMA_CMA
++	help
++	  Inspection mechanism allows registration of a specific memory
++	  area (or object) for later inspection purposes. Ranges are added
++	  into an inspection table, which can be requested and analyzed by
++	  specific drivers. Drivers would interface any hardware mechanism
++	  that will allow inspection of the data, including but not limited
++	  to: dumping for debugging, creating a coredump, analysis, or
++	  statistical information.  The inspection table is created ahead
++	  of time such that it can be later used regardless of the state of
++	  the kernel (running, frozen, crashed, or any particular state).
++
++	  Note that modules using this feature must be rebuilt if this
++	  option changes.
+diff --git a/kernel/meminspect/Makefile b/kernel/meminspect/Makefile
+new file mode 100644
+index 000000000000..09fd55e6d9cf
+--- /dev/null
++++ b/kernel/meminspect/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
++
++obj-$(CONFIG_MEMINSPECT) += meminspect.o
+diff --git a/kernel/meminspect/meminspect.c b/kernel/meminspect/meminspect.c
+new file mode 100644
+index 000000000000..d9d38f484f1f
+--- /dev/null
++++ b/kernel/meminspect/meminspect.c
+@@ -0,0 +1,474 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/crash_core.h>
++#include <linux/dma-map-ops.h>
++#include <linux/errno.h>
++#include <linux/meminspect.h>
++#include <linux/notifier.h>
++#include <linux/vmcore_info.h>
++
++static DEFINE_MUTEX(meminspect_lock);
++static struct inspect_entry inspect_entries[MEMINSPECT_ID_MAX];
++
++static ATOMIC_NOTIFIER_HEAD(meminspect_notifier_list);
++
++#ifdef CONFIG_CRASH_DUMP
++
++#define CORE_STR "CORE"
++
++static struct elfhdr *ehdr;
++static size_t elf_offset;
++static bool elf_hdr_ready;
++
++static void append_kcore_note(char *notes, size_t *i, const char *name,
++			      unsigned int type, const void *desc,
++			      size_t descsz)
++{
++	struct elf_note *note = (struct elf_note *)&notes[*i];
++
++	note->n_namesz = strlen(name) + 1;
++	note->n_descsz = descsz;
++	note->n_type = type;
++	*i += sizeof(*note);
++	memcpy(&notes[*i], name, note->n_namesz);
++	*i = ALIGN(*i + note->n_namesz, 4);
++	memcpy(&notes[*i], desc, descsz);
++	*i = ALIGN(*i + descsz, 4);
++}
++
++static void append_kcore_note_nodesc(char *notes, size_t *i, const char *name,
++				     unsigned int type, size_t descsz)
++{
++	struct elf_note *note = (struct elf_note *)&notes[*i];
++
++	note->n_namesz = strlen(name) + 1;
++	note->n_descsz = descsz;
++	note->n_type = type;
++	*i += sizeof(*note);
++	memcpy(&notes[*i], name, note->n_namesz);
++	*i = ALIGN(*i + note->n_namesz, 4);
++}
++
++static struct elf_phdr *elf_phdr_entry_addr(struct elfhdr *ehdr, int idx)
++{
++	struct elf_phdr *ephdr = (struct elf_phdr *)((size_t)ehdr + ehdr->e_phoff);
++
++	return &ephdr[idx];
++}
++
++static int clear_elfheader(const struct inspect_entry *e)
++{
++	struct elf_phdr *phdr;
++	struct elf_phdr *tmp_phdr;
++	unsigned int phidx;
++	unsigned int i;
++
++	for (i = 0; i < ehdr->e_phnum; i++) {
++		phdr = elf_phdr_entry_addr(ehdr, i);
++		if (phdr->p_paddr == e->pa &&
++		    phdr->p_memsz == ALIGN(e->size, 4))
++			break;
++	}
++
++	if (i == ehdr->e_phnum) {
++		pr_debug("Cannot find program header entry in elf\n");
++		return -EINVAL;
++	}
++
++	phidx = i;
++
++	/* Clear program header */
++	tmp_phdr = elf_phdr_entry_addr(ehdr, phidx);
++	for (i = phidx; i < ehdr->e_phnum - 1; i++) {
++		tmp_phdr = elf_phdr_entry_addr(ehdr, i + 1);
++		phdr = elf_phdr_entry_addr(ehdr, i);
++		memcpy(phdr, tmp_phdr, sizeof(*phdr));
++		phdr->p_offset = phdr->p_offset - ALIGN(e->size, 4);
++	}
++	memset(tmp_phdr, 0, sizeof(*tmp_phdr));
++	ehdr->e_phnum--;
++
++	elf_offset -= ALIGN(e->size, 4);
++
++	return 0;
++}
++
++static void update_elfheader(const struct inspect_entry *e)
++{
++	struct elf_phdr *phdr;
++
++	phdr = elf_phdr_entry_addr(ehdr, ehdr->e_phnum++);
++
++	phdr->p_type = PT_LOAD;
++	phdr->p_offset = elf_offset;
++	phdr->p_vaddr = (elf_addr_t)e->va;
++	if (e->pa)
++		phdr->p_paddr = (elf_addr_t)e->pa;
++	else
++		phdr->p_paddr = (elf_addr_t)virt_to_phys(e->va);
++
++	phdr->p_filesz = ALIGN(e->size, 4);
++	phdr->p_memsz = ALIGN(e->size, 4);
++	phdr->p_flags = PF_R | PF_W;
++	elf_offset += ALIGN(e->size, 4);
++}
++
++/*
++ * This function prepares the elf header for the coredump image.
++ * Initially there is a single program header for the elf NOTE.
++ * The note contains the usual core dump information, and the vmcoreinfo.
++ */
++static int init_elfheader(void)
++{
++	struct elf_phdr *phdr;
++	void *notes;
++	unsigned int elfh_size, buf_sz;
++	unsigned int phdr_off;
++	size_t note_len, i = 0;
++	struct page *p;
++
++	struct elf_prstatus prstatus = {};
++	struct elf_prpsinfo prpsinfo = {
++		.pr_sname = 'R',
++		.pr_fname = "vmlinux",
++	};
++
++	/*
++	 * Header buffer contains:
++	 * ELF header, Note entry with PR status, PR ps info, and vmcoreinfo.
++	 * Also, MEMINSPECT_ID_MAX program headers.
++	 */
++	elfh_size = sizeof(*ehdr);
++	elfh_size += sizeof(struct elf_prstatus);
++	elfh_size += sizeof(struct elf_prpsinfo);
++	elfh_size += sizeof(VMCOREINFO_NOTE_NAME);
++	elfh_size += ALIGN(vmcoreinfo_size, 4);
++	elfh_size += (sizeof(*phdr)) * (MEMINSPECT_ID_MAX);
++
++	elfh_size = ALIGN(elfh_size, 4);
++
++	/* Length of the note is made of :
++	 * 3 elf notes structs (prstatus, prpsinfo, vmcoreinfo)
++	 * 3 notes names (2 core strings, 1 vmcoreinfo name)
++	 * sizeof each note
++	 */
++	note_len = (3 * sizeof(struct elf_note) +
++		    2 * ALIGN(sizeof(CORE_STR), 4) +
++		    VMCOREINFO_NOTE_NAME_BYTES +
++		    ALIGN(sizeof(struct elf_prstatus), 4) +
++		    ALIGN(sizeof(struct elf_prpsinfo), 4) +
++		    ALIGN(vmcoreinfo_size, 4));
++
++	buf_sz = elfh_size + note_len - ALIGN(vmcoreinfo_size, 4);
++
++	/* Never freed */
++	p = dma_alloc_from_contiguous(NULL, buf_sz >> PAGE_SHIFT,
++				      get_order(buf_sz), true);
++	if (!p)
++		return -ENOMEM;
++
++	ehdr = dma_common_contiguous_remap(p, buf_sz,
++					   pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL)),
++					   __builtin_return_address(0));
++	if (!ehdr) {
++		dma_release_from_contiguous(NULL, p, buf_sz >> PAGE_SHIFT);
++		return -ENOMEM;
++	}
++
++	memset(ehdr, 0, elfh_size);
++
++	/* Assign Program headers offset, it's right after the elf header. */
++	phdr = (struct elf_phdr *)(ehdr + 1);
++	phdr_off = sizeof(*ehdr);
++
++	memcpy(ehdr->e_ident, ELFMAG, SELFMAG);
++	ehdr->e_ident[EI_CLASS] = ELF_CLASS;
++	ehdr->e_ident[EI_DATA] = ELF_DATA;
++	ehdr->e_ident[EI_VERSION] = EV_CURRENT;
++	ehdr->e_ident[EI_OSABI] = ELF_OSABI;
++	ehdr->e_type = ET_CORE;
++	ehdr->e_machine = ELF_ARCH;
++	ehdr->e_version = EV_CURRENT;
++	ehdr->e_ehsize = sizeof(*ehdr);
++	ehdr->e_phentsize = sizeof(*phdr);
++
++	elf_offset = elfh_size;
++
++	notes = (void *)(((char *)ehdr) + elf_offset);
++
++	/* we have a single program header now */
++	ehdr->e_phnum = 1;
++
++	phdr->p_type = PT_NOTE;
++	phdr->p_offset = elf_offset;
++	phdr->p_filesz = note_len;
++
++	/* advance elf offset */
++	elf_offset += note_len;
++
++	strscpy(prpsinfo.pr_psargs, saved_command_line,
++		sizeof(prpsinfo.pr_psargs));
++
++	append_kcore_note(notes, &i, CORE_STR, NT_PRSTATUS, &prstatus,
++			  sizeof(prstatus));
++	append_kcore_note(notes, &i, CORE_STR, NT_PRPSINFO, &prpsinfo,
++			  sizeof(prpsinfo));
++	append_kcore_note_nodesc(notes, &i, VMCOREINFO_NOTE_NAME, 0,
++				 ALIGN(vmcoreinfo_size, 4));
++
++	ehdr->e_phoff = phdr_off;
++
++	/* This is the first coredump region, the ELF header */
++	meminspect_register_id_pa(MEMINSPECT_ID_ELF, page_to_phys(p),
++				  buf_sz, MEMINSPECT_TYPE_REGULAR);
++
++	/*
++	 * The second region is the vmcoreinfo, which goes right after.
++	 * It's being registered through vmcoreinfo.
++	 */
++
++	return 0;
++}
++#endif
++
++/**
++ * meminspect_unregister_id() - Unregister region from inspection table.
++ * @id: region's id in the table
++ *
++ * Return: None
++ */
++void meminspect_unregister_id(enum meminspect_uid id)
++{
++	struct inspect_entry *e;
++
++	WARN_ON(!mutex_is_locked(&meminspect_lock));
++
++	e = &inspect_entries[id];
++	if (!e->id)
++		return;
++
++	atomic_notifier_call_chain(&meminspect_notifier_list,
++				   MEMINSPECT_NOTIFIER_REMOVE, e);
++#ifdef CONFIG_CRASH_DUMP
++	if (elf_hdr_ready)
++		clear_elfheader(e);
++#endif
++	memset(e, 0, sizeof(*e));
++}
++EXPORT_SYMBOL_GPL(meminspect_unregister_id);
++
++/**
++ * meminspect_unregister_pa() - Unregister region from inspection table.
++ * @pa: Physical address of the memory region to remove
++ * @size: Size of the memory region to remove
++ *
++ * Return: None
++ */
++void meminspect_unregister_pa(phys_addr_t pa, size_t size)
++{
++	struct inspect_entry *e;
++	enum meminspect_uid i;
++
++	WARN_ON(!mutex_is_locked(&meminspect_lock));
++
++	for (i = MEMINSPECT_ID_ELF; i < MEMINSPECT_ID_MAX; i++) {
++		e = &inspect_entries[i];
++		if (e->pa != pa)
++			continue;
++		if (e->size != size)
++			continue;
++		meminspect_unregister_id(e->id);
++		return;
++	}
++}
++EXPORT_SYMBOL_GPL(meminspect_unregister_pa);
++
++/**
++ * meminspect_register_id_pa() - Register region into inspection table
++ *		 with given ID and physical address.
++ * @req_id: Requested unique meminspect_uid that identifies the region
++ *	This can be MEMINSPECT_ID_DYNAMIC, in which case the function will
++ *	find an unused ID and register with it.
++ * @pa: physical address of the memory region
++ * @size: region size
++ * @type: region type
++ *
++ * Return: None
++ */
++void meminspect_register_id_pa(enum meminspect_uid req_id, phys_addr_t pa,
++			       size_t size, unsigned int type)
++{
++	struct inspect_entry *e;
++	enum meminspect_uid uid = req_id;
++
++	WARN_ON(!mutex_is_locked(&meminspect_lock));
++
++	if (uid <= MEMINSPECT_ID_NONE || uid >= MEMINSPECT_ID_MAX)
++		return;
++
++	if (uid == MEMINSPECT_ID_DYNAMIC)
++		while (uid < MEMINSPECT_ID_MAX) {
++			if (!inspect_entries[uid].id)
++				break;
++			uid++;
++		}
++
++	if (uid == MEMINSPECT_ID_MAX)
++		return;
++
++	e = &inspect_entries[uid];
++
++	if (e->id)
++		meminspect_unregister_id(e->id);
++
++	e->pa = pa;
++	e->va = phys_to_virt(pa);
++	e->size = size;
++	e->id = uid;
++	e->type = type;
++#ifdef CONFIG_CRASH_DUMP
++	if (elf_hdr_ready)
++		update_elfheader(e);
++#endif
++	atomic_notifier_call_chain(&meminspect_notifier_list,
++				   MEMINSPECT_NOTIFIER_ADD, e);
++}
++EXPORT_SYMBOL_GPL(meminspect_register_id_pa);
++
++/**
++ * meminspect_table_lock() - Lock the mutex on the inspection table
++ *
++ * Return: None
++ */
++void meminspect_table_lock(void)
++{
++	mutex_lock(&meminspect_lock);
++}
++EXPORT_SYMBOL_GPL(meminspect_table_lock);
++
++/**
++ * meminspect_table_unlock() - Unlock the mutex on the inspection table
++ *
++ * Return: None
++ */
++void meminspect_table_unlock(void)
++{
++	mutex_unlock(&meminspect_lock);
++}
++EXPORT_SYMBOL_GPL(meminspect_table_unlock);
++
++/**
++ * meminspect_traverse() - Traverse the meminspect table and call the
++ *		callback function for each valid entry.
++ * @priv: private data to be passed to the callback
++ * @cb: meminspect iterator callback that should be called for each entry
++ *
++ * Return: None
++ */
++void meminspect_traverse(void *priv, meminspect_iter_cb_t cb)
++{
++	const struct inspect_entry *e;
++	int i;
++
++	WARN_ON(!mutex_is_locked(&meminspect_lock));
++
++	for (i = MEMINSPECT_ID_ELF; i < MEMINSPECT_ID_MAX; i++) {
++		e = &inspect_entries[i];
++		if (e->id)
++			cb(priv, e);
++	}
++}
++EXPORT_SYMBOL_GPL(meminspect_traverse);
++
++/**
++ * meminspect_notifier_register() - Register a notifier to meminspect table
++ * @n: notifier block to register. This will be called whenever an entry
++ *		is being added or removed.
++ *
++ * Return: errno
++ */
++int meminspect_notifier_register(struct notifier_block *n)
++{
++	return atomic_notifier_chain_register(&meminspect_notifier_list, n);
++}
++EXPORT_SYMBOL_GPL(meminspect_notifier_register);
++
++/**
++ * meminspect_notifier_unregister() - Unregister a previously registered
++ *		notifier from meminspect table.
++ * @n: notifier block to unregister.
++ *
++ * Return: errno
++ */
++int meminspect_notifier_unregister(struct notifier_block *n)
++{
++	return atomic_notifier_chain_unregister(&meminspect_notifier_list, n);
++}
++EXPORT_SYMBOL_GPL(meminspect_notifier_unregister);
++
++#ifdef CONFIG_CRASH_DUMP
++static int __init meminspect_prepare_crashdump(void)
++{
++	const struct inspect_entry *e;
++	int ret;
++	enum meminspect_uid i;
++
++	ret = init_elfheader();
++
++	if (ret < 0)
++		return ret;
++
++	/*
++	 * Some regions may have been registered very early.
++	 * Update the elf header for all existing regions,
++	 * except for MEMINSPECT_ID_ELF and MEMINSPECT_ID_VMCOREINFO,
++	 * those are included in the ELF header upon its creation.
++	 */
++	for (i = MEMINSPECT_ID_VMCOREINFO + 1; i < MEMINSPECT_ID_MAX; i++) {
++		e = &inspect_entries[i];
++		if (e->id)
++			update_elfheader(e);
++	}
++
++	elf_hdr_ready = true;
++
++	return 0;
++}
++#endif
++
++static int __init meminspect_prepare_table(void)
++{
++	const struct inspect_entry *e;
++	enum meminspect_uid i;
++	int ret;
++
++	meminspect_table_lock();
++	/*
++	 * First, copy all entries from the compiler built table
++	 * In case some entries are registered multiple times,
++	 * the last chronological entry will be stored.
++	 * Previously registered entries will be dropped.
++	 */
++	for_each_meminspect_entry(e) {
++		inspect_entries[e->id] = *e;
++		if (!inspect_entries[e->id].pa && inspect_entries[e->id].va)
++			inspect_entries[e->id].pa = virt_to_phys(inspect_entries[e->id].va);
++	}
++#ifdef CONFIG_CRASH_DUMP
++	ret = meminspect_prepare_crashdump();
++	if (ret)
++		pr_warn("meminspect: failed to prepare crashdump ELF header: %d\n", ret);
++#endif
++	/* if we have early notifiers registered, call them now */
++	for (i = MEMINSPECT_ID_ELF; i < MEMINSPECT_ID_MAX; i++)
++		if (inspect_entries[i].id)
++			atomic_notifier_call_chain(&meminspect_notifier_list,
++						   MEMINSPECT_NOTIFIER_ADD,
++						   &inspect_entries[i]);
++	meminspect_table_unlock();
++
++	pr_debug("Memory inspection table initialized\n");
++
++	return 0;
++}
++late_initcall(meminspect_prepare_table);
 
- Documentation/dev-tools/index.rst                  |   1 +
- Documentation/dev-tools/meminspect.rst             | 144 +++++++
- .../reserved-memory/google,debug-kinfo.yaml        |  48 +++
- MAINTAINERS                                        |  16 +
- drivers/of/platform.c                              |   1 +
- drivers/remoteproc/qcom_common.c                   |  55 +--
- drivers/soc/qcom/Kconfig                           |  13 +
- drivers/soc/qcom/Makefile                          |   1 +
- drivers/soc/qcom/minidump.c                        | 271 ++++++++++++
- drivers/soc/qcom/smem.c                            |  10 +
- include/asm-generic/vmlinux.lds.h                  |  13 +
- include/linux/meminspect.h                         | 271 ++++++++++++
- include/linux/soc/qcom/minidump.h                  |  70 +++
- init/Kconfig                                       |   1 +
- init/version-timestamp.c                           |   3 +
- init/version.c                                     |   3 +
- kernel/Makefile                                    |   1 +
- kernel/configs.c                                   |   6 +
- kernel/cpu.c                                       |   5 +
- kernel/fork.c                                      |   3 +
- kernel/irq/irqdesc.c                               |   2 +
- kernel/kallsyms.c                                  |   9 +
- kernel/meminspect/Kconfig                          |  29 ++
- kernel/meminspect/Makefile                         |   4 +
- kernel/meminspect/kinfo.c                          | 257 +++++++++++
- kernel/meminspect/meminspect.c                     | 474 +++++++++++++++++++++
- kernel/panic.c                                     |   4 +
- kernel/printk/printk.c                             |  12 +
- kernel/sched/core.c                                |   2 +
- kernel/time/timekeeping.c                          |   2 +
- kernel/time/timer.c                                |   2 +
- kernel/vmcore_info.c                               |   4 +
- mm/init-mm.c                                       |  12 +
- mm/mm_init.c                                       |   2 +
- mm/numa.c                                          |   2 +
- mm/page_alloc.c                                    |   2 +
- mm/percpu.c                                        |   5 +
- mm/show_mem.c                                      |   2 +
- mm/sparse.c                                        |   3 +
- mm/swapfile.c                                      |   2 +
- 40 files changed, 1713 insertions(+), 54 deletions(-)
----
-base-commit: 5c73cd9f0819c1c44e373e3dabb68318b1de1a12
-change-id: 20260708-meminspect-v3-76dd8166c4f1
-
-Best regards,
 -- 
--Mukesh Ojha
+2.53.0
 
 
