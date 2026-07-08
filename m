@@ -4,69 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9953C43602
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 06:09:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14690C44501
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 06:23:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 692286B0088; Wed,  8 Jul 2026 02:09:00 -0400 (EDT)
+	id DDDA66B0088; Wed,  8 Jul 2026 02:23:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61D276B008A; Wed,  8 Jul 2026 02:09:00 -0400 (EDT)
+	id DB5FE6B008A; Wed,  8 Jul 2026 02:23:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E3EA6B008C; Wed,  8 Jul 2026 02:09:00 -0400 (EDT)
+	id CCC926B008C; Wed,  8 Jul 2026 02:23:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 25BA16B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 02:09:00 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F5B9C3FF3
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 06:08:59 +0000 (UTC)
-X-FDA: 84964581198.15.E260E0A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A4FBD6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 02:23:03 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1CDC6140649
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 06:23:03 +0000 (UTC)
+X-FDA: 84964616646.20.C223AD5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1D8CC4000B
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 06:08:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YYX6AO3h;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 85E6EC0002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 06:23:01 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LGtbx85v;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783490938;
+	s=arc-20220608; t=1783491781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QXYsrdEbQvlPjl1uht/h4kWy1QyDvVCqKoZYxI/q3SI=;
-	b=7B8QgBhZoPbnCkkwNfpIkNz3leYiWrUj/sWRp/ccX/Qu04SFf7Tk3bwuAF7RInswz3Y96w
-	y9by1d8Xd/bqgz3CAoreH200uBMIZB1Kd7El0Dk83G+DajFWM1ccCr4qY4jaKJ0FUPNql2
-	wEYPCCIdbvcY3+cS1sOzZMQka+oWvLA=
+	bh=WhJE5OuUUHCm7qpu+pDY+GZ63fKdVTQlvI+ddyPOyH8=;
+	b=ljgqT5wmxwoXiC3L/Mlf3fwYGNj7zcOVdXXcQstZQ9QuqFWH17R/fDACgkI8o0Axhsf3J/
+	vdAYEeTAgkmNQdgG18g3swbJ2B1Mbl+zJDWc1UU6HJmnWK8YNDqOdpySmROsED05j0CbYF
+	Fz1IT6ucaSLbpWTtJT2eeeEagG1MEuQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YYX6AO3h;
-	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LGtbx85v;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783490938;
-	b=nIeLS75qYyB4NdS7jF6v2M3+yHBwNmciDTMBUD0nAdAA9nHsccvbBFTEAg1Dze+La3lclb
-	Gb/rVqrxR0QPtxbjS6yWmCwGjwGJ3Y20WYa6nyJ7L5hPFSUnfVz1NRCCy/Af8cuxXlxCa5
-	F0lytvdcDvpWCeMRTX4CevGhhprHrm4=
+	t=1783491781;
+	b=WcwoF4PRaGj8+4qehfyWF/tXsF43Csfo9qXuPhH9lEGRQ2DuIkHfaaBwGIugCGmk5az2B1
+	689L3TYPdSTX2TDbhwjWkiwjsOIPkr/yeQMp9mhuD0iUf/nCJNoDV9ACMHRi8dFMkJ6eMj
+	Gsl0NusA02fHETd1aZADXwgeGo5rEug=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 55B016001D;
-	Wed,  8 Jul 2026 06:08:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF84F1F000E9;
-	Wed,  8 Jul 2026 06:08:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E50BC6001A;
+	Wed,  8 Jul 2026 06:23:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C7C1F000E9;
+	Wed,  8 Jul 2026 06:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783490937;
-	bh=QXYsrdEbQvlPjl1uht/h4kWy1QyDvVCqKoZYxI/q3SI=;
+	s=k20260515; t=1783491780;
+	bh=WhJE5OuUUHCm7qpu+pDY+GZ63fKdVTQlvI+ddyPOyH8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=YYX6AO3hdEi9m/q1XH47iSD+UNkPfg4oPc3zq2g2N5gushnNghyd8YHYTWiWtfJ5F
-	 NoRiADuOJYEKz/EofPKj7GCMxv8t+7/V7/l4olpJLPqG3KF+vwjoADJRLlxdXzvrrL
-	 /XxE/W1SxQ/S8ydJoa9OHQuZEg2q8mDOrGUmdB3ZrlagsAbqt4yC6M3oYA+b66VBFH
-	 ZIZtDOzvoUfnAnqXVCOow0sCjT1HUi+Rl74qFn5J/LjTqbRwPbt+cCd4F9rdRA9bnf
-	 NF/UHneHvyejQcc3ffXfS5eLTcqAbn8QciekgMmyeq3ElnjruRKuhcPAwY5DtsVNCa
-	 TvEisjAEmtmcw==
-Date: Wed, 8 Jul 2026 09:08:36 +0300
+	b=LGtbx85v1aFTEcg8MP7ZNBwXODbxJUrGK5XMbNxHZthj1bawnpu/7anqV9DlZTTID
+	 otNtVvtpsO3VoicTwuOXqdziXuAyCM/og2X2BfPcxS/E1GoE3iuuGH9nMR8ELGeFxb
+	 XUP5XadBQwvxvwWx5VDeEWn4FKwW/DsRv71/lQ6OUo5vQTsj8Jp39fOqO0XAr/8Ayq
+	 h13iuJHwp8S8xP/Lo5nTx7lqfuav2YlDWI81VHSVMQ88VcSNXzoTk2T10wby+OVF51
+	 wjdgFe40bLWn9Amg6fgATfiCLi1Hp5Vjd0jvqtFYEtkpQNgJ5MAZS4fnhDnBUeUB3R
+	 Y9Zv/zyiYnJoA==
+Date: Wed, 8 Jul 2026 09:22:40 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Thierry Reding <thierry.reding@kernel.org>
-Cc: Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Will Deacon <will@kernel.org>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Jonathan Hunter <jonathanh@nvidia.com>,
@@ -94,7 +96,6 @@ Cc: Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
 	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
 	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
 	Brian Starkey <Brian.Starkey@arm.com>,
@@ -115,26 +116,29 @@ Cc: Will Deacon <will@kernel.org>, Rob Herring <robh@kernel.org>,
 	Thierry Reding <treding@nvidia.com>, Chun Ng <chunn@nvidia.com>
 Subject: Re: [PATCH v3 04/11] arm64/mm: Add set_memory_device() and
  set_memory_normal()
-Message-ID: <ak3pZG3GFLT1SSBh@kernel.org>
-References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
- <20260701-tegra-vpr-v3-4-d80f7b871bb4@nvidia.com>
+Message-ID: <ak3ssP3_gDIwu1VG@kernel.org>
+References: <20260701-tegra-vpr-v3-4-d80f7b871bb4@nvidia.com>
  <akYs91INHMXMTI-t@willie-the-truck>
  <akZkuwktaXFTrASP@orome>
  <akaSJ5D98w2cHqb6@orome>
  <akftuw9NyRy36fXA@willie-the-truck>
  <akuvyu1Pq0ZVMZV0@orome>
+ <akzikTrmhMsvkNVY@willie-the-truck>
+ <b0a1bdd7-46ab-4025-8775-c9273892444e@arm.com>
+ <ak0A6eLp0Pw8iKK0@kernel.org>
+ <f6e8b4d4-8b50-4cc7-b264-ae39929c619a@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akuvyu1Pq0ZVMZV0@orome>
+In-Reply-To: <f6e8b4d4-8b50-4cc7-b264-ae39929c619a@arm.com>
+X-Stat-Signature: odp8aozze3ex6wh3kgxneo8ewjhnnsta
+X-Rspamd-Queue-Id: 85E6EC0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1D8CC4000B
-X-Stat-Signature: fqrhmkst8pno6tzbgxj7ijzrkdskkqsf
-X-HE-Tag: 1783490937-314171
-X-HE-Meta: U2FsdGVkX1+CrWM+lLJGP66zbOIeIOmZVGK/l9fYhyfe5gENtJFSNyzSAyzJ17dGPfjEJ4BSkoAkfVRwmoyGGdHPWgzqwEnt2qlbQPr3okImnEe21VTmBqNxofoGOLAe6v2X0qXR2yUQbKRrw89v7Af462zfrcshC+9rn0zsPAC0lbsKUjFzBzuyLE3CesO6vsGdQIoqcr0AJkG1g3EmcGHi2933a8PLuStQdhxM7Q8/Pu1Gz35MiKlKywNkBfxwo348jkPbrTHmUjJjil7hvkavaxhepxJWlw7A3qzG6nNkgPZrykqePbl3j7Ekb3AemNMNmKgJNczQ6343lTzfmQmLsuzKFvZ7A46dYOconbhOWehhzLSLGWraYXYhfWFqEqIYSQS4cbjkZOyshLziScdMItZ0a4p3w/sJV8V6ayDWl8DewwGrBw1bRi7resdFO0LXBfZ4tBCErO5bhwvNfanXJCJFjqW6LxbK8nqTRJU7G1pq8dmx6VXwKAJdjV2SsKkJ5qmksucR7L3hbIK0UfmzJfWgDpJ/fOHataRAm5l+92g/r0gaWvthAv2tWoTCdiycMv2gywbHYMWkQI43Orens04OiD+1H9MzfIP1jEsOS0dSwpTlnVp+eYyM8qxijwbKDyowUK13WLO/B9mSX+suM9o17ZRnhlCppVJ3WF2hTRcnydOAAGUYjJ1UY3XGoKYSwfYqoTwJwDwEW8N0wvzN5AfwxnVRihZ+7To36nk9giLGQvq/pGSWAul58Y8jCBKlDbN4DM6O5alEa0PU3Y/UlkQOZQLXkn3eL6K1NaFsJaF6482tLmJTVbh8IdXh5mhgBRFY0L1bW9vYy2qKVEyEGt9yuh9LSJTR7Yaf/R7ft9bFrUwLIn6kbkq197XIZDUbedo2r+Jftf3Olykp/W3d+p9AY04zMlwfHgXJJjS+G94oK1SN8uqXmEnyW5hCg1ZFAQNV0zPEOXXYk8e
- Z7xiAaRZ
- KTDPCSGSj76nvldo/8n+NA3I0zMWumEq0sLajiZddXO4kVlI+736mMYYE3D0/2Fb4SazRnCP4crZysheYb59ifYzOAUa1run3z7sWV5IscDFnKMFVb59orCldFsBMHtsWWt5joOkbiyCdlc3suWAUZHoiZ8d0++IUd0eYG8MZTrQCfBXrANzf2McjzzTEmAjAakHVHd8IWowfGTy4vJHcA9CiEtSycT9PXWzt83EnkFHgVTOxyzuR+h4YFaoBPz+CmV40W91gwI6jp+ROBzY0laD87jsHASDaTKnE10JBAaQg92P0VyPOSsEuWEACf6ENEDjrqOk5FfWDfl7BXsJAPl5eAH2nL7C/8RCCrmAsrNZKWVMbJg7QoqJ/I29Eklql2hNSYMShPXECK0RqZVO3rakG2FWbheRdjp1ga6nUxxBpnRMsGxTOYnoTumG1IAcbjSyFd7mPu2wVuHs=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783491781-65201
+X-HE-Meta: U2FsdGVkX1/7O7SIzvm8VFdD8wSGGxEwM1RUP+2bMCrFrCswRH3lkWUDHk6BbbSy/W3huhj5zJ64OWA5ROOVcDJ2hE+882WyadwbebX8hQsD29pompKqUY8LMgK9u3IfhMLo/keH1VMmDQkykqCydOCU1llIpLHzAFENhd8hFraiI5kxltZIdATAPJ2KDU4Q7E4Mcf6Dq85RFTW4g1qlWhZdlyaflAMlI3f5xb5MF3cG8VBQB1nOI4UpZzs0RcCVU+m9B+N50VJWlJt2SuJO+dOWdbfcWfzi7Z5TeLO/VXww9RqM28lr8oMYs1oFBYCjmHeNRz0d59jVMu68qQyaH1z9eu+IrTAY3kXcaVSu4V4eD+D44100ScDN4k/+XJqfx44tXwvZthsig6cQAYRvC6OfYM7qEAynuqZuK4MKltsi3KIUbWKD8P7wO0BzqbnxjfyboPcY06Aq4BzipWTww6u61tG5ljQQDT0Ncff7vm8vMsGxUbOT78XgXFrk/TGdflC9pctYQ+9LOfN72bx5xthEpEDRnXwN7bdF171f4WvaJNUkMGWWdsmPq7HyH67uE1aC7Stv97fQQupxZPlJfiIZdycewSD8XMGXyq3dcuA+/nNazzcM3sDZ2o64dlxD7QzzTtP/mz98pTU5NTRFwygYVH/HRWD+PCqSBrYYyoKubPUBvIJ+MXcISSfFotDt5/co1xvuq5iXp5Ovdg6L3KCbdErjL4uumV4ZrWSM8TDP9oD2DMrq/DPgl3nYoPW/x/3MRvc/0RNGnmkEaQaCWR/1EOVgAPDlbQCvD8zX4KVxWHHBup1mCpUFP7POC+WNBeqBznU8SJgBNdWKpaPFg1t+J8Ey/LxhQYhHvmC1zNau+Q4+A/J/cJWy4wqjfmMF/dBGLKmN5ugw1u8bcn+m0TxeCywOwgflSA4Q+GRKz5D1mFHxn1jn/8+OvKQPQRkdVEAL4tDj1PK0gZ5zdyN
+ 1zdxzQKS
+ oNSA4ijVDKWX0wr+MStY6dKJcz4+N62DNKzsXlvCrVEzW5x/57TUM2TtK+f53fi8KVv1Tsx7J4TB1s1qQgzrZ3Mr3AT4ronUUo//F9vqFzyGS2II/02FHUpZSxR9p6EKKvJa+jKjG7i43I6nLQ8VvExil2YhYCDbHYwa6Dr4HVhjMGqodUvqT9TPAlpCihg5F/qBEQCbtISzGWufergeohw4sLhpubDvVEPyJ+8Hg43814kelfcOwVwFmkjMW0uHEVpAAnYhjFVvW5xgKW7I4k12IpG97fL1X/3UNGLDE01VJS3NZy2IuAFABiKIChPRPRGYl+MTQB7mpvs/ZFLBDbb4Q1DRrOI/qbCn0QmIjohKg88FgCLXlJB6Z9WonqKQn+g4lGonM0CxxAJhB/ISb8V4skKhXWFTzLSTvQoce5e23hLpjp9rcyxfGnsGfC5SzoD1KH2ZgNQP9HBg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,29 +146,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jul 06, 2026 at 03:49:24PM +0200, Thierry Reding wrote:
-> On Fri, Jul 03, 2026 at 06:13:31PM +0100, Will Deacon wrote:
-> > >
-> > > How about if I extract a common helper and provide set_memory_p() and
-> > > set_memory_np() in terms of those. Those are available on x86 and
-> > > PowerPC as well, so fairly standard. I suppose at that point we're
-> > > closer to set_memory_valid().
+On Tue, Jul 07, 2026 at 03:15:24PM +0100, Robin Murphy wrote:
+> On 07/07/2026 2:36 pm, Mike Rapoport wrote:
+> > On Tue, Jul 07, 2026 at 02:17:29PM +0100, Robin Murphy wrote:
+> > > 
+> > > Given the precedent of memblock_mark_nomap(), as long as the reusable
+> > > reserved-memory regions also get split into distinct memblocks, then it
+> > > seems like in principle we ought to be able to give them a new
+> > > MEMBLOCK_PTEMAP (or whatever) flag which could then be picked up in
+> > > map_mem() without needing to override force_pte_mapping() globally?
 > > 
-> > Why not just call set_direct_map_invalid_noflush() +
-> > flush_tlb_kernel_range() for each page? We already have APIs for this.
+> > Please don't. _nomap() caused enough pain.
 > 
-> Having a "standard" helper with a fixed and documented purposed seemed
-> like a preferable approach for this particular case. We also may want to
-> make the driver that uses this buildable as a module, in which case we'd
-> need to export these rather low-level APIs. And then there's also the
-> fact that we typically call this on a rather large region of memory
-> (usually something like 512 MiB), so doing it page-by-page is rather
-> suboptimal.
+> Indeed I was there for pretty much the whole pfn_valid() saga :)
+> 
+> Bad example maybe - in this case the only actual similarity to nomap would
+> be the fact that it would also be set by the of_reserved_mem code based on
+> what it finds in DT; in all other aspects it should be functionally closer
+> to something like MEMBLOCK_RSRV_NOINIT, i.e. just carrying information
+> through the mm init phase, then ceasing to matter at all once the linear
+> mapping is done.
 
-There are discussions about adding numpages to set_direct_map, e.g.
+Sounds simpler than nomap indeed :)
 
-https://lore.kernel.org/linux-mm/20260410151746.61150-2-kalyazin@amazon.com/
+Although I'm not sure it won't be required after mm init in some way. There
+is already a suggestion to allow collapsing PTE mappings into PMD in the
+linear map [1] and it already adds a use-case for runtime check for
+MEMBLOCK_PTEMAP.
+
+That said, I don't hate the idea. The only thing is that such flag would be
+very much arm64 specific. 
+I've been thinking for a while about splitting memblock flags to generic
+and arch-specific parts and if you decide to take a memblock flag route it
+seems like a good use case for memblock_{set,clear}_arch_flags().
+
+[1] https://lore.kernel.org/linux-mm/20260611130144.1385343-7-abarnas@google.com/
  
+> Cheers,
+> Robin.
+
 -- 
 Sincerely yours,
 Mike.
