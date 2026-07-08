@@ -4,111 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE137C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1195C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:49:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D424F6B009D; Wed,  8 Jul 2026 03:48:15 -0400 (EDT)
+	id C323D6B009F; Wed,  8 Jul 2026 03:49:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D19816B009F; Wed,  8 Jul 2026 03:48:15 -0400 (EDT)
+	id C09506B00A1; Wed,  8 Jul 2026 03:49:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C56A16B00A0; Wed,  8 Jul 2026 03:48:15 -0400 (EDT)
+	id B475F6B00A2; Wed,  8 Jul 2026 03:49:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EEC76B009D
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:48:15 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B43340335
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:48:15 +0000 (UTC)
-X-FDA: 84964831350.12.AE182CB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7A880A0007
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:48:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LjJlrrq2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C4F66B009F
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:49:02 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2586C1C3CFB
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:49:02 +0000 (UTC)
+X-FDA: 84964833324.08.11CB51C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4FF60180004
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:48:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Yf34rmEA;
+	spf=none (imf06.hostedemail.com: domain of BATV+3086788e15153571dc5e+8354+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+3086788e15153571dc5e+8354+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783496893;
+	s=arc-20220608; t=1783496940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3OevjrqXdRJOTrMJtKKzkDBmycrF0jmHB4LMFtbouHE=;
-	b=vPaUWqQsJMqNjiwz73r9Tw7M7wwWV9vzTTS4id5/EBezGlUk1vSpCicxQYczbT+GQRoDzn
-	AgiGS1jaPUxBqc/4/Li3GoGBTVvvXCvX/srTVMjj2Y8nHTycbN7V0ZG5V4IVIngwyfVojR
-	Xgt3NlBJ/wCZzp3Bucjyz5ktMjZCCy4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LjJlrrq2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=1GKqWLEPMpSojJNy8dWRNhk5xCmhjbzGdFpbVnUJaBw=;
+	b=w5WDRYy0beS69U88YyX/nclnig7/xtMbCGl/evwaVbDl5LzeN0yPVnuSXi5Y1d5gNEOsXt
+	an8Ys7UoSpkG+pJwVWia7Z6vtERH2Bp+P07KjtqzAXsafZ35gEhdSRpY1NMEa3YXOWWIzu
+	oNnDNPhzMFTRWZKMHtaWdPJWnS72Sno=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783496893;
-	b=Xjw31KKdi+K6M09vMGrxvKrlobI6ZEYBrJ6ssvC1h6lurubwAMECL0gzBXpp296KvxJ1nr
-	r8ClW7koJMYsme3ASJeM+j3N9AOLo2tdv4bqfjUzNu7Wi2n5qego6xwOR5EpYWX4vQaijb
-	8T98Ej/e3d7Rgd0rGhDKLEtYfr3KC2M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9732D43A38;
-	Wed,  8 Jul 2026 07:48:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58581F000E9;
-	Wed,  8 Jul 2026 07:48:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783496892;
-	bh=3OevjrqXdRJOTrMJtKKzkDBmycrF0jmHB4LMFtbouHE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LjJlrrq2oFTukn2i1pCUeSiArZM+6hQwNFxPYuh/g4jt66M47+7zhAhVufrXJTXvk
-	 AYGtWhiMJP8oNmL8n8nXqUgv6HcBAi0TGS6ok7M3saBtRWkgpxKgGjhPam/vaNydxr
-	 CHIJLBeX77gHZsupfpi6opKk03yZQ8eKPbuUn4pn3WL92SCHv2VSxiLF0NCmigi5ro
-	 CFqHb+DMeL6sc73iLwtBHsA/jRtqZvbJdwhlvt3z+168bJLs0cz+8ixPo3/IuOv3rN
-	 HiBlWecG0OBlYEX9SIrBUR4iWn573796Y/jk1BCDlj+rRRWhUoXoRKebDzZQ0UpIvm
-	 MK4PX9aO5dTzQ==
-Date: Wed, 8 Jul 2026 08:47:51 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Eugen Hristev <ehristev@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
-	Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-arm-msm@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 11/26] mm/swapfile: Annotate static information into
- meminspect
-Message-ID: <ak4AgXqMnkn8rVGE@lucifer>
-References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
- <20260708-meminspect-v3-v3-11-7aa5a0a74d5c@oss.qualcomm.com>
+	t=1783496940;
+	b=DG9KPZhjomrFkL9+jXiq4VWEE8LyTRknZ6N7NmRxGso4IKDB8nill6x+yToJGJe2gG5m2P
+	FLxIx8Xfq7D8+q+xmBjtm6qq9SGfcrNaSPcYj9LjPKNIP7Op5kevTMU4xeAg0KmLna+s7V
+	pvj0mERPX7mE1ee/ZtnBqWrvFw5HdF8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Yf34rmEA;
+	spf=none (imf06.hostedemail.com: domain of BATV+3086788e15153571dc5e+8354+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+3086788e15153571dc5e+8354+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1GKqWLEPMpSojJNy8dWRNhk5xCmhjbzGdFpbVnUJaBw=; b=Yf34rmEAxcLNuhnC7Kq8y4edIn
+	yHLw/ZngPfYN4Ht4snU+mOMkMNi/O+LHMInNR9DR+2vJR7VXHFoixo4uBSKJziJQeVDiqI/V+11Yg
+	IFd68c1E3lx9cSVDK9tTEXqswI+f+n/QplUk1S0geaRP1VEq5yiPEhkapAerHAxA2VkxT2SeJ72KU
+	WHzQ/+JskZTDMwYxI7N2j8N1EbWgXo1uGBe+tgI7ktqUEBtV6XkIn+UQkA7S6ZReyWLGxQCJnFDEA
+	MTly9iUpoiyS95CyXfl2WbcQ+qoOXfUQ/9w9W33kJEHw8gQZaVK07G8PlP6x02jRmr9lMDeFFLGH8
+	cO8aLwFw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1whN1c-0000000GXRD-1kHi;
+	Wed, 08 Jul 2026 07:48:56 +0000
+Date: Wed, 8 Jul 2026 00:48:56 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Trond Myklebust <trondmy@kernel.org>, linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Anna Schumaker <anna@kernel.org>,
+	Shivaji Kant <shivajikant@google.com>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 6/7] nfs: Optimize direct I/O to use folios for
+ requests
+Message-ID: <ak4A6IEmWNi27I2d@infradead.org>
+References: <20260616134000.2733403-1-praan@google.com>
+ <20260616134000.2733403-7-praan@google.com>
+ <7ee3bcfdd6126c93cbb1c219bf601182b95c10d9.camel@kernel.org>
+ <ajGGpDvzZdkGtSbN@google.com>
+ <ajP8ZTTLYkICFTO_@infradead.org>
+ <ajQ21kH1ZVajS2Y7@casper.infradead.org>
+ <aj4iiD5C_yyLeb3U@infradead.org>
+ <akevQfFVteCOD6LM@google.com>
+ <akfAgy52s_Gch2KG@infradead.org>
+ <akzsO_vmYX_7Umjd@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260708-meminspect-v3-v3-11-7aa5a0a74d5c@oss.qualcomm.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7A880A0007
-X-Stat-Signature: ntbhcwishdme9x6rakm3bz5knt6oyjun
+In-Reply-To: <akzsO_vmYX_7Umjd@google.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-HE-Tag: 1783496893-72870
-X-HE-Meta: U2FsdGVkX18A7Ha1rhB00D9+VjlRn5fQjBEe0mYd+OjFNGLr22ebQQrsGe9bgOf6+waX5OpOzJT/jrZStU99W/ACFKZipOPHD1DY4av8g6ScdQzKeR6r8O9MKJaRCYsh6qOxZSgI3C+0BMiQDdpeAc8O98wmLeUXwT4X2HG3BQato+P9frUjT/YCLzL47MW7Zt8fPCxj0DDBFIAdClOBl880qzIWw7ODjz31H4W5MxvFxrzFjCtofbPQ30hMOhLl7upLWyVCXPO+oFYfXJOqRwh0hdZ4LIyFQMojLz3jn0RQCbtVO+oYE6pke93LRUhO7XAb9vm8sLXcoUGd+o56Nj4sJtYnnNU5EGmWHaaEabHgeamUfNtiLv5Hr4N9+CEawSuXyx55nkOf7GrDF3m1aaOnEEyEwW3sURXx8AR9h2f98YYNOn32fHmNQJJIzUkJ/2gabL+gFCHQIYL2akS+0t42KagzoG6QazpJz5lJfj3FWmCHuScGmlw1ZvtEM5G7MRO+auteXohGOTOnb/P00e3+vR4MErH4qBN3zUKTrlDUakNIPkunXLOISLP0jd1PWUp6DWbJ49cKWHjFsVfqA/Vap/RtKviObPphKsr7fZRbS6rdbsFPxHo+dzUMJm2pCO8zJVEKFIELBbgFLgIa9ud33KveOqeJVuILSGGex/GXXHIOdhl1bETchwe1YJJGfMkf84LBbkY0a4GGJkJswdooKhYLKXGJnTZTh64hZigBTZe9BCwtNn8rzAtyoznrIEL/KDrnmr3nEksN3V6B8xrXto9pXnxAejpmr8COSJncL7jf4DsBrnlLzqt3NS2Mw/WryasbMpqsWFTOw5EYuy9V67S/B4b6ukKDwmJz9ECd+lgT59lkBYLxFSlWy9CdQ71cvcEAqbvED0WR2dq7CqCBG8oeng3v90kkYGHErZKRK52GAnGsV5Ufi6YwSKHmLIKG4Cr8lwu97TFEe/T
- 8fWO1tWc
- S3s3WYpD71Ru+VcbI+U+Xd60Xg1p4XFlpZxY7xI5+Dd00xQuH2flfCHILU+mcFZYW1Dz4Om/3mdrE6XqmXeuWJQ3p/d8R32RK77Xo1Qxm1lzFCk6AiYn+L/gGYxT6atmuf5gbIXbSK787wzAHHQrfl5toZ8CJdFwv47DdcNgIP1wyj5Vw7Nx8u5eucsyCDodP/0B6JzTPJW80Ql0np+P60wPtQ6pVWA3gKViYlbkZBLm5BF/He8MSvTSa6vuzvetoxWKQ7KxZNgWloMWYizbqItVx5HUmSmI2CrumgeBpUJpd4/JbE8ReVWMURnYxgYZlPVOstVWwk49ObUOFwx3BT4KUXaNpEqNb4yZumAbu8Eodn/YnAHYMUkJsFwh24qOagTOusYUFb7ySawdPWXZos7QJ/TD4Owe7T2Wl6j2sFGV93/5LqhJSTaYbbvzHJp8xnaMZOLTiywHiwUFvGY3aNDTbPw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4FF60180004
+X-Stat-Signature: em6abqxch5jwq5jgw3rd67ih6a3kmk5o
+X-HE-Tag: 1783496939-351278
+X-HE-Meta: U2FsdGVkX19tHEb6mmMijDvDpLCJlPrqPHn+3xNPk5l/IUwwO+Iv5OlSFBCqgrmdS+iXfTgVorrixn20kirQa6acchvWhO1XTVhhfL1hI3GBJw0cqt717SnbSfyy6Snp6NfVB36TtUA+Cyik805WXjhTh9EPqRgUUQUcCTtag76nMjzBNrgpzFHgUNeZafJG1aW1yGc8gylZrHya7H3ODOcMRp0s9u/vx96DkTzitWRGOi8i3gZaxXwUqYO+rGKRwwkrEwmxJ+a2PkzkE7cNFKjKf5iV5ZVNmMTRAO1o3rmx1UY+EoW71QaYhlhWZyeI3qiIG9q/Whgu503cjhOWQmlSDcSR6YHzbqEU15mQWyDtE2b2pMw7ZIgohtJ0mT/ZstOfAFwVY/AC8ZXjessUMp2RKXre9rWGhCOGweA6b4DxYAPXSyKgmoz46jz4u+IZumrSdastQjinL0icTHn99nk8RFKasr0lz/ox/m5Ru/YkrZ0xKGWGHwovs6dKU6nEz8XckTNvz3v0sJMLjVDoFAefkc1fZSrCIYN0s4wNk0Poas9ZvYODZ+xM7s88aUBe/e8vwOEXb+UjS7NHsccYLEBtEljcE+IEgfu8SQsBxFHf+vq8UInnyPWMQUBQMv6PckoPDMFDxey5IO51FEC77+6TTWMJdMH3p1hVgCtJtwulPyHF5mV1yCTrw/4jZArG3NgkIyhBvk0aqGXWbTuHzyLqjfmLWxFvm9sZTx8bBT9FLWN6Nx+RTQ0QKVgLmLfSqQ2tzAoxxLH8iBRUihdbTXV7p9iZhDpma9+821X5jrVu7WNBjWx01qrelJxjdSOJTvoYZaS62SgGwrNY2UCAj6DLDbDdYGQYuNHLAsha8wh9zn6VIOEzwYE11q42kiJUqmGvKO9jovslmYAl0oS+6SQ2bw1iXxEvXuRmDgiSGuox8uiq+DU+w+OWfH6epiDBEbXW1Uv7EX5nwJkzGFl
+ pw1bfP+e
+ U/I+fvjesWGtbGUESNO4akFV7+ENJLjsRvMAw8KFyxsYxvePFR4P9/YZm61HOVLQgVhlJesSrdT5oDhhcwaUQjvGUmh1uUEvJxoYqwqXgacY/crBpEZK36nsVcx2xH3NhiWukwOtgp69hK6SMmBQYnE4ifMAgizDW6TAYe3rQst78XYYVedh4QSSqe52wacmfzG1stgxUzdAHZ+V+966IG0qy/AsU2t9qIIU289UChy+8AFlJ4UEdkJU372CKZG4ncvE+468fqV/dpW2AuRzRPlJ5BCDNE/pTlUHyUJ0L28+9LvC9cXstF3pXUxogbl5ROAd/fhAPEini6C0k9E+1MQxABO9S6ANuByIuMFofJNY5KTVAxtK5rPwAhzU6qD4KAp4k+PJakM4Y3o4Fb+0QzPGcC3CDbjmS01aUDHIJN/uBtHgQW/3h9DdzJF6caZG3IS9lTmVpMJeIWj5q+SU84aJ5lpVUhkA7n78PrE8a0QmLEVwbBGMJPE1/1v5vgiqwZ24u/q0rr34Jt1FkXyE58IMp33sDU9zNScGN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,46 +103,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 11:01:50AM +0530, Mukesh Ojha wrote:
-> From: Eugen Hristev <ehristev@kernel.org>
->
-> Annotate vital static information into inspection table:
->  - nr_swapfiles
->
-> Information on these variables is stored in a dedicated meminspect
-> section.
->
-> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-> ---
->  mm/swapfile.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index a602e5820513..d480727e4987 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -42,6 +42,7 @@
->  #include <linux/suspend.h>
->  #include <linux/zswap.h>
->  #include <linux/plist.h>
-> +#include <linux/meminspect.h>
->
->  #include <asm/tlbflush.h>
->  #include <linux/leafops.h>
-> @@ -65,6 +66,7 @@ static void move_cluster(struct swap_info_struct *si,
->   */
->  static DEFINE_SPINLOCK(swap_lock);
->  static unsigned int nr_swapfiles;
-> +MEMINSPECT_SIMPLE_ENTRY(nr_swapfiles);
+On Tue, Jul 07, 2026 at 12:08:27PM +0000, Pranjal Shrivastava wrote:
+> Ack. I see! Thanks!
+> 
+> Regarding the page_folio impasse, how do you suggest we proceed? Should
+> I expose and use get_contig_folio_len() from bvec? Or should I move the
+> NFS helper into the iov_iter lib? (or both).
 
-Now the EXPORT_SYMBOL_GPL() is an EXPORT_SYMBOL() in effect no?
+Sounds like the best way forward for now.
 
->  atomic_long_t nr_swap_pages;
->  /*
->   * Some modules use swappable objects and may try to swap them out under
->
-> --
-> 2.53.0
->
+> Also, do you suggest sending the Folio move as a standalone patch if it
+> is blocking the rest of the series or do we prefer keeping these in a
+> single series?
+
+Sorry if I'm thick, but I'm not sure what "folio" move means.  In doubt
+if you think you can get a series merged quicker without a later part
+I'd split it.
 
