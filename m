@@ -4,123 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B49EC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 05:35:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8324CC43602
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 05:35:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 003096B00A5; Wed,  8 Jul 2026 01:35:11 -0400 (EDT)
+	id 66C3A6B00A7; Wed,  8 Jul 2026 01:35:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1DDE6B00A7; Wed,  8 Jul 2026 01:35:10 -0400 (EDT)
+	id 644876B00AA; Wed,  8 Jul 2026 01:35:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0C5C6B00A9; Wed,  8 Jul 2026 01:35:10 -0400 (EDT)
+	id 532D16B00AB; Wed,  8 Jul 2026 01:35:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AC9F66B00A5
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:35:10 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 231C140686
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:35:10 +0000 (UTC)
-X-FDA: 84964495980.20.D48BE1F
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AEA32100004
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:35:07 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=M4u4oLee;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=ND1hEJBw;
-	spf=pass (imf05.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 23F7C6B00A7
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:35:32 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ABBFC1A0679
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:35:26 +0000 (UTC)
+X-FDA: 84964496652.08.ADA41A3
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 04FDEC0002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:35:23 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=pFo9WSIh;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=klKwNL8O;
+	spf=pass (imf10.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783488924;
+	b=iP/FJIDaMcKp9hK74GsL4V7SIngikCbVtccuRA1LOwBwRnZCDVHm3y7PPC60FvLWo0BUhm
+	+Na8OUi2rBP+toYTdQls/GeCNxJTw2hm87okWZLPh8+rg7zb/RM+0cpurY6j9qg1M/TddC
+	s5v27OBuX0NInWP5Lq3TEe63/fbHoaU=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=pFo9WSIh;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=klKwNL8O;
+	spf=pass (imf10.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
 	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783488907;
+	s=arc-20220608; t=1783488924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e3kzuLsbVSP+LQEgSP+wDvBNkj7pdMjocJ33jwAybcM=;
-	b=qiWz+Wit4C6wFd2G6eUq8cE3IuI1M/wNNb9gYFbYQUlCa5oQGxQwVQG9h/FsOQQCkiaLBM
-	Oh2feh1q1f8QkGHiA++H37+9owyZY0w8OmBIH1DoRC+UB3cTp4o7HeDBA1RL0PtLiGYoHA
-	frtPd7awXcZmco5Vs9CH+Q4uH85S1Yg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783488907;
-	b=um0iMAsfUlfnBsYqZ09S8NaunYd6u25Ji1PKrN4GSJZ08KrEdpei8QkNyz5o0YjvdXZrru
-	yB0JAfadhxAZVWo5QoYyNRsCREptwEyqFl4f/6audMFjfcLIdXZRB4QK+5yULSN0k2dDwh
-	waXTzNoSmLvQz2Eb6si+QjD8dH+N15A=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=M4u4oLee;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=ND1hEJBw;
-	spf=pass (imf05.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 668428U91656386
-	for <linux-mm@kvack.org>; Wed, 8 Jul 2026 05:35:07 GMT
+	bh=+3x+TMMzYs51Q57TTs1j42iOpyhdFk+I0hp3TICnwjg=;
+	b=wKYmN6c9Obwh8AXiEDq+EBQfVmxaggQ926NM/0UaBn3vVAcAGBAXWU2nrCk1K00+E+AAlS
+	WLFNzg57ver41i1Q7J/jZXXdCcbrBmKBGP6QIXCuFMDQmgu/kBr9G4w4E9XGsVSsx2knfa
+	Wyo3yp+PQg48Wt1XkCGQnMRvaK+98mE=
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66842U901447476
+	for <linux-mm@kvack.org>; Wed, 8 Jul 2026 05:35:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	e3kzuLsbVSP+LQEgSP+wDvBNkj7pdMjocJ33jwAybcM=; b=M4u4oLeej6p8aS0u
-	TRiwSM6+IF3MEJ73TbAD5e3O6bITNiVhDsevvmXVA8qM7eHF8ko+X7aB5nuu9aa0
-	VGyZj0lxfsCcIoLynfx+qcUXzgOwfBJSVD6Coh/wG1mrFdfAuVOm4FeR5jHxaJcn
-	OSVcziuUAkVr0Jsie3RsCsuxwHRnw92TBYL2AsOpSOI25B2LX4lyximoVyCKH89k
-	RCi4EMAa0qHudCXQ4GNEai/e3XLrrL90yW7MoFAGAG61/ffzdilghSC5UKSGVJkZ
-	pBAjnOcJqrkdnfbmUkEkRcCbaSL2MoV/Z0A5zUJxUgBmiq/OUVKrib1maXiZWC4R
-	hd26Nw==
+	+3x+TMMzYs51Q57TTs1j42iOpyhdFk+I0hp3TICnwjg=; b=pFo9WSIhwEYdEYNM
+	wWtorKvFh3bDjSxFAinXAxdKwm7Z024P8hmHhadMiLzMLCPdruqT4rmAkY4tQewl
+	ElxyGsMl3gajlha+6ZroCW63wi4nK1ktdBuPuX3FAL9ZXixN/0lx3tvC3Y7lNvyR
+	Yt37rMWQBgF6yWC5dLeTfFhuwBZ3VQbRD+U49GV2ROHTYrVtws5GaKRnlbgrdpHZ
+	M9IeaDbto9UL5CGReS7Hx4YXldYcCpau+lqO1CfXLCQmq064VIbY5TSiGRZKMPxl
+	6MIkzT6lV54A4TStfdW2tLHHia2uaiAGk/gWoiKa4LRQQf7oCcF59MGEh9tFrS5Y
+	PF8WXA==
 Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9cssrts7-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f97u11ts6-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 08 Jul 2026 05:35:06 +0000 (GMT)
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-8423f1fe39eso661455b3a.1
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 22:35:06 -0700 (PDT)
+	for <linux-mm@kvack.org>; Wed, 08 Jul 2026 05:35:22 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-845df469a26so905895b3a.3
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 22:35:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783488906; x=1784093706; darn=kvack.org;
+        d=oss.qualcomm.com; s=google; t=1783488922; x=1784093722; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=e3kzuLsbVSP+LQEgSP+wDvBNkj7pdMjocJ33jwAybcM=;
-        b=ND1hEJBwgSzkZy1HtYREzpCCu2WSBYQMDevhYkRbJ21L8yE05Hw4qZSV+E2dhE+5Ub
-         3R3T89eFlJBgqiF0QbuVab2jC9XZC0PzSfsXf5H8TXiY8Srdd16mLfSsezBSZsdYvE3S
-         eh0ftr2C5CK9jlVDGtWPbc6USAVDhHgqHG3gCtBkXZcIXEWnGT/mcBfwuIJT8BgkC0uU
-         EUgj6FtGjgSOtM/QApai5GWu/Yo4ehpwTMYYux86pbZHDJwui7vWi1ekmK7wcPBwZFKZ
-         b9NIXU6PRjn5wrm+AMPiptJ+aRnZbIsd6fwVzJB4cr2RbsEbR5EtwGUMs2Xdtl3hYPzo
-         mK6w==
+        bh=+3x+TMMzYs51Q57TTs1j42iOpyhdFk+I0hp3TICnwjg=;
+        b=klKwNL8OEDwzLaPGdjyai7Ic/lSAuv7GohAo1WALUKDALiS0MAP4JEob9+ZeHVNbXt
+         gHJ0OGFDH3CZOJtM5kw2mwhkgmBCGw4PyL5gUzz2UlBaOuVGiPBXblxaO/3KmQLa8jOd
+         EqBypMhgOFMfp1Z9G5CawTcP0GGRes5IKYGnomfB2iBdOUeSeqGxIrDFcRnuH/ENb2ka
+         jDPFdo3AsiDWQBYfde7Os+CQZ41gIv8+5fH4k5WPjFgIjZaWNBsFaf0ZFNIbWeD4fPcN
+         jU35F7/84PhsZY6gagt4W6LXhVAcrHaZ6rMuJ+5r48CKikuzIRYiMed+Co4AIVINviUU
+         ZQxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783488906; x=1784093706;
+        d=1e100.net; s=20251104; t=1783488922; x=1784093722;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=e3kzuLsbVSP+LQEgSP+wDvBNkj7pdMjocJ33jwAybcM=;
-        b=GygfBWNPg6H+PgagHJ4t3UHXlvfHX26Zphq61tEOcce4o3fsmROy8fZ1H80KaCBEDV
-         trI0vmEu7Hx649QfD8SBDRj3EMGUyM8ofvTeP5tH7YhfPSp2La6GL22oKm4jr0VarPwX
-         YvOjo5RvMl03fj4LJslXHzITuZQpnJ2BRTVHBnfiUyAo/+6ftj5n3Pk6I9g1pErzryQl
-         Dy7Eq1ImYshkjlXS3bdKRrqnMXmnbBf8DXVPdHfwkXXoCE7wgS+WNWo+Eb0meSrh2RAb
-         gspEZSVo2sIt9NQkIoy0SRq6xGle2RREPHEFyeb5RSPYD2dvgiDMd1cBm7UJsPU70PCf
-         ZPpw==
-X-Forwarded-Encrypted: i=1; AHgh+RrX6Edkzo3UWTPLvQvSuzMbf9CnwJBhlj5LCFNn/Qqq8wnVP0r5N6mTHG8HBbNsRxM4BkSbSWHScQ==@kvack.org
-X-Gm-Message-State: AOJu0YxnkWZFng2PIe5GZZ1t/wyjuYk8EMWkCos9m+iGjikbprm8thEa
-	wyag8SReYDjrfk/CvtNHkpr6xdhDIfINlfv5LGO2UsyjpfrhSUVrOu7J8qXGZITsBQewevYT/6x
-	jezZ2KZsXj1HS3WRduix4tZD4CVwhj6nNkDnaq/I4lw3lG1a//O2j5g==
-X-Gm-Gg: AfdE7cnoqj3DXRUV/9OiCms5jsaHFvnZFGf2pp7qRxsEQaG5kGF3Z7V5iJFbzSTj6jX
-	FVATMtGc8sDoIgAfplok2hlBFAW8xD4xJqRh/sL9opbfXWTIC9DRQEgHuHbqxxYAsyZoIrUm6Yb
-	O2YjE6E1H4uHDTtXFguxQdfdc8S1TBKB6h7PxKDUQdkRb/FKinUFRbmhvk7EuQtumWo2zEzxWqd
-	MevnPGZczJrHuhyyE4evw4WwqgaRHH+dqw304Y+KMwr2rpMYrLjW3B57SlDgF4E14ehUQHunUR3
-	M+ZF4bBRhvFqf8r/u4Tvu0qqtZTwKu8uGQivcqcZ1F68DSJO8F8vMEeJbN1eIn7qlvZ/3FHB6ie
-	pt3jcJKMFKoPHY9IcG5svoeHQxWmiPydEZ00ssA==
-X-Received: by 2002:a05:6a00:9aa:b0:843:49f0:f5a0 with SMTP id d2e1a72fcca58-848432a16ebmr1252334b3a.32.1783488905624;
-        Tue, 07 Jul 2026 22:35:05 -0700 (PDT)
-X-Received: by 2002:a05:6a00:9aa:b0:843:49f0:f5a0 with SMTP id d2e1a72fcca58-848432a16ebmr1252249b3a.32.1783488904894;
-        Tue, 07 Jul 2026 22:35:04 -0700 (PDT)
+        bh=+3x+TMMzYs51Q57TTs1j42iOpyhdFk+I0hp3TICnwjg=;
+        b=oc3jrDwO36JQEqLZxI24TTSYbwl7t7xmrXdpuDOuozW3yz0aBOJrVKqtoEHvFpG8GA
+         pjFwAJZ6P5itXvabT0MCHLmZLaEVvG2zZT85xx86pHkiJjclm4/GFDZqNukaeLwKiLyJ
+         RibpdobfmuQFsyj9PmfEq9yXUnNZX5Yvxxm2asmX4IyaUZ10ozDwvAxRIVMsydoSduIL
+         KTsdLkTuxaar8uqIyAeD6mlA8UJcQxN+4+PlBT0zlqmqXGOPhsWOBemWvuOQ5JahdIqD
+         r7R5PZNe0cjTlKMulMsl3K8ONPBjSi1NX9iX2MS17oYl3JpOI7Sd0fodvEcLH3wzRUYM
+         vaOg==
+X-Forwarded-Encrypted: i=1; AHgh+RrPvJUBpT0W41Pz3MefsMu8eorwJ5U8+LQESyY5F0wBqdFd1W6F5sIOb4Tm40ZMhFrzLWn3r9NH4A==@kvack.org
+X-Gm-Message-State: AOJu0YzjfcFo921N2pmZTCd0aYk5xPRa+hb5ejaTD9X7yD8RARBl881c
+	tn2K5aMOK3IQgrx9ZrO3O1d2TD58tJyazblK7cLpJ4zgS2tjxiX3JZOLZSmaGrAR1CZ8atp0FTv
+	Pld5SKLIMvCyiDFqiJHgx0ufqi3DbyTxaQo6KbkZID6sYBKckukJlUA==
+X-Gm-Gg: AfdE7cmdn1nnOVNhEsR1WkZ53mH+ZRstziVZ4ReewbcGZH465NYvY5emqc07bcmx5Z4
+	VQvjnvo5c1/qjLFtzw6EAQpXdmrrtn2k63H4gv7g+OxSsiP2Xh7rGWLcDtHnB5pNBnWzZMK1n+G
+	x42fQBb1LZDPbx6UOHvR5BjX/lEpADRCoXvwoo1nQLli/hzjmScePddsgZ4DspgjDESVBf4rzuO
+	jMWhpFoXPGjf8TtOQ/tGRMCLhVHgP/ocT4pUoQ3KpokPjobhrSWk5CyBo8hhCDsWKMVMbBql0xe
+	5g0caddbxsUNRdDJtluofqg3GcnoJGjF/0AKf2RXH3tVafftRJTbLp6VX64eioVFQiU0EhfqFlT
+	MTutKGXUl/CselhANa7dxJAmC3IZTjEx65amnXw==
+X-Received: by 2002:a05:6a00:3c94:b0:847:8bf0:b82 with SMTP id d2e1a72fcca58-848438cc8a0mr1132186b3a.60.1783488921804;
+        Tue, 07 Jul 2026 22:35:21 -0700 (PDT)
+X-Received: by 2002:a05:6a00:3c94:b0:847:8bf0:b82 with SMTP id d2e1a72fcca58-848438cc8a0mr1132049b3a.60.1783488920709;
+        Tue, 07 Jul 2026 22:35:20 -0700 (PDT)
 Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6db29d1sm6484592b3a.53.2026.07.07.22.34.49
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6db29d1sm6484592b3a.53.2026.07.07.22.35.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 22:35:04 -0700 (PDT)
+        Tue, 07 Jul 2026 22:35:20 -0700 (PDT)
 From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Date: Wed, 08 Jul 2026 11:01:50 +0530
-Subject: [PATCH v3 11/26] mm/swapfile: Annotate static information into
- meminspect
+Date: Wed, 08 Jul 2026 11:01:51 +0530
+Subject: [PATCH v3 12/26] kernel/vmcore_info: Register dynamic information
+ into meminspect
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260708-meminspect-v3-v3-11-7aa5a0a74d5c@oss.qualcomm.com>
+Message-Id: <20260708-meminspect-v3-v3-12-7aa5a0a74d5c@oss.qualcomm.com>
 References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
 In-Reply-To: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
 To: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
@@ -165,49 +165,48 @@ Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org,
         linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
         Eugen Hristev <ehristev@kernel.org>
 X-Mailer: b4 0.14-dev-f7c49
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1783488714; l=977;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783488714; l=1258;
  i=mukesh.ojha@oss.qualcomm.com; s=20250708; h=from:subject:message-id;
- bh=Le/Q1zQCFzKw7TzU97mwXcZteClh+RXmg0tVYvpLcUg=;
- b=/A38jB8jdahPqFeNwjbw3VsOCOB71d39aCOjB+lkv/q++5YdKJm74I+QKrYoRlSQmDy7ph1py
- Js3L+F1YhD2A103w/t5mZSZ9W83XBW+cKVhsPjinjQelhxoWx2X6Hww
+ bh=5yycsUBwoFxiKNQeKvCsF+mVUdasuljHstmWvn84Jps=;
+ b=dh1WtDpiEGxqTk4F/COwgg2DhrAd3AuPXNJplwhLTNVJqIHM4OhNRd1Zmmkp2+owqTNHhWdct
+ CiAtW2VX+qgAIDAxAIMI67SaI2XkeGHgfZ7O/D/Y9bcG/K5XSCTPfU+
 X-Developer-Key: i=mukesh.ojha@oss.qualcomm.com; a=ed25519;
  pk=eX8dr/7d4HJz/HEXZIpe3c+Ukopa/wZmxH+5YV3gdNc=
-X-Authority-Analysis: v=2.4 cv=EtziaycA c=1 sm=1 tr=0 ts=6a4de18a cx=c_pps
+X-Proofpoint-ORIG-GUID: wkxmmBWDXeBieZc6OwAe0Hg68j_WZqNk
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfX9e0sfQ3HfBZi
+ nnPaAzNlfzroIf1rW8FNyxVaXlePaXTEPs4z7n5wU1vydiBfTVRV+vd91EnZFyjFb7l1b9qoGf5
+ gwrYtTZPWqHG20LwcSXi+YizYI7w1Yc=
+X-Authority-Analysis: v=2.4 cv=F9JnsKhN c=1 sm=1 tr=0 ts=6a4de19a cx=c_pps
  a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
  a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=7W-H8-9HiqHpPtFVMfQA:9
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=v3IzjsPwLRQtBGjmhGYA:9
  a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfXwC/+IFUADVZx
- kMdmt9SgBFO/AKVbRQx8pYOn3hCHx5dVpJIYUGyiRDOwucfNI1Vy5RyANh+lSR49HNYuQ8q+jQp
- Wca30HHj5AGatTJ4TzGY/2a2DfaZz2tkHZdsf0GtbX5MRfid7+qk31qnJMEYLa75uyPhVfc/xM4
- Vqei3JQwAlAcUi+3ot3wlA2q5GJONuQC8+MdTnEUGQwQj5bebeRgtiJevg2qacLaToECVfETEPC
- WyD95u2ctUlRtvM228ry1UpEQ8h01Qad6SpjsAGwJHgumy55KJQBVOlrfTFHmEtx6iCnKYBklaD
- oJCg1Sfa0aKEdA/99MPDTavoUMULxHEpBPz62yoIwsLMiuQ5hafyJIXevrbMg3eNBExksVEaHJC
- Mf0n/SAKoiyoOMKvLZn79PKd2Ev9hbkmepEohlE4Z24m6DxLeoiQDlURpb6iaEbZe5ZneakbV3/
- WJqNMhJ1zY4qxMug71g==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfX2v6ndH7MJFOB
- t6mLvPds2n/tByUUSNsjodQYiF/ieRYC44cSMNA/C0+ZJdOZEmxVkYC5DIP+nmS6c41GLOWEDze
- tTu5hMlbBKCoKjqlrrujgi4Yd/j6tsY=
-X-Proofpoint-GUID: FnzSoSnBxs59FrXY8BdooP8Q0T87Tbrn
-X-Proofpoint-ORIG-GUID: FnzSoSnBxs59FrXY8BdooP8Q0T87Tbrn
+X-Proofpoint-GUID: wkxmmBWDXeBieZc6OwAe0Hg68j_WZqNk
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfX3XO30Jjvk59T
+ hvxzMAcM99TrWN51747FnlSuz1KHccknv9UPi2iBfMjYndWQEWLTOqkzTu+bq7bG9frqVQDHJdh
+ o3zco75Zst+r/qBC1qDwXZGtSJDBte0bHaWXJiBo67tb1LfYxrW0rkAxRbWbUYtJe3ZivGVTeSs
+ VCzHqmM/Y8QJBfkj/UA0TakYOV8D/8G0tPPndAapGxCe5Unit5ANmyaUNn0OWMT/wfljQXC1H+a
+ FUsP3d0b00B3mvJmtFPMHA/ZEF7/vPT7eG7W8jd/1oHhT7gSc6j92RZYDipbJC6gb1LLZ2+syLQ
+ 16Qn5Elce7RkrDfE3TLw/wF2zJ1BEaRlOxkBxGGygEro9xC6ETWlV7IgXQ66cVJUru6tDYu9dcI
+ +IH7jS/Dh0tZq4U20I1yYf3CshvnUfeZP3i4h4jF9CDhjLHfZ2jF14Mk/40jnRxIK/ZCmsPlZoB
+ Ou/tGdHYAKLfTrciZGA==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-07-07_06,2026-07-06_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 clxscore=1011 suspectscore=0 bulkscore=0 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2607080050
+ impostorscore=0 adultscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
+ phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080050
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AEA32100004
-X-Stat-Signature: xku3ez5fh67hf1jadr4ffjnn3btpjdej
-X-HE-Tag: 1783488907-321184
-X-HE-Meta: U2FsdGVkX1/qMZtLyk50Jqsk8zHzs9y/3n45B1IrhOOegPYIa7jEVxKRD96CFSB/IQtc2OMgIIdeBbJCaYkOFCCJW8ob0jty48deQdeBFFe35sIQdnKnCjfZLAlUG9JFCATAKfeuHVUvDkwifI1Vpaa4LIfm6sOG92kenWFXBfcbcQ5TcDcLLFE6Pn2e3SRJOK7R8D1/kwHXfYM9m2AAs8n9Zb7WS+bMq7eDk97Qg0/SSXfNr/A0dGFakezQB3jymJDBR1lXVlYpJidWQ0KVkp7ie/sd5sewF8YVlsR0IzSpwl0y28Yd0sATWywp53jbJKPwxD1oyCzhWIf5UyPP/TBUiQWh1FxGFlkYlsXRL3qgG7G9+dMrhop+xNbC6/tT6svkMOP4gJuSMl7+IC40dNKRRfKbXq+Zbuc66fgT6K0T53fTuC3VF6gc5Grond15Cy0gPcmO2fFz2Q4J/g7hNpm/R6mjsRf7SWrzawkImbyhwP77OSOre/fhmvk7RfbCQjVsIQnFfn6V9DAgmaIW5T9P7GC4O7C2+HvcWCMakIQ4fYuneYXRyZV9QmWW3EvfTmoe1MUbiw/FMZ6lCsFMPUrPPFBln39aW2KCVOD80n22+tqh9ZXzTu+I9OKwcU5x+iGEmO/ApvRbMwlxRDpYKUcRsqJf2JkBClAIBjVGnqbUHqQT2XgTjIU3LLjNR/QG9vIDxD09RZUxhUsgeAww3IHmuQWVuxe5YO2AvIkvHJNdayfiHogYx0/6y5T83SH36dL/653LFXEOLu6C6D0nijkmtA60gucuScOEjo6UfeRoCo24yj0hiR0ZanUcr/SpYbvuye+gyMUoq9f72imbe4K6xU8DISIJmJh1QUbx1oocbBfkFxO9laTQMgqSlhHR6VIyG37R6zch0hWtjNhzVoK3NAvyDqMC9h+XkwrVY/qHp4EG7gqNAn9y+xhX9PBnp0HXPWaXEKaG8ptsI+2
- y6xkFO42
- 4szeHnh4gekof494Z4i6Cm5Myt4xxO6B+M8Bky9qxJu2RPLEv3GaQfRUbt4n7+vqWNQ0kMdqOe2MRTOGIpurLadYUcivUwajjZnOexkOwklyl9yvTd3OC+9/f+QDThgy4GB0syAKaCdRdoU1m410ALWDertwK8q+f54wCz4OGTXqT1dKpK2oftTeevbOhRdDAhSLBX3DFsnDTF1W9n6qz24e/eeUY7C+0/XIOtDVLDnlUvf7J1Y9YOQkGjtk6zPm1Y/wKEDxcDvqLYrsosW0rCKj5AjL+vBq4shlWIclEXyWX2zrMhnOaA30c4PLQaIfcxyKFrmINtKuhdtDZIRUKa25dmLxwYO9rCkXq3cYQE0LdonTW8r6boU+q0vZY7wjVYj4O4+aaZ/eAmiA4oVydYFdUcIS5BJC8UYQbqu5A1Z8VcZjqOiuYKJKyj1lB2FwUJ5nTesqriTpnJLLUAVddsUANAdJolgvGYXB6yyTdF0aqIyfc3qkkA/NITQAtJ6z/qTtU2IRDtt7hCzxKGFKqQC9uLjmxpeVd3MeFSvvdU4xFgGn+6AgzPOCdlHD2ZskC/x0RJBNtZoSGtmhRwwynli86HQghIRvxpnx8BTd5QY8ztgUdXlYIyqI9sg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 04FDEC0002
+X-Stat-Signature: ng3s8811kwh1xtxb6xfwosw9jowq3ktw
+X-HE-Tag: 1783488923-608686
+X-HE-Meta: U2FsdGVkX1/kLaIjXb/txiR2qWLKm0mqD1QRpwlEIS9mX6YPIUT4zWSiL/eUWpWjpUunoqe4/YsgxemEXHfHLW0dAoPFnjHWU9MYB+lH6w4+g6DJi2DaxS3s8P89Hn0hzWRouLiIwPwKutRWaCWKrxr67WWuUmFNdwRiQOUOY0MFXVrWxS+4OZTX1Yu2a+jqn9diXCDA/XB+CBMbaqi85zU8T0IOJJjw0mmpaWhhGpSzRFNnwSgsqNkqh7Ifbg4aQ92TaGCKYOINUaNInHaKuLXXrqIu03pLc5FltEf3AbnjX6uFrN2vm1MJi7ifeBFrEOqrG5KUwjeEE/Uw61h0L19/cnX5h7I3R6lPvPc7LWLeqnrB/DSGGnq5oL6zPBmX502Ri0btrX2F8ZHAyMxRUBsa/3lFIp1aoQTLi2k70mdI/RRHa7HoAUei2tjgWZlJmeS/BIPIL/oLQBNmG8fhSWgXzI1OODgbQO5mcul1ZVgaoU606Wgo+xuFt4qpFwGMkpohM752f4D++DHOTU3Rx/8dDpQS02Blm6F8aJ6utjwmpOGNtMK9eoqKs5elOELX6S4IhLZS33oLf8wezfOE5rk3HLfVoHXN03esg0RCdZ5ukr2TqWMLeMPmnhKFFmg6eMQedXMSuuV7LqgJP3uiPto3q0QOiBjZep5uslKbg1qJIOIVzh831crgl7pxbB++vw2nwqiCyKMbpOM5F01QK+eipNY5oNUWFN4gcKYolviBYy+6n/6UaVdsZvRUdhjPcGUbaMGoNtRGiWz9zrAdj0ElJ+HyIJqPgmXJfG9NokPqezNhTDavMAT3YIAjLLvelZcxdEaZtPdqqpuatkkqeb3/i+1MCk5IP6XMzR6BqtXSj2ueRDjncTgHuYUjB5r0hZ38U4QWbALeLtpNJbDl3O7n6/hU7H/u+9KcI/kp4dEYxpqvir/sqJpiBR5kYYJLALggXtddhxnQl9QVzZz
+ WDLOq6Hr
+ q9+Xk+JvGsId/ftrVG1wpT+YJ1MVGDt65MV1Jh/mk4o94MqeCQ/G9LNbjPddLqkVV7lj/Pc4FUy9Xc7Cu2yi23UBuz/ue0A+7uz+CDPRBPDDa/6OgN+cCitIiMIVL0rFvjas7e+j3ejekdhQj7JAZI71P2aNuFPlkfLSBH3zeggykw/e+/ikhQ+Og7PqOxSdPp07JF3lizH5ygV1FoQkWpe1wyvxeN649SboPgVCpVuTRL/0Ukpf+026A0lPfZrSe+5xmQ93CT0cV8nun56+JWMGhCO1xdA4Rar/+GkWFWQ1eahHRAZBCEW1p7ZxTmLAJiveIoWpEEqc2obs+fyWLUNg19WN0fxcD5FhdkEgzKT/T0U3RrKdDm9tu0QFIt0OgpJeBoIrxN4DQyzy5FuspspzZR0m02P2ZpeWcOzQmXuO0zSVSF06ianOxSIH3c5wLom3sRBK9pVi5an8dtrjPvQKQ+HDHJHRz+AGRnWPNQ8SR7yopv75kEOwUAQVXCCdEH6s2TQw75a1I6SbObhBWy85MlOt9nOnWzJEYtUzo7m9thFQmt596O8V+roI6PFdEqs1U8Z8KDbBYqYdk3usRz8j1rIgL243kT/rXfRWoYIAa1ooZY3kV2k6uAZ81Q6m8VmV978BVQv6FJSH2hTClauT89kChxAWFFuGq7egAuYqJjgw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -217,38 +216,42 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Eugen Hristev <ehristev@kernel.org>
 
-Annotate vital static information into inspection table:
- - nr_swapfiles
-
-Information on these variables is stored in a dedicated meminspect
-section.
+Register vmcoreinfo information into the inspection table.
+Because the size of the info is computed after all entries are
+added, there is no point in registering the whole page; instead,
+call the inspection registration once everything is in place with
+the right size. A second reason is that the vmcoreinfo is added
+as a region inside the ELF core image note, so there is no point
+in having blank space at the end.
 
 Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
 Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 ---
- mm/swapfile.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/vmcore_info.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index a602e5820513..d480727e4987 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -42,6 +42,7 @@
- #include <linux/suspend.h>
- #include <linux/zswap.h>
- #include <linux/plist.h>
+diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
+index 8614430ca212..c5181e9d049c 100644
+--- a/kernel/vmcore_info.c
++++ b/kernel/vmcore_info.c
+@@ -14,6 +14,7 @@
+ #include <linux/cpuhotplug.h>
+ #include <linux/memblock.h>
+ #include <linux/kmemleak.h>
 +#include <linux/meminspect.h>
  
- #include <asm/tlbflush.h>
- #include <linux/leafops.h>
-@@ -65,6 +66,7 @@ static void move_cluster(struct swap_info_struct *si,
-  */
- static DEFINE_SPINLOCK(swap_lock);
- static unsigned int nr_swapfiles;
-+MEMINSPECT_SIMPLE_ENTRY(nr_swapfiles);
- atomic_long_t nr_swap_pages;
- /*
-  * Some modules use swappable objects and may try to swap them out under
+ #include <asm/page.h>
+ #include <asm/sections.h>
+@@ -247,6 +248,9 @@ static int __init crash_save_vmcoreinfo_init(void)
+ 	arch_crash_save_vmcoreinfo();
+ 	update_vmcoreinfo_note();
+ 
++	meminspect_lock_register_id_va(MEMINSPECT_ID_VMCOREINFO,
++				       (void *)vmcoreinfo_data, vmcoreinfo_size);
++
+ 	return 0;
+ }
+ 
 
 -- 
 2.53.0
