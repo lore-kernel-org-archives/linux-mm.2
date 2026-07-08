@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD9B9C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 11:14:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9B45C44501
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 11:14:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C05366B0093; Wed,  8 Jul 2026 07:14:31 -0400 (EDT)
+	id CA1036B0095; Wed,  8 Jul 2026 07:14:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B697E6B0095; Wed,  8 Jul 2026 07:14:31 -0400 (EDT)
+	id C78F66B0096; Wed,  8 Jul 2026 07:14:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A30186B0096; Wed,  8 Jul 2026 07:14:31 -0400 (EDT)
+	id B417A6B0098; Wed,  8 Jul 2026 07:14:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 538036B0093
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:14:31 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C9695406DA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BF006B0095
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:14:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 158C51C752D
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:14:33 +0000 (UTC)
+X-FDA: 84965351226.25.066ED8C
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2202E180004
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:14:30 +0000 (UTC)
-X-FDA: 84965351100.19.6384DCA
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B994D1C0007
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:14:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="t N5yVQM";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=evevypNl;
-	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783509268;
-	b=dey7PqWx2sTF2b4DYSGl7qsEhCcnh1gjnIAGaNUyOm7sTR3Fd4hax1m+bLi5bq8REPHSKT
-	Nrvd8mx2AZyhUoeaRNEQXI2seKN3Y+vWgWf2Jc2ZV1Y6n+k/KRFVTqXjrn6Q+V35aE3AP9
-	4yUuGdLxjibVRzMaqwAiFT4juAQ8Jwo=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="t N5yVQM";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=evevypNl;
-	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.154 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="A 4+wb7r";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=IonbHU3W;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783509268;
+	s=arc-20220608; t=1783509271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PKAe8FCnQi1imGYIaY7BbYLjDN16QHzGSt2hbz+wSfE=;
-	b=3yJErdzC88dN7feRECXdKPtS2JC2RcRyQxONSWuwzC+z2OnKBPveSjCisqq8BsBseeB1qd
-	yfls8K6iuPBf2CHLGPPCA0IX+li9WQpef+JB/e5xH+LKS0S17Bkg0OyjYuDvJ79o8isOfv
-	cChyujRMf6jQA3v9cuPnCF1zGnt4Od8=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 89ADB7A015E;
-	Wed,  8 Jul 2026 07:14:27 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 08 Jul 2026 07:14:28 -0400
+	bh=KHWPH1BueoLrKJ2AnlWZbvIzikefHXu8fHT5GFP5/Qw=;
+	b=Fk/31mY5/BY2gU82LyunXZjtZWrr7V+uGjI4psL7p/2BfGUmlGTV9zFFOIqObul/YQe9An
+	1iXeDJaoYpGRR+OgAQ9wciFcElBBbtxyz1iqBr5NXle6Wa+emJQzdqlsr5mEdgj+i4CxUH
+	ZIr2MViY7Bc0+hG5D1PYCU/reSPsce8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="A 4+wb7r";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=IonbHU3W;
+	spf=pass (imf06.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783509271;
+	b=zAvET1M9WIALXSg2wDak/3ZE+ZbqBLOnck2hNxQygLTP/uNapdT7AZFuQw6DFc8c86/N/K
+	rKJwj3UVdI2SKg2yad9KGop1BLVcKkPP4YomtMVQ+yQUTS260yK4FONPiaclL6PJgFaEUC
+	o1fJFNySliA/vrgcR8SVGu/zVliCLds=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id E18BE1D00128;
+	Wed,  8 Jul 2026 07:14:29 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 08 Jul 2026 07:14:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
 	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
 	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1783509267; x=
-	1783595667; bh=PKAe8FCnQi1imGYIaY7BbYLjDN16QHzGSt2hbz+wSfE=; b=t
-	N5yVQMuUtyitoEH63ux4MJ5uSHNhDsSwFK0invbw53RiZfRpIaMgjnu/BADpEsxg
-	U/20JcJ1j8xgr1IH6yI6kFPDEKsRv9sDNNyoMJOwXVUEa+QtQo+CnI8NnMY5Qm1P
-	hXMMO3QzcXCq2GBZgnSGgqsp5L43c/pJIcKod9dLUDmy45idnmObhCzVk4ipcIdn
-	9VvAl6nE0LglOTfrq5/ncSMAHgNzd475vR+mW44hZSbGM/DTpBkuvG2Y8lr5G/hR
-	VJg9GrP4YdaQyVBsncQ1X58bOk/w3Lgl888tpwZUFFDsE1kUVJo9eS2LBvWEBPMI
-	SYRaq4qmXoHIIxteptSdA==
+	:reply-to:subject:subject:to:to; s=fm3; t=1783509269; x=
+	1783595669; bh=KHWPH1BueoLrKJ2AnlWZbvIzikefHXu8fHT5GFP5/Qw=; b=A
+	4+wb7rCn/35uZe1LOC31HNCxrSmlDZa1pEMLJvp5kBKjMRKc2V6bzdgRQYZNEQQj
+	IWLIMrAW/el+aVWiSDnGC6tKiSxxyuQ/T4vISRLtGdaNZiGbme8SY4TA4942Gnml
+	zGDh0i8GK0Gke7Ct4RjOZZEkR2qM5pSvE42b6UQMZ76UG9CXv5rnfOhS/SV2kMgy
+	2U7htMr3yC1zySUMVk8QuVMYmxQiDqF17/XNmSMqbjeRu0WyTXzdTcgrqceVIuL1
+	HeXE32u5kHNXwI6GR+eqqt5Tjfv7tBkQ6ruz35Tcuck/mwDpkHX/ttPeY0eGS9/1
+	/frAl/L0YWnAGjiNMGcCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1783509267; x=1783595667; bh=P
-	KAe8FCnQi1imGYIaY7BbYLjDN16QHzGSt2hbz+wSfE=; b=evevypNlALjeOeN+s
-	RRSJ2jfAmairhEzMzU35aodg9k4GQmy5p5cimzeWbs0Tk8E5u4yYq9NYB9WRbCwT
-	NinhtMSWQUsCxSTan7qBfhW01G+NzlqKx1/dNtTKMdpwhBaRXtfraMX5+uXhN8Pg
-	lXsVOZ5Jq87gFbBaGahxdoP5djO9HymN0B4e88a223WQG6BvZ53zNQV8fFSIb5YP
-	rL/T2gjbtpPVw8OsM24w2I0Ff+FqlugDrOwLoXCtbDlFBSAxRUGYtp3ihl12jkIe
-	vxqKHxccRTLaTqXI3+DTDeHIE1b/vwuIsj44s0CbaVlnIm04FQC4ekuDEYuQ1AiZ
-	Mxwuw==
-X-ME-Sender: <xms:EzFOas3Qmvc_xSmRcj6IeuwsUJUNGIXAol3_FaT6mYXlPam05j3Nuw>
-    <xme:EzFOarBcqZUPBKZaQ17ePwYfThy5XrE62pfGXwluV-Lp2AignmUAEIH2jopd2D93A
-    KIWu0EJyMvqh2UkaiW4nRTa_fbk2iuLgeotIZMgci1qdR54bIT3UA>
-X-ME-Received: <xmr:EzFOatbWXz178F1aOpmnS1mHO_QjVf1qS19Im2g4S-Rq2MMsny9_HTvgdH2HHA>
-X-ME-Proxy-Cause: dmFkZTGp+lp1jxge+zfWWQDOmFev1Aj93weD2lzg4uPZWx+Z3SZe1CWKpSY34hOQnXWdCH
-    X3J4fIJFgTBESvc4xWiwx5/MD14dlgPgF9nEAAA62nAEEbDoeWJIotrsSVP/3RfCG4AL69
-    GWjO5h6ISMv13p/WrSnOtYbJToRcDYMu+oxe1Md/9ogUnUkXvzdGTImpAvqmGUHyhNQHgM
-    9EFSvv/v+Vr6S4j4lzrtAd/spoCmUPXwfzSzofPeR7pTVQTh2KO7mHNCViFZXuf2LlCk37
-    tL6Z2TITbN4EPiDlJfbqtg+HqWMejqgZ48pmgyHt4ULCT1Smmr1CePpfQyTeBk4h4LlJDc
-    7ur5IqjA7/fKaNf1gVzjEtnHlL0hG0gENcwBKvNfggiaXLGxAbAEOgtL2zWQZv5ib1kPZB
-    qjyt8cByNjGn3I1CyoY6vxTIPXSuM2tfHcQRQsvmx29BmjREd8kiiA5xWUa0Rt+T/oGsSV
-    6VdMlhj1G7ngQpRHAttsI1T3lMGvdAQWNzFcrKzXP8sKKYdko+u6UQu74PAG9OZZTOsOoc
-    mOkDC9j43Zz+RpmR7cTqfNuTLDsftsytbf1KjGzbjV/FESkiSfs3khVvD/zblG30oPCPYv
-    q2Mlb1qGcKDnpIzGlDOc4LZ9JN7Twj4w9uGQCNcMSb0Bzfurl+/NENI+++IQ
-X-ME-Proxy: <xmx:EzFOavbN9k84MpujBd-xW0xiWUpzidCk6RxzzBIczp1CxZ4vcuxYnA>
-    <xmx:EzFOamkIscpqP0P5Z-T5uVRx3XwG4h-LxLDkzGF4KnkmkJ5NXxSh2g>
-    <xmx:EzFOapT8AylKjfdBZDqSGCmO-I7Yz6nArk59dTZP03cRqfKnyThGjQ>
-    <xmx:EzFOajWpAIyQyR2BGKzMMvzFpjdiNhw4McDwgKxCy9loOJFJ-FsJtA>
-    <xmx:EzFOaoXjM6lTqWOhDVO-60iwNHBn4a1TlSS9V6YuMwjhNWLfmHtFKWgC>
+	:x-me-sender:x-sasl-enc; s=fm2; t=1783509269; x=1783595669; bh=K
+	HWPH1BueoLrKJ2AnlWZbvIzikefHXu8fHT5GFP5/Qw=; b=IonbHU3WuIu3RNgS6
+	hXINaWGxmcZzjlpRJ8ReqS5LyISBfc84Ftji2N7ANyoarnARqQfaH5fAaEMaAHq8
+	7EQ9op02tQIeXMAOdgN3s6V7HrUK30tTfOUpYkn6OxzRStGQxZ+uWwH1mnxw4k9T
+	ExPxu+zAxa7ZEJKXoNhaXRQOW5htcOHe3hdloS02cfoPhgpq5ZU5/CNOdyexPO77
+	DnAS4ZL2G0SoMYeIzRq5gYDcj2g0OyG6+ETfgeEgBFH23n/dgG/dpxPmbznMa4YH
+	Uo8/OVVHGe+EPUqdGxnx2ag1G0s6wQk+jw7W5oSDm7JDVD8ZA+9HfxVVDO4f8wgA
+	OcAMA==
+X-ME-Sender: <xms:FTFOalKhKgQKzjwTORA8yRywQUBZpkUefoLUHTaOWGI-335Atbc34A>
+    <xme:FTFOalGj2LQwOwjVCnVMJwM6krkIH4o0G_TZcJhsCsIDw2s_665KCtH07WgOsBDfh
+    Lu8NAvVLSzCMvK37-IF9aMW0WATToK-z3TUz-SMVMGGFAwvhKU1TXnZ>
+X-ME-Received: <xmr:FTFOamOPYbiHFQBVVkUCRSVoWj07junKbvgluAQKX6wxsr3lEc55QD9ATopXHQ>
+X-ME-Proxy-Cause: dmFkZTFrgK+JlrVaprEdMCCT9jL+WeqlR41PWLlswNzN7Q+R9eHi8slIfq82AsY5fCzbDR
+    FF2c6/38vqfy5yn0mfN1Q1IuR0w/6jjhcBlbbYbwVeHRfHyttYIq8Oj6v9pP51nLVeKVF5
+    08J2hQde+dVWeXYQH682oaYmn32K1d4rnz4RgIn1j8hjtXUL5IxvtXbrp9YKRUv370bN2m
+    UN+Zd+JxmqGqLZtvxlNtOAXgPcUE/BQPZ7oqAykND9BbS/e5r3R+8nAwQL3YfeXzdQzT7u
+    8EidJ7yOHxiJJbRHrAGeZIH1+iybwcJ1viiDHX7PYKqYv0VVB7VVolJezAJqTlXxgJaxRM
+    3ThiLxApzLqbqqYrfIhpjK6gEBmC/k4qXCx8v2AGxu/dBZDG4cm2k7SSljLRv/d06xaQkH
+    O6HdyEwpDT9bpMasaSEfONz8qeJLMIDgQv24qrEIiTFLtNOTXdmJu8iDJSRFYRp4bR3F0o
+    A1+ylmxjF3E0/9b50RHOsOcqEL4hsWe6wUc9GznweCniRfcxVGWKU9JUA0uEqpMcCxuzX+
+    N9/zNLSpu1SPpvZW4SHUhLfktWRpl8uMd45JV+TwzbkPvSxxok3m1sQVDvcoK/XiIyDau+
+    YVhqKRxOA47Dnjlwn325FlfP0Q/eCX/PrmaYv5lFO3x9VU/CwSalbmZ2yeqg
+X-ME-Proxy: <xmx:FTFOav8PfaPEYAHn8foyMsSx1HJbseg2ZNyzCkDRj5RhBztw6uGnLQ>
+    <xmx:FTFOaj48e6h-zeuQyHOBe4MCNs8fln4wwSjCGuyOZ7vYpBK3uKkFcg>
+    <xmx:FTFOakVsCcEZ0isz4qL1K_BXu-2kpPkNEP5AJnhcA9NQag_1W4zJMw>
+    <xmx:FTFOapI91p2uHJ-k-g87Wd5mnCmw1-XoqXmgEEEF2VJ6w9Qx5pA1gg>
+    <xmx:FTFOauLmcFJYYgUuCFXJvSYB0vpUQ1UQJ28c_SA8CX1I3xtN_c1Db7kp>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 8 Jul 2026 07:14:26 -0400 (EDT)
+ 8 Jul 2026 07:14:29 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
@@ -126,22 +126,22 @@ Cc: ljs@kernel.org,
 	kvm@vger.kernel.org,
 	kernel-team@meta.com,
 	kas@kernel.org
-Subject: [PATCH v10 03/15] mm: rename uffd-wp PTE accessors to uffd
-Date: Wed,  8 Jul 2026 12:14:04 +0100
-Message-ID: <20260708111417.173443-4-kirill@shutemov.name>
+Subject: [PATCH v10 04/15] userfaultfd: test uffd VMA flags through the vma_flags_t API
+Date: Wed,  8 Jul 2026 12:14:05 +0100
+Message-ID: <20260708111417.173443-5-kirill@shutemov.name>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260708111417.173443-1-kirill@shutemov.name>
 References: <20260708111417.173443-1-kirill@shutemov.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: sfu8u8ibhj3xeetcekio9eo7dg9i7mkq
+X-Rspamd-Queue-Id: 2202E180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B994D1C0007
-X-Stat-Signature: xi5j93tdxfh5x7ikzc73gshnyhmgcnuy
-X-HE-Tag: 1783509268-592582
-X-HE-Meta: U2FsdGVkX18W4H94y/MlfuR+wcobxtkfcl3d+vOKu8/yqc7hZCcTrgF/0oI/3RpzlYcrkP83i7VRD0ifgMcAuEcccXQ81+2BkAVRMyJsP7F3uBvqON+iFEklocMjHq+cIZ+ZJlXxThy8Gtza0G771XBw8hRdhDTRnJXfAxkoE8i1nQVxmCjZkt9Ab3XnSCcYgCPUjoaxB07TnIOjBKjXSmS75qLW3luGTEI/1SPx8sVsFfVpB3dsDrH6vxRG9a+OgkTineuEKsorXCnLJnUyk3pbrSQoijsVRYhs7ehjVH5JDiAETtSD4j2pN3yy1N2uTLbRm5O8Dh6F4xGcHhXK24rjNWTn/gDQaLmH7K2aC1vR+OD0uI93uV5qMTAZGYfbWXA9feOq40LLES5d9CIE1bs0LkV9VzhMAJtSEapHQwY8oQ4ipZ8D4UuMwsszI+MqiCVxB56HR5yxapqSkMW1C4qHIuwPPSGBzmS2CUD4FvLsA0ZB4GMff/8tpKarMKVFHOdqDT+BuNpEfokBZUBEloTb6eh9/8nTkd4qB6bF17LvSFqCmRiUzMTunDEHBcEGVdGwZudkDXLOaAB0Pc7vqyo//bB1uCiOjsYZM6GPRXks7pRnTR2W32lorUQA/PeOizQDzCBobPMsRblkF1d7T2ii4phjEzGQ4KmJUvGB4btKLa6RlaySR6f9/vOkPaA4PVkz3q6Qaz3NRMQgqUFS4+JdL3FpcE7nT1lIpYYid+DoNw0dr6vQmYGivBdjnQ2p1CLapShWeqeNGMc7FmdNA2uFvOKiwR9RmtqA1VLgUSXVCJ29ukTa7QTqNMS/UE7TyX6Wc86kYz3BeAu7SS7XjWuq/FnWV+T5b5t/R9N5FERcpGNpS4M2jWmDFfyA/ixocHUere0tsxN+zdyyXX9mcqXpDV7lP6H0z/0/z6a3XKBJ9QGvJDFpoiGisZLY9pKQQMsWnEJGqQHmmxIWhcM
- Ccv6bNrg
- weBBGyL8vF69W8sAnXhh95Hn5w9jQX6DH/bVNlGno9JOJmvvxmffw0WfywdnACYOMYrNEsVuxuGl61Ak6aK01glgWm3+WFrXh/qPhMErz3/NwRbS+f3HrQ1za2xttYslq6EMXvajw+rsI7sLIvc0SiMY9hhjL52stpaerrXFe4uUd7E5pBQJyysqOlhW67Vgm3/JT4l0v9Bt+fylnjLG0uE+5pkLvkz8T56IRIh9fMe5rWxZowht/rr8UvcuVmj23sRNyuVmLPrNIbcBc2FLSLRe4Breuciu6oC6yQUeugH1j+VfJ1Mu2WY1ZDKyphth6vtvFah5OujBLO+fME0AU8mHnI5RFkbUTbu8u1PQNQa5WbGwS+hEKzifxa5rPbLiRX4qYF35oWhnCMaY9n5ip7SRfwEIXXnisaGNZzMGmWctmZky9njXnyMjTZrYgiWGoD2+b9LggS3EEc5adHfm0416TG6A+MreiS4hc3T5nZhuiqDMz3ExIrxQsWQStJoJ1jn9aD5oLiRsdejcSEljpFoT35Q==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783509270-725456
+X-HE-Meta: U2FsdGVkX1/v6yANRdDzDy5uztx+blqpZvRyKFcnpXqAYOFrcz3f/eUaIfu+SjFuTbOACw5oJBc5r6WgjdxdVMkteOJh/nj2AsxfHPnN10jjQexcLftOlihqIM1yRoPDPNPq5T/yb/1tI8LvZt4L0J0Z5P+D94rVzJ631e96jIe5hwsSO/R8WQPVk+MUifKo4QNjkbz5ZgWQWFUqIricX15Bf85Z2x2CuJ/fyiybi6k2zCOWyNAzyQNs/lNyfuu08+7xyqT2HRos7GJ/I0jNVcdxi39VRYPbbhKm4opXAjfe1lBhOnGtxAw3jBz1wwJRUxhmKOuppzSW6h7uUVlCTajKbgZWOFzm6oO96CdbJHmq2NbGdt8fxEPX5XIwotztcdq6vl+v8ygBE3vpfU5m9Sny/HIe480CtMPNx4dcXU+aYOlfTRaxyhJs4WVyacZRtZnlj47FaqFDvnyXkWkhSD6UQi+NNQU9N7i2C00cfpDpFNl3mlyi+pfO6GXkspeY8IUytuQaoC1j8352lkpE/vrUU3T0UIJA9Dq3Rl7jNMpl/j+mhn02rFoU5qpvgINaGW83FCu/PabwUOOEbolrBv9ss1KwYtOUxdv9N5uwzlEoDKzs8cQGRqP9RK45jFAoB8NNk/MPKlfCUaDHEx2MGcE+tj99vi4eDzsEX1sL3MZkD1tKdsmMOqb/c1jsW2rf8xdTJQxKz0aPkKtcX79DwjdG09AkPuY91mIEy77hd6g7lwc7gNCqhCQm6sp6uJ6aRWG8XUptFMqJjD+upnP6kV5XJIU+ZcP0BfsuPjSIrBzTJYpGz4rVZeMbFIDcQCfcl8pBhcTMdUGrkypH6mYto8A+Uf0GsrDHNaCErwpcgz3ReRl+EvoZrSPXyYfAaJXxQlLupgho8c/qP8L6azbXlODmO4DYM0njxJvqZ5io0caakjvK5e+bcPwIDSM40EGj9/BMpKPSJNGOLj2XOBq
+ yhqwkUoy
+ kvQuGlmnsUK0R7X1kqZotnT+YH+73V2KIGH9GzNbcKEp7Rgo8NAE15/PHnwdh3UiPChYFWc2nBw94OyINZtEOkirTuR0nfqqafKKit8bj9ceyfRgkpX9bxlTKYbBBq73FTpXgK44GqD6V5B0tY0sxlWKd25gF/3zCKkTHKPuan62ZfEyR4xYOvzjZh9m/g4fI/DlT00Kp4OuJ8OL8KhSZE2dd/uOs+DfeG09vkdwZmpnhfU9QLMD1TBB3K2LQ4Xjlb46ufALO1UNSlNZByRH/Dfvtvf/vx8p9YbGAiDyYJiS3/J8nmsLtRFjwbsEbE2vT/uiy30h9PwzLipgLJU8/A/rs/EFIZdBH3iO0LhgrakmJL3Vh6/sx2ctG8wu7+WknHZSulBRcpWb8VJNQVZB3YiPxlBWgS3MNk5ZyFuFuivZOWI87mVNkaOh/TcoSEj7m5Rx2ogPBE3uo7cM1bGS95A6s5s1lMi8O5nlZJTWfvFV9jrViwFAbUZTpjJGoi6W8Lb+L7InfWa9DKMm7XPYbzwpNuuHh6CElS37Ego2PWVR4IAzOeBCbsx8Tirugtt9O4YbfegHjbXjlqke2mjbrjtoedvtvA8Bm3Imk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,1581 +151,77 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Userfaultfd RWP will reuse the uffd-wp PTE bit to mark access-tracking
-PTEs, alongside the write-protected ones it already marks. The bit's
-meaning now depends on the VMA flag (WP or RWP), not on its name.
+The uffd VMA-flag helpers read vma->vm_flags directly. Now that
+config-gated per-mode masks exist, switch them to the vma_flags_t
+accessor vma_test_any_mask(), which is the going-forward API and keeps a
+single place (the VMA_UFFD_* masks) that knows which modes are available
+on the current build.
 
-Rename the kernel-internal names that describe the bit:
+No functional change: vma_flags_t is in union with vm_flags, so the same
+bits are read, and the masks fold to the same code the open-coded
+vm_flags tests produced -- verified identical on gcc and clang, 32- and
+64-bit.
 
-  - pte/pmd/huge_pte accessors (and swap variants)
-  - pgtable_supports_uffd() capability query
-  - SCAN_PTE_UFFD khugepaged enum
-
-The ftrace string emitted by mm_khugepaged_scan_pmd for this enum is
-kept as "pte_uffd_wp" so existing trace-based tooling keeps matching.
-
-Pure mechanical rename -- no behavior change.
-
+Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-opus-4-6
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Assisted-by: Claude:claude-opus-4-8
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h   | 28 +++++++--------
- arch/riscv/include/asm/pgtable.h   | 38 ++++++++++----------
- arch/s390/include/asm/hugetlb.h    | 12 +++----
- arch/x86/include/asm/pgtable.h     | 24 ++++++-------
- fs/proc/task_mmu.c                 | 44 +++++++++++------------
- include/asm-generic/hugetlb.h      | 18 +++++-----
- include/asm-generic/pgtable_uffd.h | 32 ++++++++---------
- include/linux/leafops.h            |  4 +--
- include/linux/mm_inline.h          |  4 +--
- include/linux/swapops.h            |  4 +--
- include/linux/userfaultfd_k.h      | 14 ++++----
- include/trace/events/huge_memory.h |  2 +-
- mm/huge_memory.c                   | 58 +++++++++++++++---------------
- mm/hugetlb.c                       | 44 +++++++++++------------
- mm/internal.h                      |  4 +--
- mm/khugepaged.c                    | 22 ++++++------
- mm/memory.c                        | 34 +++++++++---------
- mm/migrate.c                       | 12 +++----
- mm/migrate_device.c                |  8 ++---
- mm/mprotect.c                      | 12 +++----
- mm/mremap.c                        |  4 +--
- mm/page_table_check.c              |  8 ++---
- mm/rmap.c                          | 16 ++++-----
- mm/swapfile.c                      |  4 +--
- mm/userfaultfd.c                   |  6 ++--
- 25 files changed, 228 insertions(+), 228 deletions(-)
+ include/linux/userfaultfd_k.h | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 0e490a2cf665..a2681d755358 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -341,17 +341,17 @@ static inline pmd_t pmd_mknoncont(pmd_t pmd)
- }
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--static inline int pte_uffd_wp(pte_t pte)
-+static inline int pte_uffd(pte_t pte)
- {
- 	return !!(pte_val(pte) & PTE_UFFD);
- }
- 
--static inline pte_t pte_mkuffd_wp(pte_t pte)
-+static inline pte_t pte_mkuffd(pte_t pte)
- {
- 	return pte_wrprotect(set_pte_bit(pte, __pgprot(PTE_UFFD)));
- }
- 
--static inline pte_t pte_clear_uffd_wp(pte_t pte)
-+static inline pte_t pte_clear_uffd(pte_t pte)
- {
- 	return clear_pte_bit(pte, __pgprot(PTE_UFFD));
- }
-@@ -537,17 +537,17 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
- }
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--static inline pte_t pte_swp_mkuffd_wp(pte_t pte)
-+static inline pte_t pte_swp_mkuffd(pte_t pte)
- {
- 	return set_pte_bit(pte, __pgprot(PTE_SWP_UFFD));
- }
- 
--static inline int pte_swp_uffd_wp(pte_t pte)
-+static inline int pte_swp_uffd(pte_t pte)
- {
- 	return !!(pte_val(pte) & PTE_SWP_UFFD);
- }
- 
--static inline pte_t pte_swp_clear_uffd_wp(pte_t pte)
-+static inline pte_t pte_swp_clear_uffd(pte_t pte)
- {
- 	return clear_pte_bit(pte, __pgprot(PTE_SWP_UFFD));
- }
-@@ -590,13 +590,13 @@ static inline int pmd_protnone(pmd_t pmd)
- #define pmd_mkvalid_k(pmd)	pte_pmd(pte_mkvalid_k(pmd_pte(pmd)))
- #define pmd_mkinvalid(pmd)	pte_pmd(pte_mkinvalid(pmd_pte(pmd)))
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--#define pmd_uffd_wp(pmd)	pte_uffd_wp(pmd_pte(pmd))
--#define pmd_mkuffd_wp(pmd)	pte_pmd(pte_mkuffd_wp(pmd_pte(pmd)))
--#define pmd_clear_uffd_wp(pmd)	pte_pmd(pte_clear_uffd_wp(pmd_pte(pmd)))
--#define pmd_swp_uffd_wp(pmd)	pte_swp_uffd_wp(pmd_pte(pmd))
--#define pmd_swp_mkuffd_wp(pmd)	pte_pmd(pte_swp_mkuffd_wp(pmd_pte(pmd)))
--#define pmd_swp_clear_uffd_wp(pmd) \
--				pte_pmd(pte_swp_clear_uffd_wp(pmd_pte(pmd)))
-+#define pmd_uffd(pmd)	pte_uffd(pmd_pte(pmd))
-+#define pmd_mkuffd(pmd)	pte_pmd(pte_mkuffd(pmd_pte(pmd)))
-+#define pmd_clear_uffd(pmd)	pte_pmd(pte_clear_uffd(pmd_pte(pmd)))
-+#define pmd_swp_uffd(pmd)	pte_swp_uffd(pmd_pte(pmd))
-+#define pmd_swp_mkuffd(pmd)	pte_pmd(pte_swp_mkuffd(pmd_pte(pmd)))
-+#define pmd_swp_clear_uffd(pmd) \
-+				pte_pmd(pte_swp_clear_uffd(pmd_pte(pmd)))
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
- #define pmd_write(pmd)		pte_write(pmd_pte(pmd))
-@@ -1512,7 +1512,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
-  * Encode and decode a swap entry:
-  *	bits 0-1:	present (must be zero)
-  *	bits 2:		remember PG_anon_exclusive
-- *	bit  3:		remember uffd-wp state
-+ *	bit  3:		remember uffd state
-  *	bits 6-10:	swap type
-  *	bit  11:	PTE_PRESENT_INVALID (must be zero)
-  *	bits 12-61:	swap offset
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index ae4307cbaed5..7f21742b2b6a 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -410,35 +410,35 @@ static inline pte_t pte_wrprotect(pte_t pte)
- }
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--#define pgtable_supports_uffd_wp()	\
-+#define pgtable_supports_uffd()	\
- 	riscv_has_extension_unlikely(RISCV_ISA_EXT_SVRSW60T59B)
- 
--static inline bool pte_uffd_wp(pte_t pte)
-+static inline bool pte_uffd(pte_t pte)
- {
- 	return !!(pte_val(pte) & _PAGE_UFFD);
- }
- 
--static inline pte_t pte_mkuffd_wp(pte_t pte)
-+static inline pte_t pte_mkuffd(pte_t pte)
- {
- 	return pte_wrprotect(__pte(pte_val(pte) | _PAGE_UFFD));
- }
- 
--static inline pte_t pte_clear_uffd_wp(pte_t pte)
-+static inline pte_t pte_clear_uffd(pte_t pte)
- {
- 	return __pte(pte_val(pte) & ~(_PAGE_UFFD));
- }
- 
--static inline bool pte_swp_uffd_wp(pte_t pte)
-+static inline bool pte_swp_uffd(pte_t pte)
- {
- 	return !!(pte_val(pte) & _PAGE_SWP_UFFD);
- }
- 
--static inline pte_t pte_swp_mkuffd_wp(pte_t pte)
-+static inline pte_t pte_swp_mkuffd(pte_t pte)
- {
- 	return __pte(pte_val(pte) | _PAGE_SWP_UFFD);
- }
- 
--static inline pte_t pte_swp_clear_uffd_wp(pte_t pte)
-+static inline pte_t pte_swp_clear_uffd(pte_t pte)
- {
- 	return __pte(pte_val(pte) & ~(_PAGE_SWP_UFFD));
- }
-@@ -896,34 +896,34 @@ static inline pud_t pud_mkspecial(pud_t pud)
- #endif
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--static inline bool pmd_uffd_wp(pmd_t pmd)
-+static inline bool pmd_uffd(pmd_t pmd)
- {
--	return pte_uffd_wp(pmd_pte(pmd));
-+	return pte_uffd(pmd_pte(pmd));
- }
- 
--static inline pmd_t pmd_mkuffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_mkuffd(pmd_t pmd)
- {
--	return pte_pmd(pte_mkuffd_wp(pmd_pte(pmd)));
-+	return pte_pmd(pte_mkuffd(pmd_pte(pmd)));
- }
- 
--static inline pmd_t pmd_clear_uffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_clear_uffd(pmd_t pmd)
- {
--	return pte_pmd(pte_clear_uffd_wp(pmd_pte(pmd)));
-+	return pte_pmd(pte_clear_uffd(pmd_pte(pmd)));
- }
- 
--static inline bool pmd_swp_uffd_wp(pmd_t pmd)
-+static inline bool pmd_swp_uffd(pmd_t pmd)
- {
--	return pte_swp_uffd_wp(pmd_pte(pmd));
-+	return pte_swp_uffd(pmd_pte(pmd));
- }
- 
--static inline pmd_t pmd_swp_mkuffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_swp_mkuffd(pmd_t pmd)
- {
--	return pte_pmd(pte_swp_mkuffd_wp(pmd_pte(pmd)));
-+	return pte_pmd(pte_swp_mkuffd(pmd_pte(pmd)));
- }
- 
--static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_swp_clear_uffd(pmd_t pmd)
- {
--	return pte_pmd(pte_swp_clear_uffd_wp(pmd_pte(pmd)));
-+	return pte_pmd(pte_swp_clear_uffd(pmd_pte(pmd)));
- }
- #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
- 
-diff --git a/arch/s390/include/asm/hugetlb.h b/arch/s390/include/asm/hugetlb.h
-index e33a5b587ee4..02821a7d9d91 100644
---- a/arch/s390/include/asm/hugetlb.h
-+++ b/arch/s390/include/asm/hugetlb.h
-@@ -77,20 +77,20 @@ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
- 	__set_huge_pte_at(mm, addr, ptep, pte_wrprotect(pte));
- }
- 
--#define __HAVE_ARCH_HUGE_PTE_MKUFFD_WP
--static inline pte_t huge_pte_mkuffd_wp(pte_t pte)
-+#define __HAVE_ARCH_HUGE_PTE_MKUFFD
-+static inline pte_t huge_pte_mkuffd(pte_t pte)
- {
- 	return pte;
- }
- 
--#define __HAVE_ARCH_HUGE_PTE_CLEAR_UFFD_WP
--static inline pte_t huge_pte_clear_uffd_wp(pte_t pte)
-+#define __HAVE_ARCH_HUGE_PTE_CLEAR_UFFD
-+static inline pte_t huge_pte_clear_uffd(pte_t pte)
- {
- 	return pte;
- }
- 
--#define __HAVE_ARCH_HUGE_PTE_UFFD_WP
--static inline int huge_pte_uffd_wp(pte_t pte)
-+#define __HAVE_ARCH_HUGE_PTE_UFFD
-+static inline int huge_pte_uffd(pte_t pte)
- {
- 	return 0;
- }
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 54432c308f26..8e0018fadd14 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -411,17 +411,17 @@ static inline pte_t pte_wrprotect(pte_t pte)
- }
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--static inline int pte_uffd_wp(pte_t pte)
-+static inline int pte_uffd(pte_t pte)
- {
- 	return pte_flags(pte) & _PAGE_UFFD;
- }
- 
--static inline pte_t pte_mkuffd_wp(pte_t pte)
-+static inline pte_t pte_mkuffd(pte_t pte)
- {
- 	return pte_wrprotect(pte_set_flags(pte, _PAGE_UFFD));
- }
- 
--static inline pte_t pte_clear_uffd_wp(pte_t pte)
-+static inline pte_t pte_clear_uffd(pte_t pte)
- {
- 	return pte_clear_flags(pte, _PAGE_UFFD);
- }
-@@ -526,17 +526,17 @@ static inline pmd_t pmd_wrprotect(pmd_t pmd)
- }
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--static inline int pmd_uffd_wp(pmd_t pmd)
-+static inline int pmd_uffd(pmd_t pmd)
- {
- 	return pmd_flags(pmd) & _PAGE_UFFD;
- }
- 
--static inline pmd_t pmd_mkuffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_mkuffd(pmd_t pmd)
- {
- 	return pmd_wrprotect(pmd_set_flags(pmd, _PAGE_UFFD));
- }
- 
--static inline pmd_t pmd_clear_uffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_clear_uffd(pmd_t pmd)
- {
- 	return pmd_clear_flags(pmd, _PAGE_UFFD);
- }
-@@ -1560,32 +1560,32 @@ static inline pmd_t pmd_swp_clear_soft_dirty(pmd_t pmd)
- #endif
- 
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--static inline pte_t pte_swp_mkuffd_wp(pte_t pte)
-+static inline pte_t pte_swp_mkuffd(pte_t pte)
- {
- 	return pte_set_flags(pte, _PAGE_SWP_UFFD);
- }
- 
--static inline int pte_swp_uffd_wp(pte_t pte)
-+static inline int pte_swp_uffd(pte_t pte)
- {
- 	return pte_flags(pte) & _PAGE_SWP_UFFD;
- }
- 
--static inline pte_t pte_swp_clear_uffd_wp(pte_t pte)
-+static inline pte_t pte_swp_clear_uffd(pte_t pte)
- {
- 	return pte_clear_flags(pte, _PAGE_SWP_UFFD);
- }
- 
--static inline pmd_t pmd_swp_mkuffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_swp_mkuffd(pmd_t pmd)
- {
- 	return pmd_set_flags(pmd, _PAGE_SWP_UFFD);
- }
- 
--static inline int pmd_swp_uffd_wp(pmd_t pmd)
-+static inline int pmd_swp_uffd(pmd_t pmd)
- {
- 	return pmd_flags(pmd) & _PAGE_SWP_UFFD;
- }
- 
--static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_swp_clear_uffd(pmd_t pmd)
- {
- 	return pmd_clear_flags(pmd, _PAGE_SWP_UFFD);
- }
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index e4302fcf0227..97b2ebc3fc48 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2035,14 +2035,14 @@ static pagemap_entry_t pte_to_pagemap_entry(struct pagemapread *pm,
- 		page = vm_normal_page(vma, addr, pte);
- 		if (pte_soft_dirty(pte))
- 			flags |= PM_SOFT_DIRTY;
--		if (pte_uffd_wp(pte))
-+		if (pte_uffd(pte))
- 			flags |= PM_UFFD_WP;
- 	} else {
- 		softleaf_t entry;
- 
- 		if (pte_swp_soft_dirty(pte))
- 			flags |= PM_SOFT_DIRTY;
--		if (pte_swp_uffd_wp(pte))
-+		if (pte_swp_uffd(pte))
- 			flags |= PM_UFFD_WP;
- 		entry = softleaf_from_pte(pte);
- 		if (pm->show_pfn) {
-@@ -2108,7 +2108,7 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
- 		flags |= PM_PRESENT;
- 		if (pmd_soft_dirty(pmd))
- 			flags |= PM_SOFT_DIRTY;
--		if (pmd_uffd_wp(pmd))
-+		if (pmd_uffd(pmd))
- 			flags |= PM_UFFD_WP;
- 		if (pm->show_pfn)
- 			frame = pmd_pfn(pmd) + idx;
-@@ -2127,7 +2127,7 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
- 		flags |= PM_SWAP;
- 		if (pmd_swp_soft_dirty(pmd))
- 			flags |= PM_SOFT_DIRTY;
--		if (pmd_swp_uffd_wp(pmd))
-+		if (pmd_swp_uffd(pmd))
- 			flags |= PM_UFFD_WP;
- 		if (softleaf_has_pfn(entry))
- 			page = softleaf_to_page(entry);
-@@ -2233,14 +2233,14 @@ static int pagemap_hugetlb_range(pte_t *ptep, unsigned long hmask,
- 		    !hugetlb_pmd_shared(ptep))
- 			flags |= PM_MMAP_EXCLUSIVE;
- 
--		if (huge_pte_uffd_wp(pte))
-+		if (huge_pte_uffd(pte))
- 			flags |= PM_UFFD_WP;
- 
- 		flags |= PM_PRESENT;
- 		if (pm->show_pfn)
- 			frame = pte_pfn(pte) +
- 				((addr & ~hmask) >> PAGE_SHIFT);
--	} else if (pte_swp_uffd_wp_any(pte)) {
-+	} else if (pte_swp_uffd_any(pte)) {
- 		flags |= PM_UFFD_WP;
- 	}
- 
-@@ -2451,7 +2451,7 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
- 
- 		categories = PAGE_IS_PRESENT;
- 
--		if (!pte_uffd_wp(pte))
-+		if (!pte_uffd(pte))
- 			categories |= PAGE_IS_WRITTEN;
- 
- 		if (p->masks_of_interest & PAGE_IS_FILE) {
-@@ -2469,7 +2469,7 @@ static unsigned long pagemap_page_category(struct pagemap_scan_private *p,
- 
- 		categories = PAGE_IS_SWAPPED;
- 
--		if (!pte_swp_uffd_wp_any(pte))
-+		if (!pte_swp_uffd_any(pte))
- 			categories |= PAGE_IS_WRITTEN;
- 
- 		entry = softleaf_from_pte(pte);
-@@ -2494,13 +2494,13 @@ static void make_uffd_wp_pte(struct vm_area_struct *vma,
- 		pte_t old_pte;
- 
- 		old_pte = ptep_modify_prot_start(vma, addr, pte);
--		ptent = pte_mkuffd_wp(old_pte);
-+		ptent = pte_mkuffd(old_pte);
- 		ptep_modify_prot_commit(vma, addr, pte, old_pte, ptent);
- 	} else if (pte_none(ptent)) {
- 		set_pte_at(vma->vm_mm, addr, pte,
- 			   make_pte_marker(PTE_MARKER_UFFD_WP));
- 	} else {
--		ptent = pte_swp_mkuffd_wp(ptent);
-+		ptent = pte_swp_mkuffd(ptent);
- 		set_pte_at(vma->vm_mm, addr, pte, ptent);
- 	}
- }
-@@ -2519,7 +2519,7 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
- 		struct page *page;
- 
- 		categories |= PAGE_IS_PRESENT;
--		if (!pmd_uffd_wp(pmd))
-+		if (!pmd_uffd(pmd))
- 			categories |= PAGE_IS_WRITTEN;
- 
- 		if (p->masks_of_interest & PAGE_IS_FILE) {
-@@ -2534,7 +2534,7 @@ static unsigned long pagemap_thp_category(struct pagemap_scan_private *p,
- 			categories |= PAGE_IS_SOFT_DIRTY;
- 	} else {
- 		categories |= PAGE_IS_SWAPPED;
--		if (!pmd_swp_uffd_wp(pmd))
-+		if (!pmd_swp_uffd(pmd))
- 			categories |= PAGE_IS_WRITTEN;
- 		if (pmd_swp_soft_dirty(pmd))
- 			categories |= PAGE_IS_SOFT_DIRTY;
-@@ -2558,10 +2558,10 @@ static void make_uffd_wp_pmd(struct vm_area_struct *vma,
- 
- 	if (pmd_present(pmd)) {
- 		old = pmdp_invalidate_ad(vma, addr, pmdp);
--		pmd = pmd_mkuffd_wp(old);
-+		pmd = pmd_mkuffd(old);
- 		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
- 	} else if (pmd_is_migration_entry(pmd)) {
--		pmd = pmd_swp_mkuffd_wp(pmd);
-+		pmd = pmd_swp_mkuffd(pmd);
- 		set_pmd_at(vma->vm_mm, addr, pmdp, pmd);
- 	}
- }
-@@ -2583,7 +2583,7 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
- 	if (pte_present(pte)) {
- 		categories |= PAGE_IS_PRESENT;
- 
--		if (!huge_pte_uffd_wp(pte))
-+		if (!huge_pte_uffd(pte))
- 			categories |= PAGE_IS_WRITTEN;
- 		if (!PageAnon(pte_page(pte)))
- 			categories |= PAGE_IS_FILE;
-@@ -2594,7 +2594,7 @@ static unsigned long pagemap_hugetlb_category(pte_t pte)
- 	} else {
- 		categories |= PAGE_IS_SWAPPED;
- 
--		if (!pte_swp_uffd_wp_any(pte))
-+		if (!pte_swp_uffd_any(pte))
- 			categories |= PAGE_IS_WRITTEN;
- 		if (pte_swp_soft_dirty(pte))
- 			categories |= PAGE_IS_SOFT_DIRTY;
-@@ -2622,12 +2622,12 @@ static void make_uffd_wp_huge_pte(struct vm_area_struct *vma,
- 
- 	if (softleaf_is_migration(entry)) {
- 		set_huge_pte_at(vma->vm_mm, addr, ptep,
--				pte_swp_mkuffd_wp(ptent), psize);
-+				pte_swp_mkuffd(ptent), psize);
- 	} else {
- 		pte_t old_pte, new_pte;
- 
- 		old_pte = huge_ptep_modify_prot_start(vma, addr, ptep);
--		new_pte = huge_pte_mkuffd_wp(old_pte);
-+		new_pte = huge_pte_mkuffd(old_pte);
- 		huge_ptep_modify_prot_commit(vma, addr, ptep, old_pte, new_pte);
- 	}
- }
-@@ -2860,8 +2860,8 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsigned long start,
- 		for (addr = start; addr != end; pte++, addr += PAGE_SIZE) {
- 			pte_t ptent = ptep_get(pte);
- 
--			if ((pte_present(ptent) && pte_uffd_wp(ptent)) ||
--			    pte_swp_uffd_wp_any(ptent))
-+			if ((pte_present(ptent) && pte_uffd(ptent)) ||
-+			    pte_swp_uffd_any(ptent))
- 				continue;
- 			make_uffd_wp_pte(vma, addr, pte, ptent);
- 			if (!flush_end)
-@@ -2878,8 +2878,8 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsigned long start,
- 			unsigned long next = addr + PAGE_SIZE;
- 			pte_t ptent = ptep_get(pte);
- 
--			if ((pte_present(ptent) && pte_uffd_wp(ptent)) ||
--			    pte_swp_uffd_wp_any(ptent))
-+			if ((pte_present(ptent) && pte_uffd(ptent)) ||
-+			    pte_swp_uffd_any(ptent))
- 				continue;
- 			ret = pagemap_scan_output(p->cur_vma_category | PAGE_IS_WRITTEN,
- 						  p, addr, &next);
-diff --git a/include/asm-generic/hugetlb.h b/include/asm-generic/hugetlb.h
-index e1a2e1b7c8e7..635c41cc3479 100644
---- a/include/asm-generic/hugetlb.h
-+++ b/include/asm-generic/hugetlb.h
-@@ -37,24 +37,24 @@ static inline pte_t huge_pte_modify(pte_t pte, pgprot_t newprot)
- 	return pte_modify(pte, newprot);
- }
- 
--#ifndef __HAVE_ARCH_HUGE_PTE_MKUFFD_WP
--static inline pte_t huge_pte_mkuffd_wp(pte_t pte)
-+#ifndef __HAVE_ARCH_HUGE_PTE_MKUFFD
-+static inline pte_t huge_pte_mkuffd(pte_t pte)
- {
--	return huge_pte_wrprotect(pte_mkuffd_wp(pte));
-+	return huge_pte_wrprotect(pte_mkuffd(pte));
- }
- #endif
- 
--#ifndef __HAVE_ARCH_HUGE_PTE_CLEAR_UFFD_WP
--static inline pte_t huge_pte_clear_uffd_wp(pte_t pte)
-+#ifndef __HAVE_ARCH_HUGE_PTE_CLEAR_UFFD
-+static inline pte_t huge_pte_clear_uffd(pte_t pte)
- {
--	return pte_clear_uffd_wp(pte);
-+	return pte_clear_uffd(pte);
- }
- #endif
- 
--#ifndef __HAVE_ARCH_HUGE_PTE_UFFD_WP
--static inline int huge_pte_uffd_wp(pte_t pte)
-+#ifndef __HAVE_ARCH_HUGE_PTE_UFFD
-+static inline int huge_pte_uffd(pte_t pte)
- {
--	return pte_uffd_wp(pte);
-+	return pte_uffd(pte);
- }
- #endif
- 
-diff --git a/include/asm-generic/pgtable_uffd.h b/include/asm-generic/pgtable_uffd.h
-index 0d85791efdf7..30e88fc1de2f 100644
---- a/include/asm-generic/pgtable_uffd.h
-+++ b/include/asm-generic/pgtable_uffd.h
-@@ -2,79 +2,79 @@
- #define _ASM_GENERIC_PGTABLE_UFFD_H
- 
- /*
-- * Some platforms can customize the uffd-wp bit, making it unavailable
-+ * Some platforms can customize the uffd PTE bit, making it unavailable
-  * even if the architecture provides the resource.
-  * Adding this API allows architectures to add their own checks for the
-  * devices on which the kernel is running.
-  * Note: When overriding it, please make sure the
-  * CONFIG_HAVE_ARCH_USERFAULTFD_WP is part of this macro.
-  */
--#ifndef pgtable_supports_uffd_wp
--#define pgtable_supports_uffd_wp()	IS_ENABLED(CONFIG_HAVE_ARCH_USERFAULTFD_WP)
-+#ifndef pgtable_supports_uffd
-+#define pgtable_supports_uffd()	IS_ENABLED(CONFIG_HAVE_ARCH_USERFAULTFD_WP)
- #endif
- 
- static inline bool uffd_supports_wp_marker(void)
- {
--	return pgtable_supports_uffd_wp() && IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP);
-+	return pgtable_supports_uffd() && IS_ENABLED(CONFIG_PTE_MARKER_UFFD_WP);
- }
- 
- #ifndef CONFIG_HAVE_ARCH_USERFAULTFD_WP
--static __always_inline int pte_uffd_wp(pte_t pte)
-+static __always_inline int pte_uffd(pte_t pte)
- {
- 	return 0;
- }
- 
--static __always_inline int pmd_uffd_wp(pmd_t pmd)
-+static __always_inline int pmd_uffd(pmd_t pmd)
- {
- 	return 0;
- }
- 
--static __always_inline pte_t pte_mkuffd_wp(pte_t pte)
-+static __always_inline pte_t pte_mkuffd(pte_t pte)
- {
- 	return pte;
- }
- 
--static __always_inline pmd_t pmd_mkuffd_wp(pmd_t pmd)
-+static __always_inline pmd_t pmd_mkuffd(pmd_t pmd)
- {
- 	return pmd;
- }
- 
--static __always_inline pte_t pte_clear_uffd_wp(pte_t pte)
-+static __always_inline pte_t pte_clear_uffd(pte_t pte)
- {
- 	return pte;
- }
- 
--static __always_inline pmd_t pmd_clear_uffd_wp(pmd_t pmd)
-+static __always_inline pmd_t pmd_clear_uffd(pmd_t pmd)
- {
- 	return pmd;
- }
- 
--static __always_inline pte_t pte_swp_mkuffd_wp(pte_t pte)
-+static __always_inline pte_t pte_swp_mkuffd(pte_t pte)
- {
- 	return pte;
- }
- 
--static __always_inline int pte_swp_uffd_wp(pte_t pte)
-+static __always_inline int pte_swp_uffd(pte_t pte)
- {
- 	return 0;
- }
- 
--static __always_inline pte_t pte_swp_clear_uffd_wp(pte_t pte)
-+static __always_inline pte_t pte_swp_clear_uffd(pte_t pte)
- {
- 	return pte;
- }
- 
--static inline pmd_t pmd_swp_mkuffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_swp_mkuffd(pmd_t pmd)
- {
- 	return pmd;
- }
- 
--static inline int pmd_swp_uffd_wp(pmd_t pmd)
-+static inline int pmd_swp_uffd(pmd_t pmd)
- {
- 	return 0;
- }
- 
--static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
-+static inline pmd_t pmd_swp_clear_uffd(pmd_t pmd)
- {
- 	return pmd;
- }
-diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-index ef84ac1cce19..4c1476ae3234 100644
---- a/include/linux/leafops.h
-+++ b/include/linux/leafops.h
-@@ -100,8 +100,8 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
- 
- 	if (pmd_swp_soft_dirty(pmd))
- 		pmd = pmd_swp_clear_soft_dirty(pmd);
--	if (pmd_swp_uffd_wp(pmd))
--		pmd = pmd_swp_clear_uffd_wp(pmd);
-+	if (pmd_swp_uffd(pmd))
-+		pmd = pmd_swp_clear_uffd(pmd);
- 	arch_entry = __pmd_to_swp_entry(pmd);
- 
- 	/* Temporary until swp_entry_t eliminated. */
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index efcddb9925ad..b5c4dc0f3fe3 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -600,14 +600,14 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
- 		return false;
- 
- 	/* A uffd-wp wr-protected normal pte */
--	if (unlikely(pte_present(pteval) && pte_uffd_wp(pteval)))
-+	if (unlikely(pte_present(pteval) && pte_uffd(pteval)))
- 		arm_uffd_pte = true;
- 
- 	/*
- 	 * A uffd-wp wr-protected swap pte.  Note: this should even cover an
- 	 * existing pte marker with uffd-wp bit set.
- 	 */
--	if (unlikely(pte_swp_uffd_wp_any(pteval)))
-+	if (unlikely(pte_swp_uffd_any(pteval)))
- 		arm_uffd_pte = true;
- 
- 	if (unlikely(arm_uffd_pte)) {
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 1125401b787e..c956bc445ee0 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -73,8 +73,8 @@ static inline pte_t pte_swp_clear_flags(pte_t pte)
- 		pte = pte_swp_clear_exclusive(pte);
- 	if (pte_swp_soft_dirty(pte))
- 		pte = pte_swp_clear_soft_dirty(pte);
--	if (pte_swp_uffd_wp(pte))
--		pte = pte_swp_clear_uffd_wp(pte);
-+	if (pte_swp_uffd(pte))
-+		pte = pte_swp_clear_uffd(pte);
- 	return pte;
- }
- 
 diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index 68edac4dcd78..658740df2978 100644
+index 658740df2978..c4f2cc6dfcf0 100644
 --- a/include/linux/userfaultfd_k.h
 +++ b/include/linux/userfaultfd_k.h
-@@ -211,13 +211,13 @@ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
- static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
- 				      pte_t pte)
+@@ -178,7 +178,8 @@ static inline bool is_mergeable_vm_userfaultfd_ctx(struct vm_area_struct *vma,
+  */
+ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
  {
--	return userfaultfd_wp(vma) && pte_uffd_wp(pte);
-+	return userfaultfd_wp(vma) && pte_uffd(pte);
- }
- 
- static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
- 					   pmd_t pmd)
- {
--	return userfaultfd_wp(vma) && pmd_uffd_wp(pmd);
-+	return userfaultfd_wp(vma) && pmd_uffd(pmd);
- }
- 
- static inline bool userfaultfd_armed(struct vm_area_struct *vma)
-@@ -272,10 +272,10 @@ static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
+-	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
++	return vma_test_any_mask(vma,
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
  }
  
  /*
-- * Returns true if this is a swap pte and was uffd-wp wr-protected in either
-- * forms (pte marker or a normal swap pte), false otherwise.
-+ * Returns true if this swap pte carries uffd-tracked state in either
-+ * form (pte marker or a normal swap pte), false otherwise.
+@@ -190,22 +191,23 @@ static inline bool uffd_disable_huge_pmd_share(struct vm_area_struct *vma)
   */
--static inline bool pte_swp_uffd_wp_any(pte_t pte)
-+static inline bool pte_swp_uffd_any(pte_t pte)
+ static inline bool uffd_disable_fault_around(struct vm_area_struct *vma)
  {
- 	if (!uffd_supports_wp_marker())
- 		return false;
-@@ -283,7 +283,7 @@ static inline bool pte_swp_uffd_wp_any(pte_t pte)
- 	if (pte_present(pte))
- 		return false;
+-	return vma->vm_flags & (VM_UFFD_WP | VM_UFFD_MINOR);
++	return vma_test_any_mask(vma,
++		mk_vma_flags_from_masks(VMA_UFFD_WP, VMA_UFFD_MINOR));
+ }
  
--	if (pte_swp_uffd_wp(pte))
-+	if (pte_swp_uffd(pte))
- 		return true;
- 
- 	if (pte_is_uffd_wp_marker(pte))
-@@ -424,7 +424,7 @@ static inline bool userfaultfd_wp_use_markers(struct vm_area_struct *vma)
-  * Returns true if this is a swap pte and was uffd-wp wr-protected in either
-  * forms (pte marker or a normal swap pte), false otherwise.
-  */
--static inline bool pte_swp_uffd_wp_any(pte_t pte)
-+static inline bool pte_swp_uffd_any(pte_t pte)
+ static inline bool userfaultfd_missing(struct vm_area_struct *vma)
  {
- 	return false;
- }
-diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-index 291fae364c62..5a48c5406cce 100644
---- a/include/trace/events/huge_memory.h
-+++ b/include/trace/events/huge_memory.h
-@@ -16,7 +16,7 @@
- 	EM( SCAN_EXCEED_SWAP_PTE,	"exceed_swap_pte")		\
- 	EM( SCAN_EXCEED_SHARED_PTE,	"exceed_shared_pte")		\
- 	EM( SCAN_PTE_NON_PRESENT,	"pte_non_present")		\
--	EM( SCAN_PTE_UFFD_WP,		"pte_uffd_wp")			\
-+	EM( SCAN_PTE_UFFD,		"pte_uffd_wp")			\
- 	EM( SCAN_PTE_MAPPED_HUGEPAGE,	"pte_mapped_hugepage")		\
- 	EM( SCAN_LACK_REFERENCED_PAGE,	"lack_referenced_page")		\
- 	EM( SCAN_PAGE_NULL,		"page_null")			\
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index ea0445d6c17f..b9aee7248c17 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1822,8 +1822,8 @@ static void copy_huge_non_present_pmd(
- 		pmd = softleaf_to_pmd(entry);
- 		if (pmd_swp_soft_dirty(*src_pmd))
- 			pmd = pmd_swp_mksoft_dirty(pmd);
--		if (pmd_swp_uffd_wp(*src_pmd))
--			pmd = pmd_swp_mkuffd_wp(pmd);
-+		if (pmd_swp_uffd(*src_pmd))
-+			pmd = pmd_swp_mkuffd(pmd);
- 		set_pmd_at(src_mm, addr, src_pmd, pmd);
- 	} else if (softleaf_is_device_private(entry)) {
- 		/*
-@@ -1836,8 +1836,8 @@ static void copy_huge_non_present_pmd(
- 
- 			if (pmd_swp_soft_dirty(*src_pmd))
- 				pmd = pmd_swp_mksoft_dirty(pmd);
--			if (pmd_swp_uffd_wp(*src_pmd))
--				pmd = pmd_swp_mkuffd_wp(pmd);
-+			if (pmd_swp_uffd(*src_pmd))
-+				pmd = pmd_swp_mkuffd(pmd);
- 			set_pmd_at(src_mm, addr, src_pmd, pmd);
- 		}
- 
-@@ -1857,7 +1857,7 @@ static void copy_huge_non_present_pmd(
- 	mm_inc_nr_ptes(dst_mm);
- 	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
- 	if (!userfaultfd_wp(dst_vma))
--		pmd = pmd_swp_clear_uffd_wp(pmd);
-+		pmd = pmd_swp_clear_uffd(pmd);
- 	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
+-	return vma->vm_flags & VM_UFFD_MISSING;
++	return vma_test_any_mask(vma, VMA_UFFD_MISSING);
  }
  
-@@ -1953,7 +1953,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
- 	pmdp_set_wrprotect(src_mm, addr, src_pmd);
- 	if (!userfaultfd_wp(dst_vma))
--		pmd = pmd_clear_uffd_wp(pmd);
-+		pmd = pmd_clear_uffd(pmd);
- 	pmd = pmd_wrprotect(pmd);
- set_pmd:
- 	pmd = pmd_mkold(pmd);
-@@ -2494,9 +2494,9 @@ static pmd_t clear_uffd_wp_pmd(pmd_t pmd)
- 	if (pmd_none(pmd))
- 		return pmd;
- 	if (pmd_present(pmd))
--		pmd = pmd_clear_uffd_wp(pmd);
-+		pmd = pmd_clear_uffd(pmd);
- 	else
--		pmd = pmd_swp_clear_uffd_wp(pmd);
-+		pmd = pmd_swp_clear_uffd(pmd);
- 
- 	return pmd;
- }
-@@ -2577,16 +2577,16 @@ static void change_non_present_huge_pmd(struct mm_struct *mm,
- 	} else if (softleaf_is_device_private_write(entry)) {
- 		entry = make_readable_device_private_entry(swp_offset(entry));
- 		newpmd = softleaf_to_pmd(entry);
--		if (pmd_swp_uffd_wp(*pmd))
--			newpmd = pmd_swp_mkuffd_wp(newpmd);
-+		if (pmd_swp_uffd(*pmd))
-+			newpmd = pmd_swp_mkuffd(newpmd);
- 	} else {
- 		newpmd = *pmd;
- 	}
- 
- 	if (uffd_wp)
--		newpmd = pmd_swp_mkuffd_wp(newpmd);
-+		newpmd = pmd_swp_mkuffd(newpmd);
- 	else if (uffd_wp_resolve)
--		newpmd = pmd_swp_clear_uffd_wp(newpmd);
-+		newpmd = pmd_swp_clear_uffd(newpmd);
- 	if (!pmd_same(*pmd, newpmd))
- 		set_pmd_at(mm, addr, pmd, newpmd);
- }
-@@ -2667,14 +2667,14 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 
- 	entry = pmd_modify(oldpmd, newprot);
- 	if (uffd_wp)
--		entry = pmd_mkuffd_wp(entry);
-+		entry = pmd_mkuffd(entry);
- 	else if (uffd_wp_resolve)
- 		/*
- 		 * Leave the write bit to be handled by PF interrupt
- 		 * handler, then things like COW could be properly
- 		 * handled.
- 		 */
--		entry = pmd_clear_uffd_wp(entry);
-+		entry = pmd_clear_uffd(entry);
- 
- 	/* See change_pte_range(). */
- 	if ((cp_flags & MM_CP_TRY_CHANGE_WRITABLE) && !pmd_write(entry) &&
-@@ -3017,8 +3017,8 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
- 
- 		entry = pfn_pte(zero_pfn(addr), vma->vm_page_prot);
- 		entry = pte_mkspecial(entry);
--		if (pmd_uffd_wp(old_pmd))
--			entry = pte_mkuffd_wp(entry);
-+		if (pmd_uffd(old_pmd))
-+			entry = pte_mkuffd(entry);
- 		VM_BUG_ON(!pte_none(ptep_get(pte)));
- 		set_pte_at(mm, addr, pte, entry);
- 		pte++;
-@@ -3104,7 +3104,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		folio = page_folio(page);
- 
- 		soft_dirty = pmd_swp_soft_dirty(old_pmd);
--		uffd_wp = pmd_swp_uffd_wp(old_pmd);
-+		uffd_wp = pmd_swp_uffd(old_pmd);
- 
- 		write = softleaf_is_migration_write(entry);
- 		if (PageAnon(page))
-@@ -3120,7 +3120,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		folio = page_folio(page);
- 
- 		soft_dirty = pmd_swp_soft_dirty(old_pmd);
--		uffd_wp = pmd_swp_uffd_wp(old_pmd);
-+		uffd_wp = pmd_swp_uffd(old_pmd);
- 
- 		write = softleaf_is_device_private_write(entry);
- 		anon_exclusive = PageAnonExclusive(page);
-@@ -3177,7 +3177,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		write = pmd_write(old_pmd);
- 		young = pmd_young(old_pmd);
- 		soft_dirty = pmd_soft_dirty(old_pmd);
--		uffd_wp = pmd_uffd_wp(old_pmd);
-+		uffd_wp = pmd_uffd(old_pmd);
- 
- 		VM_WARN_ON_FOLIO(!folio_ref_count(folio), folio);
- 		VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
-@@ -3248,7 +3248,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 			if (soft_dirty)
- 				entry = pte_swp_mksoft_dirty(entry);
- 			if (uffd_wp)
--				entry = pte_swp_mkuffd_wp(entry);
-+				entry = pte_swp_mkuffd(entry);
- 			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
- 			set_pte_at(mm, addr, pte + i, entry);
- 		}
-@@ -3275,7 +3275,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 			if (soft_dirty)
- 				entry = pte_swp_mksoft_dirty(entry);
- 			if (uffd_wp)
--				entry = pte_swp_mkuffd_wp(entry);
-+				entry = pte_swp_mkuffd(entry);
- 			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
- 			set_pte_at(mm, addr, pte + i, entry);
- 		}
-@@ -3293,7 +3293,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- 		if (soft_dirty)
- 			entry = pte_mksoft_dirty(entry);
- 		if (uffd_wp)
--			entry = pte_mkuffd_wp(entry);
-+			entry = pte_mkuffd(entry);
- 
- 		for (i = 0; i < HPAGE_PMD_NR; i++)
- 			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
-@@ -4899,7 +4899,7 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 
- 		writable = pmd_write(pmdval);
- 		softdirty = pmd_soft_dirty(pmdval);
--		uffd_wp = pmd_uffd_wp(pmdval);
-+		uffd_wp = pmd_uffd(pmdval);
- 	} else {
- 		softleaf_t old_entry;
- 
-@@ -4908,7 +4908,7 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 
- 		writable = softleaf_is_device_private_write(old_entry);
- 		softdirty = pmd_swp_soft_dirty(pmdval);
--		uffd_wp = pmd_swp_uffd_wp(pmdval);
-+		uffd_wp = pmd_swp_uffd(pmdval);
- 	}
- 
- 	/* See folio_try_share_anon_rmap_pmd(): invalidate PMD first. */
-@@ -4939,7 +4939,7 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
- 	if (softdirty)
- 		pmdswp = pmd_swp_mksoft_dirty(pmdswp);
- 	if (uffd_wp)
--		pmdswp = pmd_swp_mkuffd_wp(pmdswp);
-+		pmdswp = pmd_swp_mkuffd(pmdswp);
- 	set_pmd_at(mm, address, pvmw->pmd, pmdswp);
- 
- 	/* Migration entry installed: cleanup rmap, folio. */
-@@ -4971,8 +4971,8 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
- 		pmde = pmd_mksoft_dirty(pmde);
- 	if (softleaf_is_migration_write(entry))
- 		pmde = pmd_mkwrite(pmde, vma);
--	if (pmd_swp_uffd_wp(*pvmw->pmd))
--		pmde = pmd_mkuffd_wp(pmde);
-+	if (pmd_swp_uffd(*pvmw->pmd))
-+		pmde = pmd_mkuffd(pmde);
- 	if (!softleaf_is_migration_young(entry))
- 		pmde = pmd_mkold(pmde);
- 	/* NOTE: this may contain setting soft-dirty on some archs */
-@@ -4992,8 +4992,8 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
- 
- 		if (pmd_swp_soft_dirty(*pvmw->pmd))
- 			pmde = pmd_swp_mksoft_dirty(pmde);
--		if (pmd_swp_uffd_wp(*pvmw->pmd))
--			pmde = pmd_swp_mkuffd_wp(pmde);
-+		if (pmd_swp_uffd(*pvmw->pmd))
-+			pmde = pmd_swp_mkuffd(pmde);
- 	}
- 
- 	if (folio_test_anon(folio)) {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index c1823dce5a7c..53a70ee63957 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4883,8 +4883,8 @@ hugetlb_install_folio(struct vm_area_struct *vma, pte_t *ptep, unsigned long add
- 
- 	__folio_mark_uptodate(new_folio);
- 	hugetlb_add_new_anon_rmap(new_folio, vma, addr);
--	if (userfaultfd_wp(vma) && huge_pte_uffd_wp(old))
--		newpte = huge_pte_mkuffd_wp(newpte);
-+	if (userfaultfd_wp(vma) && huge_pte_uffd(old))
-+		newpte = huge_pte_mkuffd(newpte);
- 	set_huge_pte_at(vma->vm_mm, addr, ptep, newpte, sz);
- 	hugetlb_count_add(pages_per_huge_page(hstate_vma(vma)), vma->vm_mm);
- 	folio_set_hugetlb_migratable(new_folio);
-@@ -4963,7 +4963,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 			 */
- 			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
- 		} else if (unlikely(softleaf_is_migration(softleaf))) {
--			bool uffd_wp = pte_swp_uffd_wp(entry);
-+			bool uffd = pte_swp_uffd(entry);
- 
- 			if (!softleaf_is_migration_read(softleaf) && cow) {
- 				/*
-@@ -4973,12 +4973,12 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 				softleaf = make_readable_migration_entry(
- 							swp_offset(softleaf));
- 				entry = swp_entry_to_pte(softleaf);
--				if (userfaultfd_wp(src_vma) && uffd_wp)
--					entry = pte_swp_mkuffd_wp(entry);
-+				if (userfaultfd_wp(src_vma) && uffd)
-+					entry = pte_swp_mkuffd(entry);
- 				set_huge_pte_at(src, addr, src_pte, entry, sz);
- 			}
- 			if (!userfaultfd_wp(dst_vma))
--				entry = pte_swp_clear_uffd_wp(entry);
-+				entry = pte_swp_clear_uffd(entry);
- 			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
- 		} else if (unlikely(pte_is_marker(entry))) {
- 			const pte_marker marker = copy_pte_marker(softleaf, dst_vma);
-@@ -5055,7 +5055,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
- 			}
- 
- 			if (!userfaultfd_wp(dst_vma))
--				entry = huge_pte_clear_uffd_wp(entry);
-+				entry = huge_pte_clear_uffd(entry);
- 
- 			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
- 			hugetlb_count_add(npages, dst);
-@@ -5103,9 +5103,9 @@ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
- 	} else {
- 		if (need_clear_uffd_wp) {
- 			if (pte_present(pte))
--				pte = huge_pte_clear_uffd_wp(pte);
-+				pte = huge_pte_clear_uffd(pte);
- 			else
--				pte = pte_swp_clear_uffd_wp(pte);
-+				pte = pte_swp_clear_uffd(pte);
- 		}
- 		set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
- 	}
-@@ -5239,7 +5239,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 			 * drop the uffd-wp bit in this zap, then replace the
- 			 * pte with a marker.
- 			 */
--			if (pte_swp_uffd_wp_any(pte) &&
-+			if (pte_swp_uffd_any(pte) &&
- 			    !(zap_flags & ZAP_FLAG_DROP_MARKER))
- 				set_huge_pte_at(mm, address, ptep,
- 						make_pte_marker(PTE_MARKER_UFFD_WP),
-@@ -5275,7 +5275,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		if (huge_pte_dirty(pte))
- 			folio_mark_dirty(folio);
- 		/* Leave a uffd-wp pte marker if needed */
--		if (huge_pte_uffd_wp(pte) &&
-+		if (huge_pte_uffd(pte) &&
- 		    !(zap_flags & ZAP_FLAG_DROP_MARKER))
- 			set_huge_pte_at(mm, address, ptep,
- 					make_pte_marker(PTE_MARKER_UFFD_WP),
-@@ -5479,7 +5479,7 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
- 	 * can trigger this, because hugetlb_fault() will always resolve
- 	 * uffd-wp bit first.
- 	 */
--	if (!unshare && huge_pte_uffd_wp(pte))
-+	if (!unshare && huge_pte_uffd(pte))
- 		return 0;
- 
- 	/* Let's take out MAP_SHARED mappings first. */
-@@ -5623,8 +5623,8 @@ static vm_fault_t hugetlb_wp(struct vm_fault *vmf)
- 		huge_ptep_clear_flush(vma, vmf->address, vmf->pte);
- 		hugetlb_remove_rmap(old_folio);
- 		hugetlb_add_new_anon_rmap(new_folio, vma, vmf->address);
--		if (huge_pte_uffd_wp(pte))
--			newpte = huge_pte_mkuffd_wp(newpte);
-+		if (huge_pte_uffd(pte))
-+			newpte = huge_pte_mkuffd(newpte);
- 		set_huge_pte_at(mm, vmf->address, vmf->pte, newpte,
- 				huge_page_size(h));
- 		folio_set_hugetlb_migratable(new_folio);
-@@ -5902,7 +5902,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
- 	 * if populated.
- 	 */
- 	if (unlikely(pte_is_uffd_wp_marker(vmf->orig_pte)))
--		new_pte = huge_pte_mkuffd_wp(new_pte);
-+		new_pte = huge_pte_mkuffd(new_pte);
- 	set_huge_pte_at(mm, vmf->address, vmf->pte, new_pte, huge_page_size(h));
- 
- 	hugetlb_count_add(pages_per_huge_page(h), mm);
-@@ -6100,7 +6100,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 		goto out_ptl;
- 
- 	/* Handle userfault-wp first, before trying to lock more pages */
--	if (userfaultfd_wp(vma) && huge_pte_uffd_wp(huge_ptep_get(mm, vmf.address, vmf.pte)) &&
-+	if (userfaultfd_wp(vma) && huge_pte_uffd(huge_ptep_get(mm, vmf.address, vmf.pte)) &&
- 	    (flags & FAULT_FLAG_WRITE) && !huge_pte_write(vmf.orig_pte)) {
- 		if (!userfaultfd_wp_async(vma)) {
- 			spin_unlock(vmf.ptl);
-@@ -6109,7 +6109,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
- 			return handle_userfault(&vmf, VM_UFFD_WP);
- 		}
- 
--		vmf.orig_pte = huge_pte_clear_uffd_wp(vmf.orig_pte);
-+		vmf.orig_pte = huge_pte_clear_uffd(vmf.orig_pte);
- 		set_huge_pte_at(mm, vmf.address, vmf.pte, vmf.orig_pte,
- 				huge_page_size(hstate_vma(vma)));
- 		/* Fallthrough to CoW */
-@@ -6394,7 +6394,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 	_dst_pte = pte_mkyoung(_dst_pte);
- 
- 	if (wp_enabled)
--		_dst_pte = huge_pte_mkuffd_wp(_dst_pte);
-+		_dst_pte = huge_pte_mkuffd(_dst_pte);
- 
- 	set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte, size);
- 
-@@ -6518,9 +6518,9 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 			}
- 
- 			if (uffd_wp)
--				newpte = pte_swp_mkuffd_wp(newpte);
-+				newpte = pte_swp_mkuffd(newpte);
- 			else if (uffd_wp_resolve)
--				newpte = pte_swp_clear_uffd_wp(newpte);
-+				newpte = pte_swp_clear_uffd(newpte);
- 			if (!pte_same(pte, newpte))
- 				set_huge_pte_at(mm, address, ptep, newpte, psize);
- 		} else if (unlikely(pte_is_marker(pte))) {
-@@ -6541,9 +6541,9 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 			pte = huge_pte_modify(old_pte, newprot);
- 			pte = arch_make_huge_pte(pte, shift, vma->vm_flags);
- 			if (uffd_wp)
--				pte = huge_pte_mkuffd_wp(pte);
-+				pte = huge_pte_mkuffd(pte);
- 			else if (uffd_wp_resolve)
--				pte = huge_pte_clear_uffd_wp(pte);
-+				pte = huge_pte_clear_uffd(pte);
- 			huge_ptep_modify_prot_commit(vma, address, ptep, old_pte, pte);
- 			pages++;
- 			tlb_remove_huge_tlb_entry(h, &tlb, ptep, address);
-diff --git a/mm/internal.h b/mm/internal.h
-index 398741a8ab09..d51f485e41d2 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -419,8 +419,8 @@ static inline pte_t pte_move_swp_offset(pte_t pte, long delta)
- 		new = pte_swp_mksoft_dirty(new);
- 	if (pte_swp_exclusive(pte))
- 		new = pte_swp_mkexclusive(new);
--	if (pte_swp_uffd_wp(pte))
--		new = pte_swp_mkuffd_wp(new);
-+	if (pte_swp_uffd(pte))
-+		new = pte_swp_mkuffd(new);
- 
- 	return new;
- }
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 58e14d1543ec..0b5fb0d0a0c1 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -38,7 +38,7 @@ enum scan_result {
- 	SCAN_EXCEED_SWAP_PTE,
- 	SCAN_EXCEED_SHARED_PTE,
- 	SCAN_PTE_NON_PRESENT,
--	SCAN_PTE_UFFD_WP,
-+	SCAN_PTE_UFFD,
- 	SCAN_PTE_MAPPED_HUGEPAGE,
- 	SCAN_LACK_REFERENCED_PAGE,
- 	SCAN_PAGE_NULL,
-@@ -696,8 +696,8 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 			result = SCAN_PTE_NON_PRESENT;
- 			goto out;
- 		}
--		if (pte_uffd_wp(pteval)) {
--			result = SCAN_PTE_UFFD_WP;
-+		if (pte_uffd(pteval)) {
-+			result = SCAN_PTE_UFFD;
- 			goto out;
- 		}
- 		page = vm_normal_page(vma, addr, pteval);
-@@ -1544,7 +1544,7 @@ static enum scan_result mthp_collapse(struct mm_struct *mm,
- 			case SCAN_PAGE_NULL:
- 			case SCAN_DEL_PAGE_LRU:
- 			case SCAN_PTE_NON_PRESENT:
--			case SCAN_PTE_UFFD_WP:
-+			case SCAN_PTE_UFFD:
- 			case SCAN_PAGE_LAZYFREE:
- 				last_result = ret;
- 				goto next_order;
-@@ -1665,15 +1665,15 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 			/*
- 			 * Always be strict with uffd-wp
- 			 * enabled swap entries.  Please see
--			 * comment below for pte_uffd_wp().
-+			 * comment below for pte_uffd().
- 			 */
--			if (pte_swp_uffd_wp_any(pteval)) {
--				result = SCAN_PTE_UFFD_WP;
-+			if (pte_swp_uffd_any(pteval)) {
-+				result = SCAN_PTE_UFFD;
- 				goto out_unmap;
- 			}
- 			continue;
- 		}
--		if (pte_uffd_wp(pteval)) {
-+		if (pte_uffd(pteval)) {
- 			/*
- 			 * Don't collapse the page if any of the small
- 			 * PTEs are armed with uffd write protection.
-@@ -1683,7 +1683,7 @@ static enum scan_result collapse_scan_pmd(struct mm_struct *mm,
- 			 * userfault messages that falls outside of
- 			 * the registered range.  So, just be simple.
- 			 */
--			result = SCAN_PTE_UFFD_WP;
-+			result = SCAN_PTE_UFFD;
- 			goto out_unmap;
- 		}
- 
-@@ -1895,7 +1895,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 
- 	/* Keep pmd pgtable for uffd-wp; see comment in retract_page_tables() */
- 	if (userfaultfd_wp(vma))
--		return SCAN_PTE_UFFD_WP;
-+		return SCAN_PTE_UFFD;
- 
- 	folio = filemap_lock_folio(vma->vm_file->f_mapping,
- 			       linear_page_index(vma, haddr));
-@@ -3242,7 +3242,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 		/* Whitelisted set of results where continuing OK */
- 		case SCAN_NO_PTE_TABLE:
- 		case SCAN_PTE_NON_PRESENT:
--		case SCAN_PTE_UFFD_WP:
-+		case SCAN_PTE_UFFD:
- 		case SCAN_LACK_REFERENCED_PAGE:
- 		case SCAN_PAGE_NULL:
- 		case SCAN_PAGE_COUNT:
-diff --git a/mm/memory.c b/mm/memory.c
-index 5689b7cff76c..45b98b5601f3 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -893,8 +893,8 @@ static void restore_exclusive_pte(struct vm_area_struct *vma,
- 	if (pte_swp_soft_dirty(orig_pte))
- 		pte = pte_mksoft_dirty(pte);
- 
--	if (pte_swp_uffd_wp(orig_pte))
--		pte = pte_mkuffd_wp(pte);
-+	if (pte_swp_uffd(orig_pte))
-+		pte = pte_mkuffd(pte);
- 
- 	if ((vma->vm_flags & VM_WRITE) &&
- 	    can_change_pte_writable(vma, address, pte)) {
-@@ -977,8 +977,8 @@ copy_nonpresent_pte(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 			pte = softleaf_to_pte(entry);
- 			if (pte_swp_soft_dirty(orig_pte))
- 				pte = pte_swp_mksoft_dirty(pte);
--			if (pte_swp_uffd_wp(orig_pte))
--				pte = pte_swp_mkuffd_wp(pte);
-+			if (pte_swp_uffd(orig_pte))
-+				pte = pte_swp_mkuffd(pte);
- 			set_pte_at(src_mm, addr, src_pte, pte);
- 		}
- 	} else if (softleaf_is_device_private(entry)) {
-@@ -1011,8 +1011,8 @@ copy_nonpresent_pte(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 			entry = make_readable_device_private_entry(
- 							swp_offset(entry));
- 			pte = swp_entry_to_pte(entry);
--			if (pte_swp_uffd_wp(orig_pte))
--				pte = pte_swp_mkuffd_wp(pte);
-+			if (pte_swp_uffd(orig_pte))
-+				pte = pte_swp_mkuffd(pte);
- 			set_pte_at(src_mm, addr, src_pte, pte);
- 		}
- 	} else if (softleaf_is_device_exclusive(entry)) {
-@@ -1035,7 +1035,7 @@ copy_nonpresent_pte(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		return 0;
- 	}
- 	if (!userfaultfd_wp(dst_vma))
--		pte = pte_swp_clear_uffd_wp(pte);
-+		pte = pte_swp_clear_uffd(pte);
- 	set_pte_at(dst_mm, addr, dst_pte, pte);
- 	return 0;
- }
-@@ -1083,7 +1083,7 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
- 	pte = maybe_mkwrite(pte_mkdirty(pte), dst_vma);
- 	if (userfaultfd_pte_wp(dst_vma, ptep_get(src_pte)))
- 		/* Uffd-wp needs to be delivered to dest pte as well */
--		pte = pte_mkuffd_wp(pte);
-+		pte = pte_mkuffd(pte);
- 	set_pte_at(dst_vma->vm_mm, addr, dst_pte, pte);
- 	return 0;
- }
-@@ -1106,7 +1106,7 @@ static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
- 	pte = pte_mkold(pte);
- 
- 	if (!userfaultfd_wp(dst_vma))
--		pte = pte_clear_uffd_wp(pte);
-+		pte = pte_clear_uffd(pte);
- 
- 	set_ptes(dst_vma->vm_mm, addr, dst_pte, pte, nr);
- }
-@@ -3918,8 +3918,8 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
- 		if (unlikely(unshare)) {
- 			if (pte_soft_dirty(vmf->orig_pte))
- 				entry = pte_mksoft_dirty(entry);
--			if (pte_uffd_wp(vmf->orig_pte))
--				entry = pte_mkuffd_wp(entry);
-+			if (pte_uffd(vmf->orig_pte))
-+				entry = pte_mkuffd(entry);
- 		} else {
- 			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
- 		}
-@@ -4258,7 +4258,7 @@ static vm_fault_t do_wp_page(struct vm_fault *vmf)
- 			 * etc.) because we're only removing the uffd-wp bit,
- 			 * which is completely invisible to the user.
- 			 */
--			pte = pte_clear_uffd_wp(ptep_get(vmf->pte));
-+			pte = pte_clear_uffd(ptep_get(vmf->pte));
- 
- 			set_pte_at(vma->vm_mm, vmf->address, vmf->pte, pte);
- 			/*
-@@ -5023,8 +5023,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 	pte = mk_pte(page, vma->vm_page_prot);
- 	if (pte_swp_soft_dirty(vmf->orig_pte))
- 		pte = pte_mksoft_dirty(pte);
--	if (pte_swp_uffd_wp(vmf->orig_pte))
--		pte = pte_mkuffd_wp(pte);
-+	if (pte_swp_uffd(vmf->orig_pte))
-+		pte = pte_mkuffd(pte);
- 
- 	/*
- 	 * Similar logic as in do_wp_page(); however, optimize for pages that
-@@ -5239,7 +5239,7 @@ void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
- 	if (vma->vm_flags & VM_WRITE)
- 		entry = pte_mkwrite(pte_mkdirty(entry), vma);
- 	if (uffd_wp)
--		entry = pte_mkuffd_wp(entry);
-+		entry = pte_mkuffd(entry);
- 
- 	folio_ref_add(folio, nr_pages - 1);
- 	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
-@@ -5306,7 +5306,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
- 			return handle_userfault(vmf, VM_UFFD_MISSING);
- 		}
- 		if (vmf_orig_pte_uffd_wp(vmf))
--			entry = pte_mkuffd_wp(entry);
-+			entry = pte_mkuffd(entry);
- 		set_pte_at(vma->vm_mm, addr, vmf->pte, entry);
- 
- 		/* No need to invalidate - it was non-present before */
-@@ -5556,7 +5556,7 @@ void set_pte_range(struct vm_fault *vmf, struct folio *folio,
- 	else if (pte_write(entry) && folio_test_dirty(folio))
- 		entry = pte_mkdirty(entry);
- 	if (unlikely(vmf_orig_pte_uffd_wp(vmf)))
--		entry = pte_mkuffd_wp(entry);
-+		entry = pte_mkuffd(entry);
- 	/* copy-on-write page */
- 	if (write && !(vma->vm_flags & VM_SHARED)) {
- 		VM_BUG_ON_FOLIO(nr != 1, folio);
-diff --git a/mm/migrate.c b/mm/migrate.c
-index bcf98653740f..c7da7da200fb 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -327,8 +327,8 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
- 
- 	if (pte_swp_soft_dirty(old_pte))
- 		newpte = pte_mksoft_dirty(newpte);
--	if (pte_swp_uffd_wp(old_pte))
--		newpte = pte_mkuffd_wp(newpte);
-+	if (pte_swp_uffd(old_pte))
-+		newpte = pte_mkuffd(newpte);
- 
- 	set_pte_at(pvmw->vma->vm_mm, pvmw->address, pvmw->pte, newpte);
- 
-@@ -396,8 +396,8 @@ static bool remove_migration_pte(struct folio *folio,
- 
- 		if (softleaf_is_migration_write(entry))
- 			pte = pte_mkwrite(pte, vma);
--		else if (pte_swp_uffd_wp(old_pte))
--			pte = pte_mkuffd_wp(pte);
-+		else if (pte_swp_uffd(old_pte))
-+			pte = pte_mkuffd(pte);
- 
- 		if (folio_test_anon(folio) && !softleaf_is_migration_read(entry))
- 			rmap_flags |= RMAP_EXCLUSIVE;
-@@ -412,8 +412,8 @@ static bool remove_migration_pte(struct folio *folio,
- 			pte = softleaf_to_pte(entry);
- 			if (pte_swp_soft_dirty(old_pte))
- 				pte = pte_swp_mksoft_dirty(pte);
--			if (pte_swp_uffd_wp(old_pte))
--				pte = pte_swp_mkuffd_wp(pte);
-+			if (pte_swp_uffd(old_pte))
-+				pte = pte_swp_mkuffd(pte);
- 		}
- 
- #ifdef CONFIG_HUGETLB_PAGE
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 2fffeb1f9969..18d097c38853 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -456,13 +456,13 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
- 			if (pte_present(pte)) {
- 				if (pte_soft_dirty(pte))
- 					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_uffd_wp(pte))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
-+				if (pte_uffd(pte))
-+					swp_pte = pte_swp_mkuffd(swp_pte);
- 			} else {
- 				if (pte_swp_soft_dirty(pte))
- 					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_swp_uffd_wp(pte))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
-+				if (pte_swp_uffd(pte))
-+					swp_pte = pte_swp_mkuffd(swp_pte);
- 			}
- 			set_pte_at(mm, addr, ptep, swp_pte);
- 
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index cec2a1eed539..a971d86c06ca 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -240,8 +240,8 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
- 		 */
- 		entry = make_readable_device_private_entry(swp_offset(entry));
- 		newpte = swp_entry_to_pte(entry);
--		if (pte_swp_uffd_wp(oldpte))
--			newpte = pte_swp_mkuffd_wp(newpte);
-+		if (pte_swp_uffd(oldpte))
-+			newpte = pte_swp_mkuffd(newpte);
- 	} else if (softleaf_is_marker(entry)) {
- 		/*
- 		 * Ignore error swap entries unconditionally,
-@@ -266,9 +266,9 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
- 	}
- 
- 	if (uffd_wp)
--		newpte = pte_swp_mkuffd_wp(newpte);
-+		newpte = pte_swp_mkuffd(newpte);
- 	else if (uffd_wp_resolve)
--		newpte = pte_swp_clear_uffd_wp(newpte);
-+		newpte = pte_swp_clear_uffd(newpte);
- 
- 	if (!pte_same(oldpte, newpte)) {
- 		set_pte_at(vma->vm_mm, addr, pte, newpte);
-@@ -290,9 +290,9 @@ static __always_inline void change_present_ptes(struct mmu_gather *tlb,
- 	ptent = pte_modify(oldpte, newprot);
- 
- 	if (uffd_wp)
--		ptent = pte_mkuffd_wp(ptent);
-+		ptent = pte_mkuffd(ptent);
- 	else if (uffd_wp_resolve)
--		ptent = pte_clear_uffd_wp(ptent);
-+		ptent = pte_clear_uffd(ptent);
- 
- 	/*
- 	 * In some writable, shared mappings, we might want
-diff --git a/mm/mremap.c b/mm/mremap.c
-index e9c8b1d05832..12732a5c547e 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -297,9 +297,9 @@ static int move_ptes(struct pagetable_move_control *pmc,
- 		else {
- 			if (need_clear_uffd_wp) {
- 				if (pte_present(pte))
--					pte = pte_clear_uffd_wp(pte);
-+					pte = pte_clear_uffd(pte);
- 				else
--					pte = pte_swp_clear_uffd_wp(pte);
-+					pte = pte_swp_clear_uffd(pte);
- 			}
- 			set_ptes(mm, new_addr, new_ptep, pte, nr_ptes);
- 		}
-diff --git a/mm/page_table_check.c b/mm/page_table_check.c
-index 53a8997ec043..3fb995e5d40d 100644
---- a/mm/page_table_check.c
-+++ b/mm/page_table_check.c
-@@ -188,8 +188,8 @@ static inline bool softleaf_cached_writable(softleaf_t entry)
- static void page_table_check_pte_flags(pte_t pte)
+ static inline bool userfaultfd_wp(struct vm_area_struct *vma)
  {
- 	if (pte_present(pte)) {
--		WARN_ON_ONCE(pte_uffd_wp(pte) && pte_write(pte));
--	} else if (pte_swp_uffd_wp(pte)) {
-+		WARN_ON_ONCE(pte_uffd(pte) && pte_write(pte));
-+	} else if (pte_swp_uffd(pte)) {
- 		const softleaf_t entry = softleaf_from_pte(pte);
+-	return vma->vm_flags & VM_UFFD_WP;
++	return vma_test_any_mask(vma, VMA_UFFD_WP);
+ }
  
- 		WARN_ON_ONCE(softleaf_cached_writable(entry));
-@@ -216,9 +216,9 @@ EXPORT_SYMBOL(__page_table_check_ptes_set);
- static inline void page_table_check_pmd_flags(pmd_t pmd)
+ static inline bool userfaultfd_minor(struct vm_area_struct *vma)
  {
- 	if (pmd_present(pmd)) {
--		if (pmd_uffd_wp(pmd))
-+		if (pmd_uffd(pmd))
- 			WARN_ON_ONCE(pmd_write(pmd));
--	} else if (pmd_swp_uffd_wp(pmd)) {
-+	} else if (pmd_swp_uffd(pmd)) {
- 		const softleaf_t entry = softleaf_from_pmd(pmd);
+-	return vma->vm_flags & VM_UFFD_MINOR;
++	return vma_test_any_mask(vma, VMA_UFFD_MINOR);
+ }
  
- 		WARN_ON_ONCE(softleaf_cached_writable(entry));
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 9939400e77c7..50f973b63f1c 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2317,13 +2317,13 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			if (likely(pte_present(pteval))) {
- 				if (pte_soft_dirty(pteval))
- 					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_uffd_wp(pteval))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
-+				if (pte_uffd(pteval))
-+					swp_pte = pte_swp_mkuffd(swp_pte);
- 			} else {
- 				if (pte_swp_soft_dirty(pteval))
- 					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_swp_uffd_wp(pteval))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
-+				if (pte_swp_uffd(pteval))
-+					swp_pte = pte_swp_mkuffd(swp_pte);
- 			}
- 			set_pte_at(mm, address, pvmw.pte, swp_pte);
- 		} else {
-@@ -2694,14 +2694,14 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 				swp_pte = swp_entry_to_pte(entry);
- 				if (pte_soft_dirty(pteval))
- 					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_uffd_wp(pteval))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
-+				if (pte_uffd(pteval))
-+					swp_pte = pte_swp_mkuffd(swp_pte);
- 			} else {
- 				swp_pte = swp_entry_to_pte(entry);
- 				if (pte_swp_soft_dirty(pteval))
- 					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_swp_uffd_wp(pteval))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
-+				if (pte_swp_uffd(pteval))
-+					swp_pte = pte_swp_mkuffd(swp_pte);
- 			}
- 			if (folio_test_hugetlb(folio))
- 				set_huge_pte_at(mm, address, pvmw.pte, swp_pte,
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 5a69716b2052..b116fd8c7d11 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2557,8 +2557,8 @@ static int unuse_pte(struct vm_area_struct *vma, pmd_t *pmd,
- 	new_pte = pte_mkold(mk_pte(page, vma->vm_page_prot));
- 	if (pte_swp_soft_dirty(old_pte))
- 		new_pte = pte_mksoft_dirty(new_pte);
--	if (pte_swp_uffd_wp(old_pte))
--		new_pte = pte_mkuffd_wp(new_pte);
-+	if (pte_swp_uffd(old_pte))
-+		new_pte = pte_mkuffd(new_pte);
- setpte:
- 	set_pte_at(vma->vm_mm, addr, pte, new_pte);
- 	folio_put_swap(swapcache, folio_file_page(swapcache, swp_offset(entry)));
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 33ef42d5a04e..7b2adfc50e47 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -376,7 +376,7 @@ static int mfill_atomic_install_pte(pmd_t *dst_pmd,
- 	if (writable)
- 		_dst_pte = pte_mkwrite(_dst_pte, dst_vma);
- 	if (flags & MFILL_ATOMIC_WP)
--		_dst_pte = pte_mkuffd_wp(_dst_pte);
-+		_dst_pte = pte_mkuffd(_dst_pte);
+ static inline bool userfaultfd_pte_wp(struct vm_area_struct *vma,
+@@ -222,7 +224,7 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
  
- 	ret = -EAGAIN;
- 	dst_pte = pte_offset_map_lock(dst_mm, dst_pmd, dst_addr, &ptl);
-@@ -3609,7 +3609,7 @@ static int userfaultfd_register(struct userfaultfd_ctx *ctx,
- 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_MISSING)
- 		vm_flags |= VM_UFFD_MISSING;
- 	if (uffdio_register.mode & UFFDIO_REGISTER_MODE_WP) {
--		if (!pgtable_supports_uffd_wp())
-+		if (!pgtable_supports_uffd())
- 			goto out;
+ static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+ {
+-	return vma->vm_flags & __VM_UFFD_FLAGS;
++	return vma_test_any_mask(vma, __VMA_UFFD_FLAGS);
+ }
  
- 		vm_flags |= VM_UFFD_WP;
-@@ -4319,7 +4319,7 @@ static int userfaultfd_api(struct userfaultfd_ctx *ctx,
- 	uffdio_api.features &=
- 		~(UFFD_FEATURE_MINOR_HUGETLBFS | UFFD_FEATURE_MINOR_SHMEM);
- #endif
--	if (!pgtable_supports_uffd_wp())
-+	if (!pgtable_supports_uffd())
- 		uffdio_api.features &= ~UFFD_FEATURE_PAGEFAULT_FLAG_WP;
- 
- 	if (!uffd_supports_wp_marker()) {
+ static inline bool vma_has_uffd_without_event_remap(struct vm_area_struct *vma)
 -- 
 2.54.0
 
