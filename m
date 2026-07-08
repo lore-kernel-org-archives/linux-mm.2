@@ -4,93 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB6EDC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 01:22:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABCB0C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 01:31:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E46A6B0088; Tue,  7 Jul 2026 21:22:41 -0400 (EDT)
+	id 357B76B0088; Tue,  7 Jul 2026 21:31:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8956A6B008A; Tue,  7 Jul 2026 21:22:41 -0400 (EDT)
+	id 32FD56B008A; Tue,  7 Jul 2026 21:31:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 784E46B008C; Tue,  7 Jul 2026 21:22:41 -0400 (EDT)
+	id 246696B008C; Tue,  7 Jul 2026 21:31:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 40B756B0088
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:22:41 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 87CAEC3D0F
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:22:40 +0000 (UTC)
-X-FDA: 84963859680.11.C5E4FF6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id EF0384000A
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:22:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G6D42U4j;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D1A276B0088
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 21:31:23 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3A3EC40625
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:31:23 +0000 (UTC)
+X-FDA: 84963881646.25.11E79C4
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 521B340004
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:31:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kcoy+4C3;
+	spf=pass (imf01.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783473759;
+	s=arc-20220608; t=1783474281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Lb/jkgxNgC6dvY0hK5vMR6pog+drE09r16IzbOKXwA=;
-	b=xNz4H+8Z0pNj0Mq3OMFJtGPMBl7ZYnC4zWASOE4t+v/bkkyFnWK3cFHGI0rIPyEFaOkFcJ
-	TQT4w/dzTGGjTPwNnleRF+ImKQh3Jlg75Cg6P6Jr6qwGouCdmESUstZwY+x2duTHreH/7g
-	h13MsXUhSjsFnrlW3Q3i2GIeZYNccaE=
+	bh=D/LQLPuILxjB411/fYFouWHdkKkRbW9iZLAYWIeHak0=;
+	b=B4N8pTAr0I+GRBsxg27G9iHcqnLp8owHuO/C0nDKJasfOcWK0kEuNlAs5SjNP1GLxPjewB
+	6xc7H6UMvHoOQYzQ0yyjD7V3A+JogniHwSnjx1r9EK3g8yM+46LhRNO9fcVHpCIb+VUixW
+	/1dlPLwBYsplAnYyj2MDfUnpI+hiyCU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G6D42U4j;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Kcoy+4C3;
+	spf=pass (imf01.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.228.1 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783473759;
-	b=fFaZ7PHPIFJenZvo6zwxAzSZzJh96LItWbGuSaiANAiy0Pv+LumeEPR1ZntdolUiLmqi/P
-	W/n2Pbvn+1UhrpOms1HJw/1U8Umr0c+5AKtlSIx6tNWUbhs5CarwPW7Wlpx0GQVjhTvaXv
-	jUOoz3kwivBWMIS4vZUA1H8m3LFicTw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 518DF60008;
-	Wed,  8 Jul 2026 01:22:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1CF1F000E9;
-	Wed,  8 Jul 2026 01:22:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783473758;
-	bh=+Lb/jkgxNgC6dvY0hK5vMR6pog+drE09r16IzbOKXwA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=G6D42U4jW0u9iZ2KfKwxSHncc86EbH7VO7FsvrbISBe6BzRSItxsNn0lnfjTcZl57
-	 FgRRtojmPt7DFMbFuOJUdwU5WTXc6GGHkK1PfgPTOJcX6Qg9IDevUfworOUw6hjhyA
-	 /uEX0h8wokA3X9BPVc5TTnbwVtAq772oe9u4JDUAo+8JF8iHgj2ircIrM8yNMkGdCP
-	 86uk0CjVpshWm9FT8CIfzjAmqIfsIu4T30mqmj8J2yEbG5k1goqBKin6XoPjaWBnRr
-	 EFFdrUYiI4aePlYwUnkd2s4s9a+OZuu8NMtbCaSJcYoGujvrNTmCsEXHca/p9aybnN
-	 4nd96S4W4qW+w==
-From: SJ Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SJ Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/3] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Tue,  7 Jul 2026 18:22:33 -0700
-Message-ID: <20260708012234.92093-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <b786294f-0ba5-4b05-b956-d902c358dd88@huawei-partners.com>
-References: 
+	t=1783474281;
+	b=t9p3het7I2TzXIKNZN58tFM4GmA+pvuow/EGDhURlTf1VQt7u4IvimPkbDe84PmqXIshcG
+	sQ4OQ/8HLXjxXh1XRuYn0It7P3Idoq+zs+sC57JnF+VgqyagffgB3ZAcpVa3vzwkoX/gkq
+	JSHEk9grvBV19WshnLjIO2IIdo7TBsg=
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-ca034c989e2so65423a12.0
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 18:31:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783474280; x=1784079080; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=D/LQLPuILxjB411/fYFouWHdkKkRbW9iZLAYWIeHak0=;
+        b=Kcoy+4C3pNHePhFxImNs7kVVd1tUWfw8jsSKBmF/IC1cJ0Ey+M+rTKMNRKWp7Pbt0S
+         HMvCJUSxo17dpVJ1SMia52psn5qgNKe9kUCAZuQQb1kGjRPndxuZJTLLIJZmzcUbBOYi
+         Vli9SGos9IH4MiywMQpi7PK2I/GERsDPq+4FfLBETngrOHNVrr7p3C+L/OkWq1h1+zsn
+         iZnNv1gQoixXKoodKg3g6GrTLs9V1Gehnuf3PIYztsAASng0duE2XBy2uMDqwr8yCfpX
+         M3i6GOPNhCA36ye1ppqfuy1Z4Y0fVQgic3ftpfhSdpEZ90lC2M5zHWKGnyltVf9G3Tdl
+         qYNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783474280; x=1784079080;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=D/LQLPuILxjB411/fYFouWHdkKkRbW9iZLAYWIeHak0=;
+        b=dpyrgE929GtPY7jhI7Bkoe3goWGGuSZZ9dMb+qlyGmkFMsRbOi32cc6F1xmN/mYhvr
+         ZPfJrX+Vwl6fXgL+eOVpZtTEJDc1f/9BtOFgurP1cyVneB+LCpfbFxi5VQDDwuioJx3e
+         xmmnPEhWiSv1gq6IRV2f6snL3ZMeR4/Bf7Rr9Rjp3kByb3PRGAs1/EW5bJX7Zs1OhxlK
+         VasM4EEVsmuV+1n9+OdZUguuwG9t0LloBNqq+47gQerFMbjr+5tkF2gQBrWzfND4oRvq
+         hmcPaz3P7rpS8PTZHtkZXA6AXLVhB/jP7PVOLxNThTZRtIJgG6lIPZC3aXwsg68FCn5S
+         OBQg==
+X-Forwarded-Encrypted: i=1; AHgh+RrkDTO3PEEVCPL/6CYyLYbNqyR/EktUOrq36MsFesFViPasUpXyOYZgGy29JJURxKMfvQX2CrPXnA==@kvack.org
+X-Gm-Message-State: AOJu0YzCqaPS7/o22lNSLVg5skEcOYQZ9pBNrY0XoVNelLZiSsUJGw5e
+	L8o2rbtNupfWVOCF5cRm2xlGzjHRXzhfVwMOITjhM5Twtc10gHm8dBJ9
+X-Gm-Gg: AfdE7clkyULJQeoZZP0npOhceXE7hggnNSbEQ+vDTwHYGwwdzJF0+pYEp4VGyUsLLUX
+	eK+53EAteBtkCNHW3q7TJdZQziSM+bT2nINRanJWOST2Z0wuVi6HZFEg+Ce7AJjtrrxiPnxd4Z5
+	gh3tXotbptDk3xzKx2NV7TqgXBQy1mdhNAnFTZ/iqfNE+O8VvhM5EdP4ANa49gyc4wYL3LQ0uc8
+	4iRPLEBzk3eBE09j80jNW3gBjjcrpfN9aKxkYk79BQZs1IvhDMUd6B51VJ4SkFjLwMsEJKW2Y0m
+	UD1mAiI5MD6Bp0spXVX1I/wAhB63ZzrAhK1pdlQIHUNBdPdDeOBAye3J35NHXI0RdBEc+SYs4XO
+	kb4Ndo/bs7SsAqItbSxrKiKiYdv+RJsV8ILtyz0XfVrvvGg/4Gpd0HxjQIwVh3JwartuZbX6HVi
+	v054hcPV4joD8JfYAFSqwB
+X-Received: by 2002:a05:6a21:62c6:b0:398:837a:7af0 with SMTP id adf61e73a8af0-3c0bd04207cmr152449637.30.1783474280029;
+        Tue, 07 Jul 2026 18:31:20 -0700 (PDT)
+Received: from [10.125.112.20] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5af7d58f3sm1656435a12.1.2026.07.07.18.31.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jul 2026 18:31:19 -0700 (PDT)
+Message-ID: <e4761ca0-21d2-41d5-8d0f-ec14d0a5d3b9@gmail.com>
+Date: Wed, 8 Jul 2026 09:31:09 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/3] mm/compaction: skip isolate mlocked folios when
+ compact_unevictable_allowed=0
+From: Wandun <chenwandun1@gmail.com>
+To: Alexander Krabler <Alexander.Krabler@kuka.com>,
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
+ "linux-rt-devel@lists.linux.dev" <linux-rt-devel@lists.linux.dev>
+Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
+ <mhocko@suse.com>, "jackmanb@google.com" <jackmanb@google.com>,
+ "hannes@cmpxchg.org" <hannes@cmpxchg.org>, "ziy@nvidia.com"
+ <ziy@nvidia.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>,
+ "mhiramat@kernel.org" <mhiramat@kernel.org>,
+ "mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>,
+ "david@kernel.org" <david@kernel.org>, "ljs@kernel.org" <ljs@kernel.org>,
+ "liam@infradead.org" <liam@infradead.org>, "rppt@kernel.org"
+ <rppt@kernel.org>, "bigeasy@linutronix.de" <bigeasy@linutronix.de>,
+ "clrkwllms@kernel.org" <clrkwllms@kernel.org>,
+ Hugh Dickins <hughd@google.com>
+References: <20260604023812.3700316-1-chenwandun1@gmail.com>
+ <20260604023812.3700316-2-chenwandun1@gmail.com>
+ <969cb14b-5b8b-48e6-add6-4dd13101dd89@kernel.org>
+ <040788a9-e0d5-478e-bb48-3d22b8b41020@gmail.com>
+ <c8793c0f-7156-4cb7-9e6e-7909397e2fff@kernel.org>
+ <ca1115c0-1509-453a-8235-08e381a3da6f@gmail.com>
+ <PR3PR01MB6666C11E08516555C153D4FD82EB2@PR3PR01MB6666.eurprd01.prod.exchangelabs.com>
+ <a96b0b24-c405-43c4-96ef-605bacd17cad@gmail.com>
+ <PR3PR01MB6666EC8D53E75F742B37270282EB2@PR3PR01MB6666.eurprd01.prod.exchangelabs.com>
+ <05d7369e-341c-49f4-ae13-df3d0ad930d7@gmail.com>
+Content-Language: en-US
+In-Reply-To: <05d7369e-341c-49f4-ae13-df3d0ad930d7@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: adt6ttkwrwbtta5h7nn4m4rennec5po3
-X-Rspamd-Queue-Id: EF0384000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783473758-330133
-X-HE-Meta: U2FsdGVkX1+tMseH7/M+lEhNtdmSpJzvTuRNJAJUIe2X9++IE7lFz/13RWqHL0xhQxIovS1kcj9tyfDO3JT/E0J+zrO9QrQfleRRYlIY2KN/KolHiVY1VL0Ua7NQeIYWE1UNeuNazFm3554LmmnrBCZXKYs4FqZxDwDGrbg/mwWbsXqi7onGIIHGF2617/z6bIfqqKTvR9HFjBfqbSWc1LiBG3MThsIPj4Kt3naso23KwbKT8PtguIl85xbVu+stN4yxiQeVJfnAPXcJAobBwYu8wQueEHIL0wKxABeQ7yco+Rb26M3IvNLt+Zw3aq2x4vcGvnn2K7wYcvlQUKTwbHKlnrR7H7PJJR511ZXzG7o0o7a9HhNNzqTS/GA9eBWTNLt/roEDg4EJiVi1h2zD0gb+8YzPJfiMGm2rLiIHyENrWt2ORorZSnlEmRNv8y6+/jzbsFveZJ5s+Kq9aTu4dtfcA1JWOwSGQlUHvn6B4h9EpU+WZNpRp3/n1ZkVFORPpZH6cAtGbBFrFAnDTYDTLsFh/FNETpSkhgKOG6fYt3uV/OLxpB8g8iA4zP9CbQ3NBZgzdfR9laCHagPwzjAkLZ8lSYAXYZ+YNfzLclNv9ccrsqG85r9ZFQ7ILrKHFjIZ0INbxQI5/V1QicGVuerZvXQBFsjTTJ7sGduYMkAGRpMQT99qM1YWti0qdAkt2+vLM7HR1vdDgs1/x2ckmJOpFyDuZNAJht6Z+UCQhNVDwIRu8tSj/HUSf5wBkwSHHS4RYA4GMJtqkfORt/YcYUsGPtLvkQ1iIznx1AAHqppamg6La140x4sf3bvGwV8IKUsNl6AcgljBTCwrZ4xnZN51Muh/6PfRYZXnzqB+74YubEE0YLgxrJIZMpHZhcsohP9nI4rrWE1NuYtIwM01n0lluEPsGsNZWeLoN586s9cVi/k3t1pBdrRE+ALh9RSos8juouvS8HDeYxL4cSpGW1N
- RmhVF+fy
- M1RBj+6vIo/lxgWSsF59ps75tO9lAXZ/QSkZlMN1jeg3AGzWenpZno74lQPFIpINJaJBzK0t6DP0CoPo/y/zlUHYLOGiDtXtdAvjJ/voD1l4NMf1vuQ7QNDHrCFlBiq24QQSztwP6Vitro6ibT0pQBiyS5Yz2RR4W+bvcr6SYijFkPZnjrRokRYVnhiTJLd6jgleU/M/aPVvYbjPkn5Q6E+ed3720foDJfDbSeedxhar00ASHRa5pXVkkeRc5EpFc/sG88NhtrzWi9Pc=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 521B340004
+X-Stat-Signature: nexcwyhicc3hn9fpf5mfezojfm68tezk
+X-HE-Tag: 1783474281-524850
+X-HE-Meta: U2FsdGVkX18l0XE/S7Z7j4ZoYw4EBD56hnLm5bYPJjfsE4VFRr5CQnlhtEZFdE4z4/y3MvojOsEg5Y13cm5n4cF3zaEA2VFL0V5HZT/adAUeKORlw+Y4wbR2cwyr/Sweo5+KZANp5I1akeK8uHGFMEfZRMgG80/B0gLUlxqn+GZztlOQGC80ZH39r5qkyoXR2rCpoOOQECNxk00QHTvxCbBlsvrKy8+mzkpTOHSVndbpYu934G7kI+28ssEOUJU00nws0AYcV1ctVbxs/2yvtRvR9LlOc5z5Fk0yJh6oEMqnecaTrIFKSw1t7+oETLwZOz63sxRzxszAuMTCvrklVfrg9uhprZjoxLUYdXrSsgmzUItjmmpurnjCV1AE08caNOxc+8WofqDzIv10jvKVIiiIXBbG3ni1JA1Z/KG6uMnYwlTzY+L85tuhPAwDi532srFyWDdh6lbmxjG8M7YMxZeQTiTZZ5map7Nb6C9oZqEC3P5Q9ut2IISt6+xc1o6S5TaNYN71kHE5x2AsibdlJcfyorm0s1f3zR63Ia0TVH8euBXH42lKUQLJTQY1sOnyyK7Hd0CP88T6C1WJ4LJtNsmhsLS1yo1eoQGnujE51h2+6W6SajjTgi4kUQKdylYnGIcSj3TmKMAo+qvhjoMaCHj8ME1Kv16BCe0gqf2Dos0fMaGMG/cQIUcInKfbTcjlwzWDUTks2jp7SZkhDaBmULLoZ11isA0dRrr4aaOF8nrw87IpgxqhUusw3Pb4G8qKmUDRqBa7CYmAlflvLKOMLsFhnp1rsL227ePdJT00p8Y8EKF6S1m1Ag+Hxf6s1uFpK1AdOs0qpv/YCPOOk7vow1eSy6OVflRpEfoB2tt2c/kLDPjlRyBJcfw6weUaZ3ROcTH3iQDvy0wtrRdbqOYfKdCzeOKGobhiU/04whlgo2IPXUD8dnq4sFqbfp1vPj3IX/C3qicpa9Pw1hB0c+v
+ 9thhgrQt
+ Wqhopov8vMxoDczMGvu2T5EG1QnUK3qdygU2IPI/8TykqpJK3QD242wFFdozV0dsUduWbOKa++nnzBp5arMYORv9d7392ZEjgIqWXUYek9GojU8q8zgsabeVqusnFII+ZH/3RoWEnsuuS2xPy9LYLfqZscvRgYPQn6FSFDKHov0i2LlUG0yEX2DAlHWKpKYmFYgMdNgTanEtIuMPTIqFVlqQjnzzgLtUMYZnNl++gY9rA+RL7ngGEsb3nGW86BGFW9Ujoie/rB+RwjSj779Ld6MQ6yp6Cgo2v5FMYl/ad5inNN7EYUP9hP1gWQI135AeiB3O359KY4NrZ5uy2YUc+qH/81HNX0HVqGqpO3wjNcVYolYJopyviOSvSZsRZSXsGde7DWQcngwO0Dp44k644EbH0jfmRexntDuS6cPPZMmFuooAZisvRCzbWTjokUFKTzswmBYdzELDTQgDO+rcodSNB1dgp0jZVP6w9oK9AsHQJrym20Ezc7YVOXudeLl/Olo+oWcVGCUSSfIKlvgeQwLg8fNCFH1j3nAnM9cLE/dIjU56ctZUxGMy4ImfzAMvhhMDy6si6tx5o9BgvWtEjhzuyDMjzv1Q9JODFSW7MX/mCPmA6q6pGCVt3+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,271 +146,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 7 Jul 2026 17:25:36 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+
+
+On 6/29/26 17:07, Wandun wrote:
+> 
+> 
+> On 6/26/26 21:42, Alexander Krabler wrote:
+>> On 6/26/26 11:38, Wandun wrote:
+>>> On 6/26/26 16:45, Alexander Krabler wrote:
+>>>> However, we were not able to reproduce the actual race
+>>>> (mlockall() process waiting on a migration PTE),
+>>>> not in the past, not now. Might be hard to trigger that race.
+>>>
+>>> Not hard to trigger that case, I added a debug message, such as below,
+>>> lots of messages occur in a few second.
+>>>
+>>> diff --cc mm/memory.c
+>>> index ff338c2abe92,ff338c2abe92..6552b3b14f78
+>>> --- a/mm/memory.c
+>>> +++ b/mm/memory.c
+>>> @@@ -4768,6 -4768,6 +4768,8 @@@ vm_fault_t do_swap_page(struct vm_faul
+>>>                 if (softleaf_is_migration(entry)) {
+>>>                         migration_entry_wait(vma->vm_mm, vmf->pmd,
+>>>                                              vmf->address);
+>>> +                       if (!strcmp(current->comm, "repro"))
+>>> +                               pr_err("============== hit ================\n");
+>>>                 } else if (softleaf_is_device_exclusive(entry)) {
+>>>                         vmf->page = softleaf_to_page(entry);
+>>>                         ret = remove_device_exclusive_entry(vmf);
+>>
+>> I have a kprobe on migration_entry_wait set and logged into a ftrace buffer
+>> (including kernel stacktrace).
+>> Yes, this function is hit, but only inside the mmap-syscall, which is okay,
+>> memory allocation is not realtime-safe.
+>>
+>>            repro-2090    [002] d....   811.129549: frt_migration_entry_wait: (migration_entry_wait+0x0/0x100)
+>>            repro-2090    [002] d....   811.129553: <stack trace>
+>>  => migration_entry_wait
+>>  => __handle_mm_fault
+>>  => handle_mm_fault
+>>  => __get_user_pages
+>>  => populate_vma_page_range
+>>  => __mm_populate
+>>  => vm_mmap_pgoff
+>>  => ksys_mmap_pgoff
+>>  => __arm64_sys_mmap
+>>  => el0_svc_common.constprop.0
+>>  => do_el0_svc
+>>  => el0_svc
+>>  => el0t_64_sync_handler
+>>  => el0t_64_sync
+>>
+>> The original race was an instruction abort interrupt out of nothing due
+>> to the migration PTE set by kcompactd.
+>> And these kind of races I see quite often on non mlockall()-processes,
+>> but can't reproduce on memory locked processes.
+>>
+>> Example:
+>>           podman-832     [000] d....   812.447820: frt_migration_entry_wait: (migration_entry_wait+0x0/0x100)
+>>           podman-832     [000] d....   812.447823: <stack trace>
+>>  => migration_entry_wait
+>>  => __handle_mm_fault
+>>  => handle_mm_fault
+>>  => do_page_fault
+>>  => do_translation_fault
+>>  => do_mem_abort
+>>  => el0_da
+>>  => el0t_64_sync_handler
+>>  => el0t_64_sync
+> 
+> Hi, Alexander
+> 
+> From the perspective of the root cause, there is no fundamental difference
+> between these two call stacks. I modified the reproduction program, and it
+> can still reproduce the situation of the second call stack
+> (although it doesn't occur as frequently). The complete reproduction program
+> is as follows:
+> 
+> 
+> #define _GNU_SOURCE
+> #include <fcntl.h>
+> #include <pthread.h>
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <sys/mman.h>
+> #include <sys/sysinfo.h>
+> #include <unistd.h>
+> 
+> #define PAGE_SIZE       4096
+> #define NR_PAGES        10000
+> 
+> static void *worker_fn(void *arg)
+> {
+> 	int fd = (long)arg;
+> 	size_t len = NR_PAGES * PAGE_SIZE;
+> 
+> 	while (1) {
+> 		if (ftruncate(fd, 0) < 0) {}
+> 		if (ftruncate(fd, len) < 0) {}
+> 
+> 		char *p = mmap(NULL, len, PROT_READ | PROT_WRITE,
+> 			       MAP_SHARED, fd, 0);
+> 		if (p == MAP_FAILED)
+> 			continue;
+> 
+> 		mlockall(MCL_ONFAULT |  MCL_FUTURE);
+> 
+> 		for (int i = 0; i < NR_PAGES; i++) {
+> 			for (int j = 0; j < PAGE_SIZE; j++) {
+> 				p[i * PAGE_SIZE + j] = 1;
+> 			}
+> 		}
+> 
+> 		usleep(200);
+> 		munmap(p, len);
+> 	}
+> 	return NULL;
+> }
+> 
+> static void *compact_fn(void *arg)
+> {
+> 	(void)arg;
+> 	int fd = open("/proc/sys/vm/compact_memory", O_WRONLY);
+> 	if (fd < 0)
+> 		return NULL;
+> 
+> 	while (1) {
+> 		if (write(fd, "1", 1) < 0) {}
+> 		usleep(5000);
+> 	}
+> }
+> 
+> int main(void)
+> {
+> 	int nproc = sysconf(_SC_NPROCESSORS_ONLN);
+> 	if (nproc < 1)
+> 		nproc = 1;
+> 
+> 	int *fds = calloc((size_t)nproc, sizeof(int));
+> 	if (!fds)
+> 		return 1;
+> 
+> 	size_t len = NR_PAGES * PAGE_SIZE;
+> 	for (int i = 0; i < nproc; i++) {
+> 		char path[64];
+> 		snprintf(path, sizeof(path), "./repro_%d.dat", i);
+> 		unlink(path);
+> 		fds[i] = open(path, O_RDWR | O_CREAT, 0600);
+> 		if (fds[i] < 0)
+> 			return 1;
+> 		if (ftruncate(fds[i], len) < 0)
+> 			return 1;
+> 	}
+> 
+> 	printf("repro: %d workers, %d pages, Ctrl-C to stop\n",
+> 	       nproc, NR_PAGES);
+> 
+> 	pthread_t compact;
+> 	pthread_create(&compact, NULL, compact_fn, NULL);
+> 
+> 	pthread_t *threads = calloc((size_t)nproc, sizeof(pthread_t));
+> 	for (int i = 0; i < nproc; i++)
+> 		pthread_create(&threads[i], NULL, worker_fn, (void *)(long)fds[i]);
+> 
+> 	pthread_join(compact, NULL);
+> 	return 0;
+> }
+
+I found there are false positives in this reproducer.
+I modified the program a little,  the diff is as follows,
+the problem can still be reproduced
+
+
+diff --git a/repro.c b/repro.c
+index b1b34d5..59cb417 100644
+--- a/repro.c
++++ b/repro.c
+@@ -15,6 +15,7 @@ static void *worker_fn(void *arg)
+        int fd = (long)arg;
+        size_t len = NR_PAGES * PAGE_SIZE;
+
++       mlockall(MCL_ONFAULT |  MCL_FUTURE | MCL_CURRENT);
+        while (1) {
+                if (ftruncate(fd, 0) < 0) {}
+                if (ftruncate(fd, len) < 0) {}
+@@ -24,8 +25,6 @@ static void *worker_fn(void *arg)
+                if (p == MAP_FAILED)
+                        continue;
+
+-               mlockall(MCL_ONFAULT |  MCL_FUTURE);
+-
+                for (int i = 0; i < NR_PAGES; i++) {
+                        for (int j = 0; j < PAGE_SIZE; j++) {
+                                p[i * PAGE_SIZE + j] = 1;
+
 
 > 
 > 
-> On 7/7/2026 5:10 PM, SJ Park wrote:
-> > Hello Gutierrez,
-> > 
-> > 
-> > Thank you for your replies.  I still find some of my comments are not replied,
-> > acknowledged or objected.  Could you please address those all before the next
-> > revision?
-> > 
-> > On Tue, 7 Jul 2026 16:31:03 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-> > 
-> >>
-> >>
-> >> On 6/20/2026 11:02 PM, SeongJae Park wrote:
-> >>> On Sat, 20 Jun 2026 20:11:46 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-> >>>
-> >>>> Hi SJ,
-> >>>>
-> >>>> So sorry, I missed your email. I just found it. Sorry for the late answer.
-> >>>>
-> >>>> On 6/17/2026 4:44 AM, SeongJae Park wrote:
-> >>>>> On Tue, 16 Jun 2026 15:03:13 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> >>>>>
-> >>>>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >>>>>>
-> >>>>>> Overview
-> >>>>>> ========
-> >>>>>>
-> >>>>>> This patch set introduces a new autotuning which allows to collapse
-> >>>>>> hot regions into hugepages.
-> >>>>>>
-> >>>>>> Motivation
-> >>>>>> ==========
-> >>>>>>
-> >>>>>> Since TLB is a bottleneck for many systems[1], a way to optimize TLB
-> >>>>>> misses (or hits) is to use huge pages. Unfortunately, using "always"
-> >>>>>> in THP leads to memory fragmentation and memory waste. For this reason,
-> >>>>>> most application guides and system administrators suggest to disable THP.
-> >>>>>>
-> >>>>>> Currently DAMON has DAMOS_HUGEPAGE, DAMOS_NONHUGEPAGE and DAMOS_COLLAPSE.
-> >>>>>> However, there is no way to tune the settings. It will collapse all the
-> >>>>>> hot regions that meet the access pattern. If the server is a bare metal
-> >>>>>> database or big data server, this will also lead to eventual fragmentation.
-> >>>>>>
-> >>>>>> Additionally, currently THP is set globally. Ideally, there should be a
-> >>>>>> way to control which tasks can use huge pages.
-> >>>>>
-> >>>>> Could you please reword for prctl(PR_SET_THP_DISABLE) like per-process control
-> >>>>> cases, as we discussed [1] on RFC v3?
-> > 
-> > WDYT?
-> Yes, we can use prctl. However, I believe DAMON is more transparent and easier
-> for a sysadmin. I will rephrase this sentence to explain why DAMON makes sense
-> instead of other alternative.
-
-Thank you, I agree to you.  But I just want the pointer be clear.  Your
-revision plan soudns like a good plan.
-
-[...]
-> >>>>>> Benchmarks
-> >>>>>> ==========
-> >>>>>>
-> >>>>>> Huge page collapse autotuning was tested in a physicial machine with
-> >>>>>> MariaDB 10.5.29 and sysbench as the benchmark framework.
-> >>>>>>
-> >>>>>> The hugepage module was set up in the following way:
-> >>>>>>
-> >>>>>> # echo 1000 > min_age
-> >>>>>> # echo 1000 > quota_percentage_hugepage
-> >>>>>
-> >>>>> I guess this is the quota goal?  What is the unit?  I guess it is aparently not
-> >>>>> percentage?  The name doesn't sound like very consistent or intuitive.  How
-> >>>>> about hugepage_mem_bp or target_hugepage_mem_bp?
-> >>>> Right, we agreed to change the name. I will correct it.
-> >>>
-> >>> Thank you.  Because we agreed to drop the module, this could simply be dropped?
-> > 
-> > WDYT?
-> Yes, I will drop it. The new patch set will not include any of these parameters,
-> but just the target value for the quota and a new quota metric.
-
-Thank you, sounds like a good revision plan.
-
-> >>>
-> >>>>>> # echo $(pidof mariadbd) > taget_pid
-> >>>>>> # echo on > enabled
-> >>>>>>
-> >>>>>> The goal was to achieve 5% of the total memory used as hugepage.
-> >>>>>
-> >>>>> I guess this is what the above example is setting using
-> >>>>> 'quotta_percentage_hugepage'?  If so, it means the unit is 1/20000 ?  Is this
-> >>>>> correct...?
-> >>>> I actually set it to 500. I will update the cover letter.
-> >>>
-> >>> I think changes of this series is matured and very close to land.
-> >>> Discrepancies in the cover letter and commit messages are my concern that
-> >>> blocking this series.  Please keep everything up to date and in high quality,
-> >>> from the next version.
-> >> I will test it with a bigger database.
-> > 
-> > Thank you.  Couuld you further clarify what you expect to see as the result,
-> > and how it will complete the story?
-> What I expect is DAMON to keep consistent huge page usage to total memory
-> usage ration according to the target value.
-
-Makes sense, as long as we have a sound theory.  But, I'm not sure if we really
-have such theory.  Please read my comment below for why I'm not really sure.
-
 > 
-> Should I publish these results as well? I mean showing different target
-> values and the actually achieved values. And theses results for different
-> database sizes.
-
-Feel free to add as much data as you want to show.  Nonetheless, I'd recommend
-adding only data that gives us clear story in a condensed way.  The data on the
-cover letter will live forever in the git history.  Let's not make it
-unnecessarily long.
-
-If you want to share your findings in volume for discussions, please feel free
-to share.  But not necessarily it should be the part of the permanent history.
-You can send it as a mail without the code diff.  Sending that as a reply to
-the patch series could also be a good option.
-
-> >>>>>> Since the database was not very big, we may not be able to achieve
-> >>>>>> high amount of huge pages per total memory consumption ratio.
-> >>>>>
-> >>>>> I believe this patch series will work as you explained.  But, it seems bit
-> >>>>> weird to show a test result that doesn't demonstrate what this patch is aimed
-> >>>>> to achive.  Could you increase the size of the database?  IIRC, you were able
-> >>>>> to show the percentage is over-achived case in an early version.
-> >>>> Actually, this is what I got using the TEMPORAL quota goals. With the regular
-> >>>> quota goals, it actually over-achieves the goal.
-> >>>>
-> >>>> Is this an actual bug in the TEMPORAL quota goal?
-> >>>
-> >>> You mentioned "Since the database was not very big, we may not be able to ...".
-> >>> Based on that, I was assuming you will be able to make the goal achieved, by
-> >>> increasing the database size.  Now you are saying about the goal.
-> >>>
-> >>> Do you mean the database size is not expected to contributed to this result?
-> >>>
-> >>> Of course TEMPORAL goal might have bugs.  I find no clue from this datta,
-> >>> though.  Do you have some evidences that make you suspect it?  If so, could you
-> >>> please share?
-> > 
-> > WDYT?
-> I have no idea, to be honest. I will try to test with different databasesizes with temporal and consistent policies. The behaviour was weird to me,
-> but I don't know if this was a TEMPORAL policy issue or I didn't set the
-> DAMON parameters correctly.
-
-Thank you for transparently sharing your thought.  And this is little bit
-concerning me.  It feels like we don't really have a good theory about what
-change will make what results for what reason.  It rather feels like we just
-doing random experiments and showing the random results.
-
-I understand having data first and developing the theory driven by data is also
-a good approach.  But I feel like this is a time to step back and think about
-what we're doing.
-
-IIRC, your initial experiment results on the very early version of this series
-looked promising.  But from a point, it looked like just random.  Maybe I gave
-you wrong change request, or some test environment has unexpectedly changed.
-
-How about summarizing what tests you did so far, what changes in the kernel and
-the test setup has made for each iteration, and how the results have changed?
-
-If it has been too long since the older tests, just doing the tests again or
-dive deep into debugging of your current setup with the all mighty printk() on
-core DAMON internall code can be an option.
-
-Have you also monitored DAMOS stats while the tests are ongoing?  Maybe that
-could also be a good debugging option for understanding what's going on as
-expected vs not.
-
 > 
-> >>>
-> >>>>>>
-> >>>>>> The table below shows the memory consumption over time. Timestamp is in
-> >>>>>> second and the memory usage in is MBytes. Gaps in the timestamp means
-> >>>>>> that no changes in the hugepage consumption happened over that period
-> >>>>>> of time in MB. The total used memory is calculated as
-> >>>>>> mem_total - mem free. The huge page used is calculated as
-> >>>>>> huge_page_anon + huge_page_shmem + huge_page_file. The table also
-> >>>>>> shows the huge pages to total memory ratio.
-> >>>>>>
-> >>>>>> Hugepage autotune benchmark:
-> >>>>>> +-----------+----------------+----------------+----------------------+
-> >>>>>> | timestamp | total mem used | huge page used | percentage hugepage  |
-> >>>>>> +-----------+----------------+----------------+----------------------+
-> >>>>>> | 0         | 3044.988281    | 0              | 0%                   |
-> >>>>>> | 22        | 3160.207031    | 2              | 0.06%                |
-> >>>>>> | 30        | 3250.90625     | 4              | 0.12%                |
-> >>>>>> | 69        | 3781.238281    | 6              | 0.16%                |
-> >>>>>> | 71        | 3822.226563    | 8              | 0.21%                |
-> >>>>>> | 72        | 3846.578125    | 10             | 0.26%                |
-> >>>>>> | 73        | 3852.402344    | 12             | 0.31%                |
-> >>>>>> | 74        | 3868           | 14             | 0.36%                |
-> >>>>>> | 75        | 3881.84375     | 104            | 2.68%                |
-> >>>>>> | 275       | 4194.175781    | 106            | 2.52%                |
-> >>>>>> +-----------+----------------+----------------+----------------------+
-> >>>>>> After second 275, no more pages are collapsed into hugepages
-> >>>>>>
-> >>>>>>
-> >>>>>> THP (always) benchmark:
-> >>>>>> +-----------+----------------+----------------+---------------------+
-> >>>>>> | timestamp | total mem used | huge page used | percentage hugepage |
-> >>>>>> +-----------+----------------+----------------+---------------------+
-> >>>>>> |         1 |    4489.320313 |            184 |         4.098615986 |
-> >>>>>> |        15 |    4581.871094 |            214 |         4.670580984 |
-> >>>>>> |        30 |    4757.742188 |            376 |         7.902908253 |
-> >>>>>> |        45 |    4937.574219 |            558 |         11.30109595 |
-> >>>>>> |        60 |    5147.867188 |            728 |         14.14177898 |
-> >>>>>> |        75 |      5407.0625 |            918 |         16.97779524 |
-> >>>>>> |        95 |    5668.796875 |           1040 |         18.34604455 |
-> >>>>>> |       105 |    5723.839844 |           1056 |         18.44915352 |
-> >>>>>> |       115 |     5736.84375 |           1072 |         18.68623317 |
-> >>>>>> |       125 |    5732.042969 |           1088 |         18.98101612 |
-> >>>>>> |       186 |    5753.601563 |           1184 |         20.57841488 |
-> >>>>>> |       246 |    5746.398438 |           1280 |         22.27482159 |
-> >>>>>> |       306 |    5752.128906 |           1376 |         23.92157795 |
-> >>>>>> |       367 |      5772.5625 |           1472 |         25.49994045 |
-> >>>>>> |       427 |    5832.019531 |           1568 |         26.88605536 |
-> >>>>>> |       488 |    5813.246094 |           1664 |         28.62428277 |
-> >>>>>> |       548 |    5807.621094 |           1760 |         30.30500736 |
-> >>>>>> |       598 |    5841.253906 |           1822 |         31.19193292 |
-> >>>>>> |       669 |    5982.160156 |           1854 |         30.99214918 |
-> >>>>>> |       931 |    5946.605469 |           1868 |         31.41287933 |
-> >>>>>> |       981 |    6020.207031 |           1896 |         31.49393352 |
-> >>>>>> |       991 |    5988.445313 |           1910 |         31.89475566 |
-> >>>>>> |      1011 |    5988.570313 |           1926 |         32.16126554 |
-> >>>>>> |      1032 |    6016.039063 |           1936 |         32.18064211 |
-> >>>>>> |      1575 |    6057.289063 |           1968 |         32.48978181 |
-> >>>>>> |      1606 |    6026.167969 |           2000 |         33.18858702 |
-> >>>>>> +-----------+----------------+----------------+---------------------+
-> >>>>>> I ignored some points to make the table shorter. Anyway, the amount
-> >>>>>> of memory consumption, total and huge pages, is a lot higher than
-> >>>>>> with DAMON hugepage autotuning.
-> >>>>>
-> >>>>> Could you further clarify why it is, and what this means
-> >>>> Memory fragmentation. I will add information about memory fragmentation
-> >>>> in the next cover letter. >>
-> >>>
-> >>> Yes, please.  Let's make the complete story of the benchmark.
-> > 
-> > I'd like to again call out I'd like to show "complete story".  I don't think
-> > additional data points that look interesting but not providing a complete story
-> > is really adding much values to this work.
-> > 
-> > If you want my feedback on benchmark results first, sending benchmark results
-> > (with your analysis an discussions) without the code change could be an option.
-> That makes sense. Maybe I will just reply for now on to get your thoughts.
+>>
+>> Thanks,
+>> Alexander
+>>
+>> --
+>>
+>> KUKA Deutschland GmbH   Board of Directors: Michael Jürgens (Chairman), Johan Naten, Hui Zhang   Registered Office: Augsburg HRB 14914
+>>
+>> This e-mail may contain confidential and/or privileged information. If you are not the intended recipient (or have received this e-mail in error) please notify the sender immediately and destroy this e-mail. Any unauthorized copying, disclosure or distribution of contents of this e-mail is strictly forbidden.
+>>
+>> Please consider the environment before printing this e-mail.
+> 
 
-I suggested to take step back and look back what we tested so far to get a
-better idea on theory.  But, yes, adding even more data shouldn't harm us.
-Please feel free to share your findings.
-
-Thank you for replying to all my comments.  To recap, let's keep discussing
-about the test.
-
-
-Thanks,
-SJ
-
-[...]
 
