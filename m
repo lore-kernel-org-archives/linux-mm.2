@@ -4,191 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF51FC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:08:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 063C1C43602
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:12:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0EC36B008C; Wed,  8 Jul 2026 03:08:46 -0400 (EDT)
+	id CCFFB6B008C; Wed,  8 Jul 2026 03:12:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBEF36B0093; Wed,  8 Jul 2026 03:08:46 -0400 (EDT)
+	id C7A5E6B0095; Wed,  8 Jul 2026 03:12:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAD396B0095; Wed,  8 Jul 2026 03:08:46 -0400 (EDT)
+	id B6DBE6B0096; Wed,  8 Jul 2026 03:12:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 815F46B008C
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:08:46 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E67801206D4
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:08:45 +0000 (UTC)
-X-FDA: 84964731810.09.2B97F38
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5A994140003
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:08:43 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=dWA6Inxr;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=FGhcF4fR;
-	spf=pass (imf23.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8335C6B008C
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:12:02 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 01F5C168FED
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:12:01 +0000 (UTC)
+X-FDA: 84964740084.12.FC2B94F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 3E63120004
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:12:00 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J5J3r6vj;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783494523;
+	s=arc-20220608; t=1783494720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nJqYhVncBU+d62V+AHvnJXoOTo03C+xWxG51CnST7TU=;
-	b=q0dVq1W/epOmzwnZkhBTxtclmLnt3gNomTXVcLUkFmF57CGHVW1GxcuhqTJL4JiIy0ArAu
-	Jm78Y84pRen9qE9bHHRB8cN8QkyEPPpQJmAi08Tr3Y2FQ4EcGdNlf/LPnGkCBVIob4+aqL
-	YAFMt4uYOlEEKhtWvn0+PUf6NQYI0zA=
+	bh=s4/hXvWkBJYshJcEvyza1hYhIjfNO0KuzbmYf5k9+CM=;
+	b=TvbGYzvXl/BvM0mK3A2uh7wlS6UwJ6Wy8Q+8jAA4hsWyLkWsxWX2oehFRsaTIETJAsdTC0
+	yB5IeODFIOP3bkhiih2OsPM/ReuEjJkZXnddy82NUehGspyOTLE/ETjCjLCrRPuA6gssof
+	tGX64jk/YQwyeYxbr3QjvnvgXkTm6Z0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=dWA6Inxr;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=FGhcF4fR;
-	spf=pass (imf23.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
-	dmarc=pass (policy=reject) header.from=qualcomm.com
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J5J3r6vj;
+	spf=pass (imf31.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783494523;
-	b=Wz78gefQHZnGeV9LDtc8w/bFObcEhPjcKpGIghej+gle3Mi4O5h5+wA2eJEBLjOnFmmc3A
-	mdqs/5pdqkpJk2IGJfsnjfb2WLc3Xb3XWsqcYvb5uhxo+MJRTes1i4GqrOzwBLBulIsofb
-	Qw9j5YtaKgiRG08uYvgBkIq+2nDgqRw=
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6685mjIX1761043
-	for <linux-mm@kvack.org>; Wed, 8 Jul 2026 07:08:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=nJqYhVncBU+
-	d62V+AHvnJXoOTo03C+xWxG51CnST7TU=; b=dWA6InxrM1RDSuiXJWA8wNLflNn
-	bjANDuPY7kJ2Uiv12Ah48NqX8rczX8ICeD49ThCPjfrxwDYvjDxGKz9TTTt4lcSy
-	6CdqHUbjjbBrjrcFaa7ppQC+kldPN6iJVr8ovr6Cpw9lYjW9FNo6UzysXJkoMdQn
-	W4wwr6HHJyeLZeFOsIEMQMGKFVmIw/83kT8n75XoFBAnTZyE15fA4huaUutPBeZz
-	IxXwuRpA3MMGvJyii3Ju74nPN3LN9N7nfhkIaOFrr3wk31zMpV0WVtG4i+GAduni
-	FbUnjHxWmv+nWZzRz0zqBeTgIvQ8ZII1udWS9nED984qtdCzvsPdUDYXx+A==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9gqw89q4-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 08 Jul 2026 07:08:41 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c8895156101so584988a12.1
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 00:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1783494521; x=1784099321; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nJqYhVncBU+d62V+AHvnJXoOTo03C+xWxG51CnST7TU=;
-        b=FGhcF4fR4rf4mCX5QqTmsEOyvSYqXNLsxtn58zEdFPGBwbIvyx4VqWh4Psaw2hf0v8
-         +VZKa4zpHEtATVyXgWGvIlzWqEbteeY656C4i9UtbaIBTGlorJJmp5gdIdgWCsZzOCNV
-         BF5ZCZKwttsu8PcqFDb2F2wupqYO8Q40mHbba2YkDHR5czLVkFQRrsV+k5bM6nPUNKEY
-         gky42yFHGySBO2SWz4lT8aIW7LP7WTTTou++z23zSZqRRoRMocqBt0eA0cnni54dUPlQ
-         4EEqGJ6D5VTFxSrzFhcqacWTYTt893Wj71j75bt9MLxh+V2vnxwaLWThNsC1PzTxGHRb
-         YOsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783494521; x=1784099321;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nJqYhVncBU+d62V+AHvnJXoOTo03C+xWxG51CnST7TU=;
-        b=RIuNOnJedG49qXbWX0fh3d43Qa9cK4cszmCiK54MUuPBAlh9GsTa1eMmTrMl+ndSQf
-         5HDIcJKvlAf5ft+GWHh1LoCN/CsXd2q0oKOZ7xoO4arxPc9+1JiXPcZY13A1U+7lIUXQ
-         xRjCYdnhUkJRv+ra6x59JQii7HYpNKMyTmjInr0vwGgxg2iyR9IkftFIaOhanU4TIjm8
-         AzpwCU2dhzj1YnWCOzjBcA0vIG+w9lXOkW7DFvrFXiGZpi2Fq9PTzdAi6NxFDv97At94
-         icSvQjvcMz2c06QOUjtIJKEMFaYkrlWgdFQe88lYzhRsBs4AQJ6I7syH45BtYFfULuGB
-         2xeQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqvUHyXnyedzcYypUftR35ghSAXvoSR5H+L860IkZBZi7WdN7lPTZitC+aia0yeJ5F6LI+gP+kBOA==@kvack.org
-X-Gm-Message-State: AOJu0Yy0U2a2Dc2xdoqK4EHqrhfh/oQunIzTnzaMR6n2XPPpEDeMRzKj
-	p7QiKrDSxqkmtTtinTf3ltcqon/nJkA5dQw/C60Xiaydi7tghtO12GSs5MSDqtQxPlY85/Ry+zb
-	Oyi0V5WLk9RtXwdk1uA15f+enhwMNYC2oqKx2hUGB5GB5QvBE1/ycwQ==
-X-Gm-Gg: AfdE7cmpRo0HW2t7MTH0/zTBEMbUiumNfop3gB6za75yiUTdEs+JPyVp8PZLx+Trc8u
-	nDFgoiK1bkglB6UCZlfoPdbxuNa3YPTSJL3bOPlxbdSa76WZGiDUQ5ea+if+LZ9BXNr2UNKL7It
-	LGfAo5EDMASZ2B2H9shnAzDQv6zugJHLzVP2sR9nMim1QbZpqye3wNKK57cZCrCvs5LC5CVmJbF
-	4VKyJyvH6AZHB7e7IokbJz56ULW0ilsR/+Xgm0MNr66HQrpY5dG9+m7Zfs8JLDr6mWjr42OqRGd
-	iorF5/1t0TIIBNXuTNrHKLjgbJikfM5Ty9fjVz6NoNzbw0nvGOGhshhHa9xV+BHaFO8/vKjXHJB
-	kqLkhegl5jgRTT3y7HpFdZSWDdtnAYlLpP5o/BA==
-X-Received: by 2002:a05:6a21:10e:b0:3c0:9c19:65b1 with SMTP id adf61e73a8af0-3c0bd3acfb6mr1445382637.73.1783494520978;
-        Wed, 08 Jul 2026 00:08:40 -0700 (PDT)
-X-Received: by 2002:a05:6a21:10e:b0:3c0:9c19:65b1 with SMTP id adf61e73a8af0-3c0bd3acfb6mr1445323637.73.1783494520337;
-        Wed, 08 Jul 2026 00:08:40 -0700 (PDT)
-Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5afdb754asm1893624a12.13.2026.07.08.00.08.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 00:08:39 -0700 (PDT)
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-To: akpm@linux-foundation.org, anna-maria@linutronix.de, arnd@arndb.de,
-        andersson@kernel.org, chrisl@kernel.org, cl@gentwo.org,
-        conor+dt@kernel.org, david@kernel.org, dennis@kernel.org,
-        devicetree@vger.kernel.org, ehristev@kernel.org, frederic@kernel.org,
-        mingo@redhat.com, jstultz@google.com, corbet@lwn.net,
-        juri.lelli@redhat.com, kasong@tencent.com, kees@kernel.org,
-        konradybcio@kernel.org, krzk+dt@kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-remoteproc@vger.kernel.org, mathieu.poirier@linaro.org,
-        mukesh.ojha@oss.qualcomm.com, peterz@infradead.org, pmladek@suse.com,
-        robh@kernel.org, saravanak@kernel.org, tj@kernel.org, tglx@kernel.org,
-        vincent.guittot@linaro.org, workflows@vger.kernel.org
-Cc: atomlin@atomlin.com, ast@kernel.org, aliceryhl@google.com,
-        linux.amoon@gmail.com, ardb@kernel.org, baoquan.he@linux.dev,
-        baohua@kernel.org, bsegall@google.com, jackmanb@google.com,
-        leitao@debian.org, brauner@kernel.org, coxu@redhat.com,
-        dietmar.eggemann@arm.com, dianders@chromium.org, ebiggers@kernel.org,
-        feng.tang@linux.alibaba.com, yangfeng@kylinos.cn, gary@garyguo.net,
-        guohanjun@huawei.com, jack@suse.cz, wangjinchao600@gmail.com,
-        joel.granados@kernel.org, hannes@cmpxchg.org,
-        john.ogness@linutronix.de, jpoimboe@kernel.org,
-        shikemeng@huaweicloud.com, kas@kernel.org, kprateek.nayak@amd.com,
-        liam@infradead.org, ljs@kernel.org, elver@google.com, mgorman@suse.de,
-        mhocko@suse.com, ojeda@kernel.org, rppt@kernel.org,
-        namcao@linutronix.de, nathan@kernel.org, nphamcs@gmail.com,
-        n.schier@fritz.com, pasha.tatashin@soleen.com, petr.pavlu@suse.com,
-        pnina.feder@mobileye.com, rdunlap@infradead.org,
-        rioo.tsukatsukii@gmail.com, senozhatsky@chromium.org,
-        skhan@linuxfoundation.org, sboyd@kernel.org, rostedt@goodmis.org,
-        surenb@google.com, thomas.weissschuh@linutronix.de,
-        vschneid@redhat.com, vbabka@kernel.org, youngjun.park@lge.com,
-        zhengyejian@huaweicloud.com, ziy@nvidia.com,
-        Eugen Hristev <eugen.hristev@linaro.org>
-Subject: [PATCH v3 26/26] meminspect: Add debug kinfo compatible driver
-Date: Wed,  8 Jul 2026 12:38:09 +0530
-Message-ID: <20260708070809.2660886-1-mukesh.ojha@oss.qualcomm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
+	t=1783494720;
+	b=irBBtv36Mj8ihpNmMvrWHu9+zbMioXcOlq7/BUu5v+VcZb9gfgsHQ70K1lZiIm8npTrSO5
+	a9th8uSl+VtuZrEqQazSc1C+xPNzn8XbCChZe48C5mffQg65lUgXzTZp0B2yM4DiHGfHlG
+	7SVgwkPhf23H+wpkbhWuJr6U5sr21D4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 19E0F41ACA;
+	Wed,  8 Jul 2026 07:11:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BA21F00A3A;
+	Wed,  8 Jul 2026 07:11:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783494719;
+	bh=s4/hXvWkBJYshJcEvyza1hYhIjfNO0KuzbmYf5k9+CM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=J5J3r6vjeLmRU1vjJ3SHJeOj4ML88DWOr8nrH0T5TzW3tVO6YMcYQRJWtUsEfDsYm
+	 l1EyF0he63hxnS6MQy3/HKs3levCcZFRIY2ybzhEt0FiAMGRg57sg1a/2pFJhLRLz4
+	 dSbTlBJY/Fq61rBVAAFMtQLF8mG2173oTwNb34ec7k7SUB2hpRKfF+hyHa3SiF5gfO
+	 Sr0S6qfzHbZeFGLdrkBJEAUjq7Q7UU3Ap3RzZAaM5qoXZzf0sU2kxOVLUGWuBuAeKR
+	 +K7WO+ce/4Uu6RlnWKMxrV6XJ1UdkDgws2csgd9GUZfL0i2p07xTNfSyuB8wgUxZVc
+	 kPKBQdoX+xmsQ==
+Date: Wed, 8 Jul 2026 08:11:38 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Eugen Hristev <ehristev@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-arm-msm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v3 00/26] Introduce meminspect
+Message-ID: <ak3vMSOcv1E6Smbn@lucifer>
 References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDA2NyBTYWx0ZWRfX4PcQO6yOfL9d
- dW42TiIck13Zh4561ZgdKg19djt9A4k8mSvCJf1xOIEQpFpCoWI4jnIrDzNX0bdZeeYX/TbZ9bt
- XsdTeNSEFJST05PDPM0Zeapl3au41zFmWPz/VCsXLO5a7e9+qZUCyC5o7WDSdQpFi5BqyG3wAMD
- t1IRJlDVP00Tplpix7Fe4+bDJBBOQQxugAsIsjcvrSXu9FxizMTaUbTBfxm8Pv0ujw7tleeH4J7
- 8hbboIHtrQLGEvrRQkoALimbQFvBjKbNypJN7eFHC9hxG/syErVA9NRaT4FVu+igVka0TslBQBb
- jCSk3cwVjH3/ivja3kox1kWtHOKO+EV/k+o8Xgj03kQcVBvX//o8hH27qcFsycBB1xBc3zygMd8
- oWkW7tx/w/DNhG7aCHgfCG7yDlRSDOwQTSwMKOzZdl0fUFOPamvcHWt1fyyhHGDq75PNQm3+xRw
- sTaMbPwZheXvi4pXjww==
-X-Proofpoint-GUID: rBTqanX9tbvHeeWfTOuNqkzluviBxJBw
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDA2NyBTYWx0ZWRfX45oaCX6JkXnd
- 6ZW0G1+1htFKEzkeksLiumen3xf1XJY4nBdXzhQlNU7Rvf4RojLl8W2cXberT8bzoVpVXEyxLn3
- FRi2rEvQaCsb0oiv2IWg8BpvcH9bi8Q=
-X-Proofpoint-ORIG-GUID: rBTqanX9tbvHeeWfTOuNqkzluviBxJBw
-X-Authority-Analysis: v=2.4 cv=Wf88rUhX c=1 sm=1 tr=0 ts=6a4df779 cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=KKAkSRfTAAAA:8
- a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8 a=Tty9oNO6AAAA:8 a=1XWaLZrsAAAA:8
- a=rSYwI8UV6N779v-tbp0A:9 a=3WC7DwWrALyhR5TkjVHa:22 a=cvBusfyB2V15izCimMoJ:22
- a=Bts-Es6F1CBXvF7u4C_G:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-07-07_06,2026-07-06_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015 bulkscore=0 impostorscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080067
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5A994140003
-X-Stat-Signature: oy55ihrg5ohpfwc9hh8439j39w5e1qps
-X-HE-Tag: 1783494523-798041
-X-HE-Meta: U2FsdGVkX19B9wtsk+ic+xJifE+60GDmvz4/tpPRxvLYBU4S9/2WpVSnrfPjNADLunH0FKkDwv7gV8QwsxXtlVtdwWnA2HSM4/8reVRhZxD1EtaUS+o1CNU2NFZa6jXTQUf6LfFy8np1/yiNbP8BKV2lhj5pCISJD0LdvLgSVbxHUxfZDk9Idggs3RQh2Sn37yTHSw1gGWP/G/iX9d7U8Jn6dgmYKc1wFKIarefx/k2d6mPhmGX0Ufv4uBP+z0MsxWrVV/D1+mKG6JS7I8wd/vFjO2Rgf4Aq7tfEL/LkLqztgQ5ez5PrTt2INfZO0BbDcuehOYBKtUmTdNN0qKtYA0YHCfsX55jCxr7NY0oPd0fc9sU0Tfh4Nf1ntZwvPlZ+VewA/99twDov4F4e7etfW8DZECR0Fny/JovhnNxn41JCfcHigfBOZNxPE5SddKBiNHpSwH2zvocAI1poUlwNjcNSSNEmlPgM4UVvzGlnULEI28jfzD7acfdXftVxP/Ja3qPGHs6tY3s8BA3IlundjzozIR702Oc2etJOTDELERDuQ0dxkbuiGXfYLB1egL+Vr7siUh5Puz8qePAJmw3kP46bO/BWg9D1XwHlMQJa0Q9wO0f3igjvTDq1mrAsONrWGEzH+CSYpIdf3nzOjRxoFEo2kLeBpWwIuqLXwZ8ESYiBf0RU1FQRQJiVs47VGCTEtcTXVXAJAoe2PabmJse7Bua5n2ubqp3p3362AnI6G0aA7L1Ti4kpPsFNoJepyeX1mxREJ0R30J+41Lsyb2llX5CgCU/JNoA+JPO1D8gE9QzY/fEXx6ZKfeYzC4GfA0wAE7KANxs2NOQWGnU34vAx8nOTD52GMB0Y4vyyHPuEel5HoHHF8aPsG5rLfBOTyCCAPEvgLjcE4rA9B64ti/hn94EQnBmm1aAMES1JEPV1CVu8IcpxMmklwN5iF5ak/hxTiRkHjJ4PmzBrWM8fwqw
- kLbIBLrv
- mX/4TqH8l44InOsKmJgKE5WIMEt32Wkj+75uFa2IMuMPpqN64JbZtyC51Tg3IEBXdqeikL131ITpdxvEkvAAJmkwxS/j+SN3Iz3eWGcwms7YkOvitS+2SS0M5k7Px2oryt3MMvES5FU8iHtkyGCo0LeNB+AKdutPNiB1i+TT41f+asBetffp2tHyDmR+nuL9MiswtcSh0gbiGI9I+UryL/JMSvuPA8oq0Kh4xy0X45fqoXjJVh7136Jb6+ryB8BZu815lNQxwIfFEEwO7JTymTRjkwuQxZ9g+XMauPkxkjLlLkY7Um1a2Nk7IRKJGz4nWLSt51eneRrOLpz7OJWht9qj/W7cCUg0L7pWhmb78YxSnecy25AnKkbmca3dG/Pg09du6RLZtE6qd7+Jb21Df1e47LkA13Fii82thTqEGiv4BDxDK69NsDs13LApFGtEYyKspzP6TUpNWc1Pz8/AhyaZF8mmPqKaQtpX7tbryQ1dbNmX2hRtoOUuhoPoA6YrpeCQSdHfiPQH3yw2guB5ej3WciRZ5JPJPME5C3JuqLUoCQF41+8sbRwTrdsWMApA/goqInx20VVuu9UD8hKToX+fpqJN8IeEMntXAR4t2Ihf50BppPUySl/kwMx79L3/GzSl4/TZNmbO3+YRKIB0Hm02oAJOJnUWzOCKuzQx1WQav3PZzs7KUvATcGTDEnxj/x7XO
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3E63120004
+X-Stat-Signature: usypi3kfx3g4bhde3msjarpp6p3zjs8b
+X-HE-Tag: 1783494720-97589
+X-HE-Meta: U2FsdGVkX199iYRJjbbryCes1sA1HNbwhgjKfSIXFxY40zUIYWvTgWyt+TkZAb7pAerKZBAKCEeZVcejyQS6yskpBSjk+0oaBVLVmoUQcPP6WO9GqIObAV1DT/vrQMGntPxqwZEKlMldr0xyIREz5fUGd+a5MGU3CNqnBbIOlbG0vk/Dzun3qLdqQNDWZGxW5hUcdKsRJtEUNdaefujD66Ls0RWo54l83/bRgc6d5JBe2xrznh7umNBczk3CdjZhU+y1j/GNC8FxjdCXBMbulrXzGqoJfiTMxZHGbTFDVDnBCFU2eJyS3PjK0MzoGS1ZxxTW4bdqGTnOPNGLcZ9vj57xb2toxSuarD8murIKOdf1x6KQmliOhmdBXUztLbjYwMsr63nI58yo0dZFB0vR+0Jow4K10xmqO7cB5QYryN5QvmNtYtSLlC5JP3hkBub8c1KtF/QVxW9uy73VYZRxcleliaS81CDQms8FmenGbRN4alVEPnoPC5CaXMXySJkQdCBA2CPZchMSpZrRS36UlgRxReAi7x4dL3dHTb/iEP46HKWpdEfV+qkHtOFy7YfWTGdtFuGIQqvLPPWw1cgMyR71qLDgI7KR1ai33UiwNq6szexk1FIduDBVtsTIC99HiJNihnPcj6PsBHMQW8DL89Fq7LRPtF77fLUhR3lsGAc6Lbo2mRL/84PWhmB9eIpxbVXuem8MHncMFOqjF2OXp5WZiXzmRoMWqmjYlQBoOXs+MeYIiAuT0TsoWltiUZHntfY7QbbktLNr2G8uhX5c/m+nK+Eo7vb0q8jcb+vEJPe5JNOLYk1ZCKCyWhtKbQqU7eihhj4B9AXN2rRFq0QaEAtBdfDwlvAuyioK9r2oH4lB5Vk2W1SEzzKBiP9IWqg7Y6cY+LymwYjZJkKnJbZRRfvJWs5GUXBBKbdcjkXSLk1WKeb81FILT/r+u0TNbWCu3in41fgvCGlwVWksPlj
+ Qqvn96ju
+ zlVlZuX/ALF1gl23nrGgwDhNjOGpL+6KxTQXipf2keixMoxM7ZABWUjo+WitL2WmIurbZkhHpjNilr/8WZgRFe8IM3N9R4YVQRlNwMl3tI08/f30iflezEVCu6WBlj2iA9H1T8/nKHWNwhMVHR8Lo/9OE9SY6bRtTsCCwITy3BJubC40iB93gTdXIuJnhsGR9q0o6qIgDPj10GmWuW+tZU2+HABVIZyyV9lfkXFVsrNFvvSZYL0Awhv++qUDAt49aPZflCPDZ90b5yUj9Cv2HL9LqVHDqx7HV7bfH1YBYIofXIQU0E2pHCYtommu86juuSJAtLNww4t39j/Ips4o6PLYv/bKfYYisPl7OwpGI+XzGFwfHmqvdE4zOYTnlAtCSWg+fI+OftD/AOrpthqSEXmqsznfiH4iFWEW1BjvvGXyZOQFVRa4Jm2sbAK42s+anevfxLzycjbzExFdbG6jpSUMdQPQ2z16vIpxTAkCnceSqhzeoFXzAO/3DFpAX5rirBY8h0r1f6vGBJaV/GQXhcJl0GV7JD6zUVo3TRnUyGZG4DogXjMLbdT/1OtZOtn1r7J1Rhp3AZISVmJJB1JytVQY2iw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,342 +114,357 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Eugen Hristev <eugen.hristev@linaro.org>
++cc Jason as maybe he has thoughts on this...
 
-With this driver, the registered regions are copied to a shared memory
-zone at register time. The shared memory zone is supplied via OF. This
-driver will select only regions that are of interest, and keep only
-addresses. The format of the list is Kinfo compatible, with devices like
-Google Pixel phone. The firmware is only interested in some symbols'
-addresses.
+Overall - for this to be sensibly mainlined, we need to see a. a COMPELLING case
+made for this feature, b. some buy-in from others, and c. have confidence this
+will be properly maintained.
 
-Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
----
- MAINTAINERS                |   1 +
- drivers/of/platform.c      |   1 +
- kernel/meminspect/Kconfig  |  11 ++
- kernel/meminspect/Makefile |   1 +
- kernel/meminspect/kinfo.c  | 257 +++++++++++++++++++++++++++++++++++++
- 5 files changed, 271 insertions(+)
- create mode 100644 kernel/meminspect/kinfo.c
+I don't feel you've demonstrated any of these.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2d816d783024..d805ff9fedac 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16906,6 +16906,7 @@ M:	Eugen Hristev <eugen.hristev@linaro.org>
- M:	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
- S:	Maintained
- F:	Documentation/devicetree/bindings/reserved-memory/google,debug-kinfo.yaml
-+F:	kernel/meminspect/kinfo.c
- 
- MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION
- M:	Mike Rapoport <rppt@kernel.org>
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 53bca8c6f781..f80bd25fc481 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -494,6 +494,7 @@ static const struct of_device_id reserved_mem_matches[] = {
- 	{ .compatible = "qcom,smem" },
- 	{ .compatible = "ramoops" },
- 	{ .compatible = "nvmem-rmem" },
-+	{ .compatible = "google,debug-kinfo" },
- 	{ .compatible = "google,open-dice" },
- 	{}
- };
-diff --git a/kernel/meminspect/Kconfig b/kernel/meminspect/Kconfig
-index 18ff511ad4cf..7f6436c3344b 100644
---- a/kernel/meminspect/Kconfig
-+++ b/kernel/meminspect/Kconfig
-@@ -16,3 +16,14 @@ config MEMINSPECT
- 
- 	  Note that modules using this feature must be rebuilt if this
- 	  option changes.
-+
-+config MEMINSPECT_KINFO
-+	tristate "Shared memory KInfo compatible driver"
-+	depends on MEMINSPECT
-+	help
-+	  Say y here to enable the Shared memory KInfo compatible driver.
-+	  With this driver, the registered regions are copied to a shared
-+	  memory zone at register time.
-+	  The shared memory zone is supplied via OF.
-+	  This driver will select only regions that are of interest,
-+	  and keep only addresses. The format of the list is Kinfo compatible.
-diff --git a/kernel/meminspect/Makefile b/kernel/meminspect/Makefile
-index 09fd55e6d9cf..283604d892e5 100644
---- a/kernel/meminspect/Makefile
-+++ b/kernel/meminspect/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- obj-$(CONFIG_MEMINSPECT) += meminspect.o
-+obj-$(CONFIG_MEMINSPECT_KINFO) += kinfo.o
-diff --git a/kernel/meminspect/kinfo.c b/kernel/meminspect/kinfo.c
-new file mode 100644
-index 000000000000..7451c13bc316
---- /dev/null
-+++ b/kernel/meminspect/kinfo.c
-@@ -0,0 +1,257 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ *
-+ * Copyright 2002 Rusty Russell <rusty@rustcorp.com.au> IBM Corporation
-+ * Copyright 2021 Google LLC
-+ * Copyright 2025 Linaro Ltd. Eugen Hristev <eugen.hristev@linaro.org>
-+ */
-+#include <linux/container_of.h>
-+#include <linux/kallsyms.h>
-+#include <linux/meminspect.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_reserved_mem.h>
-+#include <linux/platform_device.h>
-+#include <linux/utsname.h>
-+
-+#define BUILD_INFO_LEN		256
-+#define DEBUG_KINFO_MAGIC	0xcceeddff
-+
-+/*
-+ * Header structure must be byte-packed, since the table is provided to
-+ * bootloader.
-+ */
-+struct kernel_info {
-+	/* For kallsyms */
-+	u8 enabled_all;
-+	u8 enabled_base_relative;
-+	u8 enabled_absolute_percpu;
-+	u8 enabled_cfi_clang;
-+	u32 num_syms;
-+	u16 name_len;
-+	u16 bit_per_long;
-+	u16 module_name_len;
-+	u16 symbol_len;
-+	u64 _relative_pa;
-+	u64 _text_pa;
-+	u64 _stext_pa;
-+	u64 _etext_pa;
-+	u64 _sinittext_pa;
-+	u64 _einittext_pa;
-+	u64 _end_pa;
-+	u64 _offsets_pa;
-+	u64 _names_pa;
-+	u64 _token_table_pa;
-+	u64 _token_index_pa;
-+	u64 _markers_pa;
-+	u64 _seqs_of_names_pa;
-+
-+	/* For frame pointer */
-+	u32 thread_size;
-+
-+	/* For virt_to_phys */
-+	u64 swapper_pg_dir_pa;
-+
-+	/* For linux banner */
-+	u8 last_uts_release[__NEW_UTS_LEN];
-+
-+	/* For module kallsyms */
-+	u32 enabled_modules_tree_lookup;
-+	u32 mod_mem_offset;
-+	u32 mod_kallsyms_offset;
-+} __packed;
-+
-+struct kernel_all_info {
-+	u32 magic_number;
-+	u32 combined_checksum;
-+	struct kernel_info info;
-+} __packed;
-+
-+struct debug_kinfo {
-+	struct device *dev;
-+	void *all_info_addr;
-+	size_t all_info_size;
-+	struct notifier_block nb;
-+};
-+
-+static void update_kernel_all_info(struct kernel_all_info *all_info)
-+{
-+	struct kernel_info *info;
-+	u32 *checksum_info;
-+	int index;
-+
-+	all_info->magic_number = DEBUG_KINFO_MAGIC;
-+	all_info->combined_checksum = 0;
-+
-+	info = &all_info->info;
-+	checksum_info = (u32 *)info;
-+	for (index = 0; index < sizeof(*info) / sizeof(u32); index++)
-+		all_info->combined_checksum ^= checksum_info[index];
-+}
-+
-+static void __maybe_unused register_kinfo_region(void *priv,
-+						 const struct inspect_entry *e)
-+{
-+	struct debug_kinfo *kinfo = priv;
-+	struct kernel_all_info *all_info = kinfo->all_info_addr;
-+	struct kernel_info *info = &all_info->info;
-+	struct uts_namespace *uts;
-+	u64 paddr;
-+
-+	if (e->pa)
-+		paddr = e->pa;
-+	else
-+		paddr = __pa(e->va);
-+
-+	switch (e->id) {
-+	case MEMINSPECT_ID__sinittext:
-+		info->_sinittext_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID__einittext:
-+		info->_einittext_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID__end:
-+		info->_end_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID__text:
-+		info->_text_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID__stext:
-+		info->_stext_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID__etext:
-+		info->_etext_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID_kallsyms_num_syms:
-+		info->num_syms = *(__u32 *)e->va;
-+		break;
-+	case MEMINSPECT_ID_kallsyms_offsets:
-+		info->_offsets_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID_kallsyms_names:
-+		info->_names_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID_kallsyms_token_table:
-+		info->_token_table_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID_kallsyms_token_index:
-+		info->_token_index_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID_kallsyms_markers:
-+		info->_markers_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID_kallsyms_seqs_of_names:
-+		info->_seqs_of_names_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID_swapper_pg_dir:
-+		info->swapper_pg_dir_pa = paddr;
-+		break;
-+	case MEMINSPECT_ID_init_uts_ns:
-+		if (!e->va)
-+			return;
-+		uts = e->va;
-+		strscpy(info->last_uts_release, uts->name.release, __NEW_UTS_LEN);
-+		break;
-+	default:
-+		break;
-+	};
-+
-+	update_kernel_all_info(all_info);
-+}
-+
-+static int kinfo_notifier_cb(struct notifier_block *nb,
-+			     unsigned long code, void *entry)
-+{
-+	struct debug_kinfo *kinfo = container_of(nb, struct debug_kinfo, nb);
-+
-+	if (code == MEMINSPECT_NOTIFIER_ADD)
-+		register_kinfo_region(kinfo, entry);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static int debug_kinfo_probe(struct platform_device *pdev)
-+{
-+	struct kernel_all_info *all_info;
-+	struct device *dev = &pdev->dev;
-+	struct reserved_mem *rmem;
-+	struct debug_kinfo *kinfo;
-+	struct kernel_info *info;
-+
-+	rmem = of_reserved_mem_lookup(dev->of_node);
-+	if (!rmem)
-+		return dev_err_probe(dev, -ENODEV, "no such reserved mem of node name %s\n",
-+			      dev->of_node->name);
-+
-+	/* Need to wait for reserved memory to be mapped */
-+	if (!rmem->priv)
-+		return -EPROBE_DEFER;
-+
-+	if (!rmem->base || !rmem->size)
-+		dev_err_probe(dev, -EINVAL, "unexpected reserved memory\n");
-+
-+	if (rmem->size < sizeof(struct kernel_all_info))
-+		dev_err_probe(dev, -EINVAL, "reserved memory size too small\n");
-+
-+	kinfo = devm_kzalloc(dev, sizeof(*kinfo), GFP_KERNEL);
-+	if (!kinfo)
-+		return -ENOMEM;
-+
-+	platform_set_drvdata(pdev, kinfo);
-+
-+	kinfo->dev = dev;
-+	kinfo->all_info_addr = rmem->priv;
-+	kinfo->all_info_size = rmem->size;
-+
-+	all_info = kinfo->all_info_addr;
-+
-+	memset(all_info, 0, sizeof(struct kernel_all_info));
-+	info = &all_info->info;
-+	info->enabled_all = IS_ENABLED(CONFIG_KALLSYMS_ALL);
-+	info->enabled_absolute_percpu = IS_ENABLED(CONFIG_KALLSYMS_ABSOLUTE_PERCPU);
-+	info->enabled_base_relative = IS_ENABLED(CONFIG_KALLSYMS_BASE_RELATIVE);
-+	info->enabled_cfi_clang = IS_ENABLED(CONFIG_CFI_CLANG);
-+	info->name_len = KSYM_NAME_LEN;
-+	info->bit_per_long = BITS_PER_LONG;
-+	info->module_name_len = MODULE_NAME_LEN;
-+	info->symbol_len = KSYM_SYMBOL_LEN;
-+	info->thread_size = THREAD_SIZE;
-+	info->enabled_modules_tree_lookup = IS_ENABLED(CONFIG_MODULES_TREE_LOOKUP);
-+	info->mod_mem_offset = offsetof(struct module, mem);
-+	info->mod_kallsyms_offset = offsetof(struct module, kallsyms);
-+
-+	kinfo->nb.notifier_call = kinfo_notifier_cb;
-+
-+	meminspect_notifier_register(&kinfo->nb);
-+	meminspect_lock_traverse(kinfo, register_kinfo_region);
-+
-+	return 0;
-+}
-+
-+static void debug_kinfo_remove(struct platform_device *pdev)
-+{
-+	struct debug_kinfo *kinfo = platform_get_drvdata(pdev);
-+
-+	meminspect_notifier_unregister(&kinfo->nb);
-+}
-+
-+static const struct of_device_id debug_kinfo_of_match[] = {
-+	{ .compatible	= "google,debug-kinfo" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, debug_kinfo_of_match);
-+
-+static struct platform_driver debug_kinfo_driver = {
-+	.probe = debug_kinfo_probe,
-+	.remove = debug_kinfo_remove,
-+	.driver = {
-+		.name = "debug-kinfo",
-+		.of_match_table = debug_kinfo_of_match,
-+	},
-+};
-+module_platform_driver(debug_kinfo_driver);
-+
-+MODULE_AUTHOR("Eugen Hristev <eugen.hristev@linaro.org>");
-+MODULE_AUTHOR("Jone Chou <jonechou@google.com>");
-+MODULE_DESCRIPTION("meminspect Kinfo Driver");
-+MODULE_LICENSE("GPL");
--- 
-2.53.0
+And looking through the history of this (you've made it really hard with your
+changelog):
 
+    v2 - https://lore.kernel.org/lkml/20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com/
+    v1 - https://lore.kernel.org/lkml/20251119154427.1033475-1-eugen.hristev@linaro.org/
+RFC v3 - (I literally can't find it...?)
+RFC v2 - https://lore.kernel.org/all/20250724135512.518487-1-eugen.hristev@linaro.org/
+RFC v1 - https://lore.kernel.org/lkml/20250422113156.575971-1-eugen.hristev@linaro.org/
+
+I'm struggling to understand why on earth it came out of RFC?
+
+You really shouldn't drop the RFC tag unless you've got CLEAR signal that the
+community wants the feature and that there's buy-in.
+
+Instead you've got some specific technical feedback, some trivia, etc. which
+warrants RFC respins, but nothing to suggest buy-in.
+
+So please attach the RFC tag to any future respins. And I suggest you make the
+case for this a LOT clearer and seek to engage with others to confirm that there
+is anybody else who wants this.
+
+On Wed, Jul 08, 2026 at 11:01:39AM +0530, Mukesh Ojha wrote:
+> First of all, I want to thank Eugene for his excellent work on this
+> series. What began as the Qualcomm Minidump driver from me has now
+> evolved into meminspect. He also presented meminspect at Linux
+> Plumbers 2025.
+>
+> Video of the recording is available here for anyone interested:
+> https://www.youtube.com/watch?v=aDZv4-kOLSc
+
+It's iffy putting links like this in a commit message that'll end up as a commit
+(in mm we put the cover letter in). Links can die. Companies can change their
+minds about videos being available.
+
+Maybe better as something explicitly after the commit message.
+
+>
+> Introduction: Memory inspection mechanism
+>
+> meminspect is a mechanism which allows the kernel to mark specific
+> memory areas for memory dumping or specific inspection, statistics,
+> usage.  Once regions are marked, meminspect keeps an internal list with
+> the regions in a dedicated table.  Further, these regions can be
+> accessed using specific API by any interested driver.  Regions being
+> marked beforehand, when the system is up and running, there is no need
+> nor dependency on a panic handler, or a working kernel that can dump the
+> debug information.  meminspect can be primarily used for debugging. The
+> approach is feasible to work when pstore, kdump, or another mechanism do
+> not. Pstore relies on persistent storage, a dedicated RAM area or
+> flash, which has the disadvantage of having the memory reserved all the
+> time, or another specific non volatile memory. Some devices cannot keep
+> the RAM contents on reboot so ramoops does not work. Some devices do not
+> allow kexec to run another kernel to debug the crashed one.  For such
+> devices, that have another mechanism to help debugging, like firmware,
+> meminspect is a viable solution.
+
+Please use paragraphs, this is an unreadable wall of text and it just seems
+to be noise.
+
+Why would we want to mark specific areas a special way? What are the
+trade-offs, what does that actually do? How do you interact with it? Why
+can't other approaches be used?
+
+You should make it CLEAR what exactly the benefits are and why this is
+better than alternatives.
+
+>
+> meminspect can create a core image, similar with /proc/vmcore, with only
+> the registered regions included. This can be loaded into crash tool/gdb
+> and analyzed. This happens if CRASH_DUMP=y.  To have this working,
+
+What is CRASH_DUMP? Where is it defined? You mean CONFIG_CRASH_DUMP?
+
+> specific information from the kernel is registered, and this is done at
+> meminspect init time, no need for the meminspect users to do anything.
+
+Again this just doesn't really mean anything to me?
+
+>
+> This version of the meminspect patch series includes two drivers that
+> make use of it: one is the Qualcomm Minidump, and the other one is the
+> Debug Kinfo backend for Android devices, reworked from this source here:
+> https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/drivers/android/debug_kinfo.c
+> written originally by Jone Chou <jonechou@google.com>
+
+This feels rather like you've taken a specific use case you have, and
+worked backwards from it to changes to core, honestly.
+
+>
+> Tested on Qualcomm SA8775P (Lemans EVK) on next-20260707 with the
+> minidump backend: kernel crash dump regions correctly captured
+> via firmware.
+
+What is a minidump backend? There's no detail about the testing here
+either. Does anybody outside of Qualcomm care about this?
+
+>
+> This series introduces a new cross-subsystem framework and, to
+> avoid merge ordering issues, I suggest the entire series be taken
+> via the mm tree. Subsystem maintainers for touched files have
+> been CC'd; I request an Acked-by from them if the respective
+> patches look fine from their side.
+
+Don't put stuff about mechanics of merge in the middle of a cover letter
+that will go into the git log, put this and the stuff about the video in a
+block of text below the main text, you can tag it 'REVIEWERS NOTES' or
+similar.
+
+Not only A-b for touched files, but as this is ostensibly an mm feature
+you'll need tags from mm maintainers and acceptance of the feature overall
+for it to be accepted.
+
+>
+> Alternatively, the qcom backend patches (22-24) can be deferred
+> to Bjorn's qcom tree in a follow-on series once the core
+> meminspect framework lands.
+
+I think that would be better yes, you shouldn't be adding new driver
+changes in a core series like this, only touching stuff you have to touch
+as a result of the core change.
+
+Anything else should be saved for later series. You can express ordering
+requirements in the cover letter...
+
+>
+> *** How to use meminspect with minidump backend on Qualcomm platform guide ***
+
+Odd to put a specific qualcomm TODO in a cover letter for a mainline
+feature...
+
+Again this makes it feels like this is something you want for your driver,
+and the core changes are just a means of getting there, which is not an
+acceptable justification for core changes.
+
+You have to rework this entire cover letter to sell it as a GENERAL
+feature.
+
+I'm really not convinced we want to give drivers (which are great at doing
+exactly the wrong thing with mm APIs) the ability to do invasive things in
+mm.
+
+>
+> Prerequisites:
+> Crash tool compiled with target=ARM64.
+>
+> Target kernel must be built with: CONFIG_DEBUG_INFO_REDUCED=n;
+> this will have vmlinux include all the debugging information
+> needed for the crash tool and CONFIG_MEMINSPECT,
+> CONFIG_CRASH_DUMP, and the driver CONFIG_QCOM_MINIDUMP.
+> Kernel arguments: Kernel firmware must be set to mode 'mini' by kernel
+> module parameter like this : qcom_scm.download_mode=mini
+>
+> After the kernel boots and the minidump module is loaded,
+> everything is ready for a possible crash. Upon triggering a
+> forced kernel crash, the target board will wait in download mode,
+> where QDL (https://github.com/linux-msm/qdl) running on the host
+> connected to the target (here, Lemans EVK) can be used to collect
+> minidump.elf from the target device onto the host.
+>
+> Currently, --minimal mode is being used to get dmesg log from
+> crashed device.
+>
+> Without --minimal mode, the crash tool needs to be patched to
+> not crash on missing symbols and needs to be tuned, which I am
+> currently working on in parallel.
+>
+> crash> log
+> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x514f0014]
+> [    0.000000] Linux version 7.0.0-rc3-next-20260309-00028-g528b3c656121 (@21e3bca4168f) (aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #5 SMP PREEMPT Tue Mar 10 18:18:41 UTC 2026
+>
+> *** Debug Kinfo backend driver ***
+> I need help with the testing of this driver, Anyone who actually wants
+
+Err you're putting forward a non-RFC series to mainline and also saying
+essentially it's untested at least in one respect?
+
+This is signal that this should _remain_ RFC.
+
+> to test this, feel free to reply to the patch. we have also written a
+> simple DT binding for the driver.
+>
+> Thanks in advance for the review, and apologies if I missed addressing any comment.
+>
+> -Mukesh
+>
+> Changes in v3: https://lore.kernel.org/lkml/20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com/
+
+And again, ->v2 but you label it v3...!
+
+> - Addressed most of doc. comments and binding and 0-day kernel
+>   test robot warning.
+> - Add timekeeping: Register tk_data into meminspect
+> - fixed some of the bugs identified during testing.
+> - Fix missing return before dev_err_probe() in qcom_md_probe(); all
+>   three error paths (SMEM lookup, table validation, table init) now
+>   correctly abort probe on failure
+> - Fix meminspect_traverse() kernel-doc: @priv description corrected
+> - Fix meminspect.rst: replace stale MEMINSPECT_ITERATOR_CB type name
+>   with the actual meminspect_iter_cb_t typedef
+> - Add kernel-doc for meminspect_iter_cb_t typedef
+> - Lot of code formating and style change as per coding standard.
+>
+> Changes in v2: https://lore.kernel.org/lkml/20251119154427.1033475-1-eugen.hristev@linaro.org/
+
+The link is to v1... what a mess!
+
+>  - Fixed doc warnings
+>  - Fixed kernel-test robot warnings.
+>  - Took Mike suggestion to remove mark inspect flag for dynamic memory.
+>  - Added R-b for printk patch.
+>  - Modified some commit messages for clarity.
+>  - corrected binding change for debug-kinfo as per Rob suggestion.
+>
+> Changelog for meminspect v1:
+
+You don't include a link to RFC v3 at all?
+
+> - rename to meminspect
+> - start on top of v2 actually, with the section and all.
+> - remove the backend thing, change the API to access the table
+> - move everything to kernel/
+> - add dependency to CRASH_DUMP instead of a separate knob
+> - move the minidump driver to soc/qcom
+> - integrate the meminspect better into memblock by using a new memblock flag
+> - minor fixes : use dev_err_probe everywhere, rearrange variable declarations,
+> remove some useless code, etc.
+>
+> Changelog for RFC v3:
+> - V2 available here : https://lore.kernel.org/all/20250724135512.518487-1-eugen.hristev@linaro.org/
+
+Same comment as below. Put links for changelogs with the version you're changing
+it's a total nightmare trying to follow this.
+
+And I literally cannot find RFC v3 on list, did you mislabel it?
+
+> - Removed the .section as requested by David Hildenbrand.
+> - Moved all kmemdump registration(when possible) to vmcoreinfo.
+> - Because of this, some of the variables that I was registering had to be non-static
+> so I had to modify this as per David Hildenbrand suggestion.
+> - Fixed minor things in the Kinfo driver: one field was broken, fixed some
+> compiler warnings, fixed the copyright and remove some useless includes.
+> - Moved the whole kmemdump from drivers/debug into mm/ and Kconfigs into mm/Kconfig.debug
+> and it's now available in kernel hacking, as per Randy Dunlap review
+> - Reworked some of the Documentation as per review from Jon Corbet
+>
+> Changelog for RFC v2:
+> - V1 available here: https://lore.kernel.org/lkml/20250422113156.575971-1-eugen.hristev@linaro.org/
+
+Why are you linking the previous version here, it's strange.
+
+Just put RFC v1: with the link below, same goes for other cases.
+
+> - Reworked the whole minidump implementation based on suggestions from Thomas Gleixner.
+> This means new API, macros, new way to store the regions inside kmemdump
+> (ditched the IDR, moved to static allocation, have a static default backend, etc)
+> - Reworked qcom_minidump driver based on review from Bjorn Andersson
+> - Reworked printk log buffer registration based on review from Petr Mladek.
+>
+> ---
+> Eugen Hristev (21):
+>       kernel: Introduce meminspect
+>       init/version: Annotate static information into meminspect
+>       mm/percpu: Annotate static information into meminspect
+>       cpu: Annotate static information into meminspect
+>       genirq/irqdesc: Annotate static information into meminspect
+>       timers: Annotate static information into meminspect
+>       kernel/fork: Annotate static information into meminspect
+>       mm/page_alloc: Annotate static information into meminspect
+>       mm/show_mem: Annotate static information into meminspect
+>       mm/swapfile: Annotate static information into meminspect
+>       kernel/vmcore_info: Register dynamic information into meminspect
+>       kernel/configs: Register dynamic information into meminspect
+>       mm/init-mm: Annotate static information into meminspect
+>       panic: Annotate static information into meminspect
+>       kallsyms: Annotate static information into meminspect
+>       mm/mm_init: Annotate static information into meminspect
+>       sched/core: Annotate runqueues into meminspect
+>       remoteproc: qcom: Move minidump data structures into its own header
+>       soc: qcom: Add minidump backend driver
+>       soc: qcom: smem: Add minidump platform device
+>       meminspect: Add debug kinfo compatible driver
+>
+> Mukesh Ojha (5):
+>       timekeeping: Register tk_data into meminspect
+>       mm/numa: Register node data information into meminspect
+>       mm/sparse: Register information into meminspect
+>       printk: Register information into meminspect
+>       dt-bindings: reserved-memory: Add Google Kinfo Pixel reserved memory
+>
+>  Documentation/dev-tools/index.rst                  |   1 +
+>  Documentation/dev-tools/meminspect.rst             | 144 +++++++
+>  .../reserved-memory/google,debug-kinfo.yaml        |  48 +++
+>  MAINTAINERS                                        |  16 +
+>  drivers/of/platform.c                              |   1 +
+>  drivers/remoteproc/qcom_common.c                   |  55 +--
+>  drivers/soc/qcom/Kconfig                           |  13 +
+>  drivers/soc/qcom/Makefile                          |   1 +
+>  drivers/soc/qcom/minidump.c                        | 271 ++++++++++++
+>  drivers/soc/qcom/smem.c                            |  10 +
+
+Yeah I hate that you're adding a wholy unrelated driver feature as part of this.
+
+Let's not.
+
+>  include/asm-generic/vmlinux.lds.h                  |  13 +
+>  include/linux/meminspect.h                         | 271 ++++++++++++
+>  include/linux/soc/qcom/minidump.h                  |  70 +++
+>  init/Kconfig                                       |   1 +
+>  init/version-timestamp.c                           |   3 +
+>  init/version.c                                     |   3 +
+>  kernel/Makefile                                    |   1 +
+>  kernel/configs.c                                   |   6 +
+>  kernel/cpu.c                                       |   5 +
+>  kernel/fork.c                                      |   3 +
+>  kernel/irq/irqdesc.c                               |   2 +
+>  kernel/kallsyms.c                                  |   9 +
+>  kernel/meminspect/Kconfig                          |  29 ++
+>  kernel/meminspect/Makefile                         |   4 +
+>  kernel/meminspect/kinfo.c                          | 257 +++++++++++
+>  kernel/meminspect/meminspect.c                     | 474 +++++++++++++++++++++
+>  kernel/panic.c                                     |   4 +
+>  kernel/printk/printk.c                             |  12 +
+>  kernel/sched/core.c                                |   2 +
+>  kernel/time/timekeeping.c                          |   2 +
+>  kernel/time/timer.c                                |   2 +
+>  kernel/vmcore_info.c                               |   4 +
+>  mm/init-mm.c                                       |  12 +
+>  mm/mm_init.c                                       |   2 +
+>  mm/numa.c                                          |   2 +
+>  mm/page_alloc.c                                    |   2 +
+>  mm/percpu.c                                        |   5 +
+>  mm/show_mem.c                                      |   2 +
+>  mm/sparse.c                                        |   3 +
+>  mm/swapfile.c                                      |   2 +
+>  40 files changed, 1713 insertions(+), 54 deletions(-)
+> ---
+> base-commit: 5c73cd9f0819c1c44e373e3dabb68318b1de1a12
+> change-id: 20260708-meminspect-v3-76dd8166c4f1
+>
+> Best regards,
+> --
+> -Mukesh Ojha
+>
+
+Thanks, Lorenzo
 
