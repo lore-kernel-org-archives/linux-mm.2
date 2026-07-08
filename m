@@ -4,130 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A166C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 16:28:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1A75C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 16:29:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 247F16B0088; Wed,  8 Jul 2026 12:28:40 -0400 (EDT)
+	id 928E76B0088; Wed,  8 Jul 2026 12:29:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F9A56B008A; Wed,  8 Jul 2026 12:28:40 -0400 (EDT)
+	id 8D9586B008A; Wed,  8 Jul 2026 12:29:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E84F6B008C; Wed,  8 Jul 2026 12:28:40 -0400 (EDT)
+	id 7C83B6B008C; Wed,  8 Jul 2026 12:29:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D99106B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:28:39 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6371D1C141D
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:28:39 +0000 (UTC)
-X-FDA: 84966142758.07.148095F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BFFB6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:29:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7A1F1201DA
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:29:36 +0000 (UTC)
+X-FDA: 84966145152.26.77A3F19
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 15AA0140006
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:28:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=x1n+a7GN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+8ufZLru;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=x1n+a7GN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+8ufZLru;
-	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	by imf16.hostedemail.com (Postfix) with ESMTP id C172C180007
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:29:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EaOYvba+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YMvQUPMc;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EaOYvba+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YMvQUPMc;
+	spf=pass (imf16.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783528117;
+	s=arc-20220608; t=1783528174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TGW9x4QlPkotlXfqozxVSbIvsuCm8d/ta5MfhZyK9WI=;
-	b=kEKH8SmA78elNeHWfr9DsmJqS1agHmRKkJlqcdL0me3y0zixeFQsBVWqfFQjknTyqMrK75
-	CB1sD1V7SoHjO2655BqfqvVzm1de6ZMXfvqjmK6A5BMtN0QC6PgUmkUTfCMA1uNho7NBhI
-	IYD+P8Sx2mD7C7j2z4IHR6lY0bNeKaA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=x1n+a7GN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+8ufZLru;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=x1n+a7GN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+8ufZLru;
-	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	bh=j/5vL0gtxnVlH2N135h4PQDZCX0YmGfUctk3tp3zRJI=;
+	b=QXQIw+DWPhDP0keEf7LmjOapjVWbpMvn3zfaG0mGJNNNlFqoW4atMpseA2VB9bHqGrO+Al
+	NqeZYokci2by1BLGQVEHF4p+KegQneokUJpCJIQxagdCqMdu3hUjl1u/t0TrdMXBaBCJK1
+	6+iEUr73BpmVqwKCShXlUsD/3NrWu28=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783528117;
-	b=hewQqB0chbADJyW5S1wvLrL/e0oVVyC1Y4mWI/taHztjPv2lQFx4Az/SKGanW9ub3i7FuE
-	Ujrazb4y/h1p6vfXn0Lvkn7yMCSJJTtzKuf/lUTWspcvYlNgv0E2AtJmBrNTNpqnQ66oiR
-	ZDuU0tdPni5w72DyCWmm/qQL+qlsrGU=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	t=1783528174;
+	b=ifHGQjEecj36P8+Kv4rwXbqMAaG2l7AS6JvqP0j0R/KLas0USsIESsU2XI3/OH7/7VBnDR
+	yyFN66xIpvO2XQ37Wi3BI+GD8SvDNlHdM3XJCMJuvYnABMLmGzcUwrfSIN1cMmmG6e+DUf
+	UimweIn1mRn5d/PS0f9lHLq7P8pok1U=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EaOYvba+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YMvQUPMc;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EaOYvba+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YMvQUPMc;
+	spf=pass (imf16.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8404E75BE7;
-	Wed,  8 Jul 2026 16:28:35 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9207C75E8A;
+	Wed,  8 Jul 2026 16:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783528115; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1783528173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TGW9x4QlPkotlXfqozxVSbIvsuCm8d/ta5MfhZyK9WI=;
-	b=x1n+a7GNyFG9huMkWZEqD9+zC8J/OnSTaPj6X5zWEpRAy8q6y9BrEqJ1+YNFLqDtlsxYLF
-	JaWEREIaXymEtxN1+gytrGefMIuJwTO+1LkdCzSp9L0heOIPA6IWSg/4PbRq8RdDOhIt5n
-	UOzVuB62wYyQd4p7/vQxJXUqUsxrUig=
+	bh=j/5vL0gtxnVlH2N135h4PQDZCX0YmGfUctk3tp3zRJI=;
+	b=EaOYvba+ARiTsxtWUrYDBPR91BTRtXJsdTCLw0wNxhImLHwujj3dJv3h6cCGHlzp977dwE
+	dIFixPE0pstyi4E9xED3cWLPtkgkfPJlBRlLF7KoOoeIks09dRwL71VB5xwNHvOu19Ks7M
+	f6YOoObWR6FseQ6/IWOt8xy1k9VtSCA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783528115;
+	s=susede2_ed25519; t=1783528173;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TGW9x4QlPkotlXfqozxVSbIvsuCm8d/ta5MfhZyK9WI=;
-	b=+8ufZLruUQ6whIPPqFGtQq77EcaLjvp7kROJBvdwVwlsN494++jhWf4pad5pOOxk99BVO2
-	GrTFDyI8VIUTUCDA==
+	bh=j/5vL0gtxnVlH2N135h4PQDZCX0YmGfUctk3tp3zRJI=;
+	b=YMvQUPMc+wnAmpwZbJQ/e5jUHFTTPHF8iv6B8qO+/rMFuQCGHrdiC6JQ6JXIlbiMj+vuvf
+	ZWYh9doHo6nNVsDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783528115; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1783528173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TGW9x4QlPkotlXfqozxVSbIvsuCm8d/ta5MfhZyK9WI=;
-	b=x1n+a7GNyFG9huMkWZEqD9+zC8J/OnSTaPj6X5zWEpRAy8q6y9BrEqJ1+YNFLqDtlsxYLF
-	JaWEREIaXymEtxN1+gytrGefMIuJwTO+1LkdCzSp9L0heOIPA6IWSg/4PbRq8RdDOhIt5n
-	UOzVuB62wYyQd4p7/vQxJXUqUsxrUig=
+	bh=j/5vL0gtxnVlH2N135h4PQDZCX0YmGfUctk3tp3zRJI=;
+	b=EaOYvba+ARiTsxtWUrYDBPR91BTRtXJsdTCLw0wNxhImLHwujj3dJv3h6cCGHlzp977dwE
+	dIFixPE0pstyi4E9xED3cWLPtkgkfPJlBRlLF7KoOoeIks09dRwL71VB5xwNHvOu19Ks7M
+	f6YOoObWR6FseQ6/IWOt8xy1k9VtSCA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783528115;
+	s=susede2_ed25519; t=1783528173;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TGW9x4QlPkotlXfqozxVSbIvsuCm8d/ta5MfhZyK9WI=;
-	b=+8ufZLruUQ6whIPPqFGtQq77EcaLjvp7kROJBvdwVwlsN494++jhWf4pad5pOOxk99BVO2
-	GrTFDyI8VIUTUCDA==
+	bh=j/5vL0gtxnVlH2N135h4PQDZCX0YmGfUctk3tp3zRJI=;
+	b=YMvQUPMc+wnAmpwZbJQ/e5jUHFTTPHF8iv6B8qO+/rMFuQCGHrdiC6JQ6JXIlbiMj+vuvf
+	ZWYh9doHo6nNVsDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6D4FF779AE;
-	Wed,  8 Jul 2026 16:28:34 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B315779AE;
+	Wed,  8 Jul 2026 16:29:32 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SRj0FrJ6TmpndgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 08 Jul 2026 16:28:34 +0000
-Date: Wed, 8 Jul 2026 17:28:32 +0100
+	id r222Hux6TmpHdwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 08 Jul 2026 16:29:32 +0000
+Date: Wed, 8 Jul 2026 17:29:30 +0100
 From: Pedro Falcato <pfalcato@suse.de>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: stable@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, stable@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
 	Song Liu <song@kernel.org>, Eric Hagberg <ehagberg@janestreet.com>, Zi Yan <ziy@nvidia.com>, 
 	Gregg Leventhal <gleventhal@janestreet.com>, Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, 
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH stable v2] mm/khugepaged: write all dirty file folios
  when collapsing
-Message-ID: <ak556WxAZCyqQqbf@pedro-suse.lan>
+Message-ID: <ak56uatKoDR-TAIn@pedro-suse.lan>
 References: <20260708151357.353173-1-pfalcato@suse.de>
+ <ak5tKPfX99kdkhIG@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260708151357.353173-1-pfalcato@suse.de>
-X-Rspamd-Action: no action
+In-Reply-To: <ak5tKPfX99kdkhIG@casper.infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 15AA0140006
-X-Stat-Signature: 8twgphmawiwuhkgr9o8ewoiejdx1e8mj
-X-HE-Tag: 1783528116-973515
-X-HE-Meta: U2FsdGVkX18rcBwFhGZxRE4QWrUA1+pu74IBSsQ9Qayu3SP9cW3dTbjvwjAdaYxoEQYSOF9cK73AZqJKLTvoyMc7VJx8hyX7Ca1e2QOTXFlt01TMbxP3jLxtUEaVfVniFBuW9/M38UduoD+rm5unp+1yXUpG/kxaSixGPy54q3+BLvN42mwuke4Rt6ALyoDP0ffS+/ne/RDOnhgc9ywlbZj45gNdJX/K8J+C2T69Fa6EBtUMo45NHTB6pCZtPQ3PXMwDYCjAxv5RReg54yl7z03St7uyqYmSL/Ir1EfYInPG1RmFycMvgEQ6kWiqYYIzsHr46dbwDwWzwK14Aaaq1CjsOTyAlHZF2RDUD5N65MHoQdy7k/hbXmI5J9ZBD74K158NLCRiS4q28HiZoq9CvINH8zIkykQ5gX6pTyZ4mnG/5MWtGzcXpPh2Klx1zHxCTsW7/fjN4PLLbHdq7T53s34CM8mJg6OXW716YAb6wXWlruXQZqNYoK9qqD5m+TsihQd20lx+Fa2sJEYdVEuWCOU2UW549edAyb6Yb5JW/6h0ZqqWVNZXO3rBy0/PLafUzVYGN/FM+Pn++HdFZg87S/JTemuWXR4FpYPpRfOFnN06BjWa+xF8r73XPSROmOq4drqfewwLPrkvBuILYwQbDtq44pZkMGn6OGAgz6L2VBOMEztUVkmDU9zlxs6oxwFVxGC040IhEQCA5gp5wFPvb6uD8p3Z8wcoAa5KrXklLzYLM6O6JsfypSnXVtWe3GKolAuu35z9ua+2S0PtVSI2DYQ33zDFfCfhvieaJp79/Y4NTXQn0Luqy2gyPFd2iGS1g3MGweQT6ODU/9uuMc6TifJTmMryugiNENQxxsbNIi/YTULSmSJOI4Ib7zUYBPXHXvLUyBNfr2+vSuEW8yhiAQBvOdp9TpQpRW7uu/6ie8xBE1g4/HASGLDvj8yMCrg1B8JbBKaugj+AH2kFInK
- KcM0pgtV
- /AQc9KvGHeLSu3G2LoWDI8JYcCsdjUcR1AaMj8w/3pchzpRCMjyVKe6L67Tpl0dzRpIke8T/UEsluEctoe2dta/52dn2fIDkDrxldPYMFyVgqIz1xYgEWoJ1LdThKWmVENgbwmLc5nzwtNGFlH9RN4xrb/0NMxPyVJMM4eIsMYPcZgwnoro2oMU35DxUcg1fijDrHPjbyoeGTjHwpVSNfa/c6jwKfl5125DPl2ZCUBmfizvdn8DAPYKsO7nk+JUSpGbhWFymLWc1rSKcJONjVE/ZuZHbiwD8uIOiPNc7UY+H7g7KkSitu7WS/7QMcznneXim4oNF3G1HvB31WnApsW2dVvXbYPE03Ttx/rRjo7cMh5L0XKukUlyeqDC4z5JaC/s5VkxQij82SuWn2XnpyN1nEFLKkbilLfA4quCi+/qqMsiQkq5G7SyzWoD5LJUOu1p0bR/GjFkpjcaFj2nZR1/D0T9ThIKD/2ONjVs606InW6LDOP6WEzI3YzMoHzRhUdEsOwXLR9UEw1Ug=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C172C180007
+X-Stat-Signature: 1m1kenbwgxs6d5ksgp47qrcomwmbn37h
+X-HE-Tag: 1783528174-17215
+X-HE-Meta: U2FsdGVkX1+nmcFnQ7+6L55JKLUBPk8qUvsZZz2LvLZQuOW+03Uy3Yqjk1gDoW8d2aAvBOF+55U+2FjkAsrVjcysUR/qCgzgeta+qCjJJFShNc37usxzCE5f57Nva2hI9TnUZ2gBCcF9nLQxzb51XI+WMI4VVikpoEnlvdjHssNg3OiFFIQVWP3BAayitJgRdpTkXHc5xrBgj2jyy4MovCXxh5/XTa2BLB+tFM6SAm3FKKjssTsef1pnHkECSZ71reNlC4rYGNvadWf6UumNY4iyXbTJr1Y4/Jb2SdnFJiLH89CeryPyltKvzHm22kNKJp5A8Q/lA1vdHdMYK6kHMSZmMJsRzqlvYWFDffs/c/Z7KLgK2GQiyQsZPQPX3r00Ws1TX/7lOGA0zwaaS7b1N5YY05RdsEEtrFnIeP0diqWpvfFRrHOgUVeEeYbyUDz3KV9PAtLspwy6mD1r3izjNiXEBbHlhK/hsvgiZwjUCI8hN27AEhUn7DW8Rr8KJTmFNII29QBNLkbWQtqQRenP2iN5k9hfgCzYwQhwCmjf96xU6sUrDX7ZLJmyT8UidLi9VLR2RQIt3c/ZDWaUXwW/5BMd+Mk6n8IYvfQSxQ42yPOV9gRtH1Z2MXuWAMT43oNwoJBZCOysbtMPw4HsFD1nQU1Pb3GCc6G5dk3svvYdqJTZWKk8EjUtNPN6d43Mqks5oeBHyYm/uKHNJz9v/DFWWZfTam7+2uBUnGdvkfOtlNIChb+58myieKxRhJkGP5R/yLZCbYWYWP5agutuLci6qzTxdi+RRFd1Fe1CYXCqbRc1qsCsqOWAZtmlVnemjiXRCpam9d1PIgWhrLD0a5Z6+gP1FPXV8qJFn5N2y3TBeAGpvhDPEdOhLq1Hm+U4qbmO/hAEXHiW0RajC2mJzv6RxN1sa9qKTjLUOw9OcjH/uXSLsZIs79Y2TjOZ9tfvOSWMXVdFmNHlQDtzmFsN7nx
+ oODcHO/a
+ Z4GHbtVXnWl7JmWd9+VRvHLhlMkdtAbhX/BqEIb8Y2BR+seCc6vtZTsiJnC7T/ncnK3Ll3WXnjX+6pMcp6GYM0R3gS/eaC4mpoEs4quPjLQ9uuYETjKtm9EKUlQ9vXvBIPT9h/p3SKkVax75yc1+Nz7uFBqV2Fso0Y6K2aH5TRmOvwf2M6mVwbWnrIdQ2UPNmFWk7JBguR1BcV9Jc1iRobDUEO+UQLdoMr0WbPJDfFMnnKMQ+o6vt4MEDpZ3jQ9AIlpAcYfCmbccrv0HpgHZ0w/8xhHpHXZ/wsDJ+wD7Lj76sgBVrvG4cXJmOBzKW6hnyKCSvjDCaSYDpj/npPI4NDNGMFEgQZEEre5mQjMnLIjITm5dlZ1jSbYBlEIT2XzAkU/fzrjyMDExEqeYLLpNVKSLwCZ62trlBDk2L2yoSyJc6E1vnP6cfNcoUT5vJTnVZ3bhphGZz3UpgtTGBsSqkTgUDsio1WZ2BNlP+1wGwmpQh6LMeHAVzJFBXjE3KtAl20Sd2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,136 +135,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Seems that I accidentally dropped linked list Cc's here, see
-https://lore.kernel.org/stable/20260708151357.353173-1-pfalcato@suse.de/
+On Wed, Jul 08, 2026 at 04:30:48PM +0100, Matthew Wilcox wrote:
+> On Wed, Jul 08, 2026 at 04:13:57PM +0100, Pedro Falcato wrote:
+> > [There is no upstream commit, as this code was removed by upstream
+> >  commit 044925f9b565 ("mm: fs: remove filemap_nr_thps*() functions and their users")]
+> > 
+> > Cc: stable@vger.kernel.org
+> > Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+> > Cc: Christian Brauner <brauner@kernel.org>
+> > Cc: Jan Kara <jack@suse.cz>
+> > Cc: Matthew Wilcox <willy@infradead.org>
+> > Cc: Song Liu <song@kernel.org>
+> > Cc: Eric Hagberg <ehagberg@janestreet.com>
+> > Cc: Zi Yan <ziy@nvidia.com>
+> > Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+> > Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
+> > Closes: https://lore.kernel.org/linux-mm/CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
+> > Tested-by: Zi Yan <ziy@nvidia.com>
+> > Tested-by: Lance Yang <lance.yang@linux.dev>
+> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> 
+> Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-On Wed, Jul 08, 2026 at 04:13:57PM +0100, Pedro Falcato wrote:
-> [There is no upstream commit, as this code was removed by upstream
->  commit 044925f9b565 ("mm: fs: remove filemap_nr_thps*() functions and their users")]
-> 
-> As-is, khugepaged and writable-file opening exclude each other. A file
-> cannot be open writeable and have THPs (because the filesystem is not aware
-> of them). khugepaged will never collapse file pages for files that are
-> opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
-> particular file is dropped. This is fine because nothing could've been
-> dirtied.
-> 
-> However, there is an edge-case: collapse_file() might not be able to
-> coexist with concurrent writers, but it can coexist with dirty folios
-> (from previous writers). Therefore, the following can happen:
-> 
-> open(file, O_RDWR)
-> write(file)
-> close(file)
-> madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
-> open(file, O_RDWR)
->  nr_thps > 0
->   truncate_inode_pages()
->     /* THPs are cleared out, but so are the dirty folios */
-> 
-> When this edge-case happens, there is data loss, as the dirty folios are
-> fully discarded.
-> 
-> Fix it by fully writing back the page cache (and waiting) when collapsing
-> file THPs. Doing so provides the guarantee that no dirty folio will be
-> observed while there are active THPs. To fully ensure this is safe, the
-> invalidate_lock needs to be held while doing the writeout, so that
-> do_dentry_open()'s page cache truncation excludes this write-and-wait.
-> 
-> As a side effect, move the nr_thps counter bumping outside the i_pages
-> lock. This is correct since the counter itself is an atomic_t and the
-> producer <-> consumer correctness is provided by a full memory barrier:
-> smp_mb() in collapse_file()/memory barrier implied by full ordering in
-> get_write_access() -> atomic_inc_unless_negative().
-> 
-> Cc: stable@vger.kernel.org
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Song Liu <song@kernel.org>
-> Cc: Eric Hagberg <ehagberg@janestreet.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-> Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
-> Closes: https://lore.kernel.org/linux-mm/CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
-> Tested-by: Zi Yan <ziy@nvidia.com>
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> ---
-> v2:
->  - condition this logic on !mapping_large_folio_support(mapping) (Baolin, Lance, Matthew)
->  - explain why moving the nr_thps bumping outside the i_pages lock is safe (Matthew)
->  - pick up Tested-by from Lance (thank you!)
-> 
->  mm/khugepaged.c | 39 +++++++++++++++++++++++++--------------
->  1 file changed, 25 insertions(+), 14 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index b8452dbdb043..d6e04041f5dc 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2094,32 +2094,43 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->  		goto xa_unlocked;
->  	}
->  
-> -	if (!is_shmem) {
-> +xa_locked:
-> +	xas_unlock_irq(&xas);
-> +xa_unlocked:
-> +
-> +	/*
-> +	 * If collapse is successful, flush must be done now before copying.
-> +	 * If collapse is unsuccessful, does flush actually need to be done?
-> +	 * Do it anyway, to clear the state.
-> +	 */
-> +	try_to_unmap_flush();
-> +
-> +	if (result == SCAN_SUCCEED && !is_shmem && !mapping_large_folio_support(mapping)) {
-> +		/*
-> +		 * invalidate_lock as shared excludes against concurrent opens
-> +		 * in do_dentry_open() truncating the page cache. This is
-> +		 * particularly important if there are dirty folios in transit.
-> +		 */
-> +		filemap_invalidate_lock_shared(mapping);
->  		filemap_nr_thps_inc(mapping);
->  		/*
->  		 * Paired with the fence in do_dentry_open() -> get_write_access()
->  		 * to ensure i_writecount is up to date and the update to nr_thps
->  		 * is visible. Ensures the page cache will be truncated if the
-> -		 * file is opened writable.
-> +		 * file is opened writable. If collapse looks to be successful,
-> +		 * flush any dirty pages out the page cache. With the nr_thps
-> +		 * incremented, there won't be any new writers (nor new dirties).
->  		 */
->  		smp_mb();
-> -		if (inode_is_open_for_write(mapping->host)) {
-> +		if (inode_is_open_for_write(mapping->host) || filemap_write_and_wait(mapping)) {
->  			result = SCAN_FAIL;
->  			filemap_nr_thps_dec(mapping);
-> +			filemap_invalidate_unlock_shared(mapping);
-> +			goto rollback;
->  		}
-> +		filemap_invalidate_unlock_shared(mapping);
->  	}
->  
-> -xa_locked:
-> -	xas_unlock_irq(&xas);
-> -xa_unlocked:
-> -
-> -	/*
-> -	 * If collapse is successful, flush must be done now before copying.
-> -	 * If collapse is unsuccessful, does flush actually need to be done?
-> -	 * Do it anyway, to clear the state.
-> -	 */
-> -	try_to_unmap_flush();
-> -
->  	if (result == SCAN_SUCCEED && nr_none &&
->  	    !shmem_charge(mapping->host, nr_none))
->  		result = SCAN_FAIL;
-> -- 
-> 2.54.0
-> 
+Thanks!
 
 -- 
 Pedro
