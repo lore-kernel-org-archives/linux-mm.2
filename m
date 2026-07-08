@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AF1DC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:33:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8825C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:33:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30F2F6B0093; Wed,  8 Jul 2026 03:33:20 -0400 (EDT)
+	id EA8316B0095; Wed,  8 Jul 2026 03:33:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E5BC6B0095; Wed,  8 Jul 2026 03:33:20 -0400 (EDT)
+	id E7EC46B0096; Wed,  8 Jul 2026 03:33:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AE586B0096; Wed,  8 Jul 2026 03:33:20 -0400 (EDT)
+	id D6F8D6B0098; Wed,  8 Jul 2026 03:33:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D926A6B0093
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:33:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5A8831206F8
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:33:19 +0000 (UTC)
-X-FDA: 84964793718.05.171F24B
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8F447100006
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:33:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q2xrFnWW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B1EEC6B0095
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:33:25 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 432F4A0645
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:33:25 +0000 (UTC)
+X-FDA: 84964793970.26.BA28F96
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6B01E1C0003
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:33:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n37SAsGq;
+	spf=pass (imf20.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783495997;
-	b=GwbcKVMHUA8h/ZnfccPS5G1LWIZvPGPsxj4I17UCQ5KP4RexGXoHM62ijdRLqIqO+zCaVm
-	QWcKBeo3jEwnYLqaMu2NweR4S1gd/YueZVJr8q/7YjgoKJDjkntedI2K8o9yFmqo+ovT5m
-	rCGGXVED3xGq3C81iNH3+MmJ8Sr8TYo=
+	t=1783496003;
+	b=uLcRQmtxfluWqiSLOi6+pAKQTkes6T7i0UBzfJx8Brlvx7NODteYklYK0u+nhGCZrOQ0Xx
+	hqdc6/mI0NBvaPK7wps1CTYGbqpdDxUwxnOj/mWTj5OCNabsPBIOnx2LmrEg09NORAw3Zx
+	/8PQthLy7aW6Hvk5SGeT5kcNA7xg1fs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q2xrFnWW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=n37SAsGq;
+	spf=pass (imf20.hostedemail.com: domain of doehyunbaek@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=doehyunbaek@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783495997;
+	s=arc-20220608; t=1783496003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zz4SgHtAmy0qQncUtL+GMZmlzcvWPiSx3o95/DRT6g4=;
-	b=VRxqa6WtkZ7rxJQGBQjnuqyz++YMLykW2v/JmToPkMMmUp9jomPVyMQlTpDf51jIy+8/nG
-	usXNNzFhElsm6a6kkmXacb3Ypj3dkXeDhhrszVC5BmEUJ58Ekgt94XGOc5+ZNyqY/1lCKp
-	9FumCfNueqZ7n2FuuSdaoclnHxHJIho=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-46cea75d96cso44240f8f.1
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 00:33:17 -0700 (PDT)
+	bh=prmr/Jndi+BNbM07sqH6cB8cxDm8c7W6tjC6zXyacuQ=;
+	b=P23BIIJeyy3I53WMA3xhhob2ZMy8GIrcBK+ILingBCVHcMSqAUghrazLVR3FkYnL0okH0n
+	doboHz08yn/FPZa+KlS0fOD2yBo1p9DwrBYD5bxi176yNWpjEAqeiv+Uk5bSS7WLTgA32R
+	S8hF60N47CofByDnb+UXVpBNOQ55lKU=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-490d6730461so348695e9.3
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 00:33:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783495996; x=1784100796; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1783496002; x=1784100802; darn=kvack.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=zz4SgHtAmy0qQncUtL+GMZmlzcvWPiSx3o95/DRT6g4=;
-        b=q2xrFnWWKtyi2fFwL0dWSryLRUSMnWjMmSZUUldvZ4OV2vN1l0g3JSPnUmSFhBYXrz
-         Wp8qizJu0Xt0wzvAHokHVzkBAt7rcDvWzPCa9qa6C0WUR+l8TDYBKGX3IsRb8Jdy976K
-         niXL2OOLRJJZLqej/cArjIj5v0F8vS0OZEXgyO+EHQuWKo4jHjSua4R9ZBy3LRJ537iS
-         o2DAYhVE+4AwhPx4suYt/J6D0qYhpKPMo/wiUckNvxaZA5ux4Bmr2Dmsubm1aojuY6We
-         NvaZ34WgV9lpcpPoJh346sO1cJ5KGjBlPHJRozc7nu6ghzsGYem6QkVp3nXiTXORGw8/
-         +1Mg==
+        bh=prmr/Jndi+BNbM07sqH6cB8cxDm8c7W6tjC6zXyacuQ=;
+        b=n37SAsGq7JrVB+fH2ft04kq3YzCXNnx5gmAwgAosScDksWZuzepvLmRvxO/peZLcvO
+         0b9p++jVunxY1YyuNZxfEcxmJNJ+XgfU4l+0MO0H2/O9BDDKA8brAjvGAiycdxq/dmR7
+         bHLjPqHAqZgXp3/0gT88w/FMSNirxmug2JVZBFf+ayehmyG9oPlwHAhs4N7mHSO4ZCYN
+         bexbCKyyoTYlvqPctVo0M4N/xBX6mG9JxZ0de1ThpaHMpacaOaYiPorkmob84EJsDDqg
+         DMshzr2vA/abJ9scmxRlXqPhymr0ctecIyK4VeYHlEgder8CPuf/xmgAfshkcInMX2tl
+         3mEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783495996; x=1784100796;
+        d=1e100.net; s=20251104; t=1783496002; x=1784100802;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zz4SgHtAmy0qQncUtL+GMZmlzcvWPiSx3o95/DRT6g4=;
-        b=JnKzl/uQmmYgkyEvoLK8iHqg5etI/B/ZInpb7jNmc8raOfbFevqiTM9ex5Qbl92yk5
-         idSwqcOUJJ03zbnRp1bWzGC6az/CJRM09Q8nrDbd2Oc6eHLhH4/K36ujLGmFwJ3Jy805
-         BpBcUPlFGUW9v2+QQw0eBpdUvfOml68uUJ42VAcePYq0rkWneJkspZwA/wV+MMw4DX0A
-         Om+ytOhNr39UGXk+ocePxQqNWjt9WPj07N5QyK7B54477cfhD+YmkbVin5jbWNtKaTsJ
-         Ty46h+BZfK4EMNxVlwqXKU3NOUyKGw3rGuDWTSxK3E7VYbj68DKadVK8bGoVSknywY8l
-         XApQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp68ewR/UkhujkE1nzpebBQvRcwmuJpF6/TNLHPyXMMWNI3eToJXqXP9OQDDy87Lgb3NYft+2rfXA==@kvack.org
-X-Gm-Message-State: AOJu0Yw87iBst7Hpg28J3sxsTe0kPWGgOYkHJmqT0ZivbcAAy6JiTxkM
-	sbbzf+J7R3S99UUStVxX41ep0hi92ARn6YzgAD+P7L8lTJir2dBqc48H
-X-Gm-Gg: AfdE7cnJQ1VAwkEZBtj1FZD++y9ntVMFLre8iTZlgWVc8AKgDqJDiikQW8k6yhWBGgX
-	1OmBo/CafaSJh23OZnajmM5764PGQKfqxND391KBmiI6i0rGEyvy9q8F1m1S3fFuDqFQw9HaFFV
-	ThbTiztd1awALLc941zH3tlqNUioKA9Na29tvgGyZOtnWMYJIKAYvgoNXEDA5X9gePt9SUy03EJ
-	upy+cjSxRXX4UKz1Dne7hqQCMvh6oUGhYybmxIIcISmzVUDTMk0/UHQh1dWKGfyUcKqgRgHnF0S
-	rFrjyQbkBJp9G/44H3EHSGDJilxzPx+s/zWuO4IHlp2E0IlrdNl7cya3X4AYRGXI+gn0HLDLx0B
-	wXHNA1dW8xoOARj418/7BSQAOjFsArcgv9dt9TKT1cJ2tSD1Xg+A7acvralJOnO0m6lfNkwjMNA
-	ZTGna0gvxfSmNZwcINXXOr6mvnPaorMT4r4ek75E4FlQCc7IHUcW4eDps36WQwbjuBcth4Q9p8y
-	QqvVuUsZ8ZNPLyr
-X-Received: by 2002:a05:600c:3b03:b0:493:e4a0:8e1f with SMTP id 5b1f17b1804b1-493e68eed92mr6697125e9.7.1783495996005;
-        Wed, 08 Jul 2026 00:33:16 -0700 (PDT)
+        bh=prmr/Jndi+BNbM07sqH6cB8cxDm8c7W6tjC6zXyacuQ=;
+        b=O7oDCTjYzNWIGobNO73Buqkdcce9jCGHFjbRDTMN2UpJBz3Db7OXQpTywScyhikKW4
+         0dYlJlKpowYn8vLYI+I5fazGmI/bhf51ROnzw4471VV/seMu92Jr/C/ayhpqZPSZk11Y
+         yKD4r/hG5Bnr2uo30BTgTRyuJaoDj/gIpNE5diwTMhR+kUCnZWlP2zul/C+a6Ojo6Pae
+         Xb6MNUm3tkioT4lxhEURSZHok1Pip5kGdyWMUyW+SqlpbSY1hZEJFBGeBkqbzjvoGEEr
+         o2nmIuQqDx4m/Gu9mnXXCF9z644dujgpJLYFGX/hSECxtjw9excrHr5UTt6ck7Z5ZJn3
+         KuPQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoYQPZN2MtADrA43vUj/JohqFiqiuVxIdBqpC6+NJGe5WUvdpQgEPhmF9kKJOWLXOfZD0Yy1TS35g==@kvack.org
+X-Gm-Message-State: AOJu0Yz4IcPGaa1IQzReGMUT7hAVLdFoypM59ahizciFBoOYzPdVWfUf
+	XTBYTyXEIhHcQa9A5Zyl5iqYUG0Ua2Y9IqJOJmizeT5iPuGpgrGD8rSf
+X-Gm-Gg: AfdE7cmXDNM99s2IFPzK02bmOu3G9laite6PKPm8FEj5nxc+DyvZcH++6XV4Dgt97Up
+	taPWyzKNZnB1tS8rsNZSG9TeaMOCDAzvqmdtiUEoE0BVWwJt4uXN2MbssRYCzQ4KZRZRYOuUBTT
+	ZAyE0lapbW2+voyX50ZOJs5KaiNt6E3Bw65WswW9siyzjI8nWZxBT1VCzD9MNvH3DEr7DyvpGFq
+	ktO9CYAZJtOBEZIX1lhP+4Hn7Nf3W0IZOdZDvuh2CZkZvEWosjwNWZF2lrhlbHSLgWUR10g8Q0v
+	V5Kyi9NOb57PiZXLXy5pYaYR4I2NZCbKmYv1G/RZ92fElFp83+eWibK/3SPSerBp5pmc/hCHBkr
+	ZMM4Eikhr0u5EfMhq3XpLV4OG2tOTz3/OUtnlacCvxF9rO4Pi9xfjte14nk3ttWdWJJ4diINnNv
+	stYZJS3sSC6WZ86p7r/3yyQvOvhrbRFOjW8cPnIWFmX0G/wbxOtQqsTTG83UABlPCrnBssSUJ5J
+	uS5E4am35G8tQP5
+X-Received: by 2002:a05:600c:828c:b0:490:b227:da9b with SMTP id 5b1f17b1804b1-493e6820934mr7102715e9.1.1783496002095;
+        Wed, 08 Jul 2026 00:33:22 -0700 (PDT)
 Received: from doehyun-dev.pradel.rg.cispa.de (x06.xlate.fw.cispa.de. [195.37.157.6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e610532fsm32876355e9.0.2026.07.08.00.33.15
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493e610532fsm32876355e9.0.2026.07.08.00.33.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 00:33:15 -0700 (PDT)
+        Wed, 08 Jul 2026 00:33:21 -0700 (PDT)
 From: Doehyun Baek <doehyunbaek@gmail.com>
 To: Alex Shi <alexs@kernel.org>,
 	Yanteng Si <si.yanteng@linux.dev>
@@ -105,23 +105,23 @@ Cc: Dongliang Mu <dzm91@hust.edu.cn>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Doehyun Baek <doehyunbaek@gmail.com>
-Subject: [PATCH v6 2/7] docs/zh_CN: add DAMON_STAT usage translation
-Date: Wed,  8 Jul 2026 07:32:41 +0000
-Message-ID: <20260708073246.1652828-3-doehyunbaek@gmail.com>
+Subject: [PATCH v6 3/7] docs/zh_CN: update DAMON index translation
+Date: Wed,  8 Jul 2026 07:32:42 +0000
+Message-ID: <20260708073246.1652828-4-doehyunbaek@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260708073246.1652828-1-doehyunbaek@gmail.com>
 References: <20260708073246.1652828-1-doehyunbaek@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8F447100006
 X-Rspam-User: 
-X-Stat-Signature: gwjinig4ehh77pqw3h4389antb8grwph
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783495997-394901
-X-HE-Meta: U2FsdGVkX1/5nYQBW02YtRvrxBezOQToG1tqLxLrzOnFdhtQfeqo1Nbi9xyVkrhr6hU57lcAt4IBQJtb8+hWXQZAWgCSUkZHjjpW3eTRyV8kCwmUi3TGa15fov6W50Y+33ycL/7McFodT0DSU7r7tJJtlJ7KaHAIeqNS+cIPUlBAIQeALnTw6KGG6Fuq3qONGwhqQGzFmqIxX3q2yfmXPccDIXdJKhtVKfDF4HAlr/2GYNG8Y8o56JlgIUvr4iOQNEIOcsjeCiRGHYJqFJGmhz+NZrOd2O65055AoJFxL3Z5P1is0hW/u10F1pvczd/Ur4PvcTIc/ww7O8oSYQYzVQvuOd9Y6d792c4QwXG6V1AwUb1VMdvADq42jMf43tHuk10TQiv2QELixlSI03nIPXUca8dt3cT1tNBdJCN6UvISomAz6BHDQGGhvqdaF1aD8BdCL8nQpn2PZx7DkePs5u7isd464pvqtbZgBpB89N5FmYmO73IU8CP2APOsewLZ0IMnRhrS7i/yKpPuTXaOG2zO8QIWJYjW6Mend+3hVGoQ0odEka7z8EppZwnrxR8VaZA5nXOB1fi9Fnpzic6SYsPzsKU6496g+acc/OWdaYq/x6hwqOqF9DTmlDGHL3WfnTeLb8qsAGo5g5FiQnAYIqDnHPdvgUYoAdgJO1aCrLOIauYGlFc8IxzLs4l7L4KrwrKuHxO3VoJSyr6bc/J1syM4OMiLbwVnb2UB+IE6aJmlmQr7Km47kyAjgG7Drir+qZ4mVFUppvtsz9XRdm5cm/elvCSFcis6oYpOvXD6CqYkDZmZIa37zZKEivv+mNo3+x1kunyPKSdQgud/1xmzX8A9ebmq6dZsm337OHlN+YL04LPWaid+uF7V9mTjFMCWhNCXZiY4St/x9CUPd9fxUyyZ9lxb0G7BRxAcDXYRi2USv4vCwvdHvH8xLStbb1rh6eUpH0nzPd6v9XZZxrR
- c1cAvYJy
- 9zxcSNMUUeZHXJWR848Fr21KzL1+Zj46TsHVY0a0VylUyHKaoxYn+amJweksq+jl1gsPGVuaquoh+xW81XewMr5IA0tZwl5sEWItDM8OnquhZ+KaUwmuRYmctkhn/yQOFUetaXHNOfrvlutBEc5TF4DlR2qAW7Lhbz762KoTuSvnZLhUc+c6H/7H8CBA4SDRXhNGFuWqoG/jWX3r1k1lgDdhxeLjDJQfNClt55gvwRxnDDox9IJB9D6eyR7UHs8NgxUpZ+UMDD8p7DuLGHjNjbqzXxRVfMaalPYmGPbkMcje20NKYIlBVf1Z/ykwjCv10YW4ijiVOsg2P65x/9WV2p3NtffWRXSG9PCS/h25WVWmVrhIbcJfafYWFz0nwe33cL4jrecYg6a/j4zD60FE+iOsho2zdhY/B1ZjTmg3SFw0QuCgiSNndzSGX/3p7tPFXP0jN0j2IDkqO+4Lk5QEOM96OVQTU5+LNhfRJ1LxThp1uB2TBHnnsZI0Udw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6B01E1C0003
+X-Stat-Signature: 3mjgxbr5h43shd8s4n7r975k51gedmyc
+X-HE-Tag: 1783496003-533372
+X-HE-Meta: U2FsdGVkX1/yzzDnRQ7QQt3WLxrb8WlDCzI4i6IJAh34GnKivvTtmbL19RK6MZN6EAM5Z77XnN6MvtVMaI7lD3fjdH9ehr84MGkuyLrIw/xz3vMBf28SRRge3Xzau0EpLJnmudQJIqSNdJ+9cAGLWZN91ABK3Y4hxVzutCKBMgLZ/eVfCgmKN0iGLDTHaFZcabRK0WVeMju1Aapp28XbutlySAzdutvIkZZvjme8DHELVZSjmaF/KXE6gctQFlw85RKtZ1kTnFokHDvsePdjMyxnAA4OjalxpsBum1kcAA4v3g3gHzQHKkcrtmUJ6Rg6uuUtLqcBeMCYnlMe1c/Ajx2JCLErMf6wzxd4g2JlktcR7v2BdpxI33/fVmKbDqSlS1zAFDNeUAAU2eDKZrWyey34sNy6EuvdfrHraj3hRa1Jj4fDF8rSn7Nt1bQn6ija7gotf2DGY+0m2GeTaouTFx1L+qc4h+s1kAqRBqUo3EtayG79r8WCVtlMayeem1HBL3eCRqvTwyaPUDjUz79MHNuSF8FQsiA6AdLxbMpd3ZtZi6wpyNh+GaB9F0FxKEaOFIchxwSn1ntXMmZphkj+d4LGpsTMVoywIK8aRBGqtqL2FdurXKM+CG8/2GatH/YB1YkNP7CZ/O/7lf9rUj8d1V1JBHh3JrPg+reBtSjn4CO9E6/+IdsEF5vofSKQzBj+IkN8BxCaQJ+ST+iE23UABUZKK2tsvoS9elN5cUEjgcK+fqLqry2A3gR9Tt53GVY72noXmThthw24B4E5LbXyvfop/MNmuXwipKhIhRnHsqlGXJpb5fKE4gvks9rhK2N8Ergmboqp69h4oaohR5uBTilr39Ql0V74rjOMM/sx5xXaHQbAFTqU3OUwJBcuVZzII4qtFJ7NejYEkd9177IW6BysiU5j4u89u+dqNiJXur2hgPr2xc8iOMwqyHz6WcB77xhRvzw8w4dxQfB1mUY
+ ITIMXk3b
+ zNA7UNj/vg6NQOmYJfo5GuQ0VbdVrX/j/r/hA0h22z1iZzSkSwvgtzX495o+jQc7Q6y3PHyvfnFZK+13ZEepdn/FWL0m5LMX4fxAfMF5u/M788tSLexufQ6WTqhM3YsoJHc061+aBphR7kuLgFaI5J+GVQx0EVcKylHiGPhPK4ToqTTeZOZemWj+xWVV6FAjfQcZxRf29Riyz+U9s1qDQhc6SEKZYduyDv26Iy1ZBD4VjSuOV6+wPmxGsGesYA7taOouBTnGuhygLQ9pXubHeZQDdfg0Byt/2SOxERH2BoUr1qxgC0EEIJPaq70DsGvVq2bfbUez4ZWYOlE4As+HL4R6o5UmFxt0+y3JvDxjO6piD5vmrHW0purWR0P2qryYSW3LGA6N/Z4qcdZMTEFIe/3eocc6IWws7LOw1uFNKL5XyHBehotVsvOMH/72LpVFWabzDf3PmKXgUGkRZStadIJVaaVNC9CIj8BoyEkrVW0xH7ESSDo0LqjRTCw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,117 +129,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Translate .../admin-guide/mm/damon/stat.rst into Chinese.
+Update the Chinese translation of .../admin-guide/mm/damon/index.rst.
 
 Update the translation through commit c9380cdd949d
 ("Docs/{admin-guide,mm}/damon: fix DAMON documentation details").
 
 Signed-off-by: Doehyun Baek <doehyunbaek@gmail.com>
 ---
- .../zh_CN/admin-guide/mm/damon/stat.rst       | 94 +++++++++++++++++++
- 1 file changed, 94 insertions(+)
- create mode 100644 Documentation/translations/zh_CN/admin-guide/mm/damon/stat.rst
+ .../zh_CN/admin-guide/mm/damon/index.rst          | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/translations/zh_CN/admin-guide/mm/damon/stat.rst b/Documentation/translations/zh_CN/admin-guide/mm/damon/stat.rst
-new file mode 100644
-index 000000000000..129748a5ea1f
---- /dev/null
-+++ b/Documentation/translations/zh_CN/admin-guide/mm/damon/stat.rst
-@@ -0,0 +1,94 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. include:: ../../../disclaimer-zh_CN.rst
-+
-+:Original: Documentation/admin-guide/mm/damon/stat.rst
-+
-+:翻译:
-+
-+ Doehyun Baek <doehyunbaek@gmail.com>
-+
-+====================
-+数据访问监测结果统计
-+====================
-+
-+数据访问监测结果统计（DAMON_STAT）是一个静态内核模块，旨在用于简单的
-+访问模式监测。它使用 DAMON 监测系统整个物理内存上的访问，并提供简化的
-+访问监测结果统计，即空闲时间百分位数和估计的内存带宽。
-+
-+.. _damon_stat_monitoring_accuracy_overhead_zh_CN:
-+
-+监测精度和开销
-+==============
-+
-+DAMON_STAT 使用监测间隔
-+:ref:`自动调优 <damon_design_monitoring_intervals_autotuning_zh_CN>` 来提高
-+精度并最小化开销。它会自动调优间隔，目标是在每个快照中捕获 4 % 的
-+可观测访问事件，同时将得到的采样间隔限制在最小 5 毫秒、最大 10 秒。
-+在少数生产服务器系统上，它的结果是只消耗 0.x % 的单个 CPU 时间，同时
-+捕获质量合理的访问模式。调优得到的间隔可以通过
-+``aggr_interval_us`` :ref:`参数 <damon_stat_aggr_interval_us_zh_CN>` 获取。
-+
-+接口：模块参数
-+==============
-+
-+要使用这个功能，首先应确保你的系统运行在构建时启用了
-+``CONFIG_DAMON_STAT=y`` 的内核上。通过将
-+``CONFIG_DAMON_STAT_ENABLED_DEFAULT`` 设置为 true，可以在构建时默认
-+启用该功能。
-+
-+为了让系统管理员在启动时和/或运行时启用或禁用它，并读取监测结果，
-+DAMON_STAT 提供了模块参数。下面的章节描述这些参数。
-+
-+enabled
-+-------
-+
-+启用或禁用 DAMON_STAT。
-+
-+你可以将该参数的值设置为 ``Y`` 来启用 DAMON_STAT。设置为 ``N`` 会
-+禁用 DAMON_STAT。默认值由 ``CONFIG_DAMON_STAT_ENABLED_DEFAULT`` 构建
-+配置选项设置。
-+
-+请注意，该模块（damon_stat）不能与其他基于 DAMON 的专用模块同时运行。
-+更多细节请参考 :ref:`DAMON 设计文档的专用模块互斥性 <damon_design_special_purpose_modules_exclusivity_zh_CN>`。
-+
-+.. _damon_stat_aggr_interval_us_zh_CN:
-+
-+aggr_interval_us
-+----------------
-+
-+自动调优后的聚集时间间隔，单位是微秒。
-+
-+用户可以读取 DAMON_STAT 使用的 DAMON 实例的聚集间隔。它会被
-+:ref:`自动调优 <damon_stat_monitoring_accuracy_overhead_zh_CN>`，因此该值
-+会动态变化。
-+
-+estimated_memory_bandwidth
-+--------------------------
-+
-+系统的估计内存带宽消耗（字节/秒）。
-+
-+DAMON_STAT 读取当前 DAMON 结果快照上的观测访问事件，并将其转换为以
-+字节/秒为单位的内存带宽消耗估计。得到的指标通过这个只读参数向用户
-+公开。由于 DAMON 使用采样，所以这只是访问强度的估计，而不是精确的
-+内存带宽。
-+
-+memory_idle_ms_percentiles
-+--------------------------
-+
-+系统的逐字节空闲时间（毫秒）百分位数。
-+
-+DAMON_STAT 基于当前 DAMON 结果快照，计算内存中每个字节到现在为止未被
-+访问的时间（空闲时间）。对于访问频率（nr_accesses）大于零的区域，当前
-+访问频率水平保持的时间乘以 ``-1``，就是该区域每个字节的空闲时间。如果
-+某个区域的访问频率（nr_accesses）为零，则该区域保持零访问频率的时间
-+（age）就是该区域每个字节的空闲时间。然后，DAMON_STAT 通过这个只读参数
-+公开空闲时间值的百分位数。读取该参数会返回 101 个以毫秒为单位、用逗号
-+分隔的空闲时间值。每个值分别表示第 0、第 1、第 2、第 3、……、第 99 和
-+第 100 百分位的空闲时间。
-+
-+kdamond_pid
-+-----------
-+
-+DAMON 线程的 PID。
-+
-+如果 DAMON_STAT 已启用，这将成为工作线程的 PID。否则为 -1。
+diff --git a/Documentation/translations/zh_CN/admin-guide/mm/damon/index.rst b/Documentation/translations/zh_CN/admin-guide/mm/damon/index.rst
+index 6f8676a50b38..77bbfa7c25dc 100644
+--- a/Documentation/translations/zh_CN/admin-guide/mm/damon/index.rst
++++ b/Documentation/translations/zh_CN/admin-guide/mm/damon/index.rst
+@@ -9,12 +9,12 @@
+ 
+ :校译:
+ 
+-============
+-监测数据访问
+-============
++========================================
++DAMON：数据访问监测和访问感知系统操作
++========================================
+ 
+-:doc:`DAMON </mm/damon/index>` 允许轻量级的数据访问监测。使用DAMON，
+-用户可以分析他们系统的内存访问模式，并优化它们。
++:doc:`DAMON <../../../mm/damon/index>` 是一个 Linux 内核子系统，用于高效的
++数据访问监测和访问感知系统操作。
+ 
+ .. toctree::
+    :maxdepth: 2
+@@ -23,7 +23,4 @@
+    usage
+    reclaim
+    lru_sort
+-
+-
+-
+-
++   stat
 -- 
 2.43.0
 
