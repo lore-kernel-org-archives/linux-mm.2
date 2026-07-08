@@ -4,119 +4,208 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE154C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 05:28:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E82B6C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 05:32:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B69D6B0088; Wed,  8 Jul 2026 01:28:29 -0400 (EDT)
+	id A0E1C6B0088; Wed,  8 Jul 2026 01:32:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 486736B008A; Wed,  8 Jul 2026 01:28:29 -0400 (EDT)
+	id 9E5E56B008A; Wed,  8 Jul 2026 01:32:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34E536B008C; Wed,  8 Jul 2026 01:28:29 -0400 (EDT)
+	id 8D5D96B008C; Wed,  8 Jul 2026 01:32:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 01B0D6B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:28:28 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F3671A0673
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:28:28 +0000 (UTC)
-X-FDA: 84964479096.25.AC99EED
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A251740003
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:28:26 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E0mTuDJE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AB616B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 01:32:17 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C1BAE169199
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:32:16 +0000 (UTC)
+X-FDA: 84964488672.28.DD8EAAD
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D98EAA0005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:32:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Cut39ALd;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=JUDu3cE+;
+	spf=pass (imf25.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783488506;
+	s=arc-20220608; t=1783488734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=r8c658LFrC5kUpw1BBMNZ+UryPir01aUoDyxaQYNE1A=;
-	b=n0NgSyv7bizCdXCm4aKz02LxdUgjvKknZIpdHlm1+scZTbM8/K05tsrrNrXqT1g8U565Rw
-	hJ+XTkG6LP/y16lCVk7bVCmKKMV49LgZp/PVXTIAG6y3y1UEStGKwNS6R9BVYd/tr2U9MB
-	AdmEjFH3z2h4DrkFk87IfW+R5LsJhi4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=czYreYtUDL+AdDzbHXCs5wN19gIieyN8OCDp8PV2k9U=;
+	b=27X4GjWNvjRdqaVHAgnFJv+CcpUBqDXEc/PZ+x8kcC0MnJPsd49HOZZLK9KGwLQQoW7OMW
+	7OEdVzEE2qhOAGcewJetw/R4ThWTifpHcylix3oEtydrDWmjV0tzM+iHU0I55FlFJuSa2j
+	vuPCQNggVFOXqwIOWOciXuJB5+TTTCI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E0mTuDJE;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Cut39ALd;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=JUDu3cE+;
+	spf=pass (imf25.hostedemail.com: domain of mukesh.ojha@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=mukesh.ojha@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783488506;
-	b=Ebl4ETcrhVEG8sYBJ52APCE/vg8n93HjivA1y1xkq674rJ7sDf65b3FeuaA6VNwiQfYet6
-	usEwzO9LEVUXLJF2GgCT1cG+DvtXav4nNBTcLc5hE6/QgsXBYMBSU81QDK/cnEIjja17/d
-	fufuyhRkkc29VO7bH527a8uJt4OD9M8=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ca64c3ce5fso3483765ad.3
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 22:28:26 -0700 (PDT)
+	t=1783488734;
+	b=a8WyOhjmPfWj2eSpTm5fFV8pt5q8WBGIlLea/EYs2Jtm36dB89hd6HPKEUWi9YdSy6IR2M
+	exNm9190EpggAgtqzlhBKG8Du0vRmKnIT1Ch0aX1xSOKPoIEcCDq5+MSQa03oFAAu+nHwV
+	Mg9kdXE5FBmDJv87ZEKwtTlWVSMoIms=
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 66842OSn1695664
+	for <linux-mm@kvack.org>; Wed, 8 Jul 2026 05:32:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=czYreYtUDL+AdDzbHXCs5w
+	N19gIieyN8OCDp8PV2k9U=; b=Cut39ALdm6I1OC8vWl96nLZcN6XhsMvALPLFtS
+	KdwjiSWy6rdGIdnj3OZ/En+ZCFYbw9cdGcvnDuzLFyRleVRN0I+fVGxiXLkEBZ43
+	Xe2NIEoBX/PLxxgJccrS9bCeCiM5nIX2I2kyNggwGjlvBPOrvqdTfxUDvMrpapU1
+	mc6uwBeKHD2IKphaijz0v29kbZZgmDgw7r+QbfR2/yGfZyJs4PWN/UZ6tECHAyyC
+	jFySUfRaBZeljxs0dBd2aZe8LVWeo1FyXj9JMRTnfnCtoRTqN3kPkmC6eEXsPPOr
+	Myhf8pCg5f2G5krZ2kHehINuSDtiUa4VGZ/kZ8rDdPW5c49w==
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com [209.85.210.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f9csw8s8h-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Wed, 08 Jul 2026 05:32:12 +0000 (GMT)
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-845ea8fd3easo746978b3a.0
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 22:32:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783488505; x=1784093305; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=r8c658LFrC5kUpw1BBMNZ+UryPir01aUoDyxaQYNE1A=;
-        b=E0mTuDJEj50Vomu594HsfUAVdpwpLeIXKS+JkmFaLqSY4t8HNRpaQl1i6ZxaZ9T8x1
-         uLn9PNeiA2sLx6job2dI3A4iRYWA+4j5HCpCaTvRXj/UZbr0CePpYEhN5ZwG/3lluuUL
-         Ddc6+gPkBOoYVy53hodH0S6mNRrVoNJbNAA+Flu1tBOBrTexsHLxTEItUsXAQAEZOOrG
-         BsNCP3haC2lJWmmm5zOSnIJeodEUHqgvznVQ9ipAt0DW3Kq7npl61XgjL7hIIX4Ppoj5
-         o7MHnBdv1gQOht/N8xM2DNrwTDyk3IpVFFkSWTi6chUl3tu7UdSoNewGH+qTvDaqSDsB
-         9L3A==
+        d=oss.qualcomm.com; s=google; t=1783488731; x=1784093531; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=czYreYtUDL+AdDzbHXCs5wN19gIieyN8OCDp8PV2k9U=;
+        b=JUDu3cE+oHwVdrQXCna3wNNe8tTz3JpDB29dj5kQao7KB3qVm9Sp25OqgJlvJLr0pU
+         M74ZNAyYfvkjD1Twkw7kfE+CHIfFGHwuYeGXCT0iqdEu9fGmvmTjofhLEQGoU0a0EoSb
+         yy8E4j8sqS5xLnFuHx4msBAc7n2qECdlk6Gs5fWXlbyYZXjNlL4Zhqo9scep53v9bXp1
+         VbMK+6W91OBpxwIIYzideCCCaZLsV56xhOrJ8t/ly6uykZ0sx+IG+KfhxVEW6zlVJEcv
+         HnHgFZc79zVhNgmZOb/GouNyCJMgMy6ACfnkp1Meb7+8JuH1I/FPdwV0e4tFFTLBULZp
+         ghcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783488505; x=1784093305;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r8c658LFrC5kUpw1BBMNZ+UryPir01aUoDyxaQYNE1A=;
-        b=ojoq788Tj6ha3prWpa1WL1vjgTlk7e6oPz0wTkIK/ybSe8muErWB/uSyNxEtDgpjvS
-         LFSOFoxTM5Zcc+Uc9LhfECdbkBmj/QIaZEnYWC6HdUvucvj1EhU4eC1OFPHoj691wM1A
-         UsdWrvPOf4pZ57O2XC0cZEGZ9oxoS4bQtmHaovUqBBoanfjU/l1RJQlYEIbZAT8avv0R
-         nN6PWc+4rYFlvoLa9JQEi/xTXOz8yK3qEXef2Jt/t1+MA10r9IP+FrCgV2RWqXLTHKIB
-         M5YtycDuAWrLue3hz/L+5PqgIpQpuEwSnVeZjG+3xWBN/ewTb2WIxnAIVypb4DnxxNEb
-         WeGQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrLTZ8Gh5nDvNVCNXhSi64aAKidcpBr82keHZ2ta7J96fNsRxdL5uI+W4x5CDvLyONMEMEKbYlA3w==@kvack.org
-X-Gm-Message-State: AOJu0YzmYGXOOU+6g9LUNjQbIhhQUgcYQkdwrx7VHmknV25dDt1+lGki
-	z2Ns2Kx/oToUGsygPOosoyRDglXprsT1KhsxQDjlNDfvQnUrDqSbQvsA
-X-Gm-Gg: AfdE7cke72Qr8Ot3e+1aqkcJbvYKhNEaktiVmzgUnPf34a3zQg2fmK4L7HwF5nvmZlw
-	vHfYJvD3fJiT9XkVRqmfvbl5N934dpHqEydNo7U9jx3rKjwe3M9fnQ2izOGtsj91pmEpJK1gBOP
-	JWoCIP5pRgenVqKfnzVOI/qSI+WCl6D4G8LTscFVfSJYGaiQlJJo+P5WIaGqlYwqef7TyBv/RGq
-	hqm38LTpkJKA/1w+C3wsWuaGkdSHsjI8bDAhQCSPc0JuYc2e8skPhPVqcWCZEYhTDalGdEPBCZw
-	n/shEVFFy8WFHRjqnkkiAJDzMb0mu3aXFLGWUbrLZsG3a67eij+PA/lsDSBKLUTV6ehYFDeAGez
-	kG/s+LSGCCH7J0bJiTp5zPB9Nmkk/NWj8g47DsY5LCUScFzNvPBbzAl4eVa0IaMamADkgqyM6Lx
-	nNwnTwIzUZ9aw+/x/td7HNYpp2t7RrTsllhsVz+mEvHAXF+rBX9lL6s6LSNecMcBj67knD3KBaU
-	H5xjzkmLD0KZ4SXgw==
-X-Received: by 2002:a05:6a21:4910:b0:3bf:b08a:cded with SMTP id adf61e73a8af0-3c0bce9caf9mr1052310637.37.1783488505083;
-        Tue, 07 Jul 2026 22:28:25 -0700 (PDT)
-Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca75ef0c30dsm181962a12.17.2026.07.07.22.28.24
+        d=1e100.net; s=20251104; t=1783488731; x=1784093531;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=czYreYtUDL+AdDzbHXCs5wN19gIieyN8OCDp8PV2k9U=;
+        b=kZ9tTd7qVcuHIrl+r1p57sqWAnUEHeneqIY9s8eyX9bDbCF4pIWwdoSfP6As2Otq2v
+         bZj4UPkiUm5iorzGnsaKtF/E+FMYMnLLU50lJ4QvUBef4I57WNy+MW9wINkr+oQpWU4d
+         1nU90MlvDBs7WdQjDc33giT/ta37eEhYd/iPYZrnHIMMqIkW3j1fFmu9MQQVtPczrd9J
+         uGY8rYe5mBW7rLQmR1RBnFjACB+DszF9nMibknd8lpggUis5iFXemc3eWqerIq18RTiY
+         h0LwAchIL5lwNfheTYE9tF61hHKb+C6fjqXf2Pzx9lOMw/+iXz34Y/6ZaTGkIxXAT//8
+         +Vzw==
+X-Forwarded-Encrypted: i=1; AHgh+RoTAhVIx1KwYRiadpbrqNgaSlqhkBFdGqzSlPb+ydWGVV4MjwIeKVm7TFZgo5BUpFON3VhRTEsDig==@kvack.org
+X-Gm-Message-State: AOJu0YzT92Igc/+35w/DE8EY9bXr2eu1v3GkV810rZu02WV4xneIYG2Q
+	qf9ZcFN96cfw6kHtv74GmAFd0TlitwQ1C7DRnUYD8UvuMkEK31n7tMZr6q0gAFq/jRavfwzaNmD
+	GqeCSJwQY40p4VUmhmi1Zu6GIPzIcC2DnkDYRqxdDBkPRZ57lKDwCdw==
+X-Gm-Gg: AfdE7cnJ4YU1ufwouV5/zFgun/07681nNugXtND3DNuJG+41kejQCRZEsCvH2aAkstE
+	GC9NqGv4rBwgvs3u44l+xvy/1A2CIgBXV3EXwZkSJ5Ejk57NTiGzpXrgwxWByr+qhONsa+0YpM0
+	Hz9u6Gi2j+SxP+S5u5QWjzyAUttcONIcVr44PTOIqj7b1p+St8judJWiG/KUZiagLITzR0e5GFD
+	H5VonHICJ9+HpEFzKJysKlKXcSn4yJeYmSpvYu6ujX0KuhjHolMgXGa4NzFC+NYjwroXCR3P9u/
+	PHoGTOmae8SuZuoH1NqWeriq3D+2TyDPua4feOmRSw56kZNMvDdsqk3XGONI6Ah8mW0P+DHoOqx
+	uHtOZefJEYvzBoMPe9BUDwCEa5w81USvVXh1teQ==
+X-Received: by 2002:a05:6a00:35c4:b0:848:2f77:e2d6 with SMTP id d2e1a72fcca58-848438f8ee3mr1051256b3a.63.1783488731026;
+        Tue, 07 Jul 2026 22:32:11 -0700 (PDT)
+X-Received: by 2002:a05:6a00:35c4:b0:848:2f77:e2d6 with SMTP id d2e1a72fcca58-848438f8ee3mr1051201b3a.63.1783488730339;
+        Tue, 07 Jul 2026 22:32:10 -0700 (PDT)
+Received: from hu-mojha-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6db29d1sm6484592b3a.53.2026.07.07.22.31.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 22:28:24 -0700 (PDT)
-Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
-	id 34172148FCB3; Wed,  8 Jul 2026 14:28:23 +0900 (JST)
-From: Hajime Tazaki <thehajime@gmail.com>
-To: akpm@linux-foundation.org,
-	liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	linux-mm@kvack.org,
-	geert@linux-m68k.org
-Cc: linux-kernel@vger.kernel.org,
-	Hajime Tazaki <thehajime@gmail.com>
-Subject: [PATCH v2] mm: nommu: fix the error path when vma_iter_prealloc() fails
-Date: Wed,  8 Jul 2026 14:28:20 +0900
-Message-ID: <20260708052820.556085-1-thehajime@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Tue, 07 Jul 2026 22:32:09 -0700 (PDT)
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Subject: [PATCH v3 00/26] Introduce meminspect
+Date: Wed, 08 Jul 2026 11:01:39 +0530
+Message-Id: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A251740003
-X-Stat-Signature: np18d85pgeix7owzh9z5mfq3uu4c4psj
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALvgTWoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyjHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDcwML3dzU3My84oLU5BLdMmNdc7OUFAtDM7NkkzRDJaCegqLUtMwKsHn
+ RsbW1AKGb7OFfAAAA
+To: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+        Eugen Hristev <ehristev@kernel.org>,
+        Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+        Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>,
+        Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Anna-Maria Behnsen <anna-maria@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+        Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
+        K Prateek Nayak <kprateek.nayak@amd.com>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Brendan Jackman <jackmanb@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>, Petr Mladek <pmladek@suse.com>,
+        John Ogness <john.ogness@linutronix.de>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Saravana Kannan <saravanak@kernel.org>
+Cc: workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, linux-arm-msm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+        Eugen Hristev <ehristev@kernel.org>
+X-Mailer: b4 0.14-dev-f7c49
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1783488714; l=11849;
+ i=mukesh.ojha@oss.qualcomm.com; s=20250708; h=from:subject:message-id;
+ bh=HBaTfEP8damwWWnMzQH/YpuAPB3B7/0j3KtNT81MfVA=;
+ b=/7Bc4SpQMM9aD5ZEDXUU1K2SLYjZnnKa3Vk/3lp46pAbPqaevvkOXjBjX2jHejKnoEi9OjiAP
+ gX32aEuqU/EDvmeDvxh+TKTuGcp8RF4OsVMztsVrL/BICpCO73gT3gK
+X-Developer-Key: i=mukesh.ojha@oss.qualcomm.com; a=ed25519;
+ pk=eX8dr/7d4HJz/HEXZIpe3c+Ukopa/wZmxH+5YV3gdNc=
+X-Proofpoint-ORIG-GUID: yMq4hcZtXE0eEn56D5HpId8qg8wlng5Z
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfX7bNQ2J/nfgLg
+ NeW2SWJuySvUCXtAfyoUqXbbh0uifGqPHz973SZAev2Hb1am62XJe60uyZXkrSc9r8p48GI+eV9
+ m+wRqOT47T8357axNwRxltVl0G0e0Wo=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzA4MDA1MCBTYWx0ZWRfX7aGMO2fb4Bhj
+ P/MusPFyNjl0fu5f7cPljWNpJL7GvJVu7H73O4waisVYMQAhnfQ3fkL+f3RzDL0rFfJM610Z5iQ
+ cBRakLpReohpy49IUu+968PnZOXWKfGNeLv/sQgLnvLxTx1TmcefFzhGpx5YTVDqlqRAHfTsCxb
+ FbebuOaD5jcuOdbZX3k9awZKnzjyRKpgEZd6fkLotAcwsNyZujRbeGtdMJzd4IssNfVPJHlHppv
+ mixdOBpLOErxbeoq9ZgNm7RIHFT0VCmwXiY5wb531grj09fWQyOHv1p3qZy/VteanjbBZS2HL0W
+ 2WysNjIq7XUvPKeap9DoHi/ix+XzjB7vBWYIrVgUaNNUeiWcd13YoQq8iR1AQoj0Yum3m4HODL7
+ cs184jG1NE7NWjKfSr1TaFqV3aSfIr1ue5SSb+zBXOhPZ26SOw9wUX7IdchBd2nlRtD+Sw0MmV4
+ P7BagWkeKPbgzzQpnxw==
+X-Authority-Analysis: v=2.4 cv=HaYkiCE8 c=1 sm=1 tr=0 ts=6a4de0dc cx=c_pps
+ a=m5Vt/hrsBiPMCU0y4gIsQw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=vnREMb7VAAAA:8 a=Oh2cFVv5AAAA:8 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=KKAkSRfTAAAA:8 a=1XWaLZrsAAAA:8 a=pHSkyj2oBRdTMXCnRkcA:9
+ a=QEXdDO2ut3YA:10 a=IoOABgeZipijB_acs4fv:22 a=7KeoIwV6GZqOttXkcoxL:22
+ a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: yMq4hcZtXE0eEn56D5HpId8qg8wlng5Z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-07-07_06,2026-07-06_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1011 adultscore=0
+ malwarescore=0 suspectscore=0 priorityscore=1501 spamscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2607080050
 X-Rspam-User: 
-X-HE-Tag: 1783488506-518775
-X-HE-Meta: U2FsdGVkX1+S1xRq0xbYB82JCsZ9DDCZNe2zTyNiswLMWnoxwKR1cMIw1H+w8RCGqZ5cI0fATg8s5txmzoNr2JMhE+backzMXUQTZfths3rNdXi8boya3Te0iy4LEs1zpJzC8X9g76OPU+g4/IUUdQfhfmbU2KL2pngyWWJ7tRX5lC+t8GihBFpcavwxFM5xCE/mBKOMyVwlqmMWhXPISCkV8M7Yafzbyi7Tw3IJs4N1t9hG+mjnec61MQ9IkKmt6FL+HR6P+SfhCk7mKUXNgJ0HBJuaGcHRjw4PDXXMHmqk7Ta2wg9hxfsedlc6y5lV4FGjjpi6/kPWOamAwNpNkOfKLOBn24RN+zU6yk5D9Nxin2w8I3MkyIwNOqn3UzET+zMiYQw6TngoRp5sAp/8DDdqXASAOhYF/hA27aXzKwH9zVivi/I0veJUx56WKDSfuynGjofazAj/9hixJC5yw9NA6P4QSGWULu1NnAwjA4fP+qL9R2OCP+qZcmhH/+lb5CcCjIx3azcK/rUJr1BalA/6rThC3vmGbEK6UHcQI72Xo1pwOqok3RoFlurATI/W3RLdO0Fqkwg6/dn7oROJJNh0jOBvrHKFfrmz2LIjf1MH1mWpZ1Ur9Rah/LBK9Po0TifdMA/hShExbMhZPx0Bqm8NjjXpG78CIkBxjyQDjUAA//La6h5JSex0QdcBH37cfRM58dSunGPaIgkL93ftHtzcnl4/uZTxAUsS7kduc43hD32FD6HHwT79NidueqxPtgLEuf/jm2h44gC2GjVeGpByo9MvwMnq8DTZhtou8+mYQYCbovUeLUnxRM+aWqAhG99LophfZhZjY1w9nAYymfv6QIKU4nffseX/qsiDGw/FkrgHPjNhmk7Ju5pnNpSVRlppGMB5Z19Xh2wycglnknznjg2SegfoQ0PhllUYwAXgBxoT1UufuNsLBqfXQ74H3/C/OHO6J4EEgW5cc0N
- dav46lz2
- CyHw4sg9PmS+QAhrkfToNye4E8w58OV9Ca7G5hGHNo1BMynQO2wHTrsnhyFCTafkViFtkl81qZY7ZbHymAAXzfhQeI07xgxxD/rNHTbgbYL8Oj7wtPdWakPdeuLUuWISCHYmPOTkFzZlxOrUhbxcT/OO18NR+sh8I1J6kHfWygFzaKC8Pa2UZWpP5Dp8NZd5OYM0oHlnB9wXUdMERR75O5+bLAR07xgmxkImMqHY2oHQsz/rPb26TfGHPVau2e6RkIM+tN6SGDprLRM0NivcPV0IK59njgQGY+NGYrgSVQBGQh8P4NhzJ2fKcOADRsT1QVfpozVs7KvWdSZK4uiMxU67sj5k++tSIx5E7nJrodPTfQEV68LcwSJ3xAOHGO0jHLMm3UWrjIgSYBTNcutARqc1dMZRo02NC1sYGs0ua9254m82H/PwgIO36wftOWZv/VzmzkdEbjFPjti1+MxRYdUPNwYJdC/GwkOXClHI5TXxNyGuVlMKqfQRQwnJDN+JZUJQQ
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D98EAA0005
+X-Stat-Signature: f1iazuj3fyzk8zfq55uc7iyat9jtnha4
+X-HE-Tag: 1783488733-249608
+X-HE-Meta: U2FsdGVkX19WKG+KCknPyUv0SIHrFRld/CpEdxZ2goMWIEvmpysg6eMiK5XGrmjMQbSkGXWJI5MydmzKcAJ6uGfF8yjSTSvj1Y62J0xuARcaIPOBnVs9yTw8QAJjoMj95fE1AaOL0DKT3s0n9Qo8eJVgHihNAAlpnrfy8IK9/d2K8tNeJ5XCczYRa0VnkCCxUV0VIVqfv1NGm3yZAgbC8qrpTOf+D3harTBE4m6OBN1f3anJIZqtY8dAEyndAXBze/4n8o5pPW4OSoGqE2r6rxIvjI/nsvV24lFDPFLLFt9LarjTmhuOVssZyymcq/5TxBHDa9Ee2uq7uc0WEakl8lvf162sqK+AqGk8BiztkYVBDcSKDLCnaYBJ5+KNxtb1dupgWhYhhBzXZ72riuUuR9+WvdLEPiiH6MSBs22HNf/AFbiQ5SxSv8y7xBp4KHXRNM8iQieJdSve8h6iUGxzz/ZKJdqQ2kK7GGR9moBCcWHGlmZCkF4ANEcTO7eAT/XsfmD+cn7DthQYw+7/qut5rUWVeKKPrZo9fNjcmaA0JBNV01EqtlGDbdIVHn/sFKHGluXmUrg70vcJkn9yZfutOkCX1JiTt0Zsu5i4qgrOTkcYievjmHnAEqEwzdXuWucKJFNfRumo4C3qgWZ5+xkzSafpG34I0UzLIZNRlYUggzyEplfijVj2bUJwKbsGW4H0heiBYZ4vS3EIPvsVFLSx1fdsl9rTEeUQZcvqC9kUgA8fmv7zCSImbkNY2EFzQKFe7/OfjEeNxozOG8mo1dRlDQlJA0N0+61LgSPe+w2ZHdt9nENcXIzx4yPQj7r7akvOIpYLiAhzBJU8xJRy6+AUaA4Z7RQvQLwzg0pHryro6H+PjKPs8x0RMeJbaQnb83bnnnv38nuyKDncJuMldFoq3mp/ufNRuNAiA6KjxUez3qVcsDVeP/Nj8veAcaJa7bo354ea2Wmx/9+GebP67ZH
+ +foCsVnF
+ HEYopnsVvs8NgqEn2u/BDiOe/WfDMjDCjaNr05Ztm0mEh4IU/cq8ZDxEL/q2IqbKqtrSeN2b2ydskZArbGSYm53w2NnaGeOsqiX8dYNamS80sPHLslos5kd0QlzQSXvo3IMW4qrxD619jw8sj7X4Mtssrlubk4Ommlzc6F7WSS6RWnFMsNaQELPnSoIvN3dL9TNOL2PxC+m/PjRS8ZIChHUSuG69pGr1U2bvTJcSGyahTt7BMqCZDD2r0/Bl3eLfYpItxyCAUXXFLLcT6UYNcSiGa/00Ak2yn4JIq38ELG2HeygRXQjRan8kC2krAPSo6pgGyxUDcmtVd7yBxIuluRUzZl4EcjUoBvAuvWGzVoOJa8lgBQfL6XuQxdbDU2NfAj1lp/GLyNS/Yc0nJFHLnJUOZPW+tY+4foIxOVYa8VuF4pFXe9Vj7YfunEO65ml18NxPViYO3DztjjgR8tl2bxAytyCW3ZyEYP8RafLkknt0qSAKVnYKzQKpoHn0d95TFpIVkG1p4XJqcZiQlcueYhPB0Gl0wR0qHKdclgYCsCxZUtLKUP1WEippgsjXboRtsHRvIHvxKqw1v+9ju1iXEnQvUxqjt7Hum7xdt32E2YPDj2n+NZHB66qrdFFaOy/FB54pzudw/DW+EobNq6zZiYCUzIykqdw9v80yXDZS9lPyFU+ZoWi1+SUfSupLb9mS1RPs8KYicXZ5Dk7oo/mSVxCUneeIN7/0RRc/If8fKpfnDMBFLZ+74xVF7LKa1xmcGVCnI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,157 +213,229 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When vma_iter_prealloc() fails in do_mmap(), it jumps to error_just_free
-as a error path of this function, but there are several possible issues.
+First of all, I want to thank Eugene for his excellent work on this
+series. What began as the Qualcomm Minidump driver from me has now
+evolved into meminspect. He also presented meminspect at Linux
+Plumbers 2025.
 
-1) It jumps to error_just_free without updating ret to -ENOMEM, meaning
-do_mmap() will return 0 on failure.
+Video of the recording is available here for anyone interested:
+https://www.youtube.com/watch?v=aDZv4-kOLSc
 
-2) The error path unconditionally frees the region struct.
-Since the region was already added to the global nommu_region_tree via
-add_nommu_region(), leaving it makes a potential dangling pointer in
-the tree and may cause a use-after-free on the next tree walk.
+Introduction: Memory inspection mechanism
 
-3) If do_mmap() finds an existing overlapping shared region, it
-increments its usage, sets region to this existing pregion, and jumps to
-share:
+meminspect is a mechanism which allows the kernel to mark specific
+memory areas for memory dumping or specific inspection, statistics,
+usage.  Once regions are marked, meminspect keeps an internal list with
+the regions in a dedicated table.  Further, these regions can be
+accessed using specific API by any interested driver.  Regions being
+marked beforehand, when the system is up and running, there is no need
+nor dependency on a panic handler, or a working kernel that can dump the
+debug information.  meminspect can be primarily used for debugging. The
+approach is feasible to work when pstore, kdump, or another mechanism do
+not. Pstore relies on persistent storage, a dedicated RAM area or
+flash, which has the disadvantage of having the memory reserved all the
+time, or another specific non volatile memory. Some devices cannot keep
+the RAM contents on reboot so ramoops does not work. Some devices do not
+allow kexec to run another kernel to debug the crashed one.  For such
+devices, that have another mechanism to help debugging, like firmware,
+meminspect is a viable solution.
 
-	region = pregion;
-	result = start;
-	goto share;
+meminspect can create a core image, similar with /proc/vmcore, with only
+the registered regions included. This can be loaded into crash tool/gdb
+and analyzed. This happens if CRASH_DUMP=y.  To have this working,
+specific information from the kernel is registered, and this is done at
+meminspect init time, no need for the meminspect users to do anything.
 
-When vma_iter_prealloc() fails and jumps to error_just_free, the error
-path unconditionally frees the region:
+This version of the meminspect patch series includes two drivers that
+make use of it: one is the Qualcomm Minidump, and the other one is the
+Debug Kinfo backend for Android devices, reworked from this source here:
+https://android.googlesource.com/kernel/common/+/refs/heads/android-mainline/drivers/android/debug_kinfo.c
+written originally by Jone Chou <jonechou@google.com>
 
-error:
-	...
-	if (region->vm_file)
-		fput(region->vm_file);
-	kmem_cache_free(vm_region_jar, region);
+Tested on Qualcomm SA8775P (Lemans EVK) on next-20260707 with the
+minidump backend: kernel crash dump regions correctly captured
+via firmware.
 
-This potentially leaves a dangling pointer in nommu_region_tree and
-causes RB-tree corruption.
+This series introduces a new cross-subsystem framework and, to
+avoid merge ordering issues, I suggest the entire series be taken
+via the mm tree. Subsystem maintainers for touched files have
+been CC'd; I request an Acked-by from them if the respective
+patches look fine from their side.
 
-4) When establishing a new private mapping, do_mmap_private() allocates
-physical pages and assigns them to region->vm_start:
+Alternatively, the qcom backend patches (22-24) can be deferred
+to Bjorn's qcom tree in a follow-on series once the core
+meminspect framework lands.
 
-	base = alloc_pages_exact(total << PAGE_SHIFT, GFP_KERNEL);
-	...
-	region->vm_start = (unsigned long) base;
+*** How to use meminspect with minidump backend on Qualcomm platform guide ***
 
-If we later fail at vma_iter_prealloc() and jump to error_just_free, the
-region struct is freed, but the backing physical memory isn't freed via
-free_page_series().
+Prerequisites:
+Crash tool compiled with target=ARM64.
 
-5) In the error label of do_mmap(), the vm_area_struct allocated is
-freed by vm_area_free(vma) but not called after vma_close(), leaving
-potential memory leak which should be handled by a custom .close handler
-of vm_ops.
+Target kernel must be built with: CONFIG_DEBUG_INFO_REDUCED=n;
+this will have vmlinux include all the debugging information
+needed for the crash tool and CONFIG_MEMINSPECT,
+CONFIG_CRASH_DUMP, and the driver CONFIG_QCOM_MINIDUMP.
+Kernel arguments: Kernel firmware must be set to mode 'mini' by kernel
+module parameter like this : qcom_scm.download_mode=mini
 
-This commit fixes those issues by introducing new jump label,
-error_vma_iter_prealloc, to correctly handle the error case of
-vma_iter_prealloc(), updating ret value (1), and move the region updates
-after the place that the allocation is finished (2).
+After the kernel boots and the minidump module is loaded,
+everything is ready for a possible crash. Upon triggering a
+forced kernel crash, the target board will wait in download mode,
+where QDL (https://github.com/linux-msm/qdl) running on the host
+connected to the target (here, Lemans EVK) can be used to collect
+minidump.elf from the target device onto the host.
 
-Additionally, the commit removes the existing goto label, error, and
-consolidates to error_just_free as existing `goto error;` code blocks
-always release nommu_region_sem.
+Currently, --minimal mode is being used to get dmesg log from
+crashed device.
 
-Moreover, it only frees region allocated in this request to avoid
-freeing the shared, existing region shared by other processes (3), and
-free physical memory when do_mmap_private() allocates (4). It also add
-vma_close() before vm_area_free() to fix the potential leak (5).
+Without --minimal mode, the crash tool needs to be patched to
+not crash on missing symbols and needs to be tuned, which I am
+currently working on in parallel.
 
-Those issues are discovered by Sashiko, linked below.
+crash> log
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x514f0014]
+[    0.000000] Linux version 7.0.0-rc3-next-20260309-00028-g528b3c656121 (@21e3bca4168f) (aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #5 SMP PREEMPT Tue Mar 10 18:18:41 UTC 2026
 
-Link: https://sashiko.dev/#/patchset/20260702012830.667205-1-thehajime%40gmail.com
-Link: https://sashiko.dev/#/patchset/c8513ee5aa8444ec9bf6c276043c9f833016a2fa.1783304131.git.thehajime%40gmail.com
-Link: https://sashiko.dev/#/patchset/20260707235137.498738-1-thehajime%40gmail.com
-Fixes: b5df09226450 ("mm: set up vma iterator for vma_iter_prealloc() calls")
-Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+*** Debug Kinfo backend driver ***
+I need help with the testing of this driver, Anyone who actually wants
+to test this, feel free to reply to the patch. we have also written a
+simple DT binding for the driver.
 
---
+Thanks in advance for the review, and apologies if I missed addressing any comment.
 
-v2: consolidate commits into a single patch, address additional Sashiko
-review (sorry for the noise: i have no working local environment of
-sashiko/gemini)
-v1: https://lore.kernel.org/linux-mm/20260707235137.498738-1-thehajime@gmail.com/T/#t
+-Mukesh
+
+Changes in v3: https://lore.kernel.org/lkml/20260311-minidump-v2-v2-0-f91cedc6f99e@oss.qualcomm.com/
+- Addressed most of doc. comments and binding and 0-day kernel
+  test robot warning.
+- Add timekeeping: Register tk_data into meminspect
+- fixed some of the bugs identified during testing.
+- Fix missing return before dev_err_probe() in qcom_md_probe(); all
+  three error paths (SMEM lookup, table validation, table init) now
+  correctly abort probe on failure
+- Fix meminspect_traverse() kernel-doc: @priv description corrected
+- Fix meminspect.rst: replace stale MEMINSPECT_ITERATOR_CB type name
+  with the actual meminspect_iter_cb_t typedef
+- Add kernel-doc for meminspect_iter_cb_t typedef
+- Lot of code formating and style change as per coding standard.
+
+Changes in v2: https://lore.kernel.org/lkml/20251119154427.1033475-1-eugen.hristev@linaro.org/
+ - Fixed doc warnings
+ - Fixed kernel-test robot warnings.
+ - Took Mike suggestion to remove mark inspect flag for dynamic memory.
+ - Added R-b for printk patch.
+ - Modified some commit messages for clarity.
+ - corrected binding change for debug-kinfo as per Rob suggestion.
+
+Changelog for meminspect v1:
+- rename to meminspect
+- start on top of v2 actually, with the section and all.
+- remove the backend thing, change the API to access the table
+- move everything to kernel/
+- add dependency to CRASH_DUMP instead of a separate knob
+- move the minidump driver to soc/qcom
+- integrate the meminspect better into memblock by using a new memblock flag
+- minor fixes : use dev_err_probe everywhere, rearrange variable declarations,
+remove some useless code, etc.
+
+Changelog for RFC v3:
+- V2 available here : https://lore.kernel.org/all/20250724135512.518487-1-eugen.hristev@linaro.org/
+- Removed the .section as requested by David Hildenbrand.
+- Moved all kmemdump registration(when possible) to vmcoreinfo.
+- Because of this, some of the variables that I was registering had to be non-static
+so I had to modify this as per David Hildenbrand suggestion.
+- Fixed minor things in the Kinfo driver: one field was broken, fixed some
+compiler warnings, fixed the copyright and remove some useless includes.
+- Moved the whole kmemdump from drivers/debug into mm/ and Kconfigs into mm/Kconfig.debug
+and it's now available in kernel hacking, as per Randy Dunlap review
+- Reworked some of the Documentation as per review from Jon Corbet
+
+Changelog for RFC v2:
+- V1 available here: https://lore.kernel.org/lkml/20250422113156.575971-1-eugen.hristev@linaro.org/
+- Reworked the whole minidump implementation based on suggestions from Thomas Gleixner.
+This means new API, macros, new way to store the regions inside kmemdump
+(ditched the IDR, moved to static allocation, have a static default backend, etc)
+- Reworked qcom_minidump driver based on review from Bjorn Andersson
+- Reworked printk log buffer registration based on review from Petr Mladek.
+
 ---
- mm/nommu.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+Eugen Hristev (21):
+      kernel: Introduce meminspect
+      init/version: Annotate static information into meminspect
+      mm/percpu: Annotate static information into meminspect
+      cpu: Annotate static information into meminspect
+      genirq/irqdesc: Annotate static information into meminspect
+      timers: Annotate static information into meminspect
+      kernel/fork: Annotate static information into meminspect
+      mm/page_alloc: Annotate static information into meminspect
+      mm/show_mem: Annotate static information into meminspect
+      mm/swapfile: Annotate static information into meminspect
+      kernel/vmcore_info: Register dynamic information into meminspect
+      kernel/configs: Register dynamic information into meminspect
+      mm/init-mm: Annotate static information into meminspect
+      panic: Annotate static information into meminspect
+      kallsyms: Annotate static information into meminspect
+      mm/mm_init: Annotate static information into meminspect
+      sched/core: Annotate runqueues into meminspect
+      remoteproc: qcom: Move minidump data structures into its own header
+      soc: qcom: Add minidump backend driver
+      soc: qcom: smem: Add minidump platform device
+      meminspect: Add debug kinfo compatible driver
 
-diff --git a/mm/nommu.c b/mm/nommu.c
-index 815ebefddfae..cbab1fe22be9 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -1181,7 +1181,6 @@ unsigned long do_mmap(struct file *file,
- 		ret = do_mmap_private(vma, region, len, capabilities);
- 	if (ret < 0)
- 		goto error_just_free;
--	add_nommu_region(region);
- 
- 	/* clear anonymous mappings that don't ask for uninitialized data */
- 	if (!vma->vm_file &&
-@@ -1199,7 +1198,9 @@ unsigned long do_mmap(struct file *file,
- 	BUG_ON(!vma->vm_region);
- 	vma_iter_config(&vmi, vma->vm_start, vma->vm_end);
- 	if (vma_iter_prealloc(&vmi, vma))
--		goto error_just_free;
-+		goto error_vma_iter_prealloc;
-+
-+	add_nommu_region(region);
- 
- 	setup_vma_to_mm(vma, current->mm);
- 	current->mm->map_count++;
-@@ -1218,22 +1219,41 @@ unsigned long do_mmap(struct file *file,
- 	return result;
- 
- error_just_free:
-+	/* if the error was from shared mapping/existing region, don't free the region.
-+	 * this has to be before releasing semaphore.
-+	 */
-+	if (region->vm_usage == 1) {
-+		if (region->vm_file)
-+			fput(region->vm_file);
-+		kmem_cache_free(vm_region_jar, region);
-+
-+	} else
-+		region->vm_usage--;
-+
- 	up_write(&nommu_region_sem);
--error:
- 	vma_iter_free(&vmi);
--	if (region->vm_file)
--		fput(region->vm_file);
--	kmem_cache_free(vm_region_jar, region);
-+
-+	vma_close(vma);
- 	if (vma->vm_file)
- 		fput(vma->vm_file);
- 	vm_area_free(vma);
- 	return ret;
- 
- sharing_violation:
--	up_write(&nommu_region_sem);
- 	pr_warn("Attempt to share mismatched mappings\n");
- 	ret = -EINVAL;
--	goto error;
-+	goto error_just_free;
-+
-+error_vma_iter_prealloc:
-+	pr_warn("Allocation of vma iterator for process %d failed\n", current->pid);
-+	show_mem();
-+	ret = -ENOMEM;
-+
-+	/* in case that the region is allocated via do_mmap_private() */
-+	if ((region->vm_usage == 1) && (region->vm_flags & VM_MAPPED_COPY))
-+		free_page_series(region->vm_start, region->vm_top);
-+
-+	goto error_just_free;
- 
- error_getting_vma:
- 	kmem_cache_free(vm_region_jar, region);
+Mukesh Ojha (5):
+      timekeeping: Register tk_data into meminspect
+      mm/numa: Register node data information into meminspect
+      mm/sparse: Register information into meminspect
+      printk: Register information into meminspect
+      dt-bindings: reserved-memory: Add Google Kinfo Pixel reserved memory
+
+ Documentation/dev-tools/index.rst                  |   1 +
+ Documentation/dev-tools/meminspect.rst             | 144 +++++++
+ .../reserved-memory/google,debug-kinfo.yaml        |  48 +++
+ MAINTAINERS                                        |  16 +
+ drivers/of/platform.c                              |   1 +
+ drivers/remoteproc/qcom_common.c                   |  55 +--
+ drivers/soc/qcom/Kconfig                           |  13 +
+ drivers/soc/qcom/Makefile                          |   1 +
+ drivers/soc/qcom/minidump.c                        | 271 ++++++++++++
+ drivers/soc/qcom/smem.c                            |  10 +
+ include/asm-generic/vmlinux.lds.h                  |  13 +
+ include/linux/meminspect.h                         | 271 ++++++++++++
+ include/linux/soc/qcom/minidump.h                  |  70 +++
+ init/Kconfig                                       |   1 +
+ init/version-timestamp.c                           |   3 +
+ init/version.c                                     |   3 +
+ kernel/Makefile                                    |   1 +
+ kernel/configs.c                                   |   6 +
+ kernel/cpu.c                                       |   5 +
+ kernel/fork.c                                      |   3 +
+ kernel/irq/irqdesc.c                               |   2 +
+ kernel/kallsyms.c                                  |   9 +
+ kernel/meminspect/Kconfig                          |  29 ++
+ kernel/meminspect/Makefile                         |   4 +
+ kernel/meminspect/kinfo.c                          | 257 +++++++++++
+ kernel/meminspect/meminspect.c                     | 474 +++++++++++++++++++++
+ kernel/panic.c                                     |   4 +
+ kernel/printk/printk.c                             |  12 +
+ kernel/sched/core.c                                |   2 +
+ kernel/time/timekeeping.c                          |   2 +
+ kernel/time/timer.c                                |   2 +
+ kernel/vmcore_info.c                               |   4 +
+ mm/init-mm.c                                       |  12 +
+ mm/mm_init.c                                       |   2 +
+ mm/numa.c                                          |   2 +
+ mm/page_alloc.c                                    |   2 +
+ mm/percpu.c                                        |   5 +
+ mm/show_mem.c                                      |   2 +
+ mm/sparse.c                                        |   3 +
+ mm/swapfile.c                                      |   2 +
+ 40 files changed, 1713 insertions(+), 54 deletions(-)
+---
+base-commit: 5c73cd9f0819c1c44e373e3dabb68318b1de1a12
+change-id: 20260708-meminspect-v3-76dd8166c4f1
+
+Best regards,
 -- 
-2.43.0
+-Mukesh Ojha
 
 
