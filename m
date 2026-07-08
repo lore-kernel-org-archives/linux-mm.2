@@ -4,98 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E77F6C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 16:51:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 411A6C44501
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 16:51:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CDBB76B0093; Wed,  8 Jul 2026 12:51:24 -0400 (EDT)
+	id 142D76B0095; Wed,  8 Jul 2026 12:51:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8C546B0095; Wed,  8 Jul 2026 12:51:24 -0400 (EDT)
+	id 11A356B0098; Wed,  8 Jul 2026 12:51:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA4E26B0096; Wed,  8 Jul 2026 12:51:24 -0400 (EDT)
+	id EFA596B0095; Wed,  8 Jul 2026 12:51:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 87FDE6B0093
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:51:24 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EF95C140206
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:51:23 +0000 (UTC)
-X-FDA: 84966200046.27.7797872
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1F25118000E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BC67F6B0095
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:51:25 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18CCDC1493
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:51:25 +0000 (UTC)
+X-FDA: 84966200130.22.B49C789
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8C883180003
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:51:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G2AEW2yS;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hYG4YQKG;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783529482;
+	s=arc-20220608; t=1783529483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=wy0zRs0iHOEqGoZqY8flVlrypFtpLWv9a+F5MdRc8/U=;
-	b=hTA44ua4cXUAm+v8mAuLu2+f5G7acKJ1mv9GNKpixyo2mZmBTbsml4gwaJvdh1VPDz1z5I
-	y4hR8/Wow8IZbvaKXIn39bydWfNtsx5j9hs7fE8WzAvgPeHq+fCXwjDC5nBX4mq9LO6Lvy
-	ryiGFn7/DaWNV+pHjmlw+V6REXpyCkM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783529482;
-	b=b4+zNoCq18A1nyLdpWnC7boIf6Ae+V82COCP42OmGsH/I6afCeW01b4ZssJtUCHuAmCP+U
-	yrHkuRWb+AdCeO8FO9Zb8q3Myvg0WbNYk229Y92d3wI362s7fFemr5s9wdjTDwMqAXsdqy
-	Z9CRpjjCwD6DXTb2R/fSq9yVkLexbkM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ucWwaSFjCVK5PpHi7O84rrG1/RwptI0feQpEp5dgE6k=;
+	b=plKrEsZQl0v1FduWyyX7BLSm6vXFKvnE1eF4qVdWpITMv/w1ClRQzZsZdUSBVyHWJ4hPwa
+	4X+8NyYutn2rmKqZeYQlggJqtVYPPpuxXpj/LQeIn3zn/smu17AWS+6Na6c4BrG4HCBU5V
+	b907D4Ja3etesOTXdHHesuRsVVN303I=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G2AEW2yS;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3D01B438BC;
-	Wed,  8 Jul 2026 16:51:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31C91F00A3A;
-	Wed,  8 Jul 2026 16:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783529481;
-	bh=wy0zRs0iHOEqGoZqY8flVlrypFtpLWv9a+F5MdRc8/U=;
-	h=From:Subject:Date:To:Cc;
-	b=G2AEW2ySEn90UzrvQCpkM6Q+j1L/83GPtqvTZsBNXrlV0bxDG/M/GjBWWf9qrZFrP
-	 pMuMHBvTDnSqtgdwL+H2PtTVX/OWfBxMdQcbiqajGcxEGMDhw3xhzqIOYQKQsjcEJW
-	 YLLhawnCF4LGVm6YtWOLaY7PZgndnGXLAA9KQNcmgRnF3CqdseOBh5HJvBY2s/LAFc
-	 VUEFoqF+rGumBfxnFp9qtZS5RJD/K1sjpG6qf5vv/cKdsewC05af2uKaRxgn5YVwaK
-	 fihX6XCVGmuLZX0saPX8V40UMDMYZjDgw0THH0k+Rb34lSI4a4j4bxeWQhT7gmHASx
-	 ABM27GSdvrTgw==
-From: Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 0/3] binfmt_misc: use RCU for the handler lookup
-Date: Wed, 08 Jul 2026 18:51:15 +0200
-Message-Id: <20260708-work-binfmt_misc-locking-v1-0-a009dd5b56db@kernel.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hYG4YQKG;
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783529483;
+	b=6s6SuD8BxKLorBVR7Yw0ORiPik8y/Y4uaAX1FMvwZqQloR07BQBNjBAME6rFJugSEzGVN6
+	8IgtZTrY1hoYwnG49N/9YP27L+Uw5ZLT9SrH4KgaAaegMrn/oUGnD4npBMwNNoys1aWzu0
+	+1qdgYra23gwliBEon+1Q5HgaVpkyRs=
+Date: Wed, 8 Jul 2026 09:51:08 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783529476;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ucWwaSFjCVK5PpHi7O84rrG1/RwptI0feQpEp5dgE6k=;
+	b=hYG4YQKGDkKYH3KblcwWJAOclqY5v0R+9bl8qfSPdt/Wi1r2BfI+v032SK+xtmgm9Q0etI
+	1Xc0nwe57wqCsCChmvrPmdiUYGuQRGnt4ncH/nl0h+0/pE7WQVaMhAta9f4LsIWtSr1UqY
+	IQjUSLs6MHcHlFUFkhxZjHeOKDEjXl8=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "T.J. Mercier" <tjmercier@google.com>
+Cc: Richard Chang <richardycc@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, 
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Martin Liu <liumartin@google.com>, 
+	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
+Message-ID: <ak5-qwmpXrYi5md6@linux.dev>
+References: <20260706081218.3438762-1-richardycc@google.com>
+ <ak1XzPxbwBF72d1m@linux.dev>
+ <CALC_0q9=KNnkQBE_7gC60jZ2Akj9jgL+VaDMFd7yGvqyfTJbYw@mail.gmail.com>
+ <ak3Xtrtm5iVayEx7@linux.dev>
+ <CALC_0q-juSkv=iqG7mAGCuGqbdCtjEHEy6oD1pcxQkFdBMJHWg@mail.gmail.com>
+ <ak5wxwj8cID-QQCF@linux.dev>
+ <CABdmKX2C-XPN7Z3G7joSHUxhzEmp5dgNf_oA_ojQ_coM_CmvPQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAOATmoC/yWM2w6CMBAFf4X02SW0XiD+ijGmXRZYkdbsIpoQ/
- l3Qxzk5M7NREiY152w2QhMrp7iC3WUGOx9bAq5XNq5wp6IsKngn6SFwbIbxNrAiPBL2HFuwx/2
- hrBvrCCuz6k+hhj+/9OX6Z32FO+G49bZH8EoQxEfstmnwOpLkU5k7ELRmWb7dD75kngAAAA==
-X-Change-ID: 20260708-work-binfmt_misc-locking-15347df12ec8
-To: linux-fsdevel@vger.kernel.org
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
- jannh@google.com
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3147; i=brauner@kernel.org;
- h=from:subject:message-id; bh=Sxy/gcZwE0shEfdof4tpVTMT+0mLMtUkiNwr1Sz+FnQ=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT5NbD3sEYcjZMWk3w6ryT6KNN+DUHzaQlRn1oCS61CN
- Vb4XHfoKGVhEONikBVTZHFoNwmXW85TsdkoUwNmDisTyBAGLk4BmMiVFQz/4/8tn7pOxS0g7On0
- hoxnmgub+Hwy9vicjddwW/419PC+xQz/bI5MZ9tnyRenc/jM4fOp079PP/f0euDeM198ZvUrbjv
- 3lxMA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABdmKX2C-XPN7Z3G7joSHUxhzEmp5dgNf_oA_ojQ_coM_CmvPQ@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1F25118000E
-X-Stat-Signature: h86ya1itj96bkbk7iwmmehgffaxca7z4
-X-HE-Tag: 1783529481-3121
-X-HE-Meta: U2FsdGVkX18tuFx3JwGeJAvru4AnE8okUJ3cpqciVHhRnmxeG/jsbJ1Cx6eWcEXG64hndGc8rMw2c+Q6+jMVPUzt00S4wZ3kgz0F25eOvuq8JKs4J7IBsklBFeJL6J618Eg470itScQDeUPS+Okz94S/CHMqSj7DOI1u9JROh+7gOck9I1eTiaE+VYOIB4P3MiJ5Iwjj21tRrC8Sef4mD4HWLlf/cWBDJPLVg2VrWIMVQsqqNcOSVBdDRs+3g3E+x5hVhWbW+sdh/sEbkEu1TxjHiVbT/Ybj3OXziRtxzPo6Qj8n8jMZYnxJh//lOB/KaABd9bIaJiQtkEQGVmbZeFrf2sHmCElPf8qpVxprYR/GXIp+vsmt0s1gYBiK6uxt1Zt7x3GWwQMCx2+t5h4GyMGpfN/Lilr4tmTo3jsMG+USWNodj+jEUfjo3BA6DQUOtO7eD6ZCGXaCADen67kHsWfx1Kq90r+jMBuZwCeQkJ89wyHzZUZ0Lx+NNMULV2vBRKwvRnCl0rTMpTS74Tshs2ePwTRn7DELrjQf950h+Y3hK4zmeoDDrzT3N/C3MuqS40vINAEe3OZ3eY26W5d5b4Mg72UxOlJEuAiz4RdrXyLFLEAQXDGD3kUsf/XQ6O+f6vyhmCwOOg3mj7OFpMYvSGdnZE2Kg65eFQ9W+m227SvR2gXl98Y4w/YYPNFNktTaXaavM2nMTF1at/eZJfFttVJEJ8dBF1Y69ukFrU+WY4/H+eoTKjxX6vWZtSJpfKnr6zZwaYhe1c8WBia9XnNL6lTG41Vn5+OIr50ZSLfFS+wY8R7nbx80gBvNgXu8PAXeJyKGbzaVHy6k6//YSCWTkIhOz4Me5pRLcLHDD7sI3srkXRqj9X7zHtrN6VsjSNs4rC13myDC0/d4wTa7r2l+jaWwzE2b1HK6zc51RQ41JaHBlaORQF4ksl4vqsV2OoJDvrqB25pCgdd4YJRiAEs
- e5ihcMDt
- zuecsQRVTvDJYdnxoFmkzeCDnF80w9+a3XYnA0eSqI4b2wmrM2OUIX0ISHi6oDg48ki+b9BiCFzqFcO7s11mMEAxNtIormZPutOLApeVSokk/hQouHwMXTKOiQI3wv/+QJ3Jbmy58pQK8gPs0xhggiQuIdHInruufDXvJNuVqHhDEyNjAag7kO7egRN/A/p5aty9s/4ncl6R7VTu2cZ+vESA4QXczj6aEQRR6Kr8P+P6VtCm74Fy9Lvk9WPCO5XLBoEAxpbuBDl7adkhyww4HHt5sMEsUOoUOh0n2/KantMhOrcR52DLVN9Wfix+r3g6VohZ3ifyP54p9cZsq9iwxtxU28cFs4ut/b2vym6FVIKBffG0=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8C883180003
+X-Stat-Signature: upnn8qryh14u6rgpyks3hm5hnwqyy1yo
+X-HE-Tag: 1783529481-973025
+X-HE-Meta: U2FsdGVkX18eRZ53XfqlpSAKc0J9Z16MOgRAmIkkWrcC3Gw3prxbmX9PuHcL1IvOt1fupXrRYlY7z2UVfRYRHHHhViGywpKtmsO83kG1/G/U9XlU6WliaKHg2IvXBw8tL2unb+iiWqGHXPfJ7qZFDeaMb4wqe1k/pNQNKqI8FE29VHUASZJE7Bp8e6xHkC7FCztAjQ04G1+KhTKfcnEC2XjixxKpVElg5oA5nQ4MLHoXKwtY3G2nDfNdapIPTTwbkEI8tCKgbqQfFTTlFuxNKdimMy8S9vyOcl2Fw15prrViVKpizYcoIdI2JhhFA3NEeaoQjIRQBvuFsCl2teGPWWxD8kxdGB7LwQmGSd3K9rZXd9G6B0O04Dzj4e+Nt5rlm+TB3xCa1hzE/o8dzOyWWQt01yxF4we7Jlh+kb029M/mE1fX2oHoGzOn5XCHVA1kYGQkRA1+wyPYy9qcZ9wb/Cg3nWhbgJ6+SIVS4R9Lg7ic5bDm8kSzIMKZc0vuSxvT25OPEAL/FKRH5ZR7UmJDHTSEvRkCeKdc8X/gfAXvd1EshYNDAo/65d/AiOrSegkQ4AcnJNdPUSaOarNGLpeZG43p//ipt2N5t78afjKYyHBEtplxM+QMN2SJouHUNPRQ8fjFwdmC0Cj5gTd1jf1ZeLy6w5r+ajnykzFhzeMsSxdLgZfKZL8KX1w7Kb8v0a764JJ84kKcocWpoT9zeDpClYs/CgB7ua1GnNk1EtMVlrFTcESIFsDz5UpDNmDi+MA8457Niq1OPTIIg+H2F47kuzBOh7rx8x1bwWdPot2qKNphtlXTt65+6P3ndu1VJUptd516VZj0P+XHT4P2Pwj0T1DGHwP1aTIFnvsLlVM//04ZcMbTK7ohPo2wRs5MxkgTzIH3e92PxzNEpzHHlmI2Xcf48R4bwG071Vwh1nTk1g9SedGLKYRhgYnZoLVfHWQr3crtId/LDvNe/0BtQDl
+ zEVr+qE2
+ IJogo5KqgXbZKf4spRVD12+x67DmsJkan73tvE3YbQeV+4U/rn6X+pTVtKcPxxudsoaX6Bg/ltW9R7pjygWuaE2EtPFloEASOBM5TdEUXbarvAb2dmWiDZ/qMTj2EmPfocPVg7XXOw7qH7mH6+73jf9cLmSh8RvWyN3LcXM6e2XgRukQpJ5iDMqr77UjKwpPAw2AF8B0MkGzr/0gJSqW0n5a7zV+dNmjqtgF0emsnUMtAFBJOIVJDGWhbk7r6Jl8Ip0L1fqRRkKLrBz1Js5sGmW6DQhzszJolOEqU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,65 +101,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Once binfmt_misc is loaded load_misc_binary() runs for every execve()
-on the system since binfmt_misc registers at the head of the formats
-list. Every exec therefore performs read_lock() and read_unlock() on
-the entries_lock of the relevant binfmt_misc instance, i.e., two
-atomic read-modify-writes on a shared cacheline, in the common case
-just to conclude that the binary matches no handler. User namespaces
-without their own binfmt_misc mount fall back to an ancestor's
-instance so on container-heavy systems every exec on the machine
-typically ends up hammering the cacheline of init_binfmt_misc. On
-PREEMPT_RT the rwlock additionally turns the handler lookup into a
-sleeping lock on the exec fast path.
+On Wed, Jul 08, 2026 at 09:03:17AM -0700, T.J. Mercier wrote:
+> On Wed, Jul 8, 2026 at 8:48 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> >
+> > On Wed, Jul 08, 2026 at 03:24:15PM +0800, Richard Chang wrote:
+> > > On Wed, Jul 8, 2026 at 12:54 PM Shakeel Butt <shakeel.butt@linux.dev> wrote:
+> > > >
+> > > > What's so special about proactive reclaim? Why the same situation can not happen
+> > > > for global or memcg reclaim?
+> > > >
+> > >
+> > > The target batch size of the global/memcg reclaim is typically very
+> > > small -- usually SWAP_CLUSTER_MAX (32 pages), allowing the task to
+> > > yield or check signals between attempts.
+> > > Furthermore, kswapd is a kernel thread designed to be freezable, it
+> > > explicitly checks kthread_freezable_should_stop() in the main loop.
+> > > In contrast, the target batch size in proactive reclaim is
+> > > user-defined and can be extremely large. Without signal checks in the
+> > > inner loops, the task may continue scanning and evicting pages for
+> > > seconds at a time.
+> >
+> > Why can't the proactive reclaim use the same batch size as memcg and global
+> > reclaim?
+> 
+> Because it is very slow:
+> https://lore.kernel.org/all/20240202233855.1236422-1-tjmercier@google.com/
 
-The lock protects very little. Entries are immutable after publication
-except for the Enabled bit which is already toggled locklessly via
-set_bit()/clear_bit() and entry lifetime is already handled by the
-users refcount. The read lock's only remaining job is to make "the
-entry is still linked" and "take a reference" atomic with respect to
-the unlink sites.
+Yes, we should fix reclaim and preferrably have single solution for all types of
+reclaim. Though that is orthogonal and out of scope for this patch.
 
-So make the lookup an RCU walk that acquires a reference via
-refcount_inc_not_zero() and free entries via kfree_rcu(). The removal
-paths need to detect whether an entry has already been unlinked and
-rely on list_del_init() reinitialization for that today, but
-reinitializing the forward pointer of a removed entry would make a
-concurrent lockless walker standing on it loop indefinitely. hlists
-support exactly this pattern: hlist_del_init_rcu() keeps the forward
-pointer of a removed entry intact for concurrent walkers and only
-zeroes ->pprev with hlist_unhashed() serving as the linked test. Hence
-the first patch converts the entry list to an hlist so the RCU
-conversion in the second is a pure locking change.
-
-Writers remain serialized by the inode lock of the root dentry with
-one exception: bm_evict_inode() unlinks entries during umount without
-holding it. A spinlock stays around the unlink sites to make that
-exclusion explicit instead of relying on superblock lifetime rules to
-provide it implicitly.
-
-Handler removal semantics are unchanged. An exec that acquired a
-reference just before its handler was unregistered already completes
-with the removed handler today. The read lock never protected against
-that, it only made the window smaller.
-
-With this an exec that matches no binfmt_misc entry no longer writes
-to any shared cacheline at all. The last patch annotates the
-long-standing lockless ->enabled accesses for KCSAN while at it.
-
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
-Christian Brauner (3):
-      binfmt_misc: convert entry list to an hlist
-      binfmt_misc: use RCU for the handler lookup
-      binfmt_misc: annotate racy accesses to ->enabled
-
- fs/binfmt_misc.c        | 86 ++++++++++++++++++++++++++++---------------------
- include/linux/binfmts.h |  4 +--
- kernel/user.c           |  4 +--
- 3 files changed, 53 insertions(+), 41 deletions(-)
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260708-work-binfmt_misc-locking-15347df12ec8
-
+The reason behind my questioning is that the commit message should have all of
+this information from the start instead of requiring readers to extract all of
+this.
 
