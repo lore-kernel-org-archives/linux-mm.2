@@ -4,105 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 241C1C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 09:14:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C64F4C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 09:16:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E72666B009B; Wed,  8 Jul 2026 05:14:23 -0400 (EDT)
+	id A08CD6B009D; Wed,  8 Jul 2026 05:16:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E22D06B009D; Wed,  8 Jul 2026 05:14:23 -0400 (EDT)
+	id 9B9476B00A0; Wed,  8 Jul 2026 05:16:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CECA96B00A0; Wed,  8 Jul 2026 05:14:23 -0400 (EDT)
+	id 8A8476B00A1; Wed,  8 Jul 2026 05:16:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A12C86B009B
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:14:23 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15A9516927E
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:14:23 +0000 (UTC)
-X-FDA: 84965048406.10.9A7754A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4D924180002
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:14:21 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SDfjEVLN;
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E0556B009D
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 05:16:12 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B7DA11A06E7
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:16:11 +0000 (UTC)
+X-FDA: 84965052942.17.BAA10A8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3E58220008
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:16:09 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LGjEPZee;
+	spf=pass (imf13.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783502061;
+	s=arc-20220608; t=1783502169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AXXHqKxP6hZn4M2zHTw2/0ZaLNmtz5Sx6sgLJ6b0uwI=;
-	b=zEBVuJIofpvXKUZkEcvlSrR7p2NxWHeFlqMdL7z7B5VT/wwG77051JpVX6Rw33TxHmfwqQ
-	4MltwDZWgdhG+lRP0GBJ1KiOjoTsIeuGj7mg4buzSTI/qPYZF40XZb5XA0HMmwAw+eY2QN
-	BMfQ7/Z7S8caZ1JX9p8O8lghmIg6Lxo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SDfjEVLN;
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=b4K/HdwkKVaSF1+rIVNyQiESO9vsDqggAz/6RtbS1nI=;
+	b=ZxJ3wfMq8g5jSsvOwt95uBFCV3bPj8dTeiD8ajI7JYAXvYC+P4f0VnuBiev6JVp8CBePJ8
+	Sj2eqcoHo/MjkwWJqJwvHjBhK+dkPsGqrrWtdTwEIZgBHYHE3znM31IeGr7G317UVTecGS
+	vRgn41Xio8RrigWuBzA3JdmJdYYpV08=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783502061;
-	b=ASu7Vtw0n/u0PqwhYZQluJgSp2m+2nnstj4ZDEnUs37xIGUQVGjltAahJz4zzb9bO86Puj
-	SrFO2q4Vw1D2VIyISR/Wcp2gtKHCDZzZCxW8hbvrHdgJ3X26c398pwnA3v6yTP1NK0O3ME
-	3ucp51ValCITgtBtjNNzd2ipi55VbNs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B3BED6001A;
-	Wed,  8 Jul 2026 09:14:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511C11F000E9;
-	Wed,  8 Jul 2026 09:14:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783502060;
-	bh=AXXHqKxP6hZn4M2zHTw2/0ZaLNmtz5Sx6sgLJ6b0uwI=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=SDfjEVLNuk28Tl68PJynCZdX2Kqgk26eXL56PM60LwXTOto0CWSTAjFNmFJ1ICrYq
-	 vqKrIquj1RTSThYPAkkuZKFMEJJILzNSscRunJ+pgIFSSh08YkyGtgsH+nZaKdzukn
-	 iMDAjHrz9fsaEewNzgyTNI9QMu4QTS+qbl27g0QQgeEfdyLidSY4tBRWjVFvII4m6L
-	 Mg/MUO6Uw6puC7rRRegBzohlNiUOQs2CdfsxP6+YUfd7hMmehUFo1qX1cTgCMUcWIL
-	 wqzswdBa2dXxFUhqGkvLSZImHcXAPEpFi5jpruDOtR2AEu7JW3YD54smjQflkIk7t1
-	 p8lCaVreY3Ppg==
+	t=1783502169;
+	b=BEjckh+BoafcK5qksxPRcVJn4/kpxbnj8frTz/qDrJwFXr8SnvDVPCgZk1fUnk62eUdTbR
+	sL/CF1Ur65L/4CClm0zSSBGxdzmnA/8yk2CcSbzqUHs1OIhYOUs4yNHY4U4h7ziyDFQ2kT
+	7sQRN5xoFLIPHMdl+tOPGp+2uIW1N3U=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LGjEPZee;
+	spf=pass (imf13.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1783502168;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b4K/HdwkKVaSF1+rIVNyQiESO9vsDqggAz/6RtbS1nI=;
+	b=LGjEPZeemMuviSF8/bhZlfMQTgmkFE+YUdZqkODW5rQPn7C84+mM+ybu9UAzNSmVdnMRv9
+	XpuK55P/d2vf4Ku14X/yVVtM10YwR/GVrqogheNr2YMNq4EepfAfu99AbrLaI3VI6J5Cfv
+	O6oT1mSLsB6LyChaqjF0HflLVFJY+2E=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-240-RD_EajTGP1SqWQ4n66rkrA-1; Wed, 08 Jul 2026 05:16:07 -0400
+X-MC-Unique: RD_EajTGP1SqWQ4n66rkrA-1
+X-Mimecast-MFC-AGG-ID: RD_EajTGP1SqWQ4n66rkrA_1783502166
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-69841da1946so603832a12.2
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 02:16:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783502166; x=1784106966;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=b4K/HdwkKVaSF1+rIVNyQiESO9vsDqggAz/6RtbS1nI=;
+        b=lHra9/XhlwU5WK6nPlb68p2eYyzwYdtZXQtnQlvNAalN/CgcRKGSPa/T/vD/E3JCmS
+         aeZx0uKYyypXfn/ivfXOHN07ZqlNVmUE9Cpl8nODq5oowF+oH2zabpD5NvuujaHpQ7LA
+         v5X8Ys0cd1Pb2Yv94fUMMELK31ByM9Equ/+nOPxfdBnc+YsyvAx8f3PuphP312SkQvcd
+         3ZFp6BUVpgzfhRMv9VqTtN+za7cH5xeYD+61AvAGwUFhsAGHTjkLIe3WzRVnvYIkbe3V
+         yRMQ9PqKjyWocH5GMUC6Q0pZQSeTdAZNuII/GBfE7THQyY5b3XgFBa8H5BXbXLvzjsjL
+         E3PQ==
+X-Forwarded-Encrypted: i=1; AHgh+Ro5uJmAEy/Kn2Jl4qBfXV9ij0L+Y4e2f5evkyuJ3jUV9o4tCgc/mjnr7KNJrzyIlvbAQXRbaXMdIA==@kvack.org
+X-Gm-Message-State: AOJu0YzsiVwUjCJBu0JsTh6F4OnLYCFClJqmJlMs6R8nvSPE6eI+mAdG
+	BU9Sh0W+uriYM/JoesDhXpcN+hDcUyicJvcsPmeXwY7d3dk6K5ZnBXoZjY2QJe/r85pAa8BqgrO
+	UNT7Bg+ulPTp/QVqHntO5zDPAdg6k5jJ+hL4D9/TZ7ZGROkpiA14Q
+X-Gm-Gg: AfdE7clztGV5VnUw2y8gjK0RLbdH+MGNzy9+5Iz9w+SxHMB+//xoGSGaLDltjeMb/uE
+	7xy1RYE4JcBuhjvuPN/HaEzDdD+OdxEQ2ew9bz90fLAe6XR93VXXIfCWxFlBdz89zQioV8qSYXO
+	9v8MCEFrsxKqrXv1YL+u6kjJvtJgyrX+jBJlne5LG5ECF2AhTAT6VGp58ahE2QG7oThpgai3CuS
+	vdZwGd82V1UsK/U4/JJ0NUxoq9+6Mz+LhWjhD5MhFTd38wg/vaperuUyTmmGnvCpPymLB2WArqS
+	6It/hNjO/HWGh4/rywxgxlv+B9gtHJsEssoEjafiEu96/HPp7iK8CDqxr2X5xDd5Y68OTnStzcP
+	alDEG+aVsM3WA8/AyqdRuZy/1zdrzoX+/
+X-Received: by 2002:a17:907:1003:b0:c15:9709:fb9b with SMTP id a640c23a62f3a-c15ce0f880emr64100466b.44.1783502166143;
+        Wed, 08 Jul 2026 02:16:06 -0700 (PDT)
+X-Received: by 2002:a17:907:1003:b0:c15:9709:fb9b with SMTP id a640c23a62f3a-c15ce0f880emr64098866b.44.1783502165600;
+        Wed, 08 Jul 2026 02:16:05 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-68-31.inter.net.il. [80.230.68.31])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c15ad9bca25sm286808266b.35.2026.07.08.02.16.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2026 02:16:04 -0700 (PDT)
+Date: Wed, 8 Jul 2026 05:16:00 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Sourav Panda <souravpanda@google.com>, muchun.song@linux.dev,
+	osalvador@suse.de, akpm@linux-foundation.org, liam@infradead.org,
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+	mhocko@suse.com, mhklinux@outlook.com, fvdl@google.com,
+	gthelen@google.com, mike.kravetz@oracle.com,
+	pasha.tatashin@soleen.com, rientjes@google.com, riel@surriel.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [RFC PATCH 0/6] mm/hugetlb: Dynamic, NUMA-aware HugePage Cache &
+ Free Page Reporting
+Message-ID: <20260708050547-mutt-send-email-mst@kernel.org>
+References: <20260707064235.1386552-1-souravpanda@google.com>
+ <9624988a-366e-4884-9408-3f3b88c27290@kernel.org>
+ <20260707062428-mutt-send-email-mst@kernel.org>
+ <b9a48d89-74f1-43d4-b7bb-be988b6855c9@kernel.org>
+ <akzZr2jfJ0J8zox4@lucifer>
+ <20260707095843-mutt-send-email-mst@kernel.org>
+ <ak0xWgpJPSaNWPsl@lucifer>
+ <20260707152755-mutt-send-email-mst@kernel.org>
+ <f9bad4b3-93ee-4daf-84d5-97f6ca305240@kernel.org>
+ <ak4JiBcvi29sYx0v@lucifer>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and
- interpreter selection
-From: Christian Brauner <brauner@kernel.org>
-To: Farid Zakaria <farid.m.zakaria@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>, david.laight.linux@gmail.com, 
- jack@suse.cz, jannh@google.com, kees@kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mail@johnericson.me, 
- shuah@kernel.org, viro@zeniv.linux.org.uk, Gemini <assistant@google.com>
-In-Reply-To: <DJSPBVXTF02G.3SKLB9EO89GPT@gmail.com>
-References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
- <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
- <20260706-uhren-raubbau-sinnkrise-e40a8337414b@brauner>
- <CACCo2jm5=xrQNfak=TdO=2oh0DC5pe+atj=UfuTa8Y9s8GVkqg@mail.gmail.com>
- <20260707-campieren-fingen-himbeeren-e4b682bd8e63@brauner>
- <20260707-wortreich-kanal-zensor-9386ef4f38f7@brauner>
- <DJSPBVXTF02G.3SKLB9EO89GPT@gmail.com>
-Date: Wed, 08 Jul 2026 11:14:09 +0200
-Message-Id: <20260708-welken-dystopie-ertrugen-56a3b5f7ab66@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2372; i=brauner@kernel.org;
- h=from:subject:message-id; bh=nQTJehsrNjH/qX4EOyzAlTO+RBHcG/yjYW9gYuuUFIA=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWT5iTy+4ej3eN+rzKsRBx4ms/YfnOB6fLmtKfum3MBTZ
- v/k56+f1VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjARdy1Ght8F4v9ZvLd8PqCw
- cTPv7+My2zQPTK7c/yLBYM7VFfW/Jr1iZPh6ZUP0oay2dbVyE06brmj+s+j8sXc2qYsnh76+F7G
- 2WJ8LAA==
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 7iiw134i6eaiuzkybidi6ebo5pbwp4ob
-X-Rspamd-Queue-Id: 4D924180002
+In-Reply-To: <ak4JiBcvi29sYx0v@lucifer>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 0kjqyo7zHvqI9aDN-8qZ2md8Ltr37kZccuhicXM2aBQ_1783502166
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783502061-765321
-X-HE-Meta: U2FsdGVkX1+slS+hTwChXcgIflwDhU5eGfvfvCcm+xFwMuflNG77Kdc/FNHjVu738X1ztVawuwGolJW0UnxuL6x2yOsGx3uAlhwPq5UNQxach5qbBgk6St9VGQcVuWyn3w7UI30yGf6M4qkxdYprHRWFr4Zd0YdjSqV7Q1GxeN7DYbIsOHl/CdARzMNwhapmt7z7OoPlpVO9NzVhwBCjC2oTCR52k6JFGKGr45dxO8uHxTiNMdN/jApWdvFMlBl9IGy7hvOjUNhRIbnOS+Grj38GAuPx/aRCU5Y2vRkq7DFUvLSIc41CUasxZz+I4M2lPinaATzBZvviAPh6zTOREZzOEuaHDTg24vV5J5aJhEMwJ3n/IoH5+pc0pYW72jW0lqdpauuGmvozDQuWN2C2vhIprge7zRQkgGPSSNhK0TipoZ6Q4den9CymTUnNNQxOEFO47t5PZPzItrrDpE3jVCq/yYcoFLJMv0aRKV+3c3eu3KUmTlvjelxv5P6k471woQK7JpLKLSaQ4RdkjM8e+m1Ochz2O2sc8cVz2n4oYmueh3Lm+CmdYVcvEtRGSwFFeDirBvcEqpMFdsCyQQhgRlxPRCb1w2nxLSmdlCPqAToaivkj5t4VS8rGk2oaVU1NSefKiDqjYPfYIX5S7xczC7jh7/Kxxcl2JS1N80u9znR9MMTrBFbx5ddSpX1+/Zhc4LgWYaluIa6thnluomv8aMacXxVayA/JZ8Csx6M2dZ/O7S2ykZncv8LhWasO15/fMGPIDH5Lq29XQg3X75itE+LKl4CvZGnUCu13UH11zI7j99ik0lq6FhRUUDvQMVKXGm4SHUbszc6FoZaIlq9JCE8FhQKEnr7MqH2vBExvwjT0LElQfh1LoRgAcXq3PLmerODTs1Nzx6l3ZfhHk1i1uUTUqxbPw5r0fZVbMxM9vMa5MEovWSULjFShPlF+ni8IOqMkHOPvxoT/A5uGQpz
- tzEoe7kB
- EsEWp/HSB6XSywT5IvqE+qoARClHg7HHd36KWc2q476DIxCkqqQUVNPCq661LwJ8D4pRnXwxhyZKU4ivjMPXr0CNFPm1UXWPt6syVaXGsWEzzYZzFDZNNBKdnLz9HCdI2X+p8otVg6IwKCfAPIAIyJlufp400LrDANe0njjAJ5/gu1+RfQ/3HiIM+2LEbBbq/k3uPGESlkO7U/XAgJhCfh4F0FEZ/bkyOn4U+r20Qn2f9XoqnnNOzNT1E8atxIM+ZZ4gyFXHhyzRPcWcXAggMlYK6RoUaGEQBHaUPfIpyCzhkvZMgGvntcq4meHGToDU0x+NWfELHPLTxMVo9dccW6UUdFzHXL3EoRZT6rYhcFvq5/5/I2DTuc+/Bo5YK3cD1S232sxQ2x0J4I39Hu9pTyej8adydMnBK0FZhGhOJ5O5/tLuvbexN+xnG9g==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3E58220008
+X-Stat-Signature: ogkzbkgwndrfkya1qojd65jz9ts5mupz
+X-HE-Tag: 1783502169-238245
+X-HE-Meta: U2FsdGVkX1+K3tbH7hSXxg1hIu5P1ZUujm4+29EwuhpjLfkFcDWitcgEua77+t0OAp9EzZ5Q5BZPmwkH7BGysgS8TsicBD7ueuErC7u9uyzBtrpk1PflwGYpARxaA1KWQ7Ksa1FOAJSx2NJK7nBVARrgQBZNKtThvRHcGLUnl1w570jdfK8QLXLsqdQvJ5q0w/CZ6OSMW22uLI9o+GLzFdGc3MY1JhkYRbJTzW5D8iCMZNyqFbn75HKqwlQ358W+psfAKK5681iyyFb5KefhtxEdP5kpoXup9jWOHcStXM2OKFKu4/Nv29e0zmiaQBDphCpqxLFfBd76MuprBpEOFBONoAD/xyyFXlVLe5kyaHc8ClH/kycMXs6/S2qwUqiGG3Zc0Irm9YmhHp/SOqXyi/vRLADE/OPnKXv9Z4QWGT1ETf4sbrVn6H5Q9D90XLFIHqiEQVjAcJv02SFBBPVl6gqsCp78NhaSuuEJBVXrVdLHG3h4FZ/NTfzVv8dWxosNnqwY6bR3ZKHF6v1sIKOGqusCk4t8cCQsB52MT9bRshcWlxKdjw9hguN8KgqmVKFMkmOMDG8QmIbwSp18PWiWaIAPqv5GrK6azGN/zEWN+HoG/CDn+vPahAVnmuPXtaTzhk+h9fT0gDIEedGRI+L3qvy/4v89PQCmsuO44q9vi5ECUB6c/mTzSJZZg5X33Owc6hdzkK4kISvc3KR99zAcl7vsOnd0THCCsC0kPzBYNnlzrl6YdPJvJV5pivwAD4YB1un3Rlxf7LtHc5aUClwKCZSvkrEIc2+Zr9ekCUisryvJWqWRYF+z5NM+iPcxR9WNHsVKE7csHe4X3wVCBwStwpH3EnL2TaI3cN+S/dOiD/FFw684wcqpsix6vkwZ7I+rVX1dMAMFyRMhvdVycojH9SSLADOuWSn9aT4F+mf/rtG5JDUsKzlRXB9bLctiHO5E/09KXhyWhokrDPaTM9T
+ cUyqDYKu
+ ujWrhbIXWGoR1VCXVnxc/KmpE5h34oo07fXyeeTlGIfdaNWHCcGk2Kzd0ev+aVkrr6saazrOGTUHshuRs3TR6GI2WGYZUJjVKwjkjIN2+S5tDOAf5k/L6W048vfBfiuFSsIyZls2Mp+msqICDuhweQt9adMkz1wXgwjSY7U5lM3g0AkWJnctMWuOPmhk9RVXP7XXTOV9IcpZO5+0qGapD3fCcNqlLzZ15KW7yduI0CkdAnwAf8mv46qaKJz92GgdrsfXtPB73OoMy8iDw/xPAoccqiidRoqiyXLUgO6EjViwrSBRESWCYAS7cIfI2x64u4uV45hjAkjAO6QPn1aWZeVmNaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,55 +143,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-07 15:44 -0700, Farid Zakaria wrote:
-> On Tue Jul 7, 2026 at 12:45 PM PDT, Christian Brauner wrote:
-> > On 2026-07-07 13:34 +0200, Christian Brauner wrote:
-> >> On 2026-07-06 09:47:53-07:00, Farid Zakaria wrote:
-> >> > On Mon, Jul 6, 2026 at 9:01 AM Christian Brauner <brauner@kernel.org> wrote:
-> >> > 
-> >> > > Ignoring the blatant bpf abuse here I think this is quite workable. So
-> >> > > this can be turned into an actual design and patch imho...
-> >> > 
-> >> > Glad to see you think this proposal is in the right direction.
-> >> > Just for my edification, when you say "balatant bpf abuse", you mean
-> >> > how it abuses the socket bpf type?
-> >> > If so, do you have any guidance on a new type or should I just take a
-> >> > stab at it.
+On Wed, Jul 08, 2026 at 09:26:18AM +0100, Lorenzo Stoakes wrote:
+> On Tue, Jul 07, 2026 at 09:46:14PM +0200, David Hildenbrand (Arm) wrote:
+> > On 7/7/26 21:32, Michael S. Tsirkin wrote:
+> > > On Tue, Jul 07, 2026 at 07:46:28PM +0100, Lorenzo Stoakes wrote:
+> > >> On Tue, Jul 07, 2026 at 10:01:55AM -0400, Michael S. Tsirkin wrote:
+> > >>>
+> > >>> Fair enough.
+> > >>>
+> > >>>
+> > >>> Lorenzo, do you know *how* you want it reworked? Could you write it up
+> > >>> at a high level?
+> > >>> Because if not, it's not really practical to make it the asking price.
+> > >>
+> > >> Michael, you're an experienced maintainer, I'm surprised I have to tell you that
+> > >> the burden for that lands on the submitter.
+> > >
+> > > Oh sure, "fix bugs A,B,C before you add to this mess" is a classic way
+> > > to actually not end up with even more of a mess.  But I usually do try
+> > > to be explicit of what are specific issues I want submitter to address.
+> > > I don't really feel figuring that out lands on the submitter.
 > >
-> > I drafted a POC for you that should be closer to how this should look
-> > like with the bpf people in Cc. I'll let you lead from now on. I just
-> > wanted to help you out and illustrate a more viable direction. Might be
-> > that the bpf people want it done differentely. Let's see.
+> > Sometimes it's certainly easier. With things like hugetlb there often just isn't
+> > a feasible way to integrate it nicely into core-mm. It's just too special.
 > 
-> Cool. I just saw the POC.
-> (I'm trying out aerc to view the patch series. I will also try b4, I've
-> never set it up before)
-> I will rework my qemu demo to use the struct_ops and go through my own
-> testing to see it work.
+> Yeah exactly :) once you reach a certain level of 'specialness' it is more like
+> pointing at a flaming trash pile and crying ;)
 > 
-> That looks very similar to what I was researching with an LLM. I was
-> just going over the idea of struct_ops bpf (a new concept to me) and
-> using traditional bpftool load, a new bpf program type and kfuncs.
+> >
+> > --
+> > Cheers,
+> >
+> > David
 > 
-> You put out a surprising amount of polished code -- thank you.
+> Cheers, Lorenzo
 
-I would not call this polished and it also lacks any tests... I've not
-given the locking much thought and maybe there's easy wins on the table
-I haven't been considering.
+Well as long as I'm not the one being asked to put it out ... it is just
+hard for me to get motivated to do cleanups if there's no actual bug to
+fix, or a feature to develop somewhat proportional in size to the
+cleanup.  But for example, and without calling anything trash, after poking
+at memory-failure.c, *I* want to cry, because either there's multiple
+races, or I just don't understand the code.  Some of these we discussed
+here already.
 
-> I would have had to lean on an LLM (heavily) and from the patches I've
-> put up so far they still have quite the gap to cover in terms of polish.
+It seems to boil down to the fact that when people start getting lots of
+these errors they rush out and buy a new system, so hey. But maybe with
+RAM prices spiking it will become less practical. I'll put together an
+email with a list later, maybe.
 
-This isn't my first bpf ride in both kernel and userspace.
-
-> What does "take it from here" mean in practicality?
-
-Bring it over the finish line so I can merge it into my tree. :)
-If the bpf people have no comments or worries than we're done. If they
-want changes I'd appreciate if you could make them and slap you
-Co-developed-by onto the whole thing as necessary.
-
-Also, please ensure that this works for all the cases you're
-considering.
+-- 
+MST
 
 
