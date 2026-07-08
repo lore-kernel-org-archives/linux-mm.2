@@ -4,85 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A9F0C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9145AC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:59:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 852806B00A0; Wed,  8 Jul 2026 03:59:35 -0400 (EDT)
+	id 5458D6B00A3; Wed,  8 Jul 2026 03:59:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 802C96B00A3; Wed,  8 Jul 2026 03:59:35 -0400 (EDT)
+	id 51DDE6B00A7; Wed,  8 Jul 2026 03:59:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 718E96B00A5; Wed,  8 Jul 2026 03:59:35 -0400 (EDT)
+	id 3E6B96B00A9; Wed,  8 Jul 2026 03:59:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 458A66B00A0
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:59:35 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id EEF516B00A3
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:59:49 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C91EE120688
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:59:34 +0000 (UTC)
-X-FDA: 84964859868.24.E48FE9F
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4A0BCA0005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:59:32 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="eww7RN/E";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf15.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69CCB120706
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:59:49 +0000 (UTC)
+X-FDA: 84964860498.24.6A4099B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id DA237140005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:59:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cogbiAXK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783497587;
+	b=GMa9/ylP5rLdB2ixJl7rOxmJI69p5q4Bay1ZooeBONoA+Yv5AnOvW5PHKoqleQnpKbDWgU
+	R/M2GPmtrIbweJzmWKuBYXL2WMbhw/GjwROq4LOlhgmXtr7Bq4o4dxrTHWMFc+CEb6UPKQ
+	t2u9kOsshrzeeujvznSVnhCx8G6RC4A=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cogbiAXK;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783497573;
+	s=arc-20220608; t=1783497587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YVmVbtBX3HCj9Ijd0ts5x4Wm1TJDsoimgyijvblmLxM=;
-	b=OMOEWEO+A+Asb00/FEXlQsPHqxjxcAc0rTV9JigCcBY4czhsUsFwYb+XibXniI5PKCHn4T
-	sHIku5UO1hfwEwUQVCMPKwTSKOYbOUFEHh7sairk0LnSZZUIcQ+i7HvEUgctp3aALLr2ta
-	3uhrEtjp2UpBTO96rMDTRRQu+8uwYw8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="eww7RN/E";
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf15.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783497573;
-	b=xMg4Je/WX9a5c/TCLA+vlzL7qg4vT3h71QH2nj2S54hN3FanKgGuEuHwVoMZk9AtoIKUfS
-	AHxQdLcd77A354rL3ENRul4TvqrWZvaJGVY2GQJMl7wJeNbTsc2RPlDZ4/CVehkQ4UvHZq
-	kXGj3bG3T6z/xVs2N0Vn9U+0uQTiL9c=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1783497566; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=YVmVbtBX3HCj9Ijd0ts5x4Wm1TJDsoimgyijvblmLxM=;
- b=eww7RN/E12R5+K/Y8ZquyTUz+A6c907DGgISd7D/i7o9Tb+Fb3SRji/Z/2G6lw7i2s3Z5q
- 7kX4thirQSA9GzuhdB7dTtW0STLFooBXgUOLBFYLBw7WVtWM0K/1dGuWeOR1ogqZ92cbm5
- 7hyBMZ3sdZ6uOOUZw8KRw13aoRMw8zsZ6S+PVtl9ro7xxgC/wrVjS7P+I6dTNCwaB+Xv41
- uFTElYEEGBzfbntqHjMctESu8gK1twPGKjgDpZTLnQHbmus8Or9kaOoBDZcaqUtE/SV2ew
- /C8HIp+xNdjRFLSjZX8bUDjo0O/Jn9i8fhjgepHJpfwbQ19O1mN0Tit16CdL2A==
-References: <20260707142314.a421d05c05da56260d1bf085@linux-foundation.org>
-In-Reply-To: <20260707142314.a421d05c05da56260d1bf085@linux-foundation.org>
-Cc: <akpm@linux-foundation.org>, <linux-kselftest@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<muchun.song@linux.dev>, "Yijia Wang" <wangyijia.yeah@bytedance.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.43.0
-X-Original-From: wangyijia.yeah@bytedance.com
-From: =?utf-8?q?=E7=8E=8B=E7=BF=8A=E5=98=89?= <wangyijia.yeah@bytedance.com>
-Date: Wed,  8 Jul 2026 15:59:19 +0800
-Message-Id: <20260708075919.3324888-1-wangyijia.yeah@bytedance.com>
-Subject: [PATCH v4] selftests: mincore: count file-mmap readahead on both sides
-Content-Type: text/plain; charset=UTF-8
-To: <shuah@kernel.org>
-Content-Transfer-Encoding: 7bit
-X-Lms-Return-Path: <lba+26a4e035c+b67edb+kvack.org+wangyijia.yeah@bytedance.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4A0BCA0005
-X-Stat-Signature: seojxydtotbqx5us1drk4wx4f7kqieep
+	bh=8g8Ttn0kjFhoN2K8SOSf7rP1PCWBsxtWcEWwceV1Cm8=;
+	b=foSUfzwtalhxVUnRlwScrlYFLNcktgy7dRxbcBDVbStYIZIy2GYelgoxhWTtCq5hE2ogcq
+	pd+AUZrCKKprTkf8s6lXpCOWYvGmVqdW07vRl+e/re4DyAfT21V4SWcv5epTyYAYm/CHKo
+	Vi7lgggLFRnWjKdK8XQkcrgg5630fG0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 65AAC6001D;
+	Wed,  8 Jul 2026 07:59:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22611F000E9;
+	Wed,  8 Jul 2026 07:59:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783497586;
+	bh=8g8Ttn0kjFhoN2K8SOSf7rP1PCWBsxtWcEWwceV1Cm8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cogbiAXKmyAMp8pfFGMw1+XH+2/KFQZ2sirJm0MkZ25BfGjdi7K7UkK2mGaisfiBm
+	 KuN5ega3YTdU78XA4W+ovM0uk40KtUwj1IQJmdwuQOvmh0MLUniAH2UDpAzGHUZg0P
+	 u1fYmNoGSHOAUHdmYneYRgfT/AZFQBTayBEa9v7QKC/NjNK+mp6bmS9UuUV3dYDcI3
+	 TkVvcloCp1L2SU5GfdNRvlOhdCjDCV2Q9JdhGctPFX1cA+y3HBjoNVMbHew/PGh6oC
+	 sTKjkZqL/4xzF5SYpZ1Wl95LijL6ZH0gEp7MczaplLaen9JfL6pHR73TxoEo+KBbpn
+	 Dl5SwOUOzgI6g==
+Date: Wed, 8 Jul 2026 08:59:26 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Eugen Hristev <ehristev@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, linux-arm-msm@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 21/26] printk: Register information into meminspect
+Message-ID: <ak4Cr5GEMdo8xWqu@lucifer>
+References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
+ <20260708-meminspect-v3-v3-21-7aa5a0a74d5c@oss.qualcomm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708-meminspect-v3-v3-21-7aa5a0a74d5c@oss.qualcomm.com>
+X-Rspamd-Queue-Id: DA237140005
 X-Rspam-User: 
-X-HE-Tag: 1783497572-795012
-X-HE-Meta: U2FsdGVkX1+q4VQc6mepyQwu8p1R65fPzxV+F84THd0PFeZwYZMCOj+sR55B64ksvz8GyIoslTogh8UKuBQ5dNlRQYVFROQF/GcMUtsbJ4wzVnyZCV70SN9AUL+VT6ssiDudjkCzovvE09GDBHgtrVh4vc7ryRmqhJ+SAwq0m5mTAC4k5Zama03Z+wf3SxcIac3W8rgR66BcvypoNv1wrw+vIOUGERi1TuYVcklGcvPSjtDNcsCXs/PkerBJt/gSIX3syednDRFJ5O5d+R5tU0qyqLwciCy+Uxek0VngNp4+cpKfOanQYr3AsAMt0LVe1DBlYNVLqy3cPQX+XCqM+xikGxgzTDJcrpvsJWrJP4PUSm+MMOzEIIrfGrGg/3l3kkerCKeAiD/SqyaocN9COXszHn2xjHYbgTLSZ67wowWTnp7sfBUCijspe5z/jAm0Dlzg6muoNQHQ+peO3wvZUjDQi9RfEVynoiuzJ8q3FvSI99G8bwp4SP3NqNm7/4VWaAg6ndh1hs9hOi4vYyCzCbLVK8Y8pdn0MJH2OpL/0uh4biyEiT6FMg/9FhWyFdBt//HIbNCrWrznE/RZ4QZIRQUtU4nMoY9l1lUEq0WpAYWbLaki3qwy7TBPdGtke9b9k+LmvV2Bbq16jrtB2dmSj1GPyHCHbWtpZ72h1OOzFBNwododar4iydf+j6663rxALkmRLj7soz66/ugo4WXYWdmIumwJ2UCtUuIwphQqSNw2PZajTEAaJbuDt/IrGK5m4p1tRHKut5cTAZnU7gHtqpMiMG0hJFcqthE8j8Ghxb0Zl7DVMfUPi/nLj3HDgpO7JZ53uoFlCsIYOyc8sxkwjb8Xip2KH3UrN+5VDCTlM6aLEQHV3vVTNBCOcPdSTic6yWaHJMqeYXXCG88vxCb73S0eJOentrgGHYDCaztCkZbcFZRKyf0lVvro8Vgdjw34BCO2t7o3XSVSk/MV4oB
- zo4KcbiU
- ffvF989iZihAMyKHbu1eLfOpmqKTyCzv5h9xPTfM5h7irbyBQdqrKz5SPpzIkCao9W7nTIpU3hE2ZDxPa5vBcXQ5egVEJXoeLaxYBAnRW3E2SA2tdrtJmY07MhnJmTn46Y5awC+qgBheNxOV4h73tjjItKBNcYfZzldAma0JaZHvunfNKFCuxfs06aIXbfSzec2nGbMQDCSGQW20Hh8Xphq0wCzZvP2CooVitAF0tifZzy/baAs3hn3tnxOqvcgsnZd/BP46IaXVTR7bj6PrqOmjfsA==
+X-Stat-Signature: afmq3g7gsgcf9y8usen1n1etxa4q1u4s
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783497587-839032
+X-HE-Meta: U2FsdGVkX1+jWidRjUjKhr11HFaJOVazPHZhuuB7Pz1vo9A5tloruOjIrEzEcP34OELmzWxMRU1GrKCqHYcANV3GkIAR0sluP29H14FNBeb8CWWbYDz6UKgBu6apljA0AuVrDVxpKLLnnJmJs3WahUlFfYzdNIm8JXa19xQI3tBqNCobS9fdftfCLv+xClv2X+94UFdPuZ9BV2K+9MqAtc0CSMjUiSqZ9qEiNKsY8FOupb6bHmRnSmi402ahZV9UHE5KwoHUo07tcj4vJBYqntsvGNY2vu8MUREVqEdcaE9cxXs9NixYaGHDEF2LxrwTFUgkphvayfpHSO8rcN4AbxGUjkb93oQF4vT0TyPt+pw98RVAeaCApFwO3Bpb+EVNnABtv6b7Zp5v3fNlQS0tiOwk4jp1cJ37h5RQ8MFcl88kkygsPDqNmttmaRAEsEI7BPFIIae4egllGv17tWdNAnneY1l9Z/BKCbYqvof1j/lchlAcgRI8FgzzAwneLlYUX6ng0I1WkHgYURXBEYCc5r+3dj4i5xVqHkdh0T5bM4RjQtmAPLD45eQ8Xfi2BhefmwE5rO6wZZP23/2lmDc6aMioVW7Eu9EE/u1Ct2b0KI+/+AKd+tbPGIU/StqOAk6LLybBech0491toeLLNVoaUTejooMTYYRf1TDt5JYLHizAkNwphCOj/NF90/WxyUjfgDq4wAWNQARgq+yWfB13OVSX9Dz0BZfA/rpeQlDmq1p93qW47skfA5be5i1kRBAxioiN6v0JZDfkf7rUr6E8TS+TM6lKjAceXJcqZK7+DKmttGEwR5MsQB+rE7oZsA6G+1kxMaTOOEmvolV1RLecW6EiaFGq1rmBsLnk042IHBUVH8Hrr/lnsmUN1JKkc42WoodBEwKllQkpY0QzOU97eiAsDGe1X+6clf2MS/IOMNPD8skg6jA2j0R5ckRe2iYm8rec3wG2CFYNubzX9jr
+ Mh8oVq8/
+ MXoypTWC3QNwIznpe4iv6CM2rLw+sN8x+IlW8BhrwchNZtyL9lG606QpMx3jzyP+lFCC2UVBcdPy20wlIVPzDCQ/uN/35oDzJCOLJEzutBONxvoFJxmrlGANiqwkxd09EbZCkXZknFN/gORlq0OihH4it9LV3QymlBvmMn1CJL9Ax96mXo5+/B/6tipWcI9tC2Guk1M1LX4al3GHfGHJzEsj/ZrheTkHEBfoXUhg7+4A/MMwcw1bxpIUczTgSwr82Xe9P1vmwEyjiyBkhPITNuJUtb25ZkkqjOInK9jaSc8fjTOKrDCOQVY+ls3S3C850FE2aXi0CFMNcOYdgZVw9O4pHkYsBqzwrBHxFt4c/BI8UMDVMW5N5aFUhf9bU/agL0YUIYXbtD5IEJ9STkmhUc1HHCqnW1L1Ir72XeZx8E0d62vEDMDgyFbFs6/CD1lleDpyBjOBc/bdt4Z01Rg2Nviqsn58Vog6YE2hBX2p0dEm1piXJdE+dl0oFGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,64 +115,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Yijia Wang <wangyijia.yeah@bytedance.com>
+On Wed, Jul 08, 2026 at 11:02:00AM +0530, Mukesh Ojha wrote:
+> Annotate vital static, dynamic information into meminspect for debugging
+>
+> Static:
+>  - prb_descs
+>  - prb_infos
+>  - prb
+>  - prb_data
+>  - clear_seq
+>  - printk_rb_static
+>  - printk_rb_dynamic
+>
+> Dynamic:
+>  - new_descs
+>  - new_infos
+>  - new_log_buf
+>
+> meminspect uses a different API to annotate variables for inspection,
+> and information about these variables is stored in the inspection table.
 
-check_file_mmap() faults a page in the middle of a file mapping and
-expects the mmap read-around path to make neighbouring pages resident.
-The test currently counts only pages after the faulted page.
+This commit message is a mess again. You're writing what the code does, not why,
+you mention separate API but not which or why.
 
-That misses valid read-around on systems with large base page sizes. On
-arm64 with 64K pages and the default 128K readahead setting, the
-read-around window is two pages wide and centred on the faulting page.
-Faulting page 32 makes pages 31 and 32 resident, so the forward-only
-scan from page 33 reports ra_pages == 0 even though a neighbouring page
-was brought in.
+It's useless basically, and it's weird to list arbitrary fields like this.
 
-Keep the existing readahead assertion, but count resident neighbouring
-pages on both sides of the faulted page. This fixes the 64K-page false
-failure without teaching the selftest to compute the expected readahead
-window from sysfs or other implementation details.
+Always think 'what would be useful to reviewers and people coming back to this
+patch in debug/development'.
 
-Signed-off-by: Yijia Wang <wangyijia.yeah@bytedance.com>
----
-Changes in v4:
-- Drop the sysfs read_ahead_kb helper and skip logic from v3.
-- Keep the existing ra_pages assertion and count resident readahead
-  pages on both sides of the faulted page.
+If it just says what the code says it's useless. Put what's NOT there.
 
- tools/testing/selftests/mincore/mincore_selftest.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+>
+> Reviewed-by: Petr Mladek <pmladek@suse.com>
+> Co-developed-by: Eugen Hristev <eugen.hristev@linaro.org>
+> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+> Reviewed-by: John Ogness <john.ogness@linutronix.de>
+> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> ---
+>  kernel/printk/printk.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+> index 2fe9a963c823..f7f32c09b9b8 100644
+> --- a/kernel/printk/printk.c
+> +++ b/kernel/printk/printk.c
+> @@ -49,6 +49,7 @@
+>  #include <linux/sched/debug.h>
+>  #include <linux/sched/task_stack.h>
+>  #include <linux/panic.h>
+> +#include <linux/meminspect.h>
+>
+>  #include <linux/uaccess.h>
+>  #include <asm/sections.h>
+> @@ -518,10 +519,17 @@ static u32 log_buf_len = __LOG_BUF_LEN;
+>  #endif
+>  _DEFINE_PRINTKRB(printk_rb_static, CONFIG_LOG_BUF_SHIFT - PRB_AVGBITS,
+>  		 PRB_AVGBITS, &__log_buf[0]);
+> +MEMINSPECT_NAMED_ENTRY(prb_descs, _printk_rb_static_descs);
+> +MEMINSPECT_NAMED_ENTRY(prb_infos, _printk_rb_static_infos);
+> +MEMINSPECT_NAMED_ENTRY(prb_data, __log_buf);
+> +MEMINSPECT_SIMPLE_ENTRY(printk_rb_static);
+>
+>  static struct printk_ringbuffer printk_rb_dynamic;
+> +MEMINSPECT_SIMPLE_ENTRY(printk_rb_dynamic);
+>
+>  struct printk_ringbuffer *prb = &printk_rb_static;
+> +MEMINSPECT_SIMPLE_ENTRY(prb);
+> +MEMINSPECT_SIMPLE_ENTRY(clear_seq);
+>
+>  /*
+>   * We cannot access per-CPU data (e.g. per-CPU flush irq_work) before
+> @@ -1238,6 +1246,10 @@ void __init setup_log_buf(int early)
+>
+>  	local_irq_restore(flags);
+>
+> +	meminspect_lock_register_va(new_log_buf, new_log_buf_len);
+> +	meminspect_lock_register_va(new_descs, new_descs_size);
+> +	meminspect_lock_register_va(new_infos, new_infos_size);
+> +
+>  	/*
+>  	 * Copy any remaining messages that might have appeared from
+>  	 * NMI context after copying but before switching to the
+>
+> --
+> 2.53.0
+>
 
-diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
-index 3182043..ebf2b06 100644
---- a/tools/testing/selftests/mincore/mincore_selftest.c
-+++ b/tools/testing/selftests/mincore/mincore_selftest.c
-@@ -243,8 +243,10 @@ TEST(check_file_mmap)
- 	}
- 
- 	/*
--	 * Touch a page in the middle of the mapping. We expect the next
--	 * few pages (the readahead window) to be populated too.
-+	 * Touch a page in the middle of the mapping. We expect some
-+	 * surrounding pages (the readahead window) to be populated too.
-+	 * Depending on the page size and readahead setting, the pages may
-+	 * land before the faulted page rather than after it.
- 	 */
- 	addr[FILE_SIZE / 2] = 1;
- 	retval = mincore(addr, FILE_SIZE, vec);
-@@ -253,6 +255,12 @@ TEST(check_file_mmap)
- 		TH_LOG("Page not found in memory after use");
- 	}
- 
-+	i = FILE_SIZE / 2 / page_size - 1;
-+	while (i >= 0 && vec[i]) {
-+		ra_pages++;
-+		i--;
-+	}
-+
- 	i = FILE_SIZE / 2 / page_size + 1;
- 	while (i < vec_size && vec[i]) {
- 		ra_pages++;
--- 
-2.43.0
+Overall exposing live dynamic printk information to drivers seems unwise, but
+not quite as insane as some of the other stuff thus exposed...
+
+Thanks, Lorenzo
 
