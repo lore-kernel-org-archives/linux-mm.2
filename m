@@ -4,118 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23517C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 00:24:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 414FEC43602
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 00:31:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D546A6B009D; Tue,  7 Jul 2026 20:24:03 -0400 (EDT)
+	id 2C3676B009F; Tue,  7 Jul 2026 20:31:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFE266B009F; Tue,  7 Jul 2026 20:24:03 -0400 (EDT)
+	id 277CE6B00A0; Tue,  7 Jul 2026 20:31:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC6036B00A0; Tue,  7 Jul 2026 20:24:03 -0400 (EDT)
+	id 18BC96B00A1; Tue,  7 Jul 2026 20:31:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F4426B009D
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:24:03 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D61EE8FBDA
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:24:02 +0000 (UTC)
-X-FDA: 84963711924.05.03B89DF
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 14518100006
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:24:00 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=boGbChI1;
-	spf=pass (imf14.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id DB47E6B009F
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:31:39 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49FFD8E484
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:31:39 +0000 (UTC)
+X-FDA: 84963731118.03.726B685
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 08BB81C0005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:31:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wZd7chiX;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783470241;
+	s=arc-20220608; t=1783470697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fwb6T7QVdGDxs2wP5yfln48hkZneD+IuZNOtsCtvSik=;
-	b=clIpzZ5yvDeaHIXjr0TFFhT+cPpQcWoXtbT8ci8Iy4JlhUeml8BNZuoBr4Fb/pbuDCziWx
-	G6ewOoZ7NEn0Wxp09aoWZRQQLDFT3cibJ9bI3tObs0WyDa+/uzgccjrTwu2snuj4uC57O4
-	pgChy7a7lXJ44q/e+YjUujTWPsCPli8=
+	bh=zryoqLpY5XcbZJXngdfeetx+hhc/I/xTEt/aoCxXbTw=;
+	b=XcLHu1QAK4CvgEtdwopEc2aD3BO0MZM/JNy5WWFNER9qtsxDrhlwnAKpKai7ASgMR7hdzK
+	gU+X1VphMJS8Q4TJu8NmvsjkYE43zpvZdOcr5tQA8HeUkGtT1+kJf6AUKQAYtit/lD7Y+y
+	vifT3K6Q0xCQhtOA2ZQe6cvwQS3LDCI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=boGbChI1;
-	spf=pass (imf14.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wZd7chiX;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783470241;
-	b=F86VpIUbL8RXeA18idpAMAnlum1YWoTHbW9Qu1Zyl+oEOPNQoe7tKL2a+puy5ny8f4tEZd
-	cx9m9z1yaZW4inBR2OnEzJg8XfW821sYWdSuV4Zjmo5QnYl/3ANfdepAhKaZMv3reF+Ci/
-	v4hm+PXaNEf2gmhhRmVkJ0H6TXrwjpE=
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ccdf36f63dso55195ad.0
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 17:24:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783470240; x=1784075040; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Fwb6T7QVdGDxs2wP5yfln48hkZneD+IuZNOtsCtvSik=;
-        b=boGbChI1zn1nPOB/ZZDbPUcC/GhvLbsxN1FH9at0uKYxIX8rsrGWmHVt9poaoPT4ur
-         WPzyKwgTHI+T4BHfzCnKRmK0yY2dcmwREYSMv2IIDkFMXS9oamlvYb6tVzWPU+uU5wiv
-         Are/x4VtBLL/zCrWUSMZsVOVHoHOvtjBw8ipBg09N1qqqWLtFPWGuqpt2ypSXo7DjkSD
-         IaAJIN8cbefGaJKsd4QtJEKZlJxGLP+2QJgFRzRrSr4H8v4gGIgugd0o+XWMVJhGueX3
-         i///3DWVDYjP8x62IzCI7mnWYkrmAc6yUPcVaXbVgBuF4G2P2InSgPbUwCg7QHW6hNBO
-         DuDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783470240; x=1784075040;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Fwb6T7QVdGDxs2wP5yfln48hkZneD+IuZNOtsCtvSik=;
-        b=lS+93bUxlLBvP0s7a+hrww6luI1rlr6ITOf0IiAtakd+RTQ1NieipYJcIIDF/dvA6M
-         cjDy2ErUDFvA3ziKtNtoOvXnmof5vDhiztDJZV4/8/MSGKsUhgE9DJ+Fno2PjBkpMM5u
-         Uv9hFpW80eMKKj4cVKu+6fqFA5ye3yO9ayH1FcIrhZFLYmUBsYX3S39BdajBrkAWFrob
-         CSWwlEwLQncJitItYU/g19kyqCcfFYjgHqvLU4gGB0aq/jDYvr3kB3cWGsZVj4LVc1+q
-         JYAjLNH80fYMf1Xl/Q/MiklONZDuM0gIYAKmf+I98/Dzi/voevVw0nG6Kcar3Qk5q4ec
-         Uyug==
-X-Forwarded-Encrypted: i=1; AHgh+Rpjr8c/qTn6r8cYFcrAVd3AgczZDopn8JEC3GZZxhXFiTu3f2p+zbsYvg6zSkXnmJiNgzKmodPxBA==@kvack.org
-X-Gm-Message-State: AOJu0YzMGIUvLHLVnheJuP1d+SYefaU+FSljfxKqXmL+cmNHqWmc+OAl
-	ssQp2pIoqDN1OsQOA4INEY193TOOA+rxTeRr4sJRQDxC7LVeaN2Jjvngii7YfT5gcQ==
-X-Gm-Gg: AfdE7cl3K3zcu+SKswzrVQVomV2bL+AA9KpDLMkEU3MPrtbeDpR4zj/ZaTa80YJJIZe
-	38awKhV1/jhsT00FIHMOqLDjywmVDIBR3kZMLmTq7t/+MUctcRMNV7Cy8rWqYCPznHrpSAkT1bS
-	AUrgMvmtVyIJxZnQamR1O/CFaMFjL1tj8QpDXxrW8PzY/2AbZrzEHa+iwZJEtXaEqO/S1XXCVOm
-	SU/gB6nXsqxuQsSMSVDTzL0eM2DP6uS5qF6wmixf+lO3rQMwgjRdfD6iEn9lTati7b0UBOrnrYM
-	XmWogzcz+uKNNMrFSCqFB4c86OOLPnrjpltTMTyMxsTtnZYXzCLqHDgr1+MZRHAlc93aeh3k716
-	4MWOjWatCSY2htvVJWtySA6uc0rAQufCvv/Qc79Z9e2B8MfsJ2mPsu5D5WcVJHovdt9fO+6vVSa
-	nHI79y91f6dnqow5ignCN3vZOqsLyg1yqD8pgLRn5VMIdcMTnUtwVSUPK1H94PRbu/+1Z5a5nmc
-	xKdhNMpnmw=
-X-Received: by 2002:a17:902:d589:b0:2bf:3579:cdaa with SMTP id d9443c01a7336-2ccc9c2d137mr5761425ad.10.1783470239360;
-        Tue, 07 Jul 2026 17:23:59 -0700 (PDT)
-Received: from google.com (168.136.83.34.bc.googleusercontent.com. [34.83.136.168])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6dd9237sm6303930b3a.59.2026.07.07.17.23.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 17:23:58 -0700 (PDT)
-Date: Wed, 8 Jul 2026 00:23:55 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pranjal Shrivastava <praan@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 4/4] kho: Introduce kho_split_preserved_pages() helper
-Message-ID: <ak2YXFNGvCGo4oz6@google.com>
-References: <20260703020832.1731864-1-praan@google.com>
- <20260703020832.1731864-5-praan@google.com>
- <178341290877.3292146.993563652569119942.b4-review@b4>
+	t=1783470697;
+	b=YQQ0hrJhblKPjcOdm2Z5IBuCa3AEYRDSwg2mM+i4upfjDU7g+yNwmSyRdCQyCrU13A+Scq
+	qn2WOHhZap0t6qF3d7qjA3FidWEo8TmxuvrIp400kESnIfiNpKdt7nATTk7c5L/Ic6Crle
+	fyd3fE91IxStjB8JgArB9SpYaporhhc=
+Date: Tue, 7 Jul 2026 17:31:23 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783470694;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zryoqLpY5XcbZJXngdfeetx+hhc/I/xTEt/aoCxXbTw=;
+	b=wZd7chiXqMIHJ5/8OfDPYrJ7LFoLqsDa7aEOq7QpzXPekS3QnHdYiZNSWF1vz8+QF4LbKg
+	bWuVsOIsC2ByfC7tQZvhUVEv702FwmStEl9Fl/muJOPeOwG1Wt+KJchE+EGSWO2toNpgOv
+	+8rkP1aaO7Fl54Svwvr0VdVVdt6SFSM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Ziyang Men <ziyang.meme@gmail.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, bpf@vger.kernel.org, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, kernel-team@meta.com, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] selftests/bpf: compare BPF and memory.stat memcg
+ stat readers
+Message-ID: <ak2Wpk6OnhTyon65@linux.dev>
+References: <20260704045617.487664-1-ziyang.meme@gmail.com>
+ <bc12730fe6eccde10d36e6544607ae2464357e05.camel@gmail.com>
+ <akxW5dzvR9e2CfGq@linux.dev>
+ <eccfd9a8dd1af1668e142b9b866194333647b0d5.camel@gmail.com>
+ <ak2LXDWoPFSJL2Q9@devvm16600.scu0.facebook.com>
+ <bc47c75a00acab57e7fea72612e0f6f089ddecc9.camel@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178341290877.3292146.993563652569119942.b4-review@b4>
+In-Reply-To: <bc47c75a00acab57e7fea72612e0f6f089ddecc9.camel@gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: zz7mqu8ty99a81xs9pty8j5yqr3unzcf
+X-Rspamd-Queue-Id: 08BB81C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 14518100006
-X-Stat-Signature: 4inr48bqsojru3crromweu1br45upfud
-X-HE-Tag: 1783470240-114171
-X-HE-Meta: U2FsdGVkX1/qNMP1cuVgZ/ykW3TNFJuklTv5+IiFTisunspDd2iH3D+iD/QzX78btFxVrIc06VoxLCJ/C3KsMrxV3J2pqa7hWRE1cIge8fvv2nTxsMNZdh/uPrVx3bYelu31w90IqICmqNnANHnag8EdhJcWLjJMxEj+utKJ9k3K6utNm5Y5jJfhJaz9tiQCcQtr40jRN5RtJwzBMJi0A0qfL2YbNvVjfdexlzVmoHxg2PRK5gblPzsA97ZLNs3RND4MDyw/sLtGOBuj0Wb0UtQhS1CoCUqjcuVS9bD2ohjdA4ILtWYzGYFk15Xb9O3JWMsGQk62MWTzh0B6/lLiuifuslV6c/UDaXYnXxEALNBQRheyqHeo5KW6gfQFiu+J50mdlVjGp5mdml4xfckVo/pUJfneAMlzyh45Ev1gBglwqdHhQwH4GMt8EHfoxO0up56z/8/PLLOD9jRhgnp2UgkHCdhyQ4nVVBJgUDPtwCn7KB9oR4BIKRmNFH3fMkRjfZMGmWq4uiIR/txFKCgHWIN3ZLdt8u54AKTqyx8IU/tvJXnI0yJgMqfstNETyha+WC0KHflCnUYud7I3qm5HB4XSnAlTGs9+9Cwhi8ZhBYNm3/IOwkoOQEgR0PoiCMsOCFlZQygcKC2My9+hAsnEub6W2pUm7ie4zVZiGSFBDFlGJ5mI3J+FLRhXGytiwPsex8Kd4sH+Ht7ey57JbSnPeQoHdfPNHsCYmorgmUKde+RR5x4l6VgekZTU1hvsOGMRSlVdlGCfl6cGFWtTa48LLpRWhV4LdsocD9b6JiKtXPQeygWwThrVyBI16HByDajNE7N+TXUIMtueYnI9tEbO+GV/R12muszuNl4ZacjH5aeMS1mgFPAwzvPxGqaBOUc0pC3IBropwsHJDctPM8TwxgWYnwBBx3JZ0z4iORb5gBH5ziyCn1qOt7VxiUIglev5kRSlpQqNWQUJ1zMkTL0
- mlIoQe5S
- ZXbtaFcKH3QqJCOp0HsorDn4q/Mxai051B3AuxrmSxPgoa/LuELa+YlbTJu75Li12ziUJ7PmTSadH2a6RU3sH8BOy38fa53EdV+n0dW1wXDFBvjraKtWH7JsXU3yPz6990+wNZZKXFqGKNfbDmjHPpOS6KCT8hgyAweLV/gpoCafECl9hgK3vU8yzmEq6Adah5zykIXM19JgGCC7jRtmwqCaEnX6i5fqXsp1Hz8Dzeeyk0IHPGH041XiQ3yaQcw0MVT0UluNfv0VJRy9F3ZZmMRAPO4XeEKLr4wvUa6yqh8ZSPn+kQK9x+JwiOWHLhp7dyTwd5Plbs8JTp1USD3O6FxX0Qp/I2sTo0YHhFiIWnhsbBCPQRW4sA2lbzHy7JgvAlxD8SdFhl/WMc1kaBsq82icjfA==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783470696-102293
+X-HE-Meta: U2FsdGVkX18rRLaoxCkpZ0+Pnnh3wscVKlYQ24VMTUHFujq8LVXLZk3J0lt1QtSEJ42I1HEA5pqzASBwUqVCfjlgrguC8MmpIwSY9IWPB6w4YHJrqV2FZaZKNLjsk/CpPvAVBBX0AHtrit/ZgPz7JuTcrJi8fvXXUUM5HM9cnPlMt57BJgEMprzFB76KZG987Xd5Jga4CcrfMheK/4yXWzHlNM9Nk//NDtvlmhN+YH55KDS2RJB8BvSN0GXSMZP5tZNcJWfqUJOmAYgXN84SZbcuGeJziedkgiryKhFoT5seS+a+ktEvRYxI5rMWRxkBoH0NTUlxkIg9/U9YZ5pRwgNWdmoMiKk7L9nI07fIADPyAz4eH7WFKoSchKNpe3G52bBq+ngbR8FIMK3EcIZFaXM3CGGKmcWxZaOvYg7O49g9hH6oOaHI1eLfFJcNTUBfpfvDDfVOGV773JapXofG65Vfv8qo84tZD62othG2YYbA0qtnnA5nxl6uiQozl9pyO+tk8Uk0HEP0OmeJrnDBFjmuJYCu+mm0ukn+HGnXoNGEBLB0WMgvPtjQF9iIqGfqmkRWhi21wbUZZkBvqCab9BR20MXLo7hSSBS2MPbrf9f1fHc7SVLXcuY0m+CHSmyk2JmnErZywvxUsEb03m+ddOkCfThxcfwN4quEQk0sxgoGPKttoU8SuGIgVG69mvdfKeXP6QN4dRmIp2VNGCZwS0G910WZUA6X/BEdX35OKq/iMNwv1n9DQK0yatYklH/mUicjyYQABbwYaXVvzZmASoxGT0mQqnFpk28Ngf3+QRrDOxNOCuCbFK+0tGOmi3EnEcKIT4pnDFo+zZhoSxJRTXr4IsbDsMcb4qTca5uq/NJEt6O+I4QahXmo/+7nZjkNKFwBa4CNmHeiWMFW/hGxP8f1u/eXCFSvd/vCRIv/wHDboAvrWU+n7ahSSPmi5sHYpV6gS9tOGflUTjbKB+M
+ K/XXp2c2
+ 42DaHjc0CEdPubzw5/l8QlRb8EIOG5hrsk4XW8zk1xVYtPBaKSsVaiV91gISonKB7BIZmOapajgfebD4rkHurFnE1xXu5wm6NwLBVsYBn4FQM7pSUTBjszTkwRdWy6vOyNx5XfYj85S8eR/1vN8J5Bgy7goszubVYzR86p01YacZryxo5V+qGuRFWjqoa9Ev/U27p4bntnXKNtrafsKQ0Alx/bZwm7uZEGXRx9wBZ+T29dLPwCEb5b8v/oyDaH4yvmuyrD+qQMMXJEWhbGN/pV1XdmIn8EqgdDYOI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,37 +98,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 11:28:28AM +0300, Mike Rapoport wrote:
->> A driver may need to split a high-order allocation that has already
->> been preserved. If the pages are split using split_page() manually,
->
->Why?
->Are there particular examples?
->
->> the refcounts would change but KHO won't record the change in the
->> preserved page-type, resulting in a metadata mismatch during
->> restoration in the new kernel.
->>
->> Introduce kho_split_preserved_pages() to handle splitting of preserved
->> pages. The helper follows an unpreserve -> split -> re-preserve sequence,
->> while ensuring that the KHO radix tree is updated with the correct
->> KHO_PAGE_SPLIT type bits.
->>
->> The helper returns 0 on success, or a negative error code if the
->> re-preservation fails. Callers must ensure the provided order matches
->> the original allocation and that the operation is serialized against
->> other preservation API calls.
->
->Let's put this on hold until there are actual users.
+On Tue, Jul 07, 2026 at 04:50:11PM -0700, Eduard Zingerman wrote:
+> On Tue, 2026-07-07 at 16:27 -0700, Ziyang Men wrote:
+> > But the patch also carries functional value: alongside that comparison, it
+> > checks the correctness of the stats the kfuncs return.
+> > 
+> > Let me first answer the main question -- what these tests add over what we
+> > already have -- and then lay out a plan.
+> > 
+> > First, the static test (memcg_stat_reader) vs the existing cgroup_iter_memcg.
+> > 
+> > The existing test calls the kfuncs, but for each value it only checks whether it
+> > is greater than zero. For example, in prog_tests/cgroup_iter_memcg.c:
+> > 
+> >      memset(map, 1, len);                    /* dirty some anon */
+> >      if (!ASSERT_OK(read_stats(link), "read stats"))
+> >              goto cleanup;
+> >      ASSERT_GT(memcg_query->nr_anon_mapped, 0, "final anon mapped val");
+> > 
+> > It never checks the value is actually correct -- i.e. compares it against the
+> > value in cgroupfs -- only that it is non-zero.
+> > 
+> > Besides, it also walks a single cgroup:
+> > 
+> >      .cgroup.order = BPF_CGROUP_ITER_SELF_ONLY,
+> > 
+> > and reads only five fields.
+> 
+> Arguably one of the the cgroup_iter_memcg.c tests can be extended to
+> allocate some mem and check if the value is reflected in the stats.
+> But there is a line between MM tests and BPF tests.
+> All BPF kfuncs except iterator logic itself are thin wrappers on
+> top of the existing MM functionality. Hence, I don't think that
+> BPF selftests are a place to stress-test these things.
 
-+1
+That is actually a good discussion point. Where does such kind of tests (i.e.
+testing that bpf based memcg stats read functionality is equivalent to
+traditional memcg stats reading). As more subsystems are exposed to bpf, similar
+questions would arise more often.
 
-I think we discussed in this in one of the hypervisor liveudpate meeting
-sessions and it was concluded that the split of preseved pages is not
-needed.
->
->-- 
->Sincerely yours,
->Mike.
->
+In this particular case, IIUC you want only tests for bpf related code (wrappers
+& iterator) to be present in bpf selftests, right?
+
+Personally I don't have strong opinion where this test should live.
+Functionality wise as it is testing rstat infra, I think cgroup selftests might
+be better home for this.
 
