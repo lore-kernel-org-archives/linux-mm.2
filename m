@@ -4,142 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBDF1C43602
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 16:03:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9AA8C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 16:18:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B6566B0005; Wed,  8 Jul 2026 12:03:35 -0400 (EDT)
+	id 78A396B0088; Wed,  8 Jul 2026 12:18:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7672E6B0088; Wed,  8 Jul 2026 12:03:35 -0400 (EDT)
+	id 713A86B008A; Wed,  8 Jul 2026 12:18:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6570A6B008C; Wed,  8 Jul 2026 12:03:35 -0400 (EDT)
+	id 5DB976B008C; Wed,  8 Jul 2026 12:18:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3630A6B0005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:03:35 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 962821401F6
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:03:34 +0000 (UTC)
-X-FDA: 84966079548.25.C8A4049
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9AD4440004
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:03:32 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uac0fSBJ;
-	spf=pass (imf01.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783526612;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E8F96B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:18:15 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A8F801201D1
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:18:14 +0000 (UTC)
+X-FDA: 84966116508.19.1A04CDF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2742012000C
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 16:18:13 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j5Y/+nm7";
+	spf=pass (imf29.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783527493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A9k15NC2tu6GIqgaUNafNWbmC+Zeria+kWA/766+euo=;
-	b=qr6fXTqMxIXt/1LWnVhwJqIwliuZTgyR6OvulpAC0YgzhllfvzeTsWkouHVxTnI9DVLFZZ
-	5p2qOv7VmJPhLspBrU5EozMl+IjpnUWyPhUw7t4H7XHHuTaTvo3dZeb2bySscGKo283Kyk
-	tCdttBTaaiNU/4ZeX52D2qJQ7Hj1Xyo=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783526612;
-	b=GeX2/bEaic2I4YiPQbv/l4OaNHcT2+h3/pHGFufl0Kzmy3IPwksbHUfGPVt1EwhD6SBdvY
-	9VYPYoUUx4/+aCwZJEaLSKoRdUkhTaHr6K9Lkbl6UfU5eZ0daTiNuia2iNBBX5X5El1N6t
-	nzYMdtyNnD2rVDQQqA3irCrZkuVqj/M=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=uac0fSBJ;
-	spf=pass (imf01.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493be0fbcc5so67785e9.0
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 09:03:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783526611; cv=none;
-        d=google.com; s=arc-20260327;
-        b=KqyZOrIdfkfrTwFKq98TwHIjRL4KIyLFf1m+UxJrgNC7AnENkNLgw3glukb7ujUyaA
-         p0pnMWgsBewwwdRcQJZwouIK4j5V+oBW+I490oUtCb9SA7G4d0EaWgzziyk4ypxoZDkx
-         bLRctvf055RqvpnZzrLMlhXewKTMupBM0Cm7phZx9VNBReYC4DDCdbQn0xRK3e1tXsaF
-         f322STlacwDGPwytlIMW80/yQxMcmx/58clWYv86NGoj8nRmTFun5ss+q/CmzWzaNYXq
-         f/xdPEghT3wS9XX5f+T7o/7NuYsdu7TMl8lxyt/O3u0AIKM2LKDl4y8qECT6Y2nFfHTM
-         cDrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=A9k15NC2tu6GIqgaUNafNWbmC+Zeria+kWA/766+euo=;
-        fh=3puZ8cTtEIMg3yW2n6re0yrS5TzRqZzccVCBus3K8+w=;
-        b=i5SmZd301yg6NiVgfvMOYLFj5CguZFgfd7V0lvPH4CW/ha8R9oAuen2nsXbJ6wc286
-         ZnmdRWN9puMQao76OP17IygC4c+eBgNH+LivrWh4nHJApsF5Su5neEN2FTsflpUXg+z7
-         j7R4jt82I4tvybvdNTJNfE5hgt95v8FObg3cietfBMbJnjwKeJKi8PNX6DcRkCPN4Twi
-         u9dCzt9ieQkJ6198YdXSe3Kd5PAEmojLajs9KjYMHoswCa6ZIcrDr0x3HPiXeq1OqXKm
-         bC0hgU3CT6HvpMHCuY5gAtZacZsaX6OIB/OTyxGSpf6DsJM/q/K4gE1c1WvN464JDBSZ
-         /BYg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783526611; x=1784131411; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=A9k15NC2tu6GIqgaUNafNWbmC+Zeria+kWA/766+euo=;
-        b=uac0fSBJPccAUXUqQ2TpIWUYOWiIr4qNS632ymYjAKIVHHsBbhDGdkXShJL32uIUfH
-         jU4KI2HNRLIht5zAlThN4M3IC2hemSxyacS5HXOngDz6Knub4z4YOfgHHIe/cv0huODw
-         Ek9oan85birYZo58pDzs38ii8pSCbb7pwcwDJuDoLm8CYodNiwzxLBtmVnJqp3B2UdgY
-         O2RE4RcLrwuV3w2r9zJ7qCjVZDRccuUjL/UYjWfkLvAXBUJINBvdsRzul6Hgtq9adccb
-         jnr70ANHsTMgibUAEJ11gnuvdlRkLxTkkZr8ZdAyEJl5JXd+CUfB7Hgl8HZ8YBayGZjW
-         N53w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783526611; x=1784131411;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A9k15NC2tu6GIqgaUNafNWbmC+Zeria+kWA/766+euo=;
-        b=I7xdOtGQcAS/wORVfPdj3nca+Ba6Qq8y7YXLsIZDueFnU7KWaa7xXldPlxy4JSjwa3
-         r/+aMmSBkrUSYDqeCrphPA8q6MOtnP4Iozj1eTSGrX+4PnorNjU9f9Gprke9sU9zYO5R
-         OYnGB8ehCgD5ONT5b7mllV04uLf0QllGwQQkUCDykBBV0/+/Kwu8T7WCrNnR3y1SH578
-         mQVAqnwR/6dRYKamFnzKK1Gyn0jUIqWwza+XeRQ+oN4eNi12TW3uUPz/ch+QjsUI41NS
-         jsan0yrLW0TnVz/hPQP8B2lin2/WK4UP3Dt0OBvVtGDFgU5pmRwhzGpBSyLgX2mucfiI
-         nEGA==
-X-Forwarded-Encrypted: i=1; AHgh+RrRU5VRR5YqqHXdmt8DLizQwfA0lXIsxNyAeCGO077vwBYoR9QHWFBC0igz+DJsr7Fn5BEB9rmsMw==@kvack.org
-X-Gm-Message-State: AOJu0Yy4ETHuDHEE5q6FLaOklkzjh9yjxDdYrM653JZsRXAzyUi7tuoa
-	+CYFNZUBOtro5GmupNNE9/Jj/MvYh8RMZGucZiWAQKmfDEPmUGfRYGzNfLlpWVwQXX6j6bm45iH
-	jRHDH/eacfKoYLXzK2EhF0nXMD9/atsj9Fw7FcZDX
-X-Gm-Gg: AfdE7cmL6FDrGOLcuGFwMpt81pdOMGeLvV5Snj2gTPQGTzF2U9UWwt9F2n7t5PsbL46
-	zFDv8+qSvGHmo5h0+wJdyTBMzmDcii2NEWb49swrw15QJ8nlIvqy2F/hSOO/8k5yQ2rd8s1bulF
-	+pUd5c1LGz9nZIFzk4IzmqvAhMYRd3yoiDsImf9oD8zVhb3Il/ON9sg5gb/kxFfNr0wk0GhTXTD
-	zavxO+9mkjsJYiJPxxNVGN23KzUWFktJyKOJDQBEJgjBG0ZY7hoNhD2FcZszFhHgVgmHo1JXW0F
-	xIhBp8Rm/N+OwHi9BUiLYaM7uqgrDjqRCmFauG9mu0Wl/Uw9k0RKdrWWKyK/9POqcQ+j
-X-Received: by 2002:a05:600c:1c0d:b0:492:203f:a378 with SMTP id
- 5b1f17b1804b1-493e121b8cemr1125155e9.8.1783526610773; Wed, 08 Jul 2026
- 09:03:30 -0700 (PDT)
+	bh=y752DrbBFFJ8XerVisGtOLzv8nsy5PhYRKi3Iy7oc5I=;
+	b=1kqX8Wf39MlnnQ7Ezwan1Q+5B7wfYD3dPJ4V1jVLCriepQNLq2pWOBx5qHhGj+mJTqiX5q
+	SEs9ixOxU8LEhMEVdn1MJrLwd6jIk4hhWz3RUQeerYSBL+3HK1kaniTYsG3IscpmlPq6bA
+	8EyUbZleqnfxXl+n2YWXuoAOG9vShfk=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="j5Y/+nm7";
+	spf=pass (imf29.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783527493;
+	b=nsYiv2xDPymsHIzWSfKfV0h8qOfz9khFksUjsUWTlcvrGfQcO3sgIURsjL9PW7FpRbhEqt
+	bZcpv6XdpQPhV+xq1eKN/SntZfj1yGDE2neD/VaHSvBCsK96ko5rtZmCDmJ+27nEoofZUC
+	e7Jx286/loiXuBj7pVsTs+DBOA1lCTg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D310601D9;
+	Wed,  8 Jul 2026 16:18:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D25E1F00A3A;
+	Wed,  8 Jul 2026 16:18:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783527492;
+	bh=y752DrbBFFJ8XerVisGtOLzv8nsy5PhYRKi3Iy7oc5I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=j5Y/+nm76DxQqxVQ2O+uA2O29guRVqRiECEnMndzrX6O1QnnGoIxp2bjapqLS2BHu
+	 jVJFtqTe3UugvZNfBbhiRRNC2C5dzNv78ys6CYuC1x7c3La4ymr/QOU9C1SC/ELw9C
+	 UtxVp80PMuvpJqW6zgM8iKoa0pRA8QDTVTmAmj4MuUy9sbe6S0HRJapHaQq1eCSqkQ
+	 vITo2wO/XYgiIIlxI3nq5Q/sKSYW/K7QydMN4dv/+K9ad5hrS2QHakeJLErVlgknES
+	 fagUYCD9M7NlJr1Cdn2xNEudUV4lb+ZY7JRq5CF2pLt/IRAMNRAagZOz01v0W0Jr2A
+	 N7vZ4ppo4339g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	jiayuan.chen@shopee.com,
+	jiayuan.chen@linux.dev,
+	yingfu.zhou@shopee.com,
+	willy@infradead.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Huang Ying <ying.huang@intel.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5.15.y 6.1.y 6.6.y 1/1] mm/vmscan: flush deferred TLB before freeing large folios
+Date: Wed,  8 Jul 2026 12:18:00 -0400
+Message-ID: <20260708120502.agent5-0002@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260708041237.289026-2-jiayuan.chen@linux.dev>
+References: <20260708041237.289026-2-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-References: <20260706081218.3438762-1-richardycc@google.com>
- <ak1XzPxbwBF72d1m@linux.dev> <CALC_0q9=KNnkQBE_7gC60jZ2Akj9jgL+VaDMFd7yGvqyfTJbYw@mail.gmail.com>
- <ak3Xtrtm5iVayEx7@linux.dev> <CALC_0q-juSkv=iqG7mAGCuGqbdCtjEHEy6oD1pcxQkFdBMJHWg@mail.gmail.com>
- <ak5wxwj8cID-QQCF@linux.dev>
-In-Reply-To: <ak5wxwj8cID-QQCF@linux.dev>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Wed, 8 Jul 2026 09:03:17 -0700
-X-Gm-Features: AVVi8CeKwW_bIq12eer8jqRPGlfjRD0YcQhmUYS4ZpC1uymCZabPMvvX7Vk_-Do
-Message-ID: <CABdmKX2C-XPN7Z3G7joSHUxhzEmp5dgNf_oA_ojQ_coM_CmvPQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: vmscan: abort proactive reclaim early when freezing
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Richard Chang <richardycc@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Martin Liu <liumartin@google.com>, 
-	Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9AD4440004
-X-Stat-Signature: 19z6oqj3axi8bpqsaafntg59unbw4ad7
-X-HE-Tag: 1783526612-848816
-X-HE-Meta: U2FsdGVkX18FoBj7/bXpZJuOfOlgzFDz3lqTQ37kQKmFDBoXUtg6+kOKUzpJriWiutJU34xeQZxc09XdRP7nnHIq8F5ClluAXi1uWXN10Tm+kVGFIszIWDXjeLQI/HsyXQvkMtNulQ/hoHtT2eNFwjuMd0H7MP9KN/kaWlXCq6L3hzwE6F5vQBSfsJUQPci8teYUh+OhogHkgpoRG8f08MW39jJ7RdGWAnTU/PXLTz5YsPJSN0MuOZAWZIBF7O4A8aV4aWPn/dAry2pOHn96PMA3P0Q2eQDbVJHRJ21uZhwQR93wCG7SNaJMN8YSrVdsHKsGKK5+1WfUFQMoVxnMIwDMI+8967GfbK8LyWouGKJDo4MPRRZOcPCPkCFIGO6P8Q1RYxkSzl8NbXT23aA/yE8iHHhueI2e1uJWOR7QxGv95qfQZj7i3oVR6ir1ov3Kakw/5fm0GbxIF82W48Hb+nK499oSLP0UeEkQSN24qDqaizLtobJtDTWjL1cal7FaWG3H/0nsmgjZ31kkBNCjbuO+PYJky0T5Vudqhx5nbXbp+FYrK8oiqGZR0KZjHTVs1TcAEWb7pysU0W6EA/XuRSP7Z1x5vBgH534dtZscRC12RtAvwBWzQ331MJQkEb2q26D6kIHP33m1bsJ81WQg8lKqsTplI++vHpD1kaOlVS6UNQ3Z4S5eCWYZkQ1vra48NBxlwm/EOR5RnxyQHGFgn/rory26dFxpZYGgXOAZUG/yg1NT9wgaUIMy2h+dJmVmG2vL5GZ/8Tkk50NQs5BhaYerL9ijX/PEQ7xBn3v3P7CHZ1mar013bw78/ztJ7jEcIFrTXB23WmVVZnvAynkgA9Kr/pDIeQSVyBPVtR9qmhLdgJbqbXEx1fX7ewoB3rNZUBLvX4+KuTmVXgIpfzMdH39gZC80GTEhykzhxBpfEbYgNA5grkfZha1iVntkdo8bKxjSIhlsOFkqPIIe0Wx
- Hd0j0H3V
- bcEqDdpnMGQ4W+UJQc6S7GYOIzNqSz9G+i03kQrf6lVJ9sJvLyRjlaICGVGI1T71WFCw8ZM6KmyGN6SWFL8bwlGtBldd4YE37rv1IVvUIJYj+9GzwFBv+1cuEkI/gb0F+ezeUbvkc3Zq0A8a49tyk5AGGr3N0ChNDG1y93nhaSTl35YuIjN6yosmUkh17X3RB2kYimdAPxua8aSeBMTWxKBWMja9O78DCU/Uw4Ta0WLqf//3KwOkSR83VPITM621aC1tsNPdOOCq/B55JR6pwFjTcksmpJJdFFn+c
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2742012000C
+X-Stat-Signature: 1sjqn5qk1tujnstgrd14gmdaqzqyrymd
+X-HE-Tag: 1783527493-334797
+X-HE-Meta: U2FsdGVkX18H2lg2zw3zWktofKjXEGTb/TLf5YUnWHEtpuObMQWVN8t/GTKHH6/aplesKzg2aHW1Y+yBGqaIw9s9tH7ilM1mEFEK98A3h8vh7E9TmrTFmz+vvo7EjF+KDO5WFzTIJAxdxVGE7pqiUosgk29hQwc4VNAgdHeXL48HDxO1XPDmSm/0fHicrMHbeJGGrRZ9OkysDTVh2kYGFMRHe2fGD73JxSYQJ4Smom81QeebJGL81m4NgZmIB70LTUt/FV+Rj59RCC1cpqzwws+kCy8TBiNsh+qEUWZnSV/poen9ohL8XF7zhEeF215z20UegMFrct1T5YeBSF3s4Vwu28YD0CEjStTHwXP9Ayu0/WC8tCEddC3fHC9/x17P2kFGMxlb7U3rhMsF0mrgla3p4Cyu5IEzTOFwEBZu0z7N8EocK9PUds3bOO/MxuwZRfoFoS0EFtEUgFNEQW6IQT07iz62tLlguA8ktSTJsbJK1UB5Cn2+nMMk4kQibZleHjk0koQKw930cPDIJrNd1bqUXwhe+si0Am0fg2L8ybVJKFjTIXuVHjKHFsrd8n3ymKNYdaCHIbT+D5a4OkAC1MkA4nh+ht8Uc5cBb+Wy1D2L2Opdq+ZPhO1Js7tVHF9ZHDJP265EblWJjG1Ds0cUZolvE97DUofzaIc7bSgKGHCYgMvsRO5R4ZIIt9XA/qAc6papFv3LwY5gOsyXE7hLvC5xa/pFXmAAFUpqTnlRtd9DyqoP0/aUTZdYO75bXxHqyKFhV5rhKC892puOxk8Ufzpl12qwiy4IeNrAhxKO58LpbwlocXF7v+a4+aB+LGjoY76ZAUUqq8CFdBqUDFBI22ytGbabw3DoS0HpU7MSvq3inIVmLQFU18SUHid/NxYIPMtBix9PVEuhHW1TIzICuxXoFseSz0LQ4Xwoyh5Re8B5+5hoIDkkzfos8+hVIVqTwN6s/2biAOeHx9cagB8
+ aWTsuBoV
+ fnabazgAqATLMW6jHh9z5iHaOj4ui41NIa1RmHhYG7fa4qH97PM3PEQF3QvSRNLRDRBMc2AoRS2nTJ1luYiW8G2uSICdwhMdosF/xA1a2724M7okJqB9/Ru/klGvLU4e22/AFV7+EydxQzWxhdHTjlh/k2MWEYxwAnZ9bvatw0fZFtMJpY0svSM5ps8q/yGk3Ydm6ZAS9D93cIbI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,32 +97,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 8, 2026 at 8:48=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.dev=
-> wrote:
->
-> On Wed, Jul 08, 2026 at 03:24:15PM +0800, Richard Chang wrote:
-> > On Wed, Jul 8, 2026 at 12:54=E2=80=AFPM Shakeel Butt <shakeel.butt@linu=
-x.dev> wrote:
-> > >
-> > > What's so special about proactive reclaim? Why the same situation can=
- not happen
-> > > for global or memcg reclaim?
-> > >
-> >
-> > The target batch size of the global/memcg reclaim is typically very
-> > small -- usually SWAP_CLUSTER_MAX (32 pages), allowing the task to
-> > yield or check signals between attempts.
-> > Furthermore, kswapd is a kernel thread designed to be freezable, it
-> > explicitly checks kthread_freezable_should_stop() in the main loop.
-> > In contrast, the target batch size in proactive reclaim is
-> > user-defined and can be extremely large. Without signal checks in the
-> > inner loops, the task may continue scanning and evicting pages for
-> > seconds at a time.
->
-> Why can't the proactive reclaim use the same batch size as memcg and glob=
-al
-> reclaim?
+On Wed, Jul 08, 2026 at 12:12:36PM +0800, Jiayuan Chen wrote:
+> Flush the deferred batch before freeing a large folio inline, the same way
+> the order-0 path already waits for the flush.
 
-Because it is very slow:
-https://lore.kernel.org/all/20240202233855.1236422-1-tjmercier@google.com/
+Queued for 6.6 and 6.1 with Matthew's Reviewed-by added, thanks.
+
+> destroy_compound_page was recently renamed to destroy_large_folio.
+> So it would be conflict when this patch was applied to 5.15/6.1
+
+It actually applied cleanly to the current 6.1.y (that tree already
+uses folio_test_large()/destroy_large_folio() there), but it does not
+apply to 5.15.y, which is still page-based
+(PageTransHuge()/destroy_compound_page()). Could you send a tested
+per-branch version for 5.15.y? 5.10.y has the identical vulnerable code
+shape, so a 5.10.y version would be welcome as well.
+
+-- 
+Thanks,
+Sasha
 
