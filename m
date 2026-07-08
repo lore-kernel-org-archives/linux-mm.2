@@ -4,126 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 710A4C43602
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 11:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC7BC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 11:59:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F2FD6B00A5; Wed,  8 Jul 2026 07:47:37 -0400 (EDT)
+	id D26E76B0005; Wed,  8 Jul 2026 07:59:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A3CF6B00A6; Wed,  8 Jul 2026 07:47:37 -0400 (EDT)
+	id CD8B36B0088; Wed,  8 Jul 2026 07:59:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5BA7B6B00A7; Wed,  8 Jul 2026 07:47:37 -0400 (EDT)
+	id BF0A66B008A; Wed,  8 Jul 2026 07:59:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AA7E6B00A5
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:47:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BAA1A91405
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:47:36 +0000 (UTC)
-X-FDA: 84965434512.13.3A66B04
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EC4AC40003
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:47:34 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OzVWildZ;
-	spf=pass (imf27.hostedemail.com: domain of praan@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 89BD26B0005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:59:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0B6361C8110
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:59:00 +0000 (UTC)
+X-FDA: 84965463240.20.F636B09
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8E222140005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:58:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CUwyF+Sd;
+	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783511938;
+	b=TM1JfE8GjTkqibTi66JsJiJbFJeRvdBzSlcBVMMrziNvJdfWExZaPI2amxf+d+E4tfdORq
+	xf5kIJX9BGtNp/fiRQ8Hve9S25KeK9qarAOT6edHrAvvNIl8Y7bUfkVXaHimGHfdL0emal
+	5PXyol8rHurJZUtvTCKWhu3x2PNkW6U=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=CUwyF+Sd;
+	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783511254;
+	s=arc-20220608; t=1783511938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yQthvAmb6mZfzW7rEXSGGNwecmdXpDNmUVxAWD35bFk=;
-	b=dnnf8766XUK9hBdc3Hbm4rt7Zr3mOfLN0cjHMoD0tnRjWvaUio79WqN15gyCn+mIMakYCR
-	QweRnAnSuzH4RfIf/Br+z2IPFjX3kci58vUuzftgP5pL0Wf2UNQ2syeZmV4e5rPprkhhdv
-	TfbwiUIGEyDs++mvWZ59mZo5AsyYLU8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OzVWildZ;
-	spf=pass (imf27.hostedemail.com: domain of praan@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783511254;
-	b=D4e6X7KF1eBxli0hK6INsdycHMa1Ug9SPeODkJAq1uhEowp0d3U3odVhV98Fqi0kE0uwNr
-	Dv9HDryOjy6wZJRk8COEpoxwAMV6+JPJOK1w+1MS4haCUYtblLbdSXL7E4zcudmtx19krp
-	xkwAVOjZefSoPxlRBKZuLuyLGOd6PyI=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2cab97c86bdso76715ad.1
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 04:47:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783511254; x=1784116054; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yQthvAmb6mZfzW7rEXSGGNwecmdXpDNmUVxAWD35bFk=;
-        b=OzVWildZPWSVOwFhHsNIudOIAsA58vOpoGzKXkPmHSfqPpBNxudlqsGFizI7DbkOwJ
-         7jsz7ugPiOAxV4t+BlFTpTjh6rl+fLFlC57Do1KFtMf0aVo0nKJOnICYb4tXFD84Ebe4
-         tdiGznIpbA5tng7ZXF1U34YGADfvG6UREoWd9jyjOJ/PXsFBeY/XMekbmGmdV4RETRIC
-         DT6uPNTVXwCtf78VUGhkZpAvlpDwhkHWkj8jlLIci8mMRbse7nQQI0UWui33mK9uSXj8
-         H9PL7WDBq4FQJhJz3HwhNlpIAS4r3YPkMlKGBLrduJOcAG1cGdDqp4AhWaHyqTJBFC3f
-         FP1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783511254; x=1784116054;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yQthvAmb6mZfzW7rEXSGGNwecmdXpDNmUVxAWD35bFk=;
-        b=UHNSxNI01wAErSKKIR9JxoBc0Y8B5A9nFNVZkXoK+9BsVPTe6ABVPl5ZQ2geEzm5fh
-         6VvQOzYVZt0OUdp0WmNUK7qlti3XSEx0SpV6Zqu/ILDLl1F88pp7hH+K5LBeJQSwtpe6
-         G0oNy1aGSeGJj+wDOZHyoZZppoTyOuA9mtQRdHLV+0ppyNBOhnPVUvKnZch7g+of75Ni
-         QDFVbqUmwdy71iw9nGwB8sa+1e8LAYwOCKG9rohvWyGp80zRvnWAywtfJR2dJ9Z3k7yw
-         dS3NUgcXYz9PVp9jXxSHtMBgw5/HGSrgwULJDgawt5rtaxJGwvdbRmoLnW3/mp+c//40
-         3eLg==
-X-Forwarded-Encrypted: i=1; AHgh+RpVpKQm4LcaSMbMfyebjnEinPjCh2Wkr1gvrFGfH573w60bnNn4r+4HH8LkFFHlgn4lU9tWlvRetg==@kvack.org
-X-Gm-Message-State: AOJu0YyhcQTBnd6QLodW4Kefi/M3h0r0FEL+vqBqPmf7P94STe8Jo6Gw
-	Mgrc2t65YE66mBnrpDir3Fbwl9LDKr0ru9gIHoldQcxGa4cf7x4egrcv1m5GMFx4Fw==
-X-Gm-Gg: AfdE7cnPOxYsqWcfm6MTk9/a0YE/2RoYC0FaJfASTMvh4IJc1zzditiRNMFbQ0IMibp
-	cgKd39M4MNuAhHLbkW52bQS/b2zfg+98p9TzeFoTvA8stFiE4AfH0M1e/df3UH6yUSNKQtuczNr
-	jcNMGeBDWf1DaQR+f8oGWSeSi2gDzF92npTAC1u+xyNyeoM8aTXXoW+8PPlbbdYiN/5OArrv2jR
-	h6W/WP0YjkWj6oTYNG0A6wX/w/hNJDShJZ6DAPSd9RvrCtjdLc6tjYZTmIXpQhIuo3QYWe29kaT
-	lEpAmWPd8vltgfD0D6rQ5xZofS0TSGBcBxnHoSql9EFx6YIckAwJ/ICvvWi0CCjZBCyWXR8seGh
-	GsYy/c7PC/NWQwmFLNgbzRKUyMgz/kEE8Ek41wlZRqeZLRMua421mz9OjNlRViGVlsJGjsDTVfT
-	PtnEEebr4ZL7xBSvwrwRg/cF2mIVfVa/8Sw15kK2faEdSwtxI=
-X-Received: by 2002:a17:903:2442:b0:2c7:a13a:7fe6 with SMTP id d9443c01a7336-2ccc9c48162mr6446945ad.10.1783511253251;
-        Wed, 08 Jul 2026 04:47:33 -0700 (PDT)
-Received: from google.com (10.129.124.34.bc.googleusercontent.com. [34.124.129.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-387d36676easm2656833a91.9.2026.07.08.04.47.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 04:47:32 -0700 (PDT)
-Date: Wed, 8 Jul 2026 11:47:27 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Trond Myklebust <trondmy@kernel.org>, linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Anna Schumaker <anna@kernel.org>,
-	Shivaji Kant <shivajikant@google.com>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 6/7] nfs: Optimize direct I/O to use folios for
- requests
-Message-ID: <ak44z-X-SKKhkBkg@google.com>
-References: <20260616134000.2733403-7-praan@google.com>
- <7ee3bcfdd6126c93cbb1c219bf601182b95c10d9.camel@kernel.org>
- <ajGGpDvzZdkGtSbN@google.com>
- <ajP8ZTTLYkICFTO_@infradead.org>
- <ajQ21kH1ZVajS2Y7@casper.infradead.org>
- <aj4iiD5C_yyLeb3U@infradead.org>
- <akevQfFVteCOD6LM@google.com>
- <akfAgy52s_Gch2KG@infradead.org>
- <akzsO_vmYX_7Umjd@google.com>
- <ak4A6IEmWNi27I2d@infradead.org>
+	bh=1Kf3EofRDITTaRJwm6sW4nnfT4qFNk7C4XIMhYPG6Vs=;
+	b=f98ASIW74jWxPVbKW+VcMLY/L4hF7YRfbkcPHGYl1nG8Jon113dUjLPV1DcJF1wO3XToR3
+	dYF8QyTf4A+yJH63kOzZKySwogjxt0zYhf9G+gJkgzJaGVQqc8nnQ8DgOfG7Q9p99Q2X7O
+	Zn1OYSNxP8whWye8i3b2stuoMtr8xnI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1Kf3EofRDITTaRJwm6sW4nnfT4qFNk7C4XIMhYPG6Vs=; b=CUwyF+SdxF25bXCDrLcrFgyyyR
+	v6U3S3r9IUzd4lXJmS8eY85l7huJukUQlsaJXjUh81DKpfl/fdWOjtsdtCOvlnx0SwcJIaKB7e6Pi
+	DdgW5P78XU5Arbpw85d77jbbcogHEw58jKz0ol75zO+fLGWdutWVisEiCfAXHNuAm2pjNh8iran1P
+	3pysIttD3I4lvB59Az3PaxKY0Mlb5KfyIy5XJZD1bP9S2xC7Om/NF4u3H9dlfFho3Ah+Bav1QhvCX
+	tcltfz5uYhrGIXB6eeJCZ+Ys40kQqMqenEjmJzUfq6xku7x2Jc90OrRkwXLg4iXhGww2xY8H4V6io
+	f6nufLaQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1whQvW-00000002Gc6-0lZF;
+	Wed, 08 Jul 2026 11:58:54 +0000
+Date: Wed, 8 Jul 2026 12:58:53 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: stable@vger.kernel.org, linux-mm@kvack.org, jiayuan.chen@shopee.com,
+	yingfu.zhou@shopee.com, Andrew Morton <akpm@linux-foundation.org>,
+	Huang Ying <ying.huang@intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5.15.y 6.1.y 6.6.y 1/1] mm/vmscan: flush deferred TLB
+ before freeing large folios
+Message-ID: <ak47fZui1es8Lobz@casper.infradead.org>
+References: <20260708041237.289026-1-jiayuan.chen@linux.dev>
+ <20260708041237.289026-2-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ak4A6IEmWNi27I2d@infradead.org>
+In-Reply-To: <20260708041237.289026-2-jiayuan.chen@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EC4AC40003
-X-Stat-Signature: 6qajhxas5yotzphyfawwayeu99gk48on
-X-HE-Tag: 1783511254-269271
-X-HE-Meta: U2FsdGVkX19GqwLzIfl4aiNNhAqDCfkzM7ao+Y4qBZ5hUuASaVI20YNt60QrrwRuBWyznIkF0OG2HLX4OICcWg0e1H3OiEGjR0X4gmTGNfDTab/weUwdxtRf506rSDMdJqyaZ6aMTQYpfp7j9dhy1iubfYgxe7oFvDqm5Z76UhQ8B1iTpQpsxe2hSql2tyQI1ibeJauAnA7QIINhEcVJvZ/nMjaltRJPkYuORIkdqvo2JavknG0jRQCOTq2N6Jpj9j5webzoKlQ8LgwzS2xPM/4b/uCNlMQtTjJL8s5t50zX8J9mblSfAqoou77MvxuyXAV3l2DBr3JKXgCCt/NZJswmJ/OX2feM82FqQdwQuEeGqt5/mdsSEQF9SgTIGpv6y7wnCHwdZuC/h/+2Kzg8EQmLggnEgS6Fyt/uzx/LRdPY4uJ4SC2hFoHIF+WvURNFJzvqRn+E8BpfOo1oeVx72mo+hcYUJAbNSODEtxkL3tXue+5dI6UAaqUnEFtP6//XvDG1XSro4Y4gSS3xT6C7RWC68o3drBfhKYoH0+YvLNaNW2ZZEAtD1IP2Sk+UomcJVB8ULxONTZ85IwUYPloAQr39OIHEqxVlJrz367xCVylakrIGMNzKqf3MtLz2MFhcwIm/xXT5W/9yaJqSD6b5jTfYQK2dYWNfuowwoaxCdlOucHoxW+0P2Rxvb46VoYsdEN3JUIV8pEUOtsJHC2bU+s9PKytHgIWps5DE+3NnsndyJOh0/nAjf6MlxzjmdY9qhqzumf/pJvazNWn4Z+5FPMQVSr9AXHp4+DMh4Nd2aTFx88saRRc9QNiMUX6wa2Ao7rw/XbO7UpLj7D2TdsPNO3LkOdzYJzwQbpviiCqKsMFmPByATsfkov/jMnp7i0f1yKhIapTOnhzDz4WjrzthS/nEkUmuBB4l9STqeoOqJxnzujKlHgdFSCSvKc9f3noGChxJ3ClbGwawSqj8Y80
- xCjZE9US
- V39W0Uyzz5bC2CzrGyPWOESOd7yQMttEhcm4Y8Z/ZWuORaM01vWeroIsKy7p8wD3/1zjSgXHa9gCE/7HUcPlw1djZMJ89QvRhmvwk6j8LOdlCECByfAHttsFs7pBqgGzFoz66dBdu4sc+NCLCWjzgWMQDODcVfW03wGJPmy2LH4a6n2cg+RMp9LZ4k7C4eeEjTVjwQGHNqWIcQS5QaYf2xbaNRrvkX0Trbh8dykIRYPDV41zz63jJd6LdTMQx0zVaYpwt1a7x4OyVjJUCcEU27LulXr5JPnur2HIS7Xa6o6Nbbzr40EBWfI8DJ4qu5qiNg32uq4F1COXhNEYtV95qBSJIUw46/u+aVyz+1RGDqLMLhsA=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8E222140005
+X-Stat-Signature: mnjdk81a7g5trd6so4pbf3n79z1s7wgx
+X-HE-Tag: 1783511937-3196
+X-HE-Meta: U2FsdGVkX1/Tw8fiPsVOepdDkSxQCM5bIqjlW2jN/mBIxEEU4eGbyQc38f29WU+Yd+sbYDWkCwUP7FPfZh7aroUddTnFspDmZvQWI6YV2M0UoEb8NwJTtQ0NZMFApI0ZPcKgS8B8+Rl+3BygQGmQBwxUNv2UDI+dvek2NtA1+ZaRaFWn/yfTQ2bQejfaez/nxIm6oTFNymvF9n4+z1HuZUfmcklThiGLIJ+7o/g0XlYGUdssT/LB00zrHpr4Q0QsvDmj29oCfiPGz97aV16GEpF5+i/9z/HCTHC18TpkZNpMas9aeXMbknA96/K0fhEVvJ6OPQKKE2meWkDY0gOEsGm8t5gKK1KuU8XxxC4pozo9SD/KGU5L0T4CIBTrHp9NQUNc04EBDE/6l9+QUS6JYA6jZOZjM8yO++eE8TSkOdgt6RsagZbdZQM9A4JpqPMVTyphMJrPrevEAT541UOuJCoy5c7EOKNokLBN/EL9XogWtTo/nXuWZokqwLxHNKENyRq/KyaEyNBVPMRyL27SRSwUECl86uJpw3a855Phftewrd7h/K6e/RAtg0peRlDedm32JWFjDD/I3GMKEdauPNhw1murPsMHz64ckFxuvlulJeg+zD0ABY5YMM6kHjPhEPD1nVT/UtjhdUo2gK5u8tb94NnxZV9lk0Up0TEhEwfxNvTHST8YsED3GiJnj4xNS4BOzrp/2TbphpRj0Ok2VItX4oOGYoOYUis58gMEMHl5tFm+DVDBfSJWltRWitiWaMPjs8e4LX2nAujqC4nhW/WJmpBBTUqz7bOJQYWZs4j7OZNrwwODyTTFeI9hStHvyt2y5wKjfn5gPyyG6MIbqx/vB5CSoMOdkO/CxlLophY+uupVtaxc0lf2bXVj2geSG9m9H9SVcTlUc+GRdrfFz5f5UQe4Wt33p10ROZcg7+QRBPHC3sa7wy/U3LeK8jqQ7EpgH16p/U/ZW4YxhlK
+ VOTUnBD9
+ sXFwEQ5pYqCus4vy4h/UwiYHEvYWTYLEmSdNuMCQs6cqLoEabS0Keo58qXI/T3pVZw4H1WPopPA3Y5asmm6C187c1KIZuWctZ3JoLXdUxu6tt9I/5aWdoZtnMsIHmzWlpyhiX3clI/pQyD8/lQrEPQWpEhejICtajhiiQ31/APnt5zeZa+3Wrs31S2zwZ44wrvrQHhLaXRQkR6tHoOjcDtQ80bLOBEWvs6leGICx+JyptcSu3vX6IWrxDcfJGbLNQD85m5n8nZKCTSibgpVllOIXp3YetCwtMLkxXJjjUoOit1AQw/rxtxvefPnLE+psFhej1oq0Lkh7I4kIzrJHwvfrVIjsXe3Y/nG8ugFvL+wl8c20=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,32 +91,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 12:48:56AM -0700, Christoph Hellwig wrote:
-> On Tue, Jul 07, 2026 at 12:08:27PM +0000, Pranjal Shrivastava wrote:
-> > Ack. I see! Thanks!
-> > 
-> > Regarding the page_folio impasse, how do you suggest we proceed? Should
-> > I expose and use get_contig_folio_len() from bvec? Or should I move the
-> > NFS helper into the iov_iter lib? (or both).
+On Wed, Jul 08, 2026 at 12:12:36PM +0800, Jiayuan Chen wrote:
+> In reclaim, shrink_folio_list() unmaps PTEs with a deferred, batched TLB
+> flush. The batch is only flushed by try_to_unmap_flush() near the end of
+> the function, just before the order-0 folios collected in @free_folios are
+> handed back to the allocator.
 > 
-> Sounds like the best way forward for now.
-
-Ack. I'll reuse get_contig_folio len and move the nfs extractor to
-iov_iter for v3.
-
+> Large folios don't go through @free_folios -- they're freed inline at the
+> free_it label via destroy_large_folio(), which runs before that flush. So
+> a large folio's pages can be returned to the buddy allocator and reused
+> while another CPU still holds a stale TLB entry for them, and that CPU then
+> reads or executes through the stale translation into the reused page. For
+> file-backed large folios (e.g. executable text) this shows up as random
+> SIGSEGV/SIGILL in user space, with fault addresses that don't match the
+> code being run.
 > 
-> > Also, do you suggest sending the Folio move as a standalone patch if it
-> > is blocking the rest of the series or do we prefer keeping these in a
-> > single series?
+> Flush the deferred batch before freeing a large folio inline, the same way
+> the order-0 path already waits for the flush.
 > 
-> Sorry if I'm thick, but I'm not sure what "folio" move means.  In doubt
-> if you think you can get a series merged quicker without a later part
-> I'd split it.
+> Upstream this is fixed as a side effect of commit bc2ff4cbc329 ("mm: free
+> folios in a batch in shrink_folio_list()"), which is a larger change; this
+> is the minimal fix for -stable.
 
-Apologies for being unclear. I meant I could post a standalone series
-that moves NFS Direct I/O to folio, i.e. break out Patches 6 & 7 to
-another series, if that makes sense?
+I agree that it would be wrong to backport bc2ff4cbc329 and all its
+dependencies.  And free_unref_page_list() only handles order-0 folios,
+so we can't do this:
 
-Thanks,
-Praan
+-		if (unlikely(folio_test_large(folio)))
+-			destroy_large_folio(folio);
+-		else
+-			list_add(&folio->lru, &free_folios);
++		list_add(&folio->lru, &free_folios);
+ 		continue;
+
+I think this is the right fix.
+
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+
+> Reported-by: Yingfu Zhou <yingfu.zhou@shopee.com>
+> Fixes: bd4c82c22c36 ("mm, THP, swap: delay splitting THP after swapped out")
+> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> ---
+> destroy_compound_page was recently renamed to destroy_large_folio.
+> So it would be conflict when this patch was applied to 5.15/6.1
+> ---
+>  mm/vmscan.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index aba757e5c597..8eb498351d9b 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -2123,10 +2123,12 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>  		 * Is there need to periodically free_folio_list? It would
+>  		 * appear not as the counts should be low
+>  		 */
+> -		if (unlikely(folio_test_large(folio)))
+> +		if (unlikely(folio_test_large(folio))) {
+> +			try_to_unmap_flush();
+>  			destroy_large_folio(folio);
+> -		else
+> +		} else {
+>  			list_add(&folio->lru, &free_folios);
+> +		}
+>  		continue;
+>  
+>  activate_locked_split:
+> -- 
+> 2.43.0
+> 
 
