@@ -4,110 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5194C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 08:07:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B911C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 08:08:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68F9D6B00A2; Wed,  8 Jul 2026 04:07:23 -0400 (EDT)
+	id 4E3FD6B00AC; Wed,  8 Jul 2026 04:08:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 667176B00AC; Wed,  8 Jul 2026 04:07:23 -0400 (EDT)
+	id 494456B00AE; Wed,  8 Jul 2026 04:08:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5567B6B00AD; Wed,  8 Jul 2026 04:07:23 -0400 (EDT)
+	id 3AB126B00AF; Wed,  8 Jul 2026 04:08:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 17C596B00A2
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:07:23 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7DFF190CD8
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:07:22 +0000 (UTC)
-X-FDA: 84964879524.12.1E18D5C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E9052C000C
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:07:20 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=flVw3qAh;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783498040;
+	by kanga.kvack.org (Postfix) with ESMTP id 0665B6B00AC
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:08:16 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7CC26140694
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:08:16 +0000 (UTC)
+X-FDA: 84964881792.27.8D7BE4D
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azolkn19010023.outbound.protection.outlook.com [52.103.12.23])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E2D6FA000C
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:08:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=A5rmMcsm;
+	spf=pass (imf15.hostedemail.com: domain of jiahuitry@outlook.com designates 52.103.12.23 as permitted sender) smtp.mailfrom=jiahuitry@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783498093;
+	b=BcU9+ihisN/JFtEwhwuTBFYZ/uK3/vJmZzwVFWl1GjVai03KI0pHsjv5VvnYd2f6So/BjR
+	M5QyUjIdOm/wHyT7d3qkDOpA8eZxVOrVeiNiRLwqwdWOd5uwDqXp032quXON2MKI/uPyJe
+	FcBKu/I2WmQxSE/AFZBpugdD+5NjAW8=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=A5rmMcsm;
+	spf=pass (imf15.hostedemail.com: domain of jiahuitry@outlook.com designates 52.103.12.23 as permitted sender) smtp.mailfrom=jiahuitry@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783498093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eey33vCwR2TDg/L/7ImDVaFgtxdBYVYOOW3e0Hzed1c=;
-	b=yeYvRF/PLfTK5219fpzKYteu/NM6sPX6QuVtBp6oX81veL94d25n3MdjKXVS3zh2/Jg2i9
-	0Svh1Ux4qKGre1bOM/l0vSk8pWtxELpGLrX513b97NwNSShR38EEjYwC++GZmdHFT1C2XQ
-	jXj5X1K62TpIA1B2rBlLXxDURzqhpNY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=flVw3qAh;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783498040;
-	b=nl3NMrBLo6tZaCjaCi3TTz3//2rwl34ywEVf/jhirAl08I4K+7/jRnGWAdm0c9+aByooER
-	w4Po+bb6fFhlYJvAWQhKpPl5dBEMq+PDUmX+ipGb/R79f/GY9pJLUcnOp2OLUcAzVSJsmI
-	NZXg0MRx9V9bsDXV77Zpg9lg6xln0Lo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2A62660008;
-	Wed,  8 Jul 2026 08:07:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B7C1F000E9;
-	Wed,  8 Jul 2026 08:07:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783498039;
-	bh=eey33vCwR2TDg/L/7ImDVaFgtxdBYVYOOW3e0Hzed1c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=flVw3qAh6hNuSMs/jQ8WX9sgUiBwvxP3Ah3MtOh+v89sSULzfJkDqVDC424Q0Y5jh
-	 P3kK3AKqV6dUJvPIGHbGPjmZjI0mR4s0cuOFp63O9iNuB7pNgxb8/NvkAP/qeyXH6l
-	 0nmHlEgYdvyDtwSKmbDMsA9JAkFppmUGrLvd5SnrAa2d4aaiXGWhWH+y1RZ16LRQlO
-	 mCgx8xerhgXKUC6O6KR1rj3CrfX2UTR0bHeBtFPC9TMI3v6cN64oP3iau+gOLlIg+j
-	 VcoPp+Cqei0kj2IbhK3HLvMiczZxO2AaGvEjL094Q9kcLHOeU4Ib0hbRjAk1sR5Kxz
-	 wLNu+X43UaeHw==
-Date: Wed, 8 Jul 2026 09:06:52 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Cc: akpm@linux-foundation.org, anna-maria@linutronix.de, arnd@arndb.de, 
-	andersson@kernel.org, chrisl@kernel.org, cl@gentwo.org, conor+dt@kernel.org, 
-	david@kernel.org, dennis@kernel.org, devicetree@vger.kernel.org, 
-	ehristev@kernel.org, frederic@kernel.org, mingo@redhat.com, jstultz@google.com, 
-	corbet@lwn.net, juri.lelli@redhat.com, kasong@tencent.com, kees@kernel.org, 
-	konradybcio@kernel.org, krzk+dt@kernel.org, linux-arch@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-remoteproc@vger.kernel.org, mathieu.poirier@linaro.org, 
-	peterz@infradead.org, pmladek@suse.com, robh@kernel.org, saravanak@kernel.org, 
-	tj@kernel.org, tglx@kernel.org, vincent.guittot@linaro.org, 
-	workflows@vger.kernel.org, atomlin@atomlin.com, ast@kernel.org, aliceryhl@google.com, 
-	linux.amoon@gmail.com, ardb@kernel.org, baoquan.he@linux.dev, baohua@kernel.org, 
-	bsegall@google.com, jackmanb@google.com, leitao@debian.org, brauner@kernel.org, 
-	coxu@redhat.com, dietmar.eggemann@arm.com, dianders@chromium.org, 
-	ebiggers@kernel.org, feng.tang@linux.alibaba.com, yangfeng@kylinos.cn, 
-	gary@garyguo.net, guohanjun@huawei.com, jack@suse.cz, wangjinchao600@gmail.com, 
-	joel.granados@kernel.org, hannes@cmpxchg.org, john.ogness@linutronix.de, 
-	jpoimboe@kernel.org, shikemeng@huaweicloud.com, kas@kernel.org, 
-	kprateek.nayak@amd.com, liam@infradead.org, elver@google.com, mgorman@suse.de, 
-	mhocko@suse.com, ojeda@kernel.org, rppt@kernel.org, namcao@linutronix.de, 
-	nathan@kernel.org, nphamcs@gmail.com, n.schier@fritz.com, pasha.tatashin@soleen.com, 
-	petr.pavlu@suse.com, pnina.feder@mobileye.com, rdunlap@infradead.org, 
-	rioo.tsukatsukii@gmail.com, senozhatsky@chromium.org, skhan@linuxfoundation.org, 
-	sboyd@kernel.org, rostedt@goodmis.org, surenb@google.com, 
-	thomas.weissschuh@linutronix.de, vschneid@redhat.com, vbabka@kernel.org, youngjun.park@lge.com, 
-	zhengyejian@huaweicloud.com, ziy@nvidia.com, Eugen Hristev <eugen.hristev@linaro.org>
-Subject: Re: [PATCH v3 26/26] meminspect: Add debug kinfo compatible driver
-Message-ID: <ak4DqBta0boElPak@lucifer>
-References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
- <20260708070809.2660886-1-mukesh.ojha@oss.qualcomm.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=r9vu99FBvV3snrIqZFzfRHd3gWh6Dp0UOlms2yOGh3Q=;
+	b=apaj5avI5R98pvCS0Q8VgF0qoOeUuXVk1WdhPclvcfU9ndqqKpLc+xWUUfRvzyfFpfUsYR
+	GMd83i+q2gMqXzZ6cZ9EwQ0yyjMs6IebFLeXE9Qw2l84wo6Rzwq+bpx/dwjiVKYdqlX6Js
+	NdJIFfpBHNA1EQjjgDGail8MWNkd9wk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xUT1S0gEAmeEA19owuQ5lhYqQ0I+W+aIJDev1iceRRFxiokb+Nm7g84k7M20jwxgx5FqBCtQPgO+CO4WZBzlVjFOckrQZ5TEaeP76fSJYgWgE3SqSnUJk76+U0A4ztXoE2zc3YjnqxBYaLMghbR5gv74ajKqRz4eQH3ytqVhyAweBpHgvaoFX4tFMLt0gdPjEm1rnHEUQoJk+sCGFn9KTTJpQ5xrNubyYfKRhhrV4lDhY9ulnTaSm8D8ayHKOFsbkRev7Js27jiAu4Ga7g00Mkj7FM2RCzxCpZnQ9NZUb0+QcmfSlmnUXGnv8vqCP8lTyefLcenvpii1udl3T+n8SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r9vu99FBvV3snrIqZFzfRHd3gWh6Dp0UOlms2yOGh3Q=;
+ b=YwPi2OGWqAbcI2OZJt2rU795o9QI98THtGJ1pydootOGzH+s/8YXFmuiPrywEuIrNDnbn9kT31J6ZMHXHHdR3LtBFLYuzmj/081sp0Mirqnv9ZXv9JT/4UiSomMFi3A53TsPGfbP+I7TgFxrDoBO+PP2l3G6M699mYEhLrhOTRP6m27CCFWBzHxvuI8CdHLbWWxLk4K2uf5BDncjDyW9hF0AfA885i+KP38AVVAfe9AQtQACThmfvfn+LBOlZzxh4klwYarvRY7s2jHIsudHhEPE+OxP3niIKPrl7BB77Hh71LI8NgwzBxU8qwyaJM5qfGfm0THbyaik8SDuB8VOpQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r9vu99FBvV3snrIqZFzfRHd3gWh6Dp0UOlms2yOGh3Q=;
+ b=A5rmMcsmoMv860bqgsbI5RD1wEV0wKLyylMSW2FkSq8n1U6GO6B1uV3DMxlgOR/Pn0lTEvW1WZL5KChjTkbbktVCFot+JMqlqtVftu8coQwb5J9qA3DZ4q7cmJ8omgF3N233YKzbByhou2kgHSVnH9hkR5mmhNLhOfL9Oom75hvA8saO7NvTNux/quWQWCLwf/8dk3CxoAiulRdYl6xier3pNvzLe4Ox5q5lKlytxxXqNw62tWi3z/ireOGQD8oWiYyQ12vnydpaH0TLql59UKOTRwuhZo7sWjMzJpxybn2+rMmjvpIxLgYDAiR6w2qh1K90aSnPOpY3kt1FE6E+bw==
+Received: from BY5PR02MB6642.namprd02.prod.outlook.com (2603:10b6:a03:20c::23)
+ by IA0PR02MB9808.namprd02.prod.outlook.com (2603:10b6:208:490::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Wed, 8 Jul 2026
+ 08:08:09 +0000
+Received: from BY5PR02MB6642.namprd02.prod.outlook.com
+ ([fe80::97a8:6e72:40bb:875d]) by BY5PR02MB6642.namprd02.prod.outlook.com
+ ([fe80::97a8:6e72:40bb:875d%5]) with mapi id 15.21.0181.012; Wed, 8 Jul 2026
+ 08:08:09 +0000
+From: zjh <jiahuitry@outlook.com>
+To: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: zjh <jiahuitry@outlook.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/damon: prevent migration fallback to non-target nodes
+Date: Wed,  8 Jul 2026 01:07:54 -0700
+Message-ID:
+ <BY5PR02MB6642F4D1A8BA92BFF3A034B4B5FF2@BY5PR02MB6642.namprd02.prod.outlook.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: JH0PR01CA0010.apcprd01.prod.exchangelabs.com
+ (2603:1096:990:56::19) To BY5PR02MB6642.namprd02.prod.outlook.com
+ (2603:10b6:a03:20c::23)
+X-Microsoft-Original-Message-ID:
+ <20260708080755.19291-1-jiahuitry@outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260708070809.2660886-1-mukesh.ojha@oss.qualcomm.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR02MB6642:EE_|IA0PR02MB9808:EE_
+X-MS-Office365-Filtering-Correlation-Id: cc997e2d-499e-4e4b-9299-08dedcc80c57
+X-MS-Exchange-SLBlob-MailProps:
+	WaIXnCbdHrO+2YmbT5jW+WUSUt4IT5vRdGfOu7SFjpgcA8gOlPoQYlu0lY7cIWoD7nCorPQ2juJA/VYm13a7R9Y0DrOPgbWcAbZa0A7fHWGkkrFQYXlrVU9PLx1EyjZ7INyOzTwYcTq6HQBjs4O/st6b3WAIhQNky7cbjOQvN6VgSQO8gnkUVgUQ2v5ytxbWgXMqosPutoosKIa2yPesSIY0HaghNf7vhvR/bujeZVlpeBgcUfckZBiPBd+r0Qa3bk+Wvan4e6vrTL6hNS2YBYG/WJfyo2zF78zqWJir62pQTpFUsnugReAVwvrZXw4mxniQDL2a2iHQUlPEuBr7ljB9xdmxPSLE67gy9kU4Wkk7uz30mVLLoqEOcJ/qhNHriMBF0SpxDGYm4JJdUq89Xr2vYXauyKFQmDv0/07kyNXFlmWr1h+YnfaRVAObEk8hCnAZ/y85q1y/kFUNT/lHzGSqxC/OKIddzaluG4+iRPzqoBJCNSuTyis8nASQhsuc7Qwg4VIr7CY9ia+S1jWwCKxs7d4WB+54toj8IelIwwJK/rGmJYw29ZvyjeQ+ELPB+CqrZ4hp6s9/N9yZdZUEaDYfPRW9i2+iOZTc5EZubrXOmvwjTanyCR+mCMmq7Q7jTXkq8NFvcFU7x6Y32U1A6B69fC9fouK2UcsGc0U11dAa7CB/Iv5oY+dG1I3OOpqNKlrKLYfaKvVvZ4btGsdZt+VfaemHVZGJsMJXs7hOsHWEOrapXOVJ/89u+tGGNbOQNbhwnuo58u8=
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5062599005|23021999003|24021099003|15080799012|19110799012|8060799015|5072599009|39105399006|5040399003|22141099003|4140399003|40105399003|3430499035|18061999006|440099028|3412199025|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Gw2KReQNx7vVsMbTDoUwFogA7fUnvDzwZWojGpbE9mt7JDB3JIwHMlkiGcF2?=
+ =?us-ascii?Q?Lh51JN3vuuOkHMS1Ozc9/THd4DVkFXtUV9hsP46V6YoC+a5A8ir9n5mT/FX0?=
+ =?us-ascii?Q?X4v4//NYsvqj8awDrTsDIHU3B1G28+9n5SWkz94RBHFC0f4syV7VMSGk1nEI?=
+ =?us-ascii?Q?+ps5YuSRQQET9AofFxfrr0EpMs+86Q8j2nq5a2IDA/tzU5Mgai/79nNquy4j?=
+ =?us-ascii?Q?3blO0NaGJELcR6o86dYMkQCNEo0LYwVkBa28PhViYisxH5nLnf300UzvjSeR?=
+ =?us-ascii?Q?xojbcZvSt4/2W9NFttFU/s7YV97kq59RJ9YFM7EujZoVfCudCOfIEJLHKKVc?=
+ =?us-ascii?Q?2Oa/vgLn+SDXtYjCVAb3NF10i8RpTtl2RQm+d9CG2h22s1WTeei7vZoieFOT?=
+ =?us-ascii?Q?P46Qb2mkf1aRbQgyyzq+tu+bruS8IigNrnlkNIRVdjMWvnNuPG0vD2a2GNAw?=
+ =?us-ascii?Q?R+s6U67q0Wufu8eU9UcNgKufVgyG1OCi/lj3cEa8kwCgVk/KYebVWNBNkWti?=
+ =?us-ascii?Q?aisQ2jXlugfvZcVSwftzofSUfSiO8DV1glFO5OK9OOLM/Hgpdt8MkxX5AHOU?=
+ =?us-ascii?Q?xZDpYoDYL+MZN8VufHkBeADVzRgPuAcQpkxXL4nt41/X215UVHevZ6rGfLlj?=
+ =?us-ascii?Q?Hl8RDPP1QWw0ToyjDspawg7JiC6qOU6UDdYfSp+kIvPQjEpYfWH+uGqGcROy?=
+ =?us-ascii?Q?/R8I3ccmeDNw7ZcQKdt/M1cZkBGRP5rPvgfErxwcNCjPgnxIEJ8Ia1ZPkGbw?=
+ =?us-ascii?Q?D/ixZWOBoCCVudCsEEYlmypyJzqzh3UWvOc3kHQ9eBAzisyaXrlXYWzXgTKh?=
+ =?us-ascii?Q?9bNdGxpiVNHUlhmZxFti9V4ltmHnc8rXdMQWNsRIK+Tyi94QasdiPXBPgwJ1?=
+ =?us-ascii?Q?zuF2qEFfNnmtO30WJYTzFaXsPmPGsU10HufeoHtaK+ol5SCZ0DRAobLZ8R1q?=
+ =?us-ascii?Q?gJv+YoZqXiW1HbxtlfpS7u8lliyVhnVKbYGhE0l4scG7w0WhIcLHT+d+MvPX?=
+ =?us-ascii?Q?AEr8QeJKAnLwIBjWfIxJ16U0wPNx+39MSEEYrW1dL5f/kTc/nDMlkfSJYKhN?=
+ =?us-ascii?Q?GuGCA7+D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?SMcz3GYZxfDkMrgnszqAhkH/KHx36qA2VYxfB/KAy9PmghgCtO06LD8y4pd7?=
+ =?us-ascii?Q?S2n4RcXy4TdY1h9RGKIKnRhlsEwvu1UOWggiBpt6N/eBd/zI3lww02A01nLA?=
+ =?us-ascii?Q?fMtpMb1st8zA4uXKHZF+jPnZpNyrMP8tvk2/NdhbU0cDYphnhQJHQ6bq0vgu?=
+ =?us-ascii?Q?k0HT0Bvgc1MmyUQwog55Sj5kd6MobCmEiBnjWILY2qUX1XgHa5Vvp7eqkPX5?=
+ =?us-ascii?Q?0JQ8MVjsm1hxz7IRCv0IMGWw+qYinvkgfZXSJB8j5RP282qyWTISJPz5RPe7?=
+ =?us-ascii?Q?IVRGku2V954LUZ/m+S7hvSj4JspEOgOO6suL+4H5RJveUBKihwefNcAS8aMx?=
+ =?us-ascii?Q?EN6SFjq9GcSxy+TvA5gYCYlIBptzfJx1CmixSj0HpSp7rmb0BErXyb1c9Lh+?=
+ =?us-ascii?Q?E7wLvyQNJAkKnV1XyM5FsKxicEYQtXtgszI2tLvZljuVkeA5fpybvd8oJND9?=
+ =?us-ascii?Q?keh+I8tBwrD8U3OaMNoSfXTvxJEa+Kw4QI/28siK/LqkPRHjvxZrJIDhOozp?=
+ =?us-ascii?Q?u88HRIb2RD3ID6iSxYklOZHS6zD1urUjvV/HnJ1SsDplhzx57eZgNSkuckeF?=
+ =?us-ascii?Q?aitsXcYEIbzDK9DAvvdB3GbhEnxiARL8zpjjZda2V/xExYZTdb+HbyTNnA5w?=
+ =?us-ascii?Q?8PLUkNdRpOh86cl0MILrZunaDg1sHF3GL6ex3CqwOt25s+v4y0mSvbXTkjWU?=
+ =?us-ascii?Q?Ig5kljVqaNsdwcDdFseykBCAyktry3fUHBeHp4ZVKtzcu21JrbjUXNWOyxfa?=
+ =?us-ascii?Q?G8EiLQCNLYD6iQ6NLTw5KBuC+HUXJAdf6F/pu3WufhGIzn9/tfu8wjd57jvj?=
+ =?us-ascii?Q?w4AszjvLVVcBE6uqKu7bWE4rWG/9Q826zMoD/ctAZ27ZjNWKRahx4PYe8bjz?=
+ =?us-ascii?Q?jEY+H5oVzl2j5SP6Ewc8akPDZtESykjhTlzDMCxvVRwLm0bZ61DXvlOu9blL?=
+ =?us-ascii?Q?f0LyxkECRDYkacyE2ImGeo8DhL9Vl29gy+c4mIUs29lnRo63dL3w8gxNGUxK?=
+ =?us-ascii?Q?Hk2JFc3BnhCCr7gl1VNA7bnqRVo5rxTP9JEiyva356R7IOh5VQFhHvZHrqcE?=
+ =?us-ascii?Q?mxDKX+lB0exnoBuXGHqrR201w7ND6P9lieqv4Qz27ssyCNR5L7TlwDv+oUrA?=
+ =?us-ascii?Q?4TGjy5wuEvrWtw+xptY+DdhPCk+Fb3pJYRhv/UuGYRlc0RKZ1+xp6ysQwxyE?=
+ =?us-ascii?Q?DgHaIgx6wphverPYLlchKfbEGJr0QLjjfxA6yqtzxXtZW63+b4eHgtmQxQri?=
+ =?us-ascii?Q?yU+4cCzh/j4HrEuvvJscRNsTEg+GBzVuh6T56u01mH0dQZSyeQ50sngBcgpX?=
+ =?us-ascii?Q?5KhI/jZT7yWeclPysnJXMgtDFw3Dy3+jPxO7miWQzKsZ/ltOCD6J7wobSX51?=
+ =?us-ascii?Q?tPvGoVgHbrKFemxKF5PlrP33XPoH?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc997e2d-499e-4e4b-9299-08dedcc80c57
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR02MB6642.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 08:08:09.5185
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR02MB9808
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E9052C000C
-X-Stat-Signature: ojzjshcwky7uk1ufhyr6d3noq55m1we5
-X-HE-Tag: 1783498040-676441
-X-HE-Meta: U2FsdGVkX18p9vBigYQnDNYGbOHeBvliybhdhdf6ch3c/ozf/wiFprxSMnAnfpPYvD9FEx8fljusI+fxkaramET5fVevaIbuSZd36+hdWF+1Gi03A6vGwMbbGL3bRQgPOm0LuNmymOG0rjGcMPwMOQKXqMTMHK+u72v/CCS7MRAZD1o1BMNZQdhxvZQvEIb0n9BJNVosEUIvjzSQAwQHO9dydiuuKvQRZ1lZF8VbIur31Z2qLed2vFnovZNUSQbbQ+HJ7SQytpGZkzAI6czy8SrU44vJJZNbnHuLvize6aMDdvAXPc5IvfbVtdy5wPy84rccy298oRSCn8YhGmgwZrZBjwefkSOzSon8QH65n+K0bHbY/tgOM3YRRW3R50xwHyHYM5MWVpDS0Zi4w4RnhT1WjPVdEVZ12cv4/OArUjB/olI11+CKvhR6ZBIjfQLmMSwGZ32KfAzKhDfBrG9vSlBImtWxEMhnOsmvZ5wUlrbZN2k7NNOv5V2Dh5nUmPqiqr0iWSTrkkTvh4P7C5a3jZb+H5jpJyxCGdsNs9SOhVE7+Q8zfiCzcZkScPAFTdBCA66+MEM5EvC0lM4ifbvSSG6UCuzQKQoCaaOTzscWWn2yUTXAE+zPhNL59q8gEUJHi5SC00FvOQt9V/jp0YuxaG0Lb4Gtlmyqb5uKJd24ZPJkFJ32G21IAMYZzWNijw030kw/GNXsAb+xKCRsyllNtxfioM9ww2MFbQgz+MTmMrJGLGL3xd62EJwC7YoCMulXaHnOKXfD3Wes+7xPDGCfIyYdQdDV8OPMz2/4tjpyP/5Vn4BcSb2AhKTPY/4pbZv+UiCcW7cMpWHue/2Ib/Yf8tfpOt25adIe0S2Lz5Mvk8ff8MGksQ3TR84UIUJnXLStxTw1RnaLLxgjfFzgn7bvVP5MhrbHvsrrc6A+RJaT+uBSp17rhb+wWLPcN01YVZ7ggXn3Aje/Y6tFiW6q4+b
- fLcF2Nbq
- FWClf3YJS5lLEBiRBRKUC9AJQWic8KKCDPZRBXfI+fLcGgpuW3J8nnCyRF2boQEYIQT3LeD36yB3NL72TpMU60seN/sTqycV6ux+zwFUWqjQgFmVaPKvf5Co0aB6gN+iIGzQqsS9curcVmz7lUkWSPp+ElqqferaejJcfTw/kdM+EbquPIbR+aUv1kDeFJd8Dldo6LJlneMssIb7B75CUx4ejTeKhQ/h1V92P0ccmTc3C9j75Te/pA/VVrO95+D8vBfPfj557sYnvzler9WX1fqWwkMYM7o4m5oEfj/FgKkuvB7k/Tn/7+xFStiYdfIeroeN1xfQh/S39jqbWnnzmDFDxeMa6TNAZnAE1bw7aAO7ob4o8XbhZ5QBBWlQwc8+NKheucVo77Ll+a3nOYBvK32zuLbFj1SAi2W+OapXs467JMiDTRYOHEJ04wP8kUxmFQ6YALd1gntxP1QskJqgN1TFdeJOS7X+oU2iXccrvgh7MG3uHpAD0DaQnaJzUQvUyISstcWOZs1MAWuTYDPm7mgOKfUlDkiAa0565gRy9R9VI44M=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E2D6FA000C
+X-Stat-Signature: 39rjq7qmbkmibqky3tfnst8xmyghh7ma
+X-HE-Tag: 1783498093-764341
+X-HE-Meta: U2FsdGVkX18kIursPuzrRFJ0TYwSmxx046mUI/qVqLD7HcBkdFmK0i+YroqBbAuBlpOdlv1N9WT9U8oiq7avjOx/LzDaMGxYPKr6p5BS9zSelDZ/eTjzW4CZB817GkJm2Vn7fh0nmVW2aLOFQ75dL7FMRPTkniHzwv/6Hf+z2sUMFsg5zZRobLHDtvklcb2ryJIYQcTb6ntROmogXazDUlYzj5NttE9ddwnlXr1L0FSdmrNIVKBeAqqG1N2ozNwJSAp3IP07+iJxGdLK9JRaZ81ooroizln8o6zglkPvYmgqIcTjJElQHGM0y/yf0ZLSTdj2Tgco8MoHjCG2cjh3V0oTbiHdUysfJ84Xeic214clyTVEoMQPcUEx2jIwBZm5T6wl/W3sDonni51Ks2Hv0wGrbrdLJEI2JVUOJbgrHD4h5Ei9xfHkGmspaliGFMH2JITVinFtVBuH8+J3o0P0vRt+kVLvhUzwekAKccUrHWaUr5O85cpt8P83Qfmm/FpIiF2XxKtSY8ZsXnTWlDdhD7Pt3kGsJDbgnK9CUoSMkWTwJ8Ry+ZA/mvSh8YeDFyev4Lt+iZOM4TZ45Urb+m4UOMEe5DkPwi53R6PX99HB9gyMgliL5oY+l/jE5JYnMxERzzBDCUI726nAfAvjhiO0u++ndgE3G02q6NvFiyF/x1WziWJdZpgjPLqlW6vX6iTTk2mkcbAPk21KwURTM/6oYFAyKYaRKRQzy8wZ2ydsuCMwi6UD4pzskEv8Fq9SoAW+mOj4re1Ggtj3JXnqt2n/dpS3zTpv91JOFn0bYa0EIHGM3X+CV3r9EEcFtlslxe3W0sw0CnAlG2M7A7jtZocQUX1bmQbFF48ZFbBtBadDu6QTpnlO5vGLo0wy5fbnZMSVol2j4gYJdUq67Wv7nuw6FEzmiYg3DC3JETvLdVXw0mIFJVKROwZnHtASqwbSXEdB87+I3WVfMUhYqPYh6OI
+ 8pT2W3Nq
+ ZBQo9DNQm66yDFSM/OFhSXd9ch1hCyE93pWJCwUv28jSbDCBDJF63c88vWv3tuzjfc5BMHh6n/Y8hGRJH3/7jbM1d+dCuJXFIuktK6i5r6Z/7I6pXFXMiI5bu9xLz2rRhefjvU0TZaXwsQYatkBdmHJEJcHv/drDDnDEQ0Dx+qNH2UnBd21xAmL6aekdmG8UGQ98bWhvLZiUMd6v2ktjEqn1w6HJimemGiASga1HQtpyFbTlWDRngs7R7G1MK/Tj4jXC3QrWLm4taYSgNKep5xH8cAaboz/kPtv49dNZEcMZ/LUPWuyYiP8yt6Ac6yEvielse1tcChHG7JGzHcNN3VF2IK5TQEBMByAjT2P74iVnx0nWNiY2VjByHZqvSbWMnlBJPHLZr+TqA9NQszngNf3/KPqtdl3GrC/mruFY1daJ8c9bKfrqUCNgmaXPjIAyDll2VveZM0LhY9bSVE4HAA1jtMDxfViHAfg2bvN1yYxJInm4JRn2JLvMDCe7xslLid089lNerRjUXjMcVeLpECI3TLEk1RboA/n1r9F5xQ+dbucc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,353 +173,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 12:38:09PM +0530, Mukesh Ojha wrote:
-> From: Eugen Hristev <eugen.hristev@linaro.org>
->
-> With this driver, the registered regions are copied to a shared memory
-> zone at register time. The shared memory zone is supplied via OF. This
-> driver will select only regions that are of interest, and keep only
-> addresses. The format of the list is Kinfo compatible, with devices like
-> Google Pixel phone. The firmware is only interested in some symbols'
-> addresses.
->
-> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
-> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+DAMOS_MIGRATE_{HOT,COLD} passes a target NUMA node to migrate_pages().
+But alloc_migration_target() treats mtc->nid as a preferred node unless
+__GFP_THISNODE is set.  Hence target allocation can fall back to another
+node, and migrate_pages() can report success without placing the folio on
+the requested target node.
 
-Hang on, this is a driver that exposes internal kernel symbol information in a
-shared memory region for anybody who wants to access it?
+Make DAMON migration target allocation strict by setting __GFP_THISNODE.
+This is consistent with alloc_misplaced_dst_folio() and
+alloc_demote_folio(), which also use __GFP_THISNODE for migrations to an
+explicit destination node.
 
-This doesn't really seem sane?
+Signed-off-by: zjh <jiahuitry@outlook.com>
+---
+ mm/damon/ops-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Looking through the code it seems you are only exposing things that are already
-otherwise exposed, so maybe it's not so bad, but it seems as if a registered
-meminfo driver could in any case get access to things they shouldn't?
+diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+index 6bdd1cfd3863..d21b106b81ca 100644
+--- a/mm/damon/ops-common.c
++++ b/mm/damon/ops-common.c
+@@ -311,7 +311,7 @@ static unsigned int __damon_migrate_folio_list(
+ 		 * instead of migrated.
+ 		 */
+ 		.gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+-			__GFP_NOMEMALLOC | GFP_NOWAIT,
++			__GFP_NOMEMALLOC | GFP_NOWAIT | __GFP_THISNODE,
+ 		.nid = target_nid,
+ 	};
+ 
 
-> ---
->  MAINTAINERS                |   1 +
->  drivers/of/platform.c      |   1 +
->  kernel/meminspect/Kconfig  |  11 ++
->  kernel/meminspect/Makefile |   1 +
->  kernel/meminspect/kinfo.c  | 257 +++++++++++++++++++++++++++++++++++++
->  5 files changed, 271 insertions(+)
->  create mode 100644 kernel/meminspect/kinfo.c
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2d816d783024..d805ff9fedac 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16906,6 +16906,7 @@ M:	Eugen Hristev <eugen.hristev@linaro.org>
->  M:	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
->  S:	Maintained
->  F:	Documentation/devicetree/bindings/reserved-memory/google,debug-kinfo.yaml
-> +F:	kernel/meminspect/kinfo.c
->
->  MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION
->  M:	Mike Rapoport <rppt@kernel.org>
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index 53bca8c6f781..f80bd25fc481 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -494,6 +494,7 @@ static const struct of_device_id reserved_mem_matches[] = {
->  	{ .compatible = "qcom,smem" },
->  	{ .compatible = "ramoops" },
->  	{ .compatible = "nvmem-rmem" },
-> +	{ .compatible = "google,debug-kinfo" },
->  	{ .compatible = "google,open-dice" },
->  	{}
->  };
-> diff --git a/kernel/meminspect/Kconfig b/kernel/meminspect/Kconfig
-> index 18ff511ad4cf..7f6436c3344b 100644
-> --- a/kernel/meminspect/Kconfig
-> +++ b/kernel/meminspect/Kconfig
-> @@ -16,3 +16,14 @@ config MEMINSPECT
->
->  	  Note that modules using this feature must be rebuilt if this
->  	  option changes.
-> +
-> +config MEMINSPECT_KINFO
-> +	tristate "Shared memory KInfo compatible driver"
-> +	depends on MEMINSPECT
-> +	help
-> +	  Say y here to enable the Shared memory KInfo compatible driver.
-> +	  With this driver, the registered regions are copied to a shared
-> +	  memory zone at register time.
-> +	  The shared memory zone is supplied via OF.
-> +	  This driver will select only regions that are of interest,
-> +	  and keep only addresses. The format of the list is Kinfo compatible.
-> diff --git a/kernel/meminspect/Makefile b/kernel/meminspect/Makefile
-> index 09fd55e6d9cf..283604d892e5 100644
-> --- a/kernel/meminspect/Makefile
-> +++ b/kernel/meminspect/Makefile
-> @@ -1,3 +1,4 @@
->  # SPDX-License-Identifier: GPL-2.0
->
->  obj-$(CONFIG_MEMINSPECT) += meminspect.o
-> +obj-$(CONFIG_MEMINSPECT_KINFO) += kinfo.o
-> diff --git a/kernel/meminspect/kinfo.c b/kernel/meminspect/kinfo.c
-> new file mode 100644
-> index 000000000000..7451c13bc316
-> --- /dev/null
-> +++ b/kernel/meminspect/kinfo.c
-> @@ -0,0 +1,257 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + *
-> + * Copyright 2002 Rusty Russell <rusty@rustcorp.com.au> IBM Corporation
-> + * Copyright 2021 Google LLC
-> + * Copyright 2025 Linaro Ltd. Eugen Hristev <eugen.hristev@linaro.org>
-> + */
-> +#include <linux/container_of.h>
-> +#include <linux/kallsyms.h>
-> +#include <linux/meminspect.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/of_reserved_mem.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/utsname.h>
-> +
-> +#define BUILD_INFO_LEN		256
-> +#define DEBUG_KINFO_MAGIC	0xcceeddff
-> +
-> +/*
-> + * Header structure must be byte-packed, since the table is provided to
-> + * bootloader.
-> + */
-> +struct kernel_info {
-> +	/* For kallsyms */
-> +	u8 enabled_all;
-> +	u8 enabled_base_relative;
-> +	u8 enabled_absolute_percpu;
-> +	u8 enabled_cfi_clang;
-> +	u32 num_syms;
-> +	u16 name_len;
-> +	u16 bit_per_long;
-> +	u16 module_name_len;
-> +	u16 symbol_len;
-> +	u64 _relative_pa;
-> +	u64 _text_pa;
-> +	u64 _stext_pa;
-> +	u64 _etext_pa;
-> +	u64 _sinittext_pa;
-> +	u64 _einittext_pa;
-> +	u64 _end_pa;
-> +	u64 _offsets_pa;
-> +	u64 _names_pa;
-> +	u64 _token_table_pa;
-> +	u64 _token_index_pa;
-> +	u64 _markers_pa;
-> +	u64 _seqs_of_names_pa;
-> +
-> +	/* For frame pointer */
-> +	u32 thread_size;
-> +
-> +	/* For virt_to_phys */
-> +	u64 swapper_pg_dir_pa;
-> +
-> +	/* For linux banner */
-> +	u8 last_uts_release[__NEW_UTS_LEN];
-> +
-> +	/* For module kallsyms */
-> +	u32 enabled_modules_tree_lookup;
-> +	u32 mod_mem_offset;
-> +	u32 mod_kallsyms_offset;
-> +} __packed;
-> +
-> +struct kernel_all_info {
-> +	u32 magic_number;
-> +	u32 combined_checksum;
-> +	struct kernel_info info;
-> +} __packed;
-> +
-> +struct debug_kinfo {
-> +	struct device *dev;
-> +	void *all_info_addr;
-> +	size_t all_info_size;
-> +	struct notifier_block nb;
-> +};
-> +
-> +static void update_kernel_all_info(struct kernel_all_info *all_info)
-> +{
-> +	struct kernel_info *info;
-> +	u32 *checksum_info;
-> +	int index;
-> +
-> +	all_info->magic_number = DEBUG_KINFO_MAGIC;
-> +	all_info->combined_checksum = 0;
-> +
-> +	info = &all_info->info;
-> +	checksum_info = (u32 *)info;
-> +	for (index = 0; index < sizeof(*info) / sizeof(u32); index++)
-> +		all_info->combined_checksum ^= checksum_info[index];
-> +}
-> +
-> +static void __maybe_unused register_kinfo_region(void *priv,
-> +						 const struct inspect_entry *e)
-> +{
-> +	struct debug_kinfo *kinfo = priv;
-> +	struct kernel_all_info *all_info = kinfo->all_info_addr;
-> +	struct kernel_info *info = &all_info->info;
-> +	struct uts_namespace *uts;
-> +	u64 paddr;
-> +
-> +	if (e->pa)
-> +		paddr = e->pa;
-> +	else
-> +		paddr = __pa(e->va);
-> +
-> +	switch (e->id) {
-> +	case MEMINSPECT_ID__sinittext:
-> +		info->_sinittext_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID__einittext:
-> +		info->_einittext_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID__end:
-> +		info->_end_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID__text:
-> +		info->_text_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID__stext:
-> +		info->_stext_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID__etext:
-> +		info->_etext_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID_kallsyms_num_syms:
-> +		info->num_syms = *(__u32 *)e->va;
-> +		break;
-> +	case MEMINSPECT_ID_kallsyms_offsets:
-> +		info->_offsets_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID_kallsyms_names:
-> +		info->_names_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID_kallsyms_token_table:
-> +		info->_token_table_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID_kallsyms_token_index:
-> +		info->_token_index_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID_kallsyms_markers:
-> +		info->_markers_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID_kallsyms_seqs_of_names:
-> +		info->_seqs_of_names_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID_swapper_pg_dir:
-> +		info->swapper_pg_dir_pa = paddr;
-> +		break;
-> +	case MEMINSPECT_ID_init_uts_ns:
-> +		if (!e->va)
-> +			return;
-> +		uts = e->va;
-> +		strscpy(info->last_uts_release, uts->name.release, __NEW_UTS_LEN);
-> +		break;
-> +	default:
-> +		break;
-> +	};
-> +
-> +	update_kernel_all_info(all_info);
-> +}
-> +
-> +static int kinfo_notifier_cb(struct notifier_block *nb,
-> +			     unsigned long code, void *entry)
-> +{
-> +	struct debug_kinfo *kinfo = container_of(nb, struct debug_kinfo, nb);
-> +
-> +	if (code == MEMINSPECT_NOTIFIER_ADD)
-> +		register_kinfo_region(kinfo, entry);
-> +
-> +	return NOTIFY_DONE;
-> +}
-> +
-> +static int debug_kinfo_probe(struct platform_device *pdev)
-> +{
-> +	struct kernel_all_info *all_info;
-> +	struct device *dev = &pdev->dev;
-> +	struct reserved_mem *rmem;
-> +	struct debug_kinfo *kinfo;
-> +	struct kernel_info *info;
-> +
-> +	rmem = of_reserved_mem_lookup(dev->of_node);
-> +	if (!rmem)
-> +		return dev_err_probe(dev, -ENODEV, "no such reserved mem of node name %s\n",
-> +			      dev->of_node->name);
-> +
-> +	/* Need to wait for reserved memory to be mapped */
-> +	if (!rmem->priv)
-> +		return -EPROBE_DEFER;
-> +
-> +	if (!rmem->base || !rmem->size)
-> +		dev_err_probe(dev, -EINVAL, "unexpected reserved memory\n");
-> +
-> +	if (rmem->size < sizeof(struct kernel_all_info))
-> +		dev_err_probe(dev, -EINVAL, "reserved memory size too small\n");
-> +
-> +	kinfo = devm_kzalloc(dev, sizeof(*kinfo), GFP_KERNEL);
-> +	if (!kinfo)
-> +		return -ENOMEM;
-> +
-> +	platform_set_drvdata(pdev, kinfo);
-> +
-> +	kinfo->dev = dev;
-> +	kinfo->all_info_addr = rmem->priv;
-> +	kinfo->all_info_size = rmem->size;
-> +
-> +	all_info = kinfo->all_info_addr;
-> +
-> +	memset(all_info, 0, sizeof(struct kernel_all_info));
-> +	info = &all_info->info;
-> +	info->enabled_all = IS_ENABLED(CONFIG_KALLSYMS_ALL);
-> +	info->enabled_absolute_percpu = IS_ENABLED(CONFIG_KALLSYMS_ABSOLUTE_PERCPU);
-> +	info->enabled_base_relative = IS_ENABLED(CONFIG_KALLSYMS_BASE_RELATIVE);
-> +	info->enabled_cfi_clang = IS_ENABLED(CONFIG_CFI_CLANG);
-> +	info->name_len = KSYM_NAME_LEN;
-> +	info->bit_per_long = BITS_PER_LONG;
-> +	info->module_name_len = MODULE_NAME_LEN;
-> +	info->symbol_len = KSYM_SYMBOL_LEN;
-> +	info->thread_size = THREAD_SIZE;
-> +	info->enabled_modules_tree_lookup = IS_ENABLED(CONFIG_MODULES_TREE_LOOKUP);
-> +	info->mod_mem_offset = offsetof(struct module, mem);
-> +	info->mod_kallsyms_offset = offsetof(struct module, kallsyms);
-> +
-> +	kinfo->nb.notifier_call = kinfo_notifier_cb;
-> +
-> +	meminspect_notifier_register(&kinfo->nb);
-> +	meminspect_lock_traverse(kinfo, register_kinfo_region);
-> +
-> +	return 0;
-> +}
-> +
-> +static void debug_kinfo_remove(struct platform_device *pdev)
-> +{
-> +	struct debug_kinfo *kinfo = platform_get_drvdata(pdev);
-> +
-> +	meminspect_notifier_unregister(&kinfo->nb);
-> +}
-> +
-> +static const struct of_device_id debug_kinfo_of_match[] = {
-> +	{ .compatible	= "google,debug-kinfo" },
-> +	{},
-> +};
-> +MODULE_DEVICE_TABLE(of, debug_kinfo_of_match);
-> +
-> +static struct platform_driver debug_kinfo_driver = {
-> +	.probe = debug_kinfo_probe,
-> +	.remove = debug_kinfo_remove,
-> +	.driver = {
-> +		.name = "debug-kinfo",
-> +		.of_match_table = debug_kinfo_of_match,
-> +	},
-> +};
-> +module_platform_driver(debug_kinfo_driver);
-> +
-> +MODULE_AUTHOR("Eugen Hristev <eugen.hristev@linaro.org>");
-> +MODULE_AUTHOR("Jone Chou <jonechou@google.com>");
-> +MODULE_DESCRIPTION("meminspect Kinfo Driver");
-> +MODULE_LICENSE("GPL");
-> --
-> 2.53.0
->
+base-commit: 42db70db0bf4f1aa4eac4ddbe121143131b793df
+-- 
+2.53.0
+
 
