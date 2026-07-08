@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D57FC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9B8FC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:19:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F79A6B0092; Wed,  8 Jul 2026 09:17:53 -0400 (EDT)
+	id C34876B0092; Wed,  8 Jul 2026 09:18:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A8FB6B0093; Wed,  8 Jul 2026 09:17:53 -0400 (EDT)
+	id BE5AD6B0093; Wed,  8 Jul 2026 09:18:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 098176B0095; Wed,  8 Jul 2026 09:17:53 -0400 (EDT)
+	id AD73F6B0095; Wed,  8 Jul 2026 09:18:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CD6586B0092
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:17:52 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4478A140153
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:17:52 +0000 (UTC)
-X-FDA: 84965661984.23.E1FC287
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 75A221C000E
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:17:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CbCFShmt;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8ACAA6B0092
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:18:59 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 113091C05D0
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:18:59 +0000 (UTC)
+X-FDA: 84965664798.15.DE48A42
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 35E69180002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:18:57 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=m0iuxMKH;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	spf=pass (imf06.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=thehajime@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783516670;
+	s=arc-20220608; t=1783516737;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j5RZEo+P8E5xC+3Aj9wmMlL0rGp1x8P/zFfWqOow7No=;
-	b=csYyhB7y5nK7U5e72z4MCJ2eGUGaeXtioP2TIprySZNI1Xtwp+cQdq4OOwcFUfvlVAqzPt
-	AG3nPWu6r/kVbcRl1Q9h17vgRddPDQRcrD/6cg84RZYr1u+U4sruIQ1bhxc4cMskOUM5tY
-	19TOsK0QbSTh1s7LrRJam1/ey5AeAGU=
+	bh=lU05FE26Pl3IlT3o57vnxyXktDraHqQtoMyoL/hzPVA=;
+	b=TBQMz3pRsNOogm4bNgqe0RjQAUejdVPIBCdIPXwMXIOBmHTj4J2WCrirLgdDukh1Wyygsx
+	kCeC3mYrmQTsKsnVCmqzRUngK42yhP7tqLfrKzeJGghf+WhWnJ12L3stn8JsJALengwKgf
+	91fWEXGqwiig87pT1mPijK4RVNdKQpw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=CbCFShmt;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=m0iuxMKH;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	spf=pass (imf06.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=thehajime@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783516670;
-	b=3Kxf1CjnsN04lW6Owz0JX/l2OY6gnonGBCJpteyVEEVCi+e8a6uaBcotHKSWmH+BJ1rwY1
-	7z27AbCMYoWJ2ij6iT7ZXcv2XQfKxNUOK6ngybmIKxyBdOJWZl9FVhK8c4M6eyKsKMs7ab
-	/0GSq5ghkAOjH3pz0VJuBNDhv/fWLx0=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-847d1e9db22so678870b3a.2
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 06:17:50 -0700 (PDT)
+	t=1783516737;
+	b=sqMaS5RbQzcabb/Z6dPSSc1j74NTjLtg7OIj5eCy/PlcxnuLN3KxbQg/WVznpPBBmQF9KZ
+	DodhOlyjVvu1EueiHv9Amp5DqP7T99pyaBY0VIW00Qh7i+vSK3ErM1rUxvyRL3+EyC39kx
+	NkXDDP0s+MQu6SAyb4g2kRttjC3Gp20=
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so485808a12.2
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 06:18:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783516669; x=1784121469; darn=kvack.org;
-        h=mime-version:user-agent:references:in-reply-to:subject:cc:to:from
-         :message-id:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j5RZEo+P8E5xC+3Aj9wmMlL0rGp1x8P/zFfWqOow7No=;
-        b=CbCFShmtBI6KpL4OUK+yAxcE1Auc49wUlmnXFn6DtHmR5dlb5sCBBIAcQA60VhlvG8
-         q4qwlIcfr0uZWEpMVX9xpECZUGhcWP+IAKOE0ui/Hf43nzFHi/btCsUfYyrAaZoYFcQq
-         WINC/eX9eO727899p5wffpPSyJO1f005Ye+wBhETML6BHmYgtdBaosFOIIN6MAo5alTe
-         1jfN9os1S2NDJBwAi9c6CzdtfUzl1sQl+ncni2bEaU7CY+2TRbH7paUpzdaV9tdaFJ66
-         J9uHfYbiyA67JUZbrSfh/VVRyQiRZtbTIX6+qn9n+5GX4Dyiom6EUXrtRD3ef2KFT66r
-         Rthg==
+        d=gmail.com; s=20251104; t=1783516736; x=1784121536; darn=kvack.org;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=lU05FE26Pl3IlT3o57vnxyXktDraHqQtoMyoL/hzPVA=;
+        b=m0iuxMKHXATFzl39y/AWG0GpP4leS1XRf/r3sIKB2lkaKuLHRqw9pfoYgKEinZ9Y0u
+         EXxmnk+kWJJfX74uMHc02E0w95PDuuXBbpFIJuEn5l7cUVgG/0Hdyp7aF/FFw0LrsfUS
+         T1t8Mo9w577OwyW94adTH45qt6Bq/0ZqryFdEKYOccsHezs4fra2LOK2wRmRXo7eT9og
+         27ApYpYDPPn7ULAl+mCJKdaoZWEfTmAxzWI2DWRKvx7XlWvvkfv4APGDd4nLQOY428LL
+         q5BlpCE9AtItYM4Rj5whUbmW5qwBCaGOfIRcM1PIiSi7LRZIdExN5idz2U2nJizW2XJy
+         QZ5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783516669; x=1784121469;
-        h=mime-version:user-agent:references:in-reply-to:subject:cc:to:from
-         :message-id:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j5RZEo+P8E5xC+3Aj9wmMlL0rGp1x8P/zFfWqOow7No=;
-        b=TRiapSyU0iIbajXOYUdY0t6Uoh2W2Fs3II8/cUrOf760LA6x1oNBTTrNLpOWSZLCyS
-         Tj0/v6d/HEEdBLSACFm7Fbh2SwKodRp7/p+CJUntFv6EMHmojP4zz92QF9hHfT+Us50Q
-         ebBpfoqqzhM6lCVynDKFnJm2UtouY5JqP3eJqFPbiogwKgUOcgFowHn7NKsA+CFq1R5B
-         fUkUceKAR/8y8Ovi2lpWUSvwT7soWZ1kDFVYrsGNLPthJyF6eG19T1HeLGWihUvEeIih
-         UrmsjNY8/ZywfAm0R3djQDovfwWKSrKp89sr2bHM1ilq0RbzWjgj5PnmQABlw1aNiAq+
-         Lj2w==
-X-Forwarded-Encrypted: i=1; AHgh+Rph9ywF4jMehE5G7mIxdZALfPnnRijBkGjbKJ3GgTPbHqLT3kHw6txBb2+VEeHE5Y596aahKnBThw==@kvack.org
-X-Gm-Message-State: AOJu0YyOfTByxOj5tCb/zzk3/JOAFnnAye1GPSuqsRMNib4TqT/hWPvf
-	46y+Q4xnMhRzvR3iu+YutZ5dJ3NPt8nuYH8CdDkCdwWEw1f+RrgelQab
-X-Gm-Gg: AfdE7cnqxWxWNcXcDEBAWHd2xU6vWHAir3qhXmhaOXBbNZ5e5Sy+R0XrSzf4NgdkaCK
-	Opatu7zRV8fJ2e6St8aRkt0pGWzL7nTC3p7vigKXKyYsAq0drE/jd4T6sJ90rz+PSyi31go1uRT
-	rDYm8JQzxNLH1LEGrKvghpt1UuaFagt2pb9uVJi6rwHwlRq+6Y1omA1A0ZiwhZEs5yGg7nuMDlN
-	bYH1G6oRSj8Jwe00jiXFf8cPYrirCSZl2uQ7Sn3ci9Xg3KBcaBkX4XaYHuNEu1zCp080C6O9Vfp
-	grXWOK0XrlyXK//6lfQ3l++480QHP11ig3b4x5tJM6j72y11CIwiFn+DUM0s1OviDPQ2DtNYPVR
-	DBV/Atmot4FrMHgaP2lJxVDvUeXTsfvb4GoUxsf4nOwZKeCcfCB9uhe4we0EqLpQM7oOV7BcCYw
-	Y/UH4ir5b7eEptlBT+4QnKrlhZld41JqW8h+zU83uNuW5t/K7UxffbPssDdoxLFjcrmG/5HxdkD
-	bA5ZHa8RD9rLacyEc4lzzYvxZONNdSxSw==
-X-Received: by 2002:a05:6a00:99d:b0:842:672e:7b5d with SMTP id d2e1a72fcca58-8484302405bmr2286640b3a.17.1783516669248;
-        Wed, 08 Jul 2026 06:17:49 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783516736; x=1784121536;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=lU05FE26Pl3IlT3o57vnxyXktDraHqQtoMyoL/hzPVA=;
+        b=UnLkLL6iwTqAcUzJjclqBk3fBwfL6HrvKxrtAXvHSGab5x0pcga1jESeUsgIXqowEH
+         8hfoaj1lkZQ7mucxI2nx8dD/B56Gs5zGlepGi0C9Waid7UavZXY6xDsbLW3F8cEOxu7N
+         +h+mc7nCmCLpYgAh1kN7wNLFP9V1GAuzMRDWJgVyMcGhErVz15HRdAkJ4x2xiDn4OSea
+         TI3RHWYTklu5BcQT1nbrgIsmo/GY76cghCoAxt9A2MmkmDqh4F/SKHE4DFSB+iW88BAg
+         kagYfZgcmgeVQ2CAsPLvSUVp20Mc3NBbctg2ysZKZO3eWEli+2RScwoZ1g65Y+xSodV6
+         p+Ew==
+X-Forwarded-Encrypted: i=1; AHgh+RqOTK2E50EOdiQnHuB6ihHMr7mCcXT7aHkpXiC4z2q2eHtAsd5vk5CnjULKZI9oOjfkGITvu9HBNQ==@kvack.org
+X-Gm-Message-State: AOJu0YyKTdnMPUdDgJ6YT/KXp6z+hOB94tGo4NATubsl6uPk4z1lLIo8
+	MsvZx4rKJgDBWqUW/s3dXoa/8QCMfc8W3Vleks/YUYUB//E1ugKsRUP+
+X-Gm-Gg: AfdE7clSdpKwVbVl4QD/sqn4ZJSYPqCGGNcVYPi2Qyd196OLCGX/k1XtZMHLcNOH/8D
+	EPGIyehdfA4rX2ckQSuSmZqTJoUqGQFCkqKrphVE32YGMIs7SgYJ+2oLry/JyURJEnU+l6rn0yY
+	AKgvu2URoAbMN0MMuTcjOVyGndhqCIJ+Le7nBsi9y5qkRlawIgieQKj/l/LKcUtOFtqb52URslD
+	9PiI3DmjMOx2U/omSsGFDWw0sOLoBiCHzjxTWKfRKW8dFhluKCp4IijX0f5R+ef/TYwowqYTRKv
+	S0zljXrNZZNTYcPm8KA5kP8xb1C3PeOEDvtN7gmJ6kjhyDhJkbyHkybdSAaWl7Aprk2pVJHP1EG
+	wuwzgF9Zk4HICSW1tndlgUP5rPlqi192pvYFdOQQA9Fa90xEooQu+qA0DCCo8ZFZnRXzajjc1sP
+	bNJ+BrLDbiGJP69A5CWuzLOnL+eeHu+RrQB6x0k7R2PHC/Hum+Nf51sjJH0rl/x+gtCBJok9yqI
+	mdTddvKHswnuzwGvMNVTEHQKEC4Jzgc0w==
+X-Received: by 2002:a05:6a20:6f8b:b0:3b4:b275:c5b1 with SMTP id adf61e73a8af0-3c0bc9bb036mr3196913637.26.1783516736110;
+        Wed, 08 Jul 2026 06:18:56 -0700 (PDT)
 Received: from mars.local.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6b9e12csm7083750b3a.21.2026.07.08.06.17.47
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca5b3643399sm2462823a12.22.2026.07.08.06.18.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2026 06:17:48 -0700 (PDT)
-Date: Wed, 08 Jul 2026 22:17:46 +0900
-Message-ID: <m2jyr5tybp.wl-thehajime@gmail.com>
+        Wed, 08 Jul 2026 06:18:55 -0700 (PDT)
+Date: Wed, 08 Jul 2026 22:18:53 +0900
+Message-ID: <m2ik6pty9u.wl-thehajime@gmail.com>
 From: Hajime Tazaki <thehajime@gmail.com>
 To: akpm@linux-foundation.org
 Cc: liam@infradead.org,
@@ -100,22 +101,24 @@ Cc: liam@infradead.org,
 	jannh@google.com,
 	pfalcato@suse.de,
 	linux-mm@kvack.org,
+	geert@linux-m68k.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: nommu: point to the write iterator upon split_vma
-In-Reply-To: <20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
-References: <20260702012546.665383-1-thehajime@gmail.com>
-	<20260705152708.582fd8d87561f600da23c0a7@linux-foundation.org>
+Subject: Re: [PATCH 1/2] mm: nommu: fix the error path when vma_iter_prealloc() fails
+In-Reply-To: <m1a4s29tbt.wl-thehajime@gmail.com>
+References: <20260707235137.498738-1-thehajime@gmail.com>
+	<20260707173910.928c74a7e4dc8a1fdfddae3d@linux-foundation.org>
+	<m1a4s29tbt.wl-thehajime@gmail.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 35E69180002
+X-Stat-Signature: 3ywwhrbt5gwu4b5wug6ixarjadsjt99y
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 75A221C000E
-X-Stat-Signature: qsadnxjmrhukg6dnjd9uorbejccrsza4
-X-HE-Tag: 1783516670-821543
-X-HE-Meta: U2FsdGVkX1/Cxwmd+VVyuowm9xwYglg4CBZifzdn881uyDvTeyXOmPWYCNSiOf32QU0lv90c8AfnAAL3+5LmFkAuxV+bSxXAcgF7a8nJG2H0I8hJsme8hPSeee43r/dlmWA6+LDXu9CnCcj8nZFyhxX5h8Y4TJLlsVJT+04/TxS+Yw1ZVv4KssEv0J/E+/GGxFcEIjiRXXGlbGz7ur0g3Vn8iZ2CkxW50EA2tumCtDkC4DJ3PfmwTiwRGPsOY/cyA0eP6VstsWAdumvJPOZO6KEbeBF0U+o+wDpsD6sFw+t68iVLy1KhTPZmewkp+WvmxRmzO72fhgzBQvXBFh8fHUqW0R8aRr4Kt66M1UeFVIU6Nt10CwMm0GKgW+hjBN1m3WpP1avHA9gMX1zgOxFKqgUTlaBCv5IzYe//m8FHwSKh6vNl8lASZcBvxaksLFW7igeLeLlpM90WgB+8bxYmPxaomGvrx/BFKooyTrclTlulEGNhYsym9t+/8EZ0bdmKMEY7qM/lTtQwAq7zg6DEGky1+Xd3eppiOZH+Ah70okivPgA1WBypXUU3Eg81F/a5mQDo78A51zvN8Hq+mR0NeFjwX6kQuQxGViUhftdhbK0iwhK1MMGfR54glu1Lul9FLPtguJZiuw6dIrEQCZVptQKfIoik2eh9WDT+E+EkM6mj+THmFGr9y7idj9bk9buRwz9Y/cGFs4LuUtI7gLEIWAZ5NkL3nu9ebXApkn3fUgbyOCYypapKWg/Xe6+PvneaYdmmvAayR6P+VQ42HqFylZrH3FR7w5Lpeq0434ZntxJhTFRKh/S05SIJpNzWOQyBybZCWMHHWs+ksbsPK1fdYq6508nh48i5mW6jjhi/GFScRur3vjcQ0i8dT4rLEL85yBcvZ0uK0Zk1Rn7KKX+yQifLSz+h4pUn3vhKhiiDLhBr7AlfZvFyRMO6wlq0FX6PcuIY1iykYnTPlg9u21K
- N7geONFW
- 2Cd/yT7gY56jQzSi6tRfs8ua5c+Z3FJOAwulI3j42hDC8u5jz1jl3XegiwwxVc7UjQKF/+VOzbp++O10qLnTQ+612b1kz3mG0QnEo1jUm/tFiLHc8kg01PJ6MuWnOEsiuwEI4EKZ1aCqbIDKw6W3kO5jxI7O4SKdEUDIFUpKk2p9uBM3QE44Mp7KidQ0j/zQffXxsXdnwvFL7x9O8C9H+rAldo4Qlugv9/AmUkkLHXLL8taqA2xf2NAuxHMdvE+ZHpO5m/nbbxHhHkEqGDFihWupF64wBaS1neTBx8QljFT62Nd2mUfZ4FvJntciHzU5h2nOB635XJBxRNLSQ8qmMokkzRS+5EgxvKM+LK6OFmznu3Gcfd/aI/CLGIVftR2q9hHIlOBC9AQ6yQGMGQu5yNyczffbp9+BxqEMCLmC2YFY5iHQhlmGUpDyDqk27wnV83TWhat5hLlGTJtoHBpxUgifjaPL3g2x8+mZu+wDdmvS1Oa0=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783516737-408146
+X-HE-Meta: U2FsdGVkX18KzlwEhVmj3LEgFsTkwCLNzukkTKeWSXIdqzXTdyurohtVD7nOIjx+4ebcA+OndxKRXTx4FGp4W6SV30Ji2woSP9ReoTKExa9c/1ylpA8cAul5Y8E8Mbu+3z+lQhCeEhx0rYQ8WNVGIPvYB61XDJ7rb+sLu76YdOO3iWQCVNRQYgg502ybxZ0im8kESYQZnnPtakz6Bnaa70IA5Xq+ZhCg00I+ymbLJ1KhyuqbxS9OnLXamq/H8pkOQl2hpD2xq9CQ2Z50MDERAbKxHcuf6HhGJjXglwlXRbAdycG80n8ebAQq4BrNqMuu92fImJQIVc34vWKlJWGmUhf8kpi7HycZR55RfJzwPrVg0rmbXcahMB76Oiz27qdkJM3yBx7i7yjEeR6H5IsJpC3+5aavHcuaJHXZup8MY6ALgh2EROg+5rREvF77mYQAgy/Wu6gfCC4rA8HAWWzMi3t154zXN1t+E7nqq6yXRkf1p1atth7hjHEPdEkaEt+5rzGEfp443/FNUymM8ca/No1S84OnnY/ooO6S1DfWjSwDL1bcF4xLO5jae7GoX4+8J9Vkedid29tmfkkhCospOPmfZWVhHjShH58xzQzi2NF2bpvhAWTLhWwNz0pFsacelQhR8M1B9zzEF3zDReo+uHNKN20og0xf9d6ZSv1rzwbR6ocesyGjGMI/OiQr1vu89JyV86VrOzPL0vM8DV3KhkMNYNm/QN1mcdGdxzlzkHdQgT9GANCFFN9E0W8WOGOZQOCQOJg8rM+wNBtlwiYJfQUYwpo7ecwDw9Iom+Xns/59qoaxQPe82QUaNQs/SgFvhFKhHbaWTrT1cfW7pRbZPjkpUWe1Uckhq6LeDKzNJp/699zwmmnSL2HStHnvpElZB4YFMKUx3+eW4P2iu6n8z+bkbZyslB0ObFhJScSZ++Ely5FTgexhL2bhJYWT+mfG85tu/bG5CTqtqg6quxF
+ s6qWh29P
+ 7li87aMdNv0j8r5uw4Etmi5OJP4eW7nQexloLE48vIjAt5u01btUgZxJOLkXYQUvis0wCgxTABUFUtg1tnWSuGfqAZ/R4IzNyoS7597CxSGFIoeCufd2Tc3nCuK6sqovdLj8vZBkaBv3fkkKrZ2jJYDtrZpeLYXNdvYDj7Zz5lFWr7wPg8+yQ4C+H+grEMf1BDGxb+C6R2bniIEpwanLrlCJWRfLACLYyCt8Aq1vpXocNXNoRJOhoCSpNWzr/UyGFNsa37fErv69IEG25lcZdq1Kr4AY4Qh8waKSna3R9XnyN6F16eI/NqgpFEGMFs8M+xvVCmpRmlWxLVDQVup7X+vZKw+s5ANUDWhXR7mFcyCUVHC9wg45hh07T4xeyLCrLJDtlU5tbzh+jRI+cxej1O5sE94DkCMohmsPOaC5wVs7eiPOGICq9ibLMv8TdViU3EIV5vA+sVYSM5i0czHaTNzzWWPdshnKa+iTA4Ss+zdlpziK0UQz3Uwvrskl/E3FgP3Ql
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,18 +127,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Mon, 06 Jul 2026 07:27:08 +0900,
-Andrew Morton wrote:
+On Wed, 08 Jul 2026 10:13:42 +0900,
+Hajime Tazaki wrote:
 
+> > afaict, all these issues pertain to failures from vma_iter_prealloc().
 > 
-> Thanks.  Unfortunately we aren't very diligent about the nommu code
-> (are we?).   Perhaps appropriately - clearly this code doesn't get used a
-> lot.
-> 
-> It appears that AI review has found another issue in there:
-> 	https://sashiko.dev/#/patchset/20260702012546.665383-1-thehajime@gmail.com
+> yes, will look into detail and get you back with another spin.
 
-I will also look at this.
+now with two more spins, Sashiko reports no issues with v3 patch.
+
+https://sashiko.dev/#/patchset/20260708083829.576036-1-thehajime%40gmail.com
 
 -- Hajime
 
