@@ -4,139 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFF90C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 08:04:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5194C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 08:07:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D4216B008A; Wed,  8 Jul 2026 04:04:56 -0400 (EDT)
+	id 68F9D6B00A2; Wed,  8 Jul 2026 04:07:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AC066B00A2; Wed,  8 Jul 2026 04:04:56 -0400 (EDT)
+	id 667176B00AC; Wed,  8 Jul 2026 04:07:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79B7C6B00AB; Wed,  8 Jul 2026 04:04:56 -0400 (EDT)
+	id 5567B6B00AD; Wed,  8 Jul 2026 04:07:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E5296B008A
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:04:56 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C853AC408E
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:04:55 +0000 (UTC)
-X-FDA: 84964873350.08.E6A8B06
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 02C7C16000E
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:04:53 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4QGuiEW;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 17C596B00A2
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:07:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7DFF190CD8
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:07:22 +0000 (UTC)
+X-FDA: 84964879524.12.1E18D5C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E9052C000C
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:07:20 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=flVw3qAh;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783497894;
+	s=arc-20220608; t=1783498040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i+KcHVGfx4TQ7GeqLxiyIT2kRa9bqeUsL1z7l7Z/8gQ=;
-	b=evg0HVSjfCGRmUbxpZZp04hmkRBCj5kbDhomJWKipWVvOME5AHY4INPEL/YxrMAvxtA9HB
-	medJPF97Dsjjchsz90+aAH0BoGrOtZ71060e15r2Z+Wkv8sKogw4G1N+ZXj8sae4+4lav7
-	eCi9XVSTZvHavPKTyHwh6EgSTW4ct9A=
+	bh=eey33vCwR2TDg/L/7ImDVaFgtxdBYVYOOW3e0Hzed1c=;
+	b=yeYvRF/PLfTK5219fpzKYteu/NM6sPX6QuVtBp6oX81veL94d25n3MdjKXVS3zh2/Jg2i9
+	0Svh1Ux4qKGre1bOM/l0vSk8pWtxELpGLrX513b97NwNSShR38EEjYwC++GZmdHFT1C2XQ
+	jXj5X1K62TpIA1B2rBlLXxDURzqhpNY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D4QGuiEW;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=flVw3qAh;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783497894;
-	b=tNRyVAJJPm8qymOnUHUOYdQKKTK1iYy4g7GkQimBfmZRyDtVdtFhNm39tbsbEgwCsLfZjf
-	pj/GM9ddhh2SrNgBI+t+lrpyvBmMOnk/mEgPacpvl+wA/5U7PQu547K03RxuQD/8/qVbZb
-	J75vqXMVLhWMIQ2vnhCfK8apgGEeCXY=
+	t=1783498040;
+	b=nl3NMrBLo6tZaCjaCi3TTz3//2rwl34ywEVf/jhirAl08I4K+7/jRnGWAdm0c9+aByooER
+	w4Po+bb6fFhlYJvAWQhKpPl5dBEMq+PDUmX+ipGb/R79f/GY9pJLUcnOp2OLUcAzVSJsmI
+	NZXg0MRx9V9bsDXV77Zpg9lg6xln0Lo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 41A8243D6E;
-	Wed,  8 Jul 2026 08:04:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A225D1F000E9;
-	Wed,  8 Jul 2026 08:04:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A62660008;
+	Wed,  8 Jul 2026 08:07:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B7C1F000E9;
+	Wed,  8 Jul 2026 08:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783497893;
-	bh=i+KcHVGfx4TQ7GeqLxiyIT2kRa9bqeUsL1z7l7Z/8gQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=D4QGuiEWjdQ6+wVyqz6pkTXQZi/Pa0pp9z+DKm8Wyzl96jzEvp6Bx+oU2fhETUKWE
-	 sMl1hY7yJetN3a3voHlhb04YYYWs/9ZVcP34zze1TcD9pXj7fhBOz/9kiFLcAis7F9
-	 ByN+y8fvGHxWXLelMsK3weZIjpa/qmgGpvdYG4yJA3nxA40qPkzhMGxOzVk/TY78rA
-	 k+85/G9LbNrLs9ITl1cWuEEKZlnVxC3fATDmQIgM1B2w/3eFTRxmerNPGHpW1o1Tj7
-	 89/jOn/87GsoDN/17st5/u7/hh702+2G/v1XNZnvk7oA4Fr0MK4e6d1eGPG2sBa+GW
-	 fv4kLCADplgxQ==
-Message-ID: <73c67890-0048-40ff-9314-81944a8dfdb8@kernel.org>
-Date: Wed, 8 Jul 2026 10:04:45 +0200
+	s=k20260515; t=1783498039;
+	bh=eey33vCwR2TDg/L/7ImDVaFgtxdBYVYOOW3e0Hzed1c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=flVw3qAh6hNuSMs/jQ8WX9sgUiBwvxP3Ah3MtOh+v89sSULzfJkDqVDC424Q0Y5jh
+	 P3kK3AKqV6dUJvPIGHbGPjmZjI0mR4s0cuOFp63O9iNuB7pNgxb8/NvkAP/qeyXH6l
+	 0nmHlEgYdvyDtwSKmbDMsA9JAkFppmUGrLvd5SnrAa2d4aaiXGWhWH+y1RZ16LRQlO
+	 mCgx8xerhgXKUC6O6KR1rj3CrfX2UTR0bHeBtFPC9TMI3v6cN64oP3iau+gOLlIg+j
+	 VcoPp+Cqei0kj2IbhK3HLvMiczZxO2AaGvEjL094Q9kcLHOeU4Ib0hbRjAk1sR5Kxz
+	 wLNu+X43UaeHw==
+Date: Wed, 8 Jul 2026 09:06:52 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: akpm@linux-foundation.org, anna-maria@linutronix.de, arnd@arndb.de, 
+	andersson@kernel.org, chrisl@kernel.org, cl@gentwo.org, conor+dt@kernel.org, 
+	david@kernel.org, dennis@kernel.org, devicetree@vger.kernel.org, 
+	ehristev@kernel.org, frederic@kernel.org, mingo@redhat.com, jstultz@google.com, 
+	corbet@lwn.net, juri.lelli@redhat.com, kasong@tencent.com, kees@kernel.org, 
+	konradybcio@kernel.org, krzk+dt@kernel.org, linux-arch@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-remoteproc@vger.kernel.org, mathieu.poirier@linaro.org, 
+	peterz@infradead.org, pmladek@suse.com, robh@kernel.org, saravanak@kernel.org, 
+	tj@kernel.org, tglx@kernel.org, vincent.guittot@linaro.org, 
+	workflows@vger.kernel.org, atomlin@atomlin.com, ast@kernel.org, aliceryhl@google.com, 
+	linux.amoon@gmail.com, ardb@kernel.org, baoquan.he@linux.dev, baohua@kernel.org, 
+	bsegall@google.com, jackmanb@google.com, leitao@debian.org, brauner@kernel.org, 
+	coxu@redhat.com, dietmar.eggemann@arm.com, dianders@chromium.org, 
+	ebiggers@kernel.org, feng.tang@linux.alibaba.com, yangfeng@kylinos.cn, 
+	gary@garyguo.net, guohanjun@huawei.com, jack@suse.cz, wangjinchao600@gmail.com, 
+	joel.granados@kernel.org, hannes@cmpxchg.org, john.ogness@linutronix.de, 
+	jpoimboe@kernel.org, shikemeng@huaweicloud.com, kas@kernel.org, 
+	kprateek.nayak@amd.com, liam@infradead.org, elver@google.com, mgorman@suse.de, 
+	mhocko@suse.com, ojeda@kernel.org, rppt@kernel.org, namcao@linutronix.de, 
+	nathan@kernel.org, nphamcs@gmail.com, n.schier@fritz.com, pasha.tatashin@soleen.com, 
+	petr.pavlu@suse.com, pnina.feder@mobileye.com, rdunlap@infradead.org, 
+	rioo.tsukatsukii@gmail.com, senozhatsky@chromium.org, skhan@linuxfoundation.org, 
+	sboyd@kernel.org, rostedt@goodmis.org, surenb@google.com, 
+	thomas.weissschuh@linutronix.de, vschneid@redhat.com, vbabka@kernel.org, youngjun.park@lge.com, 
+	zhengyejian@huaweicloud.com, ziy@nvidia.com, Eugen Hristev <eugen.hristev@linaro.org>
+Subject: Re: [PATCH v3 26/26] meminspect: Add debug kinfo compatible driver
+Message-ID: <ak4DqBta0boElPak@lucifer>
+References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
+ <20260708070809.2660886-1-mukesh.ojha@oss.qualcomm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10] mm: fix ASSERT_EXCLUSIVE_BITS by passing
- memdesc_flags_t by pointer
-To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <20260708021525.627503-1-hui.zhu@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260708021525.627503-1-hui.zhu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260708070809.2660886-1-mukesh.ojha@oss.qualcomm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 02C7C16000E
-X-Stat-Signature: zz7z6z739p9qp3m1uq4t9yxnigasxdxn
-X-HE-Tag: 1783497893-876113
-X-HE-Meta: U2FsdGVkX1/Uoifu8uRv0pJu94oVm26mfbD/PWJe6Eli0Q64hX+SHLF9lqHpfHCsaOBfSBnQCwyE/nYKivjSKFRfGdQy3Hl4mZfPi2T5JETuU4ICzHSIOH7p3lCywFfc6MwYxvYtnq0tKcM2K0NF5hJoJDlFAAJqleSeD+wnyMCXn8pOWPBv744NjC7BwK2QfC3pf0uX0uWu+xhZkvwSfx+6NxCPp3Bsyh9OoYkvjxkH/vghp+pBxRbDtI9zuparIOKbWdOZ4EiREvsUBrz7IWcQ8Lr1CMNZ6wcv7nt9UkA+vvXeL1gKWgzMkTIW18da74wiNs+T/AplRX/KFqbijNRJWpc7o2pAUGC7MaIhS+y7x9po+HVMdq/EMQdbKFTFC8x30Ju01u+y6zlEOtaWQsibMuxGdgcA1BromGtbNoLAL8X7VcE1Tm0GAZpmIEE1I+tiMcF0yksmWLKpVhjtsUbfYQXqCXqswRsYxHmyOpBNVJiubkxQ/umByvsV0/1//N3BEhO9MPvEp8EmegTib6QXJ/wGT723ypSCB54g5V28bHmYJp3LbXBsTNA3oXyhA/9IWmo8LqSOBE6YEG+UeQgMGimAnIi6omx+mgB8g2uyWmUMdtSyko39RlY0eBr4qmxGFBj2bMwJ1irZ8NEFctWADfLmObO0Eno2Jluc75X1+lvB0IWpu58nWF8jmcHz3iM3glsRtJUpxbWTZmwnaS0jwsS/nIqQdazOHP062SmnUSp6s40bG8qCkGFpx8I28joaEsZP8JCUucXFie91JHS9SXIbtdrJrGdp6BLAffv1sVAJBfyMxX9o8GVidmSZe8mp/YEKd9yf465v2v49RGTe2COKSQtLVyz5U4pvOMuMXz3IhVQH50Wq19byIXXI+dNJmodlEGDc1WYCCGAD680AYFJCoQFLZaCXp/rc2pLVtcxORbnmVhXG3L5SQM7jh+A1aUyDjYrTrxCXcI4
- JEgSLhCd
- O9lA8JpfB2LbVTib8UGKUMDBqmosi3/88Y4WU4ttR3OV7xOoszquyApJdDmTiIZSnTo57fE6RNJ/2wmz8rsUTRE9EC9t/oIzG1WxKaWJjCWqVuGhrYWH7+tmYH+FjB33L3aV6uiiJt94VUvbOlDM3CMInzMGsR9gM6Sh0G8Ls8GgKZSVc3hQ6AASjCwZBHzb5+GV9hUjYVXqWVBz2q/YMFcIUfbZg0vgzre99GvCGpfVYWYy/6kqAgVr7kyOf80GdpwahHk0UfQAtkpw8H7SPDZoYMK+QliyUVHnDKn4+FUqefu3JE06/OHxHucD5kEUna1ojVONWy47t+a0=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E9052C000C
+X-Stat-Signature: ojzjshcwky7uk1ufhyr6d3noq55m1we5
+X-HE-Tag: 1783498040-676441
+X-HE-Meta: U2FsdGVkX18p9vBigYQnDNYGbOHeBvliybhdhdf6ch3c/ozf/wiFprxSMnAnfpPYvD9FEx8fljusI+fxkaramET5fVevaIbuSZd36+hdWF+1Gi03A6vGwMbbGL3bRQgPOm0LuNmymOG0rjGcMPwMOQKXqMTMHK+u72v/CCS7MRAZD1o1BMNZQdhxvZQvEIb0n9BJNVosEUIvjzSQAwQHO9dydiuuKvQRZ1lZF8VbIur31Z2qLed2vFnovZNUSQbbQ+HJ7SQytpGZkzAI6czy8SrU44vJJZNbnHuLvize6aMDdvAXPc5IvfbVtdy5wPy84rccy298oRSCn8YhGmgwZrZBjwefkSOzSon8QH65n+K0bHbY/tgOM3YRRW3R50xwHyHYM5MWVpDS0Zi4w4RnhT1WjPVdEVZ12cv4/OArUjB/olI11+CKvhR6ZBIjfQLmMSwGZ32KfAzKhDfBrG9vSlBImtWxEMhnOsmvZ5wUlrbZN2k7NNOv5V2Dh5nUmPqiqr0iWSTrkkTvh4P7C5a3jZb+H5jpJyxCGdsNs9SOhVE7+Q8zfiCzcZkScPAFTdBCA66+MEM5EvC0lM4ifbvSSG6UCuzQKQoCaaOTzscWWn2yUTXAE+zPhNL59q8gEUJHi5SC00FvOQt9V/jp0YuxaG0Lb4Gtlmyqb5uKJd24ZPJkFJ32G21IAMYZzWNijw030kw/GNXsAb+xKCRsyllNtxfioM9ww2MFbQgz+MTmMrJGLGL3xd62EJwC7YoCMulXaHnOKXfD3Wes+7xPDGCfIyYdQdDV8OPMz2/4tjpyP/5Vn4BcSb2AhKTPY/4pbZv+UiCcW7cMpWHue/2Ib/Yf8tfpOt25adIe0S2Lz5Mvk8ff8MGksQ3TR84UIUJnXLStxTw1RnaLLxgjfFzgn7bvVP5MhrbHvsrrc6A+RJaT+uBSp17rhb+wWLPcN01YVZ7ggXn3Aje/Y6tFiW6q4+b
+ fLcF2Nbq
+ FWClf3YJS5lLEBiRBRKUC9AJQWic8KKCDPZRBXfI+fLcGgpuW3J8nnCyRF2boQEYIQT3LeD36yB3NL72TpMU60seN/sTqycV6ux+zwFUWqjQgFmVaPKvf5Co0aB6gN+iIGzQqsS9curcVmz7lUkWSPp+ElqqferaejJcfTw/kdM+EbquPIbR+aUv1kDeFJd8Dldo6LJlneMssIb7B75CUx4ejTeKhQ/h1V92P0ccmTc3C9j75Te/pA/VVrO95+D8vBfPfj557sYnvzler9WX1fqWwkMYM7o4m5oEfj/FgKkuvB7k/Tn/7+xFStiYdfIeroeN1xfQh/S39jqbWnnzmDFDxeMa6TNAZnAE1bw7aAO7ob4o8XbhZ5QBBWlQwc8+NKheucVo77Ll+a3nOYBvK32zuLbFj1SAi2W+OapXs467JMiDTRYOHEJ04wP8kUxmFQ6YALd1gntxP1QskJqgN1TFdeJOS7X+oU2iXccrvgh7MG3uHpAD0DaQnaJzUQvUyISstcWOZs1MAWuTYDPm7mgOKfUlDkiAa0565gRy9R9VI44M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,160 +115,353 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/8/26 04:15, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
-> page->flags and folio_trylock()/folio_lock() concurrently doing
-> test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
-> 
->   BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
-> 
-> The race is benign: nid/zone bits are set once at page init and never
-> overlap with PG_locked.  However, ASSERT_EXCLUSIVE_BITS() inside
-> memdesc_nid/zonenum() was checking a by-value copy of the flags word,
-> not the live page->flags, so it failed to annotate the real access.
-> 
-> Change memdesc_nid(), memdesc_zonenum(), memdesc_section(), and
-> memdesc_is_zone_device() to take a const memdesc_flags_t * and update
-> all callers to pass &page->flags / &folio->flags, so
-> ASSERT_EXCLUSIVE_BITS() operates on the actual shared word.
-> 
-> Guard the ASSERT_EXCLUSIVE_BITS() call in memdesc_zonenum() under
-> ZONES_WIDTH != 0 to avoid a zero-mask check on configs where the zone
-> field is absent.  memdesc_section() needs no such guard, since
-> SECTIONS_WIDTH is never 0 wherever SECTION_IN_PAGE_FLAGS is defined.
-> Under CONFIG_NUMA=n, memdesc_nid() itself is stubbed to "return 0"
-> instead of reading page->flags, since NODES_MASK is 0 and the check
-> can never fire; page_to_nid()/folio_nid() now just call memdesc_nid()
-> unconditionally and rely on that stub, instead of duplicating the
-> CONFIG_NUMA split at each call site.
-> 
-> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+On Wed, Jul 08, 2026 at 12:38:09PM +0530, Mukesh Ojha wrote:
+> From: Eugen Hristev <eugen.hristev@linaro.org>
+>
+> With this driver, the registered regions are copied to a shared memory
+> zone at register time. The shared memory zone is supplied via OF. This
+> driver will select only regions that are of interest, and keep only
+> addresses. The format of the list is Kinfo compatible, with devices like
+> Google Pixel phone. The firmware is only interested in some symbols'
+> addresses.
+>
+> Signed-off-by: Eugen Hristev <eugen.hristev@linaro.org>
+> Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+
+Hang on, this is a driver that exposes internal kernel symbol information in a
+shared memory region for anybody who wants to access it?
+
+This doesn't really seem sane?
+
+Looking through the code it seems you are only exposing things that are already
+otherwise exposed, so maybe it's not so bad, but it seems as if a registered
+meminfo driver could in any case get access to things they shouldn't?
+
 > ---
-> Changelog:
-> v10:
-> According to the comments of David, drop the redundant CONFIG_NUMA split
-> in page_to_nid()/folio_nid() and remove the SECTIONS_WIDTH != 0 guard
-> around ASSERT_EXCLUSIVE_BITS() in memdesc_section().
-> v9:
-> Add the SECTIONS_WIDTH check to memdesc_section.
-> v8:
-> According to the comments of Andrew, include kcsan-checks.h in mm.h.
-> Incorporate David's patch that switch memdesc_nid(), memdesc_zonenum(),
-> memdesc_section() and memdesc_is_zone_device() to take a const
-> memdesc_flags_t * instead of using a per-accessor macro/call-site hack.
-> Update all callers accordingly and extend the same exclusive-bits check
-> to memdesc_section() and memdesc_is_zone_device(), guarded by
-> SECTIONS_WIDTH != 0 / reusing ZONES_WIDTH != 0 to avoid zero-mask checks
-> on configs without the corresponding field.
-> v7:
-> According to the comments of Sashiko, restrict the memdesc_nid() macro
-> to CONFIG_NUMA, keeping a plain "return 0" static inline stub otherwise,
-> and re-add a local page pointer in page_to_nid() to avoid evaluating
-> PF_POISONED_CHECK(page) twice.
-> v6:
-> According to the comments of David, turn memdesc_nid() from a static
-> inline function into a macro so ASSERT_EXCLUSIVE_BITS() can check the
-> caller's page->flags/folio->flags directly.
-> v5:
-> According to the comments of Sashiko, guard the ASSERT_EXCLUSIVE_BITS()
-> calls with #ifndef NODE_NOT_IN_PAGE_FLAGS (for nid) and #if
-> ZONES_WIDTH != 0 (for zonenum).
-> According to the comments of David, avoid calling
-> PF_POISONED_CHECK(page) twice in page_to_nid().
-> According to the warning of lkp, switch the CONFIG_NUMA=n
-> page_to_nid()/folio_nid() stubs from macros to static inline functions.
-> v4:
-> According to the comments of Andrew and Sashiko, set
-> page_to_nid()/folio_nid() as static inline stubs returning 0
-> under CONFIG_NUMA=n.
-> v3:
-> According to the comments of Andrew and Sashiko, move
-> ASSERT_EXCLUSIVE_BITS out of memdesc_nid()/memdesc_zonenum()
-> into the page/folio call sites.
-> v2:
-> According to the comments of David, remove useless comments and use
-> ASSERT_EXCLUSIVE_BITS() in memdesc_nid() instead of data_race() in
-> page_to_nid().
-> 
->  include/asm-generic/memory_model.h |  2 +-
->  include/linux/mm.h                 | 28 ++++++++++++++++++++--------
->  include/linux/mm_inline.h          |  4 ++--
->  include/linux/mmzone.h             | 26 ++++++++++++++------------
->  mm/page_alloc.c                    |  6 +++---
->  mm/slab.h                          |  2 +-
->  mm/sparse.c                        |  2 +-
->  7 files changed, 42 insertions(+), 28 deletions(-)
-> 
-> diff --git a/include/asm-generic/memory_model.h b/include/asm-generic/memory_model.h
-> index fd74de50b054..c6b4eafaf4cb 100644
-> --- a/include/asm-generic/memory_model.h
-> +++ b/include/asm-generic/memory_model.h
-> @@ -53,7 +53,7 @@ static inline int pfn_valid(unsigned long pfn)
->   */
->  #define __page_to_pfn(pg)					\
->  ({	const struct page *__pg = (pg);				\
-> -	int __sec = memdesc_section(__pg->flags);		\
-> +	int __sec = memdesc_section(&__pg->flags);		\
->  	(unsigned long)(__pg - __section_mem_map_addr(__nr_to_section(__sec)));	\
->  })
->  
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 2101e5205fc0..01683d50b3cd 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -37,6 +37,7 @@
->  #include <linux/bitmap.h>
->  #include <linux/bitops.h>
->  #include <linux/iommu-debug-pagealloc.h>
-> +#include <linux/kcsan-checks.h>
->  
->  struct mempolicy;
->  struct anon_vma;
-> @@ -2286,22 +2287,32 @@ static inline int page_zone_id(struct page *page)
->  }
->  
->  #ifdef NODE_NOT_IN_PAGE_FLAGS
-> -int memdesc_nid(memdesc_flags_t mdf);
-> +int memdesc_nid(const memdesc_flags_t *mdf);
->  #else
-> -static inline int memdesc_nid(memdesc_flags_t mdf)
-> +#ifdef CONFIG_NUMA
-> +static inline int memdesc_nid(const memdesc_flags_t *mdf)
->  {
-> -	return (mdf.f >> NODES_PGSHIFT) & NODES_MASK;
-> +	ASSERT_EXCLUSIVE_BITS(mdf->f, NODES_MASK << NODES_PGSHIFT);
-> +	return (mdf->f >> NODES_PGSHIFT) & NODES_MASK;
->  }
-> +#else
-> +static inline int memdesc_nid(const memdesc_flags_t *mdf)
+>  MAINTAINERS                |   1 +
+>  drivers/of/platform.c      |   1 +
+>  kernel/meminspect/Kconfig  |  11 ++
+>  kernel/meminspect/Makefile |   1 +
+>  kernel/meminspect/kinfo.c  | 257 +++++++++++++++++++++++++++++++++++++
+>  5 files changed, 271 insertions(+)
+>  create mode 100644 kernel/meminspect/kinfo.c
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2d816d783024..d805ff9fedac 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16906,6 +16906,7 @@ M:	Eugen Hristev <eugen.hristev@linaro.org>
+>  M:	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/reserved-memory/google,debug-kinfo.yaml
+> +F:	kernel/meminspect/kinfo.c
+>
+>  MEMBLOCK AND MEMORY MANAGEMENT INITIALIZATION
+>  M:	Mike Rapoport <rppt@kernel.org>
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index 53bca8c6f781..f80bd25fc481 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -494,6 +494,7 @@ static const struct of_device_id reserved_mem_matches[] = {
+>  	{ .compatible = "qcom,smem" },
+>  	{ .compatible = "ramoops" },
+>  	{ .compatible = "nvmem-rmem" },
+> +	{ .compatible = "google,debug-kinfo" },
+>  	{ .compatible = "google,open-dice" },
+>  	{}
+>  };
+> diff --git a/kernel/meminspect/Kconfig b/kernel/meminspect/Kconfig
+> index 18ff511ad4cf..7f6436c3344b 100644
+> --- a/kernel/meminspect/Kconfig
+> +++ b/kernel/meminspect/Kconfig
+> @@ -16,3 +16,14 @@ config MEMINSPECT
+>
+>  	  Note that modules using this feature must be rebuilt if this
+>  	  option changes.
+> +
+> +config MEMINSPECT_KINFO
+> +	tristate "Shared memory KInfo compatible driver"
+> +	depends on MEMINSPECT
+> +	help
+> +	  Say y here to enable the Shared memory KInfo compatible driver.
+> +	  With this driver, the registered regions are copied to a shared
+> +	  memory zone at register time.
+> +	  The shared memory zone is supplied via OF.
+> +	  This driver will select only regions that are of interest,
+> +	  and keep only addresses. The format of the list is Kinfo compatible.
+> diff --git a/kernel/meminspect/Makefile b/kernel/meminspect/Makefile
+> index 09fd55e6d9cf..283604d892e5 100644
+> --- a/kernel/meminspect/Makefile
+> +++ b/kernel/meminspect/Makefile
+> @@ -1,3 +1,4 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>
+>  obj-$(CONFIG_MEMINSPECT) += meminspect.o
+> +obj-$(CONFIG_MEMINSPECT_KINFO) += kinfo.o
+> diff --git a/kernel/meminspect/kinfo.c b/kernel/meminspect/kinfo.c
+> new file mode 100644
+> index 000000000000..7451c13bc316
+> --- /dev/null
+> +++ b/kernel/meminspect/kinfo.c
+> @@ -0,0 +1,257 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + *
+> + * Copyright 2002 Rusty Russell <rusty@rustcorp.com.au> IBM Corporation
+> + * Copyright 2021 Google LLC
+> + * Copyright 2025 Linaro Ltd. Eugen Hristev <eugen.hristev@linaro.org>
+> + */
+> +#include <linux/container_of.h>
+> +#include <linux/kallsyms.h>
+> +#include <linux/meminspect.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_reserved_mem.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/utsname.h>
+> +
+> +#define BUILD_INFO_LEN		256
+> +#define DEBUG_KINFO_MAGIC	0xcceeddff
+> +
+> +/*
+> + * Header structure must be byte-packed, since the table is provided to
+> + * bootloader.
+> + */
+> +struct kernel_info {
+> +	/* For kallsyms */
+> +	u8 enabled_all;
+> +	u8 enabled_base_relative;
+> +	u8 enabled_absolute_percpu;
+> +	u8 enabled_cfi_clang;
+> +	u32 num_syms;
+> +	u16 name_len;
+> +	u16 bit_per_long;
+> +	u16 module_name_len;
+> +	u16 symbol_len;
+> +	u64 _relative_pa;
+> +	u64 _text_pa;
+> +	u64 _stext_pa;
+> +	u64 _etext_pa;
+> +	u64 _sinittext_pa;
+> +	u64 _einittext_pa;
+> +	u64 _end_pa;
+> +	u64 _offsets_pa;
+> +	u64 _names_pa;
+> +	u64 _token_table_pa;
+> +	u64 _token_index_pa;
+> +	u64 _markers_pa;
+> +	u64 _seqs_of_names_pa;
+> +
+> +	/* For frame pointer */
+> +	u32 thread_size;
+> +
+> +	/* For virt_to_phys */
+> +	u64 swapper_pg_dir_pa;
+> +
+> +	/* For linux banner */
+> +	u8 last_uts_release[__NEW_UTS_LEN];
+> +
+> +	/* For module kallsyms */
+> +	u32 enabled_modules_tree_lookup;
+> +	u32 mod_mem_offset;
+> +	u32 mod_kallsyms_offset;
+> +} __packed;
+> +
+> +struct kernel_all_info {
+> +	u32 magic_number;
+> +	u32 combined_checksum;
+> +	struct kernel_info info;
+> +} __packed;
+> +
+> +struct debug_kinfo {
+> +	struct device *dev;
+> +	void *all_info_addr;
+> +	size_t all_info_size;
+> +	struct notifier_block nb;
+> +};
+> +
+> +static void update_kernel_all_info(struct kernel_all_info *all_info)
 > +{
+> +	struct kernel_info *info;
+> +	u32 *checksum_info;
+> +	int index;
+> +
+> +	all_info->magic_number = DEBUG_KINFO_MAGIC;
+> +	all_info->combined_checksum = 0;
+> +
+> +	info = &all_info->info;
+> +	checksum_info = (u32 *)info;
+> +	for (index = 0; index < sizeof(*info) / sizeof(u32); index++)
+> +		all_info->combined_checksum ^= checksum_info[index];
+> +}
+> +
+> +static void __maybe_unused register_kinfo_region(void *priv,
+> +						 const struct inspect_entry *e)
+> +{
+> +	struct debug_kinfo *kinfo = priv;
+> +	struct kernel_all_info *all_info = kinfo->all_info_addr;
+> +	struct kernel_info *info = &all_info->info;
+> +	struct uts_namespace *uts;
+> +	u64 paddr;
+> +
+> +	if (e->pa)
+> +		paddr = e->pa;
+> +	else
+> +		paddr = __pa(e->va);
+> +
+> +	switch (e->id) {
+> +	case MEMINSPECT_ID__sinittext:
+> +		info->_sinittext_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID__einittext:
+> +		info->_einittext_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID__end:
+> +		info->_end_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID__text:
+> +		info->_text_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID__stext:
+> +		info->_stext_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID__etext:
+> +		info->_etext_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID_kallsyms_num_syms:
+> +		info->num_syms = *(__u32 *)e->va;
+> +		break;
+> +	case MEMINSPECT_ID_kallsyms_offsets:
+> +		info->_offsets_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID_kallsyms_names:
+> +		info->_names_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID_kallsyms_token_table:
+> +		info->_token_table_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID_kallsyms_token_index:
+> +		info->_token_index_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID_kallsyms_markers:
+> +		info->_markers_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID_kallsyms_seqs_of_names:
+> +		info->_seqs_of_names_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID_swapper_pg_dir:
+> +		info->swapper_pg_dir_pa = paddr;
+> +		break;
+> +	case MEMINSPECT_ID_init_uts_ns:
+> +		if (!e->va)
+> +			return;
+> +		uts = e->va;
+> +		strscpy(info->last_uts_release, uts->name.release, __NEW_UTS_LEN);
+> +		break;
+> +	default:
+> +		break;
+> +	};
+> +
+> +	update_kernel_all_info(all_info);
+> +}
+> +
+> +static int kinfo_notifier_cb(struct notifier_block *nb,
+> +			     unsigned long code, void *entry)
+> +{
+> +	struct debug_kinfo *kinfo = container_of(nb, struct debug_kinfo, nb);
+> +
+> +	if (code == MEMINSPECT_NOTIFIER_ADD)
+> +		register_kinfo_region(kinfo, entry);
+> +
+> +	return NOTIFY_DONE;
+> +}
+> +
+> +static int debug_kinfo_probe(struct platform_device *pdev)
+> +{
+> +	struct kernel_all_info *all_info;
+> +	struct device *dev = &pdev->dev;
+> +	struct reserved_mem *rmem;
+> +	struct debug_kinfo *kinfo;
+> +	struct kernel_info *info;
+> +
+> +	rmem = of_reserved_mem_lookup(dev->of_node);
+> +	if (!rmem)
+> +		return dev_err_probe(dev, -ENODEV, "no such reserved mem of node name %s\n",
+> +			      dev->of_node->name);
+> +
+> +	/* Need to wait for reserved memory to be mapped */
+> +	if (!rmem->priv)
+> +		return -EPROBE_DEFER;
+> +
+> +	if (!rmem->base || !rmem->size)
+> +		dev_err_probe(dev, -EINVAL, "unexpected reserved memory\n");
+> +
+> +	if (rmem->size < sizeof(struct kernel_all_info))
+> +		dev_err_probe(dev, -EINVAL, "reserved memory size too small\n");
+> +
+> +	kinfo = devm_kzalloc(dev, sizeof(*kinfo), GFP_KERNEL);
+> +	if (!kinfo)
+> +		return -ENOMEM;
+> +
+> +	platform_set_drvdata(pdev, kinfo);
+> +
+> +	kinfo->dev = dev;
+> +	kinfo->all_info_addr = rmem->priv;
+> +	kinfo->all_info_size = rmem->size;
+> +
+> +	all_info = kinfo->all_info_addr;
+> +
+> +	memset(all_info, 0, sizeof(struct kernel_all_info));
+> +	info = &all_info->info;
+> +	info->enabled_all = IS_ENABLED(CONFIG_KALLSYMS_ALL);
+> +	info->enabled_absolute_percpu = IS_ENABLED(CONFIG_KALLSYMS_ABSOLUTE_PERCPU);
+> +	info->enabled_base_relative = IS_ENABLED(CONFIG_KALLSYMS_BASE_RELATIVE);
+> +	info->enabled_cfi_clang = IS_ENABLED(CONFIG_CFI_CLANG);
+> +	info->name_len = KSYM_NAME_LEN;
+> +	info->bit_per_long = BITS_PER_LONG;
+> +	info->module_name_len = MODULE_NAME_LEN;
+> +	info->symbol_len = KSYM_SYMBOL_LEN;
+> +	info->thread_size = THREAD_SIZE;
+> +	info->enabled_modules_tree_lookup = IS_ENABLED(CONFIG_MODULES_TREE_LOOKUP);
+> +	info->mod_mem_offset = offsetof(struct module, mem);
+> +	info->mod_kallsyms_offset = offsetof(struct module, kallsyms);
+> +
+> +	kinfo->nb.notifier_call = kinfo_notifier_cb;
+> +
+> +	meminspect_notifier_register(&kinfo->nb);
+> +	meminspect_lock_traverse(kinfo, register_kinfo_region);
+> +
 > +	return 0;
 > +}
-> +#endif
->  #endif
->  
->  static inline int page_to_nid(const struct page *page)
->  {
-> -	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
-> +	const struct page *p = PF_POISONED_CHECK(page);
 > +
-> +	return memdesc_nid(&p->flags);
->  }
-
-Nit: Why not keep it as
-
-return memdesc_nid(&(PF_POISONED_CHECK(page)->flags));
-
-Apart from that
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
+> +static void debug_kinfo_remove(struct platform_device *pdev)
+> +{
+> +	struct debug_kinfo *kinfo = platform_get_drvdata(pdev);
+> +
+> +	meminspect_notifier_unregister(&kinfo->nb);
+> +}
+> +
+> +static const struct of_device_id debug_kinfo_of_match[] = {
+> +	{ .compatible	= "google,debug-kinfo" },
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(of, debug_kinfo_of_match);
+> +
+> +static struct platform_driver debug_kinfo_driver = {
+> +	.probe = debug_kinfo_probe,
+> +	.remove = debug_kinfo_remove,
+> +	.driver = {
+> +		.name = "debug-kinfo",
+> +		.of_match_table = debug_kinfo_of_match,
+> +	},
+> +};
+> +module_platform_driver(debug_kinfo_driver);
+> +
+> +MODULE_AUTHOR("Eugen Hristev <eugen.hristev@linaro.org>");
+> +MODULE_AUTHOR("Jone Chou <jonechou@google.com>");
+> +MODULE_DESCRIPTION("meminspect Kinfo Driver");
+> +MODULE_LICENSE("GPL");
+> --
+> 2.53.0
+>
 
