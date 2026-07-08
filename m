@@ -4,131 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 992F6C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 11:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24139C43602
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 11:17:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79D336B00B4; Wed,  8 Jul 2026 07:16:52 -0400 (EDT)
+	id 1D41A6B0005; Wed,  8 Jul 2026 07:17:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74E5B6B00B5; Wed,  8 Jul 2026 07:16:52 -0400 (EDT)
+	id 1A9F96B0092; Wed,  8 Jul 2026 07:17:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63D836B00B6; Wed,  8 Jul 2026 07:16:52 -0400 (EDT)
+	id 0E9B16B00B5; Wed,  8 Jul 2026 07:17:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F0C26B00B4
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:16:52 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 98405120742
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:16:51 +0000 (UTC)
-X-FDA: 84965357022.29.E2AB487
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7712310000C
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:16:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Za4DuOW8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6r1x0ynR;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=i0hMqNmj;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Aj3XLAhY;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DC06E6B0005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:17:31 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 626D04074E
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:17:31 +0000 (UTC)
+X-FDA: 84965358702.16.DE5BE5B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 799E610000B
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 11:17:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Xp+nu7ny;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783509409;
-	b=6/VXc5hCFmdX//eSQj3MDC5W21wT3l8vrmzHq6nX4MJuS9GPWzXgR6Cfyx1oGTYS2cfgEo
-	aNza1ui62+pW18RDeNUrrgM95pZccfsPw7KFIxcqKzzNu1fKKNXQ2v6vUlS6NuqNsUC+0L
-	RckLB5ZGuvcFDSP/pNN3ZlTPME2VJfo=
+	t=1783509449;
+	b=xtS2FL6YcEpYncTy2CBs1nPGdKiJMhTBCvnScW/VAllYxDSMPFuuqnnFDt0b+SxOPCjQdE
+	AXsEsrWKfK4EwRKsovcELJbJeTbbp1eGCtuuKXYJk7iqkMlazlltPQMMDzuc4omMzKepJz
+	O+10Y4VY1zrrWBNF7zLk9nYsOLIrpnM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Za4DuOW8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6r1x0ynR;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=i0hMqNmj;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Aj3XLAhY;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=Xp+nu7ny;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783509409;
+	s=arc-20220608; t=1783509449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zf0N7hyL9ieefPaK1hQyYaoHoBFLf71w/CV6PNdQScA=;
-	b=xZgTm6Yc51UNUxmSDtqKBY6e7b3Nm7kqa6YKX08jGF1p4bOaHeY5qZEWCM6tBKGtpa1Ovc
-	vRqoihaYV7IAEwRPfhL3EeqVPhP/PpjG/nqahhCzRhcbCvKk/Sbdd7dXf03ukMtpcuRl+3
-	2rBR6O0XGMuxGeYy3ETjZsfSqboO8x8=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D033D759DC;
-	Wed,  8 Jul 2026 11:16:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783509408; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zf0N7hyL9ieefPaK1hQyYaoHoBFLf71w/CV6PNdQScA=;
-	b=Za4DuOW8aViDWdGKSRqUx+4l0Wiat9bfqmZmUpcJU4asPLP2SHTX5SRpROgsQ08eJN1xBi
-	qY3On68ubhYOTy4etsXYgv/c32bIZQGW+2iDNmvI4CtOn5ojw4nE2pMXfUJTy8nRjeiYcm
-	lD4lqTtj3TUUTUSMzpPF5psGnesq2AU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783509408;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zf0N7hyL9ieefPaK1hQyYaoHoBFLf71w/CV6PNdQScA=;
-	b=6r1x0ynRj86u7sQ1VQIc9IRfOk/cBqFF9KRYm+28V22F8wBxU+EUCOncVAtBQ1OtmqH5eI
-	EI4VRIkQK9uUlGCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1783509407; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zf0N7hyL9ieefPaK1hQyYaoHoBFLf71w/CV6PNdQScA=;
-	b=i0hMqNmjGuh18zyd9w7EBeCsH3kQW85vULtgyHNjuKGx+sz2m8SL74PJLqYEReu9RZbtv+
-	OMnuopjq1kf3VMNu1oF9xcqtPGRKZ6u6Sp041aF9TbrJvcx0CeAUP5g95t2Rpu+TewoSVm
-	38IEf9OIvW51n7bf1Nz5bDcochaADvs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1783509407;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zf0N7hyL9ieefPaK1hQyYaoHoBFLf71w/CV6PNdQScA=;
-	b=Aj3XLAhYXjGFu1orWSrMrTIBuRA+FR70+NILNlEteFudv028P9a5xA0UZdzNJLRM8qzlKX
-	KwpBM+z5LjKsQABA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0590779AE;
-	Wed,  8 Jul 2026 11:16:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GMK9Mp4xTmriQQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Wed, 08 Jul 2026 11:16:46 +0000
-Date: Wed, 8 Jul 2026 12:16:44 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Jason Xing <kerneljasonxing@gmail.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>, linux-mm@kvack.org, 
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>
-Subject: Re: [PATCH net-next v3] net: skb: isolate skb data area allocations
- into a separate bucket
-Message-ID: <ak4w2k4Woj55E0On@pedro-suse>
-References: <20260702170728.168755-1-pfalcato@suse.de>
- <04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com>
+	bh=ln+nTIzlrpQQ+GOWArxr9Ry/rda/mUKsqoMKokC8zAw=;
+	b=wErE7lwd7DUvm+7q/uwasNeC9yxRKClj4WR1xrYm0wysHQ8cQbKf9uPAs1l9y300pe4dFD
+	f8K0uRl3AKaMM7e72oigdV/pM6bbhdUTGy4d4uJOD3h2pbRKjdydOhMpZTtCJyp5emBsyY
+	59oQHfeuix53TyK2tpNgHcY7MkSGleY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783509448; x=1815045448;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1SUytAJQxBuqeggCAq5+Uh8RFQaVx7WpBu6U6QPTItc=;
+  b=Xp+nu7nym3mWixmloy5r17JfQb7TnnAdFPaUI1a+Ad6cSzAUe2kb9B9p
+   ZlL0Hz89ViJ0hb5565GpNiVSinOZ4I0Ik/QmaT1/k9BO8UrlUJE3lmBHr
+   xivrnFEJ/7US5ODa/Tctnvo8temgMHj4fZaCpNAQcW7kbb2TUFFnU4aZm
+   /J6y3ysNNDDQSzz0Z/2FlhHFUtDvcFbCC96JkrlVZ9LxsEQypQ44by4Rd
+   cZMKNLyy0DaV2WpTk8WV9ZqwJna37mvCgab9JmN0JNJpuu4ZJbx2mZ4X+
+   +d/2sqdjaYDg5TDbmtdB9kzFuhDEe4faxbovjmDoCzBJmEEKlzUZU4Jez
+   g==;
+X-CSE-ConnectionGUID: /16/B4bvRtSZOL6EzPEmvA==
+X-CSE-MsgGUID: mSkFKozaSIml4L20m/cpgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11840"; a="71689774"
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="71689774"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 04:17:27 -0700
+X-CSE-ConnectionGUID: pAVKBk2bQyW7uUlD8uVmdQ==
+X-CSE-MsgGUID: +grBGXWSQaq8zO4daOCWCA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,153,1779174000"; 
+   d="scan'208";a="259165387"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.100])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 04:17:25 -0700
+Date: Wed, 8 Jul 2026 14:17:23 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, usama.arif@linux.dev, hughd@google.com,
+	willy@infradead.org, ryan.roberts@arm.com,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V2] mm: Standardize printing for pgtable entries
+Message-ID: <ak4xw2JwyZk3uTPI@ashevche-desk.local>
+References: <20260708032824.969752-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <04debe19-bbe8-4b5f-9668-753d1f97832d@redhat.com>
-X-Rspamd-Action: no action
+In-Reply-To: <20260708032824.969752-1-anshuman.khandual@arm.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Queue-Id: 799E610000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7712310000C
-X-Stat-Signature: omdp7p8oqbby9jhf5ganf5gj7fh8xj5d
-X-HE-Tag: 1783509409-669302
-X-HE-Meta: U2FsdGVkX19/rLoS1q/NRoKO8o8Zx8JXDYihH1SVJ+S0gCFR7ZKKX1VKwJSO9BeEIve4WrfTI6HdCamiGnz9f0oJdo3mcYyLpB3W1z780dMovJdtfcLjKEKcbWTAf+ECHI7O0+tIculS0vfEV1x6zPXzADOw97TkLm7ucNYPXoNJlgjM4/XRZD41CG4hVtt/Pzq77qvZqobdMZGixF7bZGEE4xt9cxIzHWzn4jZ4LajkLyVCmO1fSvQ+kMZL5HGVOSZ4F7Kk+7UPs8hWisWJejmvCI6izU/YeMKMDQvGpwfU1O37zxMU6zpmBBOORGCGskKGFffawI8cGASrV4itnmOie3fNduKEaEBoKv91aEtDp+QFUKtDLVPyPzaybtcn6ppth9pXC3I2vDu1AYpswXepVfuhmVAFsBuZ6bFK2H2p7sYot9ndrJdBCKVWroUmRCHuMDheRyWhQDjHUTNy1pLbiLR5ScdOJbNDaTd5LLEWvC0w4A12Yl9DG+Evv/umm9ZcafO/W39Ufip6oVIVpIzggnAdGgNi8FD1yuZIifoa6HYKwSoK6MpvkOxAjke2/kh1kDuqlFkw6n4au8dt+AUqwgkl3qtnnt0wT6JJfbon0vI0IHFLGTRC9qjD4UykYS/2ZAowsMCTkZlgDTcUT3Mk9bt8NkD5OuzxI0I6xplGX3SLV0XgODHTn7WoC241lgsKyRLmXl5QbN6RaNTEJ8ILgq2oktaUFSOcqZ+cYEFHGlYSkejaayDe4Sbm49prqOAXXfVYxmPkPTVt1hN4Gcu6Ts5T3gW0lpCHDctJQ5MGyan9NyaYQEsqs770//4LR8nb9cEaU8G33F11pNu+e+Zrl9FDpkK0Bm6g9RzEHsDKQel0ElSqH6I/2aSNcrGV01hgG4xpUXTx4RQ/wRrcuCLF6uHutH+DJ63v4/c3QPbc86oHk6ac7Jg7zmpNZsP6KIHQ7VR7i8NRzd1dzw9
- 1kY3DU6N
- C93KJYPvVZxUya6n0fTI2ejb82WwW5iHoPaLobPkwfifut8gK4ihv1TQcDa2QznYBf97e0Y2tDCyYEw1ZS26hg350c1VBnM8pHh8ZXRtzcXQfgVxMyzpCVzEmDhbPnXGRt+v7JNrs2o9YKNrWiwrHsqmV+kihkY/3N49v+1TFhEC+EfIAf9jFPivPe5UNuXMNUnKvtXiinqfFvNd24GLVR95rZlwDwU1rF5JS1Euez8a72tXE65a1FxJpH8Sz0p3FA0jW9H5UfTet+gxwCXkJdJNE88MWeU2Gza28e0LAgnTJ+cdxVts/pAkXJ2zFdcessoIkEWP2e5GR+Dk8nnWkHT5/OwuPmoYInt6rAJFog7+IqQ0=
+X-Stat-Signature: woubw1tpnm7mw3u8h853itfm47zwodg4
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783509448-478547
+X-HE-Meta: U2FsdGVkX19YWVW0EwxcEiCdAj06PUwZ/TXFG6WJhxsUf1gGSns8AGqp+awzv+e1RjUiawHZszTE4diJYfBaG3OIeTrfmlnBy5m+hVMP4ODr0eMbecDNdwQela4l8exVo3TZnPpA74OgHS70rexzp/yISgqNMs0xZRSaOEoKbCkPkoRjLxqHvnrWK7fd9jT0vJpHWbF1mY0xrvvu+jfhhOOLV0nfQJKdwcJ8h3amzkcSh/GFkoAVOJbZw9qkeudXF4INZUw2dJ2uQMpkU8KKacCzQR8/ST+xbK6eQKNmeMumlQkPqxosUoVt+KnVzte2yOQivemT/0ehKS2pZVBQlrDbQaR9SXHvqOCIX04gY7JDxH9l0DxxiB9K3vDHHJjR9b/N+6QLAxSMfKrJE3W5oRkSrCbxv+D3ZopdBLfKb94NptidHXoIQlKnKQcjzQZ34mbr4Y9TI2n50Bex34oU4E6EEq6gSUlb8Zi/ng/A0QvE9Ic26kLxnl2XH3CK7BVnHeXNzGIHqXnag5U8f45GXt9b9LSkBi/3Isb7Ct/u44n/QADZicJ8L2X8BrazHlOKgfKzlm3Q6WmnbtGmWwyUDtZclpSgEwhlZO0k+4p0FbnQ5teb+nYuWZbYlDqCnVjGbljnIntZisBtjUhaf5WCRldFmGAXCb6qn0olEC8VzuCZ1ZzWLDvs9VV3Bp0VaRI84iDFyxiCel1i0PLYBK3DuCO3L4MtuNa+7582qs9Yh+7UuqAOBFDeI3cQMd8JvpM4197xLrSUOinGF8B7JX1vYYzfru7B/o4t/Y699Gi2ydSYM467tT0OA8d2Y1uD56FIzZGZgAdyS+M1dpYKopQZrTzrtfkufbKKoQlz9INErTE+AaRh9TmzKs3tkXJco9QLV1ysZDnJ/fx3HoXofodqiAX7qlce2ivWv61XkieNiOZKUdqEQECpyx/EDc8zi+Is2yzdFLlo7ILm5i4q5Dp
+ oyJ9a3/5
+ zyGrUsMHVYyKTrPla4ZiRotdE699ey/bCDHtke7oHkHCfrYsp8U7zR2SGaS7WdWY+BoN9am1dbPOM90cjG/8vRKslNdBkesFjltNkgXb+1vkJSkvKy5S8+ELPzKKOpbuFC3LJlR8otz7TqoCN1pNy0WlpI+gRIIcyjZJJLPL9gpXsGN2VD6DjLaeaYkJwhw9HdSOI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,56 +107,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 10:30:50AM +0200, Paolo Abeni wrote:
-> On 7/2/26 7:07 PM, Pedro Falcato wrote:> @@ -586,6 +586,8 @@ struct
-> sk_buff *napi_build_skb(void *data, unsigned int frag_size)
-> >  }
-> >  EXPORT_SYMBOL(napi_build_skb);
-> >  
-> > +static kmem_buckets *skb_data_buckets __ro_after_init;
-> > +
-> >  static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
-> >  {
-> >  	if (!gfp_pfmemalloc_allowed(flags))
-> > @@ -593,7 +595,8 @@ static void *kmalloc_pfmemalloc(size_t obj_size, gfp_t flags, int node)
-> >  	if (!obj_size)
-> >  		return kmem_cache_alloc_node(net_hotdata.skb_small_head_cache,
-> >  					     flags, node);
-> > -	return kmalloc_node_track_caller(obj_size, flags, node);
-> > +	return kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
-> > +						    flags, node);
+On Wed, Jul 08, 2026 at 08:58:23AM +0530, Anshuman Khandual wrote:
+
+> Bad page map reporting currently stores page table entry values in an
+> unsigned long long and prints them with fixed 64-bit-oriented format
+> strings. This is inconsistent across call sites and does not work well for
+> architectures where page table entry values are not naturally represented
+> as 64-bit values, such as 32-bit or 128-bit entries.
 > 
-> Sashiko noted that some drivers may require GFP_DMA buckets, and the
-> above may break them:
+> Introduce a common helper to convert raw page table entry values into a
+> fixed-width hexadecimal string based on the actual entry size. Use it for
+> bad page map reporting and for dumping the page table walk in
+> __print_bad_page_map_pgtable().
 > 
-> https://sashiko.dev/#/patchset/20260702170728.168755-1-pfalcato%40suse.de
+> Pass page table entry values to the reporting path as raw bytes together
+> with their size, instead of forcing them through an unsigned long long.
+> It keeps the printed output consistent and avoids truncation or misleading
+> formatting for non-64-bit page table entries.
 
-Oh, this is really awkward. Adding linux-mm and slab maintainers for input here.
-
-Considering the current slab bucketing does not seem to duplicate DMA or
-CGROUP caches, could it make sense to duplicate those as well? Otherwise we
-could add a branch like:
-
-if (gfp_flags & __GFP_DMA)
-	/* use the global dma kmalloc caches */
-
-> 
-> >  }
-> >  
-> >  /*
-> > @@ -634,7 +637,7 @@ static void *kmalloc_reserve(unsigned int *size, gfp_t flags, int node,
-> >  	 * Try a regular allocation, when that fails and we're not entitled
-> >  	 * to the reserves, fail.
-> >  	 */
-> > -	obj = kmalloc_node_track_caller(obj_size,
-> > +	obj = kmem_buckets_alloc_node_track_caller(skb_data_buckets, obj_size,
-> >  					flags | __GFP_NOMEMALLOC | __GFP_NOWARN,
-> >  					node);
-> 
-> Minor nit: checkpatch laments WRT brackets alignment.
-
-Will fix, thanks.
+Why do you still use __auto_* instead of 'auto'?
+Please, see the comment in compiler_types.h about this.
 
 -- 
-Pedro
+With Best Regards,
+Andy Shevchenko
+
+
 
