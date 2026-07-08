@@ -4,59 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D902C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 12:20:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF3B4C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 12:20:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 606D96B008A; Wed,  8 Jul 2026 08:20:51 -0400 (EDT)
+	id 6A3A46B008C; Wed,  8 Jul 2026 08:20:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5909E6B008C; Wed,  8 Jul 2026 08:20:51 -0400 (EDT)
+	id 62D466B0095; Wed,  8 Jul 2026 08:20:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4597D6B0092; Wed,  8 Jul 2026 08:20:51 -0400 (EDT)
+	id 4F5036B0096; Wed,  8 Jul 2026 08:20:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 163E86B008A
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:20:51 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E84187023
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:20:50 +0000 (UTC)
-X-FDA: 84965518260.11.4054456
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2513E6B008C
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 08:20:56 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A1786120113
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:20:55 +0000 (UTC)
+X-FDA: 84965518470.13.D6951BF
 Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 91FDE16000E
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:20:48 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MoRVEU5I;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783513249;
-	b=X7TQHAqkQwinpM4hUGgZTDIghVPJT3L6Ww4Ss02EtIlVw3eXoSYMNkL0gECAmjeoHZkIU8
-	Kyd9eQk1oR1D+OrqlpePzbjCDbjRyrwenWNrnfTZI+FG0rMUcch+0Xlls9hTR1Ce2MuZH/
-	KoEWn5nQ9V0wklce+fOUAmFuma6U6jI=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MoRVEU5I;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	by imf28.hostedemail.com (Postfix) with ESMTP id DF398C0006
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 12:20:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=klKLKaKp;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783513249;
+	s=arc-20220608; t=1783513254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=JE2eto0rTcmGeQDmN1z5HNPDhBhNNJkb6xZo9UCW1u4=;
-	b=HBYCV7qhblHm9mtM6CGJS0Ag0WrWX50CX6BCaw3ebP3qqEYqA9JXZdTcanm7u8ntClbp35
-	3HTWckGup632oWAdb2F6qCW9JZoA6T41Ef2cWhoipQh+Hhf9KAHjRgJfLdCRQ4NvdAopir
-	SQQwkDw5tUMutS4v+PWVrQMjJVMP9DI=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pLR4NTdd81YwHMva27KFRdPfSNha1yNVphS6scVIA8Y=;
+	b=OSpBkB+kbeCmAIYQAowOJUN//j/EAPKDoXOzUwMiYlte+qEb4pv13F6icOwSXyRkMGmRwE
+	HHsd2pEzlT3H3BVXR2e7O6JnL+Vn/PTMYdQp9J9Y64BQxoekFZu2KtCOFnP205mP2VuS/f
+	5MXs8Al9Sd7TwdPP/zrZ7Yx9Y7z++7U=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=klKLKaKp;
+	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783513254;
+	b=2truHtD7WN68eJjPJn9sNUUVNZ7JqvDYU8XUovIoYjLCJVUKlC/VH6E3ixOppqV1boY4/e
+	1Y1FxLqmtaVg4ALAMn5HRZsKWzbKmgFtFPJn6HhJkHQ7f2vHdLUkgwWBkgvOxc6z+ImdHx
+	tupJqKlNscyJi9+gheIgH2RmCGDJ7zo=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783513246;
+	t=1783513252;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JE2eto0rTcmGeQDmN1z5HNPDhBhNNJkb6xZo9UCW1u4=;
-	b=MoRVEU5IKS3apV7HlZfdXtZ/WUvo7E4qL1LcnrjycfrSCQlpQGlanolDS8Xv436G4Vr+sF
-	hJI9Mgkj5/Sl/AkpURRpVaD2lS5PFDaMf+ZmumQWuy3DC+OSjIVKwxZUKkK0Fq1LSQkayo
-	TBEUrAKEq2AG+v6GX/ra2MBKIbl1UDY=
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pLR4NTdd81YwHMva27KFRdPfSNha1yNVphS6scVIA8Y=;
+	b=klKLKaKplweSEQGqTSBhvVQKqIE/wZDOFqmqFojo/YESsUhqb8YNMex/lxIBX+G7/lD9SD
+	W+K/4Kz5m9z+IKgKIIJx+u11F0X5XEv5iPIIfBDd64Z0U01DH7+k0MRgMmT21SDLSipEYD
+	TTmx4fKshMqLGdALX4PfGjY6QRogNLU=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	apopple@nvidia.com,
@@ -84,20 +86,24 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	ziy@nvidia.com,
 	shakeel.butt@linux.dev,
 	hannes@cmpxchg.org
-Subject: [PATCH v2 0/3] mm: handle device-private PMDs in walk callbacks
-Date: Wed,  8 Jul 2026 05:20:06 -0700
-Message-ID: <20260708122040.861335-1-usama.arif@linux.dev>
+Cc: sashiko-bot <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/3] mm/mempolicy: skip non-present PMDs when queueing folios
+Date: Wed,  8 Jul 2026 05:20:07 -0700
+Message-ID: <20260708122040.861335-2-usama.arif@linux.dev>
+In-Reply-To: <20260708122040.861335-1-usama.arif@linux.dev>
+References: <20260708122040.861335-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 91FDE16000E
 X-Rspam-User: 
-X-Stat-Signature: tf9tpx9hpsiyuxmyqp8tuz4334en7nng
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783513248-589984
-X-HE-Meta: U2FsdGVkX196m87snGgiQeUbuBGlnwOguB6LFjx03nO0czmZ1/dfxrGx6SfX5xCHNOCZzm/n2Q0YAmCYYWAfGlTYbSjUF09cvCyMJGBjOZFJ16lvXsRMXytSzh8bAnEZhjWa2VvUrYxqS0LRejDpeuQjyW+ixS0sU0qLs1/vQKIrK3K/vl2qPFoiW2hTHT/MQdjUPTMyF6pbNIqtbFzFiVCMBKWyNH1Q3Rh16VTIOCJyy9rf1/QoIMgliuzWeDwuuGoqsusnKtV+z3HLOKsT4+0s3r23WzXHpcu6PtAzhloWEHDws21rvLTvPh4AK2fyrfvG0Pz8l+bDqjEKrw1nEz74MBbGik82H5wJ6P3Omv98vZIVdU3kY5cDe3Atp0JG8BcmjRRfkhhu3XLh0a/vhjoKoPtfhRdpBWt/j23py0UHFAl7Gu0qnsVDXMMs2/RLgxNaq7ULTNSPoA33ftEmJg9ggYqQbil2oBSpxsr94MD9loIIHWuqNwUX1GFhEfPoz3J7yBDjvK7SiySZARhbZ4QpcWBHNamXh8FpAWJwRQg2onZj8hBkoJZmXRcZT2PBaSabqyWtybjUhJOzeIWKxRr5tOfDALY+c+nyaohdQzUKASq0dBcRnmPc8RuZP+/i97kHaUeP5dc7yTbEFixJWF9MJ/XMWuyG7gu4MK6FqSyZ9VBrOpVVLw6BR2lQwL0qMn2bQUEvT6MwziPgya0pVWClYOtexRg7HQ/doLkfOHnUjQA3r+t3VfSEpTJX1mPhyu2gJYogjwZ2WDSBAa0MnEqVXz55AxYjraW2NlD702rbdmvT0Pildy57QnMmxL9NifME5F6Dd6qPMgK0mHGin2dVIw2Zbuxd+wkpfKbWtA+FhT4/MuOvNC5IA/bHSh1bkfXAR9cAXSqgnIQxMQBG5TK+tYy2adbp+8MYvHycyZ+vCZr9vHYDT3zHgg08VKi2j54gSjMgTRYc47Lcplf
- NttBrSJL
- QO/BkEI08VCkqWsqVW4E8dMn6kE+tes0JjWuw0HpkzGRKX3qRY4nSENFdC4+K3vYuwrbaMtAO2sE2Np5ZYuNcWMW6VsczzWdYJ+RyTsFbqU4JPUUvZtETV+HPEajN9WzquDJWTOFTe3zlFF4XexVlxkPMFIyv0rX3ejsDJgNoLmlapHRYSZi+sD3qRrTm9cGVwFIOl8x3hAq7Ge2SasFLQBUJsWfPP+1CEEuC7zfP0P7T/nOXh43DUJ7jejoxjXS9Nm2ruVlEYcNJY5Occo6i0BcyaR2hlU4VwR71plze6I83PneThC+M0nACMWNZes+nVWw4
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DF398C0006
+X-Stat-Signature: f39soq9sprat1snczupbb5ufos6idw3c
+X-HE-Tag: 1783513253-295474
+X-HE-Meta: U2FsdGVkX1/lJb94qUGM5FDjON1xrJKAtXRWIFyeHhL7cH1UEYOgEZTIQCBsbYWQLy4RDeChHZDBvDRtS/XXQiH38uNvO0qCOQsb0AQovoxQxbJpHqlVKIVkX6UkMe1XEW4176eaLUrBefQxhQpInOYQin1bQXDwmTgqsrEN1TgKcz9kQjW6Nx5m6rzE08Sz8ZWIe5QebdRYGwb4Sx18OG1RyahUD+VfljfczKS15dmzmqm9OiamkwLpD/JsJZIE8dDXjdfpQFXd8XSf2LWZ9HMFmO40wkoCUvIXpQ7O6Gr4jPerwlp7P79TDD+80FSVLb/irIy9z0if9yYX8hfAyo8kaddV3Z3glHMbU5rWUPV5nT/5JUmbXpjprMIRLTXjkgTr9LAIVQ6M8aoGxULvdiOECtSisJZlcTD/d+/pJo+QEQYdJ6TsxMjnW/lubtlAXQvOCHUTdy7lJcN+eremvpjoLqJ8whLuw8khZVOS4pfw3JPUt48bJbHXRmVdoRazHLpYezlLcKO+qZ7dDbS3KHTPAgraKQOww/pBIQFFz7qlxrMIYmGduTJn9LVMhO9K5OC+H1W4SHN7ssmv4+aS2GPu+WEMEBIyi7q+ezoZ9XrWbl5Vc6H3PBAFDDL6vS+2G0gvezonqvJiHFNdJrZ6XVd9VADO+YYHttRkX1KWiZPi4XMYa4Majp4fXTzRzooyUV0VZnlJHgBdsBEedy2t4xkU0qMNG0/jhh23X6fAgG81ibKQ+f07jMhHT76NZ+JImPs51wDevXQqOrvddVzE4D0Uw4A45Q+8BiBzya0zWGxHGcCxc1sh9W5RlmWdoRrJuM3DyFhnbAigeLrv3VWuLtvOtzDMD+9M+hQ/lT9pPhfW6azN3yhr8XIVIdzTQyxrD2Seh85lnfBSCESHbIx79pEKydQHtNtXpMTmwMXw1dsRzAxfbqP2LvwzXYDiYGaNO7Sn1rBaUBZ20D+qax7
+ 4hqyB8HH
+ VoED1iEGn4fl9Z5A9P45H+GNoVE/Zxa/pV2+xR3kLHvwDIUB3iECfcmmVdI6PnWtmgF8jWuoblcbJrceTu5EBb00hDWCqPmVwmuO3NhMoaII1doRBX0Hk1HRjpBb355bFboFx2nit2G31ZyxXh017nLTwTAV+xROdSz4IzGeVnokdYYz174dfM4LW7AwWnDcJUiHJHxyVntCBYKh/+CoAA8+eQOuZPlkrkBV7w6fXPpyBz9u4VVfLrwSre+7f2//uzwm1UTnPDLC1v94asEkqnyVl54eSZCCbdoJ24UtWuNfDO1f1c5y9L3kiqf/6p8O1+gyLvBZBAHGPjApW0SbQwtC//eyaSsqSQJJEsWSwpz8vFhWBxY/dRZszjwVIdlYU+Xn/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,45 +111,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I have followed Joshua's suggestion in [1] for v2. The patches look different
-but acheive the same goal, so I have kept the Reviewed-by tags from v1.
-Joshua, Zi and Balbir please let me know if this wasn't ok!
+queue_folios_pmd() is called under pmd_trans_huge_lock(), whose
+pmd_is_huge() check returns true for any non-present, non-none PMD
+softleaf. Passing such a PMD to pmd_folio() treats the softleaf encoding
+as a hardware PFN and can return a bogus folio pointer.
 
-Since commit 368076f52ebe ("mm/huge_memory: add device-private THP support
-to PMD operations") a PMD may hold a device-private swap entry whenever
-an HMM-based GPU driver migrates an anonymous THP folio to device memory
-via migrate_vma_pages().
+Mirror queue_folios_pte_range(): handle non-present entries before
+looking up a folio. Keep migration entries counted as failures, but skip
+other non-present PMDs such as device-private entries.
 
-pmd_trans_huge_lock() succeeds for such PMDs (pmd_is_huge() returns true
-for any non-present, non-none huge PMD), so several MM walk callbacks
-that used to assume present THP or migration entry are now reachable with
-a device-private PMD. The results range from a VM_BUG_ON() firing on debug
-kernels, to an oops on a bogus vmemmap dereference, to silently isolating
-an unrelated live folio from LRU in the aliasing case.
+Potential trigger: an HMM-based GPU driver migrates an anonymous THP
+folio to device memory via migrate_vma_pages(), leaving a device-private
+PMD. Userspace then calls mbind(), migrate_pages() or
+set_mempolicy_home_node() on that range.
 
-[1] https://lore.kernel.org/all/20260707191917.3213033-1-joshua.hahnjy@gmail.com/
+Reported-by: sashiko-bot <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=6
+Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+---
+ mm/mempolicy.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-v1 -> v2: https://lore.kernel.org/all/20260707135255.292870-1-usama.arif@linux.dev/
-- Patch 1 now gates queue_folios_pmd() on !pmd_present() instead of
-  checking only pmd_is_device_private_entry(). This matches the PTE path,
-  keeps migration entries counted in qp->nr_failed, and skips other
-  non-present PMDs such as device-private entries before calling
-  pmd_folio(). (Joshua)
-- Patches 2 and 3 now fold device-private PMD handling into the existing
-  !pmd_present() VM_BUG_ON() condition instead of using a separate early
-  pmd_is_device_private_entry() check. (Joshua)
-- cc stable (Zi)
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 914f81863db5..4785b55c02da 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -654,12 +654,14 @@ static void queue_folios_pmd(pmd_t *pmd, struct mm_walk *walk)
+ {
+ 	struct folio *folio;
+ 	struct queue_pages *qp = walk->private;
++	pmd_t pmdval = *pmd;
  
-Usama Arif (3):
-  mm/mempolicy: skip non-present PMDs when queueing folios
-  mm/madvise: skip device-private PMDs in cold and pageout walks
-  mm/huge_memory: skip device-private PMDs in madvise_free_huge_pmd
-
- mm/huge_memory.c | 3 ++-
- mm/madvise.c     | 3 ++-
- mm/mempolicy.c   | 8 +++++---
- 3 files changed, 9 insertions(+), 5 deletions(-)
-
+-	if (unlikely(pmd_is_migration_entry(*pmd))) {
+-		qp->nr_failed++;
++	if (unlikely(!pmd_present(pmdval))) {
++		if (pmd_is_migration_entry(pmdval))
++			qp->nr_failed++;
+ 		return;
+ 	}
+-	folio = pmd_folio(*pmd);
++	folio = pmd_folio(pmdval);
+ 	if (is_huge_zero_folio(folio)) {
+ 		walk->action = ACTION_CONTINUE;
+ 		return;
 -- 
 2.53.0-Meta
 
