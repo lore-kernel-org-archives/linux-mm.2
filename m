@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0399EC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:55:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DA0EC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 14:01:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0F3B6B00A5; Wed,  8 Jul 2026 09:55:28 -0400 (EDT)
+	id 801556B0005; Wed,  8 Jul 2026 10:01:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE7716B00A6; Wed,  8 Jul 2026 09:55:28 -0400 (EDT)
+	id 7D94A6B0088; Wed,  8 Jul 2026 10:01:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D005D6B00A7; Wed,  8 Jul 2026 09:55:28 -0400 (EDT)
+	id 6EEF36B009E; Wed,  8 Jul 2026 10:01:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ABE226B00A5
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:55:28 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3E31A4016A
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:55:28 +0000 (UTC)
-X-FDA: 84965756736.04.5869541
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 67CC440007
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:55:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ApkfZAPe;
-	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F5A16B0005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 10:01:11 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A5AF8C05D7
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:01:10 +0000 (UTC)
+X-FDA: 84965771100.08.4439958
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 938604000E
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:01:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hlMlCC2k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783518926;
+	s=arc-20220608; t=1783519268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DumeYOm4RAsOVh0uQBPFbd4lfQ35Js58LdeDgME4iC8=;
-	b=MEYtt+/zAByDf0Ncxb3lzuY5NOUyA35Ti5NvgGpZh8C0Fc5VnM/IqSPFofm+DfIZ9CSoFg
-	L8l1WWR3TE1tz4UNMsmIfknVhkgi0r8asus9Uw9IUC+XP99/sPmJ/2cSahrK3gWmoxOPWu
-	JAma7/qTiieezlx+AK5C+b00CFsfkY0=
+	bh=ZWBeYBKTsPxmSmrWR5dD6tT/sFVgb0W2FXc/WHMVd3o=;
+	b=WVWzUgInzmaVnqW4d8cDz6BL5v6l7vBKO8scfa7Hkp+dRCd4hQ/Ox/O/yq21FXBJSv+4/1
+	IK/JStaDidrCckPSEqnS+8PWhun1WD/kns9wooyt3kmYYUPATFSMf9QREWK/l75NcXtriA
+	kvZvPXTguj4WLRqcCCMWI/OzZ+VGq+I=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ApkfZAPe;
-	spf=pass (imf07.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hlMlCC2k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783518926;
-	b=BTgwjpDxVuz7s4Mnm1Ww7ey+WPV6UF3nOzQAB0oCuByYeHQ44Yzz+ZuNl70UtNuin/lKcj
-	H60TSu0E/jduxUERIWcNPwS6KtdA6YT8e+kXHNpeR7k1XTwctIO46JEP5xtVxWLyxRDmZ5
-	ja+cmw3xeehwl6LLFOwuc9ClezRQKCw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783518924;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DumeYOm4RAsOVh0uQBPFbd4lfQ35Js58LdeDgME4iC8=;
-	b=ApkfZAPexPaSLNtsfl42DBx1qyChc5EO2KpX8eeuck2SebANu8tOXOMCQ1T+/zOIgmk5bY
-	4ee5xmFvzYgajiV3YeMtkSbdFKoo1DTlJed8IyOX2toProdSQ1KS5WwncTjvJLWvf3O0wz
-	lP4gXygReDf/aARZ4m/KTneai1EYZ3A=
-From: Usama Arif <usama.arif@linux.dev>
-To: Sayali Patil <sayalip@linux.ibm.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Liam.Howlett@oracle.com,
-	linuxppc-dev@lists.ozlabs.org,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: Re: [PATCH v3 2/3] selftests/mm: fix ksm NUMA merge test for systems with memoryless NUMA nodes
-Date: Wed,  8 Jul 2026 06:55:02 -0700
-Message-ID: <20260708135503.180169-1-usama.arif@linux.dev>
-In-Reply-To: <78a3b0e3fb94004c0710872c5bab6f7381b7d63c.1783446924.git.sayalip@linux.ibm.com>
-References: 
+	t=1783519268;
+	b=WOswhElIYLsLbSZyJO3GiFF+L0qLuxQGG0chF4en8ZkSMdoBePV8fpt9NUeQ1cKFMoT0iV
+	Bb4NPlhoaj0yhCmP4GosFwycjggDMcKbyWRafVpnJYkTEslL1sWF+xyIgGeu6zHYDN+xsh
+	xknHJfoA3ZCs/djM2zViE9G3S+IyC7Y=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C9CA43332;
+	Wed,  8 Jul 2026 14:01:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DC91F00A3A;
+	Wed,  8 Jul 2026 14:01:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783519267;
+	bh=ZWBeYBKTsPxmSmrWR5dD6tT/sFVgb0W2FXc/WHMVd3o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hlMlCC2krrSFfA0KjxNyo3KbctkEX2rJPS6YVpogfSe15ml6rs6a3COh/0LmJryoX
+	 YlGBO1jbfzs0dvAEOVNjMlSeiLzCt1JWQJ7jIJ6CGsNInl3uK17PLnbE5JI9PIJCyi
+	 bYyYNXmMYMtOdEL3+t+A+uqHIwN+9YBsIq4jfSk2POFwscKdkCwH/X9KIuLSSfW8ld
+	 RaD4bqqydV0UD6RsL6FoqJdoiVRqFmk1unXjPSR46mJqLUbTy9zRb65NmD6GdvRRGf
+	 pGl6vjrMcQt4AyFoGxsZBXqxCRVywRWHDcafzcJ6OQolNE0zXwWWTz3g6s6T5RQME0
+	 h1t4SvL7ErnOw==
+Message-ID: <b7a50cac-5cab-4938-a16b-1b9091cbdf4b@kernel.org>
+Date: Wed, 8 Jul 2026 23:00:59 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: bj3dcqp7mjbwer4hznijtskotbuf6pum
-X-Rspamd-Queue-Id: 67CC440007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/slub: fix lost local objects when bulk remote free
+ batch fills
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, hu.shengming@zte.com.cn,
+ akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, cai.qu@zte.com.cn
+References: <202607062139095043SOsLi6TIf403tcjPf8fm@zte.com.cn>
+ <84c4c2bf-397e-461c-b898-482d1a49f40b@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <84c4c2bf-397e-461c-b898-482d1a49f40b@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------a7AZcdOAk08A059gQIFz2y9h"
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783518926-483927
-X-HE-Meta: U2FsdGVkX190FBizK2JIh6tB2sO8T6ZGXvhlnjgOe1Onq+t/mFZNlkWIyAG0O2odpXauP7TOxCOARo2/db8E2U/sYHC0v/r2pBmevqgHAfCg6jRg8zY5agvzDfqoHOeZJ7yFr++3FM/O6vcdy+bxUCO+vI3TzwLtrfAWSc9snrzq34MndAs8w87r7wvR5CxyqV7WLYetpx2PBUxTFSkEv5kW3ozNXdnJN3gOPZsZifSnt0kn2Gj3mKdET9TZu+wYr5IqLdE5ace43pTOsgRjDLH/ERvG9F+6f/L37E2fmAW0uJ9e/erV5pc+tMfwMKugH79tIs9Z+IMi3hYHkybGUb+lPTbqSPWO6xzCMogTbzLHCqe3mvx7JfSzYS1xmQwvP0gRU0+RyGRjvx3atn1g7cS1xBSP+ypxqv6MmTJE2kxo4ATI8vW7SVkUOm9ekzsZfpGkJ/WsCxuHIrS7V3/NzReotyeY3c2IocDXTl96zuwpxuVDgfRYWFbgR4+UFJvePc+b0O561PkEAA0Ow9UbBaY4ov3HzeBZrNGQe8W25EEUHt3PPPk+TYcynMZOPN/VTNqVpGPEy/AL5oCCmT+Y/defDBN5T94Vg8GjZz8TR6DBz+7+9K8La7xHMJBEqJQu0+k3X48Jef/LvwdcpbjFawcjzxlmgD+L9wN0azyGbpNBHCt/qVfzI9u6DVj3tdqpaeohVA8MvgMsSu3fzXXgfhNtGPJkUWJXLW1KFtuHP5BcCWG1+FSgdwtSycZv3iQhhujf+xT0cQsxehj85nscST8L4cLmeYvbEbs7mtexj2jfCa+DhjfM06QtstxD1QG2/sKVs4CEoKLEJXHSbtkEy/IUJX5+MAdkIccGGvVNJGyfwV5ACI0E4bkAli0hbhyzPMBNMHpQBoJBNBdbvzOw/tyVmJRvK4GC6B1jG8Rgklrl1d+ne3msIwXMM9zjKRJXBSeXAml1BymycyXtYMB
- bhFKk2cI
- m1zmiTYJaZwRkQFc3Gf5+jjHjqRkJmoALMELIbtg3by4gBDmVTytJzc8uWe4QTTQdGjRAgQhbHas7eIolibPq+dMApMpjzazEw/E2HApzTmwg4i2c7RF1gWfy0FYgb4L6kt2OkEudOfy6aN8HbdEPYamCa3DxcMEDR5SBZM42KqIHUauk99oMAQzbGb86ARn4T3WjdY2nBHnWDfq92derpD3JQFFP0HbcHT3LGfTt+i8yg6r1lypsUJqnIbi8/rNFqZVcMC6nuXS/x70PVlAaWbYu1finnOKYw3nsPwYE1kALSCufCdwN7OKBEkHcKBf/Iv1B
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 938604000E
+X-Stat-Signature: 3o3fhw4ny87mu6sizj4y1zz6r8eguiy7
+X-HE-Tag: 1783519268-79469
+X-HE-Meta: U2FsdGVkX18L3k1Omxbc2LgiXV+hrKjS1W7vMKXOBUnz/X/RxnTBTqnjjGvO/bQoEHoxR4AjXwJWCt/w40X0HF/Z9CgmGSCQDpUz0+ZXOpHbdxMe0Oz5CbbXnNrGgc5pAiyX+i6qZmoxTuSR07bTOjc2ULN1CmqW0cUmj+jkKeTQZ/C3wY8n4N4xETnOy4HxZwttrhY9kK7SZI3xsoa/487+BYcVzHz5ZpqeVRU/S9x6aqf6Qw5QlW1T1Gw5lFnhjCPiA2wL3D2spFE1MlWGisIHb0F8Sq0Ho6kNFuvK06MPFzDZxZVZvrRapiCVyWcgE0cHfgXR5H29W7sV2L3wLLiiohTSgpPZgLVFyqToZn182DZ7sjo+fh8ywrvYFzUUi3YPMfDdTY6KtND0JgCMd1jtt6lO7B3bw91Y6nFr5cGeFb8jjy3crUY4olTn2h4JEzHGdyg5xdC4TygBONR6MZ4oF3QCzePALLgp/ajx/xHsyctn5NCPs0oXsGCZQqXzJe4CiP/xhDDtNnfaUdg4yVYyWk2l3mLT5cvbaxiQQ86zzSE7McH1oxBhrZJgbogbT8qSXVkwhD3t4Sh8ZORUyTX+SsFWvMC7lJTyyVsg1lZg9sN7IJYOMdWIkYZjYZdxeGcDl4cOi6JCf6mjbKq8rGl9oq/uaIAHoNXPFy+k4W+JUFnRG3jkyNOnE7ZXuovJNkB3cZT9PQEmjQ1NIp/NEXsG58qZMA+t+pNyxyEBYcl2JNwwfOrP0dOOUbZtbzd+F9Q0NYlgLwTVHe9IcZw8xnd+9v9volwWHll3ju2lnFCeE9cJyY4UCuQXkpZ0TPVak9lfUxLINGG1SXGCoyVW3J4pueh22tGAT6qgEv05A0fQdJUlYTW7fFLeGQi9+LUdXE3eH3HR9UJYGmFlDNu1ML1V5OEuif7koEPkBWWmKbgs5DYv4HIQz/fKGDE4tL6y+4c8kJFM+wCfLKd8M8+
+ VFHhEtHw
+ v1/z8cVO5awc1MARX1su8fU+tb87imqWADlKfxW6tiOOcoVfoTXZe+hyk8ZK00LVF8mc7csJdDHU12SYYfydlqf9UKIloq/3TgSkAeB0GCE2W5hSEK/NDA17mJr0odiNnIbd18ZSMQv2dBHWxO6bYTunbMheVe3veWrvSa14giQnwxUGFbKeEQqKP8yu7bTm0dnq7TL1eiUU6a3oXOn7Mf2MHR0913yMB79lzPcwJHKJ0QD5PFOXw6ygvGKWZrZ/z3kOBEkHOt3NeCZA6yAV03fZkajjorU3/jh4ScO3LOC0hRGkd4OiFtF04YNbgDd4oDI2/YjF3Za4kRwFcAqq5VkLvvO2+ATJSuKiFpfHh2RvYg1CWbAueH22vl4CoZG9AYY3oR1tLZ9XkSqBYBhNMsZmEPy/vq+gcktJVNElYlC/GJmzqHCxk7GZyYzE7NWQTeqkbB1ZnZ7XSAYGxE/ooS3rrxoG8NoF1yCKRc5eRXWN5BeoHRxhndOMYsw8hrrCmZemLeDsOeVOsaYpeF7/PkPOIaF7JGk+avhJg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,81 +97,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  8 Jul 2026 12:29:06 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------a7AZcdOAk08A059gQIFz2y9h
+Content-Type: multipart/mixed; boundary="------------0pyQRp0tdhi5apzn07P0glTF";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, hu.shengming@zte.com.cn,
+ akpm@linux-foundation.org
+Cc: hao.li@linux.dev, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ zhang.run@zte.com.cn, cai.qu@zte.com.cn
+Message-ID: <b7a50cac-5cab-4938-a16b-1b9091cbdf4b@kernel.org>
+Subject: Re: [PATCH v2] mm/slub: fix lost local objects when bulk remote free
+ batch fills
+References: <202607062139095043SOsLi6TIf403tcjPf8fm@zte.com.cn>
+ <84c4c2bf-397e-461c-b898-482d1a49f40b@kernel.org>
+In-Reply-To: <84c4c2bf-397e-461c-b898-482d1a49f40b@kernel.org>
 
-> The KSM NUMA merge test allocates identical pages on different NUMA
-> nodes and verifies KSM behavior with merge_across_nodes enabled and
-> disabled.
-> 
-> On systems with memoryless NUMA nodes, for example:
->  #numactl  -H
->       available: 2 nodes (0,4)
->       .....
->       node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
->       node 0 size: 14825 MB
->       node 0 free: 1382 MB
->       node 4 cpus:
->       node 4 size: 0 MB
->       node 4 free: 0 MB
-> 
-> the test may attempt to allocate memory on a node without memory,
-> causing numa_alloc_onnode() to fail and resulting in a spurious test
-> failure.
-> 
-> The test currently checks numa_num_configured_nodes() to determine
-> whether sufficient NUMA nodes are available. However, configured nodes
-> do not necessarily have memory.
-> 
-> Reuse the existing get_first_mem_node() and get_next_mem_node()
-> helpers to locate NUMA nodes that actually contain memory, and skip
-> the test when fewer than two such nodes are available.
-> 
-> Before patch:
->        ---------------------------
-> 	running ./ksm_tests -N -m 1
->        ---------------------------
->         mbind: Invalid argument
->         ok 1 KSM NUMA merging
-> 	Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->         [PASS]
->        ok 1 ksm_tests -N -m 1
->        ---------------------------
->         running ./ksm_tests -N -m 0
->        ---------------------------
->         mbind: Invalid argument
->         not ok 1 KSM NUMA merging
-> 	Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
->         [FAIL]
->        not ok 2 ksm_tests -N -m 0 # exit=1
-> 
-> After patch:
->        ---------------------------
->         running ./ksm_tests -N -m 1
->        ---------------------------
->         At least 2 NUMA nodes with memory must be available
-> 	ok 1
-> 	SKIP KSM NUMA merging
-> 	Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
->         [PASS]
->         ok 1 ksm_tests -N -m 1
->        ---------------------------
->         running ./ksm_tests -N -m 0
->        ---------------------------
->         At least 2 NUMA nodes with memory must be available
-> 	ok 1
-> 	SKIP KSM NUMA merging
-> 	Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
->         [PASS]
->         ok 2 ksm_tests -N -m 0
-> 
-> Fixes: e3820ab252dd ("selftest/vm: fix ksm selftest to run with different NUMA topologies")
-> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
-> ---
->  tools/testing/selftests/mm/ksm_tests.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
-> 
+--------------0pyQRp0tdhi5apzn07P0glTF
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Usama Arif <usama.arif@linux.dev> 
+
+
+On 7/7/26 6:27 PM, Vlastimil Babka (SUSE) wrote:
+> On 7/6/26 15:39, hu.shengming@zte.com.cn wrote:
+>> From: Shengming Hu <hu.shengming@zte.com.cn>
+>>
+>> In free_to_pcs_bulk(), when remote_objects[] fills to PCS_BATCH_MAX,
+>> the code jumps to flush_remote to free the batch. If all remote entrie=
+s
+>> have already been compacted out of p[] via tail swaps while local obje=
+cts
+>> remain, the flush_remote path returns early since `i < size` no longer=
+
+>> holds. The leftover local objects are then neither cached in the sheaf=
+=20
+>> nor returned to the slab freelist, causing a memory leak.
+>>
+>> For illustration:
+>>  size =3D 64, local objects at p[0..31], remote objects at p[32..63]
+>>  After scanning all remotes: i =3D 32, size =3D 32
+>>  p[0..31] local objects are dropped.
+>>
+>> Harry pointed out that, although the logic contains a real leak, it do=
+es
+>> not appear to be triggerable with the current in-tree users. To hit th=
+is
+>> path, at least PCS_BATCH_MAX objects, currently hardcoded to 32, need =
+to
+>> be collected in remote_objects[]. Looking at current kmem_cache_free_b=
+ulk()
+>> users:
+>>
+>> * maple_node has sheaf_capacity =3D 32
+>> * skbuff_head_cache has sheaf_capacity =3D 28
+>> * panthor and msm drivers have sheaf_capacity =3D 4
+>>
+>> The sheaf capacity is, at least for now, derived purely from the objec=
+t
+>> size, with the user-requested capacity used as a minimum. Therefore, a=
+mong
+>> the current users, only maple_node has a sheaf_capacity large enough t=
+o
+>> reach PCS_BATCH_MAX.
+>>
+>> However, for the bug to trigger in maple_node, all objects in the shea=
+f
+>> would have to be from remote nodes. In that case, there would be no lo=
+cal
+>> objects left to leak. So this issue was found by code review rather th=
+an
+>> from a runtime report, and it does not seem to be triggerable by curre=
+nt
+>> users.
+>>
+>> Still, the bug could become reachable with future users, a different s=
+heaf
+>> capacity, or a change to PCS_BATCH_MAX. Fix the logic by freeing a ful=
+l
+>> remote batch in place during the scan and then continuing to process t=
+he
+>> compacted array. This keeps all local objects on the normal fast path,=
+
+>> while the tail path only handles any leftover partial remote batch. Th=
+e
+>> redundant next_remote_batch jump label is removed as well.
+>>
+>> Fixes: <989b09b73978>("slab: skip percpu sheaves for remote object fre=
+eing")
+>=20
+> Removed the < >
+>=20
+>> Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+>=20
+> Thanks! I added cc: stable anyway so we avoid unexpected surprises in c=
+ase
+> something else is backported there that exposes the bug. And the fix is=
+
+> small enough.
+
+Ack.
+
+> Merged to slab/for-next-fixes
+>=20
+>> ---
+
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+Thanks!
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------0pyQRp0tdhi5apzn07P0glTF--
+
+--------------a7AZcdOAk08A059gQIFz2y9h
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCak5YHAAKCRCGXBN6rc5S
+1sWKAQC+KhWT6wvchRiroFUB/oFj9EbbMA/6FCabhMvsQqNKBgEAqFTLaSdGYUyy
+k0Z2DDN460S7c7J762T9o7WNYzHL/AQ=
+=vh99
+-----END PGP SIGNATURE-----
+
+--------------a7AZcdOAk08A059gQIFz2y9h--
 
