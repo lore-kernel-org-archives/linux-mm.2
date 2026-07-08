@@ -4,122 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36D3BC44501
-	for <linux-mm@archiver.kernel.org>; Tue,  7 Jul 2026 23:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D216C43602
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 00:08:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E1C96B00A0; Tue,  7 Jul 2026 19:51:50 -0400 (EDT)
+	id 795526B009D; Tue,  7 Jul 2026 20:08:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 017496B00A1; Tue,  7 Jul 2026 19:51:49 -0400 (EDT)
+	id 746496B009F; Tue,  7 Jul 2026 20:08:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD36B6B00A2; Tue,  7 Jul 2026 19:51:49 -0400 (EDT)
+	id 634DC6B00A0; Tue,  7 Jul 2026 20:08:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B0F6C6B00A0
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 19:51:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1C9FE8FA87
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:51:49 +0000 (UTC)
-X-FDA: 84963630738.12.9DA18A4
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 49C184000A
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:51:47 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qzZd2m9U;
-	spf=pass (imf07.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 344856B009D
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 20:08:43 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E9F64060A
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:08:42 +0000 (UTC)
+X-FDA: 84963673284.07.D31AB70
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B72F120006
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:08:40 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LIHFxdyh;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783468307;
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783469320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NjoZ3kU3AvUL0LV6smVKBwxGmvcLVEM8ZIL8h6Quy60=;
-	b=s9R2i4fByeTczA7hG1eOGnRFASK7TeXjVrkJoiJEMojiOxcmX3b28RVdfnxwlETU8fh/9E
-	1HWG3zi54Iq+f7iUrIX7jKtlsI5OEwWqiyE2ZgA1VaGBzzLnNOLCV5ZZQ/DSjwFBNx4LqA
-	6At0TPO2UAhV3lR8cnjlcXTori1L6Os=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qzZd2m9U;
-	spf=pass (imf07.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	bh=kb/xvVbvZ2c9F92U8pIkmxcQRFXF7zJtJ9eluQJqJNk=;
+	b=2RBdbnouiasANgIOB0yZVetDz0yJHB1a6bm3Z56wiqTwQGD2fvYU/If2LTYDydRLZ26txD
+	mHc91M/YGguSV8e/4Oh+N+oKxUIBPFu4Ag1R5MNnI9GGj3hK2ERdiZsIxJqOwdKGYnCjzf
+	aK1++qZDLEHEiOZ/N9AJ5Hm8vv4Pp3M=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LIHFxdyh;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf31.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783468307;
-	b=Uu1NumIQY4eL3z3BDyVHDEP3sbBRupl+TUNxvVe13fK9dlI82InxjNfn1iZm4Z7MfNmIEY
-	42ti/P4MHJ/aQOuSoHqMpJOl+4vMLhvKiaAsOwe3b1Sry3CPy3TWRZHAl0GzeAZRiNDqWX
-	37+JCHhuFXa1E6lE2qKZoDdoWREJGJc=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2cc97653887so1276455ad.1
-        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 16:51:47 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783469320;
+	b=XOK4LmpTBN3eSuf4DDVd8KDLj7mST0gljsSrPqX1cGHg2iufF767zBf4u22tEJ4OGrLzI7
+	xKz+b+jDkHqYxz5Ur5vr1dR2vcrgcbPM8PfSDjlCCGUxHEb7jWODHnEt2vZUjkjcwggorp
+	zCuBJS87DAykSF3FIdtavklanFL7MUo=
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5aeb77b3afbso97374e87.1
+        for <linux-mm@kvack.org>; Tue, 07 Jul 2026 17:08:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783469319; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eM9BoWGS3xbRGtZ55acxcqnxImDA3+kRqf7EJgdK07OkMAvfuBNMviXINKdOnB7DiU
+         586IUG8OSR9Ylh1RFsYKEkHPPYNxT66hEbYTcDCZFKRz8qg5P8M4l7U8AKqV0UlRpadZ
+         SU4LA4hcUHe5xTJVSEyPgxiv2h7cBxcx1JR96+CmoiM/nMjZA/axvgUpIngVV0OtKnX1
+         XS0iyy8iCsWVQcHjk7gtc8HLYJI/lxQZYindNQrQ5pQ/Op4tpCJ+eLzezWz1SWFDjN81
+         Psr4l1YFxOV5gGviT7TykKqrL4fsAAA70/5q0tT1oLzk5mC/rtIs5KxFAK1Spsn1z4Pv
+         mvVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kb/xvVbvZ2c9F92U8pIkmxcQRFXF7zJtJ9eluQJqJNk=;
+        fh=/l3zQ3arxXaOvB5xxzLv/E6e27u3g2uewUacqfRg1ks=;
+        b=oN7KkUOOAmBnaCsOoCLl4QIC+cUtOlO87B+SS4Sa7kvm6iPAXplLYrhoDycWRTYgTM
+         hvsiU8ZOCK4RG4RDkXV5MzNQ37L7KJ67opkAUG06Af1Lv40js1Sx4UNnDXO0GfUaO6h5
+         ezIAPpfef+Ih+deVN1yyVZdz9K2IJKupE8m7py+L+0EUhc4klnV5g8RM1WUbaapaYL4/
+         XtuIB3IgX2aq1VhgLIpH80ujgmydratZ04JqduTiML09NOk0AYTnYAKtP1s05f9JftEl
+         mLgBgynpFOrAo71hQU0rAhiOnlhvrNchZFhiAhI8Tc9XhONFwgvRAHJ8T0tZoU1/S6MX
+         QV6Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783468306; x=1784073106; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NjoZ3kU3AvUL0LV6smVKBwxGmvcLVEM8ZIL8h6Quy60=;
-        b=qzZd2m9U8xnH0od4sOHmeu2K+MX1uKqMZg5KAve0fYMh5ywpPqnQTn2zhLg0jVRSDF
-         iKX4ZeWv8zzWIu29sVIUIIAC3lr72wznfJ6x5Rp8xjiHVnFCUpuKU2YG3szAXtCxK8JC
-         k9qvSXacC0cgjtTC9vuImtXwyMzaKNFvsMIl+Sa6zi40D50b9q6SeiUXb6VfTFsbVaIE
-         CjJNQdJ6qpkh+bybPH6ywL+0CCVd1UFh8W9IRDD9PVeK8vVaMCqfeRuQ9SuG0H+w1sOa
-         JtED/vZYxVCvumwCVR2PgOMs1UB1CNEbxMrkH8MCCFDy3Gwa1fYS78troqywVbuzlL2g
-         ncjA==
+        d=gmail.com; s=20251104; t=1783469319; x=1784074119; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kb/xvVbvZ2c9F92U8pIkmxcQRFXF7zJtJ9eluQJqJNk=;
+        b=LIHFxdyhVdVqdJ0lxURhY7O3FXXM+pJZdZ5Xy9AOlKmILRKTY0EgbbxDPEKGVzooRf
+         vtdOZpvEwC7RZZzEzMYgMZrLs8u5vA7t+KFFjMd0o4NtL3lYUThmoBeGwahEf7MFgmIK
+         VrOrFpylcOvkp/ZMz0BxQ/mzfadkaMh2RVTQCGFliYuLKoA1LwWEfCXfbHlTVsguG1QE
+         bb9CmI8WpIaWk/E2pEoLzCX+gCrjdxEySN2/F7197R0PEWdbrhUUGxvHUk7Un3X7GJEF
+         NjvYYaPYemYZ8EBWp8Oqu9odlomWlcS3vimeeFuKHXiXuSnL900JjAwGV0ycaI9X6L/7
+         D+gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783468306; x=1784073106;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NjoZ3kU3AvUL0LV6smVKBwxGmvcLVEM8ZIL8h6Quy60=;
-        b=ZMRDZGGKbOc6qH+FouOYtTmGWc4THve5rrqbsxFer6Gyhl9LAzLamq14yosl058Uln
-         epkkOSIYD5osran3y6vzgq6kp+4T5/KLocRjL6FrqTM0RDpKhIIHjm05/h+0d9wGdyeO
-         OkPWnyWBMwQyeBeBWfPO5wyFowO2jPhum46qOjg7aYvyVlxYhSxvsGnsNp3ajIS8gU70
-         KthaIEBuXlikFHryeVYK7V4NywuRDlcNqb5wnqbOlCRQB+bopHEjaWRmx55FmoV0LOtH
-         6z8aS6nBtGDFV6kaXNKkA3H23nQ0/cPVKO1qFUC8zpUmdVreeALZQgb5Q6OEsP2OfoHu
-         rJfg==
-X-Forwarded-Encrypted: i=1; AHgh+RpIjaRd8JH0faWbVIEQB5xOa7LdP5TW17oMAP+eOY2BoMRunwpmcWu1iXhrnYvo0Ayb0CAlDYJsXQ==@kvack.org
-X-Gm-Message-State: AOJu0YwSldvibfYGA8+rD9cd/gayNjGj8SknmugldeCmEOzTyoK3OCv4
-	syOa2msPsrshdbFdVv30R8EdxKDmItF4I6utnwq6N/ypLd2JeAtqHlDI
-X-Gm-Gg: AfdE7clnP3tlY/dPRasCoxWZ50TlI/adr2Qf3JZ6AdWk8S5VZQASna36t1VaHV9Udou
-	+gCGG52eYMyq7mu3vrYX7oOixLo5AahG+FTZmkqpzXr1cqn1girQdw1HpmqKAyZq0gtewVVV+rJ
-	2z1dvleeYB+QpkZc1XtoIA3VIKqND6ZER7CIrTz2JB7algGHzV02oVQ/C65xADiyBsEk7y+r0lp
-	5AEJUoLVYgQFQtrmWTh8DJGYOJqG7JW65pS3prYxw1zPPM6Vk3bnZIrwZjyR6mVoQ5F9U7pUtaX
-	Z9Ne8SUPBtnDql6Wle0nmMTVrSPq1E2kDLCMTAsNTC5jzqw3hIZqE1xjFBI0d7VSEisYyxFMiS4
-	v8T6UZQv05sBc+MZfDlwe/IA1zx514k92efiGj2s820xxkfRGDYqjOZSW7RKscDf4WmDT+xpBJz
-	gAqYoAMivOPCKGWzTcVESzFQmiE/FkwfSPlLJaMhnZsNFNqJ4yzNnI0NlZk5X04+1GeMqPPW2rT
-	VPiyKJmsSKK+6BHhw==
-X-Received: by 2002:a17:903:2286:b0:2c9:97a8:afe8 with SMTP id d9443c01a7336-2ccea3d8697mr1162125ad.43.1783468306055;
-        Tue, 07 Jul 2026 16:51:46 -0700 (PDT)
-Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb877sm18937045ad.14.2026.07.07.16.51.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2026 16:51:45 -0700 (PDT)
-Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
-	id 0322B148F31E; Wed,  8 Jul 2026 08:51:45 +0900 (JST)
-From: Hajime Tazaki <thehajime@gmail.com>
-To: akpm@linux-foundation.org,
-	liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	linux-mm@kvack.org,
-	geert@linux-m68k.org
-Cc: linux-kernel@vger.kernel.org,
-	Hajime Tazaki <thehajime@gmail.com>
-Subject: [PATCH 2/2] mm: nommu: fix error handling on vma_iter_prealloc() failure
-Date: Wed,  8 Jul 2026 08:51:37 +0900
-Message-ID: <20260707235137.498738-2-thehajime@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260707235137.498738-1-thehajime@gmail.com>
-References: <20260707235137.498738-1-thehajime@gmail.com>
+        d=1e100.net; s=20251104; t=1783469319; x=1784074119;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kb/xvVbvZ2c9F92U8pIkmxcQRFXF7zJtJ9eluQJqJNk=;
+        b=ZbyvCTggOYULHfpkq8MrI1u/txgUIfW/3D/SU1BRKCZLbfsY9Z8+Gv55MBihAOSxyC
+         n5bY2Jb6K1hjfSgscWhvcMnqVheeAxau2b/WMOx2UBZ2faf3G4R9KGJcslv/w5gj2K1M
+         WE7DghCJQg5x/yTbEKyG/e3MYF5kBf3tXapbhx0H2VnhcOxYPv/lfhEU3EAQe+QdTzaO
+         j4QvYq7jldGngHgVq2KaKJYU8OXuOMi2Z2l0zN8R6HqoUMXkQ/UKMTFq5OQJGhwUWh6e
+         +i3yW7HKxj/2xSh+lOxO4rpPKuj1yWcsTQFkoqPPzR1XOpZbUhuUuaOvoxnGIc6tFZA5
+         fEJA==
+X-Forwarded-Encrypted: i=1; AHgh+RrWMZKUNMUP3zgA+W9fuETWmGwAI3RePgutuDJEinlNbruhBSXZIqYwnanOF+4bYW4qDo7cDtLXLQ==@kvack.org
+X-Gm-Message-State: AOJu0YwGzhYQf6aU/dS0vlLuyay/q9fOoX7BwXoHrZYWkm/oPIGNUHCW
+	5Ro+Pi6AQR8cMVKprpW+7siuYMLqeysuBrApLjATJYaTZk2YFJGRvTbM8CGM8jC8HjKMytDixZ0
+	essjnTEiufgEFRvyi+egMwd3IkN86eWI=
+X-Gm-Gg: AfdE7ck/qp+tNvNEsNdD8LMU5pipb/s4CtBSayyjihG/OtMoP5LXZbG5UN5BiRkL6Dk
+	fzSIjKRpfJgUCVXBVEOnQHjf+vN3TB0GQCWRF07VDeOaVYzk9m1p8h4iFbJD7HiJRUmekM9KKs/
+	I4uK/wizXLO2MEoviygk4QG6e3Too8cZT1wrLjSlFQ7NwZkNPFmoaypIEdySAUuMGh/eOZGEOAJ
+	0IK+rpSROo20F+FAoQW43lM6bVxtRnXERSv1cPyJUlxDsKO2CPqRWmFNQwdzptL7BbxgnBS
+X-Received: by 2002:a05:6512:8046:b0:5a8:8db6:b3d with SMTP id
+ 2adb3069b0e04-5b01147f555mr40151e87.24.1783469318736; Tue, 07 Jul 2026
+ 17:08:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9bt38dt6k1kz1qayfuwisidno97bj54b
-X-Rspamd-Queue-Id: 49C184000A
+References: <20260608210618.3437216-1-willy@infradead.org> <20260608210618.3437216-3-willy@infradead.org>
+ <CANFS6bYc5uSSYWvwJZ4BgjzF0_bO9rkcFNvX2vVHnzWDi3kpuw@mail.gmail.com>
+In-Reply-To: <CANFS6bYc5uSSYWvwJZ4BgjzF0_bO9rkcFNvX2vVHnzWDi3kpuw@mail.gmail.com>
+From: Hyunchul Lee <hyc.lee@gmail.com>
+Date: Wed, 8 Jul 2026 09:08:27 +0900
+X-Gm-Features: AVVi8CdGi_C6rE3txMZQnG-e3IT5Ry6oWBkUYMiraSxo4xYpBWUS0o-T89fKM6o
+Message-ID: <CANFS6bZZN6455QLhPE=yYi5fAHMt+MuqumtW6BCg__pESLiLaQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/6] ntfs: Remove use of __folio_index in handle_bounds_compressed_page()
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, Namjae Jeon <linkinjeon@kernel.org>, usama.arif@linux.dev, 
+	lance.yang@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783468307-645229
-X-HE-Meta: U2FsdGVkX1/qarjwGRPVAXE4JdB8L1LO68c1lqiC+Laqu74Qj5yXBXTV5zOUFnxWLodcXyf+F4gzQ0GLdFNEUxG/xR3iGFlbYT80Jgp+4S9u1GCNuc/b30vXyxZNiaCjdFhZ3BG9akYIF5AX+87afNX6DRjU6IEqDKoaWmgxN3+qJgPdDAetF3R1tduH6oBULYqmeEktToDeFLumr/VwZOW37mMARiR78zK/WBwBYDmAwaKJvsWeOAVQWDFdChsMqW5c6lKHB3bcjCtGEXdrm1/3qT7wQxaiwLuIktHyjegpdWXeTB7qF0iz0IxKdCt547wQSCqSy1c/NpbeQaKfnVoCYmwjr9+Bp3aieHEHMHGjX2DGd5d7cil9vz76E+/eqDhWwOefRjTyLwIEwsWRTpC6dHNCR21Vs+SG2Ua3aSBUyOrLHQwfZq2yRla3/kwrd5tUt5ZNZR3hPL2C3QW5CLs2XrarZGOp3Pa9yVCRSo5Y35TP3+viLYF8gPXrsYG/1c+h4raRTeLFUG2xU/CUoX+BF+4vcFKieemprnnnTC2Nyg3pB9F7OArcyQ30U2CHt9ohBfD+9QOAMhtD/E8lfgqKnt+cbb00tmxnaF432cyU6Lf8HYX21Cnre07R2PbFTDeXeGFv4gi6X3repC3/TF/FRNcoVbP2qJroa05udltuJ5Vl6o3i99r4WXTbcfFlwaEOcNbDd10ji4a5I/dCrMaHgW4bEBFu0TwbWq9XQ4yKqsMtpbWmwpsAfpvYIx6+ZiIWsLRfqzVrmhUU0VM6JHvFFe9ltA1LYxOlYJJj0QZnf/Rot1VpwuwgW5hACyrrfA2br3YU6aRlPGnCa/+RRsZ6bqJa13KuUQ5P1Pny5tTOvSLA0CjHsZN6yYF1n4PKibPoLeo+XH3xTaQE6OzznhkUbJMKRilzgP57sEV0EKglGjCDbe7J1XHW/Vc1H9veoqFiannsHVGLRglG4cf
- zmn4ej24
- +RNJqYTbXHWeEzFahgR7rQIjYSOiKoAqWiGa1lh/f60pqp8V3w+p1U5EYoibJqmIJbh37dEFHzuiL6tdJNLo+3VeumGtlkd61OfB5SbEvSXvmVVimR/vE+SAh/jUOydMVJz5DmuyCxK2SHV4ir2K1dUAWlbccfKVai5c8FugfaltHBA2eAHUDoaBEf0nmuG/GN8M0C8lM/fcVxMwTDmWC4sWh6a9IpjUiCkK/mx5cSmz5+xiDiNi5zuRtBom/rBvX1iQkOyPsAAtV0B//v0/zWeSVJCsVdWF2TmEHaycTvwWPyec6GZRFT4yGfDYJiqzbdY0YIKy+EEU69e1fyBs5uYxYHevhu1aoRng/eBHwcHeB9u5TrZ996G63L23MEfg1TkcN7r2IDTvZxFybZLvjJniqFpUDjNJpRWNeiVUV0mRM0naisIJeoZpONPlWalPy/C30SW0GqZhDb/ebNHJ0X47ofG/qLKtN78NG5aQVp8KVpKr2jtgYHF4gZJpj/PGIA8AsPmm2kUh226Y=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B72F120006
+X-Stat-Signature: yjmcbio8j1qqfds4539mjdcsuewymbhf
+X-HE-Tag: 1783469320-123500
+X-HE-Meta: U2FsdGVkX1/8Lru9wEe0DUNeNfcpmwnkjIVUo7tMQKM8l9hyQN5zLIphiE5uJ45F6wpCHKGRAUNRv8ZNSPJoHamVnjwb69R/225l0NM+GDV07ATEmlcTQVAMNG9CjSwgk4aaZ6GD6/vAjfwjKU54c3FJ7U0Ms8Q0qYop8/V7bBP3xe4oxrihanFYi9baHoQBhfn+mAbnzGVWchx3B9j2jl4jfHnU9DktcDebu/0ti/wnXCx3ppyy2I/1VviElMN+Dyj2GzPdVKH36ye3ipSMHQN3C6UOuY9dMD13THUfnqAAOr9mtKG5Ui22pCV8x6vuWqU7wMWuhrGp5bFMFwKDxQD1GU0JeosEiDK2JplV+/9LBjbNDhlpIlXgXp+myiLRVTHN56Q1oVoLz720QXZNsZ4x81L/R+OH+uAG6kOuu74kxNzIFjozOkOkZ8YxFpnS6UbK+b9eYsY8kWLHJLohbYsHwIFn4KBY2x1Oso43xpygLr4G7NCYVhGJBiaytvMIcOEMqbyZUDLc3TiwVBbohVhRziGDzVisZA9/H0xxA7y8dtIVHUmEMoGfMJK+AF5ggSq7rqCFW2ZPNgBgR39FRkiGc3swyaFsD30DLMYZdoeQrN3t3AtQaioBa7g12wmWlGI63L8RyBjw4DUikYvuz0hGlZxtdZgkK6r+wr41OzOBlRyry7Q4QG3D3RGoQUtJoKXxwoP+gq3/qYrWhi9FBjZgeNUT6/nUshTApxsD+CmAsenHKE7c9AZVija9cYCgudrsHtlwelQjoKUq4AlwzG5jGrO9dAdJEGgxELYBl0UfUIJE4dfyDEVa/o1fXjO0ywf0cn/NWeOs0tGARJuc+ysdFSm7BP/17Ynp6An4e+mlJmfAIczz3c3ZvTujVz7IW98ViolLwvTGjgTcH7v0ElaYTUdm3HMpkQSdqpgIiNV2IJfCde9gM4omqqV/CbihqLxy892xR7+4r2uzUa6
+ RkjThRXi
+ OCqUb63YqdzXFN250NRqNb2779wLC0wFTrkVR4zvwSu8IQRzwvrWFDCwx8ahrAF6YdLd38b5quxPljktxERWh4WHMnVZ65l68k+05DmlvS2Llh4QnJ9KTjtuIXtYw81E7ooQPF/1uPtrKGgkS5AqOThiY0Kvdju7AbYTQKOe1I9SrOfc5FbIPB4R5gLWaKPfJ2jZPDAs4j8t/RrfWC8MSaFlsVnkk5FhdQc1wn/jY7LjrtxCbwO1wjxC5kJ6g95Qb7UzAhU5uVAHd0MLAUhQNRdfiy3r3mykqT8i25a2Xsob+Diowiw7ikybmABW1Q0f3OQ4+h8SYor2OWZsIbsxCtrF1QX9rf5xMJa/54HHIguTxUjsFQMuJRo9O2vEtFlq/y/Cbe14wTLye7PIy9T1ZoEOY/KcFUa5fi2VVknwaI8c/mBeG1559rrt1ekPs3BmgfMwEiReMs4REpHsKHs5LNKjO/jg/gGMT5MSnLiquB39aClMLJgH2NVY9Vpe2T66y6uq09ZgktdbrFcAmeoQH4S8R18QfReXF58T8uLKv48YI3IHeS3DPhxXmrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,81 +140,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If do_mmap() finds an existing overlapping shared region, it increments
-its usage, sets region to this existing pregion, and jumps to share:
+Hi Matthew,
 
-	region = pregion;
-	result = start;
-	goto share;
+2026=EB=85=84 7=EC=9B=94 6=EC=9D=BC (=EC=9B=94) =EC=98=A4=EC=A0=84 10:58, H=
+yunchul Lee <hyc.lee@gmail.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+> Hi Matthew,
+>
+> 2026=EB=85=84 6=EC=9B=94 9=EC=9D=BC (=ED=99=94) =EC=98=A4=EC=A0=84 6:06, =
+Matthew Wilcox (Oracle) <willy@infradead.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=
+=EC=84=B1:
+> >
+> > Nobody is supposed to use page->__folio_index.  Use page_offset()
+> > instead, and simplify by working exclusively in loff_t instead of mixin=
+g
+> > up loff_t and pgoff_t.
+> >
+> > Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > ---
+> >  fs/ntfs/compress.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
+> > index c904858dff3d..b279f38636d6 100644
+> > --- a/fs/ntfs/compress.c
+> > +++ b/fs/ntfs/compress.c
+> > @@ -105,13 +105,14 @@ void free_compression_buffers(void)
+> >  static inline void handle_bounds_compressed_page(struct page *page,
+> >                 const loff_t i_size, const s64 initialized_size)
+> >  {
+> > -       if ((page->__folio_index >=3D (initialized_size >> PAGE_SHIFT))=
+ &&
+> > -                       (initialized_size < i_size)) {
+> > +       loff_t pos =3D page_offset(page);
+> > +
+> > +       if ((pos >=3D initialized_size) && (initialized_size < i_size))=
+ {
+>
+> I think the following change would address the review comments for
+> this patch and patch 3/6.
+>
 
-When vma_iter_prealloc() fails and jumps to error_vma_iter_prealloc, the
-error path unconditionally frees the region:
+Would you mind if I continue working on this series?
+I would fix the above if-condition and add Co-developed-by for my changes.
 
-error:
-	...
-	if (region->vm_file)
-		fput(region->vm_file);
-	kmem_cache_free(vm_region_jar, region);
+Please let me know if that's okay with you.
 
-This potentially leaves a dangling pointer in nommu_region_tree and
-causes RB-tree corruption.
+> if ((pos + PAGE_SIZE > initialized_size) && (initialized_size < i_size)) =
+{
+>
+> >                 u8 *kp =3D page_address(page);
+> >                 unsigned int kp_ofs;
+> >
+> >                 ntfs_debug("Zeroing page region outside initialized siz=
+e.");
+> > -               if (((s64)page->__folio_index << PAGE_SHIFT) >=3D initi=
+alized_size) {
+> > +               if (pos >=3D initialized_size) {
+> >                         clear_page(kp);
+> >                         return;
+> >                 }
+> > --
+> > 2.47.3
+> >
+> >
+>
+>
+> --
+> Thanks,
+> Hyunchul
 
-Additionally, when establishing a new private mapping, do_mmap_private()
-allocates physical pages and assigns them to region->vm_start:
 
-	base = alloc_pages_exact(total << PAGE_SHIFT, GFP_KERNEL);
-	...
-	region->vm_start = (unsigned long) base;
 
-If we later fail at vma_iter_prealloc() and jump to
-error_vma_iter_prealloc, the region struct is freed, but the backing
-physical memory doesn't seem to be freed via free_page_series().
-
-This commit fixes those issues, discovered Sashiko, linked below.
-
-Link: https://sashiko.dev/#/patchset/c8513ee5aa8444ec9bf6c276043c9f833016a2fa.1783304131.git.thehajime%40gmail.com
-Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
----
- mm/nommu.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/mm/nommu.c b/mm/nommu.c
-index ad619611e83f..24bd8c529c2a 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -1222,9 +1222,16 @@ unsigned long do_mmap(struct file *file,
- 	up_write(&nommu_region_sem);
- error:
- 	vma_iter_free(&vmi);
--	if (region->vm_file)
--		fput(region->vm_file);
--	kmem_cache_free(vm_region_jar, region);
-+
-+	/* if the error was from shared mapping/existing region, don't free the region  */
-+	if (region->vm_usage == 1) {
-+		if (region->vm_file)
-+			fput(region->vm_file);
-+		kmem_cache_free(vm_region_jar, region);
-+
-+	} else
-+		region->vm_usage--;
-+
- 	if (vma->vm_file)
- 		fput(vma->vm_file);
- 	vm_area_free(vma);
-@@ -1240,6 +1247,11 @@ unsigned long do_mmap(struct file *file,
- 	up_write(&nommu_region_sem);
- 	pr_warn("Failed vma_iter_prealloc()\n");
- 	ret = -ENOMEM;
-+
-+	/* in case that the region is allocated via do_mmap_private() */
-+	if ((region->vm_usage == 1) &&
-+	    (!file || !(vma->vm_flags & VM_SHARED)))
-+		free_page_series(region->vm_start, region->vm_top);
- 	goto error;
- 
- error_getting_vma:
--- 
-2.43.0
-
+--=20
+Thanks,
+Hyunchul
 
