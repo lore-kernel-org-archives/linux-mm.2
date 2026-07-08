@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66906C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 03:11:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 802CEC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 03:12:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC79D6B00B4; Tue,  7 Jul 2026 23:11:41 -0400 (EDT)
+	id 0F74F6B00B7; Tue,  7 Jul 2026 23:11:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D52886B00B7; Tue,  7 Jul 2026 23:11:41 -0400 (EDT)
+	id 0AE296B00B8; Tue,  7 Jul 2026 23:11:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C384D6B00B4; Tue,  7 Jul 2026 23:11:41 -0400 (EDT)
+	id EAF426B00B9; Tue,  7 Jul 2026 23:11:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 945E76B00B4
-	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:11:41 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 181EA1A062A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 960086B00B7
+	for <linux-mm@kvack.org>; Tue,  7 Jul 2026 23:11:42 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C0D87120671
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:11:41 +0000 (UTC)
-X-FDA: 84964134402.30.D0B761D
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6DA39120007
+X-FDA: 84964134402.16.0C9B55F
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 10B3618000A
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:11:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NVSfd1YD;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jrTdLIR+;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of 36r9NagoKCPkkuipvhiupohpphmf.dpnmjovy-nnlwbdl.psh@flex--jthoughton.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=36r9NagoKCPkkuipvhiupohpphmf.dpnmjovy-nnlwbdl.psh@flex--jthoughton.bounces.google.com
+	spf=pass (imf24.hostedemail.com: domain of 36r9NagoKCPkkuipvhiupohpphmf.dpnmjovy-nnlwbdl.psh@flex--jthoughton.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=36r9NagoKCPkkuipvhiupohpphmf.dpnmjovy-nnlwbdl.psh@flex--jthoughton.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783480299;
+	s=arc-20220608; t=1783480300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nqMjZmPsv3+liEaC57LQksKr8l/QZSzOSPi/lkAXRvo=;
-	b=s5E4XgxvSfoyJmepmfMtVkHn+7ISNe64L7WQcs+7Tt4qyqIvykeiW3WXhP2zl0pWo5yeCd
-	TNpaeQD6GF4iXBjzUQN21nY9ylQAStX95Ah37Z9KxxSYnpXysJmyvc199XN5nPO+82i3DG
-	R59O1sABGUZLK55jPJtgBNNQuqG0nag=
+	bh=Ibpf6/Yw4Qk7w5nMnSeu5NqKAQPPT11UDasodOvdS4o=;
+	b=XGK3HpNzyk+DdSy177MnT9cMipL6ixUcm0u9aqrp9T44jCYAI9pGFd4jhhi3NS/gwJCIot
+	C+s3R4kf8j9P8qF4mqmCvwRdADfsV6DbUpozg88Zhlkmw7BX/ogshZg8B1JLSptlWOmVXV
+	WQSvDDrCGAg3dN776Zy+hrHBsx2EhRw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=NVSfd1YD;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jrTdLIR+;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of 36r9NagoKCPkkuipvhiupohpphmf.dpnmjovy-nnlwbdl.psh@flex--jthoughton.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=36r9NagoKCPkkuipvhiupohpphmf.dpnmjovy-nnlwbdl.psh@flex--jthoughton.bounces.google.com
+	spf=pass (imf24.hostedemail.com: domain of 36r9NagoKCPkkuipvhiupohpphmf.dpnmjovy-nnlwbdl.psh@flex--jthoughton.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=36r9NagoKCPkkuipvhiupohpphmf.dpnmjovy-nnlwbdl.psh@flex--jthoughton.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783480299;
-	b=OqjI6Jdc4aDWLqZ4KLeFZWrWK1hRyfvHMVZ1r7fx3yJlmbP0lGFi9+dlAT36jLj77kAPjn
-	V6K0i9HI1FZcKmhLS9sC8bDirQOuWl6zX+CepNzOqQLWJ3haSK1NAN9Mnel9D3/MMe20DV
-	PSYRW7fyuBZvyJ3Lkd/aAGq67fvymLM=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2cc86a9ef97so6299945ad.3
+	t=1783480300;
+	b=ZoxNlC1ojK+9SgPOShoqMffbQXuC+mOdMXrpekAP+eeBvrrGA112JpMPkn4i35JSdh/lde
+	mPn+iO9LAWQUfCozcbFlEw1+aUQx6pHAImpPbkmlYT6KqzG3+JkUWQiKR4mdj5MvLeDGzu
+	REigH2JUB4+e67kNIpWrYD6XsYKEUcQ=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2cc5faecf01so7049675ad.1
         for <linux-mm@kvack.org>; Tue, 07 Jul 2026 20:11:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783480298; x=1784085098; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nqMjZmPsv3+liEaC57LQksKr8l/QZSzOSPi/lkAXRvo=;
-        b=NVSfd1YDASDCqKW6PyEG9sr/19FkUfKWvBQ2VTdAJwPNCX8k/E9hWgX0NU7DgHtOM0
-         dTbJOG1ZruvOM7XZEoBrps6kUNcej4h88tIQI+1waGwTZN3qAWCfR8YUsjNlJsHmKAih
-         Z0QWY+2JhkQE7QApRsS7L/4YmL43XpYK9uAO1GuVxjzn/QEZN08tY40eyiV20p//HrxV
-         3GEjSJOqEYsasb1XGF1HIJsl5tZ6uigqLfzg6ldf9NMU/zgIucYYDUZT4k8X7J4ojuZO
-         /rpy827N0WbdYhZXGIP1PcjwblpokvfD5BdfdGSVKzxd0J6LM/3z2u/auQ+CE0dlSmIC
-         2iNw==
+        d=google.com; s=20251104; t=1783480299; x=1784085099; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ibpf6/Yw4Qk7w5nMnSeu5NqKAQPPT11UDasodOvdS4o=;
+        b=jrTdLIR+lUbXLBCeD9fxXIuWIiy4Hb2wBCWC8fRDFk0UCQwtk6Wh09ioTxPoy5Qf1S
+         mxoVpUH5vp9Ufm/VtyH1vQeY5JefsvrY8DYvesvVuPoyk0RNtijIr4eVyCXT8eTt+xbb
+         ouDAnMDenV2zS4smZw/86P25D9wFjaZLac2zGx+2pmd2DSEfsWPBWBikoKbAkZM05Pjw
+         wRGGgZaLe1RahIR74nSq2V4LfEQfcUHTweTUWWzdg5Ie30ltCa2RJQrblN3yIs/mYN2N
+         IonZUHxH5lGUPSaYXWQPl/cZnRqtOAOF5IEOPoIt6F8/1nWXLE9QQTkZ85Kl+6avEQEE
+         PNSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783480298; x=1784085098;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nqMjZmPsv3+liEaC57LQksKr8l/QZSzOSPi/lkAXRvo=;
-        b=K7naQJ/HL7ZKnxC+8elEOptCO8xyGIOKqhz0nI7TjrQv2Ep0UGBPd9Lf3zadWnNLB4
-         61dcDMVl6jLO5DaxbnS4hfnwX0yBot/1MliCMy2hFELbgIXtpNkBa11xGUbvRHrUvhL+
-         rRZXo8pNOHeI566STQOdOIRRlhm9YDZZHgyGQi+OW2964RaMGhA0kR0WV5yErYvcrn47
-         TSgYWsE5tBkOGlI/vDeV2Rv3tda5STUiuOSKuifBz0WDBeO7Z3dhATTUqbQ4KVFA/FZu
-         NyH5nf2pHLBQ+GOeGyiydH83l4s3mmrI4FgEcai0LqyLP6T5ewK2ZtgVPQLjKr+Z6EY4
-         daJQ==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7HK5gVZ+tN6kgJrHgU92PhwKeKUwTck6tsF1lmt+H0S6vWp5E1F390EEES9M9P/VY9+5g89FqFw==@kvack.org
-X-Gm-Message-State: AOJu0Yzfd7mbXMDbh6tmsyLpr5Lyr+6jVVyk24fp0ypD1fXJKB1XrjEr
-	+w9UgFuvJKzylwb/wzAqfWyBBntI98uPyiKHu4NKceS1USv+ial0S271mAu8yI6KgMnGNjsM0TT
-	7UALX5bgtpRq9gTzTdXtRWg==
-X-Received: from plml12.prod.google.com ([2002:a17:903:184c:b0:2b6:417:db8d])
+        d=1e100.net; s=20251104; t=1783480299; x=1784085099;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ibpf6/Yw4Qk7w5nMnSeu5NqKAQPPT11UDasodOvdS4o=;
+        b=fH+8Ma5ki//SSZMPcQouxyXQCp7TqwKjeuFabvp07B6yhPTnDTjis2lumcK/zXAbrp
+         AYWE89FKZqDJYR2gQSPbW45ldHKFWO/b7SaMu5V28JV5urKfSXNsyPksfr3ZM5czC9di
+         JLrH2L+Laenno+FKXFyWvXyXQua+Lc+1XsfHendZqyliF05qLgmMPLXANn9obUA2YTwy
+         F0ajAt4Ylz1xRNLXofChHXQoaDoTbiZIdiyEWrfKXzqJTluc/7yKjnr9ql/bY3hiyoOU
+         GWjo/RpaHyE7k+1Fs6Q8VL/Os1Efxqv0UZyy6qnU6jdZWVso0yrEopv1/HzU+ROK/Dc6
+         ERcQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqdFUPRKJiLKCj8msfAfd069kRKXRwTgVlE+xFOOYcMEu653GlLIBqonDDrnPGlDxV32XX5Hl4I9g==@kvack.org
+X-Gm-Message-State: AOJu0YyTzdVy3I6ZYjvCT4RBJNbVAi4M2K6+NzdInALBGd3iOWO6/MT6
+	FNyUB40IDMpM3SCMoqXg5hfXNriKzRMX6XvTGPwof44r1fRwBZ9aMSMr2aAq8WOGcttex9iQIdM
+	yUQwVSdKaV9UD+jhaC6LH9w==
+X-Received: from pllg11.prod.google.com ([2002:a17:902:740b:b0:2cc:e845:dd38])
  (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:2b0b:b0:2ca:2753:f3cc with SMTP id d9443c01a7336-2ccea45a3a2mr7332045ad.33.1783480298065;
+ 2002:a17:902:fdab:b0:2ca:d666:df72 with SMTP id d9443c01a7336-2ccea39be30mr7195965ad.21.1783480298875;
  Tue, 07 Jul 2026 20:11:38 -0700 (PDT)
-Date: Wed,  8 Jul 2026 03:11:15 +0000
+Date: Wed,  8 Jul 2026 03:11:16 +0000
 In-Reply-To: <20260708031129.3503195-1-jthoughton@google.com>
 Mime-Version: 1.0
 References: <20260708031129.3503195-1-jthoughton@google.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260708031129.3503195-6-jthoughton@google.com>
-Subject: [PATCH 05/18] hugetlb_vmemmap: Allow architectures not to allow HVO
- at runtime
+Message-ID: <20260708031129.3503195-7-jthoughton@google.com>
+Subject: [PATCH 06/18] arm64: Rename cpu_has_hw_af to system_has_hw_af
 From: James Houghton <jthoughton@google.com>
 To: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
 	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
@@ -100,13 +101,13 @@ Cc: Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.co
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6DA39120007
-X-Stat-Signature: 6zp9uqph6yu3xupxbkzu4nn3grdf9hyc
+X-Rspamd-Queue-Id: 10B3618000A
+X-Stat-Signature: 5zhgyxxor96oo7k9odrdaxzgifwrdidb
 X-Rspam-User: 
-X-HE-Tag: 1783480299-580470
-X-HE-Meta: U2FsdGVkX1/RiZwBHWU7v4u4mg0qN7/bpykE9qhFITTeefO09SVs9sNo9HRdxDU1y0hyvc6aLBxQfyjDBv3Xm0U3sKwIX7xPEkN7UzTMxo9HPixYKk1KgR1pm/FElKnERbYO/c9PKhy1nKSOfnvGl2Hchfq/5VAQlU30yrTcE1vcGnXkxi79+jWNSFfkUWNOrTBMo/Nhqe0LlCAqbyEwMEjvfbfsWJhg9isrgIfAIlCCCK5wfeDBByfUXwW8XVVyemMzui8TEo4qNDpy90RxXdd/YsyfI394JWWjwGvbEVZbJMTQqw4Unw6LN5GuCKh/FEyDDNiRsiHjE+gX57JRhJXuuhsCdGKVVaPtrXs6/3TDiesrd3RPJ3S8IUU2zI+tYajH5AMWfzRfYU0o/AIoxvhHJyN/qyfQbQ3hbAN+burcexShbL657GPmNKARH5kQdyb4y7MO0Ewd/vem4LxXNmgCVNmKMZwBz2CRGMBrvanXLfINfwmCkcV6U49Idf41tifTvrcag0GMsM0CcYIlu+lATryw/9Bwpf5evzeDz1FQPpp+DV552VrR4RyEpxNuZHcx/VN1rAS+MrYmmM2DbWYa0aYXv29zctzYGJYfcb8u3Ck1sl3VQqd4qLe5XgfA+p3+fOWUuDFqMz2X047VvxmkTenr2wjaPlSz2xoyqQb35eob4fK+GhYoM4PAcYQnexa9tgaYPFzDVX8U7ewJAUEsOrKfHobLB/egRVQh0J9ZYdJon7r2hT5VWV04z9r3eH3Tej79+trfFgcZvT7zW5SFuHqia0Pfplvs2HF34gsKQoTG/295z3/J+DHKSAg8LqQTUuoVUXiK8cwfxYuU5jXu6VtzC2k1zaZrNFpgG/Wmtc/kg+haJsOxxj3jc9VP4+9vDgHr9v4V/798tBHBQOvsMXQL2TQvvBPfTqM/8iy0EEZ9EadCKaHr3NPb90M0ToehJ1UBnzLZkHYb1qP
- 015sN86H
- 9caL8h/ocyjM6OQ9uSOU8EXpfMo1tsvwpKBsAwfhOZh7X7fgRbvA3JXUw9ObetAUtNvlIwaVpvKcnXEUR8ISQ2muDnBAzTwmLTvMWOS2HjksiAsBBMmoae568BCJHdmdn8QyhnNQCe8AlUPo1l9eNJTpO4VWzNY2Ut1YIm4e7CKs/omYtiy3c/w8LWayXX7hjYLMOzTxcZ1ieLl0vUeE1MukQcKrWt9sjtaBV5Eeb+OQQzRIwfZIY1XM9mVYITVjtaj9H9O1FXqiKa93q+g5N19AfP2PXd0ResOdFYVvhGmF0S0o2wr2vK2PwyVbCl0P9R9xeofJkrSZFAefbwo5CCiQvDR7qqMAvzVX52UC/fETHI1fOHza6b/6cY4Np9LvQSHxR/3uFr9xP11KTSmGqxMfTy0VtUZTUzTks+IQmVfQ4p0x0ZKqo1/NX4HZZ1mOfHG8iD1hrH++5HHzakq4thCIAvmKILp6E2ZhGo+aJIRf1E/E9FQyGZwQ+Bfb8IVJ5wSziXA7cY/P1yoOzbR9Hx6XQq6r57BIRxAcThkec9dB0M6zZD61w7QvTNg0gRrSKODKbvN4bp5IB8Y1n5JEQGQvfHUWhY+hZ/qSgJ6z8ZQx7aBRoDlrtNG0r7uW8lQ5Ok1wysOKk2i/LVkvY25NtNtKJYo8GQUnyLDu11t6gkGqFJcTyM/rTV3eVpek7avI8AMB0
+X-HE-Tag: 1783480299-765450
+X-HE-Meta: U2FsdGVkX1+h64saVD5/btg3w67g2pNCT/JmOdRSvQVQFpB3DtSx3wxXSNgt/zZft907oyl+pQOC6ZXt2r1EutTSuXNRF5JC50iVh01/mprnefuEBB3tjmxv6JOIxRq2n5904gWQZ5sgKVP0aRsCQ9uj70B6j/dPa4j6xaoGkFM7XCzK0U/V/zNpkcZ4fo/O8V08Paaaf1AXeQm+m2nnN36ovOilIfhGNvlPoGyP8/T13Ii1eI1Qt0kW7tw7V7ji9XZNx4d3ShEHfiIt9kqx66Q+jPftMAJ3GLbh1jVIP4eolNhT1T9odUMKMhc321KEbNivoKW7+8+kxAYDls46mYn4g4wwNCxd6r+ZU9HFCFnK2v2i+/ULFXg1yTXWyvH2mcnTUdYx8SitzFvn6na828gqNbEmor72dL+NDKOVIHLdpkJMyiplfRqSU+WSW6Ob36bhugnrwtNN8OzF64xPOJeA7gr/N1n5mLO2gz4+lp7fomn6z8EEJrpmY2eVTfHH6zZ6Imm4GlSBxVgNxGx+lDSM9PTpdilmbcIY7zoecizjF7zcnZHW6n4aku+8Zn25N3csp85a2LlM7/ZZ1lOaMhjKwYw35F65a1YWHv8JqmwM5ElGT6ubVNN54GaSJLhp0vqgOU7FbcKYoupfYxKOw6d6ImJWQk8WkaOKEgrxKZ4rln9pwgq8tA8HNI3NKmEmCVIoxkskTfwARJzKt/dd0lq+tcQ0/Zkh12ZB+l7TynqZ9PbrZ4iHGBWFRzg2U1n+WYnCoAoGXWaEso5HIcspR8jG9TUYtXZ9fxJ+cd/a0NauUSoYgNnPJ41HSGZg9evEaxT8kbCXP0GEkbAA6amzKJ+8LcP8Pvk4DKsCpUl455IUisTipxMW1Hph0+jmtUQlHo6D6VJ3jHEj6I7fkZHiP7IlL0TzBx2vz2bbUKHqt/klIilaw/8wA2tICHopuQ2TMZRrMOUWBHWmPqwZGqA
+ qjjAe+17
+ 6deoq18SboBJEa675vutTndkfR3Tlo+C9pBUbx1EnYNxuNT1AQK6XjoUQpml1ew4k5UCUkPywEsFvY3I9h7onfkDQ2o2tX0ZYnl8WSPf+a8oCNzNo/9awnCfpfdbm9EQUO6dZ4TMH6mefjN0QLpPe8bvftUCjm2aDHBIuxzBZ0S7XckYKY+TpCy3YgFzmNh1k/ejC7j8EYIfRfMp4x9jMtMTINpkozkjbxHa0yRoj2hj/Mw5uxRslkvDL437GXlWGKnM+vQYMZvnjM8jn9CejaGIrcNPySjieRMM7wRKdZDT9SvIkVhsUL0PjYOYtiOWjyuIATfmXq0C90DrLxpMjtLre3wOhAqoYOeufHJC5r/oTRyPg6h7njcQ/s6SW5ujBL3C0aOUp3hFiQIUrhPSuFKwEhLtd/XqzCbGey7n+13jcf9NS6zlJ2a62ByhLRjZa4wRx1mMFn1jvQMfX+reYI7/BzyCmWUpghZSOLQNDG6KLXEAOX17cZbH8vDvKYw1NN52dOH6YlbIi3XcEV28KdsaoeJ29tpAKkZJ415VZDC1GC0UO1J4z22nft9a+n1EFWvKW6seaC9hlqnpcraTn2sPG4kGAx7N3j4vw0EPlDYrPuMvcflQp5i16MSB0yHuu/G/W8TwJfE9FTFAzip92DA4HmhRW4KzRBETl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,74 +115,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Even if HVO is enabled, architectures may at run-time determine that it
-cannot be used.
-
-It may be the case that arch_supports_hugetlb_vmemmap_optimization()
-returns false at first but eventually returns true. This is the case on
-arm64. When this happens, bootmem hugepages won't be immediately HVOed,
-but they will be optimized in prep_and_add_bootmem_folios(), part of
-hugetlb_init().
+In a follow-up patch, a new system feature will need to check for the
+presence of HW AF on each CPU individually.
 
 Signed-off-by: James Houghton <jthoughton@google.com>
 ---
- include/asm-generic/hugetlb.h |  7 +++++++
- mm/hugetlb_vmemmap.c          | 12 ++++++++++++
- 2 files changed, 19 insertions(+)
+ arch/arm64/include/asm/cpufeature.h | 26 ++++++++++++++++++++------
+ arch/arm64/include/asm/pgtable.h    |  4 ++--
+ 2 files changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/include/asm-generic/hugetlb.h b/include/asm-generic/hugetlb.h
-index e1a2e1b7c8e7..c4796c54b702 100644
---- a/include/asm-generic/hugetlb.h
-+++ b/include/asm-generic/hugetlb.h
-@@ -128,4 +128,11 @@ static inline bool gigantic_page_runtime_supported(void)
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index a57870fa96db..e818ad1b56e2 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -910,22 +910,36 @@ static inline u32 id_aa64mmfr0_parange_to_phys_shift(int parange)
  }
- #endif /* __HAVE_ARCH_GIGANTIC_PAGE_RUNTIME_SUPPORTED */
  
-+#ifndef __HAVE_ARCH_HVO_SUPPORTED
-+static inline bool arch_hugetlb_vmemmap_optimization_supported(void)
+ /* Check whether hardware update of the Access flag is supported */
+-static inline bool cpu_has_hw_af(void)
++static inline bool supports_hw_af(int scope)
+ {
+ 	u64 mmfr1;
+ 
+ 	if (!IS_ENABLED(CONFIG_ARM64_HW_AFDBM))
+ 		return false;
+ 
+-	/*
+-	 * Use cached version to avoid emulated msr operation on KVM
+-	 * guests.
+-	 */
+-	mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
++	if (scope == SCOPE_SYSTEM) {
++		/*
++		 * Use cached version to avoid emulated msr operation on KVM
++		 * guests.
++		 */
++		mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
++	} else {
++		mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
++	}
+ 	return cpuid_feature_extract_unsigned_field(mmfr1,
+ 						ID_AA64MMFR1_EL1_HAFDBS_SHIFT);
+ }
+ 
++static inline bool system_has_hw_af(void)
 +{
-+	return IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP);
++	return supports_hw_af(SCOPE_SYSTEM);
 +}
-+#endif /* __HAVE_ARCH_HVO_SUPPORTED */
 +
- #endif /* _ASM_GENERIC_HUGETLB_H */
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 3951c043164a..21377f795293 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -17,6 +17,7 @@
- #include <linux/pagewalk.h>
- #include <linux/pgalloc.h>
- 
-+#include "linux/hugetlb.h"
- #include <asm/tlbflush.h>
- #include "hugetlb_vmemmap.h"
- #include "internal.h"
-@@ -556,6 +557,9 @@ static bool vmemmap_should_optimize_folio(const struct hstate *h, struct folio *
- 	if (!READ_ONCE(vmemmap_optimize_enabled))
- 		return false;
- 
-+	if (!arch_hugetlb_vmemmap_optimization_supported())
-+		return false;
++static inline bool cpu_has_hw_af(void)
++{
++	return supports_hw_af(SCOPE_LOCAL_CPU);
++}
 +
- 	if (!hugetlb_vmemmap_optimizable(h))
- 		return false;
+ static inline bool cpu_has_pan(void)
+ {
+ 	u64 mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 27689c62bd25..5f21d3a738ee 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -1598,7 +1598,7 @@ static inline void update_mmu_cache_range(struct vm_fault *vmf,
+  * page after fork() + CoW for pfn mappings. We don't always have a
+  * hardware-managed access flag on arm64.
+  */
+-#define arch_has_hw_pte_young		cpu_has_hw_af
++#define arch_has_hw_pte_young		system_has_hw_af
  
-@@ -764,6 +768,14 @@ static bool vmemmap_should_optimize_bootmem_page(struct huge_bootmem_page *m)
- 	if (!READ_ONCE(vmemmap_optimize_enabled))
- 		return false;
+ #ifdef CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG
+ #define arch_has_hw_nonleaf_pmd_young	system_supports_haft
+@@ -1608,7 +1608,7 @@ static inline void update_mmu_cache_range(struct vm_fault *vmf,
+  * Experimentally, it's cheap to set the access flag in hardware and we
+  * benefit from prefaulting mappings as 'old' to start with.
+  */
+-#define arch_wants_old_prefaulted_pte	cpu_has_hw_af
++#define arch_wants_old_prefaulted_pte	system_has_hw_af
  
-+	/*
-+	 * Architectures may return false here but true by the time
-+	 * hugetlb_init() is called. In this case, although the folios will
-+	 * not be pre-HVOed, they will be optimized in hugetlb_init().
-+	 */
-+	if (!arch_hugetlb_vmemmap_optimization_supported())
-+		return false;
-+
- 	if (!hugetlb_vmemmap_optimizable(m->hstate))
- 		return false;
- 
+ /*
+  * Request exec memory is read into pagecache in at least 64K folios. This size
 -- 
 2.55.0.795.g602f6c329a-goog
 
