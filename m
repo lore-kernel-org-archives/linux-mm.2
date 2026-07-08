@@ -4,171 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9184BC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 14:44:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2D03C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 14:51:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35B326B0092; Wed,  8 Jul 2026 10:44:09 -0400 (EDT)
+	id C91E56B008A; Wed,  8 Jul 2026 10:51:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 332756B0095; Wed,  8 Jul 2026 10:44:09 -0400 (EDT)
+	id C429A6B008C; Wed,  8 Jul 2026 10:51:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FAF86B0096; Wed,  8 Jul 2026 10:44:09 -0400 (EDT)
+	id B58AC6B0095; Wed,  8 Jul 2026 10:51:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D31B36B0092
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 10:44:08 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31409C07F3
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:44:08 +0000 (UTC)
-X-FDA: 84965879376.30.0D9A164
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011058.outbound.protection.outlook.com [40.107.208.58])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 447DF16000E
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:44:05 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hYcYnBOB;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.58 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783521845;
+	by kanga.kvack.org (Postfix) with ESMTP id 855156B008A
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 10:51:08 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 14837C0AD9
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:51:08 +0000 (UTC)
+X-FDA: 84965897016.11.4C5994B
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 75D15100007
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:51:04 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf14.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783522266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9YCKFE33/PkQ2gzrLFqZFab4AEaLPXQdMpgCSnPsGU0=;
-	b=O05l85t4uhAJkQ5fbckBMBe8jz+KoZxFZgL2x3MqcccrMuDbb5sDhtqP/COuYbLBmBOVZl
-	vmjwZzGiCqcNUYWE8Ki8T4g5oLbojgNhZAOesUu3OXh+T/R1R0fgucoHHfsnkoZdMqMgGn
-	owqdojgJomvGnuliAL3JkKem5vZ6wnE=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hYcYnBOB;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf08.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.58 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783521845;
-	b=gPRW3e8I1gbgssE7VtSew6XM7iC//84l8dgDsISjhFMDtWMIIA0BYN6+9SDAIoxQbNStwt
-	comofd9hSQpWPBfX6Jf5PHHC9OkW3q8g1Ktz6OkQjIKPz+9LmxL1PIzWVvrd9N24ueweER
-	Z4BiXKzkfsp6pVuxZv9Bpk3XPzh0t8Q=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XDwHY2ipVHV4f8NCM9cxHKIeiMACXuwU3SlQZfJhGMqfYPLjDxHA6omKrPKm3uQkOiR+2RK7/LBIIl9HBXF8FOp/Mrogv/gGoESNH9jjInAS9t9vwDYE/jk2E4C+Kn6C/XcKqEkPv3iIU/JBVtwvahd9xJ3th3dre0Hm6oUqMxUCEAZsSgd6PORKNdI3eTY/IoUc+XcZIbamQ/u30mhsUl3gwF/6XiEidAS4yp3XEAedZPMHLa1Njq9wsavGVNzSuPx9DZh9wdI2ty1a7aNOH25sss8LamnVOx5Sza9BbIaif6Cenx2kaGSSpsmskSsdt/UvLMeYeaYxLxzZlIip5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9YCKFE33/PkQ2gzrLFqZFab4AEaLPXQdMpgCSnPsGU0=;
- b=cgBr2x6QhRg0bHjJVy3xpKKl3yLZtdGsxcHBJT7cyZiPGFrU/fUavKm+H7dZ7M5rIB0OLulT8/Gu8AHLfUkNLtouk4VT4khAxDCBmWSpU4MQiOBfWIU1kka0AFZuoVTVJMNahcElYsxASg2YsVFZSs2n4CYQzDh2PPQkSHiTi7ikFLFFI7+W9dtMG+ldnT+Z7wWts3XJrPjDB4yDAQGkkiWM2K4HNH3pM5PCuz21RyUEe8KHPafk5RogwjTQjUUu7o+pCkCtcp9F1MJlKDgGnBEvmZcz77aEFKWbYWFfj+V+UKNupqBzuish/jao9+O72yLbkSuKDNsDeZ+QM9qu2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9YCKFE33/PkQ2gzrLFqZFab4AEaLPXQdMpgCSnPsGU0=;
- b=hYcYnBOBYIlBmU7oBIHg5ubMzcAv7mFVV9pElLqYcjdTEwsnTqzlLwk3cquHDU4w9VeGtKEZBUX3GJ4j/aZFrfno3IqHPtH9p/R4t06lObCxezOmEb+kcBcv8/PkATr+4Vj5UATSpCi1SgGyIQ5QN/euaW+xjz9kiCcfLkdeOyw7Z19wvvkLo8Eru2dckxne8wyau3pBMcgA5xaDKPw8y+NVhbjUijHW5tav8rEDrqxJ+MHn0RpkpxMxZLPWmOsCgMs0WjZrv4nq4Se7jNymAPo/5Y+JeD5Sz+cQX3jhnyWGIB2LpKJzIFubarM4wAFGfUkiRwpOq7j4MZvErzvB9w==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by BL3PR12MB6595.namprd12.prod.outlook.com (2603:10b6:208:38e::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Wed, 8 Jul
- 2026 14:43:58 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.009; Wed, 8 Jul 2026
- 14:43:58 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 08 Jul 2026 10:43:57 -0400
-Message-Id: <DJT9Q4WLXSUG.GHQOMM41P9PZ@nvidia.com>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH] mm/migrate_device: avoid overflowing migrate_vma
- collection arrays
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Sashiko"
- <sashiko-bot@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Matthew Brost" <matthew.brost@intel.com>,
- "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>,
- "Byungchul Park" <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>,
- "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair Popple"
- <apopple@nvidia.com>, "Balbir Singh" <balbirs@nvidia.com>, "Kefeng Wang"
- <wangkefeng.wang@huawei.com>
-X-Mailer: aerc 0.21.0
-References: <20260707-fix-array-overflow-in-migrate_vma_collect_pmd-v1-1-ce3ff4627653@nvidia.com> <b806c878-e1e6-4af9-8816-678955288d82@kernel.org> <DJT9JHBIGW8V.17SI5NN5GCJVQ@nvidia.com>
-In-Reply-To: <DJT9JHBIGW8V.17SI5NN5GCJVQ@nvidia.com>
-X-ClientProxiedBy: BL1P221CA0036.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:5b5::6) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	 in-reply-to:in-reply-to:references:references;
+	bh=fwmDe1A7xoiZ7XcVnITrt+R4809DOqAWeiFQFFpEpy8=;
+	b=NqqcVtSdufgKMKF7odRXb9qyr+2Y8p9S8n/3ypFHSCrnDHDKhc+bdeZZUFThCCLx8Hrffa
+	mmTrvEQwLsrZIWyeSloQTKt88nR9r7SNGKAcCABysH4d/5m2MBxznNxhf8zTdjhRfbC/fR
+	HXM9zRNwhjpsA293KGNC9Jkn5XVnsyA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf14.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783522266;
+	b=n183de07Q1ObXcIK7emgfd78YslSt10JYJpPzUyFoODZCvfR0ENBAIxrwRTK0rXqTb182v
+	yYoC2Z1sU0VbR0ZDPBQyTzBxtALmFCUCxF507Vig5EaemCRDUws9+c1ycbipabRdYEbPgU
+	pFYjY89uqYeKtWIvrp0PMt8uj78qqfI=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4gwLbq0KvBzJ4682;
+	Wed,  8 Jul 2026 22:49:59 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id E8EDC40575;
+	Wed,  8 Jul 2026 22:50:58 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 8 Jul 2026 17:50:58 +0300
+Message-ID: <8b8cb8b6-41ff-4975-9be2-7256b180fcda@huawei-partners.com>
+Date: Wed, 8 Jul 2026 17:50:57 +0300
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|BL3PR12MB6595:EE_
-X-MS-Office365-Filtering-Correlation-Id: 756d20eb-96a2-443b-c13e-08dedcff57e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|23010399003|366016|921020|18002099003|4143699003|22082099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	u7997DxKK5+O4bNwjC3Vt6MWX7LzSauDzkeoKtEEalSSd6ED0wrtVd9GtCSe5UO/nR0nPgk18H3RanEheS087WYAvqtDtXe+CzawG0uuEeAv+ZJsSBchdLNOQn6iOZgMPcCN6mvztOBVS/Bo1/jYrgaWAl3UYqwWieBCJFkZkZ5sEiuDheJtxXuZMhA+DpAgNWFU4NeGbJopTvcFkPyJ+Jfbz6PFOSe2y5fQUXZWNG6/PQfenYzF3yy3tSvlWIphiJu41EoWsr1PsPWI7HGDrVThgXF17AtI5/T+V25XMRjJxSzZFWzQLvs3ETGjfOIwsnkBdwtpsfXzXJnoi7pW4W9Cl9MtNE5lcS7MxYcEGdv2pIuHYTDjyW3AEJc42OobJ3N+gxcG/XZtRDMV3CsJW05/tVSRzUfebPjopZwWXpa4Ubu4/hIBO3KjVwWc0oRBidogtTHMgVKxnFxru/N41erxY+8GANPx29h5ahveTW0UfVYnnll0WXWx545vULkrimRvE7O4PhZbxlhQ/xER76bYgTWomlDGKtwRiSPcyOIHkrbXGTN7wveCvta3+YbtOSqPoy+oEYOn90YFZaIsTzC2Il3FuTlrG86TX2/Jsw1m1RU1F6n6xYpduI1lZfq8q5jZhC/vjgPmST+0AJyqKSkq+94RhqgT0PcX74FUJ5mfv4FXm99ZsxKZ4H5vTAxBg7i+Gh+hbhN3cDSIPBDD2w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(23010399003)(366016)(921020)(18002099003)(4143699003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MUFkeUhESnNVMWJIbFMxUmlFR1dPM0NjTmJhUHViWFU0MlJqM1VMNkxFeXNF?=
- =?utf-8?B?ZTg4Y3dTTG0xOVI0M3ZDeEFQeDRDZEF5VkZucXR4VVZVR1MvaHZ1T2tVZkZM?=
- =?utf-8?B?UDNERENoeW5FVDNjNkJ4YzJVWGRYNXZxb0pwdC92cm5ZWUlQTU43Z2MwZmF3?=
- =?utf-8?B?SEVpZDBBUjNDaUVQcTlDU3JoeFlPUGphMUh2UnJWdXYxU2FhZDl2b2NGbnZF?=
- =?utf-8?B?M3pNaERXR1pFczhwK1JjMFppUEplKyt0VGV3RjB3c3VmbHlwRHluTnQzd0Za?=
- =?utf-8?B?ZFdxK1J2V2hzZ2RhUndKUWtSOHp5L3kzek1IN2ZJVUZKMEZkOVhRRU9GQ1k1?=
- =?utf-8?B?VWV3bU41R2R6NExoNmZoeW9WSndCTHEyWlZXbm5ndzhnTXZ4TlVRYjFYZG9z?=
- =?utf-8?B?MEE1emNMd1hOY2VZSDB0QkM2TUhPNXU4YVIwbEJEMFBIVkFhd0xQRklXVkZs?=
- =?utf-8?B?MnhrYlptbTdHN1JOMXMxZU9pU2syM1kwWFo4YjYzTFNlckZ3VFJjajh1Q2pS?=
- =?utf-8?B?SXlhQWo5Rk00N21UQkI4VG95czh1S0dLNjZ1ZytybmtIWmRvYWpjWDJkcnph?=
- =?utf-8?B?bm83Uk5XSHdTWTRUYXVwY3Jlak85VGE5SXBsa2Zhb2NDMlIwZ2xCaFlCT0Jw?=
- =?utf-8?B?cTI4Ymc5ZzVqZURweWJxUnFlek1Bay92ajV1Vk9zV096eUt4dFZENEcyTkxp?=
- =?utf-8?B?K0t1RXVseGRuNHBMNUdjdFVieDAxcENybFRGTUVLQUxXY3BHMVFIOFAzMVBq?=
- =?utf-8?B?TGZTMWpoTFVQdEVYVVF3M0VTRnJmU0NmR0tWd2lzMWZGa3F3ZWZXZmVNYXVU?=
- =?utf-8?B?cnRmMFJsYTlZZ2FpaHZaamhmU1plbi91YnNON3B1TWNEelo4cGs4eFRSNFpi?=
- =?utf-8?B?NE5WbEFSRTE5eTZRanJpV1NEZ1FyY0J2c2pMdXpRZitwTUNOSmI3SzJkdzdy?=
- =?utf-8?B?MEdXTHhJWnBwZEpRcjBkTytPV1oweFZTc2U1bWFYTHE1WHpySTAyazEyT0dB?=
- =?utf-8?B?aWNuVmx5ZGNwSS95YU9pZ0c3dFZxM2pMblE5eWNsYkYzQk1XanE2VHN3OHBO?=
- =?utf-8?B?bC85enpkSHd3ZElzK2x0cEtjMlN6NE5yL3JDQVJteXg4eE1nc2p0QmdHenZL?=
- =?utf-8?B?UmVDRmtRQ2hIS0h4cDVFR0ZEWC9WMkkxMVVtYXRlQzNIbUk4aEVhUTNCbkRN?=
- =?utf-8?B?R05nVVhqc29HaWFzcm5GZ1RQelZWcHpSQSsrWjNJOVk4aElEVkVDNklzSEIz?=
- =?utf-8?B?Wi9CU2o0aWZ5b2tZdWFJenF5VVJIY2h4UjhIbE10Z0N2NXZDWFRXbG5tZnJE?=
- =?utf-8?B?bStEaUZLdE9pM0pjWXRlc0NTSjZ3a1k5VWRxTitob25sajJpSm02OFQwZjJJ?=
- =?utf-8?B?UGN3c2Z6cmtxSzlrNWdyL2d6TWw4ZVA4K29yQnV0MjN6SVNiUzZkWldPU1Rp?=
- =?utf-8?B?NkNWSktBZXo1RlFuczN3eVhZWGtyZXNUTjdsYnhBYmZqZG1yOEt4WU1NRlB1?=
- =?utf-8?B?Z3pqc2lVNWNQdVpPMFBBK2pDRFNaZkNuZDh3SHFWREI4UG9EMGVIUFRrd3Q3?=
- =?utf-8?B?UktNUm1sRnFZVlprSmI3NnFCZ1JHWWFDYmVScEpQZFVOVzBWSGxXa2JWUDUw?=
- =?utf-8?B?WDNhb3pPMzh1RWxpQUNJTndPeTRHQXJNMllpQUZYb1dHSTFpc3JEVUhaZE9u?=
- =?utf-8?B?cGdaSVJ2SVFENTUwWjFOZ2dVQlJDKzhZOCttazFNT2FEMHJ1VDFZcU5kbEFH?=
- =?utf-8?B?VzRZZ1JQVW5xMTFWemdxbFN4My83T25mQU9kRU1tL25pcnlxYldaM1UxNm9r?=
- =?utf-8?B?UFMyenpKR2p4S09XcWMwNDNoZU9JeDQ1S2xYaXJOOEh2bWYyTGdlSjhxOGtZ?=
- =?utf-8?B?Wm0zMXB3M2VPeW1ka2pQZnI2bHJ0cm4xMnorY2dvaVd3bTVXOG0wSUZTdkxP?=
- =?utf-8?B?RXFrNkNuc2h5QWlXRHArNjdONGZyYTQ4QWUySFczdGd2dzlZY2VxTWpkTmw3?=
- =?utf-8?B?eDFkbzNKWTFxZWsyZWlrZ0pHd3pZKy82RW1Lc3ZrU2dWd3Qxa3NtMDc5a0Nn?=
- =?utf-8?B?WnhPYjZYOUFqRFJzU1czR1hpRTlOK09ZK0F6clVYZ1JiNEFGN2tGRFRlSE80?=
- =?utf-8?B?bWxLdzlVT3ZBeVlVVnZYNG45aTNUUzkxdnQxelFtOEFzUStGTElTa0dQMS9D?=
- =?utf-8?B?SXAyTkFmS1BKZlNMM09IczhKSTZ0WVRhOHFFdEo0VlNYTGpHaDNTTDQyZkR4?=
- =?utf-8?B?WFp1cHc5bHdBNlgxU1c1ZWVDRDZmQVV4Zndua2dWQVhIbElhVGZiYzdTYUxS?=
- =?utf-8?Q?Pvr9pvn27oIrzrI4i7?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 756d20eb-96a2-443b-c13e-08dedcff57e5
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2026 14:43:58.4259
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: z/2eTQKqpsOWLzX+u8eBAag37oz9AHCVlxcONIU6n2bJ/x2Z3LVNMl6ijjZI5Dq6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6595
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 0/3] mm/damon: Introduce a huge page collapsing
+ mechanism using auto tuning
+To: SJ Park <sj@kernel.org>
+CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260708012234.92093-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260708012234.92093-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 447DF16000E
-X-Stat-Signature: hxi5himo13npjxtxfdicnt9p4fz3ccaz
-X-HE-Tag: 1783521845-878395
-X-HE-Meta: U2FsdGVkX181je12053+qZucho+g3l8FIOIqNlKdHrPvnPneBysBFyI8ANS2lkV/Y0uz0D+FO1FUCXSdmV0HeAJO+a9TglUIbGaOruEGqTAvY60L9pz784BmF+nWDkfui7MRj7wkL2cUpMDtn+P28kTcd53Nr5dJKYNq/TxHp0hF89EuR6ywqj4EVP97vNrYN3O+Hwyn+JPW9p7rupAw0eEJ1jAko846YKCDMd8DdcvXWiS3DBLdlDlGwY7CW2KCd6k1Ifjo2LQg78Tu07xy2ojj4+zMyjoABuQIPqNw2YK8f6/+Z4kVKDcu5rx2W5McQkOZHpr6AJbC1VT5gQ2h8MNRHcZ6MVFIL0Xxexe4r4S36DESQPyhCzozHfzpa9k6Vg2qwVdcFVMAoyj7kvzAcWlBNp3rGUg8GKPG39nYChHHBGYbVhiMEgTH/oRyDt21FjMRjIHbrPd/+mWFRmYbBZZBo+NSzs31Y3HLF0DozXI6Fz6BuxWmvKwfgLygE0n6RnofJzA9mAmDdhp4FRJlz+OZwMDu7oXnIfh+DOhBJstVGborl5FCGvkiAgd3EWXc896OfILF6egKXhJQNNkC6s12EfCt67E73fLVMN/5BFoX78Xs17Ai1pS0lgfzd2j7jcqb157+jQGnZaPLoIPqRH2hVwI39x50ViXwb1L+jMHqVGRKleORfXpvMtJSXzlHP/FKT+Q58BIK7pBG5QilX+/SZRXIcovDOXhA3B1K8h0qiny+GDPfB6KRrXY4DepRFJziWFrdElzjwRd038t2iK6ejfxZulAgVdgI3V8dDr2k6NsU+8dWy8PSg99x2k91OxA2Hj3csTMpFrlPmy9qRgld1fqM+7HiOPXC+ud2kqysDgxYCY1NN1+GDqmVCKQGBVzF/uGr39VkOV2yfw8WCXNd1Xg7VrhwoqqaNQJV/FAKtnYoD6n8/xlMVLXZpLUsYkbPRORAzuvYOk4jghq
- ZTttBM9N
- z1ATbjUXuyatfyJNbTw9mdnREabQFhLqhYheuQvGHQMbelQ0x96qdyz3qsorYRSFr/DP7M0ppQLseTQgE3pt1o8mOKRZ5o7llXq9qkLYXI3G1WzsnlLVIH4eh45AuhFgvDyKgJEeiu6J4VFUEcSMwd71H6w9PUPJEkN6pOUXguVrc7Z6veI513vPgMDnLK0VDSh0EjHtspIFxEZVykMbLb8ctUtoE2MNOdZdpduZWPi2fAdPlGPKc93zanjMCx2+yoLBsLJ4PC5r/VzBbUZiX0DTT8C+FYtqse5eJijHbEto1Q1Xp1II8xdx/yxxVAoO0iVFEavQJFFV/y4V5UX5RuwBVyjGUQUXePLJAXYHs9vzSimyMpKOlb3VLOi7l5KqJpf9zlI0QkiF7anuyMaUW2yhIRMd0bDaPqDA3CRrRqcXu/pQsAFUHRRgRcSMA9+Z4VfefDJh/fsVIkK8/4jQ0Ondzc7mo2uklP0ajsKRbV6+SjvW8ws/Lx6EDsVKwbTQYbkJU7RQKUudJjk1gOBlxgxltsjmDzA3gx1CNm9BuFGJQZ7V1T7WyN9trRw1/5ote9d6EVbtm+FADeBbVqBn+qBUB0eUBjySjm/BPXdvjpFF/H9TO5Zw5eOFRHQ==
+X-Rspamd-Queue-Id: 75D15100007
+X-Stat-Signature: ziawh7846rbfsfz6j5hsi7iwtpjutydu
+X-HE-Tag: 1783522264-166568
+X-HE-Meta: U2FsdGVkX18Rdld4yXRKfb2H0B/tVI39gWOGWYeTug8pZgJuJBK9HdnaQZ6dXhsM5hnC3WzG8t0qyWNrpkOxQRSMc4OXzT/81H1P+PmoT3TZ4XJ7xXsAKVo8K/3q9FkJHv/wQgyiRA2Tv+bLGUC/L8/t/jOL8FYZi4aAoHMj9Ds4QJ0VjvAIYD2O0brfxogDr8IeZdFQuPPCQ4KVeDUIrg1h0DjPt7qxezAtKkwjxx15kMcgoZKWPA92n9Lr4rErU8skp870JshkDes7PkKMmSUolE94ThzZzO1QpokxmfUpV8ZpFpI3zMt0xqmfVKPUncOlTx3EROOUcfcR8IwpTo4lIbqispiLhUf0vAngo7QdKsU+g+xuJ1SO8Lr5rOHdzb4ov4YIIRGfz6osvW0cyugiTLZbH0mAbk9hXe5AdiXGmLD7SUuo0s18fyjIoR84VPlfUctSyts8MaRUflweGghjRJME8iIfNNOQ3755K5zx2JW4Vgp92iBxMnsr51qt9klMkV1qa7BWrm3SQ/M1pD7QYJJKSVO3XuqjqmOMFEtislO4bccAI7r92VOuoo0LWbC/SumKgXPLnp7CadYjZbsaFT1/WSKnOisCq5SFM1bBtrbM45lQ4CwrThR/422S3Eb/mVKD1+VTPOScghIX7a974bCnD1fp84WLc4ppc9f4CpyRZvTjjpXtGQZ6+RTfLpO15eyocmMQrn673uws+Z8AdmOIsixbnFLlcpKw7gSB1nCn6ukhVOFCdx55Fa+3P6X2hGsZaDurUBGik9GdEFB/LM8Gr8eUgbz0Fv/WS/GgBym/caV8EgdH8kXaqG4JvPDBcZNh4RtG4vtlOfbwA6j4VdVduXOhEe6j8lII3wke0pDSFT9tCJRE1qTZzx2nXe9ptHjArNnWVhtChxN6kZKCLbVYWzx6irO48mWe3zXvBr+ywtwgf6LlVjXz5kv4KVHlc4qZHAEKKKlhEFh
+ ua+H7G0K
+ NWllglwWQyVOtsKK2joJ24qOCNH6gpBW5DrLuaSO93XlyM+63LVHSpGCn3ffGy4otZdi9Lj6um0tW1JhL3doW+ns5F/B+S3XkXsHVF58KjMZ9CGVPDx1srsec+XqY46JQUH3JgYXtQ216woyzRVV7F9bNpOvnMS8wi9wicgMIvvY/NUreHW+nJHvdqUGzuhOWlL9vyUJeiIewep4KJ6YgvEba6tv8i33ffWcaSpsrcTwajnnoaDMqJMCKRmsEMGJLsxXM4tlQc+urmOz+mziDFsKGwDmVTgEmTwML
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -176,110 +94,290 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Jul 8, 2026 at 10:35 AM EDT, Zi Yan wrote:
-> On Wed Jul 8, 2026 at 4:43 AM EDT, David Hildenbrand (Arm) wrote:
->> On 7/8/26 03:50, Zi Yan wrote:
->>> migrate_vma_collect_pmd() can drop pte lock to split a large folio and
->>> restart. But the code does not handle restart properly when pmd becomes
->>> huge or cleared. It can overflow migrate->dst and migrate->src arrays
->>> during the hole or skip collection. Fix it by:
->>> 1. avoiding migrate_vma_collect_huge_pmd() if some collection is done,
->>> 2. skipping the rest of the range if pmd no longer points to a pte page
->>>    table.
->>>=20
->>> Fixes: a30b48bf1b244 ("mm/migrate_device: implement THP migration of zo=
-ne device pages")
->>> Reported-by: Sashiko <sashiko-bot@kernel.org>
->>> Closes: https://sashiko.dev/#/patchset/20260706111958.3649651-1-wangkef=
-eng.wang@huawei.com
->>> Assisted-by: Claude:claude-opus-4-8
->>> Signed-off-by: Zi Yan <ziy@nvidia.com>
->>> ---
->>> The issue is spot by Sashiko during a patch[1] review as a pre-existing=
- one.
->>> This patch has the minimal change. An alternative is to reset
->>> migrate->cpages and migrate->npages and restart the whole range from th=
-e
->>> beginning, but that also requires a restoration of no-longer-present PT=
-Es.
->>>=20
->>> Link: https://lore.kernel.org/all/20260706111958.3649651-1-wangkefeng.w=
-ang@huawei.com/ [1]
->>> ---
->>>  mm/migrate_device.c | 19 +++++++++++++++++--
->>>  1 file changed, 17 insertions(+), 2 deletions(-)
->>>=20
->>> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
->>> index 2fffeb1f99694..6ceb47ec1da24 100644
->>> --- a/mm/migrate_device.c
->>> +++ b/mm/migrate_device.c
->>> @@ -257,7 +257,12 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->>>  	pte_t *ptep;
->>> =20
->>>  again:
->>> -	if (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp)) {
->>> +	/*
->>> +	 * Only check pmd when addr is at start, namely no pte is collected.
->>> +	 * It avoids collecting the same address range [start, addr) twice
->>> +	 * and overflowing the collection arrays.
->>> +	 */
->>> +	if (addr =3D=3D start && (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp=
-))) {
->>>  		int ret =3D migrate_vma_collect_huge_pmd(pmdp, start, end, walk, fau=
-lt_folio);
->>> =20
->>>  		if (ret =3D=3D -EAGAIN)
->>> @@ -267,8 +272,18 @@ static int migrate_vma_collect_pmd(pmd_t *pmdp,
->>>  	}
->>> =20
->>>  	ptep =3D pte_offset_map_lock(mm, pmdp, start, &ptl);
->>> -	if (!ptep)
->>> +	if (!ptep) {
->>> +		/*
->>> +		 * Skip the rest if pmd becomes huge or cleared. Flush if any
->>> +		 * pte is modified
->>> +		 */
->>> +		if (addr !=3D start) {
->>> +			if (unmapped)
->>> +				flush_tlb_range(walk->vma, start, end);
->>> +			return migrate_vma_collect_skip(addr, end, walk);
->>> +		}
->>>  		goto again;
->>> +	}
->>>  	lazy_mmu_mode_enable();
->>>  	ptep +=3D (addr - start) / PAGE_SIZE;
->>
->> It's hard to express which feelings reading migrate_vma_collect_pmd() gi=
-ves me,
->> haha :)
->
-> I guess I have the same feelings.
->>
->>
->> In case we split ... couldn't we just undo what we already did, before d=
-oing the
->> "goto again" ?
->
-> You mean we reset migrate->cpages and migrate->npages and restart from
-> the beginning? But it is not only that, since the code below also
-> changes PTEs into migration entries. We will need to revert them as
-> well.
->
-> Hmm, migrate_vma_collect() documents itself as "update the src array and
-> "takes a reference on the page" without mentioning changing PTEs. I
-> wonder why changing PTEs is necessary, since later migrate_vma_unmap()
-> also changes page table entries to migration entries, although
-> migrate_vma_unmap() changes all entries to a folio, whereas
-> migrate_vma_collect() only changes PTEs from the specified VMA.
+Hi SJ,
 
-OK, it is an optimization[1] when migrate_vma*() was introduced. If
-there is only one mapping, migrate_vma_collect() will set migration
-entry immediately without waiting until migrate_vma_unmap(). Fun.
+On 7/8/2026 4:22 AM, SJ Park wrote:
+> On Tue, 7 Jul 2026 17:25:36 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+> 
+>>
+>>
+>> On 7/7/2026 5:10 PM, SJ Park wrote:
+>>> Hello Gutierrez,
+>>>
+>>>
+>>> Thank you for your replies.  I still find some of my comments are not replied,
+>>> acknowledged or objected.  Could you please address those all before the next
+>>> revision?
+>>>
+>>> On Tue, 7 Jul 2026 16:31:03 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+>>>
+>>>>
+>>>>
+>>>> On 6/20/2026 11:02 PM, SeongJae Park wrote:
+>>>>> On Sat, 20 Jun 2026 20:11:46 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+>>>>>
+>>>>>> Hi SJ,
+>>>>>>
+>>>>>> So sorry, I missed your email. I just found it. Sorry for the late answer.
+>>>>>>
+>>>>>> On 6/17/2026 4:44 AM, SeongJae Park wrote:
+>>>>>>> On Tue, 16 Jun 2026 15:03:13 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+>>>>>>>
+>>>>>>>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>>>>>>>
+>>>>>>>> Overview
+>>>>>>>> ========
+>>>>>>>>
+>>>>>>>> This patch set introduces a new autotuning which allows to collapse
+>>>>>>>> hot regions into hugepages.
+>>>>>>>>
+>>>>>>>> Motivation
+>>>>>>>> ==========
+>>>>>>>>
+>>>>>>>> Since TLB is a bottleneck for many systems[1], a way to optimize TLB
+>>>>>>>> misses (or hits) is to use huge pages. Unfortunately, using "always"
+>>>>>>>> in THP leads to memory fragmentation and memory waste. For this reason,
+>>>>>>>> most application guides and system administrators suggest to disable THP.
+>>>>>>>>
+>>>>>>>> Currently DAMON has DAMOS_HUGEPAGE, DAMOS_NONHUGEPAGE and DAMOS_COLLAPSE.
+>>>>>>>> However, there is no way to tune the settings. It will collapse all the
+>>>>>>>> hot regions that meet the access pattern. If the server is a bare metal
+>>>>>>>> database or big data server, this will also lead to eventual fragmentation.
+>>>>>>>>
+>>>>>>>> Additionally, currently THP is set globally. Ideally, there should be a
+>>>>>>>> way to control which tasks can use huge pages.
+>>>>>>>
+>>>>>>> Could you please reword for prctl(PR_SET_THP_DISABLE) like per-process control
+>>>>>>> cases, as we discussed [1] on RFC v3?
+>>>
+>>> WDYT?
+>> Yes, we can use prctl. However, I believe DAMON is more transparent and easier
+>> for a sysadmin. I will rephrase this sentence to explain why DAMON makes sense
+>> instead of other alternative.
+> 
+> Thank you, I agree to you.  But I just want the pointer be clear.  Your
+> revision plan soudns like a good plan.
+> 
+> [...]
+>>>>>>>> Benchmarks
+>>>>>>>> ==========
+>>>>>>>>
+>>>>>>>> Huge page collapse autotuning was tested in a physicial machine with
+>>>>>>>> MariaDB 10.5.29 and sysbench as the benchmark framework.
+>>>>>>>>
+>>>>>>>> The hugepage module was set up in the following way:
+>>>>>>>>
+>>>>>>>> # echo 1000 > min_age
+>>>>>>>> # echo 1000 > quota_percentage_hugepage
+>>>>>>>
+>>>>>>> I guess this is the quota goal?  What is the unit?  I guess it is aparently not
+>>>>>>> percentage?  The name doesn't sound like very consistent or intuitive.  How
+>>>>>>> about hugepage_mem_bp or target_hugepage_mem_bp?
+>>>>>> Right, we agreed to change the name. I will correct it.
+>>>>>
+>>>>> Thank you.  Because we agreed to drop the module, this could simply be dropped?
+>>>
+>>> WDYT?
+>> Yes, I will drop it. The new patch set will not include any of these parameters,
+>> but just the target value for the quota and a new quota metric.
+> 
+> Thank you, sounds like a good revision plan.
+> 
+>>>>>
+>>>>>>>> # echo $(pidof mariadbd) > taget_pid
+>>>>>>>> # echo on > enabled
+>>>>>>>>
+>>>>>>>> The goal was to achieve 5% of the total memory used as hugepage.
+>>>>>>>
+>>>>>>> I guess this is what the above example is setting using
+>>>>>>> 'quotta_percentage_hugepage'?  If so, it means the unit is 1/20000 ?  Is this
+>>>>>>> correct...?
+>>>>>> I actually set it to 500. I will update the cover letter.
+>>>>>
+>>>>> I think changes of this series is matured and very close to land.
+>>>>> Discrepancies in the cover letter and commit messages are my concern that
+>>>>> blocking this series.  Please keep everything up to date and in high quality,
+>>>>> from the next version.
+>>>> I will test it with a bigger database.
+>>>
+>>> Thank you.  Couuld you further clarify what you expect to see as the result,
+>>> and how it will complete the story?
+>> What I expect is DAMON to keep consistent huge page usage to total memory
+>> usage ration according to the target value.
+> 
+> Makes sense, as long as we have a sound theory.  But, I'm not sure if we really
+> have such theory.  Please read my comment below for why I'm not really sure.
+> 
+>>
+>> Should I publish these results as well? I mean showing different target
+>> values and the actually achieved values. And theses results for different
+>> database sizes.
+> 
+> Feel free to add as much data as you want to show.  Nonetheless, I'd recommend
+> adding only data that gives us clear story in a condensed way.  The data on the
+> cover letter will live forever in the git history.  Let's not make it
+> unnecessarily long.
+> 
+> If you want to share your findings in volume for discussions, please feel free
+> to share.  But not necessarily it should be the part of the permanent history.
+> You can send it as a mail without the code diff.  Sending that as a reply to
+> the patch series could also be a good option.
+> 
+>>>>>>>> Since the database was not very big, we may not be able to achieve
+>>>>>>>> high amount of huge pages per total memory consumption ratio.
+>>>>>>>
+>>>>>>> I believe this patch series will work as you explained.  But, it seems bit
+>>>>>>> weird to show a test result that doesn't demonstrate what this patch is aimed
+>>>>>>> to achive.  Could you increase the size of the database?  IIRC, you were able
+>>>>>>> to show the percentage is over-achived case in an early version.
+>>>>>> Actually, this is what I got using the TEMPORAL quota goals. With the regular
+>>>>>> quota goals, it actually over-achieves the goal.
+>>>>>>
+>>>>>> Is this an actual bug in the TEMPORAL quota goal?
+>>>>>
+>>>>> You mentioned "Since the database was not very big, we may not be able to ...".
+>>>>> Based on that, I was assuming you will be able to make the goal achieved, by
+>>>>> increasing the database size.  Now you are saying about the goal.
+>>>>>
+>>>>> Do you mean the database size is not expected to contributed to this result?
+>>>>>
+>>>>> Of course TEMPORAL goal might have bugs.  I find no clue from this datta,
+>>>>> though.  Do you have some evidences that make you suspect it?  If so, could you
+>>>>> please share?
+>>>
+>>> WDYT?
+>> I have no idea, to be honest. I will try to test with different databasesizes with temporal and consistent policies. The behaviour was weird to me,
+>> but I don't know if this was a TEMPORAL policy issue or I didn't set the
+>> DAMON parameters correctly.
+> 
+> Thank you for transparently sharing your thought.  And this is little bit
+> concerning me.  It feels like we don't really have a good theory about what
+> change will make what results for what reason.  It rather feels like we just
+> doing random experiments and showing the random results.
+> 
+> I understand having data first and developing the theory driven by data is also
+> a good approach.  But I feel like this is a time to step back and think about
+> what we're doing.
+> 
+> IIRC, your initial experiment results on the very early version of this series
+> looked promising.  But from a point, it looked like just random.  Maybe I gave
+> you wrong change request, or some test environment has unexpectedly changed.
+> 
+> How about summarizing what tests you did so far, what changes in the kernel and
+> the test setup has made for each iteration, and how the results have changed?
+> 
+> If it has been too long since the older tests, just doing the tests again or
+> dive deep into debugging of your current setup with the all mighty printk() on
+> core DAMON internall code can be an option.
+> 
+> Have you also monitored DAMOS stats while the tests are ongoing?  Maybe that
+> could also be a good debugging option for understanding what's going on as
+> expected vs not.
+The problem I've been having is inconsistent results. This may be due to thefact that I'm testing primarily with database, which contains a lot of
+variable data, like indexes that may be hit sometimes, and other times not,
+different data distribution, etc.
 
-[1] Commit 8c3328f1f36a5 ("mm/migrate: migrate_vma() unmap page from vma wh=
-ile collecting pages")
---=20
-Best Regards,
-Yan, Zi
+I've been trying to get a test as consistent as possible, pinning the
+database to a single NUMA node and the tests script to another one, avoid
+network traffic, etc.
+
+I am almost done getting some consistent data.
+
+Maybe I can use perf to get DAMOS tracing. Would that make it?
+>>
+>>>>>
+>>>>>>>>
+>>>>>>>> The table below shows the memory consumption over time. Timestamp is in
+>>>>>>>> second and the memory usage in is MBytes. Gaps in the timestamp means
+>>>>>>>> that no changes in the hugepage consumption happened over that period
+>>>>>>>> of time in MB. The total used memory is calculated as
+>>>>>>>> mem_total - mem free. The huge page used is calculated as
+>>>>>>>> huge_page_anon + huge_page_shmem + huge_page_file. The table also
+>>>>>>>> shows the huge pages to total memory ratio.
+>>>>>>>>
+>>>>>>>> Hugepage autotune benchmark:
+>>>>>>>> +-----------+----------------+----------------+----------------------+
+>>>>>>>> | timestamp | total mem used | huge page used | percentage hugepage  |
+>>>>>>>> +-----------+----------------+----------------+----------------------+
+>>>>>>>> | 0         | 3044.988281    | 0              | 0%                   |
+>>>>>>>> | 22        | 3160.207031    | 2              | 0.06%                |
+>>>>>>>> | 30        | 3250.90625     | 4              | 0.12%                |
+>>>>>>>> | 69        | 3781.238281    | 6              | 0.16%                |
+>>>>>>>> | 71        | 3822.226563    | 8              | 0.21%                |
+>>>>>>>> | 72        | 3846.578125    | 10             | 0.26%                |
+>>>>>>>> | 73        | 3852.402344    | 12             | 0.31%                |
+>>>>>>>> | 74        | 3868           | 14             | 0.36%                |
+>>>>>>>> | 75        | 3881.84375     | 104            | 2.68%                |
+>>>>>>>> | 275       | 4194.175781    | 106            | 2.52%                |
+>>>>>>>> +-----------+----------------+----------------+----------------------+
+>>>>>>>> After second 275, no more pages are collapsed into hugepages
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> THP (always) benchmark:
+>>>>>>>> +-----------+----------------+----------------+---------------------+
+>>>>>>>> | timestamp | total mem used | huge page used | percentage hugepage |
+>>>>>>>> +-----------+----------------+----------------+---------------------+
+>>>>>>>> |         1 |    4489.320313 |            184 |         4.098615986 |
+>>>>>>>> |        15 |    4581.871094 |            214 |         4.670580984 |
+>>>>>>>> |        30 |    4757.742188 |            376 |         7.902908253 |
+>>>>>>>> |        45 |    4937.574219 |            558 |         11.30109595 |
+>>>>>>>> |        60 |    5147.867188 |            728 |         14.14177898 |
+>>>>>>>> |        75 |      5407.0625 |            918 |         16.97779524 |
+>>>>>>>> |        95 |    5668.796875 |           1040 |         18.34604455 |
+>>>>>>>> |       105 |    5723.839844 |           1056 |         18.44915352 |
+>>>>>>>> |       115 |     5736.84375 |           1072 |         18.68623317 |
+>>>>>>>> |       125 |    5732.042969 |           1088 |         18.98101612 |
+>>>>>>>> |       186 |    5753.601563 |           1184 |         20.57841488 |
+>>>>>>>> |       246 |    5746.398438 |           1280 |         22.27482159 |
+>>>>>>>> |       306 |    5752.128906 |           1376 |         23.92157795 |
+>>>>>>>> |       367 |      5772.5625 |           1472 |         25.49994045 |
+>>>>>>>> |       427 |    5832.019531 |           1568 |         26.88605536 |
+>>>>>>>> |       488 |    5813.246094 |           1664 |         28.62428277 |
+>>>>>>>> |       548 |    5807.621094 |           1760 |         30.30500736 |
+>>>>>>>> |       598 |    5841.253906 |           1822 |         31.19193292 |
+>>>>>>>> |       669 |    5982.160156 |           1854 |         30.99214918 |
+>>>>>>>> |       931 |    5946.605469 |           1868 |         31.41287933 |
+>>>>>>>> |       981 |    6020.207031 |           1896 |         31.49393352 |
+>>>>>>>> |       991 |    5988.445313 |           1910 |         31.89475566 |
+>>>>>>>> |      1011 |    5988.570313 |           1926 |         32.16126554 |
+>>>>>>>> |      1032 |    6016.039063 |           1936 |         32.18064211 |
+>>>>>>>> |      1575 |    6057.289063 |           1968 |         32.48978181 |
+>>>>>>>> |      1606 |    6026.167969 |           2000 |         33.18858702 |
+>>>>>>>> +-----------+----------------+----------------+---------------------+
+>>>>>>>> I ignored some points to make the table shorter. Anyway, the amount
+>>>>>>>> of memory consumption, total and huge pages, is a lot higher than
+>>>>>>>> with DAMON hugepage autotuning.
+>>>>>>>
+>>>>>>> Could you further clarify why it is, and what this means
+>>>>>> Memory fragmentation. I will add information about memory fragmentation
+>>>>>> in the next cover letter. >>
+>>>>>
+>>>>> Yes, please.  Let's make the complete story of the benchmark.
+>>>
+>>> I'd like to again call out I'd like to show "complete story".  I don't think
+>>> additional data points that look interesting but not providing a complete story
+>>> is really adding much values to this work.
+>>>
+>>> If you want my feedback on benchmark results first, sending benchmark results
+>>> (with your analysis an discussions) without the code change could be an option.
+>> That makes sense. Maybe I will just reply for now on to get your thoughts.
+> 
+> I suggested to take step back and look back what we tested so far to get a
+> better idea on theory.  But, yes, adding even more data shouldn't harm us.
+> Please feel free to share your findings.
+> 
+> Thank you for replying to all my comments.  To recap, let's keep discussing
+> about the test.
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+Thanks to you. I will keep testing and keep you posted in the coming days.
+
+-- 
+Asier Gutierrez
+Huawei
 
 
