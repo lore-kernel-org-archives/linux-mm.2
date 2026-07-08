@@ -4,98 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1195C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 560B3C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 07:51:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C323D6B009F; Wed,  8 Jul 2026 03:49:02 -0400 (EDT)
+	id 4BCD96B0092; Wed,  8 Jul 2026 03:51:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C09506B00A1; Wed,  8 Jul 2026 03:49:02 -0400 (EDT)
+	id 493AB6B0096; Wed,  8 Jul 2026 03:51:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B475F6B00A2; Wed,  8 Jul 2026 03:49:02 -0400 (EDT)
+	id 383A36B00A0; Wed,  8 Jul 2026 03:51:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C4F66B009F
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:49:02 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2586C1C3CFB
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:49:02 +0000 (UTC)
-X-FDA: 84964833324.08.11CB51C
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4FF60180004
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:48:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Yf34rmEA;
-	spf=none (imf06.hostedemail.com: domain of BATV+3086788e15153571dc5e+8354+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+3086788e15153571dc5e+8354+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 11BA36B0092
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 03:51:02 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8ED001C3D02
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:51:01 +0000 (UTC)
+X-FDA: 84964838322.07.811A7B8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A2404140009
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 07:50:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="m/dsYTHV";
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783496940;
+	s=arc-20220608; t=1783497059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1GKqWLEPMpSojJNy8dWRNhk5xCmhjbzGdFpbVnUJaBw=;
-	b=w5WDRYy0beS69U88YyX/nclnig7/xtMbCGl/evwaVbDl5LzeN0yPVnuSXi5Y1d5gNEOsXt
-	an8Ys7UoSpkG+pJwVWia7Z6vtERH2Bp+P07KjtqzAXsafZ35gEhdSRpY1NMEa3YXOWWIzu
-	oNnDNPhzMFTRWZKMHtaWdPJWnS72Sno=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783496940;
-	b=DG9KPZhjomrFkL9+jXiq4VWEE8LyTRknZ6N7NmRxGso4IKDB8nill6x+yToJGJe2gG5m2P
-	FLxIx8Xfq7D8+q+xmBjtm6qq9SGfcrNaSPcYj9LjPKNIP7Op5kevTMU4xeAg0KmLna+s7V
-	pvj0mERPX7mE1ee/ZtnBqWrvFw5HdF8=
+	bh=b1XQkZo2eR7ZM42tf1xDfDsvue3fQhs/RXMdTrjh2OM=;
+	b=Ee/PuZXbgk17pPAFUsCiqD6+P2A1YoBYSW6O7RwB8s9ss7ZC5/7EhNPABSa80sJDwT69/z
+	OmN2N7v2willJdAIUqYIsMropVp3Z13hnmmb5seD1HNL0AnSFp2CkiECpUhaR56qQxCLUy
+	fDB6MdCKBhJ2CjovNIiuB3LoipsaC3c=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=Yf34rmEA;
-	spf=none (imf06.hostedemail.com: domain of BATV+3086788e15153571dc5e+8354+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+3086788e15153571dc5e+8354+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=1GKqWLEPMpSojJNy8dWRNhk5xCmhjbzGdFpbVnUJaBw=; b=Yf34rmEAxcLNuhnC7Kq8y4edIn
-	yHLw/ZngPfYN4Ht4snU+mOMkMNi/O+LHMInNR9DR+2vJR7VXHFoixo4uBSKJziJQeVDiqI/V+11Yg
-	IFd68c1E3lx9cSVDK9tTEXqswI+f+n/QplUk1S0geaRP1VEq5yiPEhkapAerHAxA2VkxT2SeJ72KU
-	WHzQ/+JskZTDMwYxI7N2j8N1EbWgXo1uGBe+tgI7ktqUEBtV6XkIn+UQkA7S6ZReyWLGxQCJnFDEA
-	MTly9iUpoiyS95CyXfl2WbcQ+qoOXfUQ/9w9W33kJEHw8gQZaVK07G8PlP6x02jRmr9lMDeFFLGH8
-	cO8aLwFw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whN1c-0000000GXRD-1kHi;
-	Wed, 08 Jul 2026 07:48:56 +0000
-Date: Wed, 8 Jul 2026 00:48:56 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Trond Myklebust <trondmy@kernel.org>, linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Anna Schumaker <anna@kernel.org>,
-	Shivaji Kant <shivajikant@google.com>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 6/7] nfs: Optimize direct I/O to use folios for
- requests
-Message-ID: <ak4A6IEmWNi27I2d@infradead.org>
-References: <20260616134000.2733403-1-praan@google.com>
- <20260616134000.2733403-7-praan@google.com>
- <7ee3bcfdd6126c93cbb1c219bf601182b95c10d9.camel@kernel.org>
- <ajGGpDvzZdkGtSbN@google.com>
- <ajP8ZTTLYkICFTO_@infradead.org>
- <ajQ21kH1ZVajS2Y7@casper.infradead.org>
- <aj4iiD5C_yyLeb3U@infradead.org>
- <akevQfFVteCOD6LM@google.com>
- <akfAgy52s_Gch2KG@infradead.org>
- <akzsO_vmYX_7Umjd@google.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="m/dsYTHV";
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783497059;
+	b=pnLQDIjnbTvrV+32qBRiYjECcmHeCifV6T6CgCY0qQrum5oe/fc+vF4nAAha3cIQHVfzE8
+	0BR4arIpXppBHgQbH5f4Qmkb0/HaVIcXPuxHLrIdd1bQktpm7lte8qZj8lR/gHOAC6LIZR
+	ABWKUPp1mBpJanjmSSSn01jzaun78Gs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DCE4141B23;
+	Wed,  8 Jul 2026 07:50:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C3F11F00A3D;
+	Wed,  8 Jul 2026 07:50:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783497058;
+	bh=b1XQkZo2eR7ZM42tf1xDfDsvue3fQhs/RXMdTrjh2OM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=m/dsYTHVHuIvELsx8PPNfFFI5J7f0fJ5q48N89vKvt1BK7Lwil/6XCJJUw61F/WL3
+	 u8dXmp4kqrkNDUyVgGMxCzeQpv01gqoOVZrQXkcorNJl7HrwfWWQoYXD74ycQtuwU5
+	 ZYeLImtZ4oLH8ZYhrdFwQsL7mKe3rPsNKVsMF/+xC0ikE1uxE1aDW1LF/6gLMroriM
+	 QM0PDcfDNkgNLVMyn/If/6RtfZ2mvuL/5rcO11s3CgZmgvpIKuUTLxNieCS9vE1qp/
+	 XIEoxCL/QIRSDgYLRNIPq7NT7RVh4ZMzmhzCq4M7jieE5xKxm8DsZGCvyEOVRluDN8
+	 tMJAaOTiXq4bA==
+Message-ID: <79ab5b36-c9a3-4af4-b9ba-7fa883cc5323@kernel.org>
+Date: Wed, 8 Jul 2026 09:50:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akzsO_vmYX_7Umjd@google.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/ksm: Initialize the addr only once in
+ collect_procs_ksm
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org, chengming.zhou@linux.dev
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <202607081219094603lvrfl0HWd-31cAGrp79l@zte.com.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <202607081219094603lvrfl0HWd-31cAGrp79l@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4FF60180004
-X-Stat-Signature: em6abqxch5jwq5jgw3rd67ih6a3kmk5o
-X-HE-Tag: 1783496939-351278
-X-HE-Meta: U2FsdGVkX19tHEb6mmMijDvDpLCJlPrqPHn+3xNPk5l/IUwwO+Iv5OlSFBCqgrmdS+iXfTgVorrixn20kirQa6acchvWhO1XTVhhfL1hI3GBJw0cqt717SnbSfyy6Snp6NfVB36TtUA+Cyik805WXjhTh9EPqRgUUQUcCTtag76nMjzBNrgpzFHgUNeZafJG1aW1yGc8gylZrHya7H3ODOcMRp0s9u/vx96DkTzitWRGOi8i3gZaxXwUqYO+rGKRwwkrEwmxJ+a2PkzkE7cNFKjKf5iV5ZVNmMTRAO1o3rmx1UY+EoW71QaYhlhWZyeI3qiIG9q/Whgu503cjhOWQmlSDcSR6YHzbqEU15mQWyDtE2b2pMw7ZIgohtJ0mT/ZstOfAFwVY/AC8ZXjessUMp2RKXre9rWGhCOGweA6b4DxYAPXSyKgmoz46jz4u+IZumrSdastQjinL0icTHn99nk8RFKasr0lz/ox/m5Ru/YkrZ0xKGWGHwovs6dKU6nEz8XckTNvz3v0sJMLjVDoFAefkc1fZSrCIYN0s4wNk0Poas9ZvYODZ+xM7s88aUBe/e8vwOEXb+UjS7NHsccYLEBtEljcE+IEgfu8SQsBxFHf+vq8UInnyPWMQUBQMv6PckoPDMFDxey5IO51FEC77+6TTWMJdMH3p1hVgCtJtwulPyHF5mV1yCTrw/4jZArG3NgkIyhBvk0aqGXWbTuHzyLqjfmLWxFvm9sZTx8bBT9FLWN6Nx+RTQ0QKVgLmLfSqQ2tzAoxxLH8iBRUihdbTXV7p9iZhDpma9+821X5jrVu7WNBjWx01qrelJxjdSOJTvoYZaS62SgGwrNY2UCAj6DLDbDdYGQYuNHLAsha8wh9zn6VIOEzwYE11q42kiJUqmGvKO9jovslmYAl0oS+6SQ2bw1iXxEvXuRmDgiSGuox8uiq+DU+w+OWfH6epiDBEbXW1Uv7EX5nwJkzGFl
- pw1bfP+e
- U/I+fvjesWGtbGUESNO4akFV7+ENJLjsRvMAw8KFyxsYxvePFR4P9/YZm61HOVLQgVhlJesSrdT5oDhhcwaUQjvGUmh1uUEvJxoYqwqXgacY/crBpEZK36nsVcx2xH3NhiWukwOtgp69hK6SMmBQYnE4ifMAgizDW6TAYe3rQst78XYYVedh4QSSqe52wacmfzG1stgxUzdAHZ+V+966IG0qy/AsU2t9qIIU289UChy+8AFlJ4UEdkJU372CKZG4ncvE+468fqV/dpW2AuRzRPlJ5BCDNE/pTlUHyUJ0L28+9LvC9cXstF3pXUxogbl5ROAd/fhAPEini6C0k9E+1MQxABO9S6ANuByIuMFofJNY5KTVAxtK5rPwAhzU6qD4KAp4k+PJakM4Y3o4Fb+0QzPGcC3CDbjmS01aUDHIJN/uBtHgQW/3h9DdzJF6caZG3IS9lTmVpMJeIWj5q+SU84aJ5lpVUhkA7n78PrE8a0QmLEVwbBGMJPE1/1v5vgiqwZ24u/q0rr34Jt1FkXyE58IMp33sDU9zNScGN
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A2404140009
+X-Stat-Signature: 38izajatewrqz9z5r85guay6h5kmbsr7
+X-HE-Tag: 1783497059-348230
+X-HE-Meta: U2FsdGVkX19JQfwsBxWrwcjQ6HDFUWqZ7GcJQDeWks55gVAGFDBevf/X+b1/cjHWzzQ6c8O2CSW8R4nE6trmgC+kqlPymRn8G5cJwX4fFsUwR9S6A/C7qOv+qCtZu9tRVrHCZGh5PGuG+0i8VkitA67+p2z1cGQ0Ue3970WttYL1BsSRxs1JbdRbIVuOuNuLlG1HnyS79+MaUBl/zosXLyIrGO4o4Prok+gKyGhZER66QHmhOo8iqbPw2vButfbjBR/ULsgSENrL0oQfnLVFKXp3PlF4cXgH0YN/PtpoaK8ScAE4ueAILXIUI+fRZSsuxESSCASXG/5KXu6BzBtR6HdTVJKJv9BTOY1YucORmLf94Iqv1Fm4s92sjE8uijn/4+NzIVmbf/hx46noGpmZrcnxH6kIrW9o40p3gp42/kEA5gdGgv2Df8IwiQd2GGcgixN3xZJaORuoFvj9oJi0r97ayjMHO3sfZbB7xvyokwP4wE4Pq+nko2SNE5yhYgUCXIQsOMb/qk6wA0/yaMHgdFIM92Dhx7cwWlAnShTX3XrlOWsHdjmd+6GPpEKJYZBq0oWXIWiY371N78DVuGRLpXJVk/nNJNJqpKmmNZTTJVhXlmy9hdfAqDxuqQ4f6lzFUDC2u+opQEuwkYDiIeuBGej3qUXeXcSBd+267i2M3lecukNS91fJmcF3RElIxRy3ZBR2WrEBxoNjI9AmQDEvDPQ7AwgBBs34w3SioqTbzLii7nzW5pPyzD3f2FydFXyoPALtwureZV5iNeaGOt1C4vC8FhkCOPCTLJOH1f2yi2mdZPKgcECh9a1JVdMzzfSEXa/tRDfbV24QeJaiKEbewszKkvpAR+LUZrlS72uveKdB3BGlPvSm7s85Hw14xnhS2ANaJhAw8Qxod9CbLgvFSawKspgB742yUdIotxl47K87uHeTytLdPo5fE3EKcy0lrZ3tJCgX4MhveD+O9nb
+ E3AmbZb8
+ yFox9/Dix3sDBchb2dYxdkA32eR8VK6JF/v+52bA5yPA2Bhe4cubpFG2AYP8kVAofmy9cpyvL7ZJ5QKWlOzoDyG7twwbifUudqMCxpmXC29Fj+lGxFWtRhGr4ukmvKfAMsIQNPcKSwW3RlVa2vGb9LPN5iKnbzzuiX3rBFwSh9dhGCAbse0aznW6LqeC5mgPrUo3d2A9TwZFPaqt/Dh559Z3Tb3j0q1amterLJ2QLhDJGGHIxAh+REc2Bm3+bfiZBYEEMRFadydM0+m6Eme9aFk/aMmqhK53h2LR/oznkschTYgBwbdaB0l8i2qsKrPjRcsC6zUIag87TqpO/YGegQGW0A041Mk0FTaoRE5CVcV/H3ATaQdiJoJ8cI5IRqB0J9gfF8O6LHh4MCYo3hSA2858FnCt4ph+9+xQPlAUQlARmEhQHukP5Ndwp1TKIo9kRQTVu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,20 +137,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jul 07, 2026 at 12:08:27PM +0000, Pranjal Shrivastava wrote:
-> Ack. I see! Thanks!
+On 7/8/26 06:19, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
 > 
-> Regarding the page_folio impasse, how do you suggest we proceed? Should
-> I expose and use get_contig_folio_len() from bvec? Or should I move the
-> NFS helper into the iov_iter lib? (or both).
+> Similar with 318d87b8fa7 ("ksm: initialize the addr only once in rmap_walk_ksm"),
+> Only initialize the addr only once in rmap_walk_ksm because the addr variable
+> doesn't change across iterations.
+> 
+> Signed-off-by: Xu Xin <xu.xin16@zte.com>
+> ---
 
-Sounds like the best way forward for now.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> Also, do you suggest sending the Folio move as a standalone patch if it
-> is blocking the rest of the series or do we prefer keeping these in a
-> single series?
+-- 
+Cheers,
 
-Sorry if I'm thick, but I'm not sure what "folio" move means.  In doubt
-if you think you can get a series merged quicker without a later part
-I'd split it.
+David
 
