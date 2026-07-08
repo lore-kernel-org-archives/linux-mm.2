@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44D82C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 06:31:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00A91C43602
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 06:35:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D1E86B0088; Wed,  8 Jul 2026 02:31:36 -0400 (EDT)
+	id C2D446B0093; Wed,  8 Jul 2026 02:35:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 083566B008A; Wed,  8 Jul 2026 02:31:36 -0400 (EDT)
+	id BB0C26B0095; Wed,  8 Jul 2026 02:35:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDB796B0093; Wed,  8 Jul 2026 02:31:35 -0400 (EDT)
+	id A9E996B0096; Wed,  8 Jul 2026 02:35:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C4A226B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 02:31:35 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D5651A0698
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 06:31:35 +0000 (UTC)
-X-FDA: 84964638150.11.0F299FB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B7242C0003
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 06:31:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FMBpqUXc;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 78F6F6B0093
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 02:35:45 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EAB831C3A32
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 06:35:44 +0000 (UTC)
+X-FDA: 84964648608.05.44E1B13
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6B298A0008
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 06:35:43 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ary3czBU;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783492293;
+	s=arc-20220608; t=1783492543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IdgAJHMGRJTpfsfF+AYasgFlGXIoomItdq4jFM8o5mA=;
-	b=trpdhHbx2Xu4NYKCwi1yJs448zzEhrE/JYefBM8Zy5TjZi4bnJ8HSLlo0pGfcE0nw2J+Xp
-	1LzjODrgAAXAH3SXEMkmpfJsuGsNkEfX1TqAjlu+JxvmorUMUktm9/WQZ6CHymLXKNZQmN
-	s28RUqFPCWPnIV21xMXM2kaQ61or18Y=
+	bh=XWmw6MhRs0t0z19SkOsOO9Camu8gGn8nD1+tXIB2gPU=;
+	b=WET9XmU+qBodhkBCOuLptsnKLWAsVpuOILlN5tfnv8Xz/nJ8qHd/5p4ibIlF8dIprn72OB
+	iK+E1L999YJsWvcUAgZvsKLEmWUfg0lPxZBNM/uC5inbtp4cXPi0L+bQOdckNX3b0iF4jN
+	+NSXsoWeeVk1z2Tk87QhBNkuHOWigH4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FMBpqUXc;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ary3czBU;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783492293;
-	b=KUQVnEZM3mNph85Nd80btIVxXkEcQ34wRHQije9TH2I7RIuTTmCgifCUkoAJmfIIRqMSfN
-	F0O4Knx7yuVoMCATikgiTlFZCQ3EngVj4DyG4lM6V4ZzZkFC7EXr8XP33DIfaWuSyTKHYT
-	xQYbDBU+3/jNWGC2dIqlvlOazap5lQI=
+	t=1783492543;
+	b=bsK0W8ufrG7A/WXYnvxSNaeG+xi0xyZFgD25QjWfKa3GqpC+kcEQlrU0m7faqA3XTis7sz
+	TENqp5Evf4zkdy9g8R6YLC/8S0JIO8MTITnKBw5YX/mW1l7h1kELG1sDYIM81qbqK8yw3w
+	aeTObiudTOvjAAOxzZ2qGARaFE91h5w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 805E0410CF;
-	Wed,  8 Jul 2026 06:31:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA33B1F000E9;
-	Wed,  8 Jul 2026 06:31:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E594E6111A;
+	Wed,  8 Jul 2026 06:35:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A611F00A3D;
+	Wed,  8 Jul 2026 06:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783492292;
-	bh=IdgAJHMGRJTpfsfF+AYasgFlGXIoomItdq4jFM8o5mA=;
+	s=k20260515; t=1783492542;
+	bh=XWmw6MhRs0t0z19SkOsOO9Camu8gGn8nD1+tXIB2gPU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FMBpqUXcx1rEMTajpDAMv6rywRMlwmMyOccijI1R/LaMEARbJW4BU2vPsEM16GZ3w
-	 C6OSsjIMkOGc/kaMV3u5QLJfXv9sX4z8gmmz20zVgxW2/9uz2/iWaD5rhqR2+xIIkJ
-	 kxMMksBnbV5y4F4dehkhT6QGP3MQsPVfWf5IfDUdLjIwCF5W9yuD+fhsr2ikpLaDbf
-	 LJ8ZqfLC0pDgnKbxRUdlH23b3D4isas2eAoxs16Oj4XhDPsI4a5lO5rg1lIY7LXYSA
-	 ou++MqG63MBLoNaRzzrtzkcGyuuuFSyTVxZvdaFe8QSylmgXFMU3uXogsqti8rg2np
-	 uyWq1EFX08FOQ==
-Date: Wed, 8 Jul 2026 07:31:18 +0100
+	b=Ary3czBUrY5BcdJ3bPJlEhOFr7Qcw04lGjDc9MQsKZGy5g1+Dp/Ez09GzJmArhggm
+	 tleNdg56kmZuj3eGJ2O5/pzrHjYhaBICFkjn6pHDMqP6q/UTcyS025e43edF6cH+uM
+	 f1gXic3Gx44bPepct+tpNB7qDbE6hHVN1WUd9CQPkYrOIw0igHwe0CY3qxyTWTk2Ut
+	 I+iqjyhG3QRvZFTD9Ns0Pxuc1yjYyz27HY0UBeT3Spwl8jYgid3Ad/kFtEO/X/oz+c
+	 qKMkS7odNKVVb0eJew/2nh7nPJgDR6oyrQpWvgolblZHNv0Y0nGb6yJqYOzWnEZsqE
+	 0B5Q6JJuonTJQ==
+Date: Wed, 8 Jul 2026 07:35:29 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Wandun Chen <chenwandun1@gmail.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
@@ -74,20 +74,21 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	bigeasy@linutronix.de, clrkwllms@kernel.org, Alexander.Krabler@kuka.com
 Subject: Re: [RFC PATCH 0/3] mm/compaction: honour
  compact_unevictable_allowed in mlock race and alloc_contig path
-Message-ID: <ak3uV7L5EEi3aKyD@lucifer>
+Message-ID: <ak3vmMYh2dzO28wJ@lucifer>
 References: <20260604023812.3700316-1-chenwandun1@gmail.com>
+ <ak3uV7L5EEi3aKyD@lucifer>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260604023812.3700316-1-chenwandun1@gmail.com>
-X-Stat-Signature: 3qe4iyzjmjkn1e8yy35fa1iw9n3qj9kn
-X-Rspamd-Queue-Id: B7242C0003
+In-Reply-To: <ak3uV7L5EEi3aKyD@lucifer>
+X-Stat-Signature: 3n9benagqa14d198e8rgdq11oywaru6r
+X-Rspamd-Queue-Id: 6B298A0008
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1783492293-51995
-X-HE-Meta: U2FsdGVkX1+sQ/LrNbVPYvClH3OrU1hZL4y7tJAgky00v0Q2VWPQTd/dzmV6eIw7yyMZu0tBtPia9XTgtTzsJ0N/K3Oisy4AD2R6GMLKVqyHbEQ3BVTOQ5G3ofaPaqSVS8yNml2rBNeWzeit3XKZcoFfkUC8wiJ0gzaXAqET8vcWZgzOZ1N00lxsF8fTtToCfrZbu9zpex0P/ySZHDydmFjr6I527azJcOkuroturJNb2sSLvbTrVAVaGuEEkyT4A3D5MN7c8wWwGA7ONDBdQW4i28bxycU6UTV5D6Y0qL5DmugiSvKT7t065xGL1wCQS1XMH7YkcC2TzCew/oboGRGe8OcHJ2w7M0OH0jbr7wIogvTtmuFA801NX2gaAof9UakSObSuD6Opm7NdBsrT71DUG2bUFTzbqVXf5zfC/4BdXijU0xN2pmH41ElDof5TlRl+rJnNcPACsmAVe4N4/sd7WbG1NBrb7rWgvwqP7lqGLD3TIDRGj47zK7QxnvxzyE8XeQxvpPxOe482g+4re0JUbbHYePWZWt9dkE6d6iOvg631tFaHrnQwj/dsN8PFL301BsmqI2ejUXqqdO+dO9w3o6CaNWE+vf1KxEoxr6FBGRVzijHXx0BEkFWsTk0bHXSmfpYeTDelDZwp5xBymscgG84z1+HcE/Yc1msRAARie0ycMdmmz+c+TKWQpy690w2sf3d7t40u6+LpWJxfaKt70SjzDFYOLc1P9Bmz4rC25/AMeR/BX5faWUYNxJz6M6+2C0CH9uT6hF961nTtoXNYq46Kx8Y/048HbSGIr/LFXwUYVoJnOj3lpdeWKu5e6N94TIrK3gIqAAgxHGcYfvPmmkPRdIgsdTfns30aPpIEC4uA6tvFSNLoUo+B74q4TIpf/a4DXPzdgHm0FzCrk/+QyvqD8Gv/3EnJBe2eFRCtwP265DVPNnhaTFNpPN53LLyGUL3OURgVPNh4lY1
- 1CYjVSPn
- 4YXIHvsn9jNxApRMMFrQW5eLjfb+OQrTPLaRQWLRTOM68E/y8FIli8gwMFosRWHLpWeXU7+oVDT2npThYxga28H9Tc2YH0BuAEsjD7yr5miBprnNp5yIP9Lf9SeFbwWe+RMkq6qbqye32MQMxvIyTjuz6AGGUmniZFOW/+EqKt4CoJ209aIuB4PCJ1aBtmQHFp/1EzTiHJnhFs/PpQjtbMJjTeQ/6dWUgUnpVWbD+r73RCgoeaelpZ0xrHqZMa1OxTyXfgi2pBeYZ7IwK8EQ7EvSxAfpST0i4aAlIs68EfiFN7HWAUV+uUe0aFunXK4QRqGXLiP5ZHxFaihJonChNJLtSYLLV5wZg4pgRJUZXvTa/QmV9xS+EGkPs6UBuC0SvmQNQTqecwYnCIUSi+FKd2pdCa5VFFm3nju4vPyqs52OtHeQcuELEMeDAUGmp+NIu4ZUBmhmnYFK84NUdRaWoBVNqHCRJyS2/EPjh
+X-HE-Tag: 1783492543-913319
+X-HE-Meta: U2FsdGVkX1/7jfu6BLOJ4aQBv87RU/zp1WivL3bynB60dkcA8wnIMudkbsLRFC/2IH+9bPxMUSWQWQSU67GdJaqaTEj8T2FYK4evGZofJyP/VWcu0JEgVHsmPlWrM1Ij1r8RguMMfWKxorZ6QrHgsbLjkHfN+jcMXK/5dguGyWCjPdGrcnbZG9d8MNNLkHZ+M4PCn4OeyjVIOdse/BQjgRScWPHoYm+NkzGwlnIaS4S+n2WyG5YTmbxVDTb9E7fF9f0WW0kp27K6oy7ANTGBCzt/fserqLo/fMXmxiF55GgBCvKHx55wj6jZfKNMx1me0zya+eeeJugkP1u9OxwSMYPfkWXIUovum5He9y90AjRLUo03dAO+0wdP245zrM2SEsnb5CQxHPusbzpO0Trz6McHXECwrnPzvqzplmqWwXEg349TRIgInnl3E6SrLhipMzzPTyCUgb97VgyM3r1u0ShfTMcwyjrGiVmrt8Ar+C+wn0U4KzdQDM7CTyRmE2zlwA6TJzIDG/SEC7DN4xz0FWVd4Sg3dadpgm58mJDPrTyx3m2xZipnKJUWXSj18IYfspxiOR1hsl8nqBjwInsZ4jERO/ucW7v3x78qcjXJNN3Bcn1wnnWWVdPxxSSYPGEO8IZvqBkxH8dv37spVn2q/G7MqKiPZw7790A4skwuzrtJcd1W5qUfVLg37z54o1hpLSW9CoWkjc2PCE8tCqX/IXSSW93i+O2CXP0LvpWHbMGnnlDmtJJGyM+2y8NTtYViI0i1+55YAbP2JhaYztu/fLkpIPrn9MkMdwYafTiUATeoNuS9nh+6g6s2mGMXiQUI5VXUD/jXKzPk290vl956yI0iQQe7aye6YWeZszTvRV2JYcOzZXM9HlCviVxJ67OFRnnoBe2eqV9GyGca3zm1UfzmNI7gP3MtpDrmkkvflM862Ix7cLfO6zzwcLAcBpLo3cVmgU+b0T2ggHCZ0wD
+ lz6I2Ibm
+ so0rmQvvo+HhabIHaeYJ8Hi5ic27y2OJOFf1q1IK15Y+FQcApgtQhy+7mLtUoLl+u+8UZh2slqg0fQxyr9fK814abufXWDQE/vDq8Bvy/EixhEyVO1eQwLJAgUHHaBbJYdSbnb6uqMigGmHitaL3MwShOkGTe02hkqnj4Sqha7ALwrUIoU+ge5d9+PCeyyouLPhWDNUwxLGtiZS7oDLZms0ZPMFiYfNBiftaq25NpwnbLtt2fij0OjSYo1GYqJwUrNdmzv9/O4erWgVNxgMRAuxzoky8/KHp9EZtdWPhjSUJ+BntNFAUnB307c7N0VXJtKMT4gUPpIouz3Zq44l4VtjKgA4yN1HVIAJEc/HV2SP/RNBsxQQaL+Z/HnNr1BiSLV/5gxzxGZvYr8bdb4+kCwH02xm7a9oDbgzTG8sLjVdxwgm5eU2sobgCc72foBAfvzZi3UWmOZ2mXPEtYUX65WhErD453RXq5h55+2WRToR5YF2A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,45 +96,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Errr... how does this relate to your other, non-RFC patch series [0] "mm: honour
-compact_unevictable_allowed in mlock and CMA paths"?
+On Wed, Jul 08, 2026 at 07:31:26AM +0100, Lorenzo Stoakes wrote:
+> Errr... how does this relate to your other, non-RFC patch series [0] "mm: honour
+> compact_unevictable_allowed in mlock and CMA paths"?
+>
+> Why did you send this separately and why do you not mention the other series
+> here or there?
+>
+> And why is one RFC and the other not?
+>
+> You really need to add more context like this, I spent quite a bit of time
+> reviewing [0] and don't want to find out that actually you are abandoning that
+> for this or something?...
 
-Why did you send this separately and why do you not mention the other series
-here or there?
+Oh hang on... this is old, and [0] is new, my bad.
 
-And why is one RFC and the other not?
-
-You really need to add more context like this, I spent quite a bit of time
-reviewing [0] and don't want to find out that actually you are abandoning that
-for this or something?...
-
-On Thu, Jun 04, 2026 at 10:38:09AM +0800, Wandun Chen wrote:
-> From: Wandun Chen <chenwandun@lixiang.com>
->
-> vm.compact_unevictable_allowed=0 is meant to keep compaction from
-> touching unevictable folios. In practice there are still two paths
-> where it does not take effect. This series fixes them and adds a
-> tracepoint to make such issues easier to diagnose in the future.
->
-> Wandun Chen (3):
->   mm/compaction: skip isolate mlocked folios when
->     compact_unevictable_allowed=0
->   mm/compaction: add per-folio isolation tracepoint
->   mm/compaction: respect compact_unevictable_allowed in alloc_contig
->     path
->
->  include/linux/compaction.h        |  6 ++++++
->  include/trace/events/compaction.h | 26 ++++++++++++++++++++++++++
->  mm/compaction.c                   | 14 +++++++++++---
->  mm/internal.h                     |  1 +
->  mm/page_alloc.c                   |  2 ++
->  5 files changed, 46 insertions(+), 3 deletions(-)
->
-> --
-> 2.43.0
->
+It just got pinged up my mail client because of recent replies :>)
 
 Thanks, Lorenzo
 
-[0]:https://lore.kernel.org/all/20260707125925.3725177-1-chenwandun1@gmail.com/
+>
+> On Thu, Jun 04, 2026 at 10:38:09AM +0800, Wandun Chen wrote:
+> > From: Wandun Chen <chenwandun@lixiang.com>
+> >
+> > vm.compact_unevictable_allowed=0 is meant to keep compaction from
+> > touching unevictable folios. In practice there are still two paths
+> > where it does not take effect. This series fixes them and adds a
+> > tracepoint to make such issues easier to diagnose in the future.
+> >
+> > Wandun Chen (3):
+> >   mm/compaction: skip isolate mlocked folios when
+> >     compact_unevictable_allowed=0
+> >   mm/compaction: add per-folio isolation tracepoint
+> >   mm/compaction: respect compact_unevictable_allowed in alloc_contig
+> >     path
+> >
+> >  include/linux/compaction.h        |  6 ++++++
+> >  include/trace/events/compaction.h | 26 ++++++++++++++++++++++++++
+> >  mm/compaction.c                   | 14 +++++++++++---
+> >  mm/internal.h                     |  1 +
+> >  mm/page_alloc.c                   |  2 ++
+> >  5 files changed, 46 insertions(+), 3 deletions(-)
+> >
+> > --
+> > 2.43.0
+> >
+>
+> Thanks, Lorenzo
+>
+> [0]:https://lore.kernel.org/all/20260707125925.3725177-1-chenwandun1@gmail.com/
 
