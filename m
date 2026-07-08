@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD60DC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:10:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 523BCC44507
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 13:12:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73E9D6B0005; Wed,  8 Jul 2026 09:10:40 -0400 (EDT)
+	id CC0FC6B008A; Wed,  8 Jul 2026 09:12:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C91D6B0088; Wed,  8 Jul 2026 09:10:40 -0400 (EDT)
+	id C4A8A6B008C; Wed,  8 Jul 2026 09:12:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56C326B008A; Wed,  8 Jul 2026 09:10:40 -0400 (EDT)
+	id AEDB76B0092; Wed,  8 Jul 2026 09:12:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 265476B0005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:10:40 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A68FE1A0143
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:10:39 +0000 (UTC)
-X-FDA: 84965643798.24.4151555
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id F16C420004
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:10:37 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0+8cPel;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E63D6B008A
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 09:12:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 120D2A0149
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:12:08 +0000 (UTC)
+X-FDA: 84965647536.10.863B3C7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3EBA980011
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 13:12:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ncv/lTIr";
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783516238;
+	s=arc-20220608; t=1783516326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XVbR6znNF637T9MAgobLVmsZoz7qMXfdjHyuLiDhLeU=;
-	b=xE7yyqlXQkt8wS+0IWyVr5phCFNpHkZxZlFaAiD7z4/g2i0uX31SoH6qv2GaGNoy8ChMgO
-	GlgMhAPHA8pMRcpGnt2dNy8PTur4DdoBOhxdH1vcdFkg4/UMV45e9bkzj34B/gVjASaJxJ
-	TF3Kf4VywKfdFRXDUQE57J3mAK5oXwQ=
+	bh=2xoTJUVCMoAA0S9QwdA/2rHDyx2S8Uo8HqqZplJCTfU=;
+	b=Al5CN01SJD7J7gSMyX6GZvquZNKR3BKO65U/0j8ruXdqLfHVy6aKcjqmokoLIVjCjjDg5r
+	qq1uDObRx+kZ1giAFcWGVct24Nd5e+486FkBWmqExygl0LgER/qPVTCsSLoLItXmpILNnP
+	5G/2o7VUD+cyw7VRJwn1lo43cNISwGE=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X0+8cPel;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ncv/lTIr";
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783516238;
-	b=vdVk773d1C08wrAoVzaC4+2L1DemMpa7E4G2wyC3NqsAUzg/2+vZeed6H3yWAv7wz/ttTQ
-	lNK/BL7nlF1dEK/4oRwslkEyEWC8ylNMdSu7jZ6YSL92N9dtou3sLkbCJ2IToMf4HWzpem
-	/3/Wrj3MUYHMdzX+3+bGnjQWBo+G82E=
+	t=1783516326;
+	b=KneAad7qPLIQGVER6M2Qw5FnHvUAecD+zGvyhYj8iJsjXAhrsYXcSiPazr+SEc7Iis5jzo
+	RuQElOuemQ0OOjait65z+Y1BCgmpxlzIygsfk6WJic5+NXwYFsdTtCONmaSy0RlkHHSjlt
+	W1BO50+qGvuDr00gjyDo/XwfEg2RLFk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8B53C6136D;
-	Wed,  8 Jul 2026 13:10:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C5D1F000E9;
-	Wed,  8 Jul 2026 13:10:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8766C43AA5;
+	Wed,  8 Jul 2026 13:12:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1851F000E9;
+	Wed,  8 Jul 2026 13:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783516237;
-	bh=XVbR6znNF637T9MAgobLVmsZoz7qMXfdjHyuLiDhLeU=;
+	s=k20260515; t=1783516325;
+	bh=2xoTJUVCMoAA0S9QwdA/2rHDyx2S8Uo8HqqZplJCTfU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=X0+8cPelmsVUM1oV9qfkrrvutBumdGTkzTk5XjIq+6Nxv952UFEV0WE1hwFN/lEdR
-	 thDgQXiPP0LZ3ythiiSua63U9+jgwV4dcluGeGF3H9+1zWP3x22hKA6K3gPSkkiAij
-	 2vd5CvcgynxmGndas4FjOEyBbjEf0tUGGzUdsG5i2Ert4NSKokmzxDzQjBmZG9mirr
-	 sUmPtCRbrFovnNg4CImiBzuRY8tQEJOYgYcMUfXE2saapFJ+xArHATO7Dn4BS4AzGu
-	 b5a+YZtS2JchD3P4W+SG86maqmyD8WWY0dkcO7fArhaLENrvXiOulr1fFY4Ona1mCT
-	 l0vop9xiE7cEQ==
-Message-ID: <bafd6e63-c4c6-432f-97bd-ad0d49391c52@kernel.org>
-Date: Wed, 8 Jul 2026 15:10:28 +0200
+	b=Ncv/lTIrZk4Eu47jjFa/0pc7PWzz9gHW0qPdQR1xTsVinQsfV+Mugp3a+N1Ojy74s
+	 9wJNnFKACFz8xG3pH/rfJZgPXLJwuNZ3ID4sBDXjDcGUAe9r+ZG5/sJkqwP3lC8Pom
+	 ZkHwS4+W7mewk8oT/lyAvGr3B8tiAYH+9K8lRVGhRZfVsgBF7Cap1maGcEGAdQBpDC
+	 NdqkG0EC5hSnvTEw9m9RgxHm1sBxE8GLaAeGYpJeHWrB4tWMGumSe6YMliFRIIsluC
+	 Cd6RueppI/F9zAFEFDHXOQ4pOcOWpGjuibK2PMBnCDlv5alOXU1XJExf2dOQhwMcnM
+	 fBDxYxKevuGCg==
+Message-ID: <9450b10b-3340-4261-9a9c-3f95cea3fb65@kernel.org>
+Date: Wed, 8 Jul 2026 15:11:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/madvise: skip device-private PMDs in cold and
- pageout walks
+Subject: Re: [PATCH v2 3/3] mm/huge_memory: skip device-private PMDs in
+ madvise_free_huge_pmd
 To: Usama Arif <usama.arif@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>, apopple@nvidia.com,
  balbirs@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
@@ -79,9 +79,9 @@ To: Usama Arif <usama.arif@linux.dev>,
  matthew.brost@intel.com, npache@redhat.com, rakie.kim@sk.com,
  ryan.roberts@arm.com, vbabka@kernel.org, ying.huang@linux.alibaba.com,
  ziy@nvidia.com, shakeel.butt@linux.dev, hannes@cmpxchg.org
-Cc: sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Cc: stable@vger.kernel.org
 References: <20260708122040.861335-1-usama.arif@linux.dev>
- <20260708122040.861335-3-usama.arif@linux.dev>
+ <20260708122040.861335-4-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260708122040.861335-3-usama.arif@linux.dev>
+In-Reply-To: <20260708122040.861335-4-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F16C420004
-X-Stat-Signature: baxmun3yjujc7t1tizaadkxbwfh95jrb
+X-Stat-Signature: d6rzb3qkg3kggj5ndbqj94yjb6y14nfx
+X-Rspamd-Queue-Id: 3EBA980011
 X-Rspam-User: 
-X-HE-Tag: 1783516237-785221
-X-HE-Meta: U2FsdGVkX1/Iv7Z/2YxxBbwNmnDj5ZXRivBYHp8CATKo59C0/5Z9GyKIGgIYWcwzuMbT4dRADKYp5OZC/hjvsIXHT7+wJ8vx5BJPi7SDuTRyURA4m4pah1HfW/PH9eUn1RegfhcHq78w5DILn8eEskRjV+319Cbnb4lkvO8iT47srquvhW4fVtseZSnPF2v5lTyBRpbEsYtTkJCUdAlCnqYTjSSfptAAG+9ASlns8/WwKhWwLZN3Jnv6ySWS3Noxr4L83CftWm7SwsN5EUBMcpk1maAVEubgDFuOaiJIrj6I1Bax44DvhDd8sOk+dJLAu8nEJ/2PPdYlqBfGctqqYvrQtkLHCfoaZb6M/d6RivHAqUmXN0bJXVWF6xHbcc2CJdvPnSib8A5eakI7lFEs5FZZV017Lgl1KvDFbD2HmrbtDjpT3mlN0INKkOCYaHxd1v4PG9387Dvi1wgQAsvErK3bVN+lrSjieI14Qh7hFs7AVyOR/UGukCdFdGYKEBubIy7hXEZsKuG4JbMVdq4sggppLurbo7YGsjVycxI7jk1lfQmVUttosh7rITGm1igEaRngdZsrjJGAcEzzdcxVMt5jOziIh+27vyuXEzHvyDFyUqy2JAIqy6n33jLrpe/XOuvhxR7E9wsmLulHMV5nGN/TcraYVg/dvu0ge2sj+2pnUKXCf5+y1CIWNXxnXogdFqAUGu93J3lGXe2P0Zx2xhr5tWZlF4vNI1mW3Y3WnBEBGwwaOyY4qZcIeZ9bwq8YbLDhjDtoWvvFXHtpK/RTZJq7nzTTCmSeY/29jRHP2ZlBoIzcODAPANgvugrJJ1ArJLkRlQJfFrxgEmUr6cV0c0ANcUN500we+PVff+b5DJXkgKbSg/JX0cIqbL4q8fLaCNYlcpxm65oWxJo6rPPwId4XEEIxYYcS+zNdnj1fpC9gIcLbk2je4iwtRUL3HuVc+FwalYFkxMWey7OqVXF
- gGwQY+xg
- Jrzrqf+CTGls8bxShLJg/CMZEAriMlDoxNGiADH0mQlTh1P1zfIGv17XbPFF+H/7vUkxwxQKyZAfqQhXMvx+FHIkSfAfIv+z6rpn7vuGt7vSwvhW6q6Xer46VIJ0NNkl8FZtnqHdZZ8qASz6I2mO8vORvcS2R0R6kATzP4BQsqHwvijm06r2PPkOzq9WGBlZ9QT9qV/7U0pt6TPSh/6gZTd4a0kwk/hiIhhSyTm8mlHSoPX9SqF/V8MmDScYz9tWRhChVjpnhL4hYWhhyZDc9gzCKCdOqwLFjX/jI08v4GJN54ME/qWl/pJs4EdcCF500hWyZi1ALNrRkrCeFCcW/mdxMUn/p6Sdsk6oMmYnYL7v2FXJJ8WKk45GRZZ80iIzyA3OFal09dOvYhZxG01mS+wThi4D4U/lrUXqsJyHDVuhLRyKlkaHprftswdpSgd5R+MTLjSTZMTAcLbR1DhSlwkr+DQ==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783516326-45300
+X-HE-Meta: U2FsdGVkX1/73MGKDbcfTPLEU0LNoi8FZgrWNaEuFbzxAgXkKJc6bixntPtoEkudgHB3miqAnpaeNM8z5Fh5wqhgUQ0Lty1Q801G99WdlLfRfVSb03ldfcq1NDlZLg6MyIf2rXKS4CaLHgZKLVLTNBsLbtd2QCMvLpK1yEJVbotVF5r/ko0X7XesP9kebSOJHsHxlXD60tvjXGgGvqmUnFaObCSR8exMRxVuR5WT/CVhYD7NFGKA4bpqCSlb3MiRpJOY/nhQ4ZPqUckz/5BR+lfm/js+9U9Z2CDWiWlQpkEDhAAC0zJy+0iU730X64cZx7tMJQ02zmxnrYz71+k0oNudB7FEwBYZrs1TOAFlv3ri6FRI/Mp9fmiwpMCYj5KkEYzrMJtBPHAS+XuRhcCTXMUDCwu1egj7O03MugqJawvKB0PhhpknVPVYUTwvsVTLAsKDePVNxtQbRc3xXzKFwnLeCvbSJOHigrqg0uJ8yIInP4Sk0b1vPAYM6/dwJsUVN21pGETDLFED/rMFVVG3g/kaBhsY5QsI9P8WNot/5IVFXuA2ii8FvJIPMP8Ssd/tQmp/k7aJzF4+Is4ATmTbATJlrpWFUn1kIRvturkeMvuq/QiijHOKFhAngedd3Qw2h4SPu9JU9W+lobmZP490+bTSyBejEyjJ1AHCJJ/LmFy4JUREuRPWsqgnUXQN8EZ3qoYcmjcrMIR0m3o71LJhpZ4DrxL2teNthhBh6ZEOJVyB2Ve3CNObuhNYa5Fv/2CHkTBOnJ04sWszhWg2IAplCtnmLpgcUbDbAmSaC1pMMLlewJg+bEs17eHLLDFZxMbpyX3eQ96XNLZT11WOrz/QTU6yX1IGFsyBoc0xy4KW7kDvlGa47+04dmJrl/nckFg0kcqE1PEaST2a5TzDpTciN5c+IIbgtBSHCNatdseqxWsWHH74o0l3pmsPMSXzYiU3DhVDv/i6gXgjwCZRJvI
+ Jqr1fPGc
+ Mc0QZKAYao9jhUuMVHa5qaGEKNK2ldBWYM2/dMegiO2OwI4W/431eRsUaHXyoZvnq47OKTfzOC6Lr7VOOqJjhH8gIbEJ+z5+bx6KLz3VDTBqFwdIQ4QV4gHu8LUaF5tWKRYfXWLj0Pe+St6gbbBpQClkQKOkyOZTqZCN3CKeCksolyPQiKaj5KTFr42c2rImEab6rR9Hn63yJvrOUB7B6PlsT1FhPLvFLJSEBzEl5elkQj00MEkf8+JOzTHAgPUcNIB+bQRrAOMbGRR7D3F/7aAF1JUXslTt7Fdkyi++MS23FcSmEGicowbgpu60NqFnvmGMd5CrsO68cfvKc2FieHVw91FxFFKjOi56UYXUovln6VxWe9ceS1QlMh8q4ARdiXfGpIv//jBFbA5teSLqbKPi3usVKd6Ikj52T75zHYk/03Hr9Gs/bFP+u9LA6yeNlUPzNEuIlHeFb66AWBc5ZVNnJIIxclJPmUF6Mb3umXAOt8VTjJcHvtGacMA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,23 +147,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/8/26 14:20, Usama Arif wrote:
-> madvise_cold_or_pageout_pte_range() takes pmd_trans_huge_lock(), whose
-> pmd_is_huge() check returns true for a device-private PMD. The subsequent
-> !pmd_present() branch has a VM_BUG_ON() asserting migration is the only
-> allowed non-present case; a device-private PMD trips it.
+> madvise_free_pte_range() checks pmd_trans_huge(*pmd) unlocked, then
+> madvise_free_huge_pmd() takes pmd_trans_huge_lock(). pmd_is_huge()
+> returns true for a device-private PMD, so orig_pmd can be device-private
+> and enter the !pmd_present() branch.
 > 
 > Allow device-private PMDs in that non-present assertion and continue to
-> huge_unlock before calling pmd_folio(). This keeps the assertion for
-> unexpected PMD softleafs while skipping device-private PMDs like other
-> non-present PMDs in this path.
+> out before calling pmd_folio(). This keeps the assertion for unexpected
+> PMD softleafs while skipping device-private PMDs like other non-present
+> PMDs in this path.
 > 
-> Potential trigger: an HMM-based GPU driver races with
-> madvise(MADV_COLD)/MADV_PAGEOUT: pmd_trans_huge(*pmd) reads true, then
-> migrate_vma_pages() flips the PMD to a device-private entry before the
-> PMD lock is acquired.
+> Potential trigger: an HMM-based GPU driver races with madvise(MADV_FREE):
+> migrate_vma_pages() flips the PMD to a device-private entry between the
+> caller's pmd_trans_huge() check and the callee's pmd_trans_huge_lock().
 > 
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Link: https://sashiko.dev/#/patchset/20260703173903.3789516-1-usama.arif%40linux.dev?part=6
 > Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
 > Cc: <stable@vger.kernel.org>
 > Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
@@ -171,30 +168,22 @@ On 7/8/26 14:20, Usama Arif wrote:
 > Reviewed-by: Balbir Singh <balbirs@nvidia.com>
 > Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > ---
->  mm/madvise.c | 3 ++-
+>  mm/huge_memory.c | 3 ++-
 >  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index 9292f60b19aa..1065b5a84ea7 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -389,7 +389,8 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index c0892cc533a9..ddbdc83b4cae 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2298,7 +2298,8 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
 >  
->  		if (unlikely(!pmd_present(orig_pmd))) {
->  			VM_BUG_ON(thp_migration_supported() &&
-> -					!pmd_is_migration_entry(orig_pmd));
-> +					!pmd_is_migration_entry(orig_pmd) &&
-> +					!pmd_is_device_private_entry(orig_pmd));
+>  	if (unlikely(!pmd_present(orig_pmd))) {
+>  		VM_BUG_ON(thp_migration_supported() &&
+> -				  !pmd_is_migration_entry(orig_pmd));
+> +				  !pmd_is_migration_entry(orig_pmd) &&
+> +				  !pmd_is_device_private_entry(orig_pmd));
 
-thp_migration_supported() is just effectively CONFIG_TRANSPARENT_HUGEPAGE &&
-CONFIG_ARCH_HAS_PMD_SOFTLEAVES.
-
-pmd_is_migration_entry() -> softleaf_is_migration(softleaf_from_pmd(pmd)) ==
-false without CONFIG_ARCH_HAS_PMD_SOFTLEAVES. ... and
-CONFIG_ARCH_HAS_PMD_SOFTLEAVES is only selected if TRANSPARENT_HUGEPAGE.
-
-While at it, can you drop the thp_migration_supported() check and turn the
-VM_BUG_ON into a VM_WARN_ON_ONCE() ?
+Same comment as to #2.
 
 -- 
 Cheers,
