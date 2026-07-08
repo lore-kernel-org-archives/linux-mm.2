@@ -4,102 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3669EC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 14:12:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 306DCC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 14:15:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 165746B00B0; Wed,  8 Jul 2026 10:12:28 -0400 (EDT)
+	id 2CB236B0096; Wed,  8 Jul 2026 10:15:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13D356B00B2; Wed,  8 Jul 2026 10:12:28 -0400 (EDT)
+	id 27D0D6B0098; Wed,  8 Jul 2026 10:15:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 052666B00B3; Wed,  8 Jul 2026 10:12:27 -0400 (EDT)
+	id 191696B00B2; Wed,  8 Jul 2026 10:15:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CC2AF6B00B0
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 10:12:27 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 525391A0140
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:12:27 +0000 (UTC)
-X-FDA: 84965799534.27.6474355
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9737040005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:12:25 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iAQ1P35k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E3DF66B0096
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 10:15:28 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 73A1A16817A
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:15:28 +0000 (UTC)
+X-FDA: 84965807136.29.E21E554
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf03.hostedemail.com (Postfix) with ESMTP id B609120002
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:15:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AdA9oPzn;
+	spf=pass (imf03.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783519945;
+	s=arc-20220608; t=1783520125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J38DrbD7HGGgkXHTOv7ioJOBlse544u95iqYz9lc1ao=;
-	b=vLRwle0j4w3y4zGn6Gjk9Nwk87UgoIPsZvYuwPqEowKNLqmd0d32l6Vdr/2ID2Rty+p9A1
-	1CAly5F+SzKinrSgDKWWwlrBSN2UE+QeEYWW3Tb2AvwkfkFQYuKg6/bMoxAKOlKstCtbwJ
-	Sk/6hWx1kn9tWE6EbsS89mKSWUxfvSk=
+	bh=idL2Xz0mU2qCcJAvF4YtSgzLnoGRC91n4WDotTzDTTc=;
+	b=EXilNHCOv4ymoZ269J4Vs0cILd9lUdeT4MxOI4jzDg1PDtJBtxW7DszmPiogQhvU6VnLuq
+	T/KPwJHw23jAkFCiyoULg5Q3ynCF5io8HfkV6ZdRol6RgWCl3D9a2G138wraDMAwSKfGoy
+	ZmyW1Ll/Av9EaptK55jDyxSVcVYhZwU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iAQ1P35k;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AdA9oPzn;
+	spf=pass (imf03.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783519945;
-	b=ioJWidg847Bfg48zrBjXNwOJslU5sYqIc8iDd9liTnZEk7Ycb3EQQ2RDQrpwuVOGMmYQbA
-	t0MzR5+sejRktZFdjFBgGzmVkvuAp36k9pxJU7B6E8WyF5dFYSmgtK5tt68r9xkEMPVMk0
-	cB/aconT58Mom/WB5qrH8mnc1ApzfTM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C6EB1402D6;
-	Wed,  8 Jul 2026 14:12:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3731F00A3D;
-	Wed,  8 Jul 2026 14:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783519944;
-	bh=J38DrbD7HGGgkXHTOv7ioJOBlse544u95iqYz9lc1ao=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=iAQ1P35kJG7h2YU5gI9Dkl9yV9n2YwjPBEecOBDxjGfgx1yNtFaIaZdAtue7k7WfA
-	 zfYdhFDtZlZZlsdqIL2hkkRax3Pi0RkofDvjBMO+rqZVtEgnUniF7JIeBnQpT6wxqm
-	 D4WGFgjwAiDWjzq6ttLmnahNLnab4AGAaGVFZCwgczJ/quwEYEFwaKC6WysIKeMqie
-	 XmLqp6jZc80RuPYBWuvlIMut/o176f5A4dgxTCfEuMHXvjGZBcTTKHGrr//pCfMx1g
-	 sxNGQQk4iGUo4O/mcVWBfm0MKyaltDHC5++B0BZHJNCtUI3bZYxYuhiKPNkvvKSgZQ
-	 Lr1NR9EoHom1g==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 08 Jul 2026 16:11:05 +0200
-Subject: [PATCH 10/10] mm/bootmem_info: remove
- CONFIG_HAVE_BOOTMEM_INFO_NODE
+	t=1783520125;
+	b=3kFfTh661lILLhymJtXZ/XbbVumFYlqj7fmEobg3iw+t4hLBD+Y9/DODh4wWufcBC8q9As
+	SNVzL+6IK8ekNoVmdeeVcIeFxGXbp0TFE6v+N/E9PmxRDKJXRecBFG/ANWM1Ga4Y0MmR9t
+	gJQFIwPDdaHsmJlS7O8keH8T0AzBUZo=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cca24023edso11073915ad.1
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 07:15:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783520125; x=1784124925; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=idL2Xz0mU2qCcJAvF4YtSgzLnoGRC91n4WDotTzDTTc=;
+        b=AdA9oPznBkgs++vBVURtp3pO1wBgGLg5zHbI/gTyc3uVNnHpCDOIgfyLD1Q9OILx3Y
+         4xn3kv5k37ms2LUerzx4bFDUgMOxzLfi6r5TJ95uRGHxhPkO57xhQaZRMbHaP8jMfYxz
+         F6twDENJ3E0YksX4l85HfrtKQrUm7/0out+rAjzFJjCI5p4LcIaFsMF2sZCuQdwGAEol
+         g4CRqlAwhfWMaZV67EhZCuT81REOHLdq4Dgi0A1aP68Qn3x+nUkmgoL//aKkYHUzf1v6
+         At2x4DlZGNMDYsEqnkkItxXtgaq1XD6F4L8cXknHJ8nfl/23l4RHfkQe84UxDF3KzCxm
+         rCBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783520125; x=1784124925;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=idL2Xz0mU2qCcJAvF4YtSgzLnoGRC91n4WDotTzDTTc=;
+        b=KnVZnICY//3R6jzFNmOob4AaIwKO/Eqq2OiveFU9fj1WTaKZrK6qydBLvIecL/DMxY
+         S4G1dv8u+R1qzK3U2jPb1tOh8rPLwxfG7J7lFHvMsUhcUHPjE1JAINToP2nZh0nSCskb
+         f1aHNMPh6TjoXN8DKYtxNio9PB4W7rF0DN1/pQNdHdMx2089f4Di3GDFcT1mNA1uXquX
+         QpvPmaqfwXEbMxQH0GCINvyTXRUpIiHxWRsEgPYX/92YzyuXAJeXqsi2Sn8dYSdktlmK
+         YmCHijnJMn3v3QXQWMAzPGBvcRVJhgPSNcJGG4Xe/EJ4yZWZDfXkCULWpscxJb23Ea+B
+         uZYQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rq0VmJyfX6DIyqyAcXIT5KdEGRiafRBmEWKfy9Lse0VbjAhLk4iWaZ3kjQF0ZZxnD7Z8S2Y4uhLMA==@kvack.org
+X-Gm-Message-State: AOJu0Yz9SL313aPUDeauHBfFBX4JYKUukIYGgKB5Tp4pyiRzIwuRrWqc
+	KlkppwWnyRNuw+kgUZlHumPg38nL9OYCHicNSVGmYz1Mwpljp9zFOMkh
+X-Gm-Gg: AfdE7cn+7OdCyCOaUJb/5jHmhdgSTuQ0g5FtcZnQZ4ncFPZSNFodYoCY5Fxn1ii64Td
+	tZv4nf9x+uo26p4L3FtkOEyckJoZU9/7ZOinoRzqQns0Wd6gLxHVHZG4qySlZsa01TtZX0fgxxP
+	eZpIPTu0HzoQtdxN0wvTx9DVjKdjLZRncfD4DX0wK6Mtg7RyGlU17vH975tlYY37VW5Zd20ZA8t
+	2f5ZkR5YIl0c3TDrT2b+CEGF4/XPLeskEehs/otq6z4Jo2W4zlYmd4sQwTjEaKRrhNKOy/g2+oL
+	vvai4haIbzbI8whLTArsf7TWtmJh1LOzAnxH3CiN1YHTnhk+aUfNkR7SWyFxlkQTUk8gLBw5RVG
+	JH+I3wnEKjFTvFIjVZedMlkiBcsaS6an2kBFg3yW6iIYhsSSTJG9nCnxarv1k0mx1Qpq/NEd0Hg
+	T06WxmEz2mcejwbk1UyawAkU8gQqV+IxH9drW7k3RYp43q
+X-Received: by 2002:a17:903:3c67:b0:2ca:9d5a:8b6c with SMTP id d9443c01a7336-2ccea37d246mr27168615ad.5.1783520124216;
+        Wed, 08 Jul 2026 07:15:24 -0700 (PDT)
+Received: from [10.125.192.148] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9c21429sm29047715ad.37.2026.07.08.07.15.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jul 2026 07:15:23 -0700 (PDT)
+Message-ID: <bf14cfe5-e98e-c20a-231e-37b3a2489040@gmail.com>
+Date: Wed, 8 Jul 2026 22:15:08 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260708-bootmem_info_part2-v1-10-156ce4986598@kernel.org>
-References: <20260708-bootmem_info_part2-v1-0-156ce4986598@kernel.org>
-In-Reply-To: <20260708-bootmem_info_part2-v1-0-156ce4986598@kernel.org>
-To: Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- linux-s390@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.15.2
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v5 4/6] mm/zswap: Implement proactive writeback
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
+ nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+References: <20260629112032.20423-1-jiahao.kernel@gmail.com>
+ <20260629112032.20423-5-jiahao.kernel@gmail.com>
+ <akMJ8UfeZXrVe5LN@google.com>
+ <cbbdf506-b67d-193c-2c94-bacf828d559f@gmail.com>
+ <CAO9r8zNCEis2QHROEsM5QZsb_H4ofNjA_sE-pM7SVxtgHg_rqg@mail.gmail.com>
+ <4ec2bd64-af40-8ebf-b8a8-2dd7421a1100@gmail.com>
+ <5ce4035b-7f56-d1d2-2d2a-668446d870e8@gmail.com>
+ <CAO9r8zOLe5eJfNmoszCX3rtD=6YEa_7xrvDV1acVDOtZg4vWYA@mail.gmail.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <CAO9r8zOLe5eJfNmoszCX3rtD=6YEa_7xrvDV1acVDOtZg4vWYA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9737040005
-X-Stat-Signature: 5yn5e8ry745f4k6p5bgwpwcytnqbmhnq
-X-HE-Tag: 1783519945-836416
-X-HE-Meta: U2FsdGVkX19DCxTpZ4mTSscJWIGbG1CwENAxq413XNil4cTk07cH02viYRFyooki0LBcYXrr8CXd7N0S/G46REcaEOELw8GCZMUowSWSb7L/WTLKtN5I4lVlBFaeoOYGUBH+Ez8FzjJjWrsEUtt7SK/xZOsMrOnRopxpEzVFq83j2Qu4VDZ/d4Iz2pCRw4kpGMzmYPWh85O2bIqeRFXLWCU4Iw8DrLSoSW4Kc/gaKp7Oa1RTZysz3LEl15aKnccV1uGPgP9dPv4R+icq47rHuu32vJ1ofW/Ac0dwQAVK/mZ9ykcoIVCAkfUyntV1sYrREx1/VlbMLeRXhMPePw33H0YAInGwJD1Oy+/LB4HUnzGYD/4rCnZXBR5cftI2JRWfgIkEWScQpitughH1N9SkKIEr2nlncQfF/hetbBBDPmouPHjLMEL08bX3IjbWIr3b1vYEN4KyDF1a6Fd+RYeOS6bhHUzbTC6hG4Kma7CgWnW7stNtI+DwEQ9Izb/+qKCtrFBrzZv6/We9LsZGEt1h1BEmn3BC4kIjlHBlm7Ldz5IwpyP3l8gWXDCsEDR2mixv0V/LujmgJweIj1E6/PNdXxS3eKlbw3q8J1LwMdG82R9ztB8+1LjJB57F1w49N6DKcP5Uu5mNbS8hj2EYwWDRDGvgX7CW9oYiBTrPeX139zi+9fo/Q6t6lhMZyrDS2OKjHiPqS8UPUq3s95XU1ZIi2jlIfFStiG2Sa9g9E6wBsHfLBwUbjJhZtQg8iEdQtcy24n85Y/DGowBx/WPMWloxNtUfRW9G681B2ARXtscNR9/fiElO8bC3Oj2KyPVbg4bFfAxlyHJUKJQmnAL9I6y4fAH8afMG5//lvrwmj7O29gF6QOaDP0RKZE0Tccwv7ZBEEzPq7Q046Ut9cYmToTEobg/GeQCg+reQCkzhmAllWOvQen7W7NXXXUXa0eSbzXUymJL0KprC5mauZ+5uiX4
- PllVNk/8
- 0go7h3A+kM6GUDZw+C2znMeQopQII9RIv+Yh+WQ6sCKyJoIlS9SAeJJGkpoGHo0UPxPpXUl+Lt0b7YJL3ENDi/2KtvfRateo/+reUdT9giNkNHF/Bak2qsmpACz2/fhaaW7Br+LxPE9BeeHrH/HTY+zXygY+irJzMbDlkuqANNFAEp0YrLWoQJ3ihFDXrG/BNT7QqIWu/QrSOyAMPeWAO8gTfXL5GAFwvToO/rKVhQ7RjJ8AmVaRj7oNEnCqAswE8d7BwR1pGOJVDMlPjz+pkXX0UF4iWGvrPEbcwh/Kz8BkQfmgfMbBpYadtypLEuJDSMscK
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B609120002
+X-Stat-Signature: 7dcadiczyba41ojbsx4uiujo6ui1a65n
+X-HE-Tag: 1783520125-410912
+X-HE-Meta: U2FsdGVkX186wLPgeN51t6FpnuZljClqxW4ZH+99ob7JBBVxp37wtbkGhRGUWnnFnlKgwzeHVmdNOG75xGvDwn6dNXy35XaAYmn8cGWuz02zItFcDyiy1HDYwPRLs4QYM1K2EurOLPSPc1RnElmM8buHWgquuzEpN7Ye5azjMdE71XB/9tjTKwBm+KLmflyCaCg3vqBXKEv6dK+Y0nRLSz6sI8akWDpvS84v/AM62PJmBeY3hH11qNMSgDhFZCLiS39AldVX1ylRsp4eh5udohUzp9GjyqgN9dOiFlGZiaXw35o6z40ouZSUR5x4uMxYuZQi7MAixUte/FG1r/Hnvk48CiXchQwWRMh3fAwSLNhm1mPqVp++ACfDUqPYe6usjN5T9G1cJDc+fxTa/BEw7nzCHbXo+r5gosuX++k4jiaC4D/rIgWpmHjrf1+qk+sScno+Ydc61NfFJ33vxEGaF34MGauez7e1BmnCzB2IK6nZ5+PM0omnvVjL4h2BsXgk5DJczu4GjrMjMGRH4FM97/T/ctUEgD1LlAWypYhVPhkcxF2UCKFx4hkyTKIhUSqBznWRwwRgqe4jYyIaG3xbGs9mLreC5HAnNrFyJQKbaQXCqkzXVOQFwEEQfKXHX0gfssMqfvSXyl2LGi8+oojxtLlvWELll506ORe8M02cEh5ctqKjREjpqrvss9qORJALrPlfWP6esQw61O7bUtE0S8eipgpNxI42wRb7YGccGT71QQ+fgxCgW/ifSD8oe9pmTEzHZZRMNJ0Z2WpQFaL72DPj7dFU0NpspsbCPt9g3WsNPIoQrqFWVc1bvc1eN2MPBfxNrJrz3hgw03Da9bjH0z5qnwf5YqJjn1FcIs/0xqA2RT8UEFM7lAB2If1RXEUPQUtcY+3JheAHPZOeQBEp6qQb5znXKaBJT/JlHOI/MFE0K2xihL5ICxIN0bHIpBSqZQlaJkRKxUdtt9Di5Pu
+ xlQb2bQI
+ fTltjft5VnBntkMoZUPTQtD55QGf8fLPpTWB5Xd6bRikwOPTpwQxVWpBJ4sO4aN6ShuNfndL12zbzPttgEx8uKA5Bzum0UdzOxOymT361St6155VyeJBxAuylVxJ9VbMQiX8FT2TGzf3JDlLjYc0/1J2P973EwrrBgKtQFAmvWuZOQrYPJSQzpgMU2y4Qnd1AKycvbaA2DVtlE5KgfuXBrdLa3KBRmSr4OAApOFBuf7jRC37omfBXIq5HZRIk02GNfFpBvyHb0jvKa6r2WiBP1qHeilv0m/puJY0yYzzwupMIxR91SvWhqZHs9HuKpZhBINjWUy6S1xhfui93a4GT6OyfrnIhXVe6VYeGllZwhDoRCjD1NnPOAfF+k+gAad05D3vIhp0kg+8ctZ/eyhxibobYGTtpbMJ80PCvYYByCWaH4VI87HyjP+W/mJziS4TDgIQBWDojKwTc0lxDTWM0fChEttuxfOAewKQSWtgbnICg1wo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,235 +131,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The whole infrastructure is unused now. Let's remove the config option
-along with mm/bootmem_info. + include/linux/bootmem_info.h.
 
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- MAINTAINERS                  |  1 -
- include/linux/bootmem_info.h | 89 --------------------------------------------
- mm/Kconfig                   |  7 ----
- mm/Makefile                  |  1 -
- mm/bootmem_info.c            | 72 -----------------------------------
- 5 files changed, 170 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d19822d574fd4..9a67ae0f7865e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16877,7 +16877,6 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git fixes
- F:	Documentation/core-api/boot-time-mm.rst
- F:	include/linux/kho/abi/memblock.h
- F:	include/linux/memblock.h
--F:	mm/bootmem_info.c
- F:	mm/memblock.c
- F:	mm/memtest.c
- F:	mm/mm_init.c
-diff --git a/include/linux/bootmem_info.h b/include/linux/bootmem_info.h
-deleted file mode 100644
-index 486acc6127039..0000000000000
---- a/include/linux/bootmem_info.h
-+++ /dev/null
-@@ -1,89 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __LINUX_BOOTMEM_INFO_H
--#define __LINUX_BOOTMEM_INFO_H
--
--#include <linux/mm.h>
--#include <linux/kmemleak.h>
--
--/*
-- * Types for free bootmem stored in the low bits of page->private.
-- */
--enum bootmem_type {
--	MEMORY_HOTPLUG_MIN_BOOTMEM_TYPE = 1,
--	SECTION_INFO = MEMORY_HOTPLUG_MIN_BOOTMEM_TYPE,
--	MIX_SECTION_INFO,
--	NODE_INFO,
--	MEMORY_HOTPLUG_MAX_BOOTMEM_TYPE = NODE_INFO,
--};
--
--#ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
--void __init register_page_bootmem_info_node(struct pglist_data *pgdat);
--void register_page_bootmem_memmap(unsigned long section_nr, struct page *map,
--				  unsigned long nr_pages);
--
--void get_page_bootmem(unsigned long info, struct page *page,
--		enum bootmem_type type);
--void put_page_bootmem(struct page *page);
--
--static inline enum bootmem_type bootmem_type(const struct page *page)
--{
--	return (unsigned long)page->private & 0xf;
--}
--
--static inline unsigned long bootmem_info(const struct page *page)
--{
--	return (unsigned long)page->private >> 4;
--}
--
--/*
-- * Any memory allocated via the memblock allocator and not via the
-- * buddy will be marked reserved already in the memmap. For those
-- * pages, we can call this function to free it to buddy allocator.
-- */
--static inline void free_bootmem_page(struct page *page)
--{
--	enum bootmem_type type = bootmem_type(page);
--
--	if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
--		VM_WARN_ON_PAGE(page_ref_count(page) != 2, page);
--		put_page_bootmem(page);
--	} else {
--		free_reserved_page(page);
--	}
--}
--#else
--static inline void register_page_bootmem_info_node(struct pglist_data *pgdat)
--{
--}
--
--static inline void register_page_bootmem_memmap(unsigned long section_nr,
--		struct page *map, unsigned long nr_pages)
--{
--}
--
--static inline void put_page_bootmem(struct page *page)
--{
--}
--
--static inline enum bootmem_type bootmem_type(const struct page *page)
--{
--	return SECTION_INFO;
--}
--
--static inline unsigned long bootmem_info(const struct page *page)
--{
--	return 0;
--}
--
--static inline void get_page_bootmem(unsigned long info, struct page *page,
--				    enum bootmem_type type)
--{
--}
--
--static inline void free_bootmem_page(struct page *page)
--{
--	free_reserved_page(page);
--}
--#endif
--
--#endif /* __LINUX_BOOTMEM_INFO_H */
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 592003a258bad..169a3ba12a255 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -509,13 +509,6 @@ config EXCLUSIVE_SYSTEM_RAM
- 	def_bool y
- 	depends on !DEVMEM || STRICT_DEVMEM
- 
--#
--# Only be set on architectures that have completely implemented memory hotplug
--# feature. If you are not sure, don't touch it.
--#
--config HAVE_BOOTMEM_INFO_NODE
--	def_bool n
--
- config ARCH_ENABLE_MEMORY_HOTPLUG
- 	bool
- 
-diff --git a/mm/Makefile b/mm/Makefile
-index 4fc713867b9bd..52428a3d3ae14 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -141,7 +141,6 @@ obj-$(CONFIG_MEMFD_CREATE) += memfd.o
- obj-$(CONFIG_MAPPING_DIRTY_HELPERS) += mapping_dirty_helpers.o
- obj-$(CONFIG_PTDUMP) += ptdump.o
- obj-$(CONFIG_PAGE_REPORTING) += page_reporting.o
--obj-$(CONFIG_HAVE_BOOTMEM_INFO_NODE) += bootmem_info.o
- obj-$(CONFIG_GENERIC_IOREMAP) += ioremap.o
- obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
- obj-$(CONFIG_EXECMEM) += execmem.o
-diff --git a/mm/bootmem_info.c b/mm/bootmem_info.c
-deleted file mode 100644
-index 0fa78db7fbc0b..0000000000000
---- a/mm/bootmem_info.c
-+++ /dev/null
-@@ -1,72 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * Bootmem core functions.
-- *
-- * Copyright (c) 2020, Bytedance.
-- *
-- *     Author: Muchun Song <songmuchun@bytedance.com>
-- *
-- */
--#include <linux/mm.h>
--#include <linux/compiler.h>
--#include <linux/memblock.h>
--#include <linux/bootmem_info.h>
--#include <linux/memory_hotplug.h>
--#include <linux/kmemleak.h>
--
--void get_page_bootmem(unsigned long info, struct page *page,
--		enum bootmem_type type)
--{
--	BUG_ON(type > 0xf);
--	BUG_ON(info > (ULONG_MAX >> 4));
--	set_page_private(page, info << 4 | type);
--	page_ref_inc(page);
--}
--
--void put_page_bootmem(struct page *page)
--{
--	enum bootmem_type type = bootmem_type(page);
--
--	BUG_ON(type < MEMORY_HOTPLUG_MIN_BOOTMEM_TYPE ||
--	       type > MEMORY_HOTPLUG_MAX_BOOTMEM_TYPE);
--
--	if (page_ref_dec_return(page) == 1) {
--		set_page_private(page, 0);
--		free_reserved_page(page);
--	}
--}
--
--static void __init register_page_bootmem_info_section(unsigned long start_pfn)
--{
--	unsigned long section_nr;
--	struct mem_section *ms;
--
--	start_pfn = SECTION_ALIGN_DOWN(start_pfn);
--	section_nr = pfn_to_section_nr(start_pfn);
--	ms = __nr_to_section(section_nr);
--
--	if (!preinited_vmemmap_section(ms))
--		register_page_bootmem_memmap(section_nr, pfn_to_page(start_pfn),
--					     PAGES_PER_SECTION);
--}
--
--void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
--{
--	unsigned long pfn, end_pfn;
--	int node = pgdat->node_id;
--
--	pfn = pgdat->node_start_pfn;
--	end_pfn = pgdat_end_pfn(pgdat);
--
--	/* register section info */
--	for (; pfn < end_pfn; pfn += PAGES_PER_SECTION) {
--		/*
--		 * Some platforms can assign the same pfn to multiple nodes - on
--		 * node0 as well as nodeN.  To avoid registering a pfn against
--		 * multiple nodes we check that this pfn does not already
--		 * reside in some other nodes.
--		 */
--		if (pfn_valid(pfn) && (early_pfn_to_nid(pfn) == node))
--			register_page_bootmem_info_section(pfn);
--	}
--}
+On 2026/7/7 03:33, Yosry Ahmed wrote:
+> On Thu, Jul 2, 2026 at 5:32 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
+>>
+>>
+>>
+>> On 2026/7/1 19:45, Hao Jia wrote:
+>>>
+>>>
+>>> On 2026/7/1 00:10, Yosry Ahmed wrote:
+>>>>>> Before going through more versions we need to figure out if this will
+>>>>>> pivot to be a proactive demotion interfcae for swap tiering.
+>>>>>>
+>>>>>
+>>>>> Yes. Should I drop patches 4-6 in the next version and wait for swap
+>>>>> tiering to be finalized?
+>>>>> We can try to get the non-memcg parts (patches 1-3) merged upstream
+>>>>> first. This would also give them plenty of time to bake and catch any
+>>>>> potential regressions. Thoughts?
+>>>>
+>>>> Patches 1-2 can be sent and merged separately, yes. For patch 2,
+>>>> please include some numbers for the writeback performance before and
+>>>> after batching.
+>>>
+>>> I'd love to collect some performance data. Do you have any recommended
+>>> benchmarks for this?
+>>>
+>>
+>> Perhaps the following test case could work?
+>>
+>> Test Setup:
+>> - Total memory: 32 GB
+>> - zswap settings: max_pool_percent=1, accept_threshold_percent=50,
+>> shrinker_enabled=N
+>> - cgroup constraint: memory.max=1G
+>> - Workload: Run the following stress-ng command inside the cgroup for
+>> 120s to
+>>     continuously force zswap store failures and trigger shrink_worker():
+>>
+>>     bash -c 'echo $$ > /sys/fs/cgroup/zswaptest/cgroup.procs ; \
+>>     exec stress-ng --vm 4 --vm-bytes 4G --vm-keep --vm-method rand-set -t
+>> 120s -q'
+>>
+>> The following comparison results were collected over multiple runs via
+>> bpftrace
+>> and the 'written_back_pages' sysfs interface:
+>>
+>>                            Baseline         Patched
+>> ---------------------------------------------------
+>> shrink_worker wakeups       5,587             878
+>> shrink_memcg calls      7,823,853       2,347,320
+>> written_back                  257         781,214
+>>
+>> Conclusion:
+>> Under the same workload and duration, the patched kernel shows a
+>> significant reduction
+>> in both shrink_worker wakeups and shrink_memcg calls, while successfully
+>> executing a
+>> much higher volume of page writebacks.
+> 
+> Hmm this is actually a bit concerning. Yes, we are invoking the
+> shrinker less, but we're writing back *a lot* more memory, orders of
+> magnitude more. We are using a batch size of 64, and making ~1/3 of
+> the calls to shrink_memcg(), so the number of written back pages
+> should be ~20x more, not 3000x more? I think I am missing something.
+> 
+> Also, ideally, the batching wouldn't result in significantly more
+> writeback, but a similar amount of writeback over less shrinker
+> invocations. If we are writing back significantly more pages then the
+> batching logic is probably too aggressive?
 
--- 
-2.43.0
+Apologies, I think the test I constructed has a bit of a problem. This 
+test has very, very heavy memory pressure and is already a very abnormal 
+case.
 
+The zswap entry returns the first time because of "second chance" after 
+setting referenced to false. For the baseline, it scans 1 page per node 
+each time for 16 loops. During the test, shrink_worker() basically exits 
+at about 16 pages each time.
+
+Since stress-ng periodically and randomly writes to this 4G memory, it 
+keeps triggering zswapin and then waiting to zswapout new zswap entries 
+after falling below the pool threshold. When the speed of zswapin/out is 
+far greater than the scanning speed of shrink_worker(), a large number 
+of zswap entries cannot wait until the second scan for writeback. New 
+entries are stored on the zswap LRU list again, and the referenced of 
+the new zswap entries is set to true again. During the test, it was 
+found that 99.21% of the return values of shrink_memcg_cb() in the 
+baseline kernel were LRU_ROTATE.
+
+For the patched kernel, shrink_worker() scans at least 64 * 16 entries 
+in a single pass, so it can trigger writeback during the second scan.
+
+
+I have re-tested using a more common, reproducible scenario:
+
+Test Setup:
+- Total memory: 32 GB
+- zswap settings: max_pool_percent=1, accept_threshold_percent=50, 
+shrinker_enabled=N
+
+Test Procedure:
+Allocate 512MB anonymous pages and fill the data with random numbers (to 
+avoid compression), then use cgroup memory.reclaim to force 512M 
+anonymous pages into zswap.
+Allocate a 4K anonymous page at an interval of 2ms, and then trigger a 
+reclamation of a 4K anonymous page through cgroup memory.reclaim. When 
+the pool threshold is reached, shrink_memcg() will be triggered.
+
+The test data after running for 300s is as follows: (it will eventually 
+stop writing back because the pool threshold is reached)
+
+                           Baseline         Patched
+---------------------------------------------------
+shrink_worker wakeups          5126            85
+shrink_memcg calls      11,003,734       173,420
+written_back                40200          40233
+
+
+Thanks,
+Hao
 
