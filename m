@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A0AC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 04:13:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68060C43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 04:13:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D8946B0088; Wed,  8 Jul 2026 00:13:05 -0400 (EDT)
+	id 5F7186B008A; Wed,  8 Jul 2026 00:13:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B0FC6B008A; Wed,  8 Jul 2026 00:13:05 -0400 (EDT)
+	id 5A8E06B008C; Wed,  8 Jul 2026 00:13:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C6826B008C; Wed,  8 Jul 2026 00:13:05 -0400 (EDT)
+	id 4BE6A6B0092; Wed,  8 Jul 2026 00:13:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4D86B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:13:04 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B329902BC
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:13:04 +0000 (UTC)
-X-FDA: 84964289088.06.B60B6E2
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A70F6B008A
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 00:13:08 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF4DA1A0651
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:13:07 +0000 (UTC)
+X-FDA: 84964289214.20.BB5A0DF
 Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 70C6440007
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:13:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UCEZEhKb;
-	spf=pass (imf07.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by imf13.hostedemail.com (Postfix) with ESMTP id AA12D20003
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 04:13:05 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XisPliXw;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783483982;
+	s=arc-20220608; t=1783483986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JgCF/d1GzpHoQKC1qhkhHRFZUTixiHjHsF4UG1qii78=;
-	b=TebRz8J2SFAWfoGvfQyMn9NMEb01exVcegEXI5SkNByRtasZnGf65bJBRO+X5biRLo57HQ
-	osEPBTB6IWinjyIewl3eX/vE/rYrGYFeJVvC0oMinj4zb2ll7oWODwqHP4jTeTq4URL4bg
-	62FlEtKfmjXIFoWFRgDOmuAs/GPJxyc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fZiJokuQxVfAJpsiEey7YS1EwQOtYiv53Kf+q+DJltM=;
+	b=0RzVD7I1e6FDUpxyToIbm/sF3kLSdMpdeqcNRzYIFzrvAbFilMOG1PYf/BW3h8PHFA9X/F
+	ES9Qolh/dyzPYM/GcKUinSV38GFdOkNbzFwyXONsVoNLqNhOm3d44B6rMYXvtkIraAsC2i
+	cYehfbzJHzMsq4fCLDb0biWNHsnB6PI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UCEZEhKb;
-	spf=pass (imf07.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XisPliXw;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783483982;
-	b=mbPkQvUMLsdXQ3XtIwRWX44bmwKUFgJ+59DVuG2RCafg389IUNGr0HDeNnJBjI6/XT7U4G
-	CeVqBk/gDpiguIjIHQhdarohpKqjySmrv31I3Ak7nSEjVSsUCy+w/U40GgLrBMX9nVS5Wi
-	eBRh1m0o5uIcPjfjZbTQ6iGSs8Ow3+A=
+	t=1783483986;
+	b=LMN8LwSvoKs66keeEjmTk9D4M5c8dpkI2JTstuW8cI4+XcIq9viRz/XXF3dzt0CPRJu5/T
+	ulZDhEq7J/fyOHhnck7W+TalArThG5uNE1/DRvEbRdoJ2dgjHowm/mP2OnTeFM81iEQcl6
+	sYvEvD5YOxzEJkUpu5iwAudufptE500=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783483980;
+	t=1783483984;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JgCF/d1GzpHoQKC1qhkhHRFZUTixiHjHsF4UG1qii78=;
-	b=UCEZEhKbX1dlK8CTrdLBo+EbszDWU9fQk1ecn+HXPsx6OtoBHPR+eExQ7BoZfUFlrQ65KK
-	MMLe9Daz2f5ZX/BppB246vI1n8S9CcG6HjYg7nlKm4VopaL2mOFEN9hyOW4AczVNFUdC+T
-	V3fd0oNUO6yYwI4YFXwkYVexyT6CvhM=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fZiJokuQxVfAJpsiEey7YS1EwQOtYiv53Kf+q+DJltM=;
+	b=XisPliXwGD7r66MNwvPo8dSl731WjYnm5BjYbglvCteLzzHzH5d1qjVh9eQS4X15YMjBhM
+	64gnefgI5wpz5YxhmYkD5x1FyM+ODovvIXiDd2n7JN7P6wXidzuCR0znVXjuL7xkg86x+W
+	xeBYOSsVL6joY35x6HATZ7OiThyCsV8=
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: stable@vger.kernel.org,
 	linux-mm@kvack.org
@@ -68,20 +69,22 @@ Cc: jiayuan.chen@shopee.com,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Huang Ying <ying.huang@intel.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y 6.1.y 6.6.y 0/1] mm/vmscan: flush deferred TLB before freeing large folios in reclaim
-Date: Wed,  8 Jul 2026 12:12:35 +0800
-Message-ID: <20260708041237.289026-1-jiayuan.chen@linux.dev>
+Subject: [PATCH 5.15.y 6.1.y 6.6.y 1/1] mm/vmscan: flush deferred TLB before freeing large folios
+Date: Wed,  8 Jul 2026 12:12:36 +0800
+Message-ID: <20260708041237.289026-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20260708041237.289026-1-jiayuan.chen@linux.dev>
+References: <20260708041237.289026-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: AA12D20003
+X-Stat-Signature: nw4b9qx6zm9wcemkxgmsik6ymxy65ywx
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 70C6440007
-X-Stat-Signature: epcaezedidprx8q916xtkywd1wpkperi
-X-HE-Tag: 1783483982-100625
-X-HE-Meta: U2FsdGVkX18+SDRFh3Ip7G0MuYga0Wzrr0G/9f4Z8hnoOZdnmGGBahR0fdhleAFY0MF8n6VjBBVjUxwudYqSW/W0lUdE4o13/Di6/8jgmIx+KQUujAKmHrPX5J2ZX+h/24RcgWuM9YAVnjUGwZhXJQCu4pfymfD3hAjXD5ovPZUAasDCaRTfvAKwJ4yV4wiGunW9JwsDN7AP4q9i16tY9IBhqDXVYzqsArkicXGTLnaasa8ntmD024sMMKJpqcVyW8SfXkMQye7cK6/Uh6yMUl6++tgJPX04j7ZvXXB2zQQvAv73MYmgxGPrZJ2STzrPSHBZj8+dqCadaYUTYivAlb37g8HJpruyIDAnCXfqs6QB3OtanymnkejrVSz5v2IZL9LvqAVoMp6stUaEUsqSnu/Q1jlV4WXylM/FE6VWfYBVgFtpsYh1ic9+KQr5Rieew1ZjTLd3M1wpHtlXqmdT95hlB9pXM+kWG2iDDR4NuEfCfirrsJmGgo1WrgFc7fRUmxbpFxfYnIOb1JOfNsOEJH86yek5xLrN60Z4EK5ljwuGy8fB2iL6+dQSX3nglmsxw5t9CBSlOctC6wIzZzLXibYHmT4+y9FLAxJ357mN7wEHpb+tPpB3L1BGyduiHypjIPbwdi5KWYRoFxsEWhMPKjV8sgrdAP6OG2nUrGo+Y5ZphRli0NtrVuHl5UBr7pVkMMO/VQqVjQ3dHGQYc3855TjzZH0OtnWX+YKTtD8t8cXc8NrAyKrX9vy/C7ZZcCI+0Fz4PZShoyzPgBYd6ZxqK9BkdOTwT/pDq/p2IgQPQ6+sRqIJyEDko4wsxKcP2lE+s+CY1UCET+wvycWb8xQrz9x1H45TBgShahKeKl7tx5pnhdoK5yTCNy7LJP7H5pePZ/LB6GCkVqqpft6Lyjwk9uv+EjS3mI0tl+k13iD/1+3TEhe3r+UpQpc/H2WBX0bQYnA+kl1OZvmX3kLhEGh
- ozyoFpHU
- ucXkGiEMszZ4M8BzCUlUaNiFFC3lheZoAAb9rHm/jnoJ9DTy9anYyD1pfWi790vdyRw8cuRfv/4o9yd9BEvrpvJ0jpSzb1988eRd7JhCFx0SnP+Fck3hSCc+ZNoLh208/GMKZkq4h0Y+T7LLOz50jAIgfkUPTK1jY0vNidAN1Dp0dhUWoSE07tIInvonHqHHnvrel
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783483985-669163
+X-HE-Meta: U2FsdGVkX1/Fmuz82QzkQeaHcgkV5ZPa9siHFH0/iqAi6KRyJT0SY2IG9vUq2mqDEZXwlrIH8Da1OeM6O1/JCxFiseIEDEsjQ4TKLxGVYt1YFa89Z4CX5HTqYol+uYmGFSf7fQCUEhJ+4RAsUvQg7YPMqsL4qxi5v+uueyFpCw7S2oO5W1fKW/07fJmEQJBw6WQPGmcTxF/atg2XBUwZIpWpHpo0J6HNLizqyT5S4XIiUcjmh0y4QOpxz30IsmnPjNfYR6dmk6j3u3P7uVN1HFhEpGZhc1mm3RaYejzwuVymX5JlydDYJDtOyTVXVyte719+XS3A9X8vJjqPr5PyPiycicHD/3RCka9dHW8pFows137TO2kQzd4Ne7rVGDE9XXU0+Y2tYKSx+eNqABFqvVbI5EnAwExGemJIDE1xKBz/RJTzt4iF9xEdsEsVvcj2geUra/PsjlS4Z0XomJnbk5OIdd6WeXk+ySBZzXRGmCD9Rl0NhfRDl/jpDxMYqsJXfKzdBywkBNdo0ALxDAPjfXno5VOWvByERM4akWv9KqoZ84GHvctRayrRPW5qBEhGz8V7wQXlCUKfyhmirg+UsFQkASm2hv+zS0L/3uPOvk9Ezd4DW/Az2VMBQOqJTyiDt0CxWfDgJ/JEa2eom22sEtf+ltpaTF+WdvLzfjz73XomaR8tFomxxDi8ig4KwjLyGp0FnkSeo880GafrODvIyjw6sV+5KSnonOxt18Xcw/oFRUZxg3zTxQjwxqNyOuhIdw6ZfZxIYNbbxwRpZ9azZKvwoMr27/lKbvd0OXNzIesePGas7zIH/TJmgw9Tp0hlC09oymUjHtkMCh13aPyCRYATEmV8yhZLTwHRFbE/19ZIQ0GvW5n7c8Mfz+dvNTz/socFWqweB8yJrcQjwc4CJf21epKY+q1aFLnUmrp+ItvYN0hLZGc4yCIOeiKbLFOCOQSxH2bGhOc2xNRHD9w
+ hIbjmWhZ
+ r3tooFUQBb9JPSN0DPnw7INYhtuHvOzBfH+RuCpYfahJjjWjlFS+Dpr1goSeydrD517Dte/WYvwU0sxB4dJvDIy3lzqP5fiEDq7eKLEACo+MZEPQ0WNTfe9R1sNzrOKnjQOl3aslOYj2hMWcE4jhYpUipzKyQr67pDpK5283IXA2nHco0g1fCXMXJoSKREt+jYX/Y7l3ctpe7ru6IcC3nmE2bn3iAcm9L2fM9sIfOIGt29kyGDqF/CU4lAFgVMwCc288qYeqkIrAaUcz5Jdtrbn4Bwv/ED93PVUpxRLyOOwnzkN4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,60 +92,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-We were chasing random user-space segfaults on our production kernels.
-They were fully non-deterministic, and the fault address reported for each
-SIGSEGV was itself random and had nothing to do with the code that was
-actually running -- which smells like a stale TLB entry, not corrupted
-data.
+In reclaim, shrink_folio_list() unmaps PTEs with a deferred, batched TLB
+flush. The batch is only flushed by try_to_unmap_flush() near the end of
+the function, just before the order-0 folios collected in @free_folios are
+handed back to the allocator.
 
-We managed to reproduce it with stress-ng: under memory pressure the
-workers take random SIGSEGV/SIGILL too, again at random fault addresses.
+Large folios don't go through @free_folios -- they're freed inline at the
+free_it label via destroy_large_folio(), which runs before that flush. So
+a large folio's pages can be returned to the buddy allocator and reused
+while another CPU still holds a stale TLB entry for them, and that CPU then
+reads or executes through the stale translation into the reused page. For
+file-backed large folios (e.g. executable text) this shows up as random
+SIGSEGV/SIGILL in user space, with fault addresses that don't match the
+code being run.
 
-It turns out we're missing a TLB flush. In reclaim, shrink_folio_list()
-tears down the PTEs with a deferred, batched flush. Order-0 folios are
-collected and only freed after that batch is flushed by
-try_to_unmap_flush(). Large folios, though, are freed right away at the
-free_it label via destroy_large_folio(), which runs *before* the flush. So
-a large folio's pages can go back to the allocator and get reused while
-some other CPU still has a stale TLB entry pointing at them -- and that CPU
-then reads or executes through the old translation into a page that now
-belongs to someone else. When it's executable text mapped as a large
-folio, the CPU literally fetches instructions out of a reused page, which
-is where the random crashes come from. (This is about file-backed large
-folios, not anonymous THP, so transparent_hugepage=never doesn't help.)
+Flush the deferred batch before freeing a large folio inline, the same way
+the order-0 path already waits for the flush.
 
-How we reproduce it:
-- Make a cgroup and set memory.high.
-- Run ~45 stress-ng workers in it (e.g. --cpu N --cpu-method all).
-- Alongside, run a tiny program that keeps allocating anonymous memory to
-  push the cgroup over memory.high and keep reclaim busy.
-Dropping caches first (echo 3 > /proc/sys/vm/drop_caches) makes the text
-refault as large folios and reproduces it much faster.
+Upstream this is fixed as a side effect of commit bc2ff4cbc329 ("mm: free
+folios in a batch in shrink_folio_list()"), which is a larger change; this
+is the minimal fix for -stable.
 
-To be 100% sure about the mechanism, we filled every reclaimed large folio
-with 0xCC (INT3) and held onto it instead of freeing it. Under the repro,
-stress-ng workers immediately hit INT3 at instruction pointers inside their
-own text -- i.e. CPUs were fetching instructions through stale TLB entries
-from freed, poisoned pages. stress-ng has no INT3 in its binary, so the
-only way to execute one is through a stale translation into a freed page.
-Several CPUs hit it within the same microsecond, which lines up nicely with
-a single batched unmap whose flush was skipped on more than one CPU.
-
-Upstream this got fixed as a side effect of
-commit bc2ff4cbc329 ("mm: free folios in a batch in shrink_folio_list()")
-which sends large folios down the same flush-before-free batch path.
-
-The patch below is the minimal fix: just flush the deferred batch before
-freeing a large folio inline.
-
-Jiayuan Chen (1):
-  mm/vmscan: flush deferred TLB before freeing large folios
-
+Reported-by: Yingfu Zhou <yingfu.zhou@shopee.com>
+Fixes: bd4c82c22c36 ("mm, THP, swap: delay splitting THP after swapped out")
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+---
+destroy_compound_page was recently renamed to destroy_large_folio.
+So it would be conflict when this patch was applied to 5.15/6.1
+---
  mm/vmscan.c | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index aba757e5c597..8eb498351d9b 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -2123,10 +2123,12 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		 * Is there need to periodically free_folio_list? It would
+ 		 * appear not as the counts should be low
+ 		 */
+-		if (unlikely(folio_test_large(folio)))
++		if (unlikely(folio_test_large(folio))) {
++			try_to_unmap_flush();
+ 			destroy_large_folio(folio);
+-		else
++		} else {
+ 			list_add(&folio->lru, &free_folios);
++		}
+ 		continue;
+ 
+ activate_locked_split:
 -- 
 2.43.0
 
