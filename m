@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7246EC43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 14:31:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D05FBC44501
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 14:34:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 058FB6B0005; Wed,  8 Jul 2026 10:31:41 -0400 (EDT)
+	id 9D3F36B0088; Wed,  8 Jul 2026 10:34:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F24E56B008C; Wed,  8 Jul 2026 10:31:40 -0400 (EDT)
+	id 984846B008C; Wed,  8 Jul 2026 10:34:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E162F6B0092; Wed,  8 Jul 2026 10:31:40 -0400 (EDT)
+	id 89A286B0092; Wed,  8 Jul 2026 10:34:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B963B6B0005
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 10:31:40 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45F2AC05BD
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:31:40 +0000 (UTC)
-X-FDA: 84965847960.05.3D429A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 89B16140008
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:31:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cCpJO0aj;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783521098;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xnVyRAW1GybKVfIibIhr7aymmWn8IPGRIA1RKT+MYxA=;
-	b=QygcIwoZOSQtuChmxYXoYmz9RcNozjXV7SN5CV0s5HR9sOhAbmFWwzq/seRQ94FS4PKmLN
-	wWCKr3vG0FuWvwIP6ZhNNqrasm8By+Ot9ZduCGntxZzb3FTONGil9tQYdDN0rR6W508Z95
-	4YgJ5/S9yS9T9VVWX0GLbuL/V/oVIm8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cCpJO0aj;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 609D46B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 10:34:14 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DE21E167F62
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:34:13 +0000 (UTC)
+X-FDA: 84965854386.13.DAADFAF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4BEC54000C
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 14:34:12 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gkp8WN81;
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783521098;
-	b=MJfGPKUELJdR8FjlkLjq1Qqi5rgJmVOOSSdplNmjAvVan42xOsyL/mYsXta1P9ZwaAbv5I
-	H1wZrq+MoZU66Lh5MgBWs6EmdwWLs0a36PEgRPKXvhuArzS91YykY0zMebcZAoULKr9Lgb
-	Rk5lSNMVMINk3JIL7WQJ6JM/oB3xlcI=
+	t=1783521252;
+	b=wE/CpgQfiR0k52rYehtkOSz5PfsZ1Oi1zmnyUMN/HfPiwtg6T6QDXYaF9S0HrlUV+1OhDZ
+	T5qxQ8O6AM73ymBuAAS+FKoZDjCGTesDDbjxtEH4DLj3oIV4pMCUq9VGkeov/F4vS6rQQF
+	opP4tiK5isI/WYm7VLlTF4iK9WO8ii0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gkp8WN81;
+	spf=pass (imf11.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783521252;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yMl/Hl9vchj200XFGcGCOCkDW3TMDHU36nBeESh9U+g=;
+	b=ggaXU1osC9rgUfqimIpuw2eKUklXjLT6bNIJTY6eR+YnQ3Q0hzknLrUvAhPKw6/KNi/67C
+	mg0d84XkSHKogmXakvCpNeCcngQHiYPtHE5UBkg9aAk3KG0yeOydUPzvEDYb2GsATkP/ZV
+	nY0an8a+Z+1llfReKLkXlLNddGvs7/I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0249D60008;
-	Wed,  8 Jul 2026 14:31:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852E41F000E9;
-	Wed,  8 Jul 2026 14:31:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 72D2143F3A;
+	Wed,  8 Jul 2026 14:34:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977651F00A3A;
+	Wed,  8 Jul 2026 14:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783521097;
-	bh=xnVyRAW1GybKVfIibIhr7aymmWn8IPGRIA1RKT+MYxA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cCpJO0aj5uJU/hUo5m+g7jSkGEXNzf5taItrCRpfzkUXT5cVT1l3aHMg/Er4rRRkK
-	 VRcenDWbOqCaAXmTLwKLbApBvzIkiwYefLMVvn+CU9BBxs8TWUvBG9kibjxBm/dI/s
-	 ip7keYMwP1vQfG0WQsvtLhuejUnfhAuD/5t7hBlydsEzkz+4roSo5ORag0sJ7inPSG
-	 3Kkra9GFTZhTIhh+YrmrwF0zI0vHIPpI5Wdd8Kjq7NMch0Br+mS9Wpiy62B73Wofss
-	 +S5KRYvzQVySR42chkR28/nIL91/GgYTFtiK2aGD2HKM3vHaesxuDVHHnnuFF4uHNV
-	 uxG/jHMMYA4KQ==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 1/7] mm/damon/core: remove comment and test for nr_to_bp() divide-by-zero
-Date: Wed,  8 Jul 2026 07:31:29 -0700
-Message-ID: <20260708143130.124419-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260708135359.122587-2-sj@kernel.org>
-References: 
+	s=k20260515; t=1783521251;
+	bh=yMl/Hl9vchj200XFGcGCOCkDW3TMDHU36nBeESh9U+g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=gkp8WN81Xw1+3ZEkuWvUYxFshXJZ/yQOPS7JoVjHAG33Ow3qX6AMrvVMPVydpxbJr
+	 NjWhiPqXSxGGTD6P1tK49i1Iu88eYDUyp5560l8rg0In5aPnqZUp3veBvqCFfhYPw5
+	 jORC0MmWPIsTYbmOwLQu7NQ9zwVmIZ52rxC04wkaDcUJ8nj1eHp6t6hpmlwQq3h3vI
+	 ksb525Q3DGV/pcBOebrChZQfScER8OFD89JWU5slohAEvMjcJ+dHGk5VKJdHkrvCFu
+	 PCcu51S1BU+7AI8LN7lpTDnbUWWzeTz4Wsg0ynFQp7YbluiF/mC2mwovOdkygZ32n5
+	 SjiWo06DMVvVg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pranjal Shrivastava <praan@google.com>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
+  Alexander Graf <graf@amazon.com>,  Samiullah Khawaja
+ <skhawaja@google.com>,  David Matlack <dmatlack@google.com>,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/4] kho: Support preserving unsplit high-order pages
+In-Reply-To: <178341290876.3292146.16538284698967245356.b4-review@b4> (Mike
+	Rapoport's message of "Tue, 07 Jul 2026 11:28:28 +0300")
+References: <20260703020832.1731864-1-praan@google.com>
+	<178341290876.3292146.16538284698967245356.b4-review@b4>
+Date: Wed, 08 Jul 2026 16:34:08 +0200
+Message-ID: <2vxz33xtmty7.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 89B16140008
-X-Stat-Signature: 8f4xxwsysde7r3mu8kow7iixa5mg8ffp
-X-HE-Tag: 1783521098-103255
-X-HE-Meta: U2FsdGVkX181ybPpPHrvq5YjQOgWbXY0rN+D6eRGEfRzyXxYK7V+n17IYMcjBr8TAvhZYYIYAXYFYOiLPFzT7WOUt1iBQLLkcXwYSOQMI+UtyvYlpI5YUQfz11DBx+FIKOOEEnBoHGloTcEvgsaSRxsz97dV3WArCJFWf168HG/QWheCELYjfTjKztOG+MuCQ1/7IFPtWdSycwoH0T3XWSF9s2Kb4gHhFOyi8jFhttAOMMrqn8nQRONFoxuiJhOa3AGVHrCyhgVSCROiXssJOmHUELLee4s88zNy+3prDvzWCHGv1PUT+/KCBVbwPodubkMEaOPwomzPWvBWGf+Qf7NYO1OtcSOEPz2Ol4HxfHPamXGZki/HzGkGfG67qzopc04psjQMxC7/2NigBO9AQRrZmWfCUBSKxVvXh9xcRV81LOhoC3UPTXiIlTtaDg7Cj+znCzhsj/8bKpaMffqFTGfd0lf9xLPhrMzzTT/gcUn+IsqrKjFsI2VTQu24ioZDcWylWR4EfPUn4LS78PEaxI2pbx8qJnPzFxNv29k4I5xhIyWeNxMtnyURWPVa0AZWYHB4Z1HpBrhxgVhroKMCiVO1aifbEi4jGceJezUSE6K2ZdZUqBqotVpaWIY+LC44DbTrnWrCYDRC5twB8gplibOHJQILQqb5TkMYzwaeI45tTp4qdlAs4Jo1YmytYDoevKB+mzwsWZ8O+OriYsZnFEZFn2QkbpJP5GtLZotpMa+8EDafPCAUoE5YEpBpzRJr8tWF2iurkhSKrJj69TJqVdJ/cfFeXWsedn+W+ZuQ08Cfe1XqAM2yaxkO4TpdbYYooMhSE4j3LT0+6bhh+DvSVPZnXjipfgME6QUDVuj8ItpETVrApuuPBoXGkcUriIaPvkYeXPVT/sFEizAx2f/Fun+WELdLT9NoAX6qsifQAgtc0rPVWBssSKUljY52hxT8S4NSB2xphl4barAdMEv
- ghECDOni
- cTAErDZZZTT4m7jo8OCX45VRsyS9nHwGyZCfLQkRTbHyBlemVBr3yjRxrvp5ze4dC7l0/UxfjLL39HOXVw5XOQGuWkg/g/4gQcqRc3BaKBprrI4D2wTd2TZrYpiEMsnEgo+usYyPuKkS6LgGpd2SvcdPEa4anRkxk8q2/H2pR7fNG1W7zrszmbXV7emyRES3GwlezpYRmlA6RT1vBxRsxM/2R4hwxZgSiMljUCO54t0xCVCRYKlqrOYS7lKM7mgNrjIj20Le/54sq8hKhYbydscgj7A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4BEC54000C
+X-Stat-Signature: 7w9yofc7e9wpeb73yhfkz75diu8ib66j
+X-HE-Tag: 1783521252-703705
+X-HE-Meta: U2FsdGVkX19wMOfNPrGllBci/MuKwpyClJHEgAe0gAluGkq0IHjHxwOzFPus1fsTuxE75JUKl+/iCWumpnjjNmvd+p0K0C0PJ9cQi22H+qPvXa7PTysjCY0Xccdlyih/zrPz5qqteB3WfgKP43IQ+0XX3cbQ3qiEQuHpS4zlRK8J0K4eDDM5TfFr+yoDRGl5VEBmtWf2g3AMUkh4xXBBR7tNQcyVzVA2haPhCAVeCc1u20NUfPcE9+ngvjnJ5ORsgMCtHihY2NaAe90NPS6tJUu0lm1KRtlMoGB2XSvvFM2cz9EhsNTfyIUaN9ohpemNKbEB7qImv4sMurR8gNQkrzkHTs9dsnqxuQc/os8myMBsDNmvqGTdVTHmdsgs+q/gyK/+U7OltlIBxigb28SybGzCruhSnrZ865qhrtzogaqFxiFh96BvAnalO5HkhIelJaoCpLSTZzjJqOP+YUQRUDJWhAx+9osW5zYD8heQiKRMEMYXdopHjWMYjtvBYwU8oUhDDlK6gxmO9RydErk8DjEsZVQ8boO8PEmyLu6u/dyS/nsH267vggfCjtOu3BJBTYDhcEuRHFNJhLHuCfpjmMvx7CS/yiTW+xQOCRH2rzuaW4Z81MmxKkwCGbe+d15r3tw0lFS7f/1682d6caINIHmRcaMRteN1Vj79LomRB4W3FsSbEdQZFnHOBARIyG/z2S5WvaHLW2v6cLXfmAlNB9FfTvWYF2aLi3wYRrA8e1kTD2k1+UmpJJsZ1UdsWzPNmW6Xmw44uUDC5lnyoYRWu9dytPeRoIzJ3aKPabMJJe/BMU2v5GJx3rY+IIbIh5oW1S4HrYtALA4OHFEc4hriNUa/7giBPwsJEa3zcTIpvp8mlPVQ507WXyZnW2p84xA87ifyAHPkNSUjRdFhn+eqLT7tc/Ld63rKjATA/zcd/Pyih8pMpNwmigUG25xUshq7s9QI6RBdUh73RESKdN3
+ M3yQwCx/
+ E5Y12xpX750vJI7Sl60rDjUFVHgNictWTmKVMQKdWRfl3UNeAwHNEpu5qDyrWL/1KMbhwwt/D7tEcyBTRgHWHEYvC+2lnwvSAL/4P57MC6FK6btQbGZOEIHpAknP2tHVJH427F62qsYSbv/OWCdGQCdKsFaAeYsK5R2BPBKNPOehX5XSfV2fKtgvVx6KAkTzZP591/cG0HJnPk8WdwEvSCkh7zqIn6PORgLPzggnMdt64x2Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,22 +96,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  8 Jul 2026 06:53:51 -0700 SJ Park <sj@kernel.org> wrote:
+On Tue, Jul 07 2026, Mike Rapoport wrote:
+>> 2. The type bit is preserved in the high bits of the KHO radix tree key
+>>    (Bit 63) and stashed in page->private metadata during boot.
+>
+> This brings a broader question - what is the best way to deal with page
+> metadata. This particular case requires only a single bit and luckily we
+> have a few spare high bits in the radix tree key. But what if going
+> forward we'll need more than a few bits? Do we need a parallel data
+> structure for the page metadata? Or something in kho_radix_leaf in
+> addition to the bitmap?
 
-> The comments on damon_nr_accesses_to_accesses_bp() and its unit test
-> warn it can trigger division-by-zero when the aggregation interval is
-> zero.  Commit 35d4a3cf70a8 ("mm/damon/ops-common: handle extreme
-> intervals in damon_hot_score()") modified damon_nr_samples_per_aggr() to
+FWIW, I am not convinced we need the extra bit of metadata _in this
+case_ [0]. But in general, I think the answer depends on how many pages
+need that metadata.
 
-I mistakenly used the future name of damon_max_nr_accesses() on the above
-sentence.  Andrew, could you please fix the above sentence by doiing
-s/nr_samples_per_aggr/max_nr_accesses/ when you pick this up?
+Storing it in the key has a side effect because it increases the memory
+usage. Since the keys will be more spread apart due to the metadata
+bits, it will result in more radix table pages being allocated.
 
-Please let me know if you prefer v2.
+If we need the metadata for each preservation, I'd guess we should just
+change the leaf nodes to have more bits per key instead of just one. If
+the metadata is fairly rare, maybe we just do a parallel data structure.
+Although parallel data structures do run the risk of going out of sync.
 
+So I guess it depends on the use case, as always...
 
-Thanks,
-SJ
+[0] https://lore.kernel.org/kexec/2vxz7bn5mv0n.fsf@kernel.org/
 
-[...]
+>
+> I'm not saying that a generic solution for page metadata must be a part
+> of this series, but we definitely need to consider and better sooner
+> than later.
+
+-- 
+Regards,
+Pratyush Yadav
 
