@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9134C43458
-	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 22:22:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1591BC43458
+	for <linux-mm@archiver.kernel.org>; Wed,  8 Jul 2026 22:22:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E7806B0092; Wed,  8 Jul 2026 18:22:24 -0400 (EDT)
+	id D7B026B0095; Wed,  8 Jul 2026 18:22:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 897496B0095; Wed,  8 Jul 2026 18:22:24 -0400 (EDT)
+	id D52966B0096; Wed,  8 Jul 2026 18:22:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AD606B0096; Wed,  8 Jul 2026 18:22:24 -0400 (EDT)
+	id C8F2B6B0098; Wed,  8 Jul 2026 18:22:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44D996B0095
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 940416B0096
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 18:22:24 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 837C114018B
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0480C1C30C5
 	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 22:22:23 +0000 (UTC)
-X-FDA: 84967034166.22.DE9F79A
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BE820100003
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 22:22:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=p8MuGrCP;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3m81OagsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3m81OagsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com
+X-FDA: 84967034208.07.15E12F8
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5CDB240005
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 22:22:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=i7DzvVvL;
+	spf=pass (imf27.hostedemail.com: domain of 3nc1OagsKCMwsu2w93wGB5yy66y3w.u64305CF-442Dsu2.69y@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3nc1OagsKCMwsu2w93wGB5yy66y3w.u64305CF-442Dsu2.69y@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783549342;
+	b=LwSIToVDFWQ5XqRzyWHP+rObDAKyGVSpoG78QE/EhenzUEVWQrcaF7X6erO7daoV6yS+Ly
+	25zXPOTJnAuMov2ysZjTEkfukCkcFBQ7IL275oVUGrVmHBrJ3i/FvUzKb8mM0lrkMFTyr7
+	2eB+tB08t3KHcTxQfs4+k4AU37nJVAk=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=i7DzvVvL;
+	spf=pass (imf27.hostedemail.com: domain of 3nc1OagsKCMwsu2w93wGB5yy66y3w.u64305CF-442Dsu2.69y@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3nc1OagsKCMwsu2w93wGB5yy66y3w.u64305CF-442Dsu2.69y@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783549340;
+	s=arc-20220608; t=1783549342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FMn5rOQ8G0MdN/j3eEgjALE6UNgIkquz76Y7IvgCOJ8=;
-	b=BgSakINeXzNEdweixdxp/amIKrXe6zFZr8AQNUxAWgdxHNHU7DOM0JFG8BWwrVnZpBqwYP
-	U2RJKaGVRB1PNZrjALnN4Pg3fgad2zl4riKnlvlKM86viZckeE6rOwpoXld7dglINNM5fU
-	tRgkU577G1dP2Q9RNrGcn1ykd+yOI4A=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=p8MuGrCP;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf14.hostedemail.com: domain of 3m81OagsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3m81OagsKCMoqs0u71uE93ww44w1u.s421y3AD-220Bqs0.47w@flex--ackerleytng.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783549340;
-	b=aoQBb75kFNX4xmC1JBb4tDwg+vTRoS07r4DkJ7Ye2hsS0knMWsaIbk6n6zC0Ggt7OQvCMP
-	PL5lkHz+G3ZcZCEaLGvQSpSEXMvUDCXRqyMQn0CM+LwdAsIgKJuoPJg+/uuzp18ZEMcYeV
-	gXbq6ap0tgPqnrFlM1M65qIe+XTjBMY=
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ccb6823efcso11834745ad.0
-        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 15:22:20 -0700 (PDT)
+	bh=Ez2sGXr0ImIl6qeGIDRJYiog01DgnPS7oVjoUBzVAs4=;
+	b=mfYo+Pvel7eQY51aLrWvOYHZPpArnVIjyWREVIKGDR2OaTjo4FfCUX4/UKGx+u2jsameW2
+	9oMLpxMCyqSrEDBt5qKQGIh6pKTqgvsHQiQFsvGSn3E//eIKg5g16wFdGoF19qn5od/HKN
+	ibQCL6/v8+Hp0u6Nl1fL8CYQ8284Nxs=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-848474825ffso284007b3a.0
+        for <linux-mm@kvack.org>; Wed, 08 Jul 2026 15:22:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783549340; x=1784154140; darn=kvack.org;
+        d=google.com; s=20251104; t=1783549341; x=1784154141; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FMn5rOQ8G0MdN/j3eEgjALE6UNgIkquz76Y7IvgCOJ8=;
-        b=p8MuGrCPrTjxNXt6+zxmOgO1Wn6oQNShR8IzduF2r/6RxrKOnmbWahkOULum23vrqK
-         TA8nbj/0unB1NyVztN/W++Po1jV4M3DN1x1vZ+m6C8cF1nGbUH6rMzGWI8aQtEbqhE6k
-         aHycWVH0unwgzowUziLSftDnfpPCWNt49F3/WhPOs90g7aj+gaTmJ8LLMp4j65Ut/43l
-         5g+OO4zBFNx80jzwtpEAdW9HzeSMxPAaOcDz3Ct9DRQL6qOncx/RrUN81uHcCm72QLDV
-         oqXZEvnIfLVAOGIABHVQ9JZxROYMPFPoaHJYU6M7b0symmMV0V0x6VId6QE/YIrmTWNg
-         hLuw==
+        bh=Ez2sGXr0ImIl6qeGIDRJYiog01DgnPS7oVjoUBzVAs4=;
+        b=i7DzvVvL8Dg0pbd1JM07EIcuzlR1OmibhaEwvuIcpDS6asGuGsRSM6vSXtFrPJloVh
+         ANXttNcplnli1M0KFR1z9iumBc9G3tvf/EgDFSny3C8ON/edCpePI47PpRqF1Q2ijWNc
+         ZDBnJOqnzEBblaDIz2AxfLqj5FWEYAy4LqncGCRuuTxTVmqS7P+LHOdD1agjSkuDSitE
+         POVBYM4lWGX219yzdrYEG8hkx1J0SW9TDfrwqloKfkM4cjlK5aUxmUT57aXZqdp28O4Q
+         qIKiUqFCsK0l7oWJBGO9DDumXVBCbuTCDQdaO9HB2Dojh+ov7vkVm/bkA5qGUHpaMszM
+         Xmmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783549340; x=1784154140;
+        d=1e100.net; s=20251104; t=1783549341; x=1784154141;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FMn5rOQ8G0MdN/j3eEgjALE6UNgIkquz76Y7IvgCOJ8=;
-        b=YogpdPlUSG5Nlw0VSVNX9uWdgoQxKW5VivR9JFalnB8L9OdfZB8da9ys0dewsuNEHF
-         NUzDGfZSv0tR7B3ulkgK+NJPL3d8AyJVr4vOIyngbu//iqsHG/HASNyMWKDc08w2+cDs
-         Qy5EL1IDpJCQvhPATERlCdRirj+eVQcN0Kf4AqRPlucbR53OS5i2lQi94Rm+t82thgDl
-         P5cCoVcrZ/g/bEmBQIEYGQqiR3fPMHX8dXGshPGuxJYhoBR0oxeTfO+zHEHe/j39EUMD
-         OdMaFSc21rbKIX8hZrRNcgHcFoX4hlFK7cAALqjR1GgR+uNVYb8DGI31PGnMmMl4YHzl
-         LNyg==
-X-Forwarded-Encrypted: i=1; AHgh+RpFqFtoxRGUemZUMD1CW9SN15JrEVnjf1stbOsjEMPZRYQWxnnrfSEbTXkbGOZ4U2qOkGn+DXZ3RA==@kvack.org
-X-Gm-Message-State: AOJu0Yyvjm5u4fmitgNccoAwVeB6rSkuFlRAlksX6ZrBS2VLQrhVjDzW
-	XJiHC3GVWe6dXdOA4BHVFpkLPRa+RO/B8U9JV+CYFmdH/lzxT4S4DjrfWdeYYdQRUuRSucQJgNn
-	j8BdFl2oFzJYWAn2ghyfJoAnGkw==
-X-Received: from pldd21.prod.google.com ([2002:a17:902:c195:b0:2c8:4c1:883a])
+        bh=Ez2sGXr0ImIl6qeGIDRJYiog01DgnPS7oVjoUBzVAs4=;
+        b=kt69fop2KKOCRYCXmK2+nM6N5gBI0zY8zUhsWrVjrD/UXT/ITGdyLZx1q08i2tNm30
+         HBb5lzmnLSQSZcd8GJHv8KxZkB/0H25t4ZNKAf4sA3enqhk410t+sVqRy+idGW7ve2GY
+         ybRsgl3idiHSg/1HcHMnuXEtGLMpbDuVRdIWKTGDAbKVLH4+rYSAGRRFv4UxZUI/baBv
+         3RV6qDvAna4S8H7Mr0MljjWqL+KrcWI7uc0ZANoTcbM5c8/qWxNImQbANTGR9g+AI5xY
+         S4r+ukFUA2pGQjTO2Cp6wcqrGSue3KBz/HRrXgumnw5/WUNUuLfNuj0KhTte6z1J8E6a
+         nPtw==
+X-Forwarded-Encrypted: i=1; AHgh+Rod3ixIjp4i88BzpEOkXXgh75XFGlmtvrqppqamA7tkasYeEJWSVs3aQdKIaoZAdjMoh0/Iz3466Q==@kvack.org
+X-Gm-Message-State: AOJu0YxjwuJ66bs/3iwRyiZRWH8c4ocQ314KWK+1nZtsu6/iIlhs9qej
+	1TfncCsa4CEkCpA7ruXnCBmzJO4H28M54p+/qou0LUR6q3RCFdLmOgo6aW5hvDm3jrQAb9GHTgY
+	i5qbL7Zk8i1I3BmZi+x5znJgLxw==
+X-Received: from pfbna42.prod.google.com ([2002:a05:6a00:3e2a:b0:848:4809:51c6])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:1670:b0:2ca:52ce:6f74 with SMTP id d9443c01a7336-2ccea464790mr52655045ad.29.1783549339459;
- Wed, 08 Jul 2026 15:22:19 -0700 (PDT)
-Date: Wed,  8 Jul 2026 15:22:11 -0700
+ 2002:a05:6a00:2e28:b0:847:8791:f54f with SMTP id d2e1a72fcca58-8485ab7c6d2mr193415b3a.29.1783549341021;
+ Wed, 08 Jul 2026 15:22:21 -0700 (PDT)
+Date: Wed,  8 Jul 2026 15:22:13 -0700
 In-Reply-To: <cover.1783549129.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <20260708-hugetlb-alloc-failure-fixes-v2-0-c7f27cbb462b@google.com>
  <cover.1783549129.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <1db8819133a88e03297aea7924878582c28e3dbc.1783549129.git.ackerleytng@google.com>
-Subject: [POC PATCH 1/3] Reproducer for false restoration on shared HugeTLB mappings
+Message-ID: <946c52b1d2bf058d8a61128a1490cbeab56b20a6.1783549129.git.ackerleytng@google.com>
+Subject: [POC PATCH 3/3] Reproducer for allocation failure due to cgroup v2
+ memory limits
 From: Ackerley Tng <ackerleytng@google.com>
 To: devnull+ackerleytng.google.com@kernel.org
 Cc: ackerleytng@google.com, akpm@linux-foundation.org, david@kernel.org, 
@@ -99,14 +100,14 @@ Cc: ackerleytng@google.com, akpm@linux-foundation.org, david@kernel.org,
 	osalvador@suse.de, peterx@redhat.com, rientjes@google.com, 
 	shakeel.butt@linux.dev, stable@vger.kernel.org, vannapurve@google.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: BE820100003
-X-Stat-Signature: 9fosmw18nhsbh6kxx4ejpy54ni4n8x1o
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783549340-292368
-X-HE-Meta: U2FsdGVkX1/ZhHKsWH8RuTwqjEID2HKlRSO3D+Sp9GmVhM/yDMaohN2fmDUXgKTQdcjzN9QTBZhxd/VBSHOIunxI+rCdu6QZtm1xrzTPKv1fgwfDbFrhXLHbOhDpRLCiQF4TCrfqV2+pl1taf+3ZKPSB7MVvORLYknjVRHZ2BwUhDpBKay4sF4KEYcrXdAqnYnGANDAajA/EPHcixUMdC4+XLFjc4+rHS91tcNWUMnujsLY1Gr3+QaYaZibkvN2ktzPHTzyJkp8PRBkDaWbrcuxFth3+rYUPUXDfaiMTcsv+YUlvUHTYaLCqGhSC6HIQT9EkhHIWKfQPiuj10ptivW2qigS5u8JGwPCWkj9aAejUCdz0BwsbfsWmW4X57T0y2Qo+04Nkj9TTGbuuCIWddRWQivcVlX4hzyO1pyJGtF9ZxyeJ1kypm4RXfGlMar1ej5aCMiXAAdL+c6OVPaqNPPVRJ1CDDdpIcwqkOjLgqRr1VkJwFVvCvSOO5RCkbNwb3zfAtfTElrw3Doa6C/fEBe9mK3JNkLyh2gHLSGM2/Xe3n9yzIW5c/7h/N0mKPwQWY5djWLRszXy7opelEufRwrBQfGwTm5ZVwgPgEPHUjesMcV3DiHM8cfq1C+xuHI+VT/PfnGo7wlJ6BxPXzq1hvXLBYBQyf6MGIQgrjSbDl3XJgvh3lPnsAR9TBNBqLibNeyBa+b1d5CBklvf4mUiCIomWEtod9nWBAO1j71qDufAxL/EIkSEuFTakhmivUOHLghDWSz0QYMi6p1QVhWiqJjgYK8QhRquQtOqRCKRxg0o7gKySrsqfQVjXI+vSRPivqn5JX7bffrqb+beIgL6jyWdXHAV6y9M8c+filOH8xKx6w0PbbPalUhy4T36IPBM2EVJ9Rte/qeg38sce9wA0Zt0Vjtj/H3MAHR0JiZCNa5nEdMyC9TwC0mTzgNnYPlSIK0c02o8Yq/BVpsHU3nz
- DVe4XXLZ
- BNIrT4sbY8bFIo4BSBgGiQj9yR6u3pBwOjsSwQOijIB1/EbPvM40UodIqIicSyox6ptRV5RFRKqP+rdIiEOJ3el+oJqLe97ICCC1HyX3aC83m+jyOK37tFCT3hYvXOEDcR9RE7mN6bOUU26FiTgmoOPaoOGOmdJzO+aS+Nyfc3p4WiCy7GcsamTbhSVRWfPdC3C5e/JU5TJq5M6SNQ81D1dk9xZUAA2H2hBP5DY43wG4XpPLAMDOh5fsOUWwbzLUqcfTOfe/j2qM+rJPPNbmGBcFMkWVN2Dg0J8j6H6/ti8JevOk53XYk3mducbbUvn/bzdwtJy+1XtfgIyKJ9CtUWIWT18A53L0wPip/AQAbhkE7nnxaQLIh+deauwiWw4ORZcTRgPjz1GrYgIPBfPMwHk6VPzC5OD3ruxP7Wdlc7I9On8s259Zn38kFJuloCIT2YqWLhvxuvfjSEPTN5wwOFhs2KQba86K8HxeVanBaf+bjj7JoiRHfkZPb6gVF+vg7VNITZD98WUypstBZuk3z1OxRO91Pz41VDrMQGK263parT4Ex1gim63R5YHD3ILVgrcKdHdbtamjK1Ev+owTDwaBIc/QkCO4CU/DApfSpd+/hZpc8wxnFOxpHDvLtALRzihqXsvjGUzYcg+7gd91kfdjDgb9TtGfJDSTPAykAPHSqTjExPmwQB2IWxNmpl6Kc5aq6Iat++dfk5x0bY/mROz5LNg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5CDB240005
+X-Stat-Signature: ea6oewr86oa3pkp9xk9tnuoipx8pitb4
+X-HE-Tag: 1783549342-468070
+X-HE-Meta: U2FsdGVkX1/jCg8daIwvTm8wQAlu1luV7OHntQNMf/YBbOHFPfNwizFeF1722895sAk1tedWnK3GxIEbZUcKoSoi0s/XzaOUdezwmzwVxagLutt6DHVjt6F2vdbx/rjGovpugDpgsCRsmY3GnJVuGdoQDrHlIz6OnGgTn4QROD81qRbHdQg2PaozM080QVWi+8hW+5MDhSmGkRUf7HgoZyQWc/BSzU/9c9b5ZHZcvYSybd5aA+l1sZw6rqOp+8LK3kq2gsXc+sA0XXyL5s1LG9ehTw6xPM2yLTK2GGKYqntrhYOK8PYYtcCPD8Y/UqRN3zv2LAKz7oLLlmcPJfw7Tpad4VPP/8kHaurNF2AU2Gy6oLNOM3s0gGsUy5ARjG9W5ViRmXCi7A1NfyNPVGU8zJd1OCUvfAfIGWOHy4Szy/ZQtGJug6QPwTwruBU9Eg+pyCbvlFq3bP5zxFU2QyPgtyvrddm75GcAv+X8rhxAxCwOZumxh1PACR57B9H9SFeK7aiFipAwkn/bj1rB1DCMaiP1WJ957qV+xw3Jh7r3gvNxvvPx9eyt3h4qP6Ar4BPLYi/zvLHALV/MOf0/XvVbuxXNymHmTmTjbvT9sUqdA+E+aQ4/TJy6vXvRiVkcZ+cO7GK80F2UtzgEQA7EvfXxyGu11LZ9ClaLXmlMkLCsZt7MDLOzuIfe0AsyK7dNmqIzZrcbhD9iAz0aaCRQRDX2gpLcrc67Jyot7jw7CxMyVs/NuXEZPtvteDnzR6zmYhCXZEf2iBmPZTrqv/CBMsF0QRzQa4NkroLuTePR3/N4F6BRQsx93eeE8I/fYKFeoryrrDP9IxZwbzwCC4U1wcDBomd/EV17hZl3o6MQploV/qJ9R+ypKngynzawuTtxjHisIupf3nwldaQelacKMNgNTlkNXbdRIrlUdef9Yy8hixC1yBh6gBdzfJUBxsutWxVqzde6knDUgmLooKs0uHW
+ +VrioMUE
+ 4IMWQPRw9Ss7Setr1eBY3WW0ArisdtUGdmyqDSnV8tk8+zhiTotYXcJ9zptVlQ1bi+QgmZDC+PvpU/BL9PtzYR3QseLOzjwkPde/3idbBnFPkQA4QqCgADMolmUG+IciwLyW5RcYrIMqljuPv0e+OH+a8sosevmP1CWZaXx5lq8ZPjK6KajAZRUWEYVtQwF3JA6U/w5e5BpgG9pCtpFZT4mk+j5oPBBenK/oyV7qtmjvGNMZYtG1XgZoWkNPZoKPGshSP0igKV7RfXGdd1K1CrkvH+7H1uFAK6/cXGcmtA9QId13qj3D7W8caVL1SwJiznRGJIvWVPRaskvOplZBpJo9QH0ioF9TGGy8Q34jijctgylDfgtl7ak1iJ8OATKDeq9laSvhkbSqTdYneiXOQyR28OIvQ+uqgKzq/KIRZxqdTGWuVYaglCad1U6HYDySmmVzrZDejXKYVG+5yjiUxMwXgROgpzr4mHz0zb44SJtvNpD8PxjYWf9zI956KTkTWAiEDLj5yfugE7wjR8pdPmsL0ATjKzYLvE0J4+RsQGvt+n9alXZqZ3M+oLhV4HoyozBzOtRj92zNVP423MTovv+1pmx/deg5fPntJ2e1iXMgE1okUzoVonFJ4/C/T2j5xavqgEf8db2pHxxbgkj5w/GtcM9k//bRooPjBqiU594YRlYL/Qhca1DcYdzAosERPNU3LdlQZAY0IpNaR1Tf8u2PuXvAyI9IWsNbU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,196 +117,218 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 (This reproducer was hacked up and not meant to be merged.)
 
-hugetlb_unreserve_pages() unconditionally returns reservations to the subpool
-(via hugepage_subpool_put_pages()). This means that regardless of whether a
-subpool reservation was actually used, the reservation is processed by the
-subpool structure.
+cgroup_v2_allocation_failure.c triggers HugeTLB allocation failure by exploiting
+cgroup v2 memory limits. This allows testing the error paths in the kernel when
+memory control charging fails, even when physical huge pages are available.
 
-To create a false restoration, the reproducer performs these steps:
+The program performs the following steps to trigger the failure:
 
-1.  Mount with min_size=2M (1 page). Global resv_hugepages becomes 1.
-2.  The program maps 4MB (2 pages) shared (which also grows the file to
-    4MB). Global resv_hugepages becomes 2 (1 from the mount, 1 new global
-    reservation).
-3.  The program populates only the first page. Global resv_hugepages decrements
-    to 1 (reservation consumed by allocation).
-4.  The program exits (closing VMAs/fds). For shared mappings, reservations are
-    associated with the file inode, so they remain active. Global resv_hugepages
-    remains 1.
-5.  The script truncates the file to 2MB (truncate -s 2M).
-    +   This synchronously triggers hugetlb_unreserve_pages() to release the
-        reservation of the truncated range (the unallocated 2nd page).
-    +   It calls hugepage_subpool_put_pages(spool, 1).
-    +   On Vanilla Kernel (Buggy):
-        +   used_hpages is 0 (not tracked).
-        +   used_hpages (0) < min_hpages (1) is TRUE.
-        +   The subpool incorrectly restores the reservation (spool->rsv_hpages
-            becomes 1), even though Page 0 is still allocated and satisfies the
-            mount's minimum guarantee.
-        +   hugepage_subpool_put_pages() returns 0, skipping
-            hugetlb_acct_memory(h, -1).
-        +   Result: Global resv_hugepages remains stuck at 1 (Leak).
-    +   On Fixed Kernel:
-        +   used_hpages is tracked and is initially 2.
-        +   hugepage_subpool_put_pages(1) decrements used_hpages to 1.
-        +   used_hpages (1) < min_hpages (1) is FALSE.
-        +   The subpool does not restore the reservation.
-        +   hugepage_subpool_put_pages() returns 1.
-        +   hugetlb_acct_memory(h, -1) is called.
-        +   Result: Global resv_hugepages decrements to 0 (No leak).
+1. Enable hugetlb accounting in cgroup v2.
+     + The program checks if memory_hugetlb_accounting is enabled in the cgroup2
+       mount options. If not, it remounts /sys/fs/cgroup with this option
+       enabled. This ensures that HugeTLB allocations are charged against the
+       cgroup memory limits.
 
-When the filesystem is unmounted, hugetlbfs_put_super drops the subpool
-reference. Since the filesystem is being unmounted, the reference count drops to
-0, triggering unlock_or_release_subpool.
+2. Create a test cgroup and set limits.
+     + The program creates a new cgroup subdirectory named test_reproducer under
+       /sys/fs/cgroup.
+     + It sets the memory.max limit of this cgroup to 1MB (which is less than
+       the 2MB huge page size).
 
-Inside unlock_or_release_subpool, the kernel checks if the subpool is free using
-subpool_is_free.
-+ On the buggy kernel, subpool_is_free checks if spool->rsv_hpages is equal to
-  spool->min_hpages. Because of the phantom reservation, spool->rsv_hpages was
-  restored to 1. Since min_hpages is 1, the check (1 == 1) returns true.
-+ Since the subpool is considered free, the kernel releases the initial
-  mount-time reservation by calling hugetlb_acct_memory to decrement
-  resv_huge_pages by spool->min_hpages (which is 1).
-+ This decrement reduces resv_huge_pages from 1 (the leaked state) to 0.
+3. Fork a child process and move it to the test cgroup.
+     + The program forks a child process.
+     + The child process moves itself into the test_reproducer cgroup by writing
+       its PID (using 0 for current process) to cgroup.procs in the test cgroup
+       directory.
 
-As a result, the leaked reservation is cleaned up during unmount and does not
-persist afterward.
+4. Attempt to allocate and touch a 2MB huge page.
+     + The child process maps a 2MB anonymous huge page using mmap with
+       MAP_PRIVATE, MAP_ANONYMOUS, and MAP_HUGETLB.
+     + The child process writes to the mapped address, triggering a page fault.
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+5. Triggering the kernel bugs.
+     + The page fault handler calls alloc_hugetlb_folio to allocate the huge
+       page.
+     + The allocation of the physical page from buddy allocator succeeds
+       (assuming nr_hugepages is sufficient).
+     + The kernel then attempts to charge this allocation to the child process's
+       cgroup by calling mem_cgroup_charge_hugetlb.
+     + Since the child's cgroup memory limit is 1MB and the page is 2MB, the
+       charge fails and mem_cgroup_charge_hugetlb returns -ENOMEM.
+     + This triggers the error path in alloc_hugetlb_folio where the bugs (folio
+       refcount mismatch, infinite loop on ENOMEM, and reservation leaks) are
+       handled.
 ---
- subpool_shared_leak.c  | 29 ++++++++++++++
- subpool_shared_leak.sh | 86 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 115 insertions(+)
- create mode 100644 subpool_shared_leak.c
- create mode 100755 subpool_shared_leak.sh
+ cgroup_v2_allocation_failure.c | 160 +++++++++++++++++++++++++++++++++
+ 1 file changed, 160 insertions(+)
+ create mode 100644 cgroup_v2_allocation_failure.c
 
-diff --git a/subpool_shared_leak.c b/subpool_shared_leak.c
+diff --git a/cgroup_v2_allocation_failure.c b/cgroup_v2_allocation_failure.c
 new file mode 100644
-index 0000000000000..5811e18d7f8be
+index 0000000000000..938cbf02ae6f7
 --- /dev/null
-+++ b/subpool_shared_leak.c
-@@ -0,0 +1,29 @@
++++ b/cgroup_v2_allocation_failure.c
+@@ -0,0 +1,160 @@
++#define _GNU_SOURCE
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <unistd.h>
++#include <fcntl.h>
 +#include <sys/mman.h>
 +#include <sys/stat.h>
-+#include <fcntl.h>
++#include <sys/types.h>
++#include <sys/wait.h>
++#include <string.h>
++#include <errno.h>
 +
-+#define HPAGE_SIZE (2 * 1024 * 1024)
++#define CGROUP_PATH "/sys/fs/cgroup"
++#define TEST_CGROUP "test_reproducer"
++#define TEST_CGROUP_PATH CGROUP_PATH "/" TEST_CGROUP
 +
-+int main(int argc, char **argv) {
-+    if (argc < 2) {
-+        fprintf(stderr, "Usage: %s <file_path>\n", argv[0]);
++void write_file(const char *path, const char *val) {
++    int fd = open(path, O_WRONLY);
++    if (fd < 0) {
++        fprintf(stderr, "Failed to open %s: %s\n", path, strerror(errno));
++        exit(1);
++    }
++    if (write(fd, val, strlen(val)) < 0) {
++        fprintf(stderr, "Failed to write %s to %s: %s\n", val, path, strerror(errno));
++        close(fd);
++        exit(1);
++    }
++    close(fd);
++}
++
++int is_hugetlb_accounting_enabled() {
++    FILE *fp = fopen("/proc/mounts", "r");
++    if (!fp) {
++        perror("fopen /proc/mounts");
++        return -1;
++    }
++
++    char line[1024];
++    int enabled = 0;
++    while (fgets(line, sizeof(line), fp)) {
++        char spec[256], file[256], type[256], opts[512];
++        if (sscanf(line, "%255s %255s %255s %511s", spec, file, type, opts) == 4) {
++            if (strcmp(file, CGROUP_PATH) == 0 && strcmp(type, "cgroup2") == 0) {
++                if (strstr(opts, "memory_hugetlb_accounting") != NULL) {
++                    enabled = 1;
++                }
++                break;
++            }
++        }
++    }
++    fclose(fp);
++    return enabled;
++}
++
++int enable_hugetlb_accounting() {
++    printf("Attempting to remount cgroup2 with memory_hugetlb_accounting...\n");
++    int ret = system("mount -o remount,memory_hugetlb_accounting " CGROUP_PATH);
++    if (ret != 0) {
++        fprintf(stderr, "Failed to remount: system() returned %d\n", ret);
++        return -1;
++    }
++    return 0;
++}
++
++int main() {
++    struct stat st;
++    if (stat(CGROUP_PATH, &st) != 0 || !S_ISDIR(st.st_mode)) {
++        fprintf(stderr, "cgroup v2 not mounted at %s\n", CGROUP_PATH);
 +        return 1;
 +    }
-+    const char *file_path = argv[1];
 +
-+    int fd = open(file_path, O_CREAT | O_RDWR, 0666);
-+    if (fd < 0) { perror("open"); return 1; }
++    int enabled = is_hugetlb_accounting_enabled();
++    if (enabled < 0) {
++        return 1;
++    }
++    if (!enabled) {
++        if (enable_hugetlb_accounting() != 0) {
++            fprintf(stderr, "Could not enable memory_hugetlb_accounting\n");
++            return 1;
++        }
++        // Re-check
++        enabled = is_hugetlb_accounting_enabled();
++        if (enabled <= 0) {
++            fprintf(stderr, "Failed to enable memory_hugetlb_accounting (re-check failed)\n");
++            return 1;
++        }
++        printf("Successfully enabled memory_hugetlb_accounting\n");
++    } else {
++        printf("memory_hugetlb_accounting is already enabled\n");
++    }
 +
-+    void *addr = mmap(NULL, 2 * HPAGE_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-+    if (addr == MAP_FAILED) { perror("mmap"); close(fd); return 1; }
++    // Enable memory controller in subtree
++    int fd = open(CGROUP_PATH "/cgroup.subtree_control", O_WRONLY);
++    if (fd >= 0) {
++        if (write(fd, "+memory", 7) < 0) {
++            // Might fail if already enabled or not supported, ignore for now
++        }
++        close(fd);
++    }
 +
-+    *(volatile char *)addr = 1; // Allocate 1st page only. 2nd page remains unallocated (but reserved).
++    if (mkdir(TEST_CGROUP_PATH, 0755) != 0) {
++        if (errno != EEXIST) {
++            perror("mkdir test_reproducer");
++            return 1;
++        }
++    }
 +
-+    munmap(addr, 2 * HPAGE_SIZE);
-+    close(fd);
++    // Set memory limit to 1MB (less than 2MB hugepage)
++    write_file(TEST_CGROUP_PATH "/memory.max", "1M");
++
++    pid_t pid = fork();
++    if (pid < 0) {
++        perror("fork");
++        return 1;
++    }
++
++    if (pid == 0) {
++        // Child
++        // Move to cgroup
++        write_file(TEST_CGROUP_PATH "/cgroup.procs", "0");
++
++        printf("Child: Attempting to allocate and touch 2MB hugepage...\n");
++        // Allocate 2MB hugepage
++        size_t size = 2 * 1024 * 1024;
++        void *addr = mmap(NULL, size, PROT_READ | PROT_WRITE,
++                          MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
++        if (addr == MAP_FAILED) {
++            perror("Child: mmap MAP_HUGETLB");
++            exit(1);
++        }
++
++        printf("Child: mmap succeeded at %p, touching it now (should trigger fault)...\n", addr);
++        // This should trigger the fault and call alloc_hugetlb_folio -> mem_cgroup_charge_hugetlb
++        // which should fail and trigger the bug.
++        *(volatile char *)addr = 1;
++
++        printf("Child: Successfully touched page (bug not triggered?).\n");
++        munmap(addr, size);
++        exit(0);
++    }
++
++    // Parent
++    int status;
++    waitpid(pid, &status, 0);
++
++    printf("Parent: Child exited. Cleaning up.\n");
++    rmdir(TEST_CGROUP_PATH);
++
++    if (WIFSIGNALED(status)) {
++        printf("Parent: Child killed by signal %d (%s)\n",
++               WTERMSIG(status), strsignal(WTERMSIG(status)));
++        if (WTERMSIG(status) == SIGBUS) {
++            printf("Parent: Child got SIGBUS as expected (if kernel didn't crash).\n");
++        }
++    } else if (WIFEXITED(status)) {
++        printf("Parent: Child exited with status %d\n", WEXITSTATUS(status));
++    }
 +
 +    return 0;
 +}
-diff --git a/subpool_shared_leak.sh b/subpool_shared_leak.sh
-new file mode 100755
-index 0000000000000..46c622b18559a
---- /dev/null
-+++ b/subpool_shared_leak.sh
-@@ -0,0 +1,86 @@
-+#!/bin/bash
-+
-+if [ "$EUID" -ne 0 ]; then
-+    echo "Please run as root"
-+    exit 1
-+fi
-+
-+MNT_PATH="/tmp/mnt_hugetlb_shared_leak"
-+FILE_PATH="$MNT_PATH/test_file"
-+
-+# Save original values
-+orig_nr=$(cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages)
-+
-+cleanup() {
-+    echo "Cleaning up..."
-+    rm -f "$FILE_PATH"
-+    umount "$MNT_PATH" 2>/dev/null
-+    rmdir "$MNT_PATH" 2>/dev/null
-+    echo "$orig_nr" > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-+    echo "Cleanup done."
-+}
-+trap cleanup EXIT
-+
-+# 1. Set nr_hugepages to 2
-+echo 2 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-+
-+# 2. Mount hugetlbfs with min_size=2M (1 page)
-+mkdir -p "$MNT_PATH"
-+if ! mount -t hugetlbfs -o min_size=2M none "$MNT_PATH"; then
-+    echo "Failed to mount hugetlbfs"
-+    exit 1
-+fi
-+
-+# Check resv_hugepages after mount (should be 1)
-+initial_resv=$(cat /sys/kernel/mm/hugepages/hugepages-2048kB/resv_hugepages)
-+echo "Initial resv_hugepages (after mount): $initial_resv"
-+if [ "$initial_resv" -ne 1 ]; then
-+    echo "ERROR: Initial resv_hugepages is not 1!"
-+    exit 1
-+fi
-+
-+# Verify reproducer binary exists
-+if [ ! -x ./subpool_shared_leak ]; then
-+    echo "reproducer binary './subpool_shared_leak' not found or not executable."
-+    echo "Please compile it first: gcc -static -o subpool_shared_leak subpool_shared_leak.c"
-+    exit 1
-+fi
-+
-+# 3. Run helper to map 4MB, allocate 2MB, and close.
-+# This creates 2 reservations, consumes 1 (by allocating Page 0).
-+# The unallocated Page 1 reservation remains active in the inode's resv_map.
-+echo "Running helper..."
-+./subpool_shared_leak "$FILE_PATH"
-+
-+resv_after_helper=$(cat /sys/kernel/mm/hugepages/hugepages-2048kB/resv_hugepages)
-+echo "resv_hugepages after helper (should be 1): $resv_after_helper"
-+# Page 0 is allocated (no longer reserved). Page 1 is reserved.
-+# So resv_hugepages should be 1.
-+if [ "$resv_after_helper" -ne 1 ]; then
-+    echo "ERROR: resv_hugepages is not 1 after helper run!"
-+    exit 1
-+fi
-+
-+# 4. Truncate file to 2MB (releases Page 1 reservation)
-+echo "Truncating file to 2MB (releasing 1 page reservation)..."
-+truncate -s 2M "$FILE_PATH"
-+
-+# Check resv_hugepages after truncate.
-+# Since Page 0 is still allocated (and in page cache), and satisfies the
-+# min_size=2M guarantee, we should have 0 reservations remaining.
-+# If the bug is present, the truncate path will incorrectly restore the
-+# reservation to the subpool and skip releasing it globally, leaving
-+# resv_hugepages at 1.
-+final_resv=$(cat /sys/kernel/mm/hugepages/hugepages-2048kB/resv_hugepages)
-+echo "Final resv_hugepages (after 2MB truncate): $final_resv"
-+
-+if [ "$final_resv" -eq 1 ]; then
-+    echo "RESULT: LEAK DETECTED (FAIL)"
-+    exit 1
-+elif [ "$final_resv" -eq 0 ]; then
-+    echo "RESULT: NO LEAK (PASS)"
-+    exit 0
-+else
-+    echo "RESULT: UNEXPECTED STATE ($final_resv)"
-+    exit 2
-+fi
 -- 
 2.55.0.795.g602f6c329a-goog
 
