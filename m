@@ -4,97 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC256C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 15:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F363AC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 15:39:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C4C46B009F; Thu,  9 Jul 2026 11:36:26 -0400 (EDT)
+	id E35086B0088; Thu,  9 Jul 2026 11:39:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 775A06B00A2; Thu,  9 Jul 2026 11:36:26 -0400 (EDT)
+	id DE5856B008A; Thu,  9 Jul 2026 11:39:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 667166B00A4; Thu,  9 Jul 2026 11:36:26 -0400 (EDT)
+	id CAFBE6B0092; Thu,  9 Jul 2026 11:39:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FB816B009F
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:36:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AB01B1C0D3B
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:36:25 +0000 (UTC)
-X-FDA: 84969639930.02.54D7EF9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EB87340007
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:36:23 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c58V4tRt;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id AB6FC6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:39:37 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 59C451C141D
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:39:37 +0000 (UTC)
+X-FDA: 84969647994.11.5CA3E52
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 80F4640011
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:39:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eTnjEWRs;
+	spf=pass (imf11.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783611384;
-	b=bDOVWgnIGoaGQuuDVu58okYEQo/VX7tHYITLnjs0T6hyAQMPnVJNo+Rmg0KdktGf/oaiI5
-	YxlMJahZKvR7vxNGljlzC/Fx+sivxqoO3mwbyayB+7IUPReqZ89qtoWdDUG6k0txG6N9sz
-	1XDwDOC/vTumlBbKeocbaLb1o/2n0yU=
+	t=1783611575;
+	b=K8Q2aIT1SlCXy7OFm7kkglaBwPwredSDfCe8/k52dBf8xMe9RyJdoY97tfpRTRa8uK4Fim
+	gzxAkNyv6ri6Qz5b/An2mimCuCC+eJict+X3Z0RUFc/73uGNaiMcuiwaQstqRqBLQdLd8f
+	m8Vtml3qlDzyzZsMu9LHzPCmlqkTCBQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c58V4tRt;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eTnjEWRs;
+	spf=pass (imf11.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783611384;
+	s=arc-20220608; t=1783611575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4mg2V0R7ROggXXchkyKDCKlOYU1ruVph4CL/uITEWhg=;
-	b=zqb0UqbU5+i9UTQq68OZhmO9Ekv1OmRJCZVk2gMxlSFG4KvigOxTM3dStcbOfn1cTywDhU
-	65FFkaE1wBoM6zaIo9IatG4MFyW6DEPK/V7PcslhTi/DKIsVpDX7vX+5LG0C33/4NNcbbv
-	TnY4a6K7oxh/nnO1UZ3q7xJ99swbtVs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D652341823;
-	Thu,  9 Jul 2026 15:36:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BA21F00A3A;
-	Thu,  9 Jul 2026 15:36:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783611382;
-	bh=4mg2V0R7ROggXXchkyKDCKlOYU1ruVph4CL/uITEWhg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=c58V4tRtaxqpKPeZvomkSUxRufHz00GTZSdV7gdbR7tLG41wuZYPKtLskkkHtg/Wb
-	 8jNv8LPawi649eM8ho1JXfSx1BMDPxHrymwneL/GvGyWdhek3KsH7zFC5e1JjQWnou
-	 iOv4zpApjw7SbfT7AEw2JV7BD/tfMbe0uXK3kEa812I62T6vpYt5jUz7FpFtTe10CD
-	 4ECqE0tZFBdePa8c3CMUA9bDBbgK2axaR9q94iDgV5sxxlRY58ZdX0Hk+O48jzlZeo
-	 qTiDDqfpGfqIZ8KxE9OxS7usK9HxPv2ff2iR6va1vt9/CrJjbTxqFimlbYjuS1kNkk
-	 JQbXGDOnK1ftQ==
-Date: Thu, 9 Jul 2026 16:36:08 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Graf <graf@amazon.com>, Alexander Potapenko <glider@google.com>, 
-	Brendan Jackman <jackmanb@google.com>, Christoph Lameter <cl@gentwo.org>, 
-	Dennis Zhou <dennis@kernel.org>, Dmitry Vyukov <dvyukov@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Zi Yan <ziy@nvidia.com>, kasan-dev@googlegroups.com, kexec@lists.infradead.org, 
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/3] mm: split a couple of headers from internal.h
-Message-ID: <ak-5GEPVMrwT77uQ@lucifer>
-References: <20260709-internal-h-v2-0-695631425968@kernel.org>
- <0970fec0-5c18-41e1-b63d-029c7a8354ee@kernel.org>
- <67bbfc47-a8f1-4557-9a24-298bad4f3591@kernel.org>
+	bh=lXXGap0Q/LiZLJdfHOXl3AEYRU8Fj6byPx+ImpQAltY=;
+	b=ZLFmV8okuIUimAuP+Tm+NqyJQsLRYlKJHEMUWo1Xsnm9i/XRjiq6jpg2+KQ7O9AIPaCgau
+	mwGfa67LVUu/eDUF+oP/H9gkCyGh7iCJaPL80F4x3HwHCDuL2I3Nvxznn/ZhPDFy/RGeZ9
+	CPZuh+G50JmD1S395pRyEpIQQP1enY0=
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-84537d04408so101558b3a.0
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 08:39:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783611574; x=1784216374; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lXXGap0Q/LiZLJdfHOXl3AEYRU8Fj6byPx+ImpQAltY=;
+        b=eTnjEWRsESGy3/febTS3Ejrzx2DiN1Jza+zvySzE+8fhAFzh2CSwcz+POtymrG+FBc
+         Rq50ooXUPhQEZjDAs3HP4o7YRyrFkQtEGfC3LBp5LbwT/uGw4ja5EfUd0pl1NOaV1agj
+         UiNiG3ig62fNZgxqLbfJaeBTC2z9JoC+18aIF0WmczaHO3ICUz3NzImuJy2yIpcnhWBY
+         cZiH9qHY+/71fa0coFQkRJB9C2vIyPWOUq6RC0IrrHr4Je8ixgsr+718P8dPA0Wefkiw
+         NuRfIIOXWt8OQ59niwr13mhTgIyZD3b1R9O2AIsFqLrc5AWDRa0d45SiOkqHpjcmfoIc
+         z7NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783611574; x=1784216374;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lXXGap0Q/LiZLJdfHOXl3AEYRU8Fj6byPx+ImpQAltY=;
+        b=SeaBelMNZ4Uo0tC3NswmTH8EUHSBem4I58xbOgT5VB8FbPy+QgmD6fvAosba9CHl3O
+         3/vmYrIddlNtKT3aatByapxjEkpKtkFt/Z1I5VwHgsMFQzg2V6hEbSNDmViy3YCg0BiZ
+         d+872hx5tZ26Ygcd4veRy11Ftk8LjFbcaoHFUclktp1HsD+RHIq6/7Qdeo1mHm8XtXHb
+         LD9Buv22aAzXL6tnkZOwsqKo+6IE7IUeWTNNk2VMBUO8FO9pEJufrKUY00x/WiR+LjoQ
+         jmPwCB+rBeZMoTzprF/UR3u64doKd/MpkuxLDfgv6GcXAN3i+Mp5TwWSO2Pz70vvzJ9F
+         IDwA==
+X-Forwarded-Encrypted: i=1; AHgh+RrjsObXT4vdy/QbQRpg7UVp+7UjT1ECGIDLaYTyaWtbHKt7WONVs/K6XW/bRjOud63A5AE3VDoIgw==@kvack.org
+X-Gm-Message-State: AOJu0Yx5YtnA2EwriuSwI3gvW2EPyRiF8PaD5eCh2BD6NbF3l5aUFf5R
+	twXRzJ+0+vOFdsp8bnGY/avrc9z5xHovpaoQHgkBseryGRBYaJ0jXpY2
+X-Gm-Gg: AfdE7clSrGXnMNENXTl8vQuVzHfJEeWRVvJ/+f9f7psMYiUyMMnVDUbFRev4nj0I+YD
+	ZicXBWZ9XVghjHa0RnwA4xRi2Z1PxSvwRTBHpfncwx8+mtXrfBkJxZbhMf36JCYwLyjOEjmnYkC
+	fay1ojab/5Hjd1WpPqyfbHDM6M2UfmU31xcgsxfuDkcwNKkQOPUh2+wqATj4Cs7NXmPqQRGbGXD
+	fXCjMF8/GcjGkc/0Caxsy3sAQns78V1h/ufW52sd/+WWdLAl3MOaR/uiuOqd2onl6t5r5baQ8Qy
+	ct1EVbCxFc4iQBRs8mMFQDE8/mTCJmYwz4UCr2xNuyFlht5dcZhQhXPAXwmnu3k3W+ZtyTtsg5a
+	ELbx5/i/gwGVDYr73g0ydPUGie0l499OyaGHkh0kcenxOQUT+5K3qeGTnS4QBrqmV5zRmHDN6oi
+	fcCAg2FbAHKYHS4TQWlmFj75CPVSk5j1cm2xFSCOy+JSgktVgEUw/Db7E=
+X-Received: by 2002:a05:6a00:a93:b0:847:8971:87d8 with SMTP id d2e1a72fcca58-848560021c5mr3191674b3a.6.1783611574014;
+        Thu, 09 Jul 2026 08:39:34 -0700 (PDT)
+Received: from debian.lan ([240e:391:ea3:6910::1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84856d5d619sm1491303b3a.39.2026.07.09.08.39.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 08:39:33 -0700 (PDT)
+From: Xueyuan Chen <xueyuan.chen21@gmail.com>
+To: hannes@cmpxchg.org
+Cc: xueyuan.chen21@gmail.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	baohua@kernel.org,
+	zhaonanzhe@xiaomi.com,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	youngjun.park@lge.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	qi.zheng@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com
+Subject: Re: [RFC PATCH v2 2/3] mm: distinguish large folio swap allocation failures
+Date: Thu,  9 Jul 2026 23:39:24 +0800
+Message-ID: <20260709153924.772408-1-xueyuan.chen21@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <ak-4d67hVnC2_BBH@cmpxchg.org>
+References: <ak-4d67hVnC2_BBH@cmpxchg.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67bbfc47-a8f1-4557-9a24-298bad4f3591@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EB87340007
-X-Stat-Signature: ftx5mtsbjgg3es9fhkguq4hz3he9ersr
-X-HE-Tag: 1783611383-883977
-X-HE-Meta: U2FsdGVkX1+Y4foFqRi7TdTfM+QFAxGqvblKpC3nZjA9jMejYJ5Ly6W2+NByFxUv30seKotbQLdtXnvvu3XXy/HlidGLqi5AAkirPdUl4n1QQMyQ1JE+YJLqXz4eenhfV8yWIPQYsX+HFv813kPRfvLNs1avr8GbOYqQwC11U/jEtYln0MfsED4wc3vrLX5hvbN0BBqNTpEsthj9inYmDiqfpF7VlUhmo8bIQxU0EbMJhbLRAojG0acuGK/IexNs5inDNr6pW7hExGznJWotzUXeB9hgj4VUtDy399vEGw/oXry/HMMVb9UKDYzfucesE6ddyrCJmXCZtjncGcgB0WJ2tJ4eMIugJKuDnnKtOaV7S0LWDEoCyN9DFip0alGiURe4GDy0WMcn75dg4rWFbdi9Q2Q3U3tyeQbbiJ8xycYGOV1RB8qoXndxH3Fmoej4FkA6iiSppkKu+urQYSuTcuhPCB+1aeEvDlWoGIr57j7iovdciIZahEN6J2/D0Ys905ysmc4dbM0TQfj+SA4+V5znEaRGnvSiLdMFZqpwXHZySJ1x2T8/ub1OOtAQb8n7pgb5PaDo5iHxljc16M5wnVYaCfhIwMz315aesaJp/S1Gf7WkNxEY98F1d2I8Er68NYsS0DIwLlmutIOZfcD6Q4fXkGCnhL7+RLnuMwvY+rQLJQLuiR/60wu0qGJ4LDYWBQLRbegoUXTnFAWvaHa7qHSoJOa0wYHXUQme1oCqtSmZtufq6M9+KJ/YjayM/zNjXUoUNCPvKW3IHszuwQzjGLifozg+xSPEaYvOJPnpK7yPsn0an7sLa5dSrPgOS8AYE8Mx8mwlQkRsk+X7q3L3NmcJbcwq3Z3I8ySKJsmUs0GZ9ZY4MUMxC21waBiZr8pdEBbAthpXJmFdxEcUQL5M9bKZfelXDcILQ8J0TA0oavmIzARJs/5mpZnSXDn8JcJXa2echzH1YmnD1vwLq4d
- Vfcmj+Mx
- BPb/MGNe4XE93qMIfrSROMJ8d8oxGJg+zqjBUqu8b8glU1JTHauwBbBa4kIbX8Yd4S/YLWWzZ+QmCYtw4gCId84rCfx9rLsubKXqqDJkX6TU5RYgAFPJjWtTvSRd45Q7JYD83wyjigtyCcazzG2dStvVaXACoEj05OG3fJxzobt25lBrtsH7Dv8GxCZjWQMm3nTPK9HYTYPUMgrveUEywHHlymFEHJyA9YKdjm+K9WBWtrC+jwJbEVl6YX+/Yabik/7a94HhAfrxTUl63oWo1dno2akiqDwhpcOGDopBOZ62ax28Lz1zxwrWn0Tv6lyBqMnUN2jnGvC0ps7DBYHPaACmlBO9OcgY2f4aJLHSw8ClFBbQ=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 80F4640011
+X-Stat-Signature: qmhr954t4751eindx4x3rcp4zumptimq
+X-HE-Tag: 1783611575-623904
+X-HE-Meta: U2FsdGVkX1+UtXuBAM5+uWV0h/gTmkvyEsbHlKstIVBZg+x07mwIxwSesbBzgcxQsefiI1ZHwBdFVXeezhD4wjV/05qu0Sq5dvCjRPm1Vy/0Eb/dg/eCsetOtijdXT57xLRqO6eRHe1zdZ0t+nwYYI35USNkqFN4l2XMw7D1WB/6BvZmyd3ITD0D+wvrwdv72T65y0j2nvhnC5TyycOoayMtnVntBoAcufmHCN7w6jNuLzzQhyw0TIcyB0+IZF/Dtc63R5VinxvrC4stOHGUkh7pJsTf+c2gQbh6hQSVCGfKmQlMAZzTY9RW0iujD2A7KJFgJn/aCo/0Z0lp9XDT97gBpH0r2jwf07PB2XszCi9HrdBCQvxAdC+3C6idyBtu4WvlH47m3Vb9PBSIyw6KneGsXL/3daFjp5idCyvtRaePmC66/jcpGtFJSm/kyCuZ2Jj9ZuWYI7+Ypd4PvBI5/cDrPck+AX9TfYv4HH7Kai562p810WUKNR3GTCMpvyliTUYFoxPCPAIP5cYWDCyNAEqXOs4vgR7jpFIb5iGUmDRxAL+a7FcP0NRo0BxOuE8ilRJ8uuBrfNXoGpIDSYkBRIMHZVeD9VfE1K3GhVNnAyJ8Eeh4wX4RCVcvVPA/YVrAmL08T79QjryLVP2e7XNA7d6g/5tcsZ7u660q10K5t7wMqPmR0l7Q0P10z3WsbDse7kHJKT4lm4587cL6A7gWXg1v7MSEN4+rb5UJ5WfF6ptTBiNWuW+nn8s9+Kk1XCrewYED3zxrRyXQsGRt+aaRSSLXw7mXsVDcd2fUOX3oaL8DuVweNd3ZI4nSqnZBGfk/uUEkDZ04tLdV8uWz7fAlui6SSUzA6eks6qMQ0o5ABMlrqU0OFD8LM3XYsSC2/LV3cBMC8DN/K6sFgeHZ5EkaYqrYgVmpAWHyWzkU54u/AuiB9szs1AtxU4lkMedP+ZxP6zIhqjhN2bMh9F2yg+q
+ jeZuhyn1
+ IbKefqp8E+gD+rmxUdaPXKr6X6dn7wIeUlRPum2oejawtMrDpjWQStKEkqLbCLAOEOcgMQCEIyhglselcE9NDn1tPeHpsjOYlO4Yo22jZffOFWKiys76dKTjiAKYyk4ljNiHP/HjLkzvm9CnsgqjhU5sO6RgdsqFMxE+f8ckm6m6hO7E25RHMolYnmMmUhCy/GyX6hCYnifluRzYc3K2Gs+THRlRpkgUkODs1wNiK2DFO4jlS21DeRX4XTJq59Wa1q55jKhBh7DX0RTNbOR6kPEnT+NC9pWm8DwByxxbSFkaXN+131TDh52wsr7K140P50XE8pki10qkApJV6aaYC/Rd1H2n1q05f5SgteOXJGgaz2ZJfHxVuMGc1JdqAdl26wFLSCQo9SR+vwEDcxMb6qfAwTWE42SdYiu4QX7p88EWvXMSttDqG02aSTbGIKkRy5476rCYrVsVOv6kXy3xtbKQFeA++6AtDmQGNzWa1IsS0mE1X3M8kpno7hXzE7Ctqxw4pr+qLKEflAZxbtspBmmKWf0taRwDS9XVjTRFtEVmaEaltZvZLBvydZZaTDV8BKjKskHoNByN4iTY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,72 +145,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 12:21:12PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/9/26 12:09, Vlastimil Babka (SUSE) wrote:
-> > On 7/9/26 12:00, Mike Rapoport (Microsoft) wrote:
-> >> mm/internal.h becomes more and more bloated.
-> >>
-> >> Split declarations related to mm_init, memblock, vmalloc and sparse into
-> >> new headers.
-> >>
-> >> ---
-> >> v2 changes:
-> >> * fix fallouts of rebase fixups of checkpatch warnings
-> >>
-> >> v1: https://patch.msgid.link/20260709-internal-h-v1-0-956d5092782d@kernel.org
-> >>
-> >> ---
-> >> Mike Rapoport (Microsoft) (3):
-> >>       mm: split out mm_init and memblock declarations from internal.h
-> >>       mm: split out sparse declarations from internal.h
-> >>       mm: split out vmalloc declarations from internal.h
-> >>
-> >>  MAINTAINERS                        |   3 +
-> >>  kernel/liveupdate/kexec_handover.c |   3 +-
-> >>  mm/cma.c                           |   1 +
-> >>  mm/execmem.c                       |   1 +
-> >>  mm/hugetlb.c                       |   1 +
-> >>  mm/internal.h                      | 183 -------------------------------------
-> >>  mm/kmsan/hooks.c                   |   1 +
-> >>  mm/kmsan/shadow.c                  |   1 +
-> >>  mm/memblock.c                      |   1 +
-> >>  mm/memory_hotplug.c                |   1 +
-> >>  mm/mm_init.c                       |   3 +
-> >>  mm/mm_init.h                       | 120 ++++++++++++++++++++++++
-> >>  mm/page_alloc.c                    |   1 +
-> >>  mm/percpu-vm.c                     |   1 +
-> >>  mm/sparse-vmemmap.c                |   2 +
-> >>  mm/sparse.c                        |   2 +
-> >>  mm/sparse.h                        |  63 +++++++++++++
-> >>  mm/vmalloc.c                       |   1 +
-> >>  mm/vmalloc.h                       |  46 ++++++++++
 
-One thing to be wary of, and I mean I'm going to get a bunch of conflicts with
-my mega series, but anythign that uses vma's should use internal.h rather than
-vma.h directly (the mega series touches this).
+On Thu, Jul 09, 2026 at 11:04:23AM -0400, Johannes Weiner wrote:
 
-But nothing you changed does use VMAs afaict so should be good.
+Hi Johannes,
 
+>On Thu, Jul 09, 2026 at 11:01:12AM -0400, Johannes Weiner wrote:
+>> On Thu, Jul 09, 2026 at 10:51:23PM +0800, Xueyuan Chen wrote:
+>> > @@ -5550,10 +5558,7 @@ long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
+>> >  
+>> >  	if (mem_cgroup_disabled() || do_memsw_account())
+>> >  		return nr_swap_pages;
+>> > -	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg))
+>> > -		nr_swap_pages = min_t(long, nr_swap_pages,
+>> > -				      READ_ONCE(memcg->swap.max) -
+>> > -				      page_counter_read(&memcg->swap));
+>> > +	nr_swap_pages = min(nr_swap_pages, page_counter_margin(&memcg->swap));
+>> 
+>> This hunk is unrelated to this patch. Don't mix refactor work with new
+>> functionality. Make the previous patch a pure refactor job (where you
+>> add page_counter_margin() and use it here ^), like I had proposed.
 
-> >>  19 files changed, 251 insertions(+), 184 deletions(-)
-> >
-> > Sounds good
-> >
-> > Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+You're right, that refactor doesn't belong in patch 2.
+
+>I also liked my version of mem_cgroup_get_nr_swap_pages() a bit
+>better. Please just use my patch, keep the From: and you can add
 >
-> Agreed
+>Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 >
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Oh hey me too! <3
+I'll use your version in v3, keep your From: and Signed-off-by, and make
+patch 1 a pure refactor patch that adds page_counter_margin() and
+converts mem_cgroup_get_nr_swap_pages() to use it.
 
-Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+Patch 2 will only keep the functional folio_alloc_swap()/memcg charge
+changes.
 
->
-> --
-> Cheers,
->
-> David
-
-Cheers, Lorenzo
+Thanks,
+Xueyuan
 
