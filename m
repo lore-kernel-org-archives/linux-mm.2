@@ -4,133 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47409C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 15:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC5E9C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 15:01:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A0866B009F; Thu,  9 Jul 2026 11:01:16 -0400 (EDT)
+	id A565C6B00A5; Thu,  9 Jul 2026 11:01:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 351BC6B00A5; Thu,  9 Jul 2026 11:01:16 -0400 (EDT)
+	id A07136B00A7; Thu,  9 Jul 2026 11:01:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 242E66B00A7; Thu,  9 Jul 2026 11:01:16 -0400 (EDT)
+	id 91D4D6B00A9; Thu,  9 Jul 2026 11:01:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EFD706B009F
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:01:15 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 861361201F4
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:01:15 +0000 (UTC)
-X-FDA: 84969551310.09.2FE0F44
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 415D440019
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:01:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=T41BnhzP;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.48 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 70E756B00A5
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:01:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC6421C7F3D
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:01:17 +0000 (UTC)
+X-FDA: 84969551394.29.D01D1BA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3CFFA40013
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:01:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mCclnew5;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783609273;
-	b=vPex1BTEpMIpbWYHQI/zRmVKdRM7mcvLKDlcvQyMBgCk7jjrsYGDFuG1sFM2wPwlb7SEUZ
-	UXT+BcNbKHnAcTS9GMNsT78mEqYox3JUKv7W/QDrI44oD5nRDvhgnOahLXLHlGh1655R6J
-	cyA0mfj903Q2hXZudX/0ZVCXYRNsMRI=
+	t=1783609276;
+	b=KKfRsz/IcmplGJ/lcGhm57tZVuwumeSlbE1yXlRizZWqibClCXy/opmNOi57wiMmUHZH7U
+	DFMFpyVdqeVJ+QLEiRFVdnTA2D6imVBQ8fvCIsuMDIc1rxz0dfktWmdwl0sQvzUx/ZFjiT
+	+S8EPDq6ZutYlyk9lAaGSDJJdx7Nc58=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=T41BnhzP;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.48 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mCclnew5;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783609273;
+	s=arc-20220608; t=1783609276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lCoCDKvKWAelS8ArabvJ3verPItQS1mXV1mG6RVch54=;
-	b=QsQ6KmsyAIB3YitvUmEmRBFhqrK+oLsiitWEh72wtNlfg6AaMBRZVLFa0a0XMYtQONQr+2
-	cNHYBF8Vre82TL1RP8hohkmn7wh6c8G07/JGy6pXBqqWoP10yqwlvevH/lC+YIm/OFqscK
-	o2+W/7ss/vHZYV4QASASS9O2Wn7IaFc=
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8e5be46f663so84536d6.0
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 08:01:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1783609272; x=1784214072; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lCoCDKvKWAelS8ArabvJ3verPItQS1mXV1mG6RVch54=;
-        b=T41BnhzPftbe5CC1rSiIvyqks4IxexloUTQCQqh9FxVzU8tcH7iI9xgdr3moT8Am9x
-         7dOfFGb8XLxa0NgD3JMNBGPci17PCTUIsSem5YxAVELUM75+UeLeMiHFKu1B5GdXgBq3
-         b16OcNXvUTD/Jqjav/Om92F4066DWaCpJY6unQS30t9RdDBWcaA8OQIXkjwzx2zHSPyB
-         BJpNCThFuWlMyok9mgYs4wN0J3jT5NtLQW7nCYifXTxKoYHIoHjKi2zCzFRjIhFQkWip
-         Ux24T4fyOrlt5FopXPWsqCNSIdKiovOjQgXSlIRr1qAC4zBVyaJyKojAeLkRzuuW4uxe
-         aEfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783609272; x=1784214072;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lCoCDKvKWAelS8ArabvJ3verPItQS1mXV1mG6RVch54=;
-        b=qRGsXC2DJMQtgq4pvjTldWsv+Atf17ix8bpIZDtvtOTQS3g0sgNMv4NxZc1WLsSjpL
-         ViL/pVi+w8trwNKkIP3IDlIFB1V/YbSvE69wAxWn9rvOaCkgbJ8F8aYLhnQPq3I0NRNG
-         DaSPXUgtsWrCAotur1PwMnSxeIoEHB847qLSaUSAeD4LcgzekC3W8iUQFOOT4Ypr91yn
-         AY4pQxCIYQ3E3vbSOY1v9dcJ72YRi/5BRNamsBW2r8eie/q+xwYlshki6ZrTIpVWwRao
-         HCD2z+nXhm5iKe/PLLIt3NEdodXz0qkKQWYJHHpFJvGIuEo2IwQFBLNQ4fNgqsdfGlcR
-         CAKw==
-X-Forwarded-Encrypted: i=1; AHgh+RpdaeBBYa4C8toUwDDtxfyLpBuYY4nUF5v36ptNQ4CTNjyxg1vejsJPrhbdCDGZlVObeXTeKc2erQ==@kvack.org
-X-Gm-Message-State: AOJu0Yws5A+Del0KE/Jc07CGUjUQyHC1rsvarHzwYW5yikH9n7sHwfsD
-	1QJNvKEMFD1EVaNYTzIenKEX+9H6kuMpHu+cdEiLCMnGEEQh6q+Cq8pPRINRTg+52aA=
-X-Gm-Gg: AfdE7ckT8suVqULsT3TvMi/VthzxAQSZaErg8mWmIZGhgIZZt/SJUPrHkbQF7GFP44c
-	OVN3hLKyt6STL1iwhzRjpg7UIAQgU4JarzndaFJfZ5mfRZVjIjd6cxfcKVpnwcIHi+LVxrfuzTq
-	ajAdN+m/kdpiX+p552FkagAFlxTv3bH+/lydI5W8rJ3I8lLv9sPshPF5RMp3vB1VQScXyIJuj0V
-	uY/LMurtj1F4B2BaZelbr9MROtaRyVvoKdK2OMlVnFFDw1oM9LmiCo0XfR0GMyseBuqJ3SgxUZZ
-	Bm26Gt1NS/CRU/ut5Z25kRm+cSsX1IbuMbXu2A45xup1RwmV5WurO2zkfoM1dln4Gy68YctWNH2
-	KK4vNO2zK2X7x6rRXjPQ2JPc/QLOZ5cwLqjSIJp8t2+xFSyPTESI9uodC1TNGhN3gOrYa5Cp69l
-	8iu90uhx/ftL0=
-X-Received: by 2002:a05:6214:1305:b0:8e9:f62b:8fa2 with SMTP id 6a1803df08f44-8fec342e855mr93084796d6.55.1783609265440;
-        Thu, 09 Jul 2026 08:01:05 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd81f4bbdsm18994596d6.36.2026.07.09.08.01.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 08:01:04 -0700 (PDT)
-Date: Thu, 9 Jul 2026 11:01:03 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	Barry Song <baohua@kernel.org>, Nanzhe Zhao <zhaonanzhe@xiaomi.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>
-Subject: Re: [RFC PATCH v2 2/3] mm: distinguish large folio swap allocation
- failures
-Message-ID: <ak-3r4i2qdejYzSP@cmpxchg.org>
-References: <20260709145124.764807-1-xueyuan.chen21@gmail.com>
- <20260709145124.764807-3-xueyuan.chen21@gmail.com>
+	bh=bs58MBJLx0dSPnNUhauIAU/NgeeIieNvdxeLqwZSYtM=;
+	b=tT192oyc9uREExgz94hSUKkBF/x8Iw3g3b9e7kkDhjkColY7hq9b3N1ET0DIjoAbFYiqme
+	skETfC76P3/VkpBF78+YSmE11Avq0z+QSr7wDtk0qKkAi5XpUKt4bK7FPsLXDP8fcGoCdj
+	qfXJplR/v2BfO3Py8JyI2uEYXPIFZig=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2958940338;
+	Thu,  9 Jul 2026 15:01:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440AF1F00A3A;
+	Thu,  9 Jul 2026 15:01:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783609275;
+	bh=bs58MBJLx0dSPnNUhauIAU/NgeeIieNvdxeLqwZSYtM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mCclnew5cVt0n37fGUUOr9gmU1Esl5X7tOEFvhzautMETbyXk8KpmxhNQm8vmKPZ5
+	 6XiMWaT8Biz/cLcvM2s5XXBMQnwpqmRJghipz963jxTuyfGEcGt0wgnXt8rgVoh2+d
+	 fHb+wlRnlRgtdgycUpXTEggEYCvDSu613ePaDgE6SYGnzUQ2QFcrWP1AmuLpWhwI6o
+	 9bFlytaI212c9Wo30pIdQVtQDa/LNOgnc1B1DegVASnPEkUwHzsWmNP3QB5uYFzP3M
+	 jsiCRfnMrK9HpwWrFvFjlxe2uKfdx5pKI6aJpXbkSDlKODymBAIVQSX75bx7V5lQkz
+	 YTUeXC6mf9jkw==
+Date: Thu, 9 Jul 2026 16:00:59 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Wandun <chenwandun1@gmail.com>
+Cc: vbabka@kernel.org, david@kernel.org, rostedt@goodmis.org, 
+	mhiramat@kernel.org, Alexander.Krabler@kuka.com, hughd@google.com, fvdl@google.com, 
+	bigeasy@linutronix.de, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, akpm@linux-foundation.org, 
+	surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, riel@surriel.com, liam@infradead.org, harry@kernel.org, 
+	jannh@google.com, lance.yang@linux.dev, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	pfalcato@suse.de
+Subject: Re: [PATCH v2 1/4] mm/migrate: do not migrate folios mapped into
+ VM_LOCKED VMAs under compaction
+Message-ID: <ak-2VAwNNuCD98Jv@lucifer>
+References: <20260707125925.3725177-1-chenwandun1@gmail.com>
+ <20260707125925.3725177-2-chenwandun1@gmail.com>
+ <akz7ythMxfIZeT0d@lucifer>
+ <ak0EsCeucJarlI7G@lucifer>
+ <f33a9dca-03d6-45f8-bd25-717b9033c75c@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260709145124.764807-3-xueyuan.chen21@gmail.com>
+In-Reply-To: <f33a9dca-03d6-45f8-bd25-717b9033c75c@gmail.com>
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 415D440019
-X-Stat-Signature: cuqg9z77ynhn5xhfipc5pcrrpxz1r5q1
-X-HE-Tag: 1783609273-934040
-X-HE-Meta: U2FsdGVkX18fOdeCzjtaklHKNOYO5WfHnrK90lfA3dqX7nD8CSEoHCoJWjGcHuF3vzV8vLIAwSQf4BIizO7zweU2Gg93yUz873hy3d66Y5C/W0BJ+ZhDtbFEhWryy6RsZlfl2GhnBr9K2bGnIF6C/WeLe+sOaaMN3+3qAjy70ps3K5/0u6HjVJDntYnVxYvtLKZozKh0632F4a5BYkNOLpmrbf/Pm/KMu919e1WtRLbUheilxvBEqMZT7VikFKiAA29h96nSAY9QT48iCXbWKBCe/YdXZ8a2XiMEOqdf5NrPggVoLTwubhhTdwqby8I6YzbYwO4EwGx2MHKyhQm5M4DwqCZLdGezzX12J/2nZ/mZtMszJpXHG6VXVU1tlJCYWgtDTGpgH9nARQ8DrRcpN79bMbH0y+Ew/QJ3f/BVjeSOMbjwyG4KuCmhLgc6gp26f0YCCF3wnuu948ZHvfRNBLXJoFnlU5jgky9Z15dgRBMpk6ZjV0S6l628S7kt6+E02fCNxscRW/r+KV80BU3kH7aQGL48Sk0BykqGI1HvZM4UGU6JR2Ms51+ZiH72qM6TCxbVaEb61Xt/RTFLRT3193JI5tSbP2mdQ+EP0Ef2Res3TmRH3OoCgHR0tnifT9B/Wz53IXBbYBtmbS6uIr+BaS/YAY+ltpF/1XhwTYU8QbFHBeNiXVNzut58TSDjiXg/Qp1mj0zOZ/t0arw64Tbp8BqhdI05NC6KdCz53wmQSdGnChQ21Puo2J6AnEYU0A7fvRkdjtUA9UlKHgNfMwXQViwBct/4tJS60mlUCzIRO/RKK1RGQ8VpUFYijIZo0/CMX6vzlQvT63ZqLrEm01SfRqbuljB2fbXzJP9LBqsuq1sCh3jVRt7U+1c3o/S3jtfPBsQRR6c5RhWNvkNtzuMnTmANVMSOu/i2WGdKgfmgHam0DV/gFQFoIGPfkvMEUM5aKh9X+VqCuS36y6j++On
- vs4yFyfd
- NGckQVvlBibrl6kyQvsPcyrjgJkm4npNOwKCgni3AmKr2hBtLGM0sUtVQ80f1wXIf68dosToQjfZDuIQKD1LqIpOobFAAj2w41kW/gAl7+zjxTd5lFbsGsgM7dc1pPeYGtVtg5Irx5gYtPDccScjO/50qmRnwjxx3ZnSgUaGpJdAbef2W39WxWO3WUpP6Kl5EIRn3EPOFR1C4h8MlXbKZTN35hoSSaPYjoEZsZQRSBIS85mmOTzMlKORJtrYlTW4cQj12xP/qeN9JfNi0fMtJT8Uq6vOS6qbesf6IXGWknPbZw32x5azASObNbRMP3mNXv0YqlkmyKgOIYgEQvXUSdbKHSXhNQu7fZRkNTY/JEL1kQO3p7qfFfFKioHtjhghKEU7RjTlI4FTIS/kicfbJNWFqrBfn6lcIg12t81jxn85tEQ6+duyq12STC0/zKd//8QjYbJvvQMYi7nGJa34nlNbGO0+SA6xWh6QY
+X-Rspamd-Queue-Id: 3CFFA40013
+X-Stat-Signature: xxhjsfuen6ud6rhz889azum584198shn
+X-HE-Tag: 1783609276-627837
+X-HE-Meta: U2FsdGVkX1/Svc3/jHT84WT6A7fiQDZP41R633L9Bpkqa7/DR16e+uhDh8yTMIk+l3yZXc6ym0DMWnuHBwE+Vx/G60zufNgpxilkd+VCwN21IEmTINciRd/WrTp/A7Vzz2a+QjMX21BVA1iLDMLyk7ku/IY9vvoNZfkxidq2aZp8QLV37nUunCTo1e2PK/SvjeI7ncqkahzdJghNAiBnnTbkphABvW9tmS2vRavV7GIIUnKra0SwEDPDDVmw5N1AaO4hPcK7Fx/L/t/UVCuOgoL+sxiEVXvO0D7MbdlAybkMAVujSm7NBIMDEtB2sJLxReoaTxzqFSgUzlL5ApUmxlPNmOexYbEZBpxWZEldRIQ8BDsH+oosPdTU/XFFbEar7dGD0aRXc50xLTwn1bSBM7T9K5dUd0qKKLuyeEwlG7z+d7/2kqrvweJrxDkVDEGMqtpEPBrS6CEmiso53u2P054H3Afdm84jcZ9fkETJcmFweI5jnplYrvnad8UuLlxIxnliYHrEWIJduuny9bDfk1xNklrorqJ+O9H2It+/CjRlkxEKTsfn4w9ciFn06DeZ5masCexbRctaEnXkcAyEWuxc1LEZdklJDHA0pBx1rKg3X6u4Rw6n5ZH4XTarH7BUcPUnXlsuiPYWSCUV3sxu31JmSt68EMG/HsTdHCqQJOBWEyoJZ34d+eM7lP9lGJThk5/8wCRdvgyCw7Cxz2c0ypv2R8fKjp+GajYq6uOh8n1I/tnvZme1P2weVh/P6OPaiOFNnw8mpdbUwN6Rw0Z5dSfm5402lEQgCbBHKj5nPRPH+AJqLIrdZHPk9jIIfOH/ptqlDQeeZW2A2alDW1AzXICqYH5Can2GwyX1kTs5iosj4mmdL4sDEc+2hLn2hV6WqR6KGNi/AOvoVeyvwMe2cjUwhOMmm5m95xZtyWo9+3t1Xdp4KfOF2xgB5M24XdqImDxDLManWWu+AnP//QG
+ SMXsh8PB
+ C4xh1qzfCBITHzCO7klzuwEUz2sp69KvqP1hxiAzLY6szFW8ASpy4blwkh/mo27X0qjxZLDbzd6zdCtDWBIj+fFuY9my3p8dpPzIYi+L92BLL991xocKiZ5SXEK2IGH4IEbOL84Y6r6BS/+u1XQzo1sjjIsuFrhYM6bhHtlOmboK/3bhL1T3z/QAJNNj1DXQiNgtMiQW8fc3uBHNu4eQE1A7sIVqNM8WbAGeLFARxQbvL9qOzxBE4FqEFMUAF6z1KYisAxDgu6gPY0HTN1uJ40i+iivhFqTGN85WwqW0/EPvSqcnXdnNh+V0RO3w+j2Sxbpfzrsj40q2b/AOYPowvw3NHT5VcZsLWBMmdp/AyUXrY5oi9ceQA28WvFQXk2BS3g9kd9+xbHoQiC7fIDf6ufbXgSdqT7qnjEzEav+oEaHEYofY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,18 +103,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 10:51:23PM +0800, Xueyuan Chen wrote:
-> @@ -5550,10 +5558,7 @@ long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
->  
->  	if (mem_cgroup_disabled() || do_memsw_account())
->  		return nr_swap_pages;
-> -	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg))
-> -		nr_swap_pages = min_t(long, nr_swap_pages,
-> -				      READ_ONCE(memcg->swap.max) -
-> -				      page_counter_read(&memcg->swap));
-> +	nr_swap_pages = min(nr_swap_pages, page_counter_margin(&memcg->swap));
+On Thu, Jul 09, 2026 at 04:25:27PM +0800, Wandun wrote:
+>
+>
+> On 7/7/26 21:55, Lorenzo Stoakes wrote:
+> > On Tue, Jul 07, 2026 at 02:44:50PM +0100, Lorenzo Stoakes wrote:
+> >> See above about deduplicating.
+> >>
+> >>> +			ttu |= TTU_RESPECT_MLOCK;
+> >>
+> >> Hmm. I don't love 'respect mlock'. I guess we only know about the reason
+> >> being compaction here.
+> >>
+> >> But I'm confused anyway. We have the folio, why aren't we just checking for
+> >> PG_mlocked() here instead of getting the rmap to see if it's mapped
+> >> anywhere with VMA_LOCKED_BIT?
+> >
+> > Also, since compaction_allow_unevictable() is a function that is accessible
+> > elsewhere, you could literally just have a TTU_MIGRATION here instead and have
+> > the rmap logic call compaction_allow_unevictable() instead rather than this.
+> Do you mean:
+> 1. change TTU_RESPECT_MLOCK to TTU_MIGRATION, that'is OK.
+> 2. move call compaction_allow_unevictable() to try_to_migrate_one? but as you suggested
+>    migrate_mlock_allowed function, it already called compaction_allow_unevictable()
+>    in order to determine whether TTU_MIGRATION needs to be added. Did I misunderstand
+>    something somewhere?
 
-This hunk is unrelated to this patch. Don't mix refactor work with new
-functionality. Make the previous patch a pure refactor job (where you
-add page_counter_margin() and use it here ^), like I had proposed.
+The next paragraph addresses this.
+
+>
+> >
+> > And then you could adapt the function I suggested before not to take a reason
+> > parameter but rather a 'is_migration' one instead possibly and then pass (ttu &
+> > TTU_MIGRATION) in.
+
+
+> >
+> > BUT. I still question whether this is at all needed since you have the folio you
+> > can check for PG_mlocked...
+>
+> I described a race scenario at this link:
+> https://lore.kernel.org/lkml/c372e68f-2bfc-45b6-a431-01bf55717247@gmail.com/
+
+OK thanks. You really have to spell this out in the code in a comment, this is
+really non-obvious.
+
+I will try to look at your reply in due course (am between jobs atm).
+
+>
+>
+> >
+> > Cheers, Lorenzo
+>
+
+Thanks, Lorenzo
 
