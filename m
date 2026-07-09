@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DBC7C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36755C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:06:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE94F6B0093; Thu,  9 Jul 2026 10:06:08 -0400 (EDT)
+	id 042406B0092; Thu,  9 Jul 2026 10:06:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C42E26B0099; Thu,  9 Jul 2026 10:06:08 -0400 (EDT)
+	id F31836B0098; Thu,  9 Jul 2026 10:06:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A76B86B0093; Thu,  9 Jul 2026 10:06:08 -0400 (EDT)
+	id D5E236B009B; Thu,  9 Jul 2026 10:06:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EBBF6B0098
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AE6DF6B0092
 	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:06:08 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BA499401D1
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:07 +0000 (UTC)
-X-FDA: 84969412374.02.2C29017
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1C36C1C0002
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:05 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wf8IEfuR;
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3DE108BE9D
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:08 +0000 (UTC)
+X-FDA: 84969412416.29.084C3F0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9BF481A0004
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:06 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cVhAT7hU;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783605966;
+	b=FFwtvlc5fN6zbrHVGEwbVRUrTA4ztA5acnVeVDyS8j10tDg8SS+5QMOYgJkoo7+E65I8y8
+	H5VlUirsT2Oq7AAfawF5IzB7Qgewk1eTGIKqcDoHlecV1P4f3h4vILAvM5Cd3uqaEeeaQD
+	KazSOrpjC5WyxK3+3w2jcDx0dCETrW0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cVhAT7hU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783605966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EAUgZZ3SWrIGgoijnllQjqFZihl0bkx/8MfT/CIerVU=;
-	b=2fhWlUD9CTHmAt2f0twsWav0Nhcf7v0dV7PJzpk7odUDQzXMRwpNHOP/+7rxkeNCSa2EHj
-	mjdC+dHBKtoVQOCYBmCRZnegePEXz8aeLV8sGR0wCvaBkG/SA3KbmCMcQEORIfB6miadcs
-	RbVIJtEGeF/aW/6D3pst1IIYKsvZovM=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wf8IEfuR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783605966;
-	b=513Xs4VQwdExTFlhVX0U0jahlX3OufIw2NztHyXaIR9T48jNmSk/0TvaZEaN+Z892xvzYJ
-	n4h+yBCgjnwrwExndiv8dkO1QbT6ZS4i6MrlPro/rVz3/Bc91UgrIWCGJgk77udR9IQ3mq
-	7e201TSIPgFFpkNYbSnUg/Cej/B8zUE=
+	bh=HWM9ulbAfG9bosKr1Xo0BbZMoQtsvPUcnEqaGbAY52s=;
+	b=xZ0UNob9cGeIJ2Yru0VvnRzagi3GMKYL1UecFwxcMcN9ULk51QsNvv8SgbcrWahenTlXrT
+	/tI7tIr9yeFk28AOnhkokvFWR9TRJ1a0UpkxPj0ppudw4Rfdt1FlQ/Ci8ol6j6Np21DAmj
+	FxR2gahLIi46zMnTo6meSMDDPscjejM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 666CF42D89;
-	Thu,  9 Jul 2026 14:06:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245371F00A3F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3545D61384;
+	Thu,  9 Jul 2026 14:06:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0631F00AC4;
 	Thu,  9 Jul 2026 14:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783605965;
-	bh=EAUgZZ3SWrIGgoijnllQjqFZihl0bkx/8MfT/CIerVU=;
+	bh=HWM9ulbAfG9bosKr1Xo0BbZMoQtsvPUcnEqaGbAY52s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wf8IEfuRhf2ecTkelQp+n69tNYlsE6nuD8zt/Sr6MTHtE3waC0OwlYp4vY9wkeaB+
-	 DxI9LI/915IRsqV/LB6AI43V9aRGkRFO3KVJ7gKn3jdWVBDU+DX7GYKfMsIz8DYI5w
-	 bDhyNF89KjWPaUNQbVBDy4+9V3xO9VPwfXFvPSVUk/Lxw0KIKYxh/lo6p0wUzYHj2w
-	 ZiweLpHhIofQ20dqaeo6crq00ij/Qh8kJ4CzyxbtVDkPnFqrCvPl6Du5YBFoIL/fGt
-	 pvLss5te/FMIxKh6u/Cinqrdvp4Gm8LNFVRKEJiqVd1FZSLpAIuj1/mVYaB250U4z2
-	 Ppn5LxE2VYKsA==
+	b=cVhAT7hUdkosfNwbP8UnavLeo0F9t+WLJHfUYu0JxwhIRPAv5fwgn0iRcsJFWlo6e
+	 rSe1Ehge/90Sw1ZgkeTwMy/oTwetyRP1yM+J3YobvZdjpqzvQB8zw+hJx/IVLi/Jx7
+	 KKyBc1gp2Mg8p+uVuToQKUoJ5aPafYWl1lCWCRF+/J+C/bCnwR6IAbGCf4qV23Za/g
+	 42KnUlrbKnxkUqqAeMOUAnpzC8cyZ8iKdpyC1eNgQcxi+/jAXgXg1M1kGJOC5OUFYU
+	 d0B8l6fM12hgkvgltNY3Fi71nOLtsU+yJwbY38lzLGeyQTnmvZ83vAVbXxQLmgRIs6
+	 hIOD2qxSwJEGQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 04/19] mm/damon/core: ask apply_probe() to return max probe hits weighted sum
-Date: Thu,  9 Jul 2026 07:05:42 -0700
-Message-ID: <20260709140600.90950-5-sj@kernel.org>
+Subject: [RFC PATCH v1.2 06/19] mm/damon/paddr: respect return_max_wsum
+Date: Thu,  9 Jul 2026 07:05:44 -0700
+Message-ID: <20260709140600.90950-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260709140600.90950-1-sj@kernel.org>
 References: <20260709140600.90950-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1C36C1C0002
-X-Stat-Signature: 7tmyerwaduyzywy6sxn3rjpx8bxghbqm
+X-Rspamd-Queue-Id: 9BF481A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783605965-902631
-X-HE-Meta: U2FsdGVkX1/fXRof9TcMvXHbQzJ+1m5OI/Ja/BW6FuazH96MzV3M73WnwJIh+f7JpSfRV0Rgfk/xS5JaiuxEZU/L7zbXEfW66dLahYcKYYnJDbBszjl2z4T3uqc53UZCLqv2n8+sn3l2m9v7p2OyGmeZxtLENNXeQQWE9jmMuQpcCb3CvgUuRrAqu63jJF4v1B9qsqDQd+rt8YyKJfXcK149PaSjNAPjcdF60tlDeyggF+Xk+zvE7GZYtpnfoxsvq9ChHfPVBhiifsmxvQmLNChGDdoJaOYGOtrUNjm/AYNXRjmiIcA/LZPmXe3V6SkDA8QOcKUPLM5i4eh4Ryt8r31N2wF7f4APDUBDlJxhgbauWwrP+LkzzMfarz5osUu/ODwGwTasbJRZaJ+LorS+iW78ypuj7KG/dJrmsh02rUjmrUPKbDY5XGenFauZ4/83Q6a4JDLnMhbpyuVO1cwHG9SsF9tSJqIU07eP985t7cGG8ostWfsww+svmqfhkXmKwiNAwQwfbe1/V66lp/pBQ7hPJ8MEIQHQKn43zN37yjooHw3+9ZYM8q/IF8FuNk9cDI3Pxltzm5HyyILtlVfCF8WlAH58DP5uPnKvbByh21UHTcDQevzCDPpZjkM24UTR+j8Icxo4PzJJ4uG8sYF7LjEC9PhQzJytOXXwCMPI9Tokx0cBxpnVI8D1n6ggfMCCnvrx1c3GkwOUJ5dK6uxLGzbWJ2xeHlIcncFO4Bm0nV+30h/EreX9BWoNhMkRqlV8zr99l0R2jSqJydXHKFi/29Dbs1LHaqRgfWuXhg3Fajz1EHKa0J2w8QHmzV8rzcn2QmDGXzE5EUSaf4V0BmeFQ4eeYN6NqqfWvnLPdLF2DGZQT49mB7w6XYKBbh7q1bxzPqM+fAyGW0SJ+D0bDp4nyoZ4M/7/7Tqb1rYysYWXsWAPwkTD77aZ3EP6hj0mjEinKJzyH1i0YQV76nY14ak
- FrgzMElR
- xeYelj38qYulAa79eIu7i2eE9uDsit6xUOAh0jAksCe4VHTsK4IHrNCbYDWf0JB9gowDkt7WtQkP/1ndvorIHVpNGOasKewGE/8RfZr6dfW1jiCUAPAwxMB4aS4gLtu11DTFTzDdugYlasSVCSIS3bIapk582ZRYaubHnMYOqcPzDt+PephPVIFTFurUjKlSgZ+5iAVXsdfe1mBQhKp0tQ4vLseIBcdCJs5xhfOSrkv4SdMrq/zKWpSsj8ujX9Qhfhpuclppiwl3hi2obAHYSdnJoYA==
+X-Stat-Signature: oeq7m3tpwgr7x7ofhgg6zb1c3qbx83oe
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783605966-280505
+X-HE-Meta: U2FsdGVkX1+YcSQs0JF+iSOq/5iyhKBawqZvXZyzpXhDI1CFeeGJhGvkvNLoEu9ct/sjghE8TgSGl6ef671HUZaKTFoxMhNVs3n8Ug0rlEUNPN5uqJP2ff6xAxDAahz6/D8JVZ+Xj5k9YmMzFnlsRNK/Kptw/QYaMvDvA0d5DTuFoq3Y5LUa02ED75lQZfCDteVQPwK4tb0bl3bQDfCQLO2Hgp4Fu/y8kPbXwuVAyz7DNbkhdyvr8UbK2y5H8o35LIxiZK2ztmbcx40bBd25uJ23UOXX+k42Q/PezaskQrJeutiMz9zNNNX+E9pKMHRkWxf+4iDxIGNnDrLZklWSR1ZryvkdFxgqH52W17vHIf+35/jCVmLytNj2lcNnSTceI60M78CAwGNSMKpS3UoeZmsRca1bYvIcLAI9keax58OYZ0BoS8yKUuhKeY9DiS2RD7yL2WtvB5sKvw0AyJCC3wjLLx29dycN4mNzt0cGZcIA40zGnpAu1OaS1357ELE4pXTthPxCKvsVVdRAd7dxF4/+TDhtg53wqE3e78LBBIeWqLr2eFFKrHNf2YAGIdLUuRM8S7u6b9glFviJm9CqALEkVByHJQC4JOtiVC6+wjVLZEy/3B7r80uxfIXVpN4xXLqueN5qIspIaxtDZYq5uCb2VEdlsloHxVcty3u3oWiSiO+5sN0wFaaMVWJpNwQdBI0LOL2MynA15/FV82sbM7ti/TaSoros7RPA+aLB7EKQuKnT7+zI95Yfi9TiSHa7jRsdC2fkrEXMCMRbQJBLbJMIP0F9ToNkNY5i3bHzqB0pYBmab3MjgS/MJgtw7rJDYHFGV0eyaHzzp/BVF+P21suLRkfKx+4kyxQARnUvnyiz0ATFMa+JBN9gLmF9fy7krHqY+rrTSbgh/Zk3vHrMRsZMIn7ECy7edgAraR4qopgeqMxJp5yxSBSiDfK8Bz/u2MD/4XUUCDFkDHc8Tuo
+ qGeNRTHD
+ 3PnSkd+hCF2D6mbP609P6UXYeMjIKMe+oDC8ntV9pv2cBtuPK3si+7r0uML3CaE9pl8lSyo1hrsucTuYT1x2YYZ+litwHp8sDDPawUVtPtBrJ3TxCXRjvD0kvaBxiZ/5Z9ody0Mb2foirrAbdFB6TZM6hCwsX/r+wHS5+ABR4V6l+KBDmiiOyDQ9QkHl1NhziacvhM0XK2cUF5S0vH5QrPhz1dutCH7gu7JItfYvKuXr18e01P/o0UN/M8BrEROYWVhcf7Ntu7yEYAF87n+mSI0CdJQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,76 +93,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-check_accesses() DAMON ops callback returns the maximum nr_accesses of
-regions.  DAMON core uses it to calculate a reasonable region merge
-threshold.  The core will need to adjust regions for not nr_accesses but
-probe hits weighted sum in future.  For that, the core needs to know the
-maximum weighted sum of the regions.  Update the protocol for the task.
+apply_probes() ops implementation in DAMON_PADDR is ignoring
+return_max_wsum.  Respect it.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h | 7 +++++--
- mm/damon/core.c       | 2 +-
- mm/damon/paddr.c      | 4 +++-
- 3 files changed, 9 insertions(+), 4 deletions(-)
+ mm/damon/paddr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 3c2a4d673bf62..4e1845ce83870 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -648,7 +648,9 @@ enum damon_ops_id {
-  * of its update.  The value will be used for regions adjustment threshold.
-  * @apply_probes should apply the data attribute probes to each region and
-  * accordingly update the probe hits counter of the region.  It should also
-- * &set sampling_addr of each region if ``set_samples`` is true.
-+ * &set sampling_addr of each region if ``set_samples`` is true.  It should
-+ * also return maximum probe hits weighted sum of regions if
-+ * ``return_max_wsum`` is true.
-  * @get_scheme_score should return the priority score of a region for a scheme
-  * as an integer in [0, &DAMOS_MAX_SCORE].
-  * @apply_scheme is called from @kdamond when a region for user provided
-@@ -666,7 +668,8 @@ struct damon_operations {
- 	void (*update)(struct damon_ctx *context);
- 	void (*prepare_access_checks)(struct damon_ctx *context);
- 	unsigned int (*check_accesses)(struct damon_ctx *context);
--	void (*apply_probes)(struct damon_ctx *context, bool set_samples);
-+	unsigned int (*apply_probes)(struct damon_ctx *context,
-+			bool set_samples, bool return_max_wsum);
- 	int (*get_scheme_score)(struct damon_ctx *context,
- 			struct damon_region *r, struct damos *scheme);
- 	unsigned long (*apply_scheme)(struct damon_ctx *context,
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 9fbea6204520b..9f6cdd810bd8a 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3692,7 +3692,7 @@ static int kdamond_fn(void *data)
- 		if (ctx->ops.check_accesses)
- 			max_nr_accesses = ctx->ops.check_accesses(ctx);
- 		if (ctx->ops.apply_probes)
--			ctx->ops.apply_probes(ctx, false);
-+			ctx->ops.apply_probes(ctx, false, false);
- 
- 		if (time_after_eq(ctx->passed_sample_intervals,
- 					next_aggregation_sis)) {
 diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index ff4fcca949660..3eba3564a31fc 100644
+index 3eba3564a31fc..b85f88a7a38f4 100644
 --- a/mm/damon/paddr.c
 +++ b/mm/damon/paddr.c
-@@ -166,7 +166,8 @@ static bool damon_pa_filter_pass(phys_addr_t pa, struct folio *folio,
- 	return pass;
- }
- 
--static void damon_pa_apply_probes(struct damon_ctx *ctx, bool set_samples)
-+static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
-+		bool set_samples, bool return_max_wsum)
- {
+@@ -172,6 +172,7 @@ static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
  	struct damon_target *t;
  	struct damon_region *r;
-@@ -194,6 +195,7 @@ static void damon_pa_apply_probes(struct damon_ctx *ctx, bool set_samples)
+ 	struct damon_probe *p;
++	unsigned int max_wsum = 0;
+ 
+ 	damon_for_each_target(t, ctx) {
+ 		damon_for_each_region(r, t) {
+@@ -182,7 +183,6 @@ static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
+ 			if (set_samples)
+ 				r->sampling_addr = damon_rand(ctx, r->ar.start,
+ 						r->ar.end);
+-
+ 			pa = damon_pa_phys_addr(r->sampling_addr,
+ 					ctx->addr_unit);
+ 			folio = damon_get_folio(PHYS_PFN(pa));
+@@ -193,9 +193,12 @@ static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
+ 			}
+ 			if (folio)
  				folio_put(folio);
++			if (return_max_wsum)
++				max_wsum = max(damon_probe_hits_wsum(r, false,
++							ctx), max_wsum);
  		}
  	}
-+	return 0;
+-	return 0;
++	return max_wsum;
  }
  
  /*
