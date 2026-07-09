@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F1A2C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:41:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 446B2C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:41:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD35B6B00A1; Thu,  9 Jul 2026 13:39:04 -0400 (EDT)
+	id 902666B00A2; Thu,  9 Jul 2026 13:39:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C83DA6B00A2; Thu,  9 Jul 2026 13:39:04 -0400 (EDT)
+	id 88D816B00A3; Thu,  9 Jul 2026 13:39:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC1636B00A3; Thu,  9 Jul 2026 13:39:04 -0400 (EDT)
+	id 7CA326B00A4; Thu,  9 Jul 2026 13:39:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 058EE6B00A1
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:39:03 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD07D8CBFB
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:02 +0000 (UTC)
-X-FDA: 84969948924.15.84D6AB4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 482A46B00A2
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:39:06 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C956C15FE
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:05 +0000 (UTC)
+X-FDA: 84969949050.20.CE50AAE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 35C884000A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:01 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IyZn+n4o;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783618741;
-	b=AjLDm4zlzBzBO/H6RSoXwMTwcD80XBsaiWl6C3UmdPfql6dBGy5FOEoPLYln23Isbvn5Y8
-	M2mN+ZULMSPZ9qoK6OBSLWsGXjh5fJ4DG1o7uP6UYFSFpIRGU95BL538YrnaY11y42zVAG
-	esO0K7kMrFcsK+GDOiM2bVMoocmpeS8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IyZn+n4o;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id AA4CE10000C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f0IzsIya;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783618741;
+	s=arc-20220608; t=1783618743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sn5jxIlLMIau4GifCV8YOHeAp5/QttEGk8CccgmzI9U=;
-	b=j9tYUYGcjgN8mzwVAgKDMwyf7fCXatT9BKSjl11FZT/PNNEk696BlqO3d4z03UKiAAxxP9
-	M6u3yiYllVWInugZPR8SDzSVGEYiRSOn0gspxlnWr9+3MlfaWDNev6z9QxEUN21bXh0ca5
-	yX4K8R4qkWyiVIZXi9ZnMmmKhNXVCJY=
+	bh=XsiwX2KU4GjCVUN88XJ1zOxK6etLsLe5sKXBgJJKO1Q=;
+	b=krn8LhUOmzn4LzJPQLHa3rcypvc5Pb+mhPpMG86IFpiA5/avuASQ5CwdbLs7ze+wfpNiwD
+	+1LcOfj5+EHhFDbx99Rd59GwUczHYr06IGnTt8HOf8IOjoIgk/YrVTG4CycaIybTd+CSDi
+	CcsdJvstyF4xGK6WEf9nAi9sMV8SNdI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783618743;
+	b=fbnidEldMCQrfDfSorvXqb+/uYCyD+VZaw23Kb7UyuwMfVUC8QrP5NhVu5+xR+9P5gLCAT
+	MhAbGMZBgIHFVqPr2DllemANsEZMLKD2ZgblCzc2pfF+aeDfrSenXRWzu3ATcGOwW/lm9x
+	pB/FEVpxn/LV2/YkaFaok8LIeyy0fxs=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f0IzsIya;
+	spf=pass (imf14.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 81E6F4169D;
+	by sea.source.kernel.org (Postfix) with ESMTP id 12EEB40D58;
+	Thu,  9 Jul 2026 17:39:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48A41F00A3A;
 	Thu,  9 Jul 2026 17:39:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1871F00A3D;
-	Thu,  9 Jul 2026 17:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783618740;
-	bh=sn5jxIlLMIau4GifCV8YOHeAp5/QttEGk8CccgmzI9U=;
+	s=k20260515; t=1783618743;
+	bh=XsiwX2KU4GjCVUN88XJ1zOxK6etLsLe5sKXBgJJKO1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IyZn+n4oTykDT3NuNnSd0oHZSsVb13m5OHh6NioPTijvXAL53mRdYeaX/yrzRLmVU
-	 ycoXx4A+uUZmtZeUN5+brNVYDg7mTz1lu+riWs5zf2PP1TZ6pYcWysWH/jPVe0WVOM
-	 h/TkpOmD3r70Rzw3hthOVTegCejxjF+vNmJsqcsmN358OoO1k/jHPq+/DnKaZwyILk
-	 RRGhPH7SYYVrgFV81UlTehoIAMgMgikZpMfWji1V5kvmxj+0GsTjQAKaIqDH+8/8Kp
-	 jfVmqMkiFYcMBN8S+EQSJDUGMYhy6I32GWZDdsd+Pm0DVU1+35gyZxtAFbx5K5GI+e
-	 1A/Ied3hRG1MQ==
+	b=f0IzsIyaxLg0GbrzBRj5QkAwCzDsbsSzTbQ3gaT+icuX9JK9b3b5myQ6Q2KD2xDTH
+	 7zSR7S9CjI5VeT0ZNhBqy0TwPaTD3dhLS9s35HXPUbl7k9aFapqkRBkFwV8+NTYMSe
+	 KXWN0PpaWu/rgoMYYO1s/RIyQh3zlYBiA1dhYSNbHKLYBvScaIR/EQYuLNdk7UrrVb
+	 bsLdO9pK1Lx6J46G5OLRx6ZszonAfooI0UIGlKxv0qC5/c8PCgIVZ4JzWFBmfP7BLl
+	 gL3JaMF+kscEOBYnCxT+86XHOaCjHMMrsoB4rKo5/8SWqQ9KV7xTCddd6CYqPZYsaM
+	 k3ydyvegCfI4w==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -77,22 +77,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 11/21] kho: allow destroying KHO radix tree
-Date: Thu,  9 Jul 2026 19:38:00 +0200
-Message-ID: <20260709173821.429921-12-pratyush@kernel.org>
+Subject: [PATCH v3 12/21] kho: add kho_radix_init_tree()
+Date: Thu,  9 Jul 2026 19:38:01 +0200
+Message-ID: <20260709173821.429921-13-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
 In-Reply-To: <20260709173821.429921-1-pratyush@kernel.org>
 References: <20260709173821.429921-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 35C884000A
-X-Stat-Signature: edkoi1cajh9k5ssc445gs83p6zx9a6uj
-X-HE-Tag: 1783618741-706197
-X-HE-Meta: U2FsdGVkX1/nmwU5BWYY3V3XbymnX9xMxxo6ge0tEHXFniKVgHe/ooz4L656xOREL8R7k0h8oEKYCigJ/tTkPUd/Q69TDMP9nKmRWF7BlaaK6pKLhXkAoOEuyyUtGdNkveah2LQpt2mEw3NmBkm0ozW7N+lmn5Ddo3YJknsaw6joOSKhxKop00rlEOX+lRnrMx23klVXt4EvL/Z3LpyeoeoEvefVPGtZEblquEXMQ6eFwMQojwo3Y8vj4XgVnrdbsEXa2nvoTTE/9slbmmaNOF+r6OaxO92dRPfugEAUzJzp7xalzdWDH4X0jJheOZYtGTGIyWMikjnlUHqqZfGMbMc1GjFteg7rIF/U9eGLEBKFZRJ13Rey1ykFKy1biXt4Zi/eqXXqCQ8G1sOcvJSHhq9IlId8GFq4AeIfTppR7fOIr7T9q9AaQH6rrwFDXTxdNA4F9dUEQrwOuKlrkFy+T6a96M4llPKeK0CM+0xWCLAj78IeqOt8aeweUSmQsB20Gke0ZoZuE5HCPkDCr6Hp1I6Zm69waS/MvG8srOfrRUyFRidR+iQC5rEiXwmTHpYZEG/EgsgRIrAWzG+XDmKxhbG4YRIuT7Kz1knWdClb+X0Bz1qK6g6oHCU1EpTIsaX3KckDlLYuxqH9Y3vSREjP1T29uO3J/IlWv/ffJ/4TCgRIOCGJW9MigaT2Px/+wJnwyzLjvLrQSAlagtU7cu2ypk8kJlKnGGZ0EzjdIAMvU0WJyCfJyK5aJWcUQBbBAJobnixTvhJJnUXlHEjn8WmY+miwJJBgtvQ/khR7nPeHUvbHcYh/cdc3+HufBhWB7fVCtTrQxt7NLNzZLw2ban2MhfzEiNplRlR44XJ25jGxKZbEUcs0S0zE+Sy5P/pjMPHnQlE/vAFi+Vrc2NRa34lP2NJrp8NpHgiv/mS9aMTOpkQZz5RLrtDS/s4amu4RdvlHT690TpAYCI6vGVzQYgY
- gK1QhoZc
- 122+jfj6VSy7D6T+43TZFgL1I9zs2lKrvFPFAcA3leIWH8WjqIS+MCFq6dqLSuSeHuMduHuvrFjQpCOhgkjdOKTLQ40e8cF/CWUFLLfhVO9Abv7kTnu3x1Pzp25hhNX1tc/LkkhLz/Pxt0XrvpGkhrFs+udNQuXr/5pz+fReBF3AVJqPvhrSeI6bHuXVVgrqkzr/euelc0rD/zKBBGM78yoluewm+ocszlt+hlGUOM9+/2VB4O/0uCj2xrL3+FL4cZEsNGaoBu31J/oy9PAr7uPw5SRnDTGaP9C7H
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AA4CE10000C
+X-Stat-Signature: nesfihk34cynh51gsb5q8dw59tktgw1b
+X-HE-Tag: 1783618743-447544
+X-HE-Meta: U2FsdGVkX1/k2N2U3ycpHAWfDZESBqBEZ+tpyPO4e2633g2ddJG3wIeU7ZSAq+I0nHB/9puAHaXvZGXHLZ7rqjlFhb45SL6FjUBB2OeFy4EZZK5YyEk49hCtdqwxhAOX5/6TutJAuhtZIG4esBu8c6UhIHIE0YFLFNbcSuxd12WiYDNrD0MOo4k3rT9rTPRvlhm76qr/3VvF+DNvAsqF9IM2AVYzBzC0trOMleLhGdKwu43Fc/fYofHVOXGyrUpFCiOM8P7jgvIGNJycRZ2H0NZk238dREFMZG2pkJVv5IxoAoriSLwau1ARxM9gQ5x/SgtqfKmDo/kHBhYdKDGw1Xb1WGXAmA/dKQDuaX5z/DQ552kC/fvRu2Z3D9J9jZt7LgwReD19Oy06jh6jqN7lJ4/m5wRsi7dK7VVEkF9CaUryi0AJUFqtZ/kMZ6Xq60vft28JMfgccPZ2c/nYqFHLa4YPuFNH1c4ShEXvqj2OY1SyBAMiNYOSdp4KECQptEP3TChbWFNGBaOLEsa8KMfqJsoekYGxcotOb2gELjUV72HFz1nA3dcYHl4VFLOACOgRmu1rUms3146G6M5cMb0iTHQyA4EyIBwUfmlOJMn6e5poUiY5N8JwMVXNzo3lWlVWwH4a/qhfBpXu9ouNSkML09Vu3RpL5tX6PrLAe4c6Ae0as/q4h4ljGofjBcU4jEm6aYRC/cBrQTrXhzvG4z99In4EROpMale51Xs8fT/wksfev1Y2Zn4Atw8NKRe3NXeqMVP7Oe9Gk8s0+T5u5pZxBocZKyEMsyNaggL+mNxWsxvlnYsmRs/2UONj9xBw5iVWT4vxEdAhYfqT/LEufYIXAqmU/ogE2k55/HmOsm8tRxIAdvooJFG41BEG+JTyVwLX6mQ2yHdyeECauNr+gt2Um2nUv/C8X2GWeJzaJx8tMG7Jv/RhNPKr7Z3vXkA+4/rUm8pzuS1Y05EyjpEKARI
+ XmMnB6YD
+ a7rzHIl9eF1zGyHQklqthxuz9NUSPKGI1Totz5TzcGEIorTlj8jOmgvRX1RE2sqYA/WVX+ZTZ+fRmqe8EwlSuLaHMJbaWoU3zsAySFewo6DFcPjc9cPB/ugzpWm8fs3ZbD/YBFPXrnVayZKOgp5KnCsFMZXtRp806tjdGIrAGeQlCgWxTpmvp4TLeHpunM/L4p08zxZZibny09svKo83R5KL3u1ZobHAMKZYxVrmHhoUynvh0qEDm1Ry588nOLKY6yYftGawNW5hE4fySjcPeTMl8ASb+uve6dyXO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,87 +102,143 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Add kho_radix_destroy_tree() which allows destroying the radix tree and
-freeing all its pages.
+Move the initialization logic of the radix tree into
+kho_radix_init_tree() instead of having users open-code it. Makes the
+boundaries cleaner and reduces code duplication when a new user of the
+radix tree will be added in a future commit.
 
-This is will be used by the upcoming scratch extension mechanism. It
-creates a radix tree to track free blocks and then frees them after
-telling memblock about them.
-
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- include/linux/kho_radix_tree.h     |  3 +++
- kernel/liveupdate/kexec_handover.c | 35 ++++++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ include/linux/kho_radix_tree.h     |  7 ++++
+ kernel/liveupdate/kexec_handover.c | 62 +++++++++++++++++++++---------
+ 2 files changed, 51 insertions(+), 18 deletions(-)
 
 diff --git a/include/linux/kho_radix_tree.h b/include/linux/kho_radix_tree.h
-index 4138621e0e87..66ca936b3f06 100644
+index 66ca936b3f06..5d6ae2893684 100644
 --- a/include/linux/kho_radix_tree.h
 +++ b/include/linux/kho_radix_tree.h
 @@ -54,6 +54,7 @@ int kho_radix_add_key(struct kho_radix_tree *tree, unsigned long key);
  void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key);
  int kho_radix_walk_tree(struct kho_radix_tree *tree,
  			const struct kho_radix_walk_cb *cb, void *data);
-+void kho_radix_destroy_tree(struct kho_radix_tree *tree);
++int kho_radix_init_tree(struct kho_radix_tree *tree, struct kho_radix_node *root);
+ void kho_radix_destroy_tree(struct kho_radix_tree *tree);
  
  #else  /* #ifdef CONFIG_KEXEC_HANDOVER */
- 
-@@ -71,6 +72,8 @@ static inline int kho_radix_walk_tree(struct kho_radix_tree *tree,
+@@ -72,6 +73,12 @@ static inline int kho_radix_walk_tree(struct kho_radix_tree *tree,
  	return -EOPNOTSUPP;
  }
  
-+static inline void kho_radix_destroy_tree(struct kho_radix_tree *tree) { }
++static inline int kho_radix_init_tree(struct kho_radix_tree *tree,
++				      struct kho_radix_node *root)
++{
++	return 0;
++}
 +
- #endif /* #ifdef CONFIG_KEXEC_HANDOVER */
+ static inline void kho_radix_destroy_tree(struct kho_radix_tree *tree) { }
  
- #endif	/* _LINUX_KHO_RADIX_TREE_H */
+ #endif /* #ifdef CONFIG_KEXEC_HANDOVER */
 diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index a5800b960cf6..105dc0f3e691 100644
+index 105dc0f3e691..04bfcbf9cc55 100644
 --- a/kernel/liveupdate/kexec_handover.c
 +++ b/kernel/liveupdate/kexec_handover.c
-@@ -301,6 +301,41 @@ void kho_radix_del_key(struct kho_radix_tree *tree, unsigned long key)
+@@ -320,6 +320,30 @@ static void __kho_radix_destroy_tree(struct kho_radix_node *root,
+ 	kho_radix_free_node(root);
  }
- EXPORT_SYMBOL_GPL(kho_radix_del_key);
  
-+static void __kho_radix_destroy_tree(struct kho_radix_node *root,
-+				     unsigned int level)
-+{
-+	unsigned long i;
-+
-+	if (level == 0) {
-+		kho_radix_free_node(root);
-+		return;
-+	}
-+
-+	for (i = 0; i < PAGE_SIZE / sizeof(phys_addr_t); i++) {
-+		if (root->table[i])
-+			__kho_radix_destroy_tree(phys_to_virt(root->table[i]),
-+						 level - 1);
-+	}
-+
-+	kho_radix_free_node(root);
-+}
-+
 +/**
-+ * kho_radix_destroy_tree - Destroy the radix tree
-+ * @tree: The radix tree to destroy
++ * kho_radix_init_tree - initialize the radix tree.
++ * @tree:   the tree to initialize.
++ * @root:   root table of the radix tree.
 + *
-+ * Walk @tree and free all its nodes.
++ * Initialize the radix tree with the given root node. If root is %NULL, an
++ * empty root table is allocated. If root is not %NULL, it is the caller's
++ * responsibility to make sure the root is valid and in the correct format.
++ *
++ * Return: 0 on success, -errno on failure.
 + */
-+void kho_radix_destroy_tree(struct kho_radix_tree *tree)
++int kho_radix_init_tree(struct kho_radix_tree *tree, struct kho_radix_node *root)
 +{
-+	if (!tree->root)
-+		return;
++	if (!root)
++		root = kho_radix_alloc_node();
++	if (!root)
++		return -ENOMEM;
 +
-+	__kho_radix_destroy_tree(tree->root, KHO_TREE_MAX_DEPTH - 1);
-+	tree->root = NULL;
++	tree->root = root;
++	mutex_init(&tree->lock);
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(kho_radix_destroy_tree);
++EXPORT_SYMBOL_GPL(kho_radix_init_tree);
 +
- static int kho_radix_walk_leaf(struct kho_radix_leaf *leaf, unsigned long key,
- 			       const struct kho_radix_walk_cb *cb, void *data)
- {
+ /**
+  * kho_radix_destroy_tree - Destroy the radix tree
+  * @tree: The radix tree to destroy
+@@ -1499,18 +1523,23 @@ static void __init kho_mem_retrieve(void)
+ 	 * catches that and never sets kho_in.scratch_phys, which stops memory
+ 	 * retrieval.
+ 	 */
+-	kho_in.radix_tree.root = kho_get_mem_map(fdt);
+-	mutex_init(&kho_in.radix_tree.lock);
++	err = kho_radix_init_tree(&kho_in.radix_tree, kho_get_mem_map(fdt));
++	if (err)
++		goto err;
+ 
+ 	err = kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL);
+-	if (err) {
+-		/*
+-		 * Failed to initialize preserved memory. Clear FDT and radix
+-		 * so KHO users don't treat it as a KHO boot.
+-		 */
+-		kho_in.fdt_phys = 0;
+-		kho_in.radix_tree.root = NULL;
+-	}
++	if (err)
++		goto err;
++
++	return;
++
++err:
++	/*
++	 * Failed to initialize preserved memory. Clear FDT and radix so KHO
++	 * users don't treat it as a KHO boot.
++	 */
++	kho_in.fdt_phys = 0;
++	kho_in.radix_tree.root = NULL;
+ }
+ 
+ static __init int kho_out_fdt_setup(void)
+@@ -1636,16 +1665,14 @@ static __init int kho_init(void)
+ 	if (!kho_enable)
+ 		return 0;
+ 
+-	tree->root = kzalloc(PAGE_SIZE, GFP_KERNEL);
+-	if (!tree->root) {
+-		err = -ENOMEM;
++	err = kho_radix_init_tree(tree, NULL);
++	if (err)
+ 		goto err_free_scratch;
+-	}
+ 
+ 	kho_out.fdt = kho_alloc_preserve(PAGE_SIZE);
+ 	if (IS_ERR(kho_out.fdt)) {
+ 		err = PTR_ERR(kho_out.fdt);
+-		goto err_free_kho_radix_tree_root;
++		goto err_free_kho_radix_tree;
+ 	}
+ 
+ 	err = kho_debugfs_init();
+@@ -1696,9 +1723,8 @@ static __init int kho_init(void)
+ 
+ err_free_fdt:
+ 	kho_unpreserve_free(kho_out.fdt);
+-err_free_kho_radix_tree_root:
+-	kfree(tree->root);
+-	tree->root = NULL;
++err_free_kho_radix_tree:
++	kho_radix_destroy_tree(tree);
+ err_free_scratch:
+ 	kho_out.fdt = NULL;
+ 	for (int i = 0; i < kho_scratch_cnt; i++) {
 -- 
 2.55.0.141.g00534a21ce-goog
 
