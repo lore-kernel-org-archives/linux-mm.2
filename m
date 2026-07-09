@@ -4,94 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055C8C44506
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 13:06:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A53EC44501
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 13:15:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CECC6B008C; Thu,  9 Jul 2026 09:06:08 -0400 (EDT)
+	id 3C8326B0088; Thu,  9 Jul 2026 09:15:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97F646B0092; Thu,  9 Jul 2026 09:06:08 -0400 (EDT)
+	id 379706B008A; Thu,  9 Jul 2026 09:15:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BC196B0093; Thu,  9 Jul 2026 09:06:08 -0400 (EDT)
+	id 28F4C6B008C; Thu,  9 Jul 2026 09:15:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 64F496B008C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:06:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DEB3E40175
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:06:07 +0000 (UTC)
-X-FDA: 84969261174.17.FC61996
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 399BEA0003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:06:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AfhJDsXr;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 060F56B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:15:15 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 91B72168455
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:15:15 +0000 (UTC)
+X-FDA: 84969284190.26.AE9728D
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D049B40007
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:15:13 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=hcHM9UjY;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=50jcczpJ;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf01.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783602366;
+	s=arc-20220608; t=1783602914;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gHoAaqin36BM7n0JyPwQOiJA2k5bERfSNEoUEt4tWaA=;
-	b=Lr5Iy6cOl3K6/uv2G06s4kEEutNnC3Irv5kaKvGvQLbuYlkMPk7Z3KBLvDC9Vliat0XVPX
-	zBj0mi16YOrVL7oACo3RBvGL6AYi+U7Vo4CdDgsr9rro7m3WKa5upARXiusZvTu4YUZ7gv
-	VXyCSMSAuu4QXwtugr/sC3NHrzZryv4=
+	bh=2eWXoJbsmPACrUiEI6Qes7YghoFFmPaabwm8a5YUjvg=;
+	b=iEagSgwWRSNqVxlILWktXemenVKyGPQuSzK0844dUGxXABfHKzZIj9lov3+pXcqKeASHYO
+	veoXjpNcmfpAG0DQgVba88vPokU50J1oH1zP/FUHtBNJQw1NNrB8v1QKCXtfOFbylcsCSZ
+	cbHTsiVgqmIJhA5iT1ooPMCAiiYx/MU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AfhJDsXr;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=hcHM9UjY;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=50jcczpJ;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf01.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783602366;
-	b=iJz2M+AWmrWyNHRJ8WUxGoVCanKESo8fN4FTorXYOFPy0BVrAPO9NKgtC18/R7nivCvcdO
-	PMaU0PKiCDxkQDAaD+f6r8pHlwWaYnWgl6nsisZcwnf9TN9cEfYaBfmph1B5SowoZcaFXR
-	Q88DehZJnCTP9vQ/pKQJatSCmhuSCR4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1FBC440498;
-	Thu,  9 Jul 2026 13:06:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373911F000E9;
-	Thu,  9 Jul 2026 13:06:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783602365;
-	bh=gHoAaqin36BM7n0JyPwQOiJA2k5bERfSNEoUEt4tWaA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AfhJDsXr9Jlh7JbWr6kTwPdZ2rinAltVe3gCbsphpBZwQhIWOHoS/OJLKDv0SaM92
-	 usoZnqAhNKrNYTsB8hSLGLOr0ZTAR2D6pN8PAXIR72BWQlLNUWYfaaITPLUozVolb5
-	 y6Xn4VjC6+jdUuFQQCYvpkGitYNqGB15TRPQ5Z8IjzLHy7dIVyMB6+mxf+yIe0pQIV
-	 6w+7TzuKTqWytZekZ4phDVnKW1R9cNpAkyC84VmdpX36o975jUoHhuRahpVHMOaNfa
-	 I9I2KXf4OA6tci8sf8im68/NTyxsxsypyy0uGqO8rRbPzxv3RTWsjeBQdr7tD5JITe
-	 TCOQkjDEreubA==
-Date: Thu, 9 Jul 2026 16:05:58 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/17] mm/mm_init: skip initializing shared vmemmap tail
- pages
-Message-ID: <ak-ctr06UDUlNCJZ@kernel.org>
-References: <20260702093821.2740183-1-songmuchun@bytedance.com>
- <20260702093821.2740183-5-songmuchun@bytedance.com>
- <ak97z4tryYAGJgb_@kernel.org>
- <2306829C-A66D-41F2-B5F7-1C164A7FF757@linux.dev>
+	t=1783602914;
+	b=wkzNivCtPyjlVmsMsA3N+pqfgNGByDmggLU0iqn44t1lW5PWLgKcRNLcOn6XucXxVOaCyC
+	SpHVk/RqXLY4y/TiyvF+tAjkiFllOK4N+OKLFDxMlvJlWqSL9jyJ8bCJ1B2PYgHh5SAv5e
+	uR+e6yqWJX3wWuyoBKeCvTiqaWKI8Ww=
+Date: Thu, 9 Jul 2026 15:15:09 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1783602911;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2eWXoJbsmPACrUiEI6Qes7YghoFFmPaabwm8a5YUjvg=;
+	b=hcHM9UjY2WcIxUhWAQ5bfTfhnUDaIvNt0zTL1QGxytCGn2/Pt1JuQgl1O0B0c0Fh/k8xYl
+	oozFDDllzS8gho4Q4Og9D95QhNfRy1QGX8kbN1RLp3JQnpqqz+1U/c8eQ6A/QKdH86EyDK
+	Z8/Ka4vBvFI7rJ5OHYy9hYwxrAs1ZWQDgzvgA/O8FDPKWfN773GNs5xexJBWmmDcrMWIL6
+	nhA9a5OhYmcZtXqQoKodZEp5jhMY7ck++PAE+6JX0vNZyjBZrUGr5BbqVBaaeWI49oouyK
+	cKHUfDWhXC++QmyZeOfYpSAtcDA+dqPTQuT56KkV7istkRc79R2Iz3GVAyWVxQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1783602911;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2eWXoJbsmPACrUiEI6Qes7YghoFFmPaabwm8a5YUjvg=;
+	b=50jcczpJIGp28/Y+rrdo2bcKZ4fBBALge0z10UabFspXx1idCA3exxs+6JwKQ4tQ1HdLry
+	TRfTEYvVRqMHTRDQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Wandun Chen <chenwandun1@gmail.com>, vbabka@kernel.org,
+	rostedt@goodmis.org, mhiramat@kernel.org,
+	Alexander.Krabler@kuka.com, hughd@google.com, fvdl@google.com,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	ljs@kernel.org, riel@surriel.com, liam@infradead.org,
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+	mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	pfalcato@suse.de
+Subject: Re: [PATCH v2 4/4] mm/mlock: migrate folios out of CMA when mlocking
+ a range
+Message-ID: <20260709131509.iIPP2VBh@linutronix.de>
+References: <20260707125925.3725177-1-chenwandun1@gmail.com>
+ <20260707125925.3725177-5-chenwandun1@gmail.com>
+ <9b227263-56d9-41d5-ba8e-c969d8d68785@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2306829C-A66D-41F2-B5F7-1C164A7FF757@linux.dev>
+In-Reply-To: <9b227263-56d9-41d5-ba8e-c969d8d68785@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 399BEA0003
-X-Stat-Signature: cau1ikm7xac5cwrb4rti7tre79wjjkwj
-X-HE-Tag: 1783602366-501283
-X-HE-Meta: U2FsdGVkX1/F950EZXDSCt0gRY1aJFPkH8sDTHlOFYy66gfka9ktfe/2sg2vf+RPqbTqRcLDlhL2lMqxpOdGu+BW1Qo3z4Pswqc7IKQcX2cazdDvazjVWLQ5xKC91RhXVQwzjGSuwYvxqDI7m6RDX31wfbaNviGOgWB8ZeiyKY+UAhwWaasoqkSCb/7d7tnkxDgFnDz2NfYa1w4vKP1SaKZUn5icazXVXAzfwHHEWkNVx2vY8CuK7ydHGJbomhUt5bNvI4uj8kOiKDtgX2u3rM+Wwyid0jSMxT0IUZ1WyacXjOpP9IY2bOjQoa0wuHD+dOslJ9XxAsGmiQGZHC5CkYlEAX09iuYq7HQcDeD6nWnoGXAjNY5iabKHYroPeXFV2UTwtH57jdCWiVXm3Bk7i1P0Eg+cPZyad7qEF2h9Gk9kEezdLv059nWUt12aR+ambo/HxdYRi4nzzqjttrGbzOnGAKin4zssdQEaQvqXBC7d7gSIsttmQDAumKCKbv8yjdfYk8M+FuzdERIp38yph0k+JCIYhWG/h7iGfldsHnB2Dsza3FrD81WR2auOU389kfQdjLthibwOBw7yLJhmeKVfRRsL1N7j+AuULZjsEVrwnePZbJmCmP+J8qmJYwF83fTSjTgRupFy1RFPRACvdq92an9kY5x37okUFDoMDNmX8F2S779TcsBO8MnfVhHHoIaoqte6XTHOC1qHR7DLRBW8wyqcXXcCJGkI/JUvBKf/uArHyIvFULdLdJ9psc9bFhzpciolU4M7+7GjFi15lOhycGbq3YVz02L03YrHKPk6kog6OAR/KN9ErUNbRWuaqOb3uiVdGIh3FnArURuya1z9tZxRJGCmEb84tKHplZ2QFBo85gckwvk9GOcvs+CLdncbfQU7F1pIeS6FtM/0uX95so5KkQwpKIKptiE4U8UdQIL9wyumpQTOjtekjOE5bUC95gQebF0ZjI7NrOu
- F1rhcBY9
- Ox2qsNVNfWV/W2t6e/5lueC6j8G+JuDAPpuKdmkUMvtgdKzjlcua9pHK7Pt4ipQzELitETA2r2QxMVPfkKLmD2xqzuDUW7+FVM+7B/AV9Co/Dh3/A42E2HXZgTR9+rXsmLtbC+YGEv2c3+AxjwA+4M/tBZy7CLDTkI7kGo/t2ziR0W0h8LzlLecSNTCwf9EPQkYBZITa1vo7HlklA83Bgg3UKXgXy0usJ4vyaXp3IsZDpozWj21kPibmLQGFqS989eMIc7z3JCmyi+8EmU2wNx21B6S3hM1bidTWXrsn0TRaDtpx+fIAZatradRfXfLUmHYOdr4IgYuDq8sx3yoeA88DuMzT9uXOi3IR0
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D049B40007
+X-Stat-Signature: kjcmxfn8idcx7cotssbb177nfwrewwt1
+X-HE-Tag: 1783602913-895419
+X-HE-Meta: U2FsdGVkX1/g1YMCYsIlPRQz23Unz7DY1qv2fRUsoELNktEdgkk7eTmV7joV87y13c0GtAhcEu237hAIuTbe2KYDx65O8wqSSwCGJf1eo8gKINX+kPNZGBfW6O6k47H1qg8SYLG1tivUjpnG9veQ5w7YWmbNcotDMtRiQ7o2S+JbFpqIudNLUKMM3+8WgD8pOZ3rP58Guqdh0S70PDH5iLCdUlle5+osH7JNZE185azT6fZrCR35HiuB1i0iXED+1C5viVVFINeAJqdqfKpFRffRhqGcglnoEaOi93wvGMgbEsf1Z6iWPbPWNdwoDLVm0zz8VoWdufwTcO6YtMa/1Te2AIOMu9bY/bwUpWRMwlB1hPZBl/HzZgi2v49WnUfIja5IqAsiejnNc49FlD5snaI1wx8wqTJF1J5oWBzNd2twmXarCu7EzMy4S9thMNyxM8moqymstP+SV3p+KdRSNw3PU54m/UOSDVN1UgIMQSXyGCbHdv32vFnMdueSHh/t3H1o4OT9+cpYcrfXIC80OvSBrljoHEdc33CLFWGX7z5yYRsompsiP76IxM/uRx9n6Q8Yz2yDUCqWOKdkt4ljg4r8Tlh3mD2WfTfhialIyJmCemTIn65FUABdbMxYWM1KhP+2stlTaqYra8UAnWMhV8toxuuEcY3MpuJ+9bqJl5Ob1aeXWvuC6/iEUKr8/hsUk1gawhmS6vjPIP3gTQbOc+BNpVMLKAWMIi03iyZPD6L2Piuvj/hKH3JI7XZ7C7Oa4P5LHHOIhsOdAzfRi0MN5MfkOSuDNmbvm35yIy6m0JIeJvJGmz4i3Z4cVrRncuVh5Y9niHUnH1oOXRiKsfuopL7edWOe2tZc+lzHm+r9ZHV+hWeTsBmvaI68mdbR+4FewxAXSj9gDs/gp4EszB6DrcMPxPNWhSDGDZmdTrgP4p1kKynsbydUTOW2hprDN26RpD2vlozH47r4Ewu0ZJu
+ F4KXhEce
+ nEFJnGaG2rMXwLtmZf8qzApz0cMf/NHgjvUGoVH2TdBvk3mUWjElSOR84TksgC1UoDVoaISOdRPuEzThvuqRRFFiWKnjug5vXa2Q+jZpdJ3Bw/wU/DRjEFFQBJTz/kdYcCPRgWrIgUMMVLJPBvRrDhza49I6XEZ6tRzv8meBtEck/RCQeMp5ularXB9RFymq/tTDwmWEzqiNcgec6hOUM25E4UD5n/x5d7TcawyCxd9g3zEFL/1CeAj0XhLv8APIHN+nM8neeHb6C6JpFfevToN4g3sJKAvdHcqrv2diLho7/v7tNAK+dMZti1bONGz6Q2wLGcb8f/w2BOKg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,91 +110,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 08:31:31PM +0800, Muchun Song wrote:
-> > On Jul 9, 2026, at 18:45, Mike Rapoport <rppt@kernel.org> wrote:
-> > On Thu, Jul 02, 2026 at 05:38:08PM +0800, Muchun Song wrote:
-> >> memmap_init_range() initializes every struct page in the target range.
-> >> For compound pages with vmemmap optimization, the tail struct pages are
-> >> backed by a shared vmemmap page.
-> >> 
-> >> Initializing those tail struct pages would overwrite the shared
-> >> vmemmap page contents, so users such as HugeTLB have to open-code
-> >> follow-up handling to restore the metadata afterwards.
-> >> 
-> >> Use the section's compound page order to detect struct pages that fall
-> >> into the shared tail vmemmap range and skip their initialization in
-> >> memmap_init_range().  Still initialize the pageblock migratetypes for
-> >> the skipped range so the surrounding setup remains intact.
-> >> 
-> >> This is a preparatory change for consolidating handling across users of
-> >> vmemmap optimization, and it also avoids redundant initialization of
-> >> shared tail vmemmap pages during early boot.
-> >> 
-> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> >> ---
-> >> include/linux/mmzone.h |  4 ++++
-> >> mm/internal.h          | 16 ++++++++++++++++
-> >> mm/mm_init.c           | 25 +++++++++++++++++++------
-> >> 3 files changed, 39 insertions(+), 6 deletions(-)
-> >> 
-> >> @@ -673,19 +673,21 @@ static inline void fixup_hashdist(void)
-> >> static inline void fixup_hashdist(void) {}
-> >> #endif /* CONFIG_NUMA */
-> >> 
-> >> -#if defined(CONFIG_ZONE_DEVICE) || defined(CONFIG_DEFERRED_STRUCT_PAGE_INIT)
-> >> static __meminit void pageblock_migratetype_init_range(unsigned long pfn,
-> >> - unsigned long nr_pages, int migratetype, bool atomic)
-> >> + unsigned long nr_pages, int migratetype, bool isolate, bool atomic)
+On 2026-07-09 12:04:33 [+0200], David Hildenbrand (Arm) wrote:
+> On 7/7/26 14:59, Wandun Chen wrote:
+> > From: Wandun Chen <chenwandun@lixiang.com>
 > > 
-> > What is isolate parameter for?
+> > The region covered by mlock[all] may contain CMA pages. cma_alloc installs
 > 
-> I've re-examined the code, and you're right that the isolate parameter is technically
-> redundant for our current use case, as memmap_init_zone_range() passes false.
-> 
-> The rationale behind keeping it is future-proofing. The ultimate goal of a generic
-> HVO is to support arbitrary huge pages, not just HugeTLB. I decoupled this as a
-> parameter to prevent potential regressions down the road; if a developer leverages
-> this for other huge page types in the future, they won't inadvertently break
-> things by forgetting to update a hardcoded false in init_pageblock_migratetype(),
-> especially since memmap_init_range() natively accepts an isolate parameter.
-> 
-> Of course, we could also just delete this parameter for now and add it back later if
-> needed. I think both approaches work.
-> 
-> Which way are you leaning?
+> What about ZONE_MOVABLE where memory is supposed to be migratable?
 
-I'd drop it for now and would revisit when there would be a new HVO user. 
-Even one boolean means it's hard to tell from a call site what is the
-intention of the flag, two make it completely confusing :)
- 
-> >> {
-> >> 	const unsigned long end = pfn + nr_pages;
-> >> 
-> >> 	for (pfn = pageblock_align(pfn); pfn < end; pfn += pageblock_nr_pages) {
-> >> - 		init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
-> >> + 		init_pageblock_migratetype(pfn_to_page(pfn), migratetype, isolate);
-> >> +#ifdef CONFIG_SPARSEMEM
-> >> 		if (!atomic && IS_ALIGNED(pfn, PAGES_PER_SECTION))
-> >> +#else
-> >> + 		if (!atomic && IS_ALIGNED(pfn, MAX_FOLIO_NR_PAGES))
-> >> +#endif
-> > 
-> > Let's trigger cond_resched() on some defined number of iterations or some
-> > memory size chunk, e.g PAGES_PER_128M or even PAGES_PER_1G.
-> 
-> Yes, that's for the best. I was really struggling to choose a suitable macro
-> for this earlier, but I realized it's a difficult thing to get right. I'm leaning
-> toward selecting PAGES_PER_1G instead.
+Would it be bad if the pages would not be movable anymore? Does this
+effect just memory-hotplug or something else, too?
 
-Yeah, PAGES_PER_1G makes sense to me too.
- 
-> Muchun,
-> Thanks.
-> 
-> > 
-> >> 			cond_resched();
+> Also, what about drivers that mmap() CMA memory to user space, and
+> __mm_populate()->populate_vma_page_range() would actually try mlocking them, and
+> they actually must remain on CMA areas?
 
--- 
-Sincerely yours,
-Mike.
+It should be safe to skip those. They belong to device and they
+shouldn't be affected by anything including getting swapped out.
+
+Sebastian
 
