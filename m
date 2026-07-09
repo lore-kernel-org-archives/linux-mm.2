@@ -4,83 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B6F0C44503
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:17:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68C1AC44503
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:22:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 535636B008C; Thu,  9 Jul 2026 03:17:57 -0400 (EDT)
+	id 5B5996B0093; Thu,  9 Jul 2026 03:22:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E5DE6B0092; Thu,  9 Jul 2026 03:17:57 -0400 (EDT)
+	id 565F86B0095; Thu,  9 Jul 2026 03:22:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FC506B0093; Thu,  9 Jul 2026 03:17:57 -0400 (EDT)
+	id 456E06B0096; Thu,  9 Jul 2026 03:22:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C48F6B008C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:17:57 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 827EB12041F
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:56 +0000 (UTC)
-X-FDA: 84968383752.02.174A87E
-Received: from outbound.baidu.com (mx15.baidu.com [111.202.115.100])
-	by imf16.hostedemail.com (Postfix) with SMTP id 2AED6180003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=ZKH0Jvsj;
-	spf=pass (imf16.hostedemail.com: domain of "prvs=md16448C18A3=lirongqing@baidu.com" designates 111.202.115.100 as permitted sender) smtp.mailfrom="prvs=md16448C18A3=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 218C06B0093
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:22:50 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D051140407
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:22:49 +0000 (UTC)
+X-FDA: 84968396058.13.BFC8F75
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0F27940008
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:22:47 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vfkr0ESu;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783581474;
+	s=arc-20220608; t=1783581768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=OkEwYNn3Kzj/19nEDUJIcFeVvbVD2LipZW/+SjC+YEc=;
-	b=hEc7CIE8u6jU/wIOUb90+4AybS9Nk7JCvjFTVuvwJp0KUS+kCRPn8l6sPSWW9Jx74Vqw2/
-	VwXsNfPcGBG2lsRFQUBnVUp/S9hpk3Vh3e9HfOIVuCeK34Akn8tYs/R/zvv3F/Kq/UKYjO
-	n9UgcGWAvMub9r8/IW1D2rORUEwELVw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783581474;
-	b=WRG+PBXw12QkwiS1BvmLI3CPxQnV76bquwL54d+7WpbR/0+nZ1xZ/kWvGefd3MKevUI6I0
-	hxS/Je6xNdJjEhzPRTl4cbTwmeyOm5lLtZx82S3Kz3Q5zN62fFFx/pehURbUrnFXVOZVd/
-	lbOGC25ZnFw7AQIOo1lbUouLz6SYuy8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/zW25RGaPGwBbxFd+aS9kBW8b47epnczIHFRFBCLAYo=;
+	b=zkpfL7UtdwqIHKDf61KPP861898+zH6/8wy5orY7MWPT6tV4GY5iKevEjcl9cPbPGrvezq
+	su9j3zYbGAuEEgxzW9KNq1H2ZDIr4KQAmFtRdvdehvNZnaDDL8f+fbFVXwJeev6KLkrpwT
+	qjbO2Ar3jsFtv+4VhyAs2pIIjkvDbxs=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=ZKH0Jvsj;
-	spf=pass (imf16.hostedemail.com: domain of "prvs=md16448C18A3=lirongqing@baidu.com" designates 111.202.115.100 as permitted sender) smtp.mailfrom="prvs=md16448C18A3=lirongqing@baidu.com";
-	dmarc=pass (policy=quarantine) header.from=baidu.com
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
-	<linux@rasmusvillemoes.dk>, <linux-kernel@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>, Andrew Morton
-	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
-Subject: [PATCH] nodemask: use nr_node_ids instead of MAX_NUMNODES in __nodemask_pr_numnodes()
-Date: Thu, 9 Jul 2026 15:17:39 +0800
-Message-ID: <20260709071739.2408-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vfkr0ESu;
+	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783581768;
+	b=yLCNtH6mIR0k8aZQhtQF+gjqCra+U9xE0DSXnsfoZbKTrz4QbCN/DHv6/l4tEfCMWOZS8W
+	Db4pwY+JE+2Sq6QRJsVuDKpGlu3cSAFZkyTBz4C+ONm9uvZWwTtkX2266nKnLNYbvTXSM8
+	MujLe3/nMlZxDEnmtU+AN8X9fKYh2gU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6B2146001A;
+	Thu,  9 Jul 2026 07:22:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CE41F000E9;
+	Thu,  9 Jul 2026 07:22:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783581767;
+	bh=/zW25RGaPGwBbxFd+aS9kBW8b47epnczIHFRFBCLAYo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Vfkr0ESuoATXnPUkdBeq5+55sr7cVzSbt5ClCmVrSnQkJcQlnePuTOPN43DOTmXBB
+	 YSlQfUnogVcP5QFkvu6bmLtwBljgujN7UWqTgrsBz/mE/apwSbu1SjJZF9FbAd9uHS
+	 YN+nGemmSCwyGDh+062S5GniNn8bNOd+VlJTpc4Ev7w6aZ1qJeLKrrA3kf7DEhJXCs
+	 NcIZY28KAhZuKKTdEjThKMco81MwWoZcwhDhzGMSYaZvrTkjXcV/6rn4gWFjtTemEr
+	 iQZoNnClbYQXt0PJm8wXnjYh33q++mH230eCtmwWcF0M7UOxqN4QNmZ5IiHWpXSsJK
+	 2uv9LvYoeHkhQ==
+Date: Thu, 9 Jul 2026 10:22:35 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>,
+	Alexander Potapenko <glider@google.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Marco Elver <elver@google.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	kasan-dev@googlegroups.com, kexec@lists.infradead.org,
+	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 0/3] mm: split a couple of headers from internal.h
+Message-ID: <ak9MO-FWjkgr22KL@kernel.org>
+References: <20260709-internal-h-v1-0-956d5092782d@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.31.63.8]
-X-ClientProxiedBy: bjhj-exc11.internal.baidu.com (172.31.3.21) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1783581468;
-	bh=OkEwYNn3Kzj/19nEDUJIcFeVvbVD2LipZW/+SjC+YEc=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=ZKH0JvsjmwG4lw8VtoMemnvQGhsZ9Wc1f86/T1rMScMl9HdBxveQUleexwu8k81hs
-	 PNVbAShndVoQtpOrfpl7Kxy6ySMcW+eFdVTjK6gzNh9j81gJpKb9oafVg8zsWO1tC8
-	 P0RvtdueVq8+05j7weH4D/MsuwTGOVh5E4hiFaXtT5oMKmwPuxQcKWk7Pb9MBsLJSf
-	 gU0lkX0uNCBvWO2gHq1OfWZvL7PJQxeZVVqRrwrZOfPO7NnsLMczYDAWMkPpojmJEr
-	 Gb73OHR9vdJdbCAfAuTwpu07uBJmcE5kurtAkROpOgh/enzhNjCiwXhGzAJtVLfe55
-	 bmurdZPIVR8Yg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260709-internal-h-v1-0-956d5092782d@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2AED6180003
-X-Stat-Signature: dmfrwp8km3etpjxzw8c1hrgb15kuqtjo
-X-HE-Tag: 1783581470-907816
-X-HE-Meta: U2FsdGVkX19V33QEsiOTytMrGcB1SYR1AZQKE5/sXs/ILuwQWOQcKh22NX6bLRVMG7vq0HSUHxaXrHX3Kqy7wsPAEC8cpsaPiI4Vh52YANALdkSaxIWbBpxo+QQ4p8V/wO9ZiTG1p95NT1nWGYks7ElWEtjy+79ohV1ZOA9u8v8s7nFxx4KGQnc8BjYXKuvzQQDLExrePsMgMADL6ddirjSHYCmTLTdGlxZjD+OjhqiU0yNn64UwVPah04sd2CfZD6Qz8uOTKe9mDXida+x54KlevySe9/vA6FqfaqvKi05WqltOlxjpFmCrgTHpCm/TNti5rtD9z7NXhATO9eW7RJ5JV0/DP6cLtnSi94tfGHTzD/UlcQyMh+VhtPtJfN5EnR0EyGct1ZI6dekJlBYcK4Bu1z4/0aFR1UtwpdfPCsxth2spsqpi2CVg/XnzGKpjI8PEzuwVNr/sJ/WzS4vAs5XZlPnwrNBl5tN/W66KowAhKg4nySiDFf0zEVQM+Ne1SoQFCZ2dPAgWuVQw8kKaVuj/dFV+uMs0WTGG2b3r0Nrft+EzoDkOIg1K7KCP6Yo257OHMqqwMfTd92neaWObOuRFs8YRVNK0q3TjO8krL/+cqKRpM80oSsRCM3Wn7nFuSKhC9EhQCG+DbQz62lOJIn7o04dCPgK5/3L/XRaMensSG2moWyupx9vJi4tjenaKs1PGtNwaoEN6ttG/OOxxIE3uBgS6FJuSUwQvjW2N1rq/lQghZOJ6jSKnC7I6Ewo2p2k2wIC0r+YnMTVmHz28fOl0M/hZCwZyJOIMcLk1PviMZLCBh71Dl4RZs+896aXp39DL/yx5BWb+VHCmeusKxNVhEOMBwLmpaHMxqT+Q/17LWi1ZcIz3003uww8wq3+YmBjupQ/W0P6IHAA4qHwDrYPbIHsEVH/T7WLgv8D6MJiH9xGvVdw4EX0/5p3WyxyuK7x7RG9/kHsOKnGa/dA
- UlSoY1rN
- fhS6JxT+VdlwmcFlwrLmAs2tu21JRvrl6OzHgM4nn3XlKO4Vj1UwtOqYBaXrD1Eqh1ljLKpuQjqOp3/X2GLd1RCbD3L3BRJ15YMoBcAUOf+gzmzuz3+oC4Cb/kO+MotxHOwKyeQiC4FNQvXgOobpNYLrHbl3RaLGtpr8+gkreM5jNQxc1l9FcdhRpjVi1tqdezdnYzPP+OPGzWVZoeniyRc4Fg2WIcL6XLd2fg61vqWI1uSzof7cofaUSvyJHiIqc9vtgap0thytSCOXaoIe/eV8pOr0hZnpR0taUqkU4KXwhu9Ef81VSnX5NWLpTWM/ntL6aT7TGWg1Ul6d0WJRDN3J9C0MiCUT9533IT9NRsP9rSMrNM9W/GF5vYv/G6mKDxkFATqKBiPBzZnkXLa73NVDC7Y2gQFRryGzz/oRFm9xQ92/RFJOPltgj8LAXJEF3GwyUpr5QEfIuUeQa6kPA4r0XXZP2cYTFaE9g3HIi++FudOq4wWrwUxmHihtXFjTprxoEP1v3ICHzIybgOz+2aDQeSKdcqvhc7rQbs/5U4fZH1ZM3ac6wssIDjE+8b1qU75Qk3wDRoezDc+g2FZ07J/B02V1RpnzQvc9iTIFsy7FmE15IdfKTJ6DvEUKE+2dG6OrtvQ75nKWOuuY=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0F27940008
+X-Stat-Signature: 681nx8hhncpuxxu6pexk14szx9rzgkjn
+X-HE-Tag: 1783581767-944365
+X-HE-Meta: U2FsdGVkX19d9/V1h39A0FXa68uOdcKO/OVVJ7FtumCp5L7XqV8GbTHxQD/F60lcVj4WzEReWBklYBWumoEkji7L2wJAJh7R0+1t/7/469WTgcyo4tAm+aX5CqqIWSIagrn8NOVBj6EXnFb8fQl/lgMwOR3PtBq6m1trpRJju0Hae2gjElLYtIzYtDbaaH1q9GoFaE4Cwwo8Mf97eyRHmjP+jTj1huj2Vs8qhNQc+vWoZdTcX5P5epEH3tK6fQfefxQ8QmSoG4VZAc9HFoGU9ly0Ca9xo6sJRbjNOOUgiezSiN4QKr9uoiXjzCbcoNMsXnbIKKflbQkHcF2loGifp8K0ib0FAjvzSx+fSIcZAR565B4Uszjdw+nuGLYRpKZ2MtH0H2V3vid7kMJ/D1jsuwR8H8ERBb9CouG4f0FEix273S+giquzD79YALXmQFRCXxdU1exZtSFEUndKL52+juBR7zkYlBgrjEEwicxsEfhgUbRjfmuF/GHHRCOPn6+oLdJqLb6QjFPqezWO4rx3j5IriY08dESgEM7KdWjuJ58yJuTHbWh+N0KN5+EsUleSWyEv9QfYao6bOD22OxDNdmmPKyLIAbYTNDOM53UqX6VFVUhPzx7xdAvZF04gAK7goThens1UqLf0oiJBv3qBCmGOHDBuOMyCB2u8uWqlWhqGQPkJhwNb9Z3GYNTwSMpRcVueKW0akFWyEhVMnjWnIj3cyBJxUQpdY6iWLlgZfpLSMeIunAfkGv0P5sujqViMu/PvwIy9soeoH9vNJtfVhnJiKPYNHraacx7lsQwloCywevpcra4cNgjaO/hjAJ6IlM8fqSCfNwCTcwbvVaAae8E0484MbgTGCmLjTlwtZGeDgyUM3uWjna8BWO0yo+v8OHMvG4w5CffH6OplL1oXt4aMmu0eMTYPzvuFEvD+OY/IJPmUtJeEEyV1TGQ6m1ZcpETeaerLV5jGnJoVPID
+ hfesTsFw
+ /KnEbyxe4I58VQfglUXvdr2BnqON+MYqaMkd+sTK7M1S2sFQdhiZjEzwDg8B8PsLYmzQEI/Ktq8eR7qFthtSOd2/Iz5g0sG+vlpJI5XjVSBXdN6BE7iFRreCIa96i91Zm+yBkpr51bxdzOxgMXYUS8apjiuSamhXAlD/pPmM5feoXSWAYRrdIJuq0pEZEBim8kAVeEFq2R6rf/x2cLq9TyfAOQVleA3Vi/kPLv/+WcDjVdl+04vUH0utBIMzu7VBt1xLF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,75 +107,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Li RongQing <lirongqing@baidu.com>
+On Thu, Jul 09, 2026 at 09:41:46AM +0300, Mike Rapoport (Microsoft) wrote:
+> mm/internal.h becomes more and more bloated.
+> 
+> Split declarations related to mm_init, memblock, vmalloc and sparse into
+> new headers.
 
-__nodemask_pr_numnodes() returns MAX_NUMNODES, a compile-time constant,
-as the width for '%*pb[l]' nodemask printing. On systems with few NUMA
-nodes this produces excessive zero-padding, e.g. with MAX_NUMNODES=1024
-but only 2 nodes:
-
-  Mems_allowed: 00000000,00000000,...,00000003  (32 groups)
-
-Use nr_node_ids (the runtime highest-node-id + 1) instead, matching the
-behavior of cpumask_pr_args() which uses nr_cpu_ids:
-
-  Mems_allowed: 00000003
-
-Move the nr_node_ids declaration earlier in the file (guarded by
-__nodemask_pr_numnodes(), and remove the now-duplicate declarations.
-
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Cc: Yury Norov <yury.norov@gmail.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
----
- include/linux/nodemask.h | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
-index b842aa5..35269ea 100644
---- a/include/linux/nodemask.h
-+++ b/include/linux/nodemask.h
-@@ -95,6 +95,12 @@
+Sashiko rightfully pointed to some issues, will send v2 later.
  
- extern nodemask_t _unused_nodemask_arg_;
- 
-+#if MAX_NUMNODES > 1
-+extern unsigned int nr_node_ids;
-+#else
-+#define nr_node_ids		1U
-+#endif
-+
- /**
-  * nodemask_pr_args - printf args to output a nodemask
-  * @maskp: nodemask to be printed
-@@ -105,7 +111,7 @@ extern nodemask_t _unused_nodemask_arg_;
- 				__nodemask_pr_bits(maskp)
- static __always_inline unsigned int __nodemask_pr_numnodes(const nodemask_t *m)
- {
--	return m ? MAX_NUMNODES : 0;
-+	return m ? nr_node_ids : 0;
- }
- static __always_inline const unsigned long *__nodemask_pr_bits(const nodemask_t *m)
- {
-@@ -438,7 +444,6 @@ static __always_inline unsigned int next_memory_node(int nid)
- 	return next_node(nid, node_states[N_MEMORY]);
- }
- 
--extern unsigned int nr_node_ids;
- extern unsigned int nr_online_nodes;
- 
- static __always_inline void node_set_online(int nid)
-@@ -480,7 +485,6 @@ static __always_inline int num_node_state(enum node_states state)
- #define first_memory_node	0
- #define next_online_node(nid)	(MAX_NUMNODES)
- #define next_memory_node(nid)	(MAX_NUMNODES)
--#define nr_node_ids		1U
- #define nr_online_nodes		1U
- 
- #define node_set_online(node)	   node_set_state((node), N_ONLINE)
+> ---
+> Mike Rapoport (Microsoft) (3):
+>       mm: split out mm_init and memblock declarations from internal.h
+>       mm: split out sparse declarations from internal.h
+>       mm: split out vmalloc declarations from internal.h
+> 
+>  MAINTAINERS                        |   3 +
+>  kernel/liveupdate/kexec_handover.c |   3 +-
+>  mm/cma.c                           |   1 +
+>  mm/execmem.c                       |   1 +
+>  mm/hugetlb.c                       |   1 +
+>  mm/internal.h                      | 183 -------------------------------------
+>  mm/kmsan/hooks.c                   |   1 +
+>  mm/kmsan/shadow.c                  |   1 +
+>  mm/memblock.c                      |   1 +
+>  mm/memory_hotplug.c                |   1 +
+>  mm/mm_init.c                       |   3 +
+>  mm/mm_init.h                       | 120 ++++++++++++++++++++++++
+>  mm/page_alloc.c                    |   1 +
+>  mm/percpu-vm.c                     |   1 +
+>  mm/sparse-vmemmap.c                |   2 +
+>  mm/sparse.c                        |   2 +
+>  mm/sparse.h                        |  63 +++++++++++++
+>  mm/vmalloc.c                       |   1 +
+>  mm/vmalloc.h                       |  46 ++++++++++
+>  19 files changed, 251 insertions(+), 184 deletions(-)
+> ---
+> base-commit: 820d5dfede0cd55dcbc89ce96fcfbb11b7c457ba
+> change-id: 20260707-internal-h-2efef660381d
+> 
+> --
+> Sincerely yours,
+> Mike.
+> 
+
 -- 
-2.9.4
-
+Sincerely yours,
+Mike.
 
