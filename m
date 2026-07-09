@@ -4,105 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B23FC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 09:13:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 993B8C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 09:15:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BA686B008A; Thu,  9 Jul 2026 05:13:22 -0400 (EDT)
+	id 900E76B0092; Thu,  9 Jul 2026 05:15:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 292226B008C; Thu,  9 Jul 2026 05:13:22 -0400 (EDT)
+	id 8B1EF6B0093; Thu,  9 Jul 2026 05:15:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1826D6B0092; Thu,  9 Jul 2026 05:13:22 -0400 (EDT)
+	id 7A2EF6B0095; Thu,  9 Jul 2026 05:15:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E9E9A6B008A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:13:21 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5F811C2894
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:13:21 +0000 (UTC)
-X-FDA: 84968674602.17.31E5B0B
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BC5711C0002
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:13:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=guIrbCG2;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=1FqZ4Glp;
-	spf=pass (imf21.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 566726B0092
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:15:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C66151403B3
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:15:32 +0000 (UTC)
+X-FDA: 84968680104.15.28C2090
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CCF72A000B
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:15:30 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Jwgkampe;
+	spf=pass (imf15.hostedemail.com: domain of pmladek@suse.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=pmladek@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783588531;
+	b=mtxtlXCU+AOHiZzA3GdGCrJXLOHgH8D92wWXnp0qAsf7YEWK7zGy81y3ZH6dtYJvwPaUH/
+	4uBiMrHQyjojnEXitfYJ3i+h+mGeISTRtsFyY+A6ZztDoS1iY3rEO1HBRup0azKxwX/DqV
+	Il1v5gbvnxA4rCKrJ6iFmhwDr/Y9pws=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Jwgkampe;
+	spf=pass (imf15.hostedemail.com: domain of pmladek@suse.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=pmladek@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783588399;
+	s=arc-20220608; t=1783588531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oFkhovupFuB+0rzcV3/Rh8Yfa4/ndsw3Kaki+DTqEk0=;
-	b=CN8jHwyg00zGWNjqHwO+LqdnzwSp2adzFgQgBuPUnnR9vH1uMdpL2F3CgfCeehTAd9Uw7j
-	ZqclJDUa0nl0FOAs+pztx9Pnv+vA6vnR1LgcT10jq4rV92B9c3HTV4+SAhqVGs3urLmE2+
-	lm+7r7nnvOJzjxS1H/AsSu0oeJXGgO4=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=guIrbCG2;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=1FqZ4Glp;
-	spf=pass (imf21.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783588399;
-	b=gVz449O23S4kkdWbsxFbkh9Nk6CPVmi/pr/nVapwplZiw2tSADggWLXSoY151GBYpj6jrK
-	DzOTibD11ceuIxW8N+FLk7SByAuqyxvs69c+VMkLPI4DMIR2Lb7zCslk/UNHfYwJRt/XWr
-	1QX8R4iatGkTQDzNQszp5/gSFF/2nzY=
-Date: Thu, 9 Jul 2026 11:13:16 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1783588398;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oFkhovupFuB+0rzcV3/Rh8Yfa4/ndsw3Kaki+DTqEk0=;
-	b=guIrbCG2tFjNemmIWTWaeYkEEVw96TgbMZ/9sp+L9Zu4pxOJuXjszNyLZk5UCalt1MZeFk
-	J4EUN+jbwE7bJEVdDFjrpygx7YtwM8CDq7w1Z3deoFVIUMCbWioPu8pBqB792z8DmyzX+8
-	eZBeGE80HL4zj+f8UIcazq9FS3G70IvCkWxkoY37YrTX9yl33P0e01MqoGjfcZaoekXiC4
-	4kIGWf9nlf8H5YCgNR66/sUxWEa/c0K2Rp77uYnpMPk71hEcBe3XJVXLPEezX4hSlCHwwA
-	dBJSbO/YG4q/vIKPNsT1gWZFNwqeZD5VfwqUTZtzxi1fTUDVXrrSMTh9v8pRrA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1783588398;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oFkhovupFuB+0rzcV3/Rh8Yfa4/ndsw3Kaki+DTqEk0=;
-	b=1FqZ4GlpMtrrBtqzEJlHdoI4seB5yz2jzvAcIEnwg8F9aO5ZT07ZTCZyXqq5nTBv7j96/e
-	bB4kfk2g2ag5sACw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Wandun Chen <chenwandun1@gmail.com>, vbabka@kernel.org,
-	david@kernel.org, rostedt@goodmis.org, mhiramat@kernel.org,
-	Alexander.Krabler@kuka.com, hughd@google.com, fvdl@google.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	riel@surriel.com, liam@infradead.org, harry@kernel.org,
-	jannh@google.com, lance.yang@linux.dev,
-	mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
-	pfalcato@suse.de
-Subject: Re: [PATCH v2 4/4] mm/mlock: migrate folios out of CMA when mlocking
- a range
-Message-ID: <20260709091316.TFgtBZlE@linutronix.de>
-References: <20260707125925.3725177-1-chenwandun1@gmail.com>
- <20260707125925.3725177-5-chenwandun1@gmail.com>
- <ak0OZKzapUefmA3v@lucifer>
+	bh=0Xo8vReeYi/VtYuebsK0R479nywgN1CS8NCBcmTm2So=;
+	b=3xN1wkhU5VVwnB3l7jnVt/GQS0Gvj5Ji4kv9+58EqN+A5tpvRadudxEryJ2gfHYyRySWTk
+	UekwKhXYKf6+Cqp9XJl8l6nrqeGj9lSJNTmFySOoRIYzBU12WKepKcdG55NfJ9yM5xs96c
+	MM30YUuC2//EadJ5oUbdnFOP8OSacPw=
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-47df6a5202bso285872f8f.0
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 02:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783588529; x=1784193329; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0Xo8vReeYi/VtYuebsK0R479nywgN1CS8NCBcmTm2So=;
+        b=JwgkampenVwX3CNVv6j6cOlj9IDjQthYfbmBPna3wVdhELWRkfd5kd2DHTKoUecW/x
+         l1FuWvXP8wkPOvoMBUR+zI6Mbr3qVsdodjlGmE1/ceMfF2VqmVpqA2eo8z+a6IOfZKcB
+         6vaTCAiAjhWv6DQdJRttEdMJow6uY+SOOcf1TvlaHad4me1Lf2siuORipn+6mytO+ipF
+         O6DB3op4aLMlNcHaY5iHGJqKbgEI+PXy48sLBXhcNR8APC4pyJFKbRBNHvUnlMLWCaz6
+         qTmVSyi5zh5nBtY9n8o4nbQMoYbgtWXfSmtBJTOKH6YPfBxMLe3RvVfDp7uUNsiqK7Dx
+         J42w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783588529; x=1784193329;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0Xo8vReeYi/VtYuebsK0R479nywgN1CS8NCBcmTm2So=;
+        b=dtvCeG5OrQR1rcPQoEjZ9W9+kVYilNcmSAlRF/D2nTpIT7oKIhsiw21Wm97r8nVnI1
+         9/4ry8zVmiXUP++jpOnGJ9SnX9VEnZutCXH64dhKljzzhPQVyH5f5KpkwvVRUwCYhDfL
+         igICh4Bk1MtJN49OYMYvUN2klvi3xnniYf311Wi8fpF0MaZZ5dZJNie2ofxHQJkYeTPW
+         yxT3cSjTCug0kop7393OJCT0PlZ161GEVgpJBvd4OSdvo/KY29uqAEhxnIAMAw239UWC
+         Jwy+7AWWsE3yNniK/8UoDrg091uanA77p5GegGgyXWp028eWcmB9QgpEz2hoZLIcaDQM
+         oGew==
+X-Forwarded-Encrypted: i=1; AHgh+RpigNazlOeeJVjcHXEW/hX+xgeX0BqHsc3XJMZngDKjZxTqnleJ2rn0dzpn4R+jqgPMopE0bmAFAA==@kvack.org
+X-Gm-Message-State: AOJu0YwOdHB869i5hXWkd8uu+llbhubM/Sqv+ySOrQQzaI3FB3ZTZEvm
+	xicg97y4d4kvW+loYQh/KZYNFeKM2l8/PSnxUOQQQKYwmt7flRg3c9OUaTF8el04NcU=
+X-Gm-Gg: AfdE7clXhiwinZPC+8hROfNEHGe5mJ8mUzu9l2xxzaXjL88aUfB7au7kLKkvNgjB/Tn
+	IgbE5z+vBM9SDjr2jgWaElYZcenzC/+RUoBg5dsvBgSrNaE1LJMdDDjsaFQyafHO20RIPq4ARft
+	VkofExH+K8iT9OEJ050LEHIMbREJ9pWhNRtu/USr9zHxWlM1cbVjcLnTj6rXShrgUp3HLRTwEs6
+	1NGOL2TJVzM312hlD9wNbTl2AWl2QrNGTJw/qBKCJeF2qegSqYDsuBO8lcCqk7MHJ0C0lqkKerP
+	IzJf/CLPrGr6UQqNU/F5zQQwIl3sqoUp+YDamJKOXMn0W29pv9vNX/kI5SAcHnLbtuJodo3/tdb
+	Qqjifgs1upSTQzHPqiIiaByb8TVwnfVjYK2YPbrn9uZLksCvW8kxrPkfVYRbyDonEmbYtjxCkI+
+	reSmhdBrHD5a79xaA=
+X-Received: by 2002:a5d:5f51:0:b0:474:57f0:49f8 with SMTP id ffacd0b85a97d-47df07a988fmr6128868f8f.4.1783588529359;
+        Thu, 09 Jul 2026 02:15:29 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47aa0960816sm48024686f8f.29.2026.07.09.02.15.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 02:15:29 -0700 (PDT)
+Date: Thu, 9 Jul 2026 11:15:27 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+	usama.arif@linux.dev, hughd@google.com, willy@infradead.org,
+	ryan.roberts@arm.com, "David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
+Message-ID: <ak9mrw37kTORZXmc@pathway.suse.cz>
+References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
+ <ak9Qe1G7Rv3HF6ZR@ashevche-desk.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ak0OZKzapUefmA3v@lucifer>
+In-Reply-To: <ak9Qe1G7Rv3HF6ZR@ashevche-desk.local>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BC5711C0002
-X-Stat-Signature: cjst5dcwbtgin74fhbym16zn61odos1r
-X-HE-Tag: 1783588399-841957
-X-HE-Meta: U2FsdGVkX1+5xmmqWEnwgH/JO1Cq28aJdSvZtXUjIUnGWiemHoRQE9E6xRcMQ2g3s4rvRPfQODBk+QQmwy/vLZbD0SAQ5zxEt9F3QzC5DUdvPq5es50SWKuvF6fXWsrARMkvRiUd+KidD6rCW9MXGbuqlIvNZ9aqyjRWUeDNKrO+IF7CjddPJuBMRAA8jp63zwEE6Z9l5h52YaqPJWWvIvWCKuqNGpRYBHne9ewqFjZ72hzIN7LjUE7H3DTWUYnIQP46/H84piBFXuW/8UUoWnxpgbPQjrx/pQeWNtnIToyVR2qy4V4stM+/2K57LlCa6Sv8gN2MAfnLImrVCtSwTRnxNY0UhjyrLJQ8JTI31binxOHwM30BnHcNRm4jLLGZ2ANFsdqd0J0aV7wU0MnbqPZ/MLJ6WX666XsLdXKUMiksszBGm2T6nO1teiRNi2w6JzGwn5mhd4UuB9/JL+zMRQXp+vM+tuvRr3ca/11bscF85kTltrytCdTVJCiK+qGkmp4WEf2/8lMEqyP+J++TG5oJzJJRjZbbM9AETN1TNIN8cpqlQJu7Ynizp9BxWxsWvKQ+qiGXF04U4e6iNZrn6O5X2Jb5gvA/cbpLo3ypr5nyjlOn+5xxAfz8cVtnKOCM2rp3SQtURU3g2XUYT2RlDnQCCgo+jgxK6nTdNONs9pIr1pNqQfNVyDKJLj5XPHegG/5EEIJDDRzGy90rn2IvWzZdsxxTWfh0Y07jANSMeg3xa9NVPjK/4EwL5rtehRKdwKOqw1P5iBo43MbzLDxGRLVlUjrAiIitEFQblHx0qD6T4IHDXDGfgbIC4yP3NMZsaw5BHiRSS5+pmsid1WsaQ0CPfHk3aCBroLCdvBiLjCsIlz4J8VmwsDN+vm62H3ieMBwIu+W5+ybg1QsKYfb9oPEtlIUeSwwmONWddfIfs8ci5blgwY9YQABWN5e4Z3JUPlDMv/mMtNFB3tg6doi
- LIJWZXlz
- mmNmDjdpgHGuFd+k3kSMCW8X7uwedZrc9s21nzGXcFHMnCYTqDfwLCVPsuXjQtewjp/HajCvpgRZvymKtuwB/uouXgiUgQWm0UMFeDuz+YdoYjo7f70Bh+CgXM7ZLSjs3NwJQ8b2qPVcHYPDC1b1+C9TAEUJqD9Q5d+qwwvvXW8FYKI2SICnCi4sXeCIugTUJn1wqAO4xrZlCvygyGuQYLCY91lk7vfc1M/Lo41XrkbTwPVzkymbF9sW04LSeGfqWnmzyPoHOXLemgvcwC3pAc4s34pD1Zv49pNFXyOYy/NuFaG6XqiBNu9hU5TZA/QdtlVDdGtSMOogYyTs=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CCF72A000B
+X-Stat-Signature: 7b83rnu6znkf1z38a6ujxuyfim97g77p
+X-HE-Tag: 1783588530-22304
+X-HE-Meta: U2FsdGVkX19yLzxHCnJEGL15H2mxOH9f4sp4EdYJj5+BoRFAjwfMiNwRKbq/cbXQ1ic3s0O+SyCMid046UvlHUHmYj9WXxMUK7BmMS4FN8RbRCPlI1T+qF8JULzRv68z8nI9Q0i5fcsCI3Lr8PraA6uTqvSu/cfDVE127pLSex/GEL/e3FOOwKOIKOaheeASV4S6fr9JRDq9mZey40xImQgLek5RBuOx/p2kBaH0glRSOvjiJHIoZXB5oj/P86ChcE/iZ/drL28JKQXfJ+9wIezVgYaRRniWori6mepse61ozMHQP+hjiWN3Wbad4kiGyRhJn3wM+yXz4ZTmZ/NcMMiAcHPQuHeLgRt821gnB/PtgAKQYlFX4hBdRW0CGNhgUs2N5IezG0Emj1mDWu72GkZ3pEi5CylrgokcKqHnhp6KNL5mFjYuC+wZNi3vcs5N2F0UeuGu+6TV2heEwJdRnNZB4JKQiDT1n9WTeNq0wrLCjjpj6mBxiFv5YVTAxQOUJSiat9qlwgZX6Y2+Jp8WycNwa8lAtMJp+djUxz1tScQk/Y0ayeSi4082c8Oih/y8Np1xjiKw5hDhf/6E2M0EVSbglGGxFgZtsu9y6tIjZlYR6Ow31FaZul9PIYgnPRb53G+0EPudCM1+YG2+k0V2Cg+ESRchGRzWsiSkoyPLJeAThRByOO7ynFA6YS8rVLDEw1uDf2q8OISMFiWrbs8dv24ruD3PEXJVHrMKDqiyPDVZYl+k9oY5clYa/6GbdGMU6qOEmEzAcore1YF/vHLD7mrkm/rqONRoLL8tx3sXugEfDpYK201gc+bBcqw/eC0iLL5cFU89tGqGLiBugdvWKAof/1iwvTMjNVvq3lyUEHs3YDKBqlLLd740eNegxb9wF5MxKjuyA8sYNHF6Zi8dyOavhvFs8IRja9r1lU+kBiUM7BsITqJLa4SMmpv14yWBaeWNiCY1mlnbcdgxcKc
+ VKFmFgRV
+ vtSFs/yvkJpDlGrQTbtHDcXk2n/haOLhAIjKfTd4q1c18g4NlDaBtIYe3K4NWdbKVnrnftuyrnBcRk7eJTLslZ3eyGg6yy2pDqGBAXRluVNSe1wQsPiyY6lBZwDQ8eRo/zFV7/JKPaEi7r8nUb/uLekn1nEidEbnKZfzr70ZUbOlKNkXzhnHB7kY9ORiya10hCkxmG0Gw7qdR3G9svmX/v6Q8yWHitUui1GIzRPaYFg9JJJ4h7jXfX7unEhcr39JqIYQCg9vVnSFvXeXiQwcQvFTkOCuJul1TfuMGBVJIcLhOXXql+C8ISjtdRauLNracJwy9KmzF/kod0I3OA6bmSRBMqHrJkPAtkR0fo5FaFCPP/cTPyEUj5wNGY8RsSOMzikuAHgtf2wcpMObkKyJVrviIWZv+PKnwKKMEOmfTxesMbkIty6iBn07bsZ6Hs0N7vjp4aDPzilO79bCJSzvPUhwXzaRL0JB8gx+G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,42 +122,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-07-07 15:54:57 [+0100], Lorenzo Stoakes wrote:
-> On Tue, Jul 07, 2026 at 08:59:25PM +0800, Wandun Chen wrote:
-> > From: Wandun Chen <chenwandun@lixiang.com>
-> >
-> > The region covered by mlock[all] may contain CMA pages. cma_alloc installs
-> > migration entries in the page table, if a memory access occurs at this
-> > point, it must wait for the migration to complete, which may cause
-> > latency spikes on the RT kernels.
-> >
-> > Try to move the migration cost into the mlock[all] caller, which is
-> > typically a setup path. So reduce the chance of latency spikes on RT
-> > kernels by migrating the currently mapped CMA pages out of CMA region.
+On Thu 2026-07-09 10:40:43, Andy Shevchenko wrote:
+> +Petr, wondering your opinion about code dedup (see below).
 > 
-> 'reduce the chances of latency' so do you have any data to back this invasive
-> change or not?
+> On Thu, Jul 09, 2026 at 10:13:34AM +0530, Anshuman Khandual wrote:
+> > From: "David Hildenbrand (Arm)" <david@kernel.org>
+> > 
+> > Bad page map reporting currently stores page table entry values in an
+> > unsigned long long and prints them with fixed 64-bit-oriented format
+> > strings. This is inconsistent across call sites and does not work well for
+> > architectures where page table entry values are not naturally represented
+> > as 64-bit values, such as 32-bit or 128-bit entries.
+> > 
+> > Introduce a common helper to convert raw page table entry values into a
+> > fixed-width hexadecimal string based on the actual entry size. Use it for
+> > bad page map reporting and for dumping the page table walk in
+> > __print_bad_page_map_pgtable().
+> > 
+> > Pass page table entry values to the reporting path as raw bytes together
+> > with their size, instead of forcing them through an unsigned long long.
+> > It keeps the printed output consistent and avoids truncation or misleading
+> > formatting for non-64-bit page table entries.
+> 
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: linux-mm@kvack.org
+> > Cc: linux-kernel@vger.kernel.org
+> 
+> FWIW, you may move these to be after...
+> 
+> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> > Co-developed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> > ---
+> ... this cutter line with the same effect on the email. The bonus is that
+> it will eliminate the huge noise and churn in the commit message.
+> Note, many maintainers switched to this schema (especially those, who use
+> `b4` tool, which allows to handle this nicely).
+> 
+> ...
+> 
+> > +static void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
+> > +{
+> > +	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
+> > +		snprintf(buf, buf_size, "overflow");
+> > +		return;
+> > +	}
+> > +
+> > +	switch (entry_size) {
+> > +	case sizeof(u32):
+> > +		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
+> > +		break;
+> > +	case sizeof(u64):
+> > +		snprintf(buf, buf_size, "%016llx", *(const u64 *)entry);
+> > +		break;
+> > +#if defined(__SIZEOF_INT128__)
+> > +	case sizeof(u128):
+> > +		snprintf(buf, buf_size, "%016llx%016llx",
+> > +			 (unsigned long long)(*(const u128 *)entry >> 64),
+> > +			 (unsigned long long)*(const u128 *)entry);
+> > +		break;
+> > +#endif
+> > +	default:
+> > +		snprintf(buf, buf_size, "unsupported");
+> > +		break;
+> > +	}
+> > +}
+> > +
+> > +#define ptval_to_str(buf, val)								\
+> > +	do {										\
+> > +		auto __val = (val);							\
+> > +											\
+> > +		ptval_bytes_to_hex_str((buf), sizeof(buf), &__val, sizeof(__val));	\
+> > +	} while (0)
+> > +
+> > +#if defined(__SIZEOF_INT128__)
+> > +#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
+> > +#else
+> > +#define PTVAL_STR_MAX	(16 + 1) /* Max 64-bit value in hex + NUL */
+> > +#endif
+> 
+> The above is quite duplicative with what we have in lib/vsprintf.c. Have you considered
+> using something from there instead? (Yes, it might require some functions to be wrapped
+> or dropped from static.)
 
-The application gets pages assigned which belong a CMA area. If the
-pages are in need by the CMA then those pages are replaced with other
-pages during a migration phase. Since there is no guarantee how long
-this will take and is also subject to general scheduling in the system
-it will be measurable and painful once hit.
+Honestly, I can't see any reasonable way to deduplicate the code.
 
-> And for RT, but nothing in here at all checks for RT? You're using this
-> compaction sysctl as an RT check somehow? That's gross.
+Most of the magic in the above macros are in the value/buffer size
+detection. I do not see anything similar in vsprintf.c. The sizes
+are handled another way there.
 
-The man-page for mlock says that it guarantees to stay in RAM and/ or
-preventing to be moved to swap area. I would however argue that
-replacing physical pages in the background should fall under this since
-the application can't access them and is blocked while trying. The notes
-section (in the man-page) lists "real-time applications" and
-"deterministic timing".  Therefore I think it makes sense to do this
-unconditionally for mlock areas regardless of the sysctl knob.
-Security related application probably only care that their memory does
-not hit the swap area and probably wouldn't mind 10ms delay.
+Also the internal API used in vsprintf.c is a bit tricky because
+the buffer size is passed via *end pointer and it counts the printed
+characters even behind the *end pointer.
 
-> This doesn't feel like the right solution.
+But maybe you had something particular in mind.
 
-Sebastian
+Best Regards,
+Petr
 
