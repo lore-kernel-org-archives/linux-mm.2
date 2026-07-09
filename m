@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13E2DC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:06:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C508AC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:06:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BFE846B00A2; Thu,  9 Jul 2026 10:06:11 -0400 (EDT)
+	id F35856B00A1; Thu,  9 Jul 2026 10:06:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B62166B00A4; Thu,  9 Jul 2026 10:06:11 -0400 (EDT)
+	id EBC156B00A3; Thu,  9 Jul 2026 10:06:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DADC6B00A3; Thu,  9 Jul 2026 10:06:11 -0400 (EDT)
+	id D36136B00A5; Thu,  9 Jul 2026 10:06:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 656CE6B00A2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A1BFA6B00A1
 	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:06:11 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E975120140
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:10 +0000 (UTC)
-X-FDA: 84969412500.24.41B88E8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E7ED2A0003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:08 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vmg0eQ78;
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3BC1D8BFA7
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:11 +0000 (UTC)
+X-FDA: 84969412542.26.B8EB18A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8ABB7140004
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kKda/8Kk";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783605968;
-	b=OpRCiE33VIiB3aIixXksTU6piXbLSpbQlthAvwoaHPPS9VhEBtOy6HK8E0MiMJqgWBuRtN
-	FVb1SNd208NgqBhd973FdGZATzrdl6FEcqnWoXO6+GmDQ/NwKOTXoviFo3R1IM1cB3kG+g
-	TpJYbfNUwloqukbpexEOBahGMuQCtgs=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vmg0eQ78;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783605968;
+	s=arc-20220608; t=1783605969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uIok4qBZQSpg60ailXO0bOCkjI7Xk9a+1vq0pYdirF4=;
-	b=n/tzzpnRrFY6TJFExdXMz6bmy+gf991/iDULcC5fGbPqmcHkvcvh3d33Yn9+3w4eA1vLgv
-	gTiS5MyfKSfOiglNy+pKuwb6gfQZ7/rkp3d/yfnrM/N7YqFmq9V0taomjK502ps5XAo29w
-	qhoDJ/O9jUKXh+r8XKed43NZMbSQE9Y=
+	bh=ibGLnCcjbBBeYSipXvEOLcsc39tu7yTI88ewylASLiM=;
+	b=YrrltDVbmyAELUhx38BzBwPPehgtop98SP30qLzn/gQEWAAwf8xumFYaqmzPZITOe9jjSQ
+	/Q02yn/H8LFcGOvEU+DTOuo4sbEoIDxOu+18HxAFrqq7c9ausFprbQ2Xz/QGitk490Wma9
+	e7E2CXURs42qpex5awwOxd9L0/wLU7A=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kKda/8Kk";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783605969;
+	b=l7H5LY4HkC+lcX9V0Ch4Dd5FxaZxScaotl7WXA40gY5Pm3VxUixsdctK/FpbaRhAU0wMPc
+	kPXQA5oYjh5GICJzkERMwo4xTBeBFScC2X9Kqvp4AnZhXmJCEsrfBPTUb/M0gzVYU0fEHo
+	ilg6tDSEXq6cqI6agE+M+MQlRtJ0gKs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B96C061386;
+	by sea.source.kernel.org (Postfix) with ESMTP id DBE2F42E7C;
 	Thu,  9 Jul 2026 14:06:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFD71F00A3E;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE531F00AC4;
 	Thu,  9 Jul 2026 14:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783605968;
-	bh=uIok4qBZQSpg60ailXO0bOCkjI7Xk9a+1vq0pYdirF4=;
+	bh=ibGLnCcjbBBeYSipXvEOLcsc39tu7yTI88ewylASLiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Vmg0eQ784RNQy4F1LMVusNPLwtOeDD5MkHC4mmvzhsAgcOyLihdCuXxPmt2E0ckLa
-	 0ndiwRvYu9X9JlRCsaXND48MjjOPKb+STLe1BEzhGtbHlyUF2H5f5t40J/fH0GHGsy
-	 pcgudqt4GPeiweZZtbJaW0HCt5mhOs1aiG8StOdwI4BoMywMlHZrwvcBRDN2MjVGHr
-	 nVzej4uJCZa3FOXCb7aHwDhTkXNbf4kQ4EguxX1zXZXpWk/SwqLNS1qbSMpVQCou93
-	 OyE0QlyP8ybncx1kQVFep7YDYCiAltT2ZkbI16U1dv1vEaGdgcypwMv9Eo6QxixZhe
-	 HJhTgPhKLJLwA==
+	b=kKda/8KkTpzWtIhthgfP+t+vMJfnwe8SlB1loMD8eVeFj+//HmZIsJkTq42mkLq4X
+	 BnVd2fq+HBz0XB4eFCyjTUQmiom2Gei/OYA+mGjlUCYPQZWURKEQ+foDBCPBoKuNE9
+	 pEYoiNiUUqyLpNhhyqWWyOItvYbD4Zhtr8IAOr5/YUIU5u0Sg0RyDg2aK4xDvbVsMr
+	 56ietg39h++6cAz+hIlmTQk6GARVL005iEaUC34v+np5H/J6XZed3J1OIq+8AFD9Hn
+	 0hUbJfs958cCxOqHE7/jzEJ4GmPzFdKgQs8pBHQ13j3ATCExTVBbT51zDfDS2LgFJ0
+	 CpgRm9OyxALkw==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 14/19] mm/damon/core: get merge threshold from probe hits when weights are set
-Date: Thu,  9 Jul 2026 07:05:52 -0700
-Message-ID: <20260709140600.90950-15-sj@kernel.org>
+Subject: [RFC PATCH v1.2 15/19] mm/damon/core: implement damon_has_probe_weight()
+Date: Thu,  9 Jul 2026 07:05:53 -0700
+Message-ID: <20260709140600.90950-16-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260709140600.90950-1-sj@kernel.org>
 References: <20260709140600.90950-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E7ED2A0003
 X-Rspam-User: 
-X-Stat-Signature: p6zioy1bcruw9z9raxe1e4h9qry1tfse
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783605968-35312
-X-HE-Meta: U2FsdGVkX1/a1zQ/FB2QeXYqTyU8PqFXigRuWPKrChmLoD3DnvRJ3ch8tQ1G4dhehXFzdYW8gPOa64L93fbKTshy+S8+pMnm8hENj6VlN6ql/w4PokTUMz/RNGPlJyScI2DHxbymOGoA3k+YD5nnpCKidj3yg+Q7c1LuwcpZN1nbb03UGeC0Iervd0DWIA2eb4NYJyi8gAWTQbV8E4JiITxvVn3a8o4iRZaJiYgwp4xTeDf+sYpS1sqn3KYzHhXuDqq5Tl42Muz41jW4B/uRS+LV3qV7ej5YZyZ4Qe6fkzKI6iaZYcSXAif8Otd2zx4c4IoGWcU6eKgWmX1yMy5FJNoHiNSs9EHHbD3R1vMzgWf3p8c/4WQsQYUT/8ltASc/aZpd4VleKPQJYo2G01fRo83uB/W3pk/xpn24a2p5CpWFyADknXuePOz78iquDXDufN3YaLp5w0Xd6cRNIzYHMN7uBfESW73FEzkH3el5ySYtZiqqRmYyrtpaunT2JWEriwj6C7MuoLzZJOujeFDFT9eIkbWAV9am4QUF4ODvolWoZHESJYC7VuAT5k4t+fBSWFsPTWPhIahgF8L+GKrNOxsJ9iJKQDYA9Ra93XTTUFduiv2zHykfkHylaVnCY8GBqhoLDC2Na4wsKICh8vCffheBZQhI7XE59D0Hadc7ErW1Bbj6ozGWUrFzL8f/0qThnE+irdHQZvwKVCxHB4uA8Gfa9vxAdWbj5Wd1lO9C20J3EYi/VUEvg8KLvPeZNFgT6POiF2ahtH97TGQ91sc6rxrF9qhgtPM6vqpP9WLStiezYVvyjD4JlvuUNPt7frNEFi+sEj4vBphnB0EofG/9gTH09z0kDwj/jWqILsbHZdgnVYs4npFnBOKVQ/0U+2MsTCo6v7J7VQHgGgJskDmka2Ob5i/pkNTWonfH66MoxOY7NWJ93rnjC/A2OHBGOmonCftJZTzsM6g4Ljcgqkm
- pCGL8wZ4
- nLNezuuKXRxXWDifAlPGy9o7L+McVqQz0VLmqeX/QURWVjNSJT7DhkGLVndPEsr/wfO6mQLJbLtkmtOVWiveEnhucD65emdyF4OL2Vuqm7x/+Vlxnt1gf63ypr/9/nxz+jRKARS/OJp0AUD9nfB51SjWS03j2XE7E/y/sKjCRLvedm7HJ66IybiDsGhuRzDwUR0DDy8ydvrwRPTXL9DehDmL8+KrY2TItw9QxgZyDrBPlsDE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8ABB7140004
+X-Stat-Signature: rdafoe79nsew1kan9kbiy3esckh49gjm
+X-HE-Tag: 1783605969-983327
+X-HE-Meta: U2FsdGVkX19FNb4+b5q/JnNZ+50cqnyIVarf63jqPF2UTqka1WPqwz6fr8vMQtz0E+oPVYE5mVk5SYpcr6ef/Pj20SBk2FnADgOvk7ykdwah+/PTIWj4uzkM/MnAqa8BpvDrCMSfRc+cOwJztO2aArbxl45y+habnSFM1eke31MDwccrN7dIIwgN7sdl6Xb5TgaN7lyJeebsa4AZBiCBjYaoqXftGLM+sZvsAjbWimL1yoVVBAVAiIGLhRwUiS0vVsfw9nlo/6KC0w99rhnciW6X9fYo2r6GLLp+bN4c3QO6PSZvGKomDZxDxzhSWDD2CMnF0ndE115lYVnOvMPCmUXMQiXVFaxIyz0BIKYzvwJjgKxJqh3syKSYb/+mHg4kZ+oEL04dXG8fqsDL44DK9aj+BtsHlbwu2U7NLkfUdxiFGDhU+eQCMOEXGbXcrkkUYldUxxN0cUH8UQCBG6iX+UIq8edc6sZiMYhPbd4t4bUuNT/b9hFtald2EiUIDv7mv7C7wR1PLJEVHsGCWGdbwnqikVqniVuefugugmIp+h46SjPUfSHF/g/Q9G6vgBxWgPUPNBvKaeqXflm+kDhcZvLha2Vk8zv3vF/inru6mebeQd7f7GQkJQiNHLi21cJ3TfR7jwdw99h5j23SerOnUQn7YAICYXt3D1hDApkvtwWfMz5P7tZprHyzQOm8+9PD03XwmcCcM+CB61UsOslmKQVDNgV7Yp2PQf4ttSHzVAolOmwqM6WhogF2vkCnAUnq+JExrQQFR4W7W+AhHzpY8rx5bkrFks9vTkhAyBQ5bD/gXeR3IVbygeuYiN4+BDuHhK7PiJQPPk0ztMmzIYNuhLnc4pHe74oPs+fvdRmBwA6w8PqYnBTde4C36idgGw6tJoOBgJW5NTpG+s7W9xtMsE2Gbo3/DP6j26iKDKO0KNThB3P55nc4QQan6llXjnFAYabCIbnoALGzPuZFxLe
+ yQ/8g33y
+ VnCUol9KW25dBau9U0/g5VA2l49IBgwVY3NyV96OPuVyBe1esbBbwDpMpEr8HCri/vGunCxNpMMVdGDT19u2pL3u23YsQIjgUB3aPRlv2oj/2pLBqpXs+IiwU4mkjo3f9a6N1xwRNyq0qExadNmJB3h1tgeEcxH28ewLhSKBEy2t83m57E7Gc/UIu7wKrfuHiX8gPoXeqFAELOEF1JWMMUd2qEejEO71MaxzemryLaWFv49Hpanbl39zGK0NO04mBDEZdhSyvDxOG3Mg/VquJXY08bA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,53 +93,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When probe weights are set, DAMON merges regions based on their probe
-hits weighted sum.  But the merge threshold is calculated based on the
-access frequency.  Update it to retrieve the maximum probe hits weighted
-sum in the snapshot from apply_probes() ops callback, and generate the
-threshold based on it.
+DAMON monitors only data attributes when probe weights are set.
+However, the function for detecting it is intentionally returning false
+always.  The intention was to make changes for complete support of the
+mode in a safe and incremental way.  Now all the building blocks are
+made.  Complete the mode detection function so that the mode can really
+start working.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ mm/damon/core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 8837b2129baa6..12c66edecd783 100644
+index 12c66edecd783..6661d4bfab5b9 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -3763,7 +3763,8 @@ static int kdamond_fn(void *data)
- 		unsigned long next_ops_update_sis = ctx->next_ops_update_sis;
- 		unsigned long sample_interval = ctx->attrs.sample_interval;
- 		bool access_check_disabled = damon_has_probe_weights(ctx);
--		unsigned int max_merge_score = 0;
-+		unsigned int max_merge_score = 0, max_wsum;
-+		bool get_max_wsum;
+@@ -211,6 +211,12 @@ static struct damon_probe *damon_nth_probe(int n, struct damon_ctx *ctx)
  
- 		if (kdamond_wait_activation(ctx))
- 			break;
-@@ -3776,9 +3777,18 @@ static int kdamond_fn(void *data)
+ static bool damon_has_probe_weights(struct damon_ctx *c)
+ {
++	struct damon_probe *p;
++
++	damon_for_each_probe(p, c) {
++		if (p->weight)
++			return true;
++	}
+ 	return false;
+ }
  
- 		if (!access_check_disabled && ctx->ops.check_accesses)
- 			max_merge_score = ctx->ops.check_accesses(ctx);
--		if (ctx->ops.apply_probes)
--			ctx->ops.apply_probes(ctx, access_check_disabled,
--					false);
-+		if (ctx->ops.apply_probes) {
-+			if (time_after_eq(ctx->passed_sample_intervals,
-+						next_aggregation_sis) &&
-+					access_check_disabled)
-+				get_max_wsum = true;
-+			else
-+				get_max_wsum = false;
-+			max_wsum = ctx->ops.apply_probes(ctx,
-+					access_check_disabled, get_max_wsum);
-+			if (get_max_wsum)
-+				max_merge_score = max_wsum;
-+		}
- 
- 		if (time_after_eq(ctx->passed_sample_intervals,
- 					next_aggregation_sis)) {
 -- 
 2.47.3
 
