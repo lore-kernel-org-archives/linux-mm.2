@@ -4,128 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3B27C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 18:58:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74CD7C44506
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 19:05:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C20D26B009F; Thu,  9 Jul 2026 14:58:26 -0400 (EDT)
+	id 63C676B0005; Thu,  9 Jul 2026 15:05:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF8B16B00A0; Thu,  9 Jul 2026 14:58:26 -0400 (EDT)
+	id 6139A6B009F; Thu,  9 Jul 2026 15:05:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE9946B00A2; Thu,  9 Jul 2026 14:58:26 -0400 (EDT)
+	id 529A56B00A0; Thu,  9 Jul 2026 15:05:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 906C56B009F
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:58:26 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3825A1A026C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:58:26 +0000 (UTC)
-X-FDA: 84970149012.15.5A74284
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6E44B20002
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:58:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N67iw72G;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783623504;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D1A86B0005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:05:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2C001C2437
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:05:06 +0000 (UTC)
+X-FDA: 84970165812.19.011ADE5
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B353D140003
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:05:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hOvCjM6c;
+	spf=pass (imf26.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783623904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v7H//saN3HUHN+i+S3SULFCinOHrdn1xh7S62KvKH1s=;
-	b=oDPXQw2heO5yBFSn3+pThcdA83L16CkyoJpCHlV6ePVwoUdB0VIQIomHoFHOwUhUwgOZ4Y
-	zq0Ty9HDJSCMJ7d5fCH1PNsh/BRYpCzWSjKwO3F2M2w0HtODFLLGBnX8USHLJ0E17MsWXO
-	LMg3k9uX1a5Fh43cj0QPt8jnnpkqjcY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=N67iw72G;
-	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.53 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783623504;
-	b=FGh5kfdi0CP8RMDIcC+mriN166a8r6sn07gfchd29a4tbX/hH//JxwOzr5OostYi4N4Mb2
-	uJOVtmWN/XF/bIRw4dWiCC+jkmQCud2BO5mJ+8VOD+u8qxNWu5MAhNCNVXpWMCKU3AP9pm
-	susY5J25nbscu2dvqJGlBdBEiF7Ixj8=
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7eb29ed2bbdso88475a34.2
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 11:58:24 -0700 (PDT)
+	bh=bNRtJyB9QHVjAm5rxzEf0kABc3aKI1V0CftN11/9Smo=;
+	b=k+k+ZcOc7bILEzHC4QMbSZjP3nziCOnIEMm7FFwYsB4NxJmHESo3TeZ/zSpboRUt67gJfH
+	bYOqNyptqcIzirn3kJFh6RXBvKlfbaKy+CE4hblWPjGt+iIVo5bqoNeSpkEcc9h8oOGeT0
+	lXnQRauV8HpN3KUx6HBMLB/uuhdsojQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783623904;
+	b=oj3iwiqmhfuyzWji+WFHaqqh6wwVNVkgyzbExlmlBBgYDzntmQdwMDLq0or4Z/IbiHwn3R
+	yWygplRzobWBM/Z5WJ2GIDX/e6B0vB+Vu/APhsfYvBMsl+Fr6gRMkRy6iRyJDYBcDMj0AE
+	2W3/Ua5nOuN8juxiSy/P3z7npe9/dGU=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hOvCjM6c;
+	spf=pass (imf26.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c15fd3a299eso28362966b.2
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 12:05:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783623903; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kx+Yec/YKhsUxK8JPSQ1fKXxgIF2ejPhvGr2MAhAUsevTzCoCjbBKvX0TbInYoTJ2O
+         Z3tziX4I1bb1aYI2bcKaScOjXmd/AmtSKtIbqnUSx+isi0Y+8HZ7Nn1Td5Hfm9hgyXEA
+         QvKHMQRYrcZkAl4LpzYnyzLTLY7twvEcu7Aut6CE2hqpOr7HOsSXY99f9YGTMSZEoXdQ
+         vHr6Tvd7fuVn19iJQrLLOP1P5I+ZjjwCwF7OLqw+g01lcpqim5/bSK8STCeewweLfz6r
+         41qRdpbCN/ndXvlmnp5sxWP4sxG3vWJTMS4vtOgbTtU4Hwe49hRh4LOV9VRuoaQcdxtE
+         J31g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bNRtJyB9QHVjAm5rxzEf0kABc3aKI1V0CftN11/9Smo=;
+        fh=cCcEWB4qQupYOuA7+gi2Hkel8Oce8216egrz313b07U=;
+        b=N4EaY2ZkBe7sByutQ0xEvJ1odlVRQR+ZivV2XnGYUSlJ++u+RTjLi4KDWmDZFIe3Pj
+         QJ05AoeDA/6Au/uEqw9WJ29G9wD9UEj2AG3ePayNFqhnFDHuGRnN41RCZtjKp8h6LnaB
+         zX1AP3T5g7pI5ZSms80AFBJvmfqQ+BhUQ/cRhjZBvusYKpombDhryfvtBCMnlwWlm0Lt
+         ZCb4XN795YlNVZROu8piRrJpd0QBZIwxAocBiz4ZXMiYLM0rcUmA3TdgasRS8XMoKxtA
+         qv1bOj4nr7d7AJUYg1W7o+0Z7X7xARHXgSZM/crADs4GMPIRBCc3PpEnNGYPFo4WNkoz
+         i+Ww==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783623503; x=1784228303; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=v7H//saN3HUHN+i+S3SULFCinOHrdn1xh7S62KvKH1s=;
-        b=N67iw72G75dZDfmJMJSkK3uA1yzDyWWtqohpP1EBPNn75Dg14OoCfd9o9TD1+5yIyk
-         mfXiIrU+phkvXr5+FkXw7NNJEC9BQbkacXhKdeDZA0CRuwZemgOf0AYZBJbp7k3EczuP
-         Y00OBYjg76sySscG8hUHuH0FUwpzdCQzZn5oO0j5mecRS1Zu/wR8Ps6rdngv5FyOciBJ
-         dG2Bk4hXimTxGjWgSwu6bRUkouODE2RL/uHUAfDI2O6cFiXMciAQOgeA1G/wkRHxYKpX
-         1wBrWkro4BTByGXBU5yebWaA/nu0DI/Znu0piXXHbEudhrGX1RLnbaE84l5T1ytFYkPF
-         EpRw==
+        d=google.com; s=20251104; t=1783623903; x=1784228703; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bNRtJyB9QHVjAm5rxzEf0kABc3aKI1V0CftN11/9Smo=;
+        b=hOvCjM6cZbFOR+uBzJDUZsS20w8ECbXBrYAONKojOm08e+mWEbT6iRpX0BrUmaLLeN
+         eK1XnIm1livh4BS+uHE5EYAvJexLevljsOg3NfCguABpyNUXzm4zWuwrrJpz/Mv3/DD4
+         H1ghx2ir3KqjSidJ0sDl6FmYVZtVTMyQ6EkTPz78LQkhOhBT6FMs2VZdz/YRg78zZ5PN
+         2njtuC2yHPZcfTnV4GjhgBGpfZIESBPMBLiDsJcWtYoSIXjJorN3TImcNJggCcqC/XEJ
+         18feqtkfkSWCCvkp6G5QWn0TkXx9JyuW3Gw8MVf/syGu7gY66xRRcAsZPSwIgMbOYK1J
+         arIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783623503; x=1784228303;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=v7H//saN3HUHN+i+S3SULFCinOHrdn1xh7S62KvKH1s=;
-        b=gwJFO8qPHpIE+5YAUtobE6C/vWDIvh9JHrfyO14vQb73cpiaoJqoiEjhpk4cs14e+H
-         oEF8hW+6XZwk7kRIZ46oEHls3f6MSAGjzYlnx1HtvOawAbxDIWlSQXenylkAwQXId3mh
-         hjyVMnVXQNe+rO9AcPGsAz2gktE9r3/F0HEQaFzlvU++yJkCl8mcMZXqfK58lIC0HMWF
-         ONnTuMx2//mLgJN6uoIuyj+FgmDGPnYhg5FeMsePXgSmpGvGqkd7vO0VamcraKQyONSV
-         PBGHdChvVbpQXwX3SzfC0ayxI3ihB8nPIceKTWtRYohF9K6wTCzAq+Z4IjL9DhCGiNxD
-         F0Ig==
-X-Forwarded-Encrypted: i=1; AFNElJ9gFvYGcDD5/T9Ke0Tavj+3ua6YiQAo+CKRQ4cnXjA7CBixxp5exrqMBhRaJX3Egtmn23Wt/5apbA==@kvack.org
-X-Gm-Message-State: AOJu0Yz5a5N7mcXInik6qmfoibfbmcXamPnezTGVIUYycViumcAZmDZh
-	rjGxGN2z7OHW3vPxswNKEiuQmva9bpe0VNXx8OVZolw/n7DW19imEPyF
-X-Gm-Gg: AfdE7cm0/ELGsZDcNd1F4EwJ1ZuMlFtUS4MQSfg37Ymiy3PMcd2bEK69DjWCWaX/fAQ
-	DwmsyMMU11JQMq5uG/YGdC0CoWNoOWEbDdbB1msf0t/fYWTLeozY7Dmx3LQ6ASfQrhB0mRkAUSw
-	H5QBKyTWePxmaFNCc4C29fTudBIx6phTrSNHooRTEXh0QrMgRZ5wzHZK2vhhADK4qRPTBrrrNs6
-	BnDL8ouLrW28cG/Sl1Mg4BLNbqXPOm1o1majjh4TAE8HRAUkx1Oe76cS12Hafob0WDkKatoAsLP
-	PqlghZ2P2iIIQUOmz5vkzabwWktpYWd7YUZRkbe3FJin29CKZR/j6xgF+1/nbMbisNUJY9K5SYp
-	D4pK3/RsSO7rG/4RvWYBHPAsmhXQuOZTeBknkxJ9RX8FKH7qxqxlg2yCVojwH5ODZq4HoPl+Niv
-	4IRWH4Cfe0kB/Lvrz9RdZlhD2YgQguMow6HD9vqJtv6OjM81hWkR8dHQ==
-X-Received: by 2002:a05:6830:8388:b0:7e6:c9eb:535a with SMTP id 46e09a7af769-7ebcfe5414bmr6526626a34.6.1783623503381;
-        Thu, 09 Jul 2026 11:58:23 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:55::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcae177c5sm4885829a34.5.2026.07.09.11.58.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 11:58:23 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Xu <peterx@redhat.com>,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	fvdl@google.com,
-	rientjes@google.com,
-	jthoughton@google.com,
-	vannapurve@google.com,
-	erdemaktas@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ackerley Tng <ackerleytng@google.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] mm: hugetlb: Fix folio refcount mismatch on memcg charge failure
-Date: Thu,  9 Jul 2026 11:58:21 -0700
-Message-ID: <20260709185821.1893061-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260709185456.1854151-1-joshua.hahnjy@gmail.com>
-References: 
+        d=1e100.net; s=20251104; t=1783623903; x=1784228703;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bNRtJyB9QHVjAm5rxzEf0kABc3aKI1V0CftN11/9Smo=;
+        b=TCBHNIu3VL8d+2xe2Rwx6YXoIpBW9jJAMr2EfdO7Ke++KDpqaw+9tLRb6txfm7JnMt
+         L1USWBFGSWEWST/NCBeqnmJcxwocxX7kvBSgvGq+moRqUgTEsrOX3LSHt7/5vFCJOSAZ
+         JbySuPgfW6PNWW52eFrjmFgAGOc8h89qfpxi2O4aJ1BHMhPch2rYaEdvvtC8FTdyPDR5
+         DSFd7YQ+PbFOQRnkQJ058PEABrTmEPitt3ewRWoUmQ1S991XJ3x4AOkZKf4iisKPnWZX
+         V9xCKgnp77rOdszU0msyM6Wn8wtYv3qDO/1i8MuqFILEF3Mn2OKdPkWTGImyp/o5XKAX
+         6noQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rro3l5eK6N6VpprrG2QeRqiLP7nL17Z8z+nEQM2bYtuk48gnE0whDCgqakcCjOMq8dtQwtQ1GCqkw==@kvack.org
+X-Gm-Message-State: AOJu0YxnNp8R4wsyjwCH2x9QLOw1PDH5VLjh2THNYw4gTXEsd/L5awzj
+	GQFWVEVU4zrpEK2aA11LQF07ldDfzZ1cFdNPm6sJCE/JBchNyXYgVnzvcJfosaMN+Mv7bz5bJDR
+	Ar8cpA3E2BH+P5xg9Cp3Erczt60qKGOHMXd/Z2q3s
+X-Gm-Gg: AfdE7clsvUZx//FWezXOICjn8IMLR42FVkRyVXtCDI8RaeiLqZaCIBYAOgKYYkqifk7
+	Co+rc070D6HgZZmJvG86jEH+ZiHMqMRSw4qRjQvZjJYSHQirTdWqqBUyrUtnxFucb5GjdmA0rS7
+	mlXJAi/FRWXNB+0aUBUx9QGFawzrM+ZZgaHDZgIhgBYMO5amwrV+V9sZUJL3kJnGMH/qdWcCZLn
+	ZgU/D8MjkeuN59XQ39oJV0okn/oWSCSk4O/nTVTQt/4c2X09B34D2NZXI8Fx13RcesPxol2ShXZ
+	s4YzG9j41YU4Yr4Ohe+0rhtERVAXxgs3sKt5HBPNdt2cLHPfr+mMHBLs3i8=
+X-Received: by 2002:a17:907:e153:b0:c12:aaec:3436 with SMTP id
+ a640c23a62f3a-c15cdfeac35mr299077466b.14.1783623902587; Thu, 09 Jul 2026
+ 12:05:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: bb34iodn3ha9no9deu6i6e5p5qx1gym8
-X-Rspamd-Queue-Id: 6E44B20002
+References: <20260708031129.3503195-1-jthoughton@google.com>
+ <FC9E78F0-8FF7-44AF-A848-8401B4702488@linux.dev> <CADrL8HVkrojXbBuEX-W=UHBmyyFzqxdGBvtAoPP53SyYa10uag@mail.gmail.com>
+ <ABB70C2A-316E-4C19-A855-C9920BE105E1@linux.dev>
+In-Reply-To: <ABB70C2A-316E-4C19-A855-C9920BE105E1@linux.dev>
+From: James Houghton <jthoughton@google.com>
+Date: Thu, 9 Jul 2026 12:04:25 -0700
+X-Gm-Features: AVVi8CcfpMMaiNKWH9W77S2UuJGk4oIqw9AGhPYaowbYWta-f_S794HnODSYVjA
+Message-ID: <CADrL8HUCqrzOQGXRDwnitintQHjHCw10n8wo6gChQ2tWvC2JBQ@mail.gmail.com>
+Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Oscar Salvador <osalvador@suse.de>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
+	Linu Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>, 
+	Yu Zhao <yuzhao@google.com>, Frank van der Linden <fvdl@google.com>, 
+	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783623504-935967
-X-HE-Meta: U2FsdGVkX1/Es0cV1iywxeRyVe3UBzj88OJLDRgmJFSmiSrk8QA1htXofxBrZ6Q1pX5YGRl30zm821SmYtwnAWMXJW8ITv1isEnGFDk/zNWTk3I3g5pOgFenxOS3MgzIGePS34LhuBGlQE/fAiNGIhmEfWSTYf1jxSMxoirzIi5LNNVg520lW/qPKYvmS463pVfXv5c213W57lpAyvKq1ctUaljWN/OPs1qfpsuL2BfjzqloxqtNbGMMDXS1d0KcqwrEUFVMczZQmsiSxdsJVPC7JBBqLDF8HR0zZlcOfYXgjhe4NaJyohxonp4fHsQFbSeDcAfJx7Z9CXrEK9ixXwn9YIDcgDgrFDe3iEcm0PuRYqEmhTvf+rvMcPYjMG4zhwu9Ms87HxOjD0EVWLTE2bGJvP52Z+junO/iGiMR5BHd7zj7tGGmXGHrubpDZHUWLYkv8CsOlyCXxwasFrnlNU3iphZSndKWWwxbSOj0x/nSVnROCn8xI01ypnvfhj/tX+4JwYWebUTTIwbAYqAhDX4VofjWvmSUKqa5v5YgH+0x/KyjNOPMyUZxPJQpVRloVJbbW9IR1T183PHuYqAS4NX2zBRsg0nKNum6vd1VFdmIso5TBjozYaS0OPdzr1sFhoc8WRzxzz/7PQ8Vdb6R0BbGnbtUM9c/oPfFkmhXm2nmRkpKPmNhX9wVYe+MsKi+9x32Hd6o1KLHbB++4fAKYTyW5q+2dkzQv9gr8ITTKgLwz54X/WxWh0NWT6ABfXVd16A81X+iM5uOWPmyQ/PvMORs9R4lYcCpD9wBLNi/Gv3TS6FayTmFitLS2kHJv9xC01e3A+YVUdVYO4Yp4d5DK6k2tFLOlH0mdU9d+YgbUZfRoyOopUz3H6SdnK0YjZpzwy9B+9IhMHF4yb+ZCaHfT4/BCGNhwuEIDS4Z0AMU4J3jdpwoh9TiJgDmRL9SzgcXIZkfL/l7HNDyo5QvzAn
- lGVBi/xG
- fenORBTzO33b91vWgRpY6FBRpLZ63Wp2hxgTY2yBThTyy4jo+BAju/ayKjk1kqdCMaIM1LPNPl7SNWi8yP3Ji3pfgzxNnKmfCA1FsEdevjzsav9mlZr8bJ/0QJiffhfikkG/62HdMXFs/4LeVgCYggnbtrnDKRJrtwRT/RMB82q0jWTG3LnioAuh+B3XuVVbHwAj025e6BRjiN+QR+qynTk9mr53EFPbK9/ZrcbimIO6mYdeVLz+OM5TJRQDmLEPVNkE//TlGIeqxO6coOzdXhIBFsAAfs2zR8oL/Kc4acSrCaQaiLyNSaHBBx0OirVLP8y+RznJrmQCAnYXnTBN6oYJnsV+LRrx+fCUhVprvKjEBpJ9sl6S8+H5z9hbszvcegxBvJsYz9YOd/ZMZRgIqKNTrtcebOc2BXaF/ldIXBlclXzuUoiX6DGYRdyIFR2XYDlNKyZn4ozgPvPlTG1bHcLfmQ+RwRul0B4YiVX6mYcCOGA6GEvGbMEGgpEjgQFvBJZuqZVNYRbH3wRCmMpbhZ7a6MWpM7J0l9dh+XkmRmJKnSL9/R2aIkd+o5+DC7V+gYSaNVvGYigk8xJcomtIh0etakusv8mq6+tOrLq05OErmJ5h7hGZLiDJC9zfsQaBLa3+TXwwBN7NXQmDc5WYOggyAig==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B353D140003
+X-Stat-Signature: yamx8fkpqi65wzszak6qcx8hqpndywbb
+X-HE-Tag: 1783623904-672507
+X-HE-Meta: U2FsdGVkX1+jjkaH3qQksXVi/oRHjBMm65IY87IsKnn7FeeRRPvmNnaUW8n9BulX2UY+Yed0WMppoPVDRN0oyppcorUAYwGA4kwQUFeQSA1ARA4N7KIVGyN2LykK3LTkyEYPVw1jXMEQO1tC6zOArqmrKGvr3ZzXS1EuYRRmG0pxYLmOLU4u+tuHVr+sxuPF1xUiGbJpViAY6QMRj8p291bBaeKmO0eOKACUuginDHWm5v4wBnJM3nIGs+AskbqEsGGKVrkbKy4Heby8491+6f0PH265HAjsMdD3aUYrp4XrkR/RDZBn1vP6fxXMHQGFBukMB9K4TxUpC94Vm3Lwnma1DLwfAUhOsFbRxWNAA5fckropc1CLp0TtFNtBtKEaOSBnm+ymmwI7H3cEGV15H4ThAXpLpVcBXOzBua1CoFUL0ThL3AVdf+tg6QmFkRkavjRWUBQr84tDk3E3MBkc01vpPBiIV9OsA2dNkFypW4cTqm36s5m4XAxdlC9426STzUavVa2fhfTVY0mNpOd9zWLTgT8BvlITTIyxRcH1NQJJC+b7CrP/6TherMJZKCh7J3BRZPs/s0HWMMS5zwO22+XcksTbvp2QIZCmYmvTNRB3juVRSDv0gruRk8uKWRaENBzD3dTGl0a3w+pIs4bMITih6M8hf/XA4zIVONLl0FSWyYG2R9iAG3PlgDYpBzrgIzW9pqFrAcNk7JPu3s9BrsIw2uIOE2WcqqcaiPcYUULOmZmJnayzL6v2RJ0TOUzrWrHR+LXxQPDXBDw9/DYtZOCI0Wh920miJXz2PyyDuvQwAUxo5qgbLQ+JgND3VSXxADEGHYVPa3jOU8yrtanRbLy/0rJWr/HvfaqGQA3Vl1oHYl5XCGJMgd7lVVjn26UupWLpANoMh1I5DfjMnOs1/xZDqVVzjEkZdGxq46nSiv6dUi6vlHuj1TH/lKkKV05B+aOyVXaMTd3VpiZEsHk
+ Ev2gi0rR
+ Q2r6rN4iL5Tuxgwcwj591CfG4aKnRj6PJVL5r8VY/lWYmkSenRzIk+RYw7p6RH1PGRUWn9e2/dKto2PXHIKocOydsGsVYm78w7r+ZVn0JezMKza0OVhdVAP7EoyRgqjnJoKIqCGQvpFca5hTn+8xg5+ebgRSCWpXXLDY4TB60Mz5w1zs4o7Nwy57pXtRlsflQNgmI/tN8oSej5/GLRFo+oaRoMOKfu3sxC3OSH4pZvA/qjHCcNV9u/odP+Xo36pLjMLHmBB4q6zPwsKI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,95 +147,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  9 Jul 2026 11:54:55 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Thu, Jul 9, 2026 at 2:55=E2=80=AFAM Muchun Song <muchun.song@linux.dev> =
+wrote:
+> > On Jul 9, 2026, at 00:49, James Houghton <jthoughton@google.com> wrote:
+> >
+> > On Wed, Jul 8, 2026 at 1:41=E2=80=AFAM Muchun Song <muchun.song@linux.d=
+ev> wrote:
+> >> Do you mean that the support for AF might vary across different CPUs?
+> >> I'm not that familiar with arm64, so it seems a bit strange to me that
+> >> such basic hardware features can differ so much from one CPU to anothe=
+r.
+> >
+> > Yes, hardware updates of the Access Flag is a per-CPU feature. It is
+> > available for a CPU to use if TCR_EL1.HA is set. TCR_EL1 is a system
+> > register; each CPU has its own. (Linux will always enable HW AF for a
+> > CPU when it is onlined[1] if support is advertised, so we simply need
+> > to check if support is advertised to know that it is in fact enabled.)
+> >
+> > These days it is not uncommon for a system to have two (or more?)
+> > different core implementations, like with "fast" cores and "efficient"
+> > cores.
+> >
+> > [1] See the CONFIG_ARM64_HW_AFDBM bits in arch/arm64/mm/proc.S
+>
+> Thanks for your detailed explanation. When enabling HVO via the cmdline,
+> can we simply prevent CPUs that do not support AF from coming online?
+> Would implementing it this way be much simpler? In practice, developers
+> definitely know whether the current system is suitable for enabling HVO.
+> If some CPUs do not support AF, they would just need to evaluate the
+> trade-off between memory savings and having fewer online CPUs than expect=
+ed.
+>
+> For scenarios where HVO is enabled via sysctl, we simply need to check
+> if all CPUs support AF. If any do not, the system should return an error.
+>
+> Then, we can proceed with the Pre-HVO.
 
-> On Wed, 08 Jul 2026 15:12:51 -0700 Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org> wrote:
-> 
-> Hi Ackerley, 
-> 
-> Thanks again for the fix. Thank you also for adding the reproducers,
-> they made testing this really easy for me! : -D
-> 
-> > From: Ackerley Tng <ackerleytng@google.com>
-> > 
-> > When mem_cgroup_charge_hugetlb(folio, gfp) returns -ENOMEM, the folio has
-> > its refcount set to 1 via folio_ref_unfreeze(folio, 1).
-> > 
-> > The error path calls free_huge_folio(folio) directly, which expects a
-> > refcount of 0. Hence, VM_BUG_ON_FOLIO(folio_ref_count(folio), folio) is
-> > triggered.
-> 
-> So yeah, I built mm-new (with your hugetlb open code series) and ran
-> reproducer #3, and got the following output:
-> 
-> ...
-> [   23.855813] Call Trace:
-> [   23.855838]  <TASK>
-> [   23.855877]  hugetlb_alloc_folio+0x190/0x360
-> [   23.855930]  alloc_hugetlb_folio+0xf9/0x310
-> [   23.855972]  hugetlb_no_page+0x590/0xa00
-> [   23.856016]  hugetlb_fault+0x194/0x770
-> [   23.856060]  handle_mm_fault+0x29b/0x2c0
-> [   23.856103]  do_user_addr_fault+0x208/0x6e0
-> [   23.856146]  exc_page_fault+0x67/0x140
-> [   23.856191]  asm_exc_page_fault+0x22/0x30
-> [   23.856234] RIP: 0033:0x401734
-> ...
-> 
-> Running it with your fix, I don't get a kernel crash. So this change
-> looks good to me, please feel free to add:
-> 
-> Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> 
-> But.....
-> 
-> It seems like fixing this bug actually surfaces a different bug.
-> I don't see a kernel crash anymore, but my kernel gets stuck in a 
-> different loop:
-> 
-> ...
-> [   42.526726] pagefault_out_of_memory: 120780 callbacks suppressed
-> [   42.526732] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
-> [   42.526955] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
-> [   42.527084] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
-> [   42.527192] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
-> [   42.527288] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
-> [   42.527382] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
-> [   42.527476] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
-> ...
-> 
-> mem_cgroup_charge_hugetlb() fails
-> --> hugetlb_alloc_folio() returns ERR_PTR(-ENOMEM)
-> --> propagated to alloc_hugetlb_folio()
-> --> hugetlb_no_page converts it to vmf_error(PTR_ERROR(folio))
-> --> propagates up to the pagefault handler..
-> 
-> But there's no OOM handler to resolve, I think. So it just keeps retrying
-> the fault and cycling over and over and over again... I think we need
-> to be returning ENOSPC instead of ENOMEM like the other failure paths
-> in alloc_hugetlb_folio (or hugetlb_alloc_folio... I think we should
-> change this name, it's a bit confusing).
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 288535838a48b..05214b1cd491a 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -2903,7 +2903,7 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
->                  * were committed to the folio and freeing the folio
->                  * would have cleared those up.
->                  */
-> -               return ERR_PTR(ret);
-> +               return ERR_PTR(-ENOSPC);
->         }
-> 
->         return folio;
+I don't think it makes sense to try to implement pre-HVO.
 
-Ah, immediately as I sent this out and went to 4/5 to review it, I
-see that this is the exact change you have... oops, please disregard
-the message : -) I do think we should 3/5 and 4/5 together for
-bisectability purposes.
+We cannot do HVO if any boot CPUs do not support HW AF, as HW AF will
+be required to free the HugeTLB pages later, which we should continue
+to support. Pre-HVO (today anyway) happens before all boot CPUs are
+onlined. IMO it is not okay to prevent boot CPUs from onlining.
 
-Thanks again. Sorry for the noise!
-Joshua
+Let's say for a moment that HVO cannot be toggled at run-time, then
+the best we can do is:
+- If a user does not specify hugetlb_free_vmemmap=3D1, we can always
+allow onlining of late CPUs
+- If a user specifies hugetlb_free_vmemmap=3D1 but not all boot CPUs
+support HW AF, we can always allow onlining of late CPUs.
+- If a user specifies hugetlb_free_vmemmap=3D1 and all boot CPUs support
+HW AF, we must not allow onlining incompatible late CPUs.
+
+HVO compatibility has to be modeled as an Arm system feature. To
+support conditional onlining of late CPUs based on whether or not "HVO
+is being used", we still need the extra cpufeature.c logic.
+
+So if HVO cannot be toggled at run-time, we can simplify the
+definition of "is HVO being used?" (for the purposes of determining if
+late CPUs can be onlined). We can simplify it from what it is now
+("are there any optimized pages?") to
+"vmemmap_optimize_enabled=3D=3Dtrue?". That allows us to drop patch 15
+(which then needs a slight change to patch 17), but that's about it.
+So this is a slight simplification, which is nice.
+
+If you (or the Arm folks) feel strongly, I'm happy to write this simplifica=
+tion.
+
+> > I'm hoping you can look at patches 1-3 anyway. I think they're the
+> > right thing to do, even without the arm64 changes.
+>
+> Yes, I've looked it over. I think that making modifications across
+> several areas will be much simpler on top of my refactored codebase.
+> For example:
+>
+>  - In patch 2: There is no longer a need to move vmemmap_get_tail().
+>  - In patch 3: Handling partially-HVOed pages becomes straightforward
+>                because vmemmap_restore_pte() no longer relies on
+>                ->vmemmap_tail to detect whether a restoration is needed.
+>  - In patch 4: I have updated the ->remap_pte callback to return an int
+>                as well, making it easy to adapt your changes.
+>
+> Overall, the implementation is significantly cleaner, so I won't list
+> every detail here.
+
+Thanks! Good to know I can basically drop those patches. :)
+
+Please CC me on these HVO simplifications when you send them out, thanks!
 
