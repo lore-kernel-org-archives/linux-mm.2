@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BF65C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 06:27:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1F9BC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 06:27:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38D1A6B009B; Thu,  9 Jul 2026 02:27:11 -0400 (EDT)
+	id 9CFDF6B009D; Thu,  9 Jul 2026 02:27:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33D7F6B009D; Thu,  9 Jul 2026 02:27:11 -0400 (EDT)
+	id 981B86B009E; Thu,  9 Jul 2026 02:27:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 206FE6B009E; Thu,  9 Jul 2026 02:27:11 -0400 (EDT)
+	id 8497A6B009F; Thu,  9 Jul 2026 02:27:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E80E86B009B
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 02:27:10 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 672841C8468
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:27:10 +0000 (UTC)
-X-FDA: 84968255820.11.277EB94
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 12095C0003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:27:06 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bMfLYpv1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FAF96B009D
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 02:27:19 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D3C5D1C3522
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:27:18 +0000 (UTC)
+X-FDA: 84968256156.12.B45994E
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3045840002
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:27:17 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MaLwDGfs;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783578428;
-	b=yAKe62YgOyQ6nKj7BNUSJfXmW4wKp3Ev7zhiApZrK6hnPhkAA0ovhZNgafKFAmdUi+FJ+1
-	bGfEC2QBHv6c04bmluSySz0b1LalALSZ/RilF6LSsFxKGKCn31X/Y38snck4xcKssLK7wC
-	CcPukeVrGPW/yo9Mpg0C6TIEWt+4OMs=
+	t=1783578437;
+	b=AhCnGS1PI2ve7zxzJhawoKFHDjT9fs2hktgqZ8F5Xe+cXVyBneeCjLRnTttGzNl2Dg72uV
+	iEBS6Vg+i/BqIFLbaWD/ygm/G8ZIvhmgGGj5gTRuvKpedxBIIfBasEwCqsu8OjpRrny97P
+	MUylhYgWe2gCEa6gTsd8Yefg+uonO74=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bMfLYpv1;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MaLwDGfs;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783578428;
+	s=arc-20220608; t=1783578437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o56MuZDIUAWS/19L51Dk7siopJkCeItvuE/xMY0FFHQ=;
-	b=BlyuAc+aLgoEETyNy3ePIotXlVp3NgCiZ1sR434f54vjad4EztK4FUvlvPDVoZDICjXc+v
-	gOvdcX6RLIau00Z2LW5Ay/rGwqv9I+DHF+tQl394sEYDcVlU45YSg8a7VLspLe1CkU0slU
-	nyyfgK9jL3MBoDcEatEs8wKQ1yQOoIc=
+	bh=CkD2tiWn+pr0tZo+GQDvfH+2NUFzkCHzNiGBy7j67/Y=;
+	b=4eUH2R28Uf4sHj/V9nVmLdxx6o3lFpbb0Hdrm2LrdPM9Tl8+rltSOmZbpYSrdRB8ZsU6TP
+	s7OF1DXQENNpCoq6KyD6FEhtU315x/nONenbOl3y5a3u+sut6e5O4rBvR3XHrJt4Ogcl2P
+	7DdW4mPoV0+qOYmgo/2nMPwyCnrmbCc=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783578425;
+	t=1783578434;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=o56MuZDIUAWS/19L51Dk7siopJkCeItvuE/xMY0FFHQ=;
-	b=bMfLYpv1l5qccaXheH+l4qWGKcOKx7Cr4VppGmkLATFhkZrc5EassGgXF/bGUsBPppMdX4
-	ElRtZfYMlLJJTXKMBpvaS8qwR/Pz4FUbY15aOSh4hnbjQFePeEijKn5SiIlCE0+US12rxK
-	IPg/688IuCFEwy3F5mjhJkMholsjaKk=
+	bh=CkD2tiWn+pr0tZo+GQDvfH+2NUFzkCHzNiGBy7j67/Y=;
+	b=MaLwDGfsMHrr6WI9nZ80gg6uKittEzAonTv5k+i1wS2JaU2OYnWRayeIT6DPvKYy06LvsW
+	mg8DPbPD+0CKavxmh6NZa2DRv0fi9cNzzx+6ZAMcKJoPJRTA7yf1EWYjRIA7npMJohJHrH
+	ns0XCYMx5HwNfbDBR6OJGbUKobMiXY0=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 08/10] mm/hugetlb_vmemmap: remove bootmem_info leftovers
+Subject: Re: [PATCH 09/10] mm/sparse: remove bootmem_info.h include
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260708-bootmem_info_part2-v1-8-156ce4986598@kernel.org>
-Date: Thu, 9 Jul 2026 14:26:15 +0800
+In-Reply-To: <20260708-bootmem_info_part2-v1-9-156ce4986598@kernel.org>
+Date: Thu, 9 Jul 2026 14:26:36 +0800
 Cc: Dave Hansen <dave.hansen@linux.intel.com>,
  Andy Lutomirski <luto@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>,
@@ -96,19 +96,19 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
  linux-mm@kvack.org,
  linux-s390@vger.kernel.org
 Content-Transfer-Encoding: 7bit
-Message-Id: <4562730E-8B96-440E-A517-7156E084FA06@linux.dev>
+Message-Id: <1E36E995-7F30-4782-9225-9909D9AB9BFD@linux.dev>
 References: <20260708-bootmem_info_part2-v1-0-156ce4986598@kernel.org>
- <20260708-bootmem_info_part2-v1-8-156ce4986598@kernel.org>
+ <20260708-bootmem_info_part2-v1-9-156ce4986598@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 12095C0003
 X-Rspam-User: 
-X-Stat-Signature: 558cqy56un5t3hdsqemqeu78pscxae97
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783578426-767769
-X-HE-Meta: U2FsdGVkX1/HOPUlmaOvgbnrN29IRjvO63Zi0WyI9DyN8ttBB3eDM7cTlszfZ3lf+a/uId7bbv14joFlO9XSi7YYsh9C7zXsFG/aZSLIlAvcuTY86E0dsR9dCeXHih6TnN6qnCoHgQuK99pM05+YFYglp/H3232k17bUg65xSTYB5RrVo/xKeg2B75MB1snHgb6W5hwiCJkIS4f7Y76QySp5OBzq5SO4GkiBXPgDxAiDAMm/uIjQbR5e1ESkiPHUD4pAsUxaB5IvpoNSSkbT50PTf7O4XcgKWmWnyvZlDOLXqlIH7/BIJhH0lo028AKuCAkAtmoSbE2Qy0IfVG2f1IZyzr2bTNYyjTyveVJYXq9iJWk2gc7NqK+dACQtzTtR1jP/pgtBQZS7+h5CM5/t5MNop1ZnNqfQeDKKnJfDA2WRotRO3PL5SyU0py2qi5DhMs+BnH6hTYJ/RRsrWGGwaCcw+dNGI1cN0qejoStkEnduHhsY/BCDvAnRZAN/JZVuH50OuHzVKLz/CtVh0FJQ1ePNKi8glxv60qGxHdmdU7uw72VfVuYuTbix4joFICq/cubq3KsX2v7zWdupsmbtk0XKesROx/MZ4CRQnM+MD9qAkSI/qIn59KFB61F0cV+uGCqol2iTm/XDoCAtfKPpRfGRhOu0Z4pN/JMLShZMLRrvTpuLplBdntT2TQYcyIwa2J/GIgjEa6a4Gp3zewV35aahDjbfUJzxI/YxtRyfCyCFF/abYxePeFhN+N98qqfhIKXwzxOXWVWNTrhK1RUnoVpN+lC5RTbbzR16ovT0F0cGjmkgHvpz6p2JqQQ+bNdE2ZRLmVamvOgJCdLIEwxt89W6NQZtq3fXnT+wwJXJSGNJ291+sinpk6wVNQ2XegWrxG55YbFcyV3qFffYMq1DY+ZE6yyAg7bJ90R7uMJUBw1rjIjm3xBch0/u3+9UFxrGBqsINWew+8FGfKR6rBl
- +SCcnV+j
- +jaxze8OD4bmI++gKwxyyurlkehKrNOthRVHh8UpQcDCbeqiCITj5eHrL6at6k8LdGcv8qGEmS5jYoVqvTGWPyyJcShTEayOhw5vRIASQ9A+DBo4Qhz3ngEIP9R1bBscdNNU2qJhaKjv/flY0pShumG5rg88D6nCp1uBT9bKxwpLnkc4u3mso3xNHEOLXiv81OlPfA6IuXF0zH95yjKxPD/D1R1TzjOnFzhCzqazrntS+QizrTbAnL9NWHsSou+5GK/YJ4p1Kg5GeMksGuknQhHERsV+ZMiihjwcgnMej4ezqxriSVEExy23lYg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3045840002
+X-Stat-Signature: 9ozng45yrpiw7tggehfbow1ktc1nqhdp
+X-HE-Tag: 1783578437-470157
+X-HE-Meta: U2FsdGVkX19U9g5xZYjPvglIHneti/qDfvEDtmRRswRipDA+6nUHfNN4BPhqAxO5SwtAXbimxy38FtghrDUJtnguA6RbIR2otNvAPhKZjGoebAjW6BOxxx0qVb4ZrM0qo8YQ3OrDMt6iWeFiGYVi6QnsZX///JgDEIGYlyYPUCRIu48DMTPf4e5Z9WYTeaqTtvSTwaxEO96NZsmp1icFEeWhL6UicmnPB1UV8NEDcrzwoShmVok5aXE3E3PKeN4Y+6utxD+gIHy8oYuPm8gQW6B43bFrtWL8Wuh0j27AaSwrlMi24FN+25IPKpK/9kAMAODtIjPECeyV/UVxg2cfx2aNgAFdDloHBf5hjsvRpZMSHjf0UovhFkQaSIo7hmDdmGs51trezg16kY/dnEuDnrHqUL8PJJEqUk7/aNiqSaqiduEU3vFPQEW+NYm2yN1Ts91vFQuBjc1z0Bfuw4R7htt+l18tdMXPmgnrkS54pzo9vuKc7fW4Rv41vqJXYgcDmtK4iSOBk/izkIVXbUwMSJNQPjWYZxkfdF1JtPOgQ94mamGTA74/knRdSQWyiszuc4vNM+fzDsB5aCwL1CH/RKVxvhT9Dyj0MBJnGTNdVQYyDxHeiyeVfoU3in+yTTGeCNJ/yYY0uTtXrAAEXwqk7i3s7kLo+ElO1a05fThOo9TU4MzhNtmA3UbdDjktAwrQBwINcLxlwN9FLB3slLAIVIQWEi+INo0LTB6yOhYZIWdsFfSHDb8y7Yfdo6XVHI/3f4DYgRn3K63BzH3S0fOkTL/Vvz7Y3SuBdOAMbwcdav8Mf751AsspXsMwtpnvutJkov1QoykmiZky3iz/MoR7hXlT6bT97ikl9Hgf8LZ3gAJn7a9PptfNC8MYC5Ifd9XBKmMPlYKM8ep0lAwWK5oKIm9qy8e2k8f5nBBVHg1nzogS22u7piYBhDxQLPF5bpoRkxes5bxPZfQYo7+IPQI
+ /amA6hQp
+ r8mKuucEMZhXS5/OlhWUM0vtgPUblZyGQ7I/9DO/4dFtHm9qC1Dvc2j9uE2g9+pR9lc07/RFinxAzKBx0mBmy+mdFhR1Zq+Y3BoemFTOqMee6W+uFnWSgVh+q/CxFMcteglmC7xyLmUIlxZeT54GCvM67AviMWM4eiLh8cd7CTkyj9AM7luS2XaRQTZUAXP+oeOTD0ZoInuvdZAOMkeNG4peRvE8xfsbb8UHBlQF4ZHNDuXm+RqQtdVDgN2Omqkw3nC4asBvIgZQmBiL73pwu2RymsItLe3+OT7rUS5ZpczSBHZaEUKlbsFRqlkln8s0PIS+bkGclzNCdFPw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,8 +120,7 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 > On Jul 8, 2026, at 22:11, David Hildenbrand (Arm) <david@kernel.org> wrote:
 > 
-> We never set CONFIG_HAVE_BOOTMEM_INFO_NODE, so we can just switch to
-> free_reserved_page() and drop the register_page_bootmem_memmap() call.
+> No longer required, so let's remove it.
 > 
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
