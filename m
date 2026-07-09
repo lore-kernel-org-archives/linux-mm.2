@@ -4,107 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90C6AC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 10:43:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 467C9C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 10:45:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C7246B0088; Thu,  9 Jul 2026 06:43:27 -0400 (EDT)
+	id 0798E6B008C; Thu,  9 Jul 2026 06:45:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 778236B008A; Thu,  9 Jul 2026 06:43:27 -0400 (EDT)
+	id F1E626B0092; Thu,  9 Jul 2026 06:45:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68E166B008C; Thu,  9 Jul 2026 06:43:27 -0400 (EDT)
+	id DE94E6B0093; Thu,  9 Jul 2026 06:45:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 490866B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:43:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9DB731A0470
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:43:26 +0000 (UTC)
-X-FDA: 84968901612.13.6C27F46
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A7A4E100004
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:43:23 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=H37oZXe4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf05.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B4A186B008C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:45:45 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 37B808E184
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:45:45 +0000 (UTC)
+X-FDA: 84968907450.15.E32FDF4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A327E40006
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:45:43 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EGulu5Zy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783593804;
+	s=arc-20220608; t=1783593943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ty3/D0G4b2e+KmJEySti4uf0ShmQy+c+8Sngom0io9c=;
-	b=YiTkFiWvWHXqlW6B7MAXam+FMch0JcD1j9d6auQ+E1R54hipMpaHVun26KmXfUPzzMRXNa
-	a1gZipbPVt9mPdbBv0CKItaRPIuqyAWVQV757tbNWnrco4LY4uFY36ewzpMrSCu6Waw7/o
-	glPnkTitE+J0T4mWx/7HZWYdLInC3ZY=
+	bh=UOpYD6ZRcmuhibOLDuRYZLKQNBiTJQnRVmlbmamWuH0=;
+	b=Z1Ml6+VffbkCpA11o5XU83/1JyKgr+Fb7cG732TncyPGLvdYwqRTU8tVYv4A0tNZklziYg
+	ozqFJb51TpETQUKb/AGDr35nrPkqAlENPS77UVompm0OHIbeI63HKmh+Sz+k/ErdEiK91Y
+	eFhr+qLhjxttK78r6zjsEkupI+tG2wA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=H37oZXe4;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf05.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EGulu5Zy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783593804;
-	b=4jwrlV2Z+R1yJ12lsUivtO3MaoWFxqySacw2udpMgz3ubyVEJkRYYX5uoV38rDORCiqk3P
-	I/SVhLNmZg1t1/5ec7C3PAM8x7X4L8jdNAYtwakMthvR94wnbz/P3klPwVL0g5umgufLfj
-	fm2kLdgHZUkRdlT9vfO+lKz/X6M3nOs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783593804; x=1815129804;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=mqCjFT98lyntQtuLHJA1DbTT0KIDY+LcRiiRyh8xCHw=;
-  b=H37oZXe41illKl0SV34E7Qnp4fdKcvx5hl23ETtsxL6PD2i4Vzey9RyY
-   kQrt8oJdfZpcTDRhl91SCz6gnYKzcOcp4LU+U91/akCtb3DkBJcW+ehGw
-   LuDEKvZaQA42NtSm9T+E5kMO0e5FWUAI2EfRV7QwyISdb3IL5TlI2/LR1
-   Q2wqxbs10GvAEzZFASqq0YhmP9SvSGQBoSAaicobbJXheJGKBSb7zizN7
-   hDlXflwfMN/CJ3pX1DX8znT78xUsCm/hpaebtVGcfUagq8LSkqPBAgOEw
-   2u1Y1RnvbkkX6ZouzQdgmvKrDbeGZwID/EGzIF3xy4CU6jSi2KyKXtGPJ
-   A==;
-X-CSE-ConnectionGUID: jrhcKs9ORw+b8hYt4NTPMw==
-X-CSE-MsgGUID: DiODr1mLSeuBdoct0YND2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95643104"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="95643104"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 03:43:22 -0700
-X-CSE-ConnectionGUID: KCjKhrLsTWOM5utjz4jMcg==
-X-CSE-MsgGUID: Ww5JuRfCS/WP0cX9CwvoYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="259449554"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.235])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 03:43:20 -0700
-Date: Thu, 9 Jul 2026 13:43:18 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
-	usama.arif@linux.dev, hughd@google.com, willy@infradead.org,
-	ryan.roberts@arm.com, Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
-Message-ID: <ak97RtqgNMV4O-D6@ashevche-desk.local>
-References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
- <ak9Qe1G7Rv3HF6ZR@ashevche-desk.local>
- <ak9mrw37kTORZXmc@pathway.suse.cz>
- <ak9z3ZRdRqGoOu-T@ashevche-desk.local>
- <ak90WW3I4tmg7Pwz@ashevche-desk.local>
- <a23c0ace-b52c-4f28-9f40-d0b6dc4ca2d3@kernel.org>
+	t=1783593943;
+	b=x6Q3paRaM1smSZ7JaKJfnJ3E/bAIOAil3GrCCnQp5Qujbwq43jm3Gd6qDaLz/uOcsTnWUu
+	2F7Z57reS9hvJryWqmGAzeABTvArms8vF8++cF+wYuaJ4EAiVnkgRHwVvdLHGIv9V+dVz6
+	ro7/CLCx3UCZrNBKLoveEiAyfXYc3aA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 139C1600C3;
+	Thu,  9 Jul 2026 10:45:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5483A1F000E9;
+	Thu,  9 Jul 2026 10:45:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783593942;
+	bh=UOpYD6ZRcmuhibOLDuRYZLKQNBiTJQnRVmlbmamWuH0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EGulu5ZyFyUvVdMAfBtWjFgP8rSSL0HpiletGPpKEn0Zuh8N4ftMXXFQ4mqZZiD5J
+	 IVJycgTh1khV6E9wsVdMvWeB95R18aEUav5FpKBGMmjbHkfGt3m6w9cKVbPk5blw44
+	 UKYj8ghbMdkBaegXU4VhgUbin+dNH1COOq1cT+6C4JQuZfL1xER+hpAA7sc4pJqRIN
+	 kcb/Jlmaz9v+dQN+teZ6dvEKEkuIBU1V3nahtuELsHI15aHITRbAERcvVIPY4EoE3C
+	 SKkxZRXF5PJRba37woZvUK9GfmIvY2gnJe3DyjTQ9FtBKHY2sa96iT4GJ1dUhmH+0Q
+	 6/A5Jt7Wz+org==
+Date: Thu, 9 Jul 2026 13:45:35 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	linux-kernel@vger.kernel.org, muchun.song@linux.dev
+Subject: Re: [PATCH 04/17] mm/mm_init: skip initializing shared vmemmap tail
+ pages
+Message-ID: <ak97z4tryYAGJgb_@kernel.org>
+References: <20260702093821.2740183-1-songmuchun@bytedance.com>
+ <20260702093821.2740183-5-songmuchun@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a23c0ace-b52c-4f28-9f40-d0b6dc4ca2d3@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A7A4E100004
-X-Stat-Signature: uzshweyn7posmh3497rohkaos96bre8q
+In-Reply-To: <20260702093821.2740183-5-songmuchun@bytedance.com>
 X-Rspam-User: 
-X-HE-Tag: 1783593803-225825
-X-HE-Meta: U2FsdGVkX1948R4exvUgSEAdRgnLT5nRaEow6uGNZx9sY69QI7/gfjBLJxAmhS7zxTh1IiNh2TG87Ysiwx68/9k4UH1T5oLfU2lMxUW8j/0gk1fLhxe0Rfkyhp0Qu+K21a6CG6Z0L/Ni6VWZL5E60gVYY8PhRSEt4CS7DCpw0jaG5P+TpvPTAnLKKZR8bPCTII5g3lmYqFswhrPFBVi9NRF8k5eerZFar2usP6D9q19GsaEODrIMoe9DQBFrIeGl93r/qL6JWndzIgxenNrr4j8pKo619n/gIye+P8lX03TFank3Gy8vJRL8f5rYlzl1LZnKN26mi8rxTzM6AZ2YYBST2M/WO6ZjiJOT9T+SbjsNH6eTEZ8wLjg/kWb+C3B4ZNuFoMXJVL3KeFvAinL2YrpQXA8vUT9J+eaMwHsQE7YOZq3PBDDbwAFXX/zZNtHt3qYenLcvbSZxpI8QzulXO2+eeDva/+GRo45hxopmoBH92lA2f9cSA2zW2H3CZH4H6UwyYiYPixjszLQ8CBYV0rURrEop8RpVtyG6Pbf2eo1ex4VCCPVn7gE8invJSumNuYa6O6FlEyXUjSn50x/8Qr+Pkl1GZad/x2nTUf4Ip8HttAaG//G39S6WnyS7oUE9orDM+4T3xOaSSECbV0auM6SyPdXOMjb36L/pn+v4mxsyRt8EiHZPLqw5FrbVuW7rFOGExSpNb5JMXRSAwAEnufl3JxHlfYSoZtz/0NpQl/gwatb/JHnEXvIzUCvJ5Pvt1j7UfpGEFfdli3yj48UIBhPDpJjQYfFw9lrOMl3mRTwU/771Jf10GwB+9tLgks+sq/VDAAX2l/Qxl4Z9cX+zWUX3UEK+IvqHkxGGIqDdwx1+vJWOID+uQTNZ77ap8I90SgO46D1KbrwdcNRFtgRo4o1Fa4/Cx3NogCNSEhweBpZogvuj9CNnBieRCJGUgokEqP/Kq/zu3mu//P94Og/
- kHReXGu3
- yBmmkcFFno632czgrkHabzHELjUsXcCJNIN+7CwMu9GhR0/IljgPHRI4r5Cu+SVJVUTLYw3CYbHLXZJl4737ywTpzD0R6Fwn90e9uroLrQXRzXfmIhyPORuKMqfsGOc4kzAB9mlXnoIYKOg62/IhEJWZzdKjwaHKjEMibZjDADYDKB5PTxsIWHaSqTHddC9lYtaKc
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A327E40006
+X-Stat-Signature: 7u7yqt7xw4o33mcpeuqn4r4s4pck4kmn
+X-HE-Tag: 1783593943-195135
+X-HE-Meta: U2FsdGVkX19xl2c7NU5wFj//8IB3gpGJaiF8100pLAJ+fthwAZu8GqxU1O2uZlPqafnE0Ut0yzPOy8+jJywLouF0GgGzxJBJXH4kJDyLU+cr3Y6ILS8H2tVo2GdMmXUOMljrMiiXqxtrbR7YSqZQrYqMV6iSbqMONLbwK8INmJ3cyYl7j2jb7DKbi0PJ7XmfiAEBnpHxffFDZEbGjRTHjbPjQmS2XJ1kqQ1ArSGhERJyAtce1ZRgFPgzrN7AWRA0tVzxkHxVBLWKE7fJu1NbfZRThogd/0TGPrr7SCkey69deczWO2M8anebdVIlDTSpVZ0yI89q1nmsVyI8xXa5Isgw6F7G1fhVqQyIwAl+ovux3/vqeKlDkPqdRAhElL+HH5O/LXkuA18AxhGhfgIuFRjSAX3Ytsh6kRaI8ypK2u6JkfMI3RIwc5u9X1vnrhGFGhiqFxWn7hFzd6gWFJMsAtEPk8t0BQ+lrVVfcfk9c3LKGQ0Plwp2W9jvVGJeFiLvllX39QGES5Zu33B61pW6PXFgL9yNubjgOlqDzSu8+nKnYny0VuuAmjDBYoY921bFNXHKHwYxnqCrSCAMurgXy4bXtTvvxYJY1Mi7EoZe2Q+LGJp4Cqf721bvL587HfNZi1qjpP6WQFg+0HysbgKBYeXtM4rz+lwhZygtS6bQVOH2PBib4J+ILUONnxEo01xw+neyMoxle8hWut1FPqW4LTBdthWXUnjCNQ/GhfAPnnotLJkmD298ZW5ZtQCQDePMUGiSnCs+lXuqAFQn2WrzLq+ew6StMIwOLfBlUt+7TUWX+3g4syuxLPgwSvMPkZZ9Jez9P1AeK+8ic+7KtU2wtX0N4rSCQiXCadj6vOzSxW2KZUmh44//a9+PoaaQAfKotRN05+oU3dfAE1ztI5Cc7VXq9pqwNGaWyVzV/axqJli0uFiiNriwMtgTfN/qU82F1RlneY+RRtWi5DFCsGJ
+ VSvl3upQ
+ VKZ9EceOFGh1dsfR3U7cIeZk4x3hfHR7rQvjD9omu4rPdt1dZKq3Jkgvy5gtdF7IpI4uuHB3uTLVRXrQ99HyV+qY4+DYZo7YMOCTYBsD5axLJPESoIi7Pgh8UwYx2ZXylIsRYjgvGMbWOYeA3sOTV4Bm3o2uJeGJ4kfpxkn+G+eVqaL6DUuPdT4dcmvG9mYBn2Fc6r49QEEQDfXXBhFUMo7wf6RP8HD7TXjEwcH8r1N+qpG8kDIksuPGUWTLifEOOlov5h54v5GasfFO85XO2BHDF4XQaLMrgx6u7gNHV1xLFM1vbrxxxCPdJ+LlQAfnjExAW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,35 +96,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 12:24:08PM +0200, David Hildenbrand (Arm) wrote:
-> On 7/9/26 12:13, Andy Shevchenko wrote:
-> > On Thu, Jul 09, 2026 at 01:11:46PM +0300, Andy Shevchenko wrote:
-> >> On Thu, Jul 09, 2026 at 11:15:27AM +0200, Petr Mladek wrote:
+Hi Muchun,
 
-...
+Below are some preliminary comments, I'm planning to spend more time on
+review next week.
 
-> >>> But maybe you had something particular in mind.
-> >>
-> >> Yes, I was thinking of a wrapper on top of special_hex_number(). It takes size
-> >> as an argument and hence will work even for 128-bit cases.
-> > 
-> > Okay, the argument is limited to 64-bit in there. But I don't think it's a big
-> > impediment.
+On Thu, Jul 02, 2026 at 05:38:08PM +0800, Muchun Song wrote:
+> memmap_init_range() initializes every struct page in the target range.
+> For compound pages with vmemmap optimization, the tail struct pages are
+> backed by a shared vmemmap page.
 > 
-> Rewrite number() / create a new 128bit variants to avoid 3 simple snprintf()
-> statements? :)
+> Initializing those tail struct pages would overwrite the shared
+> vmemmap page contents, so users such as HugeTLB have to open-code
+> follow-up handling to restore the metadata afterwards.
 > 
-> Hm ...
+> Use the section's compound page order to detect struct pages that fall
+> into the shared tail vmemmap range and skip their initialization in
+> memmap_init_range().  Still initialize the pageblock migratetypes for
+> the skipped range so the surrounding setup remains intact.
+> 
+> This is a preparatory change for consolidating handling across users of
+> vmemmap optimization, and it also avoids redundant initialization of
+> shared tail vmemmap pages during early boot.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>  include/linux/mmzone.h |  4 ++++
+>  mm/internal.h          | 16 ++++++++++++++++
+>  mm/mm_init.c           | 25 +++++++++++++++++++------
+>  3 files changed, 39 insertions(+), 6 deletions(-)
+> 
+> @@ -673,19 +673,21 @@ static inline void fixup_hashdist(void)
+>  static inline void fixup_hashdist(void) {}
+>  #endif /* CONFIG_NUMA */
+>  
+> -#if defined(CONFIG_ZONE_DEVICE) || defined(CONFIG_DEFERRED_STRUCT_PAGE_INIT)
+>  static __meminit void pageblock_migratetype_init_range(unsigned long pfn,
+> -		unsigned long nr_pages, int migratetype, bool atomic)
+> +		unsigned long nr_pages, int migratetype, bool isolate, bool atomic)
 
-Since it's slowly spreading (I mean 128-bit types), I think sooner or later we
-would do it anyway. For now we can just have a wrapper on top of number()
-(yes, special_hex_number() probably too special for this case) to print it.
-And yes, avoiding sprintf() in this case seems beneficial to me, we will have
-one implementation of how we print pointers.
+What is isolate parameter for?
+
+>  {
+>  	const unsigned long end = pfn + nr_pages;
+>  
+>  	for (pfn = pageblock_align(pfn); pfn < end; pfn += pageblock_nr_pages) {
+> -		init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
+> +		init_pageblock_migratetype(pfn_to_page(pfn), migratetype, isolate);
+> +#ifdef CONFIG_SPARSEMEM
+>  		if (!atomic && IS_ALIGNED(pfn, PAGES_PER_SECTION))
+> +#else
+> +		if (!atomic && IS_ALIGNED(pfn, MAX_FOLIO_NR_PAGES))
+> +#endif
+
+Let's trigger cond_resched() on some defined number of iterations or some
+memory size chunk, e.g PAGES_PER_128M or even PAGES_PER_1G.
+
+>  			cond_resched();
+>  	}
+>  }
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Sincerely yours,
+Mike.
 
