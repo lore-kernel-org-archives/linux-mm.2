@@ -4,86 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B31A7C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 23:49:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D2FDC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 23:57:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B06EC6B008C; Thu,  9 Jul 2026 19:49:56 -0400 (EDT)
+	id 04AC06B0005; Thu,  9 Jul 2026 19:57:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB73C6B0092; Thu,  9 Jul 2026 19:49:56 -0400 (EDT)
+	id 01A276B0088; Thu,  9 Jul 2026 19:57:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CE1F6B0093; Thu,  9 Jul 2026 19:49:56 -0400 (EDT)
+	id E729D6B008A; Thu,  9 Jul 2026 19:57:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A9696B008C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:49:56 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8046120308
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:49:55 +0000 (UTC)
-X-FDA: 84970883550.21.4D5299A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 411C31C0003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:49:54 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EHOtvqF9;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C7D656B0005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:57:37 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43DC340319
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:57:37 +0000 (UTC)
+X-FDA: 84970902954.16.02EE28E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3635B40005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:57:35 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VGvMFIuG;
+	spf=pass (imf12.hostedemail.com: domain of djbw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djbw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783641455;
+	b=b1GgAXV7A461aDuWeVXlPoOZ34R6uLn3d+8hzIAttJ9eZFK6kMGsFeUDT2qytd3qfU4QsR
+	WnLsQUFsCbEbWFPf3wisco2veo8Zkd8rTrHq3uMJUWQuausvT7225Mc1WYL3EiNUlikMvg
+	EBX2FOAUEoxMO5BqXm5xiH3anZZGY+A=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VGvMFIuG;
+	spf=pass (imf12.hostedemail.com: domain of djbw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djbw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783640994;
+	s=arc-20220608; t=1783641455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=14I/OIUOvPE++U6ixxkq7lr8VNi5s9TDJBiz5Ica5m0=;
-	b=5pbpIf9EFujg4pQdpVVxQUccUaeTQgE0peK4IN0WWVJ4KT1Dm1VC4AQUZlBH6DVdF4JxKf
-	oxHNx+BjX51HuetD614fFEYecROJqsl4AZi8KnoYyj11TckgO0zGJ6FTAhFhT+jRhxe8fv
-	CEBV1cz+gZx7bPs/yJWSpMNOevmFgnQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783640994;
-	b=trIyuHOtgz4+uR/LeCzmY4V+6wheDlEfoEXR6z2XirCrkcL+uHT1zf2IZxXB0KFK1kEh+V
-	R9Ru2dTcDv74ld/EZWjoxHhVg11qHHY0UK+Jf/hRTEGs3KWViyXhyaBl416aBqCQ+p3Gpu
-	wNIk7947Tk4OEp2g3xTCuBMj7+4nhO0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EHOtvqF9;
-	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=NL6KkE+XGM13rjECEPlDsP8sDmlO2+4iY80eSoJW34k=;
+	b=7PW3nWgz2BbXR5ossfnVvBHFKK2l2TKYQASAvdniPvGKzzvP+EBpuDUT2Ko/OpcyrJSdEj
+	3wOh08OiDgfKYgYAm7nIag0V5W6xisY7HgovMkGqfB7YVzr0KTwk0tWN4CPTv/witSbFuI
+	gaxjLataw2JuI4ppceubOAICSQdoCMY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F6CB600C3;
-	Thu,  9 Jul 2026 23:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5341F000E9;
-	Thu,  9 Jul 2026 23:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783640993;
-	bh=14I/OIUOvPE++U6ixxkq7lr8VNi5s9TDJBiz5Ica5m0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=EHOtvqF9fQiz+50/sGzEDe9IPMZTj66d3m1XmucGNT+/13uTlRGuAJBChcLnTgfXT
-	 ZuzKJSTIwlv9HyO9OF96u/fzdfx3L1YOL5gboPAzucw371DY4WMjfr6QrV/ugeClmL
-	 WNJkapoIk7rowTRHk29ePkCK9zbzUpzuciXhgwl0=
-Date: Thu, 9 Jul 2026 16:49:52 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: lirongqing <lirongqing@baidu.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
- <linux@rasmusvillemoes.dk>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>
-Subject: Re: [PATCH] nodemask: use nr_node_ids instead of MAX_NUMNODES in
- __nodemask_pr_numnodes()
-Message-Id: <20260709164952.6630ce13f63a3104c2c53572@linux-foundation.org>
-In-Reply-To: <20260709071739.2408-1-lirongqing@baidu.com>
-References: <20260709071739.2408-1-lirongqing@baidu.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3EDAE4505C;
+	Thu,  9 Jul 2026 23:57:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418A01F00A3D;
+	Thu,  9 Jul 2026 23:57:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783641454;
+	bh=NL6KkE+XGM13rjECEPlDsP8sDmlO2+4iY80eSoJW34k=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=VGvMFIuGD04PIRzU/JMeGvWpJXoTWA+IBrWJ4DETddqsvMfFiGavTTa9l63r0ClWv
+	 X2UUQqNqpZqczRFyLqhZ+Zy8m15reHdQPTxmbUIl38NqaY/9+pMPbWiYC4uxdsvauQ
+	 wiyhThJeiv2vh4H7xyufBRg8Jf3VvutnySvhp/UkfByFzJVEb/o6mL59688vpOGA8E
+	 /KtI4FyfFU6/yE1N8/6ajHygAZKQzXhv4MUIjJQ7ZlAJqRmRYhZpdgugODmzwu+OMS
+	 LmeVZGAdUBW7l7GzygghdDpLsz0oELPEdGv7JVw3JmP3iGheo/4T7jidFlKAypbciy
+	 7bI+bsP27Yw9A==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5ED64F40068;
+	Thu,  9 Jul 2026 19:57:32 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 09 Jul 2026 19:57:32 -0400
+X-ME-Sender: <xms:bDVQalWT3kkP1O_nPlEUgaGq8m8QWlO5PPNjznrDe7d1CpTWIfMANg>
+    <xme:bDVQalv5hmJ1CwhK2dgiJKfqcKH5_0MDF8nquspQ3CIiab0qCEzQOUNU3wTkB6jqA
+    qux6Ekbzjl6ev_KByOlE4DpQciHdJVr0JS7N5fHu8-OEkyJk7RLkY4>
+X-ME-Received: <xmr:bDVQavNLOvwweJeepDKvjUahneSQU-R9SYF3Ap5jl8v4MTmiRC2Md5MF496hZvJ_k9lFsj2yuAX9-jTBk3671HtMbzuA8Bg0NRc>
+X-ME-Proxy-Cause: dmFkZTFRjNBlnTz3PRsAmwjqRoF0mrjGm979SwqAKHEfthIBDq5uh/i9WRUkVW7VZSf//w
+    YDoaw7hRG798DaAYdC6UbfhFGRdHF+jU+/jGu6HBle2Ytf+9RWyMwBDwRmckEaZLf/nUyQ
+    SKi5sJRgbDjlp94ASRYw/4muCvkc2xHnl/vxqUx1y1DhspUjPMoJnbB/bl00rpb5PWiQyg
+    GTtZWI4G6plLyhOdjNWH8CBGphBXLtH3D2Pvho0pAK+KnWiAORXsSOpMdV4xD7ID8QXYje
+    a9mh9aiUSp78AdFrJ9O2B3vkzu06KG1gqyHdViPBwiRVrcIhbVPJi05ziCPPBR/N6vYfer
+    6lrpXziKcnjva9wT7p5QUwgxDdC5jjdwT7fXiZidMKAEs3vLpiGVt16GoilNTbBE1Swe66
+    lq1nYogPtBgSjvZCHT/YZLpCIqUO4TamHC1Gj5FtyOihURCc/3jiGGJS5HrnflvJVUhjxl
+    uPu1tEET6rrY+yW5GgTNYjuDoKs+MzBD57qey3Z58xdp6wOjNRKNBRIG8N4BLdwR9dsmCv
+    A4RIo/MDKkVvsbyt2hA+z7nruReU0o4mcD3lQXH5OqBkbo9AE/nGnLS1/bS/nnG97VTtRr
+    clacuChAjPCOEchopHVZNuyYh3E0NUuVP+WPVNPQEQOSK3N74GMuftNUjPxA
+X-ME-Proxy: <xmx:bDVQasnnBxeuM7jroXxksAQB9zn6duvpKmyvN9LZYwI-PdaHUkJUKA>
+    <xmx:bDVQatz0AT56AL-iX_O4imnfAPCevJDLonBYOOcGBR4lexJTusoU-A>
+    <xmx:bDVQalDdKFvxjIjyCfZD792xaNLb2nqmtQGGLIeFu5A_OdS7ISVbsQ>
+    <xmx:bDVQal5BbtDERhJ51QOg_cveb9aqQk1z5niWGshAPguYIvTxzRtlwA>
+    <xmx:bDVQap1K540U56JdRBFV8JSNUnGOGG8a2VUV2cYjZ6gcar-XwgSzqP4U>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 9 Jul 2026 19:57:31 -0400 (EDT)
+Date: Thu, 09 Jul 2026 16:57:30 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: Gregory Price <gourry@gourry.net>, 
+ "Dan Williams (nvidia)" <djbw@kernel.org>
+Cc: linux-mm@kvack.org, 
+ nvdimm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, 
+ linux-cxl@vger.kernel.org, 
+ driver-core@lists.linux.dev, 
+ linux-kselftest@vger.kernel.org, 
+ kernel-team@meta.com, 
+ david@kernel.org, 
+ osalvador@suse.de, 
+ gregkh@linuxfoundation.org, 
+ rafael@kernel.org, 
+ dakr@kernel.org, 
+ vishal.l.verma@intel.com, 
+ dave.jiang@intel.com, 
+ alison.schofield@intel.com, 
+ akpm@linux-foundation.org, 
+ ljs@kernel.org, 
+ liam@infradead.org, 
+ vbabka@kernel.org, 
+ rppt@kernel.org, 
+ surenb@google.com, 
+ mhocko@suse.com, 
+ shuah@kernel.org, 
+ iweiny@kernel.org, 
+ Smita.KoralahalliChannabasappa@amd.com, 
+ apopple@nvidia.com, 
+ Hannes Reinecke <hare@suse.de>
+Message-ID: <6a50356aa7a4a_3cabcb1008a@djbw-dev.notmuch>
+In-Reply-To: <alApfp2z9Thyan16@gourry-fedora-PF4VCD3F>
+References: <20260630211842.2252800-1-gourry@gourry.net>
+ <20260630211842.2252800-10-gourry@gourry.net>
+ <6a502267b17cc_3b7ee51008f@djbw-dev.notmuch>
+ <alApfp2z9Thyan16@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH v6 09/10] dax/kmem: add sysfs interface for atomic
+ whole-device hotplug
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 411C31C0003
-X-Stat-Signature: qtq9rh5ntkg6174tnqkwrrhqph44bofq
-X-HE-Tag: 1783640994-497349
-X-HE-Meta: U2FsdGVkX19rBpB16uBJLimaIhv7uDUJ5TLJdiGWkQ9hLrPNeLNljbsM7egTrLleOX0CQf2CPLe84EW15+hGgswlg6ZQLCnXbIz3vDoiqfGCrHsFL0l4DONLpbMy/Mq+V+XLsp9nQJxXDCy+QPeQfZ+DEm7QsJkf3+GiLUzFPoSm8XguXfSLYQWg2BjcTR/mRfPvIMgxE7DW0jsRB2WGbVnXMCNqEAsuTdwXBf3FJAMzG8DMAmi6S4af8U5ltZyxNA7xn/gSv2JUINp2JoV8SsDKU+rRZJrkOKppptGdhm17kSDUWpchEX07j3+q78O7W+QAblQzsUm/VQtGyZsn3DlvJzpcz3ofyJwaVaqPCj4rbvPHWGfI93sfD5YHUQh4CIH11uLOxfptBFAYBb/zJVjfrVVJk+0O+KyaVB7ToJv6UFDf74jfZ0RZ34PKTauhj3zsM0aO3Xz3clAULth6J7fglR0dK0wGKz5yq+dNqZ6eEd0ayAUU3hNluB8v6ZEOkg/Kx6MSc6yZT6b6gmpcqe1M1AbH86pXqTerPUgfXznbXyWPBIGAvIPwGo7YdxdD5VPOwwr1BmAhaQIPhbJWlo1AxTxzbd9h4XlwvnB+7+ML5+DbJglVSoNxQ2hFdfayXMlwqWE5lcK4dxvJWoJ52XgusTtwQmtaMq5LuUyn4sXYIzuSyxg4betXoc1lZOwzJTZXH65QyYKeTLuLvCNBN2xW3OCAjQG7qC/q3vHCJFFU2qYN3qPQkWHSz5ZGCX5KUgF895w51UGWe4JvuTgVmQqYpk1s/z8u0ISXeuIR3D7sRuO996qSgh34sMPOAqi7gXp1jbluEUEry0J8bDG/QT5uFzMSLVAJRjRUshCIwIyNi+sOrxqXcGPEpfyI3qDsJDbIAXOrCrMJGDvodCKJ4210yuxYr+RyeohAJlgCie0GQvpbvjYVUKlpwOocvfpASHK88jTrzj+qnqx+dvg
- u1gaINom
- FuU2+RzxBQh0MrbZv2z3/FL39fejBdUG3oK/CUu9n+F+uo/QmsuIYSLEN5rPzcMPAQn8AvskdmNJmQQuIzbdfh1MHvJrYwzfmhWep45v1VULL6sHFtafQyPus9tiZ7A8he5/0fazYg/xWKaU6ECIh8/RkcVK9R0KPT5KNBnbOA4gt5PKof02Qj/2Nx7iMtwqS/enLvHcbE8lqDgel0E1fo4guucXNuD5/PL3pPon8QmHi6SWqEY+8mBtjU0FOuflEk2Z2/dfDKlD62vykqS3cfZcHpXsD3Anw+PWFn70QGnF98Tc4Q+1kcZTPgfWdhY+0gT7D5VvjoJEPVVMd+nFiPuEyAcWScQlypVyflKlRkhrgCfAQuYyH6yvdxJUmPo3aH8YXsssTqE6uOOM=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3635B40005
+X-Stat-Signature: 373mj58ohcc4n3bpmoaxb96iemi1ihnb
+X-HE-Tag: 1783641455-95386
+X-HE-Meta: U2FsdGVkX18d8G/4ohzPf2YSCANj7Ezlt3aBUi3AOPdd+BV3PnsNM2FJc19agUxmhSBVCbNLSlT6OS/x0qmlFFKFwxk3ouLxKOJEYc0FaViZjWgomMH5h0Fo6x4MX8Q0HTXesxQLB5YQnyqz7IWRi9/6VkTZzA4CZr5g8X3/b94ACUWYY0FoMgP4s6Vvfst3sUYOqiSMQJk+mnxFDPTIIwy7evasjBEP1QndRYPDHsY9QMPZm/07ObIF4335Dc+emmNU/HDWFee0rRHTl5z8oSbkVvEyo1MT+QA2bQfwWimnCU5/I1EiUaKT15L5vEUYrRKEwoSz39rO3NsqulkLp4/QwblC0+gunsms7lSF4nIF61XENBdGXhbvpmNvnZrYaDTA3fsy7O2f2TEgiiEoma02gPuAXH6h9i8BwXKMstIMaZLZ3SSEQDu5Sdpiq3KTHXfDvjXzGgfMkMRvDyjvebCOBR5W5hnMW/uV09tEf3U2QI+5l7INj6hFUOycnyd4wG3luPSGi3IgjyqqLGNMkxibsYVPbUBAWtEc1yBR+nTk1iSdWlETfsvY5uFSSOt/DsINv/7kvrM6vmhmF1t9V/nv1A55XiRmxNZuzdumEqdyPAlFkecJBJ9GlcsWVY4cqKQ83rsDLrOa2UxCPT5TOfD4jNrAMrVsnVOh7viShYn6PNb6gozyWZ8emw3SuUCXT9e3BZlG+VRqe3sv60b2IocAtTSDHNSf+Jp7n+JF0mQQIa+jBBo2K1SFh2LiGDFv3T0MIWhrgnYZMXxnF8RL7Cpw32ajKWDiUUVjJv6XbdDEk+XAPeIlZrbWTvjqskRtBwajmUvV/OFunOzOhGFa/FG5r4YeknVbOXrMb64qyt2e/WL6x2FerchkKklfle+wt61RBOrv/mMOaNepVGKBCJYLH2H3/YAP3F6aPYFgIJQ94CF+CeUkeTVGpseOr5NpFCnqNOedUKTCb56TjqT
+ sElU4sXi
+ Hh/3HOK/NWTA62EDlWN/68QEGi1bpdkYNpFkQaQo9+Gxo9iCBmW0YB5M9Qmbl55BI7lhJbrI9gSXhhc+qJIC232FcyeAN9sgQ+mD/7VmnYv+ywXluyr4JGiKOOTsgEQEFtEldA8sP/TfAIYR3zvVgxyILhE+71fJv4zsWtUovNxTdx9HWyEAedwMhDXw0W0ek+gmlo//cwqTkdlNuxY2EB3LLm5zCspI+lJLtaEvMNgmYx3Ja+WrvoR8Zc0ILm/EiPr5HCSzdaslr7AT9gNCnyrzO6hPBMML19qvA7zoozPfAphXdwKt2Y5mgZ4pWJoPCyubvag/wuIzZQS7Kg1EyFq6j/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,74 +149,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 9 Jul 2026 15:17:39 +0800 lirongqing <lirongqing@baidu.com> wrote:
-
-> From: Li RongQing <lirongqing@baidu.com>
+Gregory Price wrote:
+> > So the "unknown" case does not need to be here.
+> >
 > 
-> __nodemask_pr_numnodes() returns MAX_NUMNODES, a compile-time constant,
-> as the width for '%*pb[l]' nodemask printing. On systems with few NUMA
-> nodes this produces excessive zero-padding, e.g. with MAX_NUMNODES=1024
-> but only 2 nodes:
-> 
->   Mems_allowed: 00000000,00000000,...,00000003  (32 groups)
+> mhp_online_type_to_str can technically return NULL, seems better to not
+> just let a NULL dereference sit latent even if we can visually tell it
+> can't happen today?
 
-Please let's completely describe the effects of this. 
-nodemask_pr_args() is used in several places so I believe that a number
-of userspace-facing strings will now appear differently?  Let's spell
-out which userspace interfaces are affected, and how.
+Oh, makes sense I was thinking "unknown" was only a result of the
+drvdata missing case.
 
-> Use nr_node_ids (the runtime highest-node-id + 1) instead, matching the
-> behavior of cpumask_pr_args() which uses nr_cpu_ids:
+> > > +	if (dax_kmem_state_is_online(data->state)) {
+> > > +		dev_warn(dev, "Hotplug regions stuck online until reboot\n");
+> > 
+> > I like that the BUG() is avoided, but I think these should stay
+> > dev_err() given the severity.
+> > 
 > 
->   Mems_allowed: 00000003
-> 
-> Move the nr_node_ids declaration earlier in the file (guarded by
-> __nodemask_pr_numnodes(), and remove the now-duplicate declarations.
-> 
-> ...
->
-> --- a/include/linux/nodemask.h
-> +++ b/include/linux/nodemask.h
-> @@ -95,6 +95,12 @@
->  
->  extern nodemask_t _unused_nodemask_arg_;
->  
-> +#if MAX_NUMNODES > 1
-> +extern unsigned int nr_node_ids;
-> +#else
-> +#define nr_node_ids		1U
-> +#endif
-> +
->  /**
->   * nodemask_pr_args - printf args to output a nodemask
->   * @maskp: nodemask to be printed
-> @@ -105,7 +111,7 @@ extern nodemask_t _unused_nodemask_arg_;
->  				__nodemask_pr_bits(maskp)
->  static __always_inline unsigned int __nodemask_pr_numnodes(const nodemask_t *m)
->  {
-> -	return m ? MAX_NUMNODES : 0;
-> +	return m ? nr_node_ids : 0;
->  }
->  static __always_inline const unsigned long *__nodemask_pr_bits(const nodemask_t *m)
->  {
-> @@ -438,7 +444,6 @@ static __always_inline unsigned int next_memory_node(int nid)
->  	return next_node(nid, node_states[N_MEMORY]);
->  }
->  
-> -extern unsigned int nr_node_ids;
->  extern unsigned int nr_online_nodes;
+> I had to go back to calling remove_memory() by default given different
+> feedback, but I think if anything I will just modify the BUG() to a
+> WARN() and call it a day.
 
-Let's relocate nr_online_nodes also?  To keep them together.
-
->  static __always_inline void node_set_online(int nid)
-> @@ -480,7 +485,6 @@ static __always_inline int num_node_state(enum node_states state)
->  #define first_memory_node	0
->  #define next_online_node(nid)	(MAX_NUMNODES)
->  #define next_memory_node(nid)	(MAX_NUMNODES)
-> -#define nr_node_ids		1U
->  #define nr_online_nodes		1U
->  
->  #define node_set_online(node)	   node_set_state((node), N_ONLINE)
-> -- 
-> 2.9.4
+ack.
 
