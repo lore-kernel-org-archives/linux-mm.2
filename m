@@ -4,96 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A417C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 13:25:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 501ECC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 13:34:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 518806B008C; Thu,  9 Jul 2026 09:25:15 -0400 (EDT)
+	id 5C6EA6B0088; Thu,  9 Jul 2026 09:34:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C8D86B0092; Thu,  9 Jul 2026 09:25:15 -0400 (EDT)
+	id 577C86B008A; Thu,  9 Jul 2026 09:34:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BA846B0093; Thu,  9 Jul 2026 09:25:15 -0400 (EDT)
+	id 48DB46B0093; Thu,  9 Jul 2026 09:34:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E9E26B008C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:25:15 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5D51C8B9CB
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:25:14 +0000 (UTC)
-X-FDA: 84969309348.09.F16C6E0
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 214B5C000F
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:25:11 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QSXGGM3n;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 2B8876B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:34:23 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A8A38140189
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:34:22 +0000 (UTC)
+X-FDA: 84969332364.03.AB8AD55
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9AF87100007
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:34:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TqMFrkLg;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783603512;
+	s=arc-20220608; t=1783604061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sO9G8F5VULeMEdh5I5+DwqvlznbD42nz7nqrLE6HRog=;
-	b=I1EsL+1L5YTqe+Z4wdfJ4BhlCVJPmmwZrcHIW93rj42a0fDfDwj6wo9TEl2ijKoSoCC87c
-	SaMhAjTawEP/4s8v2gxlYuaL1qd5pBs/V5joBi8tL8GChLoQswgvDtzIsGS3lc+Fr22+L0
-	i4WsGw8ECH1x8Og23o5nvWAdSDMBnMI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QSXGGM3n;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	bh=4GR48i8hlkB2Ze3PQTDUSFwKBjcFU+CD3y6+0ixlT14=;
+	b=VnpLSPLwCg2UDcnDlQQF2kWyiaB5jXRMIDI46wX1+9s996OG3LvPE3TtQ3SZ/AXfPkpH21
+	tkij42Zr4FflpOUo3dT8qBQJWGBUeWaWv6JVy3lzAbb2dcvb+ZBvgrdb74W0uT+3rIQHva
+	7IuXyegFZL1syFsPe/kSHBdWw5oRytw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783603512;
-	b=A2far+NfM5qKNsQfnQ2L18xQexJ/p88/iL8PY1w0NQXML8digVna8gFp8fhty4/VjcyEDS
-	VoMpb64khc0Zqx6vmaIayfrRvTNN+HpnTYFK9KwwaToCLPEK5fbSZ+j15BPTUP6d58neWo
-	BLPiz0Y/uA/aPIMiScli0L0ON4DM6C4=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783603510;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sO9G8F5VULeMEdh5I5+DwqvlznbD42nz7nqrLE6HRog=;
-	b=QSXGGM3nkI6u+O+hECi0uUyevg1hNCWwlHV/ZG8B8g1RP8JtVFpnPfnZgITfiekwEaBx3k
-	eDLeqc/jxdcIiy4W1sQizWiCk7QTeub1WuZAQRrrBWHlLCdsxzIPlWx7Vtjg9woy2gO7Q6
-	KrRRL8ORecsEtRjMEEnT8HeDOWUyHf8=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 04/17] mm/mm_init: skip initializing shared vmemmap tail
- pages
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <ak-ctr06UDUlNCJZ@kernel.org>
-Date: Thu, 9 Jul 2026 21:23:47 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- Michal Hocko <mhocko@suse.com>,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <CFAE1475-6104-483A-86AE-511FB0A1CA2B@linux.dev>
-References: <20260702093821.2740183-1-songmuchun@bytedance.com>
- <20260702093821.2740183-5-songmuchun@bytedance.com>
- <ak97z4tryYAGJgb_@kernel.org>
- <2306829C-A66D-41F2-B5F7-1C164A7FF757@linux.dev>
- <ak-ctr06UDUlNCJZ@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 214B5C000F
-X-Stat-Signature: n7ezm88rurb6nb9sphxsny3wf31q3gdy
+	t=1783604061;
+	b=5vSaRjzLxCqRoi5jBTT8Tv2ghpM4s3UwZNwCSanZJYxM/mr5Zezbq0H9iEDEMz6tcSn/yE
+	JfLswxbtisyx0tDgx2sWrkQHzThgmhRu8DtaphkumlLxPrZM4+aqv8o9Fm+KibU+RlsW9b
+	H95VodQjdfL2VFc5nC9JErHGXvNwCsE=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TqMFrkLg;
+	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C9D23592;
+	Thu,  9 Jul 2026 06:34:15 -0700 (PDT)
+Received: from [10.164.148.40] (MacBook-Pro.blr.arm.com [10.164.148.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8B5FE3F85F;
+	Thu,  9 Jul 2026 06:34:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783604059; bh=UCBoGFyvDS7VXUCq7xWi4MDCI+kdI7sbuLuwaKPwTdk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TqMFrkLgbznn2mQhEGHlE2P5owjWK614V8M6f7dmsfN6b/aZqzS3C9G2/3EVQbwL9
+	 5nXcygHeAUw+ndJ4HzjTw6LGTQ2XqyTzpnkiahKBKxHqYeq/DwbtR/gsPmPH5aLGR7
+	 j6gPVUumSswrNs0QlNddls9HTFGWSTxztXsTCnwk=
+Message-ID: <32c60952-4f80-4cd7-8fe7-003262f09a12@arm.com>
+Date: Thu, 9 Jul 2026 19:04:06 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] mm/rmap: add anon folio unmap dispatcher function
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ ljs@kernel.org, muchun.song@linux.dev, osalvador@suse.de
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260707121128.373192-1-dev.jain@arm.com>
+ <20260707121128.373192-6-dev.jain@arm.com>
+ <50b0de85-0bb9-4d09-b32e-31a3a4661379@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <50b0de85-0bb9-4d09-b32e-31a3a4661379@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783603511-766500
-X-HE-Meta: U2FsdGVkX19A2I4PwgNXk2CUg2YOtLQ7yuvXMArUSzsi17WI2DOrONxZh26De2pEC/fb0LlLkewJQkHssWm9R9t75poEWAFnXuYNJR2HEDtrzeLYHoEqJPADFLaqyGqbVuvRCmrfs19lqPX9kEkntkfimNqNlmMOOqYLAOG7Wc7dpfyEE8Ta9wWUOm16Q3lHCWglVuoNcoTONnvpiqZaFx8nLgM+FCwYc8+2aT/xz2/+m2NKeAGXsx1G3vKufcnEjWENIaKr4hy/WEx72mCNYHSCElX2ZPJiWHxunLVX/ZrZ+yib35sh8Rm9NWMwglL9SUv2qlu9u7X9S2E9/nJW53TAFDh6gXFattZXsO+WPN+FKdNBUyGkAovAY5bldlzXoYysir5PYOKEr66hEtpTs+5pPH+NSf048M1pkHLLZAT6PQoCsF4owjWyRAHLMAsj+NHCKj4SZhCE/D964bkOq/UI1xFKwwkg3CEqXBaPxbe8OB5CWwHYKrgSqTAjCvJN31FAmaUMy3INiDhW3Ok31IoSdieqm3DLerUsZw3BJxLaCm9F41vhr/aKPbF1WqHPltJcXty1PsvKGe1ooRUkKJVzMPuVdweOFJ9uKnsLKR84zUdfBjaCqDv0uZX8eaRGanX2G4PgLM7VKKtuWvjOCQwcdOJYW1wXpjKs4Q+fsUBAJkDMjE1djck1qaDr/6RNiaQOp33KXMoM4SCOnUxVREUP65TJHDjCCLZ5td4tndtVJW2v6rqaImoHF6o1eDr/bhdz5oOHWSiIWJVtfMt/zr3sj7qC10tAAgGd/CAPK/aS4NH+e90TAo7B1VpiTL+h5F8NZ2yvBVhwLBS7sfPqU6q15EOokco1VI2KybdTxE93n/Rh2fp+XKG0YGdPQ2POSPKfUt0JlxeXozXl9lomZbRFkCD9nLsWWPLeSYD4rIcQEiz5MzsRZK9HRMd59WN1dVkVDwavRj8JIvsaUlv
- QVmAc/bM
- eMSUCgfCHkBqTETLNLce338MFJ9prr08YbqjKDluDxMm76r2FerK7QGje9wTELdwNj9gKzWn3yYg0vH1rOwLk3eof7VJKfrArzeEhHopIp1KBSDNSwvUhMxXURhXeHg60AGJ7tXtCF4qr3wQCRk30/Omt2760I1EZmjeLCrYzSgfr6ZNQGdrfzyIh6ytQRzWxix7WqZj9+Fy4i+WUHJLkCWNytsnQ4FF4D+e1a6LQ4xi45MJ3wlxbd0j7RjSIZ1x9K2qp4RW8wcd5IiILwz5qznzqLr45oPmC+bmwtLkqYTPFOWJwKXXRjmwzX+lPyAlrHsd+Lv8isRCBZoE=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9AF87100007
+X-Stat-Signature: sy3x91pxgcss5wxmcbugibsn3krdxp57
+X-HE-Tag: 1783604060-794262
+X-HE-Meta: U2FsdGVkX1/Vg2ldY8BTzADhUKXOd6R67N5/GrSaVGiSElGRptN7aQdLjvevbabuqR77i00vlsPwY9R0PfnwOqlJtl/eDdhQhJYFyHAWz4RmBkfm9aLFes1M8ypETJRYSeBl1Un7T8/aomZ1tAwsEdE8RoItOmIBIE4ykdlm2zPN1DipQzjXs3ADYlHMbMLqh4JRrrfcEHz+xRF/6mPdkdnYOhXt8apm/w/ocWbTxVt3vlnM+jbFrfrt7BhuFEIRpOaJRiKqBGJGTFi3QlbLyzo6tY1s8CooSyMueV7ZhASdrW0VazTx5oDojomLxMJgOKeBEUpsMJe0z+qK3zzgX+TA5UJwibP7tG583UbOWbnNoXc4msnyvVB0FGdUSocMabhaN+StkTM14uJGOj/GoDljr7LkJvVW7BL0vWy5h4tkJBFC1zcKgLcX8CtI8vR2HcWvYJAUHYLj02pEqiPKdmH0gDAj4uUYqOmwxr7Pmiu31peLPpuAo/4J2znwJM3Yj8LWIgHtLY1F8onQQjg1xeJx2f9GM4KKmkrFdpBLzJdHAcjU86s7yUEQN0yUe/rauD1qoYYpmuobON11+zSS7tugp5bVBVc7drWDPKdy3UsXVxO5jbcfh+XkXnzS0tyvKYkqWwRNWSXcPp3BE4+ATcCB9X+tHk+YPF+32EYBwIgQ6Km9uqx7DFIMwu2ffhCcX6J7pswYaEypeSHhR7/W9bDeRFw2CbJHT/CI7TwaSEvW+IwRX0uhjHlSHvsNflRuVo+XnDaefJ5BM2Emc33uNewUJZV04RCPH2NjB2c+Ce9X/oKFX/95MmbmAXx7uyv1riZmqlhCJPfaH0u7CrYfscJdY7fLu4QF4ZVFKZqFz8BgPvGH7E3yPKKuTjqz2JeXm+HeHqdbsLWCoD0uvFCDty+trge7WFkwnrER4EF2jRaBGMqZkqSdEOWoPU+mgopio0pbuv0nDuwb3aKPY37
+ GE6BsvIb
+ rHvB3q6VUsSKDYTRr7hVaIIS6GPla/wAovZ5IQr5bpXscwGDgXHRMklaXnx+tckpOjfVpva4pZX5+P6uuIc+9mT4aa+3FRwykz26d5hcWrsITLY0hKpXVHpZ7bOOR7eSbobMm328jDWH0YsbvxpxUwMgIfyNbnQ0cvGkP9ESrDxh+e2/gbhoA+WegjevBFBnuPPlO/BZtNcFoEji0qmciL657Thm49Fy8d5+WXLvWonEVxHkU51HSGYWpnE/aX2a0yzY9o/tUcFyXp2J+zw7Ac6EvcJG2681KaA2/nTWalX+qJlM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,124 +97,113 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Jul 9, 2026, at 21:05, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> On Thu, Jul 09, 2026 at 08:31:31PM +0800, Muchun Song wrote:
->>> On Jul 9, 2026, at 18:45, Mike Rapoport <rppt@kernel.org> wrote:
->>> On Thu, Jul 02, 2026 at 05:38:08PM +0800, Muchun Song wrote:
->>>> memmap_init_range() initializes every struct page in the target =
-range.
->>>> For compound pages with vmemmap optimization, the tail struct pages =
-are
->>>> backed by a shared vmemmap page.
->>>>=20
->>>> Initializing those tail struct pages would overwrite the shared
->>>> vmemmap page contents, so users such as HugeTLB have to open-code
->>>> follow-up handling to restore the metadata afterwards.
->>>>=20
->>>> Use the section's compound page order to detect struct pages that =
-fall
->>>> into the shared tail vmemmap range and skip their initialization in
->>>> memmap_init_range().  Still initialize the pageblock migratetypes =
-for
->>>> the skipped range so the surrounding setup remains intact.
->>>>=20
->>>> This is a preparatory change for consolidating handling across =
-users of
->>>> vmemmap optimization, and it also avoids redundant initialization =
-of
->>>> shared tail vmemmap pages during early boot.
->>>>=20
->>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>>> ---
->>>> include/linux/mmzone.h |  4 ++++
->>>> mm/internal.h          | 16 ++++++++++++++++
->>>> mm/mm_init.c           | 25 +++++++++++++++++++------
->>>> 3 files changed, 39 insertions(+), 6 deletions(-)
->>>>=20
->>>> @@ -673,19 +673,21 @@ static inline void fixup_hashdist(void)
->>>> static inline void fixup_hashdist(void) {}
->>>> #endif /* CONFIG_NUMA */
->>>>=20
->>>> -#if defined(CONFIG_ZONE_DEVICE) || =
-defined(CONFIG_DEFERRED_STRUCT_PAGE_INIT)
->>>> static __meminit void pageblock_migratetype_init_range(unsigned =
-long pfn,
->>>> - unsigned long nr_pages, int migratetype, bool atomic)
->>>> + unsigned long nr_pages, int migratetype, bool isolate, bool =
-atomic)
->>>=20
->>> What is isolate parameter for?
->>=20
->> I've re-examined the code, and you're right that the isolate =
-parameter is technically
->> redundant for our current use case, as memmap_init_zone_range() =
-passes false.
->>=20
->> The rationale behind keeping it is future-proofing. The ultimate goal =
-of a generic
->> HVO is to support arbitrary huge pages, not just HugeTLB. I decoupled =
-this as a
->> parameter to prevent potential regressions down the road; if a =
-developer leverages
->> this for other huge page types in the future, they won't =
-inadvertently break
->> things by forgetting to update a hardcoded false in =
-init_pageblock_migratetype(),
->> especially since memmap_init_range() natively accepts an isolate =
-parameter.
->>=20
->> Of course, we could also just delete this parameter for now and add =
-it back later if
->> needed. I think both approaches work.
->>=20
->> Which way are you leaning?
->=20
-> I'd drop it for now and would revisit when there would be a new HVO =
-user.=20
-> Even one boolean means it's hard to tell from a call site what is the
-> intention of the flag, two make it completely confusing :)
+On 07/07/26 7:58 pm, David Hildenbrand (Arm) wrote:
+> On 7/7/26 14:11, Dev Jain wrote:
+>> Add ttu_anon_folio() as the common entry point for anonymous folio
+>> unmapping. It dispatches to the lazyfree or swapbacked helper as
+>> appropriate, and centralizes restoration of cleared PTEs on failure.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>>  mm/rmap.c | 59 +++++++++++++++++++++++++++++++++----------------------
+>>  1 file changed, 36 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index ade78df5be2bd..f021ecd51a4a2 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2171,6 +2171,40 @@ static inline bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma, struct
+>>  	return true;
+>>  }
+>>  
+>> +static inline bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
+>> +		struct page *subpage, unsigned long address, pte_t *ptep,
+>> +		pte_t pteval, unsigned long nr_pages)
+>> +{
+>> +	struct mm_struct *mm = vma->vm_mm;
+>> +	bool ret;
+>> +
+>> +	/*
+>> +	 * Store the swap location in the pte.
+>> +	 * See handle_pte_fault() ...
+>> +	 */
+>> +	if (unlikely(folio_test_swapbacked(folio) !=
+>> +			folio_test_swapcache(folio))) {
+>> +		WARN_ON_ONCE(1);
+>> +		return false;
+>> +	}
+>> +
+>> +	/* MADV_FREE page check */
+>> +	if (!folio_test_swapbacked(folio)) {
+>> +		ret = ttu_anon_lazyfree_folio(vma, folio);
+>> +		if (ret)
+>> +			add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+> 
+> Can't the be handled in there as well?
 
-No problem. I'll drop it next version.
+Okay.
 
-Muchun,
-Thanks.
+> 
+>> +	} else {
+>> +		/* nr_pages > 1 not supported yet */
+>> +		ret = ttu_anon_swapbacked_folio(vma, folio, subpage, address,
+>> +						ptep, pteval);
+>> +	}
+>> +
+>> +	if (!ret)
+>> +		set_ptes(mm, address, ptep, pteval, nr_pages);
+> 
+> It might be cleaner to do that in the caller, where we actually removed the ptes
+> in the first place?
 
->=20
->>>> {
->>>> const unsigned long end =3D pfn + nr_pages;
->>>>=20
->>>> for (pfn =3D pageblock_align(pfn); pfn < end; pfn +=3D =
-pageblock_nr_pages) {
->>>> - init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
->>>> + init_pageblock_migratetype(pfn_to_page(pfn), migratetype, =
-isolate);
->>>> +#ifdef CONFIG_SPARSEMEM
->>>> if (!atomic && IS_ALIGNED(pfn, PAGES_PER_SECTION))
->>>> +#else
->>>> + if (!atomic && IS_ALIGNED(pfn, MAX_FOLIO_NR_PAGES))
->>>> +#endif
->>>=20
->>> Let's trigger cond_resched() on some defined number of iterations or =
-some
->>> memory size chunk, e.g PAGES_PER_128M or even PAGES_PER_1G.
->>=20
->> Yes, that's for the best. I was really struggling to choose a =
-suitable macro
->> for this earlier, but I realized it's a difficult thing to get right. =
-I'm leaning
->> toward selecting PAGES_PER_1G instead.
->=20
-> Yeah, PAGES_PER_1G makes sense to me too.
->=20
->> Muchun,
->> Thanks.
->>=20
->>>=20
->>>> cond_resched();
->=20
-> --=20
-> Sincerely yours,
-> Mike.
+Yes.
+
+> 
+>> +
+>> +	return ret;
+>> +}
+>> +
+>>  /*
+>>   * @arg: enum ttu_flags will be passed to this argument
+>>   */
+>> @@ -2351,31 +2385,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>  			 */
+>>  			dec_mm_counter(mm, mm_counter(folio));
+>>  		} else if (folio_test_anon(folio)) {
+>> -			/*
+>> -			 * Store the swap location in the pte.
+>> -			 * See handle_pte_fault() ...
+>> -			 */
+>> -			if (unlikely(folio_test_swapbacked(folio) !=
+>> -					folio_test_swapcache(folio))) {
+>> -				WARN_ON_ONCE(1);
+>> +			if (!ttu_anon_folio(vma, folio, subpage, address,
+>> +					    pvmw.pte, pteval, nr_pages))
+>>  				goto walk_abort;
+>> -			}
+>>  
+>> -			/* MADV_FREE page check */
+>> -			if (!folio_test_swapbacked(folio)) {
+>> -				if (!ttu_anon_lazyfree_folio(vma, folio)) {
+>> -					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
+>> -					goto walk_abort;
+>> -				}
+>> -				add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+>> -				goto finish_unmap;
+>> -			}
+>> -
+>> -			if (!ttu_anon_swapbacked_folio(vma, folio, subpage, address,
+>> -						pvmw.pte, pteval)) {
+>> -				set_pte_at(mm, address, pvmw.pte, pteval);
+>> -				goto walk_abort;
+>> -			}
+>>  			goto finish_unmap;
+>>  		} else {
+>>  			/*
+> 
+> Very nice.
+> 
 
 
