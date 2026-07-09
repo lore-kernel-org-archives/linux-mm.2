@@ -4,120 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 401A4C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:17:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B6F0C44503
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:17:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C7B66B0088; Thu,  9 Jul 2026 03:17:39 -0400 (EDT)
+	id 535636B008C; Thu,  9 Jul 2026 03:17:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0783B6B008A; Thu,  9 Jul 2026 03:17:39 -0400 (EDT)
+	id 4E5DE6B0092; Thu,  9 Jul 2026 03:17:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E83AD6B008C; Thu,  9 Jul 2026 03:17:38 -0400 (EDT)
+	id 3FC506B0093; Thu,  9 Jul 2026 03:17:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BC42E6B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:17:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4339FC26C2
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:38 +0000 (UTC)
-X-FDA: 84968382996.03.976FFF2
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 779AB140007
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=PtIuOfMn;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=kRB50jqQ;
-	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783581456;
-	b=gl3e4Dre5KtxvJORSevEKlNxRnUvtnc2nypFWK5SEfF1rvqSmmDAtXUTTL4k7LJamFhQ8C
-	l3bqm5LUzNEqmXKDTbT8mELw3hSM+2ScWKOSLKFOqW6T5ZN8rYv7rKRVhYGEkr/Ewq3Et5
-	CH90fWc2DfTQ/JuaHesDqI5I2VwTU1E=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=PtIuOfMn;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=kRB50jqQ;
-	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C48F6B008C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:17:57 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 827EB12041F
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:56 +0000 (UTC)
+X-FDA: 84968383752.02.174A87E
+Received: from outbound.baidu.com (mx15.baidu.com [111.202.115.100])
+	by imf16.hostedemail.com (Postfix) with SMTP id 2AED6180003
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=ZKH0Jvsj;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=md16448C18A3=lirongqing@baidu.com" designates 111.202.115.100 as permitted sender) smtp.mailfrom="prvs=md16448C18A3=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783581456;
+	s=arc-20220608; t=1783581474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F9SKBxLhUcVP1yEBFgHPNey4vuoMv6f7r4rXayVZwUY=;
-	b=iJcNlZ32wT5c1rwDESO4v+EskUR0Qh5vi6KYTkEnTd8681z4ZE6rr/FKk/fjnY+0Id9ki6
-	4d7LxNGBWJhT+8lIGH3f0G+2UZ5ryTbEW+iADmLmQCgpIQXmNORgOUFM7drQgHXcDDV/lI
-	9yTyRBPZ+NO1abPqcAU7D4KhJrSu5bs=
-Date: Thu, 9 Jul 2026 09:17:33 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1783581454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F9SKBxLhUcVP1yEBFgHPNey4vuoMv6f7r4rXayVZwUY=;
-	b=PtIuOfMnH+4L6RK5zWDYM9QxZ7qFIDDANU9HKLo3euM2pysXCVMwAa7n0WM9qlO40a3voh
-	DuJIKMU8fzWSzXZ9l491Z4XBQ0KTIpmeIuhHSzlg0CK5YvnKbZ7s/RIGLP21o2M9L0o7Rj
-	zSwnXdwJoMA72KBAhb8rJmxHHKXCqXO6C0wmhoPJoAi3VMyrmMFTka6l8meEuom7fPLR+m
-	ZKJ+2UBpVHoAgJDHaBFHf2d85mBPBBieEtIIpIP4KHv9WbVlPQOC6fsZp4ZIgta2kndNxF
-	O5hotz+4KOFHBJCxuyk1T/BLRhXpjFxIvYbJmL/KCdibPRgi80mtnrAOWqSnIw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1783581454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F9SKBxLhUcVP1yEBFgHPNey4vuoMv6f7r4rXayVZwUY=;
-	b=kRB50jqQviKOML8rg86X/o/Q3HTiZaVrhqXPi05nX1mZw5SlYEe6ldifyk1fa0K1jn//2f
-	uWSs1Y9MUuicx9Bg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: oleg@redhat.com, richard.henderson@linaro.org, mattst88@gmail.com, 
-	linmag7@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
-	kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name, 
-	geert@linux-m68k.org, tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org, 
-	glaubitz@physik.fu-berlin.de, richard@nod.at, anton.ivanov@cambridgegreys.com, 
-	johannes@sipsolutions.net, luto@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
-	peterz@infradead.org, wad@chromium.org, thuth@redhat.com, mark.rutland@arm.com, 
-	ada.coupriediaz@arm.com, kevin.brodsky@arm.com, linusw@kernel.org, yeoreum.yun@arm.com, 
-	song@kernel.org, james.morse@arm.com, anshuman.khandual@arm.com, 
-	broonie@kernel.org, liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com, 
-	yangtiezhu@loongson.cn, sshegde@linux.ibm.com, mchauras@linux.ibm.com, 
-	austin.kim@lge.com, jchrist@linux.ibm.com, arnd@arndb.de, sohil.mehta@intel.com, 
-	andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org, x86@kernel.org, 
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-csky@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org
-Subject: Re: [PATCH v16 18/18] arm64: vdso: Expose sigreturn address on vdso
- to the kernel
-Message-ID: <20260709090525-b1e5ae06-1fb4-454e-919c-6503dcf3d073@linutronix.de>
-References: <20260629130616.642022-1-ruanjinjie@huawei.com>
- <20260629130616.642022-19-ruanjinjie@huawei.com>
- <20260630172619-6c78c2e2-c2d3-44be-88e6-6c82de12baf4@linutronix.de>
- <21875fb4-434b-480d-b68b-e2ffd5fff5ae@huawei.com>
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OkEwYNn3Kzj/19nEDUJIcFeVvbVD2LipZW/+SjC+YEc=;
+	b=hEc7CIE8u6jU/wIOUb90+4AybS9Nk7JCvjFTVuvwJp0KUS+kCRPn8l6sPSWW9Jx74Vqw2/
+	VwXsNfPcGBG2lsRFQUBnVUp/S9hpk3Vh3e9HfOIVuCeK34Akn8tYs/R/zvv3F/Kq/UKYjO
+	n9UgcGWAvMub9r8/IW1D2rORUEwELVw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783581474;
+	b=WRG+PBXw12QkwiS1BvmLI3CPxQnV76bquwL54d+7WpbR/0+nZ1xZ/kWvGefd3MKevUI6I0
+	hxS/Je6xNdJjEhzPRTl4cbTwmeyOm5lLtZx82S3Kz3Q5zN62fFFx/pehURbUrnFXVOZVd/
+	lbOGC25ZnFw7AQIOo1lbUouLz6SYuy8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=ZKH0Jvsj;
+	spf=pass (imf16.hostedemail.com: domain of "prvs=md16448C18A3=lirongqing@baidu.com" designates 111.202.115.100 as permitted sender) smtp.mailfrom="prvs=md16448C18A3=lirongqing@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
+	<linux@rasmusvillemoes.dk>, <linux-kernel@vger.kernel.org>
+CC: Li RongQing <lirongqing@baidu.com>, Andrew Morton
+	<akpm@linux-foundation.org>, <linux-mm@kvack.org>
+Subject: [PATCH] nodemask: use nr_node_ids instead of MAX_NUMNODES in __nodemask_pr_numnodes()
+Date: Thu, 9 Jul 2026 15:17:39 +0800
+Message-ID: <20260709071739.2408-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <21875fb4-434b-480d-b68b-e2ffd5fff5ae@huawei.com>
+Content-Type: text/plain
+X-Originating-IP: [172.31.63.8]
+X-ClientProxiedBy: bjhj-exc11.internal.baidu.com (172.31.3.21) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1783581468;
+	bh=OkEwYNn3Kzj/19nEDUJIcFeVvbVD2LipZW/+SjC+YEc=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=ZKH0JvsjmwG4lw8VtoMemnvQGhsZ9Wc1f86/T1rMScMl9HdBxveQUleexwu8k81hs
+	 PNVbAShndVoQtpOrfpl7Kxy6ySMcW+eFdVTjK6gzNh9j81gJpKb9oafVg8zsWO1tC8
+	 P0RvtdueVq8+05j7weH4D/MsuwTGOVh5E4hiFaXtT5oMKmwPuxQcKWk7Pb9MBsLJSf
+	 gU0lkX0uNCBvWO2gHq1OfWZvL7PJQxeZVVqRrwrZOfPO7NnsLMczYDAWMkPpojmJEr
+	 Gb73OHR9vdJdbCAfAuTwpu07uBJmcE5kurtAkROpOgh/enzhNjCiwXhGzAJtVLfe55
+	 bmurdZPIVR8Yg==
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 779AB140007
-X-Stat-Signature: qc7o366didxojhkppyrndzfx5txx77b9
-X-HE-Tag: 1783581456-909773
-X-HE-Meta: U2FsdGVkX1+/ic1eD15IH6Svpov5VkuvaR+Kb769LMb5B3vkJD2VoR5fwAclMjyBndf3tqY45vHw7k48geN+xlOEwsvmKR0xauOn5aJSSmOL4klCR0ZrYqImy2+S9iXABePSm6lI9ul/61KTFKSAG2FDFXlSq/oE8NBmMEl9PVamLt4aVjs441DE3uweYa5WjdsHMEN1UzKcdUH/+1c4tX/Xk+8QlnhDnCg9qn5MgUe2//iTjh/Z15jyer0NUEVXq00hAJpMp+zbPiba/qOBwCIrhYfbGCtHBzeVGAY6HeKWUmoo0hEOvQlq/SWaHTJfBaAdrE8yhgbPVaOcRbPQEIpiHxqreUly7m990/jRcfkmtZ8vT8McK/AEo3dmnsnShG3ZuqSUa/ieX8CJsxxYFY/ta8H3QaB8F4bgvgNQ64e8quhqRNPTmWgP62DSKiA4bA613Ex8qkLo8FYCHCGmok82weT8UpovBfrtbAlnLjk2Sx59w52IxjoU01xly+VMQZtzs/YQupwHFgKvv/6M/jsYGLuWKpv1NNpxo/tNBJObCZHpHrcI+0MGlgW0dKaR700pj+wOGs0+wq9Et9RlykHr5e6qUFkHjSo+UGL8ZLcS3QX8xo3uRsT2lZoGTuc2xsW7MEsYrxjcyovjdOv3llV5gXz32xxMPrbxJ0ZAArfCjRo+GKG7SrZbFUw/znEqI1zjaYeno0wMv10KG4ODFBUJCpDaK2YM23TNGj2R/VbdWT5JPssjqFVd2zHR4z2GclC24djaG2osJLJwf8sXjBOu12n0TMImrU2IRxEXqy6crsx+35IaqWHtvIq4WKW4Y1iBEt1ORSaCccyWjXhgQ5+ZQWpRrlXLINmBgppLBmy4SQuXeBWzGg/83S/JbzPok2AQKuoIlCteX+501dDs59MUcsrgO57926D+5xdChVBNix1RxfK+YZxuxt4pgs6u66AXiaUzmxFot0CBJpX
- 5hHXzdKW
- h1sTYHif9Ki9qGTZKLVvntWmlLE8aSGZ9kVihOQ26j235B+437DFBPvMV7yVCd83d6lHZcYfNFCVbv6jRqeH2uBCMi8ne/P9lektTmhTNelQxgHR7W+BQ54fVqu5ifiTjCjVXf2jWxSka5XibnpyE1KdewuSPqZyyCUkb+wit+yGQl97Ne+tfKKm/t2k8ovxGCdiXwv7mnqVvZ98PVDyWMY5tSxDw3cYqokXTBQlzjLOjAs3QRELYvPBVKXANI6AeXF7OnEbzxD1CKn8mTb4Z2ObfAQAxps5ml0Ok4x/hc8npxYztfOVXJWfyqLiIJWplnV8vtV4mZ7m0SAPcvvfsI15Jl0PIes5LlsfYDQRqWWR2A9FLkoWQpjdQR2L3rBT7AsV5X58FnlzgZHm1zpwcO20fS7L4AWL2zUXs1CLzuUkAW+Cwyc7kLnNtQCCK89XfOgt4nVuc5zi/zrSnPOjzuKiJdW3wSBMnZ9BzWM4ZI9Is++cYOk5nO2biqfjsBFVjFWoD
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2AED6180003
+X-Stat-Signature: dmfrwp8km3etpjxzw8c1hrgb15kuqtjo
+X-HE-Tag: 1783581470-907816
+X-HE-Meta: U2FsdGVkX19V33QEsiOTytMrGcB1SYR1AZQKE5/sXs/ILuwQWOQcKh22NX6bLRVMG7vq0HSUHxaXrHX3Kqy7wsPAEC8cpsaPiI4Vh52YANALdkSaxIWbBpxo+QQ4p8V/wO9ZiTG1p95NT1nWGYks7ElWEtjy+79ohV1ZOA9u8v8s7nFxx4KGQnc8BjYXKuvzQQDLExrePsMgMADL6ddirjSHYCmTLTdGlxZjD+OjhqiU0yNn64UwVPah04sd2CfZD6Qz8uOTKe9mDXida+x54KlevySe9/vA6FqfaqvKi05WqltOlxjpFmCrgTHpCm/TNti5rtD9z7NXhATO9eW7RJ5JV0/DP6cLtnSi94tfGHTzD/UlcQyMh+VhtPtJfN5EnR0EyGct1ZI6dekJlBYcK4Bu1z4/0aFR1UtwpdfPCsxth2spsqpi2CVg/XnzGKpjI8PEzuwVNr/sJ/WzS4vAs5XZlPnwrNBl5tN/W66KowAhKg4nySiDFf0zEVQM+Ne1SoQFCZ2dPAgWuVQw8kKaVuj/dFV+uMs0WTGG2b3r0Nrft+EzoDkOIg1K7KCP6Yo257OHMqqwMfTd92neaWObOuRFs8YRVNK0q3TjO8krL/+cqKRpM80oSsRCM3Wn7nFuSKhC9EhQCG+DbQz62lOJIn7o04dCPgK5/3L/XRaMensSG2moWyupx9vJi4tjenaKs1PGtNwaoEN6ttG/OOxxIE3uBgS6FJuSUwQvjW2N1rq/lQghZOJ6jSKnC7I6Ewo2p2k2wIC0r+YnMTVmHz28fOl0M/hZCwZyJOIMcLk1PviMZLCBh71Dl4RZs+896aXp39DL/yx5BWb+VHCmeusKxNVhEOMBwLmpaHMxqT+Q/17LWi1ZcIz3003uww8wq3+YmBjupQ/W0P6IHAA4qHwDrYPbIHsEVH/T7WLgv8D6MJiH9xGvVdw4EX0/5p3WyxyuK7x7RG9/kHsOKnGa/dA
+ UlSoY1rN
+ fhS6JxT+VdlwmcFlwrLmAs2tu21JRvrl6OzHgM4nn3XlKO4Vj1UwtOqYBaXrD1Eqh1ljLKpuQjqOp3/X2GLd1RCbD3L3BRJ15YMoBcAUOf+gzmzuz3+oC4Cb/kO+MotxHOwKyeQiC4FNQvXgOobpNYLrHbl3RaLGtpr8+gkreM5jNQxc1l9FcdhRpjVi1tqdezdnYzPP+OPGzWVZoeniyRc4Fg2WIcL6XLd2fg61vqWI1uSzof7cofaUSvyJHiIqc9vtgap0thytSCOXaoIe/eV8pOr0hZnpR0taUqkU4KXwhu9Ef81VSnX5NWLpTWM/ntL6aT7TGWg1Ul6d0WJRDN3J9C0MiCUT9533IT9NRsP9rSMrNM9W/GF5vYv/G6mKDxkFATqKBiPBzZnkXLa73NVDC7Y2gQFRryGzz/oRFm9xQ92/RFJOPltgj8LAXJEF3GwyUpr5QEfIuUeQa6kPA4r0XXZP2cYTFaE9g3HIi++FudOq4wWrwUxmHihtXFjTprxoEP1v3ICHzIybgOz+2aDQeSKdcqvhc7rQbs/5U4fZH1ZM3ac6wssIDjE+8b1qU75Qk3wDRoezDc+g2FZ07J/B02V1RpnzQvc9iTIFsy7FmE15IdfKTJ6DvEUKE+2dG6OrtvQ75nKWOuuY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,47 +88,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 02:37:05PM +0800, Jinjie Ruan wrote:
-> On 6/30/2026 11:32 PM, Thomas Weißschuh wrote:
-> > On Mon, Jun 29, 2026 at 09:06:16PM +0800, Jinjie Ruan wrote:
-(..)
+From: Li RongQing <lirongqing@baidu.com>
 
-> >> diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
-> >> index 592dd8668de4..5a0314a3c26e 100644
-> >> --- a/arch/arm64/kernel/vdso.c
-> >> +++ b/arch/arm64/kernel/vdso.c
-> >> @@ -343,3 +343,19 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
-> >>  
-> >>  	return ret;
-> >>  }
-> >> +
-> >> +bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
-> >> +{
-> >> +	unsigned long sigtramp;
-> >> +
-> >> +#ifdef CONFIG_COMPAT
-> >> +	if (is_compat_task()) {
-> >> +		unsigned long sigpage = (unsigned long)current->mm->context.sigpage;
-> >> +
-> >> +		return regs->pc >= sigpage && regs->pc < (sigpage + PAGE_SIZE);
-> >> +	}
-> >> +#endif
-> >> +	sigtramp = (unsigned long)VDSO_SYMBOL(current->mm->context.vdso, sigtramp);
-> >> +
-> >> +	return regs->pc == (sigtramp + 8);
-> > 
-> > Instead of hardcoding 'sigtramp + 8' you could add a new label to the 'svc #0'
-> > instruction and use that with VDSO_SYMBOL().
-> 
-> It seems that the modification of __kernel_rt_sigreturn() is not recommended
+__nodemask_pr_numnodes() returns MAX_NUMNODES, a compile-time constant,
+as the width for '%*pb[l]' nodemask printing. On systems with few NUMA
+nodes this produces excessive zero-padding, e.g. with MAX_NUMNODES=1024
+but only 2 nodes:
 
-For the changes to the object code of the function this is obvious and
-well explained in the comments.
+  Mems_allowed: 00000000,00000000,...,00000003  (32 groups)
 
-Such a label however would not change the object code of the function.
-In fact it would not change any bit whatsoever in the final vDSO,
-save for a new build ID.
+Use nr_node_ids (the runtime highest-node-id + 1) instead, matching the
+behavior of cpumask_pr_args() which uses nr_cpu_ids:
 
+  Mems_allowed: 00000003
 
-Thomas
+Move the nr_node_ids declaration earlier in the file (guarded by
+__nodemask_pr_numnodes(), and remove the now-duplicate declarations.
+
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Cc: Yury Norov <yury.norov@gmail.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
+---
+ include/linux/nodemask.h | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/include/linux/nodemask.h b/include/linux/nodemask.h
+index b842aa5..35269ea 100644
+--- a/include/linux/nodemask.h
++++ b/include/linux/nodemask.h
+@@ -95,6 +95,12 @@
+ 
+ extern nodemask_t _unused_nodemask_arg_;
+ 
++#if MAX_NUMNODES > 1
++extern unsigned int nr_node_ids;
++#else
++#define nr_node_ids		1U
++#endif
++
+ /**
+  * nodemask_pr_args - printf args to output a nodemask
+  * @maskp: nodemask to be printed
+@@ -105,7 +111,7 @@ extern nodemask_t _unused_nodemask_arg_;
+ 				__nodemask_pr_bits(maskp)
+ static __always_inline unsigned int __nodemask_pr_numnodes(const nodemask_t *m)
+ {
+-	return m ? MAX_NUMNODES : 0;
++	return m ? nr_node_ids : 0;
+ }
+ static __always_inline const unsigned long *__nodemask_pr_bits(const nodemask_t *m)
+ {
+@@ -438,7 +444,6 @@ static __always_inline unsigned int next_memory_node(int nid)
+ 	return next_node(nid, node_states[N_MEMORY]);
+ }
+ 
+-extern unsigned int nr_node_ids;
+ extern unsigned int nr_online_nodes;
+ 
+ static __always_inline void node_set_online(int nid)
+@@ -480,7 +485,6 @@ static __always_inline int num_node_state(enum node_states state)
+ #define first_memory_node	0
+ #define next_online_node(nid)	(MAX_NUMNODES)
+ #define next_memory_node(nid)	(MAX_NUMNODES)
+-#define nr_node_ids		1U
+ #define nr_online_nodes		1U
+ 
+ #define node_set_online(node)	   node_set_state((node), N_ONLINE)
+-- 
+2.9.4
+
 
