@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0300C44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 10:00:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05431C44506
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 10:00:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8055E6B0098; Thu,  9 Jul 2026 06:00:22 -0400 (EDT)
+	id 1270B6B009B; Thu,  9 Jul 2026 06:00:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DC836B0099; Thu,  9 Jul 2026 06:00:22 -0400 (EDT)
+	id 0FE9A6B009D; Thu,  9 Jul 2026 06:00:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F1FE6B009B; Thu,  9 Jul 2026 06:00:22 -0400 (EDT)
+	id F30F46B009E; Thu,  9 Jul 2026 06:00:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 417126B0098
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:00:22 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B7B9F4047F
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:00:21 +0000 (UTC)
-X-FDA: 84968793042.22.F3827BD
+	by kanga.kvack.org (Postfix) with ESMTP id CE4786B009B
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:00:28 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6262B1A044B
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:00:28 +0000 (UTC)
+X-FDA: 84968793336.11.11A99F6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 17AD8120012
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:00:19 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHbCEebl;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id A1ECCA0002
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:00:26 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=StbkFvHz;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783591226;
+	b=yc008Jozj7PqpOTHSFc6rs3ojvHmHiTBDKSKZslmH5M6iwydMEQcurplxvALUFlusB2Bo4
+	mC83N0sm5pZ/HRJpizlK/mBCsmsCnzpQJIugxdzndkeuz/DIjBTuW8fJD3CooQM6HnpPIh
+	GqlXH71MoBiVojNQL0GPqEIuKIIEI+Y=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=StbkFvHz;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783591220;
+	s=arc-20220608; t=1783591226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EQxS5gLJOprTy5BLpTKAG3KZTEQD8HTeSg2Kje/AmYw=;
-	b=Pdicwlfm/55qvO/lHDqlMehg/VUd3dSa2BOGEkh5Pk4Z5RfAXje4+Uo1fiO+Nu7WKtEBkq
-	DQF+2CNal5LUWbas++WAWYl5U/Pi38Gzndj76A8j3hSgnulOSpVctn8dOdC3HUM3NKHMYj
-	VdSCSjcwAip32h0bghBOeX0Eo6Wz86s=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HHbCEebl;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783591220;
-	b=FU4j8u757w45lX/64mEQyu2XjEbjzybiMxBlevzGbhqwKsUMdDiiNi4H3mSJ/G4/VcFw+M
-	vYFqTh5f+yXeQrZBiAE5W0/PyqJDtKXbdNvXIElxAeaOl/gHxQ93+kn8LPL6ah9p42rG4e
-	xCFsWVPW8QKFvXJjfXONUFHd08M8zMc=
+	bh=TrELcVwRYyz8Jzkrxkj7A9TvS/0MDDsv0mFX1UjuUEg=;
+	b=0LfFjawjRt5THJkgr0i+rk+pwS7n5sWY0U4XkLuCI1pG1ThDlzzZKuN9OYisY+58VwK3ia
+	/g7bWqWiHim8nJMGLXqfnYz1u1eelM4EVAVg7vDNyZOHyH/zW0oLZePBENDsMTwiWOl+gM
+	TdLz4CTm0+9IA2/FpTYCbkvyxxJclA0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A51E601D9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2D8E561372;
+	Thu,  9 Jul 2026 10:00:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE771F000E9;
 	Thu,  9 Jul 2026 10:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4650B1F00A3D;
-	Thu,  9 Jul 2026 10:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783591219;
-	bh=EQxS5gLJOprTy5BLpTKAG3KZTEQD8HTeSg2Kje/AmYw=;
+	s=k20260515; t=1783591225;
+	bh=TrELcVwRYyz8Jzkrxkj7A9TvS/0MDDsv0mFX1UjuUEg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HHbCEeblArptyEoFgTeF0w7mbK5xIfC+AzNZ7BjM/Xzr1lvXqzL2qpSWiKQffbNRe
-	 k1/stSenLO3m4okjDzAxWynoagcMuWe+SV1OWBzTcctgBG2iZHCC0sOJRzKaYRrSTn
-	 j7l7jC93mXYK56MT4tbyHS/ydRgE86fP/6y7xXgxihOqouzjcQRXrE/ElyyyOZOURX
-	 KwUiQsqNnL9tLXPDrWV6HA4tpHRN/tI3J5LAnCL7RP5ktsxoiuq1SIrbhA0334V1y1
-	 GkXmaQxaEmX3XBz6Y+ssef+1jPByVyxdUihJW7UWrS94SF0Y5F8XVIMp3dv4rWgi66
-	 52//tzX6Zoq6Q==
+	b=StbkFvHzawMhF0L4yrlgXoQknDDCvW45GVgyVKeSATD3sS6xlFsVQp7trQfrDH5P7
+	 04NV94a2lyluspknNz3Ow/hXxTzu1AZG5xcF+7x8NiHfTl3hGVbXMlDFGbQpUjBJWK
+	 VqKp9WEudr61e0Lf1pkXWy/00IKakbMp1yjPoEESVsLJGJWAHWzgOy6r4VEihNUBCi
+	 WzwuugtweWvwWEfScgbUOvL33bhVQstQb2CWC74iWnlkFPG8BhNmaeaqEeSIDrTmqM
+	 jiTcOnrjI/YYKDAZkBw9ylWcyZSmDd6LTWZY0zDczecZXYpxuMs9rhvTe+FdzpZgbP
+	 kFURq7j8z28Bw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Thu, 09 Jul 2026 13:00:03 +0300
-Subject: [PATCH v2 1/3] mm: split out mm_init and memblock declarations
- from internal.h
+Date: Thu, 09 Jul 2026 13:00:04 +0300
+Subject: [PATCH v2 2/3] mm: split out sparse declarations from internal.h
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260709-internal-h-v2-1-695631425968@kernel.org>
+Message-Id: <20260709-internal-h-v2-2-695631425968@kernel.org>
 References: <20260709-internal-h-v2-0-695631425968@kernel.org>
 In-Reply-To: <20260709-internal-h-v2-0-695631425968@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -94,13 +93,13 @@ Cc: Alexander Graf <graf@amazon.com>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.16-dev
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 17AD8120012
-X-Stat-Signature: pex4rr51cemphok8uemcxzpat9yftzpt
-X-HE-Tag: 1783591219-354774
-X-HE-Meta: U2FsdGVkX18CTliCM8JNxKsacCNVYjn5aHdJj9oMHhojdntMn+jcozHBI5vKAwI7j8H13KAoH2IEy7Bipq3v71O0g5PoE37DXpO33w9OcJB0fyC1nNHNITnGKKG9rehqNyXJFa38eZefsfTnHL/HvSSMIsdRoCQWmA7qURHyr7GXVzBBw4pRU4DXNQBH9KS9ElxvPE0R0nPddfGFhuzTq3DJtN0iCbOrfHsp4O5hanwme6chxucu8R0z7AlBAZSEVGsiwRs0bl49V7J8mJNNTIFiBZpC+o54clJZm4HuEq5DIzJtfrm2EdV3ZAUAZc55IxSJD5J+c7W1F0ZtgRpRxIS/0aQbuhfSKr+WD8xJKBVp4Ss2Z1oFXcMuHSwKGbHNElKlgAkCjlGZby+NLqph9eNgva036WVLO+YlvbskX9iNrmHbJdSynYQERDsF1b2OrFRqNm8VRiy1djNYTiGIVqJPCYadsXHEfywRu3r3DA1I5TYaYo6db0nkrUvk8DloH2MNOiX+5Zx4k1WrCD4IJW0OX+NThS63Hk0+SI4Ajh/xiSnyjVMols51GS5gcizC9wYeBrDLEZ+dVR8JlQtfkTCIEdI44Kde6L76HXeGahqbAUbD+OdErCcyC2M6LIneS47RNsa1mW6BQNkFJLPRYRWifoMDK/LS5FxTz8Q9q8czirxQtply6RgUSQC8Toe3eVQrJGH97uobEV3rKzJRPMSU0RxHn9MmCy9oYFQR18k8SYvYpp3tLsKM1etRLtzYAiIDeuByR3H0kMogwANPxeUPKUhHs/FuvBWcqOZLQ6CqX3HvBRv/MPiDuDfxwJHlusEQiW7SMfGhNON0MQ89z23AhGRA8BB0reH4mP6xiVJ5Cnr8u7L5hbEjCIOwNknBYuCXQTBNJQ9H7elXrkO8GvatonBSur9EBw7khbwyjXzPlqwMwMEHziEa8Mv8m/jdBAnPq+6Nql3BpvVGOjl
- w69ZVphM
- Z7TTiaEWYVdujl4clSZiMC70oDbCN8vaKT449gt3+Us27KKlXipY63ogbU50C6ugbEwHWOo8/9mxC8BeFBZYItmmWp0L9Y/+kilkW+Fex5U9P4yCymNbX9Pr+6aOU006hmAW6dkJlQHBV8AVZMABs/39mux4zuaMwqrcUXVSrQhF61mggyOH6ypRF2VRJQCaLQ71rt8tdLQ2tbuS2D19g2Ib64va/5wMStwQ2WF85kqZDNDyhyXj7Wza8lSPKJQzbge5YSBea1N7TFDzVihyxsYmShB24UxsWIeVQ
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A1ECCA0002
+X-Stat-Signature: x1h3hqsp6yhktaqw197xnxi8j7cctdfq
+X-HE-Tag: 1783591226-933680
+X-HE-Meta: U2FsdGVkX19PTEWFk+A1dDNexMTOG7GPiYNuKeLD9GgQQuO0S7KTvoAYakBFnRagM6zghkl3oISVqzT2krLn+hOo9lIbaIZlSvqD5pXeVefgYQwQJs4HG/fYgjgd9y/IpOr42TG8ikaHd5c0zeGmzhxOZihYWVcBEAsop2V3HJHLbwV+ctIC8Ta1J/4BCLvSeZBDP+Q9mfABKpjvOGMn9DY2emQuCNzSYGn2tf2t0G2pvZUzS/TE3KxkJc/oZkyCj34QFNbdW5XEHDEBnlm8xtB3BbpmOtLiX2NfaRE7g7unr0UWZPAhUHOAZW5t//R8HZ/im/HTSIeo5ZEe+J0VKMdpfSx++KGwvOYRnM7OzsCKH1yI1WIilm2p9GX4GL56BGIZ5RstJpaW/ERLcT22fZUW/3pyBmmP1AXaVE+6Xrc78tmlE76G22YTrAR4ujhm81GOUjyLY4/Tt5pYGsZJRUA2yzD39uorLlfNoALP5fL8c9D7cVenkO8hXOLZxvw1vaDMMSZZpNJhfcwZtQ+bp8EaqEjm1xqJkt1v8vlEZCJpG6VsJpSLcY+0F9FzfaBdZ0/KEZH5oW4c77SRJYuKdOrlIjm+VvV+PGCg+of2Z5k+Imwek6zrY9kWaEBXLg1nGLdhr06h9cDg3NAk0b6Caoeo6k+yw7smjtwrBsjmAPwDbzeEWolvaFRNaVeQlVW2sH+zO8xgPgq6FIQKbykOuNHR5QCmRRew4dGzEM5jlKnyEWCN6txnvk7RH0HUyGTDrvKeQi4OOE4IjGwQIo+BWO17CVSEJ7qu4SkJF9F/wBR0Xial+Xku/fDlVN13LeNNl/pjh5gW5tXSiV6Nu3r0/ayeHRCSX34SgUGepHlbvWPQFs4UEo4RchAjGQPFKtgafPevE0qy+7ozo/P4bbb1qR7HBvD6Ds2+T57fv9R2qcw4h+qOtu6Zj4C0p3DMpCamQgOPn2INU2fTBfs8pHZ
+ UePuhpQy
+ Tuj8f8qUpn3fpYpH7rkVr3/M8klGfubfSC+OuAHgmKCVDtiCmnKkaMoqsMKOJdeWa4s7WHS2ddS/zWV47eJYv4fXaMDmmJF/8OZOpVzUYVro72e7GNhRIA+Oh0HMagXFgWdHAc3dL3JGVBHim/No1TD27QIsvjgMNl/hqxCuWA1KNUsYNBALnjUV+5OVCEbJvGgbO/iFCeKk6ePIuBxSnQdiVnqX9iMGfoqY3HUrPN8zUOHpU2JZJSfDfqFQ9I836dvqeA2g7uFqrpRzgVCothUZklQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,435 +109,202 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 mm/internal.h becomes more and more bloated.
 
-Move declarations for related to mm/mm_init.c and mm/memblock.c to a new
-mm/mm_init.h header.
+Move declarations related to SPARSE and SPARSE_VMEMMAP memory models to
+a new mm/sparse.h header.
 
 No functional changes.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Acked-by: Muchun Song <muchun.song@linux.dev>
 ---
- MAINTAINERS                        |   1 +
- kernel/liveupdate/kexec_handover.c |   1 +
- mm/cma.c                           |   1 +
- mm/hugetlb.c                       |   1 +
- mm/internal.h                      |  91 ----------------------------
- mm/memblock.c                      |   1 +
- mm/memory_hotplug.c                |   1 +
- mm/mm_init.c                       |   1 +
- mm/mm_init.h                       | 120 +++++++++++++++++++++++++++++++++++++
- mm/page_alloc.c                    |   1 +
- mm/sparse-vmemmap.c                |   1 +
- mm/sparse.c                        |   1 +
- 12 files changed, 130 insertions(+), 91 deletions(-)
+ MAINTAINERS         |  1 +
+ mm/internal.h       | 52 -------------------------------------------
+ mm/mm_init.c        |  1 +
+ mm/sparse-vmemmap.c |  1 +
+ mm/sparse.c         |  1 +
+ mm/sparse.h         | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 67 insertions(+), 52 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 2acd811d3746..33cef4d8e1ee 100644
+index 33cef4d8e1ee..5c1aed067656 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -16880,6 +16880,7 @@ F:	include/linux/memblock.h
- F:	mm/memblock.c
- F:	mm/memtest.c
- F:	mm/mm_init.c
-+F:	mm/mm_init.h
- F:	mm/rodata_test.c
- F:	tools/testing/memblock/
- 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 4834a809985a..fe11cbf1006e 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -35,6 +35,7 @@
-  * internal APIs.
-  */
- #include "../../mm/internal.h"
-+#include "../../mm/mm_init.h"
- #include "../kexec_internal.h"
- #include "kexec_handover_internal.h"
- 
-diff --git a/mm/cma.c b/mm/cma.c
-index 31073738f2ac..a7929c758df1 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -33,6 +33,7 @@
- 
- #include "internal.h"
- #include "cma.h"
-+#include "mm_init.h"
- 
- struct cma cma_areas[MAX_CMA_AREAS];
- unsigned int cma_area_count;
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index a85ea663b192..f4a7bf6fb518 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -51,6 +51,7 @@
- #include "hugetlb_vmemmap.h"
- #include "hugetlb_cma.h"
- #include "hugetlb_internal.h"
-+#include "mm_init.h"
- #include <linux/page-isolation.h>
- 
- int hugetlb_max_hstate __read_mostly;
+@@ -16999,6 +16999,7 @@ F:	mm/pgtable-generic.c
+ F:	mm/ptdump.c
+ F:	mm/sparse-vmemmap.c
+ F:	mm/sparse.c
++F:	mm/sparse.h
+ F:	mm/util.c
+ F:	mm/vmpressure.c
+ F:	mm/vmstat.c
 diff --git a/mm/internal.h b/mm/internal.h
-index 3d30650a8440..59adb140fc7a 100644
+index 59adb140fc7a..a29a7dab2e6c 100644
 --- a/mm/internal.h
 +++ b/mm/internal.h
-@@ -716,9 +716,6 @@ void set_recommended_min_free_kbytes(void);
- 
- extern char * const zone_names[MAX_NR_ZONES];
- 
--/* perform sanity checks on struct pages being allocated or freed */
--DECLARE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
--
- extern int min_free_kbytes;
- extern int defrag_mode;
- 
-@@ -726,19 +723,9 @@ void setup_per_zone_wmarks(void);
- void calculate_min_free_kbytes(void);
- int __meminit init_per_zone_wmark_min(void);
- 
--void set_zone_contiguous(struct zone *zone);
--bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
--			   unsigned long nr_pages);
--
--static inline void clear_zone_contiguous(struct zone *zone)
--{
--	zone->contiguous = false;
--}
--
- extern int __isolate_free_page(struct page *page, unsigned int order);
- extern void __putback_isolated_page(struct page *page, unsigned int order,
- 				    int mt);
--extern void memblock_free_pages(unsigned long pfn, unsigned int order);
- 
- /*
-  * This will have no effect, other than possibly generating a warning, if the
-@@ -820,14 +807,6 @@ static inline void init_compound_tail(struct page *tail,
+@@ -807,58 +807,6 @@ static inline void init_compound_tail(struct page *tail,
  	prep_compound_tail(tail, head, order);
  }
  
--extern void *memmap_alloc(phys_addr_t size, phys_addr_t align,
--			  phys_addr_t min_addr,
--			  int nid, bool exact_nid);
+-/*
+- * mm/sparse.c
+- */
+-#ifdef CONFIG_SPARSEMEM
+-void sparse_init(void);
+-int sparse_index_init(unsigned long section_nr, int nid);
 -
--void memmap_init_range(unsigned long, int, unsigned long, unsigned long,
--		unsigned long, enum meminit_context, struct vmem_altmap *, int,
--		bool);
+-static inline void sparse_init_one_section(struct mem_section *ms,
+-		unsigned long pnum, struct page *mem_map,
+-		struct mem_section_usage *usage, unsigned long flags)
+-{
+-	unsigned long coded_mem_map;
 -
+-	BUILD_BUG_ON(SECTION_MAP_LAST_BIT > PFN_SECTION_SHIFT);
+-
+-	/*
+-	 * We encode the start PFN of the section into the mem_map such that
+-	 * page_to_pfn() on !CONFIG_SPARSEMEM_VMEMMAP can simply subtract it
+-	 * from the page pointer to obtain the PFN.
+-	 */
+-	coded_mem_map = (unsigned long)(mem_map - section_nr_to_pfn(pnum));
+-	VM_WARN_ON_ONCE(coded_mem_map & ~SECTION_MAP_MASK);
+-
+-	ms->section_mem_map &= ~SECTION_MAP_MASK;
+-	ms->section_mem_map |= coded_mem_map;
+-	ms->section_mem_map |= flags | SECTION_HAS_MEM_MAP;
+-	ms->usage = usage;
+-}
+-
+-static inline void __section_mark_present(struct mem_section *ms,
+-		unsigned long section_nr)
+-{
+-	if (section_nr > __highest_present_section_nr)
+-		__highest_present_section_nr = section_nr;
+-
+-	ms->section_mem_map |= SECTION_MARKED_PRESENT;
+-}
+-#else
+-static inline void sparse_init(void) {}
+-#endif /* CONFIG_SPARSEMEM */
+-
+-/*
+- * mm/sparse-vmemmap.c
+- */
+-#ifdef CONFIG_SPARSEMEM_VMEMMAP
+-void sparse_init_subsection_map(void);
+-#else
+-static inline void sparse_init_subsection_map(void)
+-{
+-}
+-#endif /* CONFIG_SPARSEMEM_VMEMMAP */
+-
+ #if defined CONFIG_COMPACTION || defined CONFIG_CMA
+ 
  /*
-  * mm/sparse.c
-  */
-@@ -948,9 +927,6 @@ int
- isolate_migratepages_range(struct compact_control *cc,
- 			   unsigned long low_pfn, unsigned long end_pfn);
- 
--/* Free whole pageblock and set its migration type to MIGRATE_CMA. */
--void init_cma_reserved_pageblock(struct page *page);
--
- #endif /* CONFIG_COMPACTION || CONFIG_CMA */
- 
- struct cma;
-@@ -958,7 +934,6 @@ struct cma;
- #ifdef CONFIG_CMA
- bool cma_validate_zones(struct cma *cma);
- void *cma_reserve_early(struct cma *cma, unsigned long size);
--void init_cma_pageblock(struct page *page);
- #else
- static inline bool cma_validate_zones(struct cma *cma)
- {
-@@ -968,9 +943,6 @@ static inline void *cma_reserve_early(struct cma *cma, unsigned long size)
- {
- 	return NULL;
- }
--static inline void init_cma_pageblock(struct page *page)
--{
--}
- #endif
- 
- /* mm/util.c */
-@@ -1177,63 +1149,6 @@ static inline void vunmap_range_noflush(unsigned long start, unsigned long end)
- }
- #endif /* !CONFIG_MMU */
- 
--/* Memory initialisation debug and verification */
--#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
--DECLARE_STATIC_KEY_TRUE(deferred_pages);
--
--static inline bool deferred_pages_enabled(void)
--{
--	return static_branch_unlikely(&deferred_pages);
--}
--
--bool __init deferred_grow_zone(struct zone *zone, unsigned int order);
--#else
--static inline bool deferred_pages_enabled(void)
--{
--	return false;
--}
--#endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
--
--void init_deferred_page(unsigned long pfn, int nid);
--
--enum mminit_level {
--	MMINIT_WARNING,
--	MMINIT_VERIFY,
--	MMINIT_TRACE
--};
--
--#ifdef CONFIG_DEBUG_MEMORY_INIT
--
--extern int mminit_loglevel;
--
--#define mminit_dprintk(level, prefix, fmt, arg...) \
--do { \
--	if (level < mminit_loglevel) { \
--		if (level <= MMINIT_WARNING) \
--			pr_warn("mminit::" prefix " " fmt, ##arg);	\
--		else \
--			printk(KERN_DEBUG "mminit::" prefix " " fmt, ##arg); \
--	} \
--} while (0)
--
--extern void mminit_verify_pageflags_layout(void);
--extern void mminit_verify_zonelist(void);
--#else
--
--static inline void mminit_dprintk(enum mminit_level level,
--				const char *prefix, const char *fmt, ...)
--{
--}
--
--static inline void mminit_verify_pageflags_layout(void)
--{
--}
--
--static inline void mminit_verify_zonelist(void)
--{
--}
--#endif /* CONFIG_DEBUG_MEMORY_INIT */
--
- #define NODE_RECLAIM_NOSCAN	-2
- #define NODE_RECLAIM_FULL	-1
- #define NODE_RECLAIM_SOME	0
-@@ -1532,9 +1447,6 @@ static inline bool gup_must_unshare(struct vm_area_struct *vma,
- 	return !PageAnonExclusive(page);
- }
- 
--extern bool mirrored_kernelcore;
--bool memblock_has_mirror(void);
--void memblock_free_all(void);
- 
- static __always_inline void vma_set_range(struct vm_area_struct *vma,
- 					  unsigned long start, unsigned long end,
-@@ -1573,9 +1485,6 @@ static inline bool pte_needs_soft_dirty_wp(struct vm_area_struct *vma, pte_t pte
- 	return vma_soft_dirty_enabled(vma) && !pte_soft_dirty(pte);
- }
- 
--void __meminit __init_single_page(struct page *page, unsigned long pfn,
--				unsigned long zone, int nid);
--
- /* shrinker related functions */
- unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
- 			  int priority);
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 6349c48154f4..777c69f05400 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -29,6 +29,7 @@
- #include <linux/io.h>
- 
- #include "internal.h"
-+#include "mm_init.h"
- 
- #define INIT_MEMBLOCK_REGIONS			128
- #define INIT_PHYSMEM_REGIONS			4
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 11ab2f7bc7f3..99090f49d2df 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -40,6 +40,7 @@
- #include <asm/tlbflush.h>
- 
- #include "internal.h"
-+#include "mm_init.h"
- #include "page_alloc.h"
- #include "shuffle.h"
- 
 diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 537664974ab1..39583c028e34 100644
+index 39583c028e34..b557e5fe35f3 100644
 --- a/mm/mm_init.c
 +++ b/mm/mm_init.c
-@@ -33,6 +33,7 @@
- #include <linux/kexec_handover.h>
- #include <linux/hugetlb.h>
+@@ -35,6 +35,7 @@
  #include "internal.h"
-+#include "mm_init.h"
+ #include "mm_init.h"
  #include "page_alloc.h"
++#include "sparse.h"
  #include "slab.h"
  #include "shuffle.h"
-diff --git a/mm/mm_init.h b/mm/mm_init.h
-new file mode 100644
-index 000000000000..39f75df9be1c
---- /dev/null
-+++ b/mm/mm_init.h
-@@ -0,0 +1,120 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * mm_init.h:
-+ *
-+ * mm/ internal mm_init and memblock declarations
-+ */
-+
-+#ifndef __MM_MM_INIT_H
-+#define __MM_MM_INIT_H
-+
-+#include <linux/types.h>
-+#include <linux/init.h>
-+#include <linux/mmzone.h>
-+#include <linux/jump_label.h>
-+#include <linux/printk.h>
-+
-+struct page;
-+struct vmem_altmap;
-+
-+/* perform sanity checks on struct pages being allocated or freed */
-+DECLARE_STATIC_KEY_MAYBE(CONFIG_DEBUG_VM, check_pages_enabled);
-+
-+void set_zone_contiguous(struct zone *zone);
-+bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
-+			   unsigned long nr_pages);
-+
-+static inline void clear_zone_contiguous(struct zone *zone)
-+{
-+	zone->contiguous = false;
-+}
-+
-+void memblock_free_pages(unsigned long pfn, unsigned int order);
-+
-+void *memmap_alloc(phys_addr_t size, phys_addr_t align, phys_addr_t min_addr,
-+		int nid, bool exact_nid);
-+
-+void memmap_init_range(unsigned long size, int nid, unsigned long zone,
-+		unsigned long start_pfn, unsigned long zone_end_pfn,
-+		enum meminit_context context,
-+		struct vmem_altmap *altmap, int migratetype,
-+		bool isolate_pageblock);
-+
-+#if defined CONFIG_COMPACTION || defined CONFIG_CMA
-+/* Free whole pageblock and set its migration type to MIGRATE_CMA. */
-+void init_cma_reserved_pageblock(struct page *page);
-+#endif
-+
-+#ifdef CONFIG_CMA
-+void init_cma_pageblock(struct page *page);
-+#else
-+static inline void init_cma_pageblock(struct page *page)
-+{
-+}
-+#endif
-+
-+/* Memory initialisation debug and verification */
-+#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-+DECLARE_STATIC_KEY_TRUE(deferred_pages);
-+
-+static inline bool deferred_pages_enabled(void)
-+{
-+	return static_branch_unlikely(&deferred_pages);
-+}
-+
-+bool __init deferred_grow_zone(struct zone *zone, unsigned int order);
-+#else
-+static inline bool deferred_pages_enabled(void)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
-+
-+void init_deferred_page(unsigned long pfn, int nid);
-+
-+enum mminit_level {
-+	MMINIT_WARNING,
-+	MMINIT_VERIFY,
-+	MMINIT_TRACE
-+};
-+
-+#ifdef CONFIG_DEBUG_MEMORY_INIT
-+
-+extern int mminit_loglevel;
-+
-+#define mminit_dprintk(level, prefix, fmt, arg...) \
-+do { \
-+	if (level < mminit_loglevel) { \
-+		if (level <= MMINIT_WARNING) \
-+			pr_warn("mminit::" prefix " " fmt, ##arg);	\
-+		else \
-+			printk(KERN_DEBUG "mminit::" prefix " " fmt, ##arg); \
-+	} \
-+} while (0)
-+
-+void mminit_verify_pageflags_layout(void);
-+void mminit_verify_zonelist(void);
-+#else
-+
-+static inline void mminit_dprintk(enum mminit_level level,
-+				const char *prefix, const char *fmt, ...)
-+{
-+}
-+
-+static inline void mminit_verify_pageflags_layout(void)
-+{
-+}
-+
-+static inline void mminit_verify_zonelist(void)
-+{
-+}
-+#endif /* CONFIG_DEBUG_MEMORY_INIT */
-+
-+extern bool mirrored_kernelcore;
-+bool memblock_has_mirror(void);
-+void memblock_free_all(void);
-+
-+void __meminit __init_single_page(struct page *page, unsigned long pfn,
-+				unsigned long zone, int nid);
-+
-+#endif /* __MM_MM_INIT_H */
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 543cd2fc88d5..03bf4933ddb7 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -56,6 +56,7 @@
- #include <linux/pgalloc_tag.h>
- #include <asm/div64.h>
- #include "internal.h"
-+#include "mm_init.h"
- #include "page_alloc.h"
- #include "shuffle.h"
- #include "page_reporting.h"
+ 
 diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 515a404b66c0..10dd4a9b591b 100644
+index 10dd4a9b591b..458b0b9570ff 100644
 --- a/mm/sparse-vmemmap.c
 +++ b/mm/sparse-vmemmap.c
-@@ -41,6 +41,7 @@
- #define VMEMMAP_POPULATE_PAGEREF	0x0001
+@@ -42,6 +42,7 @@
  
  #include "internal.h"
-+#include "mm_init.h"
+ #include "mm_init.h"
++#include "sparse.h"
  
  /*
   * Allocate a block of memory to be used to back the virtual memory map
 diff --git a/mm/sparse.c b/mm/sparse.c
-index b5c74aab3379..d54e30f58b93 100644
+index d54e30f58b93..704a9dec2b9a 100644
 --- a/mm/sparse.c
 +++ b/mm/sparse.c
-@@ -15,6 +15,7 @@
- #include <linux/swapops.h>
+@@ -16,6 +16,7 @@
  #include <linux/vmstat.h>
  #include "internal.h"
-+#include "mm_init.h"
+ #include "mm_init.h"
++#include "sparse.h"
  #include <asm/dma.h>
  
  /*
+diff --git a/mm/sparse.h b/mm/sparse.h
+new file mode 100644
+index 000000000000..95aa031213f2
+--- /dev/null
++++ b/mm/sparse.h
+@@ -0,0 +1,63 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * sparse.h:
++ *
++ * mm/ internal sparse and sparse-vmemmap declarations
++ */
++
++#ifndef __MM_SPARSE_H
++#define __MM_SPARSE_H
++
++#include <linux/mmzone.h>
++
++/*
++ * mm/sparse.c
++ */
++#ifdef CONFIG_SPARSEMEM
++void sparse_init(void);
++int sparse_index_init(unsigned long section_nr, int nid);
++
++static inline void sparse_init_one_section(struct mem_section *ms,
++		unsigned long pnum, struct page *mem_map,
++		struct mem_section_usage *usage, unsigned long flags)
++{
++	unsigned long coded_mem_map;
++
++	BUILD_BUG_ON(SECTION_MAP_LAST_BIT > PFN_SECTION_SHIFT);
++
++	/*
++	 * We encode the start PFN of the section into the mem_map such that
++	 * page_to_pfn() on !CONFIG_SPARSEMEM_VMEMMAP can simply subtract it
++	 * from the page pointer to obtain the PFN.
++	 */
++	coded_mem_map = (unsigned long)(mem_map - section_nr_to_pfn(pnum));
++	VM_WARN_ON_ONCE(coded_mem_map & ~SECTION_MAP_MASK);
++
++	ms->section_mem_map &= ~SECTION_MAP_MASK;
++	ms->section_mem_map |= coded_mem_map;
++	ms->section_mem_map |= flags | SECTION_HAS_MEM_MAP;
++	ms->usage = usage;
++}
++
++static inline void __section_mark_present(struct mem_section *ms,
++		unsigned long section_nr)
++{
++	if (section_nr > __highest_present_section_nr)
++		__highest_present_section_nr = section_nr;
++
++	ms->section_mem_map |= SECTION_MARKED_PRESENT;
++}
++#else
++static inline void sparse_init(void) {}
++#endif /* CONFIG_SPARSEMEM */
++
++/*
++ * mm/sparse-vmemmap.c
++ */
++#ifdef CONFIG_SPARSEMEM_VMEMMAP
++void sparse_init_subsection_map(void);
++#else
++static inline void sparse_init_subsection_map(void) {}
++#endif /* CONFIG_SPARSEMEM_VMEMMAP */
++
++#endif /* __MM_SPARSE_H */
 
 -- 
 2.53.0
