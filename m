@@ -4,109 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FC53C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 18:53:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3B3EC44506
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 18:55:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75B896B0088; Thu,  9 Jul 2026 14:53:40 -0400 (EDT)
+	id DC7116B00AB; Thu,  9 Jul 2026 14:55:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 732A76B008A; Thu,  9 Jul 2026 14:53:40 -0400 (EDT)
+	id D9E896B00AD; Thu,  9 Jul 2026 14:55:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64B946B008C; Thu,  9 Jul 2026 14:53:40 -0400 (EDT)
+	id CB49F6B00AF; Thu,  9 Jul 2026 14:55:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B7A56B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:53:40 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C60021C0537
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:53:39 +0000 (UTC)
-X-FDA: 84970136958.11.2996482
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 05F6DA0002
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:53:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="e5fYQ/uU";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=dave.jiang@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E1E66B00AB
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:55:01 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 25DDC401F1
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:55:01 +0000 (UTC)
+X-FDA: 84970140402.18.5FB7516
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 526EF4000D
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:54:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ogWj94rg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783623299;
+	b=o0Rs4ScOGMkY9/p58mPyWKYkIr4ygGSsyiI67DspYkq5mydlSy/zm4IaCoTVsmrZp03sZS
+	eqfe66T1pvLk8PavtVEOJPzuIRW+jvazbyqQXgi6opwPbQ3mNS5ajr7AZLe4y4n00IBbfZ
+	aUtDUdjKKQpkEwxz1M5tzSzP+RL9jLE=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ogWj94rg;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783623217;
+	s=arc-20220608; t=1783623299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RI7iJgvTf8txY6Dhz+ITywiAeeyqaT0TQssDuyyFM/Y=;
-	b=U38mZ54nP/XFi8LqL35Grfnih6auLZBhnWCOisttDSdZuLcgGivZI53wu8H1k4M/jFVrxC
-	+av0LGa96gmfef8vizyEpy5RZmcicJO55g6aJIG00B6Jf3q9tokbP6BmQxMx0LF+mZt+5l
-	xT+G4ZClgCjgKOEvTEia1rv0dkZFJvw=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="e5fYQ/uU";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=dave.jiang@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783623217;
-	b=kTQ2ttvlcVdURzwQtSbITtALFaIW1KCCIwJF0GCAGNUYOlrTBlnpvoWGJhtzpgHSdIoPQB
-	eiUDzENvs+0EV0SSKe8wDgsQqVfSPV8MoO1/oJqmK7wGk2n8ZDFlMstLwMzSJpmTGS8SQj
-	b4oz71EiVOAlpwm8+S6+3pkfYPNyi90=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783623217; x=1815159217;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LWIYIVvgdWKhwMP33tl30RMSOxpaqVLRpXYaD3FEX/o=;
-  b=e5fYQ/uUTq0SFh0MfWoBtA4kos8eD/HcqlbRzJlmEB1UDzFhTqsL7ShA
-   xIp9WViLGZBh1XcIQczUobwTSgjR+cTb0TXlusR04BKcG138NQAiI6iCJ
-   zdDLsxqJPWIH8TFMlplP4c7bBsLJdNBHKL6Zl1GD26uWvsqAxjFNaArpc
-   VzSGbGROQyjUnJ7dUApeLqU+XLp0rrlobKeO8XoSS5+DMkK/W1c1SfCfK
-   j66NjZt9fDIT/WF/BBVcltZpNX4TisEf8EhGdglTE4sNTUO4oJEJqAX7D
-   UEtl7lT5f3mUpgys26MZ1WrjGR+6gMUFA90A74p3u1S8zKNo8VbSW/YDx
-   A==;
-X-CSE-ConnectionGUID: /QaIR/dXTF2aKqmo+1DeZw==
-X-CSE-MsgGUID: 4o12CmoURV2jUQrt1o7aUQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="86863319"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="86863319"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 11:53:36 -0700
-X-CSE-ConnectionGUID: 8y4wDk/dRRm6acAzB59uyw==
-X-CSE-MsgGUID: O3/+HRVRQj2m6mIsYe7DqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="252933813"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.111.142]) ([10.125.111.142])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 11:53:34 -0700
-Message-ID: <48645b42-64e7-4f96-9113-b136386038f0@intel.com>
-Date: Thu, 9 Jul 2026 11:53:33 -0700
+	bh=Wf2mCygj2V3MtxPOIjhT5RGqf+/9JXlGVheo76S1fao=;
+	b=7xEjmhHuDzwLpGfl/Cwhc0IaChZUiG+KCgryWjdNXR0leuaKun76Lsv8H+tDJc46B1yed/
+	A9CVXwuGwh7l7MAVxkKGfVit8MOAX94aYSsDex04QDPJfXXdxMyYGBfBWimrC3STBZgw6p
+	0Q6i4/HyQRSOSuO8L6tNj5PzJHnUczs=
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7ea9c6ea7deso175252a34.3
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 11:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783623298; x=1784228098; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Wf2mCygj2V3MtxPOIjhT5RGqf+/9JXlGVheo76S1fao=;
+        b=ogWj94rgS13ODqBO5MFlytznfFR4Ud9Qk20IVer/b2eeakXm7FD/Ike4Z1TWQqn3gO
+         4pklxmQbdmwV2O1v5MtQFB4xdu4gqD/LTdwO0S5Vmn3RYkYkJhXQsnnrFKNcEczDUGHo
+         aV3r4tiqBR8mAvPsUheaHrBaog2nXBDzeUcq+xGoOyGGth2e8CR4YA0leZkeYAZ62/QP
+         OlLO6av3zBgoxm1Th/hjBaemeLh9SlQk1PdiwVBd/mw0sGguoOr9YwrqDcSpgF2UT4kz
+         IwCIkuqP1kndEBgmOkOhoUHni61geatk3qqC2RHTE8rmflb+lWlLTKM56Fcx0blu41m1
+         Okhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783623298; x=1784228098;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Wf2mCygj2V3MtxPOIjhT5RGqf+/9JXlGVheo76S1fao=;
+        b=d7GMH/1KAURJ+QKQWE8d26W4rBbXgjL0E1SeM10NAVIDDCGOrCcHVrKcW6uQqBCbA5
+         J0Viuqsvh6EExMGBh6cRDO2y55hEk6Kb8gk7j/pbOdWJ86hRxdJU01qFFYUFS1skaGuJ
+         lsFTWwK8a+ecTLjX069qhHMzq0YhY/3bIcs4kjCMBnt/YLLMJPhmkt4zdF19W/2VfL11
+         lcZS1WAbnUV5WOG+UgmSth3beq6Vl5S2SqYDWBan02O9To+gldi0996Qd7nnCQ7LA4tz
+         VfiQgz4w1Pm7EOnxtuAAVbqugvEf0gTq/hM1nA64YP0Btk241FvgyI3bSBvCT7NtTOoq
+         2/gQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9rbiI25kHPQaNrMHNBycZ8Cy3cXSZG+J8lT6nCTUwQHCmcGLgbN9C7u5pBhx9JLc44fBml9f9VeA==@kvack.org
+X-Gm-Message-State: AOJu0YzgcbFCsqmw5SmBwlDPu6XxAaOfkGKKzjvm/kXRSdyERej3dX/2
+	x6eExa3F5tgcqWuAzha93c5MLg0+w96gUxU5vKo8vTYyEfv8UaEO3UD9
+X-Gm-Gg: AfdE7ckx1hGhMOp87Bzv/Wb2Ed51BiRrFmDoT8y+c/bg/GPUS/DhHZ1Eq0eUEwRRY54
+	B4nfAWH0Qefx6kFxLc3X6bHvGEmTzW0IucL/6/pkQcO+eHprR43SVxOn+KF52+yFChChi5Zo/gz
+	KwpBCgOMjIllugdLk5o8yj6OZJShjNkl8unheXQbYFeIQHKVjJzif0FP5bvWW4SOh4UIEoF9/Jk
+	fZap89QB6Au4A0Pb24vESFxXGSa8NVn0tKt7CeVcy7f5Mje5Bmd+ps+Lfdy0YD00ZAu87f/sRSG
+	Q3TaLtrMG091XszDoYh8gu+S9blJSbYzXzyUC6Y7djr3l3V+hskK/G7pjA5i/Iwo9slIYCaPhaj
+	xOpkqtUkKY3TJlaSnKf2fECQgRhvBEinCBLqPdRzgR5ALSYqzGZu6vYb4NA7ahiGWD1/tiXwpmN
+	yHND1D0goJ+n8OkcqfrSwpflcuY90ouOT3D/7A9FsRnuk=
+X-Received: by 2002:a05:6830:2b08:b0:7e9:b537:102e with SMTP id 46e09a7af769-7ebcff9e14cmr5905427a34.27.1783623298042;
+        Thu, 09 Jul 2026 11:54:58 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:40::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcb2630casm5108633a34.18.2026.07.09.11.54.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 11:54:57 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Xu <peterx@redhat.com>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	fvdl@google.com,
+	rientjes@google.com,
+	jthoughton@google.com,
+	vannapurve@google.com,
+	erdemaktas@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Ackerley Tng <ackerleytng@google.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] mm: hugetlb: Fix folio refcount mismatch on memcg charge failure
+Date: Thu,  9 Jul 2026 11:54:55 -0700
+Message-ID: <20260709185456.1854151-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260708-hugetlb-alloc-failure-fixes-v2-3-c7f27cbb462b@google.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 06/10] mm/memory_hotplug: add
- offline_and_remove_memory_ranges()
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
- linux-kselftest@vger.kernel.org, kernel-team@meta.com, david@kernel.org,
- osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com,
- alison.schofield@intel.com, akpm@linux-foundation.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org, iweiny@kernel.org,
- Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com
-References: <20260630211842.2252800-1-gourry@gourry.net>
- <20260630211842.2252800-7-gourry@gourry.net>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260630211842.2252800-7-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 05F6DA0002
-X-Stat-Signature: mqhkg8ag66uirtqy7xp93945jcbabxpf
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 526EF4000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783623216-357369
-X-HE-Meta: U2FsdGVkX18gh+88T9Zdh6GF8f/cknvsZ5HdlOY7rh5HYdq6165A40oylxudQ2SVgBgQg0pXXN7BzaEyD1JuI5VrEpibXoHg71vf2rOgIJyBZogXzpACiUvpJ7Np06t87u8jAILBTwO9J/iY0CEMmYWbq3UNCqIQVCha4WesvpP9Mh86CJ7cd3yJaZ7w6KSwS/w9WbKiMzHSaNlO6CKi9I5WPUXc0H4WlcsJC7dGvdwNRBDQuK2feo2XbTNAERyDkaDMEbGiS7H9AXj8axYU4D3jAOEJa58HkN56UtNyoQkgSA1ieJij/an5SL3Ik2nfozBX2iz30I0MGdeTMb/mqGepXaDxpAR4rgr+oG0POECPQZ2ddmrf80bv38Aa48j7tnPPBxLpJ39OZzCkftmz0K9DRemOeUc7Apz0ALsEZ1pCcOHCAvKNwb57siEIiUlsv4O6+k5kHy4fwvG7S+c6m2s32qung83P0g2esvRVMwYRGCb6h0NysnvG3LXgDLaKduaNoM9uuMOVIA6Z0xfTKXI4r3MkjHRaLlIlqqe8aJqYBa0bc9rw631WZeAKiEAUmhQimrEQ+VmYs+wpj5Q5YN3ZYWCyLsQPHuLmNKFf79kgVXfG93Ic//4UkYIkKTwXfrZi5EkjSG/6YGeu3QDT0SdtaUCbzLeadC095Qeaii7zIZcMYnL8A1QzmVjqggeuECU7JvH6tXyaqUwA6ez/lss1QbFspx1aZtLoS6aJ64/lmYIh1Yo6hRFIuh543pEyEtwH+a0NnwPE362MqSkl4XANKoQcXIbNvLqWegK9FOj9YPnMzhFkSfgp71cdgK9/cwvm8ukmg7srMA0abg8/wp6wYLtK8UrQne86oMUg3wm9ZfGLUldZvWvBBi6KcvprUgPmPX/5ychDW0tujrYF7Wb1UT8lYf87IoaN+CbtrDsr8rsHpbzKgGsbnsqqD8Bex2lijnHEjafz59sCu4N
- 19jvULGr
- x7JAzgSA9ji4sB1k6Tu3W+61oZCl/A1hJLaMbCby15sAPb9reTmC0ZHvyhSrYyxGkNYq2w39GP5AiO+pCS7xEBemOAezt1wqpvug+0TF/eXjt9IU02j35NRn3wuUEfjjGP41UaBF6YzSEmC0t4GiWwTOGrxDOXFhTURxOZmmJP6SBAeUUt4IgoxC8vaU2VTLUcVclaJMHfsGER0w3twPpEt7cpQ8wx27Zlr3MmZ0ka7fwoagFAuURTUvrOOFsDLrdALKGIsZKA0KQkXKwgTdXCWEinNrKJuNqMquChSJhZXswvCCM+qbNYjaa/76DZWINEYcjcmBQ8MgpfQR3jwASHwMpwXCR7Kp9LHAmCoBcFstX3oAn3gphnBrdaq42EEvs4GJ+xCWv2YYdPLBxNIr5w3iOEEhHWohHois4ldaNnf3U63ZicuRkrUeI2g==
+X-Stat-Signature: jfauma4nnu7aea714qajxdomsjsg5wbn
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783623299-590715
+X-HE-Meta: U2FsdGVkX19CwIPJrgM+siDHIFOihPScc6yYszoNhAlwoeF6Gmo+w9W4crbXfFxv7/JPS9DbsZVJo7dqJi9TuTRbBUX08rWkuv6tqB1cMIS7nZXNw6Pokj23XsnMjKhvyFksh5ERkVTUfaqfIr8pHrr0V96Fec35xxYLD/+fcdfKPxXk88WSTVR3W2uPW2u32Ckrpxohcrxa4VUwtnoVTnZlkwIOJW7jU98BPXiN6DxJIIymDxYCN4mXFdegW57DE+t/h2O5bsgMex3nQ05AmgouPDVLRe0oktXsesKJ9QRExI9Oay24MOqnMKYd0Qng8FCraFRjufJiYMX+0FHj4t/qRZk4n7m6Ph/yUjHQRUd6HKoac3JumQ9Y8b/vYP3pI0xkZJoynK/uf2QXM0iPtjIf3Y97mT0XC99s/lvxtA8OR2Yq7e3srGoLaVXpU4dpaGvz3Jk6NgIzSxlfGVMceaDGbchJvEEUxPhTJUUVPWMPraE70w3A7F4n0VjhG5jVwuVhdhRSWO24XchT1EBGas2pv7I0LThzSKezaGZQw8W/UCn0rRREH7r1P8jgphSeRubBW8oAWKChfPIz+/3mdFMdOXivTA24RwVtTGbpS40P0k/z4LU3HT1JEKgQwOJoXRg/yK1QptrORylTGcLuIdbyFRqXja5Vm7lLn6GYtSJpclmYaaMPm+spHKrGR3vZOHjDg4VjWCxLv5nWQqqBS/DrNsbfhtzSY7Ys2cnqBIqdz05H68C6N72hdiUaX5yDpQPS8EkMvyNpnO95b+rDZzFX33tpj9OkkSgEU7Cv2G2yFrphyt5UZp1aQIWVeZUdfmViooWPyUEXdO1S/QHJ5mi4L5YCex1hE6Happb6xFwZ9wpnTK4WNfzlDImkNccMkN1mliJWO3dXb+nlyd4RDabT65QjsrSIax88rrpmUixlHe/2Z42bJ7Uh6L6v5k2mi0RUmWf8GKMsVOsk9rl
+ ph/lP6aS
+ kR5gE8dYz08NArqNIkdQoekc4xu8veTyb+ucKS4WMHplGVcKMrFzXakw3qSsxTUMMXraQsIrj/vR4MBZMIixVxFU1SWNj8OIiHhKQAaUIebRe+mTsEvXqgaXXSsrMPpfzrv6J+d6rxONKyjDaZK1Mzjc1dZxCRR3kd9jo8BJGy+Nx0AHrnqYdKYgY4KnHlMFmB/2qkz/ZCnu5K23ObDcdJCg50zbKpUlD/o3yMklGZO8k6namNyop4k3YbxEGaR9ix7a4mmtilZ09D5tVUNWxdGh7IQuVWjHBXcX96SSWcz8xConJ7gCHF1R8oaqxZ+nY8cWQ4gu4tp8+LxNVTiiAeA+t/mHT5ZKpbqkliWeiO4ZaQmlQpJxpdeHd5sX59tuVMLmpekBE3JMTRMITr6tzYIhuLgzFCUt+MlJIxKBgYaSf6ZjyGLiLfIZuvIGnBdTEisF0ZcKRiajYwBVCUpo/yEuaW3ps6cRjCT789NCIyp3oHO9eDj9TJ5O3i+pZsiDYhmxRUB7i6FeQzVFDLZ8sq2h90cby/UjYExmcGfgLJTPRgr/MsL1bpHv2HQb07Lc8kvMMkrm19Q+1gBXZ2jiiViKXDzbmO8jBE3ifsdiM/te2KcX8IhS//tIFpVwOHR87BMnNR5RndutBck7XeLpWgO+4ig==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,202 +132,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, 08 Jul 2026 15:12:51 -0700 Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org> wrote:
 
+Hi Ackerley, 
 
-On 6/30/26 2:18 PM, Gregory Price wrote:
-> offline_and_remove_memory() handles a single contiguous range.
-> 
-> Callers that manage a device composed of several ranges (dax/kmem)
-> currently have to call it in a loop, which gives up atomicity.
-> 
-> In addition to pushing rollback logic into the driver, the lack
-> of atomicity creates a race condition between system daemons trying
-> to manage the same resource:
-> 
->    - Manager 1:  Offlines memory blocks.    Removes device.
->                                         ^^^^
->    - Manager 2:  Detects offline memory blocks, re-onlines them.
-> 
-> Add offline_and_remove_memory_ranges(), which takes an array of ranges
-> and processes them as one operation under a single lock_device_hotplug():
-> 
->   - Phase 1 offlines every block of every range.
->   - Phase 2 removes the ranges only if all ranges are offline.
->   - If any offline fails, the whole operation is reverted.
-> 
-> This gives callers all-or-nothing semantics for the offline step, so a
-> failed or interrupted unplug leaves the device in a consistent state.
-> 
-> This also resolves the battling managers race - the second manager's
-> operation simply fails when the block is destroyed / cannot be onlined.
-> 
-> offline_and_remove_memory() becomes a thin wrapper that passes its single
-> range to the new helper, so the offline/rollback logic lives in one place.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
+Thanks again for the fix. Thank you also for adding the reproducers,
+they made testing this really easy for me! : -D
 
-With Richard's comment addressed,
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> When mem_cgroup_charge_hugetlb(folio, gfp) returns -ENOMEM, the folio has
+> its refcount set to 1 via folio_ref_unfreeze(folio, 1).
+> 
+> The error path calls free_huge_folio(folio) directly, which expects a
+> refcount of 0. Hence, VM_BUG_ON_FOLIO(folio_ref_count(folio), folio) is
+> triggered.
 
+So yeah, I built mm-new (with your hugetlb open code series) and ran
+reproducer #3, and got the following output:
+
+...
+[   23.855813] Call Trace:
+[   23.855838]  <TASK>
+[   23.855877]  hugetlb_alloc_folio+0x190/0x360
+[   23.855930]  alloc_hugetlb_folio+0xf9/0x310
+[   23.855972]  hugetlb_no_page+0x590/0xa00
+[   23.856016]  hugetlb_fault+0x194/0x770
+[   23.856060]  handle_mm_fault+0x29b/0x2c0
+[   23.856103]  do_user_addr_fault+0x208/0x6e0
+[   23.856146]  exc_page_fault+0x67/0x140
+[   23.856191]  asm_exc_page_fault+0x22/0x30
+[   23.856234] RIP: 0033:0x401734
+...
+
+Running it with your fix, I don't get a kernel crash. So this change
+looks good to me, please feel free to add:
+
+Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+
+But.....
+
+It seems like fixing this bug actually surfaces a different bug.
+I don't see a kernel crash anymore, but my kernel gets stuck in a 
+different loop:
+
+...
+[   42.526726] pagefault_out_of_memory: 120780 callbacks suppressed
+[   42.526732] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.526955] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527084] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527192] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527288] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527382] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+[   42.527476] Huh VM_FAULT_OOM leaked out to the #PF handler. Retrying PF
+...
+
+mem_cgroup_charge_hugetlb() fails
+--> hugetlb_alloc_folio() returns ERR_PTR(-ENOMEM)
+--> propagated to alloc_hugetlb_folio()
+--> hugetlb_no_page converts it to vmf_error(PTR_ERROR(folio))
+--> propagates up to the pagefault handler..
+
+But there's no OOM handler to resolve, I think. So it just keeps retrying
+the fault and cycling over and over and over again... I think we need
+to be returning ENOSPC instead of ENOMEM like the other failure paths
+in alloc_hugetlb_folio (or hugetlb_alloc_folio... I think we should
+change this name, it's a bit confusing).
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 288535838a48b..05214b1cd491a 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2903,7 +2903,7 @@ struct folio *hugetlb_alloc_folio(struct hstate *h,
+                 * were committed to the folio and freeing the folio
+                 * would have cleared those up.
+                 */
+-               return ERR_PTR(ret);
++               return ERR_PTR(-ENOSPC);
+        }
+
+        return folio;
+
+This gives me the following result from your reproducer, which I think
+is the expected behavior:
+
+attempting to remount cgroup2 with memory_hugetlb_accounting...
+Successfully enabled memory_hugetlb_accounting
+Child: Attempting to allocate and touch 2MB hugepage...
+Child: mmap succeeded at 0x7f0023600000, touching it now (should trigger fault)...
+Parent: Child exited. Cleaning up.
+Parent: Child killed by signal 7 (Bus error)
+Parent: Child got SIGBUS as expected (if kernel didn't crash).
+
+What do you think? Happy to send it out as a separate fix or feel free
+to fold it into your series / fix, whatever you prefer.
+
+Thanks Ackerley!
+
+> Even with CONFIG_DEBUG_VM disabled, returning a folio with refcount 1 to
+> the freelist can corrupt allocator state later.
+> 
+> Use folio_put(folio) instead of free_huge_folio(folio) to properly drop the
+> reference before freeing it.
+> Fixes: 991135774c0e0 ("memcg/hugetlb: introduce mem_cgroup_charge_hugetlb")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Reviewed-by: Muchun Song <muchun.song@linux.dev>
 > ---
->  include/linux/memory_hotplug.h |  8 +++
->  mm/memory_hotplug.c            | 93 ++++++++++++++++++++++++----------
->  2 files changed, 73 insertions(+), 28 deletions(-)
+>  mm/hugetlb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index ff3b865ea7e7..db10d50f30ae 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -268,6 +268,8 @@ extern int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->  extern int remove_memory(u64 start, u64 size);
->  extern void __remove_memory(u64 start, u64 size);
->  extern int offline_and_remove_memory(u64 start, u64 size);
-> +int offline_and_remove_memory_ranges(const struct range *ranges,
-> +		unsigned int nr_ranges);
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4093c1c0a4a1d..1f3f4b964b153 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -2990,7 +2990,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>  	lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
 >  
->  #else
->  static inline void try_offline_node(int nid) {}
-> @@ -284,6 +286,12 @@ static inline int remove_memory(u64 start, u64 size)
->  }
->  
->  static inline void __remove_memory(u64 start, u64 size) {}
-> +
-> +static inline int offline_and_remove_memory_ranges(const struct range *ranges,
-> +		unsigned int nr_ranges)
-> +{
-> +	return -EBUSY;
-> +}
->  #endif /* CONFIG_MEMORY_HOTREMOVE */
->  
->  #ifdef CONFIG_MEMORY_HOTPLUG
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index a66346def504..3225364bec2f 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -2429,58 +2429,95 @@ static int try_reonline_memory_block(struct memory_block *mem, void *arg)
->   */
->  int offline_and_remove_memory(u64 start, u64 size)
->  {
-> -	const unsigned long mb_count = size / memory_block_size_bytes();
-> +	struct range range = {
-> +		.start = start,
-> +		.end = start + size - 1,
-> +	};
-> +
-> +	return offline_and_remove_memory_ranges(&range, 1);
-> +}
-> +EXPORT_SYMBOL_GPL(offline_and_remove_memory);
-> +
-> +/**
-> + * offline_and_remove_memory_ranges - offline and remove multiple memory ranges
-> + * @ranges: array of physical address ranges to offline and remove
-> + * @nr_ranges: number of entries in @ranges
-> + *
-> + * Offline and remove several memory ranges as one operation, serialized
-> + * against other hotplug operations by a single lock_device_hotplug().
-> + *
-> + * This offlines all ranges before removing any of them.  If offlining any
-> + * range fails, the entire process is reverted and nothing is removed.
-> + * This provides a fully atomic semantic for unplugging an entire device.
-> + *
-> + * Each range must be memory-block aligned in start and size.
-> + *
-> + * Return: 0 on success, negative errno otherwise.  On failure no range has
-> + * been removed.
-> + */
-> +int offline_and_remove_memory_ranges(const struct range *ranges,
-> +		unsigned int nr_ranges)
-> +{
-> +	unsigned long mb_count = 0;
->  	uint8_t *online_types, *tmp;
-> -	int rc;
-> +	unsigned int i;
-> +	int rc = 0;
->  
-> -	if (!IS_ALIGNED(start, memory_block_size_bytes()) ||
-> -	    !IS_ALIGNED(size, memory_block_size_bytes()) || !size)
-> +	if (!ranges || !nr_ranges)
->  		return -EINVAL;
->  
-> +	for (i = 0; i < nr_ranges; i++) {
-> +		const u64 start = ranges[i].start;
-> +		const u64 size = range_len(&ranges[i]);
-> +
-> +		if (!IS_ALIGNED(start, memory_block_size_bytes()) ||
-> +		    !IS_ALIGNED(size, memory_block_size_bytes()) || !size)
-> +			return -EINVAL;
-> +		mb_count += size / memory_block_size_bytes();
-> +	}
-> +
->  	/*
-> -	 * We'll remember the old online type of each memory block, so we can
-> -	 * try to revert whatever we did when offlining one memory block fails
-> -	 * after offlining some others succeeded.
-> +	 * Remember the old online type of every memory block across all ranges,
-> +	 * so we can revert if offlining a later block fails.  All entries start
-> +	 * as MMOP_OFFLINE so blocks we never touched are skipped on rollback.
->  	 */
->  	online_types = kmalloc_array(mb_count, sizeof(*online_types),
->  				     GFP_KERNEL);
->  	if (!online_types)
->  		return -ENOMEM;
-> -	/*
-> -	 * Initialize all states to MMOP_OFFLINE, so when we abort processing in
-> -	 * try_offline_memory_block(), we'll skip all unprocessed blocks in
-> -	 * try_reonline_memory_block().
-> -	 */
->  	memset(online_types, MMOP_OFFLINE, mb_count);
->  
->  	lock_device_hotplug();
->  
-> +	/* Phase 1: offline every block in every range. */
->  	tmp = online_types;
-> -	rc = walk_memory_blocks(start, size, &tmp, try_offline_memory_block);
-> -
-> -	/*
-> -	 * In case we succeeded to offline all memory, remove it.
-> -	 * This cannot fail as it cannot get onlined in the meantime.
-> -	 */
-> -	if (!rc) {
-> -		rc = try_remove_memory(start, size);
-> +	for (i = 0; i < nr_ranges; i++) {
-> +		rc = walk_memory_blocks(ranges[i].start, range_len(&ranges[i]),
-> +					&tmp, try_offline_memory_block);
->  		if (rc)
-> -			pr_err("%s: Failed to remove memory: %d", __func__, rc);
-> +			break;
+>  	if (ret == -ENOMEM) {
+> -		free_huge_folio(folio);
+> +		folio_put(folio);
+>  		return ERR_PTR(-ENOMEM);
 >  	}
 >  
-> -	/*
-> -	 * Rollback what we did. While memory onlining might theoretically fail
-> -	 * (nacked by a notifier), it barely ever happens.
-> -	 */
-> +	/* If any failure occurred at all, rollback any changes and bail */
->  	if (rc) {
->  		tmp = online_types;
-> -		walk_memory_blocks(start, size, &tmp,
-> -				   try_reonline_memory_block);
-> +		for (i = 0; i < nr_ranges; i++)
-> +			walk_memory_blocks(ranges[i].start,
-> +					   range_len(&ranges[i]), &tmp,
-> +					   try_reonline_memory_block);
-> +		goto out_unlock;
->  	}
-> +
-> +	/* Phase 2: Remove. This should never fail holding the hotplug lock */
-> +	for (i = 0; i < nr_ranges; i++)
-> +		WARN_ON_ONCE(try_remove_memory(ranges[i].start,
-> +					       range_len(&ranges[i])));
-> +
-> +out_unlock:
->  	unlock_device_hotplug();
->  
->  	kfree(online_types);
->  	return rc;
->  }
-> -EXPORT_SYMBOL_GPL(offline_and_remove_memory);
-> +EXPORT_SYMBOL_GPL(offline_and_remove_memory_ranges);
->  #endif /* CONFIG_MEMORY_HOTREMOVE */
+> 
+> -- 
+> 2.55.0.795.g602f6c329a-goog
 
 
