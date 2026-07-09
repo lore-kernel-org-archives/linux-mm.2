@@ -4,99 +4,183 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE30CC44507
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 08:47:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24FFFC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 08:48:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D7A3E6B0093; Thu,  9 Jul 2026 04:47:01 -0400 (EDT)
+	id 25A056B0096; Thu,  9 Jul 2026 04:48:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2ABF6B0095; Thu,  9 Jul 2026 04:47:01 -0400 (EDT)
+	id 231C96B0098; Thu,  9 Jul 2026 04:48:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C19FC6B0096; Thu,  9 Jul 2026 04:47:01 -0400 (EDT)
+	id 0FA7B6B0099; Thu,  9 Jul 2026 04:48:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 948E16B0093
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 04:47:01 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3664E1A0437
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:47:01 +0000 (UTC)
-X-FDA: 84968608242.28.4D094D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 80775160003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:46:59 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBSldxOd;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783586819;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D7D936B0096
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 04:48:23 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E9DB1C390C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:48:23 +0000 (UTC)
+X-FDA: 84968611686.19.F8B8212
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8182340007
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:48:19 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=l04jYtfh;
+	spf=pass (imf12.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783586900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mRZq5csL5hUNDy0QIxQvRraRTIooykr0ndYA3Ihtjl4=;
-	b=bp86rS1EPmzZUn5AywabhpE2HfZeerA1oYdXyT+YzE1+T694SPdscWmxcc0mPvZLBl7pHt
-	/YoixMcEYj5a53yaB6E7umv2zl7Emy7jv9U7AjKnFAcnucGkDF2ff+ic23x1xOXcvscQeN
-	LRlF8x5v2N51IsAnw4i6X+BhvWrdKqU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783586819;
-	b=aVdLRAfBUBmHWhiIsXm+rF54aTQDXFsoFkL2lw3TJlGS2jZxxSQcb2Ct6ie6ZXI3okvGLh
-	WX/4ZKlBSmswxkykyT/5TaBtoZW2NTk08+Nsjy0bLydvaaMl+rIcOlsQboE+f7Vgbtwu6h
-	6PLoXPU7Agd6YE8O674OpJviLcfCbAQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HBSldxOd;
-	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C40786001A;
-	Thu,  9 Jul 2026 08:46:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B1E1F00A3F;
-	Thu,  9 Jul 2026 08:46:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783586818;
-	bh=mRZq5csL5hUNDy0QIxQvRraRTIooykr0ndYA3Ihtjl4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HBSldxOd1OT5zXPN3a1odB2dmyiw8TrN+4d1Gw7m3d/CL9q66iVrXfGiiTtI9wiCO
-	 EeFUp5cVScV+TNykS0qn9JfgUMavTojFnkakG28zvB9WDrXLadsrV95yPNDySkp/iP
-	 hwQfAQsUZOqTJ1t/yChGxMqchDFohGzCwJKID7Wbt75x17NVBqZpj3Yt18U8c6yUTP
-	 1Wp4TjpxUysxyteciKfm6Q/RXCSk2Ddhm03NiDFqzxGrpIL5ZiY0OwBX/Nba+YLTqN
-	 2QZgNe2XSyKOfhnbRYf8/vaauCmhJsk5YfnmZPF6qlVLOcZx+IcL8WsyzhWdPAh9HQ
-	 47khgETVRVZEw==
-Date: Thu, 9 Jul 2026 10:46:52 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Farid Zakaria <farid.m.zakaria@gmail.com>
-Cc: david.laight.linux@gmail.com, jack@suse.cz, jannh@google.com, 
-	kees@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, mail@johnericson.me, shuah@kernel.org, 
-	viro@zeniv.linux.org.uk, Gemini <assistant@google.com>
-Subject: Re: [RFC PATCH] fs: binfmt_misc: introduce eBPF-based matching and
- interpreter selection
-Message-ID: <20260709-quizsendung-glasdach-ausmerzen-05ebd412a86d@brauner>
-References: <20260704-kochkunst-hauswand-blass-7226e9443a9f@brauner>
- <20260704211409.1978485-1-farid.m.zakaria@gmail.com>
- <20260706-uhren-raubbau-sinnkrise-e40a8337414b@brauner>
- <CACCo2jm5=xrQNfak=TdO=2oh0DC5pe+atj=UfuTa8Y9s8GVkqg@mail.gmail.com>
- <20260707-campieren-fingen-himbeeren-e4b682bd8e63@brauner>
- <20260707-wortreich-kanal-zensor-9386ef4f38f7@brauner>
- <DJSPBVXTF02G.3SKLB9EO89GPT@gmail.com>
- <20260708-welken-dystopie-ertrugen-56a3b5f7ab66@brauner>
- <20260708-kordel-laben-kopfhaar-1c0dd234aae5@brauner>
- <DJTQTPG7QZSH.1YIDYKL3O985U@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="7accz5oj66ddjm3r"
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=PQkfKqZNQNd8ozLeGUiouZa6u7qERHyCDLPAVbelYeU=;
+	b=2J1EeSttlxOojm1VqqfYO9+vjS/7n4caCnPB6ztAyGl5dxO7z7e7UkeS7hEGWvBpFuW4KO
+	hxnev5iOQ6tMOMQ0/nYlTXoAs43RSA1qBZy8481akRnb+MbF6nMu4E89LsCVe12DdbMJGM
+	IfauDTbAWeFQ0HoOb8RrONEvKB8sMuA=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1783586900;
+	b=2gRotvU2iufwJ6oodIWc5yczl0Uaz5iRePFCWWSR4dL/e6uSX3yPEq2nJNY0GMazlPjuRk
+	9xguExI4lK00NujmOUNqt/q/+6hXi3rwjbtoTqpuCm7YU8tdf58KOk0KldTVoOa8wRV/Oq
+	Rft/Qw9wyzhMBLTQOCggjI9N2osCBLw=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=l04jYtfh;
+	spf=pass (imf12.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783586900; x=1815122900;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=T9CC4cpJ1BJ3HBsVmpA6UjR3ljMSQnIZlgK/vYH2ZcE=;
+  b=l04jYtfhkQW7R7QlZeh9byTe03eJUxptPDnGg0PJVE7kLelkMJFKJehq
+   Pw2pu7H0NpTbcrjhOgLhCbxDPDqoW/MQSQoG939ufrA/MMLvs0Oew3hk2
+   hOAjUQO5ixrmUaqH/8Ur0z/5o8i0024qOSgXE5HJ1aYduv23Zn5QcdP78
+   6RhnEXEL8rSdD5u78HojZfqA5TTvltXgwwd299EWzdY1bPcG1F8V7yghn
+   sBjdMIZ70Xx7F0TQWcjVzdxZIVXWPyOPzmS0EEWzoE5pAoODzv7ijD/J0
+   OBYP9MOHvSlGcEinZb/FIZr094izEvxg6LAZNTMPBnc3UByUt5ybHRwXs
+   g==;
+X-CSE-ConnectionGUID: 7O/iAns3TYyuuKLcLAZTEQ==
+X-CSE-MsgGUID: 3xJt1YJTTQu/zQFaZEiyVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="101809169"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="101809169"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 01:48:18 -0700
+X-CSE-ConnectionGUID: s9zAKyWGS0mGV0u3nWWIvA==
+X-CSE-MsgGUID: AC2mN0BjRGq+6kkucdoTdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="250542291"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 01:48:18 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 9 Jul 2026 01:48:17 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Thu, 9 Jul 2026 01:48:17 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.14) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Thu, 9 Jul 2026 01:48:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nJvnSHuW2EIWay5McPQq/ezWArUG/MIoq6NoQoMQUPVRzHjs/SuBLPQOox2AFT/dg9rNuyPWnhx4bLaZwiTutAGNNKOCOZnmAzysTG6IE3qhgRHsIwynSBmrhsnVzmyjxDahZO87Lw1JcVYS0A/zV78Df9N/1L4JzgK5sGo5IqJgPoM3MRKD15Kr0e2CZUwAzsOguc6RYLGdYeOrAy4RgCwDOAoAYrcis5Tw6Bv9vMcwsJ5jq02nveYtPmR////fk16mULcvA1xFsw3YewsfaITVcSuMGbcLftJvbnt1JtmH3M/bHAHTnVd5r0teLDqAZxwketqQMNwWfKPxL8ktyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PQkfKqZNQNd8ozLeGUiouZa6u7qERHyCDLPAVbelYeU=;
+ b=VeKdSzlThCUmu5frpVoOA52sGjzQgYqiwWMaaZ1HifwlaTm9UMYZsAMHgCtZqjYZ1cWsQossFZDuSgw/zxu22xtywK/QQWgn4Jit3NPzsjSEgCaBBCoxgwq2w9oNW6vTlcfVIA0HOGLDRSgvojMj59ugvRpXQgbyGkj7e5KGvh2nmtzz2ROipw7kPDP+bTqdWNkbQN/XsNeHrYTV2MTSrch6CITS3UbodtNVAfQkRpauMCACfuUz94C9LCokg9050QNmaUMYpy9KDTtxhR2p2LKIy+GvhkihOX6ZMBDdgGe8jIjne1+8Bfu11km/8BeuYFRv06ZK74RQwhgj+kIkMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB5832.namprd11.prod.outlook.com (2603:10b6:510:141::7)
+ by DM4PR11MB6383.namprd11.prod.outlook.com (2603:10b6:8:bf::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Thu, 9 Jul
+ 2026 08:48:08 +0000
+Received: from PH0PR11MB5832.namprd11.prod.outlook.com
+ ([fe80::106e:78dd:4c96:d707]) by PH0PR11MB5832.namprd11.prod.outlook.com
+ ([fe80::106e:78dd:4c96:d707%5]) with mapi id 15.21.0181.008; Thu, 9 Jul 2026
+ 08:48:08 +0000
+Date: Thu, 9 Jul 2026 16:48:00 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Harry Yoo <harry@kernel.org>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, Danielle Constantino
+	<dconstantino@meta.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+	<linux-mm@kvack.org>, <oliver.sang@intel.com>
+Subject: [harry:kmalloc-no-objext-rfc-v1r1] [mm/slab]  6bc21472e7:
+ BUG:kernel_NULL_pointer_dereference,address
+Message-ID: <202607091002.cdfe5a08-lkp@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DJTQTPG7QZSH.1YIDYKL3O985U@gmail.com>
+User-Agent: s-nail v14.9.25
+X-ClientProxiedBy: JH0PR01CA0070.apcprd01.prod.exchangelabs.com
+ (2603:1096:990:57::14) To PH0PR11MB5832.namprd11.prod.outlook.com
+ (2603:10b6:510:141::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5832:EE_|DM4PR11MB6383:EE_
+X-MS-Office365-Filtering-Correlation-Id: a282a028-c8df-4a49-533e-08dedd96cc8c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|23010399003|3023799007|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info: bxCTtrgN5d2Xx244B4A3oN95nE+E1scgJA5JnAlyKM1687Qs8FrB0MdkH0oHIZCDU9DuZUx7AI9FTEOkcYAKIguXveobMxcEAcaVtu4gbNcsZDbGlT2T2E4aJZIHPT2uP0Pizhi/PPJdGVTHc9P6soVTa7B0wu2CWW+/U5ZIMVsRhPaLk3V0zNPSRmVNST0zZ5UU47of0okBgKxw8WWugXrWIvfCFQaaINhaQbi4p5eq+HEFTF6uAE0ulexSl6wqukVnhGbCm1LjUjT2IPPq66X+DyO6/B5TsjLeiZWIDMkK/UtzT2WYt2tT8WUeRoOJ5u9QVV8LZvXB61ORjEl3Y7tACrVfksLJGkBCleumxJmhPEj4avZAx4K8Dafau66FaOVLWY72lgW0nvFhOLv+6poPUetrTX1/CXEEeM1YUBIxITFIbiKnlryPgtTzSgdnQvjz+ookERUYFjkCwOeAlUpBqicdi1FvsI14B+Y9DjuN3fnLNCw7RbI92a4Cv38VNFzPYsr7x5vFlI+VZHrAffpM5CbSHGRaHNaccFLCo98be35o7RQGNjjNEx2gEfxgVlYf749BW6QKHAwVcmIxv+CMJX1W1tUwNAzDTiPF0W0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5832.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(3023799007)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?S/wvC4gkRn17FyAda87BrrXWv6M4QzfDx39emeaUtV4pqDbmqFZ00eufnUI0?=
+ =?us-ascii?Q?EAo8Mde7vu8LVJQYWZskjCkKJrjm2yse7U/lbsscEY4NpT/X0kiFRMGrMbWz?=
+ =?us-ascii?Q?+eld+8PQ5M0APRtyOM/c3ma7iRQHcrqwAz4Caqd+LBMtJ8FgA/CegISzeDM/?=
+ =?us-ascii?Q?JiuwVJLqDpJWN0cIrCwmH/zLOWjr0KfkZ6g6Gu70YJ0ebC8y7Owc+TXm82mc?=
+ =?us-ascii?Q?1xusntARlzS2+YQprqkRU5PaLke222FRBSkZ+kDkPynhV26SzrkuHJG6Uk3O?=
+ =?us-ascii?Q?szwm7X6E7tfxDbGKylYhf/91Y2DLDZwzmCTFq/r9tEEtxgGcePO3NUcXh86m?=
+ =?us-ascii?Q?pxhVchW5lAWXDlw64ku/LMTmWn0FDHLzMuXQYYapolrwGsMTtUUbniohtgDP?=
+ =?us-ascii?Q?SZyL2HIeMRqN5MuazIGbBT8QshW25nOXZ+H7hykJ8LYgTQowxolBGASkW0Sj?=
+ =?us-ascii?Q?FJTemSwtELJL6Y2hIFG/V8We8q8kQi3qpasj20ILv93FcZFs+5LgG4IcexnR?=
+ =?us-ascii?Q?lSdpTMVABaIwiEfLt3OAanP9KS2YVOsQdgvFEfk0CLAgEZXOEJxmueveNBkk?=
+ =?us-ascii?Q?IYvgQ0E6f+pbhWsWyDhl529TsMWPYTPP9ZSqjxDid4JoeLYnqtoXAvA8XwRK?=
+ =?us-ascii?Q?Ng8Ae+cg7NBZ+mOkfka8QthIJQpnZ8ZvtdQWtZPNUP+kAkOfNwDcvjbGqhFT?=
+ =?us-ascii?Q?K5JxpQatDagUl2OGpqHUxb29KKBbv+cF00XO5H+lKRVNGfoZGlfMIcSuukR2?=
+ =?us-ascii?Q?yhsn+oCTmNlhWKo74b8+wVa9qhKovMdNiT0jQ+k3jYQ+cK5VcvYi5gJexSW0?=
+ =?us-ascii?Q?6LXGfG8BYuTpp/GCNI1QIIQScBG+suWvqs9frJQh7nFuBCv0kWgOOcX5y4pg?=
+ =?us-ascii?Q?XNugrCL0Gr/XrmaUHhdhb8uYYuBHFGHNC/I90vQeJcnnQKX/t/fC0e3GGGp0?=
+ =?us-ascii?Q?mqoWKfsh3kGhJyh2xKkx7r1imNOssKlp3NeoiHwMoBDA3ErGFPK5EUJwykME?=
+ =?us-ascii?Q?ifU+Un2dIBPnEfxYapGBIf6R74WDM4e5eO1PsNPL0GMtmYLdWffzsyyOCsku?=
+ =?us-ascii?Q?+LnflXDI8IFli8ohnym3hper8DKJ5lczugF0c9wu/WbTDKgHPUXytymtFT2D?=
+ =?us-ascii?Q?I21dPPVnTev8pf0lI/A/Bj6LISY55o6KpFhMr4/s8Iumu/5eyI9HimhMs7qZ?=
+ =?us-ascii?Q?goow7BebhpWuNC+rBPBwJ6H/Rae3YWBGqNRbs96Ial6ZtHYSgNVQ9g4LZD7f?=
+ =?us-ascii?Q?TOcnYMWsLBLiDvaPY/4INZY1xPB8AQAixJvmzeJn/5ql/g02SWXmX+ka9KCJ?=
+ =?us-ascii?Q?YSJoGpS1mwHV7fIrB3f8nPGAGZZle8JKD8IKXbx31G7ntOanAidJI44/CDDS?=
+ =?us-ascii?Q?OcHXiGPNuco9GVTTX86A8wa/P0PHzLF/GgisWv4NMAqhbkocOKDLmhZi9F3F?=
+ =?us-ascii?Q?hBzyuMzzZQ+tC3GWzW/JkThOboRcZRJWt11/8vHTZUVUkJO0Hdn8bRlWQcLN?=
+ =?us-ascii?Q?cNqTzcQ790mea0yPwfGJzKfMeSv48uAwIaNJw0Ouf6WJT29FRaCay7XOM1DD?=
+ =?us-ascii?Q?euZhmA5JJO0WLMqx/3KWkHeYFehMPKFx7Oik8R0PmWv7w7FfAvdquo2YtnCu?=
+ =?us-ascii?Q?WDE+ZuzwJM5XS/t5OuESFzTeXNYXICULjuiXh/jbE8P8/2aObGxtqDF8pSKN?=
+ =?us-ascii?Q?D0IprXjaFdm/Pj53EHeqi+qRIZHQuEhzLLt5Uz4I2vduEIpRrZRMrdkYgqLN?=
+ =?us-ascii?Q?Aklw9pBwiQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: Kmyta63dG6WCAoOBuG/YHHaPLpbXBN0TlLrRNg2hN1/z9CGPUGfAObH5vKSnqX3ah4yh+yuetLq/nXUfsMNkxIevgS5MY8sHQVqlgK8j2K7THpPePjB+J1ngEt/XStVo8uXHyzCXqaXkYyCEwoCu+7mfR8IRh2FhGIxqIlkdFuDugMh7p/0YYYhPYhNXkbgH6jEzbYBG7Yuu9GtDSG7L7hvIOY9Za1atKuoO+WBGWMS3hiNKXe4KJqcwzcKf+9tvI+Gg0pVlVCcIlJdQiALkOVsXlbaw+I/SwtegyqPqJagNtMmncAfCbrc+lKKZQmzfvyj0HvpxHhJng2p5uWCFXg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: a282a028-c8df-4a49-533e-08dedd96cc8c
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5832.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 08:48:08.2534
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sFjIvZvJdMa/832UfykpRgZ2vceNVbXUONo7rnPrriBWdp1dXYy2hROUdwvZmgD7plRRPfMnB6oZHUvVoRoYxg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6383
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 80775160003
-X-Stat-Signature: n4jr1an7i3osqmrk7opb4hou458spy4q
-X-HE-Tag: 1783586819-964058
-X-HE-Meta: U2FsdGVkX1/4a+IONUiT3ADsxx8Qw/eBZ4SQUWw0pzU3E6LbuSkUqWeBONfoCxb3kJ7doPxfKUHQx5Svem41AG9RHH6m0VjL34EEz3TDGmTc1NTI2f9Fheht6brS+hPRTu+xjmbsoT+lMS3NmjuuDPz90D7vtqsaWQJMVKRU1KlIVWoaZ1Lfy9TFEyrUOrZ/J8a3pGJPfJ9UfdO1gJnz0MJaSJoKSoFJ51Xej81qHO7KN+u4H/cW3pKOOXjh2jB7gqMV8I0LxImk3NjoXGDSAu5hVpcXAg50tvc7Akiyt+OWnsPoIIwQIly0myUfHSBh7p0HkywlBd30bEZWs++3cghNBJz9kPaHilyoq9isDzguTkU8+bZvfi8aIMDYB0HcUKnbzMH8/UkhSUGb0OBGUqN5NmpWQTcWG84oQ4EAdIyEwb45gYR/WqJO9/Ev8jNSZCHwQs3HYv8i7TKerwfxTNv+Dj0c+3amvWZ8XhGTvyRZ6T4YNooA6pxDi3EAy4XhRw5AofkB+6+aJK1UfkJS48JgHLcVmm4nyE/5k7ZgpayE5SyRMiigRkER4I8QYucZeX0t5MN3XqlFt0q2F0+w37MJoH4QJynbt5d6xKgf4gJY2F+C4xsjKa6DC72AazP2IjfhkILDpRpZFLg5pUJMaYCJm6rRRGkhXPoDXxi2vj6JVmIzxkV4H6uJ3YDGY//jR74fhVzsLhPasDc9BIBZ731QTFu8ogo0zWNZS/agh/j0nf0yJl6sl8HsywR/K+WJeIEloT7CrK6Xwe4MavvIe+JBvcE2DyAz3rdJcBUmvXKwL3fq+71lfus4xJp2IrOfULkxQRIAbYS7qRSk+KQMU5nFyovv/bqvcjoIooygvl2ZMw/Ficm6JLDH2oGLOKNvt5HPY/Kz1pJsw6HyjLcYGF9+d0XJAQz6whSM7rQKV0Vqn40yGb3vxBrV6b39MEis2bDFsnlhGbgvsUb8zb/
- 5LPUwsaM
- nqV4qA6huM7FFxt/ki1b4cSGm6noY/6nJpf1YYcVoWxRE+s17rs9gI30YGv4mx2Mpg7ZTkF0fFlmoWUQ21F6AWlPQgAkKYFfvmEg5a3+4AAd1BsGAH+MyK0CYZ+GPcONtNClyIhjfdFtmDf+9VmwuoR99hy1e+bVbJ+3emg2aOjaOn6jj8JbAfI2NBb+K/A/nAe5iyN31gJChca9wcW6LSyY/rNZuco468tF/7cHCgwZJNpShi5OC7Pa/TxPu0zQVzoGtM0zowQxnr1o2GuiVGwD7E2XW6Ny32YhhDgxooKl71FGhTI7cr2eFyA0S8Phaa3GKs0DQdiOGbi7XQqXHcH4fUX4tSdrqyt+U/d5hHfZgayopXzzr/p5J4dByYZpXNjluayVW/Rkpj2OG8SmBBieNBxnpNSMQg/7bHH1i3DxGitWiGU0gBAKvChQT3GIHS3juwgHUzKNltocfbFosIilKbKorsbAp45tp8UEpbNNie/Y8Mf4a0FV5JlIUj+4MEsMr0XeEkrIJFQqLjiH0pNKq4ZAgT2n6xO3HoCIAnfWYIxooG3DFIEstNszAq9A/53Oa6CQK9YW0KZEhJr8O76F9V+VYQ+aCHFgVO5FLTDY3W5fUgfsB+mOJVzUS5l+jCjt3dX2a0v6Ejt4FLFE3W09LRBRf31aMalREdPWOzYMANU1EHUJqXF4oCFWDwkQ4r9eu1cD5G8EqUor+TZKyCvg24w==
+X-Rspamd-Queue-Id: 8182340007
+X-Stat-Signature: q54ofrawhzjoj9k8tzhyj4cq4jrp13ea
+X-HE-Tag: 1783586899-805476
+X-HE-Meta: U2FsdGVkX1/qyQp5IvTxqkdDhziwb0fzAYqVlQiHe8P/5fJoxsKFjR0AxmY9ukUufzjwwOfrwujHVhXF8nxnFY/A1fp+Er1VRsISINVpyAPi2xgnrkB2LyfQERWco8I8gAYfdi8PH3XkFT60h0A9qs+QTm7hnFtx4kOGBrEPg8Bb4YfMRPPUjFH8a7i6Uk8xmIHUA6NxePfjuYUKxMn39iQ8ZR/5e5nq/5MsZXG4VtQhwr1j3BaJC+WsfNPtPCKqJirZg4YvzK0IrYK9bxx6tzIV2JsYTXkjKpW3YayIPCiVHe/lgHE1sRYrGyaakiaLKtySE2+yro4seKlZV4CJPHr2nGtdZYKVEiw3qUDMrzh0qdAA3TH4IKXumoktSg222euMnQSvwbj2FEPEQvkDzSxO4hbniBFR90qvdDhWjtCy3JXqOzgUGxNNL4+R1+edrkFaNk14o5spG4B+BdpGGTfrl/+p5b7vY5ct0i8XLT5C8X1NfA2YoL23KFqbiHBtIxiITrISgnJmDQE2fotjE8u+ADQ/uir5LeNkhAl+G/DRCXm9JHIcaoui8xcu+QnuP73LokbkC/HWaJbJXbHYS2kdtrl7s2IE7PDdgMTb744ng0UbZc+IS7WkcMwr7kxl8fN2QJLMUssZTLFBEImLowSDs/jKWwkliowSBomF3e27VjEL0WX3a4/Ujszy2D2gX59IFj2+ySXR1ythXvi+4pobx9grBLlgHxGkFhIbFfkpcVvYMlr2L/OwqSan92OS+L7yeY7YMmi+Sl3+QwVkcbT1+eR3twJWcU4HQNv9qOUZbuk0IjPCQOT29G9tbN1MtXEwg/a12FrWvDRexnuZqSqgbUlCrwtnXQ8JmoOUneZEpt2Hwq7UVg+o5wxiqxyGGBMwpAC4UbXtXfVROnZLfmXc2VIzAsCf2Ga9w9ynjS5J4nveRcSSrCO1wYs5FGcYmX2v2y9WgFKx8GGE1hu
+ PZNkq/2e
+ KAD44tkDgZhVvcdKhjxVzggrPCpSHVTscp1kfTE1X8jtFVGrDauwzgK1hRAo0Q3SSZR3iEdno+DOzdrVAnWkyOWhh1JRmWWJ6kDfC8+ZYAoWD+3OFxGsqgSky6X8WoQ9F3iiKi6SukXfwnpEWhxz4ep10fGBieMn0ZZVMPPyGFpRUBPAwlCktvlUImMKmO7wjhUZX5oBLnaHws6BvfDoRJ35It46dE1sHWJHHzbrgcPzwxgH/IaJ5lqf5HWKajRz+76XcOH/ewimUou3sI8YCae1g4Rnlhn9SJ1taMMN2DDG7GsnrEZfiqk39NJLD3TKOK4EowAUZsBB/5LkOA+VH2njEjw9lljdLo/rUqOnTcqFzGubX9T5KdOfR/L1sP3KY9hGnolC2phIol5l2oJJWv49hYjx2YwZr1xgWchd20cFIxissiteFvHZVPaMKTpR7+uBf3qChGf5gnhkzOLt+QSo27y0wiAOAlMKCj+m9XaCBlPTDHoYsgCgkHxMBrnh+8Jc67iGlGjFKGNoOJJglBBEwEc8l6SWHy+TeltpGnfqmnGsjHSk5Q10v9yeV/eUybDKGfDYjzwEZrTJwfXyzy/pGaZHRiU9s3ZxaiMmu+CwqmWm4RsF29+x5AQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,392 +189,146 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---7accz5oj66ddjm3r
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 08, 2026 at 09:07:55PM -0700, Farid Zakaria wrote:
-> On Wed Jul 8, 2026 at 9:47 AM PDT, Christian Brauner wrote:
-> > On 2026-07-08 11:14 +0200, Christian Brauner wrote:
-> >> On 2026-07-07 15:44 -0700, Farid Zakaria wrote:
-> >> > On Tue Jul 7, 2026 at 12:45 PM PDT, Christian Brauner wrote:
-> >> > > On 2026-07-07 13:34 +0200, Christian Brauner wrote:
-> >> > >> On 2026-07-06 09:47:53-07:00, Farid Zakaria wrote:
-> >> > >> > On Mon, Jul 6, 2026 at 9:01 AM Christian Brauner <brauner@kernel.org> wrote:
-> >> > >> > 
-> >> > >> > > Ignoring the blatant bpf abuse here I think this is quite workable. So
-> >> > >> > > this can be turned into an actual design and patch imho...
-> >> > >> > 
-> >> > >> > Glad to see you think this proposal is in the right direction.
-> >> > >> > Just for my edification, when you say "balatant bpf abuse", you mean
-> >> > >> > how it abuses the socket bpf type?
-> >> > >> > If so, do you have any guidance on a new type or should I just take a
-> >> > >> > stab at it.
-> >> > >
-> >> > > I drafted a POC for you that should be closer to how this should look
-> >> > > like with the bpf people in Cc. I'll let you lead from now on. I just
-> >> > > wanted to help you out and illustrate a more viable direction. Might be
-> >> > > that the bpf people want it done differentely. Let's see.
-> >> > 
-> >> > Cool. I just saw the POC.
-> >> > (I'm trying out aerc to view the patch series. I will also try b4, I've
-> >> > never set it up before)
-> >> > I will rework my qemu demo to use the struct_ops and go through my own
-> >> > testing to see it work.
-> >> > 
-> >> > That looks very similar to what I was researching with an LLM. I was
-> >> > just going over the idea of struct_ops bpf (a new concept to me) and
-> >> > using traditional bpftool load, a new bpf program type and kfuncs.
-> >> > 
-> >> > You put out a surprising amount of polished code -- thank you.
-> >> 
-> >> I would not call this polished and it also lacks any tests... I've not
-> >> given the locking much thought and maybe there's easy wins on the table
-> >> I haven't been considering.
-> >> 
-> >> > I would have had to lean on an LLM (heavily) and from the patches I've
-> >> > put up so far they still have quite the gap to cover in terms of polish.
-> >> 
-> >> This isn't my first bpf ride in both kernel and userspace.
-> >> 
-> >> > What does "take it from here" mean in practicality?
-> >> 
-> >> Bring it over the finish line so I can merge it into my tree. :)
-> >> If the bpf people have no comments or worries than we're done. If they
-> >> want changes I'd appreciate if you could make them and slap you
-> >> Co-developed-by onto the whole thing as necessary.
-> >> 
-> >> Also, please ensure that this works for all the cases you're
-> >> considering.
-> >
-> > I have another cleanup series for binfmt_misc btw. That code is quite
-> > old. There might be a few additional series coming out of this work that
-> > we base the bpf bits on.
-> 
-> Sounds good. I just saw the patch series.
-> My plan at the least by the weekend is to:
-> * apply your binfmt_misc cleanup series
->   * I will try b4 with aerc. Here  is my config if anyone wants to crib it [1].
-> * apply your POC series for the bpf to validate
-> * make any changes if necessary or just add selftests if it works as is
-> 
-> [1]: https://github.com/fzakaria/nix-home/blob/aaee67c3a6d035d06a62cb75392657563de58f4a/users/fmzakari/aerc.nix 
+Hello,
 
-I hade some vibe-coded tests somewhere. Let me see if I can find them...
-Ok, appending them. There's an elf-section parsing test and a $ORIGIN
-test.
+kernel test robot noticed "BUG:kernel_NULL_pointer_dereference,address" on:
 
---7accz5oj66ddjm3r
-Content-Type: text/x-csrc; charset=utf-8
-Content-Disposition: attachment; filename="elf_sections.bpf.c"
+commit: 6bc21472e7eb9f8c771ffdf86266aa6d9dcb1dac ("mm/slab: prevent unbounded recursion due to obj_exts in free path")
+https://git.kernel.org/cgit/linux/kernel/git/harry/linux.git kmalloc-no-objext-rfc-v1r1
 
-// SPDX-License-Identifier: GPL-2.0
-/*
- * elf_sections.bpf.c - walking ELF section headers from a binfmt_misc_ops
- * program.
- *
- * Demonstrates full section-table parsing via the file dynptr: locate a
- * section by name (through e_shstrndx/shstrtab) and read its contents.
- * The demo looks up ".comment" and dumps it, then declines so the binary
- * is loaded normally.
- */
-#include "vmlinux.h"
-#include <bpf/bpf_helpers.h>
-#include <bpf/bpf_tracing.h>
+in testcase: boot
 
-char _license[] SEC("license") = "GPL";
+config: i386-randconfig-2006-20250804
+compiler: gcc-14
+test machine: qemu-system-i386 -enable-kvm -cpu SandyBridge -smp 2 -m 4G
 
-#define EI_CLASS	4
-#define ELFCLASS64	2
-#define SHT_NOBITS	8
-#define SHN_UNDEF	0
-#define SHN_LORESERVE	0xff00
-#define MAX_SHDRS	64
-#define SEC_NAME_MAX	64
-#define DUMP_MAX	64
+(please refer to attached dmesg/kmsg for entire log/backtrace)
 
-extern int bpf_dynptr_from_file(struct file *file, __u32 flags,
-				struct bpf_dynptr *ptr__uninit) __ksym;
-extern int bpf_dynptr_file_discard(struct bpf_dynptr *dynptr) __ksym;
 
-/* Look up a section by name; @name_len includes the NUL. */
-static __always_inline int find_section(struct bpf_dynptr *dp,
-					const struct elf64_hdr *ehdr,
-					const char *name, __u32 name_len,
-					struct elf64_shdr *out)
-{
-	char nbuf[SEC_NAME_MAX];
-	struct elf64_shdr sh;
-	__u64 shoff = ehdr->e_shoff;
-	__u32 shnum = ehdr->e_shnum;
-	__u64 stroff, strsz;
-	int i, j;
 
-	if (!shoff || !shnum || shnum >= SHN_LORESERVE)
-		return -1;
-	if (ehdr->e_shentsize != sizeof(sh))
-		return -1;
-	if (ehdr->e_shstrndx == SHN_UNDEF || ehdr->e_shstrndx >= shnum)
-		return -1;
-	if (!name_len || name_len > sizeof(nbuf))
-		return -1;
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202607091002.cdfe5a08-lkp@intel.com
 
-	/* The section-name string table. */
-	if (bpf_dynptr_read(&sh, sizeof(sh), dp,
-			    shoff + ehdr->e_shstrndx * sizeof(sh), 0))
-		return -1;
-	stroff = sh.sh_offset;
-	strsz = sh.sh_size;
 
-	bpf_for(i, 0, shnum) {
-		bool match = true;
 
-		if (i >= MAX_SHDRS)
-			break;
-		if (bpf_dynptr_read(&sh, sizeof(sh), dp,
-				    shoff + i * sizeof(sh), 0))
-			return -1;
-		/* Name (incl. NUL) must fit inside shstrtab. */
-		if (sh.sh_name >= strsz || strsz - sh.sh_name < name_len)
-			continue;
-		if (bpf_dynptr_read(nbuf, name_len, dp, stroff + sh.sh_name, 0))
-			continue;
-		bpf_for(j, 0, name_len) {
-			if (j >= SEC_NAME_MAX || nbuf[j] != name[j]) {
-				match = false;
-				break;
-			}
-		}
-		if (!match)
-			continue;
-		*out = sh;
-		return 0;
-	}
-	return -1;
-}
+[    0.183091][    T0] BUG: kernel NULL pointer dereference, address: 0000000c
+[    0.183772][    T0] #PF: supervisor read access in kernel mode
+[    0.184312][    T0] #PF: error_code(0x0000) - not-present page
+[    0.184851][    T0] *pde = 00000000
+[    0.185186][    T0] Oops: Oops: 0000 [#1]
+[    0.185561][    T0] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.2.0-rc1+ #1 PREEMPT  27a7cd77b6ab41253c0455bf8bac7f75db905e14
+[    0.186647][    T0] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    0.187601][    T0] EIP: __kmalloc_flags_noprof (slub.c:5311 slub.c:5506)
+[    0.188122][    T0] Code: 7d d7 00 74 0a 84 d2 74 06 31 c0 89 df f3 aa ff 75 e8 89 da 89 f0 8b 4d dc e8 47 28 00 00 59 8b 45 e0 89 da ff 75 0c ff 75 dc <ff> 76 0c 8b 4d d8 e8 00 da ff ff 83 c4 0c eb 16 8d 45 e0 50 ff 75
+All code
+========
+   0:	7d d7                	jge    0xffffffffffffffd9
+   2:	00 74 0a 84          	add    %dh,-0x7c(%rdx,%rcx,1)
+   6:	d2 74 06 31          	shlb   %cl,0x31(%rsi,%rax,1)
+   a:	c0 89 df f3 aa ff 75 	rorb   $0x75,-0x550c21(%rcx)
+  11:	e8 89 da 89 f0       	call   0xfffffffff089da9f
+  16:	8b 4d dc             	mov    -0x24(%rbp),%ecx
+  19:	e8 47 28 00 00       	call   0x2865
+  1e:	59                   	pop    %rcx
+  1f:	8b 45 e0             	mov    -0x20(%rbp),%eax
+  22:	89 da                	mov    %ebx,%edx
+  24:	ff 75 0c             	push   0xc(%rbp)
+  27:	ff 75 dc             	push   -0x24(%rbp)
+  2a:*	ff 76 0c             	push   0xc(%rsi)		<-- trapping instruction
+  2d:	8b 4d d8             	mov    -0x28(%rbp),%ecx
+  30:	e8 00 da ff ff       	call   0xffffffffffffda35
+  35:	83 c4 0c             	add    $0xc,%esp
+  38:	eb 16                	jmp    0x50
+  3a:	8d 45 e0             	lea    -0x20(%rbp),%eax
+  3d:	50                   	push   %rax
+  3e:	ff                   	.byte 0xff
+  3f:	75                   	.byte 0x75
 
-#define FIND_SECTION(dp, ehdr, lit, out) \
-	find_section(dp, ehdr, lit, sizeof(lit), out)
+Code starting with the faulting instruction
+===========================================
+   0:	ff 76 0c             	push   0xc(%rsi)
+   3:	8b 4d d8             	mov    -0x28(%rbp),%ecx
+   6:	e8 00 da ff ff       	call   0xffffffffffffda0b
+   b:	83 c4 0c             	add    $0xc,%esp
+   e:	eb 16                	jmp    0x26
+  10:	8d 45 e0             	lea    -0x20(%rbp),%eax
+  13:	50                   	push   %rax
+  14:	ff                   	.byte 0xff
+  15:	75                   	.byte 0x75
+[    0.189928][    T0] EAX: b11c8b96 EBX: 00000000 ECX: b18bdac5 EDX: 00000000
+[    0.190574][    T0] ESI: 00000000 EDI: 00000150 EBP: b1e17df0 ESP: b1e17db8
+[    0.191220][    T0] DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00210046
+[    0.191925][    T0] CR0: 80050033 CR2: 0000000c CR3: 0253b000 CR4: 00000090
+[    0.192579][    T0] Call Trace:
+[    0.192877][    T0]  ? alloc_from_new_slab (linux/spinlock.h:408 slub.c:4416)
+[    0.193350][    T0]  ? alloc_slab_obj_exts (slab.h:39 slub.c:2149)
+[    0.193823][    T0]  alloc_slab_obj_exts (slab.h:39 slub.c:2149)
+[    0.194280][    T0]  __alloc_tagging_slab_alloc_hook (slub.c:2329 slub.c:2358)
+[    0.194833][    T0]  alloc_tagging_slab_alloc_hook (slub.c:2381)
+[    0.195372][    T0]  __kmalloc_cache_node_noprof (slub.c:4596 slub.c:4893 slub.c:5482)
+[    0.195903][    T0]  ? init_kmem_cache_nodes (linux/slab.h:1192 slub.c:7732)
+[    0.196400][    T0]  init_kmem_cache_nodes (linux/slab.h:1192 slub.c:7732)
+[    0.196882][    T0]  do_kmem_cache_create (slub.c:8646)
+[    0.197354][    T0]  create_boot_cache (slab_common.c:717)
+[    0.197788][    T0]  new_kmalloc_cache (slab_common.c:735 slab_common.c:996)
+[    0.198237][    T0]  create_kmalloc_caches (slab_common.c:1019)
+[    0.198701][    T0]  kmem_cache_init (slub.c:8555)
+[    0.199125][    T0]  mm_core_init (mm_init.c:2728)
+[    0.199533][    T0]  start_kernel (main.c:1034)
+[    0.199939][    T0]  i386_start_kernel (x86/kernel/head32.c:79)
+[    0.200368][    T0]  startup_32_smp (x86/kernel/head_32.S:292)
+[    0.200791][    T0] Modules linked in:
+[    0.201141][    T0] CR2: 000000000000000c
+[    0.201513][    T0] ---[ end trace 0000000000000000 ]---
+[    0.202004][    T0] EIP: __kmalloc_flags_noprof (slub.c:5311 slub.c:5506)
+[    0.202522][    T0] Code: 7d d7 00 74 0a 84 d2 74 06 31 c0 89 df f3 aa ff 75 e8 89 da 89 f0 8b 4d dc e8 47 28 00 00 59 8b 45 e0 89 da ff 75 0c ff 75 dc <ff> 76 0c 8b 4d d8 e8 00 da ff ff 83 c4 0c eb 16 8d 45 e0 50 ff 75
+All code
+========
+   0:	7d d7                	jge    0xffffffffffffffd9
+   2:	00 74 0a 84          	add    %dh,-0x7c(%rdx,%rcx,1)
+   6:	d2 74 06 31          	shlb   %cl,0x31(%rsi,%rax,1)
+   a:	c0 89 df f3 aa ff 75 	rorb   $0x75,-0x550c21(%rcx)
+  11:	e8 89 da 89 f0       	call   0xfffffffff089da9f
+  16:	8b 4d dc             	mov    -0x24(%rbp),%ecx
+  19:	e8 47 28 00 00       	call   0x2865
+  1e:	59                   	pop    %rcx
+  1f:	8b 45 e0             	mov    -0x20(%rbp),%eax
+  22:	89 da                	mov    %ebx,%edx
+  24:	ff 75 0c             	push   0xc(%rbp)
+  27:	ff 75 dc             	push   -0x24(%rbp)
+  2a:*	ff 76 0c             	push   0xc(%rsi)		<-- trapping instruction
+  2d:	8b 4d d8             	mov    -0x28(%rbp),%ecx
+  30:	e8 00 da ff ff       	call   0xffffffffffffda35
+  35:	83 c4 0c             	add    $0xc,%esp
+  38:	eb 16                	jmp    0x50
+  3a:	8d 45 e0             	lea    -0x20(%rbp),%eax
+  3d:	50                   	push   %rax
+  3e:	ff                   	.byte 0xff
+  3f:	75                   	.byte 0x75
 
-SEC("struct_ops.s/load")
-int BPF_PROG(elf_sections_load, struct linux_binprm *bprm)
-{
-	char data[DUMP_MAX] = {};
-	struct elf64_hdr ehdr;
-	struct elf64_shdr sh;
-	struct bpf_dynptr dp;
-	__u32 n;
+Code starting with the faulting instruction
+===========================================
+   0:	ff 76 0c             	push   0xc(%rsi)
+   3:	8b 4d d8             	mov    -0x28(%rbp),%ecx
+   6:	e8 00 da ff ff       	call   0xffffffffffffda0b
+   b:	83 c4 0c             	add    $0xc,%esp
+   e:	eb 16                	jmp    0x26
+  10:	8d 45 e0             	lea    -0x20(%rbp),%eax
+  13:	50                   	push   %rax
+  14:	ff                   	.byte 0xff
+  15:	75                   	.byte 0x75
 
-	if (bprm->buf[0] != 0x7f || bprm->buf[1] != 'E' ||
-	    bprm->buf[2] != 'L' || bprm->buf[3] != 'F' ||
-	    bprm->buf[EI_CLASS] != ELFCLASS64)
-		return 0;
 
-	if (bpf_dynptr_from_file(bprm->file, 0, &dp))
-		goto out;
-	if (bpf_dynptr_read(&ehdr, sizeof(ehdr), &dp, 0, 0))
-		goto out;
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20260709/202607091002.cdfe5a08-lkp@intel.com
 
-	if (FIND_SECTION(&dp, &ehdr, ".comment", &sh))
-		goto out;
-	/* SHT_NOBITS (.bss-like) sections have no file content. */
-	if (sh.sh_type == SHT_NOBITS || !sh.sh_size)
-		goto out;
 
-	n = sh.sh_size;
-	if (n > sizeof(data) - 1)
-		n = sizeof(data) - 1;
-	if (bpf_dynptr_read(data, n, &dp, sh.sh_offset, 0))
-		goto out;
 
-	bpf_printk("elf_sections: .comment @%llu +%llu: %s",
-		   (__u64)sh.sh_offset, (__u64)sh.sh_size, data);
-out:
-	bpf_dynptr_file_discard(&dp);
-	return 0;	/* observer only: always decline */
-}
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
-SEC(".struct_ops.link")
-struct binfmt_misc_ops elf_sections = {
-	.load = (void *)elf_sections_load,
-	.name = "elf_sections",
-};
-
---7accz5oj66ddjm3r
-Content-Type: text/x-csrc; charset=utf-8
-Content-Disposition: attachment; filename="nix_origin.bpf.c"
-
-// SPDX-License-Identifier: GPL-2.0
-/*
- * nix_origin.bpf.c - $ORIGIN-relative PT_INTERP resolution
- *
- * A binfmt_misc_ops handler that makes relocatable (Nix-style) ELF
- * binaries work: if PT_INTERP starts with "$ORIGIN/", the loader is
- * resolved relative to the directory of the binary being executed and
- * selected via bpf_binprm_set_interp(). Anything else is declined so
- * regular binaries fall through untouched.
- *
- * Activate with:
- *   bpftool struct_ops register nix_origin.bpf.o /sys/fs/bpf
- *   echo ':nix-origin:B:nix_origin::::' > /proc/sys/fs/binfmt_misc/register
- */
-#include "vmlinux.h"
-#include <bpf/bpf_helpers.h>
-#include <bpf/bpf_tracing.h>
-
-char _license[] SEC("license") = "GPL";
-
-#define PATH_MAX	4096
-#define EI_CLASS	4
-#define ELFCLASSXX	2	/* ELFCLASS64; flip to 1 for 32-bit */
-#define PT_INTERP	3
-#define MAX_PHDRS	64
-
-#define ORIGIN		"$ORIGIN"
-#define ORIGIN_LEN	(sizeof(ORIGIN) - 1)
-
-#define ENOENT		2
-#define ENAMETOOLONG	36
-
-extern int bpf_dynptr_from_file(struct file *file, __u32 flags,
-				struct bpf_dynptr *ptr__uninit) __ksym;
-extern int bpf_dynptr_file_discard(struct bpf_dynptr *dynptr) __ksym;
-extern int bpf_path_d_path(const struct path *path, char *buf,
-			   size_t buf__sz) __ksym;
-extern int bpf_binprm_set_interp(struct linux_binprm *bprm, const char *path,
-				 size_t path__sz) __ksym;
-
-struct scratch {
-	char interp[PATH_MAX];	/* PT_INTERP as embedded in the binary */
-	char path[PATH_MAX];	/* d_path of the binary, becomes the result */
-};
-
-/* Keyed by pid: execs run concurrently and the program can sleep. */
-struct {
-	__uint(type, BPF_MAP_TYPE_HASH);
-	__uint(max_entries, 512);
-	__type(key, __u64);
-	__type(value, struct scratch);
-} scratch_map SEC(".maps");
-
-static const struct scratch zero_scratch;
-
-SEC("struct_ops.s/load")
-int BPF_PROG(nix_origin_load, struct linux_binprm *bprm)
-{
-	__u32 isz, sfx, rsz, slash;
-	struct elf64_phdr phdr;
-	struct elf64_hdr ehdr;
-	struct bpf_dynptr dp;
-	struct scratch *sc;
-	bool found = false;
-	__u64 id;
-	int ret = 0, len, i;
-
-	/* Cheap reject from the prefetched header. */
-	if (bprm->buf[0] != 0x7f || bprm->buf[1] != 'E' ||
-	    bprm->buf[2] != 'L' || bprm->buf[3] != 'F' ||
-	    bprm->buf[EI_CLASS] != ELFCLASSXX)
-		return 0;
-
-	if (bpf_dynptr_from_file(bprm->file, 0, &dp))
-		goto out;
-
-	if (bpf_dynptr_read(&ehdr, sizeof(ehdr), &dp, 0, 0))
-		goto out;
-	if (ehdr.e_phentsize != sizeof(struct elf64_phdr))
-		goto out;
-
-	bpf_for(i, 0, ehdr.e_phnum) {
-		if (i >= MAX_PHDRS)
-			break;
-		if (bpf_dynptr_read(&phdr, sizeof(phdr), &dp,
-				    ehdr.e_phoff + i * sizeof(phdr), 0))
-			goto out;
-		if (phdr.p_type == PT_INTERP) {
-			found = true;
-			break;
-		}
-	}
-	if (!found)
-		goto out;
-
-	isz = phdr.p_filesz;
-	if (isz <= ORIGIN_LEN + 1 || isz > sizeof(sc->interp))
-		goto out;
-
-	id = bpf_get_current_pid_tgid();
-	if (bpf_map_update_elem(&scratch_map, &id, &zero_scratch, BPF_ANY))
-		goto out;
-	sc = bpf_map_lookup_elem(&scratch_map, &id);
-	if (!sc)
-		goto out_del;
-
-	if (bpf_dynptr_read(sc->interp, isz, &dp, phdr.p_offset, 0))
-		goto out_del;
-	if (sc->interp[isz - 1] != '\0')
-		goto out_del;
-
-	/* Not "$ORIGIN/..."? Decline, the elf loader owns it. */
-	if (sc->interp[0] != '$' || sc->interp[1] != 'O' ||
-	    sc->interp[2] != 'R' || sc->interp[3] != 'I' ||
-	    sc->interp[4] != 'G' || sc->interp[5] != 'I' ||
-	    sc->interp[6] != 'N' || sc->interp[7] != '/')
-		goto out_del;
-
-	/*
-	 * From here on the binary is ours: resolution failures fail the
-	 * exec instead of falling back to binfmt_elf, which would resolve
-	 * the literal "$ORIGIN/..." relative to the caller's cwd.
-	 */
-	ret = -ENOENT;
-	len = bpf_path_d_path(&bprm->file->f_path, sc->path, sizeof(sc->path));
-	if (len <= 0 || len > sizeof(sc->path))
-		goto out_del;
-	/* Unreachable or unlinked ("... (deleted)") binaries can't resolve. */
-	if (sc->path[0] != '/')
-		goto out_del;
-
-	/* $ORIGIN = dirname of the binary. */
-	slash = 0;
-	bpf_for(i, 1, len - 1) {
-		if (i >= sizeof(sc->path))
-			break;
-		if (sc->path[i] == '/')
-			slash = i;
-	}
-
-	/* Splice the suffix (leading '/' and NUL included) onto the dir. */
-	sfx = isz - ORIGIN_LEN;
-	rsz = slash + sfx;
-	if (rsz > sizeof(sc->path)) {
-		ret = -ENAMETOOLONG;
-		goto out_del;
-	}
-	bpf_for(i, 0, sfx) {
-		__u32 s = ORIGIN_LEN + i, d = slash + i;
-
-		if (s >= sizeof(sc->interp) || d >= sizeof(sc->path))
-			break;
-		sc->path[d] = sc->interp[s];
-	}
-
-	ret = bpf_binprm_set_interp(bprm, sc->path, rsz);
-	if (!ret)
-		ret = 1;
-out_del:
-	bpf_map_delete_elem(&scratch_map, &id);
-out:
-	bpf_dynptr_file_discard(&dp);
-	return ret;
-}
-
-SEC(".struct_ops.link")
-struct binfmt_misc_ops nix_origin = {
-	.load = (void *)nix_origin_load,
-	.name = "nix_origin",
-};
-
---7accz5oj66ddjm3r--
 
