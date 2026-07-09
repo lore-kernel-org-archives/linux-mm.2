@@ -4,84 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A473DC44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 13:46:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6F50C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 13:51:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8044B6B0092; Thu,  9 Jul 2026 09:46:50 -0400 (EDT)
+	id B69816B008A; Thu,  9 Jul 2026 09:51:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B4C26B0093; Thu,  9 Jul 2026 09:46:50 -0400 (EDT)
+	id ACB046B008C; Thu,  9 Jul 2026 09:51:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A4906B0095; Thu,  9 Jul 2026 09:46:50 -0400 (EDT)
+	id 993A96B0093; Thu,  9 Jul 2026 09:51:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 465EB6B0092
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:46:50 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C45321A0192
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:46:49 +0000 (UTC)
-X-FDA: 84969363738.17.744401F
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 408B840007
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:46:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lf0nvBCM;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 730426B008A
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:51:04 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D3304016A
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:51:04 +0000 (UTC)
+X-FDA: 84969374448.01.3B78A8C
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 29873140006
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:51:02 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qj3MKYul;
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783605062;
+	b=Jx2cQl8+x/qHfmhZ/2XM9I3S4opx/ma9rmqCgG7i6Dj8iTc2II46HroHb2NWFKeH3a+HAh
+	gVOSJ357ismK4lrSzoxcwMYgM945JjxvQRDk3DGh18BgH+EfXOEhSvNeRoxqEHjoX0doPA
+	syZcpMVqywkLBBQHGcseAM5EyNK8hok=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qj3MKYul;
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783604808;
+	s=arc-20220608; t=1783605062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2osXVDxgVvuGU+T2YOX7g61cy9uE4ngVaflraIX5Kjs=;
-	b=WeDZO6zdWH4UxU++m9cwHAbP/FPbe5LvVsZ879ctmxdHXqw4e/RTqcUARiHoKfd/y9kkk4
-	wIeG5hL8YKe707MoQCWZBxLuDAPJ3JHgShibUzYmGWyjTyPbpI6es8HIHR6uiGTyyGokbj
-	qtomoKhY9byfCCV9O7s3/K7erFiKvMc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=lf0nvBCM;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783604808;
-	b=8FJNzyIC9wwegFBkvv02FS3IsZIO18SzkwBWgFQdd7crqOHEXo9KY1ueFLRunEGaM+p5jb
-	wt0JxSKw/MLDX8wYMBDGtV6cbAspmQAnLAV7F5+LwtDYI4H5x0u8FleLQNsaV+uPDb9wWm
-	pKC4DW5wcuFt9SDLbtLBJhmO4D/+UbI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=2osXVDxgVvuGU+T2YOX7g61cy9uE4ngVaflraIX5Kjs=; b=lf0nvBCMYSHnQRhvptl+at6CaC
-	EvJMHEFfJWWszDemx7tscb7Ycv2hjjWE2JqXJ2TT2xLFWfTSPlF9Kuk4eeMdf2MIUCg5aOcxc09Fp
-	BX2vcZkhK3Dn5xVXUS2ZPNeOqnE7RYl27Nzr0KSEeDabX9yGWaDyhatT/mCsrogktEST072KUoaa3
-	rFMtCJa6VxFMuN+fKtw+qqbVwECq6f+OQyA+vmlyd4DVz9zgz27DnvE2FdgbEGJ01KyRZ4ksPfBsl
-	9t8n7Lkhc+1OVUXakQnHWKiiDoT9Khayoi7TZAPbYtOWCDrtZa7GY2+5VopVVRi9QF/qFMba+Io1c
-	P7yw5Pqg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whp5P-00000004vCI-3e6I;
-	Thu, 09 Jul 2026 13:46:43 +0000
-Date: Thu, 9 Jul 2026 14:46:43 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Longxing Li <coregee2000@gmail.com>, Theodore Ts'o <tytso@mit.edu>
-Cc: akpm@linux-foundation.org, linux-ext4@vger.kernel.org,
-	adilger.kernel@dilger.ca, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ext4: fix use-after-free in ext4 delayed I/O completion
-Message-ID: <ak-mQ2DnbaxIO_WU@casper.infradead.org>
-References: <20260709075613.854-1-coregee2000@gmail.com>
+	bh=z8FqW5eq3Uh1W5agsXYXom0eXyZ/LkbEOhFOOkLyqNU=;
+	b=vL/ZRLkQuUtpYBgDO3szVfrObA+vgWgERmJJADAXs1SpEYJGpLQNNMwembVb60/z9rhx75
+	CjA/3x23/oudYn2fbCasZH4zig+cjViompuSNgmiqfWO10LFtc9XBeeBmkv3x7N/xWc42x
+	C1y3u/4yXwnfMn6coBaeyU3OrAzksdc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783605060;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z8FqW5eq3Uh1W5agsXYXom0eXyZ/LkbEOhFOOkLyqNU=;
+	b=qj3MKYulS0/NJ/Qjk8zhEIgCr9AW0b51sFXof////YFtj5/yXTLY4yyzdVD1+/8HM/hfFX
+	3KOoV5n2sVnAjg3GVW2moiIW/UcY/2XiWIKzaUzuBzVYyPCsOS8yDqeFxjEiYGcGgV66ta
+	CLG9sXAFewOyZ2U5Vgpi+8YvYKSCbX4=
+From: Usama Arif <usama.arif@linux.dev>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	linux-mm@kvack.org,
+	ying.huang@linux.alibaba.com,
+	Baoquan He <baoquan.he@linux.dev>,
+	willy@infradead.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	"Liam R . Howlett" <liam@infradead.org>,
+	ryan.roberts@arm.com,
+	Vlastimil Babka <vbabka@kernel.org>,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 01/11] mm: add PMD swap entry detection support
+Date: Thu,  9 Jul 2026 06:50:49 -0700
+Message-ID: <20260709135050.2910286-1-usama.arif@linux.dev>
+In-Reply-To: <20260703173903.3789516-2-usama.arif@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709075613.854-1-coregee2000@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 408B840007
-X-Stat-Signature: 4knuxguejhw5zq9e5hhwixktex346n61
-X-HE-Tag: 1783604807-469812
-X-HE-Meta: U2FsdGVkX18FAIVyHcRs3kjMA6o0y0XoQtfEpGdTt4I5H/y5f+4jRTYn7fm74x1OJMd8yAeWGQ8mJ/NVEZPlVXSdpJXaquE7R3Kyneh2Io4TLR2/JvZYK9JAeEB8WOQ/2NSxoS8L3oKRDBkc8RAfyKy8O7QU77RJdPfbFWzt6j5TBGSlkubuQios129GWWnYG5buTLSjZOKimlZvpZgZFInpF1Auxdaoj8qL5R27X4/r58BLOuU6tIb111gCQTNu9GjLGoOtT/EkcyzLmrm5RmqNpamyzAbxMyNvH3qqMOZqBWE7FO8/AQhVBlOTqop2BRU8afgUtoOaBpFj1kNA5qE1oSxntm2H2i0mslgqOwaGuu3env/aCVAKOv+Wi8Pb+d1QuV85Sxebs8CRA6hITY9UFb11JgSm9JMRlcOtiXZxEGsOw7xFbfkxepExHCUpYL39eU0xwvAiApY18pC7dCrp7wHwtFDpb6ro+5V1110BivH6m9hFaw7xDrx7jYceRF9geZAC6qY6rrElee6/7N+hCsE6xQGkkUHKOYXFSpbLSh9Tj5XVj7bVtWC3f4/3whk6pVcBSKSrB7xS2Da17Uqy1scNd69CNGvA0Rr69WF0Hql127Jk3UN96XYXiG59Zg/qv9Qbxw32b7SuVVlTrhlUmltl9EQn33MkMgB9SIx+slfnDnKYn8uYluVfHt+0qmRz1sZ5U8lIJj7yeLdNDqqXYq6K3HKyCGu53P9iF19n/0g2OnsMhQwJWFlU7GazexDwiofIdO5UxX9SX1ZV6oogBm8KawFLcZ1gIq/JbMzwe2czIkod2OgXZRNru/Jy7ZPWH3wBpf1M7CaIyWhn3H4MJQPHc2ulHrJDte/bGNhwDcqu5hxP7a5Ewko/FqNIzX00mCmyhGtd3rbg01YuPsXNe8iPoWgJrPmgRCYMPFrAlIzTmSECLpu9wapgP8NcHpIPpaBlPGO1hBCGu+7
- bHxiHPlu
- +V7tQd+m4SSTqfaWZRhe+DZ/KAU6RK6a0kKYEDgO1Vc6abJ8rny1FhFZ7tEx/xSAMOutsJyC+C1XFZVBE9zKsYFob3sfO2nFohB1iROR0s4onDnKbVW887CiQ980fI56s6Mez2HSK5XQUbWuLW9BiFVVyGe2pIKY5MDULHLmwP5hd4F/RavoTCxc4rg67rt4maPDhtVNLoUCiihb2QNU0zUEMpvjwKZsy3e/bYV8Ma9vJqTVv1lxn0LWF4oCpC12uqC3NsyudbG3M9GF2kFUhUruj9kopMbnNr8U5BZnlXiknT2A=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 29873140006
+X-Stat-Signature: gmntci4ykrpbiupf1qdry7twme8ejndt
+X-HE-Tag: 1783605062-724020
+X-HE-Meta: U2FsdGVkX19As8603hcLCVE2IhmV+hJ+IZ5YSRcVsFNJeIIsR1bsHnapFhtwSzIq/ef0VTj4SQYUjpMP+qxoB63FBBpVQlfQgQYuHbzF0LV735vR6HSHk9va50phDdDtUwV9Dbio7jOde6OHKbGTD0PUEWpto0SkfSm17rPOY51ORUgxKLOSkbl63213xUwcDryt0xhuFKxZN9MJg89hriE6GKAUIVosVtv1RsMghUdBKUyAwbkGjB26VFvduscQQfBmEyYGlK15eaFUFx/0hiDBAiyQzrcNgEjYvfTojBEmkKWm06UkKS7KIhnH2xsyKDM3B8ZcewLej9k3aa8pMADB+h0+/2o9agLRnq6GuuFr+4Zi5pJ3uGdea7jU131jWBbMe3k8JuNSRHsFltZg8YT42d5RC4q+vWUbSy+AAw7nOa810d6Fg8yw1Ekh4vuKLDZPYI6vImjOIBM4RsdU3zguWLbPAs00V02gxbbaii2WBa0FXiefTb3FYFfQ+rfp9XlXkCs28tjcos+ZiaNPgZJywUcBjlfMqrx/fkYy81dxIemxkvq2Gpj50SS2DOP2Y3AJk/jNNuchIuFgW06N+3wd8S0M1BwVVDvn2/zJH6MTrTsf0ktLiZzC0hjLofSvQwVQaVFRC/cwgzELGiUsPKDcfj4XTbRoCebPVPzTptelHEA/oyGE0dQV5/YYQckSeaNy7yNHDAMtMyr9dsKha9039MFvSoYl74nFNqj1z2u+zwu/We6QkckvG9OWdCmVqrNvGKeGarEAg0KGuXCMrYNjgfaAQfNtlxkmKNOa0yc0AXeAUgy0AlbSV1T3TfExLpcnIYI+45bQ8XtgIPtj5+v+KbOHivAdH9/eCmbDxBk9bT/2LUyAwUxSB2ErkUOd6hwLBqQBUMejw4RRcwF1VKsj8+hj/6o7xsI+SxQzBek2BvresbOGe++8oqMkQV8XCiM3qIzV2o+urfxavdW
+ Zb93/9iF
+ GaSUCfKHxZCtWPyx7atpIXtNyAocENkOzmhnF2ucpjybvG0wLVJJk2GppM/8jHxckXWPahSmXvuVuonYyDwMqlXIpDIY3uEZEX9PRPtkKlhOfFv03l6ugxn2qmntt21QKh4HdKvROaP4bnQmKtuer3dyfreTPhI7ZprYkna8pPo+8Hva6TXB+fQqY0Do0/+VZOtAt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,99 +112,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 03:56:13PM +0800, Longxing Li wrote:
-> ext4_add_complete_io() queues the inode's i_rsv_conversion_work without
-> holding an extra reference to the inode. If the inode is unlinked and
-> evicted before the delayed work runs, the inode slab object gets freed.
-> When ext4_do_flush_completed_IO() later accesses io_end->inode, it is
-> accessing a freed/reallocated object -- a use-after-free detected by KASAN.
-> 
-> Take igrab(inode) when first queueing the work (only when list is empty to
-> avoid duplicate references), and drop the reference in
-> ext4_do_flush_completed_IO() after processing all io_ends.
-> A per-inode bit (i_rsv_need_iput) tracks whether the extra reference
-> was taken.
-> 
-> This is a defense-in-depth fix complementary to the upstream fix
-> c678bdc99875 ("ext4: fix inode use after free in ext4_end_io_rsv_work()")
-> which adds consistency checks in ext4_io_end_defer_completion(). Both fixes
-> address the same root race but from different angles.
+On Fri,  3 Jul 2026 10:38:18 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 
-Um.  You've cc'd everybody except the maintainer.  And this is already
-fixed, but you want to fix it even more?  I don't get it.
-
-(also if this patch isn't AI slop, it's doing a Really Good Job of
-pretending to be AI slop.  Why would you choose 'unsigned short' as
-the type?)
-
-> Fixes: ce51afb8cc5e ("ext4: abort journal on data writeback failure if in data_err=abort mode")
-> Reported-by: Longxing Li <coregee2000@gmail.com>
-> Signed-off-by: Longxing Li <coregee2000@gmail.com>
-> ---
->  fs/ext4/ext4.h    |  2 ++
->  fs/ext4/page-io.c | 15 +++++++++++++--
->  fs/ext4/super.c   |  1 +
->  3 files changed, 16 insertions(+), 2 deletions(-)
+> Currently when a PMD-mapped THP is swapped out, the PMD is always split into 512 PTE-level swap entries.  To preserve huge page information across swap cycles, later patches will install a single PMD-level swap entry instead.  This patch adds the infrastructure to detect those entries.
 > 
-> diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-> index 56112f201cac..239e6c0a3d3c 100644
-> --- a/fs/ext4/ext4.h
-> +++ b/fs/ext4/ext4.h
-> @@ -1179,6 +1179,8 @@ struct ext4_inode_info {
->  
->  	/* Lock protecting lists below */
->  	spinlock_t i_completed_io_lock;
-> +	/* Track if ext4_add_complete_io() took an extra inode reference. */
-> +	unsigned short i_rsv_need_iput:1;
->  	/*
->  	 * Completed IOs that need unwritten extents handling and have
->  	 * transaction reserved
-> diff --git a/fs/ext4/page-io.c b/fs/ext4/page-io.c
-> index 39abfeec5f36..294c0bcbbb7f 100644
-> --- a/fs/ext4/page-io.c
-> +++ b/fs/ext4/page-io.c
-> @@ -262,8 +262,12 @@ static void ext4_add_complete_io(ext4_io_end_t *io_end)
->  
->  	spin_lock_irqsave(&ei->i_completed_io_lock, flags);
->  	wq = sbi->rsv_conversion_wq;
-> -	if (list_empty(&ei->i_rsv_conversion_list))
-> -		queue_work(wq, &ei->i_rsv_conversion_work);
-> +	if (list_empty(&ei->i_rsv_conversion_list)) {
-> +		if (igrab(io_end->inode)) {
-> +			ei->i_rsv_need_iput = 1;
-> +			queue_work(wq, &ei->i_rsv_conversion_work);
-> +		}
-> +	}
->  	list_add_tail(&io_end->list, &ei->i_rsv_conversion_list);
->  	spin_unlock_irqrestore(&ei->i_completed_io_lock, flags);
->  }
-> @@ -291,6 +295,13 @@ static int ext4_do_flush_completed_IO(struct inode *inode,
->  		if (unlikely(!ret && err))
->  			ret = err;
->  	}
-> +
-> +	/* Release inode reference from ext4_add_complete_io. */
-> +	if (ei->i_rsv_need_iput) {
-> +		ei->i_rsv_need_iput = 0;
-> +		iput(&ei->vfs_inode);
-> +	}
-> +
->  	return ret;
->  }
->  
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index 87205660c5d0..10a5d863d9b9 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -1418,6 +1418,7 @@ static struct inode *ext4_alloc_inode(struct super_block *sb)
->  	ei->jinode = NULL;
->  	INIT_LIST_HEAD(&ei->i_rsv_conversion_list);
->  	spin_lock_init(&ei->i_completed_io_lock);
-> +	ei->i_rsv_need_iput = 0;
->  	ei->i_sync_tid = 0;
->  	ei->i_datasync_tid = 0;
->  	INIT_WORK(&ei->i_rsv_conversion_work, ext4_end_io_rsv_work);
-> -- 
-> 2.34.1
+> Teach the softleaf layer to recognise PMD swap entries: pmd_is_swap_entry() detects them and softleaf_is_valid_pmd_entry() accepts them as a valid non-present type.  Clear the exclusive overlay bit in softleaf_from_pmd() before decoding, matching how soft_dirty and uffd_wp bits are already stripped.
 > 
+> Add pmd_swp_mkexclusive(), pmd_swp_exclusive(), and pmd_swp_clear_exclusive() helpers to each architecture that supports PMD softleaf entries (x86, arm64, s390, riscv, loongarch, powerpc), mirroring the existing PTE swap exclusive helpers in each arch's pgtable.h.  Provide generic no-op PMD swap exclusive fallbacks for architectures without PMD softleaf support, matching the generic PMD swap soft-dirty fallbacks.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+
+I forgot to format the commit message before sending this patch,
+sorry about this, will fix in the next revision. 
 
