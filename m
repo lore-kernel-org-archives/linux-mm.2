@@ -4,87 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A56DC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 04:43:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 958D8C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 05:02:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B81026B0088; Thu,  9 Jul 2026 00:43:53 -0400 (EDT)
+	id 652C56B0088; Thu,  9 Jul 2026 01:02:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B31476B008A; Thu,  9 Jul 2026 00:43:53 -0400 (EDT)
+	id 5DD5F6B008A; Thu,  9 Jul 2026 01:02:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A231D6B008C; Thu,  9 Jul 2026 00:43:53 -0400 (EDT)
+	id 4A4E86B008C; Thu,  9 Jul 2026 01:02:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6807B6B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 00:43:53 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 152D36B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 01:02:07 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CFEC1A03A3
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 04:43:52 +0000 (UTC)
-X-FDA: 84967995504.29.14C553A
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 04C52140004
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 04:43:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZqP2fAh7;
-	spf=pass (imf09.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 137E11C83BE
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:02:06 +0000 (UTC)
+X-FDA: 84968041452.29.418D9BE
+Received: from mail-24424.protonmail.ch (mail-24424.protonmail.ch [109.224.244.24])
+	by imf14.hostedemail.com (Postfix) with ESMTP id EF501100003
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:02:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail header.b=JTaouySd;
+	dmarc=pass (policy=quarantine) header.from=proton.me;
+	spf=pass (imf14.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 109.224.244.24 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783572231;
+	s=arc-20220608; t=1783573324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=wbkXSaRIDJifaJLQNLOUH1eTHKVzyIzQV3F/ZP3iV/0=;
-	b=5J/pTWTKXCUPHozNMUfoOH+j4lBburpcctE1MJEfpZj+tRWDl5ViO5U0pPqEfiSrzWTjtG
-	otAkVw0KVJ1hTe7+5jFOhS8oSiuwVIzs8UcxqAFuoFo2koyiytZQglxZzvzMojdj0HqK5A
-	+HDoz8AVxKkorZ6tfEpS09x+MCHLw5s=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3dBFv2nmjH7KnyI2JtApUmVX+YshddiBGuTh7hq38pM=;
+	b=aNQyPqVwAY/PQr7cI+k89ZcWayh1HvRjMmOXLfcfTwbGWpWzwBQlYzjPrF05EexWwShSCZ
+	tDnRcl1wMOG7fEK5mswB1P8MKdM0ZK5P7QwRqoyHQmQNy4pNJLj9s9oA/1Q0zVfxcoB8WE
+	gReUChQ4m0UHBrjZpAfL6qqk4VFzeF0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ZqP2fAh7;
-	spf=pass (imf09.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail header.b=JTaouySd;
+	dmarc=pass (policy=quarantine) header.from=proton.me;
+	spf=pass (imf14.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 109.224.244.24 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783572231;
-	b=6qtElw6nO/jMC3+cmaatd9DIzC7XvXlPc5mnXri6FUpXXbLbXzgyoJ8yviRxu3FciENl0o
-	QhBOGsg8d0DiZHyFnFMknOTJ/XQcnFsSllFt7GDNIi2vB1niBj4pGIi3Sc4xJvTD8jwDkH
-	dqXzW3qyIJsajbnjdnpVSBJsTdauHsc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 968D11684;
-	Wed,  8 Jul 2026 21:43:45 -0700 (PDT)
-Received: from a085714.blr.arm.com (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0DB7E3F7B4;
-	Wed,  8 Jul 2026 21:43:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783572229; bh=mD+nrT8/9X0MW7Uq+ioEFOEUot5exy78uod7gguIxbU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZqP2fAh7O1/aAQd0VGUPCUBCOtW0HJ0U9uxVbx1SpfH4akq8l//RZzWwLMdvPP/JU
-	 EqdpO0Ofje35hj3KuvDLkbHeMp89gz+C4+mF+FMBqjDo2wSM6cI6Qk6lg9OO5M5LqV
-	 TrNXk+KEX8rZGI84B3FCgUzxhe0Xg1EvaRBttLTk=
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: andriy.shevchenko@linux.intel.com,
-	usama.arif@linux.dev,
-	hughd@google.com,
-	willy@infradead.org,
-	ryan.roberts@arm.com,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: [PATCH V3] mm: Standardize printing for pgtable entries
-Date: Thu,  9 Jul 2026 10:13:34 +0530
-Message-ID: <20260709044334.1741263-1-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.43.0
+	t=1783573324;
+	b=BexOEoD+FVMh/v/SezFkJsian5HPsC2pGEXJNWmyrX4ykNlunEMHpuQ9N0kALDO6AC4JIo
+	WET77wpHAkt5ewZgFjy/URn2oYqvZqHhzZoUQVz673GmQC7nv+ePcHMo4G5fHnmP9/nnhA
+	6AdElU3MsA7dxrQZ8P3i3E1dPBCCJ9w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1783573321; x=1783832521;
+	bh=3dBFv2nmjH7KnyI2JtApUmVX+YshddiBGuTh7hq38pM=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=JTaouySdv0J8avYGAKcv2kj9jgfxcCwLDg6Fej41dBl3Qqq5NsSf/AwU5gJOFJDfp
+	 jSpcg1vZWpvDgq6Ump0xdo3o9uKsjTJFZrTeHbMuFdHb6++u6O4N9K6Be1c/+Fkiy4
+	 0AHeB87oMLxezTZoH9L4iiPmCjgL36Lmwg87y/yyKcGuvW2xH1kp41SJ9p9i/3UPAl
+	 eQq6iCbsTxs1d/kHSdG2wCAMvxgHYZZxpKFOyG3I0bYHNt1pHJ/pSjNmU1QPj3p0iD
+	 fLDusnZfSYMN8WPmmtWiSLlc3IE42zOwgoUkXD5xNZdXd6qHP8aGK9Py7eYYN0H0HA
+	 xcYRcLRhvUDUA==
+Date: Thu, 09 Jul 2026 05:01:55 +0000
+To: "rppt@kernel.org" <rppt@kernel.org>, "paul@paul-moore.com" <paul@paul-moore.com>
+From: BoxStrikesTeam <BoxStrikesTeam@proton.me>
+Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "jmorris@namei.org" <jmorris@namei.org>, "serge@hallyn.com" <serge@hallyn.com>
+Subject: [RFC/discuss] memfd_secret(): opt-in visibility for security monitoring (eBPF/audit)
+Message-ID: <1A0aVRcP8k4NNDVsOsaPqyGIeNZcFeUaDBvlGK2GGBbRu8jqj7gvzS5o3QvWHMnsP_BxYr77tRZ6SZliMfkLH2mECejwhpeWbOm2YXqUink=@proton.me>
+Feedback-ID: 205449183:user:proton
+X-Pm-Message-ID: e45c84311096c90f539a07c65cb49efe6f72c78b
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/alternative;
+ boundary="b1=_fDqk7ab3mLda83C1IjqWcy5mBHXRmCyV8XXBJN6rMTQ"
+X-Rspamd-Queue-Id: EF501100003
+X-Stat-Signature: dfrapzwmt9tzcaeprzae5ikacrguctjy
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 04C52140004
-X-Stat-Signature: gn4fzzmgrodiu9e3cc9jgx5tbny81bxr
-X-HE-Tag: 1783572230-27667
-X-HE-Meta: U2FsdGVkX1/d8QZZ58k5CBENTJapHjOjlsBwTWoTLx0ojxl2+aMiWcFNtZSiPRfdIUtRfg6q0ufkGeeeH4UpT0hAPUOMXBAyIRJtqRpq3LqOiTkb1xaa6qfVQJrYLMBnbqJ7aBlZS39wsG6OHiMt5hMM+GdC5GPGUY3z94Fv6j5zhr+66iHx0M2urhJHC77Qs43gITkzjw4aZeDGSr5qItawhe6ZD6+eDxiv8JYof5mUOVKbivqK+LqBaw3oKQ8R+byv0mgvnAZ+Kb5i+SdtaOs3Vp/+LvSAyY4dPYajlieJwAzts4PACQoypoOI/ZG+X65cjW/4OctpqefZ6fHpSzP8DKCrrCj81RDtgEt5WyACYx00PDNt33d0KNNIhO80eWYHeYzyBw3bXcagsVcezwu3k0SUNO50I1JmvShB6yzbq2k0MVBzh5AaBLiiUPTn5USyvAVKpWxp3WYPhiX3Oo1mDf91H24Ulb2rpgFHqv4cdNN9/s8FEEc1H7U1fjQrZszxR1HO2eoHU4MXyfbtUCkvok+jYL/uwlkPq/uIViyATKWk+AViIUKyaXylk66To1UJat/P9I/525+kFcnT+DyziBUZVSLNkhHCVt6Wt/e3lObXlc9yCceEsBnW3UbDmdIcX+F6AhrhQ0nkzqZUnDe7PGAf5Ypn7jchgU+lmyD0Kwt8keDh2ijOrGpWDukPxThmTmLT/ev6Zi136MKVMsWLIOb3m9CBGEOJFKX+W1EPJUTgMk5cM0xHUkEVANmRtUcjU7RW1kl2qfecRW9YfTZp2EYvWrF3EZf8NHX9WqDzHdvVOE3g1AGZxSH//43B1k2DLXMZ0e+0B2xIUohdthI5X8gWjv+R69EdghCNd9cat5pehXjxRBzSqt/4TPijEKmIMSajg/xiPWjCjCtW+WUnCT+Yo8UcCGSUAzr3lbt6oQDPZmoz7VPtemzUehAdxiSQuckiIin3YJyib9V
- 4DddHwEL
- Ch7jdm0VMoR/g4PWrXulTTDjW3ZQB6aDv3NbIWd7ODFFySl3VPgydmslt+KdmYHKaBfpjzyrSZ7+Q60isu3Xeg/EGqNapp9e9mxTltvMjIAKiBio718GHMEAV7C9c2bMlTRgeOWUQU1ykdbEwgpdCCx5cJ4LFdXMzwXOUAfbwb4OLPwDQITlXv9Vd/gI2/MAVa6mhN326hRz8B3jBIgkkFCRqIuJg4pCxj3RZAkncUI/7ucIdO5VYK/ldgGrL5RbmA0u82yDmVWwBMYbvdE4KTPchfttkIbry8wdKZfPfEuUkUf2F2okq1pGB9qWSmDMHH5YvUOPTpAEoQ7xaxeFnj8u3rh2WxoZ1XJfF1d6+aIaVryU10V4DVmXCIvOi8bXj3welqfeBMvKA3ew=
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783573323-353466
+X-HE-Meta: U2FsdGVkX1+O8JNUzZ+qTY9hOkYMBy+BAV9TVEDGeB15REhc4OaBZFjLEedjWKL75gurMqgSNaoXaBSGXjPtO2LqPhcaiwTtsfuB7fAJxmDlC65L9qiPnAp/Af/2lPKuml+u9qqj7k1lUZCc+86YuLzPZ6fesXlo4iw4xGcd2P19Km17tX6/Qr840Hf+KButvPCxEPceZ8rNkgnZiaLn13MXwYTesyzjetb+vueqZ+Nldr4TAOmpA+yapFgWiQGAiQ5xRaxAb5HbOmQFdqM/A0GGK+Y31bmwQB8/I1LaVVl70wBn7IBOGiwZ+FVFcYOhdsPoWN+khvhv84+NpHXaM+4XG65v+RyBBD/YAI4pl2PnxgigynNqKdN7zl34PfsObZk4OXsv9EkOphJdV58EFmmqn6TF8A2vrYml50wkB94Pyr//PsuSKd6vRi+mWqmNqWs5w60mGP7wJLgDNNxlS/WL8uRrPs2EQXeIXxZJ1popTwx2cJfODnb6MQhPxg4QND296uHw8r8OMmAlRSWWldJuDox6gBcSY/0U1baXKOSlJMuF3feK5Q1bW+xWdkB/Sj7jobSitF1qhUuTImrZ2YQk7oCFsa6hGwbPmJKg7PHzCuO5libcwNymDHwcIrp35Gaje8N//wUgQNNGVYWQRtOPHy+l736BXTzAy0r8L/dcqouJYJH46Z2jJc0s6IjE+FTVdxGtLSjbbS4gfMggs5Y8mUvqgk8Ho8KXgvqQq8yw9vTu14k+26jrVmoVSGsS1iChxY09gwAgx0wWsH+8LDRrQcMp0M93mP9ufpDXNyzu7JrSKZVyCugvmrWCUyoT9e3k42zC+t+Pn/movh/dd2dZq+HW1E+hDh/h/pjQk6nJPwlUTDOf8cjusUU8/GaalH5T2z2+vah5rYlwV6fNLicGamiBZnAsMQTlhBaKVOT3lTSDVYHlDVvgyewevyVyJxkMDdz6D2InUPwzQlM
+ TYtB0C9l
+ jc/A0mp2q6GmIn29nq8Cc/5jm1+YttF7JLLSadk2nSUNBy5rj8JsZv4YJlOtqkYQ3odmV9oKnuJEaNr6P7dQherF58tKxV2UhmT6+jYzZQJ1hxtjs6SrXWmSmBEawDhAj1YQaAQw97DLfrTtQdl9kzKUcfATIqD0+YG3KCUQD9Qu37xdlNF67tiCDWIM/xdDiylrI/fRk5Ab2itCweVcU1EQNXfGtorASQLvmjdiwvay2Fzo1WCYf3gtALItfgNY7jdI3FQx0eRrVLiC2YCtSFyKRmzY3WsZclYyQfVk5+xj9babjz67olKbYqBX+aS64e8/RltM1Ln89Sljx9bXVFiMbTfK+r3YPt1liQ5Z1GLi3C7dILV29XMfrSCA/LNY4gGn09Yn4x1v41tJVojfa0TUXiA+LvhslPGBni5IwBPdPYe4aqNfWq9H7nuArSR7xhwdfhNTRN+jVTy0al8ET435qxOd55L4Q0AnDuWxhCplFySo6kRYLbYk4XHkWvpVFK1DeRqFt4HodL10=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,279 +84,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+--b1=_fDqk7ab3mLda83C1IjqWcy5mBHXRmCyV8XXBJN6rMTQ
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Bad page map reporting currently stores page table entry values in an
-unsigned long long and prints them with fixed 64-bit-oriented format
-strings. This is inconsistent across call sites and does not work well for
-architectures where page table entry values are not naturally represented
-as 64-bit values, such as 32-bit or 128-bit entries.
+UGF1bCwKClRoYW5rcyAtIEkgZm91bmQgdGhlIEdvdHRzY2hlL2lub2RlX2luaXRfc2VjdXJpdHlf
+YW5vbigpIHRocmVhZCBhbmQgY2FuIHNlZSBpdCBsYW5kZWQuIFRoYXQgYW5zd2VycyAoYSkgY2xl
+YW5seTogbGFiZWxpbmcgZXhpc3RzLCBwb2xpY3kgY2FuIGJlIGxheWVyZWQgb24gdG9wIHZpYSBT
+RUxpbnV4L0FwcEFybW9yIGlmIGEgc2l0ZSB3YW50cyBhbGVydGluZyBvbiBtZW1mZF9zZWNyZXQo
+KSBjcmVhdGlvbi4gR29vZCB0byBoYXZlIHRoYXQgY29uZmlybWVkIGFzIGFscmVhZHkgc29sdmVk
+LgoKT24gKGIpLCBsZXQgbWUgcHVzaCBvbiBpdCBhIGJpdCBmdXJ0aGVyLCBiZWNhdXNlIEkgdGhp
+bmsgaXQncyB3b3J0aCBzcGVsbGluZyBvdXQgZXhwbGljaXRseSByYXRoZXIgdGhhbiBkcm9wcGlu
+ZyBpdC4KCk15IGNvbmNlcm46IGFzIGl0IHN0YW5kcywgYW4gdW5wcml2aWxlZ2VkIHByb2Nlc3Mg
+Y2FuIHBvcHVsYXRlIGEgbWVtZmRfc2VjcmV0KCkgcmVnaW9uIGFuZCBtc2VhbCgpIHRoZSBtYXBw
+aW5nLCBwcm9kdWNpbmcgbWVtb3J5IHRoYXQgaXMgKGEpIHVucmVhZGFibGUgYnkgYW55IGtlcm5l
+bC1zaWRlIGludHJvc3BlY3Rpb24gcGF0aCwgaW5jbHVkaW5nIHJvb3Qtb3duZWQgZUJQRiB0cmFj
+aW5nIHByb2dyYW1zLCBhbmQgKGIpIGNhbid0IGJlIGNvZXJjZWQgYmFjayBpbnRvIGFuIGluc3Bl
+Y3RhYmxlIHN0YXRlIHZpYSBtcHJvdGVjdC9tdW5tYXAuIEZyb20gYSBob3N0LWJhc2VkIGRldGVj
+dGlvbiBzdGFuZHBvaW50IHRoYXQncyBhIGJsaW5kIHNwb3QgYW4gYXR0YWNrZXIgY2FuIHVzZSB0
+byBwYXJrIGEgcGF5bG9hZCB3aGVyZSBhIENBUF9CUEYtcHJpdmlsZWdlZCBtb25pdG9yaW5nIGFn
+ZW50IC0gc29tZXRoaW5nIHRoYXQgaW4gbW9zdCBvdGhlciByZXNwZWN0cyBjYW4gaW5zcGVjdCBh
+bnkgcHJvY2VzcyBvbiB0aGUgYm94IC0gc2ltcGx5IGNhbm5vdCBsb29rLCBubyBtYXR0ZXIgd2hh
+dCBjYXBhYmlsaXRpZXMgaXQgaG9sZHMuCgpJIHVuZGVyc3RhbmQgdGhlIG9iamVjdGlvbiB0aGlz
+IGludml0ZXMsIGFuZCBJIHdhbnQgdG8gYWRkcmVzcyBpdCBkaXJlY3RseSByYXRoZXIgdGhhbiBw
+cmV0ZW5kIGl0IGlzbid0IHRoZXJlOiB0aGUgbWVtZmRfc2VjcmV0KCkgbWFuIHBhZ2UgaXMgZXhw
+bGljaXQgdGhhdCBpdHMgUk9QIHByb3RlY3Rpb24gcmVzdHMgb24gdGhlIGFic2VuY2Ugb2YgYW55
+IGluLWtlcm5lbCBwcmltaXRpdmUgZm9yIHJlYWRpbmcgdGhpcyBtZW1vcnkuIElmIEknbSByZWFk
+aW5nIHRoYXQgcmlnaHQsIHRoZSBvYmplY3Rpb24gdG8gKGIpIGlzIHRoYXQgYWRkaW5nIGFueSBz
+dWNoIHByaW1pdGl2ZSAtIGhvd2V2ZXIgY2FwYWJpbGl0eS1nYXRlZCAtIHJlLWNyZWF0ZXMgZXhh
+Y3RseSB0aGUgYXJ0aWZhY3QgYSBST1AgY2hhaW4gd291bGQgd2FudCB0byBjYWxsLCB1bmRlcm1p
+bmluZyB0aGUgIm5vIHByaW1pdGl2ZSBleGlzdHMiIHByb3BlcnR5IHJlZ2FyZGxlc3Mgb2Ygd2hv
+J3Mgbm9taW5hbGx5IGFsbG93ZWQgdG8gaW52b2tlIGl0LgoKSSBkb24ndCB0aGluayB0aGF0IG9i
+amVjdGlvbiBpcyB3cm9uZywgYnV0IEknbSBub3Qgc3VyZSBpdCdzIGZ1bGx5IGRpc3Bvc2l0aXZl
+IGVpdGhlciwgYW5kIEknZCBsaWtlIHRvIGhlYXIgdGhlIG1haW50YWluZXJzJyB0YWtlIG9uIHRo
+ZSB0cmFkZW9mZiBleHBsaWNpdGx5OgoKLSBUaGUgUk9QIHRocmVhdCBtb2RlbCBhc3N1bWVzIGFu
+IGF0dGFja2VyIHdobyBhbHJlYWR5IGhhcyBhcmJpdHJhcnkga2VybmVsIGNvZGUgZXhlY3V0aW9u
+ICh0aGV5J3JlIGNhbGxpbmcga2VybmVsIGZ1bmN0aW9ucyBkaXJlY3RseSkuIElmIHRoZXkgaGF2
+ZSB0aGF0LCB0aGV5IGNhbiBsaWtlbHkgYWxyZWFkeSB3YWxrIHBhZ2UgdGFibGVzIGFuZCByZWNv
+bnN0cnVjdCB0aGUgbWFwcGluZyBieSBoYW5kIC0gdGhlIHByaW1pdGl2ZSByZW1vdmFsIHJhaXNl
+cyB0aGUgYmFyLCBidXQgcGVyIHRoZSBkZXNpZ24ncyBvd24gY2F2ZWF0ICgibm8gMTAwJSBndWFy
+YW50ZWUiKSwgaXQgd2FzIG5ldmVyIGFkdmVydGlzZWQgYXMgYWJzb2x1dGUuCi0gVGhlIChiKSBz
+Y2VuYXJpbyBJJ20gcmFpc2luZyBpcyBhIGRpZmZlcmVudCBhY3RvcjogYSBsZWdpdGltYXRlLCBw
+cml2aWxlZ2VkLCBrZXJuZWwtbWVkaWF0ZWQgbW9uaXRvcmluZyBhZ2VudCAoZUJQRiBMU00vdHJh
+Y2luZyBwcm9ncmFtKSBvcGVyYXRpbmcgdGhyb3VnaCB0aGUgbm9ybWFsIHZlcmlmaWVyLWNoZWNr
+ZWQgaGVscGVyIHBhdGgsIG5vdCBhbiBhdHRhY2tlciBleGVjdXRpbmcgYXJiaXRyYXJ5IGtlcm5l
+bCBjb2RlIHZpYSBhIFJPUCBjaGFpbi4gQ29uZmxhdGluZyAiYW55IGNvZGUgcGF0aCB0aGF0IGNh
+biByZWFkIHRoaXMgbWVtb3J5IiB3aXRoICJhIGdhZGdldCBhIFJPUCBjaGFpbiBjYW4gY2FsbCIg
+bWF5IGJlIG92ZXJseSBjb25zZXJ2YXRpdmUgaWYgdGhlIG5ldyBwYXRoIGlzIG5hcnJvd2x5IHNj
+b3BlZCAoZS5nLiwgYSBuZXcgYnBmX3Byb2JlX3JlYWRfc2VjcmV0bWVtKCkgaGVscGVyLCB2ZXJp
+Zmllci1yZXN0cmljdGVkIHRvIENBUF9QRVJGTU9OfENBUF9CUEYgcHJvZ3JhbXMsIG9wdC1pbiBw
+ZXIgcmVnaW9uIHZpYSBhIG1lbWZkX3NlY3JldCgpIGZsYWcgdGhlIG93bmluZyBwcm9jZXNzIG11
+c3Qgc2V0IGF0IGNyZWF0aW9uIHRpbWUpLgoKSWYgdGhhdCBkaXN0aW5jdGlvbiBkb2Vzbid0IGhv
+bGQgdXAgLSBpZiBhbnkgYWRkaXRpb25hbCBrZXJuZWwtY2FsbGFibGUgcmVhZCBwYXRoIGlzIGNv
+bnNpZGVyZWQgZXF1YWxseSBleHBsb2l0YWJsZSByZWdhcmRsZXNzIG9mIGdhdGluZyAtIEknZCBn
+ZW51aW5lbHkgbGlrZSB0byB1bmRlcnN0YW5kIHdoeSwgc2luY2UgaXQgd291bGQgbWVhbiB0aGUg
+Y29uZmlkZW50aWFsaXR5IGd1YXJhbnRlZSBpcyBmdW5kYW1lbnRhbGx5IGluY29tcGF0aWJsZSB3
+aXRoIGFueSBmb3JtIG9mIGF1dGhvcml6ZWQgaW50cm9zcGVjdGlvbiwgd2hpY2ggc2VlbXMgd29y
+dGggc3RhdGluZyBwbGFpbmx5IGluIHRoZSBkb2N1bWVudGF0aW9uIGZvciBhbnlvbmUgYnVpbGRp
+bmcgRURSL21vbml0b3JpbmcgdG9vbGluZyBhcm91bmQgZUJQRi4KCkV2ZW4gaWYgKGIpIGlzIHJl
+amVjdGVkLCBJIGJlbGlldmUgZXhwbGljaXRseSBkb2N1bWVudGluZyB0aGF0IG1lbWZkX3NlY3Jl
+dCgpK21zZWFsKCkgY3JlYXRlcyBhbiBpbnRyb3NwZWN0aW9uLXByb29mIHJlZ2lvbiB3b3VsZCBi
+ZSB2YWx1YWJsZSBmb3IgdGhlIHNlY3VyaXR5IGNvbW11bml0eSwgc28gRURSIHZlbmRvcnMgY2Fu
+IGFkanVzdCB0aGVpciB0aHJlYXQgbW9kZWxzIGFjY29yZGluZ2x5LgoKVGhhbmtzIGFnYWluIGZv
+ciBlbmdhZ2luZyB3aXRoIHRoaXMuCgpFbmVzaGFuIEVyZG/En2FuIEthcmFjYS4=
 
-Introduce a common helper to convert raw page table entry values into a
-fixed-width hexadecimal string based on the actual entry size. Use it for
-bad page map reporting and for dumping the page table walk in
-__print_bad_page_map_pgtable().
+--b1=_fDqk7ab3mLda83C1IjqWcy5mBHXRmCyV8XXBJN6rMTQ
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Pass page table entry values to the reporting path as raw bytes together
-with their size, instead of forcing them through an unsigned long long.
-It keeps the printed output consistent and avoids truncation or misleading
-formatting for non-64-bit page table entries.
+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0
+cHg7Ij48YnI+PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlm
+OyBmb250LXNpemU6IDE0cHg7Ij48YnI+PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFy
+aWFsLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0cHg7IiBjbGFzcz0icHJvdG9ubWFpbF9zaWdu
+YXR1cmVfYmxvY2siPjxkaXYgY2xhc3M9InByb3Rvbm1haWxfc2lnbmF0dXJlX2Jsb2NrLXByb3Rv
+biI+PHA+UGF1bCw8L3A+PHA+VGhhbmtzIC0gSSBmb3VuZCB0aGUgR290dHNjaGUvaW5vZGVfaW5p
+dF9zZWN1cml0eV9hbm9uKCkgdGhyZWFkIGFuZCBjYW4gc2VlIGl0IGxhbmRlZC4gVGhhdCBhbnN3
+ZXJzIChhKSBjbGVhbmx5OiBsYWJlbGluZyBleGlzdHMsIHBvbGljeSBjYW4gYmUgbGF5ZXJlZCBv
+biB0b3AgdmlhIFNFTGludXgvQXBwQXJtb3IgaWYgYSBzaXRlIHdhbnRzIGFsZXJ0aW5nIG9uIG1l
+bWZkX3NlY3JldCgpIGNyZWF0aW9uLiBHb29kIHRvIGhhdmUgdGhhdCBjb25maXJtZWQgYXMgYWxy
+ZWFkeSBzb2x2ZWQuPC9wPjxwPk9uIChiKSwgbGV0IG1lIHB1c2ggb24gaXQgYSBiaXQgZnVydGhl
+ciwgYmVjYXVzZSBJIHRoaW5rIGl0J3Mgd29ydGggc3BlbGxpbmcgb3V0IGV4cGxpY2l0bHkgcmF0
+aGVyIHRoYW4gZHJvcHBpbmcgaXQuPC9wPjxwPk15IGNvbmNlcm46IGFzIGl0IHN0YW5kcywgYW4g
+dW5wcml2aWxlZ2VkIHByb2Nlc3MgY2FuIHBvcHVsYXRlIGEgbWVtZmRfc2VjcmV0KCkgcmVnaW9u
+IGFuZCBtc2VhbCgpIHRoZSBtYXBwaW5nLCBwcm9kdWNpbmcgbWVtb3J5IHRoYXQgaXMgKGEpIHVu
+cmVhZGFibGUgYnkgYW55IGtlcm5lbC1zaWRlIGludHJvc3BlY3Rpb24gcGF0aCwgaW5jbHVkaW5n
+IHJvb3Qtb3duZWQgZUJQRiB0cmFjaW5nIHByb2dyYW1zLCBhbmQgKGIpIGNhbid0IGJlIGNvZXJj
+ZWQgYmFjayBpbnRvIGFuIGluc3BlY3RhYmxlIHN0YXRlIHZpYSBtcHJvdGVjdC9tdW5tYXAuIEZy
+b20gYSBob3N0LWJhc2VkIGRldGVjdGlvbiBzdGFuZHBvaW50IHRoYXQncyBhIGJsaW5kIHNwb3Qg
+YW4gYXR0YWNrZXIgY2FuIHVzZSB0byBwYXJrIGEgcGF5bG9hZCB3aGVyZSBhIENBUF9CUEYtcHJp
+dmlsZWdlZCBtb25pdG9yaW5nIGFnZW50IC0gc29tZXRoaW5nIHRoYXQgaW4gbW9zdCBvdGhlciBy
+ZXNwZWN0cyBjYW4gaW5zcGVjdCBhbnkgcHJvY2VzcyBvbiB0aGUgYm94IC0gc2ltcGx5IGNhbm5v
+dCBsb29rLCBubyBtYXR0ZXIgd2hhdCBjYXBhYmlsaXRpZXMgaXQgaG9sZHMuPC9wPjxwPkkgdW5k
+ZXJzdGFuZCB0aGUgb2JqZWN0aW9uIHRoaXMgaW52aXRlcywgYW5kIEkgd2FudCB0byBhZGRyZXNz
+IGl0IGRpcmVjdGx5IHJhdGhlciB0aGFuIHByZXRlbmQgaXQgaXNuJ3QgdGhlcmU6IHRoZSBtZW1m
+ZF9zZWNyZXQoKSBtYW4gcGFnZSBpcyBleHBsaWNpdCB0aGF0IGl0cyBST1AgcHJvdGVjdGlvbiBy
+ZXN0cyBvbiB0aGUgPGVtPmFic2VuY2U8L2VtPiBvZiBhbnkgaW4ta2VybmVsIHByaW1pdGl2ZSBm
+b3IgcmVhZGluZyB0aGlzIG1lbW9yeS4gSWYgSSdtIHJlYWRpbmcgdGhhdCByaWdodCwgdGhlIG9i
+amVjdGlvbiB0byAoYikgaXMgdGhhdCBhZGRpbmcgYW55IHN1Y2ggcHJpbWl0aXZlIC0gaG93ZXZl
+ciBjYXBhYmlsaXR5LWdhdGVkIC0gcmUtY3JlYXRlcyBleGFjdGx5IHRoZSBhcnRpZmFjdCBhIFJP
+UCBjaGFpbiB3b3VsZCB3YW50IHRvIGNhbGwsIHVuZGVybWluaW5nIHRoZSAibm8gcHJpbWl0aXZl
+IGV4aXN0cyIgcHJvcGVydHkgcmVnYXJkbGVzcyBvZiB3aG8ncyBub21pbmFsbHkgYWxsb3dlZCB0
+byBpbnZva2UgaXQuPC9wPjxwPkkgZG9uJ3QgdGhpbmsgdGhhdCBvYmplY3Rpb24gaXMgd3Jvbmcs
+IGJ1dCBJJ20gbm90IHN1cmUgaXQncyBmdWxseSBkaXNwb3NpdGl2ZSBlaXRoZXIsIGFuZCBJJ2Qg
+bGlrZSB0byBoZWFyIHRoZSBtYWludGFpbmVycycgdGFrZSBvbiB0aGUgdHJhZGVvZmYgZXhwbGlj
+aXRseTo8L3A+PHVsPjxsaT5UaGUgUk9QIHRocmVhdCBtb2RlbCBhc3N1bWVzIGFuIGF0dGFja2Vy
+IHdobyBhbHJlYWR5IGhhcyBhcmJpdHJhcnkga2VybmVsIGNvZGUgZXhlY3V0aW9uICh0aGV5J3Jl
+IGNhbGxpbmcga2VybmVsIGZ1bmN0aW9ucyBkaXJlY3RseSkuIElmIHRoZXkgaGF2ZSB0aGF0LCB0
+aGV5IGNhbiBsaWtlbHkgYWxyZWFkeSB3YWxrIHBhZ2UgdGFibGVzIGFuZCByZWNvbnN0cnVjdCB0
+aGUgbWFwcGluZyBieSBoYW5kIC0gdGhlIHByaW1pdGl2ZSByZW1vdmFsIHJhaXNlcyB0aGUgYmFy
+LCBidXQgcGVyIHRoZSBkZXNpZ24ncyBvd24gY2F2ZWF0ICgibm8gMTAwJSBndWFyYW50ZWUiKSwg
+aXQgd2FzIG5ldmVyIGFkdmVydGlzZWQgYXMgYWJzb2x1dGUuPC9saT48bGk+VGhlIChiKSBzY2Vu
+YXJpbyBJJ20gcmFpc2luZyBpcyBhIDxlbT5kaWZmZXJlbnQ8L2VtPiBhY3RvcjogYSBsZWdpdGlt
+YXRlLCBwcml2aWxlZ2VkLCBrZXJuZWwtbWVkaWF0ZWQgbW9uaXRvcmluZyBhZ2VudCAoZUJQRiBM
+U00vdHJhY2luZyBwcm9ncmFtKSBvcGVyYXRpbmcgdGhyb3VnaCB0aGUgbm9ybWFsIHZlcmlmaWVy
+LWNoZWNrZWQgaGVscGVyIHBhdGgsIG5vdCBhbiBhdHRhY2tlciBleGVjdXRpbmcgYXJiaXRyYXJ5
+IGtlcm5lbCBjb2RlIHZpYSBhIFJPUCBjaGFpbi4gQ29uZmxhdGluZyAiYW55IGNvZGUgcGF0aCB0
+aGF0IGNhbiByZWFkIHRoaXMgbWVtb3J5IiB3aXRoICJhIGdhZGdldCBhIFJPUCBjaGFpbiBjYW4g
+Y2FsbCIgbWF5IGJlIG92ZXJseSBjb25zZXJ2YXRpdmUgaWYgdGhlIG5ldyBwYXRoIGlzIG5hcnJv
+d2x5IHNjb3BlZCAoZS5nLiwgYSBuZXcgYnBmX3Byb2JlX3JlYWRfc2VjcmV0bWVtKCkgaGVscGVy
+LCB2ZXJpZmllci1yZXN0cmljdGVkIHRvIENBUF9QRVJGTU9OfENBUF9CUEYgcHJvZ3JhbXMsIG9w
+dC1pbiBwZXIgcmVnaW9uIHZpYSBhIG1lbWZkX3NlY3JldCgpIGZsYWcgdGhlIG93bmluZyBwcm9j
+ZXNzIG11c3Qgc2V0IGF0IGNyZWF0aW9uIHRpbWUpLjwvbGk+PC91bD48cD5JZiB0aGF0IGRpc3Rp
+bmN0aW9uIGRvZXNuJ3QgaG9sZCB1cCAtIGlmIGFueSBhZGRpdGlvbmFsIGtlcm5lbC1jYWxsYWJs
+ZSByZWFkIHBhdGggaXMgY29uc2lkZXJlZCBlcXVhbGx5IGV4cGxvaXRhYmxlIHJlZ2FyZGxlc3Mg
+b2YgZ2F0aW5nIC0gSSdkIGdlbnVpbmVseSBsaWtlIHRvIHVuZGVyc3RhbmQgd2h5LCBzaW5jZSBp
+dCB3b3VsZCBtZWFuIHRoZSBjb25maWRlbnRpYWxpdHkgZ3VhcmFudGVlIGlzIGZ1bmRhbWVudGFs
+bHkgaW5jb21wYXRpYmxlIHdpdGggYW55IGZvcm0gb2YgYXV0aG9yaXplZCBpbnRyb3NwZWN0aW9u
+LCB3aGljaCBzZWVtcyB3b3J0aCBzdGF0aW5nIHBsYWlubHkgaW4gdGhlIGRvY3VtZW50YXRpb24g
+Zm9yIGFueW9uZSBidWlsZGluZyBFRFIvbW9uaXRvcmluZyB0b29saW5nIGFyb3VuZCBlQlBGLjwv
+cD48cD48YnI+PC9wPjxwPkV2ZW4gaWYgKGIpIGlzIHJlamVjdGVkLCBJIGJlbGlldmUgZXhwbGlj
+aXRseSBkb2N1bWVudGluZyB0aGF0IG1lbWZkX3NlY3JldCgpK21zZWFsKCkgY3JlYXRlcyBhbiBp
+bnRyb3NwZWN0aW9uLXByb29mIHJlZ2lvbiB3b3VsZCBiZSB2YWx1YWJsZSBmb3IgdGhlIHNlY3Vy
+aXR5IGNvbW11bml0eSwgc28gRURSIHZlbmRvcnMgY2FuIGFkanVzdCB0aGVpciB0aHJlYXQgbW9k
+ZWxzIGFjY29yZGluZ2x5LjwvcD48cD5UaGFua3MgYWdhaW4gZm9yIGVuZ2FnaW5nIHdpdGggdGhp
+cy48L3A+PHA+PGJyPjwvcD48cD5FbmVzaGFuIEVyZG/En2FuIEthcmFjYS48L3A+PHA+PGJyPjwv
+cD48L2Rpdj4NCjwvZGl2Pg0K
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Co-developed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-This patch applies on v7.2-rc2
 
-Changes in V3:
-
-- Replaced __auto_type with auto per Andy
-- Added Co-developed-by:
-
-Changes in V2:
-
-https://lore.kernel.org/all/20260708032824.969752-1-anshuman.khandual@arm.com/
-
-- Dropped space after ":" during print per Matthew
-- Dropped CONFIG_CPU_BIG_ENDIAN per David
-
-Changes in V1:
-
-https://lore.kernel.org/all/20260707041703.658021-1-anshuman.khandual@arm.com/
-
- mm/memory.c | 102 ++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 79 insertions(+), 23 deletions(-)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index ff338c2abe92..c8fe2f373fd2 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -519,9 +519,52 @@ static bool is_bad_page_map_ratelimited(void)
- 	return false;
- }
- 
-+static void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size)
-+{
-+	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
-+		snprintf(buf, buf_size, "overflow");
-+		return;
-+	}
-+
-+	switch (entry_size) {
-+	case sizeof(u32):
-+		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
-+		break;
-+	case sizeof(u64):
-+		snprintf(buf, buf_size, "%016llx", *(const u64 *)entry);
-+		break;
-+#if defined(__SIZEOF_INT128__)
-+	case sizeof(u128):
-+		snprintf(buf, buf_size, "%016llx%016llx",
-+			 (unsigned long long)(*(const u128 *)entry >> 64),
-+			 (unsigned long long)*(const u128 *)entry);
-+		break;
-+#endif
-+	default:
-+		snprintf(buf, buf_size, "unsupported");
-+		break;
-+	}
-+}
-+
-+#define ptval_to_str(buf, val)								\
-+	do {										\
-+		auto __val = (val);							\
-+											\
-+		ptval_bytes_to_hex_str((buf), sizeof(buf), &__val, sizeof(__val));	\
-+	} while (0)
-+
-+#if defined(__SIZEOF_INT128__)
-+#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
-+#else
-+#define PTVAL_STR_MAX	(16 + 1) /* Max 64-bit value in hex + NUL */
-+#endif
-+
- static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
- {
--	unsigned long long pgdv, p4dv, pudv, pmdv;
-+	char pgd_str[PTVAL_STR_MAX];
-+	char p4d_str[PTVAL_STR_MAX];
-+	char pud_str[PTVAL_STR_MAX];
-+	char pmd_str[PTVAL_STR_MAX];
- 	p4d_t p4d, *p4dp;
- 	pud_t pud, *pudp;
- 	pmd_t pmd, *pmdp;
-@@ -532,34 +575,34 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
- 	 * see locking requirements for print_bad_page_map().
- 	 */
- 	pgdp = pgd_offset(mm, addr);
--	pgdv = pgd_val(*pgdp);
-+	ptval_to_str(pgd_str, pgd_val(*pgdp));
- 
- 	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
--		pr_alert("pgd:%08llx\n", pgdv);
-+		pr_alert("pgd:%s\n", pgd_str);
- 		return;
- 	}
- 
- 	p4dp = p4d_offset(pgdp, addr);
- 	p4d = p4dp_get(p4dp);
--	p4dv = p4d_val(p4d);
-+	ptval_to_str(p4d_str, p4d_val(p4d));
- 
- 	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
--		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
-+		pr_alert("pgd:%s p4d:%s\n", pgd_str, p4d_str);
- 		return;
- 	}
- 
- 	pudp = pud_offset(p4dp, addr);
- 	pud = pudp_get(pudp);
--	pudv = pud_val(pud);
-+	ptval_to_str(pud_str, pud_val(pud));
- 
- 	if (!pud_present(pud) || pud_leaf(pud)) {
--		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
-+		pr_alert("pgd:%s p4d:%s pud:%s\n", pgd_str, p4d_str, pud_str);
- 		return;
- 	}
- 
- 	pmdp = pmd_offset(pudp, addr);
- 	pmd = pmdp_get(pmdp);
--	pmdv = pmd_val(pmd);
-+	ptval_to_str(pmd_str, pmd_val(pmd));
- 
- 	/*
- 	 * Dumping the PTE would be nice, but it's tricky with CONFIG_HIGHPTE,
-@@ -567,8 +610,7 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
- 	 * doing another map would be bad. print_bad_page_map() should
- 	 * already take care of printing the PTE.
- 	 */
--	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
--		 p4dv, pudv, pmdv);
-+	pr_alert("pgd:%s p4d:%s pud:%s pmd:%s\n", pgd_str, p4d_str, pud_str, pmd_str);
- }
- 
- /*
-@@ -584,10 +626,11 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
-  * page table lock.
-  */
- static void print_bad_page_map(struct vm_area_struct *vma,
--		unsigned long addr, unsigned long long entry, struct page *page,
--		enum pgtable_level level)
-+		unsigned long addr, const void *entry, size_t entry_size,
-+		struct page *page, enum pgtable_level level)
- {
- 	struct address_space *mapping;
-+	char entry_str[PTVAL_STR_MAX];
- 	pgoff_t index;
- 
- 	if (is_bad_page_map_ratelimited())
-@@ -596,8 +639,9 @@ static void print_bad_page_map(struct vm_area_struct *vma,
- 	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
- 	index = linear_page_index(vma, addr);
- 
--	pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
--		 pgtable_level_to_str(level), entry);
-+	ptval_bytes_to_hex_str(entry_str, sizeof(entry_str), entry, entry_size);
-+	pr_alert("BUG: Bad page map in process %s  %s:%s", current->comm,
-+		 pgtable_level_to_str(level), entry_str);
- 	__print_bad_page_map_pgtable(vma->vm_mm, addr);
- 	if (page)
- 		dump_page(page, "bad page map");
-@@ -627,8 +671,13 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
- 	}
- }
- 
--#define print_bad_pte(vma, addr, pte, page) \
--	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
-+static void print_bad_pte(struct vm_area_struct *vma, unsigned long addr,
-+			  pte_t pte, struct page *page)
-+{
-+	auto entry = pte_val(pte);
-+
-+	print_bad_page_map(vma, addr, &entry, sizeof(entry), page, PGTABLE_LEVEL_PTE);
-+}
- 
- /**
-  * __vm_normal_page() - Get the "struct page" associated with a page table entry.
-@@ -636,8 +685,9 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
-  * @addr: The address where the page table entry is mapped.
-  * @pfn: The PFN stored in the page table entry.
-  * @special: Whether the page table entry is marked "special".
-- * @level: The page table level for error reporting purposes only.
-  * @entry: The page table entry value for error reporting purposes only.
-+ * @entry_size: The size of @entry.
-+ * @level: The page table level for error reporting purposes only.
-  *
-  * "Special" mappings do not wish to be associated with a "struct page" (either
-  * it doesn't exist, or it exists but they don't want to touch it). In this
-@@ -697,7 +747,7 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
-  */
- static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long pfn, bool special,
--		unsigned long long entry, enum pgtable_level level)
-+		const void *entry, size_t entry_size, enum pgtable_level level)
- {
- 	if (pgtable_level_has_pxx_special(level)) {
- 		if (unlikely(special)) {
-@@ -710,7 +760,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- 			if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
- 				return NULL;
- 
--			print_bad_page_map(vma, addr, entry, NULL, level);
-+			print_bad_page_map(vma, addr, entry, entry_size, NULL, level);
- 			return NULL;
- 		}
- 		/*
-@@ -741,7 +791,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- 
- 	if (unlikely(pfn > highest_memmap_pfn)) {
- 		/* Corrupted page table entry. */
--		print_bad_page_map(vma, addr, entry, NULL, level);
-+		print_bad_page_map(vma, addr, entry, entry_size, NULL, level);
- 		return NULL;
- 	}
- 	/*
-@@ -767,8 +817,10 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
- struct page *vm_normal_page(struct vm_area_struct *vma, unsigned long addr,
- 			    pte_t pte)
- {
-+	auto entry = pte_val(pte);
-+
- 	return __vm_normal_page(vma, addr, pte_pfn(pte), pte_special(pte),
--				pte_val(pte), PGTABLE_LEVEL_PTE);
-+				&entry, sizeof(entry), PGTABLE_LEVEL_PTE);
- }
- 
- /**
-@@ -809,8 +861,10 @@ struct folio *vm_normal_folio(struct vm_area_struct *vma, unsigned long addr,
- struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
- 				pmd_t pmd)
- {
-+	auto entry = pmd_val(pmd);
-+
- 	return __vm_normal_page(vma, addr, pmd_pfn(pmd), pmd_special(pmd),
--				pmd_val(pmd), PGTABLE_LEVEL_PMD);
-+				&entry, sizeof(entry), PGTABLE_LEVEL_PMD);
- }
- 
- /**
-@@ -850,8 +904,10 @@ struct folio *vm_normal_folio_pmd(struct vm_area_struct *vma,
- struct page *vm_normal_page_pud(struct vm_area_struct *vma,
- 		unsigned long addr, pud_t pud)
- {
-+	auto entry = pud_val(pud);
-+
- 	return __vm_normal_page(vma, addr, pud_pfn(pud), pud_special(pud),
--				pud_val(pud), PGTABLE_LEVEL_PUD);
-+				&entry, sizeof(entry), PGTABLE_LEVEL_PUD);
- }
- #endif
- 
--- 
-2.43.0
+--b1=_fDqk7ab3mLda83C1IjqWcy5mBHXRmCyV8XXBJN6rMTQ--
 
 
