@@ -4,99 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E81C44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 12:59:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055C8C44506
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 13:06:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68CC96B008C; Thu,  9 Jul 2026 08:59:52 -0400 (EDT)
+	id 9CECC6B008C; Thu,  9 Jul 2026 09:06:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63C566B0092; Thu,  9 Jul 2026 08:59:52 -0400 (EDT)
+	id 97F646B0092; Thu,  9 Jul 2026 09:06:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 504FD6B0093; Thu,  9 Jul 2026 08:59:52 -0400 (EDT)
+	id 8BC196B0093; Thu,  9 Jul 2026 09:06:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BE8E6B008C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:59:52 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B77D4A0147
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 12:59:51 +0000 (UTC)
-X-FDA: 84969245382.22.3C62526
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 64F496B008C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:06:08 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DEB3E40175
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:06:07 +0000 (UTC)
+X-FDA: 84969261174.17.FC61996
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 174FF2000B
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 12:59:49 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J3lGK4Te;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 399BEA0003
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:06:06 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AfhJDsXr;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783601990;
+	s=arc-20220608; t=1783602366;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dfPuN5XK89i90iKP7N1UEg6cXPRSfGHauPrCcp91Soo=;
-	b=ssWyxJWXF4yieGZXKSc2evR1kxLvtCcDyqpp4/fYMYdE1CnzZicZd2hT22b6OUnuHNmAip
-	vtsIdZrsI9i87PUY2Cc2qiaTMS1En5oXge085+9yTe4s2g1LWsM9DfERy6uv4y4z1OWM56
-	Uy6gwWn2ga5O7BL7HGQvV2wLwR+Fv4I=
+	bh=gHoAaqin36BM7n0JyPwQOiJA2k5bERfSNEoUEt4tWaA=;
+	b=Lr5Iy6cOl3K6/uv2G06s4kEEutNnC3Irv5kaKvGvQLbuYlkMPk7Z3KBLvDC9Vliat0XVPX
+	zBj0mi16YOrVL7oACo3RBvGL6AYi+U7Vo4CdDgsr9rro7m3WKa5upARXiusZvTu4YUZ7gv
+	VXyCSMSAuu4QXwtugr/sC3NHrzZryv4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J3lGK4Te;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AfhJDsXr;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783601990;
-	b=urBDp9Qmvs7YIf66BTIa6DhAW7VfX0acRVAjNjftaIIEY94MGzeJMsK03z5ikiypSEQ3v2
-	OlBU23kp2xP95E/hE0sro+adfbpvV8DwK08Hbdyun1YBBYNJht5fAIk8jfG/DUq9OfBALn
-	ik4fLUFnWTbIzDb1D+9Vz3Ym/+kWltc=
+	t=1783602366;
+	b=iJz2M+AWmrWyNHRJ8WUxGoVCanKESo8fN4FTorXYOFPy0BVrAPO9NKgtC18/R7nivCvcdO
+	PMaU0PKiCDxkQDAaD+f6r8pHlwWaYnWgl6nsisZcwnf9TN9cEfYaBfmph1B5SowoZcaFXR
+	Q88DehZJnCTP9vQ/pKQJatSCmhuSCR4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0850043651;
-	Thu,  9 Jul 2026 12:59:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B3F1F000E9;
-	Thu,  9 Jul 2026 12:59:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1FBC440498;
+	Thu,  9 Jul 2026 13:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373911F000E9;
+	Thu,  9 Jul 2026 13:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783601988;
-	bh=dfPuN5XK89i90iKP7N1UEg6cXPRSfGHauPrCcp91Soo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=J3lGK4Te1f4zzXGsuskTvVM2iBsyuSztXeOmCggDo36HjJ3cFV8/MZPAkLsLFQuzS
-	 lNVmeEbnta9/P5w6O6w9uM+11NdtyZUs9hA3OafhOr/Q4UHG5Xyq70hDx3FmpkjRla
-	 UHBbV04VVT4urrcAR4hxuiIPkP/cdxeSW3G65y+mOSwDdd9ogtDLl6pcH5//9D/KrN
-	 zlupO5ofc9MYYuFPrlnmkEaVq8YXf+uicS8JLzLuThh9pdRXv4cN+Hddu9XJIwCiF5
-	 4nMf33vBikptKw71xYxPVonYLUz/vsdC46ymFQu11EvLzSAapT1ixwKexH6HjjBnD6
-	 1DSahxeZccbnA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@kernel.org>,  Alexander Graf <graf@amazon.com>,  Alexander
- Potapenko <glider@google.com>,  Brendan Jackman <jackmanb@google.com>,
-  Christoph Lameter <cl@gentwo.org>,  Dennis Zhou <dennis@kernel.org>,
-  Dmitry Vyukov <dvyukov@google.com>,  Johannes Weiner
- <hannes@cmpxchg.org>,  "Liam R. Howlett" <liam@infradead.org>,  Lorenzo
- Stoakes <ljs@kernel.org>,  Marco Elver <elver@google.com>,  Michal Hocko
- <mhocko@suse.com>,  Muchun Song <muchun.song@linux.dev>,  Oscar Salvador
- <osalvador@suse.de>,  Pasha Tatashin <pasha.tatashin@soleen.com>,
-  Pratyush Yadav <pratyush@kernel.org>,  Suren Baghdasaryan
- <surenb@google.com>,  Tejun Heo <tj@kernel.org>,  Uladzislau Rezki
- <urezki@gmail.com>,  Vlastimil Babka <vbabka@kernel.org>,  Zi Yan
- <ziy@nvidia.com>,  kasan-dev@googlegroups.com,  kexec@lists.infradead.org,
-  linux-cxl@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/3] mm: split a couple of headers from internal.h
-In-Reply-To: <20260709-internal-h-v2-0-695631425968@kernel.org> (Mike
-	Rapoport's message of "Thu, 09 Jul 2026 13:00:02 +0300")
-References: <20260709-internal-h-v2-0-695631425968@kernel.org>
-Date: Thu, 09 Jul 2026 14:59:43 +0200
-Message-ID: <2vxzh5m8l3nk.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1783602365;
+	bh=gHoAaqin36BM7n0JyPwQOiJA2k5bERfSNEoUEt4tWaA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AfhJDsXr9Jlh7JbWr6kTwPdZ2rinAltVe3gCbsphpBZwQhIWOHoS/OJLKDv0SaM92
+	 usoZnqAhNKrNYTsB8hSLGLOr0ZTAR2D6pN8PAXIR72BWQlLNUWYfaaITPLUozVolb5
+	 y6Xn4VjC6+jdUuFQQCYvpkGitYNqGB15TRPQ5Z8IjzLHy7dIVyMB6+mxf+yIe0pQIV
+	 6w+7TzuKTqWytZekZ4phDVnKW1R9cNpAkyC84VmdpX36o975jUoHhuRahpVHMOaNfa
+	 I9I2KXf4OA6tci8sf8im68/NTyxsxsypyy0uGqO8rRbPzxv3RTWsjeBQdr7tD5JITe
+	 TCOQkjDEreubA==
+Date: Thu, 9 Jul 2026 16:05:58 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 04/17] mm/mm_init: skip initializing shared vmemmap tail
+ pages
+Message-ID: <ak-ctr06UDUlNCJZ@kernel.org>
+References: <20260702093821.2740183-1-songmuchun@bytedance.com>
+ <20260702093821.2740183-5-songmuchun@bytedance.com>
+ <ak97z4tryYAGJgb_@kernel.org>
+ <2306829C-A66D-41F2-B5F7-1C164A7FF757@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2306829C-A66D-41F2-B5F7-1C164A7FF757@linux.dev>
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 174FF2000B
-X-Stat-Signature: 4rkhkq8jptrj87sftfjsrhbesdiqugmm
-X-HE-Tag: 1783601989-950230
-X-HE-Meta: U2FsdGVkX19FEAQZUympXsIbgjfk5UGxCMJ6GRIP8ZKfL2qFT/71c3XoH5Dymmh73wyd0D6BE1AA3Vf3LXkWNIO87MRUg8X6clRwCKAcsMR2HYKhnUAm/mdFFlfyfwE7KP9GuIu4iSJxGKfRmFSjwuzaJGpHQu9zibmk/a73S0p2kL0HS2wEuoF2IuOCn5ct1Xo4AhjB7NzawpXKZyr6AMeE13IQTDbJlmkW5VW37ZpkxYdi3pLynwg/bPpn4mz1gIKc84MEsUwi+EKYW07cE2s/wuH82qdPPP59p82qcLdcfGi64LqHDehadZeKPFT8nQadfKa6Z2gPf6a98QlGG7khjTqhHLfFTfB4TrqXR9mNKU9I7ZSOnTFMq3eUYAo6/3sXHQupmbdNaUV4tBIPX0A+BGZ45HY5/Zz3n13Re9mjgZmjFG6AYl8iIpmgv20/jnSYZhmr1d0P+IJr3Hh0A0utL67LSQyXCrxUoswpiHLyZyBlEYxY/oat3U984pcCicfgUCivDmcsFSjVs/y3cwXO89lFTJ79xvFGXYFTNF+WCaakv3LsjRg322QhZtwAJoxcGVZ2kqTq4wNE0OQSt6QrVdFr/L727OtUQkeHI2Xpm/Rr7yk6/f97v9oZsC8Ymj8hBIaDHgul4CUyQyYXMrQed4+OWvc3gQO/lXbt/ux6xUlW+3uUXcPcNBCkx/CUTefANEWf72vk1My/UVPRQhhUB5PRT53dyg5Mf6oXlr9qrzBjUlKOkb0g6NeS1dCRT28EyD8kvrrpEyWvC1r+R8lg4HmU/vYlnrk58GqylDsJ428/i4+yjGAp/Q+50Y0QLEL6IBpACBnS+9VKRwh6D45INKSFPj6fXZ8zYCJHoRECRwwX/gMsSgrW2c/IgxoCpipioWLhvCfEDAmuPSUhHHBZOP/eUYs+FMoiahZrEVHPYUTqWsDNvQ9yKAYb8cbJHfDY1QGRBAccY5O5Hco
- 4z0np9up
- FSSyj+DMKlzxjSTSv2In4UFG1MgSrfbYhUTK5GZzTRgKWM8gQcv5Rop1G33YO8Rn4ULkZlVPviD8N+cJsAmPbdB1ZoHzXDcqKzfdo+rwGjyGkobqrNcFxLxcxnd/7JqkAfKLn0k5g2SU+h3MfrtbObpn5SXd3/a5NY6LWTSuJC+Ew2Aflldp01jVt4K2A3Jjhm+8yRUmA1xCTqWb45j8EKtRn+eerGUBucTatxusOXUdiaH1nwEJ0nX8dKVaAXI302Y3o
+X-Rspamd-Queue-Id: 399BEA0003
+X-Stat-Signature: cau1ikm7xac5cwrb4rti7tre79wjjkwj
+X-HE-Tag: 1783602366-501283
+X-HE-Meta: U2FsdGVkX1/F950EZXDSCt0gRY1aJFPkH8sDTHlOFYy66gfka9ktfe/2sg2vf+RPqbTqRcLDlhL2lMqxpOdGu+BW1Qo3z4Pswqc7IKQcX2cazdDvazjVWLQ5xKC91RhXVQwzjGSuwYvxqDI7m6RDX31wfbaNviGOgWB8ZeiyKY+UAhwWaasoqkSCb/7d7tnkxDgFnDz2NfYa1w4vKP1SaKZUn5icazXVXAzfwHHEWkNVx2vY8CuK7ydHGJbomhUt5bNvI4uj8kOiKDtgX2u3rM+Wwyid0jSMxT0IUZ1WyacXjOpP9IY2bOjQoa0wuHD+dOslJ9XxAsGmiQGZHC5CkYlEAX09iuYq7HQcDeD6nWnoGXAjNY5iabKHYroPeXFV2UTwtH57jdCWiVXm3Bk7i1P0Eg+cPZyad7qEF2h9Gk9kEezdLv059nWUt12aR+ambo/HxdYRi4nzzqjttrGbzOnGAKin4zssdQEaQvqXBC7d7gSIsttmQDAumKCKbv8yjdfYk8M+FuzdERIp38yph0k+JCIYhWG/h7iGfldsHnB2Dsza3FrD81WR2auOU389kfQdjLthibwOBw7yLJhmeKVfRRsL1N7j+AuULZjsEVrwnePZbJmCmP+J8qmJYwF83fTSjTgRupFy1RFPRACvdq92an9kY5x37okUFDoMDNmX8F2S779TcsBO8MnfVhHHoIaoqte6XTHOC1qHR7DLRBW8wyqcXXcCJGkI/JUvBKf/uArHyIvFULdLdJ9psc9bFhzpciolU4M7+7GjFi15lOhycGbq3YVz02L03YrHKPk6kog6OAR/KN9ErUNbRWuaqOb3uiVdGIh3FnArURuya1z9tZxRJGCmEb84tKHplZ2QFBo85gckwvk9GOcvs+CLdncbfQU7F1pIeS6FtM/0uX95so5KkQwpKIKptiE4U8UdQIL9wyumpQTOjtekjOE5bUC95gQebF0ZjI7NrOu
+ F1rhcBY9
+ Ox2qsNVNfWV/W2t6e/5lueC6j8G+JuDAPpuKdmkUMvtgdKzjlcua9pHK7Pt4ipQzELitETA2r2QxMVPfkKLmD2xqzuDUW7+FVM+7B/AV9Co/Dh3/A42E2HXZgTR9+rXsmLtbC+YGEv2c3+AxjwA+4M/tBZy7CLDTkI7kGo/t2ziR0W0h8LzlLecSNTCwf9EPQkYBZITa1vo7HlklA83Bgg3UKXgXy0usJ4vyaXp3IsZDpozWj21kPibmLQGFqS989eMIc7z3JCmyi+8EmU2wNx21B6S3hM1bidTWXrsn0TRaDtpx+fIAZatradRfXfLUmHYOdr4IgYuDq8sx3yoeA88DuMzT9uXOi3IR0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,18 +99,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09 2026, Mike Rapoport (Microsoft) wrote:
+On Thu, Jul 09, 2026 at 08:31:31PM +0800, Muchun Song wrote:
+> > On Jul 9, 2026, at 18:45, Mike Rapoport <rppt@kernel.org> wrote:
+> > On Thu, Jul 02, 2026 at 05:38:08PM +0800, Muchun Song wrote:
+> >> memmap_init_range() initializes every struct page in the target range.
+> >> For compound pages with vmemmap optimization, the tail struct pages are
+> >> backed by a shared vmemmap page.
+> >> 
+> >> Initializing those tail struct pages would overwrite the shared
+> >> vmemmap page contents, so users such as HugeTLB have to open-code
+> >> follow-up handling to restore the metadata afterwards.
+> >> 
+> >> Use the section's compound page order to detect struct pages that fall
+> >> into the shared tail vmemmap range and skip their initialization in
+> >> memmap_init_range().  Still initialize the pageblock migratetypes for
+> >> the skipped range so the surrounding setup remains intact.
+> >> 
+> >> This is a preparatory change for consolidating handling across users of
+> >> vmemmap optimization, and it also avoids redundant initialization of
+> >> shared tail vmemmap pages during early boot.
+> >> 
+> >> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> >> ---
+> >> include/linux/mmzone.h |  4 ++++
+> >> mm/internal.h          | 16 ++++++++++++++++
+> >> mm/mm_init.c           | 25 +++++++++++++++++++------
+> >> 3 files changed, 39 insertions(+), 6 deletions(-)
+> >> 
+> >> @@ -673,19 +673,21 @@ static inline void fixup_hashdist(void)
+> >> static inline void fixup_hashdist(void) {}
+> >> #endif /* CONFIG_NUMA */
+> >> 
+> >> -#if defined(CONFIG_ZONE_DEVICE) || defined(CONFIG_DEFERRED_STRUCT_PAGE_INIT)
+> >> static __meminit void pageblock_migratetype_init_range(unsigned long pfn,
+> >> - unsigned long nr_pages, int migratetype, bool atomic)
+> >> + unsigned long nr_pages, int migratetype, bool isolate, bool atomic)
+> > 
+> > What is isolate parameter for?
+> 
+> I've re-examined the code, and you're right that the isolate parameter is technically
+> redundant for our current use case, as memmap_init_zone_range() passes false.
+> 
+> The rationale behind keeping it is future-proofing. The ultimate goal of a generic
+> HVO is to support arbitrary huge pages, not just HugeTLB. I decoupled this as a
+> parameter to prevent potential regressions down the road; if a developer leverages
+> this for other huge page types in the future, they won't inadvertently break
+> things by forgetting to update a hardcoded false in init_pageblock_migratetype(),
+> especially since memmap_init_range() natively accepts an isolate parameter.
+> 
+> Of course, we could also just delete this parameter for now and add it back later if
+> needed. I think both approaches work.
+> 
+> Which way are you leaning?
 
-> mm/internal.h becomes more and more bloated.
->
-> Split declarations related to mm_init, memblock, vmalloc and sparse into
-> new headers.
+I'd drop it for now and would revisit when there would be a new HVO user. 
+Even one boolean means it's hard to tell from a call site what is the
+intention of the flag, two make it completely confusing :)
+ 
+> >> {
+> >> 	const unsigned long end = pfn + nr_pages;
+> >> 
+> >> 	for (pfn = pageblock_align(pfn); pfn < end; pfn += pageblock_nr_pages) {
+> >> - 		init_pageblock_migratetype(pfn_to_page(pfn), migratetype, false);
+> >> + 		init_pageblock_migratetype(pfn_to_page(pfn), migratetype, isolate);
+> >> +#ifdef CONFIG_SPARSEMEM
+> >> 		if (!atomic && IS_ALIGNED(pfn, PAGES_PER_SECTION))
+> >> +#else
+> >> + 		if (!atomic && IS_ALIGNED(pfn, MAX_FOLIO_NR_PAGES))
+> >> +#endif
+> > 
+> > Let's trigger cond_resched() on some defined number of iterations or some
+> > memory size chunk, e.g PAGES_PER_128M or even PAGES_PER_1G.
+> 
+> Yes, that's for the best. I was really struggling to choose a suitable macro
+> for this earlier, but I realized it's a difficult thing to get right. I'm leaning
+> toward selecting PAGES_PER_1G instead.
 
-Acked-by: Pratyush Yadav <pratyush@kernel.org>
-
-[...]
+Yeah, PAGES_PER_1G makes sense to me too.
+ 
+> Muchun,
+> Thanks.
+> 
+> > 
+> >> 			cond_resched();
 
 -- 
-Regards,
-Pratyush Yadav
+Sincerely yours,
+Mike.
 
