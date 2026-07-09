@@ -4,152 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDDE6C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:17:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 401A4C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:17:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 979746B0088; Thu,  9 Jul 2026 03:17:10 -0400 (EDT)
+	id 0C7B66B0088; Thu,  9 Jul 2026 03:17:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 902F56B008A; Thu,  9 Jul 2026 03:17:10 -0400 (EDT)
+	id 0783B6B008A; Thu,  9 Jul 2026 03:17:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A3296B008C; Thu,  9 Jul 2026 03:17:10 -0400 (EDT)
+	id E83AD6B008C; Thu,  9 Jul 2026 03:17:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 493A66B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:17:10 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CC00FA0409
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:09 +0000 (UTC)
-X-FDA: 84968381778.29.18BA015
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010008.outbound.protection.outlook.com [52.101.46.8])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8446DA0008
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="GfTuUw/m";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of shivankg@amd.com designates 52.101.46.8 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783581426;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BC42E6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:17:38 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4339FC26C2
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:38 +0000 (UTC)
+X-FDA: 84968382996.03.976FFF2
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 779AB140007
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:17:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=PtIuOfMn;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=kRB50jqQ;
+	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783581456;
+	b=gl3e4Dre5KtxvJORSevEKlNxRnUvtnc2nypFWK5SEfF1rvqSmmDAtXUTTL4k7LJamFhQ8C
+	l3bqm5LUzNEqmXKDTbT8mELw3hSM+2ScWKOSLKFOqW6T5ZN8rYv7rKRVhYGEkr/Ewq3Et5
+	CH90fWc2DfTQ/JuaHesDqI5I2VwTU1E=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=PtIuOfMn;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=kRB50jqQ;
+	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783581456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o6hm6HhF4Yc8zEixV39mMQyrwyGc3XgnCz2mI/SLk9A=;
-	b=Qw4MtZJqsVWjkUpAbmfzq77TRwKST2D70SCVTTZNioIIgZinzV2QeiG/qCIiQ26luCbWIL
-	p5efKMuX/0ereMtkmeLh0EkvimD6QdQHmrMwHe1YyFPzwnOeKfn3z1sTpTNbnfJBRE3YHu
-	Lyv0VxalXFM7+nomxtx7Jg9+DrlLPyA=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="GfTuUw/m";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of shivankg@amd.com designates 52.101.46.8 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783581426;
-	b=QdQZGXjY26V5NKsll+JvcOGbGQO+tum6Q13bEKlwpYiuiSRqjCU4apEEVFDGNVWR0Z/bue
-	lLQC0Op161rO3q59EfaACkQdOSSb5bQ+9QYyo2WkuHhZMrWBRHoJEFjiB5BRLhtPU+M4dk
-	p5NUswA7gyo5b9cTRw77TcY7X/r1wWU=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bj7fx9oWUx2Hmg7zB3UeW3lJV3nBUbCW8Les8EtTQD4190lLinb6pl5Df5qq29kaZOuE/f/+bkwvrV2X0O7AZDpcUA8LXIf84e8moUdN80MLJxIWNNwkoyyLL2/ujf6pmJdYbIqm4ZOB3ZEb+FxAHCP/UixLmLCn6CKjUtAA+6htNgfd0UxxIPw4WQ9r14RWBdWDA2M0qhTI5MmFyvb6xXL9wm4UibaE6gWsugkhiOvl1cp6t2yAlCLm5PilAD1sAivHmPTxtyKuAlRyEcri4p/taTA8jbI7NbqZd3yVWXVg1c4FcUbK+0hBRqOMm8rTfoy7Z1vrCbEJbIGvvR0Zxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o6hm6HhF4Yc8zEixV39mMQyrwyGc3XgnCz2mI/SLk9A=;
- b=jjPqtVPM1N9cB0MMIEpbuYY4H2PhAmwAq0nE0+OxjS6U2cMhPSUgnLZs6KHmF8ETettlZVkfk2c5NxHzsFkz6LsoTB3Dmf16EgnsHr4kKMd4ajifjqV3vNy9emG+pyT2aMGeFcWd1CA+lCV3ELGx3B8tgKFhUk8yConb8PGsaX9RLa0sPu0GJ+YvA9cIQT0y+3G29hhokWU12845lGknH0jmx727galcctlGpCs1+179GSE3kPoEbuqnQKRzzHe9IHRjgJ/fTLki7QKDrUUNg41QCOHzENJ9gm0Eg/InyaMrA6oPnL4DUmy/kBCoEhJW4QcxTsTG6GwF1aWDGV5t7A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=arm.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o6hm6HhF4Yc8zEixV39mMQyrwyGc3XgnCz2mI/SLk9A=;
- b=GfTuUw/mWB+G823Y9xFuuua9Ybyh4i5tuB3gib4RSC5LuHhbepRb+2w3XbW+cS37nITV+mqq61EGlxYeScVNUW/S1A87FnTDOlUQrDFw4/KEeqbYHYnUqLLzJpbz9c262fu7CZJUbbFW8zthq3IkQATKItTw9w0csQM5kuBg3+c=
-Received: from SJ0PR03CA0041.namprd03.prod.outlook.com (2603:10b6:a03:33e::16)
- by CYYPR12MB9014.namprd12.prod.outlook.com (2603:10b6:930:bf::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Thu, 9 Jul 2026
- 07:16:56 +0000
-Received: from SJ5PEPF00000207.namprd05.prod.outlook.com
- (2603:10b6:a03:33e:cafe::3c) by SJ0PR03CA0041.outlook.office365.com
- (2603:10b6:a03:33e::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.202.10 via Frontend Transport; Thu, 9
- Jul 2026 07:16:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF00000207.mail.protection.outlook.com (10.167.244.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Thu, 9 Jul 2026 07:16:55 +0000
-Received: from [10.128.115.58] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Thu, 9 Jul
- 2026 02:16:48 -0500
-Message-ID: <d7cac057-c270-4b3d-bc9b-c3503c5b6f50@amd.com>
-Date: Thu, 9 Jul 2026 12:46:46 +0530
+	bh=F9SKBxLhUcVP1yEBFgHPNey4vuoMv6f7r4rXayVZwUY=;
+	b=iJcNlZ32wT5c1rwDESO4v+EskUR0Qh5vi6KYTkEnTd8681z4ZE6rr/FKk/fjnY+0Id9ki6
+	4d7LxNGBWJhT+8lIGH3f0G+2UZ5ryTbEW+iADmLmQCgpIQXmNORgOUFM7drQgHXcDDV/lI
+	9yTyRBPZ+NO1abPqcAU7D4KhJrSu5bs=
+Date: Thu, 9 Jul 2026 09:17:33 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1783581454;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F9SKBxLhUcVP1yEBFgHPNey4vuoMv6f7r4rXayVZwUY=;
+	b=PtIuOfMnH+4L6RK5zWDYM9QxZ7qFIDDANU9HKLo3euM2pysXCVMwAa7n0WM9qlO40a3voh
+	DuJIKMU8fzWSzXZ9l491Z4XBQ0KTIpmeIuhHSzlg0CK5YvnKbZ7s/RIGLP21o2M9L0o7Rj
+	zSwnXdwJoMA72KBAhb8rJmxHHKXCqXO6C0wmhoPJoAi3VMyrmMFTka6l8meEuom7fPLR+m
+	ZKJ+2UBpVHoAgJDHaBFHf2d85mBPBBieEtIIpIP4KHv9WbVlPQOC6fsZp4ZIgta2kndNxF
+	O5hotz+4KOFHBJCxuyk1T/BLRhXpjFxIvYbJmL/KCdibPRgi80mtnrAOWqSnIw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1783581454;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F9SKBxLhUcVP1yEBFgHPNey4vuoMv6f7r4rXayVZwUY=;
+	b=kRB50jqQviKOML8rg86X/o/Q3HTiZaVrhqXPi05nX1mZw5SlYEe6ldifyk1fa0K1jn//2f
+	uWSs1Y9MUuicx9Bg==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: oleg@redhat.com, richard.henderson@linaro.org, mattst88@gmail.com, 
+	linmag7@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
+	kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name, 
+	geert@linux-m68k.org, tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
+	deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org, 
+	glaubitz@physik.fu-berlin.de, richard@nod.at, anton.ivanov@cambridgegreys.com, 
+	johannes@sipsolutions.net, luto@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
+	peterz@infradead.org, wad@chromium.org, thuth@redhat.com, mark.rutland@arm.com, 
+	ada.coupriediaz@arm.com, kevin.brodsky@arm.com, linusw@kernel.org, yeoreum.yun@arm.com, 
+	song@kernel.org, james.morse@arm.com, anshuman.khandual@arm.com, 
+	broonie@kernel.org, liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com, 
+	yangtiezhu@loongson.cn, sshegde@linux.ibm.com, mchauras@linux.ibm.com, 
+	austin.kim@lge.com, jchrist@linux.ibm.com, arnd@arndb.de, sohil.mehta@intel.com, 
+	andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org, x86@kernel.org, 
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-csky@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org
+Subject: Re: [PATCH v16 18/18] arm64: vdso: Expose sigreturn address on vdso
+ to the kernel
+Message-ID: <20260709090525-b1e5ae06-1fb4-454e-919c-6503dcf3d073@linutronix.de>
+References: <20260629130616.642022-1-ruanjinjie@huawei.com>
+ <20260629130616.642022-19-ruanjinjie@huawei.com>
+ <20260630172619-6c78c2e2-c2d3-44be-88e6-6c82de12baf4@linutronix.de>
+ <21875fb4-434b-480d-b68b-e2ffd5fff5ae@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
-To: Dev Jain <dev.jain@arm.com>, <akpm@linux-foundation.org>,
-	<david@kernel.org>, <ljs@kernel.org>, <chrisl@kernel.org>,
-	<kasong@tencent.com>, <hughd@google.com>, <liam@infradead.org>
-CC: <riel@surriel.com>, <vbabka@kernel.org>, <harry@kernel.org>,
-	<jannh@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<qi.zheng@linux.dev>, <shakeel.butt@linux.dev>, <baohua@kernel.org>,
-	<axelrasmussen@google.com>, <yuanchu@google.com>, <weixugc@google.com>,
-	<shikemeng@huaweicloud.com>, <nphamcs@gmail.com>, <bhe@redhat.com>,
-	<youngjun.park@lge.com>, <baolin.wang@linux.alibaba.com>, <pfalcato@suse.de>,
-	<ryan.roberts@arm.com>, <anshuman.khandual@arm.com>
-References: <20260526063635.61721-1-dev.jain@arm.com>
- <20260526063635.61721-3-dev.jain@arm.com>
-Content-Language: en-US
-From: "Garg, Shivank" <shivankg@amd.com>
-In-Reply-To: <20260526063635.61721-3-dev.jain@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000207:EE_|CYYPR12MB9014:EE_
-X-MS-Office365-Filtering-Correlation-Id: 50a26bca-9e56-44ac-f9c4-08dedd8a0ef6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700016|23010399003|4143699003|18002099003|56012099006|11063799006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	7LF8OacmVtfd7SOEPR8QsPg6kCdkuM7wsPHmeD0VekR8qlh0XwURiA/iXTyb4tI/iHrM5KiEfrJmSz/fkBKmxVfxnvys8UY6iaTUDurI5ylMNNS1RHir2UjfyMhVuVUEpOK+iiTIKWQ9uMUTiKqe1J+wm/PPUv+OP1g9l8cmBuL0RxyGr7D+Yb7Zn6E4Cy4XdYOCYaLeNclh6qDh9WBqoiNTOQyGdMhB12C86FolNrBE8kU8tHwso3sePNaLSaX41SScPDFJyVuCpmOXHCFVRdVowjdIz7ZbS3DbMVX2hk6DqZPB3oKUt1k9NgyhTsU3vUl0QlVO+3+s4N9+BJgOQ+H6eyscT9odGtPBS7Vi6CJqqGMebSVXemUZ4+RCSZO1APSfupsI6wgnOrTYbMtLSc9LXYFIBECi6k69Mxird7iLtgzuuXfVAJAqHNMrie83Mvv0Mp+Ti9e6/kJVx7Y96Rq0IPZBF4MFboWzRWqDjq1sBEwi2B8EMt8jAxzJdjy9R3SsN+fTR/DWhBVSJzmT3e6onYrLu2jZWm6O3aOofroSc+O9+t1bUfNPVkIegFnXO9pBMCR2X8HBeT9oI5xuLdPmZSrIed+1c4rorI9ZWXUYWMWwvindW9YvSuwHetCAnwypVJzEuxRkNJcESwWxAPfxr42IiuTHt5fiuNLDwBpNNEqFNvFIq6NZ/I3MP8EkepPWg/dkgAt2JPMileOPCw==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700016)(23010399003)(4143699003)(18002099003)(56012099006)(11063799006)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	N0RDy+z9eY2d5J3BnFRvoD61yUc0zYO/XC/CFoEZRHpS/j+/pT/I6MbAZPInxhWa0iU5gTxnZg4WBs53S5XG4WGYkqY01TI+Afj77lLY+iJ0UcmMGv2HjcQQLBZbMZBqMKW9OqZ+3/bomePYwu91Kg1Wz5L682VRthqhdGICqT2B4wX3/ZvST1p0TYCxuqZh5mDog6hcIqIFWQLDmsEohssHVh85ICTzz1iGLcUtkldVLOzrIRjdRMic7JP2egRaVqKO6JCI6rAPdYH80071DRKE5+kNBpkTD7r/xK1U2rX2CRYVPYsd6rEj4aTmfP6+lyGXLUBmZ94K02Ea8JFlKJpx5fAtgLXjRSbFJmVAInmRleREo7D5UrRr4ScoSuN8oByVgsa338YPI8GgoysU0OrT/faMtEePOITVceSX4A0sZcHl2w4SU0Fe/i5cqse3
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 07:16:55.8185
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 50a26bca-9e56-44ac-f9c4-08dedd8a0ef6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000207.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB9014
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <21875fb4-434b-480d-b68b-e2ffd5fff5ae@huawei.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8446DA0008
-X-Stat-Signature: jrgt1dprfhcja4qdgwneoim8suaz4c8m
-X-HE-Tag: 1783581426-165904
-X-HE-Meta: U2FsdGVkX1++3goCymhV4lXgmdYZbno+PaS4wetbf8Q27SNC+VKhVFSbTuTlM8TOMH9J1LrAnnimsQC2zvvstVRv42YN1wZmpRybbpTAYABa+YcJmvT4MQwJ0wajV+gCL2xVbAWg0ACProivyWEKRilcRuoeGukk/rTy9p56T1wx2m1NydQjlkZs0jTahsIFUK4asGM5mkgUAUcHNBQ7tJPIcMSPsLMaCxm1mNJbYbsv/56MgVmHOWIMufQgJjX4KwUKRJ0d8K8XWo2yY/a06OLTXiiMHIbNkkjYPvuQeFLalo1ef5IJKhYuA2DaGNcOtfP4twRcwM9aV4jxyusmuh4OpMB3LfOCtXhs+roUfWlX0ql9xaYIe3aT1nh3Gm4PKP/0rwbEZlSxzA/jzPX6EOvTwm9E42DxBn7rGrqn6x3DzdJDLsBPk+PFBmU9D69lftvbRvu55wx4GQ9iwDZP8C2G49m1HpUsR0qmmm4XVUQCK4TIZAxpQ/Elf4xQf0HINTNW/Zw9iILCzGVWicNR4in1fZAujHaN2CX4r2BQ0DNab7EWVcNNGoFqViaD3vAQyGKta/qJcWzSEktkFeUJb13/4Mky2OHNyCfXRNA9oEOKlVmYC5WNYLsgMhabuJj6Hzh3hRC/0p7FZaJxZ2KKf15W+AkBJmFLuIwhI5IiXeDlawYa5xlQVaFAFkaesaRHf/fWFBFtNaYSxtw16VY92yykS2OM29NHse9/aBXPQWTJB/48wiS2FKPYRgSUTR79rOkZn6J0aroHqe4nZ7DsSaidcylOLOPZrGqGrpQrys/Jyb6Pp8uapwl9PAzEoWJDb63h9SXVsiDx7+knAUwrsT499vuOTJXn/5U7ByzaMCO6LZwzdGBviYTlO2tTjc3Zj7xgGIe2paLjkxD+vpLs3JqTa5sDAAbF+oWA2gFrOhpFmazMyyMTQ8LvadNCWW4dCOQuhorRkgy6zhtbDOh
- NhU4am6t
- tnyKmrjdahUIq45MXs2/XkZbs3dFT2XjHaqGbK4lEi+5gwXXMzk+1ci1F7/PEeMlLPhli2/8AeMO3gMQiHeE6wMybaVCHsd8Kp/Pd+n911sNDVBFFxUBQpPCXLNjJFmX++yfFCFLzK3Q1cX5vgjUB0Bnhhudt39o8I7s7EGOLXeAnd77do2pIEiMX6UbvupjJtSXeuKDtQhBg4auOaL2auqNQc0KQfT+oZkdGpNB9b1W/Kx+ZANsd4eXrR9Vc69cJyvwS2p7ijUhU3zNO7+uo2rgUgbq8qaDdI7VOctmdWG4T57Cl/CqIQU3xeIu7oPlwuukgHTL7yiV9kkIC/NrJ2BpKeeMY1+1XYQAqQV6VDizR2Jb7MvaqC1TqL2UR5f2Lq0/Arn4vzlvR/r82Z5NVNkiBfCSE/YHnlD/8zF6Ujeva3/t10zmgjLEpO1BsfhkCM199jFRDdN8xyAeLKqYxA09jBn8NrIXKuogYYVjp80xQV8HIIemnSN1WV6IiCEEO7Smet2OFEJ4e8hcXwVUjktxtDhlsBKZOjUkwXkLFwmB4Bhp1NCoKlLv2EA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 779AB140007
+X-Stat-Signature: qc7o366didxojhkppyrndzfx5txx77b9
+X-HE-Tag: 1783581456-909773
+X-HE-Meta: U2FsdGVkX1+/ic1eD15IH6Svpov5VkuvaR+Kb769LMb5B3vkJD2VoR5fwAclMjyBndf3tqY45vHw7k48geN+xlOEwsvmKR0xauOn5aJSSmOL4klCR0ZrYqImy2+S9iXABePSm6lI9ul/61KTFKSAG2FDFXlSq/oE8NBmMEl9PVamLt4aVjs441DE3uweYa5WjdsHMEN1UzKcdUH/+1c4tX/Xk+8QlnhDnCg9qn5MgUe2//iTjh/Z15jyer0NUEVXq00hAJpMp+zbPiba/qOBwCIrhYfbGCtHBzeVGAY6HeKWUmoo0hEOvQlq/SWaHTJfBaAdrE8yhgbPVaOcRbPQEIpiHxqreUly7m990/jRcfkmtZ8vT8McK/AEo3dmnsnShG3ZuqSUa/ieX8CJsxxYFY/ta8H3QaB8F4bgvgNQ64e8quhqRNPTmWgP62DSKiA4bA613Ex8qkLo8FYCHCGmok82weT8UpovBfrtbAlnLjk2Sx59w52IxjoU01xly+VMQZtzs/YQupwHFgKvv/6M/jsYGLuWKpv1NNpxo/tNBJObCZHpHrcI+0MGlgW0dKaR700pj+wOGs0+wq9Et9RlykHr5e6qUFkHjSo+UGL8ZLcS3QX8xo3uRsT2lZoGTuc2xsW7MEsYrxjcyovjdOv3llV5gXz32xxMPrbxJ0ZAArfCjRo+GKG7SrZbFUw/znEqI1zjaYeno0wMv10KG4ODFBUJCpDaK2YM23TNGj2R/VbdWT5JPssjqFVd2zHR4z2GclC24djaG2osJLJwf8sXjBOu12n0TMImrU2IRxEXqy6crsx+35IaqWHtvIq4WKW4Y1iBEt1ORSaCccyWjXhgQ5+ZQWpRrlXLINmBgppLBmy4SQuXeBWzGg/83S/JbzPok2AQKuoIlCteX+501dDs59MUcsrgO57926D+5xdChVBNix1RxfK+YZxuxt4pgs6u66AXiaUzmxFot0CBJpX
+ 5hHXzdKW
+ h1sTYHif9Ki9qGTZKLVvntWmlLE8aSGZ9kVihOQ26j235B+437DFBPvMV7yVCd83d6lHZcYfNFCVbv6jRqeH2uBCMi8ne/P9lektTmhTNelQxgHR7W+BQ54fVqu5ifiTjCjVXf2jWxSka5XibnpyE1KdewuSPqZyyCUkb+wit+yGQl97Ne+tfKKm/t2k8ovxGCdiXwv7mnqVvZ98PVDyWMY5tSxDw3cYqokXTBQlzjLOjAs3QRELYvPBVKXANI6AeXF7OnEbzxD1CKn8mTb4Z2ObfAQAxps5ml0Ok4x/hc8npxYztfOVXJWfyqLiIJWplnV8vtV4mZ7m0SAPcvvfsI15Jl0PIes5LlsfYDQRqWWR2A9FLkoWQpjdQR2L3rBT7AsV5X58FnlzgZHm1zpwcO20fS7L4AWL2zUXs1CLzuUkAW+Cwyc7kLnNtQCCK89XfOgt4nVuc5zi/zrSnPOjzuKiJdW3wSBMnZ9BzWM4ZI9Is++cYOk5nO2biqfjsBFVjFWoD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,31 +125,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jul 09, 2026 at 02:37:05PM +0800, Jinjie Ruan wrote:
+> On 6/30/2026 11:32 PM, Thomas Weißschuh wrote:
+> > On Mon, Jun 29, 2026 at 09:06:16PM +0800, Jinjie Ruan wrote:
+(..)
+
+> >> diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
+> >> index 592dd8668de4..5a0314a3c26e 100644
+> >> --- a/arch/arm64/kernel/vdso.c
+> >> +++ b/arch/arm64/kernel/vdso.c
+> >> @@ -343,3 +343,19 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+> >>  
+> >>  	return ret;
+> >>  }
+> >> +
+> >> +bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
+> >> +{
+> >> +	unsigned long sigtramp;
+> >> +
+> >> +#ifdef CONFIG_COMPAT
+> >> +	if (is_compat_task()) {
+> >> +		unsigned long sigpage = (unsigned long)current->mm->context.sigpage;
+> >> +
+> >> +		return regs->pc >= sigpage && regs->pc < (sigpage + PAGE_SIZE);
+> >> +	}
+> >> +#endif
+> >> +	sigtramp = (unsigned long)VDSO_SYMBOL(current->mm->context.vdso, sigtramp);
+> >> +
+> >> +	return regs->pc == (sigtramp + 8);
+> > 
+> > Instead of hardcoding 'sigtramp + 8' you could add a new label to the 'svc #0'
+> > instruction and use that with VDSO_SYMBOL().
+> 
+> It seems that the modification of __kernel_rt_sigreturn() is not recommended
+
+For the changes to the object code of the function this is obvious and
+well explained in the comments.
+
+Such a label however would not change the object code of the function.
+In fact it would not change any bit whatsoever in the final vDSO,
+save for a new build ID.
 
 
-On 5/26/2026 12:06 PM, Dev Jain wrote:
-> Simplify try_to_unmap_one by separating out the hugetlb parts into
-> try_to_unmap_hugetlb_one.
-
-[snip]
-
-> @@ -2393,7 +2431,8 @@ static int folio_not_mapped(struct folio *folio)
->  void try_to_unmap(struct folio *folio, enum ttu_flags flags)
->  {
->  	struct rmap_walk_control rwc = {
-> -		.rmap_one = try_to_unmap_one,
-> +		.rmap_one = folio_test_hugetlb(folio) ?
-> +				try_to_unmap_hugetlb_one : try_to_unmap_one,
->  		.arg = (void *)flags,
->  		.done = folio_not_mapped,
->  		.anon_lock = folio_lock_anon_vma_read,
-
-Now that try_to_unmap_hugetlb_one() is split out, should we wrap it in
-#ifdef CONFIG_HUGETLB_PAGE and a stub function for !HUGETLB case?
-
-I'm working on similar change for try_to_migrate() and had this thought.
-I think either is fine, but wanted to check the preference.
-
-Thanks,
-Shivank
+Thomas
 
