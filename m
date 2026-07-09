@@ -4,79 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 958D8C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 05:02:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72D33C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 05:14:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 652C56B0088; Thu,  9 Jul 2026 01:02:07 -0400 (EDT)
+	id 537B46B0088; Thu,  9 Jul 2026 01:14:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DD5F6B008A; Thu,  9 Jul 2026 01:02:07 -0400 (EDT)
+	id 50FEE6B008A; Thu,  9 Jul 2026 01:14:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A4E86B008C; Thu,  9 Jul 2026 01:02:07 -0400 (EDT)
+	id 401CE6B008C; Thu,  9 Jul 2026 01:14:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 152D36B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 01:02:07 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 137E11C83BE
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:02:06 +0000 (UTC)
-X-FDA: 84968041452.29.418D9BE
-Received: from mail-24424.protonmail.ch (mail-24424.protonmail.ch [109.224.244.24])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EF501100003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:02:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=JTaouySd;
-	dmarc=pass (policy=quarantine) header.from=proton.me;
-	spf=pass (imf14.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 109.224.244.24 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B0306B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 01:14:47 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 965A7120226
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:14:46 +0000 (UTC)
+X-FDA: 84968073372.22.8217441
+Received: from mail-10696.protonmail.ch (mail-10696.protonmail.ch [79.135.106.96])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5CAA340006
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:14:44 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail header.b=FrA8MWgS;
+	spf=pass (imf12.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.96 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
+	dmarc=pass (policy=quarantine) header.from=proton.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783573324;
+	s=arc-20220608; t=1783574085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=3dBFv2nmjH7KnyI2JtApUmVX+YshddiBGuTh7hq38pM=;
-	b=aNQyPqVwAY/PQr7cI+k89ZcWayh1HvRjMmOXLfcfTwbGWpWzwBQlYzjPrF05EexWwShSCZ
-	tDnRcl1wMOG7fEK5mswB1P8MKdM0ZK5P7QwRqoyHQmQNy4pNJLj9s9oA/1Q0zVfxcoB8WE
-	gReUChQ4m0UHBrjZpAfL6qqk4VFzeF0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=//uLA+s6qwaDTgsvTiLRg4jEcoe8gz5B2XgMn4s7FKg=;
+	b=0fi2dS0G9zdCbaIJ+YOwkei1pxTMuNVS56j35NXxobkkzUh0yt8CvVVuoLFBXgzpEV3PcI
+	U/lrVAf890IsTsqzPcYCMSSzFcuHThug29tsrzVoFtvrH0KjdJkIFdl09Gdrp2OIpS2leC
+	Vi/Gq5Fz8Q06e5fHnO9E7Q4BiZZYz+M=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=JTaouySd;
-	dmarc=pass (policy=quarantine) header.from=proton.me;
-	spf=pass (imf14.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 109.224.244.24 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me
+	imf12.hostedemail.com;
+	dkim=pass header.d=proton.me header.s=protonmail header.b=FrA8MWgS;
+	spf=pass (imf12.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.96 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
+	dmarc=pass (policy=quarantine) header.from=proton.me
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783573324;
-	b=BexOEoD+FVMh/v/SezFkJsian5HPsC2pGEXJNWmyrX4ykNlunEMHpuQ9N0kALDO6AC4JIo
-	WET77wpHAkt5ewZgFjy/URn2oYqvZqHhzZoUQVz673GmQC7nv+ePcHMo4G5fHnmP9/nnhA
-	6AdElU3MsA7dxrQZ8P3i3E1dPBCCJ9w=
+	t=1783574085;
+	b=F7Up0fhpx8qdoN122wY5MJ1xm1dWvk30+zBoc47jb1MyVERbMq2Y2SXapReIDVz3FCsUTe
+	qPL7TQr0ioyZHA5Zp8xJdMBky7sKDl1cXYmZgHRhQqZZEPLjvG+T0AaNPKX60//nSubgp9
+	3UcWQVyYcksUrRnsucy+AcAhw3LYvmg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1783573321; x=1783832521;
-	bh=3dBFv2nmjH7KnyI2JtApUmVX+YshddiBGuTh7hq38pM=;
+	s=protonmail; t=1783574082; x=1783833282;
+	bh=//uLA+s6qwaDTgsvTiLRg4jEcoe8gz5B2XgMn4s7FKg=;
 	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
 	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=JTaouySdv0J8avYGAKcv2kj9jgfxcCwLDg6Fej41dBl3Qqq5NsSf/AwU5gJOFJDfp
-	 jSpcg1vZWpvDgq6Ump0xdo3o9uKsjTJFZrTeHbMuFdHb6++u6O4N9K6Be1c/+Fkiy4
-	 0AHeB87oMLxezTZoH9L4iiPmCjgL36Lmwg87y/yyKcGuvW2xH1kp41SJ9p9i/3UPAl
-	 eQq6iCbsTxs1d/kHSdG2wCAMvxgHYZZxpKFOyG3I0bYHNt1pHJ/pSjNmU1QPj3p0iD
-	 fLDusnZfSYMN8WPmmtWiSLlc3IE42zOwgoUkXD5xNZdXd6qHP8aGK9Py7eYYN0H0HA
-	 xcYRcLRhvUDUA==
-Date: Thu, 09 Jul 2026 05:01:55 +0000
+	b=FrA8MWgSX8EAeMxc/LECNUan0idpSp7JLCWZWnkIGbyCWCjkm3e/QvDYUTqBI1L1W
+	 oe++g69ToQ8xlEGGlGGCAtZRdavuYEIhdfxorJ6BatfJ7e2vxQdleKgexLBa7eXTdP
+	 HgHjBD4j2zfIl9H+WrGtPwquOPZBYc9HjgokXA3RptdcA8eiTo/W9yMqfHBswecqAy
+	 7f18A75Xv4fL3LNO/s+FEljyEH7gnvCM8iko8Y0+6T9TcjqSugIjnZaJsDVWWfKQTQ
+	 TtzFRZGnx0L4l3w36ISJxDhvtxNEXPI/JvoeF0a3FT5xjwFgozOAM/TKKpcSVqi9lD
+	 bEjwddCq+TarQ==
+Date: Thu, 09 Jul 2026 05:14:36 +0000
 To: "rppt@kernel.org" <rppt@kernel.org>, "paul@paul-moore.com" <paul@paul-moore.com>
 From: BoxStrikesTeam <BoxStrikesTeam@proton.me>
 Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "jmorris@namei.org" <jmorris@namei.org>, "serge@hallyn.com" <serge@hallyn.com>
-Subject: [RFC/discuss] memfd_secret(): opt-in visibility for security monitoring (eBPF/audit)
-Message-ID: <1A0aVRcP8k4NNDVsOsaPqyGIeNZcFeUaDBvlGK2GGBbRu8jqj7gvzS5o3QvWHMnsP_BxYr77tRZ6SZliMfkLH2mECejwhpeWbOm2YXqUink=@proton.me>
+Subject: [RESEND][RFC/discuss] memfd_secret(): opt-in visibility for security monitoring (eBPF/audit)
+Message-ID: <MZlCECz5s73hPgQxtqWZ2VbXNTCZnItnwMHu2iZQlRC6ba0B9GuqxT2EhvhwQ-uanBDsNn7Bg09nGVynBHdmSsiRjhyI1udkYbqOoPfpe6w=@proton.me>
 Feedback-ID: 205449183:user:proton
-X-Pm-Message-ID: e45c84311096c90f539a07c65cb49efe6f72c78b
+X-Pm-Message-ID: 10d4677c9e8ac675e6b6709b3446567f78dad599
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
- boundary="b1=_fDqk7ab3mLda83C1IjqWcy5mBHXRmCyV8XXBJN6rMTQ"
-X-Rspamd-Queue-Id: EF501100003
-X-Stat-Signature: dfrapzwmt9tzcaeprzae5ikacrguctjy
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: m5niqi9itoaqxc95chjotm8sad38ijkf
+X-Rspamd-Queue-Id: 5CAA340006
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783573323-353466
-X-HE-Meta: U2FsdGVkX1+O8JNUzZ+qTY9hOkYMBy+BAV9TVEDGeB15REhc4OaBZFjLEedjWKL75gurMqgSNaoXaBSGXjPtO2LqPhcaiwTtsfuB7fAJxmDlC65L9qiPnAp/Af/2lPKuml+u9qqj7k1lUZCc+86YuLzPZ6fesXlo4iw4xGcd2P19Km17tX6/Qr840Hf+KButvPCxEPceZ8rNkgnZiaLn13MXwYTesyzjetb+vueqZ+Nldr4TAOmpA+yapFgWiQGAiQ5xRaxAb5HbOmQFdqM/A0GGK+Y31bmwQB8/I1LaVVl70wBn7IBOGiwZ+FVFcYOhdsPoWN+khvhv84+NpHXaM+4XG65v+RyBBD/YAI4pl2PnxgigynNqKdN7zl34PfsObZk4OXsv9EkOphJdV58EFmmqn6TF8A2vrYml50wkB94Pyr//PsuSKd6vRi+mWqmNqWs5w60mGP7wJLgDNNxlS/WL8uRrPs2EQXeIXxZJ1popTwx2cJfODnb6MQhPxg4QND296uHw8r8OMmAlRSWWldJuDox6gBcSY/0U1baXKOSlJMuF3feK5Q1bW+xWdkB/Sj7jobSitF1qhUuTImrZ2YQk7oCFsa6hGwbPmJKg7PHzCuO5libcwNymDHwcIrp35Gaje8N//wUgQNNGVYWQRtOPHy+l736BXTzAy0r8L/dcqouJYJH46Z2jJc0s6IjE+FTVdxGtLSjbbS4gfMggs5Y8mUvqgk8Ho8KXgvqQq8yw9vTu14k+26jrVmoVSGsS1iChxY09gwAgx0wWsH+8LDRrQcMp0M93mP9ufpDXNyzu7JrSKZVyCugvmrWCUyoT9e3k42zC+t+Pn/movh/dd2dZq+HW1E+hDh/h/pjQk6nJPwlUTDOf8cjusUU8/GaalH5T2z2+vah5rYlwV6fNLicGamiBZnAsMQTlhBaKVOT3lTSDVYHlDVvgyewevyVyJxkMDdz6D2InUPwzQlM
- TYtB0C9l
- jc/A0mp2q6GmIn29nq8Cc/5jm1+YttF7JLLSadk2nSUNBy5rj8JsZv4YJlOtqkYQ3odmV9oKnuJEaNr6P7dQherF58tKxV2UhmT6+jYzZQJ1hxtjs6SrXWmSmBEawDhAj1YQaAQw97DLfrTtQdl9kzKUcfATIqD0+YG3KCUQD9Qu37xdlNF67tiCDWIM/xdDiylrI/fRk5Ab2itCweVcU1EQNXfGtorASQLvmjdiwvay2Fzo1WCYf3gtALItfgNY7jdI3FQx0eRrVLiC2YCtSFyKRmzY3WsZclYyQfVk5+xj9babjz67olKbYqBX+aS64e8/RltM1Ln89Sljx9bXVFiMbTfK+r3YPt1liQ5Z1GLi3C7dILV29XMfrSCA/LNY4gGn09Yn4x1v41tJVojfa0TUXiA+LvhslPGBni5IwBPdPYe4aqNfWq9H7nuArSR7xhwdfhNTRN+jVTy0al8ET435qxOd55L4Q0AnDuWxhCplFySo6kRYLbYk4XHkWvpVFK1DeRqFt4HodL10=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783574084-91918
+X-HE-Meta: U2FsdGVkX18DhiY2mFZzNxAArhspq4hIYEALh5mkwBKjGGU2uuw56k/T4A0//krySXtbDpDKsOABmD8prFsSVy37EKFYbP/wv949ULcsKEBTZvuxkYmtN5j/R5ZV77s5pMKGrUePHQqCZAyB0z0f+w5MG36y+KlnCKVRT+uEInEzdQNMEOvqEbj7fLIQYThB//+L6yKWPpup0zbedeUMuHor6WxsBm3t40KjqXAHH0daSwljOpu+09NZnwMJ7E3phN0RR8JX71eTzfKRJUnpbezW+H5Z7z3eKWoomQGNMtjH2E/lD02GbHwePzgts0FnufpKkUeWVB/xxvL2KI4+2Pf4Jgb1ys/vzHW/mAK1Lh03Xd4WwZqjCpQlO5kEMObDvcrZKF2j9WyR3237+ow4z4zGFozuRu5tHey/A03oIeDWEEEYhAQ3GqPSdulcSiwMYICBUtKwADWNKmr64EqYDJr8bL9Agj0bwOWXjnOCpTk8upuvS8Bv2rNm/y50wa0edE4INSfPDfaN7EPIq/1/++YKCbeXY4cwdQOS49yOTMT3OOdKUpGu5b+rrRbtEux72r6x1NXSmlegrz+Re3M2s6IYx6M3SQFMFfEnWb6cRDIpfHQ7qEYmqRANXhI/NYYUo9eKomRpoGilgn3YZVjo3uVaY5UZ9qQWynWXBIMIk5t3qNe5Q4h/3L6BUWKQbOn/iPWKzx/8L28zwbGRDCjtYQdrOEkeF8ZlRZlH6ppbv0/VpFuQDEdzSFOLGsIJiHKIQAVOAtQjPJuU3sBRI0Zagzyb4lca2jo1KTQI3GR3D/SmN5nNdlUeN7kI1fWWqaP/gBV7xyAlE45zNU4ipYoi7t7T7qjCHp3aERT4JOHl0+CJBA6eS5JpOzWglLPGH0NnIg/VW2j42g6xLO9e+yNEkkJcle7NpYsd9pHP3Muv3cWDE/gtuhr8hRbmgMzyc2Tu6SZ+1+Irho+so0WdCVJ
+ rLkZBi4V
+ zRE9Wn/88zA4inrN1TfCW1wGjQZMgnYMoHsKhc1YThIv+cZFyNMDviW8KxIePttUo6I7UGOlnClKAFcpQmGXSlj33oB19u1sqaJ6Njf0Ksstro58qHi43fRbh5QnCJ2BoDKpqJJAmDx7XCZToy2AYHKKxgqqaSTMTd431o1Zv+I6cc6PUAu55YAGsnqAUIyfWEk508M5JOnHNvVUVhYVAhC+hW3x4TEUlfHaCvEtcu7CnxFEU/iJVnzQ1zgavFx+dUPTVD0DRBpJA5UVnOWQaUKJKi2L6kDfm0QGAD2qycbp1pfPo8kWQj41qNCmQJXoR3XqqaMRxApO5a0Z7fJrbftZ1BzBS8nBGSWHNhEv5KuqtCi4JFWbwLcuRXeHfsqggKGqwFwgdWSLMr+FHGjXggz7FOgWJhRhipy9oZ+mLcQxGo6Julm8O26grsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -84,143 +85,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---b1=_fDqk7ab3mLda83C1IjqWcy5mBHXRmCyV8XXBJN6rMTQ
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-
-UGF1bCwKClRoYW5rcyAtIEkgZm91bmQgdGhlIEdvdHRzY2hlL2lub2RlX2luaXRfc2VjdXJpdHlf
-YW5vbigpIHRocmVhZCBhbmQgY2FuIHNlZSBpdCBsYW5kZWQuIFRoYXQgYW5zd2VycyAoYSkgY2xl
-YW5seTogbGFiZWxpbmcgZXhpc3RzLCBwb2xpY3kgY2FuIGJlIGxheWVyZWQgb24gdG9wIHZpYSBT
-RUxpbnV4L0FwcEFybW9yIGlmIGEgc2l0ZSB3YW50cyBhbGVydGluZyBvbiBtZW1mZF9zZWNyZXQo
-KSBjcmVhdGlvbi4gR29vZCB0byBoYXZlIHRoYXQgY29uZmlybWVkIGFzIGFscmVhZHkgc29sdmVk
-LgoKT24gKGIpLCBsZXQgbWUgcHVzaCBvbiBpdCBhIGJpdCBmdXJ0aGVyLCBiZWNhdXNlIEkgdGhp
-bmsgaXQncyB3b3J0aCBzcGVsbGluZyBvdXQgZXhwbGljaXRseSByYXRoZXIgdGhhbiBkcm9wcGlu
-ZyBpdC4KCk15IGNvbmNlcm46IGFzIGl0IHN0YW5kcywgYW4gdW5wcml2aWxlZ2VkIHByb2Nlc3Mg
-Y2FuIHBvcHVsYXRlIGEgbWVtZmRfc2VjcmV0KCkgcmVnaW9uIGFuZCBtc2VhbCgpIHRoZSBtYXBw
-aW5nLCBwcm9kdWNpbmcgbWVtb3J5IHRoYXQgaXMgKGEpIHVucmVhZGFibGUgYnkgYW55IGtlcm5l
-bC1zaWRlIGludHJvc3BlY3Rpb24gcGF0aCwgaW5jbHVkaW5nIHJvb3Qtb3duZWQgZUJQRiB0cmFj
-aW5nIHByb2dyYW1zLCBhbmQgKGIpIGNhbid0IGJlIGNvZXJjZWQgYmFjayBpbnRvIGFuIGluc3Bl
-Y3RhYmxlIHN0YXRlIHZpYSBtcHJvdGVjdC9tdW5tYXAuIEZyb20gYSBob3N0LWJhc2VkIGRldGVj
-dGlvbiBzdGFuZHBvaW50IHRoYXQncyBhIGJsaW5kIHNwb3QgYW4gYXR0YWNrZXIgY2FuIHVzZSB0
-byBwYXJrIGEgcGF5bG9hZCB3aGVyZSBhIENBUF9CUEYtcHJpdmlsZWdlZCBtb25pdG9yaW5nIGFn
-ZW50IC0gc29tZXRoaW5nIHRoYXQgaW4gbW9zdCBvdGhlciByZXNwZWN0cyBjYW4gaW5zcGVjdCBh
-bnkgcHJvY2VzcyBvbiB0aGUgYm94IC0gc2ltcGx5IGNhbm5vdCBsb29rLCBubyBtYXR0ZXIgd2hh
-dCBjYXBhYmlsaXRpZXMgaXQgaG9sZHMuCgpJIHVuZGVyc3RhbmQgdGhlIG9iamVjdGlvbiB0aGlz
-IGludml0ZXMsIGFuZCBJIHdhbnQgdG8gYWRkcmVzcyBpdCBkaXJlY3RseSByYXRoZXIgdGhhbiBw
-cmV0ZW5kIGl0IGlzbid0IHRoZXJlOiB0aGUgbWVtZmRfc2VjcmV0KCkgbWFuIHBhZ2UgaXMgZXhw
-bGljaXQgdGhhdCBpdHMgUk9QIHByb3RlY3Rpb24gcmVzdHMgb24gdGhlIGFic2VuY2Ugb2YgYW55
-IGluLWtlcm5lbCBwcmltaXRpdmUgZm9yIHJlYWRpbmcgdGhpcyBtZW1vcnkuIElmIEknbSByZWFk
-aW5nIHRoYXQgcmlnaHQsIHRoZSBvYmplY3Rpb24gdG8gKGIpIGlzIHRoYXQgYWRkaW5nIGFueSBz
-dWNoIHByaW1pdGl2ZSAtIGhvd2V2ZXIgY2FwYWJpbGl0eS1nYXRlZCAtIHJlLWNyZWF0ZXMgZXhh
-Y3RseSB0aGUgYXJ0aWZhY3QgYSBST1AgY2hhaW4gd291bGQgd2FudCB0byBjYWxsLCB1bmRlcm1p
-bmluZyB0aGUgIm5vIHByaW1pdGl2ZSBleGlzdHMiIHByb3BlcnR5IHJlZ2FyZGxlc3Mgb2Ygd2hv
-J3Mgbm9taW5hbGx5IGFsbG93ZWQgdG8gaW52b2tlIGl0LgoKSSBkb24ndCB0aGluayB0aGF0IG9i
-amVjdGlvbiBpcyB3cm9uZywgYnV0IEknbSBub3Qgc3VyZSBpdCdzIGZ1bGx5IGRpc3Bvc2l0aXZl
-IGVpdGhlciwgYW5kIEknZCBsaWtlIHRvIGhlYXIgdGhlIG1haW50YWluZXJzJyB0YWtlIG9uIHRo
-ZSB0cmFkZW9mZiBleHBsaWNpdGx5OgoKLSBUaGUgUk9QIHRocmVhdCBtb2RlbCBhc3N1bWVzIGFu
-IGF0dGFja2VyIHdobyBhbHJlYWR5IGhhcyBhcmJpdHJhcnkga2VybmVsIGNvZGUgZXhlY3V0aW9u
-ICh0aGV5J3JlIGNhbGxpbmcga2VybmVsIGZ1bmN0aW9ucyBkaXJlY3RseSkuIElmIHRoZXkgaGF2
-ZSB0aGF0LCB0aGV5IGNhbiBsaWtlbHkgYWxyZWFkeSB3YWxrIHBhZ2UgdGFibGVzIGFuZCByZWNv
-bnN0cnVjdCB0aGUgbWFwcGluZyBieSBoYW5kIC0gdGhlIHByaW1pdGl2ZSByZW1vdmFsIHJhaXNl
-cyB0aGUgYmFyLCBidXQgcGVyIHRoZSBkZXNpZ24ncyBvd24gY2F2ZWF0ICgibm8gMTAwJSBndWFy
-YW50ZWUiKSwgaXQgd2FzIG5ldmVyIGFkdmVydGlzZWQgYXMgYWJzb2x1dGUuCi0gVGhlIChiKSBz
-Y2VuYXJpbyBJJ20gcmFpc2luZyBpcyBhIGRpZmZlcmVudCBhY3RvcjogYSBsZWdpdGltYXRlLCBw
-cml2aWxlZ2VkLCBrZXJuZWwtbWVkaWF0ZWQgbW9uaXRvcmluZyBhZ2VudCAoZUJQRiBMU00vdHJh
-Y2luZyBwcm9ncmFtKSBvcGVyYXRpbmcgdGhyb3VnaCB0aGUgbm9ybWFsIHZlcmlmaWVyLWNoZWNr
-ZWQgaGVscGVyIHBhdGgsIG5vdCBhbiBhdHRhY2tlciBleGVjdXRpbmcgYXJiaXRyYXJ5IGtlcm5l
-bCBjb2RlIHZpYSBhIFJPUCBjaGFpbi4gQ29uZmxhdGluZyAiYW55IGNvZGUgcGF0aCB0aGF0IGNh
-biByZWFkIHRoaXMgbWVtb3J5IiB3aXRoICJhIGdhZGdldCBhIFJPUCBjaGFpbiBjYW4gY2FsbCIg
-bWF5IGJlIG92ZXJseSBjb25zZXJ2YXRpdmUgaWYgdGhlIG5ldyBwYXRoIGlzIG5hcnJvd2x5IHNj
-b3BlZCAoZS5nLiwgYSBuZXcgYnBmX3Byb2JlX3JlYWRfc2VjcmV0bWVtKCkgaGVscGVyLCB2ZXJp
-Zmllci1yZXN0cmljdGVkIHRvIENBUF9QRVJGTU9OfENBUF9CUEYgcHJvZ3JhbXMsIG9wdC1pbiBw
-ZXIgcmVnaW9uIHZpYSBhIG1lbWZkX3NlY3JldCgpIGZsYWcgdGhlIG93bmluZyBwcm9jZXNzIG11
-c3Qgc2V0IGF0IGNyZWF0aW9uIHRpbWUpLgoKSWYgdGhhdCBkaXN0aW5jdGlvbiBkb2Vzbid0IGhv
-bGQgdXAgLSBpZiBhbnkgYWRkaXRpb25hbCBrZXJuZWwtY2FsbGFibGUgcmVhZCBwYXRoIGlzIGNv
-bnNpZGVyZWQgZXF1YWxseSBleHBsb2l0YWJsZSByZWdhcmRsZXNzIG9mIGdhdGluZyAtIEknZCBn
-ZW51aW5lbHkgbGlrZSB0byB1bmRlcnN0YW5kIHdoeSwgc2luY2UgaXQgd291bGQgbWVhbiB0aGUg
-Y29uZmlkZW50aWFsaXR5IGd1YXJhbnRlZSBpcyBmdW5kYW1lbnRhbGx5IGluY29tcGF0aWJsZSB3
-aXRoIGFueSBmb3JtIG9mIGF1dGhvcml6ZWQgaW50cm9zcGVjdGlvbiwgd2hpY2ggc2VlbXMgd29y
-dGggc3RhdGluZyBwbGFpbmx5IGluIHRoZSBkb2N1bWVudGF0aW9uIGZvciBhbnlvbmUgYnVpbGRp
-bmcgRURSL21vbml0b3JpbmcgdG9vbGluZyBhcm91bmQgZUJQRi4KCkV2ZW4gaWYgKGIpIGlzIHJl
-amVjdGVkLCBJIGJlbGlldmUgZXhwbGljaXRseSBkb2N1bWVudGluZyB0aGF0IG1lbWZkX3NlY3Jl
-dCgpK21zZWFsKCkgY3JlYXRlcyBhbiBpbnRyb3NwZWN0aW9uLXByb29mIHJlZ2lvbiB3b3VsZCBi
-ZSB2YWx1YWJsZSBmb3IgdGhlIHNlY3VyaXR5IGNvbW11bml0eSwgc28gRURSIHZlbmRvcnMgY2Fu
-IGFkanVzdCB0aGVpciB0aHJlYXQgbW9kZWxzIGFjY29yZGluZ2x5LgoKVGhhbmtzIGFnYWluIGZv
-ciBlbmdhZ2luZyB3aXRoIHRoaXMuCgpFbmVzaGFuIEVyZG/En2FuIEthcmFjYS4=
-
---b1=_fDqk7ab3mLda83C1IjqWcy5mBHXRmCyV8XXBJN6rMTQ
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: base64
-
-PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0
-cHg7Ij48YnI+PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlm
-OyBmb250LXNpemU6IDE0cHg7Ij48YnI+PC9kaXY+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFy
-aWFsLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0cHg7IiBjbGFzcz0icHJvdG9ubWFpbF9zaWdu
-YXR1cmVfYmxvY2siPjxkaXYgY2xhc3M9InByb3Rvbm1haWxfc2lnbmF0dXJlX2Jsb2NrLXByb3Rv
-biI+PHA+UGF1bCw8L3A+PHA+VGhhbmtzIC0gSSBmb3VuZCB0aGUgR290dHNjaGUvaW5vZGVfaW5p
-dF9zZWN1cml0eV9hbm9uKCkgdGhyZWFkIGFuZCBjYW4gc2VlIGl0IGxhbmRlZC4gVGhhdCBhbnN3
-ZXJzIChhKSBjbGVhbmx5OiBsYWJlbGluZyBleGlzdHMsIHBvbGljeSBjYW4gYmUgbGF5ZXJlZCBv
-biB0b3AgdmlhIFNFTGludXgvQXBwQXJtb3IgaWYgYSBzaXRlIHdhbnRzIGFsZXJ0aW5nIG9uIG1l
-bWZkX3NlY3JldCgpIGNyZWF0aW9uLiBHb29kIHRvIGhhdmUgdGhhdCBjb25maXJtZWQgYXMgYWxy
-ZWFkeSBzb2x2ZWQuPC9wPjxwPk9uIChiKSwgbGV0IG1lIHB1c2ggb24gaXQgYSBiaXQgZnVydGhl
-ciwgYmVjYXVzZSBJIHRoaW5rIGl0J3Mgd29ydGggc3BlbGxpbmcgb3V0IGV4cGxpY2l0bHkgcmF0
-aGVyIHRoYW4gZHJvcHBpbmcgaXQuPC9wPjxwPk15IGNvbmNlcm46IGFzIGl0IHN0YW5kcywgYW4g
-dW5wcml2aWxlZ2VkIHByb2Nlc3MgY2FuIHBvcHVsYXRlIGEgbWVtZmRfc2VjcmV0KCkgcmVnaW9u
-IGFuZCBtc2VhbCgpIHRoZSBtYXBwaW5nLCBwcm9kdWNpbmcgbWVtb3J5IHRoYXQgaXMgKGEpIHVu
-cmVhZGFibGUgYnkgYW55IGtlcm5lbC1zaWRlIGludHJvc3BlY3Rpb24gcGF0aCwgaW5jbHVkaW5n
-IHJvb3Qtb3duZWQgZUJQRiB0cmFjaW5nIHByb2dyYW1zLCBhbmQgKGIpIGNhbid0IGJlIGNvZXJj
-ZWQgYmFjayBpbnRvIGFuIGluc3BlY3RhYmxlIHN0YXRlIHZpYSBtcHJvdGVjdC9tdW5tYXAuIEZy
-b20gYSBob3N0LWJhc2VkIGRldGVjdGlvbiBzdGFuZHBvaW50IHRoYXQncyBhIGJsaW5kIHNwb3Qg
-YW4gYXR0YWNrZXIgY2FuIHVzZSB0byBwYXJrIGEgcGF5bG9hZCB3aGVyZSBhIENBUF9CUEYtcHJp
-dmlsZWdlZCBtb25pdG9yaW5nIGFnZW50IC0gc29tZXRoaW5nIHRoYXQgaW4gbW9zdCBvdGhlciBy
-ZXNwZWN0cyBjYW4gaW5zcGVjdCBhbnkgcHJvY2VzcyBvbiB0aGUgYm94IC0gc2ltcGx5IGNhbm5v
-dCBsb29rLCBubyBtYXR0ZXIgd2hhdCBjYXBhYmlsaXRpZXMgaXQgaG9sZHMuPC9wPjxwPkkgdW5k
-ZXJzdGFuZCB0aGUgb2JqZWN0aW9uIHRoaXMgaW52aXRlcywgYW5kIEkgd2FudCB0byBhZGRyZXNz
-IGl0IGRpcmVjdGx5IHJhdGhlciB0aGFuIHByZXRlbmQgaXQgaXNuJ3QgdGhlcmU6IHRoZSBtZW1m
-ZF9zZWNyZXQoKSBtYW4gcGFnZSBpcyBleHBsaWNpdCB0aGF0IGl0cyBST1AgcHJvdGVjdGlvbiBy
-ZXN0cyBvbiB0aGUgPGVtPmFic2VuY2U8L2VtPiBvZiBhbnkgaW4ta2VybmVsIHByaW1pdGl2ZSBm
-b3IgcmVhZGluZyB0aGlzIG1lbW9yeS4gSWYgSSdtIHJlYWRpbmcgdGhhdCByaWdodCwgdGhlIG9i
-amVjdGlvbiB0byAoYikgaXMgdGhhdCBhZGRpbmcgYW55IHN1Y2ggcHJpbWl0aXZlIC0gaG93ZXZl
-ciBjYXBhYmlsaXR5LWdhdGVkIC0gcmUtY3JlYXRlcyBleGFjdGx5IHRoZSBhcnRpZmFjdCBhIFJP
-UCBjaGFpbiB3b3VsZCB3YW50IHRvIGNhbGwsIHVuZGVybWluaW5nIHRoZSAibm8gcHJpbWl0aXZl
-IGV4aXN0cyIgcHJvcGVydHkgcmVnYXJkbGVzcyBvZiB3aG8ncyBub21pbmFsbHkgYWxsb3dlZCB0
-byBpbnZva2UgaXQuPC9wPjxwPkkgZG9uJ3QgdGhpbmsgdGhhdCBvYmplY3Rpb24gaXMgd3Jvbmcs
-IGJ1dCBJJ20gbm90IHN1cmUgaXQncyBmdWxseSBkaXNwb3NpdGl2ZSBlaXRoZXIsIGFuZCBJJ2Qg
-bGlrZSB0byBoZWFyIHRoZSBtYWludGFpbmVycycgdGFrZSBvbiB0aGUgdHJhZGVvZmYgZXhwbGlj
-aXRseTo8L3A+PHVsPjxsaT5UaGUgUk9QIHRocmVhdCBtb2RlbCBhc3N1bWVzIGFuIGF0dGFja2Vy
-IHdobyBhbHJlYWR5IGhhcyBhcmJpdHJhcnkga2VybmVsIGNvZGUgZXhlY3V0aW9uICh0aGV5J3Jl
-IGNhbGxpbmcga2VybmVsIGZ1bmN0aW9ucyBkaXJlY3RseSkuIElmIHRoZXkgaGF2ZSB0aGF0LCB0
-aGV5IGNhbiBsaWtlbHkgYWxyZWFkeSB3YWxrIHBhZ2UgdGFibGVzIGFuZCByZWNvbnN0cnVjdCB0
-aGUgbWFwcGluZyBieSBoYW5kIC0gdGhlIHByaW1pdGl2ZSByZW1vdmFsIHJhaXNlcyB0aGUgYmFy
-LCBidXQgcGVyIHRoZSBkZXNpZ24ncyBvd24gY2F2ZWF0ICgibm8gMTAwJSBndWFyYW50ZWUiKSwg
-aXQgd2FzIG5ldmVyIGFkdmVydGlzZWQgYXMgYWJzb2x1dGUuPC9saT48bGk+VGhlIChiKSBzY2Vu
-YXJpbyBJJ20gcmFpc2luZyBpcyBhIDxlbT5kaWZmZXJlbnQ8L2VtPiBhY3RvcjogYSBsZWdpdGlt
-YXRlLCBwcml2aWxlZ2VkLCBrZXJuZWwtbWVkaWF0ZWQgbW9uaXRvcmluZyBhZ2VudCAoZUJQRiBM
-U00vdHJhY2luZyBwcm9ncmFtKSBvcGVyYXRpbmcgdGhyb3VnaCB0aGUgbm9ybWFsIHZlcmlmaWVy
-LWNoZWNrZWQgaGVscGVyIHBhdGgsIG5vdCBhbiBhdHRhY2tlciBleGVjdXRpbmcgYXJiaXRyYXJ5
-IGtlcm5lbCBjb2RlIHZpYSBhIFJPUCBjaGFpbi4gQ29uZmxhdGluZyAiYW55IGNvZGUgcGF0aCB0
-aGF0IGNhbiByZWFkIHRoaXMgbWVtb3J5IiB3aXRoICJhIGdhZGdldCBhIFJPUCBjaGFpbiBjYW4g
-Y2FsbCIgbWF5IGJlIG92ZXJseSBjb25zZXJ2YXRpdmUgaWYgdGhlIG5ldyBwYXRoIGlzIG5hcnJv
-d2x5IHNjb3BlZCAoZS5nLiwgYSBuZXcgYnBmX3Byb2JlX3JlYWRfc2VjcmV0bWVtKCkgaGVscGVy
-LCB2ZXJpZmllci1yZXN0cmljdGVkIHRvIENBUF9QRVJGTU9OfENBUF9CUEYgcHJvZ3JhbXMsIG9w
-dC1pbiBwZXIgcmVnaW9uIHZpYSBhIG1lbWZkX3NlY3JldCgpIGZsYWcgdGhlIG93bmluZyBwcm9j
-ZXNzIG11c3Qgc2V0IGF0IGNyZWF0aW9uIHRpbWUpLjwvbGk+PC91bD48cD5JZiB0aGF0IGRpc3Rp
-bmN0aW9uIGRvZXNuJ3QgaG9sZCB1cCAtIGlmIGFueSBhZGRpdGlvbmFsIGtlcm5lbC1jYWxsYWJs
-ZSByZWFkIHBhdGggaXMgY29uc2lkZXJlZCBlcXVhbGx5IGV4cGxvaXRhYmxlIHJlZ2FyZGxlc3Mg
-b2YgZ2F0aW5nIC0gSSdkIGdlbnVpbmVseSBsaWtlIHRvIHVuZGVyc3RhbmQgd2h5LCBzaW5jZSBp
-dCB3b3VsZCBtZWFuIHRoZSBjb25maWRlbnRpYWxpdHkgZ3VhcmFudGVlIGlzIGZ1bmRhbWVudGFs
-bHkgaW5jb21wYXRpYmxlIHdpdGggYW55IGZvcm0gb2YgYXV0aG9yaXplZCBpbnRyb3NwZWN0aW9u
-LCB3aGljaCBzZWVtcyB3b3J0aCBzdGF0aW5nIHBsYWlubHkgaW4gdGhlIGRvY3VtZW50YXRpb24g
-Zm9yIGFueW9uZSBidWlsZGluZyBFRFIvbW9uaXRvcmluZyB0b29saW5nIGFyb3VuZCBlQlBGLjwv
-cD48cD48YnI+PC9wPjxwPkV2ZW4gaWYgKGIpIGlzIHJlamVjdGVkLCBJIGJlbGlldmUgZXhwbGlj
-aXRseSBkb2N1bWVudGluZyB0aGF0IG1lbWZkX3NlY3JldCgpK21zZWFsKCkgY3JlYXRlcyBhbiBp
-bnRyb3NwZWN0aW9uLXByb29mIHJlZ2lvbiB3b3VsZCBiZSB2YWx1YWJsZSBmb3IgdGhlIHNlY3Vy
-aXR5IGNvbW11bml0eSwgc28gRURSIHZlbmRvcnMgY2FuIGFkanVzdCB0aGVpciB0aHJlYXQgbW9k
-ZWxzIGFjY29yZGluZ2x5LjwvcD48cD5UaGFua3MgYWdhaW4gZm9yIGVuZ2FnaW5nIHdpdGggdGhp
-cy48L3A+PHA+PGJyPjwvcD48cD5FbmVzaGFuIEVyZG/En2FuIEthcmFjYS48L3A+PHA+PGJyPjwv
-cD48L2Rpdj4NCjwvZGl2Pg0K
+Note:Apologies for the HTML format in the previous send; this is a plain-te=
+xt resend of the same message.
 
 
---b1=_fDqk7ab3mLda83C1IjqWcy5mBHXRmCyV8XXBJN6rMTQ--
+
+
+Paul,
+
+Thanks - I found the Gottsche/inode_init_security_anon() thread and can see=
+ it landed. That answers (a) cleanly: labeling exists, policy can be layere=
+d on top via SELinux/AppArmor if a site wants alerting on memfd_secret() cr=
+eation. Good to have that confirmed as already solved.
+
+On (b), let me push on it a bit further, because I think it's worth spellin=
+g out explicitly rather than dropping it.
+
+My concern: as it stands, an unprivileged process can populate a memfd_secr=
+et() region and mseal() the mapping, producing memory that is (a) unreadabl=
+e by any kernel-side introspection path, including root-owned eBPF tracing =
+programs, and (b) can't be coerced back into an inspectable state via mprot=
+ect/munmap. From a host-based detection standpoint that's a blind spot an a=
+ttacker can use to park a payload where a CAP_BPF-privileged monitoring age=
+nt - something that in most other respects can inspect any process on the b=
+ox - simply cannot look, no matter what capabilities it holds.
+
+I understand the objection this invites, and I want to address it directly =
+rather than pretend it isn't there: the memfd_secret() man page is explicit=
+ that its ROP protection rests on the absence of any in-kernel primitive fo=
+r reading this memory. If I'm reading that right, the objection to (b) is t=
+hat adding any such primitive - however capability-gated - re-creates exact=
+ly the artifact a ROP chain would want to call, undermining the "no primiti=
+ve exists" property regardless of who's nominally allowed to invoke it.
+
+I don't think that objection is wrong, but I'm not sure it's fully disposit=
+ive either, and I'd like to hear the maintainers' take on the tradeoff expl=
+icitly:
+
+- The ROP threat model assumes an attacker who already has arbitrary kernel=
+ code execution (they're calling kernel functions directly). If they have t=
+hat, they can likely already walk page tables and reconstruct the mapping b=
+y hand - the primitive removal raises the bar, but per the design's own cav=
+eat ("no 100% guarantee"), it was never advertised as absolute.
+- The (b) scenario I'm raising is a different actor: a legitimate, privileg=
+ed, kernel-mediated monitoring agent (eBPF LSM/tracing program) operating t=
+hrough the normal verifier-checked helper path, not an attacker executing a=
+rbitrary kernel code via a ROP chain. Conflating "any code path that can re=
+ad this memory" with "a gadget a ROP chain can call" may be overly conserva=
+tive if the new path is narrowly scoped (e.g., a new bpf_probe_read_secretm=
+em() helper, verifier-restricted to CAP_PERFMON|CAP_BPF programs, opt-in pe=
+r region via a memfd_secret() flag the owning process must set at creation =
+time).
+
+If that distinction doesn't hold up - if any additional kernel-callable rea=
+d path is considered equally exploitable regardless of gating - I'd genuine=
+ly like to understand why, since it would mean the confidentiality guarante=
+e is fundamentally incompatible with any form of authorized introspection, =
+which seems worth stating plainly in the documentation for anyone building =
+EDR/monitoring tooling around eBPF.
+
+
+
+Even if (b) is rejected, I believe explicitly documenting that memfd_secret=
+()+mseal() creates an introspection-proof region would be valuable for the =
+security community, so EDR vendors can adjust their threat models according=
+ly.
+
+Thanks again for engaging with this.
+
+
+
+Eneshan Erdo=C4=9Fan Karaca.
+
 
 
