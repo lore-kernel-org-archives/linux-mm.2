@@ -4,125 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A6F8C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 23:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DBC5C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 23:08:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C8F46B00A5; Thu,  9 Jul 2026 19:06:47 -0400 (EDT)
+	id DB7966B00A6; Thu,  9 Jul 2026 19:08:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 352826B00A6; Thu,  9 Jul 2026 19:06:47 -0400 (EDT)
+	id D68B86B00AC; Thu,  9 Jul 2026 19:08:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21DA36B00A7; Thu,  9 Jul 2026 19:06:47 -0400 (EDT)
+	id C59AB6B00AD; Thu,  9 Jul 2026 19:08:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EAABD6B00A5
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:06:46 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6589C120305
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:06:46 +0000 (UTC)
-X-FDA: 84970774812.17.2B2BB82
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9506A140002
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:06:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="u/bfFLt1";
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DB626B00A6
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:08:09 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 209D41C7EDD
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:08:09 +0000 (UTC)
+X-FDA: 84970778298.08.5DF1DE3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5901E4000A
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:08:07 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XMPYVnzp;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783638404;
+	s=arc-20220608; t=1783638487;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G+I1Kh+neFzTKmOmQym2AfGZpWjdwKJKu5WX9LjuS6A=;
-	b=HVbmhZQcEaBZlZUqKYtdeTFhXkVVqQXVjicLZqJD69rFfFQY9ytwguGC/W9dcp5WnGOUWg
-	TcQst9iDG8kshKcciJ+x7gaAwMhQs+LsVYK4N8Tmup45LCtHuV9wAG1JqO16CuYqyCxR8Z
-	xl/gYm7H2DSsyZ4vmiOIqTaKY/N6TR4=
+	bh=hrvsWTz435qSeuQ7MkXJncgr8HSB0tXcJQzesUwSVlc=;
+	b=fYytyizu8Zc89hHPpcMcWjjCbRIdT3A7tKBUrwnRoRjZA5O5ysHMmSdQ0HkXyNpogVW1CJ
+	uAW3eq3AGRVhGkUcncURNNQJLeEvk+09glCgoPzR6kg/Ec9ZqjTgdgv9bY6k+M9On3g6gk
+	QMY67Fi+IACvaeLc94qcJ5FOmvG5jvg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="u/bfFLt1";
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XMPYVnzp;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783638404;
-	b=JN3nIRpowDcssVa8ZyKQx85qdWCX2FzN/3CfUrbEuxcYaLg/ixPosWcr12sfx2tWdUOOfs
-	/Jc8c9M8imbrgnlul5jl8IoNnoE0YD+T8wiMTggL6glNhg7Mm/NP6E0M1aYkr8qK1p2Hnw
-	RWATGGdtt4lW9SfCcteRtMq4235Sd3Q=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92e50979c71so25226985a.3
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 16:06:44 -0700 (PDT)
+	t=1783638487;
+	b=hf0Gf4RDx9FHq5CfG7Nme+rfB7ye6wb1KKNcNOXCdMb7VxuUg9JnvPVc0VSvVNwc2Fd9r0
+	3pvdMiZSiPtkaVO+Nt3Xv9MPrdx6Wju9qaxhe+u8XPYbZRC+vHe+DLEvTYVCCeQG+TE4/R
+	l3POD4xDY8tUCAOaQo7n4+xkkAt+Vk0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9F72E600C3;
+	Thu,  9 Jul 2026 23:08:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8CA1F000E9;
+	Thu,  9 Jul 2026 23:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783638404; x=1784243204; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=G+I1Kh+neFzTKmOmQym2AfGZpWjdwKJKu5WX9LjuS6A=;
-        b=u/bfFLt1Lkgg/uWWtVkHMM4NxnSM0wduahBK78iqm0NgkTLL/1jo4t3htbxjjgR34P
-         VT6T1urHDgPO2JL63OUEkMHXz8suMN3mXl4TTOcE3zae0nWWsoaIWH7IIPccL9JaRwyS
-         3HizmSu7uXfgBwdgIet+wXYmGIox1bcaRKGUv5SNXdlj6i2fO/bw+Vj4/4M0P17jObSD
-         YjRTrXuWl7SRIMlRTOGqMCTXOwdddkhG9k2GRrG5pnB4jOGs/ifxEjZ2Bh+9vZo/dxIm
-         u2Y/0p+gpl6hlBQ+dVPugKPl471TIg5yTMgeOI24mqTvMEuzV8XEIVHGTpAxOzd0hQOb
-         1Ljw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783638404; x=1784243204;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G+I1Kh+neFzTKmOmQym2AfGZpWjdwKJKu5WX9LjuS6A=;
-        b=iEqO3m+v/5ull21vE2LED41XfwiQlpTqsAx1L9dV+VWTfmdlQ39O5zlkn+bEQPUiIp
-         RWT/+cYZtvsc31nE1Tf+DtPsSIH1c3HusJv9xxa1Zt8oLmaIEPWhWQ8mxxkeNfdAAAiz
-         1gh6G3Nkq7WZ64PPVfc6yhfDmOwFTHc5bHRFODIUjQXj3ftVMzm+it0RL5tWU1NZ8G2C
-         +qVXxfQNIP8IzRoTnO0Y5I6EwbAcr9SLgjlcbafW+6n62vtg3QBWH0VoYb5Mrs/HhZLe
-         793GAgfGUTaZvgArPRxqorxOjvol1JnzYkBpjMJsEUvBlhLZfggO8WpZQ1IY9MPwSX/t
-         15nw==
-X-Gm-Message-State: AOJu0YzqmJwuSkvRjlz1p/kS6MHvj9lkKDqWM9cn6FWRtCpk8DBCmR84
-	l8N9sh4WNLbobjfWMEH8sRjTk5dP/IvxrHMsOECkEqiK7OgSOpvykV3vam9CpNzqLBs=
-X-Gm-Gg: AfdE7ckj/VM6i2iS5knn9Gau0oU0R2wPYgOxapzbhpOx/r73IGqomVG+yjknyDrZztU
-	6bb/99t2P1vpakVWJZBVEl5sE8tXEeFLOKcqSwA7jMZyYxZSeU3jhLyAA2h2919Nwj2JHlh3uBO
-	FgPpGxctm+sLIEbGX5WWvKct7KNicfM6cYV/ukk6k2l6DD974/Xxg0jLRFLHqNN3s2gprKxx8bH
-	FGzRZatpslj65wtP+9d0b+3qa4xLWiWsZIx6Hwl/L1JucSXZlL9Flf3j+VSzSHlAaEkmlJs0jRm
-	YedtggYRy99At5NbZjZZnDUhVPS3T/ripBWX1lDSrANfC8Py5Z+8Bj4x+9kFjdGICkBGki5eONl
-	lIunu6uJvYaGc48kShtZcXLuwcVkxMrbbuMlHsFLbklziAtypzzvgmSIAPubgYSTJfWNvAkRZTT
-	8EpD2DyPSWInJyP+1/aGNwgUJ42ngV8OGSpA6agf4w4by6qPL5ePoT8Aw7cKiesDNOZGoP
-X-Received: by 2002:a05:620a:31aa:b0:92e:7db8:1e86 with SMTP id af79cd13be357-92ecf6aa487mr1099339185a.58.1783638403562;
-        Thu, 09 Jul 2026 16:06:43 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5b4b1bbsm59189185a.2.2026.07.09.16.06.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 16:06:42 -0700 (PDT)
-Date: Thu, 9 Jul 2026 19:06:38 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Dan Williams (nvidia)" <djbw@kernel.org>
-Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com, david@kernel.org, osalvador@suse.de,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	vishal.l.verma@intel.com, dave.jiang@intel.com,
-	alison.schofield@intel.com, akpm@linux-foundation.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	shuah@kernel.org, iweiny@kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com,
-	Hannes Reinecke <hare@suse.de>
-Subject: Re: [PATCH v6 09/10] dax/kmem: add sysfs interface for atomic
- whole-device hotplug
-Message-ID: <alApfp2z9Thyan16@gourry-fedora-PF4VCD3F>
-References: <20260630211842.2252800-1-gourry@gourry.net>
- <20260630211842.2252800-10-gourry@gourry.net>
- <6a502267b17cc_3b7ee51008f@djbw-dev.notmuch>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a502267b17cc_3b7ee51008f@djbw-dev.notmuch>
+	d=linux-foundation.org; s=korg; t=1783638486;
+	bh=hrvsWTz435qSeuQ7MkXJncgr8HSB0tXcJQzesUwSVlc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XMPYVnzpEX9f0UBhMb0AFQua5Zx3cNbDm/B0AFFGcRpVZo/yG6lGdx3nzh+bEGn0y
+	 KMWgSup9nsqlEPWYR2X1uctCeeM780oiZRdBOGYFd5DtKJ9ZVQy9HKFOO00F9eidpa
+	 gqV1qO3aZSx61RYVPs9rirVw1GLd9Vl90ebf8tgU=
+Date: Thu, 9 Jul 2026 16:08:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com,
+ will@kernel.org, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com,
+ anshuman.khandual@arm.com, david@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ rppt@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com, Wen Jiang
+ <jiangwen6@xiaomi.com>
+Subject: Re: [PATCH v6 0/6] mm/vmalloc: Speed up ioremap, vmalloc and vmap
+ with contiguous memory
+Message-Id: <20260709160805.26e63bae89dd03cf2951104e@linux-foundation.org>
+In-Reply-To: <20260709073823.6643-1-jiangwen6@xiaomi.com>
+References: <20260709073823.6643-1-jiangwen6@xiaomi.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9506A140002
-X-Stat-Signature: xkwukborpnxpeje99x75dxpw58jcqpyz
-X-HE-Tag: 1783638404-595937
-X-HE-Meta: U2FsdGVkX1/ujK1mpdfVP3Aj5zaHA7v61OBE4gZn6GtDTOcqcW7RxtqgigxTIBhcFlpTI3nwBH24vUNljlfhvDYY7/jhyEjZFO8oxvv9J+tOV1ss8wV2GuSFsBlzjScrdsgmBIvfpBhvi/75Nm5gSSAqdnnUnu/Zv6JipSITmZWI/fx4Xv3SPEwZ9Wo/Efp2q35PJNzJr8VV/AwJiracD8Pqw/YsO/BiNWaccDHNkpqdcXR9rdyHC6EDkcTkNAgzhW3jZ2MeaJueFb29rkCI6hpYKLUja+zqa0CeSovlAJfjFSVvyMuwJffAOtSGI+Mf6ai4ndUxhKuLEgYCW6VgzV8Mz5xTpQ1ir36J42b+sOKJ3rCrkUD7YV/SnSaVZfgT30eH5Cmx0wXGpQSw/iutYrcOpGElT8dKL9cxgABXKSnN7WWIZxaJZa39kRxMnpoB7iL0gf18TM/BwiXkjeFynnsMrdUJ/GdmF504I1UJS80fYHxFF4OqRfvHrUcalr8dGph2H+RX9F+9U9bfOaLRxOzoT9b5UofqMG2GUoG4db4JLv71g+sx1s8G9feT1wJjTnNCkdqPBpoyMPP3U3dcb9oUe1C+MmhNbuqziFikgUmzBhsotyUU8GITdP1MaiZAmNFQq8DzVyKsyhIhD7Q2Rw8tvFald+YuLnC+jRDICmS4RwNfRshMjuZBOXAx6g9dn0QS4oMP7hFJFEjlmee07rGEGNFI8wpEPtHOGBG+C2MWWW9+SNdokTDyfEZN1+kdqY2GfmZjLBcq3kEVDxko3ZJAVlZiBWwu3CBiJiY825W9ktmg74wnXUjC21VuYKU9y4AA3n8Gx6rDxnCTgvh+rGUa/I9wRgMF8GJk9EJ6t8vvxNbyjkKJ2fe8IB7o6/TqUoDKeZrx76kgUfc0agpbC0Ovp1EhuWIAsExkulleWh4S5D2bEVFOhz/W2rNl+SZ7e0/ryRPMfVXAIvzHUHT
- x3d/3i9Y
- urGq2Rs1x/a57+kp/iWmbL71/UMPvs0TKx3kzoEq7ffEl4HcKVSGuUBpizSZzL89+SoHzQJfSBH7rVFkHo01lu3t7DUlbOR+UWS1BT3tTce4GVGCS4wF6mJL4D88EpJp08eztignPLvBCA+6BubWi9WCCoYM1FEH9luBaRqr0gX1+cz1P2fAx02dNfFkyCv8mD8M3QFw42quBPshKdl17fyYcDQ+TSc+IOAiSXEbJMysLcc10tVoLEZ3m/9z+bGKfIw2tDdUVEPLP9YwU4Dw6j5gHIG7aFhzVcdH/Lfn/zhVJLU53ydJxWdaRZpxv53gemPEG2Z6lyhwUHrSIj5TzIS10t/qh+9vbT68Qdjeej5P4La1FeTqI4VwY1/EQCbZPuihnMsRL+Qbl6ss0tIawih88UQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 5901E4000A
+X-Stat-Signature: 7sz4ys3dg4smezdm65i3zeatru16jif4
+X-HE-Tag: 1783638487-181024
+X-HE-Meta: U2FsdGVkX1+mnA/mfONTaISbJrNJsS6jQJYVeyWe8PgUGiygTf29z/Oj0epGf953veM1O8dZc93BziwK2Sk1m908lUhTR7XgVlwORkgussMEDk6P/3J/uAh/XX9t+MbhbWqr0jJd/Y1H9LB9A/dSdq6OwavCMZwWaOdZF8OHl/maDTfCP9t+7QOrKJVHnkJMQ+DnSX3fy6xsUj7JD3yL1NqXuJ5ZAE6MQ2gjYR3q2Oesx577qO6QAZWIzPaqMt0nvJcPb9PQNuW8vHSQ3HHHsPsObqBFy9UOPRU44GSDfWO1lvQ+qzrLk/+tsUpbdAu7GCOsOhdUT9Q2o5/4hf2podNDUscKJ5/vHU6PI29RxTH9mNU+dYMva6OiixzxOH4xXuFh4RqnzWBs7x9zRX9VWh8voXgaBXb39KDWM7L7Y/OJVqKYX+NmUH9sWKye7m5q/ewutd16z/zFG1Y54cUvN5XnVL0mtKemSI4eY84soCmUTdpEOl5E04BHCNrUy5AOXb5o1FFHwePUc6uTUX98ZervrBaFZffLxCL/h/9a6LQLKUSxMFF4+rw7NRWuVw7Q5PmrlC9HXpQcvRB1oDO6rSlqZ+o1rHRt/hqn9MOCTziKYRN9+TSOssCInGcIYrv6FF3e48pqT2C2DInXwdnU05pwLVvYNeU6e004y0QB5H/JYGzFfPJxE2mak2gFN7Y8dY20Vz4XNVM+JI4Mcmin+Ggimh2vcm1Ei1oFTdpSRXDEFeWpcWvWfr/EmzewcybbtFlK2MukciWl37NI1MWgtwcvgM8YHc9xwfHPkQB1bdJ9f7l/em3Nq/KzUt8NNqSFlN3tmzHPgUo2wISwVvzdJkx+szFnopz55FCKzyKwv+2fd61HpHPfVPxiOP/ARGUUsV0H+mLUIBqZJ74ZOUziZeF1LpUIN72RMQsRg5lVvdw6F5PyXStrRr+NVQDgfMuUQjTqiNDWdwYe62/m8o9
+ Xzftwz2S
+ F0xwSqTd+Enbx0cK49xb5RpusCaMkM2ntIH/kr4Gp8rsClOkKoamoFd+TP9uXoITNFjhZcddZOArZrRzYxPo4OrU/1RImj2UPBSUU7Qvj+JK/T0eRCi//pri1H2n5af+2viLG2lpg4MXccG/gxmjll3QC4AWM7yx1LYvyDve8H0OuTNhunpfaNODW4H0x4mIvL4KUEXcrfNAsmHxbxHvmHtd68C9FQRn+6B5+dEWaV3o2x0kideBQd6PWoxLGHtkzn6Bm0fn9vsKmXWzlXYFvDVG4Jg/LNl11ZA0Z/xTMHBAL/GKUAFizKyOF3tG/0eF/nMgBGaITtLU7NgK6eTDeFHmOt9CiSiKCMdwdFUDZjqVTSz9Jxcz378fII65SLOqPj9Z5YMbT7NQ1S7CZ6iPRKEaITXpHKYzlYo5XYEE6sSTf0oP76K8lDk8BIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,99 +94,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 03:36:23PM -0700, Dan Williams (nvidia) wrote:
-> Gregory Price wrote:
-> > +	ranges = kmalloc_array(dev_dax->nr_range, sizeof(*ranges), GFP_KERNEL);
-> 
-> The new hotness is:
-> 
-> ranges = kmalloc_objs(*ranges, dev_dax->nr_range);
-> 
+On Thu,  9 Jul 2026 15:38:17 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
 
-ack.
+> This patchset accelerates ioremap, vmalloc, and vmap when the memory
+> is physically fully or partially contiguous.
 
-> > +static ssize_t state_show(struct device *dev,
-> > +			    struct device_attribute *attr, char *buf)
-> > +{
-> > +	struct dax_kmem_data *data = dev_get_drvdata(dev);
-> > +	const char *state_str;
-> > +
-> > +	if (!data)
-> > +		return -ENXIO;
-> 
-> Cannot happen with a dev_group attribute. If probe succeeds then drvdata
-> is present. If probe fails, attribute never appears.
-> 
-> When unplugging, dev_groups are unregistered before drvdata is cleared.
-> 
+Thanks, I added this to mm.git's mm-new branch for wider testing.
 
-Ah good to know.  I am always paranoid, but i'll drop.
-
-> > +
-> > +	if (data->state == DAX_KMEM_UNPLUGGED)
-> > +		state_str = "unplugged";
-> > +	else
-> > +		state_str = mhp_online_type_to_str(data->state);
-> > +
-> > +	return sysfs_emit(buf, "%s\n", state_str ?: "unknown");
-> 
-> So the "unknown" case does not need to be here.
->
-
-mhp_online_type_to_str can technically return NULL, seems better to not
-just let a NULL dereference sit latent even if we can visually tell it
-can't happen today?
-
-> > +	/* Always create blocks for backward compatibility, even if offline */
-> 
-> Unless maybe a driver knows better and wants to preclude the possibility
-> of legacy per-block hotplug policy firing? I.e. driver asks for dax_kmem
-> to start in the unplugged mode per my "should DAX_KMEM_UNPLUGGED be a
-> online_type with a different sentinel".
-> 
-
-I suppose I can put DAX_KMEM_UNPLUGGED in the header and allow this.
-That seems reasonable, and makes sense why to differentiate
-DEFAULT/UNPLUGGED.
-
-ack.
-
-> > +	rc = device_create_file(dev, &dev_attr_state);
-> > +	if (rc)
-> > +		dev_warn(dev, "failed to create state sysfs entry\n");
-> 
-> Always prefer statically declared attributes. In this case an attribute
-> that only appears while the driver is attached would be something like:
-> 
-
-ack.
-
-> > -	success = dax_kmem_do_hotremove(dev_dax, data);
-> > -	if (success < dev_dax->nr_range) {
-> > -		dev_err(dev, "Hotplug regions stuck online until reboot\n");
-> > +	if (dax_kmem_state_is_online(data->state)) {
-> > +		dev_warn(dev, "Hotplug regions stuck online until reboot\n");
-> 
-> I like that the BUG() is avoided, but I think these should stay
-> dev_err() given the severity.
-> 
-
-I had to go back to calling remove_memory() by default given different
-feedback, but I think if anything I will just modify the BUG() to a
-WARN() and call it a day.
-
-ack on dev_err().
-
-> > +	struct device *dev = &dev_dax->dev;
-> > +
-> > +	device_remove_file(dev, &dev_attr_state);
-> > +
-> 
-> One less cleanup to do if the attribute is registered statically.
-> Attributes are shutdown prior to this point.
-> 
-
-ack.
-
-~Gregory
+AI review asked some questions, and some of them are new since the v5
+series:
+	https://sashiko.dev/#/patchset/20260709073823.6643-1-jiangwen6@xiaomi.com
 
