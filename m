@@ -4,99 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41C3CC44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 08:16:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 373E2C44506
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 08:16:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3477E6B0092; Thu,  9 Jul 2026 04:16:19 -0400 (EDT)
+	id 877A96B0093; Thu,  9 Jul 2026 04:16:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31EF86B0093; Thu,  9 Jul 2026 04:16:19 -0400 (EDT)
+	id 84EFA6B0095; Thu,  9 Jul 2026 04:16:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 20E0A6B0095; Thu,  9 Jul 2026 04:16:19 -0400 (EDT)
+	id 718206B0096; Thu,  9 Jul 2026 04:16:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F39876B0092
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 04:16:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C3BA140426
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:16:18 +0000 (UTC)
-X-FDA: 84968530836.19.0A91DAA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E6295A0008
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:16:16 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 42E806B0093
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 04:16:20 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CE177120445
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:16:19 +0000 (UTC)
+X-FDA: 84968530878.04.F1A1597
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C987FA000B
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:16:17 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NmHmTCee;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783584976;
-	b=fqWhAU19VBAlKMC1RnMTcmnc+emxcSmnlmczd9fKcbKVoR7kY067qXyBANSVYDjUNAPEuN
-	gj800LEgOtsLzQzwvNpHgJRGES2mU25E/Iw3auTnsOqJePwYJa/qwFrNmouvfySoUsjQry
-	i52XPrr9TzFJ2eM8+J+5VSKqevAhH18=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NmHmTCee;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	dkim=pass header.d=suse.com header.s=google header.b=ep9G5l0k;
+	spf=pass (imf15.hostedemail.com: domain of pmladek@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=pmladek@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783584976;
+	s=arc-20220608; t=1783584978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWqM26o6P8eM5Qx/ljoWpy23OEgj04qhT8EVjOatyCY=;
-	b=BaWN174DAlcfalrZlMC5HlanAPvrFgXqLa4d86Q8NIehdMJQrBtpO39ErLpM5IJxmfxcPv
-	tb6EXIkXwnOGFfNapw0cuk6RAXLgde/ik2bkBe583vdGJBsQcnnyKgxhOKPnBQbGES7wxP
-	gqYC0Up1xqFevoSgzonCFppmE1/cz0s=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 821946001A;
-	Thu,  9 Jul 2026 08:16:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E161F00A3A;
-	Thu,  9 Jul 2026 08:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783584976;
-	bh=aWqM26o6P8eM5Qx/ljoWpy23OEgj04qhT8EVjOatyCY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NmHmTCee3X8f1bLKrHgQmWnc0gi1/z2V0METrdkfkYmtXlPdxEn7npLiM8VFckiHx
-	 EY4OvD6HMEdARwOCDp9H0aIxHGeCUIXHGTReZY4uBN/4soQF92WrW+r0dCajeEUpD2
-	 Mk/3jgt6H0xwxR78ymzhjxMQ5xLThLKyr8VV0fCJaUGYx4gv/L6c42nektKrNlLgLt
-	 YW2lTta3ApfMmPEyoIA2/QenKZk8769nTt0R1uqp+Ds5jNw4C1HbkUw6D7B6MKoEwI
-	 yEHlDeUP7kv50G8By9qdKH24xmeNYOl4a8NpxPx5OocOUfj/fftN/lpPD6v4PBizD7
-	 RRjsgMMp/SAXQ==
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org
-Cc: baolin.wang@linux.alibaba.com,
-	dev.jain@arm.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	ziy@nvidia.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [RFC PATCH v2 1/2] mm: allow smaller large folios to use lru_cache
-Date: Thu,  9 Jul 2026 16:15:35 +0800
-Message-Id: <20260709081536.82768-2-baohua@kernel.org>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260709081536.82768-1-baohua@kernel.org>
-References: <20260709081536.82768-1-baohua@kernel.org>
+	bh=z+CFlNGgVOBUKoyPjKhrOhvumBe76lgJlilpAZoLH+g=;
+	b=sQqkT7/F/fqrquB1xj3C4kv5RHYw4W72Qn8PZG9e27bAfDm5oe/oWuJ7NYs9jgIn/OCGzw
+	AOvWmYpY1NaxN8GsHHwAfJp7tir24nK+CN+vKKVSJLj47G8lyBBm1CD3l779fcnJPoouqM
+	2rSnSF+WtS5OYyC6op6rSYHSWS2X5Yg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ep9G5l0k;
+	spf=pass (imf15.hostedemail.com: domain of pmladek@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=pmladek@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783584978;
+	b=U//jqJSUC8GHAv4IBQcZb8j6C0VjRyviKEQuC9m0RxJ3aCZeBfdmQFKf9Lg3nw524d8w6y
+	DTbQzNGhJIyWhcmsHZsB+Z2C9kmi+RSrF3EvzB2fEVVBee6AELq3BVtXW74v26iqCQsDSL
+	gKliG9+9wMwDAd5t3//WM/rro9cwdTk=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-493ba701891so11180125e9.3
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 01:16:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1783584976; x=1784189776; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=z+CFlNGgVOBUKoyPjKhrOhvumBe76lgJlilpAZoLH+g=;
+        b=ep9G5l0kkEFIJQTNSgWH8SU5WLLmX977ouOGGB5ZKfkRWaUnQwQApgQXeNd9TiTTGY
+         4trCB/6xTk5g/5g0SMPtG7dmc6AgKDTOHKKnLDgYEIKQpPi/3+htN3RYyAAmCULqHaRe
+         cVvavcP/3jsxWyALkJlI7USm9LDplfQRMV1MJ3cYTjGKKz/J6YXg6+W1dsJxFg5qSwLh
+         U03OfCvIKGKMwl2xc7/djO63gSkK2zBkYX1mJkK6hOTKQrlJGN6dQpEmlwVwNPf0fb6Y
+         47Ha2XUvI08wNH+77pTGR05eGr8Tg3BWn6iAns4ZJGzKLSCpYfgav4+K7KYqXAz26rvO
+         Ovbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783584976; x=1784189776;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=z+CFlNGgVOBUKoyPjKhrOhvumBe76lgJlilpAZoLH+g=;
+        b=U5PVLjmVM9FVeW7z/GjwqmK9kG41j4yZMxKYiuxQam9ZyXqgRYMoHyfFF0PGkhXIyW
+         R/fr8S4nLe4eRWXDL/kvvz+50Xsrx/lUFnu/JIUVnzKJfhrKQPcvyp14LvfydoaZ4r39
+         pEfQJKMZNyIc510W75PV7f9z77jNp3CoC8KUsI3nDHHZKGpBoAzyM+FDsIz4lssSeVz4
+         oQCXWrtiVBsVinu3V9EPXnPI5IVyb52QpOlp8DFOgTNpzr/S8SCMcwxPFQLrnyw4hbL1
+         5rSOCEysA2WDYBt/1rV199AGvgVBleyvNHVgImCNJ2VrRMClq5Ao3CwjUeqcGBrH1xjg
+         zHZw==
+X-Forwarded-Encrypted: i=1; AHgh+RrNjje+G0DKpLPwDreNbfDiiVsLODaqkP+Snr/71++pN755IVzIFyAGUiHsGnJPxQ3E8f6kK+CmTQ==@kvack.org
+X-Gm-Message-State: AOJu0YxtpEZWkPstkh9PaOxMeSQjogSFz1yPUXPGDgIBkG4JVvHdhEZN
+	3ccgxilEbqAdj6gvij4AvJKUGb8O3QbD1b4RCqeE89fnJkM01TI6JShQ8+uQYHDiuoA=
+X-Gm-Gg: AfdE7cmYOdICZJjg/9YdUpnudu6q9P9CpDqBOqEfCbsGU5TONvaR+XMXWILd3x5s6eI
+	q4pquKG+8CaEbI5WyCNrA+4SmSnHTt1PW5Bw7772IjCieksrrwQUdCoufwdHbukbw7s6IlrYv5V
+	rbiSb7gjTg8XaixVOJqh0v7WhsEoA2rFis1mz5yiLCVOMdMDP5By/Lh5iZbmEpOWHZwu+NSAnPa
+	sRVcNAq9atpXMhU57hbxLkQ24KeLJHKjhlFl0kjD2K4V6xb3JCSrlL+MtTFMkN2llqZ0Yeid+Fn
+	7edQZzDztu/NL5NtMnYP5A0Z3zQLkLsojXCJA6IUzsb7l23QCvndjvOOgofdJURakKotGwQS1gi
+	cMcrCEkRzPs3MQv6nhSlw6YLKn52HrNaGVl2lCQjcX3OH2V7rlB94/eHcHt/UIOE6DM4klyGt5W
+	bFbnL1dROiXD9ZG30=
+X-Received: by 2002:a05:600c:1d1e:b0:492:7084:32af with SMTP id 5b1f17b1804b1-493e68bf03amr56205565e9.23.1783584976164;
+        Thu, 09 Jul 2026 01:16:16 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493ee2bcac0sm20177645e9.0.2026.07.09.01.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 01:16:15 -0700 (PDT)
+Date: Thu, 9 Jul 2026 10:16:12 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Eugen Hristev <ehristev@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>, workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 21/26] printk: Register information into meminspect
+Message-ID: <ak9YzK_Puejpg_du@pathway.suse.cz>
+References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
+ <20260708-meminspect-v3-v3-21-7aa5a0a74d5c@oss.qualcomm.com>
+ <ak4Cr5GEMdo8xWqu@lucifer>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E6295A0008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ak4Cr5GEMdo8xWqu@lucifer>
 X-Rspam-User: 
-X-Stat-Signature: p6bxc7spondrzgdj17ez9ir6nwdsn8xy
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783584976-100397
-X-HE-Meta: U2FsdGVkX186dKF6hhYPdq5RF2y5Pv00Ispbqf2XVD8dgTv+Q9aAwB5NCQcwpFDe992Io0ab+BQktA3PwUdbhuTWpBlCm1udG3t5H178Fm7/bRPc7s4n9QOjKoAzmbSt/1fTYogpPhzfX4qclktXzrQ/blozV0Nwvi2NCs7cwe18yJH7QGLBD9236k5/dRxE/tXCiucoKk6S5q22FQg017Gmc6OKNI1As2SmLPfUHDDslMZtVQ8aXKnL2JfalLYawb97HZYadky1M+C1Dc1xeNr+Q16onkq6y8qBq5u+6yKPfvUGpNXa3q2RKaRTRJE3QCjbB7LEYVXSyzpfgnfYxggn5jV7G4KKgfb8VSTS8nxYxhX6v9oYL158i83Fs86Nh6s8JiKYfiDz9r7pG0L3GfO5Y/kJ7OnD7VweJ1ykbyCOIZ9rqqU43u+5capy1UapUQ9/Fg3g09lZ/1nsGZdC19JEIsnV0ITPXnnZ1Tcfcv0r69SH7xfEErmHIx3wypEtCwogpy6R+EdBwhXln+GjzTy4VTBYhw7WhDEFkxkpAExOYCUb+hvduk72owVrORAihPxSRu90mnPgJKL6kHrXWQYmfa7Za8NaEKI04JAErzJZ1HbH+frF28wWMxGIOGXZ+yCdYZ4c0a9j6le43xqHmB5g8sZqZvLYBo2mC9DgQwRNeD67x2Etkm2E+bELLDQzPLii1BrYO/YJdamgg9xrbtIqlVA7AqFXTKGljQFZ+TdJleB0b3ABv8l3ejMhQlBvU2GOneAoedf6CuLjS8iEu4AhiN0HGRHIeCdjLHECbN6vnVX4nMA/uDOZ1fZVwKBQnShbyei7/aXx23N4V34dG9MUfR1KZB7KxLxtGgGvJLd8edIQ4zMtaUy7Izz6q5rrQ/Egl7Eh6SbRRf5az2bAZS0CHDocRkmB5LXsFUjsInPfzKGwkR44HFpt7NRWvmzJkuI9axrWKkKTgoB6N5X
- BUdeLUwp
- vVktjFJ3W5NjOlNL5CQ52U34XTev97NwT+xkJ2wXiGWFbODnY3eCeQLBnsvGekYnp8nnloUF2+kmHbJQlN5Lu1OupyXW0nGsPEHyurQ+EN54WPlkxpdYDVRbYxQ1zkmzB+O29u3bpU6p1WiN8VSxxCSLde0Zi+luw71oEv8+06wMrp23TEm6Q5jdEge8laq25jw1CAUdHLw6GyrVl6248BksoOmNmPpGaVqoB17efo5eKGr1nW2+mXY+E960ZdQbttoXcxeBQE4eEFXb5qEh6cHvRJtQCPISBYGKi
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C987FA000B
+X-Stat-Signature: 5fduoz9k188fx4q88nhc9shyqybhszfe
+X-HE-Tag: 1783584977-442583
+X-HE-Meta: U2FsdGVkX1+SgavzyUeXhqaYve7oJpaQqbZW7LKyddlA3RTqD22BFnYITTDM/p4CyIehTqkazSaaEy0Kab5Iyd4h1Qg4RQH9jDEs3QqzTqzDsVVBlBZVYYq6dVYFkDvVUZK1TbpTcSJ5PPYOC2Q7OwAuao5cosITUZaLGlLvTKQz0tPfHNYGIM+ltACumPRQiVVlSsHVOSdbQBIIq3mdwMfuGLb8dmBNuyXYPmJirqdaigwylfQx8kKQWcLAq+Hsnq0IJgWePsi1KJBfmSut9UB3PQC2+Mr1SeHCZT51cDp6gn6+XHvxb3K1iZgfOGkkRcot1WBkvIpsh6Ky6nFzcbt3BOmHEHXgB+MfFj8dFCQefGN/HPdTDowtTacquDw99v059uing7XU3AQp21nI+qYfA21H1GBcr9XFlFmSKInashL/6rRI/VexU/h2mTjyPdJODGRGdEpG+YQPlNYLeX4VOb49EqzqnYA/Ws956YBDOb0CXEJgjcwFW1ElJqb3W95wWUE3xjmhGaudNmiVbCKx7FRNdreJJzSKS2IhnIhnQkCu4VAbGx8rTQozgcS19d5KJTTf6syxPWfxXeu0Ie8FjOnNT8II2dr7ftFjUj/qKsEIOSS16Y2/ikM9NizI+65rpT8rAqnNQQpcdSiK+fWdaG4cWJJ0FztcuzWXLdipoXfJHB4WC3hJdjYjjKePON7lT/C9gJ6VqjDqhsp2cN1l2ETb2lH3W/QLvRTLn8SVZqjTk1ka3gCihE13Xn0Yl70CK3wgqSV03Y6KWxhxMhDapyhHXOl7w/gs5XfOy943yv67Ng8RzGyG4prZEh+nLmSWomyFnPtzkb+ZU8ahKDybAtEZeLKCg6AmWskJrtKMEa66Gywbfm+n4DCSWpm/iyS60wPj5WoJkAKxf6jtaZWguOJclGd5nXu7La64XmQA1yPBB597WnTiSMsZdQXFIDM130E2BlTtuJdQ6SH
+ n36DZd4c
+ Wr4PpI6j7k/fS4fMUGCE3VVam+jSH0LJrpVcFwEb0f9lFbG3MSInobfK+BUq/QfgF31YP94cH3pBqY+M8nLMVgrY08WdT53rgE9Wb/3IPUQv/phfXE8YvbUwAvsnq8rtoTLtP8Hu639ukGoky7y1GW7fK05vM8DFxyS5dRdkvUsWa0XGfQ7gzBg7bD9ayaDlLQTyR+fr+hFEkMxusunpTIFVBZ4RfzYIy49SM6JMaz/L+VzGdLUXEyiuOXTqyv9+3vSnVMQYKWsPhPLfWFnz9eHK8/u1xaRmT2RwS8Sw8ag9ylOa/B5XHTHkdNuZDvWh1VdF/oUgjzsqoyNiy4qlAa04h2WhSexKboaO2nyiv4CA7nzTff6hyJhijRsVkaUHK945r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,116 +164,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For a system which primarily uses smaller orders for large folios,
-it could be beneficial to enable lru_cache to avoid lock contention.
+On Wed 2026-07-08 08:59:26, Lorenzo Stoakes wrote:
+> On Wed, Jul 08, 2026 at 11:02:00AM +0530, Mukesh Ojha wrote:
+> > Annotate vital static, dynamic information into meminspect for debugging
+> >
+> > Static:
+> >  - prb_descs
+> >  - prb_infos
+> >  - prb
+> >  - prb_data
+> >  - clear_seq
+> >  - printk_rb_static
+> >  - printk_rb_dynamic
+> >
+> > Dynamic:
+> >  - new_descs
+> >  - new_infos
+> >  - new_log_buf
+> >
+> > --- a/kernel/printk/printk.c
+> > +++ b/kernel/printk/printk.c
+> > @@ -49,6 +49,7 @@
+> >  #include <linux/sched/debug.h>
+> >  #include <linux/sched/task_stack.h>
+> >  #include <linux/panic.h>
+> > +#include <linux/meminspect.h>
+> >
+> >  #include <linux/uaccess.h>
+> >  #include <asm/sections.h>
+> > @@ -518,10 +519,17 @@ static u32 log_buf_len = __LOG_BUF_LEN;
+> >  #endif
+> >  _DEFINE_PRINTKRB(printk_rb_static, CONFIG_LOG_BUF_SHIFT - PRB_AVGBITS,
+> >  		 PRB_AVGBITS, &__log_buf[0]);
+> > +MEMINSPECT_NAMED_ENTRY(prb_descs, _printk_rb_static_descs);
+> > +MEMINSPECT_NAMED_ENTRY(prb_infos, _printk_rb_static_infos);
+> > +MEMINSPECT_NAMED_ENTRY(prb_data, __log_buf);
+> > +MEMINSPECT_SIMPLE_ENTRY(printk_rb_static);
+> >
+> >  static struct printk_ringbuffer printk_rb_dynamic;
+> > +MEMINSPECT_SIMPLE_ENTRY(printk_rb_dynamic);
+> >
+> >  struct printk_ringbuffer *prb = &printk_rb_static;
+> > +MEMINSPECT_SIMPLE_ENTRY(prb);
+> > +MEMINSPECT_SIMPLE_ENTRY(clear_seq);
+> >
+> >  /*
+> >   * We cannot access per-CPU data (e.g. per-CPU flush irq_work) before
+> > @@ -1238,6 +1246,10 @@ void __init setup_log_buf(int early)
+> >
+> >  	local_irq_restore(flags);
+> >
+> > +	meminspect_lock_register_va(new_log_buf, new_log_buf_len);
+> > +	meminspect_lock_register_va(new_descs, new_descs_size);
+> > +	meminspect_lock_register_va(new_infos, new_infos_size);
+> > +
+> >  	/*
+> >  	 * Copy any remaining messages that might have appeared from
+> >  	 * NMI context after copying but before switching to the
+> 
+> Overall exposing live dynamic printk information to drivers seems unwise, but
+> not quite as insane as some of the other stuff thus exposed...
 
-For large folios with higher orders, the number of folios involved
-would be small, so the contention is less significant.
+I agree that we should be careful with exporting symbols.
 
-The following small program runs on a system with 16 KiB
-mTHP enabled.
+Well, if I get it correctly then at least the printk-related symbols
+are already exported a similar way using vmcore_info.h API,
+see log_buf_vmcoreinfo_setup().
 
- #include <pthread.h>
- #include <sys/mman.h>
- #include <string.h>
-
- #define NUM_THREADS     20
- #define MEM_SIZE        (16 * 1024 * 1024)
- #define LOOP_COUNT      1000
-
- void* thread_worker(void* arg) {
-     void *addr = mmap(NULL, MEM_SIZE, PROT_READ | PROT_WRITE,
-                       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-
-     for (int i = 0; i < LOOP_COUNT; i++) {
-         memset(addr, 0x55, MEM_SIZE);
-         madvise(addr, MEM_SIZE, MADV_DONTNEED);
-     }
-
-     munmap(addr, MEM_SIZE);
-     pthread_exit(NULL);
- }
-
- int main() {
-     pthread_t threads[NUM_THREADS];
-
-     for (long t = 0; t < NUM_THREADS; t++) {
-         pthread_create(&threads[t], NULL, thread_worker, (void*)t);
-     }
-
-     for (int t = 0; t < NUM_THREADS; t++) {
-         pthread_join(threads[t], NULL);
-     }
-
-     return 0;
- }
-
-Before patch:
-root@barry-desktop:/home/barry# time ./a.out
-
-real	0m20.233s
-user	0m21.739s
-sys	6m21.143s
-
-Perf lock report:
-      Name   acquired  contended     avg wait   total wait     max wait     min wait
-
-             21158662   21158662     29.20 us     10.30 m      67.83 us       884 ns
-                13547      13547     14.68 us    198.93 ms    135.39 us       982 ns
- rcu_state         41         41      1.83 us     75.21 us      3.46 us      1.27 us
- rcu_state         34         34      1.83 us     62.09 us      2.60 us      1.16 us
-                    5          5     21.31 us    106.57 us     25.77 us     18.17 us
-                    5          5      3.01 us     15.07 us      5.19 us      1.53 us
-                    3          3      6.42 us     19.26 us      9.63 us      4.22 us
-                    3          3      4.20 us     12.61 us      7.45 us      2.10 us
-                    2          2      5.03 us     10.06 us      7.88 us      2.18 us
-                    2          2      2.79 us      5.59 us      3.34 us      2.25 us
-                    1          1      4.70 us      4.70 us      4.70 us      4.70 us
-                    1          1      9.77 us      9.77 us      9.77 us      9.77 us
-
-After patch:
-root@barry-desktop:/home/barry# time ./a.out
-
-real	0m17.796s
-user	0m24.962s
-sys	5m28.774s
-
-Perf lock report:
-      Name   acquired  contended     avg wait   total wait     max wait     min wait
-
-              1407013    1407013     25.44 us     35.80 s     127.83 us       972 ns
-               845113     845113     47.96 us     40.54 s     152.86 us      1.21 us
- rcu_state       1920       1920      5.87 us     11.27 ms     25.02 us      1.76 us
- rcu_state       1889       1889      5.80 us     10.96 ms     30.35 us      1.61 us
-                  140        140      3.97 us    555.52 us     12.51 us      1.20 us
-                   10         10     61.34 us    613.42 us     96.90 us     44.48 us
-                    8          8     24.03 us    192.26 us     37.64 us      6.95 us
-                    8          8     12.32 us     98.56 us     25.55 us      4.16 us
-
-Both system time and lock contention are noticeably reduced.
-
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- include/linux/swap.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 8d19be675baf..9c5f7a11c7b0 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -316,9 +316,9 @@ static inline bool folio_may_be_lru_cached(struct folio *folio)
- 	/*
- 	 * Holding PMD-sized folios in per-CPU LRU cache unbalances accounting.
- 	 * Holding small numbers of low-order mTHP folios in per-CPU LRU cache
--	 * will be sensible, but nobody has implemented and tested that yet.
-+	 * will be sensible.
- 	 */
--	return !folio_test_large(folio);
-+	return folio_order(folio) < PAGE_ALLOC_COSTLY_ORDER;
- }
- 
- extern atomic_t lru_disable_count;
--- 
-2.39.3 (Apple Git-146)
-
+Best Regards,
+Petr
 
