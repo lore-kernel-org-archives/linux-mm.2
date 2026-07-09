@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05281C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 18:22:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE5AC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 18:30:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE40A6B00A9; Thu,  9 Jul 2026 14:22:52 -0400 (EDT)
+	id 665156B0088; Thu,  9 Jul 2026 14:30:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CBC4C6B00AB; Thu,  9 Jul 2026 14:22:52 -0400 (EDT)
+	id 615D26B0092; Thu,  9 Jul 2026 14:30:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD3A86B00AC; Thu,  9 Jul 2026 14:22:52 -0400 (EDT)
+	id 552E06B0093; Thu,  9 Jul 2026 14:30:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9242B6B00A9
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:22:52 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0BAE61401E4
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:22:52 +0000 (UTC)
-X-FDA: 84970059384.25.BD61381
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3386A6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:30:31 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC4E51C1FF2
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:30 +0000 (UTC)
+X-FDA: 84970078620.06.BF53A80
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 44B5EC0007
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:22:49 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DPmrjvqA;
-	spf=pass (imf10.hostedemail.com: domain of dave.jiang@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 14021160006
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:27 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VpNCJupc;
+	spf=pass (imf08.hostedemail.com: domain of dave.jiang@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783621369;
-	b=itzQu1PY49W8C0Uh2eB4iT3mbxi3VehodeSdkrEjImMUW+r1KlZjuQuKsYDlFj43pxRBKB
-	vhlfKtfC6qBfVKhyVJFLill1vH/wSPoC4hdnVboQHItGIFOIARmuN9STIgYGpq3s/nACFf
-	JcT1TaCu3RcLt9vmAvqpNsHFkQX/rRQ=
+	t=1783621828;
+	b=D0NoTrDfiQcjwJ60TstXa6O2tPgorXWJBebU0Euo2NlAdQJpT06kHDP4MUs2cusYx3/WXc
+	poD3jecvaSViTpJHgIRflb5ZOAlH3CFk3ApTlDHpyxuETAarRZwG4rcNr0dZG+EN/lTX1O
+	0aOnz4KiKl9Iw0W0uR1YvAgbjlaj0oQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=DPmrjvqA;
-	spf=pass (imf10.hostedemail.com: domain of dave.jiang@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VpNCJupc;
+	spf=pass (imf08.hostedemail.com: domain of dave.jiang@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783621369;
+	s=arc-20220608; t=1783621828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9+H3hJf63T6C4VnzXfjUdDuFHeC93G6M1XPLd+xR+Zc=;
-	b=YlColuS6TLnNz5Waho6ETV/Zm+LtL5mOkNBu30fWpMYaazDCSDIcg27iQ+hO6yMQnifZVG
-	VJODTmWjtqUUStK8e1pyte3N+IXfMm2JE7197q5VzcdVEmxgDhDTxo5yWOETjEEYIhLLIg
-	UFgRZ2qV9kL44BRVQdvgvvAxC4DVwUk=
+	bh=GSIblLaznmZlTWnPXhnYlJQAVMxEGTQDCsBIHdlMB00=;
+	b=AWm9Q0VSmc3wi1RSjOQ2cWPQY/5zO2gHIZTqG9BvfyGS7DT6ZK74PwN2RUt7M/ZIOqyM/E
+	px265AtDiPoXHspfqG2XgpYZmaWCLh6IZSePo3j4f0wH013QodOkVRdciLpdGAABh8MstZ
+	hMZpHUB8Mn5ww6xWv/5UkPb2b0h8XV0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783621369; x=1815157369;
+  t=1783621828; x=1815157828;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=J2V7pKlJhKQawZoorNAwgpGNERi+fNljDDAyDSdjiqQ=;
-  b=DPmrjvqAWj/QE/Wnpe7yytnO165A8qNjFevOrC9/B3/Y3Jtldwfppllu
-   rr4DoU1/WqSyq8mpaRbZ2DBjiHukJuPY3ymEY7Ek2yXtresIP3yCat4Y4
-   OEseNMyF5ic1c4DmfBMuZgnI02kcqrBdg4EDaVuxRXf8/sM8nqSbJmtPg
-   a7FXDR6hYo0KchGeYm3MUu3shv52cHppHHR6KL/NWID8050bzLMyTw4I/
-   jbxYl9uwKSDAyhk7bnij9IkGLv/mgEwsOfAy7Qx8NjEHSLp1yPEDX/v3a
-   8U0dWYPFUmXUfNSQkK7MvahynDCuxAiJ+biJuCYBAWRg2xMqRr2kBK4nZ
-   Q==;
-X-CSE-ConnectionGUID: 74pGml/HSzq2AkicIDL/hA==
-X-CSE-MsgGUID: JYjI8dqMRP2Vo4pYjZ6+6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88231500"
+  bh=sJrITh55upt9+7i4xO8v5KWYgInW0gtqD9Qlj0C5gCY=;
+  b=VpNCJupcThGuEOTkLpYsGwXaM5S1t7Dx/7mvKmqh6KTeJFVKHa12nhYw
+   tU+q6bdgnUfxoGXQdNAVPC11s5Gp1GprbA1HQkFwJA9502KCxLv317Vcx
+   S8Sz1ksGomliPXaE3jM4A6yAWNpddBzLs6LGNnPXo+cItd8lshBcaAItt
+   CppuYqvEu/37l8U7PC2nsSA8ZNVWaff+ad2PVBnHpyc94RRPQ9wKvTrTl
+   Do/gI2v4A9JVWDt298eIpOShakW/Hgc3qlbCGHDfqkE+NRHj84Yxube8p
+   YPLeyhgNVCCkCiHhOXUQQaZnJg6IqXuKq10GoYhaLsE2VWQQZr44N3j1s
+   g==;
+X-CSE-ConnectionGUID: 8i+y7gBrRsWZtqDPnPGm4Q==
+X-CSE-MsgGUID: 40wlsOdJSSGhmZe8SW+G1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88232219"
 X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="88231500"
+   d="scan'208";a="88232219"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 11:22:47 -0700
-X-CSE-ConnectionGUID: FjvWRgBjQ9WWQi8JEzfF4g==
-X-CSE-MsgGUID: ovSS3j6bR8axoTyoJ0LHhg==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 11:30:27 -0700
+X-CSE-ConnectionGUID: CreSit38SEqhU34F5Ejwog==
+X-CSE-MsgGUID: GyVfq50gT2Gw6mAARUjGdw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="256578857"
+   d="scan'208";a="256580746"
 Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.111.142]) ([10.125.111.142])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 11:22:45 -0700
-Message-ID: <fc78da27-d642-460c-99f1-35b2fdf11913@intel.com>
-Date: Thu, 9 Jul 2026 11:22:43 -0700
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 11:30:24 -0700
+Message-ID: <6cc4354f-c494-4198-b1ad-a8b538aa1a77@intel.com>
+Date: Thu, 9 Jul 2026 11:30:23 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 03/10] mm/memory_hotplug: pass online_type to
- online_memory_block() via arg
+Subject: Re: [PATCH v6 04/10] mm/memory_hotplug: export
+ mhp_get_default_online_type
 To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
 Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
  linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
@@ -91,23 +91,22 @@ Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
  alison.schofield@intel.com, akpm@linux-foundation.org, ljs@kernel.org,
  liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
  mhocko@suse.com, shuah@kernel.org, iweiny@kernel.org,
- Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com,
- Pankaj Gupta <pankaj.gupta@amd.com>
+ Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com
 References: <20260630211842.2252800-1-gourry@gourry.net>
- <20260630211842.2252800-4-gourry@gourry.net>
+ <20260630211842.2252800-5-gourry@gourry.net>
 Content-Language: en-US
 From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260630211842.2252800-4-gourry@gourry.net>
+In-Reply-To: <20260630211842.2252800-5-gourry@gourry.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 44B5EC0007
-X-Stat-Signature: 1khri4c8ddo5e1u99yyp1hzoat8oxqg5
-X-HE-Tag: 1783621369-649013
-X-HE-Meta: U2FsdGVkX19FjLX3KtJL2uik2bNRgRUwSY5KKiabmIW47LTmuWtVxUgIMU+ZFt/Q2zhJGOkUmYgOFM9anK8aNWS0tp6LtojtUdjArE3LxaxvNEPm9NCGj1Uv01AilDZ97s1Qw+yQqh+T/ssjFzxIpCT059j8LHs0ZReEi2Sl/uBRFQveB4kcr5j3mRplBZ2bhmBCL8f/rwA7X9vP0vwPg5LTEC4KwNdajTQeQI+ybx8WKEmqODpbzUnb4Ei8y1xdabX/M18tRR2a5rmS7xcw40p7WaHQDxXBmAErc31y7UbJsHs8DezVliiwzdnwhESb3iDgWun4EPMpYyKM2NYblvgQD+qcuEClK9fN1P/UX6ZSGdGRMECX7DrO9r2bYmR/djrjVqLKv3vtrkXCXFClomnJT+o4jMPz0Tq158ofbWi7B/34HtEYvwBBW+5MLWNG7uxG0WGnH19rxOapiZOOhUcb9aINZRNTFz/GuZRFwnv275EQENkNbJ5VUO551hdLeBU+eSN2QUcRbtuXEHe4FvPczTzt0TQYwXkOExUbISFESFcpvbZ6vDn3IO8ptXSvZ+NoOOhomOH0N/ZvFpirlQY+PTzgfN8/USO8btj50WyDTzTVTVuNu3q0/9MBFuBBVrP1QJfOKbyxkgdjrS9M6KfXJJmO4gbUkIRLXVI+vwmuX09hy5Tb5Co5E+hLQ+UVNKjmlxUTlhUhggGBtgBaAxPyR+NQSIGU/nZ9Xc/yD4MDZXBBt5hA592R7JM5m1NN409fFz55aR+x2rhfYn2Le3EQHqMIw0boluBgjg/daI8e4PguwjpA5yq6U46bfTmeQVWoTl4fLFy0u2c8VDPQYtQEuRJqesKuQO0wn2TaxQcC0vMHlOKk57n4ZZj9QiyvlvnwelcgtWKn+mXPUb+98fnG1rOg9QO3p/+z5+TtLxpG/R5Vquyy4ajXEkjdTukaUWrse66QwTslv8SWde7
- CGgth/jZ
- k9Go57sZiyN/rncWRTrTyZlSv5fJCVTIVQMSKdRTehLMp+eAi6TRF5P/JLmRoaxSigErZQ/k+HKv5aXiOd4YhdxHUcvwVYvXb7ilw1dpqfYaRtaO0wcTu2Oql4LOqAPxSAgyNUbmmoOe2kj/Npz4uUbCC+aPqybu2UHb07oIMIi6rNUdZ3TmwlnK1wszjvM7ZdwLmqAbbrIOHReD3HYOrpDTM7ynVl+kymMU1K67inH6PcJVlheU+3Oyx6LWnt51C9ocaTgw8RXEX5YS3kzjPgktCW4jFxVKH1JdZujgSqaT5fe4EHhgO2wCvpiq19SwU4obEvYnm5hJf1O33qLl2gLjBbnBFNWOKp/Uvco5dDdSrmfzaGARsQaNgoNaEmjHOy1pOl65+i8Wy+rkMCsk7t+rJyuka4VpOvC1EBw+o6QLNujYi70OT55bVpm1ylgbbiez/xHkvDlM0Lf0=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 14021160006
+X-Stat-Signature: jwo914ouazcf3ouo9tekt8fpoze5ihnu
+X-HE-Tag: 1783621827-575988
+X-HE-Meta: U2FsdGVkX1/wPrmG+kz6Uuq+GY3PWBaRbSQ4WU4jOfgWGJimg5nzZhJxshvyVov7cw/Ed8Auquk06YVX/GLIfivpDwNadhAImq6Dy8q0im1MpCC2vURv43VoE+Uwqh/pGfPTlJNo0jcioGHXhEaMFXCmqonRnB+Ub/z24sYl8eZKOZYoqGEzKs8ffi1kLsHAVXKm6aq5YwJjxspOK1HacD1g14PuDzT2s9XwlGF+S5UuX5iwdqnZpn+uU/plawJT1opSUFgvLpJOt9iX929b/jCG/8sMPhAwrz9LpzHaRCR/kdITEv1MlXzXlUmanuELL6NymkyJ/KBjhNAr9S575oh80+7aU51EMI8/bB+GD5TDuODrSwt+ygv85C8oT3YeD9996f6v/+gqJRh8OqH4Lf2xr0MET/XkP0JtejCLRMVrQeEU005WwkSFTU8Hb+GwoEmG19K3k7WZ3mtzHjLFT/xsehVfbtQCfL5uVbxTsD0KrayekvGdaI/0jFXNTfQ4q6Djnkn9HYaUhiOMoc2egmQrH0TD/WaGM16X/fIkGeeBzvlSV5HrvDmml3g3EYjdKXm7o1WdIpDCJdjRI28U32MOKsuWNJpR8EbbCD/k39TzdWwpTh4VMbj9zvmUzqATgkICkCvwTjwdeHGtRjYQXH0XrZazmB+pvgk2JunoOXiMLnYKXRWrjIu/e1YHVdnIuZmXM32Tu7Tj1tUJ71MIdGNymfFu9pecSX0uR6PxHW4albANb2eH/5rCren0iRe8EqykzVeKFwp6wk3y3bk8+rVimeLAIR+cqB5Dh9mGMYnL9U7STJEmy+vijNAyb93kERIis2ItjxFYCoYBYN1TToqNa/RkOpoX0MbZLQhZMldW1VWwNLCj4VEoxOquNe5x5futlrdo8WFiUn5uPkWERPdUZBcFru4++VpgxJVnzKZT1VFPfPJDDMO/heDNqbrtf8cznn5UTxlnRnMdeJR
+ 4qYaze5l
+ 8PfqQrolIoshRTAqS5xe8+DD7poATPOUsXTWljjVFNoEehGslhW5ggdkp4sZ8zL/C6G1P55LHTp9PzPuY7GGSwxkxC3HE0XKZxrzCaOb+xpeiGiOTT4VzwEsb/gsKIUbOO/Q2cGab18MYsLF3fTZ3NFrrolpiCaxG7krAIlH1cTMWZuWMEM113ewV1FwksOfVOKwg8cc4P3HnanpFhZuY7gvN0pL4GlJjgR9SKW/C+ujC6h532iXePZ4fHDXKv+d1B9vmCxFBTgQeTckhRR29LLD0wAFU4caPWSCR+HGYv04oKHqI6TtZTxiLJ+b1xIdPJUXf/67wwt3dLdfL+QNFpkofV7EwEvvHC2MIByjHen3yUW3uQ3v7rb6b8IuAPXAISC+TqLFaXxhz6tbYrP/19HSmbXXoKeGofuD9xMhEWWNV3u47yK5vxdaxuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,58 +117,55 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 6/30/26 2:18 PM, Gregory Price wrote:
-> Modify online_memory_block() to accept the online type through its arg
-> parameter rather than calling mhp_get_default_online_type() internally.
+> Drivers which may pass hotplug policy down to DAX need MMOP_ symbols
+> and the mhp_get_default_online_type function for hotplug use cases.
 > 
-> This prepares for allowing callers to specify explicit online types.
+> Some drivers (cxl) co-mingle their hotplug and devdax use-cases into
+> the same driver code, and chose the dax_kmem path as the default driver
+> path - making it difficult to require hotplug as a predicate to building
+> the overall driver (it may break other non-hotplug use-cases).
 > 
-> Update the caller in add_memory_resource() to pass the default online
-> type via a local variable.
+> Export mhp_get_default_online_type function to allow these drivers to
+> build when hotplug is disabled and still use the DAX use case.
 > 
-> No functional change.
+> In the built-out case we simply return MMOP_OFFLINE as it's
+> non-destructive.  The internal function can never return -1 either,
+> so we choose this to allow for defining the function with 'enum mmop'.
 > 
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
 > Signed-off-by: Gregory Price <gourry@gourry.net>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
 > ---
->  mm/memory_hotplug.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
+>  include/linux/memory_hotplug.h | 2 ++
+>  mm/memory_hotplug.c            | 1 +
+>  2 files changed, 3 insertions(+)
 > 
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index 5d4b628c4a1f..4d51fcb93a37 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -317,6 +317,8 @@ extern struct zone *zone_for_pfn_range(enum mmop online_type,
+>  extern int arch_create_linear_mapping(int nid, u64 start, u64 size,
+>  				      struct mhp_params *params);
+>  void arch_remove_linear_mapping(u64 start, u64 size);
+> +#else
+> +static inline enum mmop mhp_get_default_online_type(void) { return MMOP_OFFLINE; }
+>  #endif /* CONFIG_MEMORY_HOTPLUG */
+>  
+>  #endif /* __LINUX_MEMORY_HOTPLUG_H */
 > diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 7ac19fab2263..6833208cc17c 100644
+> index 6833208cc17c..494257054095 100644
 > --- a/mm/memory_hotplug.c
 > +++ b/mm/memory_hotplug.c
-> @@ -1337,7 +1337,9 @@ static int check_hotplug_memory_range(u64 start, u64 size)
+> @@ -239,6 +239,7 @@ enum mmop mhp_get_default_online_type(void)
 >  
->  static int online_memory_block(struct memory_block *mem, void *arg)
->  {
-> -	mem->online_type = mhp_get_default_online_type();
-> +	enum mmop *online_type = arg;
-> +
-> +	mem->online_type = *online_type;
->  	return device_online(&mem->dev);
+>  	return mhp_default_online_type;
 >  }
+> +EXPORT_SYMBOL_GPL(mhp_get_default_online_type);
 >  
-> @@ -1494,6 +1496,7 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
->  int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>  void mhp_set_default_online_type(enum mmop online_type)
 >  {
->  	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
-> +	enum mmop online_type = mhp_get_default_online_type();
->  	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
->  	struct memory_group *group = NULL;
->  	u64 start, size;
-> @@ -1582,7 +1585,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->  
->  	/* online pages if requested */
->  	if (mhp_get_default_online_type() != MMOP_OFFLINE)
-> -		walk_memory_blocks(start, size, NULL, online_memory_block);
-> +		walk_memory_blocks(start, size, &online_type,
-> +				   online_memory_block);
->  
->  	return ret;
->  error:
 
 
