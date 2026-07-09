@@ -4,142 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74CD7C44506
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 19:05:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30FADC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 19:12:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63C676B0005; Thu,  9 Jul 2026 15:05:07 -0400 (EDT)
+	id 0325F6B009D; Thu,  9 Jul 2026 15:12:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6139A6B009F; Thu,  9 Jul 2026 15:05:07 -0400 (EDT)
+	id 008BE6B009F; Thu,  9 Jul 2026 15:12:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 529A56B00A0; Thu,  9 Jul 2026 15:05:07 -0400 (EDT)
+	id E13456B00A0; Thu,  9 Jul 2026 15:12:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D1A86B0005
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:05:07 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C2C001C2437
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:05:06 +0000 (UTC)
-X-FDA: 84970165812.19.011ADE5
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B353D140003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:05:04 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hOvCjM6c;
-	spf=pass (imf26.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ADFE26B009D
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:12:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3857D1A026B
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:12:24 +0000 (UTC)
+X-FDA: 84970184208.27.8AA121F
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011046.outbound.protection.outlook.com [52.101.52.46])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4E961C0010
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:12:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oFwUuA7M;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783623904;
+	s=arc-20220608; t=1783624341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bNRtJyB9QHVjAm5rxzEf0kABc3aKI1V0CftN11/9Smo=;
-	b=k+k+ZcOc7bILEzHC4QMbSZjP3nziCOnIEMm7FFwYsB4NxJmHESo3TeZ/zSpboRUt67gJfH
-	bYOqNyptqcIzirn3kJFh6RXBvKlfbaKy+CE4hblWPjGt+iIVo5bqoNeSpkEcc9h8oOGeT0
-	lXnQRauV8HpN3KUx6HBMLB/uuhdsojQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783623904;
-	b=oj3iwiqmhfuyzWji+WFHaqqh6wwVNVkgyzbExlmlBBgYDzntmQdwMDLq0or4Z/IbiHwn3R
-	yWygplRzobWBM/Z5WJ2GIDX/e6B0vB+Vu/APhsfYvBMsl+Fr6gRMkRy6iRyJDYBcDMj0AE
-	2W3/Ua5nOuN8juxiSy/P3z7npe9/dGU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=kEEY3RpJ4ViD0lrIGiVuLp9delb4RxLFIw0p43qHzEY=;
+	b=Fe7tuEx72e+RaKYzC5JHMDHiI6sUvNGvxxPi/mLvraOW0NC1bJkq8L3NerRTpDW43GuVOg
+	NgUkd+swCAGxpV6Asy9GtNkWZeIUrmU/Npeyn/qjeMfx4mXJHivUphYWdRV1UovO+RYiMN
+	k4GrcZY56Vd0Pt8Kbv4rTwq1AmxyEXc=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hOvCjM6c;
-	spf=pass (imf26.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jthoughton@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c15fd3a299eso28362966b.2
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 12:05:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783623903; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kx+Yec/YKhsUxK8JPSQ1fKXxgIF2ejPhvGr2MAhAUsevTzCoCjbBKvX0TbInYoTJ2O
-         Z3tziX4I1bb1aYI2bcKaScOjXmd/AmtSKtIbqnUSx+isi0Y+8HZ7Nn1Td5Hfm9hgyXEA
-         QvKHMQRYrcZkAl4LpzYnyzLTLY7twvEcu7Aut6CE2hqpOr7HOsSXY99f9YGTMSZEoXdQ
-         vHr6Tvd7fuVn19iJQrLLOP1P5I+ZjjwCwF7OLqw+g01lcpqim5/bSK8STCeewweLfz6r
-         41qRdpbCN/ndXvlmnp5sxWP4sxG3vWJTMS4vtOgbTtU4Hwe49hRh4LOV9VRuoaQcdxtE
-         J31g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bNRtJyB9QHVjAm5rxzEf0kABc3aKI1V0CftN11/9Smo=;
-        fh=cCcEWB4qQupYOuA7+gi2Hkel8Oce8216egrz313b07U=;
-        b=N4EaY2ZkBe7sByutQ0xEvJ1odlVRQR+ZivV2XnGYUSlJ++u+RTjLi4KDWmDZFIe3Pj
-         QJ05AoeDA/6Au/uEqw9WJ29G9wD9UEj2AG3ePayNFqhnFDHuGRnN41RCZtjKp8h6LnaB
-         zX1AP3T5g7pI5ZSms80AFBJvmfqQ+BhUQ/cRhjZBvusYKpombDhryfvtBCMnlwWlm0Lt
-         ZCb4XN795YlNVZROu8piRrJpd0QBZIwxAocBiz4ZXMiYLM0rcUmA3TdgasRS8XMoKxtA
-         qv1bOj4nr7d7AJUYg1W7o+0Z7X7xARHXgSZM/crADs4GMPIRBCc3PpEnNGYPFo4WNkoz
-         i+Ww==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783623903; x=1784228703; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=bNRtJyB9QHVjAm5rxzEf0kABc3aKI1V0CftN11/9Smo=;
-        b=hOvCjM6cZbFOR+uBzJDUZsS20w8ECbXBrYAONKojOm08e+mWEbT6iRpX0BrUmaLLeN
-         eK1XnIm1livh4BS+uHE5EYAvJexLevljsOg3NfCguABpyNUXzm4zWuwrrJpz/Mv3/DD4
-         H1ghx2ir3KqjSidJ0sDl6FmYVZtVTMyQ6EkTPz78LQkhOhBT6FMs2VZdz/YRg78zZ5PN
-         2njtuC2yHPZcfTnV4GjhgBGpfZIESBPMBLiDsJcWtYoSIXjJorN3TImcNJggCcqC/XEJ
-         18feqtkfkSWCCvkp6G5QWn0TkXx9JyuW3Gw8MVf/syGu7gY66xRRcAsZPSwIgMbOYK1J
-         arIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783623903; x=1784228703;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bNRtJyB9QHVjAm5rxzEf0kABc3aKI1V0CftN11/9Smo=;
-        b=TCBHNIu3VL8d+2xe2Rwx6YXoIpBW9jJAMr2EfdO7Ke++KDpqaw+9tLRb6txfm7JnMt
-         L1USWBFGSWEWST/NCBeqnmJcxwocxX7kvBSgvGq+moRqUgTEsrOX3LSHt7/5vFCJOSAZ
-         JbySuPgfW6PNWW52eFrjmFgAGOc8h89qfpxi2O4aJ1BHMhPch2rYaEdvvtC8FTdyPDR5
-         DSFd7YQ+PbFOQRnkQJ058PEABrTmEPitt3ewRWoUmQ1S991XJ3x4AOkZKf4iisKPnWZX
-         V9xCKgnp77rOdszU0msyM6Wn8wtYv3qDO/1i8MuqFILEF3Mn2OKdPkWTGImyp/o5XKAX
-         6noQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rro3l5eK6N6VpprrG2QeRqiLP7nL17Z8z+nEQM2bYtuk48gnE0whDCgqakcCjOMq8dtQwtQ1GCqkw==@kvack.org
-X-Gm-Message-State: AOJu0YxnNp8R4wsyjwCH2x9QLOw1PDH5VLjh2THNYw4gTXEsd/L5awzj
-	GQFWVEVU4zrpEK2aA11LQF07ldDfzZ1cFdNPm6sJCE/JBchNyXYgVnzvcJfosaMN+Mv7bz5bJDR
-	Ar8cpA3E2BH+P5xg9Cp3Erczt60qKGOHMXd/Z2q3s
-X-Gm-Gg: AfdE7clsvUZx//FWezXOICjn8IMLR42FVkRyVXtCDI8RaeiLqZaCIBYAOgKYYkqifk7
-	Co+rc070D6HgZZmJvG86jEH+ZiHMqMRSw4qRjQvZjJYSHQirTdWqqBUyrUtnxFucb5GjdmA0rS7
-	mlXJAi/FRWXNB+0aUBUx9QGFawzrM+ZZgaHDZgIhgBYMO5amwrV+V9sZUJL3kJnGMH/qdWcCZLn
-	ZgU/D8MjkeuN59XQ39oJV0okn/oWSCSk4O/nTVTQt/4c2X09B34D2NZXI8Fx13RcesPxol2ShXZ
-	s4YzG9j41YU4Yr4Ohe+0rhtERVAXxgs3sKt5HBPNdt2cLHPfr+mMHBLs3i8=
-X-Received: by 2002:a17:907:e153:b0:c12:aaec:3436 with SMTP id
- a640c23a62f3a-c15cdfeac35mr299077466b.14.1783623902587; Thu, 09 Jul 2026
- 12:05:02 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=oFwUuA7M;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf10.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783624341;
+	b=tWXvrk/d6isNSQn3IbxDUCWIuqXzqnRXGqSiW7xx5sslsDcswJrbNXyzLBSuR9r227JcE4
+	uRidw5fBr/9guw9/8K8fXNWO1YIIY4PhGaVHjwiSJzm1V5uaxwo6JF+eiv7x054MDh7co6
+	xFsKae0wqc7P6X5bOg1/3VUmvX/92Fw=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hz4tu4SghpUCA5LqnuvfAuEJCUO2VrhKdYgM8M5IP8JqoflxhonAcrktRb38ipdP9U2/2aDfB/fcZnWtQAGC8Z1DcMVqeEgHG1vbxzMrnNtKC70qcdWStBeNfGcLttT/Vz0ZJ15dDg9L3LK9tZTHpYgah+vydEQPTMLM+3cPHFHICTAKeFfl0JinqLj/bbwT6kPAzj8KKazi3A04E6GThymgR119Siu5k9AXMprdJTYl2YESuCilgyQxsvyCBuenfjZE2rOelty6Ac3U//IpANUZWHbLFvvqpOHkpv4Vn4rq17mld/6WPJOvVpN1gSjl2TUCLWV0dfxo0LcB1aPJ2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kEEY3RpJ4ViD0lrIGiVuLp9delb4RxLFIw0p43qHzEY=;
+ b=pQhxalBiKWLGwiYwe0yvqdaVrU0309GggLA/1XTNIdwjZ+RGb/FGdMh0oawQm6Mm7hm3eD5a9+DjRyhvvt125ZLnHlkMn8eu/VgY0f6LdIK8RnpnTnlTPn7ojZJTXqs2bL9PHh6CQZuzaWTVSnNVE1gVI814GBiUgOx+JVCPPrzKOOu6u19l0LnSQFJLYCpBVs6ShoSHQ9KCTNlMuh9/lgsOwq1AtKZCBKPTdjo50qAConJtdcy+qD0Oi69lH0ydvAucfaITfsXNEoRDUsbBXBj2lfchih6uUr0D+VM2YBiNbt6jSJLdbbFVxs3+toB1KPlg75MCQOFtYtPJwS4cIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kEEY3RpJ4ViD0lrIGiVuLp9delb4RxLFIw0p43qHzEY=;
+ b=oFwUuA7MDOVPuTP9ydk+zOH4RQoGiI1y9w8bUOWwOVtCXoZP3KQDmEzxhjCylBnk2rIlNY1hvIDNXPi7Qj4bXklx6BUFESGJ+H+tga5UlazPewP0slyl74QPjhLzl7KxWW5fUW09zy6iLL1XVkkmWgsSpMs1hyJefszKc8nUAL+Crw2z0pySJqvOMvsvWXsItU6pUB+PrgkmQ2B6niWQQkGt5aPDvylq7u1EvXhcX9qgkFysKwA8exr1qyX/IXvZl+EoeNAwY0LfyXyPnMRoJDfxADkK1qER+NWsCSLzSnRHWeoUGy8oiP4AlUUUrFoDe0BJOOPiZGs0Umnk4xK8WA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by MW6PR12MB8664.namprd12.prod.outlook.com (2603:10b6:303:23c::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.16; Thu, 9 Jul
+ 2026 19:12:15 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
+ 19:12:15 +0000
+From: Zi Yan <ziy@nvidia.com>
+Date: Thu, 09 Jul 2026 15:12:01 -0400
+Subject: [PATCH] mm/percpu-km: fix bitmap overflow and accounting in
+ pcpu_create_chunk()
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260709-fix-pcpu_create_chunk-in-percpu-km-v1-1-1f64745a84cc@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAIDyT2oC/x2N2wqEMAwFf0XybKAW1sv+yiJSa6pBtltSXQTx3
+ w0+zoE5c0ImYcrwLk4Q+nPmX1SoygL84uJMyJMyWGNr05gOAx+YfNoHL+Q2GvyyxxU5YiLRGdc
+ v1lNwbbDtWDUv0KMkpNYT+fTXdQNIB/XgdAAAAA==
+X-Change-ID: 20260709-fix-pcpu_create_chunk-in-percpu-km-6dfa8f28b175
+To: Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+ Christoph Lameter <cl@gentwo.org>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@linux.com>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>, 
+ Zi Yan <ziy@nvidia.com>
+X-Mailer: b4 0.14.3
+X-ClientProxiedBy: BN9P220CA0022.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:408:13e::27) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-References: <20260708031129.3503195-1-jthoughton@google.com>
- <FC9E78F0-8FF7-44AF-A848-8401B4702488@linux.dev> <CADrL8HVkrojXbBuEX-W=UHBmyyFzqxdGBvtAoPP53SyYa10uag@mail.gmail.com>
- <ABB70C2A-316E-4C19-A855-C9920BE105E1@linux.dev>
-In-Reply-To: <ABB70C2A-316E-4C19-A855-C9920BE105E1@linux.dev>
-From: James Houghton <jthoughton@google.com>
-Date: Thu, 9 Jul 2026 12:04:25 -0700
-X-Gm-Features: AVVi8CcfpMMaiNKWH9W77S2UuJGk4oIqw9AGhPYaowbYWta-f_S794HnODSYVjA
-Message-ID: <CADrL8HUCqrzOQGXRDwnitintQHjHCw10n8wo6gChQ2tWvC2JBQ@mail.gmail.com>
-Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Oscar Salvador <osalvador@suse.de>, Nikos Nikoleris <nikos.nikoleris@arm.com>, 
-	Linu Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>, 
-	Yu Zhao <yuzhao@google.com>, Frank van der Linden <fvdl@google.com>, 
-	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MW6PR12MB8664:EE_
+X-MS-Office365-Filtering-Correlation-Id: 225a16d3-dbe1-4db2-8fae-08deddedfcbd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	Y1REvUd+ZNRkRTgA2VS3ZWRb1xd6zj5sEik2ZDTmhRiW7NBK8wJa2VP/Fk29A+q9K2JVDtHk0GD7JSZ0Tp/8bjsUHfhllxg0vUUexX2C9qGpT5ijwCe1FVuwOCCEUGJbfE8Fr40E9BY4VDPhD7qP/O2tQonx0oFsuuY+l5uZMnU7N3HbS9Hr34pCOdjFeo+vV5R1iADc93lkk9pjAw7ZEGUA4Jgx9yQyIcc+yzHV+y4MAysSk2pUkj7jqH2/Uzx85GHeqogUR9rLdhcqRTLGsYuOXso6tYN57XdyAtc7ZWo9DAi+8sLHbQWSExmlW4gG7MkOALkYqYO/XfFtga702E8sneHDu2Uk6aM6y9CfppjPSpTcIXl+O/3c/kpNY9+fgzQvDbIcbnuD1+Ar00uOtUbYr3Hzc6GNAnFPgCPN2J+SH/kjrp8GW0RisaNESNgdvsGmtVLgdMdLnxNuvD4BO82t3Xq6/OjJFlBDSjS4WP0q9FwzvdIPlDtzXpxVZic7GLhn6OtgpCCfgYWu7qcsg2D33qJ00YwgIcn7wbpKeAFuGo+bh16cZU2E+gYtSIEvHzAlj9hjDATTbmI4z1EagDdCjQidUxyn69fvhKaDghEbj8WPufWYm1WmFMAIH9cKQrKEq7UHQ6jqlphDv62+a5oqRyS2gSdcMa9vQZFTwSM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ekFlb0JEcWRLbXlESE5abjBqaklSOGc1OWFFWUg2RHZIeEJXaEpvZ1JqRHBz?=
+ =?utf-8?B?RENlRXlsTUpJTHRKclpGaE0yL2pFeXhRdklxU3hmelZ4YjJSbzl3dFFicjJJ?=
+ =?utf-8?B?YjJpbjcvR0pleTF4QTFrVEdXWUFKSG9lNjA2bEt0OVk5eFlXTlBSYlV6SFdu?=
+ =?utf-8?B?bC8xbmxkZXFib0lEOGpBVUpKOFY5N2lBMXg1QS9BTVh3TGZwWEpVdzlRTzdZ?=
+ =?utf-8?B?cENwdVVrVmI4VXF4NEZVODdKdjRaemdxUW9qVUJFdXFOa3RQUzFHUmNwTXYy?=
+ =?utf-8?B?eEtVbWc2WWNtSXBSK1BqOGo1VzRMQWtVUmdENFdBNmp4L214R09kMitvODQ2?=
+ =?utf-8?B?SStNWUpFY2VPV05oMjVUY3NmaXVGQkVleE4xV0o0dk8rako5UitzQmd1M1dV?=
+ =?utf-8?B?TTFJK1ZFYkFTTTFILy9xYXkvM1ovVkU0enNaRU52dTZsK1hHRHhFV3VNUk1Y?=
+ =?utf-8?B?b2FnNVM5eitaQys0UVB5TllsNXQxN1h5TUNSNStEbWxGem9adm1OK3NWVjQz?=
+ =?utf-8?B?ZHcxK2RwSlA1cVVqQzZoRlloVWlYNUhvQi9BRy9oRjNEbjkwcnB1a2YwQW9i?=
+ =?utf-8?B?NXhsWWVPeEJudVFjRVZGZEdmYncyQ012MEpoNDJOV08vSllQWTIvTVhrekw1?=
+ =?utf-8?B?WmNBUXRTbloyTWRQeEliSXY5MnUvMC9wS2ZOcE5md1l4Q0FKZE9HajlmNklU?=
+ =?utf-8?B?aVExSWM4MEdlUXgrNjBKcEFjTDUyUVFqYmN3RDBrOGgvQm4zYWhVcmIxTG1j?=
+ =?utf-8?B?SnI0bjk4dXRDd1NKbTlBUEVPVDNCNUhVZVZJeFlQT0o1eTBTVjJXL0l6RlR0?=
+ =?utf-8?B?dUpPeVdnZ0lEUVJKa3VlL2I3Sm9yN0Y3bURNcWh4RHdCOTUzNTFMRkNiMjlK?=
+ =?utf-8?B?MTdLSjZHMVFKTmN6MGlwL1hna2ZIeUt5cHYrYVluUUpiMkNuK3YySGlXQjZP?=
+ =?utf-8?B?c0ZaTndsQjJoWGt0aVdMYzJ2elVERmlLU3BGdXhvRzZ5dFJMMlNhMFljV2hC?=
+ =?utf-8?B?eHBHMEpEb0dxaXVtY2VsTEp0aUpQM2ZqMW1ucVpRQ2FKTXRaOEtSOWdHRDhY?=
+ =?utf-8?B?dG5UR1hlNUY4QkdlUXFCSWFmRXZBaldTQmh4clFBanhTMlJ0WGgwT3QzQTFP?=
+ =?utf-8?B?KzA0cnIwT3hGKzlCeDRvSTNoYjNyb1BUdTJraUJBWWhXSFN2ZnJUQS9rdHMw?=
+ =?utf-8?B?SmJuc3REUFdCV054ekxuWDltbGxIOWY1ZnBjbWNIODYxUE40TmtTamZ1Tm1N?=
+ =?utf-8?B?Rm1pbHhkQ1pOdDRYZnBQcmdRY0xhT0E5V2FHeFFGdmZ3bzE4Q0U5OWxJK2Fo?=
+ =?utf-8?B?M1dOdHc1SG9Ibk5yaHB2WngrSFdxVlNRa1Z0SG9Ham84UUpOeFVRcE85L0tk?=
+ =?utf-8?B?cWE2QnNFR1hpdjhPSnlsQzVIME9VMU1GZ2t6VHdsSkNCVEpHZHFVMGdzbXE5?=
+ =?utf-8?B?d2k1UTZNYUhTaWc5dzI1dXRXNUdneEJjRDI0TGRzQWw4TUt2cDRueEp6OE40?=
+ =?utf-8?B?NVdXQmxqWkNySm9CbHp6M2ZHWUg4cHduc244ek0vVmxKM1RuckVRRXZkYThw?=
+ =?utf-8?B?R3FtRjc3UzBzK2pORFJyRngvL2pkd3ZWTWRJWnVSVzlCR2hraUdtbGQvMkxE?=
+ =?utf-8?B?R1pSVGJoQTZSZjFISkgwRnpHOWF1dkUwT3hZdi9lVHhuTTdOZ3ByYkZtdkV2?=
+ =?utf-8?B?UHIrazVqNGtGWlFLVUNHY2dhTCtjSVdNUGcwQmNYYjBuUzRWdE9ucFh0dFJv?=
+ =?utf-8?B?aVVxbDRBYjJscHJiOVVTTU8xLzQybDBRQXN1V2MwK21paVRrd2VLTHdSSXp3?=
+ =?utf-8?B?Ukp4RlFNdXhXMHdJbkN3U0NYd3ZJZWJubjJKb01xZWUwVEt1dmVnVDRRSVRJ?=
+ =?utf-8?B?eitPVGo0NjByOFh4NkVQRzd3ekx0RWRvUVFaMktCdlFMQ2FHTDhReUJXa010?=
+ =?utf-8?B?elUxOVpOQnlLWUlGU3RqYTlaZmdJZUMrL0RnRmwvdlMzTTNTdWFldEFUTm1q?=
+ =?utf-8?B?T0kveXM0WldSbkIxWlhuQ29FNGZLWDlNNkJhTHF5aXpNTWU2MVBicnFTSnZn?=
+ =?utf-8?B?WVdqM1R5TXZXK0ttcmVFUk1ZVzJMSjNERXU5aE5od0puc1RlSFpIOW1NQ2cv?=
+ =?utf-8?B?RWdvWExwejdpQ2dUeVVrUmtPbk0zMHBDTWZoSm9wRWZ6cGtodk1xb2RwYVBl?=
+ =?utf-8?B?a2ZNMG1GTS9XYTAyc2FGR3RCRHVDdG0zeERKOVpPS0dpM3ZZL0dpRE1RVVI0?=
+ =?utf-8?B?S3ZybDA0MWpraGk4Y0JJZDJFK0RNR2FEN0txZTJlNVEzWHY2aW5oNS81bEto?=
+ =?utf-8?Q?ESr28nCP5M6UNDWrQC?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 225a16d3-dbe1-4db2-8fae-08deddedfcbd
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 19:12:15.1907
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hys4ovxgKBe/GLO2YZOyal5Q2ajLNrzlTgRRvPfNTbP68W2ZttfUF3zohRiYOY6H
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8664
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B353D140003
-X-Stat-Signature: yamx8fkpqi65wzszak6qcx8hqpndywbb
-X-HE-Tag: 1783623904-672507
-X-HE-Meta: U2FsdGVkX1+jjkaH3qQksXVi/oRHjBMm65IY87IsKnn7FeeRRPvmNnaUW8n9BulX2UY+Yed0WMppoPVDRN0oyppcorUAYwGA4kwQUFeQSA1ARA4N7KIVGyN2LykK3LTkyEYPVw1jXMEQO1tC6zOArqmrKGvr3ZzXS1EuYRRmG0pxYLmOLU4u+tuHVr+sxuPF1xUiGbJpViAY6QMRj8p291bBaeKmO0eOKACUuginDHWm5v4wBnJM3nIGs+AskbqEsGGKVrkbKy4Heby8491+6f0PH265HAjsMdD3aUYrp4XrkR/RDZBn1vP6fxXMHQGFBukMB9K4TxUpC94Vm3Lwnma1DLwfAUhOsFbRxWNAA5fckropc1CLp0TtFNtBtKEaOSBnm+ymmwI7H3cEGV15H4ThAXpLpVcBXOzBua1CoFUL0ThL3AVdf+tg6QmFkRkavjRWUBQr84tDk3E3MBkc01vpPBiIV9OsA2dNkFypW4cTqm36s5m4XAxdlC9426STzUavVa2fhfTVY0mNpOd9zWLTgT8BvlITTIyxRcH1NQJJC+b7CrP/6TherMJZKCh7J3BRZPs/s0HWMMS5zwO22+XcksTbvp2QIZCmYmvTNRB3juVRSDv0gruRk8uKWRaENBzD3dTGl0a3w+pIs4bMITih6M8hf/XA4zIVONLl0FSWyYG2R9iAG3PlgDYpBzrgIzW9pqFrAcNk7JPu3s9BrsIw2uIOE2WcqqcaiPcYUULOmZmJnayzL6v2RJ0TOUzrWrHR+LXxQPDXBDw9/DYtZOCI0Wh920miJXz2PyyDuvQwAUxo5qgbLQ+JgND3VSXxADEGHYVPa3jOU8yrtanRbLy/0rJWr/HvfaqGQA3Vl1oHYl5XCGJMgd7lVVjn26UupWLpANoMh1I5DfjMnOs1/xZDqVVzjEkZdGxq46nSiv6dUi6vlHuj1TH/lKkKV05B+aOyVXaMTd3VpiZEsHk
- Ev2gi0rR
- Q2r6rN4iL5Tuxgwcwj591CfG4aKnRj6PJVL5r8VY/lWYmkSenRzIk+RYw7p6RH1PGRUWn9e2/dKto2PXHIKocOydsGsVYm78w7r+ZVn0JezMKza0OVhdVAP7EoyRgqjnJoKIqCGQvpFca5hTn+8xg5+ebgRSCWpXXLDY4TB60Mz5w1zs4o7Nwy57pXtRlsflQNgmI/tN8oSej5/GLRFo+oaRoMOKfu3sxC3OSH4pZvA/qjHCcNV9u/odP+Xo36pLjMLHmBB4q6zPwsKI=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4E961C0010
+X-Stat-Signature: 4bosm8ibttoy9xssbxghjkfpfibp4a3o
+X-HE-Tag: 1783624341-566175
+X-HE-Meta: U2FsdGVkX1/fdLn4JBv6+KI+imYBGaF+infHzp0xj9VZS/e2R+2KU5kaDxY10nTzIVvKPcli8b0nSMzp5r8+8UUFxT2cKccdJoetqswkEkdreMd9VLpIPw2q1wSGfp31F+kkkWzVX6daGGuLK00LrJ5uwxhoqrTn+TBEmib2ZnNm5Uv70/ytt+ONUU/LBt7PcbT00UiwApLUmdj6XGSOUnb+lpquI76vYK7E9sBUacsqZk0S6K3/9W9UouF6IhpLr5Mirzjj5O8wa1dK9krM8QPFgAxrLi+yqpaWhuZ6N57zB7vRkLgX3/j02dC3acmAqNVdbma/gfkeGZv3vYMJk61pjOmE2L4dbYsu65+VAY/1L+v7p5WJGiGHlKVEm0FtEs+T8KqKhzHZqBY0FEIggPI1cJVrUF7P9D1y/I+7qY4dFYfZh9rRQBCk2YibxRAFN06BFPGkVV9D1adgKw/Ygz4IlXRmzDVGk5oLtV5uhacGTNyH930lWqgTy3jhyY6MEucQR+OExLgBFMd6yE5O89WWJOB6f4kwLsu7Rkqhv5xx282kkIJaJFJD4IDTHsrUtAvbdE1q2rP7MQ78TBE8plXE2wOiiDjRHOPp1dKpzyIuslNZKI8nitgUSdvC+cB9FX5+LrPBGmjAs90i97uE2g5kBM/dqoo1+gzlZ/hE4fqUeY0UJiArmnW+s5JCHJDttOYiGR/KqzCBeANP0y+Z3ouxchFS2ijyPqC5WrQ/+ZwDre+Tf5wdJhz4AjKZ7XzUgIcKHihotNfOcUUO8NdVTmgc6cT+GKzbU9GXDsf7NugKxMEv44xHBjmNobjbwS4KGwdWaP18jlPAwCzKw0bnOK/Zx6DeRAIvUkEBOIoGYMkAtxvWueRgGVft9MZGQ9VghpN+o0lfQ+FVHjfC0uhjCOolTYIPjbJEE8TEsLhSzxQQN9XOGpnJHXGxFH/TUGF/Nccfa5YhA5tnk58R0EY
+ odvS937X
+ B6RWFVBQDsRS1WRtH85pu1HBojDlUfzdif+LIEOg0jghbPYLrdODMFXggF8w4E5vnNHeRvmqVf5yJMnbGQ35dUVpl/r9db+zssMzyyyZiHj/sYZriBvkBguABWg+7Kz91WlO199/O6wa1zlViTw9ocwkXPjO9xhcPkbGK4icHHgEBhVYZbZ7nNYrIIDFqzwfCbTj4Q/RU9mFMKqOR7749Sle7n+6tS4P2ajQP0rgPUsY2tKfJXAnVcFM/sfSV3qXHbFl28G+NgLd1Ce/qc6SpwkfMVFWfJa+zKiI/gM5jB9nHgYukRl3Gq5JCmfs2yEYA2GUIOEHmUT1JIXH/QMQHZXApS2HsJgll7rIVfR8z51+FCNPWasO7js6yYuDdCrvJTl9C/WHwVhkVAS+7SpPggevw7XA/81E7ZYT6OHfqhkv7wY1Gmlf3UXY40NviIq/o4P3iR8+kPX8i6dZ9YGdVKXp0x1DYqWsz7RixIowlWts7EGl+WQmxlyGcB2xmnOwSp4UASkpttGKruvU5vSNbYl4W5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,91 +174,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 9, 2026 at 2:55=E2=80=AFAM Muchun Song <muchun.song@linux.dev> =
-wrote:
-> > On Jul 9, 2026, at 00:49, James Houghton <jthoughton@google.com> wrote:
-> >
-> > On Wed, Jul 8, 2026 at 1:41=E2=80=AFAM Muchun Song <muchun.song@linux.d=
-ev> wrote:
-> >> Do you mean that the support for AF might vary across different CPUs?
-> >> I'm not that familiar with arm64, so it seems a bit strange to me that
-> >> such basic hardware features can differ so much from one CPU to anothe=
-r.
-> >
-> > Yes, hardware updates of the Access Flag is a per-CPU feature. It is
-> > available for a CPU to use if TCR_EL1.HA is set. TCR_EL1 is a system
-> > register; each CPU has its own. (Linux will always enable HW AF for a
-> > CPU when it is onlined[1] if support is advertised, so we simply need
-> > to check if support is advertised to know that it is in fact enabled.)
-> >
-> > These days it is not uncommon for a system to have two (or more?)
-> > different core implementations, like with "fast" cores and "efficient"
-> > cores.
-> >
-> > [1] See the CONFIG_ARM64_HW_AFDBM bits in arch/arm64/mm/proc.S
->
-> Thanks for your detailed explanation. When enabling HVO via the cmdline,
-> can we simply prevent CPUs that do not support AF from coming online?
-> Would implementing it this way be much simpler? In practice, developers
-> definitely know whether the current system is suitable for enabling HVO.
-> If some CPUs do not support AF, they would just need to evaluate the
-> trade-off between memory savings and having fewer online CPUs than expect=
-ed.
->
-> For scenarios where HVO is enabled via sysctl, we simply need to check
-> if all CPUs support AF. If any do not, the system should return an error.
->
-> Then, we can proceed with the Pre-HVO.
+In pcpu_create_chunk(), nr_pages is the total contiguous backing
+allocation, i.e., nr_units * pcpu_unit_pages, but pcpu_chunk_populated()
+uses it to set chunk->populated, whose size is pcpu_unit_pages, bitmap.
+Since bit N in chunk->populated means page offset N inside every unit is
+backed. When nr_units > 1, the function writes beyond chunk->populated. Fix
+it by using chunk->nr_pages.
 
-I don't think it makes sense to try to implement pre-HVO.
+It also fixes the global pcpu_nr_empty_pop_pages accounting, since
+pcpu_balance_free() only iterates up to chunk->nr_pages.
 
-We cannot do HVO if any boot CPUs do not support HW AF, as HW AF will
-be required to free the HugeTLB pages later, which we should continue
-to support. Pre-HVO (today anyway) happens before all boot CPUs are
-onlined. IMO it is not okay to prevent boot CPUs from onlining.
+Commit a63d4ac4ab609 ("percpu: make percpu-km set chunk->populated bitmap
+properly") introduced the bitmap overflow issue. Later,
+commit b539b87fed37f ("percpu: implmeent pcpu_nr_empty_pop_pages and
+chunk->nr_populated") added pcpu_nr_empty_pop_pages and caused the
+accounting issue.
 
-Let's say for a moment that HVO cannot be toggled at run-time, then
-the best we can do is:
-- If a user does not specify hugetlb_free_vmemmap=3D1, we can always
-allow onlining of late CPUs
-- If a user specifies hugetlb_free_vmemmap=3D1 but not all boot CPUs
-support HW AF, we can always allow onlining of late CPUs.
-- If a user specifies hugetlb_free_vmemmap=3D1 and all boot CPUs support
-HW AF, we must not allow onlining incompatible late CPUs.
+Fixes: a63d4ac4ab609 ("percpu: make percpu-km set chunk->populated bitmap properly")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260703-keep-subpage-private-zero-at-free-v2-0-2970fe777dd6%40nvidia.com?part=1
+Assisted-by: Codex:GPT-5
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+---
+To make nr_units > 1 in percpu-km, we need SMP && !MMU && NEED_PER_CPU_KM.
+RISC-V can have SMP && !MMU. SH J2 can have it too. The kconfig analysis is
+done by Codex.
+---
+ mm/percpu-km.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-HVO compatibility has to be modeled as an Arm system feature. To
-support conditional onlining of late CPUs based on whether or not "HVO
-is being used", we still need the extra cpufeature.c logic.
+diff --git a/mm/percpu-km.c b/mm/percpu-km.c
+index 7ffe84adadb9d..65fd5580e4472 100644
+--- a/mm/percpu-km.c
++++ b/mm/percpu-km.c
+@@ -75,7 +75,7 @@ static struct pcpu_chunk *pcpu_create_chunk(gfp_t gfp)
+ 	chunk->base_addr = page_address(pages);
+ 
+ 	spin_lock_irqsave(&pcpu_lock, flags);
+-	pcpu_chunk_populated(chunk, 0, nr_pages);
++	pcpu_chunk_populated(chunk, 0, chunk->nr_pages);
+ 	spin_unlock_irqrestore(&pcpu_lock, flags);
+ 
+ 	pcpu_stats_chunk_alloc();
 
-So if HVO cannot be toggled at run-time, we can simplify the
-definition of "is HVO being used?" (for the purposes of determining if
-late CPUs can be onlined). We can simplify it from what it is now
-("are there any optimized pages?") to
-"vmemmap_optimize_enabled=3D=3Dtrue?". That allows us to drop patch 15
-(which then needs a slight change to patch 17), but that's about it.
-So this is a slight simplification, which is nice.
+---
+base-commit: 59e34180e138a293260301c139cf7ee800978533
+change-id: 20260709-fix-pcpu_create_chunk-in-percpu-km-6dfa8f28b175
 
-If you (or the Arm folks) feel strongly, I'm happy to write this simplifica=
-tion.
+Best regards,
+-- 
+Yan, Zi
 
-> > I'm hoping you can look at patches 1-3 anyway. I think they're the
-> > right thing to do, even without the arm64 changes.
->
-> Yes, I've looked it over. I think that making modifications across
-> several areas will be much simpler on top of my refactored codebase.
-> For example:
->
->  - In patch 2: There is no longer a need to move vmemmap_get_tail().
->  - In patch 3: Handling partially-HVOed pages becomes straightforward
->                because vmemmap_restore_pte() no longer relies on
->                ->vmemmap_tail to detect whether a restoration is needed.
->  - In patch 4: I have updated the ->remap_pte callback to return an int
->                as well, making it easy to adapt your changes.
->
-> Overall, the implementation is significantly cleaner, so I won't list
-> every detail here.
-
-Thanks! Good to know I can basically drop those patches. :)
-
-Please CC me on these HVO simplifications when you send them out, thanks!
 
