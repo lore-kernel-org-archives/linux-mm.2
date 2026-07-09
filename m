@@ -4,99 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90226C44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 10:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90C6AC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 10:43:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 705F16B008C; Thu,  9 Jul 2026 06:26:18 -0400 (EDT)
+	id 7C7246B0088; Thu,  9 Jul 2026 06:43:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DCDE6B0092; Thu,  9 Jul 2026 06:26:18 -0400 (EDT)
+	id 778236B008A; Thu,  9 Jul 2026 06:43:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A6E66B0099; Thu,  9 Jul 2026 06:26:18 -0400 (EDT)
+	id 68E166B008C; Thu,  9 Jul 2026 06:43:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 34C966B008C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:26:18 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A08098E11B
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:26:17 +0000 (UTC)
-X-FDA: 84968858394.27.6021D94
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 161CD180004
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:26:15 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DTci9JOW;
-	spf=pass (imf06.hostedemail.com: domain of sudeep.holla@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sudeep.holla@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 490866B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:43:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9DB731A0470
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:43:26 +0000 (UTC)
+X-FDA: 84968901612.13.6C27F46
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A7A4E100004
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:43:23 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=H37oZXe4;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783592776;
+	s=arc-20220608; t=1783593804;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TPdVHdBqE78Tyd4PBWnjxJl0mWtpdEwQn28B3/SGb/w=;
-	b=dBgIJPk+fSjjqbLv9Zezsk/KurPxaBmFLWdpGD2XlibVbjWQGoFa3/ydgzipd9Ce7tyeHw
-	zgx6IPz4xBBHlYnhTK0vNn/Zt7bSxZ4dSAIXJwU3YuKJzstyG4K6aFr4wPrNx1Rofm4hYm
-	BNJUYeMJC+X+NSbwqCbpu2C/8+ivfjE=
+	bh=ty3/D0G4b2e+KmJEySti4uf0ShmQy+c+8Sngom0io9c=;
+	b=YiTkFiWvWHXqlW6B7MAXam+FMch0JcD1j9d6auQ+E1R54hipMpaHVun26KmXfUPzzMRXNa
+	a1gZipbPVt9mPdbBv0CKItaRPIuqyAWVQV757tbNWnrco4LY4uFY36ewzpMrSCu6Waw7/o
+	glPnkTitE+J0T4mWx/7HZWYdLInC3ZY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DTci9JOW;
-	spf=pass (imf06.hostedemail.com: domain of sudeep.holla@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sudeep.holla@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=H37oZXe4;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783592776;
-	b=o9vT0KTpqANKK8ZnFcGNG7WWDAjRkktg4dPR1tBDBLcpDT+6v/9q6T/xl28G6i6e2qaLz2
-	tFU2HZAFbDF1e+kKEqSqbg8ntlvPj9xkPnW6Fy01aoJmsPhTtg8BsWybV/bledoxcar1t1
-	9vDWnsUFq7O5zIasVti8xtUiPW+y54g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 748246001A;
-	Thu,  9 Jul 2026 10:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ADD1F00A3A;
-	Thu,  9 Jul 2026 10:26:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783592775;
-	bh=TPdVHdBqE78Tyd4PBWnjxJl0mWtpdEwQn28B3/SGb/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DTci9JOWIGHKfBoQb3CBfSV1SkaFony1B9cQxR/582XmSaBE0WcAVXehCunpqUihN
-	 FcSL9fchO9EriU8hNo2GAlseP1MoOnrrdV/AyxTRDEq1Ol5ptedub8IwkszrzuqoEY
-	 swWIWr9i1t5L/RQDig18MQO15ZxE+C2JBWaEWTU4bG25OzyCJ51zbowDDHd3UFF5XE
-	 f3PMBjDE+iF6kT+TtVb99M0QRkFKJaZDrOEDpLo7xKZuZMAIMY60GLDzL1TodfoyH4
-	 Wv9HTOujAGR4LZKtOqXySgP/XHA8H65aLq/KqyUT0ASQ0/EqW7VhIL1rPzLeQcwxQS
-	 uTq86OLThc6Rg==
-Date: Thu, 9 Jul 2026 11:26:08 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Shyam Saini <shyamsaini@linux.microsoft.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>, ardb@kernel.org, david@kernel.org,
-	will@kernel.org, linux-arm-kernel@lists.infradead.org,
-	akpm@linux-foundation.org, bboscaccy@linux.microsoft.com,
-	bp@alien8.de, dapeng1.mi@linux.intel.com, ebiggers@kernel.org,
-	elver@google.com, enelsonmoore@gmail.com,
-	feng.tang@linux.alibaba.com, gpiccoli@igalia.com, kees@kernel.org,
-	kuba@kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	lirongqing@baidu.com, peterz@infradead.org, rdunlap@infradead.org,
-	tgopinath@linux.microsoft.com, tony.luck@intel.com,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>
-Subject: Re: [RFC v2 PATCH] reserve_mem: add support for static memory
-Message-ID: <20260709-educational-nimble-seagull-5fc031@sudeepholla>
-References: <20260630170911.43521-1-shyamsaini@linux.microsoft.com>
- <ak4fu1qINGyAQUEl@arm.com>
- <ak7tTVs6tWZPOln0@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	t=1783593804;
+	b=4jwrlV2Z+R1yJ12lsUivtO3MaoWFxqySacw2udpMgz3ubyVEJkRYYX5uoV38rDORCiqk3P
+	I/SVhLNmZg1t1/5ec7C3PAM8x7X4L8jdNAYtwakMthvR94wnbz/P3klPwVL0g5umgufLfj
+	fm2kLdgHZUkRdlT9vfO+lKz/X6M3nOs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783593804; x=1815129804;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mqCjFT98lyntQtuLHJA1DbTT0KIDY+LcRiiRyh8xCHw=;
+  b=H37oZXe41illKl0SV34E7Qnp4fdKcvx5hl23ETtsxL6PD2i4Vzey9RyY
+   kQrt8oJdfZpcTDRhl91SCz6gnYKzcOcp4LU+U91/akCtb3DkBJcW+ehGw
+   LuDEKvZaQA42NtSm9T+E5kMO0e5FWUAI2EfRV7QwyISdb3IL5TlI2/LR1
+   Q2wqxbs10GvAEzZFASqq0YhmP9SvSGQBoSAaicobbJXheJGKBSb7zizN7
+   hDlXflwfMN/CJ3pX1DX8znT78xUsCm/hpaebtVGcfUagq8LSkqPBAgOEw
+   2u1Y1RnvbkkX6ZouzQdgmvKrDbeGZwID/EGzIF3xy4CU6jSi2KyKXtGPJ
+   A==;
+X-CSE-ConnectionGUID: jrhcKs9ORw+b8hYt4NTPMw==
+X-CSE-MsgGUID: DiODr1mLSeuBdoct0YND2g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="95643104"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="95643104"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 03:43:22 -0700
+X-CSE-ConnectionGUID: KCjKhrLsTWOM5utjz4jMcg==
+X-CSE-MsgGUID: Ww5JuRfCS/WP0cX9CwvoYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="259449554"
+Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.235])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 03:43:20 -0700
+Date: Thu, 9 Jul 2026 13:43:18 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+	usama.arif@linux.dev, hughd@google.com, willy@infradead.org,
+	ryan.roberts@arm.com, Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
+Message-ID: <ak97RtqgNMV4O-D6@ashevche-desk.local>
+References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
+ <ak9Qe1G7Rv3HF6ZR@ashevche-desk.local>
+ <ak9mrw37kTORZXmc@pathway.suse.cz>
+ <ak9z3ZRdRqGoOu-T@ashevche-desk.local>
+ <ak90WW3I4tmg7Pwz@ashevche-desk.local>
+ <a23c0ace-b52c-4f28-9f40-d0b6dc4ca2d3@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ak7tTVs6tWZPOln0@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+In-Reply-To: <a23c0ace-b52c-4f28-9f40-d0b6dc4ca2d3@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A7A4E100004
+X-Stat-Signature: uzshweyn7posmh3497rohkaos96bre8q
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 161CD180004
-X-Stat-Signature: 4if1b76nqj68q9o7zafkhdjqwdw39oas
-X-HE-Tag: 1783592775-983315
-X-HE-Meta: U2FsdGVkX1+kTg8qGrFjp/fbfvJFlAnsM43Lt9x7c/gEB3KWfpmfluJRKb6XvzWEsdjsSEnDCudEx0XImmAH5X2B5DsQr+ZYvFRq1Ec7m7CFvdM1HyuAgtqojVOM6Ni+XFE7/0CFlKJhWDTxmRURve3KCfOI4XAh9GTFYxIuLeCWIiFXvDd8AjNwluQchYDI+MIzZMyC/LALTupgVn41L1mvzDlP5rIdSvC3x8GyWcBj+S0hjTPXzkdsH5RuKGivaJbSozhrym5kyWJ04GgcwFdzeqSBRNZsF/OMYOWBT8RPqYP3FQfNa3MAmYYPO/iY/knUU5EZOYT+3s6TZOu0Pt9ux0peRYZ1zLPLzsEx3inIXoowMSu5Rrs7tyqCXqyFJnqwkfbOCR4G5nQEiJbrzYJR3cVg/AsN/zh9g9VMKKw30DtJ0RR92TzfEOz+AgBicP9Ciystid/2HShqifTE9yIHrHpu5KKEhQ2MtOVWyn0/daBnIF3v0T6BxJucwwf9dxO6RdxNLhZhel5O4YUU8jX0x7bVMzmWSD0pwLsveBMQHv25CQ8beqT2UlGoUlky/0hy0hzRDIn6121SBxmgXZ5puUQix1C4+XfiSBgi6lqIQXUJBdm5VwDx6RYSjON+QsEN4Lw+YvySsudg5/aeCeaplDV+3nA4Bh9+KBB2aOiisz7uM6BW5Q2jC025h1AXHs/QPWppNub2+h0pYbiBt8vs2kATvppBwhq0h5puHZ7/KYn3u65DbUhcayWnpfA3MrpZEFWgCs7vr+wX97SNP2/qYfrP7bnOKAk4tnxog/UI4JPvybIGrVosMorz/eU6OcLwDWRxHLUP+SVhVNWpy9Cg+vKcFnkNTS8jKa0tfQkReiKhKkizkCsLHxJo7xoQXQHsgqGKCOnU0lKoXzOLFyb/Jg4ruxnXEbv3ZMsnHbGcVC6buSWDSEn3PkkTLs0JcirYlqkPcAbUsD8GpK8
- Gvz40wXx
- CSparxH2qE2JoCQ9e2i8eFUo9zeJ8QKvZD2ssZTCRdrNbDCTs27onBMjfncfvwXfVChWF6CCEdykXMeigIwN/8hTdSVXzYYx8A2dceR7/7fOb8oTrxV3g0lpQepi2XdVoffUHxGNfEKPLF/vxGv0hzxjNAm2ZIDbOn863iilKY5DPqVLNP/7PKvx1Lu26jlSe90IZPIFs4q4tjJySXAFdP9dFzKNBE5MExqj1MtlfHdHHYmMdgWBFcQU2+UGO7QxetrCFOrn8DK62IzIuUKASD4YScUtXKtRA0NE4x4DGIcSjtGY=
+X-HE-Tag: 1783593803-225825
+X-HE-Meta: U2FsdGVkX1948R4exvUgSEAdRgnLT5nRaEow6uGNZx9sY69QI7/gfjBLJxAmhS7zxTh1IiNh2TG87Ysiwx68/9k4UH1T5oLfU2lMxUW8j/0gk1fLhxe0Rfkyhp0Qu+K21a6CG6Z0L/Ni6VWZL5E60gVYY8PhRSEt4CS7DCpw0jaG5P+TpvPTAnLKKZR8bPCTII5g3lmYqFswhrPFBVi9NRF8k5eerZFar2usP6D9q19GsaEODrIMoe9DQBFrIeGl93r/qL6JWndzIgxenNrr4j8pKo619n/gIye+P8lX03TFank3Gy8vJRL8f5rYlzl1LZnKN26mi8rxTzM6AZ2YYBST2M/WO6ZjiJOT9T+SbjsNH6eTEZ8wLjg/kWb+C3B4ZNuFoMXJVL3KeFvAinL2YrpQXA8vUT9J+eaMwHsQE7YOZq3PBDDbwAFXX/zZNtHt3qYenLcvbSZxpI8QzulXO2+eeDva/+GRo45hxopmoBH92lA2f9cSA2zW2H3CZH4H6UwyYiYPixjszLQ8CBYV0rURrEop8RpVtyG6Pbf2eo1ex4VCCPVn7gE8invJSumNuYa6O6FlEyXUjSn50x/8Qr+Pkl1GZad/x2nTUf4Ip8HttAaG//G39S6WnyS7oUE9orDM+4T3xOaSSECbV0auM6SyPdXOMjb36L/pn+v4mxsyRt8EiHZPLqw5FrbVuW7rFOGExSpNb5JMXRSAwAEnufl3JxHlfYSoZtz/0NpQl/gwatb/JHnEXvIzUCvJ5Pvt1j7UfpGEFfdli3yj48UIBhPDpJjQYfFw9lrOMl3mRTwU/771Jf10GwB+9tLgks+sq/VDAAX2l/Qxl4Z9cX+zWUX3UEK+IvqHkxGGIqDdwx1+vJWOID+uQTNZ77ap8I90SgO46D1KbrwdcNRFtgRo4o1Fa4/Cx3NogCNSEhweBpZogvuj9CNnBieRCJGUgokEqP/Kq/zu3mu//P94Og/
+ kHReXGu3
+ yBmmkcFFno632czgrkHabzHELjUsXcCJNIN+7CwMu9GhR0/IljgPHRI4r5Cu+SVJVUTLYw3CYbHLXZJl4737ywTpzD0R6Fwn90e9uroLrQXRzXfmIhyPORuKMqfsGOc4kzAB9mlXnoIYKOg62/IhEJWZzdKjwaHKjEMibZjDADYDKB5PTxsIWHaSqTHddC9lYtaKc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,38 +112,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 08, 2026 at 05:37:33PM -0700, Shyam Saini wrote:
-> Hi Catalin,
-> 
-> On 08 Jul 2026 11:00, Catalin Marinas wrote:
-> > Hi Shyam,
-> > 
-> > Adding Lorenzo, Hanjun, Sudeep.
-> > 
-> > On Tue, Jun 30, 2026 at 10:09:11AM -0700, Shyam Saini wrote:
-> > > Following up on this, As Mike pointed that reserve_mem is best effort
-> > > reservation mechanism, so what is the recommended reliable Linux
-> > > mechanism, if any, to reserve a predetermined memory range during
-> > > early boot on ARM64/ACPI platforms for warm boot scenarios? KHO is
-> > > one option, but I'm specifically looking for a solution that preserves
-> > > the region across warm reboots.
-> > 
-> > If you need ramoops-like support, I think ACPI ERST is a better fit and
-> > we don't need any memory reservation tricks. I'll let the arm ACPI
-> > maintainers comment further.
-> > 
-> 
-> while this patch mentions use case of ramoops, there are other uses cases that
-> requires predetermined memory reservation at boot time, one of them is PMEM.
-> Like Mike pointed out in this [1] thread, we don't seem to have an
-> equivalent mechanism for reserving predetermined memory on ARM/ACPI
-> platforms, as is available on ARM/DTS based platforms.
-> 
+On Thu, Jul 09, 2026 at 12:24:08PM +0200, David Hildenbrand (Arm) wrote:
+> On 7/9/26 12:13, Andy Shevchenko wrote:
+> > On Thu, Jul 09, 2026 at 01:11:46PM +0300, Andy Shevchenko wrote:
+> >> On Thu, Jul 09, 2026 at 11:15:27AM +0200, Petr Mladek wrote:
 
-Indeed, it was been discussed in several forums in the past but AFAIK there
-is no conclusion or a direction towards solving this yet.
+...
+
+> >>> But maybe you had something particular in mind.
+> >>
+> >> Yes, I was thinking of a wrapper on top of special_hex_number(). It takes size
+> >> as an argument and hence will work even for 128-bit cases.
+> > 
+> > Okay, the argument is limited to 64-bit in there. But I don't think it's a big
+> > impediment.
+> 
+> Rewrite number() / create a new 128bit variants to avoid 3 simple snprintf()
+> statements? :)
+> 
+> Hm ...
+
+Since it's slowly spreading (I mean 128-bit types), I think sooner or later we
+would do it anyway. For now we can just have a wrapper on top of number()
+(yes, special_hex_number() probably too special for this case) to print it.
+And yes, avoiding sprintf() in this case seems beneficial to me, we will have
+one implementation of how we print pointers.
 
 -- 
-Regards,
-Sudeep
+With Best Regards,
+Andy Shevchenko
+
+
 
