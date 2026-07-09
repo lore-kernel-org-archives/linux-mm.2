@@ -4,124 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBD8C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:42:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EC8EC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:45:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FD456B008A; Thu,  9 Jul 2026 13:42:34 -0400 (EDT)
+	id 0FB3C6B0088; Thu,  9 Jul 2026 13:45:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D4CB6B00BD; Thu,  9 Jul 2026 13:42:34 -0400 (EDT)
+	id 0D2C76B00BD; Thu,  9 Jul 2026 13:45:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5126F6B00BE; Thu,  9 Jul 2026 13:42:34 -0400 (EDT)
+	id 00FEB6B00BF; Thu,  9 Jul 2026 13:45:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C4FE36B008A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:42:33 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0FE471C1F05
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:42:33 +0000 (UTC)
-X-FDA: 84969957786.09.41035E4
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D6615A0009
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:42:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C63766B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:45:43 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D64061C8179
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:12 +0000 (UTC)
+X-FDA: 84969949344.15.4FFF2CC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 47735A0004
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:11 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OQqnee6k;
-	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RlW3SLa/";
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783618951;
-	b=7bFkUZ5xXDpclfLVyMk0JKvyOoK9ZvnxpaRUNEZh4MZcwD/WETcX0ssvPwT8mXEpW04mia
-	WPCKlSfv+SOB1haqdewkG5tUYbL4qRegwvtxlnJYT9iWJBDg16XnFNuWztaiunUcWmao7C
-	Qgh0sBGkEdJeUDwU65YIxl59pVaJ4A0=
+	t=1783618751;
+	b=XvuAST1Hc/rL4HRWtwHFQhIfQqF5HXFdXOxgc2c+WLVp64IMPjVyYBxC1/wdbkSIFmm4Ny
+	62SlqlNIFPJi4ZWmv98PrBFxZOSqdVHgGKi5MkyYkWkfwxNIsor0qVYFckFUMWdFWcQQyk
+	c3DmDRP8KU/1HyjsgwyALNeoYeyCB7A=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=OQqnee6k;
-	spf=pass (imf15.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RlW3SLa/";
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783618951;
+	s=arc-20220608; t=1783618751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZCmYJfmZUrFzu6y7sef3nXo3D+tzzPc1JVMO9nTza9k=;
-	b=n+VvpL0AWHF5OO9sMHEBUCUn26wfcbS4PzQhb+JAFhdhGupOo/w8nbvHSjH4sSeMuXIziW
-	eAPLRcz876UieMRs43o4dq7MkoJXhOv9el+7VLbt8nI1nfCnxSMfwH8090XLWJTxnVptqu
-	n3bX+3BH8rAspJih707FLZ7SAMHgECM=
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e55b62640so3244885a.0
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 10:42:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1783618950; x=1784223750; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZCmYJfmZUrFzu6y7sef3nXo3D+tzzPc1JVMO9nTza9k=;
-        b=OQqnee6k+bfNfP+lLe9YgerAENAP51fjJGDhPC6hgK5VKOwjkzSZGUs9Sthk0tlOp7
-         VwJhSLof6Q/NVdeDYPDEEZBI+JsS/jSeNcyR5Lux0+OmzDR+YUALoTuVnpA56JCj6dPO
-         o0Q2M403uY107ZZx3EB6bIBqGPEuZOpvnFkFbZh5yICsElu7uSCvueazUKjqY/IlwLNZ
-         da9Nu+I4+hZ+rsGwoHhOmlCSEryejTWcZ3qM6DBgolmOEceAkHJ9cGno+nYSeaguCVRd
-         2taVnE/2JInThKZDAJvwb5oHP0qNCtLy2oRjSv/5/6KAuorHS+OqB5T4q52nCF0qNR4u
-         uE5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783618950; x=1784223750;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZCmYJfmZUrFzu6y7sef3nXo3D+tzzPc1JVMO9nTza9k=;
-        b=dOObQ6gjajORBPZxrpbb7kdonbw3Eajmh21cquyLpXMjbT3scDGlm2aDi000TLj/8Z
-         KbcHcqFzWwIKd5pklQOREhBwYX7+KnC7d++O0282jOvEkHRNEJ1daYuT4nYLKl2qOFQW
-         5i129xXzDaxBh0g31F+ylGr9KrmLTyi3+MboGsTpLKtVs716em4VXf9Zp3Vg0K9ukiZT
-         3QCFRqfdy56qz12s4a9+5kMqD74v9HU8DTVlT94u07IRuuIK+xm5bV4GAlDW3biV8BQf
-         IyvurTi0vENSKnzdiBeakKSuw/VBXyitCipovc8ndb2ypUSpdcQ8UUJQwaRJKxhGWd2M
-         ac0g==
-X-Forwarded-Encrypted: i=1; AHgh+Rp0gsxyc9JZPbfjUzMCiZiKWTJIXTYjwrKtbAapA/IqrAkE8ITe5tgDwKTy5RXYc5TfwuknErUmtA==@kvack.org
-X-Gm-Message-State: AOJu0YwPQfrQP0HDK5JVsidbdG/JktgVAbksW/KbTqclePMAfj8ESrNw
-	BUbUUg3nAykKenvfYEqa8xCpAEgp8o5/qrLjYdwjD34jFvJy7xVjRyt+bwhtzEmYYOc=
-X-Gm-Gg: AfdE7cmTWgkj0byRbici6k74LPEpRu1JYGPoGzmu83NDmyOki+1PIrUtv0NhQAawYo+
-	GVfeTlZ05a3f95Hn/jIaQfvyABUYVqH4XG1sn63kgJiD761HJJbi71gKsoeyOVYFSBExgk4LLHs
-	dy/2pflJU04KAbw8IAXPOsdsv+Pt4gM9/A3SqC8At75ulm7kslfyqNFofaCOptF5LGaGwvROU/V
-	+GuiZ0rgSOl3pUQRyUDaFYOcEug12A2TkvRDoi8hJF0YUUqM+SZPLaeyZA0DNdOayUSDNipS6s5
-	fJhqvQ5h7j50JjZmuN4Ee2PaSHW3kNK5fV/bm+SLPZERw6falokl2ANju+kr1Zl1Hj65GcQaUWA
-	1spwqutkh7zaxoB0tZXyL4YUVZluMC9aNKwcek0JLaf4cnCZstN6zHl9H2ufoRafE+Fdt7QiHdI
-	Gedn95zLV4rcw=
-X-Received: by 2002:a05:620a:a51b:b0:92e:d953:8283 with SMTP id af79cd13be357-92ed9538814mr421842585a.44.1783618949159;
-        Thu, 09 Jul 2026 10:42:29 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90ca004fsm1721530585a.28.2026.07.09.10.42.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 10:42:28 -0700 (PDT)
-Date: Thu, 9 Jul 2026 13:42:27 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
+	bh=dgB2xMhCheXYxaDaTXd3qxlc7A2ly9v83pGoMbOAmws=;
+	b=pa4/13DsugY+JUOy6rrGvN6N8NWWi6DQTz3txFClgB8LBays6IIUbt9UWBl/6TJfafrgEh
+	jABhHF2ebIlpwo2K40X7pB98HQ26+3bo+R/LpEZ/7mEi/C1bR3uPSPNkSJsWRg6nwM0KoQ
+	ah3ZPDGRRb8D3yPdlmSfNb1I5tu9OrM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D6B8461836;
+	Thu,  9 Jul 2026 17:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0CA1F00A3D;
+	Thu,  9 Jul 2026 17:39:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783618750;
+	bh=dgB2xMhCheXYxaDaTXd3qxlc7A2ly9v83pGoMbOAmws=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RlW3SLa/7ACatTt0jZ2TGxgUhFDYqGkZzFlokYqAgVzHR7YUv5fO80oyI3obRxQma
+	 E+1avjG09445a841Dj7dNYSogNub6lOhJTHMC9mPHYPl65v550aLUdqn8h1m+SmXIX
+	 uMuaYw+QI7uJCIqBt/M9vGyfHzOhSlUgtsC3VbsWmXAcFrd4HIUWK3CpQ4RJrwh4xO
+	 EiFs2M0Spe454LDUALw3E2Gg4hPnKzlpyTBhpY6ipyr4vef5NlHbyveaO5bbT+RVP8
+	 MdWJe7FbzAc5dinNreJF58+0w+cIDnutUn3dCZD3OwlqrXaqVGoXXCmBDf5furhlgr
+	 OotBLs7sBSajQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>,
+	Jork Loeser <jloeser@linux.microsoft.com>
+Cc: kexec@lists.infradead.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] mm: compaction: support non-movable compaction for
- pageblock requests
-Message-ID: <ak_dgyUa3QI8SKaI@cmpxchg.org>
-References: <20260626182215.1107966-1-hannes@cmpxchg.org>
- <20260626182215.1107966-3-hannes@cmpxchg.org>
- <DJNPG9B5H59C.1RS4YG5DJRNWB@nvidia.com>
+Subject: [PATCH v3 15/21] kho: initialize preserved memory map radix tree earlier
+Date: Thu,  9 Jul 2026 19:38:04 +0200
+Message-ID: <20260709173821.429921-16-pratyush@kernel.org>
+X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
+In-Reply-To: <20260709173821.429921-1-pratyush@kernel.org>
+References: <20260709173821.429921-1-pratyush@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DJNPG9B5H59C.1RS4YG5DJRNWB@nvidia.com>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D6615A0009
-X-Stat-Signature: 3tuux63fpgd3zc9jfjd9ta4bcjci3muk
-X-HE-Tag: 1783618950-76813
-X-HE-Meta: U2FsdGVkX1+aHF1FEuKbMGA2jLibiKzr5IPadoz0MLv9LT9N8QMu6cBbZVKKMwyqiATtGKNxj0rj4MvqHLnUzDLxYPKnQhK0EfhndOqkOojkxt05xCVNyASbFV/b1sDCOTeN8ZRYSTftrj+zT3EsuF2lqIeuWCD9P6K3zhtrZYaCJ5mKTHTYxZuxZtmegi/XEvljxCA4z9SNDPs/ARYgXdx87sfJ5ISaNxmV4Q7l0+gc0TxZvVw+iKoLUwPBjs8Qpb84tgKE8XVKx3ugrQ1vljtXnLVDRxi8tqoNQL/Z6yRHQ5dam3KF/pjWhFem+hW92yA2gFZWDoDgXCq+mxZz0A0ax7i/OnNd8cI7rS8CAXg5c4HPrPz2huXTKeWcMLTK9OD32OBsuSY9nqyI0o6Sz6hHigO3rBeE+swqeVS+eddislgeQjotPPyNJQUJz8bQf6KymLdNB3cHF/9HBgShDdLXnQWJUueVTgGS+cAwQGIw/+fgpyOAAZeA0D1qV0an3MfOkb7RPi9piJiJH+hhTSNoBl+AE1iVzlXEsWiMp9f3MVjo1ZUcZEmRNRWQodT9rXfmSncnCKkdq/bnfOsVeW8xE4jjLEsU88W6JuE2RChRzsig4Bp5vDhw2vQiVRiIyV5YM376q+3iB4M0TRlvVv6kTKUYBUpopknIoD2dqM9M5D8cbnCZAxugwUKuSZfoUX8bjIGFa6QX5kwYeVCjNHA8HeU3bPcJhs0Kk3q+ZERIHnwGQXVaZ18HKQuk08mlwZ33RUkWqzWkN4kXkZtZwwb0qMFzmy7eJw9/sppg2ouK9CBUgJEz9ahOss1c6jGodQzLcCyV4+ZPJn4s70IA1kq38+uaAC5OOqVVvPzI+k/koF82in1dzuQLeC9AG4DqUor5c53UtXHpguXJ/BkJ7YWYyTHNrskM8gA9PYjSepExNgQUXVfmLcYu/xcDwfgcYaerFSNPxJ8hCRxRdRG
- VkS04FWe
- 89c39ksW/c/qPtbZfkHUwONwU3AmaeGNPIXdYgFu3ePJSlG0cugbC8oKCyTep92pBNNydoYPnfUuX8FC+dCLDG/+Jy2+0KSxMtpE7Khd23Tf/l77RAvuLVkaMVGJ3c3KBfV4zmXEZzu3qaDXg4yWrQrfAiKF844qCY5XHBvYYVxPKRC/E4x98+6/mFAp/Ir74PDA2dRRfAdmqjIQumKBvAUlcrkeP8c4a20NZB46AE/0EvBxt4J4tZGK9BMQqO0mOFo2C3jl5g8O4JH4amvT+oTg4Ysy1g/iZtDrqntKRW2x08xIIush+GQTWzq4Rrk9Pu7+h5e8VxdMDcu84kH5WNE3Zo0m5aMOE7a2FquZ0J8kFHacXyAZdFfPaaM/ahM0b7acpqZav2+D1S8Kz9vGH5Lc7JNihZv6t+EspEAl3rxzMRD0=
+X-Rspamd-Queue-Id: 47735A0004
+X-Stat-Signature: 9rtjtoo76jrc1nqj7heg8c9eyjjk7ybh
+X-HE-Tag: 1783618751-620556
+X-HE-Meta: U2FsdGVkX18rr9e2gTQBujRPpnRv9EXh2kEEVN403kweX0IznkH2b75AgUszzqr2p9wRlHezMBwhObnjcPflydrIswGwDK6ieTQ8Eks/BPvqS4kvBxFERncJHN+CGPMyVeB/nbVL3LLlCNWg2JOEFxktZOiY8zgiVIEarOgxjZl036cwJx8xvmm6rEtuzZUjZh5N094eQWGQUJSps2k1I5dhDbm58xvO1Nz1oZgv04+g9EXuLMZokYVBNzf8H8q0WXhCKLU3RStnSN+KS3cuZniWgu619WoFOxSCQZQjlvVd27PJ+U986VOejw+J2DQQXGbSL40igyK2BG+vGeoUxjh5GypnBnJNrqhHvSkmbh8XBB+Ft3s14Zy6FgDz2eAr39qBVvBkuw9U8HfAj9FWW1S1l/W0VPjYtI+LW4xUrC8dV5kCxOcPXLbCjqXu7Gg0XJjPRjdfdkahwLFP9HIt2e5KPsAYP0xH1Ip2iC8NIyqQr3sOSOEMJ53kynx0A3fjdP30chtCdmGizq4d45Kg00j9mZNjtBifN2fSmD5cA0tYFCYu1kG0sykj4wvbCQXZwgTBhmxeIeOaKE22c7bvNUw94nw3HS9pVgyByM/ndAxJ7ef40jDq4mfsxvs2k+wTf5VAgdiRKaWj3wFv4Mdfs9glqY6Pghy+h18Rmeguy7uKS4l56hY9k0jj0oye6/lRtzC81bTtyGvnPXyGMkQOSvXlzM9EQIQ0zoAxpaNPHfI22yPtn7OtiXYw2pF7vmPGo/ooj72PWooFaijmrtHUNTwfM8I+YW0E+Q60Vy9egdwuwkcw+/Zj+U2YXILR5vterAIw2ewJIEXSesbTbWle5dSzgSwYFj17okAnG6QROdPERqH+a9Nh7pwOIE4eYfOdiL6li97zBJ7oe6oAqMhwMTuQUhAsBKf4lAEz9Fvf6feelyarsLYbgVHbIrE74kr7TmG5OXy53c/JnGhWs3H
+ y//piUeT
+ GC3K6rPugOnVDlwC0OOpUxeFRPRH23YiGye1Qjpsh3fHyO+QetA9IXqz5pxR50R7X4X8fG7pgPQfOeZfif8mf+RKcaKb1Y3C//AjaCeUAaBV0noNlNvic7CHvURmaENweazEASthsBxlP1v4gh1wGwQDvb6pBaC0XpK2HPZYgy8rnChGy5ESyUYUMKrWkNzNTVnAvqW65tpGWfolAPQzeQijfLBRw5tyXwKszWIefeqv0Ulc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,73 +100,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026 at 09:47:21PM -0400, Zi Yan wrote:
-> On Fri Jun 26, 2026 at 2:21 PM EDT, Johannes Weiner wrote:
-> > While trying to fix a reclaim storm in defrag_mode, I noticed that
-> > non-movable direct compaction is extremely inefficient.
-> >
-> > When searching for space to evacuate, compaction only allows blocks of
-> > the same type as the incoming request. This is to prevent migratetype
-> > pollution, where a small non-movable request frees space in a movable
-> > block and provokes the allocator to fall back and pollute it.
-> >
-> > This protection is reasonable on one hand, but the downside is that it
-> > makes non-movable direct compaction nearly useless: if we get the type
-> > annotations right, by definition there aren't any movable pages inside
-> > the non-movable blocks it is allowed to scan.
-> >
-> > With defrag_mode, the goal is the production of whole blocks, which
-> > are essentially type neutral: __rmqueue_claim() will convert them
-> > wholesale on alloc. This makes type mixing and pollution a non-issue.
-> >
-> > Fix the pollution gates to take the requested order into account, and
-> > allow whole-block requests to scan blocks of other types.
-> >
-> > The only exception is CMA blocks. That type is sticky and these blocks
-> > cannot be claimed to other types. Continue to be strict with them, and
-> > allow only explicit ALLOC_CMA requests and kcompactd to evacuate them.
-> >
-> > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> > ---
-> >  mm/compaction.c | 35 ++++++++++++++++++++++++++++-------
-> >  1 file changed, 28 insertions(+), 7 deletions(-)
-> >
-> 
-> <snip>
-> 
-> > +
-> > +	/*
-> > +	 * Prevent small unmovable/reclaimable requests from polluting
-> 
-> "small" here means smaller than pageblock_order requests? If yes, it is
-> better to spell it out to prevent confusion.
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Ah, I thought the order < pageblock_order in the code would make it
-clear. But I don't mind spelling it out.
+Currently the preserved memory radix tree is initialized from
+kho_memory_init(), which happens relatively late in MM init. In a coming
+patch, the tree will be used from kho_memory_init_early(). Move the tree
+initialization there.
 
-I will change this to "<pageblock_order". Shout if you prefer
-something else :)
+Simplify some of the code in kho_mem_retrieve() by getting rid of the
+err variable and jumping to err directly.
 
-> 
-> > +	 * movable blocks through fallbacks. Whole-block production is
-> > +	 * exempt as the allocator claims and converts these.
-> > +	 */
-> > +	if (cc->migratetype == MIGRATE_MOVABLE || cc->order >= pageblock_order)
-> >  		return is_migrate_movable(block_mt);
-> >  	else
-> >  		return block_mt == cc->migratetype;
-> > @@ -1974,12 +1995,12 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
-> >  		return pfn;
-> >  
-> >  	/*
-> > -	 * Only allow kcompactd and direct requests for movable pages to
-> > -	 * quickly clear out a MOVABLE pageblock for allocation. This
-> > -	 * reduces the risk that a large movable pageblock is freed for
-> > -	 * an unmovable/reclaimable small allocation.
-> > +	 * Prevent small unmovable/reclaimable requests from polluting
-> 
-> This "small" as well.
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+---
+ kernel/liveupdate/kexec_handover.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-Yep, will keep these in sync.
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 2ddfc804cdf7..6e8682469bd7 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -1531,20 +1531,8 @@ static void __init kho_mem_retrieve(void)
+ 	const struct kho_radix_walk_cb cb = {
+ 		.leaf = kho_preserved_memory_reserve,
+ 	};
+-	const void *fdt = kho_get_fdt();
+-	int err;
+ 
+-	/*
+-	 * kho_get_mem_map() should always succeed. If it fails, kho_populate()
+-	 * catches that and never sets kho_in.scratch_phys, which stops memory
+-	 * retrieval.
+-	 */
+-	err = kho_radix_init_tree(&kho_in.radix_tree, kho_get_mem_map(fdt));
+-	if (err)
+-		goto err;
+-
+-	err = kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL);
+-	if (err)
++	if (kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL))
+ 		goto err;
+ 
+ 	return;
+@@ -1756,6 +1744,8 @@ fs_initcall(kho_init);
+ 
+ void __init kho_memory_init_early(void)
+ {
++	const void *fdt = kho_get_fdt();
++
+ 	if (!is_kho_boot())
+ 		return;
+ 
+@@ -1765,6 +1755,20 @@ void __init kho_memory_init_early(void)
+ 	 * early.
+ 	 */
+ 	kho_scratch = phys_to_virt(kho_in.scratch_phys);
++
++	/*
++	 * kho_get_mem_map() should always succeed. If it fails, kho_populate()
++	 * catches that and never sets kho_in.fdt_phys.
++	 */
++	if (kho_radix_init_tree(&kho_in.radix_tree, kho_get_mem_map(fdt))) {
++		/*
++		 * Failed to initialize preserved memory radix tree. Clear FDT
++		 * and scratch so KHO users don't treat it as a KHO boot.
++		 */
++		kho_in.fdt_phys = 0;
++		kho_in.scratch_phys = 0;
++		return;
++	}
+ }
+ 
+ void __init kho_memory_init(void)
+-- 
+2.55.0.141.g00534a21ce-goog
 
 
