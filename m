@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AC98C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:30:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4E92C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:30:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E72366B0099; Thu,  9 Jul 2026 18:30:30 -0400 (EDT)
+	id 682ED6B009B; Thu,  9 Jul 2026 18:30:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E498B6B009D; Thu,  9 Jul 2026 18:30:30 -0400 (EDT)
+	id 5BE296B009D; Thu,  9 Jul 2026 18:30:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5C2C6B0099; Thu,  9 Jul 2026 18:30:30 -0400 (EDT)
+	id 4FCC96B009E; Thu,  9 Jul 2026 18:30:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A43446B0099
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:30 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 260BB40314
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 186326B009B
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 795F91692AF
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:32 +0000 (UTC)
+X-FDA: 84970683504.19.E98EB93
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AA4BC40005
 	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:30 +0000 (UTC)
-X-FDA: 84970683420.09.B8EDACD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 70803C0011
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:28 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lqw7KnIf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QmlgicS2;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783636228;
+	s=arc-20220608; t=1783636230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7TfSZ6IW6EVUOTLu+a8V1x8AdtgO5MINp4HOFsWyE98=;
-	b=n5sDcqn77SO2b/GE6IzJwJfHYzVqkV9cJ4Z7GTNwCUIvvSmD0eodK9IIkq4sgMI81f4rYN
-	QAxRsVsEKAUNPvOe/3SkqYvkP6qd33pEDT91mRuYNozaWpXAhPvnVzE/H9G+oWhyfo3rns
-	G55fbf388REUGrBIq6ToUWsNSkO6Pd8=
+	bh=TpPIWnB5EGOBygOl5xUSo4Bo31VS4QZB7PjbGgp98j4=;
+	b=i5AItuLU/ugLUaDNgWe9ppS/qZeUv7/O7SoKs7CSJqhsRHCu+lwMXJd0LurCH3fKEovqn3
+	WSajSa4szA1kNpOAPlhilKETJ4KC4GTca0+clWijgS2Cx2M3Hn6KbI2qANeelNjMu7kW75
+	2sTNrxF85Xz8TK5WMmp5NFo76PyfkKk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lqw7KnIf;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QmlgicS2;
+	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783636228;
-	b=JTlOuAWLQGQyJ7n3Wdn5qLdNnrWhfhuNsMFK0b8f20fl3yoUGQRKqkdnZiJsc6ZvB19vp3
-	llZY1k4W5iDJ6ZX1LvAdBuZWkySyQeme+VQHftb7vNFJfJkpfPk/we7SzaF/oz+1DvbjnO
-	4y5k/ZEsL9gEo/JUGUVB32SbHBtaZzI=
+	t=1783636230;
+	b=qm96YP5+PPVmrNFmRTJDAU1qpiqMKUNXyRjH5X0E0myIfpqwhEp0M7zr9xEk1Emn712B3f
+	T1/V1Rinqd1PZiUC7NvEcnqIZRqTTn9yzvp1xbcK5vVrFqZDmjXKhMoI5EHAHV1gN8kgkO
+	06tCnWWZaFAzyipAiyK4Zva+MLeOHdE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 037E36138A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0631C418DD;
+	Thu,  9 Jul 2026 22:30:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2AB1F000E9;
 	Thu,  9 Jul 2026 22:30:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F871F00A3A;
-	Thu,  9 Jul 2026 22:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783636227;
-	bh=7TfSZ6IW6EVUOTLu+a8V1x8AdtgO5MINp4HOFsWyE98=;
+	s=k20260515; t=1783636229;
+	bh=TpPIWnB5EGOBygOl5xUSo4Bo31VS4QZB7PjbGgp98j4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lqw7KnIf+yaT1BLIPiQxYYc0ifpBkl6XS0pK/SzC1m2NVk7pvpRJNYxIIcDALVOzt
-	 DlRtmQvp5JNG1YWpIZFE/WZ7JYUib0C68wNTVk638OtyJbcxxmIw6ZCmRpIFlH9b8P
-	 NQ4gUv4OiN7lC3j/tp854fUUpZqXVq2aee+OgMkC9dLM7xM9uJ6KhxlmEPh4WGX3pQ
-	 aMaFXQlzENRj9+O5futEOWTZzHDWRzHnFXGfVxMc4X+JZv1mM70waslwOB3VQG9Mm7
-	 L7rMFQQFYFgzKEUEicSaKpEKeOOtq7HL07MVznfqosRDrua1K0jWXr5MRrsrQc7ufy
-	 n0jCzCczmCt4g==
+	b=QmlgicS2TKnrfmRNI+JacrCDJK6QxRMJ19YOOf83cTetLjtNRQPaVj6OpKpbZFN9V
+	 9e+Nj98GnLUcOCQKGOJcWGepLY1JLghFmWFL29iuei8rdVVrcsOFeXP/ky+etVDZyx
+	 W1yKKDg0hapQKP0kSh7lzDGpzXBIq9HqWMjLH5R/wH8Q/AcCSiUAfsSdtRjlzpFy21
+	 KhNLzbn8XfYOSnsA3CI9EoZiR8ErzjCoA/V0REQN8vKI77WdP5gx7BqhGq9yhQpg79
+	 zIBiPAHATlqzdIlEW7jevlw/LNyeenpO0Pd6T9IEeYKkkdgc4BXBcpd71dUFaOWrT3
+	 lnZw4VqXXIL/A==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 10 Jul 2026 00:30:01 +0200
-Subject: [PATCH v2 06/23] binfmt_misc: turn the entry bit numbers into a
- proper enum
+Date: Fri, 10 Jul 2026 00:30:02 +0200
+Subject: [PATCH v2 07/23] binfmt_misc: turn the entry behavior flags into
+ an enum
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-work-binfmt_misc-locking-v2-6-2a1c3d4126a7@kernel.org>
+Message-Id: <20260710-work-binfmt_misc-locking-v2-7-2a1c3d4126a7@kernel.org>
 References: <20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org>
 In-Reply-To: <20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -80,22 +80,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
  jannh@google.com
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3324; i=brauner@kernel.org;
- h=from:subject:message-id; bh=z9QHeXcMB2NP6cxIN0CnxHAFiQBh0+c9XtYMXdoWbAc=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQFKHydXqOVJjcpw7O28pyvsvQC9cvyrDxplqYv+N6Eq
- vie2FzWUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMBHpakaG58oefqs03fUv/Uz7
- 23je9vT7jfa5W/rshasvztn9tb/dluGvcHjLObFTcVcn+u1Za8tqmfy053DL1obDl7mfrb2y6tw
- xJgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1363; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=oi6YqCiauhLy2SRVgSkkNzs31bAwl53yzw4aBTbiKnQ=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQFKHzNylDesETCJeBm4M8dM0NsDhxNcdpil2u1Z9a3h
+ A9To+6bdZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExENIGR4Yh98Yk650M58259
+ sM92jw+tLRSPrzU3XTJXUvbXMbaidwz/tLY82lX1Yn/3uRdrnTkmqL9Z/fDKkcAVG18ecPj6MGD
+ fDw4A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 70803C0011
-X-Stat-Signature: c7oe3fz9gs3bxmsacxhejpk4qnrtka5w
-X-HE-Tag: 1783636228-625882
-X-HE-Meta: U2FsdGVkX19ipYd31ZIQ959FbGBqdWswQugOmSP/fA9Ry3q8tz53d0nFvTua+zVkN64qqwiL/NfoXTFOVOR8o0KRCKalmupUEWBJzIvhnsNMQaHPcW/xVwbGxcGzj5sHndU5wFq0tD+hrUDbltVlJ9/XTv1YVFXzRTnXOvob1/rPUahBkP7N6QNAns9l64s5onIWBvMyTfygCnKBAjz3tXCh7uOrLnd1YwSjA80YDHHOukOQ/m1qFR48Nb327nwHFEd/2chedK0A9Tncm+fcWILbNhYALoiSz1LqbOrpJqWgpsYGIomQOYMD1lO5R+AGJextKxtt4GtPeXQ3zsDDHKSw6fnMwlqDEDFWmDGVp3tZo2wq1qM4DlHqAVTPIy7qWg02JJM9MtF4/YraetKhSs/sIhLx6Q/QwTnS+AZTm8v772WYJQvy8nk26rhDYFofBIlr/I8R4wzS/9spINY3vO9I1/dfiEZxQ7JqqtSqNDlLKAm0UOZDAbcqNBbDGmaPaGPbaQejcfya2ZcsoU2MtPS8XC0DVwoKAN02KPi3/96pjIQaeyJ/648MgcTFdAKuLTLh30dwX20EYDWdgv22rZet2E7u6b7BIR43oALSk8HeFcJFoVMTLYakctnAEJtgeIpYBHiLlpr4XFhJvb4vA9PCEXeB7xBXXw7l9y6YyTtWLM0/GQKNZfoLpQfgO9wLyoPo/zbB/gE5TGoZrOEMJUSrHbP3nsiMhAkDSGwcjs50/wEFq618X7Khfhmnxn4OOMyB1eHk7NnXADGDHXEubhOiEirEnE8nfk5raKf3lf8kKsYBY1I4B9RDcqD7n/NkHFIqkAoBNxjenSA27UlgR789IIG+IG4PCGiXYpqOxlh4FjBtP9NIrJT7i+2C2x6ENQeM6SC2vgOIm1V5otVQI/MKAUAby2hJ6pJF2xEBTXQKKqK52PXRxRUGClfHuP59ocnRi2kDMgQwLWp4Ld6
- Q/zz1szg
- TPrKw+uiNlDNqB48PQHTXfy1GYqzUEqsxKGXQz5X+ga51DvYlCHvQ8Rte7jWC41sB0GZmHM5UeIaDNPCCMmRrqXTfudFIglInoAP0YwXwsvrrJI4ZQOVz9ObOlZ2kD4a+ZhBguNKE16FBZlhN8aGsQpvTvoy4vydFyxi3jDQbU94SqXeENcEHyFo323WZLpDWTVTKj/gy5KAuS6lLoMZe2IBp7asStmRDjDgnJ+hBcrwpswxn0PKxp2h9yLzIn30aON93IFgN/+Mv3DI2r01d5KglozFxHhiHu9dfcvuYG46xYVV7af7RivguZzi+D3ix/f2cifiRGoFUczML3/HIp/z4XXJzFeVd+F7UFERTCd3+ABE=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AA4BC40005
+X-Stat-Signature: xi9ixp4ihedxi3896s36qegw8fyxdwqk
+X-HE-Tag: 1783636230-528386
+X-HE-Meta: U2FsdGVkX19a4yvfBvfasweSQvKWaouNAko66REGtZ5jW1gsYYH643JxcASkaoJwzNOJVb5iPprHHUhVvh8engSTyrAF90kZ6k8faTs0oAszLbHgyeHCiE53lXcfkxqn5m2C+5Zt7avwSI0NC0cqb9vQlns1RoRCHc3EMo+l6jlRTlscOzIpFbsluJIUo2oAcc/rGvKOVqbXQE8XJR3ykn7Z8X+I3+Kk60p5tMVFagMJULpArDD7MG7ndfENR8/bKlAC3khttlDq0qHJ9jVUQHD6ziSvHNoOMdSwWU+dABNfHI2HPtf8YitGMBTCFXhB+Cx5iHp9veELH2Cv7ZaRIJMU4LUzsRtS5OBdbOTJwRopM+4sr8kckgwcp8t77Zk0XhfdnG79kLcrpt1F9f9ekaEo0IviELF5LNSFM2PS8wqAg9U1KR3aaVAMK+8bkeG4ucCkajlk4flvkvQL2eegkVhDe97l3lkxDv+AIspoo9WmSULW21eXfkM2Z9+fN+Bdb2V+4ijx7w3vjfe+3G6OMk5kXsttgpr+JrS08g4XVHNfnZ85LU/iu4NffHDJE5aZlw9RaUkEiWJZro/QWoz9F5fAL2zVVWwtkxXGk8eHPU5SEAMjynzvpXd1O8CoE9AHjlWCHHOXntFwazLT6XH4Mw8BwoJof9YIlFiUW0MvtQu5MfBhaXr1Eaf2tW5D8ChpLES5yqTdjJ+JnI/WqJHI4YZ6bqFcWQnfgi68SZU2f84ptPBLrktTsctxBmgOIjHy/ch/O0xuq7yYUUIjoqS1YuSTHInh9mMTT0Zhk2tyUWs6A51xJoLiZBsvdcElA/zywaoq4JXE2g5YVCbtktKoUNPDEU84CrLiT4WkJ9T2GM4vgCoBBWN08pQjhkJk5Bwtx3KfSU8/Det4SAY4rYszBJIsZJsLsNWcjHLigP6RbJt7yvH3J+5WofsVHCLQfAguyM2tZtlGEsjJgG2a+OU
+ Vl60gAtc
+ SHXKLGMCpn+UgkdSnn+yboO1BbG7B4DbgBEGhROFIqlimPPaKBlqWUmtHiqCn3ZQMCNNUC2UYPsKC7owx5GyJE2v48bk53Nrn471D+XL+nl6zH0oMb3g/u81exjsFaNsexDvrVWTxCEdQIeyXmiIZd0mMsEhqoZBUa6lO3VNuC7c95kYQQupvK+VJAlJOWN/MotKftP36qalSyJwcsEGkRrfxQM5XWpN4fRX70y0W2KWIJzBZcra/VwrHjsfKaFXbNlN0SeHjA36a1AgXULo7Wxz1RsmQALT9iXQWMx/lW0Zep8lUJaF4d/XbdvMojKGGKwFtDv6TIIDu0b80kJiPl4ERHyE9wzyaGtQFoBkxhbJaVDqlQh4Pf2JonA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,105 +103,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Enabled and Magic are bit numbers in the flags word of an entry but
-are declared as bare, unprefixed enumerators with implicit values in
-a style that predates the git history. Give the enum a name, explicit
-bit numbers and namespaced names and use BIT() instead of open-coding
-the shifts when building the initial flags word in create_entry().
+The MISC_FMT_* behavior flags are macros using unsigned long literals
+while the entry bit numbers right above them are now a proper enum.
+Move the flags into an enum as well so every flags word constant is
+declared in one form and shows up in debuginfo. (1U << N) keeps the
+enumerators within unsigned int range which is well-defined for enum
+constants and the values are unchanged when promoted to the unsigned
+long flags word.
 
 No functional change.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ fs/binfmt_misc.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 2a9025627f6b..f1ad0bce5af1 100644
+index f1ad0bce5af1..c722ee54c939 100644
 --- a/fs/binfmt_misc.c
 +++ b/fs/binfmt_misc.c
-@@ -42,7 +42,11 @@ enum {
- 	VERBOSE_STATUS = 1 /* make it zero to save 400 bytes kernel memory */
+@@ -47,10 +47,14 @@ enum binfmt_misc_entry_bits {
+ 	MISC_FMT_ENABLED_BIT	= 0,
+ 	MISC_FMT_MAGIC_BIT	= 1,
  };
- 
--enum {Enabled, Magic};
-+/* Entry status and match type bit numbers. */
-+enum binfmt_misc_entry_bits {
-+	MISC_FMT_ENABLED_BIT	= 0,
-+	MISC_FMT_MAGIC_BIT	= 1,
+-#define MISC_FMT_PRESERVE_ARGV0 (1UL << 31)
+-#define MISC_FMT_OPEN_BINARY (1UL << 30)
+-#define MISC_FMT_CREDENTIALS (1UL << 29)
+-#define MISC_FMT_OPEN_FILE (1UL << 28)
++
++/* Entry behavior flags, fixed at registration time. */
++enum binfmt_misc_entry_flags {
++	MISC_FMT_PRESERVE_ARGV0	= (1U << 31),
++	MISC_FMT_OPEN_BINARY	= (1U << 30),
++	MISC_FMT_CREDENTIALS	= (1U << 29),
++	MISC_FMT_OPEN_FILE	= (1U << 28),
 +};
- #define MISC_FMT_PRESERVE_ARGV0 (1UL << 31)
- #define MISC_FMT_OPEN_BINARY (1UL << 30)
- #define MISC_FMT_CREDENTIALS (1UL << 29)
-@@ -104,11 +108,11 @@ static Node *search_binfmt_handler(struct binfmt_misc *misc,
- 		int j;
  
- 		/* Make sure this one is currently enabled. */
--		if (!test_bit(Enabled, &e->flags))
-+		if (!test_bit(MISC_FMT_ENABLED_BIT, &e->flags))
- 			continue;
- 
- 		/* Do matching based on extension if applicable. */
--		if (!test_bit(Magic, &e->flags)) {
-+		if (!test_bit(MISC_FMT_MAGIC_BIT, &e->flags)) {
- 			if (p && !strcmp(e->magic, p + 1))
- 				return e;
- 			continue;
-@@ -413,11 +417,11 @@ static Node *create_entry(const char __user *buffer, size_t count)
- 	switch (*p++) {
- 	case 'E':
- 		pr_debug("register: type: E (extension)\n");
--		e->flags = 1 << Enabled;
-+		e->flags = BIT(MISC_FMT_ENABLED_BIT);
- 		break;
- 	case 'M':
- 		pr_debug("register: type: M (magic)\n");
--		e->flags = (1 << Enabled) | (1 << Magic);
-+		e->flags = BIT(MISC_FMT_ENABLED_BIT) | BIT(MISC_FMT_MAGIC_BIT);
- 		break;
- 	default:
- 		goto einval;
-@@ -425,7 +429,7 @@ static Node *create_entry(const char __user *buffer, size_t count)
- 	if (*p++ != del)
- 		goto einval;
- 
--	if (test_bit(Magic, &e->flags)) {
-+	if (test_bit(MISC_FMT_MAGIC_BIT, &e->flags)) {
- 		/* Handle the 'M' (magic) format. */
- 		char *s;
- 
-@@ -595,7 +599,7 @@ static void entry_status(Node *e, char *page)
- 	char *dp = page;
- 	const char *status = "disabled";
- 
--	if (test_bit(Enabled, &e->flags))
-+	if (test_bit(MISC_FMT_ENABLED_BIT, &e->flags))
- 		status = "enabled";
- 
- 	if (!VERBOSE_STATUS) {
-@@ -617,7 +621,7 @@ static void entry_status(Node *e, char *page)
- 		*dp++ = 'F';
- 	*dp++ = '\n';
- 
--	if (!test_bit(Magic, &e->flags)) {
-+	if (!test_bit(MISC_FMT_MAGIC_BIT, &e->flags)) {
- 		sprintf(dp, "extension .%s\n", e->magic);
- 	} else {
- 		dp += sprintf(dp, "offset %i\nmagic ", e->offset);
-@@ -741,11 +745,11 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
- 	switch (res) {
- 	case 1:
- 		/* Disable this handler. */
--		clear_bit(Enabled, &e->flags);
-+		clear_bit(MISC_FMT_ENABLED_BIT, &e->flags);
- 		break;
- 	case 2:
- 		/* Enable this handler. */
--		set_bit(Enabled, &e->flags);
-+		set_bit(MISC_FMT_ENABLED_BIT, &e->flags);
- 		break;
- 	case 3:
- 		/* Delete this handler. */
+ typedef struct {
+ 	struct hlist_node node;
 
 -- 
 2.53.0
