@@ -4,122 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9161CC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD501C44506
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:58:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D78E6B00AC; Thu,  9 Jul 2026 13:51:25 -0400 (EDT)
+	id 8B6656B0005; Thu,  9 Jul 2026 13:58:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 460A36B00B9; Thu,  9 Jul 2026 13:51:25 -0400 (EDT)
+	id 88EAC6B0093; Thu,  9 Jul 2026 13:58:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32BE06B00BA; Thu,  9 Jul 2026 13:51:25 -0400 (EDT)
+	id 7A4D46B0096; Thu,  9 Jul 2026 13:58:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 01FE26B00AC
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:51:24 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7ADCE1A0249
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:51:24 +0000 (UTC)
-X-FDA: 84969980088.21.449F485
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 575F74000C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:51:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=uSkARBtA;
-	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 56CFF6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:58:08 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E1C0514022C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:58:07 +0000 (UTC)
+X-FDA: 84969997014.07.DB70D68
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0B41B120008
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:58:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QinGRakq;
+	spf=pass (imf29.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783619885;
+	b=vkj0M35kSUhFMiEZihGebrmlbYQni+z7klZRxE7/mbL2DO4LsWfhHvywXW36PG2xwv6XAu
+	fm4W05ZSJhZoHO3Ckp3nrqCRPwNDHhK7+y+ep4xLXK62vpb9xCyIGkgyNqBa5crHseGhKd
+	eR6dD+G7NdTMrriFxtIFeoh9PFV7XUw=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=QinGRakq;
+	spf=pass (imf29.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783619482;
+	s=arc-20220608; t=1783619885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zsrwC6Kq0RUJ8ahrgx8wvLWmUknec3ZbOovjEs7ytXY=;
-	b=eQFJnMrYUk0l8sVJwTDL1elmlTC21526rVOYzsZlV7/DIIQrxUw+o2tFLJ1XgHZt01Rn9M
-	H4CI0vTuvOkrKGZBSi4YFfy9mbL7RHPXYJgp4b0gdZamsgUj65TDSzLFHbHWMoDcNokdHI
-	1k7e22YtUDnavSI8JE+DTbb0dJ5xRzY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=uSkARBtA;
-	spf=pass (imf04.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783619482;
-	b=2OFMJFoUXP37YlTxmaxdICut8kKuUsYAGsQngKtg6JtdCRzuslEJDjt4IFtzXfFzI6FZFn
-	ox09ogdHc7WtzVVDDC6Z6dyXzzCTD6QOuPuecpEZhhWY5TsqQPkBYbJWmlgbuA1PURO9iU
-	VAOgG3xmA1dH0fJ/ZptdS4PVipEXgTI=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c22c61795so488611cf.0
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 10:51:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1783619481; x=1784224281; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zsrwC6Kq0RUJ8ahrgx8wvLWmUknec3ZbOovjEs7ytXY=;
-        b=uSkARBtAWSjR7Y6H5QeYP4u90UusJgH1230OdzOomcDyxTKgUDy6m5JAaXAZpXlaYQ
-         7fZoTMu7XcHncIQo6eTLGzw50i5LvCXegERwRFxVtg+bpMc7Zx7hRnA9b5ZlNtjN4jJ4
-         /iYcnhFhG44LnxePU31LTEphjuM4ZrkvuKf1YlFP1HhZizAFbusOSX4RyQBn3pn+2tjk
-         PJXnzNbPEcC2zz33OG1vfSqYgcmNWcZOcWEXk39pSgLraoLhnB6zk+S9JnQJhIY2Zqor
-         nczH6EApgfAdllN8JmRb4GVLUYHxp803k0OdESFiw/EyrxbenmYcKziyyHBNXy2i50yF
-         jXDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783619481; x=1784224281;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zsrwC6Kq0RUJ8ahrgx8wvLWmUknec3ZbOovjEs7ytXY=;
-        b=qjxgiuTml0t9I1DA5HDO5EuNTu5IqNzGk9B2mSsA7x+hoQRkZ5XiQda9PabR0oAMDO
-         nwAP5bzW7Yzi+AoALSDumdwxfOxKOT9Dz5CBZxlA5XxKeuHFBQEDB6lUR2z15yJVyffd
-         wo9xtOGqpleOTjwy/Hm/gimk8DNMISPXhfRpeq2khYmRgeDiylRfW8ERQKZK2ZQzR0oA
-         ffGVPh6HThagWEFAPYdsGMPeABkmS0x+ziLKFEbf7JZz9rnkk3BELvyeSzWsBNmJ0A+J
-         NvOaFRb+50BKU7UK6ry0dxk9E0Y8lva5kJOJHX3+eu0oJSojUoDFQSE+bi3QQsePc0ad
-         Ez0w==
-X-Forwarded-Encrypted: i=1; AHgh+RrTfn1lCsxVvePOOWUuN0kwFcKnNNARfL4EFcxZ+9JOb40NC3Mbnrkeechsnit+qRSQqlb2FWkp/w==@kvack.org
-X-Gm-Message-State: AOJu0Yzlm8Vnp0ZIqTod8V7ffl3bObTkYQqO2AHc9weXPhI2+cuCr1cG
-	HjehKAa30DqWITTSsMTF1j4s/1BU2EVaZvvtQBkwCZ5S2nevzk6Yciok1dEqoCdJOGo=
-X-Gm-Gg: AfdE7cn8xhjBz1A24baFZf1lMaEKS4JKbBabRyJaSY7nCFfMMVxwdK4g3/PTUOtaZ6+
-	ML95CoPcPtbuWZMWj3PxIBWHhBnaSCq4RolGsBgPRedsiUJmtwnwOEqeC/1HiYlpkw7ziQGMe2O
-	8THHTRN5sov6IRzTA1VFSOx1g2eGNQPS+h8mYlBJyk3A2/xUyqG8CQKewDVXi9og/AdydDbp8xO
-	2SEtc6/pnogsKXruzrcNDYHoqX0fmsmJxUgAEiROIuTW86N1iwhCeDGhaC7XQtv23HKigfW1dDR
-	bGE2HWFm0Vbxkn0OObr771yIxfwuFWFvYU6h9U5f7EV+ymHjWbrTG0kUnvPvE1uYHMokWRg6YFn
-	6i+cxZMOYkIN8BpNV8goKTw4KeDsojMhoOzOjx2mhwYPJFP7IyKrFDA/5SkL4BTUPFnv1ZS7mUl
-	j63dRbr4eE/m1vAQPXEgk1yg==
-X-Received: by 2002:a05:622a:4d05:b0:51c:7d0:7ed7 with SMTP id d75a77b69052e-51c8b31e045mr95887891cf.39.1783619481339;
-        Thu, 09 Jul 2026 10:51:21 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51caacdacf7sm104021cf.11.2026.07.09.10.51.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 10:51:19 -0700 (PDT)
-Date: Thu, 9 Jul 2026 13:51:19 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] mm: fix reclaim storms in defrag_mode
-Message-ID: <ak_fl7Nq0DHmQd2K@cmpxchg.org>
-References: <20260626182215.1107966-1-hannes@cmpxchg.org>
- <akWwg0irlanA_y1i@linux.dev>
+	bh=J8oTXoMIeSNhsW15lhFkm553ZQb04PxScfwo/mcUww8=;
+	b=JQ2eN8M3adms6HdVd1WaprZn8j9S3gaKAFf8KzE2y09LyMMG/om19aV2s/nQ7bv0IhyiHH
+	P5wvV0SqHNjCWqkhqUGbcpVXJ+zj4K1QKd6fDwiyMG3HiquAbzoxAW5YFtVTxfdG/kwqUp
+	U+Fn0M/Sj1lW2EuuORdichB8KstET4w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783619885; x=1815155885;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ueCfC8mj9W6I1SlYqEpl674vMNV2wFKokvVZLAzEXzA=;
+  b=QinGRakq01yGwXdvDvTquHr/s0RRan5Ir9XySXk02l8qZeAiKN9413ae
+   3MtNp0rnXpHM3kzqarMKgLcB7pM6Fe6tdspo3gIerElyAEREkn6zX3FPt
+   aERtWyPEE0DecN+W6ea/LB56siGEjTzLIvcyYC2aeDDGfiv2tsdgT5cBO
+   /7Tp6HlwCQ0U/R7isW3ZiZmG3Tbm5M0XtH39PqZ70wgezHqv3o1bEXq//
+   gJR7XHW5i7h4esRokBI7hasKC5zaFsrHoo9rPRqBeCKL0tDmXrFsmAKYr
+   F2bMhE5zt8t+gYsqiJjWjNryf+dCM6HiGZNQ1Gz7rsPN9TEVTvYQJ0J7m
+   g==;
+X-CSE-ConnectionGUID: MXdQV1tAR5W1jgVNCt+9VQ==
+X-CSE-MsgGUID: DqjvzKuWREyi1BgKEsIUiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88139587"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="88139587"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 10:58:04 -0700
+X-CSE-ConnectionGUID: hf/hEBL1SMaZOpk5XqzpzA==
+X-CSE-MsgGUID: mMZej/BNT82mbag9beBfMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="252920685"
+Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.111.142]) ([10.125.111.142])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 10:58:02 -0700
+Message-ID: <c4e18591-137f-4827-b635-a8662a44fe9d@intel.com>
+Date: Thu, 9 Jul 2026 10:58:00 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akWwg0irlanA_y1i@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/10] mm/memory: add memory_block_aligned_range()
+ helper
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, kernel-team@meta.com, david@kernel.org,
+ osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
+ dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com,
+ alison.schofield@intel.com, akpm@linux-foundation.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org, iweiny@kernel.org,
+ Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com
+References: <20260630211842.2252800-1-gourry@gourry.net>
+ <20260630211842.2252800-2-gourry@gourry.net>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20260630211842.2252800-2-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 575F74000C
-X-Stat-Signature: ohsijgdmocdm8egkii8icxmwtbpewuu4
-X-HE-Tag: 1783619482-236430
-X-HE-Meta: U2FsdGVkX18nDXJ2zhDTTQ/KxWmFUY6YckaFlvaJDvvx6YuRFxOF5wocHLMfyhNSl4s2cG2hhfqH1KBcCGFho7alg45AXQmCLrolLl6qNvTxjTHgxhd5m1JiOGHqRVuDozbbixOKS3O14TYxjC/xwUkKPxs/GHR0G4V0amswo37mTazx73YbrCDW2w3D+6l5fdtsx7xBn/jVHC6ldTHMK0HwWvyM/dR8M2OI1BJBizoOdl5PsVe0u+qW/DCkE8KYfIQBzHYvrKPfV0F58G/ZUjuIEyLteSI32Sby1etgw6jC56nfolOmch+tflJlfsYkyKlt7uaVOKDBfxbY9nDDT+g5hFf1/9k/Qv/1M+JlmRqFkhDuAvFRLXdWFEXBZWiv5SX/gP3QPx1l3lGog9wwXWTIH7zuKdBWNdlGFDyOoPPyTBP1omwVc0sa31OJ3Qwc5JCfc4MWpi0ARfkYN1kRaAc0IN2B+vOlZwVVTNliu+LR2mHRJQ0PBvDNrZHLnjDNVPwvdFCDG5nSmvmNTPzU0bDim35wjZ5zy3AMI96irMSUKXl2mkogvrrNXxm665i88iEoXZ7vFDnw9cVrr5pEMMeLzj7CzjksDWRagVQexq/KZddv1nM2/NVhWLJ6f2Cpa5NX+tpvj/Z4mCEMCgkCNRAiWUEdmGtRPWrl5vr2NTHARAhYeAiVkeMpqEi1VLRVYVZPKLZbxAlDoYUPb14+4qklHpB+6kZMDqKxe7rPRIb0/Iq+Z7nnXRuUh4EdcGJbvd3L7RCRJCh0NutVMb1RJ8moghJAWMrRhp22KQJBwk9YsLnbvAsD2SrCxu5H6FLPpa9mruP7DVMjY62GSQfEHukjI429l7kxioEJw5IA8PmthSeuLOsBf4zzLaXCUoiAHhakzG9vo6VBTci1T+naLrERIZYJ6KK746eth58yrmVoTKmnG2ycB5lwvp3oAP8ppoK6HyB33J9KHIQPw8D
- BanxgaIz
- qpId+Vi5OQpRY01WrFQWJ2A1tgsliv0tyE6HjL1zeNUwrvNuYjpRjCwCxsNpE3UaAdb0rGsQdEj+ZrJmxfxJQBwhhJlZUiq+dIrECeTR3SV+s89cylzRK8CQXGc+K78gO61qF989av8rElmFcTHy1ZPXgORZQsaYRURZS/xJ83dgzmXgW8yCZeIvy9ep6JtAxqbhtkHUDJWc6bhllomXafGSpcNYvXaYJmMtjcgXUhtBqAsh9ilS3pFDJF6/8wbTMRutLRDXLknpOuS4LJutsfhglerQvzzEFLUJXCPn8YMg/Bq4se1ta2ar5ZTcVe5cC53rn2WYNTn/V/1W4XswRD6FEy5+ZMhCQz54rXBBcg46EmgzHH8Yu8rZX2bhXjOmCwOMXvXiVT+7oZEYaebBTPaSTahiehE87lpEhYjh62jN62U61Ewj5XtJNH0yAIsNMBMfZQOVzVHXH2Lo=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0B41B120008
+X-Stat-Signature: yix6peftbqncbijdehjmfx4ho8hwuqc9
+X-HE-Tag: 1783619884-590274
+X-HE-Meta: U2FsdGVkX1+ezO9UoVLpS/AY3ApVfZzq8euagFtsYLZ/udJ5k0Aei6g2X5iATjsUQQ2Qyv74U62PIqtQbbkU4FmAJ49XQT1W505dGyUnB7qAqwr2Liu+MW3rimVXJ19zTtMUIArK5EgPrtBDttcTOtujKpY565fVA5uHRw1RX2kEuWOsqxncTJImxT+iW7xSyrlt3VPAnV5gB0BUKTWztyZ+wtkgt/I85Gbc7Mq6+z536C3H5XHZ24x+6MXdvNKlDWOX0pv8XH4ZYQLZFYjoLCeF7eyfy1H0C6ch0gEMqhR53ldntmbsAVs/MIO9arvCu0FAbPmjESatdXcS8ugD2cELEpEtuGKWlQp+J4WCEXo7anXdVZtiTnGYyORAFfRSpSeOd8tonCTJJ33zS5aPsLSrub8+9ejLXoYacFy92LJqVV6OBASfrUSD88Te96sH9hfB1UAae+CXYSzhwwda+GJcvRWT1REVI2ulvYvfNAtZNPSm8RVEEpjAeRXZaMIZ+G1IxxdU7aUblyXYAWKKC92cEXrlWeL7v2lOByQx6STsXA9QRhzAzPm2GxaNU23FU4XLHNqEIi7gNzIROeRJapkyu6QNpL/GPRSD4u1TOxQuVfBZVBu99gWsba0FmmHks2Nem8lvmYXFgUK7wmD8mWdtsPZy2RN2QdoI0gJCEoYB6n+8/n0XnjvaBIwd+izWS/8Hj7JBDWIja9SsxINz9rLCtZNqjtvJbhJWcNvwmQjzR2ryaLAMQQxFVKTtsJrkQY8HK3oN4r8M+m6kvaB16xBUs/Q7Rn6fme0QURtkWpGlLFEcQQC39ERq65T2wQx5ExjpKzVyvLbRMgv9MLcgN0UOVreQQ2MBjalWnz1cVKAgA8x7y1Mpd2ooo5htngY2UTH0ONl+1vDW3lOPujAsLCe5EOQyiVywWsHIRHYNZCTuODeddHue8L1MJFE28Yd7HBGu0HvR6zpAIBkeh9X
+ RO9r88KL
+ 5vftiKAgYkjbFIJmZKPoc+OMF1KsRXFOfbWz8QTxcaRZhZ1pybtruKAfAdWfaO51vUe1CMxnVcNoAfg6SPdI3V8uEP+Gu9r6Cb9/6TEiVv2J9phsYVNnBk2qY050U+1hJvw/pB0ezEUAdXllqKbZq5XdHVCQypKIZsEvncVjD+q4GTp5JjdJUzpsPkMV4LEc0FX0s8j3k0eKnhKZK2oRdHUYwWrIndG7U76msxklYA9+kkQdTJ+SfEjyMSHYIf4V8FPMiXWBoVyc5poAvKfNCM85FJVXYOM5fX5UZUmIML1zUAs3Y4lH0+jJKnO7lkjOBKRlCMjsgMNGZ4UAJVIq/z9To1/7wA4RUl6gSlt0RSBlCroVDtWlREeKxjzSV9XzaZI1cat62uqzJJThal47GwvpjDYBABSrSCoon94v+ALxfJI0prDHwiAu6kw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,45 +114,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jul 01, 2026 at 05:31:11PM -0700, Shakeel Butt wrote:
-> On Fri, Jun 26, 2026 at 02:21:16PM -0400, Johannes Weiner wrote:
-> > As we deployed vm.defrag_mode=1 into Meta production, some workloads
-> > regressed with recurring pressure spikes and swap storms (which in turn
-> > triggered userspace OOM rules on pressure and swap utilization levels).
-> > 
-> > Tracing pinned this to non-movable 
+
+
+On 6/30/26 2:18 PM, Gregory Price wrote:
+> Memory hotplug operations require ranges aligned to memory block
+> boundaries.  This is a generic operation for hotplug.
 > 
-> allocation?
+> Add memory_block_aligned_range() as a common helper in <linux/memory.h>
+> that aligns the start address up and end address down to memory block
+> boundaries.  Guard against end underflow when the range falls below the
+> first memory block boundary, returning an empty range instead.
 > 
-> > requests spinning and reclaiming
-
-    ^^^
-
-non-movable requests :)
-
-> > unproductively when kswapd/kcompactd are overwhelmed. Direct reclaim
-> > predominantly frees up pages in movable blocks, but those requests
-> > cannot use that space under defrag_mode rules; 
+> Update dax/kmem to use this helper.
 > 
-> Do we have these rules documented somewhere?
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Kind of. The crux is that defrag_mode enforces ALLOC_NOFRAGMENT in the
-slowpath as well (whereas vanilla just does it in the fastpath). So
-it's documented to the extent that ALLOC_NOFRAGMENT is.
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-> > and it is unlikely to
-> > free up whole blocks incidentally for __rmqueue_claim() to work.
-> > 
-> > This series fixes it by making non-movable requests participate in
-> > pageblock production in the allocator slowpath.
+> ---
+>  drivers/dax/kmem.c     |  4 +---
+>  include/linux/memory.h | 27 +++++++++++++++++++++++++++
+>  2 files changed, 28 insertions(+), 3 deletions(-)
 > 
-> Sorry after reading above sentence I didn't get what those allocators will do
-> things differently after the series (I still have to go through the series).
+> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+> index a18e2b968e4d..592171ec10f4 100644
+> --- a/drivers/dax/kmem.c
+> +++ b/drivers/dax/kmem.c
+> @@ -33,9 +33,7 @@ static int dax_kmem_range(struct dev_dax *dev_dax, int i, struct range *r)
+>  	struct dev_dax_range *dax_range = &dev_dax->ranges[i];
+>  	struct range *range = &dax_range->range;
+>  
+> -	/* memory-block align the hotplug range */
+> -	r->start = ALIGN(range->start, memory_block_size_bytes());
+> -	r->end = ALIGN_DOWN(range->end + 1, memory_block_size_bytes()) - 1;
+> +	*r = memory_block_aligned_range(range);
+>  	if (r->start >= r->end) {
+>  		r->start = range->start;
+>  		r->end = range->end;
+> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> index 463dc02f6cff..1783299073e4 100644
+> --- a/include/linux/memory.h
+> +++ b/include/linux/memory.h
+> @@ -20,6 +20,7 @@
+>  #include <linux/compiler.h>
+>  #include <linux/mutex.h>
+>  #include <linux/memory_hotplug.h>
+> +#include <linux/range.h>
+>  
+>  #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
+>  
+> @@ -100,6 +101,32 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
+>  unsigned long memory_block_size_bytes(void);
+>  int set_memory_block_size_order(unsigned int order);
+>  
+> +/**
+> + * memory_block_aligned_range - align a physical address range to memory blocks
+> + * @range: the input range to align
+> + *
+> + * Aligns the start address up and the end address down to memory block
+> + * boundaries. This is required for memory hotplug operations which must
+> + * operate on memory-block aligned ranges.
+> + *
+> + * Returns the aligned range. Callers should check that the returned
+> + * range is valid (aligned.start < aligned.end) before using it.
+> + */
+> +static inline struct range memory_block_aligned_range(const struct range *range)
+> +{
+> +	struct range aligned;
+> +
+> +	aligned.start = ALIGN(range->start, memory_block_size_bytes());
+> +	aligned.end = ALIGN_DOWN(range->end + 1, memory_block_size_bytes());
+> +	/* No whole block fits (e.g. range below the first boundary): empty. */
+> +	if (aligned.end <= aligned.start)
+> +		aligned.start = aligned.end;
+> +	else
+> +		aligned.end -= 1;
+> +
+> +	return aligned;
+> +}
+> +
+>  struct memory_notify {
+>  	unsigned long start_pfn;
+>  	unsigned long nr_pages;
 
-Let me add:
-
-[...] - meaning, they will invoke direct reclaim and direct compaction
-with pageblock_order.
-
-Does that clarify it a bit?
 
