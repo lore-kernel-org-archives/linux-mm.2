@@ -4,130 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D977C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 10:22:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6AB2C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 10:24:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C1FC6B008A; Thu,  9 Jul 2026 06:22:53 -0400 (EDT)
+	id EEFD36B0096; Thu,  9 Jul 2026 06:24:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 778346B0092; Thu,  9 Jul 2026 06:22:53 -0400 (EDT)
+	id EC7796B0098; Thu,  9 Jul 2026 06:24:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 663456B0096; Thu,  9 Jul 2026 06:22:53 -0400 (EDT)
+	id D907C6B0099; Thu,  9 Jul 2026 06:24:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C9626B008A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:22:53 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BEB23C21C1
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:22:52 +0000 (UTC)
-X-FDA: 84968849784.05.4E3C918
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8BB691C0003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:22:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dje02QeN;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AtxxGKZB;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dje02QeN;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AtxxGKZB;
-	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B80AD6B0096
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 06:24:16 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 33AF9140458
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:24:16 +0000 (UTC)
+X-FDA: 84968853312.03.88CBD1C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 87B4F20002
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:24:14 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU+hyQjU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783592570;
+	s=arc-20220608; t=1783592654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zx4/K/592I8NvYZBqlKcnuj2Yy+ngX/K4XOfGwEMKkc=;
-	b=xgT6GMkBtvXbwsqYdSspZwcufRytP2xAndcQE96sx8x8XYc5Rm7logPPy/tg49eixHTH/D
-	9vGuXH+CzgOKszSr26pB7+G/qoWJm3GgvWS+Ju8lwc3twno2El44aw+BfJzoSudSPmJraj
-	J7/VHrxD5xZrOyPk8Pv4yZLQN+FytOI=
+	bh=wXUi9iS7a16C976jNFUWijTW73Ll9wqEqZ9JDDOWg4E=;
+	b=DOGmyFAMXy+EFOEWdPr5HEYrPJhMcxjpSgSfgx7xok97n+jKS/FinHpqCQdbbDJqPtWvzb
+	Zef+pkEse/iA0QaBZ8HWMO+ugoFDjvCGYQJrXvx/8AW/5qSNWE9HFZxMHEFVfCpbTZclkd
+	8bncmKsjcGkBcuTxl3rK/xZQuj6NSuc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dje02QeN;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AtxxGKZB;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dje02QeN;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AtxxGKZB;
-	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bU+hyQjU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783592570;
-	b=fsmYtYY9M+UvXYrHfy27RSBUmWx7LaJHJALWRgrdkG4moMQngSHIABoJ4R++KcvvcqzokV
-	SH2/4MctZzA77wxtd0dspLMVYAo8YubmrcVtJECB78WdCGU8m/55XNVFIWgoRxppyNsmeW
-	OM6F9l6y9wne5G0Wa+lzJDI853M+VB8=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C1D827610B;
-	Thu,  9 Jul 2026 10:22:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1783592567; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zx4/K/592I8NvYZBqlKcnuj2Yy+ngX/K4XOfGwEMKkc=;
-	b=dje02QeN4Kv4vewc8fdEDVAyiP6dM6F2MCy/4dbE0DPWyaDVjCCsl/AFlDNN0Y2GW+6mj8
-	JzzCg5K0h0nYq6JIiWICW7w9elGyxQfGH2vXywtdYveDP6NlWkHRdGrqzPAFk7ntImzmD2
-	3+NKc5X2ujcwu/aVbMg8TO/B/h58hn4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1783592567;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zx4/K/592I8NvYZBqlKcnuj2Yy+ngX/K4XOfGwEMKkc=;
-	b=AtxxGKZBJTGfrfXeBqEvc3IB14FA4a6umkjlwYGgREDYKTamlpyIeMBSz1SOAzSikCgSnT
-	+1OoVmHVLMcm1dAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1783592567; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zx4/K/592I8NvYZBqlKcnuj2Yy+ngX/K4XOfGwEMKkc=;
-	b=dje02QeN4Kv4vewc8fdEDVAyiP6dM6F2MCy/4dbE0DPWyaDVjCCsl/AFlDNN0Y2GW+6mj8
-	JzzCg5K0h0nYq6JIiWICW7w9elGyxQfGH2vXywtdYveDP6NlWkHRdGrqzPAFk7ntImzmD2
-	3+NKc5X2ujcwu/aVbMg8TO/B/h58hn4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1783592567;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zx4/K/592I8NvYZBqlKcnuj2Yy+ngX/K4XOfGwEMKkc=;
-	b=AtxxGKZBJTGfrfXeBqEvc3IB14FA4a6umkjlwYGgREDYKTamlpyIeMBSz1SOAzSikCgSnT
-	+1OoVmHVLMcm1dAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B97AA779AA;
-	Thu,  9 Jul 2026 10:22:47 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 1wlCLXd2T2rmdgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 09 Jul 2026 10:22:47 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 66888A12D7; Thu, 09 Jul 2026 12:22:47 +0200 (CEST)
-Date: Thu, 9 Jul 2026 12:22:47 +0200
-From: Jan Kara <jack@suse.cz>
-To: Chengfeng Lin <lin2530632123@gmail.com>
-Cc: Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [REGRESSION] tmpfs: flistxattr(fd) small-list slowdown after
- simple_xattrs rhashtable conversion
-Message-ID: <q6pq2txjkc4hkdgo23s7t34l76rjsvbyebthqcawjq2dz6aiv4@rfygllbnj77r>
-References: <CANGjgdm=gbQj=tmakUipHz9wR-mUvMVECfvJbTm=sEufxOe20g@mail.gmail.com>
+	t=1783592654;
+	b=CzUhTb/qys4LGp5T04kANtDot/npnKmKDl/fE9+ykuDF3sJSBZ4UF5NSfC302KAW/Gv4Fx
+	oN43LJvXK25WSAByQqTC6znlSGoA5TSKZiBJx5nD23HKNJJ9pLh+olsMTU0mMtwADTyRxG
+	rVkNo1zzozvBmMDYJTQXJG8bQg3FB+k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0766E6001A;
+	Thu,  9 Jul 2026 10:24:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0613D1F000E9;
+	Thu,  9 Jul 2026 10:24:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783592653;
+	bh=wXUi9iS7a16C976jNFUWijTW73Ll9wqEqZ9JDDOWg4E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=bU+hyQjU78/eOT/gfLPvhkIcfbHJkNYW1Qpj5bxGIObFpFVBuyk5ATpjhGmBPP84M
+	 kiiHUy2jV+SKSBc2JOhA9XtQefGqsuvYn0ul+KMOxUiD5FmeatAuSbpMnCv6BW9yQ1
+	 vZKuTUIRcD4Ru54KmWrPhorXxaAhgBS7Ipkpra2rPY7XaP3BEASlTYyWIwKDvqnZgN
+	 69PqGq3gX/luCFyEdUUY/LOCYamwhFYarM9HMcrMZh29EAzPdZlIY0uIhhrOx369VQ
+	 3ULeDdQn2rx7Hslq6PQjRqLMl5X491fGlpYiPiu0n7lnGjqXN5pCHeS8fK9jtdoRmw
+	 RikxDgE0q4kYA==
+Message-ID: <a23c0ace-b52c-4f28-9f40-d0b6dc4ca2d3@kernel.org>
+Date: Thu, 9 Jul 2026 12:24:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANGjgdm=gbQj=tmakUipHz9wR-mUvMVECfvJbTm=sEufxOe20g@mail.gmail.com>
-X-Rspamd-Action: no action
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Petr Mladek <pmladek@suse.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ usama.arif@linux.dev, hughd@google.com, willy@infradead.org,
+ ryan.roberts@arm.com, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org
+References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
+ <ak9Qe1G7Rv3HF6ZR@ashevche-desk.local> <ak9mrw37kTORZXmc@pathway.suse.cz>
+ <ak9z3ZRdRqGoOu-T@ashevche-desk.local> <ak90WW3I4tmg7Pwz@ashevche-desk.local>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ak90WW3I4tmg7Pwz@ashevche-desk.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8BB691C0003
-X-Stat-Signature: gt1biy4atjgzxr7j8cmjfg3srfjtpdqc
-X-HE-Tag: 1783592570-947381
-X-HE-Meta: U2FsdGVkX1+n4axO7KQJo52mOFaDlj6AwcC/90SRi3JvFQ7ttfDJ63W55S5STwjVNpO/YOxDRILk/0ozZtmdeO1ZRS2DCmyuGxlF9z3MX/V4OD5GtOjXUULE3XPxzvyeD/AhgtRJ6EeyMaaNlC6EThZZdrAm4yZxd+TN4lMFXeSKCQ5dCHWpOCr1jwDLLKrpFWS3HDcCuvEeeIS4jE1+3y0u8ck5gTofg2gMw6gkQA49fUDyvWZ8RA4yR8KyPAp2n3jXR+Dng86vzy19olKYjGqoUU6DpELuC+2+h7G3bhku5+7vNdYWu/LcNd+XA9/PjdRjrCWLD9CJGkXbZQVclNTfd5MNFowSTFfEhNtvzxSbiRYw46FqkpzhUjJCVKQpsie1ghSweKwQDf6z7vzrj/ooy1tdOO6B8ERMQuqO/7H1PWXue7ZU/aMYtFb69/ohOLrDUtg4fQU7aKvYrcpyxRHtXo1ddK82p9908PXPyoMJeQzF1oKIf7thF0umk42TtCVShy7A01YmpLbtRqB0pBKxsgLiM3oAxQ/d6GR5NWSN/vU60isI1jTNyFxmuc2a2XfIfyLS0NdIy5K/53kPeB4mnk4jJ2OR15Ebl+ACZVTbJTwBM7Sb0Vv9eOrUyV10PdpB6h4T5pUncr3xTYFMavdqhxx+0EamiguJ0+7CLyDlNxvPP8xvlHo6ssjwAk/wOyErnyqYTZuw+/xhQ8hA9gUr6xLIuxB7zNUyvnK4ANIvP4tCBJb9Wo08c4BvmJhu8BLB7gxw5mKoFp4wr0kk1/EZyVHV9eThhes483C0yPqjyheamu7SkthMW4/0V7DDGG2eJFpM/4mp9IB7OgsLBsefjRONhNmqPYc9rzlJI7jM9Slk0eXAw+aTt57L6Yqt0+InMum949wzeW7YS3I+ePXbMn+4I1kFFWdgcxHIH6CJfC5D/abYGxgejYm3zjJ0env6uyD2Kyid92kIsE1
- 0lXCxozt
- X9RgOi70Qc9gFw9LVJgtry28LfREM9+doDhoG8jOW0X1rDGih0Of6V57mtr/o84vV8Cr+XTGutyW1+pEMBo3M85MY4ihOXSL8Q6AgI2tuR9jv173IAnGKUJ3e1tlF9E8jmcWx8uqF1peZbpgOGupzMdrLvI3Nnje8vqWZ9AEEshawhzSRsRlWCFExhwdWzDayLy7Uh3r5CF6CjEbaIWxwh7Lgsdz7aNYbtY0RTNjaaF5q24dFimN0WQGhAC5klvUAJjhwIN7keJOvPVhzpiy8XBl7osbsp6zxYM6Dn9a8N6CcepHkgIhQQQGDZ9o12YwjkO7HzVLh/vm0frBb0PKhu9wRWm4o+dUasTPg/vQVYVixcgUT2dcfpCPMmoXyS7LWuPA957nZ6llkl3s=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 87B4F20002
+X-Stat-Signature: dgkbq8g6iyxxjbs1gh8g87ux6p5iys6u
+X-HE-Tag: 1783592654-692571
+X-HE-Meta: U2FsdGVkX18eUd5Lr8/gGlEGu79W4GLL/m+9Ns+O7PTUUqergxeKvKmfx25pSUBITLT6ZYWYHqGlFo3snr1iGiOkBAPB2IYuyRu+GgHeK7hcnxdZWTnUVQeB0uB2nqg2arA6hYVazQOvR8gDndkxtLx5idsxrD0lJ9aYIZI54BVPdBlt5xBEN/r6Fm2YACbELS34RBXK8MwkwIPOzRAniLxq55AikV/g66/LSHeB/JjnxMQr7/MokYGESWtNTuLT3Ag9lKBpBXEGM9mg0AgaLECc93brp+iu+YhAc3wz14UQWtiXnOAamQVYc3LICTnERhQ8+T0QMURo0cZZ+pZJv1p+COTKMjxJov1hictXLLJLZjEnGMFgyLZ0CZ2WE/fLbyIerJifu4neFQDDOWqG01RSuhMH4oh15HYs1RGBRFX5yUd7FR4yHVo8mhRsMJPwBkfToSphDHiv5+Tu2aKAtwVFM3on+x6/loJ0DEGdwbidSHSNTdK9P8LLsnxTxyfh/Jta5Zr1SetLcsXaR3nb4aOc6mOVAmvXJ378L4YWhB1A94zkerAHJrNMxRVsj4HY4Q+Indl7o4HHc1vpLvlUYpcUvqnhhJGfli9Dk6oM2IA2A/j6Bs1k2NCwmJrT08a5pLmAenRTWtycpZOAHdMIlsEt8NL3tYr5fUdoxQiuex/abOSi9CPrvM1TP15bPB8LOXn/JHLmNXkLJJKwY7kEl3dp0WxJIOuuW8jjN90f3A2nJejP1rN60AibtzO4GfPopQOuyR+N5pggVX7QOykAktN8ZkbhjX19kbGv6XBF4UcGO+uBFwqCySr/rorqnghylD0bG55farTzqtsoEuYYOKUGUxMUB1JeV1YEACFXKQIhvge6maj9d3kCvzKHjWrFh+FMwnMmbg5BfqUPJiaRcHMu7EtWo2gzIHYB7sXgbo8Rt0Mydgn39JvovmrsTRU+jQY8Kz5lX+IkFm2vktg
+ OTKB2ZGA
+ 1Mgb4b3wIGwgaYR08BQJuC1Rk+NLRDG5zARwNss/9fpkIneeteegAgo0klwB2Zk1rAy9rQ7GuuTXRhkeXywhc29JtXQiEURTxHRguz45UccUgyBBoCuztxEY4CPSwunAs3HoLCDBjOfI0iB1Nz5O6np9/2f3yvLsM2cd+3ZAhJ8e/fK9VHTWdKENotYYMBwDHZtberSNSoUpCLQqPCTDkMqJmAKgW71jgZeIA+7E8hBI9mDymhjv5xx3Ku9+DPn/t2TY8udlGvA37frkohw1WfZRBrw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,67 +142,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi!
+On 7/9/26 12:13, Andy Shevchenko wrote:
+> On Thu, Jul 09, 2026 at 01:11:46PM +0300, Andy Shevchenko wrote:
+>> On Thu, Jul 09, 2026 at 11:15:27AM +0200, Petr Mladek wrote:
+> 
+> ...
+> 
+>>> But maybe you had something particular in mind.
+>>
+>> Yes, I was thinking of a wrapper on top of special_hex_number(). It takes size
+>> as an argument and hence will work even for 128-bit cases.
+> 
+> Okay, the argument is limited to 64-bit in there. But I don't think it's a big
+> impediment.
 
-On Mon 06-07-26 16:53:28, Chengfeng Lin wrote:
-> I found a small-list flistxattr(fd) slowdown on tmpfs while looking at FS
-> performance regressions.  This is a performance regression report.
-> 
-> The scope is intentionally narrow:
-> 
->   tmpfs + user xattrs + flistxattr(fd) + small xattr lists
-> 
-> The cleanest reproducer creates a tmpfs file, sets one or more `user.*`
-> xattrs, and repeatedly measures:
-> 
->   flistxattr(fd, list, list_size)
-> 
-> The single-xattr scenario checks that the returned list is non-empty; the
-> count-gradient scenario also checks the exact returned list length.
-> 
-> The bare-metal test machine is an x86-64 Intel Core i7-14700 system with 28
-> logical CPUs and 30 GiB RAM.  The benchmark was pinned to CPU 2, and the test
-> filesystem was tmpfs.
-> 
-> On bare metal, the parent/child A/B around:
-> 
->   52b364fed6e1 shmem: adapt to rhashtable-based simple_xattrs with
-> lazy allocation
-> 
-> shows a clear jump.  The parent has the rhashtable infrastructure but tmpfs
-> still uses the old rbtree path.  The child switches tmpfs to the lazy
-> rhashtable-based simple_xattrs path.  I understand that the lazy allocation
-> part is meant to avoid per-inode rhashtable overhead for tmpfs inodes that do
-> not use xattrs; this report focuses on the small-list listxattr cost for tmpfs
-> inodes that already have user xattrs.
-> 
-> With one xattr, skipping the first round:
-> 
->   kernel / state                         flistxattr_ns_per_op
->   parent A, tmpfs old rbtree path         135.754
->   child,  tmpfs lazy rhashtable path      229.663
->   parent B, tmpfs old rbtree path         135.335
-> 
-> That is about +69.4% for the child vs the average of the two parent runs.
-> The two parent runs agree closely, and the skip-first-round ranges were:
-> 
->   parent A: 134.451..140.153 ns/op
->   child:   217.758..239.498 ns/op
->   parent B: 134.273..138.098 ns/op
+Rewrite number() / create a new 128bit variants to avoid 3 simple snprintf()
+statements? :)
 
-Thanks for report! Couple of questions:
+Hm ...
 
-1) Can you still observe a difference in your benchmark between 7.0 kernel
-and kernel after commit 1e7cd8a53b72 ("simpe_xattr: use per-sb cache").
-Because that was exactly addressing performance regression for small number
-of xattrs.
-
-2) If yes, we need to better understand where the time is spent but we need
-to analyse profiles after commit 1e7cd8a53b72 because that significanly
-changed how things behave...
-
-								Honza
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers,
+
+David
 
