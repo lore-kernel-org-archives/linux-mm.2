@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC40CC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:06:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DFA7C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:06:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A5A96B009B; Thu,  9 Jul 2026 10:06:10 -0400 (EDT)
+	id CC19A6B009D; Thu,  9 Jul 2026 10:06:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 655706B009D; Thu,  9 Jul 2026 10:06:10 -0400 (EDT)
+	id C993F6B009E; Thu,  9 Jul 2026 10:06:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5463F6B009E; Thu,  9 Jul 2026 10:06:10 -0400 (EDT)
+	id B39826B00A0; Thu,  9 Jul 2026 10:06:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 25CC06B009B
+	by kanga.kvack.org (Postfix) with ESMTP id 8D5B86B009D
 	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:06:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 68DA41C1149
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D99571C10AE
 	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:09 +0000 (UTC)
-X-FDA: 84969412458.14.B767EDD
+X-FDA: 84969412458.10.3D3617D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D30D4C0006
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cOTkeH/f";
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4B98F1A0004
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:08 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksvBOlhX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783605967;
-	b=j8GzHq6+B+Slrv6cF9izZsoQkQnwYMPu/33pGUkA4wiY/q01xzmR0/Sj0oG9vYJDBgQ2p+
-	c9gjiLVrV85A/IOI48zd5n+E2TRXmX+RBN351bIad0BPnjx9Wtf4p87n3GOf0XtQo5XZjx
-	ujWfY+ED4pxJKNe7bu5T+NhOZzDr5AQ=
+	t=1783605968;
+	b=Knu95i+LboA9MJk1be5M4+w7ijr8vz2PTPvM5OwCo24kw8t0DzAzFU2jj+u9EjCGLpBhOd
+	7Kqs7YGWCgBklKIuC76h/nUO7IH9Pn/EGgn9VvEs/AE/AN3Gd0Uup88dWcPDutsX0iqXtT
+	IZbOYKO70UGXTInmTikpb2EkMkCCzaU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cOTkeH/f";
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ksvBOlhX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783605967;
+	s=arc-20220608; t=1783605968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f7X699AHd2yvS5SlnZ9pQaDNVWM6Hfq6tYMt+CDq9Tc=;
-	b=GOTvq58X8s7XBMPgxYGMRV+nYU+F0qEeu1+SbN+vJstNCtlp5XQkbb8ei7qqGcDEERRX8h
-	r2TxsnajpgH1XBHdClfwqpvnaBsbi5BVVBUGGc33SPo8W2JDiMdWvQtQb29wo+yVt7m6bJ
-	QQuQr7eQw5S2QlgZ6nTOAbs0RaP5HiM=
+	bh=cwl2cglmpuAFjTMSYGCoVfFN6ks32ggZ1ukBCbftSNA=;
+	b=ZvdLBk5b3sT63Y+mC5yvjN7uHIG23HnxTaMo/d4KSuvgvEdBHxOz1jQ3r9GCtgImGYThSr
+	lfH9Pwp4zHokaZsB869khvla5/2k8AUwIZuBr1v5XYVao1kU8cETLq84aHGaw7ikOJax5/
+	pbmQH/Rv9LZQq7oeBTvumQVW2qXOpMs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 76FD561382;
-	Thu,  9 Jul 2026 14:06:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA5F1F000E9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1E83A61384;
+	Thu,  9 Jul 2026 14:06:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43061F00A3D;
 	Thu,  9 Jul 2026 14:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1783605967;
-	bh=f7X699AHd2yvS5SlnZ9pQaDNVWM6Hfq6tYMt+CDq9Tc=;
+	bh=cwl2cglmpuAFjTMSYGCoVfFN6ks32ggZ1ukBCbftSNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cOTkeH/fz2U74GAMLYWPYTDTNtvX7NVYSU/t3paid/5xYNcgQTkUpTDSRHvmukEDF
-	 wFzfOMW4sYRVKIWlXtqa9EnUe5wT0Du+zKjtz1ALCNhqwdZj/XCJnuuZaS/ZsWLG+/
-	 w2qLgBQE3qt79Y6lmcqkTs5W1xfxawY841zKpf35e8x8ylzqILUTE/1Vai+3QAKJht
-	 cOTlOp1PA0vgSvyV2TG8cX4Y7mQ28u6iESfSRsBuYMYTMf8dxjNATumrPZYoREbQn1
-	 yMDcwlFYdm1Ge8c1LBTvbk+15aOFyjz9zeK9dgQ4JcKvmNdHtRtZ2rp1mHRtuFafP8
-	 2sxT1dnn01Hxg==
+	b=ksvBOlhXZuYe6PcvDfA7Nh2i2MrRnI9YRQHYZScgbU9jprbbnerU3CogTOghKADMA
+	 AqWVuMMkmttEV3P5neGz/VeCsLEvQJoYI34mCiMB4Q8Kb1o/zmTFExXyc+iGBRK6Eq
+	 /7BUvKPgH1VNDMs88H3wSwyzUGYYiUG0itGUopGTpfAAiFVPhSr3BGAI7UbNGsOEXj
+	 xpD4ApvNI2vHxW1DRwYIlMd5aUXhXsO1WxaflUDULuPmMVGtFlepDC1tigck6LiehO
+	 Ro6T1BH2JL1DXbqNfsnV/5p1DWSJzn9f6RyFeH5GeqTHScw9EgdwN2kFQtBjfhYuNE
+	 AUDnv7+9IeTbg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 10/19] mm/damon/core: validate params for probe hits weighted sum overflow
-Date: Thu,  9 Jul 2026 07:05:48 -0700
-Message-ID: <20260709140600.90950-11-sj@kernel.org>
+Subject: [RFC PATCH v1.2 12/19] mm/damon/core: set samples in apply_probes() if probe weights are set
+Date: Thu,  9 Jul 2026 07:05:50 -0700
+Message-ID: <20260709140600.90950-13-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260709140600.90950-1-sj@kernel.org>
 References: <20260709140600.90950-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4B98F1A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D30D4C0006
-X-Stat-Signature: jf7uxjimhres94h9yeayg97c81pwy79g
-X-HE-Tag: 1783605967-244556
-X-HE-Meta: U2FsdGVkX1+3YjTocN9Txsr70X/OcZhqfbUUybzZ9pT4T+VBB9mCXizGN3osdMdh0ClezNrre8hrytkeoERsQHlFNTs1ScS7m9rL85foTWg/u5TY5oxmEZA9xfXsE8XkAE2oBZM5zkWbvyopKbwC2xJrvxm9uzaW7ZjHS/87cLa7hLBG+nw4TQKePr6vpiQ6W6YojljUgMKMHt+1QHBqVKwfGrR1IMby9ykX317ncNkdNMowMSHXzyKJmtx2Yxs6V9TbHJUSi68WRlldZYKOmAx6UeWfDLJ0k5AcFw0aBQAI5fxgCuuN7fXtbnj8sEgUmgzxSSbejk+ZvD+Ytd+4DoXV7OwKA0BzsYNcK8/abGs/skira9NQ1fQ5haIdbFJQmuUyyMd+VXzMGqcsXp1uk26VLSe7qGoE7fVOPL3x/7YXDEqLfdDsqT/FJyrjUyva8u8Q4GvueT1ppHxuOmI17E1FjAauRiTYTrU1rPhiYy+ornNUTIw80Uq5CVH1+P9NbWhzSlypbxKBfwwaPhXOfp8ZQjyLoEs2JRy5CgA4LFZoiLYnA32wD4bHVIsHibpN0Q/IZm1yzj3Whv7OuARBJpJNXD7vraCKFRfwcgnbSFJmidOuFXa0/xXqf6ZGzAZOXcbtA9fwCjmbzHsdAIFTL9j1zpsc6VaEEf6fdCVReD6fGnujGuJ+tdn4LLV+t80qSdBa3ePCaFyQcZ5+ELaO4Um71NoA2aEr6Xl9NFzBgU6Ep1JOM2Eoxee+sAgjDCgnvPUoXDuuqepavEcpapaS0SxvNCWUM4+BvfKoJcgI+Ar67N+szp71thvAmAF5sRGn9BwGZh4DKM4l5plQrQyQv7L1f0PWZSQP8XEOP88ZoImRrwDYEtUX8Suvj2w+aW3/2TXyv35wmur/01WzEThvV9ab6rZMvBPunbCinQziPnJufm3rO+Elq+6za/tsqvq8zjh4FGIkjL8s5F6uNkK
- xuM83s56
- xdUvtv+6JYGSxJNZKpvSMELXiWdEyWbk72hZzqEcu3jCTXdOM1URgwx8B+gAWDD2J7Xha+Ba6yOA06bHUEXnQHIllQvyKCK29b1IE/7b2t3QsqYHNxvcSz/L7YxG8i/7p7wG2Jw4P/4KOrV01cRBdU/QGVGkwLlAEC2uVeKi3v7BX6eO7gcUsWOsH6KUxm08KbqBONxczbqkPrI43ZwAHCvmZVsGiDFruX6M9Dp4DkJbxLm8=
+X-Stat-Signature: 4mhs5ok93hkx3nxtd9xc39uy1id3ib1t
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783605968-591694
+X-HE-Meta: U2FsdGVkX1/VdrX3es6WqddgKQ46Q/5oyXFPb/xQBjqRuINTZ+m8y7A4zBalz9cJaLf9yFGNFovfHyi2orewjgkuqKx+eirzPR8cXB5OurcGxCvVii5vRkTR7uJN9Vl8alBz6RT3P4ASRmlrtMJ7WSAywE6Rl7DeurQJzpy5yFn11ptPw2YQt4yzJqCqiYmEITuaeZZ2NfRjvFJKu6Ssa2IvHBHY9mN/ddah82pepUjcSuDkM07AYKphOJIUseT8hSeI6tUxqXu3gAG6pOAZh8uFkWLS+qZ4oFgVn4jLY4V8cVoDMdSimJy9+mMM4Sn//1x7JkaiHMxwB2h19isasdknwP9fqY6scuCL/il7efasF/6Hy0M37eE5vqM1nKvQpWmeCl1slYuRbMB44ivLlmBaU7c0rY5OCrHysnvloG5jVnRsJd46rfTeCKbeaNsM851j55c9p/6MvkGBKNau/wm/sGUAjXPUzwhP7xziYGC6GRTHpo/Sy1aPfB6u957T1DQ/yPd+gPPc9S2Og8EZwRc36vg0RL0WYgZgfvE6O124hrOiXNOksxqQC4RRJhm9V/o3j9xuayXUVDNshRHaeIsosOdlModm/ACakAIegPOSlwtIIH6a5UcM6AndpJnOSwxEGDHWoOIABYA1F4FQHPycpjZEltHrBouZl38LTzrj90TmmUP5KORscy71oF9KDMNPypmzStDgAdsOwjyKkL4rmsGXduPMLCp/ADOfNEVNWt+s7N4/UE0PKZMEUmw1T9R0M9WQexLQX8X9DA8vEL+Sld5O4l2fuH2EZuB5E8m5q1FWYA9zWkQyJjcUhFZJxwS6sG7G2KU0Muc+xQbkRDrexEMVU2hs/Hxnl/zkb1g67/CfU7LxvHten6ZKzR+Dfq9GW5Zqt3OY5v3HPdZGkcFR/I7yQ9bdJNVpPrexc4DMTMCSTEPcBPihdJi+ia5oaYVeeGt8ylI/cwdMm2t
+ 6agcie0m
+ vBUyDn0rZP1zXK/bRkqobqUjVjamrFo1nrNtNfJtOUiy4qAHRBOrJ9Ln1RsucoU8BDAYeD3b1aaKdIy/+Ot0aJ0n9TQsUWb6GErpC9uU+TAH774gOBydutqe3Fj34NXbRp8wgxb5OadzCt0t03ORef9Hr9LfTGLOnAauy2HUQxpz30AZdjvmEVAlWVf/fhcjLGysMPcxg+XlwdFT3pZGGLAwtR0+fJhOSOjE77LOZq8VPplP/iua7EuX52yAOxeLmZnFrEreUa9XlrZrLZLMNcxMyPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,57 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_probe_hits_wsum() could overflow in weird setups.  Users could set
-the weight unreasonably high.  They could also set the aggregation
-interval unreasonably high compared to the sampling interval.  Such user
-setup is unlikely.  Even if such setup is used,
-damon_has_probe_weights() always returns false, so the overflow cannot
-happen.  The function may be completed in future, though.  Even if the
-overflow happens, the consequence is degraded monitoring results for the
-unreasonable setup. It is just a trivial user experience issue.
-
-It is still better to be prevented unless the cost is expensive.  Avoid
-the overflow by adding the parameter validation in the core layer
-parameters validation function.
+When probe weights are set, the prepare_access_checks() ops callback is
+not invoked, so sampling addresses of regions are unset.  Ask
+apply_probes() to set those together in the case.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ mm/damon/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 4f1425e56950b..b585e4bf035f1 100644
+index e250b7080708d..f1be748e9a674 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -1335,6 +1335,9 @@ static void damos_set_filters_default_reject(struct damos *s)
- static bool damon_valid_probe_params(struct damon_ctx *ctx)
- {
- 	unsigned long sample_interval;
-+	unsigned char max_probe_hits;
-+	struct damon_probe *probe;
-+	unsigned int wsum, wsum_to_add;
+@@ -3777,7 +3777,8 @@ static int kdamond_fn(void *data)
+ 		if (!access_check_disabled && ctx->ops.check_accesses)
+ 			max_nr_accesses = ctx->ops.check_accesses(ctx);
+ 		if (ctx->ops.apply_probes)
+-			ctx->ops.apply_probes(ctx, false, false);
++			ctx->ops.apply_probes(ctx, access_check_disabled,
++					false);
  
- 	if (!damon_has_probe_weights(ctx))
- 		return true;
-@@ -1342,6 +1345,18 @@ static bool damon_valid_probe_params(struct damon_ctx *ctx)
- 	sample_interval = ctx->attrs.sample_interval ? : 1;
- 	if (ctx->attrs.aggr_interval / sample_interval > U8_MAX)
- 		return false;
-+
-+	/* invlaid if probe hits weighted sum can overflow */
-+	max_probe_hits = damon_nr_samples_per_aggr(&ctx->attrs);
-+	wsum = 0;
-+	damon_for_each_probe(probe, ctx) {
-+		if (probe->weight > UINT_MAX / max_probe_hits)
-+			return false;
-+		wsum_to_add = probe->weight * max_probe_hits;
-+		if (UINT_MAX - wsum < wsum_to_add)
-+			return false;
-+		wsum += wsum_to_add;
-+	}
- 	return true;
- }
- 
+ 		if (time_after_eq(ctx->passed_sample_intervals,
+ 					next_aggregation_sis)) {
 -- 
 2.47.3
 
