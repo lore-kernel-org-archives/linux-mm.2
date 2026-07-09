@@ -4,119 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 609AEC44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 16:13:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4555C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 16:13:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 537DB6B0092; Thu,  9 Jul 2026 12:13:32 -0400 (EDT)
+	id 97E286B0095; Thu,  9 Jul 2026 12:13:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50F116B0093; Thu,  9 Jul 2026 12:13:32 -0400 (EDT)
+	id 954CA6B0096; Thu,  9 Jul 2026 12:13:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FDB76B0095; Thu,  9 Jul 2026 12:13:32 -0400 (EDT)
+	id 81FF26B0098; Thu,  9 Jul 2026 12:13:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E82E6B0092
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 12:13:32 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83A2B1C16B5
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 16:13:31 +0000 (UTC)
-X-FDA: 84969733422.14.2909605
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D07CC180010
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 16:13:29 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e8tKeN5i;
-	spf=pass (imf24.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783613609;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 506C06B0095
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 12:13:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7D0512022B
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 16:13:47 +0000 (UTC)
+X-FDA: 84969734094.07.4ADCD51
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011050.outbound.protection.outlook.com [52.101.52.50])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0C55540009
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 16:13:44 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Lp1HS8SN;
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.50 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783613625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RAelIY3SGJPFiX9W78brt71IyKj6nxt4Jj1gg/NENhM=;
-	b=3lucrHWtVFpAe3dV86cs5luSQS0PVMgwfzCP8EQusu6b5ZErfz+Zav7lwNwu53LkJdYfLj
-	Ecbeze8ib9xLWgaxAhEMEDuRNCN8zx+Zkvbwusc9o6sC52zlCknR6wQJx4XGsehSPU3i5R
-	gPZWijLFjbMc5I8WhIaq2FLgb64rDpI=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e8tKeN5i;
-	spf=pass (imf24.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783613609;
-	b=3yr9nKeYrPCsqtIEYIA5W0wloPNs2d8qYFh/UA4+81GOuFRKiC+QwtDHfPzmTDi8i2jrCG
-	t9rRF2A155bYFuAPVH9DA3Y9YrqFtQ/tbNMC03C1mG8yiSS50DS1JC8J5gnfR4AC3zF1ju
-	oC9kuNTY8nWdAEOCYY3os8q+VG6Ypcg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F1A3A4089D;
-	Thu,  9 Jul 2026 16:13:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2C31F00A3A;
-	Thu,  9 Jul 2026 16:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783613608;
-	bh=RAelIY3SGJPFiX9W78brt71IyKj6nxt4Jj1gg/NENhM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e8tKeN5i4m4ACoOIBmSex0OeWH2XVw83XZ/aBvIwAmA4coEeCRkZa20zr/3Llj4QL
-	 6vzg0h1m+yrIbw5jfQXfNEWCibeZaeL4FHjTTGZiP9eAP/lTt3VOP3zXoetxmU0q0/
-	 79FOEwYtkhE9Xmg6wgzbgQmtchuGg/eeL1OjeSNT/5CTp5HwVi9+sU+rSGiOhb85nm
-	 CjX2Wsyt7C4fzG2CQU2FPvrchrTG/FgiPV99mGrgxgNQfmP/+MqQIKgRdf6MPKsoOS
-	 zICm/nvJRVVETdHHU8Emsy3FV9eKl4gAhMMhlVaCEy4/b8Hsbqv4Wy0XMBByorPdci
-	 ErIM9s1QwJm+Q==
-Date: Thu, 9 Jul 2026 18:13:26 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Will Deacon <will@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
-	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
-	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
-	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, Chun Ng <chunn@nvidia.com>
-Subject: Re: [PATCH v3 04/11] arm64/mm: Add set_memory_device() and
- set_memory_normal()
-Message-ID: <ak_F9o4KMMqZAsq3@orome>
-References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
- <20260701-tegra-vpr-v3-4-d80f7b871bb4@nvidia.com>
- <akYs91INHMXMTI-t@willie-the-truck>
- <akZkuwktaXFTrASP@orome>
- <akaSJ5D98w2cHqb6@orome>
- <akftuw9NyRy36fXA@willie-the-truck>
- <akuvyu1Pq0ZVMZV0@orome>
- <akzikTrmhMsvkNVY@willie-the-truck>
- <ak5CXzGStC6ZmtwI@orome>
+	bh=wNX2K/og9RjFMa/HAei6CBqBXpzbMEmlhTjMZ0W5fsQ=;
+	b=5Udsx1xQ3anAh07Yh8Ll1DUvhebkUwzVwtg2SLn363YJKCtEhBxfgXVpAlLryij21PmzdR
+	iDJOD8+nx/u+2I7eJb6ZdrBZyXMe5kEhTVJVqQ4JOg9sKeVCYrnArpD/vreR8q8Py1rQ5h
+	crRfcGH6SM79hnwyX9CGTgaO6ISN3uk=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783613625;
+	b=FwO7SO2yRy3X4GSv9k/k9IsXUaQtldr+b7LTd0+rLMPxkITvAOHvmP78y9qQ0A1/2ubKV+
+	EIUP+XyQ+ZLWPExpR5w7UO40x0+7XHj7jJfSbYJS/qItqzD4GQ5x39yeCJ8GC98BdOD/rD
+	0p6zS+vgNrnYHyDxPcmPYItyUdmlVpo=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Lp1HS8SN;
+	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.50 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BPSZKczSUUXrYbCtI7ScKuzfBONreWzG76YMxQKYR3Ge6M8tdz2Lvz2jSQEV3+AsBVpgX6ALAD+4H0lBWFJW/vxsaO9oBdWSDPy0wDvr6Xkdq1+c1BdyTjNBM0dqOADSt7l20nLbOCwmiiV6ZMAnrQhoHnKIblLal1IesJxpaiJkQyFGM1Quv8E8kpUMRCjLLyCUusozPyYJIxTlWjWkxZVH5AkZA5++746viFwQLi0ydNDhEBQ+Q7jMzxVIgcrGdk0fuOoGQ8U4QxypbBZNOIR1z986MQBZqzfEv8HhVRWe+ccnU57VJlR5l7OJfYthdjGJehMOzWHHnuk7yccFpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wNX2K/og9RjFMa/HAei6CBqBXpzbMEmlhTjMZ0W5fsQ=;
+ b=X7nyKjyzqRO1ZIY+BvsjaFj8pueEdhLNu2t4vmguYWmjNndKNsLi4Gzn4DAUcSBaNRv97dv4TdfXcS0E8kPGx7rGk9RoGzXAOJwrCohS7j3rIL4BmlE+CpXaGKC3pz1s9KHrY6JkglUmIviVCtpuUO0KcfHpqNEhh/H6AZpBaCsOS7LoXTEtj7O4NL4JRsyFGOoqHa2+ASVER49zGkXKJ3iXoixsoHamJXUap6tbQi20+udf9a4tgcmsODaBIHFGBBMPmMPnAZ0laK0YkaKFVNR4GI33vVtE0y+wtMuZC/qlq8UY0IHkAF9wFMDqnRzVCaYdICVQeQrMYeti8K87jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wNX2K/og9RjFMa/HAei6CBqBXpzbMEmlhTjMZ0W5fsQ=;
+ b=Lp1HS8SNevW7UtP5uvQXq06VofIh5PDHeo4aNjzkEEzHmjDitnQuNMAD/0yQAx/kfRkfdtjtCIGmEAV+zm66hHQLOm886GEKavzuImW6K5joyvtMEDrKAl4kd3WNlaf7W/liiT9/yuqQ6vC1jXadhkKzxwNNnYtFW4lbsNtMjgLjc0u1E9BA+tcsnzL/UM2WiHYRLTDWWroeBUX4NuAhqq+4CB8gierkdSQf4O9DXYg3tQAX0F4l97Fu/fP1S3vbHN07gQh1Ko3XDYawG/UaT7K0Fy6NH9s+WcgsurJM6tJW9VOh5Pq0wB2pAfauz9GTa1zShBSnW5kAxXWIjVVa2Q==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CH3PR12MB8878.namprd12.prod.outlook.com (2603:10b6:610:17e::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.8; Thu, 9 Jul 2026
+ 16:13:28 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.014; Thu, 9 Jul 2026
+ 16:13:28 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, Dennis Zhou <dennis@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] mm/page_alloc: make sure tail_page->private is
+ zero at page free time
+Date: Thu, 09 Jul 2026 12:13:26 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <4BFAE46A-2AA6-405E-8CA7-0802C25EC21F@nvidia.com>
+In-Reply-To: <9fc67666-ac70-4d03-8836-5f8a9f5f1ff6@kernel.org>
+References: <20260703-keep-subpage-private-zero-at-free-v2-0-2970fe777dd6@nvidia.com>
+ <20260703-keep-subpage-private-zero-at-free-v2-4-2970fe777dd6@nvidia.com>
+ <9fc67666-ac70-4d03-8836-5f8a9f5f1ff6@kernel.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BN9PR03CA0461.namprd03.prod.outlook.com
+ (2603:10b6:408:139::16) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="u2l7n4igggpssyeo"
-Content-Disposition: inline
-In-Reply-To: <ak5CXzGStC6ZmtwI@orome>
-X-Stat-Signature: d639ajc41fayxyn37eywjd8c5ne47o1r
-X-Rspamd-Queue-Id: D07CC180010
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CH3PR12MB8878:EE_
+X-MS-Office365-Filtering-Correlation-Id: ffeee1d3-b58f-4c5f-0de1-08deddd50302
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|366016|22082099003|18002099003|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	A5nTy8t1fu8ygtKHPn88I1WdmAA+r8/nAQ07UCYNnQJKPkw4jw0p4KQ/EZbKRMq8u04jplKq9lDJyUmRvjkkXiuZTJmEifVx3SluLcumBi75SYuez2XlayFQh4ldiYBGNlHfzsdps1jTwn5K4X7P3M5+gSGgpPUA4ZM7HWdKyeeJ5jJZmtnLrrDmE10KqhK7dJnOTEfLUsIMWN44K5qFjfAkwtIJqRrnmgY9+ROJ+lB6nMBgg0qa3f7TLdYwqhULLXFYtHXzqv+5EXe2Dj0IHgJZSpDjTnsQ+xSe+L4wmOmNibPQLyHVedFnmtFRktkloqKza3IhL5Y11Pby4CjHuUDJ6m6Osz7vzgPleHfXvjOG99I3QVs3fxpySZubotxOgokPtzqcAb5YMQESefS3RLILy+ulsiHRKeDmWVl5cqSz9dUOp5aYXMHPk98e5W0sZQye3/MlwZkVhrQ1bY9+8x9sv99CsOTlsgwA3fUi9YLJF1PxQpSpEhW3EZIJJSJNMf7lt9QdAqUYLsXw88vJLyGdp3hQUsVRfEFrb5Pak24qYE0bmAKtgGi/aadvdGnNL/HNqE/1vQCXVCt8yg8k66uSPNAF5269wkkk1r2LN6q0yKqZTx4nmmNVSmcJnWDuW/R6Uz9JZccm0WmqeNGja70wYXyZoU//gp5ILqUrocc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(366016)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?InYX8xXFiGulswRdTdWVXwBk8GS/MkFB4R90rgYR62DzLijlRlH+aYhCQQRD?=
+ =?us-ascii?Q?V31PqWra2zuYretM5m0YkBaFcvd/hY6swl5NvKHM6UNp3s1xV/bA3k6gidDB?=
+ =?us-ascii?Q?0Lnt/cH4VcuzaN8y3t2qPiMmvDJy221mpEuWRKgZubxKFi53WuFS6xyY73wk?=
+ =?us-ascii?Q?w9mz9lOCLLyqorEGH6S8+lGVomxpNV0pLbC/g/wBdRd83fkPz33YcDVXU+U5?=
+ =?us-ascii?Q?0aH3KMilj9pvVTNwd+c61eSp3hXBAvfGdoxLLfgqwyoKk9KLAIwNWxDrrMRm?=
+ =?us-ascii?Q?2kuDYshkWVOTRitr5DDjFewgkseEEqvt1lSiH6X8WPvcNHxWotGVDxrJlVrY?=
+ =?us-ascii?Q?6lTJ18INQBcGP5qThz8YtMv3C7Fzu5DI6ao96ZPrUyatKvmB7u3BAzz1FiZk?=
+ =?us-ascii?Q?Apulx5FXdQD57HRbAn4m/C6WvSBIlfQhNYLsduGfFu26yrMbl1i4NbcDCB8E?=
+ =?us-ascii?Q?tsNZjeE3+lScxwhXhi8F1OZgGtiAgCghSiCQE8Y/iDqxOEPObqCKzcosxY8l?=
+ =?us-ascii?Q?PBL18FkrJo9IABqYXgj6/n/cqHxTzuam7iRzhUkRnF8LRISgO8DZSxFM02bB?=
+ =?us-ascii?Q?dvLBeSGBevFioOiRMA5Gto8gPGJg/apr9KnD2OUUvN9hI6+LxX8X2UxdX7cc?=
+ =?us-ascii?Q?2TuiQgzUxge7YZAL/Rfccr7UWpqvzlmcgOlWJcsgCA4LUIbzMJuoLYHbXQ8L?=
+ =?us-ascii?Q?9ZQViko3i4fH+4ahu5ux4xD02BnWTvnF959tv2xGyS/oG7Kkny1M/XaYI4J1?=
+ =?us-ascii?Q?gFoyZ6vkh9uVA3kTrVJJCywnurNyX8qIyOq2O7QuZKz9EWby2A4h2Ri/CWBA?=
+ =?us-ascii?Q?CmJyFj5JkebGtZVHfyPCu+SpHk69IXxvRAErmt/7RdXpsgBJnhiiEKtNhijQ?=
+ =?us-ascii?Q?PqM1W4NIjGii3FcNZiQDJf9wZncLvK5zP2ztZUUYdygeU/8NjEt7CDYjTMlT?=
+ =?us-ascii?Q?mTKIqsDEckCb0fRm1GXOXAN2OLd4/UEUEllGS0MeqhiydbdNJpeSdl0aStEt?=
+ =?us-ascii?Q?mIuBJjuMfQ7mdUP9w5dLyTRUYtjZNlAUXAIBbSA1yhHOh83eSyEBIBpsuMZA?=
+ =?us-ascii?Q?LriKk8/4x6ZjvbdOhfRRyZJ+ZrXIVuEW2qy2ogzz+0H85kqoaKjDtbYWlAoF?=
+ =?us-ascii?Q?lyhbUxho8klc0f+hmZUXz5Rv/JEDXnbxy80O5rHBP4qYiQqwqJ6JIyq0uTEU?=
+ =?us-ascii?Q?9CBPRDGhB0j6uh2KqPEAzlCgOokW60Eoxmid7DEdVdV1TdD2rTbasaOjd6K4?=
+ =?us-ascii?Q?JJmRS8CvNRI3lOF/uJONXVZPJU/RLwMQDkmbKqqlq2qvEFq+8MX9Yv5TT0Nr?=
+ =?us-ascii?Q?idf55x+CGZtodiEzMdg8k0xBwChkPNhu8T5jxTQD5dbzKXjPh4iqrrqsQBZZ?=
+ =?us-ascii?Q?7xRzH9xY+E1AE9yBAXZzxO8zbjn0w8TOeKYYHnlIA9ycxwbDHwnC8knE0IQL?=
+ =?us-ascii?Q?L2SaX06ZGPUHpQv2hxf6NoS9FeCtD6j0MqSmAkt0+kIbbDRVmNIhD4K0Mla4?=
+ =?us-ascii?Q?veaTIgVlQpsyGWaERYd0+irU+a6KAPLu7jXkoqDhYL2IKnGrNf6Uzbekgcvx?=
+ =?us-ascii?Q?8Hh8yvBx1s32Cdub/lNwx5+wuG/DpZA9CtUjhllq9Av8dFWpxLkESFmF2xpQ?=
+ =?us-ascii?Q?oBj76iFcopti8cN1tVzVWsdffz4hqzqIZX6adLpBmeiK5IOfkBd9rR0xxmfI?=
+ =?us-ascii?Q?+Hxcfc9Db8aKX2IvIHxQDcpSMSX0nl8mmnQagfP5B8ewW6AC?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffeee1d3-b58f-4c5f-0de1-08deddd50302
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 16:13:28.3021
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: c8y3QAYgO+svtdRACJsXNn5yRqGs6kcNfRPUHpzmOSQlXkbT3KAOMA5aSB8nYGPI
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8878
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783613609-153862
-X-HE-Meta: U2FsdGVkX1/ioKzwR3vR1BDY53CG7pHZr9D/aYav52w77gHVG5OpWoX//eIiAt3WOCb1UUu+vqZAPTroYQAdV4YzYZrLYC+mWgK3NKAyETWwmy/ZbpYMvOwoOMfAJP7yCs8dyqvU0Ki+x4q+hCOfB2stnz45Tp+f0oKrQPpYEVloKhfT5y7NJkjdxd8dXXfCbTFUNlwCfWoTQmwD/8McpPtJYWTMi69IONhA/5dXz9Ao70g7hip3Sl5DbzYq6FdhJ/4a2bf3XMFQ9FP50TL8syxF71CeQhfQJZWcx+ehtII2rK5RZerRCr5oZ7mN+fDrC4Wk0r0JUwOrR15H0HfvQ+nz1UdAP/Hm831+AbM5x3a6l5o0nW+49swRMo/0I/tZzwZU6aC+ymUGH0KumndOOI9oOdN1YCxT0vyZxRI6kHIgpsYJGWKSwrvALgRs7V5jQpBbBTWtGE3zZ4rsLGSP2kz+a7eRsf7T9dfGRCRWghw0UAID33hnYz/UceNEcsNXpriA0tSBVocsrc49wH6EXz59ECe4x6pPB3H6fbL2a7LgXDN3D9hN+Y24Z9blMBa9+axUL1pgdOgEBVF6IqvqNh84Kqsrk9T0bcVNkRNUEHyi6cixlmTuqG/Xt89DX8LFl6/602n5qAytAHTlRP00PYVW8BiQdbrmjbUfXONk28Os0nK6Yo69bCYb4VtqK7ZlKNGdPmOdpIA5glwPfsnsuQohDAsRUipTzoIaWu8xv+4tL5BgasD4EhQ5ojC53OWU8K8RB9Eo/fLf51cuXauBT8cq+qEQvnk/DLubD7BI1p6rfprnw+Dsqpsy+8xbUW3vxTSc8aDf1UhdpakqNdJl3PlPwoJ2sA7dD7PRxq91TZd8JkW3jY92X2sifD/qWR6yQP9B/QJZ5VhSgIV8oAXi6e7dw2g+C7TuPNkGzX4iiPLDf9dikysSCAMVWExpSPOvQJry8zIaDFcgmf7x8vA
- 9fFv7jSz
- ZEkVfJmqSfsClhA4J8V3zF82x8OrB34WBkLtcfVR1gXP6zWTBMM6SklEfVuzavY3ugYb555BrFMItyfaYGf+uoe2CvzXug39md/860qSRfzYEY6gJ4pV1RzR0VyMbIPCyIawtpVzvwYmo+4aMFxVNz256zkT6ZmJ9Mm0V3l1mJFpOWGVHaMqfWWkFHfeqoxAxD+5MMAvbY3tCCl1hRpcEASF6cocNW21coOa2rB1kjzIrzx2UeeDdFQgE4sXh3pxtxf71uzis0P8TfQIiFNOfZ6Esr6+91dfMZBjNVWyLRKePTdgNOcSQCiq8wCY7DDATsZtR08xPci5m8BwLOuOuFj7L4O+8fiEKLp91qfr/S4i3wCh6SmyBD2wmfdNmQw0TPDL6vRAnjWFoEOEvG/emc5NFvdVn5vUAqVPQYOqRTZExZsDxBvmABGaf4eV9yqyRSVzndSukditlOTmY6H1vAVz+1NLd+MAjw5mGn7hXgDgRAijIzJhbcdBHzSg/H19HfauDbTxGzTc9k40Y7CqVUdhDGQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0C55540009
+X-Stat-Signature: pyeanomtjiryamyo9wt74wzdrxcuy9kg
+X-HE-Tag: 1783613624-196498
+X-HE-Meta: U2FsdGVkX1/nnTlyZAexSD7RR6RiH/plPNKeAEFo4Npc8U8XyUmav66oeqYcjUG2qgsyQSlsDp9VGE9CDypFlhBbYzAaWT4YAUCxfnyf3jluuYrb4MXvAyu8gMoe1eiVrHsAVRS5J0V6norwL4Wq+uEi2AxQwNeBb0fHP4qruQvJKvlhyUDEwQ5DDdDU8gXxTW0KUfuHpyrlN98gUD+WYKvwpn2mYIE52zqt6NfIgcQ8NWQ35UiFkLibXP9Vma+VGMdwMfoh/aUseu+b3ICKPz+4Fv5PgDNt+2v02IUh+bTGsWtjRFq70uKijaiW3ukBgl8bUZ3FlM16+akXzfecMzLjNXi7/Lc0mBjek6AACeZkGlRF5kaRPhPGnLXThbLCEzXTWcDWKbrt+rHxEfspfR3vk6T7Gc3pkO4oAMGZOJqrZAhrUmR7ZD6DBPPyLVT0OtgkegA65IdzDw0oLAE916/WywquHhOfhplrI6gE2Yr5kT+X9dh/NFf3+Yx13HMS3yRhVUx46po+5Z39Ud1un5hMCYDfX/aYu50NS7O5uGz8Tm6fhGnBUvKe2UwQLeZ1yNgGoPx65vBkT3JOI3v9aVMdEhewbEB0rqJQ5mF08zvwrjAXmpA3dePF/LakM3roD8TIlb7BO9NVKTbB0BTu3mDAE25smNms0zx3OO65GCUTXQwhGAw8ZlB8+jXO+DKD7BgnUv7z9MZqnZv6ZmuhS+MMKwLKrfJ10wyIqLcWYlAT/JVh36T46HDT9DMS/K4Ap5Oh9fpMZ8xHm8L/C8HZFv2lnyNhpfvADSLUzFhrNJuEt0fueIYW5/63wWKtzc30bPEKRLxhj75sPmpnQY0+DjyOqQg7ZfZg1wzaZ6+BW1uR578U8tUeNeCpikqwK2L1qMne4cQVA1BXy3qkpxJi064rIvqtJCEX5ev8nG6QO0haWyNDcevk5gcIcBYjWwGD1aj8Xdp35PVRsNpO/AH
+ hTEiIgI5
+ U/5mlsG1bb8q7TDy9cX0s8MySjZVxbUNt3vn+CpGZt9wQiQRNQZPJ7RNQbADFw852hyLX/18U8PkiVTnHuzmy5mCsiJexHQarYNAF87Axf2tUerF+lpy3MOlE0wS7pCsEDnPYXAD6co5JliTeGD+LPI9SmYh5Wh/ir6I4H5zQQZQVAhOJBZHo5Qv9f6+ijzP37l9f1NjyBVh3Wrhk8AFnulHDPwVS7v5WIK9dVdTGRj3z+VWLytTULw2keT/YdYOWwIqCH1TEthLprh/zfEPPzeLakAGSDpsn0Gug+NVF2ee56AVT8KBxmCBOjccOTlV94JpAduYA9H81tUSmb+YwExUPh0tTlWtzu8+SZY3mFP5RQdt9DlRyaNULO824R88vB5MTc9EtSQaDir6lmj8NChoC7ufR0tQkCg19/nPEmzD3J3cc5V9cyHk7euGTX89oPzsTbDHOOmSAo/4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,204 +172,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9 Jul 2026, at 4:24, Vlastimil Babka (SUSE) wrote:
 
---u2l7n4igggpssyeo
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v3 04/11] arm64/mm: Add set_memory_device() and
- set_memory_normal()
-MIME-Version: 1.0
+> On 7/3/26 15:47, Zi Yan wrote:
+>> Any code using tail_page->private of a folio, a compound page or a
+>> high-order page is supposed to reset it after use, otherwise ->private=
+ data
+>> can leak to new page user and cause unexpected issues. Add a bad_page(=
+)
+>> check at page free path for it.
+>>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>
+> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>
+> Nit:
+>
+>> ---
+>>  mm/page_alloc.c | 13 ++++++++++---
+>>  1 file changed, 10 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+>> index 762d9b6bc792f..723a52dfc80f6 100644
+>> --- a/mm/page_alloc.c
+>> +++ b/mm/page_alloc.c
+>> @@ -1376,15 +1376,22 @@ static __always_inline bool __free_pages_prepa=
+re(struct page *page,
+>>  #endif
+>>  		}
+>>  		for (i =3D 1; i < (1 << order); i++) {
+>> +			struct page *tail_page =3D page + i;
+>> +
+>>  			if (compound)
+>> -				bad +=3D free_tail_page_prepare(page, page + i);
+>> +				bad +=3D free_tail_page_prepare(page, tail_page);
+>>  			if (is_check_pages_enabled()) {
+>> -				if (free_page_is_bad(page + i)) {
+>> +				if (free_page_is_bad(tail_page)) {
+>>  					bad++;
+>>  					continue;
+>>  				}
+>>  			}
+>> -			(page + i)->flags.f &=3D ~PAGE_FLAGS_CHECK_AT_PREP;
+>> +			tail_page->flags.f &=3D ~PAGE_FLAGS_CHECK_AT_PREP;
+>> +			if (is_check_pages_enabled() && tail_page->private) {
+>> +				bad_page(tail_page, "nonzero private");
+>> +				bad++;
+>> +				continue;
+>
+> It could be moved to the already existing is_check_pages_enabled() bloc=
+k
+> above. The flags reset doesn't need to happen before the check, no?
+>
 
-On Wed, Jul 08, 2026 at 02:50:04PM +0200, Thierry Reding wrote:
-> On Tue, Jul 07, 2026 at 12:27:13PM +0100, Will Deacon wrote:
-> > On Mon, Jul 06, 2026 at 03:49:24PM +0200, Thierry Reding wrote:
-> > > On Fri, Jul 03, 2026 at 06:13:31PM +0100, Will Deacon wrote:
-> > > > On Thu, Jul 02, 2026 at 06:41:23PM +0200, Thierry Reding wrote:
-> > > > > On Thu, Jul 02, 2026 at 03:46:44PM +0200, Thierry Reding wrote:
-> > > > > > On Thu, Jul 02, 2026 at 10:18:47AM +0100, Will Deacon wrote:
-> > > > > > > On Wed, Jul 01, 2026 at 06:08:15PM +0200, Thierry Reding wrot=
-e:
-> > > > > > > > From: Chun Ng <chunn@nvidia.com>
-> > > > > > > >=20
-> > > > > > > > Add helpers to swap PROT_NORMAL and PROT_DEVICE_nGnRnE prot=
-ection bits
-> > > > > > > > on a kernel-linear-map range.
-> > > > > > >=20
-> > > > > > > That sounds like a really terrible idea. Why is this necessar=
-y and how
-> > > > > > > does it interact with things like load_unaligned_zeropad()?
-> > > > > >=20
-> > > > > > This is necessary because once the memory controller has walled=
- off the
-> > > > > > new memory region the CPU must not access it under any circumst=
-ances or
-> > > > > > it'll cause the CPU to lock up (I think technically it'll hit a=
-n SError
-> > > > > > but in practice that just means it'll freeze, as far as I can t=
-ell).
-> > > > > >=20
-> > > > > > Probably doesn't interact well at all with load_unaligned_zerop=
-ad().
-> > > > > >=20
-> > > > > > > I think you should unmap the memory from the linear map and m=
-emremap()
-> > > > > > > it instead.
-> > > > > >=20
-> > > > > > Given that the memory can never be accessed by the CPU after th=
-e memory
-> > > > > > controller locks it down, I don't think we'll even need memrema=
-p(). The
-> > > > > > only thing we really need is the sg_table we hand out via the D=
-MA BUFs
-> > > > > > so that they can be used by device drivers to program their DMA=
- engines
-> > > > > > internally.
-> > > > > >=20
-> > > > > > Looking through some of the architecture code around this, shou=
-ldn't we
-> > > > > > simply be using set_memory_encrypted() and set_memory_decrypted=
-() for
-> > > > > > this? While they might've been created for slightly other use-c=
-ases,
-> > > > > > they seem to be doing exactly what we want (i.e. remove the pag=
-e range
-> > > > > > from the linear mapping and flushing it, or restoring the valid=
- bit and
-> > > > > > standard permissions, respectively).
-> > > > >=20
-> > > > > Ah... I guess we can't do it because we're not in a realm world a=
-nd so
-> > > > > the early checks in __set_memory_enc_dec() would return early and=
- turn
-> > > > > it into a no-op.
-> > > > >=20
-> > > > > How about if I extract a common helper and provide set_memory_p()=
- and
-> > > > > set_memory_np() in terms of those. Those are available on x86 and
-> > > > > PowerPC as well, so fairly standard. I suppose at that point we're
-> > > > > closer to set_memory_valid().
-> > > >=20
-> > > > Why not just call set_direct_map_invalid_noflush() +
-> > > > flush_tlb_kernel_range() for each page? We already have APIs for th=
-is.
-> > >=20
-> > > Having a "standard" helper with a fixed and documented purposed seemed
-> > > like a preferable approach for this particular case. We also may want=
- to
-> > > make the driver that uses this buildable as a module, in which case w=
-e'd
-> > > need to export these rather low-level APIs. And then there's also the
-> > > fact that we typically call this on a rather large region of memory
-> > > (usually something like 512 MiB), so doing it page-by-page is rather
-> > > suboptimal.
-> > >=20
-> > > > The big challenge I see with any linear map manipulation, however, =
-is
-> > > > that it will rely on can_set_direct_map() which likely means you ne=
-ed to
-> > > > give up some performance and/or security to make this work. Does me=
-mory
-> > > > become inaccesible dynamically at runtime? If not, the best bet wou=
-ld
-> > > > be to describe it as a carveout in the DT and mark it as "no-map" so
-> > > > we avoid mapping it in the first place.
-> > >=20
-> > > VPR exists in two modes: static and resizable. For static VPR we do
-> > > exactly that: describe it as carveout in DT with no-map and deal with=
- it
-> > > accordingly in the driver. Resizable VPR is for device that have small
-> > > amounts of RAM. Content-protected video playback will in the worst ca=
-se
-> > > consume around 1.8 GiB of RAM, so we want to be able to reuse for oth=
-er
-> > > purposes when VPR is unused on those devices. In that case, the memory
-> > > is also described as a reserved-memory region in DT, but it is marked=
- as
-> > > reusable so that it can be managed by CMA.
-> > >=20
-> > > The resize operation is fairly slow to begin with because we need to
-> > > stall the GPU and put it into reset before the operation, then take it
-> > > out of reset and resume it afterwards.
-> > >=20
-> > > What kind of performance impact do you expect?
-> >=20
-> > You'll need to measure it, but we've seen reports of double-digit
-> > percentage regressions in performance and power. As I said, the problem
-> > is that you need to split the linear map to 4k page at runtime to unmap
-> > the dynamic carveout, but that isn't something that can be done on most
-> > CPUs. Therefore you end up having to use page-granular mappings for the
-> > entire thing, similarly to how 'rodata_full' drives can_set_direct_map()
-> > and the perf/power hit affects everything.
-> >=20
-> > It's hard to know what to suggest... I wonder if any of the memory
-> > hotplug logic could help here?
->=20
-> I've read up on memory hotplug a bit and it sounds like it could fit
-> this really nicely. Given that we only use CMA (along with the extra
-> patches to it) to make sure that any buffers are reclaimed for VPR use,
-> we should be able to get rid of the CMA usage altogether and replace it
-> with online_pages() and offline_pages() instead. Rather than using a
-> fixed set of CMA areas like we currently do, each "chunk" in the VPR
-> driver could represent a memory block instead (which looks like it will
-> be 128 MiB for 4 KiB pages and 512 MiB for 64 KiB pages). We currently
-> use 512 MiB as the chunk size, so it should be relatively similar and
-> easy to adjust.
->=20
-> One issue that we would absolutely need this memory to be ZONE_MOVABLE
-> from the start. Using no-map in DT and then online_pages() probably will
-> not work because there's no struct page for the memory. So we're left
-> with keeping the memory onlined by default, in which case we'd need some
-> way for DT to instruct the memory to be put into ZONE_MOVABLE always.
->=20
-> There's a "hotpluggable" property for "memory" nodes, maybe that can be
-> extended to apply to reserved-memory nodes as well?
+You are right. Will change it. Thanks.
 
-I haven't been having much success with this. memblock_mark_hotplug()
-doesn't have much of an effect because the kernel clears this flag
-automatically at some point, so by the time the movable zone is created
-there's no memory left that's marked hotpluggable. I don't know if it's
-a good idea to modify the code to keep the flag.
+>> +			}
+>>  		}
+>>  	}
+>>  	if (folio_test_anon(folio)) {
+>>
 
-Another thing I briefly tried was to use add_memory_driver_managed()
-together with the no-map flag in an attempt to get the memory explicitly
-added as movable, but that fails because __request_resource() notices
-that the reserved memory is actually part of the system RAM that was
-registered earlier.
 
-I think in order for this to work the bindings would probably need to
-change, such that reserved-memory nodes aren't used but it's described
-using the memory nodes instead. That way a piece of system RAM could be
-carved out and added by the VPR driver. I don't know if the kernel would
-like this kind of splicing of the system RAM, though.
-
-It's all very close to what I need for this, but doesn't quite fit. Any
-ideas which of the options is best? Right now it sounds like finding a
-way to make this region explicitly ZONE_MOVABLE would be the best. That
-should allow offline_pages() and online_pages() to be used, which seems
-like the cleanest approach.
-
-Thierry
-
---u2l7n4igggpssyeo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmpPyKMACgkQ3SOs138+
-s6HMyg//VTBl5irgppGTb3EjEccykd6c0o9JZQ0UMSSSA+GHq89TLA0mP06UMEIo
-rhLr7OakIAbbZ1QlsTywvsU9Fm33hcO4AddUn1OAcl4HTvP19JfwNN3Y/AwZtsKw
-CO5/J9sJOO2Ofb3O20BC7RHHfLxHhhwjdcp8+aQ739tG7fKlyA6r/R3ebAOVsQqJ
-VTSFF8Bdej2X/EWVBZRWprUdSgDACyFlhNIRBOt57nRObqO7iqnXEjm84gMXJWxk
-/4OStnkVJL4fVk1ZaDzYjFJzi1MTT20KOEldRWAL3CwxSLYBcP8rYG0YoGLaZIfC
-Hgvo0XBO+RHwufv77wN4Z7vDLAktcNu6PTS1ovemW24iW3DelUv89/7Fh32l31CV
-dTnvNK6sukz82QXd62VFzskpbfxW9ONO5awGKcpxDEoSeUGd/4Cg+nfvXIbhfZgN
-kdjAJXxD5VvDeIpvOVMSQVINE9T/OkGqV8CkCMQfDu3+hSq7iU8OW8TH2eybWcqt
-POCKNDd0dm21w1miNqpi5qvUrUa8zzYfjmQt1dxwPUf36EcoodZaOSNjkKi0amdm
-S5yLHnW6KuFY26nTGPQ54Noup4ZPuKBoqZjg/m6sPx34fr8HKIMSLM6Kp2oYq2K6
-oga7buaPA7sRTHJ9tMFv/G9ACDJo71dmTuDyMAnNFqpv46c1+4c=
-=+7m0
------END PGP SIGNATURE-----
-
---u2l7n4igggpssyeo--
+Best Regards,
+Yan, Zi
 
