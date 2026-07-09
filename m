@@ -4,97 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30488C44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 23:28:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B31A7C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 23:49:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13AB26B0005; Thu,  9 Jul 2026 19:28:24 -0400 (EDT)
+	id B06EC6B008C; Thu,  9 Jul 2026 19:49:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EA396B008A; Thu,  9 Jul 2026 19:28:24 -0400 (EDT)
+	id AB73C6B0092; Thu,  9 Jul 2026 19:49:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0001F6B008C; Thu,  9 Jul 2026 19:28:23 -0400 (EDT)
+	id 9CE1F6B0093; Thu,  9 Jul 2026 19:49:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D37E66B0005
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:28:23 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5CB228D175
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:28:23 +0000 (UTC)
-X-FDA: 84970829286.20.F62C4CA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8AB0420007
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:28:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XyeVMPlK;
-	spf=pass (imf03.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783639701;
-	b=YYCx6mHmwoCZ/p6nGNkDJLUHLjh1HQmpu6G4FK2Qflf99FwoWnTOTL5yApPELW7aqXXSY3
-	G6eJ4vdVXiCev11UEU/Nqw860HKqZswGr4a7LEpS/BUMQWNbQ6VeTEyZDoQpYgo/QfL81U
-	D9Cv0uP+fIlDWtKuFcDNqCjhlove3aE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XyeVMPlK;
-	spf=pass (imf03.hostedemail.com: domain of linkinjeon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=linkinjeon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A9696B008C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:49:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8046120308
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:49:55 +0000 (UTC)
+X-FDA: 84970883550.21.4D5299A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 411C31C0003
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:49:54 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EHOtvqF9;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783639701;
+	s=arc-20220608; t=1783640994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VnEWDzkpJDdab93DctjKcy+iRl+tSdMUNcz4cbIL01E=;
-	b=8j2i9qfvIw8D/NrNmpZ48QuADEMRnhmUG/Dg2enK7rvfxw7Mc5Xmy5l2VoeVIB8WRXyfgE
-	Un3hSnNfIAUQk55VZrsmpI0fW03m65hdi3qjl3P3LtvJJDT1mDp6/jMooTySODDo3NcktR
-	Nd+84GldyazfXg/QzW+Z+ituWYqo8XI=
+	bh=14I/OIUOvPE++U6ixxkq7lr8VNi5s9TDJBiz5Ica5m0=;
+	b=5pbpIf9EFujg4pQdpVVxQUccUaeTQgE0peK4IN0WWVJ4KT1Dm1VC4AQUZlBH6DVdF4JxKf
+	oxHNx+BjX51HuetD614fFEYecROJqsl4AZi8KnoYyj11TckgO0zGJ6FTAhFhT+jRhxe8fv
+	CEBV1cz+gZx7bPs/yJWSpMNOevmFgnQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783640994;
+	b=trIyuHOtgz4+uR/LeCzmY4V+6wheDlEfoEXR6z2XirCrkcL+uHT1zf2IZxXB0KFK1kEh+V
+	R9Ru2dTcDv74ld/EZWjoxHhVg11qHHY0UK+Jf/hRTEGs3KWViyXhyaBl416aBqCQ+p3Gpu
+	wNIk7947Tk4OEp2g3xTCuBMj7+4nhO0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EHOtvqF9;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8656E44FAD
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:28:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658891F00ACA
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:28:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783639700;
-	bh=VnEWDzkpJDdab93DctjKcy+iRl+tSdMUNcz4cbIL01E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=XyeVMPlKK+2ugMiNqAcqW0DSUaYretY0munWCo3/pMbU4eh+dv32pLdg4L7k+2hDT
-	 ETTSBND7LpIilZ1eZ9AT0zxb6CkwiZADjcw4Q1ybxM/1wAqfsAx7jdiax3UrJnV2o3
-	 6JqUJW2H+9dMGNUbe3OXAWZIcaG7dEekZf40UaLUWlj9+blhiVeICMes40BPL+CKxr
-	 s3TvKvmexvw2XIJEQRHfgWcqwdRYuvXp4YggIu+v1R6HpAG2X1owoKwcsMuMDsdreI
-	 GCe6unNy9Tpx1/XhTLiv6nVbzwc2Amv6BjO9J29BRq//RMhuBfHKuoAXGHucF4Wofq
-	 DFlYUPD6fKjug==
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6986578d8c0so437402a12.1
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 16:28:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RokQ2EQ07yHispxsQ+Zz4jhuSlnu7u5Hd+qyXzDsDKXlfZxo75YEGYAf9NFnPHaJ8qJt9/q/9W8ww==@kvack.org
-X-Gm-Message-State: AOJu0Ywt7lLz7DwG5E59pBvVvCqzHE8XHavFk0O6rxOxJQ4U0OpdcmqP
-	tMvo5qGzqXPfSM9ctwyffAOaaXU1f0zL9eL/+9ZTsnZCapUfzD+GUS2lu+l1BFCrtkLjnRefyiX
-	IvFRmI/zonlSAUJnv+tGmse9WfApX4Fg=
-X-Received: by 2002:a17:907:1c2a:b0:c15:da6a:c27c with SMTP id
- a640c23a62f3a-c15da6ac90emr301540266b.25.1783639698946; Thu, 09 Jul 2026
- 16:28:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260608210618.3437216-1-willy@infradead.org> <20260608210618.3437216-3-willy@infradead.org>
- <CANFS6bYc5uSSYWvwJZ4BgjzF0_bO9rkcFNvX2vVHnzWDi3kpuw@mail.gmail.com> <CANFS6bZZN6455QLhPE=yYi5fAHMt+MuqumtW6BCg__pESLiLaQ@mail.gmail.com>
-In-Reply-To: <CANFS6bZZN6455QLhPE=yYi5fAHMt+MuqumtW6BCg__pESLiLaQ@mail.gmail.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Fri, 10 Jul 2026 08:28:05 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd8qPHHNrDkJ29NwR7NrOj7Ny05vRPKzjUPckC870ULeRA@mail.gmail.com>
-X-Gm-Features: AUfX_myErJ-4JtqUD5YjlzwNbj0oPPyCpuzOLKwO5B11tKGPbSGvpJAOIzk-OyQ
-Message-ID: <CAKYAXd8qPHHNrDkJ29NwR7NrOj7Ny05vRPKzjUPckC870ULeRA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] ntfs: Remove use of __folio_index in handle_bounds_compressed_page()
-To: Hyunchul Lee <hyc.lee@gmail.com>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, usama.arif@linux.dev, 
-	lance.yang@linux.dev
-Content-Type: text/plain; charset="UTF-8"
+	by tor.source.kernel.org (Postfix) with ESMTP id 3F6CB600C3;
+	Thu,  9 Jul 2026 23:49:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5341F000E9;
+	Thu,  9 Jul 2026 23:49:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1783640993;
+	bh=14I/OIUOvPE++U6ixxkq7lr8VNi5s9TDJBiz5Ica5m0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=EHOtvqF9fQiz+50/sGzEDe9IPMZTj66d3m1XmucGNT+/13uTlRGuAJBChcLnTgfXT
+	 ZuzKJSTIwlv9HyO9OF96u/fzdfx3L1YOL5gboPAzucw371DY4WMjfr6QrV/ugeClmL
+	 WNJkapoIk7rowTRHk29ePkCK9zbzUpzuciXhgwl0=
+Date: Thu, 9 Jul 2026 16:49:52 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: lirongqing <lirongqing@baidu.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
+ <linux@rasmusvillemoes.dk>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>
+Subject: Re: [PATCH] nodemask: use nr_node_ids instead of MAX_NUMNODES in
+ __nodemask_pr_numnodes()
+Message-Id: <20260709164952.6630ce13f63a3104c2c53572@linux-foundation.org>
+In-Reply-To: <20260709071739.2408-1-lirongqing@baidu.com>
+References: <20260709071739.2408-1-lirongqing@baidu.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8AB0420007
-X-Stat-Signature: 5hmbsczeft5nxf65ph69kyud8a3z78i3
-X-HE-Tag: 1783639701-582912
-X-HE-Meta: U2FsdGVkX1+jnySE3r7HqvTOK01bSDTQuHyI9Olit5PZmjqfUBkbVCKq74DAwKOX6WRObXSkPU33Qhgkq5fBFEONyGt1dvB5TScChY32x1KTq+w2kvvjtPeXxwA67aSq8xS0Gk/yei/hWQxkPgENeVIANJHp3sTSweWaKbXHJNrcVARPYx4EIuI5+Awg3SBVjEFgRS8v74M6YKnMMYAIg88L2VEiZjebM8Ozu/tVfmD9ogtzZpCUdXxHMZv1ygCIefH2nRqY/p1bFX9+xygtMD4tvY8V2z98VCqsXsMbbF87s2/BIio/T3Z7JlkgJ1yMGlBa/xoheXdfpI8AmFhxfv5ufDqKaS5eQlC3PLMsVEJHlhQC2XAgnmStNZ6vYWpF6TZbqNWtY5ySsw1M6LoJw4+rZ0kTnLcD8nwBOsZ4FFNmYUmfHhPBJRHwKJdt2iPAmQPyY5n6QwSYMiFXRXaU2OUccCxPeQUvZqbVIOOx4vJk0qjXvF156HuN4NvrJTgkCR2JelPs5ddo7u2rntHMJVl5DBk/k52GMFiXwCTLHRmERCNam5MtXAEsGwoo6uPxzwLjIuHVLY0PgopDuqAfWllh503uKkeDnzH+KbZL1slWyQjhtOE+lQPJc0oTH7EdLcgYqodP6N8Cjw6Vjs0JUtz3QTOySSe+iB7EI2jKtLH+NmTUCiSRAs/c5Mo8yOqssNRZIjIXlQAUfKH2ExgbxnGfqQiN1BvNqETbBbACz6CMatm+Sk5GWkXS1CpeF2WKCoEWcR0EkM/6uMVC1yCcs3+tiG/yzAKDuxFnhwxhxVwcw0pCY0kCSy2hndcsDO4pCZj6fiFG5fw5AxMaTkjo9XuxG2zkGieGHKqCDdz63QqHPWU3nPFJ9ceRdnn+fjoj1Mqgialn0TXM6DHpqTCxmqHsesFoxFJ06xhg71vw4tL/0n3PtMazRly3EMz2mgynDu90cTeX90ImkW3xl8Q
- MxP4WiO6
- b4np/P5deV9+iDQ1orudJDDzvTyl4/nXhwgWA5yB02RUUYFQWAfwn3Re+mZKLCxIDABnbGQ5UaZoDbjjqP/SYm8Fru2Ax/nUhcoEi4meLOtD9vtbh3Byd+p47yQ9xBytBVJQNBdjSgDwRIjtVvUauCjvxwraLdAyyqPIfK8lE90t7+zNSIeBL25I9Y9InVrZ2itSStt15OSgMTJXT83+yOcMTLm7LwKjQP8NXZaRptWOS5ca/ciTRSekRhKO+PSw4a98t0v+PCXJTn4TCTQILhT8dO+1lR3GhKcWeTvM518cDJu322+Kywf42LaNI413Qa+eDSIaJfEqUkMG7iZGV2Wx8Xt79m/07PKBqNZeZ4ntgFpqoOe5dUr21mOlVlJ5R81g5j1CkxdIMPeyqIgzxNWzX1w==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 411C31C0003
+X-Stat-Signature: qtq9rh5ntkg6174tnqkwrrhqph44bofq
+X-HE-Tag: 1783640994-497349
+X-HE-Meta: U2FsdGVkX19rBpB16uBJLimaIhv7uDUJ5TLJdiGWkQ9hLrPNeLNljbsM7egTrLleOX0CQf2CPLe84EW15+hGgswlg6ZQLCnXbIz3vDoiqfGCrHsFL0l4DONLpbMy/Mq+V+XLsp9nQJxXDCy+QPeQfZ+DEm7QsJkf3+GiLUzFPoSm8XguXfSLYQWg2BjcTR/mRfPvIMgxE7DW0jsRB2WGbVnXMCNqEAsuTdwXBf3FJAMzG8DMAmi6S4af8U5ltZyxNA7xn/gSv2JUINp2JoV8SsDKU+rRZJrkOKppptGdhm17kSDUWpchEX07j3+q78O7W+QAblQzsUm/VQtGyZsn3DlvJzpcz3ofyJwaVaqPCj4rbvPHWGfI93sfD5YHUQh4CIH11uLOxfptBFAYBb/zJVjfrVVJk+0O+KyaVB7ToJv6UFDf74jfZ0RZ34PKTauhj3zsM0aO3Xz3clAULth6J7fglR0dK0wGKz5yq+dNqZ6eEd0ayAUU3hNluB8v6ZEOkg/Kx6MSc6yZT6b6gmpcqe1M1AbH86pXqTerPUgfXznbXyWPBIGAvIPwGo7YdxdD5VPOwwr1BmAhaQIPhbJWlo1AxTxzbd9h4XlwvnB+7+ML5+DbJglVSoNxQ2hFdfayXMlwqWE5lcK4dxvJWoJ52XgusTtwQmtaMq5LuUyn4sXYIzuSyxg4betXoc1lZOwzJTZXH65QyYKeTLuLvCNBN2xW3OCAjQG7qC/q3vHCJFFU2qYN3qPQkWHSz5ZGCX5KUgF895w51UGWe4JvuTgVmQqYpk1s/z8u0ISXeuIR3D7sRuO996qSgh34sMPOAqi7gXp1jbluEUEry0J8bDG/QT5uFzMSLVAJRjRUshCIwIyNi+sOrxqXcGPEpfyI3qDsJDbIAXOrCrMJGDvodCKJ4210yuxYr+RyeohAJlgCie0GQvpbvjYVUKlpwOocvfpASHK88jTrzj+qnqx+dvg
+ u1gaINom
+ FuU2+RzxBQh0MrbZv2z3/FL39fejBdUG3oK/CUu9n+F+uo/QmsuIYSLEN5rPzcMPAQn8AvskdmNJmQQuIzbdfh1MHvJrYwzfmhWep45v1VULL6sHFtafQyPus9tiZ7A8he5/0fazYg/xWKaU6ECIh8/RkcVK9R0KPT5KNBnbOA4gt5PKof02Qj/2Nx7iMtwqS/enLvHcbE8lqDgel0E1fo4guucXNuD5/PL3pPon8QmHi6SWqEY+8mBtjU0FOuflEk2Z2/dfDKlD62vykqS3cfZcHpXsD3Anw+PWFn70QGnF98Tc4Q+1kcZTPgfWdhY+0gT7D5VvjoJEPVVMd+nFiPuEyAcWScQlypVyflKlRkhrgCfAQuYyH6yvdxJUmPo3aH8YXsssTqE6uOOM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,29 +91,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> > > diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
-> > > index c904858dff3d..b279f38636d6 100644
-> > > --- a/fs/ntfs/compress.c
-> > > +++ b/fs/ntfs/compress.c
-> > > @@ -105,13 +105,14 @@ void free_compression_buffers(void)
-> > >  static inline void handle_bounds_compressed_page(struct page *page,
-> > >                 const loff_t i_size, const s64 initialized_size)
-> > >  {
-> > > -       if ((page->__folio_index >= (initialized_size >> PAGE_SHIFT)) &&
-> > > -                       (initialized_size < i_size)) {
-> > > +       loff_t pos = page_offset(page);
-> > > +
-> > > +       if ((pos >= initialized_size) && (initialized_size < i_size)) {
-> >
-> > I think the following change would address the review comments for
-> > this patch and patch 3/6.
-> >
+On Thu, 9 Jul 2026 15:17:39 +0800 lirongqing <lirongqing@baidu.com> wrote:
+
+> From: Li RongQing <lirongqing@baidu.com>
+> 
+> __nodemask_pr_numnodes() returns MAX_NUMNODES, a compile-time constant,
+> as the width for '%*pb[l]' nodemask printing. On systems with few NUMA
+> nodes this produces excessive zero-padding, e.g. with MAX_NUMNODES=1024
+> but only 2 nodes:
+> 
+>   Mems_allowed: 00000000,00000000,...,00000003  (32 groups)
+
+Please let's completely describe the effects of this. 
+nodemask_pr_args() is used in several places so I believe that a number
+of userspace-facing strings will now appear differently?  Let's spell
+out which userspace interfaces are affected, and how.
+
+> Use nr_node_ids (the runtime highest-node-id + 1) instead, matching the
+> behavior of cpumask_pr_args() which uses nr_cpu_ids:
+> 
+>   Mems_allowed: 00000003
+> 
+> Move the nr_node_ids declaration earlier in the file (guarded by
+> __nodemask_pr_numnodes(), and remove the now-duplicate declarations.
+> 
+> ...
 >
-> Would you mind if I continue working on this series?
-> I would fix the above if-condition and add Co-developed-by for my changes.
->
-> Please let me know if that's okay with you.
-Could you please provide the updated ntfs patches so I can apply them
-to the ntfs tree?
-Thanks.
+> --- a/include/linux/nodemask.h
+> +++ b/include/linux/nodemask.h
+> @@ -95,6 +95,12 @@
+>  
+>  extern nodemask_t _unused_nodemask_arg_;
+>  
+> +#if MAX_NUMNODES > 1
+> +extern unsigned int nr_node_ids;
+> +#else
+> +#define nr_node_ids		1U
+> +#endif
+> +
+>  /**
+>   * nodemask_pr_args - printf args to output a nodemask
+>   * @maskp: nodemask to be printed
+> @@ -105,7 +111,7 @@ extern nodemask_t _unused_nodemask_arg_;
+>  				__nodemask_pr_bits(maskp)
+>  static __always_inline unsigned int __nodemask_pr_numnodes(const nodemask_t *m)
+>  {
+> -	return m ? MAX_NUMNODES : 0;
+> +	return m ? nr_node_ids : 0;
+>  }
+>  static __always_inline const unsigned long *__nodemask_pr_bits(const nodemask_t *m)
+>  {
+> @@ -438,7 +444,6 @@ static __always_inline unsigned int next_memory_node(int nid)
+>  	return next_node(nid, node_states[N_MEMORY]);
+>  }
+>  
+> -extern unsigned int nr_node_ids;
+>  extern unsigned int nr_online_nodes;
+
+Let's relocate nr_online_nodes also?  To keep them together.
+
+>  static __always_inline void node_set_online(int nid)
+> @@ -480,7 +485,6 @@ static __always_inline int num_node_state(enum node_states state)
+>  #define first_memory_node	0
+>  #define next_online_node(nid)	(MAX_NUMNODES)
+>  #define next_memory_node(nid)	(MAX_NUMNODES)
+> -#define nr_node_ids		1U
+>  #define nr_online_nodes		1U
+>  
+>  #define node_set_online(node)	   node_set_state((node), N_ONLINE)
+> -- 
+> 2.9.4
 
