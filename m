@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4916C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 00:52:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22493C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 00:56:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A35986B0088; Wed,  8 Jul 2026 20:52:30 -0400 (EDT)
+	id B2A126B0088; Wed,  8 Jul 2026 20:56:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E67D6B008A; Wed,  8 Jul 2026 20:52:30 -0400 (EDT)
+	id B022C6B008A; Wed,  8 Jul 2026 20:56:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D7FD6B008C; Wed,  8 Jul 2026 20:52:30 -0400 (EDT)
+	id A1A956B008C; Wed,  8 Jul 2026 20:56:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 582BD6B0088
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:52:30 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A6A9EA0226
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 00:52:29 +0000 (UTC)
-X-FDA: 84967412418.03.5A5B13A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1EC2A80002
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 00:52:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIKCAC12;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B49B6B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 20:56:36 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F37621402FF
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 00:56:35 +0000 (UTC)
+X-FDA: 84967422750.28.C550938
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DAA8320003
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 00:56:33 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ReY8dtSC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783558348;
+	s=arc-20220608; t=1783558594;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9kW6vnOtpcVYAgeY996D2IQsA70zg+YZWtPz9L5fIac=;
-	b=dGBj7CNcFTHXyQGQZ/AIGJi9Bmvhep4ik8rTrZfdBJUqnk1o3N4qAq+RjwreVdakucw9hm
-	BGrE7IVHDgw9WLKzrI0BSoglxvtYggqhm0QAm4MiPr2z44pQ3HpPQQCjJXBjYrvbBtxI6i
-	fnvoi1Oiui85lahf0QNuluAOFVzjL1E=
+	bh=QW4SY9Z/tGn1IPNVvL7G7PC98wn1mtgzpnrzSAfXEx4=;
+	b=mO377cpzHfMm7AHmujOqWXNZDwUhXazSc1j5EqFDgzfxjSSMUSH6dvFzA/pAZ4pGQzk/Ep
+	xLTShjceWkbIvktVdTn8P7QCM/t4mjZBLCiYKQlKxV1eCIrLhfzi7SA4dFVG521jnPxmTX
+	ktnPWptXV1PXxU0xKijdU35cKh/y3eg=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aIKCAC12;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ReY8dtSC;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783558348;
-	b=cHYKAA0JPr1yX0HU9IRtNFDyjxRn7K1v7VO/YVt9vNzs7VpTyk7yh/0KGdzkV8pMy3MBfu
-	6gWO5GyYad/1l3GslA/YSp5moxoXFDhVnVgN9D6PVa43zcJQsOU0VZjtz4ZoLAYXvj3kWB
-	JUF79rfBN5+AOY4cNNxiDrbszB5E4Hc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5653B6001A;
-	Thu,  9 Jul 2026 00:52:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECDE1F000E9;
-	Thu,  9 Jul 2026 00:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783558347;
-	bh=9kW6vnOtpcVYAgeY996D2IQsA70zg+YZWtPz9L5fIac=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aIKCAC128TILAgoYJubwyzLEPBOdqLYKQDk038RB1Iic0DPEGQwsGmt3HEZ5YiHAn
-	 ML+J5YZBmZXLhUanpeaalSZqMHdFPMDGyvZ/NBbHQcrnKKK5N3lI1ndI2HqWVRcfgx
-	 HRvq3vCo54OKOW47duTInzgwQeKa+cA/mPkv8Fmf/LnDMtUil0U9r7PWOQEm4ju5G6
-	 +4tqX0D80fkfBE6f0bEJgS4182rkENWLJZcRtoJQEkW6bt2YxHTKXYUX5VVKhkt6kQ
-	 4V+9LA9cUAj4OZhDWsgyucQ9nchM/2tMfiCYXkK+xp8+t2vMQ5iKUYXiSnwvc4yYEX
-	 6ygNWxhHclFEw==
-From: SJ Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SJ Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/3] mm/damon: Introduce a huge page collapsing mechanism using auto tuning
-Date: Wed,  8 Jul 2026 17:52:23 -0700
-Message-ID: <20260709005224.128135-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <8b8cb8b6-41ff-4975-9be2-7256b180fcda@huawei-partners.com>
-References: 
+	t=1783558594;
+	b=QYeqW5wl6hfd8RzD+LraMuwIklCCpdsC6J3PoWhe4F08k2vdtnP/O6ABKKrgbhPIPeJPNu
+	/R14NYGTptkeckgFu5IiVny87oPsMJPD2AvjbqbEDwip+KCw5nxlD9iTLANbzMxwcNYhWQ
+	ptuNNgDYrYZ/om0CdPbvqZCr3mX0Zak=
+Message-ID: <8f74de0a-4c86-4da9-ad1b-3f496d3ab733@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783558592;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QW4SY9Z/tGn1IPNVvL7G7PC98wn1mtgzpnrzSAfXEx4=;
+	b=ReY8dtSCkspGxZ1EJpSTPWaK+F/2B5C0ODBysqxbKXH+vvH+AXFB3TW5zeIYMmj/NyL39w
+	CBqzyLzl3gk3EQwZ0T+11DIsHmqRSwXb39b6NBJDiylvSESTKetbLGFFawc4ezjrrNlK/m
+	nvdf44pCn4oHTkdIL2vpmZjbpDcZJTI=
+Date: Thu, 9 Jul 2026 08:56:13 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: maz9pinn1ijxgqs6mbkrh9i3abusygxn
-X-Rspamd-Queue-Id: 1EC2A80002
+Subject: Re: [PATCH 5.15.y 6.1.y 6.6.y 1/1] mm/vmscan: flush deferred TLB
+ before freeing large folios
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: jiayuan.chen@shopee.com, yingfu.zhou@shopee.com, willy@infradead.org,
+ Andrew Morton <akpm@linux-foundation.org>, Huang Ying
+ <ying.huang@intel.com>, linux-kernel@vger.kernel.org
+References: <20260708041237.289026-2-jiayuan.chen@linux.dev>
+ <20260708120502.agent5-0002@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260708120502.agent5-0002@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: jbpp7mx6mr1gtc3qj96ybzp6sxk39k73
+X-Rspamd-Queue-Id: DAA8320003
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783558347-264333
-X-HE-Meta: U2FsdGVkX1+hMqGgkcpf67d/EKjKzZ7/QqVzx8AKjN2cK8WevZRTar8r5wNYZtSS6TEDQ0m9iCRSB4qxiCp8OcuuosnvUZjrFYV5sGEohclpvx5nzpAfUe4XK2n2JCpmcv5NUIbGO8j9E3o3B4junRW4xGBiBdqwSfX3AkbhhQQgauV6uBsISgPyjRiZY1D8x/IFds8U9Eq7YvfrTiieKq6Rfkzxpi+8j1Ej24Y3qh4Wf4CmVheM7pECFyb26hQixQc6gEZGWZ9Q2WwtEKfnsYIVhUzcZxxgROtmtQ3Az1CFSLoxMQacal2hWMuoGwQWvBf4Lmv6dhKVgJ1vwNeITEguo5GYUwREPVxQy5ShAdLAKA/9mLBmreEJYn9z8b+Cqbig1n+6jOxqQrlvpqQU44ucnchRyiSTWtZicqC5Q8nUMuS4qnut39B/q01CxSOnWNC5T2RYmCD/d/xnrcbR7XUbUY8t/gCPSjVQ247Fap+EaZT3qkuPLjEEFGOXH7zeUolFmorXTgs1CqqcEaZ+1+EL5vhhv1MuqUnkr0z6mWkz4QdsIO3IKbwGMf8vxbyuZBltGB02vxjnpTaO4mOIr6RDJeub/YqwrAsLvTS9BzBjeVfJBYWzMARM1VlEC9EpKXcu/M45ZN3epJSX8J5jGi3gdLsVj0ht382wqgae0EFfdCk4Kvm7fQ6j16rdkSzKhN5+VKErF2pJqOji8tIFoQKmRFfR/nfbs91FsiYZl/9kvzB5nhTDOAj3sw3kRmsW66mYwEOi7OqyfvOOxT6pfrg9PQrMegY0S6IQ7JW565b0LmpuiHuMGuiiKklo/cAPQb8I7foWN6qpwou/KEof9NLKisEUy8UQzJtOh4dyboTrna6F8D2Mf33xOBJD8ko9xeFbhtYJ6pGiyxSk/94SBxTVijcJOsz8TmSIWiqS/cOg01zSaWqOCao8FmG34zdCp+oxkYPuFkva8DW5wjB
- 7MRrgcUV
- W+nj4T6KsjgcK7n2HGtOtHSSdbnRMTRosANWwt0sW7zCLtCDhuC6479QSspHJM4t1/Tg3oxmSwikmg+UNvXTSd38/sVaHML3xGFTDG5E4UHKzGlAN/TO0EN/gA234y/pSOGmAPvxFwmg0KAhr7J+GL3TGzf+gZMjM19ITsJxVFwg3oFTJlmAnkqACbk7ROR1GRl2+K4nwzvFKI5MIvvgQl0Gx/rA9FBfmIRMD0zGE5uANnZW78diFncEae2KwYkvMDLkmwpfWxVWU60A=
+X-HE-Tag: 1783558593-8374
+X-HE-Meta: U2FsdGVkX18WRFHkR3yw8T0iuSukPpvCShvAzheKrTsJVrw5xBWjaVh2xZjDhZQHqO7jnuLHsvdmFokmkdABXfsXU8pcjZrOV7CCqUwLmvR4fZwT7KQ9RWrIVsun7Bq0fbzSaIZbjTUPoNe8XqcjDC9sYven+eHPVtmUp9pksQsE/dS3E1utBbNMOx2j8Ia0IJmos9tVQeMoI17WbSexlJhe8Jhi3MxKIyUGJAJDL0l4ES/ffcdyHKcnUou95pZJoiaD+FpqXNyzbAiHWnuli1tbD0sK4SXw/3qvG8jfzGM3V5Cn2CPlh7BLIo5XfQODho4aRplrNsC1m2J+S6YQM4j1xFwXc2I8CsiVVeeeCXfSCSG5XEtjD80swtV2czpNIoIeMtEH7CZfYLbQGojAedUVt6eOVdhx7uKfpop83/Ywj/YmUrEgFnJlI0F0VmGgZkN2vrF1YiWfv1lOdNRcUbXmN8H0s9LaIe3TtHpE9R3aInIRRnPpcEXSQXYfCUXKA64jq1T3TcSHD9ZVBxVTG91I6URa4DJI0jsKBTySc78sLpyMFWjyIkcqtscYfO2bNznHeFA1cCpiymN0OLLk4X9lJ4J55sJf8LSC6sf34iPuxSB9szRy2vOVll/ClZF5yBNJ0Rvuq0uMom5wOm13zOS3/D8L0kLRSCI6xvZgHHvymfHrwph59Rq50jxH4RM0e10Jt7md5phh6KpoqyAV5upTxq8aMLFAkLY05nMQE0PX7Sy2BKDUIBWzeMXTB7dDvrFKd+xoVz9jHoFKRMIIz4/3BbBlkrGlksKFkHC/uOLxGAl3h6PC+I6pVc1Q2bZ28HZ8yNOp2xH1sKKV3Gl13TI9a9Rw/7hVBZR+dqEDqCmiYKH20QagPxqDz7Y4bWF2UMyJC4fJKoSY/9MvP6MsHgzE3UKYTMzLvZRWuiL3Q/FW4AdkIaM8PovuRiz2wCEUq+X53utLdfD+6N2JJI/
+ soTQyKnX
+ 5ru6O2GFdGbsc6eh26Qk6Cd62AbWD44sIIDjQVs43XVuMlnv3LQkNp6DW92tp5LH9dkTu7qYWkinznOj6b34b+yQhTiL/fSDhmBlrYO8Jeitlgc/UsLgHl1Z03p8i6Dr+4TVdDFLLFaQ72cgSEnE0rMISEU/mSKzlIVH3QBZa0fW1Vs+BYK5hMn9nLlsIj/771m5vt4DvaGCgWsE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,81 +92,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 8 Jul 2026 17:50:57 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-> Hi SJ,
-> 
-> On 7/8/2026 4:22 AM, SJ Park wrote:
-> > On Tue, 7 Jul 2026 17:25:36 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-[...]
-> >> I have no idea, to be honest. I will try to test with different databasesizes with temporal and consistent policies. The behaviour was weird to me,
-> >> but I don't know if this was a TEMPORAL policy issue or I didn't set the
-> >> DAMON parameters correctly.
-> > 
-> > Thank you for transparently sharing your thought.  And this is little bit
-> > concerning me.  It feels like we don't really have a good theory about what
-> > change will make what results for what reason.  It rather feels like we just
-> > doing random experiments and showing the random results.
-> > 
-> > I understand having data first and developing the theory driven by data is also
-> > a good approach.  But I feel like this is a time to step back and think about
-> > what we're doing.
-> > 
-> > IIRC, your initial experiment results on the very early version of this series
-> > looked promising.  But from a point, it looked like just random.  Maybe I gave
-> > you wrong change request, or some test environment has unexpectedly changed.
-> > 
-> > How about summarizing what tests you did so far, what changes in the kernel and
-> > the test setup has made for each iteration, and how the results have changed?
-> > 
-> > If it has been too long since the older tests, just doing the tests again or
-> > dive deep into debugging of your current setup with the all mighty printk() on
-> > core DAMON internall code can be an option.
-> > 
-> > Have you also monitored DAMOS stats while the tests are ongoing?  Maybe that
-> > could also be a good debugging option for understanding what's going on as
-> > expected vs not.
-> The problem I've been having is inconsistent results. This may be due to thefact that I'm testing primarily with database, which contains a lot of
-> variable data, like indexes that may be hit sometimes, and other times not,
-> different data distribution, etc.
-
-Makes sense.  Testing is another challenging area of arts.
-
-If you find it is too difficult to have a stable test setup, I wouldn't mind
-using more artificial test setup for test results on this series' cover letter.
-I'd request it to be only makes sense and shows a sane and complete story.
-
-It would be really great if you can apply this on more realistic environments
-and share the wins.  But that's not necessarily a blocker of this series in my
-opinion.
-
-> 
-> I've been trying to get a test as consistent as possible, pinning the
-> database to a single NUMA node and the tests script to another one, avoid
-> network traffic, etc.
-> 
-> I am almost done getting some consistent data.
-
-Cool.
-
-> 
-> Maybe I can use perf to get DAMOS tracing. Would that make it?
-
-Yes, that should work.
-
-'damo' also provides a wrapper of 'perf' for tracing purpose.  If you want to
-try it, I'd suggest something like below:
-
-    damo report trace --event damon:damos_esz damon:damos_stat_after_apply_interval
-
-[...]
-> Thanks to you. I will keep testing and keep you posted in the coming days.
-
-You're welcome.  No rush.  Take your time and fun :)
+On 7/9/26 12:18 AM, Sasha Levin wrote:
+> On Wed, Jul 08, 2026 at 12:12:36PM +0800, Jiayuan Chen wrote:
+>> Flush the deferred batch before freeing a large folio inline, the same way
+>> the order-0 path already waits for the flush.
+> Queued for 6.6 and 6.1 with Matthew's Reviewed-by added, thanks.
 
 
-Thanks,
-SJ
+Thanks Sasha.
 
-[...]
+
+>> destroy_compound_page was recently renamed to destroy_large_folio.
+>> So it would be conflict when this patch was applied to 5.15/6.1
+> It actually applied cleanly to the current 6.1.y (that tree already
+> uses folio_test_large()/destroy_large_folio() there), but it does not
+> apply to 5.15.y, which is still page-based
+> (PageTransHuge()/destroy_compound_page()). Could you send a tested
+> per-branch version for 5.15.y? 5.10.y has the identical vulnerable code
+> shape, so a 5.10.y version would be welcome as well.
+
+
+I will try to reproduce and fix in 5.15 and 5.10.
+
 
