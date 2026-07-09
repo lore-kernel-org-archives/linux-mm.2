@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FE40C44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 11:28:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A06B6C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 11:28:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DEF56B0088; Thu,  9 Jul 2026 07:28:34 -0400 (EDT)
+	id 918716B0088; Thu,  9 Jul 2026 07:28:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B5846B009E; Thu,  9 Jul 2026 07:28:34 -0400 (EDT)
+	id 8EF216B008A; Thu,  9 Jul 2026 07:28:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FCF86B0088; Thu,  9 Jul 2026 07:28:34 -0400 (EDT)
+	id 82DB06B009E; Thu,  9 Jul 2026 07:28:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D1256B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:28:34 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC0BBC012E
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:28:33 +0000 (UTC)
-X-FDA: 84969015306.15.A18BDFE
-Received: from va-2-113.ptr.blmpb.com (va-2-113.ptr.blmpb.com [209.127.231.113])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 07C19120002
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:28:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=et2VeqbG;
-	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5DC9E6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:28:54 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F19D61C069C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:28:53 +0000 (UTC)
+X-FDA: 84969016146.22.B00852F
+Received: from va-2-112.ptr.blmpb.com (va-2-112.ptr.blmpb.com [209.127.231.112])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 0660010000D
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:28:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=kwKIzdWJ;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783596512;
+	s=arc-20220608; t=1783596532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AN464t3GErrzCu0A8hyIj0aMpfRwo0PDzzsVvqxolEc=;
-	b=vnv3l6AGAOR+u8AO9u//2Pzva+9mjoyKv3VC71aQjhPkApfdia4azoyMpWlfilehTvACx4
-	tyU4asxDvsYBRVFSCOp8M7nzGTe61n8ssBuit1WQYcTVf0FD8NAiQQgi7pylVvg4dDNlRS
-	2NrBxKJiGw8hTFvdSnKV+1T8BGA/VNY=
+	bh=UJcKYOJQhKyg/isyMbMzrX1li+G0ZF58QSuW2HC410c=;
+	b=PLwAn14HKNkws3jtaU8vc7YwLG+g0RcDJQX3LcvuNynfeHhpGAylXjcQMP5ev5Q6rC/fUv
+	jSyys3jFeN848EQRqWd4nIZwixrBkiESrSZDmC4Z79Akuc+xIzZVI15hM2KkLXhA3IjIKf
+	vJ8RpIkEqTJk391KZQL2wxsmfkKU+gc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=et2VeqbG;
-	spf=pass (imf29.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=kwKIzdWJ;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783596512;
-	b=CdTPxR1f9I7VpN3qsMY8K0+XZ9l+dDDMtdoN5P6iaIOR8ME/O2bj/1t0blu5/AEx/3lxlE
-	QClCxtgGlLbi4qvLD4+xvUKNYGLYn8YJ8sD6zE8DsNrhTV5TeZfIdfn0gCuXYByRoymMKK
-	LMCKBSq5p77HuVRwe065sXV1jjF8DgA=
+	t=1783596532;
+	b=fwWoB+XpuWDxhaOV32T1fGZOuhbiAibQbkfQDWtcrpXNIdZZaTrYBRtlpcmvzeRN2mAx68
+	eYkiVLTnQDzAHfnlXCqL2nPmjgT0wlOoza505JwD65A+mAoVShu3lREED4LklC17k4WUmB
+	Cun0DeatLuNNimPlPl/AKjng63O5lzg=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1783596506; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1783596527; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=AN464t3GErrzCu0A8hyIj0aMpfRwo0PDzzsVvqxolEc=;
- b=et2VeqbGY3Yb26WM2odN801kehVtE1LMN9E9+kSbKQWi8OyTNkzF0dKE7/SplLzTRZT5Xq
- DlS2o8wxkCRO8fOD5UX6WeZ8okhfIUTQP/5mngLll3U5FSnqIcu+CgarfpyFLR2D6M1VkI
- TDJzKO7V/odmu6FOslia3CqaQOQnD3FSxlARnCzM6X9b34YJ8ZLRNFMl0G4wf+El4e9B4h
- jdM4vCCy0dFiFs5/OJUjk20mFjt2FeMbTQu56VohMLBU/LOSWqrgS2Ryl/m0JJZ+JxBHHV
- F8TPANhYmSsGnJ0g/mzwwt9iadY7o/nH3RbsoyTDanEV0DXLAsQheEXfTKxtnA==
+ bh=UJcKYOJQhKyg/isyMbMzrX1li+G0ZF58QSuW2HC410c=;
+ b=kwKIzdWJAlIq6wGx8BgDz//6S0ckbT7x52bNr5qRL0mAfXe5FUrk8K9jV+vJ3GqcG4QqNl
+ awQbHDCeAcBw6PVa2QXO+v+9fF9hLg8OG2k9ymylKNLVUi6HZxMmky1oJCkeMcdK7ICds7
+ GMpURhN7E5wXZtnKxZLpdPTApnCrn9B0yNt8fnIRAQ/+gp0zaYtk2/2OpVJGr64G18vzz8
+ n7lnAFIsCwyTQBI0Q3WDVetpP+4Gb9/ZA0k3Ot3MMNIK4l1EF9ieN7BsZ5uOcAtUW9SgzX
+ u9aX5GEflM9TfqtonNut8gyMXmGW7QIFpkUuyi/PzBPhY8yhEsIaRQomO9AYaw==
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26a4f85ed+c0435a+kvack.org+lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+From: "Li Zhe" <lizhe.67@bytedance.com>
+In-Reply-To: <20260709112520.24857-1-lizhe.67@bytedance.com>
+Content-Transfer-Encoding: 7bit
+Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<lizhe.67@bytedance.com>, <x86@kernel.org>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+References: <20260709112520.24857-1-lizhe.67@bytedance.com>
 To: <akpm@linux-foundation.org>, <apopple@nvidia.com>, <arnd@arndb.de>, 
 	<balbirs@nvidia.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>, 
 	<david@kernel.org>, <kees@kernel.org>, <mingo@redhat.com>, 
 	<rppt@kernel.org>, <tglx@kernel.org>
-Subject: [PATCH v6 7/8] x86/string: extend memcpy_flushcache() fixed-size fastpaths
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Subject: [PATCH v6 8/8] mm: use memcpy_nt() in zone-device template copies
+Date: Thu,  9 Jul 2026 19:25:20 +0800
+Message-Id: <20260709112520.24857-9-lizhe.67@bytedance.com>
 X-Mailer: git-send-email 2.45.2
-Content-Type: text/plain; charset=UTF-8
-Cc: <linux-arch@vger.kernel.org>, <linux-hardening@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<lizhe.67@bytedance.com>, <x86@kernel.org>
-Content-Transfer-Encoding: 7bit
-Date: Thu,  9 Jul 2026 19:25:19 +0800
-Message-Id: <20260709112520.24857-8-lizhe.67@bytedance.com>
-In-Reply-To: <20260709112520.24857-1-lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+26a4f85d8+c6ac53+kvack.org+lizhe.67@bytedance.com>
-References: <20260709112520.24857-1-lizhe.67@bytedance.com>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0660010000D
+X-Stat-Signature: wys4t1ikzkdz5c6rhd8uen3ont5kmu1x
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 07C19120002
-X-Stat-Signature: kdgawi3yyuc9ptqqf4ccs3o9eorrqmdg
-X-HE-Tag: 1783596511-900499
-X-HE-Meta: U2FsdGVkX18c2sq9i9bUBmJpYH2pY6R81erHflZGWQdhSXlhJAzt4Z+4J7CQrxxkoLf95XExnNztAiQEgckG44NvTm+dQxvXB847mw25LLDzPddb5yX9HFxwm93Wrf0WqpvFFXTG/2EPzOBAUw3NMeSgx7tRaBa7OMlpsEeP32zSTC/rd4skCmZAfjNgzfxhBDV2xMSUcJI5Fp9Q+l1PRwNA505N3x03sJAYLa18TDZaRu6Y1T2J349ZCxCkvYc8i+s93N5FGDZKr137/XHCBne2cTfH41yvfTdjCqr/q2IbGKUQv8c89uV+a7HXJDw1u+6yZu9zT+XXWvjW2d8orjKVXBBTlnKIGF87ijKoj8E37QoyzT9X/ceCkgnHJtW/+X3AN6Jrnw5pcmZEiY+GiWnCc3cpqaiMccDv/kSHe9zMqrIeIKbfa4x5NYLWlQsQT6QM1bxWJi8W39J040wTcESexpQnNsD24J5MOX3mL7FMXAyqMo6aC99fku3VNErn01YaW5dmht4By7kg2io+mY7dCGF6k5IU+FYscZJJthDIOcuGIir8YqWEVLQaRVAtC7jIznBEyNntTUT9zwusXaz1i8taY/wJGpNkZbLJMcTGBKOmScBqDglko+rSKSI6MhNpuvcnZ7huh8axOQFDMwU1wd0cQ8ryX49K/N8wLsu26XSnjKcPlbXd0Lvct7SF98Y9A5jn71FDdR7Rg1P6GAfMDyQHcIX5sQN6Cb0dzvKnGw0DCF2mT2mNGKsNBJeEp10vYBFUisrE/n9AvwsCSP1zuCI6u2CD/kvqEWwKkzZN3uMv8AedW4eYHNXhyUNYFclqtxMvlNx2/V5fad1JQXXXWwOKT2BFRiLstVJ3A2dUwrV+VMNjrKbOgEqPLFicNIiiWMp4ZvqWCW3lsL3BLUGJUPDeCRzZ8ntr4ah/AUpOkbO9E8KR0gVCatlwpsXA4awunw37T8fcUUQQJ5L
- Dxg4pETn
- xOAYHz8dyz2Agkf9niWaubkrBDR2L2GXFQdblvIYumAxc9s2/izP9oEFsO8NBMm22Xg32JpHABY7IwZJUtAw/HGvVW62cLNu31ThxzFgCWlxoJ2JZhyWxkgfBdk0MBYROFaxHcvMvQO+8v4v+tq8/xiVktjpp1VyhH/pJilR4SbA0C2o2kvXtsWhCZ6hvCx4CCXKYm81AZV0bmWNsApOgaxXGX63aIWcHQdbZzz2ZIxhdtWuL1amB9edo4o72+pzEchH2mf3jkf+8rEYafwG/5h8bp3kE2n5JghENc8yEQgPDTfMUcOLNIjTr6A==
+X-HE-Tag: 1783596531-172952
+X-HE-Meta: U2FsdGVkX1+a8++1SCnBeegugVT7to6HWCPbYr3518fHAyptNO24oH3GyWy3JNOep01Un3U2VWEjVzM21x1i8Tvz5qwv+gVlxS3JG1pv/jHsMfpCv21SkaE/ndyw2VZvvDl0SlCR4GCMVFKj8lAiFcWu8JbW7y75GO8yCy/2xw0dG4jDoNDX9V/k0+2n/3paZXpGaPRQ/wpcl+Q9QKxvQJox/VkG5UKPv67uLw8xG/s+GHq6Gm+8mJXxB609y5QJ2EcP/FetBlEJmoCmjiagjFzUBo9WSbJ5DVzO/VRh7uXA7GkrdP6SHoenFaQpOCY931KaAjKHS+Aa1kI3hyx6cy/IFWJEDP9kMNggGuY7mDzRyYV9iX13v9Y1JmbIrmznvOFBN0c6OWFKXcr1JKNyJO9NJxYOwigp5M/mdakU5vu3YlTZxDhYvrH4HzYguQvkjEyNGw5qU5sCntunTPqiY3FK7W8Fo0WEVx0RhCDbjiMqgAxbbc56Wp0BRxg4aSwnnIJAxHnLLSfyclnk6ysUzsf0XagZ2cJoWqil02nJbAVYZi2UwMITPNTXeEbQz9+dHp6278tQKMqxuT1uO49hDviC4AcrN4oNl3sDJVxnN06oT+dokjEvWoTYNRpE+y9StUly6PQaHg3xgNdEJBDw+K1d35ifuC6Iwelb4cKo3uKHolE/MRSOsySMHgfBqVQIn8p8vi8xeElNJogI4re+Bs2ABZdgUxbxmJJ5rwfRH/m3RdY8wARcwV6heRsBQv+sWmOxsDPozGFgTBYsjCXU6KPjO1j8FSWBJv0HeRZdlRZrGELP3SOU/ZJQ9PB9OIJ3D73dp+pmnRIA43DzIkCO3r2JfkTKTaMDDMkjSQybc5jGSR3a4GxuwHxZkW/0lrZLa84EtCBPv9izk2mdWER4wwDvKaMew0b8pcXOLInQYcZm97hu2jKwFcUap/7Z3C2YmEJGq1dJZdDaqCQ8QxJ
+ qDsVuojG
+ wbSXCWuqLs6XivFRimfiddnZC02GODwsak5/avGpnBde9OWiT+GkTZiNUSaTMAsXrLwzg12bbPnwnX2n+27UMjAZLVbsDAgATJgv59+d31g9JbSzquqS0SHbebRBblMyy7KnHL2StkwhxvW1eiaZANZgV3pYeDhWcHQmEZkBtONU67fGQKmp1uYGO3VCo44OiMX16xQtiQM02eAaUhStf5+uxoUX8F0R1VN0Y/KwIvTpZ3Yq0QmGSlkwGyuTvq9D1TDffEqxM+f8eiqgkUqlNFD7WwS1GQpBMbFd19PyHr0lgC6YNq9nHzTqczg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,150 +93,139 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The new x86 memcpy_nt() helper in this series maps to
-memcpy_flushcache(), and the ZONE_DEVICE fast path uses that primitive
-for constant-sized struct page template copies.
+The template fast path currently uses memcpy() for the actual struct
+page copy. Switch zone_device_page_init_from_template() to memcpy_nt()
+and add memcpy_nt_drain() before memmap_init_compound(), before
+prep_compound_head() updates overlapping tail metadata, and before
+returning from memmap_init_zone_device().
 
-The immediately relevant x86_64 sizeof(struct page) values here are 64,
-80, and 96 bytes. memcpy_flushcache() currently inlines only the 4, 8,
-and 16-byte cases, so even those constant-sized struct page copies fall
-through to __memcpy_flushcache().
+ZONE_DEVICE memmap initialization is largely write-once: each struct
+page is populated once, and most destination cachelines are not expected
+to be reused immediately afterwards. On x86, a regular cached memcpy()
+can therefore incur write-allocate traffic by pulling destination
+cachelines into the cache before writeback, and can populate the cache
+with data that has little near-term reuse. Using memcpy_nt() lets this
+path request non-temporal stores for that copy pattern, which can reduce
+cache pollution and avoid part of the associated write-allocate
+overhead, while architectures without a specialized backend still fall
+back to memcpy().
 
-Add 32, 48, 64, 80, and 96-byte MOVNTI sequences to the main fixed-size
-switch so those constant-sized copies can stay on the inline path.
-Factor the larger sequences into movnti_8()/16()/32()/64() helpers so
-the switch can reuse them without duplicating the inline assembly.
-While the ZONE_DEVICE template-copy path only needs 64/80/96-byte
-copies, keep 32-byte and 48-byte copies inline as well rather than
-sending those nearby fixed-size cases back to __memcpy_flushcache().
+When memcpy_nt() maps to non-temporal stores, order those stores before
+memmap_init_compound(), before prep_compound_head() updates overlapping
+compound metadata, and before returning from memmap_init_zone_device().
 
-A microbenchmark compared two memcpy_flushcache()-style helpers that
-shared the same generic body and differed only in whether
-32/48/64/80/96-byte copies stayed in the fixed-size switch or were
-redirected to __memcpy_flushcache() when the destination was not 8-byte
-aligned. The timed interval covered the copy loop only; wmb() was used
-only to separate rounds.
+Keep sanitized builds on the slow path so KASAN/KMSAN retain their
+instrumented stores.
 
-In pseudo-code, the two variants were:
+Tested in a VM with a 100 GB fsdax namespace device configured with
+map=dev and a 100 GB devdax namespace (align=2097152) on Intel Ice Lake
+server.
 
-variant A:
-	switch (len) {
-		case 32:
-		case 48:
-		case 64:
-		case 80:
-		case 96:
-			do fixed-size MOVNTI stores;
-			return;
-		default:
-			generic __memcpy_flushcache()-style body;
-	}
+Test procedure:
+Rebind the nd_pmem and dax_pmem driver 30 times and collect the memmap
+initialization time from the pr_debug() output of
+memmap_init_zone_device().
 
-variant B:
-	switch (len) {
-		case 32:
-		case 48:
-		case 64:
-		case 80:
-		case 96:
-			if (!IS_ALIGNED(dst, 8))
-				goto generic_path;
-			do fixed-size MOVNTI stores;
-			return;
-		default:
-	generic_path:
-			generic __memcpy_flushcache()-style body;
-	}
+Base(v7.2-rc1):
+  First binding for nd_pmem driver: 1456 ms
+  Average of subsequent rebinds: 244.28 ms
 
-For offsets 1..7 averaged, keeping those sizes in the fixed-size
-switch took about 0.410/0.411/0.426/0.426/0.428 us per
-32/48/64/80/96-byte copy, while redirecting the same cases to
-__memcpy_flushcache() took about 0.962/0.956/0.923/0.998/1.001 us.
+  First binding for dax_pmem driver: 1462 ms
+  Average of subsequent rebinds: 273.31 ms
 
-Based on that measurement, keep these new cases in the main
-memcpy_flushcache() fixed-size switch without a separate
-alignment check.
+With this series:
+  First binding for nd_pmem driver: 1272 ms
+  Average of subsequent rebinds: 96.79 ms
+
+  First binding for dax_pmem driver: 1354 ms
+  Average of subsequent rebinds: 119.04 ms
+
+This reduces the average rebind time by about 60.4% for nd_pmem and
+56.4% for dax_pmem.
 
 Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
 ---
- arch/x86/include/asm/string_64.h | 56 +++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
+ mm/mm_init.c | 39 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 37 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
-index 6cb9e0ac7fa0..1e634264a31b 100644
---- a/arch/x86/include/asm/string_64.h
-+++ b/arch/x86/include/asm/string_64.h
-@@ -83,7 +83,35 @@ int strcmp(const char *cs, const char *ct);
- #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
- #define __HAVE_ARCH_MEMCPY_FLUSHCACHE 1
- void __memcpy_flushcache(void *dst, const void *src, size_t cnt);
--static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t cnt)
-+
-+static __always_inline void movnti_8(void *dst, const void *src)
-+{
-+	asm volatile("movntiq %1, %0"
-+		     : "=m"(*(u64 *)dst)
-+		     : "r"(*(const u64 *)src)
-+		     : "memory");
-+}
-+
-+static __always_inline void movnti_16(void *dst, const void *src)
-+{
-+	movnti_8(dst, src);
-+	movnti_8(dst + 8, src + 8);
-+}
-+
-+static __always_inline void movnti_32(void *dst, const void *src)
-+{
-+	movnti_16(dst, src);
-+	movnti_16(dst + 16, src + 16);
-+}
-+
-+static __always_inline void movnti_64(void *dst, const void *src)
-+{
-+	movnti_32(dst, src);
-+	movnti_32(dst + 32, src + 32);
-+}
-+
-+static __always_inline void memcpy_flushcache(void *dst, const void *src,
-+					      size_t cnt)
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index fb855bb0437a..addb4969587e 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1067,11 +1067,21 @@ static void __ref zone_device_page_init_slow(struct page *page,
+ 
+ static inline bool zone_device_page_init_optimization_enabled(void)
  {
- 	if (__builtin_constant_p(cnt)) {
- 		switch (cnt) {
-@@ -97,8 +125,34 @@ static __always_inline void memcpy_flushcache(void *dst, const void *src, size_t
- 				asm ("movntiq %1, %0" : "=m"(*(u64 *)dst) : "r"(*(u64 *)src));
- 				asm ("movntiq %1, %0" : "=m"(*(u64 *)(dst + 8)) : "r"(*(u64 *)(src + 8)));
- 				return;
-+			/*
-+			 * The relevant fixed-size copies here are the
-+			 * x86_64 struct page sizes: 64, 80, and 96 bytes.
-+			 * Keep 32-byte and 48-byte copies inline as well
-+			 * instead of sending those nearby fixed-size
-+			 * cases back to __memcpy_flushcache().
-+			 */
-+			case 32:
-+				movnti_32(dst, src);
-+				return;
-+			case 48:
-+				movnti_32(dst, src);
-+				movnti_16(dst + 32, src + 32);
-+				return;
-+			case 64:
-+				movnti_64(dst, src);
-+				return;
-+			case 80:
-+				movnti_64(dst, src);
-+				movnti_16(dst + 64, src + 64);
-+				return;
-+			case 96:
-+				movnti_64(dst, src);
-+				movnti_32(dst + 64, src + 64);
-+				return;
++	/*
++	 * Keep sanitized builds on the slow path so their stores stay
++	 * instrumented.
++	 */
++	if (IS_ENABLED(CONFIG_KASAN) || IS_ENABLED(CONFIG_KMSAN))
++		return false;
++
+ 	/*
+ 	 * The template fast path copies a preinitialized struct page image.
+ 	 * Skip it when the page_ref_set tracepoint is enabled.
+ 	 */
+-	return !page_ref_tracepoint_active(page_ref_set);
++	if (page_ref_tracepoint_active(page_ref_set))
++		return false;
++
++	return true;
+ }
+ 
+ static inline void zone_device_tail_page_init(struct page *page,
+@@ -1110,7 +1120,7 @@ static void zone_device_page_init_from_template(struct page *page,
+ 	 * to the destination page.
+ 	 */
+ 	zone_device_page_update_template(template, pfn);
+-	memcpy(page, template, sizeof(*page));
++	memcpy_nt(page, template, sizeof(*page));
+ }
+ 
+ /*
+@@ -1179,6 +1189,15 @@ static void __ref memmap_init_compound(struct page *head,
+ 							    &template);
  		}
  	}
 +
- 	__memcpy_flushcache(dst, src, cnt);
++	/*
++	 * When the template path is enabled, order the preceding tail-page copies
++	 * before prep_compound_head() updates the overlapping compound metadata
++	 * in the first tail-page descriptors. If memcpy_nt() fell back to
++	 * regular cached stores, memcpy_nt_drain() may be a no-op.
++	 */
++	if (use_template)
++		memcpy_nt_drain();
+ 	prep_compound_head(head, order);
  }
+ 
+@@ -1238,10 +1257,26 @@ void __ref memmap_init_zone_device(struct zone *zone,
+ 		if (pfns_per_compound == 1)
+ 			continue;
+ 
++		/*
++		 * When the template path is enabled, order the preceding head-page copy
++		 * before memmap_init_compound(), which immediately updates compound-head
++		 * metadata. If memcpy_nt() fell back to regular cached stores,
++		 * memcpy_nt_drain() may be a no-op.
++		 */
++		if (use_template)
++			memcpy_nt_drain();
++
+ 		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
+ 				     compound_nr_pages(pfn, altmap, pgmap),
+ 				     use_template);
+ 	}
++	/*
++	 * Ensure any prior template copies are ordered before returning.
++	 * On architectures where memcpy_nt() used regular cached stores,
++	 * memcpy_nt_drain() may be a no-op.
++	 */
++	if (use_template)
++		memcpy_nt_drain();
+ 
+ 	pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE);
  
 -- 
 2.20.1
