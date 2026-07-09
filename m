@@ -4,95 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76A47C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:07:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BE17C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:24:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DB296B00A6; Thu,  9 Jul 2026 10:06:15 -0400 (EDT)
+	id 1A04E6B00B0; Thu,  9 Jul 2026 10:24:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 089666B00A7; Thu,  9 Jul 2026 10:06:14 -0400 (EDT)
+	id 177226B00B1; Thu,  9 Jul 2026 10:24:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DACD16B00A9; Thu,  9 Jul 2026 10:06:14 -0400 (EDT)
+	id 041BE6B00B2; Thu,  9 Jul 2026 10:24:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B8C506B00A6
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:06:14 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 535C31A018B
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:14 +0000 (UTC)
-X-FDA: 84969412668.05.BC20020
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BB8E020005
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:06:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+MvowD5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D2E526B00B0
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:24:26 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 320651C1130
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:24:26 +0000 (UTC)
+X-FDA: 84969458532.08.21653DB
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5B53A120007
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:24:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Btk+aZVn;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783605972;
+	s=arc-20220608; t=1783607064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KtGhb2uuQghnzvwRekFMe5vHCrkMdKOrMY5ghfXYhj4=;
-	b=UnynDRQ0xHTTU7S9DWny6AFaSt/Uk971FsONNEYl6l5YIHUsEBj3ByyhYJwLg0iTeKYhuf
-	0A0dkKG4ziiOTC1f+wl3T/Sd817nxe6yvQcYCDN0x9xF3iJA0S0ElhPk9arS+Kv2uCX7Gk
-	mTFY8T4daxvALSvcScUk8frxJzjtR5A=
+	bh=EUy+Ri2pT7wvVY/ajX0BV3e3H7R/seUWuMeezghtcHk=;
+	b=u/Aqe1xV23MTbAbKu68B5AGwDXf4kF9q/kfLaTJxo72jQNsq75ExN/ZmxbFNiYFURJyFnb
+	Yq8x3+fzXt9t+kvsvPW9UC46vk4B0IaxsyHnmH14U+E0wVXZ8JOBr3uoVR6yYfbuaq9oq8
+	5/V7sIZrXEGSimeo6rSs4tNUdkjHzuM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+MvowD5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Btk+aZVn;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783605972;
-	b=Zqclo/9mVLlEQCezSWz/zUKHFN1r0d8W/CBBrUlu1tlCizaf81UPRgU96CMooGYhYgrX6C
-	1B3AKy8dNIIMF9ElgfdX8QPQfNhYz3Wsi0Ke2hi16rU5IbBsoHrXaC7VRQr2TA4pmwRqL7
-	PBtB/cb5gD87FHcL9LUv80qKL2FqfOw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5289C61387;
-	Thu,  9 Jul 2026 14:06:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC391F00A3A;
-	Thu,  9 Jul 2026 14:06:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783605972;
-	bh=KtGhb2uuQghnzvwRekFMe5vHCrkMdKOrMY5ghfXYhj4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n+MvowD5sZPU2yKTHj8RKerbKJrDMh+lcYqF6jmKJLtSEq/jCVrVTbsHOiPTceZnS
-	 LLgD5txxChTw2I61p4rIEe98n1XhvX8oAd2Eahx6hNVxYjvUKwDX6gY/BH+pF5pLDj
-	 yoWdG/+noYkBHgsfwQbnOgvgd08Y+u86ysPfF4ZgAGDOnnR4XMPHmR6SGHM5JFr0y9
-	 EAm6iiQqRIrZnPF5iJBHsp3Ljqhx0nMG2IsStUfv/gSJzboDkFri1IFR89vJMutkOk
-	 SwW/143tFx17n2FqyVcqk7OWhKwyvd4N6ARs3BscAIwTDPoNGzPsGLqEqqTtekn3u0
-	 IKf9O+fhLmZ3g==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
+	t=1783607064;
+	b=cKPCRjhBglvCvVWUR1GxDAnY4oDNgIJKnSXG7Ms2XrWsy2zLi5MxQj6/tVryNUs0SOX8IY
+	hSWjsuxq2Zt+Mb1c9mD9hR3gmfELseA5iD03tnEOk9Cn0FtXpeHHvF5DhYkONYDhIwmw8V
+	o20BFyHt10E75RD/WsUrAzm2XRyCCT0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783607062;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EUy+Ri2pT7wvVY/ajX0BV3e3H7R/seUWuMeezghtcHk=;
+	b=Btk+aZVnVrfetD0/oZcoqxzqskUtquanN86nBAQQy2GMIakYKxG6K18qS76Eb9X434e39/
+	TvJH+sZo7/dtDfDgg+nTqQa5FHgW7AALn/bO2K+ZBt7ZDy5exPzUJd+zdv2IRElB9yMvXd
+	Q9FVDnwysjJC2HD9vFL2xq2PDCIZK9k=
+From: Usama Arif <usama.arif@linux.dev>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chrisl@kernel.org,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	roman.gushchin@linux.dev,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 19/19] Docs/ABI/damon: document probe weight file
-Date: Thu,  9 Jul 2026 07:05:57 -0700
-Message-ID: <20260709140600.90950-20-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260709140600.90950-1-sj@kernel.org>
-References: <20260709140600.90950-1-sj@kernel.org>
+	cgroups@vger.kernel.org,
+	rientjes@google.com,
+	kernel-team@meta.com
+Subject: Re: [PATCH 0/1] mm/vmscan: reduce lru_lock contention via vmstat-derived scan-balance cost
+Date: Thu,  9 Jul 2026 07:24:11 -0700
+Message-ID: <20260709142412.91707-1-usama.arif@linux.dev>
+In-Reply-To: <20260706122954.3552990-1-usama.arif@linux.dev>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: uakasuuub1ujwuhbytt96sua8tbgbzp7
-X-Rspamd-Queue-Id: BB8E020005
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 4xqoarfe3oi5b4mszjhu4s8uigewf8eq
+X-Rspamd-Queue-Id: 5B53A120007
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783605972-679851
-X-HE-Meta: U2FsdGVkX18kqpFZzgtaOws0d8FteKf08d6inKjBI8ub8+Vwl2plRN3q6Rknn9wQfWiEGvTvbaJ939dm0s9X2+zjNuqbcwRQLBWETEcl7yapwk+7XfVkIGjetsFCaRKFBo5WRDQVr7IMpelp8EhZpAW37Rr96SkXw6JjKIxrKvIvd09xasq8cn6+0dexoB51qsZJrHf32+kenVoYcaYFrnReXgf9lKnW+W03HFY2Byno87W/6DFS144awAJC05Y+8jPs63qhN2sXekQUEiCEKIBQa19vZ5EGik0b1b0HHuK0qZa2evZwi1zCb7ivXKySepFuFzyEI2D8ZRblHmHyWbMEJ65vaiyKHCXI7LgTRvrJ1FobBNxZnJcDE41+95PMLhz+ETzdq/EeWYvmXRw92Suem/8t5F0vJJJKkpJExrOO+wodsNhlImNjjd/3FFsCo9jXI7qchDRkEiGkRICTBD0JBVbGSBvmUx3m9ebg4aKoTZQay0PRElmlujP/9z/+l65PlGxmw7IEHxXV01EAWaeTu7QQBqbVX2R0rS5iOObHDZfjHh/FJRXOTXTLmcAK5T5WXoj9jtTH1y4db0oG57rGl5HNHUmj2dX/yf+lFneRTqxnWmSU7BxoNpVqh1fQ3luSuT9PeQbR02bO4wxdxCU40wqo/ZBbrg0PsLSjDZziwb3/96LMpQbU8wsoTrt2A1zf02lY6DiLquIjLwPXEfm//7lMFy2zoeyaakJRKPbju33SQ/kRnxvxoSxhz45J+iAGxghYW5yLGrRV3AJ9QKMCZzJaa5oZRc9/XVw5exJqRIFttutNrKvBMOUpFhSaCMQzCZOReHsBY7u5d+B9FG4RHwU3ROpqFgIxtHIdpjeG+S3SWg26p+CAmrJPordAsNroWrS1Q0RetznlbCA6Sk95/9S6T43ofbW5t8ZOzHL/gVvcdLB/Bb/kKlE5kjcv9y5VsJiXm5XGrtgDxxT
- a0dB8SZA
- 08lDy9V3/IYZXMqGhFWW2dayRBpKd1wWbH83AudkqqkMcBdrniGfihpAidjQQDHFE5lUCpAyOCaw3bQ7DCEyBezZNuwgC3jlKxSvGn3FGk23/cOnnhhDBW3gOjPtkEBSZbMZvVjkhV8BXcYPXnm3e9r+QkRuTW/3zc28V0I2v2eEB+BY2F6avFSxQI6mUw7m9NbMsFx97EojBGdMJr+9xgERsHb6ubMnPeg+fvhngb6buczM=
+X-HE-Tag: 1783607064-636357
+X-HE-Meta: U2FsdGVkX19YzxTS9uu+pp7JtQaVVTIFIsnJyBZnIynfJGlUidg1y1el8L6sMl/eE8eb2JyuuYU4spSonhaXXgvwZJ0oG/coo7Dx/KFpKpayDSOF2TXgnVQ6jERBf9HDHw5ecx6VXu8CuI98jThk7ppjOvblQrxs8sI/mRsIzoRGARn4k9LUyo/Nu54y6K6z5gE9/3i2epD6HFLZvbUDcTexCoFCXvCy4ZbbeVPTdaClEv+J4B0bfqB6opTo/EPIa7U4b9Th6Qh2Ap3FjVM7kzighugaLu7oWtNluW2iwEPn4u+7sTGcwDXgBwCUSpJ2W3eIT/Ai+8H1J8C4p4aTevWmaxzerY5c/qB6vC4gcvrUjccFuF+NrUYNUvA8yqLQG9XlhD93yd6Je30TAXctfGFyiYO1OFlcN4VbYr6CHKKgHO/jLO9fN5L3fQxgNoUEiD9KFFgfwbH4eyRmiPP2pS9m3k08QM+SoZofbhzhoe9k6xPqxt0513fo3quk9rUjTTr3/mkJUXzEEzBWbF0Vv+6Vs2YcsMOMd7gnf0dTh/ToVMXojXVVU3gbufb+BSWxZ0eGy8oqI0fxu14/iT8l1NszgqA3aiJ0MIw7u1xI/u9GEmGQUAhaP6VsuAyABnrVlwC9AvYp2r4BeVGx7oxnsM3+Jv18zfjnHG/9nu7YfhETCCXco4xRUgY35IbnzuKqztiFMbqJvTMVCz8Zqlbo1qXXU4FA2Iyj213Hix2XOVgrJ30bQeXnzniJwWPkR5SZl+irM1ShkGiG0ZGhBPTkve2r07qHN3w9FF5D0ETs0iuRsm/2uT9ubrZPy0AOQDum7ZRx8ZqxQTe6Bq+6LJpiyvTlbzh1nIsFwSQlhy2NAa3Rtg6AT9xooZ3mA8649x5diXHQ9S570s8PVFPAjbRy1kMpeAd4rm0Sz+P9zPNDRpGfFdjdAeSVhiQc6NNOMhEUHyUazlnYApuYWhohgi1
+ koMWAcLN
+ XIYFsLqXmBE/C5E704Sa3b9xq9HkB2ROFER1wWmF605BJQZ5lRK9BQo6vBLOcIBi3U4/mRsRTvH/xUdPNDtEFOjRudm/Nr+wqPq05KicpKtbfaQnGN6nGzGG/0yqCrPaVEghJIVOnWDlfJngTEAjE0ORfnB+59ofhxR+iVVwP8wGjDwcFwqYFAHNCMnXnSF1v9SM5Yjg094p6IcvNs5VyzqJqf+LgjxzKYN2htdgnh4D7BZo3h4qB/fyAfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,30 +110,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON ABI document for the newly added probe weight sysfs file.
+On Mon,  6 Jul 2026 05:28:25 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- Documentation/ABI/testing/sysfs-kernel-mm-damon | 6 ++++++
- 1 file changed, 6 insertions(+)
+> The anon/file scan balance heuristic in get_scan_count() is fed by two
+> scalars in struct lruvec (anon_cost, file_cost) that every reclaim
+> producer updates under lruvec->lru_lock. The cost-recording work
+> itself is trivial, but it both contends for and contributes to
+> contention on lru_lock - which is often a contention point on
+> memory-pressured workloads. Specifically:
+> 
+> - shrink_inactive_list() re-acquires lru_lock at function exit just
+>   to call lru_note_cost_unlock_irq().
+> - shrink_active_list() does the same after rotation accounting.
+> - workingset_refault() takes folio_lruvec_lock_irq() purely to
+>   record the refault cost.
+> - prepare_scan_control() snapshots anon_cost/file_cost under
+>   lru_lock.
+> - lru_note_cost_unlock_irq() itself walks parent_lruvec() and
+>   re-acquires lru_lock on every ancestor, multiplying the cost
+>   of every update by memcg-hierarchy depth.
+> 
+> This patch removes those producer-side acquisitions entirely. The
+> producer-local inputs (PGROTATE_*, PGRECLAIM_PAGEOUT_*) become
+> per-LRU vmstat counters; WORKINGSET_RESTORE_* already captures the
+> refault input. prepare_scan_control() reads the raw cost signal
+> lock-free from those vmstats and folds the delta into a per-lruvec
+> accumulator. A dedicated per-lruvec cost_lock, not touched by
+> isolate_lru_folios(), move_folios_to_lru(), or folio_add_lru(),
+> serialises the accumulator RMW and the lrusize/4 halving check.
+> Hierarchy aggregation is implicit in rstat propagation, so the
+> parent_lruvec() walk and the lru_reparent_memcg() cost-splice both
+> disappear.
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-index dd6b5bd76e119..907a504fb64c5 100644
---- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-+++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-@@ -164,6 +164,12 @@ Description:	Writing a number 'N' to this file creates the number of
- 		directories for each DAMON probe named '0' to 'N-1' under the
- 		probes/ directory.
- 
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/probes/<P>/weight
-+Date:		Jul 2026
-+Contact:	SJ Park <sj@kernel.org>
-+Description:	Writing to and reading from this file sets and gets the
-+		per-probe attribute weight.
-+
- What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/probes/<P>/filters/nr_filters
- Date:		May 2026
- Contact:	SJ Park <sj@kernel.org>
--- 
-2.47.3
+Another update on this, I was profiling another Meta workload that suffers
+from very heavy reclaim and has a lot of cgroups. I ran:
+
+bpftrace -q -e 'profile:hz:99 { @[kstack, comm] = count(); }'
+
+The biggest entry was below:
+@[
+        lru_note_cost_unlock_irq+146
+        shrink_lruvec+1913
+        shrink_node+869
+        do_try_to_free_pages+197
+        try_to_free_mem_cgroup_pages+311
+        __mem_cgroup_charge+1832
+        filemap_add_folio+127
+        page_cache_ra_unbounded+347
+        filemap_fault+956
+        __do_fault+40
+        handle_mm_fault+4034
+        do_user_addr_fault+406
+        exc_page_fault+105
+        asm_exc_page_fault+34
+, Func___]: 5354
+
+5354 represents 51.42% of all kernel samples collected.
+
+A very signifcant amount of time was being spent just in lru_note_cost_unlock_irq
 
