@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58935C44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:30:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A9CC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:30:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D4126B0088; Thu,  9 Jul 2026 18:30:22 -0400 (EDT)
+	id EC6216B008A; Thu,  9 Jul 2026 18:30:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 462D16B008A; Thu,  9 Jul 2026 18:30:22 -0400 (EDT)
+	id E48B76B008C; Thu,  9 Jul 2026 18:30:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3738F6B008C; Thu,  9 Jul 2026 18:30:22 -0400 (EDT)
+	id D86886B0092; Thu,  9 Jul 2026 18:30:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AFE36B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:21 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4A335A02D0
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:21 +0000 (UTC)
-X-FDA: 84970683042.11.6E651CC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AB3726B008A
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 33B821C32B2
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:23 +0000 (UTC)
+X-FDA: 84970683126.12.E19AC51
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 88B8140006
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:19 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/2udjMJ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 48F48180011
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRKp+h8B;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783636219;
+	s=arc-20220608; t=1783636221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dpRcp/2dJk6gV7eAG1xmqQEL3beSixOls/uDr77Rs8Q=;
-	b=MbD/1aW67VXtjLJIdGw13H+kMQwyrat96tz9qO8jPZK1ei+Snq4TFOvvTkGfp/5F3HLLRp
-	XpGgdAJEGIJ/855kibqkTorWCOfOOrVLls7OlXzOBdPUotwjSlBDanXxtHBYq8291j4BtG
-	5lPUgKo6+242YVgAVocXB3D3f2SFAHw=
+	bh=677B5n0kvLgyERJskeE3rTX4vg8H2agSafboCd79Yqo=;
+	b=EbnS2uqqsctgMG5qwUPSPo1inqYAV9d/F906Z1ddjgtDoD9HRCfEEifZNCNBEwOPvUPGw8
+	t2LugDZZZ0AdZPunuO0S1KBPNLXjl4XukkUPJWhqf3DKaLGtl4VDhLEFYXQ+tD41o/jTMk
+	1KKDdPdsSn6b1IiXC5wQA3bISx402pg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/2udjMJ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRKp+h8B;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783636219;
-	b=kB5vKkxcgJliI6FeSNOf9qBiZ5voq6NuCecwGv46Wmx+ORvOTCGm/xWim6ohd+x2HZcQQd
-	VOPq7s0Cg+l69qSVzHWxd6TF1bYnujt3xiDW91fDKYT2lXDrJsgvcYSC6ZcEM72bIrbYc3
-	jhshobRWs1S7MkddKY/tTBBsSxxq7NM=
+	t=1783636221;
+	b=WpPtTbB2MvZ2bTiKoIw8o5H8ZN74yFVKxU/3bSIMAY9zyhJgO0HDu5zHh+Aos5hmI28x/D
+	o8TkRDKy+3Kh219a4fLtLK8WtoF6bzhc+eAETkT5GFCh/vUaisTsg48Rj+4ZlzpsNxbIPQ
+	9k0Jx9yBRJJ83Hc7O0fy2R53U1XYVuY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9469043D1F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 91A2042AB1;
+	Thu,  9 Jul 2026 22:30:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E396B1F000E9;
 	Thu,  9 Jul 2026 22:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E911F00A3A;
-	Thu,  9 Jul 2026 22:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783636218;
-	bh=dpRcp/2dJk6gV7eAG1xmqQEL3beSixOls/uDr77Rs8Q=;
+	s=k20260515; t=1783636220;
+	bh=677B5n0kvLgyERJskeE3rTX4vg8H2agSafboCd79Yqo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=H/2udjMJKhsRxr1MvEvq4eUPt+vKw9iK589MD1x2J7dTv4kCE+oEFU2IcfkPxCjuP
-	 YkPzKqZemTAGZwKoIg7WFYiyjx/Ni1q57XqOcWkoX0bpmgtsEH2gibYZzRRL3IKbt0
-	 Yb/kXjj2mNlpWrdZM653UCHCCenx8Cw3buKcFS4jcfKhiJJw1mT7Dhk3z2XNd9EGuC
-	 kHAnuRw5NX8X5eFHLLLkPuWd4FskhVHLILyDT1ke2L+ezRUvUCa5MGzGlOxhKv/TtS
-	 xIe55GnToFdt5tUzy2Jz8pEzl1A2gFqhvDDCRR2Xl1ODDiwkE9fRDqwxLPo/GNKK56
-	 UY57bq5ggIXjg==
+	b=lRKp+h8BWaSeDykoHoqJ5mrqlRIS7VQXlre/ap9aJ/0RlrHcyAhk6na3dJU3uSyrW
+	 ctG+55gZWNCsY7zihUV0+qp3xgbTtpkPPuV8lHecUZ5Esggt5NJft8AkTKFPlNXk0m
+	 VZSIEdHZYx6K/f/a+w5k9vBbZlhn9DrBDbu+WSmkEV9hOshFgeUiHUM2dM+qK0Vo5g
+	 j4v1eY4em9b/9UCzakYT+3deEWb/j7q0SQitS44/z0G/UrWi2egiNRXmBUyY7b3SYf
+	 M/5Pc06+47TTRggx8pyDNQ71FptEwEU0xnTEOhUQnwzOO2/e3SlwuQ8qTy4/L3LYhn
+	 Qr0tDeKYYF2KQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 10 Jul 2026 00:29:56 +0200
-Subject: [PATCH v2 01/23] binfmt_misc: restore write access when removing
- an entry
+Date: Fri, 10 Jul 2026 00:29:57 +0200
+Subject: [PATCH v2 02/23] binfmt_misc: use exe_file_deny_write_access() for
+ the interpreter clone
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-work-binfmt_misc-locking-v2-1-2a1c3d4126a7@kernel.org>
+Message-Id: <20260710-work-binfmt_misc-locking-v2-2-2a1c3d4126a7@kernel.org>
 References: <20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org>
 In-Reply-To: <20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -80,22 +80,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
  jannh@google.com, stable@vger.kernel.org
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1605; i=brauner@kernel.org;
- h=from:subject:message-id; bh=t8nER3lsjLzcjeJujucgoUoGrAUWFYH7V6NQav6UZeY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQFKHzNfVZ7rshjEgfT2v9loRPYj9RdS9xe+fjUw1kPW
- WcYuVaad5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykRoGRYcoKtfvZnEX5xtq8
- KtwpynF8d88c5F4jtuPxFfX1f9hypzL8Zj1oW7eLw/LtpmkXVbhPPHzw//sZmfUZtwQFJZgb5n/
- awQ0A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2087; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=AYPobXhR7tlhSW9eVD0N+FrhRjSI1w+57SYynhHowac=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQFKHx92v+Ba8sr9bpOt5yDwT9ftWx4s+jNjVzJ0skxc
+ THy9+587ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjImURGhmu3lp+0ehIurTtL
+ OP6FkG3TicD9wql+209++jFfoH7JX3NGhmb1Bk+PX1vnmOjz8s0WfetnMrt3Vkuv6Nr/B+e2nTU
+ 6xQIA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: erwxekwhau6crh1wwcpgokw7ws1qpgq1
-X-Rspamd-Queue-Id: 88B8140006
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783636219-864356
-X-HE-Meta: U2FsdGVkX1/m4Wgdt17aXsyCABryYiIRh3Ytff11w5V6N/6xH5rG+t3UyyRfqYS+sMs38McO6CZkQG+/FXz2VuH2XBLvECf0wsv7tabRA93MTwVMichIlwrQ/I1Y/8Z3EutNt4A4J/a8kicuAZukE3eTxocxYgSWH/fke8U8dTVpwSWXx+Gy03vKEEOwMw+o4RrOJDMJRbTyHg+auhLV4n+GkHWIZ4kjQhmy8SL7toC/83rneiihag3qRDvpAvol6XESb6+stDnseqC8caB6PIeFlzMc41U03G+zqOIISVieslMCWm4FkKLQQxCYrPaMC8rWEiTDCWVWsIt1I6lUh7jEMeF1ny5GQVsc6YWYGiWGVkdSuQj0YOOAe+dVszx3o2CebdEad1XdyWTVGd0/1LprEUXJ+7Gd+DtAOyZ3+Pu5rW1trgAmRXa9Rp8Q5avUuW3Llglc9QGBtUcEb2Su5lAjHUvs6+jx6NJhNWe+EgoPlHFH+SfWRHE40UKj2IVzKmzEpWeNInerLn+YR9CZEM6/PFlrwiNmEqDjc3yl9oAQGZQ2GeyiNyBbDkPQLTvCWWEQMyEJOi5yE1YTFw+R4thScIrNkulVfRnEY/Q7G6De61G5IGDmXSrt7ZxazB1ukHJrRwQNplQ6frD1dubki3DrhnBSLqeC/t1lOcwQcvnKbfO8q2vOuIpv7qNIAsZrhVekRSql31SLfFlAIxW0cGqCKVKPhWQe5N5LE6L4w8v/QRHSykp8XryjSVcXLb4sias8C5mOEtcRmk4SXkUTjnP5ZA2PiYkqSAaYXSG0Q6W29n3T2dYtvg1xqVcHXHEo1r+qnKHpI1JdNeSgY0XjtkeZ0VUwl8sY5617E5odY7z+awNF7Hj58mRe5EuMAo51KaDyhOk2OYC69tZrDQGNKm6o0o7vgH5ZPAwPTN0g0M/aig3JspFQnSQyoDPe91UPMPmOXGJWEMTosoteMZU
- ZxLuK8uM
- /xOW/1K+PsFRanKsMY5O97XY61uNuAJgGP1TUycsjdLhg/X5nK+Nj4WGopNXuXXPozPfrx7abGXagjf80dvyDen1CKus65h5mAqf1/HlrP/KS2te/K+sAJXqsMJSDtlzPS8EbTzDwNzngIEDsMYfy7tf4VfJkPhQ8jBAbV2wEcivd+n5CRNpyu39Ot72v1zyK4EmpaHc6c0OlCrN21JCzcEpvh46I13Gph9i6fTE/M1CTMa03H8dzEY84xW7+XheJESVcaEpuPjo3k92MBAdCBwvn6FubHKtotMnYmzO5YeMIX+2xi5k1lrBAFfXbs5LVoaKeX+1owWo3ZeXSIBeogmKZkgrrkbOvI37KHEuv9b5eDesB2duV/IPg3JpI1O7uW2kngK3Hw3XzTXc=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 48F48180011
+X-Stat-Signature: rru7x5psenud7oirra44pbumh5soqzyr
+X-HE-Tag: 1783636221-847340
+X-HE-Meta: U2FsdGVkX1+trzMkXnaTC9WUCX19TNVq30hbTl6DiIFQ3pjDn3r/ZV4JfCrt1qivC+5ksoXYVW/Whbx8f1KyCsAHogaOTHVP4I6i75MjaOhQLCcjhvzemDpsohT857MqMj+dxct17iPFCbl2RJN2Plbr1keODe0kM1gHjDiEREiBlPQQgUcty1+F+Via2tf0u2YcdkAUfVRulr9XeVSoO6bl1iU1cWJOPIyaqT3zV0FJraBPRiOqw7uUjAWhy11XiNo33VkEjSlT2DmtGnFvQsKpsJkNue/mu5aUfpBLKMlViKlHsDyh1Pwo545m36rkNo7yhKx4UVEzhoYF4ydbr6wEiTGgUOilz4r5mRyNBVij9d+5QnGH8CAkUGjiahEmoYRgkzu/vlAog53RlpDQJYQroFfEz7ULi3e/nLAS+oGN/MnagXPEmw1DkHIPkZQ5oG51IyuG/sxz9LsO5KC77SqjLSxNokPB4RNprosF43LyjxNf3T18HyryfBdpdfy4SZwa684X8CiicX0P0CHfNjcCnZ6tKq7K0IsHADgJUXJJkV0y8VWSumY3XCClmAY2VHT99GMiMq2fTNVLlgEBL/n+qNSjDaTGB7hQoIS2qOu/45PoMsrSqSatOhe29ROr71KNjW6mE78vVRgeccHnh3g23n3CJrYNv4QVwC0/vUvRXyJLS9Zk6ZisRiRG/Wd087pA9o9FDEkrpmZyzqCrIq/v4gpxTbo3nCL2LzvVbqCw11gJIQ+tyOvkRtEZJG1FMipBo9ApMmy8CuDOS0Xf+RGOcaNiA6iA1lVt6Z/XeNAhxAONa7utCR7XoRyP0yDpoPOZDfKjp4/G19ZG4yZROGLCKPGIwCUY+BfG3ZGBFETe98Z/bx05wCAF5uMszKGhZPyAuMSMNETb9eh9fWgOYVzUxlryqtOurdTRAHt6RwUIUcHUcDgbfCQSsaifZA8l4+4hOpCGN3DFuQYSUFx
+ M9btdeNh
+ RXxRssqugdR5P/PMN9U818CrPFAPKM0Qk3RK6cZz2JbF6QakSXkn+a6C6epbY3/XDjQWNQdZDOBqH8EeUxIQhbvOWPWKJr2RZFEn0i/jL7pXbUWNevXgTQJ5HXjgs791ruioiAe52w1ZPagFrZP8DZQEjV6Jxph/t0W6dO331IFKY9tCCOd7FczdeXkpsJi+v1JbyJ1O9EMk2xLXHsjjq5qWs2YGLeG5MWa76piGROyD9jF2W2e+NxOOl/2np402EgUC7/vSE0kWx38PrriL7T2eXFRjpAEIf6Id30wquLEaXWBj+TcPCdR96ahrZx2fj5NnfCoJSJ/behnQst3OEsgo2WNOAxckvODWznTBu9IkknhrxP+7bENRqQYDLOnllN/cI9WLtYcboVvY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,45 +103,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Registering an entry with the MISC_FMT_OPEN_FILE flag opens the
-interpreter via open_exec() which denies write access to it for as
-long as the entry exists. Removing the entry closes the interpreter
-file via filp_close() but never restores write access, leaving the
-inode's i_writecount permanently negative. Opening the interpreter
-for writing keeps failing with ETXTBSY long after the entry is gone
-until the inode is evicted from the inode cache.
+For MISC_FMT_OPEN_FILE entries load_misc_binary() clones the
+registered interpreter file and denies write access to the clone via
+plain deny_write_access(). The clone is installed as
+bprm->interpreter and later released by the exec machinery through
+exe_file_allow_write_access() which skips the i_writecount increment
+for files with FMODE_FSNOTIFY_HSM set.
 
-Commit 90f601b497d7 ("binfmt_misc: restore write access before
-closing files opened by open_exec()") fixed the same imbalance in the
-error path of bm_register_write() but the actual removal path has
-been leaking the write denial since the introduction of the flag.
+The deny and allow side can therefore come to different conclusions
+when pre-content watches are in play: if a pre-content watch is added
+to the interpreter after registration every subsequent exec through
+that entry takes a write denial on the clone that is never paired
+with a write allowance, driving the interpreter inode's i_writecount
+further down with each exec and leaving the interpreter unwritable
+even after the entry and all its users are gone.
 
-Restore write access in put_binfmt_handler() before closing the
-interpreter file.
+Take the write denial via exe_file_deny_write_access() so both sides
+of the pairing base their decision on the same file mode, and
+propagate failure instead of silently ignoring it: an interpreter
+that is concurrently open for writing now fails the exec with
+ETXTBSY, exactly like an interpreter freshly opened via open_exec()
+would.
 
-Fixes: 948b701a607f ("binfmt_misc: add persistent opened binary handler for containers")
+Fixes: 0357ef03c94e ("fs: don't block write during exec on pre-content watched files")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/binfmt_misc.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 84349fcb93f1..de50a7468b07 100644
+index de50a7468b07..24142859658c 100644
 --- a/fs/binfmt_misc.c
 +++ b/fs/binfmt_misc.c
-@@ -162,8 +162,10 @@ static Node *get_binfmt_handler(struct binfmt_misc *misc,
- static void put_binfmt_handler(Node *e)
- {
- 	if (refcount_dec_and_test(&e->users)) {
--		if (e->flags & MISC_FMT_OPEN_FILE)
-+		if (e->flags & MISC_FMT_OPEN_FILE) {
-+			exe_file_allow_write_access(e->interp_file);
- 			filp_close(e->interp_file, NULL);
+@@ -252,8 +252,14 @@ static int load_misc_binary(struct linux_binprm *bprm)
+ 
+ 	if (fmt->flags & MISC_FMT_OPEN_FILE) {
+ 		interp_file = file_clone_open(fmt->interp_file);
+-		if (!IS_ERR(interp_file))
+-			deny_write_access(interp_file);
++		if (!IS_ERR(interp_file)) {
++			int err = exe_file_deny_write_access(interp_file);
++
++			if (err) {
++				fput(interp_file);
++				interp_file = ERR_PTR(err);
++			}
 +		}
- 		kfree(e);
+ 	} else {
+ 		interp_file = open_exec(fmt->interpreter);
  	}
- }
 
 -- 
 2.53.0
