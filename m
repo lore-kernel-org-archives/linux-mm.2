@@ -4,103 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 760F1C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 19:32:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E95DC44501
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 19:58:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 518446B0088; Thu,  9 Jul 2026 15:32:33 -0400 (EDT)
+	id 2444D6B0005; Thu,  9 Jul 2026 15:58:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F01F6B008A; Thu,  9 Jul 2026 15:32:33 -0400 (EDT)
+	id 1F4C96B0088; Thu,  9 Jul 2026 15:58:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42E6B6B008C; Thu,  9 Jul 2026 15:32:33 -0400 (EDT)
+	id 10BB06B008A; Thu,  9 Jul 2026 15:58:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 210756B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:32:33 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A17B5168F9B
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:32:32 +0000 (UTC)
-X-FDA: 84970234944.25.2621F0F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BF6B240007
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:32:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NEqk7ojV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783625550;
-	b=tUcekqagyDgBVJhIZNLA7KTjXsAuWtlARVseMPExUiARkT2ivL5MPTxzpzF+1BiM06ReVV
-	3nvC9jPRxtph+VbdN8ZcvFg+XWUfpc/NLOpnb5QkX8RMryPOtKbEcblMivySLrwxiNgk8v
-	wgPEH8WFi1q6jndSXCyWhlpyiWAjnlo=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NEqk7ojV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DABF96B0005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:58:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 652138CEEF
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:58:07 +0000 (UTC)
+X-FDA: 84970299414.18.63FF18E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B7EB810000B
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:58:05 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUZ0FPy6;
+	spf=pass (imf14.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783625550;
+	s=arc-20220608; t=1783627085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=npXyDmufoqDAPaNNUVO/9ceYtcSWui2jgNerLmFDHKc=;
-	b=cVpYsgOCD4jFO954bmGv4qUIsXmRT7ijv/qEj49tdJw6O22XQ9drWLvFfdkN4PzbiDnDYI
-	znn8Fktkx9CAZFzeHAaobTTN2tyt3uR1CaaE3zd2mTqLgjPpiowKBeuQOtVH++eO5m59xE
-	W++I4OTRPvlufdUxCVOeKX/0F7z/iCI=
+	bh=nASUEopdTVpbiOlaqA3bl70JASaPDBXc6RrPfU8TUhM=;
+	b=VXh7Dx/AvPhvvXkEklznN/ZbUUgdjwbtlNDhTiNI0VP4ix01vorvaW8yOWclOZwL2KT4gx
+	xhqhHYO7WWYjpsh3PuiEtp9OpkSad9KN5LZb2VJaJ03o3YmLPI5ots5oQn7i85cdmHr5EU
+	u1cxI1xhepMxNpnLIiUxFS3S4M43BQE=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUZ0FPy6;
+	spf=pass (imf14.hostedemail.com: domain of thierry.reding@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783627085;
+	b=NcR9mjpqnYXBjDl14OJKEcuB+htuOx0nlCeRqGRQny4wCJt5mnHOYcjQIGYs1WD4F4TNdV
+	wdCob0Quhsa+J8ZKgMLHsmQ8AQyuZvVzlbzABvortaKTQtx+5QeyXQlrrFbkG8KXG+dT6J
+	p3fyjULrA8jo595ExTVYj0hLkKl6F1s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A029600C3
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:32:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D2F1F00A3A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:32:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 78EA143440;
+	Thu,  9 Jul 2026 19:58:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69C51F000E9;
+	Thu,  9 Jul 2026 19:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783625549;
-	bh=npXyDmufoqDAPaNNUVO/9ceYtcSWui2jgNerLmFDHKc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=NEqk7ojVAD8jS8s0G0J1BYhZ+wXTK8ICpYsDhJQAeRFJ/oBWJoMhQOYhbsBu9qKVz
-	 uZ5LM6RONQ+5BbPuYebxemJ6t+6ZJ25qHQRz+ldxl+AXQdmO09YOuQeAw/vlXMS8XR
-	 JqqW70nATiZkuT5YqGAq82VcVfLt8AY/T+49yNbHTppbn0V7zXGYLQTbgO9Q0oOrWN
-	 D0yRBylfd8eg7vtJG69CONbJ4xiwEzRvDEURJHQYyvbiq0dzBM694qt2bcXNaOXD0d
-	 Ag8oZk9TMU7hClYbSB5MWWq7+8gPmowRyWewezUvguYkdDgvMdCDxCUgiV/ukV7pKo
-	 xVl06N8Yiab4Q==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-69a5ecbbfb2so273532a12.2
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 12:32:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RqfgUIDU9iRVuqtsyZm/wzYREvn60knlAss8jrDoON8hRYbuk/S1MKQ5TrkewBkNaYD2l2qW6Nmrg==@kvack.org
-X-Gm-Message-State: AOJu0YxvPRJO1z480CqIyUU1U+y+Rm4j2p9LbPvTtGqhm3oqy3Y/QNry
-	c5JwmpfaLv8pGeG/QiZoyISm2sJCgdPTGYsV+D50rFNBeZWEJ8w2oX+2OmvRqCsvyvbY6DTv6OP
-	QBjrGHIVlWp3MmrySpKbySL6UxKCDPnU=
-X-Received: by 2002:a17:906:7311:b0:c12:a425:cbca with SMTP id
- a640c23a62f3a-c15ce120431mr373065566b.54.1783625548779; Thu, 09 Jul 2026
- 12:32:28 -0700 (PDT)
+	s=k20260515; t=1783627084;
+	bh=nASUEopdTVpbiOlaqA3bl70JASaPDBXc6RrPfU8TUhM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HUZ0FPy6tJ5k2FpZZk4TmtW8oNPYG0UCTaswg34FnSsVTMZ+nc6abBzQoGLAe7QpZ
+	 4839oR2E7eU5H+0VQhcuYDxXFXmLbqe785v0OtfK8pZM64xT/vjBbY8gU6OQqxdQko
+	 2bj2K0aisc+j7i5kyFSxJBzHYPyWTVbTuJKmXAkqp+WJvRZsZfqnl91bOFM7185CBN
+	 pNNt3ie4Xo7ripQOTTqoaN5lwefEhmBf7ncJ41sgP4urIb+UmKalmTY+FHBAjFjAbH
+	 sZHtyFtM9TSgQQsGPMBhSwsdDCYRoGd5HD7SutnqDROuHsn6T0qtpDhVLf9Zj3BAl/
+	 ejFRs0GNI3+Yw==
+Date: Thu, 9 Jul 2026 21:58:01 +0200
+From: Thierry Reding <thierry.reding@kernel.org>
+To: Will Deacon <will@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Sowjanya Komatineni <skomatineni@nvidia.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Yury Norov <yury.norov@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Russell King <linux@armlinux.org.uk>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Benjamin Gaignard <benjamin.gaignard@collabora.com>, 
+	Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>, 
+	"T.J. Mercier" <tjmercier@google.com>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linaro-mm-sig@lists.linaro.org, 
+	linux-trace-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, Chun Ng <chunn@nvidia.com>
+Subject: Re: [PATCH v3 04/11] arm64/mm: Add set_memory_device() and
+ set_memory_normal()
+Message-ID: <ak_8Po3NxgAU7k0T@orome>
+References: <20260701-tegra-vpr-v3-0-d80f7b871bb4@nvidia.com>
+ <20260701-tegra-vpr-v3-4-d80f7b871bb4@nvidia.com>
+ <akYs91INHMXMTI-t@willie-the-truck>
+ <akZkuwktaXFTrASP@orome>
+ <akaSJ5D98w2cHqb6@orome>
+ <akftuw9NyRy36fXA@willie-the-truck>
+ <akuvyu1Pq0ZVMZV0@orome>
+ <akzikTrmhMsvkNVY@willie-the-truck>
 MIME-Version: 1.0
-References: <20260702180908.150136-1-yunzhao@cloudflare.com>
- <akbHBZP9HxOJMtQB@cmpxchg.org> <CAO9r8zOiwgG80EjqdZFgWQvODUe1RzecLemxcB7xXNm_f3XfbA@mail.gmail.com>
- <6ecf5579-0b3b-4e8c-a625-bbf0a4a48f94@kernel.org> <CAO9r8zP6JrZcBnzb8A3A9V8so4gJMWLvrJQ7VwPyyU417GikQg@mail.gmail.com>
- <CAAnvDSyNbV5xSH0hrX9Tgw_wXU7Neo-XSJ1enebxJXvjOheHWQ@mail.gmail.com>
- <CAO9r8zODSyYTipACxdEzoheMrNKzfFt_tjBzrB+2tSCHA82WWQ@mail.gmail.com> <CAAnvDSziZM9TOExkFrF9vNi4VN=7T6yofS-=4rmFqc3jXncveQ@mail.gmail.com>
-In-Reply-To: <CAAnvDSziZM9TOExkFrF9vNi4VN=7T6yofS-=4rmFqc3jXncveQ@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 9 Jul 2026 12:32:17 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPuX0j_fZsgRsaNQFyJqY4rZxERLya69TcCF83HrpHy-A@mail.gmail.com>
-X-Gm-Features: AVVi8Cf8-M4xZZExnpUIJTjNgq3ZpVD4qlYoeRddcr1y_lwYwKDDOovuyHJniEo
-Message-ID: <CAO9r8zPuX0j_fZsgRsaNQFyJqY4rZxERLya69TcCF83HrpHy-A@mail.gmail.com>
-Subject: Re: [PATCH] mm/zswap: use ratelimited stats flush in zswap_shrinker_count()
-To: Yunzhao Li <yunzhao@cloudflare.com>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
-	nphamcs@gmail.com, yosryahmed@google.com, shakeel.butt@linux.dev, 
-	akpm@linux-foundation.org, zhouchengming@bytedance.com, 
-	James Houghton <jthoughton@google.com>, kernel-team <kernel-team@cloudflare.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: BF6B240007
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rvxsrpqt5djhs2ak"
+Content-Disposition: inline
+In-Reply-To: <akzikTrmhMsvkNVY@willie-the-truck>
+X-Stat-Signature: asphjoxndffa1fexp4h3h3mzosbcdyrh
+X-Rspamd-Queue-Id: B7EB810000B
 X-Rspam-User: 
-X-Stat-Signature: u15izycgwdi76kftkzw8rttzcfnk1hub
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783625550-125211
-X-HE-Meta: U2FsdGVkX19jJCNR0q0Gq+/T3eB43CVysnBD8H8DkbW64iOMwCwRfUjnW3a+W45C4KgLMDaMiuXTxywKgUumy2kRWMpGnjTM4EBmy50TYM4Zt7LoMxHJDHlja3yTbBKFh5F+uA7U+F+RZnoRpyXzczcm1Ti2rn43Zn58AFuVKLjULAUJp7l2cqQ8C4fky3wkqVvO6FPn51vSkcxYwxX4IdsNx0enwhtlV9OKua6pJVVBxF7ElJc4jThGf1fxd8ntKHSqe/W8395u8IuokqAmRbkKlb2E2m84j4ErUunPd59WMBOMZAPWI+v/7XYqaD5ZJFmxwxwa2ZQZy2/fr9ZT0KUwbwtgIU4MyuGG3KHVjLTNdeSXQ8oMGS17ml7hxx9Tylto7BACFmSccQ2AGMT1PccGvT7rUdKl69MKbnp9MoanIWoCNT1cls0VB8D4lhWrorNJ1nUECujtR0IiOiaODjnAomRx8a27if6TmNKTdjln6jT2d3CPny1SSZVm8XWQoe9nuOiux7SSxYN5bLtjmxePIYkoHbUOJ/X5tz7KRxpWyCEjwRY0/rtg8LlexCl1cCBtYWEtsVCX1WWXtUUlGIt5a4F2HQdY4O8DJ+MSkornVd/MZKF+FGg5LSrlEjPTTH8izKcAVRMhg6hLZrwm3SsAFrvBE+alYRNg/kL0IqnXEYGG50xxC9r+/RUrDFVUVJAu9JTG5GqD8xKiDuviPz/s7o6sO4QAPwL+JE/jlmiTvgxeHHOHTTyLSefxQk0XB3Py/gNlUTrZpWk5EmF43ifqkJ2I/Z2gMhO5vaEesqDwYjg7vZQZdPw9iwsq6Y/spnbg/99Ag45nixOWyLqIVbb8zQjzi/ZDhssAz+DKxW47ulfypmYu4O3I/9xsw2hfb13Ur0zVT6i25Srs6ls64VTX51lrTdwmz5vfp7XWzbz4t2UDjtyayh7RAX73rfNI4R8/F4hLE8Rjqbb+oc1
- ye8L985m
- VXmFpKWri0CPCvHRGci+bUvSzl/PIz8FbG/Ar4B4ejxiV0/cno+uoW8kFVqbITaVlQ3ACpKjnlG8Hs3WcZaqTK3HPkVcotkSZQ4nN42YYMRvjbll/95THQzT4aIhkXpLEznnO9XHZNxnw1djRNzQyHciowtSEoEwKAwzUn2IpRMaNuHIEMlQjzEU9eXlIgiI54uYV+X5trg1Fj3XqhGHvte0Q6XTL4yagsEpw+KrfXgiXa9HA0/HQr5PFy7DJy3PAVZ5NiKPrRvZkDIQddjSpAVu2gSS7Ce31/fiB2WSpdkyamRAiUpf95QeRk7yANiYKSAQ138XekeI1R/pONTYORgbT7QzhWSf9M5QBySUnT07NaeC43xswnSttWLRaWiF96DC7wUD1StYFJZB6w/gUPDtwLg==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783627085-505641
+X-HE-Meta: U2FsdGVkX19HJXdR12rewXKFLc5fDNHOtA6IVYD1w9AI0DKt+NDghiLkHMTD+1N9Lsrf6ErR5MsBK85lvVuYQzBQYkzm5Y1x9jW6s5dbGWkhFR62qLNaGhsbQWjPv1WU7OOm2Y6kxzJ7alRJwEguTDsX+mH8DkTpfuiwHBhBhRA/YL79YZt9HlvUjtGzp5YC+CS1UTjUWELi1p0zbRjGH1z8y5r52VBIYrzyP3VRy8T7IbnsYvFi72L0aooKOg7WBu8tTbRImBNsQNU08+O+Zx0JKo9mqsiyCOP8dLFAeYnb2fG76oj/IQVso5FkblY8IsnqIgVD+43y5OD8VyPAG5sJgDwRI3laOomIibMngL0TF7pn9NQdre0fXFWi4Iv7B58j2VjhiaM2aX2mexoMVuPrIQ5Ay5liT8IjrtLnLovb9CznmwRipULvB1nCBxFhu+5JjpDcv6ZDwttWJwsL3fZtIjmVUrFsD/5BHaBXRcp0do6Ry6CzQtUpYuQMBhWDFGmP0mEHD0P8ZF8ZcPjL9k6hDKr2wFHpcgSJC9lidvioDrVYWc8wWPU5QLv9hrynCTRQqJ2ca/aO/DuQWgluB5BJQhni7NCWPPNEh/TMOS1SuXfQ++06A7QLc7dpPaI3Re1Retqn++KgEgVayP4izriG5T19x1rk5XTgB/OfKsSBkMx0cMSy4yRn3a2IvW6S+Gi6TafnWyevPCz+dzyJd0RA+U7W1GUHQq67B8BK/CjZCxMA3CkOJNq6uOJAOO8VS6IYo73Q4wcYjM/3mnuoApUn0j7dCZhuG390txfhj/vGM0WvBD9YSE5UxsQ7AU8uRKwUNxgMT5/rWNiZNZYVqn7TM5IM3I3XhCgAAiWsc+uE4dl2SoZgxxQDTNjmoq3kDHsTdtYm8X7+m6T62oP1tDpFliWbkW+nUTONFtN2lFRg8jmNXQm52N+qulmXAEOA/aKrXhsWlQYgwGNJGfd
+ ZI2a9+x9
+ +hPo3i4fEtwHFNNxZ2bPGB3f+hUohtXSRfJE8w7u0nJXGBYtMA0Ob9tum4PpKAbj4wYFKPf8rnB40npb+xSmcvrxPP04sSc8mpY6MlZk0ozxgixTR4RSHp03FpK/RPUN2NserrLnCKQz4U3ZDOOPg7qTHrieQGzEFSHW8udF01XWnv75GsWJmE0X9E2zA6KP+PpoQAWiVSH9YPS1XXWgojwfDtilNWGYCDbHijpCQGrUogCXaC9UmX/j1a5ke61ACVnb7w/yDrbskmbs2GVHqz5x5eKzTNolLkRBEovEvoiUMfsY2P2mDev+eJyBCxJ/3TL/SU46o8+QqQMiwZCoUQ3Mh2OZ325am6JNI9zXtMO3g307CFO1tdqu1j+ly0oZfoFsfTWHC4jz4wkqCVdd5/r/LMdKv/VFbbg13Ay8vPLA/RtqH2OzUsOmAdv/b6c/troAEOLzmC1a4qaDZ3mrdzBOFuTT6ufuKgusWFxuByb4mOjbSgwC3HF+EVDTpORnV2EtPBErmHi2PX3iKK3d8dHDcZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,33 +123,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 9, 2026 at 9:34=E2=80=AFAM Yunzhao Li <yunzhao@cloudflare.com> =
-wrote:
->
-> > Are you observing any performance impact when enabling it
-> > (e.g. higher fault latencies)?
->
-> Actually the opposite with this patch. Swap performance is better with th=
-e
-> shrinker enabled:
->
->   shrinker=3DY: sync swap overhead 10.3 ms, swap rate ~800/s
->   shrinker=3DN: sync swap overhead 22.5 ms, swap rate ~1.7K/s
->
-> Per-swap latency is about the same (~30 =C2=B5s P99 both ways), but
-> with shrinker=3DN there's roughly 2x more swap activity. I think
-> the extra 16 GiB of free RAM from the shrinker just means less
-> memory pressure overall, so fewer pages need to be swapped in.
-> The shrinker seems to do a good job picking entries that don't
-> get faulted back in under our Prod environment.
 
-Yeah the per-fault latency is exactly what I was looking for. Seems
-like most of the faults are not faulting in the pages written back to
-disk, nice.
+--rvxsrpqt5djhs2ak
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 04/11] arm64/mm: Add set_memory_device() and
+ set_memory_normal()
+MIME-Version: 1.0
 
-Would you be able to take a stab at eliminating the flushes as I
-suggested above as an alternative?
+On Tue, Jul 07, 2026 at 12:27:13PM +0100, Will Deacon wrote:
+> On Mon, Jul 06, 2026 at 03:49:24PM +0200, Thierry Reding wrote:
+> > On Fri, Jul 03, 2026 at 06:13:31PM +0100, Will Deacon wrote:
+> > > On Thu, Jul 02, 2026 at 06:41:23PM +0200, Thierry Reding wrote:
+> > > > On Thu, Jul 02, 2026 at 03:46:44PM +0200, Thierry Reding wrote:
+> > > > > On Thu, Jul 02, 2026 at 10:18:47AM +0100, Will Deacon wrote:
+> > > > > > On Wed, Jul 01, 2026 at 06:08:15PM +0200, Thierry Reding wrote:
+> > > > > > > From: Chun Ng <chunn@nvidia.com>
+> > > > > > >=20
+> > > > > > > Add helpers to swap PROT_NORMAL and PROT_DEVICE_nGnRnE protec=
+tion bits
+> > > > > > > on a kernel-linear-map range.
+> > > > > >=20
+> > > > > > That sounds like a really terrible idea. Why is this necessary =
+and how
+> > > > > > does it interact with things like load_unaligned_zeropad()?
+> > > > >=20
+> > > > > This is necessary because once the memory controller has walled o=
+ff the
+> > > > > new memory region the CPU must not access it under any circumstan=
+ces or
+> > > > > it'll cause the CPU to lock up (I think technically it'll hit an =
+SError
+> > > > > but in practice that just means it'll freeze, as far as I can tel=
+l).
+> > > > >=20
+> > > > > Probably doesn't interact well at all with load_unaligned_zeropad=
+().
+> > > > >=20
+> > > > > > I think you should unmap the memory from the linear map and mem=
+remap()
+> > > > > > it instead.
+> > > > >=20
+> > > > > Given that the memory can never be accessed by the CPU after the =
+memory
+> > > > > controller locks it down, I don't think we'll even need memremap(=
+). The
+> > > > > only thing we really need is the sg_table we hand out via the DMA=
+ BUFs
+> > > > > so that they can be used by device drivers to program their DMA e=
+ngines
+> > > > > internally.
+> > > > >=20
+> > > > > Looking through some of the architecture code around this, should=
+n't we
+> > > > > simply be using set_memory_encrypted() and set_memory_decrypted()=
+ for
+> > > > > this? While they might've been created for slightly other use-cas=
+es,
+> > > > > they seem to be doing exactly what we want (i.e. remove the page =
+range
+> > > > > from the linear mapping and flushing it, or restoring the valid b=
+it and
+> > > > > standard permissions, respectively).
+> > > >=20
+> > > > Ah... I guess we can't do it because we're not in a realm world and=
+ so
+> > > > the early checks in __set_memory_enc_dec() would return early and t=
+urn
+> > > > it into a no-op.
+> > > >=20
+> > > > How about if I extract a common helper and provide set_memory_p() a=
+nd
+> > > > set_memory_np() in terms of those. Those are available on x86 and
+> > > > PowerPC as well, so fairly standard. I suppose at that point we're
+> > > > closer to set_memory_valid().
+> > >=20
+> > > Why not just call set_direct_map_invalid_noflush() +
+> > > flush_tlb_kernel_range() for each page? We already have APIs for this.
+> >=20
+> > Having a "standard" helper with a fixed and documented purposed seemed
+> > like a preferable approach for this particular case. We also may want to
+> > make the driver that uses this buildable as a module, in which case we'd
+> > need to export these rather low-level APIs. And then there's also the
+> > fact that we typically call this on a rather large region of memory
+> > (usually something like 512 MiB), so doing it page-by-page is rather
+> > suboptimal.
+> >=20
+> > > The big challenge I see with any linear map manipulation, however, is
+> > > that it will rely on can_set_direct_map() which likely means you need=
+ to
+> > > give up some performance and/or security to make this work. Does memo=
+ry
+> > > become inaccesible dynamically at runtime? If not, the best bet would
+> > > be to describe it as a carveout in the DT and mark it as "no-map" so
+> > > we avoid mapping it in the first place.
+> >=20
+> > VPR exists in two modes: static and resizable. For static VPR we do
+> > exactly that: describe it as carveout in DT with no-map and deal with it
+> > accordingly in the driver. Resizable VPR is for device that have small
+> > amounts of RAM. Content-protected video playback will in the worst case
+> > consume around 1.8 GiB of RAM, so we want to be able to reuse for other
+> > purposes when VPR is unused on those devices. In that case, the memory
+> > is also described as a reserved-memory region in DT, but it is marked as
+> > reusable so that it can be managed by CMA.
+> >=20
+> > The resize operation is fairly slow to begin with because we need to
+> > stall the GPU and put it into reset before the operation, then take it
+> > out of reset and resume it afterwards.
+> >=20
+> > What kind of performance impact do you expect?
+>=20
+> You'll need to measure it, but we've seen reports of double-digit
+> percentage regressions in performance and power. As I said, the problem
+> is that you need to split the linear map to 4k page at runtime to unmap
+> the dynamic carveout, but that isn't something that can be done on most
+> CPUs. Therefore you end up having to use page-granular mappings for the
+> entire thing, similarly to how 'rodata_full' drives can_set_direct_map()
+> and the perf/power hit affects everything.
 
-(Also in general, please avoid top-posting and respond inline:
-https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replying)
+The VPR has fairly large alignment restrictions (1 MiB) and we do unmap
+in fairly large chunks (512 MiB currently, but we can change that if it
+is helpful) because we really want to avoid resizing operations, so the
+tradeoff is between frequency of resize vs. potential memory wasted.
+
+Does that change anything with regards to performance?
+
+Thierry
+
+--rvxsrpqt5djhs2ak
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmpP/UkACgkQ3SOs138+
+s6GFqBAAsfNpGtxzDc/1UKAc4Vjp9eilQE6L3ZzhQhn1d3Crc+ym9vGZzyfe4lTR
+di2aYaWn+6XslOczfKwW58jo+D8/fP64sFF9UY3mR7U+MzuIGEF61RVgF0fFH4Vb
+wo6H5bLYvA2J1VhXyIv08l/Oxb+GGHMa2gRVdTbFux+csAi4ahPJVT0oS9S0sJht
+cmPEaDkjN8StPrx4IN3oTcj7g3LW3aDuShMtgqRrceSaIw2xvtb+rvWLvGJac/HH
+kNrn5Vc+pAJJigN3NZqMgpjeD3gHZDZYaKUToPXJuIOlZILR0VzdDAHxD9U+lmyD
+YVPGNnPi13QmxTk9KHR+Tm2aL7AxXx8TK0jIOUFuaySrgD16Oo9CTxOvsxewNGpg
+lGDhuvag7BCxZqQzlxbhAuGtHZS+s6OWCXleWAsKpVs4Ga/FDaAvZYCHugxIur84
+mexc1/5CBcjohTAfvTLpAZGUxDXslKopeYaBZGgRJXz+iwulrGeeDpEvDH1VNo1r
+SkCIXoLOlq4bEKwejuGzuVzc47hLYGL+c09cCOwa73rhvVARke2v05fRowwN29Iv
+1OVDKNQTsHbBZ8PNTsoaEApLvif8crc38kborIPtiuaGz4WDg7q90ogJoIhqEK2L
+z8Lt64Ul985C2ht8PNWLbWeUKGNX54YFmnBCCP+lgBzDRu2sc4g=
+=Axxn
+-----END PGP SIGNATURE-----
+
+--rvxsrpqt5djhs2ak--
 
