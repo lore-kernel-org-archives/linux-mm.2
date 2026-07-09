@@ -4,95 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EC8EC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:45:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D4DAC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:46:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FB3C6B0088; Thu,  9 Jul 2026 13:45:44 -0400 (EDT)
+	id 085B06B00BD; Thu,  9 Jul 2026 13:46:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D2C76B00BD; Thu,  9 Jul 2026 13:45:44 -0400 (EDT)
+	id 05DC06B00C0; Thu,  9 Jul 2026 13:46:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00FEB6B00BF; Thu,  9 Jul 2026 13:45:43 -0400 (EDT)
+	id EB6FF6B00C1; Thu,  9 Jul 2026 13:46:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C63766B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:45:43 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D64061C8179
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:12 +0000 (UTC)
-X-FDA: 84969949344.15.4FFF2CC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 47735A0004
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RlW3SLa/";
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783618751;
-	b=XvuAST1Hc/rL4HRWtwHFQhIfQqF5HXFdXOxgc2c+WLVp64IMPjVyYBxC1/wdbkSIFmm4Ny
-	62SlqlNIFPJi4ZWmv98PrBFxZOSqdVHgGKi5MkyYkWkfwxNIsor0qVYFckFUMWdFWcQQyk
-	c3DmDRP8KU/1HyjsgwyALNeoYeyCB7A=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RlW3SLa/";
-	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B35946B00BD
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:46:03 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B8451A0248
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:46:03 +0000 (UTC)
+X-FDA: 84969966606.17.9E4548B
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 1F1FA40005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:46:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=DTF9PLtJ;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783618751;
+	s=arc-20220608; t=1783619161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dgB2xMhCheXYxaDaTXd3qxlc7A2ly9v83pGoMbOAmws=;
-	b=pa4/13DsugY+JUOy6rrGvN6N8NWWi6DQTz3txFClgB8LBays6IIUbt9UWBl/6TJfafrgEh
-	jABhHF2ebIlpwo2K40X7pB98HQ26+3bo+R/LpEZ/7mEi/C1bR3uPSPNkSJsWRg6nwM0KoQ
-	ah3ZPDGRRb8D3yPdlmSfNb1I5tu9OrM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D6B8461836;
-	Thu,  9 Jul 2026 17:39:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0CA1F00A3D;
-	Thu,  9 Jul 2026 17:39:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783618750;
-	bh=dgB2xMhCheXYxaDaTXd3qxlc7A2ly9v83pGoMbOAmws=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RlW3SLa/7ACatTt0jZ2TGxgUhFDYqGkZzFlokYqAgVzHR7YUv5fO80oyI3obRxQma
-	 E+1avjG09445a841Dj7dNYSogNub6lOhJTHMC9mPHYPl65v550aLUdqn8h1m+SmXIX
-	 uMuaYw+QI7uJCIqBt/M9vGyfHzOhSlUgtsC3VbsWmXAcFrd4HIUWK3CpQ4RJrwh4xO
-	 EiFs2M0Spe454LDUALw3E2Gg4hPnKzlpyTBhpY6ipyr4vef5NlHbyveaO5bbT+RVP8
-	 MdWJe7FbzAc5dinNreJF58+0w+cIDnutUn3dCZD3OwlqrXaqVGoXXCmBDf5furhlgr
-	 OotBLs7sBSajQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+	bh=ARkFEEgQKbrHJZpn11PfpILDbZ2rflYjxDUaqEPQFVE=;
+	b=AneQfofPi9yigfZvilRUMTO4GzOwPXLmLTHlx48JW9aezzE0DrfqfU4S0RuNS+oIEl76jk
+	8MPYjPy0Bu+PqFqqPygPyuaWp2sT7lhScwa+gpLQy8IsMTChoYHEEcykUGpK++9L0UwB/W
+	+FPlijpfRarjRsyPAf90Tp+pGApTNNM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=DTF9PLtJ;
+	spf=pass (imf17.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783619161;
+	b=1yDoT36KgCYuu+BCEv+j99L0wIWCmcHDLBqDl1aiR5Jw4WAHC4yVfin8Fk/tjhiZVtPoDJ
+	uI6CJHdjuauQJE33yNZQG8sV+fSqMzhaq7JMhJ4HF6YJeOh6Itvq7e7kcfe+pG5bC/mevB
+	0O1ACmXFcmB26tseKCNu7XlrjPF6FH4=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c5382806fso339761cf.2
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 10:46:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1783619160; x=1784223960; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ARkFEEgQKbrHJZpn11PfpILDbZ2rflYjxDUaqEPQFVE=;
+        b=DTF9PLtJJjeu2CvEuLDkQehVcTorCLDij2Tv0beKCa9x7z5sHKFWlW9vtiYcJ4Fkj1
+         KXWUpfcMlVtn92Rbitnw0OyGqZh500e8Xu8BPcuT9a5wRiB9hz7qq/8OIk8OjJIsjvt7
+         M4MxPoSD3t60bSxYklqVChhgMCRGymruXdv25w5WESUlrIxxMZQT9wCJeVkHa1qfcdHu
+         /OzmfI283QuNcyBMfeLd04Wsas5T2siijGHcNHeU1LS2nY1kKq3sPltIZ0YtswqlY96e
+         OfkDlwz7L68pkDh4As3DmOTaT3sG9VJeleK0/KzXmgqikpUoFk0Y30iCa50BC7AKZgLK
+         aAIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783619160; x=1784223960;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ARkFEEgQKbrHJZpn11PfpILDbZ2rflYjxDUaqEPQFVE=;
+        b=p3/ZuL2mroJaNUpCnbkjcGmHfApdPz3PQPqZPly8qUfwKXxLSOfmAvWsyh5bF0Fh5Q
+         QgiZLoEbb5wdtYuVvybOW7Xf7La+I5kQXB6JJMGxkG9V5kJ/eXBSZD/pOjyECiIBTkIG
+         y9XScCpbefFxpdJUG0+h3XP9I2qWx/HDALch7NU3nBvx/1T5JzuEuYyYLjmw9hblpcVp
+         X3wH/AoRx2k1Mzdoh2/HViqGeuiB1bBpTgK4/qB/IQOt4fuvMW1J/mDVme07xNqBSoXM
+         Us+u14rfawsgfLS/qbM2SeGoeJJurNvEGDP3s5VipeZm1XcZoAW3vQHcb7/t35D0YTjy
+         TtQw==
+X-Forwarded-Encrypted: i=1; AHgh+RqQwdFRFvuQ57Eu5qerHtP3CKbsLRgBvh+vD+k0WLggpDMeT/Rr+E5IEFsUgIfpuC7HylkQmNUZVg==@kvack.org
+X-Gm-Message-State: AOJu0YyZchvt4IOPZl3ztZbg0xUtjgOOjRlAIkesQRm1RjDA50EcsVRb
+	w7USucs1Ncr1N0+fxrqYn4tbbpqYYDFkhe5rRiXXQU16/L9Vnz9560T75AlERUCA8/8=
+X-Gm-Gg: AfdE7cnLS4TN7ChXlXUXIwTN7Xldz7yA2uiPahhbcFfFXOMgXYE+94eMrgbhhqKKwUF
+	UMzpcPGjE7ljmx3AD988SJnmg6C48TJi5Y4tKSOggERoYwG1RZN5Ku1WoW4nsffnSmhT19w69mS
+	aW4zJomxRRTRPWmAHqdTfhAgoBCduDmlSy4Yp5YX93vb1VojygfvgMawHpqTf4xtSrN7IOWXtyU
+	HBk74HTG0Lj4tcw19TYNEiI4zHjQshDwEY/HEJi0HzorrXekVyqOkn2Bmtskwzl6+QrD2T5UMbR
+	bCkJkHfHhw4R3aJVOmTpHj0j71J/nGj4hdy54RlAZbmv9MM4kjbAVQQGNufJgl68+7baCdjTyc4
+	u2Sw8gCQPXRbA2CS6Ui9m6bJDASw8rdLFNKx96rOf79CXxfWAo9flzjEkK/t7kMb4sJ2StNNjHx
+	VfSsSmC79RXQg=
+X-Received: by 2002:ac8:5741:0:b0:51c:1361:fead with SMTP id d75a77b69052e-51c8b4160c7mr98674671cf.37.1783619160101;
+        Thu, 09 Jul 2026 10:46:00 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd50df5e2sm22716566d6.4.2026.07.09.10.45.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 10:45:58 -0700 (PDT)
+Date: Thu, 9 Jul 2026 13:45:58 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
 	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Miu <jasonmiu@google.com>,
-	Jork Loeser <jloeser@linux.microsoft.com>
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 15/21] kho: initialize preserved memory map radix tree earlier
-Date: Thu,  9 Jul 2026 19:38:04 +0200
-Message-ID: <20260709173821.429921-16-pratyush@kernel.org>
-X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-In-Reply-To: <20260709173821.429921-1-pratyush@kernel.org>
-References: <20260709173821.429921-1-pratyush@kernel.org>
+Subject: Re: [PATCH 3/4] mm: page_alloc: move capture_control to the page
+ allocator
+Message-ID: <ak_eVpT_SpYytSSw@cmpxchg.org>
+References: <20260626182215.1107966-1-hannes@cmpxchg.org>
+ <20260626182215.1107966-4-hannes@cmpxchg.org>
+ <c11c73ba-4422-4ef1-834d-6cc230146dea@kernel.org>
+ <akV_VwtcvUN7Mq16@cmpxchg.org>
+ <e63acfb5-c9d6-4e2a-b44c-417ad3a15b8b@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e63acfb5-c9d6-4e2a-b44c-417ad3a15b8b@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 47735A0004
-X-Stat-Signature: 9rtjtoo76jrc1nqj7heg8c9eyjjk7ybh
-X-HE-Tag: 1783618751-620556
-X-HE-Meta: U2FsdGVkX18rr9e2gTQBujRPpnRv9EXh2kEEVN403kweX0IznkH2b75AgUszzqr2p9wRlHezMBwhObnjcPflydrIswGwDK6ieTQ8Eks/BPvqS4kvBxFERncJHN+CGPMyVeB/nbVL3LLlCNWg2JOEFxktZOiY8zgiVIEarOgxjZl036cwJx8xvmm6rEtuzZUjZh5N094eQWGQUJSps2k1I5dhDbm58xvO1Nz1oZgv04+g9EXuLMZokYVBNzf8H8q0WXhCKLU3RStnSN+KS3cuZniWgu619WoFOxSCQZQjlvVd27PJ+U986VOejw+J2DQQXGbSL40igyK2BG+vGeoUxjh5GypnBnJNrqhHvSkmbh8XBB+Ft3s14Zy6FgDz2eAr39qBVvBkuw9U8HfAj9FWW1S1l/W0VPjYtI+LW4xUrC8dV5kCxOcPXLbCjqXu7Gg0XJjPRjdfdkahwLFP9HIt2e5KPsAYP0xH1Ip2iC8NIyqQr3sOSOEMJ53kynx0A3fjdP30chtCdmGizq4d45Kg00j9mZNjtBifN2fSmD5cA0tYFCYu1kG0sykj4wvbCQXZwgTBhmxeIeOaKE22c7bvNUw94nw3HS9pVgyByM/ndAxJ7ef40jDq4mfsxvs2k+wTf5VAgdiRKaWj3wFv4Mdfs9glqY6Pghy+h18Rmeguy7uKS4l56hY9k0jj0oye6/lRtzC81bTtyGvnPXyGMkQOSvXlzM9EQIQ0zoAxpaNPHfI22yPtn7OtiXYw2pF7vmPGo/ooj72PWooFaijmrtHUNTwfM8I+YW0E+Q60Vy9egdwuwkcw+/Zj+U2YXILR5vterAIw2ewJIEXSesbTbWle5dSzgSwYFj17okAnG6QROdPERqH+a9Nh7pwOIE4eYfOdiL6li97zBJ7oe6oAqMhwMTuQUhAsBKf4lAEz9Fvf6feelyarsLYbgVHbIrE74kr7TmG5OXy53c/JnGhWs3H
- y//piUeT
- GC3K6rPugOnVDlwC0OOpUxeFRPRH23YiGye1Qjpsh3fHyO+QetA9IXqz5pxR50R7X4X8fG7pgPQfOeZfif8mf+RKcaKb1Y3C//AjaCeUAaBV0noNlNvic7CHvURmaENweazEASthsBxlP1v4gh1wGwQDvb6pBaC0XpK2HPZYgy8rnChGy5ESyUYUMKrWkNzNTVnAvqW65tpGWfolAPQzeQijfLBRw5tyXwKszWIefeqv0Ulc=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1F1FA40005
+X-Stat-Signature: usutj4ct4xgnu7n7h6zaccgpm99gx38x
+X-HE-Tag: 1783619160-193325
+X-HE-Meta: U2FsdGVkX191VPcJcFOH640HV5oMWX9DM90MNi0wb+vSOuqbucy09g5Hz1nprtvPIkUe9wohdi7HTE+5PLbk0m/ArkjcNbQ8Uj36QTa/pZ2z/9Tp1hT8jpzo0hQxabkANI9Nwtaf3n04zagbMMon+ik0s6swm0t5CDzvFLVZEFLOo40A5WF7dNJdP5VDwzDBU+IO+zS5Ffo2Mly8xVA7HG65xFWZTgGlqREHC66XdyrgArnIMZvAtgPx0nSrlQwdS1yrFiZCaY3wlzvDG/lxK+Rbs6d+KBHDQK2W9AREUm921qklMczzil+pGjHqjggiXQnGHh1O6LtmWjmUr+4khIOxEKi+6Z8bxBVZHH9/f9ERijZjZdraGv0rfiypW7Ira5Ml5Cg9zxcAcgNotnoMnQHXxwdADn/plVpvkv8nPGmgoqn08OwiQarWWj4EcRCKMmKHvlDxldwwMCqtUteIXx6jXtf3+dtc2PYvVUnxUBMHDfafI7hMSEJMr8WTUA++lRZm9YaIpifl73DrBAXwF7q5NXD0c70WN9mwIZTURaE0as5+lFwvs1p1CyXeT8egnacZBOf2sqUonaz2HKsnN/cc0TU2KYSbEQm4ylwxNbgSlqdWk0V/1dGg7fiNCk1iQd7Ebz8ZJALgmPlC1rMSBv/9KUsTE5De3cILN/4UlnWQGqiFyLGnyeqPiw+sv/yOLHsomKP75ZFrwRrNLAaefE0sJJ/TlcM7rr3C+ogdbQZPIPkvLHLrwvVWHeuRwvvX3TXntSSLOAoxVI/U4KWojGjqW4G9WDXOf5MDmuDaHe8fIP5diH8s63LAHiq5h7hreHpHWI0LdDJWXmxwQnnSU4g+Hne3wtS0kNW1tMO05QZDqwHr41Dj6jJpptqGa46CAO+LvJx04GJj9c+9HW/Gc0liCFTdqPkAcw5ZPmSAXFtPqUekWL4hUf+yf4c2SqOaY6wa339R3y51poi3gPs
+ WLpF9dBH
+ AMMlQODIudQfshX/SCnXp3NU/vPpMPoDd40o9NntZHSqaU7jc5pX6qnkBo3NkQhRQ9R0I/iQgtEhzXT1BdwIq6aA1YPdfzXbCS2KjVJPuo8kA4TdCLT5vmob7by7N5WcoqrAXaLPjT/Pu0cu4PkQtOzBt+A90EEY6GDb6yw6K1fb62ZyhumyKT0MVKD5Sr86UykvbS/95dDccxmQZd9C92wxBuXP9uOltiFTouW5tFQgWm7Dfk+i/vJWxD42ETLiw30WOIH/VgpVf0QQ1Vd73YS/JHH3WcKKdScTXI4/5YyY5OVXoJMeuxjpBlsSbwzkobo6XDRXElhq3POdO9TuRRH3rBYqoiDDJ1w/DaGZRBNWftEj4t7q83JsvTHruOMaRLbKzEa0Ji5LUHC7lZRVjIiGARhcDncLIZa5gHFXEjDNTTnvrgp5p3SDJPeltSw5GhGRF0L+4nlZVr30=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,78 +130,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On Thu, Jul 02, 2026 at 12:20:48PM +0200, Vlastimil Babka (SUSE) wrote:
+> Now my version (only compile tested):
 
-Currently the preserved memory radix tree is initialized from
-kho_memory_init(), which happens relatively late in MM init. In a coming
-patch, the tree will be used from kho_memory_init_early(). Move the tree
-initialization there.
+Ah, now I get it. Thanks.
 
-Simplify some of the code in kho_mem_retrieve() by getting rid of the
-err variable and jumping to err directly.
+> diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+> index f29ef0653546..66a2f70e9e01 100644
+> --- a/include/linux/compaction.h
+> +++ b/include/linux/compaction.h
+> @@ -58,6 +58,7 @@ enum compact_result {
+>  };
+>  
+>  struct alloc_context; /* in mm/internal.h */
+> +struct capture_control; /* in mm/internal.h */
+>  
+>  /*
+>   * Number of free order-0 pages that should be available above given watermark
+> @@ -92,7 +93,7 @@ extern int fragmentation_index(struct zone *zone, unsigned int order);
+>  extern enum compact_result try_to_compact_pages(gfp_t gfp_mask,
+>  		unsigned int order, unsigned int alloc_flags,
+>  		const struct alloc_context *ac, enum compact_priority prio,
+> -		struct page **page);
+> +		struct capture_control *capc);
+>  extern void reset_isolation_suitable(pg_data_t *pgdat);
+>  extern bool compaction_suitable(struct zone *zone, int order,
+>  				unsigned long watermark, int highest_zoneidx);
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index b7878e4a2c4b..902573797f99 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -2792,7 +2792,7 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
+>  static enum compact_result compact_zone_order(struct zone *zone, int order,
+>  		gfp_t gfp_mask, enum compact_priority prio,
+>  		unsigned int alloc_flags, int highest_zoneidx,
+> -		struct page **capture)
+> +		struct capture_control *capc)
+>  {
+>  	enum compact_result ret;
+>  	struct compact_control cc = {
+> @@ -2809,36 +2809,8 @@ static enum compact_result compact_zone_order(struct zone *zone, int order,
+>  		.ignore_skip_hint = (prio == MIN_COMPACT_PRIORITY),
+>  		.ignore_block_suitable = (prio == MIN_COMPACT_PRIORITY)
+>  	};
+> -	struct capture_control capc = {
+> -		.cc = &cc,
+> -		.page = NULL,
+> -	};
+> -
+> -	/*
+> -	 * Make sure the structs are really initialized before we expose the
+> -	 * capture control, in case we are interrupted and the interrupt handler
+> -	 * frees a page.
+> -	 */
+> -	barrier();
+> -	WRITE_ONCE(current->capture_control, &capc);
+>  
+> -	ret = compact_zone(&cc, &capc);
+> -
+> -	/*
+> -	 * Make sure we hide capture control first before we read the captured
+> -	 * page pointer, otherwise an interrupt could free and capture a page
+> -	 * and we would leak it.
+> -	 */
+> -	WRITE_ONCE(current->capture_control, NULL);
+> -	*capture = READ_ONCE(capc.page);
+> -	/*
+> -	 * Technically, it is also possible that compaction is skipped but
+> -	 * the page is still captured out of luck(IRQ came and freed the page).
+> -	 * Returning COMPACT_SUCCESS in such cases helps in properly accounting
+> -	 * the COMPACT[STALL|FAIL] when compaction is skipped.
+> -	 */
+> -	if (*capture)
+> -		ret = COMPACT_SUCCESS;
+> +	ret = compact_zone(&cc, capc);
 
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
----
- kernel/liveupdate/kexec_handover.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+&capc, and I switched it to just return compact_zone(&cc, &capc);
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 2ddfc804cdf7..6e8682469bd7 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1531,20 +1531,8 @@ static void __init kho_mem_retrieve(void)
- 	const struct kho_radix_walk_cb cb = {
- 		.leaf = kho_preserved_memory_reserve,
- 	};
--	const void *fdt = kho_get_fdt();
--	int err;
- 
--	/*
--	 * kho_get_mem_map() should always succeed. If it fails, kho_populate()
--	 * catches that and never sets kho_in.scratch_phys, which stops memory
--	 * retrieval.
--	 */
--	err = kho_radix_init_tree(&kho_in.radix_tree, kho_get_mem_map(fdt));
--	if (err)
--		goto err;
--
--	err = kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL);
--	if (err)
-+	if (kho_radix_walk_tree(&kho_in.radix_tree, &cb, NULL))
- 		goto err;
- 
- 	return;
-@@ -1756,6 +1744,8 @@ fs_initcall(kho_init);
- 
- void __init kho_memory_init_early(void)
- {
-+	const void *fdt = kho_get_fdt();
-+
- 	if (!is_kho_boot())
- 		return;
- 
-@@ -1765,6 +1755,20 @@ void __init kho_memory_init_early(void)
- 	 * early.
- 	 */
- 	kho_scratch = phys_to_virt(kho_in.scratch_phys);
-+
-+	/*
-+	 * kho_get_mem_map() should always succeed. If it fails, kho_populate()
-+	 * catches that and never sets kho_in.fdt_phys.
-+	 */
-+	if (kho_radix_init_tree(&kho_in.radix_tree, kho_get_mem_map(fdt))) {
-+		/*
-+		 * Failed to initialize preserved memory radix tree. Clear FDT
-+		 * and scratch so KHO users don't treat it as a KHO boot.
-+		 */
-+		kho_in.fdt_phys = 0;
-+		kho_in.scratch_phys = 0;
-+		return;
-+	}
- }
- 
- void __init kho_memory_init(void)
--- 
-2.55.0.141.g00534a21ce-goog
-
+But otherwise it looks clean to me. I'd just take this as-is with your
+From: if you don't mind. Can I add your S-O-B?
 
