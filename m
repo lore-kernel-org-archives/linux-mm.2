@@ -4,111 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAE7BC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 02:33:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24D94C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 02:37:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACCC36B008A; Wed,  8 Jul 2026 22:33:47 -0400 (EDT)
+	id DBB0E6B0088; Wed,  8 Jul 2026 22:37:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA6CE6B0092; Wed,  8 Jul 2026 22:33:47 -0400 (EDT)
+	id D930A6B008A; Wed,  8 Jul 2026 22:37:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BB8E6B0093; Wed,  8 Jul 2026 22:33:47 -0400 (EDT)
+	id CD8C86B008C; Wed,  8 Jul 2026 22:37:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 72AC86B008A
-	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 22:33:47 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 05A4D1C81D6
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 02:33:47 +0000 (UTC)
-X-FDA: 84967667694.25.4D08DD7
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1492CA0002
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 02:33:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r7Q1Gay2;
-	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CF906B0088
+	for <linux-mm@kvack.org>; Wed,  8 Jul 2026 22:37:25 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1644B120388
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 02:37:25 +0000 (UTC)
+X-FDA: 84967676850.26.667B559
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 64884160003
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 02:37:23 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WajQre9O;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783564643;
+	b=aIDvjDKkJZYnaMJTV3NE56i6J9IwhohAypxrFe6H7h1RWg2F4AVTj6U9E7VzbKsiw4I66u
+	ryEZd/SYQuPGODwz1k53yF8htdubBC1ZuqgVzE172sryIjPmaUrh/rwNZUy0wqPhFB5k9g
+	T2/HRXIXtkkjJmKqAdKP3etLpRLujrI=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WajQre9O;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783564425;
+	s=arc-20220608; t=1783564643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rUCzNBo2De+EFhwds+D3LViOOG1LNZhzLGOzUdX1xuI=;
-	b=OF0jzccU0YKSys+0qAjqdd3i9XxouMT1dVHJsXvtkr7giB7keoInOSUB4+P9hSh/lt8rfu
-	lu6e5ry2DCe9aAPI1JtvQPEaFpSnSACLCCjm0VBSWxFSKYJsGnLGoKYA44L0iXzz/ICXo/
-	hpnLoiRr2UnKL1/2+1Li01dzJkaUkpM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=r7Q1Gay2;
-	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783564425;
-	b=tXCiZOF55VzlKNUzqyceTU8qHUgS2f0gujpBOL806u69/RkQzbPfzoh6fPw5Ajwqa5nEnd
-	RndRxa8ClZt7fGCOa/uhMpcQAE7YypM6Fo4zUVuBqou8Og01YVdCuhczU83smlwB6FZ/aL
-	8gZ+NNjkICrsRYXmswhj/5mqLIGO//I=
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783564422;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rUCzNBo2De+EFhwds+D3LViOOG1LNZhzLGOzUdX1xuI=;
-	b=r7Q1Gay2oSrwXoJ7iuGffU4EvlFvnQegMN9d4T+5AoK8K6sgF+4mGzBYKl3UE2JSFm73T0
-	nD7oIrq/l0m1+Cwb69+VpKifvk6gBPY9qQtfiRjT7Zdc/WfGNfp/r5odSTR2WV5vHPkTxy
-	6p2kuqkiRW5gtdYt9D3ws9ynXwO52eg=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 01/10] x86/mm: drop order parameter from free_pagetable()
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260708-bootmem_info_part2-v1-1-156ce4986598@kernel.org>
-Date: Thu, 9 Jul 2026 10:32:57 +0800
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>,
- x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- Oscar Salvador <osalvador@suse.de>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- linux-s390@vger.kernel.org
+	bh=JX23oQxCnBnBAcGpq5NO6ntuxDExUTVnrk4WKrffy8o=;
+	b=XzTkrvF/8/ssO9w9KO6jo1wIRtjfFDJ34HOSmrjwTomD4PhT8e7lucKKcHqE1Cs2yCd98q
+	d+Dq8VEOlhbNn4rGq15u1bBz1b5zy2pgEZXUoKzerw3vQiMIMoK56TbeuJXFxzpghsCWQa
+	Z7i7hUtMtTTz8723R8k2CjPGdKTDg48=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C5ABF6001A;
+	Thu,  9 Jul 2026 02:37:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010801F000E9;
+	Thu,  9 Jul 2026 02:37:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1783564642;
+	bh=JX23oQxCnBnBAcGpq5NO6ntuxDExUTVnrk4WKrffy8o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WajQre9OLvs6mRqXfZYmVtTC4w1/Wvl3AnsS8o/+HCGyI2P6dC/xWlzvAYa83yZBN
+	 gBHqZMYCxRidUbGYVHy7z591MvvbfuXU2ZmuDY9x0jbjO+W3hMp8QuhAHYHLl5JO5b
+	 1DDN4kpF+eBciN33ilBDk1rPLtjCHGxgCpMKRf5w=
+Date: Wed, 8 Jul 2026 19:37:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hongfu Li <lihongfu@kylinos.cn>
+Cc: jgg@ziepe.ca, leon@kernel.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ hongfu.li@linux.dev
+Subject: Re: [PATCH] selftests/mm: Fix memleak in migration benchmark
+Message-Id: <20260708193721.5aae192c95bd8c7840e9c1b0@linux-foundation.org>
+In-Reply-To: <20260708103705.840679-1-lihongfu@kylinos.cn>
+References: <20260708103705.840679-1-lihongfu@kylinos.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <8ED0A21F-15DA-4B82-A326-88DDF7466CB6@linux.dev>
-References: <20260708-bootmem_info_part2-v1-0-156ce4986598@kernel.org>
- <20260708-bootmem_info_part2-v1-1-156ce4986598@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 9q8pitrwpozm6fr5e1ufh31m3zcws6tp
-X-Rspamd-Queue-Id: 1492CA0002
+X-Rspamd-Queue-Id: 64884160003
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783564424-366557
-X-HE-Meta: U2FsdGVkX19ZtR4AKbNaTbwDR3BjPA/YgT/EhY6HV8oPSVL2zXUv9viM0wbb/MyyjaZ7tcMXhycwP99tdZHoWsul1wmJgHZqDsqX2VYu7dDyBPD9i78YbNXkYw+5/RNg0htEGQ08S12HaBCLvHpIYvGzQDgamDOexNyeEYEXTfTNkJJytQai4PigbPJ5kmn1+8wGBotoR/AK85NBASRK6sCVOTvSwVVkhG2nbO6FdYEAlrutt78T/j5WEAcVw1jMUEEP9h47UxWRSTdXKhmJL6tznkxH9aL/Ki6alIL4b6Tq0uC0vclT/ePDMxX/17MWftxpYW2Mwx/Dx2ISI9lWjAKl9JfivfoXESHdmdzVB68NXy7VfzzDu50zn3YDilPsqnFObhEzRfcYM106iO/1UfmKsmF9ICSNEzzqxPLUR8HIDy+tLkN92Xajm/WhOEh7VPwaolvmQTeqbpohtmZExAysOWjwdEh7cnrIxfWCsQEYd5ZFm4mB6KEsaYgvTr53sH/9t8Imj8AKVJS4Lr4eltT7cRwQhgdCYq8+K+DfT+6COUjGyeQRmY/aJnjchyasvqaK7zjbGnvnm9PwZvwxqauletfUdjBf5yIg7vp0UbPcWvwu38rhybKJlh24F1RkGkH2SNTQtLG+ImwpUBLdRSwnBTv3QFB61+MCowvJKzdYzFJgYk/tq+6BM7Cy5e1ThOWf8Yu6kpNqGP950nzJE7V8f0htymKFT2/N3/R6HBg2x0nMlZuO4klCgtNqEuvnSB78Beq8mDDN+jZszowGsiErDAKW3T/C3EqmwB0rnZ5UGiQ55Ghbz4fGrol95D1tD83HVYTzS2PGRKrVQvx40rJCzRaaUnhvjjxgz+MQSk6cbk9zhD5Q6EZX9/R0SKq+uSgbxzkflwWl6TdNnxCHLWacbMQvdkNVs4qLjPPIN9MPJQKfUTAVCLQomiWWfYotJJRBWqsCVMlK+gZkPrD
- Ck+792lV
- jGi6ce8NF07NLoS7520Wk7ZisVVUE9vYfAkHAeBDNYfS4T8K/36K4K4bWgrwLQCo+9vpnXjnvMgbOnDqGDDlXkneXRQh5Bq/Y7b/Y+zlk+i0B/mGwwf6EDLR3zeglPHR49K2Ctcfbo7DJTGZSJ+wLd5ycy4e9IKtKTJ2wIiu+T7i8piMd5x8LwJTnEJKUINLFnxBYxLJ9cWB+iswDHMRX+lEk3AoUT8Al7lqCINZMNs/TWRtT4f0DK7o2UQntk6T72b8jaf+v/2Zi88mx3zqnhD0o+uqdZW9XVskNlxiColr+aMOEgw12kbd/GnpjgjLe1BSyqlYz1vguyNr3Fhu6AIBGow==
+X-Stat-Signature: ybmz6eboywmfht1syr5cwqw3rcz4peyp
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783564643-603294
+X-HE-Meta: U2FsdGVkX18BiDUKymIJDNhrcRG9DvsEAejSERsIql0ke59dTlhyvqEJHjO/eanr86Sra9+C7WALB/E4tZ3PBoMf9klV8XkxXO44iEVK4yofQuyecbGk27KO1+EeVIQeTKg6hR4BqYZGLioTvDcik2hTBjrnkMGz0LAW2fAVa/TGEtCZRtHSHsarjUgbrYf7I5Kl/6oTiUgUiXyuR5BLOVpynGz04s2U/vrdcbSCEZgFc9RUmAzYv7/U1hncuhEMfzww97w5mDA8JylNJDm7ZCtOnJblrYtjv3OJjriezdM/OORf0RNpEGKzIFRfDbB+fUzW81qjqXng65HmkChu00iq35yfJqGPbPcPVYV04I8h8A2GUVW/OKHGtAo538vqSwvbAAtAAG9xg0p1Jdt17Mj5Xgp5QcKK8KDn/jo57VrrZ9mI1mg3CNzWHAcc75ExZZLhJlcMV2R1EPh6688NhLtVgSLQ32VOP4rv8X4TcWpX1iT3KnNbBNc933BGfYuNQaRElQVp+XMLsKkuCJf1HNv2gGYjj1rOkQkDToTEyMuzaAuFXuYbc6cmyjHzO8JcopYlT/z9Y5uG24tKFF7UPlqghfRemTQeyzi8a60MEKz46Z27ljYcaXpatge2i0RcGgk2+PI2M9CKGInys61qCljauutbyuf8K/493KpofzWDeYGHzbLJ8S57Fu+7S4mLQjDkmDlft9dHc39XVd531n9OdQHPlVzO/txO6xDt7VNfoFyB98Ji430ZujMSkOMwFur8aH2T0nAjUBKvQ/tmDX3FMjv3rmtkWwfyVcJ4Q1xrZtek7ofw81y0XYZy+Rwif71+l+Y8ph8PKy3eWO+tYLA3Q7VSA7sRs8jQnYQBVl7ZuKF45fgmjO/MkUq0F4QJP3WfEl3Kn2inQZZ3Ih/M+jlxUBzqwa+RfTx39gLncntdCIy04KTOAV1DdVpFHFVzEUyOigh6k/boPsauWGB
+ jk2M+jsO
+ bcu2wiml/PKHs00qtCAh7kfW5EuL5dfF0GpdPZP3GNBCmgCGOPVMd87cJfD0QuNi7ju8rvdRtZZlEYreoXISm5kQJkxAMy7bm9+sofrbg4kommBTawFqWkDZoNdwR4ZX3mjYtB2fKpcsPgpYM1zyXQzou8WjxHY3WAnxMk55s45bLCu2/x/RuS8/sVvnDCZDsSJjufeu6O0+Nl2DgBZkoikDXKhjnSlAC3naO8GpRzsjQ+UHZ41QzljG6pcNKxdEwID9prcgLc2GV6vwYJJyeuPezH81P2xPJ0/PQyjz3HAXSkDHfLkVA0UoJkRvgiagbWUz428LoTUcmqHZw5XcuQTUWI3q3bv60W7wYsgVSgak/aFARq8ddfDz4tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,16 +92,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed,  8 Jul 2026 18:37:05 +0800 Hongfu Li <lihongfu@kylinos.cn> wrote:
 
+> Several early return paths in run_migration_benchmark() skip
+> hmm_buffer_free(), leaking the buffer. Replace with a single cleanup
+> label.
 
-> On Jul 8, 2026, at 22:10, David Hildenbrand (Arm) <david@kernel.org> wrote:
-> 
-> All callers pass 0, so let's drop the parameter.
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-
-Thanks.
-
+Thanks.  Sashiko found a bug:
+	https://sashiko.dev/#/patchset/20260708103705.840679-1-lihongfu@kylinos.cn
 
