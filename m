@@ -4,110 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35201C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:14:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BA72C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:15:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F2856B0005; Thu,  9 Jul 2026 18:14:36 -0400 (EDT)
+	id E2A696B0005; Thu,  9 Jul 2026 18:15:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17CAA6B0088; Thu,  9 Jul 2026 18:14:36 -0400 (EDT)
+	id DDE316B0088; Thu,  9 Jul 2026 18:15:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 044086B008A; Thu,  9 Jul 2026 18:14:35 -0400 (EDT)
+	id CA32E6B008A; Thu,  9 Jul 2026 18:15:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C15126B0005
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:14:35 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12DF312029B
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:14:35 +0000 (UTC)
-X-FDA: 84970643310.02.7D94AF0
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8479310000A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:14:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mEPJw3Qj;
-	spf=pass (imf05.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783635273;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 98C2A6B0005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:15:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69CCF1402BE
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:15:55 +0000 (UTC)
+X-FDA: 84970646670.18.34CF9F0
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6F06140009
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:15:53 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=c42vZu8j;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783635353;
+	b=tWGGaROwhKN2WVaCWg0k36Zs9lrlyccAtxq4Lv8r87l9Nu1QRl7VhoUVYN5H0uBWbiocu+
+	gFnJdB6Iw8Um3YeQKUrhGk20nv383HTOVd24n2qm2tWSoyrwNP/nGKVg11qLjyZG8VN+UP
+	PatyMrckgwImd27uz+z3eoZeZHOxxtw=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=c42vZu8j;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783635353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M94IAuvV4+QhxGhOa+LeYfxhtX2YDuwiGYbQ4fxHZ8w=;
-	b=hQBGyuzKZii8BcBjoRFKYSscRegaJNLlJZCvVq37v22B8HOXva+LLHz9im0PWHSWpFtxBC
-	X96jAcYvpilf8Jq6Dw0JzdDLGm1CTKW44TTlOctl/a/N/k728BngdS833RQU3RgHD5cxEu
-	coP6jiMkQGVtBkQf/Q++fD3nYgBRIo0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=mEPJw3Qj;
-	spf=pass (imf05.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783635273;
-	b=TWPf3GiFT1+LOHi1XENJKstuPJ7crxhMA/ZpXqmDtQUEMU/D4mnn1bNllmwkLZ3Mt0g40Q
-	xQLcmW3J5PXK4Mfn4t7rZdBJCUNq0X7a9SdRrKIbUAAIvGRMvwzSHs6GzadTAJyBawqH+R
-	0cHVGksGkpLUTXjAAsNJ/T+on8/+K24=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783635271; x=1815171271;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=H13cOZs0rbpMAnxve/WCmr3/qvgKGoLzGrSYFqPcPfw=;
-  b=mEPJw3Qj4iwrxQWNjZtsfcRbEzI8MrcYILPyXb4OWHLt5Zj7HNdM+uK8
-   gXO3ws1HNprbZjI4hydhLG4V+w34Rq2b7yBVK48p2FJKu3QqTpuAJZKsQ
-   jnK3VDa+zfJbcmlJ3pRcJgEEVYoU3wa0Ck3CtFcklppcZ6fHt3ny7c/FQ
-   FsB+peneZyZebJ/1L63a/waJiJVNyZb8+lyso4T/u5a2mIm5XxUJKk6Y+
-   miqHNkeI9s25sqnqGCUNBVNzVwtZs+ml5kWkuFhloT2OyP9+YkZOpCQNe
-   lqOwXtlzUb87m13zZcnIW/TyYTEHB1vbHaeSBuuxDMYzhj2yXlPaYx+TN
-   Q==;
-X-CSE-ConnectionGUID: 8nzDktquRu+prwnUTDPgsQ==
-X-CSE-MsgGUID: 9gL8XuqiQG6Yz+kgxdag8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="71859267"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="71859267"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 15:14:30 -0700
-X-CSE-ConnectionGUID: CX//9Zr4Th6aMk7l2xDAtw==
-X-CSE-MsgGUID: 22qVyAETSnC5lNDGXLID8g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="258601322"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.111.142]) ([10.125.111.142])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 15:14:28 -0700
-Message-ID: <6fd50351-93e0-4d65-960f-53dee655a786@intel.com>
-Date: Thu, 9 Jul 2026 15:14:26 -0700
+	bh=mEwVlE35yinwK/CaZ7UcUKT4GdRsANBC6/sIz3zUbfo=;
+	b=PJjv35XsFx797TLbf3pcLFjjXwx4MmF8eo/VY0n01o6tqGiZCYeZBu/jNnIO9mucEI2ew9
+	1jDREx1tMJ52v21k1PQwj5NMDZ1cZrnNlApD0jQEguTYtZqMILWU8McZK4xneWPOXKdwOX
+	1GkMc+x7FOxk+MKwXI3qPqsOuR0RTD0=
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c9cf07d2df6so213537a12.2
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 15:15:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783635352; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Vaw/YlYFT4+VGqKtp2fVMhVgh03FcX44YV39pyaVFZsOF4FfGjI2dO+gW7nWj/t6pk
+         VHncRkbtBu/Lld9ANM9DmkzfYXb0JMLJFPzwHWRmdiWz6IMJGE+FYANgM8VNJJYx6osj
+         buam734Cv3aq6jaS/3KAN30CppjWTWEvxZzc/cYi0Kmiaqp983637LnGMnCAlCn7Xv2Y
+         CgNdKtOqC1NBgOMXdmhgRy+UkuW7XrfEGygfMwWber2fbj5aILXARn3WRYLNUuLPMMq9
+         DrmFWxx1nfg60rouYlxqXb8J0cQl+UMWnDPAnH0dwlky/YqoZtno3hAPkV/JxUfjLdXC
+         OnBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=mEwVlE35yinwK/CaZ7UcUKT4GdRsANBC6/sIz3zUbfo=;
+        fh=nzfDC55mYK9/sYhsnXXhlt+kr+/9rEvYWddxbgc3qd8=;
+        b=NhI+F7tmYNGJlF/fUaD5eEML6KAt70E4aN0rtDMDLtv6Bu0Fq2pKZhJzXbcoZIkfAZ
+         4sZVD5Kf28IWct1m7fZhFxos9+++DOAi+1u7Cv96swW1bFNROZja5XQM/vPzfCVIlG15
+         /XR5nSOUkw0xRTp3svf8fTLVsbqCbFlaaqTeGMQap60QM3CloBkKmxZhvKMYS3O0U83M
+         aAqPT2qy1Pt31fuX1rHKIFGEhVjZJtxEBkoAgKASm5rtzM/WmqPlR5S8q5+/s68Y715t
+         OaMakd7OTbL4GUN71nrB8f43y2mbM3e+KsF9x8q3iJHPAF4hGA0/+xz+kvQ41ROxBaqg
+         YUIA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783635352; x=1784240152; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mEwVlE35yinwK/CaZ7UcUKT4GdRsANBC6/sIz3zUbfo=;
+        b=c42vZu8j1vECgwSZ5Xu1njX2a41BfV7nABasvFRRjUIJ+YUg9i5K7VF+Jx0cF3/eXJ
+         6f4qg9YChSKsAX2/HQSBEL/J69ceRUvTq78ezl4DLRU5IMCpK4SyvWi0+j6r1RtMqP/E
+         J2Q9xGXN/aH0jmu93mXbOrFMS+uJoKZx4gSmFTR/tOd4P0bbkT9t+Idn6/3IyQmu7Nic
+         fQ6aEP+kNLS+6C1R2Ac+rcQKxFxxhG+56PWFLgA17WU8E+30cQn+GOqYlZsLOCbxItam
+         j9rcwdb8sw5zGHrM0CkKTrnmlSwfHYF26krsDdmntu0lxQFe2PzJlhc5ThSKNABhf6vY
+         1EXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783635352; x=1784240152;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mEwVlE35yinwK/CaZ7UcUKT4GdRsANBC6/sIz3zUbfo=;
+        b=Mgq///bC62Luq8of5k4m0O4k3lOzvzCif59k0r3/k6NMGdwH/yTYNaT04ZuGdKG4/5
+         b2AI3+pyMgGiE+yKfjnHCT5Z0+nbhCpRfTxJBeq0lUVKtei9CvArNk0kJnL160VfxSUR
+         HjoOONp7VlsTJ1Fw4EpYZAcRvoK5aHjL6FXUdNzziWCMZ3yzWGvnqaFumY6uKOXlT2eR
+         yr/lKRpLKt+bJdwP+N+bCIUA0ENDRf4CJLcE89WDdqjoxIk4JZgxOBsD0xqwBXVPsekO
+         Tb6tyE8BiBysiamxoT5DF1nIuR7CSLurUMEtKCP+lvVafBso1y2vl5k20xfQil/ojlgQ
+         BfHw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro1hue13TjDdAbKISg4RKHq2gKktr0anUEp+1fprs+5/QUnA7BZSfUEBU1WixZXL8WLMOGsKpJwiw==@kvack.org
+X-Gm-Message-State: AOJu0YwqUPc9DO24pWUBAV+zGheTWyEmR3NQhTjw/BHAc6//UygGb020
+	REUHAIlhpVvTJmpiTnMQeKowV6uKwePVmFuOslaETKeO5SnbATCqnxtWl6jrm21NZb5Lt9+JS/q
+	t4E4wUV8f9CMvup1Wt7ssVLak96PK+97w/K1kUuuq
+X-Gm-Gg: AfdE7ckcTnK4Avw8ZswSfwBX3nV1rQcQ6qtP4sqrFVoeUQ9QbJAufkXVln5zs/7EK22
+	b8q6h0R0YO5RthXSOmUK0lJ9dwkcT0FAbQmNjEw8qYaREsofsGxLPG3NV4yHrvkx2jwIDuIwnmS
+	/qU4R9Hz1YL1nXHBqikvL16HKWCD44X90FxrBRg5POEUO/pYvJhxEFIq3T4FOg6nQev2itH2bXO
+	ZoCaWKrKzzopxmVSideuJwrYxukohbXbIEXpL2QDUOJFjujirlRBQLnDsxyKoBjSqHYLlLURXoI
+	VGfq9xDIodizMRtncuD5pNStCo8VwTHNhuurESNGUPyWIC3UnBSGJ89SqDeEr5rC/iLAyw==
+X-Received: by 2002:a05:6a21:3086:b0:3bf:b705:4b9d with SMTP id
+ adf61e73a8af0-3c0bceca396mr10973890637.28.1783635351656; Thu, 09 Jul 2026
+ 15:15:51 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 9 Jul 2026 15:15:50 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 9 Jul 2026 15:15:50 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <CAEvNRgH9WSF64eKardR9M9VeRiN85UkS=Zsje9H8mqjQQychmw@mail.gmail.com>
+References: <20260709153409.2091070-1-joshua.hahnjy@gmail.com> <CAEvNRgH9WSF64eKardR9M9VeRiN85UkS=Zsje9H8mqjQQychmw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 09/10] dax/kmem: add sysfs interface for atomic
- whole-device hotplug
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
- linux-kselftest@vger.kernel.org, kernel-team@meta.com, david@kernel.org,
- osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com,
- alison.schofield@intel.com, akpm@linux-foundation.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org, iweiny@kernel.org,
- Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com,
- Hannes Reinecke <hare@suse.de>
-References: <20260630211842.2252800-1-gourry@gourry.net>
- <20260630211842.2252800-10-gourry@gourry.net>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260630211842.2252800-10-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Thu, 9 Jul 2026 15:15:50 -0700
+X-Gm-Features: AVVi8CdvfF-IT3gKBuhe9TeVC3ZAyxvU-Wq7nKHZoFIvtZtPczQqgh73rAYctlA
+Message-ID: <CAEvNRgGN0HSJ2iLSDD2haSKOxifa-uhkO9Hwossh0+Q_d9fzOw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] mm: hugetlb: Fix subpool usage leak on allocation failure
+To: Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Peter Xu <peterx@redhat.com>, 
+	Wupeng Ma <mawupeng1@huawei.com>, fvdl@google.com, rientjes@google.com, 
+	jthoughton@google.com, vannapurve@google.com, erdemaktas@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	David Carlier <devnexen@gmail.com>, Zhao Li <enderaoelyther@gmail.com>, lance.yang@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 6F06140009
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8479310000A
-X-Stat-Signature: xq1zx3ute51fgr9m9mpnwezbr8fr3oyx
-X-HE-Tag: 1783635271-818063
-X-HE-Meta: U2FsdGVkX18/GDDEpLVhU/8WVdXRPRqX12va04aRETvRH40ctkg7SPuKLIBsBptXNCJUvX5R7Dv/2Ar8U536Yn/zgGmBZtCVji3UX2WEYFlHzrOfOdApeXW2w1QwzOnqtBSCj+bWWSMMk1JcWo8XjkVn9HoQEPWb6xg+FR48AYNL8iOY0LC30ye3FyYeNDd1el6ygeVEfk4gYdrB+rSso9lAiEIDpRANs9/xS/TNUrDvSsvbQh2h4abO/6w4ImaM3E86muhODvcorumh9UP+joCWBVyCq/qXI9lJzogk6ka0sDQOLkMoZrUZIDnakLuomg5Vbt4G3PM1/GG4XeTulcUKSLE7HhZIh/xPQoQie6I0/hV9f8vOiP/XHAM0HPdwpqX2OAINlHBzRvg7GXypP4uw6jkRy5/xWX8dMqmX96cAVjuflt9tNDeInMCc6PN+pi1aEpXayhVm8VnOt9mRZkqx7ld1Z+jBD+sVrmtcfy/Km9OxfnyzjsogSZaUfRZv7YfUV4k0QjOeS0RAFIsLL+abA5CBSVyFr7EyH/nD036mq9vD0i0piqEENG2/x52iblllgKR0TGKNmsbswuJu2ANlKz97bLIEM8VsyqSVp5ngyN30PIR1iYcYGj7JUSvPS5eG3cic886wsoKiOWJkhv5CwzMdXJhMvTzM3LAZeq80hnpercaLJ2jfkMhUbhXVzgrbjhyS3y90IdFVJIMemYAXbGtNV0elVnq9sSRoJxK9oAHJgGakyK5+/43FPIULKc/zApEr6LQFzwgCxeLZYKejjlNfwqR1kBPd7ZbYg0lLqj/KpcURjYzS0j9tR1eyd2fPmOBNCU6FJnul7nA2j4WlDaZLmjh5xZZpiKQobdV7jAkBlsD+JsKc583DMFo3v9XR+MoM1CU4fG/HUSkHsBN0MAoNGDx2Tn47YClQl7sTICmD+s24ymS2Wh7emhHO+Qzw6IWQbETD7t1taPh
- bLICGVNW
- 3XUhIoennSzbYZQaU/YibpbTHhWIx9MBatr9bAjesiD1FGvw7CiRpQeH7wlUBlCebgf/J4Yf9nmGhgqRUeIjM3VELNK9Gp+fX12kvTLdAkkrfpwsoZV0wFs+Fcs+rHFrH0L7m/kWMx759xeiKK23oQm5suHJdfRixejRW45YBmtuPRvcrIcu+7AQnjdcfneXm3xBw9202Of9CF1Vxt3eA6gW9K0pSU+K35mpsfqd7welM2q5pzCqRbeNjn7EYucElYH3qljh2nO7cMigL3kD9C+jk94+QCh9hhkjymS2ystdG8Eq/d7MoZYBY3ryRWYiWyNUfLRJxhMYC4nzrWwVLsMLhHOfCLuWLvFir4ZN7cvFjQGw=
+X-Stat-Signature: 3ynqx4qbjd4rtzj57acpebgyuzztj3s9
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783635353-661674
+X-HE-Meta: U2FsdGVkX1+DyLdnDVxjNB6AQAXGpqplzNgHc7axxCes2ohVYfQoud2WBfOiclSRR0N0JLPIrsvuISp4oRIc1sy6npgVTLsVgglJFOXe7Mp/K6g1xGQwnsIdwV6TXLfkIrCuqDBeJfc3WdRDonzkY07CJbDg8HZOCgxGT3+wQoy/+QAx+kdNZZMUcPljbisREd73rFL718tzcX3PG56h01lgnrdaGBhV/uSPDolMNxabg8CaNYxTLSHKxOqN+WQEL4FzMkPiaj/SufKxxOrwexTX4L4eqMBFjwoPRkMYtLBu1R8D1t/kXlpEWcBUx31xOL4eNOIWsA6z3MjmdfmpuMVFDhw1aGkl5zlrgZf/TPbhmdrJgWONpTLq8jVCiphRtSYhlkhwdZL0zcV2z6zDvQG5rGwf6AShkMUsudEvBPx2huTAdlLEw46uwAGcrDGsZYG6hN5dpjFfOyV2qHmdoLULkfALJ0pOvlYvEOtFXS1oiPy38GLCz6uXp5vZA4GDE115UAm7IlVs4mlED+8io5nk0KV19BzLJH4MdXSSn1d4pw8sldl1WEF9uA4DLlUG67mDhJq3laxiYthAr4fVytpArID6jzthiCiDkUleM94yLGSLhOO4mdS4O0OXysBy7s/9kYwuF+KyscjgHeJuUa130EJpFkYCMavPTmglP/sL70W3t0cSZ/GbA8csJ2moE67agYD3UMXoxxQkQzNY5PONzM0djJlRNxDsO+GQSwjvr+LQczuFx7gEjZ3ksslgY0ERXrqlicjvzNpFV4a32VMNUiPdORBSjxH0prsi5mJqaduUuyNAyRt2Fgul3wOmgzfgvE75tFihCoq1OnGgfKsoNShFjL9giEDKoH48hSNWpKqY2ZRX3kWuh5SqCyluGjQDOqvCFh7JAfUIWzqcxqHESBBwsw3EbbGX1uv0Q/25DCRtCzhLUOIEcNE9chcdMVds8fa3+YnsQKR9o7U
+ cDuSczhR
+ AJ/T5pGoP6uxI51zkrQO+hfeIMZBCpdO472Ct6mcJUd7YTujQFSmYfJR4Q8+k/axTlVISYMAHY8JfQnGTEK6S+OkMufHNB6x+wkbeUyjqdvFVZYl1tJwmBzjeV8Koolm6XgTkOMIDrQr2JIvUbvN8ql8yHpXkxAF6hwWK9WyFEbjiCxpobrxDsYZqxEv8RWL3ccTlDEAqQx02PLps2tCz0tTsmGOxU6Y3pJcwWxLGbZG8RPM2gT7ycg/Idzq5OBLWIo+v6d1Qn6Sbp732+Xkd5hZuyhfkPiNb8w5gnw1S0ptxknHqp7JXZV6XooENA4RMVPulMrxjgMJu5Fl48bzXbBzfeRAdkcXntMgfA14BgL0XAOwkiTMJlvENnYNhvU/0IN5W3qg7GJFI8tuh9X9VYT0WIsM/rNzW3qgRodG5JuHYWZMdqZWJ65j7U+YZuBzIp/aF0qeheQnWJp3pvr3cPc2TyEwymGMds6EXHgNUa35oJnvqJE0+glPewnU4xkbuYs/4D+8V2SMie9jrKL+tIEyvxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,489 +146,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Ackerley Tng <ackerleytng@google.com> writes:
+
+> Joshua Hahn <joshua.hahnjy@gmail.com> writes:
+>
+>> Hi Ackerley,
+>>
+>> Thank you for this series. I really wanted to work on hugeTLB accounting
+>> fixes but never got the time to get to it. I'm very grateful that you
+>> are taking a look!!
+>>
+>>> From: Ackerley Tng <ackerleytng@google.com>
+>>>
+>>> When alloc_hugetlb_folio() fails early (e.g. buddy allocation failure or
+>>> hugetlb cgroup charging failure) and gbl_chg == 1 (meaning a reservation
+>>> was not used, but a global page was allocated instead), the subpool page
+>>> acquired via hugepage_subpool_get_pages() must still be returned.
+>>>
+>>> Currently, the error path out_subpool_put: only calls
+>>> hugepage_subpool_put_pages() if !gbl_chg is true. If gbl_chg is 1, it
+>>> skips it, permanently leaking the subpool's used_hpages counter.
+>>>
+>>> With the earlier patch to always track used_hpages in the subpool, always
+>>> call hugepage_subpool_put_pages() if map_chg is true to consistently
+>>> restore the page to the subpool. Only call hugetlb_acct_memory() to adjust
+>>> global reservations if gbl_chg == 0 since gbl_chg == 0 indicates a
+>>> subpool (and global) reservation was used.
+>>
+>> So I think that I've seen that this part of the accounting specifically
+>> is a bit suspicious. There have been two attempts in the past to fix
+>> this area [1] [2]. I think functionally they are quite similar to this
+>> fix, they just open-code the contents of the put_pages function inside
+>> the condition. I've Cc-ed the authors of those two patches in case
+>> they wanted to chime in.
+>>
+>
+> Thanks for connecting us! I didn't realize this was already being worked
+> on. Also adding Lance, who commented at [3].
+>
+>> I reference these fixes because I think they handle the minimum
+>> subpage case a bit differently. To be honest, I recall reading those
+>> fixes a while back and getting a bit confused on what exactly happens
+>> when the page is absorbed to fulfill the minimum size...
+>>
+>> It does seem like Sashiko also notes this as a possible concern.
+>> WDYT? Does your reproducer for this issue also work when a minimum
+>> size is set (let's say, to 1?)
+>>
+>
+> Let me look into this more!
+>
+
+I was looking at Sashiko's comment [4] and Sashiko is right that there
+could be a race. Specifically, at the time of
+hugepage_subpool_get_page(), I might be using a reservation, hence
+returning 1 (thread A), but at the time of hugepage_subpool_put_page(),
+some other thread (B) might already have restored a reservation to the
+subpool.
+
+With used_hpages tracking within the subpool, we can rely on the return value of
+hugepage_subpool_put_page():
+
++ Return 1: Reservation should be returned elsewhere (pool has enough pages to
+  satisfy minimum, or doesn't track minimums)
++ Return 0: Reservation does not need to be returned elsewhere
+
+But calling hugepage_subpool_put_pages(1) doesn't say anything about whether the
+1 (in this case, 1 doesn't always represent a page, since specifically on the
+error cases, the page wasn't allocated) consumed a reservation or not.
+
++ gbl_chg == 0 means a reservation was used, and
++ gbl_chg == 1 means a reservation *should be used*, but
++ gbl_chg == 1 does not necessarily mean a reservation should be used, since
+  h->resv_huge_pages may not have been decremented yet. (See goto
+  out_subpool_put and goto out_uncharge_cgroup_reservation in
+  alloc_hugetlb_folio())
+
+So, we need to track if h->resv_huge_pages-- happened (with some local variable
+like reservation_consumed)
+
+| reservation_consumed | hugepage_subpool_put_pages() return value |
+h->resv_huge_pages++ |
+|----------------------|-------------------------------------------|----------------------|
+| 1                    | 1                                         |
+Yes                  |
+| 1                    | 0                                         |
+No                   |
+| 0                    | 1                                         |
+No                   |
+| 0                    | 0                                         |
+No                   |
+
+TLDR: replace !gbl_chg with reservation_consumed?
+
+    <<== reservation_consumed = true
+
+	if (!gbl_chg) {
+		folio_set_hugetlb_restore_reserve(folio);
+		h->resv_huge_pages--;
+        <<== reservation_consumed = true
+	}
+
+	if (map_chg) {
+		long gbl_reserve = hugepage_subpool_put_pages(spool, 1);
+
+		if (!gbl_chg)  <<== this should be reservation_consumed
+			hugetlb_acct_memory(h, -gbl_reserve);
+	}
+
+I believe this depends on always tracking used_hpages in subpools, in order to
+know for sure, just based on a number (with no page information), if the page is
+supposed to use a reservation.
 
 
-On 6/30/26 2:18 PM, Gregory Price wrote:
-> There is no atomic mechanism to offline and remove an entire
-> multi-block DAX kmem device.  This is presently done in two steps:
->     1. offline all
->     2. remove all
-> 
-> This creates a race condition where another entity operates directly
-> on the memory blocks and can cause hot-unplug to fail / unbind to
-> deadlock.
-> 
-> Add a new 'state' sysfs attribute that enables an atomic whole-device
-> hotplug operation across its entire memory region.
-> 
-> daxX.Y/state mirrors the per-block memoryX/state ABI:
->   - [offline, online, online_kernel, online_movable]
->   - "unplugged" - is added specifically for dax0.0/state
-> 
-> The valid writable states include:
->   - "unplugged":      memory blocks are not present
->   - "online":         memory is online, zone chosen by the kernel
->   - "online_kernel":  memory is online in ZONE_NORMAL
->   - "online_movable": memory is online in ZONE_MOVABLE
-> 
-> Valid transitions:
->   - unplugged                -> online[_kernel|_movable]
->   - online[_kernel|_movable] -> unplugged
->   - offline                  -> unplugged
-> 
-> A device can only be onlined from "unplugged", so it must be returned
-> there before being onlined into a different state.
-> 
-> For backwards compatibility the memory blocks are always created at
-> probe - existing tools expect them to be present after kmem binds.
-> 
-> "offline" is therefore a reportable state but is not writable: it only
-> arises from the legacy auto_online_blocks=offline policy.  Onlining
-> such a device through this attribute requires unplugging it first in
-> an effort to get drivers creating DAX devices to set a default.
-> 
-> Unplug is atomic across the whole device: dax_kmem_do_hotremove()
-> collects every added range and offlines/removes them in one operation.
-> Either the operation succeeds or is entirely rolled back.
-> 
-> Unbind Note:
->   We used to call remove_memory() during unbind, which would fire a
->   BUG() if any of the memory blocks were online at that time.  We lift
->   this into a WARN in the cleanup routine and don't attempt hotremove
->   if ->state is not DAX_KMEM_UNPLUGGED or MMOP_OFFLINE.
-> 
->   An offline dax device memory is removed on unbind as before.
-> 
->   If online at unbind, the resources are leaked (as before), but now
->   we prevent deadlock if a memory region is impossible to hotremove.
-> 
-> Suggested-by: Hannes Reinecke <hare@suse.de>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->  Documentation/ABI/testing/sysfs-bus-dax |  26 +++
->  drivers/dax/kmem.c                      | 258 ++++++++++++++++++++----
->  2 files changed, 248 insertions(+), 36 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-dax b/Documentation/ABI/testing/sysfs-bus-dax
-> index b34266bfae49..2dcad1e9dad0 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-dax
-> +++ b/Documentation/ABI/testing/sysfs-bus-dax
-> @@ -151,3 +151,29 @@ Description:
->  		memmap_on_memory parameter for memory_hotplug. This is
->  		typically set on the kernel command line -
->  		memory_hotplug.memmap_on_memory set to 'true' or 'force'."
-> +
-> +What:		/sys/bus/dax/devices/daxX.Y/state
-> +Date:		June, 2026
-> +KernelVersion:	v6.21
+Perhaps related: does it make sense to flipping the reservation tracking
+to instead track an "available" page count? This is basically the
+mathematical opposite of rsvd_huge_pages, as in,
 
-Kernel version a bit old :)
+  available_pages = free_huge_pages - resv_huge_pages
 
-DJ
+This way, there's no need to synchronize the number of reserved pages in
+both the subpool and global hstate.
 
-> +Contact:	nvdimm@lists.linux.dev
-> +Description:
-> +		(RW) Controls the state of the memory region.
-> +		Applies to all memory blocks associated with the device.
-> +		Only applies to dax_kmem devices.
-> +
-> +		Reading returns the current state; the writable states mirror
-> +		the per-block /sys/devices/system/memory/memoryX/state ABI::
-> +
-> +		  "unplugged": memory blocks are not present
-> +		  "online": memory is online, zone chosen by the kernel
-> +		  "online_kernel": memory is online in ZONE_NORMAL
-> +		  "online_movable": memory is online in ZONE_MOVABLE
-> +
-> +		"offline" (memory blocks are present but offline) may also be
-> +		reported - this happens when the device is bound while the
-> +		auto_online_blocks policy is "offline".  It cannot be written,
-> +		as it's not useful and creates device destruction races.
-> +
-> +		A device can only be onlined from the "unplugged" state, so a
-> +		device must be returned to "unplugged" before it can be onlined
-> +		into a different state.
-> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-> index 72dcccee41e1..19effe0da3dc 100644
-> --- a/drivers/dax/kmem.c
-> +++ b/drivers/dax/kmem.c
-> @@ -42,9 +42,15 @@ static int dax_kmem_range(struct dev_dax *dev_dax, int i, struct range *r)
->  	return 0;
->  }
->  
-> +#define DAX_KMEM_UNPLUGGED	(-1)
-> +
->  struct dax_kmem_data {
->  	const char *res_name;
->  	int mgid;
-> +	int numa_node;
-> +	struct dev_dax *dev_dax;
-> +	int state;
-> +	struct mutex lock; /* protects hotplug state transitions */
->  	struct resource *res[];
->  };
->  
-> @@ -63,12 +69,22 @@ static void kmem_put_memory_types(void)
->  	mt_put_memory_types(&kmem_memory_types);
->  }
->  
-> +/* True for the online states a kmem dax device can hold. */
-> +static bool dax_kmem_state_is_online(int state)
-> +{
-> +	return state == MMOP_ONLINE ||
-> +	       state == MMOP_ONLINE_KERNEL ||
-> +	       state == MMOP_ONLINE_MOVABLE;
-> +}
-> +
->  /**
->   * dax_kmem_do_hotplug - hotplug memory for dax kmem device
->   * @dev_dax: the dev_dax instance
->   * @data: the dax_kmem_data structure with resource tracking
-> + * @online_type: the online policy to use for the memory blocks
->   *
-> - * Hotplugs all ranges in the dev_dax region as system memory.
-> + * Hotplugs all ranges in the dev_dax region as system memory with the
-> + * provided online policy (offline, online, online_movable, online_kernel).
->   *
->   * Returns the number of successfully mapped ranges, or negative error.
->   */
-> @@ -77,9 +93,15 @@ static int dax_kmem_do_hotplug(struct dev_dax *dev_dax,
->  			       int online_type)
->  {
->  	struct device *dev = &dev_dax->dev;
-> -	int i, rc, onlined = 0;
-> +	int i, rc, added = 0;
->  	mhp_t mhp_flags;
->  
-> +	if (dax_kmem_state_is_online(data->state))
-> +		return -EINVAL;
-> +
-> +	if (online_type < MMOP_OFFLINE || online_type > MMOP_ONLINE_MOVABLE)
-> +		return -EINVAL;
-> +
->  	for (i = 0; i < dev_dax->nr_range; i++) {
->  		struct range range;
->  
-> @@ -123,14 +145,14 @@ static int dax_kmem_do_hotplug(struct dev_dax *dev_dax,
->  				kfree(data->res[i]);
->  				data->res[i] = NULL;
->  			}
-> -			if (onlined)
-> +			if (added)
->  				continue;
->  			return rc;
->  		}
-> -		onlined++;
-> +		added++;
->  	}
->  
-> -	return onlined;
-> +	return added;
->  }
->  
->  /**
-> @@ -193,45 +215,64 @@ static int dax_kmem_init_resources(struct dev_dax *dev_dax,
->   * @dev_dax: the dev_dax instance
->   * @data: the dax_kmem_data structure with resource tracking
->   *
-> - * Removes all ranges in the dev_dax region.
-> + * Offlines and removes every currently-added range in the dev_dax region
-> + * atomically: either all ranges are offlined and removed, or none are and
-> + * the device is returned to its prior state.
->   *
-> - * Returns the number of successfully removed ranges.
-> + * Returns 0 on success, or a negative errno on failure.
->   */
->  static int dax_kmem_do_hotremove(struct dev_dax *dev_dax,
->  				 struct dax_kmem_data *data)
->  {
->  	struct device *dev = &dev_dax->dev;
-> -	int i, success = 0;
-> +	struct range *ranges;
-> +	int i, nr_ranges = 0, rc;
-> +
-> +	ranges = kmalloc_array(dev_dax->nr_range, sizeof(*ranges), GFP_KERNEL);
-> +	if (!ranges)
-> +		return -ENOMEM;
->  
-> +	/* Collect the ranges that were actually added during probe. */
->  	for (i = 0; i < dev_dax->nr_range; i++) {
->  		struct range range;
-> -		int rc;
->  
-> -		rc = dax_kmem_range(dev_dax, i, &range);
-> -		if (rc)
-> +		if (!data->res[i])
->  			continue;
-> -
-> -		/* range was never added during probe, count as removed */
-> -		if (!data->res[i]) {
-> -			success++;
-> +		if (dax_kmem_range(dev_dax, i, &range))
->  			continue;
-> -		}
-> +		ranges[nr_ranges++] = range;
-> +	}
->  
-> -		rc = remove_memory(range.start, range_len(&range));
-> -		if (rc == 0) {
-> -			/* Release the resource for the successfully removed range */
-> -			remove_resource(data->res[i]);
-> -			kfree(data->res[i]);
-> -			data->res[i] = NULL;
-> -			success++;
-> +	/* Nothing added means nothing to remove. */
-> +	if (!nr_ranges) {
-> +		kfree(ranges);
-> +		return 0;
-> +	}
-> +
-> +	rc = offline_and_remove_memory_ranges(ranges, nr_ranges);
-> +	kfree(ranges);
-> +	if (rc) {
-> +		/* Recoverable: the ranges rolled back, nothing is leaked yet. */
-> +		dev_err(dev, "hotremove failed, device left online: %d\n", rc);
-> +		return rc;
-> +	}
-> +
-> +	/* All ranges removed; release the reserved resources. */
-> +	for (i = 0; i < dev_dax->nr_range; i++) {
-> +		if (!data->res[i])
->  			continue;
-> -		}
-> -		any_hotremove_failed = true;
-> -		dev_err(dev, "mapping%d: %#llx-%#llx hotremove failed\n",
-> -			i, range.start, range.end);
-> +		remove_resource(data->res[i]);
-> +		kfree(data->res[i]);
-> +		data->res[i] = NULL;
->  	}
->  
-> -	return success;
-> +	return 0;
-> +}
-> +#else
-> +static int dax_kmem_do_hotremove(struct dev_dax *dev_dax,
-> +				 struct dax_kmem_data *data)
-> +{
-> +	return -EBUSY;
->  }
->  #endif /* CONFIG_MEMORY_HOTREMOVE */
->  
-> @@ -247,6 +288,18 @@ static void dax_kmem_cleanup_resources(struct dev_dax *dev_dax,
->  {
->  	int i;
->  
-> +	/*
-> +	 * If the device unbind occurs before memory is hotremoved, we can never
-> +	 * remove the memory (requires reboot).  Attempting an offline operation
-> +	 * here may cause deadlock and a failure to finish the unbind.
-> +	 *
-> +	 * Note: This leaks the resources.
-> +	 */
-> +	if (WARN(((data->state != DAX_KMEM_UNPLUGGED) &&
-> +		  (data->state != MMOP_OFFLINE)),
-> +		 "Hotplug memory regions stuck online until reboot"))
-> +		return;
-> +
->  	for (i = 0; i < dev_dax->nr_range; i++) {
->  		if (!data->res[i])
->  			continue;
-> @@ -256,6 +309,85 @@ static void dax_kmem_cleanup_resources(struct dev_dax *dev_dax,
->  	}
->  }
->  
-> +static int dax_kmem_parse_state(const char *buf)
-> +{
-> +	int online_type;
-> +
-> +	/* "unplugged" is kmem-specific - the rest map to MMOP_ */
-> +	if (sysfs_streq(buf, "unplugged"))
-> +		return DAX_KMEM_UNPLUGGED;
-> +
-> +	online_type = mhp_online_type_from_str(buf);
-> +	/* Disallow "offline": it's not useful and creates race conditions */
-> +	if (online_type == MMOP_OFFLINE)
-> +		return -EINVAL;
-> +	return online_type;
-> +}
-> +
-> +static ssize_t state_show(struct device *dev,
-> +			    struct device_attribute *attr, char *buf)
-> +{
-> +	struct dax_kmem_data *data = dev_get_drvdata(dev);
-> +	const char *state_str;
-> +
-> +	if (!data)
-> +		return -ENXIO;
-> +
-> +	if (data->state == DAX_KMEM_UNPLUGGED)
-> +		state_str = "unplugged";
-> +	else
-> +		state_str = mhp_online_type_to_str(data->state);
-> +
-> +	return sysfs_emit(buf, "%s\n", state_str ?: "unknown");
-> +}
-> +
-> +static ssize_t state_store(struct device *dev, struct device_attribute *attr,
-> +			     const char *buf, size_t len)
-> +{
-> +	struct dev_dax *dev_dax = to_dev_dax(dev);
-> +	struct dax_kmem_data *data = dev_get_drvdata(dev);
-> +	int online_type;
-> +	int rc;
-> +
-> +	if (!data)
-> +		return -ENXIO;
-> +
-> +	online_type = dax_kmem_parse_state(buf);
-> +	if (online_type < DAX_KMEM_UNPLUGGED)
-> +		return online_type;
-> +
-> +	guard(mutex)(&data->lock);
-> +
-> +	/* Already in requested state */
-> +	if (data->state == online_type)
-> +		return len;
-> +
-> +	if (online_type == DAX_KMEM_UNPLUGGED) {
-> +		rc = dax_kmem_do_hotremove(dev_dax, data);
-> +		if (rc)
-> +			return rc;
-> +		data->state = DAX_KMEM_UNPLUGGED;
-> +		return len;
-> +	}
-> +
-> +	/* Onlining is only allowed from the unplugged state. */
-> +	if (data->state != DAX_KMEM_UNPLUGGED)
-> +		return -EBUSY;
-> +
-> +	/* Re-acquire resources if previously unplugged, otherwise no-op */
-> +	rc = dax_kmem_init_resources(dev_dax, data);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	rc = dax_kmem_do_hotplug(dev_dax, data, online_type);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	data->state = online_type;
-> +	return len;
-> +}
-> +static DEVICE_ATTR_RW(state);
-> +
->  static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->  {
->  	struct device *dev = &dev_dax->dev;
-> @@ -324,6 +456,10 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->  	if (rc < 0)
->  		goto err_reg_mgid;
->  	data->mgid = rc;
-> +	data->numa_node = numa_node;
-> +	data->dev_dax = dev_dax;
-> +	data->state = DAX_KMEM_UNPLUGGED;
-> +	mutex_init(&data->lock);
->  
->  	dev_set_drvdata(dev, data);
->  
-> @@ -336,9 +472,15 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->  	if (online_type == DAX_ONLINE_DEFAULT)
->  		online_type = mhp_get_default_online_type();
->  
-> +	/* Always create blocks for backward compatibility, even if offline */
->  	rc = dax_kmem_do_hotplug(dev_dax, data, online_type);
->  	if (rc < 0)
->  		goto err_hotplug;
-> +	data->state = online_type;
-> +
-> +	rc = device_create_file(dev, &dev_attr_state);
-> +	if (rc)
-> +		dev_warn(dev, "failed to create state sysfs entry\n");
->  
->  	return 0;
->  
-> @@ -357,22 +499,62 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
->  }
->  
->  #ifdef CONFIG_MEMORY_HOTREMOVE
-> +/*
-> + * Remove the device's added ranges with remove_memory().
-> + * Unlike the sysfs unplug path it never offlines and fails if the blocks are
-> + * online (-EBUSY), so it is safe from unbind. Failures leak until reboot.
-> + *
-> + * Returns 0 only if every added range was removed.
-> + */
-> +static int dax_kmem_remove_ranges(struct dev_dax *dev_dax,
-> +				  struct dax_kmem_data *data)
-> +{
-> +	struct device *dev = &dev_dax->dev;
-> +	int i, rc = 0;
-> +
-> +	for (i = 0; i < dev_dax->nr_range; i++) {
-> +		struct range range;
-> +
-> +		if (!data->res[i] || dax_kmem_range(dev_dax, i, &range))
-> +			continue;
-> +		if (remove_memory(range.start, range_len(&range))) {
-> +			dev_warn(dev, "mapping%d: %#llx-%#llx stuck online until reboot\n",
-> +				 i, range.start, range.end);
-> +			rc = -EBUSY;
-> +			continue;
-> +		}
-> +		remove_resource(data->res[i]);
-> +		kfree(data->res[i]);
-> +		data->res[i] = NULL;
-> +	}
-> +	return rc;
-> +}
-> +
->  static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
->  {
-> -	int success;
->  	int node = dev_dax->target_node;
->  	struct device *dev = &dev_dax->dev;
->  	struct dax_kmem_data *data = dev_get_drvdata(dev);
->  
-> +	device_remove_file(dev, &dev_attr_state);
->  	/*
-> -	 * We have one shot for removing memory, if some memory blocks were not
-> -	 * offline prior to calling this function remove_memory() will fail, and
-> -	 * there is no way to hotremove this memory until reboot because device
-> -	 * unbind will succeed even if we return failure.
-> +	 * If UNPLUGGED: state is known clean and reboot can clean up.
-> +	 *
-> +	 * If ONLINE_*: memory cannot be removed here: offlining during an
-> +	 * uninterruptible unbind can deadlock. Leak the resources until reboot.
-> +	 *
-> +	 * If OFFLINE: blocks are attempted to remove with remove_memory(),
-> +	 * which never attempts offlining. A block onlined behind our back
-> +	 * fails -EBUSY and is leaked.
->  	 */
-> -	success = dax_kmem_do_hotremove(dev_dax, data);
-> -	if (success < dev_dax->nr_range) {
-> -		dev_err(dev, "Hotplug regions stuck online until reboot\n");
-> +	if (dax_kmem_state_is_online(data->state)) {
-> +		dev_warn(dev, "Hotplug regions stuck online until reboot\n");
-> +		any_hotremove_failed = true;
-> +		return;
-> +	} else if (data->state == MMOP_OFFLINE &&
-> +		   dax_kmem_remove_ranges(dev_dax, data)) {
-> +		any_hotremove_failed = true;
-> +		dev_warn(dev, "Unplug failed, resources leaked until reboot\n");
->  		return;
->  	}
->  
-> @@ -393,6 +575,10 @@ static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
->  #else
->  static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
->  {
-> +	struct device *dev = &dev_dax->dev;
-> +
-> +	device_remove_file(dev, &dev_attr_state);
-> +
->  	/*
->  	 * Without hotremove purposely leak the request_mem_region() for the
->  	 * device-dax range and return '0' to ->remove() attempts. The removal
+It's quite confusing now, that reserved_pages-- can be either "used a
+reservation" or "unreserve". If we track the opposite, available_pages--
+will definitely mean the page's availability is removed from the global
+hstate and transferred to the subpool, and allocating page doesn't
+involve updating both the subpool and hstate.
 
+One downside I can think of is that creating hugepages (surplus, or
+promote/demote, or hotplug, or runtime echo 1 > nr_hugepages) would need
+to update the global hstate's available_pages count, but I imagine that
+would be less frequent than allocating huge pages?
+
+>>
+>> [...snip...]
+>>
+>>
+>> [1] https://lore.kernel.org/linux-mm/20260428113037.88766-2-enderaoelyther@gmail.com/
+>> [2] https://lore.kernel.org/linux-mm/20260515202902.461539-1-devnexen@gmail.com/
+> [3] https://lore.kernel.org/linux-mm/20260428113059.79001-1-lance.yang@linux.dev/
+[4] https://sashiko.dev/#/patchset/20260708-hugetlb-alloc-failure-fixes-v2-0-c7f27cbb462b%40google.com?part=2,
 
