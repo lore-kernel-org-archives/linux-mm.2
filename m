@@ -4,107 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 264DFC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 09:47:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A166C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 09:55:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BCAE6B0088; Thu,  9 Jul 2026 05:47:53 -0400 (EDT)
+	id ED8D26B0088; Thu,  9 Jul 2026 05:55:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06DA66B008A; Thu,  9 Jul 2026 05:47:53 -0400 (EDT)
+	id E8A056B008A; Thu,  9 Jul 2026 05:55:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9FCA6B008C; Thu,  9 Jul 2026 05:47:52 -0400 (EDT)
+	id D519F6B008C; Thu,  9 Jul 2026 05:55:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C30DC6B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:47:52 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4AD8C1C39D7
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:47:52 +0000 (UTC)
-X-FDA: 84968761584.20.156E2A2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 78E92180003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:47:49 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kdCbjirh;
-	spf=pass (imf06.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A5C06B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:55:40 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20C5C120453
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:55:40 +0000 (UTC)
+X-FDA: 84968781240.21.FACACEA
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3593A40002
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:55:38 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="gs/boVWv";
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783590470;
+	s=arc-20220608; t=1783590938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SSuJLx9SE57A7qIxtS+wkjg1DUj+y6sjOCSXMaWQQak=;
-	b=DliyNIHb63bzmqRw9zKWHV29t2KEluXFNPGgRq+xdINgOMqcnie7GHxeWRn00KrH3OlWU/
-	uxHkrpiJG5gd+jPRQpratuWEtpbonN+MvA4RfdNn6VvIhCvprfBDWbpSdnX9+Gb3W8VVhH
-	PjcScOK+XNfAf7lO4nRKyEv8M5eKVGU=
+	bh=ElFNuuVHav11jlXT2tYgxUaeRfnidh0joOXtmtl3810=;
+	b=hnyMnisvxWw2GJfmK/hO8NZbDV8xD5cP0Z2iYyzVXkznvR0rQfIlHfhljyoWIcR1pt2x18
+	lSKmUU00TnQUJaiBMt1nkyhXvq92LFgCx6+PBWEmb/gfSfPqEQxwy8O7J2rpd+TL19Sp5n
+	COJnsrxqoqoO3+OyUYLbWQikc6Jnf8k=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kdCbjirh;
-	spf=pass (imf06.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="gs/boVWv";
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783590470;
-	b=OpedNd/7rT1WiYVs0NdSPr3pMTRyV3/thYmJnbhep5ki6pp6mDqbP5fA0SW9NgQ2IFF4X3
-	rp3l1MTy9bBtD+ClXe2ZcKxGKQoVWpG9KtfhG9BSUiyNGc56Qr2pcf4yvXXKqJunaBJ6r8
-	f1EytEaXdBZWubV+fMJw7imu/kzBYtQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783590470; x=1815126470;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=SSuJLx9SE57A7qIxtS+wkjg1DUj+y6sjOCSXMaWQQak=;
-  b=kdCbjirhD03ZoFSekIX0+keWLEevDkqtFmgPPZQ8w+xKUdQ9QPIpH2lZ
-   g1D58CnV4aOOaW4D0GOTnTYs5fCzMLXRPegJY82+Gtdys850TZ7Uuv3+B
-   YEjxrOO40JiNGWuhb3Qb+Wt4cVGWJ27RGgyFMM1WWFBMVtCtCB42EVd8h
-   dydpOzViHzLLwgLzd+RGihL5Gz/bqlacUEfTTAp53oXWTQW9O0UI2v9+G
-   xavOuLEO5dlVmFuXzdZ7+WdKAZOmjseWQZf2zj17Zfo9iiNC86LJ/9JV2
-   EMt0lNK40j/LByQp7KiYUn5w+tkXnvVMaBqO/o+lzy+o+aNnbM4GukF4Z
-   g==;
-X-CSE-ConnectionGUID: H9lP/dwnQYOelfQV04zpdw==
-X-CSE-MsgGUID: Y7Z8lo2DSeiplu7L2nJSVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84380020"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="84380020"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 02:47:48 -0700
-X-CSE-ConnectionGUID: 4ygGpAhyTYeln8kGMGST4g==
-X-CSE-MsgGUID: th6FiBwhSfakI1Bu3JJT6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="258142936"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO [10.245.244.44]) ([10.245.244.44])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 02:47:41 -0700
-Message-ID: <265737ad21d42a7509a8c43619975f0ef150f275.camel@linux.intel.com>
-Subject: Re: [PATCH v7] cgroup/dmem: implement dmem.high soft limit with
- proactive reclaim
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Jing Wu <realwujing@gmail.com>, matthew.brost@intel.com
-Cc: christian.koenig@amd.com, ray.huang@amd.com, matthew.auld@intel.com, 
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- 	airlied@gmail.com, simona@ffwll.ch, tj@kernel.org, hannes@cmpxchg.org, 
-	mkoutny@suse.com, natalie.vock@gmx.de, mhocko@kernel.org,
- roman.gushchin@linux.dev, 	shakeel.butt@linux.dev, muchun.song@linux.dev,
- intel-xe@lists.freedesktop.org, 	dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, 	cgroups@vger.kernel.org, linux-mm@kvack.org
-Date: Thu, 09 Jul 2026 11:47:38 +0200
-In-Reply-To: <20260709061114.1623774-1-realwujing@gmail.com>
-References: <ak81RUK6vRZaMN2D@gsse-cloud1.jf.intel.com>
-	 <20260709061114.1623774-1-realwujing@gmail.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
+	t=1783590938;
+	b=IX6NXeoHg3p+q5ExYV8j1u0Pi7Pfd3c2foo00nASPA33R3uubh8ZiOisA593kD7WJtdKRx
+	anAXdur7NdJR6VAas9J8EqHAtggmHXB1Po6NG8lFGQT2SdhkGFoTf7eqvpTLvUbOhgsEqp
+	qWHdoA6vuvOxNg3cbYd2wYaG1PTA0G8=
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783590936;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ElFNuuVHav11jlXT2tYgxUaeRfnidh0joOXtmtl3810=;
+	b=gs/boVWvqp9saHyn5lfka+F54TUV/ESt2lma5lx2+y3wAuHWuvFi8z8bUd7lGvjGqMTCTw
+	xmyeNZXZVYS0vLdnhlkQE8ah/XNhliWvKtBS4t+A2AvfTLx7qZAXMayb6YYeJvnPl9Rsen
+	rIc9SKpxCht6wdPhAZK/YmtdlttInOc=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <CADrL8HVkrojXbBuEX-W=UHBmyyFzqxdGBvtAoPP53SyYa10uag@mail.gmail.com>
+Date: Thu, 9 Jul 2026 17:54:45 +0800
+Cc: Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Nikos Nikoleris <nikos.nikoleris@arm.com>,
+ Linu Cherian <linu.cherian@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Nanyong Sun <sunnanyong@huawei.com>,
+ Yu Zhao <yuzhao@google.com>,
+ Frank van der Linden <fvdl@google.com>,
+ David Rientjes <rientjes@google.com>,
+ linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-MIME-Version: 1.0
+Message-Id: <ABB70C2A-316E-4C19-A855-C9920BE105E1@linux.dev>
+References: <20260708031129.3503195-1-jthoughton@google.com>
+ <FC9E78F0-8FF7-44AF-A848-8401B4702488@linux.dev>
+ <CADrL8HVkrojXbBuEX-W=UHBmyyFzqxdGBvtAoPP53SyYa10uag@mail.gmail.com>
+To: James Houghton <jthoughton@google.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 78E92180003
-X-Stat-Signature: ad6gix1kjgtptgxndtmwtb1o8f66o4ro
-X-HE-Tag: 1783590469-102799
-X-HE-Meta: U2FsdGVkX1/TVwHAvZ+UXP/MEq7ivti0VW8z9eO/CvGPL2U+tQM0H0uqDaS/E9fx0OMHXg7bUp4KI7fFDIi88BbiUkQ2BEHiuVbWsEqiBCNWcGD5xs9XwVEQWlMe62aDvugkmB2y/Ia8n1i+otyFW/LSwk82Yk7bGq+ebRnJ0QYoGpG/yX6VNIscKSwdE+q7sfDg/2cPtDDWVNlMlpnpnDryBrT93v2tp6fPNHcwmjgD8ERGDw13wAAXQtsa2VpivDHAFLAu4vxv4IhaibFhUaHGjut9NxjEqYy81WLvOKfpNkHf0C36fXUUGQ2hkHHNlKSgiJEQJLcXyNl2pDWdeLbQ8qbUg9d8AMiu7sarBbZ9E/snqxHAaqqG6iojfU6fs95Tr3t26Qaf5gZtzpZbDuXzyeJHe4PYh7/txnETZ3r2ag6KwdBL12b1Oq2g1Ox+Iplciil85ilT45Z6KUd5FYq2dYO55Sro4xxm1wD8PWz5vcpL+5tLXRRoUQ8Bx4AE+AzBb+9/IxbUMC1Ij28EhWkFRwCikSU+OpUSOOK8FzsErkSN7CqzGNQrw/phQek/SAqlgPbTWKxmMzjVb5LR75EI8oPiEMgKoScmgHcE6uyI3zfw6juPQEpifUJK9blKxDAZER6vRCk3rU+65aaGP0p3umtAPxtUOX26eMN2d2qSbg1jPovqdx18EhAFdOgF4UqE0YrvSKnL6FSbAJeklOFB5wLMR37TM12hyTPm521DCIqOMmmM1aOs6vwfv/R0LBS3mXUaAbquhHGJpJAZwZpggPnOS6HKhn7DnWkTxm39KSyetT9murNto1T44T30GHcY7KY4ONBGcwV7chdWJHr6kV2efPjEYVYpnDs5GvT0MiNoPRV6gvStZQfj/lKE0BH8HE/j1tO2VP5Z2AHZTQeRI7eEPCzQO0jyl2HrzulN2I7W5/S0i4oHjU7b28NL/ZFhwJccQ2LkhV4Ua7r
- dWWkb+td
- WtoTI3YSfjcmHRQftKsM2ap2f+vQxMwtEAZgyAOP7XTFQFrmEGznQUsYQlDLDAUhd+2kdteLZshZVXaAGWLmUCLS7G70R9riz7SeDbWc6EcPkkndD51sw/b+PuSS8+MtK8DX7tUJafKzrODNUISyh2DxQ+G0RqPtfkA9AyJNbkNgBQSME3LrxWrprnWiEGObpKq1hxEMjapZx3k4/6TI1BH/DqLZsmkj4wjKpN/EoU0EWkWn6DuDcwhgF5v4zxUi0jEJ0
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3593A40002
+X-Stat-Signature: 8jiignni36guy5741hg7i1nwzo3y6jex
+X-HE-Tag: 1783590938-645444
+X-HE-Meta: U2FsdGVkX1/f300YsPpWazNn9lyApKLyGFtvXHkFyE5ovuaInAHJJJsZ2HAgB4KI4czj5xcL4lNFolB2/jpy6HW0eXOthV3FCB8Tx9efxpNoVEUUGo/OzVJyC/wRQNxCTf48vQQZzm6Ld5qBedorIhJg0j90drXQ1yhXKkv4j5XEingVmJ7pmC87au/BceU6YDF1BE5DBgvuCSGgYD3PHC7nhx7dtWf+2AztWOtrXxihrP/pfO2DRO0PUrgDDUdHAHA3N3qWhm/BC95Ynz7qKxUaLRHyL0Box1cKmpjhlYwEdeIZlC4ZzTPNrhNbsLE/rIXAgbmApfm8kr0sHS/6C/IZePIjTI527A1cxlTzgnQqJMqY/EnzBStdaqj7TxyGPquF/TYTOaSpiXcIWQ3ZuS+PqstwzV2KjUYe83vOUqOp80Y1Z0uBam2edlmf2WDEan+RmDxDUypIFoE3ulMunqIwhz2CGr6jPMU18iahK0ZSAmIK9Axq9KWCfFbyx2TwFDky2c1NcZRJjyCXvgoHOFc2xIJQPk9k1hCLkf8B4vq6SOgMo2v7/iZd6bUiAhVoKTErJ6jH8bH4T/TNYOE15XtDjUfCZ13eH2QMddkLjfVX5nRLt4x80Rf+y45qRo0QLAlaUotr8pkjmwyd0PahyT1O9FK/G+xi9wGgoB1UYUDk6vSUkrzp7tXXFa5Aet0jurGv0QNLhFVuXwawgKWEVkYOAblknx9soqyRXzFJZIQwHotvJa4OhkqXg6VQvUif+9Ay5XuNdK0oVO91xo8HwZest4WOr5Htny79XCVCrEtIrD0r+MXfqNm09Zg7Mf6WTVFK1Al+1xQ8td7GzGblQyQPnNgYen+kjoGiURm1ZN8ceR+CJZWrszMYkb0+EnSdijfprmwTBmv+ZLbjlf6BM3chaeaU+dju4ZJo0/sKceQ1vM8+ORYKL6WZA/sAYyodHEzMt6ZSSnqXVXiKCgl
+ PTsikCSJ
+ hvMBaEYM8fxgHf1C5gvPirJjA68vRCV849rLwgHvfI68egMsi3w2cb7NJU+1Jtcl1IBgZYck9vcdnYajaCHQktvP15/+Pj0a+wqnTWwe00WJTINbbuwZBA5FhTs5RYH+eH6jBRMgg+sL//eB+OgQhzn2vfY0A8Ac7uMeWzCiBPz4t3kbnxwRfbCgzJ/2w69+UXwyf1O11PtiWJiHCfMO0ILiyta4PBreXriMCuC2Ec0QYVDcJrwO0KjbXt/LoGVYpXHbo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,86 +105,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-07-09 at 14:11 +0800, Jing Wu wrote:
-> On Wed, Jul 09, 2026 at 12:44:37AM -0700, Matthew Brost wrote:
-> > This looks quite similar to work Thomas is doing here [1].
->=20
-> Thank you for the pointer, Matt.=C2=A0 We were not aware of Thomas's
-> series
-> before your mail.=C2=A0 After reviewing Thomas's v7 [1], the two series
-> turn
-> out to address different =E2=80=94 and complementary =E2=80=94 problems:
->=20
-> =C2=A0 - Thomas's series hooks a reclaim callback into the dmem.max write
-> =C2=A0=C2=A0=C2=A0 path: when an administrator lowers dmem.max below curr=
-ent usage,
-> the
-> =C2=A0=C2=A0=C2=A0 kernel calls the driver's reclaim callback to bring de=
-vice memory
-> =C2=A0=C2=A0=C2=A0 usage down to the new limit.=C2=A0 This is analogous t=
-o what happens
-> in
-> =C2=A0=C2=A0=C2=A0 memcg when memory.max is written below current usage.
->=20
-> =C2=A0 - Our series adds dmem.high as a soft limit enforced in the charge
-> =C2=A0=C2=A0=C2=A0 path: when a successful allocation pushes a cgroup's u=
-sage above
-> =C2=A0=C2=A0=C2=A0 dmem.high, TTM proactively evicts one BO from that cgr=
-oup before
-> =C2=A0=C2=A0=C2=A0 returning.=C2=A0 This mirrors memory.high semantics in=
- memcg, where
-> =C2=A0=C2=A0=C2=A0 reclaim is triggered per-allocation to keep usage belo=
-w the soft
-> =C2=A0=C2=A0=C2=A0 threshold.
->=20
-> Both mechanisms coexist independently in memcg and serve distinct
-> purposes: the max write path handles capacity reconfiguration by
-> operators, while the high-limit path provides automatic backpressure
-> for workloads approaching their quota.=C2=A0 Having both in the dmem
-> cgroup
-> controller seems correct.
->=20
-> > Are either of you two aware of this seemly overlapping work?
->=20
-> We were not, until your mail.=C2=A0 Now that we are, we would like to
-> coordinate with Thomas on a few interaction points:
->=20
-> =C2=A0 1. API intersection: Thomas's v5+ replaces the bare u64 size
-> argument
-> =C2=A0=C2=A0=C2=A0=C2=A0 in dmem_cgroup_register_region() with struct dme=
-m_cgroup_init
-> (which
-> =C2=A0=C2=A0=C2=A0=C2=A0 bundles the region size, reclaim ops, and driver=
- private data).=C2=A0
-> If
-> =C2=A0=C2=A0=C2=A0=C2=A0 Thomas's series lands first, we will adapt our p=
-atches to the
-> new
-> =C2=A0=C2=A0=C2=A0=C2=A0 registration interface.
->=20
-> =C2=A0 2. File-level conflicts: both series modify ttm_resource.c and
-> =C2=A0=C2=A0=C2=A0=C2=A0 ttm_bo.c.=C2=A0 The changes are semantically ind=
-ependent and should
-> =C2=A0=C2=A0=C2=A0=C2=A0 compose cleanly after a rebase, whichever lands =
-second.
->=20
-> Thomas, would you be open to coordinating on merge ordering?=C2=A0 We are
-> happy to rebase our dmem.high series on top of yours once it lands,
-> or
-> to split out any shared infrastructure as a common prerequisite if
-> that
-> helps.
 
-Sure. Let's notify eachother of imminent merge plans. I will rebase my
-series on yours if yours go in first. If needed let's look at a topic
-branch that we can merge into drm or vice versa.
 
-My work is stalled on lack of reviews ATM.
+> On Jul 9, 2026, at 00:49, James Houghton <jthoughton@google.com> =
+wrote:
+>=20
+> On Wed, Jul 8, 2026 at 1:41=E2=80=AFAM Muchun Song =
+<muchun.song@linux.dev> wrote:
+>>> On Jul 8, 2026, at 11:11, James Houghton <jthoughton@google.com> =
+wrote:
+>>>=20
+>>> Hi everyone,
+>>>=20
+>>> This patch series uses a trick with the Access Flag on CPUs that =
+support
+>>> hardware update of the AF to update vmemmap page table entries =
+without
+>>> introducing a time window where CPUs accessing the vmemmap might =
+fault.
+>>>=20
+>>> By avoiding faults, the HugeTLB vmemmap optimization (HVO) can be
+>>> implemented correctly on arm64 in a much more straightforward way =
+than
+>>> previously attempted, most recently here[1] (please see [1] for a
+>>> breakdown of the other approaches attempted before).
+>>=20
+>> Hi,
+>>=20
+>> Thanks for your ongoing efforts on supporting HVO on arm64. This is =
+truly
+>> one of the most useful features that arm64 has been missing for a =
+while.
+>=20
+> Hi Muchun,
 
-Thanks,
-Thomas
+Hi,
 
 >=20
-> Thanks,
-> Jing Wu
+> Thanks for taking a look so quickly. :)
+>=20
+>>>=20
+>>> For large-memory systems that allocate most of their available =
+memory to
+>>> HugeTLB, HVO saves a huge amount of memory (1.5% of system memory).
+>>>=20
+>>> This series has four parts:
+>>> 1. Some preparatory changes (patches 1-3)
+>>> 1. Bare minimum HVO support (patches 4-10)
+>>=20
+>> It looks like there is a typo in the number here.
+>=20
+> Oh yes, so there is. I'll fix it in the next version of the cover =
+letter.
+>=20
+>>> 2. Drop BBML2_NOABORT requirement for HVO (patches 11-13)
+>>> 3. Drop the user-configurable Kconfig for HVO (patches 14-18)
+>>>=20
+>>> Parts 3 and 4 are technically optional. More details below.
+>>>=20
+>>> The main functional caveat with this series is that bootmem HugeTLB
+>>> pages are not "pre-HVOed". They will be HVOed, but because at =
+pre-HVO
+>>> time SMP CPUs have not been enabled, we cannot query for full system
+>>> support.
+>>=20
+>> Do you mean that the support for AF might vary across different CPUs?
+>> I'm not that familiar with arm64, so it seems a bit strange to me =
+that
+>> such basic hardware features can differ so much from one CPU to =
+another.
+>=20
+> Yes, hardware updates of the Access Flag is a per-CPU feature. It is
+> available for a CPU to use if TCR_EL1.HA is set. TCR_EL1 is a system
+> register; each CPU has its own. (Linux will always enable HW AF for a
+> CPU when it is onlined[1] if support is advertised, so we simply need
+> to check if support is advertised to know that it is in fact enabled.)
+>=20
+> These days it is not uncommon for a system to have two (or more?)
+> different core implementations, like with "fast" cores and "efficient"
+> cores.
+>=20
+> [1] See the CONFIG_ARM64_HW_AFDBM bits in arch/arm64/mm/proc.S
+
+Thanks for your detailed explanation. When enabling HVO via the cmdline,
+can we simply prevent CPUs that do not support AF from coming online?
+Would implementing it this way be much simpler? In practice, developers
+definitely know whether the current system is suitable for enabling HVO.
+If some CPUs do not support AF, they would just need to evaluate the
+trade-off between memory savings and having fewer online CPUs than =
+expected.
+
+For scenarios where HVO is enabled via sysctl, we simply need to check
+if all CPUs support AF. If any do not, the system should return an =
+error.
+
+Then, we can proceed with the Pre-HVO.
+
+>=20
+>>> This series is based on 7.2-rc2 (0e35b9b6ec0f).
+>>>=20
+>>> This series almost 100% cleanly applies to mm-new, which has some of
+>>> Muchun's HVO patches, with one trivial conflict. I imagine this =
+series
+>>> will conflict pretty heavily with some of Muchun's other patches[2].
+>>=20
+>> You know, as we iterate on HVO, the codebase is becoming increasingly
+>> complex and difficult to maintain. Aside from the work in [2] that =
+you
+>> mentioned, I actually have some local patches aimed at refactoring
+>> hugetlb_vmemmap.c as well to reduce this maintenance complexity. I =
+really
+>> want to avoid piling more code on top of it right now, as that would
+>> only make things worse.
+>>=20
+>> Therefore, my personal suggestion is that if this approach is
+>> theoretically validated on arm64, it it better to wait until the HVO
+>> refactoring is complete, and then review your work based on the clean
+>> codebase. For now, what we need to focus on is evaluating the =
+feasibility
+>> and soundness of the approach itself. What do you think?
+>=20
+> I agree. The first order of business should be for the Arm folks to
+> tell me if they think this approach is unsound (though I've been
+> chatting with Will about this for quite some time :)).
+>=20
+> I'm happy to rebase on top of your refactoring work when it is ready.
+>=20
+>>>=20
+>>> -- The AF trick --
+>>>=20
+>>> The trick is that translations with the AF unset cannot be cached in =
+the
+>>> TLB (see Rule R_DWZCQ in the Arm ARM), so they can be atomically =
+updated
+>>> without needing a full break-before-make sequence.
+>>>=20
+>>> So the PTE update sequence becomes:
+>>> 1. Atomically clear the AF on the existing PTE.
+>>> 2. Invalidate the TLB.
+>>> 3. cmpxchg the AF=3D0 PTE with the new PTE. If this fails, goto 1.
+>>>=20
+>>> If there is a CPU on the system that does not support hardware =
+access
+>>> flag updates, clearing the AF is problematic, as those CPUs might =
+fault
+>>> on the vmemmap usage. Therefore, HVO compatbility checks all CPUs =
+for HW
+>>> AF updates.
+>>=20
+>> Sorry, I am not familiar with arm64, so I will leave it to the arm64
+>> maintainers (or experts) to verify the feasibility here. Once the =
+viability
+>> of the approach is confirmed, I will look into the HVO-related =
+implementation
+>> details and consider how to support this feature on top of the =
+refactored
+>> code in the future.
+>=20
+> Sounds good, thanks Muchun.
+>=20
+> I'm hoping you can look at patches 1-3 anyway. I think they're the
+> right thing to do, even without the arm64 changes.
+
+Yes, I've looked it over. I think that making modifications across
+several areas will be much simpler on top of my refactored codebase.
+For example:
+
+ - In patch 2: There is no longer a need to move vmemmap_get_tail().
+ - In patch 3: Handling partially-HVOed pages becomes straightforward
+               because vmemmap_restore_pte() no longer relies on
+               ->vmemmap_tail to detect whether a restoration is needed.
+ - In patch 4: I have updated the ->remap_pte callback to return an int
+               as well, making it easy to adapt your changes.
+
+Overall, the implementation is significantly cleaner, so I won't list
+every detail here.
+
+Muchun,
+Thanks.
+
+>=20
+>>> -- Application to HVO --
+>>>=20
+>>> HVO relies on the following page table transitions:
+>>> - When enabling HVO for a page, PMD block entries in the vmemmap are
+>>>   shattered into PMD table entries. The first PTE remains mapped
+>>>   normally (RW mapping to a real page of struct pages), but the
+>>>   remaining PTEs in the vmemmap are mapped read-only to a shared
+>>>   page of struct pages (that is, there is an OA change and a
+>>>   permissions change).
+>>=20
+>> Just to clarify, does OA mean Output Address? Please spell it out for
+>> readers who are less familiar with this context.
+>=20
+> That's right, sorry about that. I'll spell it out more clearly in
+> future versions of the series.
+>=20
+> Thanks, Muchun!
+
+
 
