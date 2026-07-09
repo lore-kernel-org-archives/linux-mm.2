@@ -4,118 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 048A1C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:32:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0024C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:33:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC05F6B0005; Thu,  9 Jul 2026 13:32:25 -0400 (EDT)
+	id 91DF76B0088; Thu,  9 Jul 2026 13:33:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E98146B0088; Thu,  9 Jul 2026 13:32:25 -0400 (EDT)
+	id 8CE786B008A; Thu,  9 Jul 2026 13:33:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D89116B008A; Thu,  9 Jul 2026 13:32:25 -0400 (EDT)
+	id 7E7176B008C; Thu,  9 Jul 2026 13:33:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B35516B0005
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:32:25 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BFFF168BB0
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:32:25 +0000 (UTC)
-X-FDA: 84969932250.28.B409439
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8808A80007
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:32:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tSEvYTYw;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 423716B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:33:54 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D2689168DC8
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:33:53 +0000 (UTC)
+X-FDA: 84969935946.26.77CEF64
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CD95CC0012
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:33:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="Z/GvK7QY";
+	spf=pass (imf10.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783618343;
+	s=arc-20220608; t=1783618432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+iygNm+vh0afSLVE9tfBUkC6Dh/o/QFksTzffYOLwxY=;
-	b=xjaSOWZTTiQeDpwcOOQqi2gsu22b4bNra26+98Dbuk/YXll72PAnsBhGoN1xV8728wLEBk
-	fbPS8xZiVMaX/sX2XJ61aFWiKeb7YnMOhYaRhbcv3H7YsRfXeYbNbwk/OFiBhn3zSr3Nxy
-	NQazgGIRIfYdG0QyjJq1q1d8rX+ufds=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=HdtO2LUS3BfbYCc5UouYbQ9tOWtdjh92xlNm6EsNhlI=;
+	b=aNiJUs7hgBJ6EpdPBmLpcZQfMSXLs62rx23A6nkzoWBFkbTNhk8Iju4IoG6lWrERTyrEjH
+	m0tgVArbEURgClQaRc8SeWpK/6aK7xgmKBxEiqtyLYtHh//Y8HvdlROUAi0+lCeH9mxbAk
+	0sG/hZElMmHPRMIlLF6xOTdyDEmpLOk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tSEvYTYw;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="Z/GvK7QY";
+	spf=pass (imf10.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783618343;
-	b=8EXZIEf7cKQXW0wsnAkx/MEypXYteBdjmWETn1B/BMuHAvV3xW/YdqkjQvyjIHMtQ3MFsG
-	pENU3MpbCXnXm2Do2paqQodhiEjs1g3GjEB/vh4tWnEbLHb0Pom3+O/3PTAngn2XFBN0Af
-	znO3Hzj2ZUOIpIn7mjtMauXwg+PZYr8=
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e7c6ec9dbso1850585a.0
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 10:32:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783618342; x=1784223142; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+iygNm+vh0afSLVE9tfBUkC6Dh/o/QFksTzffYOLwxY=;
-        b=tSEvYTYw9jSThXjaABAIM9/kjFjfQMqgLH9RUUTYAzi2v545O7moQlPWyH19LRbBuz
-         BVV3prXxhKTotRj/L63z/Pup7pIWJ5ZrzM2yRBvf0rOm4492cJS7Uq9u7fTxTLvQFOiE
-         v2nkDd+a513wT+u7WkekKIaknn17gjKRCNZEQ273XCTgVkNvjmQ+1cXcrev1ubk28ZcK
-         kQP1MJk07TuUVlSx6FC4zZ6PNP0H/HskbsrHoWFOlsoR0m7CNaMIyEPEjRVt35xQQkex
-         IR1EY0LE1LeFuOfsIFDBPjRtV70en8KEk03GwYPBIfULdaWnaDeIGiThi9u04iGlCDPA
-         HG4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783618342; x=1784223142;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+iygNm+vh0afSLVE9tfBUkC6Dh/o/QFksTzffYOLwxY=;
-        b=WMJVOmPHcZ33rThOyOFnOk3fJS8I51W4edVnCdtdoZ8K9qvl1BFoxZp3ODfL5dn+AQ
-         VDQikU7BlDX6rCII/vL5z3KROS5r1XZW5I/SZ/lPICAQ0HYg4hDAJYNDeObkNC7nUD/S
-         h/3tZLygBc6oCP/NRk/EZdwoXcrICgm/W9J6hiDbOIkgG454Z4YNWifQmLDw3WFYYzcB
-         zBbGsWq0dFFJgKmk9p6X7kyj1h26ixEGLsjeFz5sdH6jU5jyL4f28jS83uj7fNsqUpO+
-         lXvLAayuoD/3VlJhqSLOm499tuoe8K5x9g6BniK+LgdUJL2fWcl0YswtAo2k3X1/l2X9
-         1I6Q==
-X-Gm-Message-State: AOJu0YwjJNB8kmuhlCbuwHeZDRko/wM3scVAO92moV7+CwsaoLUSqMDm
-	lH2/VqsyV6rGrsaZVY5tKg4ahj5MC7nOsf8JsOAyeJyfZ8nMZ2oFfP8vl09THtLWUhI=
-X-Gm-Gg: AfdE7ckOCjy7POkvhwCymXokPHA+Abnvllw17TNDR2bex5f622GOLp+4LTfFjaZPZGd
-	eHg31lxTrYSVO0wAk1PkJAJSC2dTnGFeSwhxenvFdpDOszFV/S78G0+wMHjk3QtfhxT7WEYu6+6
-	lhYgLbfzj52NZr4YmcxIB2kFd5tNq652/7VkQDOMa0nnocYEH4elTAzNcy3yUswOMSckQPszFbT
-	3q8gSQ1mVyTyuyKCumTo4g8Y3RIFaCS7C/1PbM90DL7m/LrEEA8APHnxFL3DAWbdXVZvb1jIEe+
-	P/89UI/1ltCYm/oMZ/FRHQNO0j9SpBybvVbiEZPr+OfnbhkYktc+s33L/rbeR3xX6uhRMUgtjLd
-	AKTrNk3RviMT8g6zRpz87LZ8ZUCK4ZdmrVc7+k4n9D/rfQA5NN0j/Bq3a/CePJuITDQWQUjil2q
-	OdchyaY6pYgKvE5Np6wwsnGt++ZKodhsblK4Or9yIqHCzwutG4uV5+eKkjjRkLhUzgJWej
-X-Received: by 2002:a05:620a:890b:b0:92e:7c3e:26fe with SMTP id af79cd13be357-92ecf67b0f3mr805067985a.64.1783618342643;
-        Thu, 09 Jul 2026 10:32:22 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90bb91adsm1705974285a.20.2026.07.09.10.32.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 10:32:22 -0700 (PDT)
-Date: Thu, 9 Jul 2026 13:32:18 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com,
-	willy@infradead.org, jack@suse.cz, akpm@linux-foundation.org,
-	david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
-	apopple@nvidia.com, Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [PATCH 0/2] mm: don't apply task mempolicy to unmovable kernel
- allocations
-Message-ID: <ak_bIlYWJsEWx1P1@gourry-fedora-PF4VCD3F>
-References: <20260701222112.2820098-1-gourry@gourry.net>
- <87echco1w6.fsf@DESKTOP-5N7EMDA>
+	t=1783618432;
+	b=7bnbiuv4/D5/tE92F/ooC3DF/MA/OhqgiHVdOLox6NeSbfmuTXdTCSInTBq6tuwXwsN0qL
+	Nyqu1rMlTpFkUII/N0UbNGgM/Ypo+cBYxz/a6BwYPUwpeWXwVbHssEvq/8xBy8R3XchKBm
+	Jfp9vPm3mW13auuYj0Dl+3b2iHoGw0g=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5028D1477;
+	Thu,  9 Jul 2026 10:33:46 -0700 (PDT)
+Received: from gaia.lan (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AD1893FD88;
+	Thu,  9 Jul 2026 10:33:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783618430; bh=zIT/xLbbs8vi+r7fH9gOio4S5P+iCKE4zCWJYcJdnzo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Z/GvK7QYaxBo+o+yhClPhpwCdGfatuoBnPNjS6Ec9n1wBszvkQbNTSmqZG0iVqJsX
+	 VinI/I2wIeUIgAp2gbqxjgDHCq1QxmAlxW60U9iiPiafZGHsRnvdmDkWbTMCL035HQ
+	 NHIeroHdQBTZrVoR99j+zEF9rq8vxgZi3YT2Y+F0=
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: leitao@debian.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] mm: kmemleak: confirm suspected leaks with a second scan
+Date: Thu,  9 Jul 2026 18:24:47 +0100
+Message-ID: <20260709173347.689607-1-catalin.marinas@arm.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87echco1w6.fsf@DESKTOP-5N7EMDA>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8808A80007
-X-Stat-Signature: ktkphbasztgm3h6adgupkqp73bsbzksg
-X-HE-Tag: 1783618343-371980
-X-HE-Meta: U2FsdGVkX19+5RaCNXS+AcY4lIX0iZJGCTN9KJ332APS+GzAoC3z07EiHky4G7F1FxTknX/13YLqs8MYrgdx/Y6LhqPuMbYNWOy+anhjyJJR6qFYWU8enPUCymTCJu6hj4CYgo1ZHW/SxSsZZDVQDyMoaOr012ntEYpqSNdhoEBa/8BfBuHj0M/kjnx9T6IyjPRkRnqGvl6b4SLlL6ke4gDDiPExaHh3MbCFxQHkN3LPcmcrrWzVPiq4gSp4mGgrM9C3oDwP651JAlwB8GeQqAiqUpppgNGPpuoh9VE/1mTT4Ts7Jj5GWqkzASgX//35A/NnZdHkgkIItPYI4zjNn0rVIUwyzm0VUYgn95EX3zkM+O9GcbPy82cCv68GdpO7qEspIoh59yFfyQwTPtWvTyTNs5/CQgmXgmjScBvPiPksHP/8IEdPC5oXr+i2UfXOqR/FqU6o8Q2QLBNQtRkDt2xamniiFKDu7oztyes96f1zJC2dv4x8I2FU/6NL4ANRPoUsLJQMls8obTKHt02eXDXd48f5nO1gjSY6cPoo+7849TFkRdoFmcXK40G9JnruKzQyDmMD0ZeOewB8E5H3b3Vh0C4Nfw8zfWkrUkKru6VdzTlDbQ2Lcf5tY/bM4O9cmt8+Pb951dgGVh/HL7JJg8IcN4JTUyA6o3awKg6Z02x4llAYtmWZ8c3rdMCqzX7rYY7p3FoNTGl2m3dJ9ISrE/3kA54iY9bj5qL2Fere3JEnNuOE91J020aEtWeLTbh350YvTDKSMMHYmGbNiBjpJdekCBglQCv9OpYfUJf6ni0U+7deKbJfmhS6f1YfOiw7AtPPjjwPJTN83BHqaNxU++sJvJupoEdxU2z4Ug3GZX8P6+69nWQgzzT6pA6rxlL+hlFv2lE3QMxn6mHqR7/GerrPmsI8k8OW4h7AaI1CdgBkNcygHp4K1yZaJtK+WUll6g8MQCi5AGyqqQI/1lN
- nclltJBP
- 02NomAguc6rKHTCow8el9Thu7DX8ASwMXidkojnjItdQhltAm+IOj22Pm3nScpNu2JdcxH4Q9+mUVPQORdVxuH4GQqDj+wVL4CjfhrvUFIV5nSspOjh9zLiLu/fJ4Ub4dDibbJlXql8P17mqRU/gZ5Im96thLn26dFupyQlJ+papyKcN0Nrn7UDFfQ/+n1xQ6IAqQarWVZEguICg9+9i61XCHSfEskg7WqVX543mI1Vz6sFM41GjLZhgGi76vpXRQWCef+L/CYQuf6HRMOM7WyLw4IEvzaEl8LqKqY2vaNKSm6SEfDdKpr5M7unFleGfPMzk6uuDVDfoz2CzMIqunBFury+sELgGmfURTT6yGmdc07fb/kvQ6owjcFlwNHKiqQx2jBMEVxiwS6NPicciDWpsqY4cuy6rgku4Z7c4OClNMhlvwDVcu9N9a7/y48fSWa+9AdnQePs++aGVX9Vt5KYv7Vg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CD95CC0012
+X-Stat-Signature: rwt3n4sfdeerk9y7a4ut4xhk3ck86zu9
+X-HE-Tag: 1783618431-904257
+X-HE-Meta: U2FsdGVkX1+yoQ/xNfMfwslYzX3cBxDATFLVrLRk1R0sz7qRKhPQ3o0G4catB0zkObSC6zxWEOhRCVSSQBl6K8V8w7/oMcqY6wl7o2Q2ZSyUNpSpJmv7pbwatlNH3oCVDeI8eeeOLke2SdOYxIGJYgY3bgN1gwc/fchZBGkkrxv0yy1ilPSdC1KL3udXmj5sDYwjOaWbSis1DtbGur5dPa0EVUU5ZCGhp9mv9gI74RDlW+I0wVrUC/769ENnJgqkjGt6ezmYcSrHqPQCi6pTInuFzwoww/9dEI7xCDd0zg1oWyAq0K6YSnWq3GeMxf1InbX2bkERgutOFQEJ7yGOEMFPrdMdJ0RabsfCaD6YaOLYh56ro3MRWTssnPPdoD6C6fpqllPV4NDwbLHxiHei00O/FjHh/W30HWkv2pDCo4rhYISDG1FTeK4OfqjdjkB43teNN3w1ddMC7tOMUMDSV6mbRdkhtemvAlgC0sDzY/V+NVBPQGrD7oDuK7muVDd1XrwZY8oKIyQt4SN159DQh7U/VdPGmtnVRo0DtRm2/udv7f2qpemU6SIf7xcRnOPE/fJHeZQ07NP+tkTcezzh5izh/fwFCFhDytuHJBeOeC6bgtx9KvypJyvXJyl0iFQNihBCpKSxvKNa0SrgJ/zV4wfeIIyMCP/T02RRp1g/2bBb0psre8NBo4wOA3Q22dOqYuAAkEx3+cAu5ur3w+Ij/Y3fY77+VXtH8SKHEf2+wY7oGi+aHL0/P9ttPDwgOQySxTZI7TXrGn3L2q0Du7OQStlPGemPhWTJOtdThKYB2R5/Ny5ikPgiPb6GVh+qQrYxtMIxCyU25qz4ioJmu2jLgn6P2Wiq4X2Ju0BduE+wb3tKADdp5vO1Jv/ea0/3/DJ5Mh5XkwTRCmVw8cQxuHl2Y6Ix7+NfewZadAXf8S8jBi1u9UmT3UEuX+9fQU5e+lawj81sbA9UeBog42awCjb
+ z7418t85
+ 3O3YTw6frVUrQVdRJqJ62+JoemPDF0rhP7GZV1rpql+bLTpfDFqe0hwD5Fh5gnbN4wvfOuOIQKDVHeVoGSoH2Zj/ijM/1cnN/Jka7LWNGnK+4YgQKh/o+5634//aaoPapBDMQrhUWR9eTmNsCvMXy0/xbs4zSA/ktoW7JOLQrfYdNCzDmf0fQLJSjpnx+fjVs8oYj+QhzD/W0VjBHSyBJQ8spnQUbPrupBFx8aEnIWb1wamDHS5SYQLpuagq7d2QAGR/kJCyNuSlW+Hr1SzKK66UaB9NOddgT73Si/VSgNsj4qxWWdXUZnk8ty7CIJ1KBEr8WmIGaI/qsU238iM6GVurlnDVoU5Z2P/cczCgC+i0ZkbFaai61mt9DgW8+liEhyloZL3JGlwuCN0KKdLbzrMmywpfAVaqKbVfw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,37 +86,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 07:09:29PM +0800, Huang, Ying wrote:
-> Gregory Price <gourry@gourry.net> writes:
-> 
-> > The unmovable unaccounted kernel allocations stop following the
-> > task policy and place node-local. With no policy set, both place
-> > node-local as before.
-> 
-> Personally, I think this should be the right thing to do theoretically.
-> However, you may need to find some practical issues that this resolves.
-> 
+The kmemleak marking phase is not atomic. While the object graph is
+traversed, the kernel can modify pointers, free objects or allocate new
+ones. If a reference to an object is moved from one location to another,
+kmemleak scanning may miss it. We have explicit annotations like
+kmemleak_transient_leak() but identifying and maintaining them is not
+trivial.
 
-I don't entirely disagree, but there is at least one scenario where this
-is an obvious improvement:
+Given that such transient leaks are short-lived, rather than just
+reporting such objects as leaks, do another scan to confirm the
+suspected objects. If no new leaks are found during the first scan, skip
+the confirmation one.
 
-  BIOS-configured CXL memory brought up in ZONE_NORMAL. 
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Assisted-by: Claude:claude-opus-4-8
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+---
 
-An task interleave policy on such a system will end up with unaccounted
-kernel allocations landing on the remote node, which is just not
-preferable at all (and uncorrectable).
+As discussed here:
 
-It's not a complete fix (fallbacks can still occur under pressure), but
-it's one piece of the puzzle.
+https://lore.kernel.org/r/ako1sMPVu4dfQR4K@casper.infradead.org/
 
+attempting some more heuristics to reduce the transient leaks. It
+overlaps a bit with Breno's minimum scans patchset but this one limits
+it to two scans only back to back and only if new leaks are found. I
+would say it is complementary.
 
-Forward looking:  This patch makes private-node's with ZONE_NORMAL
-reliably hot-un-pluggable.  But that improvement is obviously predicated
-on work that isn't upstream (yet :] ).
+The difference from the link above is that we now use the same scan loop
+to mark the suspected leaks instead of a separate, heavier one.
 
-I need to send a v2 of this with SLAB_ACCOUNT fixed up, and some numbers
-to justify dropping the pagecache fix.  But I will probably sandbag this
-a bit until i finally send out v5 of private nodes.
+I told claude to refactor kmemleak_scan(), hence the assisted-by above.
+Ideas mine ;).
 
-~Gregory
+BTW, I'll be away from Saturday for three weeks. I may reply
+occasionally but won't be able to test anything.
+
+Thanks.
+
+ mm/kmemleak.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 54 insertions(+), 3 deletions(-)
+
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 7c7ba17ce7af..505b5c3a423b 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -175,6 +175,8 @@ struct kmemleak_object {
+ #define OBJECT_PHYS		(1 << 4)
+ /* flag set for per-CPU pointers */
+ #define OBJECT_PERCPU		(1 << 5)
++/* flag set on an object left unreferenced by the full scan, pending confirmation */
++#define OBJECT_SUSPECT		(1 << 6)
+ 
+ /* set when __remove_object() called */
+ #define DELSTATE_REMOVED	(1 << 0)
+@@ -235,6 +237,8 @@ static unsigned long jiffies_min_age;
+ static unsigned long jiffies_last_scan;
+ /* delay between automatic memory scannings */
+ static unsigned long jiffies_scan_wait;
++/* number of objects flagged OBJECT_SUSPECT during the current scan */
++static int nr_suspects;
+ /* enables or disables the task stacks scanning */
+ static int kmemleak_stack_scan = 1;
+ /* protects the memory scanning, parameters and debug/kmemleak file access */
+@@ -1439,6 +1443,11 @@ static void update_refs(struct kmemleak_object *object)
+ 	 */
+ 	object->count++;
+ 	if (color_gray(object)) {
++		/* referenced after all, no longer a suspect */
++		if (object->flags & OBJECT_SUSPECT) {
++			object->flags &= ~OBJECT_SUSPECT;
++			nr_suspects--;
++		}
+ 		/* put_object() called when removing from gray_list */
+ 		WARN_ON(!get_object(object));
+ 		list_add_tail(&object->gray_list, &gray_list);
+@@ -1797,15 +1806,15 @@ static void dedup_flush(struct xarray *dedup)
+  * kernel's standard allocators. This function must be called with the
+  * scan_mutex held.
+  */
+-static void kmemleak_scan(void)
++static int __kmemleak_scan(bool full)
+ {
+ 	struct kmemleak_object *object;
+ 	struct zone *zone;
+ 	int __maybe_unused i;
+-	struct xarray dedup;
+-	int new_leaks = 0;
+ 
+ 	jiffies_last_scan = jiffies;
++	if (full)
++		nr_suspects = 0;
+ 
+ 	/* prepare the kmemleak_object's */
+ 	rcu_read_lock();
+@@ -1835,6 +1844,8 @@ static void kmemleak_scan(void)
+ 
+ 		/* reset the reference count (whiten the object) */
+ 		object->count = 0;
++		if (full)
++			object->flags &= ~OBJECT_SUSPECT;
+ 		if (color_gray(object) && get_object(object))
+ 			list_add_tail(&object->gray_list, &gray_list);
+ 
+@@ -1904,6 +1915,10 @@ static void kmemleak_scan(void)
+ 	 */
+ 	scan_gray_list();
+ 
++	/* a confirmation scan does not look for modified objects */
++	if (!full)
++		return nr_suspects;
++
+ 	/*
+ 	 * Check for new or unreferenced objects modified since the previous
+ 	 * scan and color them gray until the next scan.
+@@ -1926,6 +1941,11 @@ static void kmemleak_scan(void)
+ 			/* color it gray temporarily */
+ 			object->count = object->min_count;
+ 			list_add_tail(&object->gray_list, &gray_list);
++		} else if (unreferenced_object(object) &&
++			   !(object->flags & OBJECT_REPORTED)) {
++			/* flag the objects left unreferenced by this scan */
++			object->flags |= OBJECT_SUSPECT;
++			nr_suspects++;
+ 		}
+ 		raw_spin_unlock_irq(&object->lock);
+ 	}
+@@ -1936,12 +1956,42 @@ static void kmemleak_scan(void)
+ 	 */
+ 	scan_gray_list();
+ 
++	return nr_suspects;
++}
++
++/*
++ * Scan the memory and report the unreferenced objects as leaks. Must be
++ * called with the scan_mutex held.
++ */
++static void kmemleak_scan(void)
++{
++	struct kmemleak_object *object;
++	struct xarray dedup;
++	int new_leaks = 0;
++
++	/*
++	 * Full scan. Objects left unreferenced are flagged OBJECT_SUSPECT and
++	 * counted in the return value; nothing to confirm or report otherwise.
++	 */
++	if (!__kmemleak_scan(true))
++		return;
++
+ 	/*
+ 	 * If scanning was stopped do not report any new unreferenced objects.
+ 	 */
+ 	if (scan_should_stop())
+ 		return;
+ 
++	/*
++	 * A live object whose only reference is moved by, for example, a
++	 * concurrent RCU update can be missed for one scan and reported as a
++	 * transient false positive. Scan again and only report the objects
++	 * left unreferenced (still flagged OBJECT_SUSPECT) by both scans.
++	 */
++	__kmemleak_scan(false);
++	if (scan_should_stop())
++		return;
++
+ 	/*
+ 	 * Scanning result reporting. When verbose printing is enabled, dedupe
+ 	 * by stackdepot trace_handle so each unique backtrace is logged once
+@@ -1969,6 +2019,7 @@ static void kmemleak_scan(void)
+ 		trace_handle = 0;
+ 		dedup_print = false;
+ 		if (unreferenced_object(object) &&
++		    (object->flags & OBJECT_SUSPECT) &&
+ 		    !(object->flags & OBJECT_REPORTED)) {
+ 			object->flags |= OBJECT_REPORTED;
+ 			if (kmemleak_verbose) {
 
