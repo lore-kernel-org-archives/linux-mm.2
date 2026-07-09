@@ -4,82 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BC9CC44506
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 09:58:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0C1AC44506
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 09:59:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB7046B0088; Thu,  9 Jul 2026 05:58:12 -0400 (EDT)
+	id 9FD506B008C; Thu,  9 Jul 2026 05:58:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E67B46B008A; Thu,  9 Jul 2026 05:58:12 -0400 (EDT)
+	id 9AEF16B0092; Thu,  9 Jul 2026 05:58:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D577E6B008C; Thu,  9 Jul 2026 05:58:12 -0400 (EDT)
+	id 89E2F6B0093; Thu,  9 Jul 2026 05:58:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AD7D76B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:58:12 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 480BD1C3971
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:58:12 +0000 (UTC)
-X-FDA: 84968787624.12.49E948A
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 64EE76B008C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:58:59 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D7D15120468
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:58:58 +0000 (UTC)
+X-FDA: 84968789556.23.5A4CE4D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 888D1C0002
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:58:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeNxs0kk;
+	by imf27.hostedemail.com (Postfix) with ESMTP id DC48B4000A
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:58:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HrBNYB+P;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783591090;
+	s=arc-20220608; t=1783591137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pIZMYCGQGBeYBRz+whWaY4gLPy2ytIC+Ky+/PPP/NbE=;
-	b=PY8btensAeK82Y9xNzgdf8DUCKhIL438CdaTYML1Vc9kVxdd/h66ykGa0lyC+0PqvoS0VR
-	3wH2PwskRGXVe3EH3I3g/q2KNEb9AsqWUAoOocuVS76NXPgBWJ06ZaCcXcrm4MNceSJMjb
-	eKYjOlJr2rnuovW8Y0HROd5x/Xmuy6s=
+	bh=x1It6yxyQPzIyWutbFZMgnXccx27Y4Ek4Y0tDuWVYk4=;
+	b=JTls4GIKBTg5s+kbSWJ+8fS3T0iu31AvWVLaSapoXrPOdlPqfrG0xFmI9ZQfRw35+Rb4py
+	sMHByapo7t0VnDwqCL+CepipN5fvrWQBKbtAFK9JBH3ZAoV5yIf1ILp96FpyHy+d/OKAhT
+	shMJB7+OGgIjRf+WNcpvp5Db3KpkJzI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WeNxs0kk;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HrBNYB+P;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783591090;
-	b=7Mt/T21uxJDZSkj4VU1WNP1vcvuSZ9Ok1o1XPZLRxXH1bhW8h8VpsDqMgkOpOodoq7MOjf
-	5SQRguQmSfu8y3YC3e27br1BqY2jvOmv5kpgch63sp5C8Sih253Be+jSPxE+sc+PsLsp6L
-	eASMWunIiNpvXK3p/exQ6VWm1GcVXOo=
+	t=1783591137;
+	b=CjQ++Cw9ChhLIg6JMMtGn35E43yeL4s5rNkLVO3viqcDTcUByqbOn1QcfvNpHfLTV6I/zC
+	QOOKim8nXFroHOVuIeE7rR2cyPHJRKe53rMcsqyLF+2xAlTbLkp3EcDXXLuZeWX2xKs8dP
+	35Xodn9SIWMcZrDSL3rEI31dS6CNKUU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CBABD4063C;
-	Thu,  9 Jul 2026 09:58:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABA61F000E9;
-	Thu,  9 Jul 2026 09:58:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 274984165E;
+	Thu,  9 Jul 2026 09:58:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22511F00A3F;
+	Thu,  9 Jul 2026 09:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783591089;
-	bh=pIZMYCGQGBeYBRz+whWaY4gLPy2ytIC+Ky+/PPP/NbE=;
+	s=k20260515; t=1783591136;
+	bh=x1It6yxyQPzIyWutbFZMgnXccx27Y4Ek4Y0tDuWVYk4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WeNxs0kkEZTOSayX6k8SqjOWRMZrokZFwAHLQyFciN4Akkj37P02YgRmGi/jEKLQj
-	 OZ0JYqIWL3JODmbUhux7WPSTUPcgacvDpAhSrr8wVADnrRFQGOqTqg3nx7XKyPHB9Q
-	 wu6rHrJ/QkV0/n2rY9vKmcSABJEnEtBQ8Hy4VFaiXW9676QLCF+cgANsS4/OsRJIoP
-	 KHdjEctL7UQo2970NOWNI2mjch6/U0a5wic2XoLpqSWdJqDp2Lv71i3F+ceG5+kpJA
-	 XgWKlt7GFvydVEizWjUz+9Dd6ED15kZ8IYhOu7xToyH2GIwIMt+mP2639Zpp6UHikV
-	 3zYAFhvKwMxrw==
-Message-ID: <42a5cd12-9569-4719-bd6e-95dc0100c065@kernel.org>
-Date: Thu, 9 Jul 2026 11:58:03 +0200
+	b=HrBNYB+P8LIh+GTrL3Psw9XZ2FzjGe6EF988SnGYOKS3nC9RTmLcM9/JH3eQThL65
+	 UkCfACLKKahoOdFQYJayD95IJldLClw8DEXgf8dmgcQmVHZA02TW4jvRCh44e0WMna
+	 KqkLGpJlwUtbs7awT+gTIT/XReenN5L6hwl7eO7bHWm2oaHJdCTVe9AHkDLLlDo3b3
+	 BXRqt4qbzNMVquJPCXieo//V2FKRc2a8uZ4B78YyrictwuunZjZk55C/ReIajmuLmZ
+	 QxoNQN7BZSfLdXCz4OxOoBIhGrKtlsvXNGhgSaGWgfhhqaHqfZVdbbn1Zbkl+JuTh/
+	 ETOKuDiMeeEtw==
+Message-ID: <f1720e2f-c25a-45d2-8c51-c88bffc8f5f8@kernel.org>
+Date: Thu, 9 Jul 2026 11:58:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
-To: James Houghton <jthoughton@google.com>, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
-Cc: Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>, Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-References: <20260708031129.3503195-1-jthoughton@google.com>
+Subject: Re: [PATCH v2 1/2] mm/ksm: Initialize the addr only once in
+ collect_procs_ksm
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
+Cc: chengming.zhou@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260709173212190rZdwynySRyLr9EtPuXBRU@zte.com.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260708031129.3503195-1-jthoughton@google.com>
+In-Reply-To: <20260709173212190rZdwynySRyLr9EtPuXBRU@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 888D1C0002
-X-Stat-Signature: 41hkn7c3hrfdq9gmbqzgf3uwh6nekcui
+X-Stat-Signature: dgaueiytubq619z7ag8qrg8jmgzgentc
+X-Rspamd-Queue-Id: DC48B4000A
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783591090-668894
-X-HE-Meta: U2FsdGVkX1+FIX2MkW+6sdiQ4WW2aSGiJQcCYJGbBwzCO5P9+7xC4jqxiPhvMA9/kV6vErO7WQ2+BsqMdS+sOW4qFtR3BmFk8MYKxY4uG4fQz6f2+nXfWVX1oPOvFKmIxxbuHDNV5fjDXSeIGnimBznP9yWbscj+Y1pU1N2EslofBAJ5eE5xIi4EICXNce+c9ERuI+JvUtL7NDmWQq4i3dToDwLFImnoHecPiOMe1EzBiBEzGWL9EkpbPhexBB+hpcivdy5lmyROLQG4rp+gueUkYHSrD4Zv3PsIhAqjF/me5Gi82AUpMmcePSgKd4F5WJS4OKYJApgqfnyn1uqywvrRjgeyTAmZmWJpovKfk2SWO0mwXcSZpZtONcGsZxLw3vTP3C27v2wghD7PFB8sjz/aFL7yWv62lMmnjB2V0wRtAFJIudrty+gb+57hbYMN5I+b2z7cAU5ncsN02cIbV7aZX4Xh/0N2zOjWUVqPCaR4hq+2vOF05WlZa9oqqeiZJIUYz5ZduD0Tn2IK+WqQE9cNhUX9wYGES5P89vv4mBjikPT3PDSC1QSX8uu0mbtamZsfB5OjwVHOc4rVsOcsjhhhESsvb+uGoVrKa0QH3OgKlqEKWszaMzJWjI59ETBO/V4Q+2tz16rQbdiWsiMNoKeEluQHcMJSkBmTjRjj5Cvbqs2wMD7kMKx57BagRWS8HsprpDQiHktK7reAbpKH/OBN2pQIxlkV1R/9WBLldeWZgrmGKM0IgBr5LUbAp2K931aDCkmwJIzpODgBYTs7ga2zxLMJ13/HUSmFqlJrQFWvSleuhVspBhrrW3g1VxbxIGjc/s0MIkBivnJ51uU1WumkJEEMITS5v6M47VubFJG6rraW+S1yXCPJ0Pk54kk1yC5YvpY6zPKvND4TXTnA+QPD5p8CvQbQE3cH7OY/epg2oMqfTI5M7azi0TIAl9dH6Uq0mTNKcJ7TzRhC4wF
- /OvBlG3a
- t3GnH/1DsSq6t+yld6AvUqqlV27OO6MXiCfoshIgyKaX7Z4KNH7NvMf+VAHJBWWsQfABQIGIiBkPH8NGDQkK/eSFp5fT5WzwcLBNRn9wOS0gnC7sisX/4vxCKPIrny92BOroVwYiiCFQMsp6M3HVrN353hCbAGLMlPKTEqOA+Y+/7YKUgSNfyQ7ExVatM7vbMK2MMLGkkt9+NG1tKQE/rjNsSoecObc0GXSHCmc4zg8sB4mUUh5a5Do/hGCyxEXxkvHogOIj7VvcSt7kZsYm0k6N5gKlafVhHxS0t
+X-HE-Tag: 1783591136-575295
+X-HE-Meta: U2FsdGVkX1/l7HT8V8Gm1LzZ7E73D8Nv4TucsivJKnZoznun5jHAgPtXQk2dnBFKpKjsWdktic4NMy4S6TwodWHNEKor50CaLyqQkLmqKuj5qt1ShYfGDHO1C+5l4xgwNzYud/eyRF5HDDv2OkYCaHaYuZo+HkS0lxDmmTEnujEUTM3Hr9RaHd4KM4OC/z3TggBbWTUKe3X/lUMm5bWc6hNCHAICuKc4qybUDksQLxdj+/vGQSl4ydjOd6KyrG9wGAyLNAnVRLMgu7Lc/A5viCQcaPzMtfsdcCkskfc72tRus70dndoJXiipcGVZ5BQ/gXjRIsWtZt20jvwtgAYLmkJFSxEXje6V/kf7Xd/WJd/20q5/HnRLxj+G8Uh6QO9s/mqyRSEhnR1nJ8llT4eDEs4atgBGLt9D8DjZXiaa+JqTvzYzOlVALraOC0eQxSjL4pUUCtY7tGaYX06m5NG0OVnPwgTNYelYEdh/LEJsgeQV7QkT2LBetXVv/kTZGy+LgFOdeuho+stumYInxZGjXDfCvmKoW8TECk6lhcBwtg3ktQSbzE2orsch/RN1ctaFKJ3NNWktnlZbciBO8TWpQiWVD2/ZciL/hIiTZgx3tYPQhOyLYyIwpZWR5ayBD5Bv2Qqm/4SxHXDFTCDUMWXNdOcVCCYBGd3mw7H6fCAkdVc3nMpPm4XLPGAOa2lZxT7mEsJdUyo9BAPt5mmaOj/CQSZg/D/+KeCmuyxd7JODXeSBErdVtikdEc6WkoScdQ6AmYYV5woE5zqkDf69BxGfb1s9sG+0mcX2xx5NidaMi8sSySjDj0g6/THj9GkBzVTq9n+55/v7N432sDyxpUGp+0ZAmRV9bIOFvIs0OFhqFcfdGRtbr1H9dD42lEkyO4ttf8UiMDvjqcszbI0vVKejBFe22ofkzQcQdPGn6gB2WJ96ZthHKL+ExFX9Udrs0JSaH7uZOOkh2NCCXNiGssi
+ ASIznFVx
+ sCE7GqcdXqkeYPD5NUwNt3H/7TXBMBRad/sTeIc+APXlYOAFoG2fOtF4PMRD5cylmhzPYMsCatQiWcc8Bt3NBq9rtZLz2vX3VNUmnHNjU6oMn6+tcBoNYeBiKuKU97LtejWONrIBWa7GfUazJJ+r59J8li9gisOt8oAaM1EP11G8XzR5SkjKKjj53o3NK0gwjmFAVjIxqzwC8q5KJNP63Llb+Re09V9vFxOkgtl+uX87xLfMOwoZD4CqF5+MQjuotMwDVevNf1vFUoIIRbT7BiQv4ru2FSMAQXlSi81/KA6/BEd0N3+IO8Hu7IrIXr6/hkF0VQmVIjQ7sOBdEOdpHNnyEiFYfdKP/+TI6067mxbHmQ8nmkQA9JU2VdUBlXDsPS+RG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,23 +137,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> -- The AF trick --
+On 7/9/26 11:32, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
 > 
-> The trick is that translations with the AF unset cannot be cached in the
-> TLB (see Rule R_DWZCQ in the Arm ARM), so they can be atomically updated
-> without needing a full break-before-make sequence.
+> Similar as 318d87b8fa7 ("ksm: initialize the addr only once in
+> rmap_walk_ksm"), only initialize the addr once in rmap_walk_ksm
+> because the addr variable doesn't change across iterations.
 > 
-> So the PTE update sequence becomes:
->   1. Atomically clear the AF on the existing PTE.
->   2. Invalidate the TLB.
->   3. cmpxchg the AF=0 PTE with the new PTE. If this fails, goto 1.
-> 
-> If there is a CPU on the system that does not support hardware access
-> flag updates, clearing the AF is problematic, as those CPUs might fault
-> on the vmemmap usage. Therefore, HVO compatbility checks all CPUs for HW
-> AF updates.
+> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+> ---
 
-Pretty nice trick, I hope this will fly :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
