@@ -4,109 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DE5AC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 18:30:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DB30C44501
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 18:41:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 665156B0088; Thu,  9 Jul 2026 14:30:31 -0400 (EDT)
+	id E6B136B009D; Thu,  9 Jul 2026 14:41:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 615D26B0092; Thu,  9 Jul 2026 14:30:31 -0400 (EDT)
+	id E1C696B009F; Thu,  9 Jul 2026 14:41:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 552E06B0093; Thu,  9 Jul 2026 14:30:31 -0400 (EDT)
+	id CBD4D6B00A0; Thu,  9 Jul 2026 14:41:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3386A6B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:30:31 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC4E51C1FF2
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:30 +0000 (UTC)
-X-FDA: 84970078620.06.BF53A80
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 14021160006
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:27 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A995A6B009D
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:41:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2CC03A0253
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:41:02 +0000 (UTC)
+X-FDA: 84970105164.10.AEBBCCF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6C68D160014
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:41:00 +0000 (UTC)
 Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VpNCJupc;
-	spf=pass (imf08.hostedemail.com: domain of dave.jiang@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783621828;
-	b=D0NoTrDfiQcjwJ60TstXa6O2tPgorXWJBebU0Euo2NlAdQJpT06kHDP4MUs2cusYx3/WXc
-	poD3jecvaSViTpJHgIRflb5ZOAlH3CFk3ApTlDHpyxuETAarRZwG4rcNr0dZG+EN/lTX1O
-	0aOnz4KiKl9Iw0W0uR1YvAgbjlaj0oQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VpNCJupc;
-	spf=pass (imf08.hostedemail.com: domain of dave.jiang@intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fLM6MjaP;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783621828;
+	s=arc-20220608; t=1783622460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GSIblLaznmZlTWnPXhnYlJQAVMxEGTQDCsBIHdlMB00=;
-	b=AWm9Q0VSmc3wi1RSjOQ2cWPQY/5zO2gHIZTqG9BvfyGS7DT6ZK74PwN2RUt7M/ZIOqyM/E
-	px265AtDiPoXHspfqG2XgpYZmaWCLh6IZSePo3j4f0wH013QodOkVRdciLpdGAABh8MstZ
-	hMZpHUB8Mn5ww6xWv/5UkPb2b0h8XV0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1783621828; x=1815157828;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sJrITh55upt9+7i4xO8v5KWYgInW0gtqD9Qlj0C5gCY=;
-  b=VpNCJupcThGuEOTkLpYsGwXaM5S1t7Dx/7mvKmqh6KTeJFVKHa12nhYw
-   tU+q6bdgnUfxoGXQdNAVPC11s5Gp1GprbA1HQkFwJA9502KCxLv317Vcx
-   S8Sz1ksGomliPXaE3jM4A6yAWNpddBzLs6LGNnPXo+cItd8lshBcaAItt
-   CppuYqvEu/37l8U7PC2nsSA8ZNVWaff+ad2PVBnHpyc94RRPQ9wKvTrTl
-   Do/gI2v4A9JVWDt298eIpOShakW/Hgc3qlbCGHDfqkE+NRHj84Yxube8p
-   YPLeyhgNVCCkCiHhOXUQQaZnJg6IqXuKq10GoYhaLsE2VWQQZr44N3j1s
-   g==;
-X-CSE-ConnectionGUID: 8i+y7gBrRsWZtqDPnPGm4Q==
-X-CSE-MsgGUID: 40wlsOdJSSGhmZe8SW+G1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="88232219"
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="88232219"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 11:30:27 -0700
-X-CSE-ConnectionGUID: CreSit38SEqhU34F5Ejwog==
-X-CSE-MsgGUID: GyVfq50gT2Gw6mAARUjGdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
-   d="scan'208";a="256580746"
-Received: from bradocaj-mobl.ger.corp.intel.com (HELO [10.125.111.142]) ([10.125.111.142])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 11:30:24 -0700
-Message-ID: <6cc4354f-c494-4198-b1ad-a8b538aa1a77@intel.com>
-Date: Thu, 9 Jul 2026 11:30:23 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 04/10] mm/memory_hotplug: export
- mhp_get_default_online_type
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
- linux-kselftest@vger.kernel.org, kernel-team@meta.com, david@kernel.org,
- osalvador@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com,
- alison.schofield@intel.com, akpm@linux-foundation.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org, iweiny@kernel.org,
- Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com
-References: <20260630211842.2252800-1-gourry@gourry.net>
- <20260630211842.2252800-5-gourry@gourry.net>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20260630211842.2252800-5-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
+	bh=rYrqKyJcarkPc3ot8aQvhf0e9iwthKczmlyiuvPt6L4=;
+	b=E/gXgOROuANy4gxkWJFPuGWApueR+3NNGGtvbW3XJb2ceySnu5GjOWbc6t8cW25f25mPg4
+	Zi4z+FavQX209Bz2RCQA3WyaNu/RCeVtmsHRu7MpmZ6GVIc07q8NVNWjSKc7lRcqTCzibc
+	pKW0/gNtBICR+26/6D1+DcFnEF+BrBc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fLM6MjaP;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783622460;
+	b=CzVYKO5oevfICKBpb/SYBrik1/gdyloCHbT9s9RC/BIsrDDeNvN/Iq79apha1ooXSjJHkd
+	ghPmdb7ljvgl/wMDuMnzhOlU5n4/7+K+qrLG12H/xUOGEJfwY9jXFpfx4JL0I46QenKa64
+	MsuJzj5SvKjouMBeucc7izklWT/u//I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B61636137F;
+	Thu,  9 Jul 2026 18:40:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C871F00A3F;
+	Thu,  9 Jul 2026 18:40:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1783622459;
+	bh=rYrqKyJcarkPc3ot8aQvhf0e9iwthKczmlyiuvPt6L4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fLM6MjaPetUInIuGrh5P5aAaYIHFgG/X7H+VK0G+FB2uoe0TC1exsmP1HRqUA5g7B
+	 VWxhAqVi3XKOJZn0P7koDAQSrKcfmv5GpiGHQr6OczkJLUwd4uM3rBLEDuKDUWw+kc
+	 Q7QbWwC8csiqlxarxL6YAI8nc/JPz8BmmXulTs+Q=
+Date: Thu, 9 Jul 2026 11:40:58 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
+ <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, David
+ Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Baolin
+ Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Nico Pache <npache@redhat.com>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Mike Rapoport
+ <rppt@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo
+ <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>, Alistair Popple
+ <apopple@nvidia.com>, Usama Arif <usama.arif@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/5] Keep tail page private zero at free and folio
+ split time
+Message-Id: <20260709114058.52eb184d1529a247993ebdf8@linux-foundation.org>
+In-Reply-To: <20260709-keep-subpage-private-zero-at-free-v3-0-7e4fe155f5b9@nvidia.com>
+References: <20260709-keep-subpage-private-zero-at-free-v3-0-7e4fe155f5b9@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ocs5naqtgdjzicutomudtmbteq45fknq
+X-Rspamd-Queue-Id: 6C68D160014
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 14021160006
-X-Stat-Signature: jwo914ouazcf3ouo9tekt8fpoze5ihnu
-X-HE-Tag: 1783621827-575988
-X-HE-Meta: U2FsdGVkX1/wPrmG+kz6Uuq+GY3PWBaRbSQ4WU4jOfgWGJimg5nzZhJxshvyVov7cw/Ed8Auquk06YVX/GLIfivpDwNadhAImq6Dy8q0im1MpCC2vURv43VoE+Uwqh/pGfPTlJNo0jcioGHXhEaMFXCmqonRnB+Ub/z24sYl8eZKOZYoqGEzKs8ffi1kLsHAVXKm6aq5YwJjxspOK1HacD1g14PuDzT2s9XwlGF+S5UuX5iwdqnZpn+uU/plawJT1opSUFgvLpJOt9iX929b/jCG/8sMPhAwrz9LpzHaRCR/kdITEv1MlXzXlUmanuELL6NymkyJ/KBjhNAr9S575oh80+7aU51EMI8/bB+GD5TDuODrSwt+ygv85C8oT3YeD9996f6v/+gqJRh8OqH4Lf2xr0MET/XkP0JtejCLRMVrQeEU005WwkSFTU8Hb+GwoEmG19K3k7WZ3mtzHjLFT/xsehVfbtQCfL5uVbxTsD0KrayekvGdaI/0jFXNTfQ4q6Djnkn9HYaUhiOMoc2egmQrH0TD/WaGM16X/fIkGeeBzvlSV5HrvDmml3g3EYjdKXm7o1WdIpDCJdjRI28U32MOKsuWNJpR8EbbCD/k39TzdWwpTh4VMbj9zvmUzqATgkICkCvwTjwdeHGtRjYQXH0XrZazmB+pvgk2JunoOXiMLnYKXRWrjIu/e1YHVdnIuZmXM32Tu7Tj1tUJ71MIdGNymfFu9pecSX0uR6PxHW4albANb2eH/5rCren0iRe8EqykzVeKFwp6wk3y3bk8+rVimeLAIR+cqB5Dh9mGMYnL9U7STJEmy+vijNAyb93kERIis2ItjxFYCoYBYN1TToqNa/RkOpoX0MbZLQhZMldW1VWwNLCj4VEoxOquNe5x5futlrdo8WFiUn5uPkWERPdUZBcFru4++VpgxJVnzKZT1VFPfPJDDMO/heDNqbrtf8cznn5UTxlnRnMdeJR
- 4qYaze5l
- 8PfqQrolIoshRTAqS5xe8+DD7poATPOUsXTWljjVFNoEehGslhW5ggdkp4sZ8zL/C6G1P55LHTp9PzPuY7GGSwxkxC3HE0XKZxrzCaOb+xpeiGiOTT4VzwEsb/gsKIUbOO/Q2cGab18MYsLF3fTZ3NFrrolpiCaxG7krAIlH1cTMWZuWMEM113ewV1FwksOfVOKwg8cc4P3HnanpFhZuY7gvN0pL4GlJjgR9SKW/C+ujC6h532iXePZ4fHDXKv+d1B9vmCxFBTgQeTckhRR29LLD0wAFU4caPWSCR+HGYv04oKHqI6TtZTxiLJ+b1xIdPJUXf/67wwt3dLdfL+QNFpkofV7EwEvvHC2MIByjHen3yUW3uQ3v7rb6b8IuAPXAISC+TqLFaXxhz6tbYrP/19HSmbXXoKeGofuD9xMhEWWNV3u47yK5vxdaxuw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783622460-609072
+X-HE-Meta: U2FsdGVkX19ukmpcgclN8/rsA6idGg4irkUAOUTjakRRZEUP2wgQKxug9V3PpDlE4aW1pcVeqJHvq6n+wf/TKDw8/nZZ+UwwI0BBZ/qsWktAYHUAi+Fpr4dUdkQmv383Iq89ZyN91IFpA2UcjW5T1q8g0qUPYuAsFWMIi8GvZeA6hHp3MqKQS0pKuJYKNLoix5v5bAOxBESzbab4DpioaXdnoYgbLwpRHa0njjGlt4e/lvc6VdncfgCx0Yz6E5TTJ36iFsmjkDEVrBowb26Z7svgI9PSGO6yB6q587FGQ69f067N9zx1LynvBeyk5Nwmw710CZw/FjOmsFcK4y/FRqDn24jSO6b9UiheF7rdhXLGcEIy0FNeeuJ1X+7hz6nk0WBwsvSOCGExJoTXkcemMNgrtNMqnbxnLj7nVQ+LwZVjTtlE+dOYGbdJN0ZmM8e+UOwaVcPnMJgyrKHrwoXbCytanO4RyfNuByTwTi6kPTWep7BPkaRQQgRDdX2+Y18vRi2AsOt6KKEHhenwile6t/fq3pg0AO2BUuUSLFH52GWXe2RSBs3XbACFgI7YqyhNxYnc1NHTWsvJFL40Ek5tQQzrmfW+ar19/lK96kb1zVDIF6+xJqDcD5CgF0l0iE0IzgyQkTXxGGDaz+54971Kie1OGN563H8T0tp1rRATQ4SMO7io+N0+nhXJ4WJHQ4qFduIRBiVoAFj4coW6SoyG+A5Dxyp1/I9fE8YWWOkpMHHMmKBG0EiWa1RRFoWU9NYZQCA5g4/b5dgowbWsIJXyTxD6u6wmVM2WJnlTla/DzdwmCk5uuipjCq6i5U0Ft/N+xI2Aw1o8cG77tuXoNyoo9IVA+zLuT68/xlV5Wnj0j5UY6UPE61lOycIC3E/cPKFPEncd9UkC4PtlvTkfYGIyoYWSkkWEXvemCJxeuSMKcXgapkJH8sD2zSZ1GaY8MiL3CZFiD+GnVFXR/HvtfbV
+ UI1BoP9W
+ n0nmvCPq9vpDXbENRG+emgzGUewcf4kBmV2ZpgBnoGJotqn6G/BFuLmNwpKaPJzWFgwf1txauSLgUTROsDhGTgmRbIgVKl3Ej7oftel5RCzoe1uRxZuZx5Nnp6L0swnnZPIdxXAoTvRqbcpv8TT44OUiRbv7gIcXMqLk0woNaJkTH5hkCfz8QwSx6La1mI3MAXxh4lZrokFBK1hDXm+PoiZJeR03aLjwsEtvOyyv6LUZyrWW8VVRiY7mbZSCrAAeMIq2Umb9iEMOxkW+ukaR98uxUwJyOGQEjL7PBhn+Gl9d+K6g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,58 +100,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 09 Jul 2026 14:06:00 -0400 Zi Yan <ziy@nvidia.com> wrote:
+
+> Hi all,
+> 
+> This patchset makes sure tail_page->private is zero before compound or
+> high-order pages are returned to the allocator. It also checks tail pages
+> that become new folio heads during large folio split, before their private
+> fields are used by new folios.
+
+Updated, thanks.
+
+> Changes in v3:
+> 1. replaced "it" with "a DEBUG_VM check" in Patch 3 commit message
+> 2. moved tail_page->private bad_page() code up to the existing
+>    is_check_pages_enabled() block in Patch 4.
+> - Link to v2: https://lore.kernel.org/r/20260703-keep-subpage-private-zero-at-free-v2-0-2970fe777dd6@nvidia.com
+
+Here's how v3 altered mm.git:
 
 
-On 6/30/26 2:18 PM, Gregory Price wrote:
-> Drivers which may pass hotplug policy down to DAX need MMOP_ symbols
-> and the mhp_get_default_online_type function for hotplug use cases.
-> 
-> Some drivers (cxl) co-mingle their hotplug and devdax use-cases into
-> the same driver code, and chose the dax_kmem path as the default driver
-> path - making it difficult to require hotplug as a predicate to building
-> the overall driver (it may break other non-hotplug use-cases).
-> 
-> Export mhp_get_default_online_type function to allow these drivers to
-> build when hotplug is disabled and still use the DAX use case.
-> 
-> In the built-out case we simply return MMOP_OFFLINE as it's
-> non-destructive.  The internal function can never return -1 either,
-> so we choose this to allow for defining the function with 'enum mmop'.
-> 
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+ mm/page_alloc.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-
-> ---
->  include/linux/memory_hotplug.h | 2 ++
->  mm/memory_hotplug.c            | 1 +
->  2 files changed, 3 insertions(+)
-> 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index 5d4b628c4a1f..4d51fcb93a37 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -317,6 +317,8 @@ extern struct zone *zone_for_pfn_range(enum mmop online_type,
->  extern int arch_create_linear_mapping(int nid, u64 start, u64 size,
->  				      struct mhp_params *params);
->  void arch_remove_linear_mapping(u64 start, u64 size);
-> +#else
-> +static inline enum mmop mhp_get_default_online_type(void) { return MMOP_OFFLINE; }
->  #endif /* CONFIG_MEMORY_HOTPLUG */
->  
->  #endif /* __LINUX_MEMORY_HOTPLUG_H */
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 6833208cc17c..494257054095 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -239,6 +239,7 @@ enum mmop mhp_get_default_online_type(void)
->  
->  	return mhp_default_online_type;
->  }
-> +EXPORT_SYMBOL_GPL(mhp_get_default_online_type);
->  
->  void mhp_set_default_online_type(enum mmop online_type)
->  {
+--- a/mm/page_alloc.c~b
++++ a/mm/page_alloc.c
+@@ -1386,13 +1386,14 @@ static __always_inline bool __free_pages
+ 					bad++;
+ 					continue;
+ 				}
++
++				if (tail_page->private) {
++					bad_page(tail_page, "nonzero private");
++					bad++;
++					continue;
++				}
+ 			}
+ 			tail_page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+-			if (is_check_pages_enabled() && tail_page->private) {
+-				bad_page(tail_page, "nonzero private");
+-				bad++;
+-				continue;
+-			}
+ 		}
+ 	}
+ 	if (folio_test_anon(folio)) {
+_
 
 
