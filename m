@@ -4,71 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F734C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:59:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9CEBC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 08:03:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A3EF6B008A; Thu,  9 Jul 2026 03:59:09 -0400 (EDT)
+	id BB5376B0088; Thu,  9 Jul 2026 04:03:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67B0F6B0092; Thu,  9 Jul 2026 03:59:09 -0400 (EDT)
+	id B8D1B6B008A; Thu,  9 Jul 2026 04:03:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 590A06B0093; Thu,  9 Jul 2026 03:59:09 -0400 (EDT)
+	id AA2966B008C; Thu,  9 Jul 2026 04:03:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 390F66B008A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:59:09 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C4D8E40465
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:59:08 +0000 (UTC)
-X-FDA: 84968487576.27.62F51D2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 13DB1180004
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:59:06 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OUUATdfN;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BF426B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 04:03:20 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2EFC11C399D
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:03:20 +0000 (UTC)
+X-FDA: 84968498160.14.6F62775
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 610451C0002
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:03:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l1fg/Ke4";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783583947;
+	s=arc-20220608; t=1783584198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oWwbm+zwEQ+hKtiYKEe/Fy+CBUoPDFgh3D2WLIb/mrw=;
-	b=TRfnfm6KmLOBHUpk77d48RA3CFtG2xlvqtC28yxkx1WNyc4cqlPMFUWkYw6/8nMp14RMmm
-	3Jn8nZJneFD/p9ytfByjffB2Pj6jmGYNKwU5D0k8prVGF4E0a3CMHyRTQBot8ypX+VNCCP
-	aiuhxGEAg4hOZ5p/cNDss9kJ/qvaNaI=
+	bh=h5ZMUXMkvr/7WHhhpVtDxbUpZkY1abuvie4G1/u+VcI=;
+	b=dkmKSjcPyQrZH6lx4Hvl0A6iWeSSRCx/BrKjciRVddukQXpi5y/Y7C1CxNnJKqdJgPn++e
+	GQ6NthR6ymBlmbXX5VgOjUSL2ULKK3y1TtweozysLYK7aaSa1kmmbQ+Ar9g5V+R//1RJnR
+	O/X29VhUh6f9FH/SVwXWinI0nwzth6c=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OUUATdfN;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l1fg/Ke4";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783583947;
-	b=xMGBK0frxIKQOp4uXzpGKmiSE/rUCcV/lsRg+vkaC397JnRdIJpFMryKLhDDeB8LWp7c0+
-	b0oKHJVLNNH9sJvM/tI5KL9nRYa1ST3N2KI3oKRnIwnHWhh7F2lP7ynqnEhL2yYQfkXbc8
-	8P0+tC3UFqFCXmbyuz9w4OzZTBNGG6E=
+	t=1783584198;
+	b=b9TTvwIioUZ7+xlMCuuDfYGSYCQBmQwYg6C6P6TM/18rmjfFKoRlkdH+pAwe9gNR7np/9Z
+	L+RrWghjmeWTfSDaCqf1obpK2OwNk5lO0iHYejhbQ9Tm2aoPgAQW204RA/6MNXMG4SgzZU
+	dk+NgHFRS6BE/Vg9xQiSYxRKbXAZ7vU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6119E600C3;
-	Thu,  9 Jul 2026 07:59:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083FF1F000E9;
-	Thu,  9 Jul 2026 07:59:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 759DE41432;
+	Thu,  9 Jul 2026 08:03:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E4F1F00A3A;
+	Thu,  9 Jul 2026 08:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783583946;
-	bh=oWwbm+zwEQ+hKtiYKEe/Fy+CBUoPDFgh3D2WLIb/mrw=;
+	s=k20260515; t=1783584197;
+	bh=h5ZMUXMkvr/7WHhhpVtDxbUpZkY1abuvie4G1/u+VcI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OUUATdfNZxV7YJWwlf5dZ9aP+RuPXbX1D1M4n3pTKC/QdSRi9kpL0Dfay2ab1/95T
-	 HZoYHz6ytOk0z4Ck27144zYmn+4ZOiazDR3h/rKXkrMsRYqcJ7LMDqwlBhkYYEEx1M
-	 KCLc/JcRLM2Q+ymVtGLbxEiWmuNoS2tiFrKXhRb2HWCW7hooTd5Y5pNN4BfY/7cpJz
-	 G0lu/XmZ5yvbghgKFMP4/JzL70GS4H0gG7sDVAIkezBekGYbjpj+ZqkCtMW1PlqLhF
-	 M+pHWuWyjXml6bEKtIEIxa4bokofQgmMVJWfZ41nbodkn0UEtPqVrlaj9AAoxFcRBm
-	 7NInRHIeUd6wA==
-Message-ID: <706d312e-2509-459f-9339-3743d18f0ce5@kernel.org>
-Date: Thu, 9 Jul 2026 09:58:59 +0200
+	b=l1fg/Ke4z/FFhff5Njov+OQVa7rzHpXWK45MA/ebH+hWYUEWCOkvhG9FH+6MP8upf
+	 DT+WlYGmyLAf+Fl7bm8Yd+tcYXlzOJxa8VWpumeH2G/j+DeFo/KG9uAUHD3pSgGYRi
+	 5ztQu7K620YTfozDColg9z6eKx71L9ADEQj9RK0d481+ERvUAzLjiMLbfjqRNBW5Kf
+	 MS3tdlg3PjzyzRSbBoADOtUE/3BqWJNHv4VY1nf5lmu4N9rHqxdNsd2s3lAGHsH+AM
+	 b3cKB7ug4okAbiHX0DO4A8r093MKgdQsgQcoIEFL1looLIQxX5/s3W9tsAoc2RmpuH
+	 EfyhpT/QHJrkQ==
+Message-ID: <97d3831f-ce7e-4408-ae0c-60e45d00d69e@kernel.org>
+Date: Thu, 9 Jul 2026 10:03:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm/percpu-km: clear page->private before free them
+Subject: Re: [PATCH v2 3/5] mm/huge_memory: add page->private check back in
+ __split_folio_to_order()
+Content-Language: en-US
 To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
@@ -82,9 +84,8 @@ To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
  Alistair Popple <apopple@nvidia.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260703-keep-subpage-private-zero-at-free-v2-0-2970fe777dd6@nvidia.com>
- <20260703-keep-subpage-private-zero-at-free-v2-1-2970fe777dd6@nvidia.com>
+ <20260703-keep-subpage-private-zero-at-free-v2-3-2970fe777dd6@nvidia.com>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -124,17 +125,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260703-keep-subpage-private-zero-at-free-v2-1-2970fe777dd6@nvidia.com>
+In-Reply-To: <20260703-keep-subpage-private-zero-at-free-v2-3-2970fe777dd6@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 13DB1180004
-X-Stat-Signature: d53jq5rn6mdq1g5o4goc3dist3g8ytow
+X-Rspamd-Queue-Id: 610451C0002
+X-Stat-Signature: eqabkx8mfgxt6kjcfbayeqkc18ftegpc
 X-Rspam-User: 
-X-HE-Tag: 1783583946-884716
-X-HE-Meta: U2FsdGVkX1+baOFAvnmQafbYIebiYtqWwd/s+Ticx+womy5kzC7nV9SOspyTJVah6OgRV8GNMlPFvFaGUnEWAAkxn6A4CSUwWOlXl+IB3MCuKPDiC6dGKr+9E6LcRfQrED52HfcLPKOSLcfV9U8KW3rccRCkYZ6bIPe5V/9ZJXO7zbUu2T4pV/cFzZIUaxuzwX8KMx5HFRrgmt0+tajEw/bh9ioySk39ezN0KBN8zNMHbHSLYG4Zc2VHCvb67XhPmnVfMATe2CPABddSPR3r+CeGrkHgQLVFSaNRiLTUQWhjpNx4YLv8NhTqe2X7NkS2kcsErjOhL5rdZBWNAvKkedecdz2uRMcgjHUzuHTQ5Gxv+3EXM7gbeUGN/H4PJl/fiWow07BiAbUZF1JOhg++RUjufKzkUSN1z6zNylG/uXHctRA0er/ofpSVW97UCw3JcbMKVIUL1Jo+ZNHaK2csJ4D5VQ5btvoCyb6FzCZEirbNY86iJcIE2daixowRUX2HZ0NInIfBmbE0yoZ7mI17+vkjJEPEi3M+QDYbjyCbw+h25+YhBoxExk0QXU949isLcMaZdqB3/avaBCzdZZ2GuJr8OsPbH2HmMSrZ2TwdD8JXM02aEFlPD7eVuEHW6uw+4d/ArFKUD6e1qW2+SQxL6G1soZRKD3xir9s9ldYM7S4w293PjqIlnZHxuVXm7Jh+vfhUWjZtntF4h+0ByZ6lgavqU4/OoHb36qrjzdJPwGcyU5yMv2c1W/W3roMmmnpPR7KaaYPVVuGs8vOnl6Qwe598j3F/fhCgYrD1PeU3M9Y8nEThYrkj4jGt/vGOUZAi/KUthCLKPeNbX77sHURq03/gykSBf+1ITkIOzDDV0uulc1028SB4X6fFTKrzgNZBiBN86j/+eaHMKRcg4vAmS/4at18oHnxklm1/d4JyqqPk4astJ2fV4w5x1kvIDEu4tLbHFC5+Xkua9FPLR8V
- U59y1/Ve
- kDsA8l6VS8ZwjaPxtPQi2lknt6WUKcK5z/1hlgoZL9touvtDYwl5Qrx4BD4e8vvG14CA3GpevnRKTjuXz6CweVphOLtsMf6NAcmKmO4SLKiEdEDqqpqMcMFH+WiqIGTdSWN8U2KC+K7/mEou0wh0EpIcWcwU60J+uOmbHQadFO4Yp/INPx7NYeHpqOUX3BBhA11iq8OmCBbnTgXIqaUrNuSVNE2b/yKNpKD/Z76UMBl+AwZnFPpcXOe9kr21z8EWXf9G5yUh/UaSKt2CarW3kXFT7mTPf1323l0R7oHQV5XqEerU1idy3TEX4kg==
+X-HE-Tag: 1783584198-122016
+X-HE-Meta: U2FsdGVkX19lvynb37EKayzdJqKMX4k0R1Xie7tHzfglKXbvLKkhy5zWpG6XZ3tN9cjrWBwMMrcYdX2pQNokjHLiFSQZqL/54/eqWW332OKz8QodlobMPWZQomr9OGY9KEm0/bMHP3BCsO2HvRqcVzTTQkJvRNNEzoV5vTfYV9cNaWF4WzwgWY3Kg4Ffqjwai5rSTsXZmR1K7U/F6ZyLre3clb0rtqI83krrPhMnDQskMQ06MH1WWBhehL/21THP7+WpWO+FZbfAmKeTVSgB6n+lRcaF6xgR7cYhXor6ZJU/Rhv1A0JCLURTGcQ63hX8sRXnjrXjhKSxJ5afhZrPrMqT2im6+KgdFvOWmo5/0UyGcmVPRi1VXNDSYpnarSJFEGeQ64RdKAKP1QpsHwwxbi1SgqhHhKs5tR7/YotTnYGXunuPOK+yOK1gFFqnzswf3UchxGxF+lg5Lw0fjkbTMjJwKmW+HQz0xsiQaThe1iF0BNZU98QrKDxO6K+Ti0zu5tf6FTd1aLHsApZHCLYz8qEUehG0mxTdENLjISbgsmTsP5kIrTDwETIeLqgL3evZ/j4E2dPTqmsyctddP8TYXkp3iQwnwtScywOw7pcEyiHzQhgwkr+BPRx3DvL8FmOmtr3PHzPAAcMq5VwDMlurESUThCuCIZ8GdGS94uMU8pZKpak0zrQ/4UPRLy/FFbrAvNcQ6GUOSFi673tyU21EwFmmJP+m3UG5sCR//lbEZ2NLTPsuzeHXa8Izy7KZomUo2morYQfQtPu7qXZbK73KW4zD9UqgI8XmvV12+Z1xJMD+xAVpg4jjgvMOY18fnXGOxtPdZCBU7nlGSHjtmHlOKM8uKRO4/C9XHq8wL4WcbxJBVLszCAdR+m2M/1pKepRhMg7FkHSy6roIDpGi+02aOSMSQFY7SFJD8+9ffYzSmJz6nu0UiaxrsCAC1SvBjjh67MgN52LunySFYgzGHGD
+ TWDwaGJq
+ A9DeV74fTpBhFL5u9fmLvktTjAULRU6IDCLjestL6edZ4yQqfDbS31qTVM54ZKi0ZGiC1AbKpeddro7HW/CtsBpHRS3ue66/k9HmNkG3Z2FjpMGgfbAKKtrRRtpmttQC6AKQZLKKX0dnr61OMn8dBIsAlN7q9vfKdAQkV2v3MDM7rqTjYaGjBaxRh0W2oDKorK2CwSlPHOraY/D+pRAP4uWwS2/kaLrk983E9INIo/jdEtE1BsppJ7UuobRHZimQ4bbwnYh1D8vOca2UwhihCCjiAVyOyjWdk4x5N19mgW3Cvjik9gdMnQwsJsqomDc4ojvMmuq7JGY5/yRZLmEWx75BrSDtvgGs8LQgQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,38 +144,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/3/26 15:47, Zi Yan wrote:
-> page->private is cleared in free page path. In a subsequent commit,
-> tail_page->private will be checked and ensured to be zero. Clearing
-> percpu-km allocated pages' ->private to prevent triggering warnings later.
+> page->private should not be set in tail pages. Commit 4265d67e405a
+> ("mm/migrate_device: add THP splitting during migration") removed it
+
+I would say e.g. "a DEBUG_VM check" instead of "it"
+
+> without a proper reason[1]. Add it back.
 > 
+> Link: https://lore.kernel.org/all/13f3fcda-7328-4aa5-afc6-75a294a82b2a@nvidia.com/ [1]
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 > ---
->  mm/percpu-km.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+>  mm/huge_memory.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/mm/percpu-km.c b/mm/percpu-km.c
-> index 4efa74a495cb6..7ffe84adadb9d 100644
-> --- a/mm/percpu-km.c
-> +++ b/mm/percpu-km.c
-> @@ -94,8 +94,15 @@ static void pcpu_destroy_chunk(struct pcpu_chunk *chunk)
->  	pcpu_stats_chunk_dealloc();
->  	trace_percpu_destroy_chunk(chunk->base_addr);
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index bdd8635922f96..06d0671cff899 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3591,6 +3591,13 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  		new_folio->mapping = folio->mapping;
+>  		new_folio->index = folio->index + i;
 >  
-> -	if (chunk->data)
-> +	if (chunk->data) {
-> +		struct page *pages = (struct page *)chunk->data;
-> +		int i;
+> +		/*
+> +		 * page->private should not be set in tail pages. Warn once
+> +		 * if private is unexpectedly set. Do it before swap.val assignment
+> +		 * since private overlaps with swap.val.
+> +		 */
+> +		VM_WARN_ON_ONCE_PAGE(new_folio->private, new_head);
 > +
-> +		/* clear chunk info from each page before free them */
-> +		for (i = 0; i < nr_pages; i++)
-> +			pcpu_set_page_chunk(pages + i, NULL);
->  		__free_pages(chunk->data, order_base_2(nr_pages));
-> +	}
->  	pcpu_free_chunk(chunk);
->  }
+>  		if (folio_test_swapcache(folio))
+>  			new_folio->swap.val = folio->swap.val + i;
 >  
 > 
 
