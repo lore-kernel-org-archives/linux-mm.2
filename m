@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3389BC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:42:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB4C0C44501
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:42:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD83B6B00A6; Thu,  9 Jul 2026 13:39:30 -0400 (EDT)
+	id D970F6B00A5; Thu,  9 Jul 2026 13:39:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A88DA6B00A7; Thu,  9 Jul 2026 13:39:30 -0400 (EDT)
+	id D20D56B00A7; Thu,  9 Jul 2026 13:39:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C8566B00A9; Thu,  9 Jul 2026 13:39:30 -0400 (EDT)
+	id C5E316B00A9; Thu,  9 Jul 2026 13:39:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 086996B00A6
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 941576B00A5
 	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:39:29 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 42BA01C82A9
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:28 +0000 (UTC)
-X-FDA: 84969950016.22.4BED334
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 97D2A4000D
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uc5holxa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 80A3A168582
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:25 +0000 (UTC)
+X-FDA: 84969949890.14.A35EFD4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0279840008
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:23 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+g1M1oD;
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783618764;
+	b=Hk9yQ5KchU+wRQHI8Pt8JmAX+wfng9gRrtbAHMXPBB3oqMaED2anLh9Pez3S+wTzRg6r92
+	XIF/8paZBysPnf4V0XcIu/ez1DuKX4umAMo8ZHCIKTIVN8xZgBl08z7wNjtUSss+pie6l3
+	M7cEAw5aoSwa4fDppLTMw38FCJpIkaM=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a+g1M1oD;
+	spf=pass (imf04.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783618766;
+	s=arc-20220608; t=1783618764;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jo6vG8Fck92Ec2ICF08h9HWgylgcmuoyS4qHd/4tb4k=;
-	b=ERX9ZNDYZvFHzcbzWv3eYadC3jvfTRZWPd3Fp7veWkEi3DrLqDsMO/e2bunu94XXW2ecI5
-	+en+K4TKiwwo29wuFiDKPWot+L0PZ5PcTO95uUn12ry33MKbi40A44lGACgDd3YkG4w8sv
-	7XKoynbjniQ0QtOiZXBQ2JHD/qgYqik=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uc5holxa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783618766;
-	b=4jUJvuPSFz1lvTlKezP5e7xZVBPitrx4UnGLtBkZ8CD0J+zTCHcD42Yq5CMCQBzB+DD3Jn
-	cYr4+ikg2V20uWHXi2bgc4iQ/1DuG1Wy9TrYEsvxGNPUVoi5gs4sWc81ARhgpxiPQAojaC
-	WMy08VzmnNMY1akJ/2ribMcbNOgNTvc=
+	bh=GIKLTijiKnBgrZXcLoBE8VlZLtn/daTEtdVuzKJ4kpE=;
+	b=noWhZWWa5Jdax20MQyqBkr4Lg4rBcYluuNu9wcpMtFzOFoi4lg38ycqRd+KymS7WmFvjK5
+	YeKpQsgPCaOikPmMpwibMeWZdrXnJq6QTXOKIi9uTU24IPSR67x5tgGHUdg9Mp3/lTSQmd
+	Mu7iHwL4VgNFNPO5q5LmVhA3n0yMQkQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E8FAE42E1B;
-	Thu,  9 Jul 2026 17:39:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70881F00A3D;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8F83561381;
 	Thu,  9 Jul 2026 17:39:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EA91F00A3A;
+	Thu,  9 Jul 2026 17:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783618765;
-	bh=Jo6vG8Fck92Ec2ICF08h9HWgylgcmuoyS4qHd/4tb4k=;
+	s=k20260515; t=1783618763;
+	bh=GIKLTijiKnBgrZXcLoBE8VlZLtn/daTEtdVuzKJ4kpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Uc5holxavp4JQIp7OghW6d0zZ/963AZ+EpsBk1yFU1Od1tM2H46v8cfDKe5Y/1b7a
-	 zPE+Jce/p0bDpwIpMAO+1TNlNXAM+3aOHUK6MvXSfJDwrqzKOh164kDbHktkLBbm+p
-	 uRIeolRBn7n6PqIoyLDfxFWUWoJw4SCHffrXva6IJV314NFnGKEQ9r7jnm3SReA++R
-	 He/+e8OXxBI5iiy5LFPHG5Rt4eb80rcmRcILB6xzCJY7T2/wZ7WVbVFLWFm8+btt2x
-	 UXyNXG6EoAwJXHWTKr1OZEuEIbAL9+HY410UK9qfnlU7sC++R2yFAwiv8cu+cuYR3E
-	 XQPAq4T1QQlAw==
+	b=a+g1M1oDufFBFZydVBdmxrJjcJaTrBCkRDeT/XIBd08gpl1wEoGlOx3f13NjoUa+p
+	 wz1WAATyzMrRkjhi+H64P2b6Bzm83+JmjSoyqq1LWfsOI76/LkKfRC7DG69mlPIv8C
+	 tkjd7rX6MvY6qfRw2mP3UoERGmt27c201PhOHzc/tgA5jlTaH6HQQproNWA9K3dT23
+	 sWMjZ34E+MFNA4NmEVtItaSSytuQQNYhNbh63AB7+CWuLCogtgGuI+eO25fU1/s9bl
+	 dsjc4ZcnKzfO3y3E5gHiFsAhhspI8y9QvbfVeO6I1/SL/7jnP1yjS/dQnLYUszCTZy
+	 EpVxJLH7hSQpQ==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>,
 	Pasha Tatashin <pasha.tatashin@soleen.com>,
@@ -77,22 +77,22 @@ To: Mike Rapoport <rppt@kernel.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 21/21] kho: exclude hugetlb memory from scratch size calculation
-Date: Thu,  9 Jul 2026 19:38:10 +0200
-Message-ID: <20260709173821.429921-22-pratyush@kernel.org>
+Subject: [PATCH v3 20/21] memblock: add memblock_reserved_hugetlb_size()
+Date: Thu,  9 Jul 2026 19:38:09 +0200
+Message-ID: <20260709173821.429921-21-pratyush@kernel.org>
 X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
 In-Reply-To: <20260709173821.429921-1-pratyush@kernel.org>
 References: <20260709173821.429921-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 97D2A4000D
-X-Stat-Signature: hq49ho7uxxcukapydenqcb14yhs4obbr
-X-HE-Tag: 1783618766-52970
-X-HE-Meta: U2FsdGVkX1/yU42xWwFgsWx8luIscyk3K5ZlejFe3KO5FLoTxR57NUzELHOGKy6ihRLtQ5d50OMV4IBb2ZeDioI7a463qcJxBZ5+LTRo/+V3+qaoxBNzO7OV/thV3jodXcNVPKpbhI0FwN/xliziibZSANw30tUMxbAFIHaJ43P4dDq0DdJSGnOOCJ9A+uljF4tyW/SFfYIOHUfxP0BxJ/s8kVewyblqXnZW7fNVkcnG5sI0amFBfDlmJ1nf+PqACy2wg/ldKURL1DZgiEz4c7KUKwP5IyP0r8d8qHUS3WLJD7xVsnJCLgXzclhfXAzxncbeOqqU4xZaKbAeKfMrmdWifTuJb2fTVt33QrQvW+ccdHOqE2595jclwjLGp5lSh6SMyej8R/jLz3j6ht6aWkB31kppgniXvHOdoKpNKD6CWbe6Msq6TnOzu7xWIZnvXLeWCubN8X9BKm2wBF4LaE0hYqc6qRE4r0EqKkapMDgLiJ5ogdgKZn4JcQcObc5TA3UHDawWC9KKuY1yAxKP4+uWRiE/fI3w2NFTSdCEY16cZaSMyyZC0Gt4Fus6DCwWmfnW078t0fPpejwqmZJPx2sPSgl4vBPQ6vcTw0ropJlcYBiSdzkU+JXeUSSMb2BzqADqFU2405LfmMGVzwJ2bv6xAld6b3Jrd2FMOovUQ1vxlNv319FXUSNDOKa8Xi9HSff1YTRjm21ygKgB1IyNiWuJc+CCwYdc5ZJZ8OmykK5x9iz09YkXsOBmz98q4ZFeoImq7oTrk/DY+ZTnA/c4bNdtPAhdeG5H4JXAs9tA2VP8cSrxl2awq6Djira3eBGyzyeEqUFlczaC5zT2Q2W1oDBfmOMPLDCyoiQe1uDWC00HwpboLzn5/lAEUhvTauAlPw9hCo6vxCm2dKnCkRfyI0V/Wo3wb02QlHDywTx1ZavmwiJj4ayp6mYS1OXeOxST0HgZasYlI28REciVkWh
- PxMI56gM
- 6ndcNFITIjg8RedXM4POSvtMuNk1uiaA/MTlmrlHIWVMRHZPEbP3ahVoDRwHkwmzmv1x5fZtiJK3mA7hmY1e+eY3AIBv3oqSn+Df+afCBk1kyKlCdgsUB9A7EH6LkFbQ1D9eaA2OpC9N1lnI/agH1SjZ+heU034psSps94o3WLhQXenCEYQ2JPxk/7lN+h4zAkhZP+MpVtqZd6uGj42ApFEH82WdWutk/tEX3L3KKpyL6i6Y=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0279840008
+X-Stat-Signature: wfm1pcusr9864e8pinuk6fbgruo7e1fk
+X-HE-Tag: 1783618763-394831
+X-HE-Meta: U2FsdGVkX1+cGchmwFotB/sQcWoI39rZoTB9RwrJpQi+1zkBtHeIki41RVgcB3o8CTVze4Y3WQ2sWfgaASLgMmo9wph8EPHhguy4LsuQ+racoxWg5vtR6gx2J+pxlOGItymL9SVR/Ff98ycnxCjCn6uFTmNfhTIuwEJVd65FE7Dx9oYT1HfAQelCzC1FtrUTlhrJdF36Cn9Julk1idGsyebyknbpb3Va6k3zRdeCfXeLdZluE3v/5IC4OJKivt6F5vQIi3RbylVr6EpagV/0GKfpDsMpS3q+GlaEX9modVQW7PTfvKCZku7ypyKhugY4St4KWu4lqQRjB7vldkpnkz7YkkN08n3hGXcmv/8olQwCL0tlTcVkSo2TEHFN5uNyBZwemB11fJ751+o2znFZwFXIM1j2EkwGtrUsXrh3Ao4Yn7ZdEusVvu7L5q6Qb7OIgiBLGdkTybgY6KfvPhrewVwpt+/c2S7oK1lKzJA4nrdaGlUOQbusOwqX848Dy5FWnREnZ3Cwco9BKiczahzaEeZUnOCHLyURyLBMsPIQObhQZN8n6k3tyBDMYDp8PJIlrbgLTeUHP3RjjU46A239PxEIodj1J7S4A75YPjrIxj39YoBNf7hnI+hvFq3TFDn3egD+0f4oK3sIyyUo6LZgvMS8n7Po+4pbRj6jSV63AvuGqXTbRZwvTrreGaYx41psSufjPYixLe2vp6Ngou4Zkl6QyRWMcKZrxuKU2ekrGMnoWEGz0NwC19t250daHIzp2iLMJEqHVFaTfYfNykHciIWnaUjZ2OGrRw6jK8rTnSZQ93unXO1Ss+p4fxOXkRfSIbbZ5W/bIPRlZ/UyBzri34qOuOUb2IZSR3taS8YpWh64ohnClh20fEeUExtNHB9EjWc1qnBYlXbFJh3pnCzQWHk3BZN0PweccSnCUoAAG+61PNi9jx6xDp9rifDOVwx+SX7f7s59H67ldaDXoEL
+ 7IW0w6C7
+ Tyrd8ADFeSsEiyuHAQjThLAgXxY4Nl0qgQxgaykVGnXwgeTSSkUcbNMv7c4Ajuon2Q0pzAM1qaipP8cL7EbLYgCqeUxg18+PJUPVkjiCm4FEdrTamMmcTR7Ff2PrCeXPPc54o8YF2o8xGFqsL3v3rYKizsRkMBALzLj9wJVQ6DrqPd+pMzHfDiMqkzI8h/VS0ykkBpGLbRc++Pfi/IN5eXfQLPycZk9TwKdHsBqpqmjvL+lxbH/zqPH37bW2epGilmKmUmt02Z9/cgMR+Dy2TVehAyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,62 +102,62 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-HugeTLB pages can be preserved memory. So they are never allocated from
-scratch. Instead, they are allocated from the memory blocks with no
-preserved memory. These areas are detected at runtime on each boot.
-
-But since they are allocated via memblock, they show up as RSRV_KERN,
-and blow up the scratch size when scratch scale is in use.
-
-All hugetlb pages are marked RSRV_HUGETLB. Subtract their size from
-RSRV_KERN when calculating scratch sizes.
+Similar to memblock_reserved_kern_size(), but calculates only the memory
+reserved for hugetlb pages. This is needed in an upcoming commit that
+subtracts hugetlb reservation size when computing the size of KHO
+scratch areas.
 
 Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 ---
- kernel/liveupdate/kexec_handover.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ include/linux/memblock.h |  1 +
+ mm/memblock.c            | 22 ++++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 2c4848874629..9dc79b7103bd 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -742,19 +742,24 @@ early_param("kho_scratch", kho_parse_scratch_size);
- static void __init scratch_size_update(void)
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 678fe466529a..d62db9e776cf 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -487,6 +487,7 @@ static inline __init_memblock bool memblock_bottom_up(void)
+ phys_addr_t memblock_phys_mem_size(void);
+ phys_addr_t memblock_reserved_size(void);
+ phys_addr_t memblock_reserved_kern_size(phys_addr_t limit, int nid);
++phys_addr_t memblock_reserved_hugetlb_size(phys_addr_t limit, int nid);
+ unsigned long memblock_estimated_nr_free_pages(void);
+ phys_addr_t memblock_start_of_DRAM(void);
+ phys_addr_t memblock_end_of_DRAM(void);
+diff --git a/mm/memblock.c b/mm/memblock.c
+index ba6d887ea18e..c10dfb054806 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1893,6 +1893,28 @@ phys_addr_t __init_memblock memblock_reserved_size(void)
+ 	return memblock.reserved.total_size;
+ }
+ 
++phys_addr_t __init_memblock memblock_reserved_hugetlb_size(phys_addr_t limit, int nid)
++{
++	struct memblock_region *r;
++	phys_addr_t total = 0;
++
++	for_each_reserved_mem_region(r) {
++		phys_addr_t size = r->size;
++
++		if (r->base > limit)
++			break;
++
++		if (r->base + r->size > limit)
++			size = limit - r->base;
++
++		if (nid == memblock_get_region_node(r) || !numa_valid_node(nid))
++			if (r->flags & MEMBLOCK_RSRV_HUGETLB)
++				total += size;
++	}
++
++	return total;
++}
++
+ phys_addr_t __init_memblock memblock_reserved_kern_size(phys_addr_t limit, int nid)
  {
- 	/*
--	 * If fixed sizes are not provided via command line, calculate them
--	 * now.
-+	 * If fixed sizes are not provided via command line, calculate them now.
-+	 * Remove HugeTLB allocations from it because they never get allocated
-+	 * from scratch.
- 	 */
- 	if (scratch_scale) {
- 		phys_addr_t size;
- 
- 		size = memblock_reserved_kern_size(ARCH_LOW_ADDRESS_LIMIT,
- 						   NUMA_NO_NODE);
-+		size -= memblock_reserved_hugetlb_size(ARCH_LOW_ADDRESS_LIMIT,
-+						       NUMA_NO_NODE);
- 		size = size * scratch_scale / 100;
- 		scratch_size_lowmem = size;
- 
- 		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
- 						   NUMA_NO_NODE);
-+		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
-+						       NUMA_NO_NODE);
- 		size = size * scratch_scale / 100 - scratch_size_lowmem;
- 		scratch_size_global = size;
- 	}
-@@ -774,6 +779,9 @@ static phys_addr_t __init scratch_size_node(int nid)
- 	if (scratch_scale) {
- 		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
- 						   nid);
-+		/* Do not count HugeTLB pages. */
-+		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
-+						       nid);
- 		size = size * scratch_scale / 100;
- 	} else {
- 		size = scratch_size_pernode;
+ 	struct memblock_region *r;
 -- 
 2.55.0.141.g00534a21ce-goog
 
