@@ -4,102 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68C1AC44503
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:22:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4849BC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:23:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B5996B0093; Thu,  9 Jul 2026 03:22:50 -0400 (EDT)
+	id 4A4A76B0093; Thu,  9 Jul 2026 03:23:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 565F86B0095; Thu,  9 Jul 2026 03:22:50 -0400 (EDT)
+	id 47BFB6B0095; Thu,  9 Jul 2026 03:23:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 456E06B0096; Thu,  9 Jul 2026 03:22:50 -0400 (EDT)
+	id 36B4E6B0096; Thu,  9 Jul 2026 03:23:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 218C06B0093
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:22:50 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D051140407
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:22:49 +0000 (UTC)
-X-FDA: 84968396058.13.BFC8F75
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0F27940008
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:22:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vfkr0ESu;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 0E93F6B0093
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:23:23 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9B7EF14040C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:23:22 +0000 (UTC)
+X-FDA: 84968397444.17.28842DA
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DC39F80004
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:23:20 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jryRixbA;
+	spf=pass (imf30.hostedemail.com: domain of 3Z0xPagoKCJYH8270H3O226EE6B4.2ECB8DKN-CCAL02A.EH6@flex--richardycc.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3Z0xPagoKCJYH8270H3O226EE6B4.2ECB8DKN-CCAL02A.EH6@flex--richardycc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783581800;
+	b=rFxM9jxjYItArIIm0A/vy0/STFGPEj4yjE7KZdiOqOczexfd12qdHCgd/SXdinRjIqcKTf
+	Xi2Ojc+S/5Mu1AMJIm0BBTkSaevSlkjO4Pki+EZEt9tcvxDNhTiWRkZoGG9234hnlCxvdq
+	u8lESD9rt2FLW9INgYtbUmWJRbzV7vI=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=jryRixbA;
+	spf=pass (imf30.hostedemail.com: domain of 3Z0xPagoKCJYH8270H3O226EE6B4.2ECB8DKN-CCAL02A.EH6@flex--richardycc.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3Z0xPagoKCJYH8270H3O226EE6B4.2ECB8DKN-CCAL02A.EH6@flex--richardycc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783581768;
+	s=arc-20220608; t=1783581800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/zW25RGaPGwBbxFd+aS9kBW8b47epnczIHFRFBCLAYo=;
-	b=zkpfL7UtdwqIHKDf61KPP861898+zH6/8wy5orY7MWPT6tV4GY5iKevEjcl9cPbPGrvezq
-	su9j3zYbGAuEEgxzW9KNq1H2ZDIr4KQAmFtRdvdehvNZnaDDL8f+fbFVXwJeev6KLkrpwT
-	qjbO2Ar3jsFtv+4VhyAs2pIIjkvDbxs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Vfkr0ESu;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783581768;
-	b=yLCNtH6mIR0k8aZQhtQF+gjqCra+U9xE0DSXnsfoZbKTrz4QbCN/DHv6/l4tEfCMWOZS8W
-	Db4pwY+JE+2Sq6QRJsVuDKpGlu3cSAFZkyTBz4C+ONm9uvZWwTtkX2266nKnLNYbvTXSM8
-	MujLe3/nMlZxDEnmtU+AN8X9fKYh2gU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B2146001A;
-	Thu,  9 Jul 2026 07:22:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CE41F000E9;
-	Thu,  9 Jul 2026 07:22:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783581767;
-	bh=/zW25RGaPGwBbxFd+aS9kBW8b47epnczIHFRFBCLAYo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Vfkr0ESuoATXnPUkdBeq5+55sr7cVzSbt5ClCmVrSnQkJcQlnePuTOPN43DOTmXBB
-	 YSlQfUnogVcP5QFkvu6bmLtwBljgujN7UWqTgrsBz/mE/apwSbu1SjJZF9FbAd9uHS
-	 YN+nGemmSCwyGDh+062S5GniNn8bNOd+VlJTpc4Ev7w6aZ1qJeLKrrA3kf7DEhJXCs
-	 NcIZY28KAhZuKKTdEjThKMco81MwWoZcwhDhzGMSYaZvrTkjXcV/6rn4gWFjtTemEr
-	 iQZoNnClbYQXt0PJm8wXnjYh33q++mH230eCtmwWcF0M7UOxqN4QNmZ5IiHWpXSsJK
-	 2uv9LvYoeHkhQ==
-Date: Thu, 9 Jul 2026 10:22:35 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>,
-	Alexander Potapenko <glider@google.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Christoph Lameter <cl@gentwo.org>, Dennis Zhou <dennis@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Marco Elver <elver@google.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Vlastimil Babka <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	kasan-dev@googlegroups.com, kexec@lists.infradead.org,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/3] mm: split a couple of headers from internal.h
-Message-ID: <ak9MO-FWjkgr22KL@kernel.org>
-References: <20260709-internal-h-v1-0-956d5092782d@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709-internal-h-v1-0-956d5092782d@kernel.org>
+	bh=1TSgsShlAlS/YHIH2eE10SQokZv8lmk2KYUHn6cAnAI=;
+	b=79ZarlmC+kybUISV2Wzg8JQTxKtHLw0I8sdx1O0Q+foRjBPl0dGGYOBwyZqdbN3V+g6yjX
+	PgGzMjiqG8aIpboqFFoURvAXdQ0Wg8g6jDRtIKSLNe28XImMPNctngTBtUgcJCPdtLm76S
+	h749lnlD6MpY8jGhd25Ev2h5cO7/D1k=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8484ba00601so1203997b3a.1
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 00:23:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783581800; x=1784186600; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1TSgsShlAlS/YHIH2eE10SQokZv8lmk2KYUHn6cAnAI=;
+        b=jryRixbA3MNQBdPQa/21WE46vxKXYuqNBGB6d711f6XIMgfIWaqTiJlLw84UkMql31
+         RBp9Is9JTEe9D8XGSsq7XVvDcc3LHRdqnLRFKEbC8m1kZu7qoUuCpbYhSO4VKXKWfq7C
+         B2ahHDQXvrESC6/NJ67xH5F3Z4JP2Sv8IYeRyepkJrDWC54bTRrZ19spmp645+HZQKCy
+         0LVw1ci6ZDCwFEOrAiYK5Wrx9BhuQakGXLnXUjtIXK+6etzjJFugCysLmkS3LjeReZOU
+         vnepQL+tI3GLC/77nA5ObDBwOZ4cIUtCyaSsMFb7gHetxpyYijpYlRsw4pFQALCypYmS
+         SJFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783581800; x=1784186600;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1TSgsShlAlS/YHIH2eE10SQokZv8lmk2KYUHn6cAnAI=;
+        b=dZlO916MqyKCyPtO9KynOwh25OYCD1/1C07ITDZsz8r9sXlAggoEKcenyaiytdSrum
+         yaX/XtNZ/ozbHacT1G+0DDPehCVet+uNfhfuMn5cxfq23ls5aKiIUMsIaTJzCSrKv3G8
+         aI4NmnaiVugA+T4qf8p992GsitZBlrJRbaFk+RvqMVPUkXXtDWMnCmJvRcCaQ2gUTg7h
+         OvFj1sKSx5DGtIj+1mABI8KXCvQbghHZhAFfRzI7CL3nkDq43XbSMd/XLgk80WLvFUjj
+         qM+bXr22YDJ24BRahS0eZIXchRFOzmIB2RX0BQ4PBrPp9pEb054MPfIN72Ate3h0hSPt
+         IkUA==
+X-Forwarded-Encrypted: i=1; AHgh+RodVCAjWzHYMeKAzvqDSUkVO7jRJob7QghY+cABj4i/dkvDIfbAzLolZHNeTeyw6eZNjRfuLVmN6Q==@kvack.org
+X-Gm-Message-State: AOJu0Yy3YlcaCtxWtTieeYqrZTcgzp65dAceuhmTkAdGR5CDKcvC852S
+	QBSM6GED85FiQ35TMTrokOPYSaDlpivZTNohhS+Xw8MCL0Uk/4wnY9oD2mqT1lNq8YoJYB+iYc3
+	omSHakEe57Pc2n7vJgl3V
+X-Received: from pfblj3.prod.google.com ([2002:a05:6a00:71c3:b0:848:50ed:208e])
+ (user=richardycc job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:748a:b0:848:469d:b7b2 with SMTP id d2e1a72fcca58-848469dbc0dmr4324674b3a.77.1783581799210;
+ Thu, 09 Jul 2026 00:23:19 -0700 (PDT)
+Date: Thu,  9 Jul 2026 07:22:31 +0000
+In-Reply-To: <ak5-qwmpXrYi5md6@linux.dev>
+Mime-Version: 1.0
+References: <ak5-qwmpXrYi5md6@linux.dev>
+X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
+Message-ID: <20260709072231.3163082-1-richardycc@google.com>
+Subject: [PATCH v2] mm: vmscan: abort proactive reclaim early when freezing
+ for suspend
+From: Richard Chang <richardycc@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
+	Martin Liu <liumartin@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Richard Chang <richardycc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0F27940008
-X-Stat-Signature: 681nx8hhncpuxxu6pexk14szx9rzgkjn
-X-HE-Tag: 1783581767-944365
-X-HE-Meta: U2FsdGVkX19d9/V1h39A0FXa68uOdcKO/OVVJ7FtumCp5L7XqV8GbTHxQD/F60lcVj4WzEReWBklYBWumoEkji7L2wJAJh7R0+1t/7/469WTgcyo4tAm+aX5CqqIWSIagrn8NOVBj6EXnFb8fQl/lgMwOR3PtBq6m1trpRJju0Hae2gjElLYtIzYtDbaaH1q9GoFaE4Cwwo8Mf97eyRHmjP+jTj1huj2Vs8qhNQc+vWoZdTcX5P5epEH3tK6fQfefxQ8QmSoG4VZAc9HFoGU9ly0Ca9xo6sJRbjNOOUgiezSiN4QKr9uoiXjzCbcoNMsXnbIKKflbQkHcF2loGifp8K0ib0FAjvzSx+fSIcZAR565B4Uszjdw+nuGLYRpKZ2MtH0H2V3vid7kMJ/D1jsuwR8H8ERBb9CouG4f0FEix273S+giquzD79YALXmQFRCXxdU1exZtSFEUndKL52+juBR7zkYlBgrjEEwicxsEfhgUbRjfmuF/GHHRCOPn6+oLdJqLb6QjFPqezWO4rx3j5IriY08dESgEM7KdWjuJ58yJuTHbWh+N0KN5+EsUleSWyEv9QfYao6bOD22OxDNdmmPKyLIAbYTNDOM53UqX6VFVUhPzx7xdAvZF04gAK7goThens1UqLf0oiJBv3qBCmGOHDBuOMyCB2u8uWqlWhqGQPkJhwNb9Z3GYNTwSMpRcVueKW0akFWyEhVMnjWnIj3cyBJxUQpdY6iWLlgZfpLSMeIunAfkGv0P5sujqViMu/PvwIy9soeoH9vNJtfVhnJiKPYNHraacx7lsQwloCywevpcra4cNgjaO/hjAJ6IlM8fqSCfNwCTcwbvVaAae8E0484MbgTGCmLjTlwtZGeDgyUM3uWjna8BWO0yo+v8OHMvG4w5CffH6OplL1oXt4aMmu0eMTYPzvuFEvD+OY/IJPmUtJeEEyV1TGQ6m1ZcpETeaerLV5jGnJoVPID
- hfesTsFw
- /KnEbyxe4I58VQfglUXvdr2BnqON+MYqaMkd+sTK7M1S2sFQdhiZjEzwDg8B8PsLYmzQEI/Ktq8eR7qFthtSOd2/Iz5g0sG+vlpJI5XjVSBXdN6BE7iFRreCIa96i91Zm+yBkpr51bxdzOxgMXYUS8apjiuSamhXAlD/pPmM5feoXSWAYRrdIJuq0pEZEBim8kAVeEFq2R6rf/x2cLq9TyfAOQVleA3Vi/kPLv/+WcDjVdl+04vUH0utBIMzu7VBt1xLF
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DC39F80004
+X-Stat-Signature: 3xjhy9jpz8sz663qz67fp381r5nr3bmq
+X-HE-Tag: 1783581800-63109
+X-HE-Meta: U2FsdGVkX18Qf8Ax2jP4glDvDItgHeHNbyUbQQgcpt6ausNFyHe0az5Zct54t/BetqlS1MZh4CKRi97pUbf3gjX56kf24saiN8u242koUDilIJzsKImXeFjxkauvrHNvAnZTRlr1GHesYdJ754Y8N0W3rBzD6M0BQ+BuJ9vNhsHMVNNE8aaysDbqhtrs37V8uEeSOEWFbTKZdWwIcey0s1AiPPk4tI7LcbVTRsZGtB1wJzHPxvpI9RJRcmm2jwOtEM68vp+DPdSdgXKfldDxPwKsIfo6GORueTUl9o60vcMSjM772SUm2s2b3aWoe9b0K8WTe7oMqFjG04222uir8Pd98fJeYF9Pi4h1XbwWaf8P6gjFN1u00EBA9qcS9Aktn345l9ys4Qe5IT2OVTlX/2qxko0Aj0GtPjOuucy3IR/wP2s6pTtdlZ3+BZ3tsCK8Xk/6uPIeK0NvlEGcBq3sRg4sSbGVwfxMQyCJvEOMhjFARkFeAJJ9cxjNsf4qjeb5WlwxFtgEhHa4NDnLvvtaaI3ITrT764M3ChcGFHG6JxkTl4iDXChekHIabd9flwevdTYgLT4GWUl/JbRY+MNt7vkROBYHAon3IjkrnfI7XDenhbp5B+ggWrxoBz50m+8mtp4Fcw55/9odfdn7M+WDnki+vfWEUXohZVdR9xKfBnppK9DSiV89Id6qW+88K6oY6Uu9nAItmPEl32KpXilGzhpTPexoRNyfDgk3yAf/Fjy0a5QujunRcuLJvj1we67Wesp2lc3O+/PRrcYxApCnUr4oOhesAaLxrCnOy4/5vuoVs8x1AqDR0l7RK9pIHKFWduFkqdxPvmmTDKRxxnqBygVsCCZS29J/nNKzg+vIRVHpfYhq+u1YBSpGfnOv0bAv3ExUX5/kOco5Bs4L2f5lfE+8SKphedc7FjEP081RxgtvHoEEr6Lpk3UHp4zZTtEsjSs2S9tkW1B+fsHqngE
+ U7kutvi7
+ pteLUVHi7q9cHY20A9IY/5BCZW17+iRK6b9zAIPjqZjEzIWTrSzrYCgcKJoD0INHuKvSlowpQQMixn5uyz1tXVXhFntDXTMlea8o60fSISrLP+BcNCGA7OvZh90NoO9jKwof/6pFGHs1eRtW11zrx3aq8EGOa/JAUGDuivwLIP1TunqUaD1pBi5QP09/VPvqdcSJSUnH2NqSTH+J9wkV/RJdSWIxRrtCt14tP4r98E3Sq4t4XY5Zg8KsxLqf6Nej3tjbiyTck7GuzNk07wzRHHAQ/7DJ8mh5epx1Ayi/5Ok7r0464q+RJFCoLxct/dbTYPQae+vsa1yleMdXLV2xG1WIenrWSj457sB7722gs7R8DA7SERSMxGnQOTVH6GhFmhY1aFc35KPc4KOKqaiIq+q0Ljwkzv2tGDHvNMO7QaGWeap+qZAUDO0piZ2M/ai7mR9deeFOqxPIoHFYne+YnebwavEqykSWraqnqmPiNuON0fu20C5Q/VqkJP/UWR8VALhdbumO3LarAL5nUdhCqtSuPsXmaE3EkqOUAHc8c0TDRqFGlaFFPdxvxxQnuqf9K9alnI7FCb+iQly9GgVuYeQJm4/ss9V2vgJX0Yn9h1vloUtU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,50 +119,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 09:41:46AM +0300, Mike Rapoport (Microsoft) wrote:
-> mm/internal.h becomes more and more bloated.
-> 
-> Split declarations related to mm_init, memblock, vmalloc and sparse into
-> new headers.
+Proactive reclaim (triggered via memory.reclaim or node sysfs)
+checks for pending signals in its outer loop in
+user_proactive_reclaim(). However, the inner reclaim
+loops=E2=80=94specifically scanning cgroups in shrink_many() and
+evicting/aging folios in try_to_shrink_lruvec()=E2=80=94can run for a long
+time before returning to the outer loop, especially on systems with
+many cgroups or large memory sizes.
 
-Sashiko rightfully pointed to some issues, will send v2 later.
- 
-> ---
-> Mike Rapoport (Microsoft) (3):
->       mm: split out mm_init and memblock declarations from internal.h
->       mm: split out sparse declarations from internal.h
->       mm: split out vmalloc declarations from internal.h
-> 
->  MAINTAINERS                        |   3 +
->  kernel/liveupdate/kexec_handover.c |   3 +-
->  mm/cma.c                           |   1 +
->  mm/execmem.c                       |   1 +
->  mm/hugetlb.c                       |   1 +
->  mm/internal.h                      | 183 -------------------------------------
->  mm/kmsan/hooks.c                   |   1 +
->  mm/kmsan/shadow.c                  |   1 +
->  mm/memblock.c                      |   1 +
->  mm/memory_hotplug.c                |   1 +
->  mm/mm_init.c                       |   3 +
->  mm/mm_init.h                       | 120 ++++++++++++++++++++++++
->  mm/page_alloc.c                    |   1 +
->  mm/percpu-vm.c                     |   1 +
->  mm/sparse-vmemmap.c                |   2 +
->  mm/sparse.c                        |   2 +
->  mm/sparse.h                        |  63 +++++++++++++
->  mm/vmalloc.c                       |   1 +
->  mm/vmalloc.h                       |  46 ++++++++++
->  19 files changed, 251 insertions(+), 184 deletions(-)
-> ---
-> base-commit: 820d5dfede0cd55dcbc89ce96fcfbb11b7c457ba
-> change-id: 20260707-internal-h-2efef660381d
-> 
-> --
-> Sincerely yours,
-> Mike.
-> 
+During system suspend, the PM freezer attempts to freeze all the tasks
+by sending signals. Because the inner loops do not check for pending
+signals, the proactive reclaim task can remain stuck in kernel space
+for seconds, failing to enter the refrigerator in a timely manner. This
+leads to suspend failures due to freeze timeouts, a behavior observed
+on Android devices.
 
--- 
-Sincerely yours,
-Mike.
+This latency issue is specific to proactive reclaim because of its
+large, user-defined reclaim targets (could be gigabytes). Since commit
+287d5fedb377 ("mm: memcg: use larger batches for proactive reclaim"),
+proactive reclaim uses larger decaying batch sizes (starting at 1/4
+of the remaining target) to maintain throughput. This keeps the task
+in the reclaim loop with a large target for a single syscall
+invocation. In contrast, reactive reclaim (global/memcg) has small
+targets (SWAP_CLUSTER_MAX, typically 32 pages), allowing to yield or
+check signals between attempts quickly.
+
+To fix this, add a signal_pending() check to should_abort_scan() for
+proactive reclaim paths. Since should_abort_scan() is called within
+the inner scanning and eviction loops, this allows proactive reclaim to
+abort early and return to the outer loop, ensuring the task can enter
+the refrigerator and allow suspend to proceed.
+
+The check is limited to proactive reclaim (sc->proactive) to avoid
+affecting reactive reclaim paths, and wrapped in unlikely() as it
+is a slow path.
+
+Signed-off-by: Richard Chang <richardycc@google.com>
+---
+v2: Update the commit message
+
+ mm/vmscan.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96..fb472e924fc7 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4929,6 +4929,9 @@ static bool should_abort_scan(struct lruvec *lruvec, =
+struct scan_control *sc)
+ 	int i;
+ 	enum zone_watermarks mark;
+=20
++	if (unlikely(sc->proactive && signal_pending(current)))
++		return true;
++
+ 	if (sc->nr_reclaimed >=3D max(sc->nr_to_reclaim, compact_gap(sc->order)))
+ 		return true;
+=20
+--=20
+2.55.0.795.g602f6c329a-goog
+
 
