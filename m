@@ -4,129 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7464EC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 08:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26C84C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 08:28:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 384C96B0093; Thu,  9 Jul 2026 04:25:48 -0400 (EDT)
+	id 203646B008C; Thu,  9 Jul 2026 04:28:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35BD96B0096; Thu,  9 Jul 2026 04:25:48 -0400 (EDT)
+	id 1DB146B0092; Thu,  9 Jul 2026 04:28:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 278286B0093; Thu,  9 Jul 2026 04:25:48 -0400 (EDT)
+	id 0F15D6B0095; Thu,  9 Jul 2026 04:28:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E83336B0093
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 04:25:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4FC5E1A0431
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:25:47 +0000 (UTC)
-X-FDA: 84968554734.30.D055B21
-Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 6A4E1180003
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:25:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MrnApL8O;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.132 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E36586B008C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 04:28:03 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 87A571C8442
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:28:03 +0000 (UTC)
+X-FDA: 84968560446.15.DC37D9A
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DA17D40002
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:28:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=UMXxHBpp;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=ja1LHTEE;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783585545;
+	s=arc-20220608; t=1783585682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fZYBoXNfxRtgISWI6nwLbyRJgOnKdbrwsBmGvBXyyQo=;
-	b=C+AMslp5aV2Y3MK3ceUOs9duTIr4dPQFuwXVjVf2XutQgWsgmHrbOTFVp6LWqSBxdVzJIq
-	9aEWxhfhSsFH5YAlZNPX4zYulg8CmQ3rBnOerHm1m1JwVeSMOB3oCsGpE+f6FRJB7EqgUg
-	uTea8afGf8X1+0uUOYmaRFaHt499lhs=
+	bh=Lx0GPfIb+p9dvxHOdBuxBw9NKashWf8lY5lGPcZuetQ=;
+	b=IG/0D0bL3Z0Hup4T2BQgG6nigQ14eagrbXexTvgj60MCqTVvPntrxBtGlpxBS5340iB0Cs
+	ynzkd7DEb0El+XysGH/cE0R7gvfnmtkVTGebgBojyz6ZD7xU48Poer6bdiBfYflxVR4sVi
+	naycvcVrcS4e4lXl652ItCWuTRQylSI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MrnApL8O;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.132 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+	imf27.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=UMXxHBpp;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=ja1LHTEE;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783585545;
-	b=RfSNzIbSqsUxEBjuVRG1cX+JCHGTvP16eHSHZ4ZAkS23qFCIze1fwI7cy4egQEzT26wylr
-	nEDcgr53XKekvYBJdw3Cb6OH8x/VHmvI1dPdMcf8KC9HLi3Yix+AM6O2TH1+9Z90wYD9ml
-	4ZnYVB3cBg+mEDOgzkSVqw1anfgg4jA=
-Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-381a094c43fso1066201a91.0
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 01:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783585544; x=1784190344; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fZYBoXNfxRtgISWI6nwLbyRJgOnKdbrwsBmGvBXyyQo=;
-        b=MrnApL8OwDnyNEbTqOT6AvVrCc8ydmo+33uFVUyyPxkV5WMnki3+7/JJuPUg6fZ5iD
-         nW81Y9UpEuJMutZ0bCLCn/J0OV7v9dtvRaBP68tnMRTqnZgoFA5D8fEiB2RkbjJKqniC
-         ipNR8U6EzH05viAWCHJqQNaeiIchGMOG9I02iLwkeJ8x0QAZg+qb/rdzQ5Wh8chuEfLz
-         RqH73XfFHJ5YWSB21lyTj44wN/FUEuTI2TxK4zzqYuzPqemfNGYblRBTX2emeu/SMpIT
-         M/BSzlOQNsLV3ZUuZXj1DbqcCuC0U3sjg6bsKl9PxkcENI8oTWMn1Rm2m/666vBt6pzR
-         2DkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783585544; x=1784190344;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fZYBoXNfxRtgISWI6nwLbyRJgOnKdbrwsBmGvBXyyQo=;
-        b=qr+BmJNcgIbJriz7nnL9Bi0yT5WAXdgJTWke8TaOmoc0MH4FnizeygeYOyVAcNoSb7
-         v+O11q5KnrOEPCfOegiXSMIqSp2fBs9TPMlspKAG0yI8rdqjmVFoM4vC0nbQx60v6C2S
-         X1MBJ4qxsDgCMyrQNTdgp/ugjmgwut+ksDbOwE55LFl8zgmRQmxOIPgRKNYmOpITXp4W
-         RijEqJLIl3bzCIC4Ta2AtKoAsDFpkRPrMjpRTrQlrztWENCglQvM+uVSUl97i9PKwCW7
-         IR080S89MyMuLORfARd/jWZHWsfGQOp2Qy1U9orsFa8rrTSpHSRy7xucqeHHfONNUjZS
-         hY6A==
-X-Forwarded-Encrypted: i=1; AHgh+RohdlbyHqMbSJvh7nJvd1sEmwolK/41nbueg6miXa4hhIBT9S+r6TXTESN0d4/HYo2+hGfLhWi13A==@kvack.org
-X-Gm-Message-State: AOJu0YwXxD8+lRVNAFXui1c9ptYkJyxidPtC98URcRnQalb1C2vgD+MB
-	F5msPKAxNpm/ib1hflo8agUeeJTFZMCU2PWMi8wTW12G2kdL+sDM15DI
-X-Gm-Gg: AfdE7ckFl800N45OwZdmdMwAvnn/q/sT435lnQCSHnzPjQ/a8Kspj2foHq2YSqQfLrx
-	lEz0mWY1pRTWGjuKaIBVvSs6ZbRkXWFVkvijK62FU5ga6P8lb9g+4MrEDEw0M7T6tP43SQsSKLY
-	L14L0a3XwpSI2KaL9r6G0sUeao7aN3WPKhItp+wUtrDZ8FfMn+cSuhSPbYWjnW/Sd9cvOl5Vvsc
-	Sp2Nk22BZqfukIKHAQeKAPHTJEM+xBextFwWjBCq07hBHjtBfMjlTsU5IwUR93EWL7SIYzIhbbh
-	IW2SDg5jgpLFuIpBRbGnr0MA2Lg+1Bk3WpHljZlLNp5rnuA/kHgrbORLK/2HVHRv1rCIwYLT0p+
-	SV0RApUQUkDhgUF1Or4llKnuWcdECEr7I9wbU6DicsWcVHOmtV9Po7bfMyIJt0NOLCmVH1vipUv
-	SND4rGenq7nrkUznDvVWrVNTDS0d3Qr9c=
-X-Received: by 2002:a17:90b:3b45:b0:387:e0db:3d89 with SMTP id 98e67ed59e1d1-389434634f6mr6128019a91.36.1783585544240;
-        Thu, 09 Jul 2026 01:25:44 -0700 (PDT)
-Received: from [10.125.112.20] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38a5574c513sm786919a91.5.2026.07.09.01.25.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jul 2026 01:25:42 -0700 (PDT)
-Message-ID: <f33a9dca-03d6-45f8-bd25-717b9033c75c@gmail.com>
-Date: Thu, 9 Jul 2026 16:25:27 +0800
+	t=1783585682;
+	b=LKRdzzxDfb/vDJoGYENC9c2RFP7SDklx8c0iq56yIV/WARiuIJd2c5hIFWFPogqtTJiV6l
+	GI6XRf7UI9Rh2lhL+XzyqoANqtoEdQNXscj8tlvEjH28FpJ6kpdHMM+Gj9y077EhxYoIAj
+	wO+lwOkhcsxKGQlURlTGhV1fWv+oeA8=
+Date: Thu, 9 Jul 2026 10:27:59 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1783585679;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lx0GPfIb+p9dvxHOdBuxBw9NKashWf8lY5lGPcZuetQ=;
+	b=UMXxHBppphhTbYxa+BqOd80W4ngqWYhzPYL77GljpeFMyXukW5uGAsLDprtKEJyeETmgFN
+	msqYnUBjEJpozd4qRINi/gEyl3eXmF2JPhb5bRF2Yb5RUoZMBkLPEgJNOqb7n5jnrIsz1J
+	T/EBLiEGVbgE7kFtiNNGRfmCBxiNT6X9Xm8U+cdKwvRKu4vfD+B+cdupmGQos4JbCaBuBM
+	3S2JvvwStqAxmiRXN9m9xk6wUV5Sz8TVKl60PYbK5h/Xqn/t8B/VKJmV+gEAfJXWT5pqum
+	3QEumRjVd9w0RwuzH4WlnvukX96IcDYpjIFc4OGRgiDohFmqu7XaFHUL9oUstQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1783585679;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lx0GPfIb+p9dvxHOdBuxBw9NKashWf8lY5lGPcZuetQ=;
+	b=ja1LHTEEnpn4UBUpRMLUNv43JZPCLqwtNJbKK8I1pjYisGl/FUXT1xQeXCjf2brcux0Cb1
+	vjeEfDRtTffYYZCQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: oleg@redhat.com, richard.henderson@linaro.org, mattst88@gmail.com, 
+	linmag7@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
+	kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name, 
+	geert@linux-m68k.org, tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
+	deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org, 
+	glaubitz@physik.fu-berlin.de, richard@nod.at, anton.ivanov@cambridgegreys.com, 
+	johannes@sipsolutions.net, luto@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
+	peterz@infradead.org, wad@chromium.org, thuth@redhat.com, mark.rutland@arm.com, 
+	ada.coupriediaz@arm.com, kevin.brodsky@arm.com, linusw@kernel.org, yeoreum.yun@arm.com, 
+	song@kernel.org, james.morse@arm.com, anshuman.khandual@arm.com, 
+	broonie@kernel.org, liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com, 
+	yangtiezhu@loongson.cn, sshegde@linux.ibm.com, mchauras@linux.ibm.com, 
+	austin.kim@lge.com, jchrist@linux.ibm.com, arnd@arndb.de, sohil.mehta@intel.com, 
+	andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org, x86@kernel.org, 
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-csky@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org
+Subject: Re: [PATCH v16 18/18] arm64: vdso: Expose sigreturn address on vdso
+ to the kernel
+Message-ID: <20260709102117-c4dc4d58-f8d9-46b0-8246-61e8fb8825ce@linutronix.de>
+References: <20260629130616.642022-1-ruanjinjie@huawei.com>
+ <20260629130616.642022-19-ruanjinjie@huawei.com>
+ <20260630172619-6c78c2e2-c2d3-44be-88e6-6c82de12baf4@linutronix.de>
+ <21875fb4-434b-480d-b68b-e2ffd5fff5ae@huawei.com>
+ <20260709090525-b1e5ae06-1fb4-454e-919c-6503dcf3d073@linutronix.de>
+ <d9c9686c-dfd8-4539-b301-8726bab7443b@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] mm/migrate: do not migrate folios mapped into
- VM_LOCKED VMAs under compaction
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: vbabka@kernel.org, david@kernel.org, rostedt@goodmis.org,
- mhiramat@kernel.org, Alexander.Krabler@kuka.com, hughd@google.com,
- fvdl@google.com, bigeasy@linutronix.de, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, akpm@linux-foundation.org,
- surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
- ziy@nvidia.com, riel@surriel.com, liam@infradead.org, harry@kernel.org,
- jannh@google.com, lance.yang@linux.dev, mathieu.desnoyers@efficios.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, pfalcato@suse.de
-References: <20260707125925.3725177-1-chenwandun1@gmail.com>
- <20260707125925.3725177-2-chenwandun1@gmail.com> <akz7ythMxfIZeT0d@lucifer>
- <ak0EsCeucJarlI7G@lucifer>
-Content-Language: en-US
-From: Wandun <chenwandun1@gmail.com>
-In-Reply-To: <ak0EsCeucJarlI7G@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: e8kcy8uiigpe6cqmkpueohbh17cwox1x
-X-Rspamd-Queue-Id: 6A4E1180003
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d9c9686c-dfd8-4539-b301-8726bab7443b@huawei.com>
 X-Rspam-User: 
-X-HE-Tag: 1783585545-744037
-X-HE-Meta: U2FsdGVkX18D5v/n7LekIlDBmPyRMZ4CGPgmad7ri9hzjkSDn36dleXKkPPyJcsNoEYhB6BpJznXnXB4v7qiTbGKpBYBtj/sXyHRRnis59r2g2k/UX193NsAjSJyVRmjhk4LcV7UmT2zy7cSYico5Exdko7B6QvOfOKzpP2do9B7A4WxtZ0sXwW3Fr6qZVgL8ubABy4jG7qedF3AS5l+NcLe2/4flw4ZYEPdoQKRebOaZIJ/bcXEtF82hUEF4DCL7qFrtGyk42YbHhpM561vF6sW/o/z8E01zThXnzHjxOQyaw4mYkgOK5WOxlUEdINkU210B8b3i+qEZ42hTgs8HckDoN3e7bkCFklzzgcIkp88uyXIGFSmBKgVrJqsy9hgc+FnmnIgrStTm4abzdH/xYMbNSGDAwanPrpURfvJ067Km6L8UcsVCDPAw+wXRuG0U/sZPpahcJBk3Cc24H7lMhVnxsKuSZIWHk8gGfoip7exFWLHo/jHryjiF8BOHhP1/Xmjhj4gsCEcB9Y24P9G4ZtCOYAl+C3LHMtzVJmfsbK6sDacy8VbgrY8Rn/tUSrFavADQm3GumTU81PGq4dS/NvD63v4DZwag60lTXDX1rKfN5+PocEOLcbhiq+apKBgwUrTds8UvpZfCuneuuSXlcAWnMCCs6WTsskbC/2NEDf+bP1X96CaKiD/p9wKUmYa1ICR/yDanQPd/JNkZ4hPI+A+DpeG91s5s3iRjkKWM1nzyoi6QXP8BbnCjGkXTj3F0HVC9flyuK8N7fUfVNCbZcII3yCJQauB6YwDS8P+rXYkKAsy/hiug3g3emisJoHOhUOuHlIvk545n+jjbH5d7nQpaceyYEUGZRLHWNYZrd9fLwM8+l5RbHUDqt/aih9lzhDg9jmsN9C70P1tGLen9wF8VUEyzGcvILQ+UBGbqQN6RGRtLBka9GcD6vsvW1kUV5NUkISTRlluQLklp15
- iZz5vQRl
- hu7TDNU5bj/wFMLi8AlyxlC2gg7axP/KcL5VmMkf5SnJXJL3ExQxkwj6kKtq0LFtNhZYpg4kibHLZMEv0t8Hui54vEOY0xa1VaPMa2TZpQYBgLkfy3HrmiuiVyCYMpTue/YI3BWBzvGW3SHQ6BPl3fD4NHX+dc2mlvisnb7/msB44ObSWzhvsBK77o/KnFTq54/MnK8nLrq0ob32gwt55hCPAJhS/D6uDEoV/qyrh8XRVqR7oO5yCecWA1e1pQkG8Ahi4OLZ5UmIkFjbZ+cFKreWWJYQ1kBPfN02DRPu477s2DGLopuFOA9UNC2Wtpetg9zwfzX6gBRhDYEFIfUPz/0gWVv2RCnu9m1/O0CCWc7eMLRky7vNsdeeJ+mtd+RmHKx2HiBqjcQpPDJAW4zpXnc3ta0W8f8liziP1acqTCpqZgXErLVd+Cn5kvakYDVYoRuNkQ5Wtrx+O5FOm5KsL0YK8qVQHEL6ZVrgfqy3037C/AXccbUAczBIyskTt4R6HY0NTULwdnu0pR7hNBFAGM4QvVTvQONSkXjB95P/a6ta/uZuf+2Hu2TI9AgQQxl1fQI8MmrD5Fu1VgldPo/MjZdhnREFkKN2M0tx3
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DA17D40002
+X-Stat-Signature: xa5xsbuu7he1iemmocb6qmxu1yt39ik3
+X-HE-Tag: 1783585681-911339
+X-HE-Meta: U2FsdGVkX18Med4eICvscKs1ao/ouE55C0WTbaHo2uWWNatkmmfV1DycOcgg792BkwuiTa0mSf5I6GKdqYFda0ipUov7G9ebwvQFrkR+hty6w2aiaT70UNm416fnA9ZHdl5ad5Vs4BoiC2RXFfGFdeJ1O/RyXJYV9U5N7GriTTsF7LheLM+AfFxxxDjra7wfIGCTMfPkKYq8vJGcd9P53M0kBeDgzWUtu1apE2LzLebhsEzAaTn9N3JdfqxwAsCKcfMEOo8cEqEja2hNg54n46tYQJ1A/E3o0gbd4JhGdTsbAjxKbCeFgso3c8FEYHnZbYDjFg2Sn3vd+45QOJiz26Rm057svCew1HNkNUm40DWN1K8tWmm+72C7ZM986/n06E4dF9xjZ7YToVBVJyP9OOA0fG83GKT7vn0OYp6wPWVz2beVbGLlpUBmb61Ds8HXJgXnDoYxCH/s4NoZHDrI/3w+eL/ili0I0PIDsbhbWcCl5ANjfLSl2Oc62XdP5GCSAc7GmKYVC+/30jpUOryjRiyuUKLkGflayESah4Qc+nni87g/XYVDjtf8O2XNfALJoVWDKNLVk4DqgdJLMXM/XB9Rx5GBcjkZCrEHUar4nhgelcM3dFGEx3fKf0jBYRIXXlkaItQR+gO8f3OuvA26wDO2soVr53Jhp7RmzvFExwgjVJCNfhM2x8Uk8szZtfpmMEbsg7njY4pr4IK7kA4sOK4SlLdvyPJ+e8giFnUyODtwv4512sQj2CHI1fGa6HruwxQ3L5IMhG3hNK2R8Ah7xL5ynw8BGlkqnupDZtaQkwYqsccN1w8wxqTe7uWhsUHyyKi+ABuoaEzAOsZ+7a9Gd7WZDJ/ad1Y2ZaXJiA0tWRTgD6cdjnWnxRRU7OVqI6bFi223TydgMYKe81GaG0ISqpz0Mkf5052Yiv6TCCJ1gmfz9GoHvA2z9B12SlJqacS5GZvvgO+UrEzWRHj62H/
+ t6G17vrU
+ v8hC8vxdQLSdPFsqRxBJ7ac5OaCvlPQop7RINFsZitym+YJGTYbSfSpauk18EGzIDl3uvy6lnByCphIdYfFvLtqzcNwOQuJIFy0raw5M8zA0E5FW0fo3v3s3YPV5/aK5AVOTa06oSuYS8ueRmTMoeJf8hPRXTVqEkxKlTvBhixuDW0pRIeU2d9KaPP4Di5MsotnDnQYPhAVrj8MBcAdOVcNYmGR7I0qGKDil4+L5Aht83YfNpjX8XPq+DCyH8DpaYPJ3B7SEV7qg4GshzTNPKMcak8aWMvprvWfp+Mo40VAl99E81Fl01MTeUsyLORucnYRJBAY3ZhgCHvqpvyCjtO7J7mqMxe4QD4gx4ieaBljfynsLMacSDWD5hKCmu4g60qli9c8P3WpnQWXBdrLRqEsI8KULvHD9laSV1VFXdzureQDhQohJFnN56fp6kdGxIv5+LZWhjxKqMLJ3qpbOtIo8kzo1lCcjcJloSAgmR4/L25eDsFDxD2IwwpEfynG07N5eI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,44 +127,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 7/7/26 21:55, Lorenzo Stoakes wrote:
-> On Tue, Jul 07, 2026 at 02:44:50PM +0100, Lorenzo Stoakes wrote:
->> See above about deduplicating.
->>
->>> +			ttu |= TTU_RESPECT_MLOCK;
->>
->> Hmm. I don't love 'respect mlock'. I guess we only know about the reason
->> being compaction here.
->>
->> But I'm confused anyway. We have the folio, why aren't we just checking for
->> PG_mlocked() here instead of getting the rmap to see if it's mapped
->> anywhere with VMA_LOCKED_BIT?
+On Thu, Jul 09, 2026 at 04:15:15PM +0800, Jinjie Ruan wrote:
+> On 7/9/2026 3:17 PM, Thomas Weißschuh wrote:
+> > On Thu, Jul 09, 2026 at 02:37:05PM +0800, Jinjie Ruan wrote:
+> >> On 6/30/2026 11:32 PM, Thomas Weißschuh wrote:
+> >>> On Mon, Jun 29, 2026 at 09:06:16PM +0800, Jinjie Ruan wrote:
+> > (..)
+> > 
+> >>>> diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
+> >>>> index 592dd8668de4..5a0314a3c26e 100644
+> >>>> --- a/arch/arm64/kernel/vdso.c
+> >>>> +++ b/arch/arm64/kernel/vdso.c
+> >>>> @@ -343,3 +343,19 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+> >>>>  
+> >>>>  	return ret;
+> >>>>  }
+> >>>> +
+> >>>> +bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
+> >>>> +{
+> >>>> +	unsigned long sigtramp;
+> >>>> +
+> >>>> +#ifdef CONFIG_COMPAT
+> >>>> +	if (is_compat_task()) {
+> >>>> +		unsigned long sigpage = (unsigned long)current->mm->context.sigpage;
+> >>>> +
+> >>>> +		return regs->pc >= sigpage && regs->pc < (sigpage + PAGE_SIZE);
+> >>>> +	}
+> >>>> +#endif
+> >>>> +	sigtramp = (unsigned long)VDSO_SYMBOL(current->mm->context.vdso, sigtramp);
+> >>>> +
+> >>>> +	return regs->pc == (sigtramp + 8);
+> >>>
+> >>> Instead of hardcoding 'sigtramp + 8' you could add a new label to the 'svc #0'
+> >>> instruction and use that with VDSO_SYMBOL().
+> >>
+> >> It seems that the modification of __kernel_rt_sigreturn() is not recommended
+> > 
+> > For the changes to the object code of the function this is obvious and
+> > well explained in the comments.
+> > 
+> > Such a label however would not change the object code of the function.
+> > In fact it would not change any bit whatsoever in the final vDSO,
+> > save for a new build ID.
 > 
-> Also, since compaction_allow_unevictable() is a function that is accessible
-> elsewhere, you could literally just have a TTU_MIGRATION here instead and have
-> the rmap logic call compaction_allow_unevictable() instead rather than this.
-Do you mean:
-1. change TTU_RESPECT_MLOCK to TTU_MIGRATION, that'is OK.
-2. move call compaction_allow_unevictable() to try_to_migrate_one? but as you suggested
-   migrate_mlock_allowed function, it already called compaction_allow_unevictable()
-   in order to determine whether TTU_MIGRATION needs to be added. Did I misunderstand
-   something somewhere?
-
+> Yes, and using labels is easier to maintain than hardcoding offsets
+> directly.
 > 
-> And then you could adapt the function I suggested before not to take a reason
-> parameter but rather a 'is_migration' one instead possibly and then pass (ttu &
-> TTU_MIGRATION) in.
+> Similar to the code below?
+
+Exactly.
+
+(...)
+
+> diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
+> index 592dd8668de4..609d7bcd8308 100644
+> --- a/arch/arm64/kernel/vdso.c
+> +++ b/arch/arm64/kernel/vdso.c
+> @@ -343,3 +343,19 @@ int arch_setup_additional_pages(struct linux_binprm
+> *bprm, int uses_interp)
 > 
-> BUT. I still question whether this is at all needed since you have the folio you
-> can check for PG_mlocked...
+>         return ret;
+>  }
+> +
+> +bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
+> +{
+> +       unsigned long sigtramp;
 
-I described a race scenario at this link:
-https://lore.kernel.org/lkml/c372e68f-2bfc-45b6-a431-01bf55717247@gmail.com/
+Could be named better now.
 
+> +#ifdef CONFIG_COMPAT
+> +       if (is_compat_task()) {
+> +               unsigned long sigpage = (unsigned
+> long)current->mm->context.sigpage;
+> +
+> +               return regs->pc >= sigpage && regs->pc < (sigpage +
+> PAGE_SIZE);
+> +       }
+> +#endif
+> +       sigtramp = (unsigned long)VDSO_SYMBOL(current->mm->context.vdso,
+> sigreturn_landing_pad);
+> +
+> +       return regs->pc == sigtramp;
+> +}
+> diff --git a/arch/arm64/kernel/vdso/sigreturn.S
+> b/arch/arm64/kernel/vdso/sigreturn.S
+> index 0e18729abc3b..8d2d413ff45e 100644
+> --- a/arch/arm64/kernel/vdso/sigreturn.S
+> +++ b/arch/arm64/kernel/vdso/sigreturn.S
+> @@ -73,6 +73,7 @@ SYM_CODE_START(__kernel_rt_sigreturn)
+>         mov     x8, #__NR_rt_sigreturn
+>  //     PLEASE DO NOT MODIFY
+>         svc     #0
+> +       SYM_INNER_LABEL(__sigreturn_landing_pad, SYM_L_GLOBAL)
+>  //     PLEASE DO NOT MODIFY
+>  //     .cfi_endproc
+>  SYM_CODE_END(__kernel_rt_sigreturn)
+> diff --git a/arch/arm64/kernel/vdso/vdso.lds.S
+> b/arch/arm64/kernel/vdso/vdso.lds.S
+> index 52314be29191..5fee2927e4c5 100644
+> --- a/arch/arm64/kernel/vdso/vdso.lds.S
+> +++ b/arch/arm64/kernel/vdso/vdso.lds.S
+> @@ -104,6 +104,7 @@ VERSION
+>                 __kernel_clock_gettime;
+>                 __kernel_clock_getres;
+>                 __kernel_getrandom;
+> +               __sigreturn_landing_pad;
 
-> 
-> Cheers, Lorenzo
+This should not be done. The symbol is not intended to be used by userspace.
 
+>         local: *;
+>         };
+>  }
+> @@ -112,3 +113,4 @@ VERSION
+>   * Make the sigreturn code visible to the kernel.
+>   */
+>  VDSO_sigtramp          = __kernel_rt_sigreturn;
+> +VDSO_sigreturn_landing_pad     = __sigreturn_landing_pad;
 
