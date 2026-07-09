@@ -4,168 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ECD7C44501
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 15:30:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4857C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 15:34:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4D596B008A; Thu,  9 Jul 2026 11:30:09 -0400 (EDT)
+	id AA5E56B00A3; Thu,  9 Jul 2026 11:34:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A24146B0093; Thu,  9 Jul 2026 11:30:09 -0400 (EDT)
+	id A7CCB6B00A4; Thu,  9 Jul 2026 11:34:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 914AB6B0095; Thu,  9 Jul 2026 11:30:09 -0400 (EDT)
+	id 96DFE6B00A5; Thu,  9 Jul 2026 11:34:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 66B116B008A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:30:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F3372A01FA
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:30:08 +0000 (UTC)
-X-FDA: 84969624096.07.C07450B
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 15BF6180006
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:30:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=j4nGkmxF;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B49B6B00A3
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:34:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 000771C0F32
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:34:14 +0000 (UTC)
+X-FDA: 84969634428.25.C80C434
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 35B7020008
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:34:13 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="CWt94/za";
+	spf=pass (imf31.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783611007;
+	s=arc-20220608; t=1783611253;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fYSI9yTT5sy6RSjg3MJktJbkZRCOSo/WRgJFUwJppy4=;
-	b=blLogT6MTqcebPeWcS5Jdv5tVe8qHIqRuPM3o256AVeh8zcQD4xeE/Ds1jbp+z+Gxot8/C
-	/M+hEdWzDwfgwVkjeibzujgHBxt8nVXBCClmBgmeyEdZS1ZCFOJpTED/pjh2ZqxxFUdFvp
-	T80WqTr4yfsfTciPFbxzoasjfZ7GvZw=
+	bh=wgZAKDefd+qsWOygAjWV/OqF2VHOBPEQz/tYDmXsGXA=;
+	b=FeqYRFCuXtZZRokhLWnvtF2+Z+p0QIY2GxOO4IAa6gT1Wi1+1X6GFJwkiyGEsiK4M1126j
+	GrzdRGX+mmxzmZAWNvtQU4mRFvGuZi/8qj6yJ/fdCN1TDzL92pI4fUXx0pI3p20JwlpdDm
+	FHhh9QOjmUcy5D4o9bOX1Hi5D+cIvbA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=j4nGkmxF;
-	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="CWt94/za";
+	spf=pass (imf31.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783611007;
-	b=28gCweDkOYEKSZe+Rgq0JdSvQrsOTMYeQDMP9A7jFe8HaJieANHtsQXqck8uLd2toYQdcS
-	iL/I4Og6lnjrZZ4GZjzt6fUIXSu7rYArKkXkLQjGTurBLFnrLzqS5tEWiz3RVWFXgXYNew
-	hpmX+nO61sD5+rYjD+tUf3GDmKMrCyU=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c1805b8a7so19770621cf.3
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 08:30:06 -0700 (PDT)
+	t=1783611253;
+	b=Ix8n4u35K9OlAeTNBrxAToLwN4iMVd0dqAmMP6iXu3SX3lt7tX86w9IRWqMgDd7nAauGpU
+	OIUnMbT6XcGorLsMjiPkHYHQxE2Nyfy/6TVH83UzPTWGbeJ+guGCVyuTTmQoHjxDCqJ4EY
+	BOnDtRVpv7EQKV8r/HcGr7QxEwdJNrc=
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-499f6e0bbabso1238950b6e.0
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 08:34:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783611006; x=1784215806; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fYSI9yTT5sy6RSjg3MJktJbkZRCOSo/WRgJFUwJppy4=;
-        b=j4nGkmxF+PkTXp/qV5Xb2vuSUseQP6Us7xFeGrzZMpl4O7eg0UK4njBsAv17UqpfuK
-         0m0NdpLc6ODSEbIyTbKrv/ucAwocBfqXHGy/grQEbpSbHjXpuNx5qiQJkrkq+EuvMY7P
-         Tsr1hnf1fwh3I2JyIaMLFfrhxNXR8LNSnekSZ4sCnz8OgpA5mGEQ7d3ioZGhTbfR2f9r
-         9XOV+yZjagdwKU07YYTADI46nV44BeOeqE2HZT5yeyI3ZkqZJ1L6hDzN9z4JSR+/0A30
-         eVToNdHt1+ov72GoU2kZGuj4nA85HTGpAA8yiR0H70uyo/MFynQMdb9BHLxum5HzxwuQ
-         FucA==
+        d=gmail.com; s=20251104; t=1783611252; x=1784216052; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wgZAKDefd+qsWOygAjWV/OqF2VHOBPEQz/tYDmXsGXA=;
+        b=CWt94/za9vLPH1dM1XpEC5H3PQ6U/XQ+8sVc+yfLUew8XHCYKZ8UJf8ENcBLTx2C9Q
+         GgTqmcj+XwTgKNWWfZYozWSRPp+nA391Bzq2yHoxZcCaIF9frvh9eQ86d2DCm2tTajrO
+         72G57011TliflA3o6RhpVs/QjHIt18Z5/jUddY2r5MoJCkAapHq7wiaYDfEwzeDx8cYc
+         Wlt0eGPEYKVYz2s7R5K3adAHMTQlak0KJDMp5YLirGnTLl6mXyF5SuVxSB0yyfXevZGa
+         9yYTGLns8RuCuwyjxGH8SkaWuaEGQTbNQdSjlw2WZ3S58WixDjlVx0jUCaaBVLwRpizj
+         UOjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783611006; x=1784215806;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fYSI9yTT5sy6RSjg3MJktJbkZRCOSo/WRgJFUwJppy4=;
-        b=YsPG+smG8IJV5BcLoZPuFTZhpETt8h4lZFJdQng73ttjZ19/buoiUguUziI5GkDhN2
-         ifea7iDePIgZ4cifDsCKHaEmFWspCi5+T9c+VOeh6DCBoBypHiaeL9vCewSuDh3K5MA4
-         njBSPeiadlQ7/itt91Oq4sESxKilYdAZv+8psYhGBCFF1bOJoYnahasfZoqDdC2Dz1PN
-         5AA5pTSronYfuV/0PD2N3L+G4EJqMNDPC1tbQqcUTjxWWPjrPbLyfMuTDu+Jg5wmRmSf
-         +3GlMmmzYfPTZt9i9pixr7Azvpshk0pxq0bHozb+SmRW6WDc3sNE6xEffCNhXPv7VK1h
-         OfkA==
-X-Forwarded-Encrypted: i=1; AHgh+Rrf+C1uj4AENvkpO8ka11MsVCuZQ9Z78w8kQUOnJd8ek3uDMW7/Yc7tVIlQeyEU61evSVDW0QG1UA==@kvack.org
-X-Gm-Message-State: AOJu0Ywbb5cRed0UXIXYEbmp23dNtCIguEauSeyYEa3+v7QWG4o52Ggj
-	CTv8lfZ3i2M5TczZ3f2mf121zKkQr/+4hyHuuEXsPM1xAZKbXz+AXlugyCEe/gOZpVE=
-X-Gm-Gg: AfdE7cnsW0WFzRC0J4XfwSs2A5f2d5/hT1Frkk/LbWPkES3PCTPSwo5bhdBuLW6mgOj
-	Fx2J0doSENoOaLJYuWACY47Zxyi0nO9GJdt1Rv2fjGqGMoissAWo8EcqvdUN8tG1vkqVJBkXyMZ
-	L395ZRfKcac2gRLaB73TBrBOg1mRVGkO6Svbt9n/spezwHuZOyPkgTecFkbHYWxci6tVx7xvHLB
-	YMQR7oDnUfBpi+xH0CyTfjEB4H6hy4xZHOz+Rq6hCdeT9YFp7HC7znoFLGe2ClsBWhD2SPjOwN+
-	06RpPgFQWKCLV5yUuhktKM5P2nMbqqmHHG6etEi1egXUgiv9JQHqNqYy36PriX2nEDCutfZC/F/
-	mdvhpAT3hVNIgDuI8FINGUN4oWzL07wbkbtYi25S0bQdMnTmD9wCJSKlfDC2YB5BuGCJhqtVk9E
-	Iv5/MgFWRqbwm2oM9FQxoErtb3QS/sU5HWaeGB+pCyS57ZseU/02Mqr6X5f32mhrL6qsNC
-X-Received: by 2002:ac8:7e8f:0:b0:51c:7b12:5fda with SMTP id d75a77b69052e-51c8b438e93mr84318041cf.86.1783611005740;
-        Thu, 09 Jul 2026 08:30:05 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd81f4bbdsm19539096d6.36.2026.07.09.08.30.02
+        d=1e100.net; s=20251104; t=1783611252; x=1784216052;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wgZAKDefd+qsWOygAjWV/OqF2VHOBPEQz/tYDmXsGXA=;
+        b=Ph5f6pk8fH3eos39PE88NH5mGIF1jFJ5CZHqlEdRGJ+/uUaDipDFCv7Y6+UjjT9/T/
+         ZnflxVmvShSXCvxZPX1JDVVBenAEVXNVB3wCodrNSWO2Hum4F39MwbSDDVB9hkA21MpU
+         TsGLvONQohdPBCfpyRq4HMJtwlpPBL3UjEPg9vcodNqHtWKWPVeFpMggPAbSIXAfvLrf
+         dy0XvvtPlNybid4Ch/QzI2E99CCQzMp2iZbB0TmHcNJfz/uVLA0882q1mVayqCowJmuO
+         Mavud399Y3wSEb0WPrdX5FxC4pCLt1LE1argA67hZjhXKvOgxOuuupJSQMVBH9oNA4DT
+         2ekg==
+X-Forwarded-Encrypted: i=1; AFNElJ8D54dAoY9YUYosBcFlECdrViPEWY/VlzEgm9OKQLLix+cka5B3KPfvMJwUj8wa3w+mca1Xsc2ftQ==@kvack.org
+X-Gm-Message-State: AOJu0YytookgVCmbkZiAve3yvbXDmUni/5w7LTXGpICzMhpYnYyOCjmP
+	IyGvhfC6lvryYSZyNfAUlxSNDzWiRSBBIFY+srDSIwSCf+VH3H86vlXB
+X-Gm-Gg: AfdE7cn4FNMF6Clek3+MZo54hj98T/f7r6tZcfQbGTz8P+YuuJFARhln6OkcohuF0bd
+	Yzh98Pb96q9b6PDqcdFu1u7wS/BOtBSf1oQPiiPUyYbyU0EFKkeUc2U0cbaOkIipsK/+29ruYaN
+	T/SDPXq1Uk5T6jKfJ/QPeFNyWStPNwPG19GU5PnEK1qbL1YIgjPHkb0zwgvTkGfgyQOmkbqLArl
+	hhPYEShOFOSi+B1d8NZJwYlm1opIVZRUvev2Kev32qJXik2IOS0UiIi9fWnAP/vvb9Sbo4pS5Jl
+	ynvkBfDuv58OkGqP6VX2A4NsGbwYzC81xoWXpiw3rJu28HziYew5eNmnMY+nAiDrWf1wYXVaUC4
+	DbzahjS4ciMg3gwxc6+5wTUxdZfDNL6mvpWkK5F4yrx8H+3ey8oTYbOZehjSK2b/88WSCt8isWs
+	I6nTfe5uMDTrfM9hgvNo5AbqQ+OYI3uqkopm169vS+48U=
+X-Received: by 2002:a05:6808:f88:b0:496:7ba:89b9 with SMTP id 5614622812f47-4a204ffb038mr5628776b6e.32.1783611251981;
+        Thu, 09 Jul 2026 08:34:11 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:10::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4a1acc83099sm3948634b6e.2.2026.07.09.08.34.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 08:30:04 -0700 (PDT)
-Date: Thu, 9 Jul 2026 11:29:58 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+        Thu, 09 Jul 2026 08:34:11 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>,
 	Oscar Salvador <osalvador@suse.de>,
 	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 16/30] mm/vma: use vma_start_pgoff(), linear_page_index()
- in mm code
-Message-ID: <ak--doS80hnAeQ9s@gourry-fedora-PF4VCD3F>
-References: <cover.1782735110.git.ljs@kernel.org>
- <33d79008948391d30bab38db5ae31072ce12f0a1.1782735110.git.ljs@kernel.org>
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Xu <peterx@redhat.com>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	fvdl@google.com,
+	rientjes@google.com,
+	jthoughton@google.com,
+	vannapurve@google.com,
+	erdemaktas@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Ackerley Tng <ackerleytng@google.com>,
+	stable@vger.kernel.org,
+	David Carlier <devnexen@gmail.com>,
+	Zhao Li <enderaoelyther@gmail.com>
+Subject: Re: [PATCH v2 2/5] mm: hugetlb: Fix subpool usage leak on allocation failure
+Date: Thu,  9 Jul 2026 08:34:09 -0700
+Message-ID: <20260709153409.2091070-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260708-hugetlb-alloc-failure-fixes-v2-2-c7f27cbb462b@google.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <33d79008948391d30bab38db5ae31072ce12f0a1.1782735110.git.ljs@kernel.org>
-X-Stat-Signature: cwh8d5fdegn3598pf4fo1zsgqcurtdon
-X-Rspamd-Queue-Id: 15BF6180006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: fkh3uctdwza54b9xsq77sxpdpyrzijtk
+X-Rspamd-Queue-Id: 35B7020008
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1783611006-835104
-X-HE-Meta: U2FsdGVkX19PpFR+mxpACff+UwKb+USCbsnr5uhONa3ITJbFxouo9Hin+cF70jBzLvLZWqBBP2JV44YKcdiV0kBkLlyD84t5Kd9Eidmp5jwufYB9bUuBfUy+pi9h2MZ/qUApX1pmYowKKk9yswTV36EE4bcmAzwWMpA+BLd/lKCX2tqe95awlsZJbdjYubQgKhFfwp0S6pv+wn+IhD9HaRHase4u7C2NPpXhDnD/VuIv7MG1/1eIEEzQaw3lJRjNDuH3ue7Ef9RJsAZNErGfkSKX56XQyFD3+/okwrKdf9cCirjpF2KPO8S7HntaG/gdBmSr8AOOy2ri7VDwA6+ztgt0AD3VqOFMd9ZakGd0OQrbRvcZKNOdLyELd1a819L476xooSWXbhEVi5AgC1AYz7xzssyxKuMgT9cd9dHs9nM5P50vR7V1vo9RRpD+vWVgsKoWVM+PkrOl5E9ag9gmljncCdi+nDWtFLgs8fxddXfcDw1j6lQTq4bnl7bD/Uj0TrPQOyxxMRsCMntLDysbbsxDvzzDa+p+Re0NeXLEMYs56V076CAasUGSVONw1trFdSmUtYLb0wA6qtPVSIwMAXFPE/ZHq3goCksu7dlUkmvDl2QuQHqa8tSQcXQpsB/t7b3n1bZ7ZyPP/WuK/+GcuLWD3TG01Eqo9WyePnhiAIaNSDkY+wJ1jw/uioBK3VnKa5KBT20etm6PDGcdWkarE0MDa4BrbFE5AjqjatnPjTD6Svnl0pWCnCj73tQfrmiZw7g6wbL8j3w3WLB0l5msq5dgH5ceGzTGEYGPX6xcqPrxfIua3gYsHXHVz6tElwaURnOkUMG9HiPER7CaqbQyWH4IqSUw85CDig57RbwowIG/MyEe638YHew8HqK6TvJ/HV8zk/ohH9FV8FqbvYN8ln94+2OMChMId7OAxAaTHnCAAJWOIPJgXxJx/Z6t8NudCLfpCLuvoFXWrnSc9MU
- hi+rmjB6
- NlqZVGnDIgyIJpX1aHec7thcs3g3gG3dSkLlU5NfdB1MS9hO8PNnTD5S04O++JNo742Mg3oqkZV+n1wZjkrvJHY65ZZ81gDuhktKHmBEgE6Bxj+y2tYRRrpQ7P84Y3q7OWm31l9VtuM+TmP/2zi4XDqCBHrbTYZYCYwTZjnaCaBDLXfzydHUjaOk3jUEJ82n/tv1WlzqNRLRZxKII103ZbXQg6hqAbuFJkvALH6+1XcTQYX91iSGCKyRzx9RmTR41eF5QFC5NIeJ9dR2rESAMHeFTIVtpEbS/Y2Kc94eKs7kPW1pecKUPaY2vMYj7juYuhgDWv2AMR/l+Ol2uN4Vc9RAR7RsIRis7YWcJg3/tVnWbY2Sx5C7iz0oJ4m8SSXUe35YR9HtRfCA+nCHnJPsD9OgpKwfDW7Dy3Byyf384R0858M8OwfXNoOBP97Hj9x5KOpsmF/6/izhGWMYtg9VliP46q1iTl/BvmqIfMICp3ruEC/lL1nVAsH9GXrWUnUI1NsJG8rZlxsbzWmymz8RQAp12mySESZI0304H
+X-HE-Tag: 1783611253-798494
+X-HE-Meta: U2FsdGVkX18nk2MdfXIEv9H6JEtccpcl2DerfZEzfin88QYRhJzAtZLW3eoulcofayLRKW9Hup0JfZLnED/QN5MwXHHWnP7LUfuqQADOkQp2WW0p8sm8Q8LD1opGxawF2VNUrZkUweGM4jM1JWp95JFVz2VLqweKVsh7lzWvVqHgisO7mBnXrmjnjGV308xy1+JzZM7dtB0GE1gPCqwi6tMbyOXSVvfMC4YrFKWiv8K+E960P9kYvmS1F0U1jzaIXR4VZHhzgC2zQulboXbghVz4NlKIh679z1daq4TyXfD+6jtVYjywMSt6NzmmLy/3On24vRoiYuZcIfpNnyJUFz3jVe7NmdcA3ACTFNNJTMOZck8SlFcE937CQrYYgxgdXTYisuj1RAnJetY+mfNyahZ4e4qVdcy6dfcdyXQzPn4q4S2IfuKr4MXGxjS4RuRLBZmCLDsiTRKHnJCXBpXHw7vZvN6fpn61F/oHZ11m9tDDixYfnAUI/+pR3OIRhpG8mILYPC5CFJKIAhSVSUqcEdu5EAvTxwXOvsjlLlSvfSNQ8rukX53jhbjPUHUJalAt63bbkDLex2ymPOsJzyCvkEGkDskqPjC3/5XBO0yMA1ESe1q3yeKdoNkxUbM6hWBSKtdN3XO1FpXsNhr2FH90QYn5HzLVxR7Q8s7W1nx7zqw4ubtrWFJJFATVAOWucYY4HLexI0J7+EKNW2Xn0mW1cHEgcFZB2ngNOuXAdfFveP0LDi1DL1BNO81TUO6dX2CDwn6MlXRjrT2eKffbrWGWYfXYsJvLE8pqeRUeRsYGQpIfK0xPtoAb3+jzRoZgwO781vRLFlpxwGHJPON2hh6cOGxPqZXsqpDsdc+7okD1yft9Qd3/rhX3C9x6vpUHUEin+bZNrsciIBKAWfqJPdNUzMyJS/xKvO2V04MIOJ3rssbF0IUfhQ2cUkYYczZ2V5VoU/REeWgbp/KCWn5P8y6
+ DFvp3LYI
+ cGacMRNjGHGQ4lXtsM3ryV3xJun/2DWJxuQ8Y9Qjc6DxdJGy/ckLn9Cxx4f6e1VmLGuCJu8p6UAaAmVzK/VgF5iuzFN6IU2Eb1A9k4OxMCnSjgzEGv8/CQ2XLV1fixvrxtiN2p0lzI7z20JsONhwo0rAElLa4ZbUg2xmTfQb+X1Hz9m5mB2jeotczxMeR5Vu6WODPMLmEqmLjnNX1AZXpzMVg6xKYFqKoGB7iaCwkR5ENSxYMyxvUeUSo3qakwhRCX0xquoOkcw2SOZOlGYMLd+hEVqMvGGhQ8YI5oty9/vcHJEfgR0T5AjN1Fq4rs+8Jz1L/UQXKJH4tNvgM8MPkuSmLM/q6HY6RDagw6KpdNg1L6f0osGGIKTF9+T2u9pwRqLWwibHq+Rdj0GiUMeHkyL3GyojKhrSEQjmQA332gkDBj5z/uAq4gNs5fPziC0sErJOoShusSMK2a0gc8uhnWXJi64BxvkN4whIIDMDw6FveRt8H5XABfQ8/OAiEDjqNZ4uIDRzx/dM82Q2YvizACGAxRtZHgbqhIoJMSAIhcfEl3xJ8KdUCryQ6zkT0mW6M9vHa6YTkWbXoBGUXd3RWOTsxFUa0lxZl7+nx36vfOQHJHK4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,752 +134,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:27PM +0100, Lorenzo Stoakes wrote:
-> There are many instances in which linear_page_index() (as well as
-> linear_page_delta()) is open-coded, which is confusing and inconsistent.
-> 
-> Additionally, vma->vm_pgoff doesn't necessarily make it clear that this is
-> the page offset of the start of the VMA range.
-> 
-> Doing so also aids greppability.
-> 
-> So use vma_start_pgoff() in favour of directly accessing vma->vm_pgoff, and
-> linear_page_index() where we can.
-> 
-> This also lays the ground for future changes which will add an anonymous
-> page offset in order to be able to index MAP_PRIVATE-file backed anon
-> folios in terms of their virtual page offset.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Hi Ackerley,
 
-such a nice readability improvement, thank you.
+Thank you for this series. I really wanted to work on hugeTLB accounting
+fixes but never got the time to get to it. I'm very grateful that you
+are taking a look!!
 
-This made me wonder though whether we can make it painful for people to
-open-code this in the future, otherwise I fear another one of these
-patches creeping in 5-10 years down the line.
+> From: Ackerley Tng <ackerleytng@google.com>
+> 
+> When alloc_hugetlb_folio() fails early (e.g. buddy allocation failure or
+> hugetlb cgroup charging failure) and gbl_chg == 1 (meaning a reservation
+> was not used, but a global page was allocated instead), the subpool page
+> acquired via hugepage_subpool_get_pages() must still be returned.
+> 
+> Currently, the error path out_subpool_put: only calls
+> hugepage_subpool_put_pages() if !gbl_chg is true. If gbl_chg is 1, it
+> skips it, permanently leaking the subpool's used_hpages counter.
+> 
+> With the earlier patch to always track used_hpages in the subpool, always
+> call hugepage_subpool_put_pages() if map_chg is true to consistently
+> restore the page to the subpool. Only call hugetlb_acct_memory() to adjust
+> global reservations if gbl_chg == 0 since gbl_chg == 0 indicates a
+> subpool (and global) reservation was used.
 
-Not sure it's feasible though
+So I think that I've seen that this part of the accounting specifically
+is a bit suspicious. There have been two attempts in the past to fix
+this area [1] [2]. I think functionally they are quite similar to this
+fix, they just open-code the contents of the put_pages function inside
+the condition. I've Cc-ed the authors of those two patches in case
+they wanted to chime in.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+I reference these fixes because I think they handle the minimum
+subpage case a bit differently. To be honest, I recall reading those
+fixes a while back and getting a bit confused on what exactly happens
+when the page is absorbed to fulfill the minimum size...
 
+It does seem like Sashiko also notes this as a possible concern.
+WDYT? Does your reproducer for this issue also work when a minimum
+size is set (let's say, to 1?)
+
+Thanks again. I hope you have a great day!!!
+Joshua
+
+> Fixes: a833a693a490e ("mm: hugetlb: fix incorrect fallback for subpool")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > ---
->  include/linux/huge_mm.h    |  1 +
->  include/linux/hugetlb.h    |  3 +--
->  include/linux/pagemap.h    |  2 +-
->  mm/damon/vaddr.c           |  5 +++--
->  mm/debug.c                 |  2 +-
->  mm/filemap.c               |  7 ++++---
->  mm/huge_memory.c           |  2 +-
->  mm/hugetlb.c               | 11 ++++-------
->  mm/internal.h              | 24 ++++++++++++++----------
->  mm/khugepaged.c            |  3 ++-
->  mm/madvise.c               |  6 +++---
->  mm/mapping_dirty_helpers.c |  2 +-
->  mm/memory.c                | 25 +++++++++++++------------
->  mm/mempolicy.c             | 13 +++++++------
->  mm/mremap.c                | 12 ++++--------
->  mm/msync.c                 |  4 ++--
->  mm/nommu.c                 |  7 ++++---
->  mm/pagewalk.c              |  2 +-
->  mm/shmem.c                 |  9 +++++----
->  mm/userfaultfd.c           |  4 ++--
->  mm/util.c                  |  4 ++--
->  mm/vma.c                   | 15 +++++++--------
->  mm/vma_exec.c              |  4 ++--
->  mm/vma_init.c              |  2 +-
->  24 files changed, 86 insertions(+), 83 deletions(-)
+>  mm/hugetlb.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
 > 
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index ad20f7f8c179..653b81d08fe7 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -230,6 +230,7 @@ static inline bool thp_vma_suitable_order(struct vm_area_struct *vma,
->  
->  	/* Don't have to check pgoff for anonymous vma */
->  	if (!vma_is_anonymous(vma)) {
-> +		/* vma_start_pgoff() in mm.h so not available. */
->  		if (!IS_ALIGNED((vma->vm_start >> PAGE_SHIFT) - vma->vm_pgoff,
->  				hpage_size >> PAGE_SHIFT))
->  			return false;
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 2abaf99321e9..8390f50604d6 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -792,8 +792,7 @@ static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
->  {
->  	struct hstate *h = hstate_vma(vma);
->  
-> -	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-> -		(vma->vm_pgoff >> huge_page_order(h));
-> +	return linear_page_index(vma, address) >> huge_page_order(h);
->  }
->  
->  static inline bool order_is_gigantic(unsigned int order)
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 644c0f25ae73..68a88d34a468 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -1101,7 +1101,7 @@ static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
->  	pgoff_t pgoff;
->  
->  	pgoff = linear_page_delta(vma, address);
-> -	pgoff += vma->vm_pgoff;
-> +	pgoff += vma_start_pgoff(vma);
->  	return pgoff;
->  }
->  
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index d27147603564..faa44aa3219b 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -12,6 +12,7 @@
->  #include <linux/mman.h>
->  #include <linux/mmu_notifier.h>
->  #include <linux/page_idle.h>
-> +#include <linux/pagemap.h>
->  #include <linux/pagewalk.h>
->  #include <linux/sched/mm.h>
->  
-> @@ -627,8 +628,8 @@ static void damos_va_migrate_dests_add(struct folio *folio,
->  	}
->  
->  	order = folio_order(folio);
-> -	ilx = vma->vm_pgoff >> order;
-> -	ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-> +	ilx = vma_start_pgoff(vma) >> order;
-> +	ilx += linear_page_delta(vma, addr) >> order;
->  
->  	for (i = 0; i < dests->nr_dests; i++)
->  		weight_total += dests->weight_arr[i];
-> diff --git a/mm/debug.c b/mm/debug.c
-> index 77fa8fe1d641..497654b36f1a 100644
-> --- a/mm/debug.c
-> +++ b/mm/debug.c
-> @@ -163,7 +163,7 @@ void dump_vma(const struct vm_area_struct *vma)
->  		"flags: %#lx(%pGv)\n",
->  		vma, (void *)vma->vm_start, (void *)vma->vm_end, vma->vm_mm,
->  		(unsigned long)pgprot_val(vma->vm_page_prot),
-> -		vma->anon_vma, vma->vm_ops, vma->vm_pgoff,
-> +		vma->anon_vma, vma->vm_ops, vma_start_pgoff(vma),
->  		vma->vm_file, vma->vm_private_data,
->  #ifdef CONFIG_PER_VMA_LOCK
->  		refcount_read(&vma->vm_refcnt),
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 5af62e6abca5..bcb07b21a685 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3402,8 +3402,8 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  		 * of memory.
->  		 */
->  		struct vm_area_struct *vma = vmf->vma;
-> -		unsigned long start = vma->vm_pgoff;
-> -		unsigned long end = start + vma_pages(vma);
-> +		const unsigned long start = vma_start_pgoff(vma);
-> +		const unsigned long end = vma_end_pgoff(vma);
->  		unsigned long ra_end;
->  
->  		ra->order = exec_folio_order();
-> @@ -3921,7 +3921,8 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
->  		goto out;
->  	}
->  
-> -	addr = vma->vm_start + ((start_pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> +	addr = vma->vm_start +
-> +		((start_pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
->  	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd, addr, &vmf->ptl);
->  	if (!vmf->pte) {
->  		folio_unlock(folio);
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 2bccb0a53a0a..e94f56487225 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -180,7 +180,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->  	 */
->  	if (!in_pf && shmem_file(vma->vm_file))
->  		return orders & shmem_allowable_huge_orders(file_inode(vma->vm_file),
-> -						   vma, vma->vm_pgoff, 0,
-> +						   vma, vma_start_pgoff(vma), 0,
->  						   forced_collapse);
->  
->  	if (!vma_is_anonymous(vma)) {
 > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index f45000149a78..d44a3ac5ee0a 100644
+> index ee5e99c1894b9..4093c1c0a4a1d 100644
 > --- a/mm/hugetlb.c
 > +++ b/mm/hugetlb.c
-> @@ -1011,8 +1011,7 @@ static long region_count(struct resv_map *resv, long f, long t)
->  static pgoff_t vma_hugecache_offset(struct hstate *h,
->  			struct vm_area_struct *vma, unsigned long address)
->  {
-> -	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-> -			(vma->vm_pgoff >> huge_page_order(h));
-> +	return linear_page_index(vma, address) >> huge_page_order(h);
->  }
->  
->  /*
-> @@ -5372,8 +5371,7 @@ static void unmap_ref_private(struct mm_struct *mm, struct vm_area_struct *vma,
->  	 * from page cache lookup which is in HPAGE_SIZE units.
->  	 */
->  	address = address & huge_page_mask(h);
-> -	pgoff = ((address - vma->vm_start) >> PAGE_SHIFT) +
-> -			vma->vm_pgoff;
-> +	pgoff = linear_page_index(vma, address);
->  	mapping = vma->vm_file->f_mapping;
->  
->  	/*
-> @@ -6771,7 +6769,7 @@ static unsigned long page_table_shareable(struct vm_area_struct *svma,
->  				struct vm_area_struct *vma,
->  				unsigned long addr, pgoff_t idx)
->  {
-> -	unsigned long saddr = ((idx - svma->vm_pgoff) << PAGE_SHIFT) +
-> +	unsigned long saddr = ((idx - vma_start_pgoff(svma)) << PAGE_SHIFT) +
->  				svma->vm_start;
->  	unsigned long sbase = saddr & PUD_MASK;
->  	unsigned long s_end = sbase + PUD_SIZE;
-> @@ -6856,8 +6854,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
->  		      unsigned long addr, pud_t *pud)
->  {
->  	struct address_space *mapping = vma->vm_file->f_mapping;
-> -	pgoff_t idx = ((addr - vma->vm_start) >> PAGE_SHIFT) +
-> -			vma->vm_pgoff;
-> +	const pgoff_t idx = linear_page_index(vma, addr);
->  	struct vm_area_struct *svma;
->  	unsigned long saddr;
->  	pte_t *spte = NULL;
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 181e79f1d6a2..89e5b7efe256 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1143,26 +1143,28 @@ static inline bool
->  folio_within_range(struct folio *folio, struct vm_area_struct *vma,
->  		unsigned long start, unsigned long end)
->  {
-> -	pgoff_t pgoff, addr;
-> -	unsigned long vma_pglen = vma_pages(vma);
-> +	const unsigned long vma_pglen = vma_pages(vma);
-> +	pgoff_t pgoff_folio, pgoff_vma_start;
-> +	unsigned long addr;
->  
->  	VM_WARN_ON_FOLIO(folio_test_ksm(folio), folio);
->  	if (start > end)
->  		return false;
->  
-> +	pgoff_folio = folio_pgoff(folio);
-> +	pgoff_vma_start = vma_start_pgoff(vma);
+> @@ -2852,7 +2852,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>  	struct hugepage_subpool *spool = subpool_vma(vma);
+>  	struct hstate *h = hstate_vma(vma);
+>  	struct folio *folio;
+> -	long retval, gbl_chg, gbl_reserve;
+> +	long retval, gbl_chg;
+>  	map_chg_state map_chg;
+>  	int ret, idx;
+>  	struct hugetlb_cgroup *h_cg = NULL;
+> @@ -3003,13 +3003,11 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>  		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
+>  						    h_cg_rsvd);
+>  out_subpool_put:
+> -	/*
+> -	 * put page to subpool iff the quota of subpool's rsv_hpages is used
+> -	 * during hugepage_subpool_get_pages.
+> -	 */
+> -	if (map_chg && !gbl_chg) {
+> -		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
+> -		hugetlb_acct_memory(h, -gbl_reserve);
+> +	if (map_chg) {
+> +		long gbl_reserve = hugepage_subpool_put_pages(spool, 1);
 > +
->  	if (start < vma->vm_start)
->  		start = vma->vm_start;
->  
->  	if (end > vma->vm_end)
->  		end = vma->vm_end;
->  
-> -	pgoff = folio_pgoff(folio);
-> -
->  	/* if folio start address is not in vma range */
-> -	if (!in_range(pgoff, vma->vm_pgoff, vma_pglen))
-> +	if (!in_range(pgoff_folio, pgoff_vma_start, vma_pglen))
->  		return false;
->  
-> -	addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> +	addr = vma->vm_start + ((pgoff_folio - pgoff_vma_start) << PAGE_SHIFT);
->  
->  	return !(addr < start || end - addr < folio_size(folio));
->  }
-> @@ -1234,15 +1236,16 @@ extern pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma);
->  static inline unsigned long vma_address(const struct vm_area_struct *vma,
->  		pgoff_t pgoff, unsigned long nr_pages)
->  {
-> +	const pgoff_t pgoff_start = vma_start_pgoff(vma);
->  	unsigned long address;
->  
-> -	if (pgoff >= vma->vm_pgoff) {
-> +	if (pgoff >= pgoff_start) {
->  		address = vma->vm_start +
-> -			((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> +			((pgoff - pgoff_start) << PAGE_SHIFT);
->  		/* Check for address beyond vma (or wrapped through 0?) */
->  		if (address < vma->vm_start || address >= vma->vm_end)
->  			address = -EFAULT;
-> -	} else if (pgoff + nr_pages - 1 >= vma->vm_pgoff) {
-> +	} else if (pgoff + nr_pages - 1 >= pgoff_start) {
->  		/* Test above avoids possibility of wrap to 0 on 32-bit */
->  		address = vma->vm_start;
->  	} else {
-> @@ -1266,7 +1269,8 @@ static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
->  		return pvmw->address + PAGE_SIZE;
->  
->  	pgoff = pvmw->pgoff + pvmw->nr_pages;
-> -	address = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> +	address = vma->vm_start +
-> +		((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
->  	/* Check for address beyond vma (or wrapped through 0?) */
->  	if (address < vma->vm_start || address > vma->vm_end)
->  		address = vma->vm_end;
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index bd5f86cf4bd8..ffef738d826c 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -2145,7 +2145,8 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
->  		spinlock_t *ptl;
->  		bool success = false;
->  
-> -		addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> +		addr = vma->vm_start +
-> +			((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
->  		if (addr & ~HPAGE_PMD_MASK ||
->  		    vma->vm_end < addr + HPAGE_PMD_SIZE)
->  			continue;
-> diff --git a/mm/madvise.c b/mm/madvise.c
-> index cd9bb077072c..6730c4200a93 100644
-> --- a/mm/madvise.c
-> +++ b/mm/madvise.c
-> @@ -253,7 +253,7 @@ static void shmem_swapin_range(struct vm_area_struct *vma,
->  			continue;
->  
->  		addr = vma->vm_start +
-> -			((xas.xa_index - vma->vm_pgoff) << PAGE_SHIFT);
-> +			((xas.xa_index - vma_start_pgoff(vma)) << PAGE_SHIFT);
->  		xas_pause(&xas);
->  		rcu_read_unlock();
->  
-> @@ -318,7 +318,7 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
->  	mark_mmap_lock_dropped(madv_behavior);
->  	get_file(file);
->  	offset = (loff_t)(start - vma->vm_start)
-> -			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-> +			+ ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
->  	mmap_read_unlock(mm);
->  	vfs_fadvise(file, offset, end - start, POSIX_FADV_WILLNEED);
->  	fput(file);
-> @@ -1023,7 +1023,7 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
->  		return -EACCES;
->  
->  	offset = (loff_t)(start - vma->vm_start)
-> -			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-> +			+ ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
->  
->  	/*
->  	 * Filesystem's fallocate may need to take i_rwsem.  We need to
-> diff --git a/mm/mapping_dirty_helpers.c b/mm/mapping_dirty_helpers.c
-> index 737c407f4081..e0efa36e0a07 100644
-> --- a/mm/mapping_dirty_helpers.c
-> +++ b/mm/mapping_dirty_helpers.c
-> @@ -95,7 +95,7 @@ static int clean_record_pte(pte_t *pte, unsigned long addr,
->  
->  	if (pte_dirty(ptent)) {
->  		pgoff_t pgoff = ((addr - walk->vma->vm_start) >> PAGE_SHIFT) +
-> -			walk->vma->vm_pgoff - cwalk->bitmap_pgoff;
-> +			vma_start_pgoff(walk->vma) - cwalk->bitmap_pgoff;
->  		pte_t old_pte = ptep_modify_prot_start(walk->vma, addr, pte);
->  
->  		ptent = pte_mkclean(old_pte);
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 98c1a245f45a..f5eb06544ba4 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -725,10 +725,10 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
->  				if (!pfn_valid(pfn))
->  					return NULL;
->  			} else {
-> -				unsigned long off = (addr - vma->vm_start) >> PAGE_SHIFT;
-> +				const pgoff_t index = linear_page_index(vma, addr);
->  
->  				/* Only CoW'ed anon folios are "normal". */
-> -				if (pfn == vma->vm_pgoff + off)
-> +				if (pfn == index)
->  					return NULL;
->  				if (!is_cow_mapping(vma->vm_flags))
->  					return NULL;
-> @@ -2643,7 +2643,7 @@ static int __vm_map_pages(struct vm_area_struct *vma, struct page **pages,
->  int vm_map_pages(struct vm_area_struct *vma, struct page **pages,
->  				unsigned long num)
->  {
-> -	return __vm_map_pages(vma, pages, num, vma->vm_pgoff);
-> +	return __vm_map_pages(vma, pages, num, vma_start_pgoff(vma));
->  }
->  EXPORT_SYMBOL(vm_map_pages);
->  
-> @@ -3298,7 +3298,8 @@ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long
->  	unsigned long pfn;
->  	int err;
->  
-> -	err = __simple_ioremap_prep(vm_len, vma->vm_pgoff, start, len, &pfn);
-> +	err = __simple_ioremap_prep(vm_len, vma_start_pgoff(vma), start, len,
-> +				    &pfn);
->  	if (err)
->  		return err;
->  
-> @@ -4342,15 +4343,15 @@ static inline void unmap_mapping_range_tree(struct address_space *mapping,
->  					    struct zap_details *details)
->  {
->  	struct vm_area_struct *vma;
-> -	unsigned long start, size;
->  	struct mmu_gather tlb;
->  
->  	mapping_interval_tree_foreach(vma, mapping, first_index, last_index) {
-> -		const pgoff_t start_idx = max(first_index, vma->vm_pgoff);
-> +		const pgoff_t start_idx = max(first_index, vma_start_pgoff(vma));
->  		const pgoff_t end_idx = min(last_index, vma_last_pgoff(vma)) + 1;
-> -
-> -		start = vma->vm_start + ((start_idx - vma->vm_pgoff) << PAGE_SHIFT);
-> -		size = (end_idx - start_idx) << PAGE_SHIFT;
-> +		const pgoff_t offset = start_idx - vma_start_pgoff(vma);
-> +		const unsigned long offset_bytes = offset << PAGE_SHIFT;
-> +		const unsigned long start = vma->vm_start + offset_bytes;
-> +		const unsigned long size = (end_idx - start_idx) << PAGE_SHIFT;
->  
->  		tlb_gather_mmu(&tlb, vma->vm_mm);
->  		zap_vma_range_batched(&tlb, vma, start, size, details);
-> @@ -5684,7 +5685,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
->  	} else if (nr_pages > 1) {
->  		pgoff_t idx = folio_page_idx(folio, page);
->  		/* The page offset of vmf->address within the VMA. */
-> -		pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
-> +		pgoff_t vma_off = vmf->pgoff - vma_start_pgoff(vmf->vma);
->  		/* The index of the entry in the pagetable for fault page. */
->  		pgoff_t pte_off = pte_index(vmf->address);
->  
-> @@ -5796,7 +5797,7 @@ static vm_fault_t do_fault_around(struct vm_fault *vmf)
->  	pgoff_t nr_pages = READ_ONCE(fault_around_pages);
->  	pgoff_t pte_off = pte_index(vmf->address);
->  	/* The page offset of vmf->address within the VMA. */
-> -	pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
-> +	pgoff_t vma_off = vmf->pgoff - vma_start_pgoff(vmf->vma);
->  	pgoff_t from_pte, to_pte;
->  	vm_fault_t ret;
->  
-> @@ -7274,7 +7275,7 @@ void print_vma_addr(char *prefix, unsigned long ip)
->  	if (vma && vma->vm_file) {
->  		struct file *f = vma->vm_file;
->  		ip -= vma->vm_start;
-> -		ip += vma->vm_pgoff << PAGE_SHIFT;
-> +		ip += vma_start_pgoff(vma) << PAGE_SHIFT;
->  		printk("%s%pD[%lx,%lx+%lx]", prefix, f, ip,
->  				vma->vm_start,
->  				vma->vm_end - vma->vm_start);
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 36699fabd3c2..650cdb23354a 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2048,8 +2048,8 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
->  		pol = get_task_policy(current);
->  	if (pol->mode == MPOL_INTERLEAVE ||
->  	    pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
-> -		*ilx += vma->vm_pgoff >> order;
-> -		*ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-> +		*ilx += vma_start_pgoff(vma) >> order;
-> +		*ilx += linear_page_delta(vma, addr) >> order;
+> +		if (!gbl_chg)
+> +			hugetlb_acct_memory(h, -gbl_reserve);
 >  	}
->  	return pol;
->  }
-> @@ -3250,16 +3250,17 @@ EXPORT_SYMBOL_FOR_MODULES(mpol_shared_policy_init, "kvm");
->  int mpol_set_shared_policy(struct shared_policy *sp,
->  			struct vm_area_struct *vma, struct mempolicy *pol)
->  {
-> -	int err;
-> +	const pgoff_t pgoff = vma_start_pgoff(vma);
-> +	const pgoff_t pgoff_end = vma_end_pgoff(vma);
->  	struct sp_node *new = NULL;
-> -	unsigned long sz = vma_pages(vma);
-> +	int err;
->  
->  	if (pol) {
-> -		new = sp_alloc(vma->vm_pgoff, vma->vm_pgoff + sz, pol);
-> +		new = sp_alloc(pgoff, pgoff_end, pol);
->  		if (!new)
->  			return -ENOMEM;
->  	}
-> -	err = shared_policy_replace(sp, vma->vm_pgoff, vma->vm_pgoff + sz, new);
-> +	err = shared_policy_replace(sp, pgoff, pgoff_end, new);
->  	if (err && new)
->  		sp_free(new);
->  	return err;
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index e9c8b1d05832..079a0ba0c4a7 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -948,8 +948,7 @@ static unsigned long vrm_set_new_addr(struct vma_remap_struct *vrm)
->  	struct vm_area_struct *vma = vrm->vma;
->  	unsigned long map_flags = 0;
->  	/* Page Offset _into_ the VMA. */
-> -	pgoff_t internal_pgoff = (vrm->addr - vma->vm_start) >> PAGE_SHIFT;
-> -	pgoff_t pgoff = vma->vm_pgoff + internal_pgoff;
-> +	const pgoff_t pgoff = linear_page_index(vma, vrm->addr);
->  	unsigned long new_addr = vrm_implies_new_addr(vrm) ? vrm->new_addr : 0;
->  	unsigned long res;
->  
-> @@ -1255,12 +1254,10 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
->  static int copy_vma_and_data(struct vma_remap_struct *vrm,
->  			     struct vm_area_struct **new_vma_ptr)
->  {
-> -	unsigned long internal_offset = vrm->addr - vrm->vma->vm_start;
-> -	unsigned long internal_pgoff = internal_offset >> PAGE_SHIFT;
-> -	unsigned long new_pgoff = vrm->vma->vm_pgoff + internal_pgoff;
-> -	unsigned long moved_len;
-> +	const unsigned long new_pgoff = linear_page_index(vrm->vma, vrm->addr);
->  	struct vm_area_struct *vma = vrm->vma;
->  	struct vm_area_struct *new_vma;
-> +	unsigned long moved_len;
->  	int err = 0;
->  	PAGETABLE_MOVE(pmc, NULL, NULL, vrm->addr, vrm->new_addr, vrm->old_len);
->  
-> @@ -1802,8 +1799,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
->  		vrm->populate_expand = true;
->  
->  	/* Need to be careful about a growing mapping */
-> -	pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
-> -	pgoff += vma->vm_pgoff;
-> +	pgoff = linear_page_index(vma, addr);
->  	if (pgoff + (new_len >> PAGE_SHIFT) < pgoff)
->  		return -EINVAL;
->  
-> diff --git a/mm/msync.c b/mm/msync.c
-> index ac4c9bfea2e7..90b491a27a14 100644
-> --- a/mm/msync.c
-> +++ b/mm/msync.c
-> @@ -12,6 +12,7 @@
->  #include <linux/mm.h>
->  #include <linux/mman.h>
->  #include <linux/file.h>
-> +#include <linux/pagemap.h>
->  #include <linux/syscalls.h>
->  #include <linux/sched.h>
->  
-> @@ -85,8 +86,7 @@ SYSCALL_DEFINE3(msync, unsigned long, start, size_t, len, int, flags)
->  			goto out_unlock;
->  		}
->  		file = vma->vm_file;
-> -		fstart = (start - vma->vm_start) +
-> -			 ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-> +		fstart = (loff_t)linear_page_index(vma, start) << PAGE_SHIFT;
->  		fend = fstart + (min(end, vma->vm_end) - start) - 1;
->  		start = vma->vm_end;
->  		if ((flags & MS_SYNC) && file &&
-> diff --git a/mm/nommu.c b/mm/nommu.c
-> index 6d168f69763f..60560b2c457e 100644
-> --- a/mm/nommu.c
-> +++ b/mm/nommu.c
-> @@ -975,7 +975,7 @@ static int do_mmap_private(struct vm_area_struct *vma,
->  		/* read the contents of a file into the copy */
->  		loff_t fpos;
->  
-> -		fpos = vma->vm_pgoff;
-> +		fpos = vma_start_pgoff(vma);
->  		fpos <<= PAGE_SHIFT;
->  
->  		ret = kernel_read(vma->vm_file, base, len, &fpos);
-> @@ -1355,7 +1355,8 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	delete_nommu_region(vma->vm_region);
->  	if (new_below) {
->  		vma->vm_region->vm_start = vma->vm_start = addr;
-> -		vma->vm_region->vm_pgoff = vma->vm_pgoff += npages;
-> +		vma->vm_pgoff += npages;
-> +		vma->vm_region->vm_pgoff = vma_start_pgoff(vma);
->  	} else {
->  		vma->vm_region->vm_end = vma->vm_end = addr;
->  		vma->vm_region->vm_top = addr;
-> @@ -1603,7 +1604,7 @@ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long
->  	unsigned long pfn = start >> PAGE_SHIFT;
->  	unsigned long vm_len = vma->vm_end - vma->vm_start;
->  
-> -	pfn += vma->vm_pgoff;
-> +	pfn += vma_start_pgoff(vma);
->  	return io_remap_pfn_range(vma, vma->vm_start, pfn, vm_len, vma->vm_page_prot);
->  }
->  EXPORT_SYMBOL(vm_iomap_memory);
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index 98d090ede077..0a3bbff57d46 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -813,7 +813,7 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
->  	mapping_interval_tree_foreach(vma, mapping, first_index,
->  				      first_index + nr - 1) {
->  		/* Clip to the vma */
-> -		vba = vma->vm_pgoff;
-> +		vba = vma_start_pgoff(vma);
->  		vea = vba + vma_pages(vma);
->  		cba = first_index;
->  		cba = max(cba, vba);
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b51f83c970bb..4e7f6bc7a389 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1032,6 +1032,8 @@ unsigned long shmem_swap_usage(struct vm_area_struct *vma)
->  	struct inode *inode = file_inode(vma->vm_file);
->  	struct shmem_inode_info *info = SHMEM_I(inode);
->  	struct address_space *mapping = inode->i_mapping;
-> +	const pgoff_t pgoff = vma_start_pgoff(vma);
-> +	const pgoff_t pgoff_end = vma_end_pgoff(vma);
->  	unsigned long swapped;
->  
->  	/* Be careful as we don't hold info->lock */
-> @@ -1045,12 +1047,11 @@ unsigned long shmem_swap_usage(struct vm_area_struct *vma)
->  	if (!swapped)
->  		return 0;
->  
-> -	if (!vma->vm_pgoff && vma->vm_end - vma->vm_start >= inode->i_size)
-> +	if (!pgoff && vma->vm_end - vma->vm_start >= inode->i_size)
->  		return swapped << PAGE_SHIFT;
->  
->  	/* Here comes the more involved part */
-> -	return shmem_partial_swap_usage(mapping, vma->vm_pgoff,
-> -					vma->vm_pgoff + vma_pages(vma));
-> +	return shmem_partial_swap_usage(mapping, pgoff, pgoff_end);
->  }
->  
->  /*
-> @@ -2839,7 +2840,7 @@ static struct mempolicy *shmem_get_policy(struct vm_area_struct *vma,
->  	 * by page order, as in shmem_get_pgoff_policy() and get_vma_policy()).
->  	 */
->  	*ilx = inode->i_ino;
-> -	index = ((addr - vma->vm_start) >> PAGE_SHIFT) + vma->vm_pgoff;
-> +	index = linear_page_index(vma, addr);
->  	return mpol_shared_policy_lookup(&SHMEM_I(inode)->policy, index);
->  }
->  
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 246af12bf801..bf4518f4449d 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -481,7 +481,7 @@ static void mfill_retry_state_save(struct mfill_retry_state *s,
->  {
->  	s->flags = vma_flags_and_mask(&vma->flags, MFILL_RETRY_STATE_VMA_FLAGS);
->  	s->ops = vma_uffd_ops(vma);
-> -	s->pgoff = vma->vm_pgoff;
-> +	s->pgoff = vma_start_pgoff(vma);
->  
->  	if (vma->vm_file)
->  		s->file = get_file(vma->vm_file);
-> @@ -507,7 +507,7 @@ static bool mfill_retry_state_changed(struct mfill_retry_state *state,
->  
->  	/* VMA was file backed, but file, inode or offset has changed */
->  	if (!vma->vm_file || vma->vm_file->f_inode != state->file->f_inode ||
-> -	    state->file != vma->vm_file || vma->vm_pgoff != state->pgoff)
-> +	    state->file != vma->vm_file || vma_start_pgoff(vma) != state->pgoff)
->  		return true;
->  
->  	return false;
-> diff --git a/mm/util.c b/mm/util.c
-> index af2c2103f0d9..61e6d32b2c16 100644
-> --- a/mm/util.c
-> +++ b/mm/util.c
-> @@ -1188,7 +1188,7 @@ void compat_set_desc_from_vma(struct vm_area_desc *desc,
->  	desc->start = vma->vm_start;
->  	desc->end = vma->vm_end;
->  
-> -	desc->pgoff = vma->vm_pgoff;
-> +	desc->pgoff = vma_start_pgoff(vma);
->  	desc->vm_file = vma->vm_file;
->  	desc->vma_flags = vma->flags;
->  	desc->page_prot = vma->vm_page_prot;
-> @@ -1379,7 +1379,7 @@ static int call_vma_mapped(struct vm_area_struct *vma)
->  	if (!vm_ops || !vm_ops->mapped)
->  		return 0;
->  
-> -	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma->vm_pgoff,
-> +	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma_start_pgoff(vma),
->  			     vma->vm_file, &vm_private_data);
->  	if (err)
->  		return err;
-> diff --git a/mm/vma.c b/mm/vma.c
-> index dc4c2c1077f4..ee3a8ca13d07 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -967,10 +967,9 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
->  		 *   prev   middle   next
->  		 *  extend  delete  delete
->  		 */
-> -
->  		vmg->start = prev->vm_start;
->  		vmg->end = next->vm_end;
-> -		vmg->pgoff = prev->vm_pgoff;
-> +		vmg->pgoff = vma_start_pgoff(prev);
->  
->  		/*
->  		 * We already ensured anon_vma compatibility above, so now it's
-> @@ -987,9 +986,8 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
->  		 *   prev     middle
->  		 *  extend shrink/delete
->  		 */
-> -
->  		vmg->start = prev->vm_start;
-> -		vmg->pgoff = prev->vm_pgoff;
-> +		vmg->pgoff = vma_start_pgoff(prev);
->  
->  		if (!vmg->__remove_middle)
->  			vmg->__adjust_middle_start = true;
-> @@ -1011,13 +1009,13 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
->  
->  		if (vmg->__remove_middle) {
->  			vmg->end = next->vm_end;
-> -			vmg->pgoff = next->vm_pgoff - pglen;
-> +			vmg->pgoff = vma_start_pgoff(next) - pglen;
->  		} else {
->  			/* We shrink middle and expand next. */
->  			vmg->__adjust_next_start = true;
->  			vmg->start = middle->vm_start;
->  			vmg->end = start;
-> -			vmg->pgoff = middle->vm_pgoff;
-> +			vmg->pgoff = vma_start_pgoff(middle);
->  		}
->  
->  		err = dup_anon_vma(next, middle, &anon_dup);
-> @@ -1126,7 +1124,7 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
->  	if (can_merge_left) {
->  		vmg->start = prev->vm_start;
->  		vmg->target = prev;
-> -		vmg->pgoff = prev->vm_pgoff;
-> +		vmg->pgoff = vma_start_pgoff(prev);
->  
->  		/*
->  		 * If this merge would result in removal of the next VMA but we
-> @@ -1957,7 +1955,8 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
->  			VM_BUG_ON_VMA(faulted_in_anon_vma, new_vma);
->  			*vmap = vma = new_vma;
->  		}
-> -		*need_rmap_locks = (new_vma->vm_pgoff <= vma->vm_pgoff);
-> +		*need_rmap_locks =
-> +			(vma_start_pgoff(new_vma) <= vma_start_pgoff(vma));
->  	} else {
->  		new_vma = vm_area_dup(vma);
->  		if (!new_vma)
-> diff --git a/mm/vma_exec.c b/mm/vma_exec.c
-> index 5cee8b7efa0f..e3644a3042e2 100644
-> --- a/mm/vma_exec.c
-> +++ b/mm/vma_exec.c
-> @@ -37,7 +37,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
->  	unsigned long new_end = old_end - shift;
->  	VMA_ITERATOR(vmi, mm, new_start);
->  	VMG_STATE(vmg, mm, &vmi, new_start, old_end, EMPTY_VMA_FLAGS,
-> -		  vma->vm_pgoff);
-> +		  vma_start_pgoff(vma));
->  	struct vm_area_struct *next;
->  	struct mmu_gather tlb;
->  	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
-> @@ -89,7 +89,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
->  
->  	vma_prev(&vmi);
->  	/* Shrink the vma to just the new range */
-> -	return vma_shrink(&vmi, vma, new_start, new_end, vma->vm_pgoff);
-> +	return vma_shrink(&vmi, vma, new_start, new_end, vma_start_pgoff(vma));
->  }
->  
->  /*
-> diff --git a/mm/vma_init.c b/mm/vma_init.c
-> index 3c0b65950510..a459669a1654 100644
-> --- a/mm/vma_init.c
-> +++ b/mm/vma_init.c
-> @@ -46,7 +46,7 @@ static void vm_area_init_from(const struct vm_area_struct *src,
->  	dest->vm_start = src->vm_start;
->  	dest->vm_end = src->vm_end;
->  	dest->anon_vma = src->anon_vma;
-> -	dest->vm_pgoff = src->vm_pgoff;
-> +	dest->vm_pgoff = vma_start_pgoff(src);
->  	dest->vm_file = src->vm_file;
->  	dest->vm_private_data = src->vm_private_data;
->  	vm_flags_init(dest, src->vm_flags);
-> -- 
-> 2.54.0
-> 
+
+[1] https://lore.kernel.org/linux-mm/20260428113037.88766-2-enderaoelyther@gmail.com/
+[2] https://lore.kernel.org/linux-mm/20260515202902.461539-1-devnexen@gmail.com/
 
