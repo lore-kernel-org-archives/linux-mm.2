@@ -4,88 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A95D4C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 11:39:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4DCAC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 11:50:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 955216B0088; Thu,  9 Jul 2026 07:39:17 -0400 (EDT)
+	id B1C5A6B0088; Thu,  9 Jul 2026 07:50:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DF666B008A; Thu,  9 Jul 2026 07:39:17 -0400 (EDT)
+	id AF4656B008A; Thu,  9 Jul 2026 07:50:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 781716B008C; Thu,  9 Jul 2026 07:39:17 -0400 (EDT)
+	id 9E4236B008C; Thu,  9 Jul 2026 07:50:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 46E816B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:39:17 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D3084166814
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:39:16 +0000 (UTC)
-X-FDA: 84969042312.02.1ECF7CC
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9ECD9C0009
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:39:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yddf6CYv;
-	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 726306B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:50:26 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EBFF2892F7
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:50:25 +0000 (UTC)
+X-FDA: 84969070410.19.873AABF
+Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 06E081A0004
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:50:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BzxIY3LF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.131 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783597824;
+	b=M/OkWI7BP4fpC/QJQ4RYZG5jzujyRlBR99UyzhgpxuxhigHVdYUWhuobW/RpXIvfH4yC31
+	fl6VdVmZa1hqXfxNrQLaXUg7HlAq2reTI7a4fw0VVs7q5riPNYxQWMq0h7rU9Ctyc2fGSQ
+	zW44BRlPejwic6/BF9nrzO711HjgdWI=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BzxIY3LF;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.131 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783597155;
+	s=arc-20220608; t=1783597824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2+0CMz74OTc2uduve0AH5zq/sAPYYSAi9CmWx8qrG8c=;
-	b=MxhYd+DNcLCrjuO4bwHhb0EH4sb9yd0JYjN38xpezVjBCN7j++qTH44kAF0pR+MzYYPWln
-	/TsK/xHvcRZtf1yJrXe8VOOa88WBkcN0sFyEMk093wfj2fkV1wwbzlYKoi4h/mwzIVNC+B
-	YRuDib45QC9m9523k+fiXscCzvODIFQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Yddf6CYv;
-	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783597155;
-	b=hfCUfsqCdDWLIkI3RIipvJhbZz+hMlMTcktxetuPpihWq63zLLoJ3tI4KzHuQnNQEbd/nX
-	avS0CyhyA9pGfCzsWtIFY7d52SzCTSkk8eaYxyu9Xjrq8fvfbIPyXDRU1pj5H5EiETCwf4
-	mwKvsXgTbtnCRpOY1l7BfoNFa3TmX98=
-Date: Thu, 9 Jul 2026 19:38:51 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783597151;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2+0CMz74OTc2uduve0AH5zq/sAPYYSAi9CmWx8qrG8c=;
-	b=Yddf6CYv95Il95DagSO2rkL6G5KuvItxo8lRM6AS0BBvH2aJgY0C1/i8DB00l4h0oGhzaC
-	+zFF0csDVs1gZgo5jF0dZgjgcn6oTwoTRS+yOJX4zpNqA812aG7bNwYPbiLsSunD4FXmKH
-	NU2wK9+PdTI8ASRO901UF6r0mn7SVO0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Baoquan He <baoquan.he@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
-	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org,
-	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org,
-	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 00/10] mm/swap: ghost swapfile with backend switching
- via Redirect entries
-Message-ID: <ak-IS61GeP85Jnxg@MiWiFi-R3L-srv>
-References: <20260707082614.95030-1-baoquan.he@linux.dev>
- <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
+	bh=hNCN2Fdr8yqkD0LsjJkDJLi2MeWHIGyOWfhBDBuuA2k=;
+	b=eHOgLQCVRvuZboTxU4CsBTIiNBJUbROFMMao/DfeFtv7M+2GAUgnfA9fXvaT7wRRVJws6/
+	r+z1Xm6+5ftz7/kQ1fwhaOBxx9Yo00HJzwF0YSXEYZ5QgLc/SVEUNZCpUvVuM+EjSxxRWQ
+	bNCbyGs+e6M0nc1zLQY5L6gJSwQQ7ic=
+Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2ccb0e85312so11593295ad.0
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 04:50:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783597823; x=1784202623; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hNCN2Fdr8yqkD0LsjJkDJLi2MeWHIGyOWfhBDBuuA2k=;
+        b=BzxIY3LFqHKxKqgVRpGZ3NlBX7gi3ziU3JAQ3LVuvLyfaIQbfeVaGL5JvoZsKd5TIV
+         ZQUyoUGoRNhgmNmt07/hy732AqB+s5UifaT8TVp9HfOgTG1M97Meq2s2aLJrjSrE8ix8
+         11/5oxAGSwddSovPc2VdpH6pZzCfS29TrJKiM2FaXoz4gVfB2tBquWCOCHJnG+vojnA0
+         MHz2HuLsKIk3wjRkFqeDbMvu76t1p9MhCMwhJ6SUs4GqXB4sXomhn4z0yA9o8puJDTmr
+         TM65dKUWD+6e+V5L2mGATtdEnErRFNS6DzmdDCGE12BY9xJAAGqMUPlyyEhvMOX6iARW
+         3qig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783597823; x=1784202623;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hNCN2Fdr8yqkD0LsjJkDJLi2MeWHIGyOWfhBDBuuA2k=;
+        b=ZHNVZgWP79IJllgPMNpf4wIYTt8RXzMzuTJuCl3tcIAByQPXZGLmYZqAYqEx482g6N
+         B/lJGre/6HWAHrSaqPFQR4v3mxPrSsVkCVRedI4IYfiBbdMpKrpUA1jnwhgCMgrdaiEd
+         2PuD7vX20sfq17IT5EbE9fi2j8KUxHsfwz6HcyFHffueOjTPJ+/JeBggzVSgwNyWF/+y
+         2JoRG7uUKOkxXRILp7QH0xfdU054FNrk3gRUd1AUCep9DrY0HNF72+FxxJ8q6F3dt8E/
+         o+iCJebvUX/4QeSXUvAwI9AlSB6gsVwRId0n5CoHWGpC0iBS7nKKHjn4rewX3UeQ6UyL
+         /1Bg==
+X-Forwarded-Encrypted: i=1; AHgh+RrWGwpNAJlqfuqR2VAfRckLefH4S9GQN7MI1kO7GIzqaNNcrnzlyn0QX/O4XxUSJViFzUsd1sJpRQ==@kvack.org
+X-Gm-Message-State: AOJu0YzoWVfW2xcr1XPS9lEv6O8CMal1hUh6tMBJaxP/EZ8FKeR/IYpb
+	Lx8gTap/oGnco4meeZ3uFYAHWmC+m6ILSvcCrW3BzVD0DwpSdyTnE+ZM
+X-Gm-Gg: AfdE7cnRNIeeyvM1ptP9rK3XQd9BRB+DBo0MC3Kv9FOhjOg5mEsYtfKie7qiwQwD8N7
+	slEUyx+do0hqraHq4gqOHw7fJXiB5h36Qczu/GjjJ94NGzRmU19VJTGzz87SjLJUpluujJDf+BQ
+	oxdDFwn6TeY33D6D5UPKmHFcrxg/XCVbkjp94ngHSS01jeoEwcJODWm1ldTvgTwGHTcBPV8+exu
+	bzwZ2vBGj5sre8LIP2wkPU7Zuud8jEtVDYQz5LyyCOGZkBC3empXX9Ozq4F2Oo0sebwrIODQMVE
+	1nQktXq6AlNluuDMAe9m7SN52NjwsuSyhqkMtjF+LqTtSOckroRDW/VL+W+1LNmt4KPD+TWFZjM
+	BjuXRfJgFCO5t94lU98aPOI2NivaHVvCy+CiQbyjzYI/+5ad1WkR5zd9lZi3tVx/Z/i6jzENph0
+	WzizOkFeuN4J64G/rLUoW5
+X-Received: by 2002:a17:903:2b03:b0:2cc:f4d4:299f with SMTP id d9443c01a7336-2ccf4d46d5amr50430705ad.27.1783597822781;
+        Thu, 09 Jul 2026 04:50:22 -0700 (PDT)
+Received: from [10.125.112.20] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb6e2sm43597885ad.3.2026.07.09.04.50.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Jul 2026 04:50:22 -0700 (PDT)
+Message-ID: <66a0b183-825d-43e8-8a03-8ab98728c153@gmail.com>
+Date: Thu, 9 Jul 2026 19:50:07 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=P50av2rfocpsqZoDQowZ=EEhQ-5vj5tBykbNz8vtKTzA@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] mm/mlock: wait for migration to finish when
+ mlocking a folio
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: vbabka@kernel.org, david@kernel.org, rostedt@goodmis.org,
+ mhiramat@kernel.org, Alexander.Krabler@kuka.com, hughd@google.com,
+ fvdl@google.com, bigeasy@linutronix.de, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, akpm@linux-foundation.org,
+ surenb@google.com, mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
+ ziy@nvidia.com, riel@surriel.com, liam@infradead.org, harry@kernel.org,
+ jannh@google.com, lance.yang@linux.dev, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, pfalcato@suse.de
+References: <20260707125925.3725177-1-chenwandun1@gmail.com>
+ <20260707125925.3725177-3-chenwandun1@gmail.com> <ak0C-DP_1ZrTVSLj@lucifer>
+Content-Language: en-US
+From: Wandun <chenwandun1@gmail.com>
+In-Reply-To: <ak0C-DP_1ZrTVSLj@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 06E081A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9ECD9C0009
-X-Stat-Signature: uu4qubkr5rcb4gw1cshp8onwyea33nsd
-X-HE-Tag: 1783597154-64446
-X-HE-Meta: U2FsdGVkX19aL87IXdp5oM/MGS1t7dZIQVxj4szd+Q9LfKkjdAVNklbLoMde2g/eEAAnQCCBDvK1+0Cl13odjPxuha7plCFqqVgtMGCSPRSmOe+QgMHlfmLB7zuxypyCken9RkEbbFntw9jP6YqHno4Pm60qxElYnBznFpBDA8oMi/AZ3vKZ7Pz2z7PPOdmnFK8iGcJXRfcMNLkEjQhO7BgoJ4R4zVL8jnlNkW78E/ytbjrUyV7SZM5Pv+CTIsuAHwTyH3wp4IGbO5OHNb+YOYjgBm3rdCfC63jFm3hljaox9/b27l9N0mwJrQHXa7ut6zRRdvoB2ip4TGGmcjYcC28eRu5U3LNMhoPgOhi/NN/tDfptsRaHMlHEJU1EQ6BqW713ohPrZp9pKhfmBcIeBGMnpr8ap9+IsRqqJvsOFC3wmaUQqzHU99z+3PxqmulLzqZNBs5VXlUBFy7LVYietHeDCLMXTGNeL4sZpGdTDlsYpB0/6/RV6q6jXYH9tUItOAud6ySUABkJskt5N+tUH01NCEeJ4iTDSlKhTxbOi2ecHgmXZ3nOKy5X/5Pd0d/AGVh/tcAjRiIknAVl4P60hCYCAL/NX4j67gRGBAAD/13rxJskfU5Nfd05W5CrrmYtZ3kTxyJ9XXwKEnKiBgvDxKRIytIRpoc5AqqeLAOcVW4WMc2Mo0yy65CIJbpTFBVA8ETemKwKHXiQYOlDfR/3gbumDNjA0IkXUUKULwJxRW+xDVBZjvcX4nL9BdTMMI3MjJY3EQU4NTSEtgj0M18VcF4E7Tjewpa84jRckvlnGEnUT67uXR09vtQrJs/63Vxs1BGdGX6ZgxkngdzCMbkiVbHyyaRt4XNkCssLvxBKNH69dNYMNsz4/8wYsD5hc/ZHrb6Kc1iSGODnEX7eCcLgS8HIKcWSyEVRPs6uyMMs89/wG5Mx3YlG2y/IhrKrusdWdxw5y3wk1tcUDSPGEVU
- bcUbT+Dl
- QwyC1QngiGUnDoxjfLi7La9xEBGgMq0hcx37z8ponCl7g+z5pmlq4+BZ3k/DXlGJHoKC3IoN1lEciW+JLIBPhaz4dVisefejafOE9oGr6FlHwPcKPkHx1+c0YtJRgkZ98EiyBB6kpVNPQi7JPN6k9JI99eL87cP8oNK3ocCotcQWNu0FDLqfGeY5aPSDtNFuR4fYzRamMBYdx0WOdd2nte78917OvwoHUa3f3h9cyQnArdboOoHVxT1H+rSvIz+Gzg3Nx7a2e61ggf8lmA3CTRtB8kQ==
+X-Stat-Signature: abk7yw8fs3iiwt4rgfqudufpnzi3r5h3
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783597823-794710
+X-HE-Meta: U2FsdGVkX18a/aBzNbgVeGckiEWtL9iyUV2NcP4jMdGnyEQOjdPreT/Fu7zSL6xdc8NsJA9fnIAIEuImcndMpEuocwYcEIgFFNNOIhHuio0MUA9nqvWBbZ9Z8Yx8pMaPdF5Bb7P7iwSTUUFzBf2pUbAjMVxCPq8mN9VV9DJaWegkHYn/kt9GqawLRi+uTDDAueRPuN8OTclJkkyCcOB7705SNELVPMtoquyc+ZsPIzQQ1TU+TH3kMBEOZxl1M72VFaAMcRm+Vlw/nXErWVDseWt3iTmS8sj9Fw/SwsENefipI3o3y5E6sx7a6a0/DKGSZVWGMpxfQr9Fyc0URVS07nuO9zUOxls6tdnk0e8yAtVWiYE6MPWh8TKT2/jruHL1cxnQc+hysUrPdUn4DOQ41wJzI0I1GDC4eKMLykRbtgpoF0hZMbgVgVKoMVwu1aVt4S+VExXRtL0E9dEMgCENOuNUkYNQcEa1H+fTHg7HSVHMuB/3Nuey8XHhZDxNzVBgLV9sWyhTu/4EL4a8k96H6yXrvOi5LSnPR9AsJXZ92jMap7eRQKuPdxBkNExrtE4F95ve8dPInU32W+CfzRFK8/f+nMbqjkcSAsYFE6NUnlLg6pjSsyouZB1VZyBJyNcgc/CQjFlr2lvMVb9lAcZ+7Yf/YOTiGqEa4dUHmvmRH7v7cS8QToScdj3iVNIeeWkLaPVoN2Zj2Pkq54nyfDjbUqaoC2hqRNaf1QVjnjJZAtJWFs4y9P6BkUEHZl0lkh7AsTRYv7NvDSfN4+AU1Bs48OYLesCX+i/vQk8eFRGc0DwZbg8nBJZsip+JvJPsvcAb7hwz223nCpfK76uoxQVwe8edkNiGN2cxTZHo/9TOtEO9PA22v+YaKR9oi4jUfwWOIohe3BA8O3qdCsWfQKHISllIhlhFsOSz2cOiBaq0lv+ZqvyJ5+mmQA+GI5C2ZiujGKnkwDiapTsap8Mr4en
+ LNNaUM5N
+ Gp4xuz+4c72+O7e60piX9mfQ9bthLz1v7jGOVyRVe8pNf3bKWata4Q2obwyUO6m/cgW+WOAK5jWzYis8W2CfiGuE7NIyITAf09/myEd1QCk8ds6a2ZIVxfol3TpP1kfHpk5b6X7ZUNKRtNs7IAkB/mfQB/M82k4R/+jtnqTeYFbtKFFK1V9e6kN/efXgxYKbtIHEcXj/whuuAfjpt4w1JHsDG4YdQMhBEQvWhKvkxwvzu0ozb8O7W2RVKebw4PDdU2VnQjx62K1RCE1w1f0Ngarw7Mei7Kw/929BRciayp8TLumtQsURsYdotZP12x3P7K1EJXa2F1ZPTZrLm7g36goPlk2AqZcJ+da8NCAEjTjaL4nazvr/MHMeF7Gne18+98IrDrfAMftSG+s025cEUobv2/iwHBG7plzQYd/JOBeNuuAJ0S83g3/zFX4cS1cJw5S67OsNcMy/jpMc9jsSMDeloyN+sobTy6mRE2+Zz7DPHVXKw/YAMx0JeK2+cjxpCGBpMHLQnlfyhPz0Ag63CROrvFa614BxYOiIRcZdoCHOPyIJkQZo/t6pduPQozHbp5RyOD6HC6Yy4S/STYSNfdm6X7l9UBhM2q7kbvHyOg2dWVyZHzEWXoGmpPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,327 +133,258 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/07/26 at 02:23pm, Nhat Pham wrote:
-> On Tue, Jul 7, 2026 at 1:26 AM Baoquan He <baoquan.he@linux.dev> wrote:
-> >
-> > This series introduces a virtual "ghost" swapfile that can be backed
-> > by multiple physical swap devices, switching between them at runtime
-> > using a new "Redirect" swap table entry type.
-> >
-> > Motivation
-> > ----------
-> > Physical swap devices have fixed, large sizes but a machine may only
-> > need a fraction at any given time.  Ghost swap decouples the logical
-> > swap capacity from physical swap allocation: it presents a large
-> > virtual swap device to userspace while lazily mapping slots to
-> > physical devices only when data must leave zswap (writeback).  This
-> > enables overcommit of swap capacity without wasting physical disk
-> > space, and allows the ghost device to grow dynamically at runtime.
-> >
-> > Ghost swapfile characteristics
-> > --------------------------------
-> > Ghost swap decouples logical swap capacity from physical swap allocation.
-> > Key properties:
-> >
-> > - No backing store required.  A ghost swap device can operate purely
-> >   as a zswap container — compressed pages stay in the zswap pool without
-> >   ever touching a physical swap device.  No physical swap device needs
-> >   to be attached.
-> >
-> > - Optional physical backing.  One or more physical swap devices can be
-> >   swapon'd alongside the ghost device, acting as writeback targets when
-> >   the zswap pool needs to evict cold pages.  The Redirect entry in the
-> >   ghost swap table links each evicted slot to its physical destination.
-> >
-> > - Dynamic size growth.  The ghost device can be extended at runtime via
 
-Thanks for the thorough review, Nhat.
+
+On 7/7/26 22:33, Lorenzo Stoakes wrote:
+> On Tue, Jul 07, 2026 at 08:59:23PM +0800, Wandun Chen wrote:
+>> From: Wandun Chen <chenwandun@lixiang.com>
+>>
+>> In RT kernels, sysctl_compact_unevictable_allowed is false by default,
+>> when the mlock/mlockall system call try to lock all the present page,
+>> the mlock_pte_range function skips non-present entries. If these
+>> non-present entries are migration entries, and the migration is not
+>> guaranteed to have completed before the mlock/mlockall, it may result
+>> in a page fault on subsequent access, which then waits for the
+>> migration to finish, causing spike latency in RT kernels.
 > 
-> We don't want to put additional operational burden on users. Besides,
-> expecting userspace to react to swap space being filled, especially
-> under memory pressure (at which point userspace processes might be
-> stalling already), is tricky.
+> Is this really noticable and measurable?
 
-The manual sysfs extension is the minimal viable interface for the RFC,
-not the final choice. But even in its current form, it is a dramatic
-improvement over the status quo.
+Alexander Krabler reported a 1.1ms latency in [1]
 
-Today, to use zswap you MUST provision a physical swap device of the
-same size as the swap capacity wanted — even though most of that disk
-space will never be touched.  With ghost swap, you swapon a ghost
-device at whatever size you expect to need (e.g. 64 GB), and if your
-workload grows, you grow it via sysfs.  That is already a step
-change in operational simplicity: no disk pre-provisioning, no wasted
-storage, and a one-line resize when needed.
-
-Automatic growth can be considered later if it's really demanded.
+https://lore.kernel.org/all/DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com/
 
 > 
-> This is especially bad when redirection entry still eats up space in
-> the upper level (ghost zswap) swapfile. You will run out of zswap
-> space really fast under concurrent zswap store and zswap writeback.
+> I suppose not too many ranges should be mock
+> 
+>>
+>> Fix it by waiting for the migration to complete during the mlock/mlockall
+>> syscall when sysctl_compact_unevictable_allowed is false.
+> 
+> Probably better to reference the sysctl itself rather than an arbitrary varible
+> name.
+Got it.
+> 
+>>
+>> Fixes: 90d07210ab55 ("mm: mlock: use folios and a folio batch internally")
+> 
+> Again I have no idea why you chose this as the fixes target, especially for
+> this?
+You're right, the Fixes tag was wrong.
 
-I think there is a misunderstanding here.  A Redirect entry does not
-consume an *additional* ghost slot.  Before writeback, the ghost slot
-held a Pointer entry (zswap).  After writeback, that same slot holds a
-Redirect entry (pointing to the physical device).  It's a state
-transition — one slot, one entry — not an extra allocation.  The ghost
-device's total capacity is unchanged by writeback activity.
+Setting sysctl_compact_unevictable_allowed to zero was introduced in v5.7 by:
+	commit 6923aa0d8c62 ("mm/compaction: Disable compact_unevictable_allowed on RT")
+
+Before this commit, mlocked page can be migrated, and dont need to wait for
+migration complete.
+
+After this commit, if don't wait for migration complete, this may result in
+latency spikes.
+
+(The batch mlock feature increases the probability of hitting migration entries.)
+
+Will update Fixes tag in next version.
 
 > 
-> >   sysfs, up to a current maximum of 1TB.  This is implemented through
-> >   lazy vmalloc: a sparse 64MB virtual address space is reserved at
-> >   swapon time to cover the full 1TB range, but physical pages for
-> 
-> This range seems a bit small, especially from something essentially fixed.
+> But in any case, why is this separate from the previous commit? I sthis an
+> entirely separate fix?
 
-The 1TB limit comes from a conservative 64 MB sparse vmalloc reservation
-in RFC. It certainly can be redefined as a bigger one which is more
-reasonable in reality. For most real-world deployments today, 1 TB per
-ghost device — with support for multiple ghost devices — is more than
-sufficient.
+These two patches address two aspects of the same problem,
+and I split them into separate patches mainly to make review easier.
 
-> 
-> >   cluster_info[] structures are allocated only on demand as the device
-> >   grows.  The cluster_info pointer never changes, so all existing
-> >   accessors (__swap_offset_to_cluster, cluster_index) work unchanged.
-> >
-> > - sysfs control.  Each ghost device exposes attributes under
-> >   /sys/kernel/mm/ghost_swap/ghost_<N>/:
-> >     path (RO) — backing device name
-> >     max  (RW) — current max pages; writing a larger value triggers
-> >                 swap_ghost_extend_max()
-> >
-> > Design overview
-> > ---------------
-> > A swap table slot can now hold a Redirect entry:
-> >
-> >   Redirect: |----- physical swp_entry_t -----|101|
-> >
-> > This stores a plain swp_entry_t pointing to a slot on a real (physical)
-> > swap device.  The low 3-bit mark (0b101) distinguishes it from Pointer
-> > (0b100), PFN (0b10), Shadow (0b1), and NULL (0) entries.
-> >
-> > The lifecycle is:
-> >
-> > 1. swapon a ghost device — reserves sparse vmalloc area (64MB virtual)
-> >    and physically backs only the initial range.  The device starts with
-> >    no physical backing store: pages swapped out go to zswap, and zswap
-> >    pool evictions go to any concurrently attached physical device.
-> 
-> If you think this data structure is superior to the xarray for dynamic
-> swap address, it's a fairly simple change on top of what I had in the
-> virtual swap RFC, no?
+Patch 1 mainly prevents pages to be migrated due to batch mlock;
+patch 2 mainly ensures that pages undergoing migration have finished
+migrating once the mlock system call completes.
 
-I appreciate the suggestion. However, the difference between the two
-approaches goes beyond the cluster allocation strategy — it's
-the overall architecture:
-
-- Virtual swap introduces a mandatory, always-on vswap device (CONFIG_VSWAP).
-  with per-cluster virtual_table arrays, xarray-backed dynamic clusters.
-  per-CPU allocation caching.
-
-- Ghost swap extends the existing swap device model with one new entry
-  type (Redirect, 0b101) and one new flag (SWP_GHOST).  It reuses
-  swapon/swapoff, the existing allocator, and the swap cache
-  essentially unchanged.  No Kconfig option is needed.
-
-These are two explorations of the same problem, while virtual swap goes
-far beyond the problem itself, the decoupling of physical swap and
-virtal zswap. We can discuss and choose one approach.
 
 > 
-> It can be grafted on top of what I had in a subsequent patch, or
-> squashed into my first patch. If you have concerns with me
-> implementing your idea here, I'd take your code if it proves to be
-> superior.
+>> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+>> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+>> Link: https://lore.kernel.org/lkml/c8793c0f-7156-4cb7-9e6e-7909397e2fff@kernel.org/#t
 > 
-> >
-> > 2. zswap writeback from ghost: when the zswap pool needs to evict,
-> >    zswap_writeback_ghost() allocates a physical slot from any real
-> >    swap device, writes the data there, and plants a Redirect entry
-> >    in the ghost's swap table pointing to the physical slot.
+> A nit but please strip that #t.
+Got it.
 > 
-> What if user swapoff the physical swapfile, whose slot is backing a
-> redirection entry of a ghost swapfile, rather than a PTE. Has this
-> been handled yet?
-
-
-This is a gap in the current RFC.  Both swapoff and physical-slot
-reclaim would need a reverse mappingfrom the physical slot back to the
-ghost entry to be handled robustly. This can be added in a future version
-if there is consensus that writeback-to-physical is a necessary part of
-the design.
-
-I think the primary motivation for ghost swap is to enable zswap
-usage *without* a backing physical swap device at all — the "No backing
-store required" mode described in the cover letter.   In that mode,
-writeback never happens (there is no physical device to write to), so
-the swapoff and reclaim questions do not arise. Ghost writeback to a
-physical device is an optional extension for users who want the safety
-net of disk-backed swap. Surely we can discuss and decide if we need
-add it or not.
+>> ---
+>>  mm/mlock.c | 23 +++++++++++++++++++++--
+>>  1 file changed, 21 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/mlock.c b/mm/mlock.c
+>> index 97e49038d8d3..ac65de40b22b 100644
+>> --- a/mm/mlock.c
+>> +++ b/mm/mlock.c
+>> @@ -25,6 +25,7 @@
+>>  #include <linux/memcontrol.h>
+>>  #include <linux/mm_inline.h>
+>>  #include <linux/secretmem.h>
+>> +#include <linux/compaction.h>
+>>
+>>  #include "internal.h"
+>>
+>> @@ -361,8 +362,17 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+>>
+>>  	ptl = pmd_trans_huge_lock(pmd, vma);
+>>  	if (ptl) {
+>> -		if (!pmd_present(*pmd))
+>> +		if (!pmd_present(*pmd)) {
+>> +			if (unlikely((vma->vm_flags & VM_LOCKED) &&
 > 
-> Similarly, say the physical swapfile is full, and you attempt to
-> reclaim a physical swap slot that is swap-cache-only (swap count = 0).
-> Say this physical swap slot was allocated from a previous zswap
-> writeback attempt, i.e it has a redirection entry in the ghost zswap
-> swapfile associated with it. Did we handle it somehow?
+> -> vma_test(vma, VMA_LOCKED_BIT)...
 > 
-> My apologies if I missed it somehow.
+> What is the basis for your unlikely()? Don't use likely()/unlikely() just
+> because it feels right. Leave them out unless you have actual profiling data to
+> prove it.
 > 
-> >
-> > 3. Swap-in from ghost: swap_read_folio() detects the ghost device
-> >    (SWP_GHOST), resolves the Redirect to the physical swp_entry_t,
-> >    and forwards the read I/O to the physical device.
-> >
-> > 4. When the swap cache folio is removed, the Redirect entry is restored
-> >    from an xarray (redirect_xa) that persists the mapping, so
-> >    subsequent reads still find the physical backing.
-> >
-> > 5. When the physical slot is freed, the ghost slot is also freed,
-> >    cascading through swap_range_free().
+> Remove it please.
+Got it.
 > 
-> I don't get how *any* of this is simpler from what I had. If anything,
-> it's more complicated. With a vswap device, you just allocate a
-> physical swap slot (which you also did), change the backend, submit
-> the IO (which you also did), and that's it. No need to juggle this
-> redirect_xa entry. What does this redirect_xa buy us?
-
-The redirect_xa persists the ghost→physical mapping across swap-cache
-folio teardown.
-
-Ghost: redirect_xa[offset] = phys  (only allocated when Redirect
-       is active) + swap_table[slot] = Redirect(phys) once the
-       swap cache folio is removed
+> But I'm also confused here - why are you checking for VMAs that already had
+> VMA_LOCKED_BIT set when you are about to set it?
+> 
+> Surely this shouldn't be predicated on VMA_LOCKED_BIT?
+munlock also would call mlock_pte_range, if page is under undergoing migration,
+munlock dont need to wait migration complete.
 
 > 
-> Not to mention now it entagles generic swap logic into
-> backend-specific code, unnecessarily. And we have more state in the
-> state machine to consider: With a generic vswap device, vswap -> disk
-> swap directly is the same state as vswap -> written back zswap entry.
-> With this zswap ghost swapfile design, you have to treat the latter
-> separately, as there is a redirection entry involved, which means
-> concurrent swap operations interact with it.
+> 
+>> +			    !compaction_allow_unevictable() &&
+> 
+> Why do we care about compaction here? Are we assuming the softleaf migration
+> entry is present only for compaction reasons?
+> 
+> So these migration entries could be there for any reason? Does it matter? Is it
+> such a big deal, on mlock, to wait for migration entries? I think probably not.
+> 
+> But then maybe some weird workload gets affected... hmm.
 
-I'd argue the opposite.  Ghost swap touches the generic swap paths in
-very few places:
+Indeed, there are workloads that are affected by this.
+In RT kernels, RT processes typically use mlock to prevent their memory from
+being swapped out, and sysctl_compact_unevictable_is set to default 0 in the
+RT kernels, so mlocked memory won't be migrated and won't encounter migration
+entries on access.
 
-  - swap_read_folio:    one SWP_GHOST branch → resolve Redirect
-  - __swap_cluster_free_entries: one Redirect check → cascade free
-  - __swap_cache_do_del_folio:   one redirect_xa lookup → restore
-  - zswap_writeback_entry:       one SWP_GHOST branch → ghost writeback
+Using compaction_allow_unevictable here is mainly to check whether the system
+is latency-sensitive. In RT kernels, sysctl_compact_unevictable_is set to 0 by
+default.
 
-Ghost swap only affects behavior when a ghost device has been
-explicitly swapon'd, and even then only on the paths listed above.
-
-This is different than virtual swap which is more ambitious. As I said,
-ghost swapfile focuses on the problem itself, and based on the swap
-table.
+If there is no waiting, the migration may won't have completed by the time of
+the subsequent memory access, and then we would have to wait for migration
+to finish in the page fault path. Since pmd_migration_entry_wait/migration_entry_wait
+has no priority-propagation mechanism, if the process executing mlock is an
+RT process, this can lead to priority inversion and latency spike occurs.
 
 > 
-> So it's more complicated, and achieve less - this is specific to
-> zswap, whereas what I provide is something generic to swap
-> infrastructure, which can be extended for future backends. I would
-> understand if it resulted in less overhead (which was the argument for
-> my pre-swap-table vswap design), but this seems like it's just virtual
-> swap, with similar space overhead (technically a bit worse since you
-> added redirect_xa xarray to physical swap cluster too), and with more
-> complications?
+>> +			    softleaf_is_migration(softleaf_from_pmd(*pmd)))) {
 > 
-> >
-> > Note:
-> > ------
-> > Ghost swapfile is a proof of concept. Compared with the other patchset:
-> > [RFC PATCH v2 0/7] mm, swap:  Virtual Swap Space (Swap Table Edition),
-> > it explores a different approach to implementing virtual swap on top of
-> > the existing swap table infrastructure, with a simpler implementation.
+> Use pmd_is_migration_entry()? :)
+Got it.
 > 
-> You neglected to mention that this "simpler" implementation lacks a
-> lot of design choices. Just on top of my head:
+> And technically you should use pmdp_get() I think? Maybe a situation where we
+> don't care/need the READ_ONCE() though.
 > 
-> 1. Certain optimizations for cases when vswap points to disk swap.
-
-Ghost swap's Redirect entry directly encodes the target swp_entry_t, so
-the swapin path resolves it with a single cluster lookup — no extra
-indirection through a virtual_table.  For the hot swapin path, this is
-an optimization, not a missing feature.
-
+>> +				spin_unlock(ptl);
+>> +				pmd_migration_entry_wait(vma->vm_mm, pmd);
+>> +				walk->action = ACTION_AGAIN;
+>> +				return 0;
+>> +			}
 > 
-> 2. No reverse mapping, or at least some mechanisms to handle the case
-> where you have to go from physical swap slots to the upper layer.
-
-Acknowledged — a reverse mapping can be added in a future version if
-writeback-to-physical becomes a priority.
+> This code is really disgusting, let's please not just copy/paste open-coded
+> nested horror shows like this.
 > 
-> 3. Charging behavior difference, and deduplication of metadata when we
-> have multiple swap levels. (In fact, you seem to be double charging a
-> writtenback entry here towards the swap counter, not just duplicating
-> the metadata space)
-
-There is no double-charging.  A ghost slot is charged to nr_swap_pages
-when the ghost device is swapon'd.  When zswap writeback allocates a
-physical slot via alloc_phys_swap_slot(), the physical device's own
-inuse_pages is incremented — but this is the physical device's
-independent accounting, not a double-charge to the ghost device.  The
-two devices have separate si->inuse_pages.  That said, we agree the
-swap counter semantics need to be clearly documented in the cover
-letter and will do so.
-
+> A good rule of thumb is if you see a bunch of code 'poking out' like this and
+> certainly if you copy/paste it or something very much like it, break it out into
+> a function.
+Got it, will do in next version.
 > 
-> 4. Infrastructure to make sure allocation from this swap device and
-> allocation from the backing swap device does not invalidate each
-> other's per-cpu allocation cache. You seem to just go for the slow
-> path with alloc_phys_swap_slot() for zswap writeback?
-
-Yes, alloc_phys_swap_slot() uses the slow-path allocator
-(cluster_alloc_swap_entry), which is correct for this low-frequency
-operation.  zswap writeback is not a hot allocation path — it runs
-from the zswap shrinker under memory pressure, typically hundreds to
-thousands of operations per second at most.  The fast-path per-CPU
-caches remain dedicated to folio_alloc_swap(), which handles the
-high-frequency swapout path.  There is no cache invalidation problem
-because the two paths use different allocation mechanisms on different
-devices.
+> So:
 > 
-> It's fine to disagree with any or all of these design choices of mine
-> - I'm receptive to discussion. But it's misleading to say you have a
-> simpler design here, IMHO. My design choices resulted from multiple
-> thoughtful iterations (a lot of them could be found in my
-> pre-swap-table version of vswap) and real production pains.
+> static bool wait_for_migration(const struct vm_area_struct *vma, softleaf_t entry)
+> {
+>>>>> As above I'm not sure should even be checking this?
+> 	if (!vma_test(vma, VMA_LOCKED_BIT))
+> 		return false;
+>>>>> As above I'm not sure this makes sense?
+> 	if (compaction_allowed_unevictable())
+> 		return false;
+> 
+> 	return softleaf_is_migration(entry);
+> }
+> 
+> Then call it like:
+> 
+> 	if (ptl) {
+> 		const pmd_t pmd = pmdp_get(pmd);
+> 
+> 		if (!pmd_present(pmd)) {
+> 			const softleaf_t entry = softleaf_from_pmd(pmd);
+> 
+> 			if (!wait_for_migration(vma, entry))
+> 				goto out;
+> 
+> 			spin_unlock(ptl);
+> 			pmd_migration_entry_wait(vma->vm_mm, pmd);
+> 			walk->action = ACTION_AGAIN;
+> 			return 0;
+> 		}
+> 		if (is_huge_zero_pmd(pmd))
+> 			goto out;
+> 
+> (etc. going *pmd -> pmd)
+> 
+> But we could probably do even better than that, and assuming your dubious checks
+> above aren't needed, we don't even need a helper then:
+> 
+> 	if (ptl) {
+> 		const pmd_t pmd = pmdp_get(pmd); // possibly just *pmd?
+> 		const softleaf_t entry = softleaf_from_pmd(pmd);
+> 
+> 		if (softleaf_is_migration(entry)) {
+> 			/* Wait for migration entries. */
+> 			spin_unlock(ptl);
+> 			pmd_migration_entry_wait(vma->vm_mm, pmd);
+> 			walk->action = ACTION_AGAIN;
+> 			return 0;
+> 		}
+> 		if (!pmd_present(pmd))
+> 			goto out;
+> 		etc.
+> 
+> And similar for the PTE stuff below.
+> 
+> This works because softleaf_from_pmd() (and pte) will give you a 'none' softleaf
+> if the entry is not a softlaf entry. So you can unconditionally call it on a
+> PMD.
+Got it.
+> 
+>>  			goto out;
+>> +		}
+>>  		if (is_huge_zero_pmd(*pmd))
+>>  			goto out;
+>>  		folio = pmd_folio(*pmd);
+>> @@ -383,8 +393,17 @@ static int mlock_pte_range(pmd_t *pmd, unsigned long addr,
+>>
+>>  	for (pte = start_pte; addr != end; pte++, addr += PAGE_SIZE) {
+>>  		ptent = ptep_get(pte);
+>> -		if (!pte_present(ptent))
+>> +		if (!pte_present(ptent)) {
+>> +			if (unlikely((vma->vm_flags & VM_LOCKED) &&
+>> +			    !compaction_allow_unevictable() &&
+>> +			    softleaf_is_migration(softleaf_from_pte(ptent)))) {
+>> +				pte_unmap_unlock(start_pte, ptl);
+>> +				migration_entry_wait(vma->vm_mm, pmd, addr);
+>> +				walk->action = ACTION_AGAIN;
+>> +				return 0;
+>> +			}
+>>  			continue;
+>> +		}
+>>  		folio = vm_normal_folio(vma, addr, ptent);
+>>  		if (!folio || folio_is_zone_device(folio))
+>>  			continue;
+>> --
+>> 2.43.0
+>>
+> 
+> Thanks, Lorenzo
 
-You're right that "simpler" needs qualification, and I'll update the
-cover letter accordingly.  What I meant — and what I should have stated
-explicitly — is that ghost swap is less invasive to the existing swap
-infrastructure:
-
-  - It does not require a Kconfig option.
-  - It does not create a boot-time device that lives for the kernel's
-    lifetime.
-  - It does not introduce a new per-cluster data structure
-    (swap_cluster_info_dynamic / virtual_table).
-  - It does not add a separate per-CPU allocation cache.
-  - It does not split the swap entry namespace into "vswap" vs
-    "physical" — a ghost device is just another swap device with one
-    extra flag and one extra swap-table entry type.
-
-I think VSS goes beyond solving the "zswap without backing store"
-problem — it is fundamentally an architectural restructuring of the
-swap subsystem, with virtual swap as a first-class abstraction layered
-above physical devices.  That is both its strength (comprehensive,
-future-proof) and its trade-off (more invasive to existing paths).
-I respect that.
-
-My goal with ghost swap is different: address the immediate pain point
-with the smallest possible change to the existing infrastructure.  Both
-approaches have value, and I hope the community discussion will help
-identify the right balance.
-
-Thank you again for the detailed review — it has already clarified
-which parts of the design need more thought and documentation, and will
-make the next version stronger.
-
-Thanks
-Baoquan
-
+Thanks again.
+Wandun
 
