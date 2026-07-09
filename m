@@ -4,95 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD8DEC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:42:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A377DC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 17:42:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E48B6B00A7; Thu,  9 Jul 2026 13:39:32 -0400 (EDT)
+	id 2C2816B00AA; Thu,  9 Jul 2026 13:39:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4950C6B00A9; Thu,  9 Jul 2026 13:39:32 -0400 (EDT)
+	id 273846B00AB; Thu,  9 Jul 2026 13:39:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D4456B00AA; Thu,  9 Jul 2026 13:39:32 -0400 (EDT)
+	id 163546B00AC; Thu,  9 Jul 2026 13:39:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EAE86B00A7
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:39:30 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EEBCD1C1EDD
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:22 +0000 (UTC)
-X-FDA: 84969949764.18.615642E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 6784540007
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PStD/HcK";
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B80046B00AA
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:39:45 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E4CC1C0F60
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:40 +0000 (UTC)
+X-FDA: 84969950520.02.33D1B20
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EBE2E40003
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 17:39:37 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HswCZwwS;
+	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783618778;
+	b=RufdiWt512N8Rfzwf9nha9YBxFFR9litx0vB3upcA9/lMgPjFwT70ztb8ZBeOOBPd4pZ2+
+	pMD2ucLQz/KJZM/qHa604/fCUxPfQCB51/TjsFmMRPWPaV6HsfK+rox9N6L8SA0Cn0QReZ
+	Td97P8CavUM0kOzgwlh5HzPEyso438M=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=HswCZwwS;
+	spf=pass (imf27.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.171 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783618761;
+	s=arc-20220608; t=1783618778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ix6I6I+r1vTD3BUcaSUPcfAv6vZf01a6pDgBUVaQZsU=;
-	b=ERTzgggh9aD/kX681LfHi0UctfCCSXcggmMLAFUaVuyIK+b9F/jP69jyK4G47KKmoMfZq9
-	4aLRr6BryEe6+j9RqkhVRG6xkTNzZ9/yXl6zgCjGnc+SRElZNuTCJqshe53ydZLqHfxYtp
-	xrk4zAWXEIVXH0dXvjx+DK77cu9T2Cs=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PStD/HcK";
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783618761;
-	b=DFCMBfEomaPpuf/d36TzTX9sSpcj0ctxOIRuM1vrCynmWFXb6ZA2lj8Svo5gfbrt5vofYp
-	5mPWLvhB+kmW6LQq9P1cgzwSnrDJGLALq078Z36mGSIam7p6/IOA8qeHHerq8Cdh4jG7Gh
-	9G7mJF0mnm7JHmUTrvG1XpuY+5N/DgA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B60061381;
-	Thu,  9 Jul 2026 17:39:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CF31F00A3F;
-	Thu,  9 Jul 2026 17:39:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783618760;
-	bh=Ix6I6I+r1vTD3BUcaSUPcfAv6vZf01a6pDgBUVaQZsU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PStD/HcK3IeCVUJvMBF5NmYMR3SQUv+aJDuTJPtSR1AnHLGcesJXS9oDRyHSSMLJy
-	 k/FBFuh/j98WqOUxmfof1y71AXFNYy6AdD9lDWFhB2pGEtMdI41x8tzto9u56t8CwU
-	 1JddvGI31gDJEyf5+b5xfZnJiM2vYozU/skjY3Orb08hfsnOTMbDq11QbXovWWFRPo
-	 +Qy1Ks6OOGIuaupH+N05w/bfS7juCt72+7ToR8UDJc1Eq403d3XDPRBymNwtV+KrC6
-	 4oDCHpdo9CQF+qiq/FTgKPFoQpaCmE0d3uLLz7WMM6Nr1CxSSih7LAhJ99mNZkNyJT
-	 89SANEVhcul8w==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
+	bh=u9AnDRBr8KqFPgYAaaOIV/GMT4K0ldCBDDn+vjmduSg=;
+	b=Qmr9H63BarqDcBgLY8CEl4NLahw9HoT89txROqEw2zYlQI4yKlSpmHFNjc556vlOqDE/XY
+	H5S0QfeVnSR2+H9G8E3Qzd/1xAG1L7wM9D+hGx2B8rfGElHh+9UaN5drsn0UElu+VEuKsv
+	Rk+6EPWZmCSYNOm5NfOb5BmDe6+77no=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-51c2cce930cso512621cf.0
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 10:39:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1783618777; x=1784223577; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=u9AnDRBr8KqFPgYAaaOIV/GMT4K0ldCBDDn+vjmduSg=;
+        b=HswCZwwSx60MSrXFX4S7Fh/oCRh2DHdzB+3Zeh8+DR9JTilJ7DSEaNyyrmxoi8Bxkm
+         vf+Z5B7AySqUOabcFnkSaDeSl5RutXqfZEI798QaccuWK/6b41EVS9Asst5oUwFjNLxT
+         xqv18oNzZytF/0cNqyPVhr4FcUDVL+lR1khtOHn8GOvfhd3+aCSM5gkClYGeed8FMCwH
+         wrEgU62bg8mbkW1kAxle4txQ8NT0Fw/+ZOVQk58DfHTK4JwYnLvrK1WFxdW1/bigHjeG
+         rO7EG086RSEhD0SG6D2ZxFOleyKVniahoubvClzCV+0g/pB7KoLi+GOa3GMoC334oA51
+         jJLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783618777; x=1784223577;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=u9AnDRBr8KqFPgYAaaOIV/GMT4K0ldCBDDn+vjmduSg=;
+        b=XfWA4jv6btV43etToGburwd3xpYhZVIkVOckT8h7aBg8SwkwyE469LMYcpxZKYwqLB
+         6UinFSo676qG4c9io3xQa0ohiWctYqS7RYs90ccuy5g5NMXgvl8smou06BOjVa2QnnPB
+         Gn+OU3lwHRIpF10vM/nuY1aNFdjlns//5PLMdkMvWbCkPxVXGJ8fWFP86b+mj/Q5+hDf
+         +aZW7EOrkvFBYoPN8N61+0JV9Wa0kDa6d4nvjg+W8jd17z49P3XN2014LK/pFoItMx91
+         thx5a5KBDRJ+URNwQtgcxlSib4CUpXUncOx0y9LerkRGZXlZnlBlvdh0iqK9+qi9fSR5
+         Dpsw==
+X-Forwarded-Encrypted: i=1; AHgh+RqCz8hPfvwn+se5XGfMdgTJkEXxrsdOKNp3WpB/WBKuifPyIqpeo1UozE50m5RDEfQvsCbav7tFFQ==@kvack.org
+X-Gm-Message-State: AOJu0YxZO9KwxMPen8a8RUXM9bz5VsfU56cYyBWuZhihnJPe1Kac2WOG
+	yOSdNDFIjmTlvVrk6IBryt/81uvhCy9EhHpRyDIEq2kaj3OFboZLbXXFXMsSB3GT8D8=
+X-Gm-Gg: AfdE7ckpxMU/Vnx022kSaHuYFfSpjeNyPSmQ7tB1wVAbZH2lcJ+GrzEdDPMno5ODLcC
+	+n8bWRhCw2qSIATxbEjXmeewAD8guoeSkxQzty7g9wXG9NubBduCl0Et1Ak0I4uDaXdmWrHIWAm
+	UT6yEmsrH3r3PsJndbWkgzy6BJrdup2sqCrLTSv3B41J4BOaz8grGj/WRkdg8S6CI9yrT2/M158
+	MqwOsZzuvvGCkLWTXMCxIGlow0KfZeJ1+sPrqV8tcSPzu1dfymQXbiSz5u5LC58mPyXjFdskyjz
+	xBrxH7qxzouG4M/xaKkhOvKwAGWrJXtJ0yzIFKtcIcWtG6IhSOZGr5OnNTeHUF2oXIt6wWm3Tsd
+	657KgLvL6M5O0awo11cZCTidHkJ7fTK8Q/uxOoBAIXSwOoEFH2NWYW1RNatciBPZqD3jcbDIB2T
+	RUbsEeWtyG+2ZQ1J+ah1VnSA==
+X-Received: by 2002:ac8:5fcc:0:b0:517:98e3:d939 with SMTP id d75a77b69052e-51c8b48ec53mr93024431cf.49.1783618776845;
+        Thu, 09 Jul 2026 10:39:36 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd56bf115sm22855186d6.12.2026.07.09.10.39.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 10:39:36 -0700 (PDT)
+Date: Thu, 9 Jul 2026 13:39:32 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
 	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Miu <jasonmiu@google.com>,
-	Jork Loeser <jloeser@linux.microsoft.com>
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 19/21] memblock: make HugeTLB bootmem allocation work with KHO
-Date: Thu,  9 Jul 2026 19:38:08 +0200
-Message-ID: <20260709173821.429921-20-pratyush@kernel.org>
-X-Mailer: git-send-email 2.55.0.141.g00534a21ce-goog
-In-Reply-To: <20260709173821.429921-1-pratyush@kernel.org>
-References: <20260709173821.429921-1-pratyush@kernel.org>
+Subject: Re: [PATCH 2/4] mm: compaction: support non-movable compaction for
+ pageblock requests
+Message-ID: <ak_c1HH72sJDmaSZ@cmpxchg.org>
+References: <20260626182215.1107966-1-hannes@cmpxchg.org>
+ <20260626182215.1107966-3-hannes@cmpxchg.org>
+ <e36dad58-d259-4533-be08-50d667d5144e@kernel.org>
+ <akUyEgKMryy6TntY@cmpxchg.org>
+ <c00f2d42-83f7-4417-aaf8-aed0bf1e28db@kernel.org>
+ <akWCZLAMgJrmnZGN@cmpxchg.org>
+ <61bc1ad0-f9e3-405a-ae32-b89bcdd2e1d1@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <61bc1ad0-f9e3-405a-ae32-b89bcdd2e1d1@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6784540007
-X-Stat-Signature: xoswz8yrofjf7bwt5ctpdm8ifau9zc35
-X-HE-Tag: 1783618761-258204
-X-HE-Meta: U2FsdGVkX19rPXe60ru5Hn9qkXtJ7P2WF1g/fBRJKljM6PZbIO8vTi0oUoror5Bsljhs1FVX9TKRdwQ3qqym+AkfKJBfdmU4iAdV+q4BI/t3ULMTjYGcNQdGHbT0ZU+vn6xSmOL6lCYFgvmGSAggr10Z/zElF7AfNZbLOJu4XM7xilPg2txDCndVq9/EMNcXAF9/cBwPjxOHsZi7n1VsJEn4G3W/0ny1yajLciTyt0kr0nKpMI/RMymmSF8K60jtnw+JEDdEmc5PiOvl3TG8fodGo60GA1UoljKicXX5BAiaAbvTA5BWiLvsqAYrW1Tf7AYxJhqPdLG7CejriIcYF5VyPX8Zsv7+zqfxTe2vz2AdwtcWMMbeoMlqg26MgVlu45Ex1NNXuZ+FDGYeTZXTkzdgRQ1fo/mIAMgRDL9KFyF3poUYdIZqjl/cMjKDTtoZMWxw54RKzxC4Xosg/UTLJZqPqGAA7nxH2avHZZ1f2R5b8wBDHVCOcJTVeMLdNFNwtuAw1p0EvyLm9MHWkLMQWTo5/lthwmW3P1DewqP8sBKVtp2NvK1i0v5SzZcQBIK0Jttlh7V+mx/W0vWJIGyJuaxs6N+Jg4gCp6sLoJPEUkBLID1u1kCyGVT+QxMxu2g36Qbp+nApu0JPhFCD4XSIRfieOK51tNYCNY7kyCWBfuMjBfl41dy4q4rtk29g2pZwKI0b4v+pVCmJbqmVUYjf3DhhnVDPDgEp1k7yQ7CEOQAxHHKF7LV6k4txnohJC+CBUYJtZfkLXP6pXnWKj5KQGJmeEobAMbhYDrK0uScCcAIpJkPsUs9bna98MKvLWc9ZY+ulDqtnd8b1yQpXxRu4Ljg2A3ZJXF0JIYVAuBLbCYPL3vGZmnEnocfk5jHelwSjKjjPGUp8Oms7riQSVNNQ+XVZ7O9YMUrSi6YTIPsln+p09l/3U0Qfjax9DX9ODmQ7v5tm4k4YPyVEWIx6n59
- lSZjs/t8
- 5AgUaoF4n2iftX8qZ5IwZOHGQTwk1ZAzSXNfpIQ4E+ZLpZN16a9YKa19nDTjFAdwBDOS/0w68RkvY7hDGdkgRfmNQwhDFtCqPr7tAcD9JWyZ/nAS6SZsZ/6DpfiuC6oNPH6yc+Qjm+hD3SLQVxCR12UPzXQE4nhlRuewKPAp0OIb11ahEprAV/A8BTR5Aevr49GivAOI1XMnDE/srmscfphkD15mpQOEaf+R4kW/Ww8FXU+8=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EBE2E40003
+X-Stat-Signature: 6z7of3jjgpbf8ixt7d4x1sqzbg95uq8d
+X-HE-Tag: 1783618777-115779
+X-HE-Meta: U2FsdGVkX1/AUce/d/EZv2++RSlSHLmmLR1OGhGbcvh12d92qywM4pL01RVisTFMp01Dax4aXqGAbKlejHSBaDPtlw7mQ9lHC912ihfON8amM7C9Wi/H9eAiHg5VwNtDYRNWn4gC0+Qk+R2jjG0qetxATvdeYyvcjGyUK5IAA67bvMIjxmMQHWylZXdUZO/U0FqOiXqbpiOMx97jR7P/Z0ELBEh1ysolCSWQd2oHBvQh1Uy+F0ghERUrtRIsL5j7XrBrBop9TGz5VhX0XUpY7WHBTnRG9A0B8NzWusrYLM3S0uOitJsFBhpGElqFDSgpBzRA6iQhnC50FAfd/1i7CGGUvZHJ11kDt5OSOnuyymcECUjHjPPZob+V+ZSb6aQhiERdamnHvFwGtj1zwgrRRpwgHc1GeI/6R2PqTKKdDETRH/q2ksEh8tDBbLybhfdLqPHWu/uvcf2/Zf3ObNrh5PW76xgczFjmaX8UsbHiAplnrP2NW7nUxVoWau6qizYVMv8W8F46J47xRme/fPlwCBSZQHHxv//OUo7sukQhAaIW411wffXR8b+nOkdg8i7ZUtBi3Ut/u5nPpykaBF+zNx77HDaongqZyR+NAdoMknb1nrgr8mXZMGkLMNValizstJOb2wwxyVqKXgfQgAFHw5NF78Wkz5bAafIIBfjvJjQMN55fvO07AB+3iwTnaRSrKtd5MvkEXpJEaq6euWtEtBYGrsZsk238skZBpk3eQbReV0kj3hzb1uZjZQf0NsCT9kXQXLyurjIMuAghFUgiXZupBufwEc2espjgXDoPOJtaairTrGdFMCNN4/PGNk6uv000vMhj/fR40wJFIhgzeB+kWu3PSYszhO35UeGaVGktNTJPEJHfFpMeOk4vjcOtyG+rx9bjbbQStEjDDpb+eIeTvWwtscX3TFWN5MbztDCU4sVn9zq3KkN0um2sHny1TiYEKcBdBKaEAkaEEEb
+ 3RoqLfvB
+ 33+y6/+1bOmbP1lqqvhdYt2p8C4g5o3WrxFX5Em0P2D8Vqg8rWZq9nU2Q+hq1IhKTuxZnveDIX5e8PdME1wpextSRSKAVJJKf5vATjPwcxqv77NTk8POugliT8zqIFxgFs2gS9L/fKGbBpqwZonhJELUabTrTnSUaizd3e8yfUjF0yj9kWtkB/ULC4lT3VlSjByZaGct7TXnplcTbKisHXPj0c7wC0kztNeQbQrzea5+J2dPyd0Ti2lPnDWM0kIJmG5JywvsLy5AIIXfLaZxhGu+QFE8eGlcXOyuOJ6zN60NfzYe/2pTicC3eO3hAkwGzRrJOp9OPK4bxYgbvuSsVVDxkb4I64F77eH7f6FeU4UDxzPYDgjTKMykom0j2kRJiyAzkFTtdlVRfxHOlykc0hOzsTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,286 +132,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+On Thu, Jul 02, 2026 at 11:28:47AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 7/1/26 23:11, Johannes Weiner wrote:
+> > On Wed, Jul 01, 2026 at 08:14:05PM +0200, Vlastimil Babka (SUSE) wrote:
+> >> 
+> >> > This made the migratetype filtering about preventing block
+> >> > pollution. The patch quotes reduced extfrag numbers.
+> >> > 
+> >> > So now we have a block pollution guard that we apply only if... the
+> >> > scanner is latency sensitive? :) Is this actually desired behavior?
+> >> 
+> >> Yeah indeed I was wondering in this direction.
+> >> 
+> >> > Another way of looking at it would be this:
+> >> > 
+> >> > 	/*
+> >> > 	 * Allocation fallbacks can spread migratable pages
+> >> > 	 * into non-movable blocks.
+> >> 
+> >> But also vice versa, non-movable pages into movable blocks? (without
+> >> defrag_mode?).
+> > 
+> > Uhm but those aren't compactable anymore then, right?
+> 
+> Yeah.
+> 
+> > There is a flipside, but it isn't quite symmetrical. Movable requests
+> > are allowed to look for movables in unmovable blocks once they become
+> > sync (high-effort, low-result). Non-movable requests are finally
+> > allowed to empty movable blocks once they become sync; they *start*
+> > with the high-effort, low-result mode to avoid block contamination but
+> > are allowed to escalate when that doesn't produce results.
+> 
+> Hm, true!
+> 
+> I was also thinking, if defrag mode doesn't allow that escalation ever
+> (IIRC?), should it be reflected here as well even with sync compaction?
 
-Gigantic huge page allocation is somewhat broken currently when KHO is
-used.
+Ok I made a clarification regarding defrag_mode in the other comment.
 
-Firstly, they break KHO scratch size accounting. RSRV_KERN is used to
-track how much memory is reserved for use by the kernel. Since
-hugetlb::alloc_bootmem() calls the memblock_alloc*() APIs, the hugepages
-allocated also get marked as RSRV_KERN.
+How about this?
 
-Allocations marked RSRV_KERN are used by KHO to calculate how much
-scratch space it should reserve to make sure the next kernel has enough
-memory to boot when it is in scratch-only phase. Counting hugepages in
-that blows up scratch size, and can lead to the scratch allocation
-failing, making KHO unusable. This will show up when huge pages make up
-more than 50% of the system, which is a fairly common use case.
-
-Secondly, while not supported right now, huge pages are user memory and
-can be preserved via KHO. The scratch spaces should not have any
-preserved memory. Allocating hugepages from scratch (on a KHO boot) can
-lead to them being un-preservable.
-
-Introduce memblock_alloc_hugetlb(). This lets memblock tailor to the
-needs of hugetb without exposing those details to the general allocation
-routines.
-
-First, it does not use mirrored memory for hugetlb. Mirrored memory is a
-limited resource that is best saved for kernel data structures, not user
-memory.
-
-Second, if the free memory area found by memblock_find_in_range_node()
-is a part of a KHO scratch area, the free area is not used. Allocation
-is retried starting after the free area to ensure no hugepages come from
-KHO scratch.
-
-Third, it simplifies the argument list by baking in some hugetlb
-assumptions like alignment and exact_nid. This also simplifies
-allocation logic in alloc_bootmem().
-
-Also introduce MEMBLOCK_RSRV_HUGETLB to mark reservations made for
-HugeTLB. This will be used by KHO in future patches to correctly
-calculate scratch sizes.
-
-Refactor some of the preparation logic like kmemleak tracking and
-accepting memory into a separate helper memblock_prep_allocation(), and
-use it from both memblock_alloc_hugetlb() and the usual
-memblock_alloc_range_nid().
-
-Add a stub for kho_scratch_overlap to memblock tests to make sure it
-compiles.
-
-Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
----
- include/linux/memblock.h          |   3 +
- mm/hugetlb.c                      |  22 ++----
- mm/memblock.c                     | 112 ++++++++++++++++++++++++------
- tools/testing/memblock/internal.h |   5 ++
- 4 files changed, 105 insertions(+), 37 deletions(-)
-
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index f142c8a8cd5b..678fe466529a 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -51,6 +51,7 @@ extern unsigned long long max_possible_pfn;
-  * memory reservations yet, so we get scratch memory from the previous
-  * kernel that we know is good to use. It is the only memory that
-  * allocations may happen from in this phase.
-+ * @MEMBLOCK_RSRV_HUGETLB: memory is reserved for hugetlb pages
-  */
- enum memblock_flags {
- 	MEMBLOCK_NONE		= 0x0,	/* No special request */
-@@ -61,6 +62,7 @@ enum memblock_flags {
- 	MEMBLOCK_RSRV_NOINIT	= 0x10,	/* don't initialize struct pages */
- 	MEMBLOCK_RSRV_KERN	= 0x20,	/* memory reserved for kernel use */
- 	MEMBLOCK_KHO_SCRATCH	= 0x40,	/* scratch memory for kexec handover */
-+	MEMBLOCK_RSRV_HUGETLB	= 0x80, /* memory reserved for hugetlb pages */
- };
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 7df3a85d43af..a12a49eefe85 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -1399,13 +1399,24 @@ static bool suitable_migration_source(struct compact_control *cc,
+ 	if (is_migrate_cma(block_mt) && !(cc->alloc_flags & ALLOC_CMA))
+ 		return false;
  
- /**
-@@ -420,6 +422,7 @@ void *memblock_alloc_try_nid_raw(phys_addr_t size, phys_addr_t align,
- void *memblock_alloc_try_nid(phys_addr_t size, phys_addr_t align,
- 			     phys_addr_t min_addr, phys_addr_t max_addr,
- 			     int nid);
-+void *memblock_alloc_hugetlb(phys_addr_t size, int nid, bool exact_nid);
- 
- static __always_inline void *memblock_alloc(phys_addr_t size, phys_addr_t align)
- {
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835..ab4afc818e8c 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3033,29 +3033,21 @@ static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
- 	if (hugetlb_early_cma(h))
- 		m = hugetlb_cma_alloc_bootmem(h, &listnode, node_exact);
- 	else {
--		if (node_exact)
--			m = memblock_alloc_exact_nid_raw(huge_page_size(h),
--				huge_page_size(h), 0,
--				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
--		else {
--			m = memblock_alloc_try_nid_raw(huge_page_size(h),
--				huge_page_size(h), 0,
--				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-+		m = memblock_alloc_hugetlb(huge_page_size(h), nid, node_exact);
-+		if (m) {
-+			m->flags = 0;
-+			m->cma = NULL;
-+
- 			/*
- 			 * For pre-HVO to work correctly, pages need to be on
- 			 * the list for the node they were actually allocated
- 			 * from. That node may be different in the case of
--			 * fallback by memblock_alloc_try_nid_raw. So,
-+			 * fallback by memblock_alloc_hugetlb_bootmem. So,
- 			 * extract the actual node first.
- 			 */
--			if (m)
-+			if (!node_exact)
- 				listnode = early_pfn_to_nid(PHYS_PFN(__pa(m)));
- 		}
--
--		if (m) {
--			m->flags = 0;
--			m->cma = NULL;
--		}
- 	}
- 
- 	if (m) {
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 8b2e551435ae..ba6d887ea18e 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1506,6 +1506,32 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
- 	return 0;
- }
- 
-+static void memblock_prep_allocation(phys_addr_t start, phys_addr_t size,
-+				     bool leaktrace)
-+{
 +	/*
-+	 * Skip kmemleak for those places like kasan_init() and
-+	 * early_pgtable_alloc() due to high volume.
++	 * Per default, scans are restricted to blocks compatible with
++	 * the request, to prevent cross-contamination. Once
++	 * compaction priority escalates to synchronous scans, though,
++	 * scan all blocks to try to make forward progress. For
++	 * movable request, this likely helps little: there shouldn't
++	 * be many migratable pages inside non-movable blocks besides
++	 * allocator fallbacks. For non-movable requests, this helps a
++	 * lot, as they can finally scan movable blocks.
 +	 */
-+	if (leaktrace)
-+		/*
-+		 * Memblock allocated blocks are never reported as
-+		 * leaks. This is because many of these blocks are
-+		 * only referred via the physical address which is
-+		 * not looked up by kmemleak.
-+		 */
-+		kmemleak_alloc_phys(start, size, 0);
-+
-+	/*
-+	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
-+	 * require memory to be accepted before it can be used by the
-+	 * guest.
-+	 *
-+	 * Accept the memory of the allocated buffer.
-+	 */
-+	accept_memory(start, size);
-+}
-+
- /**
-  * memblock_alloc_range_nid - allocate boot memory block
-  * @size: size of memory block to be allocated in bytes
-@@ -1580,28 +1606,7 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
- 	return 0;
+ 	if (cc->mode != MIGRATE_ASYNC)
+ 		return true;
  
- done:
--	/*
--	 * Skip kmemleak for those places like kasan_init() and
--	 * early_pgtable_alloc() due to high volume.
--	 */
--	if (end != MEMBLOCK_ALLOC_NOLEAKTRACE)
--		/*
--		 * Memblock allocated blocks are never reported as
--		 * leaks. This is because many of these blocks are
--		 * only referred via the physical address which is
--		 * not looked up by kmemleak.
--		 */
--		kmemleak_alloc_phys(found, size, 0);
--
--	/*
--	 * Some Virtual Machine platforms, such as Intel TDX or AMD SEV-SNP,
--	 * require memory to be accepted before it can be used by the
--	 * guest.
--	 *
--	 * Accept the memory of the allocated buffer.
--	 */
--	accept_memory(found, size);
--
-+	memblock_prep_allocation(found, size, end != MEMBLOCK_ALLOC_NOLEAKTRACE);
- 	return found;
- }
- 
-@@ -1756,6 +1761,69 @@ void * __init memblock_alloc_try_nid_raw(
- 				       false);
- }
- 
-+/**
-+ * memblock_alloc_hugetlb - allocate boot memory for HugeTLB pages
-+ * @size:      size of the memory to be allocated in bytes
-+ * @nid:       nid of the free memory to find, %NUMA_NO_NODE for any node
-+ * @exact_nid: only allocate from the specified nid. If %false, the specified
-+ *             nid is tried first, and then all nodes are tried as fallback.
-+ *
-+ * HugeTLB pages are always aligned by their size, so the alignment matches
-+ * @size. Since the memory is for userspace, mirrored memory is not used. The
-+ * memory is not zeroed. Does not panic if request cannot be satisfied.
-+ *
-+ * Return:
-+ * Virtual address of allocated memory block on success, %NULL on failure.
-+ */
-+void * __init memblock_alloc_hugetlb(phys_addr_t size, int nid, bool exact_nid)
-+{
-+	enum memblock_flags flags = choose_memblock_flags();
-+	phys_addr_t addr, start = 0, end = MEMBLOCK_ALLOC_ACCESSIBLE;
-+
-+	memblock_dbg("%s: %llu bytes, nid=%d, exact_nid=%d %pS\n", __func__,
-+		     (u64)size, nid, exact_nid, (void *)_RET_IP_);
-+
-+	/* Don't waste mirrored memory on HugeTLB pages. */
-+	flags &= ~MEMBLOCK_MIRROR;
-+retry:
-+	/* HugeTLB pages are always aligned by their size. */
-+	addr = memblock_find_in_range_node(size, size, start, end, nid, flags);
-+	if (addr)
-+		goto found;
-+
-+	/* Try all nodes if allowed. */
-+	if (numa_valid_node(nid) && !exact_nid) {
-+		nid = NUMA_NO_NODE;
-+		goto retry;
-+	}
-+
-+	/* Found nothing... :-( */
-+	return NULL;
-+
-+found:
-+	/*
-+	 * HugeTLB pages can be preserved with KHO and no preserved memory can
-+	 * be in scratch. So retry if found address overlaps with scratch.
-+	 *
-+	 * Scratch areas are normally not very large, so this shouldn't take too
-+	 * many retries.
-+	 */
-+	if (kho_scratch_overlap(addr, size)) {
-+		if (memblock_bottom_up())
-+			start = addr + size;
-+		else
-+			start = addr - size;
-+
-+		goto retry;
-+	}
-+
-+	if (__memblock_reserve(addr, size, nid, MEMBLOCK_RSRV_KERN | MEMBLOCK_RSRV_HUGETLB))
-+		return NULL;
-+
-+	memblock_prep_allocation(addr, size, true);
-+	return phys_to_virt(addr);
-+}
-+
- /**
-  * memblock_alloc_try_nid - allocate boot memory block
-  * @size: size of memory block to be allocated in bytes
-diff --git a/tools/testing/memblock/internal.h b/tools/testing/memblock/internal.h
-index b6b1d147fd75..e86bb9000b22 100644
---- a/tools/testing/memblock/internal.h
-+++ b/tools/testing/memblock/internal.h
-@@ -66,4 +66,9 @@ static inline void init_deferred_page(unsigned long pfn, int nid)
- 
- #define __SetPageReserved(p)	((void)(p))
- 
-+static inline bool kho_scratch_overlap(phys_addr_t phys, size_t size)
-+{
-+	return false;
-+}
-+
- #endif
--- 
-2.55.0.141.g00534a21ce-goog
-
+ 	/*
+ 	 * Prevent small unmovable/reclaimable requests from polluting
+-	 * movable blocks through fallbacks. Whole-block production is
+-	 * exempt as the allocator claims and converts these.
++	 * movable blocks through fallbacks. Whole-block production
++	 * (directly requested, or defrag_mode) is exempt as the
++	 * allocator claims and converts these.
+ 	 */
+ 	if (cc->migratetype == MIGRATE_MOVABLE || cc->order >= pageblock_order)
+ 		return is_migrate_movable(block_mt);
 
