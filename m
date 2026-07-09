@@ -4,70 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E48D6C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 12:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D770C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 12:36:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D772B6B0088; Thu,  9 Jul 2026 08:32:47 -0400 (EDT)
+	id 8EEAE6B0088; Thu,  9 Jul 2026 08:36:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D00E46B008A; Thu,  9 Jul 2026 08:32:47 -0400 (EDT)
+	id 89E516B008A; Thu,  9 Jul 2026 08:36:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC8BE6B008C; Thu,  9 Jul 2026 08:32:47 -0400 (EDT)
+	id 7662B6B008C; Thu,  9 Jul 2026 08:36:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CD1D6B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:32:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26814887E5
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 12:32:47 +0000 (UTC)
-X-FDA: 84969177174.27.29A481E
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A55AFC0006
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 12:32:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EFRIuEf+;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 4B01E6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 08:36:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D051A1C6387
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 12:36:14 +0000 (UTC)
+X-FDA: 84969185868.09.5680D18
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0130C160002
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 12:36:12 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CsCRiN26;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783600573;
+	b=rZozhA5BO0p4K1Rul4XuD5Iz224Lt4Pz7vttTBIqox98JyKxTQzm8T5zb3TqnVgr7463bH
+	59snWyXuwRrAscP8g36KzgKbNqtVdbEXTrC0cCllKDCFghhhkh95W/dffQzCRXovGap6Fy
+	37znftsuNs2KZ7OSfqhJa9vWNLKXUR4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CsCRiN26;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783600365;
+	s=arc-20220608; t=1783600573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qIaNLNm9VuAS2foEnqbP367IvDgYygGITQCqidSdvLo=;
-	b=wiuyJNkCTpwC2DFxEG7b4f/75uyYvSZOtRDvu5qsQpiVQ4jhCq1mX2cQ89abEkbBbRMgu/
-	c8BP+3mIjfDN8IX33vgrwwhwJugopIraqubm82yTmdhat2nf949DebeC6de2CLuW1fkD50
-	S5+oJuKdWy4aoIVP2iS/kzWUW8HRYW8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783600365;
-	b=mitT2pbweybls9bymA3589P7kup7d9fw0bTldhCDamXXz4A7OELlJ+lSi0LcPgxFrPletl
-	NESf+qbjUopWnInIR3azxpCBpfUumAoTo5yhW1mSZnjUNbSrZQRSBZUQ7Do1Lfy8JiuCCH
-	lxSrdq2EGP96QDEpueJ9Yvzz0Zv0CYg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EFRIuEf+;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=uajAih/cRQEi5P07GjUh87AJGEuGYoUB7sEFHa8VKYA=;
+	b=yTu3CSepU55Ajg2yfOUqCsdca6k49G1raI+/BbZ1ul7Me+DosHAnwocJTFS+cABbddCS2Z
+	SN8vZXo5OAUpxBx/qc0DvaKjwJkU2LH4xdt+QIBqjHvZJ00azEj96wxWmuax+wqEnMJb7L
+	ma9SoBRNkxnGf8ZDYlrIAyqic5bKnzQ=
 Content-Type: text/plain;
 	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783600358;
+	t=1783600570;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qIaNLNm9VuAS2foEnqbP367IvDgYygGITQCqidSdvLo=;
-	b=EFRIuEf+dcSQJ16OaGTavldWW10IO15UpndLxGXEf55y6xSwQf3h5ScjCFQAiMcMJ/zxXP
-	j/UwrAWlunDwmtH3iVWqRH+SlJQQf9/sBfR+M/RStV6QEKsdPYQSuRJQMwzB6T6bBahgEn
-	nxYl+L1yi7h50uuFySIcGu/xZom9VNE=
+	bh=uajAih/cRQEi5P07GjUh87AJGEuGYoUB7sEFHa8VKYA=;
+	b=CsCRiN26DZyAILMKmd9IZQ0q2FK7WjXXpQjfSXMZbkuZSkAVVu/0giYKRI1nB6wYgl69FW
+	xB9e6mE0czdXxJGOC+QhdTcFxIi6Ox/RZZvACqPluvfwn0/HDVia/wIoIBcrj8xT6/wNfJ
+	HiviROy7X9Lv/cQVWxhM6qOhCc9wrJ0=
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 04/17] mm/mm_init: skip initializing shared vmemmap tail
- pages
+Subject: Re: [PATCH 08/17] mm/sparse: mark memory sections present earlier
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <ak97z4tryYAGJgb_@kernel.org>
-Date: Thu, 9 Jul 2026 20:31:31 +0800
+In-Reply-To: <ak996_21b-jxYLGV@kernel.org>
+Date: Thu, 9 Jul 2026 20:35:13 +0800
 Cc: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Oscar Salvador <osalvador@suse.de>,
@@ -77,21 +76,21 @@ Cc: Muchun Song <songmuchun@bytedance.com>,
  Lorenzo Stoakes <ljs@kernel.org>,
  Michal Hocko <mhocko@suse.com>,
  linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2306829C-A66D-41F2-B5F7-1C164A7FF757@linux.dev>
+Content-Transfer-Encoding: 7bit
+Message-Id: <8F2B957E-B99A-46ED-B3A3-CB3C932851DF@linux.dev>
 References: <20260702093821.2740183-1-songmuchun@bytedance.com>
- <20260702093821.2740183-5-songmuchun@bytedance.com>
- <ak97z4tryYAGJgb_@kernel.org>
+ <20260702093821.2740183-9-songmuchun@bytedance.com>
+ <ak996_21b-jxYLGV@kernel.org>
 To: Mike Rapoport <rppt@kernel.org>
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 0130C160002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A55AFC0006
-X-Stat-Signature: mqoz8w8x1uskgddrcp44gqmbzxofmphm
-X-HE-Tag: 1783600363-752087
-X-HE-Meta: U2FsdGVkX1/4JgYaU1PyZbqiIhvGMt8BATDPNZQZ2uyqm3btQo6lWTUig5UcLewa+l/88Pitzlcq+nQ8rWdXoaPE/wibn3GbQp0w3hBWYDw5BYW1c+LkeVzApAgzj+w5B69vu43mc39QZTqUvgnT6jSm4OQMoVgOgUGGQt/3sLsw6+iu91bfYdBMBc3+NDcUxwaigdJXyrdoV1AFeqsjUOyeYFdKf9JkVICBsig3wUD/u0g6Nd0jjdhp0reO3F+sbX5UW7ssck+IOPkXSjkomRNzra/MxIAriKnUV9XqIeisEVD48oMR6FHMgicTcaHXLSc7ytZH07f/SfZ9BSniT2bSj7FHfd0TR4T5ELgfWaHY0nb9tpgouYca+zLG58BcsEnATqagG+BqQYo81VG1pdggkbv8eRsSwyfCqYXPTGM2ZtupFVpNxwD3Xx0/ZkcJsqVVrq4ZhkUK9LOxuW9uShcF+2jGXNS+0fiaw3YcZc+B9cMVz0er9a62yfa0sTjovtdWdWA91Mo5ThlQ8u80StipPB1K8hDLs1uCAvzPY7/TYdsbKBEkPyU+FR6Vhq7oz4MjTTNiKkfPWj5pE2KIwFHeVmPTav3YtMAFKpPcIiIolpGZQv+2J5sWw6aiSXBgHlqQCTd923y6GGDrxsRfqdk0rMmgM3Fc7XvEaErv5tTuq0aL5bT5Zd+fJyyuJIYYzvWVbV8poLLCpwViOS+MaVbnQWXYrmCGl2Zy9a9g8KQi0ICC1q6gDD18+Wba/tW8do+JUuAcRcTIBG8LQqLuDBzw+AeRyh4xG3HIn2rxflEDjiX+sUGj2GXu6K6SaiO8poCjG/sJR8+0ghnKxvf2238Zme1AKeEGUaao4ZMS5U3+SovmyvbzhYaZdJy3LQv5j42ZS9WnU/fi88OvU9LGpPxug361yQbGHln4lqdhmK0Oi60Ekj6G0B14Pj7Wo9xLk4QGYmuLEFXMBfkF2kq
- TyWAZ//0
- qmMU6BjVUd4sK2LuPRf6w8WOVev05XZtsNV0Y3vO9z1li5IRNTjVEc7QckXLixh6LrCuNXITd4I5k9GjOgg7yGe9NRDUqqE/Biw4NCQqpguRxJVLMrrlgcNHPleid1tl6eUX4vPIbKiNWaO9oGZHyduhknYRVeGnGScIwjIJBSUTxGCi9uNx7FITXuDiPJ/s1+gd+YgwJ1eFtwuhPnnHO1Nl51g5sogm0uTru+lgnL4FHvriKqQ+hMGgWXK6YFJO8THY5zGFRLelrHpIVKhvDMo+e+I0Cgm6iA/Cjl4IAATzco/cDyxGDhOxyG5/rVoNGQy1dNXg8RzFgQpk=
+X-Stat-Signature: qopdk96ne1amqorj16pyu13i4fn7dikp
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783600572-730797
+X-HE-Meta: U2FsdGVkX195AP+/QfGQ1TsARI9uvh8tOdi96dgghH5jSSSYzYi3N5/Zs+anIfiBPZnvbtLcAy7HH7lLh3x/ZHCleJwYBlC9sDkWwiGsWtESs75PAwoarQnApC6+tSaSsl2Qjz0fDTO5NIXTLEJ0UxOoH4i1S0CoS4qQj/mH07ykjlH5ny1eZDhX+grABACxwR1sfiOUc3UiRsxVGlRWsZMMTZ4xNGxXzpqnDKs7ov9IRsOCXmHAEUQqrUJnpEWSm8dtgCOkjSLTAxtufH7VTk/CQB+0GPKqIqsvM21zwWt8QbqTEO3jNLTZnDOFOwiJbg653uguxCAXAmObAEOLOMGB/n2tbliH8PTJLJ6L4GDZ308Sp0t17an/BnXZHjLobXQV0TPXcKtAbwIn6dD9miXeemWJKzOsCjIjUaZh0s639XL8YREtdTRIujjmfWzYD2cRT+AHrk7qrfax2IFL/VDhb5Xl+zJUwCju3RKzqDtzQ2p7lDZ2RNuY86GKXBEzuTqIBQZ4mmoJS5GV2xVvqroCDF64oKNm0z3874Wpvd7odyjbZ88rJux/6hayV4ZFCltXaIqZ15erK1UmzHNFusFix0Bn4NaTik/Cu3y1s+cHXSwUOBwS14QSYusLi55bQYv+yWe69LljxitkRSCQuCWHJnB09YIL7SLDUEhy9Lp7pHMcUTKmmoS0+MLmKwWjCLLlVziV/l9ZRVqdFzzAERY5Nr5Swp6yXBJPvd1BXlGe+OJSYsyGhS9byDwJ7DOe9kmIkX4XFzxNSeRKFoSgYE+zsuIgVx0tugJaAqgguKXr7YrdDhdY1wKdQyoMT6bw1qp5Fu67EzVwSzoUY7u2vDIcXuBtcILkd3DxAFokKHlcRHMooSr8SOlb7KwYOa390pLHAMCxHKbeMqAomCIAudpzvzjpAzjbFQzvC7yOC/cCDgYGcjFbgMyMVrZsxwVKC5spgwcYwvP2sblktPJ
+ 6T0ZqMTV
+ 0hbpQV3XEpspu2kYo0jQVcvX4xYwqGQdZamxYogBVM5raqnNusNTGLXG0QHLHPoDrMbc5hA4/1J3wDWMUqGycksB0ObtxmBIObGQNeVRIPTrTRueqvT5TNXfKRNDOz2V+F+6de2ACRPGJU4aSMajtllIASqIOValHiYfvgNL3O4cUwcTCF1HSnKHexlausqjgoXJnbDObsL+8tYCg1MGyjh25LFViXu2FhPkHGeL/LGvhQgFC/zLAtEPQqs3gdVIQ/YM01vDXugd5P2+E1M8AojLM9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,121 +100,46 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Jul 9, 2026, at 18:45, Mike Rapoport <rppt@kernel.org> wrote:
->=20
-> Hi Muchun,
+> On Jul 9, 2026, at 18:54, Mike Rapoport <rppt@kernel.org> wrote:
+> 
+> On Thu, Jul 02, 2026 at 05:38:12PM +0800, Muchun Song wrote:
+>> Upcoming HugeTLB bootmem changes need sparsemem section metadata before
+>> the HugeTLB bootmem allocation path runs. The memblock ranges are marked
+>> present from sparse_init(), which is called too late for that setup.
+> 
+> It's not only that memblock regions are marked present, but it actually
+> initializes mem_section's for the present memory ...
 
-Hi,
+Right.
 
->=20
-> Below are some preliminary comments, I'm planning to spend more time =
-on
-> review next week.
+> 
+>> Move the code that marks memblock ranges present into
+>> mm_core_init_early(), before free_area_init() and the HugeTLB bootmem
+>> setup. Rename the helper to sparse_memblock_present() to make the new
+> 
+> ... so let's name this function to reflect that.
+> 
+> How about sparse_sections_init()?
 
-Thanks for the early feedback! Looking forward to more review next week.
-
->=20
-> On Thu, Jul 02, 2026 at 05:38:08PM +0800, Muchun Song wrote:
->> memmap_init_range() initializes every struct page in the target =
-range.
->> For compound pages with vmemmap optimization, the tail struct pages =
-are
->> backed by a shared vmemmap page.
->>=20
->> Initializing those tail struct pages would overwrite the shared
->> vmemmap page contents, so users such as HugeTLB have to open-code
->> follow-up handling to restore the metadata afterwards.
->>=20
->> Use the section's compound page order to detect struct pages that =
-fall
->> into the shared tail vmemmap range and skip their initialization in
->> memmap_init_range().  Still initialize the pageblock migratetypes for
->> the skipped range so the surrounding setup remains intact.
->>=20
->> This is a preparatory change for consolidating handling across users =
-of
->> vmemmap optimization, and it also avoids redundant initialization of
->> shared tail vmemmap pages during early boot.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> ---
->> include/linux/mmzone.h |  4 ++++
->> mm/internal.h          | 16 ++++++++++++++++
->> mm/mm_init.c           | 25 +++++++++++++++++++------
->> 3 files changed, 39 insertions(+), 6 deletions(-)
->>=20
->> @@ -673,19 +673,21 @@ static inline void fixup_hashdist(void)
->> static inline void fixup_hashdist(void) {}
->> #endif /* CONFIG_NUMA */
->>=20
->> -#if defined(CONFIG_ZONE_DEVICE) || =
-defined(CONFIG_DEFERRED_STRUCT_PAGE_INIT)
->> static __meminit void pageblock_migratetype_init_range(unsigned long =
-pfn,
->> - unsigned long nr_pages, int migratetype, bool atomic)
->> + unsigned long nr_pages, int migratetype, bool isolate, bool atomic)
->=20
-> What is isolate parameter for?
-
-I've re-examined the code, and you're right that the isolate parameter =
-is technically
-redundant for our current use case, as memmap_init_zone_range() passes =
-false.
-
-The rationale behind keeping it is future-proofing. The ultimate goal of =
-a generic
-HVO is to support arbitrary huge pages, not just HugeTLB. I decoupled =
-this as a
-parameter to prevent potential regressions down the road; if a developer =
-leverages
-this for other huge page types in the future, they won't inadvertently =
-break
-things by forgetting to update a hardcoded false in =
-init_pageblock_migratetype(),
-especially since memmap_init_range() natively accepts an isolate =
-parameter.
-
-Of course, we could also just delete this parameter for now and add it =
-back later if
-needed. I think both approaches work.
-
-Which way are you leaning?
-
->=20
->> {
->> 	const unsigned long end =3D pfn + nr_pages;
->>=20
->> 	for (pfn =3D pageblock_align(pfn); pfn < end; pfn +=3D =
-pageblock_nr_pages) {
->> - 		init_pageblock_migratetype(pfn_to_page(pfn), =
-migratetype, false);
->> + 		init_pageblock_migratetype(pfn_to_page(pfn), =
-migratetype, isolate);
->> +#ifdef CONFIG_SPARSEMEM
->> 		if (!atomic && IS_ALIGNED(pfn, PAGES_PER_SECTION))
->> +#else
->> + 		if (!atomic && IS_ALIGNED(pfn, MAX_FOLIO_NR_PAGES))
->> +#endif
->=20
-> Let's trigger cond_resched() on some defined number of iterations or =
-some
-> memory size chunk, e.g PAGES_PER_128M or even PAGES_PER_1G.
-
-Yes, that's for the best. I was really struggling to choose a suitable =
-macro
-for this earlier, but I realized it's a difficult thing to get right. =
-I'm leaning
-toward selecting PAGES_PER_1G instead.
+Make sense. This name really captures the function's purpose well.
+I'll go ahead and use it.
 
 Muchun,
 Thanks.
 
->=20
->> 			cond_resched();
->> 	}
->> }
->=20
-> --=20
+> 
+>> caller describe the sparsemem-specific initialization step.
+>> 
+>> This is a preparatory change.
+>> 
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>> mm/internal.h | 2 ++
+>> mm/mm_init.c  | 1 +
+>> mm/sparse.c   | 4 +---
+>> 3 files changed, 4 insertions(+), 3 deletions(-)
+> 
+> -- 
 > Sincerely yours,
 > Mike.
 
