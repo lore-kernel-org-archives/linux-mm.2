@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 798D7C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 18:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48D34C44501
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 18:47:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3D1B6B0095; Thu,  9 Jul 2026 14:47:49 -0400 (EDT)
+	id A5B276B0096; Thu,  9 Jul 2026 14:47:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F14FA6B0096; Thu,  9 Jul 2026 14:47:49 -0400 (EDT)
+	id A35276B009B; Thu,  9 Jul 2026 14:47:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E04466B0099; Thu,  9 Jul 2026 14:47:49 -0400 (EDT)
+	id 948B26B009D; Thu,  9 Jul 2026 14:47:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B84D76B0095
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:47:49 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2E203C0A9E
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:47:49 +0000 (UTC)
-X-FDA: 84970122258.21.3E4F1C7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 622FB6B0096
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:47:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DC77F1A0279
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:47:50 +0000 (UTC)
+X-FDA: 84970122300.30.B216248
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4CE95160012
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:47:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OD2cPwhr;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 197EC40006
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:47:48 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=se0JPcqZ;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783622867;
+	s=arc-20220608; t=1783622869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WGzsdh6wPoQgMw5cd9uKBeGzgmNURZq8GSz/ptEy9mA=;
-	b=kaZSdBoDZH692UWEDTdZYNx5ssd6Gx0DJH1Abd8EhfOU57zNrUzNg7ZAqKZRFacjG1qPvw
-	B8w96XisvzN47aK4Id+/zlXZNi6vhSH+CYajBynQAUDQmdza20jJ8qTjxFaI9ALSNCcFq6
-	zH2p8RjgNWJukilikkgwrkFrt2vk4Ek=
+	bh=O+gzxfPCLwqteQeNfEBhkBCsllyjJc2ee+7IBWDm2H4=;
+	b=wpwKk14+98O0Un8Y5qr0S0FaiT6bZ0OIGa8VOgy8uJgLaR0iPye/19iaj/Flneq5rqWznv
+	BEU3hGpq+EWcLIZuiLI8hylEdMKeX+rOUN4gMqtixGw6VZEHx/3qwQDa+JYd3BpLF4gxOE
+	TshNOuan0Xo/a41KZYVoVmEPjtZmBP0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=OD2cPwhr;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=se0JPcqZ;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf08.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783622867;
-	b=PxEfs0/4Y3nCL+T9vUNaH2D0uj9I2l16c2xX9LCOGEOWOHtMNidnMO5rGNV0kLu6bcSn0g
-	+C6ufdkNQ5jPCetfBzOb6pafbVSBHoqswa4eyrgb/n/ef3K3Nw3x3k/xmjeBTYM2jvjpyb
-	rsgdYjzAMKQAoCeRZ564G5PAF6qFFAU=
+	t=1783622869;
+	b=LLDRQu+CI3TCrrvy51pELELFkQv8paRj0cYkVouJ+31Z3x0jpBOSJjWNCZP4ndsEIFQ/MW
+	tsXyWbhzzpuipw5khicu4e4tRy1bgeMUBVIED2UgRkgPpZ6CSQOuv2eL3aVFrmXH8WJ/mF
+	6dvyL+ijqrx5gS6Lo0edb0nALWecPBM=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=WGzsdh6wPoQgMw5cd9uKBeGzgmNURZq8GSz/ptEy9mA=; b=OD2cPwhraNaHSAcICzvZE/QgCi
-	yGiOlNuWxYJD9mNrLOs+HiMuuN6JTVX+CXKAwS8kyGsrW4q6nu3TK5i0a87qN9ReAGs/UvrtuTgF1
-	I4T942+DTI5t2SvTydflGQ8tkE3zVkwR1uQHjLi5UQYOGsMLDCM9/ZS+SBrlMzeI2V9ri+s7JjdYy
-	Jql0ORX0UuADYovrmTImGYnlOULrMYVGjvlVtsLh/eeolR9pvPrA2H2fVMCWT8jz5uXDbAOZxrAcB
-	4uV2gO30SSa8vNYFWLlfj/7brK86BAm/qoxs8yR43vzw386P1AKRpL2qhGNo3xSPEJ+/vcGXWbmcK
-	dlBKzKXw==;
+	bh=O+gzxfPCLwqteQeNfEBhkBCsllyjJc2ee+7IBWDm2H4=; b=se0JPcqZDWQMgEY8NKEdJzfIB/
+	/wSOEo/YrwziDZtrCD4h8QangqX7dyI34UmF3BpT6bXYquNFbhuDNVaszVi67ftXrAFsyfm0qGqQc
+	me2iKzblj1dotTHk3rt33SKIfrP3pp3Zw6J5HGC+J+uGXD+MejVkzKtEVpiaqHGUeoyqvObJQOqyx
+	SUcCdVPMfAZWdS7l11gU5iDwI6DfZss1g6wRmJa8+XFhOG0cSNR7+AHeRqSj3Dgadv6QBormlkK/X
+	iZeQkmm+nh70HLQ7ZSJiVWLEko7ByWAqY08WyHEu54nmoqcHjgTwJzdNZ6ehjuGLRADaDkGTIsB81
+	ihWj+sVA==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whtmg-00000005OhD-1lcP;
-	Thu, 09 Jul 2026 18:47:42 +0000
+	id 1whtmh-00000005OhR-0ua0;
+	Thu, 09 Jul 2026 18:47:43 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Jane Chu <jane.chu@oracle.com>,
@@ -74,22 +74,22 @@ Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Christian Brauner <christian@brauner.io>
-Subject: [PATCH v2 02/10] hugetlb: Mark some function arguments as const
-Date: Thu,  9 Jul 2026 19:47:30 +0100
-Message-ID: <20260709184740.1286561-3-willy@infradead.org>
+Subject: [PATCH v2 09/10] filemap: Add support for authoritative mappings
+Date: Thu,  9 Jul 2026 19:47:37 +0100
+Message-ID: <20260709184740.1286561-10-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260709184740.1286561-1-willy@infradead.org>
 References: <20260709184740.1286561-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4CE95160012
-X-Stat-Signature: rmjis1rnf8cjoox44xnjjas3ikbiants
+X-Rspamd-Queue-Id: 197EC40006
+X-Stat-Signature: myjxsrw6zpok35r6ir5rt784z16imq1b
 X-Rspam-User: 
-X-HE-Tag: 1783622866-68483
-X-HE-Meta: U2FsdGVkX1+3vvpVWznSKOs+b7aExWVdPQhwpnmflvSrIsGvQ3FGNqyLKmvDulnUdoKeeUich4t80aN33sXZMu5gL+W/J5tEteVE6h/x42Ieo7rTEu/VTOQS4AH5w8tFtVu1K5DxzRbgfI7pO+5rMPiCgFJMjEFDAg2FA605EaymRbrHVjSaI9L+UwTaBNCivPReMWIHYGH9nlViQ0qoq7VHGFBSOUJeGXqWkSj7ZdwiUe4Nzf3Nk8VCDPJbDB88Wvi3Abo9SE95PeyLLsf5l+vlQG/6nebvhLggpG3bK9jb57/j3hX1QmvPTtFeW5V/K3XxSk3/DD3ARyL2c/uPdFNaoiroUVLqbitn4NWbf6knIDSQDDzKZPoOIThHSBXbDHuH3xjZ5rdrB/dkZXb27kNxnEY0Bkk+R9d21R4yiirutX57Yu++QDsIRrlRBO9r8lFi2RN1G4myLV2AkXdTaLGe+7XHw3LqtfbfM2RCw/5AfjK2m27okvM9jgvoD9xKNSWM++sJxMaNnx7rWWNiAK6y5fVXZW/cZ1n/uP3p1Tzt9T9HEbvZdzy4z5pwV5Cir+UvCnyaZS0DQM8eLADw0jhlcqMDjKmHHO4imVfRFfUCNDKeJ11Jck+UgQfxIiTBmOvplbNG3ufMHc+ecupkAu2FO99hZsBVBFxSl/r8jrasC51Qc34y+ek9NN8EYaArNrNjpK2+MXL3mNjSKtcV6D+7lbLp+QuzqBnZPEKlWTrXZ45lvowdU7oyU0wYM7/XXtZj2VpIlPw891yF+7RgHyfkuICHgq8IKcB77VRw/IuUkhQSuftNV+GeMGnj8CcfebE3mC06YGAe6BQhCAc2pHg4NAkQ/iIdL9wtPjdtDqTRkRRiiSeso9EeMLfRkm9fsijy3hNiABpJQCjA56eUffRSHhV7Jaj/vvBB+yiDJMuDuqb+Ilz7WNCLWNyj6XWmQYMXneK8WlEDSLs9Mt4
- YTJt0bj4
- AXIjq8A7baWfOa3BpQ6o1/lxcbKy6yjWZrDBkZpIeyMOd2RHozHzUuwIziY2TYEnHRue1XS51nPfMU1sIB8S9XJVHTe7k+KFOwSIUTCEghwg3bOCe/O4FpgUfBJqLpy+xl1MrxSNPglsayptrkmVHk6JMQktY/Fh2YbNAMUiZy7VDy3eLeNI9PtblhPsNvdfiQDCVvQMqEjNbbSOOQwFfRSdhoY06rO4WF4DAf8MNchPEQ0PE/CiXE0YD4DU/4TGuU2fczJsbwibmwAc9ZCiG8gW6f0HRJ6+fTNfYJGPWWA0EhVpo6fEHHKpFMfJTW5AYy8KjE9xdAFsJIqaFfImdjoOk0pxrMzwTfA1238dj5V8pSWA=
+X-HE-Tag: 1783622868-237728
+X-HE-Meta: U2FsdGVkX18whbqnFVDWddjItmDwamVadVF3BKTOlQjNvCH69n8K1ihuV5zJ7ytWykQqfj0Q28wbN4OZuAJOOGZeUUI+SHph1T3osq1IrfRI4IOu10AmUpjJ5osi1Yn3ueGcLX0k8PPGG3aSgRkHmrI2gopBYr1mRWc26xoHmNmSZcYA0dCCIk0dJoui8pnGKubatpeObnv2rYVcP5K7xb1Ow4EJWbYu+40VLJ41iby5YnuYE/vmdY49UdPB9EIaOuMhQdNlfrEyaj2uiPBdt3OVIrqmLBkiekmnKl8D+Wf5Ah+u2+6hsR/4K+c8dJwfQxG2WNIW8I1wUokrxEMxylYUGcI6jJW2sz7EA6S0rhYCIa1Jz2GGxlL9hQ8dL7kp1vQ10Axrfckhx/WPZKPlVJQ+iR14otBiO+jm7vaVxCNtdtAkkVIJZBg9xG7HJG2Ma1+45zx1OzJ8HaPvjKS/jCVUf2vAcebW6ydeI1vy4s5yL6Pp4LDMtixV7EENRCBU+4Lp1t61GBORub+Gk8stuB2G7sqHkahrFlDTF6JrhXID5TyUfb8TOSp0Go/5guAcgc/dUdosAyS3ajAzItVKpx+DuDbUGzbKVAvEpo93qreP8s5HHNoQOs/ZSQIecZu3vlG8GqLCaE0pDkD6iBmu2tEMbYzoePZl1LvQaFkcZX8vwqTSzXhHFlT1KS+8ukFQivopoG82j1qrM5D/WlSSVQmLu5NUTqrBoQ69wrgVL8KUlK/LaZstBQpDx32ZfkcmbL3+Je04dQYqmxYjKxW2YZpN4WnDTkDfPBdK6fqwNM8gBXsiEg/410lkdPF6evF/ry0nBI7FlPAkcGmAtWlX77Kf6SgCf5qKRsr7UZFzuCVpUtBVEkLlv/CVf18wgv2y/u8vjCvDoJHJwne2CDuDG8ipY5HNHTOpu9/sT6jhCgb+do2hjU4OGfh6rHfWOmZapjyFxhuBX8ie83rpC3M
+ jMRxCKYf
+ MaUssxgPn7i0gVwf+dUkjXJOm94d81G1D1rLzuqBPJRQZJdUwxyE9qiZf4ZBQ4adlUsTb+ADfKUYo0SEP0fq16lx9W6YIpj71byu5Z0eBZ81zO6ab+es7FiXmek1WG5eDN34H0Q1qAlL9dpg9g48AGxWDeWOsbiuQ6ALGtWByiw/tapGKmcqvxIwIo8ClSAzvVOb9iVszm2Kj6jtcyoaB9BP2jw1CiH+qsvHW8pbFZ4nfxk5hzbHjFFhVDtqpTddwpxqewgv5R3nT7pHGtaI3+kS69zPmzfQEE/MhnGkpxZVYHdo2gsXNM+QUYnpJNmmo7ZKqRpdVKmoxtcY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,108 +97,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-These functions do not modify their folio argument, so we can mark them
-as being const which will allow for some minor optimisations and let us
-mark other function arguments as being const in the future.
+An authoritative mapping knows about all the folios in the mapping.
+If read() finds a missing folio, there's no reason to allocate one and
+try to read it because we know it's a zero region of the file.  We can
+just call iov_iter_zero() instead.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- include/linux/hugetlb.h | 19 +++++++++----------
- mm/hugetlb.c            |  2 +-
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ include/linux/pagemap.h | 11 +++++++++++
+ mm/filemap.c            | 18 ++++++++++++++++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 2abaf99321e9..18661a7cdb37 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -165,7 +165,7 @@ bool hugetlbfs_pagecache_present(struct hstate *h,
- 				 struct vm_area_struct *vma,
- 				 unsigned long address);
- 
--struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio);
-+struct address_space *hugetlb_folio_mapping_lock_write(const struct folio *folio);
- 
- extern int movable_gigantic_pages __read_mostly;
- extern int sysctl_hugetlb_shm_group __read_mostly;
-@@ -292,8 +292,7 @@ static inline unsigned long hugetlb_total_pages(void)
- 	return 0;
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index d0c9aecaa4ac..64e67bf79b20 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -210,6 +210,7 @@ enum mapping_flags {
+ 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+ 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+ 				   account usage to user cgroups */
++	AS_AUTHORITATIVE = 11,	/* If we miss in the page cache, it's a hole */
+ 	/* Bits 16-25 are used for FOLIO_ORDER */
+ 	AS_FOLIO_ORDER_BITS = 5,
+ 	AS_FOLIO_ORDER_MIN = 16,
+@@ -345,6 +346,16 @@ static inline bool mapping_writeback_may_deadlock_on_reclaim(const struct addres
+ 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
  }
  
--static inline struct address_space *hugetlb_folio_mapping_lock_write(
--							struct folio *folio)
-+static inline struct address_space *hugetlb_folio_mapping_lock_write(const struct folio *folio)
++static inline void mapping_set_authoritative(struct address_space *mapping)
++{
++	set_bit(AS_AUTHORITATIVE, &mapping->flags);
++}
++
++static inline bool mapping_is_authoritative(const struct address_space *mapping)
++{
++	return test_bit(AS_AUTHORITATIVE, &mapping->flags);
++}
++
+ static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
  {
- 	return NULL;
- }
-@@ -595,8 +594,8 @@ enum hugetlb_page_flags {
- #ifdef CONFIG_HUGETLB_PAGE
- #define TESTHPAGEFLAG(uname, flname)				\
- static __always_inline						\
--bool folio_test_hugetlb_##flname(struct folio *folio)		\
--	{	void *private = &folio->private;		\
-+bool folio_test_hugetlb_##flname(const struct folio *folio)	\
-+	{	const void *private = &folio->private;		\
- 		return test_bit(HPG_##flname, private);		\
- 	}
+ 	return mapping->gfp_mask;
+diff --git a/mm/filemap.c b/mm/filemap.c
+index c568d267c803..c113bc69887a 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2697,6 +2697,8 @@ static int filemap_get_pages(struct kiocb *iocb, size_t count,
+ 	if (!folio_batch_count(fbatch)) {
+ 		DEFINE_READAHEAD(ractl, filp, &filp->f_ra, mapping, index);
  
-@@ -616,7 +615,7 @@ void folio_clear_hugetlb_##flname(struct folio *folio)		\
- #else
- #define TESTHPAGEFLAG(uname, flname)				\
- static inline bool						\
--folio_test_hugetlb_##flname(struct folio *folio)		\
-+folio_test_hugetlb_##flname(const struct folio *folio)		\
- 	{ return 0; }
++		if (mapping_is_authoritative(mapping))
++			return 0;
+ 		if (iocb->ki_flags & IOCB_NOIO)
+ 			return -EAGAIN;
+ 		if (iocb->ki_flags & IOCB_NOWAIT)
+@@ -2853,6 +2855,22 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 			goto put_folios;
+ 		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
  
- #define SETHPAGEFLAG(uname, flname)				\
-@@ -727,7 +726,7 @@ static inline struct hugepage_subpool *subpool_inode(struct inode *inode)
- 	return HUGETLBFS_SB(inode->i_sb)->spool;
- }
- 
--static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio)
-+static inline struct hugepage_subpool *hugetlb_folio_subpool(const struct folio *folio)
- {
- 	return folio->_hugetlb_subpool;
- }
-@@ -857,7 +856,7 @@ static inline bool arch_has_huge_bootmem_alloc(void)
- }
- #endif
- 
--static inline struct hstate *folio_hstate(struct folio *folio)
-+static inline struct hstate *folio_hstate(const struct folio *folio)
- {
- 	VM_BUG_ON_FOLIO(!folio_test_hugetlb(folio), folio);
- 	return size_to_hstate(folio_size(folio));
-@@ -1088,7 +1087,7 @@ static inline unsigned long huge_page_mask_align(struct file *file)
- 	return 0;
- }
- 
--static inline struct hugepage_subpool *hugetlb_folio_subpool(struct folio *folio)
-+static inline struct hugepage_subpool *hugetlb_folio_subpool(const struct folio *folio)
- {
- 	return NULL;
- }
-@@ -1157,7 +1156,7 @@ static inline struct hstate *hstate_vma(struct vm_area_struct *vma)
- 	return NULL;
- }
- 
--static inline struct hstate *folio_hstate(struct folio *folio)
-+static inline struct hstate *folio_hstate(const struct folio *folio)
- {
- 	return NULL;
- }
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835..cc8d98399913 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1775,7 +1775,7 @@ void init_new_hugetlb_folio(struct folio *folio)
-  * stable.  Due to locking order, we can only trylock_write.  If we can
-  * not get the lock, simply return NULL to caller.
-  */
--struct address_space *hugetlb_folio_mapping_lock_write(struct folio *folio)
-+struct address_space *hugetlb_folio_mapping_lock_write(const struct folio *folio)
- {
- 	struct address_space *mapping = folio_mapping(folio);
- 
++		if (!folio_batch_count(&fbatch)) {
++			size_t fsize = mapping_min_folio_nrbytes(mapping);
++			size_t offset = iocb->ki_pos & (fsize - 1);
++			size_t bytes = min_t(loff_t, end_offset - iocb->ki_pos,
++					     fsize - offset);
++			size_t copied = iov_iter_zero(bytes, iter);
++
++			already_read += copied;
++			iocb->ki_pos += copied;
++			last_pos = iocb->ki_pos;
++
++			if (copied < bytes)
++				error = -EFAULT;
++			continue;
++		}
++
+ 		/*
+ 		 * Once we start copying data, we don't want to be touching any
+ 		 * cachelines that might be contended:
 -- 
 2.47.3
 
