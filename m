@@ -4,98 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A9CC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D2AEC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:30:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC6216B008A; Thu,  9 Jul 2026 18:30:23 -0400 (EDT)
+	id 744CC6B008C; Thu,  9 Jul 2026 18:30:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E48B76B008C; Thu,  9 Jul 2026 18:30:23 -0400 (EDT)
+	id 6F5A26B0092; Thu,  9 Jul 2026 18:30:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D86886B0092; Thu,  9 Jul 2026 18:30:23 -0400 (EDT)
+	id 6328E6B0093; Thu,  9 Jul 2026 18:30:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AB3726B008A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:23 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 33B821C32B2
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:23 +0000 (UTC)
-X-FDA: 84970683126.12.E19AC51
+	by kanga.kvack.org (Postfix) with ESMTP id 37E626B008C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:25 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B837D1C32BD
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:24 +0000 (UTC)
+X-FDA: 84970683168.16.185885D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 48F48180011
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRKp+h8B;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 07C5D160011
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CK/MBKNR";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783636223;
+	b=cvZSFkbl1T2hX60fnJPXzO5AFtqrMzbmZUon01aT5Ynbr43fwyG9d4SsawWgKQFQ1OSppu
+	rffPUlAzW+A65GKC2bupK9WQ+wtCkNc2fIeTNP4lSK30EC0pfzUSjOB123kz73Ufkuc7cD
+	qvjMaYnUqrcZaz9MsJf+7hBKn+UyV5M=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CK/MBKNR";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783636221;
+	s=arc-20220608; t=1783636223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=677B5n0kvLgyERJskeE3rTX4vg8H2agSafboCd79Yqo=;
-	b=EbnS2uqqsctgMG5qwUPSPo1inqYAV9d/F906Z1ddjgtDoD9HRCfEEifZNCNBEwOPvUPGw8
-	t2LugDZZZ0AdZPunuO0S1KBPNLXjl4XukkUPJWhqf3DKaLGtl4VDhLEFYXQ+tD41o/jTMk
-	1KKDdPdsSn6b1IiXC5wQA3bISx402pg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRKp+h8B;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783636221;
-	b=WpPtTbB2MvZ2bTiKoIw8o5H8ZN74yFVKxU/3bSIMAY9zyhJgO0HDu5zHh+Aos5hmI28x/D
-	o8TkRDKy+3Kh219a4fLtLK8WtoF6bzhc+eAETkT5GFCh/vUaisTsg48Rj+4ZlzpsNxbIPQ
-	9k0Jx9yBRJJ83Hc7O0fy2R53U1XYVuY=
+	bh=vMyuSi7gzb6O0VdBFMx0MJUBdwyDUatYS2gTmPOsA0U=;
+	b=3dmEbXFkxxGZdR6gTk0VhE2+sw3fmqFSfoFnXufOGCADehMPB412jhDIl85C+85C5a0T/i
+	ldySKgjVvk1YO+N+C2btjkC0P+LqauUD4do00htcOcE/x8Uq8/tdSmPea+unp+O/s1kCP6
+	+cAezrSumXMdqnU3dECwLX/SWGftVF8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 91A2042AB1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 63BAD43D6A;
+	Thu,  9 Jul 2026 22:30:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A781F00A3A;
 	Thu,  9 Jul 2026 22:30:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E396B1F000E9;
-	Thu,  9 Jul 2026 22:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783636220;
-	bh=677B5n0kvLgyERJskeE3rTX4vg8H2agSafboCd79Yqo=;
+	s=k20260515; t=1783636222;
+	bh=vMyuSi7gzb6O0VdBFMx0MJUBdwyDUatYS2gTmPOsA0U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=lRKp+h8BWaSeDykoHoqJ5mrqlRIS7VQXlre/ap9aJ/0RlrHcyAhk6na3dJU3uSyrW
-	 ctG+55gZWNCsY7zihUV0+qp3xgbTtpkPPuV8lHecUZ5Esggt5NJft8AkTKFPlNXk0m
-	 VZSIEdHZYx6K/f/a+w5k9vBbZlhn9DrBDbu+WSmkEV9hOshFgeUiHUM2dM+qK0Vo5g
-	 j4v1eY4em9b/9UCzakYT+3deEWb/j7q0SQitS44/z0G/UrWi2egiNRXmBUyY7b3SYf
-	 M/5Pc06+47TTRggx8pyDNQ71FptEwEU0xnTEOhUQnwzOO2/e3SlwuQ8qTy4/L3LYhn
-	 Qr0tDeKYYF2KQ==
+	b=CK/MBKNR342u/WAxiwPW2N5vj3qLGW3awgYFm6hPJQgdoO2RvB5KcWtRImWSUKp+I
+	 bHE80QB56ejWzaSiaIHOXB/4Jfq3t2zXkw3Wa7yFP6NMMa1DunONBJU+61ZukpSqCl
+	 8BYdjT7mMLRwnQ9iw5DP9P16g3E0k8i885AtSW/3K6FbrzY7TTWbCrePwlSZD83cNO
+	 qxSzotY/UZIV7jtwFcy2FaTwNo/MliFAkAV+29l1aaCxuEu6f61Zz2LrrCx5FbGZBr
+	 4votkWlZ7JK1t3eyq5LkRe2lURhRhyXbAsGS2/nyo5Dg3nOZq64oRGtDDBhcl9jBew
+	 aMSKOObBkE8fQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 10 Jul 2026 00:29:57 +0200
-Subject: [PATCH v2 02/23] binfmt_misc: use exe_file_deny_write_access() for
- the interpreter clone
+Date: Fri, 10 Jul 2026 00:29:58 +0200
+Subject: [PATCH v2 03/23] binfmt_misc: convert entry list to an hlist
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-work-binfmt_misc-locking-v2-2-2a1c3d4126a7@kernel.org>
+Message-Id: <20260710-work-binfmt_misc-locking-v2-3-2a1c3d4126a7@kernel.org>
 References: <20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org>
 In-Reply-To: <20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
  Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
  linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
- jannh@google.com, stable@vger.kernel.org
+ jannh@google.com
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2087; i=brauner@kernel.org;
- h=from:subject:message-id; bh=AYPobXhR7tlhSW9eVD0N+FrhRjSI1w+57SYynhHowac=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQFKHx92v+Ba8sr9bpOt5yDwT9ftWx4s+jNjVzJ0skxc
- THy9+587ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjImURGhmu3lp+0ehIurTtL
- OP6FkG3TicD9wql+209++jFfoH7JX3NGhmb1Bk+PX1vnmOjz8s0WfetnMrt3Vkuv6Nr/B+e2nTU
- 6xQIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5590; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=K7+oalDrHMTeNQ9AP6yNW0Cu9brM96qW++KI833Vybk=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQFKHxd4jg7q2+mqfP9AB6WQtG4GJOsjoleTY8cN10sD
+ Q74q+bZUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJFrCxn+1x14E9dv1iR4pW3B
+ Hw/1R3XxYfveL04w5PIKMi3fcrjPgZFh+VPZvwLLbRcVbZqjfqzOe86HHI3fdrkTvix8pHyQ7b0
+ 4PwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Queue-Id: 07C5D160011
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 48F48180011
-X-Stat-Signature: rru7x5psenud7oirra44pbumh5soqzyr
-X-HE-Tag: 1783636221-847340
-X-HE-Meta: U2FsdGVkX1+trzMkXnaTC9WUCX19TNVq30hbTl6DiIFQ3pjDn3r/ZV4JfCrt1qivC+5ksoXYVW/Whbx8f1KyCsAHogaOTHVP4I6i75MjaOhQLCcjhvzemDpsohT857MqMj+dxct17iPFCbl2RJN2Plbr1keODe0kM1gHjDiEREiBlPQQgUcty1+F+Via2tf0u2YcdkAUfVRulr9XeVSoO6bl1iU1cWJOPIyaqT3zV0FJraBPRiOqw7uUjAWhy11XiNo33VkEjSlT2DmtGnFvQsKpsJkNue/mu5aUfpBLKMlViKlHsDyh1Pwo545m36rkNo7yhKx4UVEzhoYF4ydbr6wEiTGgUOilz4r5mRyNBVij9d+5QnGH8CAkUGjiahEmoYRgkzu/vlAog53RlpDQJYQroFfEz7ULi3e/nLAS+oGN/MnagXPEmw1DkHIPkZQ5oG51IyuG/sxz9LsO5KC77SqjLSxNokPB4RNprosF43LyjxNf3T18HyryfBdpdfy4SZwa684X8CiicX0P0CHfNjcCnZ6tKq7K0IsHADgJUXJJkV0y8VWSumY3XCClmAY2VHT99GMiMq2fTNVLlgEBL/n+qNSjDaTGB7hQoIS2qOu/45PoMsrSqSatOhe29ROr71KNjW6mE78vVRgeccHnh3g23n3CJrYNv4QVwC0/vUvRXyJLS9Zk6ZisRiRG/Wd087pA9o9FDEkrpmZyzqCrIq/v4gpxTbo3nCL2LzvVbqCw11gJIQ+tyOvkRtEZJG1FMipBo9ApMmy8CuDOS0Xf+RGOcaNiA6iA1lVt6Z/XeNAhxAONa7utCR7XoRyP0yDpoPOZDfKjp4/G19ZG4yZROGLCKPGIwCUY+BfG3ZGBFETe98Z/bx05wCAF5uMszKGhZPyAuMSMNETb9eh9fWgOYVzUxlryqtOurdTRAHt6RwUIUcHUcDgbfCQSsaifZA8l4+4hOpCGN3DFuQYSUFx
- M9btdeNh
- RXxRssqugdR5P/PMN9U818CrPFAPKM0Qk3RK6cZz2JbF6QakSXkn+a6C6epbY3/XDjQWNQdZDOBqH8EeUxIQhbvOWPWKJr2RZFEn0i/jL7pXbUWNevXgTQJ5HXjgs791ruioiAe52w1ZPagFrZP8DZQEjV6Jxph/t0W6dO331IFKY9tCCOd7FczdeXkpsJi+v1JbyJ1O9EMk2xLXHsjjq5qWs2YGLeG5MWa76piGROyD9jF2W2e+NxOOl/2np402EgUC7/vSE0kWx38PrriL7T2eXFRjpAEIf6Id30wquLEaXWBj+TcPCdR96ahrZx2fj5NnfCoJSJ/behnQst3OEsgo2WNOAxckvODWznTBu9IkknhrxP+7bENRqQYDLOnllN/cI9WLtYcboVvY=
+X-Stat-Signature: 93hygxd3qb31k7jwjtet6wo91f7mye5x
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783636222-581326
+X-HE-Meta: U2FsdGVkX1/iEmWNDF97OHSAmASXdcqKIeXJFqsElbcUqjsr1lIk1+LYsSMrhyRJ02lRLFULy01MdCeut2kCgexKmnajuP0+Jk3QHH1K5f2zUlrMbq25OkzwTuTACdCtJrn3s/g2LEQVQUtphJ+KWjWUIxOqaIL8Mf3JiWp5Mpac9hKnTWkr1DkeMyOkjUEOYBcEOjSJozPtrNnVH4EXXh+PQL27Zd2155plQPg8FblnSaXILj2Wh2wT8A3sac0HS+KG70rnnNU2jAcaukiTCjG8cMYeFqEC9OVngKUl3aewZ7hexQkxVK0FjKvw3mK+zQxfFaKY36XDZHNik9YSM5fLqRC7ghB/G1tHfHXdHn8R3ozbizN9ENM4obKzkw5cz/cTQaWCNfR6/K4C8W4B/XFnAhTNwKbc4h99YeIOoJDDgGUrSV+JLA0dx3NcqD4p+/e7OfNOKCz4ZBaCRgqDA9Izv1umuI0Sv8ebB9b7rlUGQp4STg7PM0NO4e5GCA7enIZe7+oE1RGUEwuNrf5FZ1XnFuVUQx9rIHVY+ZeaJxVjzEg51TjWYxJl5knw6TTQFt20Gmd2aj6KX3JUJ4RZ9Xt3nguCtBkaSZ9bx19v8RvoRamxnGpjqOfqtEHzUJ2mrS8QbH0kHVfExl5PQfMH2ZuvIIUHUtZMXw4oVT0i6UqtZwdrVsgYVIYSekWCSEpg/8hpNVLao8G11Rfkdh5G2xkIisaLCA6F6qjTLCnyBwowTRkBFXNrxN8h5irDmkKYQiS4maTucRBCVWEtoNFnJdBNPmKEXk+JRRB1lTgy/nPKxuyVBhdg5ap5NZ9Frhj4d0qiyvWbLrk8HrzaxkDEfP+z6XLT/Y0y7bhVX76W0U196UttvhMHZ7NfeLs2q9qa7DO0vf0HmyggHtmS/MjJVcsznJJgI3uYr6th3Db82CUrQt1jXSHP/A8E6NmrXwjaWkYE5h0yCo1xrZQZkun
+ wuNhOHLA
+ usGETtI6agAPwDssfNBnGL+Bz46lNMnnlnIsB0jwyfMdMdjhMzkcoRnAzh0NsABnwWtuox47BeIp1ddfpujtlx8W2ot9o2hl39xSG+ehD9Jrq/Q92il2D79RzsmgCZbhSxhKPEfruIRxh9HoPQV0OkqOBX8MrzY39e3TlgrB/lUNBfz059qJ45d8QK9s5JtPcrKpRZIQ7Qo74B8ATRlCbBBHG93BRxiVV7OUuO4olquuJUt/LczluS7AHlWMcXX5SCp8fZtHslRLeVvxMkHK9xvz0RgwvUrXWfCxIsuaEc0u6MublbNnPAUU+ofdoomdm09TdvyKDFx7h2lLuqTGorQ+Zv5nejT36tAh2Dv/ZluEebHM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,56 +102,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-For MISC_FMT_OPEN_FILE entries load_misc_binary() clones the
-registered interpreter file and denies write access to the clone via
-plain deny_write_access(). The clone is installed as
-bprm->interpreter and later released by the exec machinery through
-exe_file_allow_write_access() which skips the i_writecount increment
-for files with FMODE_FSNOTIFY_HSM set.
+The upcoming conversion of the handler lookup to RCU walks cannot use
+list_del_init(): reinitializing the forward pointer of a removed entry
+would make a concurrent lockless walker standing on that entry loop
+back onto it indefinitely. The removal paths do rely on
+reinitialization though because bm_{entry,status}_write() and
+bm_evict_inode() need to detect whether an entry has already been
+unlinked.
 
-The deny and allow side can therefore come to different conclusions
-when pre-content watches are in play: if a pre-content watch is added
-to the interpreter after registration every subsequent exec through
-that entry takes a write denial on the clone that is never paired
-with a write allowance, driving the interpreter inode's i_writecount
-further down with each exec and leaving the interpreter unwritable
-even after the entry and all its users are gone.
+hlists support exactly this pattern: hlist_del_init_rcu() keeps the
+forward pointer of the removed entry intact for concurrent walkers and
+only zeroes ->pprev with hlist_unhashed() serving as the linked test.
 
-Take the write denial via exe_file_deny_write_access() so both sides
-of the pairing base their decision on the same file mode, and
-propagate failure instead of silently ignoring it: an interpreter
-that is concurrently open for writing now fails the exec with
-ETXTBSY, exactly like an interpreter freshly opened via open_exec()
-would.
+Convert the entry list to an hlist now while keeping the rwlock so the
+subsequent RCU conversion is a pure locking change. hlist_add_head()
+inserts at the head just as list_add() did so lookup precedence
+between registered handlers is unchanged.
 
-Fixes: 0357ef03c94e ("fs: don't block write during exec on pre-content watched files")
-Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ fs/binfmt_misc.c        | 25 +++++++++++++------------
+ include/linux/binfmts.h |  2 +-
+ kernel/user.c           |  2 +-
+ 3 files changed, 15 insertions(+), 14 deletions(-)
 
 diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index de50a7468b07..24142859658c 100644
+index 24142859658c..ab7dbd898977 100644
 --- a/fs/binfmt_misc.c
 +++ b/fs/binfmt_misc.c
-@@ -252,8 +252,14 @@ static int load_misc_binary(struct linux_binprm *bprm)
+@@ -48,7 +48,7 @@ enum {Enabled, Magic};
+ #define MISC_FMT_OPEN_FILE (1UL << 28)
  
- 	if (fmt->flags & MISC_FMT_OPEN_FILE) {
- 		interp_file = file_clone_open(fmt->interp_file);
--		if (!IS_ERR(interp_file))
--			deny_write_access(interp_file);
-+		if (!IS_ERR(interp_file)) {
-+			int err = exe_file_deny_write_access(interp_file);
-+
-+			if (err) {
-+				fput(interp_file);
-+				interp_file = ERR_PTR(err);
-+			}
-+		}
- 	} else {
- 		interp_file = open_exec(fmt->interpreter);
+ typedef struct {
+-	struct list_head list;
++	struct hlist_node node;
+ 	unsigned long flags;		/* type, status, etc. */
+ 	int offset;			/* offset of magic */
+ 	int size;			/* size of magic/mask */
+@@ -95,7 +95,7 @@ static Node *search_binfmt_handler(struct binfmt_misc *misc,
+ 	Node *e;
+ 
+ 	/* Walk all the registered handlers. */
+-	list_for_each_entry(e, &misc->entries, list) {
++	hlist_for_each_entry(e, &misc->entries, node) {
+ 		char *s;
+ 		int j;
+ 
+@@ -662,8 +662,8 @@ static struct binfmt_misc *i_binfmt_misc(struct inode *inode)
+  *
+  * If the ->evict call was not caused by a super block shutdown but by a write
+  * to remove the entry or all entries via bm_{entry,status}_write() the entry
+- * will have already been removed from the list. We keep the list_empty() check
+- * to make that explicit.
++ * will have already been removed from the list. We keep the hlist_unhashed()
++ * check to make that explicit.
+ */
+ static void bm_evict_inode(struct inode *inode)
+ {
+@@ -676,8 +676,8 @@ static void bm_evict_inode(struct inode *inode)
+ 
+ 		misc = i_binfmt_misc(inode);
+ 		write_lock(&misc->entries_lock);
+-		if (!list_empty(&e->list))
+-			list_del_init(&e->list);
++		if (!hlist_unhashed(&e->node))
++			hlist_del_init(&e->node);
+ 		write_unlock(&misc->entries_lock);
+ 		put_binfmt_handler(e);
  	}
+@@ -698,7 +698,7 @@ static void bm_evict_inode(struct inode *inode)
+ static void remove_binfmt_handler(struct binfmt_misc *misc, Node *e)
+ {
+ 	write_lock(&misc->entries_lock);
+-	list_del_init(&e->list);
++	hlist_del_init(&e->node);
+ 	write_unlock(&misc->entries_lock);
+ 	locked_recursive_removal(e->dentry, NULL);
+ }
+@@ -754,7 +754,7 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
+ 		 * read-only. So we only need to take the write lock when we
+ 		 * actually remove the entry from the list.
+ 		 */
+-		if (!list_empty(&e->list))
++		if (!hlist_unhashed(&e->node))
+ 			remove_binfmt_handler(i_binfmt_misc(inode), e);
+ 
+ 		inode_unlock(inode);
+@@ -798,7 +798,7 @@ static int add_entry(Node *e, struct super_block *sb)
+ 	d_make_persistent(dentry, inode);
+ 	misc = i_binfmt_misc(inode);
+ 	write_lock(&misc->entries_lock);
+-	list_add(&e->list, &misc->entries);
++	hlist_add_head(&e->node, &misc->entries);
+ 	write_unlock(&misc->entries_lock);
+ 	simple_done_creating(dentry);
+ 	return 0;
+@@ -871,8 +871,9 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
+ {
+ 	struct binfmt_misc *misc;
+ 	int res = parse_command(buffer, count);
+-	Node *e, *next;
++	struct hlist_node *next;
+ 	struct inode *inode;
++	Node *e;
+ 
+ 	misc = i_binfmt_misc(file_inode(file));
+ 	switch (res) {
+@@ -898,7 +899,7 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
+ 		 * read-only. So we only need to take the write lock when we
+ 		 * actually remove the entry from the list.
+ 		 */
+-		list_for_each_entry_safe(e, next, &misc->entries, list)
++		hlist_for_each_entry_safe(e, next, &misc->entries, node)
+ 			remove_binfmt_handler(misc, e);
+ 
+ 		inode_unlock(inode);
+@@ -973,7 +974,7 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		if (!misc)
+ 			return -ENOMEM;
+ 
+-		INIT_LIST_HEAD(&misc->entries);
++		INIT_HLIST_HEAD(&misc->entries);
+ 		rwlock_init(&misc->entries_lock);
+ 
+ 		/* Pairs with smp_load_acquire() in load_binfmt_misc(). */
+diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+index 2c77e383e737..071da63f2b48 100644
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -101,7 +101,7 @@ struct linux_binfmt {
+ 
+ #if IS_ENABLED(CONFIG_BINFMT_MISC)
+ struct binfmt_misc {
+-	struct list_head entries;
++	struct hlist_head entries;
+ 	rwlock_t entries_lock;
+ 	bool enabled;
+ } __randomize_layout;
+diff --git a/kernel/user.c b/kernel/user.c
+index 7aef4e679a6a..c6a2bfb4d918 100644
+--- a/kernel/user.c
++++ b/kernel/user.c
+@@ -23,7 +23,7 @@
+ 
+ #if IS_ENABLED(CONFIG_BINFMT_MISC)
+ struct binfmt_misc init_binfmt_misc = {
+-	.entries = LIST_HEAD_INIT(init_binfmt_misc.entries),
++	.entries = HLIST_HEAD_INIT,
+ 	.enabled = true,
+ 	.entries_lock = __RW_LOCK_UNLOCKED(init_binfmt_misc.entries_lock),
+ };
 
 -- 
 2.53.0
