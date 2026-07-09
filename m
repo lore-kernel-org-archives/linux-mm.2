@@ -4,117 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72301C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:31:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CC42C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:45:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7052D6B00A7; Thu,  9 Jul 2026 10:30:59 -0400 (EDT)
+	id D676F6B00A2; Thu,  9 Jul 2026 10:45:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DD206B00AB; Thu,  9 Jul 2026 10:30:59 -0400 (EDT)
+	id CF0E36B00A3; Thu,  9 Jul 2026 10:45:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CE726B00AC; Thu,  9 Jul 2026 10:30:59 -0400 (EDT)
+	id BB7AE6B00A5; Thu,  9 Jul 2026 10:45:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E9576B00A7
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:30:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D09F31C7E43
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:30:58 +0000 (UTC)
-X-FDA: 84969474996.28.586F36D
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	by imf01.hostedemail.com (Postfix) with ESMTP id DDC5040015
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:30:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EEWMmP73;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783607457;
-	b=Ffv+zyQcYCZHBbUq1VuTRgd8wf1F6AVCA/I5jHHa+0BKFVHSzRhyw0LvQ+3k0VoNssBfPI
-	yR3QTKo/+QmknMXnG1y8IixNaUgcuIVaPYNDEtEZ7zYWEDhwB+ZFfh26fU/o6x68bJp7sC
-	wM1+UH0kSw0qSRdj06ofcc2uQBNPkAM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EEWMmP73;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.50 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783607457;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D8F56B00A2
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:45:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE04B401BF
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:45:17 +0000 (UTC)
+X-FDA: 84969511074.29.4A1A785
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 06D2D40007
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:45:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AFMeQZGi;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783608316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Mnu8ylsDHpO+mw+tq1vQqx2VIcm18P4eTlOKV9syFk=;
-	b=WMKb95iT9kAbz1UaenPJkbseEvJN0/+PvgAmqByhoqpmYDE7rzADrWhfJchaGRWPmr6NjS
-	B4Ng6UdkuD3bHn1rAITBe2Zuy7HEIqDzBFh1s1P/y7FmioxKJI9w3YTwb68OQH03Ngrnol
-	VOArzLad8gZS0ApoznqIi9xyaFaT6Hk=
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7ea9c6ea7deso1172152a34.3
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 07:30:56 -0700 (PDT)
+	bh=Zd5VoNhWPJ5FEzML0KqVlaL2mS6uuL6nYiz9sQZLNME=;
+	b=JQjjlwX7kQgW2A1d2KlllQIcEyr4AIUA1rOJ8owGm+hhyubuWJuCULBok6ADaticJBTWcx
+	E5zxg91JZKndIXd4QKtRVf2y05uyZjKoG2ZEJKdN4B0olkFcJzxYqQGnEA+rn87GljMAA2
+	REHwHST8zZNzn1Sl1ZQ08mDjoNhW1G8=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783608316;
+	b=P6jPORKn22i8lZj0eGJIDSZxicrbeF4qbt4Ip6Ot/nRYmBUjBJTzlbEzNHLHYrG2HmxFOg
+	yRXVEhYoDkLpaE5a0lu+dw574gfqE4/nYM9U6l6RCOnqXU+cp+UOQUdCYxmIKiSgMFN7no
+	r/Eem2ie+eEcr+SAqVKLlIjlMmFuMHs=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AFMeQZGi;
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-698411099d6so13327a12.0
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 07:45:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783608314; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YgOYwg3cNdBSB6YRdVe70DHeVGIyznMybP/dUr2dr1nSV+xswUX6axN/4uwhcSRSP1
+         sxIl3Ef7TIxztK5hrja3VAhUElhtgbK2tX4BDRQyPLU9M3KCSL9xyHt622hY2STi01LI
+         fsp+IxUuJ55Clq5afblUOcJLBnD3VrhYaCK/aACRJq7DboBfEbR2xYcw97J1w/CRCbiB
+         kVYgBqzps2fWBSfzOc+IvDHNwZnXmrAQVLSUMCVDiJN7YPhVhP1bnl+Rp+bRRZ8AIjsL
+         zhTZXZg84TgogNQ6bnbikmTPaV/HMyFHR/bALelw0YWnIpV4aHBolliHSNv15LiSe3yO
+         FDrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Zd5VoNhWPJ5FEzML0KqVlaL2mS6uuL6nYiz9sQZLNME=;
+        fh=PmxqnVq53Df1T3X8/XCuurIvR7dbJp4wir+UGv9M7G4=;
+        b=Ftwxo1/apo/TMtq8rmhXYpdhmuvPgoweHKlxVQeLvZGbmtvJ3GEvACgZk25g4/N80a
+         5yrGb22e9Uyp5CytTyddckt/00pGpE8rmEX7VBoRjZBOI6kAMEc9ud5yh9bAvEGCsFFZ
+         VJeL0SWdRakV/5oxmKtYxhnKzAUQlKkv1lgWQQsGRwXPKBMV+43MbWszry4XAsNQQhcz
+         IUDe8oYYMeOn4hr9JTg3T4bUO+jfgzPkPKWMhnQJabur+8kT/P1kI1BukMd6igVoFyN/
+         YEJi85Eq0zuTAH3zbBDLu2nWJswF9R9ucJbldJbIDbRhslNjyJgHGGHjbWGX11vn+b2X
+         Snmw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783607456; x=1784212256; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2Mnu8ylsDHpO+mw+tq1vQqx2VIcm18P4eTlOKV9syFk=;
-        b=EEWMmP73w7uwaDZtPkTz2YVdSNLJb3cpYFdqIS+r8ZbxO3qJ4k486GBTg+ROKwjHC6
-         cx9giEKcxtVBsTcgwWkjP2jkElQb6lmonVOQtAnjuQyN/P1J5yTITKwZ3XCQo9CILNIT
-         ViGdSAIS22gdh8nDGXeY6STsEe4BvftC0D6KGfD0Xplb3mOsNbiC7FF7SI8ntopASYZw
-         6EzPjI1hJ0KTrXnpSb7d8oVkxmgmbSs29lh11pQZWjj3WoPtqwxTAyF3Ch5aBRaaRl8o
-         XLFdzLrYztVqnToP5EKbX77UsiO+1k1IZE2wpdLP4W7iCeuZ3T3caBE60yNM/2sJm8cH
-         9ICw==
+        d=google.com; s=20251104; t=1783608314; x=1784213114; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Zd5VoNhWPJ5FEzML0KqVlaL2mS6uuL6nYiz9sQZLNME=;
+        b=AFMeQZGiDGPEBPN0N3fQwCMJ7g7ASgM43dnkA8pv0PO/hhRT0y71QdIbzY+QNSp0fq
+         InsA2X3tMeC5RcCCrC+AVJGcq3F1KhVh1elBWq3rq2S8c3NBAMdeLBrsYWxYFF26cjmL
+         UNnTqPqa4RRRUuTNuf9k6GYRuXjpM0RK9ey4BoU+fq6GxRiL2mjRi73vJSzAncSATnJR
+         T8/27Blou6Us1zNyze9GhwD3iKDMho/tYM1NVn9DKEIPy7nDsjgaFN2I4GS5FK26LTbu
+         HgCax6D4ZO8UtFaWHVctkm9smrS/l4MHpanQmXXUTE6ZTOWcsC36qFPKPlkiG6TKzdaQ
+         wkzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783607456; x=1784212256;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2Mnu8ylsDHpO+mw+tq1vQqx2VIcm18P4eTlOKV9syFk=;
-        b=ETGOhjgN4r+3WM1xQYGzIgajLSFSkvEbGNVeC0Hd8jU53FFC6sSHfEBu/Y1ZuR/ikX
-         zKj9CqjppW9hJgEs09W+RUaq4bp07350Cy/aNOO8JSobl3L6C/Kom5BgXufLqgqPpvzn
-         Y4zJE0jBz7C7PgY653G9DU8m4cvcqhCAT7z3lzRNHh/rYBT7Tvrl1XS4YnFym1bX8/LF
-         +F0F9RnqocJFzT5eqs2SsyvxDzbLicCD81erJDTeTIFfQ3hnBmPhRC2pQAFVfGHtnEON
-         pVWMIdsHnVD0gjip7fcw8pJ4vS9OBt4w/mYO3QFk0iasqryFGl6/zVytj8J0ljfPMcTT
-         pEzw==
-X-Forwarded-Encrypted: i=1; AFNElJ/Elzzk7tzg4iWkPZx8jgJZ8tS8eFoEfk7v4PVkO/NDtqXc+ZIVsplDx3Rxo5mRtS4h9Ta3n26OBg==@kvack.org
-X-Gm-Message-State: AOJu0YzK8O1Gmn83hzB5MD4oVhWRT9dzUgZoyrxScHvuMZ/Bq6RL52M8
-	BNvCpzZPchTR0VxlBz2HUTqOuZO+piMZKGFVZbACQXN98Y3e5jRNxVHgpX6gMA==
-X-Gm-Gg: AfdE7ck5fq1njvC1FhTKMBu3PSTje3hdKRsb9ZxuOPgZNDw9D/tNNtU8S5RdZhOSXUY
-	IxriXKZJ1Em8ntV9ONDsV6NIQPRhvE6rt5q+nBDBhw4tqQlOx98EOsqG+n/ifDvQ2v2vuFp7+rL
-	mrvaGAoGkCr1TngZ3n01t+h9KS7mp/ddiqNBCz93ebAMoqYPnuV4DG8G+/ZYA2ApZg+4HMRXQgA
-	4KWiL5sTStL+z7/ilb/06nVTvVZwVXxFRtpWlMRvRQA7iNuQxcCHQ2V0XHXeRGzlZMCMWzVb213
-	mbkHUafcAQOyQDbiIz6igqfwR5ZiOj6yBI/t3cGIYN8P79G87a+jE++2AM7CdPLyfWxRODYtLdJ
-	xMSCVgMJklu3ho3YP9fyTk0K5sra1QUvaRaaGozU0/JwbZt3x9sh1O6lJTbzeN8gfQxLGWmGkTk
-	xVldG0MSYajn+BOITYGtKN5p2dKDUjNdBjwuO0PwZo2qQ=
-X-Received: by 2002:a05:6830:6112:b0:7e9:e3cb:29aa with SMTP id 46e09a7af769-7ebcffcef05mr5983352a34.29.1783607455876;
-        Thu, 09 Jul 2026 07:30:55 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:18::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7ebcab8efc3sm4168157a34.0.2026.07.09.07.30.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 07:30:55 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: chaithco@redhat.com
-Cc: muchun.song@linux.dev,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	arozansk@redhat.com
-Subject: Re: [PATCH 1/2] mm/hugetlb: Prefer mempolicy nodes for calcuating surplus hugepage reservation
-Date: Thu,  9 Jul 2026 07:30:52 -0700
-Message-ID: <20260709143053.1188272-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <BT4VHT.DYI921C1JF9G@redhat.com>
-References: 
+        d=1e100.net; s=20251104; t=1783608314; x=1784213114;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zd5VoNhWPJ5FEzML0KqVlaL2mS6uuL6nYiz9sQZLNME=;
+        b=T4sHuVa23DKnzGXUxJHnw7RqpY0jEaclmpqWmURpjkVR+UIfWtmlzuLdjO72Ttzz53
+         qZWlF3B5Y2iEyecJfSEeJdc5l72uly126CpVUCEd4eV4NtmxDFwUbJOKN6XyKiZC1gGk
+         dabwIwD5aen+bCxIcbhYfP5ExzcpmZ9CAub5Xh4JJpLCGoZz/1QPjKg6kcUgpRjOhuTw
+         oJ1FLL5IRdYUFvhCQfz9u7DxmQDc6F1UI0y4dnWFJYC/4yDwxGwuPvqiZdyVL535Z8sL
+         Efe/fHtyug7lD1YvLVHdOfnUn17snKdyjG6BLMiXmiJvJN0GJlzBcCQuTJOFqWC9cjv4
+         Iagw==
+X-Forwarded-Encrypted: i=1; AHgh+RravJJFd3Sb/r00He0Co+0ikjqabNV9WyBW/1kepNgQRk/f0rlW2/XVQjIL8WbA8Lz+ha8E8tUmbQ==@kvack.org
+X-Gm-Message-State: AOJu0YxVQyWth7LsFxLro+td4h2f77beJ2N1cYYp1CpJEk8ma7zFX8Uu
+	rCHR3ryFoSdqi8ciJDM/ceMBNkX84ETBcQQ0yLHWvaVwDMlHE5HG+B3ckI3m+4hmfC/t3HoCVhy
+	BCvvliul1ukI3jhDhP8IfHoHBCrFtXUiDnKqFgOa8
+X-Gm-Gg: AfdE7cnFPuj3jCGgIkjPmduUvLXylBFTSedKtkFSUfb43PN1UWoUfTlXHF0pmWq9dxw
+	sMuhB3G9FqSq5FEeFbxJvFYlrQhnHBLo9qN+ir8zsFp//HIOlK9IJu33rjyxrp+wU+Biyp/RJpz
+	caGgZm0vs9mJ2T9RviC7rv6N5fcVNfjaN6/6ejZcmbYrVFA/a9UxWnq+GrmQUp8sa6Rh6F2RO1V
+	5HO4aevbNTzsn9xQCAKw7lPrTkV3jQRvGnfEHh7rCiiAOx2vDPAzqvgZbOTL7Sou9irK4FwGfIT
+	ZRuc3OPAsHKGs2rYNMXUhiSZOOo=
+X-Received: by 2002:aa7:d50f:0:b0:69a:fb2d:e84b with SMTP id
+ 4fb4d7f45d1cf-69c0702dbf7mr41178a12.9.1783608313884; Thu, 09 Jul 2026
+ 07:45:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DDC5040015
+References: <202607091820.qbjlGhKK-lkp@intel.com>
+In-Reply-To: <202607091820.qbjlGhKK-lkp@intel.com>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 9 Jul 2026 07:44:59 -0700
+X-Gm-Features: AUfX_mxdaahI1V6-jyyKE3lUbvW_nBZksjAKzczctwG_EjEihAxbOStFVHjycmM
+Message-ID: <CAJuCfpHjUij9kkD6QiWxYvsYD3iKga9rzJZWnN9vCf3bhp-dXA@mail.gmail.com>
+Subject: Re: [akpm-mm:mm-new 344/369] mm/alloc_tag.c:356:58: error: implicit
+ declaration of function 'compat_ptr'
+To: kernel test robot <lkp@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Linux Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org, 
+	Abhishek Bapat <abhishekbapat@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: ea9e3eu43xa3yetu4gkootm9mcax73do
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783607456-544368
-X-HE-Meta: U2FsdGVkX1+Oi6d1XE3lWodcphaZccYxGRkikrUi6HGbK5vwtz+Bns9fkGJV34KFCWbIk+aphtbxau9ptYAQQVYA9p25PC00CLW+5003Z5VIOw3RPV7uqdeRO1DTwJt013K1yNDZZq2XvCxIMhhP6a1PHmV2Pf71IN6zFLAAVe0yBIb4FEDWLQDmWB0asKKCimtOTka614wqr2ZZBDUXrEYaGv9IDxbBgT/lAM/rhzX6hxUF9ZldOFUtFiWQ93kmQWYZuip6MgLsb8TXaLDvWZ7XQqZJhmPr1UjzkaYYbZOCntLSXXvK0ncTAvAafe4pSDcfp4xe7c+1de8xSBzg4DFsqrb+uqr/9qCXssTMcfgrlgYV5CE/rLIfurlXX7xzTMPj7umDv7HdlJ3SDfhjnwEucMTf6zseAf8+gulFpKSuF0iY2Rb0WeiRpobsH6j2yaFQi3tATgtN/zqK5eXKRf4tfSuowNKiPkscmWJL+R8uz/D9QfKQqWc7arpSPPjPhsuYRD7yYdKgZx9xRUbYoJwQv0+XtoRpf/X/ApuslF/phgio6OP8Eq0upB+7N3SI4EDeCyiMwm5v4mtmjuHksfLq71Wyv0kZnaXxp9+8vPVGnobA1Nojy1P6xGYPxx6c31bTrqbmV+zAuOrhRjhtTBlZLd0UXASDp97ynX+OOJ02tgTR0w7gaafoxcpnVTovcSOfuNQnQl3O1D9k2ki29LvhpFxcEqk8mxw998qm+shJwgeonBqsLo8Ydeq40UTR3U46TAbsPQhiZxSln9n9Tlc5Of8YQCOjXu3A2i9D2lUhX3r6p4Rj5qihnqZKx8RH4LBTedMz5lt/h4KI/Sz5t3IVI4kDqSs/7fPb3cl4DXHmKRdnfpqxgxef9ucHCl/MfloESKNrbNRJmIbetGZMjw5e5PfgJN2//VUIDI59j9DYOUwotiEBg1cRcl5kbs7xvhqw9jVR7gcgcOV7DA1
- dgG0P9UV
- Tv9ZWUb40VTBBQDetzm+YII8L0xW/9zFgQvwSWq3gAh2ZjmVRnL9OGbip+xTE1DiTpCWZWf11g00uaC/2MTrLEFy4DHpFkIFG6qq8+0F/vhdxganBDN0HettuiJAk5keKwZtURItvRhVDmUf4nT9Gj4+mdQXmeAnclrGVVKy41DSHVk6RCVIme7jdLTjz8W8Ml+qD6bP1bXEidCplZRZGwmJzRQpsQvYnfudsrFc9cNjFrR+m2QlJbtuNehURfxix8AOHr3xJRvp/yy/FluXJBifXiZp0rPeiXN5SkjPmGJgRejBc5WtK5xHgFRzPzlm3FfUiz512rJjUNhPyN42Xrh5R3WP7e8dM+JrWwzNK82/ZhVj0gJ6ku3j+7k+tpcLfy8qWcjmeoxjVnQjOo+OpYwkwZdJx62VA4y9vhjASWxm3uOMtZ91EuP3iMmfFRZkYiyKn+Cbz2MiP9wPhbzM0gOdw/PQGOvEtoeF2PUYZ3YBDCfuez7f0R1vqvUp3VYBtobwzVpNU8KtXM2t1SAJHSKMNqg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 06D2D40007
+X-Stat-Signature: pj477zauypuk47n6h44y1ofmkh7f8e8o
+X-HE-Tag: 1783608315-114719
+X-HE-Meta: U2FsdGVkX1+34j65FRdWIM2wvmnmro02iexJa7zTdk+2gUH++rtuw58kP5/axzek+Lx0aNKb4qLJEXFTiMotjjcibhWKitzuZw3AthadK+m4wU9cgByRtwhVCOwEILuBOWjzg5ZS47Z0JvzjXCt3cnHvO/G98B5fRLi0Hv/JR3m3uQU2l67yEQhgng2DXuOz0Gg69MD1vq2whOCZij5AvyT0LN43C95iDnUTO1enBmY45fFPNcwpIdV/fOwZCE6o5CMMXMx7xbiIbBoYKwO5vigZYUTowB24DkzIK02VZtV3DChtE++79NY319tx4nKkGA8pbm3DY+Zxx6idunsTeDiQguw4ITZV4sg/Tu900q8a0LKEJEJVWZjt4mAMqWHKY7JEhlX5HCOcci0FZR83wuZkve9CkVg/Ku1z9GZum/myToeQ2DzlNjlZFdpCFWVIVSHxcWPQNUCF1LBeaHeApc4YjP/u1fdG+1xePEHLGgeXIMBvYg4lW2Rt0h3AW85aKEOi6oCeoNbexE66+S2QH12fDMaJbLEGji+oqj660MN2JKiL7Jo2OaxbBwE4NPXBbETeKaCfEsIV8EDcdL1RVf+Xyv7dftt3TaEi+aN+wrV4fraC8uc6Cr7EP4v83ASP9Nhsvq0HM7WAKcvhb+2B7lsLq80SrAyWZDm7M2a2wcQzAssi57J5ant/iAn4b7IROsJmcSYqyHeC3eAVjGjUbT2gxOB0hNI+r2MCE0E1Z4mj+g3Hz+rCdzGXKeoQD5DxEkWjw9CVUzQ6p8758JmSgpl2Bva44s8/lYpgr8d7Ge2X1TPbjTImWWmssWQ4/hvNfRvj2/FLcem4R/6QuC5d8z/cRL28/Girl4j6CHoOl6sQRjwtsztYUR0yuO8tDBMQpripg0HUOr+CMDgAC/HlhlTmfb4+T0b+7mH6bQtSUYaWQEJ5narpKloH2rxN7RniKIbEgALo1fKglRpKEnq
+ eYXotEET
+ CQvlB0/7jh2MO97oZB9TTTqTNahAN+2TbnGgYRbkQrmqsEYCVrTnhUEabxLTgyoj08Rp1c9yMIrBbSxgKX8/1/SU8F6D/9G+kBQKK0MU0sHeZx2XRroLo9IH6SYABpsuh+t7fJdQ5WbYfAHzv5lF5mtewdXKAxmZhfI7KINAKchQzFC5IvYw3OEwQ5QKENnRN4WI96ybW1ODTJsFOR9VmX7qaE6hi6KWyFfXuQWNpH5UT/lLsQBrrrR8DfX6OjJbYmGcCrKYHvGEKW19klVdZjotLawzaVGvCOtI/6olxfZVq5t/vDqmsDrzqVCKPIGL9k7xYHG13RPwfBpmfvdU3PwCBBz6i3/c5irGCyCHl27geEM9VRlaB45gWzeamrrKBD8FjRPad9g2Ws1mcNYe+jhqc9KHXjOV7tOba
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,35 +142,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> 
-> 
-> On Tue, Jul 7 2026 at 12:33:57 PM -07:00:00, Joshua Hahn 
-> <joshua.hahnjy@gmail.com> wrote:
->  > On Tue,  7 Jul 2026 12:28:55 -0600 Charles Haithcock 
-> <chaithco@redhat.com> wrote:
->  >
->  > Hi Charles, thank you for the patch, this looks good to me!
->  >
->  > Personally I like the description of the commit in the cover letter
->  > because it provides a bit more context. Do other reviewers have
->  > thoughts on this? In any case, the code LGTM : -)
-> 
-> Thank you! If people prefer, I can copy the cover letter contents to 
-> the main
-> patch notes. Just let me know!
-> 
->  > BTW this is a little strange but Sashiko seems to have failed to 
-> apply
->  > this patch [1] which is strange because when applying on the exact
->  > same commit db6ed2a3d3106 "mm/swap, PM: hibernate: atomically 
-> replace hibernation pin"
->  > as Sashiko tried, it worked & compiled for me with no errors at 
-> all...
-> 
-> Interesting; is this something I need to act on in any way?
+On Thu, Jul 9, 2026 at 3:00=E2=80=AFAM kernel test robot <lkp@intel.com> wr=
+ote:
+>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-ne=
+w
+> head:   59e34180e138a293260301c139cf7ee800978533
+> commit: 27ace96bf8195484c9e9e1a08eb5af5a4e81f9f0 [344/369] alloc_tag: add=
+ ioctl to /proc/allocinfo
+> config: sparc64-randconfig-001-20260709 (https://download.01.org/0day-ci/=
+archive/20260709/202607091820.qbjlGhKK-lkp@intel.com/config)
+> compiler: sparc64-linux-gcc (GCC) 15.2.0
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20260709/202607091820.qbjlGhKK-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202607091820.qbjlGhKK-lkp=
+@intel.com/
+>
+> All errors (new ones prefixed by >>):
+>
+>    mm/alloc_tag.c: In function 'allocinfo_compat_ioctl':
+> >> mm/alloc_tag.c:356:58: error: implicit declaration of function 'compat=
+_ptr' [-Wimplicit-function-declaration]
+>      356 |         return allocinfo_ioctl(file, cmd, (unsigned long)compa=
+t_ptr(arg));
+>          |                                                          ^~~~~=
+~~~~~
+>
+>
+> vim +/compat_ptr +356 mm/alloc_tag.c
 
-No not at all, I just thought it was worth pointing out since I had
-never seen before. Thanks again for the patch!
+Missing #include <linux/compat.h>
+After adding it the error goes away.
 
-Joshua
+>
+>    351
+>    352  #ifdef CONFIG_COMPAT
+>    353  static long allocinfo_compat_ioctl(struct file *file, unsigned in=
+t cmd,
+>    354                                     unsigned long arg)
+>    355  {
+>  > 356          return allocinfo_ioctl(file, cmd, (unsigned long)compat_p=
+tr(arg));
+>    357  }
+>    358  #endif
+>    359
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
