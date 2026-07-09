@@ -4,125 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E79EFC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:23:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 111FDC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 22:30:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9379F6B0005; Thu,  9 Jul 2026 18:23:00 -0400 (EDT)
+	id CE9866B0005; Thu,  9 Jul 2026 18:30:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E1B66B0088; Thu,  9 Jul 2026 18:23:00 -0400 (EDT)
+	id C9A8F6B0088; Thu,  9 Jul 2026 18:30:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D2A06B008A; Thu,  9 Jul 2026 18:23:00 -0400 (EDT)
+	id B899F6B008A; Thu,  9 Jul 2026 18:30:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F2FA6B0005
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:23:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CBD411A02DD
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:22:59 +0000 (UTC)
-X-FDA: 84970664478.07.B753294
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 25772100005
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:22:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=PK+54S25;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by kanga.kvack.org (Postfix) with ESMTP id 924B86B0005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 18:30:19 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E6B991A0294
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:18 +0000 (UTC)
+X-FDA: 84970682916.28.54ECC29
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 36D9C140009
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:30:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kpqnw+ve;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783635778;
+	s=arc-20220608; t=1783636217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b50SGMSOIyssQj3plHocLLhkQW1pcBLVRqoMkWAD4k0=;
-	b=eFKQNjJx5heh3NUrZXbQ5OzFo+vxl838M3wodsW4fqmunjmSQZT5Nlpmrj7j2JyYPBjpIG
-	gm6KUHzF+x/yfwogdMQo9ooA7jaP0y8k76zuXDB3K7IFkbosrsIlGEjsIMQDaPvK3IBZWq
-	c/BJ2Tio6XalcRENH+vPYddsoytCHrE=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=0EyJr0/xAe7avOLcVrbyCwP6jqYeJsuARR8e8XI8AfY=;
+	b=AueHVQzFlMJnBjE68QUakkdKp9NXDn1nEl5NZjKs98EUKs1C3PvHb8wpzCiK0qT8Wzqxsv
+	Ii9ZV/BUVLEDRu9mxU9x7AyyNCLwH/OyYeID2MsAy38efEeJOW3UUUtm6su88fbSR+X7hX
+	r3m01fMgvHXDBl8KvWMiWqRwadvYZnc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=PK+54S25;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kpqnw+ve;
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783635778;
-	b=ng6BrrQ+iqvIvqMvyfGszFZmfKaNN46pqVUx6R+QneaEzZtQCwuLWPq9EKQdaA2s9Q9IO0
-	Ivu14lXQ5eI6ym5NWe/jfWpScrBnw4Zmb0nDkIyUCXLNSW37rg7QW14nbNANht6mtVlCkp
-	jg91/CnZuKCOxxFyt21VrD5dDrtk35Y=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-51c2149571dso2171771cf.3
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 15:22:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783635777; x=1784240577; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=b50SGMSOIyssQj3plHocLLhkQW1pcBLVRqoMkWAD4k0=;
-        b=PK+54S25paHQxpc2tC1exMpm8FLpBBZIl5GE1EHj0kf7eD78fHbuTMh4B5etfOsqOu
-         vbCCgxYWB4jTD/kWwIbyS6M1IH9dfuvFF38gcURMVMizgU4PfQBQ9jpbVOkZv327T3IX
-         lW487wtjLVujjbaV6C0fE/K648kAQnGuKHH8h5vWjsDWUDrKbxf8HjW5IvDXJMDJ/D50
-         ALtqVukLXQzbgSfq+MK/FT+ofE/nGbJp5KoOIHs/9gs8YR37YeE2TwPhvrGYiJDb82Za
-         mIpVP9ZzBBmiMab2RWQHPWr8ON1TrjvqBS0B5mPdEOemRFwtjuIhY0GNlD35zbFKDKxN
-         lorg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783635777; x=1784240577;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b50SGMSOIyssQj3plHocLLhkQW1pcBLVRqoMkWAD4k0=;
-        b=Xxjs05k8e3VezhFi+7RUaoipYdm3AsiDCLH5rHeujHFrQEEfIc0+r4b6ouTFQxW79W
-         xkJEimxLBFCoTO+b5iYAwwjSWhixYjB0onrCxgM0phZCAErGyidwZDoOYoH7nPu+JXOz
-         sOktQruixARPHg2tc4gzUStKaWO2KuZ8LlWfKCjY/JVVOYqLexhIruBZ4Mcm2C1zipOO
-         7JQPLeerpoonwOJJcn2cvVFQemak2/RnkQzwZ+DqhHEGAOJUiluTlccdO0Cxf4aKX6BH
-         WQ9KWo9L+3Nr5GXaMnuTc8K8sX8f41JtdoY8oHE+m41KEZTVdrpACyqxuuaVYQaNejFK
-         OJ6w==
-X-Gm-Message-State: AOJu0YzQ7kHj/Ahid374tiJHV8/SUsBPNSbzCJB1urFmulbDQ4zPlA5W
-	y8qVTPYi0eU94geq7nwBwg204FAIgzCZbNYKkRv/qT5xZfaBpmvAECy6VEatCia2HUo=
-X-Gm-Gg: AfdE7cmWvyaBRRinOwrCAfEnXRxoW1LuvBj0cUGDVXnJK1fyHNfKwjeJfgSG9kD7qVI
-	h4rVh0c3KT9VaAc1wR5ODK6fLNn6ETnZpB46I/P1X1vL5d7NudX4jxI0HkYqs93KWYu98WUNckh
-	X1tLgHSners8clC8EljUBKPR1htjr30iu1bqXCuy0EaMOo+M4YoP0zIc5iE/9+T3//iKclX66HO
-	5dJerUnvSg8i3tBKG5zZRbL6C/9mV3RGeY0hp61iKi/OEB7HCWvg6xk1zPyXfHlK4p51Bv2H8nH
-	kcHnOCqP6mOxEOJXYEiWu/kJvz7jWI7Cr9vK/dstIZ6/tPXe2ngxF9mui+Rr8e37tFyuyzhtfeL
-	ZQz51ERc1uJGlIlspjyQrQ2+Gl8bydnWS2K/XIm1wHSeJiy2ZYsfOlwA6PNXmR2FdSzozqR5OWw
-	D9iOC/dKJrKyWHKbwzI+64cr8Jb9TqXzuuWDki5v8GYdYfjFKi2oPf35XniZKHEYZjqsaX
-X-Received: by 2002:ac8:5a02:0:b0:51a:8c97:fb91 with SMTP id d75a77b69052e-51c8b4bac92mr100050501cf.58.1783635777304;
-        Thu, 09 Jul 2026 15:22:57 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51caace31a4sm4283401cf.12.2026.07.09.15.22.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 15:22:56 -0700 (PDT)
-Date: Thu, 9 Jul 2026 18:22:51 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Dave Jiang <dave.jiang@intel.com>
-Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com, david@kernel.org, osalvador@suse.de,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	djbw@kernel.org, vishal.l.verma@intel.com,
-	alison.schofield@intel.com, akpm@linux-foundation.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	shuah@kernel.org, iweiny@kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com, apopple@nvidia.com,
-	Hannes Reinecke <hare@suse.de>
-Subject: Re: [PATCH v6 09/10] dax/kmem: add sysfs interface for atomic
- whole-device hotplug
-Message-ID: <alAfOxnnYQxPW8DO@gourry-fedora-PF4VCD3F>
-References: <20260630211842.2252800-1-gourry@gourry.net>
- <20260630211842.2252800-10-gourry@gourry.net>
- <6fd50351-93e0-4d65-960f-53dee655a786@intel.com>
+	t=1783636217;
+	b=urhFMY48BdKp8n1gAAgilAN+jVU9KKUAmnHIyqWHdCYhk3hoeiO0XdIOpCxTVPFPQi6c1m
+	KPn3+FngZTH8+piltYFyaVjvyfYPROzigC9YDMRK53Lzw9XlDjhlVAGoWwIbhCaA8VZN2p
+	ragmpy53bt+wBtTpi1fGoiUPr8BQRIY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B1A49600C3;
+	Thu,  9 Jul 2026 22:30:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D70DB1F000E9;
+	Thu,  9 Jul 2026 22:30:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783636216;
+	bh=0EyJr0/xAe7avOLcVrbyCwP6jqYeJsuARR8e8XI8AfY=;
+	h=From:Subject:Date:To:Cc;
+	b=Kpqnw+ve3+9UW3cJQqw64p+5ga50Zy83nVzL36o2r88lhFRV4fRR3pjS5POG/Q58R
+	 Ufj85CJr+d1t9rJzjw0kAZQmfzJvSpnfOcbbu0aX1gxi6opni3nYUxXhwRB3RoBWsC
+	 YJ3xl0OfLEL3GoWGEgv6BVx9Rgtd7VccWJHZetVUvYTFaeyvfVTWaCkybDA0QaQJ/2
+	 Ueb8SX8FaNy6q2UdG2h/V/w2QzpDXJAzTIf99ciQ5Ll5FPTMEMobwku4d2k+MsdG+e
+	 99hNp6IzOyeDBP8GbiaU3BRfhHrEUzJ1/qzGiTsGaI9ZxLiSfg2kQwf3sIs+RqmNkZ
+	 yeMiTIK4vu1KQ==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH v2 00/23] binfmt_misc: write access fixes, RCU handler
+ lookup and cleanups
+Date: Fri, 10 Jul 2026 00:29:55 +0200
+Message-Id: <20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6fd50351-93e0-4d65-960f-53dee655a786@intel.com>
-X-Stat-Signature: nr1gedryptau9uengogde3qj6ah97dd3
-X-Rspamd-Queue-Id: 25772100005
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOMgUGoC/42OXQ6CMBCEr2L67JK2iqhP3sMY058FVqQ1W0SN4
+ e5SvYCP32Tmy7xFQiZMYr94C8aREsUwg14uhGtNaBDIzyy01BtZyS08IndgKdT9cO4pObhG11F
+ oQJWrdeVrpdFtxTy/Mdb0/KqPpx+nu72gG7IvN6xJCJZNcG2OepMG5GKsCg3sVG60lIbIr++7U
+ WXTH0dGBRKMlDvvS1tuvD10yAGvReRGnKZp+gBDWBS49QAAAA==
+X-Change-ID: 20260708-work-binfmt_misc-locking-15347df12ec8
+To: linux-fsdevel@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
+ jannh@google.com, stable@vger.kernel.org
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6831; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=O/cickC6NJoi8fvGwVtPbnnxQPKMcPn36PywjR+AOYA=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQFKHz9pMSr/Olnjlyr6Kb23+npDJr5K3Qi7HUtjI7rC
+ Z8/28/fUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJETzgx/BY8xTQp6kxjHPeVF
+ UAEr027PkiMaCxrXdZ9t3NElceBZJyPDjQMeV/wa3thtLw3zEXn2fYnXqmtsd9XmbYjtnHV0z1R
+ tZgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-HE-Tag: 1783635777-331588
-X-HE-Meta: U2FsdGVkX1/jwuiSwFYAlYpctdXatIhzvg2AEw0cqsv/w+OOy4+NifXM67awBheRApCF4ucRLAZFBUcdEzf2pvDiaEewZEQjGFbfneZYDDe2/bbks1TbNxG00IRtIq/BNnbOYIaYpXRbxbFdC2gsTjVq9tqdyBAOFf3FG/HO9f8WEUXU1txt56Whp5goLlLQfU+Vhp3lAIdLvPBiMkF45xP2dprgIsilu64SHI7Rfcnbqbsu92MAmY8lQyFiuU4qgB2dlTlXOAYzPZ6pXRdm/JOZobPGNjNlsQHPQkIQ7gUuHS1psJgaym63QDcwicnq8LDw96/60sZWpEBrdp1ZnXERg4t+Sht8L05LU45zMKw329gX95lMrEYVtlXt/TD11qp6dVurJx8/P/XWVHG35Qa8r64fsO/1PWkMNTOEEjosuwaJ+MchqGk+KipRyEarT7whwhByzyBKkLwxkHMJPgQtWAeMpV1v/Fgp3kYyoQola8YI+KBxi2y2W0qzogE+lYbREKIpvF9jpZ9oXMOmvf/vSh5afOoqql6c7QRGwTK30h1PoA1TG6ntU4G8p44k1fTOdE8X4t7lINVbV/YMoAlsvcCiw4JIqV4zXiDo71IQAgImqcp7+Ve4AON5UigaxPeMQ1YvXhpohRRGbNsh+5Bcsn1wOScfg7Gp/hDn1Z3TojsWb/Uyadhf1Mm19zdLuv4w2rAa8bynpVLpXLuA6r2QK1kBz6fXR2cM6FfPkGjasy+Y5gM1VBgFGjOB64dFiRiYABMxHXcrdDUL8YsR/9JXxxfOKfGhbXbTLcI6yiFJ6MNRQ+rmTdFBX5Vxw+dbXXctWzn5WV8P+RWxZYT0Xc2YNqKLshByQogqCiuxIEDtQzVa0X23v7WIGIk9bZ/eOWjfpdTYf6Dqu8YM9DheUiaLPYtDEcWkWes8MhPYzlb/QRgO4Arm6WCxFsVXd/IfHRqU8s+TTozF6wiSRq9
- QXc/+asP
- hDyQxCh8LERoBlx/F3qbhuUrBMLCgo1anaa7eztG8Q7tevBA/Nn7qSdUsJIHT/KRt6vAuRrZQnbaOerylN9PJOBPOj2UwZvGsokyYdM0sfUJ6ZfxcZk5oDM4+Oo3Fg7KJFwSmmPkHl/vcstKokbNijX8Uk+1pCFeKuLHfP251FnmlChdMuSCpgDHWThEtQDJE2IBy2yUSe2LJ1/DKmAcstBwGL3lgRel0k+CVwjmwQCuEksWKGN3gkdweoNaufge3bDNUwCYsjcy2rQuE7nMCgwOMjbep5QrWvnNopqis9VZMjv80byuAhTADL4Nw5SxGODsap7rwlF01gfhkzBeYLYXU7XaLpr3MIwZoRzToDOacwqKOIyCGPNF52S1vsN09qgNSRoWB+LtdRqEWOY6Q0cl4Yg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 36D9C140009
+X-Stat-Signature: qnxz3sb5zfizxpkkrwoqzrtnyuq9x6od
+X-HE-Tag: 1783636217-171618
+X-HE-Meta: U2FsdGVkX1/K7BdbDsTv2wDAHXR0xc+R6TfpVO7AdgHdVumvpGS24lrrbQHxr0YhUEUlKLs7fukseWlHpJoup5EOCfCdlpVIAbAyBzVGb3J+cFPWargq5Oabnd13LvLeXEZkWHtZCPYzBBdc0WuSlExOI4WYkcLQnFTz90c9krhGG9N4mcsNq2DHS+o7D0xfkw8Uqi8k3ss2ExdLxONvJbTzl7GQLBJW7fOBCvT5PaZWyQDm1g0VLpkbw7AOxZUe36q2G3ll3/XRfglmKq9bxzzTJrfUQkJmEVU7NVPq8hWOeLRaePIG7WEqI2hOu7Cw3gYYdCMJjp4AydRa9ckYjPcZyE94uUcWZfZ3ZcDFW/A5TInweJN5u7S2Uh2zojztPo0rJsEnPITrDC0P1a+L4arFufp7WEEcugRem1rw7mXUWz1P1ls6F5TToxYGZxENr1tWJSzh/rzLlDoJqDVA70yKAqxM+3ULiQ9Id1Wh+PKW6XnpEU6egkAY0qHkcIV+Uwm9wgK44tRftd7BUdRpFnvzT27m8IlS/7LzwXsoWnE1VA+jzxS+dBv9I5uyKC9f90Ik01TK6GcK243AaP3h398LemR565CV5RUS9NpV5Kv24xfFZfKhYECNqR+Jc7EOOkTDj+63SleMubTze7hLe+HBA9pC9GRvNpt3R7b6YdEyjM75gFeI9xvXQ59WwfCGQOyoPj275CYAEB1cukoB1FptF9tiCubwKTwb8/nOmOsYea6qIyaeoKPxM/5Z8WOiT9LK9DKEsMS/nqQf5R3o3SIgegtXDpwBJ3FNMQlCZSzTGsb+JstzQ1HCWvXbM4bd02WDouMdze3n03V89YJmCR6GMRzkDrTY55Cxb3x3sGQJ3QX+ux724GIyhpxYs3B32Z5SaCGxqfHbDfQMQ2mBCyfz7mW5jvjgOT2crfQBGodkW+TiHMSVb5WrnoWZy0TEH1X3gok5mxtQXju8Kha
+ BoBte9LE
+ sIcTn1RLBhVIINgkPd32HlNfZ5kiIUEFyO6DMdJi9/8ekWqAoZrJFHdxtEyPT0YbHi6jjs+J8TVcKlZI1t8YzQq42OgIQoH+4f0pn01ZOudemyUhq4pGwMi3tP7ApkEVLjMzvrQxTFI4kt4uXQEqQZQJuQMpDht4hRXNzF/4obWOuuFSNt8e9flaGXflPh3xo/IQ64VrrNHDY812p91ECNJNP7xQVnSQ8Uedmer/3ohOXPHpVML045HGqqU0hgpz6s4t80fr7QbbRbMoK4DXJqz9qUbBRKXDJP+FerFTlw4VdBRcbyV0ENrrTCsDtbCCoitdI9zMKQMvV6Ev1KTJkXpXZx+MANOetBM4TrlTGWxv6kMZ/f3xAX0R2XdKUQZTZ0RFEPdZXdPFhbMhZyTxj1NRRcqDCDV85Kgh/pDuHn8OnsZnEil9/i6YZr+BzzqfUbxLCvFBMvtqGUT+wLBk5kEF2Bdg4BQ96EYh1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,26 +105,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 03:14:26PM -0700, Dave Jiang wrote:
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-dax b/Documentation/ABI/testing/sysfs-bus-dax
-> > index b34266bfae49..2dcad1e9dad0 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-dax
-> > +++ b/Documentation/ABI/testing/sysfs-bus-dax
-> > @@ -151,3 +151,29 @@ Description:
-> >  		memmap_on_memory parameter for memory_hotplug. This is
-> >  		typically set on the kernel command line -
-> >  		memory_hotplug.memmap_on_memory set to 'true' or 'force'."
-> > +
-> > +What:		/sys/bus/dax/devices/daxX.Y/state
-> > +Date:		June, 2026
-> > +KernelVersion:	v6.21
-> 
-> Kernel version a bit old :)
-> 
-> DJ
-> 
+The first two patches fix two i_writecount imbalances on
+MISC_FMT_OPEN_FILE interpreter files that turned up while auditing
+the file for the rework below and are marked for stable: removing an
+entry never restored the write access denied by open_exec() at
+registration, leaving the interpreter unwritable until its inode gets
+evicted, and the write denial taken on the interpreter clone during
+exec is not paired with the FMODE_FSNOTIFY_HSM aware release the exec
+machinery uses, so pre-content watches make execs leak write denials.
 
-It has been a hot second since i started this n_n;;;;
+The rest reworks the locking and tidies the file up.
 
-~Gregory
+Once binfmt_misc is loaded load_misc_binary() runs for every execve()
+on the system since binfmt_misc registers at the head of the formats
+list. Every exec therefore performs read_lock() and read_unlock() on
+the entries_lock of the relevant binfmt_misc instance, i.e., two
+atomic read-modify-writes on a shared cacheline, in the common case
+just to conclude that the binary matches no handler. User namespaces
+without their own binfmt_misc mount fall back to an ancestor's
+instance so on container-heavy systems every exec on the machine
+typically ends up hammering the cacheline of init_binfmt_misc. On
+PREEMPT_RT the rwlock additionally turns the handler lookup into a
+sleeping lock on the exec fast path.
+
+The lock protects very little. Entries are immutable after publication
+except for the Enabled bit which is already toggled locklessly via
+set_bit()/clear_bit() and entry lifetime is already handled by the
+users refcount. The read lock's only remaining job is to make "the
+entry is still linked" and "take a reference" atomic with respect to
+the unlink sites.
+
+So make the lookup an RCU walk that acquires a reference via
+refcount_inc_not_zero() and free entries via kfree_rcu(). The removal
+paths need to detect whether an entry has already been unlinked and
+rely on list_del_init() reinitialization for that today, but
+reinitializing the forward pointer of a removed entry would make a
+concurrent lockless walker standing on it loop indefinitely. hlists
+support exactly this pattern: hlist_del_init_rcu() keeps the forward
+pointer of a removed entry intact for concurrent walkers and only
+zeroes ->pprev with hlist_unhashed() serving as the linked test. Hence
+the third patch converts the entry list to an hlist so the RCU
+conversion in the fourth is a pure locking change.
+
+Writers remain serialized by the inode lock of the root dentry with
+one exception: bm_evict_inode() unlinks entries during umount without
+holding it. A spinlock stays around the unlink sites to make that
+exclusion explicit instead of relying on superblock lifetime rules to
+provide it implicitly.
+
+Handler removal semantics are unchanged. An exec that acquired a
+reference just before its handler was unregistered already completes
+with the removed handler today. The read lock never protected against
+that, it only made the window smaller.
+
+With this an exec that matches no binfmt_misc entry no longer writes
+to any shared cacheline at all. The fifth patch annotates the
+long-standing lockless ->enabled accesses for KCSAN and the three
+patches after it make the entry flags proper enums and give struct
+binfmt_misc_entry a name that isn't Node.
+
+The remaining patches are a cleanup pass over the whole file: remove
+the VERBOSE_STATUS and USE_DEBUG compile-time toggles, convert the
+entry file to seq_file, factor out entry matching, entry removal and
+the register string field parsing, make the entry/register string
+allocation a flexible array member, give the parse_command() results
+names, let cleanup.h unwind the entry registration and exec error paths
+and prune the include list down to what is used. Aside from
+seq_lseek() now bounding seeks on entry files and the ETXTBSY
+propagation in the second patch the cleanups have no user-visible
+effect.
+
+The last patch adds what the comment in remove_binfmt_handler() had
+been suggesting for years: entries can now be removed via unlink(2)
+in addition to the -1 write. The status and register control files
+refuse removal.
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Changes in v2:
+- Allow removing entries via unlink(2).
+- Add two stable-marked fixes restoring i_writecount balance for
+  MISC_FMT_OPEN_FILE interpreter files, first so they apply to
+  mainline directly.
+- Turn the entry bit numbers and behavior flags into proper enums and
+  rename Node to struct binfmt_misc_entry.
+- Add a cleanup pass over the whole file: remove the VERBOSE_STATUS
+  and USE_DEBUG toggles, convert the entry file to seq_file, factor
+  out entry matching, entry removal and register string parsing, use
+  a flexible array member for the register string, name the
+  parse_command() results, use cleanup.h for the entry error
+  unwinding in registration and exec and prune the include list.
+- Link to v1: https://patch.msgid.link/20260708-work-binfmt_misc-locking-v1-0-a009dd5b56db@kernel.org
+
+---
+Christian Brauner (23):
+      binfmt_misc: restore write access when removing an entry
+      binfmt_misc: use exe_file_deny_write_access() for the interpreter clone
+      binfmt_misc: convert entry list to an hlist
+      binfmt_misc: use RCU for the handler lookup
+      binfmt_misc: annotate racy accesses to ->enabled
+      binfmt_misc: turn the entry bit numbers into a proper enum
+      binfmt_misc: turn the entry behavior flags into an enum
+      binfmt_misc: rename Node to struct binfmt_misc_entry
+      binfmt_misc: remove the VERBOSE_STATUS toggle
+      binfmt_misc: use print_hex_dump_debug() for the register debug output
+      binfmt_misc: convert the entry file to seq_file
+      binfmt_misc: factor out the entry matching
+      binfmt_misc: rename load_binfmt_misc() to current_binfmt_misc()
+      binfmt_misc: return errors directly in load_misc_binary()
+      binfmt_misc: give the parse_command() results names
+      binfmt_misc: factor out the entry removal
+      binfmt_misc: simplify check_special_flags()
+      binfmt_misc: use a flexible array member for the register string
+      binfmt_misc: split the field parsing out of create_entry()
+      binfmt_misc: use __free(kfree) in bm_register_write()
+      binfmt_misc: assorted small cleanups
+      binfmt_misc: include what is used
+      binfmt_misc: allow removing entries via unlink(2)
+
+ Documentation/admin-guide/binfmt-misc.rst |   3 +-
+ fs/binfmt_misc.c                          | 835 +++++++++++++++---------------
+ include/linux/binfmts.h                   |   4 +-
+ kernel/user.c                             |   4 +-
+ 4 files changed, 429 insertions(+), 417 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260708-work-binfmt_misc-locking-15347df12ec8
+
 
