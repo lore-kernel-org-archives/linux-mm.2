@@ -4,90 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3904AC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E65BC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 07:49:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 047066B008A; Thu,  9 Jul 2026 03:47:38 -0400 (EDT)
+	id F3F466B0095; Thu,  9 Jul 2026 03:49:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3A236B008C; Thu,  9 Jul 2026 03:47:37 -0400 (EDT)
+	id F171C6B0098; Thu,  9 Jul 2026 03:49:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2C486B0092; Thu,  9 Jul 2026 03:47:37 -0400 (EDT)
+	id E2FA36B009D; Thu,  9 Jul 2026 03:49:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B4A526B008A
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:47:37 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A59B8DD84
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:47:37 +0000 (UTC)
-X-FDA: 84968458554.22.C93B464
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 19B78140005
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:47:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wr5hOQzO;
-	spf=pass (imf09.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C272F6B0095
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 03:49:11 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D3241C8624
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:49:11 +0000 (UTC)
+X-FDA: 84968462502.07.DC69F5F
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5F87520003
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 07:49:09 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QxdDwnTR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783583255;
+	s=arc-20220608; t=1783583349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3fogsgOQM4/1FaO0lwHcVAgzkNI1hP1CHJlr2Huc2Ho=;
-	b=16KNSalvsndWo9UFAa3eR827qvkRIMAmMTaMQ/dDuNIm9jiZTHZKCVtNCau+NZfpxx0/u9
-	bxFBcP4rHYjXhHbXb8teTIsGSi46XKISNekX+s/ah1akQfUvyRM82tXB0bRrTu4a3yz0Zh
-	R2evNFTYRBvqrz+PecV+t4AfQJINYO4=
+	bh=Bz0ZIC6honVFONNe2kkGW+tQ+zqDAmMEe2v+OkKeqyU=;
+	b=w8gtVTCy/YWixv5su4nBsAr8ILG2MlkpYHYWzaZ1yoTYMpRZjE9Jxp83VQMboGIvKBRWfL
+	Omojs4PUVn3aa9mYACeZMknzEo7OpNKXz2OZ+MO/f5ciEs3qhMoR3ey/+/Jmjhp2/0xo6/
+	W6O45MOX97KV8atLrOX6csEOroiyJdk=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wr5hOQzO;
-	spf=pass (imf09.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QxdDwnTR;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783583255;
-	b=E9QSaX13CLTIkkT4c4By4zfWDQSljl7E5bt4atfci8dEA+3ljB4KFieR9+Ly1ouVNC15IF
-	UOXtEyblHlPmjGrT2OGWxSAqh6+ZOPMZ9auHJlDUNFL7IVcbvonBq5SM+/eneLzhCtWGng
-	wWZDTB6eY37Ls+2qYOHLdLRFNCm9efQ=
-Message-ID: <9d92b421-b4f5-40b1-9f17-6039cd0571e9@linux.dev>
+	t=1783583349;
+	b=oUtfwFipuaogpwKV4/R0BXW6LoRDAqKuHBHFbmwhqOM0kNbJv59uE/VrLibEYzwrBx1uSS
+	Z1oB8DNX0n7qPHLxV/Qc5dJdr8ntsP7+YusLg2i36oNtuBislZKvXXMGvDSU2rLeI/AGkm
+	dsrrILNud6tcAp/6P5X50iu/oDkIkx4=
+Content-Type: text/plain;
+	charset=us-ascii
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783583253;
+	t=1783583347;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3fogsgOQM4/1FaO0lwHcVAgzkNI1hP1CHJlr2Huc2Ho=;
-	b=Wr5hOQzOAZwYbqdAfD+ha91JJThOskL3Wd29Jp8NP3LWd34/wDhhHoGH0IKQ4K+EZV3cZp
-	nwIGVoWYsRtQ9VkiVz0Uzk4aULh2rHSwVXvmGQRHELGHWdDYkOQ/ncbD/+xbn9ERjL8cg1
-	Db1PAOipOStXFv7uRUJmqH14Sw4izmg=
-Date: Thu, 9 Jul 2026 15:47:28 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v8 6/6] kselftest: alloc_tag: extend the allocinfo ioctl
- kselftest
-To: Abhishek Bapat <abhishekbapat@google.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Sourav Panda <souravpanda@google.com>
-References: <cover.1783532853.git.abhishekbapat@google.com>
- <e5171926b48802531284c1cb5f04734017141341.1783532853.git.abhishekbapat@google.com>
-Content-Language: en-US
+	bh=Bz0ZIC6honVFONNe2kkGW+tQ+zqDAmMEe2v+OkKeqyU=;
+	b=QxdDwnTRWm20VGliIkKhSn+dBliUnrpDgqk1fVsnpLGkywZOxT18NohgKhFG+VAe81Oqpb
+	vZaKdUdBDjHYwNPbzP5z3Pr0BIIxbex1rg7tb6d3ea96i0kT0gM7H/us5Hnt3JI8etR/pk
+	s6kFktWl8bcGGK9Saz4/zUix/SFzyk0=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 0/3] mm: split a couple of headers from internal.h
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <e5171926b48802531284c1cb5f04734017141341.1783532853.git.abhishekbapat@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <ak9MO-FWjkgr22KL@kernel.org>
+Date: Thu, 9 Jul 2026 15:48:19 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Alexander Graf <graf@amazon.com>,
+ Alexander Potapenko <glider@google.com>,
+ Brendan Jackman <jackmanb@google.com>,
+ Christoph Lameter <cl@gentwo.org>,
+ Dennis Zhou <dennis@kernel.org>,
+ Dmitry Vyukov <dvyukov@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Marco Elver <elver@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Tejun Heo <tj@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Zi Yan <ziy@nvidia.com>,
+ kasan-dev@googlegroups.com,
+ kexec@lists.infradead.org,
+ linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B53B1031-B655-4526-B1AC-952BE39D96D3@linux.dev>
+References: <20260709-internal-h-v1-0-956d5092782d@kernel.org>
+ <ak9MO-FWjkgr22KL@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ik91mtssnjxm1encsyk3q5kts563ap78
+X-Rspamd-Queue-Id: 5F87520003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 19B78140005
-X-Stat-Signature: c6n6r1ueihowp4ionwe8c8fsp9fs4hrt
-X-HE-Tag: 1783583254-672747
-X-HE-Meta: U2FsdGVkX18qjFFzWa/mEuUWgR/RRi06jTsjqYokzUb0xvbGZTrUnnworOA2Hdwanaq4DlMcqYCN0HeCKFxi3vOUklrnIlpFZl0yeqTjw7mMGMmkPVeEP6o11VW1RTwOZ5XtXVYhqhpVxjgvQMq6ntkfwH2sAahBUjkIw3L6KSVyOfB59MsfXPt1LcHDl71sUOxwF7vpsQFUD2tytOQs7rU8w0BA1EF+674RChkY0dkuaekQI/KI1Tc0jlmfkcklHfOtp1sFPu6MWLm+Z+5yhA5YYI7qqclSHjXuIHsYtEL0F39qQrZUM5x011iZuqD/Vq6SjlMtrVlWfNk33OFX8VkIU1quYybDY4W0GecKUuMJd1Hr1O52Nmb2ETdBm745OOhQufH+bAZMOBbybpipjW3y6MqAemwkn3GoZcWjoTCUA7K/LdaLOzb0YTVnbbOhwEaYEjq4cy1vsoLoDs7fN3QD8zj7nC7wd3vXNST4Mnm324cpz0u59/oFzaTfzWhivZfpHWGGH3BN4mRyB56+K3ktXjAZktAWs7uihXXiSPGJW20vAAC7rib5/f16FLthBctNpmPM8cprt0gkT2FTWmCJH7NidOv+OQHkyFHovdhXCyPIIROEDpe7HnbcOvRfrSrVPvrpm3o5tfopgvC+cijq7uP2syFstjcuEgYM4i3qfX8bHFTK+95WxmHfAwWhtjfF1/bFjgx2YtbMfST4clkR+UVaDClA7ZUR/wcLg94U1UeZ9iN1Ui/zqVyMVfnCZfF8qmhtrPkOK93Nbe99B125KbugvepL5sPCB7E3mI8Ch9uQF+A7Sdn88nuc7X/srXigde48aIa26495zVtTaeMwJGJLTLzws1rJUCuVaUa36N3s20C02GTQcOmWrjASRZxNtfS/b7y4CtRNq/u7su2Q5BqU0lDEqNtv/kQPllQVVIEHqYLVvSHiBZVRNjgQpDg1jEd91neMrqCo1l9
- qajU1hFr
- vT8oF2HqasKiku9hC5n6PQrj9X5P4pQo/5B31EYhcaK1BQFWo4UW7N6hk/GMvZRRl2QTLLzibMpWB12xOEGgCY6lxO67ot7IejkBoNfsxTwQ6fi/SgjAyqOuo7w/tBn53lxKepDTX4XrzsFNlTOBIswlFkvmPTx6q/vSpp5Yj1GdOYDRU8cHcDRK8lV13jGf5G3z1Xh3VpyDTpraFT6mJpEfqt2+MOQuYvSdSYtN3R+1+tsOk8R643Bg4OFtU5IoECvz4zdzwy0HiGxsYNJPwj7cDKtk4QlC0UDCiDGfC0EVUSrpwfdKOgfzvB9IwC03U8Jxm
+X-HE-Tag: 1783583349-445465
+X-HE-Meta: U2FsdGVkX1+9YkblEB8p9Icqt3BLW2INZsniBvoGiyaVLHKH8CkcVLrDhnidz/X+JekM1R4rY/tr0phJCJ5QZtMvZA2JYOuiDr3Etq6HFdRMq55HBR/6Y/gdm5nDOPkvgwT430tzU8OFcmBAERwCopQHLTr+J8i/v+sJcrHIJ6Iv829qBRJG48XxYmGsNfrySYt+n5u0pSESNfKln/cHyoT4TEQ7AePxpFvquZwzSP7CZ3neP3CcqJvBOtXmompzZIJOK9b0eyrJea2KOz8SVKqAAx2kwYVqtkLZAjeN9+SeQNiu/gjON6JDNLMxoIt1tJyRlxPayod/CGjRUF6jDTaozpez4mMoU9jXI6DD5/6k8wX7YT1FFUwuD00YmQsETIe4NDbDr8J2oqvxejIaMNotpZQM354FRU20tz/rH+Sl9N3ZbyA/hg9VLqyGshNeX5pnWwsVdWS/oyg97d4Hnmjfz7P1BdiQU6NYTWLeEyQZ1iNEMqUot6IuuFs7x0q0X/i3/P3wSaMMLEq1b4xX1eGBXXFj4sjOoQz5nMeXe81hGt6a5rQ7+qTvBxINEMTNETmPwgICS2zs45q40+SROUiz26Qs0uRxde2/5/yNBOwgEeZn1N9QYBMIn6TJQ+fS7nqowwDk5KJiZvrSkQvbJNLUNB+AitcogKnWwJu76Uv9CwZBXMWFYXjgwf6QAwD9LbX3jiNs96yQOPgGxPI6ODfwQi1S61gPgvumNb1la6+VIsxKqklLdj8RgpwTnH4JikrFFnIxrIv0rpYHkHm3qQ8UFfxwEpFoAkcitKsFOVodNuvynyxxaZxpVc0Q81WgiZlpS6OPBWmCP1jjMO0a6v9Od0HkwPh/9EYC2AaHeASogjZHOHvO3PbTvy7PCJ4k/Zer7kiU0gp3TLBGxc0ezIwjD4WzEdYenM/1e0tzr5N9GQXiJYhVtBI5DYuK8vLRY1FoXO4Fr/XII4xGGd4
+ CMRtj1KC
+ YOr0QCf77Ne+t+TY+2/kuJ/jvuoMdjrZqp8yJQXHoXWRTxUriVH55CLQgOvDIxFIidNyP+Enfa1dyiOGFk+WVz5Y664NNXKj8hLQfdvG4WwQ+vXZhVSb+DiDcaq3sEIxpXek5SpHMR0uqUTFo6bXzUokIoyEunUfPRAphpTnqvwnxIiuGk3op3l8THMaH5kXinD97bkwq2PIarbtYqEognUNRVbNL5XvD3UP0abw5ZdaufwF44kXkVAiZ4mwpRR0fqed4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,278 +114,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Abhishek
 
 
-On 2026/7/9 02:01, Abhishek Bapat wrote:
-> Add the following 2 scenarios to the allocinfo ioctl kselftest:
-> 1. Validate size based filtering
-> 2. Validate lineno based filtering
->
-> The first test uses "do_init_module" as the candidate function for the
-> test. This is because the associated site will only allocate memory when
-> a kernel module is loaded. The return value of get_content_id() changes
-> every time modules are loaded or unloaded. Hence, as long as
-> get_content_id() values at the start and the end of the test are the
-> same, the memory allocated by the do_init_module call site should also
-> remain the same. Consequently, the test can assume consistency between
-> the value returned by the ioctl and the procfs resulting in less
-> flakiness.
->
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> On Jul 9, 2026, at 15:22, Mike Rapoport <rppt@kernel.org> wrote:
+>=20
+> On Thu, Jul 09, 2026 at 09:41:46AM +0300, Mike Rapoport (Microsoft) =
+wrote:
+>> mm/internal.h becomes more and more bloated.
+>>=20
+>> Split declarations related to mm_init, memblock, vmalloc and sparse =
+into
+>> new headers.
+>=20
+> Sashiko rightfully pointed to some issues, will send v2 later.
+
+Hi Mike,
+
+I recall that this work was mentioned during the last review in my =
+series.
+However, I didn't have time to address it then because I was still =
+working
+on the HVO refactoring. I really appreciate you taking this on. Thanks =
+for
+your work.
+
+I've reviewed Sashiko's comments as well, and it doesn't look like there =
+are
+any major issues. Therefore, feel free to add my ack for this whole =
+series
+in your v2 version with the proper fix.
+
+Acked-by: Muchun Song <muchun.song@linux.dev>
+
+Muchun,
+Thanks
+
+>=20
+>> ---
+>> Mike Rapoport (Microsoft) (3):
+>>      mm: split out mm_init and memblock declarations from internal.h
+>>      mm: split out sparse declarations from internal.h
+>>      mm: split out vmalloc declarations from internal.h
+>>=20
+>> MAINTAINERS                        |   3 +
+>> kernel/liveupdate/kexec_handover.c |   3 +-
+>> mm/cma.c                           |   1 +
+>> mm/execmem.c                       |   1 +
+>> mm/hugetlb.c                       |   1 +
+>> mm/internal.h                      | 183 =
+-------------------------------------
+>> mm/kmsan/hooks.c                   |   1 +
+>> mm/kmsan/shadow.c                  |   1 +
+>> mm/memblock.c                      |   1 +
+>> mm/memory_hotplug.c                |   1 +
+>> mm/mm_init.c                       |   3 +
+>> mm/mm_init.h                       | 120 ++++++++++++++++++++++++
+>> mm/page_alloc.c                    |   1 +
+>> mm/percpu-vm.c                     |   1 +
+>> mm/sparse-vmemmap.c                |   2 +
+>> mm/sparse.c                        |   2 +
+>> mm/sparse.h                        |  63 +++++++++++++
+>> mm/vmalloc.c                       |   1 +
+>> mm/vmalloc.h                       |  46 ++++++++++
+>> 19 files changed, 251 insertions(+), 184 deletions(-)
+>> ---
+>> base-commit: 820d5dfede0cd55dcbc89ce96fcfbb11b7c457ba
+>> change-id: 20260707-internal-h-2efef660381d
+>>=20
+>> --
+>> Sincerely yours,
+>> Mike.
+>>=20
+>=20
+> --=20
+> Sincerely yours,
+> Mike.
 
 
-Tested-by: Hao Ge <hao.ge@linux.dev>
-
-Acked-by: Hao Ge <hao.ge@linux.dev>
-
-
-> ---
->   .../alloc_tag/allocinfo_ioctl_test.c          | 216 +++++++++++++++++-
->   1 file changed, 215 insertions(+), 1 deletion(-)
->
-> diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> index 9ce7b53078b1..7d94abb785a1 100644
-> --- a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> +++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> @@ -5,6 +5,7 @@
->    * Copyright (C) 2026 Google, Inc.
->    */
->   
-> +#include <errno.h>
->   #include <fcntl.h>
->   #include <stdio.h>
->   #include <stdlib.h>
-> @@ -312,11 +313,212 @@ static int test_function_filter(void)
->   	return run_filter_test(&filter);
->   }
->   
-> +static int test_size_filter(void)
-> +{
-> +	int fd;
-> +	struct allocinfo_tag_data_vec *tags = malloc(sizeof(*tags));
-> +	struct allocinfo_tag_data_vec *procfs_entries = malloc(sizeof(*procfs_entries));
-> +	struct allocinfo_filter filter;
-> +	int ret = KSFT_PASS;
-> +	__u64 target_size, i, pos;
-> +	struct allocinfo_tag_data *found_tag = NULL;
-> +	const char *target_function = "do_init_module";
-> +	struct allocinfo_content_id start_cont_id, end_cont_id;
-> +	int retry = 0;
-> +	const int max_retries = 10;
-> +
-> +	if (!tags || !procfs_entries) {
-> +		ksft_print_msg("Memory allocation failed.\n");
-> +		ret = KSFT_FAIL;
-> +		goto freemem;
-> +	}
-> +
-> +	fd = open(ALLOCINFO_PROC, O_RDONLY);
-> +	if (fd < 0) {
-> +		ksft_print_msg("Failed to open " ALLOCINFO_PROC ": %s\n", strerror(errno));
-> +		ret = KSFT_SKIP;
-> +		goto freemem;
-> +	}
-> +
-> +	do {
-> +		found_tag = NULL;
-> +		pos = 0;
-> +
-> +		if (__allocinfo_get_content_id(fd, &start_cont_id)) {
-> +			ksft_print_msg("allocinfo_get_content_id failed\n");
-> +			ret = KSFT_FAIL;
-> +			goto exit;
-> +		}
-> +
-> +		memset(&filter, 0, sizeof(filter));
-> +		filter.mask |= ALLOCINFO_FILTER_MASK_FUNCTION;
-> +		strncpy(filter.fields.function, target_function, ALLOCINFO_STR_SIZE);
-> +
-> +		if (get_filtered_procfs_entries(procfs_entries, &filter)) {
-> +			ksft_print_msg("Error retrieving entries from " ALLOCINFO_PROC "\n");
-> +			ret = KSFT_SKIP;
-> +			goto exit;
-> +		}
-> +
-> +		if (procfs_entries->count == 0) {
-> +			ksft_print_msg("Function %s not found in procfs\n", target_function);
-> +			ret = KSFT_SKIP;
-> +			goto exit;
-> +		}
-> +
-> +		target_size = procfs_entries->tag[0].counter.bytes;
-> +
-> +		memset(&filter, 0, sizeof(filter));
-> +		filter.mask |= ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FILTER_MASK_MAX_SIZE;
-> +		filter.min_size = target_size;
-> +		filter.max_size = target_size;
-> +
-> +		while (1) {
-> +			struct allocinfo_get_at get_at_params;
-> +
-> +			memset(&get_at_params, 0, sizeof(get_at_params));
-> +			memcpy(&get_at_params.filter, &filter, sizeof(filter));
-> +			get_at_params.pos = pos;
-> +
-> +			if (__allocinfo_get_at(fd, &get_at_params))
-> +				break;
-> +
-> +			tags->count = 0;
-> +			memcpy(&tags->tag[tags->count++], &get_at_params.data,
-> +			       sizeof(get_at_params.data));
-> +
-> +			while (tags->count < VEC_MAX_ENTRIES &&
-> +			       __allocinfo_get_next(fd, &tags->tag[tags->count]) == 0)
-> +				tags->count++;
-> +
-> +			for (i = 0; i < tags->count; i++) {
-> +				if (strcmp(tags->tag[i].tag.function, target_function) == 0) {
-> +					found_tag = &tags->tag[i];
-> +					break;
-> +				}
-> +			}
-> +
-> +			if (found_tag || tags->count < VEC_MAX_ENTRIES)
-> +				break;
-> +
-> +			pos += tags->count;
-> +		}
-> +
-> +		if (__allocinfo_get_content_id(fd, &end_cont_id)) {
-> +			ksft_print_msg("allocinfo_get_content_id failed\n");
-> +			ret = KSFT_FAIL;
-> +			goto exit;
-> +		}
-> +
-> +		if (start_cont_id.id == end_cont_id.id)
-> +			break;
-> +
-> +		ksft_print_msg("Module load detected during size verification, retrying...\n");
-> +	} while (retry++ < max_retries);
-> +
-> +	if (start_cont_id.id == end_cont_id.id && !found_tag) {
-> +		ksft_print_msg("Entry with function %s not found in IOCTL results\n",
-> +			       target_function);
-> +		ret = KSFT_FAIL;
-> +	} else if (start_cont_id.id != end_cont_id.id) {
-> +		ksft_print_msg("Failed to match content_ids for procfs and IOCTL, skipping...\n");
-> +		ret = KSFT_SKIP;
-> +	} else if (found_tag && found_tag->counter.bytes != target_size) {
-> +		ksft_print_msg("IOCTL entry size %llu does not match target size %llu\n",
-> +			       found_tag->counter.bytes, target_size);
-> +		ret = KSFT_FAIL;
-> +	}
-> +
-> +exit:
-> +	close(fd);
-> +freemem:
-> +	free(tags);
-> +	free(procfs_entries);
-> +	return ret;
-> +}
-> +
-> +static int test_lineno_filter(void)
-> +{
-> +	struct allocinfo_tag_data_vec *tags = malloc(sizeof(*tags));
-> +	struct allocinfo_tag_data_vec *procfs_entries = malloc(sizeof(*procfs_entries));
-> +	struct allocinfo_filter filter;
-> +	enum ioctl_ret ioctl_status;
-> +	int ret = KSFT_PASS;
-> +	__u64 target_lineno, i;
-> +	struct allocinfo_tag_data *target_tag;
-> +	bool found = false;
-> +
-> +	if (!tags || !procfs_entries) {
-> +		ksft_print_msg("Memory allocation failed.\n");
-> +		ret = KSFT_FAIL;
-> +		goto exit;
-> +	}
-> +
-> +	memset(&filter, 0, sizeof(filter));
-> +
-> +	if (get_filtered_procfs_entries(procfs_entries, &filter)) {
-> +		ksft_print_msg("Error retrieving entries from " ALLOCINFO_PROC "\n");
-> +		ret = KSFT_SKIP;
-> +		goto exit;
-> +	}
-> +	if (procfs_entries->count == 0) {
-> +		ksft_print_msg("Could not retrieve procfs entries\n");
-> +		ret = KSFT_SKIP;
-> +		goto exit;
-> +	}
-> +	/*
-> +	 * We depend on the procfs results to determine the line number for the filter before
-> +	 * making the ioctl query. Hence, we cannot reuse run_filter_test here.
-> +	 */
-> +	target_tag = &procfs_entries->tag[0];
-> +	target_lineno = target_tag->tag.lineno;
-> +
-> +	filter.mask |= ALLOCINFO_FILTER_MASK_LINENO;
-> +	filter.fields.lineno = target_lineno;
-> +
-> +	ioctl_status = get_filtered_ioctl_entries(tags, &filter, 0);
-> +	if (ioctl_status == IOCTL_INVALID_DATA) {
-> +		ksft_print_msg("Trouble retrieving valid IOCTL entries, skipping.\n");
-> +		ret = KSFT_SKIP;
-> +		goto exit;
-> +	}
-> +	if (ioctl_status == IOCTL_FAILURE) {
-> +		ksft_print_msg("Error retrieving IOCTL entries.\n");
-> +		ret = KSFT_FAIL;
-> +		goto exit;
-> +	}
-> +
-> +	for (i = 0; i < tags->count; i++) {
-> +		if (tags->tag[i].tag.lineno != target_lineno) {
-> +			ksft_print_msg("IOCTL entry %llu has incorrect lineno %llu.\n",
-> +				       i, tags->tag[i].tag.lineno);
-> +			ret = KSFT_FAIL;
-> +			goto exit;
-> +		}
-> +
-> +		if (strncmp(tags->tag[i].tag.function, target_tag->tag.function,
-> +			    ALLOCINFO_STR_SIZE) == 0 &&
-> +		    strncmp(tags->tag[i].tag.filename, target_tag->tag.filename,
-> +			    ALLOCINFO_STR_SIZE) == 0)
-> +			found = true;
-> +	}
-> +
-> +	if (!found) {
-> +		ksft_print_msg("Original procfs entry not found in IOCTL lineno filter results.\n");
-> +		ret = KSFT_FAIL;
-> +	}
-> +
-> +exit:
-> +	free(tags);
-> +	free(procfs_entries);
-> +	return ret;
-> +}
-> +
->   int main(int argc, char *argv[])
->   {
->   	int ret;
->   
-> -	ksft_set_plan(2);
-> +	ksft_set_plan(4);
->   
->   	ret = test_filename_filter();
->   	if (ret == KSFT_SKIP)
-> @@ -330,5 +532,17 @@ int main(int argc, char *argv[])
->   	else
->   		ksft_test_result(ret == KSFT_PASS, "test_function_filter\n");
->   
-> +	ret = test_size_filter();
-> +	if (ret == KSFT_SKIP)
-> +		ksft_test_result_skip("Skipping test_size_filter\n");
-> +	else
-> +		ksft_test_result(ret == KSFT_PASS, "test_size_filter\n");
-> +
-> +	ret = test_lineno_filter();
-> +	if (ret == KSFT_SKIP)
-> +		ksft_test_result_skip("Skipping test_lineno_filter\n");
-> +	else
-> +		ksft_test_result(ret == KSFT_PASS, "test_lineno_filter\n");
-> +
->   	ksft_finished();
->   }
 
