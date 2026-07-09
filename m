@@ -4,80 +4,195 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72D33C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 05:14:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DF9CC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 05:44:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 537B46B0088; Thu,  9 Jul 2026 01:14:47 -0400 (EDT)
+	id 0C1606B0088; Thu,  9 Jul 2026 01:44:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50FEE6B008A; Thu,  9 Jul 2026 01:14:47 -0400 (EDT)
+	id 0726E6B008A; Thu,  9 Jul 2026 01:44:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 401CE6B008C; Thu,  9 Jul 2026 01:14:47 -0400 (EDT)
+	id E55EC6B008C; Thu,  9 Jul 2026 01:44:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B0306B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 01:14:47 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 965A7120226
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:14:46 +0000 (UTC)
-X-FDA: 84968073372.22.8217441
-Received: from mail-10696.protonmail.ch (mail-10696.protonmail.ch [79.135.106.96])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5CAA340006
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:14:44 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=FrA8MWgS;
-	spf=pass (imf12.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.96 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783574085;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D5DD6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 01:44:50 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E00D168E76
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:44:50 +0000 (UTC)
+X-FDA: 84968149140.16.D0F319A
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 37EEAC0009
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 05:44:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fqbUjM4K;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf22.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783575886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=//uLA+s6qwaDTgsvTiLRg4jEcoe8gz5B2XgMn4s7FKg=;
-	b=0fi2dS0G9zdCbaIJ+YOwkei1pxTMuNVS56j35NXxobkkzUh0yt8CvVVuoLFBXgzpEV3PcI
-	U/lrVAf890IsTsqzPcYCMSSzFcuHThug29tsrzVoFtvrH0KjdJkIFdl09Gdrp2OIpS2leC
-	Vi/Gq5Fz8Q06e5fHnO9E7Q4BiZZYz+M=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=FrA8MWgS;
-	spf=pass (imf12.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.96 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783574085;
-	b=F7Up0fhpx8qdoN122wY5MJ1xm1dWvk30+zBoc47jb1MyVERbMq2Y2SXapReIDVz3FCsUTe
-	qPL7TQr0ioyZHA5Zp8xJdMBky7sKDl1cXYmZgHRhQqZZEPLjvG+T0AaNPKX60//nSubgp9
-	3UcWQVyYcksUrRnsucy+AcAhw3LYvmg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1783574082; x=1783833282;
-	bh=//uLA+s6qwaDTgsvTiLRg4jEcoe8gz5B2XgMn4s7FKg=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=FrA8MWgSX8EAeMxc/LECNUan0idpSp7JLCWZWnkIGbyCWCjkm3e/QvDYUTqBI1L1W
-	 oe++g69ToQ8xlEGGlGGCAtZRdavuYEIhdfxorJ6BatfJ7e2vxQdleKgexLBa7eXTdP
-	 HgHjBD4j2zfIl9H+WrGtPwquOPZBYc9HjgokXA3RptdcA8eiTo/W9yMqfHBswecqAy
-	 7f18A75Xv4fL3LNO/s+FEljyEH7gnvCM8iko8Y0+6T9TcjqSugIjnZaJsDVWWfKQTQ
-	 TtzFRZGnx0L4l3w36ISJxDhvtxNEXPI/JvoeF0a3FT5xjwFgozOAM/TKKpcSVqi9lD
-	 bEjwddCq+TarQ==
-Date: Thu, 09 Jul 2026 05:14:36 +0000
-To: "rppt@kernel.org" <rppt@kernel.org>, "paul@paul-moore.com" <paul@paul-moore.com>
-From: BoxStrikesTeam <BoxStrikesTeam@proton.me>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "jmorris@namei.org" <jmorris@namei.org>, "serge@hallyn.com" <serge@hallyn.com>
-Subject: [RESEND][RFC/discuss] memfd_secret(): opt-in visibility for security monitoring (eBPF/audit)
-Message-ID: <MZlCECz5s73hPgQxtqWZ2VbXNTCZnItnwMHu2iZQlRC6ba0B9GuqxT2EhvhwQ-uanBDsNn7Bg09nGVynBHdmSsiRjhyI1udkYbqOoPfpe6w=@proton.me>
-Feedback-ID: 205449183:user:proton
-X-Pm-Message-ID: 10d4677c9e8ac675e6b6709b3446567f78dad599
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PeBuCxKGp+MgBJASYbOS2aS70dSFoh37KLx5zr6ER+w=;
+	b=y7SW3v6O8VrMoYPZ2E3FyRylsBjvJYFoIlHmejLQpA1Rpb1VsLE6oUyrK90TFKXILRxawi
+	quNqmSupRpaR1ZUZgdED9iVqLGacZV9OuhSGOB7hBY1DhC5mFQXg1kPYErgYZ+Rz1Vio25
+	sXIsqB0gRpmPRxFHlOTdcW6vM5Z/tlQ=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fqbUjM4K;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf22.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1783575886;
+	b=WsdsLq+hqgj0qyWIVpDEhZIX2T30pLaqLpSeymSOsWJm4lH5KT2UD7ohkwMj+Qms6HEdC7
+	l/w8TwMtKQ3bDejmW/DG6DroJFe9JVvOzi/OpIMTE9RA/9vLq6kn0wAjErcdniycl6c+lC
+	y95FXd59EAf3LUwFlcgMgkJ2689xk9s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783575885; x=1815111885;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=AKE1LSXkXGoH4+/3gkqQMPcOBCz86YZ5xM9Zq2bGaBg=;
+  b=fqbUjM4KsQAThYxNCdxSXa22RjM9DRUCRRfRQ0WQgIxkjIlRj4V80/Yt
+   UyA53xmJXaOy+NHlfikm/582Neto9ynydYu19anIimAbswORB+IJyPDQ9
+   8WbX72KB+GUuqxmeCJ2TTvzUReWfJGkTCWbg2/xYtDLUDqMLHT8lcfl5Y
+   l27R3Mvg3k86C6xRJz0flCFtHc/ILaHsCZ3Oxdu/w/3WeJmbuS/eVvAJj
+   oYFXb8K0fa8lymzZN4R4jn9E5ySjFk99SwZzBmxTYYdDM0/zrXfUIsLhU
+   ++JHSAKend0xsgL6pMleU9NMYYVMs/je4AGbsxZutW8fchzI245ZeZjEU
+   Q==;
+X-CSE-ConnectionGUID: 7NQqG2/0QCSMAsfGSgchVg==
+X-CSE-MsgGUID: BGbMkG41Q9O9msf748osOg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84301235"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="84301235"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 22:44:43 -0700
+X-CSE-ConnectionGUID: FMyiyKPNT8aXgAbMylsPEQ==
+X-CSE-MsgGUID: Ldc4c1kuSb6Rt6vDfg5uTw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="250500723"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2026 22:44:43 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 8 Jul 2026 22:44:42 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Wed, 8 Jul 2026 22:44:42 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.23) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Wed, 8 Jul 2026 22:44:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C+2JsGTy69Hs7Kesi2D8o2xwgTLyoKKs1sJN4pTwlHK9gUy3spxOwPP1KpmCQqigveji7ogFtMNnCvgOGOd9de87MS2eQwB/YQzkJMov5mw3kG0CERE1zNdTAL/HlBhozZBA1d4HcrZ8AcjPMrD+GGIAqLJjCFtCNKhRYYQjPgIPch6rFgbY9qR+34YWEoIcDQ7pN1OJ9UMWDm6j2GPCGwWyUd0MQcGOgz0Chl0c8Sga8TNYSgy0BtmhV0a+94GhKF4zFLwO+32XChkjqzPW4JYLzFu6kOCRlCtZoxPop++P5djMhAON1dVjhu2LxVtmnfU1m9ceAfSHOp+ibvWhLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PeBuCxKGp+MgBJASYbOS2aS70dSFoh37KLx5zr6ER+w=;
+ b=SdpDmuMXl66x0k3sfpRwxhDkHZ04V+Y3cBG9Xy/ET9wj9YYxUDmqGPhtSg/xF7CpGp2H/pGp1CXf18pBw8KigVOAHz+ykDkuBcshWKG31NeIdBp9+n2KtG4vfynpRU9BO3CbQXquQT7P4ENxUirZ7YoCaexgVXiKbAFRc/fyNLnZA0H2GaP5X+vd6D7IUwF7SWJr2dUzVtVAArKjswzkKDr27TF95Rc7AuI2insRA7wkDc4U1UN8O6f76OpBtHJcNbwQOvNX4i2ewduJqUeOgOvyIx5NkhP/exrxQ0pyaiaNk1b/QTTnPFtv+ZZdaQIRaX6fiGF8AlA7kyuNYOtaLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by DS4PPF11A2D5672.namprd11.prod.outlook.com (2603:10b6:f:fc02::b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Thu, 9 Jul
+ 2026 05:44:40 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c%4]) with mapi id 15.21.0181.008; Thu, 9 Jul 2026
+ 05:44:39 +0000
+Date: Wed, 8 Jul 2026 22:44:37 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: Qiliang Yuan <realwujing@gmail.com>
+CC: Christian Koenig <christian.koenig@amd.com>, Huang Rui
+	<ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, Tejun Heo <tj@kernel.org>, Johannes Weiner
+	<hannes@cmpxchg.org>, Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Natalie Vock <natalie.vock@gmx.de>, Michal Hocko <mhocko@kernel.org>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, <dri-devel@lists.freedesktop.org>,
+	<linux-kernel@vger.kernel.org>, <cgroups@vger.kernel.org>,
+	<linux-mm@kvack.org>, Qiliang Yuan <yuanql9@chinatelecom.cn>,
+	<thomas.hellstrom@linux.intel.com>
+Subject: Re: [PATCH v7] cgroup/dmem: implement dmem.high soft limit with
+ proactive reclaim
+Message-ID: <ak81RUK6vRZaMN2D@gsse-cloud1.jf.intel.com>
+References: <20260709-feature-dmem-high-v7-1-de559e7e7768@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260709-feature-dmem-high-v7-1-de559e7e7768@gmail.com>
+X-ClientProxiedBy: SJ0PR05CA0039.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::14) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: m5niqi9itoaqxc95chjotm8sad38ijkf
-X-Rspamd-Queue-Id: 5CAA340006
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|DS4PPF11A2D5672:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83a64ea7-e3b8-4826-39cf-08dedd7d2b26
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|366016|1800799024|56012099006|6133799003|7136999003|11063799006|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info: gMuiSEpQq5ypBZqe+Ehe+nL5kyCJBmH7nQWE+XgQcrmgVxKDoiXOic8KzNOGoqOP0UNdNCg+m68rW922gjOkDAfMbT1cetepKoPdlyyM+VagCPEg/rcN2ROgToq9dGxe7lSuU4Jzm0xp9efCOCmODk4V2XIOglpmtsUcz/JYAJPYMaWIWMkC9v9WnlpzrcqG/8tTYEW4XUPsLVGWUzGEIdMKqOtnGvAyO5o+m7DLuFD3aX8+LLnYWtDlGk/ANsUqIP3SVioj/tPOeae7S8TVAsxLYaXwH01udcIlD9JjY6Imbx4qy3ryPVYKtT+1QzB32WZHe6DiZKidgbvhb5LFGbA/Y+HZvNR/wfr/2ouuab6z/LbqQN8ks4U+kqyfUlFcAerDRmx2sfdqBkRFXv14b8m0q3qxJszPkvhmb0j2SHGu4TcqogSP5XQAfXHTt92o4YEu3sNLFmck7hLeJhEh0c1Md96FPUJ14A+eB7I9nbS4jrFRicYXKxvoZ8V+sZQ38PqkFnpomztZ5TAt2ocpUmnaMaiEbXSmuTvf9aBDIIwELyVGg05wXTJFYlvte3RwffL6UwUxbOs+LBS7KyCRbaxstaYA+iMVDXK8vYzEBUfz74OEhmHp7jgc3w2+mnly
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(366016)(1800799024)(56012099006)(6133799003)(7136999003)(11063799006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?gUpVeHcXU7ZDa9peUoABe6+/zRkKnr/NqaUHc3Omr6etzf1q9DKzSrzMnerM?=
+ =?us-ascii?Q?AWAzKaW/qtOfHwJtpevC696q0PA1/vlZ5IaVYY0mP2xXVtNbJQ83FsVwZAUY?=
+ =?us-ascii?Q?0xde3s1tJFTio6kByWWNfn0OpvKEhVPWDV9fIEYyYGDBKaJiy2LikUeCWIqq?=
+ =?us-ascii?Q?Ponz6Mt0DDBY6KmxQzbsBtEuzAbZO2WpL9fuGWtkCkLpgIoyeoIykjhMm9cz?=
+ =?us-ascii?Q?cJPqzbO2KPrTyPlKQNEkOZHZc4fus8UEFrGlu0SbHXCU3Of8EW05wJxywOGE?=
+ =?us-ascii?Q?oWQclUNZhhlFSahAKo76bkwOPCueZE38uvZDfaTAFO6/4yD09tjPDolvB2Vn?=
+ =?us-ascii?Q?kHBSKfTG8GFQxW/W9s4HPn0WNqMK36XBmT0ZVgoNe0Xtv/OfEbQ0xZaS0Eii?=
+ =?us-ascii?Q?OU67dH8cLwyFJ6eFM/ewBT8x4WfHyErYRPKBKZ8kimJUj48rh6mq0DSvDsp1?=
+ =?us-ascii?Q?kHlu4s9hDZZjnyI+77ePhAzol7ASX4wiyPn+Ee08mufy9DEAxjN18MEQmimH?=
+ =?us-ascii?Q?1bQeETiaJnVg3z1AAGrBu5kSOph2//1H+um08WCfo0bQLLGj0ot0Uti3BXGd?=
+ =?us-ascii?Q?EAVo+6z71O4dlsP6iyr/dul7yHtoLeZKc9k0Vsthxu5cUUZh5M+uOtU8/don?=
+ =?us-ascii?Q?Og3wEJqWn9rwuO4XcvBe+y0KtOwNRZvO5bMUzF2SSp2zIu8Ptj527xI/zxlG?=
+ =?us-ascii?Q?xl1C4KgVri5xi8zw8P75QVZdMStQT7P8a5G0ibXhUM+5SEY7Y6cg/ZtxcT95?=
+ =?us-ascii?Q?Fdv4qE/VvrwaiGozO32WkaIY1ntmFva4KFYczRu2LtGQyk0V/IJ4cGJO8gvk?=
+ =?us-ascii?Q?yQaA2w1+Idmu/ry6IXCeQFxf9WaaCzPn7fRUBg23+h6vifFV+oI/o3B0akqO?=
+ =?us-ascii?Q?CaUSNYtECd55nJ5yg621jRceOk7RezHLaw9jd0PPxpiHBjI4jY9bSPfrfqb2?=
+ =?us-ascii?Q?B93nxUd33esnt6JQZEIM9inlposkqzUkmSpHSk1DFM41o2/wjVyn1a3A64IN?=
+ =?us-ascii?Q?jopj0vl9ay9ldv9ikLavnUw58Wc3CDmdueNMopFH1JgsjE1GuNZrUY7qC9mu?=
+ =?us-ascii?Q?f117/aW0+dF0LXdwKqCjARLTFOez4fU7InG2fA8N7Kr7ZSVMf6F1YHdcJGMu?=
+ =?us-ascii?Q?ktZ7FeIEduf8e9x8qyfipvkqeXVnXlayh/+0w6otYcZFhLUrenwv4M3dqu0p?=
+ =?us-ascii?Q?EAGF2fidVnU0NQ+/LHR5hbH73pYBmXbLZa8AIW4WSfkpORyNAB7TJAlLBsrG?=
+ =?us-ascii?Q?ZmiWZhtwIiH2fa/f1Ds852HcuWMiMjRoM91jvUmHKO7gYiSV+xauIaWf6lXK?=
+ =?us-ascii?Q?UjDRKT7yy7aAKVBbeO1rw74D7Zlt9Il9QX3+JSGsSOOSVOW7vvHY6znj1cUn?=
+ =?us-ascii?Q?njLVCQEwinCBMsuhICIQPE6RCsK4saOHrXcuCgzVXjXMpRdXIZX0LUi15QLu?=
+ =?us-ascii?Q?yq06EagGNtpe9itsaMlbRqusv6dFLLnSNcTlZcMX2aRZz9QmwiI0lTABvj9x?=
+ =?us-ascii?Q?xu/MzfALLjM2VmVMEoCaZhGqYeHltdX2mlN1rj4/8ZfG5tG0oGMK6br04G82?=
+ =?us-ascii?Q?ko7eNUniN0M/pMdNGoA0FxRUD5LJnvQjAwzqdA37mU9Q/VH3VRCpD5+C0ETV?=
+ =?us-ascii?Q?/y2vSdtoJizvR8RQt96/N9BUr9NYi9nsBfZal23wxcUvGUirrd7ZC+77m5HK?=
+ =?us-ascii?Q?cmGTb1/EcWy9NPqb4re2VHrGV3Rj3pZCg7P1OYy7a1tTp7lED+2Lx93N/5am?=
+ =?us-ascii?Q?Ei7FlcIdCg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: QL0jx4CB5i9zU+uQm8WRUNUWUJBITIsREMTt+5awBeDxBAx7geKOxabm10qHxKGdBCpEL33TX1Soc6IMuyBuiiZI32oNSuHHLim0W9QpFKouOupvac7AvbEiWLNCG19SypH/uJzB4/u11K98644kGeZgRn5t3zuqBwPWw+0ia3XdSGxtOxvTNZ2Jf8NzXQX9+Qgo1ALKMAkCHd64IGMceQIaV9lWogoUmiFRdSRdM0Zerp/UJUlG/iwnNgYApw/e+9nPCK7X9GG0VI/BppgXeV0SmXoP0ZoU89qu+txo4hA697T83i7V/5UAGZ4hu3P+R7LZ9fbVJcBRjR/J+mlKlg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83a64ea7-e3b8-4826-39cf-08dedd7d2b26
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2026 05:44:39.9271
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZLNjwtx+CTkCiTBe1Uc5BMbKypo+Hq1tYQjPIxNGxsfPJX/9o7ezza8nqUXMK2wgFSbF/JeilwoJMVVuBeGrOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF11A2D5672
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783574084-91918
-X-HE-Meta: U2FsdGVkX18DhiY2mFZzNxAArhspq4hIYEALh5mkwBKjGGU2uuw56k/T4A0//krySXtbDpDKsOABmD8prFsSVy37EKFYbP/wv949ULcsKEBTZvuxkYmtN5j/R5ZV77s5pMKGrUePHQqCZAyB0z0f+w5MG36y+KlnCKVRT+uEInEzdQNMEOvqEbj7fLIQYThB//+L6yKWPpup0zbedeUMuHor6WxsBm3t40KjqXAHH0daSwljOpu+09NZnwMJ7E3phN0RR8JX71eTzfKRJUnpbezW+H5Z7z3eKWoomQGNMtjH2E/lD02GbHwePzgts0FnufpKkUeWVB/xxvL2KI4+2Pf4Jgb1ys/vzHW/mAK1Lh03Xd4WwZqjCpQlO5kEMObDvcrZKF2j9WyR3237+ow4z4zGFozuRu5tHey/A03oIeDWEEEYhAQ3GqPSdulcSiwMYICBUtKwADWNKmr64EqYDJr8bL9Agj0bwOWXjnOCpTk8upuvS8Bv2rNm/y50wa0edE4INSfPDfaN7EPIq/1/++YKCbeXY4cwdQOS49yOTMT3OOdKUpGu5b+rrRbtEux72r6x1NXSmlegrz+Re3M2s6IYx6M3SQFMFfEnWb6cRDIpfHQ7qEYmqRANXhI/NYYUo9eKomRpoGilgn3YZVjo3uVaY5UZ9qQWynWXBIMIk5t3qNe5Q4h/3L6BUWKQbOn/iPWKzx/8L28zwbGRDCjtYQdrOEkeF8ZlRZlH6ppbv0/VpFuQDEdzSFOLGsIJiHKIQAVOAtQjPJuU3sBRI0Zagzyb4lca2jo1KTQI3GR3D/SmN5nNdlUeN7kI1fWWqaP/gBV7xyAlE45zNU4ipYoi7t7T7qjCHp3aERT4JOHl0+CJBA6eS5JpOzWglLPGH0NnIg/VW2j42g6xLO9e+yNEkkJcle7NpYsd9pHP3Muv3cWDE/gtuhr8hRbmgMzyc2Tu6SZ+1+Irho+so0WdCVJ
- rLkZBi4V
- zRE9Wn/88zA4inrN1TfCW1wGjQZMgnYMoHsKhc1YThIv+cZFyNMDviW8KxIePttUo6I7UGOlnClKAFcpQmGXSlj33oB19u1sqaJ6Njf0Ksstro58qHi43fRbh5QnCJ2BoDKpqJJAmDx7XCZToy2AYHKKxgqqaSTMTd431o1Zv+I6cc6PUAu55YAGsnqAUIyfWEk508M5JOnHNvVUVhYVAhC+hW3x4TEUlfHaCvEtcu7CnxFEU/iJVnzQ1zgavFx+dUPTVD0DRBpJA5UVnOWQaUKJKi2L6kDfm0QGAD2qycbp1pfPo8kWQj41qNCmQJXoR3XqqaMRxApO5a0Z7fJrbftZ1BzBS8nBGSWHNhEv5KuqtCi4JFWbwLcuRXeHfsqggKGqwFwgdWSLMr+FHGjXggz7FOgWJhRhipy9oZ+mLcQxGo6Julm8O26grsg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 37EEAC0009
+X-Stat-Signature: i1u8auhy7fbhosahegg14b4jn5188j4m
+X-HE-Tag: 1783575885-239906
+X-HE-Meta: U2FsdGVkX1/+b1c5mm4Ugp1e97UgxaZsgUHwdMXisWc671DlNijjsUlYJuMYOjl9Qf8EcOJAaYm6TmROcu7yPL3+sR9MMcHVo05ls5PLEzibkZb4Ms5uMOaVOrRZAJGj46Mo+AZoYjS4nztr8WeUYpQXlMwQXjAcTrjxgIZ6Tnn/cSGBjBKJMT09W+y8DTjVI5grJ8f4SrWMVuLJWUaShw6iXJPWqtt3WUQGP+QnjSkniAc3hNF0M3YsU/Ag5xNIcW/e2G/ib6Nbt8AbZIgcOLgNSXUt7VmyKjg4J63Z9EXLH9Aks81IKfGJhV4y8aobDMg6tJfp8OQNX7+KVhWC6Q8NHvGdhHVJgg2ZxwHFKcChasUPxSFHGZQyjAoJXYQmVzS011Xqc5SWecFVfjdf3Yst637XDpDL+YU/vjmJCMsT9O222ezDssoD1btHZpMj+mhQ+BYyxuC5EYtEG4kONCyGlnoJxLvj2ciuRaZl6I/gHZ0zNCy8sUeICU4AwXnAj9ZeYeHJADZ/LpZ9sR4ZJ6nRYQ7cAofSSAej6474Ws7RPeM/p5qpUxoBWTFRrUctdpQ+3AMH3KH06FzEG4I2vR06rJb+7PiASNqoOG5nE8Qv4WxTZY8ialZwSpwv/+T8gBaDkP7A2DjlvBBadxNkG6wC6qGZHBlmoS9zL5FrzUYR5P9Ee/skuVXB1FKqNNwC90/t8jcGwD4HjOtsnphi7vz9cRnToUo2y+3gr1sJGbvJgTPU3Xx5VsnU7WjGzFNoSjSS0JGv9IrhTYHZbpVFvZd6aE3gsCE76iNjcu8uzxQ9LQ6o1hTF3WoZt/oTdTAa4FXY++FBtfZqucaKyLJn+yN21cwEdJ65ciiJf7A4sX/by1C/HfaXq60HjrqLGyLr3ZNsUr/ZXNdhsGjFCyB7j8/h7NMzk+jnePBZM0jxRK9FuNt115RX7cIfSmyypLt+yDt1Q6S+4rjSQlBH2Pp
+ EzZisWYu
+ 4nlRAuuv8P6tBQreHv0sbeZ+x5h9FJ508EyP0G/QXidwvmAzM/HFckJ4OoV8PZw8FwFZl9IH/IgMXN4lBD1B/gFaUSk6VtkZ+obk9cBLAFTit5PZ3LvwI4bZZP5QuxHmm/vmN8clRJhEPmG/QCajjCeVbsiTt5qYeZyCFvGfD915vvvsQQ2M4CugZ2v10Mf96dHOWvNPcPonqhWzM5Xoztqj2m+IH1w2/Pmji0vB1ZbxE3/M2nTHrvLne/eUXsLl4uIdNKZmdJBugP+Upnm4hmiMyz/T28YKGen1qwxQs1wf3Qbmcq+NFRQsoyLpf5pv+0vH+O1YoHXGmDhJ0S6xDgWgbUrZ3qnRP52yf5pS8oyhgXnFJbekPgLAGl6sWsYVIzdtexFfZZKWL9ivlABciPMk4vjVsCT3SGDUdzSIMToIXs+4js0yS3U5idgXZggJ5lUM7wWO/3+p8ci95KAsbWSX4ZlX3Q0/tdSuU6yMfNeG0r5sVFhxMB4DzWRIuSJLsaE8X0/9UfMwRrVAML04KSvBwd8FJiuTEyrmIYE2CXYuh2W/C/DlYms0YTknNRyum0sjKBzJqA2hAhzOkWCuxvTUMQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,77 +200,719 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Note:Apologies for the HTML format in the previous send; this is a plain-te=
-xt resend of the same message.
+On Thu, Jul 09, 2026 at 12:02:00PM +0800, Qiliang Yuan wrote:
 
++Thomas
 
+This looks quite similar to work Thomas is doing here [1].
 
+Are either of you two aware of this seemly overlapping work?
 
-Paul,
+Matt
 
-Thanks - I found the Gottsche/inode_init_security_anon() thread and can see=
- it landed. That answers (a) cleanly: labeling exists, policy can be layere=
-d on top via SELinux/AppArmor if a site wants alerting on memfd_secret() cr=
-eation. Good to have that confirmed as already solved.
+[1] https://patchwork.freedesktop.org/series/163970/
 
-On (b), let me push on it a bit further, because I think it's worth spellin=
-g out explicitly rather than dropping it.
-
-My concern: as it stands, an unprivileged process can populate a memfd_secr=
-et() region and mseal() the mapping, producing memory that is (a) unreadabl=
-e by any kernel-side introspection path, including root-owned eBPF tracing =
-programs, and (b) can't be coerced back into an inspectable state via mprot=
-ect/munmap. From a host-based detection standpoint that's a blind spot an a=
-ttacker can use to park a payload where a CAP_BPF-privileged monitoring age=
-nt - something that in most other respects can inspect any process on the b=
-ox - simply cannot look, no matter what capabilities it holds.
-
-I understand the objection this invites, and I want to address it directly =
-rather than pretend it isn't there: the memfd_secret() man page is explicit=
- that its ROP protection rests on the absence of any in-kernel primitive fo=
-r reading this memory. If I'm reading that right, the objection to (b) is t=
-hat adding any such primitive - however capability-gated - re-creates exact=
-ly the artifact a ROP chain would want to call, undermining the "no primiti=
-ve exists" property regardless of who's nominally allowed to invoke it.
-
-I don't think that objection is wrong, but I'm not sure it's fully disposit=
-ive either, and I'd like to hear the maintainers' take on the tradeoff expl=
-icitly:
-
-- The ROP threat model assumes an attacker who already has arbitrary kernel=
- code execution (they're calling kernel functions directly). If they have t=
-hat, they can likely already walk page tables and reconstruct the mapping b=
-y hand - the primitive removal raises the bar, but per the design's own cav=
-eat ("no 100% guarantee"), it was never advertised as absolute.
-- The (b) scenario I'm raising is a different actor: a legitimate, privileg=
-ed, kernel-mediated monitoring agent (eBPF LSM/tracing program) operating t=
-hrough the normal verifier-checked helper path, not an attacker executing a=
-rbitrary kernel code via a ROP chain. Conflating "any code path that can re=
-ad this memory" with "a gadget a ROP chain can call" may be overly conserva=
-tive if the new path is narrowly scoped (e.g., a new bpf_probe_read_secretm=
-em() helper, verifier-restricted to CAP_PERFMON|CAP_BPF programs, opt-in pe=
-r region via a memfd_secret() flag the owning process must set at creation =
-time).
-
-If that distinction doesn't hold up - if any additional kernel-callable rea=
-d path is considered equally exploitable regardless of gating - I'd genuine=
-ly like to understand why, since it would mean the confidentiality guarante=
-e is fundamentally incompatible with any form of authorized introspection, =
-which seems worth stating plainly in the documentation for anyone building =
-EDR/monitoring tooling around eBPF.
-
-
-
-Even if (b) is rejected, I believe explicitly documenting that memfd_secret=
-()+mseal() creates an introspection-proof region would be valuable for the =
-security community, so EDR vendors can adjust their threat models according=
-ly.
-
-Thanks again for engaging with this.
-
-
-
-Eneshan Erdo=C4=9Fan Karaca.
-
-
+> The dmem cgroup v2 controller currently only provides a hard "max"
+> limit, which causes immediate allocation failures when a cgroup's
+> device memory usage reaches its quota.  GPU-bound AI workloads need
+> smoother over-subscription support: a soft limit that provides
+> backpressure through reclaim before the hard limit is reached.
+> 
+> Implement dmem.high as a proper soft limit following the memory.high
+> semantics: the limit is checked in the charge path on every successful
+> allocation, and proactive reclaim is triggered when usage crosses the
+> threshold, rather than waiting for a dmem.max hit to drive eviction.
+> 
+> Expose "high" as a new cgroupfs control file per region via
+> set_resource_high() and get_resource_high(), initialized to
+> PAGE_COUNTER_MAX in reset_all_resource_limits().  Like get_resource_max(),
+> get_resource_high() returns PAGE_COUNTER_MAX when the pool is NULL.
+> 
+> Extend dmem_cgroup_try_charge() with a ret_over_high_pool output
+> parameter.  On a successful charge, if the pool's usage now exceeds its
+> dmem.high threshold, ret_over_high_pool is set so the caller can
+> trigger proactive reclaim.  Propagate this signal through
+> ttm_resource_alloc() up to ttm_bo_alloc_resource().
+> 
+> Add ttm_bo_proactive_evict_high() in TTM, which walks the LRU and
+> evicts one BO from the over-limit cgroup (using the existing try_high
+> logic in dmem_cgroup_state_evict_valuable()).  This is best-effort:
+> the allocation already succeeded since dmem.high is a soft limit.
+> A blocking lock is used when a ww_acquire_ctx ticket is available,
+> trylock otherwise.
+> 
+> Remove the try_high first pass from ttm_bo_evict_alloc(): that pass
+> tied the interface semantics to a specific eviction ordering detail
+> rather than a proper soft limit.  Proactive reclaim in the charge
+> path is the correct place to enforce the soft limit.
+> 
+> Co-developed-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
+> Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
+> Signed-off-by: Jing Wu <realwujing@gmail.com>
+> ---
+> Implement dmem.high as a proper soft limit for the dmem cgroup v2
+> controller, following memory.high semantics: the limit is checked in
+> the charge path on every successful allocation, and proactive reclaim
+> is triggered when usage crosses the threshold.
+> 
+> The dmem cgroup currently only supports a hard "max" limit, which causes
+> allocation failures for GPU-bound workloads.  A soft limit enables
+> smoother over-subscription by providing backpressure through reclaim
+> before the hard limit is reached.
+> 
+> The implementation extends dmem_cgroup_try_charge() with a
+> ret_over_high_pool output parameter that signals callers when a
+> successful charge pushes usage above the dmem.high threshold.
+> ttm_resource_alloc() propagates this signal up to
+> ttm_bo_alloc_resource(), where ttm_bo_proactive_evict_high() evicts
+> one BO from the over-limit cgroup on a best-effort basis.
+> ---
+> V6 -> V7:
+> - Replace prioritized eviction (eviction-time ordering) with proactive
+>   reclaim (charge-time enforcement): dmem.high is now checked in
+>   dmem_cgroup_try_charge() on every successful allocation, matching
+>   memory.high semantics as requested by Tejun Heo.
+> - Add ret_over_high_pool output parameter to dmem_cgroup_try_charge()
+>   to signal callers when a successful charge crosses the high threshold.
+> - Add ttm_bo_proactive_evict_high() to evict one BO from the over-limit
+>   cgroup on each allocation that crosses dmem.high (best-effort; the
+>   allocation already succeeded since dmem.high is a soft limit).
+> - Remove the try_high first pass from ttm_bo_evict_alloc(): the high
+>   limit is no longer enforced via eviction ordering in the max path.
+> - Propagate ret_over_high_pool through ttm_resource_alloc() and update
+>   all callers (including TTM test files) to pass the new parameter.
+> - Add Michal Hocko, Roman Gushchin, Shakeel Butt, Muchun Song to Cc
+>   per Tejun's request for memcg input on soft limit semantics.
+> 
+> V5 -> V6:
+> - Guard the try_high dereference of test_pool->cnt with a NULL check
+>   to prevent a kernel panic during global memory pressure eviction
+>   when a BO has no associated cgroup.
+> - Make the disabled-cgroup stub for dmem_cgroup_state_evict_valuable()
+>   return false in try_high mode so the stub does not incorrectly
+>   enable Pass 1 when CONFIG_CGROUP_DMEM=n.
+> 
+> V4 -> V5:
+> - Restore the original control flow in dmem_cgroup_state_evict_valuable():
+>   test_pool is no longer dereferenced before the ancestry checks, fixing
+>   a NULL pointer dereference on BOs without a cgroup.  The limit_pool
+>   NULL-to-root-cgroup resolution is now performed before the try_high
+>   block, fixing a panic during global memory pressure eviction.
+> - Keep the try_high check for limit_pool == test_pool inside the existing
+>   early-return branch to avoid bypassing the hierarchy constraint check
+>   that prevents cross-cgroup eviction.
+> - Use a blocking lock in Pass 1 only when a ticket is available
+>   (trylock otherwise), addressing the deadlock risk of blocking without
+>   a valid ww_acquire_ctx.
+> - Explicitly reset trylock_only to true before Pass 2 so it does not
+>   inherit Pass 1's blocking behavior.
+> 
+> V3 -> V4:
+> - Use a blocking lock in Pass 1 instead of trylock to ensure
+>   over-limit cgroups are penalized even when their BOs are actively
+>   in use, as requested by Maarten Lankhorst.
+> - Evaluate the try_high condition before the limit_pool == test_pool
+>   early-return so that the limit-hitting cgroup's own BOs are also
+>   filtered by dmem.high.
+> - Remove the high-priority compensation retry at the start of Pass 3,
+>   which is no longer needed now that Pass 1 uses a blocking lock.
+> 
+> V2 -> V3:
+> - Walk the page_counter parent chain in the try_high pass to prevent
+>   child cgroups from evading the penalty when a parent cgroup exceeds
+>   its dmem.high limit.
+> - Check dmem.min protection in the try_high pass to avoid evicting
+>   BOs below the effective minimum.
+> - Add a properly-locked high-priority retry at the beginning of Pass 3
+>   so that actively-used over-limit BOs (which failed trylock in Pass 1)
+>   are not skipped while innocent cgroups are evicted.
+> - Fix get_resource_high(NULL) returning 0 instead of PAGE_COUNTER_MAX
+>   to match the behavior of get_resource_max().
+> 
+> V1 -> V2:
+> - Replace sleep-on-allocation throttling with prioritized eviction.
+> - Remove task throttling entirely.
+> - Add dmem.high cgroupfs control file per region.
+> - Extend dmem_cgroup_state_evict_valuable() with try_high parameter.
+> - Refactor ttm_bo_evict_alloc() into a 3-pass eviction strategy.
+> - Initialize high to PAGE_COUNTER_MAX in reset_all_resource_limits().
+> 
+> v6: https://lore.kernel.org/r/20260531-feature-dmem-high-v6-1-20563ecd6dc7@gmail.com
+> v5: https://lore.kernel.org/r/20260531-feature-dmem-high-v5-1-1c6c532b26a9@gmail.com
+> v4: https://lore.kernel.org/r/20260530-feature-dmem-high-v4-1-ee7c6ec1c8da@gmail.com
+> v3: https://lore.kernel.org/r/20260528-feature-dmem-high-v3-1-c642b34bcb2f@gmail.com
+> v2: https://lore.kernel.org/r/20260522-feature-dmem-high-v2-1-1d7d4a0fa5da@gmail.com
+> v1: https://lore.kernel.org/all/20260520-feature-dmem-high-v1-1-97ca0cb7f95a@gmail.com
+> ---
+>  drivers/gpu/drm/ttm/tests/ttm_bo_test.c          |  18 ++--
+>  drivers/gpu/drm/ttm/tests/ttm_bo_validate_test.c |   4 +-
+>  drivers/gpu/drm/ttm/tests/ttm_resource_test.c    |   2 +-
+>  drivers/gpu/drm/ttm/ttm_bo.c                     |  60 ++++++++++---
+>  drivers/gpu/drm/ttm/ttm_resource.c               |   8 +-
+>  include/drm/ttm/ttm_resource.h                   |   3 +-
+>  include/linux/cgroup_dmem.h                      |  15 +++-
+>  kernel/cgroup/dmem.c                             | 104 +++++++++++++++++++++--
+>  8 files changed, 179 insertions(+), 35 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
+> index f3103307b5df9..7a03f6a04f4e8 100644
+> --- a/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
+> +++ b/drivers/gpu/drm/ttm/tests/ttm_bo_test.c
+> @@ -258,13 +258,13 @@ static void ttm_bo_unreserve_basic(struct kunit *test)
+>  	bo = ttm_bo_kunit_init(test, test->priv, BO_SIZE, NULL);
+>  	bo->priority = bo_prio;
+>  
+> -	err = ttm_resource_alloc(bo, place, &res1, NULL);
+> +	err = ttm_resource_alloc(bo, place, &res1, NULL, NULL);
+>  	KUNIT_ASSERT_EQ(test, err, 0);
+>  
+>  	bo->resource = res1;
+>  
+>  	/* Add a dummy resource to populate LRU */
+> -	ttm_resource_alloc(bo, place, &res2, NULL);
+> +	ttm_resource_alloc(bo, place, &res2, NULL, NULL);
+>  
+>  	dma_resv_lock(bo->base.resv, NULL);
+>  	ttm_bo_unreserve(bo);
+> @@ -300,12 +300,12 @@ static void ttm_bo_unreserve_pinned(struct kunit *test)
+>  	dma_resv_lock(bo->base.resv, NULL);
+>  	ttm_bo_pin(bo);
+>  
+> -	err = ttm_resource_alloc(bo, place, &res1, NULL);
+> +	err = ttm_resource_alloc(bo, place, &res1, NULL, NULL);
+>  	KUNIT_ASSERT_EQ(test, err, 0);
+>  	bo->resource = res1;
+>  
+>  	/* Add a dummy resource to the pinned list */
+> -	err = ttm_resource_alloc(bo, place, &res2, NULL);
+> +	err = ttm_resource_alloc(bo, place, &res2, NULL, NULL);
+>  	KUNIT_ASSERT_EQ(test, err, 0);
+>  	KUNIT_ASSERT_EQ(test,
+>  			list_is_last(&res2->lru.link, &priv->ttm_dev->unevictable), 1);
+> @@ -355,7 +355,7 @@ static void ttm_bo_unreserve_bulk(struct kunit *test)
+>  	ttm_bo_set_bulk_move(bo1, &lru_bulk_move);
+>  	dma_resv_unlock(bo1->base.resv);
+>  
+> -	err = ttm_resource_alloc(bo1, place, &res1, NULL);
+> +	err = ttm_resource_alloc(bo1, place, &res1, NULL, NULL);
+>  	KUNIT_ASSERT_EQ(test, err, 0);
+>  	bo1->resource = res1;
+>  
+> @@ -363,7 +363,7 @@ static void ttm_bo_unreserve_bulk(struct kunit *test)
+>  	ttm_bo_set_bulk_move(bo2, &lru_bulk_move);
+>  	dma_resv_unlock(bo2->base.resv);
+>  
+> -	err = ttm_resource_alloc(bo2, place, &res2, NULL);
+> +	err = ttm_resource_alloc(bo2, place, &res2, NULL, NULL);
+>  	KUNIT_ASSERT_EQ(test, err, 0);
+>  	bo2->resource = res2;
+>  
+> @@ -401,7 +401,7 @@ static void ttm_bo_fini_basic(struct kunit *test)
+>  	bo = ttm_bo_kunit_init(test, test->priv, BO_SIZE, NULL);
+>  	bo->type = ttm_bo_type_device;
+>  
+> -	err = ttm_resource_alloc(bo, place, &res, NULL);
+> +	err = ttm_resource_alloc(bo, place, &res, NULL, NULL);
+>  	KUNIT_ASSERT_EQ(test, err, 0);
+>  	bo->resource = res;
+>  
+> @@ -518,7 +518,7 @@ static void ttm_bo_pin_unpin_resource(struct kunit *test)
+>  
+>  	bo = ttm_bo_kunit_init(test, test->priv, BO_SIZE, NULL);
+>  
+> -	err = ttm_resource_alloc(bo, place, &res, NULL);
+> +	err = ttm_resource_alloc(bo, place, &res, NULL, NULL);
+>  	KUNIT_ASSERT_EQ(test, err, 0);
+>  	bo->resource = res;
+>  
+> @@ -569,7 +569,7 @@ static void ttm_bo_multiple_pin_one_unpin(struct kunit *test)
+>  
+>  	bo = ttm_bo_kunit_init(test, test->priv, BO_SIZE, NULL);
+>  
+> -	err = ttm_resource_alloc(bo, place, &res, NULL);
+> +	err = ttm_resource_alloc(bo, place, &res, NULL, NULL);
+>  	KUNIT_ASSERT_EQ(test, err, 0);
+>  	bo->resource = res;
+>  
+> diff --git a/drivers/gpu/drm/ttm/tests/ttm_bo_validate_test.c b/drivers/gpu/drm/ttm/tests/ttm_bo_validate_test.c
+> index 2db221f6fc3a1..cd40f5b2ab4f1 100644
+> --- a/drivers/gpu/drm/ttm/tests/ttm_bo_validate_test.c
+> +++ b/drivers/gpu/drm/ttm/tests/ttm_bo_validate_test.c
+> @@ -547,7 +547,7 @@ static void ttm_bo_validate_no_placement_signaled(struct kunit *test)
+>  
+>  	ttm_bo_reserve(bo, false, false, NULL);
+>  
+> -	err = ttm_resource_alloc(bo, place, &bo->resource, NULL);
+> +	err = ttm_resource_alloc(bo, place, &bo->resource, NULL, NULL);
+>  	KUNIT_EXPECT_EQ(test, err, 0);
+>  	KUNIT_ASSERT_EQ(test, man->usage, size);
+>  
+> @@ -604,7 +604,7 @@ static void ttm_bo_validate_no_placement_not_signaled(struct kunit *test)
+>  	bo = ttm_bo_kunit_init(test, test->priv, size, NULL);
+>  	bo->type = params->bo_type;
+>  
+> -	err = ttm_resource_alloc(bo, place, &bo->resource, NULL);
+> +	err = ttm_resource_alloc(bo, place, &bo->resource, NULL, NULL);
+>  	KUNIT_EXPECT_EQ(test, err, 0);
+>  
+>  	placement = kunit_kzalloc(test, sizeof(*placement), GFP_KERNEL);
+> diff --git a/drivers/gpu/drm/ttm/tests/ttm_resource_test.c b/drivers/gpu/drm/ttm/tests/ttm_resource_test.c
+> index c0e4e35e04426..41fe4d89cd714 100644
+> --- a/drivers/gpu/drm/ttm/tests/ttm_resource_test.c
+> +++ b/drivers/gpu/drm/ttm/tests/ttm_resource_test.c
+> @@ -303,7 +303,7 @@ static void ttm_sys_man_free_basic(struct kunit *test)
+>  	res = kunit_kzalloc(test, sizeof(*res), GFP_KERNEL);
+>  	KUNIT_ASSERT_NOT_NULL(test, res);
+>  
+> -	ttm_resource_alloc(bo, place, &res, NULL);
+> +	ttm_resource_alloc(bo, place, &res, NULL, NULL);
+>  
+>  	man = ttm_manager_type(priv->devs->ttm_dev, mem_type);
+>  	man->func->free(man, res);
+> diff --git a/drivers/gpu/drm/ttm/ttm_bo.c b/drivers/gpu/drm/ttm/ttm_bo.c
+> index bcd76f6bb7f02..bdfcfe5c7d1e2 100644
+> --- a/drivers/gpu/drm/ttm/ttm_bo.c
+> +++ b/drivers/gpu/drm/ttm/ttm_bo.c
+> @@ -505,6 +505,8 @@ struct ttm_bo_evict_walk {
+>  
+>  	/** @limit_pool: Which pool limit we should test against */
+>  	struct dmem_cgroup_pool_state *limit_pool;
+> +	/** @try_high: Whether to only evict BO's above the high watermark (first pass) */
+> +	bool try_high;
+>  	/** @try_low: Whether we should attempt to evict BO's with low watermark threshold */
+>  	bool try_low;
+>  	/** @hit_low: If we cannot evict a bo when @try_low is false (first pass) */
+> @@ -518,7 +520,8 @@ static s64 ttm_bo_evict_cb(struct ttm_lru_walk *walk, struct ttm_buffer_object *
+>  	s64 lret;
+>  
+>  	if (!dmem_cgroup_state_evict_valuable(evict_walk->limit_pool, bo->resource->css,
+> -					      evict_walk->try_low, &evict_walk->hit_low))
+> +					      evict_walk->try_high, evict_walk->try_low,
+> +					      &evict_walk->hit_low))
+>  		return 0;
+>  
+>  	if (bo->pin_count || !bo->bdev->funcs->eviction_valuable(bo, evict_walk->place))
+> @@ -538,7 +541,7 @@ static s64 ttm_bo_evict_cb(struct ttm_lru_walk *walk, struct ttm_buffer_object *
+>  	evict_walk->evicted++;
+>  	if (evict_walk->res)
+>  		lret = ttm_resource_alloc(evict_walk->evictor, evict_walk->place,
+> -					  evict_walk->res, NULL);
+> +					  evict_walk->res, NULL, NULL);
+>  	if (lret == 0)
+>  		return 1;
+>  out:
+> @@ -553,6 +556,38 @@ static const struct ttm_lru_walk_ops ttm_evict_walk_ops = {
+>  	.process_bo = ttm_bo_evict_cb,
+>  };
+>  
+> +/*
+> + * Proactive reclaim: evict one BO from a cgroup that exceeds its dmem.high
+> + * soft limit.  Called after a successful charge that pushed usage over the
+> + * high threshold.  Best-effort; allocation already succeeded (soft limit).
+> + */
+> +static void ttm_bo_proactive_evict_high(struct ttm_device *bdev,
+> +					struct ttm_resource_manager *man,
+> +					const struct ttm_place *place,
+> +					struct ttm_buffer_object *evictor,
+> +					struct ttm_operation_ctx *ctx,
+> +					struct ww_acquire_ctx *ticket,
+> +					struct dmem_cgroup_pool_state *over_high_pool)
+> +{
+> +	struct ttm_bo_evict_walk evict_walk = {
+> +		.walk = {
+> +			.ops = &ttm_evict_walk_ops,
+> +			.arg = {
+> +				.ctx = ctx,
+> +				.ticket = ticket,
+> +				.trylock_only = !ticket,
+> +			}
+> +		},
+> +		.place = place,
+> +		.evictor = evictor,
+> +		.res = NULL,
+> +		.limit_pool = over_high_pool,
+> +		.try_high = true,
+> +	};
+> +
+> +	ttm_lru_walk_for_evict(&evict_walk.walk, bdev, man, 1);
+> +}
+> +
+>  static int ttm_bo_evict_alloc(struct ttm_device *bdev,
+>  			      struct ttm_resource_manager *man,
+>  			      const struct ttm_place *place,
+> @@ -579,29 +614,24 @@ static int ttm_bo_evict_alloc(struct ttm_device *bdev,
+>  
+>  	evict_walk.walk.arg.trylock_only = true;
+>  	lret = ttm_lru_walk_for_evict(&evict_walk.walk, bdev, man, 1);
+> -
+> -	/* One more attempt if we hit low limit? */
+>  	if (!lret && evict_walk.hit_low) {
+>  		evict_walk.try_low = true;
+>  		lret = ttm_lru_walk_for_evict(&evict_walk.walk, bdev, man, 1);
+>  	}
+> +
+>  	if (lret || !ticket)
+>  		goto out;
+>  
+> -	/* Reset low limit */
+>  	evict_walk.try_low = evict_walk.hit_low = false;
+> -	/* If ticket-locking, repeat while making progress. */
+>  	evict_walk.walk.arg.trylock_only = false;
+>  
+>  retry:
+>  	do {
+> -		/* The walk may clear the evict_walk.walk.ticket field */
+>  		evict_walk.walk.arg.ticket = ticket;
+>  		evict_walk.evicted = 0;
+>  		lret = ttm_lru_walk_for_evict(&evict_walk.walk, bdev, man, 1);
+>  	} while (!lret && evict_walk.evicted);
+>  
+> -	/* We hit the low limit? Try once more */
+>  	if (!lret && evict_walk.hit_low && !evict_walk.try_low) {
+>  		evict_walk.try_low = true;
+>  		goto retry;
+> @@ -737,7 +767,17 @@ static int ttm_bo_alloc_resource(struct ttm_buffer_object *bo,
+>  			continue;
+>  
+>  		may_evict = (force_space && place->mem_type != TTM_PL_SYSTEM);
+> -		ret = ttm_resource_alloc(bo, place, res, force_space ? &limit_pool : NULL);
+> +		{
+> +			struct dmem_cgroup_pool_state *over_high_pool = NULL;
+> +
+> +			ret = ttm_resource_alloc(bo, place, res,
+> +						 force_space ? &limit_pool : NULL,
+> +						 &over_high_pool);
+> +			if (!ret && over_high_pool)
+> +				ttm_bo_proactive_evict_high(bdev, man, place, bo,
+> +							    ctx, ticket, over_high_pool);
+> +			dmem_cgroup_pool_state_put(over_high_pool);
+> +		}
+>  		if (ret) {
+>  			if (ret != -ENOSPC) {
+>  				dmem_cgroup_pool_state_put(limit_pool);
+> @@ -1152,7 +1192,7 @@ ttm_bo_swapout_cb(struct ttm_lru_walk *walk, struct ttm_buffer_object *bo)
+>  
+>  		memset(&hop, 0, sizeof(hop));
+>  		place.mem_type = TTM_PL_SYSTEM;
+> -		ret = ttm_resource_alloc(bo, &place, &evict_mem, NULL);
+> +		ret = ttm_resource_alloc(bo, &place, &evict_mem, NULL, NULL);
+>  		if (ret)
+>  			goto out;
+>  
+> diff --git a/drivers/gpu/drm/ttm/ttm_resource.c b/drivers/gpu/drm/ttm/ttm_resource.c
+> index 154d6739256f8..e6ad46d9ff181 100644
+> --- a/drivers/gpu/drm/ttm/ttm_resource.c
+> +++ b/drivers/gpu/drm/ttm/ttm_resource.c
+> @@ -389,7 +389,8 @@ EXPORT_SYMBOL(ttm_resource_fini);
+>  int ttm_resource_alloc(struct ttm_buffer_object *bo,
+>  		       const struct ttm_place *place,
+>  		       struct ttm_resource **res_ptr,
+> -		       struct dmem_cgroup_pool_state **ret_limit_pool)
+> +		       struct dmem_cgroup_pool_state **ret_limit_pool,
+> +		       struct dmem_cgroup_pool_state **ret_over_high_pool)
+>  {
+>  	struct ttm_resource_manager *man =
+>  		ttm_manager_type(bo->bdev, place->mem_type);
+> @@ -397,7 +398,8 @@ int ttm_resource_alloc(struct ttm_buffer_object *bo,
+>  	int ret;
+>  
+>  	if (man->cg) {
+> -		ret = dmem_cgroup_try_charge(man->cg, bo->base.size, &pool, ret_limit_pool);
+> +		ret = dmem_cgroup_try_charge(man->cg, bo->base.size, &pool,
+> +					     ret_limit_pool, ret_over_high_pool);
+>  		if (ret) {
+>  			if (ret == -EAGAIN)
+>  				ret = -ENOSPC;
+> @@ -409,6 +411,8 @@ int ttm_resource_alloc(struct ttm_buffer_object *bo,
+>  	if (ret) {
+>  		if (pool)
+>  			dmem_cgroup_uncharge(pool, bo->base.size);
+> +		if (ret_over_high_pool)
+> +			dmem_cgroup_pool_state_put(*ret_over_high_pool);
+>  		return ret;
+>  	}
+>  
+> diff --git a/include/drm/ttm/ttm_resource.h b/include/drm/ttm/ttm_resource.h
+> index a5d386583fb6e..88fb402acfdc6 100644
+> --- a/include/drm/ttm/ttm_resource.h
+> +++ b/include/drm/ttm/ttm_resource.h
+> @@ -461,7 +461,8 @@ void ttm_resource_fini(struct ttm_resource_manager *man,
+>  int ttm_resource_alloc(struct ttm_buffer_object *bo,
+>  		       const struct ttm_place *place,
+>  		       struct ttm_resource **res,
+> -		       struct dmem_cgroup_pool_state **ret_limit_pool);
+> +		       struct dmem_cgroup_pool_state **ret_limit_pool,
+> +		       struct dmem_cgroup_pool_state **ret_over_high_pool);
+>  void ttm_resource_free(struct ttm_buffer_object *bo, struct ttm_resource **res);
+>  bool ttm_resource_intersects(struct ttm_device *bdev,
+>  			     struct ttm_resource *res,
+> diff --git a/include/linux/cgroup_dmem.h b/include/linux/cgroup_dmem.h
+> index dd4869f1d736e..1808bfbbc9a31 100644
+> --- a/include/linux/cgroup_dmem.h
+> +++ b/include/linux/cgroup_dmem.h
+> @@ -19,11 +19,12 @@ struct dmem_cgroup_region *dmem_cgroup_register_region(u64 size, const char *nam
+>  void dmem_cgroup_unregister_region(struct dmem_cgroup_region *region);
+>  int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
+>  			   struct dmem_cgroup_pool_state **ret_pool,
+> -			   struct dmem_cgroup_pool_state **ret_limit_pool);
+> +			   struct dmem_cgroup_pool_state **ret_limit_pool,
+> +			   struct dmem_cgroup_pool_state **ret_over_high_pool);
+>  void dmem_cgroup_uncharge(struct dmem_cgroup_pool_state *pool, u64 size);
+>  bool dmem_cgroup_state_evict_valuable(struct dmem_cgroup_pool_state *limit_pool,
+>  				      struct dmem_cgroup_pool_state *test_pool,
+> -				      bool ignore_low, bool *ret_hit_low);
+> +				      bool try_high, bool ignore_low, bool *ret_hit_low);
+>  
+>  void dmem_cgroup_pool_state_put(struct dmem_cgroup_pool_state *pool);
+>  #else
+> @@ -38,13 +39,17 @@ static inline void dmem_cgroup_unregister_region(struct dmem_cgroup_region *regi
+>  
+>  static inline int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
+>  					 struct dmem_cgroup_pool_state **ret_pool,
+> -					 struct dmem_cgroup_pool_state **ret_limit_pool)
+> +					 struct dmem_cgroup_pool_state **ret_limit_pool,
+> +					 struct dmem_cgroup_pool_state **ret_over_high_pool)
+>  {
+>  	*ret_pool = NULL;
+>  
+>  	if (ret_limit_pool)
+>  		*ret_limit_pool = NULL;
+>  
+> +	if (ret_over_high_pool)
+> +		*ret_over_high_pool = NULL;
+> +
+>  	return 0;
+>  }
+>  
+> @@ -54,8 +59,10 @@ static inline void dmem_cgroup_uncharge(struct dmem_cgroup_pool_state *pool, u64
+>  static inline
+>  bool dmem_cgroup_state_evict_valuable(struct dmem_cgroup_pool_state *limit_pool,
+>  				      struct dmem_cgroup_pool_state *test_pool,
+> -				      bool ignore_low, bool *ret_hit_low)
+> +				      bool try_high, bool ignore_low, bool *ret_hit_low)
+>  {
+> +	if (try_high)
+> +		return false;
+>  	return true;
+>  }
+>  
+> diff --git a/kernel/cgroup/dmem.c b/kernel/cgroup/dmem.c
+> index 4753a67d0f0f2..b322c8a7e2a67 100644
+> --- a/kernel/cgroup/dmem.c
+> +++ b/kernel/cgroup/dmem.c
+> @@ -156,6 +156,12 @@ set_resource_low(struct dmem_cgroup_pool_state *pool, u64 val)
+>  	page_counter_set_low(&pool->cnt, val);
+>  }
+>  
+> +static void
+> +set_resource_high(struct dmem_cgroup_pool_state *pool, u64 val)
+> +{
+> +	page_counter_set_high(&pool->cnt, val);
+> +}
+> +
+>  static void
+>  set_resource_max(struct dmem_cgroup_pool_state *pool, u64 val)
+>  {
+> @@ -167,6 +173,11 @@ static u64 get_resource_low(struct dmem_cgroup_pool_state *pool)
+>  	return pool ? READ_ONCE(pool->cnt.low) : 0;
+>  }
+>  
+> +static u64 get_resource_high(struct dmem_cgroup_pool_state *pool)
+> +{
+> +	return pool ? READ_ONCE(pool->cnt.high) : PAGE_COUNTER_MAX;
+> +}
+> +
+>  static u64 get_resource_min(struct dmem_cgroup_pool_state *pool)
+>  {
+>  	return pool ? READ_ONCE(pool->cnt.min) : 0;
+> @@ -186,6 +197,7 @@ static void reset_all_resource_limits(struct dmem_cgroup_pool_state *rpool)
+>  {
+>  	set_resource_min(rpool, 0);
+>  	set_resource_low(rpool, 0);
+> +	set_resource_high(rpool, PAGE_COUNTER_MAX);
+>  	set_resource_max(rpool, PAGE_COUNTER_MAX);
+>  }
+>  
+> @@ -289,10 +301,13 @@ dmem_cgroup_calculate_protection(struct dmem_cgroup_pool_state *limit_pool,
+>   * dmem_cgroup_state_evict_valuable() - Check if we should evict from test_pool
+>   * @limit_pool: The pool for which we hit limits
+>   * @test_pool: The pool for which to test
+> + * @try_high: Only evict BOs whose usage exceeds the high limit (first pass)
+>   * @ignore_low: Whether we have to respect low watermarks.
+>   * @ret_hit_low: Pointer to whether it makes sense to consider low watermark.
+>   *
+>   * This function returns true if we can evict from @test_pool, false if not.
+> + * When @try_high is set, only pools with usage above their high limit are
+> + * evictable, enabling prioritized eviction of over-limit cgroups.
+>   * When returning false and @ignore_low is false, @ret_hit_low may
+>   * be set to true to indicate this function can be retried with @ignore_low
+>   * set to true.
+> @@ -301,15 +316,26 @@ dmem_cgroup_calculate_protection(struct dmem_cgroup_pool_state *limit_pool,
+>   */
+>  bool dmem_cgroup_state_evict_valuable(struct dmem_cgroup_pool_state *limit_pool,
+>  				      struct dmem_cgroup_pool_state *test_pool,
+> -				      bool ignore_low, bool *ret_hit_low)
+> +				      bool try_high, bool ignore_low, bool *ret_hit_low)
+>  {
+>  	struct dmem_cgroup_pool_state *pool = test_pool;
+>  	struct page_counter *ctest;
+>  	u64 used, min, low;
+>  
+> -	/* Can always evict from current pool, despite limits */
+> -	if (limit_pool == test_pool)
+> +	/*
+> +	 * When the limit-hitting cgroup's own BOs are being considered
+> +	 * in try_high mode, only evict them if their pool exceeds its
+> +	 * own dmem.high limit.  For non-try_high mode, maintain the
+> +	 * existing behavior: always evict from the limit-hitting pool.
+> +	 */
+> +	if (limit_pool == test_pool) {
+> +		if (try_high && test_pool) {
+> +			ctest = &test_pool->cnt;
+> +			used = page_counter_read(ctest);
+> +			return used > READ_ONCE(ctest->high);
+> +		}
+>  		return true;
+> +	}
+>  
+>  	if (limit_pool) {
+>  		if (!parent_dmemcs(limit_pool->cs))
+> @@ -330,10 +356,38 @@ bool dmem_cgroup_state_evict_valuable(struct dmem_cgroup_pool_state *limit_pool,
+>  	}
+>  
+>  	ctest = &test_pool->cnt;
+> +	used = page_counter_read(ctest);
+> +
+> +	if (try_high) {
+> +		struct page_counter *c;
+> +
+> +		/*
+> +		 * Walk the page_counter parent chain to check whether any
+> +		 * ancestor cgroup exceeds its dmem.high limit.  This prevents
+> +		 * child cgroups from evading the penalty when a parent cgroup
+> +		 * is over its high limit.
+> +		 */
+> +		if (used <= READ_ONCE(ctest->high)) {
+> +			for (c = ctest->parent; c; c = c->parent) {
+> +				if (page_counter_read(c) > READ_ONCE(c->high))
+> +					break;
+> +			}
+> +			if (!c)
+> +				return false;
+> +		}
+> +
+> +		/*
+> +		 * Respect dmem.min protection: do not evict BOs below the
+> +		 * effective minimum even during the high-priority pass.
+> +		 */
+> +		dmem_cgroup_calculate_protection(limit_pool, test_pool);
+> +		min = READ_ONCE(ctest->emin);
+> +
+> +		return used > min;
+> +	}
+>  
+>  	dmem_cgroup_calculate_protection(limit_pool, test_pool);
+>  
+> -	used = page_counter_read(ctest);
+>  	min = READ_ONCE(ctest->emin);
+>  
+>  	if (used <= min)
+> @@ -634,8 +688,9 @@ EXPORT_SYMBOL_GPL(dmem_cgroup_uncharge);
+>   * dmem_cgroup_try_charge() - Try charging a new allocation to a region.
+>   * @region: dmem region to charge
+>   * @size: Size (in bytes) to charge.
+> - * @ret_pool: On succesfull allocation, the pool that is charged.
+> + * @ret_pool: On successful allocation, the pool that is charged.
+>   * @ret_limit_pool: On a failed allocation, the limiting pool.
+> + * @ret_over_high_pool: On successful allocation, set if usage exceeds dmem.high.
+>   *
+>   * This function charges the @region region for a size of @size bytes.
+>   *
+> @@ -647,11 +702,17 @@ EXPORT_SYMBOL_GPL(dmem_cgroup_uncharge);
+>   * eviction as argument to dmem_cgroup_evict_valuable(). This reference must be freed
+>   * with @dmem_cgroup_pool_state_put().
+>   *
+> + * When the function succeeds and @ret_over_high_pool is non-null, it will be
+> + * set if the charged pool's usage now exceeds its dmem.high soft limit. The
+> + * caller should trigger proactive eviction to bring usage back under the limit.
+> + * This reference must be freed with @dmem_cgroup_pool_state_put().
+> + *
+>   * Return: 0 on success, -EAGAIN on hitting a limit, or a negative errno on failure.
+>   */
+>  int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
+>  			  struct dmem_cgroup_pool_state **ret_pool,
+> -			  struct dmem_cgroup_pool_state **ret_limit_pool)
+> +			  struct dmem_cgroup_pool_state **ret_limit_pool,
+> +			  struct dmem_cgroup_pool_state **ret_over_high_pool)
+>  {
+>  	struct dmemcg_state *cg;
+>  	struct dmem_cgroup_pool_state *pool;
+> @@ -661,6 +722,8 @@ int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
+>  	*ret_pool = NULL;
+>  	if (ret_limit_pool)
+>  		*ret_limit_pool = NULL;
+> +	if (ret_over_high_pool)
+> +		*ret_over_high_pool = NULL;
+>  
+>  	/*
+>  	 * hold on to css, as cgroup can be removed but resource
+> @@ -685,6 +748,18 @@ int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
+>  		goto err;
+>  	}
+>  
+> +	/*
+> +	 * Charge succeeded. Check if usage now exceeds the soft high limit so
+> +	 * the caller can trigger proactive reclaim to bring the cgroup back
+> +	 * under its dmem.high threshold.
+> +	 */
+> +	if (ret_over_high_pool &&
+> +	    page_counter_read(&pool->cnt) > READ_ONCE(pool->cnt.high)) {
+> +		*ret_over_high_pool = pool;
+> +		css_get(&pool->cs->css);
+> +		dmemcg_pool_get(*ret_over_high_pool);
+> +	}
+> +
+>  	/* On success, reference from get_current_dmemcs is transferred to *ret_pool */
+>  	*ret_pool = pool;
+>  	return 0;
+> @@ -835,6 +910,17 @@ static ssize_t dmem_cgroup_region_low_write(struct kernfs_open_file *of,
+>  	return dmemcg_limit_write(of, buf, nbytes, off, set_resource_low);
+>  }
+>  
+> +static int dmem_cgroup_region_high_show(struct seq_file *sf, void *v)
+> +{
+> +	return dmemcg_limit_show(sf, v, get_resource_high);
+> +}
+> +
+> +static ssize_t dmem_cgroup_region_high_write(struct kernfs_open_file *of,
+> +					  char *buf, size_t nbytes, loff_t off)
+> +{
+> +	return dmemcg_limit_write(of, buf, nbytes, off, set_resource_high);
+> +}
+> +
+>  static int dmem_cgroup_region_max_show(struct seq_file *sf, void *v)
+>  {
+>  	return dmemcg_limit_show(sf, v, get_resource_max);
+> @@ -868,6 +954,12 @@ static struct cftype files[] = {
+>  		.seq_show = dmem_cgroup_region_low_show,
+>  		.flags = CFTYPE_NOT_ON_ROOT,
+>  	},
+> +	{
+> +		.name = "high",
+> +		.write = dmem_cgroup_region_high_write,
+> +		.seq_show = dmem_cgroup_region_high_show,
+> +		.flags = CFTYPE_NOT_ON_ROOT,
+> +	},
+>  	{
+>  		.name = "max",
+>  		.write = dmem_cgroup_region_max_write,
+> 
+> ---
+> base-commit: ab5fce87a778cb780a05984a2ca448f2b41aafbf
+> change-id: 20260519-feature-dmem-high-16997148dc38
+> 
+> Best regards,
+> -- 
+> Jing Wu <realwujing@gmail.com>
+> 
 
