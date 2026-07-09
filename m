@@ -4,90 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 501ECC43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 13:34:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49168C44506
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 13:34:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C6EA6B0088; Thu,  9 Jul 2026 09:34:23 -0400 (EDT)
+	id A0CC66B008A; Thu,  9 Jul 2026 09:34:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 577C86B008A; Thu,  9 Jul 2026 09:34:23 -0400 (EDT)
+	id 995B96B0095; Thu,  9 Jul 2026 09:34:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48DB46B0093; Thu,  9 Jul 2026 09:34:23 -0400 (EDT)
+	id 882DF6B008A; Thu,  9 Jul 2026 09:34:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B8876B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:34:23 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A8A38140189
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:34:22 +0000 (UTC)
-X-FDA: 84969332364.03.AB8AD55
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9AF87100007
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6343B6B008A
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 09:34:24 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DB7FBA0187
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:34:23 +0000 (UTC)
+X-FDA: 84969332406.28.1BDE56C
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1534C1C0006
 	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 13:34:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=TqMFrkLg;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JkR1qJnu;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783604061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4GR48i8hlkB2Ze3PQTDUSFwKBjcFU+CD3y6+0ixlT14=;
-	b=VnpLSPLwCg2UDcnDlQQF2kWyiaB5jXRMIDI46wX1+9s996OG3LvPE3TtQ3SZ/AXfPkpH21
-	tkij42Zr4FflpOUo3dT8qBQJWGBUeWaWv6JVy3lzAbb2dcvb+ZBvgrdb74W0uT+3rIQHva
-	7IuXyegFZL1syFsPe/kSHBdWw5oRytw=
+	bh=mtrMMM37pb4qvc+Y6/GJwlGJ60d+a3IjyD8EGIoYf+o=;
+	b=boHgVzZHQxkYocn74M3mCNX4iMt44GgTRWRVn0KNESNDSJoHq8Iw08BJhoUgRsZTBJyRhg
+	nLAaZ3ao4iUb5hUmu8QKJzFXKPdpDTOVLWMua83Q+gsMR5AQTZr6fOw4k3RNp+7s4TUZlm
+	g8UW7nmGRRSzy1KA0d2EhnEAPNz69KA=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=JkR1qJnu;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783604061;
-	b=5vSaRjzLxCqRoi5jBTT8Tv2ghpM4s3UwZNwCSanZJYxM/mr5Zezbq0H9iEDEMz6tcSn/yE
-	JfLswxbtisyx0tDgx2sWrkQHzThgmhRu8DtaphkumlLxPrZM4+aqv8o9Fm+KibU+RlsW9b
-	H95VodQjdfL2VFc5nC9JErHGXvNwCsE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=TqMFrkLg;
-	spf=pass (imf14.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C9D23592;
-	Thu,  9 Jul 2026 06:34:15 -0700 (PDT)
-Received: from [10.164.148.40] (MacBook-Pro.blr.arm.com [10.164.148.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8B5FE3F85F;
-	Thu,  9 Jul 2026 06:34:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783604059; bh=UCBoGFyvDS7VXUCq7xWi4MDCI+kdI7sbuLuwaKPwTdk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TqMFrkLgbznn2mQhEGHlE2P5owjWK614V8M6f7dmsfN6b/aZqzS3C9G2/3EVQbwL9
-	 5nXcygHeAUw+ndJ4HzjTw6LGTQ2XqyTzpnkiahKBKxHqYeq/DwbtR/gsPmPH5aLGR7
-	 j6gPVUumSswrNs0QlNddls9HTFGWSTxztXsTCnwk=
-Message-ID: <32c60952-4f80-4cd7-8fe7-003262f09a12@arm.com>
-Date: Thu, 9 Jul 2026 19:04:06 +0530
+	b=wdiQsesOB8XTXNeRKoJ9yzdwbVrhMtjB+AxQ8HkTblwOJHLEvS8yf7yzqtJCSsjdLklddg
+	l/xXdt1jaO/jTTscaGY3KPDrsyB6+ij9K1I/vqcgGm5MET0L/9yN49Ju4tRsP74pa2e3eZ
+	Kwxqva6pBkOC1BIZt72gjSfwQTUQHG4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783604061; x=1815140061;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=X3CwQbCqfrcNU9ZylJJlHJqkM//5I2Tgy37tgnnrNBo=;
+  b=JkR1qJnuY5IFhoxwBFY0Mv5B6zMJxwN3Md5BFmWIY8osvo9VKX0KIkoF
+   NHFXOh91kg6BbDcki/EjxYTzh1hITBWl/23BB0jTY3zvWCt6pGKah4Kr3
+   jeSDuQsSZBn/joTcPeN2V5YlE0/6LB+f5UpWwIwxyrqmBi2C2QFuvtQ7e
+   h/K3IWgxQHVxILBNSi1C1ELsKGrnq1x7o0h553ajAGYxaloRGEgjXcJ7J
+   jyLeEuUdAUJ28VytVK4sqRlunWDoErSA34nkcUYfO77FG5doxWDE2bjEY
+   BDoULx+YOkQTlqGszfEAC+Y5+4X1c1kauI3WZ67ypcbTyR6+4UOHHBfMG
+   A==;
+X-CSE-ConnectionGUID: oIEQEtQuQ7mii+28wbdXjg==
+X-CSE-MsgGUID: Q7LChY8/QVKwsaBzMB1LOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="83258542"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="83258542"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jul 2026 06:34:19 -0700
+X-CSE-ConnectionGUID: 9cubGrFMQ5SZBjxcss1LVg==
+X-CSE-MsgGUID: SZ4xYWHESIejiE1wEnNLhg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="250188140"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 09 Jul 2026 06:34:15 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1whotI-00000000Hih-27Cs;
+	Thu, 09 Jul 2026 13:34:12 +0000
+Date: Thu, 9 Jul 2026 21:34:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Vivian Wang <wangruikang@iscas.ac.cn>, Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Vivian Wang <wangruikang@iscas.ac.cn>
+Subject: Re: [PATCH v5] mm/sparse-vmemmap: flush_cache_vmap() after
+ hotplugging vmemmap
+Message-ID: <202607092128.yG6dYQOt-lkp@intel.com>
+References: <20260707-mark-after-vmemmap-populate-v5-1-77d1ded3cae3@iscas.ac.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] mm/rmap: add anon folio unmap dispatcher function
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- ljs@kernel.org, muchun.song@linux.dev, osalvador@suse.de
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, lance.yang@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260707121128.373192-1-dev.jain@arm.com>
- <20260707121128.373192-6-dev.jain@arm.com>
- <50b0de85-0bb9-4d09-b32e-31a3a4661379@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <50b0de85-0bb9-4d09-b32e-31a3a4661379@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260707-mark-after-vmemmap-populate-v5-1-77d1ded3cae3@iscas.ac.cn>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1534C1C0006
+X-Stat-Signature: ienh7qsa59i6jj3m9k1c6d53mudksku3
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9AF87100007
-X-Stat-Signature: sy3x91pxgcss5wxmcbugibsn3krdxp57
-X-HE-Tag: 1783604060-794262
-X-HE-Meta: U2FsdGVkX1/Vg2ldY8BTzADhUKXOd6R67N5/GrSaVGiSElGRptN7aQdLjvevbabuqR77i00vlsPwY9R0PfnwOqlJtl/eDdhQhJYFyHAWz4RmBkfm9aLFes1M8ypETJRYSeBl1Un7T8/aomZ1tAwsEdE8RoItOmIBIE4ykdlm2zPN1DipQzjXs3ADYlHMbMLqh4JRrrfcEHz+xRF/6mPdkdnYOhXt8apm/w/ocWbTxVt3vlnM+jbFrfrt7BhuFEIRpOaJRiKqBGJGTFi3QlbLyzo6tY1s8CooSyMueV7ZhASdrW0VazTx5oDojomLxMJgOKeBEUpsMJe0z+qK3zzgX+TA5UJwibP7tG583UbOWbnNoXc4msnyvVB0FGdUSocMabhaN+StkTM14uJGOj/GoDljr7LkJvVW7BL0vWy5h4tkJBFC1zcKgLcX8CtI8vR2HcWvYJAUHYLj02pEqiPKdmH0gDAj4uUYqOmwxr7Pmiu31peLPpuAo/4J2znwJM3Yj8LWIgHtLY1F8onQQjg1xeJx2f9GM4KKmkrFdpBLzJdHAcjU86s7yUEQN0yUe/rauD1qoYYpmuobON11+zSS7tugp5bVBVc7drWDPKdy3UsXVxO5jbcfh+XkXnzS0tyvKYkqWwRNWSXcPp3BE4+ATcCB9X+tHk+YPF+32EYBwIgQ6Km9uqx7DFIMwu2ffhCcX6J7pswYaEypeSHhR7/W9bDeRFw2CbJHT/CI7TwaSEvW+IwRX0uhjHlSHvsNflRuVo+XnDaefJ5BM2Emc33uNewUJZV04RCPH2NjB2c+Ce9X/oKFX/95MmbmAXx7uyv1riZmqlhCJPfaH0u7CrYfscJdY7fLu4QF4ZVFKZqFz8BgPvGH7E3yPKKuTjqz2JeXm+HeHqdbsLWCoD0uvFCDty+trge7WFkwnrER4EF2jRaBGMqZkqSdEOWoPU+mgopio0pbuv0nDuwb3aKPY37
- GE6BsvIb
- rHvB3q6VUsSKDYTRr7hVaIIS6GPla/wAovZ5IQr5bpXscwGDgXHRMklaXnx+tckpOjfVpva4pZX5+P6uuIc+9mT4aa+3FRwykz26d5hcWrsITLY0hKpXVHpZ7bOOR7eSbobMm328jDWH0YsbvxpxUwMgIfyNbnQ0cvGkP9ESrDxh+e2/gbhoA+WegjevBFBnuPPlO/BZtNcFoEji0qmciL657Thm49Fy8d5+WXLvWonEVxHkU51HSGYWpnE/aX2a0yzY9o/tUcFyXp2J+zw7Ac6EvcJG2681KaA2/nTWalX+qJlM=
+X-HE-Tag: 1783604060-428192
+X-HE-Meta: U2FsdGVkX19rBGovWN7lQAsyuujCUXzRB5+grHKIXrmpmF2FhHpjzd+rW2knXV+BXzfDdf5KDdPUvz+QlYXoXoSVlg9FoKEaDFquEclOB/ziCJzYdP7yK/UNxLpHj1wTTL4K2223135N0ioapym4Zd6Dgt3BsEBCjV4pZOpv8UuS18l9/gKXRaIIuIeWLGSkY1+fh+qrHV2lu5KcIJpfDiHdSQ1kBIjMs1jVcBriUiFGpx704NfwxUPrr2S+u7hA370K6rfQtcR0ZLOSQeOuLz9CmulzVjjUmGmNVyVWy7exp4p4gf3PDVXfyD+Q9XvngUz7BfQJ62SUZhqt9LIQULhReVcf68cyEsQAINqwKxDek0RvkHzHAQdHN9+0HqmRhYJWGMO/mxyCKhUPq9dFLQlpcgM6vC76eozm15M5smZz+Q0A0drjHFNr0HeXZTxd2KYHNXOk5D1BudnidsjJeCdQtSEkArwYRS7WzD7c/n8cKlz6UnjOy+4Ze51dU9+2in16kP7ZSJGcyOhV7xkqrBOOfPslfr+O0QNAmp/pYT6HOAusAokHxfOGHG/cXNQkEa2h9gFbVqkUPrBfbQd1kLmloH/YFwC5hToUBXC0+V4Q3tgJQcc1KMAr8imOKb3YA2YKPSFlnAbVKu0NRteukn0ReEbDQLKscwQvSjanDohK4ULJQ8Qy6MNlpbG4VrsCERqo0p7iMrwRonsXJx7bus3ynxG97r3ASmvmUSv8pH90LYh9e0W0TVthMAwThcBxq4koqekhqNTiwyUORKm7Xako1cTglZPr1Pcwv3o0nHXiJmlKBoI9FJB3eg9G2Ma8eWGAj1oOGM0uCY7taQfOAx6+L0XXv7GgVQozvufCrH0Ux3xiC39IsErHIs4TprQSKC1YIUliFAOye3yMaAXKa32vidi81JpSMBbQM/uwzBbn+iQAgnTw6exkWhDVeobnnYKJShAPIvsJqxTE4aB
+ VaO3lGSI
+ ceffPNnEW7TDqzojEqp//rgW0yQblXmb3u3eaBb9hXz+UMoMiaqWBuVj9uMX+z1yCr3hvWOw6BRbERp3kI9VVoYZTqeTFBAdydhjn0dcwdKv1h1fXY6e+Qlq9aJNqPBi+xMArjX7xKNY1P71dvPf2ORLZbq1ZvUtdCOhzsXt8y0JV6jW0SL1EEBb/tkbV3S/lHtoQb2EbveTtChpWCqrNj41q0Itjj7IL0roXf2w5mjFrPVSofuHVIzpkeP2hP8gNA3LocmHfoQgv4wj++QyC1GXrtXiYaZtGlEfIUiOIVeuzQpldOO7jY2ZWhHolrLlMHU65Dkx7AJH8bBp6bbPbV9bywVT/9seGjavkQRp9MEiwwsTkY82zF8EQ+Zbubc107VeY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,115 +118,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Vivian,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on dc59e4fea9d83f03bad6bddf3fa2e52491777482]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Vivian-Wang/mm-sparse-vmemmap-flush_cache_vmap-after-hotplugging-vmemmap/20260707-121114
+base:   dc59e4fea9d83f03bad6bddf3fa2e52491777482
+patch link:    https://lore.kernel.org/r/20260707-mark-after-vmemmap-populate-v5-1-77d1ded3cae3%40iscas.ac.cn
+patch subject: [PATCH v5] mm/sparse-vmemmap: flush_cache_vmap() after hotplugging vmemmap
+config: riscv-randconfig-002-20260709 (https://download.01.org/0day-ci/archive/20260709/202607092128.yG6dYQOt-lkp@intel.com/config)
+compiler: riscv64-linux-gcc (GCC) 10.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260709/202607092128.yG6dYQOt-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202607092128.yG6dYQOt-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/cacheflush.h:5,
+                    from include/linux/highmem.h:8,
+                    from include/linux/bvec.h:10,
+                    from include/linux/blk_types.h:10,
+                    from include/linux/writeback.h:13,
+                    from include/linux/memcontrol.h:23,
+                    from include/linux/swap.h:9,
+                    from include/linux/suspend.h:5,
+                    from arch/riscv/kernel/asm-offsets.c:12:
+   arch/riscv/include/asm/cacheflush.h: In function 'flush_cache_vmap':
+>> arch/riscv/include/asm/cacheflush.h:60:16: error: 'VMEMMAP_START' undeclared (first use in this function)
+      60 |      (start >= VMEMMAP_START && end <= VMEMMAP_END))
+         |                ^~~~~~~~~~~~~
+   arch/riscv/include/asm/cacheflush.h:60:16: note: each undeclared identifier is reported only once for each function it appears in
+>> arch/riscv/include/asm/cacheflush.h:60:40: error: 'VMEMMAP_END' undeclared (first use in this function); did you mean 'MEMREMAP_ENC'?
+      60 |      (start >= VMEMMAP_START && end <= VMEMMAP_END))
+         |                                        ^~~~~~~~~~~
+         |                                        MEMREMAP_ENC
+   make[3]: *** [scripts/Makefile.build:184: arch/riscv/kernel/asm-offsets.s] Error 1 shuffle=275821313
+   make[3]: Target 'prepare' not remade because of errors.
+   make[2]: *** [Makefile:1405: prepare0] Error 2 shuffle=275821313
+   make[2]: Target 'prepare' not remade because of errors.
+   make[1]: *** [Makefile:248: __sub-make] Error 2 shuffle=275821313
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:248: __sub-make] Error 2 shuffle=275821313
+   make: Target 'prepare' not remade because of errors.
 
 
-On 07/07/26 7:58 pm, David Hildenbrand (Arm) wrote:
-> On 7/7/26 14:11, Dev Jain wrote:
->> Add ttu_anon_folio() as the common entry point for anonymous folio
->> unmapping. It dispatches to the lazyfree or swapbacked helper as
->> appropriate, and centralizes restoration of cleared PTEs on failure.
->>
->> No functional change intended.
->>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  mm/rmap.c | 59 +++++++++++++++++++++++++++++++++----------------------
->>  1 file changed, 36 insertions(+), 23 deletions(-)
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index ade78df5be2bd..f021ecd51a4a2 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2171,6 +2171,40 @@ static inline bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma, struct
->>  	return true;
->>  }
->>  
->> +static inline bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
->> +		struct page *subpage, unsigned long address, pte_t *ptep,
->> +		pte_t pteval, unsigned long nr_pages)
->> +{
->> +	struct mm_struct *mm = vma->vm_mm;
->> +	bool ret;
->> +
->> +	/*
->> +	 * Store the swap location in the pte.
->> +	 * See handle_pte_fault() ...
->> +	 */
->> +	if (unlikely(folio_test_swapbacked(folio) !=
->> +			folio_test_swapcache(folio))) {
->> +		WARN_ON_ONCE(1);
->> +		return false;
->> +	}
->> +
->> +	/* MADV_FREE page check */
->> +	if (!folio_test_swapbacked(folio)) {
->> +		ret = ttu_anon_lazyfree_folio(vma, folio);
->> +		if (ret)
->> +			add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
-> 
-> Can't the be handled in there as well?
+vim +/VMEMMAP_START +60 arch/riscv/include/asm/cacheflush.h
 
-Okay.
+    42	
+    43	#ifdef CONFIG_64BIT
+    44	/* This is accessed in assembly code. cpumask_var_t would be too complex. */
+    45	extern DECLARE_BITMAP(new_valid_map_cpus, NR_CPUS);
+    46	extern char _end[];
+    47	static inline void mark_new_valid_map(void)
+    48	{
+    49		/*
+    50		 * We don't care if concurrently a cpu resets this value since
+    51		 * the only place this can happen is in handle_exception() where
+    52		 * an sfence.vma is emitted.
+    53		 */
+    54		bitmap_fill(new_valid_map_cpus, NR_CPUS);
+    55	}
+    56	#define flush_cache_vmap flush_cache_vmap
+    57	static inline void flush_cache_vmap(unsigned long start, unsigned long end)
+    58	{
+    59		if (is_vmalloc_or_module_addr((void *)start) ||
+  > 60		    (start >= VMEMMAP_START && end <= VMEMMAP_END))
+    61			mark_new_valid_map();
+    62	}
+    63	#define flush_cache_vmap_early(start, end)	local_flush_tlb_kernel_range(start, end)
+    64	#endif
+    65	
 
-> 
->> +	} else {
->> +		/* nr_pages > 1 not supported yet */
->> +		ret = ttu_anon_swapbacked_folio(vma, folio, subpage, address,
->> +						ptep, pteval);
->> +	}
->> +
->> +	if (!ret)
->> +		set_ptes(mm, address, ptep, pteval, nr_pages);
-> 
-> It might be cleaner to do that in the caller, where we actually removed the ptes
-> in the first place?
-
-Yes.
-
-> 
->> +
->> +	return ret;
->> +}
->> +
->>  /*
->>   * @arg: enum ttu_flags will be passed to this argument
->>   */
->> @@ -2351,31 +2385,10 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>  			 */
->>  			dec_mm_counter(mm, mm_counter(folio));
->>  		} else if (folio_test_anon(folio)) {
->> -			/*
->> -			 * Store the swap location in the pte.
->> -			 * See handle_pte_fault() ...
->> -			 */
->> -			if (unlikely(folio_test_swapbacked(folio) !=
->> -					folio_test_swapcache(folio))) {
->> -				WARN_ON_ONCE(1);
->> +			if (!ttu_anon_folio(vma, folio, subpage, address,
->> +					    pvmw.pte, pteval, nr_pages))
->>  				goto walk_abort;
->> -			}
->>  
->> -			/* MADV_FREE page check */
->> -			if (!folio_test_swapbacked(folio)) {
->> -				if (!ttu_anon_lazyfree_folio(vma, folio)) {
->> -					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
->> -					goto walk_abort;
->> -				}
->> -				add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
->> -				goto finish_unmap;
->> -			}
->> -
->> -			if (!ttu_anon_swapbacked_folio(vma, folio, subpage, address,
->> -						pvmw.pte, pteval)) {
->> -				set_pte_at(mm, address, pvmw.pte, pteval);
->> -				goto walk_abort;
->> -			}
->>  			goto finish_unmap;
->>  		} else {
->>  			/*
-> 
-> Very nice.
-> 
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
