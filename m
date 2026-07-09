@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 647D6C44506
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 15:20:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF23BC43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 15:22:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 296246B0088; Thu,  9 Jul 2026 11:20:55 -0400 (EDT)
+	id C84E26B009E; Thu,  9 Jul 2026 11:22:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26E126B008A; Thu,  9 Jul 2026 11:20:55 -0400 (EDT)
+	id C37DF6B00A2; Thu,  9 Jul 2026 11:22:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1353E6B0092; Thu,  9 Jul 2026 11:20:55 -0400 (EDT)
+	id B000B6B00A3; Thu,  9 Jul 2026 11:22:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D338D6B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:20:54 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 52F5C1201FE
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:20:54 +0000 (UTC)
-X-FDA: 84969600828.27.C0FBC28
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 81B1140004
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:20:52 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=PffVcNWa;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	by kanga.kvack.org (Postfix) with ESMTP id 84D796B009E
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 11:22:57 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 14B5A1201F6
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:22:57 +0000 (UTC)
+X-FDA: 84969605994.26.8AEF838
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 230ADC0011
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:22:55 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ok8Be0hf;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783610452;
+	s=arc-20220608; t=1783610575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3aG5hxu0JYH7EcM/cq6JX5Yef1RoVI9XARU/q8dKmL4=;
-	b=sH9cXNfen6XyEXjrbc+DGT7UtbojXtOedS19pFCDMht7dDZBPqUjOFJQla/YrM5mqjgqUd
-	LFiI0wOQpIHdAz4KjwFBXxRkrKkIP3NqZHKaA4gi904ZD2tHWOFaqRtNhBhYCPWY+EsUS6
-	AlF53Lk1aA/bChwVqCk7loHiZoZzi8I=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783610452;
-	b=Xy+MTfRqakbVDNwnIJXGLTTa0qq8JKoUBW0gVzs2hSKx4Qr2dz9uoRtxTG9WLjdkqQGnBl
-	ndV/vNzRvBPGVFbm82ySMMIXAJOWiEEYvnV2juNdQD9RzWkstO0xCyF2T5Uc3Snk7mZmU+
-	mDG4KcSrQz257+N2uEAUA/QWx0r9ks4=
+	bh=8MCYdDNt+ln4FYDiI3hqZQpolLcmikZ66uE9gEYE70E=;
+	b=6VzoaUsc2afkceB0pisMkU5U63qxlbxm7SxPK8e9QR9RyVJcJBFXDYCwUmfK0xnIoXPVsR
+	6iLeqJvcsLL09orh2P6WS77/TVd0a5sF3SmIVRPGjenZQAtFR+NcrRgOxLGeDlkRpQuT6Q
+	86TxcIfYpoKdNp2yqMvbDSn1vE2Pqp4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=PffVcNWa;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=ok8Be0hf;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.46 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92e65e18969so79761785a.1
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 08:20:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783610575;
+	b=eaMP3pUukyxi0IBmwbmfPV8AVhUpXW09v3cZvdMERrMLQSgvNmnRhpxRLVaOVF2v/RErey
+	S0xx0wpDkaTOQ0z4Z4d8sUDD/CIbTNOCGqnyYusszsA3jMuRYW3eEE+Q9csqDUBYM/MWV2
+	gASjQqYeEIKVwaXnUYcsDleF/GHeY+I=
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8eefd4a8057so447456d6.0
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 08:22:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783610452; x=1784215252; darn=kvack.org;
+        d=gourry.net; s=google; t=1783610574; x=1784215374; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=3aG5hxu0JYH7EcM/cq6JX5Yef1RoVI9XARU/q8dKmL4=;
-        b=PffVcNWaWVhEKU3tOcy8cMg3QKznJ3eFB0R9F4ACjjAhJ3tQVhMbWfn9OFmTOZp5UR
-         /3eqNqACBHzYvhg8o8aSH07vaWEJZRAhZDe1CY/Foe0zrQR32EdeSh8mxdfgEvqAJ4v4
-         xQhiclravicdB2uFitClJ47/8am++ySD8ertHQRw0aUAZj1v4S0AAbqMU7b7/ECFaE9F
-         gmfvkkeGqvG08pL1QgIwfEdi3OvZ1sRX9zA+1qXfX67SUBsNLkM5TMraX0QBfo1W7X2T
-         5RWwlAj+fQ6EDWDTwHHiySAKsLUivzYcIMZl7nox3GDJdNv0nRpH59QWjHC4BcpdzNqp
-         9jCQ==
+        bh=8MCYdDNt+ln4FYDiI3hqZQpolLcmikZ66uE9gEYE70E=;
+        b=ok8Be0hfT46r2Hbp4yJmdwo1Hi6tP6DLUdxLNryf9KkyGIlybJ4hVYGM/95m7/II4y
+         PC9p/j2h4Yv6+Pk3AQuqV5Tvyp3AulCGOo1GfIe0RR24eqT+U7KFZrx3RTnB/Pd46wxf
+         8sj9O37ofm/WImwutQQjAvSL6KKg5Z2nlVv4LTULmYrud+w4vYvFcQanNJA07LEqNWFc
+         yVQGg5wGxGZNP8VjCfQOcf6SL5zvNUNbVWUDoBn5xpAvgQT99PDnx042dAY1qG8va7dn
+         Sw/bU+vp1+M1XhxeuanN+vopTRRaevEdYcu/+mrKSmkAaqQyKBjwP6fOjJBSpwseUM8G
+         +ArQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783610452; x=1784215252;
+        d=1e100.net; s=20251104; t=1783610574; x=1784215374;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3aG5hxu0JYH7EcM/cq6JX5Yef1RoVI9XARU/q8dKmL4=;
-        b=VYp3LpYFafXftjZh+rGFWioOfaGlOIVsUyhRb5aA7/U/x6Xd5Qq91Fh/qNMWwz8Thm
-         BHDQIwBjWR5tfKZuoSWj3tzSWudYbFWDSPnsVd7Dl2GM8miXhdLO+CKb7BXJAf48ouZT
-         gVgazemz+NXf3yqkdbBbhdP3XjLFxAMyF9smZBKVIQ7Ku/6U49/QHhlHrCIHH0ll7Yjm
-         Q+kFjSlvWiiXqkeEJWGptQMcyYoHKbnVoEQGas/SrZHhnhAX0qyXHKea8OCSgCxHLJBZ
-         GRYeonCkuN5tYfUS4aEdH7g4D1uipbdNUYdr+Bs+11lA6ZR4i/1Swp9GUwCM1lOCQhyP
-         TmwA==
-X-Forwarded-Encrypted: i=1; AHgh+RoJFxA1PxAAoMByLJsF56us0t5wDoE026rBE1hMoz9mceqqaBWcFGLreojmtTmhW4E9P/LD0eM0gg==@kvack.org
-X-Gm-Message-State: AOJu0Yx4Ws01w/p8pbACCjZq6fqlJqf8Zol/5e0AUBnzfLhC3T4UwXnK
-	VnNbbHpCrmEhZ/nE2aGPsAdYUZPsTZNyPZW2QDkNj1TsiATooFLkr5PANQUTZz04TEM=
-X-Gm-Gg: AfdE7ckyQPoWvJe1zD3spyVr3tbjAy1zcCKY3lMegC1N3a3byXHmzM9BZiiGZGS95Cu
-	kAFFB8z/iLB7WKJ4BrGxm6q5dpRc6xls4+HEcTIZPU6VRDvMjQgKrNU8zTMETzhD4rrSuiFhSMM
-	2a2TPjwe0FVsgfGVVpV8nqRyQAu59E9+hmrhdm94FWbWfAMXNsOXp6OXmp+Ekh1aiUPU1Ayajrb
-	vNX/BoTR0kN1Fp517s0/T3XF/+H2IJj7oE4XYRjFAzr0XZIAzFNIA+C9FA27Q2D4Y99JgfalbTj
-	JQr4R8v1jJ683KvKRb6eU4/ub/TTFKZFg+/h6khQuMvyekKNANGDw7njhYrD1jP+yF44EtA9U4m
-	RuOVQDCiBlSFGxijw4BuNnuUahckBPRlzmIDa05pRhfDwN4BxoRatRldsohI/Y9xR0aJPlKQ7e4
-	EiFfRvodD5gCFFut6HvNrRUuctTPpKwBELchZJ81VrK2KFDdL/Zj9oiZnDIvUn19lf49jw
-X-Received: by 2002:a05:620a:179e:b0:92a:f74f:904 with SMTP id af79cd13be357-92edab23ef2mr337298385a.1.1783610451142;
-        Thu, 09 Jul 2026 08:20:51 -0700 (PDT)
+        bh=8MCYdDNt+ln4FYDiI3hqZQpolLcmikZ66uE9gEYE70E=;
+        b=RU5X+pFhxRp9UlugMn/22aQFwHY/KgHP2vL3TnG1BGiP5BpcIDskGmiJuFSqR+FxaV
+         rwzfDBV2SY5lWweR9EyFeiQsLzG94+7A5W2euzUqSmwQtJpHCzLixMR67iX7FJEap+7f
+         2DwafcRWvPlIGlWIJLbdd2lCdp5ZRjHMkMxiCcR9le9tWQv1OlnNZkrEAyb37wOHys58
+         tActNWRnRDF/opyjLLU3jb0K4Gj+XTwvRkyuceCYPdjpbdCU4FLUMz4+X9na4Vm/vqtZ
+         IWViOWRmzDfo4MVteuJcCJUeVpwRm6vLP7Fr6AVJmtC9hvWhk7USHmWRRbr7oykFW0Vy
+         l9aQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpnnMDLX7WMlRzxUDzx3otU3btGQToyg4Mexlb/aVN/GsbIu0W5HaxVONudNRbaZJvE66sA2ITUKg==@kvack.org
+X-Gm-Message-State: AOJu0YxgYkBmYNK+SrqFA7FTgTVu9yTm0Hpzx/vvrQQ92fNvAHd7Ikup
+	XHWGL/xd8XEhBGabbM7HBug8cySPl00Usy9FLRKJkFLeMR4DRJqdxxZiMoXaqsnZ4SA=
+X-Gm-Gg: AfdE7clTn4AfLTrCYdu0zcw29zJkTal94GMveNT07CXmSg/YL+hIK1eBQbDcRD/TrJE
+	QkuoFga2CUlzZOKHMjolnTzGgIhbYavXXTQkMuhRLp2iEAJSLmbBkmyPc/9YttGBJ62WPAmRxdG
+	Oor5ihVTjsGShB8zXxYr+R4QFNpHwjmyQeKzjvyKffT0xLemR7Z8eedUdZkqWRoi9uzmOSYNHj4
+	K54YyPdHkmKlAFI639SVq44bWCZ/rrofAql9WIpevMj3c5z5erJTlK6ryq7MS6g7HS0y4U9fs4n
+	fuoMsFqZ5aZJa7AR8Y16j9JVXhs4CuYm9uJGr4jKEtiJoHu2EFwzPLYd7bsg+YOilwAtQx2w+Oi
+	FkwRrm97yHLQGDuek8b3Akf5IyhUW25IqTmK8/bowjpQrfwM9guM2WgSkJE9nVv+gVhyXC/CDu4
+	qjgMwigY/NRuRp+BMatLyP3/h03udOPEtYbbtMVMrn2fyazWZTDRHv/DNsP0PbaZ5mEle3
+X-Received: by 2002:a05:620a:28cf:b0:92e:68be:1c5 with SMTP id af79cd13be357-92ecf6165e4mr847751685a.21.1783610574232;
+        Thu, 09 Jul 2026 08:22:54 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90ca90a5sm1652288685a.32.2026.07.09.08.20.48
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e90b7fc3asm1638936985a.9.2026.07.09.08.22.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 08:20:49 -0700 (PDT)
-Date: Thu, 9 Jul 2026 11:20:44 -0400
+        Thu, 09 Jul 2026 08:22:52 -0700 (PDT)
+Date: Thu, 9 Jul 2026 11:22:47 -0400
 From: Gregory Price <gourry@gourry.net>
 To: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -149,23 +149,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 14/30] mm/vma: minor cleanup of expand_[upwards,
- downwards]()
-Message-ID: <ak-8TKDC1GBOeMOM@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH 15/30] mm: introduce and use linear_page_delta()
+Message-ID: <ak-8x3TWsuhGzKlJ@gourry-fedora-PF4VCD3F>
 References: <cover.1782735110.git.ljs@kernel.org>
- <b24f70b72f0a9e2a37b904e5b59d80b88bd42e4a.1782735110.git.ljs@kernel.org>
+ <eedf589778aaab33e6df2ad6556dcde536e13460.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b24f70b72f0a9e2a37b904e5b59d80b88bd42e4a.1782735110.git.ljs@kernel.org>
+In-Reply-To: <eedf589778aaab33e6df2ad6556dcde536e13460.1782735110.git.ljs@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 81B1140004
-X-Stat-Signature: n4ae1m6ioshr7nzk3ctom6s8nfwbkrsq
-X-HE-Tag: 1783610452-595508
-X-HE-Meta: U2FsdGVkX192QJX1mwGIVVZsWdYhdiVPEp4EK/otZ7Hck49K05l86my3L8lJhYO0uTSGi0KwBXrOSUwyMJWEq0/g15gcFzuxoG8XzEAsPyRS0QRx/NC7a+hNHVJWUlEdNExJGJXMq3aymd8t/pmxvWjOX2pLRlMGM+afcKOOHmaNr9uNnNbI45hGvxU27ezP5DozoOSCyNglMa0zoCUok8LZ89XCHYT2LBG0DjZBLcDlNwybGyAlCWf4o5UGW3rJHJibJchb/3/7A8ZDM5uIxRYJgFwWV5DGShVncrKPfrLw3ULtSLkNu5+edSdQcNUrJl0etCDniibvZZzHIHaEgieaAyNWP2iHyqIMHib9VzkfkCLMaYIjzC3hk0CnQXQ/0SRU8aCJQYIdjmUqH/EmwGe0V1bPdnTjU2VSASvbR+5PU4o+/Vh9h+KlP+S8lKYYCI13LS1MZGbU+wVZdANMGzuDMOeq42TWrzdArvjkVMf0y7j93zblqEWG+R4KYd8NyiwuvAoK/lf1i76M9qSrXHElC1rST8jceDnAQUHzUqAjDTizot6ce+7VLBy0H/0Hl4a87sVC5TiHFEU0UFnsMyukKzY15bWP/1J05EWfMpTULPj7xHWsFxfE8iQFMUQiG+j5OdYIecUxUuCM6h6O1k3d3v6xsqd408DeH7tZp/fRGN6cANkpuxpPTw0hW0mdyIjL/G41PoGvU/XUPLdniBBAu0rrzO0c7KRGa+NgdkiuO4dD4kxTGYS/524B5NwVK7T5+PS/xgPa7JCuylNmARenfc8FohF0fDUES4MDqIVSTJOcO8TpRQCO39qoc4jaJFDItz3jT/E/oMMDy/G9z9A0bIUTHl+d/UnZS6hmd6pJk21LwT8i89EthuIlKipaFDlqwqyxXpNTaKa6AtqtgfIIUcFHFwcP3KcllPW3fLPAl/qwlodWDzKlMlZ64mebOUIqHbfcFxZTZ16PpR8
- RLMeeomI
- d36Dxb1WzE+I0J0+jslCEKpRvGOGji6HvlVJBOrKTEkcy7TV1RT9WCP74UEuo1WezkZFr7g7cuiYkAhKKxqZGYwQMgyY94mRAUxpwKqedeydFbT4gzy2ljsZL+ZCo/fsFOy8PSldJdeF19bDBl9oiSswtrW3Xd70uWNg3dr1jNEVIWwSRfuYw2Gdpgmih5QRQN1QK3HiT32qTcG5+5m3QpPUPzmxR8p4Pra9mglIA5hzWScP0yS4BuDuAZEAPrt4N7cG2euJDL6Rymz2GM49lLsqXarLJnZX2xN4V60AuX7Kyl2vpJRtzv8vIuFnecqQ+Ggezl2Qibdv3jbU9+Qm/kjiR71Dx1GEcXZHGb4HLv6Xn0mK1LO2is5o5hZRmLrRSO2+w6xWmELChVN8gsQRgFsiO9zmCjsweSPcIQogqH3vLBtdFaJiXcCktdih3bHP/IXKMj5UU2kyibxatg20reKhX7cp0UqfkuupgR8Mi32RY7IIGWCo6lcvlAUVSFpAwDHcNCf9WWDI1HgWlazd6Gcn7CA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 230ADC0011
+X-Stat-Signature: t3weexucuorbpuocimg4c13naodj7zey
+X-HE-Tag: 1783610574-439960
+X-HE-Meta: U2FsdGVkX1+KtVSehEjm5Qat+SLeZilBytMgUlPNtFFXJt4es3kvSPLf+aW4Rh9WErXMMv8XMG7RHofKbvvdYPOZjVZrX9L1+ZOL8LDym+Ps0rBsW0fn33RL9Cbo6sBBagyGM7rpDnCcGHcEmDMZclqcHh96vpmtXKqBez7DtjD+fuGGzVX2jfPhr3cAa2Ehw/dGLXxWjHIs7erkMgmveKACkSWj7RG9BaU1OpTR/8QhmNbBxoUuaFvoaF2IR+ZObQ+SX/Ru/gKmwIJvtqdnPshiPfATqcnLbdshndIrTwwgRhqOJIxObH1zRqt0jlh0UFE1+qIFI7ir4PVw0yvhM46Kv8T6t/0Ro6iGg8PKS6hraRb7SJd5A5Y19Y8aybImF0ylenA9fUA5UDFdcVCMf5IR8irtQHFzVIGiJGFgVHOjppn3os6VgPRb32QhKy1ZY+TpdNhOxm85UgFnlMPwtbrvwy976LvnUsTS9SG22rKZLOycvQ/fLH2PtJbckke8STUhkTeYaTkXpVXKyuMwsUMDBqBOK00BfNLjST6VBanip7nPuieC2028ec2tcCoPKPAIMvwSCT1aiP5JFfCnQslF5V+VJ3rTrnzHUFWfQ2qvH67LoTzlhIdgPpz9uPCy8M5Hi6qLgHt1T4ISiNYH1lBBWjQvXyxM/0ic04o2XIWgshckWFEN6igeq0YaLOiohp8zd6K8ssn054wGQWEg/DENNYMlNlh3CbaZKG3awWf6H5X0nGyOU0AUON1NPDLu7vsl3aSe+C2H18R1u3b8ZlVSKmQ1ywbVnf2yURsDPnQw0jzRmWIheiRdjjjFX7+KgT6g5wEibCxXKOhTw+406dfpw8fOdh7AIOQhOmuGcGqLDk/0fNipC3RuDrrAlkcNO9IyAfCZKP44kXNaVK2rxI72XhfmwmrKZg4rh67+A4hGPLTnxw65PznMwEzT17Rz4P+pHZlVnF+qW2lgBsZ
+ n9VKdGqG
+ A8c0vxUu4x1u/6xLUq1kLarn4AX4947z98ruek44OLxa5LVB+UOv8aVkDkkxCpy6Pza/cwP7uPvNymTUkF+h0gDx3YqP+/5Tw9aGXZc/+mvSz/HlHYFtfadZ0glg2rpUMqdqjvIxRiMF4LGZlS+eGbW7Ex1gmMlK7OtT78vKZp9ApshWNpT1ZEyutbCIaNJ/GewShNsPDsOAUwVSomyKmWQmvTzyoR9t3WbF0Eqp95f3KxSZEUOrJqTh7zR7v9E7Yk7Oz1Ad4iNHbJG9HJHCZfX3cIeZkboSdpdwr9T1Q7y2nC9CeTOvIdF3YC4DF3PW7ohRiIYP8InKRf5NQORiBkG/+XArm2Yyb1H/Lx4ogHQHAumtH7yHzxr/CoEHeYd59gbtvrhye/2P35+hco8j7abNSu0vYEdg6hdXOOGqBQWyjFDCrPbjK9tBOOqL/LpJF9GOAzw42DxoMun7aC9WY9wu5vdUebds0+igw1Ut609qdV93xa5Vz9a2njKmVBdTOuxqeZBoKsk2PIyLhcGXVw4adog==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,15 +172,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:25PM +0100, Lorenzo Stoakes wrote:
-> Adjust the stack expansion functions expand_upwards() and
-> expand_downwards() such that they are expressed in terms of named constant
-> values, and make use of vma_start_pgoff().
+On Mon, Jun 29, 2026 at 01:23:26PM +0100, Lorenzo Stoakes wrote:
+> It's often useful to obtain the number of pages a given address lies at
+> within a VMA.
 > 
-> This clearly documents that we are referencing the page offset of the start
-> of the VMA.
+> Add linear_page_delta() to determine this and update linear_page_index() to
+> make use of it.
 > 
-> Additionally this cleans up the overflow check in expand_upwards().
+> Add comments to describe both linear_page_delta() and linear_page_index().
 > 
 > No functional change intended.
 > 
