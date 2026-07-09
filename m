@@ -4,137 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D40C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:52:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81174C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 14:53:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED6D56B009F; Thu,  9 Jul 2026 10:52:04 -0400 (EDT)
+	id 870596B00A3; Thu,  9 Jul 2026 10:53:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAD6F6B00A3; Thu,  9 Jul 2026 10:52:04 -0400 (EDT)
+	id 847DF6B00A6; Thu,  9 Jul 2026 10:53:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC3096B00A5; Thu,  9 Jul 2026 10:52:04 -0400 (EDT)
+	id 785206B00A7; Thu,  9 Jul 2026 10:53:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B237D6B009F
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:52:04 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3A1D8C0F5F
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:52:04 +0000 (UTC)
-X-FDA: 84969528168.28.B7D071D
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5948CC000D
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:52:02 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qgc+qo8K;
-	spf=pass (imf22.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 51BBF6B00A3
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 10:53:30 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D620CC0797
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:53:29 +0000 (UTC)
+X-FDA: 84969531738.18.D61460F
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf09.hostedemail.com (Postfix) with ESMTP id D8F8F140005
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 14:53:27 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PwCi9JdD;
+	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783608808;
+	b=N+mMxJKi2ju4RTIKaoWXbA1kkmY5yi2dksx/NvJwv+Hl34ORR0+U0Wh+j1bdJo7vQDwWo6
+	IxenNcutj6Ajar3Voph6Gwrfq1D5s/pCD5hRx93GOL0KkQ2QZmWYDHtT7MV76p+a/4WtyE
+	7T9v8FC1Ip9/4TlBQZmt/isawJHFTu4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PwCi9JdD;
+	spf=pass (imf09.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783608722;
+	s=arc-20220608; t=1783608808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TomD5kQp4QDVC9gWt3p58S/rBPFQXp4PWIaI11lLUvQ=;
-	b=0V3KGvjhxekC7Q3jOh3nbJ2rjEyxYHfIc4aNnZLdAATm8TvifzeApN6gXRyZv2D/sFH/tM
-	SVclj8j9N+vfGVfQvou2jUhzKTWzwIuaT26B1z9SXgxIxSObhvKDQLlfsAZu8aZ3/BeDKk
-	/FOHjjGE5yyIWvSd+KLqs9UEzFyFOvk=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qgc+qo8K;
-	spf=pass (imf22.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783608722;
-	b=Kf82M18Fh1x1HVo130aHRHdFIVb75zmX/Pa7uccycPuU19WGE0mogfivryozJQGj7cYnjr
-	0naJnEZ9NQxZBACltveL1Xc85c7ggZsauc/3NluKbSrPXXaaYFgd9ecIwhNOuN5GmxJQG6
-	YmNEouv74+X1bUa/jezGipFzUkU2GYc=
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-381d656c36eso197282a91.1
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 07:52:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783608721; x=1784213521; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TomD5kQp4QDVC9gWt3p58S/rBPFQXp4PWIaI11lLUvQ=;
-        b=Qgc+qo8KV32K63iive22vwb6zhnnGbT2ct4PjvNcnRAV+j6Su4QMI8ehYsTF3t5PQD
-         lIj5SNbJc4VRnRALZ1/NRBhQThocXxUEByHDOffwwvw1/7bI+kTDnbWb2O2kRMtwWM5K
-         hZY7BCbBN58KERicSCnf0uRYa8NAtKLOLUcJKY4lQ6V/C+iFaofe1tKWXpm+R3KxTJs+
-         PZ3xj76OFCXG4wdadkwB95uGj7lKIZTl/84JU1ElnLLjDxIUIxVKqUgiI9Vrkb60Wqds
-         8Fkmz9N8yFL8sdlVkBsEoY4bYrdjOrRA8aKxmTKYneK+xqRjz+FEd8LdQFx0GAnNSUug
-         AGJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783608721; x=1784213521;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TomD5kQp4QDVC9gWt3p58S/rBPFQXp4PWIaI11lLUvQ=;
-        b=cosq9F1vZjDLPMVX5h0UtRACN0i3Y02qfN9/0276sCSrtkxlnRSThIaf4xd5Ff1775
-         d3ka8vkbmz6lH08p9/OyP2pVBxe5MFmGCkqAF23d181YpDwQdzqCp0XrjZ6in/N9YXaB
-         Lp6VBWn4uAji1L4fc88N0aVc8mFhnA0R1C7qAyy+yKXltFpCgRTXcUYERTX4sbfha2Sb
-         Dh3lEozvhDhmVUnInutYOqCCU1F0WmxkrOiKcB7QacI0ojPWnq+fn2hPVgqIU9+yiLCP
-         5dJg+h461lIscHhxWw7WpebtNLrt1yMBBeF8TuaeD0sHVhXR46w3qzvfNJ7df2m9lzp2
-         5ilQ==
-X-Forwarded-Encrypted: i=1; AHgh+RofArdiNhKFUVGNYHkuGcNxqEyUL45pxfvODflgYnlf5XxgDexHBgcLnAOQ7vFd4kRj3Gqo5BDavQ==@kvack.org
-X-Gm-Message-State: AOJu0YzORz65rVTnec5C3+u0QSSaTdKUb26AIknLIF0weXwj1/pTTj8r
-	R8h1spYP2SBSNqLQDQHeWSZ4dUuC8zVVPNTlGxI2fZeN0WJXtUlAqlgh/Hfyg4UJCec99bmT
-X-Gm-Gg: AfdE7cmOHSoTejzqjFUvwnCHJOke0LfaE8JJYyKL/GgZyfhvnxp98OFfVq0d2TZQa04
-	aijcgCQ4SCmbTzsq1B4izKU7NYVet2WV0itmhyUM7NNyA9XSSWfhCsE71DmANQP52SsbMKDahdO
-	CFYbEdapCqpC0wsa4oTCpMmPD3+EZUpYSY6pxaxw3QOqGMId/9tjC6on51jQTk8JCmhiNxEIZ38
-	k6YkdDl92cMoLHt6zIE8I7/HQFs8QLdRD0VNoi6suSdWn1Pq/B5h3PoOyJv30STsDWgCIsRt3VP
-	9gE2KOuJ8NimZH5kSExuMIJX6Fhm6B2WBnCUlOUZkDd0kvWAPyFlLx9pAkAjMoEkmjUsJZ9rzun
-	sk5jIv7obRaQSOBMAkohy1ywVEMxGFvf93ra3all5yqtkpETNaTUmeeDDIDJQP60tJQpv/H0Qfs
-	cdzdM5VKL7KgKeQd4CUbg6nrsjvQJPWVRDxDrcoIsJ+MT+a4EGL3Kx1lB1FjQ5LyRirQ9KmekMZ
-	77GLh8=
-X-Received: by 2002:a17:90b:37cc:b0:381:6cf0:d5f5 with SMTP id 98e67ed59e1d1-38a2122afafmr3620933a91.5.1783608721148;
-        Thu, 09 Jul 2026 07:52:01 -0700 (PDT)
-Received: from debian.lan ([240e:391:ea3:6910:38e7:894b:82e3:a58b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38a57dc5820sm1286917a91.10.2026.07.09.07.51.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 07:52:00 -0700 (PDT)
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	Barry Song <baohua@kernel.org>,
-	Nanzhe Zhao <zhaonanzhe@xiaomi.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>
-Subject: [RFC PATCH v2 3/3] mm/vmscan: avoid pointless large folio splits without swap
-Date: Thu,  9 Jul 2026 22:51:24 +0800
-Message-ID: <20260709145124.764807-4-xueyuan.chen21@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260709145124.764807-1-xueyuan.chen21@gmail.com>
-References: <20260709145124.764807-1-xueyuan.chen21@gmail.com>
+	bh=3V4DmKvYu5ICYDlwnJydkBOT1bVUqwjuXDcWIyId3Xw=;
+	b=v3t/UNxPFBxmwc9Y60fiKtxkL/Nq7E4PJ2fYxDhBiuw60pE6r9wxxu0DhsZ9w3YqdhhnfD
+	1cufPOQsbl/0jDZBR2WgbvQEfqcW0MMDhzZ7vHkPUpM5DoMMDhNandXKgwVvc+06knfO9F
+	e2ZASibxdWHvAxLvEbxFT4JJ/GsOyOc=
+Date: Thu, 9 Jul 2026 22:52:59 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783608806;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3V4DmKvYu5ICYDlwnJydkBOT1bVUqwjuXDcWIyId3Xw=;
+	b=PwCi9JdDCO1JE2fhdAuCrQ5Yd8MgYdSnLaM0++DKo40SMUJ8xFDZ4/lW0eEGfUWJwF1Iw1
+	7kz1668VQL48qqGxvUEfzphjsVXWdMMhZuKoxxhJ1ZU++MMpb7AzmAcpQODgrrU5XZ41+y
+	TPABNWPTj7gTVCglBswlUZDujqaCKjE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Baoquan He <baoquan.he@linux.dev>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
+	kasong@tencent.com, shikemeng@huaweicloud.com, baohua@kernel.org,
+	youngjun.park@lge.com, hannes@cmpxchg.org, yosry@kernel.org,
+	chengming.zhou@linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 09/10] mm/swapfile: implement swap_ghost_extend_max()
+ for dynamic growth
+Message-ID: <ak-1y8poqzPEhXtQ@MiWiFi-R3L-srv>
+References: <20260707082614.95030-1-baoquan.he@linux.dev>
+ <20260707082614.95030-10-baoquan.he@linux.dev>
+ <CAKEwX=OygNR_5iD+FbWKhMD9Z7fxU3+VOfqn48aRGqZzYF2e_g@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKEwX=OygNR_5iD+FbWKhMD9Z7fxU3+VOfqn48aRGqZzYF2e_g@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5948CC000D
-X-Stat-Signature: jaesh1uzpq3kq7p5ynmk8737ukphjqbc
-X-HE-Tag: 1783608722-227441
-X-HE-Meta: U2FsdGVkX18pWz2gKTsKmZKF18ukvPXO+2i+IZwETT/yc1IDG/45S2D6l0H5AFgpdKS8lzOKhd4lghY8E3Ke5525pis28Nkb434R2sr9pJct2SgHegBR0GFH0orO+NDlds5VylEZVbYg06mzAE3e7081TJMe+gzgtPhcOOJ7rIG73R4z52Po5nP5C2RP/86mZDK6GTZ4QSk3tyR7gdoU5SC9OuSdW5m8pRTfXvDHR8cBS5HdUPBKXD+EEkXSGy7UhkpanVfquRVn18CJJbibdy/FGFSNJkDPbMhp2Sa/36vf/P4VXhUtiXZJbydGGSUZsHyJIwbaRdwJsqlJ4kvWBICmuy+wqoi3ry/MO+aFS9fhtsm11xK0DtpvCkHHcA6JA2/xm7fedL0pWEiL/Pbe5otsudBcLYam3yaCR2Tml//Xg3L4N/48Y91/W2LsOSlCrKmfKOBXHw4LYysZZNE9BnJzIPzod8Cx1BBOFUPhwxBYW/H2VLeKQqw+PTHfGUWBvorfvJ5EYQBIx+YaXO7xmha1LxpWGgxOsAahQ2MPm9nOrNdIERLtjbdwZZC0BHfQEVKtSA7bbD75T+ovSmJYzrJ6kQY+hbULI8k3Ok1OT7aM6kyYPzRUFamVjaPEn7VkfBrV49Jd65XZ+zdzrnd3y/uHfendSCyMXaJ8KIPB5p4yQ2zf9Chle0EFcK8RMOJMR+2APfJvWIes1bt8r6ijUkCGMDNLA0Xv6de4cPS+UUjYTH3H6q0nYtS2pVPIOGQEWqT+4WH8ZSew/0D/o3l6H5HyRQvYv2F/UUWx1Wa7+F6xUoDT+GIC7MGUeKbz2Hq/TuTzu335dUzpUzzZKnK1yvyjFXqE74+NyZki3Gk0MrCJMT2JM1lPVw/RrFNhZJnwFqAB2kfxDLidDL/GVvW9gY2OJAjPd/akHOztXVlaPLwT57PJ+x9DFrA/BC4Kjsp0JzMWwELG/re9StYFheL
- WHOxCXQJ
- e7pB6d1FzeLjIP0jPxXxpRncVx0q++EOzJ53/5x2DRW3ahpybhv+jIS0liRqJuBgNM3pHJ9lgEeDOX96QOUZL/XDu/q4AO7qfGPfMTu0hIoxD3lLHMov4RPq6QXwUNG41IrZdnLdmUgkmSlWmZyttGxsqVLkO6uk2r0VHsNPcfQ13sH6tKOr6uPnZQOu8FZLKgCGi2n0Z9K2Xn9bAoZaf5YqEOWVr98ezXux7KY6u1pLPwwUHBEHhkqhfwBt1HqdaSfsZJ5DYElSu54VxQImIXGbqBRSAGZWAb+qVfZlNq0DUetfeUiyOkZHkcTiMDTDNxsJr10SK9l94SZXEmHnEFFYGOtkvbw8tCjcKNRGdHkRDjcv2Zm5UD9lNLLwBOisT5mdQlIU7pCw/ftB2EEZyRf0TB9T8hpbKXI2yAxT0db+8eQclgLc1rnzzc0NMd7mfvLcYkzrDBW1IaAb8iyUwm6j2tCssbY9+pVcW/Mg7ZGH5J9FEq3pS7xSVSQPSPNkUHmtP8xPilgxA3t4=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D8F8F140005
+X-Stat-Signature: 5omuypzkoh8n9dqu8uqhkpe5j3jntsc1
+X-HE-Tag: 1783608807-853144
+X-HE-Meta: U2FsdGVkX18XQj9I/HusvF73wAw0+dJe3zqXrZmyqHCu26gJGO06WYRD1nRdHSNDZnB5xghvCNaVMxq6L8Gogoa/FpzpcCIiFQi/1cvFd1linyF3sn9hgbnBx7dzFac1uU69FzL5I5Vh2T/zCO/b743En/XcNJs0X2qYqFq7VDCsGyS2905iGjntAGliTbRsAvEYDoxjbnoCKf8HDG3uVSh/LKUpVHKw0PzhcCRDhqVOTqvX1ee5FrYklwbd0eXS5KnVhIWArkBe/so4wYwhoPJp1RmJdN2CSKK+kbM8mLks+3yVQDFZMMHI9tZOmXygGMm57XZCyKBo2KugBanOUigKKLXuzthU/8Bp8qDIq5bm02gHEWDNFhAZ7joRxrv48vi/mpWLUMedfiwkaEqw2dF6KZagVaG9ZBikUXSNfdrD0sAl8Tn9y6r9xZHJwWgDyElvd7kQULkUMg1g3U+thaVM/PTpS+fAlW42aDKnO5YYLaTZLprbks4BEkfatuFljGAIid0yqxv4DjN13k9OTI/31fKOw1pjG2pHnj473aYiUPtUOPXaOoOhqvJG1hn1+XrzUp6oim80nlFOWPVEJeFxNVyqgivQ67645FKHILqM0q8bMpwm8gBFUtrWx6hmuK/1aFQVlCeTHhOs5HO40EXzytDK4x2Khj3LhozEBphPQrqsclqyYYBo90t8vxZWmEfF9ddOE7F6+sDxhpEp1UG5g1nOlnzdyq8FTNaCMmTor/KWnZoJ1eYoPcOag7Ckb0Rhh/3yXmQlMvkXDpBYpFWrOdb2YMuMck/NXyY7niyyDfbvcVairjZkfzTRPUdXbkMEXq3P6HRka1SsijiDcAavy1aKWFMAHpfzbFNVwuKz+HhhAvBiCOq3UaL2kYz/9Rp8JlTSwF0jrvxiLh25wJA7fdgbMg6rEjQ6MN7efa+XlC4T+UKq8IwDQoSnj02m+6WWySW4LqwmiKHc5l+
+ NEM3O5cN
+ ExinfLYzYjujfA6ZLsB+IpKoFfDLk73/3SLyUqKEkUJsTJl/eSs/nXkD0eDyaytJQJ5T+zJ5uLKvRx9mNX2cizdfVU3c93NJsMSRRWTn5IymSeQ8BzxWfi4CF2xo2f54UO1r+b2MG9c7aMOwCstwkbppYbGjqarPcpWapiAzaT2Fsohd4go35W8ZIG9v0qXfVbLi6YUQnGG8pBo4I/kDRdQbCGipX+o575etnoJOMLaGAIh+ZJfAcAX1BuAzCTr/4pYAZ/QZCGybN9Ay1/vNNZtEqc4NC0cZNxsDez/XuVCeew9yoaoqLMm0PLjezEK4HlXle
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,54 +94,178 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+On 07/07/26 at 03:36pm, Nhat Pham wrote:
+> On Tue, Jul 7, 2026 at 1:27 AM Baoquan He <baoquan.he@linux.dev> wrote:
+> >
+> > Allocate additional physical pages and map them at the end of the
+> > already-reserved sparse vmalloc area via vm_area_map_pages(). The flat
+> > cluster_info pointer never moves — new clusters appear contiguously at
+> > higher indices. New clusters are fully initialized (spinlocks, list
+> > heads, trailing BAD mask) before si->max is published via WRITE_ONCE.
+> >
+> > Page-pointer tracking in cluster_vm->pages is reallocated to accommodate
+> > additional entries. Returns -E2BIG if the requested size exceeds the
+> > reserved VA range. Extension is serialized by swapon_mutex.
+> >
+> > Signed-off-by: Baoquan He <baoquan.he@linux.dev>
+> > ---
+> >  mm/swapfile.c | 110 ++++++++++++++++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 110 insertions(+)
+> >
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index da085a75d7b5..8bf336678887 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -58,6 +58,8 @@ static void move_cluster(struct swap_info_struct *si,
+> >                          enum swap_cluster_flags new_flags);
+> >  #ifdef CONFIG_ZSWAP
+> >  #define GHOST_MAX_CLUSTER_BYTES (64UL * 1024 * 1024)
+> > +static int swap_ghost_extend_max(struct swap_info_struct *si,
+> > +                                unsigned int new_maxpages);
+> >  #endif
+> >
+> >  /*
+> > @@ -4247,6 +4249,114 @@ swp_entry_t ghost_redirect_to_phys(struct swap_info_struct *si, pgoff_t offset)
+> >
+> >         return (swp_entry_t){};
+> >  }
+> > +
+> > +/*
+> > + * swap_ghost_extend_max — Extend an active ghost swap device.
+> > + * @si:  ghost device (SWP_GHOST set)
+> > + * @new: new max pages (> si->max)
+> > + *
+> > + * Allocates physical pages and maps them at the end of the reserved
+> > + * sparse vmalloc area.  si->cluster_info never moves.  New clusters
+> > + * are fully initialized before si->max is published via WRITE_ONCE.
+> > + *
+> > + * Returns 0, -ENOMEM, -EINVAL, or -E2BIG.  Caller holds swapon_mutex.
+> > + */
+> > +static int swap_ghost_extend_max(struct swap_info_struct *si,
+> > +                                unsigned int new)
+> > +{
+> > +       unsigned long old_max = si->max, old_nr, new_nr;
+> > +       unsigned long old_bytes, new_bytes, nr_new_pg;
+> > +       struct page **new_pglist;
+> > +       unsigned long i;
+> > +
+> > +       if (!(si->flags & SWP_GHOST) ||
+> > +           !(si->flags & (SWP_USED | SWP_WRITEOK)) ||
+> > +           new <= si->max)
+> > +               return -EINVAL;
+> > +
+> > +       old_nr = DIV_ROUND_UP(si->max, SWAPFILE_CLUSTER);
+> > +       new_nr = DIV_ROUND_UP(new, SWAPFILE_CLUSTER);
+> > +       old_bytes = ALIGN(old_nr * sizeof(struct swap_cluster_info), PAGE_SIZE);
+> > +       new_bytes = ALIGN(new_nr * sizeof(struct swap_cluster_info), PAGE_SIZE);
+> > +       nr_new_pg = (new_bytes - old_bytes) / PAGE_SIZE;
+> > +
+> > +       if (old_bytes + nr_new_pg * PAGE_SIZE > si->cluster_vm->size) {
+> > +               pr_warn("ghost: extend to %u exceeds reserved VA (%lu bytes)\n",
+> > +                       new, si->cluster_vm->size);
+> > +               return -E2BIG;
+> > +       }
+> > +
+> > +       new_pglist = kvmalloc_array(si->cluster_vm->nr_pages + nr_new_pg,
+> > +                                   sizeof(struct page *), GFP_KERNEL);
+> > +       if (!new_pglist)
+> > +               return -ENOMEM;
+> > +       if (si->cluster_vm->pages) {
+> > +               memcpy(new_pglist, si->cluster_vm->pages,
+> > +                      si->cluster_vm->nr_pages * sizeof(struct page *));
+> > +               kvfree(si->cluster_vm->pages);
+> > +       }
+> > +       si->cluster_vm->pages = (void *)new_pglist;
+> > +
+> > +       for (i = 0; i < nr_new_pg; i++) {
+> > +               struct page *page = alloc_page(GFP_KERNEL | __GFP_ZERO);
+> > +               if (!page) {
+> > +                       while (i-- > 0)
+> > +                               __free_page(new_pglist[si->cluster_vm->nr_pages + i]);
+> > +                       return -ENOMEM;
+> > +               }
+> > +               new_pglist[si->cluster_vm->nr_pages + i] = page;
+> > +       }
+> > +
+> > +       if (vm_area_map_pages(si->cluster_vm,
+> > +                             (unsigned long)si->cluster_vm->addr + old_bytes,
+> > +                             (unsigned long)si->cluster_vm->addr + new_bytes,
+> > +                             &new_pglist[si->cluster_vm->nr_pages])) {
+> > +               for (i = 0; i < nr_new_pg; i++)
+> > +                       __free_page(new_pglist[si->cluster_vm->nr_pages + i]);
+> > +               return -ENOMEM;
+> > +       }
+> > +       si->cluster_vm->nr_pages += nr_new_pg;
+> > +
+> > +       for (i = old_nr; i < new_nr; i++) {
+> > +               struct swap_cluster_info *ci = &si->cluster_info[i];
+> > +               spin_lock_init(&ci->lock);
+> > +               INIT_LIST_HEAD(&ci->list);
+> > +       }
+> > +
+> > +       if (new % SWAPFILE_CLUSTER) {
+> > +               unsigned long base = (new - 1) / SWAPFILE_CLUSTER *
+> > +                                   SWAPFILE_CLUSTER;
+> > +               unsigned long idx = base / SWAPFILE_CLUSTER;
+> > +               struct swap_cluster_info *ci = &si->cluster_info[idx];
+> > +
+> > +               if (!ci->count && swap_cluster_alloc_table(ci, GFP_KERNEL)) {
+> > +                       for (i = 0; i < nr_new_pg; i++)
+> > +                               __free_page(new_pglist[si->cluster_vm->nr_pages + i]);
+> > +                       return -ENOMEM;
+> > +               }
+> > +               spin_lock(&ci->lock);
+> > +               for (i = new % SWAPFILE_CLUSTER; i < SWAPFILE_CLUSTER; i++)
+> > +                       __swap_table_set(ci, i, SWP_TB_BAD);
+> > +               spin_unlock(&ci->lock);
+> > +       }
+> > +
+> > +       WRITE_ONCE(si->max, new);
+> > +
+> > +       for (i = old_nr; i < new_nr; i++) {
+> > +               struct swap_cluster_info *ci = &si->cluster_info[i];
+> > +               ci->flags = CLUSTER_FLAG_FREE;
+> > +               spin_lock(&si->lock);
+> > +               list_add_tail(&ci->list, &si->free_clusters);
+> > +               spin_unlock(&si->lock);
+> > +       }
+> > +
+> > +       si->pages += new - old_max;
+> > +       atomic_long_add(new - old_max, &nr_swap_pages);
+> > +       spin_lock(&swap_lock);
+> > +       total_swap_pages += new - old_max;
+> > +       spin_unlock(&swap_lock);
+> > +       return 0;
+> > +}
+> >  #endif /* CONFIG_ZSWAP */
+> 
+> Does this only grow? Say I have a huge but temporary spike in swap
+> usage, which triggers the extension of the the ghost swapfile address
+> space. Do these metadata space live forever?
 
-When swap is disabled, exhausted, or unavailable due to memcg swap
-limits, splitting a large anonymous folio cannot make swapout progress.
-The fallback only destroys the large folio and inflates split statistics.
+Yes, it is grow-only for now.  The metadata overhead of an extended
+ghost device is very small: cluster_info[] costs ~32 MB per TB of
+capacity.  For a 64 GB machine, 1 TB of ghost swap space costs about
+0.05% of RAM in metadata.  This is not a resource that needs urgent
+reclamation after a spike subsides.
 
-Use -E2BIG from folio_alloc_swap() as the explicit signal that splitting
-the folio might allow swapout of smaller pieces. For other allocation
-failures, keep the existing activation path and avoid the split.
+If it does need to be reclaimed — for instance, after a one-time spike
+pushed capacity far beyond normal needs — ghost swap supports swapoff.
+The admin can swapoff the ghost device and swapon a new one at a
+smaller size.  No swap type in the kernel today supports online
+shrinking (not block devices, not swapfiles, not zram), so this is the
+standard mechanism.
 
-This preserves the split fallback for fragmented or partially available
-swap, while avoiding it when there is no backing space for any part of the
-folio.
+Shrinking would require migrating active swap entries out of the
+evacuated range — swap entry migration infrastructure that does not
+exist in the kernel today.  Implementing it solely to reclaim a few MB
+of metadata after a capacity spike does not seem like a good
+cost/benefit trade-off.  If there is a concrete use case that requires
+online shrinking, we can discuss adding it as follow-up work.
 
-Reported-by: Nanzhe Zhao <zhaonanzhe@xiaomi.com>
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- mm/vmscan.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Thanks
+Baoquan
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index bd1b1aa12581..40340a88f78e 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1260,6 +1260,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 		 */
- 		if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
- 				!folio_test_swapcache(folio)) {
-+			int ret;
-+
- 			if (!(sc->gfp_mask & __GFP_IO))
- 				goto keep_locked;
- 			if (folio_maybe_dma_pinned(folio))
-@@ -1278,10 +1280,11 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 				    split_folio_to_list(folio, folio_list))
- 					goto activate_locked;
- 			}
--			if (folio_alloc_swap(folio)) {
-+			ret = folio_alloc_swap(folio);
-+			if (ret) {
- 				int __maybe_unused order = folio_order(folio);
- 
--				if (!folio_test_large(folio))
-+				if (!folio_test_large(folio) || ret != -E2BIG)
- 					goto activate_locked_split;
- 				/* Fallback to swap normal pages */
- 				if (split_folio_to_list(folio, folio_list))
--- 
-2.47.3
-
+> 
+> If that's the case, might as well just swapon...?
 
