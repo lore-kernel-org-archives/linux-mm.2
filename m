@@ -4,88 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B284C43458
-	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 19:19:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 760F1C43458
+	for <linux-mm@archiver.kernel.org>; Thu,  9 Jul 2026 19:32:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54BD86B0099; Thu,  9 Jul 2026 15:19:57 -0400 (EDT)
+	id 518446B0088; Thu,  9 Jul 2026 15:32:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 523346B009D; Thu,  9 Jul 2026 15:19:57 -0400 (EDT)
+	id 4F01F6B008A; Thu,  9 Jul 2026 15:32:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 462536B009F; Thu,  9 Jul 2026 15:19:57 -0400 (EDT)
+	id 42E6B6B008C; Thu,  9 Jul 2026 15:32:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 215076B0099
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:19:57 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9BD1F8CDE9
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:19:56 +0000 (UTC)
-X-FDA: 84970203192.04.0734790
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1C90A4000C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:19:54 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vklztZeQ;
-	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 210756B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 15:32:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A17B5168F9B
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:32:32 +0000 (UTC)
+X-FDA: 84970234944.25.2621F0F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id BF6B240007
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:32:30 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NEqk7ojV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783625550;
+	b=tUcekqagyDgBVJhIZNLA7KTjXsAuWtlARVseMPExUiARkT2ivL5MPTxzpzF+1BiM06ReVV
+	3nvC9jPRxtph+VbdN8ZcvFg+XWUfpc/NLOpnb5QkX8RMryPOtKbEcblMivySLrwxiNgk8v
+	wgPEH8WFi1q6jndSXCyWhlpyiWAjnlo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NEqk7ojV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783624795;
+	s=arc-20220608; t=1783625550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ywJuDuX3pJR00dpC/wU8zi9tZDyVl8qDRYGEK5siP2E=;
-	b=SM8wuRMBukXWXIEbQZX6FEzYXKcD8T5OK3w037+Ll7yZc1nnVEIF7jwSj29XxsxCCecRwY
-	Ru4N/ysebLO4g6u46ZIhRhhLWHLiiLaTWqQjP6JaCEbA3ttwazYN9/hJWj/NIZpLgzL4CQ
-	8Tx5S84joc8I90JqXAx1a/8ZJZzf6B8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vklztZeQ;
-	spf=pass (imf17.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783624795;
-	b=F/kIfsM9rN6jLqTGMybqoIKYh7QkWuyiCSaBNYFvAfxfTtF6gTFAmIZ6nTFim2UGh3Ej52
-	WdpRkuV2bjwaehA/V0IwvkthwkgkEUqfeMLqcGvlfPxlsKuBoRvLKANBzcqiwInUk8Kgmp
-	C8XS47dmTrrgsOYbBHuch0fni6M8L1w=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ywJuDuX3pJR00dpC/wU8zi9tZDyVl8qDRYGEK5siP2E=; b=vklztZeQzyUAabKNBVOE3K0ahb
-	Ka1tU67W+PoS/sQxtr4NG4BQwiez3iuX5S2h36+DS+lX5zq2jLHmAVk6yKZ7hSqxZs0OLlg6xRg4j
-	JafG3aADCjWO2kDujximy3Gcs051dMGvxswXCoD8wuGpcNKDkyfZ0uPdRJHw1ESJ6ol55rEb4e0je
-	vbkVNOjnkOyjW9Z8LANE/jRcHyp2cbQMdYygffskKGtrI7tnNLqjDc5MEtkFGnQtpKl+GW/yqQHlF
-	VUBDJnfND6Hcgj6XZrgT7g/DGF6nmmSgWKtZVv9r8rS7dYZvMcGcuIofpEac0HsIsIB5rs+Dw+Qzd
-	e+7KN9Ug==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whuHn-00000005Rtz-0Jqc;
-	Thu, 09 Jul 2026 19:19:51 +0000
-Date: Thu, 9 Jul 2026 20:19:50 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v2 00/10] Use generic_file_read_iter() in hugetlbfs
-Message-ID: <ak_0Vg7_qyPquaOh@casper.infradead.org>
-References: <20260709184740.1286561-1-willy@infradead.org>
+	bh=npXyDmufoqDAPaNNUVO/9ceYtcSWui2jgNerLmFDHKc=;
+	b=cVpYsgOCD4jFO954bmGv4qUIsXmRT7ijv/qEj49tdJw6O22XQ9drWLvFfdkN4PzbiDnDYI
+	znn8Fktkx9CAZFzeHAaobTTN2tyt3uR1CaaE3zd2mTqLgjPpiowKBeuQOtVH++eO5m59xE
+	W++I4OTRPvlufdUxCVOeKX/0F7z/iCI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A029600C3
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:32:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D2F1F00A3A
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 19:32:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783625549;
+	bh=npXyDmufoqDAPaNNUVO/9ceYtcSWui2jgNerLmFDHKc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=NEqk7ojVAD8jS8s0G0J1BYhZ+wXTK8ICpYsDhJQAeRFJ/oBWJoMhQOYhbsBu9qKVz
+	 uZ5LM6RONQ+5BbPuYebxemJ6t+6ZJ25qHQRz+ldxl+AXQdmO09YOuQeAw/vlXMS8XR
+	 JqqW70nATiZkuT5YqGAq82VcVfLt8AY/T+49yNbHTppbn0V7zXGYLQTbgO9Q0oOrWN
+	 D0yRBylfd8eg7vtJG69CONbJ4xiwEzRvDEURJHQYyvbiq0dzBM694qt2bcXNaOXD0d
+	 Ag8oZk9TMU7hClYbSB5MWWq7+8gPmowRyWewezUvguYkdDgvMdCDxCUgiV/ukV7pKo
+	 xVl06N8Yiab4Q==
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-69a5ecbbfb2so273532a12.2
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 12:32:29 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqfgUIDU9iRVuqtsyZm/wzYREvn60knlAss8jrDoON8hRYbuk/S1MKQ5TrkewBkNaYD2l2qW6Nmrg==@kvack.org
+X-Gm-Message-State: AOJu0YxvPRJO1z480CqIyUU1U+y+Rm4j2p9LbPvTtGqhm3oqy3Y/QNry
+	c5JwmpfaLv8pGeG/QiZoyISm2sJCgdPTGYsV+D50rFNBeZWEJ8w2oX+2OmvRqCsvyvbY6DTv6OP
+	QBjrGHIVlWp3MmrySpKbySL6UxKCDPnU=
+X-Received: by 2002:a17:906:7311:b0:c12:a425:cbca with SMTP id
+ a640c23a62f3a-c15ce120431mr373065566b.54.1783625548779; Thu, 09 Jul 2026
+ 12:32:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709184740.1286561-1-willy@infradead.org>
+References: <20260702180908.150136-1-yunzhao@cloudflare.com>
+ <akbHBZP9HxOJMtQB@cmpxchg.org> <CAO9r8zOiwgG80EjqdZFgWQvODUe1RzecLemxcB7xXNm_f3XfbA@mail.gmail.com>
+ <6ecf5579-0b3b-4e8c-a625-bbf0a4a48f94@kernel.org> <CAO9r8zP6JrZcBnzb8A3A9V8so4gJMWLvrJQ7VwPyyU417GikQg@mail.gmail.com>
+ <CAAnvDSyNbV5xSH0hrX9Tgw_wXU7Neo-XSJ1enebxJXvjOheHWQ@mail.gmail.com>
+ <CAO9r8zODSyYTipACxdEzoheMrNKzfFt_tjBzrB+2tSCHA82WWQ@mail.gmail.com> <CAAnvDSziZM9TOExkFrF9vNi4VN=7T6yofS-=4rmFqc3jXncveQ@mail.gmail.com>
+In-Reply-To: <CAAnvDSziZM9TOExkFrF9vNi4VN=7T6yofS-=4rmFqc3jXncveQ@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 9 Jul 2026 12:32:17 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPuX0j_fZsgRsaNQFyJqY4rZxERLya69TcCF83HrpHy-A@mail.gmail.com>
+X-Gm-Features: AVVi8Cf8-M4xZZExnpUIJTjNgq3ZpVD4qlYoeRddcr1y_lwYwKDDOovuyHJniEo
+Message-ID: <CAO9r8zPuX0j_fZsgRsaNQFyJqY4rZxERLya69TcCF83HrpHy-A@mail.gmail.com>
+Subject: Re: [PATCH] mm/zswap: use ratelimited stats flush in zswap_shrinker_count()
+To: Yunzhao Li <yunzhao@cloudflare.com>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, 
+	nphamcs@gmail.com, yosryahmed@google.com, shakeel.butt@linux.dev, 
+	akpm@linux-foundation.org, zhouchengming@bytedance.com, 
+	James Houghton <jthoughton@google.com>, kernel-team <kernel-team@cloudflare.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: BF6B240007
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1C90A4000C
-X-Stat-Signature: 4xbonoxhqkprmh7q4r3cqq3ykxte8zpy
-X-HE-Tag: 1783624794-904158
-X-HE-Meta: U2FsdGVkX185kDg3AM8JAyKtadkK9+eTxQHCH25BsT4GTKQn9IeezqwgWkJecO+xsGOLcvUot5tJX8a/rEExZ215bvGVoYio2RncxVdE+vgN4uHXcajBu3OcBnC4KYlL25h3wSFxUhEwHIU0HyL9eoxS8S0vTd2Cf2H1J7bxJefju3T7HKzc5Tz7Cw9kzeRkK+xZkwmnBvxWw2JL8fQQDk4tRWcTI8e2qOd1kGoykI1DjLKT4X0FfviSD1T2QxteXR18IexuX4LXcq1dO/JwgPzyLbZDNPpdn0UtjcDuoEb0DBBgiC/ED8R06pU20hTJ0ImHaKn9hlOQSoehoiTKsZpnRWJlI5vAJ/TCQYz+rT07GDlA7JkTlmMgEl0ezTJPhCkarKQG1IQlIWS0Lz+PwxfAIQLgIDIqBNna/HqMi8hb4WKVnArFiP0GQKpMP2LILS7BhAZzxGl7/vOU5oB+0ht3gy2Cd+qTp/FhOaMnWgZ6PPdhhT19iT0Gkowb6XFDC/II9AJ2/ODdYbHQ0TlQcXZk+DU3AejrfzXbqTt/cne+iF0s7zvX3LzZ2IZ3u/JAiYVHc8gGjGRhbTIChDFMVQWq4WLyLWOjARCfIwcMoXc/nAXEZgp8yjAnbeVgHLAj1RFeLbXSL57rp+vsQTd6gMmBxyuvOTNuISOY2FBoqN6yTIIq4ozQVfIUrqhpaFOgFg41DkT1mHDXBkuC5v+q/68qLJrDMgYFY2pEQ9EfYwqSHlREjjzF3Qm7NbN56Jnp7kUQoBlLyz0dUU969Nzj2Xo7nICDoFEIWAswvZwvxV2cvmsbcfu6Q1+5IdACVDP0ho3huMUHyufdDntxfzSjFOwhx5w+JUpoAh4tO9QaKj2rgvEB/V2NcHfTdRqEgR16y+rWsgw2xb8JwZfqD+Vx0iDVdu8t3XiCrYz5EfYerTUhtDZlncasVy+wjyRj2v9CCj5OdPLL7ezb2ocvYiJ
- cdk9Tf+F
- /LoiBFaGcGXILZX7xbAEQGMh6nZYYqKZiyBckTxps+5ySDX4L3MQ1pkT5ClIwgxWmxyQIz7Z7u0wNFvswv4rjJAPLpKA8DN/OeZuryVOw1OjGfZilPOAnls7JiM3i6vCkQfxMq4hBV4pngIV2n7uMxpretqp0TN3m7FWuM/yZw6cA+V9b4Hzd4aQ0ABOrGq8aEiBb6KWuEB5+l+IlpqGc1BrzKLNu+J0HJNz1QT/1dpneTuVEVHhBdfUCU2iEPwzq/lixP686Yn30Zeip8b9daKM2QO8loB9ZOg8xY8DsJ3Jquht4ANoFkKDWuhWYZ1iPfTBdrYGr0vhvOfZnq3LW3n+W+uB4ndlqoxtjq8CQQypxbdEzwoL97IG7AiQkZIdthg9ejpvULCaw+nfMKjxAFZodhEO/HEQRl0eAzFQstNcuQ47EYBf+0edTCrOlGjCsy/NJ/Gm1LWg5glzgW+akmDOiX4kD8MNP0E3Bk8Nz9Qu7SNsO2bbOT2g5HRwX+2DJL4GC4ryNEUNwpGU01jZHyUtfXmRHY9JGlAxuCkrHt1OJN760b18TTnFUbg==
+X-Stat-Signature: u15izycgwdi76kftkzw8rttzcfnk1hub
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783625550-125211
+X-HE-Meta: U2FsdGVkX19jJCNR0q0Gq+/T3eB43CVysnBD8H8DkbW64iOMwCwRfUjnW3a+W45C4KgLMDaMiuXTxywKgUumy2kRWMpGnjTM4EBmy50TYM4Zt7LoMxHJDHlja3yTbBKFh5F+uA7U+F+RZnoRpyXzczcm1Ti2rn43Zn58AFuVKLjULAUJp7l2cqQ8C4fky3wkqVvO6FPn51vSkcxYwxX4IdsNx0enwhtlV9OKua6pJVVBxF7ElJc4jThGf1fxd8ntKHSqe/W8395u8IuokqAmRbkKlb2E2m84j4ErUunPd59WMBOMZAPWI+v/7XYqaD5ZJFmxwxwa2ZQZy2/fr9ZT0KUwbwtgIU4MyuGG3KHVjLTNdeSXQ8oMGS17ml7hxx9Tylto7BACFmSccQ2AGMT1PccGvT7rUdKl69MKbnp9MoanIWoCNT1cls0VB8D4lhWrorNJ1nUECujtR0IiOiaODjnAomRx8a27if6TmNKTdjln6jT2d3CPny1SSZVm8XWQoe9nuOiux7SSxYN5bLtjmxePIYkoHbUOJ/X5tz7KRxpWyCEjwRY0/rtg8LlexCl1cCBtYWEtsVCX1WWXtUUlGIt5a4F2HQdY4O8DJ+MSkornVd/MZKF+FGg5LSrlEjPTTH8izKcAVRMhg6hLZrwm3SsAFrvBE+alYRNg/kL0IqnXEYGG50xxC9r+/RUrDFVUVJAu9JTG5GqD8xKiDuviPz/s7o6sO4QAPwL+JE/jlmiTvgxeHHOHTTyLSefxQk0XB3Py/gNlUTrZpWk5EmF43ifqkJ2I/Z2gMhO5vaEesqDwYjg7vZQZdPw9iwsq6Y/spnbg/99Ag45nixOWyLqIVbb8zQjzi/ZDhssAz+DKxW47ulfypmYu4O3I/9xsw2hfb13Ur0zVT6i25Srs6ls64VTX51lrTdwmz5vfp7XWzbz4t2UDjtyayh7RAX73rfNI4R8/F4hLE8Rjqbb+oc1
+ ye8L985m
+ VXmFpKWri0CPCvHRGci+bUvSzl/PIz8FbG/Ar4B4ejxiV0/cno+uoW8kFVqbITaVlQ3ACpKjnlG8Hs3WcZaqTK3HPkVcotkSZQ4nN42YYMRvjbll/95THQzT4aIhkXpLEznnO9XHZNxnw1djRNzQyHciowtSEoEwKAwzUn2IpRMaNuHIEMlQjzEU9eXlIgiI54uYV+X5trg1Fj3XqhGHvte0Q6XTL4yagsEpw+KrfXgiXa9HA0/HQr5PFy7DJy3PAVZ5NiKPrRvZkDIQddjSpAVu2gSS7Ce31/fiB2WSpdkyamRAiUpf95QeRk7yANiYKSAQ138XekeI1R/pONTYORgbT7QzhWSf9M5QBySUnT07NaeC43xswnSttWLRaWiF96DC7wUD1StYFJZB6w/gUPDtwLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,34 +108,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 07:47:28PM +0100, Matthew Wilcox (Oracle) wrote:
-> This set of patches are separated out from Jane's earlier series.
-> https://lore.kernel.org/linux-mm/20260617172534.1740152-1-jane.chu@oracle.com/
-> 
-> There's enough potentially controversial things in here that I think
-> it's worth considering them by themselves.  First, handling hwpoison
-> in filemap_read().  I want this for shmem as well as for hugetlbfs (a
-> later patchset, maybe).  Second, handling misses in the pagecache as
-> holes rather than opportunities to populate the pagecache.
-> 
-> v1 here: https://lore.kernel.org/linux-mm/20260707181713.208282-1-willy@infradead.org/
-> Sashiko had a lot of valuable feedback on that, and that's all addressed
-> here except for the things that I don't think are relevant.
+On Thu, Jul 9, 2026 at 9:34=E2=80=AFAM Yunzhao Li <yunzhao@cloudflare.com> =
+wrote:
+>
+> > Are you observing any performance impact when enabling it
+> > (e.g. higher fault latencies)?
+>
+> Actually the opposite with this patch. Swap performance is better with th=
+e
+> shrinker enabled:
+>
+>   shrinker=3DY: sync swap overhead 10.3 ms, swap rate ~800/s
+>   shrinker=3DN: sync swap overhead 22.5 ms, swap rate ~1.7K/s
+>
+> Per-swap latency is about the same (~30 =C2=B5s P99 both ways), but
+> with shrinker=3DN there's roughly 2x more swap activity. I think
+> the extra 16 GiB of free RAM from the shrinker just means less
+> memory pressure overall, so fewer pages need to be swapped in.
+> The shrinker seems to do a good job picking entries that don't
+> get faulted back in under our Prod environment.
 
-Well, Sashiko pointed out a few different things this time.  Will noodle
-on them and produce a v3:
+Yeah the per-fault latency is exactly what I was looking for. Seems
+like most of the faults are not faulting in the pages written back to
+disk, nice.
 
-https://sashiko.dev/#/patchset/20260709184740.1286561-1-willy%40infradead.org
+Would you be able to take a stab at eliminating the flushes as I
+suggested above as an alternative?
 
-The only one I think is invalid is:
-
-: Does returning 0 here with an empty batch cause an infinite loop in
-: filemap_splice_read()?
-
-No, it doesn't, because we don't call splice_read for hugetlbfs.
-
-The rest all seem like legitimate concerns.  If anyone spots anything
-else, let me know.  And really what I want from humans is higher level
-feedback like "This is the wrong way to handle hwpoison, it should be
-done inside copy_page_to_iter()".
+(Also in general, please avoid top-posting and respond inline:
+https://subspace.kernel.org/etiquette.html#do-not-top-post-when-replying)
 
