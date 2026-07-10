@@ -4,95 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 251B9C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 23:04:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC856C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 23:19:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4B486B00AC; Fri, 10 Jul 2026 19:04:22 -0400 (EDT)
+	id AE6BA6B00A4; Fri, 10 Jul 2026 19:19:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C21F56B00AD; Fri, 10 Jul 2026 19:04:22 -0400 (EDT)
+	id ABE116B00A6; Fri, 10 Jul 2026 19:19:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B61EA6B00B1; Fri, 10 Jul 2026 19:04:22 -0400 (EDT)
+	id 9FB2A6B00A7; Fri, 10 Jul 2026 19:19:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 84E7F6B00AC
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:04:22 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0A9E01405D1
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 23:04:22 +0000 (UTC)
-X-FDA: 84974397564.01.92B184F
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 585A3C000C
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 23:04:20 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf28.hostedemail.com: domain of 3c3pRagkbAAg067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3c3pRagkbAAg067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7C8CF6B00A4
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:19:38 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1188C1C8DF7
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 23:19:38 +0000 (UTC)
+X-FDA: 84974436036.08.4B0AD72
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5D8401C0002
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 23:19:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kRzBIAxX;
+	spf=pass (imf21.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783725576;
+	b=ocZtrlaCKQHmfjTNhOau7qVTG2jzOF4jTmRE/bvQ763Jfe1zBKGAME8wRSac4DMVdv6GZ+
+	eQXdvhcwDP2CDp5J9oiVqR1YAnNihyU/A0ilaSGQho2DEay3mfCnP+Rx9/zkO8Q/hdSr6q
+	0bq57omILZCBVDpcZBUZzpaxMjr0FDo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kRzBIAxX;
+	spf=pass (imf21.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783724660;
+	s=arc-20220608; t=1783725576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=PILKuP1baRMrI40srAIIZX6vgxgjZMMRu2N2qYBgI64=;
-	b=zqZxLePES0Ym4OmoAMVURDi+3rHfB+EJi4DoMammdM4xjzVPHdgmAtoUBzrfAQophFXdaR
-	OGSGDG08JRXKtIgHwz+G4YSvC9a7/tR6lLaXNkPCysPifZO7YV4WcWwOzF4GYGAK0Yi0do
-	j6QXeueHAU7nvzVm4+AYqAC5Rnxjdpc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf28.hostedemail.com: domain of 3c3pRagkbAAg067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3c3pRagkbAAg067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783724660;
-	b=S9Q60psgYMWTB7WLk4SwAziWHUHhMsB6QvCiqD9fsS/MVWkghAxsDnaCiWM4eMUunK63S7
-	rFpYtB42Sd3obLdbZ1hW+TfAvXWWTgRhGRM1EZNoMK1xZjuaRT14rW1mYisVoutJOaS64G
-	FhOd76zbkH8OEzwFvszX2krhSHV4F/8=
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7eb64224fd2so2134662a34.0
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 16:04:20 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=mu6H5cxyF3N3ShBbole+6JVO+Fftq+/N3BhrSBcvHHk=;
+	b=g5v4c0UQJJdwB8PKWKF/FLqgeVMuGhPEPxPeejEOGCGa2i7IzN4T/vuzZ22uMX8FpX+Wlu
+	hzqZ3QcjAqxv4jrzZwyDUrZYDp646emmJJnMfSEEJmqD6S1nNj/j4LIyjXpV9KuJYiDeMR
+	SPP8fYEIpanrHMn2fMYWEKnx1REtIIk=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-493f140ca8eso8883435e9.1
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 16:19:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783725575; x=1784330375; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mu6H5cxyF3N3ShBbole+6JVO+Fftq+/N3BhrSBcvHHk=;
+        b=kRzBIAxXd4lyRKRsiq/8GeuoRn69guo4psZPfNX6De7n6yA77cgfpWHOg2NxjnR8gl
+         yseUzgSnWx3pPNiBYw8UKIPQWvrgW/ZO3gu7zMGBg2Wpn4t141aHOa2QpihTab/zumVD
+         hFxKZkDYCiqHuGD6eoFjbpgN5vnP9e1YolN8ODLhdvhF3NtzF/dVUILMmudUh3ei5Aq+
+         GTng8H1mD8cxNdAeAsN/SFrn2xHyywh2ZPk+aEdD7TWVHbYLA4f2R/yBJTAfwYuTOLqb
+         BbohpOl2EX4o80BZ+wsW1oYs1SALqjVEg0IO/43G+11UYiLzM5npNnfS73ulB7gQ3DJW
+         qCLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783724659; x=1784329459;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=PILKuP1baRMrI40srAIIZX6vgxgjZMMRu2N2qYBgI64=;
-        b=sYmLAoWJiqfETGOfaimcaH0V5/CZIj9JQrxgaF1o4yNVjh582zaQIV/42HdrkCcsOE
-         pZqgrXd+cLW7HQpKU7VoGYuuFkP9bvFGagZ+LU+jQxmkAoXijynk8JV71dHZliVf+6DB
-         9vlHorkQrG1/F8w5xRZ9Q+aqA59uVa4Wy4GMMMFmeJzNIzetEj44VP8Ptt4F3KAL/U0M
-         bXLMsfpLlNZvUh950WFS8G8kuDAoOgOsDvxeY038RGDE49FOvplnlXxxXAr+yRCGXyi9
-         MWBm1zcIHkntKcivYMx5rT2RBqLIOrvcjrWuW/Gli2T2yHkklQlrYor96pPwEAz6tzsM
-         DdgQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+QB1c4p22T5vcScGN16i96ncxzk/RACQ4URJyDKyU7gzjKmtZsRegoxFQF4PKsNsJO9gwtlyJI0Q==@kvack.org
-X-Gm-Message-State: AOJu0YzK4Qr5rPN9S8QDDd9mKnDuMr9o2uqTszx0/HSrqVxoNhh5r3mr
-	OiEYW2RWptp1QOD3g+BHXKWcY9scRPHvaTK7EuIb029dEVdF7z4ejqWUFDSp9/pvZw/z7Asqq1u
-	SjFvCNFzn9CMxRl2CeQMgvn4TnYc8jNFJeEXA1sgk4rykoxOSderM/11mxkI=
+        d=1e100.net; s=20251104; t=1783725575; x=1784330375;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mu6H5cxyF3N3ShBbole+6JVO+Fftq+/N3BhrSBcvHHk=;
+        b=sw/+6ASDMl4R/pKt1I2WD1gh7Ltj8rtsFYvypNvpa0laD/MxvCRxu2vNvvBCj6o5Jl
+         438j/lAvf8+Gce1tM684aKyks/Jn40i0hdv1zfFlIJKm5GeuYjN4s64IhCgbmZ1k7qLA
+         eDQecyjWjEkoQk1Y8YFHTUjHRdU74hfGRHUK5RlrMpUKwcAIhQJoB4+iYLKz8m8xhjCA
+         B4OWC+5IxbXMvQ/fAtRRNXwQ9MNiWXBVPEM//UUs/HsmUZyAL+3zTHfaGiXL7pYkugNL
+         /YCDZuQsFKSiUrEvbGLTigXYIq1e6jp0RT8ZW0GPXEc+GBCNTmQtRpCT5n/iE0OAmqOK
+         kA6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RoYYMM8V2H+WkC2moPdd1BostCSz8V4Jp2sFrFFVlMksvzJCAZLxtPcocVBELRKlc4cdiaYfLiQqg==@kvack.org
+X-Gm-Message-State: AOJu0YwymvVwH2eekdEjoY74PZ0odpxuTjfe37Ug32FIzCeVf5R4b6Yg
+	Ac59OYqXesaL/VOCMyM+vgLSdzFkqeaOGgYG3PkCN7yVZebI9wyZ9MRz
+X-Gm-Gg: AfdE7cliKy/a0ALeZAmqcKpbEV8dRO9yTkz4KIM3MFp9mXOxsPa+tYNBweWCn9Hed0s
+	MDfw3QEMNjgCkt7/EdcQOcf2VnUNYqdqnKEgmpdDXkFzELjgdFZev+Rgcs0PzzUoOXtmdcfA1rq
+	kqARwP5oXD3p/a1BxVkVYK2A16J17ONICCEpW61NQo6twft5R0PkuNmmG2TKBjjyAadXnfiQBwx
+	BTtHAZ2K2VpxaMUnC/lCLO5oX/2lzktZB7oQspymAGsrUGKuz5AKSZ03mTZxFmhIDU+6f4SLrA+
+	qoLQWLg+tSz/J8bPGkzHaRvPH+KaPMxR1JhQ5Hrj7yZ9fTc46JgIZ31gPN5XN3OdkCmyNDz2qiw
+	T+gDEZlrs1W8R8zDi2/77DSX7Gr/s5Sw+Om2nwEMKb8Tp0L0t8ckxez9oRwrop/hb7dqfWnzSMx
+	KpcOYac1kfwr0=
+X-Received: by 2002:a05:600c:3b07:b0:493:f807:1a79 with SMTP id 5b1f17b1804b1-493f882b042mr6140015e9.27.1783725574653;
+        Fri, 10 Jul 2026 16:19:34 -0700 (PDT)
+Received: from user ([197.46.176.74])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493eb6f3c42sm171727565e9.1.2026.07.10.16.19.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 16:19:34 -0700 (PDT)
+From: yahia <yahia.a.abdrabou@gmail.com>
+To: willy@infradead.org,
+	jack@suse.cz,
+	akpm@linux-foundation.org
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	yahia ahmed <yahia.a.abdrabou@gmail.com>
+Subject: [PATCH] mm: truncate: exit on empty batches in truncate_folio_batch_exceptionals()
+Date: Sat, 11 Jul 2026 02:19:30 +0300
+Message-ID: <20260710231930.93427-1-yahia.a.abdrabou@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c3f2:b0:4a3:58a6:8a2f with SMTP id
- 5614622812f47-4a42af2782cmr764717b6e.33.1783724659442; Fri, 10 Jul 2026
- 16:04:19 -0700 (PDT)
-Date: Fri, 10 Jul 2026 16:04:19 -0700
-In-Reply-To: <20260709184740.1286561-1-willy@infradead.org>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a517a73.278cdcd2.e885.0009.GAE@google.com>
-Subject: [syzbot ci] Re: Use generic_file_read_iter() in hugetlbfs
-From: syzbot ci <syzbot+ci26aa0fb7896cb4c6@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, christian@brauner.io, david@kernel.org, 
-	jack@suse.cz, jane.chu@oracle.com, linmiaohe@huawei.com, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev, 
-	nao.horiguchi@gmail.com, osalvador@suse.de, willy@infradead.org
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: pfnyc7xkmgiuuhxuhxcgw115a4psgymt
-X-Rspamd-Queue-Id: 585A3C000C
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783724660-267666
-X-HE-Meta: U2FsdGVkX1+yNScHkTl8KSzzFSuSu4DPLcMii4IVa90/w+zXxwueAyepj5EOgjliORqSKfcTtfBURPYfaFZ3oNQG4gRU3yF2FtL9cIyYkr36kjNlT20CJ+NkWGPq3G5ikLCCybzwHHsr+U3Iv8eJg6Au8bi7pFb05Ub/eHyuFXsGhql93MW4e2kKugVRb9qVyecKijSGwocjGEC+BSVk9MJtxNPGh6OddwSgphkKhozl9NWyD9pAeLVW/cGzl/1NnfEFXATUAXDk8yaeFTRXXeK8XpkpCeT1MQAsEszMfRLN4axFAhy/OW5t1eICL7scOxvY8VjP4FBxcmLZydvE64dbzlAyhZFLTfJTaDB4xxwH8zFKvkJfd4u4KVNjqaMxFF2/z2JpiTmnyJt+LlSDVb25Ag0QfqMwZnTkKSkXacYN/4rX+YGVoQJL13Gh76LN5yjio868JsVYHttWbDyyDLdCpC9L2BMZ4UmFPtxedD0rdnIbdh5UtQM2pb1L+Oj3oqNX9Aw8gVS2OW6JuiUnmd30ZtS3ideIjiqaBcdGuILGYi1p2mZ68lyA/QxcN1nSXlfsHD8KpBCb9/sfTbGcpqhzl5YLI3hfZvqG7qaF0DMkZtAYfWdHCCT2lfPY0MeDaZmcApd9CuQoTJ+j1QYHrsZVHxrRwk1G6Z94MEY5jllWeeH5ADABFf8XAr4mKwTfT0M+SIM6M9mA2QOLFJX57XeUdcgDqlTinZz6c1u6bU4k4yASVtLNgblJYYWEkbqKdluVWdUWZje+EvBl7dw7yKWSTU89RSzca7tOvz8WBZQdA5yFUkGXcf+xjAwUGF0G0iN+001nBdrngZ7rmgg+zTlO7QFmM2ThxwcpTGK3J3QEW28M3+drjEbFku8eWMy6hVGV6Vf7Y4oMHmoQAtCLMTyknWpuvYqUGGj+akfbqFGdRj70jCxgtCoYmRxc8nPKVBw2UnxpFsBGKakSkQI
- 0r2x3MFc
- VUTI29TzSxhnx7SwH1ta8FLqORmwCc1mxm9iVvXuUYFTiNTNuRBmgPLpskqUFq7WB42hDzs/mLTA3xqaoxVuOs65bV4UI+xn/ycLSLo8+21YltkAAd1oDiHFgtuM5Cs0ONIz2N7UVdMfL0wx2kkwNUk3UPJQd5wTb4PecHJMTrOY2KKFhdiXjwTlERvXp5SzCL6WNhGFmlzX//2796x2+9swZEUx3vyor6ZWzmTgQ1ZylBN4Njs09W/xYEkY1F7MXwpQaD5BONnzbrIByEYkWpDeeyABRI2HFyRwCBjqr6unqo/B93TwzJwuJsVJ8fFwSmCs9O3Om9yaTG6vNvDVcMAT9r9UJBrJ8cvlPKsO2tnTMWpSOcCLu6Wt4yvzq1vjz4ja3FbNwLqNpaz032ZusSP+r38KpT811h7APSPhPeYrFjgK48cBNauHsY7pioeQf/YLHhrWehHroFjPOBnRnEoGdwMxQvKo+9Gek3yKab/G765dBK7V3Jc1W0b3HsjpfHZgG5OZkqmXv9fWEQjIAM91ZL1QFJRLhlCwE2h0SWSNXwDA3Ro3BONAj99c5xW3mZmiiQTVur+fgQkCnUx6lcHKjp4WEawBTdAEQ06kiwk+TyZ46YWG7aqujSyPPClXNmk/lOZdOEUsfwmcbYlgHrisHEMPUa5tGyGExUs4ZgdUnOk2QTG7H2bLQCJQikOXtGqQ/fDQ3yRjmBBEgabLLAvlzPuPwTVqNXFBhjZjRDjLdmoGjCEFhnqa6MqlBo/EHXvPmqXkh7Az/03NaiKt8RuG38buTybPEKfskKpvz4wlMSVzttzB+eSiEUEWXWAckec3r1xrWU71/Y/B5BJwZsEBwENclr5Pwz0JIMLG1vzkUsK8q4um0+aGRHwMEyZPCscAhxAxk7DwDs0G9M7syIOf6FZQpH5/8k70+ZaIh+gHues0Ffb8TtsXYzqqFXyljejtmZ6BNbxGgsWXFX7cFQP3cP1/X
- RWZ9Mgny
- 7x3ogL0SrhbMqBGie+OFnQX0z1J3Woj+LJzS3Tjn+xT7iINUsYZcQMMx4RpY8SxuKN/3BWdiO1FHZ/EvhdDdSK8Nbe+/4hTJ
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5D8401C0002
+X-Stat-Signature: gt9xz8ke7tn5j66e5a1n15jxazongb47
+X-HE-Tag: 1783725576-878688
+X-HE-Meta: U2FsdGVkX1/HHCqB5t8jiwtKlQiA2BfkYlTo2BSjhOcFvaPNaBQA1aIZa4JsDPF4hRWi7GVaUNzAuXJn2INXVyLgwu3lhJ+j/Nxpqp2Zf25Wjf+wCNOjQVXNjI4rVs3KFmQgimEg9sQU+GdclfbD9NFyzW6sokKH29s8+PXcKQLXnOcCR0m6URt3DNSoTQf7gJ5+gq/iRLF/DxhzEr5zU2f+v0qX2oMKGR2gPAmkvuOYLGqbYYagsQ9ApkepPylI0UkbRlyLDNJEpxzzjzTA61/qDupEtW5Y5OL4JlPI1bXixd72fCCuhytH1py2Y7qumLIqFpD5coT9E3AqCZ5YROTLK+HhPHWO2dyTRqGsj3siC3aeY2e5ue4eSvAZFo4V3xbBlf5xuWomxs5SnOu9Lv6V7SpjlysaDRF/cK/FYNPkZQBGRTNwEATSlJdeKEj/sRNXenCPEHsp4ApmiwXH1RIH8YZqsTZtoxuFe8SJ0n2ruDajnOEELr1sVyaEIZHjgf7KOq0N3fj8w47qVrwyP40BMhZ+qidLMyj0+jZlox228JspzvFvywxuRnfJ8DGaPXaI21hRvQWMhKA0p1lsF1xcSMapeuw+t7+L5muDdqIAvbc/nxrYodOCoQXSINcoEOLoblEr8Rq6iRL3v0+RQVx2WU/5GQbtdKwbg3BCiaYHnb2hU7Ar6valaHAZtG4pyEIgryjIhQ7bfZLIERndk5a3tdrz6zTKCRznmj+bO494tlWE/U1pu3ip/7l2aX5Q3GddKPvPRa+QnDq9ek/SkuUZZBvezwvjbSbDqn74kjC1ZktdV0yCajFSkD4dmU/x4loxwZOZMtTRPci0zTQZXlphPtFKkEgqpR1rH2ykIEqvnL8ltJWm+07j7+Am6V7p6Eb0sunZYp+gCYhNTzVNHcCfMytQMH/ZeMKhkKxpoV2J/M5S8oZWg+31R9RfdwtlqbXU/Cb67IxW8X05jkQ
+ OB1qaFvp
+ rgA12XgA3iAuy2+cgPg0n6xWr5MOls07Nu6bbTK7Fk5lEgsPDf7wuOAWLSwyYWfsbRAh2ap142ltkIBt7Uu54cmt28eSWyVBHwO4YUVGVDuRhcBIS58XlazFsCTPOppvMT5RDmPmAm2UzbdqP/NelMm6EQOS/7QQyFYVbGvxUzWnmXHbtsyL7PzdhdukemQCtqzk0efIu/E7jbMY6JGs69eRSWClrThRzEMxYhhAqDtorjgBcXBheEnslZmWEvfH8Lhd6FnItoVTxA1UIgog1Nb7f6iQqzzFXvZDQs/nxAN9EyR9sGWcde+qGRKQL+tFVOLVDpD2MzrUR7txXCWPWhlUpIstWd4RAMYstzM3x9OxpXPFNHTEVQ/dm8KjpOIwCO85OYsNnWNsO9blqfzaLFUCfloGVxgLyLoXCZ1OFe6jzBl+9ZMsWRINvMIRS23wyOk7K2UYieBtGX5MFY8ViO14cVHgEdhhTVw0Jabj9YGEek1ccc6nTEQOf71NatJRnA7pKHQWruB3865B1gudowhkONtAcLYkD1SYmxi7MT1M8kvjQOVM8ilNdYw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,114 +117,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+From: yahia ahmed <yahia.a.abdrabou@gmail.com>
 
-[v2] Use generic_file_read_iter() in hugetlbfs
-https://lore.kernel.org/all/20260709184740.1286561-1-willy@infradead.org
-* [PATCH v2 01/10] mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
-* [PATCH v2 02/10] hugetlb: Mark some function arguments as const
-* [PATCH v2 03/10] filemap: Remove checks in mapping_set_folio_order_range()
-* [PATCH v2 04/10] hugetlb: Set mapping folio order
-* [PATCH v2 05/10] memory-failure: Remove raw_hwp_list_head()
-* [PATCH v2 06/10] memory-failure: Prevent UAF in raw_hwp_page list
-* [PATCH v2 07/10] mm: Handle hugetlb correctly in is_page_hwpoison()
-* [PATCH v2 08/10] filemap: Add hwpoison handling to filemap_read()
-* [PATCH v2 09/10] filemap: Add support for authoritative mappings
-* [PATCH v2 10/10] hugetlb: replace hugetlbfs_read_iter() with generic_file_read_iter()
+In truncate_folio_batch_exceptionals(), a loop scans for a shadow
+entry via xa_is_value(), However, most batches sent contain valid
+pages that don't require exceptional truncation.
 
-and found the following issue:
-BUG: unable to handle kernel NULL pointer dereference in filemap_read_folio
+When a batch is empty (nr <= 0), the loop and the following check
+are redundant, adding an early check like if (nr <= 0) allows exiting
+the function before executing any loop or redundant if.
 
-Full report is available here:
-https://ci.syzbot.org/series/35ead019-1e81-4d15-8801-8ff11d9c959b
+In benchmarking, truncating 1000 files went from an initial 0.77
+seconds to 0.76 seconds.
 
-***
-
-BUG: unable to handle kernel NULL pointer dereference in filemap_read_folio
-
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      dc59e4fea9d83f03bad6bddf3fa2e52491777482
-arch:      amd64
-compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
-config:    https://ci.syzbot.org/builds/fedb89e4-11ba-4995-927f-a51101829a59/config
-syz repro: https://ci.syzbot.org/findings/7a0cb565-4340-4daf-8de2-06f5b1d2af93/syz_repro
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-#PF: supervisor instruction fetch in kernel mode
-#PF: error_code(0x0010) - not-present page
-PGD 8000000117bc9067 P4D 8000000117bc9067 PUD 0 
-Oops: Oops: 0010 [#1] SMP KASAN PTI
-CPU: 0 UID: 0 PID: 5840 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:0x0
-Code: Unable to access opcode bytes at 0xffffffffffffffd6.
-RSP: 0018:ffffc900035eebf8 EFLAGS: 00010293
-RAX: ffffffff82063559 RBX: 1ffff920006bdd84 RCX: ffff88810ba18000
-RDX: 0000000000000000 RSI: ffffea0000948000 RDI: ffff88810139d200
-RBP: ffffc900035eecb0 R08: ffffea0000948007 R09: 1ffffd4000129000
-R10: dffffc0000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 1ffffd4000129000 R14: ffffea0000948000 R15: 1ffffd4000129001
-FS:  00007f2e39ef46c0(0000) GS:ffff88818dc11000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffd6 CR3: 000000011578a000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- filemap_read_folio+0x12c/0x3a0 mm/filemap.c:2512
- filemap_create_folio mm/filemap.c:2650 [inline]
- filemap_get_pages+0xe9a/0x21e0 mm/filemap.c:2714
- filemap_read+0x428/0x1700 mm/filemap.c:2841
- __kernel_read+0x4ca/0x960 fs/read_write.c:532
- integrity_kernel_read+0x89/0xd0 security/integrity/iint.c:28
- ima_calc_file_hash_tfm security/integrity/ima/ima_crypto.c:222 [inline]
- ima_calc_file_hash+0x451/0x890 security/integrity/ima/ima_crypto.c:280
- ima_collect_measurement+0x51b/0xa00 security/integrity/ima/ima_api.c:300
- process_measurement+0x1272/0x1c10 security/integrity/ima/ima_main.c:425
- ima_file_mmap+0x1b0/0x200 security/integrity/ima/ima_main.c:523
- security_mmap_file+0x773/0xa20 security/security.c:2581
- vm_mmap_pgoff+0x134/0x4e0 mm/util.c:575
- ksys_mmap_pgoff+0x57d/0x760 mm/mmap.c:606
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2e38f9ce59
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f2e39ef4028 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
-RAX: ffffffffffffffda RBX: 00007f2e39215fa0 RCX: 00007f2e38f9ce59
-RDX: 0000000000000007 RSI: 0000000000003000 RDI: 0000200000000000
-RBP: 00007f2e39032e6f R08: ffffffffffffffff R09: 0000000000000000
-R10: 0000000000040033 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f2e39216038 R14: 00007f2e39215fa0 R15: 00007ffe3450a298
- </TASK>
-Modules linked in:
-CR2: 0000000000000000
----[ end trace 0000000000000000 ]---
-RIP: 0010:0x0
-Code: Unable to access opcode bytes at 0xffffffffffffffd6.
-RSP: 0018:ffffc900035eebf8 EFLAGS: 00010293
-RAX: ffffffff82063559 RBX: 1ffff920006bdd84 RCX: ffff88810ba18000
-RDX: 0000000000000000 RSI: ffffea0000948000 RDI: ffff88810139d200
-RBP: ffffc900035eecb0 R08: ffffea0000948007 R09: 1ffffd4000129000
-R10: dffffc0000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 1ffffd4000129000 R14: ffffea0000948000 R15: 1ffffd4000129001
-FS:  00007f2e39ef46c0(0000) GS:ffff88818dc11000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffd6 CR3: 000000011578a000 CR4: 00000000000006f0
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+ mm/truncate.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-To test a patch for this bug, please reply with `#syz test`
-(should be on a separate line).
+diff --git a/mm/truncate.c b/mm/truncate.c
+index b58ba940be47..c22803d59bf0 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -69,6 +69,9 @@ static void truncate_folio_batch_exceptionals(struct address_space *mapping,
+ 	if (shmem_mapping(mapping))
+ 		return;
+ 
++	if (likely(nr <= 0))
++		return;
++
+ 	for (j = 0; j < nr; j++)
+ 		if (xa_is_value(fbatch->folios[j]))
+ 			break;
+-- 
+2.55.0
 
-The patch should be attached to the email.
-Note: arguments like custom git repos and branches are not supported.
 
