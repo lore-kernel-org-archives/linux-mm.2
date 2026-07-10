@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92CCEC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:02:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 158ADC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:06:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62AE66B00AE; Fri, 10 Jul 2026 10:02:49 -0400 (EDT)
+	id 067326B00AB; Fri, 10 Jul 2026 10:06:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DBA26B00AF; Fri, 10 Jul 2026 10:02:49 -0400 (EDT)
+	id 017766B00AC; Fri, 10 Jul 2026 10:06:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 518416B00B0; Fri, 10 Jul 2026 10:02:49 -0400 (EDT)
+	id E23C96B00AF; Fri, 10 Jul 2026 10:06:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2864E6B00AE
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:02:49 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 998141204A1
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:02:48 +0000 (UTC)
-X-FDA: 84973032816.17.11C5CB1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E9BA4180002
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:02:46 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVqzTa4s;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BAEFA6B00AB
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:06:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C8FB140477
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:06:19 +0000 (UTC)
+X-FDA: 84973041678.07.3DAC246
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 72CF7A0004
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:06:17 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b="izD/LZLr";
+	spf=pass (imf25.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783692166;
+	s=arc-20220608; t=1783692377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YXRFFkLYVns1/+XFmHFxA02oUx/vG7e6oaudilozWhU=;
-	b=bvadgh/M3H+pc03ak4bCdbAZNVyVVpvjanf7X2I8LaEayxzUoo/uhSWzt+DSFhy4YTgAbw
-	CfxuResf4PDLMHEqa5uKg1pTu/KRufLL8tj6YC2W45HPKYvGrFJqlqzn0lUsBfGYtOZG/z
-	6Ikjh/lWMzTbNVH27G1JAKZyS33yeHY=
+	bh=3zqoMSC9CKLV7T331cHIk+yii31h/xyMfRSAoEynpd8=;
+	b=3Sx2F21RqOOpj8epbKgA/jHyz8Q5via6lbY08LfhTWyR6cedPsWwhovL95w/BYIaUau0xT
+	+/UqP8UbWehSTOgrZdmTyC3UWcdPhmebv3AhGZXOvsQDbOdwVdo4DlbF9YFVPGHan+x89z
+	Qljc1xgfMkizxyOi0EnrmSFySNN49b0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVqzTa4s;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=mit.edu header.s=outgoing header.b="izD/LZLr";
+	spf=pass (imf25.hostedemail.com: domain of tytso@mit.edu designates 18.9.28.11 as permitted sender) smtp.mailfrom=tytso@mit.edu;
+	dmarc=pass (policy=none) header.from=mit.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783692167;
-	b=pDVt0yyufd7MVGOnwpLthgXOONZKbjQAlMVLZ5UeQ07ajzGUd5ugHHZyTwJg3Ei9qAx97I
-	SATjWXWpVQwBKKCZBKTppX9JLMRUh4czqgkng6SdR09ortyuOj9Ui3lajz81uvtF0RHlz4
-	6kl6WhajsLc5hamyiyBweHnr9v9wetk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 45582600C3;
-	Fri, 10 Jul 2026 14:02:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1481F000E9;
-	Fri, 10 Jul 2026 14:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783692166;
-	bh=YXRFFkLYVns1/+XFmHFxA02oUx/vG7e6oaudilozWhU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NVqzTa4sCRa2i+lQ20ttLl8+DYSA5pV41sI1EMXc8DLGzL0+p9SAXYy7+73NBq/gY
-	 s79VGcmES1x4l0YI4xlc9XoQwwVpnHGEvCXnUW/qNozPSdTft1SVFzrQhLe7Rx4ZLj
-	 R/majU9cH8n9+ILjd04KtELbscU5sfIaSR8A7aL9gOWkk7G6WyydJOSk6tqRC5N5hM
-	 jfL8I0lfhjBhLG2evyMEoyptCl1EONDwAL2BekQDGtZiRxFZnWMd89N/Nz9+uYd4mU
-	 R3Hkgx4EXmbPdFj1e92mE5D7jPM81FV8vTEpo+WE977Iy4N5e+S+ky/zWJ8GsJAoWi
-	 tKEtWZ2ufe6FA==
-From: SJ Park <sj@kernel.org>
-To: Song Hu <husong@kylinos.cn>
-Cc: SJ Park <sj@kernel.org>,
-	akpm@linux-foundation.org,
-	shu17az@gmail.com,
-	jiayuan.chen@shopee.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/damon/tests/core-kunit: test damon_nr_accesses_mvsum()
-Date: Fri, 10 Jul 2026 07:02:37 -0700
-Message-ID: <20260710140238.24103-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260710041530.557455-1-husong@kylinos.cn>
-References: 
+	t=1783692377;
+	b=zHUlybzzGJLUX486sohCXwfiJ2vAFgSYnG/BL37QaVMqdfCo1F89AfWLJ8cB3/Sv+vWQ+m
+	OZ3et8TaJyjQ1+RUol0dzuV1StBKSdlE0qKTRt4AxiCUjDOajQ54ZMY8CvnSClwldepSvl
+	hORChsIsGCBTjJf57O1qxPWE/cnt8JY=
+Received: from macsyma.thunk.org ([151.240.45.41])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 66AE660J028346
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jul 2026 10:06:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1783692370; bh=3zqoMSC9CKLV7T331cHIk+yii31h/xyMfRSAoEynpd8=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=izD/LZLrNcYJlmA98WB7rJMHDCpuwZoblZaecWzVR7nBh+GXIC4umyXWcURJwfi0O
+	 6WWuP6xzMThrqr7JfhOR6kog63mYv5R4jV/p/+FTxd/4cu8RnmuWtHW12s9koFEwjN
+	 YNh9Mrl01WjMvJJVPmGUR8ZzA4vN3J2OXvT+D/XDES2ClRO/+8O7i1TBRLW9PytlAH
+	 YPkL8fis/pizDGNdhWCqoRPSY3m4lVzwbl/SiRkbm+sBBDmC3kxya1BQJL3D5TtdcE
+	 bAGEMPy20l/7WMYAt5Vep+DWJ1CNX7U3ee2Bs2hB3d3YpsZue3iv3C8RQz28oy/iwR
+	 L9tXi20wtyTuA==
+Received: by macsyma.thunk.org (Postfix, from userid 15806)
+	id 09B1B9552B1; Fri, 10 Jul 2026 10:06:06 -0400 (EDT)
+Date: Fri, 10 Jul 2026 10:06:05 -0400
+From: "Theodore Tso" <tytso@mit.edu>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Longxing Li <coregee2000@gmail.com>, akpm@linux-foundation.org,
+        linux-ext4@vger.kernel.org, adilger.kernel@dilger.ca,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ext4: fix use-after-free in ext4 delayed I/O completion
+Message-ID: <alD7q_AUlNaUwAup@mit.edu>
+References: <20260709075613.854-1-coregee2000@gmail.com>
+ <ak-mQ2DnbaxIO_WU@casper.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E9BA4180002
-X-Stat-Signature: hod1spomw4g9pcw8afszu5yfjx1zbxft
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ak-mQ2DnbaxIO_WU@casper.infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783692166-16183
-X-HE-Meta: U2FsdGVkX1+ZZUu9hOTRg/2/y5Qju8v4cI7nqNxYWO80ipjltp007ZuSE6SoeMzfC/myQB15pLy8LVCDZMlXUoGvS3jzBnsBoOa5+eVvNfZOVSVdKq1netfp9/TOKkqh+egb/I1is7J+czQWCRScpOcCTy1WVZSK2zF7lS/jJDZ/U/+os9ZJKvSrUCVlMnlv4idZrGoPI87k8Q87gM2+URNmOJXPmzFNMpA5/s4GY467/ts7N0Ypw9XJZrYATWC9YXBdBhFWBf6mZP05OfS1r1dir3vnyQI6M2iR2CYAcl2PKh3BcDBAXXiC7/O3hsFx9RskDx2kOTvQPj27gfaE1TVURPR5ZJI7CNXAGBLbZTaFdKPddiYT1raBD38y3Vkzdr8mkedzIIR5zEnQqwrr+EbURo+a4F4IZxF0xUQa3Yab/uwQJYShxNohxx/L85BQMTQLw8N3ybsGwYWwyvAhHmZLclnDtAlx5/Ut2L1IelJ3qXA+n6ytMGa/+kkEgSRUNBYtdyAyWY17RXZ1nT1SJnvLN/kYL3SRVMTbd4X/NfGHu81ctKgDiB6MsjIOx6RVUQu8dVGn0d9LTDLs/jKenQqKxk6/nuS/ww0uFq7NH/gE8D8FpuYX9IyeFJFJRJEJfRizDM8nwTob42mOOqkhB+sB6BDB0bI/Jz5VuI4K3h07JH7JMSVdlNM/ll2Ko01FldW3GcrMHbt8tf3qKac+3K4s5+bsTnCSZ4JaILEFj6b+IxYq1OI0wowDonZ4CLc4CxsfSOzmMpUfh41oQHSy6EzLR1Jy3PoQdiVbv+flEcw7ZBqMnxslrFbylXgCk8iQGB8Kqq6PPxmUl6JGyvreWjCsu/Yhn4Ly/LU1l1iu4F3FiMERvPIEmIyZYhmjqTQ1oufwW9CIuQFeulrVqIlaEDs451RvdMCW35/ZcvJn42pKOoMRNRpPqo815YmLZ1WobDrqQCSQyUz+pllih6E
- AysMJTv3
- xndeMzlcDAQ9JRFk/YbGEINHTkiqXHtmK0RO3ZSX/erdB88OrEGW4LiZvFWINEp6zstQg7Az0nDTs/X1EjIrIJ83UdLmLpgcfugeyPxyq6/iDenuEHhkq74MGGYU98RzNFADcWOoUHFy9+z1eXeMtXfaegllze0nj3mhF8bFn1fxvgZi5qUq7UtGlpCNtVEbFl8Enz8tQRb+to9YuvB1iXSqAZKN4A9fzgfz611jBfJribvrp9V6IiNPi2Y6TMaApbg95IahD+d0j/TKWndabG/tXVU12+JXyTpPye4YZIxv9WGM=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 72CF7A0004
+X-Stat-Signature: imdgnxr7moyacwm1omiqr3cjareaz4u8
+X-HE-Tag: 1783692377-517979
+X-HE-Meta: U2FsdGVkX1/CTYXLZDvz/p5W6oM7PUOwlJWC77WSXlvbMVo03hs+kMGwhggwKstwCYsIthRmIMQUVwVpVgB45q1qgbDN93pp31E2eDwsrdGSuImatKBn8YAtwKkhlfJbnVVvFkiG8lTQ/V7iXCiSNrbi4U/nBCJaUsyzPhcz8NJe8p2hMAUCviQiJ1U0lMVKDFR9h4M2VfC3zCVoWSlfmIAq9Jkyq9dFnMLHykfKtu3Ud0AoyZiKBZHOTCjA2wnWFOHMDzBq1rTpyO9C35SNwxevmaOodxeisWVtFuvf6bTGzLaVySGEYNTdH5TQmgCiN/I/emMO47aem+eWe3FJXJRANVpLa7hUL0XBkwPL3vxRJszCfgSWJm8z4W1Ul2bwXFLoneYsk32cvK+xd4eRIBVSJPdpdY84vLD4gGVazqTan+v3ddlH/iymSppCBAAZFmly4rREYGapKr9Rr2ZlweweRrg7d8RiySJ65nS9UVLtRaJYZ1I0aTMoDS1LGAZCw3cFsI7TL7JVPxXv8ueSjVR9FbCP6SzPmaKEIvmFvz88qlq64/As+NKYy0Nnr7VEe+N4eKVvKU0zhKqa/ctSnvFq7O4JOgMsW+wMBIaJJ1rkvaU5RwJFY+iydVmYEDevmgVrFibRKMMWLIKtcX2CdYfhrLvcRpYOrg94Vekn0lBjhTi3EUcTc0oLBv4DzV5SeHy0DLQ9rGI2OrHzTtczzPhlJ5bAkr6DHl87agq3Y9obcuq9070028GZFRed4zvg4RUVOMVKtbw/s+eEtnNUDX1eItvQ3TbLGQumaonHwsncAW2+rT5MZpqagMqoiRXYRXRkAaE37wnxIgnGZIUVqMfP2bdzxo0qxJ/1eUak12eQqSeAsMAI4SBeGL4NcPFCB0YFqi7odgJfi0jk1hNZXCfEhh7y8770MjjO1ChCHy//WC1TFTPbD6JsD2rnoQ6eQqwUjL2YvpB0Dh7YVZv
+ w/Y+hfIU
+ Gzc/UxWlvgzVH5acluL+zTEEcVLp8xwclM8FbjAFgOPnPPFfPB6dGkCngTKBr/2a7S2Hm3b71FTAdjNxXa/OjloZd4UacdXmw1JdCvoZp+b/ctZ5gUE7lPggq1PQyEkaX4BrRozSNoUE3LEne/Uh3iP7u3HU1ZQoQhzxNer/v7lIpa9aoWl8Zl2o6/1y2g0Rt44NMPcn9BBbSm3/iR4zjTz91vg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,63 +95,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 12:15:30 +0800 Song Hu <husong@kylinos.cn> wrote:
-
-> damon_nr_accesses_mvsum() wraps damon_mvsum() with the monitoring
-> intervals of the context to compute the pseudo moving sum of a region's
-> access frequency, with a special case for when the whole aggregation
-> window remains. damon_mvsum() itself is already covered by
-> damon_test_mvsum(), but the wrapper is not.
+On Thu, Jul 09, 2026 at 02:46:43PM -0500, Matthew Wilcox wrote:
 > 
-> Add a table-driven KUnit test that exercises the full-window-remaining
-> boundary (with both reset and not-yet-reset nr_accesses), partially
-> elapsed windows, and the no-window-remaining case.
+> (also if this patch isn't AI slop, it's doing a Really Good Job of
+> pretending to be AI slop.  Why would you choose 'unsigned short' as
+> the type?)
 
-Nice!  Thank you!
+It's AI slop that didn't even bother to run it by an AI patch quality
+review process such as Sashiko:
 
-> 
-> Signed-off-by: Song Hu <husong@kylinos.cn>
-> ---
->  mm/damon/tests/core-kunit.h | 49 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 49 insertions(+)
-> 
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index 0124f83b39b8..8c030282a638 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-> @@ -683,6 +683,54 @@ static void damon_test_mvsum(struct kunit *test)
->  	}
->  }
->  
-> +/*
-> + * Test damon_nr_accesses_mvsum(), which wraps damon_mvsum() with the monitoring
+- [High] Skipping `queue_work()` when `igrab()` fails causes a permanent deadlock
+during inode eviction by stranding pages in writeback state.
+- [High] A data race and logical flaw with the 1-bit `i_rsv_need_iput` flag causes
+permanent inode reference leaks during concurrent I/O completions.
 
-Please wrap lines [1] for 80 columns limit.
+Syzbot also reported the inconsistent igrab state issue.  So it's AI
+slop that wasted resources both with Shashiko and Syzbot....
 
-> + * intervals of the context.  With a sample interval of 1 and an aggregation
-> + * interval of 10, an aggregation window is 10 sample intervals long.  Each row
-> + * below specifies the passed sample intervals, the next aggregation time in
-> + * sample intervals, the current and last nr_accesses of a region, and the
-> + * expected return value.
-> + */
-> +static void damon_test_nr_accesses_mvsum(struct kunit *test)
-> +{
-> +	unsigned long input_expects[] = {
-> +		/* passed, next_aggr, nr_accesses, last_nr_accesses, expect */
-> +		0, 10, 5, 3, 3,		/* bp=10000: unreset nr_accesses ignored */
+Longxing Li, whether or not this is AI slop, this patch will tend to
+cause me to distrust any future code submissions form you.  I suggest
+that you test patches and look at the code much more carefully before
+sending, if you don't want to have a bad reputation as a patch
+submitter.
 
-I was bit confused what 'bp' means.  Can we just drop 'bp=...:' part from the
-comment?
+Best regards,
 
-Also, let's keep the 80 columns limit.
-
-[...]
-
-Other than those, looks good to me!
-
-[1] https://docs.kernel.org/process/coding-style.html#breaking-long-lines-and-strings
-
-
-Thanks,
-SJ
+					- Ted
 
