@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EACE4C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 12:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7F52C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 12:09:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F18E16B0092; Fri, 10 Jul 2026 08:09:39 -0400 (EDT)
+	id AFB006B0095; Fri, 10 Jul 2026 08:09:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF07E6B0095; Fri, 10 Jul 2026 08:09:39 -0400 (EDT)
+	id AD2F56B0096; Fri, 10 Jul 2026 08:09:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E06966B0096; Fri, 10 Jul 2026 08:09:39 -0400 (EDT)
+	id 9EBB76B0098; Fri, 10 Jul 2026 08:09:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BFFE86B0092
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:09:39 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F2BD1A0405
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:09:39 +0000 (UTC)
-X-FDA: 84972747678.09.6FC5D3D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FA886B0095
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:09:58 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 153788E13E
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:09:58 +0000 (UTC)
+X-FDA: 84972748476.19.88DDF96
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9C7AA40002
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:09:37 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELDUjJY9;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783685377;
-	b=5vGtHH0aUEl++TxyQWN3HNPVAkX0qncN5ZsEvShIGCJsDGlYm2t9jfgdPsehJ4ZZUQ2Dtn
-	mpgBIkhdpwLd7M0XHl5Ng3n6vkt+GoUufK4Cu95gFN4PRXZN1pFpGurAhl7zMZD2tpn82Y
-	CeNMXLVxHA8TE/bCpMgDpv6E3r8+XVo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELDUjJY9;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4918C40007
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:09:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OABe8URE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783685377;
+	s=arc-20220608; t=1783685396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GHyiYyonVSx0Himos07lHVjuF+/oMX3axwRtefrjmbc=;
-	b=sOfyxizz6d9vKhyv4FibintexMl9Bx5mePWUKaDDjpaDzolVOTz5ko/Uaja3jb9F4kDL/Y
-	BXmwdSFvetJ84/Xt63JTXVvZBgNDFkyNVk2MWCmKkJOyNim59zs/jB8A5d96D8NpXiYNTt
-	UY63PD9ADmCyH7hJGjPSnvrzS6PqSVg=
+	bh=2rHI4BKRrXXV3UNk+8yza2eWB7NJmGYuyDD3S0+ngBs=;
+	b=eHeRDLgjsmuFo2VLTZ4IMtbFaKpnkUR/LvMiKizWuebySTZm6qocUC8pcvsKbbInqfNRPN
+	7WvrqfCMoh9lj2Smh+eX9tC8N17jwdg7kQCdd8tE4Q1e7uIz9olnzE0ymLr3OP+j3hIckI
+	5+yuJDgqFFGSw0TWvOVGwayB5Z9RhRA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OABe8URE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783685396;
+	b=2hBRmVgoJfw92WD3gDKRV+S7g8BR2AdXA/W3UOmHTJx2DZDyPITpMcqqyks8Fe7oIKiOxX
+	/6xq76KmzWHJVPG/nBsixRvLUZ+U+03aQ28MCRorDVfs83hlmY4LC04BqeTimZO+vvOSWP
+	Hu8ZhKW4hv8gdf0HAQiPEOaxo9hPn/g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B88EE42E62;
-	Fri, 10 Jul 2026 12:09:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D961F000E9;
-	Fri, 10 Jul 2026 12:09:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8950642E62;
+	Fri, 10 Jul 2026 12:09:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D2C1F00A3D;
+	Fri, 10 Jul 2026 12:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783685376;
-	bh=GHyiYyonVSx0Himos07lHVjuF+/oMX3axwRtefrjmbc=;
+	s=k20260515; t=1783685395;
+	bh=2rHI4BKRrXXV3UNk+8yza2eWB7NJmGYuyDD3S0+ngBs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ELDUjJY9yklISNd1G3rLfD6bcQn56TF7LUXC5wXV+cRcshH0+no7o1EJnIiMgKCKe
-	 4ABJgkXpOCuZc8gQiSay5kaQ7K3rOUvW85Ii9ThgI3fbxhlgM3zGos8kWnhnSifPtW
-	 vYRv6Len39tiGQM6Nsp4nc3txes6wdPsUCZVCADhrjQxhb7Jxohaibwiz+XnEC4ZTA
-	 q7M5m6JQiPpMGlicdlKZ3qZH+3UBZ5AO+l5gepvqmEzOqcd1y0KkL3BCxtVIch4oWK
-	 sDOw1ZSq3GeTc4S55plPwK1YKptYnUD0YOMPAsxSlmLjSnGT1mgmOgQ13QzAjQS/uW
-	 u1iTY8ZSSzcTw==
-Message-ID: <a41c58a8-9d5a-4022-ad9a-1995827b6da7@kernel.org>
-Date: Fri, 10 Jul 2026 14:09:32 +0200
+	b=OABe8UREGE+tu5QrOf1Xr1N4vokLqMZTRPXNhnjIJhFPfNpN0H4rziG2jVMjuxmK/
+	 ir8pnUrAcuGbW5qpXIazZaO/b9auhJnEquCXjMLWG4ziRC9n53juoVSfjpGG/7mDUX
+	 OVB4NzamT0HwtfaAxVj3PGzLDMLSGoUtbcWwxYuUPpDevfCYklJ4dt6S8Pw1ctwk78
+	 XjcJ8dk4XqNHHDc+pXsVLjGozJLnXL6DIokAo6DUxE+Nd37GR8Qz6eRhmnszVQW4O2
+	 EMnIWyvn8aLP1DDmob/BDwRIMGqj50qWMTuoMEmOhIj+hytlzkxFBxCKJHlRStvGnt
+	 oMAFODvQmhLeA==
+Message-ID: <5bbfac93-6cbd-4950-a33a-ae5a816d2c3b@kernel.org>
+Date: Fri, 10 Jul 2026 14:09:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] mm: mincore: replace __get_free_page() with
- kmalloc()
+Subject: Re: [PATCH v2 3/5] mm: mincore: remove xa_is_value() in
+ mincore_swap()
 To: Kefeng Wang <wangkefeng.wang@huawei.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org, "Liam R . Howlett" <liam@infradead.org>,
@@ -77,7 +77,7 @@ Cc: linux-mm@kvack.org, "Liam R . Howlett" <liam@infradead.org>,
  Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
  Zi Yan <ziy@nvidia.com>
 References: <20260710120052.103886-1-wangkefeng.wang@huawei.com>
- <20260710120052.103886-3-wangkefeng.wang@huawei.com>
+ <20260710120052.103886-4-wangkefeng.wang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260710120052.103886-3-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260710120052.103886-4-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4918C40007
+X-Stat-Signature: 5k1cexz9f8aqzuugocjw7ced5d75rzoq
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9C7AA40002
-X-Stat-Signature: npaecfsnrh8u196q31ujdjht86bmhm6z
-X-HE-Tag: 1783685377-221535
-X-HE-Meta: U2FsdGVkX181h4+b72d71SNhzoxUpR9aObzveGvOASdMx2xJSls/QflkCrtCcdrtGXOZSkoI10QwKnU9fMKz767BAAPvJjdWwpXcwLTuCC22eV9jkiDTqZC+A/jOtBGW54Fm3jDhcDWUpjMBe6Ts7RK/RngfhhOuU4arfSJz2Xw44ZRnIGU+QbTC4/NIYbyTfceyOxrr4IjKbMDVSLiqVwIx6BIPTvGqRdqnBfQGgYFchjzEdVIplabsOIsH1o9AohL3JCe3Dy3X5Pf6VKckGkVtD3BZq4oK6LkHGRcmPGSzTPldgbioHiryBeYz77/36r84Z7j6qMKCwVL8AWw3Ges70T0lqtIV3hYWRNzIlbaPsD3T0rG/ECt3PKQGzH0kMe/guiBx4ZPHnvPUQrNLsh6kax8RgZK8X5gZJJv/Sl+cjCc9Wq1n4Gr5euCRNIZzyWYeg//M42QLjvDn3CPk31jwUbBcSMI7AXLLM7+EIZx72ZGedcMf3jMO5W56jtAQlvWkmn9QSDsN7s/E1Win6/i/039Hx3qhBt1f1ECXqoeLXd5NKt4/Q3Bj+JAAXrU/oAgoQms7c7E3DU908regbTb0yZsVnlLq/ngk2a+TsDMuFUiqegJrHb9XigcRxAo9HsjOCzgQxqyJgZrM2Ph4LKywp5p1nmZXViOy5D8KVsIbrJ/EEZSB7gxPUM3sxsODBRQfRUpJ18hqufxR5SOjH2ymaAxdI5TRA9wHmWXLQ2UHJuCadoOWJgHFdLq9QSsvYEjjBOo830+Cq2IBdkvCi1JYqOmgY8wG+ZjXBhwoQ5oqTI6lgSBW8r4aHjbyFxPG5UZj4inXHFzpfbPfAdmVBVvCqq7dmjvpys3QgjOnXTuiYXKs6VOfvFIpOGP2PcwKMwuWsclHVOHe80fVcBnvSOG7Tu8cgf9wwuBnNVkP/q3Gbx2vVa6KK5RdA/vcc6PpZByRDY6GvznBgyNYpA9
- YMAcKdh0
- Pw+cM8090UydFLLSqMByRO8p64r9QLZRa+aBIztXGMl2HNJSIh4ju/UL2VV8H6L9sjmKDaONdQbKg9Oiw7pYPeIf6ZA3J7f3G+CL+2tw01WaZarZ/xADP+Y2zN5pXAH9/7xPa5Tw1hgdcYCIkFE59Mnc5w6x3CiibfzP1jBS8yKBqcaE8r8/N7aLsP4GhJx6/+oBwepWUarggWNvZAxhRZsigD1lZ+bVA9CklCfRGOgJLOk3gPBWPQThMOg43TvRmEtqpnQENHLRTVnUDNRvMvdxKAi/8VceTLpFMtZzAeCPfzNX1Wm0KIMlijedO87B4pZ6MGd1HqHdsgH7JXYlMM5Va8PhZIR2XoNuRC8z8tgwGeB/WXFWPA4ysS0tHcCvLVYZDCVpcq2Lff5sKuTiSQFCUGuu1hPV27NMj7jIaV7Px3Pg=
+X-HE-Tag: 1783685396-937650
+X-HE-Meta: U2FsdGVkX18mPdPwM/uEmjbaIcAWCZx0naEBDq/rdFfG0mk54PyxwVhYPHQ0O20OIDG0Lyk4jeWyrCL+HEXamZu2EU+LiGgrjjYO//ptqP9Vy5DB/aHDQVbUUPaF3HcXT5G8BWwfqoX9F2VScwCEMwsO0Vmv7hzNOG69ZA+Bp/k8wBmcJV+kX37aqVYDfgFoNLXb3tdQhrDwfkuSL5OcrpaNkOxhUgVK9VJTpoAP5VqNrbBHv0xZa05kpLm5e0wCTcd14KuuzTEwEYYDu7CI6YvjF/fhnYxfTmljIfrdIkh78Rch0j9kTGA2RHmBY8CHBy0R6TVbZv4miFqL17gruD9ux1jJ2HnFzxbj/XKojvbmW03BAPKLM5XrwBeSLqXou0sGk1g8PcVYIVS3TBiP/reIgg/STejHgjL8tFBK3Tz/tG/RSVE+kNODIfADYSzBjSC7+RFUqTrmZsgZvj308wcVdfAdvC9XHHYF6LVZG0DbfJdF/OW6uQ2nz05IPvvrkpAvfQx20HaKsYJm+lP9Q8AsUKadH5p9t2ewm9g+8g8MlDQlDnbJh2sbYkcUbjEfuxn2ksRz3YtCVeGPTG2Ksfd1yefzEKXcIZqxQtJ0RYw+WMRxp8pC2o6KKjjbyhyvcdi8hPms8RZdlcmwkWLg7EH4qzCXleZobz8BL7wu5op5j+r8rplaFeYf8UodVsFc6qw46MhAUmFUueio4bcl4zhO3vfI5jXAObqOAVyLVsv3kuNGglPGH1SkR1kYvgc4FeuP3GBdXpXnUBdUwt4XTUVvuUGlWTsmw7jxl0n9DREQf1J1typg0rQs4JOFhfEb2qjXde5gYc6YVzLRBCEBMAjOXTSjoeFdTmEv7G4rMuSxSMaH3hgmdWxaJ0fKQaqb8Ixn6PAsiUica6BDLmPQX5w4+hGnE5AbMnSkLRRYbJf6z6qBgQkcjAjObeEQm0fPxzga88vNyurmRYANIsL
+ YkOJ0VTd
+ vEuytlA/YDEHkTA6PZK4x4dZvC3BJewaMBkmGiaPAJPx4i/lQcnOf6bnfNDrq/s1Z65fA5I/o5yoyFq5gGnAJW1bkGiqnisqd+Dp0d3O75aiY3t7bsXEJk1Ct5rN0KSQXkdsFc2y+e74mep/XeN7I3l5+Dx+QRlpkn2D7yCWWGGrUbpr6FUuJUReLCbu9NMfcMUnx2ZRomtJP9yEtgKHmH2iLENDcg+nMNWpMwJ65f0KVYSyagZSGshBlOXp3Y555E5p4zZm9jLILNPmjNa0cXNM051UgIJwAa84s/9Tf1macSJ8jQw7VtcIc5R9dNDu26MmU7Sbxi1bMcIkIWA/kmSGup6Y+iTlwyqTawK4UvQCO5ib02DaF7+xGyOUXBgW5CrvCEYQu/KV9DPJ5HabT5s4pD0lKqUBeVomTq5jjQW7rfZA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,11 +143,12 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/10/26 14:00, Kefeng Wang wrote:
-> Remove ugly casts by using the more natural kmalloc/kfree allocation,
-> also replace GFP_USER(pointless here) with GFP_KERNEL.
+> The swap_cache_get_folio() no longer returns shadow entries, so the
+> xa_is_value() check is unnecessary.
 > 
 > Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
