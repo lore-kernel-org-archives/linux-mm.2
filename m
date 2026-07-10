@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBEC9C44501
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D418C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:27:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 303A66B00A9; Fri, 10 Jul 2026 10:25:44 -0400 (EDT)
+	id 48E606B008C; Fri, 10 Jul 2026 10:27:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 217666B00AB; Fri, 10 Jul 2026 10:25:44 -0400 (EDT)
+	id 465266B0093; Fri, 10 Jul 2026 10:27:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1540B6B00AD; Fri, 10 Jul 2026 10:25:44 -0400 (EDT)
+	id 37B686B00A5; Fri, 10 Jul 2026 10:27:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E8C556B00A9
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:25:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81853140478
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:25:43 +0000 (UTC)
-X-FDA: 84973090566.03.AA579D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id ECAAC8000C
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:25:41 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2BO+ksY;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C2126B008C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:27:21 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD30416963A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:27:20 +0000 (UTC)
+X-FDA: 84973094640.12.C56BBAF
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E02DB40009
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:27:18 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VGzwAx5F;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783693541;
+	s=arc-20220608; t=1783693639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=djPcu0FaAOL3FlpJ1AH3s2+hbsgy3DtsP6zvFCsTW9A=;
-	b=K+raoh392xVOmh/mn0dhElKymQHUAILWT22mkH4L1J6JKHtgCQR6wSgGof0xtjZM/RLSeS
-	8vvZoDRNt2uQfPYCkgtfPB3Y2Xhbvp7EhYMYJFWt5mu6i8EcG8m+XdYUeG9LhM4r/513TN
-	0wqCb2umIUltWcSJGTStAsqXzgjwLME=
+	bh=9FmCT4DwIHwttEcyHwv/ZZbQpIwis/aYjRLRrseNeWs=;
+	b=5TRpsRZzF0uWE8zx6d/HCV5JRmiD1X9d0eu4V3bpTQGcwXBrXNVA8AM0MnunnaMVjMklTR
+	h7cbartl6y6xWut2tuin+b0MIo8MnPvMmilBgjD8WPDPtZu2cHz3Bv5GtKPOXWiljghEvn
+	UVvHB71MTMwqmmfWYz69tezGmqdJhrw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2BO+ksY;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VGzwAx5F;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783693542;
-	b=73K0upIRYB7Fe8Gqr5ViItCAk+0vqSzC+nHJ+QctRQtW49zlGmbf9/T4dH/valeE6ledJN
-	jDWSOMyW8Cr8MU1CPeYeyiM7EUt2e4baf9FV3qhUNDM2mn6zuxTfGLuBNnZrfMs7hgFb1q
-	Zrb7Jr1atcl9cpxpV3nQ8GwdOt6vHIs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D10160052;
-	Fri, 10 Jul 2026 14:25:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B7F1F000E9;
-	Fri, 10 Jul 2026 14:25:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783693541;
-	bh=djPcu0FaAOL3FlpJ1AH3s2+hbsgy3DtsP6zvFCsTW9A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=i2BO+ksYpiBx37gKYrYNHUh2HlF78n89BGtyuZ73Ta2ah83pclTFsjnnd18tnUgE1
-	 CfEg4zYqwCprIe85aRi75RuWGOvj4pWOHdp4RVPGBwdDGxiayiV3pi5kVpJ7bRozsQ
-	 K7XPmGZO89OOJJ4cQxovFRQO5tAHtIRKljH5UaLtuwzn/fhxO91L5Nn0ssxuAQKD13
-	 e+Pm/jk5CkFoxg3iHZOlLDMawkW/D6pO/Kf1TPI6CqHtVK+SOo0KPQfcNcPbiAitDM
-	 /1qVc+q69HTej/99qnjeouENAUVr0gXDpXYyP4mv7zXt9Y7dlDIRcyNs5Q4Yz3JGPa
-	 s3pubU758lSYQ==
-From: SJ Park <sj@kernel.org>
-To: Song Hu <husong@kylinos.cn>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
+	t=1783693639;
+	b=EN62abzJB+YRxdmFJrNC5HJrkphMn8o204gCIHdDTj4tev7JTgbYYxr1HxuxPRLh2Tga9z
+	kCzTuaZdCvVE+psiz9Zi80tquWQhYQhGSO/NftiDMmnfSjQiFtRWzvFJln0f6lDJnI9mvT
+	WP0ODgkI4MIkHOZhVYc0xxae2fZKEbQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783693637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9FmCT4DwIHwttEcyHwv/ZZbQpIwis/aYjRLRrseNeWs=;
+	b=VGzwAx5F9rA1F82TQ32/LNbqmDdW9MBXQgFlolv3tLjzikFryo+koLfd4e11Ri6RX/fEgh
+	1brQBf25j1rYr6dhlXnxihh8ETSbVbLnRofpN7gQktXR2idUV4BRHOEWcxSnpdhtha7tTO
+	B/hXuJPOAPB5A/tIaPSHEyDUkdajXiY=
+From: Usama Arif <usama.arif@linux.dev>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH 4/4] Docs/ABI/damon: document tried_regions probe hits
-Date: Fri, 10 Jul 2026 07:25:31 -0700
-Message-ID: <20260710142532.25200-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260710044737.561102-5-husong@kylinos.cn>
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [PATCH v2 01/10] mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
+Date: Fri, 10 Jul 2026 07:27:09 -0700
+Message-ID: <20260710142710.1067864-1-usama.arif@linux.dev>
+In-Reply-To: <20260709184740.1286561-2-willy@infradead.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: E02DB40009
+X-Stat-Signature: kwdbyeqznwh8qwecdua73x7de11qkxiz
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: ECAAC8000C
-X-Stat-Signature: 6ospih9hxc88prrit5117r4of1njrqe6
-X-HE-Tag: 1783693541-249953
-X-HE-Meta: U2FsdGVkX19OcATL/6I+q/BnOU0nSgXFISa3JEQwvheoNSGwwqomIp4TiD22CCtTKM8eD8BYgNARYgyd7H+UDT9TM8XZ2aaLHaOQjist4S5+aG0+K/64rqsMjNMiaEdmFHEVfi00Q7Mzl3IWsqq4nv/RSAU10QgI0t7afdhQTXJ2pVeUjghnu2mvTEpX11fTBDiH4VaRDdlsYKhVbiLHwu/AcTbD0WdCVWn/thGgGwe3nlbZ829eYA1SeHvOAfax1yxL+F/rgdGZcK0K1yv9/mL3gQ8Jn4nlm1hFnAUNSg9WrnrYsc2pb8I/LOMcs4KId2TMYK69f8hXuUZrFBTugQl/bcHWFG2vqIdA8sZbvdktioYuCrzkjTRvbM8OGgCDxyhuq3rJCfEq/9E21w+ELmoLxfmwrepQnajUEHZzWPQ5y0f5oAWBBa3VckjtGhPDZLDeQ24lnaBoFA1PzYgvc9/TZ26ys9p4o/LJGqT7HTJOdjHmyzA/7MgVOxILlblLS8XZdOzy/vYKpOERZ7513uIlWMNtxPLkxLp/MInVXmdJQp3YqDqXr/FdNVIHjesFcu2pa5Z1oIkPxv1DOuCmXFLGgjmd4RqHr6qdLLoFkoPxhDfUyIkr7seeWPXUqLdyX3lUKEB3wRO/ZmvwM9OPtPJmaz955J6228GBQGQHXuSgFYH6lQEm0d5AzZHx7feJR82lwbjkRw83Ux+mZ4aHclaQxzLWUgtuYspeAVMmQbjWWt1cYomi6tIEEGx0BLGOoY+FmUo5Je/Qb8KUnVql50ba18gE1XTz3dVJJuVJnBx/d2uH4zrIsEzalCiWXi1imJIGN8F7aZJmZoF8chOqfM40Vc7OCgKJ4EDWC49T6oNRLOahmohCo3OZF4cmkm90s+QiTqaFMlbOmz76fvKtO4ZRZj91B7loB4Cr78vJAy3quqdXfJ4SrmClHVBJSE5BNCEka9pnhFGoVg1tR1Y
- RefWhXlk
- nSaNhQe+sGCCPsnNcupaBi+FCAbtEzX5mYaN9wacIIA7L8xV26tLdZy4mtB2GLEA2US3Xt1Gurm5O9hY6eAgalBChf+/0qJN7Pn1UGlxbgD8h5JrYdEKzBB7WSihWkTRYFhHv547qol+PwpqleKyo78b8TfggVIU319WzN5bi6sbcu05HvB/FJ+XAlU4R5+2j0yeY0Bx+HViebkORTsHre/BMYHOBRxua+Mh7VaGwTAJKbJqHR/BFeAehp8Qt8gg+kr6sF1JlJA7TPVa4ZXKfHRUToQ==
+X-HE-Tag: 1783693638-260788
+X-HE-Meta: U2FsdGVkX1/zRFMED5z0kr0ncMmm7KHQJkGn7uvCSjHZhpmax6LHOQaztONyH7Z0sZReCw/jtBbYSCulh7wsYS/Q8hmOeSqGTN6SamyGKP9Idtn08equgW6XsxdfLqZ2UMjF9jYWATEUglt0aQi/l4enJH3IiDnxwRN5ImeWlQw1X/1wvEEOjMJ4pUxotMTwMCJnXL19pUDklgpE9J61sM1mcCnB/v8oD2rN4NGtSOyB3EDUYgUXUEC0HuS10tdvj6c99DzxEJdHtiVx7IDqWxvrAU5iNbmzAVP2O7Tq9anPeJflsLPy36NxgpE1YKzCIRsN9W/wPi+aYGREAAWi/OeBbLHCKrCgRSw58+puf3YkkkS0e92PwMOV3tVDt/xhkVGR5YOpDJloGoNi9luZ2nwXJN+tYScn3ahrEGdTZU/OKph1H2sH5146rrjCpKBWiE5wnjg43apHcsUgNhUdYXNBiGI5KqrjEAjvulZQsMlVodjd7jnRQ5tExNS77dp0n2AaFwmP/sRXYVO/CgUrtCFNmj4kLQOhot5wMq/ryCGEqyxZGFTl/hn27Ev7nFcItq0op8n+gy7nYI88oObyonH/7/SWnaiWlr4mPPMddxEQ9pyfchJLoO9B2s4WtjPNom3iMDWLQHa5FiRhQZQrUqqbl1MYuKV2dzw6khwfPX11uTE96xAIjNc/11bUos+owf25aFwSVY0Pmcdql2AZqnLeQLzeWc04fW7SFWPPWMHFBvdd/lN1J7tACFOVE0SNjLuGpo9b7Z7c4ey24QbZPUpefKNRsNzNk1ycHouwHnn+vmKBYa3Qvi2VjRhQQoYLBN48x2k4IiSx5VTtsgf3SiJDPxL7HCFHTpR819+aSOVxu5IeBp8fmDKOOL1nf9A4SzvbO3fc1JlqKWKOBvh64yAoHhFwugwK1jAUvfhISIjdDAR5n6A1tMEyswnIXJ9RphE2JnZ0PBBAzdq5rH6
+ aawImHyV
+ 7BoyyejLCrHJEhZmZNLwoFjT6JgC5Uxremzn4tjaFzXa+o43am8BqV9w4ImR+uJ5CxSA+yFvixMfcQwECDEmy0o+RBshsnLTP1XQwUiZYpu7UvDdmkDWG4dUIVgsGCy9QXUtw9BGD0A3UexzzEL/Tdfw+P51awXxouNvCBbU9aC/ADOWqtGWdaXo9HY+GjK+QHLeHdiaiEpka9y7Coce7oePjs28gY1Gl8c8Em8RyStWfd3o/u1rWVsBTzLibmWS6aoOo6gPUAnZ4OuBj9fyHWtYrlHP/e6TKRKoduKqIGlSaiHTwp99pyY0JHRYv2jab04GDORtoT3vKX2DAezdv7H1zS3x5KTnB2146Oh6qj5lxxX4bGGENECroF5XLqIHxC7Jo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,24 +96,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 12:47:37 +0800 Song Hu <husong@kylinos.cn> wrote:
+On Thu,  9 Jul 2026 19:47:29 +0100 "Matthew Wilcox (Oracle)" <willy@infradead.org> wrote:
 
-> The 'tried_regions/<R>/probes/<P>/hits' file, added in commit
-> 5b0de1bc3325 ("mm/damon/sysfs-schemes: implement probe/hits file"),
-> is described in usage.rst but missing from the canonical ABI document.
+> This is a better name for this predicate.  Also make the argument const
+> to allow other callers to be made const.
 > 
-> Document the 'probes/' directory and the 'probes/<P>/hits' file.
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Thank you for catching and fixing this!
+I find it nice in review if it says No functional change intended.
 
-> 
-> Signed-off-by: Song Hu <husong@kylinos.cn>
-
-Reviewed-by: SJ Park <sj@kernel.org>
-
-
-Thanks,
-SJ
-
-[...]
+Acked-by: Usama Arif <usama.arif@linux.dev>
 
