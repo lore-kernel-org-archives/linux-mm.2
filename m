@@ -4,137 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A496C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 05:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C17A2C44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 05:47:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39E5A6B0088; Fri, 10 Jul 2026 01:43:31 -0400 (EDT)
+	id B98146B0088; Fri, 10 Jul 2026 01:47:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34F506B008A; Fri, 10 Jul 2026 01:43:31 -0400 (EDT)
+	id B223C6B008A; Fri, 10 Jul 2026 01:47:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C9926B008C; Fri, 10 Jul 2026 01:43:31 -0400 (EDT)
+	id 9EB346B008C; Fri, 10 Jul 2026 01:47:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD60F6B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 01:43:30 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 74DD66B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 01:47:12 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D1968D797
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:43:30 +0000 (UTC)
-X-FDA: 84971774580.06.4FB53DF
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5F1AD40004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:43:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RO8tojpw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783662207;
-	b=4+N1lpkR0etwpDH4VM1Yojvt15cIYrgEuWNE0Wvwnr1dN5E7yHOeC7DUzj5hVxcvoTftBO
-	eN1TKv1K8EM/A+4y3PLzMHvWK/qhOOCzM3Buxz3CQMoKMUDNdW9GaFpf0Wm5KMI8ZvHJ7Q
-	t0vYWypEXV7hSdKxsjgIk9Y3Qap7sBw=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RO8tojpw;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.167.46 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783662207;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E8AFAC1E23
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:47:11 +0000 (UTC)
+X-FDA: 84971783862.06.A060121
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3B27340003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:47:10 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RKJz9Axb;
+	spf=pass (imf11.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783662430;
+	b=zPXYqTAYu7IzBlv6ZaTz60CP0l8uDB3w2ssTS7DTOgbgiCPVDbOkhz79k0q2BhzjAriblj
+	F4RSIVzES2SwsmirSca46OUwyFqZHPLl+INRmTWy+X4nxlQIHA49cd8brARhIJioWpsC+j
+	m7RGHl5kj3Qt4wS9jzUN7EV0cK81Wu0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RKJz9Axb;
+	spf=pass (imf11.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783662430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+9Re/KEsDNt2sGvpo1jBpc9Dd0Ptp7s8KPI1kfDwE2A=;
-	b=NJobxrlqDCt5dsc1mUPb8eXYWOHueJhhBI+ykiR5e5jqg8tvBwdov7UDXQOGQ7XRv9qcJz
-	iRaR1goxoZRHyXffUQ0QBqbr8og9b1tM9IftGziFxKWma6G2v2aDz/rPpNhVJg2CfqO2jM
-	v5KOulzcHnHaKW2zCEu8m7DBaUHVAXM=
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b0115b9e17so500486e87.0
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 22:43:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783662206; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Oi2WAwEPOp8hFmHLx3WXxLUy6/JBC6zWPGEWEYqXj7YNxhSlckAQ8i1yjg4lbkhdxX
-         dFioLaqBbS3ONJcwpca2r20P338jqdM1eREQtPTz8qZWoPgUmrqi3onj+Kq8KMGY8f5Q
-         aocDu5JQ9AaT2hPTFY0vbl6cOVdzalDDgE9dPrhUzowO1AhZGh2bEIsVJEAiqtDRADYv
-         dtYihbbU9STFQyhMDzAIRfkmaYZ0X2/nvvMEv5WZH1IgIKev3rjS8sTvwDirw+QgxsoT
-         JQXqUg8tEyAuVWxFRevq0H6cnxwxGhrBGuc5mopmfdTiaRKeCXYmyTJRAmKcReOiy4gI
-         xJCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+9Re/KEsDNt2sGvpo1jBpc9Dd0Ptp7s8KPI1kfDwE2A=;
-        fh=WAuh/FfC2SrgmxYsHWuYEmLLonavj/1+UEoRAfZH8Hc=;
-        b=blJJtswdA+Ha4AhXAMwwBJwDGfLGvKpv5wuh3hxwoeUZzchCFbR60P3o76SE54Xs6j
-         gkwc6SHVfk6mgzBNL8MRZVNyCC59RxIr9jrfgE9iQts7Qjf9gUXqMsV9sDjv4mqrzskD
-         EI/2jLFAZtTnCjZXnsgBoeG27jPs+0Dlhf+aNrmU7EZlpcuIhXu34hdqKlirBP9NaNhD
-         WrT3DkJahAsLB9AQwI3PXoX4O/SbAci+y+PRlew/sjy5hXvunvXj/yDFLPx63X1BafTh
-         erdjgBEFD10yXn0UOBM/oQZJIOyBBY2qjXThg28fnfwMFf80ngO1Dq4Ib6UKF3//Fvn6
-         zfCA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=tdRhJB/OghWJG/3wbKJ2IGD+9QSPJ/wrl2a3I1KSz+c=;
+	b=bg+Xouqu0LX4g0YVnj3QfaFN2UW9cjTGSsiEteUhrDLFq2M9RAVJlF3THEcmIgmPfRU84X
+	bNRCafUCiJnxqYO4ntE7bIFudJMj3kI/tgcXr8Ywicn+gaG/qoTG5Rys77zXJMRbl+09z4
+	NTu/4iQQOcSXS/CqEdPfuTZgSr37iEM=
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2c7c61b5292so8651355ad.0
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 22:47:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783662206; x=1784267006; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+9Re/KEsDNt2sGvpo1jBpc9Dd0Ptp7s8KPI1kfDwE2A=;
-        b=RO8tojpw2Z1yt8+8BMsz0rIOby750YHYC7hpsa8SYXhDAij58otVjL7Maf6wWEae//
-         zBdVDU89SCdxKDeR2A6JLYItdkHaTXqCjMSu0X+6mRcMLnjdFYe3JGBY6k762heiB/SE
-         ICM2CdHSuvAZaGkvksojhzrsBR/SbaZQ8ypoN/P+UXvc2eiSvQAGDTxq5NZoOTr65Q2j
-         eK29NAiLlCL7LUCN1Z7GNVcrTVrLTYGnT3WPyri6JA3HaEMPx4dR+KdrE66LcoiWQmCs
-         /tVd3kyiA1533ByCtKiZpjI0G+lI3UD+/buFWd/Ngx6X7EttiudVYyLcil6+YDMyHWHG
-         h3jg==
+        d=gmail.com; s=20251104; t=1783662429; x=1784267229; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tdRhJB/OghWJG/3wbKJ2IGD+9QSPJ/wrl2a3I1KSz+c=;
+        b=RKJz9AxbyDUMC/cLmKJurYyqvasSv4oTIJbNLFshXuA2YIcSWZr915Gx1Wmw3S8GLx
+         3BidaxEDfKzHlOGkbMrN2VmohEQs1dJp5IsTOXQPvkZ5xj8C8EkDXYJjZyk5JyzyOSsP
+         By+FUCaLknM43crtaJDYAoc287Y+ZBm2flg2iWMckZAlgD7Ggf6KJ1zeawrSxTHaQ2xg
+         m43KjoUjwLghdzPtr8njJqMU0Ab+HFeti6UE6PUmL6P549JmqDzTS1rvpfNMUwGSpmSl
+         t+vwnX/6kXvVCVq1TtKbxHE1ZMEcdpn5y1/8DXcAzptTEqXciL4Yp1E4bPg8BYUyUFvl
+         oTCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783662206; x=1784267006;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+9Re/KEsDNt2sGvpo1jBpc9Dd0Ptp7s8KPI1kfDwE2A=;
-        b=sdsqjY+yBniL6Hi+k1QRtKzmV365Uj682kXthDSOOlx/SoUZGdGc++gMfVLhD9AnHL
-         LdG6yv8Iu3C2WsbGvsQMorOpPpsx4jOPKLA80PguTbvoYcYOJSf6Wt5wsNuW2Vl/TZ9P
-         kNDHVoMt+Gl3cFCs+xUq8R/HYWdyfPGMsejEzDq4UOMn8GnYr5712pCT6UbRhPUcuAVC
-         GqOhF6X4VhnqdkQdtqlrqz6VlHP4dxEClkOiGEr0XJdvvZE3Vb7JKPlLvUTDXT1R4ZBf
-         x+9Tb2NRrpx4wlT4ZVZO8r+wBs7cuwnZfbHkNmJfBNZSwlgPXbWvhRyZlB6HaF/Tu7AT
-         i1YQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoTRFKLcx1M1NvZcy7b2r0+d/49bEwiC696X3Du5/M41n82DNeuqqGxzBMi7JEosSYb35y4CPuqGA==@kvack.org
-X-Gm-Message-State: AOJu0Yw2Qy8fvrPlhAk+xjpZ1arZmeZ/nj0d+m0OOMnMlrEQthN24XBJ
-	hpJhCeqo6KYxvVm1n9MrbByN4No92+/sAP5f7RfW0cqSOXNrlnyCTQ9TFfR0ycytQOb5+wjPFCf
-	waZCdGcdSAEFyNUMDFtUGyWgYaaiPYY8=
-X-Gm-Gg: AfdE7cnIQAm+4pGE3lFsaduqBB5klpBBh5fqNGRcE2UzuMy2FaWl8JAsFJLZX3WIw0E
-	3lqJMO5wnWAYFFl34H+tAFbp0iQ4wEm12tCcym5xt8B4LfIUNUxTpd0Rlr1idQoynCvR4+H4KI3
-	OiCRtDgLmpe1AyNQMUUB5hp9n9RqGEy50nrTIABVWYutttcCEYbHH07a1nkmdLFAyBTvj0829U1
-	6lc0yYSCszSKe01d1fVgHNgbRZ2wl1B6x5sSeib6keLQB2XN1iPrWrt8Go0350z6+8zbrfsuSFp
-	YNbHCgg=
-X-Received: by 2002:a05:6512:641c:b0:5ae:ba7a:1789 with SMTP id
- 2adb3069b0e04-5b011464f5emr2122074e87.13.1783662205315; Thu, 09 Jul 2026
- 22:43:25 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1783662429; x=1784267229;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=tdRhJB/OghWJG/3wbKJ2IGD+9QSPJ/wrl2a3I1KSz+c=;
+        b=hCaWK3EyAZd1K7fKLnIsFt6SW3Je1HU7u+nqHOYPeh+1zNS7vL09wYn3NPmULbEL/2
+         FFFJ1CyVVzR9Dkp81I3/nyS51Z7JFEyglrc6Rjx1jigYYRzsuszcEDAAu1wp8j+vlclx
+         B+7joPMTe13k6pB99Eg8WKJKZJaWFkxkewkcCthk3B4zDiATJK6rCuqWMxG0M7b941YZ
+         XCfZ2w64Sr7ecXOf0bzKi/6/JXi/mmDi7qTa8nsd3PbWPFDjkKC3fglva5WFGVwffr6w
+         fLFcdbR1zCDDAzK7Da8Pm8PLasWvIcF8OPVMx9jdO3AykVzoJPiztyush8p1gdlvuqoD
+         Y0fg==
+X-Forwarded-Encrypted: i=1; AHgh+RqcCVCg2/eRcgYTHWGYXFp0R1JXzdZsFEbe7TuHdj8rDuc9OvXlgFa3KEx/vvdms5BIwVQA2I9ccA==@kvack.org
+X-Gm-Message-State: AOJu0Yx85YL4j0bNmYLC9MuiqZNQNQh352Co/dfZm6A01xz7dZK4GGKB
+	/JAWfPeoe69diDvynS39vQW1YtwKxHBeJhkx98AsZJSMPunfC0dZXtyb
+X-Gm-Gg: AfdE7cnoG3Ue7NFzY6T30JVz15JjGOGb8frOTls9HCh/VBR4U8HsdgAhNciNY8DIROB
+	TvuS7W4qi0FcPkPVQvmU/V3k3lPT6dwkB1WXkssp23q89OmKBv6ABQuqsJpMb6RdxMdInEQNOA9
+	69oq98nBK8EyQF+Kqz1E7MjGXH8ixkNS/ABEDRw/sYzPwQE/C2OnWh9Hix7v0wAFOu4QEqIvNMJ
+	H/cWfr4cmYKxFeKaipEPM2KMSDv9kItn1j70pVwPOM8Q3APAIfmytU5ZVKTVUsWm7J9j/ThmlMz
+	b67HGYydv46NtKBy9IgH4wQ3TuWJ5RxAOVy2ErL6E8hhEKFtm4eoBZcD1iT6qyqbWNnroHRV2YX
+	Xz7wu1U4r6gIer/5Kt1H19bde1Crp00wTqSzQI+2YOGPhpq19ErJopbJFdoluGe1zlrHUxac3Fl
+	8EHsYO4m6lFF8XYbWkgBKhZLqOW7tF3Ktn9pnmWk18kGjwjJqZ/MlOC4ZayOUNZqrn0g9/5fbwq
+	xZJLAR6AshLf5roCYQUHXuWeFj5
+X-Received: by 2002:a17:902:ce03:b0:2cc:ee78:3236 with SMTP id d9443c01a7336-2ccee7832d2mr100808235ad.33.1783662429102;
+        Thu, 09 Jul 2026 22:47:09 -0700 (PDT)
+Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb76asm56102255ad.12.2026.07.09.22.47.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2026 22:47:08 -0700 (PDT)
+Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
+	id A435814961CF; Fri, 10 Jul 2026 14:47:06 +0900 (JST)
+From: Hajime Tazaki <thehajime@gmail.com>
+To: akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	linux-mm@kvack.org,
+	geert@linux-m68k.org
+Cc: linux-kernel@vger.kernel.org,
+	Hajime Tazaki <thehajime@gmail.com>
+Subject: [PATCH v2] mm: nommu: free unused resources when mremap shrinks the vma
+Date: Fri, 10 Jul 2026 14:46:48 +0900
+Message-ID: <20260710054648.924005-1-thehajime@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260608210618.3437216-1-willy@infradead.org> <20260608210618.3437216-3-willy@infradead.org>
- <CANFS6bYc5uSSYWvwJZ4BgjzF0_bO9rkcFNvX2vVHnzWDi3kpuw@mail.gmail.com>
- <CANFS6bZZN6455QLhPE=yYi5fAHMt+MuqumtW6BCg__pESLiLaQ@mail.gmail.com> <CAKYAXd8qPHHNrDkJ29NwR7NrOj7Ny05vRPKzjUPckC870ULeRA@mail.gmail.com>
-In-Reply-To: <CAKYAXd8qPHHNrDkJ29NwR7NrOj7Ny05vRPKzjUPckC870ULeRA@mail.gmail.com>
-From: Hyunchul Lee <hyc.lee@gmail.com>
-Date: Fri, 10 Jul 2026 14:43:13 +0900
-X-Gm-Features: AUfX_mzwF_1VKVPfeVlM4SLysK1qhzKRkOCuoUWfDc1HQMXWox3yF9t2IeaLpaI
-Message-ID: <CANFS6bZZjBx5GQxu+ZYVYAL5T5mG1ZRtMo9TEqEYC2FfNbdCpA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] ntfs: Remove use of __folio_index in handle_bounds_compressed_page()
-To: Namjae Jeon <linkinjeon@kernel.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, usama.arif@linux.dev, 
-	lance.yang@linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 5F1AD40004
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: uhmobhfaohrnf8kkmo7f734th18usp6p
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783662207-143126
-X-HE-Meta: U2FsdGVkX183XPJHpx9HZxuOERoqcDh6LdWA49o2QWO67sQEdFxBRNqNaks3IyYemGSW5X7PkU29vLVFrsP/dU44waxaeJ+PdwtbU3t1plTTSnDqSKKg+H1wtWf19XDvbN24z62yv7VqiKimZ/jO6VZ7DdhP+5C0kULzh6xvF/4v4Z/pJBKGI02yEKEQm9c94FSe9fr1mcA8E7BZIhnbKTPsS0gLzztLUN0dNY+4NS3OS2SJkdhjUzRVCkn+FNaQXwl3m+cklN5WZWEYhtLcobRr9KW6B7nRgGg0ReQx3OxZjSldC+sbrSZHHCUa+ONFWE9vxryIb0glPgzQHO9QTcyXJ7KI5y/4884OMIxVJdXqlv+8KJh02Lp0ycbxWHLdpvzXyTEfK2dkp0Bd02WeFEJ/v96RcW1O8zms1hRNsVbcKHDRRYA2uepWhDWwS4NnhKL5vRFdUjpT89XMOfMbFjOUwVnLmfEfZPOVb74Rn2Ize1Xdoegknt3b7VyTgqjcGniCrX1ARkNxT5G/U8Nx/7XO0RQzwmPj04VK8cmer8k+Ig0uoDaFUsspYQq/ldOEdwGPLiW354mIioDRqe6m+eFZp8FDizrPV+1/vExgkcqA9Q5SiVIl4Apuk5WpOJLwnoAz0sAht6N9X9rjrVBw+6ZENdc/ypzjGA9aMaEPwLUt+NDchOZMne17lvAQv9vMdbHeWOrHvoZL1ITMit8S5K7rtKvfl6I+B3UHXiyQzyWGmOaWQw/SlDpNqMCRLvQC21KC/Ge8SRPYHLWiERFgYqyMGXwNPxuGZdepyW4sPdx51YeOLb9g9H2HqLFLQQ9Pvo94JcL0ydl852mQendffpymebZu149zsgUb7i5Xthuc4b6oc6XX5snkpNIzTkE59qU3r9Bo8vrSnyYbs4vjMtRupnNqkKN5x4h7DE8Il/sweAQelILaBcYRy+pWQb6W3uLratPSSeM7AqvtH/K
- 5N0qs4wE
- 3bJbHE6NOcMKeKCBhb2TDLDcLDy2tJKD3x/VNuRV0OuFjBkHfbG6zURL17NYPTHNmp9jmPBiNOJh82CHquLUYpnukenkelBdJCb8/dHh3Ua9+6tUgTCqm7VIkkEgHuurvN4raCCAXr9/uFwvTrzhQ+hPcEkCmczr8kRju4fiagmh4J8JVYSj1wvDDkEXH21igZjHhfVyF/PSrOKHY/LWyT+CCJspQE1GuCPfunW1dXnOttoPlxDrmaZdD/LKBCTFjeeAWE8WDJM2o5TGOqC7R5Yp/vDyIYyDDotNh7eSvNxA2RAjVw7ax+oVc/3vmHkActklh6BnzOH/NeRKMGKB4kJdfp7aUPPuPbEgY3rDeHGhscBLd92cPA3Id44VCPwWZ8wkFfYZMFfGHFBLDHgVYCzDGbSCQk8aUj8BtMmV/J/VzU13e9Mp4sdsRTd7W60y4vWKgq4w64iER1/8b2AnGfU8CXsiPFViDPKwg/gcCPI74F5s/PVEIPvL/6qroTzkwKYwe
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3B27340003
+X-Stat-Signature: emwduzjhzwukips8bgtoajsx6p4f7eyo
+X-HE-Tag: 1783662430-189353
+X-HE-Meta: U2FsdGVkX19yaTSztdaOrTa7xqtGBqo5BQVicsLQfRzC5R6PL/xayOffPGq8sCCPOp1QxTr/Ug035hG3ucKYQY+AdkRsLQvjCMVP4bIS27YuwK/JHknKF0Qxl6Yjj/UYXA3TrpiC2RcN3bWxUIN9KqCmCDbxqx47gaZrachdH2riFFRDeIW6CJ9uz2Xh3bqlvZywaFTN0YIjfyaMAxDhT981VgCRq/ruh8KzBVwhg/XVyqSn9pvQXrnXfZ/J5u8NbyGaRrrQHx+m9FmkI+/VzH74q9GntP+uyJboq43ovXUHncQyWfZd3ZscUBO1lCfwVGsYd/ob8vRDI/l+jnKt6ZHjBIN7MZTCqlQZ+68Y+E3frRbUtiSBiqutWeopR0krkJHEBixHzsdLIWahDxRdBCpXJmiTBdvkauUM3377T64SsbA7i3SbMvqU0IjjwAzd7bhuU5h/stpGDGy0caW7G/E5zC5E44cfMo4VJ+nrmymCwBmxurwn36DMR0DacNTo8VZfUM96FcwWYZJ2BorK1KyHieAAG090njf7meQ9KLaAo2bhzQpu907HkvlZgpvylq6rYyqvFiRIr/u6Ec6UVSEqwBmsZP6PjL7BDG87ZMa+RV1E4DGPxLi8jy6h0I6fxYojt/zV9wxv6AJNe80mF1LBwXR0Un2TRbZm2y5K1xYSDkj4gITYn+fpX1yDIuwdEix97ET61YMAg/PbLH2iM9oaU3Fn/JlKzIR4O4PmKi/jUvgEEiTThznUZbdg6UkCQ14yFc83pD9JKfm1FXNkvX6g4Mu/dKxHxM183gYECGwprD3Ufoxd5y0x8ff62lD6fwMEc+1eg/dp+fOetHnBfA0+FjUX1NdcPT5KjNRNX7FEKbL4O9tFoWjpubnBjdhNbtBgXwt+DcFwtSXU33BjuGT13QE9q4XdU4ZTNUqhyN58MQ4EDsHeomDCLLMzAFOvS0UyWtb05JpJbsh99Fk
+ 0zyWB6ED
+ WVfaKu4/AxXdO02Pvqt2eYEc4iRIC+tT4fQ/CalmUBNHHfEVKy1CSus2vPYcuks5Xvd/QevqUHE0ZkrXtqu19z/pDn6T7HadN+5xx77q1wuxziQstwHdJXrnePoKLQs4d9lXJmf+hR+u++UgbJAbyvygwkh19sN7N9uDikbywUxZ1s1ed3eaXqz5ifQl0NLN798KzGC8o1+mVrByVx0jEz+rlTePe8Rwb8uXfas8JHNQ3uT/h0hr/8tWQWqoNTQWGGtagcCugqHgdUrXNfdeFwHTk6hWVD4ednsX1dIDvqZQ3JUX8g8qQEODnxEhcsTfH3OsFCwv2a/J0QIzjR43l2Ag4VQkeacmoZJHGLcbKchf4+SkNWQ7gjXZr/EFZY7CQmK+t+uIik3mt+6zm5MkYQpH49ohZnT46amcYAmksbhpHj/OJi2ZO2ILdYIw7U+171DLGqTTj9IBNhkI7VocObNUARw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,45 +124,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2026=EB=85=84 7=EC=9B=94 10=EC=9D=BC (=EA=B8=88) =EC=98=A4=EC=A0=84 8:28, N=
-amjae Jeon <linkinjeon@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> > > > diff --git a/fs/ntfs/compress.c b/fs/ntfs/compress.c
-> > > > index c904858dff3d..b279f38636d6 100644
-> > > > --- a/fs/ntfs/compress.c
-> > > > +++ b/fs/ntfs/compress.c
-> > > > @@ -105,13 +105,14 @@ void free_compression_buffers(void)
-> > > >  static inline void handle_bounds_compressed_page(struct page *page=
-,
-> > > >                 const loff_t i_size, const s64 initialized_size)
-> > > >  {
-> > > > -       if ((page->__folio_index >=3D (initialized_size >> PAGE_SHI=
-FT)) &&
-> > > > -                       (initialized_size < i_size)) {
-> > > > +       loff_t pos =3D page_offset(page);
-> > > > +
-> > > > +       if ((pos >=3D initialized_size) && (initialized_size < i_si=
-ze)) {
-> > >
-> > > I think the following change would address the review comments for
-> > > this patch and patch 3/6.
-> > >
-> >
-> > Would you mind if I continue working on this series?
-> > I would fix the above if-condition and add Co-developed-by for my chang=
-es.
-> >
-> > Please let me know if that's okay with you.
-> Could you please provide the updated ntfs patches so I can apply them
-> to the ntfs tree?
+When shrinking a VMA via mremap, the bounds are modified directly:
+mm/nommu.c:do_mremap() {
+    ...
+    vma->vm_end = vma->vm_start + new_len;
+    ...
+}
+This shrink the VMA without updating its bounds in the maple tree.
+If the maple tree (mm->mm_mt) still contains the old bounds, a user
+process could access the freed portion. The stale maple tree would
+incorrectly return the shrunk VMA for an address past its new vm_end.
 
-Okay, I will send those patches.
+This commit fixes this issue by calling vmi_shrink_vma() when shrink
+happens.  Additionally, if a file-backed map is to be shrunk, it reports
+-EINVAL like do_munmap() does.
 
-> Thanks.
+The issue is reported by Sashiko review, linked below.
 
+Link: https://sashiko.dev/#/patchset/20260702012546.665383-1-thehajime@gmail.com
+Link: https://sashiko.dev/#/patchset/20260710021028.892645-1-thehajime%40gmail.com
+Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
 
+--
 
---=20
-Thanks,
-Hyunchul
+v1 -> v2:
+- handle error when vmi_shrink_vma() failed (reported by Sashiko)
+- prevents mremap() with being shrunk for file-backed one like munmap()
+
+v1: https://lore.kernel.org/linux-mm/20260710021028.892645-1-thehajime@gmail.com/
+---
+ mm/nommu.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/mm/nommu.c b/mm/nommu.c
+index 852ec9bd0505..c8effbffa0f0 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1597,8 +1597,26 @@ static unsigned long do_mremap(unsigned long addr,
+ 	if (new_len > vma->vm_region->vm_end - vma->vm_region->vm_start)
+ 		return (unsigned long) -ENOMEM;
+ 
++	/* like do_munmap(), we're allowed to shrink an anonymous VMA but not a file-backed one */
++	if (vma->vm_file)
++		return (unsigned long) -EINVAL;
++
+ 	/* all checks complete - do it */
+-	vma->vm_end = vma->vm_start + new_len;
++	if (new_len < old_len) {
++		/* shrink only happens addr + new_len and old_len are in different pages */
++		VMA_ITERATOR(vmi, current->mm, addr);
++		int ret;
++
++		/* vmi_shrink_vma() needs from/to pointers to be removed,
++		 * (mainly used in munmap) so, specify them.
++		 */
++		ret = vmi_shrink_vma(&vmi, vma, addr + new_len, addr + old_len);
++		if (ret < 0)
++			return (unsigned long) ret;
++	} else {
++		/* when there are no shrink, update vma.  */
++		vma->vm_end = vma->vm_start + new_len;
++	}
+ 	return vma->vm_start;
+ }
+ 
+-- 
+2.43.0
+
 
