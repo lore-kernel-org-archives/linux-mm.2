@@ -4,97 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98B2DC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:33:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ED1CC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:33:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F0996B0099; Fri, 10 Jul 2026 05:33:34 -0400 (EDT)
+	id 1F8F86B009D; Fri, 10 Jul 2026 05:33:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A0AA6B009B; Fri, 10 Jul 2026 05:33:34 -0400 (EDT)
+	id 1D0976B009E; Fri, 10 Jul 2026 05:33:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 356F36B009D; Fri, 10 Jul 2026 05:33:34 -0400 (EDT)
+	id 0E5A56B009F; Fri, 10 Jul 2026 05:33:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 14CFE6B0099
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C5CB66B009D
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:33:34 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE9E7A03B1
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:33 +0000 (UTC)
-X-FDA: 84972354306.17.4445A7B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0A10EA0002
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:31 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IOyOOyCz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 558A01C8997
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:34 +0000 (UTC)
+X-FDA: 84972354348.17.975D636
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 642C780002
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:32 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iVcfloGD;
+	spf=pass (imf02.hostedemail.com: domain of devnexen@gmail.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783676012;
+	b=aJ9qhl8q3cHK3SH34blzTey2ucpjXfuDK/Dm544S/BjrAnpYqMVTHHQoOk258qaLlGrKqu
+	7wM10+bOFcnWQd87Ao3dnx1AiPXP2P5h/gvK5Zh0BdqiTpMoLclBFnYr+U3YMmM1DUJ4xw
+	RbLrq/M6RoyP9d0yQJ51JUFen7GbSj4=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iVcfloGD;
+	spf=pass (imf02.hostedemail.com: domain of devnexen@gmail.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783676012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sp44KTW2xY5cnb3oWEQNPAWSe8roimC1ezkKPm0YOlM=;
-	b=KjcRmY87a85zCLOEu689P7vPdjR5JIkOvs36w1hj75KtEMPlpvezmOAJsgb+ExCWS4bAKF
-	GKeyY8GgdhKDu+XpO9+sUMiyXa99/72w5MaxzR9/42CGUDHY9YaH0qSbJ2VjjmbBJ/cgAr
-	ORbZJjiyDa0SYRq2+6FvVA/WJVS5Go4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IOyOOyCz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783676012;
-	b=jKQvm/7+lcxy55N4jo4UHdwLf3Tm49AXSNebmoBpHQCfodrBUQLXWdi2aX4TqHq2kcQxl5
-	BRgXXnzbAgIu0I1ATxWtv1dqxHGaiPerhDkN7Mn3ZWApB2WB6WVawgqetnW0JKxF88qdn3
-	aUvMF643rTzu9tLPpxKLjkHwVQlaWTE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9C6DF601D9;
-	Fri, 10 Jul 2026 09:33:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03E51F00A3A;
-	Fri, 10 Jul 2026 09:33:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783676011;
-	bh=Sp44KTW2xY5cnb3oWEQNPAWSe8roimC1ezkKPm0YOlM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=IOyOOyCzgWnjdVGlAvjW8nfhhvEwEKGohkKTrwiTsmKuVGI4woEivbm0ajojE9Q9W
-	 e3iOxR1q6bo9wpXXPJkTBfLyyBq2n+PNZLtBAe+oceVXMaDt2e1oZ+W7InFvGvNiSw
-	 nFasB7cB5+zLEBnIMDb2E2tV6eAM4h8TEYjpFvZfl6RC5fRBSF5pb30bZ+QF86FANv
-	 5Rq477JjdcGUYnHRuwwvCtihaT2nH9zTCc/ZCnQWF8ZXfm6ID6pBs2/6b0dNSInjOG
-	 qtiUMJ7oWw3RFkHTqtSo1ZHT2DAbS/XRdQIJTcBf4LgUMe4EbYL5t65B1f7GRsbhgM
-	 vqzcFH7J0sucw==
-From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 10 Jul 2026 11:33:06 +0200
-Subject: [PATCH v3 05/24] binfmt_misc: use RCU for the handler lookup
+	bh=FOfAMidp8rQWZVqstmTup6Rkr74TOq97Goi620POv9w=;
+	b=r7pah4DZyKtoqgquxvtYJ1o283XO9SeOkDAt02SBKy77gfrGhf6watX0I+zF+8rjKb2jEe
+	BLedpyLEB581CTPKfRfuFABj129YnA8qC9Iv8NLYsSEQmGQCKdLyqxAhxygnxgg1G2dO/o
+	wuaZxqg7B9cEHSroP1j22xAhSFm+9NU=
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6a1888969ddso452379eaf.3
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 02:33:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783676011; cv=none;
+        d=google.com; s=arc-20260327;
+        b=P1TP7hujTCgE5Hv6ijlZn82AmWqzlqM0V9rEM7n1MnjzymfpWtE/cd/NCTcph3Y6gt
+         UlorCtfMr7BnL2ruxAazzY7n3MFw2pR6r9NiYRdcvnlXW+QYqZhVDPqKyscgh9MzoKEQ
+         gzPgAkzUbM962caeLOfGrXTURgGESpT2ebuA4KgvY35Y2NmmOJhEFlCS2mUcTZubL8UQ
+         owumEYJJNN80zu8+va+Ushd41IXyUke8c/G1Og0FT2SYRplzbxtjaZDpiRsoK4d9IK8t
+         pztIksCBv+zdzvQ//3ZQEXXvOUa5aRH2wCQGOYOIYvNRLBX98GUg26iBV7WdqKGBlYih
+         Em2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=FOfAMidp8rQWZVqstmTup6Rkr74TOq97Goi620POv9w=;
+        fh=b1RaG1OhU6ps8+CRWpnf1IUUDdpyoF2qQxpu4VqrIdc=;
+        b=CDj2C/5DlbjLfzhcl2rU7e8hNxFdpYfIm31eC4fy169RZYWf5gd8mJLb3Y42ppAQsO
+         cc/JYllV32KUYOkf4lEZxQ3nzdckaSMyve2v6P6RK70vCGDB6qk0xpbykT3tLhNYCB8B
+         bxRhfqBk3dUtl8wLuq61RCkAFZ/frNAXw8I7+zUVcUS3u4FrHdAcjHRMBNi0+3UCfjo2
+         9sP9RXJDq4AEXkrOiSSG898Z0jX/OD7jFs4bjqhrXEAlcHUMEDo79TEeAjO3Rnr9WbZ7
+         QaiKOgVik7gex/3tlZiZ9BwfTEy5PGqOd7xdyLi80xE6B1h9Ro3I1y+ZCuiWTKyxwc6n
+         UqJg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783676011; x=1784280811; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FOfAMidp8rQWZVqstmTup6Rkr74TOq97Goi620POv9w=;
+        b=iVcfloGDPDjwb97MncGBi4IoOdtYoKA9SQTkpsT7uhC++x4EfeRDsZ9128WVwiuh15
+         93AJRx+z4NlPyIWZ7p4zj82BOaNDzCveKx1PTVQa4PTfD7CXGMD9JX1Zbb+ywhExsSDb
+         JU6W69ipqdkkg0KEqyP+0ioXaEo5ST8rowKBoLNPDyeVbx8eaWrDLdt70D4rjfTjGkiy
+         mPRX9kBqohjWIrMACXeK2E/PhXn31jviWigPBbjtCu2Bqqp1A1cBfwXm1KZp0g4LuV7M
+         wmUK+dORwEDsjRtkU75ZCRHuTZwKWZ32go9CUeWxmP8PXHRGnLmo/0R/dOJpuczyoLM8
+         aOhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783676011; x=1784280811;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=FOfAMidp8rQWZVqstmTup6Rkr74TOq97Goi620POv9w=;
+        b=lVgNQd6wYNJ7v66VQj0281/e98JBimFzEuT7auplgxXkbhhYzm0Q9n7SbUVpxoLUxT
+         8XzhpA/KoC968ghcVokYNK4k5ot1bh3d5p2B/pzZqsLy81niy3iyRGDCLm2dn3JKsbAy
+         efw4a3ukuJQFviU+TXpNdIuEG2ymycFoRD3Mqsqu3B20nAAMNE1HWKfYhNS9otPqbL/e
+         aeXVtwYiHTT9ll7iRdHIN0weYhxwNbQQTwusitVlz7sDmirhzXBvCmUblv1FPHW1QtuN
+         o4jgColaW/TZliH5X4SSCohaWS2uOrd7S+dbjqwaCR+IeLyOLM1THvSFsa8HoBWZJOr0
+         nd1w==
+X-Forwarded-Encrypted: i=1; AFNElJ8TtTn+KkPfP+CJWarpv85QD79twbOEIr/UQozOsbf9zMcjrb5GdVpfj2renOhA5wy1KEt9c8/qeA==@kvack.org
+X-Gm-Message-State: AOJu0Yz2V4wKKk58ZlmRYJi0WoZZS9kcKn1PwEMI2CXmKJLo1dVCKv5+
+	i6u1CmgRsnBbIf4CqiFPaAXyNGxYijUoZe+Q7wd9V1kmSJo4FWyGEdT9o/m8RgSW2uRXZBEaqWk
+	5Y8BY7bJV19qtAcroJFTL5aexzbDFbp8=
+X-Gm-Gg: AfdE7cmvyU+byWCiraZerEUzll3SX7TZUjodEaujU2Eas4cZBBJk4PgsPpdON/acZEv
+	myowMODNl87y8zkst5Jfowt4Uuup58Dk8JwZdqkPYnei6Ci9RgsqFXfI1viIvOTxKbsSzctD4rV
+	PAA0sqeJCSJqYeuO+02N1/ABharB+ZHe3kjCtXou+U5/hCghqF9mb4ukuyT8SgwjbD/Wed7nCwc
+	3UIK8pQaob4cyPmozmKagQFtoTGn5T+RBoQzSp6XCj2RTWchSdgvINEPAwUvGCq6F8fXat6hxXg
+	RnkXR5wa5AKcYGW8B+aR5lxP4VO3ejN/1mtD/w==
+X-Received: by 2002:a05:6820:a09:b0:6a3:129b:e617 with SMTP id
+ 006d021491bc7-6a36dad9b1fmr6981190eaf.71.1783676011361; Fri, 10 Jul 2026
+ 02:33:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-work-binfmt_misc-locking-v3-5-a162f7cb58d6@kernel.org>
-References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
-In-Reply-To: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
- jannh@google.com
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9608; i=brauner@kernel.org;
- h=from:subject:message-id; bh=TEEUTIIJoNSveJEFGAOJGCFzUCyJC8jT1qjqGXDnCsA=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQF7ImbF+De8/lNvKblFL5zxzTCGYN53qtPNKsry1721
- X79mWr1jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIkoMjP8T1gif9qnTsDiiubp
- r6dbfRd2bjfYF+8ncTmvYdFWkfxbBQx/+K/Xs1TKOcifUKjUDpi4qdfGfM6NS5J1n32e7X6tkKT
- GBwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: ij36r1h3w5xtksxu8p1fbrjk3xia8gg9
-X-Rspamd-Queue-Id: 0A10EA0002
-X-Rspamd-Server: rspam01
+References: <20260706203128.162335-1-devnexen@gmail.com> <ak0YI9KjSstnj9rJ@lucifer>
+ <CA+XhMqzvFtLq1OT-qh207aJhSf+okdE8o8Joe8e_KBvdCjcQfQ@mail.gmail.com> <alC3HqLVTBA92Prx@lucifer>
+In-Reply-To: <alC3HqLVTBA92Prx@lucifer>
+From: David CARLIER <devnexen@gmail.com>
+Date: Fri, 10 Jul 2026 10:33:19 +0100
+X-Gm-Features: AUfX_mztOU5_jS5IjGzUbvmTi3ipFisydF61T_Ppm1lypDXePa4kecWsqywAZ5E
+Message-ID: <CA+XhMqzvW=Ar__NFVCLEcJYUnfmnRhTEtAV_iT62U45B7tAR6A@mail.gmail.com>
+Subject: Re: [PATCH v8] mm: pgtable: free kernel page tables via RCU to fix
+ ptdump UAF
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Dev Jain <dev.jain@arm.com>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
+	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1783676011-819323
-X-HE-Meta: U2FsdGVkX1/nQxzRPUVESHLK5uG6F8+P/4c6mOzq7zslLp07Vs5b3sPSm/G9lqPjeEpSUyPCjYa9FTHA8/uWcSjbTG45QZow3aj6LQdE6KUtYNH2dL7FKiGUoVeImSwHDGsnm3FL2pTFR1ElyR5QGdbls0gr0kJa+GDewKu1ibD+WbO5gLdGKIhg1GueUvLfPDRbmH4EqxAY1el/nKIC3Sfff2ZSAyvxamCeBud5IKMMSdHTg8/d107MCo2jA4hmG0tmL4gyTwXdfKkGPdvcdQzKFZbMptHLNJDCsH1aJ65R81VION2PQvtsq1y8Zjq+BZjDP9r8s5LcKhVV9QtMxaaDBsOlt7lXPXjoLNBbtq5i7p91qp+dsUBGg0tAsWe/ziP9MoiLrE4SikPlmuCrDdBa26OYz9RVUTwfoV6FfK3znU3IYf4qnRtAuDkPV7G4KZg5FGwFPNWZt+Bwck2ayZdKWszQEw5B5AvAeTHLy579PKDdr4S3LNkSNLUs9G9j6zKty/nU2R9vit3OvJz/vLiN3BSX9i8fu2t2+1ggaVKdjnPj5/qFVlzQhYVcELUn6V1RcTwLVyVDepKWmcPc/LBUB4s8ZdniyB4Pmp0mgFYpBhXNJqZuhxuolLvwOD5I62y3K8Ia0MDXlG5mGDEpOD3ixgViXqjDwsyHO2qWaKWUFfDawlq0m6N0Gw2d/BGtZHgqyr6uIlDsc3yfGSp+TwxnMxz9RU5TQQSYpc+PbMF6PeqI6Z+QZ1WhKAJFLb8wNqNgOxcw0N9hg88l5ASmPDiA1uofHwaVcSBSyg4cmRIwWFEifgd4URzwztZZp4SDVxPR11iY4UXLSR0mqkBrdzItQmRM4I9d9owFfFdhDkQzMX8FEO6nDW0AFen+Js5ngtVNRj/XxQ1KWfb9DoKUwGgPWA4aayVhKhQiQwhFGKrLqdrJkq3SPc4vNgNIcsB6vU3Y1GOnElzOingsrHD
- sQ1dpp6R
- pNFo2pFLteSrs7mWTvAgYQiOXU4sSuxJ80QUblflYfm4hR3ReQ8dnl+7CXlLyxFgXJSZ79kMJxiQzL6aXmax92vTMEgALzE6tQMFuuLYFZhdDd6QQpLpf5K2yKcaprKq4VY6quOjUCNFVskVdiBL/LA2OTLiqUY/YC0ckbYXHbhLy4751hPsT0oYa7P51bGsZfSb7Hlbx8e/su+z6sbh1MShZSef/lkfULQQcm+9T7Bf5EdXtM4Wntslslq5qkY7ojgamEsVqsJL1RhTYZP6RN9Lx5WeDar3sZjervGwEmcxvGUtpvInNTS09uzYjL0E8kmn/SNTbSMVm/n5YvPCNe2Ooft28aXAqUqx1hrtnS43KUG8=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 642C780002
+X-Stat-Signature: 8p8z8zcj7sw33nk7r5p5y1sy6i798shs
+X-HE-Tag: 1783676012-750581
+X-HE-Meta: U2FsdGVkX1/ghOP50kaE7HA06J1RN6j/LCdOnrX/a9MhoO1YoguKcf2WxewWvvxPw8/RwOvxsOdPCkKpSau0Xbl6pzf3Nkr0SwpsC9JfSBznJpkDNvncV/8wA4jELT4ir/quG580ojCJMyt0Z7L+5ctES2iSBM7LSRiQsNKuM9XS+h+ZQRGHxYdX9mGVu51ZQI1sGOEWf7R5ZGQB2qB80zOxtKKHSTEaiLWFz+tNyOUHD7O+jmi/xQV5dutQOOCQjOjF4PzfumMJFcOKGhotCwe4miCzTKmPQGTsKsJL60YFRAgdFF0SiZ3QLUEmtTzfivau5effXUQO99AegQ6dRd+gB1jmOT+1oMnPz5Kd4U2dU9Fy9YJ9wUr2+mYnA/1aHAkEQBwymkAyGLsU6YXx/PYeC84D3oHKkDySY3hFb1Mop8hP4uhG1mDvNTk00yvfHqiuX5oly5Fp/iek/rzI6BZBH0FSYagh+fwzJ+UlNxP9blZ8GhnIzAm+PxoEyNGrwVdfhdK8zGZKTkkAceQCMHeDjmqgDQ4tSrAxZw+4czro+mJaR4nMf2kVAzrYKCjhe53N5QnvwXJD0qrGfnfGUqeCb7VaGZRq2UhySFj6Qb9u/X1VnOFrpttCJTl/kNCnNmOcobhKm8y+7KotBygF1ad3pONueYCmBiJP5rnA6nETEKHAuPwxtmsxik5Enel3F1Bd3niNR6OgpOA6A0FcPwy5GmAZPShPoxG1om6KHY/yshf93/73MyNl3A9rYQ8Db8hicWIMITdt0xy2A3Jrkp6/mSXbDa7hIDmgz8qhWDvsLaKtSLZ/x40wBQqR8W6MhLJhjVsJFvVrRzpvtjCwO+Wk5ry4NohUyyYtTVL/OY7m9ZoVmciKbo7Zvvka5pTN/NsIxP2s4LaFggyduczQvgF92N6BKcQFK/bEUeiGtevAbxDspqqXkkxVZyIAe0SXuq/foUDDTANKYARBXDo
+ LHHtgYWX
+ KzPSmcC5C8JQtvsSEH57/Aj6tM5zJS6ecnXmoYcdZpzKwoBaX7/0UD7JWOo7mfXDL2nvpcsa3ZySL4DXbRdqE2B4ZDJLMUJXFrU/AvNRaqRdkrQHWr/qrpkL4ENLn5PgWNLkfL9jvJJq1kagffvqjjbDVCXsciDFq3YGtO96uuLLDC9DwJV/l38sQuZ8QormEffxj2wFaflLo+Fn4w3hZ4reB7HnbEKuObPoJQc7JzulnPPOvuq7TmZ0bKIFFGZ4lZcwmQBpljTvr9qEw2k69GHGrOzXaRy4FSknqoTn0agiYYtEimwNa6cCi+KOSmQbTE0gRfM3ASanXCgb0j6njBWJnb+7vS54DvEz670Fc4IMUJ9IrZLbDQHwZHNQGY8NN5HiCiayXBDnAH2iIlNLGCa7y1qa1SgieQf507O1ic07fzS5gvd/b+tsuhQ+O0pIb4KqDD/YwwXDu8yw5ZYjIduRqPzjsMDlXntDUvXUaG7xqkQIkiY9h31NjYw4xQdK2CZiHGE+fb1cIzEERz+zrad/nr83DJ47kLDSpIJHuvgZQ+d0Swc9+pc9xng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,247 +148,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Once binfmt_misc is loaded load_misc_binary() runs for every execve()
-on the system since binfmt_misc registers at the head of the formats
-list. Every exec therefore performs read_lock() and read_unlock() on
-the entries_lock of the relevant binfmt_misc instance, i.e., two
-atomic read-modify-writes on a shared cacheline. User namespaces
-without their own binfmt_misc mount fall back to an ancestor's
-instance so on container-heavy systems every exec on the machine
-typically ends up hammering the cacheline of init_binfmt_misc. On
-PREEMPT_RT the rwlock additionally turns the handler lookup into a
-sleeping lock on the exec fast path.
+Hi Lorenzo,
 
-The lock protects very little. Entries are immutable after publication
-except for the Enabled bit which is already toggled locklessly via
-set_bit()/clear_bit() and entry lifetime is already handled by the
-users refcount via get_binfmt_handler()/put_binfmt_handler(). The read
-lock's only remaining job is to make "the entry is still linked" and
-"take a reference" atomic with respect to the unlink sites.
+On Fri, 10 Jul 2026 at 10:13, Lorenzo Stoakes <ljs@kernel.org> wrote:
+>
+> On Tue, Jul 07, 2026 at 06:08:49PM +0100, David CARLIER wrote:
+> > Sure thing :)
+> >
+> > On Tue, 7 Jul 2026 at 16:19, Lorenzo Stoakes <ljs@kernel.org> wrote:
+> > >
+> > > Hi David C,
+> > >
+> > > This has been through a lot of revisions so I think for the sake of expediency
+> > > the best solution here is for me to grab this and fiddle with it a bit then post
+> > > it out myself.
+> > >
+> > > TO BE VERY CLEAR - I will keep your authorship and attribution :), and simply
+> > > stick my name on a Co-developed-by tag.
+> > >
+> > > So this will remain your patch.
+>
+> Apologies, but the approach I'm taking is very significantly different so it
+> would be problematic in terms of patch provenance to do this :(
+>
+> I will make sure to credit you directly in the commit message so there is proper
+> attribution, this patch and follow up stuff has grown a lot (been working on it
+> all of yesterday afternoon/evening + this morning) and need to ensure the stable
+> stuff is backported etc.
+>
+> Thanks for your contributions here, very much appreciated, and sorry to have
+> messed you about on this!
+>
+> Cheers, Lorenzo
 
-Switch the lookup to an RCU walk:
+No worries I understand.
 
-* Lookup walks the entry list under rcu_read_lock() and acquires a
-  reference via refcount_inc_not_zero(). The refcount can only drop to
-  zero after an entry has been unlinked so a failed increment means
-  the walk raced with an unlink. Restarting the search is bounded
-  because an unlinked entry cannot be found again.
-
-* The unlink sites use hlist_del_init_rcu() which keeps the forward
-  pointer intact for concurrent walkers and preserves hlist_unhashed()
-  as the protection against double removal.
-
-* The final put frees the entry via kfree_rcu() as a concurrent walker
-  may still dereference its flags, magic, mask, and inline strings.
-  They all live in the entry allocation itself and thus stay valid
-  until a grace period has elapsed. Closing the interpreter file stays
-  synchronous. It is only used with a reference already held and all
-  final puts run in process context.
-
-* Writers remain serialized by the inode lock of the root dentry with
-  one exception. bm_evict_inode() called from generic_shutdown_super()
-  during umount unlinks entries without holding it. Keep a spinlock
-  around the unlink sites instead of relying on superblock lifetime
-  rules to make that exclusion implicit.
-
-Handler removal semantics are unchanged. An exec that acquired a
-reference just before its handler was unregistered already completes
-with the removed handler today. The read lock never protected against
-that, it only made the window smaller.
-
-With this an exec that matches no binfmt_misc entry, the common case,
-no longer writes to any shared cacheline at all.
-
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- fs/binfmt_misc.c        | 59 +++++++++++++++++++++++++++++--------------------
- include/linux/binfmts.h |  2 +-
- kernel/user.c           |  2 +-
- 3 files changed, 37 insertions(+), 26 deletions(-)
-
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 89da2d4e7f91..bd7790a1317b 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -24,6 +24,7 @@
- #include <linux/pagemap.h>
- #include <linux/namei.h>
- #include <linux/mount.h>
-+#include <linux/rculist.h>
- #include <linux/fs_context.h>
- #include <linux/syscalls.h>
- #include <linux/fs.h>
-@@ -59,6 +60,7 @@ typedef struct {
- 	struct dentry *dentry;
- 	struct file *interp_file;
- 	refcount_t users;		/* sync removal with load_misc_binary() */
-+	struct rcu_head rcu;
- } Node;
- 
- static struct file_system_type bm_fs_type;
-@@ -86,6 +88,8 @@ static struct file_system_type bm_fs_type;
-  * Search for a binary type handler for @bprm in the list of registered binary
-  * type handlers.
-  *
-+ * The caller must hold the RCU read lock.
-+ *
-  * Return: binary type list entry on success, NULL on failure
-  */
- static Node *search_binfmt_handler(struct binfmt_misc *misc,
-@@ -95,7 +99,7 @@ static Node *search_binfmt_handler(struct binfmt_misc *misc,
- 	Node *e;
- 
- 	/* Walk all the registered handlers. */
--	hlist_for_each_entry(e, &misc->entries, node) {
-+	hlist_for_each_entry_rcu(e, &misc->entries, node) {
- 		char *s;
- 		int j;
- 
-@@ -134,7 +138,10 @@ static Node *search_binfmt_handler(struct binfmt_misc *misc,
-  * @bprm: binary for which we are looking for a handler
-  *
-  * Try to find a binfmt handler for the binary type. If one is found take a
-- * reference to protect against removal via bm_{entry,status}_write().
-+ * reference to protect against removal via bm_{entry,status}_write(). The
-+ * refcount of an entry can only drop to zero once it has been unlinked and
-+ * a restarted search cannot find an unlinked entry again so the retry loop
-+ * is bounded.
-  *
-  * Return: binary type list entry on success, NULL on failure
-  */
-@@ -143,11 +150,10 @@ static Node *get_binfmt_handler(struct binfmt_misc *misc,
- {
- 	Node *e;
- 
--	read_lock(&misc->entries_lock);
--	e = search_binfmt_handler(misc, bprm);
--	if (e)
--		refcount_inc(&e->users);
--	read_unlock(&misc->entries_lock);
-+	guard(rcu)();
-+	do {
-+		e = search_binfmt_handler(misc, bprm);
-+	} while (e && !refcount_inc_not_zero(&e->users));
- 	return e;
- }
- 
-@@ -166,7 +172,8 @@ static void put_binfmt_handler(Node *e)
- 			exe_file_allow_write_access(e->interp_file);
- 			filp_close(e->interp_file, NULL);
- 		}
--		kfree(e);
-+		/* Lockless walkers may still dereference this entry. */
-+		kfree_rcu(e, rcu);
- 	}
- }
- 
-@@ -679,10 +686,10 @@ static void bm_evict_inode(struct inode *inode)
- 		struct binfmt_misc *misc;
- 
- 		misc = i_binfmt_misc(inode);
--		write_lock(&misc->entries_lock);
-+		spin_lock(&misc->entries_lock);
- 		if (!hlist_unhashed(&e->node))
--			hlist_del_init(&e->node);
--		write_unlock(&misc->entries_lock);
-+			hlist_del_init_rcu(&e->node);
-+		spin_unlock(&misc->entries_lock);
- 		put_binfmt_handler(e);
- 	}
- }
-@@ -701,9 +708,9 @@ static void bm_evict_inode(struct inode *inode)
-  */
- static void remove_binfmt_handler(struct binfmt_misc *misc, Node *e)
- {
--	write_lock(&misc->entries_lock);
--	hlist_del_init(&e->node);
--	write_unlock(&misc->entries_lock);
-+	spin_lock(&misc->entries_lock);
-+	hlist_del_init_rcu(&e->node);
-+	spin_unlock(&misc->entries_lock);
- 	locked_recursive_removal(e->dentry, NULL);
- }
- 
-@@ -754,9 +761,11 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
- 		 * via bm_{entry,register,status}_write() inode_lock() on the
- 		 * root inode must be held.
- 		 * The lock is exclusive ensuring that the list can't be
--		 * modified. Only load_misc_binary() can access but does so
--		 * read-only. So we only need to take the write lock when we
--		 * actually remove the entry from the list.
-+		 * modified. Only load_misc_binary() can access the list
-+		 * concurrently and it does so under RCU. So entries_lock only
-+		 * needs to be held when an entry is actually unlinked to
-+		 * serialize against bm_evict_inode() during umount which
-+		 * unlinks without holding inode_lock.
- 		 */
- 		if (!hlist_unhashed(&e->node))
- 			remove_binfmt_handler(i_binfmt_misc(inode), e);
-@@ -801,9 +810,9 @@ static int add_entry(Node *e, struct super_block *sb)
- 
- 	d_make_persistent(dentry, inode);
- 	misc = i_binfmt_misc(inode);
--	write_lock(&misc->entries_lock);
--	hlist_add_head(&e->node, &misc->entries);
--	write_unlock(&misc->entries_lock);
-+	spin_lock(&misc->entries_lock);
-+	hlist_add_head_rcu(&e->node, &misc->entries);
-+	spin_unlock(&misc->entries_lock);
- 	simple_done_creating(dentry);
- 	return 0;
- }
-@@ -899,9 +908,11 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
- 		 * via bm_{entry,register,status}_write() inode_lock() on the
- 		 * root inode must be held.
- 		 * The lock is exclusive ensuring that the list can't be
--		 * modified. Only load_misc_binary() can access but does so
--		 * read-only. So we only need to take the write lock when we
--		 * actually remove the entry from the list.
-+		 * modified. Only load_misc_binary() can access the list
-+		 * concurrently and it does so under RCU. So entries_lock only
-+		 * needs to be held when an entry is actually unlinked to
-+		 * serialize against bm_evict_inode() during umount which
-+		 * unlinks without holding inode_lock.
- 		 */
- 		hlist_for_each_entry_safe(e, next, &misc->entries, node)
- 			remove_binfmt_handler(misc, e);
-@@ -979,7 +990,7 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
- 			return -ENOMEM;
- 
- 		INIT_HLIST_HEAD(&misc->entries);
--		rwlock_init(&misc->entries_lock);
-+		spin_lock_init(&misc->entries_lock);
- 
- 		/* Pairs with smp_load_acquire() in load_binfmt_misc(). */
- 		smp_store_release(&user_ns->binfmt_misc, misc);
-diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
-index 071da63f2b48..7e7333b7bb0f 100644
---- a/include/linux/binfmts.h
-+++ b/include/linux/binfmts.h
-@@ -102,7 +102,7 @@ struct linux_binfmt {
- #if IS_ENABLED(CONFIG_BINFMT_MISC)
- struct binfmt_misc {
- 	struct hlist_head entries;
--	rwlock_t entries_lock;
-+	spinlock_t entries_lock;
- 	bool enabled;
- } __randomize_layout;
- 
-diff --git a/kernel/user.c b/kernel/user.c
-index c6a2bfb4d918..21bafdc11379 100644
---- a/kernel/user.c
-+++ b/kernel/user.c
-@@ -25,7 +25,7 @@
- struct binfmt_misc init_binfmt_misc = {
- 	.entries = HLIST_HEAD_INIT,
- 	.enabled = true,
--	.entries_lock = __RW_LOCK_UNLOCKED(init_binfmt_misc.entries_lock),
-+	.entries_lock = __SPIN_LOCK_UNLOCKED(init_binfmt_misc.entries_lock),
- };
- EXPORT_SYMBOL_GPL(init_binfmt_misc);
- #endif
-
--- 
-2.53.0
-
+Cheers !
 
