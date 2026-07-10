@@ -4,87 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA8E8C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 08:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EAFBC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 08:54:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1B9F6B0092; Fri, 10 Jul 2026 04:51:48 -0400 (EDT)
+	id 438FF6B0093; Fri, 10 Jul 2026 04:54:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCC4E6B0093; Fri, 10 Jul 2026 04:51:48 -0400 (EDT)
+	id 4103E6B0095; Fri, 10 Jul 2026 04:54:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE2A76B0095; Fri, 10 Jul 2026 04:51:48 -0400 (EDT)
+	id 2FF4B6B0096; Fri, 10 Jul 2026 04:54:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB5CA6B0092
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 04:51:48 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50E3B8DBE4
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:51:48 +0000 (UTC)
-X-FDA: 84972249096.29.2BE48BF
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf22.hostedemail.com (Postfix) with ESMTP id A47BEC0002
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:51:46 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gfurfvAY;
-	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783673506;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 116216B0093
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 04:54:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C569A03A3
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:54:18 +0000 (UTC)
+X-FDA: 84972255396.07.B87B99B
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C5AC7C0006
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:54:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hrbfdunm;
+	spf=pass (imf28.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783673656;
+	b=e5mk4JD5CVJwac3fJEhp3YqApxv7JvNrk32UokyA3l3RxfA1Trir5yg8muy26kaEG5KeZn
+	Vl8hnpuxsYqXicRr+dTwMbr6YMxdOAaS+f1GyqfcY6G1fwuOlL+GM9X571g3lPc2cnZL8G
+	xv8AFSEFCkk/eEKp12K/VbvXnYDvDhM=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hrbfdunm;
+	spf=pass (imf28.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783673656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3FuP1eMVNk9mkgmdOifxmzFZMlk1+U1DrobeqWEeEQU=;
-	b=XGv2G1wx/gcZ0li728lWx3SOctJy7G084yr7rrKbxnJ/U75GSh10DSFsz72PUGJm3RLwBR
-	E6wZC7bjc5bBh4b9uQ0kZJXWZr0x5K6L0eBizKSw0TBIAHeoRqaIqymFT+Pdy+GnlH2RpU
-	b6ZEc4Zb5PcpZi1PAn+h4zvTDP3nx94=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=gfurfvAY;
-	spf=pass (imf22.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783673506;
-	b=IiVQvhwCCwZEsQZcF+z/Etm4VuoDQwzcOJzN6Xdl2pnAoYq0COT+nJB3/blgYgonoAbKK4
-	i3rjIDc6shGAeBxzgzq33nnZq41JRMnNs1JFS/bYQ17DBRL4A1WEsMuzJAYpeq9WCQ+vPy
-	v1zjAY6+uo7RcSp+3fHWdPtC5bHOm9A=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3FuP1eMVNk9mkgmdOifxmzFZMlk1+U1DrobeqWEeEQU=; b=gfurfvAYcWbyKsomW4JufEF/rJ
-	ahzc8mqteKkRBc1IM1pOlveeF0PkaEf9I6dLtUfche17t3WNsIrTbaQ+4+QHWlBCysr35OkckOy6B
-	0qL7jHhdESb4RcsNBFV9IDVOVTaFfZow1x+dUxRXVNspqEBCasOGCrgeUM/5/iGEPjA027tV/qm/R
-	jwStVcf2DhYiI/aRgwJJxQdzWesLkYmvn/Yc2zpEfhjVuFWFwmqZX5PQbYGE82i23VyhcDp7fMB4P
-	AjxYrhOE+U4bROGfMYkiO91dBdlUXaAuRxZCl7lJlR0tiZAiiRuG3qCIK+uVoCN2pbI0ifKszhwFg
-	JNgCwpLw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wi6xT-004MUP-2X;
-	Fri, 10 Jul 2026 08:51:44 +0000
-Date: Fri, 10 Jul 2026 01:51:40 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] mm: kmemleak: confirm suspected leaks with a second scan
-Message-ID: <alCxkNBvoDGRG2ee@gmail.com>
-References: <20260709173347.689607-1-catalin.marinas@arm.com>
+	bh=jfyxUe0AubAJFPIEICfIoiV88xma8/wDPcu4g6C27ww=;
+	b=otIFQO2bqds5TppV3bPNDxu39Sn+3vHaEwNqubwZmff0qTmU50ghayrCElwcT2ze+xK056
+	0xz1lJ3XtlZLfOdTvWRkXXW/TkEhd1UcJ9WcpHi91wA96dSj5Kf3pYbqzNHLordjhsiKY3
+	zBh+aD8RGziGV8JnNZ9BsrpTRxorVv4=
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-493c19bad03so5506765e9.2
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 01:54:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783673655; cv=none;
+        d=google.com; s=arc-20260327;
+        b=se5actLLYYNPbLoLwKzYfAP4lvA/vZ11ZkgbnkmgzzXAcFlv869n3VLx8LXa0hj+hj
+         4b9kZrGAJVQm7F268i4f8/IMosls76dRBhDLw5kc84Cb7Z8Dl27iloFvKgm361YKsJ8C
+         QISmOPD3m0HpfqqocpA0okJD9CaWXJCsHTXCp9au9G4H+qYwzKhm69wp3jODdV+N9mqi
+         O6J7gGvX2EkEwCIUOKcVRgDK3DDwkL2CU24LUcy2qqZuUhTFYK+1YVNtlNwX7EgYAeB7
+         2/5NCrABbtMnaBurLYavDs/aWaDlesiijz9d4DuhTRkEW7DLZLnzypSCPkgN+z3FLho1
+         /E/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=jfyxUe0AubAJFPIEICfIoiV88xma8/wDPcu4g6C27ww=;
+        fh=wY469C9s5Cd74e9ykMkiSIC0Mh/ulxEbsGOMfzdUsO0=;
+        b=subUoQqUdpLysRbhawkkmJ8wkXJ8l1tt0psMhQzog1uH2GKJgDPAa3gnPejtcq5Ytl
+         DJCNjyDKLzyvsIRC/uKyT55Xnvq6+6zDWPG+CSqlC3qWIb6RaDweTr27vEDWO0DbgZHk
+         WQfZMYKZfdKZzhLV6w3HMIrv2ouUO1pFLu/xA85dfsnPZkeGAfHR4qSeiBIpFVuXIDdQ
+         c2ShO7lUhViXlIa+hMsF3/znNHzEVcf6tjcXWSM2iQuqGNqz5mg3qfbLFS+9jbR8nzi7
+         ktIxRCFuiYZKAvUo/gyWSW4zp6LriLkOHrH9qfr4RjxTbxqwzUFuB6hUan+A8oCx8dYY
+         pNsA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783673655; x=1784278455; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jfyxUe0AubAJFPIEICfIoiV88xma8/wDPcu4g6C27ww=;
+        b=hrbfdunmAzQc/fecKHVrGQgnvWofNE1tXeZW7V3kVIhe+fpLOo81Ip1bAP+RvnZaj2
+         OFwRSqRTQJ6lx8ooe0Wk+7e/q5zgU94IpxYqxrTJ/uaZIvPTrqDGjAtPRLwhXkvTe+Dv
+         FBB356Kmu8Yq0SsIH2bydXBH8bdZNqFiJasACvEm5T/oILHkcj1AbRN14oLKSWPmEJEa
+         +zpcmhMFoo7a6Lz3D6yaRUeoYIiltOao1MfsUqS0XALYGFukR9Ojz8xK44+VC5+Kv3Te
+         SMvFgV7n+NTNflaC+97ACfZ9qvOBXDzu0k8bBMI6LBLCNQ8s/GoWLRP/FzkHyjgi54eP
+         +K+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783673655; x=1784278455;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=jfyxUe0AubAJFPIEICfIoiV88xma8/wDPcu4g6C27ww=;
+        b=aniEJ5z8EuZmRluTg0spwzxc8fHpH1ehh3iL1FhNywWI17Cfc82MYuJM5Zgcr6evc1
+         cCNSqbKklXFR7rwm2noCNU71qyJNMS1qAe/twNX8tO1Mz2KDlcJTSUQk2TYEARui2nUa
+         AkH4FQqqyD9J+nga+OoGSgVcSQvOg/uc20gUz9xoUwxaFNPnBCj4TUBNxyI5L872+L2a
+         hOroPib8j2e/Nqw6PA3z8NX6c7N//i8cyHRHZ9QSAx5ySpXet9lzvdEIij1wNTxuaZur
+         PPviPnmGqrtmpGEgeM9DnC34woKTkHWkJWPoi8D7xw4YqxEV0/8YS7cz30lM3fRpQFsu
+         hj6Q==
+X-Forwarded-Encrypted: i=1; AHgh+RplWqlo/Bds5bYGGVbnPmvWRJgHX9JFWh8/kx+YhTovvcpMS8euzQYpRGkdMa8widtyzxAD28bm5w==@kvack.org
+X-Gm-Message-State: AOJu0YzQoTkYguuWtdoiHSutQS+pf6A3WVJwYWIIVkqyePYg62683bkh
+	CGCB4jrPNXgomwrFsnqVS8Razo9Hb2fv6sQ0cUIXz8M6o0aColijJ2hGuJa08SuzRPj52pO6CIy
+	S0H5r9vFC/gTg9WK6Wiq3QGFSTwtpaP8=
+X-Gm-Gg: AfdE7clBFp37pHntv9ovt2v/4tGLhxqAhbHPoQkw9Q51GWRCOOVoPo7LmvM2WarMNhh
+	esbK2Iu1FwYsGqqLpucSMrG9Equ6o80v5mtMAI5iO6ZBUwN+9VHMD15H5ZI4HYSA1M0hczidbU4
+	CorxAf5z9yTmL8GdEr46KaIpONMZBA+BbutVQ+XVlx2/iZZ4bV7c/6/oWlo8hnz8c4K4oh6juDW
+	sXz5Pbytlnr7PmcsAPTYeXiUbd0V86iDhODuMJyu6PEts7qar/aQMk1GvVum8XcHOWCxbaE51/x
+	OgNkmsiM
+X-Received: by 2002:a05:600c:5299:b0:493:eccb:8cb2 with SMTP id
+ 5b1f17b1804b1-493eccb8e6cmr62025005e9.30.1783673655004; Fri, 10 Jul 2026
+ 01:54:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260709173347.689607-1-catalin.marinas@arm.com>
-X-Debian-User: leitao
+References: <20260709073823.6643-1-jiangwen6@xiaomi.com> <20260709160805.26e63bae89dd03cf2951104e@linux-foundation.org>
+In-Reply-To: <20260709160805.26e63bae89dd03cf2951104e@linux-foundation.org>
+From: Wen Jiang <jiangwenxiaomi@gmail.com>
+Date: Fri, 10 Jul 2026 16:54:03 +0800
+X-Gm-Features: AUfX_mxhkgYSqJ8_goQZn75OlAX0v0UTx2TdJpHp7v9hd8vfeV3Nuoxebe3-rm4
+Message-ID: <CAHKocdH5kp5kTtZht+v5j-4-Thh40TGvif3=kRMgErRXr+Q+RQ@mail.gmail.com>
+Subject: Re: [PATCH v6 0/6] mm/vmalloc: Speed up ioremap, vmalloc and vmap
+ with contiguous memory
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: catalin.marinas@arm.com, linux-mm@kvack.org, urezki@gmail.com, 
+	will@kernel.org, Xueyuan.chen21@gmail.com, ajd@linux.ibm.com, 
+	anshuman.khandual@arm.com, david@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	rppt@kernel.org, ryan.roberts@arm.com, dev.jain@arm.com, 
+	Wen Jiang <jiangwen6@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A47BEC0002
-X-Stat-Signature: f194ifknzctxfr8nwsuuuk1gwghkk8ss
-X-HE-Tag: 1783673506-786998
-X-HE-Meta: U2FsdGVkX1/oPpScgqvfx27cZQ1fCpOb5CoVn8/qRc6DyJU5qFh9c0dGJD24DpdiL6mGaO3V6H71rQHOYbVdgoomRN0m8SPmWjviNmKdJ1QlfHbwkZt1hieDupPkTng4CZWxDoqEESXcmCisVGz+T8+iakhObIdu7F0eBd49x5DCmXya+/4VeE855gDoYAMamP5krFPZX8G9fPhCBl8Fz9X4XUwjMac3l/Mbpd4lQ15lGvUDCQz1sNriRPdpwI0wg8u212a4AgbFjNWBlt/ANuw37BoapdYgVeSNEtf65uVBggN0PX1A1wGcJQraX1NtXYU/BJ64j15+nuPwxuqRansk9UmBt7gR+UEEeJ0AlUSINMCejzLvt9oxhsBma+gdfbMsE1UZZFZMqFHKNUXDa79eNATi06CxL2yfS98nqkIz9z+uT8XZaWwHWV2YZSrbxXC8sq6jfSFETB10DRWZ4AcNnL5vpS7fSYnLbZsmerVUCvhXzOguFUwapzL6FWHUwZTRFDBvGs8IBcxEBPr9Q+oKUNStqLfJUJByuCOi1/l8jq1OpnEHXDr41eJxJ9lpQQ6SxGhxxN52T4rsPaMspvOX5GC2fTTE9hnzW/w9lTVBKtFSZ5t//Wbxy864RR6FzV8WjVnAWiYYN3qirKSNkNWral3g9LmtmRe9Z3Z2viXAO2p8F9kfGm8n/8rAur2JuC3/ddmO8bfFKw20TXZBkfky0YqGF1RqIswZ84f/mMbAj/oI0V45Cs1Navzq9ZzWVkFbJPGJIzJOPTI1w0LUE0PxF4w53PaV6NUPLB1CcnevwI5kciS5frLwvRPpTWbRNbYN6F0cR8SyphhJxksU7q5ioTklUNyKAMnHkhmTahRw3rKf8pb6JugPVdp8Hs6UoSSQNan3zbqM1sXqYW+ZPVTwZAsYX2kMxeiuHFcmjShH2JJuOtF1lqv4GNL3jfjZd2rYr1oBbYed2BF+Sw5
- GxdKnDZy
- mj2RmWeIXwnFH4NGF7xVLGV/P/H/KlIJSMpXYILSquBv9ClsnJAU/qAKlSXOkOq8NBhy4YfOReEhRGkiMi2OirNlfdkHO4G+4KL74BNCbJVqk/fdGzqUyuhuCmtsrA625CLvn2UjrMatc1kawXQf7biiBp10L/NWsSqcMvbizRe99TzIyaAG7qVlGxO5BsH12Sk0bj/GXP4vU3FQZVn/pA1SKyBb6DLTbf4CZLhkL0Lp5e7iO8UioStp4NoGlRZ+CdYNEylBCk0ZmEearx8q9QPrfB+ki/x55RZ6skzKdqwAv5n0ABOksxI85wJbdPk65qvTAAdzNbg3tlXIHktTGeD7GhaXrU4WcvF2npIzkOobZ5TdF8Ovvh76QFOzU7NLepRhYBcz6lcKop4o=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C5AC7C0006
+X-Stat-Signature: qpn9gk1aa93dwxpebwu5ygjqez7f5c54
+X-HE-Tag: 1783673656-280595
+X-HE-Meta: U2FsdGVkX1+Z+1vQV1mmEX9Jl2lDTxyccKZetWcETfQLxTaH9jFthi8i22INxMwL5PDUQOl77dp+I+ONSYZfEoiWBCvhkE4sQTclkJYuP46E6U1qimc5N57tskOMPDFSH+Uh0HibHo/YGU+XS1z/Gn4RWiTKgGA/gkNnNA+brXTOBhQDR2SHd04raVD2RJBpCOWt+ya55MXDgcZq8OkMBpBRrO6fQlC5zvNEI6EUowsFhDQrCdpM3LrbASxbn1SmOa79OlO49oZTGAqgTlQxIe3Zrm/TxoVc3LwdH7LhPwB26iH2IGhLo+0r97Mj69GR9NqhuFhaB4y2dVjRZ1T10/WNdP+OhkfvdZGMCgLwix1I8nbePUggNeQyaErzlbUsvvnSwMQ9d7K3vqm0WhhtiAF3s0ztmdDwSSMRcdsQHRxph6hB7yblU1kI2qltZEe/4lhq1iI3Jsk9YSUR+/Q3CNCbSlRHZY0sEfSbnapr69UUIktPpLyveduf/Rgz0FJc++w+Gm+9Usn5fV6tZVaHsIChl6sHf3VwN8oGIJtg56kOrVGQ+WN0w7PW6RVaPc8qeY2N3DU7renSl/GmdqgzX2MrsxQrGzVQd5jvXSNTJGY6xIziDTZbp3YaiW3x3Y9clFj68WgDxgws5njxDuoiOeC4opoiZptq+nauyM+a4zUHKTOMKh0DVRjyVqiHVTAp00ngp4orcyh4cl1Wt8bK1MT7TS3EolfIcbQMvICimImK4a50zlrI2oWHw2JPm4QHCFQzg4ctuZsL1Z1xjMGTZDmyd6swAWPpCRyebF8rEwJtHhAhCrncYPwNDB8idst6Fz05MGG36809ZfXs5dBnppWoyG2EusDBPPZG0xdQFUrZDGvlfMi9IhEnxWQwtYDoc3vE9BJU74n2Ka1FO6KlCY/ymj7RCqmny/EssjAE5pKX2k7CNBAe1J6iq03uOGtxfrhsaG4EziEphynzdJJ
+ IjTIZ3M/
+ T2I8QkFSobXIhOQd2KFUG8/8Q4zmKX2ufT7G4KmzfU0IQvc8zXO/bAJjkw8imBUnECMte/PTGwGLlJ+2Nw2vTFDaPlLT+79PozV5G+BHtIFu9e+p1vJ1ntrrg4rH4mhA8n/AwgvEQnMOa+crSFTy/I/T84dk9BbtUFav44jj/NV+XQSaxhae9dD7nnLfY7cmqAA6U1+TGOms8kK9osI38/toZZxR822v1Pn5MBkewltG3N7x+R1HazaxkKEqY/6UQCayuUwlCFuDlQHLAqi4l0n1YXd6f6KyQyXtNDb2LdSIpXZy97vE4SzqxE/9PYmWwoMvb9qCOg/znSBEdYOdSrQFu/w6Z8Y1eKntuhzwanxOpL7PuMIApeVX2rsDLmlXM7TQgHDPe0EI6i34/O7SpPAVCGZ+PRwvbeYbNUQqMAHO7BYzkcpRA44zyrIgeU2CB97gfaDvtPqzde7RcGE6ZmUMT+jNlPTbIikbg0/0xbpDsrK36V14bF2LgWFjGCPqRQ7ngy/GwISOc0kt6yyOg7ZTBMQXb0TLxF2V21L/ji7i/SmDAUDEujQm1HKaX/kScM3d8wq+9Segb/2eGK+nPjJfze71xTiI8nw4x/AsT+Pessgqh7rGwsgd/HhwQJlZiQ0Rl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,37 +141,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 06:24:47PM +0100, Catalin Marinas wrote:
-> The kmemleak marking phase is not atomic. While the object graph is
-> traversed, the kernel can modify pointers, free objects or allocate new
-> ones. If a reference to an object is moved from one location to another,
-> kmemleak scanning may miss it. We have explicit annotations like
-> kmemleak_transient_leak() but identifying and maintaining them is not
-> trivial.
-> 
-> Given that such transient leaks are short-lived, rather than just
-> reporting such objects as leaks, do another scan to confirm the
-> suspected objects. If no new leaks are found during the first scan, skip
-> the confirmation one.
-> 
-> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-> Assisted-by: Claude:claude-opus-4-8
-> Cc: Breno Leitao <leitao@debian.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
+On Fri, 10 Jul 2026 at 07:08, Andrew Morton <akpm@linux-foundation.org> wrote:
+>
+> On Thu,  9 Jul 2026 15:38:17 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
+>
+> > This patchset accelerates ioremap, vmalloc, and vmap when the memory
+> > is physically fully or partially contiguous.
+>
+> Thanks, I added this to mm.git's mm-new branch for wider testing.
+>
+> AI review asked some questions, and some of them are new since the v5
+> series:
+>         https://sashiko.dev/#/patchset/20260709073823.6643-1-jiangwen6@xiaomi.com
 
-Tested-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Hi Andrew,
 
-PS: This is now conflicting with commit 946935b07cc94 ("mm/kmemleak:
-skip the remaining scan phases when interrupted"), which has just showed
-up in linux-next. So, a respin might be required.
+I've gone through the Sashiko findings:
 
-> BTW, I'll be away from Saturday for three weeks. I may reply
-> occasionally but won't be able to test anything.
+- Patch 1 (find_num_contig): Over-interpretation. No new hugetlbfs hstate
+  is added. The extra sizes are only used by init_mm kernel mappings via.
 
-Let me know if you want me to respin it based on linux-next.
+- Patch 5/6 (NULL page): Invalid input. vmap() expects a fully populated
+    array of valid struct page pointers.
 
-BTW: Really thanks for doing it. I will backport it to Meta's kernel to
-pressure-test it and keep an eye on false positives.
---breno
+- Patch 6 (32-bit count << PAGE_SHIFT overflow): Pre-existing. This was
+    already discussed in the V3 thread, and a separate fix was proposed
+    there.
+
+Thanks,
+Wen
 
