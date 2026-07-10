@@ -4,83 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8806EC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 07:14:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8CA4C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 07:21:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 551B16B0088; Fri, 10 Jul 2026 03:14:09 -0400 (EDT)
+	id B56736B0088; Fri, 10 Jul 2026 03:21:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 502A46B008A; Fri, 10 Jul 2026 03:14:09 -0400 (EDT)
+	id B07936B008A; Fri, 10 Jul 2026 03:21:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 419416B008C; Fri, 10 Jul 2026 03:14:09 -0400 (EDT)
+	id 9D0A46B008C; Fri, 10 Jul 2026 03:21:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 229D06B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:14:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 996BAC1FFD
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:14:08 +0000 (UTC)
-X-FDA: 84972002976.18.EA7A9EB
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0F3CFC0009
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:14:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=dv72agwx;
-	spf=pass (imf10.hostedemail.com: domain of hao_zhang_kdev@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=hao_zhang_kdev@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783667647;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 75CDA6B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:21:43 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F162D1A035A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:21:42 +0000 (UTC)
+X-FDA: 84972022044.20.3BC94FD
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 69EE340003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:21:38 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EG41In9k;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf27.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783668099;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=DTERVdrZLZFLb9jkOolEdmjc6s9xd2WMQrsJO/ruk6U=;
-	b=74ElMvG7VcfeQ6zXMNQ+1PNgqq7J3opJvEuVQq8B1G2E/hTu+w7limk43w/1bVqmg2Lbh5
-	tAFKVO6KCNheiXRs2o6hBhJCzK+OVX1Ed7pHTzBUF7ssHJYkQhD6cJ5WrANrYHz2YmBMMG
-	7gcSjbzlLlhqPzdkv4IunCGMLb5h5Ls=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=dv72agwx;
-	spf=pass (imf10.hostedemail.com: domain of hao_zhang_kdev@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=hao_zhang_kdev@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783667647;
-	b=0RLer+lHaEt+5Zb6MW8N2Ika8AZTQp0CIp0u/xbEFlIzAZ9GV8UIN9NDhvDb+YnhYTtbPL
-	a9Vk6juIpy2WYV+NeNhB9cp+eg0hixiHczed8GTirb2znBATTah+vU+i62EbNiq8cCmfAb
-	5Tj23rtj3bD1LCl6xzQXw6lu+ZlVF5A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=DTERVdrZLZFLb9jkOolEdmjc6s9xd2WMQrsJO/ruk6U=;
-	b=dv72agwxrtAFTgZrnj+ut2rHvI72aKE5S3EKUfTSuXhGHov3PZDJ9KfS389p/G
-	Hjd++Ru6hJJUsYGTdJ4d7BC01ONA/IlLNptlznnvffvGW1teI7MD71Snl95LKNNz
-	Ulr/AQI5Loj6Y1dnaOhdt1SykTDGPrW7lD3CRWqeT7XsA=
-Received: from zh-pc (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wA3+Yaom1BqiseaIQ--.9100S2;
-	Fri, 10 Jul 2026 15:13:46 +0800 (CST)
-Date: Fri, 10 Jul 2026 15:13:44 +0800
-From: Hao Zhang <hao_zhang_kdev@163.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	linux-mm@kvack.org
-Subject: [PATCH] mm: thp: unlock i_mmap before releasing split folios
-Message-ID: <20260710071344.GA106129@zh-pc>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tMZA7Ws3rlw1G0ZXwy9XoS5RDd2g8Xl6+8EcJ4VHVYs=;
+	b=JPMf38RZgPDJzwVbt0wVojjYjitXcS9WixLw3qnFygxyauJ/IPFlz81o7dtyzOR1VlRhCs
+	oVXVDH5WmhTTfZheelG8s5lnp4PAzxbFrouYsZWo592heQCNEYaVr/4cWCKelom4p2lVNH
+	XMg7/jE76m0HTNpjLyqd4/6nD8rfeYw=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EG41In9k;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf27.hostedemail.com: domain of oliver.sang@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=oliver.sang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1783668099;
+	b=5kcOAdSTfIuvLIuWGEbGyD2s1CB2G97X8PCK70vR0cgjLOxao2JDrPjlqodgTflyHDqED3
+	cTV2/7DqKrujwqH1AAI2+OJipR80EotKfOwpyXFBhpaXEP4DRTc8MJ/1iwVFmQWsZvWH14
+	K5jFPxc8+pIpSwUM7BJO1ZAxtQTJDPs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783668098; x=1815204098;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=25xX0HsOIu76MVNpvrQBfeVSNfJBMCD9X6e3Gza6uP4=;
+  b=EG41In9kv3j7r1bWRcc3sX+RNNogrtyChwv9YgQM89bzLMR9nYsj5htw
+   S9lVBY2dRXDK9F+pnfRN7yYlXHjzNvizC3X/SCp22vt5wIwmBp1jxU3sa
+   pmJtWrhqahes0KlECN2IqywyxatGKnaKdbI6MZ9xnsewaOX8vsHuJsD+h
+   xZiN9qIpRVezIU6p0pHUqzclDU5VHJAlcEVNmvj4laL486be70h67dmEf
+   7uN/KJFoYnjJ9HD6+AuC67qV8zXy9MwBiwJ/CBftgdwt8HamLb26hsD3K
+   SvmF9S4+8OR3eye51qoLS6H7kaeJLN3zSVRcltirctYImu87j3eEgxO/g
+   A==;
+X-CSE-ConnectionGUID: q/2bLcrWSXaSqsMVLg3Pgg==
+X-CSE-MsgGUID: I68nySQwR32tcjbHSDJ8nQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="94969562"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="94969562"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 00:21:36 -0700
+X-CSE-ConnectionGUID: C5JRznD9RM6xhhrdNMVWVA==
+X-CSE-MsgGUID: 28/TgM/1QLKRgyFmibqPfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="253076319"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 00:21:36 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 10 Jul 2026 00:21:35 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Fri, 10 Jul 2026 00:21:35 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.44) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Fri, 10 Jul 2026 00:21:35 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VT39Tu4KmU9GqtBnj8N4b4IEs3xBr6GyRKvL6nwHs4cATH8K+ZqJx26YCh0uEWX0f1VpIIXeqoOqJKwfGJ8P+tFe7XYMOtydISnBRyUbczNCfW8zQKXP5A4sRYZmzWUxTo0ufacxmpAK47CceMk8Hb+3mfOCO0H1CSWnlTIfloW2XHOt3MtzmoLIoqnjrcqg5LrR582+0A++quBASTVmEGwjTAWTlCC1PGfDk8LDqkqgz718ZyK+6kIZ80s6Bx/VSPq4dLFBULW7J6nImpJR07T0OQTo1Ydt7AMqk5GEe7SLCl5oS4/1l5xWqAym+hbcwOP3W7jk+QB+Qat28zG82g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tMZA7Ws3rlw1G0ZXwy9XoS5RDd2g8Xl6+8EcJ4VHVYs=;
+ b=WgRxSdWv7leHEJDAmhPX2XqobspCxJKJzPmi8cZBuhQJHFbrpZI3gjKosnWoGYJzVI6RpVkBgoPh17OFqqn8x8O4Vm2ThHDkai5kMo2DCzEC5KQ0EhdSlK3hvf0TdIMqlQ1JXwi/UMVlPzxEw1I1WHSeJ8ft/8pjEJCytLbshl208s/zhY2qssHeQy0OMaSYIsQHYX0Db5ETDUeNQcjscAwUAmF+Or88HmqvQA3vPOp+LOu7gRsRXTkFgb2Or5q1KG9f+JU62zdt/Bvl+hLFWU0VMi+YrKGIdvn8oyfZLzikRWoM1T9BK0OqDAUg+jWrolad6JmA6BV2NlOUGTsDeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB5832.namprd11.prod.outlook.com (2603:10b6:510:141::7)
+ by DM3PPF31D2DA56C.namprd11.prod.outlook.com (2603:10b6:f:fc00::f18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.15; Fri, 10 Jul
+ 2026 07:21:33 +0000
+Received: from PH0PR11MB5832.namprd11.prod.outlook.com
+ ([fe80::106e:78dd:4c96:d707]) by PH0PR11MB5832.namprd11.prod.outlook.com
+ ([fe80::106e:78dd:4c96:d707%5]) with mapi id 15.21.0181.014; Fri, 10 Jul 2026
+ 07:21:32 +0000
+Date: Fri, 10 Jul 2026 15:21:25 +0800
+From: Oliver Sang <oliver.sang@intel.com>
+To: Harry Yoo <harry@kernel.org>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>, Danielle Constantino
+	<dconstantino@meta.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+	<linux-mm@kvack.org>, <oliver.sang@intel.com>
+Subject: Re: [harry:kmalloc-no-objext-rfc-v1r1] [mm/slab] 6bc21472e7:
+ BUG:kernel_NULL_pointer_dereference,address
+Message-ID: <alCddXaJ4HkjZNXi@xsang-OptiPlex-9020>
+References: <202607091002.cdfe5a08-lkp@intel.com>
+ <afe80d38-950e-44d4-a729-61aa65d3c117@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-X-CM-TRANSID:_____wA3+Yaom1BqiseaIQ--.9100S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF18AF4UtFW8WFyfWry7GFg_yoW8tF17pr
-	yYgrZxGr4kWrsY9F4xAr1q9r1rGa4Fgay5CFy7tan3Z3Z5X3W7KFW8AFW8X34Utrn3JFW8
-	Xr45ZFWkWa4jv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jAwIDUUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: pkdrs65kdqwshngh4qqrwthudrp/xtbC+gq-smpQm6oGRAAA30
-X-Stat-Signature: omgdtyib3g7mmjbh41wko7uzg9omihqw
-X-Rspamd-Queue-Id: 0F3CFC0009
+In-Reply-To: <afe80d38-950e-44d4-a729-61aa65d3c117@kernel.org>
+X-ClientProxiedBy: SI2PR02CA0001.apcprd02.prod.outlook.com
+ (2603:1096:4:194::10) To PH0PR11MB5832.namprd11.prod.outlook.com
+ (2603:10b6:510:141::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5832:EE_|DM3PPF31D2DA56C:EE_
+X-MS-Office365-Filtering-Correlation-Id: 913691ac-0bc7-42d6-b4cb-08dede53de4f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|18002099003|22082099003|11063799006|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info: tgfbbXWffl5Dbfty/8vlFbAWLZneUPOYSBMGo0+XH9/2q3NvGhVib8pJODAzh8DatEqsL/zKuyXnGAKXsz6qmDkFJkZc31KJxPZSG4UFuqf7/Iosuw8Vc5aJxcCh+JKTCT7+x2WBndU//sC+bSoDKc8PgEh0YKA2EcRzXWYQx2iEZP5YHdMpM4y9GCHL9Ybfbe00n5URDkouhOORocR8RfmH59HoLrlx3f/e5nyFzWwqiunPEujlOs/Yn75MGHhaOuafZiNInUF3VK6y0wkoTwVJlG1XD2NHmlWbrPVAjgK7ZRhl26wg0vAMkNpcobH9NVunSN1nsTkGVqMKtprLRLA4cg6Rmga5icb2TZs5v+d6e53cSLp3kJsh3pjLEMJr2ZBJtF35Uz9DvJO+15xJv5bt0YwP8hblTz2EpTv3WEvYqPO2PHiykPHY7RY7lnPiVkZik3uRTe8bPerufFCw4vy8HXf25rrZ4vW1BneGdzWYPwsjkSTJ6kP6rHOYhE2JzGrsFP4QUegBaTf35l8kPnuqs0mYpFU/5Xyw2RkM4hhb1d8niUlifFwtcOT3sNy3EDx7CejsOVOC1sr/1bGhQtOcNhOmoqGbpcOfkXzrNy1aASK82cDmzZQsuc7A+0Tk8lpHbB9SVKVx+Exba9dnn0m/8PBEics402dCTlsbjW4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB5832.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?QtKCggzn+WOe7UzlTeROOAtI5N/0pMM0PCU43+IZezIA2v7SD7QXPfLHDil/?=
+ =?us-ascii?Q?lrvsM+qRr79P+xeSMj2Q1cP2/aShXxuPGYhNKMdfevV/X6GLaMpcAeFTKOI/?=
+ =?us-ascii?Q?HHYUpKwaYYZl06mRlAvsbcto+37Zuere31KKw8sdGMA94zZiy2CenrKTnodv?=
+ =?us-ascii?Q?j53pHIsZqSO9RkNFUma44B+lteQA7DciRMm6YQwyg7D/jvNI3ioSPbsUeQsh?=
+ =?us-ascii?Q?KeUzE4FRKH1aub5IKEOQiClt/pRvriI8z8G8RU4ESyayFePdwK2B3JvE4VC4?=
+ =?us-ascii?Q?eNHX3CNBwE71mSAwM3dB7LF5IazaPVvf+qGqL0KY0AtW7iFsrNBdFPXzWTAY?=
+ =?us-ascii?Q?49QXyzocs1HEtpKfeJS5pa7BtVok7qUz+vbhAmvxhvmrZ1sraVMkI0c9pGv8?=
+ =?us-ascii?Q?61HNNpuwmQ9nTgf6p9YTqFJSFfI8ACWTbNYII/upUx7m3t0TqhsZ5iVLZrys?=
+ =?us-ascii?Q?uJkZK9ebYlDT4h9jWGL/QWc8BE2qD+awlkrbCKiQHW1O4o6S55gIHPuvyaL/?=
+ =?us-ascii?Q?PKpo8kWRJverqmi6LsqxTL4g8SvpQQV41UeyIPQAz486gk6DIwgnUtbj56ML?=
+ =?us-ascii?Q?qAhQsHxZqkkQqxEvDbKBF2L9eU12mrUrz5wkXNjU+WXnC8/9r4Q15x3hz7u8?=
+ =?us-ascii?Q?FASXonsicWHVhh25lUY/FIHwvrwNo9AJjBEHnEhBv/g+xP/nzLc0JMzoqPRm?=
+ =?us-ascii?Q?TPEjzTkcRKbYd2FCQIpYbJYlzff3NVqRVFKVcnCdI7BGYJwN84kzTdEUCvvx?=
+ =?us-ascii?Q?t8FnfK7Eat+27VJw/FtcBWZGuQqxGNQk8fMsq3OWVn0PS7iMEigBbL/Rn3H/?=
+ =?us-ascii?Q?8q2khkEUm955r8vplZGHb/bvH413USVjaGLNiuRwLDTfsk1Z9MJ2KxRtCFX6?=
+ =?us-ascii?Q?hzTIC0xQ2Fp9hUXr04j2Dbl9gTEc1dcoec3yWOBTyaQTxpoRNaEbVLLxFOLn?=
+ =?us-ascii?Q?nAbmAiYf9SqYGBMq4Y3NPpwQH/4Cn7bVD9y9pHnBRILcxgD27ZxDwfPsmsuQ?=
+ =?us-ascii?Q?KeTih7fY5Tuo8/2PIlmTlEXgBHp2nJr5vUjgUrroc2Qb01npVAt4tXzWTAc5?=
+ =?us-ascii?Q?gWfkQbH3rIJ/2pgdKq0cGYctoBm66FcHpOC3Z/w8zw+FBBj5uAnahnIlN0lZ?=
+ =?us-ascii?Q?zI3XPsfyl09Y2HbU4caOgk6SYYuvj4K52Edi260cmAnenaeToDIUqZM2fcdq?=
+ =?us-ascii?Q?/4pjapH4uRzJMMgiyGD1vhfDaTdIvY4gAX/KKZx/Oj1syAwseg1zrz2ix+od?=
+ =?us-ascii?Q?mzmW26S+Z155RSYvAKVE8xveW79kqGAbk9VKGPs6SUYvvQ6z26niEDmTMiXe?=
+ =?us-ascii?Q?hL11tJTWrWaYCfyPAQgiVeRU/GVajNe7t0a2yXgcbw4dbUWS6LjnWifZPkhr?=
+ =?us-ascii?Q?fxSBkfVGuDdI4MtGaPSOjdbcIF1GOpTxGQYV6Lp8C33Pj/HB4hSvIEwMrnfU?=
+ =?us-ascii?Q?o3a2gi+xIvyZhuz29OWdqHpmEhFfahXcEdDHbggfWdl7Fd/7nqH0mzdUVCGe?=
+ =?us-ascii?Q?3U02OFq7z1xb92/Oy0wo7zs7sPdtbwHG7/Y43mCezNRnMnGIF8irHOoLVLVN?=
+ =?us-ascii?Q?DlfbmiL6bP+kzFVlDPMZ8j4TF/8QmNvGecReG4jKfT0kMMhfcjeEwXcn9KRL?=
+ =?us-ascii?Q?rZVc+BpbNAooe6xp0uzSpx9E0g8svRgdMf2NaSAplee/bX1mpprmv84NGOqL?=
+ =?us-ascii?Q?uR4w1ItV+j/YfhWgnx6Ty5Zjbxdcicik5liIslXLYa9B9STUUlcSkAKP7UVr?=
+ =?us-ascii?Q?jJTEdIHJRg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: AJGV8Nc0/KA2bm9NWbT08j0WqBREf7qGJwwocBIB9bljcDBZKSnoz+hUXVgFZnsMuVIEdWDUVg9g0HTReRcNP9wHyoAPXvryHHZ41oIJlG9MT9cl7ZzyHjV8897PIE0NResQkJFwJk8f8ECsskMP/jo5fvsK1gWPgJNf246I0348fpxBtzpgkHSSvLVTO/lqwrJzw5tDsJtNceNFmPLhefeXiE6oZFPJR0uSMbrE462gCN6q+QdQcFvGPitmVf8JoHSnJk90PpKcTJodfvx67j14l7GYsELsuTbjiis0R/+zIl/eea9SOFhNAzQd/pRoX3w7pxzR9YXcfs81YAVAOA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 913691ac-0bc7-42d6-b4cb-08dede53de4f
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5832.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2026 07:21:32.7978
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Fph17Auegv/P1A6YQXMCUkhryPr5nbi0zSI9gQYuYDjNx/SCrq5Z3W3vg0CeSF875/JUfP9MSiS7TR3HiDnGMA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF31D2DA56C
+X-OriginatorOrg: intel.com
+X-Stat-Signature: iiiswka8it3taqsmwy3hp5m6waigp7zy
+X-Rspamd-Queue-Id: 69EE340003
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-HE-Tag: 1783667645-598152
-X-HE-Meta: U2FsdGVkX1+Q3lVeACe5cpJx67Tvlx6emjI9pQrYCgCRGgMwR7+lKZIrGJoG9OQkoxiMyUUgkT8prcR0xlN8pjtM+Pp2ioVQ+KefNve+yUUzBLi1j8KNNKsrI3+RUaFGdZgwmBhOdmITd9rAUIxRwGkUXBQqGqkmMFpuSyLSKcKZXYVLfpV7uiVDB9fZbkcnKNxLYUTtjA+kQjtWtO30bf0fCSQg9qRq1q8qG39l3axG2WA7kTTPiKvQZF0OqOj3fGco8J0ge8TubA17FLKal6HNyMu3N4i73TEWarp+N2ZcGKfOtZ+rRtpqRgvIK+pwGevnmu4OxfjSJHbUxcPE9K5B7Z8N6d2kpI3iWTWOWhFFGoqsPF5Fhy6i67zrDbnvTnqK7tNZT+06OH0MnvEYwqX4BzuZh3QgUWHhANBsX56fiI2zqlKm0IQe4yJBw+ovjTe8Ziyw9V4d4NTp1jmqegFF2lYZSmY7/3pVO5PZiBE+65Ffut1LoD/t6r9V2Kgi4w+ZJn8ZFIB47b2N0GmqeHj3BtufZIT3HT17zTSaQMP8/59BNXXD1kjJ15q7wQ8Fa8dIGO+taHDR1GtVD26GGqUFc6seIjX1LuktqvG/0jj39VXc5G213wFlp01pFunwfmqO5ryLyQwSpf72lVY43V/v6Li1Pb6rUgr4W5cThh/6LZ/swGAzZ6vIRQjgjFrkINGd8seWZVhFlUCqBdKFUbW9MudoFEQUCh3EKDgBOkVx5pLEKGX0iMn1el8+A3SWJNFzNF+mj6v8lhiEW/YlYZiRuG0aJDxIC/Wj6hqUYgssRxIYeNkgdkg9i2l+I4w23uiRCtcA1QYj7ROT3AEAR13/mvWAxiI8WmmKN096NoF/8M9UT40gdhu1A0WinipCMAmITmcnbPVOgUk85+kpvXKLGS6HuQQBixq5BoV+ZHfWSqHvt0s35tg0jfcHJmjFZMp/l0jgDSkzxdPU4Hd
- wFHf+la1
- eXE8mKmQPnoatcBvQCbkj3Dxc+9db3Xud/WyMhcBcPYnu4sW9fSBhau4NudgixBW8XX16pUk6yExZkV9M0ZmOY6biYWa01vjKkVedAKc7ZFoctcsp4OqVBguGnaEFmkS6H8dklZK0t1TqtpA8vy4jqVUyLlgApRCW0dDYqNahN9QAdj6W5aIc22Exs93dsX/3pElZ9AwMbQqAiYV8wU1KnhHuoVbS+dpOaNshmHXkxI8+rb2CChf/TxDMzUywh8wsofrbNlCc95/8gc6Kigi76uwT2fMIW8o0cjTTaVLUPa5BiMriCBoVM+cWnFRosdz0swQ61mc9a6Kg2XNCErR+/8cMXHDvUgTiBoHEJGBj/B2IK9FkoikUjfN1zt5JUgf0Vm+O
+X-HE-Tag: 1783668098-478160
+X-HE-Meta: U2FsdGVkX1+4wRoWlFpr5fIHIV48YEWQm0R+v4JBF9ir+6rJTOMd2lyaNfiCxb0w4Pgv0DWqT0eq9htaXEnWo227srZyPMa1uM4T/mXFRKzM7ZnrYe81Y9NPt/KHJ5pGxujLXpCIsxA0F1EPeDAPa/8XZAUjy51yrIwGSwDapt8EheqFIMI3PixSlCc50Cvig5A3YOLQ41wFTnq9hPVqJ6H2lqTO/ZJmchcRtjsA/F7DYUullkEl4VWhhTsA+lECwdbywTnF2/CtIeKbzL6GCKrG1WtyN7N17IXe57gv9K0/p0azQ/6mRKCb8bUtQJFgFPyBmrO1f9XH+DDXz92v8i9bkHM/PKwFUp+zR06DvW0+4z0d1oZWXRnfH2+8K5xGjSqmnm1OBMpFnKGwNBV7VZzxz8xZRCjIyWDx1DC6k0xEtV7JvPY2qTd8IgX/WhMbQ5Igs5GOIaf/4IVzYqQoHrbs2482mWEMBtz1j+5IfOwM0VsLtaE6xYTZw5S6YvmbZ+ykKYSkdPLUYTOAgmO7FgFVjW29OyhzBmRbtdQ3SS24uGoYUcxmCsZ86xT9CPn3bBQ8Rol2FTrxZEiEzmLI+pxaIbxAF72ZwWLxxYohyS6od8fh7krZUAKMWwa2JAdQ/TXA2iSPrMnVZfh0cNfCUxbknG8V0t2Bk/BG0gdNvWMoLeLlcXQEU/hzwhwolCW8w105vlNu0qvuSfVai4xw1QxkCKlDDEdlb7j4+R0063KSCycUw/7skkjeAaA80hLEe21jXwVEkXvlIoUu8e2nizKj7W7CAqUiGYWzDpiU4p6L9l/TEPHE0i2LjXdWt4ncmNYR2zMtcI2fuwfeGq5bCdizR5MfUL25lQmFtmUxb0VNNuhY8fFBnRRaSCUtQhmMsxsz4Q1ho0nB7ptU8RIzgXe7lakv7s4eySqJMZLaGN6ye/y+O5SXwRCyl9UvX7fe0Kgb/lwn9HAsCfiy99D
+ K21SaxtI
+ f8Hb0U1hdmLj8BASlrHAUky33kSNRKuvqKmZn52RW0/AZpfLytdr1jmI+Yh9hZ+HgKE0UPrIfVV4LzBlsOTKs5/WcxFJWWmXMe5z1gfnCDXKKp7ABbpAYH0YFF0CtKKXQCxbLOnHZXq4nUZcBab6MEnQc4Wmup9FUz2PQPSA8YRGn3SRerSAnIRJkPYPa25bgP6CMjTFh8KztXx/YRBIBQkPxn2/GklG8giZg/OaBfZSl+AqOfSzd5cqhEdoGjMX/JKMMQUvb7x/lt5FD4OpCjASqZi/Zdg7T55Et/yvsNyNOuK75+X0jrT2LFydX5uMM4BHm3wsOIFJQjkWFecQFk18NGSc5jMQ9ZURx6S7SnSXpANDvChOI7Qt+wcqSzQg+E8LUhS7udC2KuNh5PuTrCioYy+bjYOFg0pq6fUPOP3M56Fm3PcedCzkxeHE/dUHRH4rxrop2DeKiQtZpfTqCHk00/mtCPiCjymDobuMxhLtScYltnF+oIphJWkOxTw4S0KCOW+JpItIN/arswLY1yl4A7KGFWIfkfDQ6VTGJp43QUi4gUOEbbhelXyavGZPIKblZ36aFf28tqBk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,71 +192,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Zhang <zhanghao1@kylinos.cn>
-Date: Thu, 9 Jul 2026 16:30:00 +0800
+hi, Harry Yoo,
 
-__folio_split() takes mapping->i_mmap_rwsem while unmapping and
-splitting a file-backed large folio. The lock is currently released
-only after the split folios that are not returned locked to the caller
-have been unlocked and put.
+On Thu, Jul 09, 2026 at 06:26:54PM +0900, Harry Yoo wrote:
+> 
+> 
+> On 7/9/26 5:48 PM, kernel test robot wrote:
+> > 
+> > 
+> > Hello,
+> > 
+> > kernel test robot noticed "BUG:kernel_NULL_pointer_dereference,address" on:
+> > 
+> > commit: 6bc21472e7eb9f8c771ffdf86266aa6d9dcb1dac ("mm/slab: prevent unbounded recursion due to obj_exts in free path")
+> > https://git.kernel.org/cgit/linux/kernel/git/harry/linux.git kmalloc-no-objext-rfc-v1r1
+> 
+> This is v1r1, and I posted v1r3, because it was bootstrapping sheaves
+> for normal kmalloc only. This crashed the kernel but was fixed in v1r2.
+> 
+> Apologies for the confusion, I discovered bugs after exposing it in my
+> tree (force pushing isn't great, you know...) I should probably have
+> deleted that broken one, though. :)
+> 
+> Will be posting v2 that fixes false warnings w/ memalloc profiling
+> debug shortly.
 
-That leaves a lifetime hole. Once the split folios are unlocked and
-their references are dropped, inode eviction can make progress through
-the final page-cache truncation path. After the folios are removed from
-the page cache and the last inode reference is dropped, the inode that
-embeds the address_space can be freed after an RCU grace period. A later
-i_mmap_unlock_read(mapping) then dereferences mapping->i_mmap_rwsem
-from freed memory.
+thanks a lot for information! sorry that our bot still cannot analyze branch
+version so far. we will check the latest branch in your repo before reporting
+in the future.
 
-A possible race is:
-
-  CPU0                                    CPU1
-  __folio_split()
-    i_mmap_lock_read(mapping)
-    ...
-    remap_page()
-    folio_unlock(new_folio)
-    free_folio_and_swap_cache(new_folio)
-                                          evict inode
-                                          truncate_inode_pages_final()
-                                          destroy_inode()
-                                          call_rcu()
-                                          RCU callback frees inode
-    i_mmap_unlock_read(mapping)
-
-Release mapping->i_mmap_rwsem after the page-cache and reverse-mapping
-work has completed, but before unlocking and putting any of the split
-folios. Clear the local mapping pointer after the early unlock so the
-common exit path does not unlock it a second time.
-
-Tested with syz-repro on the two available crash logs; neither reproduced
-the __folio_split KASAN report on the patched kernel.
-
-Fixes: baa355fd3314 ("thp: file pages support for split_huge_page()")
-Signed-off-by: Hao Zhang <zhanghao1@kylinos.cn>
----
- mm/huge_memory.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2bccb0a53a0a..fadc067df179 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -4109,6 +4109,11 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 
- 	remap_page(folio, 1 << old_order, ttu_flags);
- 
-+	if (mapping) {
-+		i_mmap_unlock_read(mapping);
-+		mapping = NULL;
-+	}
-+
- 	/*
- 	 * Unlock all after-split folios except the one containing
- 	 * @lock_at page. If @folio is not split, it will be kept locked.
-
-base-commit: 0e35b9b6ec0ffcc5e23cbdec09f5c622ad532b53
--- 
-2.15.0
 
 
