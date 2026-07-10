@@ -4,120 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDE56C44507
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 15:02:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 848BEC44506
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 15:02:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C302C6B00A5; Fri, 10 Jul 2026 11:02:00 -0400 (EDT)
+	id 85F726B00AA; Fri, 10 Jul 2026 11:02:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB8D16B00AA; Fri, 10 Jul 2026 11:02:00 -0400 (EDT)
+	id 8102D6B00AD; Fri, 10 Jul 2026 11:02:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A81016B00AD; Fri, 10 Jul 2026 11:02:00 -0400 (EDT)
+	id 701CC6B00AE; Fri, 10 Jul 2026 11:02:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 854B26B00A5
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:02:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 228ED169679
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:02:00 +0000 (UTC)
-X-FDA: 84973182000.06.EEBC681
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 701CF1C0010
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:01:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Aezvcf2o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 494166B00AA
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:02:14 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D077CC360A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:02:13 +0000 (UTC)
+X-FDA: 84973182546.12.05D567D
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 32526A0004
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:02:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MZROCy6l;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783695718;
+	s=arc-20220608; t=1783695732;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nv6v5Gy5ZQKCjEDZ1CZd677nx3NlM5I4XdPHxBdo5us=;
-	b=4B9f8Ncea1URYMczqZsJ3iBXgVunurY/h4cVB6Wb7neOLXS63LQjXsR5r7n552jJdQzpB5
-	/kVJepnuz4womSJ18s2uy8jD0kcSCDF2TF6c6tqMjJ0Op9R11kPZvJO0coi7vuw8AY37kf
-	vVv1AsMupkoLNn9plnmOrwqL7d7lYeQ=
+	bh=aZI5LYV42PS6biPr4EpPtmNA2/Ct3B0vmxWhVv67hMQ=;
+	b=Pr0W/E941YUXXK56xMKpJgUxb30U+44amu0mKpZd21PiSqmjuldKQvGZFoWktEedaofegs
+	wz1FI6/L3cZsMTywvNEEuc+cg7uKkpwXz/U/DL1WAaPbhroe6pSo6lL1jkDYrdUreJ+ujR
+	dhsHWO8IXWXeFs7BAlR2lMFc6IPaG+g=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Aezvcf2o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MZROCy6l;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783695718;
-	b=zRvCHF7ClSyjE27VjwBFFl++EEEqCeLNcoRMRsfjx+jguT4QfLUXM45ZTezClcnPDMhZcn
-	FIdDUPy3NNxuCQde2NS6eAtBhLloa4oGgMmGe5xlEIdU78BubR/gXsWN5QxgR/5F8V7apR
-	1B/V20lRlb2PsYD/2QbfZRQzB2SdNWs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 37DE644A58;
-	Fri, 10 Jul 2026 15:01:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E8A1F000E9;
-	Fri, 10 Jul 2026 15:01:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783695717;
-	bh=Nv6v5Gy5ZQKCjEDZ1CZd677nx3NlM5I4XdPHxBdo5us=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Aezvcf2oBz8R5O/JgeqQKn1Iv07D3k4kEuvwCc1b7Uv9q44jdZfUS20v8wyrCa/9F
-	 sFEfI7dW7gs9z+SsSfhJ8kA/ge/LrGSSz9zC3Je135DOXWvwgHKHjr0HNZUKiB8R0Z
-	 6ZFI5o7wwOhve66iKnNqXpiMhf7SJFuqNWUQojN72CN7vt9E+8N+ylqWmq1V8VELbe
-	 6ISmJ6bIDd6gomwGV7FsmpP5iGhPAK7B4N+ljOCC/csygDMZAkTZJGZNY4oR569umI
-	 ng8odBspjBH26Pq4TIGI6qDk3zs12pR3kiMN2IWrXV9IPeu4GxV8o5adjm1flT9Viv
-	 C2o6tJaaVjqqw==
-Date: Fri, 10 Jul 2026 16:01:32 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 19/30] mm: use linear_page_[index, delta]() consistently
-Message-ID: <alEJP-qEgSIUOp38@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <bf56e2e98b512962a2fb88900d535a0e9e6769d8.1782735110.git.ljs@kernel.org>
- <ak_EivwcDDdn1Xvp@gourry-fedora-PF4VCD3F>
- <ak_E1Y-D2Twykusr@gourry-fedora-PF4VCD3F>
+	t=1783695732;
+	b=IS3ceh5Y/dsMhC4Qw1jxMKhg8ofe5VdEHm551jRx2jv4key1lOkI2wmI2VC3LSzw9pB687
+	uLIwoWNI1kDaqdFY/pWYTOnApqESOkKJQ/v3+wCUYD/SlpA4EwyF0bsRGQOAXec8TNUz1T
+	EucxfL+iqtX87ucNJ5oNMlDdFGVK8so=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1783695730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aZI5LYV42PS6biPr4EpPtmNA2/Ct3B0vmxWhVv67hMQ=;
+	b=MZROCy6lL1QQmCPfIUisZeY0kM2GabQXwOtIPP3A3cm+RMRXSOgYac6UptYGQ7VhqXNeyw
+	wtutsvb8aPqVZi6zc3EgSwoO0ln7YS4KO4nhj6JIKdxo8xv2KVisPl5jAXmGHUZKQ/nqtB
+	2NYd28az7X/hUd6bbc+c0FbG1Akn/0M=
+From: Usama Arif <usama.arif@linux.dev>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>,
+	linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [PATCH v2 06/10] memory-failure: Prevent UAF in raw_hwp_page list
+Date: Fri, 10 Jul 2026 08:02:03 -0700
+Message-ID: <20260710150204.1887475-1-usama.arif@linux.dev>
+In-Reply-To: <20260709184740.1286561-7-willy@infradead.org>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ak_E1Y-D2Twykusr@gourry-fedora-PF4VCD3F>
-X-Rspamd-Queue-Id: 701CF1C0010
-X-Stat-Signature: jxks3fhhezcjzwe3njdm1dspsokckett
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 32526A0004
+X-Stat-Signature: qojse8qu4zzxmce6yeizb7b1pcgkekgc
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-HE-Tag: 1783695718-477797
-X-HE-Meta: U2FsdGVkX1/3yrp3twEeCxngovmo/4DH58/IzN9vjcIfgsG5yXi2BjZm+7kZs/LkttCw1dDFjh4jybuR7BNMB8dtRSbno0MZuEQuDP89z05q5iU3rnA8ZKSlXtS12HmGrk88y/tAE79g87tLD1e/LKVJ1P5Pdk58eguwNlYAyuaxCWpecrPRXsi4pMRiZTvO+mPPoKkwYJklm+87h1SDC3PfdBHqfmbrg4BH5mjEWP5C+rnAO5jSD1ctxJLx/qpQZU9LJ0I0uDgKyEt61MttvrBoB14t8HW3pNofv/EzbEzyM5RgONZ6sx1OBqsan9Jclb1iPvWDsDxX1nz0wBk3v4jOcgvJnZALW/NNFWE470TBWh1Hsl4Egcq6sf8W3xsNF0jnNzxKhhBaKNxblM+WRJrcdtxgO9+QhpEeaq31sn5H/ZzlIhSEdFCiLc9rwdoL4FedJwm96ao9ltHX5Bgqd4vbCUz4ycwlXjRu9OZ/inXwJqRoInpNjvWXNoI0/0avasMgfYJD9JGlx+nQCKN18/bwMmJYuiczH6AYbsePrHGt8DwBQ8srdlE9F27aBHN1WU23IW9B8Lalbdxqp77kpdSUMV/LnoF3BZpnqErY34boZ8vlqrrJiQuLwBkq7mkJnRP1KGCtd64fdIlMuSZy1vMREdzZ+5Y9TDc9xWAibvxZfYBA8bUjDS4Xul/F+Jod7nzXtRL2dqsaEOMfOlfP8tuYuvX4XcDNjJhxLo/egOBjQ1aj3vEYjNwMJBR3Fa+oK4KnD4jUxW4INhXZDvVoJogSVkmK4aLm3eThXQXYzN4ogt3crtefcWAr5CJih/+xsSOqFxJlrhN+PvQJP2o0aQQMiGIr0M1sWUg/eFoOEuQ3cjtMo4J+XbNncEkmrla0XATx8O3nsD06ipp725OntGaHnhH2/RN1fQEQDoMDjqhtCGP4eJgDvByyBZyjO4+2g22tXTwEpA8moVWi5Zv
- XBAF+s0z
- 1Mie32l5ga2JlJE301Z1mbQyCWh7gRJSNjoFuOQ4YWHfhzZejdRR577jlZ3f/y7aa+Sc8/YKF/hS5bCZSBeZK3WYlsF4cYXq2VB11dk+hXLHF4Izdp09QZ149yBgjnwSm7xZFS78N5Y2BS/wO9TdZ4uyAC4VxpIHExoNq+EVh/A+Tb7Hp8F1df5uaGpyd9+7uQJcPrbDEm61DVj9iDCgS3uTss77vJdwQ5pCI4naYw41YVx/Ep/m1KtGdfRv8Asb+BpQ2o6cvjsmtdhb1MN50QpncwDHxN3iIZ4iZ49kL7KnDf2wxSy6+11mAeO8PbtZbU+eBqxVnZakT+mjc9dy85sauM9jbymlvmkfh/eczJZ4y/pcINwj/vQceWg==
+X-HE-Tag: 1783695732-21688
+X-HE-Meta: U2FsdGVkX18B7SyawcR4gvuXOIMz+6YmLmSb/bvo3z13u5HDLUDStCUoYooWRAdL9TONOXxA6Hkwkij7xmKnhhYkxCOFFb3ocS13gi7O1JiL69c1VeozSrjpxFh5tHDEenuWxgbXONaQCLQLmNIjGRrbqrHeE19lep37FNIaViqrbT+DKYER+IDVMNKwgXwNTzoOCBeW+f3F4gjsBRHyUCyhZOaUIG6BuABquZQoVsoQbRn3MCVl8pdVfQUcqcOpZzr9OX0OoXnRc22UJURwt+p/Q7fBtpTVsl8TSD8sE0HZpLxjrSDQFA/7hiXjPTFM21pXe7js+SV6rLkpPWIoHi3aIZRmiKnqBvPCxmhpFlFQZ10PXvSsAXo26CLy2Ej3LDf1f0W9rgKyNwwy2FVHF1vaZQZsYr/BWzP9ZwNAldlZ79k6nqEwkCsuArisXXyBc1zT8QXv0Blza2u5Hpj88983Xcfi0IpXIVE6ue/exBRxqBY1hnU2WLfmhV1iPrXth7hoh2N3CF0IusobezQRoY3+U4mLJjaXzLzEU/gQjYMLdyYQ7sJvUDAf226XUOlYzdmb2Z5TGcTcHbzgWKno6XuA9TEcP/OEDkB+Pi7NVWH0ATYTL/+0LYo6mgvivGo0kiU0lqYPbjNd7RocSloTLsw8orYyFCzjQDYly9WU1NkdexXZSXULPhg7KbKrZibST6UbcycOkPBIUYrOf7EzEJGf4YNUnZRDEtaPqUK9YBpr6QX2AJpczRxke68TObNchN4mv34DcjjIWUTzijUfp5FYQ1nPvXWWs2T2QXFHTpsg/O8bw7AxMxO5GfRHAq//A0/zG+hPuehDUZleY7hvF41+7+2GQLh1nTpdtqVSSVoG40WO6JytnZNLdDX3Vt8mLkWL2P4HWKCrlW0G4CcKcHdED5M0hmg7SlX6uWGnsySFFq5GVjIcWyVY1wwPx+nSSUHbxHBG9FOM9LUO3G8
+ WESnediu
+ vXWF06f9lJE34VuALepVU67e6OI0u8CCXoq1qYrmww40Mgp1Z4cGkOF17B1AydhnJC2ayQ5ZXB/vEM0NnvezkjT6R7sthQ1Ve24ko8rh57AGh5AgQjV/cWmc3Ecw45aHuH6bIf10AU66ks5ddWwmOHAsjOe01P1AMc24PWsbAxXs7OFkjKVacV+S5vX0UcvGWIgQ23AeNjGZ0jkxFHzdLn6Mq8CYkAAenK0ybRTxl0tCAh/kVz1i3ETNz7EVwI6v5G8eiSWbLgMz3oCGntDKP0ap2BNpX/YnpS5mqLm8VpQFlj9mDYdMBFvJCj/Cy41qXRxRJyoQnXZ01elYozDe9N0sUhceOEL3ANefPjcJXy10oYxtT9j+OUnwTMEID25KfCjkg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,23 +96,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 11:57:09AM -0400, Gregory Price wrote:
-> On Thu, Jul 09, 2026 at 11:55:54AM -0400, Gregory Price wrote:
-> > > @@ -2462,7 +2463,7 @@ static int comedi_vm_access(struct vm_area_struct *vma, unsigned long addr,
-> > >  {
-> > >  	struct comedi_buf_map *bm = vma->vm_private_data;
-> > >  	unsigned long offset =
-> > > -	    addr - vma->vm_start + (vma->vm_pgoff << PAGE_SHIFT);
-> > > +	    addr - vma->vm_start + (vma_start_pgoff(vma) << PAGE_SHIFT);
-> > >
-> >
-> > Obviously correct, but was this intended for a different patch?
-> >
-> > ~Gregory
->
-> bleh already caught, sorry for the noise :]
+On Thu,  9 Jul 2026 19:47:34 +0100 "Matthew Wilcox (Oracle)" <willy@infradead.org> wrote:
 
-Haha no thanks for picking it up, many eyes bugs etc. etc. ;)
+> Most accesses to the raw_hwp_page list are protected by mf_mutex.
+> However, the call to folio_clear_hugetlb_hwpoison() in mm/hugetlb.c
+> does not.  This is probably OK today as this is in the freeing path and
+> I think all current calls to is_raw_hwpoison_page_in_hugepage() hold a
+> reference to the folio.  However, the next patch will call this function
+> without holding a reference on the folio, which will expose this race.
+> 
+> Rename the current folio_clear_hugetlb_hwpoison() to
+> __folio_clear_hugetlb_hwpoison() and wrap it with a new
+> folio_clear_hugetlb_hwpoison() for the benefit of external callers.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  mm/memory-failure.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 53063e2a1f97..353288cce1b2 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1935,7 +1935,7 @@ static unsigned long folio_free_raw_hwp(struct folio *folio, bool move_flag)
+>  	return __folio_free_raw_hwp(folio, move_flag);
+>  }
+>  
+> -void folio_clear_hugetlb_hwpoison(struct folio *folio)
+> +static void __folio_clear_hugetlb_hwpoison(struct folio *folio)
+>  {
 
-Cheers, Lorenzo
+Good to add lockdep_assert_held(&mf_mutex) here, but there is a issue below.
+
+>  	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+>  		return;
+> @@ -1945,6 +1945,13 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
+>  	folio_free_raw_hwp(folio, true);
+>  }
+>  
+> +void folio_clear_hugetlb_hwpoison(struct folio *folio)
+> +{
+> +	mutex_lock(&mf_mutex);
+
+This wrapper can now sleep, but its external caller is the hugetlb free
+path.  __update_and_free_hugetlb_folio() is reached from
+update_and_free_hugetlb_folio(), which has a comment saying
+"Defer freeing to avoid using GFP_ATOMIC"
+
+> +	__folio_clear_hugetlb_hwpoison(folio);
+> +	mutex_unlock(&mf_mutex);
+> +}
+> +
+>  static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+>  				 bool *migratable_cleared)
+>  {
+> @@ -2051,7 +2058,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
+>  	folio_lock(folio);
+>  
+>  	if (hwpoison_filter(p)) {
+> -		folio_clear_hugetlb_hwpoison(folio);
+> +		__folio_clear_hugetlb_hwpoison(folio);
+>  		if (migratable_cleared)
+>  			folio_set_hugetlb_migratable(folio);
+>  		folio_unlock(folio);
+> -- 
+> 2.47.3
+> 
+> 
 
