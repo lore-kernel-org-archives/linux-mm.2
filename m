@@ -4,134 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03150C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 17:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9E2CC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 17:17:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE5446B0005; Fri, 10 Jul 2026 13:16:52 -0400 (EDT)
+	id 7E0C56B0088; Fri, 10 Jul 2026 13:17:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E95E86B0088; Fri, 10 Jul 2026 13:16:52 -0400 (EDT)
+	id 7B7F36B0092; Fri, 10 Jul 2026 13:17:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D60166B0092; Fri, 10 Jul 2026 13:16:52 -0400 (EDT)
+	id 6F5626B0093; Fri, 10 Jul 2026 13:17:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A39ED6B0005
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:16:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3C0D71A0460
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:16:52 +0000 (UTC)
-X-FDA: 84973521864.03.5327ADD
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4F5DD4000A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:16:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=W72B15sv;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783703810;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 45E486B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:17:02 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B9B68C38E7
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:17:01 +0000 (UTC)
+X-FDA: 84973522242.02.D28F431
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 073AC140008
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:16:58 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wM0amu2R;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783703820;
+	b=yG7qKdqhkQ9xWWTEwpIXyZJrvy+EbS89m/TduerYhu9Jd2BvF93WOeOeo1TNJ10wotQRuz
+	7U6FHj6fYWIrxB3tCcjJyxYC35Xmct0C7ySMq2wEBGgogj8zvIom23sxPA3m2QaaPArFUa
+	sCDD8EU9QOkWRC9I8umtXeFGKDMw1Rw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wM0amu2R;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783703820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iwFXVkOioCJBvVi7yud7qnzgeFYYgA7YWUrMtz44JkQ=;
-	b=a8Vtz40be13T0UQwXMtatQLsGTgOVVu2gn4SRirvkobKComW8dtXBCZKP9kgZeciLhWfFk
-	/DfDwrhiFsg7rlYt7LKCNWOCcS8Icj3GgeDcLl9zluYAnJ0Td/l4fQsvSIA+tSS95d6+hj
-	+J5ylEuGicgdUIuUZWlMPZthUdFwZl4=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=W72B15sv;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783703810;
-	b=rPSBM8oQmsWkvbcsdUZLZSJJGBFAdCtoykTuf6HVgrTA0A5eqA/gyTjPrUlzr1S5v6PQxr
-	IA5UAGvo+gDjaR3bSVjbN5u5MTd/UTDtl6gyMbHxsRIwp9BRhDMQrBmH28LSyES/BpPakt
-	mxLFHONG2V1JEwNdkhoNljebtZ9+blg=
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-47ddf7b09e5so1134434f8f.1
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:16:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783703809; cv=none;
-        d=google.com; s=arc-20260327;
-        b=tDw/w2CDVSQL8lYOdi7hUlquGUoEfMS9xreJwyAPxuaRie2V8U2c7F6+tv03aB3a2+
-         AmyqPwf1fi++8Z8+3af/YOFmajOTQNdonXmhWMyUxaOM7v39uodiIgtpwNeC2ALH7wYi
-         4yNEvH7l9Rk6mRWiBTXEKFihJPQ/zlo5eBUvEONzHWHUXv8Ut7QXD/ZodF+GEK1dqD5f
-         A14Hd26asGhmLN3NHpn5gDymcHRX2rQeR8x4YPOWLDPLVMvk7YZG8FVlrQ5jl46Q4s+G
-         gt7rsz8orifjuO3TPqkVb4bRsDYEkd2ZVDrgNpXYUF/fRc9Iu24lExJ8y1g4xxwT2Tfo
-         60rQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iwFXVkOioCJBvVi7yud7qnzgeFYYgA7YWUrMtz44JkQ=;
-        fh=OeH9GDk1ayzVjC0j8c+48tosmGuoaOkgOmcvv0ehN+E=;
-        b=dGk7phbcqbKQn2nGPzb+eDxZWLoBNg21L+v8xhC5bVcEV0Ld8atgk/593G3YwySyZM
-         tJ/rMXePaLDFhbyXsp9KxGD98liCPn35LdkUpkT3FwwM4CSPbSrq/aTKd7N35bUW2w2+
-         PUUqKCN4PVHGDaAMrtwgK8NRV7FdTWeQWkrtYkH/HH845bKb2Q7wJPJ/SWtEs3YhEeQl
-         5yYk2KaUPrGV3Pjx9MkSH08nWWJxiVKrfikDF5tYFKiF4jd6pnWamJZb6IOBjE1KglJ4
-         LMIubXUEwS/6VJdWhXwGyIV57qqlDaTwQm91NIqLhHgBB26b55mkoQnVmc8/2fPqFNF0
-         U+7w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783703809; x=1784308609; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iwFXVkOioCJBvVi7yud7qnzgeFYYgA7YWUrMtz44JkQ=;
-        b=W72B15svyljhP53PIT9/5Oe3A7tYu+DI7xG9M4ibzVUUHjFcaSeafL5cVLuiXsFv2E
-         /bo4nsG4nlkdY0k99muHzD5Wpx6rndPxxS7RZlPKajGhlfw0YhWMGPsYXMGojJQ4S+3h
-         z4l9A0zou+K8723Qfyg/xfHziC/QwI9kQAw86OgnVeKxNviTQTDCqSvM07HU+jybRZqM
-         8eok9WZt9+aFOkb+oGfIE13oMpTKvTrqpt6bf74xkEyQsgeGhFo6FrBh8we2GC/bjmmN
-         cjK10EKQTlYpoMhLfJh6rNxh2VLj2Ul7lXLHTtPAMuuEe+YCThjpfNnf4sq05xzbqzom
-         6v9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783703809; x=1784308609;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iwFXVkOioCJBvVi7yud7qnzgeFYYgA7YWUrMtz44JkQ=;
-        b=tN6KriKahyuwH/eEGubdXyo/5CoK+H8NhAGBrzPiGW1vdCexEEK07CTUaHxj8y/cdZ
-         tpn5sOmu6SGTvPLr7385TXi+B8z6ch9QXNn5RC6z7RTeY0vpBduHl9mmiNMoTflV+rt7
-         0cr/QrIeZhbXqTTvH3Pw+GvZLe96B3w6DGaEYGdsGFsifqGgQ8T1FYyn5QZ2l5SJzNmJ
-         D4uv2oei9kyukHY7kCdPrVMLRbSJM0g3MPCXrZlKfci6FJhO1uHOqgs1Tw/iArvnZ8rS
-         gEXsN6jhBMneBpDXAemDo/E94kQEquADDpTP/OD01wp12wMrpL1S3yW5Ls0aIDMPah6a
-         IBuQ==
-X-Gm-Message-State: AOJu0YxRaVy0cDgyfORfk/cecAPS+KyV7pndkqyaxNF9K5cD/f04kpf7
-	WQ8+xumt1nnGEqSmieH16gFmFxgVBdO8xKzjXWPVUnNHj1v1zKF9ZNfj4igYjtRki/M2fUadY72
-	ThY4XZhzyCa8VL/UzmIGfIUHSDumfNN4=
-X-Gm-Gg: AfdE7cnFbHSIVa8papsy8BVZLpcFez9IcFYMrJh5kTgH54udOdpLSYaa50nhDi3e4ub
-	qqjYPKq91mjLDqnYbd4aG8G2vbmqYvSMFDA+t8oeBjifnUhEOBFdOd9wtQ3mLdNc/xhg12GA7vC
-	YeptxdRaHq6bqVdRX1rP2roLGbq80UuPsn7C2Ks09QFwprsqbjALS4eQBxS7I96yPI/PJPiy2mP
-	rwY3EdsWegFAu/sdQDOa6QoS65C0C0ItU8qXwYmkrUnhTKGbDMgYhGmzzWeCVa/4nZA7+XvC11J
-	0dVzjnRxdvJvFD799O/rtWNvfqH+
-X-Received: by 2002:a05:6000:26cc:b0:472:55a:ef90 with SMTP id
- ffacd0b85a97d-47df0714a9dmr13133499f8f.8.1783703808484; Fri, 10 Jul 2026
- 10:16:48 -0700 (PDT)
+	bh=oXE/qdzDgEJh+tk6GkgML+u27UjBbh+JDL0zV5QbKUA=;
+	b=mXy1NjjW+09ge6IgkGdqdI7Y1S0ocYm5dmJjeF2zRhbASjhN5RU39Gd7qqiJm1loPGS82N
+	a+aifxFFBbcyVbPmuOGvmno51M0x3qJmArheE2LlekhQhSfxqGQmBuF5qI5RFKFyrSD1K8
+	ogX+JFqnWe31zeOQzh6fgeVsjpDO8WY=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oXE/qdzDgEJh+tk6GkgML+u27UjBbh+JDL0zV5QbKUA=; b=wM0amu2R7kPfLA6TxU6kNtPdMT
+	vgVkF+Av+X2ffQ7AozHzzq5I1zXOAPkqdJdlGIR/Vk3Lcy13Xf5RPpPLTaAXtHun5LKjGQixC5t/r
+	wkIGDzCU20f+9HZwO5pKjUFjqWikBZIU2sLYJTrbNLNTXrDuiNLksmfz3bRH2dcKwEL/p0Ciw4bbf
+	QSqq6E3Qf6khtU0mX/QBG4Y9jM77GcUTiMHKbLaQS9z63TUs8viguVUTA6+QDYH/k2NdXasur0Na9
+	MPhur4kHXx+KkYxp0cgZhcRwG08fUarV0vcTv31cLel9NXZ6M5lwvZh3r42AEibLRHTg4QJYPsDty
+	FF1gB0VQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wiEqM-00000007WIj-1WXe;
+	Fri, 10 Jul 2026 17:16:54 +0000
+Date: Fri, 10 Jul 2026 18:16:54 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>
+Subject: Re: [PATCH v2 06/10] memory-failure: Prevent UAF in raw_hwp_page list
+Message-ID: <alEpBqExnyvBnnxi@casper.infradead.org>
+References: <20260709184740.1286561-7-willy@infradead.org>
+ <20260710150204.1887475-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-References: <20260702180908.150136-1-yunzhao@cloudflare.com>
-In-Reply-To: <20260702180908.150136-1-yunzhao@cloudflare.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 10 Jul 2026 10:16:36 -0700
-X-Gm-Features: AUfX_myw30BGzTSr11ESEFfBdFU81OKh_Mcc3MuunMXP3Z7-YpTSBqDvywXmR0c
-Message-ID: <CAKEwX=PfEFcJQNEgZz1Qjw24CCBToNxC4QaPh6TSRgK0FNPoCg@mail.gmail.com>
-Subject: Re: [PATCH] mm/zswap: use ratelimited stats flush in zswap_shrinker_count()
-To: Yunzhao Li <yunzhao@cloudflare.com>
-Cc: linux-mm@kvack.org, yosryahmed@google.com, shakeel.butt@linux.dev, 
-	hannes@cmpxchg.org, hawk@kernel.org, akpm@linux-foundation.org, 
-	zhouchengming@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710150204.1887475-1-usama.arif@linux.dev>
+X-Rspamd-Queue-Id: 073AC140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4F5DD4000A
-X-Stat-Signature: 1w73esfut5gjj1wnf1gr6bnw8ei6rp5g
-X-HE-Tag: 1783703810-829120
-X-HE-Meta: U2FsdGVkX195Icucn9BqdeP4g/EIU5WocOJ5h3GXovNQcpTPgfb4guQLOk9kOqcwO+MQY37MwXFb9KkvXblFfelcAnpMxK0Pu6wbzORnK6UrvgHegoOAcESF299zMCOaBIMcOW/VU2ZgTjDUyoxYLBPiE6cCKoSeCuEnql7/BQLnN2nwh5N9w25adzFQn8jiC5SuelgOUlgfi3kx+75w48RSYd9q0NVqz5iiPjAAUl3cLc7yVhSao6fjwKHzRGdOiC9FK0l/7Trn97BRqdtXA7ogh41NzcrUUmyuYtftA7pcZ/4PALicS6CNhkk9ET1scqJ57YivHVLTcvqdQ+KvYceIWz7bqPhciPD9UW+l7+N8bs5ualtB9gMxg1+rJxD8fUbDLwsnaQ4okbSJE3M5OHQVQ04CWzvf3FkK18vjbN+Uy9aWqdCJtNm6Fi+wgCILFH/iqePJ+uH5Sd3lh3NleuvFihyKH0a3fKhncIwOa6HDlQu8NqvlDIy3RNJaWQh2bDzehm6AL/IgYAhNVdiQ+PqViIjV0t5XUyDAn0XewZAKnldWslMWNQbvIxHMZ+OUf7/a6wNEDKKe+6Ja8kL3Z/8uok26zqLE7azzQb29LQilU/ZJM5N9AYbdPcte18SLRvLFNc3n4QgmUiAUsdEeooQIMzA0X6G8H4DALw2np+eOhOzSa9iuyhrEOV8BQwAJUXy0RawV57Yo+73te1n2SZoaJWdePhIrpITtvyoeHcdEEnqg/0nnduOfISvekLI6fHOBmemh3YotDAgm6QOyVP8wLA1TONUD7zCA7S7LsXQhenC91NbR7tZQNSP/9fG+6BeOB7jv3FHWg6VRa85UjIojsolgM8PWaZb8z+Ion6NtF/Nc1sa7p1wnYZx2uReT68O0aT5BHqxjgDwATc94Tw1E5xmFydFoCrqE/PoJZdtU9+LBGyDcKApc7MCrWIVUK9xccHLgaihVJ/rVLPH
- lnZTBYTz
- MGRgNeqX8tJiqiQUcoiaFN6mm/whRW24g3BKL2jclAuBVMiKjPH825kb5oq/g+ci4jm+iTMSEC8ReT/61iwRipt5JDZvahy/yltHyx2vp3vSGtveBeh7/w7XP6/APqQ2gnuXCO3p9lWYvpHqIqLLfiLrgcyfR35iUDwzuYe9BDT5uDK5GmjSxEeRCegINfluyMnLNR9fSYvMFs2lbs9QSNcOj533ZOQsf39h48GQSVrrDAQ2WdKoibzJluD8y1OI3Amhy0vGpMzH5gkdRCyBWzZlIuRDd/AJtOrNElPDLs/H+xlEQSdD+TeNSIpPfbSVGYSVbpjeejYXG8KAM5dJQ1SbL1HvXdzZB/zRzTQYaAzUyjSV/rBMD60/+Tz4uiiDXYK2xZZPwPoDq1JKFcR56U0Wq2WW+1/VH08UkfHrCTJ7otm7cR06ob7PgwheW8wxRNJM5gxo5pfdBpY6ro1/mB8ya7rPiztCT02fa4bn1ngzF7hBJ6p3L9t9X2tC0h29SvrPWlrpsVXaPnr0=
+X-Stat-Signature: tpshhqbbm7jj8kj6usdoj76gkragq9n1
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783703818-223889
+X-HE-Meta: U2FsdGVkX18ijxdIro+Y+I2XUh8+YslrOweK9EIlOQv4MZ5e2HodSCDuwqSocT+8RgE+5jEE+1Rt9CO4AzoVnVbRVlxpx47ciBOzhkIdyiH9yrmTfKlL4Lk13oq3j00SN9Qd8JVA07jEsHe6eTlWdA+nP+TBxENSFjAXnAvTz8RwXsV3SC7US2aj0Yd9Q2FJgytEwoWEAugsGfCJBfZBd0EyC14OiNSgH60My++2mAaKZiUvdKqnnlT+iF7yFgl2WbbjHnFtwkH+0zWAP50GVhKTndh4rNPLDZ9ILE5wML4ohiUQf39OCq7MC15rK5Sf73dlfiJdlH60JhW423Be4FKgiks1RzDkR7rxKIMDIQc5xWEbrikKhVbCR33jyJ1hpgsf4b6e+AyiaJ9CYA+CjXxPYrBDsLnikwQGYyHs3l5UYT/S5KVNoWnda9MRdOr9KN7kh9NHRcZvWuC8GUcLrjk3srKQW/8MkVZMmid+FBsJeB/6kCFHaBjRc1LTIijC77CyKPzLNvnVy+GN5N6byM1noMaojpyryMVaRJGq9ngl6PUNchr9r/0Fp3Bcio4CTzVGtbyc/8RXFJjynsQKrVs9WRMaiUK1a8/JcjX0GhfHE9jnznAmmYjlWdtrqsKLUxCndg94yNxkXRDWQsGBnoNLSvwREvPklmAsVUf+B2MJYKcgZxxQ27LTMKvMfFVkSN6ICXZfYuOqLYRHyzzsz7tVnU4AtrFu8sExO1mkXybFDj3nBlWFJNPeVZyIds2iMzUzkMj40W8NbhxegWfvx/ifZ/dgeNJi1QAuNgO2SEe8UarKe3ftRwWEnImOyU5Pn3F+IKyoFOE+WthM5tlVCs4VTCJn3mRZ62+TMgm3BQyhxWXDarK0xVb/lHYvmyd+ISTS9EBMdAFQr1LyB51O6t1AMfD6FOMO98OJKXtCwHGf6iyYqcfsMM29HtkR1TaepQcBFlwf2umq6PIZAJs
+ fcgLn7Mx
+ F0jXa5cbbOTqAJXNeZG/jj+mmv/cVzQ2kTVoISImhhQ4YYNFKxL3Pw7Uvtfxyk432X/a9peaZiX4oVo2mrvlduelRDAjd8J5J67kc9KxtgzSC0E7ca/Tv34XnIE5UKrGxZer/sgN3eCwVTLGOIqbyc6pTNNex8b1SEuSur3MbF5HlGJh/HhMpcRMIpoc1NOFhZwhl7LZx5toJTmRGEjrnnUgFb6SmbRrlDICAO8zr/Mq8ChscfNpT7zmfZNWyovGO7tjSC4tbF1K+zdbT7Wx8b/S5s8O9ntg0zCwNqOcp5tIotAZpGhJSWahUMAtwsqpBu1nbWZM4WZgyFhgLaJqcdeVswX49TF6SotsYTm351uwMhgBQhIILdHOPH1NcbchVRlOfcYNijWZbcmI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,78 +96,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 2, 2026 at 11:10=E2=80=AFAM Yunzhao Li <yunzhao@cloudflare.com>=
- wrote:
->
-> zswap_shrinker_count() calls mem_cgroup_flush_stats(), which takes the
-> global cgroup rstat lock synchronously. On machines with many CPUs and
-> NUMA nodes, this creates severe lock contention in the kswapd reclaim
-> path:
->
->   - Multiple kswapd threads (one per NUMA node) run concurrently.
->   - do_shrink_slab() invokes zswap_shrinker_count() for each
->     memcg-aware shrinker pass.
->   - Each call flushes the full cgroup rstat hierarchy under the global
->     lock.
->
-> On AMD EPYC 9684X machines (96 cores, 192 threads, 12 NUMA nodes)
-> running production workloads with zswap enabled, perf shows 2.88% of
-> kernel cycles in osq_lock contention from this path:
->
->      2.88%  [k] osq_lock
->               --__mutex_lock.constprop.0
->                   --__cgroup_rstat_lock
->                       --cgroup_rstat_flush_locked
->                           --cgroup_rstat_flush
->                               --zswap_shrinker_count
->                                   do_shrink_slab
->                                   shrink_slab
->                                   shrink_node
->                                   balance_pgdat
->                                   kswapd
->
-> 84% of kswapd kernel cycles are spent in
-> shrink_slab -> zswap_shrinker_count -> cgroup_rstat_flush, not in actual
-> page reclaim (shrink_lruvec).
->
-> Controlled A/B on identical hardware and workload:
->
->   shrinker=3DY: 2.88% osq_lock, memory PSI 1.58%
->   shrinker=3DN: 0.00% osq_lock, memory PSI 0.57%
->
-> eBPF-based rstat lock wait measurement across 8 production metals
-> confirms the contention splits cleanly along shrinker enablement:
->
->   shrinker=3DY: 50-250x more contended lock acquisitions (248/s vs 1.1/s)
->   shrinker=3DN: baseline lock wait (0.0017 s/s vs 1.04 s/s)
->
-> zswap_shrinker_count() only produces a heuristic estimate, scaled by
-> compression ratio via mult_frac(). The actual writeback happens in
-> zswap_shrinker_scan(). Slightly stale stats are acceptable here.
->
-> Switch to mem_cgroup_flush_stats_ratelimited(), which only flushes if
-> the periodic 2-second flusher is one full cycle late. This matches the
-> approach already used in prepare_scan_control() (mm/vmscan.c) for the
-> same reclaim path.
->
-> After applying this patch, rstat flush latency and lock wait time on
-> shrinker=3DY machines dropped to the same level as shrinker=3DN controls,
-> while the zswap shrinker continues to function (pool size remains
-> bounded under the max_pool_percent cap).
+On Fri, Jul 10, 2026 at 08:02:03AM -0700, Usama Arif wrote:
+> > +void folio_clear_hugetlb_hwpoison(struct folio *folio)
+> > +{
+> > +	mutex_lock(&mf_mutex);
+> 
+> This wrapper can now sleep, but its external caller is the hugetlb free
+> path.  __update_and_free_hugetlb_folio() is reached from
+> update_and_free_hugetlb_folio(), which has a comment saying
+> "Defer freeing to avoid using GFP_ATOMIC"
 
-I think I'm fine with this. It's been awhile and I no longer have the
-perf trace, but this (the flushing) was one of the more expensive
-parts when I was experimenting with zswap shrinker on a production
-service.
+Yeah, Sashiko also pointed this out.
 
-If memory (and my brief revision of the codebase) serves, these two
-stats are only used to estimate the compressibility of a workload.
-Yes, a lot can happen in the duration induced by the ratelimiting, but
-from what I have observed in production, compression ratio tends to
-remain fairly stable in well-behaved systems :)
+I think I'm going to have to change how we track hwpoison in hugetlb
+in order to make this work.  Let me think out loud here:
 
-With all of that pre-amble out of the way, this looks good to me.
-Thank you for fixing this, and please feel free to add this:
+is_page_hwpoison() can be called without a reference on the folio
+containing the page.  The answer can be wrong in this case, but any
+UAF must be benign.
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+Grabbing the mf_mutex inside hugetlb_page_hwpoison() is insufficient
+because we can't protect against folio_clear_hugetlb_hwpoison() (the
+approach attempted in this patch).
+
+We could add a spinlock for protecting freeing & checking of the list.
+That's probably simplest.
+
+It'd be better to protect the list with RCU.  But then we'd need to
+put an RCU head inside raw_hwp_page, doubling its size from 2 pointers
+to 4.
+
+We could completely change how we do this; instead of having an llist,
+we could have an array of 32-bit page indices.  Reallocate it when we
+run out, doubling its size each time, and put an rcu head in that.
+That'd give us 32-bytes the first time, space for 4 indices, then double
+to 64 (space for 12 indices), double again to 128 (28 indices), etc.
+
+We could also RCU-free the folio if it's hwpoisoned.  We'd need to
+clear the hugetlb flag before asking RCU to cover up this problem
+to ensure that any reader that saw the hugetlb flag set started its
+grace period before.
+
+Probably all too much trouble.  I think I'll add a global spinlock.
+
+> > +	__folio_clear_hugetlb_hwpoison(folio);
+> > +	mutex_unlock(&mf_mutex);
+> > +}
+> > +
+> >  static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+> >  				 bool *migratable_cleared)
+> >  {
+> > @@ -2051,7 +2058,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
+> >  	folio_lock(folio);
+> >  
+> >  	if (hwpoison_filter(p)) {
+> > -		folio_clear_hugetlb_hwpoison(folio);
+> > +		__folio_clear_hugetlb_hwpoison(folio);
+> >  		if (migratable_cleared)
+> >  			folio_set_hugetlb_migratable(folio);
+> >  		folio_unlock(folio);
+> > -- 
+> > 2.47.3
+> > 
+> > 
 
