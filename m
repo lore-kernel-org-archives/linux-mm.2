@@ -4,92 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40152C44506
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:16:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D5F1C44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:16:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 057916B0088; Fri, 10 Jul 2026 10:16:41 -0400 (EDT)
+	id 7344F6B008A; Fri, 10 Jul 2026 10:16:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 007676B008A; Fri, 10 Jul 2026 10:16:40 -0400 (EDT)
+	id 70BF36B008C; Fri, 10 Jul 2026 10:16:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E61FE6B008C; Fri, 10 Jul 2026 10:16:40 -0400 (EDT)
+	id 621D46B0093; Fri, 10 Jul 2026 10:16:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BD1936B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:16:40 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 43EED1C869B
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3ECD46B008A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:16:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9327A03E6
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:16:40 +0000 (UTC)
-X-FDA: 84973067760.07.0FF5A43
+X-FDA: 84973067760.11.2CD3012
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 920D980011
+	by imf18.hostedemail.com (Postfix) with ESMTP id 24E511C000D
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:16:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Mp0sLUNW;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf02.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KahqDGrV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783692998;
-	b=5otTS4sRYKtJV7wFtuV+itpyumMOP6D7j//uiE2zLEFfgaaXn/frjxfRI46SNiUu5/H8J7
-	c6YbEeqoxI7EPSptzTLgEjAYRI1XDLKrf01eIng1C8XwrKE/o+BgCGj4jpZtrwS67J/nJP
-	93ik3U7MjkBo5jQEN5fBR9sapWJ42II=
+	t=1783692999;
+	b=6GI2uAayBmdutxZ3qFKZjpIF1kd5+buBDJlyFVLbr0+PSUrpyaOc0rwY+yLam1ERK1/ZE3
+	oWiODxZXYCElEM7UWnoQSChj9LhVvbXq9SoUGtOTDinoSS3XlceuDO2tAXMVmerNhe63j1
+	xdBZn8LPGs2F26uZSVAIZQF4NrQQy1s=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Mp0sLUNW;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf02.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KahqDGrV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783692998;
+	s=arc-20220608; t=1783692999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wBlFK0541y0Zc/79OGH2Qmor8SYhSUoS64EeY6OiQnk=;
-	b=dHZY71NpwiISTbM8ZgmN1BjAxvwBB730Fw9XvWMdcGCJDqKvahePvIlsUsi7YhPnFeHp+N
-	TztImKTKZGs3tZ3BUL2Bqx99/mI9niW8/gSAd3jqLG7zlkY7mHtOXYwa8E3F5mdylVbafs
-	/WvjGc+Z1SsPGdC2/UQ7IyykrI/xNJg=
+	bh=QaIclYB8bbvFhsCZS8P52iBbwbOGPeVuy63rBC+62Yw=;
+	b=O3RhAmjPYQiXYY06DJ7k/YMEf/8kP3+sKmaXbmFH286A0DRTChMwFkmMU250ioDDBYUysp
+	WM5XODCOESDJVQlmewGT01fOMpNjS0D5XxHvfV9fDJ/cNgdGlKkSCPNyrNrrEIl4QwLGwy
+	WIZMxUtaExaSfh/MSzAm36gy88JsdX8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1124260051;
+	by tor.source.kernel.org (Postfix) with ESMTP id B0A766111A;
 	Fri, 10 Jul 2026 14:16:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7B01F000E9;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4A81F00A3A;
 	Fri, 10 Jul 2026 14:16:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783692997;
-	bh=wBlFK0541y0Zc/79OGH2Qmor8SYhSUoS64EeY6OiQnk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Mp0sLUNWJUriS9GasCZYYGX9cDD2E6Htf1I4L5b2Z4r8o9oI+vFCeiwYxQo09so1z
-	 mMLhynXQApdClVn5iNc5Kxn1uAwMdzFja3z/Dar0ICAVsOdBNk+tW90D41MVHpQMzy
-	 3Pj05EsVxckLT+UrHNlXw7+G5YWMtWCTUC7I+SLo=
-Date: Fri, 10 Jul 2026 16:16:33 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Pavol Sakac <sakacpav@amazon.de>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783692998;
+	bh=QaIclYB8bbvFhsCZS8P52iBbwbOGPeVuy63rBC+62Yw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KahqDGrVB23ELbwXbfrA0bkp0js04Cm/Sd3I7TGV92lsdkdd7qyEbPwROUSAJSohT
+	 NrueGXCoe7BiMBfiWG863Nt3bEJVBDn+o1o1baPQvxomFbSf9YoCp7N+OUBb2HxXK5
+	 8dGhBMdmTWJAcsGjQK/7J/XN+8DJqg3e8Uot9jW9QZYxV+cntA9WGWqYgD416KLFSo
+	 XSqHrta9v1gh1aCHEc5i/aHtnC//JoPtvqbfrI4bVlD1+X0MCOFR0axUKCHh8y73HL
+	 u061aLt5n0t9FxLsZye2mR40+u8n4kgE7x50T/kNEP4WgdCzwielOjqAVRIbXi4Pj5
+	 jd9IXI/6kzibQ==
+From: SJ Park <sj@kernel.org>
+To: Song Hu <husong@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Alexander Graf <graf@amazon.com>, linux-mm@kvack.org,
-	kexec@lists.infradead.org, nh-open-source@amazon.com
-Subject: Re: [RFC PATCH 00/14] driver core: defer per-VF sysfs creation for
- fast SR-IOV bring-up
-Message-ID: <2026071004-strum-perkiness-5d9b@gregkh>
-References: <20260702174033.32116-1-sakacpav@amazon.de>
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH 0/4] Docs/ABI/damon: sysfs ABI document fixes and additions
+Date: Fri, 10 Jul 2026 07:16:30 -0700
+Message-ID: <20260710141631.24657-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260710044737.561102-1-husong@kylinos.cn>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702174033.32116-1-sakacpav@amazon.de>
-X-Rspamd-Queue-Id: 920D980011
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 24E511C000D
 X-Rspam-User: 
-X-Stat-Signature: coyuf5n5hyahyw45d4deygi5syuaiwmw
+X-Stat-Signature: gsgrkx1g1zdrwhbq3gze3sjs8nyyi7py
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1783692998-899606
-X-HE-Meta: U2FsdGVkX1+zBZtZb5atDw3tVixFTtr98zhNVVoSFAuohpEDQU2xV7SJ06mHWOCRlHJN6p71oUNhUrITbo5JtIJVwpDQK5AATFRFbj2jiKZTQgas6fPpOi+a88qXUAey51+fh2nxJbjYUlYg089Vwka4AqKnEJrDfwAjxeLOEmGChu3Bw7j7Sxx5iuAXoa5I2UyGQiZ4y4txhD9aIU198m4ra7COvGtzv8S2EMvKmgwg65YoPLXB9SLCFvGjSsVQtStdf3MJ12eQRYtmCUOsQkLhYIcGblA2N1L/EmGinmT8Tz9oGJy7YfUKAcOlE40EZSyj7tRQM24buQhZKDIJj6F2VUV22xfW/aC2HnVQP5AfKHMzkiDqss5joDnEAxisAIsFTYkK3IzXffcBMVZ8mIqL+LkdV95oWmsMMquuyyhRepOlbGTZ7j1VaD01Wues5n/BXY7FRtBCwikFIUobnqRiXaUCRumJuz7KuU/NxmT47rTE09kAg2PrN7xlmp5ixi/YLdD2LlQuhn2BSICyDNlVgXYH+YjngSaoNkfsIjl0XgSw8TcyuBevoPQVwYn8dbxEmcWUkjUbrDmqzb+3qkrLLHlhiZhACEchLF3qmFHT2C12q1rC/mQ1wUyyLpRNCUhZx6XceDaGDvnbEX1LbDpKqlkXOKzGkfoaPA4enw8qClBk/exD/E8PZflD5HgjWBYLtyg5W51w4fLkv53MbHgwvYFf+l0fAlUqH8bteJV6z6oZ92UpcUgd5cNXmLb+fLxsTHfUx7cfq6CKTkcDP1SH3Y36hCzZn1R56RIpZfAUMrHGKrYxNXqXchOXI+kuR50Yw4ogEle2046rnNw7KgSM9wjUFTORuZUHErJAP1Wt0Rc4epp1lXGocGBIBn8fZaExYmRU45zTILZBvpeUKp5ExgHRKlqQPXLomTPTA9MCreucwYdzPfAy3VuTUgordL7R/X9pHYUa0bE1cc9
- Yqw5DgEh
- aABehg9qV8+58kt5k3HoTypog7U53NdFHhDYHmpb+iQX6jJ6Agffju1q06Jpe7UwHCXuaKkdhr5jgPe75Fcd4gMiPBqmbKFvHl9VFKq7vle8lflg9Ty6d5LnD49qobDTDZ4StYDC1uVuOwSNKJ9rUTkJiXxau6HRQIdi+Wm/K4mCA+mULmYIU0aEVDMXeghuA9M+oOBOimJuJ2/pOajrih0B2a1m1CN5ndyPYygkGwWFWXLnmc8RTThooA3E3qC9YYbWqS8xNv2/rIKhl30ta2NkrWbtkmVgQIQ2mHmn6L1JvnH5mf/Ftutwj14xh+Pmm7FZKwZfYUEEcqdM=
+X-HE-Tag: 1783692998-301475
+X-HE-Meta: U2FsdGVkX1/MoOzauCDUoq5FurZYKl206Em58QvtevcOViuYq8B+VVfRl0q2qwIWx4pQ9LNLl9C5qhQBDj7dCxwq+NCfoY/lEx0dQ7cBPXRj/LUcUTItVG7MfXVP9CmJnF3JWXuwT3NMysxplKI+PJbVkVnekB5Vm2aupjo1TQDM5l/WdU8x7CBLa7LVlsjxh/uwRTvWOJdz3M30upDLWhzuXh7oKJWhg8d/uOYSK7FvjXtoU1Z05mLtbiRz2kBG2NwJ2nm8ZMUi3gJirJnpa0kNnWHJzyV5Vd/uEq4a14P9foOSNHSD6Ncf/bzlzfo68imswPYAJiThHJxax8JPHsMYRHaqkGlhcabfCMBY5a0udvkPhy0MertOAmtjjynI4vBgHXMAphHYatbQxH5IBplEIS0n03qm25M7cz9SAdYGdk+BOgjpm3uuFkcpNUW0PfDaFPHRRZAix5QDUGq+G+6QzUV5anpkYVh7FLxs82OFBB39eGfO1Zkr5S34C5Iixn0xt1b/ep/Dj1KBp04PN9LHb75jKF9gAX/dv+S+XW9rpA4SsBB2bpWzSPmc7BxliE6ZUTSJ1NDZtf6Y9zuzatMXD5GaSMWIe7flSF4NLPYZGWpjhHkZubD3vmnGpXpSuDcLTb/4UnHbvn0N2lL2otAbhtO0JBMjagFlNPGzcoAHQ3RvP1mZcyQB544xRtBuj2bxntEkvVvqoI9LblDyJGWu/nJ9iPJ5iExTjLSUPmrZL8fgIwtO0L1CFxGUifM16ZCAv2ws3ef0Or/8ZpGPGMqqSbmrn+yDOfBCXTagY9G5vhfXgBoL+vsBmPRPegJMYVn1hKQQhB8iujHhUkU8xfRysEsqwsNaACRlnScvL1UJYGYj0nxCxWelF6OsY/96AoM4n3Pkd3QODHbjTl5x6xt+jUypIvOVCnRHZJhgoO2JPX95piDkpOkYIwhoGBFP7w0t8d9p7L/MzJxXu3C
+ QOnBL+Vo
+ qARSaGkE7Z2vbxZouJOR48uh3qDWprXP0PLJ1/sugHTFj3Um8NhQ1aWgpBkqstzrtFbJBiWrxvYaW/o585ltctpHGAQjT/aclbkfzNEG+1HurwTqktFX/G8+tVAjAGXHFLaC47ndjzzCe93amHAUbFRvJAiPJx1bIUvOvB2CWEb3KWEDqdrcvbjj/NxDyGP0cR+tMeW7sM2ePBruqI1DUtZERb4jUWrbuvv3cH5getax8bAYFE1OT21LBYOZhefmn3pI8Re2zZNsnwdTu98hrPeNXiJf+7OqGT1nJBcmGjY5UffkicxR4gdagEJ712Pq7EweXvBgPA3wyNfAS92777lwhCtyTmdS9JjfYbwz+NEziOFeu22t1wDkwoqUN8tvs7POSBKgjp7CLPjn51erXmRi745CC0q8S9TkA1YOItKAZefriz7u6BQOtDhqkDua+rCP00lQbqosm+CMlv88vgZmIWqKGvZRSzLBLmblit+chK4m4ybqztrR/Yg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,134 +101,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 07:40:19PM +0200, Pavol Sakac wrote:
-> Virtualization hardware keeps increasing in CPU-core and VF density.
-> Kernel is trending towards preserving VFs using LUO across a kexec
-> which will put SR-IOV in live-update hotpath. VFs must be re-added to
-> the sysfs tree, along with its supporting devices (e.g. vfio,
-> iommu_groups). On production hardware a single VF can consume ~80 kernfs
-> nodes. With thousands of VFs on modern hardware, hundreds of thousands
-> of kernfs nodes need to be created, which can add 100ms+ to the boot
-> time and to guest downtime.
+'hkml patch check' [1] says you forgot Cc-ing below people who are recommended
+by get_maintainer.pl.  I Cc-ed them.  Please Cc all recipients who
+get_maitnainer.pl is recommending, from the next time.  'hkml patch format' [2]
+could also help you doing so.
 
-Hundreds of thousands?  You have a hundred sysfs files per device?
+- Andrew Morton <akpm@linux-foundation.org>
+- David Hildenbrand <david@kernel.org>
+- Lorenzo Stoakes <ljs@kernel.org>
+- "Liam R. Howlett" <liam@infradead.org>
+- Vlastimil Babka <vbabka@kernel.org>
+- Mike Rapoport <rppt@kernel.org>
+- Suren Baghdasaryan <surenb@google.com>
+- Michal Hocko <mhocko@suse.com>
 
-> Proposed here is a PoC of deferred materialization of sysfs files until
-> first access to avoid cost of kernfs node creation in hot path. In the
-> reproducer below using a synthetic VF to isolate the sysfs overhead,
-> the per-device sysfs-creation time is reduced by ~74%. It exploits the
-> expected access pattern of hypervisors, where only a subset of device
-> files need to be accessed to attach a VF to a VM on the hot path.
+On Fri, 10 Jul 2026 12:47:33 +0800 Song Hu <husong@kylinos.cn> wrote:
 
-Ick, that access pattern could change with other users, this feels very
-fragile.
-
-> To allow lazy init scheme, a minimal set of files and directories is
-> built per device: a device directory resolves directly to the device's
-> kobject and is used to materialize attributes at access time. The
-> access is trapped in kernfs at the dir-read or path-walk stage and
-> depending on the trigger, either the full directory or a single file is
-> materialized.
+> This series fixes typos and fills in missing entries in the DAMON
+> sysfs ABI document (Documentation/ABI/testing/sysfs-kernel-mm-damon).
 > 
-> The changes are two logically distinct parts:
+> Patch 1 fixes a path typo, "intrvals_goal" -> "intervals_goal", in
+> four What: entries; the documented path points to a non-existent
+> directory, so it is Cc'ed to stable.
 > 
->   1. Refactor of hardcoded device_add / iommu_group sysfs attribute
->      creation to a table-driven form to allow walkability of all
->      attributes and single point of definition for attributes
->      regardless of lazy opt-in to avoid duplicate definitions and
->      associated maintainability issues with it.
-
-This is probably a good idea anyway.  Want to just send this as a series
-to start with, so we can take that?
-
->   2. Lazy-init infra to front-run access to device files at lookup/
->      readdir time to trigger materialization. Opt-in per device: PCI VFs
->      and VFIO devices opt in via device_set_sysfs_lazy(); iommu_group
->      opts in at the kobject level.
-
-This is going to get complex.  Where exactly is the bottleneck?  I'm
-guessing that systems with that many devices also have many hundreds of
-CPUs, right?  Are we hitting a single lock somewhere?  There have been
-changes in kernfs in the past to split up the locks to be more
-fine-grained, perhaps that needs to continue to solve this?
-
-> As a PoC, the code does not yet follow this logical structure in the
-> commit sequence and likely does not yet cover all corner cases.
+> Patch 2 fixes two further typos ("WDate:", "manimum").
 > 
-> Synthetic reproducer measurements
-> ---------------------------------
->   devices   per-dev time   total time       kernfs nodes (base -> lazy)
->   -------   ------------   --------------   ----------------------------
->      500    31.8->8.3 us    15.9-> 4.1 ms     36,417 ->  3,922  (72.8->7.8/dev)
->     1000    33.2->8.7 us    33.2-> 8.7 ms     73,427 ->  8,432  (73.4->8.4/dev)
->     2500    32.8->9.1 us    82.0->22.7 ms    184,421 -> 21,925  (73.8->8.8/dev)
->     5000    33.0->8.7 us   165.1->43.5 ms    369,401 -> 44,406  (73.9->8.9/dev)
+> Patches 3 and 4 add ABI entries that exist in the kernel and are
+> already described in usage.rst but are missing from the canonical ABI
+> document: the 'update_tuned_intervals' state command (patch 3) and the
+> 'tried_regions/<R>/probes/<P>/hits' file (patch 4).
+
+Looks good overall.  Patch 3 looks unnecessary, though.  Let me add comments to
+each patch.
+
 > 
-> The reproducer is synthetic: an in-kernel module registers N unbound
-> platform devices (60 attributes / 4 groups, ~74 kernfs nodes each; no
-> config space, BARs, or probe) in one timed burst that models SR-IOV
-> enablement. It runs as a two-kernel A/B from one vanilla 7.1-rc2 tree
-> (eager baseline vs patched, plus a patched/opt-in-OFF arm), 20 runs per
-> point. Measures only sysfs-creation slice.
-
-I sure hope sr-iov devices are NOT platform devices.  If so, please go
-fix that up first :)
-
-> Deferral removes ~74% of the sysfs-creation time and ~88% of the kernfs
-> nodes. At 5000 devices that is 121.6 ms removed (165.1 -> 43.5 ms) and
-> ~325,000 fewer kernfs nodes (369,401 -> 44,406). The table-driven rework
-> adds a +7..+11% eager-path time overhead to non-opted devices.
-
-You're just deferring this work to happen later, so when is that
-"later"?  And what about multi-threaded probing of the bus, doesn't that
-speed stuff up too?
-
-> Available as a docker image that orchestrates builds in qemu guest and
-> prints results as a table (x86_64 Linux host with /dev/kvm assumed):
+> Song Hu (4):
+>   Docs/ABI/damon: fix typo in intervals_goal sysfs path
+>   Docs/ABI/damon: fix typos
+>   Docs/ABI/damon: document update_tuned_intervals state command
+>   Docs/ABI/damon: document tried_regions probe hits
 > 
->    docker run --device /dev/kvm ghcr.io/pavsa/linux-lazy-sysfs-vf-bench:7.1-rc2
+>  .../ABI/testing/sysfs-kernel-mm-damon         | 29 ++++++++++++++-----
+>  1 file changed, 22 insertions(+), 7 deletions(-)
 > 
-> Assumptions / Trade-offs
-> ------------------------
-> The saving depends on the access pattern of hypervisors, and on no
-> component walking the whole device tree on the hot path to avoid full
-> materialization. Both are expected to hold on optimized hypervisors.
+> -- 
+> 2.43.0
 
-Hah, as if.  Many userspace tools, once a device is notified, walk the
-whole tree of it to read the attributes.  You are going to be fighting
-that problem constantly...
+[1] https://github.com/sjp38/hackermail/blob/master/USAGE.md#checking-patches
+[2] https://github.com/sjp38/hackermail/blob/master/USAGE.md#formatting-patches
 
-> An actual production hypervisor was observed in local testing to
-> materialize an additional 5-10% of total nodes on average on the hot
-> path.
-> 
-> Overhead: +7..+11% eager-path time overhead applies to every non-opted
-> device going through device_add() as all struct devices traverse the
-> walker and can't be gated under a config option.
-> The lazy opt-in infra can be gated under config option to have zero
-> impact if disabled.
 
-Again, where exactly is the time being spent?  What lock is "hot"?
-
-> Final words
-> -----------
-> This is an RFC to first get feedback on the decisions taken at driver
-> core + kernfs level before engaging maintainers of other subsystems
-> if we want to pursue this further or pivot to something else.
-> 
-> The code is at a proof-of-concept quality written with AI assistance
-> with some known limitations with main target to gather potential
-> savings and initiate conversation.
-> 
-> Feedback appreciated for:
-> - table-driven attribute refactor targeting common device add path /
->   suggestions for more efficient/less invasive approach
-
-What's wrong with the normal way attributes are defined and allocated?
-They should all be tables today, and the driver core creating them when
-needed, no individual driver should ever be doing that on its own.
-
-thanks,
-
-greg k-h
+Thanks,
+SJ
 
