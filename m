@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 601D4C44506
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:19:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7C1DC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:24:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D54086B00AF; Fri, 10 Jul 2026 10:19:09 -0400 (EDT)
+	id DFC326B008C; Fri, 10 Jul 2026 10:24:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2BC86B00B0; Fri, 10 Jul 2026 10:19:09 -0400 (EDT)
+	id DADC56B0093; Fri, 10 Jul 2026 10:24:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C40C96B00B2; Fri, 10 Jul 2026 10:19:09 -0400 (EDT)
+	id CC37D6B009B; Fri, 10 Jul 2026 10:24:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A51B76B00B0
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:19:09 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40EF8120479
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:19:09 +0000 (UTC)
-X-FDA: 84973074018.04.49CF01E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 42F7E1C0004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:19:07 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qFlaihad;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ACB236B008C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:24:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 50A5C1A0484
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:24:22 +0000 (UTC)
+X-FDA: 84973087164.26.30B4EEF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B4AACA0009
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:24:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hvve1BE2;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783693460;
+	b=hGTqjbi9WWIjCodaGYMilmPKPn5QvpJwHSZwnSQgfoiie4bs42JEtremTEtUSxkLKgphGW
+	kwfS5nDU7JcYVZxuncZfN6IA2Yvc7uLjj6qUz90c3WZTvN3b6zY/2uOODzCNxGmoB+Sv7b
+	Q0uILyO1BnItF+3rePCa2webyuwNe5c=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hvve1BE2;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783693147;
+	s=arc-20220608; t=1783693460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YGhxiQ2wHg/fmfhidZ4pixyfl1k6upbKB+lX0ueY5go=;
-	b=xHmEiWk65ZqaGAmSVrxvoVcBcmjcDjKKLdpQm5LFoHhZvIByU+p/65qS+KqGe4Ck6EMe1m
-	8vAHz6GML0KYPW8KJpiKAFgpmofb8Ex1EAhKb7QcZIhboeZdA5pWXHiQg/e7u1FBJ2DWE3
-	MgOb7kZEZuPPsCPEKCiguGp1ktbCcxo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=qFlaihad;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf18.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783693147;
-	b=j/3StJ+Y7z64ED5b39/oGLCfa5BaufMYW4gLGNvQE2tEnfiZJ33XyI0jVVwUhWmdclBLYp
-	8WlEiYXkTY0WtS7yG3VKdPAuQyMTI/NsY9W2GNgOiXZKmKNyOzCNr0X1NBwkr9zaljbpzs
-	vYcA7dow4OYK9GqIMeTUICd/NSug3ZI=
+	bh=3rUDxcBxSTvUCkBAHloVtxdehX9iYZCWsP8zEYUkkqw=;
+	b=e7rqnuHORZYsD5FMPvqc+VvCOz7vcRgqpeDCo2PJeDBrfXfv3cr83F2YHbr2dLLkGXhedT
+	WacV5nzU/9hosMh/2jkBt9oi8ZBpiEYJ8pIbwDyfNjpLeXKp7HlmS+5jHxCW+MSM6+6er5
+	11PzJHRa710xPq2PQge/Mcu+PpNceyo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9CB1C60051;
-	Fri, 10 Jul 2026 14:19:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0A51F000E9;
-	Fri, 10 Jul 2026 14:19:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1783693146;
-	bh=YGhxiQ2wHg/fmfhidZ4pixyfl1k6upbKB+lX0ueY5go=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=qFlaihadj2osXgYoq5pgN81gSLfdraUFeTRyznRcKUEMTtPKCZrr9NmUkUTDtejqN
-	 1W+OIAZkXybtMXrNqkqSVGJBlfSBX2JHHnZPWNVTGp4xhYQ/Tx7xjeY4yjRBed1+G7
-	 q7az5F8YauhjZC+poa5Z/WLIzhcF1cqXxyNDRTZE=
-Date: Fri, 10 Jul 2026 16:19:02 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Pavol Sakac <sakacpav@amazon.de>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	David Matlack <dmatlack@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Alexander Graf <graf@amazon.com>, linux-mm@kvack.org,
-	kexec@lists.infradead.org, nh-open-source@amazon.com
-Subject: Re: [RFC PATCH 09/14] iommu: lazy-populate iommu_group
- reserved_regions/type attrs
-Message-ID: <2026071045-pushcart-duller-c3fa@gregkh>
-References: <20260702174033.32116-1-sakacpav@amazon.de>
- <20260702175114.24659-1-sakacpav@amazon.de>
- <20260702175114.24659-5-sakacpav@amazon.de>
+	by sea.source.kernel.org (Postfix) with ESMTP id 98A2B43833;
+	Fri, 10 Jul 2026 14:24:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466B51F000E9;
+	Fri, 10 Jul 2026 14:24:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783693459;
+	bh=3rUDxcBxSTvUCkBAHloVtxdehX9iYZCWsP8zEYUkkqw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Hvve1BE2sLwGuVY56H2t3YRIg4JB6/lGKUEcaHRfIRmslgZQM1dWvquBGhjH8LPNG
+	 7MAh73cA/ZThpxDisFOVLqJma1hCTpoEQr7x0p3pXY72M4CIrGZE0/nOMElLE42gjB
+	 PhQs8w872asSL4tvX2dIqASl+Nh3j8hWlXNHecXaY7KilPkY5UFeIDVTZqhSHTAFeZ
+	 wSOb6BLr/KOuXCiZf/0ChdtvZm/TbPEdoCwCzhkLCSH2WNra5AHzdb0AOS/JkyCTj+
+	 jwuj34JJwC0SaRmMbRcyqiR51x6NVGF30d0i94LCcjzEu/TMMhilGa1W0iNgbVk+NU
+	 QBQaZkEOtekxA==
+From: SJ Park <sj@kernel.org>
+To: Song Hu <husong@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH 3/4] Docs/ABI/damon: document update_tuned_intervals state command
+Date: Fri, 10 Jul 2026 07:24:15 -0700
+Message-ID: <20260710142416.25073-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260710044737.561102-4-husong@kylinos.cn>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260702175114.24659-5-sakacpav@amazon.de>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 42F7E1C0004
-X-Stat-Signature: s5fhdnt8eumbisyxfipckodw6ezmedcc
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1783693147-723089
-X-HE-Meta: U2FsdGVkX1/rUlPZ/4oDb5anCDmq+N7dP6vnBEV9yztRJ9jyjkQsRY+VwQBn6nTpo/ai7Hv/dSRuy5FdRiGTcpvMdyR2Lm7DBcCgwhfUoyBINeaZRgNzgypiJmtFv1wAArpxhE0hQtnIZumhlp659heunquffTXJTDq9sSaFEqbVPRoLAiQcFRxcfRFJ3mMqrf9je/4MYKCPp9sAp6e0XpbaVA62igu0CCZL/1YH07TBV4Aqh4sGe3F7YeJU/lraegflSjQzQsjRIr+ATpGT/WH0WucGMngf1Da2ak+RN6Qt7c/JtH40BdPd/3edASpbVYGpx0Fytu3z0CKxT7uyHU6d5iM7iVEo3nJtoDTpU9VIb2zWlsM1IyR/saV1v8uhcrMZkUxHo1XUgbTbSS87uc1vEvoKFf+Q5u+HgWySvh8+yhtzB5e60M4mYauSDORT9e/DMWphjV9xxiCrRg4ItV0BTPG9a+QLsejIQm2fk+DDPyNCwOMO1Lm27kwekajfem4RM3VZxMKZy1WzbyiLwSSu5D8+4XLUwauRDQgLfrea0jGES0v6XVHnM13oV690HTNeRT8a6ayu9/vWO6kz3XoJhSyjocShfZYRmtXYNF2Br0v8uspTt5MeuN0cxWh4Ooutka0/1xZ02WkZmFr4YDgaD+TUml2iYjtLjpmPFRHaK8BaGXS1mkRSmPsGS77YEZ0VK/im+5H2xxugAQGClmLBfBmo7VJ1Wa5OqSxQOgc4QbJwwljGYjeW9VhobZPUxeYq0m9EFcfMI9ItKyLPDt4WNI+6yI+RAXFk5ISn3RU+lId4iJLvx5eJjMw9jUvkCvgsYTMS6w6hYPLjWUu8sUsFUrVTxRS7e2IsuTdRgHzGAsYQEXOWhX7nGgUS7ZkD2Z1kJ0wMw914UKk/94IDHhpx/hwHeQimo/dhYHj8JTAGcyN02HM6HhF7f71EkOwTITe/JPS80ZV0IganwUQ
- bWmLmTCC
- vKXfVr/5UKnfwAWVOdycxSvgkwAe3v+Bf1PgusUO8e9JzaDl2JtWAkUiGLK/BGqjzoaSmsE1W1J4wzg1lK/w6pAVT4aWk3pxzkFh7BS9PMtEhYPQAY6XYA3NN/jhho9Oo9rp+14yU9NyAoA6Yif3zFDLIQFXT3GEPvBDhL2cXQb2D+U8ukqBTu9FhfKOHV4zmwq8NE0bZB2Pk7ctV1XZClQ2hs6YQQ+PfDggI2o5M9q5Xk7/vqPex5yJWlLPBBpJaA5D9XBhv/Lk/Se5rKDoucp5vwlpFihZ3F8Sgl0XVm0FkYAlAUrlCCTkCxMkFngqAvc6tuIAzrdv/UVX1C85KxW1a6YFEPZ+ClyBr4b5+bKSJlRFTMLGmn80Rhg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B4AACA0009
+X-Stat-Signature: esffgkp39tk896ybrefu7oiprx8e7fi7
+X-HE-Tag: 1783693460-265537
+X-HE-Meta: U2FsdGVkX1+eLIKBTEGD44wu4KEW0G2nfzdrvYy+Ww6km+rBC5t/izaCnvjshjIb3uOvZcHEUPIhucIP29XpdMHFp3PXEX051UlzUV8MWaHQCP9JrjLHVp8OM6lYRf9q3DdNje+oyhbLV86AcIhanh/8/4bF8br/+Mj/C/a6hFGgAYg/36S/pyrO38xuljsSqbsbIKDqn/niZa6zejujq77s1LMwILgH5XWv0MLTJIdTjaVhYPfCjSriYo9nQgtlGTbL/0+nkEDbHyH4RsJiNla4HdQp2jmK3/1UXGDpzowvnqDeGVfeXiaUaa8IuNnzCe/J7oazJIut7HOAt122WTSxbYctDPLnIpwJRxAHKdpV+K1+2gKvO/mJ0D1g+5R5gc0Tiv4ybk/8Fud0YKJgge/gu3F8FycoaTwxIq+vopD/tjsvBwh8i+0xLg9GlHkSDCbOXcu8TIZKLW4yiZczfcq5PtCUf+ML5X3QB5hLP/aqdJNTRKygUWoDfvKRtfXgyU3uGxqWPU5Ic7eiTkujI1ekvS08z9h4CTy0a+MdgxEROcSkgARCeEHGaLrisNYL7qQTi7dUn44gseGz+kJclJx9YXrO29XQlrWs/NdH6H2DFonRLPMeJRvpimBJFpk5KV8nKvD7KzaBfjl49wE/a7L9JbV/pmYdm2R5aCh7CldWBqzT+29QsvD1nTzWuJ1PTElE1ZS2DkGDrpLNRB/V+27K80hdrdkHYXc3DSgYGFQ7iRP3XJ6h+mgtWCD9M5HAgmC6n0iNjPUH/pVGTtFh2WlShZLpTZMEMd1MCZ7vOXUx25IS0IUgDEACswQRE9szlkytK0F85LmUDPG+ac3FsoOozxbeHfFfJWPfNDoqQ3DnlnhI6X7igEJsq1I2NbLdEaQ6S0vQ0xk/70daGiYreraoESCCz0D8Icq5piYvqHGLI7S5YEa5+fg3EO2LXhy9Hj4dQRJUlcu518ILGLd
+ RpcCyvSt
+ dMTQ41ce92O4JbyPTKV07AeXn+c9nvWsqWQMRRhKIEo66z+McvjnNfBr9E7cKf+o6iN0um0301DrSQ9LKTcfTeV0m0iXPTz/VFWtMtRh39aBABcPIW4t7K/KLVia27AQVQWH8OeHT5YOdPeZwY6bTTtdNo4/hvd6TujyRgFXE47pyzQ2qdNIkCI+3ljcGmlH2NiabVdASVqFhka+SvxY9uQD558A7N8n64s5Co9bMXOlMyNCfKgBetc8zK7sSLjUTPwJzgvDXYtXr5dqg3EfWZE4aLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,48 +93,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 02, 2026 at 07:51:09PM +0200, Pavol Sakac wrote:
-> +	/*
-> +	 * Defer reserved_regions and type - both are read only on
-> +	 * VFIO/iommufd ioctl paths, so let the populate callbacks
-> +	 * materialise them on demand.
-> +	 *
-> +	 * KERNFS_LAZY MUST be set before kobject_create_and_add("devices"),
-> +	 * which calls kernfs_inc_rev() on this kobject's directory and
-> +	 * would otherwise leave a stale negative dentry cached for a
-> +	 * missing reserved_regions/type child.  WARN_ON because
-> +	 * iommu_group_alloc() controls all group kobjects directly.
-> +	 */
-> +	WARN_ON(kernfs_set_lazy(group->kobj.sd));
+On Fri, 10 Jul 2026 12:47:36 +0800 Song Hu <husong@kylinos.cn> wrote:
 
-You just crashed the kernel, that's not nice :(
+> The 'update_tuned_intervals' command of the 'state' file, added in
+> commit 1077605396b4 ("mm/damon/sysfs: implement a command to update
+> auto-tuned monitoring intervals"), is described in usage.rst but
+> missing from the canonical ABI document.  Add it.
 
->  	group->devices_kobj = kobject_create_and_add("devices", &group->kobj);
->  	if (!group->devices_kobj) {
->  		kobject_put(&group->kobj); /* triggers .release & free */
-> @@ -1091,19 +1210,6 @@ struct iommu_group *iommu_group_alloc(void)
->  	 */
->  	kobject_put(&group->kobj);
+I initially thought this information is better to be only in usage document.
+But, ABI doc is already describing all the inputs.  So, this looks good to me
+now.
+
+> 
+> Signed-off-by: Song Hu <husong@kylinos.cn>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+> ---
+>  Documentation/ABI/testing/sysfs-kernel-mm-damon | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+> index 03aecc07a5bd..7e8192527191 100644
+> --- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
+> +++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
+> @@ -36,7 +36,10 @@ Description:	Writing 'on' or 'off' to this file makes the kdamond starts or
+>  		kdamond.  Writing 'clear_schemes_tried_regions' to the file
+>  		removes contents of the 'tried_regions' directory.  Writing
+>  		'update_schemes_effective_quotas' to the file updates
+> -		'.../quotas/effective_bytes' files of this kdamond.
+> +		'.../quotas/effective_bytes' files of this kdamond.  Writing
+> +		'update_tuned_intervals' to the file updates 'sample_us' and
+> +		'aggr_us' files under 'monitoring_attrs/intervals' with the
+> +		auto-tuned sampling and aggregation intervals.
 >  
-> -	ret = iommu_group_create_file(group,
-> -				      &iommu_group_attr_reserved_regions);
-> -	if (ret) {
-> -		kobject_put(group->devices_kobj);
-> -		return ERR_PTR(ret);
-> -	}
-> -
-> -	ret = iommu_group_create_file(group, &iommu_group_attr_type);
-> -	if (ret) {
-> -		kobject_put(group->devices_kobj);
-> -		return ERR_PTR(ret);
-> -	}
+>  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/pid
+>  Date:		Mar 2022
+> -- 
+> 2.43.0
 
-Why isn't the driver core creating these properly on its own today?
-These calls should not have to be done.  Also, what's up with the "raw"
-kobject?  That's not ok, this is circumventing the driver core in a way
-that is not going to work out at all (as you are finding here...)
 
-thanks,
-
-greg k-h
+Thanks,
+SJ
 
