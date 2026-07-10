@@ -4,97 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB390C44501
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 18:23:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25FDBC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 18:25:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D80C6B0005; Fri, 10 Jul 2026 14:22:59 -0400 (EDT)
+	id DF8016B008A; Fri, 10 Jul 2026 14:25:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 789846B0088; Fri, 10 Jul 2026 14:22:59 -0400 (EDT)
+	id DCFB46B008C; Fri, 10 Jul 2026 14:25:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C87F6B008A; Fri, 10 Jul 2026 14:22:59 -0400 (EDT)
+	id D0E126B0092; Fri, 10 Jul 2026 14:25:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C04D6B0005
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:22:59 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D89131A0519
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:22:58 +0000 (UTC)
-X-FDA: 84973688436.10.832388A
+	by kanga.kvack.org (Postfix) with ESMTP id B03606B008A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:25:17 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5215B1A04BA
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:25:17 +0000 (UTC)
+X-FDA: 84973694274.01.6487B24
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E74351A0003
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:22:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUBp5p39;
-	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4FD7480003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:25:15 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kK/1O+W3";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783707777;
+	s=arc-20220608; t=1783707915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3KTDWmq+3W3+x6k58hpwkrEI3HUDGthZ7rteRUOzbhk=;
-	b=r0Zea8UleDqW0s13S5JKHPex9BN1zz6SvIAzJDbHtKtQRg6eKkUkOqCf74Drq5ze6d4nv0
-	IORbK3qQSBS9J4U8HEuK6OWTkgbb6Lgg3lE94ong4Cb4HEc27eG6eNxqxkimy89wtty4VX
-	mTV+ekmTqmx4L23Xh7XOYW5ZV3NynBo=
+	bh=ZZekBbFA9NhngbLYIVC+8htxKlJKsz67NZnwnFVfRBM=;
+	b=vxRy/haWC7WhtKKdBPovgwCqA7sTlSf2Y0Im8k7NSQtrEZx6BjaZ4GtSjQ4kldV4LPCu5F
+	Elx2KNKlK9zfuVxh8DdDbhAVJBWblx4lUoNH8Kwq1DCMLK0xHgGsgJpvT/DIx0DA0gIm8w
+	jpNMMHu5Wa9dlUnHkedOH/KKZZ9PhGA=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HUBp5p39;
-	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kK/1O+W3";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783707777;
-	b=EUCWAvCbCTYKI9rQp0JOXTuPNbtj1mTafnKPmWh+0FwYMNnB1vYLFClU4WCFTRhgxhxBlB
-	bvxVUJkrRRQpTuVcx0nmFA1TxpRDuODNqFUUf1LXpltjSeDpDpJx7NVW2s6XzCO397wO2H
-	vDG3uCCMk1ptTeKmqzduGO6Ej/66Pmg=
+	t=1783707915;
+	b=gQCjhBoEcwClh4/AK95E2pujZ3T/HnLbxguCUdT17f+6nmkWEaCZYGHDcY0YwISZoU1Vgr
+	L19uOphy42sWEi2H3RgyhbF+oA9y7LcNScahtEs8yrshrnKwMyM/2fQ+oZezBwcZ4QBT9B
+	GI1xnQ20ogHcFO0lDQD8G8uw1Ix9HDQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CCED243CE2
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:22:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1B851F00A3E
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:22:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7695B43EFE
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:25:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5294B1F01558
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783707775;
-	bh=3KTDWmq+3W3+x6k58hpwkrEI3HUDGthZ7rteRUOzbhk=;
+	s=k20260515; t=1783707914;
+	bh=ZZekBbFA9NhngbLYIVC+8htxKlJKsz67NZnwnFVfRBM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=HUBp5p39jmQ15xxjoGsrx6lWNQIzCGJh5Chq6CG15x/9ilbqrj3tiCp1Xlu/OazyF
-	 0hFpr9vLmJGv/Q1UjU2GPbf/tgTX0Vs0rfse8dUGIr1M0Vvv85x7y7zM2pX2yGw9qy
-	 e9G31fN4vpf1ACbtFA+prvSXXCbttLciCzlhTPejGYe7kIAGR4SLzaVlh0imSlEiw+
-	 FBh3dtr4I5FnsNY3g6H1ZvtAX+pzNkwvzuk/PzsY5jpeyDkWzoSarsGsl/RxDuPabx
-	 4LPr4V0xOGa+3u5Dryl1Afsmcs8vz/xQWr+IlREo2//7gmNQ4WgV8dekSgniKL++R4
-	 e2yO/rALA3R/A==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-69a5ecbbfb2so1936234a12.2
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:22:55 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyXCFRJEjx2VotE262OFg7FKc/7OHLzYXB4LeWvF5q6et7XEUdN
-	0fUGJ/BtYIn4ygBWzAI2Mrtd+qLkwHbtNuYGnynThMXR+YFAGoll0CvHlNBo/+M/PKoMuwfU273
-	5lpDUUMDlTHZ4GMJXDWM5fJGvtm0+Gk8=
-X-Received: by 2002:a17:907:9483:b0:c16:86f:bb10 with SMTP id
- a640c23a62f3a-c16086fc6a1mr134332366b.48.1783707774593; Fri, 10 Jul 2026
- 11:22:54 -0700 (PDT)
+	b=kK/1O+W3osF9lgM9cCR2fSLVCuFSKquZMb8a81GQnUuMXdBkPWJLYf3vkFk2v9aOx
+	 Rq5g37N3VKaT96KU0NhGdys6TP1Zmwo24/ML6c3wsJXjRNZ6mPZTJI8PcUcf+INeR/
+	 oRkxx3luKCThwCDDcc/+HGxyaUYQP3QcZ/OIesIm+aUSkP3CkLha7AVUQQ/q0CBGTF
+	 f6k3SVvuGRznyd6r3MaQG4xDKKa82O92etN9/H3UJux64t2wexnmSRle2dioIGtXiK
+	 6mQ4VXDL1PsditNjwJwTrO4in52ocoOunKlX966sM1PVKUDeWB9OGB5hVdB0EBTMs4
+	 BV2VdAHMRH1CA==
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c15fd3a299eso156662166b.2
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:25:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RopM9wYtd5nGQzu4gUlqNLTxFPZvAFjqfhIFgIP2cankPfBbTSUVe3hGgI6CpbILYHSXayFhfsykw==@kvack.org
+X-Gm-Message-State: AOJu0Yzt7o4sx3MhcJMWlM7OapgJs+/vMdbTtg5ucyyWM+5NAAFP4krj
+	K3gayWKmXnXnqz2v396DkcvWDhQ9cSMY/Fo/V1u/QFaO8H5kooK7r2yxy9veMB1HglMniD23OW9
+	4BuJNkYppD8DmsnuMHrT+BS1eBxwiz6I=
+X-Received: by 2002:a17:907:26c8:b0:c12:6cdf:6071 with SMTP id
+ a640c23a62f3a-c15cdecfa6amr810724166b.4.1783707913208; Fri, 10 Jul 2026
+ 11:25:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260710082822.583930-1-husong@kylinos.cn>
-In-Reply-To: <20260710082822.583930-1-husong@kylinos.cn>
+References: <c0970cee-42c2-4844-b88e-229853f08e90@linux.dev>
+ <CAO9r8zNJh65SZzdW8Cc8_8N5Wr+ORuRtU3kuaAX_DhLaESFYTA@mail.gmail.com>
+ <CAKEwX=MMXdq7KTzcEgXfNt2L-eTmAVa+nijdyiujVOAhXQsHSg@mail.gmail.com>
+ <CAO9r8zO-nAys0PJfXVRwLgAzwJLa9KxpMXKQKXJR7cnYKgmhRQ@mail.gmail.com>
+ <CAKEwX=M7axSs2FJDq0KF3GBDpd6G0J=gP_2boUJraNf8M2n3Bw@mail.gmail.com>
+ <CAO9r8zM8qk9g6+B6GiCV3oytjViMTEhbr0KjrccU+bF4+PMfTA@mail.gmail.com>
+ <ak6c2TaOlcGxZ2Ih@localhost.localdomain> <CAO9r8zPiOyri2wVxRvB0bwEXf9bCKoPsQmRzOpj01XozA8hqUw@mail.gmail.com>
+ <CAKEwX=PLauANTu8nDLbDmViQ6u9gvh7HbKffUAzUXuBa6Jes=g@mail.gmail.com>
+In-Reply-To: <CAKEwX=PLauANTu8nDLbDmViQ6u9gvh7HbKffUAzUXuBa6Jes=g@mail.gmail.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 10 Jul 2026 11:22:43 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zN4ig_GGP4a=NLZ9PUW+jFmSfY1yBLrkPA9azvDCrGSvQ@mail.gmail.com>
-X-Gm-Features: AVVi8CeP67i9q7KNHqYcdJgVdQ3EjZ8ycjdmhkWOxW_VJsXAPZdKOfvryLSDsHU
-Message-ID: <CAO9r8zN4ig_GGP4a=NLZ9PUW+jFmSfY1yBLrkPA9azvDCrGSvQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/zswap: flush dcache in the compressed decompression path
-To: Song Hu <husong@kylinos.cn>
-Cc: linux-mm@kvack.org, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	chengming.zhou@linux.dev, ljs@kernel.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org
+Date: Fri, 10 Jul 2026 11:25:00 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPiK44=LA4bzyS=WA1irGFL-YCKmz7u70v-ddEVj5-zSw@mail.gmail.com>
+X-Gm-Features: AVVi8Cclh0zv6h_QCsnP6fSkY8HFOsG8hOvjUqUDiHIONAoQflK4FdYIabyurfE
+Message-ID: <CAO9r8zPiK44=LA4bzyS=WA1irGFL-YCKmz7u70v-ddEVj5-zSw@mail.gmail.com>
+Subject: Re: cgroup/test_zswap failed with "zswpout does not increase after
+ test program"
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	hannes@cmpxchg.org, chengming.zhou@linux.dev, tj@kernel.org, 
+	Shuah Khan <shuah@kernel.org>, mhocko@kernel.org, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E74351A0003
-X-Stat-Signature: sgqi7i1i13kf7rw4w3tboi5bx47spigb
-X-HE-Tag: 1783707776-502981
-X-HE-Meta: U2FsdGVkX1+mL6YQvBvpSWQoTKSiyz9nikvID6M9bJS2trg8r28iX5Kay34en7N3o9HRR1RH7blutkbwUrSB2+1oVOq6pfqjesmWQa2vDD9gicSZe4H8Ma3IlZ7ci0koT8HMMsEmHtjO9XKbIjBlOwhqUk0vMV9ENpfJf7zvEi+sNLoyMoe26ZXfpgz3vCujUJRzXWwROl90BhPrLnxDRUnkc4t7y+22Xch2J+WvZ4xSrY3nirHZ3pqQMiqdmGsbnPv3/TrbZwtn/I+J6EB2Ak2Pg/UAGwSRHktBUExHCEMrIRd4bWaE00CX6CDJiq/BW1xDsk9Ka5kL3A1naxksfupQRGNA5e9J0GAZtzsqt/2Jm7jUtHKfH8l3guV6RaLRXt5KtKvOLEKXl7zGrwlXKGzPvVX/H/3ivswdNrSFIMxobzFBlF9xbbpPt9abwIoW11cBffyP8fgtVFWDDLMeqAq4+3xItHlTDkUY1K/0TXX3iSFZepd3u8vDcJ/LRMwH9tCEjga+5yMLUJSylCu/5So07Dzz+e6sFlTCxlhEM5zLCD6HmKXPCCxJwGXQtYli7F10otkAOK/6pD0zS+7d/K1Cm7eANF30zybwLfcHuMUfvBajE9xv34l5SU2FyWq3qyq6vPKOAu7WL4JXmSpF9fTgVE5KvOnqp+fiALxbU7VZsUpZAu37qoA6jOnuTqr/OW1jpzSmvBoe96Fj70bDDP5BsXJVZ6Z41lK+8y9upkTq8ALFw9KnkUjve1SCegvL4byA3inETP8XKzWTmRjIuKZ0br/CjljkBzkyEPwwtLA3c3jjEORSSdwaXQmmYMVDgzOb8ZraAb04NAzF1RbfIVOhm7pMb/XJm1Y2Kc1LROCzlw8CgIRzCnVf1xmiRn26AYjQ9qlIzeLr88Usb/X/XgNExnH4BFwJLzul9CdUOrXSa5sm2eweCeT43g3c8L0gISmNjfxR0Y3FeCrHyZD
- 9nARmnQE
- ofehrut9CUc4oazTqVyt4RBT5DCz0CQiMXY/4ApEEa1bt+lCv3/q7j/ia7YepqQI+IBuzncH4uYIvQ6uQLCdViLzUB9GwMj8jLtiFeq5UaX6Wlvq7RisG269b7PENOlI6XbmZeWeH2Tli1yRO4gls+qSUySCm0GoQsvoJKWSm/ANgf2f1356mPi9lIqNp/rZdrnQmzzxUFDO/g6wA+3C4XY/jqPLs3e6IEVgQn+BjXsFxCEmRI/kAj6845jIDzI2GhNOL7ldISqfZn+c83ONo7Bqr9YwogUO54XaQ
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4FD7480003
+X-Stat-Signature: xhsz8ijp94xdff39pr5foeidetki89sh
+X-HE-Tag: 1783707915-529960
+X-HE-Meta: U2FsdGVkX18xJCLyrEy+Jlp+HZwqQ7dKzZVyBkEh+1InECCHHQtdkEd20EmzgFX9qQWgv01rtITKIYX9UIKdp3vCGuetl6Z8lLF1/x16lz0Wp1gUYoxxPU/wMoWFESdVTK0fQI4VH6jOhyPS5k3a9bwda1ffqbO5fsNbzqIyhndoChIZfh+wZuZtYibMQkZb5uKF7aPf/KPXNLUQEqY9bzEmwq+nRjPf9YynMpDDPV9yacSomE9GaMeh1RvlSZg4cSmF6UPVuHQO+pAu4AyK4eK/sWLL9R8Hhy1uy2NXi4Xp1JH9etfuPwZ91T1gAKvXgiEiNv+wpO57L/IXnDbX4gnVDzExIsN8r7SjSsQKT1zdXgHXo+d6XyQt1c/ah7ItZOymqYI0nLJIBcG6r1P8twe8t30AxgMRpsWdavd0p+hE0b13HZQckERFpkPF+MYkDKlcqZBAW0Chlv7tv7paXmyrQtM1TEOU571qUKwmEJN3fSsdCp0lo+UrsiYYQlk1csGyEGzpFkgBb+wBZlHFCITw1WpWaUnhd5SLLImowSX4gl8XN/yA1vi7QuUXlxVC2xh8pqFE8mgXBjLidGH7Ros2utmh+E+wp34QMd2BODy9Xors4fO2Z7Uyuscel2oafp+WD5FzHqm3jGzg0Ky0scom7/jv695yCj21ESLjN6vkAWhC4jkpXZyxGOZpFtnWfyMdABuHVLLxLGwS3SSEy//dxWt/m592tfTDY/55Y6KU7w8Bx2/xSa+3imvMAlQ5KU4HPEgbAOhl4LGl4CaTukZN4yjmb0FMWx5OiSlnfgUFy6olB2bvY+lpvBfI5lY85MHRYFK2UglDcGX+E16YXr769vP/6JG+zA7ZJ/eZfGNhXbBt3N2WSH+R0pR37MoQ5Tn++uvIprjBVu86ojqs9X2GnsR2GM3Eu/+1n0AlbKjH0n0Tf6HEjOlPAHToqrufsuOj6d7yWFcbb79H+AA
+ VHHPf39A
+ mHwtuRPGaehHf+PdqHo+2uL64+ylm+G7ExNC6izkX8XfbMYxCTvdfSichwoaBbURSh3Moq/Wz+4v7D+C+0ZePJMks03qfPW6L+4nd8/bOFF/UqqeJSbRVsnm35fv4zh/FUFEElWLImOvhXCw5hSvPiZ2NsGOuLnNcXNZvLBHpIyoXeqJMHBZSthVRHVZ8r0W/VV96NflCpMm9IwLUgsJw+T/f9qeFy0v5B7BtqjT+SDDYSb0L2cZf6HV54xdzbZEB90ARuCvfv8szvDGQ7azVqb96vdy5s+1fExZdG7kSy+mwDnfdBrdRz3pQ+sTrs0q1Nvl9UC605WmEJpsGnpoqkEqEdkLHT4qbPj0cZAGPLvE9ekV3Pg4E8xD2SFvGzTNJ54harPABGNRye3AuPOcLOJD/gxL5pPFiF5KbJdNyoawwtRGL6H/g7ZK53A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,58 +115,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 1:28=E2=80=AFAM Song Hu <husong@kylinos.cn> wrote:
+On Fri, Jul 10, 2026 at 10:30=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
+e:
 >
-> Both branches of zswap_decompress() write the destination folio through a
-> kernel mapping: the incompressible branch via kmap_local_folio() and the
-> compressed branch via the crypto scatterwalk. Yet only the incompressible
-> branch calls flush_dcache_folio(); the compressed branch was missed. On
-> aliasing D-cache architectures this can leave stale cache lines visible t=
+> On Wed, Jul 8, 2026 at 12:08=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wr=
+ote:
+> >
+> > On Wed, Jul 8, 2026 at 12:00=E2=80=AFPM Michal Koutn=C3=BD <mkoutny@sus=
+e.com> wrote:
+> > >
+> > > On Tue, Jul 07, 2026 at 02:49:56PM -0700, Yosry Ahmed <yosry@kernel.o=
+rg> wrote:
+> > > > I would honestly rather use more memory. I think there might be cas=
+es
+> > > > where the flusher is delayed. The flush being slightly delayed is n=
+ot
+> > > > technically a bug that we want to see a failure for, but if a large
+> > > > stats change is not visible that's a user-noticeable behavior that =
+we
+> > > > want a failure for.
+> > > >
+> > > > WDYT?
+> > >
+> > > There's already the (recent) page size-based scaling, so the idea wit=
+h
+> > > nr_cpus scaling could make the selftest useful on wider range of setu=
+ps
+> > > (even page size can be considered as a slight implementation detail
+> > > leak, thus the justification of nr_cpus dependency).
+> > >
+> > > Also, I still think that internally the threshold should be changed t=
 o
-> userland after a zswap load.
+> > > the "harmonic" formula [1] but the selftest can go with the linear
+> > > dependency for more pronounced effects.
+> >
+> > Yeah I agree the threshold formula can be improved, but we need to
+> > make sure performance doesn't regress.
+>
+> Yeah that's a separate discussion indeed. For now I'm fine with fixing
+> the selftests by using more memory.
+>
+> Is there a good generic formula for this? I understand there will be
+> hardcode values, but at least making it scalable (by how much memory
+> we have, page size, # of cpus) if possible? :)
 
-Adding Herbert here.
-
-Doesn't the Crypto API take care of this for the decompression path?
-Maybe in scomp_acomp_comp_decomp()?
-
->
-> zram flushes in the same situation (zram_bio_read()). Hoist a single
-> flush_dcache_folio() out of the incompressible branch so both paths are
-> covered.
->
-> Fixes: e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from zsma=
-lloc")
-> Signed-off-by: Song Hu <husong@kylinos.cn>
-> ---
->  mm/zswap.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index b5a17ea20237..bb0c16d102d5 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -943,7 +943,6 @@ static bool zswap_decompress(struct zswap_entry *entr=
-y, struct folio *folio)
->                 memcpy_from_sglist(dst, input, 0, PAGE_SIZE);
->                 dlen =3D PAGE_SIZE;
->                 kunmap_local(dst);
-> -               flush_dcache_folio(folio);
->         } else {
->                 sg_init_table(&output, 1);
->                 sg_set_folio(&output, folio, PAGE_SIZE, 0);
-> @@ -954,6 +953,9 @@ static bool zswap_decompress(struct zswap_entry *entr=
-y, struct folio *folio)
->                 dlen =3D acomp_ctx->req->dlen;
->         }
->
-> +       /* Both branches write the folio through a kernel alias. */
-> +       flush_dcache_folio(folio);
-> +
->         zs_obj_read_sg_end(pool->zs_pool, entry->handle);
->         mutex_unlock(&acomp_ctx->mutex);
->
-> --
-> 2.43.0
->
+The rstat formula depends on the number of CPUs and a constant factor
+(see memcg_vmstats_needs_flush()), but this formula is for the number
+of updates (e.g. number of pages reclaimed), and that value will
+decrease as the page size increases. So I think we want to scale with
+both the page size and the number of CPUs. The amount of memory in the
+system is not a factor for now.
 
