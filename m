@@ -4,114 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B040EC44506
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 21:26:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3239AC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 21:27:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D8636B00BC; Fri, 10 Jul 2026 17:26:33 -0400 (EDT)
+	id 10BD16B00BE; Fri, 10 Jul 2026 17:26:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B0306B00BE; Fri, 10 Jul 2026 17:26:33 -0400 (EDT)
+	id 0E4ED6B00C0; Fri, 10 Jul 2026 17:26:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59F926B00BF; Fri, 10 Jul 2026 17:26:33 -0400 (EDT)
+	id F16236B00C1; Fri, 10 Jul 2026 17:26:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 215006B00BC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C447C6B00BE
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:26:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9F1591C8B60
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:26:32 +0000 (UTC)
-X-FDA: 84974151024.03.BD6B433
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E76CEA0009
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:26:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FV7BKS3w;
-	spf=pass (imf25.hostedemail.com: domain of 3hWNRaggKCOoPYMfXMOWSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--dmatlack.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3hWNRaggKCOoPYMfXMOWSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--dmatlack.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55F9AA0168
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:26:33 +0000 (UTC)
+X-FDA: 84974151066.15.61C22A2
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7FC9C100003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:26:31 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="RlL7/9qA";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783718790;
+	s=arc-20220608; t=1783718791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vyFHddSgtH+5JtZtRXs5kryYSNhZjQ+wgfA9vuynw+w=;
-	b=TFRwX9iW8zZ82nRS6HSEwkQBGHNvIOxaz6TLOD3QIOcy+fV2vRhSgSEpTu58PtKVn8YY2W
-	rcwVwYPu3DqlZnp7i2GUrUeNJ+tU66sh32oHK6ccsQxo4EJMUBeM80AKe4jUmsELvECDZh
-	I2TTjzth476r12Nh58kK3izpyLNB4L8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783718790;
-	b=nA2Y0m7fn5rURjapLyBrfc1GeygxSpH/4IncgiHmIsHVROIkfRj3olD9Uu50YTPNYfLnmU
-	qHs2PEpqNpjZ5xTEiyal72oVG4UMbCguvDFMEnMTsPH63O10YGdvh2/s1DEpWfro3cmnd7
-	BXTMPKWiFRuBnzGZ34hwgxW/FvDS66c=
+	bh=8+MHxD8uf0HO8SRBYZIasl4vPo7jNKxT6S73gN/spU8=;
+	b=sFffeH29mAOwn0E493TMv/afT9h+Ms7my7ElRnUw2vBSyk8CVjdGnagdPcOtDv1xrUbFIx
+	NoKMBQHSDVA1vlP9qq68sEuUK5PLD7ZXmEzkMAo59cO3QvoebOXm6iq+1rkBiAdYVz/mKG
+	yBhDjl4LSRYCnF/g98qy3UXeHzUaRsA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FV7BKS3w;
-	spf=pass (imf25.hostedemail.com: domain of 3hWNRaggKCOoPYMfXMOWSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--dmatlack.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3hWNRaggKCOoPYMfXMOWSaaSXQ.OaYXUZgj-YYWhMOW.adS@flex--dmatlack.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2cc88e22f92so25424835ad.1
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:26:30 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="RlL7/9qA";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783718791;
+	b=OEwPWk2RIcbILJdzQRZBgsRrKJnwMh1vYfxmmYRQGEKRPfK0U2fZOkXCrgrbgJycGzvitt
+	zX45M98peLc4NtYa1Pnqsye7zcKYyBWfWh8ksL/9ZUHh/IPWLBHsPCrGb61Og6XiF3De47
+	/CTv1iaCs8spiz45Hta1eVuzFgpQcmI=
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-381018b9375so1761444a91.0
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:26:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783718790; x=1784323590; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vyFHddSgtH+5JtZtRXs5kryYSNhZjQ+wgfA9vuynw+w=;
-        b=FV7BKS3wH2tO4HVskBgdzdWUAuP7NEAdKCg2e/Fjs/pCzbhOq7V6g04AuRhyZwLpXX
-         PIfPa32/4WU2Ru/ccBTEPyiq3FbVo0WDcImCuz8LEw7JEH+xDbPAskjrCY5cd7Lh02Ee
-         uqkO5zOh2Yn4+CHoZfm5l78G7UGpGardREycnvs4HV5wDd5y3tv6j/HJX5f/HLUIjaax
-         S4jGb04G3p5w6mR+e0PpiLZmLXgXqtSZvg4cGQRivAHnL8A2O1buYzO1bo9VZ9Yl58K+
-         6y1UMJMEZF3LqTmitImugpvsadsViyZwrxfDNyohQCug1/3SLF8+at4uXeGnCjcBbPHn
-         XGEw==
+        d=gmail.com; s=20251104; t=1783718790; x=1784323590; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=8+MHxD8uf0HO8SRBYZIasl4vPo7jNKxT6S73gN/spU8=;
+        b=RlL7/9qAOPn4Ut1t0ecr97gCaLC1Au5IrO6ScMjpjBFYOd2KATd5wUD0js9+tZCSr6
+         zYejOnd1wC92Eoa8ujPkd8DwvaOU1JOsYqRUO9Aai96ebRlbS2WrFjoxNR6StJWPO6hp
+         ZilMAq80Aauh7aUdtMfDCdtBVKFK87qzOh4+LpreqAd8MZp1Ws4AQwakO8zXtSmPidqW
+         ZsKHfcUaESyScoaRNftE5UGky2PzINqhTWkAOqW1zaiuOXjtP0qlEoVaqLKVowtFkkNO
+         TN5qYHNDHrKqE7rbSyV8HyZMS7EZZSEfolKtUwvbM4lfRGHjFxFSJfSbz2O+tCgZNbfY
+         KSQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1783718790; x=1784323590;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vyFHddSgtH+5JtZtRXs5kryYSNhZjQ+wgfA9vuynw+w=;
-        b=kC5ACjkDbkMd41jmWkOLola3rwJt2TuIkIjON0DN5kw49+TkZvQPSsQQ8Tfgk7fqmO
-         uATSz1nkYOSK5QcCcsLvMy7YKADmoY7Kr5Mrv6Z7oVBLUvgspYSC81lFbZj8Z16nFg9K
-         rpclXjnLLOlCXAIEOqB7siFqtKtiObVrQbIZfylKIxqIRVfbAnPjmj/bPbYCJGBQsaiw
-         yD00RwwsefrbYdOW6tXtMEmOVIL9fkxrp/zBqWheIOn+lVuJ3ogd4ygDJzl+Y7KNST77
-         EiEXXEWyYhKFSH7+ABM14U7XSBlNmyJ5vtcC0B4TBcGvXzi8z1vwD/49Y5ohqXQgYfCX
-         WO1A==
-X-Forwarded-Encrypted: i=1; AHgh+RqzHpCrZ93qgZ51HiOkpV4hqiBtdMr4ODBzjHrIrFpAuLlrBskWWrEuaaEhmmlngsUs0BY3Teb5kg==@kvack.org
-X-Gm-Message-State: AOJu0Yw0ua3XQAZ5z904aWTpNzME6LMdzXUSbZTOLlDLy6dc1We8CgUi
-	oOfra56E9AwRU5lZJdTIBT814hraU7x9q49KRq10eeqpG3lCBv/GD9sYqebVNAA8XkGaBACdKcd
-	LqqJP0OFLc4inYg==
-X-Received: from pldd21.prod.google.com ([2002:a17:902:c195:b0:2c8:4c1:883a])
- (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:32ce:b0:2c9:fa31:84f9 with SMTP id d9443c01a7336-2ce9e9a6c80mr7580575ad.5.1783718789594;
- Fri, 10 Jul 2026 14:26:29 -0700 (PDT)
-Date: Fri, 10 Jul 2026 21:26:11 +0000
-In-Reply-To: <20260710212616.1351130-1-dmatlack@google.com>
-Mime-Version: 1.0
-References: <20260710212616.1351130-1-dmatlack@google.com>
-X-Mailer: git-send-email 2.55.0.795.g602f6c329a-goog
-Message-ID: <20260710212616.1351130-9-dmatlack@google.com>
-Subject: [PATCH v7 08/12] PCI: liveupdate: Inherit ACS flags in incoming
- preserved devices
-From: David Matlack <dmatlack@google.com>
-To: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
-	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8+MHxD8uf0HO8SRBYZIasl4vPo7jNKxT6S73gN/spU8=;
+        b=DBdXA4XHLK9d+i26RRJp1Ku1VToDPMjZ9Q0OO804fW3uFeyztDDbYDXRkeNn2ejIMM
+         Gb/pwz0z9nLL133TqNmsNBLz+0RDFL2YIADbGXeN2HrZdhMjX15l0RU62JHDqcDpypxo
+         5b/k2pAAHyauCBdfosQHz+Rma+FYU+ZB48205a7a05Xyrm7+gwafxOUoOjevnEuabaBI
+         pOCdnTUeuBRPeTCwwGRpRH+4joLMkei45Evp9NOL2LNN2VtyonIu/NUzx4ELT3NqAbg2
+         3daMSZERoJMSa0o7Dr/SAfvqkrSb1xt4JGB5G/Fz3dKWBEDE9ClAcbJsVPEUXvsL6pHY
+         m6CQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqrHJ2LeHOQ1TXB1fV594u9whdd/D8XcqtQiMgH0Xhu6UEL23LfX89e/rTcPVdR/a66F4tgkEmRDw==@kvack.org
+X-Gm-Message-State: AOJu0YzSDszV7T61gwwlsa9WUGokUqMOWC/eqG9PViCPbdSoIR7elb1Z
+	g3icTx7z4/AP+bPIy6gs90H3jFCXlOCI99beO4PNYlKBSm1dCC4hN6tK
+X-Gm-Gg: AfdE7cmfxhd7vRft0Oh7LOOw0hcbMJJ85zC8EMKuyVJpEKzaeXT67MN71xdC4b0yk0f
+	3BlFAQw1I/aYIEcVD1QhvCo4G8hPoKmx9hNOukNcciklBAGCcaXXA9c/zv2o6T9g1IG5Wyr+Jig
+	adQIwQMwhHq8/o1BmPuwVXYKMnROtb1QgJOf+UXj0sdngyc8eFK8VDQxHVA1jyZIxKLsVL9oip+
+	g21njPv1qtCljVuIvOLnmknx+FLqH8v577Le28CGi1lgmOaPo4bGqHc/OCDjJsrS1Tgqsm8V9xu
+	VUMd4MpIRZUKgrTbc2gU0xje64pvvPpjtte/iI3+t0LitnVTU5gufxBaNi8OqzoNd+DfnNSUfUp
+	vDQoA5jhfhEazW9tzPqsjsqdnrl6jpLdQ+ei8VIYJx8KuYiR/0Ufzv4wGiUJ4fhLuwuGrbs6r4n
+	9k5l3hG/pHpSHZO9wp4DD0gXJV7dxo5lolkXFi8iKaHXpUQZXoS0LVAK+eW+0=
+X-Received: by 2002:a17:90a:e705:b0:38c:e9e9:e7ce with SMTP id 98e67ed59e1d1-38dc74c5007mr567748a91.3.1783718790283;
+        Fri, 10 Jul 2026 14:26:30 -0700 (PDT)
+Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-38a55557f39sm3404785a91.6.2026.07.10.14.26.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 14:26:29 -0700 (PDT)
+Subject: [PATCH v8 1/8] mm/hmm: move page fault handling out of walk callbacks
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
+ corbet@lwn.net, dakr@kernel.org, david@kernel.org, decui@microsoft.com,
+ haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org, kys@microsoft.com,
+ leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com, ljs@kernel.org,
+ longli@microsoft.com, lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+ mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+ nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+ rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+ skhan@linuxfoundation.org, skinsburskii@gmail.com, surenb@google.com,
+ tzimmermann@suse.de, vbabka@kernel.org, wei.liu@kernel.org,
+ skinsburskii@gmail.com
+Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-rdma@vger.kernel.org
+Date: Fri, 10 Jul 2026 14:26:27 -0700
+Message-ID: <178371878774.900500.3975008123082170472.stgit@skinsburskii>
+In-Reply-To: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
+References: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
+User-Agent: StGit/0.19
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E76CEA0009
-X-Stat-Signature: yy5mdqdwymg5k9dc9anz44nerb6rs181
-X-HE-Tag: 1783718790-823085
-X-HE-Meta: U2FsdGVkX1+JFMMKRgpyTy+1yydEG8OWgiI4zu8cw08vFEpexMZiNVn3esnlONXntYXk4u8b9ma0mlAdLZa3dUXAr1mzQHJeya7X2o91pOuKqU0xo3nZDh/U7GrQ0D99nmuzGl9buVEOMtdci159Oy7wl8j3fow8isGpNz8CvrxAVB8ds/AQaJ0f/+YBRFma4tzmCYRrJiheKqeJ/wVdjTQBm9UPU0Ro3ezgDycNAkzJyebff6aPQOP/0Hbg6b8FeW7xveEGQ+77YP+5lgxseSjt7nIGIK/9CLn7H3x6sGLO5ry8b9qwyb7JgSaB6qJ5/Qisscwn5+qXzF/ac0mNmLrzFEZ0RNpOYNEty24cx69wtfM/CEx0pv1PtZncQHZOoSVOb7RwD/HXPLP8/qgF3aQmYowxppT7uGNdmqTyknSuhlkXOjQT7ugmE6kUBAAjUW5paBlxRKZtJAIzf4XNai3RSfb6mk0EiwHoDqK4uHA1r2QQISKCwHXE7NXkweQ2n2kzkABwX1kQC1/Gjzlva5igqvNg3XiPkdjJL8RBduxJ+w2G176PRyj1aQbyXroYS1xNk2PPsMcpFFE6JdLNwzl9tAmi5ZymtSShqHsfVlbLmAVve6KC2VSz+m7iQbyx9RsPBGd1dBCZUyYzVo9KhugIs2xv6c1NdFrfYD7D2ponu1e7JZ4s++HwlyzXCZhn9JH7ahJaCZXgzKc6vbB0mqw5Jri0lqnEYqx2aRroNjKBhMSAeyqfT9TZ9ekGDcr5EoSgULMAvDkvpIyq7ghRGRZRrElnP8hzVu1U6lW4dMmhH6V6dCHm17sW90ZmT9NNPobuAwUsb3dHbA/ABlS253Vp5I684Nld7xic+2REmIRm13oYtinpwXwiD7evdFKtBRo/Zb5ipVcCgrMkvXwdxkYRuQoSVqlvk4F2917qckwzvsCwIp/KB/xnA8r1p6YKZr1zTxfU/FXoJSNpRbl
- 5O/WgWE/
- +lQLLZ0aWL+H6SS3qqFJorrjZwXtQzhXAyUp5TIFKsOSxGbV2qoDYMEzBt7OoaEo5VydObYMdtLGRwy1wz56OgCf2SvVpj2LYmfeJenIrqrLVGF3TnI2GvbkaOnGriFdQcKNOG9VCdwmCJUIlBZ54kQhrWkMWDVT68m+3CR6kG3lvgFm37qZjlc9YP6FfxCDo3p1itcgVblPYSg0r6SpJKu+kCzXZoRZxUklfCJYrnVmvuRhReJaFrqFV2fDeqLTFz8ZNkjyumbIxhIwU57X460zVGIC7gX3bO/GwH745morUuHoi3wDLKVCIDo6OAC17Ak0sUHNxa3yCdeoVMyCfC1ol0p3vlqAFPza868Ltok4UfQoCpdpk4bPjT/L3DnHKAlktmQyYq3WS82DUFgvhhw3XXH9641I2zrpYOO/VnSrjz9yt7HSAK4ZpLmuHY5cxOYvJzKisioTcwhPTMiXApvTR7RU4SHj7K1aY8YAi3a9St6QHWTKOCzbnS+bkyfN+siOKyRfaADcpiB1bCVECIwaBHmzszoR2sYQYy7csyRHw8E0uBwUwRCDD77jD5CWDvVxSeoBQMkwFPJEmWalKVHZ6gBsNvq87u2Pk9fPreDYHeFYP13dGnhnuBw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7FC9C100003
+X-Stat-Signature: uftamah7r9fmf4oinjw1anrhd5fzieyq
+X-HE-Tag: 1783718791-563141
+X-HE-Meta: U2FsdGVkX1+zNx+l6i05xbJi+AK1VKU1nRCQMSdlKR6lVydWQ27c9x2e9/hC5iZEgNfqgy6KRjcDV1nHZHhfGS0CQGKIyptx78pxlf1xVQ4d9owgJu0cFwCsdt23mtL1KdOoBivUs1WEQTLUJ5yX0xJ3M6prniGQRzNieE74gE8vKpRB0ujSVtuPeFBZVkzf7rcNKcNyyfnmd+xBvaUrg8MZR1On9xfp9eVXrnGxbvjZZZKrwcGPu5Dsk09AGNhEMV5attygyqTPnX9HK6zzEfoAX1yCf9hJAYHHoSS1UtjI4e3d5jNNAaUZ2emRg86MrzSM6vT/IYmK1tO/WEKb/iw3tYm5ugiXFlGOMwfzX1YdhRjs1RoJ0SI5ff5L4O1Uc/558RTG1ZUQRx25gWxfctfMer6HsjZd6dRFmWTsYRh9aeOGPmVnJxfUamhaE75b3AYEhCj42ueDOg2WZRgwhHWIkNxICZF74Oi8r4ocm1VcpdleAwENon4VSD+YKrq1RJNm2H6/lnFpKuQ6EviNwIQgYwR9+4mWg7uYLRel1zrx74wLCMHtcrGmHZ0gEsGlQM4x9whoq6IdssOrj0RetSHbGUa2j6qkGcfpJZaCWU/k9c+Te3ZnyBgwmiN2zAlod3eD7wGAwOwzZoD8TfNu3myI54O2al9g387AEAJI7KA3sKNtRTliLKfiPZaKudab4YzJMtJ7eOKk9GkE9ObHQR3XvF51ah1np28TSMJ7a7p4hEykZbwK9uXK/tq+iKSBgjL63/8Tbqi0hQfuOAWeZy5dPSMNE/2FDrpVXZIy4RxleDfpomV7O3dQgJ5ejwQ7cEjybdXNJI2RG3IWvYaelmQ+WrhVOi3YGUAQRYhjNCbdMkijU6NyPq0YZWseyrCcOcEKVryzfgelREeXiH3iqbOgm5IXKWmfK2bBvFHILxSS/+ELmDK+j7NuwL7Z+ixxVNY6qKTGazlQSiOZWmH
+ 5W2gLgk3
+ 4Q6YDKCoKwuLrQQkHB9Y8upKgkmQmqA0df5RRsTvvP/pi/bqzLM7bdFp5IjX8y2oUh9uOamiYNBtuuhWVet4JomDSwsrJp3aCYjDA71VTlAg8VKXz9DARdp+960N/3hNrgSQdLHbKpB9FYOL1arGOSsGs/u2nEP3tGBdbTEFRQofRimEyGtySktD/n+cAU6rWUYL8iV+KyKcJLQuRKMWIe5/WkC2+ILNqbiiqhNHdRBUlB/lEvHg5/wyEISphYFzF1LJLJ2JqBNqKZqnuxeptxnixbatu8TsehUdLkw013attcuj/SneZ41I8ggwwysShuYQuFiYhjWI8/OZAOUsAJREt5UUkd+JroF0yuV3CeAPS0zj9FdFemIA4eWuiRsaZBllpGWrVqhPRVpDTycy/ZunnHB2H1r+F86UrySV0eWb7cz2xHF/SN51mfEBaN+ut0GsSnng/WeDfyeGnLyp8BdUf3wtyGxQdu0ZsYakoHK8m/uJXb0yp3MBgVO7cclRzkM97LzEf/IkqkM8UcZblNbMyuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,274 +132,243 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Inherit Access Control Services (ACS) flags on all incoming preserved
-devices (endpoints and upstream bridges) during a Live Update.
+hmm_range_fault() currently triggers page faults from inside the page-table
+walk callbacks: hmm_vma_walk_pmd(), hmm_vma_walk_pud(),
+hmm_vma_walk_hugetlb_entry() and the pte-level helper all call
+hmm_vma_fault(), which in turn calls handle_mm_fault() while the walker
+still holds nested locks.  The pte spinlock is dropped explicitly by each
+caller, and the hugetlb path manually drops and retakes
+hugetlb_vma_lock_read around the fault to dodge a deadlock against the walk
+framework's unconditional unlock.
 
-Inheriting ACS flags avoids changing routing rules while memory
-transactions are in flight from preserved devices. This is also strictly
-necessary to ensure that IOMMU group assignments do not change across
-a Live Update for preserved devices, as changing ACS configurations can
-split or merge IOMMU groups.
+This layering does not extend cleanly to fault handlers that may release
+mmap_lock (VM_FAULT_RETRY, VM_FAULT_COMPLETED). If the lock is dropped
+while walk_page_range() is mid-traversal, the VMA can be freed before the
+walk framework's matching hugetlb_vma_unlock_read(), turning that unlock
+into a use-after-free.
 
-Cache the inherited ACS controls established by the previous kernel in
-struct pci_dev so that ACS controls do not change after a reset
-(pci_restore_state() calls pci_enable_acs()).
+Split the responsibilities the way get_user_pages() does. Walk callbacks
+become inspect-only: when they detect a range that needs to be faulted in,
+they record it in struct hmm_vma_walk and return a private sentinel
+(HMM_FAULT_PENDING). The outer loop in hmm_range_fault() then drops out of
+walk_page_range(), invokes a new helper hmm_do_fault() that calls
+handle_mm_fault() with only mmap_lock held, and restarts the walk so the
+now-present entries are collected into hmm_pfns.
 
-To simplify ACS inheritance, reject preserving any devices that require
-quirks to enable ACS as those quirks would also have to take Live Update
-into account.
+No functional change for existing callers. As a side effect the hugetlb
+callback no longer needs the hugetlb_vma_{un}lock_read dance, and every
+fault-path exit from the callbacks now releases the pte spinlock on a
+single, common path. This refactor is also a precursor for adding an
+unlockable variant of hmm_range_fault() in a follow-up patch.
 
-Signed-off-by: David Matlack <dmatlack@google.com>
+Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 ---
- drivers/pci/liveupdate.c       | 68 ++++++++++++++++++++++++++++++++++
- drivers/pci/liveupdate.h       | 11 ++++++
- drivers/pci/pci.c              |  6 +++
- drivers/pci/pci.h              |  5 +++
- drivers/pci/quirks.c           |  7 ++++
- include/linux/pci_liveupdate.h |  6 +++
- 6 files changed, 103 insertions(+)
+ mm/hmm.c |  118 +++++++++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 75 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-index 7f7710cb1da0..a95bfe5eff77 100644
---- a/drivers/pci/liveupdate.c
-+++ b/drivers/pci/liveupdate.c
-@@ -71,6 +71,9 @@
-  *
-  *  * The device cannot be a Virtual Function (VF).
-  *
-+ *  * The device cannot require device-specific quirks to enable Access
-+ *    Control Services (ACS).
-+ *
-  * Driver Binding
-  * ==============
-  *
-@@ -113,6 +116,18 @@
-  * This enables the PCI core and any drivers bound to the bridge to participate
-  * in the Live Update so that preserved endpoints can continue issuing memory
-  * transactions during the Live Update.
-+ *
-+ * Handling Preserved Devices
-+ * ==========================
-+ *
-+ * The PCI core treats preserved devices differently than non-preserved devices.
-+ * This section enumerates those differences.
-+ *
-+ *  * The PCI core inherits all ACS flags enabled on incoming preserved devices
-+ *    rather than assigning new ones. This ensures that TLPs are routed the same
-+ *    way after Live Update and ensures that IOMMU groups do not change. Note
-+ *    that a device will use its inherited ACS flags for the lifetime of its
-+ *    struct pci_dev (i.e. even after pci_liveupdate_finish()).
-  */
- 
- #define pr_fmt(fmt) "PCI: " KBUILD_BASENAME ": " fmt
-@@ -128,6 +143,7 @@
- #include <linux/slab.h>
- 
- #include "liveupdate.h"
-+#include "pci.h"
- 
- /**
-  * struct pci_liveupdate_global - Global state for PCI Live Update support
-@@ -374,6 +390,16 @@ static int __pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing, s
- {
- 	struct pci_dev_ser *dev_ser;
- 
-+	/*
-+	 * Do not preserve devices that rely on device-specific ACS equivalents
-+	 * (for now) since that would complicate keeping ACS constant across
-+	 * Live Update.
-+	 */
-+	if (pci_need_dev_specific_enable_acs(dev)) {
-+		pci_warn(dev, "Refusing to preserve device that relies on ACS quirks\n");
-+		return -EINVAL;
-+	}
-+
- 	dev_ser = pci_get_empty_or_append(outgoing);
- 	if (IS_ERR(dev_ser))
- 		return PTR_ERR(dev_ser);
-@@ -655,6 +681,7 @@ void pci_liveupdate_setup_device(struct pci_dev *dev)
- 
- 	pci_info(dev, "Device was preserved by previous kernel across Live Update\n");
- 	dev->liveupdate.incoming = dev_ser;
-+	dev->liveupdate.was_preserved = true;
- 
- 	/*
- 	 * Hold the ref on the incoming FLB until pci_liveupdate_finish() so
-@@ -748,6 +775,47 @@ void pci_liveupdate_finish(struct pci_dev *dev)
- }
- EXPORT_SYMBOL_GPL(pci_liveupdate_finish);
- 
-+void pci_liveupdate_init_acs(struct pci_dev *dev)
-+{
-+	guard(rwsem_read)(&pci_liveupdate.rwsem);
-+
-+	if (!dev->acs_cap || !dev->liveupdate.incoming)
-+		return;
-+
-+	pci_read_config_word(dev, dev->acs_cap + PCI_ACS_CTRL, &dev->liveupdate.acs_ctrl);
-+}
-+
-+int pci_liveupdate_enable_acs(struct pci_dev *dev)
-+{
-+	u16 acs_ctrl = dev->liveupdate.acs_ctrl;
-+	u16 acs_cap = dev->acs_cap;
-+
-+	/*
-+	 * Use liveupdate.was_preserved instead of liveupdate.incoming since the
-+	 * device's ACS controls should not change even after the device is
-+	 * finished participating in the Live Update.
-+	 */
-+	if (!dev->liveupdate.was_preserved)
-+		return -EINVAL;
-+
-+	/*
-+	 * The previous kernel should not have preserved any devices that
-+	 * require device-specific quirks to enable ACS, but if such a device is
-+	 * detected (e.g. new device-specific ACS quirk in the current kernel),
-+	 * log a big warning and fall back to the normal enable ACS path.
-+	 */
-+	if (pci_need_dev_specific_enable_acs(dev)) {
-+		pci_warn(dev, "Device-specific quirk required to enable ACS!\n");
-+		WARN_ON_ONCE(true);
-+		return -EINVAL;
-+	}
-+
-+	if (acs_cap)
-+		pci_write_config_word(dev, acs_cap + PCI_ACS_CTRL, acs_ctrl);
-+
-+	return 0;
-+}
-+
- /**
-  * pci_liveupdate_is_incoming() - Check if a device is incoming-preserved
-  * @dev: The PCI device to check
-diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
-index c763255a8de4..4e8a01bcb4bb 100644
---- a/drivers/pci/liveupdate.h
-+++ b/drivers/pci/liveupdate.h
-@@ -16,6 +16,8 @@ void pci_liveupdate_cleanup_device(struct pci_dev *dev);
- bool pci_liveupdate_scan_bridge_begin(struct pci_bus *bus, struct pci_dev *dev,
- 				      int pass);
- void pci_liveupdate_scan_bridge_end(struct pci_dev *dev, int pass);
-+void pci_liveupdate_init_acs(struct pci_dev *dev);
-+int pci_liveupdate_enable_acs(struct pci_dev *dev);
- #else
- static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
- {
-@@ -35,6 +37,15 @@ static inline bool pci_liveupdate_scan_bridge_begin(struct pci_bus *bus,
- static inline void pci_liveupdate_scan_bridge_end(struct pci_dev *dev, int pass)
- {
- }
-+
-+static inline void pci_liveupdate_init_acs(struct pci_dev *dev)
-+{
-+}
-+
-+static inline int pci_liveupdate_enable_acs(struct pci_dev *dev)
-+{
-+	return -EINVAL;
-+}
- #endif
- 
- #endif /* DRIVERS_PCI_LIVEUPDATE_H */
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 77b17b13ee61..739ecaab2e76 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -34,6 +34,8 @@
- #include <linux/aer.h>
- #include <linux/bitfield.h>
- #include <linux/suspend.h>
-+
-+#include "liveupdate.h"
- #include "pci.h"
- 
- DEFINE_MUTEX(pci_slot_mutex);
-@@ -1008,6 +1010,9 @@ void pci_enable_acs(struct pci_dev *dev)
- 	bool enable_acs = false;
- 	int pos;
- 
-+	if (!pci_liveupdate_enable_acs(dev))
-+		return;
-+
- 	/* If an iommu is present we start with kernel default caps */
- 	if (pci_acs_enable) {
- 		if (pci_dev_specific_enable_acs(dev))
-@@ -3689,6 +3694,7 @@ void pci_acs_init(struct pci_dev *dev)
- 
- 	pci_read_config_word(dev, pos + PCI_ACS_CAP, &dev->acs_capabilities);
- 	pci_disable_broken_acs_cap(dev);
-+	pci_liveupdate_init_acs(dev);
- }
- 
- /**
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 4469e1a77f3c..988a18b3204a 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -1047,6 +1047,7 @@ void pci_acs_init(struct pci_dev *dev);
- void pci_enable_acs(struct pci_dev *dev);
- #ifdef CONFIG_PCI_QUIRKS
- int pci_dev_specific_acs_enabled(struct pci_dev *dev, u16 acs_flags);
-+bool pci_need_dev_specific_enable_acs(struct pci_dev *dev);
- int pci_dev_specific_enable_acs(struct pci_dev *dev);
- int pci_dev_specific_disable_acs_redir(struct pci_dev *dev);
- void pci_disable_broken_acs_cap(struct pci_dev *pdev);
-@@ -1057,6 +1058,10 @@ static inline int pci_dev_specific_acs_enabled(struct pci_dev *dev,
- {
- 	return -ENOTTY;
- }
-+static inline bool pci_need_dev_specific_enable_acs(struct pci_dev *dev)
-+{
-+	return false;
-+}
- static inline int pci_dev_specific_enable_acs(struct pci_dev *dev)
- {
- 	return -ENOTTY;
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 7ac39ec2843e..99b819f38e49 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5473,6 +5473,13 @@ static const struct pci_dev_acs_ops *pci_dev_acs_ops_get(struct pci_dev *dev)
- 	return NULL;
- }
- 
-+bool pci_need_dev_specific_enable_acs(struct pci_dev *dev)
-+{
-+	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
-+
-+	return p && p->enable_acs;
-+}
-+
- int pci_dev_specific_enable_acs(struct pci_dev *dev)
- {
- 	const struct pci_dev_acs_ops *p = pci_dev_acs_ops_get(dev);
-diff --git a/include/linux/pci_liveupdate.h b/include/linux/pci_liveupdate.h
-index 2be98819e313..2446c6d237ca 100644
---- a/include/linux/pci_liveupdate.h
-+++ b/include/linux/pci_liveupdate.h
-@@ -17,14 +17,20 @@
-  * struct pci_liveupdate - PCI Live Update state for a struct pci_dev
-  * @outgoing: State preserved for the next kernel.
-  * @incoming: State preserved by the previous kernel.
-+ * @acs_ctrl: ACS features established by the previous kernel.
-  * @inherit_buses: True if the PCI core should inherit the secondary and
-  *                 subordinate bus numbers assigned to this device due to
-  *                 an ongoing Live Update.
-+ * @was_preserved: True if this struct pci_dev was preserved by the previous
-+ *                 kernel. Unlike @incoming, this field is not cleared after
-+ *                 the device is finished participating in Live Update.
-  */
- struct pci_liveupdate {
- 	struct pci_dev_ser *outgoing;
- 	struct pci_dev_ser *incoming;
-+	u16 acs_ctrl;
- 	bool inherit_buses;
-+	bool was_preserved;
+diff --git a/mm/hmm.c b/mm/hmm.c
+index e5c1f4deed24..bc9361a715fa 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -33,8 +33,17 @@
+ struct hmm_vma_walk {
+ 	struct hmm_range	*range;
+ 	unsigned long		last;
++	unsigned long		end;
++	unsigned int		required_fault;
  };
  
- struct pci_dev;
--- 
-2.55.0.795.g602f6c329a-goog
++/*
++ * Internal sentinel returned by walk callbacks when they need a page fault.
++ * The callback stores end/required_fault in hmm_vma_walk; the outer loop
++ * consumes the sentinel and never propagates it to the caller.
++ */
++#define HMM_FAULT_PENDING	-EAGAIN
++
+ enum {
+ 	HMM_NEED_FAULT = 1 << 0,
+ 	HMM_NEED_WRITE_FAULT = 1 << 1,
+@@ -60,37 +69,25 @@ static int hmm_pfns_fill(unsigned long addr, unsigned long end,
+ }
+ 
+ /*
+- * hmm_vma_fault() - fault in a range lacking valid pmd or pte(s)
+- * @addr: range virtual start address (inclusive)
+- * @end: range virtual end address (exclusive)
+- * @required_fault: HMM_NEED_* flags
+- * @walk: mm_walk structure
+- * Return: -EBUSY after page fault, or page fault error
++ * hmm_record_fault() - record a range that needs to be faulted in
+  *
+- * This function will be called whenever pmd_none() or pte_none() returns true,
+- * or whenever there is no page directory covering the virtual address range.
++ * Called by the walk callbacks when they discover that part of the range
++ * needs a page fault.  The callback records what to fault and returns
++ * HMM_FAULT_PENDING; the outer loop in hmm_range_fault() drops back out of
++ * walk_page_range() and invokes handle_mm_fault() from a context where no
++ * page-table or hugetlb_vma_lock is held.
+  */
+-static int hmm_vma_fault(unsigned long addr, unsigned long end,
+-			 unsigned int required_fault, struct mm_walk *walk)
++static int hmm_record_fault(unsigned long addr, unsigned long end,
++			    unsigned int required_fault,
++			    struct mm_walk *walk)
+ {
+ 	struct hmm_vma_walk *hmm_vma_walk = walk->private;
+-	struct vm_area_struct *vma = walk->vma;
+-	unsigned int fault_flags = FAULT_FLAG_REMOTE;
+ 
+ 	WARN_ON_ONCE(!required_fault);
+ 	hmm_vma_walk->last = addr;
+-
+-	if (required_fault & HMM_NEED_WRITE_FAULT) {
+-		if (!(vma->vm_flags & VM_WRITE))
+-			return -EPERM;
+-		fault_flags |= FAULT_FLAG_WRITE;
+-	}
+-
+-	for (; addr < end; addr += PAGE_SIZE)
+-		if (handle_mm_fault(vma, addr, fault_flags, NULL) &
+-		    VM_FAULT_ERROR)
+-			return -EFAULT;
+-	return -EBUSY;
++	hmm_vma_walk->end = end;
++	hmm_vma_walk->required_fault = required_fault;
++	return HMM_FAULT_PENDING;
+ }
+ 
+ static unsigned int hmm_pte_need_fault(const struct hmm_vma_walk *hmm_vma_walk,
+@@ -174,7 +171,7 @@ static int hmm_vma_walk_hole(unsigned long addr, unsigned long end,
+ 		return hmm_pfns_fill(addr, end, range, HMM_PFN_ERROR);
+ 	}
+ 	if (required_fault)
+-		return hmm_vma_fault(addr, end, required_fault, walk);
++		return hmm_record_fault(addr, end, required_fault, walk);
+ 	return hmm_pfns_fill(addr, end, range, 0);
+ }
+ 
+@@ -209,7 +206,7 @@ static int hmm_vma_handle_pmd(struct mm_walk *walk, unsigned long addr,
+ 	required_fault =
+ 		hmm_range_need_fault(hmm_vma_walk, hmm_pfns, npages, cpu_flags);
+ 	if (required_fault)
+-		return hmm_vma_fault(addr, end, required_fault, walk);
++		return hmm_record_fault(addr, end, required_fault, walk);
+ 
+ 	pfn = pmd_pfn(pmd) + ((addr & ~PMD_MASK) >> PAGE_SHIFT);
+ 	for (i = 0; addr < end; addr += PAGE_SIZE, i++, pfn++) {
+@@ -328,7 +325,7 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
+ fault:
+ 	pte_unmap(ptep);
+ 	/* Fault any virtual address we were asked to fault */
+-	return hmm_vma_fault(addr, end, required_fault, walk);
++	return hmm_record_fault(addr, end, required_fault, walk);
+ }
+ 
+ #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+@@ -371,7 +368,7 @@ static int hmm_vma_handle_absent_pmd(struct mm_walk *walk, unsigned long start,
+ 					      npages, 0);
+ 	if (required_fault) {
+ 		if (softleaf_is_device_private(entry))
+-			return hmm_vma_fault(addr, end, required_fault, walk);
++			return hmm_record_fault(addr, end, required_fault, walk);
+ 		else
+ 			return -EFAULT;
+ 	}
+@@ -517,7 +514,7 @@ static int hmm_vma_walk_pud(pud_t *pudp, unsigned long start, unsigned long end,
+ 						      npages, cpu_flags);
+ 		if (required_fault) {
+ 			spin_unlock(ptl);
+-			return hmm_vma_fault(addr, end, required_fault, walk);
++			return hmm_record_fault(addr, end, required_fault, walk);
+ 		}
+ 
+ 		pfn = pud_pfn(pud) + ((addr & ~PUD_MASK) >> PAGE_SHIFT);
+@@ -564,21 +561,8 @@ static int hmm_vma_walk_hugetlb_entry(pte_t *pte, unsigned long hmask,
+ 	required_fault =
+ 		hmm_pte_need_fault(hmm_vma_walk, pfn_req_flags, cpu_flags);
+ 	if (required_fault) {
+-		int ret;
+-
+ 		spin_unlock(ptl);
+-		hugetlb_vma_unlock_read(vma);
+-		/*
+-		 * Avoid deadlock: drop the vma lock before calling
+-		 * hmm_vma_fault(), which will itself potentially take and
+-		 * drop the vma lock. This is also correct from a
+-		 * protection point of view, because there is no further
+-		 * use here of either pte or ptl after dropping the vma
+-		 * lock.
+-		 */
+-		ret = hmm_vma_fault(addr, end, required_fault, walk);
+-		hugetlb_vma_lock_read(vma);
+-		return ret;
++		return hmm_record_fault(addr, end, required_fault, walk);
+ 	}
+ 
+ 	pfn = pte_pfn(entry) + ((start & ~hmask) >> PAGE_SHIFT);
+@@ -637,6 +621,44 @@ static const struct mm_walk_ops hmm_walk_ops = {
+ 	.walk_lock	= PGWALK_RDLOCK,
+ };
+ 
++/*
++ * hmm_do_fault - fault in a range recorded by a walk callback
++ *
++ * Called from the outer loop in hmm_range_fault() after a callback
++ * returned HMM_FAULT_PENDING.  At this point we hold only mmap_lock;
++ * the page-table spinlock and any hugetlb_vma_lock acquired by the walk
++ * framework have already been released by the unwind.
++ *
++ * Returns -EBUSY on success (all pages faulted, caller should re-walk).
++ * Returns a negative errno on failure.
++ */
++static int hmm_do_fault(struct mm_struct *mm,
++			struct hmm_vma_walk *hmm_vma_walk)
++{
++	unsigned long addr = hmm_vma_walk->last;
++	unsigned long end = hmm_vma_walk->end;
++	unsigned int required_fault = hmm_vma_walk->required_fault;
++	unsigned int fault_flags = FAULT_FLAG_REMOTE;
++	struct vm_area_struct *vma;
++
++	vma = vma_lookup(mm, addr);
++	if (!vma)
++		return -EFAULT;
++
++	if (required_fault & HMM_NEED_WRITE_FAULT) {
++		if (!(vma->vm_flags & VM_WRITE))
++			return -EPERM;
++		fault_flags |= FAULT_FLAG_WRITE;
++	}
++
++	for (; addr < end; addr += PAGE_SIZE)
++		if (handle_mm_fault(vma, addr, fault_flags, NULL) &
++		    VM_FAULT_ERROR)
++			return -EFAULT;
++
++	return -EBUSY;
++}
++
+ /**
+  * hmm_range_fault - try to fault some address in a virtual address range
+  * @range:	argument structure
+@@ -674,6 +696,16 @@ int hmm_range_fault(struct hmm_range *range)
+ 			return -EBUSY;
+ 		ret = walk_page_range(mm, hmm_vma_walk.last, range->end,
+ 				      &hmm_walk_ops, &hmm_vma_walk);
++		/*
++		 * When HMM_FAULT_PENDING is returned a walk callback
++		 * recorded a range that needs handle_mm_fault();
++		 * hmm_do_fault() runs the fault outside walk_page_range()
++		 * (so no page-table or hugetlb_vma_lock is held) and
++		 * returns -EBUSY so the loop re-walks and picks up the
++		 * now-present entries.
++		 */
++		if (ret == HMM_FAULT_PENDING)
++			ret = hmm_do_fault(mm, &hmm_vma_walk);
+ 		/*
+ 		 * When -EBUSY is returned the loop restarts with
+ 		 * hmm_vma_walk.last set to an address that has not been stored
+
 
 
