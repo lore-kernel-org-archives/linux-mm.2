@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E321C44506
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:34:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B08D2C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:34:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC9F26B00A2; Fri, 10 Jul 2026 05:33:41 -0400 (EDT)
+	id 814AC6B00A3; Fri, 10 Jul 2026 05:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7B7D6B00A3; Fri, 10 Jul 2026 05:33:41 -0400 (EDT)
+	id 776BE6B00A4; Fri, 10 Jul 2026 05:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB7F96B00A4; Fri, 10 Jul 2026 05:33:41 -0400 (EDT)
+	id 68C3A6B00A5; Fri, 10 Jul 2026 05:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AF27A6B00A2
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:33:41 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 34E841A03A0
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:41 +0000 (UTC)
-X-FDA: 84972354642.19.7562737
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 663DE20006
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CaRjv39g;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783676019;
-	b=TP1KFviDc0WN4Q9EvelkACPv8xHq3msHVAuBbzFAHKQV3WeISXBbK6sllPTL3dDpIaD/Q4
-	rEknvxcypwKR4dHClToW+7xx2lwpiIulZ3wC+hMVHoP2s6USlnPoIMEOP1j2kaY/SluT76
-	lh67lYbnmTockRWjzT2G1fL0bIZ2at8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CaRjv39g;
-	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 47B506B00A3
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:33:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B88E5403B9
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:42 +0000 (UTC)
+X-FDA: 84972354684.06.FD15563
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1954CA000B
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:40 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L1eOk0sg;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783676019;
+	s=arc-20220608; t=1783676021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tKwgfmIDGAu3LPXYRf5/vaqK+XDeZJU9XGY5Zak/ri4=;
-	b=gRIvux45xvczXh4pQ+6Rs/9YvrI1+piprGOPAy5Wsy1Nai+Xk1lVAEyTjRVKtapbAjw4mX
-	WUmDjc4n0hJJnceZqxP5jfbmj1VJ38y+vPCbB3Vn6NpGiqHq1UqUtT+gdFSD6GEyyQ6Qje
-	tUXBfDZXQPNyB2Jhmv3eNWTgKqaodDw=
+	bh=ywj3OSM/tpO9RFBhWxAbwFVrl+4a5zu77M9ARvzXN70=;
+	b=5lcGYmnxHOCOo9xqxA9g7SGRpxbfLtu202MLEpi1oSuFHYTaDJyg9RcIAa9KBU25v+dyjK
+	j6BjLJTufWC1ifceoK3Fe3LcKGne8cOFY6q3/W1n5wFS1tg3A3iZFE/p+S4PHU+JEz5Mhg
+	5V5tk48gyueEUAv6nwyxe1kl3brDJm4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L1eOk0sg;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783676021;
+	b=YnH69DNq/nxcXxVzESw2cLVl3EzIvr0V+4z/8y33V13RTcBPUkyAVSrP20fLF7vqLpMnLa
+	OsZF6Pff4a3XFNciIu4fIoxlFMY6yQVi+AHB+NlYtMRHosSSyw8oNYTM1CpGzuUX+h39Mp
+	rKIgb86K14QG431BVvPyLuQbFw7Ok2o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B643343A10;
+	by tor.source.kernel.org (Postfix) with ESMTP id B4A0D6136B;
+	Fri, 10 Jul 2026 09:33:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126851F000E9;
 	Fri, 10 Jul 2026 09:33:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6551F00A3A;
-	Fri, 10 Jul 2026 09:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783676018;
-	bh=tKwgfmIDGAu3LPXYRf5/vaqK+XDeZJU9XGY5Zak/ri4=;
+	s=k20260515; t=1783676020;
+	bh=ywj3OSM/tpO9RFBhWxAbwFVrl+4a5zu77M9ARvzXN70=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=CaRjv39gPge3PvXwNYNzPn6aUSlkWhM6/vUQClRysHiVdBAULxMYn4V4pTei7yln1
-	 y5DdKNS8qQ8grGrhShvBhcZINuWV82Mgc6Wv69umGI54JcjSClHNr0SLVMPrf2lHzk
-	 3l6jTTACW/d+CkCpekkHYiPBF6vsyqbngmwEsghmFovINFQ7Hg8SiZdqDXILFrTQLV
-	 loLXd95Lmh5AnLSNv2ye258JjaRlX31WNVMWrpXcbpOrFLBZUgDQL/kGa7DmvFCjeQ
-	 XuTdG6hEa+UE4uMQGzNYnZmDXil8aE8oXTSSm4XkphaoR/DzrxlExDrAzJGDEakWSN
-	 UnIscPflWf3iQ==
+	b=L1eOk0sgBSNn+NBvcHfqDOGZuUYkLtu0mT6EzsNqXIiwvPJNXSZ3QXdpdblrB1+WF
+	 CbGt7NwXCJkauourAc8s/u2gJApHrhN2X4kdJWFJhFnZR5KPhoAF5iezWd15FLNZLL
+	 w8SFSBTInOagZd6gQkcBCEwYw87OUhtIe+WVr7RpR+R3QqIjvkM4Lrq8iWbhvWJfz1
+	 ZPR7wUeeMr/7RnmlP8liGpLDnhJCxUdAP3auCBvrWUii0F3t/db4tSFEEQ/QgwGbX8
+	 LCYuEfRVqID+a/whgPACvYtUjqgqsssABfjrZRhKmevvLMHQbk75YPgwAjuYkuYCTp
+	 3bkMMNR+Uj0Jg==
 From: Christian Brauner <brauner@kernel.org>
-Date: Fri, 10 Jul 2026 11:33:10 +0200
-Subject: [PATCH v3 09/24] binfmt_misc: rename Node to struct
- binfmt_misc_entry
+Date: Fri, 10 Jul 2026 11:33:11 +0200
+Subject: [PATCH v3 10/24] binfmt_misc: remove the VERBOSE_STATUS toggle
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-work-binfmt_misc-locking-v3-9-a162f7cb58d6@kernel.org>
+Message-Id: <20260710-work-binfmt_misc-locking-v3-10-a162f7cb58d6@kernel.org>
 References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
 In-Reply-To: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -80,22 +79,22 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
  linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
  jannh@google.com
 X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7737; i=brauner@kernel.org;
- h=from:subject:message-id; bh=gYvyyb9zgjjYOsPEkT2yCbA6U73OI+NDlS2Ck8Kt88I=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQF7Ik7++129fyMvttOwvI3Jcs4ztZWS64MO8vjd+5h2
- vtG6W3KHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5xsrI8OPVbonkxRsFmir3
- RO37LpGQVtG+33BtGGt9wbGwp9YTvzD8L42fHnH/0X6d7faGJbkHN1u8e3zWcvXKs3f3yi1Ivzj
- 7Mx8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1219; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=FvKU1KMxNauxWYEG7K5xbJSNxDdCZCqayB1AbvUm0s0=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQF7InLW7r9146G2PZtwnxv3M1T/wq985lk/6Zy6UfTx
+ WVzT/1s6ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIFVVGhs0WCSv3/ft546n4
+ 2aMBM+7kdxYf7LL6t7nrGNeHnvJCbj9Ghk8RprJOnYK73E/2Lvi48PB3af5zu98Ldcuf8RXIvav
+ 1lwsA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Stat-Signature: ogncr41ortcwq96upyk39ses9jan3bt3
+X-Rspamd-Queue-Id: 1954CA000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 663DE20006
-X-Stat-Signature: apnc7xnr1876f3fzdwo3qubmwpyhsuh6
-X-HE-Tag: 1783676019-798303
-X-HE-Meta: U2FsdGVkX1+AnjvIzzBlQvv09GOCLCGo9S6XeFwnKm1D7b1/b06tAA1XG4Lt9vqqLHzLZ68pY0JAlpd+mbUs7UwTmVkb5jDVktpsIgKC4VFwQXedYXw3C9MYVUBXfoeOarRROJZy1pvWH6zqvN3Hmq6mVAz01ztXzkZszPbV/sX68nLnxwTzXsV2T1NQMc8M1hrZLuZmfSw8qCMtE1Gg81ZB7O6MDmdJFyVS+j4Tkm47vwriDKbRUCZrCL13Sh/slOK7B1b1mYngVHAomP+hb4ANWHgK1ZZGirHRY5wXMD4dAL7r5NALgCfvLrenisPpt9DF/yFE/r35NN3gwAllvc0+LL8gr9gZ0Q9KrbatcdkC4h+wJRGnwQUzo4shzY9gK/xIx1eurD0ZJ9QlxV/XEq77UaqWIxCEADgd5gBjBo4hE/5gjFAhdok4Cf41YA6dpDW9lx1K6LzyjcX1jYIJSQAQ5UZ1jR9+herrib7VFZn8vBKHHJhf4qh1jkUR09/wkYnBDcVF/0+bROU7qxy2+0vA1QIWgyPjbVhDqK2zo8YEljttHdcxK/UspKeWUKum2xyfgZZHh8zdWMjl9ZADhaWJ1RPJYOR7SkQDov50laVruBWTNrcR68CNfKRLLAhadCd0KnL6hbcOYwjTTXsyuSqvTYjVDtg+ljB3Sxq9/DakwaGUB5A5Wc5oKvTKy+v6cMcIG/ceJ700a5fl+beUEPHhg39kux0061KC9zmOZmBB0nZFKS/HNZmAOCUP2pSf8Gk6Hr816nHAMpbeSL/ojoVbeBm6JZ68XoiTiBgbbuMF833gByjLQE47N3RHFeZeJ7FYAvdFfdSdhaVe8Z1SCvvrGTjRsQ4ZmQabXyHwyAbY5TMkii6CVh8L0Slbc+MwkWfFEFIh0+RjGcCgX2gTtz3JsFoyJg0GlFqokeyd+DYq0NVXsim6KWLVOsJ4iMqkjkp3U9bdOp1YG7bX9gL
- AMnGyR3P
- Yg8rVoB/W6+MhnuxuggzAQR89qLzm6rMzSkbhWLQ5wkVnfSyF2d4gJtdHjldli1+mJPh2gb/CVu/diZVH/8rIfK892XAz8YfbBDOzF4MzcbegSOl7DnrZezn4U+xuRvEQNHDPDLyyOxE+Kz9lgOcllb3Sp8MHr+/5gms9Cv8wQE9NdvDfatbco7BGwWjW5qo5vtsqh5tFzGbMwqlzx4y/F0DkqAJw2zL/mn2T9VmzZPLo4SiErwiDE7kG4e6lN9DlDREV3LZbD9uJ2kM37P45SBW+qP2zV0C8VJ63DL5TPScHOs+6Ok7myTxUnPE/oMqiWi2dPnvyFhXO6GQEvaNVFVqHn4Va2b8+UKnt+w7S2we449s=
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783676020-118484
+X-HE-Meta: U2FsdGVkX1+EZrg4KsYi3SQ0hjaXH90jqE5lx++bILmSjfdUBQuW5jigQmriJK9q+te3xKNdkI9eBzW5jWtPtagwo38KFy/aFEij6p4mln+M9pOUd5wP7g+O2seEuNGP7ToPpugYD4jUkoL4Xb64EcDEm+mgkwkBbDyLNXo44izF4Y4fr023pjZunrmhJMy3wqAhzsATYCAFR4PUbAPpoATtwnTkkSnsbE2WoAL5rbjyFkLogyCWLwMuQ7J9Rs4MWa2xZZqVSnXcj5PcPzxMmzLRy+3RfG9dgCU8IbhyNd/FjsXW5HZN3FzPD2ADbrC5lRx0ynECRWwS8YvUbOgOjH/iC5Ax/xqLd3wm1c4JxExMTilaTGqvxtqDZzGCR4EPGA0pZ25wzz3K4wWHTT1OnTNSCgAsiNaqZzMSjZKf8+cZCyoGJQRhObwNNpJK2NKixbMYBq8Kk2pZ5uIvmu9qF5VlGVkIfCfHoee9qsGk7YmcCEX1cIz5mNOXXgT4/qM1NQ31Jvs/xP0tjwqqSQ1oadfvB5NVlwx3tgl0HSvI6xgUrr3Dh1UT5jT38DacUVcJT1bUTGj3OvrOVeZtydklgG2Yk9vCpMiFoGAAo2F65cHdA6vrPpD2h+PnP5m8ZzJt+cg7WjHkaJUXHA0qEUYp8DMR96B6B+AEYNEGdSyy/Dn37Qun5JWRvawWNzCVL1KPhJ9YXJYkiBXos6CljX/atHc/SAZ/5MR3/ffqHRpQ9lcxexnfUfpCcWWpTVyel1HYFKVoXIsZqMRWqAqqX6AtBtJ/hbbZ+TLp6LBvfePCp1lssj5PpUMYW1CsGEKqruX+2/mHOV8ooXCEkiwIzB4Lwt0RZx/NN4qTB73DECE3Kz/B6aWcmSmKgQLMjSNFtpGZhB0KjLY7K4LcM3mbC76N3VLkVSZil0Y9hZ6WTpVDgaESODfItvJDTjttBY0HaRsLCvdDHGA+tA9pgk8jjzg
+ 3pGHlHbf
+ F4DmEo4jTgMugSgqGRvSl53sZuA7T0FfPY9ydOslERlvQPStXn3tLv/phL0R+x3vz/XF2lopKKMWns2elANoG6dqmWumGu218ewRGb7QK0iLuc0Kf/utdMPXAECBYQeqgRWBvHle9GQoFOKVkPMz18iEHsO7HGnH3mejXXdL7HBC/PnE4h1myhWzXlpTc3D37W8AZJgsZlwxrzK93xbXmQ8wSQ0Mx+IADVoA43lnWf8s3LR1H+xEjuMJn6NRhicn9wANt05dT4dKfclWCcBOw7lSKsAejC7fCiGnmik2vEmtEIvBr4G7TGu7dKusNw/cYYr7CrOVO/0QLmdBsf0WV6bkKMM1nghoDW/Z9WALObmBZdKE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,230 +102,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The CamelCase Node typedef is a 1997 leftover and hides that this is
-a plain struct. Call it what it is: struct binfmt_misc_entry, matching
-struct binfmt_misc that it hangs off of and the entry bit and flag
-enums. Drop the typedef, switch the size computations in
-create_entry() to sizeof(*e) and adjust the comments that still
-referred to the old name.
-
-No functional change.
+VERBOSE_STATUS is a compile-time constant that has been fixed to 1
+for as long as git history reaches. Turning it off requires editing
+the source and yields entry files that only ever report
+"enabled"/"disabled", a format nothing has ever seen in the wild.
+Remove the pretend knob and the dead branch it guards.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/binfmt_misc.c | 60 +++++++++++++++++++++++++++++---------------------------
- 1 file changed, 31 insertions(+), 29 deletions(-)
+ fs/binfmt_misc.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index 98ad1383ba6b..9be57f387524 100644
+index 9be57f387524..96f9ac752511 100644
 --- a/fs/binfmt_misc.c
 +++ b/fs/binfmt_misc.c
-@@ -56,7 +56,7 @@ enum binfmt_misc_entry_flags {
- 	MISC_FMT_OPEN_FILE	= (1U << 28),
- };
+@@ -38,10 +38,6 @@
+ # define USE_DEBUG 0
+ #endif
  
--typedef struct {
-+struct binfmt_misc_entry {
- 	struct hlist_node node;
- 	unsigned long flags;		/* type, status, etc. */
- 	int offset;			/* offset of magic */
-@@ -69,7 +69,7 @@ typedef struct {
- 	struct file *interp_file;
- 	refcount_t users;		/* sync removal with load_misc_binary() */
- 	struct rcu_head rcu;
--} Node;
-+};
+-enum {
+-	VERBOSE_STATUS = 1 /* make it zero to save 400 bytes kernel memory */
+-};
+-
+ /* Entry status and match type bit numbers. */
+ enum binfmt_misc_entry_bits {
+ 	MISC_FMT_ENABLED_BIT	= 0,
+@@ -611,11 +607,6 @@ static void entry_status(struct binfmt_misc_entry *e, char *page)
+ 	if (test_bit(MISC_FMT_ENABLED_BIT, &e->flags))
+ 		status = "enabled";
  
- static struct file_system_type bm_fs_type;
+-	if (!VERBOSE_STATUS) {
+-		sprintf(page, "%s\n", status);
+-		return;
+-	}
+-
+ 	dp += sprintf(dp, "%s\ninterpreter %s\n", status, e->interpreter);
  
-@@ -84,7 +84,7 @@ static struct file_system_type bm_fs_type;
-  *  - interp: ~50 bytes
-  *  - flags:  5 bytes
-  * Round that up a bit, and then back off to hold the internal data
-- * (like struct Node).
-+ * (like struct binfmt_misc_entry).
-  */
- #define MAX_REGISTER_LENGTH 1920
- 
-@@ -100,11 +100,11 @@ static struct file_system_type bm_fs_type;
-  *
-  * Return: binary type list entry on success, NULL on failure
-  */
--static Node *search_binfmt_handler(struct binfmt_misc *misc,
--				   struct linux_binprm *bprm)
-+static struct binfmt_misc_entry *
-+search_binfmt_handler(struct binfmt_misc *misc, struct linux_binprm *bprm)
- {
- 	char *p = strrchr(bprm->interp, '.');
--	Node *e;
-+	struct binfmt_misc_entry *e;
- 
- 	/* Walk all the registered handlers. */
- 	hlist_for_each_entry_rcu(e, &misc->entries, node) {
-@@ -153,10 +153,10 @@ static Node *search_binfmt_handler(struct binfmt_misc *misc,
-  *
-  * Return: binary type list entry on success, NULL on failure
-  */
--static Node *get_binfmt_handler(struct binfmt_misc *misc,
--				struct linux_binprm *bprm)
-+static struct binfmt_misc_entry *get_binfmt_handler(struct binfmt_misc *misc,
-+						    struct linux_binprm *bprm)
- {
--	Node *e;
-+	struct binfmt_misc_entry *e;
- 
- 	guard(rcu)();
- 	do {
-@@ -166,14 +166,14 @@ static Node *get_binfmt_handler(struct binfmt_misc *misc,
- }
- 
- /**
-- * put_binfmt_handler - put binary handler node
-- * @e: node to put
-+ * put_binfmt_handler - put binary handler entry
-+ * @e: entry to put
-  *
-- * Free node syncing with load_misc_binary() and defer final free to
-+ * Free entry syncing with load_misc_binary() and defer final free to
-  * load_misc_binary() in case it is using the binary type handler we were
-  * requested to remove.
-  */
--static void put_binfmt_handler(Node *e)
-+static void put_binfmt_handler(struct binfmt_misc_entry *e)
- {
- 	if (refcount_dec_and_test(&e->users)) {
- 		if (e->flags & MISC_FMT_OPEN_FILE) {
-@@ -219,7 +219,7 @@ static struct binfmt_misc *load_binfmt_misc(void)
-  */
- static int load_misc_binary(struct linux_binprm *bprm)
- {
--	Node *fmt;
-+	struct binfmt_misc_entry *fmt;
- 	struct file *interp_file = NULL;
- 	int retval = -ENOEXEC;
- 	struct binfmt_misc *misc;
-@@ -290,7 +290,7 @@ static int load_misc_binary(struct linux_binprm *bprm)
- ret:
- 
- 	/*
--	 * If we actually put the node here all concurrent calls to
-+	 * If we actually put the entry here all concurrent calls to
- 	 * load_misc_binary() will have finished. We also know
- 	 * that for the refcount to be zero someone must have concurently
- 	 * removed the binary type handler from the list and it's our job to
-@@ -326,7 +326,7 @@ static char *scanarg(char *s, char del)
- 	return s;
- }
- 
--static char *check_special_flags(char *sfs, Node *e)
-+static char *check_special_flags(char *sfs, struct binfmt_misc_entry *e)
- {
- 	char *p = sfs;
- 	int cont = 1;
-@@ -370,9 +370,10 @@ static char *check_special_flags(char *sfs, Node *e)
-  * ':name:type:offset:magic:mask:interpreter:flags'
-  * where the ':' is the IFS, that can be chosen with the first char
-  */
--static Node *create_entry(const char __user *buffer, size_t count)
-+static struct binfmt_misc_entry *create_entry(const char __user *buffer,
-+					      size_t count)
- {
--	Node *e;
-+	struct binfmt_misc_entry *e;
- 	int memsize, err;
- 	char *buf, *p;
- 	char del;
-@@ -385,14 +386,14 @@ static Node *create_entry(const char __user *buffer, size_t count)
- 		goto out;
- 
- 	err = -ENOMEM;
--	memsize = sizeof(Node) + count + 8;
-+	memsize = sizeof(*e) + count + 8;
- 	e = kmalloc(memsize, GFP_KERNEL_ACCOUNT);
- 	if (!e)
- 		goto out;
- 
--	p = buf = (char *)e + sizeof(Node);
-+	p = buf = (char *)e + sizeof(*e);
- 
--	memset(e, 0, sizeof(Node));
-+	memset(e, 0, sizeof(*e));
- 	if (copy_from_user(buf, buffer, count))
- 		goto efault;
- 
-@@ -602,7 +603,7 @@ static int parse_command(const char __user *buffer, size_t count)
- 
- /* generic stuff */
- 
--static void entry_status(Node *e, char *page)
-+static void entry_status(struct binfmt_misc_entry *e, char *page)
- {
- 	char *dp = page;
- 	const char *status = "disabled";
-@@ -686,7 +687,7 @@ static struct binfmt_misc *i_binfmt_misc(struct inode *inode)
- */
- static void bm_evict_inode(struct inode *inode)
- {
--	Node *e = inode->i_private;
-+	struct binfmt_misc_entry *e = inode->i_private;
- 
- 	clear_inode(inode);
- 
-@@ -714,7 +715,8 @@ static void bm_evict_inode(struct inode *inode)
-  * to use writes to files in order to delete binary type handlers. But it has
-  * worked for so long that it's not a pressing issue.
-  */
--static void remove_binfmt_handler(struct binfmt_misc *misc, Node *e)
-+static void remove_binfmt_handler(struct binfmt_misc *misc,
-+				  struct binfmt_misc_entry *e)
- {
- 	spin_lock(&misc->entries_lock);
- 	hlist_del_init_rcu(&e->node);
-@@ -727,7 +729,7 @@ static void remove_binfmt_handler(struct binfmt_misc *misc, Node *e)
- static ssize_t
- bm_entry_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
- {
--	Node *e = file_inode(file)->i_private;
-+	struct binfmt_misc_entry *e = file_inode(file)->i_private;
- 	ssize_t res;
- 	char *page;
- 
-@@ -747,7 +749,7 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
- 				size_t count, loff_t *ppos)
- {
- 	struct inode *inode = file_inode(file);
--	Node *e = inode->i_private;
-+	struct binfmt_misc_entry *e = inode->i_private;
- 	int res = parse_command(buffer, count);
- 
- 	switch (res) {
-@@ -796,7 +798,7 @@ static const struct file_operations bm_entry_operations = {
- /* /register */
- 
- /* add to filesystem */
--static int add_entry(Node *e, struct super_block *sb)
-+static int add_entry(struct binfmt_misc_entry *e, struct super_block *sb)
- {
- 	struct dentry *dentry = simple_start_creating(sb->s_root, e->name);
- 	struct inode *inode;
-@@ -828,7 +830,7 @@ static int add_entry(Node *e, struct super_block *sb)
- static ssize_t bm_register_write(struct file *file, const char __user *buffer,
- 			       size_t count, loff_t *ppos)
- {
--	Node *e;
-+	struct binfmt_misc_entry *e;
- 	struct super_block *sb = file_inode(file)->i_sb;
- 	int err = 0;
- 	struct file *f = NULL;
-@@ -894,7 +896,7 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
- 	int res = parse_command(buffer, count);
- 	struct hlist_node *next;
- 	struct inode *inode;
--	Node *e;
-+	struct binfmt_misc_entry *e;
- 
- 	misc = i_binfmt_misc(file_inode(file));
- 	switch (res) {
+ 	/* print the special flags */
 
 -- 
 2.53.0
