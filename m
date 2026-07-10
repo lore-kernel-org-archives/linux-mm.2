@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 777D3C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 07:41:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E478C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 07:43:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A4ED6B0088; Fri, 10 Jul 2026 03:41:13 -0400 (EDT)
+	id 4F85D6B008C; Fri, 10 Jul 2026 03:43:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 455D26B008A; Fri, 10 Jul 2026 03:41:13 -0400 (EDT)
+	id 4A9AD6B0092; Fri, 10 Jul 2026 03:43:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36E346B008C; Fri, 10 Jul 2026 03:41:13 -0400 (EDT)
+	id 39AE16B0093; Fri, 10 Jul 2026 03:43:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 12B3A6B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:41:13 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96C8C8D824
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:41:12 +0000 (UTC)
-X-FDA: 84972071184.23.A5BA52E
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 59EE920003
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:41:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="IN5u/QlO";
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B2AE6B008C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:43:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DEB2403CE
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:43:36 +0000 (UTC)
+X-FDA: 84972077232.05.85B1907
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D5D4718000D
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:43:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xTrQJqnn;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783669271;
+	s=arc-20220608; t=1783669414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K4f52g3k8n6R01YhWkm7BaroZo2smbRn1rvCWyLLPxs=;
-	b=YKSS7arGqeYprOVcv7zBfEhF0nXZuZlGnk3bJPwJm7nkiWVD/hozHpi2bNnsKODKupdmaC
-	0kDiuVBVnh4oNxt8PzKo5CAPit7ap5Hcy55f3a/r4Q6WYEDsyxC2cAggcF37TxvICSiMlu
-	nz+rxwRSN+WJHdO+vGPNAUaqDfxhfuY=
+	bh=wTHbaDxrPNNvtvGI7FMbsU1QRQRo+zezVyhSZmeVvmQ=;
+	b=MYIzs9hEyDyvxU41UgCJ8+k9rIwCbeHWdJZ3sYLHp8l6pK9CvxZGwO2h4G8wzJsoHllD26
+	5ddvOnxCEsXuyHgEYsdBxClX7hquxjI85wzXLB0k+VX+CcIuq7DMzgNOwt7hO6pI8kinqf
+	/8OcgkpNctDliwMFK/lKcuKyjJlfK4o=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="IN5u/QlO";
-	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=xTrQJqnn;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783669271;
-	b=VnexRgW9anYb5/13FzpDYxfCaqh4YCdHXBB1m2lYfv/Ku9w7gzAYxKHE7BVNE1YdLzhs3Y
-	uQXXf7jU+sEe6yuIAkVkQq0w1tc2Mcrhb9U55B+hHaHJ7lPrzZ24IQmg9OgLQTVY8iELfP
-	cIStARX2O7kwmNnqiYujHS1tiKTh5LI=
+	t=1783669414;
+	b=mnRT6aZPawmRYSVz5xuMS0o4Sb7yrQn1a1oymMEhxYD7cjR0fFtzsloia2efn4zJGduTCZ
+	HgPN1IvxglVDIS3DORg4YbEafTitjSkb22weL2L4yDZZIAnn7qFHPvQBcO0mCrAFCiid/L
+	60LnX2NzVSIwVwNAevOG+/7oLI/Lhgk=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1783669265; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=K4f52g3k8n6R01YhWkm7BaroZo2smbRn1rvCWyLLPxs=;
-	b=IN5u/QlOcoit2ggnJzSvotR3uZcIJ1AuVzKUTQsm4qNa7hIPskBtAdm/8Rtc6xEGSLY63VMl9dJkSek9tiYPyAscf3oTzpK+QwG2KZl89LiKQLsFjfiuuViusjcz+G2x9qyvsmJ1UqwmvisUbVFvr2FEaBq1eaSFJVmLVcd1ziI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R521e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X6n07c2_1783669262;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6n07c2_1783669262 cluster:ay36)
+	t=1783669409; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=wTHbaDxrPNNvtvGI7FMbsU1QRQRo+zezVyhSZmeVvmQ=;
+	b=xTrQJqnnXDAk0bAiAFZUZmEYY4GRo0rmDkC9VJ2fvHsnnheBIU8aClMhU+AuAJU/JBQzMI1yIST4v7jkId8DbEhpD1EOCDoGi9eQSVzveoFHKtUJpArIU9qkZm0AFzeco4mkXiQ6JuhO7R5BiGRQFiXQ96av705qIeJ8mMx8Lg4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R211e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X6n2i-3_1783669407;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6n2i-3_1783669407 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Fri, 10 Jul 2026 15:41:03 +0800
-Message-ID: <62b2bd29-28d2-4440-a970-526dd5d5bbe0@linux.alibaba.com>
-Date: Fri, 10 Jul 2026 15:41:00 +0800
+          Fri, 10 Jul 2026 15:43:28 +0800
+Message-ID: <d818db13-0e95-42e8-aa56-78215c2b227b@linux.alibaba.com>
+Date: Fri, 10 Jul 2026 15:43:27 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/8] mm/khugepaged: extract young page check into
- collapse_is_young() helper
+Subject: Re: [PATCH 3/8] mm/khugepaged: introduce a count_collapse_event()
+ helper
 To: Nico Pache <npache@redhat.com>, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -76,19 +76,19 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
  Shuah Khan <skhan@linuxfoundation.org>
 References: <20260706154500.39178-1-npache@redhat.com>
- <20260706154500.39178-3-npache@redhat.com>
+ <20260706154500.39178-4-npache@redhat.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260706154500.39178-3-npache@redhat.com>
+In-Reply-To: <20260706154500.39178-4-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 59EE920003
-X-Stat-Signature: tghd3o3cs187wct3b49nmbfwgddrt96q
-X-HE-Tag: 1783669267-341244
-X-HE-Meta: U2FsdGVkX18FMiSVoeafiSxhpTPFp537nbizzKufZEdpY3bnzXcjwUHQtwpOq+zeyRkWzU0odiEYvVovPSkoFVoTTLwZU7RTu8hFjMFMMqb8W8LVyoUpWq7A/8BF1Wto4jnRHwQmUSZiBFNAoPudHJxNjMPVZI11Weyqh+DUAYljAJPWDnmC/msIsXKndRyWMF4P/LhiswzXkO/vtZbKo11+iI9GApl1yQUaZ+Y013Z9Yldu/zfJpgwWpAb2uA0U6yITM+412D+pUzyerb7N0oG+NWip1Uqu99slX6NyMz/jgBQbW6/pQ6p7NdRMvDeWo0VQvs4ct8fpjWNa3zm3jDaSF/Sgqt+zMnPs+A8Ci75MClByXidFUxEbf5kHXrvi0HuKBGzPORjg0PW65UBg5kejw43HYUQlKsPMM+UrEGu1fJQdy02IkLmLtjxPL5ExEO8EyUcVOgk5Oha6VrcQhMs360jeefxMYf71aH+Y/a+UFTuhVtbO12AI//sQrVYtd2PBFsaX+ZrF4oD5yzoVY0PxrL9NoojFJ7l3y4nkmqQfHkL+hbhEgU0YTegyeXV7SoF9Vlwk5vLOTyWJSosb22/U2fPjT+P1Fvt3/mif5amwA0YTtjQaoyPGFGuY7dybtu/J60mOGQhzjNE9dtX9y5qCVWDm2Dv+ofL86sJm79G+TOX19jx0agWBp61to/YRVCwyO38+eZbTHMyGD48V/mCpj/h5r3AN99dyzCWj0EWOr37dB6LQKHgX+DMfsAHZolZXtZiDyMKw4haT3LPzhxQug4Gqx3PPJMFRvWJwLIDmoc25N8xySwpVqPtFMkTsr9YaU3KzF7J98dYmuVtRThlsyFc8g9OJSlLJyBEcygTkxs0OmS5g0gBI4JgA4p+x8a054kJ+QPcXOBeA7EKcIwB+GoCmY0zZot3hwgvh6orehcpWOY6Ym30tS5E0zFbFB7jkfWkt3b3Rsx2DKLc
- ndQ86Gk2
- JtRJAsMmaT56lEl/jTEopxaTW1cRCmvrj1FzISfGoUDI89/CQ4Wl3BzRtTKg+y6/gqykYj9v1YY5bvnrEzqK46muv9474liSx93K0dYWaDcnDHsoTnrXd2ZxHzf3ErJHgcGziioylWxAKcGNOf/srS91O4PkAGlimZRSKa/NAvww7nAsoRmK5PqIVaB8PUIWZmZWEki6OdigQZg9r9EiD8V+vr5dnUin0+4o6/7+reZS6oWQOK3Y2kHyUzq88Y1kmEBCcF++y16PevpEQQCpDxb9o26u/n9ONZWvlF+s4F0ZBIugvMsDRyjYNMBvIOd2vMUs3iFgS43eVgJFtGNZB+LXv9EqITdSxtwWRCsRKXGQgeLpnRYZtB8/cTXxh5AEXtswv
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D5D4718000D
+X-Stat-Signature: nekixq8mfk3ubn3iu7babadb8cmcayzp
+X-HE-Tag: 1783669413-531497
+X-HE-Meta: U2FsdGVkX1/qoFmHQmLBBSMnm/uoDRJQguC25IQLM0RweO3S5jH2TgoD8VaA8NTDt/AK3w1Zd67mk3YqXtUoUWDxiSwj/DJ6Ew78ZQUC7S2j+vGpuh6xyTiPc8+NHN1N8bpcZQj6OFA1eUPQitugvIawv8txH7fUpzDMR2sQr2BUrmPSFp5usK/JewW3QlAjS179hf2YhZaTPvp9gmV6Blr51kWhhpj7t8wurEsF3DOInu8T5Hcg2pVCOpL/KB+uatNbesA+L7qUQegtZw0SBBue7cleEZbo2jzm15i4VMCsv+E6qiq9BppLt4uBCd8iZyDYcWjwODz9um5LB9gEcMWHHG+h0JwtfutfYS8WuF6k1ZeQOsI3mzYpXFU1Xble+3agg4N5bK8BCgysR+cdY8qABpfs4pr+Pqg2FJkD2NZayJ2tKNmq4a/3VZBfKJQvlTY7uDarDXN1XLsxxr4gwrkZmicyQ6hmr7RSBdYRA+vQWAX0UvBAeFkzM+Nux4S0zLw3Db8gajt1KH5D8WyMaNMnYYNvmz1/QHhN+lnChaXgX9ZUmFJSqbKbCj+RLlPO0JjUqvXrtbPh6XIWMvKI1egM3huqYKajoN07opaHxcnQN74o5LAAZOEzxcSEGiIIZZ9Uv5hDsj5TlgOt5T21Zr70VHmkeQphrLiVocqKTKYjE2uooW1sjBBeiHV962LesPM2jZIF+4mU5nmtA8VGVEfKfs8WAGxI6/W4ZS1jIWGrDi7EIqKpN14UkixuQATh7Qq9HvEYSQ0CANhN1eSmy560xBcH0f/EFdASq7IlUBlnN335WgNPW33gwCM+Tda4ngutQxFQLk5G2dVj7O6bpVAdv1KrZivvIXF2AdlBN+jtJ69lfuW9Dr0Ek+Rv5zzuJMRsYRYnu1HQnE+g7Ug8i6RcjEpdUNJnnF2Tb/dJUQMTbLatz1j6prrWo9UBZ2mt91JY2mRrb8xHWENAMQM
+ zWkC9czm
+ GXntFtlTb980uwD14jx9w2dKS9OIu48XqUhOrSFwq0v4SpXl7tDSF8k0yg5Z8pP4hVMNGg8zfDESiBvf5vwbGk74MFqLIw9ZrP861EbGjHMUELfSTl9svdPryIzMoshP8QCKmh6uK+aT2UCD4HZyyuvEyby0hWwSaIeD9WfBBoJQf3A5ftCn7Rn23wv+a/nXarblwAI4XJlJBFmkivF7JLtui26si9BMKQgpQBgLJ7UkXwE5Dros4Imyv0WM/W/VwIlKCd/ryW3ExPUVIOb18G41yPrfXmaK4ewCQPiaHYSewtWIJXD56kpiMVAtM3KePSPA0+1I5A4+1Q60ZqryGRq4mhdZQKNUv05KIfBFMJv8zA8jL6W6dpee5TQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,52 +99,15 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 7/6/26 11:44 PM, Nico Pache wrote:
-> The change deduplicates the "is this PTE young enough to count as
-> referenced" condition that was repeated in both
-> __collapse_huge_page_isolate() and collapse_scan_pmd(), extracting it into
-> a single inline helper function.
+> Provide a simple helper function to help reduce a often used, and
+> duplicate pattern across the khugepaged code.
 > 
-> Also move the comment and use it as the function header. While we are at
-> it, updated the comment to clarify that a young pte is a recently accessed
-> one.
+> When collapsing to a PMD we need to record a vm_event and the mTHP_stat
+> event. When doing mTHP collapse we only update the mTHP stat.
 > 
 > Signed-off-by: Nico Pache <npache@redhat.com>
 > ---
->   mm/khugepaged.c | 35 +++++++++++++++++++----------------
->   1 file changed, 19 insertions(+), 16 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index b3985b854e77..48b008a3c891 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -675,6 +675,23 @@ static void release_pte_pages(pte_t *pte, pte_t *_pte,
->   	}
->   }
->   
-> +/*
-> + * collapse_is_young() - Check for enough young pte to justify collapsing
-> + *
-> + * If collapse was initiated by khugepaged, check that the page has been
-> + * recently accessed (young pte) to justify collapsing the page.
-> + *
-> + * Return: true if the page has been recently accessed (young pte).
-> + */
-> +static inline bool collapse_is_young(struct collapse_control *cc, pte_t pteval,
-> +	struct folio *folio, struct vm_area_struct *vma, unsigned long addr)
-> +{
-> +	return cc->is_khugepaged &&
-> +	       (pte_young(pteval) || folio_test_young(folio) ||
-> +		folio_test_referenced(folio) ||
-> +		mmu_notifier_test_young(vma->vm_mm, addr));
-> +}
 
-collapse_is_young() is somewhat confusing to me. Would using 
-'referenced' be a more appropriate name? collapse_folio_is_referenced()?
-
-Also, it feels odd to put 'cc->is_khugepaged' in a helper whose purpose 
-is to check whether a folio has been accessed. I think this helper 
-should be more self-contained and focused solely on checking whether the 
-folio was accessed.
-
-Just my 2 cents.
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
