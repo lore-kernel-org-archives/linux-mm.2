@@ -4,143 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ED1CC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:33:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 852A1C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:33:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F8F86B009D; Fri, 10 Jul 2026 05:33:35 -0400 (EDT)
+	id 750206B009E; Fri, 10 Jul 2026 05:33:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D0976B009E; Fri, 10 Jul 2026 05:33:35 -0400 (EDT)
+	id 7277F6B009F; Fri, 10 Jul 2026 05:33:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E5A56B009F; Fri, 10 Jul 2026 05:33:35 -0400 (EDT)
+	id 5A0446B00A0; Fri, 10 Jul 2026 05:33:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C5CB66B009D
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:33:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 558A01C8997
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:34 +0000 (UTC)
-X-FDA: 84972354348.17.975D636
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 642C780002
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iVcfloGD;
-	spf=pass (imf02.hostedemail.com: domain of devnexen@gmail.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783676012;
-	b=aJ9qhl8q3cHK3SH34blzTey2ucpjXfuDK/Dm544S/BjrAnpYqMVTHHQoOk258qaLlGrKqu
-	7wM10+bOFcnWQd87Ao3dnx1AiPXP2P5h/gvK5Zh0BdqiTpMoLclBFnYr+U3YMmM1DUJ4xw
-	RbLrq/M6RoyP9d0yQJ51JUFen7GbSj4=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=iVcfloGD;
-	spf=pass (imf02.hostedemail.com: domain of devnexen@gmail.com designates 209.85.161.52 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783676012;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 316196B009E
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:33:36 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AC13C169393
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:35 +0000 (UTC)
+X-FDA: 84972354390.30.DC5C1F2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E983CC0004
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RHUvkILI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783676014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOfAMidp8rQWZVqstmTup6Rkr74TOq97Goi620POv9w=;
-	b=r7pah4DZyKtoqgquxvtYJ1o283XO9SeOkDAt02SBKy77gfrGhf6watX0I+zF+8rjKb2jEe
-	BLedpyLEB581CTPKfRfuFABj129YnA8qC9Iv8NLYsSEQmGQCKdLyqxAhxygnxgg1G2dO/o
-	wuaZxqg7B9cEHSroP1j22xAhSFm+9NU=
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6a1888969ddso452379eaf.3
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 02:33:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783676011; cv=none;
-        d=google.com; s=arc-20260327;
-        b=P1TP7hujTCgE5Hv6ijlZn82AmWqzlqM0V9rEM7n1MnjzymfpWtE/cd/NCTcph3Y6gt
-         UlorCtfMr7BnL2ruxAazzY7n3MFw2pR6r9NiYRdcvnlXW+QYqZhVDPqKyscgh9MzoKEQ
-         gzPgAkzUbM962caeLOfGrXTURgGESpT2ebuA4KgvY35Y2NmmOJhEFlCS2mUcTZubL8UQ
-         owumEYJJNN80zu8+va+Ushd41IXyUke8c/G1Og0FT2SYRplzbxtjaZDpiRsoK4d9IK8t
-         pztIksCBv+zdzvQ//3ZQEXXvOUa5aRH2wCQGOYOIYvNRLBX98GUg26iBV7WdqKGBlYih
-         Em2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=FOfAMidp8rQWZVqstmTup6Rkr74TOq97Goi620POv9w=;
-        fh=b1RaG1OhU6ps8+CRWpnf1IUUDdpyoF2qQxpu4VqrIdc=;
-        b=CDj2C/5DlbjLfzhcl2rU7e8hNxFdpYfIm31eC4fy169RZYWf5gd8mJLb3Y42ppAQsO
-         cc/JYllV32KUYOkf4lEZxQ3nzdckaSMyve2v6P6RK70vCGDB6qk0xpbykT3tLhNYCB8B
-         bxRhfqBk3dUtl8wLuq61RCkAFZ/frNAXw8I7+zUVcUS3u4FrHdAcjHRMBNi0+3UCfjo2
-         9sP9RXJDq4AEXkrOiSSG898Z0jX/OD7jFs4bjqhrXEAlcHUMEDo79TEeAjO3Rnr9WbZ7
-         QaiKOgVik7gex/3tlZiZ9BwfTEy5PGqOd7xdyLi80xE6B1h9Ro3I1y+ZCuiWTKyxwc6n
-         UqJg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783676011; x=1784280811; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FOfAMidp8rQWZVqstmTup6Rkr74TOq97Goi620POv9w=;
-        b=iVcfloGDPDjwb97MncGBi4IoOdtYoKA9SQTkpsT7uhC++x4EfeRDsZ9128WVwiuh15
-         93AJRx+z4NlPyIWZ7p4zj82BOaNDzCveKx1PTVQa4PTfD7CXGMD9JX1Zbb+ywhExsSDb
-         JU6W69ipqdkkg0KEqyP+0ioXaEo5ST8rowKBoLNPDyeVbx8eaWrDLdt70D4rjfTjGkiy
-         mPRX9kBqohjWIrMACXeK2E/PhXn31jviWigPBbjtCu2Bqqp1A1cBfwXm1KZp0g4LuV7M
-         wmUK+dORwEDsjRtkU75ZCRHuTZwKWZ32go9CUeWxmP8PXHRGnLmo/0R/dOJpuczyoLM8
-         aOhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783676011; x=1784280811;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=FOfAMidp8rQWZVqstmTup6Rkr74TOq97Goi620POv9w=;
-        b=lVgNQd6wYNJ7v66VQj0281/e98JBimFzEuT7auplgxXkbhhYzm0Q9n7SbUVpxoLUxT
-         8XzhpA/KoC968ghcVokYNK4k5ot1bh3d5p2B/pzZqsLy81niy3iyRGDCLm2dn3JKsbAy
-         efw4a3ukuJQFviU+TXpNdIuEG2ymycFoRD3Mqsqu3B20nAAMNE1HWKfYhNS9otPqbL/e
-         aeXVtwYiHTT9ll7iRdHIN0weYhxwNbQQTwusitVlz7sDmirhzXBvCmUblv1FPHW1QtuN
-         o4jgColaW/TZliH5X4SSCohaWS2uOrd7S+dbjqwaCR+IeLyOLM1THvSFsa8HoBWZJOr0
-         nd1w==
-X-Forwarded-Encrypted: i=1; AFNElJ8TtTn+KkPfP+CJWarpv85QD79twbOEIr/UQozOsbf9zMcjrb5GdVpfj2renOhA5wy1KEt9c8/qeA==@kvack.org
-X-Gm-Message-State: AOJu0Yz2V4wKKk58ZlmRYJi0WoZZS9kcKn1PwEMI2CXmKJLo1dVCKv5+
-	i6u1CmgRsnBbIf4CqiFPaAXyNGxYijUoZe+Q7wd9V1kmSJo4FWyGEdT9o/m8RgSW2uRXZBEaqWk
-	5Y8BY7bJV19qtAcroJFTL5aexzbDFbp8=
-X-Gm-Gg: AfdE7cmvyU+byWCiraZerEUzll3SX7TZUjodEaujU2Eas4cZBBJk4PgsPpdON/acZEv
-	myowMODNl87y8zkst5Jfowt4Uuup58Dk8JwZdqkPYnei6Ci9RgsqFXfI1viIvOTxKbsSzctD4rV
-	PAA0sqeJCSJqYeuO+02N1/ABharB+ZHe3kjCtXou+U5/hCghqF9mb4ukuyT8SgwjbD/Wed7nCwc
-	3UIK8pQaob4cyPmozmKagQFtoTGn5T+RBoQzSp6XCj2RTWchSdgvINEPAwUvGCq6F8fXat6hxXg
-	RnkXR5wa5AKcYGW8B+aR5lxP4VO3ejN/1mtD/w==
-X-Received: by 2002:a05:6820:a09:b0:6a3:129b:e617 with SMTP id
- 006d021491bc7-6a36dad9b1fmr6981190eaf.71.1783676011361; Fri, 10 Jul 2026
- 02:33:31 -0700 (PDT)
+	bh=XXSRrY10BTWWPTtPApZMsCLKyKaoPsSPVdND+noa2X0=;
+	b=5pWLqiWyacY0d9Aqk7pJwZxuczUvvBMN9DF0zT23d91Gg1AwNXqsiGq7O90NczexKl+mNw
+	f2MZ/7xpqwCGD/bRn5bQaNA7X2xOlWa2y4X/YkFRRwJhGJpTsU8ouVJ5hA7/UHPdqQ6oii
+	qun6bWiNx0MsBpIvV+Bt8g2BTLu+BRI=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RHUvkILI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783676014;
+	b=r2MNtfnuODofnQiDrCUyHFW/Q/6k1s2vNsmLwSpPk5WHr3ouZ13c4+g0gm74R/tZBUgf9m
+	hC4uLV8xcoBHsGo5PtWewQLfxx5EMqbDrCWAShOuVaeZHBj6KtVQ3CQ8DogLKzQ9S1+Ii6
+	6U2AYcBV/3gSfUDlZT6Y9LzhNPYU1hg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 474D643A10;
+	Fri, 10 Jul 2026 09:33:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32991F000E9;
+	Fri, 10 Jul 2026 09:33:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783676013;
+	bh=XXSRrY10BTWWPTtPApZMsCLKyKaoPsSPVdND+noa2X0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=RHUvkILIimAD00TXQtkOHsCfX6EzzGvIr5/UnqBBfrZy2J2sQG3wyAdlE4qeHy6RV
+	 9Nspx5EjRwkCSl0MzQzobHoVu2/YFohqhiiBkzTaTt7LZkdXPeyfyn0+fTZBiMqYcp
+	 o4tlpvm92DX5uYuqaxaJ9gn+OtuSKhO3n4JoymrU/dpVXjPdu7NbSIkr9aV/H1RlVR
+	 WXJCZUWSBJ96I6zOGA1KQBU0EiiDkAXQw3bkErYZfj9CXk6teUFyC33/FYH7B/oNKb
+	 pDb+46QVgx6G+5uHBouvlNNPFh0KzwysQxJOqc70YKTQCF8dZj/eFjzWw0AH0c50hd
+	 pFPG6Uvt+vSTw==
+From: Christian Brauner <brauner@kernel.org>
+Date: Fri, 10 Jul 2026 11:33:07 +0200
+Subject: [PATCH v3 06/24] binfmt_misc: annotate racy accesses to ->enabled
 MIME-Version: 1.0
-References: <20260706203128.162335-1-devnexen@gmail.com> <ak0YI9KjSstnj9rJ@lucifer>
- <CA+XhMqzvFtLq1OT-qh207aJhSf+okdE8o8Joe8e_KBvdCjcQfQ@mail.gmail.com> <alC3HqLVTBA92Prx@lucifer>
-In-Reply-To: <alC3HqLVTBA92Prx@lucifer>
-From: David CARLIER <devnexen@gmail.com>
-Date: Fri, 10 Jul 2026 10:33:19 +0100
-X-Gm-Features: AUfX_mztOU5_jS5IjGzUbvmTi3ipFisydF61T_Ppm1lypDXePa4kecWsqywAZ5E
-Message-ID: <CA+XhMqzvW=Ar__NFVCLEcJYUnfmnRhTEtAV_iT62U45B7tAR6A@mail.gmail.com>
-Subject: Re: [PATCH v8] mm: pgtable: free kernel page tables via RCU to fix
- ptdump UAF
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Dev Jain <dev.jain@arm.com>, 
-	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <chleroy@kernel.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
-	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260710-work-binfmt_misc-locking-v3-6-a162f7cb58d6@kernel.org>
+References: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
+In-Reply-To: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
+ jannh@google.com
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1991; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=ElK+yid1mO76xrksl5KOw97v5Pu0FLPrm8Gxu0pXJ8k=;
+ b=kA0DAAoWkcYbwGV43KIByyZiAGpQvF7I9pE35k3wYvU8CAl5OQ9tSMLRCQINJ2fDN12qZb1D0
+ Ih1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmpQvF4ACgkQkcYbwGV43KIRIAEAm8Yl
+ 2XP4FmaYgZ87VnCLwf1CEuR7ODGiFx8zAYC3YxQBAPqAoXg9ntG0soCp1E5df1nGe3sYkVwSWWo
+ sfd9T0JYO
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 642C780002
-X-Stat-Signature: 8p8z8zcj7sw33nk7r5p5y1sy6i798shs
-X-HE-Tag: 1783676012-750581
-X-HE-Meta: U2FsdGVkX1/ghOP50kaE7HA06J1RN6j/LCdOnrX/a9MhoO1YoguKcf2WxewWvvxPw8/RwOvxsOdPCkKpSau0Xbl6pzf3Nkr0SwpsC9JfSBznJpkDNvncV/8wA4jELT4ir/quG580ojCJMyt0Z7L+5ctES2iSBM7LSRiQsNKuM9XS+h+ZQRGHxYdX9mGVu51ZQI1sGOEWf7R5ZGQB2qB80zOxtKKHSTEaiLWFz+tNyOUHD7O+jmi/xQV5dutQOOCQjOjF4PzfumMJFcOKGhotCwe4miCzTKmPQGTsKsJL60YFRAgdFF0SiZ3QLUEmtTzfivau5effXUQO99AegQ6dRd+gB1jmOT+1oMnPz5Kd4U2dU9Fy9YJ9wUr2+mYnA/1aHAkEQBwymkAyGLsU6YXx/PYeC84D3oHKkDySY3hFb1Mop8hP4uhG1mDvNTk00yvfHqiuX5oly5Fp/iek/rzI6BZBH0FSYagh+fwzJ+UlNxP9blZ8GhnIzAm+PxoEyNGrwVdfhdK8zGZKTkkAceQCMHeDjmqgDQ4tSrAxZw+4czro+mJaR4nMf2kVAzrYKCjhe53N5QnvwXJD0qrGfnfGUqeCb7VaGZRq2UhySFj6Qb9u/X1VnOFrpttCJTl/kNCnNmOcobhKm8y+7KotBygF1ad3pONueYCmBiJP5rnA6nETEKHAuPwxtmsxik5Enel3F1Bd3niNR6OgpOA6A0FcPwy5GmAZPShPoxG1om6KHY/yshf93/73MyNl3A9rYQ8Db8hicWIMITdt0xy2A3Jrkp6/mSXbDa7hIDmgz8qhWDvsLaKtSLZ/x40wBQqR8W6MhLJhjVsJFvVrRzpvtjCwO+Wk5ry4NohUyyYtTVL/OY7m9ZoVmciKbo7Zvvka5pTN/NsIxP2s4LaFggyduczQvgF92N6BKcQFK/bEUeiGtevAbxDspqqXkkxVZyIAe0SXuq/foUDDTANKYARBXDo
- LHHtgYWX
- KzPSmcC5C8JQtvsSEH57/Aj6tM5zJS6ecnXmoYcdZpzKwoBaX7/0UD7JWOo7mfXDL2nvpcsa3ZySL4DXbRdqE2B4ZDJLMUJXFrU/AvNRaqRdkrQHWr/qrpkL4ENLn5PgWNLkfL9jvJJq1kagffvqjjbDVCXsciDFq3YGtO96uuLLDC9DwJV/l38sQuZ8QormEffxj2wFaflLo+Fn4w3hZ4reB7HnbEKuObPoJQc7JzulnPPOvuq7TmZ0bKIFFGZ4lZcwmQBpljTvr9qEw2k69GHGrOzXaRy4FSknqoTn0agiYYtEimwNa6cCi+KOSmQbTE0gRfM3ASanXCgb0j6njBWJnb+7vS54DvEz670Fc4IMUJ9IrZLbDQHwZHNQGY8NN5HiCiayXBDnAH2iIlNLGCa7y1qa1SgieQf507O1ic07fzS5gvd/b+tsuhQ+O0pIb4KqDD/YwwXDu8yw5ZYjIduRqPzjsMDlXntDUvXUaG7xqkQIkiY9h31NjYw4xQdK2CZiHGE+fb1cIzEERz+zrad/nr83DJ47kLDSpIJHuvgZQ+d0Swc9+pc9xng==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E983CC0004
+X-Stat-Signature: wyue569xjswyikbo1hfqpeghq8iq9iu9
+X-HE-Tag: 1783676013-275183
+X-HE-Meta: U2FsdGVkX1/xqB0uOG3x6O9OwiBf3m/64LCBAuFm5kUADHke6/hR6tP4UE5NVWw4oRC3DnV/eJoltKcSmrL59unrxHW1tx+GSn2ECQP5QZA14oPEyyypO1z9ba9NkiQpVb/e+JsnkCHIDGIlUpA8N+lwOTz1HxuLPmbvKtK5i4ZhwY1gRamVuOmO/0sZEfZzLQWkKsQcK7zNpBfN748Yl8sgSBMEoxS3B5x+2/2BvKK67lEc/LSHC7E0pxuY3MV94BO3NUaCoAXWkFBSFUcxD9NMyb/8ggMAzszTyrPIPTzlgvaFlMvdkr1sv0uNboIfEf09OqIMm5VFdWvFxJxcisIFDHgDegXXIyyydmB8dJuaW905kHjrnh4sCMqAbYwCXN8+I1pDj6k86YETsV2wkBUj2w0fN2Drb0QecLkBiJv2D9vw/DtHzqyi5l2WcSqBIRbFzyF2qNCu16JL0Pa6dXZ6BN8mis626pO8UF3ud/evckkzuu67C4eH0Eu1OXYntjO1C9VQwBIo8Qf7c+nsgb7TKHLuk6ZltxZdjaVbiYWQTvMPQzXiEEdg2XEkBNMUlhjYp6ZaZOZdn2zI8hVx16wl1gO93vBbknTT4d/4KZAcq6hWM5+Ydu8ftT5RW0ITWk2bdrcdeqGqV3lj46Wwxg2bgXgDQUDlb6t4cg4haimw8Aqju+lUzRz04Q+U8LOSKd2MtDla/4iMxH6U5085eg8P4uXSboEOxZNdBFmoWTCt29GvJlX25nhg/ZabBs9PLguSDJyKCz6WMRZ5/Nq5qV4rnn5Y3jUsTlPevaG4CIIdpKPEUOdESzgdSC95KTyflfOOeniVXW4jjFb863oCXVz7gAflAMSCoc/U3xJlX1hnlWtWGxxSMrrsbNS1vr7Dr9Meuna6OjLzoowKTBKIQJRta6ftOM1XfZbTsCsWhgGWxgyqS+36lvcS63faVKdSVRvrjD+JwdyUyp756vr
+ 2H6F9sfK
+ 8oFsPr/TarubLnNq7vzwpLzcCDSgtCO1Vc0zFLUYZDHamb5upPxzO2ZmIc2WgX6hn5S94CVFCb5O1ya2NnVKMtlntpVB2SWh0F0l/LYupSI8CjGe1r863zZOXbhBOGVnUBBOrW5x5h+xl4AUJXLy7d0rvOm2BQDeoNz2m3pjT3Tb3/s6v8RY1/VFXlbyVymPfnlbzwXAxRvYhOFzXiDhHUtCFqcswcH9P1LyTlfpjkrcM6jq40DJBYlBCfdm9paPa869nZEjhzwV20AQIM0fjnBSkayUlL15fdheSul2XUlik70rwpqu8xTAa90dePURsZDxyc1d9uglqBqcGPLssUbdsybGQvYR5diXYmMYD5tNKG1k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,40 +102,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+->enabled has always been read and written locklessly: every exec
+reads it in load_misc_binary() while bm_status_write() or a concurrent
+remount via bm_fill_super() may flip it. That is fine as it is an
+independent boolean toggle but the accesses should be marked
+accordingly for KCSAN. Annotate them with READ_ONCE()/WRITE_ONCE().
 
-On Fri, 10 Jul 2026 at 10:13, Lorenzo Stoakes <ljs@kernel.org> wrote:
->
-> On Tue, Jul 07, 2026 at 06:08:49PM +0100, David CARLIER wrote:
-> > Sure thing :)
-> >
-> > On Tue, 7 Jul 2026 at 16:19, Lorenzo Stoakes <ljs@kernel.org> wrote:
-> > >
-> > > Hi David C,
-> > >
-> > > This has been through a lot of revisions so I think for the sake of expediency
-> > > the best solution here is for me to grab this and fiddle with it a bit then post
-> > > it out myself.
-> > >
-> > > TO BE VERY CLEAR - I will keep your authorship and attribution :), and simply
-> > > stick my name on a Co-developed-by tag.
-> > >
-> > > So this will remain your patch.
->
-> Apologies, but the approach I'm taking is very significantly different so it
-> would be problematic in terms of patch provenance to do this :(
->
-> I will make sure to credit you directly in the commit message so there is proper
-> attribution, this patch and follow up stuff has grown a lot (been working on it
-> all of yesterday afternoon/evening + this morning) and need to ensure the stable
-> stuff is backported etc.
->
-> Thanks for your contributions here, very much appreciated, and sorry to have
-> messed you about on this!
->
-> Cheers, Lorenzo
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ fs/binfmt_misc.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-No worries I understand.
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index bd7790a1317b..0b9758da1f88 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -217,7 +217,7 @@ static int load_misc_binary(struct linux_binprm *bprm)
+ 	struct binfmt_misc *misc;
+ 
+ 	misc = load_binfmt_misc();
+-	if (!misc->enabled)
++	if (!READ_ONCE(misc->enabled))
+ 		return retval;
+ 
+ 	fmt = get_binfmt_handler(misc, bprm);
+@@ -875,7 +875,7 @@ bm_status_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
+ 	char *s;
+ 
+ 	misc = i_binfmt_misc(file_inode(file));
+-	s = misc->enabled ? "enabled\n" : "disabled\n";
++	s = READ_ONCE(misc->enabled) ? "enabled\n" : "disabled\n";
+ 	return simple_read_from_buffer(buf, nbytes, ppos, s, strlen(s));
+ }
+ 
+@@ -892,11 +892,11 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
+ 	switch (res) {
+ 	case 1:
+ 		/* Disable all handlers. */
+-		misc->enabled = false;
++		WRITE_ONCE(misc->enabled, false);
+ 		break;
+ 	case 2:
+ 		/* Enable all handlers. */
+-		misc->enabled = true;
++		WRITE_ONCE(misc->enabled, true);
+ 		break;
+ 	case 3:
+ 		/* Delete all handlers. */
+@@ -1007,7 +1007,7 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	 * someone mounts binfmt_misc for the first time or again we simply
+ 	 * reset ->enabled to true.
+ 	 */
+-	misc->enabled = true;
++	WRITE_ONCE(misc->enabled, true);
+ 
+ 	err = simple_fill_super(sb, BINFMTFS_MAGIC, bm_files);
+ 	if (!err)
 
-Cheers !
+-- 
+2.53.0
+
 
