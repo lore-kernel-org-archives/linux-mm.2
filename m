@@ -4,167 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66A66C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 21:27:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF003C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 21:27:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 616D36B00DA; Fri, 10 Jul 2026 17:27:09 -0400 (EDT)
+	id CA5616B00DB; Fri, 10 Jul 2026 17:27:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5790C6B00DB; Fri, 10 Jul 2026 17:27:09 -0400 (EDT)
+	id C2EE06B00DD; Fri, 10 Jul 2026 17:27:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48EB56B00DC; Fri, 10 Jul 2026 17:27:09 -0400 (EDT)
+	id B1E156B00DE; Fri, 10 Jul 2026 17:27:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1433D6B00DA
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:27:09 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 870A08CD36
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 771EF6B00DB
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:27:11 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D731DC3283
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:27:10 +0000 (UTC)
+X-FDA: 84974152620.30.DB00AE8
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0974E80004
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:27:08 +0000 (UTC)
-X-FDA: 84974152536.26.3BFD42C
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B97A4120006
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:27:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QKbOAcAN;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783718826;
-	b=Tn2RaOrsdYRfumeXf9FGXJNrhiryCbvpmz7roWZl1v+KY9MQcpZxuiP2ckO/bOC0C+W1Fj
-	VMFD75lAGV2WgiITnOGsLxHpJ3qGhNKRzrFt4F37c6jWlFK0WsGsjngb4SmW9qg1p+fpoo
-	1YdaP1CFTQRWtzPrO5MdHiby7YbJG3s=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=QKbOAcAN;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.182 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="D/80s8Kr";
+	spf=pass (imf30.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783718826;
+	s=arc-20220608; t=1783718829;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oXHpiDgBaIEeQKnuJdWSZ8rFz2G2XIdWbRFpuwAJIiw=;
-	b=A1OaqEbaQKHwDGgMUkgO0NK6hxcaKiDXBNYHNltngKCWTH2IvqOnCQDcHItaBUdVoaq7Rk
-	q4NUUGioE0DK7MG4aQMJD74JhcH0fbfR277rR337WiraSuiLdVK6r7NkMUmiRjJ4oWuWrA
-	4qBJBTq7RZc1AcpHt82BndkYVnjakd0=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-92ed19f4d60so89286385a.0
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:27:06 -0700 (PDT)
+	bh=rz6324+iAv2KNy97kcq58R5fN0X8s7ommcJ7e4qhr4M=;
+	b=beadgoDo8l/r20NOEAyQC4pS25w5WnaKqXn2JoKmwRCoeUrtiuI0505uTGN0Kx4Ee730qL
+	0Uk2/tQyzIMlgo4HKM17m4vDGOzHIclPthGg+gvADu8ieSelbVNyU/gp7qvwybMco67DPm
+	VlBWqAKlkzvpdZqMaawH4p/1syINFac=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="D/80s8Kr";
+	spf=pass (imf30.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783718829;
+	b=hZJlbOWd9s8uHlFGXDgXQgXWuizeEL2QxuKzMvvS7Z684eoQ1MjnrafpqpzEgFy+B8gsho
+	Um5Ek4jWuyg7o4yzPn5kKTvzlOMyFt6LmnN3uxXJg2BiycCTr70X+W65xKZVmMg+Lyi+M6
+	1ORK0QSFV9dY49+HEESuWqpwBEnKOPI=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2cca0c5799eso13433785ad.0
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:27:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783718826; x=1784323626; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oXHpiDgBaIEeQKnuJdWSZ8rFz2G2XIdWbRFpuwAJIiw=;
-        b=QKbOAcANRbC2i1KpK72f2moWm58fOTCnUxONJgObZIMSlcar+vkwmuLY4cBiya394b
-         fbnXK4cnONUsvbFo9iDUd3U1oDad+od6+apau+vmUzWijNUfcy182NRfb/M4yWc4vhOs
-         JWTg52FXVLgImHCJ1hSQue35slqeavdpCKCNGKbkkLqXC7JCnwmVSfQcqzPZMwb4ZCJ0
-         hk+1qaRL3B0Hl7gvxHVszChC5khNoXwCL9LkZjClRNrD1P+Yf53AWbxoKFCBNSbAiiZN
-         PJUBuwSuxfZS6bvIgpHxbGjqTk+NtEVOSKRrIWYK1RL8j0nWbX/5wzwfCs4eFTabQTNP
-         Qm4g==
+        d=gmail.com; s=20251104; t=1783718828; x=1784323628; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=rz6324+iAv2KNy97kcq58R5fN0X8s7ommcJ7e4qhr4M=;
+        b=D/80s8KrLQnxTWhCq97TcQ3AABSS+ujkMmBWA/Ij9FWpoBt7EWIf68GRQ0nQJ1V4U3
+         Uvw0vgN91bXOrLnZrnj9Jvz/yY6Od640YTRmUgP+EQHQ8omT8TPugRo3yDsr4y9KCsZK
+         3XbszXCN7Td7oQJ3Q/FM3jVyFL4xCqY/ez4KO4CCuKXhrhIHsLV0Rau0DuYr83pRVpAF
+         ++vuoXDjB2I9BNyHXr3MXwctyK7XGqXaGuJ7TipLKYLDmAGGsTt7srvN67FvgF/BhY7y
+         pVDZirrmeIH6GShsNBtkh2dxXECE9JXjxiksHnvK71PNkoWRu6vknICu6LCrKIsT/dfU
+         FBCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783718826; x=1784323626;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1783718828; x=1784323628;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oXHpiDgBaIEeQKnuJdWSZ8rFz2G2XIdWbRFpuwAJIiw=;
-        b=fPrSk/5lT7rIQz3tXfLykkaA5GjUPe5hi9lBoxUZW1bZ5B8WPasa1lPTPGRuFdGXZa
-         IF4KcPNcnsi8J24dMoefYcwSlfUSneUmB4831g4liBpftXz70icPIpjN7zJD0L+8Lvae
-         1DcyQWlYjXRivI6hM6qieQb7DbcJzMftdUx4gvrCl95IeKyPx+yHsPt40SW4yaOWuqH8
-         0tjg1rPeutPA5TzcjKgmUKSyWt2SZb9vSCmEr/ECctkx+U4ru+qAELMXDIcrbtRkENDk
-         c5gIepLr26d7ctbvmpD5B+8ZOb0Y0IflGmzXvM9F11l49PrtrOlfOlT2NMufKTHgsV+6
-         YbXg==
-X-Forwarded-Encrypted: i=1; AHgh+RrXtLMKYSxVfZAv5lZxu/p4DBoG7Uv6Y6LlPfVqWjy87LxXRNp1XosdqtTa/3qFszR4M34Y/DxmJg==@kvack.org
-X-Gm-Message-State: AOJu0YxIufm0tdjAxP2LTNGCavtPJIc7yEs1iVDM4JQPkZFhaUyXB/nD
-	DF0zd/b6Snx5VBHBbdtd4I91CCRf2HypUQn/IWU0PBBXdKS9H80myU8t8iC9QLySZR8=
-X-Gm-Gg: AfdE7cmBG5T6wsnN21uehxmvBiv0geBknPDCvtHe5lNky9NlPdHBfj1oihBuNPoG9Gc
-	/0HE+h2k35KpBDsjBAaoW7TE8Y2yMES9xPlJvr54VjJAqZB91pJOnL4V2xGWtVaAz1Y1c1g3wHX
-	ZgNe2RNcQw8tkd2vUzrBFoUOHHg33gf8vJPaiwM+RypJG+lLc1phUIQMxNFATOEInvARZ/TA8UX
-	JfTg+HQFvUHrJL92/OqPP5QoP3k1KxAdTB7np9cXSXZZHGnHd8WcEx/Ldmh8SvN0NFB06D0osCP
-	6YBftoB13ShWh3SoZfzjfaqvxUoJBNkqwk297jE0ugeJ9cxbMdPAQZ6OnJn8/EfK6aVL3Cc3DOr
-	Lg7l9lUxVlFrTb8vIF7WJX180UXqmswagYx8dJnzRwKtpafQJNsBGqVnezxtlff9yHfYR6h75fG
-	CMgrI8Lw5pIPsuGtMU2tzmwwdFoIPxLv8JIYXVyllPheol7kMLm8ACVzlOozQ90RjZOxsZ
-X-Received: by 2002:a05:620a:4008:b0:92b:856f:3c14 with SMTP id af79cd13be357-92ef3d1792cmr55468485a.11.1783718825767;
-        Fri, 10 Jul 2026 14:27:05 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5d2d68bsm289148485a.33.2026.07.10.14.27.03
+        bh=rz6324+iAv2KNy97kcq58R5fN0X8s7ommcJ7e4qhr4M=;
+        b=Bp9pqhsOSAY6eCcl8SfxytIYZC6CHl1LUcESSyS49Rh71uYSUT5Jz8bsOS8NJmGpNw
+         YKxlSNvrLDYHLHoJ4Pbge5l0OEqpUio7ycBruwn6HvKmURPD7P8zPjbAHdRBPTu6ggUv
+         kEpWt0WhnNeY1JtbTOVZJylZ2r7XN1XUaromiPqXkgELXpNOyuRw9DWP3fZPvp9d84cm
+         tlCWxTs3wMFiUuQqHDdymhRA6m6CgI3IIQzgaImrMVPlsQ7EqTWEFCTSEoL9gc8iHXhO
+         NAIpIZkVcT9ZyttvscfkFSXrwWfYnYrRK1qeaYE60mseI3pS2gR0XfuWPiuafk2fePPg
+         n6Cw==
+X-Forwarded-Encrypted: i=1; AHgh+RqnQphSgZ1qCtBTg6ezrpVB+3ZQrmnbHhT9tXZ6Wo3ZXbilsGsBmJGc8YIHmkdspUQQjGlwXdPcjQ==@kvack.org
+X-Gm-Message-State: AOJu0YwxI1R7c+GD+kGv+kcLvn2zgAF+jlnpruCCjYNP7OJxNIXikGhz
+	cXCdDS+vg4Dp8WSQzf62K23N4bzXXD+4czwg/nKjMBwE50/DpVgyxKOW
+X-Gm-Gg: AfdE7cltSBnzuMeTi2rJoYuOY1FAX32g57KY9LWiLKDEhtOaK6iFXL9hxI//0a+iDFO
+	wetg5LxxC5GLalEAlNSdzKxLFxdS1zc9U90t04G8L+kMk9s7cNf+P8m8r0J4Vz5mutzvespcNtQ
+	6uhcmTKzALGWWDt0eXetF4owmjXu6ILXgyz8y7ETkJqgb2C3zNVE3k9tkUCKGphNK3aGBzO5gc8
+	kw58TVuLh90tCEvxhAizW5PP0yIS4mFhbrj08jxsE5TX+aWaFftzGJ/6J0wdE2Ay2gQg20fAbBE
+	ePgS9K1KieM4R8HBiCp4tRqSYdxsZ7uh2E2ViUXZ7+ERtFI0E0i4eP9ADcRZKu/DFBm+ZD4Lp6h
+	rok21IAJf+GER8kdf/HWivr6qDqrYPztdZ7f9bD0Zus8lMosa72/udDIonN2DEwa6I951Xljrf6
+	kqvBr3CPxkV928MLRPlaYLVQTbXt0saS5OyIIPyf+VXGiA8Ifdr0tyXYoCNoJAUbeSREIOMA==
+X-Received: by 2002:a17:902:d98b:b0:2ca:1bbe:c3d0 with SMTP id d9443c01a7336-2ce9f3d5e4amr6769265ad.43.1783718827906;
+        Fri, 10 Jul 2026 14:27:07 -0700 (PDT)
+Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9d3bd33sm65951165ad.58.2026.07.10.14.27.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jul 2026 14:27:04 -0700 (PDT)
-Date: Fri, 10 Jul 2026 17:26:59 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
-	Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Dan Williams <djbw@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Christian Gmeiner <christian.gmeiner@gmail.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-parisc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
-	iommu@lists.linux.dev, kasan-dev@googlegroups.com,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
-Subject: Re: [PATCH v2 29/33] mm/vma: introduce and use vma_set_pgoff()
-Message-ID: <alFjoytGnkjJs7zR@gourry-fedora-PF4VCD3F>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
- <20260710-b4-pre-scalable-cow-v2-29-2a5aa403d977@kernel.org>
+        Fri, 10 Jul 2026 14:27:07 -0700 (PDT)
+Subject: [PATCH v8 6/8] RDMA/umem: Use hmm_range_fault_unlocked_timeout() for
+ ODP faults
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
+ corbet@lwn.net, dakr@kernel.org, david@kernel.org, decui@microsoft.com,
+ haiyangz@microsoft.com, jgg@ziepe.ca, kees@kernel.org, kys@microsoft.com,
+ leon@kernel.org, liam@infradead.org, lizhi.hou@amd.com, ljs@kernel.org,
+ longli@microsoft.com, lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+ mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+ nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+ rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+ skhan@linuxfoundation.org, skinsburskii@gmail.com, surenb@google.com,
+ tzimmermann@suse.de, vbabka@kernel.org, wei.liu@kernel.org,
+ skinsburskii@gmail.com
+Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-rdma@vger.kernel.org
+Date: Fri, 10 Jul 2026 14:27:05 -0700
+Message-ID: <178371882559.900500.4008217424194230517.stgit@skinsburskii>
+In-Reply-To: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
+References: <178371866223.900500.12312667138651735591.stgit@skinsburskii>
+User-Agent: StGit/0.19
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-29-2a5aa403d977@kernel.org>
-X-Rspamd-Queue-Id: B97A4120006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: a1kjdsdwdmcu7d69yj4jo1646tcafqpc
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783718826-458536
-X-HE-Meta: U2FsdGVkX18RIsP8dIYhAfzrFTJk+WHnzmYDv09clRS/V/NeTRlCiClj/pMM3oMmC0HuZ1DRV710zzflfWepruQXIFlsJWZK1zC1fNebSjXZrIXX3ufukyXnuq1cdwl0L8F7NoPEavzoQF9T+weORvqMM2WrrprlH/qSYEBjGcw4aWhDZTVqFHTsQT3/Uc4fyAe7xdFxvUD2hdyRre7Diq7tHsGYb8+qSiphYEP/DZfQNJMmNouCxqB+6bz0jYb9qhgGwrfdr19//ImnmMQgpBQPk04XIvDsQZjwBPISLd/2lLQgxsZla3sXs4piqD5oNqePxLgmkiD3bkCAZxkuy7Of3xldXUdHvvVsVHlsnG+PGpZboXMZK1MDOObfBHcEWSwKQlxuu0zuGKvfRZmPXIY7XWWeg0f9INtkg5msanKvQpl5oUecBZEHPl5Y/+OrWws58efrieMi/96YAaw5StuPID1kFIVnRTE6sylPslZ88opmZTiMkUp3G0VhJxqca4vhM5+hPYfX1EfFEpBNg0W1Sk2mxIzsWhPn/UtxF/W40uC0PP+oHHfb8YgMcPdSr6DHnDfrHcbNm0tYQrHqg4YCt2nIuq9EZNqTW97/+Yi4SWJZYsBKBJ7IVevjL6gcpW08Is3fP24sS0DwoZ2nHuyPqoVEdRDJBwRuk+OkpnCOV6hvAhuQTZrdsyND6pyymp7pRQ/qciC0JCiBVm1LhlrOxqbszmWAUsy+5WE72PPl6hLMXKja1TCMU3bWEqTE05ejNBznNtuQomOc58piI7Z84o8HDwauOx106XP+5H+WMVIncv93/tzyPOX4VCGZcnpa1yrbAg9PZUCnS6d0ioJIti3MHDVlf9IBThkzfGh93ToynodgJlbEYOPTkxrxe0MWPxx4NVZS5a2izmqlsJYFfARz9QBy4BLuyi9IaKSKGkCH+45iIJwmHq1V3LaGur0GzN6sI1G3cszZ09e
- uHGhFYrz
- Ho3eh/pUZ2wY8BHdJVFNW1XTjTcFydqRbtZwL1iJg3RptrD6czXAF1JfL7qOdz1w8UhryZGT/D5+Pqgxxz1uB3qv4ITCrv1a8z8amwfcHGD7GXdGfZiiuzAiqTP4/1mVJzKAP2gC+NmPf6N6bg/sIuDVOxGx/xprv45w5Z1Un7LDLJBdmXcJy1ebb318fe8AZLsXknPI6Govl+MKvsgW/2NaOEkm35pDSHo79UzVXtBQMsohYo3t8a+0u9daROz+SFHKU3xeISBYYyl0kdeFmCBajsVENrefAADm52fUoBNlBD2aFM1JRnyta1r9taIT1iAh40aKVGxOwgNalmzAmWIFXM/MwmLkguMWI+epcquF4T/Pn/VyRTiHHyslvnptr6/RJDBGLkX+R0dbUa4iDTjTWtJg1LVfgb3B+H+Z+qyozHcb8DiE5IZ52IsYXoNVCcKP93THSROvlP3NExhRTkdOoZSgWdkTPy4HJjgq9O14TpxUkYTD3irHgN0ZlWofAS/phX5c+ouFe665mEcqzjkncq6uP2YPWyv4kKOAgt6tIXPiU67gxZ/VV85MpUYRwzxKb
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0974E80004
+X-Stat-Signature: hbqnrom87shx8x7emyhi1fhinfdho9ae
+X-HE-Tag: 1783718828-961821
+X-HE-Meta: U2FsdGVkX1+c2rFojvJXuU7uODQ7EBZ9+xLzE1ytP3OBlpbH3DzF6tjVpJBF7HbWJAjvJurHPQ41hWQgUi64a8cTIo2jaG9Xpph0JmDU8TIGVjIh5dq7G+NciaMfmYndepodwym2hjlTyesUfOUuTmI3lhavL9TO+NsZgWP743oMvrYCtFkFL6S8fDfbP4Beke8YhF3zdqIUz/74tyRynwmH3blm7l/kJDEkBNedXxni/SgJNuSpGvjFMlndmWTg3vKKbH1yM0bv294QKEq9drvmZvORLBsiVa2JxEJtiZpudpVwvcj674qcC1RIgBnj4MUDheW08daLCiEb3D/gMxVEmJ21XrXtTo5lSMCSsxwueTVwomFhknQuk9HCIPOHAcnFzU8XGfBifvz4qUu90bEOWfvnFDHvY5S6TCNP4XHyBfVkZVIIeRXtzN0t2F0VjB3DjW5yo9TFEY1SbqwCjo1IW7qCJPKVgL4uq4UvnkglZwCc3LiGIQIGIpeA2aE2/PPVoFzQvBkHnGuVnQU/Kzba01evHE10CkW0dLtaO7JmL7q96UIGEub1CzggdOovULBOp1P2XZvq0kC+9pws5E+OorwV1QI/Jm2FsrV5SWxt8j+gooO4/srL/r4zW9XRAKNIWasDOgukoW3A5P1BGLPVQg8DVA8kDTUK/x9MyanrOoxCgdpLVS4PXCX6CUzJhidjOTzHS0kKiOAdvaRShqHJB734+CanhubY68um8j0kQgiibNRbu5enrzDwoRYBJLMO/P6rZx3i1kGgM9sMxHLuIf2TWoddGV1wmuhvv3sOnbGrFU5jqdNIOkeZnrWMjT/VzSjELF6L8Z7OCwol5+I/tRg25s8+pzzuwzeQe5ei/9qGVf7iKeo8Vnulwtr9A6u4tlibClFVblMG3a3T1RG3204vgKguYEv1UCNSweVIoJ5KLCVbg57J7ZJ0RtHweTuIdfNOIOFkRtTTgrE
+ QPTtg7AS
+ X8bCkyviY4N7nyuMAkDJ/CnbnFc9wTitRhN6vWcZXoGOCIxD4Jdby+PELIlwfsEsxHuco+fFADCkzGnjqLJQnWhML3KtLTnSW15/cZPR0njsnhuJ/F1PXI3/kpB0mZj0MHBS85/X7Cm18nDOxJYzbmPaBFlD44hGLAur7iAmL2VqnLxjSIdThJJhYt+UmRYX3m+S8JsNWHpyotgSzcZNT4kc2jD4yx4D8sCEPnpT15Bnuaxf9mh2TfvhU7+f9v7U2qNBMrnh8YMMMBYI+RB9IEVsrbumCshcDbzDkj7kQCOqO5iVjSTNthh/yEtfJ4kC1dZQo23n+uIFwEpXEOPU+J4lU0PGMquHAkwDOhzHlQkhckpMwTVEU2BIQSacdSLNK7Yx/y6kBg5CYnTc85izgvNjqd9LrsJgJaXo86dPRJoLklXvkHxc+5kF1IvmeMrzF6SJATsQwt73QzGj4VLtVuCo/t7wM3+iR3bTp/C8JVt+RXF3tTLfQ5j2xoRpXj9H8Tina8obWxYnuQuXh3YRO3EWUkfuwZKNsnwpwcoTl8UfxbZDRRz17nZDOVmCXdqT4S/BLeJbjeyV3ATs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,53 +133,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 09:17:10PM +0100, Lorenzo Stoakes wrote:
-> In order to lay the foundation for work that permits us to track the
-> virtual page offset of MAP_PRIVATE file-backed mappings, we abstract the
-> assignment of vma->vm_pgoff to vma_set_pgoff().
-> 
-> We additionally add a lock check here using the newly introduced
-> vma_assert_can_modify(). This asserts the VMA write lock if the VMA is
-> attached.
-> 
-> We also assert that, if this is an anonymous VMA and unfaulted, that its
-> (virtual) page offset is equal to the page offset of the VMA's address.
-> 
-> We must be careful about MAP_PRIVATE-/dev/zero which violates fundamental
-> assumptions about anonymous memory, so we check for !vma->vm_file after
-> using vma_is_anonymous() which these mappings satisfy.
-> 
-> Additionally, we only perform the assert if CONFIG_MMU is defined, as nommu
-> does not set vma->vm_pgoff = addr >> PAGE_SHIFT. This isn't really relevant
-> to rmap as it has no anon rmap (nor needs it), but we must avoid it
-> asserting falsely.
-> 
-> All of this logic is kept in assert_sane_pgoff() to keep things clear.
-> 
-> In order to maintain correctness given this assert, we also update
-> __install_special_mapping() to invoke vma_set_range() after it's set
-> vma->vm_ops (which determine whether the VMA is anonymous or not).
-> 
-> We do not use vma_set_pgoff() in vm_area_init_from(), as at the point of
-> forking, we don't necessarily have correct locking state.
-> 
-> Updating vma_set_range() covers most cases, but in addition to this we also
-> update insert_vm_struct(), compat_set_vma_from_desc() and nommu callers.
-> 
-> We also update vma_add_pgoff() and vma_sub_pgoff() to use vma_set_pgoff().
-> 
-> While we're here, we drop a BUG_ON() and update insert_vm_struct()'s
-> comment to reflect the fact anonymous mappings can be added here.
-> 
-> Finally, we update the CONFIG_MMU, CONFIG_PER_VMA_LOCK defines in the VMA
-> userland tests so IS_ENABLED() will work correctly with them.
-> 
-> No functional change intended.
-> 
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+ib_umem_odp_map_dma_and_lock() takes mmap_read_lock() only around
+hmm_range_fault(), then retries -EBUSY until HMM_RANGE_DEFAULT_TIMEOUT
+expires.
 
-carry-over from v1
+Use hmm_range_fault_unlocked_timeout() instead. The HMM helper now owns
+the mmap lock and refreshes range->notifier_seq for its internal retries.
+ODP keeps using HMM_RANGE_DEFAULT_TIMEOUT for each HMM fault attempt,
+while interval invalidation retries continue to be handled by the existing
+outer loop.
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+ODP still validates the interval notifier sequence while holding umem_mutex
+before DMA mapping pages.
+
+Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+---
+ drivers/infiniband/core/umem_odp.c |   18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/umem_odp.c
+index 404fa1cc3254..9cc21cd762d9 100644
+--- a/drivers/infiniband/core/umem_odp.c
++++ b/drivers/infiniband/core/umem_odp.c
+@@ -329,7 +329,7 @@ int ib_umem_odp_map_dma_and_lock(struct ib_umem_odp *umem_odp, u64 user_virt,
+ 	struct mm_struct *owning_mm = umem_odp->umem.owning_mm;
+ 	int pfn_index, dma_index, ret = 0, start_idx;
+ 	unsigned int page_shift, hmm_order, pfn_start_idx;
+-	unsigned long num_pfns, current_seq;
++	unsigned long num_pfns;
+ 	struct hmm_range range = {};
+ 	unsigned long timeout;
+ 
+@@ -363,26 +363,18 @@ int ib_umem_odp_map_dma_and_lock(struct ib_umem_odp *umem_odp, u64 user_virt,
+ 	}
+ 
+ 	range.hmm_pfns = &(umem_odp->map.pfn_list[pfn_start_idx]);
+-	timeout = jiffies + msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
++	timeout = msecs_to_jiffies(HMM_RANGE_DEFAULT_TIMEOUT);
+ 
+ retry:
+-	current_seq = range.notifier_seq =
+-		mmu_interval_read_begin(&umem_odp->notifier);
+-
+-	mmap_read_lock(owning_mm);
+-	ret = hmm_range_fault(&range);
+-	mmap_read_unlock(owning_mm);
+-	if (unlikely(ret)) {
+-		if (ret == -EBUSY && !time_after(jiffies, timeout))
+-			goto retry;
++	ret = hmm_range_fault_unlocked_timeout(&range, timeout);
++	if (unlikely(ret))
+ 		goto out_put_mm;
+-	}
+ 
+ 	start_idx = (range.start - ib_umem_start(umem_odp)) >> page_shift;
+ 	dma_index = start_idx;
+ 
+ 	mutex_lock(&umem_odp->umem_mutex);
+-	if (mmu_interval_read_retry(&umem_odp->notifier, current_seq)) {
++	if (mmu_interval_read_retry(&umem_odp->notifier, range.notifier_seq)) {
+ 		mutex_unlock(&umem_odp->umem_mutex);
+ 		goto retry;
+ 	}
+
+
 
