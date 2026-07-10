@@ -4,95 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEB4EC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 05:59:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6983FC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 06:04:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE6306B0096; Fri, 10 Jul 2026 01:59:52 -0400 (EDT)
+	id 68BA56B0099; Fri, 10 Jul 2026 02:04:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBDA96B0098; Fri, 10 Jul 2026 01:59:52 -0400 (EDT)
+	id 63CD86B009B; Fri, 10 Jul 2026 02:04:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFAB26B0099; Fri, 10 Jul 2026 01:59:52 -0400 (EDT)
+	id 553EC6B009D; Fri, 10 Jul 2026 02:04:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BBFFB6B0096
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 01:59:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 58AB11C3355
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:59:52 +0000 (UTC)
-X-FDA: 84971815824.21.55BCC79
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 93C23120005
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:59:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=et0TOOI6;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3573D6B0099
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 02:04:00 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD3C81C88F4
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 06:03:59 +0000 (UTC)
+X-FDA: 84971826198.02.08239D3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 661E840005
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 06:03:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lk39EIrc;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783663190;
+	s=arc-20220608; t=1783663437;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BK0IGR86LM1hyN2g9Yi6DdafkFe2k1tjJxtSjm5E0AU=;
-	b=T/0t8jNSCv3rv4oSxxHDBGWu68AfNv3EyXEwc/MYgDnggFgO/vKq3I6BUCx9kkKay9/jF1
-	QeXVWHQWXCQpf5qvkQuEzhlEwb2/ZGAZzLiqgn6W9rSdHigOsZXECTSuyvYE1UG+wYVjYW
-	O+it+pPbu5qnndVFG3DIehN8rbEvgrk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ULBMQmnv8LLLVlD5lvSVdvDm5rfD5U8h0VCK9hrKVpw=;
+	b=AnPYIA5YCzwJR8HzPxrgRxGqAAbMeB3PClriH501S2Pe1nbB1E0P+05lkgs6203GVFpOgB
+	+zCcA/fAZWieFFohv4Ibg4M87liF3IwbugGqJTvKAmUkpBki05hNuoBpQzlgiXe0hwPqEb
+	NDdLZXVsE+eCAQEMxVoCp8pyAYdv58s=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=et0TOOI6;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lk39EIrc;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783663190;
-	b=cNZATMLdiILNmy8cE8ch7vneo1EGruSEUILBoPVlkfWp5cnChmMwUfWx9eHw8DF1q4EgFD
-	n2sVAKGYQq9dgx9PKTOeDR0cPImTyD4aA5FyBRucBFotMcruslnh2PRXxuIxiO0/Nc3qeG
-	4++tXYOg+JzVs0STjEPyMr2Q/suA41g=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 916C91FC7;
-	Thu,  9 Jul 2026 22:59:45 -0700 (PDT)
-Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 90D673F85F;
-	Thu,  9 Jul 2026 22:59:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1783663189; bh=FTNvFo8zJJiC9Sw9FEkIdDyjrgMmiRN2wZltHnRPR6A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=et0TOOI6ceXcgTO3k2Y3sElxu8IwptHF2mHDX/rWBFcZsPha/M8RGlmRn6sxHOIv9
-	 QcPGKmiU+NUgePZV7vy7CD/mtcbeLq1KTmCzjx06iwU9dFN/dgYRK0NXr9ksEgSsbm
-	 xL7FioeDuJJy5vyS1ebTFGqpfwPxUDASLyCABHj8=
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	muchun.song@linux.dev,
-	osalvador@suse.de
-Cc: Dev Jain <dev.jain@arm.com>,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com
-Subject: [PATCH v2 5/5] mm/rmap: add anon folio unmap dispatcher
-Date: Fri, 10 Jul 2026 05:59:14 +0000
-Message-ID: <20260710055915.638659-6-dev.jain@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260710055915.638659-1-dev.jain@arm.com>
-References: <20260710055915.638659-1-dev.jain@arm.com>
+	t=1783663437;
+	b=VKBDUGqPjWLaOMQRcMnTCliuvnqELmoXfCEiNsk6pOXc5MlMJo8fc50rSeFgzcERUoOyAl
+	RSEoOCAF0pP87IsoTvS7gwdHomzxuT4wV5/7S/n11EhRN38V52l285ejL5RA9SfAHZE5KH
+	m0lUIYW8DQIR9EjF+2LEdW++fFa5R94=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DD6340AA6;
+	Fri, 10 Jul 2026 06:03:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084881F000E9;
+	Fri, 10 Jul 2026 06:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783663436;
+	bh=ULBMQmnv8LLLVlD5lvSVdvDm5rfD5U8h0VCK9hrKVpw=;
+	h=From:Subject:Date:To:Cc;
+	b=lk39EIrc1OLJ45PR4qGIue0wtirqeIp1tg9bOwnuuSR3Y7aiIkoBul9vNk6v+ZvzT
+	 v530bKhAE+F+V1wC83Qdgcri53Ee8ZpaevpMbtx9OMGYhMucdH55s5hmGgJN3BCi4p
+	 gtrImcaiDC3FfsH6Cxd2bEHf5APXZqTML+Uzg+CSBre+ROQCAJm8crl9SiXdIlk+a4
+	 S4i8pHUVhN8mIx7CGtgZM7EVUQxYCD0rpdr0rAtsiOr0aioNTnakV/fXc151izR4ec
+	 mdnLM6dfbHte2gsRjqZembbvY2axhKMBOlIPg9M8bmSzEYyb0okNAa8IDecsrBZath
+	 WkvinjFjZu3lQ==
+From: "Harry Yoo (Oracle)" <harry@kernel.org>
+Subject: [PATCH slab/for-next-fixes v2 0/3] mm/slab: fix unbounded
+ recursion in free path with memalloc profiling
+Date: Fri, 10 Jul 2026 15:03:31 +0900
+Message-Id: <20260710-kmalloc-no-objext-v2-0-2709afb6a030@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32NwQ6CMBBEf4Xs2dVtCQU9+R+GA+ACldqalhAM6
+ b9b8e7xTd7MbBDYaw5wyTbwvOignU0gDxl0Y2MHRn1PDJKkopIkTs/GGNehdejaB68zSiXOnWB
+ SVOWQei/PvV73zRsE07Sn3nm0X/WX10kadZidf++/i9jVPxeLQEKhSlEWRFWRV9eJvWVzdH6AO
+ sb4AVmp2ObIAAAA
+X-Change-ID: 20260702-kmalloc-no-objext-2619c1e06083
+To: Vlastimil Babka <vbabka@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Danielle Constantino <dcostantino@meta.com>, 
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ "Harry Yoo (Oracle)" <harry@kernel.org>
+X-Mailer: b4 0.14.3
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 93C23120005
-X-Stat-Signature: mq1sgj6fe7qfnh86xrsydrhn7jdpb7o5
-X-HE-Tag: 1783663190-847578
-X-HE-Meta: U2FsdGVkX19Xay418NwTE1QO58gAMXiP+OEbQ0h/bkqlqP2o+3g7roS4K2gesPP5M7xTC5Toj6Hiu/JAw963+9X/y+n8yVUwRqgZBghd0zzEdhMau9AyjsnGXjUgUmIrsjhQxbuhBWDP6XI1WU23QTZfVQN/LbatTcYYmX3VG6F5uXRw8r3IBJiZNGg47JfsjF4RMi02oKubRkSVQHhfEz+y7xh7xLJeW7Jpd7wAwbw8rBAF8hblZ/gp4RWxXNt5iWTgQoKHYx1WY0BkxvvSEqO++qA4xegm5IJ3dqKnlujC3jIs615snh9+mP0YgB1jWxuXo8B2EdcHfo1AxqYYDK0s6l64Kivna55sfawjLfPFJ53vr8Jn0wV1DcGYRazdF7wClh+GoY6P5Fi2ehRn42SInzC/yaz3P9K2J6k9l8RC9NEfONxTdCDLMhb+kTU1Xj8UVZjXK1idO9YaFJJYhLpNz/rjKUzo3XCS1tn0Epov487qkYoRKMdb3xD8lu45zIB0gdyENiSe+37IrkUoOOmqM66JgtkgSfNLEa4UACWQSXV6Iwc4wy15+4assiN6rvsOJqWWsqNHskNvra/QVaZ8aIEsoplKXBJdYcX5jl2eo7ld6M/9gnzpbnDUoQDDPtJF5It4rHZyDPVGfUJYNtBsfGYiAXWqbuKLpfC6Q8sqRb2QJDGojludhfSn/PnC1Pe0GETcbWOmuPW+7HHtSw9dJUWZARpU0M/z7Lr7cGqfX4IZLLqD+m8T/kj7LNfm2voS0XedzqDLiSnbj0jMX90+n0rqqpe6te21Tob3VMeSjc2JoQPUR6Csub/Ci/EfGmJyxyljTfsKIjN83Mta/VRMqUb9Neg3T5e8NkcetXvtcOnwzEQZqa9tm64wpkSM+tBFpFdB+udnsnJVTYqiho6uR8yOZ+oiECNmSKuC5y82xEQH1mKNyO7WKDKxzfWYBAlP9onTdzyEZOA5HV0
- ifh/4Y/Y
- HiV8YuVlJn1QECtWlaNfxPfzRI7flbGiA3mnGFzRYqSYHD/KfM939VoqwmPMtgZddl3yjhUmTc/GO4HUEqZ+mrZjei+GMwhtqQl78gpIbCR75N2FW1wDjPcBUqf6cCD+CXKtXsCPJPcyxcHZYOTGfmaxg9UUPaSxImMEh4IADzvcKWl0iN8SWKqpy9CkKwTUYIBfsRAbJgIZ/QoFowX8YavA3oTbCBSG4nKwpBcSIOBtxiL83qFx6b/0KpA==
+X-Rspamd-Queue-Id: 661E840005
+X-Stat-Signature: fyfqzin67rmuycr7snfxxsqrdhueed3d
+X-HE-Tag: 1783663437-187486
+X-HE-Meta: U2FsdGVkX18sy81/tdW3nx1Ow3bRI/vQWUFqI3LhR5JygLb3AWWqlQSpc9fYA0jwr8qQYRJzJnQjANjwHvW9lxR/byNgn7f42oIG+HVdIAM+j+PrD3eKDaMLsf1Ylxa8+TRFNp7Gg4I8WgEL1Ui88fFkUTzi2taFbjvX5Cgox0pNBNo67SJeuMgcWWt83WbDVEPoc93DAZ+fbDu6EMASMz+AlGW2duWeVNDJxBKVeS7CxQFxlfjgxtKr8koUIdNrhUj7qmYXOEKoLaNkL2fR51ABCMMpAN5QJG03fqzdAk+91sJWooD+Ui/KZAmNYWFKowDHnJh4faJBYqPKhT5wrdPsrkhJBfoaTdmvZb/B+91bv8QwqopetKoIxE4g4d765KDYhXtPcfwkEvToKyj2jGA0fmEm7zoKN5UKxXIC274rs/KNff0Zh5l6CPnRK8Zks4UI1WuXM60bAjG8ecsU1RODUeqkQvyhztD27sKylNBUOaNrxucEUw/zCRsvP537uP4co3b0WLQtxj2Z3o/EoAfiHhiMhJ365jrDPTGYk8YkXQX1iQi8cb6g4x7AusZjkqWMA23ytFOf1F7bnJ86uWyrB+sCgmO4GFcNhgJvAtP6XdBzk3V01PGDub8uUhQBKWO77YdCsXW/L2KeoKyBcc8nv+2KQqu5FXuYjhXriEzMjNhcdYuIhPco8u6AEW2vSYKlt2IrUfmEdQF/oiY8CUcsaMCG7BNB6+wjYso59+r7Ys4CXMdYJESEJCPhpRy7ccqkfosSuOfAYmhbWyV8bQeWmFg08IqmhMce5IBHBhwTvB3Cl+lwDgWfuLujd84/PwF6B3mckhEhNv7SF/Jz7F8gKSpM26YMOLwb1ieefeKODPSHIFbMyx6LIyno7d8RStBBSeAk0yWNqav7rIIv2LTl6aIcRqhD7Rg1zvvjHxKAhs2LPhZp/3vofnZQerSuDlAEpMYhzmwjFWqQPa3
+ IBrvCjRI
+ uM7SSTLyYKrcQvL/LCv9tNDqdFeeZZ80icPffnEtsN9MX6gx3z5D4QEDPXlSjwKryq/WBcChwvE+KGj0Wp/YvVgp2v80F4pFQKzzcQcuwbe5ULDRj+WGqo5ceXvxsMwdQG9eSyo2JmJhXE1VwyAMqne9/brgQJMOIrUBOa+Xau7VJ/zKJMb6updX0A2rN8xZstwMHWA4DqEF8HprzytLi9vwlcqQDFplTk+jgaax/uPXDwSDpkqOHjMGorYeuYCOwO6U1LdTJCpRk9kyyp/gooeUe0sxR9WEHkJQfKTxoxCsJeuE8gFOCI9h7pQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,89 +103,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add ttu_anon_folio() as the common entry point for anonymous folio
-unmapping. It dispatches to the lazyfree or swapbacked helper as
-appropriate.
+This is a follow-up fix after the recent discussion [1].
+See patch 2 for the detailed description on the bug.
 
-Keep restoration of cleared PTEs in the caller, where the PTEs were
-removed.
+Based on slab/for-next-fixes (72bb229f916) and will be soon available
+at git.kernel.org [2].
 
-No functional change intended.
+Instead preventing cycles by bumping up the allocation size of obj_exts
+arrays, it introduces a new kmalloc type called KMALLOC_NO_OBJ_EXT and
+disallow formation of cycles between kmalloc types when allocating
+obj_exts arrays. obj_exts arrays of normal kmalloc caches are served
+from KMALLOC_NO_OBJ_EXT caches (that don't have obj_exts), and all other
+obj_exts arrays are served from normal kmalloc caches.
 
-Signed-off-by: Dev Jain <dev.jain@arm.com>
+I tried to reuse SLAB_ALLOC_NO_RECURSE to make kmalloc_slab() select
+KMALLOC_NO_OBJ_EXT, but it was not great because it does not allow
+sheaves for those caches. So I introduced a new slab alloc flag
+SLAB_ALLOC_NO_OBJ_EXT.
+
+To avoid huge confusion, I had to decouple "disallowing sheaves"
+semantics from SLAB_NO_OBJ_EXT and introduced SLAB_NO_SHEAVES.
+
+While this cannot be directly backported to v6.18 and v6.12 due to lack
+of SLAB_ALLOC_* flags and kmalloc_flags(), I don't this will be
+particularily challenging to backport it. Instead of a new slab alloc
+flag, we can use __GFP_NO_OBJ_EXT to select KMALLOC_NO_OBJ_EXT as
+kmalloc caches don't have sheaves in v6.18 anyway.
+
+[1] https://lore.kernel.org/linux-mm/9a139365-28e6-4f1e-b35b-7f6091e9aa14@kernel.org
+
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/harry/linux.git/log/?h=kmalloc-no-objext-v2r2
+
+[ "v2r2" because after exposing v2r1 I adjusted some of Vlastimil's
+  feedback and fixed a memory leak due to bootstrapping twice when
+  kmalloc caches are aliased ]
+
+Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 ---
- mm/rmap.c | 47 +++++++++++++++++++++++++----------------------
- 1 file changed, 25 insertions(+), 22 deletions(-)
+Changes in v2:
+- Fix a memory leak when kmalloc caches are aliased (patch 1).
+  This is included as part of this series as patch 3 makes it
+  easier to trigger the leak.
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 68459f23f5c0a..55aa3ff8bf216 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2172,6 +2172,28 @@ static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
- 	return true;
- }
- 
-+static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
-+		struct page *page, unsigned long address, pte_t *ptep,
-+		pte_t pteval, unsigned long nr_pages)
-+{
-+	/*
-+	 * Store the swap location in the pte.
-+	 * See handle_pte_fault() ...
-+	 */
-+	if (unlikely(folio_test_swapbacked(folio) !=
-+			folio_test_swapcache(folio))) {
-+		WARN_ON_ONCE(1);
-+		return false;
-+	}
-+
-+	if (!folio_test_swapbacked(folio))
-+		return ttu_anon_lazyfree_folio(vma, folio, nr_pages);
-+
-+	/* nr_pages > 1 not supported yet */
-+	return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
-+					 pteval);
-+}
-+
- /*
-  * @arg: enum ttu_flags will be passed to this argument
-  */
-@@ -2352,31 +2374,12 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 			 */
- 			dec_mm_counter(mm, mm_counter(folio));
- 		} else if (folio_test_anon(folio)) {
--			/*
--			 * Store the swap location in the pte.
--			 * See handle_pte_fault() ...
--			 */
--			if (unlikely(folio_test_swapbacked(folio) !=
--					folio_test_swapcache(folio))) {
--				WARN_ON_ONCE(1);
-+			if (!ttu_anon_folio(vma, folio, page, address,
-+					    pvmw.pte, pteval, nr_pages)) {
-+				set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
- 				goto walk_abort;
- 			}
- 
--			/* MADV_FREE page check */
--			if (!folio_test_swapbacked(folio)) {
--				if (!ttu_anon_lazyfree_folio(vma, folio,
--							     nr_pages)) {
--					set_ptes(mm, address, pvmw.pte, pteval, nr_pages);
--					goto walk_abort;
--				}
--				goto finish_unmap;
--			}
--
--			if (!ttu_anon_swapbacked_folio(vma, folio, page, address,
--						pvmw.pte, pteval)) {
--				set_pte_at(mm, address, pvmw.pte, pteval);
--				goto walk_abort;
--			}
- 			goto finish_unmap;
- 		} else {
- 			/*
+- Fix a warning in MEM_ALLOC_PROFILING_DEBUG by dropping
+  mark_obj_codetag_empty() for obj_exts. Sashiko raised this and
+  I reproduced it and confirmed that the warnings are gone.
+  https://sashiko.dev/#/patchset/20260702-kmalloc-no-objext-v1-0-167175008538%40kernel.org
+
+- Added R-b from Vlastimil on patch 2, thanks!
+- Adjusted Vlastimil's feedback on RFC v1
+- Link to v1: https://lore.kernel.org/r/20260702-kmalloc-no-objext-v1-0-167175008538@kernel.org
+
+---
+Harry Yoo (Oracle) (3):
+      mm/slab: fix a memory leak due to bootstrapping sheaves twice
+      mm/slab: decouple SLAB_NO_SHEAVES from SLAB_NO_OBJ_EXT
+      mm/slab: prevent unbounded recursion in free path with new kmalloc type
+
+ include/linux/slab.h |  16 +++++++-
+ mm/slab.h            |  15 +++++--
+ mm/slab_common.c     |  18 ++++++++-
+ mm/slub.c            | 109 +++++++++++++++++++++------------------------------
+ 4 files changed, 88 insertions(+), 70 deletions(-)
+---
+base-commit: 72bb229f9161a1efcd5df32141b69fcc6ae81a13
+change-id: 20260702-kmalloc-no-objext-2619c1e06083
+
+Best regards,
 -- 
-2.43.0
+Harry Yoo (Oracle) <harry@kernel.org>
 
 
