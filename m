@@ -4,93 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4795BC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 18:03:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BF71C44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 18:07:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3DAF16B0092; Fri, 10 Jul 2026 14:03:20 -0400 (EDT)
+	id 015A86B0093; Fri, 10 Jul 2026 14:07:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 365556B0095; Fri, 10 Jul 2026 14:03:20 -0400 (EDT)
+	id F07F06B0095; Fri, 10 Jul 2026 14:07:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B5386B0092; Fri, 10 Jul 2026 14:03:20 -0400 (EDT)
+	id DF82C6B0096; Fri, 10 Jul 2026 14:07:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E20696B0092
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:03:19 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3471BA0505
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:03:19 +0000 (UTC)
-X-FDA: 84973638918.24.FC45FFB
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 936FF20009
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:03:16 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vrVhH6CZ;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B33FA6B0093
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:07:30 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 338E84053E
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:07:30 +0000 (UTC)
+X-FDA: 84973649460.23.FF40990
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5B2651C0002
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:07:28 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WGvYT5k6;
+	spf=pass (imf20.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783706597;
-	b=jFX0FK6cyw+AuFEL65vAoXRvF1llBLfDYejwE3pMRKpX2A34g5trL2zk1KfgCdd/Be5/s7
-	SdC6QEkb1IcB5KLLW6Xr1cQ6qJgiphVq9We/ai9sXOjmtOLmHz2FyDoaZkterJgiovGBD7
-	owWXuAiLQsOwLSN8i0xenXUpEEfw/+w=
+	t=1783706848;
+	b=rxqjtfR7y+7R1P9bh6qDU5jnFGmp1WLLK0swwvcgsP+wp4bNbWIfj4J3N7QRerzuDF+xYk
+	uzItEU/Gc6c3GwEvkT83tJxmrnsAFt0dZN73yEVOIrHraXvdv0BIuH0Vaihvdsho7e3flZ
+	DZCfUWJ77wnnMcyUurdYyiCoy9CqeRc=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vrVhH6CZ;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf13.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=WGvYT5k6;
+	spf=pass (imf20.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783706597;
+	s=arc-20220608; t=1783706848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aavlYHK65oZ9/GvkqG4vhVx7lYGAHZXQDwnk4WMg/dU=;
-	b=MP1ntCXd9DAFdE+iaf3uPeBTuNOY1tmpoiaeXLIZ46bU3K+b62f4/t3IznKMdCEwE7znAF
-	OM0RSqUSYqcJXucywpO6nhVLbZ30WJ3jNCqb4Xf/sG4fixubFajwz2ZMj71jeAyeao3I6Q
-	NDUZxpjoVkuM5G3zESDNiY6ryjkvkjk=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=aavlYHK65oZ9/GvkqG4vhVx7lYGAHZXQDwnk4WMg/dU=; b=vrVhH6CZ43iMT+yYcxyiUFLLu7
-	6n+lRXruBnU93GSLongig8SFlKm3AgZwxoDzqo0wCFEhLVi87OcdBvy8aEyLkK6uObGGpp63VQwi0
-	hSuIpfQAUdKbz4EsnK6t5wjQvkQ/25WKWlk+JecIt/nOtDbO71fPl9LF/Y/NWdanurlhHNyyBxsjK
-	XSgbg9xirVLA2JFSb6mTgsgwyUUGEvEy/Tq4u2cqbUgu7cHfzICrLfyLQIGbF4vEvE/JodppgC3p9
-	nGpQPd0upaeQCTcahdsyxydddO8e2FVnQstNr/bwE9fIu3MRbNdbcIipOiQ0Iglr3voabEDxdG1xk
-	h5/yoyDA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wiFZA-00000007b0h-2b7J;
-	Fri, 10 Jul 2026 18:03:12 +0000
-Date: Fri, 10 Jul 2026 19:03:12 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Salvatore Dipietro <dipiets@amazon.it>
-Cc: linux-mm@kvack.org, hch@infradead.org, ritesh.list@gmail.com,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
-	dgc@kernel.org, vbabka@suse.cz, djwong@kernel.org,
-	brauner@kernel.org, alisaidi@amazon.com, blakgeof@amazon.com,
-	abuehaze@amazon.com, dipietro.salvatore@gmail.com,
-	stable@vger.kernel.org, Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-Subject: Re: [PATCH v3] mm/page_alloc: avoid direct compaction for costly
- __GFP_NORETRY allocations
-Message-ID: <alEz4Chf7Ibyg-ZG@casper.infradead.org>
-References: <20260710143437.12379-1-dipiets@amazon.it>
+	bh=vK1yycrFvPnOHneU0oNi6DrjeWKqgXkTtqXMvxDGhZQ=;
+	b=nCoNp/b9vBJxKHFSqfMr9uPWrEbnVkshm9ik9JRH9f4/C/JPfqtnAnIZW04fdsFnyUz68P
+	c8pYCCMP9HIcX11MPxod96kU/DC9HYsOfst78zqbqfDGFyyRREtc2cHVDlUxRjUOAjlHpl
+	3woZMlo9cCU9C5N/SaNZJlYiuJdRY2Q=
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ccdb73f0e1so10771105ad.3
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:07:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783706847; x=1784311647; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vK1yycrFvPnOHneU0oNi6DrjeWKqgXkTtqXMvxDGhZQ=;
+        b=WGvYT5k6znt7T8ytsmb1C5XoF3xoaIqGmqMbVO7VcXWxxYOthbVrBcV7ekpmfUs6yQ
+         baFVxXSrEM5nBdElqUMPhSmHEDhCNOOPMRezPnBvT3lWe3TcqTLYHPlXZoqlIzTyj/aB
+         9ijoMb2rojDDnFcmu20OQ2mDA8Q9Zhnt255UL49GC2RWFh5rQ4iQonNkzkiu8F69y2bV
+         4taKLIVMs9CjepEA7Zg8CVSdPy01y8hRdqhj96oa+rn/btU/C29Q39VG0GP/qqNVETqM
+         QpItRaFEWc5g1NFWajg8/uqZnX/5WQa8v6Pw/SLo+hUJHCD4XZby5bJ7kpZoQk6weg8G
+         fdcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783706847; x=1784311647;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vK1yycrFvPnOHneU0oNi6DrjeWKqgXkTtqXMvxDGhZQ=;
+        b=q9CyIY4MCtXtUS0lMAH68CI98wquq6rIXWTLxxpj3AB0g3n3AiZET6ow60AVC1Sww4
+         B5LrQRwW9T1gSgnix770IDRz4hiUtl7OozCd9GKUeBttrB4fC3niutWZKLPGQ41lM23x
+         /89QrsfVaPemPwW8aO36nX4CwrKckXPq2GVunQ8fOLgC6HrFeQfGWyrz3WKgg1YInfGk
+         bJioF2GK6t1GN980tDz86IrwnxNjLLJsLDpmc563xQG7jIxmKqIf4xLJMHkqzTcB+MmO
+         vD2l0ZNwZYxGo0sub4uNhDLnAY6EWQRiMCrN7nLnrteCswp/keFoh035da8vg8L8p+i0
+         FsvA==
+X-Forwarded-Encrypted: i=1; AHgh+RrvIcgIz8/T9TWGfnu6oqDULy8FivP5KOgF2eA5lQKRcCQZGI9ch9iJP0P/kBhxwHi+FDz6Yc+tzA==@kvack.org
+X-Gm-Message-State: AOJu0YwFfzwYFfD10XAYOwiDnFQe8xljlJROpxWAS21S2urMhIljaTZ5
+	7HWI8/8G0KS5VSItxUiowRFLk2oY1yWHLrfhoxBq/8PZdioZHXfDcBSi
+X-Gm-Gg: AfdE7cmialhDspY8Ke0Jvk5wUDR/Z0kcxq+n2AXH8J7T+INxzcSkEfS2C3yIGUrhKnk
+	I4HIqLnsuSVyEtXPbVtBAsRpyNeE+SBvU4Nkg3dcCFQSc1m8S0diMlGH322mbf/J8UB25oUfL1R
+	by9nz2wyrYwiNSW4qG/x3udq2J2x+nIeg9gM8VOkVjIlC1kz9yJBmKsB1TzykOdXi0C6GUJ2hiv
+	HnIVj65LxpkM7sZhbXRzNv4VIZjWvjO9EtbkBsyklREKIFFgveV6hIJOLFQBrWDfGAeg+/ODYJR
+	XQIB80ND+rVnkmIVltR2ObCPwYgbsrDruDUylB2XVm/b1zYuf47hXcy/hRD2cmpDmENUc3pQLZm
+	oS6fdFRpxy6JQmOnhMvF6KO3cUIH2IW6G/gDWQcUtTufiHhfYhy5nCQR44ff3OjO3+GbfsumYvp
+	dAEiJsEJ3Wa/0YbOIGJ+nDLpEeLWXcg5J6S+VLb6B840GfVSEIM56zJ+0=
+X-Received: by 2002:a17:903:2a88:b0:2c9:d8c6:1db8 with SMTP id d9443c01a7336-2ce9f284e45mr2337085ad.28.1783706847144;
+        Fri, 10 Jul 2026 11:07:27 -0700 (PDT)
+Received: from skinsburskii (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bf74cbsm63356135ad.18.2026.07.10.11.07.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 11:07:26 -0700 (PDT)
+Date: Fri, 10 Jul 2026 11:07:23 -0700
+From: Stanislav Kinsburskii <skinsburskii@gmail.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
+	corbet@lwn.net, dakr@kernel.org, david@kernel.org,
+	decui@microsoft.com, haiyangz@microsoft.com, kees@kernel.org,
+	kys@microsoft.com, leon@kernel.org, liam@infradead.org,
+	lizhi.hou@amd.com, ljs@kernel.org, longli@microsoft.com,
+	lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+	mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+	nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+	rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+	skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
+	vbabka@kernel.org, wei.liu@kernel.org,
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v7 2/8] mm/hmm: add hmm_range_fault_unlocked_timeout()
+ for mmap lock-drop support
+Message-ID: <alE028DsCGeUwNh6@skinsburskii>
+References: <178345345668.660027.2952911919681614557.stgit@skinsburskii>
+ <178345362182.660027.12809852179204464964.stgit@skinsburskii>
+ <20260710162749.GP118978@ziepe.ca>
+ <20260710164743.GX118978@ziepe.ca>
+ <alElv0EKjLQXMNK8@skinsburskii>
+ <20260710180312.GD1803712@ziepe.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260710143437.12379-1-dipiets@amazon.it>
-X-Rspamd-Queue-Id: 936FF20009
+In-Reply-To: <20260710180312.GD1803712@ziepe.ca>
 X-Rspam-User: 
-X-Stat-Signature: 8dr3g1a53471y5kzn77aidutkta87qd8
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1783706596-781377
-X-HE-Meta: U2FsdGVkX1/soaJwJKtzmye568s11LTYjXS2bI59oqrUKi4NqaLPTHAD1ANQR8ahuUbqZ+ivOoIkpVZ7O7IfSXv4XguHq8w7rpW4WvD5f4/yDNUSgfxNRzwKDcY3EYeiQ2bq1zXWwj1khy3HDi/UyvBaaiERTq1G+CNqoeklJvjsy5l6O/zD1rlxSAhguvkyGVg1B/tWbj2V391HInS68IGmy+D3K2yT0gliQ+8NWhPQbaEYtOjoRlnp2CYertMHtgFSp0mJRyf4Rh7+9ExUNNewG2usRtYIsFmL5mzu1kqe2YSD/7bp7yyMNqeJWuUdJyL5XDEE3WShDsA/RlymOCR+aagKbJY8us7q6bwfPjVu8EOZ9yd7THHb3L/mPL6+cMDEGtBtbgWReJdrCO/BOwApgFq2x6wadDoClGDBIoF72Cik3utWw2RMCADv3ge4yGpBK+2Dat3Hlo2Yvkhem+8+ThltbQX7rW0gMHicV2AHo2nR4lQ99nbn4Dw5m91f1tBsJPEzSrF+hf8PPW1KtW13w6i6oXi7g5u+VU7KjgWj3fwyw57V9oWek0VGyemt2KP8vaB0cPw7CJel5Pc/dMUD2ZEa/S5yZz+mIWHP+XWnk7BrVnDel3HATcwAolmMTqKJGyP2XdUaszl33wfhj2169JKYxIBEftxRNBlERVNf/Rh2UUGd9/55DTLKVn1LZNWKvwhO+BnPiykmP3Ekv5OT2yIKVzx7wY84LllZbrOU2THEgZOC6o4DI+ARDRQn5KFqpKCE5yIK7U1Cnknu3mH3ydO04YyNMzTghnbpF09YDZHUTwZw4WhBY2E29xbTdM7CbcFmgNFPKhlKmln3u63oNGVRaClpiR38NrZq88t7o9uBQ+axT53w7FWeckmha+XjdlryekBCHFH/YmxtFOezkw1bpFm256maTNhf++wRa1gR6yJ9yYQPmxCYpQwNFNIfgiWjAEXt+1z3wTn
- plaWh5zg
- jz/QE2bb6M0w/+JDebPT1B0nRfZjFG0nNznehxDyD4mt+oeuhuGvXutXTRk0ekMefmJ16h0CFz/eu2G3ArtPk/unnhWfttNn3bhfEknSnlTsCkyzYWmXenEwqIlBWtO16JS6SnlHuvarmd28wd+weHF1B7WiL/fhHqeFECbzLQuHiQRuTuCUVo3Gi9oKRHuwLE6HO6dVNVdoJJzg7m19ZcGwaWGoIH0zsiduzB5aN4oK6edZAfu90BjrzcQ06MT4r7B2NyUEECell7i1R/6COUrd7WNIKXQOYY/cdtYXSAxIkvIG+4rWl+RlogwMiWsOQOZxjm0u05Myxkl1wrXTxZViLGRIPPYf/kAYYFwlOEyLGMPsLtTJV7f339ZOPncf5C69zW9aolrpNwWDbLy97kVwGR21Olwetmq2xTnctJKUJrpWQoWnDncKIwSkbu0mB1gRdvy7mdNKQN18yRMJ+Iu4zflm+QZi48XXM
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5B2651C0002
+X-Stat-Signature: 4wt9sjyqre7xfge4jt5aqwkdtp46o7o5
+X-HE-Tag: 1783706848-512615
+X-HE-Meta: U2FsdGVkX19rsDDtMLUZ8FQnr264hvAnzEGltk2x/MFZeCQ/tSmw5p1ucP7hrPQg2TlHbcY0st9qj23Z0z/L9KmYhZAPhEjo9ga6G+14PohLE3nrBeRDkWi3NoyKFDPkke1ybchcDe/qyxkurDaTwj/JmwwBd9Fcj7OznuE5oZ5GUCN/IPTCkxf6dwQR+XSS2iqTqsExc72GH6ODiCCOY9c2eGcxbC/5tQI0VVBTFJn8J4Amc+S6pXBDcIT1I2GRjua33H9HAa7TpenoFnTdxCc6dI7oq92E9VbuVRH09T4R5Uk7Hxjqp4Xg0kkIbkGF+J6X+l/hloLMJV0q3F7YLgRomdUbor8r3CWG/t6YwKhXma2OMe9xjwvP/9Xxq9s5N2Wz0ebKvlQ9hlC852wn6HqrJQxyzEt251S2Bs7C48TjVCvnoc4BVgKjrXWqi2suEOGzNoknNDV4t5KtAJWqnUdHXj5rKzGxqT9cdnPAfIHeYqeQGPmYiIlKYTZwZtgQ+RJAqNiSro8mboVS348KZjn3gnjQt878iVsk6H8zFcXy8QHtgpGbYS2arBpztFcfhmNx9Ik92rNbIn47WC5Z9Lc83Hw845pIUFiVTEFOrdYYcHoSDACFftW1i7QGs+/GpSfxIlqHGdDankroMpAkdIYvvr5XSJPIaU8wQ509/l6SOfIyT266TDknLibGsK94L4galQcMphd7zaEXq+I0qHFGTPwfc6VZis6L1fr+NcRBpQrnbshu+LA1DtCK6LqiUlxoYoVLlFaPn6Q0rzqMvxC6LsTdhAFkoDN95XN05ED9Qv9jj+zgpUGu+6zT1sY3o02v/vC7f2AgxviE9gXyvldljRdgPZDW7lVRQ+epx5o3+ixDo3eX1RTx8i+c/irO02+hl8SpXf1jEikQ3BRj7g+WTkxtT16LrFA5uu1buesLyOkusxMn+KFr7NYTAA080oYVib6fh0jLaJQfKSX
+ oOS0T1Sj
+ 7w/iT1xD1kd2LgYxjE6r6klY4FwUlyK2LzfUGbRnnzGGEX6MHqSm6igESgJqFzvW3RSpLoTTRiTH/p1ak00teM11+mN3zpJSkQzZ10PYLvlu7Hab5uW04V8AyARy+MTjrMv3zXiq8AGN8VrdVO+iB7a3W5+HQqMfcPTY60NXQDkrX2JvEwHpddLmDiG/7sjNqL0wMyfZwTjwiWuwUZqDdhBASoso/PB2GR4PMF0fhvXJxHchiCgGQDxEgauhPkxRQ424mebXiZMlBJNlACmgrz3qPL0koibQCskgAoVlMpEGMrFJS4GP0ympgpQTW95kpi1GnWckTtHhjNH+9KNCTgy4tBE9E9WQyCrWpZ74/RfjeVKmwmt8VbI5VJ+f5FF/WDV7bmo+7Xm4uE37/81zvpQJVr6LBZxBSaGtPdh6kEOWj41smW8M1sRL5GPTetBKi/ot/xYxBhP9bZEAiMvsrpF7rlpoRoaFyayC832z9mVoe+iGbvhlYvmF7cNOkdJN6k3LDae0p2boNcIPFyjQfVqvTuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,54 +137,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 02:34:37PM +0000, Salvatore Dipietro wrote:
-> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
-> introduced high-order folio allocations in the iomap buffered write
-> path.
+On Fri, Jul 10, 2026 at 03:03:12PM -0300, Jason Gunthorpe wrote:
+> On Fri, Jul 10, 2026 at 10:02:55AM -0700, Stanislav Kinsburskii wrote:
+> > The main customer for this new feature I have in mind is the MSHV driver
+> > which backs VMs memory with HMM, requires userfaultfd support for
+> > post-copy live migration and fast restore and it doesn't timeout.
+> > 
+> > I agree, that this current timeout value used by the other callers might
+> > not be enough to repopulate the mappings with userfaultfd, but there
+> > drivers would get -EFAULT for uderfaultfd-backed mappings without this
+> > change anyway, so getting -EBUSY with the change instead doesn't look
+> > like a significant change to the behaviour from my POV.
+> 
+> It sounds like it won't be reliable either then.
+> 
+> > > So, maybe the deadline should be resetting after every handled fault?
+> > > ie the timeout really is only about the mmu notifier and we don't
+> > > count the time spent handling faults or walking?
+> >
+> > The timeout was inherited from existing HMM users rather than introduced
+> > as a new HMM policy. Some GPU drivers use HMM_RANGE_DEFAULT_TIMEOUT as a
+> > budget for the whole range population operation, including HMM retries
+> > and subsequent driver mapping work.
+> 
+> Yes, because we always had a timeout around the notifier because that
+> scheme can sort of live lock. The timeout was to protect that only, ie
+> limit the number of notifier retries.
+> 
+> Expanding the timeout to be outside what is bounded by the notifier
+> retry is not right, and heavy stuff like mapping should be done after
+> the hmm side succeeds and the notifiers concluded so they can rely on
+> normal locking instead.
+> 
+> This is why I'm suggesting to reset the deadline as hmm makes forward
+> progress, we really only want to bound the notifier retry loop not
+> anything else.
+> 
 
-https://lore.kernel.org/linux-mm/aeZzP6iQel-tkZOu@casper.infradead.org/
+Sure, I'll modify accordingly.
 
-I just had a go at implementing what I thought might be the right design
-(having a folio_alloc_orders(min, max, gfp)), but that's not really what
-__filemap_get_folio_mpol() wants because it needs to integrate the actual
-adding of folios to the page cache into the retry loop.
+Thanks,
+Stanislav
 
-So instead, let's try this.  The idea is that we want to try direct reclaim
-_twice_.  Once gently (ie with NORETRY specified) when we're trying to
-allocate the maximum order folio.  But now that we've tried that once,
-there's no point trying direct reclaim for other sizes, we just want to
-ask the page allocator if it can give us memory of any subsequent size.
-
-Until we come to the minimum order.  Then we want to try exactly as hard
-as we were originally asked to try.  So revert to the original gfp flags
-and don't set the NOWARN or NORETRY flags.
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 58eb9d240643..23eecaf9b328 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1983,6 +1983,7 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
- 	if (!folio && (fgp_flags & FGP_CREAT)) {
- 		unsigned int min_order = mapping_min_folio_order(mapping);
- 		unsigned int order = max(min_order, FGF_GET_ORDER(fgp_flags));
-+		gfp_t alloc_gfp = gfp | __GFP_NORETRY | __GFP_NOWARN;
- 		int err;
- 		index = mapping_align_index(mapping, index);
- 
-@@ -2004,12 +2005,11 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
- 			order = __ffs(index);
- 
- 		do {
--			gfp_t alloc_gfp = gfp;
--
- 			err = -ENOMEM;
--			if (order > min_order)
--				alloc_gfp |= __GFP_NORETRY | __GFP_NOWARN;
-+			if (order == min_order)
-+				alloc_gfp = gfp;
- 			folio = filemap_alloc_folio(alloc_gfp, order, policy);
-+			alloc_gfp &= ~__GFP_DIRECT_RECLAIM;
- 			if (!folio)
- 				continue;
- 
+> Jason
 
