@@ -4,84 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A81EEC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 13:40:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01588C44506
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 13:45:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B51856B0088; Fri, 10 Jul 2026 09:40:31 -0400 (EDT)
+	id A21656B008A; Fri, 10 Jul 2026 09:45:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB36F6B008A; Fri, 10 Jul 2026 09:40:31 -0400 (EDT)
+	id 9D9726B008C; Fri, 10 Jul 2026 09:45:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97D626B008C; Fri, 10 Jul 2026 09:40:31 -0400 (EDT)
+	id 89CFB6B0092; Fri, 10 Jul 2026 09:45:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 71E106B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:40:31 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 051988E705
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:40:30 +0000 (UTC)
-X-FDA: 84972976662.24.54E72A8
-Received: from mail-10696.protonmail.ch (mail-10696.protonmail.ch [79.135.106.96])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 359C418000E
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:40:29 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=hMk7Alrl;
-	spf=pass (imf06.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.96 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
+	by kanga.kvack.org (Postfix) with ESMTP id 62E6D6B008A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:45:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5C5D140464
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:44:59 +0000 (UTC)
+X-FDA: 84972987918.09.B5D6B25
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 32BD112000D
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:44:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KkAw23W7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783690829;
+	s=arc-20220608; t=1783691098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vIiiJ+cCf8lqAIOs514qP+AoBMOvT7LpG/tOo8gCmII=;
-	b=8Es5osqccuKJqSdpBOFTT40Bp1OQFkND2jkWDPghCuu5zIJpVpBnoK02rFy/PiH3v4y+6s
-	ADoYg+tjcT+NAncArpVEdqtb5NigFQYdGHVo6eeKPwa1olU0E9AX/Ojnwi0yX24vLJbjYk
-	ea4pGciMirUFUZ5ezmAQMZFVtP1Mfe0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783690829;
-	b=VITVzBfmMc0r2lGeUFRVtXaU0at0u5j3mMOVhiGAgMax8Bc7KGM5QfdXsd9uEVt/lx5TIL
-	W7y+mKdk00Awx1ybAFSYWi5dj6e/OmxrD/1teXYg2xTS5nyLNR89wnS80EE9/t9wWRpiQ1
-	qQdKi0OmyNQQUOvHNQ9wyDQa/l6bgmc=
+	bh=49fCPTKiQXDe2vBs0aeAafBEApIHMn5/z21njXFh8z8=;
+	b=MEDl/cV1Ju26vl1GUx8Aj5BDF0GGp5nh+BmoNUoTJI2CsYoEmuhMNhdKxfk1LD2gepId49
+	ZmEQMXHtUBAn1UpES0oPzFohr1pX5QwOAwwecgt4j7pzSlhaWh2gllqf5rAWV/QdIekF5O
+	VeP8GqlyPH475lyfXi3WOyB12N7asXs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=proton.me header.s=protonmail header.b=hMk7Alrl;
-	spf=pass (imf06.hostedemail.com: domain of BoxStrikesTeam@proton.me designates 79.135.106.96 as permitted sender) smtp.mailfrom=BoxStrikesTeam@proton.me;
-	dmarc=pass (policy=quarantine) header.from=proton.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1783690824; x=1783950024;
-	bh=vIiiJ+cCf8lqAIOs514qP+AoBMOvT7LpG/tOo8gCmII=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=hMk7Alrlqw7r1hFNUhRlV1qHOjskMYC3pW0uNzpxYGV8k1v3L73TCrSshT9w+bbhD
-	 ThbiHw4Dw1y3uFJzlZyYvHiuLmsaSM4ZqL4stx7Sbdg/KxdOFbatEL531tuolLxpU/
-	 fXpC7dgE263LggkjoXBG2dDecdbp/q0nbCkQlHekjD/QCkqlTowEjGbQBIvlFNK4Ze
-	 gmYaXBVo6e2Ga7sOofmFH1W/3YVyOsr0u7Fs7hm30E1+aXCL5H4nEYfwQWdq2Tt9tH
-	 KGpsZQz1VaNYl6mYdxlJ6D59Nt0pKR+/zVwRAV+lZ5klOw9jtU2lsbnj+De7GPBcH+
-	 lp6vqOyucVd8g==
-Date: Fri, 10 Jul 2026 13:40:17 +0000
-To: "paul@paul-moore.com" <paul@paul-moore.com>
-From: BoxStrikesTeam <BoxStrikesTeam@proton.me>
-Cc: "rppt@kernel.org" <rppt@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, "jmorris@namei.org" <jmorris@namei.org>, "serge@hallyn.com" <serge@hallyn.com>
-Subject: =?utf-8?Q?=C4=B0lt:_Re:_[RFC/discuss]_memfd=5Fsecret():_opt-in_visibility_for_security_monitoring_(eBPF/audit)?=
-Message-ID: <pciGBFzXU6ZhxcvS_9tWNr4oA-3uEmqoXh-B63mT0hsw3Deyl5pud2MXgRGQ6lHx59gqVkFekZjMMI3dhlkJemkaY63utKQplAIw1Tj-jS0=@proton.me>
-In-Reply-To: <CAHC9VhRCo1nc2qLfq=Fk9Q26vjSOUBgfM8wV6U4S+Hv1KM9LNQ@mail.gmail.com>
-References: <umQp9Qs18vw53oZDFIgYE4MyUWNemeNL8-Vbs-BOYEvQByiyPSZ3RrEvOpmdWUZ1YtjEHpjlgZnMo5DkJuJziwrKWTYS_A0QF_B3ixToMBY=@proton.me> <CAHC9VhRCo1nc2qLfq=Fk9Q26vjSOUBgfM8wV6U4S+Hv1KM9LNQ@mail.gmail.com>
-Feedback-ID: 205449183:user:proton
-X-Pm-Message-ID: 249e68c2716dbae997f0bb878229f5895b302bd6
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KkAw23W7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783691098;
+	b=1eEzVQOzWrpihDpaUvcBDvlmJ6tubrUM/WaAz85K/3JCcxBjhrOgphXxKFdl4d4XyPiTML
+	4n2738DH8ra5cgGEj7dAmeNAIOLhAZWJzryXS4mLY4aPdFH13kp7QC+xRI3Yvu/2g0mz5i
+	uTvD4Xerx5kxAJPZWyRrzbTW3IC/oNU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9A98D6111A;
+	Fri, 10 Jul 2026 13:44:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B771F000E9;
+	Fri, 10 Jul 2026 13:44:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783691097;
+	bh=49fCPTKiQXDe2vBs0aeAafBEApIHMn5/z21njXFh8z8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KkAw23W7nlT9mTj9JF/9M+J1GfAccKBcwwbAuUkOL0hvJ9ZJuOCqhZIpcDobZZP7i
+	 YpN89UtshIQU4hKjfSMETYHO3lFJurQpMbuhNc4eZeODRULMu+OwBabnRkJNaJYbIO
+	 f8dbmeVhukHVQwmp6ozzHl7wR5/C5GJS9SkHHlH7/oPS+lADBK/BT5GXWtvfpmWNYf
+	 AORODajoqKwQyevmJe9EiAfvNEeJO2jG+xQidZFA9xx8JdJ/bfRLaC/Mp0dc7uMXMj
+	 sBjRY9NDqD0/R+Q7+aBG00DqETqPmMtpjwFwUAbdbFDI1zCTRL6ihzo3A6afoNIIqq
+	 0aQI9hJde/sRg==
+Message-ID: <4a5c8eb6-90f4-412a-93bf-21360fce3c7a@kernel.org>
+Date: Fri, 10 Jul 2026 22:44:35 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH slab/for-next-fixes v2 0/3] mm/slab: fix unbounded
+ recursion in free path with memalloc profiling
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>,
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260710-kmalloc-no-objext-v2-0-2709afb6a030@kernel.org>
+ <32a056e2-e641-4aaa-887e-586d997feefc@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <32a056e2-e641-4aaa-887e-586d997feefc@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------bh0iCJLSq0YYjqkEhFMD4qVf"
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 359C418000E
-X-Stat-Signature: to8rx4zru3befezgeqqmgcjfyop33huy
-X-HE-Tag: 1783690829-907915
-X-HE-Meta: U2FsdGVkX1+KfFd36ErmLY9/viAc4oF1QNDokzj2EgU+vGjZXLHDPQ7WmzwBAiIXCeoq+GfR+lVDVOSE0rIT6CGQeZh4Zpn1gp1TrZEitGLrT9u99nx5IC7sL7/JJdyAI0Afaitk76d6aRIoqnce7gszfmS2NXtd8nvusghz5Lp7ReThcWQw8dQXPSyZYX3vzrV2NqdxzlsZ9tYL0nANJJsEKsJYMK1mCXJObXwOhZOTF9kg34ep5ts1SMqg2oYOayU3g0UCt3Dv6jRtGOZrizOomlKp/vyyj+a0qw83T8KG8SQ22C9A10YdXL4WTFGjsGyHQzsyp5yJRaZiNbvaWF1x4j+tVW4GqxaeGMnUfEHQTHN+Yjeog6IaRSDGT6mg7IcCq+5V8G7aCm9tQTaq1f3eDgukxzuBROeI8D0BV04dh+teQ39gQReSNhoWXOtv7hx5Nbyp8jHWt83JNgvi9wV1V/gEO//UdyWWftpBaS1KXZGZXuhQgaV0NQn20Pk6e+9TJyOYM/WLzI6jCmwhDrHm3HL6Ha5pwiFvfmcvapQoDYP0CvAuRKpPxT+XtkyREZUSPIsKUMmBm+o9vyMVUns3rOL6i4Ijk+KAxN8bNwXkdY4rIDCr35dtwsoaU4rOVMUCBZcwIo0eix4aoVNjj9lTwJRFLN1m+lrlBPvywVbbuoV/kVj4Xje3FA0uhqeOdmCuC62D5XIESDCn9BAZOKi2Xy1pA8X9UoSdNk2FDiGTUa0IO2S3/0s+dZWT4zGa9ynTVjXzfCMjdw5zKvExNBi8brhVb8dy2Nb/eZaQKM9Eb8o0KeqWWUWKViPuqMlqvbdJN8+cKPBPWFPTd3+Iz5wfp5XOc1rc0rW0y3tf68bWsFZd3GwdehqISpasz1GV3l9zkddDNtqjngmy0hpFhHc/jfNWZwxdlXaIotk2FqI3+bFpPgZMyB0TEk7jUMldFVNjHU2EHILHjjBQMlN
- mYK1UG46
- 6GKH1cyk9E8WODF4pNnctmFXUyFAVVDFTgXAjrMc71kIc/6s0OCwhSuJTLxajeQazlXOEXftw8TDhmbQmIX0pDKiAiQ37FrbNtn47d1v2cfg/EN5kxQ1Hl1B4JnCIXH3/yZekZB+9wxeo9ishcZCL/GDcHZPC8REcSKgdAMJ8t+/gp82JDryKthLzf3x6ETom5pfcfRbqFbMyyM1xWkHYBNbRnElgb2RXZNnIixotLpV6ZcgkzTEniEgPUg9Za5bk822GtSBJb+5yfW3sMfdMg+PHjF2CXVoUKz7dLCjZCqqO229Or31eCHxAVBFkOjkQCS6yLb+6Ijl5PQowjwnMoxTYEV9nrl+4Z4Vrh326tUr7rndq8i3jwVGT5kJCKfnISdeR1gWYsBRYlWCeCI5rBSBSISlvVBPIB4nVe5BqfXNLDpnHrhc86Il4aq8c65056jmAu2T8Ep2ye5DHQkHWIFEsZAWedvkt4pHdgGMrd2wLXyw1SqNp9Wt486LEu7Hf5znc4/IDdhqP9ulYJV5DlMisaub8xEKxqcxqB+TahZTK2hP0qNvDzMi1RMMRw5Ovgx7BM6WUDto4Ou4gsIqF81cHySl+oi0HbNHlpziq2a0AaJNrcjPtYGlpaL+NWa0z2sB41zdHDZvbHKuJ8W56vkl0mfZCHAI7TEhVPCUyZJJwkWc1o05sWfKtb/c1ua2zx9Ym/Um/T767pAGuV26RT7TGJC2sVFY3Tz5yrqwKr8AcMoKAeEV6tWjZxrcDpHi7zNfMqdfG4+JZjzvHM6FZ3DYqhrOrb49lHhG/W/9tbJ9FZEJGjkBcEW7l9sW8uSAqt/VKrLZaBRgH5jA20P4iIQB7gq2CZTPQMoexdjAtGSCRmAxlhz4zI+bFux9HPCrmkwsNbZ3QcjydYrdr0sErNonSDKLGlJBK7umrun5kju6lVdsPWXBRSxV1ig==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 32BD112000D
+X-Stat-Signature: 8weye46dotb3yb56cdayx7gpr1esffs1
+X-HE-Tag: 1783691098-57290
+X-HE-Meta: U2FsdGVkX1+aB7n8wa+4eu/jKqVN4H3fzgFvZpyE2cMnL/CAWUvp4nPusNqUp51rH9pxk10HaQsiVNz6kWlNMszYLrssC3DzaTl10e+wafkQNPJqTNidbyKCafQqjL1jf6NVt7nQnaDOcvwe6Mp9yfHZKYZCOolOkx9B//HYeG5OgRz8Uw0oDN1Nkm0ukcIVYM7LVhOVnQZw93MTC+h4HAdbs6/WC2WqhRXRhi2JaT6C58x2DFwP7WX+0Xe6PKKJ+uVHrWIUe/evF5nnoMhEi/bKuhUUxzYghrzIDMHOknKwQ88NMDSDjZ2G5xemVxccKHEhfP9AAbUZw5vc3Ho5wpCOq8HLtlB9klZDzgMJxv8hdGyXvv9BVBpKOw+OKDVbfSZmA3ICjykfFWcPMHGrilnDUnK5w9vXOpJfGJLfVAbnWKnG8U3+lkMpB+3pmXYSb0JMmjIUHmcMYOc2oht7RGV8NG97yqiVQkq+LpImS2cHpszrnCLjMlM960LG96yhheLpHHkK/1iNg87Eae8DBtMEh1C8c56swu77rg+Axg95eKocHeNm9mqDgDQBtyUSfSClWXut2O3vBGX071wrPD+vRLINKqlYo4QgYElXWeixf/fxNJeNBhM0EoaEhuTf63Zo4AEqXFZE4Sr/11fenDIGcqid7KnIOmFs86Px/NkKvQVpPjuAmw1d1zdXdQOdRwpqkUpD9YTAQqG9IhFiaSDhJq2vqZffOY09s3SD/JEZUOqPh2Z5Ayk9SVgZL+X3w6Fwav7eiDhke+kEiOl+sszxpNdMO6f3g4QKY21+uwitxkFEQnyLB8+j4sSa2f1795YyfEzokKhv6HMxIklsVA5ZFHjlf6OyQIPtUGE6rIIX0jsxtGj9sYemAwtLJ4K5TXkdoFwQ3DUrj2/vhmMZkF+oxN8pW496FgsjED0pL0EtJxkUSe0SAk8AHRkn7MyeoRakKzBnn3Isl3TjKU0
+ StQERx1n
+ JEFUxyug0QV4wLW2icW/UIfIJFhZgFIIV48t+Jup5+84XwU4QBNQmjMm9ZPnUkWggXsbFtgeN2WCKpwOarldgLJssQZGZt3RH/mIO8fz7EIMEHl9gNeBsgLiKiSQS0HommC3sbyT0YsAx3Gi3QhIGF1dJleGwkbV1PzrcELSPtEqi30HvbLEVC7qz9G5P8Xmi4ixzkOMWJJY3MO6ax+KqNFRVuDhhMIRN6xTghMWBk6pMowldOYadZZAHjqMNS8tIIuDRsLrE7cZwL+gS+LPOAWiNNK1daTWBQVuFJfwzGB2LOTyVdwSFFqfKz6wEUatKBfk7sXerrAY32ELXzm9xSPirrT6JjNCfMjHIp+xF6msJ9B5LUbypkl96U3N6VLJhpw9m0m/BESGuZOeDc00TPKwaINRfyqj7ZNETGDYILiTPdM8Z6eo/XbtrtnRwfGa21yLb26TTPTb1KeVsIdsUh6joGYlHHBuQmGhh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,106 +102,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Proton Mail g=C3=BCvenli e-posta ile g=C3=B6nderildi.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------bh0iCJLSq0YYjqkEhFMD4qVf
+Content-Type: multipart/mixed; boundary="------------LHSebdT4vB2ZGMN1riwkJEZQ";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
+ Kees Cook <kees@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Danielle Constantino <dcostantino@meta.com>,
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <4a5c8eb6-90f4-412a-93bf-21360fce3c7a@kernel.org>
+Subject: Re: [PATCH slab/for-next-fixes v2 0/3] mm/slab: fix unbounded
+ recursion in free path with memalloc profiling
+References: <20260710-kmalloc-no-objext-v2-0-2709afb6a030@kernel.org>
+ <32a056e2-e641-4aaa-887e-586d997feefc@kernel.org>
+In-Reply-To: <32a056e2-e641-4aaa-887e-586d997feefc@kernel.org>
+
+--------------LHSebdT4vB2ZGMN1riwkJEZQ
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-------- Forwarded Message -------
-Kimden: Paul Moore paul@paul-moore.com
 
-Tarih: 9 Temmuz 2026 Per=C5=9Fembe saat 05:21
-Konu: Re: [RFC/discuss] memfd_secret(): opt-in visibility for security moni=
-toring (eBPF/audit)
-Kime: BoxStrikesTeam BoxStrikesTeam@proton.me
+On 7/10/26 10:07 PM, Vlastimil Babka (SUSE) wrote:
+> On 7/10/26 08:03, Harry Yoo (Oracle) wrote:
+>> This is a follow-up fix after the recent discussion [1].
+>> See patch 2 for the detailed description on the bug.
+>>
+>> Based on slab/for-next-fixes (72bb229f916) and will be soon available
+>> at git.kernel.org [2].
+>>
+>> Instead preventing cycles by bumping up the allocation size of obj_ext=
+s
+>> arrays, it introduces a new kmalloc type called KMALLOC_NO_OBJ_EXT and=
 
-CC: rppt@kernel.org rppt@kernel.org, akpm@linux-foundation.org akpm@linux-f=
-oundation.org, linux-mm@kvack.org linux-mm@kvack.org, linux-security-module=
-@vger.kernel.org linux-security-module@vger.kernel.org, jmorris@namei.org j=
-morris@namei.org, serge@hallyn.com serge@hallyn.com
-
-
-
-> On Wed, Jul 8, 2026 at 8:09=E2=80=AFAM BoxStrikesTeam BoxStrikesTeam@prot=
-on.me wrote:
+>> disallow formation of cycles between kmalloc types when allocating
+>> obj_exts arrays. obj_exts arrays of normal kmalloc caches are served
+>> from KMALLOC_NO_OBJ_EXT caches (that don't have obj_exts), and all oth=
+er
+>> obj_exts arrays are served from normal kmalloc caches.
 >=20
-> > Hi,
-> >=20
-> > While experimenting with mseal() and memfd_secret() together on a
-> > recent kernel, I ran into what looks like a gap worth discussing:
-> > content placed in memfd_secret()-backed memory is invisible not just
-> > to other processes, but also to in-kernel tracing/observability
-> > mechanisms such as eBPF's bpf_probe_read_user() (EFAULT, as expected,
-> > since the region is removed from the direct map and kernel page
-> > tables entirely).
-> >=20
-> > That's working as designed for the threat model memfd_secret targets
-> > (protect secrets even from a compromised kernel / ROP-based
-> > exfiltration). But it does mean a local, unprivileged process can
-> > now allocate memory that:
-> >=20
-> > 1. Is invisible to kernel-side introspection (eBPF tracing,
-> > /proc/<pid>/mem, ptrace-based tooling) once populated via
-> > memfd_secret(), and
-> > 2. Can additionally be sealed against mprotect()/munmap()/mremap()
-> > via mseal() so its protection bits can't be relaxed either.
-> >=20
-> > Neither primitive alone is new or alarming - mseal() protects mapping
-> > metadata, not confidentiality, and memfd_secret() is explicitly
-> > opt-in and disabled by default. But combined, they let a process
-> > carve out a region that a host-based EDR relying on eBPF
-> > tracing/probe_read helpers cannot inspect, and cannot force back into
-> > an inspectable state either. For userland security tooling that
-> > assumes 'anything a tracing eBPF program can attach to, it can read',
-> > this is a small blind spot.
-> >=20
-> > I want to be clear I'm not suggesting memfd_secret()'s core guarantee
-> > should be weakened - the ability to keep data hidden from a
-> > compromised kernel is the entire point, and forcibly exposing content
-> > to tracing programs would undermine that model and create a new
-> > attack surface via the eBPF verifier/helper path itself.
-> >=20
-> > What I'd like to raise for discussion instead is something closer to
-> > what was already anticipated in the original series - Mike, your
-> > commit message for memfd_secret() mentions: 'Once there will be a use
-> > case that will require exposing secretmem to the kernel it will be an
-> > opt-in request in the system call flags.' Two lighter-weight
-> > directions that stay consistent with that opt-in philosophy:
-> >=20
-> > a) An LSM hook / audit event at memfd_secret() call time (this
-> > echoes Christian Gottsche's 2022 RFC to label secretmem inodes
-> > via inode_init_security_anon for SELinux). Even without content
-> > visibility, logging 'process X created a N-byte kernel-invisible
-> > mapping' gives EDR/audit systems a behavioral signal to alert on,
-> > without touching the confidentiality guarantee at all.
-> >=20
-> > b) A distinct opt-in flag (as foreshadowed in the original commit)
-> > that a process could set to allow a CAP_BPF/CAP_SYS_ADMIN-gated
-> > tracing context to read the region for legitimate
-> > monitoring/debugging - fully opt-in, off by default, and never
-> > implicitly available to unprivileged tracers.
-> >=20
-> > Is (a) something that's been considered further since the 2022
-> > secretmem-inode-labeling thread? And is there any existing tracking
-> > issue for the kind of opt-in-visibility idea in (b), or was it
-> > dropped as not worth the complexity?
->=20
-> Modern kernels do allow LSM labeling of secretmem inodes, see
-> secretmem_file_create().
->=20
-> --
-> paul-moore.com
+> Since we agreed to investigate later whether it makes sense to start
+> allocating all obj_ext allocations from the new type, I wonder if for n=
+ow we
+> should not create them at all if they won't be used - if anything to av=
+oid
+> polluting slabinfo.
+
+That's fair point!
+
+> AFAIU that means only create them with mem alloc
+> profiling is config-enabled and mem_profiling_support =3D=3D true?
+
+assuming mem_profiling_support =3D=3D true means not "never"...
+
+> (Or probably also with SLUB_TINY && MEMCG, as nonsensical as it is...)
+
+I'll instead check "is any kmalloc type w/ higher priority than
+KMALLOC_CGROUP aliased with KMALLOC_NORMAL?", which would be
+
+IS_ENABLED(CONFIG_MEMCG) &&
+(KMALLOC_DMA =3D=3D KMALLOC_NORMAL || KMALLOC_RECLAIM =3D=3D KMALLOC_NORM=
+AL),
 
 
-Hello,
+--=20
+Cheers,
+Harry / Hyeonggon
 
-Option B caught my interest. Do you have any updates, disclosures, new idea=
-s, or anything new to share?
 
-By the way, I strengthened my finding with a proof of concept and have now =
-disclosed it publicly.
+--------------LHSebdT4vB2ZGMN1riwkJEZQ--
 
-Thank you.
+--------------bh0iCJLSq0YYjqkEhFMD4qVf
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-https://github.com/BoxStrikesTeam/Counter-Attack-Injection-Method
+-----BEGIN PGP SIGNATURE-----
 
-https://boxstrikesteam.github.io/Bulgular/001/finding-001.html
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalD3QwAKCRCGXBN6rc5S
+1rBbAP9swMPew8X20cwWuwn1XEQImWWSR2qmMZhLty5iWRZ7oQEA0a/HLzON3ljk
+jBI8WgyBFx/efIAV1Ekatq5opFy5Pw4=
+=EFDt
+-----END PGP SIGNATURE-----
+
+--------------bh0iCJLSq0YYjqkEhFMD4qVf--
 
