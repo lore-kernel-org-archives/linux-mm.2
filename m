@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CAB9C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 12:07:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EACE4C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 12:09:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 021116B008A; Fri, 10 Jul 2026 08:07:33 -0400 (EDT)
+	id F18E16B0092; Fri, 10 Jul 2026 08:09:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3A7C6B009E; Fri, 10 Jul 2026 08:07:32 -0400 (EDT)
+	id EF07E6B0095; Fri, 10 Jul 2026 08:09:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E2BC06B009F; Fri, 10 Jul 2026 08:07:32 -0400 (EDT)
+	id E06966B0096; Fri, 10 Jul 2026 08:09:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AEE7F6B008A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:07:32 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2EA5440461
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:07:32 +0000 (UTC)
-X-FDA: 84972742344.27.0459233
+	by kanga.kvack.org (Postfix) with ESMTP id BFFE86B0092
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:09:39 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5F2BD1A0405
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:09:39 +0000 (UTC)
+X-FDA: 84972747678.09.6FC5D3D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5E08BC0004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:07:30 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LIIkB8KI;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9C7AA40002
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:09:37 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELDUjJY9;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783685250;
-	b=eAb3DJiuQfBdhR1wYyEGYlyxbOBNdKKJE8Vj7aUhbgssTPjAJpRBIySaZFVrV973gYTGQO
-	Zpphb4ljltcUl/bLp1Z7gd3MmTO5EQkUGxMTjd/fCmyLeeWljUAbIjH/aDct2PgfO+Cez2
-	sSApU0ZoYvhHRpA/EAVi3J+fzLMDRIQ=
+	t=1783685377;
+	b=5vGtHH0aUEl++TxyQWN3HNPVAkX0qncN5ZsEvShIGCJsDGlYm2t9jfgdPsehJ4ZZUQ2Dtn
+	mpgBIkhdpwLd7M0XHl5Ng3n6vkt+GoUufK4Cu95gFN4PRXZN1pFpGurAhl7zMZD2tpn82Y
+	CeNMXLVxHA8TE/bCpMgDpv6E3r8+XVo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LIIkB8KI;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELDUjJY9;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783685250;
+	s=arc-20220608; t=1783685377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dAv2/2M4yX2fjc5Qw6c2pxO6oxabzVLlay/XuFKe7zc=;
-	b=2P82TNNZuZ3uz/JVDO3HJbgvpd9szvnuGRMAtv9YZMEbbVaTDu/nY6OhloprnStoYVm8iz
-	HdSqsZuA4gBj+Eqg/tNsnWXiYi4rXzdQKoLc2aVKvwLdidW/AqFn57vyllD6NQzce9YulW
-	dWFnKg4p3S0CCdBTdWeOzx75bC+u+Sc=
+	bh=GHyiYyonVSx0Himos07lHVjuF+/oMX3axwRtefrjmbc=;
+	b=sOfyxizz6d9vKhyv4FibintexMl9Bx5mePWUKaDDjpaDzolVOTz5ko/Uaja3jb9F4kDL/Y
+	BXmwdSFvetJ84/Xt63JTXVvZBgNDFkyNVk2MWCmKkJOyNim59zs/jB8A5d96D8NpXiYNTt
+	UY63PD9ADmCyH7hJGjPSnvrzS6PqSVg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 715F94164C;
-	Fri, 10 Jul 2026 12:07:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5285B1F000E9;
-	Fri, 10 Jul 2026 12:07:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B88EE42E62;
+	Fri, 10 Jul 2026 12:09:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D961F000E9;
+	Fri, 10 Jul 2026 12:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783685249;
-	bh=dAv2/2M4yX2fjc5Qw6c2pxO6oxabzVLlay/XuFKe7zc=;
+	s=k20260515; t=1783685376;
+	bh=GHyiYyonVSx0Himos07lHVjuF+/oMX3axwRtefrjmbc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LIIkB8KIQjNPRB2swohnc/L3zBYDf6fwwp4eEIK0Vi65rxROayQaadbR6icpZNHs8
-	 RPdVgo4f4uIOGRzAgtOeWXr4/63fA6gFp0cKEwPx8jr6grEZ3aFk7SyBJ8dQgKIjBG
-	 hFUFvNFEkhGwplFyo0uWvVlWFWdOvcmkosfPkQnmpXfloigce4/4QBmnQRZlJeNGkO
-	 9fQ0RS3rTqIP7NsroVCPOw4y7u+k43Hp5uiHfQcJsBvTHgqv9AEVE5NmZ+/NnDXx8Z
-	 J2Q72hkQeoChdDT54eLpX/4BiupYya873pnZaAc5JVkd1hkkaRihP/R5gQ74hPu858
-	 wywGKaEOzgM7Q==
-Message-ID: <1bd96ae4-f59d-4103-a700-f9478e88c05b@kernel.org>
-Date: Fri, 10 Jul 2026 14:07:25 +0200
+	b=ELDUjJY9yklISNd1G3rLfD6bcQn56TF7LUXC5wXV+cRcshH0+no7o1EJnIiMgKCKe
+	 4ABJgkXpOCuZc8gQiSay5kaQ7K3rOUvW85Ii9ThgI3fbxhlgM3zGos8kWnhnSifPtW
+	 vYRv6Len39tiGQM6Nsp4nc3txes6wdPsUCZVCADhrjQxhb7Jxohaibwiz+XnEC4ZTA
+	 q7M5m6JQiPpMGlicdlKZ3qZH+3UBZ5AO+l5gepvqmEzOqcd1y0KkL3BCxtVIch4oWK
+	 sDOw1ZSq3GeTc4S55plPwK1YKptYnUD0YOMPAsxSlmLjSnGT1mgmOgQ13QzAjQS/uW
+	 u1iTY8ZSSzcTw==
+Message-ID: <a41c58a8-9d5a-4022-ad9a-1995827b6da7@kernel.org>
+Date: Fri, 10 Jul 2026 14:09:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm: mincore: remove special handling for VM_PFNMAP
+Subject: Re: [PATCH v2 2/5] mm: mincore: replace __get_free_page() with
+ kmalloc()
 To: Kefeng Wang <wangkefeng.wang@huawei.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org, "Liam R . Howlett" <liam@infradead.org>,
@@ -76,7 +77,7 @@ Cc: linux-mm@kvack.org, "Liam R . Howlett" <liam@infradead.org>,
  Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
  Zi Yan <ziy@nvidia.com>
 References: <20260710120052.103886-1-wangkefeng.wang@huawei.com>
- <20260710120052.103886-2-wangkefeng.wang@huawei.com>
+ <20260710120052.103886-3-wangkefeng.wang@huawei.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260710120052.103886-2-wangkefeng.wang@huawei.com>
+In-Reply-To: <20260710120052.103886-3-wangkefeng.wang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5E08BC0004
-X-Stat-Signature: q1uisrd1mrct57f48joq5z5ud4qqkpu1
-X-HE-Tag: 1783685250-211808
-X-HE-Meta: U2FsdGVkX18FNi2zzFuxKzIyz2lvEywnUlapZQ3gP/SllGzOSmyQ69ee5cm70yeVlVYUCkGFS87+2fu8GZ0OVYDX1Umb3R7bgKyxAYTaClGeuajasiiQJamJfv0ixkAutk/pDIHlhYgx/HgGhJnLZsVf2opIf7jXpFXbKR1bayoFMUR1B6hakWP9UaYGVW4dtWDvp8zWocgpCzxw/g+KgZsZEgTFOEuYVgf6sNvzSARA+MUGbvSEDswcao+3xdVhAEF96JGcHbFze3vbAd4h5chNv8caWSmqkLYEy72D1k6Z9EYBjEaKIg8c26rF/UO/ahr64fpUsvTUks0j3/DtOMMXsZvGy+MZX6gWcyxPddOxjyyijPOS0Kz43BpaCP3ufX1onyXmmG18tqwsyX7m3Ra0w64Lqi8+lesVBec/vhDfwbOufGnD24UZ0H1ajKDg/w0eJj/lpdBdG4ahYTxPP4LKDjqvjDOv0d4dwbejw8Gph9M80+8PoOvM8g8C7lsibq2d7jWZzhNx3GkBtmZGJGf8fvAsV/5JUTyIMNAuDsw5lJfr2dh21xTc5Kfk/mopjS+tW4XbunIzfZvFCMm1XicIfHfG1JeIFJpX8a02GLDCBSLTQkuFFv5Q0t2fHpRhwdggwkfOIiQuzhtjyFRcq86BC2QZrG16/uUbNdjPougxC8D5d54VoSW0npU5HWmZALX+JtdCG4U+p3WMy6QJiEGXRoBq6iM+uOxG6cjmsWtAAaalcRugxpwKkrVXLY+26x5Y5xYVLGwwaehTrd8UkkGBwtGdYBSJdkxaWchQNG4vUcXhkaWQeJwvVPu/0LxKHJL8m6t+bvosDdOdO7IDbAz8iyPEzrQ9xo8orx2PIbQ5AMyEW1hB9CRvSvnZCoYoOQdXoaBMgjcWqnKF12xcklXf77IVqLYiSwSIab4qD3vTw+4h1UcSvvr+TeqUTHTXWfM0dIXVQy9z38vj56k
- YY61lbvk
- mcsr4TwgR/f2qlHHeybTTVrkxJpiXfSl5U96gpqj33TTtHXdn2QyOZY2I6mxhumgIG+PGIyNrZsE/wzT2RGr45WJ4cPltKcH2SHXDu/m9K9BWtTDqml8zip/rR6lLUrqd8Fs6eXDCNA14YdkjXlZQiKXjbpTd0cbFJ2qspwT683w+N6bb1Heuymbi5a8U3FQMUmmcI5WMsMMbLQ/5763eLAx409AlDWcw9uxPaurzHsKFt/xq/LH26QU9cqCG9Ct540pQFJWbiAhrm81q9DQuCadCXYADonKhL9CeCSzVGAcGVfdJtDcdjjHHni5DZZ2z5bRCSkhn1M+UBCRZxjrIZx4YRjbVM8vymgi1CiWx3ckDMi2JZqNUCyGEceKqV3KKm0PB
+X-Rspamd-Queue-Id: 9C7AA40002
+X-Stat-Signature: npaecfsnrh8u196q31ujdjht86bmhm6z
+X-HE-Tag: 1783685377-221535
+X-HE-Meta: U2FsdGVkX181h4+b72d71SNhzoxUpR9aObzveGvOASdMx2xJSls/QflkCrtCcdrtGXOZSkoI10QwKnU9fMKz767BAAPvJjdWwpXcwLTuCC22eV9jkiDTqZC+A/jOtBGW54Fm3jDhcDWUpjMBe6Ts7RK/RngfhhOuU4arfSJz2Xw44ZRnIGU+QbTC4/NIYbyTfceyOxrr4IjKbMDVSLiqVwIx6BIPTvGqRdqnBfQGgYFchjzEdVIplabsOIsH1o9AohL3JCe3Dy3X5Pf6VKckGkVtD3BZq4oK6LkHGRcmPGSzTPldgbioHiryBeYz77/36r84Z7j6qMKCwVL8AWw3Ges70T0lqtIV3hYWRNzIlbaPsD3T0rG/ECt3PKQGzH0kMe/guiBx4ZPHnvPUQrNLsh6kax8RgZK8X5gZJJv/Sl+cjCc9Wq1n4Gr5euCRNIZzyWYeg//M42QLjvDn3CPk31jwUbBcSMI7AXLLM7+EIZx72ZGedcMf3jMO5W56jtAQlvWkmn9QSDsN7s/E1Win6/i/039Hx3qhBt1f1ECXqoeLXd5NKt4/Q3Bj+JAAXrU/oAgoQms7c7E3DU908regbTb0yZsVnlLq/ngk2a+TsDMuFUiqegJrHb9XigcRxAo9HsjOCzgQxqyJgZrM2Ph4LKywp5p1nmZXViOy5D8KVsIbrJ/EEZSB7gxPUM3sxsODBRQfRUpJ18hqufxR5SOjH2ymaAxdI5TRA9wHmWXLQ2UHJuCadoOWJgHFdLq9QSsvYEjjBOo830+Cq2IBdkvCi1JYqOmgY8wG+ZjXBhwoQ5oqTI6lgSBW8r4aHjbyFxPG5UZj4inXHFzpfbPfAdmVBVvCqq7dmjvpys3QgjOnXTuiYXKs6VOfvFIpOGP2PcwKMwuWsclHVOHe80fVcBnvSOG7Tu8cgf9wwuBnNVkP/q3Gbx2vVa6KK5RdA/vcc6PpZByRDY6GvznBgyNYpA9
+ YMAcKdh0
+ Pw+cM8090UydFLLSqMByRO8p64r9QLZRa+aBIztXGMl2HNJSIh4ju/UL2VV8H6L9sjmKDaONdQbKg9Oiw7pYPeIf6ZA3J7f3G+CL+2tw01WaZarZ/xADP+Y2zN5pXAH9/7xPa5Tw1hgdcYCIkFE59Mnc5w6x3CiibfzP1jBS8yKBqcaE8r8/N7aLsP4GhJx6/+oBwepWUarggWNvZAxhRZsigD1lZ+bVA9CklCfRGOgJLOk3gPBWPQThMOg43TvRmEtqpnQENHLRTVnUDNRvMvdxKAi/8VceTLpFMtZzAeCPfzNX1Wm0KIMlijedO87B4pZ6MGd1HqHdsgH7JXYlMM5Va8PhZIR2XoNuRC8z8tgwGeB/WXFWPA4ysS0tHcCvLVYZDCVpcq2Lff5sKuTiSQFCUGuu1hPV27NMj7jIaV7Px3Pg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,54 +143,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 7/10/26 14:00, Kefeng Wang wrote:
-> As David pointed out, "it’s hard to believe that someone depends
-> on pages in VM_PFNMAP to *not* be present", so remove the historical
-> behavior that always reports VM_PFNMAP pages as non-resident.
-> Instead, make them now reported as resident by checking the
-> VMA_PFNMAP_BIT, simplifying the code.
+> Remove ugly casts by using the more natural kmalloc/kfree allocation,
+> also replace GFP_USER(pointless here) with GFP_KERNEL.
 > 
-> Link: https://lore.kernel.org/linux-mm/0e619d71-1c3d-4534-8376-2982c7348c31@kernel.org/
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 > Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
->  mm/mincore.c | 10 +---------
->  1 file changed, 1 insertion(+), 9 deletions(-)
-> 
-> diff --git a/mm/mincore.c b/mm/mincore.c
-> index 53b982803771..0eb832ee0a30 100644
-> --- a/mm/mincore.c
-> +++ b/mm/mincore.c
-> @@ -219,7 +219,7 @@ static inline bool can_do_mincore(struct vm_area_struct *vma)
->  {
->  	if (vma_is_anonymous(vma))
->  		return true;
-> -	if (!vma->vm_file)
-> +	if (!vma->vm_file || vma_test(vma, VMA_PFNMAP_BIT))
->  		return false;
->  	/*
->  	 * Reveal pagecache information only for non-anonymous mappings that
-> @@ -259,14 +259,6 @@ static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *v
->  		return pages;
->  	}
->  
-> -	/*
-> -	 * mincore historically reports PFNMAP mappings as non-resident.
-> -	 */
-> -	if (vma->vm_flags & VM_PFNMAP) {
-> -		__mincore_unmapped_range(addr, end, vma, vec);
-> -		return (end - addr) >> PAGE_SHIFT;
-> -	}
-> -
->  	err = walk_page_range_vma(vma, addr, end, &mincore_walk_ops, vec);
->  	if (err < 0)
->  		return err;
 
-
-What about MAP_PRIVATE PFN mappings with anonymous pages in there that could
-have migration entries?
-
-I'd assume that we'd want to scan the thing and simply mark present ptes as ...
-present.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
