@@ -4,95 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51184C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 00:44:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8708AC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 00:45:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F2E16B00AA; Thu,  9 Jul 2026 20:44:52 -0400 (EDT)
+	id E8DEA6B00AB; Thu,  9 Jul 2026 20:45:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A3ED6B00AB; Thu,  9 Jul 2026 20:44:52 -0400 (EDT)
+	id E666A6B00AD; Thu,  9 Jul 2026 20:45:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BA416B00AC; Thu,  9 Jul 2026 20:44:52 -0400 (EDT)
+	id D56E56B00AE; Thu,  9 Jul 2026 20:45:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E3F8E6B00AA
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 20:44:51 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70DD31C8808
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:44:51 +0000 (UTC)
-X-FDA: 84971021982.11.D93096C
-Received: from outbound.baidu.com (mx13.baidu.com [220.181.3.100])
-	by imf20.hostedemail.com (Postfix) with SMTP id 589041C0003
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:44:45 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=XBK13c3m;
-	dmarc=pass (policy=quarantine) header.from=baidu.com;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=md164599CE4E=lirongqing@baidu.com" designates 220.181.3.100 as permitted sender) smtp.mailfrom="prvs=md164599CE4E=lirongqing@baidu.com"
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783644289;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A75E66B00AB
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 20:45:47 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 373761A02B1
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:45:47 +0000 (UTC)
+X-FDA: 84971024334.07.7217C90
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 52974140008
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:45:45 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JJDN0WnF;
+	spf=pass (imf26.hostedemail.com: domain of linkl@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=linkl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783644345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fzEKyACiG1UKTaCYkAzpxLPpJAo1Rv7G1I2xvVMzqps=;
-	b=k0iUT2ccfJGhC2nfs4cHLWfc4NoF2yHKOujz0v+FBVFe1J8Le4f/fNlBHwqqQEsp/EhJu8
-	doUQnCpCjY3hN8zm98L+zYnudHBPxGeUcV7NfJMJlHXJuTUTsNfPNfUfhAIafD11JBBPoS
-	PaFtrWUttuPzDPhOlb/ZlyQYZ4DDohQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=baidu.com header.s=selector1 header.b=XBK13c3m;
-	dmarc=pass (policy=quarantine) header.from=baidu.com;
-	spf=pass (imf20.hostedemail.com: domain of "prvs=md164599CE4E=lirongqing@baidu.com" designates 220.181.3.100 as permitted sender) smtp.mailfrom="prvs=md164599CE4E=lirongqing@baidu.com"
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783644289;
-	b=IMRq39zVgEUh/jDqLfMfdNsIJWLG6gtE3210t7FfVrq6AZYDf9vPDcabY0i5ZSfMrhNR5F
-	f2l0dnC7T/QK8+08VEc0hhS1uSvBwKOvgJ+nztc0FI3j9i3SrNiPz4eAY3NK/+KQMKOb00
-	BycsGa0afvB6ocsQsEWkjXU+bTicHY4=
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.45
-From: "Li,Rongqing" <lirongqing@baidu.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes
-	<linux@rasmusvillemoes.dk>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: =?gb2312?B?tPC4tDogWz8/Pz9dIFJlOiBbUEFUQ0hdIG5vZGVtYXNrOiB1c2UgbnJfbm9k?=
- =?gb2312?B?ZV9pZHMgaW5zdGVhZCBvZiBNQVhfTlVNTk9ERVMgaW4gX19ub2RlbWFza19w?=
- =?gb2312?Q?r=5Fnumnodes()?=
-Thread-Topic: [????] Re: [PATCH] nodemask: use nr_node_ids instead of
- MAX_NUMNODES in __nodemask_pr_numnodes()
-Thread-Index: AQHdD3MKs5fBK4e+NUaHhHHa3NakYrZlVkIAgACU7dA=
-Date: Fri, 10 Jul 2026 00:44:29 +0000
-Message-ID: <e86f64e7da3849e8b1be762f1ea14f3f@baidu.com>
-References: <20260709071739.2408-1-lirongqing@baidu.com>
- <20260709164952.6630ce13f63a3104c2c53572@linux-foundation.org>
-In-Reply-To: <20260709164952.6630ce13f63a3104c2c53572@linux-foundation.org>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [172.31.62.19]
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	bh=4NDxZOCfeqZWYG26A8bUT8OjQGBJjjUiBg2MLvfAqRA=;
+	b=ef7NUKuZxdV2sV7bEj1qVFMTb0g+HseChza7twkqHLYIpXzItGAN3G/GqF+cChN6RxVhdP
+	Yhbg0lIF4ml9mMFBDJuDLNENP04g+1YAxt0HPW+6gXb501oZUdYisxcBr9FVNma/MPrYcd
+	CLb0uoqPE6ArZtBf7TEkw+xfPSjmPiw=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783644345;
+	b=EkwCGcRUtPhP3QTsY8SdaXb4/37y4HG+f2O3ev6WpRdMuntDrXrEykGXVAaTis40ZYrmGU
+	U5fi9ls25AQF/JOzKMgoluPInqV6PpW9DoOOp+jjBss/eOjC6w4uxhYF4zWcxmtI6KlU3f
+	M9lXLSp+4fwA44LYirmAoOD172lQe38=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=JJDN0WnF;
+	spf=pass (imf26.hostedemail.com: domain of linkl@google.com designates 209.85.160.175 as permitted sender) smtp.mailfrom=linkl@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51c15a5b265so117421cf.0
+        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 17:45:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783644344; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TgSyf4L3dZHE/mLpt4CN7vQnhZQwQ3XQE2+pd/NvEHF/ofPjEQDrMObggQk649MrGK
+         sLgz41p7Yk8zxCZkt17WZz8m2MdvyMgAEy9kgrVYCsb0M2u/cAyR5ckWxfV3uCedFK4z
+         H40Zp6YNesoz/bKbe6k+vr8TNzvRUS8H2dG9icxBT8u64zetJZtg4plGcKQ+jb1/3h/h
+         v6JZyWDJeCSivMttiUMrzxUobCmC/TjBsTA4TdC+JU+6JClDFyCpJjpQG3T2LdorEQlk
+         vMQWTSQ/OrndByvEHtax5MNPhU84V7ugcaLe4M3WVYDb34ip7406IJ9c1tf5obHklWsE
+         1SPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=4NDxZOCfeqZWYG26A8bUT8OjQGBJjjUiBg2MLvfAqRA=;
+        fh=QsZFO3yyfAfgp5r/fehvKLhheA+Nk/yqT4OANAS483s=;
+        b=ns9eyS3bI5W2oMkSZNkYe5/oUfPxmQ+fsfP/KtiiaQXdfF6Zv92IIKqVDGQAULW5fe
+         yJMhDDFwMDm+Y+eA9BajccNlw3pPQwFl2XaAY97oRn9SG1VWksBOUOu5F5M6SIFnT+bE
+         gUxsdDO//sOF9VC+wTlhvEjALY55U1o0062iQoYf7Hp3vCV81ikA5uywJX90LFLebn/W
+         vk5rhyMcgzelsc1K5yfc6LH2iDAHzqGYiwRZs3vAujGPFkFLaTKLqncsTRSG5gd0/ONa
+         mBTZ0OU9/SaCXKFbaX9xhGUWhDG7/SSZUzrCKKYK3JmgK7CbdNKZhetYlVXAE13RCdoY
+         MbOA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783644344; x=1784249144; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4NDxZOCfeqZWYG26A8bUT8OjQGBJjjUiBg2MLvfAqRA=;
+        b=JJDN0WnF9yRmDMEoalDiijvNi2ps7ApVFQl8PYR+hxk6TYJjitujteYypegRe1xakV
+         wluNU7KsDYZjMID/DsLFfgXwuxylAZWtCoZb6nd5E4/xfylTzRrPznIMEnL8Fmue78Vz
+         sD8kw+1Tm94S04Mr1/C26L5iHpK4RQHGt5q8a+yIzgqk5Jl+K1p0gFh3lXQtcWo5i3sW
+         YEnMf90uQyEIcYosPpzpC7u2zPrQJJelaDTenzl2qOm/aRdxtNrLFj9GP4GCZSJeXXxf
+         wbHug/QOS4RXTU6kqm5XZhxXeNlgpL63HQbyjFPMRz30mDxADtjw1bmH7oCcfKrfE+I4
+         P2+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783644344; x=1784249144;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=4NDxZOCfeqZWYG26A8bUT8OjQGBJjjUiBg2MLvfAqRA=;
+        b=F8o5wGoAIkBL64PBhKDmNvtBBTPuYbynWPoKq8ZrvIus/G/oluSYoAYgYC5fs/5uwk
+         Q7BuXuX9ch67bm8wLjTF5mGBFwZtCPFWoNSoZuNmOSqQEwmcO/Pm3ulz8SO+wWvHBe5U
+         VJIYlTeUdgXv8N/m2XuJSs7B3FLBmoqyxXxd5PQnlA5ZrAC8/SvUMW7hSwfKucrN9aPT
+         X8pDifpk1WliHMzeUn1rEkaF8w3n5nz8wavlhnHb0YIY5k+PjaraDGSI3u+5LjglQXSc
+         YmIPbVaUzZIBZiZdsdpVTiYmFrwMJ07pIdf58uQ+obSALvNKv6FaLD/FZoyVlH/B/v5g
+         mx2Q==
+X-Forwarded-Encrypted: i=1; AHgh+RqfCFNf1eC6+KLwrPsjSQB7bbdSX3ycBDDLDzve6xIk0Hs74oovl2o6d4BJUKphfuyawwjWVPjLEg==@kvack.org
+X-Gm-Message-State: AOJu0Yzuq7dgFcaIFRpiOZ9Ng/pU4GMbvr7+OIkFcaqvc11anpQ6TEMU
+	yH/Mi3dlkJWWtbil5QYRkghv42mI4VW2hGVIrDHTuYX4wdLNsg4XXZJyU96XuT+SlBiDbs6/CiV
+	JMnO0nou9aY6A1AyzGaVeK9WOgmpZ5NL1iATQ8+vD
+X-Gm-Gg: AfdE7cmmOFkqCAi2iFgoPxUtc689JYQQ2DOV1GcnERIafrTmNla6HosGCz6v/j+ujyW
+	mi/O4VIpB9RB86r6fx9v5TOF3IgTAoxwF1cHIXo62/OwEQIrtcbBNhUvX2qWSSuIFN23eLb1CkU
+	SGJ3nOAydf6FbUx3C6PoqJnGqL0EREzeSf1W7e5YvcaYhTBgKmQhy1cZ8/vUrNKTDgrOm3qVF8F
+	QGQs+nziI05Br0HwNmqYfwGMTFqWDWM4qyz1H3HgS/HFZwJiv/RJImnCuyluq1sHMegXv8SKUz1
+	hNNsqKymHGDeiVkjnTg3nQ9Eyg==
+X-Received: by 2002:a05:622a:1f09:b0:516:d570:82c0 with SMTP id
+ d75a77b69052e-51cac54df32mr2758731cf.15.1783644343839; Thu, 09 Jul 2026
+ 17:45:43 -0700 (PDT)
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1783644282;
-	bh=fzEKyACiG1UKTaCYkAzpxLPpJAo1Rv7G1I2xvVMzqps=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=XBK13c3mhFMySAQZfYPCUn1CgR0Q1+ct1yL8RuT00XFW61xl4y09Avqt0eVomPMfk
-	 54OBKRxch1I78f+SaxQw5Y6qHHNxPou5dpk+jPBRv95eeAln9f7VvUBV6yQ6uSG5LL
-	 IXlr7VlBne7OMgYmEwT3KWAzcQ50DGmtrC5CTaZFFk5avyhSz1GTmBYPF/RNSzURK6
-	 B2TkCMoF69fGf8DEgYvvK+kt7G5G5KbZDVoWyD6vS1HAMoLLhZL1xlG/khSpOR7pp5
-	 KJnNyuYbyOhp8CpZn7YaldwXxxI5jjgAmh+1/wU0J7uHqz7g2xkyzOoso+7k4eVqff
-	 jutZGvyDkMRmA==
-X-Rspamd-Queue-Id: 589041C0003
-X-Stat-Signature: r7s6zwdj8ebeiyp8ygp7faoha33ozx38
+References: <20260709224330.946683-1-linkl@google.com> <20260709161253.6b5e9ba349f70a3ebfb8180f@linux-foundation.org>
+In-Reply-To: <20260709161253.6b5e9ba349f70a3ebfb8180f@linux-foundation.org>
+From: Link Lin <linkl@google.com>
+Date: Thu, 9 Jul 2026 17:45:32 -0700
+X-Gm-Features: AUfX_mzRlthWGS4tvguyuxlqGde2yyyYF501igG6ylQK6FfQ-MElEO9rT5w6uEI
+Message-ID: <CALUx4KQ=bYTpDoDAZ+iVb7Ehaa0LmyPDsEWk3xFFmTVYKrpAUA@mail.gmail.com>
+Subject: Re: [RFC] virtio_balloon: fix Use-After-Free in page reporting during
+ PM freeze
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, "Michael S . Tsirkin" <mst@redhat.com>, 
+	David Hildenbrand <david@kernel.org>, virtualization@lists.linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, prasin@google.com, rientjes@google.com, 
+	duenwen@google.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, 
+	Ammar Faizi <ammarfaizi2@openresty.com>, jiaqiyan@google.com, ahwilkins@google.com, 
+	Greg Thelen <gthelen@google.com>, Alexander Duyck <alexander.duyck@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783644285-289236
-X-HE-Meta: U2FsdGVkX1//ZDCzAvZmZ2/A8HSmkrmt94rWGPRKjWjXr7C/JJl4UuNpRxEfFugSljPOe79fc/u5wfiKMjWGz4F8Lm+6cX5q5F8WVvoAK7g0idrsUavUdy72YL5a8hTUEwQS6jFKsdhYbgZPcRRi173aFPXdLMipHgQpZ8GKf47s/qjkxiQfTQo38Pi5bF6KwF0iAW4pTkzKKnyKsYYb5oFf6nPHTvAeAyz442gJN7DOeEXw4rZZVc4yKRajZ7rt/lrgl26Anu5sRc50qaXPUt4f5ed/byGV7gVWYng4cq2f2frzcFFXvT8XNB5z++xCiKedWJSexCA2G4N/4qYz8BG5ae+0JWGWCfjRpNx8jDbmdkCfMxCZLhvDhHCL3UUDWAGIAX1bnYI4YO3aTm8EGi4jThUEjBGZAxx+zWK+4f7JT5uubLkAjuTRS751tbImsVUIfETZKGWIMhPfQ69DF6Hdd4J067uyahU8fQmv1h9jdA2m/QXtWx/XJZ6yL94Ezenb9c1Zj2XSfU04PaXzMNS/GhvbjW/fA08LH8cZUbz20sd3uFykm+o8yfnGuVK/jzrm3fQ9mgpcC4NYuj4xej1c3LYAPVllo59Ho0gvSZe83lhncyoEf1iY6AXECFOV3eXi+ALQZmQF+YfmWXMwfWOxZYNqPBjKjP6zBlfln+TZTo4J7bfR7MV0igxEXMIzMkyU/bRBNYjOT+LuTZoQCDjBssE1PI/DlLbmi+1c8kXehVddZACFEtNpb1qyRcSiJPmB3I6678boD/jF3rlngYUh3BS5dyREzYX5chJIqJw6LCrw0gu/j4uHUcN5jywRHkfYhH/y0f3bWk8lPWkChsuVFS8r40H4sp6Zr1SCj8ohuoUFaANbFRE54QdHlLHcYwEEQV5rwOf8qD7tINKaclU1aAKcni5jA8tUx9DbRbMn9f/tnRWort09tPVfOqVrjO+er2YR0WQF4AX+oQe
- lKfNqTfg
- ja4fnMgDYyRDCDGjhfWci1rLKkHp6NFUqxloEUKXk7PTDnZMIIt5HzF/8Wgb9hZZZiaKuOUzDcMIPptK3253l06q0YsMd27UkaVWHWqY33DlyK1jxd0bzgxMVaTtLaNt+mm8lsfFZY0zQxcPX3wxWZwnHotXiBq4pAR+xJOX9RciHbS4vjxv+fpyUa2CzWGUd+VxEf4iG0zIKVI+aayfz/wUhOEE8DO1YJ1t2eQ2lcggiwlczAfQvQY/YSB7kos5jKB8+3V4WAUxZTCgTvHu4lqVKUKErEYaModorW1Jn1xUCq8qfp+mRGh91rBtk7MLprpoJutGEmxZD4HoeGMMY43wNbWMEzxeTcMABO7zUGq5rW1vbamYVnc7BNIbfr7tCaxox/1xSL8UztuLOQi39sIbO/ctcliw7dUI20GsDjGK1fPTqcyuHomyas7sCgYgr4eNNLtSE8H716+tMImdiyEMFahGGBX9a3nlK5rXnkfNMzMhaaeUeL5lSsQJdejoDVp4dJvxxXJCwRhb27K3LTcTYQM8Jf4HuFMZA5ckO4fMrazkxBTS4l+AswBtFpEv2aK/f+ylK4yInAcOjXTG+PP33G9LSgazXFeSmRQEEmMXFzI9G51NH/YiodpJ1NUizn+CBHDmqvjHWHxvsWfGhoInOCVyO2lhltn5+AdADx0EbWt2OUZQWohNhziFpfNIg0YYpAlJEoZGLVxEydH6wHqmBFWYT9C73wZO2WIdimbtOMuU=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 52974140008
+X-Stat-Signature: 5bgwed4m8koruscm87mgwc9tczihjhmz
+X-HE-Tag: 1783644345-499432
+X-HE-Meta: U2FsdGVkX18r7i9KqSyVKMOTqwddiSUVzHIVF4Woo7UFUyHUJ5G8gmD2kaGfNvtjduI4x2dsWYai9K/LeIO3kIefobqtF3iF6mzy9yn5TOEevb+cAJPNuz+PabRnSUAND9T9CKIkRwKxBLzoXDDrtUid/YEivX4cIMLknqNqlXXseU2qSeP+ctqesoHFs0OW9qxDliTBXZTdBb3l9XGxiL3WGz4jZ6iWxbk90bmGH6RLcSSrOc6/VQe8RPuCALPmk1CZ4HsUN2s8BMRJSZ54Fjt3n0TF8msocw1jDLb3lVfS60KU0hWqeKyHkZ7mdQrL8gJZs7PCJLeSmQ2Lb0nnK/ialLFPJVu+QsDYweTq0VX/rSR+by7pmZMqT6+ZwFN3oGicrw/p5t9GTpYEDhWZxi0g/eToRHcb3ZaZs4FTC9xBBTwteyoVMCl49V2qKOcoViJTTla9IitpUe1miXN65mo6I6PZQ+bw5yPpRM3CTM41PEE7MZlb5hqiMJWVXuzIwSyJI+JSCRDvylC3wtnpdmbGACzeuLOkviVV6VtlUpf2rWykcTcPu6o9FNy+LQSPk5nN8ShTXIA5fBx5UgN4xn1kcfbIw79qQlioWRsqkxgWYct6LBilStfaDxPB8sZe7hiDiX+blA4469ppq/sRYMhagdSGqkDbMye6PM5rXg2TJo5UqLmoybJAb8FHfAUhst8DuHWdQMvmX04ob1GnRFaazCxtTnxr9K0LzomUJY/hKPl49H0cXSeYqaSME6mCXKZP80yUdzVQvPw16ti7L1TvWEoI0mqNRvwHw3sLxn7jJX49uSb4FHTqtcqZmrGk8PLHyRonbEGw9sfbq0S6HGvhpAV12kcB+1DE07b9mtpvrvnrV2yBIVqkwKIR5XOprKcNiUG6zc1dFBXWM7Nmm4uIORFxzxRYLw+VK1CBv6BWdMAVjZBmrenynPCQfiAvCOSk2iI3p4CXYQlqopY
+ dcnJCM9A
+ kGIuVjaoOFthT5SsGFQqkwzLnh4++QpesRku2PNS0zNfV0SWhMFfDrp2CwdXWcD8Z9Kc7S74OjjD9DiGYyfZI9FGbu5EBy90Jneue5HEwXAMKi+8QfVuQEExRJPP9I1hz6239Act4vPgPUCGry3y/p/G22oDJcneE9ercnhyBoa3boEzTEcFwAh4pvPrBZhHmzTc/ZPvkW0Io9vzi1WoZ+/tYncbagiZDvjPkDjXWvyrFYHcWJ8vgJ8oIoqMKEtRd4nozGTuAhTD6AarIPdzvRaPLvSjaT1n00NxFPyfyk5XDf+DkX2B6PEWt7qfp+E3yrpUEwwg3l78Li0oT8/U1zl2BbqtXw5uELy1Vq+xDMHhLr1n5xmMf+vN3nNFiaeYsZnpdRPKDyOAOZLbp1n96jbJBQudOPHxv1IkHhLWLBju1QpQ8PFhdn8pQjPveP8i0t2y+wPgu/hUuTM+lDbsWpgZQLwdsNHr5LMNKtP7CzziQrlrb4Wxvv+EqPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,67 +141,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiBPbiBUaHUsIDkgSnVsIDIwMjYgMTU6MTc6MzkgKzA4MDAgbGlyb25ncWluZyA8bGlyb25ncWlu
-Z0BiYWlkdS5jb20+DQo+IHdyb3RlOg0KPiANCj4gPiBGcm9tOiBMaSBSb25nUWluZyA8bGlyb25n
-cWluZ0BiYWlkdS5jb20+DQo+ID4NCj4gPiBfX25vZGVtYXNrX3ByX251bW5vZGVzKCkgcmV0dXJu
-cyBNQVhfTlVNTk9ERVMsIGEgY29tcGlsZS10aW1lDQo+ID4gY29uc3RhbnQsIGFzIHRoZSB3aWR0
-aCBmb3IgJyUqcGJbbF0nIG5vZGVtYXNrIHByaW50aW5nLiBPbiBzeXN0ZW1zDQo+ID4gd2l0aCBm
-ZXcgTlVNQSBub2RlcyB0aGlzIHByb2R1Y2VzIGV4Y2Vzc2l2ZSB6ZXJvLXBhZGRpbmcsIGUuZy4g
-d2l0aA0KPiA+IE1BWF9OVU1OT0RFUz0xMDI0IGJ1dCBvbmx5IDIgbm9kZXM6DQo+ID4NCj4gPiAg
-IE1lbXNfYWxsb3dlZDogMDAwMDAwMDAsMDAwMDAwMDAsLi4uLDAwMDAwMDAzICAoMzIgZ3JvdXBz
-KQ0KPiANCj4gUGxlYXNlIGxldCdzIGNvbXBsZXRlbHkgZGVzY3JpYmUgdGhlIGVmZmVjdHMgb2Yg
-dGhpcy4NCj4gbm9kZW1hc2tfcHJfYXJncygpIGlzIHVzZWQgaW4gc2V2ZXJhbCBwbGFjZXMgc28g
-SSBiZWxpZXZlIHRoYXQgYSBudW1iZXIgb2YNCj4gdXNlcnNwYWNlLWZhY2luZyBzdHJpbmdzIHdp
-bGwgbm93IGFwcGVhciBkaWZmZXJlbnRseT8gIExldCdzIHNwZWxsIG91dCB3aGljaA0KPiB1c2Vy
-c3BhY2UgaW50ZXJmYWNlcyBhcmUgYWZmZWN0ZWQsIGFuZCBob3cuDQo+IA0KDQpUaGlzIGFmZmVj
-dHMgZXZlcnkgbm9kZW1hc2tfcHJfYXJncygpIHVzZXIuICBVc2Vyc3BhY2UtdmlzaWJsZSBvdXRw
-dXQNCmluY2x1ZGVzIG5vZGUgc3RhdGUgc3lzZnMgZmlsZXMgdW5kZXIgL3N5cy9kZXZpY2VzL3N5
-c3RlbS9ub2RlLywgTlZNZQ0KbXVsdGlwYXRoIG51bWFfbm9kZXMsIG1lbW9yeSB0aWVyIG5vZGVs
-aXN0LCBjcHVzZXQgbWVtcy9lZmZlY3RpdmVfbWVtcw0KZmlsZXMsIC9wcm9jLzxwaWQ+L3N0YXR1
-cyBNZW1zX2FsbG93ZWQqLCBtZW1wb2xpY3kgc3RyaW5ncyBzdWNoIGFzIHRob3NlDQpzaG93biBp
-biAvcHJvYy88cGlkPi9udW1hX21hcHMsIGFuZCBzbHViIGRlYnVnZnMgIm5vZGVzPSIgb3V0cHV0
-LiAgS2VybmVsDQpsb2cgbWVzc2FnZXMgdGhhdCBwcmludCBub2RlbWFza3MsIHN1Y2ggYXMgY3B1
-c2V0IHdhcm5pbmdzLCBhbGxvY2F0aW9uDQpmYWlsdXJlIHdhcm5pbmdzIGFuZCBPT00gZGlhZ25v
-c3RpY3MsIGFyZSBhZmZlY3RlZCBhcyB3ZWxsLg0KDQpUaGUgc2VtYW50aWMgdmFsdWUgaXMgdW5j
-aGFuZ2VkLiAgT25seSB0aGUgcHJpbnRlZCB3aWR0aCBjaGFuZ2VzIGZyb20NCk1BWF9OVU1OT0RF
-UyBiaXRzIHRvIG5yX25vZGVfaWRzIGJpdHMsIHJlbW92aW5nIHRyYWlsaW5nIHplcm8gd29yZHMg
-b24NCnN5c3RlbXMgYnVpbHQgd2l0aCBhIGxhcmdlIE1BWF9OVU1OT0RFUyBidXQgYm9vdGVkIHdp
-dGggYSBzbWFsbGVyDQpwb3NzaWJsZS1ub2RlIHJhbmdlLiAgTGlzdCBvdXRwdXRzICglKnBibCkg
-cmVtYWluIHVuY2hhbmdlZCBmb3IgY29tbW9uDQpjb250aWd1b3VzIG5vZGUgcmFuZ2VzIHN1Y2gg
-YXMgIjAtMSI7IGJpdG1hcCBvdXRwdXRzICglKnBiKSwgc3VjaCBhcw0KL3Byb2MvPHBpZD4vc3Rh
-dHVzIE1lbXNfYWxsb3dlZCwgYmVjb21lIHNob3J0ZXIuDQoNCg0KPiA+IFVzZSBucl9ub2RlX2lk
-cyAodGhlIHJ1bnRpbWUgaGlnaGVzdC1ub2RlLWlkICsgMSkgaW5zdGVhZCwgbWF0Y2hpbmcNCj4g
-PiB0aGUgYmVoYXZpb3Igb2YgY3B1bWFza19wcl9hcmdzKCkgd2hpY2ggdXNlcyBucl9jcHVfaWRz
-Og0KPiA+DQo+ID4gICBNZW1zX2FsbG93ZWQ6IDAwMDAwMDAzDQo+ID4NCj4gPiBNb3ZlIHRoZSBu
-cl9ub2RlX2lkcyBkZWNsYXJhdGlvbiBlYXJsaWVyIGluIHRoZSBmaWxlIChndWFyZGVkIGJ5DQo+
-ID4gX19ub2RlbWFza19wcl9udW1ub2RlcygpLCBhbmQgcmVtb3ZlIHRoZSBub3ctZHVwbGljYXRl
-IGRlY2xhcmF0aW9ucy4NCj4gPg0KPiA+IC4uLg0KPiA+DQo+ID4gLS0tIGEvaW5jbHVkZS9saW51
-eC9ub2RlbWFzay5oDQo+ID4gKysrIGIvaW5jbHVkZS9saW51eC9ub2RlbWFzay5oDQo+ID4gQEAg
-LTk1LDYgKzk1LDEyIEBADQo+ID4NCj4gPiAgZXh0ZXJuIG5vZGVtYXNrX3QgX3VudXNlZF9ub2Rl
-bWFza19hcmdfOw0KPiA+DQo+ID4gKyNpZiBNQVhfTlVNTk9ERVMgPiAxDQo+ID4gK2V4dGVybiB1
-bnNpZ25lZCBpbnQgbnJfbm9kZV9pZHM7DQo+ID4gKyNlbHNlDQo+ID4gKyNkZWZpbmUgbnJfbm9k
-ZV9pZHMJCTFVDQo+ID4gKyNlbmRpZg0KPiA+ICsNCj4gPiAgLyoqDQo+ID4gICAqIG5vZGVtYXNr
-X3ByX2FyZ3MgLSBwcmludGYgYXJncyB0byBvdXRwdXQgYSBub2RlbWFzaw0KPiA+ICAgKiBAbWFz
-a3A6IG5vZGVtYXNrIHRvIGJlIHByaW50ZWQNCj4gPiBAQCAtMTA1LDcgKzExMSw3IEBAIGV4dGVy
-biBub2RlbWFza190IF91bnVzZWRfbm9kZW1hc2tfYXJnXzsNCj4gPiAgCQkJCV9fbm9kZW1hc2tf
-cHJfYml0cyhtYXNrcCkNCj4gPiAgc3RhdGljIF9fYWx3YXlzX2lubGluZSB1bnNpZ25lZCBpbnQg
-X19ub2RlbWFza19wcl9udW1ub2Rlcyhjb25zdA0KPiA+IG5vZGVtYXNrX3QgKm0pICB7DQo+ID4g
-LQlyZXR1cm4gbSA/IE1BWF9OVU1OT0RFUyA6IDA7DQo+ID4gKwlyZXR1cm4gbSA/IG5yX25vZGVf
-aWRzIDogMDsNCj4gPiAgfQ0KPiA+ICBzdGF0aWMgX19hbHdheXNfaW5saW5lIGNvbnN0IHVuc2ln
-bmVkIGxvbmcgKl9fbm9kZW1hc2tfcHJfYml0cyhjb25zdA0KPiA+IG5vZGVtYXNrX3QgKm0pICB7
-IEBAIC00MzgsNyArNDQ0LDYgQEAgc3RhdGljIF9fYWx3YXlzX2lubGluZQ0KPiB1bnNpZ25lZA0K
-PiA+IGludCBuZXh0X21lbW9yeV9ub2RlKGludCBuaWQpDQo+ID4gIAlyZXR1cm4gbmV4dF9ub2Rl
-KG5pZCwgbm9kZV9zdGF0ZXNbTl9NRU1PUlldKTsgIH0NCj4gPg0KPiA+IC1leHRlcm4gdW5zaWdu
-ZWQgaW50IG5yX25vZGVfaWRzOw0KPiA+ICBleHRlcm4gdW5zaWduZWQgaW50IG5yX29ubGluZV9u
-b2RlczsNCj4gDQo+IExldCdzIHJlbG9jYXRlIG5yX29ubGluZV9ub2RlcyBhbHNvPyAgVG8ga2Vl
-cCB0aGVtIHRvZ2V0aGVyLg0KDQoNCkkgd2lsbCByZWxvY2F0ZSBpdCBpbiBWMg0KDQpUaGFua3MN
-Cg0KW0xpLFJvbmdxaW5nXSANCg0KDQoNCj4gDQo+ID4gIHN0YXRpYyBfX2Fsd2F5c19pbmxpbmUg
-dm9pZCBub2RlX3NldF9vbmxpbmUoaW50IG5pZCkgQEAgLTQ4MCw3ICs0ODUsNg0KPiA+IEBAIHN0
-YXRpYyBfX2Fsd2F5c19pbmxpbmUgaW50IG51bV9ub2RlX3N0YXRlKGVudW0gbm9kZV9zdGF0ZXMg
-c3RhdGUpDQo+ID4gICNkZWZpbmUgZmlyc3RfbWVtb3J5X25vZGUJMA0KPiA+ICAjZGVmaW5lIG5l
-eHRfb25saW5lX25vZGUobmlkKQkoTUFYX05VTU5PREVTKQ0KPiA+ICAjZGVmaW5lIG5leHRfbWVt
-b3J5X25vZGUobmlkKQkoTUFYX05VTU5PREVTKQ0KPiA+IC0jZGVmaW5lIG5yX25vZGVfaWRzCQkx
-VQ0KPiA+ICAjZGVmaW5lIG5yX29ubGluZV9ub2RlcwkJMVUNCj4gPg0KPiA+ICAjZGVmaW5lIG5v
-ZGVfc2V0X29ubGluZShub2RlKQkgICBub2RlX3NldF9zdGF0ZSgobm9kZSksIE5fT05MSU5FKQ0K
-PiA+IC0tDQo+ID4gMi45LjQNCg0K
+On Thu, 9 Jul 2026 at 16:12, Andrew Morton <akpm@linux-foundation.org> wrote:
+>
+> On Thu,  9 Jul 2026 22:43:30 +0000 Link Lin <linkl@google.com> wrote:
+>
+> > Fix this by:
+> > 1. Unregistering page reporting in virtballoon_freeze() prior to calling
+> >    remove_common(). This clears the RCU pr_dev_info pointer and flushes/
+> >    cancels prdev->work on system_wq via cancel_delayed_work_sync().
+> > 2. Re-registering page reporting in virtballoon_restore() after the
+> >    virtqueues are re-initialized and virtio_device_ready() has been called.
+> > 3. Unwinding virtqueue initialization via remove_common() in
+> >    virtballoon_restore() if page_reporting_register() fails.
+>
+> AI review thinks the patch didn't do the above:
+>         https://sashiko.dev/#/patchset/20260709224330.946683-1-linkl@google.com
+
+The AI reviewer might not have parsed the entirety of the fix I proposed.
+The patch submitted definitely includes the changes to virtballoon_restore()
+for steps 2 and 3 (re-registering page reporting and unwinding init_vqs
+on failure). It seems the AI failed to parse the diff correctly. See:
+
++       if (virtio_has_feature(vb->vdev, VIRTIO_BALLOON_F_REPORTING)) {
++               ret = page_reporting_register(&vb->pr_dev_info);
++               if (ret)
++                       goto out_remove_vqs;
++       }
++
+        if (towards_target(vb))
+                virtballoon_changed(vdev);
+        update_balloon_size(vb);
+        return 0;
++
++out_remove_vqs:
++       remove_common(vb);
++       return ret;
+ }
+
+> It also might have found a couple of pre-existing bugs in there.
+
+Indeed. Regarding the first pre-existing bug found by the AI (leaving the
+OOM notifier registered during suspend, leading to a UAF if memory pressure
+spikes during S4 hibernation):
+
+I actually addressed this in the commit message:
+
+  "(Note: The OOM Notifier and Shrinker/Free Page Hinting features suffer
+  from an identical lifecycle flaw and are also vulnerable to UAFs during
+  S4 hibernation when memory pressure spikes. This patch focuses on Free
+  Page Reporting, which runs periodically, to ensure clean backports to
+  stable kernels)."
+
+Regarding the second pre-existing bug the AI flagged (leaving uncancelled
+works on system_freezable_wq if virtballoon_restore fails on the cold path):
+the AI is correct that this asynchronous work cancellation failure exists.
+
+Since these are separate, pre-existing lifecycle bugs, would you prefer I
+roll fixes for the OOM notifier, shrinker/free page hinting, and work
+cancellations into a v2 of this patch, or submit them as a separate patch
+series to keep the stable backports clean?
+
+Thanks,
+Link
 
