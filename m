@@ -4,155 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 157A4C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 22:45:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 251B9C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 23:04:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3942C6B00B8; Fri, 10 Jul 2026 18:45:30 -0400 (EDT)
+	id C4B486B00AC; Fri, 10 Jul 2026 19:04:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 345AD6B00BE; Fri, 10 Jul 2026 18:45:30 -0400 (EDT)
+	id C21F56B00AD; Fri, 10 Jul 2026 19:04:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2388F6B00C2; Fri, 10 Jul 2026 18:45:30 -0400 (EDT)
+	id B61EA6B00B1; Fri, 10 Jul 2026 19:04:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EB3A06B00B8
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:45:29 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8CCA31697E3
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 22:45:29 +0000 (UTC)
-X-FDA: 84974349978.02.62E6C13
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8DD9316000B
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 22:45:27 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZSx7QPoS;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783723527;
-	b=G3pDyo0ovIwrthMtR8vD9gb9smf64cx6w/cBwG7wzgsgttvxn7fWs9BvvkTcbCrXKx2Gci
-	ZD2wCmKAibbKeDETE1bSwC2h9MNp8y5HZRYnZUMsZY78SCkxoPrNGDwS2kDfDZUrzbO8Wx
-	m5T+0NWXjATbOh54zb68OTtzBn0RQnc=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZSx7QPoS;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 84E7F6B00AC
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:04:22 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0A9E01405D1
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 23:04:22 +0000 (UTC)
+X-FDA: 84974397564.01.92B184F
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 585A3C000C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 23:04:20 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf28.hostedemail.com: domain of 3c3pRagkbAAg067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3c3pRagkbAAg067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783723527;
+	s=arc-20220608; t=1783724660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yq17DLw8B7m0Ic0jrotN2vK5MclACu0PBR+dyFlWO78=;
-	b=mkS70DAkQcIrSkXTOZ8+p6s6OkCe0307oRCTloP0PfwGvoRJK09j8REkT3GD37pkaImmIy
-	E84cVElTN4DLq0oev8tEd9Dqs8Qv2Jklp0Mxq6pOPPob9vS6WgmMHGgGQD6L5oRdcaHjBC
-	tdtkayV+XiMJ/QPRDVSFr2BNO/0z3eo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B9FD543D01;
-	Fri, 10 Jul 2026 22:45:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FA61F000E9;
-	Fri, 10 Jul 2026 22:45:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1783723525;
-	bh=Yq17DLw8B7m0Ic0jrotN2vK5MclACu0PBR+dyFlWO78=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZSx7QPoSol/yIwMXKEmUJhTjHYhOTBLc5mXwwU3UwAh9roiwGFOEkEGDc9BHD66gH
-	 ol4A8UhH1Qv4PL+p4SHToO2ow21dRlKuMhNHReG860Gc0SP2DYkvm0I7ZKgAi4s3Wk
-	 nNh7xrNAGItIywqfA1/YCTySczvPZbj9fgWwv5ao=
-Date: Fri, 10 Jul 2026 15:45:21 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
- <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang
- <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>, Russell King
- <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster
- <schuster.simon@siemens-energy.com>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
- <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Dan Williams
- <djbw@kernel.org>, Matthew Wilcox <willy@infradead.org>, Muchun Song
- <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Masami
- Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo
- Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
- Clark <james.clark@linaro.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
- <chengming.zhou@linux.dev>, SJ Park <sj@kernel.org>, Matthew Brost
- <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Peter Xu
- <peterx@redhat.com>, Kees Cook <kees@kernel.org>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, Andrey
- Konovalov <andreyknvl@gmail.com>, Alexander Potapenko <glider@google.com>,
- Dmitry Vyukov <dvyukov@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Jarkko Sakkinen
- <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Thomas
- Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, H Hartley
- Sweeten <hsweeten@visionengravers.com>, Lucas Stach
- <l.stach@pengutronix.de>, Christian Gmeiner <christian.gmeiner@gmail.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Patrik
- Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, Rob Clark
- <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>,
- Abhinav Kumar <abhinav.kumar@linux.dev>, Jessica Zhang
- <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>, Marijn Suijten
- <marijn.suijten@somainline.org>, Tomi Valkeinen
- <tomi.valkeinen@ideasonboard.com>, Thierry Reding
- <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>, Christian Koenig
- <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Matthew Auld
- <matthew.auld@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas
- <yishaih@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>, Kevin
- Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Alex
- Williamson <alex@shazbot.org>, Paolo Bonzini <pbonzini@redhat.com>, Shakeel
- Butt <shakeel.butt@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- damon@lists.linux.dev, iommu@lists.linux.dev, kasan-dev@googlegroups.com,
- linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
- kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>, Ackerley
- Tng <ackerleytng@google.com>, Kai Huang <kai.huang@intel.com>
-Subject: Re: [PATCH v2 00/33] mm: make VMA page offset handling more
- consistent
-Message-Id: <20260710154521.435f67cc7b03ed3a9ccd423a@linux-foundation.org>
-In-Reply-To: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
-References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=PILKuP1baRMrI40srAIIZX6vgxgjZMMRu2N2qYBgI64=;
+	b=zqZxLePES0Ym4OmoAMVURDi+3rHfB+EJi4DoMammdM4xjzVPHdgmAtoUBzrfAQophFXdaR
+	OGSGDG08JRXKtIgHwz+G4YSvC9a7/tR6lLaXNkPCysPifZO7YV4WcWwOzF4GYGAK0Yi0do
+	j6QXeueHAU7nvzVm4+AYqAC5Rnxjdpc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf28.hostedemail.com: domain of 3c3pRagkbAAg067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3c3pRagkbAAg067sittmzixxql.owwotm20mzkwv1mv1.kwu@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783724660;
+	b=S9Q60psgYMWTB7WLk4SwAziWHUHhMsB6QvCiqD9fsS/MVWkghAxsDnaCiWM4eMUunK63S7
+	rFpYtB42Sd3obLdbZ1hW+TfAvXWWTgRhGRM1EZNoMK1xZjuaRT14rW1mYisVoutJOaS64G
+	FhOd76zbkH8OEzwFvszX2krhSHV4F/8=
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7eb64224fd2so2134662a34.0
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 16:04:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783724659; x=1784329459;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=PILKuP1baRMrI40srAIIZX6vgxgjZMMRu2N2qYBgI64=;
+        b=sYmLAoWJiqfETGOfaimcaH0V5/CZIj9JQrxgaF1o4yNVjh582zaQIV/42HdrkCcsOE
+         pZqgrXd+cLW7HQpKU7VoGYuuFkP9bvFGagZ+LU+jQxmkAoXijynk8JV71dHZliVf+6DB
+         9vlHorkQrG1/F8w5xRZ9Q+aqA59uVa4Wy4GMMMFmeJzNIzetEj44VP8Ptt4F3KAL/U0M
+         bXLMsfpLlNZvUh950WFS8G8kuDAoOgOsDvxeY038RGDE49FOvplnlXxxXAr+yRCGXyi9
+         MWBm1zcIHkntKcivYMx5rT2RBqLIOrvcjrWuW/Gli2T2yHkklQlrYor96pPwEAz6tzsM
+         DdgQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+QB1c4p22T5vcScGN16i96ncxzk/RACQ4URJyDKyU7gzjKmtZsRegoxFQF4PKsNsJO9gwtlyJI0Q==@kvack.org
+X-Gm-Message-State: AOJu0YzK4Qr5rPN9S8QDDd9mKnDuMr9o2uqTszx0/HSrqVxoNhh5r3mr
+	OiEYW2RWptp1QOD3g+BHXKWcY9scRPHvaTK7EuIb029dEVdF7z4ejqWUFDSp9/pvZw/z7Asqq1u
+	SjFvCNFzn9CMxRl2CeQMgvn4TnYc8jNFJeEXA1sgk4rykoxOSderM/11mxkI=
+MIME-Version: 1.0
+X-Received: by 2002:a05:6808:c3f2:b0:4a3:58a6:8a2f with SMTP id
+ 5614622812f47-4a42af2782cmr764717b6e.33.1783724659442; Fri, 10 Jul 2026
+ 16:04:19 -0700 (PDT)
+Date: Fri, 10 Jul 2026 16:04:19 -0700
+In-Reply-To: <20260709184740.1286561-1-willy@infradead.org>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a517a73.278cdcd2.e885.0009.GAE@google.com>
+Subject: [syzbot ci] Re: Use generic_file_read_iter() in hugetlbfs
+From: syzbot ci <syzbot+ci26aa0fb7896cb4c6@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, christian@brauner.io, david@kernel.org, 
+	jack@suse.cz, jane.chu@oracle.com, linmiaohe@huawei.com, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev, 
+	nao.horiguchi@gmail.com, osalvador@suse.de, willy@infradead.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: pfnyc7xkmgiuuhxuhxcgw115a4psgymt
+X-Rspamd-Queue-Id: 585A3C000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8DD9316000B
-X-Stat-Signature: qxxz3p8htgzooxucmcykiw3peh7ocd1y
-X-HE-Tag: 1783723527-205677
-X-HE-Meta: U2FsdGVkX18qCP6TJ+GAxamSGeyToc4VkQsdqbvfiTZZkT7mtLVDKB7CDilpO5fZPDhCcKOZdoKXs0II2Cwzc8wrdvU2MIJ8KxWG8KSvGtIJgSC9ZK2pKGqlHCMDxJL34RD39NgutRLko957Ea31tY2s1Q9T6vfL18EXCAHJuSHhCdEaAMw4ETar/gQivMdAS7bHHQ1ZOqArS0kcocg879JEEvNAUVlkfpVuLvmhD5QEj91f1c+QM9ez/ElS0YSJKZIlShZSfUTsBWxm5FZUAkHt3vy4+o3BlcUyUk9/0bPGOBnUmxcZivaY6GJ2V97J0cXfv6Fv+2mmfuiQnbyw5euhPbvZydsmi0IM5cTJ6r2uFnDEgxW6XOWbDHXde29isn3sw1jveL9lTmmzxiIyLCRIt+Mr99U+wnj/ijoy39OglDjNzjkfYuIr0XDdcyyQrFaBBDe3lHkgIy486mtNBp9MgXneSOkJpvutWGC08orMxnz3O38e924YiBVIKeTnOzG/MAUC9l9naf4Vj3ZY8JXNsjmwpbQObF8jR2G+zEfwYJLEIY7eobereIiDsGR78tSTYR1ZI766B+yt4rKDOueowJM3rk8S5GU0N9ohsqYNkS0AIzToTQXTdQsiDwi/zs/dt2L6PKDMkc2wvm5GgT7wM9gU0aC9fGSOcWCccxkPNrRWFuk9iMhvM0DVErqFH5lDANlHDD9ivyfzK5VVbhPCUKD0dJlBJmpGoUUiqHObhemvq8qkNq44QTuLfD1evANFAopgWZKJpqQfjmOO69jmmj+TAUHO/hdco1jmj4WI0MUas8F2MEas/yDsbEQDvUNeRiKNJQNV4cQ8LE+XKfoCksZJoKSx3ivOPRgltYns7S5FiAqHM+G6p08Za1uckDK2uSoZPaV9nNGMeGILu/YhBJ++9fQLxBWEeyNl0/vVBZ2Bkuu/RFI5V8pXCpomkwTF5uAXbKhyA+tPRR7
- GlHNy92s
- CDZ79untp2b7gUf0+Kal9L5rDTW/pDo7g4VzLSRPPz/jPtamkitZGD9AEKmTOHlqQaOR2K8BewRD3KxWT3VpW6NhoHcO4UI/9izmXMpkLjzJ/cEwtwOvQs5KxNMe6M1PtjUmfOSb29PIi3h0PB9G/cJ+cSfHt3X/B2WseSgIhRi7Q7S99I4+qDsKV9uoNJrON+2SaxE4WyQ99UsdplYfHaXIvXleK0lAQkJFTLuwe0PuSYlZFTn1FqfsCapOipluVqz3n1votwFkwurEb5aQXp/OehlftBNnrP3xWanSGR130//H3xLP9AokPU8BY6Nyih9ccg5QDGvkENbr5dma3Dabmsn0OhkMKtaCqk2hI6BlGueSkWqoANAz/b8dvQBD/Taw9Te1z5Fn2JjKwgcC84IFO3laSI3PD2RKNutGB9AgygwmKHpqGvTRCAd26AOZ20/3ZdnTQKepxcXRpl0C+Eb73kcqYt0PRki3qRMQsIXiITPbk+1fUZWIBdY64m8/HMV7apaog+b/w6H3z5cKmzYYRCmFuqrLHArGt/xxquyqZeaJ5Zw4cMMQx4/Rfrs5jT9C4/ZjHjkvlzXca7B7HyLT2QX0INjwlA8OSlTO/LmJR3lesO/T6WNeBrwuvKZvFGjcvATz2V2Yp+J+HYiAN47Fa3t5gPGkvZGo5488WHYrWW+joEpqOq13OUkLeVO0muIPKX/P9A29jCPbd7TxPKhKrc8FTP96YqWQdR1d6jbVAFS7rFMAAVzxbcuwdnUs/k5DIAUnXfK/Gs7fkgkExnurZF+6IGITNTyS5/5zsFU5Dcl26QY16UUilUaHbiYBBIwqrETtfkovAV1Cv47ihgJivhaOJWDTSuHdulMjM2SITvf+PGhnH99CV6ZQ6oBzS3U2mPfpxbD/yuP6AbZcgDMIe92BEES1Js4S82KD2Q+C+orH5WQXVeyVfLZuhT4LSe55Hli6oc2iqUcKlbTXMUzHLpgIv
- gRohQqG7
- Co/HchHpb08ThwR/oW2sEdBG5JLQRgsPQto0aq0ovehoeryKnkXl76060lSjQGURlZfrcRA7T8pt+ozdunD0DSVIQsvH6Gbrlyuv7VLWIKYtrSDhuBMF64Dfmh4veCRmlxXtfjSCTatKK2e5k2VopdgcYOZ2Wf52gO5QIoFpVU1TUK3YVRhCnXN5RRHEIf1sM0gpYJ1ZQZE8RMNo5/nWyhS6lTd0kJW32H6rLsNnRPCVm4jRCf3rgH02ItYowmW4+AgNj1QEouBxKLkIFbtsZqZQ0JiIBUMtNLSLy8zFYIf8Ji3hH8C6ZIu6Zefprz4ogA9R8tKr4nLL0iY2nSbnAZfUs2+fw3QJBvvFhoY/So6SGvFUspmlIPPpCJJ0OBVv9u3iIBtd+6oTCNCgQX1hBA5bvJWhKlWN+x35oNZhFvxN3RzPuD0w7GlaUI+XmeS6za+I2dCxH957IQYTjAAXb0JNjQOVIugEui4nLX98kkRUJaPXjNlf/OiWeu4L1ZzmJ7se6+NE/r3WhMzgp6zmyb2z8VupvV1JhSDLC4KXZlGMWcKHKgPta/Q7uTAMrXZ9RRb+JriKg+srH4UqYVaYujWbl6DENgJ6VIikaBvj0qw7JjYUb3Mh4Q483w1gMJfFgzNIxfBfEmEmCVLLZb72I9nZhXfBROZeBdz8azY1D2N8W1tiiGBgDicwSfqm8FtWVTelTX6/GkWZzxrKlBM/4ckGoRAawCdinZZ6e9/pnopLMV0p62tVQFTsf3gGIz1NMT3+YU9nGs7rznr6gPJZiu8a/jwByqb1Gy4wMlgPWSaXUOYF6nrUocIu913MPpJtucgDD6jbB44AfH7Sh3sf4Jk0/acyw8EZkiktA62R7g1KPfnPKqdKcTS4rVZ0kqIEvubIL403NagWs0qOt7wWZ7c49z7VYUsNarr1tjzjdVFZhM/WQNYBYMsk1RHbTdgevwh51qYFByRMtQ4Rb+Qj14A3AHtDN
- I/a7P3DB
- lQ33Bkcw4teN+2z2EsX1Wl7hK6qyaMu87ibYwKewQ44hz5vkSJNIslFF4TM1rI57n5KmFV/kqgDusi59mOnLxn9xPaiyW+V9D9kbFt6L2JJVu24T+KAmbKYo3NEtDK0Q8TF2TzySh/iDTFq4F5U6G8Yxq/mcmi0Ra94Ae9NKRhUqrlyniDd5T1VCffhkkFDLxyu39MfxQ2ADYPB5F6NhvwsF2pGNhvDdHiKtqKWpAht9zL18dbZpq6AvcxK+H7XukbAMY96yztRfcrc9puW/+yPfzDQemJQLJse9DYHE5p2Iv0GVEUxr9jjoaoBcuHo3wLSm70FryvPqlHjv7gCOO+Catv3RZF0c8VUcUUuq913N7tbvkxDRaqR6J+5kC4IjAxbEzFWcTWq1Scb37+4DXLHQJVKRr5967M29fqLItIBlI+XIeyGs1WgqDhIEzxqxPDms4mob0y1zlg5dd88OX6Z12ISKOjTjhHoCeRt9xg/3J0R2o9sgrx2KNkBYK2CYldnpotsgTM+UjDwu3S1n6e5KALLDFooi+2IgVA2xcIlkMibI7QMCeXnhSjzrNID3hai4PVY/MmKid5wtfL8VHpezZtM/LwrWnnC2JgF3xItEuruHU1LFE3Hv5CM30HFfOEMRQOOV2xGtocuTKADBLFge4Ov2XxbVPY0/yswo0ggwG2YI+v9D1fvMqERQ/G8MYYMtg/ZpMUWwfxIYF0EKwDeMhvBqmeda2CMPMwzdey54RbQlzKrTb/7vRi13HJqBzljZ/wd3u0zDTET796VOLkYAAbqKLhK9sxaU9sZeJmo3STbMbhCtETvIH1hPC6pfZYPfODK/2edKoFCk2lobN3GJbG/PkwHd5EMoF0YDH17LuzvTkdBRgNLh57wh7XT5Ec5EW+dmFlqKP8Aa8VZMt5XQ1KYqmbsdWxXtTH+qBvOnMAf63K7kJDkKxmCsbjcWDHkSGo1bzso8uAS9h6NnxByQCOovR
- UMRQoM0k
- 89Q9DAX2Fkw4e97LaBkZ37X6bbXVZLgboz3ZVGTGPuIy3vPFu52Qe1J8LGtFiAouySxRu6bTnLBe2PMy2LBVFm4yHD3RDV2Ll4imvuGbTjayZvsZniHthKdCNzdqQ+hHYt/hiMVlxFgWv5YfyCa/MStecIQN37uLOGxZrJeBdZJkfCkEGiLZJRv4gLdH1kHW68g4fMt6yLDTclTtGFRpNU8HvfHsIb8cPG1xnwzPK0pLAceakAIPoe9n4Ni6rVxN6VZUPVZ4apaglsvPZOPOfsnfTu9bmtmgmopQsZka6VpwZ9p/RdQRTJz8so+3Lk+Idj7BFc1HuK6eKAxVkWl+hMN7WV39ZpFLeTD+gyjhW0TZMW3BusI8TU0Cz3U9DBskw1pvFIN6pxK6PN8mvi0b6n2TG+tFPmJQPmngBUzNFwCbL6OUoe1CkYuOr2Bwyp3Cxyi4EXS7BmSH5ipZ2YVnprhCjF0Bb9QkRGCMtqnoSvmoObaqMRLFB5UBC9Rel43FRQxq9+ghWkDBxMPUKWKdW1
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783724660-267666
+X-HE-Meta: U2FsdGVkX1+yNScHkTl8KSzzFSuSu4DPLcMii4IVa90/w+zXxwueAyepj5EOgjliORqSKfcTtfBURPYfaFZ3oNQG4gRU3yF2FtL9cIyYkr36kjNlT20CJ+NkWGPq3G5ikLCCybzwHHsr+U3Iv8eJg6Au8bi7pFb05Ub/eHyuFXsGhql93MW4e2kKugVRb9qVyecKijSGwocjGEC+BSVk9MJtxNPGh6OddwSgphkKhozl9NWyD9pAeLVW/cGzl/1NnfEFXATUAXDk8yaeFTRXXeK8XpkpCeT1MQAsEszMfRLN4axFAhy/OW5t1eICL7scOxvY8VjP4FBxcmLZydvE64dbzlAyhZFLTfJTaDB4xxwH8zFKvkJfd4u4KVNjqaMxFF2/z2JpiTmnyJt+LlSDVb25Ag0QfqMwZnTkKSkXacYN/4rX+YGVoQJL13Gh76LN5yjio868JsVYHttWbDyyDLdCpC9L2BMZ4UmFPtxedD0rdnIbdh5UtQM2pb1L+Oj3oqNX9Aw8gVS2OW6JuiUnmd30ZtS3ideIjiqaBcdGuILGYi1p2mZ68lyA/QxcN1nSXlfsHD8KpBCb9/sfTbGcpqhzl5YLI3hfZvqG7qaF0DMkZtAYfWdHCCT2lfPY0MeDaZmcApd9CuQoTJ+j1QYHrsZVHxrRwk1G6Z94MEY5jllWeeH5ADABFf8XAr4mKwTfT0M+SIM6M9mA2QOLFJX57XeUdcgDqlTinZz6c1u6bU4k4yASVtLNgblJYYWEkbqKdluVWdUWZje+EvBl7dw7yKWSTU89RSzca7tOvz8WBZQdA5yFUkGXcf+xjAwUGF0G0iN+001nBdrngZ7rmgg+zTlO7QFmM2ThxwcpTGK3J3QEW28M3+drjEbFku8eWMy6hVGV6Vf7Y4oMHmoQAtCLMTyknWpuvYqUGGj+akfbqFGdRj70jCxgtCoYmRxc8nPKVBw2UnxpFsBGKakSkQI
+ 0r2x3MFc
+ VUTI29TzSxhnx7SwH1ta8FLqORmwCc1mxm9iVvXuUYFTiNTNuRBmgPLpskqUFq7WB42hDzs/mLTA3xqaoxVuOs65bV4UI+xn/ycLSLo8+21YltkAAd1oDiHFgtuM5Cs0ONIz2N7UVdMfL0wx2kkwNUk3UPJQd5wTb4PecHJMTrOY2KKFhdiXjwTlERvXp5SzCL6WNhGFmlzX//2796x2+9swZEUx3vyor6ZWzmTgQ1ZylBN4Njs09W/xYEkY1F7MXwpQaD5BONnzbrIByEYkWpDeeyABRI2HFyRwCBjqr6unqo/B93TwzJwuJsVJ8fFwSmCs9O3Om9yaTG6vNvDVcMAT9r9UJBrJ8cvlPKsO2tnTMWpSOcCLu6Wt4yvzq1vjz4ja3FbNwLqNpaz032ZusSP+r38KpT811h7APSPhPeYrFjgK48cBNauHsY7pioeQf/YLHhrWehHroFjPOBnRnEoGdwMxQvKo+9Gek3yKab/G765dBK7V3Jc1W0b3HsjpfHZgG5OZkqmXv9fWEQjIAM91ZL1QFJRLhlCwE2h0SWSNXwDA3Ro3BONAj99c5xW3mZmiiQTVur+fgQkCnUx6lcHKjp4WEawBTdAEQ06kiwk+TyZ46YWG7aqujSyPPClXNmk/lOZdOEUsfwmcbYlgHrisHEMPUa5tGyGExUs4ZgdUnOk2QTG7H2bLQCJQikOXtGqQ/fDQ3yRjmBBEgabLLAvlzPuPwTVqNXFBhjZjRDjLdmoGjCEFhnqa6MqlBo/EHXvPmqXkh7Az/03NaiKt8RuG38buTybPEKfskKpvz4wlMSVzttzB+eSiEUEWXWAckec3r1xrWU71/Y/B5BJwZsEBwENclr5Pwz0JIMLG1vzkUsK8q4um0+aGRHwMEyZPCscAhxAxk7DwDs0G9M7syIOf6FZQpH5/8k70+ZaIh+gHues0Ffb8TtsXYzqqFXyljejtmZ6BNbxGgsWXFX7cFQP3cP1/X
+ RWZ9Mgny
+ 7x3ogL0SrhbMqBGie+OFnQX0z1J3Woj+LJzS3Tjn+xT7iINUsYZcQMMx4RpY8SxuKN/3BWdiO1FHZ/EvhdDdSK8Nbe+/4hTJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,18 +100,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 21:16:41 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+syzbot ci has tested the following series
 
-> This series performs a series of cleanups and improvements around how the
-> vma->vm_pgoff field is used.
+[v2] Use generic_file_read_iter() in hugetlbfs
+https://lore.kernel.org/all/20260709184740.1286561-1-willy@infradead.org
+* [PATCH v2 01/10] mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
+* [PATCH v2 02/10] hugetlb: Mark some function arguments as const
+* [PATCH v2 03/10] filemap: Remove checks in mapping_set_folio_order_range()
+* [PATCH v2 04/10] hugetlb: Set mapping folio order
+* [PATCH v2 05/10] memory-failure: Remove raw_hwp_list_head()
+* [PATCH v2 06/10] memory-failure: Prevent UAF in raw_hwp_page list
+* [PATCH v2 07/10] mm: Handle hugetlb correctly in is_page_hwpoison()
+* [PATCH v2 08/10] filemap: Add hwpoison handling to filemap_read()
+* [PATCH v2 09/10] filemap: Add support for authoritative mappings
+* [PATCH v2 10/10] hugetlb: replace hugetlbfs_read_iter() with generic_file_read_iter()
 
-Thanks, I'll add this to mm-new.
+and found the following issue:
+BUG: unable to handle kernel NULL pointer dereference in filemap_read_folio
 
-Sashiko wasn't able to apply it :(
+Full report is available here:
+https://ci.syzbot.org/series/35ead019-1e81-4d15-8801-8ff11d9c959b
 
-There were some minor collisions in ksm.c, thanks to
-https://lore.kernel.org/20260703162510242nxmjbcLy5ccp1dbZSK3EU@zte.com.cn.
+***
 
-(You'd think His Royal AIness could figure out how to resolve a few
-dopey patch rejects.  Oh well.)
+BUG: unable to handle kernel NULL pointer dereference in filemap_read_folio
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      dc59e4fea9d83f03bad6bddf3fa2e52491777482
+arch:      amd64
+compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
+config:    https://ci.syzbot.org/builds/fedb89e4-11ba-4995-927f-a51101829a59/config
+syz repro: https://ci.syzbot.org/findings/7a0cb565-4340-4daf-8de2-06f5b1d2af93/syz_repro
+
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+#PF: supervisor instruction fetch in kernel mode
+#PF: error_code(0x0010) - not-present page
+PGD 8000000117bc9067 P4D 8000000117bc9067 PUD 0 
+Oops: Oops: 0010 [#1] SMP KASAN PTI
+CPU: 0 UID: 0 PID: 5840 Comm: syz.2.19 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:0x0
+Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+RSP: 0018:ffffc900035eebf8 EFLAGS: 00010293
+RAX: ffffffff82063559 RBX: 1ffff920006bdd84 RCX: ffff88810ba18000
+RDX: 0000000000000000 RSI: ffffea0000948000 RDI: ffff88810139d200
+RBP: ffffc900035eecb0 R08: ffffea0000948007 R09: 1ffffd4000129000
+R10: dffffc0000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: 1ffffd4000129000 R14: ffffea0000948000 R15: 1ffffd4000129001
+FS:  00007f2e39ef46c0(0000) GS:ffff88818dc11000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffd6 CR3: 000000011578a000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ filemap_read_folio+0x12c/0x3a0 mm/filemap.c:2512
+ filemap_create_folio mm/filemap.c:2650 [inline]
+ filemap_get_pages+0xe9a/0x21e0 mm/filemap.c:2714
+ filemap_read+0x428/0x1700 mm/filemap.c:2841
+ __kernel_read+0x4ca/0x960 fs/read_write.c:532
+ integrity_kernel_read+0x89/0xd0 security/integrity/iint.c:28
+ ima_calc_file_hash_tfm security/integrity/ima/ima_crypto.c:222 [inline]
+ ima_calc_file_hash+0x451/0x890 security/integrity/ima/ima_crypto.c:280
+ ima_collect_measurement+0x51b/0xa00 security/integrity/ima/ima_api.c:300
+ process_measurement+0x1272/0x1c10 security/integrity/ima/ima_main.c:425
+ ima_file_mmap+0x1b0/0x200 security/integrity/ima/ima_main.c:523
+ security_mmap_file+0x773/0xa20 security/security.c:2581
+ vm_mmap_pgoff+0x134/0x4e0 mm/util.c:575
+ ksys_mmap_pgoff+0x57d/0x760 mm/mmap.c:606
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x174/0x580 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2e38f9ce59
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f2e39ef4028 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
+RAX: ffffffffffffffda RBX: 00007f2e39215fa0 RCX: 00007f2e38f9ce59
+RDX: 0000000000000007 RSI: 0000000000003000 RDI: 0000200000000000
+RBP: 00007f2e39032e6f R08: ffffffffffffffff R09: 0000000000000000
+R10: 0000000000040033 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f2e39216038 R14: 00007f2e39215fa0 R15: 00007ffe3450a298
+ </TASK>
+Modules linked in:
+CR2: 0000000000000000
+---[ end trace 0000000000000000 ]---
+RIP: 0010:0x0
+Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+RSP: 0018:ffffc900035eebf8 EFLAGS: 00010293
+RAX: ffffffff82063559 RBX: 1ffff920006bdd84 RCX: ffff88810ba18000
+RDX: 0000000000000000 RSI: ffffea0000948000 RDI: ffff88810139d200
+RBP: ffffc900035eecb0 R08: ffffea0000948007 R09: 1ffffd4000129000
+R10: dffffc0000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: 1ffffd4000129000 R14: ffffea0000948000 R15: 1ffffd4000129001
+FS:  00007f2e39ef46c0(0000) GS:ffff88818dc11000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffd6 CR3: 000000011578a000 CR4: 00000000000006f0
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+
+To test a patch for this bug, please reply with `#syz test`
+(should be on a separate line).
+
+The patch should be attached to the email.
+Note: arguments like custom git repos and branches are not supported.
 
