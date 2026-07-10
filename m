@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB60AC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:25:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBEC9C44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:25:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E76066B00A7; Fri, 10 Jul 2026 10:25:42 -0400 (EDT)
+	id 303A66B00A9; Fri, 10 Jul 2026 10:25:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E53676B00A9; Fri, 10 Jul 2026 10:25:42 -0400 (EDT)
+	id 217666B00AB; Fri, 10 Jul 2026 10:25:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D65076B00AA; Fri, 10 Jul 2026 10:25:42 -0400 (EDT)
+	id 1540B6B00AD; Fri, 10 Jul 2026 10:25:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B539F6B00A7
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:25:42 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F25640495
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:25:42 +0000 (UTC)
-X-FDA: 84973090524.18.4A612D9
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B480E8000A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:25:38 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8C556B00A9
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:25:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81853140478
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:25:43 +0000 (UTC)
+X-FDA: 84973090566.03.AA579D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id ECAAC8000C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:25:41 +0000 (UTC)
 Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HrOLXIlJ;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2BO+ksY;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783693540;
+	s=arc-20220608; t=1783693541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1VlKCpo+tnRr2SOFJ9r1et+U9+XWbDNAx+XfTXQ4ZpM=;
-	b=iXxjImjxyj7fH+cxR0U868NxgI9M30YA8dMgHaF9mk9acmJsrAPoXyg0oXQYWTe5Djsphq
-	jNHgyloHZoAQggUwcgjMRAAmzEq9Vln6J3sxVZfCeYhegll25+SszXMqynHyoMeUx0ookk
-	xeaw7FI1gMCv7yFJC7/F2b6uDc5/Lmk=
+	bh=djPcu0FaAOL3FlpJ1AH3s2+hbsgy3DtsP6zvFCsTW9A=;
+	b=K+raoh392xVOmh/mn0dhElKymQHUAILWT22mkH4L1J6JKHtgCQR6wSgGof0xtjZM/RLSeS
+	8vvZoDRNt2uQfPYCkgtfPB3Y2Xhbvp7EhYMYJFWt5mu6i8EcG8m+XdYUeG9LhM4r/513TN
+	0wqCb2umIUltWcSJGTStAsqXzgjwLME=
 ARC-Authentication-Results: i=1;
 	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HrOLXIlJ;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2BO+ksY;
+	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783693540;
-	b=inmE0mxVADBJnwtL7XAIg6zQCy9comq97nptSk5xRDMf7FbGfZiMQrEgj05wWxkZ7KHP6d
-	k9E4FEywS8SI7dqDQ6EbZPM858YdEmkESY3UG5aLjw9avzsJy1kNmRqRJ4gOuDf6EBqrG5
-	HSnl32kr3iFdztQ9ZPpaMJhQNOo84sA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783693535;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1VlKCpo+tnRr2SOFJ9r1et+U9+XWbDNAx+XfTXQ4ZpM=;
-	b=HrOLXIlJK5byvxMRl92Xt9Qe8BH9aa97sbTEINkk6Tl1g3pRas93d3bcKawXhxT4wPQSH2
-	pUVy4GlMnPr0RDwlU+9UJT9dIuS7ZGqUPO7aQcEEzvGXQBanYYA0jXc9PaBax+GsITsfCw
-	JKZWwia7gUFzCW5BmNzi7XeiOzZU9LU=
-From: Usama Arif <usama.arif@linux.dev>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>,
+	t=1783693542;
+	b=73K0upIRYB7Fe8Gqr5ViItCAk+0vqSzC+nHJ+QctRQtW49zlGmbf9/T4dH/valeE6ledJN
+	jDWSOMyW8Cr8MU1CPeYeyiM7EUt2e4baf9FV3qhUNDM2mn6zuxTfGLuBNnZrfMs7hgFb1q
+	Zrb7Jr1atcl9cpxpV3nQ8GwdOt6vHIs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D10160052;
+	Fri, 10 Jul 2026 14:25:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B7F1F000E9;
+	Fri, 10 Jul 2026 14:25:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783693541;
+	bh=djPcu0FaAOL3FlpJ1AH3s2+hbsgy3DtsP6zvFCsTW9A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=i2BO+ksYpiBx37gKYrYNHUh2HlF78n89BGtyuZ73Ta2ah83pclTFsjnnd18tnUgE1
+	 CfEg4zYqwCprIe85aRi75RuWGOvj4pWOHdp4RVPGBwdDGxiayiV3pi5kVpJ7bRozsQ
+	 K7XPmGZO89OOJJ4cQxovFRQO5tAHtIRKljH5UaLtuwzn/fhxO91L5Nn0ssxuAQKD13
+	 e+Pm/jk5CkFoxg3iHZOlLDMawkW/D6pO/Kf1TPI6CqHtVK+SOo0KPQfcNcPbiAitDM
+	 /1qVc+q69HTej/99qnjeouENAUVr0gXDpXYyP4mv7zXt9Y7dlDIRcyNs5Q4Yz3JGPa
+	 s3pubU758lSYQ==
+From: SJ Park <sj@kernel.org>
+To: Song Hu <husong@kylinos.cn>
+Cc: SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v2 00/10] Use generic_file_read_iter() in hugetlbfs
-Date: Fri, 10 Jul 2026 07:25:16 -0700
-Message-ID: <20260710142517.1022940-1-usama.arif@linux.dev>
-In-Reply-To: <20260709184740.1286561-1-willy@infradead.org>
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH 4/4] Docs/ABI/damon: document tried_regions probe hits
+Date: Fri, 10 Jul 2026 07:25:31 -0700
+Message-ID: <20260710142532.25200-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260710044737.561102-5-husong@kylinos.cn>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B480E8000A
-X-Stat-Signature: k9rtwaf8zqero4683yh8dhr945obrkzf
-X-HE-Tag: 1783693538-188196
-X-HE-Meta: U2FsdGVkX19sZRk1ya9hFJd7WabWegEy52uSbSqFXoeZek6+QVzIk2L7KyIVUPksujEyBgmy7wi3T3607Zs4HVlQ6aCscZRSSBPQabu8WscqgEBDDEqOuSiwFWjWhfEZMG7YPHo8xIcRdYkEmljrseeR+ETNxl6TfiRRv9zPFt/KlpWF9s+m6Ky4fCHQ6x55hCgPwvMsZ7MMOY7XFdXL+xEPcK86CdZv6YmKs/CHiUYm4MdO44eaTsmO7XKaInkZgYppyIIqJz7i0zTEz3V0Ltym+eDL1ovqqQvRGHMAc8w7RPuWlf+vDLvC/9cwHShLgbH3faMqSW4ztY43UZYPQEY3ktDUvmm8eY0vohG7NtykpZgfhH7srzwGDXoP24xorewLJIXlzy5mzasfxTvAg5xOkT+cxGpnfTp6VM+E3XR52BIKLxRz9u11COb1i3mrIvDZSWjTIPkdwS6HFmBZqsS5iJ54B3YJv3xTtUhGRbt+t/mF66xMiMK7wt4a7lCZnHFSwu32MymSAEkXaFyKBe3in3+gmaz8AaBc0q65r+m4u4iqC7rMBSLmPzHmYZ9E6iLNIVpII9M/IfYJZa+3R8pGC1ccM5VcJSJPZGjHIdbL33LQaJ+rhq0RZPTu8m6ZzjdMPpNIC4HrKdm7v5iFNsV5JodcIoptPiEYzUJnq17/KKox7iqqM+HJ/QXAnRI/xT+j7aKbVet7xeuPMCY1caGJOjdDNtYfI1LZ04xQ/chvXRHaUL0EfBp1/1txaIyyTs0qitxls4D6f3IXCOWpjBrGUNWvnXO2vQrRYpA5JF6Y4dxe1Ta2ase/NobKC6ovqmzmPWOEYHJwyqiWDmiCtCLsv6n4YvRZxBg5bzkAVbyGJ0hpGgTKb8gmu8zb2eP4+to8IyZRPmb7SmNgmtUmww7wCjA3p+IHhXeIRg4j4dZQ9gAMMJgMPWu4SGNYQfYD58CcRltv3vQlPdxAu9W
- nVcltei8
- ArxBMbqMINj9xkdg4HFYWe5GhQVq+Y/UtyQG2crGi4OCm/EzkC3bSqLUqK9IBbADTt64+wXSPoACwtP3RsRvFpn4pMIcGWeJlP7BcRK8gNzR6c5n86dFsoUAKD5HxuuCKLdWuzuiHDX/LYiID4b43bk9jeR3+XeCMz0JjE9GFvA2HUhJsq5snhhv4LdIcjwOpvcTaIlKBKbx5P5yFI0Ia0laYSa4TcX9U16Du+/nxIoW/maWOGag1UWx4u086Ps3bjC/owph+CF5KjGrLnen6K7tFZpFGR6wYB8U2LMGpQDlIu65AkDh297HQcRSLOqrSeb6e3OVr4BA2PajymePj794bniFF55LVPqYRNTtjP0FIbtKhvH8HDkigXwJRx5mw5hO0Ic9/DA4gXKz/Qjf19TlihofYlih62dhBYcTLIbu2tuk=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: ECAAC8000C
+X-Stat-Signature: 6ospih9hxc88prrit5117r4of1njrqe6
+X-HE-Tag: 1783693541-249953
+X-HE-Meta: U2FsdGVkX19OcATL/6I+q/BnOU0nSgXFISa3JEQwvheoNSGwwqomIp4TiD22CCtTKM8eD8BYgNARYgyd7H+UDT9TM8XZ2aaLHaOQjist4S5+aG0+K/64rqsMjNMiaEdmFHEVfi00Q7Mzl3IWsqq4nv/RSAU10QgI0t7afdhQTXJ2pVeUjghnu2mvTEpX11fTBDiH4VaRDdlsYKhVbiLHwu/AcTbD0WdCVWn/thGgGwe3nlbZ829eYA1SeHvOAfax1yxL+F/rgdGZcK0K1yv9/mL3gQ8Jn4nlm1hFnAUNSg9WrnrYsc2pb8I/LOMcs4KId2TMYK69f8hXuUZrFBTugQl/bcHWFG2vqIdA8sZbvdktioYuCrzkjTRvbM8OGgCDxyhuq3rJCfEq/9E21w+ELmoLxfmwrepQnajUEHZzWPQ5y0f5oAWBBa3VckjtGhPDZLDeQ24lnaBoFA1PzYgvc9/TZ26ys9p4o/LJGqT7HTJOdjHmyzA/7MgVOxILlblLS8XZdOzy/vYKpOERZ7513uIlWMNtxPLkxLp/MInVXmdJQp3YqDqXr/FdNVIHjesFcu2pa5Z1oIkPxv1DOuCmXFLGgjmd4RqHr6qdLLoFkoPxhDfUyIkr7seeWPXUqLdyX3lUKEB3wRO/ZmvwM9OPtPJmaz955J6228GBQGQHXuSgFYH6lQEm0d5AzZHx7feJR82lwbjkRw83Ux+mZ4aHclaQxzLWUgtuYspeAVMmQbjWWt1cYomi6tIEEGx0BLGOoY+FmUo5Je/Qb8KUnVql50ba18gE1XTz3dVJJuVJnBx/d2uH4zrIsEzalCiWXi1imJIGN8F7aZJmZoF8chOqfM40Vc7OCgKJ4EDWC49T6oNRLOahmohCo3OZF4cmkm90s+QiTqaFMlbOmz76fvKtO4ZRZj91B7loB4Cr78vJAy3quqdXfJ4SrmClHVBJSE5BNCEka9pnhFGoVg1tR1Y
+ RefWhXlk
+ nSaNhQe+sGCCPsnNcupaBi+FCAbtEzX5mYaN9wacIIA7L8xV26tLdZy4mtB2GLEA2US3Xt1Gurm5O9hY6eAgalBChf+/0qJN7Pn1UGlxbgD8h5JrYdEKzBB7WSihWkTRYFhHv547qol+PwpqleKyo78b8TfggVIU319WzN5bi6sbcu05HvB/FJ+XAlU4R5+2j0yeY0Bx+HViebkORTsHre/BMYHOBRxua+Mh7VaGwTAJKbJqHR/BFeAehp8Qt8gg+kr6sF1JlJA7TPVa4ZXKfHRUToQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,54 +93,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  9 Jul 2026 19:47:28 +0100 "Matthew Wilcox (Oracle)" <willy@infradead.org> wrote:
+On Fri, 10 Jul 2026 12:47:37 +0800 Song Hu <husong@kylinos.cn> wrote:
 
-> This set of patches are separated out from Jane's earlier series.
-> https://lore.kernel.org/linux-mm/20260617172534.1740152-1-jane.chu@oracle.com/
+> The 'tried_regions/<R>/probes/<P>/hits' file, added in commit
+> 5b0de1bc3325 ("mm/damon/sysfs-schemes: implement probe/hits file"),
+> is described in usage.rst but missing from the canonical ABI document.
 > 
-> There's enough potentially controversial things in here that I think
-> it's worth considering them by themselves.  First, handling hwpoison
-> in filemap_read().  I want this for shmem as well as for hugetlbfs (a
-> later patchset, maybe).  Second, handling misses in the pagecache as
-> holes rather than opportunities to populate the pagecache.
-> 
-> v1 here: https://lore.kernel.org/linux-mm/20260707181713.208282-1-willy@infradead.org/
-> Sashiko had a lot of valuable feedback on that, and that's all addressed
-> here except for the things that I don't think are relevant.
-> 
-> Jane Chu (2):
->   filemap: Add hwpoison handling to filemap_read()
->   hugetlb: replace hugetlbfs_read_iter() with generic_file_read_iter()
-> 
-> Matthew Wilcox (Oracle) (8):
->   mm: Rename folio_contain_hwpoison_page() to folio_has_hwpoison_page()
->   hugetlb: Mark some function arguments as const
->   filemap: Remove checks in mapping_set_folio_order_range()
->   hugetlb: Set mapping folio order
->   memory-failure: Remove raw_hwp_list_head()
->   memory-failure: Prevent UAF in raw_hwp_page list
->   mm: Handle hugetlb correctly in is_page_hwpoison()
->   filemap: Add support for authoritative mappings
-> 
->  fs/hugetlbfs/inode.c       | 122 ++++---------------------------------
+> Document the 'probes/' directory and the 'probes/<P>/hits' file.
 
-I really like the deletions here in hugetlbfs :)
+Thank you for catching and fixing this!
 
->  include/linux/hugetlb.h    |  24 +++-----
->  include/linux/mm_types.h   |   4 +-
->  include/linux/page-flags.h |  28 ++++++---
->  include/linux/pagemap.h    |  32 +++++-----
->  mm/filemap.c               |  46 +++++++++++++-
->  mm/huge_memory.c           |   2 +-
->  mm/hugetlb.c               |   2 +-
->  mm/memory-failure.c        |  39 ++++++------
->  mm/memory_hotplug.c        |   2 +-
->  mm/shmem.c                 |   2 +-
->  mm/vmscan.c                |   2 +-
->  12 files changed, 128 insertions(+), 177 deletions(-)
 > 
-> -- 
-> 2.47.3
-> 
-> 
+> Signed-off-by: Song Hu <husong@kylinos.cn>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
+[...]
 
