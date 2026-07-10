@@ -4,74 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0591C44501
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 20:18:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0791BC44506
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 20:19:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3E826B0092; Fri, 10 Jul 2026 16:18:44 -0400 (EDT)
+	id F404F6B0095; Fri, 10 Jul 2026 16:19:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEF256B0093; Fri, 10 Jul 2026 16:18:44 -0400 (EDT)
+	id EF0696B0096; Fri, 10 Jul 2026 16:19:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB76D6B0095; Fri, 10 Jul 2026 16:18:44 -0400 (EDT)
+	id DBA776B0098; Fri, 10 Jul 2026 16:19:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ABE9C6B0092
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 16:18:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3A78C1A0570
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:18:44 +0000 (UTC)
-X-FDA: 84973980168.03.EA8A8AE
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B39F86B0095
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 16:19:07 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 457BA140570
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:19:07 +0000 (UTC)
+X-FDA: 84973981134.06.AD611F4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7988F1C0009
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:18:42 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ut/jbAuZ";
+	by imf11.hostedemail.com (Postfix) with ESMTP id 851A54000D
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 20:19:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PNLB4wzm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783714722;
+	s=arc-20220608; t=1783714745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PmdsrY2tdwYxD0uvAcRTlLh9YiiTJVFUYVkIaWXdB+I=;
-	b=MX7dsfM7hLlsxEQtqAf36jFf1eVG7L+XDfRoI5kXqf4knUK8tbJbNwj7i5zjSnaRoWUeNY
-	ooz477Ugqn0RZD8MsIi1SzGM30OEfwHgLFstRW3S1FNbJ4O3qgK3hbRPqNgoav5tI1WPgI
-	cv57q3Xu69Wd/IanwLEbkgWaNS7/O4k=
+	bh=5hYSYZL26i46R1YNC969ZGJ/HD8KnaWEcgglVNhE+Dg=;
+	b=WbMlKsbaYEolQ8knX7992d06tbweK/IvBMQpz8LBqGVvgLI9649besXjxyo1EK/e8a+XnM
+	2FRyEKAA/geT0vMqJXxY6YtisCi2UO0G6g27lHVeIgMGu3KEoijxVkSynCfN7fyhBmmPzr
+	BXd4JUrXnIb9FsHwVjI3+hRdL9jmLKk=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ut/jbAuZ";
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PNLB4wzm;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783714722;
-	b=DWlLwRtUUcLS9MYKoOq4+LZdFjqE8ByuqlZpKd64zLk8ouNSvvSUg3oTKKL5BuICSVqocp
-	QPO75HVVZ+1NrM7DTicu0+65zoQrrXhGzM6X5krTaf24QrP6cn72UDGOuz/PsqzLThxPrZ
-	3kd0fs3AtSXIMMuIC1QK88ZsX/sCwcY=
+	t=1783714745;
+	b=QX1Kzwe0nF+Ow2phYMbQs+DxUrqTAkVs77TYRGkZk92sroA15xqTMvMG0adCjCMFb4RC6y
+	wt54OyqN1nWPnUy1ag50DIz/xrg2oF12Kz514x+iXOwhodWGp90DrX+9ZnivxmlBJVjNzc
+	2S+j5QdjshR8APEv2yA397N3AjyoP9k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B89960052;
+	by tor.source.kernel.org (Postfix) with ESMTP id 23B64601D9;
+	Fri, 10 Jul 2026 20:19:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322B91F000E9;
 	Fri, 10 Jul 2026 20:18:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9B41F00A3A;
-	Fri, 10 Jul 2026 20:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783714721;
-	bh=PmdsrY2tdwYxD0uvAcRTlLh9YiiTJVFUYVkIaWXdB+I=;
+	s=k20260515; t=1783714744;
+	bh=5hYSYZL26i46R1YNC969ZGJ/HD8KnaWEcgglVNhE+Dg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Ut/jbAuZXYxfsPHDRbFG6AeYVoHfsMIi4RxevO30ikC2cXs/E8agujTPs3qJUINSg
-	 yYDdGP7J0SUmvYO63kOXh2z/L9hG8u5g7MHtuW0YfER/BpjKuMhgXjexnNCzjcv/ln
-	 VnOAWV3uW7KoliqwsBges9xe2WqrPKliwA294ZBCxF0pXsvujILvisVfI7ekVXl+EQ
-	 Z2s6qaiaghbmUvgw07AZmPOxnbKWpytV69wR0saxrOc2Rtxox2KidC0z+lYmGeWkh9
-	 094VrJuJl2I4KGfxsnR1HSxyrqtLTIeJ/4bX4EPZkK7JTF7PwBAkviNWxcolJMEFWF
-	 hI700zBKOBohA==
+	b=PNLB4wzmcFTj3lyqpCjpFNseunRPOUiWwMslZHwgnXN/dz1H6bINuUrT04kt5iEp1
+	 +NIb6HuWlNuqv89DVOB740oeyMjE3pCofc2ChzUc2YR4KtFhvnDcCHt+4GCE+gyXWn
+	 5N+MnWj5rOmm6UXVmu60Jc6I2MfPK0J7bSg9uQcFU6wtGwwH23rkV+6hwUKmgWbLk+
+	 Tctr26pEiWgizGIADOVEl3UfVfSGQDtV+0/95Ja8Pr6D6O/cbPUvsrZRSsYIjPhVRH
+	 yBJazCl6C5Rhic0/GCGXO+3WaXAvZ1vidl5uvgn9Xm7ag6HsGdXlfnoynuPxHBZ7uA
+	 zki2RHAqu/Mww==
 From: Lorenzo Stoakes <ljs@kernel.org>
-Date: Fri, 10 Jul 2026 21:16:44 +0100
-Subject: [PATCH v2 03/33] tools/testing/vma: use vma_start_pgoff() in merge
- tests
+Date: Fri, 10 Jul 2026 21:16:45 +0100
+Subject: [PATCH v2 04/33] mm: introduce and use vma_end_pgoff()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260710-b4-pre-scalable-cow-v2-3-2a5aa403d977@kernel.org>
+Message-Id: <20260710-b4-pre-scalable-cow-v2-4-2a5aa403d977@kernel.org>
 References: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
 In-Reply-To: <20260710-b4-pre-scalable-cow-v2-0-2a5aa403d977@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -152,28 +151,28 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
  freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, 
  kvm@vger.kernel.org, Russell King <linux+etnaviv@armlinux.org.uk>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7049; i=ljs@kernel.org;
- h=from:subject:message-id; bh=t8dkzQqXmue3OqugoX734wBWe/TkjwvXfzJD/QIoxFA=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLICg60Snb1XWu/ZYcRmVV06yVxlXtOPOQLHsuzTDvwLt
- yq10sjrKGVhEONikBVTZHn+RXx/kEjYvM4L/m4wc1iZQIYwcHEKwESaLBkZ9s649GV6ldT5BxJc
- 1YF6TBY8E/jEUizPnmstcdBz/6jezfDfzcbaj0+/8kRMRdoSdrul2w5n/Hq/MWp76LXfnyWfbFv
- ACAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2641; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=CFZAjloP4OpDX/vjHQ9xfGU3kS1+MIW18Lzf2dxH2BQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLICg61qc+aHMPw9/vjPW+ln592Xp0tkZNzkUJwaKjbTT
+ FZJejNnRykLgxgXg6yYIsvzL+L7g0TC5nVe8HeDmcPKBDKEgYtTACZy/Q3D/4hbiseXv3Ar8Z5d
+ VZLvoZHiXn7OKMDymNMzVtav98Kv2TAy7BE9e6z/xf/4eWp7lK7lvvXZtTcj8M3OVfczJc+uddx
+ 9iQ8A
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7988F1C0009
-X-Stat-Signature: oqjbdtga4jkz4gst1djugdp36txseru3
+X-Stat-Signature: 8pkexnpwpofg3bkrof11yb5e3pkq1jez
+X-Rspamd-Queue-Id: 851A54000D
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1783714722-892127
-X-HE-Meta: U2FsdGVkX18CPBsZFKkeyfMGCyrLJsJlwxzyXGeg6pZ48kFfNiSi7cPJifOfJDdN56Wxnggisu+Qlvx6I28CGoOZDYUgaBufJRaCtMiE7GToyYTfnirvoI5aidVrEUuK4DGZjtmnvNppoRYYw9pT6JmVrMwFkMk7ag5lPcyhdjCUIliY9eZW1YBLz4EWCy1s50Wr9dfrWUuA58XVIS06HbsHKImGzhkE8FeCiQJbEsgwAT7dk7z2GkFbosGqveYmUGpq2dQ7fEhwh0i0OzwR428Ix7p8JIBZ8cLLZWINE8ILGNi+7p1i54fq9IL8X2+YgNzdWYem4cJRaalUJNDz0VbR+d8iNsGcFIO8mol9la0BEs2kkUjZGKlit5FFRNprqOsKIyvhV1bnzca/gV0tmW+l8JLMn5B7q6pDaDO+dTlMDnKwlSl4Ar06nbJdY/mLx9Ay8odTwA38fIMIswck733U0hRPZLEgz9plC220rph2KKDvcVNVnoXNZmNQAoJ09Uxy1oAaNrj8zomw8bjLVsGSXN9kjkhamH3nmNVWs705Gqtla/AWzRO6Su+VC/zD0vxqc4QC+pDoVzmjosN+8W7xAGifKtQGPdnfZDuZAx8qemTt6qOuQn2HBOgn4kHRnt6s7K+vb0kY37tbzBd3bbR5VWyyOOjWhdFtXdptWu5xbu6HHSOtlNZm8mCgTTO4zl6mRB7iYdsVk46K0I8N/YAvGUJWShEF6AEv/RmIynnvWp+7cRAUlyImEc7NTxh6goXcvD8b8Quop+DeZxRqobf7KoLiBcrkRcmGedCtD4I7paEsF6pjNJFLDZ6zR4MF2MMi+cvJh7jpUGMgHgvZOwUXpweVFVr9gUosIOolofbF8EIAxpm6LujMhjo/APH/emnVvANBvzjxDP5CgLNi4ICo4MJcwC+3p/0UlOGBghApM/hDi1DOcg8c+yRJ72Qt8/kWPoGI3k30do8STVR
- +R3Su1GT
- VvhTSvht85miaOmw70kXLGN21LE60VxytDfIkrpjYbn0jGt6MQvydNzEYK4yHH9b3UA9ChYsprfTbWkxwvXwm/L6hU24qKku1a2J3HV5ON0/UfPWFkCRgHRYgqaqoGmsfo0TVhozifSnF+3Q7IFy+Hr9TNs/g9iEDeYgLn0p9R6ZWlJaT1iPG0my6RdGTd85Sha9XUTw1TMOXmB7mRwyr0czS8iVjAAwkaJ7fvkR1sxweUZZC+IAENli4oeWdHeoOTIYF5y99ARm8vWapeHqlRFToLdn9NpLHPlkUSKN5w9vq6M6UopGdVMht2Jl7GN42MSfxN9+JBfYFtRpO9/cxc4YwJrrR6r+GLm6yUVfvSF84h/khX0uV7iaAvWAJHGeVDbmFOv5GoKkbiQ/wIxRqCJepAwHL+u7WPUuNghD04ocn1nQl2oFH5xGb15kt4gWElAx4k+EFJI0lL5PeHZ3bcxbmxYQYDvzbNaL+AjTZgu22Cjh+8akgsyE7mvCiku6H/ql+gv1arjrRUnABUci22AhIloK5439lnLj9twly6bF7gU9sfv3CIUYfYq5sBY4Rh2zZsE4keh1QHjjqt/fu5cORGOBvP6yQHDcblnsb33Wnq7s6X7oFXgm8D4xxOzvH8ysA3ohq9SOAuehdUv4wgCLHfCv9MQAc31fkvCGnjvW5VzXH6LZJs7jJ4fNUz2qTYqlU6mUcK0uHMmj+nAuUiJiFEYqzAZd2zJsJ09sEVl4z2PE6GBmc5UkAR8e0gITALwr/4iireRuoA6Ud2PKn9p62mucEqY+X0iBcYoERfdfSw3GhBnxYggEIRdXaLGEWL3I90XbawbYJSeU8tsHPyqRPKyNE3tlnc6++q3JBlGJuIkXvxeH9lgo8DquZuVDLHLtgY58VmxWGY6DKjkGl6dIZDFClYyr7IOIW/IpkCpGOAad2AsgjBLgpi5kt8+v/OMoz9L+GXmd06Xgr2WzMVbN8VOvn
- fHJFQWCA
- KstLNV3y6MnDQCmVmAIB+dNm75CdujmfxG2uLmQHHXhtMngV3lKykFaKnngr/iM/UE6shmFcC3zhTL6y7dPip8XN2G00cedFyAt3zirErpaYz1fbYGArJMgVHuUauCQV8qmZdcuWKjZnV+yLDKxZ7kUD7VR+HfrwTPuQjCpzXCUR8T8AJunxAHbDMeUjcodNNzJw7EG4BZD/eTwS84JRB9/GLRRNwExtIkVKZDffL/DZ5fx0QgE1MTAWccR9u+/sYD12NMP9PswnrOznHLarMYln05G8hlZUAL6Wx7Hgp7ojVdNYqPznjJRyBq3rWTZypVmgoeQzz4eyEVF7IlfFJkLodqlS4ENrZJH9hcNc6hi5rtB3taOSIo/6IQLswyViAjAZSlC+llbEXycNhObte//vy7tD0ZS4VfxrsEjLfsuUdXzGjA841WUrdgTQA+t/OxVuNLKifygQWRlYm2WPtMjhiXf+csrVwxkk7Mt21JU+hKpvYcO+DoMPmZ9xwrhsLIHeAB7YeOWYxG9upR5RmloVuEX0vqSXNHnHQ+1r6fKs/+xeowU/N46mK5w8UjCgCQ0DZJ1VEIo/hJziFW4dWB4f2V8C1N0kxc7saeMioKBhVYo+bAQAiQSYz7e6yPX+XGIybm5EfCN/H7nATMJEohUn6xuep3OI71cOqVhNIGTeju1z/5Lefx30kjLt0tCEgyff1J2hgm7EUg8zj7k2FkW2HbdoOFus0OCNOMvQwZQoFHXSoazLr9aS5USlwxjclFcHonooqe117V0hiTejV0210q7fV+lZEr4gbcVQuwL+9J4Ooy0AT6rEyxGfsV6bx+iP3omPV9XfWqnhuhWzkQLqzHiNfoLhs7Fi7KwNMvEsy1ohN0EJYKVOMXJBJmnwsGhZlIQAIushICM9Y6dCSAJAUyi9d8fLzr3rwoYlKTy9G54nqi0I9mR3bQXldOLFWqxD7nve35flTgRfGynlWK8g/Rc8F
- toIzm+Su
- vCX3TdYxDDZtzA4eaShjhzphcAr0ks+jgP8YpmCh95bA7tuMKShjtIquW5HAAo2WekaUuBb/GQ8lGAyAo9C4SMme2422NKJtci6/tRjWkH2wu+Cm3RO/q+dEOyjBCST+quUC5rVDAW96L01EZTB43PDZH8vuyBEMl7pKojSvTOuMGO0R91wHWTrEAEn4pcGTAtjtwEsWZr+45Sa6RbG9zkQhGwBrbDHPobK8DoAKUw78AbFhR7SsOa0Owt3odtd4gg+AQFNLm2PfdXRmFWSP1/0W20fJG46WgKmAHdHiKmjTfY4ik5V+I8eLnHJQBOFDzHkIB+gyPd6EXVFqSEaWmUBjbsASppEj0AFD7yjg9CXUsoRi7v7jvn20FaDCRonApk/ouWr/43OQKeZLz3EIlLTy6ROM9iOtGvL44lP+xGwaYSyrMORY0Xx3dow6dqQTMn8Uu/13JWz3YQJhF6rOJcer3kbfCtRnkh/0vChCDSHebnUI2s+NHUvL660EiPyo0B3t9AgpJh12PErflN2fIJVQNVVsuxTRvnj+WolNAUlE1VcXlZeP1moDleqCw4O63LcCXUNwjzaKfwSwTLwHoad+p4ym3AvCi1eWpiprYcTrK0KDn2Lny96+vEFObdAX9Gc5OncdmxcandDuxDBl4H9aitvtbib+bgOsgQswTLe/NWfjYx9mEdpfnEcCj9ujT2MMrWuWADW4QHGbUOLGNpsQO29zLp91J4Ajx4okefrUTyll2qCwuuMAqgwqj3smQpUr111ZCrmDKMfjhQk4I504RXLJKYWTb2F0584hwbosYQKlv68ADF/yC5yT8GRtCsCWDS0dLLOnUnr1xIUIejlMgbIA+HLr+6fA2wVS5+Wv76aSBlcuRGjzWc6LnWWSwz26xAGeKqOQoafoDZWAfPuEKZSqhT7w7w9WanhlZ9dDAnwjLGhTzPNpT1bod9BWSCmsPYHHhfWvxk+X9Gv/yHTD2c3EU
- khQxnmpe
- pH2CwbpKHDQj/9EANpWLVlT+XPhy7nFBYmLi2S4L4Fc6crcsCZJbw217pxoj/3GZUMu2L+mW2W2FTBJmwxx5MeaNSq6rQWOTovqUrPb4LezIavlJkirUuid6QvaQdt5TCYiXm3SnFTTvCcx3MCSJ/jHvqh2R1UtWc0DnKRrvNi2BeSHMa57XdEioCSAymQVbPV65v1QFL8yRzmgGi18sNqEzGVXli3NawQoB+wZVEd0E2y8a6ikEIu4PImBwg4cEcCyXXUR4MsdHOXxqfErlCmwROWvtaO3hclZQASJuNSKZGQ2L3IClPtMZBIdzaO8zo7yCXYomljX2HzcMJFTCAPNf+aIKOmKvNRLcGv6RxKM/8nLTvcySRSo8R2HT9f642Ik+Sod3e+9Eauo29qb30eOn4WqufBcvQKHjYhudIi5hpW71je6Ta+GS0VUtyAXo0sSj3/T/i5PCMJiO/pYYIO2HSTcb2acQ7r3z4N+vBcFGY8XUvqrliQpamObg6ZzHIYT28yJ7rQn9NQiSDBtqg65Y1TmgNWVvx0Zrwze8wtFKPWsocnyrGl
+X-HE-Tag: 1783714745-461977
+X-HE-Meta: U2FsdGVkX1/WrlO9Uoz9nS0jK6sphzBZcJTWKq3FfMOtB2GfGhYWASVpyYRseDPSd2vn1Q8vMLfe8ckl4zAGC4EDvx5DkZ7o1V3Txa3ibceHF/k8goBtnshI9nUDEIwUryaHM5yFUEk4pFeKsowCibDii3iy99r/0mVYAe4Vii5KV3BTa/TzgmkDOcVlbKB0ADKvYDTuDZtXL0/EIYvYfoFrOR67Rv+4PsWvwATk81zIGHySCXRUSZlEH8b++yEnvf6UmQJfQHJ5uZAtoTIOpel2RzZA5pk2IeVdmAWs6j6PB4VluXUcdcW1/bfGa7BBt3dt0FoDvF5MXlgakh2ywmH1/BST7tYAHAM/7qtTRfU4JPSl3Ixy/rw3QBn9DMKLQtRyfvCIWHLXDfnzQQcoxO22veaQFm/9i9xkA2/Bge+gD66McdBN+nXvwYsy8xRvacmfotRXMyjTSlGE57oQrm60GU3rfkzn4rlg7I+co9wvP6ZsTWqOzHxUUrDzOQX63qSmBdpGRw+fgqw8c7WNCGzJKam4cYbwbDgB4yvsEhqFbcK/0jfoG2ydEsT3LUrlfwdaLEl6gVEXEpggPH+kDGiMf+jvCHZ1Rvu4UcXRzg/c1DBV9UtoM7OVM9vG24/iDK6eyDfh3wMfiXjtUXao+hhxlM3/ErwbeNeNKxSa2b+ocnMpxls7ME6TOJWnF6Clnatvo/RDqqI39ZknWAnO7OZmN5aC4CU9Pd5kEDBhp0I+3iwwf+i/wFIAilsyTbAvLcLrKpkA4OkUm7T0cjSLJaBq/BVTp00eE5CJCE7KQ9lDFMKyXtiReTwq03hLcMY2FjNzod9skDcAInvgVC1JQ1kkT9Q+MeMmWzniu5J+qrLHb/zoBp6AeS1ebSI7NF3u5DDwo8pT6fCHNY1rpD8rty0yY7tGZYwOv/7L6i0/xpy7pUNe+L4/sYY6nA/cvnAi1e/s+Px+crKROaPwuC0
+ aRuudjmy
+ JzZ/Rup86+D+//xR9SqL7sg0L7mfuW9MC5NdkwaCCjxMYs/jB2SysWmu+nWa4DMUAKpB3AfLFmUYoPFHuGKChriQJux5gpUkAU3B+fU/iUhIe8I6u/N8dK5qiFKhbq54mvrAk436vZmjM2dyi3gbhPmcgSZtcdaVvQUEkB76ZUxn8Wmq0lSqLnoCHsTOPfgi5c6hQbRo6hSiBfIEMO888NVyjeyfLDq5YKPF/NZjY/7oe59FwRlS5WEwKVGvxOfJZmQta8ECbViEPWQrpw3BWHech7DnsS/mKNADCwM6YR1LjmeMvdw9hkeJhNOeLLawMWaz1mt+o1nGqwnEO8CGXmzDYBe8eh12SirG+l0lxtbyPfiOeHDHMenfattllqliVUPkNLuATnTUzsZPFTEkRKBaE0DB+cA5hJ7itZvzUKVp/kEDdhT8VgjOCqAyAHy19lh5OLph4larlmuloTOnczbfmdu8I1hlSmoTZvNs4/7NGDZmwtqHOFLy1TUcdru87J5kG51eZvUV2cqEPea42vctnBgLVtvN0pB41vKHahFdpnlFqRts3KaTKhbDpUdfUBYwnJcQJAllhx6pKVRhLptefTJLwDBBzFw7KxTH7oecdA2KdBBT+GUEQuzmvkYSzsXwgPnbB/OzW4rgsHPIldXFqgQyp5uF5JIbJ1LxYh6nU48uCEOyRPufxKjy7mUFHQ0bVpPM9eIIVjj/WUkZbXc0EP6rKvhysEJtvH/yxEqFclGTpomj0AmPseGsDCR5TFJ05VOTpcmlQIom4qs51/H+2nh13W3lJ2uJ1qRePuLEEyZ+WXDNrGRCYNJC8zyOXR3ZE3RfS2kPpxQjIzfF2Do20DZwwSzB6lM94XQ3rFKJRWYUlD8WKdP1ob+TD2W8+hplZHAkaQMo5dSJUFRG7+80l42kOm6eL/g3UJZ+KBan4xD23WqnzJYD1YPxibU2jyFA3k2pz4IRIKUibDe/FD3urWPk5
+ b51Gm9Z7
+ gJjav8aDlUI71xX6uiQ/oZ2yA5yk2mEyqtmL4y1NK2PyVVQBU1sNEBARgKWtp/eVUlDUSBpbBO/oZs5ivwfFUpDyKBPnQnSCLKwUTYO6of+2sHAGdypOM3K1yxD82luASQS0ZnKnSxLERibaMW/IY6yDVym85YC5aE2on9Vt+dufRyYODUyAF7vigfkW155GNQrGSRH7VWhNz2G8zWNkU78B8sVo1GJ0GyvH1YFIGio0sRjWQqLqNs86HEpac6HuUjF3Uxyc070r7+I0HXkw+2JdQIpbfsN/DLlAKSXgGB5Iqk17J6NWrr3n2lxSGk404lY/ybs1kmOsypv3YzKN05foInt6hAToz1kP8Rzi1w8vCENwt4Wg8tNVPENBp3W2AnLnpt+pZX252OAbiDXKAR2ribpsyNis1hjSmUU67sOYXmx6ENiITjHQLJ2f6zT34JJC2gJ26EIWC1K0nYcxuMTf5/EyYJ4Gz4ssHU3l/ypgUKj29svRFC1EptftZRBgpD8/56pbSjoxm5bnsA5Bt/nErxEVLWSyYWyRuqFIIaM01if7eZhQB7cibouBLujTENCqgDY5JSnaRjJARFzLGZ84X/cdvkYEOEewHBzZQanPzWtjVRNZqP0WZ1fEqJ3kNX3jscmX4bWdJzzCmMwalbITPPNCui8d/+djokVuYNRjEIS2wr1iEZpETyAukASO+4bXvgHH8ECD9gMGu/nUbQ9M6CXSAM4vL9fB9bTnkP04wcDtFwlW1VWOGYD22RF1J1ug3v0tIyz8YZ2ignICG5oRiluk6H+v7Pmj1m2E+lfaEiqBySQtJW+CBkL8TExhwsfxKlZA+K3AyVkfAG3etiiAs1d6EyfWkOE84ewLX8GOYQKFPBS5f5ME8HM+BJNH8ElhhOZABO9RyGUCsVKVVqBcrRDNgMkxfEgAzPTDnQ1Oj5rB0kaGIaJ4OyB4BvBc+jtNSyHcUNBWaKhV2CQ8O3VYJtook
+ 3jj57Hcg
+ 7wn6HIAW+6qDkfGqH7XbFDeOjcKAW3lfhhD3XOooFDtaWchoXA01Wmrax1k5y82vCaUiBDFHK9ay3adqDl8Q0jhWtzFTr/TjNIBxnia9qozaUcf48c4bKYsonMJcHcefV9OnK0Uaz7jJjNurr5Wu4qEl9q81nOMyG+fJfsySwv1Vs++XdH3K56bPyQewWMrGIiNrWfkbOiA9Lp/juzO8U7TZfk9JIP/2940Doc24dVlHVnknhM19fDTaeVF8ceaaMZIF7ZjCnN+MRgsu6L/AkjHWhFPvVMgq22RefBuvZWfe7AaJ7U4te23oa+hrl3Do/nn/Qz3YmfMa1eLXgg+T24HzUqqvq1Uy3ztJW4hhQy9Jl3cLR6jcMF8+wqgw5knHsHPvcHIOf+KwQ6tZm0yW/M+cqgJ2qFPQvOBhSyyAbFoJ87Jjvdbu7PnS1DTICXUB+b+TGtTm6as3iSGR7OFl/OXrTJ3mYdO4mFgrr1NG+IzFoiVhLuCRE7nd4VDX19EZmMaRDKQb6LIBXDwTh/nJWdyRH4+IzD/NrBmX6nBSX07YUJw0YdMQvz3LQhtbXaiXb8Ve4I2plHHE2ufoKD7osJECSCEqkBkkNjvLoBrNLiQUiw2NWfoh1KtW5NxyMvTsNp0EhhGTc6BEZwvEK/MIODjsnYB2HYxYhtIx0xIKGtzKOggLkNMRPZjBT9I74hn293MsriONe0n3cpkofniLVYcdPhMq7D/EJhaDqvPKs2ewceo5nUTlnC7vCJidGCqiUf3DGDm0bwEmpsCrKT3wx8f5leZtCoLcmuCJ6mdZKha+dBSojQK2KxI56Wzuif5RvB7zpSGCdMD76WBKdwZHe/tR98Fl8Gvk6INlN7k7mpYojTXJHTwNH+LQvLkMe0/WQJplCmA3cjJ1DrzzsD46S08o1K5rmTYt7AWbETen62PscVH1PKpJcLYJXlxUXK4NJHNKbJh5jTFe4SbyoRPHzN5OiwH8G
+ KLYVc0Gx
+ f1aV/5g1s91LT4xzOlbNQ0F2sR+lvj63tSjOuRpVcjcxZFeb39zEPJ9lX1hEOrNF8zQDTYXTPvDtuju+z1g2RpRoX/l40VBd/6qdsjJ4g8asLYotR3v0sBmeruc035SFLVKQcc5aybhk+C7CNwg5+MoLKud0jaaWsbylpyWh+gP9AYGl/fvp43MtZn86uD7L2f3ccMu9SSYFEnD+phb1un3VuhatU9TxMoLe576QCYj2lWnntN7mOt+ve7FDYbtJe9QM8f/2BsVMLj8FyXK2TulxSrW+Pmw4rXbQvvUb2EJZZ5Z1VKAMXJVGoQtQQeqPRj7rfgA5h6fOoCuUiTLm9lKckBzWISA9SCuPVFxLI4n0U2InrxKYVaajB1V21FsVYau6MpIJw2xEDnZiDrApBAMPExBOPRZlIMAsCqkhotD1ojd3Uyar+uL+eJZhIc8J6tTwiQS9fVAfD9KF/ENsm/ZbALf7YSH39QofsXctwVKXgCcjetfguM1BF9uutELscH5WSvCLO/cOhRThnn/4DMutljFHx+UIXVcPFUjyMzDXoG0qoalEPm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,194 +180,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now we have the vma_start_pgoff() helper, update the merge tests to make
-use of it for consistency.
+We already have vma_last_pgoff() which retrieves the last page offset
+within a VMA.
+
+However, code often wishes to span a page offset range, which requires the
+exclusive end of this range.
+
+So provide this in vma_end_pgoff() and update vma_last_pgoff() to use this
+function.
+
+Also update the VMA userland tests to reflect the change.
 
 No functional change intended.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Reviewed-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- tools/testing/vma/tests/merge.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ include/linux/mm.h              | 19 ++++++++++++++++++-
+ tools/testing/vma/include/dup.h |  5 +++++
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/vma/tests/merge.c b/tools/testing/vma/tests/merge.c
-index 03b6f9820e0a..f8666a755749 100644
---- a/tools/testing/vma/tests/merge.c
-+++ b/tools/testing/vma/tests/merge.c
-@@ -118,7 +118,7 @@ static bool test_simple_merge(void)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index abac72785277..c56ca22d406c 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4331,6 +4331,23 @@ static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
+ 	return vma->vm_pgoff;
+ }
  
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_FLAGS_SAME_MASK(&vma->flags, vma_flags);
++/**
++ * vma_end_pgoff() - Get the page offset of the exclusive end of @vma
++ * @vma: The VMA whose end page offset is required.
++ *
++ * This returns the exclusive end page offset of @vma, which is useful for
++ * expressing page offset ranges.
++ *
++ * See the description of vma_start_pgoff() for a description of VMA page
++ * offsets.
++ *
++ * Returns: The exclusive end page offset of @vma.
++ */
++static inline pgoff_t vma_end_pgoff(const struct vm_area_struct *vma)
++{
++	return vma_start_pgoff(vma) + vma_pages(vma);
++}
++
+ /**
+  * vma_last_pgoff() - Get the page offset of the last page in @vma
+  * @vma: The VMA whose last page offset is required.
+@@ -4344,7 +4361,7 @@ static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
+  */
+ static inline pgoff_t vma_last_pgoff(const struct vm_area_struct *vma)
+ {
+-	return vma_start_pgoff(vma) + vma_pages(vma) - 1;
++	return vma_end_pgoff(vma) - 1;
+ }
  
- 	detach_free_vma(vma);
-@@ -150,7 +150,7 @@ static bool test_simple_modify(void)
+ static inline unsigned long vma_desc_size(const struct vm_area_desc *desc)
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 668650067c7c..535747d7fee4 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1306,6 +1306,11 @@ static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
+ 	return vma->vm_pgoff;
+ }
  
- 	ASSERT_EQ(vma->vm_start, 0x1000);
- 	ASSERT_EQ(vma->vm_end, 0x2000);
--	ASSERT_EQ(vma->vm_pgoff, 1);
-+	ASSERT_EQ(vma_start_pgoff(vma), 1);
- 
- 	/*
- 	 * Now walk through the three split VMAs and make sure they are as
-@@ -162,7 +162,7 @@ static bool test_simple_modify(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x1000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	vma_iter_clear(&vmi);
-@@ -171,7 +171,7 @@ static bool test_simple_modify(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0x1000);
- 	ASSERT_EQ(vma->vm_end, 0x2000);
--	ASSERT_EQ(vma->vm_pgoff, 1);
-+	ASSERT_EQ(vma_start_pgoff(vma), 1);
- 
- 	detach_free_vma(vma);
- 	vma_iter_clear(&vmi);
-@@ -180,7 +180,7 @@ static bool test_simple_modify(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0x2000);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
--	ASSERT_EQ(vma->vm_pgoff, 2);
-+	ASSERT_EQ(vma_start_pgoff(vma), 2);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -209,7 +209,7 @@ static bool test_simple_expand(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -231,7 +231,7 @@ static bool test_simple_shrink(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x1000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -324,7 +324,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x4000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -343,7 +343,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x5000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -364,7 +364,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0x6000);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
--	ASSERT_EQ(vma->vm_pgoff, 6);
-+	ASSERT_EQ(vma_start_pgoff(vma), 6);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -384,7 +384,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -404,7 +404,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0xa000);
- 	ASSERT_EQ(vma->vm_end, 0xc000);
--	ASSERT_EQ(vma->vm_pgoff, 0xa);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0xa);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -423,7 +423,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0xc000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 1);
-@@ -443,7 +443,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 		ASSERT_NE(vma, NULL);
- 		ASSERT_EQ(vma->vm_start, 0);
- 		ASSERT_EQ(vma->vm_end, 0xc000);
--		ASSERT_EQ(vma->vm_pgoff, 0);
-+		ASSERT_EQ(vma_start_pgoff(vma), 0);
- 		ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 
- 		detach_free_vma(vma);
-@@ -805,7 +805,7 @@ static bool test_vma_merge_new_with_close(void)
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x5000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->vm_ops, &vm_ops);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -865,7 +865,7 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vma_next->anon_vma, &dummy_anon_vma);
- 	ASSERT_EQ(vma->vm_start, 0x2000);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
--	ASSERT_EQ(vma->vm_pgoff, 2);
-+	ASSERT_EQ(vma_start_pgoff(vma), 2);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_TRUE(vma_write_started(vma_next));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -931,7 +931,7 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vma_prev->anon_vma, &dummy_anon_vma);
- 	ASSERT_EQ(vma->vm_start, 0x6000);
- 	ASSERT_EQ(vma->vm_end, 0x7000);
--	ASSERT_EQ(vma->vm_pgoff, 6);
-+	ASSERT_EQ(vma_start_pgoff(vma), 6);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -1416,7 +1416,7 @@ static bool test_merge_extend(void)
- 	ASSERT_EQ(vma_merge_extend(&vmi, vma, 0x2000), vma);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x4000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 1);
- 
-@@ -1456,7 +1456,7 @@ static bool test_expand_only_mode(void)
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma->vm_start, 0x3000);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
--	ASSERT_EQ(vma->vm_pgoff, 3);
-+	ASSERT_EQ(vma_start_pgoff(vma), 3);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(vma_iter_addr(&vmi), 0x3000);
- 	vma_assert_attached(vma);
++static inline pgoff_t vma_end_pgoff(const struct vm_area_struct *vma)
++{
++	return vma_start_pgoff(vma) + vma_pages(vma);
++}
++
+ static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
+ {
+ 	return file->f_op->mmap_prepare(desc);
 
 -- 
 2.55.0
