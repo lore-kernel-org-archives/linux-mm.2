@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79257C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 11:58:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAC16C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 12:01:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 848936B0092; Fri, 10 Jul 2026 07:58:13 -0400 (EDT)
+	id 801CE6B008A; Fri, 10 Jul 2026 08:01:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81FD06B0093; Fri, 10 Jul 2026 07:58:13 -0400 (EDT)
+	id 7D8986B008C; Fri, 10 Jul 2026 08:01:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EB756B0095; Fri, 10 Jul 2026 07:58:13 -0400 (EDT)
+	id 6F16B6B0092; Fri, 10 Jul 2026 08:01:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4DB0D6B0092
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:58:13 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C37D21202C7
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:58:12 +0000 (UTC)
-X-FDA: 84972718824.05.B74A4CE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 214BEC0009
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:58:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dAkxgwXT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 441D76B008A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:01:09 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BFC312044B
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:01:08 +0000 (UTC)
+X-FDA: 84972726216.30.C453B83
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CA73114001C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:01:04 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=55VBDyCG;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783684691;
+	s=arc-20220608; t=1783684866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kDw4uHkrjrH2i/wDdxHnoRQvhH62dpRg5r0nrYMHl8k=;
-	b=swb540qZRPNCfAfNTLQ8OGVMDWHi1Ua2xXShN6u16FldrSV7a6UZPk22d77UXAU71XesYO
-	LQbYQt758tlp4rKEUz2nKkEFwLjXMzaL0YhbcYf2XfTy7QgSnU3FF9429lqZ32JXvY4KK7
-	XBj7WUjkMSx7HZC7MMmWGh6W7MiqP18=
+	bh=jLm44ch9Z9sKOGsiFmujhyffDnqKNPjui1ZX84dqFco=;
+	b=KxUuI1jAzFPmbb8vm+L8RVkMo44M6bT80e1UyqYLMrIyxOl///b+jn21c4co2eHaZTBycH
+	LNsP7jV8QSGcOde8fUxOLZ0FvfZpdV/UaO5VVapxKKMX0vbQ3s+tUVC13SoNr9NtGdqkUm
+	Iq+GI+DEjanDw8e2uA5r7dkJO4xop/o=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dAkxgwXT;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=55VBDyCG;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783684691;
-	b=kCCSlzGE1R0mi1F60oTipF/ssM7QH5h0faeZLpWScWhNMlHHEMdXQSzUWUii3uaK956G0U
-	jRJXcNaMOwaPBcUUIk3K8NDjCBBrm0z9wKjwysLviXj/9MwRawS+wcH8o044we+sT2E5BI
-	AQM2n3cnS82jwtqCDokNODxHNzeN3Dc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 415BC43BDC;
-	Fri, 10 Jul 2026 11:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF991F000E9;
-	Fri, 10 Jul 2026 11:58:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783684690;
-	bh=kDw4uHkrjrH2i/wDdxHnoRQvhH62dpRg5r0nrYMHl8k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dAkxgwXT/R1DI7L+qLyNgdOAeakrAm08Pe6X6aqix0XakuDCSCOZnAqHQ2gRE0t9F
-	 h3ZdKHfNDjgo97EBH/Aqec4PzZNwGJAd3zSq1wv6qKfoBcrGvys9ohsuamv/yuQqtL
-	 IHh+n7NktbReynKyVPSjKL7zpmcAmDyw3Vf6MtiYXyeievv5tNFZ1ESTOMO9THH8mq
-	 bs9g9tjQUWl554Yh5sw1nzgLe/RZ8R/BLPik3sr+gTdFfU/iUatq8IkUVk6xz7c95S
-	 U7/08M6TK1ft8TrJ3DhiH4nyvc/SsXkVo/NzMdILO0bGEILpZKpcB4RJSfIJZox+Co
-	 auVbqGEDaiSRw==
-Date: Fri, 10 Jul 2026 12:57:56 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: David CARLIER <devnexen@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
-	syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
-Subject: Re: [PATCH 0/2] mm: fix UAF caused by race between ptdump and vmap
- pgtable freeing
-Message-ID: <alDeMJZdhbKfS023@lucifer>
-References: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
- <CA+XhMqwpDGYSQvDKrFz9XuQFiaz8_rgW0LupEzFhehSrFvUZaw@mail.gmail.com>
+	t=1783684866;
+	b=BrxAtUqSxCh5ZmC981meHkpA8faqyY07IiTtU/boiY9tBn4VuiXL7mkvSfqipuI54rRGvc
+	qiDEXakFgFTH++e3OcAIK38ZpUVzxGxxjYa6e4rcAOWh4IahuQBqT2ncTVB+/eJ6gBLQ7p
+	9fftleu2dle3Qt7uMS+VXnMeEpLf4o4=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=jLm44ch9Z9sKOGsiFmujhyffDnqKNPjui1ZX84dqFco=;
+	b=55VBDyCGAfYsWrtgnfpC500uAWjAKCEtrlTogF3ql5FO6dy4bgRZWnkolajkPJKa33Zjtqd3K
+	+85nNz83vhtShmrHqMVStZTDE6OGYR+gs7MUXfMuYKbVNkJb4afLSFu0MyzSXosPgdxu6j5z9L0
+	i9+qQnP9LKYdr/GI4F32Zs0=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4gxVYF68Xsz1cypX;
+	Fri, 10 Jul 2026 19:51:45 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id C233840586;
+	Fri, 10 Jul 2026 20:00:59 +0800 (CST)
+Received: from ubuntu (10.50.87.83) by dggpemf100008.china.huawei.com
+ (7.185.36.138) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 10 Jul
+ 2026 20:00:59 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+CC: <linux-mm@kvack.org>, David Hildenbrand <david@kernel.org>, "Liam R .
+ Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+	<pfalcato@suse.de>, Zi Yan <ziy@nvidia.com>, Kefeng Wang
+	<wangkefeng.wang@huawei.com>
+Subject: [PATCH v2 1/5] mm: mincore: remove special handling for VM_PFNMAP
+Date: Fri, 10 Jul 2026 20:00:47 +0800
+Message-ID: <20260710120052.103886-2-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260710120052.103886-1-wangkefeng.wang@huawei.com>
+References: <20260710120052.103886-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+XhMqwpDGYSQvDKrFz9XuQFiaz8_rgW0LupEzFhehSrFvUZaw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.50.87.83]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 214BEC0009
-X-Stat-Signature: 9ogzyoxq3cx4m33xs6nsj63s6i8z6d5b
+X-Rspamd-Queue-Id: CA73114001C
+X-Stat-Signature: bxyk1zhoud638qsgu8hked1nc385cw3e
 X-Rspam-User: 
-X-HE-Tag: 1783684690-863602
-X-HE-Meta: U2FsdGVkX18kIkK6FXnVVjI6rnxa785SZpdyufSLT7xvJCAzZCtBWu40P1X/ElZdc3sQgoOamL3JWLAvJW/75F92Iy+lBJ6VUBU8AVr9aede7gETTxhyp+vdX19HiaQTQd5Bhg9ntQZLyHJAJQWd71+vEZltpyuWwpQfqfg07Jg9pPG1iIipbJHMEo7va2G+jX7bgsoKpkWo/jzmimvLLcRaghkoXUpPx5kZ7DJ8Xe8xwzfbw+69K1sRLJnsSQk4tQ4fAp0QL7klEc8p1ON/EAFgTCnnnPXRjF+qL3iGHQo4xsgJLgo0ay4pqQ1NdVNhAQQBebHrPyeGlNhPtMORgrRXdysnrv2GduK6quNGss+k10/F2DvX4Ag0NR5Ut2ZYK6AlU9J0r/6rPWsT4oQhbv0n/ObXubydf07z4sOYvWTRXTKIGz8O+LrcmIthQAEHbU2QmxoW+rA0guXeysyhl53EnfEpR7cn+BbIg0TgTzqXXhdP6M1fvgmn6odg3vd7l3y2g/crNe7jqZD3NQRCvmKjrcSR7m4/2zH8A/VkNGuhNyUWeRB1d9to4nd9e9JaCQTq+zrRM0WbwfaylDGMDZfGQKoAY3MH4AMIgpDAUMLQhMYcp5Cx+YQI4cdulyafTiyQ88zeSmN63C2w8LjIx2dUT8Lys0GAekjTuMyAAm4SL3pj3/u+oAI2iWPHoUm+6wcc8Ttq4e+/KA3CBtTODIzUOk5+E3K60cVWZwKmbbvLdvpwbi+aXY9EShlogvxtD8OMHJEW4sHFWlTdtKUTpS8zxpEXXosXxEKw62dbMHIEP/ld8dI8y/iiEjYUo2JS33Sivh2L29vpxNiW4LjkR0/gEE9FTXl3b/Wq7K0mexgE03bwXsaSoHdTsNdmRsb9IW6c/g8WYRWsxnsXQQUHECxS40ZfQnBnAq141rKvcCt7kzuOD1iJ9hxdnIj6O42r7dNE5RBH5dqVkCLPCNi
- 9nlvcgIm
- 8g8AlH0OOMb+8SZxC+95avzInJosVn3WWGnBntzkhm6fyet5OjQst2AmI6Q92npXjS6WVvpruKGRlJCIJ5SyTY4KSJGHMrelop5k49cirYB8HucV5SIx9zZ5qeH7D7d+7x2HzJ8LEIRAn2zbXT+QRIWuKfHccJkgW3RMbtInZR+1YqY+DVrUQHPiuDdrM+yaHB+VmpR5bbo05c67hxbpzxSsv1ET39I8Z9yCGTgSMsHz73/QzBASo3Ibq/ChQV9qkTiDhwbOhC25f1vHXyvpP6Ujh66MArpe3MW+v0N8goxS1BiKGl2OMITmELaD3bf73Qb0KAjD0xmL4UElUPVt4nQsLQLpP56Ik2Iieu3Ex/6FPueP9RzHDQnFGiW5qKQDgfYI+bUg7kZ71lLHp+bVvNg2sK1ZdkrhBmkmG
+X-HE-Tag: 1783684864-474455
+X-HE-Meta: U2FsdGVkX19hC7sqYJwOy+F+Ky7HaTiMKOvcsduyR6EkkSwXCEYft4Cbs/+KvaQtiGwqtHp56Um30pzYRS+1ESdCFKwzYDuQfUbj7m2hF8DYRcBNrMo4t8heH7j0X0zlD/9dugwIPpeYnBlqYpNJjqaqBUdAvXPbRGMQe9bLvkNakvWRUfK4m0f+YAC4kPzdB8ZgcE9HfR+R4d4ghMZFhTwj8ngD8S3+bG43aZlalrr1TbLTwrgz+cuiLpkSKSvQpACIYaTFuUnmzLP2aoqR3cEdOgEKXJ9QcOyDVD+hX3KK2oLvptorh6E01xEqX+kQ4xENtQS3SUSzZQJXVb6Cug8SWkVBdDToBm5sRqj2tIQp+H7xRnZPLCB4t9GuYMWgfDQR0vnmqQq1y6OdiyMK4vjux5oUSUnM14l1WMVKw7z8dnGy/i5jl0Nix4Aw2DsY1cJQBtiIbyxZOzukAY08JbE5yK5VQDGK1Hihqxpk5gZzGLeEVG2Ihx1EButdtVTTf7zWR+PL7xAxt5yx/n6/Uj5WWpmY+2RVGTACq/QguReet+SeSOczp4NMby8Fx6TLDkFZEKVW6F//HCZ5N8CIpu5KLWX4MuAPKBNrsRGjFE5gl1jIwqWsSFl719ncrubEetT99rIz+ZNofLDDvkeTiXTM7QAPExItiS0L2JjV5RMtbqCXMvnEN8365rgQCIeI22oeIKL1h5oOQCcltjG68f2c9yInKKwMMuAS/u6/9dsAUOs0Rsy1YYtAV0X1gYEwiyx3Ijw2LLHKeta4m+7iL9+XPv35ek0/ZWd2oDdXuKp59ACHTOzo2QlxNvFdfv9+8iddk7gr3aTV+/vhIDIURzqCBUJ0N3EvDO3dxUVmWCjdI4q3YJBt/8j4EepN7wuNbtFr20Xz6SK8YQZI4tF7gwm+N0n0Hn8jUAvZ/SnEsDRYQtY83ITPR3zrtDukTFQfcFg1kCsmaIn5HcIDtUQ
+ LH/dMsZl
+ iBHYseIly2ROW+1xAfZ78Y8/qIS8zeefRpOPcqE0wLaAzw3NijqBVCa76lvNuF2EZK8F4KOLC+K6oe+ONyaR5HbfgdQebxb4vwLtZtZ7Y4JSUPjlwhX+Ob3ttIhXOJpdxrrl5U4p0YPKrYWIGmRwNjPERIFzGSLUexb7DmW1md691tsLtaIl0rcwB2OuWEorI9WpT5VyAbKjmN89IHc82/IxUw6rQH2HquM67DKH6X9w0pjE43iJX/76esupiKYSlvBVnstaEuo8/jjl107JHsztwzB/V++drq7KzTKGoLYmGoKwX44YgDmUNzuREdEkH2KUjMqxPPcLT3Zc1tCgn9U0ov4Angxa4FOfjIPlDeJ5el8BjIhhCTAP7mvOZ9KPcEFY3GDqYOpUnfdQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,97 +100,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 12:44:20PM +0100, David CARLIER wrote:
-> Hi Lorenzo,
->
-> On Fri, 10 Jul 2026 at 11:50, Lorenzo Stoakes <ljs@kernel.org> wrote:
-> >
-> > Kernel page table walkers fall into two broad categories - those ranges
-> > where no exclusion is required via walk_kernel_page_table_range_lockless()
-> > and those where exclusion is required via walk_kernel_page_table_range()
-> > or walk_page_range_debug().
-> >
-> > The former category is used only by arm64 arch code operating on ranges it
-> > both wholly owns and does not concurrently write.
-> >
-> > The latter category consists of kernel page table walkers operating on
-> > ranges that are wholly owned (but which need exclusion against concurrent
-> > writers).
-> >
-> > The lock used for exclusion is the mmap lock, and for kernel ranges this
-> > the mmap lock on init_mm.
-> >
-> > ptdump is a special case being both the only user of
-> > walk_page_range_debug(), and the only case in which it walks ranges it does
-> > not own.
-> >
-> > This presents a problem, as page tables may be freed under ptdump. And
-> > indeed there is a use-after-free bug in the kernel as a result, which this
-> > series addresses.
-> >
-> > vmap promotes page tables to huge leaf entries where possible, freeing the
-> > lower leaf page table when it does. It does this with no meaningful locks
-> > held against concurrent ptdump walks.
-> >
-> > As a result, use-after-free can currently occur. This series addresses the
-> > issue by having the vmap huge promotion logic acquire the mmap read lock
-> > while both setting the huge page table entry and freeing the prior leaf
-> > page table.
-> >
-> > The ptdump code already acquires the mmap write lock, so by doing so we
-> > ensure that the ptdump walker only ever observes either the huge page table
-> > entry or the existing page table entry, and nothing is freed underneath it.
-> >
-> > A mitigation for this issue was already applied for arm64 in commit
-> > a93b45fd397 ("arm64: Enable vmalloc-huge with ptdump"), which this series
->
-> seems it should be fa93b45fd397.
+As David pointed out, "it’s hard to believe that someone depends
+on pages in VM_PFNMAP to *not* be present", so remove the historical
+behavior that always reports VM_PFNMAP pages as non-resident.
+Instead, make them now reported as resident by checking the
+VMA_PFNMAP_BIT, simplifying the code.
 
-Yeah oops, I typo'd that.
+Link: https://lore.kernel.org/linux-mm/0e619d71-1c3d-4534-8376-2982c7348c31@kernel.org/
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ mm/mincore.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-Andrew - could you fix that up for me? Thanks!
+diff --git a/mm/mincore.c b/mm/mincore.c
+index 53b982803771..0eb832ee0a30 100644
+--- a/mm/mincore.c
++++ b/mm/mincore.c
+@@ -219,7 +219,7 @@ static inline bool can_do_mincore(struct vm_area_struct *vma)
+ {
+ 	if (vma_is_anonymous(vma))
+ 		return true;
+-	if (!vma->vm_file)
++	if (!vma->vm_file || vma_test(vma, VMA_PFNMAP_BIT))
+ 		return false;
+ 	/*
+ 	 * Reveal pagecache information only for non-anonymous mappings that
+@@ -259,14 +259,6 @@ static long do_mincore(unsigned long addr, unsigned long pages, unsigned char *v
+ 		return pages;
+ 	}
+ 
+-	/*
+-	 * mincore historically reports PFNMAP mappings as non-resident.
+-	 */
+-	if (vma->vm_flags & VM_PFNMAP) {
+-		__mincore_unmapped_range(addr, end, vma, vec);
+-		return (end - addr) >> PAGE_SHIFT;
+-	}
+-
+ 	err = walk_page_range_vma(vma, addr, end, &mincore_walk_ops, vec);
+ 	if (err < 0)
+ 		return err;
+-- 
+2.55.0
 
->
-> Cheers.
-> > has to deal with carefully.
-> >
-> > This mitigation resolves the issue by acquiring the mmap read lock on
-> > init_mm on vmap page table free if a ptdump is in progress.
-> >
-> > However the fix in this series would cause a deadlock if we were to simply
-> > apply it for arm64 without also reverting the change.
-> >
-> > This is because vmap may acquire the read lock before ptdump attempts to
-> > acquire the write lock, which then gets queued, and rwsem starvation rules
-> > mean that the (unacknowledged) nested mmap read lock in the arm64 code
-> > would also block, meaning the original read lock is never released and thus
-> > deadlock.
-> >
-> > This series works around this by #ifndef CONFIG_ARM64'ing the mmap read
-> > lock in vmap logic, then partially reverting commit
-> > a93b45fd397 ("arm64: Enable vmalloc-huge with ptdump"), keeping the
-> > enablement of huge vmap support, and removing the ifdeffery with the
-> > partial revert patch.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> > Lorenzo Stoakes (2):
-> >       mm/vmalloc: acquire init_mm read lock on huge vmap promotion
-> >       Revert "arm64: Enable vmalloc-huge with ptdump"
-> >
-> >  arch/arm64/include/asm/ptdump.h |  2 --
-> >  arch/arm64/mm/mmu.c             | 43 ++++-------------------------------------
-> >  arch/arm64/mm/ptdump.c          | 11 ++---------
-> >  include/linux/mmap_lock.h       |  1 +
-> >  mm/pagewalk.c                   | 22 +++++++++++----------
-> >  mm/vmalloc.c                    | 41 ++++++++++++++++++++++++++++++---------
-> >  6 files changed, 51 insertions(+), 69 deletions(-)
-> > ---
-> > base-commit: a635d6748234582ea287c5ffeae28b9b23f91c7e
-> > change-id: 20260710-series-vmap-race-fix-2a4cac988938
-> >
-> > Cheers,
-> > --
-> > Lorenzo Stoakes <ljs@kernel.org>
-> >
 
