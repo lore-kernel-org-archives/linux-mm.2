@@ -4,126 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94C2AC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 17:59:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE422C44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 18:03:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F0C56B008A; Fri, 10 Jul 2026 13:59:01 -0400 (EDT)
+	id BCB546B008C; Fri, 10 Jul 2026 14:03:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CD036B008C; Fri, 10 Jul 2026 13:59:01 -0400 (EDT)
+	id B7BAD6B0092; Fri, 10 Jul 2026 14:03:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DEAB6B0092; Fri, 10 Jul 2026 13:59:01 -0400 (EDT)
+	id A45CC6B0093; Fri, 10 Jul 2026 14:03:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4542B6B008A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:59:01 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C09291A0521
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:59:00 +0000 (UTC)
-X-FDA: 84973628040.19.00B4A64
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3F065180005
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:58:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RRLKMdLm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Fj8lmu1B;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RRLKMdLm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Fj8lmu1B;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A00D6B008C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:03:17 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E796BA04E3
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:03:16 +0000 (UTC)
+X-FDA: 84973638792.24.53F2D68
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1F0C61C0009
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:03:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=IIvYT3IJ;
+	spf=pass (imf20.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783706338;
+	s=arc-20220608; t=1783706595;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3qdjxGZy8Qv4WzY+B8ukWnDTD5tkUtlsYdD4cIzwMaM=;
-	b=qQfWpVnMTjyok676gipFgpL6GsWsoh0pguVAQP2GqLfTRhC0yUx7OidR4nc2t9YbkVfJPI
-	egJxbA+RCSlfG5U72SOZ0YNyvllMXYSK+foLn2SuJbq3E0p0pbJqKNtG5O7eN7D/1qzqp3
-	1bbatmNP/YeSvZiqFRHVSTgcYTx4b3A=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RRLKMdLm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Fj8lmu1B;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RRLKMdLm;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Fj8lmu1B;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	bh=pchhQjIZYIsHA+IyTP+kMOXOCiYK49mahPv3eolm7bw=;
+	b=fXDfMMChxZK0akVaJ71CdMevWcMNLK9T1e/tz9pItWMNleYJBSvtS6IYFWnF36UZwK4AFo
+	Y1yiNTXRGHMLw+xbNiXW2nPWoutBD4bn23B9NI5VpmqNIdPXTw4isJhrwsLv2md5tnHfox
+	HS4Jh+RU5ZsRYmNs2c+kLlNLLfMUn4g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783706338;
-	b=giOVIhzwVLAA+smmsWdec5OcImwuG6x08dHMdFSOKKQyqKfnH6BA6bhUDNdZZ1+kt5gr3v
-	1qQW0WixhZDTXKddFFdYxneGTAiiLvApiqHPk2u3zewOXQoYHxTWCA3TZrz7j2RUl4bltC
-	r8RVPO+cQPgtvePHmABcczBBQO8T2IE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5AB84768AB;
-	Fri, 10 Jul 2026 17:58:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1783706336; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3qdjxGZy8Qv4WzY+B8ukWnDTD5tkUtlsYdD4cIzwMaM=;
-	b=RRLKMdLmjQpkBc0z1jE9eDk79r9fwZuIUZGtzOsFuqZFCVZOEaiItby7LmjnYcsGPlNSjM
-	sBexDruisZmtJ8vWaENaeB9K+/uQIfsQUaAyhUEUqse4jTOdwhl8NPDnFmHYIJxKhLYaSx
-	Gskb+XTvNzkm4fSOek28cKr9wwuMMRg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1783706336;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3qdjxGZy8Qv4WzY+B8ukWnDTD5tkUtlsYdD4cIzwMaM=;
-	b=Fj8lmu1BSsZKb+k7AA/Nyc1EninbYd7LYJHW2y7h9JCDpr7UjHmRLleYUDuiMlpwjt6Kco
-	hdw8nH8lNfwWIDAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1783706336; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3qdjxGZy8Qv4WzY+B8ukWnDTD5tkUtlsYdD4cIzwMaM=;
-	b=RRLKMdLmjQpkBc0z1jE9eDk79r9fwZuIUZGtzOsFuqZFCVZOEaiItby7LmjnYcsGPlNSjM
-	sBexDruisZmtJ8vWaENaeB9K+/uQIfsQUaAyhUEUqse4jTOdwhl8NPDnFmHYIJxKhLYaSx
-	Gskb+XTvNzkm4fSOek28cKr9wwuMMRg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1783706336;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3qdjxGZy8Qv4WzY+B8ukWnDTD5tkUtlsYdD4cIzwMaM=;
-	b=Fj8lmu1BSsZKb+k7AA/Nyc1EninbYd7LYJHW2y7h9JCDpr7UjHmRLleYUDuiMlpwjt6Kco
-	hdw8nH8lNfwWIDAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 53219779BD;
-	Fri, 10 Jul 2026 17:58:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DVRCFOAyUWqsEQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 10 Jul 2026 17:58:56 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id F3943A109F; Fri, 10 Jul 2026 19:58:51 +0200 (CEST)
-Date: Fri, 10 Jul 2026 19:58:51 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christoph Hellwig <hch@lst.de>
-Cc: willy@infradead.org, jack@suse.cz, akpm@linux-foundation.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] mm: remove wb_writeout_inc
-Message-ID: <4eureaes3mp7uhjpdd3sbcvrtgqorbfo7flr3yisbivom2bvoy@elrlq6ommqax>
-References: <20260710051052.1839523-1-hch@lst.de>
+	t=1783706595;
+	b=m1L3D+/774eIlLAmiYUYfjYbvlTLfsf0TI7qy9b7LNyS/D3+bAEhFLrrQN1M+CwyIM4c5q
+	d+u/k6KSFFheOALfoIfPx95Qund9Fwq9VDLXcOxWBTdSsP/FjGCKKA94K3IgeP3xwfnZ7r
+	9WUJKBZMl498wSjs+f6afrVkgU7h8tU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=IIvYT3IJ;
+	spf=pass (imf20.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.170 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51c2a449c57so7106911cf.1
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:03:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1783706594; x=1784311394; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=pchhQjIZYIsHA+IyTP+kMOXOCiYK49mahPv3eolm7bw=;
+        b=IIvYT3IJ9VfnYKnM3z/Ole0qvK88aR7hdUQ7txUQMZuexzKJfDxJWdtp00AdUll4X3
+         KwNCSGBbFgd7zGSriqNr+S/gqOKK7Zfx5ljNzJSB5Ht7NCuCiGfLHdthB1o6R/BQZhXy
+         0HphMI8Ud7CQpkR+aH7/Uk3Ytb6IfrPtGaAzuXddGDiyORzwlNs37F9OtQQzv3RhjfIJ
+         iHuu+CKHDll2M5nSc+2TCEjHc6llseQN7lkhnXhwrGj9FVFFqsDpRlvRRFXXg/l3e3A6
+         +7F/qmRS4FzX+XxAaybTGXnnrzrItdAswe4meUnf7HxX1y8hUknh88Y8lHH0lYrNaFOk
+         uGKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783706594; x=1784311394;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pchhQjIZYIsHA+IyTP+kMOXOCiYK49mahPv3eolm7bw=;
+        b=MMS0Qz9Spy1FeXivB5XmFsQNB3zTHLBIqUEg+a707Ka1G+fP01jsV7MYc/lSkzSaMN
+         DPNE6ltyxRnq1Hb6VOFhb1JmIRB2WUws86eJupcdzcJpgs5CGfnz2iz4le1ddFULKkhv
+         kRKQ4dnIN7TFYoxyTg/KEQxa+KJYEIGsvNTgpJU4zgPOFxNYCYfDIwCBlJdl4zzeF/Sn
+         Yuf4tkC7r/vhBYLiHNmRD/ozwNhseGAqisJgI2ov2eQZzTOCDkc2W+2DbeZIJXYVDdre
+         /Qnt6Qaldi5TMnhbfbD/4r6Thyo0KwXerrO+PEiRr/o36wlBteXiedngdeBwLiwLoDZZ
+         kd5Q==
+X-Forwarded-Encrypted: i=1; AHgh+RrQBxesT6VVKyiOHqYkdSYxdzN/f32S2rEgDdo2VeY49oNn1VsVpyqKB0HR6HDJiSqr1Df2unLn3w==@kvack.org
+X-Gm-Message-State: AOJu0YyNp6lFiMS4AeeDkLISbkLYXTEv8c12CBcdhEKNG6oyaUuKymNX
+	LrG1YEfLNusLxUcwIkXYdtoeib6Ayhc/HJxBad4Ktqq2X/3lRIVq7gJWeJr1q5lKE9g=
+X-Gm-Gg: AfdE7ckNT+45cX6g3XgBMlxFINXkFOgOAfZLjqdCeZM6Yu0peymc83N1OZU9P56b4TI
+	nUXI0OC9XBZw/79bFFOynATlS/JqQ9na9VFC246kQ0rh6DNsuts3mHTaYM+rrix1uYsLbqKtUcL
+	l1HEqPeCT5NHDtVFsRNmAy3DgPMb7sHnAngIV92Yo2/XCflnliJoeMtO6au6id7FxMp2LY9mG22
+	i6PXHRH7gwxWQQailPwUny2HpIQig7lXrrwJ7RtbYT4aKBIWqOQYkkR9rYDjXcE07vmpD4V/IHX
+	90GTh5HBbFJZtCgxe1B/TjNRmX4aUTUGm+5yB3rsIurWxDLp6KFpg9iueTw41TikJm/FgPSrdUc
+	5KYTNrOMaFQzmHJdLTq1sSYJJukj1rOPQ45X096KgABmR0BW44iu8iqUI7ZJ0
+X-Received: by 2002:ac8:7e8c:0:b0:51c:7b13:62fa with SMTP id d75a77b69052e-51c8b438c0dmr129494461cf.80.1783706594020;
+        Fri, 10 Jul 2026 11:03:14 -0700 (PDT)
+Received: from ziepe.ca ([159.2.72.92])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd7c1fd2bsm47060696d6.27.2026.07.10.11.03.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 11:03:13 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wiFZA-00000007fhc-13JV;
+	Fri, 10 Jul 2026 15:03:12 -0300
+Date: Fri, 10 Jul 2026 15:03:12 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Cc: airlied@gmail.com, akhilesh@ee.iitb.ac.in, akpm@linux-foundation.org,
+	corbet@lwn.net, dakr@kernel.org, david@kernel.org,
+	decui@microsoft.com, haiyangz@microsoft.com, kees@kernel.org,
+	kys@microsoft.com, leon@kernel.org, liam@infradead.org,
+	lizhi.hou@amd.com, ljs@kernel.org, longli@microsoft.com,
+	lyude@redhat.com, maarten.lankhorst@linux.intel.com,
+	mamin506@gmail.com, mhocko@suse.com, mripard@kernel.org,
+	nouveau@lists.freedesktop.org, ogabbay@kernel.org, oleg@redhat.com,
+	rppt@kernel.org, shuah@kernel.org, simona@ffwll.ch,
+	skhan@linuxfoundation.org, surenb@google.com, tzimmermann@suse.de,
+	vbabka@kernel.org, wei.liu@kernel.org,
+	dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: Re: [PATCH v7 2/8] mm/hmm: add hmm_range_fault_unlocked_timeout()
+ for mmap lock-drop support
+Message-ID: <20260710180312.GD1803712@ziepe.ca>
+References: <178345345668.660027.2952911919681614557.stgit@skinsburskii>
+ <178345362182.660027.12809852179204464964.stgit@skinsburskii>
+ <20260710162749.GP118978@ziepe.ca>
+ <20260710164743.GX118978@ziepe.ca>
+ <alElv0EKjLQXMNK8@skinsburskii>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260710051052.1839523-1-hch@lst.de>
-X-Stat-Signature: m8ybdmufg4m1fnc59rw5aqw8otuwjy1w
-X-Rspamd-Queue-Id: 3F065180005
+In-Reply-To: <alElv0EKjLQXMNK8@skinsburskii>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783706338-499146
-X-HE-Meta: U2FsdGVkX192/kVAHM8B3cYltam0Vt6GRNRqMeGGObHKuKDAVPvR+rPmOtBiD2G8+3NigZICPdb9pX1TJ2OkY1SYx+pX3bTyej9Oo6XsRmQ5AGYG/HQM9shGGsxQCz2Gyuta6ynicQflsGVKo5FMewc6KK9kQMlEOsfMwH1XqrH3IhcdQSgacieNxhj8acF/yINtMNLN8Okh/q/KPEVMgse/HCjt8VEoT26wYBJrhhqc4S3jNbWcdnFWEUVaiCqe5ikAZjgUYdCIgt4Kkh8velzL7iy8SeQYnZKODw+gA/MGS1FL9bYCNp/c5gC003qvys80l+YttiHecoThqsc4GS4KVRFsx/aSW8qKpuf9OPgogmuP2V2numXrfLS4FCvU8cZG+hn2Z8X05olN8W/RZP84sWY19mYI0cgNIXmi9DcqnxgINerBP2cuW7koGS/72ACaBrEmDUutCIfG0aK/22kxDZOh1JmB/KjSz96sP3/pyKaLtt0yeri6HoKTuSVAULGLOUDJvFjYuHnghltbtRBus96FBLgL5YYPVXXpZwruKltl0YPDgONy0dyZVWlLo0uRqAnj9xdlvjGiZeveTsbvRPZBAQuAkGWAeoGYuyfbfvIhn14X23/0jLQ1yDqLgVSxoDcAyPNUdT2BE1ItuSby/9G3Ac8TvRDAD8OQTaraujFQbvKXa2wlsOyG2cOUl6xLPwUFrN9t7O1UPxt+cVQBnd23JpAV/lvwupT1cSz1mrpcqB0yQWfb+5oKZFd3FtDMdjARBamylW/KmF2kJj3sfRLKASAf+RDmPFhhMiMwhKeF3cb/imc1FFXpmC5/ab1KX8Qi6TFLI5N4WocWCDBc6I6Db/woguz9zQU62ZTMTkqZSqBYBjt/VPpF4DJEi+esmvNRVCoELOhHug1BO2Rk6LqTIvvxNr08BQtEyHS1cLa3iPM3uwfmAQeKLJXmYAE5qX4TtJFGiKKHd4V
- FJVn9+yU
- BlpM+pX66xaPG0OLJkyNs0V7AGq4D+uNm6Y3iwJDsitr+u0mal2sdskX5ggf3WhmbrrVd522O3sFM/PWB2wnrQ1JpZ5Wubqcg6i6wRtHZP9+dNrGYzcIUf6cIuE8wGdaHS+Q3HrWu5/30/KJzA4x6TQE2Bk3U7AE4v9J0/h8tZFfT0dbJo/9siz9/b6h5H2w+L+aErpWwHV+wd0ITAfXQzaoG1qRtyxJg/cSjzgtJYNk/WrqI7Xsh3Y+o09lPWu8pWxiMO0Y69Y5lk5cmhszAXqPc3iPg+U4o+Od4cUkOK8FWIqNdpQnVVRfHtJu5vOEcR/1T1GUW0df+ZkKLqB4wc+cg6AATFYmmwKuc4w9AND2ZDKZo5Gptsi/puUhpdmzVeeE3
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1F0C61C0009
+X-Stat-Signature: 6re48ztpwfwsteydbsodm4wgtcctxq4c
+X-HE-Tag: 1783706594-491998
+X-HE-Meta: U2FsdGVkX1+bdDvYxxFkz2tB8c2gFsREq57WhRGd/vqyIwFNWXhoTXUGqixRoJlg8wg0UnnYTU1nGDwMkrxpVLkgpdvSlPG9CSLORfNAE8tNPvHlp1qLxchp7lGOWgwojCaMsjMFve42VdJwu3//8imAdblY4IjhsUTe6KsormoGFFUQO8MbXWJbF6aE7vfJEnrOdgQ4IKrNbkjBKEl5+jX/ZpkI9mtP+b4uTX592B7ucVtkgpXyliNSLWjCSdlItbvHdYclil0z91bp2BanC6FFr6z1PKnDp3XMmLsKFqsdwlB14ya4zpHnyQ4MlBk3j1U79ktjv/AsRHkdRhDKaJKI9Lh2u7Hpo+SXEbUZ41wRyfvE3qpkA99NWMIdJpN3asrrmoDGiiBZgU0nJ74WGllLrBCoLxyNeroeORf4ZgWKrrzqBwu6GLvzr5hP9n5HBC2Nqd4Pk0/sUfgY6abdJmYy//avK+LHtCm/JdVuT6QxG+7HOsYRZrZ4xdtEyP3mcCuaPe7PXM67Skmnpr4jAM3Bbh9byauB+jDJwbi3I1pE07jLgX6ACl3Mf1Js/RVyBFZevWPx2P1MyozAZ4AoOMvT2Q61+9Jv5YVIo2dg6EyNb8m0h+zaBeVCF+znAFvVqS1PO6viwq/rM4g8gnd4YJx8ovcw5KAaZy6bDleeTPO1Z/jG+mQJ51/Ajokx6hbhvEMaVn975YHQDZkhIPkAPlrWEcelRSVYS1EfTZH4n9vpi4v4a4aynBHRAJ1w4VfhvWespbMWPYq7W14zSnMjr/8Q+rO0wuvv5/J3OA7DVx5c3oApIZ2k5J9Pi+2VuV+cAQxve78fA/8g3KJhmbPg+FefgK3l69sLHKf4p8Gl4xgsjQ3O87tTg6JaUvpg+OG+jL+i7ISPrHvP3aJUdbygbC6qdDjjRBxrImX1S/w7mWy58BxsnMTPkh62gCNR+zhv7+002HMSx9TTaZ75wUe
+ +pC1Rc10
+ 6OLXnLyoxgTYuGC0XJRFXtoR+9d/K6vnPfCTLKW3v/1MPpF++1d/D0jUJxBra6VeVMnwBVHoLahTS1ukP7C51P5/Dva2QtuWXoT1T70qTL7hcNvfpj55O56v9MleC9SmoSoJv5boMwUDbDn+fxP4kWjeZfdBYlUjvud+ooRJjfzazQpOs7Z6FRrn5YSkHd4CFWgs4Q562yGVtybBXgkbsglaOAyi1ltT+QTtry5KsHsRZ9v/XdaAgOKX6p8z+wMa4diOQKaTpcbtzIiZSB+Ij+n0mToDv71XF8o7ByLKPw7Xgp0PpqTX/OHcNRn43PNdnyEh/gM72HSp2B8I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,60 +139,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 10-07-26 07:10:52, Christoph Hellwig wrote:
-> Remove this entirely unused but exported function.
+On Fri, Jul 10, 2026 at 10:02:55AM -0700, Stanislav Kinsburskii wrote:
+> The main customer for this new feature I have in mind is the MSHV driver
+> which backs VMs memory with HMM, requires userfaultfd support for
+> post-copy live migration and fast restore and it doesn't timeout.
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> I agree, that this current timeout value used by the other callers might
+> not be enough to repopulate the mappings with userfaultfd, but there
+> drivers would get -EFAULT for uderfaultfd-backed mappings without this
+> change anyway, so getting -EBUSY with the change instead doesn't look
+> like a significant change to the behaviour from my POV.
 
-Sure. Feel free to add:
+It sounds like it won't be reliable either then.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+> > So, maybe the deadline should be resetting after every handled fault?
+> > ie the timeout really is only about the mmu notifier and we don't
+> > count the time spent handling faults or walking?
+>
+> The timeout was inherited from existing HMM users rather than introduced
+> as a new HMM policy. Some GPU drivers use HMM_RANGE_DEFAULT_TIMEOUT as a
+> budget for the whole range population operation, including HMM retries
+> and subsequent driver mapping work.
 
-								Honza
+Yes, because we always had a timeout around the notifier because that
+scheme can sort of live lock. The timeout was to protect that only, ie
+limit the number of notifier retries.
 
-> ---
->  include/linux/backing-dev.h |  2 --
->  mm/page-writeback.c         | 10 ----------
->  2 files changed, 12 deletions(-)
-> 
-> diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-> index 5b7d12b40d5e..c2284466e7aa 100644
-> --- a/include/linux/backing-dev.h
-> +++ b/include/linux/backing-dev.h
-> @@ -76,8 +76,6 @@ static inline s64 wb_stat_sum(struct bdi_writeback *wb, enum wb_stat_item item)
->  	return percpu_counter_sum_positive(&wb->stat[item]);
->  }
->  
-> -extern void wb_writeout_inc(struct bdi_writeback *wb);
-> -
->  /*
->   * maximal error of a stat counter.
->   */
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index e98748112d1e..47495be68598 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -584,16 +584,6 @@ static inline void __wb_writeout_add(struct bdi_writeback *wb, long nr)
->  				       wb->bdi->max_prop_frac, nr);
->  }
->  
-> -void wb_writeout_inc(struct bdi_writeback *wb)
-> -{
-> -	unsigned long flags;
-> -
-> -	local_irq_save(flags);
-> -	__wb_writeout_add(wb, 1);
-> -	local_irq_restore(flags);
-> -}
-> -EXPORT_SYMBOL_GPL(wb_writeout_inc);
-> -
->  /*
->   * On idle system, we can be called long after we scheduled because we use
->   * deferred timers so count with missed periods.
-> -- 
-> 2.53.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Expanding the timeout to be outside what is bounded by the notifier
+retry is not right, and heavy stuff like mapping should be done after
+the hmm side succeeds and the notifiers concluded so they can rely on
+normal locking instead.
+
+This is why I'm suggesting to reset the deadline as hmm makes forward
+progress, we really only want to bound the notifier retry loop not
+anything else.
+
+Jason
 
