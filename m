@@ -4,101 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1129CC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 02:32:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95406C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 02:34:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B82DB6B0088; Thu,  9 Jul 2026 22:32:38 -0400 (EDT)
+	id 7DE826B008C; Thu,  9 Jul 2026 22:34:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B34CE6B008A; Thu,  9 Jul 2026 22:32:38 -0400 (EDT)
+	id 7B5F46B0092; Thu,  9 Jul 2026 22:34:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A22EF6B008C; Thu,  9 Jul 2026 22:32:38 -0400 (EDT)
+	id 6A8666B0093; Thu,  9 Jul 2026 22:34:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BBA36B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:32:38 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05BA61A014F
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 02:32:38 +0000 (UTC)
-X-FDA: 84971293596.24.F62296C
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EBE121C0003
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 02:32:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6HxuLkZQ;
-	spf=pass (imf18.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 44BA56B008C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 22:34:41 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9E0F48D373
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 02:34:40 +0000 (UTC)
+X-FDA: 84971298720.30.FAE2F0C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D9E5840002
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 02:34:38 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WnY3ZLCz;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783650756;
+	s=arc-20220608; t=1783650879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vLA3HPVa4IkL/sCfl1Ni6nHLO1tC0tF97SgS+HJzcKw=;
-	b=dHmG4Tnb5KPXwVESz3eSTiqpQFmpngzdbufWQnj3PL3kKGdA+z0GO9EXipV1IFi45/potf
-	vWL4YqWScRuKfGRV1/MNGu6C669VrZXWXLX11nurpzaO8pn98EpyKipXFuoJaDr0zBJniK
-	s/qqUmjcraj2Ijsqt90rVm/KIjzoBFc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783650756;
-	b=cpfkky6hrYiU7zvap57H186WuX70S+/Cz/VWz1JZflMXq1qT3bscDZLMHBr6BJ9RWDA9wF
-	h8Kmaj/N2R+BP6F7QXpCbAX1unhmABylOZzlcCKWBECNNAupYZfld04aqud58cZp71B5Iv
-	JvNiAUUkqZRa1oKE1wWr8/fFc+kMFOE=
+	bh=h8BzesiviP7RD/FCfwHOrakN0QE3cmxepvmeCHk4/Lw=;
+	b=bkEQPTcMIKJ0o1s3QRbl/WIZbjRo5bj3fEp9GeK02Q0ikeJWDr2oR+APUKTn5jmr+APztU
+	HDOQbYcEiiIexd9Z7/C+phEd8kWYOjWBJQXmcpvWB4tMVnt3maaF81TF1SfqxKVJCHCs0j
+	tGKPAFZkpOrKs1l8NbVKcyG4W2JVVBw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6HxuLkZQ;
-	spf=pass (imf18.hostedemail.com: domain of xiqi2@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=xiqi2@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=vLA3HPVa4IkL/sCfl1Ni6nHLO1tC0tF97SgS+HJzcKw=;
-	b=6HxuLkZQ7xEfYha1BMyGZWIQVghQdQM1lgZu1HHkY/7k9r5bFITWYJDg0J+VdpZVQ0DeDxQrc
-	8qE9+C+/OxxoF7nH3pM8iUm9t0U8VFGslx3vMzaEdEvJpVbH9JjEAjTHOwyJUQnE++g3RN7ZbKr
-	Vq+jXLlvJE5mIz12+PFFPok=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gxFxF0tvJzKmVj;
-	Fri, 10 Jul 2026 10:23:13 +0800 (CST)
-Received: from kwepemo200010.china.huawei.com (unknown [7.202.195.178])
-	by mail.maildlp.com (Postfix) with ESMTPS id AF2C740572;
-	Fri, 10 Jul 2026 10:32:30 +0800 (CST)
-Received: from [10.174.178.56] (10.174.178.56) by
- kwepemo200010.china.huawei.com (7.202.195.178) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 10 Jul 2026 10:32:29 +0800
-Message-ID: <3fb3b11d-515b-400d-b1d2-5623dacb92cb@huawei.com>
-Date: Fri, 10 Jul 2026 10:32:29 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] ARM: mm: fix use-after-free in __do_user_fault()
- under CONFIG_DEBUG_USER
-To: Russell King <linux@armlinux.org.uk>, Lorenzo Stoakes <ljs@kernel.org>
-CC: Xie Yuanbin <xieyuanbin1@huawei.com>, <akpm@linux-foundation.org>,
-	<david@kernel.org>, <liam@infradead.org>, <liaohua4@huawei.com>,
-	<lilinjie8@huawei.com>, <linusw@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <mhocko@suse.com>, <rppt@kernel.org>,
-	<sunnanyong@huawei.com>, <surenb@google.com>, <vbabka@kernel.org>,
-	<xiqi2@huawei.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
-References: <akzpuerKqOY7qfFi@shell.armlinux.org.uk>
- <20260707131409.79043-1-xieyuanbin1@huawei.com> <akz8aZUW23rpyrLO@lucifer>
- <ak0cfZPZIWz4v95K@shell.armlinux.org.uk>
-Content-Language: en-GB
-From: Qi Xi <xiqi2@huawei.com>
-In-Reply-To: <ak0cfZPZIWz4v95K@shell.armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.56]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemo200010.china.huawei.com (7.202.195.178)
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=WnY3ZLCz;
+	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783650879;
+	b=yDCOofHtejL3kloDWME8uYCBPvk3KHB9h7tPLOFy2jKGfcEEo5OMrbb50Z6Sk4g4WKPvqf
+	TSXj8vuQgfc2uEADzm7YGQSZVOWqGP90uXemAt9i4BkjzjK5qPHxLHkc37l6OCXe4B4zZ7
+	WsFWjIdjAQEYl+ARue4Mp2Q13QmiTFY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3A7EE6001A;
+	Fri, 10 Jul 2026 02:34:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4071F000E9;
+	Fri, 10 Jul 2026 02:34:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1783650877;
+	bh=h8BzesiviP7RD/FCfwHOrakN0QE3cmxepvmeCHk4/Lw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=WnY3ZLCzuC5g/aI0wvLMojKDbgDgHUyL2g5iVtSbwLyvf+E1cydeTAaWtt9JG+HIg
+	 RDYNOgQ6QmWVd42SPoY8zjQvZdfO89MTkDn1vydyVB1VCdwJAUuKxEeBLeguSrojcX
+	 W6oV0NXaFvaugatsLbkCqKEqX6iIZMNtHW9q3/mM=
+Date: Thu, 9 Jul 2026 19:34:37 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Paul Walmsley <pjw@kernel.org>
+Cc: Vivian Wang <wangruikang@iscas.ac.cn>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Alexandre Ghiti <alex@ghiti.fr>, David Hildenbrand
+ <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4] riscv: mm: Avoid spurious fault after hotplugging
+ vmemmap
+Message-Id: <20260709193437.701fac04e878b34d75ab101b@linux-foundation.org>
+In-Reply-To: <b7ab255d-8d0a-24f7-2953-4f5decf11432@kernel.org>
+References: <20260630-mark-after-vmemmap-populate-v4-1-febbc15da028@iscas.ac.cn>
+	<20260630211100.5c8f09c607595fbb5bca0a74@linux-foundation.org>
+	<cd8cd425-7615-49a2-b26e-81a9aff0af28@iscas.ac.cn>
+	<20260630223332.534218a41b2f574de327e4db@linux-foundation.org>
+	<b7ab255d-8d0a-24f7-2953-4f5decf11432@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EBE121C0003
-X-Stat-Signature: trxu79dc86t9n67gxwfrta3tohgb9nmw
-X-HE-Tag: 1783650754-292848
-X-HE-Meta: U2FsdGVkX1/z0AAhDMCfoAULT23QX49EeEgfR19+8qg+r96n+E3442c39fXz/V68YYxUYbmE5xzINH/LKtJl8HVNSApKKULN5qjhosmmO+hUkgqQR8Tmc/IZcZiaRePtiK96JdDxucraN0llEEj8G5lyogygs85Qyy1fudu4yunRudTkASsIdEUBlm+2Y+A6pltaCQlPy7xne8fAY1F6zztnytEtV849/TiWHiOkpceo/NlCJdTV2VYzPaxETxD0+lasizdFsZl13LQtGE4R5t46ZwRDAFhHF++fZVfoGqGxZs0jImiw6NT0SlI11NpxhXtFUGAG3+TMsUMeljSM9AYunpjJZdHL8CXIxIlTbIlyHI+mMrCRl5aFbSKdCKOpu4O5S1RlYihzDV8dBwJ8ko7jiOCgWND5QOGy1Evr/3qQEdIsrjfOoXUSBt+4orTHM26XTIPa7v25vs6EaYCdzMclj33ceiIPtNHDKnj2PVThTluXbRpke8G6Eb0K7roXyT4Xk3soKtrrwDuWFcVp55t5oLAebRlC1EX94GhqOmUkPEqqft3Mlf31pIYdPK3jNTi5H0LmH8nBIOFZyX/8MVhm2auYUwH31LJ6Fo3D4ns3OOB23SF464LpfIiuowP7ggJm7WP/xWIayR1/YI0v12vO5lVpkE5q1WyB4l4X9VLMJSUPYKFN4daoF8jCLOb0HarQURMtwpFtX/BXQqeKVy0R20AImiGdxFGjlixjJNxXFEmw3yVt0lqZ/SvugI/rL1Lje2tTbs3J3sZUvJqsMlMBUyr0H1Gwku2GHpj/e5YDO1f4uM5D1YsM5SWqJ2VsIkpNzzNxm+dH8fnGhYmZsx/X1JfVB0C6Lzl6uU4ZfjpjnrcG15tNIQNc9eQtjeiD1DOBy8nJs+wdzP5+Pp+vWTSK1WtVqikfjz+e4/jWQSE94JCBdEaCqj7yT3k5EPQh9Uw20slHTYrPPSJ06CR
- MtJbn+Cz
- X9wqFB/Ijw0E0Yli9/KsfOZ7UCqFpc9TKMTk0nI+EwPRyDe4JrR7taxevIEPAHDvCQcPbVFWkSGjZJDIfZrBMVDNuli91JoDbqheyZ5mbR47iIFgmifcsdlo2FTMfXSjgC+fNBgSoMmZwcE659Q+sJ+son62sEL+Uklep8G24o/48D+T3bXubzwCCWk4O394U4ebQSeW/FOv3ZJRIJij85eZho2+tyvDfRo4XOZIQp1NpDDKF5FAyrD9Cx45dvBglqGd6SnkM400UUdkd5kXCRu1gOEeL+OidaiuuV2gpctyWltx1TrGqBbyema4i2PPVOAVdA2JAKFscnKK/8Vet0kTJxCaz4csgVuIhvcYGUzls1kE=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D9E5840002
+X-Stat-Signature: k8bdkpjx69w8anzw4htb15ej381c49kf
+X-HE-Tag: 1783650878-405891
+X-HE-Meta: U2FsdGVkX1/VUKcHF24zj8ouu6gY1HyWXeB0jER2+poHf35n0d59Y1ik9tKul1wB7+sxJCmH4L9kaYomAt0RPPO4Mbn/mM/7flo3bokSHAUm9NSkQdIBEoBku8xtzLC0LS8M9QCoUCrCyg875X+WPM5lCEO7jYb+vH07n1Id0fOwdnHUj24qtMEoJA+/k4rmsl6v9ymwGZeHTRZD7jTIb6kQnb6bJF5hFp9VF69h27ABEFPxBfJzxhIZjMoGH9JnlpWTPFSoLTaNq7gesCwH2lpcyQA7puaVOx9qdC/m+rXEkWdMhO6NAYSKjP1psFDwLodOSGLYVOdpso5SSy5NhA30zDi5Ke6Pv8MS2tqffPNLWVjnOEEjPiz2lHpOABErfO7mV/Qz1AuJ7RvMKqHTsq5HXTzjk+kQ89HpbduXP2MIrKUTTKLS6YDWRrFyod4SS4EzEjQ5JS+buwJ400FYgkdJhHCS/B9i2Gd1lEfk4Gf2hR8RmS6wP3f3JAen+bpcQqjgHWse++a/d+iO2jo/ezR7qqwwWDODuvfBEL1lVV2I1xWC0gvJ7ET5bL1vyV2MkiYWjk1u0P6B+CblAC43dHMc8vXCEUsS2liCwiNAE6F4dFhhsF9CwiOkTy+uM8Le4yTkbH0VzoFlDT+u+PpVtjS0xi1Fymd+uN03T39Nr89ayxY8oZQwgSl12Cagd7u1KB2HPuXKfIbBoDRW/6tK7ALyNKJWdqPZoPIy2l9jMTyqPLZQcDAEGfHFiFHekwvwVuDQEQXysErMmu+wTjNGHkNuRCODem0pxNBOhlzeH0p0nyVLSFdrkjuMdAFaY+ynMuVH2r3Z4CbEUrWRFz+osRk1sAGQ0yIWaQsvslbnsl8CnsH8X7fGz7e//3AxK2PQ137/QlwrmE7jGHzuJiz3tE2/kLpFyehfsoF9ZeI8h3cTOsIUO5VaHty8oSS8nls/d2khyOcWbqFbcMPviMH
+ iKxI3zts
+ pf1xQILxduV/ChChLCl1F9hPXzOlGFOWcxOIymHVhVvpq+Ja2GezNuvEXeY4VV4TRolIdA7TvePccUQSfUZ9QFzKEPWfLM7uk3ABYlHdhmRoC57rzlK9S9q0uKXcXC0VglgrJOxUT54hPGrWmV4T8XIIhdF42/ldGYQ3fMWnkvJPtt2u6/Zt4Wy51buxO2OCrWWd+8dWC2ZmvQiHXdR/zS0tsyoF6IzrcrVMmVOwVwWX8jTXqxih1B+ZRBkYxXAZcgY8Wyz1FLBIc6FNAwN0ES+ynGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,74 +99,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 9 Jul 2026 20:00:08 -0600 (MDT) Paul Walmsley <pjw@kernel.org> wrot=
+e:
 
-On 07/07/2026 23:34, Russell King wrote:
-> On Tue, Jul 07, 2026 at 02:20:19PM +0100, Lorenzo Stoakes wrote:
->> On Tue, Jul 07, 2026 at 09:14:09PM +0800, Xie Yuanbin wrote:
->>> On Tue, 7 Jul 2026 12:57:45 +0100, Russell King wrote:
->>>> No. This information is useful debug for kernel oops.
->>> For kernel oops, I think it should be `!user_mode(regs)`, Qi Xi's reply:
->>>
->>> On Tue, 7 Jul 2026 19:48:12 +0800, Qi Xi wrote:
->>>> For do_DataAbort() fallback:
->>>>
->>>> 	if (user_mode(regs)) {
->>>> 		if (addr < TASK_SIZE) {
->>>> 			mmap_read_lock(current->mm);
->>>> 			show_pte(KERN_ALERT, current->mm, addr);
->>>> 			mmap_read_unlock(current->mm);
->>>> 		}
->>>> 	} else {
->>>> 		show_pte(KERN_ALERT, current->mm, addr);
->>>> 	}
->>> changes nothing to kernel oops. It only skip show_pte() for user-mode
->>> faults, and the fault addr is a kernel address, which means a user
->>> program is trying to access a kernel address.
->>> I think it is reasonable to skip show_pte() in this case?
->> Well the whole reason you're faulting here might be because a userland process
->> did that right? The page tables should tell you (presumably on ARM32 :)
->>
->> And I hate to repeat myself, maybe you didn't read the whole thread but... just
->> use mmap_write_lock(), this isn't necessary?
->>
->> What is this trying to achieve?
->>
->> You're not in a hotpath, why are you bothering to conditionally take/not take
->> the lock?
-> Unconditionally taking the lock could lead to a deadlock. Consider
-> the case where the mmap lock is held, and we get an unrecognised
-> abort from the kernel.
->
-> If we try to take the mmap lock again, we'll deadlock, which will
-> result in very little debug information being output - and the
-> system locks up. The only thing that would save such a case would
-> be if the user had decided to use a hardware watchdog, or is
-> physically present to press the reset button.
+> Hi Andrew,
+>=20
+> On Tue, 30 Jun 2026, Andrew Morton wrote:
+>=20
+> > On Wed, 1 Jul 2026 13:01:15 +0800 Vivian Wang <wangruikang@iscas.ac.cn>=
+ wrote:
+> >=20
+> > > which made it miss:
+> > >=20
+> > >     Changes in v4:
+> > >     - Rebase on v7.2-rc1, drop dependencies
+> > >     - (No code changes otherwise)
+> > >     - (A concurrency fix for mark_new_valid_map was sent independentl=
+y)
+> > >     =A0 https://lore.kernel.org/linux-riscv/20260629-riscv-mm-new-val=
+id-map-ordering-v1-1-60d8c10c6292@iscas.ac.cn/
+> > >       ^--- this
+> >=20
+> > Cool, I grabbed that.  Same caveats: riscv maintainers, please?
+>=20
+> I just responded to Vivian's v5.  I guess he'll probably do a v6, at whic=
+h=20
+> point, will plan to queue it for v7.2-rc here, unless you have any=20
+> objections?
 
-We are preparing a v4 and would like to confirm the approach for
-the do_DataAbort() fallback path (__do_user_fault() is similar).
+Go for it, thanks.
 
-As Lorenzo noted, an mmap write lock is required here because
-munmap() downgrades the write lock to a read lock before tearing
-down page tables.
-
--	show_pte(KERN_ALERT, current->mm, addr);
-+	if (user_mode(regs)) {
-+		if (addr < TASK_SIZE) {
-+			mmap_write_lock(current->mm);
-+			show_pte(KERN_ALERT, current->mm, addr);
-+			mmap_write_unlock(current->mm);
-+		}
-+	} else {
-+		show_pte(KERN_ALERT, current->mm, addr);
-+	}
-
-The lock is taken only for user_mode(regs) + addr < TASK_SIZE, so
-kernel aborts that may already hold the mmap lock are left unchanged.
-For user-mode faults on kernel addresses (addr >= TASK_SIZE), as
-Yuanbin noted, it is reasonable to skip show_pte().
-
-Please let us know if you see any issues with this approach, or if you
-would suggest a different way to handle it.
+When I see a version of this pop up in linux-next I'll drop the mm.git
+copy.  This is my standard procedure.
 
 
