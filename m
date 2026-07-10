@@ -4,134 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC622C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 04:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B2ABC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 04:16:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90D056B0088; Fri, 10 Jul 2026 00:09:54 -0400 (EDT)
+	id 0407D6B008C; Fri, 10 Jul 2026 00:16:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BD6E6B008A; Fri, 10 Jul 2026 00:09:54 -0400 (EDT)
+	id 018406B0092; Fri, 10 Jul 2026 00:16:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AFB76B008C; Fri, 10 Jul 2026 00:09:54 -0400 (EDT)
+	id E973D6B0093; Fri, 10 Jul 2026 00:16:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5571A6B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:09:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5908A0330
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 04:09:53 +0000 (UTC)
-X-FDA: 84971538666.02.6179949
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 50DE7C0006
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 04:09:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=UZKgSZ9H;
-	spf=none (imf10.hostedemail.com: domain of BATV+f6dbb437d89e5d5f1fa5+8356+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f6dbb437d89e5d5f1fa5+8356+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C579E6B008C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:16:00 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 487381A028D
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 04:16:00 +0000 (UTC)
+X-FDA: 84971554080.29.F16916E
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E6818C0003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 04:15:54 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783656592;
+	s=arc-20220608; t=1783656958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XZ2ZKJwyH+czH0S6wCGrcRFmnJfF64txwylbTE5TD3Y=;
-	b=60X0HjrnkCnp3EnllufyNVrh7wgDfoxrFgTKM/gUGTIMnOpnEBtL9bKKQWmfWOhX+66w8L
-	YLA6K9rRNlR4Xb6Wopvf3nMmyxDkgrK1VaMMdDpNrSD2JiYj1gSB/w2ahpozzyDlSRZx0T
-	0tIe3KZYsyj4xzTjFzBsBzelqsi5Zyk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=BYezaF9YuINPLSIwZWHqbXqT8z7sOpw+eOJRIT+msIA=;
+	b=HvXcXknHL3DE/uG0stFWXxynaBYLFasjori6RHt1DpXjSQRQ4VXnWR/t3na2mcffeqKsCe
+	9ahAnjw2SjItVrqGMMIcXS3STl1dclK6u0DWRxEm4ssAh3kykwVe75UiP37LBpZkuqxXQo
+	M20J0xmsHHq4ohim/l8fYVVVN0+bvL4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=UZKgSZ9H;
-	spf=none (imf10.hostedemail.com: domain of BATV+f6dbb437d89e5d5f1fa5+8356+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f6dbb437d89e5d5f1fa5+8356+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783656592;
-	b=FGd4fSQHQnR1ncQi0it2bWcb96CDnjeydwtMP2LInCLCWhduSzzbm/mgrt4eDjGWPBRwOO
-	mwpHxT1Iaqp9JTE2x5szZ7scP1YSP/XAsiIKyRJvkttP9MRscFQ6/5otXFh+od3gDkszjd
-	Cf1xiRJXFZY1BiL/UCUUglhN+nBfrjU=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XZ2ZKJwyH+czH0S6wCGrcRFmnJfF64txwylbTE5TD3Y=; b=UZKgSZ9HstM/m6zYkRbYa7ngfh
-	DZ/56Ny6UarWRcWvOxILB52RdTY0S/lHv4mZLNuD2heZv5MHp43p74p7HIuDftdk55uB6CB1dDa3K
-	jbkrEd87hXH4+3hLmn0IQwvXRw/c7ySwiiHkMFgXYVetbjUKqLsHBY1QS+vuGR6dG38TRnUY/Neoo
-	XJlA7lXNLL8J0bmr4Y4KTj+lhtXLClFJ3OqTu6Z/Dkfng25d6iHRlJh/0nzLndSfFYKGT6Gf2BPMr
-	PVr+yA/Fk8aBAZWsQVZ6SRgj7aGESs5Kjbdl/pHBqMDGf/0EupVJ0um+iO2M4vAGoq7t4phcoTnCW
-	l0QHE1dg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wi2YJ-000000044w5-0wtb;
-	Fri, 10 Jul 2026 04:09:27 +0000
-Date: Thu, 9 Jul 2026 21:09:27 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Eugen Hristev <ehristev@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	David Hildenbrand <david@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Petr Mladek <pmladek@suse.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>, workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 11/26] mm/swapfile: Annotate static information into
- meminspect
-Message-ID: <alBwd9ACdVNEucut@infradead.org>
-References: <20260708-meminspect-v3-v3-0-7aa5a0a74d5c@oss.qualcomm.com>
- <20260708-meminspect-v3-v3-11-7aa5a0a74d5c@oss.qualcomm.com>
- <ak4AgXqMnkn8rVGE@lucifer>
- <20260708190535.fhqaddicljho44eq@hu-mojha-hyd.qualcomm.com>
- <ak-1HujOABoQ9wR_@lucifer>
+	t=1783656958;
+	b=cH4nTmcn3o6vcl52NjYPfznQH8HHYU18ZrdbwHi0pfV7pUyrcsi0cObIBK53bAXg5PuF7Q
+	cdcx6Mjfz37JPJXhxSSXf2bWinmM1k20w3DT5+5ghvp7lJTWMQzC61R28rqf74Mc47xtah
+	TZyCy+vRZKPHZ6kWg+kUwnnENFUlFSo=
+X-UUID: 045c12ee7c1611f1aa26b74ffac11d73-20260710
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_UNTRUSTED
+	SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:fd994086-c493-4c72-b1db-2b690073c017,IP:10,
+	URL:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:35
+X-CID-INFO: VERSION:1.3.12,REQID:fd994086-c493-4c72-b1db-2b690073c017,IP:10,UR
+	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:35
+X-CID-META: VersionHash:e7bac3a,CLOUDID:d75f8329d6be75e53ff2f0d667151fff,BulkI
+	D:260710121545M08Y2OKM,BulkQuantity:0,Recheck:0,SF:17|19|66|78|102|127|865
+	|898,TC:nil,Content:0|15|50,EDM:5,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:
+	nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,AR
+	C:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 045c12ee7c1611f1aa26b74ffac11d73-20260710
+X-User: husong@kylinos.cn
+Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 154396007; Fri, 10 Jul 2026 12:15:42 +0800
+From: Song Hu <husong@kylinos.cn>
+To: sj@kernel.org
+Cc: akpm@linux-foundation.org,
+	shu17az@gmail.com,
+	jiayuan.chen@shopee.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Song Hu <husong@kylinos.cn>
+Subject: [PATCH] mm/damon/tests/core-kunit: test damon_nr_accesses_mvsum()
+Date: Fri, 10 Jul 2026 12:15:30 +0800
+Message-ID: <20260710041530.557455-1-husong@kylinos.cn>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ak-1HujOABoQ9wR_@lucifer>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: 4xtcirg8yyrsark7wabq1xd8tswziett
-X-Rspamd-Queue-Id: 50DE7C0006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 4xkfa9ry7wk4xc17wt61tbiww6tgnxd8
+X-Rspamd-Queue-Id: E6818C0003
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783656591-790039
-X-HE-Meta: U2FsdGVkX1/aRHafubDj6+uGTZWRpY0UARpSPmxd4LCNKMGSWlXyv0uKKN6TBXvkdhtC9PNvXLQF1GPUlkSOvTE12CZFbo2KyzUKtWoZMR0YdfeHEu27Isqt4y4qraeuuzgKwvAl0fdJ/xBQ9cUq1xAzBls9SbXOeGsfNjJa3xCnvBBkPQY+Fm4CwD9dgkX0WfZC2IEXyqPWjCxFdpB5iTu7KD/Fl9QX7te81ZYo1Draiohd311olQ5NojFndAjEtlSULaBu+a5DyesdHzxCskMpS7yQJDgK7R1rICwFvcWf8qjmAvBl7snWTnhLaoWolq/s3GrS5JZ4eWyucLaYsqswT1QXB0gHJrfMDESSJQbaF7rRdTEhRpct0nprlkO8eXWa91ARU8H33nBcvNaIOAYGoV1bSCuGnogEc/LiBLfaKoiutG7079nEaqxwQNEYOpEBLOH2YrGr1OBrtnlmNqQFOiZK5pt+ZJMbldrdrFZ67xZl3KgtqM624r9GcQcr84H+v5qipUHTg9Uhy766Bv0edkfE3+MQM5L97V7BJz44Dn45mU3hobSQvM1t1lUMNCqFiJRX5aawB/1iU9sKtSAQTb4alWvPq/RrCUPf4xl8IrtLEhyCX4mH79vrjTJ4UjMdZfw0wcbXedowsY0iLl47o+cQkkW4NnjUjl2iwb84QGsDUk4WglvSokHJ3IyRpq8Mb3WlfIW2acvp+I20RDqm8D40O1MBVarQpyyCsTClhY6I0re30haUUjWkmVwxi/V2wF80ZssLRWslvZh3AWfpmlOrJLElv8mqIzHL+C3JxBFZ+lxMq5oD1HFekhOGR/AB1Ge2hH8PCTF+qKC1QAqgByw/PX48L1SFa2bRLt7fMXOwKRzReZqZnt82lmcCa1rKmmul4tfZ24jow6nd1CetDf1dOSWIav87Wl+/BGLltfsp9YIlpsCRg64v8KZZiOKlTJw4twpG3KEQoDS
- wvr4h+S1
- os6NDoe4BBq+9xVJaK/3JAPBp4N9a3f8U8tLWEUItIIXB+p6+Yp7yulXu3jeIHC5od7jb+Y2wCLhtl94g41Hn0nyQwRPIruunNCoAs1FoX9L3Z0cEV1wNXgUXPZ7Xh3oCgBUBYebCU6Xf7UZYAS+0qlevLrAG44zRdp5DFARGhwtFOLK8InQpVJpQ620e9aW7KzLJpe89R17oLmvwfNomOuvuGaNxBCA8Li2YYjsjF2tFFza8Yzt5CYLb/CX3ETc9ZDweoU5yU3KzTeqgRENG91BgKV22otVuq7iC167jxJe1Tzow7N/0iY2vTwpcAJ/Ekff/VwHkuo7esACT2YTZPqoX33trIp2DgBoKANXzrhU/PReSEPNl0RRYGsDzAELVfYztOXMVDjcifYHxsIWtB5OKjvpAugR8Se2d2qIZe7VepX0B39QRio/jKQ8PsbzapQOxisaQx6V8LdcbD0ymvW85RbnOZn7aBuPpYEX2j9e1HngW2t/ucOe2Mxrmky2DgBJy56AlUPJubvzQS+u8UXLH0cOeijLA1CAtQvA6WVt0/74abTq8rQbqYlu6kW2N85WrsaTMwVqa6XMHnJkXGfGtbnw8y8vTDbewxToIqHgVvPw=
+X-HE-Tag: 1783656954-925313
+X-HE-Meta: U2FsdGVkX18MfFGPbT5p2Yz8G+Fn1BiJEwYT6TY8sWfVV8zidP++u9He+WpAXwC5Cjlrxp/ZACa1lRzywhg1jMgSvUOl/IFKzMdQ2L7wPLyizMZPJiaUlBaoFfWrC4gvIKUgkLIC97D++k2PbWhN5i+jII2NZFdXgYN/HVxpqCOvT55yV9UL98Zq+6TPi/9LHK7SFRGydAkZ9u3UhIkz98lCwIYpkxITlwz4pf9HUM85/1+8qCD3BLG6o3MU8d5ivR2tP/Y0AWd+y5dvYyaS3FFakOINbbS7aTHGxKaiw5NFTWg2/HrYo9QQyvxn0vCPy9vYb0F4Q60Nc47m4O+GU8SqgBr+Go13xNufF6vjNUBd03rfs/XkDQ3MQxfVlK6Dj/t2CIDFd2vlwijQLCaQrLMENZKk4WRJHrizmfOEqsjPSK8aAIK5QhhY5F2ddocUxdwpXJGyAWvBq66rYMC6nFvzKBLDHsvfmVx6T1zVy6ufRZfBa9Zy6DPtWEH6uGySuocLgqiIGj0soP+nWjZZ1LUbs0Kp1ludPoc5Qd0FVMyhxNKg4LviDKrPZPdX/h/u2j+inw9HEWODIG8yFcQIn/mDgytO2syKj6bdqenc6Qohajveu26JHi1k68rMQLFXf2Bqp4wv7uViAjPbsW7MzevIe7d8j1tBhOh0m5uOHQiNMxg3nCHiaMgGaHUiHOJBzFKIaEGqm0n488tEsHwWHG6XoQEegLqhWs3qW572KpBlT7lmxIBjiH7jhPIXU8UvDOfbe2/dbUImGBaC70tttheKdfo0MaMhTPLuP6E28Og8lzhkGbWgJWSrILfAIrcSyQoL2KlybzB/4ZLCgOlnu2ezpxZQksobkQHAEP7UoWFYtRx47NYdVHlhBK8upssrUJbFT+TCxRmN59w/Pb+j8d2diHOztEBx0Yim2DKcJQHmbeBLA96M+ptjlQ23gYZ8UP8zL0XyL4oaId7Fg6r
+ hSATL/hj
+ RFkytipH8iWDgnzYY5k36GOTQVO3BbzjO6jOrUS0ysDwfIek=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,25 +107,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 03:53:44PM +0100, Lorenzo Stoakes wrote:
-> > The whole reason we had to tag most of the MM symbols is that
-> > the crash tool looks for this information while launching itself.
-> 
-> You're missing the point.
-> 
-> EXPORT_SYMBOL_GPL() != EXPORT_SYMBOL().
-> 
-> We cannot and will not allow symbols that are GPL-only to be exported by the
-> back door to non-GPL modules.
-> 
-> Meminspect seems to ignore all of this and just exports symbols another way
-> overriding kernel mechanisms which is just not acceptable...
-> 
-> I also don't really understand what you're saying here either, what has what
-> crash looks up on startup got to do with anything?
+damon_nr_accesses_mvsum() wraps damon_mvsum() with the monitoring
+intervals of the context to compute the pseudo moving sum of a region's
+access frequency, with a special case for when the whole aggregation
+window remains. damon_mvsum() itself is already covered by
+damon_test_mvsum(), but the wrapper is not.
 
-Yeah, random backdoor exports for a totally opaque facility without
-good use cases that comes from a known malicious actor like qualcomm is
-a no-go.  I don't think anyone should even waste time on this.
+Add a table-driven KUnit test that exercises the full-window-remaining
+boundary (with both reset and not-yet-reset nr_accesses), partially
+elapsed windows, and the no-window-remaining case.
+
+Signed-off-by: Song Hu <husong@kylinos.cn>
+---
+ mm/damon/tests/core-kunit.h | 49 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 0124f83b39b8..8c030282a638 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -683,6 +683,54 @@ static void damon_test_mvsum(struct kunit *test)
+ 	}
+ }
+ 
++/*
++ * Test damon_nr_accesses_mvsum(), which wraps damon_mvsum() with the monitoring
++ * intervals of the context.  With a sample interval of 1 and an aggregation
++ * interval of 10, an aggregation window is 10 sample intervals long.  Each row
++ * below specifies the passed sample intervals, the next aggregation time in
++ * sample intervals, the current and last nr_accesses of a region, and the
++ * expected return value.
++ */
++static void damon_test_nr_accesses_mvsum(struct kunit *test)
++{
++	unsigned long input_expects[] = {
++		/* passed, next_aggr, nr_accesses, last_nr_accesses, expect */
++		0, 10, 5, 3, 3,		/* bp=10000: unreset nr_accesses ignored */
++		0, 10, 0, 7, 7,		/* bp=10000: reset nr_accesses */
++		5, 10, 3, 10, 8,	/* bp=5000: half window left */
++		8, 10, 3, 10, 5,	/* bp=2000: 20% window left */
++		10, 10, 42, 49, 42,	/* bp=0: no window left */
++	};
++	struct damon_ctx *c = damon_new_ctx();
++	struct damon_region *r;
++	int i;
++
++	if (!c)
++		kunit_skip(test, "ctx alloc fail");
++
++	r = damon_new_region(0, 4096);
++	if (!r) {
++		damon_destroy_ctx(c);
++		kunit_skip(test, "region alloc fail");
++	}
++
++	c->attrs.sample_interval = 1;
++	c->attrs.aggr_interval = 10;
++
++	for (i = 0; i < ARRAY_SIZE(input_expects); i += 5) {
++		c->passed_sample_intervals = input_expects[i];
++		c->next_aggregation_sis = input_expects[i + 1];
++		r->nr_accesses = input_expects[i + 2];
++		r->last_nr_accesses = input_expects[i + 3];
++
++		KUNIT_EXPECT_EQ(test, (unsigned int)input_expects[i + 4],
++				damon_nr_accesses_mvsum(r, c));
++	}
++
++	damon_free_region(r);
++	damon_destroy_ctx(c);
++}
++
+ static void damos_test_new_filter(struct kunit *test)
+ {
+ 	struct damos_filter *filter;
+@@ -1576,6 +1624,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_update_monitoring_result),
+ 	KUNIT_CASE(damon_test_set_attrs),
+ 	KUNIT_CASE(damon_test_mvsum),
++	KUNIT_CASE(damon_test_nr_accesses_mvsum),
+ 	KUNIT_CASE(damos_test_new_filter),
+ 	KUNIT_CASE(damos_test_commit_quota_goal),
+ 	KUNIT_CASE(damos_test_commit_quota_goals),
+-- 
+2.43.0
 
 
