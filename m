@@ -4,102 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E9FC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 03:41:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E143C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 03:49:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E0D56B0088; Thu,  9 Jul 2026 23:41:11 -0400 (EDT)
+	id 83EE16B008C; Thu,  9 Jul 2026 23:49:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 591646B008A; Thu,  9 Jul 2026 23:41:11 -0400 (EDT)
+	id 7EFCD6B0092; Thu,  9 Jul 2026 23:49:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47FB86B008C; Thu,  9 Jul 2026 23:41:11 -0400 (EDT)
+	id 705456B0093; Thu,  9 Jul 2026 23:49:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 13A006B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:41:11 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BBAB6B008C
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:49:00 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 93CCA4036D
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:41:10 +0000 (UTC)
-X-FDA: 84971466300.07.C672B5F
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4865580007
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:41:08 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=L5nIoJYe;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA8A1140338
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:48:59 +0000 (UTC)
+X-FDA: 84971485998.07.057A8A2
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4C64940007
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:48:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ENIdlXh4;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783654869;
+	s=arc-20220608; t=1783655338;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dT+E5E9n47vACYHi/SVeCwzS+f47nvPEFd7PhC0qToA=;
-	b=BgT4wFqpQaCPG0im25518QB+DycLePn34AW6ps0S3uVVJNkvbDdo7G0sSUuGrIUSYVGqka
-	jvX71VQ76geSl2I8v4U8N+07GybkdbzojuBvUwBXWEKG5Jms05xvkyqu+VrTQyDCNKZFx1
-	j03D9NNurm44QFnnCdAkuaIg2pvPNqo=
+	bh=8AK1eIZIM4gwAkDFaNwngBUDojHeaE9xY2rmvZIuvwQ=;
+	b=uieYeGWmwV3fSdpFyogbBXtPpxFUnmZFD42lOrQ56I+mvqt42FjslwmU7e8xZhSDDNTTLG
+	CsxlWNKQKcEL1bX6suaV8YO2/66N/CmEcW4TC4cmmEwTPNgQ0oKmIAySDMNl1x0gH2YVqt
+	pnuULFfcOA5+CWE6MM5u1jmti+yLmKQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=L5nIoJYe;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ENIdlXh4;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783654869;
-	b=ltikyEKzPdMx70nh1aENJ9b2m305GQjmN74PwC6JotoMg/HfxNoJz1ZNqxDlyCf74bAslU
-	vN+579bQzcioziz3t92HQ8Ej8l52qjZG+gGClj/Nt+HlIgZeA0c0W8T9oGfggG/D8zmxpc
-	gtdSX/q/rKdeSdIoVv6IOJGqrUnP6fw=
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783654866;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dT+E5E9n47vACYHi/SVeCwzS+f47nvPEFd7PhC0qToA=;
-	b=L5nIoJYeemj6cziwYQ+w0kGI/cJG5cb7TAiIiYmixAHOtBjE71QaTmOoYtquMkdnefmccV
-	ZsSDe8sqIhk9NjdVJMCFyGsO+7W+NBqb9ky4nF+CWhgl+SPl8/RvCxuCVhzGwKsOWGHWpq
-	+hPtlQ3byDkxV1RAmYaNtRB0FuqvP08=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 00/18] Another attempt at HVO support on arm64
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <CADrL8HUCqrzOQGXRDwnitintQHjHCw10n8wo6gChQ2tWvC2JBQ@mail.gmail.com>
-Date: Fri, 10 Jul 2026 11:40:10 +0800
-Cc: Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Oscar Salvador <osalvador@suse.de>,
- Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@kernel.org>,
+	t=1783655338;
+	b=4EhHLbZ7R6Si6O6OlYycnGjrlvj7azmTzQEbBBxljMcDzQ2EAyDicTPFsP5b4o4983/f79
+	bsn3kdEa2wAoQFRHjczjyywyfwEpWZKFprjF0qOt83LcAI7S1GoqYMmy1+otsQOXgICXt4
+	RhpTD0U710C3ZMU5G+qTmb4+CW5VH5c=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1783655333; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=8AK1eIZIM4gwAkDFaNwngBUDojHeaE9xY2rmvZIuvwQ=;
+	b=ENIdlXh4rMtaGpjzvwruTMxSyBQJg+1p7tLZhTqRYegcwbK0U2zjZUF7I457J7yFsw65fLfBdb0wf38Zu8zHr/wJlaOppHPkTYrwoMdr4+stvLuy6KzTi8inSAsV4Namx1tfylCOcpd81IhA9L1cJOJ1orE2MBH9OpmU5yiThno=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X6mK60X_1783655330;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6mK60X_1783655330 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 10 Jul 2026 11:48:50 +0800
+Message-ID: <c820fc9c-8e5a-4708-a773-3b005bcdb541@linux.alibaba.com>
+Date: Fri, 10 Jul 2026 11:48:49 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH stable v2] mm/khugepaged: write all dirty file folios when
+ collapsing
+To: Pedro Falcato <pfalcato@suse.de>,
  Andrew Morton <akpm@linux-foundation.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>,
- Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <F2693104-180B-44CF-9F3D-CBDE26151EA3@linux.dev>
-References: <20260708031129.3503195-1-jthoughton@google.com>
- <FC9E78F0-8FF7-44AF-A848-8401B4702488@linux.dev>
- <CADrL8HVkrojXbBuEX-W=UHBmyyFzqxdGBvtAoPP53SyYa10uag@mail.gmail.com>
- <ABB70C2A-316E-4C19-A855-C9920BE105E1@linux.dev>
- <CADrL8HUCqrzOQGXRDwnitintQHjHCw10n8wo6gChQ2tWvC2JBQ@mail.gmail.com>
-To: James Houghton <jthoughton@google.com>
-X-Migadu-Flow: FLOW_OUT
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: stable@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Matthew Wilcox <willy@infradead.org>, Song Liu <song@kernel.org>,
+ Eric Hagberg <ehagberg@janestreet.com>, Zi Yan <ziy@nvidia.com>,
+ Gregg Leventhal <gleventhal@janestreet.com>,
+ Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260708151357.353173-1-pfalcato@suse.de>
+ <ak556WxAZCyqQqbf@pedro-suse.lan>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <ak556WxAZCyqQqbf@pedro-suse.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4C64940007
+X-Stat-Signature: tnn17w3x5kgwzmd7c8wc1euiewhh554y
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4865580007
-X-Stat-Signature: hkq4hb9be54dna6tyq7i5kackm4xe6nn
-X-HE-Tag: 1783654868-692487
-X-HE-Meta: U2FsdGVkX1/ebsNYCyNpG2zIb1IwaF05Ao5wjLTxw2LjMVSpsumKnB78E06NW6xZGLo005u395Wn7SAoLkND4J/Bwd3VzorrpaBULOw6Q14NriymYlXAQ/n52jQvtFGxNwdo0LBFLsHQXsZYGayZHmPzb6okfuxOtFr7L/kU1oD8RvJHwXv6AEH/gBfdbf5aSA48n31RBv9ZDfATbm2ik1/2Ix7XmJfLixp/l5dOZwEv77PS63tC9u+HSd67PfF4TraoBC3bwbtQopEJ+9xOtP9NqMNZenqMgFMXtX/D5FAB3zy+36vzNaAnV+i6kUTjIJ7QFOS3Ele43gPcHzTj7h3k1rbHyjJXvBBUTkiI+XRpUjPfp/b+57atTXHWyTaHiBydy4/7HzVKnlhA9X9T2Yrsq3u4Z0GUQDfQP0KhS+3XFpeM/uuU0Mbu6huZX730GOxrkZ7Rp4izBpId4g9ZjDSeWCY/TC/q19HIVhNgbyMzxRQA5XHhkaHjRUx7rkBIQM5dumyGDrEHnjnzaSiK3bXO7WfslpnOhs2o/8l8fiYLidGKyLtNBuCuomgr3mFEiLSlqwblBsg72mcytp61adqJNEVNFjbTcJD13V4vvr0ux7m/UDDkvEo8kx/5amuOLSzhW6VZyucSYwIgOUtSjtTSU8qUhsiljx/8S4VmNJJbpZdddPcKNlxzy2Lm6/vjvSwPa0mddvvmpdZcwiVfKxTVmzWMK6TSonHk70KS5k8oyoueMiu2rjSRqdNFJNa/RfokydbtItfLDPmpEOOPNTHSg0jkpYv4Ho6UXhdd8YrjOtPeijBdRTk+rIp1rhLFfqmSuerRTAzO9SyfftEJxsgdcetT7HvKBn8bGOR0Eos0SWpVvxqGEOFhUlp+pt542dCEzlLvx9UlIYPplRGQIOhhhu5CUhwuKocnpmzUoDYW86+4sxRuM2XeNtEtj2vb9Q+CGz1EYodSgHUTa+A
- KhcVKvL8
- 3MDLjwnDnB++nDPoder2U2/vHC0iO9D5QFqStAwkOG6fvpcFLcTQV5boDVSmIBBkbM+Hzmi1oi0j0N8udgZPzMJKyKUgOKq3LputDwqbREBgGKCFb4IKwdL9sSirYW4C7XSGp4pm0PAnvZ/1jHW3TrtdkpyFJOTAlcYJvG/Z1KlWBRQAPZhlYTWVK+l3/0xdfocApkQKUr9HGMw54fUKbEYBgom9DNVCYYQnufJFOJmAiJIW3kZhP/c83qWavvC+p203h
+X-HE-Tag: 1783655335-155632
+X-HE-Meta: U2FsdGVkX18JRKo8GNiBDpKR+SVTNSZ0Nc3mtBlvvNfayeLnVBYUndf03ZGT7y284uUtYNc34I9ljij62asqDURoD/jM3d9USLs8rP/dQHFB4aicMmPQ7t7U4AH+a1sll3ut3HbB5fx42R6eI5SQNkuCzLSDM+4DOKqrBmdlWEP6AFLiLIElRiuqzmDfezjemNmurJ/aG7kFQYXQOSDUVGfB2ZIlEGCv6dUJHirAouwRSBBvS3IUkNlFHUwCPdZawJ+zJ3ovzGy3YZt7H3Qo563Y7H7Bhd6xPfjMBgo2GuNPkm517LazCLKVA7+4R8K1wmzNcToyj+uKxZGrt0BVAb0nxmCgXMWbTDOqUKoEUMYUXIW6UVOun0jKa6oR/QC7i73+zlWTKcg565F1EM0oTdp+bmQJhQp4Bj8NlmKDv4MzDmqOxPkZS9rceCbjwtYue77DOu5fcr1F6IJvMaYU9y9fo9kIOPWonq8ass1uO/4hchdqNg703D7ABEAL/wD8F0JqV8VWlszBkwK9J4hxsa0OFCXlgywuJA7svbPcgSOEz1opK3Nn672QWScTRKrCy0C486vDPfjHjydOU+UmGiOKsr+4eEc76FeP1sgXoL85+PTsLwepnr2pbHuJ2ImoJaKse2wFBBXqznHqFKW+cFVqaHH/Kvsrps1P9qFedRyABRLvpVhe5/NAbY2jSrl6XXjDmWjKMRn7LsuOUE16q51zrMSma3KiUMWbqFAYsV6HySqbAR20u2Gi1duEk1zved9VjRZpGlDK9wM8KwBzbX9bF7H43GYqHZq67wlVC5otNZel0KBP5Lxa4Xwpafn7suYLtBCqBtCMhZUeiTkAs8nWijUCy+WGc0/PksPQH+lEO7VQtVOajdzyA4vdyPOMpF4Qmt1TQsrcblS3PWmv3XgiH4POuuE97Kf/wztxRrZtc4+gU6p8GtR1A3WSnqoib2yvAcL9CBaqds3ltI7
+ eJRHKZqd
+ XMr7jnvtYox6QAdtHzlyCbZYtYkodnNoqUEYlEEIpq0wdyKykyFdPtvqY5ct4S6BLWyyCyXyDYbBDSheobnZAGMO8zc3HYHGB2xIqh2zWz19p/iiTEwBitRXz0AVZknHSuOwmg7fYNZ8PHCmPeZ9jne3EcMbP4QfefWJ0+Z5TxpFtsxFQEesWHYNRN10zfR3WW+5R5owvlLCiRcHhSmYFewLnQOV/QCFJEuNe2lK7n+Gv/xXs5JESk485FRGWTCmH3YnOPBm35KZJYbD4S16PsWyCjL8a5MLttdiJUDD6juqnvY5SBpErp4aKY8j3rtC+OClkwD3B0mXz9UgfNIdqN+6XNK6OMntnlU/BAQCR4T8+rZ70pgkKugHei78t1uoqfdhaSFi+Tj/Ab9+grqXcEzo0Rx4CH9QG5X3Pgy67IIkYCwNGYcYWnbqQp9GQlhs+Y3B4aY0+Ks4/KUjW28KCDF8neXsuRjrza/P3eWlsRlHAv/i+YfCSYlQETMvsP0m2mM22ffJzV9y1Xg47geryyoXB9jho1lqEPiRSKCNwFXb44f4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,158 +97,65 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Jul 10, 2026, at 03:04, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> On Thu, Jul 9, 2026 at 2:55=E2=80=AFAM Muchun Song =
-<muchun.song@linux.dev> wrote:
->>> On Jul 9, 2026, at 00:49, James Houghton <jthoughton@google.com> =
-wrote:
->>>=20
->>> On Wed, Jul 8, 2026 at 1:41=E2=80=AFAM Muchun Song =
-<muchun.song@linux.dev> wrote:
->>>> Do you mean that the support for AF might vary across different =
-CPUs?
->>>> I'm not that familiar with arm64, so it seems a bit strange to me =
-that
->>>> such basic hardware features can differ so much from one CPU to =
-another.
->>>=20
->>> Yes, hardware updates of the Access Flag is a per-CPU feature. It is
->>> available for a CPU to use if TCR_EL1.HA is set. TCR_EL1 is a system
->>> register; each CPU has its own. (Linux will always enable HW AF for =
-a
->>> CPU when it is onlined[1] if support is advertised, so we simply =
-need
->>> to check if support is advertised to know that it is in fact =
-enabled.)
->>>=20
->>> These days it is not uncommon for a system to have two (or more?)
->>> different core implementations, like with "fast" cores and =
-"efficient"
->>> cores.
->>>=20
->>> [1] See the CONFIG_ARM64_HW_AFDBM bits in arch/arm64/mm/proc.S
->>=20
->> Thanks for your detailed explanation. When enabling HVO via the =
-cmdline,
->> can we simply prevent CPUs that do not support AF from coming online?
->> Would implementing it this way be much simpler? In practice, =
-developers
->> definitely know whether the current system is suitable for enabling =
-HVO.
->> If some CPUs do not support AF, they would just need to evaluate the
->> trade-off between memory savings and having fewer online CPUs than =
-expected.
->>=20
->> For scenarios where HVO is enabled via sysctl, we simply need to =
-check
->> if all CPUs support AF. If any do not, the system should return an =
-error.
->>=20
->> Then, we can proceed with the Pre-HVO.
->=20
-> I don't think it makes sense to try to implement pre-HVO.
->=20
-> We cannot do HVO if any boot CPUs do not support HW AF, as HW AF will
-> be required to free the HugeTLB pages later, which we should continue
-> to support. Pre-HVO (today anyway) happens before all boot CPUs are
-> onlined. IMO it is not okay to prevent boot CPUs from onlining.
+On 7/9/26 12:28 AM, Pedro Falcato wrote:
+> Seems that I accidentally dropped linked list Cc's here, see
+> https://lore.kernel.org/stable/20260708151357.353173-1-pfalcato@suse.de/
+> 
+> On Wed, Jul 08, 2026 at 04:13:57PM +0100, Pedro Falcato wrote:
+>> [There is no upstream commit, as this code was removed by upstream
+>>   commit 044925f9b565 ("mm: fs: remove filemap_nr_thps*() functions and their users")]
+>>
+>> As-is, khugepaged and writable-file opening exclude each other. A file
+>> cannot be open writeable and have THPs (because the filesystem is not aware
+>> of them). khugepaged will never collapse file pages for files that are
+>> opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
+>> particular file is dropped. This is fine because nothing could've been
+>> dirtied.
+>>
+>> However, there is an edge-case: collapse_file() might not be able to
+>> coexist with concurrent writers, but it can coexist with dirty folios
+>> (from previous writers). Therefore, the following can happen:
+>>
+>> open(file, O_RDWR)
+>> write(file)
+>> close(file)
+>> madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
+>> open(file, O_RDWR)
+>>   nr_thps > 0
+>>    truncate_inode_pages()
+>>      /* THPs are cleared out, but so are the dirty folios */
+>>
+>> When this edge-case happens, there is data loss, as the dirty folios are
+>> fully discarded.
+>>
+>> Fix it by fully writing back the page cache (and waiting) when collapsing
+>> file THPs. Doing so provides the guarantee that no dirty folio will be
+>> observed while there are active THPs. To fully ensure this is safe, the
+>> invalidate_lock needs to be held while doing the writeout, so that
+>> do_dentry_open()'s page cache truncation excludes this write-and-wait.
+>>
+>> As a side effect, move the nr_thps counter bumping outside the i_pages
+>> lock. This is correct since the counter itself is an atomic_t and the
+>> producer <-> consumer correctness is provided by a full memory barrier:
+>> smp_mb() in collapse_file()/memory barrier implied by full ordering in
+>> get_write_access() -> atomic_inc_unless_negative().
+>>
+>> Cc: stable@vger.kernel.org
+>> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+>> Cc: Christian Brauner <brauner@kernel.org>
+>> Cc: Jan Kara <jack@suse.cz>
+>> Cc: Matthew Wilcox <willy@infradead.org>
+>> Cc: Song Liu <song@kernel.org>
+>> Cc: Eric Hagberg <ehagberg@janestreet.com>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>> Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
+>> Closes: https://lore.kernel.org/linux-mm/CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
+>> Tested-by: Zi Yan <ziy@nvidia.com>
+>> Tested-by: Lance Yang <lance.yang@linux.dev>
+>> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+>> ---
 
-When the boot CPU starts, it first checks if the hardware (the current
-boot CPU) supports AF (The selection of the Boot CPU is critical here
-If the user really wants to enable HVO). If AF is supported and HVO is
-enabled via cmdline, we perform a Pre-HVO. Subsequently, any CPUs that
-do not support AF will be prevented from coming online.
-
-If the boot CPU does not support AF, enabling HVO is not =
-permitted=E2=80=94neither
-via cmdline nor sysctl. All CPUs are allowed to be online.
-
-Once the system has started, there is only one way to enable HVO, and
-that is through sysctl. 1) If the current system includes any CPUs that =
-do
-not support AF, enabling HVO is not permitted (unless the user chooses =
-to
-take these CPUs that don't support AF offline). 2) If all online CPUs in =
-the
-current system support AF, then HVO can be enabled. In this case, the
-system must also block any CPUs that do not support AF from coming =
-online
-in the future. Of course, if a user specifically wants those CPUs to be
-allowed to come online, they can choose to disable HVO first (At the =
-same time,
-this means that the HVO-optimized HugeTLB must be freed first as well).
-
-My proposal assumes that even though the system supports different types =
-of
-CPUs, their support for AF (I suppose this is a very basic feature =
-nowadays)
-is generally the same. I believe that for servers (Only servers stand to
-benefit more from HVO), there shouldn't be a mix of those that support =
-AF
-and those that don't. At the very least, such a situation would be =
-extremely
-uncommon. I believe this may be acceptable. That said, if we go this =
-route,
-is there a way to simplify the code implementation even further?. Of =
-course,
-this is just my personal speculation. Please let me know if I've missed
-anything.
-
->=20
-> Let's say for a moment that HVO cannot be toggled at run-time, then
-> the best we can do is:
-> - If a user does not specify hugetlb_free_vmemmap=3D1, we can always
-> allow onlining of late CPUs
-> - If a user specifies hugetlb_free_vmemmap=3D1 but not all boot CPUs
-> support HW AF, we can always allow onlining of late CPUs.
-> - If a user specifies hugetlb_free_vmemmap=3D1 and all boot CPUs =
-support
-> HW AF, we must not allow onlining incompatible late CPUs.
->=20
-> HVO compatibility has to be modeled as an Arm system feature. To
-> support conditional onlining of late CPUs based on whether or not "HVO
-> is being used", we still need the extra cpufeature.c logic.
->=20
-> So if HVO cannot be toggled at run-time, we can simplify the
-> definition of "is HVO being used?" (for the purposes of determining if
-> late CPUs can be onlined). We can simplify it from what it is now
-> ("are there any optimized pages?") to
-> "vmemmap_optimize_enabled=3D=3Dtrue?". That allows us to drop patch 15
-> (which then needs a slight change to patch 17), but that's about it.
-> So this is a slight simplification, which is nice.
->=20
-> If you (or the Arm folks) feel strongly, I'm happy to write this =
-simplification.
->=20
->>> I'm hoping you can look at patches 1-3 anyway. I think they're the
->>> right thing to do, even without the arm64 changes.
->>=20
->> Yes, I've looked it over. I think that making modifications across
->> several areas will be much simpler on top of my refactored codebase.
->> For example:
->>=20
->> - In patch 2: There is no longer a need to move vmemmap_get_tail().
->> - In patch 3: Handling partially-HVOed pages becomes straightforward
->>               because vmemmap_restore_pte() no longer relies on
->>               ->vmemmap_tail to detect whether a restoration is =
-needed.
->> - In patch 4: I have updated the ->remap_pte callback to return an =
-int
->>               as well, making it easy to adapt your changes.
->>=20
->> Overall, the implementation is significantly cleaner, so I won't list
->> every detail here.
->=20
-> Thanks! Good to know I can basically drop those patches. :)
->=20
-> Please CC me on these HVO simplifications when you send them out, =
-thanks!
-
-No problem. Will do.
-
-Thanks.
-
-
+LGTM. Thanks.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
