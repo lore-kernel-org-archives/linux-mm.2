@@ -4,108 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04DE0C44506
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 10:42:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4353C44506
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 10:50:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94BDD6B00A1; Fri, 10 Jul 2026 06:42:46 -0400 (EDT)
+	id DCA206B0088; Fri, 10 Jul 2026 06:50:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 923736B00A2; Fri, 10 Jul 2026 06:42:46 -0400 (EDT)
+	id D7BA16B009E; Fri, 10 Jul 2026 06:50:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C45B6B00A3; Fri, 10 Jul 2026 06:42:46 -0400 (EDT)
+	id CB8366B009F; Fri, 10 Jul 2026 06:50:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 36A9A6B00A1
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 06:42:46 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE6FC1A03FA
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:42:45 +0000 (UTC)
-X-FDA: 84972528690.15.C86E1A4
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1991F180002
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:42:43 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jf4tr63L;
-	spf=pass (imf16.hostedemail.com: domain of 3osxQaggKCNcC35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3osxQaggKCNcC35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783680164;
-	b=u4qpQ3AqO6qy+9B0a9gJhHHBofqjSXfBCRwlaO2S+/6z4OyT0wb4LobPZVd51Wl2T9Urmu
-	RVDMyA08iPLfiIEPQHsi3DBFsxy9eE4BGb2u4sCviMRDfxZs0BjBTwabODdCan13HLk9Fo
-	ASJr5LP0OWP4VwLU4RwDnvzdl+bRtoU=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jf4tr63L;
-	spf=pass (imf16.hostedemail.com: domain of 3osxQaggKCNcC35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3osxQaggKCNcC35DF3G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id A5B1F6B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 06:50:30 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 345CF40414
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:50:30 +0000 (UTC)
+X-FDA: 84972548220.09.20B7147
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5BBBA140008
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:50:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvNpz50O;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783680164;
+	s=arc-20220608; t=1783680628;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SFOgGA5tRZCdjyayy1zy4J6RFFsh/yatP8j3QKMHQdQ=;
-	b=A1y6NuMKalxKybAxNdW6wfEnVTi+iR4yG/W3p1rHGfakwfV/J1nBX6xG66UD2/tIW7ywxV
-	u6BlbgeIpqEhd4QW4+aZOv4vs5C3DC+tTc0CuqrEWfFeIkVi+w1s4nDIkwfIanjW9PUE8y
-	atTr5aUPtY6nPgY1VCCMKp9humZxnF0=
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-c15d2ae8d2dso89125966b.1
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:42:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1783680163; x=1784284963; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SFOgGA5tRZCdjyayy1zy4J6RFFsh/yatP8j3QKMHQdQ=;
-        b=jf4tr63LbOQL9o8Kb7pKIx/qBuj3rpZhRnOJCR4SyRPU/bgQneZuK3gz6PM9rfBEs1
-         AEDugmvaELat7bNub8HSQSbuuE2dYXEAYJZ6Uqpd3T2GcJGRn1SE8bk3Oolnrhu0N2R0
-         W+RjhJhXTkgLm6y6PQdy3ScCIZcbEEvjkMiGYpqk9kOBeTDEKlTs2OOuUNyPxYd0XVd7
-         7C+T5gVg46GMxcjK+apr3Rg2btV4W7p8N226VejFwRQZp0KS+udu8GYE1nLedbZq126Z
-         T4wGTkDZfNazdsXrUzeTvV5ZlB/AbgI3/wODOuQowr4MnAU8hCnLyvZMzRbGeD/03exW
-         xe3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783680163; x=1784284963;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SFOgGA5tRZCdjyayy1zy4J6RFFsh/yatP8j3QKMHQdQ=;
-        b=aVELzS4dpSPmwI59XwbySdfH4YHyN4iXC9w6XgBPahi+z7J8eOy89NOL5ddd0uYfUH
-         X6ZbZPb32NSdRRGBpo26GunkbD7Qlc5G/MXpEZovJpmQs+RcRfDMTha1LxkymPzxEY8h
-         GUrBC7+Dx/UTWraoKYSMSlSSA2BGYbo2NwHSS6z793eYCbXkhycOkdn9PAPZZIKzKNys
-         V6QL87tOXd03tw3i88W+2fiOLhvhCjf4pa5QkQewELbCnRLvviTR37Q0zvepx9JRRrzU
-         kQF38IKzDGe/2v+pFFp4YW09gj4dc3JMkRSKbnFi+SnRarrs4DDIlfTQbJMBw2kVzLiX
-         MKog==
-X-Gm-Message-State: AOJu0Yw3iEGLgZEaUbRFlE+g2uAZoxQRz9JlPz1RCkmLuBIWVD+AJmo9
-	QrwF9RjQXmiKTPEAz9Zc2R9DFtJ2Yz+jo09tv7uu9hwsJFvQiuIVtD1loOLStoITL634lJAIjRS
-	jcJbvTs7RlVE+PA==
-X-Received: from ejn24.prod.google.com ([2002:a17:906:598:b0:c12:7dd1:56a5])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:7245:b0:c12:b227:614b with SMTP id a640c23a62f3a-c15ce03d925mr500309166b.27.1783680162267;
- Fri, 10 Jul 2026 03:42:42 -0700 (PDT)
-Date: Fri, 10 Jul 2026 10:42:21 +0000
-In-Reply-To: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
-Mime-Version: 1.0
-References: <20260710-spin-trylock-followup-v1-0-affb5fe5ed00@google.com>
-X-Mailer: b4 0.15.2
-Message-ID: <20260710-spin-trylock-followup-v1-2-affb5fe5ed00@google.com>
-Subject: [PATCH 2/2] mm/page_alloc: rename FPI_TRYLOCK -> FPI_NOLOCK
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Harry Yoo <harry@kernel.org>, Alexei Starovoitov <ast@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, Brendan Jackman <jackmanb@google.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=WJEZw+9x/jEd5nomnZiXByrKMCRFDaAVRo5p+ehSw4E=;
+	b=RlqBRUESss5L11D7+43XTYq5658F24sU4TbjMjJjVMtz+IR/9kRpLVKGTZ0ZyBKxqul5EY
+	/uLD0RTMCTagal5tl0eaqi67az0nzNR68ZdKgWqDLnagjW08wOn+W9CiLG/tF2flHBmxkS
+	mF37ms78Y9CTAsQoPrcEaMlIyTRGr7o=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jvNpz50O;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783680628;
+	b=2WewbkEJyXvSaJTnKlCV9bnTT/YeRIGz8m5uzNPtvcy2AGmT4+KuHLoH2P/dlKqMUYHoq4
+	9FkC4pGHUC6JnjU4WkNnFjg8PRnp81hU3wNHHVLU3tvug0FVuTd0txuDkLg8l34WDhdKI+
+	9qJ6RfDBiyBDP6XwTAjMwGKiTnKqFFs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 413B5437D3;
+	Fri, 10 Jul 2026 10:50:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FA71F00A3A;
+	Fri, 10 Jul 2026 10:50:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783680627;
+	bh=WJEZw+9x/jEd5nomnZiXByrKMCRFDaAVRo5p+ehSw4E=;
+	h=From:Subject:Date:To:Cc;
+	b=jvNpz50O/5E2VXWt/YbRjL36y/6Uv4nqe2F2So4M00tY+kTpB6dZNZkDq88So/9h7
+	 FPEmtTLnn8oYAQpoLO0Oee5Eb3WAFx2uBZueusrF/5we/ZFruxxDunLOcuwj/IHNZ2
+	 KAGj5goKudawqSj8Fli2LxVn5j8lF6FdckW70IiVErJjcE4WlprTAiTdKTSpgGmtIK
+	 pH3kqAvywiNCrHLO2BtowqPcnIu6wYvsIoXDZ1RwCZr8IBHKzELYjxqKedIzGqgOdn
+	 ZQGLPXonzu9vG7riMj81A3NqmUOkNauNDsaMyDQT8/2EQAsW4FfEgTm/RDmc4NS02J
+	 Hv6p0I5VEI75A==
+From: Lorenzo Stoakes <ljs@kernel.org>
+Subject: [PATCH 0/2] mm: fix UAF caused by race between ptdump and vmap
+ pgtable freeing
+Date: Fri, 10 Jul 2026 11:49:17 +0100
+Message-Id: <20260710-series-vmap-race-fix-v1-0-5b3794c113fe@kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC3OUGoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDc0MDXYh63bLcxALdosTkVN20zApdo0ST5MRkSwsLS2MLJaDWgqJUoDD
+ Y2OhYCL+4NCkrNbkEZJZSbS0A/Km8rngAAAA=
+X-Change-ID: 20260710-series-vmap-race-fix-2a4cac988938
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, David Hildenbrand <david@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+ Uladzislau Rezki <urezki@gmail.com>, Toshi Kani <toshi.kani@hpe.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: David Carlier <devnexen@gmail.com>, Dev Jain <dev.jain@arm.com>, 
+ Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Lorenzo Stoakes <ljs@kernel.org>, stable@vger.kernel.org, 
+ syzbot+fd95a72470f5a44e464c@syzkaller.appspotmail.com
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3435; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=sMz40sYlXTtliml43cNKfdXOdD7XpzaddnUQc2wMyQY=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLICzqWfedV9ys7mTqWo11PRvSdz91c+qs7fd+Lw5Gy2R
+ 1+V/ZyUOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRJTMZGSYnzTsRodv6btXm
+ qltSArffHelo5mkK9vC0jvync44ripeRYX73dpt3y0znvXRKL4271rq+bqqB1pTemgh/wYL6/Ct
+ FvAA=
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1991F180002
-X-Stat-Signature: zp8xkxfq4tanzw4yn9t7s5whepncs8c4
-X-HE-Tag: 1783680163-522401
-X-HE-Meta: U2FsdGVkX19nIq+Vfdw5gz+H55X4Dnzb7nv8rlM2ZLB/iGyAqfnDWI2muY5z72pIAYOPafxfHVDATbaq2v50WPORUa7Xqd3W1NjkkKB/D4BMuKoDrE+72sQxQP41jnxnIioE8fcm86l0aI05pchV7kQrcnMWFzYGOWdTBPbSUmpHpDWC0/uazRJVnftf7KRAatsBLvNiepGNctQF7hwIKNBh8zWXRaIKN3uUtXJocxeytXa3jo0NoOuPzPhVJTAlJAl260DrKkkbq0vrWy6MrHk6t5ohH9WjjqUOGk1IfOFRVM4YLeVGYk701Ii48RCD9xyUSt9tPDUFzIZMGrW4iDLmGzY0Wbq1QTmb0jNPeiP35yF7Mcqe0HZe1wGjcvgGwgdVZ7ZHZ7DqXIPWpwuY9fTHQ6/l4PCPhKHH22LrN5xqE0YklyvwWcwWxvsO5JoE+5u2n1uS9uu+lkZZsytnN4WrCLGJCX625Issq6ntI/4okZ9+Zx83NNkeE+nx1ZmF766wHNz2Fze1+oh05g/eiQeOz5PJ0Q5Y4qHiKvfMdUcSFryhn8IZIRZkP76XNS0dTiiIrjzxgUaUHezLBFp+QyaDf1A5/adjke6bttz/aTwakvZru2xSnfy+dVsiG2OiqsxRWKEA2aGzjLvPRMLAOZXLauOWbUsw0mPV0DYwIdMCUr0VhQ6XtmEgbmNLJlrK8chXac4NCpfo6EqDTKosgCVbqgAAXTd7dJuKBpd2ewh77XB/jxV0tHJfsB3Cskv+/1Gz6LkNR3OJ7pAKsNJRbk9oQlWipNVJ2VWC2Ao9fMOWu5GRVxE7otk3wPZERXVz/hn9zyT6W9bl6p7RTRSbnCbsTLl3dDh2tHyY1BawRVdQn6bmXuZ+UTJ4ElHHIZXAmvNIX9Q0NYetQ3wMCyNqZl40NeXkh+lRYQVJbH0eigs0baw4zX0DJ3aOYOi33qpbaMKpOvKcnBnL1mBpBYj
- 7zeMbrrO
- NJepmv5QL9cSEmbBQubVVo3kS4U32lha6y7w1+yJePW1afhCILok0+/1LYZ0YtCQg5+RUbvngc+MA1lqedGnF/C1SZjCIBphNWLJE8J3qk+0aYmWAY9fv/AxVMDDRG3KoOK6Bxl5X4LqiB7/spXYVdDfiMUM2ISigdR6MmAyUT/1xSG+xzD2R69iF1afIdxuV4esTao7AMbkGMdTivsytn6q+hXv3MSlE/zM7Vu3+0nmCP4h416Onr4A4LM/9sDzDJFdZ1iCsPQtMFbg3Akp40Uj+UcfzLUTUQzks9gAtwuHJUCweHE85LbknlS1bRhH6zw2jBV8SnUUsRHZJ5V6ATX4rGr/AHZ2HjKQkBVE6z+wWJLIOFBE1CRK5fatUhDgP4fJlMoi/7ivohsCkosE3VEnRuUDYlHvs9JxCa6YByCe9c6PWRCb6kJxOKXbkfw1qB7eKGSsGb3KPAXGcegx/iNJjJ2SAtTvRQ0L10/R93H+bP9xMtoIdVWNyLczMVehGRKn3LZ+UB/tlwJ8O3x2fPnyH5sEkXpXCSmaI66lCwnBadty578wcVXTbPalO3R+wi/hmzOydbcoEQBnqfsgX/Q3HYGiubPe6lAjmwWz0TXnfkE+5s7zmYqKZQ48tU3HV7jeQG8ke9QyKlJbVoZj37DUrtWp4Og90PaCO
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5BBBA140008
+X-Stat-Signature: i8wtmecbzrjp6jbpii6cbbqmwbrfcgas
+X-HE-Tag: 1783680628-301398
+X-HE-Meta: U2FsdGVkX18l/UNAlZJQlsDGj7XFx/8FWk/sz6PS4cyXdB8LkrhL5SPWY6+hsLRjX9wdk5RRIH7wO2IOmz/97gjdexzKyCrjp4EkzHkUHpdZLyCLWTL3kpelclrQLnxbvwyxCbV07V5GfePsSE7mnrVEXHSWvaR1FLxmaHv/QOe4uNJzHyG/Txft4VJ8CK2eHhKY0QWf4gfT1C2u6hQcfEtk5xc4pAT1v9UNs4+K3+cVoNMk8/ys4rX2dbhoRgrjqWR1/3G0uC3cKylEorJnLRmrk/4TNvYVwV0Sr58eL9mdS6jn4HmrYiPM8HdIKthlGOobt9qoMgP4bbMY3FAOx2o3PSjkoqDxPbFU82/6TOrly0hzjBrpc23Zgtk+HKY2SoPmagcdhSkt/bIcSyoUwJDg9Ci+oVOnX4mVD+a7bImQA3uTzmFgXbNokiBWBwHeCjnD8vritXBMFKMo1QzqSvt2gkdkvp7d5kRM0eHjhaMN5v8M6jTj3jm8nTMwiCeFEYxl9koYFmEf/J2ubWZEFWjuXQNJcnjGYcavwKt4r24pa5cEzv9GLg5zrmXPW/tdRweAzHzuYdox2IbF1l8j57ea7kcKXmJFTyPJahf/zjQlklw8GK/UMnhBXOI6w6RqJ7b0THxDpwfhNLmZRzHa1OXEyjNHJJovH2In6z2yhNdZp3ccrwdmu7KpQgn/s2oPdcioL4vJFi9Kok1Ih72SrGecr5UhB8ra2C/Vgm0kDObypESlQ6BBt+ioekDz1t8Kl2J8ybx2eIhmKMVS/om8eO8398RFY3R0PG+w2Vj/8vfVxfpcleUT0mOdU/48vvSpEzoelLtq7pt//i6vuOo86oh+ja5vypjkZhjav0fKyuQWDb/BHight3g/ZwZKFQgWXhBulhASvEfvXNrniEmdooXCAlEUhKCM0v6wCuA5ld9kFqf5ikD3DNFNgT4pJzJAyb/cbTUy9skV3kuHpFh
+ 2hqFLYUI
+ Q3GtVTZopTBz9ozhLv8r1z7/XZPcIPzw1BYYBx79xhXrz7pZ662TtZTpIVtImlc0v3tyYMz2GERuRg/FOwdw+vULFFD6m67Vum54biXQYUBcm4/w3aOf70+XMpv8uwaR2BMQzK5r3jxhTuz/hCxV8yucNxgW+d1HCKlZzPqE/RtzvNgTuehIfnFUW8fz2AwpcPvZqNOmdWQIsUmwQkKItl1Ag62tJDHtKuncaMtEYGNpRWJOtjnWR2ZohxAHo47CV5bfmedp0e61Q+iLr6HybV8gZfSGzvxGjIPZxjHpPSkCO/Pg0SJqJlE1J96xIqGp4CFvjn1PleLDLC/k4Uk6odgS+rCC0s7cFBapLudDxOb+k+rm84dzCQAww1sXbAV4VifOb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,105 +111,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As discussed in the linked patch, the there is some inconsistency between
-"trylock" and "nolock" nomenclature, let's align it. Since "nolock" is
-used in the public API it seems to have more mindshare so do that.
+Kernel page table walkers fall into two broad categories - those ranges
+where no exclusion is required via walk_kernel_page_table_range_lockless()
+and those where exclusion is required via walk_kernel_page_table_range()
+or walk_page_range_debug().
 
-The linked patch did this for the ALLOC_ flag but forgot about FPI_.
+The former category is used only by arm64 arch code operating on ranges it
+both wholly owns and does not concurrently write.
 
-Link: https://lore.kernel.org/all/20260703-alloc-trylock-v5-1-c87b714e19d3@google.com/
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
+The latter category consists of kernel page table walkers operating on
+ranges that are wholly owned (but which need exclusion against concurrent
+writers).
+
+The lock used for exclusion is the mmap lock, and for kernel ranges this
+the mmap lock on init_mm.
+
+ptdump is a special case being both the only user of
+walk_page_range_debug(), and the only case in which it walks ranges it does
+not own.
+
+This presents a problem, as page tables may be freed under ptdump. And
+indeed there is a use-after-free bug in the kernel as a result, which this
+series addresses.
+
+vmap promotes page tables to huge leaf entries where possible, freeing the
+lower leaf page table when it does. It does this with no meaningful locks
+held against concurrent ptdump walks.
+
+As a result, use-after-free can currently occur. This series addresses the
+issue by having the vmap huge promotion logic acquire the mmap read lock
+while both setting the huge page table entry and freeing the prior leaf
+page table.
+
+The ptdump code already acquires the mmap write lock, so by doing so we
+ensure that the ptdump walker only ever observes either the huge page table
+entry or the existing page table entry, and nothing is freed underneath it.
+
+A mitigation for this issue was already applied for arm64 in commit
+a93b45fd397 ("arm64: Enable vmalloc-huge with ptdump"), which this series
+has to deal with carefully.
+
+This mitigation resolves the issue by acquiring the mmap read lock on
+init_mm on vmap page table free if a ptdump is in progress.
+
+However the fix in this series would cause a deadlock if we were to simply
+apply it for arm64 without also reverting the change.
+
+This is because vmap may acquire the read lock before ptdump attempts to
+acquire the write lock, which then gets queued, and rwsem starvation rules
+mean that the (unacknowledged) nested mmap read lock in the arm64 code
+would also block, meaning the original read lock is never released and thus
+deadlock.
+
+This series works around this by #ifndef CONFIG_ARM64'ing the mmap read
+lock in vmap logic, then partially reverting commit
+a93b45fd397 ("arm64: Enable vmalloc-huge with ptdump"), keeping the
+enablement of huge vmap support, and removing the ifdeffery with the
+partial revert patch.
+
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- mm/page_alloc.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+Lorenzo Stoakes (2):
+      mm/vmalloc: acquire init_mm read lock on huge vmap promotion
+      Revert "arm64: Enable vmalloc-huge with ptdump"
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 5fe1c11f919d7..ba8d882072de5 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -90,7 +90,7 @@ typedef int __bitwise fpi_t;
- #define FPI_TO_TAIL		((__force fpi_t)BIT(1))
- 
- /* Free the page without taking locks. Rely on trylock only. */
--#define FPI_TRYLOCK		((__force fpi_t)BIT(2))
-+#define FPI_NOLOCK		((__force fpi_t)BIT(2))
- 
- /* free_pages_prepare() has already been called for page(s) being freed. */
- #define FPI_PREPARED		((__force fpi_t)BIT(3))
-@@ -1419,7 +1419,7 @@ static __always_inline bool __free_pages_prepare(struct page *page,
- 	page_table_check_free(page, order);
- 	pgalloc_tag_sub(page, 1 << order);
- 
--	if (!PageHighMem(page) && !(fpi_flags & FPI_TRYLOCK)) {
-+	if (!PageHighMem(page) && !(fpi_flags & FPI_NOLOCK)) {
- 		debug_check_no_locks_freed(page_address(page),
- 					   PAGE_SIZE << order);
- 		debug_check_no_obj_freed(page_address(page),
-@@ -1558,7 +1558,7 @@ static void free_one_page(struct zone *zone, struct page *page,
- 	struct llist_head *llhead;
- 	unsigned long flags;
- 
--	if (unlikely(fpi_flags & FPI_TRYLOCK)) {
-+	if (unlikely(fpi_flags & FPI_NOLOCK)) {
- 		if (!spin_trylock_irqsave(&zone->lock, flags)) {
- 			add_page_to_zone_llist(zone, page, order);
- 			return;
-@@ -1569,7 +1569,7 @@ static void free_one_page(struct zone *zone, struct page *page,
- 
- 	/* The lock succeeded. Process deferred pages. */
- 	llhead = &zone->trylock_free_pages;
--	if (unlikely(!llist_empty(llhead) && !(fpi_flags & FPI_TRYLOCK))) {
-+	if (unlikely(!llist_empty(llhead) && !(fpi_flags & FPI_NOLOCK))) {
- 		struct llist_node *llnode;
- 		struct page *p, *tmp;
- 
-@@ -2882,7 +2882,7 @@ static bool free_frozen_page_commit(struct zone *zone,
- 	if (pcp->free_count < (batch << CONFIG_PCP_BATCH_SCALE_MAX))
- 		pcp->free_count += (1 << order);
- 
--	if (unlikely(fpi_flags & FPI_TRYLOCK)) {
-+	if (unlikely(fpi_flags & FPI_NOLOCK)) {
- 		/*
- 		 * Do not attempt to take a zone lock. Let pcp->count get
- 		 * over high mark temporarily.
-@@ -2979,7 +2979,7 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
- 		migratetype = MIGRATE_MOVABLE;
- 	}
- 
--	if (unlikely((fpi_flags & FPI_TRYLOCK) && !can_spin_trylock())) {
-+	if (unlikely((fpi_flags & FPI_NOLOCK) && !can_spin_trylock())) {
- 		add_page_to_zone_llist(zone, page, order);
- 		return;
- 	}
-@@ -3001,7 +3001,7 @@ void free_frozen_pages(struct page *page, unsigned int order)
- 
- void free_frozen_pages_nolock(struct page *page, unsigned int order)
- {
--	__free_frozen_pages(page, order, FPI_TRYLOCK);
-+	__free_frozen_pages(page, order, FPI_NOLOCK);
- }
- 
- /*
-@@ -5409,7 +5409,7 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
- 	if (memcg_kmem_online() && (gfp & __GFP_ACCOUNT) && page &&
- 	    unlikely(__memcg_kmem_charge_page(page, gfp, order) != 0)) {
- 		__free_frozen_pages(page, order,
--				    alloc_flags & ALLOC_NOLOCK ? FPI_TRYLOCK : 0);
-+				    alloc_flags & ALLOC_NOLOCK ? FPI_NOLOCK : 0);
- 		page = NULL;
- 	}
- 
-@@ -5532,7 +5532,7 @@ EXPORT_SYMBOL(__free_pages);
-  */
- void free_pages_nolock(struct page *page, unsigned int order)
- {
--	___free_pages(page, order, FPI_TRYLOCK);
-+	___free_pages(page, order, FPI_NOLOCK);
- }
- 
- /**
+ arch/arm64/include/asm/ptdump.h |  2 --
+ arch/arm64/mm/mmu.c             | 43 ++++-------------------------------------
+ arch/arm64/mm/ptdump.c          | 11 ++---------
+ include/linux/mmap_lock.h       |  1 +
+ mm/pagewalk.c                   | 22 +++++++++++----------
+ mm/vmalloc.c                    | 41 ++++++++++++++++++++++++++++++---------
+ 6 files changed, 51 insertions(+), 69 deletions(-)
+---
+base-commit: a635d6748234582ea287c5ffeae28b9b23f91c7e
+change-id: 20260710-series-vmap-race-fix-2a4cac988938
 
+Cheers,
 -- 
-2.54.0
+Lorenzo Stoakes <ljs@kernel.org>
 
 
