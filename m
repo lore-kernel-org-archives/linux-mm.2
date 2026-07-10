@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E35AC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 19:05:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80F4EC44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 19:08:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26AA26B0005; Fri, 10 Jul 2026 15:05:37 -0400 (EDT)
+	id 1FCBA6B0005; Fri, 10 Jul 2026 15:08:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21C0E6B0088; Fri, 10 Jul 2026 15:05:37 -0400 (EDT)
+	id 1D4CF6B0088; Fri, 10 Jul 2026 15:08:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E3A76B008A; Fri, 10 Jul 2026 15:05:37 -0400 (EDT)
+	id 0C38A6B008A; Fri, 10 Jul 2026 15:08:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C22406B0005
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:05:36 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27C8514054E
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:05:36 +0000 (UTC)
-X-FDA: 84973795872.18.5C489F6
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 24297C0005
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:05:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=WpXEfdDY;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CF7B36B0005
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:08:40 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 27D331695EB
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:08:40 +0000 (UTC)
+X-FDA: 84973803600.06.3951B3A
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5FC57100006
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 19:08:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=qryUKfkv;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783710334;
+	s=arc-20220608; t=1783710518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Cb4T8zzpAMOVzwqCT+1eDu/jZ6x8Q2fk7Pyrqw1u7c=;
-	b=wWREWjqEtdCrLUt6rOBMM/lgbuQVrLCNTZJ4YOsZJvMUc4Sd/zg9GVgyXF4A036hFZNjE5
-	52U1XvsOh84HpHCxilDxRuFZWZidPvShuSedHpTGxiQSXP3NzPmaWRJ8sfnvn6yiXbAiX0
-	nPWkd3SRwZyEyET5JstqqynCRsHzW/w=
+	bh=iFtVuusRSG4YUFzvnh+nyLwKm1T7E76ZywXpwPdPfD8=;
+	b=VWAopYvTmx1IcD0CCifJ3yy3Rs7dQSSKj39LHiolJ212TeKiw+LCDppT45LAdKgatWRlwh
+	jdgkI2o+L4m4z+x1DKDy/NOrXE/SihMfagVZ6lv5j9nxLO30d+riF9iyc5leweU8pZWqnK
+	vJWJVjnvreeXVL4tYaKKsnycSUJm7Fs=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=WpXEfdDY;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.169 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=qryUKfkv;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.178 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783710334;
-	b=Q3tZO/XApefl7MQ1MmaqmF60VAVAmU2IRn4TMl1p9uHavYj7ZmTZ3IPgpUYCjXIM5cpplt
-	DUG1iGJmtNk/SLDub5jam6rE4cvoi6hWO43SgmM217vsqgEFOfHt6y53+M5SeNvVrRtVza
-	/9ZcRHfZ0e3jQaP0dvciY1NvNW8VmJ4=
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92e855da580so102269385a.1
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:05:33 -0700 (PDT)
+	t=1783710518;
+	b=2CbHmJvXy2DtyaJHtBBn/tg/rUnp4ZYYHEEnimqWxvUMR3qslK8fa4FKLp3Omw5hsvbBVv
+	zKm6vbWRgFLS7guV/cJvfScou5Z529QZjKItiTTYkFHYgMjnm2474Aw/W+FwuAcpxV5bbk
+	5E2ogqbFRUYiH3kQbF8/JdZL6dKw0M8=
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-51c21495722so6193321cf.3
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 12:08:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783710333; x=1784315133; darn=kvack.org;
+        d=gourry.net; s=google; t=1783710517; x=1784315317; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=5Cb4T8zzpAMOVzwqCT+1eDu/jZ6x8Q2fk7Pyrqw1u7c=;
-        b=WpXEfdDYuQ96CXbeNkiai8JULtgCEXzH2cQnHWT6ko2fSVzXx6E8oF6nvg27RFHWf4
-         nkv7KLX3Zbrlq+wH+Yv9lZkPf4gtuwuB111WCVFZjSQdBedQIxC02k7sCf8dvv+Hama1
-         LgKMTO/VkRmJprm5ooATUuUayD8TdSQs2+jaPiUFFKM241Z/pdh8wOlFhoMGpKYqizkB
-         Q+3vQ+bmGF558sYT3yHSPx1GQ8xMiyJh7J/ENjeWwTqQqHNYjZTKvFMwEMQmwPRoheNH
-         5v1XD0X3Rc8TLsD8SQPID1FP5Pk49wKsi6AC6nW4mOJq82vpI0D2pzMabQZpAKzG7WQ9
-         jNEw==
+        bh=iFtVuusRSG4YUFzvnh+nyLwKm1T7E76ZywXpwPdPfD8=;
+        b=qryUKfkvWEwoMuIo9arf5SEnqppQIfaQ9C4IGSIWqN4rX+zbtUBVpysm/0I+K/zg48
+         kcyftDRwzocKFnxx7ICazbqvo0b12JHoHzXuCE0e4f7ExXqBKlji0ozu5t7nIv06g1fj
+         UTU3N2G8E4YKkD5ObFABVtxJG8bHQBCeNZh/0RxqUwgDP4h2Tiw7O+USJ2t+w1uLXOb7
+         C1bhd+/A7CCjKKx0zLAhybec/QU5goA4t4icEp4sm3CNucM9ejuhNIxgRP7PErMfUbMl
+         bf1GX4WGPYZy+6RXIYKPPc+AIUM1NJolagdpbSPxC1GJwydQydOXpf0b1BTyr4BQmEig
+         4FGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783710333; x=1784315133;
+        d=1e100.net; s=20251104; t=1783710517; x=1784315317;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5Cb4T8zzpAMOVzwqCT+1eDu/jZ6x8Q2fk7Pyrqw1u7c=;
-        b=mDTZ1PGiRrkrEjA5ZHHYXPWgjyws4amt+KuJgETfkuS1Csj2Ayy7Xy7TlyTSnxBw3n
-         UUY6qzKX36olP9MKpuDZmYMRDUlhjIw66fvO88UzvkNyOzKrqQOPrVvcTvii96h83CUb
-         Rxf0PoAGJ8ZthkGSPwV40SlRKCWfJiEJP/T2wL0FJfOVWX1yqqQxEJQ84iPikMQ4reav
-         QPhAUyeRnNjFs0syABuPfTglRj0kqvcKKgzqAtNwRIe926kbM6jEhEQvlG+c6RH7UxUe
-         THToaD9/OGZbvuB7lGNRvoBICH05v4zAFvWwFUGArVK4u2Ar2LiGdv/9OOkGkyalxFex
-         rbnw==
-X-Forwarded-Encrypted: i=1; AHgh+RofSOQwI0pF1llejKNNNyYXlPytqqPIWwyRFFPbMHb/qSECWquEOGIiMxiDlsnBbrwpoHQhm6hM4Q==@kvack.org
-X-Gm-Message-State: AOJu0Ywryg4eFcU3BS88v0QroCxNnNSA2kZ4ZwvufYkb4eAgqduPo5cU
-	U/oNDU+PsgcKR2PiPDhjCpBXsjSShaigPFh9lIl4YdF5XRHS5O0szg9TfKebT05ClAk=
-X-Gm-Gg: AfdE7cn7XkDAuWEyG4m7MMWgEive0L4sG8IpktFugX8ZTaOP0WV2EDKxfENW9MSqwtO
-	wOKMPdecJJUjtSJVUNmPLI8xk25nghI+GsSTlzUAw8Rx7bAXeWStyBSg5iEyPHYc8pMv66+r4GL
-	uzxYmP2q+NOcisfnyNE2txoNT9GO5eJLQKeBCkHklklRsyMG6hJlBTWX63igH3piiy6ZsxhUzAM
-	fkyJFv+lTGPF3FrezW79MvcXpaN9OMeEWQRTCATZiQ3KeM+mrtLdXau9AFsEWAUWEXikqb0qBY2
-	5YryTLHEQfH3YgjHFTXiiK7dDJpteb6nfOo58Qgk3rjPTs3WrFVeqezv1SvpveWK4Mq1X1A+kAi
-	glrsRfA0IwX7zEN18xps7l2SGLPzb7pQ88sd78pb1U/fl+Ho8gnEakU1ksPIRoVwIAU35QEceic
-	4fFEAw5Wklq8+rjoW1L+KIeZliWm/NHJgbiVmq3VoXhSlMRd6Pzz/FmtW5plB9lnki2Km+
-X-Received: by 2002:a05:6214:33c5:b0:8f0:65c7:315d with SMTP id 6a1803df08f44-903ff971194mr4994756d6.24.1783710333250;
-        Fri, 10 Jul 2026 12:05:33 -0700 (PDT)
+        bh=iFtVuusRSG4YUFzvnh+nyLwKm1T7E76ZywXpwPdPfD8=;
+        b=FkKWidMPrLrdzqb4STUaIMzuxYjTh8OBV3JvbeyKY1R5xbMLO05xeAYuzaotcFS+9+
+         lyMgJOQnsxnK3UkAvnxLZg55Qy7IgpB7AXqbz30vwhMTZ5Gm4zwwAHqLcBTAQ63I5LMc
+         gS/Htd2VJm8r2fbLpgzTOwVu+c6DFm9Ysqmgo3k14po3+3V/zGHm/KA3d3+09a3OEcm7
+         XbHPgv0s2bGJTRM0zs/NnR4CHFCSbyySWcetEFGiFlhDzJUpxhG0rMlTLZhPH9GQ5d76
+         0izakLPKRpHnsrZobVPiUl44JVr6R+iTdZLwh1zluvb3rw/X1EcwGks9KGKkvB30vnFU
+         PIzg==
+X-Forwarded-Encrypted: i=1; AHgh+RoWjLRuNTlA6P9hVb3RgV3r4cHIbk4MQMbQWG7CJQs+adbeXk1L1FEG7qPvTyELYI3bU1YG/dPDXw==@kvack.org
+X-Gm-Message-State: AOJu0YwoPqFNLbFozGPgr8arnOKzRq8H/COi+5deCB0Evq35p00OvuXX
+	0WO3ZRMXKQrbJIbAoXNVRosAupIC3kcwW15G1R3YGWsrZ5z5Pqx6SCeZlG5H3am1Qpk=
+X-Gm-Gg: AfdE7ck5dz6CJ8Hu7DsaSBWRGu1EG7qy/jc8A8SV6HEcVzcTBUVslJZx6L8253vTQnP
+	kKaL7Z0YbNcV21lUheLTmpARgvU/EIsUF/6mQcP/hP6eqwkG3L2U5Bt0OSWAFcDXhMuBOuwCA5T
+	dABQ6KjeBIuHaYu5gIUDmqR/oz/jbVAdeEGCN2mZG+Czi19sv1lqVjL9zAHdsdjJYmTY/fZzCaY
+	wnvVtrJXuw6dbwqwZa+apBehG7Ch3zKpkUQ6RnfQkVOSRpYtNGxxGvIQJS7fXxwF7AOx040YTsU
+	NLDFtazAxXhiTEI3VfTvAX4UnqvmpvKFKOJwWpTYiwp1GfjCHlDh6CWwIBGLvX4/gFZKLSgl1Uv
+	dcjU/dECir1y9o785nBGG4Dtztkf5bng5QNy9telPTSXIaEmUD/BgzNC5709rUDFUPtdxkMEypK
+	vqfFqgd+RCFt8BFvivN4Hxz/JVhg+OVa+LjQIfkY/uZG4y638XyVwfiOwVqSME52oefrCq
+X-Received: by 2002:a05:622a:1818:b0:51c:b900:513d with SMTP id d75a77b69052e-51cbf280a8amr2226311cf.53.1783710517321;
+        Fri, 10 Jul 2026 12:08:37 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd80fe009sm47940576d6.38.2026.07.10.12.05.30
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd7c1da1bsm47847566d6.30.2026.07.10.12.08.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jul 2026 12:05:32 -0700 (PDT)
-Date: Fri, 10 Jul 2026 15:05:27 -0400
+        Fri, 10 Jul 2026 12:08:36 -0700 (PDT)
+Date: Fri, 10 Jul 2026 15:08:31 -0400
 From: Gregory Price <gourry@gourry.net>
 To: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -149,22 +149,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 20/30] mm/vma: introduce vma_assert_can_modify()
-Message-ID: <alFCd1RtttwxKBLc@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH 22/30] mm/vma: move __install_special_mapping() to vma.c
+Message-ID: <alFDLz9_oSSvHTuJ@gourry-fedora-PF4VCD3F>
 References: <cover.1782735110.git.ljs@kernel.org>
- <23c7602c58cacc23ef22618a27af9a2d54addf58.1782735110.git.ljs@kernel.org>
+ <b3254231831037ca3e9757e3e05c90072e04a6aa.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <23c7602c58cacc23ef22618a27af9a2d54addf58.1782735110.git.ljs@kernel.org>
-X-Stat-Signature: iegei3zbtngtn9hies4m8b93133wc9qf
-X-Rspamd-Queue-Id: 24297C0005
+In-Reply-To: <b3254231831037ca3e9757e3e05c90072e04a6aa.1782735110.git.ljs@kernel.org>
+X-Stat-Signature: ti8cougsqa5ahaf4ppa5g5d4h8n9edc6
+X-Rspamd-Queue-Id: 5FC57100006
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783710333-303202
-X-HE-Meta: U2FsdGVkX1+xog3wI2Me0BkoKeUfsSw682G/0s+N/B2IFEEd+DaLVVap9uzFhoQC18MB2dX+M3j+8lZ/Y3eblos3w2IvKlgPkNukSGU540kQWquUVVH/t2x0fSqksGbeaXt2jjCex68FHzrB6ME+vX8GPY4v/dEdStAqfAhOaljJ5X59fKkn2nCC5amDWMPJenDoHdxy2uwP6n8BlaEGPeSuzLz91UNUTC9JpNl+X67gciqGLT95hjKLwWl185YNzQQWf4CYjiYdOMYpgpdqIwzUFz7o3vmJlZUed+/Jfat85oAF1I3ZZbEv4Sk4qXdQ2bY5nlo/xqZlhcSdhoYCLrWXhcfQkmyvBJqGSwJjRKT83e9SpStrtkq9mGlBR5RGPCij2DvY1IHGUkD+YXyRI22V9IdNV3VLFSpqUSJQ1qQCqGbytRwAagObCKnsECe3XNLnC5/mqth1rD+r//hvYF/Ih+7Xp0FGMMMhTbI6P7D2ns+hbpZE/iAJfdy7rA4vzfv15UPSusO9yHUSB7QHAfomTz2VbD22CgvJ6kheITObVenI01t/vvdpUWI8h3LuRKWVLXSqvmZIejgiYBf3RuBaU0/k5VEcaMwSRwMiGv6y5BiBf70uUkU9r93DKorkHukwd6arXPcCtVRtMzJvjiY0H/Z4jhuIuOySADZQAR2vNQN7xj8M79FjP4K4SlzzeUl0qnxhQpR7Aa1cBjQLnfhuPldRldC0Zt1uaQ5HaB+AB4OYUrsWAPwZKH2rDTbd3+bdXdlnIzzQEZoi4uBqwV5PXH4pShOtmHy+PHFMZJApFWbX2mEzGJOEpzbktAV4Gkcylb5u16FTxSpr+zHEKmifQ3ejyXypNzmbm4SFZMcUUNvjMkpnekbUfBYbBic8W5rYdWN0ajFRHOCJn88gPgRUiPLRB7w9vdvPw6tUtpUIpedA6PMvYTLs+4JRC8EyFLglMTmNOs7BgoZvbWj
- dZ8siOee
- XQiDeNDDkylBjqiJ4PRJoSTSxg5xRwz4Be8e4cT4tyAOuAo7sT/yBQIwVGyKQxXz58BKb5jOLktGYj4ncg7M1xTKoqBNe8b2ADDbWSm+r/27Gl/wmNkSHxdR+i+YfB4X9+5Mzo4joO6Ib7o1lDHF9zN9yd4pVjSjgrk+cbIxMBcSe6NdtThNRyMd0OwcBPK4QVqrjiSRm4teQmttUZ82iAnjQQE2G6bmV4Qmj8gj2Q2Ajp5nn8zOj5QCJxNidcj9HlNLd9NuWnT9hRF0ArGN73tyG3ECjeMVcHBpBrnceMHu6Ezr47wM4kJsLHgVqUZh5ESt5JyqgGAzdhbh3davOeBQb5tZ95OzuoJBqSKlO4+6S4CeqEuU/mF2/SMs6jxzh9Cj0z5Q9t44p+Z84EkxOhnOp5+EXAfA6StVHTsMOQNTg5932zVVoNlYwb0DQtsT2TmAq3Xd3e+VV39svqF7PRPBRk0V/IXvw6JOy3Pa2qBet1Cp6lUu4VySc8FJ9sTV2bjZUye3uxd5joTvTLXoRsUw27cdQZl4w2BP/ENopKIBAOytAcSLqOOQoRg==
+X-HE-Tag: 1783710518-959099
+X-HE-Meta: U2FsdGVkX19v+NdpFITKLXCUxhzv4aR2AKOw4EV8j55BkHGi/vqgZTfMAiS1oaw8wqhAB/RWdA4LiUxTODQwFtz788PR0GPUNxTCFnx5IWPVpCs8ZHXgjboaNH2iluEjjwavqRssST6Mdnl0sqb5FS9Y0rmwdIwq5lukcviHdPPccGQ1+q5JyPQ3oOU0IB2sQFNf+wvl84moE4aN4TnAbIersPMBS5IENqQkWbc09HEP/Hc84hPoPZdSIPL8X9Y0pt7P2//oi1cqKiV1OVn3OZT1CovIE+1HAJxkEsSBLO2XSkFlSoEtCGG0ECqwS2jmYKijJRVNvE/j9SOMDkIGJqYfwH6HyF+D2qYHVNWQdB4SXbeTtfl4sUCOEhwjv7xZtGNyfUIHxAGOBrSm9jroS9UxrLfU1ycmxrHNJ/7F+4AcDx/TrydA4l159yjY2IPPVJ1NyoymVZ49OUVkCeuxLtyuTV2+iAzDvixeQ8pSjsgg4t47MBi9pfMQZUkdOK6rdKiIFNXF1Lnc5a2svQHIIr6SZKeeZG/x3YldzRIJ1+GFVbwvJo50NulUyVp3v97rXltIjP+jkc9fNkkbHpFvHXbHfY1tGkSVCdBvq6ezU4wb6NZ8HP0mAgG0im0sLpp1bOwjt6E+XbXlDW1aKhGxAKflG8Os6L2pt00uLpIVPT0vUjl/to2onRJdnzFCNoXpvp62BDc42Ei+bVrhcxQm/1dWhTFyIsMnyehfFW5HNXWEHljySZ74aEau/+yAvG3ve2f1ohMznKTqhmXG2iy3Wq1x3jOKylxSgnm0zANbhH+Yjuqu/UlkF7okZFHUQXDtJanQcpvQFuEPtj4AH84Q+7ID/W/n/UmZzY6mrgrMh1RNp3RsuRyOwUKoxNy00v23luRdSOA6n9zd7b4OGA+ojvbxQXTtVeIpgyVuvF+VM5bzVO9nOX55Rn90IfdkEs8T5DPOj2SBV+HjfeNTj3D
+ 1dxpsZn5
+ B8MVQzKRoUnHrkzy3sJyePovsHhbE2c29LU7e0tL90CmsLrL6YP6/GLX36VEtMpFsuvne6fiFScnuYPjWl7mNpcJmdSANJ+GqXLazCJs0q1Pk06QcHno1pZpkN2/WmggeN5rHfbOm9/5Yt6pMNplzO+z/MW3+LTj5fEYp1B0BQ7kOdUk5Nd8eGFNiuU8jH0GskykBuHvNF+MihPEHdMZUWv2SsD/uhATSZpPMpZKfnjuvEuupLo+Bk8j9q32GF6gVnjwdnmeePOyJnxxrc3QtNR+/OMKvhgsRxWzZaczhen5MwthPA5bDMiFr9CrAQePLxlpDjy2U3hHWMkQN85bBqsDvbkqLzCtXBqW2i9046F8GQlNA/PalXN2Ahq9ibwIQk6LsUWxVCdBC3mILDJdA1aNrfk4wYPe/aPswtd8WrRqnEYohInU3T18eG6T9EFZVAVASuuIHvv+eQjzbFs9q99ZH4qnBesIIkpfEj76k9oLmTTYpYKzUnCpbyQpqCDKMbguds8lN3LqffCVteSDfoIAb9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -172,29 +172,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:31PM +0100, Lorenzo Stoakes wrote:
-> vma_assert_write_locked() and vma_assert_attached() are useful for their
-> own purposes, however VMA code absolutely does allow the modification of
-> non-write locked VMAs if they are at that point detached (i.e. unreachable
-> from anywhere).
+On Mon, Jun 29, 2026 at 01:23:33PM +0100, Lorenzo Stoakes wrote:
+> This function is operating on VMAs and rightly belongs in vma.c, where it
+> can be subject to VMA userland testing and allows us to isolate it from the
+> rest of mm.
 > 
-
-curiosity: I presume this happens mostly during init and/or teardown of
-a vma?
-
-> It's therefore useful to be able to assert that a VMA is either
-> detached (modification doesn't matter) or write locked (you're explicitly
-> locked for modification).
+> The _install_special_mapping() function will remain in mmap.c as a wrapper,
+> since this is used by architecture-specific code.
 > 
-> Therefore introduce vma_assert_can_modify() for this purpose.
+> Doing so allows us to isolate more functions in vma.c for the same reasons.
 > 
-> While we're here, make vma_is_attached() available generally - if
-> !CONFIG_PER_VMA_LOCKS, then there's no sense in which a VMA is
-> detached (vma_mark_detached() is a noop), so have this default to true in
-> this case.
+> This forms part of work to allow for tracking MAP_PRIVATE file-backed
+> mappings by their anonymous virtual page offset, as doing so allows us to
+> isolate and keep code that interacts with this together.
+> 
+> No functional change intended.
 > 
 > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
 Reviewed-by: Gregory Price <gourry@gourry.net>
-
 
