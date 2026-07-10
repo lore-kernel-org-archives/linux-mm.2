@@ -4,103 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 236C7C44501
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 08:28:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65A09C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 08:36:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D25C86B0088; Fri, 10 Jul 2026 04:28:56 -0400 (EDT)
+	id 4ACCF6B0088; Fri, 10 Jul 2026 04:36:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFDA66B008A; Fri, 10 Jul 2026 04:28:56 -0400 (EDT)
+	id 45DC36B008A; Fri, 10 Jul 2026 04:36:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEDB96B008C; Fri, 10 Jul 2026 04:28:56 -0400 (EDT)
+	id 34F636B008C; Fri, 10 Jul 2026 04:36:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A13046B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 04:28:56 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 24A771C892B
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:28:56 +0000 (UTC)
-X-FDA: 84972191472.14.0AD6B60
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 14D81C0004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:28:51 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783672134;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A67E6B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 04:36:50 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D57D1694A0
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:36:49 +0000 (UTC)
+X-FDA: 84972211338.01.3FB7D74
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A22B240005
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:36:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hV+Kfjnj;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of jackmanb@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=jackmanb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783672607;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=iLuw7JQ43IEIgGxxgYxKVar+PYkP9ayNFoOKHtxv8RE=;
-	b=HKEJhKNHs7RAiWFYNetD9CqB9sB/2xMrokcn/Ku+AeCmxEkdq8eKqydRhkNuIN5BrWPo+s
-	MTRV7n8xagMhICxcPVqu20tQLAvuaIeVcouzWg05gwM1qz3fsA36hwbDZwNxzduRvIGtvc
-	2xnHdhIaVzKVRMX6xwPiWFa31XLl+0s=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	spf=pass (imf22.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783672134;
-	b=cIiQyabFw86niKFaj3CooNDv5sVz+BoFa+xntaL9atVC7SSwi1kHkrrsLrrHSwxB2v3WvO
-	CpggU2p1+aGxC88Ui4WtJRSjY3o6cspw1xg8fr/YB+kHrBLDAagL6Go/nhs8VX8B6glZkI
-	ft9I3k7VzY/DpWK9baoVEE3aUcBzkYo=
-X-UUID: 5cb2f1887c3911f1aa26b74ffac11d73-20260710
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
-	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
-	IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED, SN_UNTRUSTED
-	SN_UNFAMILIAR, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:6e982667-8bbb-49db-85fb-e5b91f8e77af,IP:10,
-	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-15
-X-CID-INFO: VERSION:1.3.12,REQID:6e982667-8bbb-49db-85fb-e5b91f8e77af,IP:10,UR
-	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-15
-X-CID-META: VersionHash:e7bac3a,CLOUDID:47ed8060824e5aaeacefd11062448ea5,BulkI
-	D:260710162846BCIR0X1Z,BulkQuantity:0,Recheck:0,SF:17|19|66|78|102|127|865
-	|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS
-	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,A
-	RC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 5cb2f1887c3911f1aa26b74ffac11d73-20260710
-X-User: husong@kylinos.cn
-Received: from ctao-book.. [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <husong@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 2021237231; Fri, 10 Jul 2026 16:28:43 +0800
-From: Song Hu <husong@kylinos.cn>
-To: linux-mm@kvack.org
-Cc: hannes@cmpxchg.org,
-	yosry@kernel.org,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	ljs@kernel.org,
-	akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	Song Hu <husong@kylinos.cn>
-Subject: [PATCH] mm/zswap: flush dcache in the compressed decompression path
-Date: Fri, 10 Jul 2026 16:28:22 +0800
-Message-ID: <20260710082822.583930-1-husong@kylinos.cn>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5vusuleFjZncfXS2nyCDuITFoJSaIiJ699qFr3aBd5M=;
+	b=t2qxqOiQew3No/s40nv+gEmIFkLTR32xzKSlsNNICknYFze5TT8eDqxUmg+dbxEJklFort
+	6c0ytoTEgjbRieXN++DKJOi6pV/ci3LcMMPTHfNNTJHfp5+M7gXi963rZrN+YK4gFmmOv5
+	jUdX6OUS+i1OfAYfjBTPPrOgxVlPlbY=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=hV+Kfjnj;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of jackmanb@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=jackmanb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783672607;
+	b=dd2pWgvp83AuyvzCzZx2x6xwY9e4FQaQhfcbHB4WMLDAv3/kZ+VxWnotYz7w62GouresKo
+	i+ux2geMfIHiJioMWgngopHFBvNt39bhRwBRWE7LB15BOF5flnX7t3xOQtFtfFJY2AkPI8
+	hHnrrLiF0+swln8PKwYDmRINh19hJUY=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-69a45011a92so8935a12.0
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 01:36:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783672606; cv=none;
+        d=google.com; s=arc-20260327;
+        b=d4JOopPeQdWPW+PIdXlJsNqmdDXQuTGwtlbAwvhrcYsAMMJWtG1B1Pvc/Q4hjXiovy
+         urWeAmvylPdxAp50NkRObYIZD1P4yTgsxBsoYHNQTX7iJXiMyo+paIkOSJq8rbbqGbt0
+         BVnsFtb82kTapeYHqKBjztCGmDcCF9h9Ygpc08e6J+IfvQwiPQ4QLOZ61CuX8n37n3wK
+         Epc3YXejUr+DJrHkgZH/Cm4cCny6IY+FLi/LQZE23x8f6NclNFhrbCi+K67zfmiJhWLL
+         4GZx5PPTV08AKa7YM42bjXUF7jnFCgkuI5w7BjDmPJrkc+nkgdwQznGUbm30wm7WQd5E
+         YpEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=5vusuleFjZncfXS2nyCDuITFoJSaIiJ699qFr3aBd5M=;
+        fh=T4HspraeeysX7r8HxjtcgO8661SQJ09tnDLbQZUOoHg=;
+        b=RIBiPtvu4RrP09jlR0Bd+xfGNDABGxD98RkPjk4+eCxbsDCkbGLcpnzMGmR+0AvcoT
+         e0Eajz4OKpin1oi6eGXKgEzEw06DYA3uwubC8MKH1qEIwlW4UKvAryKtS7QQRSqrOT2G
+         y86DarCHpIGqT4q+BaIlHkv2IMFkfNZlKIX3YnLdl0/685GGvyn6FGIkXINAuTJ8nh41
+         MlKscQlYWlOJVghLE1eT9hwO0/XClorECLTTqONVVHBpps49LyW5SEo6OXAj7vHVozmk
+         04DKwBVJzVMaEVwqtdYkhpabOB4cmcAT4qiCrgN+Ub+EkrqzUiSNKAbVKCZcVOzsUA/A
+         gAPw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783672606; x=1784277406; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5vusuleFjZncfXS2nyCDuITFoJSaIiJ699qFr3aBd5M=;
+        b=hV+KfjnjcPGtQ01ZIlREruWXUwzYbVcYUO84ny9No8e2+cRMeCgg5f1KyDJ+yhTdpQ
+         FCDXkR32srnwt3q19c5ejiK7JOjjmCVN09ti1kLLmK/RutRRIe2ZUfjUCNWj/9I56ujK
+         +ngulNQANsvrX4FyqJc/f5jNZP+1lhcWxrK+PqAnNzfrHzdCLHdxJ1xTT8JFyV7sxkT9
+         Hbd/tVdxqkXtyFYpymvrmO2svOCQimElKNccHuNyzOu/MKDIQGTIM6TFLgBD2FTZOTkF
+         Hx4I3YTGxz5RUzWr3jJgdFRHQBq0LXoekTCX8lXNMKRbthcmDm1r40gPwV207gch/tFv
+         WV2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783672606; x=1784277406;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5vusuleFjZncfXS2nyCDuITFoJSaIiJ699qFr3aBd5M=;
+        b=WhC/HAxqxmpsrGPnmiRxmyH5ymZarNuhXzhHAGDe1c2VHnf1fbhayLnyDH7wvyqHd4
+         nWvAUslRHB1moMoy+Q/dXb4BF+ijxQ2O2jERmu/GxgOIzjt6St4X28HCa7OCorlAUUP6
+         sUeQi0m6eZ7QqcfZ8Gts/Yjz6EDQcobzTJ9U9q3/c7wjAju0bcwCrIZ4qwsr6FEPeFOU
+         2Vacwx6fdt8cpoPd9xug2oRR5ICs60WUiB7ho6HxaiRxbTNAzVhY+ZSKJrzQivJ1pqYt
+         6McupnzM0y+cZ73JGlgcwxE58DkZJkbJxdmz9vEmwTuuCg68lUVlij39zVqW9wxd8WfA
+         jqLg==
+X-Forwarded-Encrypted: i=1; AHgh+RpHhtQoU04OHDBjM++vqZPZyysKerA76gwwMUmL1hTlgisrq84dLW4tg2hGoxoUg7KgC/yThiPEwA==@kvack.org
+X-Gm-Message-State: AOJu0Yx/4eqOENfESICpWUn7anNPDF3bZtymFBn5xMuQk8O2GIaXSuvT
+	NKGXcz1RpY5uJI+FE3KFFbvyGLqa5bvDChSsxwkJad88fLDuoKo/PV67fLCgfEm2nA+5Gs7pEb5
+	xDxQwfIH30X4Oc20g2v+Muumt/qzWbxN3EIPMnJvM
+X-Gm-Gg: AfdE7clhy8uPamSER+CUuj1Sgd5fidZsahEU3yJtNaLxVvLxKwxC2KTSoGBz21t4Bys
+	YN5zPgklmZrHxYDVPb+xCh4qwfqOW4uv14l7gzWhgsc4CphPxSoycb87eTE7IFZxgAJcBW9E6LV
+	peCsLz0aS06tizzZML0hZcF72g3fgS/xVJOk25XIb4BvDl4mvn2zLIGg2+UHQquqJyqH9kFLKKC
+	ZBb4e9IIbb1MpXApia9W+Vydlsok+0Nb8oliMzgBxL6YilSRSxaZCFIjig1X+P99K9RtCLFlGnI
+	z2IdBsBECaAw3Ri14LgGgkm++A==
+X-Received: by 2002:a05:6402:a541:20b0:697:6b08:459a with SMTP id
+ 4fb4d7f45d1cf-69c29ed9df5mr35748a12.7.1783672605521; Fri, 10 Jul 2026
+ 01:36:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260703-alloc-trylock-v5-0-c87b714e19d3@google.com>
+ <997c1a4d-ee99-4214-be58-7ceb3b9b9a36@kernel.org> <20260705003039.c9b4bd681c059f62b375051a@linux-foundation.org>
+In-Reply-To: <20260705003039.c9b4bd681c059f62b375051a@linux-foundation.org>
+From: Brendan Jackman <jackmanb@google.com>
+Date: Fri, 10 Jul 2026 10:36:33 +0200
+X-Gm-Features: AVVi8Ce87UhCHbfmvKkRHtYsfZSbDlT7JQG_kxBAkz9MTI2Uf45nPVr5mC018JQ
+Message-ID: <CA+i-1C0exwnJnp-WXQa3r==d_TeRj2Ocrn9COMCdC93UiWvQoQ@mail.gmail.com>
+Subject: Re: [PATCH v5 00/18] mm: Some cleanups for page allocator APIs
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, "Harry Yoo (Oracle)" <harry@kernel.org>, 
+	Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Hao Ge <hao.ge@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, derkling@google.com, reijiw@google.com, 
+	Yosry Ahmed <yosry@kernel.org>, JP Kobryn <jp.kobryn@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Robin Holt <robinmholt@gmail.com>, Steve Wahl <steve.wahl@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dimitris Michailidis <dmichail@fungible.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 93tgbd833c4k4bai47zezcj5jmfxbwby
+X-Rspamd-Queue-Id: A22B240005
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 14D81C0004
-X-Stat-Signature: mba561no335qfp6kuhju5sskeduo7uoi
-X-HE-Tag: 1783672131-593579
-X-HE-Meta: U2FsdGVkX1/ZgpoudMAPt/0kcGV8bkZkk18PT6Koz913dNUpX1WTUdnI0XiGmkFieSU6kr/9My5QTIWvDCQQWVYgu+p36fyhHiA5mp3h97x9cMRvTS5KfZN2UN7Dx3sVDgeLEkZMgdMQJvwVSUesA9haF5jzaKqFTDM06Q2I50sNRp+4dHFyLPkQLKmpbUMqabAVOQwX3j1iJ10ziIeVDPmHnWvwPhOHPGgzBkjLENdpslGxmsFaYdlm8+0I0DO5Z+Wya6qFFg2GPh/ZeOO+UpJdF25haiOjfhzZoZPFI6fEoO+KcQq8OQuaxn8EoQ7QwNb9rfkEXMzQokFYJ5zGKr9nG5v7LQNXZ17QzpkijSFo19XNg5AE1X+D0XLrszRa9PShD/jreMvd902QWtGyRnaOgvWFnAF8r37DDnnVuHOHice6Q4l3+kzRRRANrMsja1U2Xoo9osUhTvkUv3S2ofH42UCZKFV0FTkHWX7hh4QcoFa51Km8CT6mELHNlHGfrxxJCgvi3ejATAkK5buoKRUso1RygfYirz/TaumTXRaF3iiPp0WP3q5lxi2YVRsjPtXY0EscFFbOTzUDMRB97vxJRKrHwm/GUAR4kYe8/atJdEKguZAfY3s8JKenn97O1exb4r5h/f+i5/WnVGVSB8/r8C+6ZkALPECdFGEyTt/9DNfkPFYTBFEc6EstT9lClNCZGVUYN28Y+cnZBZp0gJNVheb3K2MCIDulDJaHJdNpoWl9vFwESvuhokTi0sMIVWp+yO2QVkMJ21J3f02ppyQTidfTFJHk0zHgpHQYTe669wtAATJ+9AcJprtfzbF7cl6LMdMPRcalU4/dFM2qLT0xRlWL3BSybCdoE7PB6GDU/Jg81BAuJ4eRnLSGat9beKgcJ9YvNd1VThOEiv08/0sUfDfdFu26BIMX0ZXwAGaSJOJgbuT+mZJjkzyZaaNzAH1T9+Gi10UcXEpLJoK
- kbaZ0VaV
- Xfk0H
+X-HE-Tag: 1783672607-497492
+X-HE-Meta: U2FsdGVkX18TASaDyBg4XEJ8uq+METPOj1Ii1gt1bbIzAUdfKhhol1XvoekFWr7QIqjhZ9AgS60XCTdPEE8hj/uEURFIinEHoiRkF+M9Srrb3zLUWtV7S31WY3Bb6QMa8bDHE8h1j1LR17ASM/bkuqSW4RLofi4KY+W1znyho42QbRsyr5AoyxYbyL2oeggtyGaAMNttvzWpZcdbjr1Fn+jAKSDHl9k+eT++cweKyVTI+7bBsg7CSU4Yr9cXxAS67+cEZxfrByXjL0OD8DzldXzn2hNS4TSgidXkkt93z+bl61OUGLKDKCw6JctP+z2+UoHOQb+En1nmk3pUmLwfhqQoOB8SAWtrCXznugHFEI0jD8C25Qjbn9SlyCGRdrq9TXJrTMsEwgvDbdLu+IaAHJKzyjBKJmtPtbgt+KGo4UsPwrwCxQYTclSH36lWrxtKOqf4yAHAmtoQGCm/r76+C23Z6Toypl5iZuxn5ndJ3gyCi7ZCS/YexB1kpwr6G416PhHD83cwUQiUO5PfdQ1chzYQ/WBFS5D7wMClnfmQtD0WuR1zPfoxX5fcFXz5BmqCsjKrK1GckcMMdLFFxZUKBroLUfXMRrtupJs6SwYryh2zo/aV742DwfOkE/y5Dvwuatdk5cOHcxYRl7CHotJJ20KOV1NkrH3OC1o08xlSs+Hg0DQoHkzKbdzYWbCbY6A2OPw3MlI9TfNgCIGvEv4mOAVq5kSuQ+e5G1TkJ1JzBkDGSraJDfAm+7XdVea9pXE+vET7QFS+DN70XhYUeYZ8jWk9yB//NXcyGoP1a8/+JjKHJ1HZf9RrWTD8ZMm4HbRtXpz/TDD5tHyaOypITVk1FbOkGaxDRFfUA0qNKddX7T8IudrgitfIIfoIvo76vOILLoZi/oniLWLOLHdznlAEvrv82QhigYnZCKuL2nFlwMCRsP1VGgRiJ1L7Ok3dZsq+FRXgzcliQ+X1hzNBLiK
+ ifbVWhH3
+ RvqbipglQ4tbfp/lHdHlQis9fKjjlhj/v9GGr49VFuqjxRtirRU7AX11/dFb192n1xRsBOrlXjWt6JsBNozmDgbajDR/5iWn0KSSUwmROzKLVaH7zHkL5cxLndz4RWsBKWq73TQ2QyLZMxsQkkZaZFQwT7xTpH2Qqk1hPiq0NnoihEb0sTS1D0G9Si8EonTzcPwMrP1svRBlZzZEgg/ddysI5nWpbfy5Y/EVYMpLMPqohwv2Lq+9UuNO8o1ERuB/aJm7DADMI4s/sVGNRJf5A0BiOqQHAS6RX+ne/uh26WBPO9tcYLlmzQBXCfLw10Oe/+TdV+go7znP2gRCV0RvEYBS50n+QNdA6DO8FJ6Lwk0QkJ7HrENFZ22sJT53sgwxt0kU1z1sneJSS3vncsuR3P5MvIvSAEBUqaxOq+3ypvWIMDYpj3LetMZXY1/WCUHZ9lNdTbUK+o7uvGJ17559VwZllx2Vi860x3VyBkI17T8N3N5xrZ3GeFrJ06RHjKmNDRBGjPxHUwOTxcQo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,46 +164,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Both branches of zswap_decompress() write the destination folio through a
-kernel mapping: the incompressible branch via kmap_local_folio() and the
-compressed branch via the crypto scatterwalk. Yet only the incompressible
-branch calls flush_dcache_folio(); the compressed branch was missed. On
-aliasing D-cache architectures this can leave stale cache lines visible to
-userland after a zswap load.
+On Sun, 5 Jul 2026 at 09:30, Andrew Morton <akpm@linux-foundation.org> wrote:
+>
+> On Fri, 3 Jul 2026 14:47:32 +0200 "Vlastimil Babka (SUSE)" <vbabka@kernel.org> wrote:
+>
+> > On 7/3/26 14:31, Brendan Jackman wrote:
+> > > Based on mm-new.
+> >
+> > Seems ready for mm-new to me. I suspect most further non-trivial page
+> > allocator work will conflict, so better have it in mm to be based upon.
+>
+> OK, thanks, added.
+>
+> I also added some little notes to track Zi Yan's comments.
 
-zram flushes in the same situation (zram_bio_read()). Hoist a single
-flush_dcache_folio() out of the incompressible branch so both paths are
-covered.
+Thank Andrew. In this instance, what's the best way to send updates, I
+guess now they're in mm-new it's best to just send them as fixups for
+you to squash? In reply to the thread?
 
-Fixes: e2c3b6b21c77 ("mm: zswap: use SG list decompression APIs from zsmalloc")
-Signed-off-by: Song Hu <husong@kylinos.cn>
----
- mm/zswap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> Sashiko had things to say, mainly pre-existing things.
+>
+>         https://sashiko.dev/#/patchset/20260703-alloc-trylock-v5-0-c87b714e19d3@google.com
+>
+> the xpc_create_gru_mq_uv() issues look like facepalms.
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index b5a17ea20237..bb0c16d102d5 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -943,7 +943,6 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 		memcpy_from_sglist(dst, input, 0, PAGE_SIZE);
- 		dlen = PAGE_SIZE;
- 		kunmap_local(dst);
--		flush_dcache_folio(folio);
- 	} else {
- 		sg_init_table(&output, 1);
- 		sg_set_folio(&output, folio, PAGE_SIZE, 0);
-@@ -954,6 +953,9 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 		dlen = acomp_ctx->req->dlen;
- 	}
- 
-+	/* Both branches write the folio through a kernel alias. */
-+	flush_dcache_folio(folio);
-+
- 	zs_obj_read_sg_end(pool->zs_pool, entry->handle);
- 	mutex_unlock(&acomp_ctx->mutex);
- 
--- 
-2.43.0
+Oh actually I didn't see the point about the alloc_pages_nolock()
+comment before. Other than that, yeah all of those comments have been
+discussed during the reviews, or are brokenness in totally unrelated
+code.
 
+There is this where we should probably make a decision (also a
+pre-existing issue but this time in mm/page_alloc.c):
+
+https://lore.kernel.org/all/DJOTMGFAPDBF.261U5OD4NPU74@linux.dev/
 
