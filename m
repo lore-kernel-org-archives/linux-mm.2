@@ -4,105 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39964C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 10:56:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44A5EC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 11:01:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28DBB6B00A5; Fri, 10 Jul 2026 06:56:46 -0400 (EDT)
+	id 382956B009D; Fri, 10 Jul 2026 07:01:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2659A6B00A9; Fri, 10 Jul 2026 06:56:46 -0400 (EDT)
+	id 30C8C6B009E; Fri, 10 Jul 2026 07:01:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A26F6B00AA; Fri, 10 Jul 2026 06:56:46 -0400 (EDT)
+	id 1FAAE6B009F; Fri, 10 Jul 2026 07:01:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E95216B00A5
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 06:56:45 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B667C1BDC
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:56:45 +0000 (UTC)
-X-FDA: 84972563970.07.2E19B81
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E4A66C0003
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:56:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OCQ9off4;
-	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EFE2A6B009D
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:01:32 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 66BA11A0401
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:01:32 +0000 (UTC)
+X-FDA: 84972576024.10.8286956
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A0FF31C0003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:01:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mZFaJN/r";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783681004;
+	s=arc-20220608; t=1783681290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9+cZtzCSgj0oqYkJlHKXjgXLag2Yp/++TMmV/k7LrHM=;
-	b=IheBN9qv39NUoAcrDF1ximWYhp/VcDdHXhDce1q/+raBTL520X5iLkITiFTCm9d31nvRxo
-	kyJG3iqKHQ0gSnZ6/aFRoCnMGZ9xfH1s1PTZYhya8RpEGZ94AmTk4fgp29thsCLCKNeNeZ
-	5jgfTSccr3uvnKRat6XWz3JHcDCSNgk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783681004;
-	b=TsWiilwidJTft+7vrYpp39sFGADwyVB6rUFzrWDJ+hXa8a1qQQLxWjB2iX1ee6kG5FM1Jj
-	OZ1qQ07yNaQzQFSTImzBSkcRg9jxVtG/QZutmX5bcvR/2GLfY6DuQyXX9idV6Yhw1/TEax
-	Cw3kpJCBafuyrNRzo0p1w0+wcJU37HQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OCQ9off4;
-	spf=pass (imf28.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783681001;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9+cZtzCSgj0oqYkJlHKXjgXLag2Yp/++TMmV/k7LrHM=;
-	b=OCQ9off4uSBieuNMdiqSXYI9BbZC99ylbynli+MY5iwLPMJwgNX7zyVGsQPB+4Cg7Uh7zA
-	wgNSWCW1NuX4+wBtWiAo3RNAOESXyPjb0+0Usvz5cwtmG4/FEfFp76IcZOk3k8miSJ/Ipd
-	Ns+LNpp7tGEcaKdjiQuRubHhH2yK2bM=
-From: Usama Arif <usama.arif@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	apopple@nvidia.com,
-	balbirs@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	jannh@google.com,
-	joshua.hahnjy@gmail.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	matthew.brost@intel.com,
-	npache@redhat.com,
-	rakie.kim@sk.com,
-	ryan.roberts@arm.com,
-	usama.arif@linux.dev,
-	vbabka@kernel.org,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	shakeel.butt@linux.dev,
-	hannes@cmpxchg.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH v3 3/3] mm/huge_memory: skip device-private PMDs in madvise_free_huge_pmd
-Date: Fri, 10 Jul 2026 03:55:23 -0700
-Message-ID: <20260710105557.1987433-4-usama.arif@linux.dev>
-In-Reply-To: <20260710105557.1987433-1-usama.arif@linux.dev>
-References: <20260710105557.1987433-1-usama.arif@linux.dev>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=u1in0J6DOoNo1KJyS0K46lG1NFXjsivGf2Yh7PbnBzU=;
+	b=pAtF+ED0iMpKKWiS0qRqx2EQCn1mYFXk8f630Oqn3d/v8MoOEmMQ4z0Y/UmGYDsGQnl9mp
+	VAX0dLaswq3d/4ht4tiX6J8kHAVN9sMbxJZS/EfqSxetE7Z+uF5iTw/TrC8fEGiRNmK0Lk
+	pCNzAgZ8HpcP66TjVtnN5AlQv/alPUg=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mZFaJN/r";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783681290;
+	b=EFrf/arERSlxkP5PLdRaadczOVsK59fbN9XNIKR2DvYrsqKMSmPH3YYAwKNU83kH++uOI8
+	t2tl+XCs4ZQXD/yWWjCmxo8kbBcETF5AJLsxD8Hq1E9t+lBkw8J82ss9m3RZnruvwD2a/O
+	RQq5qyk7W+eu2aItTmu9F+Vz2z+YHRA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A338E42E7E;
+	Fri, 10 Jul 2026 11:01:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B5DC1F000E9;
+	Fri, 10 Jul 2026 11:01:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783681289;
+	bh=u1in0J6DOoNo1KJyS0K46lG1NFXjsivGf2Yh7PbnBzU=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=mZFaJN/r2g8hweCNJ2/oa/yfwnFv5zbDApI8iMUpY+NUxNgiW/bsaO+kK+YQCW64z
+	 PpaaHmSBJ3KX5fbgKV62ghk8ai+laPAHO70xaUO9vms4nDSieDvezlv/hcXvxFmtUX
+	 Sb3mTwo8TGJ5qHoLpl6FwU+z8MBa07nPhprfiLUlUJp2c5+MwNCXkagCTBRcW/f2gE
+	 qlbr9w7E/3nozUmz9Sq7E+/LnEUwKkvUZe8hrojnknH2jSFniKsuckcmkaLtWVIpXo
+	 Bt6ScxK2RJiqXcPTJgjrwKzYWKNc3ve/vCBgit3SW+5V26w6V6c6AEJC0Jow8CE1hU
+	 5Xw6vWJIEvOiA==
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] selftests/mm: remove obsolete hugetlb vmemmap test
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, muchun.song@linux.dev
+In-Reply-To: <20260710092427.3459121-1-songmuchun@bytedance.com>
+References: <20260710092427.3459121-1-songmuchun@bytedance.com>
+Date: Fri, 10 Jul 2026 12:01:09 +0100
+Message-Id: <178368126920.320109.18235623374053703699.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1342; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=8xi/0lhPSxQTlfJQ4w5thzHX9bGE+TZ3W7tHjzlAHxw=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLICLvz6eM1gm4Vs6ZQVSXu3S3BeDt95g01jl8z0J7Fnb
+ x+U+3dRoqOUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQATubqG4Z/yr3V6yZrhaxQe
+ KjvWhlz7efTn7OXXHH7GGakYnlMSPHSS4X/MBOO9t837V7KnFp64Lvf82uET7nzZkdw3uu3O3mp
+ lb2UCAA==
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A0FF31C0003
+X-Stat-Signature: 5zrhdfmccn7pj6jw36n7zg54niu4karf
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E4A66C0003
-X-Stat-Signature: seiw3m1tuqrx9ccgkc8fxbkyo74chk8y
-X-HE-Tag: 1783681003-322400
-X-HE-Meta: U2FsdGVkX1+H35xZ0L0+NCtugBoGy+c3qNopmwTh/lcgnLWjSDnHbGLFOSt2oDMuci8/YHGR6HmTGM6LoQLM6kwEk2C0I7JC5mIBDv1GUx8Os5m/m993hLBSAb5t0UaFyA8OP1mjZyueRCgA4WUCEUr3tiF+wBqKU+4o6h8KYwSdCU9ynOjmwppYswGTY5Iigm2jj0AvLUb/tazWa85T0iTbVWpoa4hW8256XEfxB4jFhjYq4iSdOmxTv5B5PGLRPVPixnU3xeGcmnJSosPnsjdjqZyPt+/1R+QjtUr4tWHzDxVoJ8zKpjYFHNr5WB+FxoBj9cCyI0U6Gca8G4oPdTU0nmcLXB0LxznFHtLINXIvnkhjE1ZOid6olbf+S8/T3ruksh8JNCEUj85qp8iJt6LabfzoMXrYtAwvA9y6u/jDrYJ5ty6fzAsDwqme3RCZdW4ZQgEJqqcpfRkrK2LvH0tHj5TOxXcYOWKhe6VVDCaZFeYTtVJC8pzVBSVMgU2/xLwJ0wYSy1wyPTg83p7LDx6P3y2QWoFHKLcVFyNHsrysGMfY3jEAYPDnRMqtDw7GgPizhal+MB38sRpkf1qLeVpljWFW9k6vsA0zMJc6NK8jMnAmOQl/awn1lt4NAQ9IQR+jQPLUgDjxomO7SwxtDRLb6qm6xtNSNrY5mC0hBJe2I6tc2vkbB5jA3zfxPPWOFEhBr2H3h75bWvX8GzrbxAgSZ5HXcNGqEg/n81iQd0dtc/xRTlsJl2kaiDwS0zBGMEINa828c8MCZiYWnNybSXPXp+C6DvIui0iLNetOU8Z5t4cjktM34KBzYaIulkJzZ8FXOs7CxsDMFP2QbCOBYrIfiwAB4yj9/+52+fi9CsqjqINGyeiVKJo7SGvlc7JtA7OKvdkd7GDBcVmYsvHlJtdlVcyJNIqywYmQY+ad6I1Dc/mZF/s9QjbVIX5MmXZPO9uQnYltxCtRohfbPA0
- vUE97qoq
- 09mhuD7W3bcukcuoxT+Nre0k3cl7hmHrJI6haBzDQzgSm4+RGVUkXajHHkLiOYVELo1du1PC/uK2+nkBNw9TmimXsN04oyS/w5MNja23VSJFECa1aSLrCmO0aprgDeYMcaTlSxkoEli935zc+3eFU84zuHPc5L5Fc7k1fXT89ohHKN3TQzJhEAPLO8BIi/Su6UvxuL1ZnVWNALvVYduMGZS2xDIS7sNyT8zZQGaIUvYDHmjNXVPBk0V6Ov332ivLM1+sGRwq3eYPSikavWPQez72gm60GF1F8h2NuFpcq+O3eMffHCDy+UF7n4oR8biDvAcdeghgAGLe9CKGUp4ba3acoA+wfP92mq3u1v+1ypYfuc4Hl50gUvIc2Q9ofo7xL/9yLc+I9ZhuryS1wUKoJC2hfRcJ6SatFi/+ATl96DuKOelNX35yiq4GoXIp/5rPeTpm9
+X-HE-Tag: 1783681290-533054
+X-HE-Meta: U2FsdGVkX1+glrtwdU8m9J4U+TSR8fsejN+ag3muhwpqyl1ug88DqqsSBwq3csulx1cyu9ugMu07RDFLaC88g5NXO+E5MgPY9AHzP7Sl0lqW1q33fmnhVs/vKtg1FlYJsJpxPHYvFaZFMqONaH7ZnDn+JHipMhwHY2vVdjQz2mrd39W8yyFokuXQPHFwDN5leb59S1Va757nqc0ENhJ6VKOxV/gGhUXrKbgdYqaxXs01gftWX1c82b9IJ137i8vQnLfMVI21IGe8Y1GQMFqk3EctnPT7W1Ctj3lY/+ElJgyViKd2Af5khAAr7Gwu5kEwgLvJUeyWYktiPJEWkYfj3MYUP3rT7XUbFf+jxMmGQ98bN1pPYhfi5cHQoRkhW83r7UclJ1Y9YgsNYaHmfUjG+WOtFJMx73McCZPxLTuOXEUotwnWq3KNdYjUnshTImqWJmBVgETW4HGAx2rr6QoeitO28ceATuNfBCQqVCn1vXZoSdNnln3530pb/4rlU+hsLt2xHj+zJfFK5ImJzR+6IkFvK7UxnO9M0r8f0bZus6fFhPBKr6OnR3dUb+/fl+eHdZfuUZPGkrPZiZ+bPNNS+DQs1IE5nm99n5p23qAWZozGopZeA6ZlHgQilo6litAFIepvJrj4q6tGFKSuGDtGMxZvr6pZTKmLmc+84JXAjMNFwC/iGhRflpG0Hmo/ozXkZ/x5yYZnCPt8erdd3NGpj46LnUWVoPg4Hn689FioupfD2Bq7HWUBPqoDZIgRFaxeiAx96piBwLqTMn7m71bZzcOioi3vbCbwafAZHvrBrpF0W66GGhYlLPNxBBgnjbuCvvRxM4KuMDqC7dtWPn42CMgYGiVQys43byqQPEtwjZYX+8VL4teuGpH9rXQBr3SWE5O0sOgMzIQ3KvZUuzyLmF5Bv/Um3LZ+8CJ+tUnSXfUJHM/bn4VUzn54zcWxSSUwnXJEGEK2HWwd4YGxXUr
+ wJCR9Kw1
+ qXcNyGWmCXlubXiBKEMQAYDxKOnQ32xRdNEEhSlOiHQhiHljDHb4kEeSUXDGOmhRAOszuOy2x/EwcdDQ1LMCm9u8bxe2qYpIOftTlV6iGnXp6fgRMZNTNgcxDYpsawhnvr3j7XMEXOGuLITiSN/mCoMip/U96oBW8tJfSVByuSg0Socb3ymxudNjYrHfzrnTOYjTHmHdzwQ+tfxY3C8zW4W8HfSr3TL4tWn21u4pO1Vh0PC+nv2mXfWqkqCxhPcMoR2zsoIkwmot6QFY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,50 +105,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-madvise_free_pte_range() checks pmd_trans_huge(*pmd) unlocked, then
-madvise_free_huge_pmd() takes pmd_trans_huge_lock(). pmd_is_huge()
-returns true for a device-private PMD, so orig_pmd can be device-private
-and enter the !pmd_present() branch.
+On Fri, 10 Jul 2026 17:24:27 +0800, Muchun Song <songmuchun@bytedance.com> wrote:
+> The hugetlb vmemmap selftest was added to check the old HVO
+> layout where tail vmemmap pages reused the head page.  That
+> assumption no longer matches the current HVO mapping layout.
+> 
+> HVO now keeps a private backing page for the head vmemmap page
+> and remaps redundant tail vmemmap pages to a shared read-only
+> backing page.  The old page flag check is therefore testing an
+> obsolete implementation detail rather than the current ABI or
+> behavior.
+> 
+> Remove the stale test and its build, run, and ignore entries.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Skip device-private PMDs in that non-present branch and continue to out
-before calling pmd_folio(). Downgrade the check to VM_WARN_ON_ONCE() so
-an unexpected PMD softleaf logs a warning rather than panicking. Drop
-the thp_migration_supported() guard: it expands to
-IS_ENABLED(CONFIG_ARCH_SUPPORTS_PMD_SOFTLEAF), and both
-pmd_is_migration_entry() and pmd_is_device_private_entry() already
-return false when that config is not selected, so the guard suppresses
-only the case where the warning would already be silent.
+LGTM, always happy to see red in the diffstat! And we definitely do not want a
+test testing something that isn't real (...!).
 
-Potential trigger: an HMM-based GPU driver races with madvise(MADV_FREE):
-migrate_vma_pages() flips the PMD to a device-private entry between the
-caller's pmd_trans_huge() check and the callee's pmd_trans_huge_lock().
+>
+>
+> diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
+> index 9ccd9e1447e6..227476d8ff1f 100644
+> --- a/tools/testing/selftests/mm/.gitignore
+> +++ b/tools/testing/selftests/mm/.gitignore
+> @@ -3,11 +3,9 @@ cow
+>  hugepage-mmap
+>  hugepage-mremap
+>  hugepage-shm
+> -hugepage-vmemmap
+>  hugetlb-mmap
+>  hugetlb-mremap
+>  hugetlb-shm
+> -hugetlb-vmemmap
 
-Fixes: 368076f52ebe ("mm/huge_memory: add device-private THP support to PMD operations")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Usama Arif <usama.arif@linux.dev>
----
- mm/huge_memory.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+It was here twice :) wow.
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index c0892cc533a9..7ae21b006b68 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2297,8 +2297,8 @@ bool madvise_free_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		goto out;
- 
- 	if (unlikely(!pmd_present(orig_pmd))) {
--		VM_BUG_ON(thp_migration_supported() &&
--				  !pmd_is_migration_entry(orig_pmd));
-+		VM_WARN_ON_ONCE(!pmd_is_migration_entry(orig_pmd) &&
-+				!pmd_is_device_private_entry(orig_pmd));
- 		goto out;
- 	}
- 
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
 -- 
-2.53.0-Meta
-
+Lorenzo Stoakes <ljs@kernel.org>
 
