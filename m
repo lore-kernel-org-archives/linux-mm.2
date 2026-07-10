@@ -4,120 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAE77C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E670C44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 09:33:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E0516B0088; Fri, 10 Jul 2026 05:24:39 -0400 (EDT)
+	id EA1DE6B008A; Fri, 10 Jul 2026 05:33:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 390C16B008A; Fri, 10 Jul 2026 05:24:39 -0400 (EDT)
+	id E79E26B008C; Fri, 10 Jul 2026 05:33:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 280286B0093; Fri, 10 Jul 2026 05:24:39 -0400 (EDT)
+	id DB65E6B0092; Fri, 10 Jul 2026 05:33:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E92856B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:24:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6CA051C8979
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:24:38 +0000 (UTC)
-X-FDA: 84972331836.03.D3EEF96
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 36490140002
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:24:36 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=I0ZcMQEJ;
-	spf=pass (imf23.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783675476;
-	b=QHGJA3DwdpxRN9hI3jNKrrk+1MGnY3JUwaeo0xKi6FlUPm7P6dNPYZaHzO/Fiv2L3IMCMQ
-	lzNE8Uc7HYh37D1Jmx5aWGoWC+U7+iePkUULS490m0yV4hQkmkIjmQE4C1W3YIrjvUcJ83
-	W9vddO89rEFzwtIo4YSzADyM1HSP0ME=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=I0ZcMQEJ;
-	spf=pass (imf23.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id B21056B008A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 05:33:24 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 40F1B1403C8
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:24 +0000 (UTC)
+X-FDA: 84972353928.29.980EA05
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 87B7780003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:33:22 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpncGmf3;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783675476;
+	s=arc-20220608; t=1783676002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dgywglFUIwjru+wdRX3rW0UAMsUidjYqKDAc3zGlpNk=;
-	b=WPF3R633ujwFfKa9U89lfT3LJbyecHcfkmiZBuXGWrysSOW4o2GEvOZKB8ILkzNLQ6Q2/E
-	LC74xaVJJqdfFvJZ1MSfA8s0lkyKPe8kg8WVqiW/gSvHrIqoSa80HIG7Kav0TAE8wpInEr
-	Vr3UAYnCnqvKaga1zL6CNNnddlw+yXc=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2cc6ae3e7f1so4123695ad.0
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 02:24:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1783675475; x=1784280275; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dgywglFUIwjru+wdRX3rW0UAMsUidjYqKDAc3zGlpNk=;
-        b=I0ZcMQEJK7JWgJCrk5A/AeHWUjq6Uqg37IHJ36W2SswNUBCcXHnmEqeSMPUDo8Vqem
-         FH18B3pqyORuq1hx2QsPM4OyAl6uReYvybHEwoRzojqaTbLdUdfSFNVj0nw6wDuBvUNX
-         HgUnJ9sX3MBGdy4+j2QdG0PvEXWmsvU4rWHIedV4bb77ojuYKxic1ifm5Fw+j7YBnyb9
-         kCp33jpv9pnVkrLahMcq07+0cgp/9s3KjBnMlpLeNAXGjwULJF6Wjt8Dfc1oPsQs/E1E
-         IyCLMcKEHpddvGyxeyerJFsYvKdcKlGOYnd4IXUfsDXLdAdcN8SrzyGs2khrfS2u3SbB
-         ibmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783675475; x=1784280275;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dgywglFUIwjru+wdRX3rW0UAMsUidjYqKDAc3zGlpNk=;
-        b=XflTXnOC07JwPM9L2gmTBKxJ9JL4/1H5OaJqiTUa4Sf7glmo5sNm4cvHAT9pmIyOJf
-         1ug6clQxv2W2Nu2qlAD7Dyabfd4OjkWdv+F+qX2j5TBY1zvN6wgQxgHPp7RPlIgaz1FH
-         NWWqqgaMnweRIiaPwuYx4QE4d2PIjc1SKqJVQTmbx9oiKO/No0fFTsGfgkDJMdxQte0E
-         7PwQiDAi7j9oXR6ql1maX8y9ooEReH8N96oYMugYfYsaOVlm/OGDmOXpkktfXNabBRB9
-         ErEOgng7TRFxd+k+U3VvOWzmUZDTpa6Hdxtwas74rpiRUtGS8QIt4PgX0+Or83/O8Wm3
-         /9NA==
-X-Forwarded-Encrypted: i=1; AHgh+RpN5bh4lo/Yy7/dUEpCfFynjEKzvQf++h6425YxYcqc9UftlLFpMnisXIbll64rUHhoPoC+xfQq8w==@kvack.org
-X-Gm-Message-State: AOJu0YwIqyHjX0WscV2lXBt0WCB04xIXOMHGY4bMoU4aD0miol3XvWmq
-	29/nofXPlCGlKPXZUD3SkRDdnLWyqlb6uHfgBSmLzeL4WIuZOz3Hns+zxn3m58wytvs=
-X-Gm-Gg: AfdE7cmwePJyKuLft7Gs5vhHD4kymUWggC8q9m2/Nm196SFHaqZTFX2GM1eLzU262lt
-	9mVg3xh01sqi0lPgAuVBpJ0fw6zsrR6itmh3LI1xlGcBossWPB8rDLYPrfYAIGq1AOW9Xj/g4PJ
-	PDUK3AGXdAH1JmFop0Ah60hiXK4tLt5a7NWTMK2S9dRDNiwCDJnnaG9XxNheCfOetTLEYLYgYb8
-	t8DMx3NE9nlXWuucYVF2jDqSga1p+sSEvPDaZQ9ZYz2JlCnM8TFHKBWtK/NZ59V4PRiEUz6yOBJ
-	DofhlY7r8Id74EypZsTdG6Mbyo2CGdbhMq/eDT3CggcipaA2xo4qCP1LNj0ofdi4e8AW4hDdkbJ
-	ztCqqXFHSjAYIq64YHwsJwdcxg/DoM4D2aqJmqGSgA7mXvR/Q976B6fURBnNFUftbptMafs/xqm
-	6iLoxCP2WL5vdsX3DuUfqhnJjKBoGj3ibg
-X-Received: by 2002:a17:902:fc8e:b0:2ca:ddbd:a19b with SMTP id d9443c01a7336-2ccea40b65emr107793175ad.28.1783675474937;
-        Fri, 10 Jul 2026 02:24:34 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.98])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ccc9bdb72fsm56827995ad.6.2026.07.10.02.24.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jul 2026 02:24:33 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>,
-	muchun.song@linux.dev
-Subject: [PATCH] selftests/mm: remove obsolete hugetlb vmemmap test
-Date: Fri, 10 Jul 2026 17:24:27 +0800
-Message-ID: <20260710092427.3459121-1-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Cupg3BA8kLDD00ofoemHrt7+K30GSRvx4gIS1hIu6mE=;
+	b=TwjnYJ8XNuhOpcOcHnuK4Ph4854YAbul1G8lXznbv9WUpxH0JgPNVMcXqHLYIHxnndTmWP
+	w8Pd7s+McJ59bjb9aaqelo3V2XzfIiw2Z3yquVgDzDPmO3RL4qKTSPA/bklMV60vdnDOvi
+	GUXNkFlz6w9zrPGsIFwWV1nK+NSoEDA=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpncGmf3;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783676002;
+	b=N0VqbkLyedAnUzYGGEz3UpkVQ7/4N9owJMppK9/FzVxyKeE+VO6wGW1CnvQnlySk2LTMA6
+	9Y9egb8rYsZGkw90frf/lhq7gFaNousHceGp0skFMKTzh05IB452Uegm9hHobq+Iuznu0A
+	oAoqYEbkL2r8Eq8obnbrVqIXHdbpw+0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C884E600C3;
+	Fri, 10 Jul 2026 09:33:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1111F000E9;
+	Fri, 10 Jul 2026 09:33:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783676001;
+	bh=Cupg3BA8kLDD00ofoemHrt7+K30GSRvx4gIS1hIu6mE=;
+	h=From:Subject:Date:To:Cc;
+	b=TpncGmf3QumrUV4gQ+24YgqSHQLUNXGZMPJ4tgFmQtrckM4rovPoltNHcLFgkMRGe
+	 LzYGGP3b5ZYAIgK5CS92v0xOOSYexd7gkyT/gpmaoRkJugyQT17HpF8PPQbh75rQo3
+	 rNeIFmi5wAYZE8PDBuhbi0iTg2oQlR6hynZYCuML5bF3Rm0SGpDtnSn63CW9kB6Eq3
+	 r8O2QDzWV85HWuERrXiJa1W1TGpmfY8io6xeRrBv0OHOLp0+P3hg9q/XkXw2CXoYTY
+	 hIP8rV8z0fKDo7ty0RyFzVbK4d6CvrX0+WocIWK1YiCi+smcqp6GHIcBkQEy1Rd9mq
+	 ep+7fufYJI3mA==
+From: Christian Brauner <brauner@kernel.org>
+Subject: [PATCH v3 00/24] binfmt_misc: write access fixes, RCU handler
+ lookup and cleanups
+Date: Fri, 10 Jul 2026 11:33:01 +0200
+Message-Id: <20260710-work-binfmt_misc-locking-v3-0-a162f7cb58d6@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAE28UGoC/43OTU7DMBAF4KtUXjOR7TRJ6Yp7IIT8M0mGNDYaB
+ 0NV5e6N203ZIJZv9ObTu4iETJjEcXcRjJkSxbCF+mkn3GjCgEB+y0JL3cpOHuA78gSWQj8v7zM
+ lB6foJgoDqKbed75XGt1BbO+fjD393OjXt3tOX/YD3VK80rAmIVg2wY3lNJu0IFe5qzSwU6UxU
+ loin2/rsirSP4ZkBRKMlM/eN7ZpvX2ZkAOeqsiDKEuyfpCU/EPSm6SNcrXfK92a7pe0rusVXam
+ PpD8BAAA=
+X-Change-ID: 20260708-work-binfmt_misc-locking-15347df12ec8
+To: linux-fsdevel@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ linux-mm@kvack.org, Farid Zakaria <farid.m.zakaria@gmail.com>, 
+ jannh@google.com, stable@vger.kernel.org
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6522; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=SJzYgy+FDiwAvoKv4ayMdK66KOsj8R4Za9eWqpZz9zY=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQF7Iktmj6Br106fGn0NSm1/DmTHrHMYun4tjRsC2tSm
+ X5Kq5JNRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQU9Rn+ma1LkL6U/Ud1noaa
+ 2D7b9/tLuj4/5l/mcuv6kcv7N3+/msLIsHCn1J/lO6vuL9dYf3mX+8nyuSa75TMFXm54vKLgQCi
+ /LDsA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Stat-Signature: goeyyzbp5sbfxm3f7nedb8wkr3kek7rr
+X-Rspamd-Queue-Id: 87B7780003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 36490140002
-X-Stat-Signature: khr71nes6f7thha6h5o1rqysojtshs85
-X-HE-Tag: 1783675476-655680
-X-HE-Meta: U2FsdGVkX1+4a71GqRXxx+Pd1dGSys8/QUzL2jiuDO7EhQY7/ufdwTUK6vr0676rTdkF/m8WPi4hnPCU5iyKwTjjGyRRjH/3hf6BVe3mu9IAC8LDNKcCTcphQexFsMUmIwAUdmTrSisG4JnSSm4fNXw5t84pXXg1dZmOulIxK92ARXGAdw8tgzJqeSsAKW8+cHp7xwhqAEDJTbP7KkIPII+61uvYGyvxo77HOF4k7LGhwUJPydatd4zK+xxTK1vdVubdSsdnxjErmTHyB+8B+RiTYrTpqnR1kT/nyJSVbLVCUuRtGI39LkLWXnmXvX4sbYgf6K+Rz2W6kf0pCg8MM1RKtPNMyTqktsewtWMl13NQGYNQk4ljAQdnvyBnO+BN9o2gzBui4REsMbOQLzeCYO5WSQ2DZRCQ7EFw4xeQm00ztWsb38hHKxP8Gkjocop0+MGihhvtXU0YrtYCn0tHYL+xDtuPyOSqea14aHM5Q4pZv+fcqUH6aZzGU6NRySLHwQx8JkbxpqAU8/LAoqc2vUzkJnBdN39LrbqUvfoVvjKIvdmva6v6m/p2y40XK7eBfhzEe+dtvN/AEpko/Ldf43+c7AycEoPDnpLgzdPTt5SkQf/RkTV3v1FRwWQAIaMddNvcugQAlFj4TT5CUi+8xlSKfvtcH7brn6KD4gHBDKmoVqbB/Dc/7oCIELHYjBwuj+YM/K3a1SVR2mcACi3Dldt1WACYhdjNvGXR9yIV2WMh7xSsSDN6tRq+muMCwJoYsr4UWZh4OwBmhknJQxXT+X9n4r4gR9W3tMezLIoQVZjMcyytYkI+NILWeO1HhOyDrYHRCIkyGxZRQ+578X+LQuByYrXSTiOb+oWuJdK8sIsMm76CvL43+DiPfHi4nw8EDx42ZCKwRUI3vlEDBJulUQSxMynp2pYG7yXQM60xH0cGlSH/YSQphgVYULdfVAexyh5hat1e0ePrHWvi/aZ
- SpaUkF5N
- 1wQnewPp+T1UCYwApFw4WJiYoIr1OzkTaBihfIwHrZGPuObpqIc3wt/R6CGxNV9eD/AgAiFMCGJZHGqqFkOeEZsbPlywuhNCdu/tTfB3vUs1+YWVynDpJc11y5/ZCN5bKfcTXq7rTWyem/DzZIVIiVY+XKkf0Dbkt9+eTgJXuLKskErbl8vkv3mQvh7QVMjlUShccyAiAGBrJuCWbL1yLAJtATybp3cADNlcAO79U7jIECpFeaaE/ZoxnSVv9UJqCFjPaPJb40mdPGK23TNlCtoZT2nKg1YfrDzydI9a4RoJ/7n0kEjCMq2ekEw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783676002-871003
+X-HE-Meta: U2FsdGVkX1+WzmzYron6sWLf5gQOd0zhBiijJPbpy3uzGBISqCc989UtgVuxVT2z9shtB0rFj9W164Fd0Kpw2HHoJZhDWVeBDLeDEQ4YPBuBa8pnzJjV9MuuAKmF7kIk2MtsZWbwLIZlvJhKheDZ7/uiAxK1sL4GqYFzgqjQ72IDwBzHE1/WztDyEx/+TOYVQGjdS5WzuUtpucU8M6d8zOVJhdHeM2MJDHlPKxYLcmMWcA1Z+1wfcngE7xS58WuEgA3lv+MTcDclPWId6zWnSubw90gIuJUGqjbomhQsn/HSEaYMKbk9mHtqN9a3IoSl/GWG50zw7mmKWgjEqyMjDc+efrAu8IDP73/5+mEQvmCNQpSnVo7l/P/pnHP0zF94DxCxlFpHZe5IjW4A7lr+zVO1627xydYrIY7aJ3PH+NNjpsiryCyD4PhsH7oE/Ra9sdLd7oNNj3i4Vgn5VnrPngPPpS0qm4MUNMm9fuXT2mWxVE27B2T7zgbFTKY3Vw9Jq0BT3ITsRH8/tkH7AH0BGbuCcETBal1dhPn+QGjAADbp5W4x1xeCcmiDlsXXlaABzYO2dYQujJzXU7tp9xoNcbtgsIOojp0WD1eewOZ3BtGIM2qp2wGiHKeSdYbFQNWjehBIND7MmDU+NXHn4H5kvDD7owgAHPAy0lkc1vctSYafCHvhyhxmCDiILAyhQbedhUYyeR8qDIZxtxI+yIy3Ii18NmUy9nBP0LghEqK4wZDBP2nid3KU4BfZMohldbwAKQhlB6mrC7Yyhyb2QcGy5VbmC6xXF9uH9deWCh0xbeWJn5ZPkPEhKXVZfQuVdPt6nBP6xcwd5dOEJw5zbE8jGmi+YVgeGp1lfu8o1WuaRiACnNfkNziqPDGNb/9HvckHc0gYbDXsCUPGBta0yjHg6NDV+ZMv7yvry9QbEjMFUSxySYOlcB8Gawwf0BgqE6e9z2Y6XNFgmb2P+MZWmcs
+ YdTsSvPr
+ ZkYFERniAIrNOCyBw6OE56ZOP3w9nMels+ew0Yk8RgOnyYPJfaIyUlqWBIG2G5ktYKTOzndGhB5BDes4jgXY77jdNeKKwyHS6YbRQB4LSvx6ZMkphKpS+QcBASW7bav1AOSReavkFU82tshZzqlVw7UbXw6uCq199GgRgpTBg6y5tu6vDE0xPYXYsJYjgm11SeWoLqFJBj2XxZWtCkwIgzvN9kf58gTX6u1BU6wS+ho1Th6s/J0RW9PvxrtOKHNlPxdMR+tAwnqfJlt7Sd9YBDk/FjzOYCTAKx8+BOp+DjylLoKcqLqDg4wIZtBWm9qpgpajZ8L9Jq17aVZs2ZXFZ+zmr09+SLXskJ1H8lgOSzef6334phal+FaC+QFRIQMxgFZHj3mFqlzQvYq5OZmgcGA9TTYvxY9ibLHInfqkH8ljsatAZHaopDiNu2zzL9Sa4w41YpJRTkfjDb78JGzhirZ0c/y0Ih4xV6oh9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,208 +106,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The hugetlb vmemmap selftest was added to check the old HVO
-layout where tail vmemmap pages reused the head page.  That
-assumption no longer matches the current HVO mapping layout.
+The first two patches fix two i_writecount imbalances on
+MISC_FMT_OPEN_FILE interpreter files that turned up while auditing
+the file for the rework below and are marked for stable: removing an
+entry never restored the write access denied by open_exec() at
+registration, leaving the interpreter unwritable until its inode gets
+evicted, and the write denial taken on the interpreter clone during
+exec is not paired with the FMODE_FSNOTIFY_HSM aware release the exec
+machinery uses, so pre-content watches make execs leak write denials.
 
-HVO now keeps a private backing page for the head vmemmap page
-and remaps redundant tail vmemmap pages to a shared read-only
-backing page.  The old page flag check is therefore testing an
-obsolete implementation detail rather than the current ABI or
-behavior.
+Also, a register string whose delimiter is one of the flag characters
+('P', 'O', 'C', 'F') makes the flag scan in create_entry() run past the
+end of the register buffer. Reject such a delimiter up front.
 
-Remove the stale test and its build, run, and ignore entries.
+The rest reworks the locking and tidies the file up.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+The current rwlock protects very little. Entries are immutable after
+publication except for the Enabled bit which is already toggled
+locklessly via set_bit()/clear_bit() and entry lifetime is already
+handled by the users refcount. The read lock's only remaining job is to
+make "the entry is still linked" and "take a reference" atomic with
+respect to the unlink sites.
+
+So make the lookup an RCU walk that acquires a reference via
+refcount_inc_not_zero() and free entries via kfree_rcu(). The removal
+paths need to detect whether an entry has already been unlinked and
+rely on list_del_init() reinitialization for that today, but
+reinitializing the forward pointer of a removed entry would make a
+concurrent lockless walker standing on it loop indefinitely. hlists
+support exactly this pattern: hlist_del_init_rcu() keeps the forward
+pointer of a removed entry intact for concurrent walkers and only
+zeroes ->pprev with hlist_unhashed() serving as the linked test. Hence
+the third patch converts the entry list to an hlist so the RCU
+conversion in the fourth is a pure locking change.
+
+Writers remain serialized by the inode lock of the root dentry with
+one exception. Handler removal semantics are unchanged. An exec that
+acquired a reference just before its handler was unregistered already
+completes with the removed handler today. The read lock never protected
+against that, it only made the window smaller.
+
+With this an exec that matches no binfmt_misc entry no longer writes
+to any shared cacheline at all.
+
+The fifth patch annotates the long-standing lockless ->enabled accesses
+for KCSAN and the three patches after it make the entry flags proper
+enums and give struct binfmt_misc_entry a name that isn't Node.
+
+The remaining patches are a cleanup pass over the whole file: remove
+the VERBOSE_STATUS and USE_DEBUG compile-time toggles, convert the
+entry file to seq_file, factor out entry matching, entry removal and
+the register string field parsing, make the entry/register string
+allocation a flexible array member, give the parse_command() results
+names, let cleanup.h unwind the entry registration and exec error paths
+and prune the include list down to what is used. Aside from
+seq_lseek() now bounding seeks on entry files and the ETXTBSY
+propagation in the second patch the cleanups have no user-visible
+effect.
+
+The penultimate patch adds what the comment in remove_binfmt_handler()
+had been suggesting for years: entries can now be removed via unlink(2)
+in addition to the -1 write. The status and register control files
+refuse removal.
+
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/mm/.gitignore        |   2 -
- tools/testing/selftests/mm/Makefile          |   1 -
- tools/testing/selftests/mm/hugetlb-vmemmap.c | 132 -------------------
- tools/testing/selftests/mm/run_vmtests.sh    |   1 -
- 4 files changed, 136 deletions(-)
- delete mode 100644 tools/testing/selftests/mm/hugetlb-vmemmap.c
+Changes in v3:
+- Reject a register string delimiter that is also a flag character.
+  A flag-char delimiter made the create_entry() flag scan read past
+  the end of the register buffer. Stable-marked, added as the last
+  patch.
+- Link to v2: https://patch.msgid.link/20260710-work-binfmt_misc-locking-v2-0-2a1c3d4126a7@kernel.org
 
-diff --git a/tools/testing/selftests/mm/.gitignore b/tools/testing/selftests/mm/.gitignore
-index 9ccd9e1447e6..227476d8ff1f 100644
---- a/tools/testing/selftests/mm/.gitignore
-+++ b/tools/testing/selftests/mm/.gitignore
-@@ -3,11 +3,9 @@ cow
- hugepage-mmap
- hugepage-mremap
- hugepage-shm
--hugepage-vmemmap
- hugetlb-mmap
- hugetlb-mremap
- hugetlb-shm
--hugetlb-vmemmap
- hugetlb-madvise
- hugetlb-read-hwpoison
- hugetlb-soft-offline
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index ed321ae709da..ee8def9b4c31 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -66,7 +66,6 @@ TEST_GEN_FILES += hugetlb-mremap
- TEST_GEN_FILES += hugetlb-read-hwpoison
- TEST_GEN_FILES += hugetlb-shm
- TEST_GEN_FILES += hugetlb-soft-offline
--TEST_GEN_FILES += hugetlb-vmemmap
- TEST_GEN_FILES += khugepaged
- TEST_GEN_FILES += madv_populate
- TEST_GEN_FILES += map_fixed_noreplace
-diff --git a/tools/testing/selftests/mm/hugetlb-vmemmap.c b/tools/testing/selftests/mm/hugetlb-vmemmap.c
-deleted file mode 100644
-index 507df78a158d..000000000000
---- a/tools/testing/selftests/mm/hugetlb-vmemmap.c
-+++ /dev/null
-@@ -1,132 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * A test case of using hugepage memory in a user application using the
-- * mmap system call with MAP_HUGETLB flag.  Before running this program
-- * make sure the administrator has allocated enough default sized huge
-- * pages to cover the 2 MB allocation.
-- */
--#include <stdlib.h>
--#include <stdio.h>
--#include <unistd.h>
--#include <sys/mman.h>
--#include <fcntl.h>
--#include "vm_util.h"
--#include "hugepage_settings.h"
--
--#define PAGE_COMPOUND_HEAD	(1UL << 15)
--#define PAGE_COMPOUND_TAIL	(1UL << 16)
--#define PAGE_HUGE		(1UL << 17)
--
--#define HEAD_PAGE_FLAGS		(PAGE_COMPOUND_HEAD | PAGE_HUGE)
--#define TAIL_PAGE_FLAGS		(PAGE_COMPOUND_TAIL | PAGE_HUGE)
--
--#define PM_PFRAME_BITS		55
--#define PM_PFRAME_MASK		~((1UL << PM_PFRAME_BITS) - 1)
--
--static size_t pagesize;
--static size_t maplength;
--
--static void write_bytes(char *addr, size_t length)
--{
--	unsigned long i;
--
--	for (i = 0; i < length; i++)
--		*(addr + i) = (char)i;
--}
--
--static unsigned long virt_to_pfn(void *addr)
--{
--	int fd;
--	unsigned long pagemap;
--
--	fd = open("/proc/self/pagemap", O_RDONLY);
--	if (fd < 0)
--		return -1UL;
--
--	lseek(fd, (unsigned long)addr / pagesize * sizeof(pagemap), SEEK_SET);
--	read(fd, &pagemap, sizeof(pagemap));
--	close(fd);
--
--	return pagemap & ~PM_PFRAME_MASK;
--}
--
--static int check_page_flags(unsigned long pfn)
--{
--	int fd, i;
--	unsigned long pageflags;
--
--	fd = open("/proc/kpageflags", O_RDONLY);
--	if (fd < 0)
--		return -1;
--
--	lseek(fd, pfn * sizeof(pageflags), SEEK_SET);
--
--	read(fd, &pageflags, sizeof(pageflags));
--	if ((pageflags & HEAD_PAGE_FLAGS) != HEAD_PAGE_FLAGS) {
--		close(fd);
--		ksft_print_msg("Head page flags (%lx) is invalid\n", pageflags);
--		return -1;
--	}
--
--	/*
--	 * pages other than the first page must be tail and shouldn't be head;
--	 * this also verifies kernel has correctly set the fake page_head to tail
--	 * while hugetlb_free_vmemmap is enabled.
--	 */
--	for (i = 1; i < maplength / pagesize; i++) {
--		read(fd, &pageflags, sizeof(pageflags));
--		if ((pageflags & TAIL_PAGE_FLAGS) != TAIL_PAGE_FLAGS ||
--		    (pageflags & HEAD_PAGE_FLAGS) == HEAD_PAGE_FLAGS) {
--			close(fd);
--			ksft_print_msg("Tail page flags (%lx) is invalid\n", pageflags);
--			return -1;
--		}
--	}
--
--	close(fd);
--
--	return 0;
--}
--
--int main(int argc, char **argv)
--{
--	void *addr;
--	unsigned long pfn;
--	int ret;
--
--	ksft_print_header();
--	ksft_set_plan(1);
--
--	if (!hugetlb_setup_default(1))
--		ksft_exit_skip("Not enough free huge pages\n");
--
--	pagesize  = psize();
--	maplength = default_huge_page_size();
--	if (!maplength)
--		ksft_exit_skip("Unable to determine huge page size\n");
--
--	addr = mmap(NULL, maplength, PROT_READ | PROT_WRITE,
--			MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
--	if (addr == MAP_FAILED)
--		ksft_exit_fail_perror("mmap");
--
--	/* Trigger allocation of HugeTLB page. */
--	write_bytes(addr, maplength);
--
--	pfn = virt_to_pfn(addr);
--	if (pfn == -1UL) {
--		ksft_perror("virt_to_pfn");
--		munmap(addr, maplength);
--		ksft_exit_fail();
--	}
--
--	ksft_print_msg("Returned address is %p whose pfn is %lx\n", addr, pfn);
--
--	ret = check_page_flags(pfn);
--
--	if (munmap(addr, maplength))
--		ksft_exit_fail_perror("munmap");
--
--	ksft_test_result(!ret, "HugeTLB vmemmap page flags\n");
--	ksft_finished();
--}
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 8c296dedf047..a60b9f9f16e7 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -262,7 +262,6 @@ echo "TAP version 13" | tap_output
- CATEGORY="hugetlb" run_test ./hugetlb-mmap
- CATEGORY="hugetlb" run_test ./hugetlb-shm
- CATEGORY="hugetlb" run_test ./hugetlb-mremap
--CATEGORY="hugetlb" run_test ./hugetlb-vmemmap
- CATEGORY="hugetlb" run_test ./hugetlb-madvise
- CATEGORY="hugetlb" run_test ./hugetlb_dio
- CATEGORY="hugetlb" run_test ./hugetlb_fault_after_madv
+Changes in v2:
+- Allow removing entries via unlink(2).
+- Add two stable-marked fixes restoring i_writecount balance for
+  MISC_FMT_OPEN_FILE interpreter files, first so they apply to
+  mainline directly.
+- Turn the entry bit numbers and behavior flags into proper enums and
+  rename Node to struct binfmt_misc_entry.
+- Add a cleanup pass over the whole file: remove the VERBOSE_STATUS
+  and USE_DEBUG toggles, convert the entry file to seq_file, factor
+  out entry matching, entry removal and register string parsing, use
+  a flexible array member for the register string, name the
+  parse_command() results, use cleanup.h for the entry error
+  unwinding in registration and exec and prune the include list.
+- Link to v1: https://patch.msgid.link/20260708-work-binfmt_misc-locking-v1-0-a009dd5b56db@kernel.org
 
-base-commit: 4f441960e691d37c880d2cc004de06bb5b6bd5e4
--- 
-2.54.0
+---
+Christian Brauner (24):
+      binfmt_misc: restore write access when removing an entry
+      binfmt_misc: use exe_file_deny_write_access() for the interpreter clone
+      binfmt_misc: reject a flag character as the field delimiter
+      binfmt_misc: convert entry list to an hlist
+      binfmt_misc: use RCU for the handler lookup
+      binfmt_misc: annotate racy accesses to ->enabled
+      binfmt_misc: turn the entry bit numbers into a proper enum
+      binfmt_misc: turn the entry behavior flags into an enum
+      binfmt_misc: rename Node to struct binfmt_misc_entry
+      binfmt_misc: remove the VERBOSE_STATUS toggle
+      binfmt_misc: use print_hex_dump_debug() for the register debug output
+      binfmt_misc: convert the entry file to seq_file
+      binfmt_misc: factor out the entry matching
+      binfmt_misc: rename load_binfmt_misc() to current_binfmt_misc()
+      binfmt_misc: return errors directly in load_misc_binary()
+      binfmt_misc: give the parse_command() results names
+      binfmt_misc: factor out the entry removal
+      binfmt_misc: simplify check_special_flags()
+      binfmt_misc: use a flexible array member for the register string
+      binfmt_misc: split the field parsing out of create_entry()
+      binfmt_misc: use __free(kfree) in bm_register_write()
+      binfmt_misc: assorted small cleanups
+      binfmt_misc: include what is used
+      binfmt_misc: allow removing entries via unlink(2)
+
+ Documentation/admin-guide/binfmt-misc.rst |   3 +-
+ fs/binfmt_misc.c                          | 839 +++++++++++++++---------------
+ include/linux/binfmts.h                   |   4 +-
+ kernel/user.c                             |   4 +-
+ 4 files changed, 433 insertions(+), 417 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260708-work-binfmt_misc-locking-15347df12ec8
 
 
