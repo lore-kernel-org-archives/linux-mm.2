@@ -4,90 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E143C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 03:49:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27988C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 03:51:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83EE16B008C; Thu,  9 Jul 2026 23:49:00 -0400 (EDT)
+	id 7A79F6B0088; Thu,  9 Jul 2026 23:51:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EFCD6B0092; Thu,  9 Jul 2026 23:49:00 -0400 (EDT)
+	id 758FA6B008A; Thu,  9 Jul 2026 23:51:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 705456B0093; Thu,  9 Jul 2026 23:49:00 -0400 (EDT)
+	id 66F3B6B0093; Thu,  9 Jul 2026 23:51:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BBAB6B008C
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:49:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA8A1140338
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:48:59 +0000 (UTC)
-X-FDA: 84971485998.07.057A8A2
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4C64940007
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:48:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ENIdlXh4;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 41CBD6B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:51:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C5CBE1C87C3
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:51:36 +0000 (UTC)
+X-FDA: 84971492592.26.478CC99
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6387040003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:51:32 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783655338;
+	s=arc-20220608; t=1783655495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8AK1eIZIM4gwAkDFaNwngBUDojHeaE9xY2rmvZIuvwQ=;
-	b=uieYeGWmwV3fSdpFyogbBXtPpxFUnmZFD42lOrQ56I+mvqt42FjslwmU7e8xZhSDDNTTLG
-	CsxlWNKQKcEL1bX6suaV8YO2/66N/CmEcW4TC4cmmEwTPNgQ0oKmIAySDMNl1x0gH2YVqt
-	pnuULFfcOA5+CWE6MM5u1jmti+yLmKQ=
+	 in-reply-to:in-reply-to:references:references;
+	bh=E/ccZUMjbpOplyiCO4s9pEUiXVkVlU0NyYFuAU4fHow=;
+	b=rv17hD21rldg49fhRLRVOTqn+0itY7lSXf/2e4YAAKoDwrYoXz2gAxvsKx6toNS6wU7eHW
+	OEbgnGML2/8ikD0b+JrCDQmJnsB2sKPI56P1oWkAFOwi2s1nRmGlQeT5ZaLBxl6JODczf1
+	jR0Xvg1/OR+AqnktVROoMgXsdyB8f5c=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=ENIdlXh4;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of wangruikang@iscas.ac.cn designates 159.226.251.81 as permitted sender) smtp.mailfrom=wangruikang@iscas.ac.cn;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783655338;
-	b=4EhHLbZ7R6Si6O6OlYycnGjrlvj7azmTzQEbBBxljMcDzQ2EAyDicTPFsP5b4o4983/f79
-	bsn3kdEa2wAoQFRHjczjyywyfwEpWZKFprjF0qOt83LcAI7S1GoqYMmy1+otsQOXgICXt4
-	RhpTD0U710C3ZMU5G+qTmb4+CW5VH5c=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783655333; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=8AK1eIZIM4gwAkDFaNwngBUDojHeaE9xY2rmvZIuvwQ=;
-	b=ENIdlXh4rMtaGpjzvwruTMxSyBQJg+1p7tLZhTqRYegcwbK0U2zjZUF7I457J7yFsw65fLfBdb0wf38Zu8zHr/wJlaOppHPkTYrwoMdr4+stvLuy6KzTi8inSAsV4Namx1tfylCOcpd81IhA9L1cJOJ1orE2MBH9OpmU5yiThno=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0X6mK60X_1783655330;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6mK60X_1783655330 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 10 Jul 2026 11:48:50 +0800
-Message-ID: <c820fc9c-8e5a-4708-a773-3b005bcdb541@linux.alibaba.com>
-Date: Fri, 10 Jul 2026 11:48:49 +0800
+	t=1783655495;
+	b=Uo+TNQcNd0grIgZknok/z2NbPf3EElHVtgbpM2AcWdY+I6v05MhPgVtm0bgjcKgKYHG3HB
+	BYlJHComTaFsCaJp7F1XFSy7AmAtbWXALisypckjjmhv5vYn+Ss3hJxWwmz8pkBlkWjZO4
+	45r5wQfQa7tpYewzBAg1Fv+LSlq0T4c=
+Received: from [192.168.0.106] (unknown [123.116.46.73])
+	by APP-03 (Coremail) with SMTP id rQCowADn47o6bFBqubxUFw--.3467S2;
+	Fri, 10 Jul 2026 11:51:22 +0800 (CST)
+Message-ID: <c53d323c-1416-49b8-9a17-faf99604b6f6@iscas.ac.cn>
+Date: Fri, 10 Jul 2026 11:51:22 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH stable v2] mm/khugepaged: write all dirty file folios when
- collapsing
-To: Pedro Falcato <pfalcato@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: stable@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Matthew Wilcox <willy@infradead.org>, Song Liu <song@kernel.org>,
- Eric Hagberg <ehagberg@janestreet.com>, Zi Yan <ziy@nvidia.com>,
- Gregg Leventhal <gleventhal@janestreet.com>,
- Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260708151357.353173-1-pfalcato@suse.de>
- <ak556WxAZCyqQqbf@pedro-suse.lan>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <ak556WxAZCyqQqbf@pedro-suse.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4C64940007
-X-Stat-Signature: tnn17w3x5kgwzmd7c8wc1euiewhh554y
+Subject: Re: [PATCH v5] mm/sparse-vmemmap: flush_cache_vmap() after
+ hotplugging vmemmap
+To: Paul Walmsley <pjw@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+ Muchun Song <muchun.song@linux.dev>
+References: <20260707-mark-after-vmemmap-populate-v5-1-77d1ded3cae3@iscas.ac.cn>
+ <db0de3be-a6e1-e4c7-6a1f-2f573499a2b7@kernel.org>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <db0de3be-a6e1-e4c7-6a1f-2f573499a2b7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowADn47o6bFBqubxUFw--.3467S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KrykWF1fKF15Wry7AFWfAFb_yoW8uFWrpF
+	ZIk3WkJFZrZFy8K34xAw17Wry8J3sIga4Yk3Zayr15C3Z8XFW0gryvg34Uury8Xa9YqFWI
+	ka4YyFy5Cws8AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvmb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+	8E87Iv6xkF7I0E14v26F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
+	MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+	67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+	UI43ZEXa7IU56yI5UUUUU==
+X-Originating-IP: [123.116.46.73]
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 X-Rspam-User: 
-X-HE-Tag: 1783655335-155632
-X-HE-Meta: U2FsdGVkX18JRKo8GNiBDpKR+SVTNSZ0Nc3mtBlvvNfayeLnVBYUndf03ZGT7y284uUtYNc34I9ljij62asqDURoD/jM3d9USLs8rP/dQHFB4aicMmPQ7t7U4AH+a1sll3ut3HbB5fx42R6eI5SQNkuCzLSDM+4DOKqrBmdlWEP6AFLiLIElRiuqzmDfezjemNmurJ/aG7kFQYXQOSDUVGfB2ZIlEGCv6dUJHirAouwRSBBvS3IUkNlFHUwCPdZawJ+zJ3ovzGy3YZt7H3Qo563Y7H7Bhd6xPfjMBgo2GuNPkm517LazCLKVA7+4R8K1wmzNcToyj+uKxZGrt0BVAb0nxmCgXMWbTDOqUKoEUMYUXIW6UVOun0jKa6oR/QC7i73+zlWTKcg565F1EM0oTdp+bmQJhQp4Bj8NlmKDv4MzDmqOxPkZS9rceCbjwtYue77DOu5fcr1F6IJvMaYU9y9fo9kIOPWonq8ass1uO/4hchdqNg703D7ABEAL/wD8F0JqV8VWlszBkwK9J4hxsa0OFCXlgywuJA7svbPcgSOEz1opK3Nn672QWScTRKrCy0C486vDPfjHjydOU+UmGiOKsr+4eEc76FeP1sgXoL85+PTsLwepnr2pbHuJ2ImoJaKse2wFBBXqznHqFKW+cFVqaHH/Kvsrps1P9qFedRyABRLvpVhe5/NAbY2jSrl6XXjDmWjKMRn7LsuOUE16q51zrMSma3KiUMWbqFAYsV6HySqbAR20u2Gi1duEk1zved9VjRZpGlDK9wM8KwBzbX9bF7H43GYqHZq67wlVC5otNZel0KBP5Lxa4Xwpafn7suYLtBCqBtCMhZUeiTkAs8nWijUCy+WGc0/PksPQH+lEO7VQtVOajdzyA4vdyPOMpF4Qmt1TQsrcblS3PWmv3XgiH4POuuE97Kf/wztxRrZtc4+gU6p8GtR1A3WSnqoib2yvAcL9CBaqds3ltI7
- eJRHKZqd
- XMr7jnvtYox6QAdtHzlyCbZYtYkodnNoqUEYlEEIpq0wdyKykyFdPtvqY5ct4S6BLWyyCyXyDYbBDSheobnZAGMO8zc3HYHGB2xIqh2zWz19p/iiTEwBitRXz0AVZknHSuOwmg7fYNZ8PHCmPeZ9jne3EcMbP4QfefWJ0+Z5TxpFtsxFQEesWHYNRN10zfR3WW+5R5owvlLCiRcHhSmYFewLnQOV/QCFJEuNe2lK7n+Gv/xXs5JESk485FRGWTCmH3YnOPBm35KZJYbD4S16PsWyCjL8a5MLttdiJUDD6juqnvY5SBpErp4aKY8j3rtC+OClkwD3B0mXz9UgfNIdqN+6XNK6OMntnlU/BAQCR4T8+rZ70pgkKugHei78t1uoqfdhaSFi+Tj/Ab9+grqXcEzo0Rx4CH9QG5X3Pgy67IIkYCwNGYcYWnbqQp9GQlhs+Y3B4aY0+Ks4/KUjW28KCDF8neXsuRjrza/P3eWlsRlHAv/i+YfCSYlQETMvsP0m2mM22ffJzV9y1Xg47geryyoXB9jho1lqEPiRSKCNwFXb44f4=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6387040003
+X-Stat-Signature: d971n4wy6ouuq7zp1h18suq1nrbnwjud
+X-HE-Tag: 1783655492-196288
+X-HE-Meta: U2FsdGVkX184+2rad1/lUC4clsMUDTalEhji1BhVoJtanQszrrvZC3w7fhPoahThAPgAxR1hqCbAV0reB52dJr3/B2INbmJbcYMw7uU+Ux61wuH7GVXodnJUekhfUMRGr4DqI9Rr++RfrUBDXFGIWriddSqbNDhF6THXTSHFXletORzAoviZcOcs3oe1/OS+ecf9GhKqkgre3IHEbef8HKuElVmuC15HHi8kpsSiEnozxFk0oSJh+fUW1Ez6vJiFgn4LNVav5DPRICVlnynOMo4stbBiqpObYs7wfHR+FH/NCOG6ILr1mxwODRhwT0wekbv9m/LdGAMfplVzFoBdg1GG/Glp7lJY6mvfVF0vcc/S2H2fs9lqk/97EOo5VsG5rP7H8i8X8wZNXviiedF7O622ymRY/4lSqcloEZHJxo+ZS4RhL1WqsxKCA3jX7uX2prnx2Lc/PUi/LCwPXCwLeXdPUPppGSscuC+hzpSliepPo1yAUq8Y/v2tPyDg34UAmcldh607Qwwad8woPlEQDhc+TPS5Wx6ilWr6QApB7lOsuJJzWNIpcbp1scWkWutgrCflnxsQgWKlw5kQte85CnsVeDc2ZUrUqhtxHjlWEMvhvHSrChNNLnQu/ddNRo+pREYkDstSx6VN4J6b44kecbnp8BlddhbUvFSuRFrKiv3NLgFW6qG+xbmacfq4S9u/w2VfJaFVjPBvEdTmp0rMM2AfdR/k7dD+gDyW/3sxRxVoQn0kUVnJ9dQ/RRyvg4ChtCIsXKDR1pCIGSV1tvcatr1ahND2u7fMX+NtJuFmIo6hE08qORW2dn/BDjL46WOias4ltbAAy/W+rYfgDZUINiOHk6O6Y9bVM7TSS+vFu4Dt3Hsc6yXCErUHgDwPLrCG+iaLjQ7sjAQ796wmpcdm+UBtv3IlTSURw9mm3iJwmLIwn+iuIr/MOXgTC/4hRqsCP2UCDW+d+jcts1AgTUD
+ v0v4mQbG
+ q4uIAyqiWx723iWzTK9cO8Vz2tIBOKAzaqYzO7FmM7YYRtqArJmaLF9S5iEWTRiaeYUyz6Ryb+I8d9Nhf5pYYrb82DYodbgO05+JqwpAE0gkTeQ9zbKHPREZkDk4KwfXrSZJNiMSE9j1tt+muVfPmczlWeGxSKmhc2sclGRs0Uv2Dr+WRhGk31Ti5nYbSG562pcogt+GIodlwItIpykkPW2eooCJXVbMKqc20l7q0LyiTeEH0Urq0V036x7pMHVBQN9wFoj5FhBDxohnvKJfpwQbBgKSkDXWT7ffB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,67 +106,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 7/10/26 09:58, Paul Walmsley wrote:
 
+> Hi Vivian,
+>
+> On Tue, 7 Jul 2026, Vivian Wang wrote:
+>
+>> [...]
+>>
+>> diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
+>> index 8cfe59483a8f..e935db27f09f 100644
+>> --- a/arch/riscv/include/asm/cacheflush.h
+>> +++ b/arch/riscv/include/asm/cacheflush.h
+>> @@ -56,7 +56,8 @@ static inline void mark_new_valid_map(void)
+>>  #define flush_cache_vmap flush_cache_vmap
+>>  static inline void flush_cache_vmap(unsigned long start, unsigned long end)
+>>  {
+>> -	if (is_vmalloc_or_module_addr((void *)start))
+>> +	if (is_vmalloc_or_module_addr((void *)start) ||
+>> +	    (start >= VMEMMAP_START && end <= VMEMMAP_END))
+> Is there an off-by-one error here?  VMEMMAP_END is currently set to
+> VMALLOC_START on RISC-V.
 
-On 7/9/26 12:28 AM, Pedro Falcato wrote:
-> Seems that I accidentally dropped linked list Cc's here, see
-> https://lore.kernel.org/stable/20260708151357.353173-1-pfalcato@suse.de/
-> 
-> On Wed, Jul 08, 2026 at 04:13:57PM +0100, Pedro Falcato wrote:
->> [There is no upstream commit, as this code was removed by upstream
->>   commit 044925f9b565 ("mm: fs: remove filemap_nr_thps*() functions and their users")]
->>
->> As-is, khugepaged and writable-file opening exclude each other. A file
->> cannot be open writeable and have THPs (because the filesystem is not aware
->> of them). khugepaged will never collapse file pages for files that are
->> opened writeable. On an open(O_RDWR/O_WRONLY), the page cache for that
->> particular file is dropped. This is fine because nothing could've been
->> dirtied.
->>
->> However, there is an edge-case: collapse_file() might not be able to
->> coexist with concurrent writers, but it can coexist with dirty folios
->> (from previous writers). Therefore, the following can happen:
->>
->> open(file, O_RDWR)
->> write(file)
->> close(file)
->> madvise(file_mapping, MADV_COLLAPSE, some non-dirty range)
->> open(file, O_RDWR)
->>   nr_thps > 0
->>    truncate_inode_pages()
->>      /* THPs are cleared out, but so are the dirty folios */
->>
->> When this edge-case happens, there is data loss, as the dirty folios are
->> fully discarded.
->>
->> Fix it by fully writing back the page cache (and waiting) when collapsing
->> file THPs. Doing so provides the guarantee that no dirty folio will be
->> observed while there are active THPs. To fully ensure this is safe, the
->> invalidate_lock needs to be held while doing the writeout, so that
->> do_dentry_open()'s page cache truncation excludes this write-and-wait.
->>
->> As a side effect, move the nr_thps counter bumping outside the i_pages
->> lock. This is correct since the counter itself is an atomic_t and the
->> producer <-> consumer correctness is provided by a full memory barrier:
->> smp_mb() in collapse_file()/memory barrier implied by full ordering in
->> get_write_access() -> atomic_inc_unless_negative().
->>
->> Cc: stable@vger.kernel.org
->> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
->> Cc: Christian Brauner <brauner@kernel.org>
->> Cc: Jan Kara <jack@suse.cz>
->> Cc: Matthew Wilcox <willy@infradead.org>
->> Cc: Song Liu <song@kernel.org>
->> Cc: Eric Hagberg <ehagberg@janestreet.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
->> Reported-by: Gregg Leventhal <gleventhal@janestreet.com>
->> Closes: https://lore.kernel.org/linux-mm/CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com/
->> Tested-by: Zi Yan <ziy@nvidia.com>
->> Tested-by: Lance Yang <lance.yang@linux.dev>
->> Signed-off-by: Pedro Falcato <pfalcato@suse.de>
->> ---
+I do think end <= VMEMMAP_END is correct.
+Documentation/core-api/cachetlb.rst says:
 
-LGTM. Thanks.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+6) ``void flush_cache_vmap(unsigned long start, unsigned long end)``
+   ``void flush_cache_vunmap(unsigned long start, unsigned long end)``
+
+    Here in these two interfaces we are flushing a specific range
+    of (kernel) virtual addresses from the cache.  After running,
+    there will be no entries in the cache for the kernel address
+    space for virtual addresses in the range 'start' to 'end-1'.
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+So this is one of those half-open ranges. When end == VMEMMAP_END, it
+means that the end of the range is exactly at the end of the vmemmap.
+
+> Am assuming you'll update this patch one more time?  At that point I'll 
+> plan to add it into v7.2-rc, assuming Andrew doesn't object.
+
+Yes I will. There's an extraneous hunk for arch/riscv/mm/init.c that I
+accidentally added to this patch, which was the thing that prompted the
+"oops I'll send a v6 to fix" earlier. And there's a build failure for
+MMU=n, which I will also fix for v6. (Why is this code even compiled for
+MMU=n...)
+
+(Muchun: Also thanks for the hint on the latter point reported by Sashiko.)
+
+I haven't been able to get to it this week, unfortunately. I'll
+definitely get to it next week if possible.
+
+Vivian "dramforever" Wang
+
 
