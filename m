@@ -4,94 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20FBBC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 10:02:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF2E0C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 10:04:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E961F6B00B4; Fri, 10 Jul 2026 06:02:18 -0400 (EDT)
+	id B40626B00AF; Fri, 10 Jul 2026 06:04:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E46596B00B5; Fri, 10 Jul 2026 06:02:18 -0400 (EDT)
+	id AF0576B00B0; Fri, 10 Jul 2026 06:04:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5CD06B00B6; Fri, 10 Jul 2026 06:02:18 -0400 (EDT)
+	id 9DFBD6B00B5; Fri, 10 Jul 2026 06:04:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A74426B00B4
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 06:02:18 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3D742A039A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:02:18 +0000 (UTC)
-X-FDA: 84972426756.23.403DD67
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8F8CA1C0009
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:02:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NStmKb/t";
-	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 727316B00AF
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 06:04:45 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0062040416
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:04:44 +0000 (UTC)
+X-FDA: 84972432930.16.7FD09A3
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 1CA551C000A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:04:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KAOHNKjB;
+	spf=pass (imf18.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783677883;
+	b=aAEcziMPiWe8wJFQQZ2mhsUAuFtrVS/IDEBgNflHwHkBRIQnTQx885VGEgUD6D9sCteLr7
+	tNTA8qYkfck/HJJwClA5//vU6VhQvQ7I16WjZRy30HW8pOxFhofJvnpfHDe56LFhgGebah
+	K+D6qysJwqwABjva2rHUDUpdF74jOX0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KAOHNKjB;
+	spf=pass (imf18.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783677736;
+	s=arc-20220608; t=1783677883;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wd3z5gi9ZC47QyTFTl0PrNt/+R38+SG2Pwn5cKGSZoA=;
-	b=Hm0igOfZ7N49zwvlheFKWiWsyWaG5X6UDdciQFeDcvOfgVgsfl6H4tyPBuJ0TJlckV6iWD
-	bCl5M+LaOZsSS52eN4XnGc3vvvq+vtHEMSM9ofNp0KJgHWdUGQeLqG/L39Lqr9UCmaJMUS
-	gElIebvwCOyZt099MpqANApq3TaWthU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NStmKb/t";
-	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783677736;
-	b=NXmSzJWk+hu0eTskosOBjlPfwX7TqCAT3xlaRGuv+isd4qJArFJVbqVWUG/dhIeoCtnj/p
-	xVCwq3U92YkoUUQ7uqesw7+PsQjUahyaMvQtss1B38HB+tkmmkNCPAF6gehYdB7MRg5/i0
-	bOk0+smyJn1AkuzWIuWi2iQHBZHCqkU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D72A060051;
-	Fri, 10 Jul 2026 10:02:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB50D1F000E9;
-	Fri, 10 Jul 2026 10:02:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783677735;
-	bh=Wd3z5gi9ZC47QyTFTl0PrNt/+R38+SG2Pwn5cKGSZoA=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To;
-	b=NStmKb/tZbEEPMPVygxPhonVPyi4RDn5Kix9Z4adjj21L9u7s9esvhbDWTiluRbL5
-	 34bskCAwb7NWKzagyv3PRLwpCTl9Th8JsRM5b27bJkJYZAGXF3cmPeTr0L/V2DkO+A
-	 1lS7CBGBF2XwBxyrU97dcS5JRonyJb1trEuhQ0dw6bulrZiFqXkmOAsY+QKW3jLbjq
-	 MzQP+gGhvDaVAehKoZWp6nGf7KSwWBvD4S41VwKcBvoeF7QFc+6nXqbSWLqNKD4S2C
-	 Cn3kF44klvJCdWtW6SVHjjrXh+VT+PJjUxBUCGHHlMCY0tkXGCpo+0DSiP3guF9PNk
-	 XuF4RvjDnkr2w==
-Message-ID: <5d1bb55e-7dad-4013-9c72-5a43051057d6@kernel.org>
-Date: Fri, 10 Jul 2026 19:02:09 +0900
+	bh=myL3E4LURnOhpDjDCaKjpNj79ZKyqlfQLnc/0/n7x1Q=;
+	b=kpsXcWd8cvSOtX+66kiqTcTjiFVzxMhYl4tNUXpkpe3SLbVasmzAlPclFHW9RUQoNbLWf6
+	AnlOvjGSrugmgjSkvr2may9baArVnMGSo9CeC3zLJizYvpV2PvOv6C8DcdsT9K80GDntfZ
+	ITPT+HlzNEehBgpwrLO25z2I5gzfyBk=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-84862b0d5aeso716339b3a.2
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:04:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783677882; x=1784282682; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=myL3E4LURnOhpDjDCaKjpNj79ZKyqlfQLnc/0/n7x1Q=;
+        b=KAOHNKjBtPFYpnYq8563ambztLOAQpceEUifJWT+jh+ir4uODajPDGCUepyaipSN8c
+         RdbUjgjujj8ugS7cAFO3JNKJ6a0dBfVzGhx1QERRkbDmouGZ6f/0o0qYvLoMEM/c/Tf9
+         7yLo0s6XSfW+66J/iJ/98La7EmkfbgqRtuUb7cFjhxT+YAO3CQplyrar3zR6y2MgkAWi
+         EUM+iMB5hv3eUf5hwnbVL2FmWV6E2Fcs9EvkLGasXi0sp4Z0lrEY2dwkSbLRRzfe6hYC
+         fp8PHiGUtL59ELi6AET8swfdDQAOH7SMIXEIEdQ+X4WIlpkHAsX5sC+kF9UEqMHte49E
+         9zjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783677882; x=1784282682;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=myL3E4LURnOhpDjDCaKjpNj79ZKyqlfQLnc/0/n7x1Q=;
+        b=sr3Ggn/AGRUgKD22106Iiijmqaj1H0HBAedAuOew2m18E5bxc/nBjv0Z9ALbzoaFzO
+         sEeEeLImJ3rO0SBTwGLu8EDzG28A71tA9+0wmcRS8m3qaurBXJM/oaJ3ycO4fyjWI00a
+         GVEkW24OG0ePkx24UoMDbMLzgseq7fuW20kYYYP4xmxFCOlBWqOwFIsn4OcyrNgMNVTc
+         5xiWyj+YQ+DMYfQ7k+7Yf05UrtNk4VGvsBqwNUbzaJfNsYVv09JwfHvAhiibohyfgqc0
+         TfTIIYnAHbukgaA0hLv34Rw2aKyMax+BwSy/IE+D5QhhRomkOWNcK7n/ESPLakbdF+ME
+         C6XA==
+X-Forwarded-Encrypted: i=1; AHgh+RoeyYkR5R35soGB/vGBQVguZQRWh40WgG3rGFz6EklWVoUYQ1qBcNv7XOg2GQ4sdW+Gm43M3QjdeQ==@kvack.org
+X-Gm-Message-State: AOJu0YyOBg9HBjszEqzW4LVMOBZAcynTqObp9q2cNwOXwforon2D/2GJ
+	ZJUkx7ghNIuzAIYAVQJ0hTr8ZoTH1snlWbKjmMDYtxoONC0eQXAkEFTX
+X-Gm-Gg: AfdE7cnyOPJ74adRQYv20asr25HCXMI4cD2IoT0Trr3zja9F/mQr7MggudcY0mZXtcb
+	iSjg/jwiNelz7tbMJX/rcQWYI0WvxYpaLd4b+nYabWNv4A9mkzmTvcYmoUi18kHIUjU0aLLxrgD
+	BN2k1JiPBTU/bI1o760xGT10X5+7vEcPCXMhyQm8IpuyNzxBqVO/uzZDVEoEJ4zHFDNbU6DyO1+
+	hDYvbq72s6OMQT+C4+QGn0xT7tQBAiX/kpOWgr02oxb9PPgzvWDHX7cmQF42ARnuzjZ8FQnz+Ur
+	FZYRnxzIYiI/H6nVWx8NfXmbuDbXeNO1dBylrdZGVT883Cya6z/c6VnqCZiaCJMiGDhzPI+FTVK
+	3v+FWclgIBvsP/lgjnSv+uFrkFl9GKZvnC9tOkaT5Nl2F3GvoOfvIYjY9IE5trLdQ/7ZCVFnwfz
+	9M2Kc5hJce5HAtlBt272HNGAB0VHf6w7hCXg==
+X-Received: by 2002:a05:6a20:12d0:b0:3b4:6f7e:d0f4 with SMTP id adf61e73a8af0-3c0bce18a95mr13340629637.15.1783677881818;
+        Fri, 10 Jul 2026 03:04:41 -0700 (PDT)
+Received: from [10.125.192.148] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ca75ef0c30dsm3257653a12.17.2026.07.10.03.04.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jul 2026 03:04:41 -0700 (PDT)
+Message-ID: <30c8df43-9464-8fa0-3614-0ca06b97862e@gmail.com>
+Date: Fri, 10 Jul 2026 18:04:23 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Harry Yoo <harry@kernel.org>
-Subject: Re: [PATCH] mm/slab: extract __free_to_pcs_batch() from
- free_to_pcs_bulk()
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Shengming Hu <hu.shengming@zte.com.cn>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260707-slab-simplify-bulk-pcs-v1-1-4850dbe0d904@kernel.org>
- <alB_hIJFVgFM3HxM@fedora> <alCAyjxEDM7PmsRy@fedora>
- <c7768cad-db55-48e6-afb8-5916c1a6f00d@kernel.org>
-Content-Language: en-US
-In-Reply-To: <c7768cad-db55-48e6-afb8-5916c1a6f00d@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------0iZRncWzsyBwJEE9LOW9wmSR"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v5 4/6] mm/zswap: Implement proactive writeback
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
+ nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+References: <20260629112032.20423-1-jiahao.kernel@gmail.com>
+ <20260629112032.20423-5-jiahao.kernel@gmail.com>
+ <akMJ8UfeZXrVe5LN@google.com>
+ <cbbdf506-b67d-193c-2c94-bacf828d559f@gmail.com>
+ <CAO9r8zNCEis2QHROEsM5QZsb_H4ofNjA_sE-pM7SVxtgHg_rqg@mail.gmail.com>
+ <4ec2bd64-af40-8ebf-b8a8-2dd7421a1100@gmail.com>
+ <5ce4035b-7f56-d1d2-2d2a-668446d870e8@gmail.com>
+ <CAO9r8zOLe5eJfNmoszCX3rtD=6YEa_7xrvDV1acVDOtZg4vWYA@mail.gmail.com>
+ <bf14cfe5-e98e-c20a-231e-37b3a2489040@gmail.com>
+ <CAO9r8zNzRWxCvUok7FJTZZOp6pS9D-Qdrsbi10rLBn4QRhw81A@mail.gmail.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <CAO9r8zNzRWxCvUok7FJTZZOp6pS9D-Qdrsbi10rLBn4QRhw81A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8F8CA1C0009
-X-Stat-Signature: x1yw4cxefmue8owfiama9ps9gxtud1q8
-X-HE-Tag: 1783677736-777527
-X-HE-Meta: U2FsdGVkX1+0ei9C9k3j55gFtmTDS6lt+HpcBm8C54Pwiai6/GS94hzmycW9uja8ldM7t380rbniws/LlRMVby7qBr+pLDxotFEYwpM2DrJUkj9ZhNOuAe2Q2kTotgh302vhIfHAkFx+yVqWQ4Ts4I8/+VZpPhJn7DA4CnAfMmDeAYO9TfIcAFTwWbj316Fy00FtzT2cLBq1ZvSGZAZuxgVySa0eYjSwn8saBcwQuWH2MdIDXJrQahLAjRdZzh93dZ6qVAXsOwJ24D9KPV0LZn7ogqTZ8sXuBlZXC3d2/SxB7tDPQTdj+EAfv2uDnGwMEhlXFP1YugyO/9q8vTlet64TghR7g0c5aVB4fjSYWhixH3/a+zkUlVRhe5MIk2wb+NT23fBCwU5yHIwjQegeOGQbp+N4XquRLzvQvx97OJl3VqGZmAcEjLx0d5GZOs8Y+zAhasS3T4wZm27a6QRcEF+X9JrZlWQwudkCgrAusNTA48ITy5xEMwgt7i5c6B19hVjBBcEmep8R04VroOgfukE589uZUngV56RfhKuy39yLLdv+60ralvihJV/rZY7wXsBucNFQJoOE09tv7W+HX/fd5VjAoJ/idP0jTO3EW7Kw5ne6ql29YTnQ0LgBYhaNf2z/9zKH0ZHUAPnpRVqND/F9J3XCF9okUay2Z01H1QgQAVVYxGaa8vg8/FnDAJX2gzui/3H1XJG1g3LPfrUSXfwuCiqVw1N8MkIoEAiGbfdzD91V5RZqKnc1Zbl+NSATuUV7sR928g3v4I8kvQ2EBe73Arb0epFqxVFhP4F6SgS3Al5vmK0HYrf0xJjalDk5Dow0UbqSqD9oo1swPKom/cpl09dnRkLCvzYuLC6Ts3n43YIp/xOAKB0m7LMlni9HuxlRlGi8CkP9nHmiSouM/yafnOxdVvI5uxY8iPyL1quTzsWzAQrmijejIp+HizTWn1ndOJF8YHd0wBhfkMS
- WCiv67dS
- 9t51cH3KwOtPpOT/BXTSCYCcRGva1xrBKrRmsvghaNxq3tUKnzoUg0EiPb3VKPkWk4YMKJjPTDKptxPdmmJ6jcush/hbzgLvD7vAhimvUhbHZht0BWvz9JoDGhVtSuc5xAHXXG6elUyS1EeMFCzcSx1Kx1CO06Ti2FRc6IjSDmJUmRn/3gD0ATG0+QQ3bxdUBVmUGlbQVrReg+qjyRRaxLb0x80B6n/hjZvS5p9CoMgzf+ka5VjUpAg7IcaX4rvnT/dyYzhZ/GZRA1CDdfcxIkrOroez2Bh6DV5otwCA5MPWtkaogJp4n7PI7IEKqKCO4t6LByjDOCcrbm2I8jExhxitYBOZlekt59GaEEVWD+pEgDPAxinm2xzmquuagqFStovewXqWXa3xlAEj0Uq5DnoOgWdmEMDfk3koYG0f3N0JXIBUBpcp4222M4xwxOFOIbwcwgYlkPFpadMwmBwHqXW+gDFrqI17lgTexO8FxZ3gpMXwiiVlBRTLiiaKjwHMivPcc9NkB/GuNtWE=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1CA551C000A
+X-Stat-Signature: h6jy6rc45g9gdrcwadpnzty6b9yeg8cj
+X-HE-Tag: 1783677882-547177
+X-HE-Meta: U2FsdGVkX18XnTaINs0CdtnSHo02PNGlF3MAtmkRLpJiY/69NyueQAGv1/K3Xwyiet9luBbJOcBAq2RtkSDeBVZHPN9vZo11mII8jJ4kugfXV/lHEZkPSdczZZvz8VqI7B/TSolOTvmJUaucfsAd4wpzPm0wgf3m/xdw/Ie7ipZvLZdi/RCxIZ328MpAs8YnUyEqe4GMn2HlNMkODH5pJl0th+jltFxtMmTD0GJYcnY/X3Gp2FJxO5uNHsfDU4pDv9s72F9GkApNTJliUYGG0fx6qdY8azggKZgOB1atkp2xLq8pNQyFp8TTiSwtQfDg0vygMt8Rd2QqZsg5m7FN3MMFfw/wUUo4hRG3iEL3AgGW2Ih+LX36GKQRGbHTv5d23cENJyqFGkp6tH2wRDgqBs08wxSIvnTg0X2E1iakEouu/xiALzJwnHLOCT7epB86jnKm6yuoqrMse5bmJntTl19ZGKwhgJCSx5CT9DHFjo5W3NuuuBXHeVaErLhUcj9+uW667H40/1f/ZZr8BoGlpw1H4ahssErOBPL+hRvmZ+oMAkQkURdtI4zmzuFlxmxiNdM5VpUo93tnGnzkStTW0G5c+gtqkdls21rxeieUyH55XyT/c0c+XyOQ6bagEXX5drjCQCQ3qKbWPif2m4mRg/64VPfT89t9QADEt9yvToH7wgN888AAp4K96wVBVx1U5bHdHNpYaJ68DAMSQ3Ua/x8BeQCTkiwie2MP/aU9a0NFq5Jw4Ph24svZj+qeq62B4vBuywKaQQiRNoeI4fSwoWquBYXqGaU0xlAM7jgN6325xLsPsJG5HaAtd7S5rDlj9Hae5fpSxlIslUeph5i2hbcgvs+gSdw0807yIlgRh/5fD5G6HeC/CyVmJVLkAbiWaW1SK5p1kZlxMa3U0LXWAnCHXs+ErOB2O1UMldGeoww1NOb1gTOlwIaenaPEfN0QdD+RzuXjJty1poM78OA
+ D+t6s0ZB
+ 9QBkW9+BNZx6+9uHTSfYr0AA4Zn3Ar0zTZzY6MtFsOz5oEIVO/Fb+4Da64WoY6YtTIE7B+fYtDIqsvltBsHOp4h0UivAbTsHWqIeFbVQJWP/QkTr409nIws1eZoJ+tH1CKBiXGGXQPuyXflgTzLVtgjn1MKpktpPsIOa36Y/Xx9ozYEDNUtuap4yxcGL0jbCw5O+4g4c4bsmnTyxvxlIbG0C0DPefnRN5TphoJ6CIPuuxwbF5vXuTChZEcd7LUIwgWXJTrP0C//r+1DLQx2pi3t/epxGxI1MPDv5tmchAaDGJ0U4cfO9hRkZSEG7TChcYo7oCHEKAtljGrHx4YEqhlIezpGwSL1/qKz2I3x1IrvRQ6sTCgQfuze/CyG+bC4HIfsB41bYOdEVnOXeSoSYtRGxagqBQbbxnfWVEi8ykFKOzmrwq4mS8dwr9FoyW71K5HMDZFWBmAtwfokDt/5rHck5AjQY4PYMVWnmNem57UAvLCe4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,154 +133,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------0iZRncWzsyBwJEE9LOW9wmSR
-Content-Type: multipart/mixed; boundary="------------32Spjo3a2GL1OUJCFYd7q0sU";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Shengming Hu <hu.shengming@zte.com.cn>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Message-ID: <5d1bb55e-7dad-4013-9c72-5a43051057d6@kernel.org>
-Subject: Re: [PATCH] mm/slab: extract __free_to_pcs_batch() from
- free_to_pcs_bulk()
-References: <20260707-slab-simplify-bulk-pcs-v1-1-4850dbe0d904@kernel.org>
- <alB_hIJFVgFM3HxM@fedora> <alCAyjxEDM7PmsRy@fedora>
- <c7768cad-db55-48e6-afb8-5916c1a6f00d@kernel.org>
-In-Reply-To: <c7768cad-db55-48e6-afb8-5916c1a6f00d@kernel.org>
-
---------------32Spjo3a2GL1OUJCFYd7q0sU
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
 
-
-On 7/10/26 6:54 PM, Vlastimil Babka (SUSE) wrote:
-> On 7/10/26 07:21, Hao Li wrote:
->> On Fri, Jul 10, 2026 at 01:18:25PM +0800, Hao Li wrote:
->>> On Tue, Jul 07, 2026 at 02:16:00PM +0200, Vlastimil Babka (SUSE) wrot=
-e:
->>>> It has been noted that free_to_pcs_bulk() is difficult to follow, wi=
-th a
->>>> number of goto labels, and this has contributed to two memory leak b=
-ugs
->>>> in there.
+On 2026/7/10 04:44, Yosry Ahmed wrote:
+> On Wed, Jul 8, 2026 at 7:15 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
+>>
+>>
+>>
+>> On 2026/7/7 03:33, Yosry Ahmed wrote:
+>>> On Thu, Jul 2, 2026 at 5:32 AM Hao Jia <jiahao.kernel@gmail.com> wrote:
 >>>>
->>>> Extract part of the code to __free_to_pcs_batch(), which focuses onl=
-y on
->>>> freeing free-hook-processed local objects to a percpu sheaf, and
->>>> returning how many were freed. Zero means a trylock failure or no em=
-pty
->>>> sheaf available, and thus the caller should fallback to
->>>> __kmem_cache_free_bulk().
 >>>>
->>>> Make free_to_pcs_bulk() call this in a while loop, removing all goto=
-
->>>> labels from the function. __free_to_pcs_batch() retains two rather
->>>> straightforward ones.
 >>>>
->>>> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+>>>> On 2026/7/1 19:45, Hao Jia wrote:
+>>>>>
+>>>>>
+>>>>> On 2026/7/1 00:10, Yosry Ahmed wrote:
+>>>>>>>> Before going through more versions we need to figure out if this will
+>>>>>>>> pivot to be a proactive demotion interfcae for swap tiering.
+>>>>>>>>
+>>>>>>>
+>>>>>>> Yes. Should I drop patches 4-6 in the next version and wait for swap
+>>>>>>> tiering to be finalized?
+>>>>>>> We can try to get the non-memcg parts (patches 1-3) merged upstream
+>>>>>>> first. This would also give them plenty of time to bake and catch any
+>>>>>>> potential regressions. Thoughts?
+>>>>>>
+>>>>>> Patches 1-2 can be sent and merged separately, yes. For patch 2,
+>>>>>> please include some numbers for the writeback performance before and
+>>>>>> after batching.
+>>>>>
+>>>>> I'd love to collect some performance data. Do you have any recommended
+>>>>> benchmarks for this?
+>>>>>
+>>>>
+>>>> Perhaps the following test case could work?
+>>>>
+>>>> Test Setup:
+>>>> - Total memory: 32 GB
+>>>> - zswap settings: max_pool_percent=1, accept_threshold_percent=50,
+>>>> shrinker_enabled=N
+>>>> - cgroup constraint: memory.max=1G
+>>>> - Workload: Run the following stress-ng command inside the cgroup for
+>>>> 120s to
+>>>>      continuously force zswap store failures and trigger shrink_worker():
+>>>>
+>>>>      bash -c 'echo $$ > /sys/fs/cgroup/zswaptest/cgroup.procs ; \
+>>>>      exec stress-ng --vm 4 --vm-bytes 4G --vm-keep --vm-method rand-set -t
+>>>> 120s -q'
+>>>>
+>>>> The following comparison results were collected over multiple runs via
+>>>> bpftrace
+>>>> and the 'written_back_pages' sysfs interface:
+>>>>
+>>>>                             Baseline         Patched
+>>>> ---------------------------------------------------
+>>>> shrink_worker wakeups       5,587             878
+>>>> shrink_memcg calls      7,823,853       2,347,320
+>>>> written_back                  257         781,214
+>>>>
+>>>> Conclusion:
+>>>> Under the same workload and duration, the patched kernel shows a
+>>>> significant reduction
+>>>> in both shrink_worker wakeups and shrink_memcg calls, while successfully
+>>>> executing a
+>>>> much higher volume of page writebacks.
 >>>
->>> Nice simplification!
+>>> Hmm this is actually a bit concerning. Yes, we are invoking the
+>>> shrinker less, but we're writing back *a lot* more memory, orders of
+>>> magnitude more. We are using a batch size of 64, and making ~1/3 of
+>>> the calls to shrink_memcg(), so the number of written back pages
+>>> should be ~20x more, not 3000x more? I think I am missing something.
 >>>
->>> [...]
->>>> +/*
->>>> + * Bulk free objects to the percpu sheaves.
->>>> + * Unlike free_to_pcs() this includes the calls to all necessary ho=
-oks
->>>> + * and the fallback to freeing to slab pages.
->>>> + */
->>>> +static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, voi=
-d **p)
->>>> +{
->>>> +	bool init =3D slab_want_init_on_free(s);
->>>> +	void *remote_objects[PCS_BATCH_MAX];
->>>> +	unsigned int remote_nr =3D 0;
->>>> +
->>>> +	for (unsigned int i =3D 0; i < size;) {
->>>> +		struct slab *slab =3D virt_to_slab(p[i]);
->>>> +
->>>> +		memcg_slab_free_hook(s, slab, p + i, 1);
->>>> +		alloc_tagging_slab_free_hook(s, slab, p + i, 1);
->>>> +
->>>> +		if (unlikely(!slab_free_hook(s, p[i], init, false))) {
->>>> +			p[i] =3D p[--size];
->>>> +			continue;
->>>> +		}
->>>> +
->>>> +		if (unlikely(!can_free_to_pcs(slab))) {
->>>> +			remote_objects[remote_nr] =3D p[i];
->>>> +			p[i] =3D p[--size];
->>>> +			if (++remote_nr >=3D PCS_BATCH_MAX) {
->>>> +				__kmem_cache_free_bulk(s, remote_nr, &remote_objects[0]);
->>>> +				stat_add(s, FREE_SLOWPATH, remote_nr);
->>>> +				remote_nr =3D 0;
->>>> +			}
->>>> +			continue;
->>>> +		}
->>>> +
->>>> +		i++;
->>>>  	}
->>>> =20
->>>> -	if (remote_nr)
->>>> -		goto flush_remote;
->>>> +	while (size) {
->>>> +		unsigned int batch_freed =3D __free_to_pcs_batch(s, size, p);
->>>> =20
->>>> -	return;
->>>> +		if (!batch_freed)
->>>> +			break;
->>>> =20
->>>> -no_empty:
->>>> -	local_unlock(&s->cpu_sheaves->lock);
->>>> +		p +=3D batch_freed;
->>>> +		size -=3D batch_freed;
->>>> +	}
->>>> =20
->>>> -	/*
->>>> -	 * if we depleted all empty sheaves in the barn or there are too
->>>> -	 * many full sheaves, free the rest to slab pages
->>>> -	 */
->>>> -fallback:
->>>> -	__kmem_cache_free_bulk(s, size, p);
->>>> -	stat_add(s, FREE_SLOWPATH, size);
->>>> +	if (size) {
->>>> +		__kmem_cache_free_bulk(s, size, p);
->>>> +		stat_add(s, FREE_SLOWPATH, size);
->>>> +	}
->>>
->>> By the way, could we move this directly into the loop inside the
->>> `if (!batch_freed)` block to make it a bit more concise? but it's tot=
-ally fine
->>> to leave it as is! :)
->=20
-> Ah right, great suggestion! will do.
+>>> Also, ideally, the batching wouldn't result in significantly more
+>>> writeback, but a similar amount of writeback over less shrinker
+>>> invocations. If we are writing back significantly more pages then the
+>>> batching logic is probably too aggressive?
+>>
+>> Apologies, I think the test I constructed has a bit of a problem. This
+>> test has very, very heavy memory pressure and is already a very abnormal
+>> case.
+>>
+>> The zswap entry returns the first time because of "second chance" after
+>> setting referenced to false. For the baseline, it scans 1 page per node
+>> each time for 16 loops. During the test, shrink_worker() basically exits
+>> at about 16 pages each time.
+>>
+>> Since stress-ng periodically and randomly writes to this 4G memory, it
+>> keeps triggering zswapin and then waiting to zswapout new zswap entries
+>> after falling below the pool threshold. When the speed of zswapin/out is
+>> far greater than the scanning speed of shrink_worker(), a large number
+>> of zswap entries cannot wait until the second scan for writeback. New
+>> entries are stored on the zswap LRU list again, and the referenced of
+>> the new zswap entries is set to true again. During the test, it was
+>> found that 99.21% of the return values of shrink_memcg_cb() in the
+>> baseline kernel were LRU_ROTATE.
+> 
+> Hmm if I understand correctly, you are saying that the current
+> upstream code is actually failing to writeback when it should in the
+> previous test case with very high memory pressure, but it is with
+> batching? If that's the case, I think it's actually really good data
+> to include. However, we should make sure that's what's actually
+> happening. If the current shrinker is not keeping up and failing to
+> writeback, we should observe:
+> 1. shrink_worker() hitting MAX_RECLAIM_RETRIES continuously and bailing.
+> 2. zswap usage consistently remains at/near the limit, and not going
+> down to the acceptance threshold.
+> 3. zswap_store() failing to accept pages and the pages going directly
+> to disk, causing an LRU inversion (hotter pages on disk, colder pages
+> in zswap).
+> 
+> Can you confirm that this is what's observed with the high pressure test case?
+> 
 
-Including the suggested change:
+Apologies, my previous explanation might not have been very clear.
 
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+For an entry to be written back, the shrinker must scan the *same* entry 
+twice: the first scan sets referenced to false and returns ROTATE, and 
+only during the second scan can it be written back.
 
---=20
-Cheers,
-Harry / Hyeonggon
+If a swap entry is zswapin'd between the first and second scan (meaning 
+the entry is no longer on the zswap LRU), then this swap entry will not 
+be written back by the shrinker. Therefore, the second scan must occur 
+before this entry is zswapin'd for it to be possible to be written back.
+So, if the baseline scanning speed is far slower than the lifecycle 
+speed of the swap entries, it results in only scanning once. In the 
+baseline kernel, 99.21% of the return values of shrink_memcg_cb() are 
+LRU_ROTATE, while the patched kernel's shrink_worker() scans at least 64 
+* 16 entries in a single pass, resulting in only 58.7% of the return 
+values of shrink_memcg_cb() being LRU_ROTATE.
 
---------------32Spjo3a2GL1OUJCFYd7q0sU--
+              Baseline         Patched
+---------------------------------------------------
+zswapin       929,096          281,196   <----
+zswapout      982,731        1,058,746
 
---------------0iZRncWzsyBwJEE9LOW9wmSR
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+After modifying the kernel to remove the "second chance" algorithm, the 
+test data of the baseline kernel roughly conforms to our expectations.
 
------BEGIN PGP SIGNATURE-----
+Therefore, the constructed test has a bit of a problem. The second test 
+case in my previous email can ensure that the entries on the zswap LRU 
+are relatively stable.
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCalDDIQAKCRCGXBN6rc5S
-1ppCAP0dTWmRJEYiuWr7o3WH3S+iVpYgFhgA5Z0t5uQu3BB2LwEAnH7y7Js/OXM5
-lP/HFvFp2ebYjuBUAC9VWpgBdpOWGAw=
-=XzdP
------END PGP SIGNATURE-----
 
---------------0iZRncWzsyBwJEE9LOW9wmSR--
+
+It is worth noting that the capacity of the zswap pool will not remain 
+constant all the time. Since stress-ng periodically writes to and reads 
+from this 4G memory, accessing the pages in the zswap pool will trigger 
+zswapin, causing the zswap pool size to decrease. Other pages attempting 
+to zswapout into zswap via zswap_store() will fail (until the zswap pool 
+size becomes 160M (accept_threshold_percent=50)), but the zswap_store() 
+path will wake up shrink_worker() to try to perform scanning and 
+writeback. Then stress-ng will continue to read and write memory, 
+continuously triggering zswapin to further reduce the zswap pool size 
+until the threshold, at which point shrink_memcg() will also stop. Then, 
+new zswap entries (with referenced as true) are added to the zswap LRU 
+again via zswap_store(), until the zswap pool size reaches 320MB (32 GB 
+(Total memory) * 1%). This process repeats continuously during the test.
+
+Thanks,
+Hao
+
 
