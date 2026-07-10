@@ -4,91 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 848BEC44506
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 15:02:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B915C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 15:02:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85F726B00AA; Fri, 10 Jul 2026 11:02:14 -0400 (EDT)
+	id 665106B008C; Fri, 10 Jul 2026 11:02:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8102D6B00AD; Fri, 10 Jul 2026 11:02:14 -0400 (EDT)
+	id 63C0E6B0093; Fri, 10 Jul 2026 11:02:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 701CC6B00AE; Fri, 10 Jul 2026 11:02:14 -0400 (EDT)
+	id 52B4B6B0098; Fri, 10 Jul 2026 11:02:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 494166B00AA
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:02:14 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D077CC360A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:02:13 +0000 (UTC)
-X-FDA: 84973182546.12.05D567D
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 32526A0004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:02:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MZROCy6l;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CE436B008C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:02:52 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9792A1C3AF3
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:02:51 +0000 (UTC)
+X-FDA: 84973184142.25.F5D9ADA
+Received: from smtp2-g21.free.fr (smtp2-g21.free.fr [212.27.42.2])
+	by imf19.hostedemail.com (Postfix) with ESMTP id ADA951A0003
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:02:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=morinfr.org header.s=20170427 header.b=BpmW1+MA;
+	spf=pass (imf19.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.2 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
+	dmarc=pass (policy=quarantine) header.from=morinfr.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783695732;
+	s=arc-20220608; t=1783695770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZI5LYV42PS6biPr4EpPtmNA2/Ct3B0vmxWhVv67hMQ=;
-	b=Pr0W/E941YUXXK56xMKpJgUxb30U+44amu0mKpZd21PiSqmjuldKQvGZFoWktEedaofegs
-	wz1FI6/L3cZsMTywvNEEuc+cg7uKkpwXz/U/DL1WAaPbhroe6pSo6lL1jkDYrdUreJ+ujR
-	dhsHWO8IXWXeFs7BAlR2lMFc6IPaG+g=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MZROCy6l;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=BZ8qRc6hbIbbhNnh/DKzO2CrCJr9e2RB77cv5o5qDZg=;
+	b=NmOxj6R7gf/7JHh6q7+s5PVuch2ICJWzK5xVv7GS8r03nnGnKlw6j+Yf/xNbbppuml1575
+	9oqU4iV2XZ5nWVqdAc4HSnjlRUbsNVHsk4qAL92i663PqB+3kUZfInmWdmWB/siZBPlbxe
+	lpJ9Djq39FQXflgoHTB2RILOvdrG/as=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783695732;
-	b=IS3ceh5Y/dsMhC4Qw1jxMKhg8ofe5VdEHm551jRx2jv4key1lOkI2wmI2VC3LSzw9pB687
-	uLIwoWNI1kDaqdFY/pWYTOnApqESOkKJQ/v3+wCUYD/SlpA4EwyF0bsRGQOAXec8TNUz1T
-	EucxfL+iqtX87ucNJ5oNMlDdFGVK8so=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1783695730;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aZI5LYV42PS6biPr4EpPtmNA2/Ct3B0vmxWhVv67hMQ=;
-	b=MZROCy6lL1QQmCPfIUisZeY0kM2GabQXwOtIPP3A3cm+RMRXSOgYac6UptYGQ7VhqXNeyw
-	wtutsvb8aPqVZi6zc3EgSwoO0ln7YS4KO4nhj6JIKdxo8xv2KVisPl5jAXmGHUZKQ/nqtB
-	2NYd28az7X/hUd6bbc+c0FbG1Akn/0M=
-From: Usama Arif <usama.arif@linux.dev>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jane Chu <jane.chu@oracle.com>,
-	linux-mm@kvack.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <christian@brauner.io>
-Subject: Re: [PATCH v2 06/10] memory-failure: Prevent UAF in raw_hwp_page list
-Date: Fri, 10 Jul 2026 08:02:03 -0700
-Message-ID: <20260710150204.1887475-1-usama.arif@linux.dev>
-In-Reply-To: <20260709184740.1286561-7-willy@infradead.org>
-References: 
+	t=1783695770;
+	b=SM4GjAEosNhUI2pVAs+l33/pvhfIsJLCmCZvEF3T+bEE4GmCOXm++MKaQUBTlbv/hOUlU+
+	Yk2zfO34sb23dHPQTznizcFbMXZw8dUyztkKkdUlYYVQ4HHzKQArcB8EgI3WoHazK+lzYL
+	jZVWcM91w+zI4CEPY5gjt0S7Twg0WGk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=morinfr.org header.s=20170427 header.b=BpmW1+MA;
+	spf=pass (imf19.hostedemail.com: domain of guillaume@morinfr.org designates 212.27.42.2 as permitted sender) smtp.mailfrom=guillaume@morinfr.org;
+	dmarc=pass (policy=quarantine) header.from=morinfr.org
+Received: from bender.morinfr.org (unknown [82.66.66.112])
+	by smtp2-g21.free.fr (Postfix) with ESMTPS id 736322003CA;
+	Fri, 10 Jul 2026 17:02:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=morinfr.org
+	; s=20170427; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=BZ8qRc6hbIbbhNnh/DKzO2CrCJr9e2RB77cv5o5qDZg=; b=BpmW1+MA9drrpqAggRd65BBc9H
+	rGtJrKgtmckMg1EP35xEozYFNz+qNhd5gV4BdUaufIgho/H6kvFNZ+4qysMOeq9mpgBIxatGe9QoG
+	qwjZkFzdf20HQt1kLnAE96fuU8An7PUtT/Xy/m2EyCYAuMumo0VILgUwpRUgwVWVm8kg=;
+Received: from guillaum by bender.morinfr.org with local (Exim 4.98.2)
+	(envelope-from <guillaume@morinfr.org>)
+	id 1wiCkV-00000001wx6-3X5d;
+	Fri, 10 Jul 2026 17:02:43 +0200
+Date: Fri, 10 Jul 2026 17:02:43 +0200
+From: Guillaume Morin <guillaume@morinfr.org>
+To: Breno Leitao <leitao@debian.org>, linux-mm@kvack.org
+Cc: riel@surriel.com, Muchun Song <muchun.song@linux.dev>
+Subject: [BUG] mm/hugetlb: possible temporary resv underflow
+Message-ID: <alEJkwn5VlTTH_ZX@bender.morinfr.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 32526A0004
-X-Stat-Signature: qojse8qu4zzxmce6yeizb7b1pcgkekgc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783695732-21688
-X-HE-Meta: U2FsdGVkX18B7SyawcR4gvuXOIMz+6YmLmSb/bvo3z13u5HDLUDStCUoYooWRAdL9TONOXxA6Hkwkij7xmKnhhYkxCOFFb3ocS13gi7O1JiL69c1VeozSrjpxFh5tHDEenuWxgbXONaQCLQLmNIjGRrbqrHeE19lep37FNIaViqrbT+DKYER+IDVMNKwgXwNTzoOCBeW+f3F4gjsBRHyUCyhZOaUIG6BuABquZQoVsoQbRn3MCVl8pdVfQUcqcOpZzr9OX0OoXnRc22UJURwt+p/Q7fBtpTVsl8TSD8sE0HZpLxjrSDQFA/7hiXjPTFM21pXe7js+SV6rLkpPWIoHi3aIZRmiKnqBvPCxmhpFlFQZ10PXvSsAXo26CLy2Ej3LDf1f0W9rgKyNwwy2FVHF1vaZQZsYr/BWzP9ZwNAldlZ79k6nqEwkCsuArisXXyBc1zT8QXv0Blza2u5Hpj88983Xcfi0IpXIVE6ue/exBRxqBY1hnU2WLfmhV1iPrXth7hoh2N3CF0IusobezQRoY3+U4mLJjaXzLzEU/gQjYMLdyYQ7sJvUDAf226XUOlYzdmb2Z5TGcTcHbzgWKno6XuA9TEcP/OEDkB+Pi7NVWH0ATYTL/+0LYo6mgvivGo0kiU0lqYPbjNd7RocSloTLsw8orYyFCzjQDYly9WU1NkdexXZSXULPhg7KbKrZibST6UbcycOkPBIUYrOf7EzEJGf4YNUnZRDEtaPqUK9YBpr6QX2AJpczRxke68TObNchN4mv34DcjjIWUTzijUfp5FYQ1nPvXWWs2T2QXFHTpsg/O8bw7AxMxO5GfRHAq//A0/zG+hPuehDUZleY7hvF41+7+2GQLh1nTpdtqVSSVoG40WO6JytnZNLdDX3Vt8mLkWL2P4HWKCrlW0G4CcKcHdED5M0hmg7SlX6uWGnsySFFq5GVjIcWyVY1wwPx+nSSUHbxHBG9FOM9LUO3G8
- WESnediu
- vXWF06f9lJE34VuALepVU67e6OI0u8CCXoq1qYrmww40Mgp1Z4cGkOF17B1AydhnJC2ayQ5ZXB/vEM0NnvezkjT6R7sthQ1Ve24ko8rh57AGh5AgQjV/cWmc3Ecw45aHuH6bIf10AU66ks5ddWwmOHAsjOe01P1AMc24PWsbAxXs7OFkjKVacV+S5vX0UcvGWIgQ23AeNjGZ0jkxFHzdLn6Mq8CYkAAenK0ybRTxl0tCAh/kVz1i3ETNz7EVwI6v5G8eiSWbLgMz3oCGntDKP0ap2BNpX/YnpS5mqLm8VpQFlj9mDYdMBFvJCj/Cy41qXRxRJyoQnXZ01elYozDe9N0sUhceOEL3ANefPjcJXy10oYxtT9j+OUnwTMEID25KfCjkg
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: ADA951A0003
+X-Stat-Signature: oqqe7jp113fb9x8ozd67j1hkbg6mntad
+X-HE-Tag: 1783695769-743060
+X-HE-Meta: U2FsdGVkX1+x9tCcNLl8D/gRkl3yqAdAkNhi7+VUQlc2T76sc5Ayjo9X5XrYEOv8bGSRgRu457sYEzB4vgwOl3fmTgSYnNsL+td8kFFXNP2ub4m4vXn0MOUvdBJycwPz5vlMj0po3chRFUgmFNEHXtIhCMGooYS+sGGYZTKzhBolCRbuMUd2JiZyU7OeWHvf//SJ2IvjjE/nhtG+3lnHOOHi08ZgqFUOHBnnEsSkFF5S2l4SF4XJGqlbsXYLtC7fM7ZF5cJi4uI8kgqJfOwgMhiEyxSsfvVbeLho8KmYfQoxIMm6dn7Hav3hyY1PVgyk66b5rWrHtGAPhBEkqEgnktLFN2Zxjp0+6W2MH+NF8bk0iBSqEQ+Vm6p6IfOjmADV03CXklFYqJXuxT6f3tRlx423g12A0t823dZ8FOe8PxvQ7AZN6pEGwLC/j9q0x23EQUvqbVuOv2xT88fsrWslshc6DsZfdeQI+KY6TS6zpwCXpbA+wfYGK2OLxB8zmFMFhRrisbuP6VxgRqhezmdokqBy7GLbySFytBwqWYNI28+5+xBlb3rSzMO5X/4TmZ7z/QYNh72ldUJVaGhSwJCYTF2+6A5Zy96Fcm6SpFhKtBlOtXHByOnhN84ZTM1EmshxsJyFIQYGUKt1frhCDL7jgfhJalfAEZSgOUBVfkOC6kF08DPB/+8uxRHURvPkun4IInK14EhcV1bQKp27qqTSdgCICv4E3MspJ/rQIS3ZizJr7NQBQDEZOJi1sO8PkTyedw2fveOVIXuYbWDDf99zvcY2uHuqsKmMolELDfXF/FkC4vpH5sKEiJsPVHM5lB6OzWtmxvk61kbdhugevJest97+lyDK0T9pEtRA/TEk1wFmmqj4NddZdC9IRUkMpH1aOdNVrBQ3vMBCqDAyFVoIdd1RMZB1Ylkhh6BoKI/+JfOPOt9E5jyHJKmRE3nmDBz9RcMiV0ec40lby2HEBTt
+ 4aZpSD6Z
+ /jO0dwtVcrlvhnOr5XTt60x535lBcygUrOCftFL3YUxDT64Q1zDOpuTJqcM9qoEEDsSlOb0cI6DsqviqQ3GRKwkcBIfXmTcQe/5TEijlN4l1prKTHBtVXUjvgbLPsmdSz3l+sUT/C1okbkuG+d7U6Zy+vIxdghmtYgl71QdaD8VUShq5PujFg7Ku6TRe7MBCt8j99mavcqHxOUThipoM3Tm6Tw7Q71ueu1rurxIVJPgdAP+SLk78e8vr8QTkJlpEXb9v1s96jstaxC8Uf4f4zAjLl/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,71 +87,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu,  9 Jul 2026 19:47:34 +0100 "Matthew Wilcox (Oracle)" <willy@infradead.org> wrote:
+Hi,
 
-> Most accesses to the raw_hwp_page list are protected by mf_mutex.
-> However, the call to folio_clear_hugetlb_hwpoison() in mm/hugetlb.c
-> does not.  This is probably OK today as this is in the freeing path and
-> I think all current calls to is_raw_hwpoison_page_in_hugepage() hold a
-> reference to the folio.  However, the next patch will call this function
-> without holding a reference on the folio, which will expose this race.
-> 
-> Rename the current folio_clear_hugetlb_hwpoison() to
-> __folio_clear_hugetlb_hwpoison() and wrap it with a new
-> folio_clear_hugetlb_hwpoison() for the benefit of external callers.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  mm/memory-failure.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 53063e2a1f97..353288cce1b2 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -1935,7 +1935,7 @@ static unsigned long folio_free_raw_hwp(struct folio *folio, bool move_flag)
->  	return __folio_free_raw_hwp(folio, move_flag);
->  }
->  
-> -void folio_clear_hugetlb_hwpoison(struct folio *folio)
-> +static void __folio_clear_hugetlb_hwpoison(struct folio *folio)
->  {
+We've encountered a temporary underflow in the reserved count after a fork when
+a parent unmaps a faulted hugetlb page before a child process. 
 
-Good to add lockdep_assert_held(&mf_mutex) here, but there is a issue below.
+After a reservation is consumed (i.e the page is faulted), if there is a fork()
+and the parent munmaps the page before the child, the reserved count
+underflows. The count is restored when the child unmaps the page/exits. I have
+reproduced the issue in 6.12.95 and 6.18.38. I believe it's still present in
+7.2-rc2 but didn't try to reproduce.
 
->  	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
->  		return;
-> @@ -1945,6 +1945,13 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
->  	folio_free_raw_hwp(folio, true);
->  }
->  
-> +void folio_clear_hugetlb_hwpoison(struct folio *folio)
-> +{
-> +	mutex_lock(&mf_mutex);
+The patch that seems to have introduced the issue is df7a6d1f6405, "mm/hugetlb:
+restore the reservation if needed"
 
-This wrapper can now sleep, but its external caller is the hugetlb free
-path.  __update_and_free_hugetlb_folio() is reached from
-update_and_free_hugetlb_folio(), which has a comment saying
-"Defer freeing to avoid using GFP_ATOMIC"
+I am not sure what the best fix is but checking folio_mapcount() == 0 
+in __unmap_hugepage_range() seems to do the trick
 
-> +	__folio_clear_hugetlb_hwpoison(folio);
-> +	mutex_unlock(&mf_mutex);
-> +}
-> +
->  static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->  				 bool *migratable_cleared)
->  {
-> @@ -2051,7 +2058,7 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
->  	folio_lock(folio);
->  
->  	if (hwpoison_filter(p)) {
-> -		folio_clear_hugetlb_hwpoison(folio);
-> +		__folio_clear_hugetlb_hwpoison(folio);
->  		if (migratable_cleared)
->  			folio_set_hugetlb_migratable(folio);
->  		folio_unlock(folio);
-> -- 
-> 2.47.3
-> 
-> 
+                adjust_reservation = false;
+ 
+                spin_lock_irq(&hugetlb_lock);
+                if (!h->surplus_huge_pages && __vma_private_lock(vma) &&
+-                   folio_test_anon(folio)) {
++                   folio_test_anon(folio) &&
++                   folio_mapcount(folio) == 0) {
+                        folio_set_hugetlb_restore_reserve(page_folio(page));
+                        /* Reservation to be adjusted after the spin lock */
+                        adjust_reservation = true;
+
+
+Reproducer (it only works if HugePages_Rsvd is 0 at the beginning of the test)
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <ctype.h>
+#include <errno.h>
+#include <limits.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <sys/wait.h>
+
+static unsigned long num_reserved()
+{
+	const char* field = "HugePages_Rsvd: ";
+	FILE *f = fopen("/proc/meminfo", "r");
+	char line[256];
+	long v;
+
+	if (!f) {
+		perror("Could not open /proc/meminfo");
+		exit(1);
+	}
+	while (fgets(line, sizeof(line), f)) {
+		if (strncmp(line, field, strlen(field)))
+			continue;
+		const char *p = line + strlen(field);
+		while (*p && isspace(*p))
+			++p;
+		if (!*p) {
+			printf("could not parse /proc/meminfo line: %s", line);
+			exit(1);
+		}
+		v = strtoul(p, NULL, 10);
+		fclose(f);
+		return v;
+	}
+	fclose(f);
+	puts("could not parse /proc/meminfo line");
+	exit(1);
+}
+
+int main(void)
+{
+	const size_t sz = 2048UL * 1024;
+	int pipe_fds[2];
+	pid_t pid;
+	char *addr;
+	long nr;
+
+	nr = num_reserved();
+	if (nr != 0) {
+		puts("For the test, HugePages_Rsvd must be 0");
+		return 1;
+	}
+	addr = mmap(NULL, sz, PROT_READ | PROT_WRITE,
+		MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+	if (addr == MAP_FAILED) {
+		perror("Could not allocate a huge page");
+		return 1;
+	}
+	if (num_reserved() != 1) {
+		puts("After mmap, HugePages_Rsvd must be 1");
+		return 1;
+	}
+
+	/* Fault */
+	*addr = 0;
+	if (num_reserved() != 0) {
+		puts("After faulting, HugePages_Rsvd must be 0");
+		return 1;
+	}
+
+	if (pipe(pipe_fds) != 0) {
+		perror("pipe failed");
+		return 1;
+	}
+
+	pid = fork();
+	if (pid < 0) {
+		perror("fork failed");
+		return 1;
+	}
+
+	if (pid == 0) {
+		/* Child: Simply wait for the parent */
+		char b;
+		close(pipe_fds[1]);
+		if (read(pipe_fds[0], &b, 1) < 0) {
+			puts("Child: read failed");
+			return 1;
+		}
+		return 0;
+	}
+
+	/* Parent */
+	close(pipe_fds[0]);
+
+	/* First unmap, this will close the vma */
+	if (munmap(addr, sz) != 0) {
+		perror("munmap");
+		kill(pid, SIGKILL);
+		return 1;
+	}
+
+	nr = num_reserved();
+	if (nr == ULONG_MAX) {
+		puts("After the munmap, HugePages_Rsvd underflowed!");
+	} else if (nr == 0) {
+		puts("Underflow not present!");
+	} else {
+		printf("Unexpected HugePages_Rsvd=%ld after munmap, should be "
+			"0 or -1. Repeat the test\n", nr);
+	}
+	/* Make the child exit, this should restore HugePages_Rsvd to 0 */
+	if (write(pipe_fds[1], &nr, 1) < 0) {
+		perror("write failed");
+		kill(pid, SIGKILL);
+		return 1;
+	}
+	close(pipe_fds[1]);
+	if (waitpid(pid, NULL, 0) <= 0) {
+		perror("waitpid failed");
+		return 1;
+	}
+
+	nr = num_reserved();
+	if (nr == 0) {
+		puts("After the child dies, HugePages_Rsvd is properly "
+		     "set to 0");
+	} else {
+		printf("Unexpected HugePages_Rsvd=%ld after the child "
+		       "termination munmap, should be 0 or -1. "
+		       "Repeat the test\n", nr);
+	}
+
+	return 0;
+}
+
+-- 
+Guillaume Morin <guillaume@morinfr.org>
 
