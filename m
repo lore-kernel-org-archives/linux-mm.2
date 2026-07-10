@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C2DFC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 00:24:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E73EC44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 00:24:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C8926B009B; Thu,  9 Jul 2026 20:24:04 -0400 (EDT)
+	id 3BEB06B0096; Thu,  9 Jul 2026 20:24:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 204486B0096; Thu,  9 Jul 2026 20:24:04 -0400 (EDT)
+	id 2C7A76B0095; Thu,  9 Jul 2026 20:24:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02F0B6B009B; Thu,  9 Jul 2026 20:24:04 -0400 (EDT)
+	id 167236B009D; Thu,  9 Jul 2026 20:24:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CE48E6B0095
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D3A516B0096
 	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 20:24:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B2E21A02DE
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:24:03 +0000 (UTC)
-X-FDA: 84970969566.12.FDCD46A
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0163DA030C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:24:02 +0000 (UTC)
+X-FDA: 84970969566.19.09B56E6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B40FF160011
+	by imf25.hostedemail.com (Postfix) with ESMTP id 6A79FA0002
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:24:01 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hD6ITAf2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0hmnbHB;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783643041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Afvkxg7JDGHDzuDLSPibRSpczK7Yb0J9zCK+iiS9Hlc=;
-	b=rigRTtzgwxARyf1g6egP0YmVl84aM5dse7taQ99jAgHDo9cz4GMLdvW6SZeg3MnWlQqZhI
-	1cn8gfHK2Nlp3BK9pIf1NpObWEFyDsOZ73HLXpssa7VQPh/0jg9Szn2h5lMZ89foIuarEH
-	qpKQHP6b3ERJK6fsxhjXJJ/4JnQ+MUY=
+	bh=HWM9ulbAfG9bosKr1Xo0BbZMoQtsvPUcnEqaGbAY52s=;
+	b=Y2GzPqVu2ZP1KFvnig84bzE8MKrtRDnrhFHpgz049yGer2is2UPAbIzIlOMPFxT52WeC1U
+	CxL/atwBmpVWRwchMQvkCa4GIzSd6F1TBS1M2st+UT9bng3GzJlGkzEw28/oE9ZHPZ+Yoh
+	7dLOYYMDWgwADWArwd+CFhTqcMsfxvg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hD6ITAf2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I0hmnbHB;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783643041;
-	b=dCVcvL5xlNzrfwmIpCN1Bp5cidU3dNAfUBl7ruKfCt/FkF1pKbTOrTM/lydK7odypjDbOb
-	s9/hAEeNbTRTsjl5LaB2Hr1nPHclD8G6+jfebJqYV6Xu6gmv/4z7ZpKPQ6k95uE1vG5Kgb
-	O772GPBUnw6QM/nttYdm292vOg5BYLo=
+	b=fD2tZ1tXxSXp1EDoHPBe8DY38E5wIjO7V0qATJsECYTPkf1TfsJmim0LRCWeXwKNMXLP6E
+	+JtVz8yEpIb3PpxpRwGkBhx64c2wo19eCxmc98dye2OexDMQdSBXh83zmmMJISYUilo4ZT
+	g3PxQnqY5RMH9jbMLMrgBsDVS21ttdw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4DD416138A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0044161387;
 	Fri, 10 Jul 2026 00:24:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57DC1F00A3A;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872A71F00A3F;
 	Fri, 10 Jul 2026 00:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783643041;
-	bh=Afvkxg7JDGHDzuDLSPibRSpczK7Yb0J9zCK+iiS9Hlc=;
+	s=k20260515; t=1783643040;
+	bh=HWM9ulbAfG9bosKr1Xo0BbZMoQtsvPUcnEqaGbAY52s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hD6ITAf2Zsiq8wZRypCUXKFrsfJY4IQ6OnuTGPbEYiz14+mnkxjghaK5xr9tRT7lC
-	 ChZ8K96sA+5MyIkWz/g1+K5i5m+3W+z3tImfbalH4vLvwKILa2afVqPw4XCjrzYYdO
-	 nAuPUR+H8/whyTesGqLo3EJkHQzqxFGAN0+yObygU8CWpKM5Kj7yhjm904b2USZmFw
-	 /A7we/IgtIzXX+fCy+vEmdNPuil2LDRqyOVrvgvhf2At5JVaBq/nkzBASFRtZ69w7r
-	 BujozuOoXMLiAZM4xWduozWYsRqoxQp/vdBbuLdF5FCdCDk3bgeUIZIX0IriNk/B5c
-	 53VJuvUbqNlHQ==
+	b=I0hmnbHBPEHzGx8A+oPtTkkPBrTG39LRjcnvRUfEvoczdjBCHtnSxb/6R9S5LQH6+
+	 9JXrO1XzAr2ACSM5XaiQ2gc9bJej1WSruLpboI6WKxsA63rxIaMrkX7xyHIOkQLP39
+	 ga7bwUHEfnbiIfQTfNUCEJ5hKEE7kkBVi9Mu6+Uab/zsQsOG+lbMQU/ZUKPVhZhgYB
+	 aPSpFp/vLdAM8RI0oAVWcyzGWTlggcpe3VSzFeAs9QQQq30OpiOfIAkNDyvHDj2h5T
+	 V1JwxwdGEKZ+SHw0LyDiH2OMa3aGhFr2x58orb5NSnh7cM9ZYsq6xQ9yVJJnciiLsU
+	 vWiauJWMjCRGg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.3 07/19] mm/damon/core: use abs_diff() instead of abs()
-Date: Thu,  9 Jul 2026 17:23:33 -0700
-Message-ID: <20260710002349.111414-8-sj@kernel.org>
+Subject: [RFC PATCH v1.3 06/19] mm/damon/paddr: respect return_max_wsum
+Date: Thu,  9 Jul 2026 17:23:32 -0700
+Message-ID: <20260710002349.111414-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260710002349.111414-1-sj@kernel.org>
 References: <20260710002349.111414-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B40FF160011
-X-Stat-Signature: 6d1thsfksb37g1gsrm9ing7tidg9714n
 X-Rspam-User: 
-X-HE-Tag: 1783643041-319114
-X-HE-Meta: U2FsdGVkX1/WsyYErjrR48g3ZeePphBG2ZZkldVsR3zDBepCLdsxOFQsggVKRI3ZZDz59jJoiGzmPemAZJfIlQby9D627uu1QdY6KxbjUIrubQkA+9ebdpJkApr2G3ZhIATvO88NbFLMb3cV1XGBkwTiIvNO+4AX6iZTCMAlwcE72yPpRy/aTu7td8XRxe4dpcRfpVJHyhRQkVXHq8fNhg9OBXKBvT9v5BLilOQIWGAXyURF0jG22Il0RndaPsP66gq6j7bnk/x8S6ZHgGeQgB8WrRCr/ov1r86IUbg8ih/+Z7Ta+x5JibyHoUKJEnjEi/gahvpJbyOiJK9SAhH6PkC+sqLG1I3axCQwDJKkXhiJh6g7dSGivKCWE9xk/0YgQy0yt7BFonJYlb9VqBYwa2sAUxM55q/WtIJu7KNj8CxFBsow39DyQ49vuzzd9sDQ3vIJIUX2GAw2TRTKKXXhye9Ji3k7cIfzyLq6G0WsKoC/hUzqcCQp4J0nl4wO7Y6dbLZHI76HcFPfwhUwJUpEVRq6NtCniUpRdW55aKHDUGm2aQ9uNL+wyTeXuSp6zVZW+Cwbm5BpWf8VRTxfHZEpHVoB6yXRultmjNcerCutJyXs7ezBRxA51gEyKrrpHcHPa7zww7B8LUk6eRA50tpkZQ2NDzGXLon2Lj/J3gUqBPtiZgDPgEBxCjfTBmK5+qDrvOOLRMnJ4IBE1cSPEgtHlhATnpgMgeA0vo93fLAu5aBBNnmMH6dU4KJX1vb479z8dQT8OuhgfXU9/6H34Plvd0OwfGqTOm3XWOh2WAvTkCWzymxXJq3/18tT9Na0pFqU5O+Z7S6Lx0QSsqXtjzmH38qBtCCrq+C1v2nZKuL6Jznr8oDPbk4PM/Gx59G7tfAMSf1lViucN18uOALzi5K7mmLin4UWm7Tc0DKR7SFCvt8ufMLlD3IZ365G05rxj5EIYlnY9k588EYwO5gpOEM
- ++R5e7Vs
- EsnmnMzr+TdSmzfPq89pnbVvgddn0IbUvzTyFKH+Oo3S0p1JKR3HlcpmDKuFerRMlDoyFMnFy/APeRemfxj9ucNXFwqlrhJQ7lRZwr3nuxJTsWY4HGU4/Xi+j7brBwuwO4H10P/EhvVAgMLAgf826j+qFgyeDDzN35VCFFrBVQtuyCjciVHnH2aYcWgwaev5svOxzqTulhSCXuSSDuGkkegjpIC9/e2KzPPj8YHtrkviu3iM0EqvVYw7lTYV/vBlFwnaxAy2eavfvEQU9rQBa6sJfgA==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6A79FA0002
+X-Stat-Signature: dy4418e58sz9ngw3k11a41c5osciki9a
+X-HE-Tag: 1783643041-103186
+X-HE-Meta: U2FsdGVkX18Q9saAgy0fFEmITEXHkMxTE0cRXdQbAJwjLGOzYMcv3Nyv9YR93Vl15at5L3Gx2xS+OPKcqSA3m+ut5gyITbUzRc3kNFA+qD9j/8fFkSFBi5eLLvjvb7iOVWByzH6Fp4l93vSsKCKzGjUd6gjX6x7SyUrCFjZ9xCYDcJp/fcJpob77p6e00OT6xnl+xGzqykRLASqzdMQG0rEAJMrCUB43SxUqvWdNABiTyao0ff9aiB2Kc9edvg0/Mapbjre4jxzTG9tf04lt+ncUUqtLqh35PmP4qtezRh/OvOGP4oMygosYmNejERVnqlOKxKiAgB92BJGeaQ/63DirrsTSM4ES6pYhZ/0cXezQIgsY+Ma9WKAgUWQ7yw0JrrElawBeZHrX1WJwy8ud1baT8JyrOS8tN8BuMYJQmtR+tcGLQkQQO67IKNgNmj8rybySskbhRhk77ozENrlDWb/JvbuwEGknGHCHM/o9SAO0Tl/hoiwerK707ZzxwDqgy7BQP0UYIIidu/4A+IlIpHpDwG2UeyEc+qIPtLMcuHLOkMkh48j1kDJ/k/vFp+70x18tXEExf3Iu0PvHFdfhh+TWHkBuzsh2elLQ1wzNtQXvg/N8k+8pbd++rbFo7nY+SPYMc5Lz3pyoLFjAhKn/qXxV+tJO63tSqPVlspnx871wGQfetr6W961TV2sV+L05RUXXWbowuQFgQXml0qO4zNn750D+clbbBi0mn/dqinARE+BfUDHXukb/fOxEUrpR3KNMqLW+3mKPIAaft8vVtmls+TNZmobqe9z5XA3+TstjSf50VLl8PM60UA3RSo0MD/r7m4vhRLVufNnYF4ydtH5ekM3GqhMd3C8CPBwoKGimumYnGasAXHViqNRGfmNf259OKKN3I/bvScVCR3RFibq2DWig/7J8G8UXNCTLraEyy79dbIyJdM6GwZaRkrzhLRZsSPJuPLvclrEspIr
+ vMWUOBVp
+ h/VIMuDPvVI4eTSsJS0zPOmCJ5YtEH/al7CJ7xb1hDggU7ev5lDHDe01PRsb1oYm7x4ck0qTuWNtLehwB18TZsKMimNYS1KudQHpSLQLZ1UpDFSqIX/6NO1wTlEj0p4nReDTlQTShfC4MZbqLZkFda/1UzuVbqFqCMv+9XG0/hOtVBENpONeJQLc4wN/t4k3PFK0J5tbEY8aIIa7Fo57tiD1z9imdqBGLOVIIF/x3tjwc9E5vx8qEUV007qPEGAdlzk5IBlAN9Ai+nkn8IfD8ofB9tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,44 +93,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use of abs() in damon_merge_regions_of() could cause a silent integer
-overflow since the macro casts unsigned int to signed int.  It is
-unlikely to have such a large value for nr_accesses.  Even though it
-happens, the user impact is just degraded monitoring results.  Users
-showing bad monitoring results for weird setup is quite trivial.  But
-the code is obviously wrong.  Use abs_diff() instead.
-
-The issue was discovered [1] by Sashiko.
-
-[1] https://lore.kernel.org/20260705213817.100841-1-sj@kernel.org/
+apply_probes() ops implementation in DAMON_PADDR is ignoring
+return_max_wsum.  Respect it.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/damon/paddr.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index fea97399b5754..4c7e8a12a9b67 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3261,7 +3261,7 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
- 	struct damon_region *r, *prev = NULL, *next;
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 3eba3564a31fc..b85f88a7a38f4 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -172,6 +172,7 @@ static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
+ 	struct damon_target *t;
+ 	struct damon_region *r;
+ 	struct damon_probe *p;
++	unsigned int max_wsum = 0;
  
- 	damon_for_each_region_safe(r, next, t) {
--		if (abs(r->nr_accesses - r->last_nr_accesses) > thres)
-+		if (abs_diff(r->nr_accesses, r->last_nr_accesses) > thres)
- 			r->age = 0;
- 		else if ((r->nr_accesses == 0) != (r->last_nr_accesses == 0))
- 			r->age = 0;
-@@ -3269,7 +3269,7 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
- 			r->age++;
+ 	damon_for_each_target(t, ctx) {
+ 		damon_for_each_region(r, t) {
+@@ -182,7 +183,6 @@ static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
+ 			if (set_samples)
+ 				r->sampling_addr = damon_rand(ctx, r->ar.start,
+ 						r->ar.end);
+-
+ 			pa = damon_pa_phys_addr(r->sampling_addr,
+ 					ctx->addr_unit);
+ 			folio = damon_get_folio(PHYS_PFN(pa));
+@@ -193,9 +193,12 @@ static unsigned int damon_pa_apply_probes(struct damon_ctx *ctx,
+ 			}
+ 			if (folio)
+ 				folio_put(folio);
++			if (return_max_wsum)
++				max_wsum = max(damon_probe_hits_wsum(r, false,
++							ctx), max_wsum);
+ 		}
+ 	}
+-	return 0;
++	return max_wsum;
+ }
  
- 		if (prev && prev->ar.end == r->ar.start &&
--		    abs(prev->nr_accesses - r->nr_accesses) <= thres &&
-+		    abs_diff(prev->nr_accesses, r->nr_accesses) <= thres &&
- 		    damon_sz_region(prev) + damon_sz_region(r) <= sz_limit)
- 			damon_merge_two_regions(t, prev, r);
- 		else
+ /*
 -- 
 2.47.3
 
