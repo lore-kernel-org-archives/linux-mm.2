@@ -4,120 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 369BAC44501
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:53:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F0E6C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:54:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 342436B00A5; Fri, 10 Jul 2026 10:53:08 -0400 (EDT)
+	id 3442D6B00A6; Fri, 10 Jul 2026 10:54:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F2296B00A7; Fri, 10 Jul 2026 10:53:08 -0400 (EDT)
+	id 31B1E6B00A7; Fri, 10 Jul 2026 10:54:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E0FA6B00AA; Fri, 10 Jul 2026 10:53:08 -0400 (EDT)
+	id 20AFA6B00A9; Fri, 10 Jul 2026 10:54:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DD8996B00A5
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:53:07 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7DB8614049F
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:53:07 +0000 (UTC)
-X-FDA: 84973159614.16.04637D9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C5EB44000C
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:53:05 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZNr2VTB;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783695185;
-	b=BwRe9OUKn8TnzYVCHJMvRyMOLcLrcD5Nv05ndX+Daa8bgHq0C6eMTHO5v4tsQmEW+1xlNR
-	itXCeQHTTybRNxkIj6iwiHh8szIDVEu50VslcT8rN+ozXKw/8FohwQZXDK8UeGMspB2jyn
-	kiZ58aYkFwY5czLN6HDPWdmDtq7cilk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZNr2VTB;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783695185;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D52D26B00A6
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:54:17 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AE5F16965E
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:54:17 +0000 (UTC)
+X-FDA: 84973162554.15.8675DDE
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 4FD1680008
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:54:15 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AFG67O+3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783695255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jr/51VQvnc5IIbd0blK/X/7vI3jheta61dHwdebdL/U=;
-	b=8BVxAOEASsN/4wWvuTLL7k0FO1cU8EeAD0Wwsm5T7xj0eIqMCLsCRUaiU9jXVDzY7aymZg
-	9eixP9c2SPjyhHXq148JeZxxG7ySAn3nVnz1tAMi2gQNxmWAiIEyQkBfrTpFAhQ54oSdv9
-	VwdZvYMl1YTZFxGUYoy1XUQ8AYHxxmU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E149F41200;
-	Fri, 10 Jul 2026 14:53:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459F91F000E9;
-	Fri, 10 Jul 2026 14:52:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783695184;
-	bh=Jr/51VQvnc5IIbd0blK/X/7vI3jheta61dHwdebdL/U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WZNr2VTBZ0TDg7uMfeP2jNYGRG1lTfiDbEe5YZsFPy5GZ7Hs444klbtdj1hNPohCG
-	 FH1DdQ09YrvnyjnOPJb8u9kzxVQ7DoF6iT5A6bvGD39pH5XNmuEqZZRycHZFOsTcYM
-	 zHWrg66DyS9T0zVPL05cCjblzC2FVMS1HA5+0Uo5alnkT3sa/ov815TgsKGdPHuYBv
-	 XewnPUzv3TIPO1yWx9BLPYsiEYGk0qPxZYCeQXcQKUMwmg2PE6HTleqwWvef2VVvZD
-	 woi+mln2IYVzCw2d+3Pc4AgzZXThHkKaAtqaOv22l6QSxAPdtZNjZ4p3UojFGrGyto
-	 33KYCBoEoYusg==
-Date: Fri, 10 Jul 2026 15:52:40 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 16/30] mm/vma: use vma_start_pgoff(), linear_page_index()
- in mm code
-Message-ID: <alEHAF8gEh_sFU_r@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <33d79008948391d30bab38db5ae31072ce12f0a1.1782735110.git.ljs@kernel.org>
- <ak--doS80hnAeQ9s@gourry-fedora-PF4VCD3F>
+	bh=2lMcEgUfrouAqfuHqw8FymiRDR1t3DKONMu9zjnR0Ao=;
+	b=zQ1lq5/hJkism31E2t5RyRGMyM1i2mfxada7XxAagtdomhEDPaJQCaZBnf/osZv/w8lrGP
+	AI1U54kA3xVPga6eC/hce3+QqyjMGKEMUATfJeyMGlavNVX6FmQF4gX/0iTqEISnsZOvrL
+	zQOTnnnEEPLYKULhpZ1ny+rlua4392E=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AFG67O+3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1783695255;
+	b=ocrbypGRwZySuVf9ii1bRAxe8Td01Louk22xsMzvxDwt0riKLKHXO0iyX7oC+XT3RovyaM
+	H+OhtGJEpQa+9t1m5Q/sU39C2mWMTkUTNR0ybEvxskJhIKiE5AfDY8yX54aJuHVrKZQoM5
+	/+dbiMTYtTFmX5dZk3usVzg+vbEW9vg=
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51c10e86e52so300401cf.1
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:54:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1783695254; cv=none;
+        d=google.com; s=arc-20260327;
+        b=X/wQz55OH+x0vng5cxiP/zAd2wmzVDzHQHlaw+TBYxxZNpRU2l/UAJhObTNLhMOfql
+         SZoSh6/nZHJHetwDtP9YYpv4bAp1BlC6qGeGByC1MOTAC/cP30DLfnNJEdUx0WnIlh4U
+         RkO7MtQzhny6VFaZRI1OR+24tqsTc6ALSTPsH3JdKKLMujFub8+qoCLk2TAWbawQzFAo
+         wn+KuCWwkjh27h2ujZ4I9h7Qi+tgMTgFFj0+iJkW/QJQCKcc4vxhCiokniYDc8R0S5iv
+         5NtEFMidOsyvkf6Dyn6Hj5xip/2bZEvxpDcuaNFDGQMMzAs/NjFYf5/8YnrA05ZZG+oD
+         5plA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2lMcEgUfrouAqfuHqw8FymiRDR1t3DKONMu9zjnR0Ao=;
+        fh=Bb95nOxbFmS2rf04SK6Mrjud2jM+yi4AcL0ht/jlRSI=;
+        b=sFSUBF/MMv2I6pbimIVVdgTIQr3G23w6PHjp2u5OV49yQCitV1jNseRU1u2TBawK2c
+         A6L0oN5aMNoOk5n4cPkqsEgUNcwDwayDH/YgWFFv9QtAUDeZvzyx002hVecM1GSmEQdn
+         PxNI/5dLxpVGoxOvaIeKWMXP+0VjqMRpt4gLsOU5s/VeJabV+gvMSiTgt2I/0fxSOLnY
+         LNX40ir283zRJ1RUGyuvrabBiWmmvammtRO+qYplER6bjEdjMnLmyGwIX8wbYdkX1pwW
+         CVeXRZVEdSHbyiabDXpe9oJAlI9RlEgfYFY6zLUoVc8N9N7yn4zhzgzxW13txUvnhW9f
+         TNMQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1783695254; x=1784300054; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=2lMcEgUfrouAqfuHqw8FymiRDR1t3DKONMu9zjnR0Ao=;
+        b=AFG67O+3oK96SiG+BBf3Unju/xDiJ1RQ2VJrpE7cQmqgIh2dgLutxVdgLtO6+161oZ
+         KAUrXWVPvOcwdeOvsjV8L1S2sq7uanE2GW/AptGxZtrhbwURJ1c4uzeMR4eX30BoSrvV
+         ZnBDEg++2NihTx3UhndUBEnjqrF4VaTzIC+cjVcORQRF48WC5LT52mAAzm/BKwUvc8Zn
+         0gJsu1yqktDhI/q56sVODS7uvnBE9Q96VVTbqhGRMUz0YXHfzxQMeh0RlYIrFAbKAnWH
+         rPCWaTvt7UZVMZKOzZFqSqD7qMGRDv3xEw67LKyUg50UiMj8XP9HXbWdqYcvM4kWIkYd
+         h2hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783695254; x=1784300054;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=2lMcEgUfrouAqfuHqw8FymiRDR1t3DKONMu9zjnR0Ao=;
+        b=OyLv2Q1kbMianeHJRAK2uj4xkgeQulgffjhjrCVcpaJGEpQjiSVkKDmrC0JKJ7G9qw
+         MckScTyD4MQJmm1XtCBJRZ3IiR5yQbs2Fb4ZGWNrI6XIc/s0/E8Q+R8j4S1Zax1JiHdi
+         asqW5YRMLq63hoMt4e0jnbM85qyU2+sdMsG4VXSBSKQs1yib6D2JrgyRIJeZY8BBBVK4
+         JsE3bHlovWBqXQHgpTBRu7fQuCBwDJxU0OPRdvlo4kzS5Lm3BTDpeUJAWsP1PP7zV9wB
+         3X9KXLhGabKwzkeVG7sO17ZK1R1LAL0tSpjllNmdmZ4D9L58CwzjnqTyuyIh6bR//75f
+         cz7w==
+X-Forwarded-Encrypted: i=1; AHgh+RoNXLqqg1BxM9dgTe5IDCDUpt3N77G3A0nrbSfvS2bogzTWiJ8sUqCi4AK75bZWL9gB+bTiz9EfHA==@kvack.org
+X-Gm-Message-State: AOJu0YzOODizioK0CjhTK6OKOapY2ICBwrmN4DGapGYgoEowNNnhKC2u
+	Gk+XwdJZj1W09DAT6W/W/1dQ2kwMtO2hW3U8udfayRmF5YTCyhSvLDrTwFwglp/YVhCv1YfsYoN
+	m6m0KTVetZDYfaV3Pu7t6FQ3ed3YZd9uNMjhfdOwx
+X-Gm-Gg: AfdE7cnTSdsvoj3I3RfpmTLraeH+b7NKHOIK2RoCqiCEhomk1uL78KtxxaKDlHtyrp0
+	qmj9faqcfmBH6epepIgRcKQ5xYzgbQyLHrWEAPT1JaEMp4WqoBa8XIWw2fXwLJXlHrtlEWOW98U
+	kpv50moDpJwKqCr4XxGIiPm1inadk4G0qBgemoyGrDUivRoQ4AtqNVBQSdbDwKjTjLFlH7agmsU
+	o+BtPU/Z9ASwwkl9SrlMPYH0XSAVuyAnN6NUTmoVILCvT48V18KWu0znKMN+KeoUl63EWrngZd9
+	d7cuRg==
+X-Received: by 2002:a05:622a:22a8:b0:51c:9ad:d76 with SMTP id
+ d75a77b69052e-51cac55248amr8235981cf.19.1783695253420; Fri, 10 Jul 2026
+ 07:54:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ak--doS80hnAeQ9s@gourry-fedora-PF4VCD3F>
+References: <20260626075019.1833065-1-zhanghongru@xiaomi.com> <ak0Xl6q52exX9sBH@lucifer>
+In-Reply-To: <ak0Xl6q52exX9sBH@lucifer>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Fri, 10 Jul 2026 07:54:01 -0700
+X-Gm-Features: AUfX_mzELtiYgnEvQKzFQOlEK1YaEae7FJQ6Fh__Q-TMLISiYa4WqwvXLpp82KY
+Message-ID: <CAJuCfpFqQc+XbkpOiFb9Xap3VME1BevndWi-XyVAVKAfGMhRNg@mail.gmail.com>
+Subject: Re: [RFC PATCH v3] mm: retry page faults under per-VMA lock when
+ mmap_lock is not required
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	david@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	mhocko@suse.com, baohua@kernel.org, shakeel.butt@linux.dev, 
+	linux-kernel@vger.kernel.org, Hongru Zhang <zhanghongru@xiaomi.com>, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C5EB44000C
-X-Stat-Signature: dkcbd4qqmqk9nggns5c5aktzwbg56jzk
-X-HE-Tag: 1783695185-556722
-X-HE-Meta: U2FsdGVkX1/h4IUBrfl8sfMdVdCCJiI6aqzxU8klzPmd5WYYoyjl59452+WpPje4966jYJO1D4lMqE4pSdef3eMKGNX9+9QAaGqUX8G1pIZhNe9+iOjNaPzt5Sv8Gv4kZclc/opQW50cjsZUfjrkjHjR3qmY3lgyE3nvdpx591K5++uIDVlGBD20wtMJN5u+npFYOs+Vnl9ybA9etIWzYQzQ26tJUjmtgJQ6ob9oKyb04dNxal79XLHRfboxfQVAKI3ekCgUmF8224+F+vZZkQ6lhhJR7eRcEeEc074PJlYOaOlO2kXDF1q1IkE+MwQwrKVRLXc/Dkjc+IfthNnL57HX7Iox+RhK9S5LXUVufNLAJysbbrPyTqfGrKRVJ0LadFnTaGH8cY+u0SgRNiErxvfeVuZv1q+h6Ja1rolygjqbCLO1DKlXv612XkGX6cQUHVpggeNXuAxVll4l2IaMXuax/zDysmIQeYFlnM9O6rbCgczR9k/JP4rLtHTkJ/Np9IqNY5fPPlRGFOOD7/ZwgM/gARZi4Csb0iXUzoScqub0gmArft+x3eT56WAlM+c+K2tpA0QP8K5ppzkOG2h0Y5noAa7wRSgrXbanDyj2zdkgqsufdTOWZbCs1ObDO8Wny5n7yMUqG2TN/NE9K90GccSU8hQNK0+umRbZYfrrBBTnWdhK3jh4dtq6tLidmBY65hEePnn7aB1tFwjB9uTUoaJyFyYPO72d7X2KK4VfGqEAwqRb474QEQv/Ncpt+T2ckvctqAtNglAocd4nUb9utO2lkaRS9ggjPpePcMlwHXUllrk4yXkTtbhGozgSj5MElnWC5C6FWMv9RjHET70ww738iF79jFIVliHTEUDWaZ5DlAdaEgv6xVLZO0SLOyMEuy3BPFXnGUGCvH2LE7BLdHAB9AejAP7cazK87W/KXvOZpM5FEd2DoI3tQnMwKGzGwyHNSXoZkexkgbJjx7s
- REzUM9tJ
- qcqz+FHCiMUawFR+K5utI/J7zq8TJ8t9qZ55fNxXr/MY2DY6CFWoKn/ANx5ppxDpFIRQvfgpF8pT3j3AEu6th8THozI3wIb3QyCsX7P6sg0stiqQsoImbwsnxv81cNL6kCsk2JDli0e5H6RupUszKFSQy6Tpbp7FX4LfWo6/iCFGKzXiFa342jrgSkxLKdyheu0ws2TFhxu5k9LiMl1AzQ6bPuUM7mJcQPglInwifTRpRPvSg+AHDsn2v6VitL3MTjL8mUrrVsi8nQLFiumFu/0Qo35ans4LeXvvzx0XZj0akaJSUu4bAkfzXd6orJze3kULcYYC4Em5FUR0fqI3iOB9TNZdTFpM28QJ8ZAmMXR0UR6YtINAZ2Kv/lI3ZS39GksBvyu79ceCO8Mr+UV7aMUCqQCQU5+wk3W1K6zMG0YAhTQGJ+Nml1wub0Rj4PevybcTRAhTQoWMCWFI=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4FD1680008
+X-Stat-Signature: ywntr55tc8t99ir8sj65gsr6m3joc5yi
+X-HE-Tag: 1783695255-780307
+X-HE-Meta: U2FsdGVkX1+IQq7HPvYT3Q8VU4YE1GDDaOAeoFFhVVC9NtkovwEMlzMJb9A9fPdIveaYOYF5rrXYXsA/RGAKj0k/kziEbgWs7IHgqfSyOp1NNlaXg63eHbY8je2cy+CC2UnR/48KD0Bt2vANA7AQUk61kcBk9yks3yhc2wHEGMosoB+flpMpYHV+1UqajkPhcOZYVMeLzOGQvmWUXO9/LS+b3kqngOX+YIng9UvbgpmOMPTb4XuXoepXic7n0Q99ZWUCDXB9dNs+aClSmTAG1SrEy0WfyYwSRRnI64V8SJTBCxCJgT1RqO9IrWbhdsJ03rzKXIb/Pyl7QC+nqVAdonOFj5UKm76nRrmfGkVdDKbbd3pzDBnDhlLKf7y1qu+NBdjbWcW9fqzwEWq8cdn22DO3gUhgmDv235U3j6Re+Ggi/at7z33hOPm1ceDyX/drOMzieRD6/p8Uf4Y1y4y18qg3xGchC4Cgh9YoJMPpME9fT5BT4qaIvuZ63MjYo2vzqyhbiZLbXeu2bDZvPwayMsSmyPhhkllEkS+j/D5PZf+RnEhK+certVFWmina9VZAPxVRw40hhGYq40/027OZYx06pcips/O0cwGKRDvfLLfn8OqqnL/VkR2Xsv/aa2B0zQT+eEXWwE9zl85koT0RpczVdH7rkUBiXvFNMiSDjVPM61wEpRebjgIdiBNfk3KhuIX1yd8rP79BytVUL83HlsLPhsZ9+AvJv79J5NEDxm5tpo28kSs8MQe231hnuOWMzo9j5r1R4GECayAX5ihtpkgnvy67s+MtgWzx0wiyZhvjNBXjskj54gL4g7/HF0po+wHrNxrw9Q9Kbd+llfGR/D2jk2ajbN+1LnKIvgkWvneNCaoJipU1W7g7PeBBI5+iZa5j/ey3nXPFtuTV96jNUBJGrPxGaWPBUNndZGWS6f8hjaarpptsq9LqsVoAZkcDMjVu4SNqbes5P1lEZon
+ cA4nfWO8
+ vRRV2Cuj++VahymGFKQZT/Gl98kCGmHPlXNJ2RO5gQqSQViuvTWqQpS6ZWc6zEBSLfyuZnF8YqBHZQ3GPRpRaQ1ZZ0liqVH/TJsY7uN4yRDUHuGseSITaNebDLosgYiPpfZ7V3k0ZnwDcYDYvXRqtnnXM1MMRCWdarJhrHGZE+Ab5o9OoT6tS7i9fclB5mUnzYU9i3sRnt8OVZ3X1Jc3Sds6ZaFH4iTKn190SMRpdeIi/ryxi9L5ZDs2JAm1VzaF1+CnAkeg0OmxzAmeCqqMcAjzmFyTU1FEBhvzLpDGHypBOzdxE9Ptdq2I6gJ2a8nwj1uZA6KuyRNqaotGJgZtDzobExFLg+3K51yxK/16fNkTC0qnO1ys04gcvwVuYrIofstTHIQt2pazavqDW5FBzpmtR2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,765 +142,636 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 09, 2026 at 11:29:58AM -0400, Gregory Price wrote:
-> On Mon, Jun 29, 2026 at 01:23:27PM +0100, Lorenzo Stoakes wrote:
-> > There are many instances in which linear_page_index() (as well as
-> > linear_page_delta()) is open-coded, which is confusing and inconsistent.
-> >
-> > Additionally, vma->vm_pgoff doesn't necessarily make it clear that this is
-> > the page offset of the start of the VMA range.
-> >
-> > Doing so also aids greppability.
-> >
-> > So use vma_start_pgoff() in favour of directly accessing vma->vm_pgoff, and
-> > linear_page_index() where we can.
-> >
-> > This also lays the ground for future changes which will add an anonymous
-> > page offset in order to be able to index MAP_PRIVATE-file backed anon
-> > folios in terms of their virtual page offset.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+On Tue, Jul 7, 2026 at 9:52=E2=80=AFAM Lorenzo Stoakes <ljs@kernel.org> wro=
+te:
 >
-> such a nice readability improvement, thank you.
+> +cc Vlata, the only one from the MEMORY MAPPING - LOCKING people excluded=
+,
+> and Willy as he's been heavily involved. But see below you need to cc- wa=
+y
+> more.
 >
-> This made me wonder though whether we can make it painful for people to
-> open-code this in the future, otherwise I fear another one of these
-> patches creeping in 5-10 years down the line.
-
-Yeah for sure, I wonder if we could somehow make some VMA fields private
-honestly which would address a lot of this. I think there clever ways of making
-certain things a gap in the struct outwardly that can do it.
-
-But one for the future :)
-
+> (nitty I know) Maybe subject should be 'mm: default to VMA lock on
+> VM_FAULT_RETRY' or something just to make it clear it's about the retry
+> path?
 >
-> Not sure it's feasible though
+> Also I guess you and Barry agreed to you taking this over? :)
 >
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-
-Thanks! :)
-
-Cheers, Lorenzo
-
+> You missed a million people from cc- by the way. This time I really canno=
+t
+> be bothered to add them all as I usually do, but it is MANDATORY to cc
+> maintainers and really you should be cc'ing reviewers too every time.
 >
+> Again I feel I need to write a bot that just autoreplies about this :)
+>
+> $ scripts/get_maintainer.pl --nogit --nogit-fallback your-patch.patch
+> <... ~36 people in total ...>
+> < lists >
+> < etc. >
+>
+> Please fix this on respin.
+>
+> On Fri, Jun 26, 2026 at 03:50:19PM +0800, Hongru Zhang wrote:
+> > From: Hongru Zhang <zhanghongru@xiaomi.com>
+> >
+> > Currently, when a page fault returns VM_FAULT_RETRY under the per-VMA
+> > lock due to folio_lock() failing, mainly because the folio is under
+> > I/O, the architecture fault handler unconditionally falls back to
+> > retrying with mmap_lock. This leads to mmap_lock contention.
+> >
+> > This patch introduces VM_FAULT_RETRY_HARD to mark the paths that
+>
+> I'm going to have to bikeshed the name :)
+>
+> While I like the idea of 'retry hard' like the movie 'die hard' :P I thin=
+k,
+> since this is explicitly about the mmap lock, we should reference that?
+>
+> So maybe VM_FAULT_RETRY_MMAP?
+>
+> or VM_FAULT_RETRY_HARDER_WITH_A_VENGEANCE? ;)
+>
+> > require mmap_lock. Retries now stay under the per-VMA lock by default,
+> > and only marked paths fall back to the mmap_lock retry path.
+>
+> I think the commit message should be much clearer about the logic here.
+>
+> You are making it such that VM_FAULT_RETRY does its retry pass using a VM=
+A
+> lock, but it retains the same 'retry and set FAULT_FLAG_TRIED' logic as
+> before.
+>
+> HOWEVER.
+>
+> On the VMA lock path the retry flag is only set if VM_FAULT_MAJOR. So now
+> you're allowing _unbounded_ VMA lock attempts (which is concerning and I
+> don't think intended by the lock code).
+>
+> None of this is clear right now, you need to documment it.
+>
+> >
+> > Based on the stress model from Kunwu Chan and Wang Lian in v2, we
+> > adapted a benchmark for a 20-core desktop environment (reduced thread
+> > count, adjusted memcg limits, 20-core Intel i7-12700). The benchmark
+> > uses concurrent page faults under memcg pressure (forcing reclaim and
+> > VM_FAULT_RETRY) with parallel munmap to amplify mmap_lock read-write
+> > contention.
+> >
+> > Throughput (higher is better):
+> > +---------+------------+------------+-------------+
+> > | Threads |  Vanilla   |  Patched   | Improvement |
+> > +---------+------------+------------+-------------+
+> > |   40    | 1071.11 /s | 1301.11 /s |   +21.5%    |
+> > +---------+------------+------------+-------------+
+> > |   60    | 1043.15 /s | 1472.36 /s |   +41.1%    |
+> > +---------+------------+------------+-------------+
+> > |   80    | 1049.39 /s | 1665.65 /s |   +58.7%    |
+> > +---------+------------+------------+-------------+
+> >
+> > mmap_lock contention count (lower is better):
+> > +---------+-----------+---------+-----------+
+> > | Threads |  Vanilla  | Patched | Reduction |
+> > +---------+-----------+---------+-----------+
+> > |   40    | 3,217,904 |  51,201 |  -98.4%   |
+> > +---------+-----------+---------+-----------+
+> > |   60    | 4,419,149 |  55,711 |  -98.7%   |
+> > +---------+-----------+---------+-----------+
+> > |   80    | 5,395,730 |  66,184 |  -98.8%   |
+> > +---------+-----------+---------+-----------+
+>
+> Yeah I worry a bit about the unbounded nature of things here, the fact
+> we're seeing such a difference could also be offset by extreme busy waiti=
+ng
+> with the unbounded VMA lock retries.
+>
+> Let's experiment based on limiting this surely?
+>
+> >
+> > Benchmark and test scripts:
+> > https://gist.github.com/zhr250/c36c2c54d9351df37e12fd072d4926ef
+> >
+> > Suggested-by: Barry Song <baohua@kernel.org>
+> > Suggested-by: Suren Baghdasaryan <surenb@google.com>
+> > Signed-off-by: Hongru Zhang <zhanghongru@xiaomi.com>
 > > ---
-> >  include/linux/huge_mm.h    |  1 +
-> >  include/linux/hugetlb.h    |  3 +--
-> >  include/linux/pagemap.h    |  2 +-
-> >  mm/damon/vaddr.c           |  5 +++--
-> >  mm/debug.c                 |  2 +-
-> >  mm/filemap.c               |  7 ++++---
-> >  mm/huge_memory.c           |  2 +-
-> >  mm/hugetlb.c               | 11 ++++-------
-> >  mm/internal.h              | 24 ++++++++++++++----------
-> >  mm/khugepaged.c            |  3 ++-
-> >  mm/madvise.c               |  6 +++---
-> >  mm/mapping_dirty_helpers.c |  2 +-
-> >  mm/memory.c                | 25 +++++++++++++------------
-> >  mm/mempolicy.c             | 13 +++++++------
-> >  mm/mremap.c                | 12 ++++--------
-> >  mm/msync.c                 |  4 ++--
-> >  mm/nommu.c                 |  7 ++++---
-> >  mm/pagewalk.c              |  2 +-
-> >  mm/shmem.c                 |  9 +++++----
-> >  mm/userfaultfd.c           |  4 ++--
-> >  mm/util.c                  |  4 ++--
-> >  mm/vma.c                   | 15 +++++++--------
-> >  mm/vma_exec.c              |  4 ++--
-> >  mm/vma_init.c              |  2 +-
-> >  24 files changed, 86 insertions(+), 83 deletions(-)
+> > Changes since v2:
+> > - v2 required each retry path to explicitly opt in to VMA lock retry
+> >   (VM_FAULT_RETRY_VMA). This patch inverts the logic: retries default
+> >   to VMA lock, and only paths requiring mmap_lock opt out
+> >   (VM_FAULT_RETRY_HARD)
+> > - This patch corresponds to v2 patch 1/5; the remaining optimizations
+> >   will be submitted separately
+> > - Rebased on mm-unstable
 > >
-> > diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> > index ad20f7f8c179..653b81d08fe7 100644
-> > --- a/include/linux/huge_mm.h
-> > +++ b/include/linux/huge_mm.h
-> > @@ -230,6 +230,7 @@ static inline bool thp_vma_suitable_order(struct vm_area_struct *vma,
+> > Link to v2:
+> > https://lore.kernel.org/all/20260430040427.4672-1-baohua@kernel.org/
 > >
-> >  	/* Don't have to check pgoff for anonymous vma */
-> >  	if (!vma_is_anonymous(vma)) {
-> > +		/* vma_start_pgoff() in mm.h so not available. */
-> >  		if (!IS_ALIGNED((vma->vm_start >> PAGE_SHIFT) - vma->vm_pgoff,
-> >  				hpage_size >> PAGE_SHIFT))
-> >  			return false;
-> > diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> > index 2abaf99321e9..8390f50604d6 100644
-> > --- a/include/linux/hugetlb.h
-> > +++ b/include/linux/hugetlb.h
-> > @@ -792,8 +792,7 @@ static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
-> >  {
-> >  	struct hstate *h = hstate_vma(vma);
+> > Link to v1:
+> > https://lore.kernel.org/all/20251127011438.6918-1-21cnbao@gmail.com/
+>
+> Hmm it's a bit odd for you to send an independent series and link to
+> somebody else's series as v1/v2 but anyway as long as Barry and you agree
+> with that approach that's fine!
+>
 > >
-> > -	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-> > -		(vma->vm_pgoff >> huge_page_order(h));
-> > +	return linear_page_index(vma, address) >> huge_page_order(h);
-> >  }
+> >  arch/arm/mm/fault.c       | 4 ++++
+> >  arch/arm64/mm/fault.c     | 4 ++++
+> >  arch/loongarch/mm/fault.c | 4 ++++
+> >  arch/powerpc/mm/fault.c   | 4 ++++
+> >  arch/riscv/mm/fault.c     | 4 ++++
+> >  arch/s390/mm/fault.c      | 4 ++++
+> >  arch/x86/mm/fault.c       | 4 ++++
+> >  include/linux/mm_types.h  | 9 +++++----
+> >  mm/huge_memory.c          | 2 +-
+> >  mm/memory.c               | 6 +++---
+> >  10 files changed, 37 insertions(+), 8 deletions(-)
 > >
-> >  static inline bool order_is_gigantic(unsigned int order)
-> > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> > index 644c0f25ae73..68a88d34a468 100644
-> > --- a/include/linux/pagemap.h
-> > +++ b/include/linux/pagemap.h
-> > @@ -1101,7 +1101,7 @@ static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
-> >  	pgoff_t pgoff;
+> > diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
+> > index e62cc4be5adf..2f909fb4f7db 100644
+> > --- a/arch/arm/mm/fault.c
+> > +++ b/arch/arm/mm/fault.c
+> > @@ -391,6 +391,7 @@ do_page_fault(unsigned long addr, unsigned int fsr,=
+ struct pt_regs *regs)
+> >       if (!(flags & FAULT_FLAG_USER))
+> >               goto lock_mmap;
 > >
-> >  	pgoff = linear_page_delta(vma, address);
-> > -	pgoff += vma->vm_pgoff;
-> > +	pgoff += vma_start_pgoff(vma);
-> >  	return pgoff;
-> >  }
+> > +retry_vma:
+> >       vma =3D lock_vma_under_rcu(mm, addr);
+> >       if (!vma)
+> >               goto lock_mmap;
+> > @@ -420,6 +421,9 @@ do_page_fault(unsigned long addr, unsigned int fsr,=
+ struct pt_regs *regs)
+> >                       goto no_context;
+> >               return 0;
+> >       }
+>
+> OK so this is really important - and it seems to be the case regardless o=
+f
+> arch.
+>
+> When VM_FAULT_RETRY is encountered under the VMA lock, we do:
+>
+>         if (fault & VM_FAULT_MAJOR)
+>                 flags |=3D FAULT_FLAG_TRIED;
+>
+> Which then allows _under the mmap lock_ 2 more retries.
+>
+> You're now (silently!) going to:
+>
+>         if (!(fault & VM_FAULT_MAJOR))
+>                 /* unbounded infinite VMA lock retries */
+>
+> This seems very unwise (TM).
+>
+> We should bound this somehow. A maximum number of retries? Only do the
+> minor fault thing once?
+>
+> Could you benchmark how it looks at different retry counts? We could also
+> consider other strategies, but unbounded attempts here seems not good.
+>
+> Another thing - is there any way to dedupe this code...? We're open codin=
+g
+> a lot of crap now in each of the arches and it's not good.
+>
+> A series like this is the place to fix stuff like that, not keep adding t=
+o
+> the technical debt.
+>
+> Hongru - could you see if that's possible as preceeding patches please?
+>
+> > +     if (!(fault & VM_FAULT_RETRY_HARD))
+> > +             goto retry_vma;
+>
+> Maybe it's worth being explicit that this is the VM_FAULT_RETRY path? Oth=
+erwise
+> it's not so clear.
+>
+> You happen to only fall through here if VM_FAULT_RETRY is set.
+>
+> So e.g.:
+>
+> /**
+>  * fault_can_retry_vma_lock() - Are we able to retry a page fault holding
+>  * only the VMA lock?
+>  * @fault: The fault to check.
+>  *
+>  * We default to performing the VM_FAULT_RETRY/FAULT_FLAG_TRIED dance und=
+er
+>  * VMA lock. This allows us to avoid mmap contention on the likely case
+>  * that we encountered an ephemeral inability to VMA lock (e.g. the VMA w=
+as
+>  * write locked at the time).
+>  *
+>  * Returns: true if we can retry under the VMA lock, false otherwise.
+>  */
+> static bool fault_can_retry_vma_lock(vm_fault_t fault)
+> {
+>         VM_WARN_ON_ONCE(!(fault & VM_FAULT_RETRY));
+>
+>         return fault & VM_FAULT_RETRY_HARD;
+> }
+>
+> And put that somewhere all the arch fault logic can access.
+>
+> Then:
+>
+>         if (fault_can_retry_vma_lock(fault))
+>                 goto retry_vma;
+>
+> Is self-documenting, and the assert assures that no mistake was made with
+> it.
+>
+> Same comments for all the arches, obviously.
+>
+> > +
+> >  lock_mmap:
 > >
-> > diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> > index d27147603564..faa44aa3219b 100644
-> > --- a/mm/damon/vaddr.c
-> > +++ b/mm/damon/vaddr.c
-> > @@ -12,6 +12,7 @@
-> >  #include <linux/mman.h>
-> >  #include <linux/mmu_notifier.h>
-> >  #include <linux/page_idle.h>
-> > +#include <linux/pagemap.h>
-> >  #include <linux/pagewalk.h>
-> >  #include <linux/sched/mm.h>
+> >  retry:
+> > diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> > index 739800835920..695a09486795 100644
+> > --- a/arch/arm64/mm/fault.c
+> > +++ b/arch/arm64/mm/fault.c
+> > @@ -673,6 +673,7 @@ static int __kprobes do_page_fault(unsigned long fa=
+r, unsigned long esr,
+> >       if (!(mm_flags & FAULT_FLAG_USER))
+> >               goto lock_mmap;
 > >
-> > @@ -627,8 +628,8 @@ static void damos_va_migrate_dests_add(struct folio *folio,
-> >  	}
+> > +retry_vma:
+> >       vma =3D lock_vma_under_rcu(mm, addr);
+> >       if (!vma)
+> >               goto lock_mmap;
+> > @@ -719,6 +720,9 @@ static int __kprobes do_page_fault(unsigned long fa=
+r, unsigned long esr,
+> >                       goto no_context;
+> >               return 0;
+> >       }
+> > +     if (!(fault & VM_FAULT_RETRY_HARD))
+> > +             goto retry_vma;
+> > +
+> >  lock_mmap:
 > >
-> >  	order = folio_order(folio);
-> > -	ilx = vma->vm_pgoff >> order;
-> > -	ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-> > +	ilx = vma_start_pgoff(vma) >> order;
-> > +	ilx += linear_page_delta(vma, addr) >> order;
+> >  retry:
+> > diff --git a/arch/loongarch/mm/fault.c b/arch/loongarch/mm/fault.c
+> > index 2c93d33356e5..d7dd55722e52 100644
+> > --- a/arch/loongarch/mm/fault.c
+> > +++ b/arch/loongarch/mm/fault.c
+> > @@ -219,6 +219,7 @@ static void __kprobes __do_page_fault(struct pt_reg=
+s *regs,
+> >       if (!(flags & FAULT_FLAG_USER))
+> >               goto lock_mmap;
 > >
-> >  	for (i = 0; i < dests->nr_dests; i++)
-> >  		weight_total += dests->weight_arr[i];
-> > diff --git a/mm/debug.c b/mm/debug.c
-> > index 77fa8fe1d641..497654b36f1a 100644
-> > --- a/mm/debug.c
-> > +++ b/mm/debug.c
-> > @@ -163,7 +163,7 @@ void dump_vma(const struct vm_area_struct *vma)
-> >  		"flags: %#lx(%pGv)\n",
-> >  		vma, (void *)vma->vm_start, (void *)vma->vm_end, vma->vm_mm,
-> >  		(unsigned long)pgprot_val(vma->vm_page_prot),
-> > -		vma->anon_vma, vma->vm_ops, vma->vm_pgoff,
-> > +		vma->anon_vma, vma->vm_ops, vma_start_pgoff(vma),
-> >  		vma->vm_file, vma->vm_private_data,
-> >  #ifdef CONFIG_PER_VMA_LOCK
-> >  		refcount_read(&vma->vm_refcnt),
-> > diff --git a/mm/filemap.c b/mm/filemap.c
-> > index 5af62e6abca5..bcb07b21a685 100644
-> > --- a/mm/filemap.c
-> > +++ b/mm/filemap.c
-> > @@ -3402,8 +3402,8 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
-> >  		 * of memory.
-> >  		 */
-> >  		struct vm_area_struct *vma = vmf->vma;
-> > -		unsigned long start = vma->vm_pgoff;
-> > -		unsigned long end = start + vma_pages(vma);
-> > +		const unsigned long start = vma_start_pgoff(vma);
-> > +		const unsigned long end = vma_end_pgoff(vma);
-> >  		unsigned long ra_end;
+> > +retry_vma:
+> >       vma =3D lock_vma_under_rcu(mm, address);
+> >       if (!vma)
+> >               goto lock_mmap;
+> > @@ -265,6 +266,9 @@ static void __kprobes __do_page_fault(struct pt_reg=
+s *regs,
+> >                       no_context(regs, write, address);
+> >               return;
+> >       }
+> > +     if (!(fault & VM_FAULT_RETRY_HARD))
+> > +             goto retry_vma;
+> > +
+> >  lock_mmap:
 > >
-> >  		ra->order = exec_folio_order();
-> > @@ -3921,7 +3921,8 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
-> >  		goto out;
-> >  	}
+> >  retry:
+> > diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+> > index 806c74e0d5ab..65ec9a8252e7 100644
+> > --- a/arch/powerpc/mm/fault.c
+> > +++ b/arch/powerpc/mm/fault.c
+> > @@ -487,6 +487,7 @@ static int ___do_page_fault(struct pt_regs *regs, u=
+nsigned long address,
+> >       if (!(flags & FAULT_FLAG_USER))
+> >               goto lock_mmap;
 > >
-> > -	addr = vma->vm_start + ((start_pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> > +	addr = vma->vm_start +
-> > +		((start_pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
-> >  	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd, addr, &vmf->ptl);
-> >  	if (!vmf->pte) {
-> >  		folio_unlock(folio);
+> > +retry_vma:
+> >       vma =3D lock_vma_under_rcu(mm, address);
+> >       if (!vma)
+> >               goto lock_mmap;
+> > @@ -517,6 +518,9 @@ static int ___do_page_fault(struct pt_regs *regs, u=
+nsigned long address,
+> >       if (fault_signal_pending(fault, regs))
+> >               return user_mode(regs) ? 0 : SIGBUS;
+> >
+> > +     if (!(fault & VM_FAULT_RETRY_HARD))
+> > +             goto retry_vma;
+> > +
+> >  lock_mmap:
+> >
+> >       /* When running in the kernel we expect faults to occur only to
+> > diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
+> > index 04ed6f8acae4..6c68414a1224 100644
+> > --- a/arch/riscv/mm/fault.c
+> > +++ b/arch/riscv/mm/fault.c
+> > @@ -347,6 +347,7 @@ void handle_page_fault(struct pt_regs *regs)
+> >       if (!(flags & FAULT_FLAG_USER))
+> >               goto lock_mmap;
+> >
+> > +retry_vma:
+> >       vma =3D lock_vma_under_rcu(mm, addr);
+> >       if (!vma)
+> >               goto lock_mmap;
+> > @@ -376,6 +377,9 @@ void handle_page_fault(struct pt_regs *regs)
+> >                       no_context(regs, addr);
+> >               return;
+> >       }
+> > +     if (!(fault & VM_FAULT_RETRY_HARD))
+> > +             goto retry_vma;
+> > +
+> >  lock_mmap:
+> >
+> >  retry:
+> > diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
+> > index 028aeb9c48d6..45a6c35044cc 100644
+> > --- a/arch/s390/mm/fault.c
+> > +++ b/arch/s390/mm/fault.c
+> > @@ -294,6 +294,7 @@ static void do_exception(struct pt_regs *regs, int =
+access)
+> >               flags |=3D FAULT_FLAG_WRITE;
+> >       if (!(flags & FAULT_FLAG_USER))
+> >               goto lock_mmap;
+> > +retry_vma:
+> >       vma =3D lock_vma_under_rcu(mm, address);
+> >       if (!vma)
+> >               goto lock_mmap;
+> > @@ -318,6 +319,9 @@ static void do_exception(struct pt_regs *regs, int =
+access)
+> >                       handle_fault_error_nolock(regs, 0);
+> >               return;
+> >       }
+> > +     if (!(fault & VM_FAULT_RETRY_HARD))
+> > +             goto retry_vma;
+> > +
+> >  lock_mmap:
+> >  retry:
+> >       vma =3D lock_mm_and_find_vma(mm, address, regs);
+> > diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+> > index 63de8e8684f2..cb80070271d0 100644
+> > --- a/arch/x86/mm/fault.c
+> > +++ b/arch/x86/mm/fault.c
+> > @@ -1322,6 +1322,7 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >       if (!(flags & FAULT_FLAG_USER))
+> >               goto lock_mmap;
+> >
+> > +retry_vma:
+> >       vma =3D lock_vma_under_rcu(mm, address);
+> >       if (!vma)
+> >               goto lock_mmap;
+> > @@ -1351,6 +1352,9 @@ void do_user_addr_fault(struct pt_regs *regs,
+> >                                                ARCH_DEFAULT_PKEY);
+> >               return;
+> >       }
+> > +     if (!(fault & VM_FAULT_RETRY_HARD))
+> > +             goto retry_vma;
+> > +
+> >  lock_mmap:
+> >
+> >  retry:
+> > diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> > index 5ef78617ce93..58db6f0af6fd 100644
+> > --- a/include/linux/mm_types.h
+> > +++ b/include/linux/mm_types.h
+>
+> Please also update the comment block to add the new flag.
+>
+> > @@ -1665,10 +1665,11 @@ enum vm_fault_reason {
+> >       VM_FAULT_NOPAGE         =3D (__force vm_fault_t)0x000100,
+> >       VM_FAULT_LOCKED         =3D (__force vm_fault_t)0x000200,
+> >       VM_FAULT_RETRY          =3D (__force vm_fault_t)0x000400,
+> > -     VM_FAULT_FALLBACK       =3D (__force vm_fault_t)0x000800,
+> > -     VM_FAULT_DONE_COW       =3D (__force vm_fault_t)0x001000,
+> > -     VM_FAULT_NEEDDSYNC      =3D (__force vm_fault_t)0x002000,
+> > -     VM_FAULT_COMPLETED      =3D (__force vm_fault_t)0x004000,
+> > +     VM_FAULT_RETRY_HARD     =3D (__force vm_fault_t)0x000800,
+> > +     VM_FAULT_FALLBACK       =3D (__force vm_fault_t)0x001000,
+> > +     VM_FAULT_DONE_COW       =3D (__force vm_fault_t)0x002000,
+> > +     VM_FAULT_NEEDDSYNC      =3D (__force vm_fault_t)0x004000,
+> > +     VM_FAULT_COMPLETED      =3D (__force vm_fault_t)0x008000,
+>
+> Hmm I suppose there's no harm in renumbering here to keep the retries
+> together :)
+>
+> I wonder if we shouldn't invert this VM_FAULT_RETRY | VM_FAULT_RETRY_HARD
+> thing though and instead have:
+>
+> #define VM_FAULT_RETRY_MASK (VM_FAULT_RETRY | VM_FAULT_RETRY_MMAP)
+>
+> And convert code that checks VM_FAULT_RETRY to check VM_FAULT_RETRY_MASK
+> instead, then there'd be no need for an awkward check/or confusion around
+> the need for VM_FAULT_RETRY to always be set in both cases.
+>
+> You're already basically touching all the files that reference
+> VM_FAULT_RETRY so it's not actually much more churn.
+>
+> >       VM_FAULT_HINDEX_MASK    =3D (__force vm_fault_t)0x0f0000,
+> >  };
+> >
 > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > index 2bccb0a53a0a..e94f56487225 100644
+> > index 94bd656eeaf8..ad0129d579bc 100644
 > > --- a/mm/huge_memory.c
 > > +++ b/mm/huge_memory.c
-> > @@ -180,7 +180,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
-> >  	 */
-> >  	if (!in_pf && shmem_file(vma->vm_file))
-> >  		return orders & shmem_allowable_huge_orders(file_inode(vma->vm_file),
-> > -						   vma, vma->vm_pgoff, 0,
-> > +						   vma, vma_start_pgoff(vma), 0,
-> >  						   forced_collapse);
+> > @@ -1398,7 +1398,7 @@ vm_fault_t do_huge_pmd_device_private(struct vm_f=
+ault *vmf)
 > >
-> >  	if (!vma_is_anonymous(vma)) {
-> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > index f45000149a78..d44a3ac5ee0a 100644
-> > --- a/mm/hugetlb.c
-> > +++ b/mm/hugetlb.c
-> > @@ -1011,8 +1011,7 @@ static long region_count(struct resv_map *resv, long f, long t)
-> >  static pgoff_t vma_hugecache_offset(struct hstate *h,
-> >  			struct vm_area_struct *vma, unsigned long address)
-> >  {
-> > -	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-> > -			(vma->vm_pgoff >> huge_page_order(h));
-> > +	return linear_page_index(vma, address) >> huge_page_order(h);
-> >  }
+> >       if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+> >               vma_end_read(vma);
+> > -             return VM_FAULT_RETRY;
+> > +             return VM_FAULT_RETRY | VM_FAULT_RETRY_HARD;
+>
+> Why are we specifically wanting this for PMD device private entries?
+>
+> You should add a comment, and the commit message should say why.
+>
+> Actually, maybe in this common case of vmf->flags & FAULT_FLAG_VMA_LOCK -=
+>
+> harder you can make a helper?
+>
+> Like:
+>
+> /** blahhhh some kdoc comment */
+> static vm_fault_t retry_under_mmap_if_vma_locked(struct vm_fault *vmf)
+> {
+>         if (!(vmf->flags & FAULT_FLAG_VMA_LOCK))
+>                 return 0;
+>
+>         vma_end_read(vma);
+>         return VM_FAULT_RETRY | VM_FAULT_RETRY_HARD;
+> }
+>
+> And:
+>
+>         vm_fault_t ret;
+>
+>         ret =3D retry_under_mmap_if_vma_locked(vmf);
+>         if (ret)
+>                 return ret;
+>
+> Or something like this.
+>
+> >       }
 > >
-> >  /*
-> > @@ -5372,8 +5371,7 @@ static void unmap_ref_private(struct mm_struct *mm, struct vm_area_struct *vma,
-> >  	 * from page cache lookup which is in HPAGE_SIZE units.
-> >  	 */
-> >  	address = address & huge_page_mask(h);
-> > -	pgoff = ((address - vma->vm_start) >> PAGE_SHIFT) +
-> > -			vma->vm_pgoff;
-> > +	pgoff = linear_page_index(vma, address);
-> >  	mapping = vma->vm_file->f_mapping;
-> >
-> >  	/*
-> > @@ -6771,7 +6769,7 @@ static unsigned long page_table_shareable(struct vm_area_struct *svma,
-> >  				struct vm_area_struct *vma,
-> >  				unsigned long addr, pgoff_t idx)
-> >  {
-> > -	unsigned long saddr = ((idx - svma->vm_pgoff) << PAGE_SHIFT) +
-> > +	unsigned long saddr = ((idx - vma_start_pgoff(svma)) << PAGE_SHIFT) +
-> >  				svma->vm_start;
-> >  	unsigned long sbase = saddr & PUD_MASK;
-> >  	unsigned long s_end = sbase + PUD_SIZE;
-> > @@ -6856,8 +6854,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
-> >  		      unsigned long addr, pud_t *pud)
-> >  {
-> >  	struct address_space *mapping = vma->vm_file->f_mapping;
-> > -	pgoff_t idx = ((addr - vma->vm_start) >> PAGE_SHIFT) +
-> > -			vma->vm_pgoff;
-> > +	const pgoff_t idx = linear_page_index(vma, addr);
-> >  	struct vm_area_struct *svma;
-> >  	unsigned long saddr;
-> >  	pte_t *spte = NULL;
-> > diff --git a/mm/internal.h b/mm/internal.h
-> > index 181e79f1d6a2..89e5b7efe256 100644
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -1143,26 +1143,28 @@ static inline bool
-> >  folio_within_range(struct folio *folio, struct vm_area_struct *vma,
-> >  		unsigned long start, unsigned long end)
-> >  {
-> > -	pgoff_t pgoff, addr;
-> > -	unsigned long vma_pglen = vma_pages(vma);
-> > +	const unsigned long vma_pglen = vma_pages(vma);
-> > +	pgoff_t pgoff_folio, pgoff_vma_start;
-> > +	unsigned long addr;
-> >
-> >  	VM_WARN_ON_FOLIO(folio_test_ksm(folio), folio);
-> >  	if (start > end)
-> >  		return false;
-> >
-> > +	pgoff_folio = folio_pgoff(folio);
-> > +	pgoff_vma_start = vma_start_pgoff(vma);
-> > +
-> >  	if (start < vma->vm_start)
-> >  		start = vma->vm_start;
-> >
-> >  	if (end > vma->vm_end)
-> >  		end = vma->vm_end;
-> >
-> > -	pgoff = folio_pgoff(folio);
-> > -
-> >  	/* if folio start address is not in vma range */
-> > -	if (!in_range(pgoff, vma->vm_pgoff, vma_pglen))
-> > +	if (!in_range(pgoff_folio, pgoff_vma_start, vma_pglen))
-> >  		return false;
-> >
-> > -	addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> > +	addr = vma->vm_start + ((pgoff_folio - pgoff_vma_start) << PAGE_SHIFT);
-> >
-> >  	return !(addr < start || end - addr < folio_size(folio));
-> >  }
-> > @@ -1234,15 +1236,16 @@ extern pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma);
-> >  static inline unsigned long vma_address(const struct vm_area_struct *vma,
-> >  		pgoff_t pgoff, unsigned long nr_pages)
-> >  {
-> > +	const pgoff_t pgoff_start = vma_start_pgoff(vma);
-> >  	unsigned long address;
-> >
-> > -	if (pgoff >= vma->vm_pgoff) {
-> > +	if (pgoff >= pgoff_start) {
-> >  		address = vma->vm_start +
-> > -			((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> > +			((pgoff - pgoff_start) << PAGE_SHIFT);
-> >  		/* Check for address beyond vma (or wrapped through 0?) */
-> >  		if (address < vma->vm_start || address >= vma->vm_end)
-> >  			address = -EFAULT;
-> > -	} else if (pgoff + nr_pages - 1 >= vma->vm_pgoff) {
-> > +	} else if (pgoff + nr_pages - 1 >= pgoff_start) {
-> >  		/* Test above avoids possibility of wrap to 0 on 32-bit */
-> >  		address = vma->vm_start;
-> >  	} else {
-> > @@ -1266,7 +1269,8 @@ static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
-> >  		return pvmw->address + PAGE_SIZE;
-> >
-> >  	pgoff = pvmw->pgoff + pvmw->nr_pages;
-> > -	address = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> > +	address = vma->vm_start +
-> > +		((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
-> >  	/* Check for address beyond vma (or wrapped through 0?) */
-> >  	if (address < vma->vm_start || address > vma->vm_end)
-> >  		address = vma->vm_end;
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index bd5f86cf4bd8..ffef738d826c 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -2145,7 +2145,8 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
-> >  		spinlock_t *ptl;
-> >  		bool success = false;
-> >
-> > -		addr = vma->vm_start + ((pgoff - vma->vm_pgoff) << PAGE_SHIFT);
-> > +		addr = vma->vm_start +
-> > +			((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
-> >  		if (addr & ~HPAGE_PMD_MASK ||
-> >  		    vma->vm_end < addr + HPAGE_PMD_SIZE)
-> >  			continue;
-> > diff --git a/mm/madvise.c b/mm/madvise.c
-> > index cd9bb077072c..6730c4200a93 100644
-> > --- a/mm/madvise.c
-> > +++ b/mm/madvise.c
-> > @@ -253,7 +253,7 @@ static void shmem_swapin_range(struct vm_area_struct *vma,
-> >  			continue;
-> >
-> >  		addr = vma->vm_start +
-> > -			((xas.xa_index - vma->vm_pgoff) << PAGE_SHIFT);
-> > +			((xas.xa_index - vma_start_pgoff(vma)) << PAGE_SHIFT);
-> >  		xas_pause(&xas);
-> >  		rcu_read_unlock();
-> >
-> > @@ -318,7 +318,7 @@ static long madvise_willneed(struct madvise_behavior *madv_behavior)
-> >  	mark_mmap_lock_dropped(madv_behavior);
-> >  	get_file(file);
-> >  	offset = (loff_t)(start - vma->vm_start)
-> > -			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-> > +			+ ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
-> >  	mmap_read_unlock(mm);
-> >  	vfs_fadvise(file, offset, end - start, POSIX_FADV_WILLNEED);
-> >  	fput(file);
-> > @@ -1023,7 +1023,7 @@ static long madvise_remove(struct madvise_behavior *madv_behavior)
-> >  		return -EACCES;
-> >
-> >  	offset = (loff_t)(start - vma->vm_start)
-> > -			+ ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-> > +			+ ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
-> >
-> >  	/*
-> >  	 * Filesystem's fallocate may need to take i_rwsem.  We need to
-> > diff --git a/mm/mapping_dirty_helpers.c b/mm/mapping_dirty_helpers.c
-> > index 737c407f4081..e0efa36e0a07 100644
-> > --- a/mm/mapping_dirty_helpers.c
-> > +++ b/mm/mapping_dirty_helpers.c
-> > @@ -95,7 +95,7 @@ static int clean_record_pte(pte_t *pte, unsigned long addr,
-> >
-> >  	if (pte_dirty(ptent)) {
-> >  		pgoff_t pgoff = ((addr - walk->vma->vm_start) >> PAGE_SHIFT) +
-> > -			walk->vma->vm_pgoff - cwalk->bitmap_pgoff;
-> > +			vma_start_pgoff(walk->vma) - cwalk->bitmap_pgoff;
-> >  		pte_t old_pte = ptep_modify_prot_start(walk->vma, addr, pte);
-> >
-> >  		ptent = pte_mkclean(old_pte);
+> >       ptl =3D pmd_lock(vma->vm_mm, vmf->pmd);
 > > diff --git a/mm/memory.c b/mm/memory.c
-> > index 98c1a245f45a..f5eb06544ba4 100644
+> > index ff338c2abe92..7f2a30b5efca 100644
 > > --- a/mm/memory.c
 > > +++ b/mm/memory.c
-> > @@ -725,10 +725,10 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
-> >  				if (!pfn_valid(pfn))
-> >  					return NULL;
-> >  			} else {
-> > -				unsigned long off = (addr - vma->vm_start) >> PAGE_SHIFT;
-> > +				const pgoff_t index = linear_page_index(vma, addr);
-> >
-> >  				/* Only CoW'ed anon folios are "normal". */
-> > -				if (pfn == vma->vm_pgoff + off)
-> > +				if (pfn == index)
-> >  					return NULL;
-> >  				if (!is_cow_mapping(vma->vm_flags))
-> >  					return NULL;
-> > @@ -2643,7 +2643,7 @@ static int __vm_map_pages(struct vm_area_struct *vma, struct page **pages,
-> >  int vm_map_pages(struct vm_area_struct *vma, struct page **pages,
-> >  				unsigned long num)
-> >  {
-> > -	return __vm_map_pages(vma, pages, num, vma->vm_pgoff);
-> > +	return __vm_map_pages(vma, pages, num, vma_start_pgoff(vma));
-> >  }
-> >  EXPORT_SYMBOL(vm_map_pages);
-> >
-> > @@ -3298,7 +3298,8 @@ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long
-> >  	unsigned long pfn;
-> >  	int err;
-> >
-> > -	err = __simple_ioremap_prep(vm_len, vma->vm_pgoff, start, len, &pfn);
-> > +	err = __simple_ioremap_prep(vm_len, vma_start_pgoff(vma), start, len,
-> > +				    &pfn);
-> >  	if (err)
-> >  		return err;
-> >
-> > @@ -4342,15 +4343,15 @@ static inline void unmap_mapping_range_tree(struct address_space *mapping,
-> >  					    struct zap_details *details)
-> >  {
-> >  	struct vm_area_struct *vma;
-> > -	unsigned long start, size;
-> >  	struct mmu_gather tlb;
-> >
-> >  	mapping_interval_tree_foreach(vma, mapping, first_index, last_index) {
-> > -		const pgoff_t start_idx = max(first_index, vma->vm_pgoff);
-> > +		const pgoff_t start_idx = max(first_index, vma_start_pgoff(vma));
-> >  		const pgoff_t end_idx = min(last_index, vma_last_pgoff(vma)) + 1;
-> > -
-> > -		start = vma->vm_start + ((start_idx - vma->vm_pgoff) << PAGE_SHIFT);
-> > -		size = (end_idx - start_idx) << PAGE_SHIFT;
-> > +		const pgoff_t offset = start_idx - vma_start_pgoff(vma);
-> > +		const unsigned long offset_bytes = offset << PAGE_SHIFT;
-> > +		const unsigned long start = vma->vm_start + offset_bytes;
-> > +		const unsigned long size = (end_idx - start_idx) << PAGE_SHIFT;
-> >
-> >  		tlb_gather_mmu(&tlb, vma->vm_mm);
-> >  		zap_vma_range_batched(&tlb, vma, start, size, details);
-> > @@ -5684,7 +5685,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
-> >  	} else if (nr_pages > 1) {
-> >  		pgoff_t idx = folio_page_idx(folio, page);
-> >  		/* The page offset of vmf->address within the VMA. */
-> > -		pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
-> > +		pgoff_t vma_off = vmf->pgoff - vma_start_pgoff(vmf->vma);
-> >  		/* The index of the entry in the pagetable for fault page. */
-> >  		pgoff_t pte_off = pte_index(vmf->address);
-> >
-> > @@ -5796,7 +5797,7 @@ static vm_fault_t do_fault_around(struct vm_fault *vmf)
-> >  	pgoff_t nr_pages = READ_ONCE(fault_around_pages);
-> >  	pgoff_t pte_off = pte_index(vmf->address);
-> >  	/* The page offset of vmf->address within the VMA. */
-> > -	pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
-> > +	pgoff_t vma_off = vmf->pgoff - vma_start_pgoff(vmf->vma);
-> >  	pgoff_t from_pte, to_pte;
-> >  	vm_fault_t ret;
-> >
-> > @@ -7274,7 +7275,7 @@ void print_vma_addr(char *prefix, unsigned long ip)
-> >  	if (vma && vma->vm_file) {
-> >  		struct file *f = vma->vm_file;
-> >  		ip -= vma->vm_start;
-> > -		ip += vma->vm_pgoff << PAGE_SHIFT;
-> > +		ip += vma_start_pgoff(vma) << PAGE_SHIFT;
-> >  		printk("%s%pD[%lx,%lx+%lx]", prefix, f, ip,
-> >  				vma->vm_start,
-> >  				vma->vm_end - vma->vm_start);
-> > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > index 36699fabd3c2..650cdb23354a 100644
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
-> > @@ -2048,8 +2048,8 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
-> >  		pol = get_task_policy(current);
-> >  	if (pol->mode == MPOL_INTERLEAVE ||
-> >  	    pol->mode == MPOL_WEIGHTED_INTERLEAVE) {
-> > -		*ilx += vma->vm_pgoff >> order;
-> > -		*ilx += (addr - vma->vm_start) >> (PAGE_SHIFT + order);
-> > +		*ilx += vma_start_pgoff(vma) >> order;
-> > +		*ilx += linear_page_delta(vma, addr) >> order;
-> >  	}
-> >  	return pol;
-> >  }
-> > @@ -3250,16 +3250,17 @@ EXPORT_SYMBOL_FOR_MODULES(mpol_shared_policy_init, "kvm");
-> >  int mpol_set_shared_policy(struct shared_policy *sp,
-> >  			struct vm_area_struct *vma, struct mempolicy *pol)
-> >  {
-> > -	int err;
-> > +	const pgoff_t pgoff = vma_start_pgoff(vma);
-> > +	const pgoff_t pgoff_end = vma_end_pgoff(vma);
-> >  	struct sp_node *new = NULL;
-> > -	unsigned long sz = vma_pages(vma);
-> > +	int err;
-> >
-> >  	if (pol) {
-> > -		new = sp_alloc(vma->vm_pgoff, vma->vm_pgoff + sz, pol);
-> > +		new = sp_alloc(pgoff, pgoff_end, pol);
-> >  		if (!new)
-> >  			return -ENOMEM;
-> >  	}
-> > -	err = shared_policy_replace(sp, vma->vm_pgoff, vma->vm_pgoff + sz, new);
-> > +	err = shared_policy_replace(sp, pgoff, pgoff_end, new);
-> >  	if (err && new)
-> >  		sp_free(new);
-> >  	return err;
-> > diff --git a/mm/mremap.c b/mm/mremap.c
-> > index e9c8b1d05832..079a0ba0c4a7 100644
-> > --- a/mm/mremap.c
-> > +++ b/mm/mremap.c
-> > @@ -948,8 +948,7 @@ static unsigned long vrm_set_new_addr(struct vma_remap_struct *vrm)
-> >  	struct vm_area_struct *vma = vrm->vma;
-> >  	unsigned long map_flags = 0;
-> >  	/* Page Offset _into_ the VMA. */
-> > -	pgoff_t internal_pgoff = (vrm->addr - vma->vm_start) >> PAGE_SHIFT;
-> > -	pgoff_t pgoff = vma->vm_pgoff + internal_pgoff;
-> > +	const pgoff_t pgoff = linear_page_index(vma, vrm->addr);
-> >  	unsigned long new_addr = vrm_implies_new_addr(vrm) ? vrm->new_addr : 0;
-> >  	unsigned long res;
-> >
-> > @@ -1255,12 +1254,10 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
-> >  static int copy_vma_and_data(struct vma_remap_struct *vrm,
-> >  			     struct vm_area_struct **new_vma_ptr)
-> >  {
-> > -	unsigned long internal_offset = vrm->addr - vrm->vma->vm_start;
-> > -	unsigned long internal_pgoff = internal_offset >> PAGE_SHIFT;
-> > -	unsigned long new_pgoff = vrm->vma->vm_pgoff + internal_pgoff;
-> > -	unsigned long moved_len;
-> > +	const unsigned long new_pgoff = linear_page_index(vrm->vma, vrm->addr);
-> >  	struct vm_area_struct *vma = vrm->vma;
-> >  	struct vm_area_struct *new_vma;
-> > +	unsigned long moved_len;
-> >  	int err = 0;
-> >  	PAGETABLE_MOVE(pmc, NULL, NULL, vrm->addr, vrm->new_addr, vrm->old_len);
-> >
-> > @@ -1802,8 +1799,7 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
-> >  		vrm->populate_expand = true;
-> >
-> >  	/* Need to be careful about a growing mapping */
-> > -	pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
-> > -	pgoff += vma->vm_pgoff;
-> > +	pgoff = linear_page_index(vma, addr);
-> >  	if (pgoff + (new_len >> PAGE_SHIFT) < pgoff)
-> >  		return -EINVAL;
-> >
-> > diff --git a/mm/msync.c b/mm/msync.c
-> > index ac4c9bfea2e7..90b491a27a14 100644
-> > --- a/mm/msync.c
-> > +++ b/mm/msync.c
-> > @@ -12,6 +12,7 @@
-> >  #include <linux/mm.h>
-> >  #include <linux/mman.h>
-> >  #include <linux/file.h>
-> > +#include <linux/pagemap.h>
-> >  #include <linux/syscalls.h>
-> >  #include <linux/sched.h>
-> >
-> > @@ -85,8 +86,7 @@ SYSCALL_DEFINE3(msync, unsigned long, start, size_t, len, int, flags)
-> >  			goto out_unlock;
-> >  		}
-> >  		file = vma->vm_file;
-> > -		fstart = (start - vma->vm_start) +
-> > -			 ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-> > +		fstart = (loff_t)linear_page_index(vma, start) << PAGE_SHIFT;
-> >  		fend = fstart + (min(end, vma->vm_end) - start) - 1;
-> >  		start = vma->vm_end;
-> >  		if ((flags & MS_SYNC) && file &&
-> > diff --git a/mm/nommu.c b/mm/nommu.c
-> > index 6d168f69763f..60560b2c457e 100644
-> > --- a/mm/nommu.c
-> > +++ b/mm/nommu.c
-> > @@ -975,7 +975,7 @@ static int do_mmap_private(struct vm_area_struct *vma,
-> >  		/* read the contents of a file into the copy */
-> >  		loff_t fpos;
-> >
-> > -		fpos = vma->vm_pgoff;
-> > +		fpos = vma_start_pgoff(vma);
-> >  		fpos <<= PAGE_SHIFT;
-> >
-> >  		ret = kernel_read(vma->vm_file, base, len, &fpos);
-> > @@ -1355,7 +1355,8 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
-> >  	delete_nommu_region(vma->vm_region);
-> >  	if (new_below) {
-> >  		vma->vm_region->vm_start = vma->vm_start = addr;
-> > -		vma->vm_region->vm_pgoff = vma->vm_pgoff += npages;
-> > +		vma->vm_pgoff += npages;
-> > +		vma->vm_region->vm_pgoff = vma_start_pgoff(vma);
-> >  	} else {
-> >  		vma->vm_region->vm_end = vma->vm_end = addr;
-> >  		vma->vm_region->vm_top = addr;
-> > @@ -1603,7 +1604,7 @@ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long
-> >  	unsigned long pfn = start >> PAGE_SHIFT;
-> >  	unsigned long vm_len = vma->vm_end - vma->vm_start;
-> >
-> > -	pfn += vma->vm_pgoff;
-> > +	pfn += vma_start_pgoff(vma);
-> >  	return io_remap_pfn_range(vma, vma->vm_start, pfn, vm_len, vma->vm_page_prot);
-> >  }
-> >  EXPORT_SYMBOL(vm_iomap_memory);
-> > diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> > index 98d090ede077..0a3bbff57d46 100644
-> > --- a/mm/pagewalk.c
-> > +++ b/mm/pagewalk.c
-> > @@ -813,7 +813,7 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
-> >  	mapping_interval_tree_foreach(vma, mapping, first_index,
-> >  				      first_index + nr - 1) {
-> >  		/* Clip to the vma */
-> > -		vba = vma->vm_pgoff;
-> > +		vba = vma_start_pgoff(vma);
-> >  		vea = vba + vma_pages(vma);
-> >  		cba = first_index;
-> >  		cba = max(cba, vba);
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index b51f83c970bb..4e7f6bc7a389 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -1032,6 +1032,8 @@ unsigned long shmem_swap_usage(struct vm_area_struct *vma)
-> >  	struct inode *inode = file_inode(vma->vm_file);
-> >  	struct shmem_inode_info *info = SHMEM_I(inode);
-> >  	struct address_space *mapping = inode->i_mapping;
-> > +	const pgoff_t pgoff = vma_start_pgoff(vma);
-> > +	const pgoff_t pgoff_end = vma_end_pgoff(vma);
-> >  	unsigned long swapped;
-> >
-> >  	/* Be careful as we don't hold info->lock */
-> > @@ -1045,12 +1047,11 @@ unsigned long shmem_swap_usage(struct vm_area_struct *vma)
-> >  	if (!swapped)
-> >  		return 0;
-> >
-> > -	if (!vma->vm_pgoff && vma->vm_end - vma->vm_start >= inode->i_size)
-> > +	if (!pgoff && vma->vm_end - vma->vm_start >= inode->i_size)
-> >  		return swapped << PAGE_SHIFT;
-> >
-> >  	/* Here comes the more involved part */
-> > -	return shmem_partial_swap_usage(mapping, vma->vm_pgoff,
-> > -					vma->vm_pgoff + vma_pages(vma));
-> > +	return shmem_partial_swap_usage(mapping, pgoff, pgoff_end);
+> > @@ -3797,7 +3797,7 @@ static inline vm_fault_t vmf_can_call_fault(const=
+ struct vm_fault *vmf)
+> >       if (vma->vm_ops->map_pages || !(vmf->flags & FAULT_FLAG_VMA_LOCK)=
+)
+> >               return 0;
+> >       vma_end_read(vma);
+> > -     return VM_FAULT_RETRY;
+> > +     return VM_FAULT_RETRY | VM_FAULT_RETRY_HARD;
+>
+> You could use my helper like above.
+>
 > >  }
 > >
-> >  /*
-> > @@ -2839,7 +2840,7 @@ static struct mempolicy *shmem_get_policy(struct vm_area_struct *vma,
-> >  	 * by page order, as in shmem_get_pgoff_policy() and get_vma_policy()).
-> >  	 */
-> >  	*ilx = inode->i_ino;
-> > -	index = ((addr - vma->vm_start) >> PAGE_SHIFT) + vma->vm_pgoff;
-> > +	index = linear_page_index(vma, addr);
-> >  	return mpol_shared_policy_lookup(&SHMEM_I(inode)->policy, index);
-> >  }
+> >  /**
+> > @@ -3824,7 +3824,7 @@ vm_fault_t __vmf_anon_prepare(struct vm_fault *vm=
+f)
+> >               return 0;
+> >       if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
+> >               if (!mmap_read_trylock(vma->vm_mm))
+> > -                     return VM_FAULT_RETRY;
+> > +                     return VM_FAULT_RETRY | VM_FAULT_RETRY_HARD;
+>
+> This really makes me think VM_FAULT_RETRY_MMAP or something explicit woul=
+d
+> be better, otherwise you have to add a comment explaining you're doing th=
+is
+> because you need the mmap read lock here since the VMA lock + speculative
+> mmap read lock acquisition didn't work out.
+>
+> >       }
+> >       if (__anon_vma_prepare(vma))
+> >               ret =3D VM_FAULT_OOM;
+> > @@ -4778,7 +4778,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >                                * under VMA lock.
+> >                                */
+> >                               vma_end_read(vma);
+> > -                             ret =3D VM_FAULT_RETRY;
+> > +                             ret =3D VM_FAULT_RETRY | VM_FAULT_RETRY_H=
+ARD;
+>
+> Again, helper above self-documents.
+>
+> >                               goto out;
+> >                       }
 > >
-> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > index 246af12bf801..bf4518f4449d 100644
-> > --- a/mm/userfaultfd.c
-> > +++ b/mm/userfaultfd.c
-> > @@ -481,7 +481,7 @@ static void mfill_retry_state_save(struct mfill_retry_state *s,
-> >  {
-> >  	s->flags = vma_flags_and_mask(&vma->flags, MFILL_RETRY_STATE_VMA_FLAGS);
-> >  	s->ops = vma_uffd_ops(vma);
-> > -	s->pgoff = vma->vm_pgoff;
-> > +	s->pgoff = vma_start_pgoff(vma);
 > >
-> >  	if (vma->vm_file)
-> >  		s->file = get_file(vma->vm_file);
-> > @@ -507,7 +507,7 @@ static bool mfill_retry_state_changed(struct mfill_retry_state *state,
-> >
-> >  	/* VMA was file backed, but file, inode or offset has changed */
-> >  	if (!vma->vm_file || vma->vm_file->f_inode != state->file->f_inode ||
-> > -	    state->file != vma->vm_file || vma->vm_pgoff != state->pgoff)
-> > +	    state->file != vma->vm_file || vma_start_pgoff(vma) != state->pgoff)
-> >  		return true;
-> >
-> >  	return false;
-> > diff --git a/mm/util.c b/mm/util.c
-> > index af2c2103f0d9..61e6d32b2c16 100644
-> > --- a/mm/util.c
-> > +++ b/mm/util.c
-> > @@ -1188,7 +1188,7 @@ void compat_set_desc_from_vma(struct vm_area_desc *desc,
-> >  	desc->start = vma->vm_start;
-> >  	desc->end = vma->vm_end;
-> >
-> > -	desc->pgoff = vma->vm_pgoff;
-> > +	desc->pgoff = vma_start_pgoff(vma);
-> >  	desc->vm_file = vma->vm_file;
-> >  	desc->vma_flags = vma->flags;
-> >  	desc->page_prot = vma->vm_page_prot;
-> > @@ -1379,7 +1379,7 @@ static int call_vma_mapped(struct vm_area_struct *vma)
-> >  	if (!vm_ops || !vm_ops->mapped)
-> >  		return 0;
-> >
-> > -	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma->vm_pgoff,
-> > +	err = vm_ops->mapped(vma->vm_start, vma->vm_end, vma_start_pgoff(vma),
-> >  			     vma->vm_file, &vm_private_data);
-> >  	if (err)
-> >  		return err;
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index dc4c2c1077f4..ee3a8ca13d07 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -967,10 +967,9 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
-> >  		 *   prev   middle   next
-> >  		 *  extend  delete  delete
-> >  		 */
-> > -
-> >  		vmg->start = prev->vm_start;
-> >  		vmg->end = next->vm_end;
-> > -		vmg->pgoff = prev->vm_pgoff;
-> > +		vmg->pgoff = vma_start_pgoff(prev);
-> >
-> >  		/*
-> >  		 * We already ensured anon_vma compatibility above, so now it's
-> > @@ -987,9 +986,8 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
-> >  		 *   prev     middle
-> >  		 *  extend shrink/delete
-> >  		 */
-> > -
-> >  		vmg->start = prev->vm_start;
-> > -		vmg->pgoff = prev->vm_pgoff;
-> > +		vmg->pgoff = vma_start_pgoff(prev);
-> >
-> >  		if (!vmg->__remove_middle)
-> >  			vmg->__adjust_middle_start = true;
-> > @@ -1011,13 +1009,13 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
-> >
-> >  		if (vmg->__remove_middle) {
-> >  			vmg->end = next->vm_end;
-> > -			vmg->pgoff = next->vm_pgoff - pglen;
-> > +			vmg->pgoff = vma_start_pgoff(next) - pglen;
-> >  		} else {
-> >  			/* We shrink middle and expand next. */
-> >  			vmg->__adjust_next_start = true;
-> >  			vmg->start = middle->vm_start;
-> >  			vmg->end = start;
-> > -			vmg->pgoff = middle->vm_pgoff;
-> > +			vmg->pgoff = vma_start_pgoff(middle);
-> >  		}
-> >
-> >  		err = dup_anon_vma(next, middle, &anon_dup);
-> > @@ -1126,7 +1124,7 @@ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg)
-> >  	if (can_merge_left) {
-> >  		vmg->start = prev->vm_start;
-> >  		vmg->target = prev;
-> > -		vmg->pgoff = prev->vm_pgoff;
-> > +		vmg->pgoff = vma_start_pgoff(prev);
-> >
-> >  		/*
-> >  		 * If this merge would result in removal of the next VMA but we
-> > @@ -1957,7 +1955,8 @@ struct vm_area_struct *copy_vma(struct vm_area_struct **vmap,
-> >  			VM_BUG_ON_VMA(faulted_in_anon_vma, new_vma);
-> >  			*vmap = vma = new_vma;
-> >  		}
-> > -		*need_rmap_locks = (new_vma->vm_pgoff <= vma->vm_pgoff);
-> > +		*need_rmap_locks =
-> > +			(vma_start_pgoff(new_vma) <= vma_start_pgoff(vma));
-> >  	} else {
-> >  		new_vma = vm_area_dup(vma);
-> >  		if (!new_vma)
-> > diff --git a/mm/vma_exec.c b/mm/vma_exec.c
-> > index 5cee8b7efa0f..e3644a3042e2 100644
-> > --- a/mm/vma_exec.c
-> > +++ b/mm/vma_exec.c
-> > @@ -37,7 +37,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
-> >  	unsigned long new_end = old_end - shift;
-> >  	VMA_ITERATOR(vmi, mm, new_start);
-> >  	VMG_STATE(vmg, mm, &vmi, new_start, old_end, EMPTY_VMA_FLAGS,
-> > -		  vma->vm_pgoff);
-> > +		  vma_start_pgoff(vma));
-> >  	struct vm_area_struct *next;
-> >  	struct mmu_gather tlb;
-> >  	PAGETABLE_MOVE(pmc, vma, vma, old_start, new_start, length);
-> > @@ -89,7 +89,7 @@ int relocate_vma_down(struct vm_area_struct *vma, unsigned long shift)
-> >
-> >  	vma_prev(&vmi);
-> >  	/* Shrink the vma to just the new range */
-> > -	return vma_shrink(&vmi, vma, new_start, new_end, vma->vm_pgoff);
-> > +	return vma_shrink(&vmi, vma, new_start, new_end, vma_start_pgoff(vma));
-> >  }
-> >
-> >  /*
-> > diff --git a/mm/vma_init.c b/mm/vma_init.c
-> > index 3c0b65950510..a459669a1654 100644
-> > --- a/mm/vma_init.c
-> > +++ b/mm/vma_init.c
-> > @@ -46,7 +46,7 @@ static void vm_area_init_from(const struct vm_area_struct *src,
-> >  	dest->vm_start = src->vm_start;
-> >  	dest->vm_end = src->vm_end;
-> >  	dest->anon_vma = src->anon_vma;
-> > -	dest->vm_pgoff = src->vm_pgoff;
-> > +	dest->vm_pgoff = vma_start_pgoff(src);
-> >  	dest->vm_file = src->vm_file;
-> >  	dest->vm_private_data = src->vm_private_data;
-> >  	vm_flags_init(dest, src->vm_flags);
+> > base-commit: 81652c5a65d4ae28e9b18c16ef917a40025c3653
 > > --
-> > 2.54.0
+> > 2.43.0
 > >
+>
+> Have you audited every single VM_FAULT_RETRY case? Because getting this
+> wrong could be a serious problem and break things. You should include a
+> list of call sites in your patch and explain why it's fine in each case.
+
+That's my main worry with this patch as well. I think a better
+approach would keep VM_FAULT_RETRY as is (falling back to mmap_lock),
+introduce VM_FAULT_RETRY_VMA (or whatever is best to indicate a retry
+with VMA lock) and then convert individual VM_FAULT_RETRY cases to
+VM_FAULT_RETRY_VMA with proper reasoning and explanation why it is
+safe. Less churn, gradual conversion, and happy reviewers.
+
+>
+> One case I noticed is uffd:
+>
+>         ret =3D VM_FAULT_RETRY;
+>         ...
+>         if (unlikely(READ_ONCE(ctx->released))) {
+>                 /*
+>                  * If a concurrent release is detected, do not return
+>                  * VM_FAULT_SIGBUS or VM_FAULT_NOPAGE, but instead always
+>                  * return VM_FAULT_RETRY with lock released proactively.
+> .       ...
+>                  * If we were to return VM_FAULT_NOPAGE, it would work fo=
+r
+>                  * the fault path, in which the lock will be released
+>                  * later.  However for GUP, faultin_page() does nothing
+>                  * special on NOPAGE, so GUP would spin retrying without
+>                  * releasing the mmap read lock, causing possible liveloc=
+k.
+>                  *
+>                  * Here only VM_FAULT_RETRY would make sure the mmap lock
+>                  * be released immediately, so that the thread concurrent=
+ly
+>                  * releasing the userfault would always make progress.
+>                  */
+>                  release_fault_lock(vmf);
+>                  goto out;
+>         }
+>
+> The comment needs updating (Suren?) to reflect the VMA lock, basically wi=
+th
+> VMA lock held this is meaningless.
+
+Right, I missed it when enabling per-VMA locks for userfaultfd faults
+in [1]. The comment is true if we already fell back to mmap_lock but
+not if we are handling the fault under VMA lock. I should amend it.
+
+[1] https://lore.kernel.org/all/20230630211957.1341547-1-surenb@google.com/
+
+>
+> We're actually safe here in general as if the VMA lock is contended on a
+> competing write lock we drop to mmap lock.
+>
+> A racing uffd release thread does an unconditional vma_start_write()
+> _after_ setting ctx->released:
+>
+> static int userfaultfd_release(struct inode *inode, struct file *file)
+> {
+>         ...
+>         WRITE_ONCE(ctx->released, true);
+>         userfaultfd_release_all(mm, ctx);
+>         ...
+> }
+>
+> userfaultfd_release_all()
+> <mmap write lock>
+> -> userfaultfd_clear_vma()
+> -> vma_modify_flags_uffd()
+> -> vma_modify()
+> -> vma_merge_existing_range()   -> vma_start_write() LIVELOCK
+> OR split_vma() -> __split_vma() -> vma_start_write() LIVELOCK
+>
+> So yeah, not sure on this one, maybe we're fine just to use VMA lock stil=
+l?
+>
+> Suren - any thoughts?
+
+If we retry without falling back to mmap_lock then
+userfaultfd_release() can end up write-locking mmap_lock but losing
+the race for VMA lock to the retrying pagefault handler. This means it
+would block while holding mmap_lock for write - not good.
+With pagefault handler falling back to mmap_lock, either
+userfaultfd_release() wins the race for mmap_lock or pagefault
+handler, so I think we are safe.
+
+>
+> You definitely need to explain your reasoning in the commit message at
+> least.
+>
+> Also commit 29a22b9e08d7 ("mm: handle userfaults under VMA lock") did fai=
+l
+> to update this comment to reflect VMA locks - we should fix that too -
+> Suren? :)
+
+Yes, I will correct my mistake and send a small fixup.
+
+>
+>
+> Also another thought - should we allow FAULT_FLAG_RETRY_NOWAIT to retry
+> with the VMA lock? As this could also be some unbounded spinning? But the=
+n
+> again, if we bound the spinning that might be ok.
+
+Hmm. If we do that, let's make it a separate series. Too many moving
+parts is never a good idea.
+
+>
+> Thanks, Lorenzo
 
