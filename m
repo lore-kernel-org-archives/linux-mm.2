@@ -4,89 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C08C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 07:29:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37F60C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 07:30:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A57106B0088; Fri, 10 Jul 2026 03:29:15 -0400 (EDT)
+	id 48D4E6B0088; Fri, 10 Jul 2026 03:30:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E0826B008A; Fri, 10 Jul 2026 03:29:15 -0400 (EDT)
+	id 416D66B008A; Fri, 10 Jul 2026 03:30:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AB206B008C; Fri, 10 Jul 2026 03:29:15 -0400 (EDT)
+	id 306236B008C; Fri, 10 Jul 2026 03:30:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CA6A6B0088
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:29:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9EB2A0352
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:29:14 +0000 (UTC)
-X-FDA: 84972041028.11.7868FA6
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E4942C0004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:29:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HXUM95L2;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 131636B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:30:17 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 794EC14038D
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:30:16 +0000 (UTC)
+X-FDA: 84972043632.28.AAE69BA
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9D87E100010
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:30:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZS2wxSjK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783668614;
+	b=Xx8Rb72oGogZCa8Lep4OjPzJ01A5B0Ej5D9N4AdJlNWoGq+nwqlalsBZP3U9jY6eRxfMI9
+	wlYlOcplx5O8pDl0W/a07Ww5J5Ftft9b9DsOl/0Y3HwrgVwXnK88Z3PvzomcrfPUxt6BUF
+	cdmi0TC4BAhAXeYAmnHhJhuqhXvxwJA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ZS2wxSjK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of thehajime@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=thehajime@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783668553;
+	s=arc-20220608; t=1783668614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6R0ZXUQFUwfZgH3nG+djP9eJT2Fdh4nBXbLmCtqMTsk=;
-	b=Lt9cBNt+CGPHqkJ0Sw8+o4XR9jznbpl+z/Derlx0lBuXDqRUmkFNKM7npg0t6Bl42oA1mX
-	E7bAX3teXtyFWYSrGoP7uHyGniSUmeVbTauCAQj8dVBuuNjSwS/DgfFPdc5zhmE94h/l9P
-	bhb61GFuIv/cNro97UCtqtX9jewjQoY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HXUM95L2;
-	spf=pass (imf22.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783668553;
-	b=HPIsG+LdOOAjj0tXC9wc/jIHSNoc7glKqb0QEolxg8SYq01A7b9JYF5jtOQbCcIeyC0wJU
-	eRQqvuq1aFjkf1xydGUcNRt/P3Urtn9GR4ZoS3KG7JvOGqi++Y79KDhJGYuPenqfcBtjHE
-	R4RTg76E8Ox4Yx3/jYdQmQDutTQ83lg=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1783668548; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=6R0ZXUQFUwfZgH3nG+djP9eJT2Fdh4nBXbLmCtqMTsk=;
-	b=HXUM95L22Fy8Jdp1/Aq3u8RHZB1TcbUJZ6vM/XEd8hLRIU70FmkAKbUnm3TgW3t0KWYCy8Z7jhV3NNgljiwdD4BKVz+jhmFpa0g1lyuAua7i+uL0E3N5BJWNi3FdLYGLH7fHBsTXy3yRlHa7qiZ7sIi7WkiFOYtgSmqxpAynuIE=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X6mtZXo_1783668542;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6mtZXo_1783668542 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 10 Jul 2026 15:29:03 +0800
-Message-ID: <037ba54e-d947-4b61-9fa4-961d14f87a43@linux.alibaba.com>
-Date: Fri, 10 Jul 2026 15:29:01 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] mm/khugepaged: refactor per-scan state clearing into
- collapse_control_init_scan()
-To: Usama Arif <usama.arif@linux.dev>, Nico Pache <npache@redhat.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260706170755.3387204-1-usama.arif@linux.dev>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260706170755.3387204-1-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xg4tbqxpg5mrie8k6abs1js8ac5a1toc
-X-Rspamd-Queue-Id: E4942C0004
+	bh=WATSgPtpfbLi/5qPX6bFc80cfd3JKyi/QUuUgx4rANk=;
+	b=wFhI7F0fwzdIDGnHkdixb50vGqlDRjng/yF+KdQFhfhINNWdBWVWBPRa3nYlrdWBXHAu9F
+	tJu1qd+4pgMUEzK1D9PBWqxJtupV+qGwvAYfVUZq85xb2iSeVhNnSHqdc7OChgn80RjkTU
+	HUs3h851TyvYkPkTNGY7vFBkw8qI6Ig=
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8487088510aso630270b3a.0
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 00:30:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1783668613; x=1784273413; darn=kvack.org;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=WATSgPtpfbLi/5qPX6bFc80cfd3JKyi/QUuUgx4rANk=;
+        b=ZS2wxSjKDX2nY7RRJ+ftHDoygBQm3TifVS913hQ3ODI0jBg72lVVnQutWZ0dTi9O2V
+         nzSQbOc0pNyEatqbtgDl6H1i54M4MED9Kzc+NdPX8Vt9LUv0uFj5mrdDikRAnezGWz5p
+         e/lBGt5FrslT08l1ve4nj4IeZTWQhTizauv7KIJaG9YdgCvGTqOrNCzcguwDonnb4wrT
+         419Z35fxIbSAP5O3KJq93dIxr8zo2AmJVz+U/fskfO93YkFfEybSam3Y7HPYPJcX76Jg
+         o1UnbTvfv6oSTBMb1qEo5K4sEHzdSOD+g91iE3MJ1Yq/HhXuJx4/3L/bj7zkMoKnuuwZ
+         Heuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783668613; x=1784273413;
+        h=content-type:mime-version:user-agent:references:in-reply-to:subject
+         :cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WATSgPtpfbLi/5qPX6bFc80cfd3JKyi/QUuUgx4rANk=;
+        b=X9zmaWx1MecCAK9bnR1UVSiO4YDHzgV+VSqEUtoaiC3Oq/sIf+BmxaYmkmqn0bA67U
+         d5uh1Fj+j22XN6ha3K2q3eSOrvj0e/kxtO7XhYA/FXU/okgWHfehPBZOlPFHhYR6jPBK
+         qUTATn62lObt4SAYUh1yZU01Mi6xQ4fYrzpC2//f0qOH6nnxumCmOxJR8m5CdLUiDc2+
+         lxP4bTxq9br5fS3eX2q/KPQKCCrW5q5SEY+8oHf17i7EMtf94G/c0fmbVWlw18JW64wI
+         IsMHRM2CjjtG6M89F3zSk+bhD4pYV5IBPL3fnakuVRgiQ6zoQkMAbpWuLUjwoioX+GOZ
+         8bgw==
+X-Forwarded-Encrypted: i=1; AHgh+RpF5EFroBw7lEuLhmImZMFsd4xmJRYzdSWWC5QllqvRNJXxbdstJ6XMi7uW3RB8GFV1jFlIB96ZFQ==@kvack.org
+X-Gm-Message-State: AOJu0YzCs3QOONXh3ZWpJdaBwU4kSSNXzh+ZOZ11slqkbTaJIRO5Wbs7
+	UqovQAwiMcMCkVCfsGsnzYPFYU76M7CXxpc/3Btt9DX6oNjMrb5C/XNA
+X-Gm-Gg: AfdE7cl8DZ7KeQBZVG5rb4FbaGQxXwf4hY/M6D99EppwNFb3Fna54B91Tf2GyxdD+/5
+	lzpmrflJpbdFFtFvOmTL8vMwPYQr0KM7n+ATUzTVEwt9QFzlACK9EhqFCvM05/odwBg7oUaJSMR
+	VmDJppw0jg3NoILcCRkQsWRe3SgfOtOraKRTbhl7u/iAvD55RRhx+cvuHQgRGPTIegtW6yvzLE7
+	bRJkmPMBMmhI516hWAStYI2UkhXLT4vm4ytTEyUuEEKEQBSI88oDbRL7ixSPTT9qAVwyrZXPhQl
+	NQnPGaAipQ+LoYAzgluaxj2Q9F14VQTP/+FvlaQebCkV2yp59TLK5HPzJJHbW4dwP3XI6BwYlLN
+	hV1FKpGKpMf3Rho/VeflzGe7IFT3o/jZpAyb6bMu72JVFsNgab/9Q5HThMOiR7ZsW9OF5+EoXgF
+	CpAmF8RRT10Eynse1eUyNtP0nYamspBuwXiABhP6Iyvs4vFIEl3v0H+8f5xMCWhSQwAX6f4fuF1
+	gSTebklV83WU9wfaWnG/PcHZVbS8NW+rQ==
+X-Received: by 2002:a05:6a00:8f0b:b0:846:22ea:e171 with SMTP id d2e1a72fcca58-84842fde6bcmr9857234b3a.3.1783668613389;
+        Fri, 10 Jul 2026 00:30:13 -0700 (PDT)
+Received: from mars.local.gmail.com (221x241x217x81.ap221.ftth.ucom.ne.jp. [221.241.217.81])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6d7a98asm9738725b3a.42.2026.07.10.00.30.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 00:30:11 -0700 (PDT)
+Date: Fri, 10 Jul 2026 16:30:08 +0900
+Message-ID: <m2cxwvti7z.wl-thehajime@gmail.com>
+From: Hajime Tazaki <thehajime@gmail.com>
+To: akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	linux-mm@kvack.org,
+	geert@linux-m68k.org
+Cc: linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm: nommu: free unused resources when mremap shrinks the vma
+In-Reply-To: <20260710054648.924005-1-thehajime@gmail.com>
+References: <20260710054648.924005-1-thehajime@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: 9D87E100010
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783668550-587694
-X-HE-Meta: U2FsdGVkX1/xDHR7FQ52RMsQvkewJhnKSIGxPZMyq7uZqyF7ScJMx5hQLnNzoRZfVTQY5IozbYrRW3hdNHpA9xKjJaKFQk8jOt/szazq6tXP0wMYWdj1VEUUsMdMJ5lFziaqsolOQaFAbUFcV+oDWXULkW7XY1/taYW7O1QUKfbup674EQp9VZtZvbjA3ZjS0CCLcqoQ08b89f6FQ5p6IpKTOb3jwx6/25Oh+eP2lhexvp7rg1w/4ITxGOd9PI/3UnQZ3txGw25GuktKeEjDQHY3/Uti9ArvWEtlKz7nsLECN3z0awURIhqm3VnX/+Tje4a34V0ZANBNRBRgTpLkpReSUnbUHV3QMkdOV5ILwYE9v4BALKj68ydYhiwIOQ+EM65oKgYSP2T0+PM7SbqEbDQZh3CLawsfTh8nh8ZBPy6llsFkkpJCwM7RTrMd3AzzfoHYqHqWDpz9R+h0W24lf3hkkq2v3XGHwffEBUY4JuWak3RvWi90Nk+Cg14UtUSJHVmGWPDkePnOCOsSgwENgGtIILhu3yfr/s/Y2E03LvGCiANiP2GDvOifcszJzoJhpvGMHOrZ4Z9e8Ask4QLi4Ig6nKF1dU0kvL1qAqTMgZjvLCD7qjgJK9FVMTceTLKB3SjWjYKGocT4wnVfJMEJxN+EA+qziO1hp4QTIhQ4x0boiHXWYjQjzhwlfyISu1HMdDBC8AQ7sK5APRFuYe6zVxpTKtV93JpIlA8svAQHzft28853pVOZ2e8HvHsYR8kErz60CncXkOahb1r1HUf7dnkjp+ILqtL37CmRFDWha2aFSIousju9eL9Fne7KHkiVgRjvXjFFmDJBq1AbhL4rKpPv3p4R+gDWqEDx5G/arRaF0VvlY9mo/ea1366XexLTdhhiKuoMHuE3w01z2qt8m4q/nJdRxuYcIB+tbewZfSWMP/BsTkpZYhWhK8l5gdeauABWejl1wA7Kf3KN+Wv
- Ei8/fnqh
- Zi8wAPPaMGaWqKbayZIlKhsJxRoasqTqavo+fY0otda9XK7AEjoP1Hw+SmkrC8O7UPdAxkFn71sX6tPvQzdRZ1oPkRFr55qTlPuZQQaBMic1W3j7AS8exP1o52uefF2otWpCwAJSFzXCSPWDa5J8Om+TtfEzD+SANq514lLFt8rxDu7eM+6w/ImRYG9Oo5qIqZ9K4ULQAg5TmSrZ47eiRLIHH//r0jaY8YC2LO2sWpa6ue77HKitwLPlI344PNOBz7gVHaUQfPIq/lD1/5lop8HU7XGkAO2uXDGdRW5lB6DM4rehnZZzrykFSkQfoHpnKoVZQi4KP27WoHmySF+4XcKgUSvqMYCy/ZtB5Q9E+9iLPrgDJi7Aty5FoOQ==
+X-Stat-Signature: 8k75mant5z68xf843pcscfptrewcoj5p
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783668614-555534
+X-HE-Meta: U2FsdGVkX1+D3BAGrQL7dA9BPwqm3WW1GCoI9axSxew79armmSNXFEqY6Ulh8Bc/s28FNOEWi3LVC3mRamRUylISK/GO36k8lxaexwR7oqB9lIhboJPVP84Ul/S2mLHPB1NyTlJS/rShENKXvvS0m/qJJWAsGKj3pE7wPRXyU+lv197LPYe8khIpYyP16Bf/nCpgX8Zq6cqEmBURHaY19dW46hDaf8ogaeSAlOvgk9IK5KXjZYhnEqjXHc1b0lui1uccvJBIyR/68bamLoticwO3NsyDFTQ5nZgVYJN/trEInob2OtLc4oAMcdqSfp0DG7ct3cYv51wT4Ibb5snrJsmTtQunSyasC6H638PeLH3MYq2QK74p+evmHHzCPO0J0lHHEM0zZJlueeE74YknglXu4PStJFrdNXpqfyMrSFTaK1EIxGbhVGa0OrD7ce6+nwKD0IzmTQ/j/01GfbkH7zzYQGELR7WQOCmLYaYjeA+kKqIxzgRRmHlxb4zgmmq4YHxkUbOp4q9Jhu7chrRyWetyNymZDrHfCt0mE9fN9phO687t43g6fcBZAr7qBf0c4U5v09Ykk5UV2M7Loi3sjaQYaEaGm7UQrz6ZOn78pXj/q5JKe8NL9FWvTH2llZId8iy3MPHNYOJRPGnVsemp8R8vpCYQJxiCKhlKddMGN/EAbzZ+OPMhN8WcOCls/LHcdLbpHlLiDkNyeSUX1s3PcrnS2dDz1ShiCjzbEGMeCxpHpamcB4+uz+paGd8eiIwYUswohjCSYZCnPuMgbZgspDRBA9g02Wp539s9/5qecNc7orfH60cqruvQFlLpE7qJDRqeXaU94FXzN4myJaYKflB3JwijN/OcWkAYXwiLHF6iphtVmqddRJCiBH4BH3h04MuWAcKCXizoVFlf+dPxOY1f+tZrl4h5wK59QpZlnJBk7gBgz7Tqpc9dfD4cHPSHW7O8KAp8rwEtZJYJlee
+ 839n4MUW
+ KtA29dDF/psXu7QTKP7018R3fF6dCl5uCbctr3OX2x+zRJW6Gp8AYo7Dzy3+3ZYHJUjUJWIRA6qgfMUgbujJPdH0wSOwqwoUrfZzKpUedVo16b3Jhhsy2ZkO4xa/swzHaJ/KJEE4woWvwLTGeLjX7C0Fplxvg5ZAbCrzwUUxb5vTOmxM448gGpzYZiyo+SYe5IMVpneos+MUQe255O4pM1yNBiZ1hM6yEOVI99wsD2Jt51PP1civak3Ss75mdiZXjY/MGp3Z7phJFlvXyzBLrC46qf49gxC51wIDDT8WWmsx9+KBm5GhXh3BOYUXaVCTMgjv3WfTeiUFhRfRFlUsJ+GfeMXc6muDzXpt4Y2DgpemIUFd9sD212hmuF4u6VgPxDsA39L/j3166Oo7zJoSUZ3p2Aw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,37 +125,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-
-On 7/7/26 1:07 AM, Usama Arif wrote:
-> On Mon,  6 Jul 2026 09:44:48 -0600 Nico Pache <npache@redhat.com> wrote:
+On Fri, 10 Jul 2026 14:46:48 +0900,
+Hajime Tazaki wrote:
 > 
->> Extract the repeated clearing of node_load, alloc_nmask, and
->> mthp_present_ptes into a helper to reduce duplication in
->> collapse_scan_pmd() and collapse_scan_file(). Althought file scans do not
->> current use the bitmap, they will in the future, and clearing it now is
->> harmless.
->>
->> Signed-off-by: Nico Pache <npache@redhat.com>
->> ---
->>   mm/khugepaged.c | 18 +++++++++++++-----
->>   1 file changed, 13 insertions(+), 5 deletions(-)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 617bca76db49..b3985b854e77 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -628,6 +628,17 @@ void __khugepaged_exit(struct mm_struct *mm)
->>   	}
->>   }
->>   
->> +/*
->> + * collapse_control_init_scan() - initialize/reset collapse_control variables
->> + * that require being cleared once per-scan.
->> + */
+> When shrinking a VMA via mremap, the bounds are modified directly:
+> mm/nommu.c:do_mremap() {
+>     ...
+>     vma->vm_end = vma->vm_start + new_len;
+>     ...
+> }
+> This shrink the VMA without updating its bounds in the maple tree.
+> If the maple tree (mm->mm_mt) still contains the old bounds, a user
+> process could access the freed portion. The stale maple tree would
+> incorrectly return the shrunk VMA for an address past its new vm_end.
 > 
-> Probably don't need the above comment, but apart from that
+> This commit fixes this issue by calling vmi_shrink_vma() when shrink
+> happens.  Additionally, if a file-backed map is to be shrunk, it reports
+> -EINVAL like do_munmap() does.
+> 
+> The issue is reported by Sashiko review, linked below.
+> 
+> Link: https://sashiko.dev/#/patchset/20260702012546.665383-1-thehajime@gmail.com
+> Link: https://sashiko.dev/#/patchset/20260710021028.892645-1-thehajime%40gmail.com
+> Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
 
-Agree. The code is self-explanatory.
+I think the original issue reported by Sashiko is addressed, but found
+another existing issue, which might take a bit to look into detail
+(e.g., currently under nommu we cannot map (actually kernel_read())
+/dev/zero, vma_set_anonymous() isn't called for /dev/zero on nommu,
+etc).
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+So I will address this in a different patch, not in this one.
+
+-- Hajime
 
