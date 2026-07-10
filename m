@@ -4,141 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C3BC44506
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 03:03:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDC6EC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 03:10:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB4B06B0088; Thu,  9 Jul 2026 23:03:54 -0400 (EDT)
+	id 634156B0088; Thu,  9 Jul 2026 23:10:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C65E06B008A; Thu,  9 Jul 2026 23:03:54 -0400 (EDT)
+	id 5E5AA6B008A; Thu,  9 Jul 2026 23:10:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB8976B008C; Thu,  9 Jul 2026 23:03:54 -0400 (EDT)
+	id 4FBD26B008C; Thu,  9 Jul 2026 23:10:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 85C2B6B0088
-	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:03:54 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 904ACC1592
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:03:53 +0000 (UTC)
-X-FDA: 84971372346.28.E0F05B9
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B2A971A0004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:03:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vq+b6GYT;
-	spf=pass (imf19.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BE606B0088
+	for <linux-mm@kvack.org>; Thu,  9 Jul 2026 23:10:36 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 853A514031C
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:10:35 +0000 (UTC)
+X-FDA: 84971389230.12.A6A33DD
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7DDBC20009
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 03:10:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lNLmbCZA;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783653033;
+	b=LMKmJIuM1pBpTC972sP+V/eUDvSEHY1QmFFVOXG9y2cc87FZLLoThGuRY4cx92jeSPbgIe
+	FXtvNakiW38OZpGjgLgVNJrGm7A2LshEfi5BgfUMUI8qjvK5b+qWMLvvfyaUAlWtceAv22
+	hLilZ1+u+CVQI23qXly+xWKJf5r4Ua8=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lNLmbCZA;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf03.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783652631;
+	s=arc-20220608; t=1783653033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ynSAhKjwAAjcKTYW0e4L0bg5A+RQVDw3lejJ8fmbfs=;
-	b=C6mlxvBUQfcTVoWS/4aW3gCmuZLKgDmmOKP4CJGkDQaMSxQkMGU93CMBnavx17DGpcUcwq
-	wsCJjUQaeEEe4P+jDWzyoKORHz1T9cCl/R8HMFSvVIrfyxOrltASGBFWgy/2b3dcstg82q
-	n8UtHH7mh9O3L01WADtriKwOnDsHlpc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Vq+b6GYT;
-	spf=pass (imf19.hostedemail.com: domain of xueyuan.chen21@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=xueyuan.chen21@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783652631;
-	b=cibs2kl1adqtAjQxkEIbXyWLSSm5p0STBs95FZW3av/DqJpqBC75PLjHDzeyh84ZdnhbhU
-	jLu6OY6q+bbHUtmtmDQknylS8JJrutMEtfkMsUFaM/QnyqWZxoR0DZhglCF7hGWcrGR6pn
-	heoAF4onNjDmUVtgspOxJtqQiF7e+tY=
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-380a02c71e2so218733a91.3
-        for <linux-mm@kvack.org>; Thu, 09 Jul 2026 20:03:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1783652630; x=1784257430; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1ynSAhKjwAAjcKTYW0e4L0bg5A+RQVDw3lejJ8fmbfs=;
-        b=Vq+b6GYTDAY/xW6kVXsYFaHbRg4lkWiweYQM/bIf3YS1uJYJrsaQlwjB5/0zmqSzrj
-         GqLrUbseb8wmR82Hilj87+ddYiLuehnTU8mZCPCPC1rn0nGKNFSd6Mbv+zhj2zQJSfRX
-         4nJsYELoPwo+oQ0kyRA7rh+REpB7PiGaT6l7LLb4oI/BqTM5s9nsGGINuIxMyaXr5Mlw
-         erM1rvefDWWySLfylyqor16xOiWOI2HpBQHp4PeVAjuElRzzHE6t2M9YccD11f0Ehpye
-         cuIxx6AEyCeBolH86Vhme9snRNF9JWHlSV4A8XtRIUseoQdeNkQaGdUxwIQodBcVogOM
-         hC4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783652630; x=1784257430;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1ynSAhKjwAAjcKTYW0e4L0bg5A+RQVDw3lejJ8fmbfs=;
-        b=cwOr5R0KU0LMs4NoXAim2feWuF1JZymX8HIGhYnwBYsh4pxygT89U2+yW1xwsfSelS
-         kCSJ4ZE23oe/cU9vaa8jVwSK95HgoS4qgQ4fK/CIVW2is0TC5nvegPOKS7QquRbxusEY
-         KTe2oqQEa7kTutWVHJQjeCAK8UkuUCBJdpDO2aUSe1HOh4J+mhFPM2YhT8F+HtySeGBx
-         Ki7jtbezsNz9KABzt+qWLf2iQc5NF+8iFK8quEkLPIjx+oFtS/AGFavGY93wvIPk1GgO
-         i8g76VOIAIFhMBQks2kN1gfawjBKLtifXLUSKb2SH7JOas5IpDSTrv7nZM2FUT3jbQz8
-         l6XA==
-X-Forwarded-Encrypted: i=1; AHgh+RpSmXq1XaBjbpR8Iw8H/l6fIVQKMXeVqg5VpvDYsPdDJYUzFB7c4+yXbxQ4eKZRJH08gN8T8mCW+A==@kvack.org
-X-Gm-Message-State: AOJu0YyQiOsE4x1YhWmXzzZuHsR9GegCkigEP33lW6iyqCuqvtIH59Yj
-	nMBAMV0VWTUhYFxsnB+sABI2zIJGHE8UfOUrekpJQwWbFggYdJqmmnV1
-X-Gm-Gg: AfdE7clUYckeJz7OAz83ldovRhXDCAMaVd5DapPTDI4agnYD/px+hgY6uQgTSloacx3
-	dnc/FQrg3Lbk4EqH2yrX3J5Jo5yVwcY2gAaBLkLE/0gf7uRvCzgsydMy6ElvgV2mVR9ZogAecMQ
-	QEDt8XYPtmnKwRN2FBYE5uWqXhXhljRl7C1CUMkh9T7mt9AyycFxTe8aHPXgXyasyiXeXpTeXJW
-	TWzracZAtjDOWq8k0OGIL+Z6a33qelt7lygLsTYHPna8vGRj6gQn//g8oWSAdwwoyPZvFfPm/z2
-	Cj/XYo4EwgbqyDbqeoXJgWyTQKnOohrSq2cGmfpcaA0nL8ShC6/ACuQLRUywGOXFVfpZfyXs/Y1
-	PlTnPhjy840nFWwcLpc1l3BmL4+7J9oV2ii1bnUpYggrmvrVAwDhIO/U7NXbbmKbL5f1m9nfIMq
-	IeE8QmTU91AW66qA8MCZ6JP1Gs6qZ5dF5mSagEKJT/KMsNFDS3YvdQK1s=
-X-Received: by 2002:a05:6a00:1804:b0:845:3ffb:ac1d with SMTP id d2e1a72fcca58-84842ee0509mr7628366b3a.2.1783652630328;
-        Thu, 09 Jul 2026 20:03:50 -0700 (PDT)
-Received: from debian.lan ([240e:391:ea3:6910::1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847f6db29d1sm9594805b3a.53.2026.07.09.20.03.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jul 2026 20:03:49 -0700 (PDT)
-From: Xueyuan Chen <xueyuan.chen21@gmail.com>
-To: usama.arif@linux.dev
-Cc: xueyuan.chen21@gmail.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	lance.yang@linux.dev,
-	jannh@google.com,
-	yang@os.amperecomputing.com,
-	rppt@kernel.org,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	hpa@zytor.com,
-	luto@kernel.org,
-	peterz@infradead.org
-Subject: Re: [RFC PATCH v3 1/3] mm: make persistent huge zero folio read-only
-Date: Fri, 10 Jul 2026 11:03:41 +0800
-Message-ID: <20260710030341.8527-1-xueyuan.chen21@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260707131714.3266156-1-usama.arif@linux.dev>
-References: <20260707131714.3266156-1-usama.arif@linux.dev>
+	bh=QPRHajWjrhSaIavarxUnyeF35eab4+Io7xcy5kNS10k=;
+	b=GbqmiDHbByTftE98+BGC5PUFow78LEqHKNWEvq0jjPvr+V7933WttBT3M8sF/9eSOa3qfe
+	t2E+DwRwDFCSKo+ZtKb8R5G5W0WqhhtASB05MwpGeZ46ieEj3t1Oy9tDVdhohSNq/jCtMP
+	Q7TyvEh5rFP2Gyo9YzDGAIPxZ96Ju6U=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22CD21E7D;
+	Thu,  9 Jul 2026 20:10:28 -0700 (PDT)
+Received: from [10.174.42.251] (unknown [10.174.42.251])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 462D23FC81;
+	Thu,  9 Jul 2026 20:10:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1783653032; bh=r/JqXLtVJZipeHmoQcA9Vb3tveHMo173t3JvLPsXfyg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lNLmbCZAKfAuKzOWn13sCSTiJnF4tNjcdAiQw5oDxbwzYSUmw/NG2SisqM08KNOED
+	 W4v6Kh+fr07ME6UaNZNJST3Dhv3LsXj/B7AySXY13fV1vu3TAsT2KFUDHrS0JvJrwS
+	 +rVAdObC8bYH0+S5QeWHMdOhS76Fp+VkZrxh6yMg=
+Message-ID: <25857f58-9ef1-49e0-99f7-366d91028c02@arm.com>
+Date: Fri, 10 Jul 2026 08:40:25 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3] mm: Standardize printing for pgtable entries
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, andriy.shevchenko@linux.intel.com,
+ usama.arif@linux.dev, hughd@google.com, willy@infradead.org,
+ ryan.roberts@arm.com, "David Hildenbrand (Arm)" <david@kernel.org>,
+ linux-kernel@vger.kernel.org
+References: <20260709044334.1741263-1-anshuman.khandual@arm.com>
+ <20260709170816.4e876a16eef9a93f41bb1940@linux-foundation.org>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <20260709170816.4e876a16eef9a93f41bb1940@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7DDBC20009
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B2A971A0004
-X-Stat-Signature: fp5uycix1tf4p5ag11fmqzpy5yeanf5x
-X-HE-Tag: 1783652631-828089
-X-HE-Meta: U2FsdGVkX19rhqJQasigwmAAtuem+Cbv8iewmeDsrO8DO4Afx/zgEdLjluIO4LFyMOiPesvrtd9Sc65j/z+ht8cwnovUMZmLbjeaeWhNiRpk/NJl2geOjhk14ITANNnJhFTbvkXmzKITMqE4+Io64pzbocwibk7IvTdGTqFsgIx+k6gVWXNplKqKKImIiJTC7XGDgBOrSIhi6lrRnN8gqWQA+iyFqOBbHcwLT+ZTTF19Q0WRdYLHQcDwGBWUseYj4Y6HW75cpAXowxL39cubKDDhSuDPpVZHTyE4IPxQ4H5JhBKo7Np64i4NuLwqr80svkRoyBQSae1jWEbouxm+NWQHW2EtOHFwXrcGqdNBFwdIuOO+DvMXyW2ZHizBCAoUoyP+SyKZdyekRL2Q84YE+1qGriE5cvTtebKJYK1c72QBTcBW5/2FvU3TXoZxOoGXYCueJY5kznv3UsgztjWWmER57rP7MgiEuuHRziKo5luQe6Wf27i/d/aFEuBa53NhDeyPLf98nEKN5Ki5gsnLOfgoXmgRKyjwz01sQEvIjUUpi5N0D/s6gtSBdCY+Ik9Mmw7xFbq49aei72TuTciYIi9Q3dxVJ1TV5gAIxd/n4jCAAfxFg9Py/GRVe34+T9YZkDeypwf9W1zw2MLAifw9NBVirF6V70DQ+UNAFyzqjxNN0UepXUtXn+u3b+ub/EGkEn10gJ2oWGtaP0D7wZWF2Dc5ebhYc+b2quW9cBC1K6IkGtKhAgqU6oNK+rb036qzwBvrJzsnpRIKHEETorZ+V1NcN30ODgOxYxL5kP07a6FJgocF1vzonlyi++rz30MVaQ6bEYw8iPFCet+QsnD4drdhTpxfEP23soRcD9V4fAEBUDfOLku9EnzRnO/k+qmDk6o1uu5yPEtawNNrYRRInqkVaJ2rioEUzQXpvnLD2CSqLl+JeYgbA+UYKUA2y3V819riEYAa2JorcHNJn6o
- cXofT5cz
- 2pUFtjz3PtjVzJEs06Qxj0OPcqbWujfXmISQ71Ggi9GcDve2o5+Rp0KYdshBsAhrV16DowWlM16d9IaoZdZQSBfJI7sdsIaIrsK2ogR5Ms1n4pwF/C7bwLMRplXDQuKM/d/1ulNro34vYF87jZn5R+1LSMelNiLSTSaYZd2xX2qxk+3kKOK0gmu7yk2LUQFSncbwTBiIi/yZziTAFQMFJ7mjb6NauQqAUKgl8Z6Mq01IW5ak+wavcLyX5wAEY2BElgAVd4RYBVhfNcPfLtLBe3JxxHQsU6+KFj3YSlr3huEbsYAt7t6fWq91B07/oPZnX3zRMahGz6/nFLZJNMnKvO1Yqcf3Op0tTOqi7ufS3VGsQdR0yXkeLzzc5jujnfu+EAEyzxKr71vbl1k/c5NvyEAdSW79zkpxrM3lenNhM08qXTUXyhzVAFMuMXf/RQ9JOXgVOQyf8QglbGvF19m/jgsPBud5SRJSt91izZnIU8KqtCiLBvSZVXTc8b0i8J/KzixGuO7hFHIOOO5g=
+X-Stat-Signature: 7tyct7bncbm1jjebs1wy7c95spxx8i5y
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1783653033-385938
+X-HE-Meta: U2FsdGVkX1/0jomMbItECAXYP48o+LULQwSAFniHK4RU1gUbP/7huIPj/x5Ruwe6R4uDsdrHGCemCBblX/IOgPqQrXwsxhPlULzSHdr+zMEXLpFU0EA7UxVo+q4CNBQ+QSrdDRD6zZIhGYW5B/RZfmMIN1XZp1c2zEslvRuIQoXJ6SLxsl5WJe6IOk6jZOkyVkriWopcjw4oFTk0QhVPgPQbPAyn4Vnj4uC8bRdq1QejdpNLEShP+TJLk6i/CfZU1PDEsxY0JDJe1zl68rSqtRloa6GJ9D6HSR2VqwSnRdZTR751MjLevkPd910QMObFDRbjxrts838qRe/z0T8EU1mQW/jKeloE4MPFME8XitVyCNOqkA3zdv6+9BhAk5h+/U0kepqAIj/vEMsAPsv3gRkpUhNhrIJSnTdOLMCjMedPRxnmzvXTK6xmGZakUYZTTXw4lnv3AU8tTsMhcZUhJ2ZcIZk8DIUXhd9+dp0yjD9O1w/nyhYGTMgq5rwX2TlHVYW3tNc0/DcG1xPYqnZHecso6yJJS2qmfBx8cOOksBy1ZpkBkwFwmhc3tkL+OELwjSZ79AILvTe1lVmp8YIK1oBTckFWI8xGa5jhMLSA5zZ85HmGv7CLs4R79TOE6SSqNLtN51bT9i+QZQCSX2TnOIgzSAIVsDK9IxtTmilfN8zITqjnXeOexlH6qkyPJz2PCmE0eex1zum3R9e5rfS/gvZzFYslCGik7jUXkoBQ/ltXNkztYpXFAVUHRNthJr6Pk1L75ID6jHZV8oCN5FRE07s21J7jq1ezhNfDAK9cZjFHr7qVndlsM2N8RBjlECRcbYg+XX1WONrRh2h/8y5iPTJBSEXjxsqmFvTH8PcEtcB7tSjGLkfwtkxt4LL++f1oAZWzlj1WPeuFWXfPX8L99joKENVr3zQatT6h6WvYf+UO6gI7i1cxKMWC06xEriy8v76z4bERoGusB38/Ql8
+ goj8sLv6
+ olUHWc+ekigglLH5WyBjnpIhN8OoE3/bplQAIQ2LY+YIF799Ec6uD5ognPJnACceCYvR6RYqtBA8tAea2vp5IlvgWkARLwB54QQ92gRQ/GMQu5Qm8hFvHFnbhBfVCggQAyVnRuclu3Sl9TQWz+UyXIUR/sPQSZ2TJCn8IhQIIUeyotL5o9MV4iJm/llc5DmAAvWnNbWql0SFJsmmpxrVm1JanhjXmDvAu9OasQrbyg4gbQ09T1hyJ4Z2OmHvbEqZhaF+NiazZy/rlGEGTClm4nSoXjtDgCOLRsE9yOCglIqKz4h9nrCbNupaf6lw8xq9x8pnH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,30 +94,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-On Tue, Jul 07, 2026 at 06:17:12AM -0700, Usama Arif wrote:
 
-Hi Usama,
+On 10/07/26 5:38 AM, Andrew Morton wrote:
+> On Thu,  9 Jul 2026 10:13:34 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> 
+>> From: "David Hildenbrand (Arm)" <david@kernel.org>
+>>
+>> Bad page map reporting currently stores page table entry values in an
+>> unsigned long long and prints them with fixed 64-bit-oriented format
+>> strings. This is inconsistent across call sites and does not work well for
+>> architectures where page table entry values are not naturally represented
+>> as 64-bit values, such as 32-bit or 128-bit entries.
+> 
+> Well grumble.  It's a lot of fuss for something which nobody is hurting
+> from.  Or are they?  What's the actual utility here?
 
-Sorry for the late reply.
+Current page table entries print does not work here for
+128 bits format (arm64 D128) because neither 'unsigned
+long long' can hold 128 bits nor printing extracts u64
+from the 128 bit entries while printing with "%llx".
 
-[...]
+Proposed a separate printk format %pp[te|md|ud|p4d|gd]
 
->Can this really skip the TLB flush here?  This runs from a
->subsys_initcall, after smp_init() and after the folio was allocated and
->zeroed through the writable direct map.  The noflush helper updates the
->direct-map PTEs but does not invalidate stale writable kernel TLB entries.
->
->I think we need a TLB flush here?
+https://lore.kernel.org/all/20260610043545.3725735-1-anshuman.khandual@arm.com/  
+ 
+But there after it was decided to rather have a local
+solution in mm/memory.c instead of adding a new print
+format.
 
-I checked the code, and you are right. This runs after smp_init(), and
-the folio has already been allocated and zeroed through the writable
-direct map before changing the direct-map PTEs. So skipping the TLB
-flush is not safe.
+The proposed change here streamlines existing u32/u64
+page table entries format prints but also enables for
+u128 which will be added later.
 
-I will fix this in the next version.
+> >> Introduce a common helper to convert raw page table entry values into a
+>> fixed-width hexadecimal string based on the actual entry size. Use it for
+>> bad page map reporting and for dumping the page table walk in
+>> __print_bad_page_map_pgtable().
+>>
+>> Pass page table entry values to the reporting path as raw bytes together
+>> with their size, instead of forcing them through an unsigned long long.
+>> It keeps the printed output consistent and avoids truncation or misleading
+>> formatting for non-64-bit page table entries.
+>>
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>>
+>> ...
+>>
+>> +#if defined(__SIZEOF_INT128__)
+>> +#define PTVAL_STR_MAX	(32 + 1) /* Max 128-bit value in hex + NUL */
+>> +#else
+>> +#define PTVAL_STR_MAX	(16 + 1) /* Max 64-bit value in hex + NUL */
+>> +#endif
+>> +
+>>  static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
+>>  {
+>> -	unsigned long long pgdv, p4dv, pudv, pmdv;
+>> +	char pgd_str[PTVAL_STR_MAX];
+>> +	char p4d_str[PTVAL_STR_MAX];
+>> +	char pud_str[PTVAL_STR_MAX];
+>> +	char pmd_str[PTVAL_STR_MAX];
+> 
+> That's another 128b of stack, in a potentially deep code path.
+> 
+> Hopefully gcc can reuse the same stack space for some of these but it's
+> not been good at this in the past.
+> 
+>>  	p4d_t p4d, *p4dp;
+>>  	pud_t pud, *pudp;
+>>  	pmd_t pmd, *pmdp;
+>> @@ -532,34 +575,34 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+>>  	 * see locking requirements for print_bad_page_map().
+>>  	 */
+>>  	pgdp = pgd_offset(mm, addr);
+>> -	pgdv = pgd_val(*pgdp);
+>> +	ptval_to_str(pgd_str, pgd_val(*pgdp));
+>>  
+>>  	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
+>> -		pr_alert("pgd:%08llx\n", pgdv);
+>> +		pr_alert("pgd:%s\n", pgd_str);
+> 
+> can this do
+> 		pr_alert("pgd:%s\n", ptval_to_str(pgd_str, pgd_val(*pgdp)));
+> 
+> and eliminate a few locals?
 
-Thanks for catching this.
+But that would not eliminate any local variable.
 
-Thanks,
-Xueyuan
+The helper ptval_to_str() does not return but instead
+fills up the provided buffer which later gets printed.
 
