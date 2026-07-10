@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6007C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 13:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9896C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 13:47:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B0746B008A; Fri, 10 Jul 2026 09:47:04 -0400 (EDT)
+	id 4593D6B0092; Fri, 10 Jul 2026 09:47:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0127B6B008C; Fri, 10 Jul 2026 09:47:03 -0400 (EDT)
+	id 409A36B0095; Fri, 10 Jul 2026 09:47:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6A2E6B0092; Fri, 10 Jul 2026 09:47:03 -0400 (EDT)
+	id 2D12A6B0093; Fri, 10 Jul 2026 09:47:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C78CF6B008A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 04B9E6B0092
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 09:47:03 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70FDEA045E
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8C6F014045B
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:47:03 +0000 (UTC)
-X-FDA: 84972993126.01.391A14B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E0E6240002
+X-FDA: 84972993126.11.4A32A37
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E06F380009
 	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 13:47:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kN6RGv2k;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7USbvXY;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1783691221;
@@ -34,57 +34,57 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xQG5oz4wU5m7lLv6nGv8jRYxqbEgbwiFogSXia05QXQ=;
-	b=zJmiqroYRRO9Xb2905bAzzd9eaF22znRHUrKb8V/RIF4cN2/Y+GhPeUJkuKt5Tvq+h+dwS
-	LY51vr0wjJIMNwZOJWBnz6HGwXawVggtyd4rTFiiwDU1ACd3QUDHFCokTdr0b+dFiK+H0h
-	PBjpi0jb63xx6Xr1SNkOWM/5yaaWuzo=
+	bh=YmfZTk/ZQOqnVMZqrheWjYkpxjXzlgMLoos2A38U/W4=;
+	b=zL7unhhx/cTkhHH27Vpt4bbe9eZVPMEHVblFDicLmQHylwuXm1jnBgl7ZYkjYA/krHE4wM
+	GXVprfzJVvwaSebt4hAyi8BCNskAJQ4xqnIwdgvjXf8+E0d00IbC3BUMU6q3HEo7bmGG7x
+	lunutqD3V1CVlafIrgqPbkG2a6aLqMU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kN6RGv2k;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U7USbvXY;
+	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1783691221;
-	b=zQKqnhczxbvRpvJfXkmIIowH9nR+veAcQXdsdlOnhi5LiKztXgLKGrDvoIWGzVYvjo9CyF
-	R0/KDtK0hnPlt6xODSkUcMFBElCAf7/ar1Mo0G/oHgBCGPZNkn+/EUEm+rZ33r1MFi2yNQ
-	zpR2C9VAQBn0GzVko2CRF3GFw2wE/5o=
+	b=pd6eN27Bqfxr0Y7LPRtPdCQbDa84+QoJY6WRRzwLqbtszNSfqWblRI3jFWKjcuM1JQTyyR
+	khjdM8lxo2ascbHlWPPsw0EMUlDs/XDzoxFb895tVg8nsdzi7OAkgkCKKoQkgue8Dq2Llo
+	t7euT+cZNb3DitJcsRgTK1Q9XQsohNo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 65BD8600C3;
-	Fri, 10 Jul 2026 13:47:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA231F00A3E;
+	by sea.source.kernel.org (Postfix) with ESMTP id E3ACB43C2D;
+	Fri, 10 Jul 2026 13:47:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3401F00A3A;
 	Fri, 10 Jul 2026 13:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783691221;
-	bh=xQG5oz4wU5m7lLv6nGv8jRYxqbEgbwiFogSXia05QXQ=;
+	s=k20260515; t=1783691220;
+	bh=YmfZTk/ZQOqnVMZqrheWjYkpxjXzlgMLoos2A38U/W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=kN6RGv2kBQYvnluj9kSRwWn/4/aFEUj7Z34Y5X0eVd8qUpPGhMFyuNQevNjFxixuq
-	 Y0zPoQw6R6zx43FjqD6+qcXi8jeiqt1a1sm+xtyZ9RAVshdkUwV89cZ4/Akv08x3A8
-	 2v2bBTzt7McA7oODOjPbzvnh8vT7wvuoIWfuV0yf+mQ7utlCKHxACrAzcWQgIV1qAb
-	 KDDBpgowGiofSckyaaqZ17kLHwH/N7zQ5Sd1KiqYra/SDZejcY2UiL/nsYggVSMyen
-	 mPn+ZPygaxFS3V0gTcEmYTtiGzyOpLZAQ3jHs2fMGZbygdnVOl0B7dBpqxKBDCv2VX
-	 5Hdsh6MN88BVw==
+	b=U7USbvXYMsHXGrpw4rOMNRw5wQyDSuQe5WE+vlNr1rTdxQ0V9e90uVNK7jx8sg350
+	 y0qmnW19lPKSn6zAlicnMAKlHgE+PQ1KJ6xKP8nG7i4IMwMRXaAi3RnBWrGMnDQFhy
+	 Oz/NKCZfEq0a6UytK2oa557tZS+o5hNJpmPcqX8KqsMLmbTKAyh2zzNyYxwYAZo7fF
+	 l8Magt0XFb+DltxWV9kzyBkRu+sM9nA2JDhPWcKMIE1FkvYVZDP1ufwMjLhcJYOehR
+	 Ovysr0Kg0kl3Q60p8z20A2oCFBMQnctX/5VVOxrKeD3l/Yb74x32VZBl7KQdlOHeOP
+	 qBAQYGwGJBLZQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 02/19] mm/damon/core: ask apply_probes() ops callback to set sampling address
-Date: Fri, 10 Jul 2026 06:46:31 -0700
-Message-ID: <20260710134651.18084-3-sj@kernel.org>
+Subject: [PATCH 01/19] mm/damon/core: introduce damon_probe->weight
+Date: Fri, 10 Jul 2026 06:46:30 -0700
+Message-ID: <20260710134651.18084-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260710134651.18084-1-sj@kernel.org>
 References: <20260710134651.18084-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zrk6q8cyotoh8wbs4gs6qubdhqfqtptq
+X-Rspamd-Queue-Id: E06F380009
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E0E6240002
-X-Stat-Signature: xfm1yii8t7asxe6sd9fjzin8ykc4x83o
-X-HE-Tag: 1783691221-606050
-X-HE-Meta: U2FsdGVkX1+a6b3NI9U5W/YPJ764yQnKyu68pHM/ykHAO/r0yzOJ5vXsnn7xqUNK/TTB3LyYWUx5O5wf8d3fYffKxKs1Wwk9M23tuS25YVnPbrjIK5MG+SXzC+39VwdDqVIFV48eVihcU5wkTo09a8YP5166Q020zGYFx0Bd5qkr/xAxY+Fu3p4j4zzgmi1OUMGnayOXW2WdT3w0PVZt2Kr9FhvLKYITVyIiJLFt0wxkD4CHe12pAREgT/L6euGj2CCZ8BIubjJhTvhqFu9XELe4aFnXMwKSefWkl4xrfus8xTkpCXZpkO86rAgfdlzB4TzljjEoEYUJucC7rQccCAps62gvqyjUULKkRxPnarFQmR9iCWMTPUpqL9x7gcpJfi+W+V9bRBY3oeMW1JgbqkADIPzlkyx6OkQuFjHrq6xrsrOSvRpQBnnnb+NsraUign+6LizHxHdtYnRs7qXzvLJ26oNh3arLbdySbuGSOUVxLmzVcQM745RFmyer2gLkjSQNMtb7gUib8HNTOmYbHKF1oQrl4Gly4s+zFQSJmIw0XAUrqgA034dq2+8Am1ms7WE8TUv/cQBq46FJOevMFEFWzWxYEXCUDhlqSJdwC+AXPXREq/o304+iVdemh9d6lCKN+/pG2VZ42AIQ/Qu01OYygtozOGY+qXkFq417MI78VwBnEs4Rdm/+cmJ97xW3OoQI+t+TMHkszqrcJozf6zNViqPLAAmR7DP5WUYkS1Cds/HYC+UjhxzfoEwemyZw1m9FaI6prClcJZRNN6KED93BL3b2W0Vtjd6PooPNW/3TxyWSueA4Of8/KBaTLIl68ruCLw36BtwtOVaKxOfiyzYkb/Pbsq6kHnYTTEz+pTY45W3dH4pjKePabDl+oRcuEpAw0PIyeYwPKbRNmbt2Kxaw9iRFmvlpTJPrCuW4rMzsCXHCDLytLP+BJ7qpDlpdZrMnfPeUX4qPylzdwai
- fjhC0u6+
- 5jZ87NjhWwdx5jSg4aO9aGM3i3qZW96PZMbXcjl3Y//6aYHPBS1vjAcfWssz4RKMtG54TvO3lc4lJbdvXQEeysCZ+VM6QieL4sudspOyvU6qEPPng4IMH4GU7BhVF4OAvM9iEwteOw2vLkld4LmyF9n7h3idybh2Oz7QFGxd0HXxWUcdrRL7L9Y9QDG7xDUllOrtXvfymPuTeecsLBwE+iFv8BkeMRX3iyqro0xbDmNAksyzO+xHW0qETT/iQSB97StQiIycuA3PKdQHQcSWDeJspNw==
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1783691221-573129
+X-HE-Meta: U2FsdGVkX1+DFd55xO3qlXhUxWYBBrs4bcRQpUmCSjhTpBbN2woaU1FYps0Xuv4FHMrIheateWn3o09+m7SpWbe/DExf5glgOOPCPNzXu/VvcTMO9f7zEEaD4oevHYLJqVu5S7uFYvsWztyaWMk/hMRHrdBfpJrvz3DHUQO2BSlsqSpvT4khePDn/MlADVHDlbWh48JMpAi7Nuz1UliXnJHA3p+Ysd6q1/wOYyb0/A6rYiRnPpVP74q0+krD2uT8GLbVzqgKq3AExRY0uqSo7n8XK1B8wNh9nOuhd9+wgKxgxOGa1AJokPXH1SKLaM9UmBBfC6SfVbchIWq+swJrx07PPoLyPgW8f6jvE7utbf5/zwFo8aletVijT2iFFO8EGJKmkP9DgfkK4uVmVcaWwLKb5hpAuHkJr+Bc5Jkwrrwrgj9r7FuBzRNypISvODftTPGEywCYzsf7jBkovQPesD8KeCRzWemiX6fJChh+RNlKRGLSqMAvNX8DDxOVmN5Rkm6TLdGoWxfPAfSPr8poLIIuPyzA/5j5iiEtP+dQyk2Nf1d8jrEBe7nziEln6LMky2DmJ0qHWtdH+ZccMIujAyiaqlcQi/gj/Bn+VbFw9VfcPeuYJ2ny4INzu9efnfBNj5lyCanbi0hnUwuxGUiGqT94DqQOEx8fJGdy4vpCQqSBxNKF2SE/+N0c3jLra20eAA0HMzTZrGPk3YFbwDn/X1fxQSUnC/e82C2ATCnfx8xkgQqBlh7BL0r/20KZ5DSVVD55kvle621FrqCfXAlhkqXjckVHwC1CTVZIRzByjTs7rCpge1I3KEgR0517/6I3NNJ3Xo3r9ojO8MvLACsf1yuN5hgzj9AQt6hGnZtN5D6dcg74cLhAKxoU/8893bsjHgMGMeQxL30DvmDS1F6y/NsJvPK69/7TvIfZRrj+rmJjz/3DcVOyvMKq00VrG++4tll05OoeEvGwi/lK+Wv
+ VW8jfNFL
+ Kd6enZyBcG4T2CC73h+D4M5dB7jQv7uEAT/UkQz8F/Df015gqkMbk9hLqhs5sTA8Rg5hFJ31EwHGKtM1DXCB0ICrAfjoXlKRDjlXAJ0wgZZpo9PsgAJWc+ihnFZCy77GjGLFockcGyDcoRJ1xqks7lZTkeFcOF4TlNjJ982b3zpyfqjK56a+jDJKkeZgu4yFTYXfnfiZByPx3THQ6kWfvjBD2V1nJjMiwFBMed8Qtx6vpwn8i4koS7dzHPk9/EdfcHnRPa9yzny4MEd+zKN7W2fUb2VMz9JOVRkIdyFchlxPakqOTQgU9f2o7ibJ+f4QrfgUOx6aLl35EfTJCeCRV9xOrXHRsFWmLvTEw6hC54FHGuEA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,68 +92,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-prepare_access_checks() DAMON ops callback sets the monitoring sampling
-address per region.  In future, DAMON will be able to call only
-apply_probes().  In this case, applyy_probes() may need to do the
-sampling address setup, to minimize unnecessary regions iteration.
-Update the protocol for the request.
+Add a new field, weight to damon_probe struct.  The field is used to
+specify the degree of the API caller's interest to the data attribute
+of the probe.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h | 5 +++--
- mm/damon/core.c       | 2 +-
- mm/damon/paddr.c      | 2 +-
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ include/linux/damon.h | 2 ++
+ mm/damon/core.c       | 3 +++
+ 2 files changed, 5 insertions(+)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index d8251c83e6e55..aee28b05acc6c 100644
+index 63f596957c1f1..d8251c83e6e55 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -647,7 +647,8 @@ enum damon_ops_id {
-  * It should also return max number of observed accesses that made as a result
-  * of its update.  The value will be used for regions adjustment threshold.
-  * @apply_probes should apply the data attribute probes to each region and
-- * accordingly update the probe hits counter of the region.
-+ * accordingly update the probe hits counter of the region.  It should also
-+ * set &damon_region->sampling_addr of each region if ``set_samples`` is true.
-  * @get_scheme_score should return the priority score of a region for a scheme
-  * as an integer in [0, &DAMOS_MAX_SCORE].
-  * @apply_scheme is called from @kdamond when a region for user provided
-@@ -665,7 +666,7 @@ struct damon_operations {
- 	void (*update)(struct damon_ctx *context);
- 	void (*prepare_access_checks)(struct damon_ctx *context);
- 	unsigned int (*check_accesses)(struct damon_ctx *context);
--	void (*apply_probes)(struct damon_ctx *context);
-+	void (*apply_probes)(struct damon_ctx *context, bool set_samples);
- 	int (*get_scheme_score)(struct damon_ctx *context,
- 			struct damon_region *r, struct damos *scheme);
- 	unsigned long (*apply_scheme)(struct damon_ctx *context,
+@@ -760,10 +760,12 @@ struct damon_filter {
+ /**
+  * struct damon_probe - Data region attribute probe.
+  *
++ * @weight:	Relative priority of the attribute for this probe.
+  * @filters:	Filters for assessing if a given region is for this probe.
+  * @list:	Siblings list.
+  */
+ struct damon_probe {
++	unsigned int weight;
+ 	struct list_head filters;
+ 	struct list_head list;
+ };
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 327398fa4ee56..9fbea6204520b 100644
+index 11473aa1f70f4..327398fa4ee56 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -3692,7 +3692,7 @@ static int kdamond_fn(void *data)
- 		if (ctx->ops.check_accesses)
- 			max_nr_accesses = ctx->ops.check_accesses(ctx);
- 		if (ctx->ops.apply_probes)
--			ctx->ops.apply_probes(ctx);
-+			ctx->ops.apply_probes(ctx, false);
- 
- 		if (time_after_eq(ctx->passed_sample_intervals,
- 					next_aggregation_sis)) {
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 6172464981730..b13bf7c6eade3 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -166,7 +166,7 @@ static bool damon_pa_filter_pass(phys_addr_t pa, struct folio *folio,
- 	return pass;
- }
- 
--static void damon_pa_apply_probes(struct damon_ctx *ctx)
-+static void damon_pa_apply_probes(struct damon_ctx *ctx, bool set_samples)
- {
- 	struct damon_target *t;
- 	struct damon_region *r;
+@@ -166,6 +166,7 @@ struct damon_probe *damon_new_probe(void)
+ 	p = kmalloc_obj(*p);
+ 	if (!p)
+ 		return NULL;
++	p->weight = 0;
+ 	INIT_LIST_HEAD(&p->filters);
+ 	INIT_LIST_HEAD(&p->list);
+ 	return p;
+@@ -1658,6 +1659,7 @@ static int damon_commit_probes(struct damon_ctx *dst, struct damon_ctx *src)
+ 	damon_for_each_probe_safe(dst_probe, next, dst) {
+ 		src_probe = damon_nth_probe(i++, src);
+ 		if (src_probe) {
++			dst_probe->weight = src_probe->weight;
+ 			err = damon_commit_filters(dst_probe, src_probe);
+ 			if (err)
+ 				return err;
+@@ -1674,6 +1676,7 @@ static int damon_commit_probes(struct damon_ctx *dst, struct damon_ctx *src)
+ 		if (!new_probe)
+ 			return -ENOMEM;
+ 		damon_add_probe(dst, new_probe);
++		new_probe->weight = src_probe->weight;
+ 		err = damon_commit_filters(new_probe, src_probe);
+ 		if (err)
+ 			return err;
 -- 
 2.47.3
 
