@@ -4,123 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC010C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 15:16:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34159C44501
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 15:22:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7459C6B00AD; Fri, 10 Jul 2026 11:16:13 -0400 (EDT)
+	id E31D56B00A0; Fri, 10 Jul 2026 11:22:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FB7B6B00B1; Fri, 10 Jul 2026 11:16:13 -0400 (EDT)
+	id E097A6B00A3; Fri, 10 Jul 2026 11:22:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E5FA6B00B2; Fri, 10 Jul 2026 11:16:13 -0400 (EDT)
+	id D1F9E6B00A5; Fri, 10 Jul 2026 11:22:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 38BF96B00AD
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:16:13 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BEB928EDAC
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:16:12 +0000 (UTC)
-X-FDA: 84973217784.18.D845B9A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 15E9FC000D
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:16:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DHGTVQQh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ABE776B00A0
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:22:22 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 74B1A1C3BD3
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:22:21 +0000 (UTC)
+X-FDA: 84973233282.21.03030BC
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4088B10000B
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:22:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=NUr9YUzB;
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783696939;
+	b=v+i5rloywEj+/5HhO5YUk0K1GyyMLdmBDMYNW4/FNCDvhyhrq9k1c6ncr2Oghzx2428Aac
+	UNl6B59P1cUevUMXSRDH/hjX4083jyfeNYMxEKXbD0RpOUEZdcifTf33POdOJrRR/9lGrI
+	Nwmr1wgQ3R8HylAYPSnUHtwfNOEvJP8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=NUr9YUzB;
+	spf=pass (imf14.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783696571;
+	s=arc-20220608; t=1783696939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4r0Cc9l2aAmZyRZIk2/aSrghpeZfvwxavhupSZVEeMs=;
-	b=OMd6GyQFAPza7AckU8xTFuGEAOQ8Q5ECezyu1yHS2OhE3lHjoMRjeGfJzyEpWOoXvLY+Iy
-	RaY1Fukdxpj/EiujLLq8fQJzI52sFr+beHqz/UPwEKS7d+wRZj+LZwA12qD2dEA2ftj8uY
-	9HSDFFZ1DDDaQSzLMUiHov5LAFsaaF8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DHGTVQQh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783696571;
-	b=uHFaXxuwVXQlQzt0CknZbJ2HChcToVCIBBapbZ8UJgMh2QFQxkrOa6KLTTlXIcexnXv5lJ
-	s4QbQc5UlLUVzp3c9hmrdqZddB2kxTZRw05ts0HAwkAPU7u8ysPsijiTd9TJv1qYrrk+PC
-	GKzhKU9EbqZuCiPtSuIFLt9Ey3ZJRUI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4CBF340A4C;
-	Fri, 10 Jul 2026 15:16:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39A61F000E9;
-	Fri, 10 Jul 2026 15:15:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783696570;
-	bh=4r0Cc9l2aAmZyRZIk2/aSrghpeZfvwxavhupSZVEeMs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DHGTVQQhWaTrPzJXRhL+eOlPh3mjgM3TYm3BACmuvjIRndZXufi/DOhVvVPUUmShz
-	 pMaTajqPd2DgQBSgWuLiUyl1vIFajO3tcup29tN2rA+oZElUGBQ1IGgnnzXislM27I
-	 7CvnkGOpI5896VQOz3W8Gmxeu3uzmNGoxn7r0l7pBdQ0sONYuYGXeAzxoC3tQ9/wUH
-	 UEFxz/qEn3hiXt8kPfwHLqlEerVkyRZiznIxE9j6rS+w6Jb2/IyIAdhgUn87BZzWbP
-	 pGVPtXCokUhc0BUp8Nl0bg7ctkDVndBAE1whxwQffv6MbiL/O4PIdb6JwCyyrjCy4K
-	 eJhH8u+Rek3lQ==
-Date: Fri, 10 Jul 2026 16:15:46 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Russell King <linux@armlinux.org.uk>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 17/30] mm: prefer vma_[start,end]_pgoff() to
- vma->vm_pgoff in kernel/
-Message-ID: <alEMciQmyQA7wdua@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <ea87349d63205bf4c26ea79854f179a9bf8cfb0b.1782735110.git.ljs@kernel.org>
- <akZCg73F-oGzDp1a@pedro-suse.lan>
- <akZGqclqQ6gS12Vv@lucifer>
- <ak_C_o2ehS17Q5HV@gourry-fedora-PF4VCD3F>
- <alEHy1raICek7imv@lucifer>
- <alELDgm258nhjk3b@gourry-fedora-PF4VCD3F>
+	bh=LslWkPhTduHsnfKJmg6Amsj5C5OwSASqPOJLzZ77NKQ=;
+	b=Po1IKPusycBNnU++svphq4eqP40LMz1rPB3ePGZk4fa9CEca9ByIPDfrPQqBZpLzW7SeEr
+	CUvAapBm/KHE801GIIE+g541VaFMrHsBp9elXSIlyLGeB74JDPP4tJe3u5AlkC/EYGGGgl
+	5ODLFcfkIN5PC1JdrXTy5eXKgTOtU9s=
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51bf2479349so6773651cf.2
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 08:22:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1783696938; x=1784301738; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LslWkPhTduHsnfKJmg6Amsj5C5OwSASqPOJLzZ77NKQ=;
+        b=NUr9YUzB855+tsdkfU23T3JVJ7ztU/PGt4ugjMmkiHFzYIoKsqvgJ3Fi0V1llJ/5Ub
+         CTr5WZtQez2TdGNUUCVNx8+BJ+Mb7AWdHYUMmCyg4d3Vwe3ajEneEdA09IKoqocwoZbi
+         su30A0vta+2B8ysl8UDmzUtBKpwf7ksj7u8AbSy+iuw3QQcavTkvr6tem+JNZu/iw1fo
+         vadRRwg5UL7/JbLF+fUPJXkr5g1iHb2rY4EE7c1aDgIa9xcbY51GEoc65RqEhgnZzPYG
+         jpQ3hQlgVGZ/NsuKe+iCYK0+mfGEbBBLaFstOUWCyX+86JxCJUvfb2M50Q82AlDfARCS
+         9Kpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1783696938; x=1784301738;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LslWkPhTduHsnfKJmg6Amsj5C5OwSASqPOJLzZ77NKQ=;
+        b=qzAG+nu3sGncH2X1F+vKzeDIA0cFzcGaNgqIrj1m2i/KVi8lHnmcXDGvsuwTWje2fR
+         dTMstriNcIsC2EaJRwR/r4V+Us5HCbgwnsdI4K/036rjBAVUnmSxqoE8xNYX3Bfal3Cz
+         7AB49p2jXcyeBulX0r9enmq/7osACC/+oQeK/2TvEpfs4D7yO2o79v4+HWpY1U3NpsE/
+         aKek2jCPlIXphA4wLG2sf00ZZA0MlSW+hXK5XYwL9yJiZvbUWuLr9cBdzhIY+S1zO9Mq
+         6VokL/W26aS1ZWnh0xAAizPW/nvv9kLMedWYXepo4tS/PjWxewalHZVg4o4RKx3O/1BO
+         uhlw==
+X-Gm-Message-State: AOJu0YyFZqi1mdOv5Y6rk/FgWznCWCEY1PvFpDPoUKdB4aIo6doelOwB
+	1wilBa/YauQ2m0Ae9Wn6t/vtErGKG5w1ubBRxUYq8uy0ctLk6xpieQ3iF4bEpYt8DbPoHaFyyID
+	03w6x
+X-Gm-Gg: AfdE7cljIGWOuZuDOsx3dHElMpS6JdPyItDZ6RP/q2SZK4R7pul06XEWIYIFY61V2+W
+	retSQx3G3TpxBXXWbugrPAXeXtUc02TPd6FlUQXLk0QaE66wYcj58F8Eiivu1UV+szQiTK6pjYK
+	7745cu7Cj4oQg9xC1YEngwJ98Y9eNT7LJjBY4/Bde+MQPGX5xDSmBU3v1l8u0/ebGC87f0QVCyN
+	qPsYWjxtcDLC1Kq4VPIVAdf21Vt9kLLHZNr5n7ygIiedUt1XImIzTiPUqwQPOHrat1TlycSx/si
+	4RGIPg7eMxULjDhPHZHVBtd2fVwxRlwpEj8CMNMHVcMN+L+Nr5eBVTmmOkOqMBHpwusvC8UiIhY
+	AmPgV4rmVtK+P4wz4Z95QqHddgPjq38KruatgZqybuldNXhAh+Ji1iiSPyfEOj4qZRsdTlCzSJw
+	pKQAyl7VvBqk0=
+X-Received: by 2002:ac8:5d46:0:b0:51c:2554:a8f5 with SMTP id d75a77b69052e-51c8b43a3c8mr125847521cf.36.1783696937888;
+        Fri, 10 Jul 2026 08:22:17 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51caae2068asm17426371cf.17.2026.07.10.08.22.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 08:22:17 -0700 (PDT)
+Date: Fri, 10 Jul 2026 11:22:13 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Salvatore Dipietro <dipiets@amazon.it>
+Cc: linux-mm@kvack.org, hch@infradead.org, willy@infradead.org,
+	ritesh.list@gmail.com, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-xfs@vger.kernel.org, dgc@kernel.org, vbabka@suse.cz,
+	djwong@kernel.org, brauner@kernel.org, alisaidi@amazon.com,
+	blakgeof@amazon.com, abuehaze@amazon.com,
+	dipietro.salvatore@gmail.com, stable@vger.kernel.org,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>
+Subject: Re: [PATCH v3] mm/page_alloc: avoid direct compaction for costly
+ __GFP_NORETRY allocations
+Message-ID: <alEOJffTvlAnYtjJ@cmpxchg.org>
+References: <20260710143437.12379-1-dipiets@amazon.it>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alELDgm258nhjk3b@gourry-fedora-PF4VCD3F>
-X-Stat-Signature: dy6bfafi3hh678s94jarruo35oh1hcrr
-X-Rspamd-Queue-Id: 15E9FC000D
-X-Rspamd-Server: rspam01
+In-Reply-To: <20260710143437.12379-1-dipiets@amazon.it>
 X-Rspam-User: 
-X-HE-Tag: 1783696570-902663
-X-HE-Meta: U2FsdGVkX19Q2UwrWn8OS6nDaVuPmFFOgS9n4qEasmdhteCNQoPdlNbxrmJmq+au6Qbbzvfvo7KJzvwr9W7VPzSZr8IWY0tI3EW8JrwWQYPrSFzE+zS/5ypqPvAa3+9zOIzygDCfic0JjTqWhGiB3oGWpCYacYXFZu9xdymRLaq0J9ntNP6W7XXVf+07GhWVgBrZxiIOz7bpStQbydy1sEs6r4qWFE8ndfYk4s0ZwIl37T1pwdgvIX8CNQBPU2RkO1t1+gCcQC3GEAN/Td5XPC2rX5n6u6T3Xk92rOKy2O7FkfbP/K6M7Q8Yo9N9y2BG/mMo5/sxOau2zYgnz705R4hbIlFhMw08+heQnvQBUramLmjSUqOEq8uW2kYj8lt1xY5hsp8pMFXZS8gWSJFp+guxKh5hCLFFohecCuN33Vwr/NgHVRTutgB4ZKqdaNAFouySf0XIAlycuIUEFGVcaT2M9q6bhmnBFODck88rqPOdvcGARp9/L7RrnmKS1QIAYg6B/8XLKP6f4M6FLw0wJDtYc+jgtmfFPmyrJ2aIap0iKTJc6Icfg2btY80/3PIMga20kFf/EtZ4TvimoBVAeqpnJ9JkjdwoywuJ0cs5wyfA+PYVV+Lc7GYAvbE62CiH2INw2h0H/a918E8GpDN979CX0Gk7nmRZGirR7SrH0GiDXlpmUbADXEbuN2OB36GdbWhgQJQNSv+4WP55myaJIIHfZlIUb3cg+CpLdzlVFWRpqPlocrlCJbaiaZYXohOwSUYUuDLF5d/Wj0OhaU6FD87HJTrymS0+pULtUySNGpEeV062W5q6x/Lph2LyLn7ObPmx7d5yOuMPX6j3fFSGWImxcgqGgnp4OLNSPV5oRCQbmAe5LXrIBPAy91igYBaDeWK7if2YQwSEa5/ptOF2oFskkHZ+RkQbrr7++oVTzREqYZX3+uPTEkY/VzBRjBSU2rm92tIB4Y/gVI36WCj
- wVeXYzwx
- uZxM31Enf0rE1m95RtZL3yAbAwpqigR2+xNxHthMuYeFRFDJldYFT0N5evjubNyeWheQzfvavB88NnsBVA5hiISCu7sVNdBU+Fl8yT/uJhzGQ3PZCDSAzc/mhlrnGfdCjAwp9ztf4dPYn0fEyuyN6SSvG4CBacjnX1bTKFUE787h7YGjRZT1ysAPvSaX1s3IwfYnvhjfldkE+36D4P/RetcBlWOX+5ivawHtyHhKzS7FsiKBeCmkP/5008krAT3OVb3aGPXajN/eWcntyih06qhx0Vxg8SJq0ZTtzcZk67/U/MmidLwe0wTG9dIz8HIUkqmTnJMddHvMu+3wuaYaurK4Qo4fvuOuIoo+sVWhw14kbtF6HoXn2v/6lQg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4088B10000B
+X-Stat-Signature: 1usankbq7x97sxsg7unqttq78a9t78mh
+X-HE-Tag: 1783696939-586366
+X-HE-Meta: U2FsdGVkX182vYBNG84BKrJobJPDW8HlJeY+mZoWVkI2vdcby51BEw1El+TChvFYbSn0GtCQ0WcNfxpPGvYslLgIYa4Y2FZqvESVYXKI8lIgNobhBO3LHv3xJmiPL5ouLMql/kMOKYZ/jkfARIXToIOantYtix+b454hMMew2qQ/P0XUetOKHluVqdmzOBJB6Ys/j63jX72uChVQ2MOAeOC+/Js6tKzkVHPSDa8gSK7U60SRZLyon7zwP8WjG7YjaiQyw0CN5rt97nBX2fEPHbe93lg+ZDg5AcP2MBzxw1CuvhB+ML1FI+Fr4ULZ1wzeiZaCnIs8J+gd5E0u9eC10f8yQo4sZfnh62e6D7WUACvTnpqtZrUA7DhqPEa8g99kFELMqqa2G5a7CqN3wRmItcdSg2/+L0Hek5sREwaPPzaeAKk3jj/lX6mZ2zNa6oLFkDNaPbs6P0q7TdypVeBOmRjQTZy9YU6Bj6OpyHGE7thqYUEGkYxzCj2WOzvrsMY7bgv61yxn7d19MtWyE7FCy9aQfGgYvyOe8dTqQ9YefbJYpvTxdKGaSqYIlqyWVu3mhqT5bhNc0/i1seHngDUjfr452eF7W2R8SZmkhgcv2Ned8ZyDgtgmzWUPqlp469Q1ORFRThc1nLxuSk5Ba9J79X7K3nmGip434h+tFleEMbztpF6nOHymWUnCntiUT+HdxlVc+jA7vieH1zh/dKbJZh3jWLrzf0715s4mDjQAS/HwovpFzHMdd36LMO+oD8p96zd1SU3C7fZICBLdaocP5oijo4lFcrc2/ReAe5L8rPzVLhZ4A9ru2l0rHbUWVmaXJI4xJIsQgK9oeE/cHkgwy4K74qmtkFQipap7tTZYpQJ3tccPkkGLf4CKy+XgCpBdffKqbffcAEwMCMw2Ft2SZzhjA4Czb0b7cyQws+fAx99NfW+FjWqHk84idEry9ge243ibyUec/gWwBpuBog6
+ eHXC+QBH
+ fDmkMeE8YesbRBhmvf6J8HzdqRh/FgR/WaGqTIztQgw6W9mP75piqOcaHn0gqhsMcVn5/f3ZZufvgyp7hxjGxso+6e5gXTEhRnKn6iBUG6OLQT+yyx/S3owP5rOBS8LnS67qinZ/lscQ8k+ic+E7Y1v3Af9T5/Gya+o+/eBdC5IJBPVOUWwPDRWNTCrlk1iZ2+huGxYE6/6Bgbm6zrU5h4UvQc/WBsN9VXu2d7L3XdBEysXozWmtzrkPlqjCAAvgn3WYp/MOO+EHsCF6+JFryu4aFdjgVC20spddCfbvLQxq/exBbZBE8QJfd+xuEdbmJXdg5e40mUE5TdtQfh2EMp33ixSL/O/V0No0QIPDkCzQsPGKJKlIGO7DquaP1SYYiN99PBureWK7yFfGXUJzQGU4jPncRj/urZfK0oZdPEeKOip9Tjn0afbdhKLowWK3+YPjHOfuKLvSz6pnWDK1Y0brENPkAMgYQhTf2+UaN9AOs469RvWcnyeSxntMdguakStjp4ITsoPHm/m52vMkshmkV/HBZvQdiEp1Ql+8G/OPAbRs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,43 +128,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 11:09:02AM -0400, Gregory Price wrote:
-> On Fri, Jul 10, 2026 at 03:56:33PM +0100, Lorenzo Stoakes wrote:
-> > On Thu, Jul 09, 2026 at 11:49:18AM -0400, Gregory Price wrote:
-> > >
-> > > Silly question:
-> >
-> > There's no such thing :)
-> >
->
-> All my questions are silly.  That's my secret :]
+On Fri, Jul 10, 2026 at 02:34:37PM +0000, Salvatore Dipietro wrote:
+> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> introduced high-order folio allocations in the iomap buffered write
+> path.  When memory is fragmented, each failed costly-order allocation
+> enters __alloc_pages_slowpath() which runs direct compaction and
+> drain_all_pages(), causing a 0.45x throughput drop on PostgreSQL
+> pgbench (simple-update) with 1024 clients on a 96-vCPU arm64 system.
+> 
+> The root issue is that direct compaction is too expensive for hot
+> allocation paths that have fallbacks to smaller allocations.
+> __filemap_get_folio_mpol() already marks higher-order allocations with
+> __GFP_NORETRY | __GFP_NOWARN, signalling that the caller can handle
+> failure.  However, the page allocator still attempts full direct
+> compaction for costly orders with __GFP_NORETRY, which is unnecessarily
+> aggressive when the caller will simply retry at a lower order.
+> 
+> For costly-order allocations with __GFP_NORETRY, skip direct compaction
+> but wake kcompactd on the preferred node so that background compaction
+> can defragment memory for future allocations, and return failure
+> immediately so the caller can fall back.
+> 
+> This keeps compaction working for long-term system health while
+> removing it from the latency-critical direct allocation path.
+> 
+> Test environment:
+>   Hardware:  AWS EC2 m8g.24xlarge (96 vCPU, arm64)
+>              12x 1TB IO2 32000 IOPS RAID0 XFS
+>   OS:        AL2023
+>   Kernel:    next-20260707
+>   Database:  PostgreSQL 18.4
+>   Workload:  pgbench simple-update, 1024 clients, 96 threads, 1200s
+> 
+> Results (average of 3 runs, TPS):
+> 
+>   Config                   Avg TPS      % vs Baseline
+>   baseline (no patch)       70,389.24    -
+>   With this patch          154,977.02   +120.17%
+> 
+> 
+> Link: https://lore.kernel.org/all/20260403193535.9970-1-dipiets@amazon.it/T/#t [v1]
+> Link: https://lore.kernel.org/linux-mm/20260420161404.642-1-dipiets@amazon.it/T/#u [v2]
+> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
+> ---
+> v3: Move to mm/page_alloc.c, wake kcompactd instead of avoiding it
+> v2: Move from fs/iomap/buffered-io.c to mm/filemap.c
+> v1: Avoid compaction in iomap folio allocation
+> 
+>  mm/page_alloc.c | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index a63733dac659..2d02703d8f0f 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4883,6 +4883,26 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	/* If allocation has taken excessively long, warn about it */
+>  	check_alloc_stall_warn(gfp_mask, ac->nodemask, order, alloc_start_time);
+>  
+> +	/*
+> +	 * Costly allocations with __GFP_NORETRY are opportunistic - Don't
+> +	 * stall on direct compaction or reclaim; instead, kick
+> +	 * kcompactd on the preferred node so large pages may become
+> +	 * available for future allocations and let the caller fall back now.
+> +	 *
+> +	 * Direct compaction is way too costly for hot allocation paths on
+> +	 * large systems: each attempt calls drain_all_pages() which IPIs
+> +	 * every CPU.  Only wake kcompactd on the local node to avoid
+> +	 * cross-NUMA interference with unrelated workloads.
+> +	 */
+> +	if (costly_order && (gfp_mask & __GFP_NORETRY)) {
 
-Mine too ;)
+I think that's reasonable. __GFP_NORETRY is a bad name, in practice it
+just means try not too hard. One direct attempt at say order-0 is
+fine; a direct attempt at order-8 is something entirely different.
 
->
-> > >
-> > >    What's the purpose of retaining tags in a non-address value?
-> >
-> > Well if you want to reconstitute an address from it later then that'd be the
-> > intent, but I'm being hand wavey here for sure.
-> >
-> > Main thing is to retain stuff under the page mask
-> >
->
-> Right, which ...
->
-> vvvvvv
-> > > That sounds like there's fragility just waiting to be broken.
->
-> If that's an actual issue, then our relationship with tags is painful :[
+The callsites COULD judiciously use __GFP_DIRECT_RECLAIM but I don't
+think we want to burden them with that. And as much as I hate that
+kind of arbitrary costly_order gating, having every caller make up its
+own rules would be even worse.
 
-Yeah, I'm just not sure tbh.
+> +		struct zone *preferred_zone = ac->preferred_zoneref->zone;
+> +
+> +		if (preferred_zone)
+> +			wakeup_kcompactd(preferred_zone->zone_pgdat, order,
+> +					 ac->highest_zoneidx);
 
-But all that is stuf for future masochism^Wfun anyway ;) focusing on the 'respin
-the monster series' fun^Wmasochism atm...
+Let's not do that, though. The page allocator doesn't wake kcompactd
+directly - it's subordinate to kswapd because it needs free pages to
+operate. The coordination code is in kswapd. And that's woken up
+further up the function.
 
->
-> ~Gregory
+The problem is we're lying to it by passing __GFP_DIRECT_RECLAIM when
+in fact we categorically don't do that for this request.
 
-Cheers, Lorenzo
+And we're lying to various other can_direct_reclaim and can_compact
+gates inside the slowpath itself.
+
+That's not good.
+
+My suggestion would be to clear __GFP_DIRECT_RECLAIM first thing in
+the slowpath function. Before that nofail branch. Before
+can_direct_reclaim and can_compact are set. So that everything in the
+function that checks these works properly. And then you'll get kswapd
+-> kcompactd wakes for that request.
+
+> +		goto nopage;
+> +	}
+> +
+>  	/* Try direct reclaim and then allocating */
+>  	if (!compact_first) {
+>  		page = __alloc_pages_direct_reclaim(gfp_mask, order, alloc_flags,
+> -- 
+> 2.47.3
 
