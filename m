@@ -4,137 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A10EC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 11:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D8A1C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 11:16:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 720D46B009D; Fri, 10 Jul 2026 07:13:08 -0400 (EDT)
+	id A35116B009D; Fri, 10 Jul 2026 07:16:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D10E6B009F; Fri, 10 Jul 2026 07:13:08 -0400 (EDT)
+	id 9E4F36B009E; Fri, 10 Jul 2026 07:16:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E7146B00A0; Fri, 10 Jul 2026 07:13:08 -0400 (EDT)
+	id 8D6DA6B009F; Fri, 10 Jul 2026 07:16:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BE4C6B009D
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:13:08 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D06C61A0405
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:13:07 +0000 (UTC)
-X-FDA: 84972605214.01.D596A9B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1B0994000A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:13:05 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eypDgINp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 644416B009D
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:16:37 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F13BC1C8917
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:16:36 +0000 (UTC)
+X-FDA: 84972613992.11.C248CB5
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CE7DB100004
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:16:34 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="v 2a0onb";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Fd7fOGXI;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783681986;
+	s=arc-20220608; t=1783682195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rZb7/pxxnbIVqETA1OR+i/G8TlRTT+kWkE9kl8/ZZJs=;
-	b=1OXr/EmfbeD919rx0a5M3639FVy9kAwV9RUSAxQYfqiTQ7gfXBAXEjxDKy2Qx8+VZRo61q
-	dLIsrZdbh5rUpWznLBh3cR0Kq8OQdnK/MzHQhWKinPUuRsCMCybk30N/MnwKcUhcROJ8jo
-	nI0txQ/KVXf7Lv2lOrP+MX//G9x4kZU=
+	bh=4tb1TbPSaUoa6sJMUNmBbUyB1nWkk1Ze1A2pnXDJ9wE=;
+	b=1iv3cX02ort1n2aiwMhLUGr9hOwuHlf1e6kbBD2caDGCC1LwmSzLQ9sKTsT1Ak62KPGSMl
+	KfLGU+xrPdpf+62aIE61M2OvGz8FfmGGZS5FaHz7qGAlrIIEmUEEdXAuEkn8ZGKiEjvRDT
+	TAbFLLNEplToikG02SDeO9BepfuBEGM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eypDgINp;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="v 2a0onb";
+	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Fd7fOGXI;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783681986;
-	b=uMbwLtJBktG32WO6fqAo6L2QtaOSwJvWFfjWTlY9CkJqN412JKYsWgNAN659eEDbgHG8x6
-	koKTvmk4dMr4+WIzP8xbfb5QLsqle4YYC9ty+kVpaEk5KOBzlWAfwVD70x9k7b5059O2v3
-	KAe6yrxCCAubJov3B284zGnABHgnc7I=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 50A6E408A8;
-	Fri, 10 Jul 2026 11:13:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE811F000E9;
-	Fri, 10 Jul 2026 11:13:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783681985;
-	bh=rZb7/pxxnbIVqETA1OR+i/G8TlRTT+kWkE9kl8/ZZJs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eypDgINp0YdZSkwT6QCh0FbLMJo85+mqtUroPW/6IRw22kqEQ2ySxdu4J8QOfr0g7
-	 EZzmELJ7RVhIYkkdmP+ofS9JM3ph5iB2q9bdqlTRsJaJHmxj7Acw5izjDSjjeC4+7I
-	 PeI8qNFGgv1uQV9DbviVpHveHPVFlGD17PwtTHdEHZ0+TyxYVb5Vvl9C+fugqk7Y+b
-	 GLIytksWVWA9VN9DFFYdryepbQuAbqn89bLIsO0Gk0s7QmgEPBjUI1Di+4Y3JxeRVT
-	 aFSfUCtIbGOdF9q+Hu5QEMW6O6GleavmbtzR/LxLjHuntxhYIgKkdgF5OmY1b5Nsty
-	 PfSvPYt42OYDw==
-Message-ID: <75cfd24a-1372-4c55-9e1c-a3ac374c1011@kernel.org>
-Date: Fri, 10 Jul 2026 13:12:59 +0200
+	t=1783682195;
+	b=CVUfEoSfonhXzQv4FnErJ1gT0RNTtqG3Peb8MgZ1a/YkrE6eJuQMXTLjwLRmzAm9jOI63O
+	MRIUnLfYDR0PqOhQa0z0V9tgylyQ1b+CEugqXrAcjyGa+V9H69VpFiTCYJ503C+WU3ye9q
+	JJ3FLpes85SEVq3LVZdUftbqr+wBh7k=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 23DFBEC0188;
+	Fri, 10 Jul 2026 07:16:34 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Fri, 10 Jul 2026 07:16:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1783682194; x=
+	1783768594; bh=4tb1TbPSaUoa6sJMUNmBbUyB1nWkk1Ze1A2pnXDJ9wE=; b=v
+	2a0onbczSxWXCdSNA9gDWK6mA6QLrB0u++a8sk2DAxNLuYcsCAIqdFcnvpCSBGwP
+	rdSNsYnd+CVw1Ab/ICHBwLCL0mlUBH/evfD8LPtZUt9lc8MMMNz/4dcC+XwtQwON
+	+W+lZXCEIu+76P0q5V2BHhq7wv4DSVNeFv/qv632XNOgnRJybA+uQV4KnqZ17jTM
+	LtHkXrRfLZ2Q8EgkcmBjalrZggxwoyeyMnYaw5uuyxEbABah5ru3Q5wGtJUGmZ5L
+	5PuZx2mp1PV5wGv+GfvdX4593CFA16111KHmbmQavoN1vYtBlA2tk5CguPMG9oDr
+	u4ldValR+YPJDyTiV3x1g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1783682194; x=1783768594; bh=4tb1TbPSaUoa6sJMUNmBbUyB1nWkk1Ze1A2
+	pnXDJ9wE=; b=Fd7fOGXIy3wsIZLrPehHfxyB04kU+OZHYzR6P+xDzQ0dS6j7bqC
+	lbSUh5IVmF9jlGx+bnPWlX4VxiWgmE0sc5zMekEMQFuKDyLHSYET3lv75JDzCDm6
+	flfQZb3li5Q+5t8B3+d16DQaH305o3bA4Ks6cmNCVcGRoawMX6h3apoY2yuvRNrh
+	nHKSsGfnR63SqRx9l8YQyuEk1csG5i8JCfdcyAhNv27r25mIVgbUm8hiCHOPwYz5
+	uJCBh6uty8F4J/QwE6lnmUjoX96uGgswfUi5CVyV4uFvx/l7Up82c2PKEYyr7JtE
+	o6M7uaRPJCh2pMVw5X+ptFC2xnukNkZZyZA==
+X-ME-Sender: <xms:kdRQakngPCrrdSo8WoYSmEXCzBkQdZmwLUKIBxBMjmwQeSdzehhp-w>
+    <xme:kdRQakTLWtDb6VlIa454LKBJMW9PzxLnFVEiAayMmQV1W_3kEODPbd7iO0DWTjizy
+    vJAIB1W_-WEAx2757U5S7lfpFBynq5Vo26tZQHXkEJ8M-YnM6Y76I8>
+X-ME-Received: <xmr:kdRQajWg_mzCAtqsUcMHrtBnWjyg4gI8yubfhpFRI1W7sG6Zxc7ekw5D50MsCg>
+X-ME-Proxy-Cause: dmFkZTF2MPfeCgygTMonQ8pNXszxYLscEiX/yYk9qDNEnAkEfaw/jWYIaZIjxTGhuWNQMu
+    uQmKzr1L8gH5hZu/zzEMkRXJojpn1LIyiXBKb/aDLsQ/XQp9wXOg+HnlPGwwPgLVDdS5fE
+    vjC72m2o57IYwvoGp9u2GdP8Tn6cz13rxMkdyQtTs94Kdakp4o28HlcC+Vnpfmhy/l9jUw
+    OeNynW723YEGoKvA1NnXgZxUbjOvoyVbR+32EUZ/5cFLduShKRhxed7lOPw6ghzcxil4bS
+    YuznSvFPs2Vx8JiGAPkE3B2aPgFbZWPaWmRPsYuao81R86UC74pn5ifxxDBWuSf0l1AGZw
+    TIXUfUroOsF12fa6WVoqLBxoVTA95O/bNdyssyNVVfH0dpKHh80hYqXZ8u63RUJ79FYtEV
+    pLMBApb78ssX6LtVgm+Z/HbC2/JJl3mC+LHP9IkfzVweBmxghJ2VI2BWjyuRVoZ9uJANni
+    PKrHz2kSd1ejVkjAO4ANTqI2fHa+01dtbWi9CS/3alleeX3TFwsrBWfDbQcOQc2Xv4m9/R
+    nowMhaRx3mBuG0S5I62yXSa7DDt8LxqM/eNXzELYnZzPSdDo4HZrAw0rqtTlkBQFGhltmu
+    LY8HicYe/mDeFvQ8kPGsq8SKhjL/AjrGImqpFDRZbixT1y9aYjvc59jmq51A
+X-ME-Proxy: <xmx:kdRQaoK7AUt5zIMHxeazcw0y2r2cF7-oT7Rfl6fajtw_sRgMisWEpA>
+    <xmx:kdRQaj3bsYl94qwhaEXPJe5BNkVXOO6Wz7KrWgx7RuoThv1keqMRNQ>
+    <xmx:kdRQalIoZJ7onmUorXejruMPGncK8pPD473iilMkJz_dgT4EeF4qFw>
+    <xmx:kdRQauiulBD5tR4zDHfuk2KnxLiDuzlMIi3fszgmPy7E_kFBsqmXJQ>
+    <xmx:ktRQaggtvmELJaiowKwD4JcbA2iN5tS4uHcDXGHSmzCFdq4i8o0rNP_4>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 10 Jul 2026 07:16:33 -0400 (EDT)
+Date: Fri, 10 Jul 2026 12:16:32 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Hao Zhang <hao_zhang_kdev@163.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org
+Subject: Re: [PATCH] mm: thp: unlock i_mmap before releasing split folios
+Message-ID: <alDSekC_5t-29vJS@thinkstation>
+References: <20260710071344.GA106129@zh-pc>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: remove obsolete hugetlb vmemmap test
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- muchun.song@linux.dev
-References: <20260710092427.3459121-1-songmuchun@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260710092427.3459121-1-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260710071344.GA106129@zh-pc>
+X-Stat-Signature: y7oi8u6paa8tckrm75hfhyumcitm1b6y
+X-Rspamd-Queue-Id: CE7DB100004
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1B0994000A
-X-Stat-Signature: odoci6dywpynrcuzz96xigjqghcn7trs
-X-HE-Tag: 1783681985-223113
-X-HE-Meta: U2FsdGVkX1+cYe86SwCOrbAdB7e+9oanO5jsEyseybizsq+wN3iv4CaNTh7R6AIHEDXA6S/wPiAXuptgAaSUp8zMxP7TmW0Jk3/bkvEjaSnnJ/VknGAfJfUGHcYVl/N7arVVk5dPtZyWt1/NnSZ9k5O6sgUVh834YnKA6Lc/fLoh3aXxIFQMH/Dlg4GaWqhy/3YFwl4c4vST0zKzY2EmIqEoB7hy1OLOOX6R/l0qXTNe0IQ3fquJOXgMI/riO/LC7LXS7ld02Vy4Gr3fqlrjzKEYfObffsImFwngJ6uL6IA39HLZmT43elitJlVd1pmGHr5jbZ/9JP/qOZc684TywqaUED/BtBN0Ofv2kJWNIa5MMONy71n/hG1/f1oaw2RQeLBADxpchH/Be/lYdT+WUyXrltTO+x1s0og6NE+N/8uG/ehXzhAicJVpAuM/YepL5VSRwQYMFLP5aOJG3iCSPAK0lFgxquorgobLcfd/RUB1TRCFPkg0KE76zpMRwPtLwY4xVef0yTrl4LQzhflGgTcbniHB3vHt5ZO+aS6XkjkB9ECxnczUaaBrimUHiiWLcDMGFsQ5iSASXOlhnJ192GnaZ5r/iLpnh+Q/+v51kv5i1V+q0JhjGfk8254qyAGSe8m2FzywhmFLVV+y4w1fFjhnresN2R1Y+jBk1hL1cYQ2vOURPAWXRMbjsDSUIl5WviSqX5AmbLdqe9igVldk/hUrDKhOW1IZ+458MT71TCm4e4v+Qkw9f9LdK7e5IfPfcTEwhb1Nb4eQbwOpUbmc2RIQuc38yAKvE56xlGUnHT8FXWUysox0Eo+S/SjZcFsiaF9wgODClxJbvHIzHjUuwFvj5QLHiIrf10yO7LtSWH50u7C50FUvMNm9HaYST0O3TgaYdXq1cXDPAzDV7eT8vU3ergdUQiJn1g99WRiBXsRyXMG6yATjLDr/girPFmuexPMN7r6+eodOWe3RFVW
- AufU8A2F
- ekn3LHfI4XPYp3EKegO4MESlipiuTCYMJOgQbBwiqnfKfs6c5fJvlYn26ZXg3eWzFgK8Wd1G4riF5aUgsj8W4CAScsq37ixKDapJCeN2CWckSJ+sBmfx+ibkSYrkZHFAckSMMyakmOlMEZQ0biKzdT/RdbrXokycznuG3xqO5CycxcyST7J9wE8QcH0UcxL7kviyzq62dJjlrL5M5iOTHIRPdwE2yzYJi2QD3gDIuT0Ov9rEHuk7eO8TN4uqpgUj6/zEkMOp6VlidmbrqOx/41ancw+1lTAzjPVFDPeAtK04VkTXRyo/1H2j75Q==
+X-HE-Tag: 1783682194-821732
+X-HE-Meta: U2FsdGVkX1+xjyckDmEHU+x9TEdUkc8FrUYa7Q5PWLknRO54FepC92O+dUVgqzJZL1C9har+VhU804evtebLHV5ZxXgYFQJlQhbPfgp3qIhquXYJz6/66Oif/dHdTKsFyQSwuCafwwrfHbhmSvWoDdkYy73qnoCuYFMbsK0+F7Y+LlbqXYLESiyd1gtHwrQACuO0VIP98GjlARUnZoB0AVqwNvD8ZdulzssjEwydvm8UVa1AyxZhmu0PLGaa6obFCaUYSe51Y42KUZ9vGw4MqHo+17k1uluNL7NuPAAnZmLaO2uBixE9NLMx5A4AqA/Wp1pl082J1Py2qXuKdwOAs1ldvRaOs7mMcPNmQuhnrLeLKnDYK9JuDC/9deQqmTIvvcREQBmFEqIn5Dcq0P3xkhstw9ZZqyw2bcheocwSFDBPZQrs1DdysctXzMSR3rMsTWX25mU0h7WATmzKAMwMLg0wWdKoRDW4Hm/n3kKWBOkd2lCmf8MKBjKTTWQcl/YgXbA6H4ZZd+YZgHrhNWR9mY9n/i4yTIMmyEoudsHOSQFYiVMJEC6h5GOstSV/kDZoLYJfkYlOPh4pUjc3mx2uJZFEOPiaL8mAKj3MiIAJarX0fJOkVCMgWxUhRPIpTR5pqOvKz/vIN0cENp0UerzQ+L6PnYDw0PvV1FZD0H8aHlL4SUBAEgBJ0jwRVQnLWpIvSGOkEsYEu3ztP3iuX+SdmuueqV2KkjPKUxjNLIo1prIKyYR70zhcAYM/LGe1YeAsLge5Rim/p3TQweL42rYI4CIFrpnuryPXBv70P8WgwZ34moz/Sk+XDev2hlJRdIEDCZ5gQoGSKwXSRY2GTt7Xump0FwFfBwlSbpnc3EyqeNY05JiSoO5mwv9b6j1PMZ72DbULtlz4TzdNub/PVF0+38ah94A1LjKAUCQ2qp86SN7L+uB5WFgEzljzzCZoDwtebU9CNrBAeCT2J7+MbvC
+ mWtazXVS
+ mEppGo/U+gazd/lnxogci7YOgA8kJPrB/yUeyrbKwteCIhBNWDBLcToy1mVBOIzpSYVe0iBG4JsPVcvaAkG9jLXiwswFcEroNUdLEhoD8AAHhneqDCZ7r1wYrk7qhG95GgSxY637PzBfCtp4GubDRDPPwpFUf68j8CGkfgOOn03hANotf1z+6jYyoKivijIJ7in7at3aeVq2fu86Orl54xPSErX5q2MSVJt4v/OoiyhZTA4XWz/nKSYLGitDrOHeahevyBxUUHhi3hueYC9zgVvOwY9GBx8muzzg6wAdPewGspDhJ1lRwoGNb8CYb6tXNXdRivP7jelzDzbyNn4ElP5IQsVTPnoJa/fYCIZEM/JVPaUu73VhY1fvJCFVVdwH7pH9N5QP8Zsu6d5UQIMIEG914sDcqgbr7xWVaihnm/XXNz/sMkkDPwJO1pXp45uJaRYwyiA7dkQhSysiPJ128a8PArnMrKlfv0tNGm3OncRk5E6I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,26 +127,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7/10/26 11:24, Muchun Song wrote:
-> The hugetlb vmemmap selftest was added to check the old HVO
-> layout where tail vmemmap pages reused the head page.  That
-> assumption no longer matches the current HVO mapping layout.
+On Fri, Jul 10, 2026 at 03:13:44PM +0800, Hao Zhang wrote:
+> From: Hao Zhang <zhanghao1@kylinos.cn>
+> Date: Thu, 9 Jul 2026 16:30:00 +0800
 > 
-> HVO now keeps a private backing page for the head vmemmap page
-> and remaps redundant tail vmemmap pages to a shared read-only
-> backing page.  The old page flag check is therefore testing an
-> obsolete implementation detail rather than the current ABI or
-> behavior.
+> __folio_split() takes mapping->i_mmap_rwsem while unmapping and
+> splitting a file-backed large folio. The lock is currently released
+> only after the split folios that are not returned locked to the caller
+> have been unlocked and put.
 > 
-> Remove the stale test and its build, run, and ignore entries.
+> That leaves a lifetime hole. Once the split folios are unlocked and
+> their references are dropped, inode eviction can make progress through
+> the final page-cache truncation path. After the folios are removed from
+> the page cache and the last inode reference is dropped, the inode that
+> embeds the address_space can be freed after an RCU grace period. A later
+> i_mmap_unlock_read(mapping) then dereferences mapping->i_mmap_rwsem
+> from freed memory.
 > 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
+> A possible race is:
+> 
+>   CPU0                                    CPU1
+>   __folio_split()
+>     i_mmap_lock_read(mapping)
+>     ...
+>     remap_page()
+>     folio_unlock(new_folio)
+>     free_folio_and_swap_cache(new_folio)
+>                                           evict inode
+>                                           truncate_inode_pages_final()
+>                                           destroy_inode()
+>                                           call_rcu()
+>                                           RCU callback frees inode
+>     i_mmap_unlock_read(mapping)
+> 
+> Release mapping->i_mmap_rwsem after the page-cache and reverse-mapping
+> work has completed, but before unlocking and putting any of the split
+> folios. Clear the local mapping pointer after the early unlock so the
+> common exit path does not unlock it a second time.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+I don't buy this analysis. We still have the lock_at page which is locked
+and still in the page cache. Inode eviction cannot complete past
+truncate_inode_pages_final() until it is unlocked, which only happens
+after __folio_split() has released i_mmap_rwsem.
+
+One possible path how this can be hit is if lock_at ends up in an
+after-split folio beyond EOF and __folio_freeze_and_split_unmapped()
+removes it from the page cache. Note the drop loop starts at
+folio_next(folio), so this requires splitting at a tail page (e.g.
+memory-failure) racing with truncate.
+
+But that's not what your analysis claims. Please share the actual crash
+reports. Let's get to the bottom of the situation before changing the
+code.
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
