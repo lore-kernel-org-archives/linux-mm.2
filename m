@@ -4,97 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 286A3C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 14:59:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDE56C44507
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 15:02:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 217B36B00A1; Fri, 10 Jul 2026 10:59:16 -0400 (EDT)
+	id C302C6B00A5; Fri, 10 Jul 2026 11:02:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A1336B00A9; Fri, 10 Jul 2026 10:59:16 -0400 (EDT)
+	id BB8D16B00AA; Fri, 10 Jul 2026 11:02:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08EC06B00AB; Fri, 10 Jul 2026 10:59:15 -0400 (EDT)
+	id A81016B00AD; Fri, 10 Jul 2026 11:02:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D15F06B00A1
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 10:59:15 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5F1C514047A
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:59:15 +0000 (UTC)
-X-FDA: 84973175070.20.6DA6188
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CE4D91C0003
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:59:13 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 854B26B00A5
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:02:00 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 228ED169679
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:02:00 +0000 (UTC)
+X-FDA: 84973182000.06.EEBC681
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 701CF1C0010
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 15:01:58 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UAET3Lve;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Aezvcf2o;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783695553;
+	s=arc-20220608; t=1783695718;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kaHO7iM2fkBkcPXX7E/p4gh+FXOCsDoSAMVqpwRtKPM=;
-	b=7IBZaV8edogUv79GtB4FYKxXADTCNsRkkKp+ZNf3HPgWhxYQ2kakeDihSj286ifCdPAZ51
-	NchY8uPBt5MZGPUTge6DtDlOtcqNv6+fAdnCjUvW8P5KxAGUkK8oXmZRZB8q7esbOttMom
-	6/uX59DHWNWeybJh/jjwjcXjNhWZZxs=
+	bh=Nv6v5Gy5ZQKCjEDZ1CZd677nx3NlM5I4XdPHxBdo5us=;
+	b=4B9f8Ncea1URYMczqZsJ3iBXgVunurY/h4cVB6Wb7neOLXS63LQjXsR5r7n552jJdQzpB5
+	/kVJepnuz4womSJ18s2uy8jD0kcSCDF2TF6c6tqMjJ0Op9R11kPZvJO0coi7vuw8AY37kf
+	vVv1AsMupkoLNn9plnmOrwqL7d7lYeQ=
 ARC-Authentication-Results: i=1;
 	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UAET3Lve;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Aezvcf2o;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783695553;
-	b=6Nrf/wvMYvQuruP4Yn0u3ie0P0XdBji3SerJOOoioSnzSEXMBzwMa8sDzJ1q//Y3wmBbPv
-	/IYjbLJmcryrbRM9x5Jfh7YYa5GLD5mYT6ln8o+C6b0zOXcOXK/XW8Svdq0lpXM4ZaFvBX
-	9t+0ev6s+gw9MWLI8dYrIO3myVnHpug=
+	t=1783695718;
+	b=zRvCHF7ClSyjE27VjwBFFl++EEEqCeLNcoRMRsfjx+jguT4QfLUXM45ZTezClcnPDMhZcn
+	FIdDUPy3NNxuCQde2NS6eAtBhLloa4oGgMmGe5xlEIdU78BubR/gXsWN5QxgR/5F8V7apR
+	1B/V20lRlb2PsYD/2QbfZRQzB2SdNWs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5A71F60052;
-	Fri, 10 Jul 2026 14:59:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5381F000E9;
-	Fri, 10 Jul 2026 14:59:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 37DE644A58;
+	Fri, 10 Jul 2026 15:01:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E8A1F000E9;
+	Fri, 10 Jul 2026 15:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1783695553;
-	bh=kaHO7iM2fkBkcPXX7E/p4gh+FXOCsDoSAMVqpwRtKPM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UAET3LveLjWX8B68X5OoBzwl8nLMnCMESO6AiBDf0f6br2bu+FSY99ro2+vJfAz64
-	 DeRRmqxYubZ+aPo2o4mlrNDX9FsHGuEmWy2qhG53I9Rek1zIkK66Cq+mOMEOuYpHQp
-	 dD8THo33ClgqdfHTq1T38PApc4m22RB+YxRdwdWwIALG5HPuP643Rw8eActmjWHK7v
-	 kNNkfbzUpIfTOfTCHUeRWYnmxvsqN9tcLnlTLjMuZ2GFJ1TfdA3cDiBjpxdxjoclTR
-	 qviEB7Y2/BMljyFgi75PuxISbyXnh9ZD2+cM/qv+VTd90REkj5HFX5D+bOys/r6NB1
-	 sZ+wBLUtR32Lw==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 00/19] mm/damon: introduce data attributes only monitoring
-Date: Fri, 10 Jul 2026 07:59:04 -0700
-Message-ID: <20260710145905.27704-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260710134651.18084-1-sj@kernel.org>
-References: 
+	s=k20260515; t=1783695717;
+	bh=Nv6v5Gy5ZQKCjEDZ1CZd677nx3NlM5I4XdPHxBdo5us=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Aezvcf2oBz8R5O/JgeqQKn1Iv07D3k4kEuvwCc1b7Uv9q44jdZfUS20v8wyrCa/9F
+	 sFEfI7dW7gs9z+SsSfhJ8kA/ge/LrGSSz9zC3Je135DOXWvwgHKHjr0HNZUKiB8R0Z
+	 6ZFI5o7wwOhve66iKnNqXpiMhf7SJFuqNWUQojN72CN7vt9E+8N+ylqWmq1V8VELbe
+	 6ISmJ6bIDd6gomwGV7FsmpP5iGhPAK7B4N+ljOCC/csygDMZAkTZJGZNY4oR569umI
+	 ng8odBspjBH26Pq4TIGI6qDk3zs12pR3kiMN2IWrXV9IPeu4GxV8o5adjm1flT9Viv
+	 C2o6tJaaVjqqw==
+Date: Fri, 10 Jul 2026 16:01:32 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 19/30] mm: use linear_page_[index, delta]() consistently
+Message-ID: <alEJP-qEgSIUOp38@lucifer>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <bf56e2e98b512962a2fb88900d535a0e9e6769d8.1782735110.git.ljs@kernel.org>
+ <ak_EivwcDDdn1Xvp@gourry-fedora-PF4VCD3F>
+ <ak_E1Y-D2Twykusr@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: tcadwq54obujuwrri6dgpax1kmik3zgm
-X-Rspamd-Queue-Id: CE4D91C0003
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ak_E1Y-D2Twykusr@gourry-fedora-PF4VCD3F>
+X-Rspamd-Queue-Id: 701CF1C0010
+X-Stat-Signature: jxks3fhhezcjzwe3njdm1dspsokckett
 X-Rspam-User: 
-X-HE-Tag: 1783695553-65692
-X-HE-Meta: U2FsdGVkX1+0AtJpE6nZzcCHbTxkRnU/hqlylU2q2g95BeTcEHtrXyI8Wxo5ZkSM35lgHVWKkVmHXUEmziCT/eM71r35IkbJS8XEvDoWD8oIRtqhE6Ez6gNYURdECCOcuI4APUCVdvLt4W7oGtc8Ef8CgCbVndlShTmdSgPobZQc2zRBsye1VJI4ZYIHLGX210atCbUYTpz/Xy7hfNtLZ4enLBtXtPOo2q5wgrdBIzqGwIPG5T/+Ira/Kg2pfSiskJKYykK+aLufjiNHORN1DLfN+1VPvTW+32YtaQH7jkCFQ+HvjrRfPjsFHtTe3G7xLTcQ09lE91zb+Wv9YvDwU2bpSp+iuRS/ms/1i0XaGKzQOLt/fuZCf1TOdNa8vsFq9mDzONPDe51x23NiDImfCBHdLMTOL2o59Hbhfjv5qeSGCZTovmZtskb4c+r1HsWS4XyMUFB6B/mf2YB6xodAxTSCaZ0ghxnhJjd/sJMpkHemo6PBUrEZZEimKIZkQwBXUfCKNuJIFszq5Cn1uaGaJBVIkM2sGNuPlhSrjz5lVjhgrUd5doooohhZU16ezf6XwSoKHPptb3ARbp78ZnZ8wzPnvrhhavZZhsbg9/vgqvCGEB/HVzgSA6PmzywQ/zUCrUVFvqOJYJUl8vNGBFQYgNOkOKmHqn4G0sHQ/jqQut9Jpj35lPXEgCZMvvVh3VL514Ix9g7wZ0DhRpHM8+KXRSU1nS9lX339wkg52watKY1GhX7CAqzidQoABRDsvGV1L2s2gtTbqqOeoKGo3hc4OqtZWijJ4vKFD/xUnMU3N7MHfBT7d7/P0hRc3uQsw187Rn255BrDdDhhQVs8PB27CFHHzSa79q82YAGLVT2rHOCGDf8sF4hyWQWrrD6e0vj3qJaCfphPKE+SGHPC9DYjcxpZJcfmRWiPNNTa8811WWXFNh+3aumCD+Im6UzlfjvEycBgD/3EpHKE1nITeM9
- j+0upMLv
- oDeWfUsl4y2jTDsx6USOqvtN1/b8TNRBu4CP4/Nw3/ellegDgCPVHsGD2lON51M55ekWJWm1qB+1DpD6E5y1M6ncQj3/pRZWmUPRqdKTkUoQUmFy5Q0iwQaecUlV1+hCBc9nObsnNx8Vi9L0aUwZKVaN6QS5BC7ccYGn1sJ85aQn9iNcVmy+WVP/VQnfOW45ygwKF9TmVZXK1rcgB96enJs1lUXV5sbGpwlLbzDoKeci/cfNBU21l6A+gyfxmoTAPPdfq
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1783695718-477797
+X-HE-Meta: U2FsdGVkX1/3yrp3twEeCxngovmo/4DH58/IzN9vjcIfgsG5yXi2BjZm+7kZs/LkttCw1dDFjh4jybuR7BNMB8dtRSbno0MZuEQuDP89z05q5iU3rnA8ZKSlXtS12HmGrk88y/tAE79g87tLD1e/LKVJ1P5Pdk58eguwNlYAyuaxCWpecrPRXsi4pMRiZTvO+mPPoKkwYJklm+87h1SDC3PfdBHqfmbrg4BH5mjEWP5C+rnAO5jSD1ctxJLx/qpQZU9LJ0I0uDgKyEt61MttvrBoB14t8HW3pNofv/EzbEzyM5RgONZ6sx1OBqsan9Jclb1iPvWDsDxX1nz0wBk3v4jOcgvJnZALW/NNFWE470TBWh1Hsl4Egcq6sf8W3xsNF0jnNzxKhhBaKNxblM+WRJrcdtxgO9+QhpEeaq31sn5H/ZzlIhSEdFCiLc9rwdoL4FedJwm96ao9ltHX5Bgqd4vbCUz4ycwlXjRu9OZ/inXwJqRoInpNjvWXNoI0/0avasMgfYJD9JGlx+nQCKN18/bwMmJYuiczH6AYbsePrHGt8DwBQ8srdlE9F27aBHN1WU23IW9B8Lalbdxqp77kpdSUMV/LnoF3BZpnqErY34boZ8vlqrrJiQuLwBkq7mkJnRP1KGCtd64fdIlMuSZy1vMREdzZ+5Y9TDc9xWAibvxZfYBA8bUjDS4Xul/F+Jod7nzXtRL2dqsaEOMfOlfP8tuYuvX4XcDNjJhxLo/egOBjQ1aj3vEYjNwMJBR3Fa+oK4KnD4jUxW4INhXZDvVoJogSVkmK4aLm3eThXQXYzN4ogt3crtefcWAr5CJih/+xsSOqFxJlrhN+PvQJP2o0aQQMiGIr0M1sWUg/eFoOEuQ3cjtMo4J+XbNncEkmrla0XATx8O3nsD06ipp725OntGaHnhH2/RN1fQEQDoMDjqhtCGP4eJgDvByyBZyjO4+2g22tXTwEpA8moVWi5Zv
+ XBAF+s0z
+ 1Mie32l5ga2JlJE301Z1mbQyCWh7gRJSNjoFuOQ4YWHfhzZejdRR577jlZ3f/y7aa+Sc8/YKF/hS5bCZSBeZK3WYlsF4cYXq2VB11dk+hXLHF4Izdp09QZ149yBgjnwSm7xZFS78N5Y2BS/wO9TdZ4uyAC4VxpIHExoNq+EVh/A+Tb7Hp8F1df5uaGpyd9+7uQJcPrbDEm61DVj9iDCgS3uTss77vJdwQ5pCI4naYw41YVx/Ep/m1KtGdfRv8Asb+BpQ2o6cvjsmtdhb1MN50QpncwDHxN3iIZ4iZ49kL7KnDf2wxSy6+11mAeO8PbtZbU+eBqxVnZakT+mjc9dy85sauM9jbymlvmkfh/eczJZ4y/pcINwj/vQceWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,20 +125,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 10 Jul 2026 06:46:29 -0700 SJ Park <sj@kernel.org> wrote:
+On Thu, Jul 09, 2026 at 11:57:09AM -0400, Gregory Price wrote:
+> On Thu, Jul 09, 2026 at 11:55:54AM -0400, Gregory Price wrote:
+> > > @@ -2462,7 +2463,7 @@ static int comedi_vm_access(struct vm_area_struct *vma, unsigned long addr,
+> > >  {
+> > >  	struct comedi_buf_map *bm = vma->vm_private_data;
+> > >  	unsigned long offset =
+> > > -	    addr - vma->vm_start + (vma->vm_pgoff << PAGE_SHIFT);
+> > > +	    addr - vma->vm_start + (vma_start_pgoff(vma) << PAGE_SHIFT);
+> > >
+> >
+> > Obviously correct, but was this intended for a different patch?
+> >
+> > ~Gregory
+>
+> bleh already caught, sorry for the noise :]
 
-> TL;DR: Introduce a way to get DAMON's best effort accuracy monitoring of
-> user-demanding non-access data attributes.
+Haha no thanks for picking it up, many eyes bugs etc. etc. ;)
 
-Sashiko found no blocker for this series.  Sashiko sent findings to damon@
-mailing list [1], and I replied to all the comments.  Please read those for
-details.
-
-[1] https://lore.kernel.org/damon/
-
-
-Thanks,
-SJ
-
-[...]
+Cheers, Lorenzo
 
