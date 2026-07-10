@@ -4,168 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 943F8C44501
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 18:57:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD92C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 18:58:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5674C6B0092; Fri, 10 Jul 2026 14:57:30 -0400 (EDT)
+	id 4CD236B0092; Fri, 10 Jul 2026 14:58:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5175E6B0093; Fri, 10 Jul 2026 14:57:30 -0400 (EDT)
+	id 47D516B0093; Fri, 10 Jul 2026 14:58:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B7FD6B0095; Fri, 10 Jul 2026 14:57:30 -0400 (EDT)
+	id 320446B0095; Fri, 10 Jul 2026 14:58:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 071E06B0092
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:57:29 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 047976B0092
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:58:23 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 850CA120557
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:57:29 +0000 (UTC)
-X-FDA: 84973775418.07.AF36706
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B208D20005
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:57:27 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=HW9Wg6rV;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 81AB24054F
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:58:23 +0000 (UTC)
+X-FDA: 84973777686.07.DE2FEE1
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C8C181A0002
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 18:58:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=klAJbRwa;
+	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783709901;
+	b=BejSCSYHOXuYn4zZhK6pHj90+YIQRu1T2zm83Zr5XP1snOQJYvQefInP0t9fQgOhuplZpl
+	Lg00m3/rqW36TzrbBe0B6hTHDqn/zR3hNINZbQ4borh4/WytFqZrEbEs4NBsxlhGDeRY63
+	qdCzHTkBYoUrJhesDwDtbMgmVcXA2cw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=klAJbRwa;
+	spf=pass (imf19.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783709847;
+	s=arc-20220608; t=1783709901;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kUriDsQ9XZtRyYKZZfoXUueFFJuZPgSg6lCZHNic6sM=;
-	b=0WZbikZqhw9a7CoqXI6Csc+GI2iy1W3wQaIvaF5apSCalnEUBSwnAXvm6qv1F4ZKBXD4CP
-	dOKGEjTvXfFB04mIAkLNJUb5W6RgTo2tImLLGCAqDyo6FmYrC1gOS106aA6OrmPRxUWVJV
-	3agyR+dgF9WghkY6E0k0UNgehiEk0S4=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=HW9Wg6rV;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783709847;
-	b=G1/D791eS7JDnxKsX9r77aSi0uvu9+dlCZQmDwCsXs+H+RwTzqij45WNqkQ91pbzDuI5Wr
-	psYnvXffWfkKZkq+pTJ6ISeKQlBha3YWtd1q24X+c5cNKdwTESi+fwuaqCRIAFtOqnMIFJ
-	UCam/gDuFWpDldOo0ig8yFyqw8QaRQY=
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-92e5b048375so61563785a.1
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:57:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1783709847; x=1784314647; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kUriDsQ9XZtRyYKZZfoXUueFFJuZPgSg6lCZHNic6sM=;
-        b=HW9Wg6rV7EGt2xCkmK4STTb11Y/UhMNXMW+8DhiHzkW3ULVqpM4ksj2pCNFUWbuBGY
-         WKGH1EpbMNv0RlteTC21z8CpLRll3S5MzDivxHhbCkK+vI5oFJzWP+Sdlx0yk/mKfSGj
-         GM94ALK6Xrk4bdWTrE2IYcchi/wUI96XZNKkQ/0tCm3IeHIdgDOJYtECdnMgo12W4LPg
-         6R4IJ1t5w1UYLHWfecrtc5en4Cs6Nz2z1e6gkr+RMrh+kKxPa7kf7hklUVIhY+Mh/jOw
-         b2p8il++4S8wzQ1dC7tEHLRZMGNrlvWBr0WjuZiHOQoDXekTyszQleIvmaGPrZuJ8tks
-         jk6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783709847; x=1784314647;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kUriDsQ9XZtRyYKZZfoXUueFFJuZPgSg6lCZHNic6sM=;
-        b=Pk4ghwlmo2HqfXLj6cyeEJLD5sDJqALi6VBIVwMZk9Ls927mq5VEH8SXIhw2i6Nzwl
-         +widCcvTRi32ihM371Nyjk49NeaCtLSxx7em2IWD6CUoYLrxVXPd5EuFz1YxtCuzoqYg
-         IMPuPMDeB3SEJSpfoGi8X8uyXptAlzy+x5LHAAWg2ZSfAr48NTamk0awp9oiZ8XPJ0bF
-         /YiFj3TwDvbNfcAqqnDQHrS4Qt4kBcYFzYZgb6LxiADgId2W8vggWCHicbdtUpXuLUHi
-         MQ7z0lYJE+nordg7d2WMgNZxm161DpBQMGN7JvNV54An7oN+2irq77wPDdCwGx6f9lZW
-         8WTQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqF54P5aKLuxu2CxDiHViAVBW0Q09ElFvgp9G31Im0pg3UeuLKA6qfbKJ65IfnjODpFDvG9IrBgIg==@kvack.org
-X-Gm-Message-State: AOJu0YzPnH7vUpbeY518Jub3s/PNYXO8DZ9brBwS0kcCn81DVIPkGYSF
-	v9NVxfZWfQhDY4qkg2pyAT3EozNjjPfLZHtUAc9NyIhjH5JNBLjRw6ZGoieWNerYwdA=
-X-Gm-Gg: AfdE7cn5LRl1Bscm47iQ+7cDULvduUrXohpGMA4p11Y1ccCAamT6zg/X7gjVQjloPQ6
-	DzyOUY2cN+vqEnI6k+Hp8lzr/XYC9JoHFLPS0XEjDcLEDXmy8gDhCLdt3E58qs6rN68/3ITmLYY
-	ccfD/FpRR1dPOZccQOdT2t4dSJ+UgmOKBE92vj45O3OKkG1p1fezfAZbjOMm9W5FGB7x4gODanR
-	iWfLaQ4DRW6A4sXFR0DMrw6DUHg6f98phPPpGWmXDpiX2TA6CulXSkFuM2WL5HmLG9c5ZUA+Ilj
-	ODoTvTNxuMUWTok9QR/P2sAeyydOxST0P9dfBsK419Uc2t2foAbyEMrTuq73xeK9XLtlHYNzAEV
-	ZzmabcgGSjY+rF0wEP1bXzjVYS007myCEZsZvAwJL74PiJb5cTwBipU5SXwHzOQoAFR47VZNVkC
-	TvFi85HGqN5ruGA8j0EYKy4CapuTaPyDxsqfpIC1uEaWAzTDYoWSefCuBBarkE/xzzDm1j
-X-Received: by 2002:a05:620a:d8e:b0:92e:9d63:a6f2 with SMTP id af79cd13be357-92ef2c1ab7bmr45629785a.70.1783709846741;
-        Fri, 10 Jul 2026 11:57:26 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ee5cfdf6fsm275995385a.24.2026.07.10.11.57.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jul 2026 11:57:26 -0700 (PDT)
-Date: Fri, 10 Jul 2026 14:57:21 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 23/30] mm/vma: make vma_set_range() static, drop
- insert_vm_struct() decl
-Message-ID: <alFAkWCnkYv--Us0@gourry-fedora-PF4VCD3F>
-References: <cover.1782735110.git.ljs@kernel.org>
- <62efd70f9f39570724c9552cc7f2aeb5c322b2ff.1782735110.git.ljs@kernel.org>
+	bh=Pxjx3HPNgwHNFs2aZgbl1oOO9kFSczH1Z0F9Hwmf1zw=;
+	b=fKXNJ0ZjgYT5Rc6k99OFruMJ3/w+I0Sr9L/BY+XyAEr90wSzcY4ZBRX9pyiNdhl825Xn76
+	oZS2pZBNnrKo35S1vUqUXleGSBaVyicXmd6SetG96v87XFnUuIGmyeYw7gDRozcEHqRELk
+	RbZpe+8ie53WGsA0KC0beWeUZ/tjKgI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1783709902; x=1815245902;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=DrPaq6heWDDdouFqQIykoOFCC9AQr7k0ptjRkxAthqQ=;
+  b=klAJbRwaycL8XJLU/DQsA/Sy19rM1A4qdITMORPYV1ouwO5phtVZYHrD
+   00TfFrj0Nx0+joyiS0rH8igxTPoe4QhriQwpgdfya6GCk2+uuT89uCdKw
+   HQg9wAdIqx6voGhbRWWLbrRW/uMKY/audav6qJvx8NnEXWvhJ9fdCyUzy
+   /3TJa42BRdHqBf5wrFEL3AcTQXNqvpKLpEar0Dxf6rm8wQkfD+1pZZP71
+   uluhjuuilNJdMGSrjZawtCRGGt71E+UzQIyo0myyhOTdLG7/YLleHyB4c
+   IcdM/s7udhf+zE6eeVj9+bqhdYdXKbxIYGV/Hx0NakXgdZHjmC9QLsc4b
+   g==;
+X-CSE-ConnectionGUID: nMCTOgrHSUKstE5wEKyj0g==
+X-CSE-MsgGUID: c49x4B37SdCuYtS4l+RN9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11841"; a="84266986"
+X-IronPort-AV: E=Sophos;i="6.25,154,1779174000"; 
+   d="scan'208";a="84266986"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 11:58:20 -0700
+X-CSE-ConnectionGUID: VeQ15drLQUOMPQogtYS6tQ==
+X-CSE-MsgGUID: YLvfyccNTkO1wszNS4m6OA==
+X-ExtLoop1: 1
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.199]) ([10.125.111.199])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jul 2026 11:58:19 -0700
+Message-ID: <bfa239d3-2582-4669-8614-0a299491a744@intel.com>
+Date: Fri, 10 Jul 2026 11:58:18 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <62efd70f9f39570724c9552cc7f2aeb5c322b2ff.1782735110.git.ljs@kernel.org>
-X-Stat-Signature: u85trqx8r9t3g5qw94eng4u1i9dhn31w
-X-Rspamd-Queue-Id: B208D20005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/vmalloc: widen guard region to defeat ENTER-based
+ stack pivot
+To: Xiang Mei <xmei5@asu.edu>, Peter Zijlstra <peterz@infradead.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>, Kees Cook <kees@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, linux-hardening@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jennifer Miller <jmill@asu.edu>,
+ Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>,
+ Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>,
+ Yan Shoshitaishvili <yans@asu.edu>
+References: <20260629214712.1198680-1-xmei5@asu.edu>
+ <d9775951-fe04-4d1f-b205-bd4626590f5e@intel.com>
+ <20260701072747.GN48970@noisy.programming.kicks-ass.net>
+ <20260701074834.GI49529@noisy.programming.kicks-ass.net>
+ <8730D74D-6395-4FF4-B9F9-06AFABBF8CDE@zytor.com>
+ <20260701083108.GD751831@noisy.programming.kicks-ass.net>
+ <CAPpSM+SzqLSPt2q0KhkzB-WvphXGmby99QBJL7v_nq4kJGAYFA@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <CAPpSM+SzqLSPt2q0KhkzB-WvphXGmby99QBJL7v_nq4kJGAYFA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1783709847-818987
-X-HE-Meta: U2FsdGVkX1+mkHr+K9xvych/CCJ0YV1su9CLFVgviKAz3i2wqPUU2ZZXqrA53p9pYqEsZ11dNL2LnCmndOVwrv2zy9ffe1dC1fVZCJAszlDXsipkZIA9m+XDAKybdoDnISVmVjCGll/aMuW/CHnS32YNREpYz2E2ZqCOIhZyxxMUy7WYcdYZDE5LtqFXjQuRf0/ezXC1k7pDWKVLV3dYREAbZomfcNNqM1tDz6ogyWMcWDZqIfrxtHR5q41MgCN3g67pd1UYOBquGqUwE35dauWRsCZ0hCFVRnUOueMH3HrkYq/s0vAhOvf/lUyceM1i5FezEqLS9a2gxs0fvxib3+P8KjMsdGIGJBBh07+DFBvUijLjp/5u6WK3aVIfPx4ZLhBIgTXa6wEC3tc4Fsw56tAlcq6DdWWBqiTmSP2tXJzwwfKnRY+qCjHA7tjQYQ3saVdWgkkQG9d4qLksItzBxqZCMqkiJD/yaTxZuoPSN5omhrlWDvtjW22BIpzdioEfwZonSnMKDM5rJh0rQy32uMAh+H2nQUpObmB8Juog/DyGZ+Mn78ckVm3RCDMRXNll6GiNnB38V/CmPPQ8yR9EDJQmyGTEi9SF9L36wqHgwt6uuawWPquGlMVtNeJSMQMprTh17yRns5OYQXOu9l4HN0VJCyYLs1MhYhJJtaQflHT28kvVkhL9mRSCJZ1s2Syc+KyL+25DvyhlMAjeRAy1BmQyY88sEvkEf8VPkXjz4oY3mqjaoSP5C4gsQpxDC6aFKd48rzwUdsIGspiuclx54JrMk6J1Kf2boc+wWtjeJVeVZQZytodBWyKXQFJRffqnODdDTvpTkO49XmrArW/p9NoRVWICT/GEw05Y5yFUXmAAIQAoMrWsBM89v4CtSLJa3N9jvsNBidnU42VjZxQf0qagxq5ssVH5gRa+zzaX3BUiNtB+hjy4S94Bfg5XBJ8zvW+w7jtSWoI+EGa/0Uf
- izHhUghn
- IAL9mIBe4gm9kK8o2NTqEUZW24U9D0J4cuowYgn5HJRCm60/9IwNR4BJG536Ib9QFaXrhiG8ZSpP5q/zqSScKKIt476WAW5tEUV2RllVmkF/Jw6y0FK/ao1kkky3OFwjAp1GCJK3THjvVclHjwE7ug3VYKv76SGJCSqfFTt+bBoQaqIwJVBno0NppK3K2rIY27BK2GDQh+5Xc4BNr7DpBhla8DsLQBpnaglPe2M0hsA5oc1Q5xiN+pMD00P7ynBVSqrMpucd/45cYnRRpLB5t9PUT30mCmTTi8kg/EBffss2AckabtbMrPk+eEXNgPi1jkBb2j53nbK7tLpJnhpyDJxOASeEIjSVY2ziUSig28tpL/m8l53LY5FYTQOc65g/mi+o/HOtzrXZIOyO83wZPUAxGfx1IGo06Kpv86bHvFWBI+xl9Dto0Z6D9NPRXuuI3hiIwe8O+CLg9Xuhiv0Ev8676v2m8t+pi8znXAQb8QiJhzUVCXzjpL+z2fqm45C8ELa/aRmonVZZqFJe59PVJWMk5Xg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C8C181A0002
+X-Stat-Signature: mrh7xd5zw8o9sioontom7t1xjujtbbrc
+X-HE-Tag: 1783709900-759147
+X-HE-Meta: U2FsdGVkX18k6K4EDC0HWjnnNxziN9t+RnD9zQuxPCkbOcT0I2bGwFin7dYLQpt2zYIipgVC0Eq0NowwklBjPEZfJba28Mk4VJA7+zNsRF/jKDHTlL12G1qm4zyPJq0cG2jvQIvwPnuIg7UeZMWjrUsheqpqYew6+WR7mDSmyy3qBCVtUlbGgx6iX5cnqbv0RQGFES+1V9/try+x7y0EXzPQG2u4D609x9WzLnQR+XxX3zkEp/Jb9ndol48AzSLfRly0yVvyY9wGraWpYgqYLewrk73gEe0gNsgjc68Nep+Y8YG/P0xGqgXeDwuBhjKx1DCFyPIdYwLldhOwD2hjKhWtQWjqPycJ1cWnD3eNbODmAYzlQOoqyJuwucIS9RyIxWqI4tGV17MTp9et/BBqs4wFr0bGfgmk9YJO7wtXGxhF5hP+YBiY8AHcJdjWzo6MaC03gL/9asTuYK4TEVYTNvaGsQ3p4c96dW4skhB6oXy628wT/WbMKL48tlKMwXg0BPcPCmFkFBQE4rZh9Tw8M/oS9/d5eYBxiSiN8J3g5y0S3KPCjzXWz/RMFXwfay+NLPByKui7/P5/J9/AXshBVUMkCUizxPU8XOzatxqYvIxL8TCuHQuf+xfCXoaZ2a7Z+Ul2F5rGO2pVMJw4PdFIHk2WUq8b7VshOLs71uVb40Ef4sQQJAZuLWaDLZA6lLHb1qhypCyBDEqBTGtQbW2lzqXQA7nQmaRkMt/SBGg9iEUMR1OE19akzxK700kf+5JkzyZxaSuVNVscnSnkZOu4IbltkE196kofKQab0232SphrTjvfkj+y4iSM7yd22nAwmT4tQ4+FKJNeoDawtqi1k2wkGoLdmjl5bV6VwIwoYyMcA/MvW4X5UVKqgeiWol4fuvdZFmmuSXkIlCNJiUYCo+0mqz4zdph5qng4EdBb8gwD1ZysM0N3m+uxrCwruwAKzBSgXfQkjwnynMRC7cE
+ 5AN8vIVO
+ AY6KWpQjXFENjBXNKvudrHvgKoyo4JVETS6ti4SS1AhGfc3BQdpM2nj/3dRVuoKISrlMQQyaqgaLeHr1GNEsbj7Q+jAut5bBOfwP/0UmCuPzW+LbxM44pIkp+Aqva63gUY1dfjhFGT69bNVgzp2lnKCtm6HA5BCIeqZOyPFTYaYQbkEIjNAJhBdsPahgqLwj1Q+UgCmNj8bANQIU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,24 +162,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:34PM +0100, Lorenzo Stoakes wrote:
-> With __install_special_mapping() moved to vma.c, vma_set_range() can be
-> made into a static function there and is now completely isolated from the
-> rest of mm.
+On 7/1/26 14:04, Xiang Mei wrote:
+> Peter's explanation is correct: this technique makes CFH->ACE easier.
 > 
-> While we're here, we can also remove the insert_vm_struct() declaration
-> from mm.h - the function is implemented in vma.c and already declared in
-> vma.h, and has no users outside of mm.
+> I think both ways can mitigate it, but I would like to hear your
+> (maintainers') idea of which one we should proceed:
 > 
-> Also update the VMA userland tests to reflect this change.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
->  5 files changed, 8 insertions(+), 24 deletions(-)
+> 1. supervisor-ENTER-#UD + Peter's objtool check. Cleanest for ENTER,
+> but it needs a new bit from Intel/AMD, so future CPUs only.
+> 2. Kill the landing zone with a 0x11-page guard area.
 
-Net negative lines of code, the best kind of commit
+Or:
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+3. Do nothing. Normal kernel IBT is good enough.
+
+The hardest part of #1 IMNHO is convincing people that we need "a new
+bit" *PLUS* the two CET technologies (indirect branch tracking and
+shadow stacks). If I were a hardware guy, I'd be complaining that those
+silly kernel developers aren't even doing supervisor shadow stacks, so
+maybe they should use what they have before we starting building new things.
+
+Also, I kinda gave you a route forward. I think someone can both make
+the vmalloc gaps more flexible, less hacky, simpler and cleaner. Then,
+once that has been done, it's dirt simple for any individual vmalloc
+user to have a custom-sized gap. Or, to have a universal, larger,
+tunable vmalloc gap.
+
+Get that series put together and I'm open to an 0x11-page gap that x86
+pokes in to place in some way.
 
