@@ -4,136 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 205D9C44507
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 21:00:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF5EEC44508
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 21:04:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E17156B00B4; Fri, 10 Jul 2026 17:00:55 -0400 (EDT)
+	id 7DD916B0088; Fri, 10 Jul 2026 17:04:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC81B6B00B6; Fri, 10 Jul 2026 17:00:55 -0400 (EDT)
+	id 7B5616B008A; Fri, 10 Jul 2026 17:04:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB75C6B00B7; Fri, 10 Jul 2026 17:00:55 -0400 (EDT)
+	id 6A4676B008C; Fri, 10 Jul 2026 17:04:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A44076B00B4
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:00:55 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 331751C8AF1
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:00:55 +0000 (UTC)
-X-FDA: 84974086470.12.4DD98BC
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2938F18000D
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:00:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=OPXT3iHA;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of paul@paul-moore.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=paul@paul-moore.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783717253;
+	by kanga.kvack.org (Postfix) with ESMTP id 3DD446B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 17:04:07 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D04AA1405A8
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:04:06 +0000 (UTC)
+X-FDA: 84974094492.06.96D3CA6
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 11D3C100011
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 21:04:04 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gv9cD8v5;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1783717445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rqzV29M/TfqY8poEDBrz7krImCgB8mIlNT5MO3ZgoJ8=;
-	b=fQr5SxffBbcKyqg3F7Fir9vzD9tyRqtBo1a+ieDhQJkPTLVcoUngXqv+gH5BmMClv/zfu8
-	SsZ/6Mj3ow6kUHEMolAqZcMN84Q+erBnBa1YpQfABdkR1tyAO9xr7yl7/eV632r0AZLldJ
-	6e0DWRwlJ4QWabGl5W9rH5Ulsv+iQzw=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=OPXT3iHA;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf24.hostedemail.com: domain of paul@paul-moore.com designates 209.85.214.177 as permitted sender) smtp.mailfrom=paul@paul-moore.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1783717253;
-	b=WuJjPoqmNbcOiE8ngaKov/EC60dEgHzlsw1Adqz6joEHKNDD/z05sYS/Jv3nbBKPowOgca
-	jr/7Hjtr8BwrwEgUfYzXR0BHagyj+IUheSVKkZf4YxAmB8U6uOL3WOyEIOyAXhJ80DQU6U
-	sa72gSoQZ1q7klsFN8h+86Hs14nOL3U=
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2caced6038eso16468455ad.0
-        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:00:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1783717252; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JqcNbMfSL84UVCG0cTeniqNOa/jOAwxk4UP+W6SzQq9VEDwkSAXe7JbmRClx9Cxstc
-         7leXOYHfa0U//KYYq0tQ5KGaQCATbu30TTJhDs7xhLNx3MWvxZTo/OHHrWZ/rnY+sRJ1
-         FKx+Ozdn5qOYuvg7aS8Z/OBfIKUcMO7+oy/WYFJPKPbBADI4+slsZo6s7v31W3cD+kbO
-         LW/qStpVEcniLxeU3c2zoBak3kcCUEzJtZXj45iBNI5joOiJQDgP64KN4AW6VF4M4D7b
-         UvgmF4FWRX17hJg4YdJ/UryLh4JWGwM54r6fp8v17n+ibkmeCw6VWxrSqIpIYDPz+MYw
-         sQkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rqzV29M/TfqY8poEDBrz7krImCgB8mIlNT5MO3ZgoJ8=;
-        fh=s5C5JXIj+7XKx/XuRrDLHEj3N5Iw9K3SphbMBY6SxpA=;
-        b=EmBXmVIBpGT1ZOLUeHu2KaU//T4v++A1LeHrOEW+5vA3bNupILH+DcNDRsd29z5VOo
-         HJo39x+sGmdmMkwNx1x2u+KolLBfReskzUQCfqAOmSAeORo4ZnSITmKALmxGZKJgX20+
-         oVUNuZCVQgG6cJcVMGlA1UWehJDDhVBkC0wSsO9/8NUJM6FQ1i4/n5LYmq0hetpTvEns
-         D1iNIEPC2GHo8FdxPsjb6IisoOZSy9DBliNG+B2UEmjRzgSoZMRQqAYFQM9/9hrkVcBM
-         tFAOvhpLl0K+nab5fIeNJwXxtVpnodH250hxNKZs99vq9/9w1FkSlowF0J2xGpFxBGIv
-         dvvQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=OhI7UcJVN9EaMSo9cM31eWAmb7Tf3pcvHFHtAkV4RLE=;
+	b=3hKJJ1cVwphVCmx6qn8hGzzubzvv9Oy9lRoc2I2D0DsxEB8I2PAljhQoMUb4n++oTS4q3x
+	k4f3JpkeSI69sh2iARnug2gOanrnPtXikaMqnoDHaY/uHGDlNOA7H6yBz96/uhb68qKOYz
+	pM1pNTk3Qo5CUGhubw8UFYh1dU23Ogo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gv9cD8v5;
+	spf=pass (imf05.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.49 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1783717445;
+	b=SMgALxH9Kht5Wh1MKAZH7/R5HD5gCsJ1KqJt2yVNPhMjai+lcmXFew9kp5Z9cxhmAlREJd
+	0QvHISzLY5XjCXtRDd8mawYipSN27cxMTQUrisXVOtnakHFLEMdQLihuAx6Op9ZIPm7mPr
+	0LejYIYNWCPW07td2BbXjsq+LmjojH8=
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-8efb708b1a0so12023466d6.3
+        for <linux-mm@kvack.org>; Fri, 10 Jul 2026 14:04:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1783717252; x=1784322052; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=gourry.net; s=google; t=1783717444; x=1784322244; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=rqzV29M/TfqY8poEDBrz7krImCgB8mIlNT5MO3ZgoJ8=;
-        b=OPXT3iHAHZJkOVmvppoNoQehQYcGw81IKqf3/nFp4FNMcaObREnHFELsjGIe153Dwo
-         5ecF+qcIp5qmYsxlYkcYj/8WchfheKuCNsUuAyfRtGCPnuXa6jWCpT2/1k19MYEXDkqf
-         EDkowoZT6LpaTHmv1Lft9y9OJq9h+lIoNnGHWFGxqmOmsjLYM1elZFgkJmbx9PPI/eSa
-         KAcnZlEyvaJuMrJuTBPu7Lgl0mgXTIOtOwLFf3FbJpVBdWzHYZPKSti9NBzZCC3fdfF1
-         nLnnxz4UYScAuvQWollbkwhiiCUq3bBuJgWtCnzZlToK9iAP+FIvxxAEgL/IT/QjTOAR
-         1ekQ==
+        bh=OhI7UcJVN9EaMSo9cM31eWAmb7Tf3pcvHFHtAkV4RLE=;
+        b=gv9cD8v5tNfJZ5g41+rOZS+ZeCPGVFkaqzfDmPtbIltzUE/1iGBHneOpYjcFcN2xqT
+         N2Rzd/X5Xpdb7fNtRuIoUUlpQ2mXJtFC6tDD5UhmZiK3KixltXIMWYpgm3lJw8TE6ltu
+         fhv5+N5zGwFsf2jWgrlukTI8UXQXEmxVw2h5pY4BRNBd4EVL+k/MjjnB4Ax23060Ax6i
+         UTX2fN0C3Vm1pIQ47XWz6is4UQuJBm4a4jr4pARawMlNUhcbSz7jOWS9KjfiLoRi46Gk
+         WIw4J0tUOj6COxA/EWp1AA5qg+gP+gvD2B6j8slKjoLAQv4s2XaE+hOJc1uT2cQEVTWN
+         8HIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1783717252; x=1784322052;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1783717444; x=1784322244;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rqzV29M/TfqY8poEDBrz7krImCgB8mIlNT5MO3ZgoJ8=;
-        b=fApgta6Eko2iPyWYn2t8vJZNBVrSbHC3B1hi5wvMFt5LLeh4wqzTatshEAQmYOPpoJ
-         7X+2f4oc23MtRbsPz1iWl33HJBZXA7gXPyiGiIWIkTRTYTTdin20/uHkHALW06P41PH6
-         aUvMAJHFKoOLUax4GaAWB4/HO0xOodnbOzGgxOwH9t4LJFchGwHdbKIsYnJV89N++H2R
-         5b5CjiU9tnpmXYK1/XmaoMazwug6oyIxt4Ulh+Qirn1uC6dU5OcS+auC9A3LO2QvCvWQ
-         Z42YHoWCtUy2JEXX9mgpFrhYzTNSBKA4KBjtrFE6eJEjL4FkEs86XrOYCxz+VQ5gbMSx
-         M45w==
-X-Forwarded-Encrypted: i=1; AHgh+RrLn9kk8Db6Y2o5Ta6vlC9QtnA3hAJr7TsJKJxlYqFbtabmIv5kYWpCwOstHQjqnrS868gQyfkOyg==@kvack.org
-X-Gm-Message-State: AOJu0YzzSLk0WkCNVW4+lY/fhHA4dh5sPLigyzRQ2SVhAUP8ALdwfzbs
-	lBWwO/AVVnWD/0akzKocFvf4hHMZLwav5U2EsFEMFnU2G/7pIShTPahuiSHQVds0v+QsG5Zoku7
-	9c0roSuG6FRHGe9U6QOgjYXrXhF8IT1PU3+G1s5Sk
-X-Gm-Gg: AfdE7cmQ39j0QH0qBBLxWteYSlQoDXw1sLpTOXQGgb7zx/ZkcpA93Z3jqI13v7UP5hH
-	h3HNXJCTimlM75r/AeYEVGadKlQ5U77S+SZq3xVcFUeW2k00d3+DIFVdZoZEsYcxzIdiKTFj0lz
-	pueNedmDzsXR7k6q74qvyIRWnR94UWym1i+SvUtBIWsr3NrVw9D3SjH3H/fXERMW3gW9GVOY8lR
-	xGeWanVZNc8ejSu3Bmk1o/92JdPGCQ3SUwpmrdk1UN9yKx9RrJQrxPl9rWCuW9LgCWDF7FW
-X-Received: by 2002:a17:903:2f82:b0:2ca:16:c169 with SMTP id
- d9443c01a7336-2ce828a0820mr40343645ad.12.1783717251507; Fri, 10 Jul 2026
- 14:00:51 -0700 (PDT)
+        bh=OhI7UcJVN9EaMSo9cM31eWAmb7Tf3pcvHFHtAkV4RLE=;
+        b=hOtdozgQh+1A81Dj0ZmwioLnsLyHmC1gEtWKzASn8GaHpco34acBBhm53EJ0tLn0wT
+         U8B8YZ40COgkM8661231jbCnktnmxbOn/iseWN4bdVr8pAWYfqswErtDq67PmaTLIT/U
+         3LcP0LC/vpopp++pPyCHZZtbVQwncxSgswxebCp3F/8kAX+3xtx9pOT8HweIsJJKNNM1
+         MGfhic4Mdrf1YWBS2Gu8jVuwVtmRu2NvAjr26++tUEw0eov10r6qfODNLWS14EcsgqSu
+         FN+c6KR7kLOyDn5zsa46Z76+vxuuwJDKfcSTqveZfZdncL9OgUvg0V+wOUsF7ZHAr0M4
+         mQOA==
+X-Forwarded-Encrypted: i=1; AHgh+Roz1bxXenQpQCLbzyTG6RCFjn8s62vo+kA5H9GPfx2rR7+o7XnoStjiaTNFM0U/yFQSA31rZx7Z2A==@kvack.org
+X-Gm-Message-State: AOJu0Ywz1nyHUav8vn1WoaNO8Dt6bcnC8KhXqk4fG8WqgHeEhiafKfVj
+	ApkTXVtTvfgdSu7OyWPfrBWw/z8VdzBTzHIWo17Ivye2JSBA6YSoNWpNwpszLVATDCg=
+X-Gm-Gg: AfdE7cmfwjNL1iqvkJqJD+R3TOzszNrpjE9+EPQ1TrgOk3Z92mOwvvFQdPFiRj7xj8H
+	auQgEQUptcEIEPkP4xEr2c2HlP0s5yPJPbbDdMPucgFEQfTA17LrF11zYBFcTd91jsCkG/fmfuz
+	P5f4RBKF9aXFxHlwORvHnSE6rNokNT8JpAcIA8k+wci8WekxCc5fXNWIGqD7P6qXbp9qrWnjADj
+	0YZCZsFo+lRz0BEhng1ZxH78ZAMF13VBHtxz6d26GIEa9bpaVv6IsrfQFAqbwd04wkQOmahoIXB
+	3koMKjNNwApI4iQ3q7HU+7uQV/vAYTnEIr46oINJynFDoMgJNCg5YheBIuOfhdfYoJisGChlUzH
+	I3eRt01o8DBY8fgQJAfQR1gKAOStMiAS8FYJcukqCjQ/tYJIUXyRRC2vEaybC6XDS5eZGqsnyKH
+	4bObEfgwlAR5R7k11JOVy5hldwn1KsN08L0pjUocqprBRxYRn8afFB09vkv1jn7iv9I58A
+X-Received: by 2002:a05:6214:3bc7:b0:8ea:10f8:ae87 with SMTP id 6a1803df08f44-903fe450f77mr10485176d6.11.1783717444207;
+        Fri, 10 Jul 2026 14:04:04 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ffd50df5e2sm50655596d6.4.2026.07.10.14.04.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jul 2026 14:04:03 -0700 (PDT)
+Date: Fri, 10 Jul 2026 17:03:58 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
+	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
+	linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 27/30] mm/vma: correct incorrect vma.h inclusion
+Message-ID: <alFePgFUR52GgBS7@gourry-fedora-PF4VCD3F>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <22d0f4e3fe11f6fd1312734e242d008267ad142c.1782735110.git.ljs@kernel.org>
+ <alFHR3fg8K1-SITK@gourry-fedora-PF4VCD3F>
+ <alFJUfaGHVnKd-Nb@lucifer>
 MIME-Version: 1.0
-References: <MZlCECz5s73hPgQxtqWZ2VbXNTCZnItnwMHu2iZQlRC6ba0B9GuqxT2EhvhwQ-uanBDsNn7Bg09nGVynBHdmSsiRjhyI1udkYbqOoPfpe6w=@proton.me>
-In-Reply-To: <MZlCECz5s73hPgQxtqWZ2VbXNTCZnItnwMHu2iZQlRC6ba0B9GuqxT2EhvhwQ-uanBDsNn7Bg09nGVynBHdmSsiRjhyI1udkYbqOoPfpe6w=@proton.me>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 10 Jul 2026 17:00:37 -0400
-X-Gm-Features: AVVi8CelOVkwsnAMfu5Dx1B7_PEB-pnfELgYLYT_dts7Hvyr4wbqu6SLxvOLeqA
-Message-ID: <CAHC9VhSWs4=-BN09XWUsJXh+9HB5zeYa0oiRsRNGb4s_sTW2HQ@mail.gmail.com>
-Subject: Re: [RESEND][RFC/discuss] memfd_secret(): opt-in visibility for
- security monitoring (eBPF/audit)
-To: BoxStrikesTeam <BoxStrikesTeam@proton.me>
-Cc: "rppt@kernel.org" <rppt@kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>, 
-	"jmorris@namei.org" <jmorris@namei.org>, "serge@hallyn.com" <serge@hallyn.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 2938F18000D
-X-Stat-Signature: b7tei6h6395zut84xaowu77uckjsc5ip
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alFJUfaGHVnKd-Nb@lucifer>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1783717252-527994
-X-HE-Meta: U2FsdGVkX18Tt6O8KGaufVOiUQtNC71pPSk83fKRJDcwgRSzaLt/M9hKynYzvNXP7Zn/3OiiJ1GUJN544KUsWsD7NdzZqEJPo64bcUsCgJqtL8M+K05ScXjz4YoKL6HnR30DD6VeQ0q5VQ97LxoF0aFSx6KgwAVLYiXjS1ODBPC5jazxJkosJvrzQiBtZbTTryow7wcS/7BTwAmKMMrVtnaE3VUpa6QdaqniEd6FxspjjV6+UZcx7edB/vNcRTZcS/Q/IZJQDHIn10amosEaS0DHv+ARxYXbhm4/SfEcMyGDa7tCFDrFROZb4tz9z/iOs25pq/JityLUs3DGQvEaDKbR5w9Pt1rXvZTz+K1P7cQ2FQRYxs+fhN/L9zVnxkR+DD1OaTWDdFlswJxr+nTTpSprNIwEl8J8ofWHkp8PqeNkkIZ/yQYylknBcSyRNnY5wnjZ5hm7v7AJGzSaQ8utmNI0DQTzELTsFyzNDR+JfIy4VLyJDmuqvxwol5Qtx/8RIQIcYV9g0fZobJZim5cEsrjtRkc7B+ahikY7Uvn4FduMzgsV8SNBiwYm6D0V32+xkUJUQ9CESh/KX0ydhZD1J0DVaPDwa+L4tMvKwWRJI9q1vVWqdyvHqfMW+8VM4ZcmWmnXrwgVThO+wgsaBPymeRR9t1MMW1nZnY3EqMTqhZq/nEfz5P5QE8E61uMAY90DinWWrTFckjrbfXTlR5SVFgawjsNBoy+IuzICyWww1onAgNoO0u7278nwZqzc4nrTLRLUK9QoIYTlq7rvuf65BKDp1r6yu5oYC1LNAOmZSGouP1ygsOlW2rtXsEvfEnjdY3pO/qtTKO8BCmWHKrFHd99V8RYJIDlEhG3cTaI6Ib8NbT+SwFKC2iOF5CDEF+Frr1QTq4mTwccouhgY0hboYrDJ3QGmGq2XIJjQW9hAnYQP6WCU4DIfY5BeZsXf5356sn/OZMTYoP4jEBaitZl
- hC4488G0
- dL8Zbgl0X/4WmWYXNccbxhaLfpFQ6bsg4qSLP+bQNDgpFD8+YkDa7mIgQ0yEs86+Qq7dELchcxCJT35zt7nTF7S1kWxTCVNLkeA7FxDoyzOjyNhWYf/ltc5ZahQlIoCyyEWrUREdJY4mvzGCFcKHeLpWqYSzbewyrvBs64xLGrqZl5qCQOMpMwZllr9YFWq7wvBzq4iwqp2w+HCLlVMDgSVD+tYKiXDkhXiNdVfmzUE9OdTqCRbrKYLOhw1vmSYrlHURKmNl05Df+vmhLWzw7kV6CG2SFwsC25uzQCPr5y8gHuTSOznNc+tWKjDaGcIfRX9ilb4vZns5UIEEDzUOrWFMx7Gy31oxy5201ML6uR2bdE7p18cbKYzHVoHeITKXr/Li8s0f8KByC3/NQFM6skY2CNJBWvNW8xUcIp9P7FJAdFU85MKmKx8GmpW9Ia5UXOGvrEA+OK9wL/BsgKMy+2ZOGig==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 11D3C100011
+X-Stat-Signature: 6oa7touxgnubpythoubkmknm45ug98xu
+X-HE-Tag: 1783717444-872005
+X-HE-Meta: U2FsdGVkX18oj7YJkAAc2+9qgulXoce71rRGpUJs96p+Nd/dPdcQt+Cq8MqbBrY3fSpbA8zfAimXc7JnIAbPZuPaOJDXGP9DY8Tozf9fS1w2l7SbqRGUwSQL801XT59jkrYVkWDm62epz9RIfgRY5LcjRXsZbSSN4nHre8VGnbnLPvJrQN+IdNKxIMNi9zuSWTH1baN+ce1UkvqreqZyvUh98oBXHMi9YmVWiOOCVq7wpKcTQedd2DHzjim7dZDGijoOmZH9euULpYMaBc2VRycvaVDX7jEL8Hs1ekBMNkLdQYgEkhA+UPZigzGtTVB804U5pnvf/G3jOG83XqHNAA+H9FeZjN7+XY4Miexumk4KHlBxRALHt+GXHaIQTzDUxbQc9hNyZYgGOz7jglsgdB5FUr0Abj5H827COo/1CrgeXzY8YNKpn4E+Ua5y5VLAOkIE6Sxp9/01ZJSaOXMiAMaJhTZrr4S4PF7dg0vydZu05Qhnc6PuAeJIG/bv4FfYPVueqgsQk1FWZLbYeC90weNJ+W4Plm5AM5gP+KhC5HO4vpYDLW9F3glybVW/N4L1xgilCmV3cnEL6fYpI5xEv7Fdpk5GunO/cCYJpcZgiRZ+dQNwgL4/HKD7DtAttSytVtDErf5ZHmF8fZ2xbdZrxAt2XzpMgo6/5vKAar4JkxeaPpXEVDt57MADA/6/315jjQUnDc8Sxk5NHZZgS+oGlDbdN7A1tVrirTHhTjgsdZNaRKJIWNnmCXMMhQUDN0aEGy+XNkv3ORJB1ngl6nk4H6jJhVdtdfY/MosIEdd1cRGtISKFqggXuaTv67qu38PZuaXuv1fFc0/EIlTFg4+n70ojUnOSObRPedfu8zKutAsqLbxOVCVS8/YckH+7AtBJeTLP4OrqFUaPwzm6L6QM1wuOzTxT5xnKflDbwIPFI3k+A7T0b5Yoxq4/iQQefBnjMT1doGvqTZONHJK/dW3
+ SvVkjbgp
+ XZvKcRo3DP6mvFcs1Pn6USRatue/5PRjiGPBNq9nejGq2yDnYs79PK4JV9L+igKLKboaJOe3cjDdZ35p4v0D+vWGmskf/dxbd7kI02SUHrUVGggb9qCsg2WtQ/e7cm9UxqOQ65i2Mxs9lsYYU13YGFTgrvABJ7+zb/p2Hl2lbJwYVYbFdwWfNVKlYsC7VVVb41USSSP0XEP87aP43ou1VmhyAPNdsGKi9Ku86LQdUvOqXFDtC1ta2UZQy9k/kYjC0PHNo3WO8QG+7iKlYPaFF+C20JfZeylzwS3jMUNuddPUKZgHCzs9t0xLy5RqMLTFoXoVBJMoYzazEcOKeSybPFGjQlyhitqC1kb4s01Hbr3/QV7o/zZQPsduVg31FCYKQC+rqbCtVXhGCSqE6daXrQ/lVjA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,77 +174,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jul 9, 2026 at 1:14=E2=80=AFAM BoxStrikesTeam <BoxStrikesTeam@proto=
-n.me> wrote:
-> Paul,
->
-> Thanks - I found the Gottsche/inode_init_security_anon() thread and can s=
-ee it landed. That answers (a) cleanly: labeling exists, policy can be laye=
-red on top via SELinux/AppArmor if a site wants alerting on memfd_secret() =
-creation. Good to have that confirmed as already solved.
->
-> On (b), let me push on it a bit further, because I think it's worth spell=
-ing out explicitly rather than dropping it.
->
-> My concern: as it stands, an unprivileged process can populate a memfd_se=
-cret() region and mseal() the mapping, producing memory that is (a) unreada=
-ble by any kernel-side introspection path, including root-owned eBPF tracin=
-g programs, and (b) can't be coerced back into an inspectable state via mpr=
-otect/munmap. From a host-based detection standpoint that's a blind spot an=
- attacker can use to park a payload where a CAP_BPF-privileged monitoring a=
-gent - something that in most other respects can inspect any process on the=
- box - simply cannot look, no matter what capabilities it holds.
->
-> I understand the objection this invites, and I want to address it directl=
-y rather than pretend it isn't there: the memfd_secret() man page is explic=
-it that its ROP protection rests on the absence of any in-kernel primitive =
-for reading this memory. If I'm reading that right, the objection to (b) is=
- that adding any such primitive - however capability-gated - re-creates exa=
-ctly the artifact a ROP chain would want to call, undermining the "no primi=
-tive exists" property regardless of who's nominally allowed to invoke it.
->
-> I don't think that objection is wrong, but I'm not sure it's fully dispos=
-itive either, and I'd like to hear the maintainers' take on the tradeoff ex=
-plicitly:
->
-> - The ROP threat model assumes an attacker who already has arbitrary kern=
-el code execution (they're calling kernel functions directly). If they have=
- that, they can likely already walk page tables and reconstruct the mapping=
- by hand - the primitive removal raises the bar, but per the design's own c=
-aveat ("no 100% guarantee"), it was never advertised as absolute.
-> - The (b) scenario I'm raising is a different actor: a legitimate, privil=
-eged, kernel-mediated monitoring agent (eBPF LSM/tracing program) operating=
- through the normal verifier-checked helper path, not an attacker executing=
- arbitrary kernel code via a ROP chain. Conflating "any code path that can =
-read this memory" with "a gadget a ROP chain can call" may be overly conser=
-vative if the new path is narrowly scoped (e.g., a new bpf_probe_read_secre=
-tmem() helper, verifier-restricted to CAP_PERFMON|CAP_BPF programs, opt-in =
-per region via a memfd_secret() flag the owning process must set at creatio=
-n time).
->
-> If that distinction doesn't hold up - if any additional kernel-callable r=
-ead path is considered equally exploitable regardless of gating - I'd genui=
-nely like to understand why, since it would mean the confidentiality guaran=
-tee is fundamentally incompatible with any form of authorized introspection=
-, which seems worth stating plainly in the documentation for anyone buildin=
-g EDR/monitoring tooling around eBPF.
->
-> Even if (b) is rejected, I believe explicitly documenting that memfd_secr=
-et()+mseal() creates an introspection-proof region would be valuable for th=
-e security community, so EDR vendors can adjust their threat models accordi=
-ngly.
+On Fri, Jul 10, 2026 at 08:35:43PM +0100, Lorenzo Stoakes wrote:
+> >
+> > Do you actually need 3 copies of this comment or just one copy in
+> > vma_internal.h?
+> 
+> I'd rather have it at a glance, it's a bit silly but C headers are silly :P
+> 
+> BTW you're kinda racing against time here as I'm on the verge of sending v2
+> :P
 
-To be very honest, I'm not too concerned about out-of-tree, security
-products; I'm focused on the in-tree kernel code.  If you are
-concerned about userspace making use of memfd_secret(), you could
-block the operation on a per-process/domain basis using either seccomp
-or SELinux (other LSMs may have similar functionality, that's an
-exercise left to the reader).
-
-Also, it is important to note that if you find the kernel
-documentation lacking in a particular area, I would encourage you to
-submit a patch to address the shortcomings.
-
---=20
-paul-moore.com
+:[ i don't refresh my inbox when i get hyperfocused and now i am sad
 
