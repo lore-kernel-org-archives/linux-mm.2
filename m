@@ -4,122 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D8A1C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 11:16:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3974C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 10 Jul 2026 11:29:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A35116B009D; Fri, 10 Jul 2026 07:16:37 -0400 (EDT)
+	id 968356B0088; Fri, 10 Jul 2026 07:29:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E4F36B009E; Fri, 10 Jul 2026 07:16:37 -0400 (EDT)
+	id 8F1AF6B008A; Fri, 10 Jul 2026 07:29:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D6DA6B009F; Fri, 10 Jul 2026 07:16:37 -0400 (EDT)
+	id 794DB6B008C; Fri, 10 Jul 2026 07:29:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 644416B009D
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:16:37 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F13BC1C8917
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:16:36 +0000 (UTC)
-X-FDA: 84972613992.11.C248CB5
-Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CE7DB100004
-	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:16:34 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="v 2a0onb";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Fd7fOGXI;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 49F076B0088
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 07:29:42 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B93C21694F0
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:29:41 +0000 (UTC)
+X-FDA: 84972646962.29.D49051F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id EAEEA8000A
+	for <linux-mm@kvack.org>; Fri, 10 Jul 2026 11:29:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2E3mUXJ;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1783682195;
+	s=arc-20220608; t=1783682980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4tb1TbPSaUoa6sJMUNmBbUyB1nWkk1Ze1A2pnXDJ9wE=;
-	b=1iv3cX02ort1n2aiwMhLUGr9hOwuHlf1e6kbBD2caDGCC1LwmSzLQ9sKTsT1Ak62KPGSMl
-	KfLGU+xrPdpf+62aIE61M2OvGz8FfmGGZS5FaHz7qGAlrIIEmUEEdXAuEkn8ZGKiEjvRDT
-	TAbFLLNEplToikG02SDeO9BepfuBEGM=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="v 2a0onb";
-	dkim=pass header.d=messagingengine.com header.s=fm2 header.b=Fd7fOGXI;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	bh=lTXqQqM4zep6luYNuf2HCeZ+pADRJ8jSNccCf2alJVw=;
+	b=sD7xmf62KlwnxuHDJWLkJ+/O93QpEBMnM/YuCwjvVqiImSj86dXMzwI4Cv7iylKLeQD4a4
+	NCJk9ytqVdq5akGreTj/UCObV8QtmoImLe44amOtO3D4z2h1ZhAH9q+Q7iVS9ks5ideqqV
+	9XrtRAX3koQaflSfjEJcxRjU4kJAOZ4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1783682195;
-	b=CVUfEoSfonhXzQv4FnErJ1gT0RNTtqG3Peb8MgZ1a/YkrE6eJuQMXTLjwLRmzAm9jOI63O
-	MRIUnLfYDR0PqOhQa0z0V9tgylyQ1b+CEugqXrAcjyGa+V9H69VpFiTCYJ503C+WU3ye9q
-	JJ3FLpes85SEVq3LVZdUftbqr+wBh7k=
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id 23DFBEC0188;
-	Fri, 10 Jul 2026 07:16:34 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 10 Jul 2026 07:16:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1783682194; x=
-	1783768594; bh=4tb1TbPSaUoa6sJMUNmBbUyB1nWkk1Ze1A2pnXDJ9wE=; b=v
-	2a0onbczSxWXCdSNA9gDWK6mA6QLrB0u++a8sk2DAxNLuYcsCAIqdFcnvpCSBGwP
-	rdSNsYnd+CVw1Ab/ICHBwLCL0mlUBH/evfD8LPtZUt9lc8MMMNz/4dcC+XwtQwON
-	+W+lZXCEIu+76P0q5V2BHhq7wv4DSVNeFv/qv632XNOgnRJybA+uQV4KnqZ17jTM
-	LtHkXrRfLZ2Q8EgkcmBjalrZggxwoyeyMnYaw5uuyxEbABah5ru3Q5wGtJUGmZ5L
-	5PuZx2mp1PV5wGv+GfvdX4593CFA16111KHmbmQavoN1vYtBlA2tk5CguPMG9oDr
-	u4ldValR+YPJDyTiV3x1g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1783682194; x=1783768594; bh=4tb1TbPSaUoa6sJMUNmBbUyB1nWkk1Ze1A2
-	pnXDJ9wE=; b=Fd7fOGXIy3wsIZLrPehHfxyB04kU+OZHYzR6P+xDzQ0dS6j7bqC
-	lbSUh5IVmF9jlGx+bnPWlX4VxiWgmE0sc5zMekEMQFuKDyLHSYET3lv75JDzCDm6
-	flfQZb3li5Q+5t8B3+d16DQaH305o3bA4Ks6cmNCVcGRoawMX6h3apoY2yuvRNrh
-	nHKSsGfnR63SqRx9l8YQyuEk1csG5i8JCfdcyAhNv27r25mIVgbUm8hiCHOPwYz5
-	uJCBh6uty8F4J/QwE6lnmUjoX96uGgswfUi5CVyV4uFvx/l7Up82c2PKEYyr7JtE
-	o6M7uaRPJCh2pMVw5X+ptFC2xnukNkZZyZA==
-X-ME-Sender: <xms:kdRQakngPCrrdSo8WoYSmEXCzBkQdZmwLUKIBxBMjmwQeSdzehhp-w>
-    <xme:kdRQakTLWtDb6VlIa454LKBJMW9PzxLnFVEiAayMmQV1W_3kEODPbd7iO0DWTjizy
-    vJAIB1W_-WEAx2757U5S7lfpFBynq5Vo26tZQHXkEJ8M-YnM6Y76I8>
-X-ME-Received: <xmr:kdRQajWg_mzCAtqsUcMHrtBnWjyg4gI8yubfhpFRI1W7sG6Zxc7ekw5D50MsCg>
-X-ME-Proxy-Cause: dmFkZTF2MPfeCgygTMonQ8pNXszxYLscEiX/yYk9qDNEnAkEfaw/jWYIaZIjxTGhuWNQMu
-    uQmKzr1L8gH5hZu/zzEMkRXJojpn1LIyiXBKb/aDLsQ/XQp9wXOg+HnlPGwwPgLVDdS5fE
-    vjC72m2o57IYwvoGp9u2GdP8Tn6cz13rxMkdyQtTs94Kdakp4o28HlcC+Vnpfmhy/l9jUw
-    OeNynW723YEGoKvA1NnXgZxUbjOvoyVbR+32EUZ/5cFLduShKRhxed7lOPw6ghzcxil4bS
-    YuznSvFPs2Vx8JiGAPkE3B2aPgFbZWPaWmRPsYuao81R86UC74pn5ifxxDBWuSf0l1AGZw
-    TIXUfUroOsF12fa6WVoqLBxoVTA95O/bNdyssyNVVfH0dpKHh80hYqXZ8u63RUJ79FYtEV
-    pLMBApb78ssX6LtVgm+Z/HbC2/JJl3mC+LHP9IkfzVweBmxghJ2VI2BWjyuRVoZ9uJANni
-    PKrHz2kSd1ejVkjAO4ANTqI2fHa+01dtbWi9CS/3alleeX3TFwsrBWfDbQcOQc2Xv4m9/R
-    nowMhaRx3mBuG0S5I62yXSa7DDt8LxqM/eNXzELYnZzPSdDo4HZrAw0rqtTlkBQFGhltmu
-    LY8HicYe/mDeFvQ8kPGsq8SKhjL/AjrGImqpFDRZbixT1y9aYjvc59jmq51A
-X-ME-Proxy: <xmx:kdRQaoK7AUt5zIMHxeazcw0y2r2cF7-oT7Rfl6fajtw_sRgMisWEpA>
-    <xmx:kdRQaj3bsYl94qwhaEXPJe5BNkVXOO6Wz7KrWgx7RuoThv1keqMRNQ>
-    <xmx:kdRQalIoZJ7onmUorXejruMPGncK8pPD473iilMkJz_dgT4EeF4qFw>
-    <xmx:kdRQauiulBD5tR4zDHfuk2KnxLiDuzlMIi3fszgmPy7E_kFBsqmXJQ>
-    <xmx:ktRQaggtvmELJaiowKwD4JcbA2iN5tS4uHcDXGHSmzCFdq4i8o0rNP_4>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 10 Jul 2026 07:16:33 -0400 (EDT)
-Date: Fri, 10 Jul 2026 12:16:32 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Hao Zhang <hao_zhang_kdev@163.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm: thp: unlock i_mmap before releasing split folios
-Message-ID: <alDSekC_5t-29vJS@thinkstation>
-References: <20260710071344.GA106129@zh-pc>
+	t=1783682980;
+	b=LFtKKagSU7TcFQsCnnUrTMNPMVs/3SbxlXQdrCv8hkGWbsT/eiDTiA0i0zblHbvPu9yavi
+	tSIJZynzuXdcwdIN9VMO9sOmEp9EWRL10eAL0dhAwE64Un9wJllWGGp6+Lxj3kgZIxYCZ3
+	m1JtXLm1YUU6jzWl3VxZoLCJSM8vO50=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i2E3mUXJ;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E393F410B5;
+	Fri, 10 Jul 2026 11:29:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765101F000E9;
+	Fri, 10 Jul 2026 11:29:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1783682978;
+	bh=lTXqQqM4zep6luYNuf2HCeZ+pADRJ8jSNccCf2alJVw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=i2E3mUXJY51s+WNjMg+CmKCUPUnJf1olJ8H/R/xiLPc6+XHEgwTJYusGFpMufCsN0
+	 95rwaCHaC4e5cliEEnF1DNm/u4yF0i2wK80Kf/x4toZ6xJx7bZ25+B6GWEYhgRRotU
+	 GGw6WXcwl8hf60LAmTOdpXvYP13UMZxpr+25MQbfQvbKd1M+HdqfJ8+9Qqq7+bL5kn
+	 4JjCv/S48QJAc67JqDoAHnS1ElmywHkWo+27tJIVDJRWBktGoQgwsw5QF1yC6WL2sJ
+	 zKNPyZIviUtCm2fXttkLUs1p+uQ6pXr9qj4LOjddJIJnbTd8r6spb0tGGG6xcnF/Qs
+	 WZ5QAI2pjdD3w==
+Message-ID: <905c7dc9-a0d5-4b28-a899-53798fc4628e@kernel.org>
+Date: Fri, 10 Jul 2026 13:29:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260710071344.GA106129@zh-pc>
-X-Stat-Signature: y7oi8u6paa8tckrm75hfhyumcitm1b6y
-X-Rspamd-Queue-Id: CE7DB100004
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] fs: stable_page_flags(): use folio_test_*() helpers
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+ ziy@nvidia.com, luizcap@redhat.com, willy@infradead.org,
+ linmiaohe@huawei.com, svetly.todorov@memverge.com, xu.xin16@zte.com.cn,
+ chengming.zhou@linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20260702110614.2176986-1-tujinjiang@huawei.com>
+ <20260702110614.2176986-3-tujinjiang@huawei.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260702110614.2176986-3-tujinjiang@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1783682194-821732
-X-HE-Meta: U2FsdGVkX1+xjyckDmEHU+x9TEdUkc8FrUYa7Q5PWLknRO54FepC92O+dUVgqzJZL1C9har+VhU804evtebLHV5ZxXgYFQJlQhbPfgp3qIhquXYJz6/66Oif/dHdTKsFyQSwuCafwwrfHbhmSvWoDdkYy73qnoCuYFMbsK0+F7Y+LlbqXYLESiyd1gtHwrQACuO0VIP98GjlARUnZoB0AVqwNvD8ZdulzssjEwydvm8UVa1AyxZhmu0PLGaa6obFCaUYSe51Y42KUZ9vGw4MqHo+17k1uluNL7NuPAAnZmLaO2uBixE9NLMx5A4AqA/Wp1pl082J1Py2qXuKdwOAs1ldvRaOs7mMcPNmQuhnrLeLKnDYK9JuDC/9deQqmTIvvcREQBmFEqIn5Dcq0P3xkhstw9ZZqyw2bcheocwSFDBPZQrs1DdysctXzMSR3rMsTWX25mU0h7WATmzKAMwMLg0wWdKoRDW4Hm/n3kKWBOkd2lCmf8MKBjKTTWQcl/YgXbA6H4ZZd+YZgHrhNWR9mY9n/i4yTIMmyEoudsHOSQFYiVMJEC6h5GOstSV/kDZoLYJfkYlOPh4pUjc3mx2uJZFEOPiaL8mAKj3MiIAJarX0fJOkVCMgWxUhRPIpTR5pqOvKz/vIN0cENp0UerzQ+L6PnYDw0PvV1FZD0H8aHlL4SUBAEgBJ0jwRVQnLWpIvSGOkEsYEu3ztP3iuX+SdmuueqV2KkjPKUxjNLIo1prIKyYR70zhcAYM/LGe1YeAsLge5Rim/p3TQweL42rYI4CIFrpnuryPXBv70P8WgwZ34moz/Sk+XDev2hlJRdIEDCZ5gQoGSKwXSRY2GTt7Xump0FwFfBwlSbpnc3EyqeNY05JiSoO5mwv9b6j1PMZ72DbULtlz4TzdNub/PVF0+38ah94A1LjKAUCQ2qp86SN7L+uB5WFgEzljzzCZoDwtebU9CNrBAeCT2J7+MbvC
- mWtazXVS
- mEppGo/U+gazd/lnxogci7YOgA8kJPrB/yUeyrbKwteCIhBNWDBLcToy1mVBOIzpSYVe0iBG4JsPVcvaAkG9jLXiwswFcEroNUdLEhoD8AAHhneqDCZ7r1wYrk7qhG95GgSxY637PzBfCtp4GubDRDPPwpFUf68j8CGkfgOOn03hANotf1z+6jYyoKivijIJ7in7at3aeVq2fu86Orl54xPSErX5q2MSVJt4v/OoiyhZTA4XWz/nKSYLGitDrOHeahevyBxUUHhi3hueYC9zgVvOwY9GBx8muzzg6wAdPewGspDhJ1lRwoGNb8CYb6tXNXdRivP7jelzDzbyNn4ElP5IQsVTPnoJa/fYCIZEM/JVPaUu73VhY1fvJCFVVdwH7pH9N5QP8Zsu6d5UQIMIEG914sDcqgbr7xWVaihnm/XXNz/sMkkDPwJO1pXp45uJaRYwyiA7dkQhSysiPJ128a8PArnMrKlfv0tNGm3OncRk5E6I=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EAEEA8000A
+X-Stat-Signature: pmumsgdecuqi9jjs19kg9zd6j6st8wsm
+X-HE-Tag: 1783682979-828399
+X-HE-Meta: U2FsdGVkX1+CJvI3ImrYf5L0FeEhKx78MMOrAVjvWPmLQiS+PeyLjlI0uX380b1uxcZAlcIr+e7DNIkt+WBPgVOXXTft9UvZRPPc8O/amxYUxk5fUm6q1yuK/oKVmSUwAPTkSOQFkSJGJEOZCwNZD/EiccWN9UY19vFIMqKN3nNryjPeGMm5Hx7u6nAbCKkiNKPHyjQVmdVpAO5H1ABVSEahkaZbpVgwa7FG7/CwgrmMEs86xmJSeQAsu07hk1Dw+FwESZbPV3ni7NHRvt96eucDWW+3dNzs4DQPNkPAqjJFQomLsqlQsxoENR510FzPvTOYxIsJO2/ogg5OODQJlINCxG7kqCEaago+tQw/HdLsAlOD8HGidiliDzMosHPhXGgLI2h0SK5W8EyprenX87MPQv1eT0KhsjZfCrjxFpgqOrnmYhhtX3tOUj3EplmIMrcIxmwKeg1shbA1i0+hJQncX5Mnd+sm52kXFducz6xcFpPYKqfim98+tqfq+9C4oVOYKxRG27Qfc4iZ6CHXchayhqbqhJc3LsHCf4lAw3qYLWsXkzXO7OEiIf5xEw4S3eG6IN0TPNPlI2Q2GhHmoGaq0Re607JG5aREMebwPLzd+8F0mD9uW/HnhPmVIZAe0Aq5mkSsFQMXANIkyIcO+htb+x0WHdOHynzzJ2Sdz0OLv1j+2MoQRUeQ6whjJy6A9ZerT+YKxzUKuhA+VgIRTfiZCKz1kkBlU3jaspelZ1e5ax2oblJI1YauhzEQWn2mpOHwkdDguAYbDkaVkHWMsj1VXD06j8x5Sk8ij/vBBYP2OJfTlEEaGY2vzG/vGh/rzK6/e/5ZuG86DH5Tq/6f+Ko1sBkeG7vtMLShaAnO/WbFPEa0nZYBn5174GBDmzWCGCTqiS52vBITo894wNQRXYJq3nNhiPxzJAadW0fJenaD324vmmDTXNfOdmhcUy+SyGL3rvpMyjxCri5F6d/
+ fHrR3bYV
+ VUw1YpBBbBhK2hVT30yJnn1KXO2C19/2x+7XYheAD71Tq98MxWNOekmI9htxEo4cgYNqKr2/K8Q97fLYp8Qy/stYH1ErCvLHeGufEGP3ptcJq1t1+pHPMFprRP+mtS7IOPbpsUc96oE4zcouFmiIhaVpkQVuUOkB/iELpzG9ae+rrBVocIWS3urOe2xz9OnUfTPk/KK2cg9T6tVxBQdXeyCNn09PLoaQHlCL3ojnEkZwlWk70Ryz4a+L2/Ac0531MHy3QMZ3lQD77nx/HpYxBj38gT6n/ZB7RZ/RDAH3pH2eKYo6ADVxPKK0vnE3nxq0T8aR+GFxI144Odl9bcGgKs+cVrqUNuFZAKkbv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,59 +140,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jul 10, 2026 at 03:13:44PM +0800, Hao Zhang wrote:
-> From: Hao Zhang <zhanghao1@kylinos.cn>
-> Date: Thu, 9 Jul 2026 16:30:00 +0800
+On 7/2/26 13:06, Jinjiang Tu wrote:
+> stable_page_flags() currently accesses folio->flags.f directly. Since
+> commit 476d87d6a061 ("fs: stable_page_flags(): use snapshot_page()"), we
+> can replace these raw flag accesses with the existing folio_test_*()
+> helpers, thereby cleaning up the open‑coded flag handling.
 > 
-> __folio_split() takes mapping->i_mmap_rwsem while unmapping and
-> splitting a file-backed large folio. The lock is currently released
-> only after the split folios that are not returned locked to the caller
-> have been unlocked and put.
+> For KPF_IDLE, set_ps_flags() already handles both 64‑bit and 32‑bit
+> cases, so the duplicate code in stable_page_flags() that deals with
+> CONFIG_PAGE_IDLE_FLAG for the 64‑bit case is removed.
 > 
-> That leaves a lifetime hole. Once the split folios are unlocked and
-> their references are dropped, inode eviction can make progress through
-> the final page-cache truncation path. After the folios are removed from
-> the page cache and the last inode reference is dropped, the inode that
-> embeds the address_space can be freed after an RCU grace period. A later
-> i_mmap_unlock_read(mapping) then dereferences mapping->i_mmap_rwsem
-> from freed memory.
+> The flag bits that has no folio_test_*() helpers are left unchanged,
+> including PG_owner_priv_1, PG_arch_*.
 > 
-> A possible race is:
+> No functional change is intended.
 > 
->   CPU0                                    CPU1
->   __folio_split()
->     i_mmap_lock_read(mapping)
->     ...
->     remap_page()
->     folio_unlock(new_folio)
->     free_folio_and_swap_cache(new_folio)
->                                           evict inode
->                                           truncate_inode_pages_final()
->                                           destroy_inode()
->                                           call_rcu()
->                                           RCU callback frees inode
->     i_mmap_unlock_read(mapping)
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+> ---
+>  fs/proc/page.c | 94 ++++++++++++++++++++++++++------------------------
+>  1 file changed, 49 insertions(+), 45 deletions(-)
 > 
-> Release mapping->i_mmap_rwsem after the page-cache and reverse-mapping
-> work has completed, but before unlocking and putting any of the split
-> folios. Clear the local mapping pointer after the early unlock so the
-> common exit path does not unlock it a second time.
+> diff --git a/fs/proc/page.c b/fs/proc/page.c
+> index 2717dbb0431b..0dbd46fa84ea 100644
+> --- a/fs/proc/page.c
+> +++ b/fs/proc/page.c
+> @@ -148,8 +148,6 @@ u64 stable_page_flags(const struct page *page)
+>  	const struct folio *folio;
+>  	struct page_snapshot ps;
+>  	unsigned long k;
+> -	unsigned long mapping;
+> -	bool is_anon;
+>  	u64 u = 0;
+>  
+>  	/*
+> @@ -163,17 +161,14 @@ u64 stable_page_flags(const struct page *page)
+>  	folio = &ps.folio_snapshot;
+>  
+>  	k = folio->flags.f;
+> -	mapping = (unsigned long)folio->mapping;
+> -	is_anon = mapping & FOLIO_MAPPING_ANON;
+> -
+>  	/*
+>  	 * pseudo flags for the well known (anonymous) memory mapped pages
+>  	 */
+>  	if (folio_mapped(folio))
+>  		u |= BIT_ULL(KPF_MMAP);
+> -	if (is_anon) {
+> +	if (folio_test_anon(folio)) {
+>  		u |= BIT_ULL(KPF_ANON);
+> -		if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
+> +		if (folio_test_ksm(folio))
+>  			u |= BIT_ULL(KPF_KSM);
+>  	}
 
-I don't buy this analysis. We still have the lock_at page which is locked
-and still in the page cache. Inode eviction cannot complete past
-truncate_inode_pages_final() until it is unlocked, which only happens
-after __folio_split() has released i_mmap_rwsem.
+These make sense.
 
-One possible path how this can be hit is if lock_at ends up in an
-after-split folio beyond EOF and __folio_freeze_and_split_unmapped()
-removes it from the page cache. Note the drop loop starts at
-folio_next(folio), so this requires splitting at a tail page (e.g.
-memory-failure) racing with truncate.
+>  
+> @@ -181,10 +176,12 @@ u64 stable_page_flags(const struct page *page)
+>  	 * compound pages: export both head/tail info
+>  	 * they together define a compound page's start/end pos and order
+>  	 */
+> -	if (ps.idx == 0)
+> -		u |= kpf_copy_bit(k, KPF_COMPOUND_HEAD, PG_head);
+> -	else
+> +	if (ps.idx == 0) {
+> +		if (folio_test_head(folio))
+> +			u |= BIT_ULL(KPF_COMPOUND_HEAD);
 
-But that's not what your analysis claims. Please share the actual crash
-reports. Let's get to the bottom of the situation before changing the
-code.
+
+Once we decouple folios from pages, we will have compound pages that are not
+folios. PG_head is not folio specific.
+
+But then, some of the flags below are used in other context outside of folios.
+
+I would focus here only on converting things to use folios that will actually be
+folio-specific: like the folio_test_anon() above.
+
+
+> +	} else {
+>  		u |= BIT_ULL(KPF_COMPOUND_TAIL);
+> +	}
+>  	if (folio_test_hugetlb(folio))
+>  		u |= BIT_ULL(KPF_HUGE);
+>  	else if (folio_test_large(folio) &&
+> @@ -201,6 +198,9 @@ u64 stable_page_flags(const struct page *page)
+>  	if (ps.flags & PAGE_SNAPSHOT_PG_BUDDY)
+>  		u |= BIT_ULL(KPF_BUDDY);
+>  
+> +	if (ps.flags & PAGE_SNAPSHOT_PG_IDLE)
+> +		u |= BIT_ULL(KPF_IDLE);
+> +
+
+That looks like an independent cleanup, right? Should probably go in a separate
+patch then.
+
+>  	if (folio_test_offline(folio))
+>  		u |= BIT_ULL(KPF_OFFLINE);
+>  	if (folio_test_pgtable(folio))
+> @@ -208,42 +208,46 @@ u64 stable_page_flags(const struct page *page)
+>  	if (folio_test_slab(folio))
+>  		u |= BIT_ULL(KPF_SLAB);
+>  
+> -#if defined(CONFIG_PAGE_IDLE_FLAG) && defined(CONFIG_64BIT)
+> -	u |= kpf_copy_bit(k, KPF_IDLE,          PG_idle);
+> -#else
+> -	if (ps.flags & PAGE_SNAPSHOT_PG_IDLE)
+> -		u |= BIT_ULL(KPF_IDLE);
+> -#endif
+> -
+> -	u |= kpf_copy_bit(k, KPF_LOCKED,	PG_locked);
+> -	u |= kpf_copy_bit(k, KPF_DIRTY,		PG_dirty);
+> -	u |= kpf_copy_bit(k, KPF_UPTODATE,	PG_uptodate);
+> -	u |= kpf_copy_bit(k, KPF_WRITEBACK,	PG_writeback);
+> -
+> -	u |= kpf_copy_bit(k, KPF_LRU,		PG_lru);
+> -	u |= kpf_copy_bit(k, KPF_REFERENCED,	PG_referenced);
+> -	u |= kpf_copy_bit(k, KPF_ACTIVE,	PG_active);
+> -	u |= kpf_copy_bit(k, KPF_RECLAIM,	PG_reclaim);
+> -
+> -#define SWAPCACHE ((1 << PG_swapbacked) | (1 << PG_swapcache))
+> -	if ((k & SWAPCACHE) == SWAPCACHE)
+> -		u |= 1 << KPF_SWAPCACHE;
+> -	u |= kpf_copy_bit(k, KPF_SWAPBACKED,	PG_swapbacked);
+> -
+> -	u |= kpf_copy_bit(k, KPF_UNEVICTABLE,	PG_unevictable);
+> -	u |= kpf_copy_bit(k, KPF_MLOCKED,	PG_mlocked);
+> -
+> -#ifdef CONFIG_MEMORY_FAILURE
+> -	if (u & (1 << KPF_HUGE))
+> -		u |= kpf_copy_bit(k, KPF_HWPOISON,	PG_hwpoison);
+> -	else
+> -		u |= kpf_copy_bit(ps.page_snapshot.flags.f, KPF_HWPOISON, PG_hwpoison);
+> -#endif
+> +	if (folio_test_locked(folio))
+> +		u |= BIT_ULL(KPF_LOCKED);
+> +	if (folio_test_dirty(folio))
+> +		u |= BIT_ULL(KPF_DIRTY);
+> +	if (folio_test_uptodate(folio))
+> +		u |= BIT_ULL(KPF_UPTODATE);
+> +	if (folio_test_writeback(folio))
+> +		u |= BIT_ULL(KPF_WRITEBACK);
+> +
+> +	if (folio_test_lru(folio))
+> +		u |= BIT_ULL(KPF_LRU);
+> +	if (folio_test_referenced(folio))
+> +		u |= BIT_ULL(KPF_REFERENCED);
+> +	if (folio_test_active(folio))
+> +		u |= BIT_ULL(KPF_ACTIVE);
+> +	if (folio_test_reclaim(folio))
+> +		u |= BIT_ULL(KPF_RECLAIM);
+> +
+> +	if (folio_test_swapcache(folio))
+> +		u |= BIT_ULL(KPF_SWAPCACHE);
+> +	if (folio_test_swapbacked(folio))
+> +		u |= BIT_ULL(KPF_SWAPBACKED);
+> +	if (folio_test_unevictable(folio))
+> +		u |= BIT_ULL(KPF_UNEVICTABLE);
+> +	if (folio_test_mlocked(folio))
+> +		u |= BIT_ULL(KPF_MLOCKED);
+> +
+> +	if ((folio_test_hugetlb(folio) && folio_test_hwpoison(folio))
+> +		|| PageHWPoison(&ps.page_snapshot))
+> +		u |= BIT_ULL(KPF_HWPOISON);
+> +
+> +	if (folio_test_reserved(folio))
+> +		u |= BIT_ULL(KPF_RESERVED);
+
+That is not a pure folio flag.
+
+> +	if (folio_test_owner_2(folio))
+> +		u |= BIT_ULL(KPF_OWNER_2);
+> +	if (folio_test_private(folio))
+> +		u |= BIT_ULL(KPF_PRIVATE);
+> +	if (folio_test_private_2(folio))
+> +		u |= BIT_ULL(KPF_PRIVATE_2);
+
+These as well.
+
+So I'd probably leave the page bit checking alone for now and focus on the
+mapping only.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
